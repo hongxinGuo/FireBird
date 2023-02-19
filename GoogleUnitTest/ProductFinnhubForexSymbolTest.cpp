@@ -58,7 +58,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -80,12 +80,18 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexSymbol1, ParseFinnhubForexSymbolTest,
-	                         testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
 		                         &finnhubWebData85, &finnhubWebData90));
 
 	TEST_P(ParseFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
 		m_pvForexSymbol = m_productFinnhubForexSymbol.ParseFinnhubForexSymbol(m_pWebData);
 		switch (m_lIndex) {
+		case 0: // 空数据
+			EXPECT_EQ(m_pvForexSymbol->size(), 0);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_EQ(m_pvForexSymbol->size(), 0);
+			break;
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvForexSymbol->size(), 0);
 			break;
@@ -112,7 +118,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -134,13 +140,19 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexSymbol1, ProcessFinnhubForexSymbolTest,
-	                         testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
 		                         &finnhubWebData85, &finnhubWebData90));
 
 	TEST_P(ProcessFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
 		CForexSymbolPtr pForexSymbol;
-		bool fSucceed = m_productFinnhubForexSymbol.ParseAndStoreWebData(m_pWebData);
+		const bool fSucceed = m_productFinnhubForexSymbol.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
+		case 0: // 空数据
+			EXPECT_FALSE(fSucceed);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_FALSE(fSucceed);
+			break;
 		case 2: // 格式不对
 			EXPECT_FALSE(fSucceed);
 			break;

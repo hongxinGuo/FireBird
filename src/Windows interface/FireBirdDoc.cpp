@@ -9,14 +9,6 @@
 
 #include "FireBirdDoc.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-// CFireBirdDoc
-
 IMPLEMENT_DYNCREATE(CFireBirdDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CFireBirdDoc, CDocument)

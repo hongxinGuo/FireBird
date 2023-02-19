@@ -61,7 +61,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			TiingoWebData* pData = GetParam();
+			const TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -141,90 +141,6 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ParseTiingoStockTest2 : public TestWithParam<TiingoWebData*> {
-	protected:
-		void SetUp(void) override {
-			GeneralCheck();
-			TiingoWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
-			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
-		}
-
-		void TearDown(void) override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			GeneralCheck();
-		}
-
-	public:
-		long m_lIndex;
-		CWebDataPtr m_pWebData;
-		CTiingoStockVectorPtr m_pvStock;
-		CProductTiingoStockSymbol m_tiingoStockSymbolProduct;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStock,
-	                         ParseTiingoStockTest2,
-	                         testing::Values(&tiingoWebData1, &tiingoWebData2,
-		                         &tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
-
-	TEST_P(ParseTiingoStockTest2, TestParseStockProfile) {
-		m_pvStock = m_tiingoStockSymbolProduct.ParseTiingoStockSymbol(m_pWebData);
-		switch (m_lIndex) {
-		case 1: // 格式不对
-			EXPECT_EQ(m_pvStock->size(), 0);
-			break;
-		case 2: // 格式不对
-			EXPECT_EQ(m_pvStock->size(), 0);
-			break;
-		case 3: // 缺乏address项
-			EXPECT_EQ(m_pvStock->size(), 1);
-			break;
-		case 4:
-			EXPECT_EQ(m_pvStock->size(), 1);
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoPermaTicker, _T("US000000000091"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTicker, _T("AA"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strName, _T("Alcoa Corp"));
-			EXPECT_TRUE(m_pvStock->at(0)->m_fIsActive);
-			EXPECT_FALSE(m_pvStock->at(0)->m_fIsADR);
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoIndustry, _T("industry have new data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoSector, _T("sector have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strSICIndustry, _T("sicIndustry have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strSICSector, _T("sicSector have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strReportingCurrency, _T("usd"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strLocation, _T("location have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strCompanyWebSite, _T("companyWebsite have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strSECFilingWebSite, _T("secFileingWebsite have data"));
-			EXPECT_EQ(m_pvStock->at(0)->m_lStatementUpdateDate, 20210302);
-			EXPECT_EQ(m_pvStock->at(0)->m_lDailyDataUpdateDate, 20210312);
-			EXPECT_EQ(m_pvStock->at(0)->m_iSICCode, 1234);
-			break;
-		case 10:
-			EXPECT_EQ(m_pvStock->size(), 2);
-			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoPermaTicker, _T("US000000000091"));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strTicker, _T("AA"));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strName, _T("New Name"));
-			EXPECT_TRUE(m_pvStock->at(1)->m_fIsActive);
-			EXPECT_FALSE(m_pvStock->at(1)->m_fIsADR);
-			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoIndustry, _T(" ")) << "当字符串为Field not available for free/evcaluation时，返回空串(一个空格)";
-			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoSector, _T(" "));
-			EXPECT_EQ(m_pvStock->at(1)->m_iSICCode, 0);
-			EXPECT_STREQ(m_pvStock->at(1)->m_strSICIndustry, _T(" "));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strSICSector, _T(" "));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strReportingCurrency, _T("usd"));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strLocation, _T(" "));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strCompanyWebSite, _T(" "));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strSECFilingWebSite, _T(" "));
-			EXPECT_EQ(m_pvStock->at(1)->m_lStatementUpdateDate, 20210302);
-			EXPECT_EQ(m_pvStock->at(1)->m_lDailyDataUpdateDate, 20210312);
-			break;
-		default:
-			break;
-		}
-	}
-
 	class ProcessTiingoStockTest : public TestWithParam<TiingoWebData*> {
 	protected:
 		void SetUp(void) override {
@@ -237,6 +153,7 @@ namespace FireBirdTest {
 			m_tiingoStockSymbolProduct.SetMarket(gl_pWorldMarket.get());
 			m_tiingoStockSymbolProduct.SetIndex(0);
 			gl_pTiingoDataSource->SetUpdateStockSymbol(true);
+			EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
 		}
 
 		void TearDown(void) override {
@@ -272,10 +189,16 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
 			break;
-		case 3: // 第二个数据缺乏address项
+		case 3: // 第二个数据缺乏address项,返回一个成功
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1) << "第一个数据是正确的";
 			gl_systemMessage.PopInnerSystemInformationMessage();
+			EXPECT_TRUE(gl_pWorldMarket->IsStockProfileNeedUpdate()) << "第一个数据是正确的";
+
+		//恢复原状
+			pStock = gl_pWorldMarket->GetStock(_T("A"));
+			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
+			pStock->SetUpdateProfileDB(false);
 			EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
 			break;
 		case 4:
@@ -286,7 +209,9 @@ namespace FireBirdTest {
 
 		//恢复原状
 			pStock = gl_pWorldMarket->GetStock(_T("AA"));
+			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			pStock->SetUpdateProfileDB(false);
+			EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);

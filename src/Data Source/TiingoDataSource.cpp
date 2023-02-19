@@ -90,7 +90,7 @@ void CTiingoDataSource::UpdateStatus(void) {
 bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
 	static bool sbWebErrorOccurred = false;
-	const long long llTickCount = GetTickCount64();
+	const long long llTickCount = GetTickCount();
 
 	if (!sbWebErrorOccurred) {
 		if (IsWebError()) {
@@ -106,9 +106,10 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 		}
 		if (IsInquiring()) {
 			sllLastTimeTickCount = llTickCount;
+			return true;
 		}
 	}
-	return true;
+	return false;
 }
 
 bool CTiingoDataSource::InquireTiingo(void) {

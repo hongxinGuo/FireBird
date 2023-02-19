@@ -8,6 +8,7 @@ namespace testing {
 		MOCK_METHOD(void, CreateInquiryMessageFromCurrentProduct, (), (override));
 		MOCK_METHOD(void, StartReadingThread, (), (override));
 		MOCK_METHOD(void, ReadWebData, (), (override));
+		MOCK_METHOD(ULONGLONG, GetTickCount, (), (override));
 	};
 
 	using CMockNeteaseDayLineDataSourcePtr = shared_ptr<CMockNeteaseDayLineDataSource>;

@@ -168,6 +168,7 @@ namespace FireBirdTest {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateProfileDB(false);
 			m_pStock->SetSaveInsiderSentiment(false);
+			m_pStock->SetInsiderSentimentUpdateDate(19800101);
 
 			GeneralCheck();
 		}

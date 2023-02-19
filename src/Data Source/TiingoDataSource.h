@@ -16,7 +16,7 @@ public:
 	void ConfigureSession(void) override; // 设置m_pSession状态。
 	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 
-	bool InquireTiingo(void);
+	virtual bool InquireTiingo(void);
 	bool InquireCompanySymbol(void);
 	bool InquireCryptoSymbol(void);
 	bool InquireDayLine(void);

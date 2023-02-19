@@ -46,13 +46,13 @@ namespace FireBirdTest {
 	}
 
 	// 正确数据
-	FinnhubWebData finnhubWebData131(1, _T("AAPL"), _T(
+	FinnhubWebData finnhubWebData133(3, _T("AAPL"), _T(
 		                                 "{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-03\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
 	// 缺乏 data项
-	FinnhubWebData finnhubWebData132(2, _T("AAPL"), _T(
+	FinnhubWebData finnhubWebData134(4, _T("AAPL"), _T(
 		                                 "{\"no data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
 	// 缺乏 Symbol项
-	FinnhubWebData finnhubWebData133(3, _T("AAPL"), _T(
+	FinnhubWebData finnhubWebData135(5, _T("AAPL"), _T(
 		                                 "{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"no symbol\" : \"RIG\"}"));
 
 	class ProcessFinnhubInsiderTransactionTest : public TestWithParam<FinnhubWebData*> {
@@ -92,23 +92,35 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubInsiderTransaction1, ProcessFinnhubInsiderTransactionTest,
-	                         testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData135, &finnhubWebData134, &finnhubWebData133));
 
 	TEST_P(ProcessFinnhubInsiderTransactionTest, TestProsessFinnhubInsiderTransaction0) {
 		m_finnhubCompanyInsiderTransaction.ParseAndStoreWebData(m_pWebData);
 		EXPECT_FALSE(m_pStock->IsUpdateInsiderTransaction());
 		switch (m_lIndex) {
-		case 1: // 正确
+		case 0: // 空数据
+			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), 19700101) << "已更改为当前市场日期";
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderTransaction());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderTransaction());
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), 19700101) << "已更改为当前市场日期";
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderTransaction());
+			EXPECT_FALSE(m_pStock->IsSaveInsiderTransaction());
+			break;
+		case 3: // 正确
 			EXPECT_TRUE(m_pStock->IsSaveInsiderTransaction());
 			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), 19700101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
-		case 2:
+		case 4:
 			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), 19700101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(m_pStock->IsSaveInsiderTransaction());
 			break;
-		case 3:
+		case 5:
 			EXPECT_NE(m_pStock->GetInsiderTransactionUpdateDate(), 19700101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(m_pStock->IsSaveInsiderTransaction());
@@ -122,7 +134,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
@@ -149,12 +161,18 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderTransaction1, ParseFinnhubInsiderTransactionTest,
-	                         testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData135, &finnhubWebData134, &finnhubWebData133));
 
 	TEST_P(ParseFinnhubInsiderTransactionTest, TestParseFinnhubInsiderTransaction0) {
 		m_pvInsiderTransaction = m_finnhubCompanyInsiderTransaction.ParseFinnhubStockInsiderTransaction(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // 正确
+		case 0: // 空数据
+			EXPECT_EQ(m_pvInsiderTransaction->size(), 0);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_EQ(m_pvInsiderTransaction->size(), 0);
+			break;
+		case 3: // 正确
 			EXPECT_EQ(m_pvInsiderTransaction->size(), 2);
 			EXPECT_STREQ(m_pvInsiderTransaction->at(1)->m_strPersonName, _T("Long Brady K")) << "数据按日期排列，此第一条排到了第二位";
 			EXPECT_STREQ(m_pvInsiderTransaction->at(1)->m_strSymbol, _T("RIG"));
@@ -165,68 +183,10 @@ namespace FireBirdTest {
 			EXPECT_DOUBLE_EQ(m_pvInsiderTransaction->at(1)->m_dTransactionPrice, 3.68);
 			EXPECT_TRUE(m_pvInsiderTransaction->at(1)->m_lTransactionDate <= m_pvInsiderTransaction->at(1)->m_lTransactionDate) << "此序列按交易日期顺序排列";
 			break;
-		case 2: // 缺乏data项
+		case 4: // 缺乏data项
 			EXPECT_EQ(m_pvInsiderTransaction->size(), 0);
 			break;
-		case 3: // 缺乏Symbol
-			EXPECT_EQ(m_pvInsiderTransaction->size(), 0);
-			break;
-		default:
-			break;
-		}
-	}
-
-	class ParseFinnhubInsiderTransactionTest2 : public TestWithParam<FinnhubWebData*> {
-	protected:
-		void SetUp(void) override {
-			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
-			EXPECT_TRUE(m_pStock != nullptr);
-			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
-			m_pvInsiderTransaction = nullptr;
-		}
-
-		void TearDown(void) override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-
-			GeneralCheck();
-			m_pStock->SetUpdateProfileDB(false);
-		}
-
-	public:
-		long m_lIndex;
-		CWorldStockPtr m_pStock;
-		CWebDataPtr m_pWebData;
-		CInsiderTransactionVectorPtr m_pvInsiderTransaction;
-		CProductFinnhubCompanyInsiderTransaction m_finnhubCompanyInsiderTransaction;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubInsiderTransaction1, ParseFinnhubInsiderTransactionTest2,
-	                         testing::Values(&finnhubWebData131, &finnhubWebData132, &finnhubWebData133));
-
-	TEST_P(ParseFinnhubInsiderTransactionTest2, TestParseFinnhubInsiderTransaction0) {
-		m_pvInsiderTransaction = m_finnhubCompanyInsiderTransaction.ParseFinnhubStockInsiderTransaction(m_pWebData);
-		switch (m_lIndex) {
-		case 1: // 正确
-			EXPECT_EQ(m_pvInsiderTransaction->size(), 2);
-			EXPECT_STREQ(m_pvInsiderTransaction->at(1)->m_strPersonName, _T("Long Brady K")) << "数据按日期排列，此第一条排到了第二位";
-			EXPECT_STREQ(m_pvInsiderTransaction->at(1)->m_strSymbol, _T("RIG"));
-			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lShare, 269036);
-			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lChange, -14236);
-			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lFilingDate, 20210303);
-			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lTransactionDate, 20210303) << "数据按日期排列，此第一条排到了第二位";
-			EXPECT_DOUBLE_EQ(m_pvInsiderTransaction->at(1)->m_dTransactionPrice, 3.68);
-			EXPECT_TRUE(m_pvInsiderTransaction->at(1)->m_lTransactionDate <= m_pvInsiderTransaction->at(1)->m_lTransactionDate) << "此序列按交易日期顺序排列";
-			break;
-		case 2: // 缺乏data项
-			EXPECT_EQ(m_pvInsiderTransaction->size(), 0);
-			break;
-		case 3: // 缺乏Symbol
+		case 5: // 缺乏Symbol
 			EXPECT_EQ(m_pvInsiderTransaction->size(), 0);
 			break;
 		default:

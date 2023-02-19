@@ -9,6 +9,7 @@ namespace testing {
 		MOCK_METHOD(void, StartReadingThread, (), (override));
 		MOCK_METHOD(void, ReadWebData, (), (override));
 		MOCK_METHOD(bool, InquireDayLine, (), (override));
+		MOCK_METHOD(ULONGLONG, GetTickCount, (), (override));
 	};
 
 	using CMockTengxunDayLineDataSourcePtr = shared_ptr<CMockTengxunDayLineDataSource>;

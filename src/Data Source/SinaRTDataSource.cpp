@@ -30,7 +30,7 @@ bool CSinaRTDataSource::Reset(void) {
 }
 
 bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
-	const long long llTickCount = GetTickCount64();
+	const long long llTickCount = GetTickCount();
 	if (static long long sllLastTimeTickCount = 0; llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime())) {
 		// 先判断下次的申请时间。因网络错误只在顺利接收网络数据后方才重置。
 		if (IsWebError()) {

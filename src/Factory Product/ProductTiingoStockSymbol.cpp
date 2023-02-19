@@ -44,8 +44,8 @@ bool CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			}
 		}
 		sprintf_s(buffer, _T("%6d"), lTemp);
-		CString strNumber = buffer;
-		CString str = _T("今日Tiingo Stock Symbol活跃股票总数为") + strNumber;
+		const CString strNumber = buffer;
+		const CString str = _T("今日Tiingo Stock Symbol活跃股票总数为") + strNumber;
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 	}
 	return true;

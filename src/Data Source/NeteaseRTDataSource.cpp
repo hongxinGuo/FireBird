@@ -20,7 +20,7 @@ bool CNeteaseRTDataSource::Reset(void) {
 }
 
 bool CNeteaseRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
-	const ULONGLONG llTickCount = GetTickCount64();
+	const ULONGLONG llTickCount = GetTickCount();
 	if (static ULONGLONG sllLastTimeTickCount = 0; llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime())) {
 		// 先判断下次的申请时间。因网络错误只在顺利接收网络数据后方才重置。
 		if (IsWebError()) {

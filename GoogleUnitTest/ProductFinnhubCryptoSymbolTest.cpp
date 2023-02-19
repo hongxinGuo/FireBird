@@ -58,7 +58,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -80,12 +80,18 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoSymbol1, ParseFinnhubCryptoSymbolTest,
-	                         testing::Values(&finnhubWebData212, &finnhubWebData213, &finnhubWebData214,
+	                         testing::Values(&finnhubWebData0,&finnhubWebData1, &finnhubWebData212, &finnhubWebData213, &finnhubWebData214,
 		                         &finnhubWebData215, &finnhubWebData220));
 
 	TEST_P(ParseFinnhubCryptoSymbolTest, TestParseFinnhubCryptoSymbol0) {
 		m_pvCryptoSymbol = m_finnhubCryptoSymbolProduct.ParseFinnhubCryptoSymbol(m_pWebData);
 		switch (m_lIndex) {
+		case 0: // 空数据
+			EXPECT_EQ(m_pvCryptoSymbol->size(), 0);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_EQ(m_pvCryptoSymbol->size(), 0);
+			break;
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvCryptoSymbol->size(), 0);
 			break;
@@ -112,7 +118,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -134,13 +140,19 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoSymbol, ProcessFinnhubCryptoSymbolTest,
-	                         testing::Values(&finnhubWebData212, &finnhubWebData213, &finnhubWebData214,
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData212, &finnhubWebData213, &finnhubWebData214,
 		                         &finnhubWebData215, &finnhubWebData220));
 
 	TEST_P(ProcessFinnhubCryptoSymbolTest, TestProcessFinnhubCryptoSymbol) {
 		CFinnhubCryptoSymbolPtr pCrypto;
-		bool fSucceed = m_finnhubCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
+		const bool fSucceed = m_finnhubCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
+		case 0: // 空数据
+			EXPECT_TRUE(fSucceed);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_TRUE(fSucceed);
+			break;
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);
 			break;

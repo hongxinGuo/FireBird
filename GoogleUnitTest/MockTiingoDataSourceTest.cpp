@@ -40,6 +40,23 @@ namespace FireBirdTest {
 	protected:
 	};
 
+	TEST_F(CMockTiingoDataSourceTest, TestGenerateInquiryMessage) {
+		EXPECT_FALSE(m_pTiingoDataSource->IsInquiring());
+		m_pTiingoDataSource->SetErrorCode(12002);
+		EXPECT_CALL(*m_pTiingoDataSource, GetTickCount()).Times(3)
+		.WillOnce(Return(0))
+		.WillOnce(Return(300000 + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()))
+		.WillOnce(Return(300000 + 1 + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()));
+		EXPECT_CALL(*m_pTiingoDataSource, InquireTiingo()).Times(1)
+		.WillOnce(DoAll(Invoke([]() { m_pTiingoDataSource->SetInquiring(true); }), Return(true)));
+
+		EXPECT_FALSE(m_pTiingoDataSource->GenerateInquiryMessage(120000)) << "网络报错，延后五分钟";
+		EXPECT_FALSE(m_pTiingoDataSource->GenerateInquiryMessage(120500)) << "未过五分钟，继续等待";
+		EXPECT_TRUE(m_pTiingoDataSource->GenerateInquiryMessage(120500)) << "已过五分钟，申请数据";
+
+		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
+	}
+
 	TEST_F(CMockTiingoDataSourceTest, TestParseTiingoInquiringMessage_STOCK_SYMBOLS_) {
 		const CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockSymbol>();
 		gl_pWorldMarket->GetStock(0)->SetUpdateCompanyProfile(true);

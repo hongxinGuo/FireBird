@@ -39,6 +39,8 @@ public:
 	virtual void ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData); // 默认是在处理完本次数据后方才允许再次接收。
 	virtual void UpdateStatus(void) { }
 
+	virtual ULONGLONG GetTickCount() { return ::GetTickCount64(); } // 为了测试方便，将GetTickCount64包裹上一层。
+
 	bool HaveInquiry(void) const {
 		if (m_qProduct.empty()) return false;
 		return true;

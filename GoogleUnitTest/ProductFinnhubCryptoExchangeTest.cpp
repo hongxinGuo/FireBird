@@ -55,7 +55,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -76,11 +76,17 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoExchange1, ParseFinnhubCryptoExchangeTest,
-	                         testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
 
 	TEST_P(ParseFinnhubCryptoExchangeTest, TestParseFinnhubCryptoExchange0) {
 		m_pvExchange = m_finnhubCryptoExchange.ParseFinnhubCryptoExchange(m_pWebData);
 		switch (m_lIndex) {
+		case 0: // 空数据
+			EXPECT_EQ(m_pvExchange->size(), 0);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_EQ(m_pvExchange->size(), 0);
+			break;
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvExchange->size(), 0);
 			break;
@@ -101,7 +107,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -126,11 +132,17 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCryptoExchange1, ProcessFinnhubCryptoExchangeTest,
-	                         testing::Values(&finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1,& finnhubWebData202, &finnhubWebData203, &finnhubWebData210));
 
 	TEST_P(ProcessFinnhubCryptoExchangeTest, TestProcessFinnhubCryptoExchange0) {
 		m_finnhubCryptoExchange.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
+		case 0: // 空数据
+			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14);
+			break;
 		case 2: // 格式不对
 			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14);
 			break;

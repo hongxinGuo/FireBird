@@ -60,7 +60,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
@@ -88,12 +88,18 @@ namespace FireBirdTest {
 		CProductFinnhubStockSymbol m_finnhubStockSymbolProduct;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ParseFinnhubStockSymbolTest, testing::Values(&finnhubWebData22, &finnhubWebData23,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ParseFinnhubStockSymbolTest, testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData22, &finnhubWebData23,
 		                         &finnhubWebData30));
 
 	TEST_P(ParseFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
 		m_pvStock = m_finnhubStockSymbolProduct.ParseFinnhubStockSymbol(m_pWebData);
 		switch (m_lIndex) {
+		case 0: // 空数据
+			EXPECT_EQ(m_pvStock->size(), 0);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_EQ(m_pvStock->size(), 0);
+			break;
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvStock->size(), 0);
 			break;
@@ -116,7 +122,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -139,13 +145,19 @@ namespace FireBirdTest {
 		CProductFinnhubStockSymbol m_finnhubStockSymbolProduct;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ProcessFinnhubStockSymbolTest, testing::Values(&finnhubWebData22, &finnhubWebData23,
+	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockSymbol1, ProcessFinnhubStockSymbolTest, testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData22, &finnhubWebData23,
 		                         &finnhubWebData30));
 
 	TEST_P(ProcessFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
 		CWorldStockPtr pStock;
 		const bool fSucceed = m_finnhubStockSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
+		case 0: // 空数据
+			EXPECT_TRUE(fSucceed);
+			break;
+		case 1: // 无权利访问的数据
+			EXPECT_TRUE(fSucceed);
+			break;
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);
 			break;

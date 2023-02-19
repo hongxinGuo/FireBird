@@ -49,12 +49,12 @@ namespace FireBirdTest {
 			ASSERT(!gl_systemStatus.IsWorkingMode());
 
 			ASSERT_STREQ(gl_systemConfiguration.GetDefaultFileDirectoryAndName(),
-				_T("C:\\FireBird\\SystemConfiguration.json"));
+			             _T("C:\\FireBird\\SystemConfiguration.json"));
 			gl_systemConfiguration.SetDefaultFileDirectory(
 				_T("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\"));
 			gl_systemConfiguration.SetDefaultFileName(_T("systemConfigurationTest.json"));
 			ASSERT_STREQ(gl_systemConfiguration.GetDefaultFileDirectoryAndName(),
-				_T("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\systemConfigurationTest.json"));
+			             _T("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\systemConfigurationTest.json"));
 			gl_systemConfiguration.LoadDB();
 			gl_systemConfiguration.Update();
 
@@ -147,7 +147,8 @@ namespace FireBirdTest {
 
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 
-			gl_pWorldMarket->GetStock(_T("AAPL"))->SetUpdateCompanyProfile(true);
+			auto pStock1 = gl_pWorldMarket->GetStock(_T("AAPL"));
+			pStock1->SetUpdateCompanyProfile(true);
 
 			// 清空预装入的finnhubInaccessibleExchange
 			gl_finnhubInaccessibleExchange.Clear();

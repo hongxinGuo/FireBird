@@ -82,7 +82,7 @@ bool CQuandlDataSource::GenerateInquiryMessage(long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
 	static bool sbWebError = false;
 
-	const long long llTickCount = GetTickCount64();
+	const long long llTickCount = GetTickCount();
 	if (!sbWebError) {
 		if (IsWebError()) {
 			sbWebError = true;

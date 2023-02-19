@@ -20,7 +20,7 @@ bool CTengxunRTDataSource::Reset(void) {
 }
 
 bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
-	const long long llTickCount = GetTickCount64();
+	const long long llTickCount = GetTickCount();
 	static long long sllLastTimeTickCount = 0;
 
 	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请腾讯实时数据。

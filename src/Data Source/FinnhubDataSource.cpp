@@ -134,14 +134,14 @@ void CFinnhubDataSource::UpdateStatus(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 由系统调度器调度，采用GetTickCount64()来确定当前时间。
+// 由系统调度器调度，采用GetTickCount()来确定当前时间。
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	static long long sllLastTimeTickCount = 0;
 	static bool sbWebErrorOccurred = false;
-	const long long llTickCount = GetTickCount64();
+	const long long llTickCount = GetTickCount();
 
 	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请finnhub各数据。
 	if (!sbWebErrorOccurred) {

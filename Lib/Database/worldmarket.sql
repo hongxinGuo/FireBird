@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
 -- Host: localhost    Database: worldmarket
 -- ------------------------------------------------------
--- Server version	8.0.31
+-- Server version	8.0.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -57,7 +57,7 @@ CREATE TABLE `choiced_stock` (
   `Symbol` varchar(45) DEFAULT '',
   PRIMARY KEY (`ID`),
   KEY `Symbol` (`Symbol`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -203,7 +203,7 @@ CREATE TABLE `finnhub_company_news` (
   PRIMARY KEY (`ID`),
   KEY `DateTime` (`DateTime`),
   KEY `Symbol` (`Symbol`,`DateTime`)
-) ENGINE=InnoDB AUTO_INCREMENT=7008485 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7267547 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -247,7 +247,7 @@ CREATE TABLE `finnhub_crypto_symbol` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`) /*!80000 INVISIBLE */,
   KEY `Symbol` (`Symbol`)
-) ENGINE=InnoDB AUTO_INCREMENT=13179 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24292 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -366,7 +366,7 @@ CREATE TABLE `finnhub_stock_basic_financials_annual` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   KEY `Symbol` (`Symbol`,`Date`,`Type`)
-) ENGINE=InnoDB AUTO_INCREMENT=5649347 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5685562 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -511,7 +511,7 @@ CREATE TABLE `finnhub_stock_basic_financials_metric` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   KEY `Symbol` (`Symbol`)
-) ENGINE=InnoDB AUTO_INCREMENT=37994 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38466 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -530,7 +530,7 @@ CREATE TABLE `finnhub_stock_basic_financials_quarterly` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   KEY `Symbol` (`Symbol`,`Date`)
-) ENGINE=InnoDB AUTO_INCREMENT=17144289 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17321332 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -646,7 +646,7 @@ CREATE TABLE `insider_sentiment` (
   `mspr` double DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `Symbol` (`Symbol`)
-) ENGINE=InnoDB AUTO_INCREMENT=193733 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=200850 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -671,7 +671,7 @@ CREATE TABLE `insider_transaction` (
   KEY `TransactionDate` (`TransactionDate`) /*!80000 INVISIBLE */,
   KEY `PersonName` (`PersonName`),
   KEY `TransactionCode` (`TransactionCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=668058 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=724672 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -743,7 +743,7 @@ CREATE TABLE `stock_dayline` (
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   KEY `Date` (`Date`,`Symbol`),
   KEY `Symbol` (`Symbol`)
-) ENGINE=InnoDB AUTO_INCREMENT=17931599 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18830535 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -809,7 +809,7 @@ CREATE TABLE `stock_profile` (
   KEY `DayLineStartDate` (`DayLineStartDate`),
   KEY `DayLineEndDate` (`DayLineEndDate`),
   KEY `Symbol` (`Symbol`,`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=38283 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='所有股票的基本情况。';
+) ENGINE=InnoDB AUTO_INCREMENT=38595 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='所有股票的基本情况。';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -831,7 +831,7 @@ CREATE TABLE `tiingo_crypto_symbol` (
   KEY `BaseCurrency` (`BaseCurrency`) /*!80000 INVISIBLE */,
   KEY `QuoteCurrency` (`QuoteCurrency`) /*!80000 INVISIBLE */,
   KEY `Ticker` (`Ticker`)
-) ENGINE=InnoDB AUTO_INCREMENT=184905 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='tiingo crypto代码';
+) ENGINE=InnoDB AUTO_INCREMENT=202095 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='tiingo crypto代码';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -876,7 +876,7 @@ CREATE TABLE `tiingo_stock_fundanmental` (
   `StatementUpdateDate` int DEFAULT '19800101',
   `DailyDataUpdateDate` int DEFAULT '19800101',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=58576 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=58646 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -908,4 +908,4 @@ CREATE TABLE `world_market_option` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-11  8:23:22
+-- Dump completed on 2023-02-19 19:27:11
