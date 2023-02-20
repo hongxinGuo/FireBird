@@ -33,13 +33,13 @@ bool CNeteaseRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 			else {
 				sllLastTimeTickCount = llTickCount;
 			}
-		}
-		// ºóÉêÇëÍøÂçÊı¾İ
-		if (!IsInquiring()) {
-			InquireRTData(lCurrentTime);
+			if (!IsInquiring()) {
+				InquireRTData(lCurrentTime);
+				return true;
+			}
 		}
 	}
-	return true;
+	return false;
 }
 
 bool CNeteaseRTDataSource::InquireRTData(const long lCurrentTime) {

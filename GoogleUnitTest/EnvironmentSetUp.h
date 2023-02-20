@@ -147,6 +147,7 @@ namespace FireBirdTest {
 
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 
+			gl_pWorldMarket->SetSystemReady(true);
 			auto pStock1 = gl_pWorldMarket->GetStock(_T("AAPL"));
 			pStock1->SetUpdateCompanyProfile(true);
 

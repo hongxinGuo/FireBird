@@ -16,10 +16,10 @@ public:
 	void ConfigureSession(void) override; // 设置m_pSession状态。
 	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 
-	virtual bool InquireTiingo(void);
-	bool InquireCompanySymbol(void);
-	bool InquireCryptoSymbol(void);
-	bool InquireDayLine(void);
+	bool InquireTiingo(void);
+	virtual bool InquireCompanySymbol(void);
+	virtual bool InquireCryptoSymbol(void);
+	virtual bool InquireDayLine(void);
 
 	bool IsUpdateStockSymbol(void) const noexcept { return m_fUpdateStockSymbol; }
 	void SetUpdateStockSymbol(bool fFlag) noexcept { m_fUpdateStockSymbol = fFlag; }

@@ -29,7 +29,6 @@ namespace FireBirdTest {
 		void TearDown(void) override {
 			// clearUp
 			m_pMockNeteaseRTDataSource = nullptr;
-			gl_pChinaMarket->SetSystemReady(false);
 			GeneralCheck();
 		}
 	};
@@ -43,6 +42,33 @@ namespace FireBirdTest {
 	TEST_F(CMockNeteaseRTDataSourceTest, TestParseData) {
 		const auto pData = make_shared<CWebData>();
 		EXPECT_TRUE(m_pMockNeteaseRTDataSource->ParseData(pData)) << "网易实时数据无需解析";
+	}
+
+	TEST_F(CMockNeteaseRTDataSourceTest, TestGenerateInquiryMessage) {
+		EXPECT_FALSE(m_pMockNeteaseRTDataSource->IsInquiring());
+		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
+		EXPECT_TRUE(gl_pChinaMarket->IsFastReceivingRTData());
+
+		m_pMockNeteaseRTDataSource->SetErrorCode(12002);
+		EXPECT_CALL(*m_pMockNeteaseRTDataSource, GetTickCount()).Times(5)
+		.WillOnce(Return(0))
+		.WillOnce(Return(10000))
+		.WillOnce(Return(20000 + 1 + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
+		.WillOnce(Return(20000 + 1 + 2 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
+		.WillOnce(Return(20000 + 2 + 2 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
+
+		EXPECT_FALSE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120000));
+		EXPECT_FALSE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120000)) << "Web Error, postponed 10 seconds";
+		m_pMockNeteaseRTDataSource->SetErrorCode(0);
+		EXPECT_TRUE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120600)) << "已过10秒且网络正常，申请数据";
+		EXPECT_TRUE(m_pMockNeteaseRTDataSource->IsInquiring());
+		m_pMockNeteaseRTDataSource->SetInquiring(false);
+
+		EXPECT_FALSE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120100)) << "继续等待";
+		EXPECT_TRUE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120600)) << "申请数据";
+
+		EXPECT_TRUE(m_pMockNeteaseRTDataSource->HaveInquiry());
+		EXPECT_TRUE(m_pMockNeteaseRTDataSource->IsInquiring());
 	}
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestInquireRTData) {

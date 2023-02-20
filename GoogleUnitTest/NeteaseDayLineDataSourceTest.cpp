@@ -5,6 +5,7 @@
 #include"NeteaseDayLineDataSource.h"
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
+#include "ChinaStockCodeConverter.h"
 #include "TimeConvert.h"
 
 using namespace testing;
@@ -24,6 +25,7 @@ namespace FireBirdTest {
 
 		void TearDown(void) override {
 			// clearUp
+			gl_pChinaMarket->SetSystemReady(true);
 			GeneralCheck();
 		}
 
@@ -49,6 +51,37 @@ namespace FireBirdTest {
 	TEST_F(CNeteaseDayLineDataSourceTest, TestParseData) {
 		const CWebDataPtr pData = make_shared<CWebData>();
 		EXPECT_TRUE(NeteaseDayLineDataSource.ParseData(pData));
+	}
+
+	TEST_F(CNeteaseDayLineDataSourceTest, TestGenerateInquiryMessage1) {
+		gl_pSinaRTDataSource->SetErrorCode(12002);
+		EXPECT_TRUE(gl_systemStatus.IsWebBusy());
+
+		EXPECT_FALSE(NeteaseDayLineDataSource.GenerateInquiryMessage(120000)) << "Web Busy";
+
+		gl_pSinaRTDataSource->SetErrorCode(0);
+	}
+
+	TEST_F(CNeteaseDayLineDataSourceTest, TestGenerateInquiryMessage2) {
+		//gl_pSinaRTDataSource->SetErrorCode(0);
+		gl_pChinaMarket->TEST_SetFormattedMarketTime(120000); // ¿ÕÏÐÊ±¼ä
+		EXPECT_FALSE(gl_systemStatus.IsWebBusy());
+		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
+		EXPECT_TRUE(gl_pChinaMarket->IsDummyTime());
+		NeteaseDayLineDataSource.SetInquiring(false);
+
+		EXPECT_TRUE(NeteaseDayLineDataSource.GenerateInquiryMessage(120000));
+		EXPECT_TRUE(NeteaseDayLineDataSource.HaveInquiry());
+
+		const auto pProduct = NeteaseDayLineDataSource.GetCurrentProduct();
+		const CString strMessage = pProduct->GetInquiryFunction();
+		CString strSymbol = strMessage.Left(61);
+		strSymbol = strSymbol.Right(7);
+		const auto pStock = gl_pChinaMarket->GetStock(XferNeteaseToStandard(strSymbol));
+		EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+
+		// »Ö¸´Ô­×´
+		pStock->SetDayLineNeedUpdate(true);
 	}
 
 	TEST_F(CNeteaseDayLineDataSourceTest, TestCreateProduct) {

@@ -8,7 +8,9 @@ namespace testing {
 		MOCK_METHOD(void, StartReadingThread, (), (override));
 		MOCK_METHOD(void, ReadWebData, (), (override));
 		MOCK_METHOD(ULONGLONG, GetTickCount, (), (override));
-		MOCK_METHOD(bool, InquireTiingo, (), (override));
+		MOCK_METHOD(bool, InquireCompanySymbol, (), (override));
+		MOCK_METHOD(bool, InquireCryptoSymbol, (), (override));
+		MOCK_METHOD(bool, InquireDayLine, (), (override));
 	};
 
 	using CMockTiingoDataSourcePtr = shared_ptr<CMockTiingoDataSource>;

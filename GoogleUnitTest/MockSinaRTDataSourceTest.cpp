@@ -32,6 +32,7 @@ namespace FireBirdTest {
 			// clearUp
 			m_pMockSinaRTDataSource = nullptr;
 			gl_pChinaMarket->SetSinaStockRTDataInquiringIndex(0);
+			GeneralCheck();
 		}
 
 	public:

@@ -35,6 +35,7 @@ namespace FireBirdTest {
 			//EXPECT_THAT(gl_pChinaMarket->)
 			EXPECT_THAT(gl_pChinaMarket->IsCalculatingDayLineRS(), IsFalse());
 			EXPECT_THAT(gl_pChinaMarket->IsCalculatingWeekLineRS(), IsFalse());
+			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 		}
 	}
 
@@ -48,6 +49,8 @@ namespace FireBirdTest {
 
 			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14) << "最初装载了14个";
 			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载了10个";
+
+			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 		}
 	}
 

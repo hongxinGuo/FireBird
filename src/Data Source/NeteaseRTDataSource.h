@@ -15,7 +15,7 @@ public:
 	void CreateInquiryMessageFromCurrentProduct(void) override;
 	bool ParseData(CWebDataPtr pWebData) override;
 
-	bool InquireRTData(const long lCurrentTime);
+	virtual bool InquireRTData(const long lCurrentTime);
 
 protected:
 };

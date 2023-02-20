@@ -32,18 +32,18 @@ namespace FireBirdTest {
 
 		void TearDown(void) override {
 			// clearUp
-			GeneralCheck();
 
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			gl_pChinaMarket->SetResetMarket(true);
-			gl_pChinaMarket->SetSystemReady(false);
+			gl_pChinaMarket->SetSystemReady(true);
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 				gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
 			}
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			gl_pMockNeteaseDayLineDataSource = nullptr;
+			GeneralCheck();
 		}
 	};
 

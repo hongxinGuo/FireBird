@@ -59,6 +59,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestUpdateStatus) {
+		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateStockSymbol());
 		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 		gl_pTiingoDataSource->SetCurrentInquiry(p);
 
@@ -67,6 +68,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateStockSymbol());
 		gl_pTiingoDataSource->SetUpdateStockSymbol(true);
 
+		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
 		p->SetProductType(CRYPTO_SYMBOLS_);
 		gl_pTiingoDataSource->UpdateStatus();
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());

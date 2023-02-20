@@ -37,7 +37,7 @@ bool CNeteaseDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) 
 			return true;
 		}
 	}
-	return true;
+	return false;
 }
 
 void CNeteaseDayLineDataSource::CreateProduct() {

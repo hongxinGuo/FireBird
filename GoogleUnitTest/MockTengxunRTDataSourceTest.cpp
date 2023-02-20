@@ -30,7 +30,7 @@ namespace FireBirdTest {
 		void TearDown(void) override {
 			// clearUp
 			m_pMockTengxunRTDataSource = nullptr;
-			gl_pChinaMarket->SetSystemReady(false);
+			gl_pChinaMarket->SetSystemReady(true);
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);
 		}
 

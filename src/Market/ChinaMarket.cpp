@@ -33,6 +33,7 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 	m_strMarketId = _T("中国股票市场");
 	m_lMarketTimeZone = -8 * 3600; // 北京标准时间位于东八区，超前GMT8小时
 	m_fSaveRTData = false; // 此存储实时数据标识，用于存储供测试函数用的实时数据。目前任务已经完成。
+	m_bProcessingRTData = false;
 	m_RTDataNeedCalculate = false;
 	m_CalculatingDayLineRS = false;
 	m_CalculatingWeekLineRS = false;
@@ -383,7 +384,7 @@ bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
 			// 新的数据？
 			if (IsOrdinaryTradeTime()) m_lNewRTDataReceivedInOrdinaryTradeTime++;
 			pStock->PushRTData(pRTData); // 存储新的数据至数据池
-			if (pStock->IsRecordRTData()) { StoreChoiceRTData(pRTData); }
+			if (pStock->IsRecordRTData()) StoreChoiceRTData(pRTData);
 			pStock->SetTransactionTime(pRTData->GetTransactionTime()); // 设置最新接受到实时数据的时间
 		}
 	}
@@ -566,10 +567,9 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	// 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。如果系统正在存储临时实时数据，则等待一秒后的下一次轮询时再计算实时数据
 	// 使用线程同步模式，就解决了这个问题。无需等待。
 	if (IsSystemReady() && IsTodayTempRTDataLoaded()) {
-		if (IsRTDataNeedCalculate()) {
+		if (IsRTDataNeedCalculate() && !IsProcessingRTData()) {
 			thread thread1(ThreadProcessRTData, this);
 			thread1.detach();
-			//TaskProcessRTData();
 			SetRTDataNeedCalculate(false);
 		}
 	}
