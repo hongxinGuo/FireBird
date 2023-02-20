@@ -19,6 +19,7 @@ CQuandlDataSource::CQuandlDataSource(void) {
 
 bool CQuandlDataSource::Reset(void) {
 	CVirtualDataSource::Reset();
+	m_llLastTimeTickCount = 0;
 	return true;
 }
 
@@ -79,21 +80,18 @@ void CQuandlDataSource::UpdateStatus(void) {
 }
 
 bool CQuandlDataSource::GenerateInquiryMessage(long lCurrentTime) {
-	static long long sllLastTimeTickCount = 0;
-	static bool sbWebError = false;
-
 	const long long llTickCount = GetTickCount();
-	if (!sbWebError) {
-		if (IsWebError()) {
-			sbWebError = true;
-			sllLastTimeTickCount += 300000; // 如果出现错误，则延迟5分钟再重新申请。
-		}
-	}
 
-	if (llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime())) {
-		sbWebError = false;
+	if (llTickCount > (m_llLastTimeTickCount + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime())) {
+		if (IsWebError()) {
+			m_llLastTimeTickCount += 300000; // 如果出现错误，则延迟5分钟再重新申请。
+		}
+		else {
+			m_llLastTimeTickCount = llTickCount;
+		}
+
 		if (!IsInquiring()) { }
-		if (IsInquiring()) sllLastTimeTickCount = llTickCount;
+		if (IsInquiring()) { }
 	}
 	return true;
 }

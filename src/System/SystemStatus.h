@@ -1,5 +1,6 @@
 #pragma once
-#include "NeteaseDayLineDataSource.h"
+
+#include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
 
 class CSystemStatus final {
@@ -20,7 +21,7 @@ public:
 	bool IsWorkingMode() const { return m_fWorkingMode; }
 
 	// 当下载新浪或者网易实时数据出现问题时，系统的其他网络活动应该让步。
-	static bool IsWebBusy() { return gl_pSinaRTDataSource->IsWebError() || gl_pNeteaseDayLineDataSource->IsWebError(); }
+	static bool IsWebBusy() { return gl_pSinaRTDataSource->IsWebError() || gl_pNeteaseRTDataSource->IsWebError(); }
 
 protected:
 	std::atomic_bool m_fExitingSystem; //  系统退出标识，用于终止其他线程。

@@ -200,6 +200,9 @@ protected:
 
 	static atomic_long sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
 
+protected:
+	long long m_llLastTimeTickCount;
+
 private:
 	char m_dataBuffer[DATA_BUFFER_SIZE_]; //网络数据缓存
 };

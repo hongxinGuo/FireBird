@@ -41,6 +41,7 @@ CVirtualDataSource::CVirtualDataSource(void) {
 }
 
 bool CVirtualDataSource::Reset(void) {
+	m_llLastTimeTickCount = 0;
 	m_fInquiring = false;
 
 	m_lByteRead = 0;

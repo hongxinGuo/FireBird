@@ -88,24 +88,20 @@ void CTiingoDataSource::UpdateStatus(void) {
 }
 
 bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
-	static long long sllLastTimeTickCount = 0;
-	static bool sbWebErrorOccurred = false;
 	const long long llTickCount = GetTickCount();
 
-	if (!sbWebErrorOccurred) {
+	if (llTickCount > (m_llLastTimeTickCount + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime())) {
 		if (IsWebError()) {
-			sbWebErrorOccurred = true;
-			sllLastTimeTickCount += 300000; // 如果出现错误，则延迟5分钟再重新申请。
+			m_llLastTimeTickCount += 300000; // 如果出现错误，则延迟5分钟再重新申请。
 		}
-	}
+		else {
+			m_llLastTimeTickCount = llTickCount;
+		}
 
-	if (llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime())) {
-		sbWebErrorOccurred = false; // 申请时清除错误标识
 		if (!IsInquiring()) {
 			InquireTiingo();
 		}
 		if (IsInquiring()) {
-			sllLastTimeTickCount = llTickCount;
 			return true;
 		}
 	}

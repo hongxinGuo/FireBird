@@ -16,31 +16,32 @@ CTengxunRTDataSource::CTengxunRTDataSource() {
 }
 
 bool CTengxunRTDataSource::Reset(void) {
+	m_llLastTimeTickCount = 0;
 	return true;
 }
 
 bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	const long long llTickCount = GetTickCount();
-	static long long sllLastTimeTickCount = 0;
 
 	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请腾讯实时数据。
-	if (gl_pChinaMarket->IsSystemReady() && (llTickCount > (sllLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime() * 5))) {
+	if (gl_pChinaMarket->IsSystemReady() && (llTickCount > (m_llLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime() * 5))) {
 		if (IsWebError()) {
-			sllLastTimeTickCount = llTickCount + 10000; //网络出现错误时，延迟十秒再查询
+			m_llLastTimeTickCount = llTickCount + 10000; //网络出现错误时，延迟十秒再查询
 		}
 		else {
 			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady()) {
-				sllLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+				m_llLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
 			}
 			else {
-				sllLastTimeTickCount = llTickCount;
+				m_llLastTimeTickCount = llTickCount;
 			}
 		}
 		if (!IsInquiring()) {
 			InquireRTData(lCurrentTime);
+			return true;
 		}
 	}
-	return true;
+	return false;
 }
 
 bool CTengxunRTDataSource::InquireRTData(const long lCurrentTime) {

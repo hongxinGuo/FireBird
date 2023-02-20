@@ -33,6 +33,7 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 	m_strMarketId = _T("中国股票市场");
 	m_lMarketTimeZone = -8 * 3600; // 北京标准时间位于东八区，超前GMT8小时
 	m_fSaveRTData = false; // 此存储实时数据标识，用于存储供测试函数用的实时数据。目前任务已经完成。
+	m_fFastReceivingRTData = true;
 	m_bProcessingRTData = false;
 	m_RTDataNeedCalculate = false;
 	m_CalculatingDayLineRS = false;

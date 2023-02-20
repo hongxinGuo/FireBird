@@ -1,14 +1,12 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-#include"FinnhubInquiryType.h"
 
 #include"TiingoDataSource.h"
 #include"WorldMarket.h"
 
 #include "ProductTiingoStockSymbol.h"
 #include"ProductTiingoStockDayLine.h"
-#include"ProductDummy.h"
 
 #include"MockTiingoDataSource.h"
 
@@ -47,44 +45,22 @@ namespace FireBirdTest {
 
 		m_pTiingoDataSource->SetErrorCode(12002);
 		EXPECT_CALL(*m_pTiingoDataSource, GetTickCount()).Times(3)
-		.WillOnce(Return(0))
+		.WillOnce(Return(1 + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()))
 		.WillOnce(Return(300000 + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()))
-		.WillOnce(Return(300000 + 1 + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()));
-		EXPECT_CALL(*m_pTiingoDataSource, InquireCompanySymbol()).Times(1)
-		.WillOnce(DoAll(Invoke([]() { m_pTiingoDataSource->SetInquiring(true); }), Return(true)));
-		EXPECT_CALL(*m_pTiingoDataSource, InquireCryptoSymbol()).Times(1)
-		.WillOnce(Return(true));
-		EXPECT_CALL(*m_pTiingoDataSource, InquireDayLine()).Times(1)
-		.WillOnce(Return(true));
+		.WillOnce(Return(300000 + 100000));
+		EXPECT_CALL(*m_pTiingoDataSource, InquireCompanySymbol()).Times(2)
+		.WillRepeatedly(DoAll(Invoke([]() { m_pTiingoDataSource->SetInquiring(true); }), Return(true)));
+		EXPECT_CALL(*m_pTiingoDataSource, InquireCryptoSymbol()).Times(2);
+		EXPECT_CALL(*m_pTiingoDataSource, InquireDayLine()).Times(2);
 
-		EXPECT_FALSE(m_pTiingoDataSource->GenerateInquiryMessage(120000)) << "网络报错，延后五分钟";
+		EXPECT_TRUE(m_pTiingoDataSource->GenerateInquiryMessage(120000)) << "网络报错，延后五分钟";
+		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
+		m_pTiingoDataSource->SetInquiring(false);
+		m_pTiingoDataSource->SetErrorCode(0);
 		EXPECT_FALSE(m_pTiingoDataSource->GenerateInquiryMessage(120500)) << "未过五分钟，继续等待";
 		EXPECT_TRUE(m_pTiingoDataSource->GenerateInquiryMessage(120500)) << "已过五分钟，申请数据";
 
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
-	}
-
-	TEST_F(CMockTiingoDataSourceTest, TestGenerateInquiryMessage2) {
-		EXPECT_FALSE(m_pTiingoDataSource->IsInquiring());
-		//EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
-		gl_pWorldMarket->SetSystemReady(false);
-		m_pTiingoDataSource->SetErrorCode(12002);
-		EXPECT_CALL(*m_pTiingoDataSource, GetTickCount()).Times(3)
-		.WillOnce(Return(0))
-		.WillOnce(Return(300000 + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()))
-		.WillOnce(Return(300000 + 1 + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()));
-		EXPECT_CALL(*m_pTiingoDataSource, InquireCompanySymbol()).Times(0);
-		EXPECT_CALL(*m_pTiingoDataSource, InquireCryptoSymbol()).Times(0);
-		EXPECT_CALL(*m_pTiingoDataSource, InquireDayLine()).Times(0);
-
-		EXPECT_FALSE(m_pTiingoDataSource->GenerateInquiryMessage(120000)) << "网络报错，延后五分钟";
-		EXPECT_FALSE(m_pTiingoDataSource->GenerateInquiryMessage(120500)) << "未过五分钟，继续等待";
-		EXPECT_FALSE(m_pTiingoDataSource->GenerateInquiryMessage(120500)) << "已过五分钟，申请数据。由于IsInquiry()为真，故而没有生成申请";
-
-		EXPECT_FALSE(m_pTiingoDataSource->IsInquiring());
-
-		// 恢复原状
-		gl_pWorldMarket->SetSystemReady(true);
 	}
 
 	TEST_F(CMockTiingoDataSourceTest, TestParseTiingoInquiringMessage_STOCK_SYMBOLS_) {

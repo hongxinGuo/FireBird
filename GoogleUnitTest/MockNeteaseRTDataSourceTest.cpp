@@ -47,7 +47,7 @@ namespace FireBirdTest {
 	TEST_F(CMockNeteaseRTDataSourceTest, TestGenerateInquiryMessage) {
 		EXPECT_FALSE(m_pMockNeteaseRTDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
-		EXPECT_TRUE(gl_pChinaMarket->IsFastReceivingRTData());
+		gl_pChinaMarket->SetSystemReady(false); // 保证快速申请数据
 
 		m_pMockNeteaseRTDataSource->SetErrorCode(12002);
 		EXPECT_CALL(*m_pMockNeteaseRTDataSource, GetTickCount()).Times(5)
@@ -58,9 +58,9 @@ namespace FireBirdTest {
 		.WillOnce(Return(20000 + 2 + 2 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
 
 		EXPECT_FALSE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120000));
-		EXPECT_FALSE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120000)) << "Web Error, postponed 10 seconds";
+		EXPECT_TRUE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120000)) << "Web Error, postponed 10 seconds";
 		m_pMockNeteaseRTDataSource->SetErrorCode(0);
-		EXPECT_TRUE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120600)) << "已过10秒且网络正常，申请数据";
+		EXPECT_FALSE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120600)) << "已过10秒且网络正常，申请数据";
 		EXPECT_TRUE(m_pMockNeteaseRTDataSource->IsInquiring());
 		m_pMockNeteaseRTDataSource->SetInquiring(false);
 
@@ -69,6 +69,9 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(m_pMockNeteaseRTDataSource->HaveInquiry());
 		EXPECT_TRUE(m_pMockNeteaseRTDataSource->IsInquiring());
+
+		// 恢复原状
+		gl_pChinaMarket->SetSystemReady(true);
 	}
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestInquireRTData) {

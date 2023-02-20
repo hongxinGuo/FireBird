@@ -81,6 +81,9 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 0);
 		EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
+
+		EXPECT_FALSE(gl_pSinaRTDataSource->IsWebError());
+		EXPECT_FALSE(gl_pNeteaseRTDataSource->IsWebError());
 	}
 
 	void DataContainerCheck(void) {
