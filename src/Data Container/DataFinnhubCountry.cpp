@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "DataFinnhubCountry.h"
 
-#include<memory>
-using std::make_shared;
+using namespace std;
 
 CDataFinnhubCountry::CDataFinnhubCountry() { Reset(); }
 
@@ -22,7 +21,7 @@ bool CDataFinnhubCountry::Delete(CCountryPtr pCountry) {
 	if (!IsCountry(pCountry->m_strCountry)) return false;
 
 	m_mapCountry.erase(pCountry->m_strCountry);
-	auto it = find(m_vCountry.begin(), m_vCountry.end(), pCountry);
+	const auto it = ranges::find(m_vCountry.begin(), m_vCountry.end(), pCountry);
 	m_vCountry.erase(it);
 
 	return true;

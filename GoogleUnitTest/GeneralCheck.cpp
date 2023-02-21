@@ -51,6 +51,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载了10个";
 
 			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
+
+			EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4847) << "默认状态下数据库总数为4847(全部上海股票和小部分美国股票)";
 		}
 	}
 

@@ -78,13 +78,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestTransferMarketTime) {
-		tm tm_, tm2_;
+		tm tm2_;
 		time_t tt;
 
 		gl_pWorldMarket->CalculateTime();
 		time(&tt);
 		gmtime_s(&tm2_, &tt);
-		tm_ = gl_pWorldMarket->TransferToMarketTime();
+		const tm tm_ = gl_pWorldMarket->TransferToMarketTime();
 		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour - 4) || (tm_.tm_hour == tm2_.tm_hour + 20))) << "WorldMarket默认为西四区(美东标准时间)";
 	}
 
@@ -99,7 +99,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsStock(_T("A")));
 		EXPECT_FALSE(gl_pWorldMarket->IsStock(_T("000001.SZ"))) << "目前测试数据库中只有上海和美国股票集";
 
-		auto pStock = make_shared<CWorldStock>();
+		const auto pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("000000.SS"));
 		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
 		pStock->SetSymbol(_T("000001.SS"));
@@ -119,7 +119,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(_T("A")));
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(_T("000001.SZ"))) << "目前测试数据库中只有上海和美国股票集";
 
-		auto pStock = make_shared<CWorldStock>();
+		const auto pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("000000.SS"));
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
 		pStock->SetSymbol(_T("AA"));
@@ -131,7 +131,7 @@ namespace FireBirdTest {
 		pStock->SetSymbol(_T("000001.SZ"));
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
 
-		auto pTiingoStock = make_shared<CTiingoStock>();
+		const auto pTiingoStock = make_shared<CTiingoStock>();
 		pTiingoStock->m_strTicker = _T("000000.SS");
 		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pTiingoStock));
 		pTiingoStock->m_strTicker = _T("AA");
@@ -253,7 +253,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(_T("OANDA:XAU_SGD")));
 		EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(_T("FXCM:EUR/CHF")));
 
-		auto pForexSymbol = make_shared<CFinnhubForexSymbol>();
+		const auto pForexSymbol = make_shared<CFinnhubForexSymbol>();
 		pForexSymbol->SetSymbol(_T("ABC"));
 		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
 		pForexSymbol->SetSymbol(_T("OANDA:XAU_SGD"));
@@ -317,7 +317,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("BINANCE:USDTUAH")));
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("COINBASE:TRIBE-USD")));
 
-		auto pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		const auto pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		pCryptoSymbol->SetSymbol(_T("ABC"));
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
 		pCryptoSymbol->SetSymbol(_T("BINANCE:USDTUAH"));
@@ -353,7 +353,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCountry) {
-		auto pCountry = make_shared<CCountry>();
+		const auto pCountry = make_shared<CCountry>();
 
 		EXPECT_FALSE(gl_pWorldMarket->IsCountry(_T("ABC")));
 		EXPECT_TRUE(gl_pWorldMarket->IsCountry(_T("American Samoa")));
@@ -555,7 +555,7 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestUpdateTiingoStockDB) {
 		CSetTiingoStock setTiingoStock;
 
-		auto pTiingoStock = make_shared<CTiingoStock>();
+		const auto pTiingoStock = make_shared<CTiingoStock>();
 		pTiingoStock->m_fIsActive = true;
 		pTiingoStock->m_fIsADR = false;
 		pTiingoStock->m_iSICCode = 1002;
@@ -593,7 +593,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateForexExchangeDB) {
-		CString strSymbol = _T("US.US.US");
+		const CString strSymbol = _T("US.US.US");
 
 		EXPECT_FALSE(gl_pWorldMarket->UpdateForexExchangeDB()) << "没有新Forex Exchange";
 
@@ -617,7 +617,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateCryptoExchangeDB) {
-		CString strSymbol = _T("US.US.US");
+		const CString strSymbol = _T("US.US.US");
 
 		EXPECT_FALSE(gl_pWorldMarket->UpdateCryptoExchangeDB()) << "没有新Crypto Exchange";
 
@@ -644,12 +644,10 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderTransaction());
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
-		CWorldStockPtr pStock;
 		vector<CInsiderTransactionPtr> vInsiderTransaction;
-		CInsiderTransactionPtr pInsiderTransaction;
 		CSetInsiderTransaction setInsiderTransaction;
 
-		pInsiderTransaction = make_shared<CInsiderTransaction>();
+		CInsiderTransactionPtr pInsiderTransaction = make_shared<CInsiderTransaction>();
 		pInsiderTransaction->m_strSymbol = _T("B");
 		pInsiderTransaction->m_strPersonName = _T("a b c");
 		pInsiderTransaction->m_lTransactionDate = 20200101; // 这个股票代码不符，需要添加进数据库
@@ -675,7 +673,7 @@ namespace FireBirdTest {
 		pInsiderTransaction->m_strTransactionCode = _T("S"); // 这个交易类型不符，需要添加进数据库
 		vInsiderTransaction.push_back(pInsiderTransaction);
 
-		pStock = gl_pWorldMarket->GetStock(_T("A"));
+		const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(_T("A"));
 		EXPECT_FALSE(pStock->HaveInsiderTransaction()) << "此时尚未存入数据";
 
 		pStock->SetSaveInsiderTransaction(true);
@@ -685,7 +683,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->UpdateInsiderTransactionDB());
 
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
-		CString str = gl_systemMessage.PopDayLineInfoMessage();
+		const CString str = gl_systemMessage.PopDayLineInfoMessage();
 		EXPECT_STREQ(str, _T("A内部交易资料更新完成"));
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->IsSaveInsiderTransaction());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderTransaction()) << "存储后并没有删除数据";
@@ -728,12 +726,10 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderSentiment());
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
-		CWorldStockPtr pStock;
 		vector<CInsiderSentimentPtr> vInsiderSentiment;
-		CInsiderSentimentPtr pInsiderSentiment;
 		CSetInsiderSentiment setInsiderSentiment;
 
-		pInsiderSentiment = make_shared<CInsiderSentiment>();
+		CInsiderSentimentPtr pInsiderSentiment = make_shared<CInsiderSentiment>();
 		pInsiderSentiment->m_strSymbol = _T("B");// 这个股票代码不符，bu需要添加进数据库
 		pInsiderSentiment->m_lDate = 20200101;
 		vInsiderSentiment.push_back(pInsiderSentiment);
@@ -747,7 +743,7 @@ namespace FireBirdTest {
 		pInsiderSentiment->m_lDate = 20210101; // 这个日期不符，需要添加进数据库
 		vInsiderSentiment.push_back(pInsiderSentiment);
 
-		pStock = gl_pWorldMarket->GetStock(_T("A"));
+		const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(_T("A"));
 		EXPECT_FALSE(pStock->HaveInsiderSentiment()) << "此时尚未存入数据";
 
 		pStock->SetSaveInsiderSentiment(true);
@@ -757,7 +753,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->UpdateInsiderSentimentDB());
 
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
-		CString str = gl_systemMessage.PopDayLineInfoMessage();
+		const CString str = gl_systemMessage.PopDayLineInfoMessage();
 		EXPECT_STREQ(str, _T("A内部交易情绪资料更新完成"));
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->IsSaveInsiderSentiment());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderSentiment()) << "存储后并没有删除数据";
@@ -779,7 +775,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestUpdateEconomicCalendarDB) {
 		CSetEconomicCalendar setEconomicCalendar;
-		auto pEconomicCalendar = make_shared<CEconomicCalendar>();
+		const auto pEconomicCalendar = make_shared<CEconomicCalendar>();
 		vector<CEconomicCalendarPtr> vEconomicCalendar;
 
 		pEconomicCalendar->m_strCountry = _T("USA");

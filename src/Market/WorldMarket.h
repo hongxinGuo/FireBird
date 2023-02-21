@@ -292,6 +292,10 @@ protected:
 	bool m_bFinnhubWebSiteAccessible; // 由于finnhub.io不时被墙，故而需要此标识。
 
 private:
+	int m_iCount1Hour; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
+	int m_iCount5Minute; // 与一分钟每次的错开11秒钟
+	int m_iCount1Minute; // 与10秒每次的错开1秒钟
+	int m_iCount10Second;
 };
 
 using CWorldMarketPtr = shared_ptr<CWorldMarket>;

@@ -515,6 +515,10 @@ protected:
 	bool m_fUpdateChosenStockDB;
 
 private:
+	int m_iCount1Hour; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
+	int m_iCount5Minute; // 与一分钟每次的错开11秒钟
+	int m_iCount1Minute; // 与10秒每次的错开1秒钟
+	int m_iCount10Second;
 };
 
 using CChinaMarketPtr = shared_ptr<CChinaMarket>;

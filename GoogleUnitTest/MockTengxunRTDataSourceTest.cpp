@@ -63,7 +63,7 @@ namespace FireBirdTest {
 		.WillOnce(Return(10000))
 		.WillOnce(Return(30000 + 1 + 5 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
 		.WillOnce(Return(30000 + 1 + 10 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
-		.WillOnce(Return(40000 + 2 + 10 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
+		.WillOnce(Return(400000));
 
 		EXPECT_FALSE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(120000));
 		EXPECT_FALSE(m_pMockTengxunRTDataSource->IsInquiring());
@@ -91,7 +91,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockTengxunRTDataSource, GetTickCount()).Times(3)
 		.WillOnce(Return(0))
 		.WillOnce(Return(40000))
-		.WillOnce(Return(50000));
+		.WillOnce(Return(500000));
 
 		EXPECT_FALSE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(120000));
 		EXPECT_FALSE(m_pMockTengxunRTDataSource->IsInquiring());

@@ -47,6 +47,28 @@ namespace FireBirdTest {
 		EXPECT_STREQ(QuandlDataSource.GetInquiryToken(), _T(""));
 	}
 
+	TEST_F(CMockQuandlDataSourceTest, TestGenerateInquiryMessage1) {
+		EXPECT_FALSE(m_pMockQuandlDataSource->IsInquiring());
+		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
+
+		m_pMockQuandlDataSource->SetErrorCode(12002);
+		EXPECT_CALL(*m_pMockQuandlDataSource, GetTickCount()).Times(3)
+		.WillOnce(Return(1 + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime()))
+		.WillOnce(Return(300000 + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime()))
+		.WillOnce(Return(300000 + 100000));
+		EXPECT_CALL(*m_pMockQuandlDataSource, InquireQuandl()).Times(2)
+		.WillRepeatedly(DoAll(Invoke([]() { m_pMockQuandlDataSource->SetInquiring(true); }), Return(true)));
+
+		EXPECT_TRUE(m_pMockQuandlDataSource->GenerateInquiryMessage(120000)) << "网络报错，延后五分钟";
+		EXPECT_TRUE(m_pMockQuandlDataSource->IsInquiring());
+		m_pMockQuandlDataSource->SetInquiring(false);
+		m_pMockQuandlDataSource->SetErrorCode(0);
+		EXPECT_FALSE(m_pMockQuandlDataSource->GenerateInquiryMessage(120500)) << "未过五分钟，继续等待";
+		EXPECT_TRUE(m_pMockQuandlDataSource->GenerateInquiryMessage(120500)) << "已过五分钟，申请数据";
+
+		EXPECT_TRUE(m_pMockQuandlDataSource->IsInquiring());
+	}
+
 	TEST_F(CMockQuandlDataSourceTest, TestGetWebData) {
 		m_pMockQuandlDataSource->SetInquiringWebData(false);
 		gl_pWorldMarket->SetSystemReady(true);

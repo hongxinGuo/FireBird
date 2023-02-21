@@ -5,6 +5,7 @@
 #include "VirtualMarket.h"
 
 CVirtualMarket::CVirtualMarket(void) {
+	m_tLastTime = 0;
 	m_fResetMarketPermission = true; // 允许系统被重置标识，唯独此标识不允许系统重置。初始时设置为真：允许重置系统。
 	m_fResetMarket = true;
 	m_fReadyToRun = true;
@@ -23,17 +24,22 @@ CVirtualMarket::CVirtualMarket(void) {
 	m_i1MinuteCounter = 59; // 一分钟一次的计数器
 	m_i5MinuteCounter = 299; // 五分钟一次的计数器
 	m_i1HourCounter = 3599; // 一小时一次的计数器
+
+	m_lastTimeSchedulingTask = 0;
+	m_iCount1Hour = 3576; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
+	m_iCount5Minute = 287; // 与一分钟每次的错开11秒钟
+	m_iCount1Minute = 58; // 与10秒每次的错开1秒钟
+	m_iCount10Second = 9;
 }
 
 bool CVirtualMarket::SchedulingTask(void) {
 	CalculateTime();
 
-	static time_t stLastTime = 0;
-	const time_t tDiffer = gl_tUTC - stLastTime;
+	const time_t tDiffer = gl_tUTC - m_tLastTime;
 	//根据时间，调度各项定时任务.每秒调度一次
 	if (tDiffer > 0) {
 		SchedulingTaskPerSecond(tDiffer);
-		stLastTime = gl_tUTC;
+		m_tLastTime = gl_tUTC;
 		return true;
 	}
 	return false;

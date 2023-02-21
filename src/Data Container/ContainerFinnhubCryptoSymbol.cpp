@@ -30,7 +30,9 @@ bool CContainerFinnhubCryptoSymbol::LoadDB(void) {
 			if (m_mapSymbol.contains(pSymbol->GetSymbol())) { gl_systemMessage.PushErrorMessage(_T("Finnhub Crypto发现重复代码：") + pSymbol->GetSymbol()); }
 			Add(pSymbol);
 		}
-		else { setCryptoSymbol.Delete(); }
+		else {
+			setCryptoSymbol.Delete();
+		}
 		setCryptoSymbol.MoveNext();
 	}
 	setCryptoSymbol.m_pDatabase->CommitTrans();

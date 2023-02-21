@@ -56,6 +56,10 @@ bool CFinnhubDataSource::Reset(void) {
 		SetUpdateEPSSurprise(true);
 	}
 
+	m_lCurrentRTDataQuotePos = 0;
+	m_lCurrentForexExchangePos = 0;
+	m_lCurrentCryptoExchangePos = 0;
+
 	return true;
 }
 
@@ -538,16 +542,15 @@ bool CFinnhubDataSource::InquireInsiderSentiment(void) {
 
 bool CFinnhubDataSource::InquireRTQuote(void) {
 	if (!IsInquiring()) {
-		static long s_lCurrentRTDataQuotePos = 0;
 		ASSERT(gl_pWorldMarket->IsSystemReady());
 		const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), STOCK_PRICE_QUOTE_);
-		product->SetIndex(s_lCurrentRTDataQuotePos);
+		product->SetIndex(m_lCurrentRTDataQuotePos);
 		StoreInquiry(product);
 		SetInquiring(true);
-		s_lCurrentRTDataQuotePos++;
-		if (s_lCurrentRTDataQuotePos == gl_pWorldMarket->GetStockSize()) s_lCurrentRTDataQuotePos = 0;
-		gl_pWorldMarket->SetCurrentFunction(_T("Finnhub stock RT: ") + gl_pWorldMarket->GetStock(s_lCurrentRTDataQuotePos)->GetSymbol());
-		TRACE("申请%s实时数据\n", gl_pWorldMarket->GetStock(s_lCurrentRTDataQuotePos)->GetSymbol().GetBuffer());
+		m_lCurrentRTDataQuotePos++;
+		if (m_lCurrentRTDataQuotePos == gl_pWorldMarket->GetStockSize()) m_lCurrentRTDataQuotePos = 0;
+		gl_pWorldMarket->SetCurrentFunction(_T("Finnhub stock RT: ") + gl_pWorldMarket->GetStock(m_lCurrentRTDataQuotePos)->GetSymbol());
+		TRACE("申请%s实时数据\n", gl_pWorldMarket->GetStock(m_lCurrentRTDataQuotePos)->GetSymbol().GetBuffer());
 	}
 	return true;
 }
@@ -657,14 +660,13 @@ bool CFinnhubDataSource::InquireForexExchange(void) {
 
 bool CFinnhubDataSource::InquireForexSymbol(void) {
 	if (!IsInquiring() && IsUpdateForexSymbol()) {
-		static long s_lCurrentForexExchangePos = 0;
 		const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), FOREX_SYMBOLS_);
-		product->SetIndex(s_lCurrentForexExchangePos++);
+		product->SetIndex(m_lCurrentForexExchangePos++);
 		StoreInquiry(product);
 		SetInquiring(true);
-		if (s_lCurrentForexExchangePos >= gl_pWorldMarket->GetForexExchangeSize()) {
+		if (m_lCurrentForexExchangePos >= gl_pWorldMarket->GetForexExchangeSize()) {
 			SetUpdateForexSymbol(false);
-			s_lCurrentForexExchangePos = 0;
+			m_lCurrentForexExchangePos = 0;
 			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub forex symbol"));
 			gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub Forex symbols..."));
 		}
@@ -730,16 +732,15 @@ bool CFinnhubDataSource::InquireCryptoExchange(void) {
 
 bool CFinnhubDataSource::InquireCryptoSymbol(void) {
 	if (!IsInquiring() && IsUpdateCryptoSymbol()) {
-		static long s_lCurrentCryptoExchangePos = 0;
 		const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), CRYPTO_SYMBOLS_);
-		product->SetIndex(s_lCurrentCryptoExchangePos++);
+		product->SetIndex(m_lCurrentCryptoExchangePos++);
 		StoreInquiry(product);
 		SetInquiring(true);
-		if (s_lCurrentCryptoExchangePos >= gl_pWorldMarket->GetCryptoExchangeSize()) {
+		if (m_lCurrentCryptoExchangePos >= gl_pWorldMarket->GetCryptoExchangeSize()) {
 			SetUpdateCryptoSymbol(false);
 			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub crypto synmbol"));
 			gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub Crypto symbols"));
-			s_lCurrentCryptoExchangePos = 0;
+			m_lCurrentCryptoExchangePos = 0;
 		}
 		return true;
 	}

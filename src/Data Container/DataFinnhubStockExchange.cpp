@@ -12,7 +12,9 @@
 #include<memory>
 using std::make_shared;
 
-CDataFinnhubStockExchange::CDataFinnhubStockExchange() { Reset(); }
+CDataFinnhubStockExchange::CDataFinnhubStockExchange() {
+	Reset();
+}
 
 void CDataFinnhubStockExchange::Reset() {
 	m_vFinnhubStockExchange.resize(0);
@@ -20,10 +22,10 @@ void CDataFinnhubStockExchange::Reset() {
 }
 
 bool CDataFinnhubStockExchange::LoadDB(void) {
-	CSetFinnhubStockExchange setExchange;
 	CFinnhubStockExchangePtr pExchange = nullptr;
 
 	if (m_vFinnhubStockExchange.size() == 0) {
+		CSetFinnhubStockExchange setExchange;
 		setExchange.m_strSort = _T("[Code]");
 		setExchange.Open();
 		while (!setExchange.IsEOF()) {

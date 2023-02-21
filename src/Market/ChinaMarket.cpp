@@ -140,6 +140,12 @@ void CChinaMarket::Reset(void) {
 
 	m_lRTDataReceivedInOrdinaryTradeTime = 0;
 	m_lNewRTDataReceivedInOrdinaryTradeTime = 0;
+
+	m_lastTimeSchedulingTask = 0;
+	m_iCount1Hour = 3576; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
+	m_iCount5Minute = 287; // 与一分钟每次的错开11秒钟
+	m_iCount1Minute = 58; // 与10秒每次的错开1秒钟
+	m_iCount10Second = 9;
 }
 
 bool CChinaMarket::PreparingExitMarket(void) {
@@ -481,7 +487,6 @@ bool CChinaMarket::TaskProcessTengxunRTData(void) {
 bool CChinaMarket::SchedulingTask(void) {
 	CVirtualMarket::SchedulingTask();
 
-	static time_t s_lastTimeSchedulingTask = 0;
 	const long lCurrentTime = GetMarketTime();
 
 	// 抓取实时数据(新浪、腾讯和网易）。每250毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
@@ -489,9 +494,9 @@ bool CChinaMarket::SchedulingTask(void) {
 	RunDataSource(lCurrentTime);
 
 	//根据时间，调度各项定时任务.每秒调度一次
-	if (GetUTCTime() > s_lastTimeSchedulingTask) {
-		SchedulingTaskPerSecond(GetUTCTime() - s_lastTimeSchedulingTask, lCurrentTime);
-		s_lastTimeSchedulingTask = GetUTCTime();
+	if (GetUTCTime() > m_lastTimeSchedulingTask) {
+		SchedulingTaskPerSecond(GetUTCTime() - m_lastTimeSchedulingTask, lCurrentTime);
+		m_lastTimeSchedulingTask = GetUTCTime();
 	}
 
 	// 系统准备好了之后需要完成的各项工作
@@ -517,29 +522,24 @@ bool CChinaMarket::SchedulingTask(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
-	static int s_iCount1Hour = 3576; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
-	static int s_iCount5Minute = 287; // 与一分钟每次的错开11秒钟
-	static int s_iCount1Minute = 58; // 与10秒每次的错开1秒钟
-	static int s_iCount10Second = 9;
-
-	s_iCount10Second -= lSecond;
-	s_iCount1Minute -= lSecond;
-	s_iCount5Minute -= lSecond;
-	s_iCount1Hour -= lSecond;
-	if (s_iCount1Hour < 0) {
-		s_iCount1Hour = 3599;
+	m_iCount10Second -= lSecond;
+	m_iCount1Minute -= lSecond;
+	m_iCount5Minute -= lSecond;
+	m_iCount1Hour -= lSecond;
+	if (m_iCount1Hour < 0) {
+		m_iCount1Hour = 3599;
 		SchedulingTaskPerHour(lCurrentTime);
 	}
-	if (s_iCount5Minute < 0) {
-		s_iCount5Minute = 299;
+	if (m_iCount5Minute < 0) {
+		m_iCount5Minute = 299;
 		SchedulingTaskPer5Minutes(lCurrentTime);
 	}
-	if (s_iCount1Minute < 0) {
-		s_iCount1Minute = 59;
+	if (m_iCount1Minute < 0) {
+		m_iCount1Minute = 59;
 		SchedulingTaskPerMinute(lCurrentTime);
 	}
-	if (s_iCount10Second < 0) {
-		s_iCount10Second = 9;
+	if (m_iCount10Second < 0) {
+		m_iCount10Second = 9;
 		SchedulingTaskPer10Seconds(lCurrentTime);
 	}
 

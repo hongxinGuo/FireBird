@@ -110,6 +110,10 @@ private:
 	bool m_fInquiringFinnhubStockEPSSurprise = {false};
 	bool m_fInquiringFinnhubForexDayLine = {false};
 	bool m_fInquiringFinnhubCryptoDayLine = {false};
+
+	long m_lCurrentRTDataQuotePos;
+	long m_lCurrentForexExchangePos;
+	long m_lCurrentCryptoExchangePos;
 };
 
 using CFinnhubDataSourcePtr = shared_ptr<CFinnhubDataSource>;

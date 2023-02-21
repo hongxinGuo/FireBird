@@ -117,7 +117,15 @@ protected:
 	//系统状态区
 	bool m_fSystemReady; // 市场初始态已经设置好
 
+	time_t m_lastTimeSchedulingTask;
+	int m_iCount1Hour; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
+	int m_iCount5Minute; // 与一分钟每次的错开11秒钟
+	int m_iCount1Minute; // 与10秒每次的错开1秒钟
+	int m_iCount10Second;
+
 private:
+	time_t m_tLastTime;
+
 	bool m_fReadyToRun; // 市场准备好运行标识。目前永远为真。
 	bool m_fResetMarketPermission; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统）初始值必须为真。
 	bool m_fResetMarket; // 重启系统标识

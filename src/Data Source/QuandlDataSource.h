@@ -13,6 +13,8 @@ public:
 
 	bool GenerateInquiryMessage(const long lCurrentTime) override;
 
+	virtual bool InquireQuandl();
+
 	void ConfigureSession(void) override;
 	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 

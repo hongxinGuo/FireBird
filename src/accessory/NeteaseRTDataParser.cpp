@@ -177,11 +177,6 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData) {
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
-	// 截取实时数据时用。为了测试解析速度
-	if (static int i = 0; i < pData->GetBufferLength()) {
-		//SaveToFile(_T("C:\\FireBird\\NeteaseRTData.json"), pData->GetDataBuffer());
-		i = pData->GetBufferLength();
-	}
 	bool fProcess = true;
 	if (!pData->IsParsed()) {
 		if (!pData->CreateJson(21, 2)) {	// 网易数据前21位为前缀，后两位为后缀

@@ -29,7 +29,9 @@ bool CContainerFinnhubForexSymbol::LoadDB(void) {
 			pSymbol->SetCheckingDayLineStatus();
 			Add(pSymbol);
 		}
-		else { setForexSymbol.Delete(); }
+		else {
+			setForexSymbol.Delete();
+		}
 		setForexSymbol.MoveNext();
 	}
 	setForexSymbol.m_pDatabase->CommitTrans();

@@ -29,7 +29,9 @@ using std::thread;
 using std::make_shared;
 
 CWorldMarket::CWorldMarket() {
-	if (static int siInstance = 0; ++siInstance > 1) { TRACE("CWorldMarket市场变量只允许存在一个实例\n"); }
+	if (static int siInstance = 0; ++siInstance > 1) {
+		TRACE("CWorldMarket市场变量只允许存在一个实例\n");
+	}
 
 	// 无需（也无法）每日更新的变量放在这里
 	m_lCurrentUpdateEPSSurprisePos = 0;
@@ -48,6 +50,11 @@ CWorldMarket::~CWorldMarket() {
 }
 
 void CWorldMarket::Reset(void) {
+	m_iCount1Hour = 3576; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
+	m_iCount5Minute = 287; // 与一分钟每次的错开11秒钟
+	m_iCount1Minute = 58; // 与10秒每次的错开1秒钟
+	m_iCount10Second = 9;
+
 	ResetFinnhub();
 	ResetTiingo();
 	ResetDataClass();
@@ -127,7 +134,6 @@ bool CWorldMarket::PreparingExitMarket(void) {
 bool CWorldMarket::SchedulingTask(void) {
 	CVirtualMarket::SchedulingTask();
 
-	static time_t s_lastTimeSchedulingTask = 0;
 	const long lCurrentTime = GetMarketTime();
 
 	TaskCheckSystemReady();
@@ -136,38 +142,33 @@ bool CWorldMarket::SchedulingTask(void) {
 	RunDataSource(lCurrentTime);
 
 	//根据时间，调度各项定时任务.每秒调度一次
-	if (GetUTCTime() > s_lastTimeSchedulingTask) {
-		SchedulingTaskPerSecond(GetUTCTime() - s_lastTimeSchedulingTask, lCurrentTime);
-		s_lastTimeSchedulingTask = GetUTCTime();
+	if (GetUTCTime() > m_lastTimeSchedulingTask) {
+		SchedulingTaskPerSecond(GetUTCTime() - m_lastTimeSchedulingTask, lCurrentTime);
+		m_lastTimeSchedulingTask = GetUTCTime();
 	}
 
 	return true;
 }
 
 bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
-	static int s_iCount1Hour = 3576; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
-	static int s_iCount5Minute = 287; // 与一分钟每次的错开11秒钟
-	static int s_iCount1Minute = 58; // 与10秒每次的错开1秒钟
-	static int s_iCount10Second = 9;
-
-	s_iCount10Second -= lSecond;
-	s_iCount1Minute -= lSecond;
-	s_iCount5Minute -= lSecond;
-	s_iCount1Hour -= lSecond;
-	if (s_iCount1Hour < 0) {
-		s_iCount1Hour = 3599;
+	m_iCount10Second -= lSecond;
+	m_iCount1Minute -= lSecond;
+	m_iCount5Minute -= lSecond;
+	m_iCount1Hour -= lSecond;
+	if (m_iCount1Hour < 0) {
+		m_iCount1Hour = 3599;
 		SchedulingTaskPerHour(lCurrentTime);
 	}
-	if (s_iCount5Minute < 0) {
-		s_iCount5Minute = 299;
+	if (m_iCount5Minute < 0) {
+		m_iCount5Minute = 299;
 		SchedulingTaskPer5Minute(lCurrentTime);
 	}
-	if (s_iCount1Minute < 0) {
-		s_iCount1Minute = 59;
+	if (m_iCount1Minute < 0) {
+		m_iCount1Minute = 59;
 		SchedulingTaskPerMinute(lCurrentTime);
 	}
-	if (s_iCount10Second < 0) {
-		s_iCount10Second = 9;
+	if (m_iCount10Second < 0) {
+		m_iCount10Second = 9;
 		SchedulingTaskPer10Seconds(lCurrentTime);
 	}
 

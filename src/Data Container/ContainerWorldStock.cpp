@@ -118,10 +118,11 @@ bool CContainerWorldStock::LoadDB(void) {
 bool CContainerWorldStock::UpdateProfileDB(void) {
 	int iStockNeedUpdate = 0;
 	int iCurrentUpdated = 0;
+	// ReSharper disable once CppTooWideScope
+	CSetWorldStock setWorldStock;
 
 	//更新原有的代码集状态
 	if (IsUpdateProfileDB()) {
-		CSetWorldStock setWorldStock;
 		for (const auto& pStock2 : m_vStock) {
 			if (pStock2->IsUpdateProfileDB()) iStockNeedUpdate++;
 		}
@@ -168,14 +169,11 @@ bool CContainerWorldStock::UpdateProfileDB(void) {
 //
 // 更新基本金融信息
 //
-// 为了加速函数的执行，UpdateBasicFinancialAnnualDB和UpdateBasicFinancialQuarterDB都生成独立的工作线程，传入的参数vStock
-// 在这些工作线程持续期间就必须保持有效，故而必须将vStock声明为static的，这样才能够保证，否则主函数UpdateBasicFinancialDB执行
-// 完毕后vStock的内存就释放了，而工作线程可能尚未执行完毕前，参数vStock就无效了。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 bool CContainerWorldStock::UpdateBasicFinancialDB(void) {
 	static bool s_fInProcess = false;
-	static vector<CWorldStockPtr> s_vStock{}; // 这个数据要使用静态存储，以保证当本函数退出时此数据仍然是有效的（本函数生成的工作线程如果尚未执行完毕，仍然要使用之）
+	vector<CWorldStockPtr> s_vStock{};
 
 	if (s_fInProcess) {
 		gl_systemMessage.PushErrorMessage(_T("UpdateBasicFinancialDB任务用时超过五分钟"));
@@ -247,7 +245,7 @@ bool CContainerWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> v
 	while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
 		if (setBasicFinancialMetric.IsEOF()) break;
 		CWorldStockPtr pStockNeedUpdate = GetStock(setBasicFinancialMetric.m_symbol);
-		if (vStock.end() != find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
+		if (vStock.end() != ranges::find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
 			iCurrentUpdated++;
 			pStockNeedUpdate->UpdateBasicFinancialMetric(setBasicFinancialMetric);
 			pStockNeedUpdate->SetUpdateBasicFinancialDB(false);

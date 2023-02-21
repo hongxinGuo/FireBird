@@ -100,9 +100,9 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 
 		if (!IsInquiring()) {
 			InquireTiingo();
-		}
-		if (IsInquiring()) {
-			return true;
+			if (IsInquiring()) {
+				return true;
+			}
 		}
 	}
 	return false;

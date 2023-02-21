@@ -3,6 +3,8 @@
 #include "DataFinnhubForexExchange.h"
 #include"SetFinnhubForexExchange.h"
 
+using namespace std;
+
 CDataFinnhubForexExchange::CDataFinnhubForexExchange() {
 	Reset();
 }
@@ -16,7 +18,7 @@ void CDataFinnhubForexExchange::Reset(void) {
 bool CDataFinnhubForexExchange::Delete(CString strForexExchange) {
 	if (!IsForexExchange(strForexExchange)) return false;
 
-	auto it = find(m_vForexExchange.begin(), m_vForexExchange.end(), strForexExchange);
+	const auto it = ranges::find(m_vForexExchange.begin(), m_vForexExchange.end(), strForexExchange);
 	m_vForexExchange.erase(it);
 	m_mapForexExchange.erase(strForexExchange);
 
@@ -45,9 +47,8 @@ bool CDataFinnhubForexExchange::LoadDB(void) {
 }
 
 bool CDataFinnhubForexExchange::UpdateDB(void) {
-	CSetFinnhubForexExchange setForexExchange;
-
 	if (m_lLastTotalForexExchange < m_vForexExchange.size()) {
+		CSetFinnhubForexExchange setForexExchange;
 		setForexExchange.Open();
 		setForexExchange.m_pDatabase->BeginTrans();
 		for (long l = m_lLastTotalForexExchange; l < m_vForexExchange.size(); l++) {

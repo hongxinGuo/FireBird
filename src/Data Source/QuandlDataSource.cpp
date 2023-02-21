@@ -90,9 +90,18 @@ bool CQuandlDataSource::GenerateInquiryMessage(long lCurrentTime) {
 			m_llLastTimeTickCount = llTickCount;
 		}
 
-		if (!IsInquiring()) { }
-		if (IsInquiring()) { }
+		if (!IsInquiring()) {
+			InquireQuandl();
+			if (IsInquiring()) {
+				return true;
+			}
+		}
 	}
+	return false;
+}
+
+bool CQuandlDataSource::InquireQuandl() {
+	// todo
 	return true;
 }
 
