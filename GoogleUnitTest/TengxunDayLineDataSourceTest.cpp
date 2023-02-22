@@ -69,6 +69,53 @@ namespace FireBirdTest {
 		EXPECT_STREQ(TengxunDayLineDataSource.GetDownLoadingStockCode(), _T("2600001"));
 	}
 
+	TEST_F(CTengxunDayLineDataSourceTest, TestInquireDayLine1) {
+		TengxunDayLineDataSource.SetInquiring(true);
+
+		EXPECT_FALSE(TengxunDayLineDataSource.InquireDayLine());
+	}
+
+	TEST_F(CTengxunDayLineDataSourceTest, TestInquireDayLine2) {
+		TengxunDayLineDataSource.SetUpdateDayLine(false);
+
+		EXPECT_FALSE(TengxunDayLineDataSource.InquireDayLine());
+	}
+
+	TEST_F(CTengxunDayLineDataSourceTest, TestInquireDayLine3) {
+		TengxunDayLineDataSource.SetInquiring(false);
+		TengxunDayLineDataSource.SetUpdateDayLine(true);
+		for (long l = 0; l < gl_pChinaMarket->GetTotalStock(); l++) {
+			gl_pChinaMarket->GetStock(l)->SetDayLineNeedUpdate(false);
+		}
+		gl_pChinaMarket->GetStock(0)->SetDayLineNeedUpdate(true);
+		gl_pChinaMarket->GetStock(10)->SetDayLineNeedUpdate(true);
+
+		EXPECT_TRUE(TengxunDayLineDataSource.InquireDayLine());
+		EXPECT_TRUE(TengxunDayLineDataSource.IsInquiring());
+		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());
+		EXPECT_STREQ(TengxunDayLineDataSource.GetDownLoadingStockCode(), _T("000001.SS"));
+		TengxunDayLineDataSource.SetInquiring(false);
+		TengxunDayLineDataSource.GetCurrentProduct();
+		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
+
+		EXPECT_TRUE(TengxunDayLineDataSource.InquireDayLine());
+		EXPECT_TRUE(TengxunDayLineDataSource.IsInquiring());
+		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());
+		EXPECT_STREQ(TengxunDayLineDataSource.GetDownLoadingStockCode(), _T("000006.SS"));
+		TengxunDayLineDataSource.SetInquiring(false);
+		TengxunDayLineDataSource.GetCurrentProduct();
+		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
+
+		EXPECT_FALSE(TengxunDayLineDataSource.InquireDayLine()) << "查询完了";
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("中国市场股票日线历史数据更新完毕"));
+
+		// 恢复原状
+		for (long l = 0; l < gl_pChinaMarket->GetTotalStock(); l++) {
+			gl_pChinaMarket->GetStock(l)->SetDayLineNeedUpdate(true);
+		}
+	}
+
 	TEST_F(CTengxunDayLineDataSourceTest, TestCreateProduct1) {
 		gl_pChinaMarket->TEST_SetFormattedMarketDate(20230201);
 		const auto pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));

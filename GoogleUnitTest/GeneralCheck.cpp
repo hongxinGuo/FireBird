@@ -36,6 +36,8 @@ namespace FireBirdTest {
 			EXPECT_THAT(gl_pChinaMarket->IsCalculatingDayLineRS(), IsFalse());
 			EXPECT_THAT(gl_pChinaMarket->IsCalculatingWeekLineRS(), IsFalse());
 			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
+			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040);
+			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 		}
 	}
 

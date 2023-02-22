@@ -75,7 +75,7 @@ CFireBirdApp::CFireBirdApp() {
 CFireBirdApp theApp;
 
 bool IsAlreadyRun() {
-	HANDLE hMutex = ::CreateMutex(nullptr, false, _T("FireBirdAlreadyRun")); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
+	const HANDLE hMutex = ::CreateMutex(nullptr, false, _T("FireBirdAlreadyRun")); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
 	if(hMutex) {
 		if(ERROR_ALREADY_EXISTS == ::GetLastError()) {
 			return true;

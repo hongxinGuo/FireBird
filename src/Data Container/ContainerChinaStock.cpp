@@ -1,4 +1,3 @@
-#include "ContainerChinaStock.h"
 #include"pch.h"
 
 #include"ConvertToString.h"

@@ -57,7 +57,6 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) 
 
 bool CTengxunDayLineDataSource::InquireDayLine(void) {
 	const auto lStockSetSize = gl_pChinaMarket->GetTotalStock();
-	bool fHaveInquiry = false;
 
 	if (!IsInquiring() && IsUpdateDayLine()) {
 		ASSERT(!HaveInquiry());
@@ -76,7 +75,6 @@ bool CTengxunDayLineDataSource::InquireDayLine(void) {
 			}
 		}
 		if (fFound) {
-			fHaveInquiry = true;
 			const vector<CVirtualProductWebDataPtr> vProduct = CreateProduct(pStock);
 			ASSERT(!vProduct.empty());
 			for (auto& product : vProduct) {
@@ -86,14 +84,15 @@ bool CTengxunDayLineDataSource::InquireDayLine(void) {
 			gl_systemMessage.SetStockCodeForInquiringNeteaseDayLine(pStock->GetSymbol());
 			pStock->SetDayLineNeedUpdate(false);
 			SetInquiring(true);
+			return true;
 		}
 		else {
 			SetUpdateDayLine(false);
-			const CString str = "中国市场股票日线历史数据更新完毕";
+			const CString str = _T("中国市场股票日线历史数据更新完毕");
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
-	return fHaveInquiry;
+	return false;
 }
 
 vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(CChinaStockPtr pStock) {
