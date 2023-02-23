@@ -14,7 +14,7 @@
 // See Watchdog.cpp for the implementation of this class
 //
 
-class CWatchdogApp : public CWinApp
+class CWatchdogApp : public CWinAppEx
 {
 public:
 	CWatchdogApp() noexcept;
@@ -26,8 +26,13 @@ public:
 	virtual int ExitInstance();
 
 // Implementation
+	UINT  m_nAppLook;
+	BOOL  m_bHiColorIcons;
 
-public:
+	virtual void PreLoadState();
+	virtual void LoadCustomState();
+	virtual void SaveCustomState();
+
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
 };

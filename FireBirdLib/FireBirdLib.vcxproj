@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\accessory\accessory.h" />
     <ClInclude Include="..\src\accessory\CallableFunction.h" />
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h" />
     <ClInclude Include="..\src\accessory\ConvertToString.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="..\src\Windows interface\FireBirdView.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\accessory\accessory.cpp" />
     <ClCompile Include="..\src\accessory\CallableFunction.cpp" />
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp" />
     <ClCompile Include="..\src\accessory\ConvertToString.cpp" />

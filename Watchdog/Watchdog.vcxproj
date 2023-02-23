@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
-    <ProjectGuid>{2C986E7D-E2B1-447D-9CCD-BD15DD4B67BB}</ProjectGuid>
+    <ProjectGuid>{72A2D2FD-AA6B-48DE-B84F-F1081F86B6D2}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
     <RootNamespace>Watchdog</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
@@ -183,34 +183,71 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="WatchdogChildView.h" />
+    <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="ClassView.h" />
+    <ClInclude Include="FileView.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="WatchdogMainFrm.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PropertiesWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="ViewTree.h" />
     <ClInclude Include="Watchdog.h" />
+    <ClInclude Include="WatchdogDoc.h" />
+    <ClInclude Include="WatchdogView.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WatchdogChildView.cpp" />
-    <ClCompile Include="WatchdogMainFrm.cpp" />
+    <ClCompile Include="ChildFrm.cpp" />
+    <ClCompile Include="ClassView.cpp" />
+    <ClCompile Include="FileView.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="PropertiesWnd.cpp" />
+    <ClCompile Include="ViewTree.cpp" />
     <ClCompile Include="Watchdog.cpp" />
+    <ClCompile Include="WatchdogDoc.cpp" />
+    <ClCompile Include="WatchdogView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Watchdog.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\Watchdog.rc2" />
+    <Image Include="res\classview.bmp" />
+    <Image Include="res\classview_hc.bmp" />
+    <Image Include="res\class_view.ico" />
+    <Image Include="res\class_view_hc.ico" />
+    <Image Include="res\explorer.bmp" />
+    <Image Include="res\explorer_hc.bmp" />
+    <Image Include="res\fileview.bmp" />
+    <Image Include="res\fileview_hc.bmp" />
+    <Image Include="res\file_view.ico" />
+    <Image Include="res\file_view_hc.ico" />
+    <Image Include="res\menuimages.bmp" />
+    <Image Include="res\menuimages_hc.bmp" />
+    <Image Include="res\output_wnd.ico" />
+    <Image Include="res\output_wnd_hc.ico" />
+    <Image Include="res\properties.bmp" />
+    <Image Include="res\properties_hc.bmp" />
+    <Image Include="res\properties_wnd.ico" />
+    <Image Include="res\properties_wnd_hc.ico" />
+    <Image Include="res\sort.bmp" />
+    <Image Include="res\sort_hc.bmp" />
+    <Image Include="res\Toolbar.bmp" />
+    <Image Include="res\Toolbar256.bmp" />
+    <Image Include="res\userimages.bmp" />
+    <Image Include="res\Watchdog.ico" />
+    <Image Include="res\WatchdogDoc.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\Toolbar.bmp" />
-    <Image Include="res\Watchdog.ico" />
+    <None Include="res\Watchdog.rc2" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

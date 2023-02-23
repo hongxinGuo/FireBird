@@ -714,6 +714,9 @@
     <ClInclude Include="..\src\Factory Product\ProductTengxunDayLine.h">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\accessory\accessory.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\CallableFunction.cpp">
@@ -1279,6 +1282,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Source\TengxunDayLineDataSource.cpp">
       <Filter>源文件\Data Source\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\accessory.cpp">
+      <Filter>源文件\Accessory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

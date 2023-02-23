@@ -6,7 +6,11 @@
 #include "afxwinappex.h"
 #include "afxdialogex.h"
 #include "Watchdog.h"
-#include "WatchdogMainFrm.h"
+#include "MainFrm.h"
+
+#include "ChildFrm.h"
+#include "WatchdogDoc.h"
+#include "WatchdogView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -14,13 +18,21 @@
 
 // CWatchdogApp
 
-BEGIN_MESSAGE_MAP(CWatchdogApp, CWinApp)
+BEGIN_MESSAGE_MAP(CWatchdogApp, CWinAppEx)
 	ON_COMMAND(ID_APP_ABOUT, &CWatchdogApp::OnAppAbout)
+	// Standard file based document commands
+	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
+	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
+	// Standard print setup command
+	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
 // CWatchdogApp construction
 
 CWatchdogApp::CWatchdogApp() noexcept {
+	m_bHiColorIcons = TRUE;
+
+	m_nAppLook = 0;
 	// support Restart Manager
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_ALL_ASPECTS;
 #ifdef _MANAGED
@@ -32,7 +44,7 @@ CWatchdogApp::CWatchdogApp() noexcept {
 
 	// TODO: replace application ID string below with unique ID string; recommended
 	// format for string is CompanyName.ProductName.SubProduct.VersionInformation
-	SetAppID(_T("Watchdog.AppID.NoVersion"));
+	SetAppID(_T("FireBird Watchdog.AppID.0.01"));
 
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
@@ -55,7 +67,7 @@ BOOL CWatchdogApp::InitInstance() {
 	InitCtrls.dwICC = ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&InitCtrls);
 
-	CWinApp::InitInstance();
+	CWinAppEx::InitInstance();
 
 	// Initialize OLE libraries
 	if (!AfxOleInit()) {
@@ -65,7 +77,7 @@ BOOL CWatchdogApp::InitInstance() {
 
 	AfxEnableControlContainer();
 
-	EnableTaskbarInteraction(FALSE);
+	EnableTaskbarInteraction();
 
 	// AfxInitRichEdit2() is required to use RichEdit control
 	// AfxInitRichEdit2();
@@ -78,21 +90,50 @@ BOOL CWatchdogApp::InitInstance() {
 	// TODO: You should modify this string to be something appropriate
 	// such as the name of your company or organization
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
+	LoadStdProfileSettings(4);  // Load standard INI file options (including MRU)
 
-	// To create the main window, this code creates a new frame window
-	// object and then sets it as the application's main window object
-	CFrameWnd* pFrame = new CMainFrame;
-	if (!pFrame)
+	InitContextMenuManager();
+
+	InitKeyboardManager();
+
+	InitTooltipManager();
+	CMFCToolTipInfo ttParams;
+	ttParams.m_bVislManagerTheme = TRUE;
+	theApp.GetTooltipManager()->SetTooltipParams(AFX_TOOLTIP_TYPE_ALL,
+	                                             RUNTIME_CLASS(CMFCToolTipCtrl), &ttParams);
+
+	// Register the application's document templates.  Document templates
+	//  serve as the connection between documents, frame windows and views
+	CMultiDocTemplate* pDocTemplate;
+	pDocTemplate = new CMultiDocTemplate(IDR_WatchdogTYPE,
+	                                     RUNTIME_CLASS(CWatchdogDoc),
+	                                     RUNTIME_CLASS(CChildFrame), // custom MDI child frame
+	                                     RUNTIME_CLASS(CWatchdogView));
+	if (!pDocTemplate)
 		return FALSE;
-	m_pMainWnd = pFrame;
-	// create and load the frame with its resources
-	pFrame->LoadFrame(IDR_MAINFRAME,
-	                  WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, nullptr,
-	                  nullptr);
+	AddDocTemplate(pDocTemplate);
 
-	// The one and only window has been initialized, so show and update it
-	pFrame->ShowWindow(SW_MINIMIZE);
-	pFrame->UpdateWindow();
+	// create main MDI Frame window
+	CMainFrame* pMainFrame = new CMainFrame;
+	if (!pMainFrame || !pMainFrame->LoadFrame(IDR_MAINFRAME)) {
+		delete pMainFrame;
+		return FALSE;
+	}
+	m_pMainWnd = pMainFrame;
+
+	// Parse command line for standard shell commands, DDE, file open
+	CCommandLineInfo cmdInfo;
+	ParseCommandLine(cmdInfo);
+
+	// Dispatch commands specified on the command line.  Will return FALSE if
+	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.
+	if (!ProcessShellCommand(cmdInfo))
+		return FALSE;
+	// The main window has been initialized, so show and update it
+	//pMainFrame->ShowWindow(m_nCmdShow);
+	pMainFrame->ShowWindow(SW_MINIMIZE);
+	pMainFrame->UpdateWindow();
+
 	return TRUE;
 }
 
@@ -100,7 +141,7 @@ int CWatchdogApp::ExitInstance() {
 	//TODO: handle additional resources you may have added
 	AfxOleTerm(FALSE);
 
-	return CWinApp::ExitInstance();
+	return CWinAppEx::ExitInstance();
 }
 
 // CWatchdogApp message handlers
@@ -138,5 +179,22 @@ void CWatchdogApp::OnAppAbout() {
 	CAboutDlg aboutDlg;
 	aboutDlg.DoModal();
 }
+
+// CWatchdogApp customization load/save methods
+
+void CWatchdogApp::PreLoadState() {
+	BOOL bNameValid;
+	CString strName;
+	bNameValid = strName.LoadString(IDS_EDIT_MENU);
+	ASSERT(bNameValid);
+	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);
+	bNameValid = strName.LoadString(IDS_EXPLORER);
+	ASSERT(bNameValid);
+	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EXPLORER);
+}
+
+void CWatchdogApp::LoadCustomState() {}
+
+void CWatchdogApp::SaveCustomState() {}
 
 // CWatchdogApp message handlers

@@ -66,7 +66,7 @@ CFireBirdApp::CFireBirdApp() {
 	System::Windows::Forms::Application::SetUnhandledExceptionMode(System::Windows::Forms::UnhandledExceptionMode::ThrowException);
 #endif
 
-	SetAppID(_T("FiriBird.AppID.0.27"));
+	SetAppID(_T("FiriBird.AppID.0.28"));
 
 	// 将所有重要的初始化放置在 InitInstance 中
 }
@@ -74,21 +74,20 @@ CFireBirdApp::CFireBirdApp() {
 // 唯一的 CFireBirdApp 对象
 CFireBirdApp theApp;
 
-HANDLE gl_hMutex = nullptr;
-
-bool IsAlreadyRun() {
-	gl_hMutex = ::CreateMutex(nullptr, true, _T("FireBirdAlreadyRun")); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
-	if(gl_hMutex) {
-		if(ERROR_ALREADY_EXISTS == ::GetLastError()) {
-			return true;
+bool IsFireBirdAlreadyRunning(CString strProgramToken) {
+	const HANDLE hMutex = ::CreateMutex(nullptr, false, strProgramToken); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
+	bool bAlreadyRunning = false;
+	if (hMutex) {
+		if (ERROR_ALREADY_EXISTS == ::GetLastError()) {
+			bAlreadyRunning = true;
 		}
 	}
-	return false;
+	return bAlreadyRunning;
 }
 
 // CFireBirdApp 初始化
 BOOL CFireBirdApp::InitInstance() {
-	if (IsAlreadyRun()) {
+	if (IsFireBirdAlreadyRunning(_T("FireBirdAlreadyRun"))) {
 		MessageBox(nullptr,
 			"Only one instance can run!",
 			"FireBird Warning:",
@@ -118,7 +117,7 @@ BOOL CFireBirdApp::InitInstance() {
 	// 最终可执行文件的大小，则应移除下列
 	// 不需要的特定初始化例程
 	// 更改用于存储设置的注册表项
-	SetRegistryKey(_T("FireBird"));
+	SetRegistryKey(_T("FireBird Stock Analysis"));
 	LoadStdProfileSettings(4);  // 加载标准 INI 文件选项(包括 MRU)
 
 	InitContextMenuManager();
@@ -157,8 +156,6 @@ BOOL CFireBirdApp::InitInstance() {
 
 int CFireBirdApp::ExitInstance() {
 	AfxOleTerm(FALSE);
-
-	bool bSucceed = ::CloseHandle(gl_hMutex);
 
 	return CWinAppEx::ExitInstance();
 }
