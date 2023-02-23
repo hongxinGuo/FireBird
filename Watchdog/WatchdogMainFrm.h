@@ -2,7 +2,7 @@
 //
 
 #pragma once
-#include "ChildView.h"
+#include "WatchdogChildView.h"
 
 class CMainFrame : public CFrameWnd {
 public:
@@ -22,14 +22,7 @@ public:
 
 	// Implementation
 public:
-	virtual ~CMainFrame();
-
-	bool IsAlreadyRun();
-
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
+	virtual ~CMainFrame() override;
 
 protected:  // control bar embedded members
 	CToolBar m_wndToolBar;
@@ -47,5 +40,4 @@ public:
 
 protected:
 	UINT m_uIdTimer;
-	HANDLE hMutex;
 };

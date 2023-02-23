@@ -74,9 +74,11 @@ CFireBirdApp::CFireBirdApp() {
 // 唯一的 CFireBirdApp 对象
 CFireBirdApp theApp;
 
+HANDLE gl_hMutex = nullptr;
+
 bool IsAlreadyRun() {
-	const HANDLE hMutex = ::CreateMutex(nullptr, false, _T("FireBirdAlreadyRun")); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
-	if(hMutex) {
+	gl_hMutex = ::CreateMutex(nullptr, true, _T("FireBirdAlreadyRun")); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
+	if(gl_hMutex) {
 		if(ERROR_ALREADY_EXISTS == ::GetLastError()) {
 			return true;
 		}
@@ -155,6 +157,8 @@ BOOL CFireBirdApp::InitInstance() {
 
 int CFireBirdApp::ExitInstance() {
 	AfxOleTerm(FALSE);
+
+	bool bSucceed = ::CloseHandle(gl_hMutex);
 
 	return CWinAppEx::ExitInstance();
 }

@@ -5,7 +5,7 @@
 #include "framework.h"
 #include "Watchdog.h"
 
-#include "MainFrm.h"
+#include "WatchdogMainFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -31,19 +31,8 @@ static UINT indicators[] =
 
 // CMainFrame construction/destruction
 
-bool CMainFrame::IsAlreadyRun() {
-	hMutex = ::CreateMutex(nullptr, false, _T("FireBirdAlreadyRun")); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
-	if (hMutex) {
-		if (ERROR_ALREADY_EXISTS == ::GetLastError()) {
-			return true;
-		}
-		CloseHandle(hMutex);
-	}
-	return false;
-}
-
 CMainFrame::CMainFrame() noexcept {
-	// TODO: add member initialization code here
+	m_uIdTimer = 0;
 }
 
 CMainFrame::~CMainFrame() {}
@@ -75,9 +64,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockControlBar(&m_wndToolBar);
 
-	// 设置10秒每次的软调度，用于检查重启FireBird主程序。
-	m_uIdTimer = SetTimer(1, 10000, nullptr);
-	if (m_uIdTimer == 0) { TRACE(_T("生成10s时钟时失败\n")); }
+	// 设置30秒每次的软调度，用于检查重启FireBird主程序。
+	m_uIdTimer = SetTimer(1, 5000, nullptr);
+	if (m_uIdTimer == 0) {
+		TRACE(_T("生成30s时钟时失败\n"));
+	}
 
 	return 0;
 }
@@ -93,20 +84,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 	return TRUE;
 }
 
-// CMainFrame diagnostics
-
-#ifdef _DEBUG
-void CMainFrame::AssertValid() const {
-	CFrameWnd::AssertValid();
-}
-
-void CMainFrame::Dump(CDumpContext& dc) const {
-	CFrameWnd::Dump(dc);
-}
-#endif //_DEBUG
-
 // CMainFrame message handlers
-
 void CMainFrame::OnSetFocus(CWnd* /*pOldWnd*/) {
 	// forward focus to the view window
 	m_wndView.SetFocus();
@@ -119,6 +97,18 @@ BOOL CMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO*
 
 	// otherwise, do default handling
 	return CFrameWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
+}
+
+bool IsAlreadyRun() {
+	const HANDLE hMutex = ::CreateMutex(nullptr, true, _T("FireBirdAlreadyRun")); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
+	bool bAlreadyRunning = false;
+	if (hMutex) {
+		if (ERROR_ALREADY_EXISTS == ::GetLastError()) {
+			bAlreadyRunning = true;
+		}
+	}
+	bool bSucceed = ::CloseHandle(hMutex);
+	return bAlreadyRunning;
 }
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
