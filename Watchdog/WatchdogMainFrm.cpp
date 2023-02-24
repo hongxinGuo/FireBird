@@ -1,31 +1,31 @@
-// MainFrm.cpp : implementation of the CMainFrame class
+// MainFrm.cpp : implementation of the CWatchdogMainFrame class
 //
 
 #include "pch.h"
 #include "framework.h"
 #include "Watchdog.h"
 
-#include "MainFrm.h"
+#include "WatchdogMainFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-// CMainFrame
+// CWatchdogMainFrame
 
-IMPLEMENT_DYNAMIC(CMainFrame, CMDIFrameWndEx)
+IMPLEMENT_DYNAMIC(CWatchdogMainFrame, CMDIFrameWndEx)
 
 const int iMaxUserToolbars = 10;
 const UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
 const UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 
-BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
+BEGIN_MESSAGE_MAP(CWatchdogMainFrame, CMDIFrameWndEx)
 	ON_WM_CREATE()
-	ON_COMMAND(ID_WINDOW_MANAGER, &CMainFrame::OnWindowManager)
-	ON_COMMAND(ID_VIEW_CUSTOMIZE, &CMainFrame::OnViewCustomize)
-	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
-	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnApplicationLook)
-	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnUpdateApplicationLook)
+	ON_COMMAND(ID_WINDOW_MANAGER, &CWatchdogMainFrame::OnWindowManager)
+	ON_COMMAND(ID_VIEW_CUSTOMIZE, &CWatchdogMainFrame::OnViewCustomize)
+	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CWatchdogMainFrame::OnToolbarCreateNew)
+	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CWatchdogMainFrame::OnApplicationLook)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CWatchdogMainFrame::OnUpdateApplicationLook)
 	ON_WM_SETTINGCHANGE()
 	ON_WM_TIMER()
 END_MESSAGE_MAP()
@@ -38,18 +38,18 @@ static UINT indicators[] =
 	ID_INDICATOR_SCRL,
 };
 
-// CMainFrame construction/destruction
+// CWatchdogMainFrame construction/destruction
 
-CMainFrame::CMainFrame() noexcept {
+CWatchdogMainFrame::CWatchdogMainFrame() noexcept {
 	// TODO: add member initialization code here
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2008);
 
 	m_uTimerID = 0;
 }
 
-CMainFrame::~CMainFrame() {}
+CWatchdogMainFrame::~CWatchdogMainFrame() {}
 
-int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+int CWatchdogMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
@@ -190,7 +190,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	return 0;
 }
 
-BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
+BOOL CWatchdogMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 	if (!CMDIFrameWndEx::PreCreateWindow(cs))
 		return FALSE;
 	// TODO: Modify the Window class or styles here by modifying
@@ -199,7 +199,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 	return TRUE;
 }
 
-BOOL CMainFrame::CreateDockingWindows() {
+BOOL CWatchdogMainFrame::CreateDockingWindows() {
 	BOOL bNameValid;
 
 	// Create class view
@@ -242,7 +242,7 @@ BOOL CMainFrame::CreateDockingWindows() {
 	return TRUE;
 }
 
-void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
+void CWatchdogMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
 	HICON hFileViewIcon = (HICON)::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_FILE_VIEW_HC : IDI_FILE_VIEW), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
 	m_wndFileView.SetIcon(hFileViewIcon, FALSE);
 
@@ -258,31 +258,31 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
 	UpdateMDITabbedBarsIcons();
 }
 
-// CMainFrame diagnostics
+// CWatchdogMainFrame diagnostics
 
 #ifdef _DEBUG
-void CMainFrame::AssertValid() const {
+void CWatchdogMainFrame::AssertValid() const {
 	CMDIFrameWndEx::AssertValid();
 }
 
-void CMainFrame::Dump(CDumpContext& dc) const {
+void CWatchdogMainFrame::Dump(CDumpContext& dc) const {
 	CMDIFrameWndEx::Dump(dc);
 }
 #endif //_DEBUG
 
-// CMainFrame message handlers
+// CWatchdogMainFrame message handlers
 
-void CMainFrame::OnWindowManager() {
+void CWatchdogMainFrame::OnWindowManager() {
 	ShowWindowsDialog();
 }
 
-void CMainFrame::OnViewCustomize() {
+void CWatchdogMainFrame::OnViewCustomize() {
 	CMFCToolBarsCustomizeDialog* pDlgCust = new CMFCToolBarsCustomizeDialog(this, TRUE /* scan menus */);
 	pDlgCust->EnableUserDefinedToolbars();
 	pDlgCust->Create();
 }
 
-LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
+LRESULT CWatchdogMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
 	LRESULT lres = CMDIFrameWndEx::OnToolbarCreateNew(wp, lp);
 	if (lres == 0) {
 		return 0;
@@ -300,7 +300,7 @@ LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
 	return lres;
 }
 
-void CMainFrame::OnApplicationLook(UINT id) {
+void CWatchdogMainFrame::OnApplicationLook(UINT id) {
 	CWaitCursor wait;
 
 	theApp.m_nAppLook = id;
@@ -368,11 +368,11 @@ void CMainFrame::OnApplicationLook(UINT id) {
 	theApp.WriteInt(_T("ApplicationLook"), theApp.m_nAppLook);
 }
 
-void CMainFrame::OnUpdateApplicationLook(CCmdUI* pCmdUI) {
+void CWatchdogMainFrame::OnUpdateApplicationLook(CCmdUI* pCmdUI) {
 	pCmdUI->SetRadio(theApp.m_nAppLook == pCmdUI->m_nID);
 }
 
-BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext) {
+BOOL CWatchdogMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext) {
 	// base class does the real work
 
 	if (!CMDIFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext)) {
@@ -395,7 +395,7 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	return TRUE;
 }
 
-void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
+void CWatchdogMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 	CMDIFrameWndEx::OnSettingChange(uFlags, lpszSection);
 	m_wndOutput.UpdateFonts();
 }
@@ -412,9 +412,10 @@ bool IsFireBirdAlreadyRunning(CString strProgramToken) {
 	return bAlreadyRunning;
 }
 
-void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
+void CWatchdogMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	if (!IsFireBirdAlreadyRunning(_T("FireBirdAlreadyRun"))) {
 		const UINT iReturnCode = WinExec(("C:\\FireBird\\FireBird.exe"), SW_SHOW);
+		m_wndOutput.ReportInfo(_T("Æô¶¯FireBird"));
 		ASSERT(iReturnCode > 31);
 	}
 

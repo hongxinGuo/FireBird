@@ -1,18 +1,19 @@
-
 #pragma once
 
 /////////////////////////////////////////////////////////////////////////////
 // COutputList window
 
-class COutputList : public CListBox
-{
-// Construction
+class COutputList : public CListBox {
+	// Construction
 public:
 	COutputList() noexcept;
 
-// Implementation
+	// Implementation
 public:
 	virtual ~COutputList();
+
+	void TruncateList(long lNumberOfTruncation);
+	void SetCurAtLastLine(void);
 
 protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
@@ -23,37 +24,41 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-class COutputWnd : public CDockablePane
-{
-// Construction
+class CWatchdogOutputWnd : public CDockablePane {
+	// Construction
 public:
-	COutputWnd() noexcept;
+	CWatchdogOutputWnd() noexcept;
 
 	void UpdateFonts();
 
-// Attributes
+	// Attributes
 protected:
-	CMFCTabCtrl	m_wndTabs;
+	CMFCTabCtrl m_wndTabs;
 
 	COutputList m_wndOutputBuild;
 	COutputList m_wndOutputDebug;
 	COutputList m_wndOutputFind;
 
+	UINT m_uIdTimer;
+
 protected:
-	void FillBuildWindow();
 	void FillDebugWindow();
 	void FillFindWindow();
 
 	void AdjustHorzScroll(CListBox& wndListBox);
 
-// Implementation
+	// Implementation
 public:
-	virtual ~COutputWnd();
+	virtual ~CWatchdogOutputWnd();
+
+	void ReportInfo(CString strInfo);
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 
 	DECLARE_MESSAGE_MAP()
-};
 
+public:
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+};

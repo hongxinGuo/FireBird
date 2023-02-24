@@ -24,10 +24,10 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MainFrm.h">
+    <ClInclude Include="WatchdogMainFrm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChildFrm.h">
+    <ClInclude Include="WatchdogChildFrm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WatchdogDoc.h">
@@ -48,7 +48,7 @@
     <ClInclude Include="ViewTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OutputWnd.h">
+    <ClInclude Include="WatchdogOutputWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PropertiesWnd.h">
@@ -62,10 +62,10 @@
     <ClCompile Include="Watchdog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainFrm.cpp">
+    <ClCompile Include="WatchdogMainFrm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChildFrm.cpp">
+    <ClCompile Include="WatchdogChildFrm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WatchdogDoc.cpp">
@@ -83,7 +83,7 @@
     <ClCompile Include="ViewTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OutputWnd.cpp">
+    <ClCompile Include="WatchdogOutputWnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PropertiesWnd.cpp">

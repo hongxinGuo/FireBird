@@ -6,9 +6,9 @@
 #include "afxwinappex.h"
 #include "afxdialogex.h"
 #include "Watchdog.h"
-#include "MainFrm.h"
+#include "WatchdogMainFrm.h"
 
-#include "ChildFrm.h"
+#include "WatchdogChildFrm.h"
 #include "WatchdogDoc.h"
 #include "WatchdogView.h"
 
@@ -107,14 +107,14 @@ BOOL CWatchdogApp::InitInstance() {
 	CMultiDocTemplate* pDocTemplate;
 	pDocTemplate = new CMultiDocTemplate(IDR_WatchdogTYPE,
 	                                     RUNTIME_CLASS(CWatchdogDoc),
-	                                     RUNTIME_CLASS(CChildFrame), // custom MDI child frame
+	                                     RUNTIME_CLASS(CWatchdogChildFrame), // custom MDI child frame
 	                                     RUNTIME_CLASS(CWatchdogView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
 
 	// create main MDI Frame window
-	CMainFrame* pMainFrame = new CMainFrame;
+	CWatchdogMainFrame* pMainFrame = new CWatchdogMainFrame;
 	if (!pMainFrame || !pMainFrame->LoadFrame(IDR_MAINFRAME)) {
 		delete pMainFrame;
 		return FALSE;

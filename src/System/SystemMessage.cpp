@@ -3,10 +3,11 @@
 #include "SystemMessage.h"
 #include"OutputWnd.h"
 
-CSystemDeque::CSystemDeque() {
-}
+CSystemDeque::CSystemDeque() {}
 
-CSystemDeque::~CSystemDeque() { m_dequeMessage.clear(); }
+CSystemDeque::~CSystemDeque() {
+	m_dequeMessage.clear();
+}
 
 CSystemMessage::~CSystemMessage() = default;
 
@@ -19,7 +20,9 @@ void CSystemDeque::Display(COutputList* pOutputList, const CString& strTime) {
 	}
 }
 
-void CSystemDeque::SysCallOutputListAddString(COutputList* pOutputList, const CString& str) { pOutputList->AddString(str); }
+void CSystemDeque::SysCallOutputListAddString(COutputList* pOutputList, const CString& str) {
+	pOutputList->AddString(str);
+}
 
 void CSystemDeque::PushMessage(const CString& str) {
 	m_mutex.lock();

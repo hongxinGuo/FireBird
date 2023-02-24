@@ -1,27 +1,22 @@
-
 #include "pch.h"
 #include "framework.h"
-#include "mainfrm.h"
+#include "WatchdogMainFrm.h"
 #include "FileView.h"
 #include "Resource.h"
 #include "Watchdog.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CFileView
 
-CFileView::CFileView() noexcept
-{
-}
+CFileView::CFileView() noexcept {}
 
-CFileView::~CFileView()
-{
-}
+CFileView::~CFileView() {}
 
 BEGIN_MESSAGE_MAP(CFileView, CDockablePane)
 	ON_WM_CREATE()
@@ -41,8 +36,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CWorkspaceBar message handlers
 
-int CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
+int CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
@@ -52,8 +46,7 @@ int CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// Create view:
 	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS;
 
-	if (!m_wndFileView.Create(dwViewStyle, rectDummy, this, 4))
-	{
+	if (!m_wndFileView.Create(dwViewStyle, rectDummy, this, 4)) {
 		TRACE0("Failed to create file view\n");
 		return -1;      // fail to create
 	}
@@ -83,14 +76,12 @@ int CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void CFileView::OnSize(UINT nType, int cx, int cy)
-{
+void CFileView::OnSize(UINT nType, int cx, int cy) {
 	CDockablePane::OnSize(nType, cx, cy);
 	AdjustLayout();
 }
 
-void CFileView::FillFileView()
-{
+void CFileView::FillFileView() {
 	HTREEITEM hRoot = m_wndFileView.InsertItem(_T("FakeApp files"), 0, 0);
 	m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
 
@@ -124,27 +115,23 @@ void CFileView::FillFileView()
 	m_wndFileView.Expand(hInc, TVE_EXPAND);
 }
 
-void CFileView::OnContextMenu(CWnd* pWnd, CPoint point)
-{
-	CTreeCtrl* pWndTree = (CTreeCtrl*) &m_wndFileView;
+void CFileView::OnContextMenu(CWnd* pWnd, CPoint point) {
+	CTreeCtrl* pWndTree = (CTreeCtrl*)&m_wndFileView;
 	ASSERT_VALID(pWndTree);
 
-	if (pWnd != pWndTree)
-	{
+	if (pWnd != pWndTree) {
 		CDockablePane::OnContextMenu(pWnd, point);
 		return;
 	}
 
-	if (point != CPoint(-1, -1))
-	{
+	if (point != CPoint(-1, -1)) {
 		// Select clicked item:
 		CPoint ptTree = point;
 		pWndTree->ScreenToClient(&ptTree);
 
 		UINT flags = 0;
 		HTREEITEM hTreeItem = pWndTree->HitTest(ptTree, &flags);
-		if (hTreeItem != nullptr)
-		{
+		if (hTreeItem != nullptr) {
 			pWndTree->SelectItem(hTreeItem);
 		}
 	}
@@ -153,10 +140,8 @@ void CFileView::OnContextMenu(CWnd* pWnd, CPoint point)
 	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EXPLORER, point.x, point.y, this, TRUE);
 }
 
-void CFileView::AdjustLayout()
-{
-	if (GetSafeHwnd() == nullptr)
-	{
+void CFileView::AdjustLayout() {
+	if (GetSafeHwnd() == nullptr) {
 		return;
 	}
 
@@ -169,44 +154,35 @@ void CFileView::AdjustLayout()
 	m_wndFileView.SetWindowPos(nullptr, rectClient.left + 1, rectClient.top + cyTlb + 1, rectClient.Width() - 2, rectClient.Height() - cyTlb - 2, SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
-void CFileView::OnProperties()
-{
+void CFileView::OnProperties() {
 	AfxMessageBox(_T("Properties...."));
-
 }
 
-void CFileView::OnFileOpen()
-{
+void CFileView::OnFileOpen() {
 	// TODO: Add your command handler code here
 }
 
-void CFileView::OnFileOpenWith()
-{
+void CFileView::OnFileOpenWith() {
 	// TODO: Add your command handler code here
 }
 
-void CFileView::OnDummyCompile()
-{
+void CFileView::OnDummyCompile() {
 	// TODO: Add your command handler code here
 }
 
-void CFileView::OnEditCut()
-{
+void CFileView::OnEditCut() {
 	// TODO: Add your command handler code here
 }
 
-void CFileView::OnEditCopy()
-{
+void CFileView::OnEditCopy() {
 	// TODO: Add your command handler code here
 }
 
-void CFileView::OnEditClear()
-{
+void CFileView::OnEditClear() {
 	// TODO: Add your command handler code here
 }
 
-void CFileView::OnPaint()
-{
+void CFileView::OnPaint() {
 	CPaintDC dc(this); // device context for painting
 
 	CRect rectTree;
@@ -217,15 +193,13 @@ void CFileView::OnPaint()
 	dc.Draw3dRect(rectTree, ::GetSysColor(COLOR_3DSHADOW), ::GetSysColor(COLOR_3DSHADOW));
 }
 
-void CFileView::OnSetFocus(CWnd* pOldWnd)
-{
+void CFileView::OnSetFocus(CWnd* pOldWnd) {
 	CDockablePane::OnSetFocus(pOldWnd);
 
 	m_wndFileView.SetFocus();
 }
 
-void CFileView::OnChangeVisualStyle()
-{
+void CFileView::OnChangeVisualStyle() {
 	m_wndToolBar.CleanUpLockedImages();
 	m_wndToolBar.LoadBitmap(theApp.m_bHiColorIcons ? IDB_EXPLORER_24 : IDR_EXPLORER, 0, 0, TRUE /* Locked */);
 
@@ -234,8 +208,7 @@ void CFileView::OnChangeVisualStyle()
 	UINT uiBmpId = theApp.m_bHiColorIcons ? IDB_FILE_VIEW_24 : IDB_FILE_VIEW;
 
 	CBitmap bmp;
-	if (!bmp.LoadBitmap(uiBmpId))
-	{
+	if (!bmp.LoadBitmap(uiBmpId)) {
 		TRACE(_T("Can't load bitmap: %x\n"), uiBmpId);
 		ASSERT(FALSE);
 		return;
@@ -253,5 +226,3 @@ void CFileView::OnChangeVisualStyle()
 
 	m_wndFileView.SetImageList(&m_FileViewImages, TVSIL_NORMAL);
 }
-
-

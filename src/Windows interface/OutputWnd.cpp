@@ -83,8 +83,8 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	ASSERT(bNameValid);
 	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)8);  // 错误消息
 
-	// 设置1000毫秒每次的软调度，用于接受处理实时网络数据
-	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(3), 1000, nullptr);     // 500毫秒每次调度，用于从股票数据提供网站读取数据。
+	// 设置1000毫秒每次的软调度
+	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(3), 1000, nullptr);
 	if (m_uIdTimer == 0) {
 		CString str;
 	}
@@ -126,71 +126,6 @@ void COutputWnd::UpdateFonts() {
 	m_wndOutputWebSocketInfo.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputInnerSystemInformation.SetFont(&afxGlobalData.fontRegular);
 	m_wndErrorMessage.SetFont(&afxGlobalData.fontRegular);
-}
-
-/////////////////////////////////////////////////////////////////////////////
-// COutputList1
-
-COutputList::COutputList() {}
-
-void COutputList::TruncateList(long lNumberOfTruncation) {
-	for (int i = 0; i < lNumberOfTruncation; i++) {
-		DeleteString(0);
-	}
-}
-
-void COutputList::SetCurAtLastLine(void) {
-	SetCurSel(GetCount() - 1);
-	SetTopIndex(GetCount() - 1);
-}
-
-COutputList::~COutputList() {}
-
-BEGIN_MESSAGE_MAP(COutputList, CListBox)
-	ON_WM_CONTEXTMENU()
-	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
-	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
-	ON_COMMAND(ID_VIEW_OUTPUTWND, OnViewOutput)
-	ON_WM_WINDOWPOSCHANGING()
-END_MESSAGE_MAP()
-/////////////////////////////////////////////////////////////////////////////
-// COutputList 消息处理程序
-
-void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point) {
-	CMenu menu;
-	menu.LoadMenu(IDR_OUTPUT_POPUP);
-
-	CMenu* pSumMenu = menu.GetSubMenu(0);
-
-	if (AfxGetMainWnd()->IsKindOf(RUNTIME_CLASS(CMDIFrameWndEx))) {
-		auto pPopupMenu = new CMFCPopupMenu;
-
-		if (!pPopupMenu->Create(this, point.x, point.y, (HMENU)pSumMenu->m_hMenu, FALSE, TRUE)) return;
-
-		((CMDIFrameWndEx*)AfxGetMainWnd())->OnShowPopupMenu(pPopupMenu);
-		UpdateDialogControls(this, FALSE);
-	}
-
-	SetFocus();
-}
-
-void COutputList::OnEditCopy() {
-	MessageBox(_T("复制输出"));
-}
-
-void COutputList::OnEditClear() {
-	MessageBox(_T("清除输出"));
-}
-
-void COutputList::OnViewOutput() {
-	auto pParentBar = DYNAMIC_DOWNCAST(CDockablePane, GetOwner());
-	auto pMainFrame = DYNAMIC_DOWNCAST(CMDIFrameWndEx, GetTopLevelFrame());
-
-	if (pMainFrame != nullptr && pParentBar != nullptr) {
-		pMainFrame->SetFocus();
-		pMainFrame->ShowPane(pParentBar, FALSE, FALSE, FALSE);
-		pMainFrame->RecalcLayout();
-	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -309,4 +244,69 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 
 	// 调用基类的OnTimer函数
 	CDockablePane::OnTimer(nIDEvent);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// COutputList1
+
+COutputList::COutputList() {}
+
+void COutputList::TruncateList(long lNumberOfTruncation) {
+	for (int i = 0; i < lNumberOfTruncation; i++) {
+		DeleteString(0);
+	}
+}
+
+void COutputList::SetCurAtLastLine(void) {
+	SetCurSel(GetCount() - 1);
+	SetTopIndex(GetCount() - 1);
+}
+
+COutputList::~COutputList() {}
+
+BEGIN_MESSAGE_MAP(COutputList, CListBox)
+	ON_WM_CONTEXTMENU()
+	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
+	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
+	ON_COMMAND(ID_VIEW_OUTPUTWND, OnViewOutput)
+	ON_WM_WINDOWPOSCHANGING()
+END_MESSAGE_MAP()
+/////////////////////////////////////////////////////////////////////////////
+// COutputList 消息处理程序
+
+void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point) {
+	CMenu menu;
+	menu.LoadMenu(IDR_OUTPUT_POPUP);
+
+	CMenu* pSumMenu = menu.GetSubMenu(0);
+
+	if (AfxGetMainWnd()->IsKindOf(RUNTIME_CLASS(CMDIFrameWndEx))) {
+		auto pPopupMenu = new CMFCPopupMenu;
+
+		if (!pPopupMenu->Create(this, point.x, point.y, (HMENU)pSumMenu->m_hMenu, FALSE, TRUE)) return;
+
+		((CMDIFrameWndEx*)AfxGetMainWnd())->OnShowPopupMenu(pPopupMenu);
+		UpdateDialogControls(this, FALSE);
+	}
+
+	SetFocus();
+}
+
+void COutputList::OnEditCopy() {
+	MessageBox(_T("复制输出"));
+}
+
+void COutputList::OnEditClear() {
+	MessageBox(_T("清除输出"));
+}
+
+void COutputList::OnViewOutput() {
+	auto pParentBar = DYNAMIC_DOWNCAST(CDockablePane, GetOwner());
+	auto pMainFrame = DYNAMIC_DOWNCAST(CMDIFrameWndEx, GetTopLevelFrame());
+
+	if (pMainFrame != nullptr && pParentBar != nullptr) {
+		pMainFrame->SetFocus();
+		pMainFrame->ShowPane(pParentBar, FALSE, FALSE, FALSE);
+		pMainFrame->RecalcLayout();
+	}
 }

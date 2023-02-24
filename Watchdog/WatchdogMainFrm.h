@@ -1,17 +1,17 @@
-// MainFrm.h : interface of the CMainFrame class
+// MainFrm.h : interface of the CWatchdogMainFrame class
 //
 
 #pragma once
 #include "FileView.h"
 #include "ClassView.h"
-#include "OutputWnd.h"
+#include "WatchdogOutputWnd.h"
 #include "PropertiesWnd.h"
 
-class CMainFrame : public CMDIFrameWndEx {
-	DECLARE_DYNAMIC(CMainFrame)
+class CWatchdogMainFrame : public CMDIFrameWndEx {
+	DECLARE_DYNAMIC(CWatchdogMainFrame)
 
 public:
-	CMainFrame() noexcept;
+	CWatchdogMainFrame() noexcept;
 
 	// Attributes
 public:
@@ -24,7 +24,7 @@ public:
 
 	// Implementation
 public:
-	virtual ~CMainFrame();
+	virtual ~CWatchdogMainFrame();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
@@ -37,7 +37,7 @@ protected:  // control bar embedded members
 	CMFCToolBarImages m_UserImages;
 	CFileView m_wndFileView;
 	CClassView m_wndClassView;
-	COutputWnd m_wndOutput;
+	CWatchdogOutputWnd m_wndOutput;
 	CPropertiesWnd m_wndProperties;
 
 	UINT m_uTimerID;
