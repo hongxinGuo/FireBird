@@ -20,7 +20,7 @@ CString GetStringOfLocalDateTime(void) {
 	time_t tUTC;
 	time(&tUTC);
 	localtime_s(&tmLocal, &tUTC);
-	sprintf_s(buffer, 100, "%04d年%02d月%02d日 %02d:%02d:%02d ", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+	sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 	CString str = buffer;
 	return (str);
 }
@@ -28,7 +28,9 @@ CString GetStringOfLocalDateTime(void) {
 /////////////////////////////////////////////////////////////////////////////
 // COutputBar
 
-CWatchdogOutputWnd::CWatchdogOutputWnd() noexcept {}
+CWatchdogOutputWnd::CWatchdogOutputWnd() noexcept {
+	m_uIdTimer = 0;
+}
 
 CWatchdogOutputWnd::~CWatchdogOutputWnd() {}
 

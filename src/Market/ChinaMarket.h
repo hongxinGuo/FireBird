@@ -363,9 +363,6 @@ public:
 
 	void SetRecordRTData(const bool fFlag) noexcept { m_fSaveRTData = fFlag; }
 
-	void SetProcessingRTData(bool fFlag) noexcept { m_bProcessingRTData = fFlag; }
-	bool IsProcessingRTData() const noexcept { return m_bProcessingRTData; }
-
 	bool IsRecordingRTData(void) const noexcept {
 		if (m_fSaveRTData) return true;
 		return false;
@@ -464,7 +461,6 @@ protected:
 
 	queue<CWebRTDataPtr> m_qRTData;
 	bool m_fSaveRTData;
-	bool m_bProcessingRTData; // 正在计算实时数据
 
 	int m_iMarketOpenOffset; // 开市的偏移量。以分钟为单位，0930 = 0，1129 = 120， 1300 = 121， 1459 = 240。
 
