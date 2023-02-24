@@ -193,6 +193,7 @@
     <ClInclude Include="..\src\Windows interface\OutputWnd.h" />
     <ClInclude Include="..\src\Windows interface\FireBirdDoc.h" />
     <ClInclude Include="..\src\Windows interface\FireBirdView.h" />
+    <ClInclude Include="..\src\Windows interface\PropertiesWnd.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\accessory.cpp" />
@@ -360,6 +361,7 @@
     <ClCompile Include="..\src\Windows interface\FireBird.cpp" />
     <ClCompile Include="..\src\Windows interface\FireBirdDoc.cpp" />
     <ClCompile Include="..\src\Windows interface\FireBirdView.cpp" />
+    <ClCompile Include="..\src\Windows interface\PropertiesWnd.cpp" />
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateAmericaStockDayLine.cpp" />
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateBasicFinancialDB.cpp" />
     <ClCompile Include="..\src\Working thread\America market\ThreadUpdateCompanyNewsDB.cpp" />

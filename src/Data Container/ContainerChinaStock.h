@@ -57,8 +57,8 @@ public:
 	CString GetNextTengxunStockInquiringMiddleStr(const long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, _T(","), lTotalNumber); }
 	CString GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber);
 
-	[[nodiscard]] bool TaskProcessRTData(void);
-	bool TaskSaveDayLineData(void);
+	[[nodiscard]] bool ProcessRTData(void);
+	bool SaveDayLineData(void);
 
 	[[nodiscard]] long GetDayLineNeedUpdateNumber(void) const;
 	[[nodiscard]] long GetDayLineNeedSaveNumber(void) const;

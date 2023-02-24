@@ -302,7 +302,7 @@ long CContainerChinaStock::GetNextIndex(long lIndex) const {
 	return lIndex;
 }
 
-bool CContainerChinaStock::TaskProcessRTData(void) {
+bool CContainerChinaStock::ProcessRTData(void) {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
 		if (pStock->IsActive()) {
@@ -378,7 +378,7 @@ long CContainerChinaStock::GetDayLineNeedSaveNumber(void) const {
 // 主线程的删除函数只在不调用工作线程（无需存储日线数据）的情况下方才执行。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CContainerChinaStock::TaskSaveDayLineData(void) {
+bool CContainerChinaStock::SaveDayLineData(void) {
 	CString str;
 	bool fSave = false;
 

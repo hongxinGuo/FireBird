@@ -81,7 +81,7 @@ public:
 	void TaskGetActiveStockSize(void);
 
 	//处理个股票的实时数据，计算挂单变化等。
-	bool TaskProcessRTData(void) { return m_containerChinaStock.TaskProcessRTData(); }
+	bool TaskProcessRTData(void) { return m_containerChinaStock.ProcessRTData(); }
 
 	// 是否所有股票的历史日线数据都查询过一遍了
 	bool TaskProcessDayLineGetFromNeteaseServer(void);
@@ -189,7 +189,7 @@ public:
 
 	// 数据库读取存储操作
 	virtual bool SaveRTData(void); // 实时数据处理函数，将读取到的实时数据存入数据库中
-	bool TaskSaveDayLineData(void) { return m_containerChinaStock.TaskSaveDayLineData(); } // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
+	bool TaskSaveDayLineData(void) { return m_containerChinaStock.SaveDayLineData(); } // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
 	virtual bool UpdateStockProfileDB(void) { return m_containerChinaStock.UpdateStockProfileDB(); }
 	void LoadStockProfileDB(void) { m_lStockDayLineNeedUpdate = m_containerChinaStock.LoadStockProfileDB(); }
 

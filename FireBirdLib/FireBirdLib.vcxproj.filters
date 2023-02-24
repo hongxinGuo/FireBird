@@ -717,6 +717,9 @@
     <ClInclude Include="..\src\accessory\accessory.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Windows interface\PropertiesWnd.h">
+      <Filter>头文件\Windows interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\CallableFunction.cpp">
@@ -1285,6 +1288,9 @@
     </ClCompile>
     <ClCompile Include="..\src\accessory\accessory.cpp">
       <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\PropertiesWnd.cpp">
+      <Filter>源文件\windows interface</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

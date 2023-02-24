@@ -32,7 +32,7 @@
     </Image>
     <Image Include="res\FireBirdDoc.ico">
       <Filter>资源文件</Filter>
-    </Image> 
+    </Image>
     <Image Include="res\Toolbar.bmp">
       <Filter>资源文件</Filter>
     </Image>
@@ -43,6 +43,12 @@
       <Filter>资源文件</Filter>
     </Image>
     <Image Include="RES\IDR_MAIN.BMP">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\properties_wnd_hc.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\properties_wnd.ico">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

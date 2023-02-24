@@ -562,6 +562,7 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	TaskDistributeNeteaseRTDataToStock();
 
 	TaskProcessTengxunRTData();
+
 	// 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
 	// 此计算任务要在TaskDistributeSinaRTDataStock和TaskDistributeNeteaseRTDataToStock之后执行，以防止出现同步问题。
 	// 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。如果系统正在存储临时实时数据，则等待一秒后的下一次轮询时再计算实时数据

@@ -278,6 +278,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	ResetMarket();
 	TRACE(_T("重置系统结束\n"));
 
+	// 生成系统外观显示部件
 	if (CFrameWndEx::OnCreate(lpCreateStruct) == -1) return -1;
 
 	if (!m_wndMenuBar.Create(this)) {
@@ -336,6 +337,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	m_wndOutput.EnableDocking(CBRS_ALIGN_BOTTOM);
 	DockPane(&m_wndOutput);
+	m_wndProperties.EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&m_wndProperties);
 
 	// 设置用于绘制所有用户界面元素的视觉管理器
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerVS2008));
@@ -385,6 +388,8 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
 	                                                     IMAGE_ICON, GetSystemMetrics(SM_CXSMICON),
 	                                                     GetSystemMetrics(SM_CYSMICON), 0));
 	m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
+	HICON hPropertiesBarIcon = (HICON)::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_PROPERTIES_WND_HC : IDI_PROPERTIES_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
+	m_wndProperties.SetIcon(hPropertiesBarIcon, FALSE);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -427,6 +432,15 @@ BOOL CMainFrame::CreateDockingWindows() {
 	                        WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI)) {
 		TRACE0("未能创建输出窗口\n");
 		return FALSE; // 未能创建
+	}
+
+	// Create properties window
+	CString strPropertiesWnd;
+	bNameValid = strPropertiesWnd.LoadString(IDS_PROPERTIES_WND);
+	ASSERT(bNameValid);
+	if (!m_wndProperties.Create(strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_PROPERTIESWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI)) {
+		TRACE0("Failed to create Properties window\n");
+		return FALSE; // failed to create
 	}
 
 	SetDockingWindowIcons(theApp.m_bHiColorIcons);
