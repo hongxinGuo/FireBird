@@ -53,7 +53,9 @@ bool CVirtualDataSource::Reset(void) {
 void CVirtualDataSource::Run(const long lCurrentTime) {
 	ASSERT(m_fEnable);
 	if (!HaveInquiry()) { // 目前允许一次申请生成多个查询，故而有可能需要多次查询后方允许再次申请。
-		GenerateInquiryMessage(lCurrentTime);
+		if (GenerateInquiryMessage(lCurrentTime)) {
+			ASSERT(IsInquiring());
+		}
 	}
 	else {
 		ASSERT(IsInquiring()); // 当队列中存在网络申请时，此标识一直有效（多次申请方可接收到一个完整的数据集，目前腾讯日线即如此）
@@ -74,6 +76,7 @@ void CVirtualDataSource::Run(const long lCurrentTime) {
 bool CVirtualDataSource::GetWebData(void) {
 	if (HaveInquiry()) {
 		if (!IsInquireWebDataThreadRunning()) {
+			ASSERT(IsInquiring());
 			GetCurrentProduct();
 			CreateInquiryMessageFromCurrentProduct();
 			ProcessInquiryMessage();
@@ -165,6 +168,7 @@ void CVirtualDataSource::CreateInquiryMessageFromCurrentProduct(void) {
 //
 //////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::ProcessInquiryMessage(void) {
+	ASSERT(IsInquiring());
 	ASSERT(!IsInquireWebDataThreadRunning());
 	SetInquireWebDataThreadRunning(true); // 在启动工作线程前就设置，以防由于线程延迟导致重入。
 	StartReadingThread();
@@ -187,6 +191,7 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualDataSource*> pVirtualDataSource) 
 void CVirtualDataSource::Read(void) {
 	CHighPerformanceCounter counter;
 
+	ASSERT(IsInquiring());
 	ASSERT(IsInquireWebDataThreadRunning());
 	PrepareReadingWebData();
 	counter.start();
@@ -222,6 +227,7 @@ void CVirtualDataSource::Read(void) {
 //
 ///////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::ReadWebData(void) {
+	ASSERT(IsInquiring());
 	ASSERT(IsInquireWebDataThreadRunning());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetByteRead(0);

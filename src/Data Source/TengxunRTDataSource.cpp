@@ -47,6 +47,7 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 bool CTengxunRTDataSource::InquireRTData(const long lCurrentTime) {
 	if (!IsInquiring()) {
 		const auto product = make_shared<CProductTengxunRT>();
+		ASSERT(m_qProduct.empty());
 		StoreInquiry(product);
 		SetInquiring(true);
 		return true;
