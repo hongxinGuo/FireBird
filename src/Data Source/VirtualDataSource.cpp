@@ -125,10 +125,11 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 
 UINT ThreadWebSourceParseAndStoreWebData(CVirtualDataSource* pDataSource, CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
 	CVirtualDataSource* pSource = pDataSource; // 使用局部变量，防止外部影响
+	const CVirtualProductWebDataPtr pProduct = pProductWebData;// 使用局部变量，防止外部影响
 	const CWebDataPtr pData = pWebData;// 使用局部变量，防止外部影响
 	gl_WebSourceParseAndStoreData.acquire();
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-	pSource->ParseAndStoreData(pProductWebData, pData);
+	pSource->ParseAndStoreData(pProduct, pData);
 	gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 	gl_WebSourceParseAndStoreData.release();
 
