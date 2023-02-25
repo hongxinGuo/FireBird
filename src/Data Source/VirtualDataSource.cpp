@@ -65,7 +65,7 @@ void CVirtualDataSource::Run(const long lCurrentTime) {
 		UpdateStatus();
 	}
 
-	GetWebData(); // 然后再申请下一个网络数据
+	GetWebData(); // 然后再接收下一个网络数据
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,14 +74,12 @@ void CVirtualDataSource::Run(const long lCurrentTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualDataSource::GetWebData(void) {
-	if (HaveInquiry()) {
-		if (!IsInquireWebDataThreadRunning()) {
-			ASSERT(IsInquiring());
-			GetCurrentProduct();
-			CreateInquiryMessageFromCurrentProduct();
-			ProcessInquiryMessage();
-			return true;
-		}
+	if (HaveInquiry() && !IsInquireWebDataThreadRunning()) {
+		ASSERT(IsInquiring());
+		GetCurrentProduct();
+		CreateInquiryMessageFromCurrentProduct();
+		ProcessInquiryMessage();
+		return true;
 	}
 	return false;
 }
@@ -100,6 +98,7 @@ bool CVirtualDataSource::GetWebData(void) {
 bool CVirtualDataSource::ProcessWebDataReceived(void) {
 	if (HaveReceivedData()) {
 		// 处理当前网络数据
+		ASSERT(IsInquiring());
 		ASSERT(m_pCurrentProduct != nullptr);
 		CWebDataPtr pWebData = GetReceivedData();
 		if (pWebData->IsParsed()) {
@@ -125,9 +124,11 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 }
 
 UINT ThreadWebSourceParseAndStoreWebData(CVirtualDataSource* pDataSource, CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
+	CVirtualDataSource* pSource = pDataSource; // 使用局部变量，防止外部影响
+	const CWebDataPtr pData = pWebData;// 使用局部变量，防止外部影响
 	gl_WebSourceParseAndStoreData.acquire();
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-	pDataSource->ParseAndStoreData(pProductWebData, pWebData);
+	pSource->ParseAndStoreData(pProductWebData, pData);
 	gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 	gl_WebSourceParseAndStoreData.release();
 
@@ -184,7 +185,8 @@ void CVirtualDataSource::StartReadingThread(void) {
 }
 
 UINT ThreadReadVirtualWebData(not_null<CVirtualDataSource*> pVirtualDataSource) {
-	pVirtualDataSource->Read();
+	CVirtualDataSource* pSource = pVirtualDataSource;// 使用局部变量，防止外部影响
+	pSource->Read();
 	return 1;
 }
 
