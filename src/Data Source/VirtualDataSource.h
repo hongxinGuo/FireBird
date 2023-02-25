@@ -29,7 +29,7 @@ public:
 	CVirtualDataSource(const CVirtualDataSource&&) noexcept = delete;
 	CVirtualDataSource& operator=(const CVirtualDataSource&&) noexcept = delete;
 	virtual ~CVirtualDataSource(void) = default;
-	virtual bool Reset(void);
+	virtual bool Reset(void) { return true; }
 
 	void Run(long lCurrentTime);
 	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
@@ -172,11 +172,7 @@ public:
 protected:
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct;
-	atomic_bool m_fInquiring;
-	atomic_bool m_fInquireWebDataThreadRunning; // 接收实时数据线程是否执行标识
 	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列
-
-	bool m_fEnable; // 允许执行标识
 
 	shared_ptr<CInternetSession> m_pSession;
 	CHttpFile* m_pFile; // 网络文件指针
@@ -200,8 +196,11 @@ protected:
 
 	static atomic_long sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
 
-protected:
 	long long m_llLastTimeTickCount;
+
+	bool m_fEnable; // 允许执行标识
+	atomic_bool m_fInquiring;
+	atomic_bool m_fInquireWebDataThreadRunning; // 接收实时数据线程是否执行标识
 
 private:
 	char m_dataBuffer[DATA_BUFFER_SIZE_]; //网络数据缓存

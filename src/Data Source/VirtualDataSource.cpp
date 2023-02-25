@@ -36,18 +36,12 @@ CVirtualDataSource::CVirtualDataSource(void) {
 	m_pCurrentProduct = nullptr;
 
 	m_lContentLength = -1;
-
-	CVirtualDataSource::Reset();
-}
-
-bool CVirtualDataSource::Reset(void) {
-	m_llLastTimeTickCount = 0;
 	m_fInquiring = false;
+	m_fInquireWebDataThreadRunning = false;
 
+	m_llLastTimeTickCount = 0;
 	m_lByteRead = 0;
 	m_dwWebErrorCode = 0;
-
-	return true;
 }
 
 void CVirtualDataSource::Run(const long lCurrentTime) {
@@ -263,15 +257,14 @@ void CVirtualDataSource::ReadWebData(void) {
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 }
 
-/// <summary>
-/// 当采用此函数读取网易日线历史数据时，偶尔会出现超时（网络错误代码12002）错误
-/// 目前最大的问题是读取finnhub.io时，由于网站被墙而导致连接错误--20220401
-///
-/// 由于新浪实时数据服务器需要提供头部验证数据，故而OpenURL不再使用默认值，调用者需要各自设置m_strHeaders（默认为空）。
-/// 其他的数据尚未需要提供头部验证数据。
-/// 调用函数需要处理exception。
-///
-/////////////////////////////////////////////////////////////////////////////////////////////////
+// <summary>
+// 当采用此函数读取网易日线历史数据时，偶尔会出现超时（网络错误代码12002）错误
+// 目前最大的问题是读取finnhub.io时，由于网站被墙而导致连接错误--20220401
+//
+// 由于新浪实时数据服务器需要提供头部验证数据，故而OpenURL不再使用默认值，调用者需要各自设置m_strHeaders（默认为空）。
+// 其他的数据尚未需要提供头部验证数据。
+// 调用函数需要处理exception。
+//
 void CVirtualDataSource::OpenFile(const CString& strInquiring) {
 	m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL(strInquiring, 1,
 	                                                       INTERNET_FLAG_TRANSFER_ASCII,
