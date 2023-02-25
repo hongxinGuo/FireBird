@@ -14,11 +14,17 @@ using namespace testing;
 namespace FireBirdTest {
 	class CDataCryptoDayLineTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) { GeneralCheck(); }
+		static void SetUpTestSuite(void) {
+			GeneralCheck();
+		}
 
-		static void TearDownTestSuite(void) { GeneralCheck(); }
+		static void TearDownTestSuite(void) {
+			GeneralCheck();
+		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+			GeneralCheck();
+		}
 
 		void TearDown(void) override {
 			// clearUp

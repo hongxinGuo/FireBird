@@ -10,7 +10,9 @@
 
 namespace FireBirdTest {
 	class CXferFinnhubInquiryTest : public ::testing::Test {
-		void SetUp(void) override { GeneralCheck(); }
+		void SetUp(void) override {
+			GeneralCheck();
+		}
 
 		void TearDown(void) override {
 			gl_systemStatus.SetWorkingMode(false);

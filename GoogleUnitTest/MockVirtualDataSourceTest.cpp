@@ -15,8 +15,8 @@ namespace FireBirdTest {
 	class CMockVirtualDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
-			m_pVirtualDataSource = nullptr;
 			GeneralCheck();
+			m_pVirtualDataSource = nullptr;
 		}
 
 		static void TearDownTestSuite(void) {
@@ -33,11 +33,11 @@ namespace FireBirdTest {
 
 		void TearDown(void) override {
 			// clearUp
-			GeneralCheck();
 
 			m_pVirtualDataSource->SetInquiringString(_T(""));
 			m_pVirtualDataSource->SetInquiringWebData(false);
 			m_pVirtualDataSource = nullptr;
+			GeneralCheck();
 		}
 
 	public:

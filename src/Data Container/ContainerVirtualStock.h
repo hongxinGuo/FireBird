@@ -25,12 +25,18 @@ public:
 
 	CVirtualStockPtr Get(const size_t lIndex) {
 		try { return m_vStock.at(lIndex); }
-		catch (std::out_of_range&) { return nullptr; }
+		catch (std::out_of_range&) {
+			ASSERT(0);
+			return nullptr;
+		}
 	}
 
 	CVirtualStockPtr Get(const CString& strSymbol) {
 		try { return m_vStock.at(m_mapSymbol.at(strSymbol)); }
-		catch (std::out_of_range&) { return nullptr; }
+		catch (std::out_of_range&) {
+			ASSERT(0);
+			return nullptr;
+		}
 	}
 
 	size_t GetOffset(const CString& strSymbol) const { return m_mapSymbol.at(strSymbol); }

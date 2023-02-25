@@ -23,6 +23,7 @@ namespace FireBirdTest {
 		}
 
 		void SetUp(void) override {
+			GeneralCheck();
 		}
 
 		void TearDown(void) override {
@@ -107,12 +108,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_finnhubWebSocket.GetSymbolSize(), 0);
 	}
 
-	TEST_F(CFinnhubWebSocketTest, Test3) {
-	}
+	TEST_F(CFinnhubWebSocketTest, Test3) { }
 
-	TEST_F(CFinnhubWebSocketTest, Test4) {
-	}
+	TEST_F(CFinnhubWebSocketTest, Test4) { }
 
-	TEST_F(CFinnhubWebSocketTest, Test5) {
-	}
+	TEST_F(CFinnhubWebSocketTest, Test5) { }
 }

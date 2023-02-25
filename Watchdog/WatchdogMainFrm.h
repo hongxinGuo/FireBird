@@ -2,10 +2,10 @@
 //
 
 #pragma once
-#include "FileView.h"
-#include "ClassView.h"
+#include "WatchdogFileView.h"
+#include "WatchdogClassView.h"
 #include "WatchdogOutputWnd.h"
-#include "PropertiesWnd.h"
+#include "WatchdogPropertiesWnd.h"
 
 class CWatchdogMainFrame : public CMDIFrameWndEx {
 	DECLARE_DYNAMIC(CWatchdogMainFrame)
@@ -35,10 +35,10 @@ protected:  // control bar embedded members
 	CMFCToolBar m_wndToolBar;
 	CMFCStatusBar m_wndStatusBar;
 	CMFCToolBarImages m_UserImages;
-	CFileView m_wndFileView;
-	CClassView m_wndClassView;
+	CWatchdogFileView m_wndFileView;
+	CWatchdogClassView m_wndClassView;
 	CWatchdogOutputWnd m_wndOutput;
-	CPropertiesWnd m_wndProperties;
+	CWatchdogPropertiesWnd m_wndProperties;
 
 	UINT m_uTimerID;
 

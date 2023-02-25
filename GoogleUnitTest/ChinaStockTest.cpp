@@ -14,11 +14,11 @@ namespace FireBirdTest {
 	class CChinaStockTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
+
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
-
-			GeneralCheck();
 		}
 
 		static void TearDownTestSuite(void) {
@@ -30,13 +30,13 @@ namespace FireBirdTest {
 		}
 
 		void SetUp(void) override {
+			GeneralCheck();
+
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			pStock = nullptr;
 			gl_pChinaMarket->CalculateTime();
-
-			GeneralCheck();
 		}
 
 		void TearDown(void) override {
@@ -1023,8 +1023,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetAttackSellAbove200000(), 101010102);
 	}
 
-	TEST_F(CChinaStockTest, TestReadOnlyFunctions) {
-	}
+	TEST_F(CChinaStockTest, TestReadOnlyFunctions) { }
 
 	TEST_F(CChinaStockTest, TestIsSaveToChosenStockDB) {
 		CChinaStock stock;

@@ -22,6 +22,7 @@ namespace FireBirdTest {
 		}
 
 		void SetUp(void) override {
+			GeneralCheck();
 			gl_pMockVirtualWebSocket = make_shared<CMockVirtualWebSocket>();
 		}
 

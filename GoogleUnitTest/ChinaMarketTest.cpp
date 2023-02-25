@@ -64,6 +64,8 @@ namespace FireBirdTest {
 		}
 
 		void SetUp(void) override {
+			GeneralCheck();
+
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			gl_pChinaMarket->SetCurrentStockChanged(false);
@@ -75,8 +77,6 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "测试数据库中的股票代码总数为5040";
-
-			GeneralCheck();
 		}
 
 		void TearDown(void) override {
@@ -266,17 +266,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestGetStockName) {
-		//未实现.由于stockName存储时使用的是UniCode制式，而本系统默认是Ansi制式，导致无法进行字符串对比。暂时不进行测试了。
+		//todo 未实现.由于stockName存储时使用的是UniCode制式，而本系统默认是Ansi制式，导致无法进行字符串对比。暂时不进行测试了。
 		//EXPECT_STREQ(gl_pChinaMarket->GetStockName(_T("600000.SS")), _T("浦发银行"));
 		EXPECT_STREQ(gl_pChinaMarket->GetStockName(_T("60000.SS")), _T("")); // 没找到返回空字符串
 	}
 
 	TEST_F(CChinaMarketTest, TestGetStockCode) {
-		EXPECT_EQ(gl_pChinaMarket->GetStock(_T("66000.SZ")), nullptr);
 		EXPECT_FALSE(gl_pChinaMarket->GetStock(_T("600001.SS")) == nullptr);
 
-		EXPECT_EQ(gl_pChinaMarket->GetStock(-1), nullptr);
-		EXPECT_EQ(gl_pChinaMarket->GetStock(gl_pChinaMarket->GetTotalStock()), nullptr);
 		EXPECT_FALSE(gl_pChinaMarket->GetStock(0) == nullptr);
 		EXPECT_FALSE(gl_pChinaMarket->GetStock(gl_pChinaMarket->GetTotalStock() - 1) == nullptr);
 	}

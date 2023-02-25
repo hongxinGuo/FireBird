@@ -19,10 +19,13 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+			GeneralCheck();
+		}
 
 		void TearDown(void) override {
 			gl_systemStatus.SetExitingSystem(false);
+			GeneralCheck();
 		}
 
 		CMockChinaMarket market;
@@ -30,26 +33,26 @@ namespace FireBirdTest {
 
 	TEST_F(CThreadBuildDayLineRSOfDateTest, TestThreadBuildDayLineRSOfDate) {
 		EXPECT_CALL(market, BuildDayLineRS(20200101))
-			.Times(1)
-			.WillOnce(Return(true));
+		.Times(1)
+		.WillOnce(Return(true));
 		gl_systemStatus.SetExitingCalculatingRS(false);
 		gl_systemStatus.SetExitingSystem(false);
 		EXPECT_EQ(ThreadBuildDayLineRSOfDate(&market, 20200101), (UINT)12);
 
 		EXPECT_CALL(market, BuildDayLineRS(20200101))
-			.Times(0);
+		.Times(0);
 		gl_systemStatus.SetExitingCalculatingRS(true);
 		gl_systemStatus.SetExitingSystem(false);
 		EXPECT_EQ(ThreadBuildDayLineRSOfDate(&market, 20200101), (UINT)12);
 
 		EXPECT_CALL(market, BuildDayLineRS(20200101))
-			.Times(0);
+		.Times(0);
 		gl_systemStatus.SetExitingCalculatingRS(false);
 		gl_systemStatus.SetExitingSystem(true);
 		EXPECT_EQ(ThreadBuildDayLineRSOfDate(&market, 20200101), (UINT)12);
 
 		EXPECT_CALL(market, BuildDayLineRS(20200101))
-			.Times(0);
+		.Times(0);
 		gl_systemStatus.SetExitingCalculatingRS(true);
 		gl_systemStatus.SetExitingSystem(true);
 		EXPECT_EQ(ThreadBuildDayLineRSOfDate(&market, 20200101), (UINT)12);

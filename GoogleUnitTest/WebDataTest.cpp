@@ -19,7 +19,6 @@ namespace FireBirdTest {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 			GeneralCheck();
-			webData.SetBufferLength(1024 * 1024);
 		}
 
 	public:

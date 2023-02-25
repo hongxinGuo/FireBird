@@ -11,7 +11,6 @@ public:
 
 	CWorldStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CWorldStock>(Get(lIndex)); };
 	CWorldStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CWorldStock>(Get(strStockCode)); };
-	size_t GetLastStockSize(void) const noexcept { return m_lLastTotalWorldStock; }
 
 	void ResetEPSSurprise(void);
 	void ResetPeer(void);
@@ -35,5 +34,4 @@ public:
 	bool IsSaveInsiderSentiment(void);
 
 protected:
-	size_t m_lLastTotalWorldStock;
 };

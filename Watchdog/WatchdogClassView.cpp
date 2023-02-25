@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "framework.h"
 #include "WatchdogMainFrm.h"
-#include "ClassView.h"
+#include "WatchdogClassView.h"
 #include "Resource.h"
 #include "Watchdog.h"
 
 class CClassViewMenuButton : public CMFCToolBarMenuButton {
-	friend class CClassView;
+	friend class CWatchdogClassView;
 
 	DECLARE_SERIAL(CClassViewMenuButton)
 
@@ -32,13 +32,13 @@ IMPLEMENT_SERIAL(CClassViewMenuButton, CMFCToolBarMenuButton, 1)
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CClassView::CClassView() noexcept {
+CWatchdogClassView::CWatchdogClassView() noexcept {
 	m_nCurrSort = ID_SORTING_GROUPBYTYPE;
 }
 
-CClassView::~CClassView() {}
+CWatchdogClassView::~CWatchdogClassView() {}
 
-BEGIN_MESSAGE_MAP(CClassView, CDockablePane)
+BEGIN_MESSAGE_MAP(CWatchdogClassView, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_CONTEXTMENU()
@@ -54,9 +54,9 @@ BEGIN_MESSAGE_MAP(CClassView, CDockablePane)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CClassView message handlers
+// CWatchdogClassView message handlers
 
-int CClassView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+int CWatchdogClassView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
@@ -105,12 +105,12 @@ int CClassView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	return 0;
 }
 
-void CClassView::OnSize(UINT nType, int cx, int cy) {
+void CWatchdogClassView::OnSize(UINT nType, int cx, int cy) {
 	CDockablePane::OnSize(nType, cx, cy);
 	AdjustLayout();
 }
 
-void CClassView::FillClassView() {
+void CWatchdogClassView::FillClassView() {
 	HTREEITEM hRoot = m_wndClassView.InsertItem(_T("FakeApp classes"), 0, 0);
 	m_wndClassView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
 
@@ -147,7 +147,7 @@ void CClassView::FillClassView() {
 	m_wndClassView.Expand(hClass, TVE_EXPAND);
 }
 
-void CClassView::OnContextMenu(CWnd* pWnd, CPoint point) {
+void CWatchdogClassView::OnContextMenu(CWnd* pWnd, CPoint point) {
 	CTreeCtrl* pWndTree = (CTreeCtrl*)&m_wndClassView;
 	ASSERT_VALID(pWndTree);
 
@@ -185,7 +185,7 @@ void CClassView::OnContextMenu(CWnd* pWnd, CPoint point) {
 	}
 }
 
-void CClassView::AdjustLayout() {
+void CWatchdogClassView::AdjustLayout() {
 	if (GetSafeHwnd() == nullptr) {
 		return;
 	}
@@ -199,11 +199,11 @@ void CClassView::AdjustLayout() {
 	m_wndClassView.SetWindowPos(nullptr, rectClient.left + 1, rectClient.top + cyTlb + 1, rectClient.Width() - 2, rectClient.Height() - cyTlb - 2, SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
-BOOL CClassView::PreTranslateMessage(MSG* pMsg) {
+BOOL CWatchdogClassView::PreTranslateMessage(MSG* pMsg) {
 	return CDockablePane::PreTranslateMessage(pMsg);
 }
 
-void CClassView::OnSort(UINT id) {
+void CWatchdogClassView::OnSort(UINT id) {
 	if (m_nCurrSort == id) {
 		return;
 	}
@@ -219,31 +219,31 @@ void CClassView::OnSort(UINT id) {
 	}
 }
 
-void CClassView::OnUpdateSort(CCmdUI* pCmdUI) {
+void CWatchdogClassView::OnUpdateSort(CCmdUI* pCmdUI) {
 	pCmdUI->SetCheck(pCmdUI->m_nID == m_nCurrSort);
 }
 
-void CClassView::OnClassAddMemberFunction() {
+void CWatchdogClassView::OnClassAddMemberFunction() {
 	AfxMessageBox(_T("Add member function..."));
 }
 
-void CClassView::OnClassAddMemberVariable() {
+void CWatchdogClassView::OnClassAddMemberVariable() {
 	// TODO: Add your command handler code here
 }
 
-void CClassView::OnClassDefinition() {
+void CWatchdogClassView::OnClassDefinition() {
 	// TODO: Add your command handler code here
 }
 
-void CClassView::OnClassProperties() {
+void CWatchdogClassView::OnClassProperties() {
 	// TODO: Add your command handler code here
 }
 
-void CClassView::OnNewFolder() {
+void CWatchdogClassView::OnNewFolder() {
 	AfxMessageBox(_T("New Folder..."));
 }
 
-void CClassView::OnPaint() {
+void CWatchdogClassView::OnPaint() {
 	CPaintDC dc(this); // device context for painting
 
 	CRect rectTree;
@@ -254,13 +254,13 @@ void CClassView::OnPaint() {
 	dc.Draw3dRect(rectTree, ::GetSysColor(COLOR_3DSHADOW), ::GetSysColor(COLOR_3DSHADOW));
 }
 
-void CClassView::OnSetFocus(CWnd* pOldWnd) {
+void CWatchdogClassView::OnSetFocus(CWnd* pOldWnd) {
 	CDockablePane::OnSetFocus(pOldWnd);
 
 	m_wndClassView.SetFocus();
 }
 
-void CClassView::OnChangeVisualStyle() {
+void CWatchdogClassView::OnChangeVisualStyle() {
 	m_ClassViewImages.DeleteImageList();
 
 	UINT uiBmpId = theApp.m_bHiColorIcons ? IDB_CLASS_VIEW_24 : IDB_CLASS_VIEW;

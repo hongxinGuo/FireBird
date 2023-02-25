@@ -1,30 +1,25 @@
-
 #pragma once
 
 #include "ViewTree.h"
 
-class CFileViewToolBar : public CMFCToolBar
-{
-	virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler)
-	{
-		CMFCToolBar::OnUpdateCmdUI((CFrameWnd*) GetOwner(), bDisableIfNoHndler);
+class CFileViewToolBar : public CMFCToolBar {
+	virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) {
+		CMFCToolBar::OnUpdateCmdUI((CFrameWnd*)GetOwner(), bDisableIfNoHndler);
 	}
 
 	virtual BOOL AllowShowOnList() const { return FALSE; }
 };
 
-class CFileView : public CDockablePane
-{
-// Construction
+class CWatchdogFileView : public CDockablePane {
+	// Construction
 public:
-	CFileView() noexcept;
+	CWatchdogFileView() noexcept;
 
 	void AdjustLayout();
 	void OnChangeVisualStyle();
 
-// Attributes
+	// Attributes
 protected:
-
 	CViewTree m_wndFileView;
 	CImageList m_FileViewImages;
 	CFileViewToolBar m_wndToolBar;
@@ -32,9 +27,9 @@ protected:
 protected:
 	void FillFileView();
 
-// Implementation
+	// Implementation
 public:
-	virtual ~CFileView();
+	virtual ~CWatchdogFileView();
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -52,4 +47,3 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 };
-

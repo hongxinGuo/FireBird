@@ -23,6 +23,7 @@ namespace FireBirdTest {
 		}
 
 		void SetUp(void) override {
+			GeneralCheck();
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			gl_pMockNeteaseDayLineDataSource = make_shared<CMockNeteaseDayLineDataSource>();
 			gl_pChinaMarket->CalculateTime();

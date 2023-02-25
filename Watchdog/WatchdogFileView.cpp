@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "framework.h"
 #include "WatchdogMainFrm.h"
-#include "FileView.h"
+#include "WatchdogFileView.h"
 #include "Resource.h"
 #include "Watchdog.h"
 
@@ -12,13 +12,13 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-// CFileView
+// CWatchdogFileView
 
-CFileView::CFileView() noexcept {}
+CWatchdogFileView::CWatchdogFileView() noexcept {}
 
-CFileView::~CFileView() {}
+CWatchdogFileView::~CWatchdogFileView() {}
 
-BEGIN_MESSAGE_MAP(CFileView, CDockablePane)
+BEGIN_MESSAGE_MAP(CWatchdogFileView, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_CONTEXTMENU()
@@ -36,7 +36,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CWorkspaceBar message handlers
 
-int CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+int CWatchdogFileView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
@@ -76,12 +76,12 @@ int CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	return 0;
 }
 
-void CFileView::OnSize(UINT nType, int cx, int cy) {
+void CWatchdogFileView::OnSize(UINT nType, int cx, int cy) {
 	CDockablePane::OnSize(nType, cx, cy);
 	AdjustLayout();
 }
 
-void CFileView::FillFileView() {
+void CWatchdogFileView::FillFileView() {
 	HTREEITEM hRoot = m_wndFileView.InsertItem(_T("FakeApp files"), 0, 0);
 	m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
 
@@ -115,7 +115,7 @@ void CFileView::FillFileView() {
 	m_wndFileView.Expand(hInc, TVE_EXPAND);
 }
 
-void CFileView::OnContextMenu(CWnd* pWnd, CPoint point) {
+void CWatchdogFileView::OnContextMenu(CWnd* pWnd, CPoint point) {
 	CTreeCtrl* pWndTree = (CTreeCtrl*)&m_wndFileView;
 	ASSERT_VALID(pWndTree);
 
@@ -140,7 +140,7 @@ void CFileView::OnContextMenu(CWnd* pWnd, CPoint point) {
 	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EXPLORER, point.x, point.y, this, TRUE);
 }
 
-void CFileView::AdjustLayout() {
+void CWatchdogFileView::AdjustLayout() {
 	if (GetSafeHwnd() == nullptr) {
 		return;
 	}
@@ -154,35 +154,35 @@ void CFileView::AdjustLayout() {
 	m_wndFileView.SetWindowPos(nullptr, rectClient.left + 1, rectClient.top + cyTlb + 1, rectClient.Width() - 2, rectClient.Height() - cyTlb - 2, SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
-void CFileView::OnProperties() {
+void CWatchdogFileView::OnProperties() {
 	AfxMessageBox(_T("Properties...."));
 }
 
-void CFileView::OnFileOpen() {
+void CWatchdogFileView::OnFileOpen() {
 	// TODO: Add your command handler code here
 }
 
-void CFileView::OnFileOpenWith() {
+void CWatchdogFileView::OnFileOpenWith() {
 	// TODO: Add your command handler code here
 }
 
-void CFileView::OnDummyCompile() {
+void CWatchdogFileView::OnDummyCompile() {
 	// TODO: Add your command handler code here
 }
 
-void CFileView::OnEditCut() {
+void CWatchdogFileView::OnEditCut() {
 	// TODO: Add your command handler code here
 }
 
-void CFileView::OnEditCopy() {
+void CWatchdogFileView::OnEditCopy() {
 	// TODO: Add your command handler code here
 }
 
-void CFileView::OnEditClear() {
+void CWatchdogFileView::OnEditClear() {
 	// TODO: Add your command handler code here
 }
 
-void CFileView::OnPaint() {
+void CWatchdogFileView::OnPaint() {
 	CPaintDC dc(this); // device context for painting
 
 	CRect rectTree;
@@ -193,13 +193,13 @@ void CFileView::OnPaint() {
 	dc.Draw3dRect(rectTree, ::GetSysColor(COLOR_3DSHADOW), ::GetSysColor(COLOR_3DSHADOW));
 }
 
-void CFileView::OnSetFocus(CWnd* pOldWnd) {
+void CWatchdogFileView::OnSetFocus(CWnd* pOldWnd) {
 	CDockablePane::OnSetFocus(pOldWnd);
 
 	m_wndFileView.SetFocus();
 }
 
-void CFileView::OnChangeVisualStyle() {
+void CWatchdogFileView::OnChangeVisualStyle() {
 	m_wndToolBar.CleanUpLockedImages();
 	m_wndToolBar.LoadBitmap(theApp.m_bHiColorIcons ? IDB_EXPLORER_24 : IDR_EXPLORER, 0, 0, TRUE /* Locked */);
 

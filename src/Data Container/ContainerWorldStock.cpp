@@ -21,7 +21,6 @@ CContainerWorldStock::CContainerWorldStock() {
 
 void CContainerWorldStock::Reset(void) {
 	CContainerVirtualStock::Reset();
-	m_lLastTotalWorldStock = 0;
 }
 
 void CContainerWorldStock::ResetEPSSurprise(void) {
@@ -97,8 +96,6 @@ bool CContainerWorldStock::LoadDB(void) {
 	setWorldStock.m_pDatabase->CommitTrans();
 	setWorldStock.Close();
 	Sort();
-	m_lLastTotalWorldStock = m_vStock.size();
-	TRACE("共装入%d Finnhub Symbol\n", m_lLastTotalWorldStock);
 
 	ASSERT(lMaxSymbolLength < 20); // 目前WorldMarket数据库的股票代码长度限制为20个字符
 	char buffer[100];
@@ -116,15 +113,15 @@ bool CContainerWorldStock::LoadDB(void) {
 /// 这种查询方式比较晦涩，但结果正确。目前使用此函数。(可能出现存储多个相同代码的问题，研究之）
 /// </summary>
 bool CContainerWorldStock::UpdateProfileDB(void) {
-	int iStockNeedUpdate = 0;
-	int iCurrentUpdated = 0;
 	// ReSharper disable once CppTooWideScope
 	CSetWorldStock setWorldStock;
 
 	//更新原有的代码集状态
 	if (IsUpdateProfileDB()) {
-		for (const auto& pStock2 : m_vStock) {
-			if (pStock2->IsUpdateProfileDB()) iStockNeedUpdate++;
+		int iCurrentUpdated = 0;
+		int iStockNeedUpdate = 0;
+		for (const auto& pStock : m_vStock) {
+			if (pStock->IsUpdateProfileDB()) iStockNeedUpdate++;
 		}
 		if (iStockNeedUpdate > 500) iStockNeedUpdate = 500; // 每次更新500个,保证此任务不占用过多时间（500个大致需要2-5秒钟）。每秒申请一次的话，五分钟最多300个。
 		setWorldStock.m_strSort = _T("[Symbol]");
@@ -141,26 +138,24 @@ bool CContainerWorldStock::UpdateProfileDB(void) {
 			setWorldStock.MoveNext();
 		}
 		if (iCurrentUpdated < iStockNeedUpdate) {
-			if (!setWorldStock.IsEOF()) setWorldStock.MoveLast();
-			if (!setWorldStock.IsEOF()) setWorldStock.MoveNext();
+			if (!setWorldStock.IsEOF()) {
+				setWorldStock.MoveLast();
+				setWorldStock.MoveNext();
+			}
 			for (size_t l = 0; l < m_vStock.size(); l++) {
-				const CWorldStockPtr pStock3 = GetStock(l);
-				if (pStock3->IsUpdateProfileDB()) {
-					//ASSERT(pStock3->IsTodayNewStock()); // 所有的新股票，都是今天新生成的
+				const CWorldStockPtr pStock = GetStock(l);
+				if (pStock->IsUpdateProfileDB()) {
 					iCurrentUpdated++;
-					pStock3->Append(setWorldStock);
-					pStock3->SetUpdateProfileDB(false);
-					pStock3->SetTodayNewStock(false);
-					TRACE("存储股票：%s\n", pStock3->GetSymbol().GetBuffer());
+					pStock->Append(setWorldStock);
+					pStock->SetUpdateProfileDB(false);
+					pStock->SetTodayNewStock(false);
 				}
 				if (iCurrentUpdated >= iStockNeedUpdate) break;
 			}
 		}
 		setWorldStock.m_pDatabase->CommitTrans();
 		setWorldStock.Close();
-		m_lLastTotalWorldStock = m_vStock.size();
 	}
-	ASSERT(iCurrentUpdated == iStockNeedUpdate);
 
 	return true;
 }

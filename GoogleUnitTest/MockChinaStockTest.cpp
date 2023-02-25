@@ -24,10 +24,10 @@ namespace FireBirdTest {
 		}
 
 		void SetUp(void) override {
+			GeneralCheck();
+
 			pStock = make_shared<CMockChinaStock>();
 			gl_pChinaMarket->CalculateTime();
-
-			GeneralCheck();
 		}
 
 		void TearDown(void) override {
@@ -46,24 +46,24 @@ namespace FireBirdTest {
 
 	TEST_F(CMockChinaStockTest, TestShowCurrentTransaction) {
 		EXPECT_CALL(*pStock, ReportGuadanTransaction())
-			.Times(0);
+		.Times(0);
 		pStock->ShowCurrentTransaction();
 		EXPECT_EQ(pStock->GetCurrentTransactionVolume(), 0);
 		pStock->SetCurrentTransactionVolume(1);
 		EXPECT_CALL(*pStock, ReportGuadanTransaction())
-			.Times(1);
+		.Times(1);
 		pStock->ShowCurrentTransaction();
 	}
 
 	TEST_F(CMockChinaStockTest, TestShowCurrentInformationOfCancelingGuadan) {
 		EXPECT_CALL(*pStock, ReportGuadan())
-			.Times(1);
+		.Times(1);
 		pStock->ShowCurrentInformationOfCancelingGuadan();
 	}
 
 	TEST_F(CMockChinaStockTest, TestThreadSaveDayLineOfOneStock) {
 		EXPECT_CALL(*pStock, SaveDayLineBasicInfo)
-			.Times(0);
+		.Times(0);
 		pStock->SetDayLineLoaded(true);
 		pStock->SetSymbol(_T("601111.SS"));
 		gl_systemStatus.SetExitingSystem(true);
@@ -72,8 +72,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
 		EXPECT_CALL(*pStock, SaveDayLineBasicInfo)
-			.Times(1)
-			.WillOnce(Return(false));
+		.Times(1)
+		.WillOnce(Return(false));
 		pStock->SetDayLineLoaded(true);
 		pStock->SetSymbol(_T("601111.SS"));
 		gl_systemStatus.SetExitingSystem(false);
@@ -82,8 +82,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
 		EXPECT_CALL(*pStock, SaveDayLineBasicInfo)
-			.Times(1)
-			.WillOnce(Return(true));
+		.Times(1)
+		.WillOnce(Return(true));
 		pStock->SetDayLineLoaded(true);
 		pStock->SetSymbol(_T("601111.SS"));
 		gl_systemStatus.SetExitingSystem(false);
@@ -99,7 +99,7 @@ namespace FireBirdTest {
 		pStock->StoreDayLine(pDayLine);
 		InSequence seq;
 		EXPECT_CALL(*pStock, LoadDayLine)
-			.Times(1);
+		.Times(1);
 		pStock->SetDayLineLoaded(false);
 		EXPECT_EQ(ThreadLoadDayLine(pStock.get()), static_cast<UINT>(16));
 		EXPECT_TRUE(pStock->IsDayLineLoaded());
@@ -110,7 +110,7 @@ namespace FireBirdTest {
 		auto pWeekLine = make_shared<CWeekLine>();
 		pStock->StoreWeekLine(pWeekLine);
 		EXPECT_CALL(*pStock, LoadWeekLine)
-			.Times(1);
+		.Times(1);
 		pStock->SetWeekLineLoaded(false);
 		EXPECT_EQ(ThreadLoadWeekLine(pStock.get()), static_cast<UINT>(29));
 		EXPECT_TRUE(pStock->IsWeekLineLoaded());

@@ -32,6 +32,7 @@ namespace FireBirdTest {
 			m_pMockTengxunRTDataSource = nullptr;
 			gl_pChinaMarket->SetSystemReady(true);
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);
+			GeneralCheck();
 		}
 
 	protected:

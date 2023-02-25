@@ -28,6 +28,7 @@ namespace FireBirdTest {
 		}
 
 		void SetUp(void) override {
+			GeneralCheck();
 		}
 
 		void TearDown(void) override {

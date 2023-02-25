@@ -7,7 +7,9 @@
 namespace FireBirdTest {
 	class CHighPerformanceCounterTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) { }
+		static void SetUpTestSuite(void) {
+			GeneralCheck();
+		}
 
 		static void TearDownTestSuite(void) { }
 

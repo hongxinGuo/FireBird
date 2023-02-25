@@ -23,7 +23,10 @@ namespace FireBirdTest {
 
 		static void TearDownTestSuite(void) { GeneralCheck(); }
 
-		void SetUp(void) override { pStock = nullptr; }
+		void SetUp(void) override {
+			GeneralCheck();
+			pStock = nullptr;
+		}
 
 		void TearDown(void) override {
 			// clearUp

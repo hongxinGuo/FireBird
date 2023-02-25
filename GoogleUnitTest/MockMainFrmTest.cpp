@@ -39,6 +39,7 @@ namespace FireBirdTest {
 		}
 
 		void SetUp(void) override {
+			GeneralCheck();
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			gl_systemStatus.SetExitingSystem(false);
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());

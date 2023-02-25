@@ -24,6 +24,7 @@ namespace FireBirdTest {
 
 		void TearDown(void) override {
 			// clearUp
+			GeneralCheck();
 		}
 	};
 

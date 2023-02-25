@@ -12,12 +12,15 @@ namespace FireBirdTest {
 	class CVirtualMarketTest : public testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
+
 			gl_pVirtualMarket = make_shared<CVirtualMarket>();
 			//gl_pVirtualMarket->ResetMarket(); // 不要这么做
-			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) { GeneralCheck(); }
+		static void TearDownTestSuite(void) {
+			GeneralCheck();
+		}
 
 		void SetUp(void) override {
 			GeneralCheck();

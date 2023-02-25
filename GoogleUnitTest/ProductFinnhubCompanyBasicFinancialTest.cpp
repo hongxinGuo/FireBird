@@ -11,11 +11,17 @@ using namespace testing;
 namespace FireBirdTest {
 	class CProductFinnhubCompanyBasicFinancialTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) { GeneralCheck(); }
+		static void SetUpTestSuite(void) {
+			GeneralCheck();
+		}
 
-		static void TearDownTestSuite(void) { GeneralCheck(); }
+		static void TearDownTestSuite(void) {
+			GeneralCheck();
+		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+			GeneralCheck();
+		}
 
 		void TearDown(void) override {
 			// clearUp

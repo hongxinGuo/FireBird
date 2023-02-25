@@ -24,6 +24,8 @@ namespace FireBirdTest {
 	class CMockChinaMarketTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
+
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
 			EXPECT_TRUE(gl_pMockChinaMarket != nullptr) << "此Mock变量在EnvironmentSetUp.h中生成";
@@ -32,8 +34,6 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
 
 			ASSERT_THAT(gl_pNeteaseDayLineDataSource, NotNull());
-
-			GeneralCheck();
 		}
 
 		static void TearDownTestSuite(void) {
@@ -48,14 +48,14 @@ namespace FireBirdTest {
 		}
 
 		void SetUp(void) override {
+			GeneralCheck();
+
 			//EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
 			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
 
 			gl_pMockChinaMarket->SetTodayStockProcessed(false);
 			gl_pMockChinaMarket->SetRSEndDate(19900101);
-
-			GeneralCheck();
 		}
 
 		void TearDown(void) override {

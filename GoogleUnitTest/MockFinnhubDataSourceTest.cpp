@@ -37,6 +37,7 @@ namespace FireBirdTest {
 		}
 
 		void SetUp(void) override {
+			GeneralCheck();
 			m_pMockFinnhubDataSource = make_shared<CMockFinnhubDataSource>();
 		}
 

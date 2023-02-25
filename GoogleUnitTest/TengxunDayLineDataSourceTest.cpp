@@ -21,7 +21,9 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+			GeneralCheck();
+		}
 
 		void TearDown(void) override {
 			// clearUp
@@ -90,6 +92,7 @@ namespace FireBirdTest {
 		gl_pChinaMarket->GetStock(0)->SetDayLineNeedUpdate(true);
 		gl_pChinaMarket->GetStock(10)->SetDayLineNeedUpdate(true);
 
+		EXPECT_FALSE(TengxunDayLineDataSource.IsInquiring());
 		EXPECT_TRUE(TengxunDayLineDataSource.InquireDayLine());
 		EXPECT_TRUE(TengxunDayLineDataSource.IsInquiring());
 		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());

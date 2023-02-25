@@ -157,13 +157,13 @@ namespace FireBirdTest {
 			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetUpdateProfileDB(false);
 		}
-		EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
+		EXPECT_FALSE(gl_pWorldMarket->IsUpdateStockProfileDB());
 
 		gl_pWorldMarket->GetStock(0)->SetUpdateProfileDB(true);
-		EXPECT_TRUE(gl_pWorldMarket->IsStockProfileNeedUpdate());
+		EXPECT_TRUE(gl_pWorldMarket->IsUpdateStockProfileDB());
 
 		gl_pWorldMarket->GetStock(0)->SetUpdateProfileDB(false);
-		EXPECT_FALSE(gl_pWorldMarket->IsStockProfileNeedUpdate());
+		EXPECT_FALSE(gl_pWorldMarket->IsUpdateStockProfileDB());
 	}
 
 	TEST_F(CWorldMarketTest, TestAddStock) {

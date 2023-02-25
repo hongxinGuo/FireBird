@@ -99,7 +99,7 @@ public:
 	CString GetStockExchangeCode(const long lIndex) const { return m_dataFinnhubStockExchange.GetExchange(lIndex)->m_strCode; }
 	long GetStockExchangeSize(void) const noexcept { return m_dataFinnhubStockExchange.GetExchangeSize(); }
 
-	bool IsStockProfileNeedUpdate(void) { return m_containerStock.IsUpdateProfileDB(); }
+	bool IsUpdateStockProfileDB(void) { return m_containerStock.IsUpdateProfileDB(); }
 
 	void AddStock(const CWorldStockPtr pStock) { m_containerStock.Add(pStock); }
 	bool DeleteStock(const CWorldStockPtr pStock) { return m_containerStock.Delete(pStock); }

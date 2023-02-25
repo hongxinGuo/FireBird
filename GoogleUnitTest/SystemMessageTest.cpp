@@ -18,11 +18,12 @@ namespace FireBirdTest {
 
 		void TearDown(void) override {
 			// clearUp
-			GeneralCheck();
 
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 			while (gl_systemMessage.DayLineInfoSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+
+			GeneralCheck();
 		}
 	};
 

@@ -15,9 +15,9 @@ namespace FireBirdTest {
 	class CTemplateMutexAccessQueueTest : public ::testing::Test {
 	protected:
 		void SetUp(void) override {
+			GeneralCheck();
 			m_data1 = make_shared<T>();
 			m_data2 = make_shared<T>();
-			GeneralCheck();
 		}
 
 		void TearDown(void) override {

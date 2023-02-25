@@ -13,7 +13,9 @@ using std::make_shared;
 namespace FireBirdTest {
 	class CSystemDataTest : public testing::Test {
 	protected:
-		void SetUp(void) override { GeneralCheck(); }
+		void SetUp(void) override {
+			GeneralCheck();
+		}
 
 		void TearDown(void) override {
 			// clearUp

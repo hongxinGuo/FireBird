@@ -15,21 +15,23 @@ namespace FireBirdTest {
 	class CDataStockSymbolTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
 			s_pDataStockSymbol = make_shared<CDataStockSymbol>();
 
-			GeneralCheck();
 			EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());
 			EXPECT_EQ(s_pDataStockSymbol->GetStockSize(), 14000) << "默认装入的StockSymbol数为14000";
 		}
 
 		static void TearDownTestSuite(void) {
 			EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());
-			GeneralCheck();
 
 			s_pDataStockSymbol = nullptr;
+			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp(void) override {
+			GeneralCheck();
+		}
 
 		void TearDown(void) override {
 			// clearUp

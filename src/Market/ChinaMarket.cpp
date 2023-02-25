@@ -948,13 +948,19 @@ void CChinaMarket::SetCurrentStock(const CString& strStockCode) {
 /////////////////////////////////////////////////////////////////////////
 void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
 	bool fSet = false;
-	if (m_pCurrentStock != nullptr) {
-		if (!m_pCurrentStock->IsSameStock(pStock)) {
-			m_pCurrentStock->SetRecordRTData(false);
-			fSet = true;
+
+	if (pStock != nullptr) {
+		if (m_pCurrentStock != nullptr) {
+			if (!m_pCurrentStock->IsSameStock(pStock)) {
+				m_pCurrentStock->SetRecordRTData(false);
+				fSet = true;
+			}
 		}
+		else { fSet = true; }
 	}
-	else { fSet = true; }
+	else {
+		m_pCurrentStock = nullptr;
+	}
 	if (fSet) {
 		pStock->SetRecordRTData(true);
 		m_pCurrentStock = pStock;

@@ -15,9 +15,9 @@ namespace FireBirdTest {
 	class CMockQuandlDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
 			m_fSystemStatus = gl_pWorldMarket->IsSystemReady();
 			gl_pWorldMarket->SetSystemReady(true); // Quandl引擎必须等待系统初始化后才可使用。
-			GeneralCheck();
 		}
 
 		static void TearDownTestSuite(void) {

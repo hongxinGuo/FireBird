@@ -47,12 +47,11 @@ namespace FireBirdTest {
 	class TaskDistributeSinaRTDataToProperStockTest : public TestWithParam<SinaRTData*> {
 	protected:
 		static void SetUpTestSuite(void) {
+			GeneralCheck();
 			CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
 			pStock->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
 			pStock->SetIPOStatus(_STOCK_NULL_); // 故意将此股票状态设置为未上市。
 			s_tCurrentMarketTime = GetUTCTime();
-
-			GeneralCheck();
 		}
 
 		static void TearDownTestSuite(void) {
@@ -64,6 +63,7 @@ namespace FireBirdTest {
 
 		void SetUp(void) override {
 			GeneralCheck();
+
 			EXPECT_FALSE(gl_pChinaMarket->IsRTDataNeedCalculate());
 			SinaRTData* pData = GetParam();
 			m_iCount = pData->m_iCount;

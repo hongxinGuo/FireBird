@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "framework.h"
 
-#include "PropertiesWnd.h"
+#include "WatchdogPropertiesWnd.h"
 #include "Resource.h"
 #include "WatchdogMainFrm.h"
 #include "Watchdog.h"
@@ -15,13 +15,13 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CResourceViewBar
 
-CPropertiesWnd::CPropertiesWnd() noexcept {
+CWatchdogPropertiesWnd::CWatchdogPropertiesWnd() noexcept {
 	m_nComboHeight = 0;
 }
 
-CPropertiesWnd::~CPropertiesWnd() {}
+CWatchdogPropertiesWnd::~CWatchdogPropertiesWnd() {}
 
-BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
+BEGIN_MESSAGE_MAP(CWatchdogPropertiesWnd, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_COMMAND(ID_EXPAND_ALL, OnExpandAllProperties)
@@ -39,7 +39,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CResourceViewBar message handlers
 
-void CPropertiesWnd::AdjustLayout() {
+void CWatchdogPropertiesWnd::AdjustLayout() {
 	if (GetSafeHwnd() == nullptr || (AfxGetMainWnd() != nullptr && AfxGetMainWnd()->IsIconic())) {
 		return;
 	}
@@ -54,7 +54,7 @@ void CPropertiesWnd::AdjustLayout() {
 	m_wndPropList.SetWindowPos(nullptr, rectClient.left, rectClient.top + m_nComboHeight + cyTlb, rectClient.Width(), rectClient.Height() - (m_nComboHeight + cyTlb), SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
-int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+int CWatchdogPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
@@ -101,42 +101,42 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	return 0;
 }
 
-void CPropertiesWnd::OnSize(UINT nType, int cx, int cy) {
+void CWatchdogPropertiesWnd::OnSize(UINT nType, int cx, int cy) {
 	CDockablePane::OnSize(nType, cx, cy);
 	AdjustLayout();
 }
 
-void CPropertiesWnd::OnExpandAllProperties() {
+void CWatchdogPropertiesWnd::OnExpandAllProperties() {
 	m_wndPropList.ExpandAll();
 }
 
-void CPropertiesWnd::OnUpdateExpandAllProperties(CCmdUI* /* pCmdUI */) {}
+void CWatchdogPropertiesWnd::OnUpdateExpandAllProperties(CCmdUI* /* pCmdUI */) {}
 
-void CPropertiesWnd::OnSortProperties() {
+void CWatchdogPropertiesWnd::OnSortProperties() {
 	m_wndPropList.SetAlphabeticMode(!m_wndPropList.IsAlphabeticMode());
 }
 
-void CPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI) {
+void CWatchdogPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI) {
 	pCmdUI->SetCheck(m_wndPropList.IsAlphabeticMode());
 }
 
-void CPropertiesWnd::OnProperties1() {
+void CWatchdogPropertiesWnd::OnProperties1() {
 	// TODO: Add your command handler code here
 }
 
-void CPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {
+void CWatchdogPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {
 	// TODO: Add your command update UI handler code here
 }
 
-void CPropertiesWnd::OnProperties2() {
+void CWatchdogPropertiesWnd::OnProperties2() {
 	// TODO: Add your command handler code here
 }
 
-void CPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {
+void CWatchdogPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {
 	// TODO: Add your command update UI handler code here
 }
 
-void CPropertiesWnd::InitPropList() {
+void CWatchdogPropertiesWnd::InitPropList() {
 	SetPropListFont();
 
 	m_wndPropList.EnableHeaderCtrl(FALSE);
@@ -218,17 +218,17 @@ void CPropertiesWnd::InitPropList() {
 	m_wndPropList.AddProperty(pGroup4);
 }
 
-void CPropertiesWnd::OnSetFocus(CWnd* pOldWnd) {
+void CWatchdogPropertiesWnd::OnSetFocus(CWnd* pOldWnd) {
 	CDockablePane::OnSetFocus(pOldWnd);
 	m_wndPropList.SetFocus();
 }
 
-void CPropertiesWnd::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
+void CWatchdogPropertiesWnd::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 	CDockablePane::OnSettingChange(uFlags, lpszSection);
 	SetPropListFont();
 }
 
-void CPropertiesWnd::SetPropListFont() {
+void CWatchdogPropertiesWnd::SetPropListFont() {
 	::DeleteObject(m_fntPropList.Detach());
 
 	LOGFONT lf;

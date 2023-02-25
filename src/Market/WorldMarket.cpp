@@ -220,7 +220,9 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 	if (IsNeedUpdateTiingoCryptoSymbol()) TaskUpdateTiingoCryptoSymbolDB();
 
 	// 更新股票基本情况最好放在最后。
-	if (!gl_pFinnhubDataSource->IsUpdateSymbol() && IsStockProfileNeedUpdate()) { TaskUpdateStockProfileDB(); }
+	if (!gl_pFinnhubDataSource->IsUpdateSymbol() && IsUpdateStockProfileDB()) {
+		TaskUpdateStockProfileDB();
+	}
 
 	return true;
 }

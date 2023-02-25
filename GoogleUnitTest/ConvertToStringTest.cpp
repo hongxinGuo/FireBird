@@ -31,6 +31,7 @@ namespace FireBirdTest {
 	class ConvertDoubleToStringTest : public testing::TestWithParam<StrConvertDoubleToString*> {
 	protected:
 		void SetUp(void) override {
+			GeneralCheck();
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			StrConvertDoubleToString* pData = GetParam();
 			dValue = pData->m_dValue;
@@ -50,7 +51,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestConvertDoubleToString, ConvertDoubleToStringTest, testing::Values(&Data0, &Data1, &Data2, &Data3, &Data4
-		, &Data5));
+		                         , &Data5));
 
 	TEST_P(ConvertDoubleToStringTest, TestDouble) {
 		CString str = ConvertValueToString(dValue, lDividend);
@@ -107,7 +108,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestConvertLongToString, ConvertLongToStringTest, testing::Values(&Data10, &Data11,
-		&Data12, &Data13, &Data14, &Data15));
+		                         &Data12, &Data13, &Data14, &Data15));
 
 	TEST_P(ConvertLongToStringTest, TestLong) {
 		CString str = ConvertValueToString(lValue, lDividend);
@@ -164,7 +165,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestConvertIntegerToString, ConvertIntegerToStringTest, testing::Values(&Data20, &Data21,
-		&Data22, &Data23, &Data24, &Data25));
+		                         &Data22, &Data23, &Data24, &Data25));
 
 	TEST_P(ConvertIntegerToStringTest, TestInteger) {
 		CString str = ConvertValueToString(iValue, lDividend);
@@ -221,7 +222,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestConvertINT64ToString, ConvertINT64ToStringTest, testing::Values(&Data40, &Data41,
-		&Data42, &Data43, &Data44, &Data45));
+		                         &Data42, &Data43, &Data44, &Data45));
 
 	TEST_P(ConvertINT64ToStringTest, TestINT64) {
 		CString str = ConvertValueToString(iValue, lDividend);
@@ -229,8 +230,7 @@ namespace FireBirdTest {
 	}
 
 	class CRSReferenceTest : public testing::Test {
-		void SetUp(void) override {
-		}
+		void SetUp(void) override { }
 
 		void TearDown(void) override {
 			gl_systemStatus.SetWorkingMode(false);

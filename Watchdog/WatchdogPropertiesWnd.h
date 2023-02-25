@@ -12,11 +12,11 @@ public:
 	virtual BOOL AllowShowOnList() const { return FALSE; }
 };
 
-class CPropertiesWnd : public CDockablePane
+class CWatchdogPropertiesWnd : public CDockablePane
 {
 // Construction
 public:
-	CPropertiesWnd() noexcept;
+	CWatchdogPropertiesWnd() noexcept;
 
 	void AdjustLayout();
 
@@ -36,7 +36,7 @@ protected:
 
 // Implementation
 public:
-	virtual ~CPropertiesWnd();
+	virtual ~CWatchdogPropertiesWnd();
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
