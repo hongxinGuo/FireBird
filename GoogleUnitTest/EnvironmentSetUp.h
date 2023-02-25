@@ -47,6 +47,7 @@ namespace FireBirdTest {
 
 		void SetUp(void) override {
 			ASSERT(!gl_systemStatus.IsWorkingMode());
+			time(&gl_tUTC);
 
 			ASSERT_STREQ(gl_systemConfiguration.GetDefaultFileDirectoryAndName(),
 			             _T("C:\\FireBird\\SystemConfiguration.json"));

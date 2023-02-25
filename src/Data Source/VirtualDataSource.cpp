@@ -28,7 +28,7 @@ CVirtualDataSource::CVirtualDataSource(void) {
 	m_strInquiryFunction = _T("");
 	m_strSuffix = _T("");
 	m_strInquiryToken = _T("");
-	m_fInquiringWebData = false; // 接收实时数据线程是否执行标识
+	m_fInquireWebDataThreadRunning = false; // 接收实时数据线程是否执行标识
 	m_sBuffer.resize(DefaultWebDataBufferSize_); // 大多数情况下，2M缓存就足够了，无需再次分配内存。
 
 	m_lInquiringNumber = 500; // 每次查询数量默认值为500
@@ -56,11 +56,13 @@ void CVirtualDataSource::Run(const long lCurrentTime) {
 		GenerateInquiryMessage(lCurrentTime);
 	}
 	else {
-		SetInquiring(true); // 队列中还有待查询的申请，设置此标识，继续查询数据。
+		ASSERT(IsInquiring()); // 当队列中存在网络申请时，此标识一直有效（多次申请方可接收到一个完整的数据集，目前腾讯日线即如此）
 	}
+
 	if (ProcessWebDataReceived()) {	// 先处理接收到的网络数据
 		UpdateStatus();
 	}
+
 	GetWebData(); // 然后再申请下一个网络数据
 }
 
@@ -71,7 +73,7 @@ void CVirtualDataSource::Run(const long lCurrentTime) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualDataSource::GetWebData(void) {
 	if (HaveInquiry()) {
-		if (!IsInquiringWebData()) {
+		if (!IsInquireWebDataThreadRunning()) {
 			GetCurrentProduct();
 			CreateInquiryMessageFromCurrentProduct();
 			ProcessInquiryMessage();
@@ -163,8 +165,8 @@ void CVirtualDataSource::CreateInquiryMessageFromCurrentProduct(void) {
 //
 //////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::ProcessInquiryMessage(void) {
-	ASSERT(!IsInquiringWebData());
-	SetInquiringWebData(true); // 在启动工作线程前就设置，以防由于线程延迟导致重入。
+	ASSERT(!IsInquireWebDataThreadRunning());
+	SetInquireWebDataThreadRunning(true); // 在启动工作线程前就设置，以防由于线程延迟导致重入。
 	StartReadingThread();
 }
 
@@ -185,7 +187,7 @@ UINT ThreadReadVirtualWebData(not_null<CVirtualDataSource*> pVirtualDataSource) 
 void CVirtualDataSource::Read(void) {
 	CHighPerformanceCounter counter;
 
-	ASSERT(IsInquiringWebData());
+	ASSERT(IsInquireWebDataThreadRunning());
 	PrepareReadingWebData();
 	counter.start();
 	ReadWebData();
@@ -205,7 +207,7 @@ void CVirtualDataSource::Read(void) {
 	counter.stop();
 	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 
-	SetInquiringWebData(false);
+	SetInquireWebDataThreadRunning(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -220,7 +222,7 @@ void CVirtualDataSource::Read(void) {
 //
 ///////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::ReadWebData(void) {
-	ASSERT(IsInquiringWebData());
+	ASSERT(IsInquireWebDataThreadRunning());
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetByteRead(0);
 

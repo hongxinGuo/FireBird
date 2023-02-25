@@ -68,18 +68,18 @@ namespace FireBirdTest {
 		gl_pWorldMarket->GetStock(0)->SetUpdateCompanyProfile(true);
 		m_pTiingoDataSource->StoreInquiry(p);
 		EXPECT_EQ(m_pTiingoDataSource->GetInquiryQueueSize(), 1);
-		m_pTiingoDataSource->SetInquiringWebData(false);
+		m_pTiingoDataSource->SetInquireWebDataThreadRunning(false);
 		m_pTiingoDataSource->SetInquiring(true);
-		m_pTiingoDataSource->SetInquiringWebData(false);
+		m_pTiingoDataSource->SetInquireWebDataThreadRunning(false);
 
 		EXPECT_CALL(*m_pTiingoDataSource, StartReadingThread())
 		.Times(1)
-		.WillOnce(Invoke([]() { m_pTiingoDataSource->SetInquiringWebData(false); }));
+		.WillOnce(Invoke([]() { m_pTiingoDataSource->SetInquireWebDataThreadRunning(false); }));
 		EXPECT_TRUE(m_pTiingoDataSource->GetWebData());
 
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*m_pTiingoDataSource->GetCurrentInquiry()).name(), _T("class CProductTiingoStockSymbol"));
-		EXPECT_FALSE(m_pTiingoDataSource->IsInquiringWebData());
+		EXPECT_FALSE(m_pTiingoDataSource->IsInquireWebDataThreadRunning());
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring()) << "这个标识不更新";
 
 		// 恢复原状
@@ -94,19 +94,19 @@ namespace FireBirdTest {
 		gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
 		m_pTiingoDataSource->StoreInquiry(p);
 		EXPECT_EQ(m_pTiingoDataSource->GetInquiryQueueSize(), 1);
-		m_pTiingoDataSource->SetInquiringWebData(false);
+		m_pTiingoDataSource->SetInquireWebDataThreadRunning(false);
 		m_pTiingoDataSource->SetInquiring(true);
 
 		EXPECT_CALL(*m_pTiingoDataSource, StartReadingThread())
 		.Times(1)
-		.WillOnce(Invoke([]() { m_pTiingoDataSource->SetInquiringWebData(false); }));
+		.WillOnce(Invoke([]() { m_pTiingoDataSource->SetInquireWebDataThreadRunning(false); }));
 		EXPECT_TRUE(m_pTiingoDataSource->GetWebData());
 		EXPECT_STREQ(m_pTiingoDataSource->GetInquiryFunction(),
 		             p->GetInquiryFunction() + gl_pWorldMarket->GetStock(0)->GetTiingoDayLineInquiryParam(19800101, gl_pWorldMarket->GetMarketDate()));
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsDayLineNeedUpdate());
 		// 顺便测试一下
 		EXPECT_STREQ(typeid(*m_pTiingoDataSource->GetCurrentInquiry()).name(), _T("class CProductTiingoStockDayLine"));
-		EXPECT_FALSE(m_pTiingoDataSource->IsInquiringWebData());
+		EXPECT_FALSE(m_pTiingoDataSource->IsInquireWebDataThreadRunning());
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring()) << "这个标识不更新";
 
 		// 恢复原状

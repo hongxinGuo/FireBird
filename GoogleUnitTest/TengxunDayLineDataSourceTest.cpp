@@ -93,7 +93,7 @@ namespace FireBirdTest {
 		gl_pChinaMarket->GetStock(10)->SetDayLineNeedUpdate(true);
 
 		EXPECT_FALSE(TengxunDayLineDataSource.IsInquiring());
-		EXPECT_TRUE(TengxunDayLineDataSource.InquireDayLine());
+		EXPECT_TRUE(TengxunDayLineDataSource.InquireDayLine()) << gl_tUTC;
 		EXPECT_TRUE(TengxunDayLineDataSource.IsInquiring());
 		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());
 		EXPECT_STREQ(TengxunDayLineDataSource.GetDownLoadingStockCode(), _T("000001.SS"));

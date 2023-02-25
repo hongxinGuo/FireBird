@@ -29,57 +29,19 @@ public:
 	CVirtualDataSource(const CVirtualDataSource&&) noexcept = delete;
 	CVirtualDataSource& operator=(const CVirtualDataSource&&) noexcept = delete;
 	virtual ~CVirtualDataSource(void) = default;
-
 	virtual bool Reset(void);
 
 	void Run(long lCurrentTime);
-	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类实现各自的查询任务. 参数为当前市场时间（hhmmss）
+	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual bool GetWebData(void);
 	virtual bool ProcessWebDataReceived(void);
 	virtual void ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData); // 默认是在处理完本次数据后方才允许再次接收。
 	virtual void UpdateStatus(void) { }
 
-	virtual ULONGLONG GetTickCount() { return ::GetTickCount64(); } // 为了测试方便，将GetTickCount64包裹上一层。
-
-	bool HaveInquiry(void) const {
-		if (m_qProduct.empty()) return false;
-		return true;
-	}
-
-	size_t GetInquiryQueueSize(void) const noexcept { return m_qProduct.size(); }
-	void StoreInquiry(const CVirtualProductWebDataPtr& p) { m_qProduct.push(p); }
-
-	CVirtualProductWebDataPtr GetCurrentProduct(void) {
-		m_pCurrentProduct = m_qProduct.front();
-		m_qProduct.pop();
-		return m_pCurrentProduct;
-	}
-
-	CVirtualProductWebDataPtr GetCurrentInquiry(void) const noexcept { return m_pCurrentProduct; }
-	void SetCurrentInquiry(const CVirtualProductWebDataPtr& p) { m_pCurrentProduct = p; }
-
-	bool IsInquiring(void) const noexcept { return m_fInquiring; }
-	void SetInquiring(const bool fFlag) noexcept { m_fInquiring = fFlag; }
-
-	bool IsInquiringAndClearFlag(void) noexcept {
-		const bool fInquiring = m_fInquiring.exchange(false);
-		return fInquiring;
-	}
-
-	void StoreReceivedData(const CWebDataPtr pData) noexcept { m_qReceivedData.PushData(pData); }
-	CWebDataPtr GetReceivedData(void) noexcept { return m_qReceivedData.PopData(); }
-	size_t GetReceivedDataSize(void) noexcept { return m_qReceivedData.Size(); }
-
-	bool HaveReceivedData(void) {
-		if (m_qReceivedData.Empty()) return false;
-		return true;
-	}
-
-	bool IsEnable(void) const noexcept { return m_fEnable; }
-	void Enable(const bool fFlag) noexcept { m_fEnable = fFlag; }
-
 	void SetDefaultSessionOption(void);
 
+	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
+	void Read(void); // 实际读取处理函数，完成工作线程的实际功能
 	virtual void ReadWebData(void); // 网络实际读取函数
 	virtual void OpenFile(const CString& strInquiring);
 	virtual void GetFileHeaderInformation();
@@ -95,14 +57,12 @@ public:
 	static void SetDataTime(CWebDataPtr pData, time_t time) noexcept { pData->SetTime(time); }
 	virtual bool TransferDataToWebData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
 	virtual bool ParseData(CWebDataPtr pWebData) {
-		TRACE("调用了基类函数\n");
+		TRACE("调用了基类函数ParseData()\n");
 		return false;
 	} //解析接收到的数据。继承类必须实现此函数。
 	void ResetBuffer(void) { m_sBuffer.resize(DefaultWebDataBufferSize_); }
 
 	virtual void ProcessInquiryMessage(void);
-
-	void Read(void); // 实际读取处理函数，完成工作线程的实际功能
 
 	// 下列为继承类必须实现的几个功能函数，完成具体任务。不允许调用本基类函数
 	// 由于测试的原因，此处保留了函数定义，没有将其声明为=0.
@@ -110,18 +70,14 @@ public:
 
 	virtual void PrepareReadingWebData(void); // 在读取网络数据前的准备工作，默认为设置m_pSession状态。
 	virtual void ConfigureSession(void) {
-		TRACE("调用了基类函数ConfigureSession\n");
+		TRACE("调用了基类函数ConfigureSession()\n");
 	} // 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
-	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
 	virtual void UpdateStatusAfterReading(CWebDataPtr pData) {} //成功接收后更新系统状态。默认无动作
 
 	void CreateTotalInquiringString();
 	CString GetInquiringString(void) const noexcept { return m_strInquiry; }
 	void SetInquiringString(const CString& str) noexcept { m_strInquiry = str; }
 	void AppendInquiringString(const CString& str) noexcept { m_strInquiry += str; }
-
-	CString GetHeaders(void) const noexcept { return m_strHeaders; }
-	void SetHeaders(const CString& strHeaders) noexcept { m_strHeaders = strHeaders; }
 
 	char GetData(const long lIndex) const { return m_sBuffer.at(lIndex); }
 	void SetData(const long lIndex, const char value) { m_sBuffer.at(lIndex) = value; }
@@ -131,6 +87,52 @@ public:
 	void AddByteRead(const long lValue) noexcept { m_lByteRead += lValue; }
 	size_t GetBufferSize(void) const noexcept { return m_sBuffer.size(); }
 
+	virtual ULONGLONG GetTickCount() { return ::GetTickCount64(); } // 为了测试方便，将GetTickCount64包裹上一层。
+
+	// 各状态
+	CVirtualProductWebDataPtr GetCurrentInquiry(void) const noexcept { return m_pCurrentProduct; }
+	void SetCurrentInquiry(const CVirtualProductWebDataPtr& p) { m_pCurrentProduct = p; }
+
+	size_t GetInquiryQueueSize(void) const noexcept { return m_qProduct.size(); }
+	void StoreInquiry(const CVirtualProductWebDataPtr& p) { m_qProduct.push(p); }
+
+	CVirtualProductWebDataPtr GetCurrentProduct(void) {
+		m_pCurrentProduct = m_qProduct.front();
+		m_qProduct.pop();
+		return m_pCurrentProduct;
+	}
+
+	bool HaveInquiry(void) const {
+		if (m_qProduct.empty()) return false;
+		return true;
+	}
+
+	void StoreReceivedData(const CWebDataPtr pData) noexcept { m_qReceivedData.PushData(pData); }
+	CWebDataPtr GetReceivedData(void) noexcept { return m_qReceivedData.PopData(); }
+	size_t GetReceivedDataSize(void) noexcept { return m_qReceivedData.Size(); }
+
+	bool HaveReceivedData(void) {
+		if (m_qReceivedData.Empty()) return false;
+		return true;
+	}
+
+	bool IsInquiring(void) const noexcept { return m_fInquiring; }
+	void SetInquiring(const bool fFlag) noexcept { m_fInquiring = fFlag; }
+
+	bool IsInquiringAndClearFlag(void) noexcept {
+		const bool fInquiring = m_fInquiring.exchange(false);
+		return fInquiring;
+	}
+
+	bool IsInquireWebDataThreadRunning(void) const noexcept { return m_fInquireWebDataThreadRunning; }
+	void SetInquireWebDataThreadRunning(const bool fFlag) noexcept { m_fInquireWebDataThreadRunning = fFlag; }
+
+	bool IsEnable(void) const noexcept { return m_fEnable; }
+	void Enable(const bool fFlag) noexcept { m_fEnable = fFlag; }
+
+	CString GetHeaders(void) const noexcept { return m_strHeaders; }
+	void SetHeaders(const CString& strHeaders) noexcept { m_strHeaders = strHeaders; }
+
 	CString GetInquiryFunction(void) const noexcept { return m_strInquiryFunction; }
 	void SetInquiryFunction(const CString& strPrefix) noexcept { m_strInquiryFunction = strPrefix; }
 	CString GetInquirySuffix(void) const noexcept { return m_strSuffix; }
@@ -138,10 +140,7 @@ public:
 	CString GetInquiryToken(void) const noexcept { return m_strInquiryToken; }
 	void SetInquiryToken(const CString& strToken) noexcept { m_strInquiryToken = strToken; }
 
-	bool IsInquiringWebData(void) const noexcept { return m_fInquiringWebData; }
-	void SetInquiringWebData(const bool fFlag) noexcept { m_fInquiringWebData = fFlag; }
-
-	bool IsWebError(void) const noexcept { return m_dwWebErrorCode > 0; }
+	bool IsWebError(void) const noexcept { return m_dwWebErrorCode != 0; }
 	DWORD GetErrorCode(void) const noexcept { return m_dwWebErrorCode; }
 	void SetErrorCode(const DWORD dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
 
@@ -160,6 +159,7 @@ public:
 	void SetCurrentInquiryTime(const time_t tt) noexcept { m_tCurrentInquiryTime = tt; }
 	time_t GetCurrentInquiryTime(void) const noexcept { return m_tCurrentInquiryTime; }
 
+	// 辅助函数
 	void DiscardProduct() { while (m_qProduct.size() > 0) m_qProduct.pop(); }
 	void DiscardReceivedData() { while (GetReceivedDataSize() > 0) GetReceivedData(); }
 
@@ -173,7 +173,7 @@ protected:
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct;
 	atomic_bool m_fInquiring;
-	atomic_bool m_fInquiringWebData; // 接收实时数据线程是否执行标识
+	atomic_bool m_fInquireWebDataThreadRunning; // 接收实时数据线程是否执行标识
 	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列
 
 	bool m_fEnable; // 允许执行标识

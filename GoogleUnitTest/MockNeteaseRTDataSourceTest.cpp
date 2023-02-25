@@ -86,12 +86,12 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestGetWebData) {
-		m_pMockNeteaseRTDataSource->SetInquiringWebData(false);
+		m_pMockNeteaseRTDataSource->SetInquireWebDataThreadRunning(false);
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_CALL(*m_pMockNeteaseRTDataSource, StartReadingThread)
 		.Times(1);
 		m_pMockNeteaseRTDataSource->ProcessInquiryMessage();
-		EXPECT_TRUE(m_pMockNeteaseRTDataSource->IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
+		EXPECT_TRUE(m_pMockNeteaseRTDataSource->IsInquireWebDataThreadRunning()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 	}
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestPrepareNextInquiringStr) {

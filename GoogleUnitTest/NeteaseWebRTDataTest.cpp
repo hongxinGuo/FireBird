@@ -8,8 +8,32 @@
 #include"JsonParse.h"
 #include "TimeConvert.h"
 
+using namespace testing;
+
 namespace FireBirdTest {
-	TEST(CWebRTDataTest, TestNeteaseInitialize) {
+	class CWebRTDataTest2 : public Test {
+	protected:
+		static void SetUpTestSuite(void) {
+			GeneralCheck();
+		}
+
+		static void TearDownTestSuite(void) {
+			GeneralCheck();
+		}
+
+		void SetUp(void) override {
+			GeneralCheck();
+		}
+
+		void TearDown(void) override {
+			// clearUp
+			GeneralCheck();
+		}
+
+	protected:
+	};
+
+	TEST_F(CWebRTDataTest2, TestNeteaseInitialize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		CWebRTData RTData;
 		EXPECT_EQ(RTData.GetTransactionTime(), 0);
@@ -33,7 +57,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(RTData.IsActive());
 	}
 
-	TEST(CWebRTDataTest, TestNeteaseRTDataActive) {
+	TEST_F(CWebRTDataTest2, TestNeteaseRTDataActive) {
+		time_t tTemp = gl_tUTC;
 		CWebRTData id;
 		EXPECT_FALSE(id.CheckNeteaseRTDataActive());
 		tm tm_;
@@ -52,6 +77,9 @@ namespace FireBirdTest {
 		EXPECT_FALSE(id.CheckNeteaseRTDataActive());
 		id.SetNew(11);
 		EXPECT_TRUE(id.CheckNeteaseRTDataActive());
+
+		// »Ö¸´Ô­×´
+		gl_tUTC = tTemp;
 	}
 
 	struct NeteaseRTData {

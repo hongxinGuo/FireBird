@@ -200,6 +200,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockWebRTDataTest, TestIsDataTimeAtCurrentDate) {
+		time_t time = gl_tUTC;
 		tm tm_;
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
@@ -219,9 +220,13 @@ namespace FireBirdTest {
 
 		data.SetTransactionTime(tt + 1);
 		EXPECT_FALSE(data.IsValidTime(14)) << _T("数据有问题：成交时间晚于当前时间");
+
+		// 恢复原状
+		gl_tUTC = time;
 	}
 
 	TEST_F(CStockWebRTDataTest, TestCheckSinaRTDataMarket) {
+		time_t ttime = gl_tUTC;
 		tm tm_;
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
@@ -238,6 +243,9 @@ namespace FireBirdTest {
 		EXPECT_TRUE(data.CheckSinaRTDataActive());
 		data.SetTransactionTime(tt - 3600 * 24 * 14 - 1);
 		EXPECT_FALSE(data.CheckSinaRTDataActive());
+
+		// 恢复原状
+		gl_tUTC = ttime;
 	}
 
 	struct SinaRTData {

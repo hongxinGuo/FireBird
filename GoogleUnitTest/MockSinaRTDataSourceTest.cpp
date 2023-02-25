@@ -47,7 +47,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockSinaRTDataSourceTest, TestStartReadingThread) {
-		EXPECT_FALSE(SinaDataSource.IsInquiringWebData());
+		EXPECT_FALSE(SinaDataSource.IsInquireWebDataThreadRunning());
 		EXPECT_EQ(SinaDataSource.GetByteRead(), 0);
 	}
 
@@ -85,11 +85,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockSinaRTDataSourceTest, TestGetWebData) {
-		m_pMockSinaRTDataSource->SetInquiringWebData(false);
+		m_pMockSinaRTDataSource->SetInquireWebDataThreadRunning(false);
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_CALL(*m_pMockSinaRTDataSource, StartReadingThread)
 		.Times(1);
 		m_pMockSinaRTDataSource->ProcessInquiryMessage();
-		EXPECT_TRUE(m_pMockSinaRTDataSource->IsInquiringWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
+		EXPECT_TRUE(m_pMockSinaRTDataSource->IsInquireWebDataThreadRunning()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 	}
 }

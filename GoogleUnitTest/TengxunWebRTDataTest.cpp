@@ -7,8 +7,32 @@
 #include"WebRTData.h"
 #include"WebData.h"
 
+using namespace testing;
+
 namespace FireBirdTest {
-	TEST(CWebRTDataTest, TestTengxunInitialize) {
+	class CWebRTDataTest1 : public Test {
+	protected:
+		static void SetUpTestSuite(void) {
+			GeneralCheck();
+		}
+
+		static void TearDownTestSuite(void) {
+			GeneralCheck();
+		}
+
+		void SetUp(void) override {
+			GeneralCheck();
+		}
+
+		void TearDown(void) override {
+			// clearUp
+			GeneralCheck();
+		}
+
+	protected:
+	};
+
+	TEST_F(CWebRTDataTest1, TestTengxunInitialize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		CWebRTData RTData;
 		EXPECT_EQ(RTData.GetTransactionTime(), 0);
@@ -32,7 +56,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(RTData.IsActive());
 	}
 
-	TEST(CWebRTDataTest, TestTengxunRTDataActive) {
+	TEST_F(CWebRTDataTest1, TestTengxunRTDataActive) {
+		time_t t = gl_tUTC;
 		CWebRTData id;
 		EXPECT_FALSE(id.CheckTengxunRTDataActive());
 		tm tm_;
@@ -71,6 +96,9 @@ namespace FireBirdTest {
 		id.SetHigh(0);
 		id.SetLow(10);
 		EXPECT_TRUE(id.CheckTengxunRTDataActive());
+
+		// »Ö¸´Ô­×´
+		gl_tUTC = t;
 	}
 
 	struct TengxunRTData {

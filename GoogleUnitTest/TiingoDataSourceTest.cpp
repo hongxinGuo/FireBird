@@ -172,7 +172,7 @@ namespace FireBirdTest {
 		const CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockSymbol>();
 		m_TiingoDataSource.StoreInquiry(p);
 		EXPECT_EQ(m_TiingoDataSource.GetInquiryQueueSize(), 1);
-		m_TiingoDataSource.SetInquiringWebData(true);
+		m_TiingoDataSource.SetInquireWebDataThreadRunning(true);
 		m_TiingoDataSource.SetInquiring(true);
 		EXPECT_FALSE(m_TiingoDataSource.GetWebData()) << "Tiingo web data尚未接受到";
 		EXPECT_TRUE(m_TiingoDataSource.IsInquiring()) << "没有处理，故此标识没有重置";
@@ -183,7 +183,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived01) {
-		m_TiingoDataSource.SetInquiringWebData(true);
+		m_TiingoDataSource.SetInquireWebDataThreadRunning(true);
 		m_TiingoDataSource.SetCurrentInquiry(nullptr);
 
 		EXPECT_FALSE(m_TiingoDataSource.ProcessWebDataReceived()) << "CurrentInquiry为nullptr";
@@ -192,7 +192,7 @@ namespace FireBirdTest {
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived02) {
 		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 
-		m_TiingoDataSource.SetInquiringWebData(true);
+		m_TiingoDataSource.SetInquireWebDataThreadRunning(true);
 		m_TiingoDataSource.SetCurrentInquiry(p);
 
 		EXPECT_FALSE(m_TiingoDataSource.ProcessWebDataReceived()) << "DataReceived标识为假";
@@ -204,7 +204,7 @@ namespace FireBirdTest {
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived03) {
 		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 
-		m_TiingoDataSource.SetInquiringWebData(true);
+		m_TiingoDataSource.SetInquireWebDataThreadRunning(true);
 		m_TiingoDataSource.SetCurrentInquiry(p);
 		while (m_TiingoDataSource.GetReceivedDataSize() > 0) m_TiingoDataSource.GetReceivedData();
 
@@ -223,7 +223,7 @@ namespace FireBirdTest {
 
 		m_TiingoDataSource.StoreReceivedData(pData);
 		m_TiingoDataSource.SetCurrentInquiry(p);
-		m_TiingoDataSource.SetInquiringWebData(false);
+		m_TiingoDataSource.SetInquireWebDataThreadRunning(false);
 		m_TiingoDataSource.SetInquiring(true);
 
 		EXPECT_TRUE(m_TiingoDataSource.ProcessWebDataReceived());

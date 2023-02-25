@@ -1018,7 +1018,7 @@ namespace FireBirdTest {
 		p->SetIndex(0);
 		m_FinnhubDataSource.StoreInquiry(p);
 		EXPECT_EQ(m_FinnhubDataSource.GetInquiryQueueSize(), 1);
-		m_FinnhubDataSource.SetInquiringWebData(true);
+		m_FinnhubDataSource.SetInquireWebDataThreadRunning(true);
 		m_FinnhubDataSource.SetInquiring(true);
 		EXPECT_FALSE(m_FinnhubDataSource.GetWebData()) << "Finnhub web dataÉÐÎ´½ÓÊÜµ½";
 

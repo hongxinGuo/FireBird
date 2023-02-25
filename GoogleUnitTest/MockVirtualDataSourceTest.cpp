@@ -28,14 +28,14 @@ namespace FireBirdTest {
 			GeneralCheck();
 
 			m_pVirtualDataSource = make_shared<CMockVirtualDataSource>();
-			EXPECT_FALSE(m_pVirtualDataSource->IsInquiringWebData());
+			EXPECT_FALSE(m_pVirtualDataSource->IsInquireWebDataThreadRunning());
 		}
 
 		void TearDown(void) override {
 			// clearUp
 
 			m_pVirtualDataSource->SetInquiringString(_T(""));
-			m_pVirtualDataSource->SetInquiringWebData(false);
+			m_pVirtualDataSource->SetInquireWebDataThreadRunning(false);
 			m_pVirtualDataSource = nullptr;
 			GeneralCheck();
 		}
@@ -49,7 +49,7 @@ namespace FireBirdTest {
 		auto p = make_shared<CVirtualWebProduct>();
 		m_pVirtualDataSource->StoreInquiry(p);
 		EXPECT_TRUE(m_pVirtualDataSource->HaveInquiry());
-		m_pVirtualDataSource->SetInquiring(false);
+		m_pVirtualDataSource->SetInquiring(true);
 
 		EXPECT_CALL(*m_pVirtualDataSource, GenerateInquiryMessage).Times(0);
 		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(1)
@@ -59,7 +59,7 @@ namespace FireBirdTest {
 
 		m_pVirtualDataSource->Run(100000);
 
-		EXPECT_TRUE(m_pVirtualDataSource->IsInquiring());
+		EXPECT_TRUE(m_pVirtualDataSource->IsInquiring()) << "网络申请队列不为空时，查询状态为真";
 	}
 
 	TEST_F(CMockVirtualDataSourceTest, TestRun2) {
@@ -79,6 +79,38 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pVirtualDataSource->IsInquiring());
 	}
 
+	TEST_F(CMockVirtualDataSourceTest, TestRun4) {// 两次Run
+		m_pVirtualDataSource->Enable(true);
+		EXPECT_FALSE(m_pVirtualDataSource->HaveInquiry());
+		auto p = make_shared<CVirtualWebProduct>();
+		auto p2 = make_shared<CVirtualWebProduct>();
+		m_pVirtualDataSource->SetInquiring(false);
+
+		EXPECT_CALL(*m_pVirtualDataSource, GenerateInquiryMessage).Times(1)
+		.WillOnce(DoAll(Invoke([p, p2]() {
+			m_pVirtualDataSource->SetInquiring(true);
+			m_pVirtualDataSource->StoreInquiry(p);
+			m_pVirtualDataSource->StoreInquiry(p2);
+		}), Return(true)));
+		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(2)
+		.WillRepeatedly(Return(true));
+		EXPECT_CALL(*m_pVirtualDataSource, UpdateStatus).Times(2);
+		EXPECT_CALL(*m_pVirtualDataSource, GetWebData).Times(2)
+		.WillOnce(DoAll(Invoke([]() { m_pVirtualDataSource->GetCurrentProduct(); }), Return(true)))
+		.WillOnce(DoAll(Invoke([]() {
+			m_pVirtualDataSource->GetCurrentProduct();
+			m_pVirtualDataSource->SetInquiring(false);
+		}), Return(true)));
+
+		m_pVirtualDataSource->Run(100000); // 第一次
+		EXPECT_TRUE(m_pVirtualDataSource->IsInquiring()) << "申请队列中尚有数据";
+		EXPECT_TRUE(m_pVirtualDataSource->HaveInquiry()) << "申请队列中尚有数据";
+
+		m_pVirtualDataSource->Run(100001); // 第二次
+		EXPECT_FALSE(m_pVirtualDataSource->IsInquiring()) << "申请队列中没有数据";
+		EXPECT_FALSE(m_pVirtualDataSource->HaveInquiry());
+	}
+
 	TEST_F(CMockVirtualDataSourceTest, TestReadWebData1) {
 		const CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
 		m_pVirtualDataSource->SetErrorCode(12002);
@@ -93,14 +125,14 @@ namespace FireBirdTest {
 		.WillOnce(Return(1024))
 		.WillOnce(Return(10))
 		.WillOnce(Return(0)); // 随后为零，函数顺利返回
-		m_pVirtualDataSource->SetInquiringWebData(true);
+		m_pVirtualDataSource->SetInquireWebDataThreadRunning(true);
 		m_pVirtualDataSource->SetInquiringString(strInquiry);
 
 		m_pVirtualDataSource->ReadWebData();
 
 		EXPECT_FALSE(m_pVirtualDataSource->IsWebError());
 		EXPECT_EQ(m_pVirtualDataSource->GetByteRead(), 1024 * 4 + 10) << "这几次返回值之和";
-		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << "直到工作线程退出时方重置此标识";
+		EXPECT_TRUE(m_pVirtualDataSource->IsInquireWebDataThreadRunning()) << "直到工作线程退出时方重置此标识";
 	}
 
 	TEST_F(CMockVirtualDataSourceTest, TestReadWebData2) {
@@ -111,13 +143,13 @@ namespace FireBirdTest {
 		.WillOnce(Throw(exception)); // 打开网络文件时出错。
 		EXPECT_CALL(*m_pVirtualDataSource, GetFileHeaderInformation).Times(0);
 		EXPECT_CALL(*m_pVirtualDataSource, ReadWebFileOneTime()).Times(0);
-		m_pVirtualDataSource->SetInquiringWebData(true);
+		m_pVirtualDataSource->SetInquireWebDataThreadRunning(true);
 		m_pVirtualDataSource->SetInquiringString(strInquiry);
 
 		m_pVirtualDataSource->ReadWebData();
 
 		EXPECT_TRUE(m_pVirtualDataSource->IsWebError());
-		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << "直到工作线程退出时方重置此标识";
+		EXPECT_TRUE(m_pVirtualDataSource->IsInquireWebDataThreadRunning()) << "直到工作线程退出时方重置此标识";
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Net Error #12002 message: http://hq.sinajs.cn/list=sh600000"));
 	}
@@ -130,13 +162,13 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pVirtualDataSource, GetFileHeaderInformation).Times(1);
 		EXPECT_CALL(*m_pVirtualDataSource, ReadWebFileOneTime()).Times(1)
 		.WillOnce(Throw(exception)); // 读取网络文件时出错。
-		m_pVirtualDataSource->SetInquiringWebData(true);
+		m_pVirtualDataSource->SetInquireWebDataThreadRunning(true);
 		m_pVirtualDataSource->SetInquiringString(strInquiry);
 
 		m_pVirtualDataSource->ReadWebData();
 
 		EXPECT_TRUE(m_pVirtualDataSource->IsWebError());
-		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << "直到工作线程退出时方重置此标识";
+		EXPECT_TRUE(m_pVirtualDataSource->IsInquireWebDataThreadRunning()) << "直到工作线程退出时方重置此标识";
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Net Error #12002 message: http://hq.sinajs.cn/list=sh600000"));
 	}
@@ -150,13 +182,13 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pVirtualDataSource, ReadWebFileOneTime()).Times(2)
 		.WillOnce(Return(1024))
 		.WillOnce(Throw(exception)); // 第二次读取网络文件时出错。
-		m_pVirtualDataSource->SetInquiringWebData(true);
+		m_pVirtualDataSource->SetInquireWebDataThreadRunning(true);
 		m_pVirtualDataSource->SetInquiringString(strInquiry);
 
 		m_pVirtualDataSource->ReadWebData();
 
 		EXPECT_TRUE(m_pVirtualDataSource->IsWebError());
-		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << "直到工作线程退出时方重置此标识";
+		EXPECT_TRUE(m_pVirtualDataSource->IsInquireWebDataThreadRunning()) << "直到工作线程退出时方重置此标识";
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Net Error #12002 message: http://hq.sinajs.cn/list=sh600000"));
 	}
@@ -170,13 +202,13 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pVirtualDataSource, ReadWebFileOneTime()).Times(2)
 		.WillOnce(Return(1024))
 		.WillOnce(DoAll(Invoke([]() { gl_systemStatus.SetExitingSystem(true); }), Return(1024))); // 第二次读取时系统要求立即退出。
-		m_pVirtualDataSource->SetInquiringWebData(true);
+		m_pVirtualDataSource->SetInquireWebDataThreadRunning(true);
 		m_pVirtualDataSource->SetInquiringString(strInquiry);
 
 		m_pVirtualDataSource->ReadWebData();
 
 		EXPECT_FALSE(m_pVirtualDataSource->IsWebError()) << "系统要求立即退出时，会重置网络错误代码";
-		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << "直到工作线程退出时方重置此标识";
+		EXPECT_TRUE(m_pVirtualDataSource->IsInquireWebDataThreadRunning()) << "直到工作线程退出时方重置此标识";
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 
 		// restore
@@ -184,11 +216,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockVirtualDataSourceTest, TestGetWebData) {
-		m_pVirtualDataSource->SetInquiringWebData(false);
-		EXPECT_FALSE(m_pVirtualDataSource->IsInquiringWebData());
+		m_pVirtualDataSource->SetInquireWebDataThreadRunning(false);
+		EXPECT_FALSE(m_pVirtualDataSource->IsInquireWebDataThreadRunning());
 		EXPECT_CALL(*m_pVirtualDataSource, StartReadingThread()).Times(1);
 		m_pVirtualDataSource->ProcessInquiryMessage();
-		EXPECT_TRUE(m_pVirtualDataSource->IsInquiringWebData()) << _T("预先设置的此标识，由于Mock类没有重置之，故而还保持着设置状态\n");
+		EXPECT_TRUE(m_pVirtualDataSource->IsInquireWebDataThreadRunning()) << _T("预先设置的此标识，由于Mock类没有重置之，故而还保持着设置状态\n");
 	}
 
 	TEST_F(CMockVirtualDataSourceTest, TestStartReadingThread) {

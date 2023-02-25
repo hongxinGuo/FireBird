@@ -19,7 +19,7 @@ CProductTengxunDayLine::CProductTengxunDayLine() {
 }
 
 CString CProductTengxunDayLine::CreateMessage(void) {
-	return m_strInquiryFunction; // 腾讯日线数据的申请字符串目前由CNeteaseDayLineDataSource类完成，本Product无需动作。
+	return m_strInquiryFunction; // 腾讯日线数据的申请字符串目前由CTengxunDayLineDataSource类完成，本Product无需动作。
 }
 
 //

@@ -7,6 +7,8 @@
 
 #include<memory>
 
+using namespace testing;
+
 namespace FireBirdTest {
 	struct RTData {
 		// 共四十五个数据，一个序列号，二十二个当前实时数据（成交金额、成交量、挂单价位和数量），二十二个上次实时数据（成交金额、成交量、挂单价位和数量），
@@ -336,8 +338,30 @@ namespace FireBirdTest {
 		}
 	}
 
-	TEST(CStockTest3, TestIncreaseTransactionNumber) {
+	class CStockTest3 : public Test {
+	protected:
+		static void SetUpTestSuite(void) {
+			GeneralCheck();
+		}
+
+		static void TearDownTestSuite(void) {
+			GeneralCheck();
+		}
+
+		void SetUp(void) override {
+			GeneralCheck();
+		}
+
+		void TearDown(void) override {
+			// clearUp
+			GeneralCheck();
+		}
+
+	protected:
 		CChinaStock id;
+	};
+
+	TEST_F(CStockTest3, TestIncreaseTransactionNumber) {
 		id.SetCurrentTransactionVolume(4999);
 		id.IncreaseTransactionNumber();
 		EXPECT_EQ(id.GetTransactionNumber(), 1);
@@ -368,9 +392,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(id.GetTransactionNumberAbove200000(), 2);
 	}
 
-	TEST(CStockTest3, TestINitializeCalculatingRTDataEnvironment) {
+	TEST_F(CStockTest3, TestINitializeCalculatingRTDataEnvironment) {
 		auto pRTData = make_shared<CWebRTData>();
-		CChinaStock id;
 
 		id.SetUnknownVolume(100000);
 		pRTData->SetVolume(10000);
@@ -391,17 +414,15 @@ namespace FireBirdTest {
 		}
 	}
 
-	TEST(CStockTest3, TestGetLastRTDataPtr) {
+	TEST_F(CStockTest3, TestGetLastRTDataPtr) {
 		auto pRTData = make_shared<CWebRTData>();
-		CChinaStock id;
 		CWebRTDataPtr pRTData2 = pRTData;
 
 		id.SetLastRTData(pRTData);
 		EXPECT_EQ(id.GetLastRTData(), pRTData2);
 	}
 
-	TEST(CStockTest3, TestCalculateOrdinaryBuySell) {
-		CChinaStock id;
+	TEST_F(CStockTest3, TestCalculateOrdinaryBuySell) {
 		auto pLastRTData = make_shared<CWebRTData>();
 
 		pLastRTData->SetPSell(0, 100000);
@@ -422,8 +443,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(id.GetUnknownVolume(), 20000); // 加了两次10000
 	}
 
-	TEST(CStockTest3, TestCalculateOrdinaryBuyVolume) {
-		CChinaStock id;
+	TEST_F(CStockTest3, TestCalculateOrdinaryBuyVolume) {
 		id.SetCurrentTransactionVolume(1000);
 		id.CalculateOrdinaryBuyVolume();
 		EXPECT_EQ(id.GetOrdinaryBuyVolumeBelow5000(), 1000);
@@ -454,8 +474,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(id.GetOrdinaryBuyNumberAbove200000(), 1);
 	}
 
-	TEST(CStockTest3, TestCalculateOrdinarySellVolume) {
-		CChinaStock id;
+	TEST_F(CStockTest3, TestCalculateOrdinarySellVolume) {
 		id.SetCurrentTransactionVolume(1000);
 		id.CalculateOrdinarySellVolume();
 		EXPECT_EQ(id.GetOrdinarySellVolumeBelow5000(), 1000);
@@ -487,8 +506,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(id.GetOrdinarySellVolume(), 0);
 	}
 
-	TEST(CStockTest3, TestCalculateCancelededBuyVolume) {
-		CChinaStock id;
+	TEST_F(CStockTest3, TestCalculateCancelededBuyVolume) {
 		id.CalculateCanceledBuyVolume(4000);
 		EXPECT_EQ(id.GetCanceledBuyVolumeBelow5000(), 4000);
 		id.CalculateCanceledBuyVolume(8000);
@@ -505,8 +523,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(id.GetCanceledBuyVolumeAbove200000(), 1000000);
 	}
 
-	TEST(CStockTest3, TestCalculateCanceledSellVolume) {
-		CChinaStock id;
+	TEST_F(CStockTest3, TestCalculateCanceledSellVolume) {
 		id.CalculateCanceledSellVolume(4000);
 		EXPECT_EQ(id.GetCanceledSellVolumeBelow5000(), 4000);
 		id.CalculateCanceledSellVolume(8000);
@@ -523,8 +540,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(id.GetCanceledSellVolumeAbove200000(), 1000000);
 	}
 
-	TEST(CStockTest3, TEStCalculateAttackBuy) {
-		CChinaStock id;
+	TEST_F(CStockTest3, TEStCalculateAttackBuy) {
 		id.SetCurrentTransactionVolume(10000);
 		id.CalculateAttackBuy();
 		EXPECT_EQ(id.GetCurrentTransactionType(), ATTACK_BUY_);
@@ -543,8 +559,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(id.GetAttackBuyVolume(), 1110000);
 	}
 
-	TEST(CStockTest3, TestCalculateStrongBuy) {
-		CChinaStock id;
+	TEST_F(CStockTest3, TestCalculateStrongBuy) {
 		id.SetCurrentTransactionVolume(10000);
 		id.CalculateStrongBuy();
 		EXPECT_EQ(id.GetCurrentTransactionType(), STRONG_BUY_);
@@ -563,8 +578,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(id.GetStrongBuyVolume(), 1110000);
 	}
 
-	TEST(CStockTest3, TestCalculateAttackBuyVolume) {
-		CChinaStock id;
+	TEST_F(CStockTest3, TestCalculateAttackBuyVolume) {
 		id.SetCurrentTransactionVolume(10000);
 		id.CalculateAttackBuyVolume();
 		EXPECT_EQ(id.GetAttackBuyBelow50000(), 10000);
@@ -582,8 +596,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(id.GetAttackBuyVolume(), 0);
 	}
 
-	TEST(CStockTest3, TestCalculateAttackSell) {
-		CChinaStock id;
+	TEST_F(CStockTest3, TestCalculateAttackSell) {
 		id.SetCurrentTransactionVolume(10000);
 		id.CalculateAttackSell();
 		EXPECT_EQ(id.GetCurrentTransactionType(), ATTACK_SELL_);
@@ -602,8 +615,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(id.GetAttackSellVolume(), 1110000);
 	}
 
-	TEST(CStockTest3, TestCalculateStrongSell) {
-		CChinaStock id;
+	TEST_F(CStockTest3, TestCalculateStrongSell) {
 		id.SetCurrentTransactionVolume(10000);
 		id.CalculateStrongSell();
 		EXPECT_EQ(id.GetCurrentTransactionType(), STRONG_SELL_);
@@ -622,8 +634,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(id.GetStrongSellVolume(), 1110000);
 	}
 
-	TEST(CStockTest3, TestCalculateAttackSellVolume) {
-		CChinaStock id;
+	TEST_F(CStockTest3, TestCalculateAttackSellVolume) {
 		id.SetCurrentTransactionVolume(10000);
 		id.CalculateAttackSellVolume();
 		EXPECT_EQ(id.GetAttackSellBelow50000(), 10000);
@@ -639,5 +650,52 @@ namespace FireBirdTest {
 		EXPECT_EQ(id.GetAttackSellBelow200000(), 100000);
 		EXPECT_EQ(id.GetAttackSellAbove200000(), 1000000);
 		EXPECT_EQ(id.GetAttackSellVolume(), 0);
+	}
+
+	TEST_F(CStockTest3, TestSetCurrentGuadan) {
+		auto pCurrentRTData = make_shared<CWebRTData>();
+
+		for (int i = 0; i < 5; i++) {
+			pCurrentRTData->SetPBuy(i, 10080 - i * 20);
+			pCurrentRTData->SetVBuy(i, i + 200);
+			pCurrentRTData->SetPSell(i, 10100 + i * 20);
+			pCurrentRTData->SetVSell(i, i + 400);
+		}
+		for (int i = 0; i < 100; i += 20) {
+			EXPECT_FALSE(id.HaveGuadan(10010 + i));
+		}
+		id.SetCurrentGuadan(pCurrentRTData);
+		for (int i = 0; i < 190; i += 20) {
+			EXPECT_TRUE(id.HaveGuadan(10000 + i));
+			EXPECT_FALSE(id.HaveGuadan(10010 + i));
+		}
+		for (int i = 0; i < 5; i++) {
+			EXPECT_EQ(id.GetGuadan(10080 - i * 20), pCurrentRTData->GetVBuy(i));
+			EXPECT_EQ(id.GetGuadan(10100 + i * 20), pCurrentRTData->GetVSell(i));
+		}
+		for (int i = 0; i < 5; i++) {
+			pCurrentRTData->SetPBuy(i, 10090 - i * 20);
+			pCurrentRTData->SetVBuy(i, i + 2000);
+			pCurrentRTData->SetPSell(i, 10110 + i * 20);
+			pCurrentRTData->SetVSell(i, i + 4000);
+		}
+		id.SetCurrentGuadan(pCurrentRTData);
+		for (int i = 0; i < 180; i += 20) {
+			EXPECT_EQ(id.GetGuadan(10020 + i), 0) << _T("原有的挂单被清零了");
+		}
+		for (int i = 0; i < 5; i++) {
+			EXPECT_EQ(id.GetGuadan(10090 - i * 20), pCurrentRTData->GetVBuy(i));
+			EXPECT_EQ(id.GetGuadan(10110 + i * 20), pCurrentRTData->GetVSell(i));
+		}
+	}
+
+	TEST_F(CStockTest3, TestHaveGuadan) {
+		EXPECT_FALSE(id.HaveGuadan(10000));
+		id.SetGuadan(10000, 0);
+		EXPECT_FALSE(id.HaveGuadan(10000));
+		id.SetGuadan(10000, 10000);
+		EXPECT_TRUE(id.HaveGuadan(10000));
+		id.SetGuadan(10000, 0);
+		EXPECT_FALSE(id.HaveGuadan(10000));
 	}
 }
