@@ -19,7 +19,6 @@ CQuandlDataSource::CQuandlDataSource(void) {
 
 bool CQuandlDataSource::Reset(void) {
 	CVirtualDataSource::Reset();
-	m_llLastTimeTickCount = 0;
 	return true;
 }
 

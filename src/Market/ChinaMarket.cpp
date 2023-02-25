@@ -38,6 +38,10 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 	m_CalculatingDayLineRS = false;
 	m_CalculatingWeekLineRS = false;
 
+	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
+	m_fUsingTengxunRTDataReceiver = true; // 使用腾讯实时数据提取器
+	m_fUsingNeteaseRTDataReceiver = false; // 不使用网易实时数据提取器
+
 	m_avChosenStock.resize(30);
 	m_aRSStrongOption.resize(10);
 
@@ -123,9 +127,6 @@ void CChinaMarket::Reset(void) {
 
 	m_fCheckActiveStock = true; //检查当日活跃股票，必须为真。
 
-	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
-	m_fUsingTengxunRTDataReceiver = true; // 默认状态下不读取腾讯实时行情
-	m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
 	m_iCountDownTengxunNumber = 10;
 
 	m_fUpdateChosenStockDB = false;

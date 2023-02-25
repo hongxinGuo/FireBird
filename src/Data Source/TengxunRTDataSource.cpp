@@ -16,7 +16,6 @@ CTengxunRTDataSource::CTengxunRTDataSource() {
 }
 
 bool CTengxunRTDataSource::Reset(void) {
-	m_llLastTimeTickCount = 0;
 	return true;
 }
 

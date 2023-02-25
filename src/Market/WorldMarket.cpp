@@ -112,7 +112,9 @@ void CWorldMarket::ResetMarket(void) {
 	LoadTiingoStock();
 	LoadTiingoCryptoSymbol();
 
-	for (const auto& pDataSource : m_vDataSource) { pDataSource->Reset(); }
+	for (const auto& pDataSource : m_vDataSource) {
+		pDataSource->Reset();
+	}
 
 	CString str = _T("重置World Market于美东标准时间：");
 	str += GetStringOfMarketTime();
