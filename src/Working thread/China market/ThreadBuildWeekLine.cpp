@@ -25,7 +25,8 @@ UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
 			pMarket->DeleteWeekLine(lCurrentMonday);
 			ctCurrent += ts7Day;
 			lCurrentMonday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-		} while (lCurrentMonday <= pMarket->GetMarketDate());
+		}
+		while (lCurrentMonday <= pMarket->GetMarketDate());
 	}
 	else {
 		pMarket->DeleteWeekLine();
@@ -43,7 +44,8 @@ UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
 	return 25;
 }
 
-UINT ThreadBuildWeekLineOfStock(not_null<CChinaStock*> pStock, long lStartDate) {
+UINT ThreadBuildWeekLineOfStock(not_null<CChinaStock*> pStockInput, long lStartDate) {
+	const auto pStock = pStockInput;
 	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseSavingThread();
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread();

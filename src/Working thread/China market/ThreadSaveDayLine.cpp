@@ -14,7 +14,8 @@
 #include"ThreadStatus.h"
 #include"ChinaStock.h"
 
-UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStock) {
+UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStockInput) {
+	CChinaStock* pStock = pStockInput;
 	gl_SaveDayLineThreadPermitted.acquire(); //使用多线程模式。
 	gl_ThreadStatus.IncreaseSavingThread();
 	if (!gl_systemStatus.IsExitingSystem()) {
