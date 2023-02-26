@@ -57,6 +57,7 @@ namespace FireBirdTest {
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGetWebData) {
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 		m_pMockTengxunDayLineDataSource->SetInquireWebDataThreadRunning(false);
+		m_pMockTengxunDayLineDataSource->SetInquiring(true);
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, StartReadingThread)
 		.Times(1);

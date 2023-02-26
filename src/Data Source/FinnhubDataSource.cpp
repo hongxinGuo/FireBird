@@ -28,8 +28,6 @@ CFinnhubDataSource::CFinnhubDataSource(void) {
 }
 
 bool CFinnhubDataSource::Reset(void) {
-	CVirtualDataSource::Reset();
-
 	// Finnhub各申请网络数据标识，每日需要重置。
 	m_fUpdateCountryList = true;
 	m_fUpdateSymbol = true; // 每日需要更新代码

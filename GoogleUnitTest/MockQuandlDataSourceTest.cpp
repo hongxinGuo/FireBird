@@ -69,8 +69,9 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pMockQuandlDataSource->IsInquiring());
 	}
 
-	TEST_F(CMockQuandlDataSourceTest, TestGetWebData) {
+	TEST_F(CMockQuandlDataSourceTest, TestProcessInquiryMessage) {
 		m_pMockQuandlDataSource->SetInquireWebDataThreadRunning(false);
+		m_pMockQuandlDataSource->SetInquiring(true);
 		gl_pWorldMarket->SetSystemReady(true);
 		EXPECT_CALL(*m_pMockQuandlDataSource, StartReadingThread)
 		.Times(1);

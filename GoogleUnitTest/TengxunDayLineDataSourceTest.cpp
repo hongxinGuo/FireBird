@@ -35,7 +35,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTengxunDayLineDataSourceTest, TestInitialize) {
-		EXPECT_STREQ(TengxunDayLineDataSource.GetInquiryFunction(), _T(""));
+		EXPECT_STREQ(TengxunDayLineDataSource.GetInquiryFunction(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param="));
 		EXPECT_STREQ(TengxunDayLineDataSource.GetInquirySuffix(), _T(",2000,,"));
 		EXPECT_STREQ(TengxunDayLineDataSource.GetInquiryToken(), _T(""));
 	}

@@ -113,6 +113,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockVirtualDataSourceTest, TestReadWebData1) {
 		const CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
+		m_pVirtualDataSource->SetInquiring(true);
 		m_pVirtualDataSource->SetErrorCode(12002);
 		m_pVirtualDataSource->SetByteRead(0);
 		InSequence seq;
@@ -138,6 +139,7 @@ namespace FireBirdTest {
 	TEST_F(CMockVirtualDataSourceTest, TestReadWebData2) {
 		CInternetException* exception = new CInternetException(12002);
 		const CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
+		m_pVirtualDataSource->SetInquiring(true);
 		InSequence seq;
 		EXPECT_CALL(*m_pVirtualDataSource, OpenFile(strInquiry)).Times(1)
 		.WillOnce(Throw(exception)); // 打开网络文件时出错。
@@ -157,6 +159,7 @@ namespace FireBirdTest {
 	TEST_F(CMockVirtualDataSourceTest, TestReadWebData3) {
 		CInternetException* exception = new CInternetException(12002);
 		const CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
+		m_pVirtualDataSource->SetInquiring(true);
 		InSequence seq;
 		EXPECT_CALL(*m_pVirtualDataSource, OpenFile(strInquiry)).Times(1);
 		EXPECT_CALL(*m_pVirtualDataSource, GetFileHeaderInformation).Times(1);
@@ -176,6 +179,7 @@ namespace FireBirdTest {
 	TEST_F(CMockVirtualDataSourceTest, TestReadWebData4) {
 		CInternetException* exception = new CInternetException(12002);
 		const CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
+		m_pVirtualDataSource->SetInquiring(true);
 		InSequence seq;
 		EXPECT_CALL(*m_pVirtualDataSource, OpenFile(strInquiry)).Times(1);
 		EXPECT_CALL(*m_pVirtualDataSource, GetFileHeaderInformation).Times(1);
@@ -196,6 +200,7 @@ namespace FireBirdTest {
 	TEST_F(CMockVirtualDataSourceTest, TestReadWebData5) {
 		const CString strInquiry = _T("http://hq.sinajs.cn/list=sh600000");
 		m_pVirtualDataSource->SetErrorCode(12002);
+		m_pVirtualDataSource->SetInquiring(true);
 		InSequence seq;
 		EXPECT_CALL(*m_pVirtualDataSource, OpenFile(strInquiry)).Times(1);
 		EXPECT_CALL(*m_pVirtualDataSource, GetFileHeaderInformation).Times(1);
@@ -215,11 +220,14 @@ namespace FireBirdTest {
 		gl_systemStatus.SetExitingSystem(false);
 	}
 
-	TEST_F(CMockVirtualDataSourceTest, TestGetWebData) {
+	TEST_F(CMockVirtualDataSourceTest, TestProcessInquiryMessage) {
+		m_pVirtualDataSource->SetInquiring(true);
 		m_pVirtualDataSource->SetInquireWebDataThreadRunning(false);
 		EXPECT_FALSE(m_pVirtualDataSource->IsInquireWebDataThreadRunning());
 		EXPECT_CALL(*m_pVirtualDataSource, StartReadingThread()).Times(1);
+
 		m_pVirtualDataSource->ProcessInquiryMessage();
+
 		EXPECT_TRUE(m_pVirtualDataSource->IsInquireWebDataThreadRunning()) << _T("预先设置的此标识，由于Mock类没有重置之，故而还保持着设置状态\n");
 	}
 

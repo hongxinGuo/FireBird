@@ -29,9 +29,11 @@ namespace FireBirdTest {
 
 		void TearDown(void) override {
 			// clearUp
+			EXPECT_FALSE(m_pMockTengxunRTDataSource->HaveInquiry());
 			m_pMockTengxunRTDataSource = nullptr;
 			gl_pChinaMarket->SetSystemReady(true);
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);
+
 			GeneralCheck();
 		}
 
@@ -71,10 +73,15 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(120100)) << "Web Error, postponed 10 seconds";
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->IsInquiring());
 		m_pMockTengxunRTDataSource->SetInquiring(false);
+		EXPECT_TRUE(m_pMockTengxunRTDataSource->HaveInquiry());
+		while (m_pMockTengxunRTDataSource->HaveInquiry()) m_pMockTengxunRTDataSource->GetCurrentProduct();
 		m_pMockTengxunRTDataSource->SetErrorCode(0);
+
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(120600)) << "已过10秒且网络正常，申请数据";
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->IsInquiring());
+		EXPECT_TRUE(m_pMockTengxunRTDataSource->HaveInquiry());
 		m_pMockTengxunRTDataSource->SetInquiring(false);
+		while (m_pMockTengxunRTDataSource->HaveInquiry()) m_pMockTengxunRTDataSource->GetCurrentProduct();
 
 		EXPECT_FALSE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(121100)) << "继续等待";
 		EXPECT_FALSE(m_pMockTengxunRTDataSource->IsInquiring());
@@ -82,6 +89,9 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->HaveInquiry());
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->IsInquiring());
+
+		EXPECT_TRUE(m_pMockTengxunRTDataSource->HaveInquiry());
+		while (m_pMockTengxunRTDataSource->HaveInquiry()) m_pMockTengxunRTDataSource->GetCurrentProduct();
 	}
 
 	TEST_F(CMockTengxunRTDataSourceTest, TestGenerateInquiryMessage3) {
@@ -99,18 +109,27 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(120100));
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->IsInquiring());
 		m_pMockTengxunRTDataSource->SetInquiring(false);
+		EXPECT_TRUE(m_pMockTengxunRTDataSource->HaveInquiry());
+		while (m_pMockTengxunRTDataSource->HaveInquiry()) m_pMockTengxunRTDataSource->GetCurrentProduct();
+
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(120600)) << "申请数据";
 
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->HaveInquiry());
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->IsInquiring());
+
+		EXPECT_TRUE(m_pMockTengxunRTDataSource->HaveInquiry());
+		while (m_pMockTengxunRTDataSource->HaveInquiry()) m_pMockTengxunRTDataSource->GetCurrentProduct();
 	}
 
-	TEST_F(CMockTengxunRTDataSourceTest, TestGetWebData) {
+	TEST_F(CMockTengxunRTDataSourceTest, TestProcessInquiryMessage) {
 		m_pMockTengxunRTDataSource->SetInquireWebDataThreadRunning(false);
+		m_pMockTengxunRTDataSource->SetInquiring(true);
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_CALL(*m_pMockTengxunRTDataSource, StartReadingThread)
 		.Times(1);
+
 		m_pMockTengxunRTDataSource->ProcessInquiryMessage();
+
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->IsInquireWebDataThreadRunning()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 	}
 }

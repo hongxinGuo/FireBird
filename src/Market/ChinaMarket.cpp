@@ -141,6 +141,10 @@ void CChinaMarket::Reset(void) {
 	m_lRTDataReceivedInOrdinaryTradeTime = 0;
 	m_lNewRTDataReceivedInOrdinaryTradeTime = 0;
 
+	for (const auto& pDataSource : m_vDataSource) {
+		pDataSource->Reset();
+	}
+
 	m_lastTimeSchedulingTask = 0;
 	m_iCount1Hour = 3576; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
 	m_iCount5Minute = 287; // 与一分钟每次的错开11秒钟

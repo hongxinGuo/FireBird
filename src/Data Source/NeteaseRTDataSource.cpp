@@ -68,7 +68,7 @@ bool CNeteaseRTDataSource::InquireRTData(const long lCurrentTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CNeteaseRTDataSource::ParseData(CWebDataPtr pWebData) {
-	return true;
+	return false;
 }
 
 void CNeteaseRTDataSource::CreateInquiryMessageFromCurrentProduct(void) {

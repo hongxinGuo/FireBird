@@ -41,7 +41,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestParseData) {
 		const auto pData = make_shared<CWebData>();
-		EXPECT_TRUE(m_pMockNeteaseRTDataSource->ParseData(pData)) << "网易实时数据无需解析";
+		EXPECT_FALSE(m_pMockNeteaseRTDataSource->ParseData(pData)) << "网易实时数据无需解析";
 	}
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestGenerateInquiryMessage) {
@@ -85,12 +85,15 @@ namespace FireBirdTest {
 		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductNeteaseRT"));
 	}
 
-	TEST_F(CMockNeteaseRTDataSourceTest, TestGetWebData) {
+	TEST_F(CMockNeteaseRTDataSourceTest, TestProcessInquiryMessage) {
 		m_pMockNeteaseRTDataSource->SetInquireWebDataThreadRunning(false);
+		m_pMockNeteaseRTDataSource->SetInquiring(true);
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_CALL(*m_pMockNeteaseRTDataSource, StartReadingThread)
 		.Times(1);
+
 		m_pMockNeteaseRTDataSource->ProcessInquiryMessage();
+
 		EXPECT_TRUE(m_pMockNeteaseRTDataSource->IsInquireWebDataThreadRunning()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 	}
 

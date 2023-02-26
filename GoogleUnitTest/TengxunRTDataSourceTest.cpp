@@ -60,11 +60,12 @@ namespace FireBirdTest {
 		tengxunRTDataSource.GetCurrentProduct();
 		auto pProduct = tengxunRTDataSource.GetCurrentInquiry();
 		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductTengxunRT"));
+		EXPECT_FALSE(tengxunRTDataSource.HaveInquiry());
 	}
 
 	TEST_F(CTengxunRTDataSourceTest, TestParseData) {
 		const auto pData = make_shared<CWebData>();
-		EXPECT_TRUE(tengxunRTDataSource.ParseData(pData)) << "网易实时数据无需解析";
+		EXPECT_FALSE(tengxunRTDataSource.ParseData(pData)) << "腾讯实时数据无需解析";
 	}
 
 	TEST_F(CTengxunRTDataSourceTest, TestIsTengxunRTDataInValid) {

@@ -143,13 +143,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(dataSource.GetHeaders(), _T("abcdefg"));
 	}
 
-	TEST_F(CVirtualDataSourceTest, TestReset) {
-		dataSource.SetByteRead(1000);
-		dataSource.Reset();
-		EXPECT_EQ(dataSource.GetByteRead(), 0);
-		EXPECT_FALSE(dataSource.IsWebError());
-	}
-
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringStringPrefix) {
 		dataSource.SetInquiryFunction(_T("abcdefghigh"));
 		EXPECT_STREQ(dataSource.GetInquiryFunction(), _T("abcdefghigh"));

@@ -142,7 +142,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedSaveNumber(), 0);
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataReceiver());
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
-		EXPECT_TRUE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
+		EXPECT_FALSE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
 
 		EXPECT_EQ(gl_pChinaMarket->GetSinaStockRTDataInquiringIndex(), 0);
 		EXPECT_EQ(gl_pChinaMarket->GetTengxunRTDataInquiringIndex(), 0);
@@ -1014,11 +1014,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestIsUsingNeteaseRTDataReceiver) {
-		EXPECT_TRUE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
-		gl_pChinaMarket->SetUsingNeteaseRTDataReceiver(false);
 		EXPECT_FALSE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
 		gl_pChinaMarket->SetUsingNeteaseRTDataReceiver(true);
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
+		gl_pChinaMarket->SetUsingNeteaseRTDataReceiver(false);
+		EXPECT_FALSE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
 	}
 
 	TEST_F(CChinaMarketTest, TestIsUsingTengxunRTDataReceiver) {

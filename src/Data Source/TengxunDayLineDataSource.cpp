@@ -19,7 +19,7 @@
 
 CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 	m_strInquiry = _T("");
-	m_strInquiryFunction = _T(""); // 该变量由相应的product赋值，故初始为空。
+	m_strInquiryFunction = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=");
 	m_strParam = _T("");
 	m_strSuffix = _T(",2000,,");
 	m_strInquiryToken = _T("");
@@ -29,7 +29,6 @@ CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 }
 
 bool CTengxunDayLineDataSource::Reset(void) {
-	CVirtualDataSource::Reset();
 	m_fUpdateDayLine = true;
 	return true;
 }

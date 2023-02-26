@@ -18,7 +18,6 @@ CQuandlDataSource::CQuandlDataSource(void) {
 }
 
 bool CQuandlDataSource::Reset(void) {
-	CVirtualDataSource::Reset();
 	return true;
 }
 

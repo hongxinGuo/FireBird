@@ -37,7 +37,7 @@ namespace FireBirdTest {
 
 	TEST_F(CSinaRTDataSourceTest, TestParseData) {
 		const auto pData = make_shared<CWebData>();
-		EXPECT_TRUE(gl_pSinaRTDataSource->ParseData(pData));
+		EXPECT_FALSE(gl_pSinaRTDataSource->ParseData(pData)) << "ÎÞÐè½âÎö";
 	}
 
 	TEST_F(CSinaRTDataSourceTest, TestInquireRTData1) {

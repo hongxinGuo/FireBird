@@ -194,9 +194,12 @@ void CVirtualDataSource::Read(void) {
 	counter.start();
 	ReadWebData();
 	if (!IsWebError()) {
+		ASSERT(IsInquiring());
 		VerifyDataLength();
 		const auto pWebData = CreateWebDataAfterSucceedReading();
+		ASSERT(IsInquiring());
 		StoreReceivedData(pWebData);
+		ASSERT(IsInquiring());
 		ResetBuffer();
 		ASSERT(IsInquiring());
 	}
@@ -254,6 +257,7 @@ void CVirtualDataSource::ReadWebData(void) {
 		exception->Delete();
 	}
 	DeleteWebFile();
+	ASSERT(IsInquiring());
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 }
 
@@ -329,6 +333,7 @@ bool CVirtualDataSource::IncreaseBufferSizeIfNeeded(long lIncreaseSize) {
 
 CWebDataPtr CVirtualDataSource::CreateWebDataAfterSucceedReading() {
 	const auto pWebData = make_shared<CWebData>();
+	pWebData->ResetCurrentPos();
 	pWebData->SetTime(GetUTCTime());
 	TransferDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
 	ParseData(pWebData);
@@ -365,7 +370,6 @@ bool CVirtualDataSource::TransferDataToWebData(CWebDataPtr pWebData) {
 	m_sBuffer.resize(m_lByteRead);
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
 	pWebData->SetBufferLength(m_lByteRead);
-	pWebData->ResetCurrentPos();
 
 	return true;
 }

@@ -1,6 +1,7 @@
 #include"pch.h"
 
-using namespace testing;
+#include "TengxunDayLineDataSource.h"
+#include "TengxunRTDataSource.h"
 
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
@@ -9,6 +10,8 @@ using namespace testing;
 #include"TiingoDataSource.h"
 
 #include "GeneralCheck.h"
+
+using namespace testing;
 
 namespace FireBirdTest {
 	void SystemMessageCheck(void) {
@@ -63,9 +66,28 @@ namespace FireBirdTest {
 	void WebInquirerCheck(void) {
 		EXPECT_THAT(gl_pFinnhubDataSource->GetReceivedDataSize(), 0);
 		EXPECT_EQ(gl_pTiingoDataSource->GetReceivedDataSize(), 0);
-		EXPECT_THAT(gl_tiingoCryptoWebSocket.DataSize(), 0);
-		EXPECT_THAT(gl_tiingoForexWebSocket.DataSize(), 0);
-		EXPECT_THAT(gl_tiingoIEXWebSocket.DataSize(), 0);
+		EXPECT_EQ(gl_pSinaRTDataSource->GetReceivedDataSize(), 0);
+		EXPECT_EQ(gl_pNeteaseDayLineDataSource->GetReceivedDataSize(), 0);
+		EXPECT_EQ(gl_pNeteaseRTDataSource->GetReceivedDataSize(), 0);
+		EXPECT_EQ(gl_pTengxunRTDataSource->GetReceivedDataSize(), 0);
+		EXPECT_EQ(gl_pTengxunDayLineDataSource->GetReceivedDataSize(), 0);
+
+		EXPECT_THAT(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pSinaRTDataSource->GetInquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pNeteaseDayLineDataSource->GetInquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pNeteaseRTDataSource->GetInquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pTengxunRTDataSource->GetInquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pTengxunDayLineDataSource->GetInquiryQueueSize(), 0);
+
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebError());
+		EXPECT_FALSE(gl_pTiingoDataSource->IsWebError());
+		EXPECT_FALSE(gl_pSinaRTDataSource->IsWebError());
+		EXPECT_FALSE(gl_pNeteaseDayLineDataSource->IsWebError());
+		EXPECT_FALSE(gl_pSinaRTDataSource->IsWebError());
+		EXPECT_FALSE(gl_pNeteaseRTDataSource->IsWebError());
+		EXPECT_FALSE(gl_pTengxunRTDataSource->IsWebError());
+		EXPECT_FALSE(gl_pTengxunDayLineDataSource->IsWebError());
 
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCountryList());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCryptoDayLine());
@@ -88,8 +110,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 0);
 		EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 
-		EXPECT_FALSE(gl_pSinaRTDataSource->IsWebError());
-		EXPECT_FALSE(gl_pNeteaseRTDataSource->IsWebError());
+		EXPECT_THAT(gl_tiingoCryptoWebSocket.DataSize(), 0);
+		EXPECT_THAT(gl_tiingoForexWebSocket.DataSize(), 0);
+		EXPECT_THAT(gl_tiingoIEXWebSocket.DataSize(), 0);
 	}
 
 	void DataContainerCheck(void) {
