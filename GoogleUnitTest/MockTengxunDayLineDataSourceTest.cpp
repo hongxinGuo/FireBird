@@ -56,13 +56,11 @@ namespace FireBirdTest {
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGetWebData) {
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-		m_pMockTengxunDayLineDataSource->SetInquireWebDataThreadRunning(false);
 		m_pMockTengxunDayLineDataSource->SetInquiring(true);
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, StartReadingThread)
 		.Times(1);
 		m_pMockTengxunDayLineDataSource->ProcessInquiryMessage();
-		EXPECT_TRUE(m_pMockTengxunDayLineDataSource->IsInquireWebDataThreadRunning()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
 		gl_pChinaMarket->GetStock(0)->SetDayLineNeedUpdate(true);

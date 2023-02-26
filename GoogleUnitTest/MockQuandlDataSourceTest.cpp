@@ -70,13 +70,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockQuandlDataSourceTest, TestProcessInquiryMessage) {
-		m_pMockQuandlDataSource->SetInquireWebDataThreadRunning(false);
 		m_pMockQuandlDataSource->SetInquiring(true);
 		gl_pWorldMarket->SetSystemReady(true);
-		EXPECT_CALL(*m_pMockQuandlDataSource, StartReadingThread)
-		.Times(1);
+		EXPECT_CALL(*m_pMockQuandlDataSource, StartReadingThread).Times(1);
+
 		m_pMockQuandlDataSource->ProcessInquiryMessage();
-		EXPECT_TRUE(m_pMockQuandlDataSource->IsInquireWebDataThreadRunning()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 	}
 
 	/// <summary>
@@ -88,7 +86,6 @@ namespace FireBirdTest {
 		pData->SetStockCode(_T("Test"));
 		EXPECT_EQ(m_pMockQuandlDataSource->GetReceivedDataSize(), 0);
 		m_pMockQuandlDataSource->SetInquiring(true);
-		m_pMockQuandlDataSource->SetInquireWebDataThreadRunning(true);
 		EXPECT_CALL(*m_pMockQuandlDataSource, ReadWebData).Times(1)
 		.WillOnce(Invoke([]() { m_pMockQuandlDataSource->SetErrorCode(0); }));
 		EXPECT_CALL(*m_pMockQuandlDataSource, CreateWebDataAfterSucceedReading).Times(1)
@@ -96,7 +93,6 @@ namespace FireBirdTest {
 
 		m_pMockQuandlDataSource->Read();
 
-		EXPECT_FALSE(m_pMockQuandlDataSource->IsInquireWebDataThreadRunning());
 		EXPECT_TRUE(m_pMockQuandlDataSource->IsInquiring()) << "此标识没有重置";
 		EXPECT_EQ(m_pMockQuandlDataSource->GetReceivedDataSize(), 1) << "存储了一个WebData";
 		const auto p = m_pMockQuandlDataSource->GetReceivedData();
@@ -113,14 +109,12 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_pMockQuandlDataSource->GetInquiryQueueSize(), 1);
 		EXPECT_EQ(m_pMockQuandlDataSource->GetReceivedDataSize(), 0);
 		m_pMockQuandlDataSource->SetInquiring(true);
-		m_pMockQuandlDataSource->SetInquireWebDataThreadRunning(true);
 		EXPECT_CALL(*m_pMockQuandlDataSource, ReadWebData).Times(1)
 		.WillOnce(Invoke([]() { m_pMockQuandlDataSource->SetErrorCode(12002); }));
 		EXPECT_CALL(*m_pMockQuandlDataSource, CreateWebDataAfterSucceedReading).Times(0); // 没有调用此函数
 
 		m_pMockQuandlDataSource->Read();
 
-		EXPECT_FALSE(m_pMockQuandlDataSource->IsInquireWebDataThreadRunning());
 		EXPECT_FALSE(m_pMockQuandlDataSource->IsInquiring()) << "当出现错误时，立即重置此标识";
 		EXPECT_EQ(m_pMockQuandlDataSource->GetReceivedDataSize(), 0) << "没有WebData";
 		EXPECT_EQ(m_pMockQuandlDataSource->GetInquiryQueueSize(), 0);

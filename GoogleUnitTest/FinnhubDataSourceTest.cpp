@@ -1008,25 +1008,6 @@ namespace FireBirdTest {
 		gl_pFinnhubDataSource->SetUpdateForexSymbol(true);
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestProcessInquiringMessage01) {
-		while (m_FinnhubDataSource.GetInquiryQueueSize() > 0) m_FinnhubDataSource.GetCurrentProduct();
-		EXPECT_FALSE(m_FinnhubDataSource.GetWebData());
-	}
-
-	TEST_F(CFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage02) {
-		CVirtualProductWebDataPtr p = make_shared<CProductFinnhubCompanyProfileConcise>();
-		p->SetIndex(0);
-		m_FinnhubDataSource.StoreInquiry(p);
-		EXPECT_EQ(m_FinnhubDataSource.GetInquiryQueueSize(), 1);
-		m_FinnhubDataSource.SetInquireWebDataThreadRunning(true);
-		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.GetWebData()) << "Finnhub web data尚未接受到";
-
-		// 恢复原状
-		m_FinnhubDataSource.GetCurrentProduct();
-		m_FinnhubDataSource.SetInquiring(false);
-	}
-
 	TEST_F(CFinnhubDataSourceTest, TestCreateWebDataAfterSucceedReading) {
 		m_FinnhubDataSource.TESTSetBuffer(_T("{ \"data\": 2}"));
 		const time_t tUTCTime = GetUTCTime();

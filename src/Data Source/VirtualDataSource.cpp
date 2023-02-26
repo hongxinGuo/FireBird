@@ -28,7 +28,6 @@ CVirtualDataSource::CVirtualDataSource(void) {
 	m_strInquiryFunction = _T("");
 	m_strSuffix = _T("");
 	m_strInquiryToken = _T("");
-	m_fInquireWebDataThreadRunning = false; // 接收实时数据线程是否执行标识
 	m_sBuffer.resize(DefaultWebDataBufferSize_); // 大多数情况下，2M缓存就足够了，无需再次分配内存。
 
 	m_lInquiringNumber = 500; // 每次查询数量默认值为500
@@ -37,7 +36,7 @@ CVirtualDataSource::CVirtualDataSource(void) {
 
 	m_lContentLength = -1;
 	m_fInquiring = false;
-	m_fInquireWebDataThreadRunning = false;
+	m_bIsGetWebDataAndProcessItThreadRunning = false;
 
 	m_llLastTimeTickCount = 0;
 	m_lByteRead = 0;
@@ -46,20 +45,43 @@ CVirtualDataSource::CVirtualDataSource(void) {
 
 void CVirtualDataSource::Run(const long lCurrentTime) {
 	ASSERT(m_fEnable);
-	if (!HaveInquiry()) { // 目前允许一次申请生成多个查询，故而有可能需要多次查询后方允许再次申请。
+
+	if (!IsInquiring()) {
 		if (GenerateInquiryMessage(lCurrentTime)) {
 			ASSERT(IsInquiring());
 		}
 	}
-	else {
-		ASSERT(IsInquiring()); // 当队列中存在网络申请时，此标识一直有效（多次申请方可接收到一个完整的数据集，目前腾讯日线即如此）
+
+	if (HaveInquiry() && !IsGetWebDataAndProcessItThreadRunning()) {
+		CreateThreadGetWebDataAndProcessIt();
+	}
+}
+
+UINT ThreadGetWebDataAndProcessIt(CVirtualDataSource* pDataSource) {
+	gl_ThreadStatus.IncreaseWebInquiringThread();
+	CVirtualDataSource* pSource = pDataSource;
+	pSource->SetGetWebDataAndProcessItThreadRunning(true);
+	pSource->GetWebDataAndProcessIt();
+	pSource->SetGetWebDataAndProcessItThreadRunning(false);
+	gl_ThreadStatus.DecreaseWebInquiringThread();
+	return 205;
+}
+
+void CVirtualDataSource::CreateThreadGetWebDataAndProcessIt() {
+	thread thread1(ThreadGetWebDataAndProcessIt, this);
+	thread1.detach();
+}
+
+bool CVirtualDataSource::GetWebDataAndProcessIt() {
+	ASSERT(IsInquiring());
+	if (GetWebData()) {
+		if (ProcessWebDataReceived()) {
+			UpdateStatus();
+			return true;
+		}
 	}
 
-	if (ProcessWebDataReceived()) {	// 先处理接收到的网络数据
-		UpdateStatus();
-	}
-
-	GetWebData(); // 然后再接收下一个网络数据
+	return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,11 +90,14 @@ void CVirtualDataSource::Run(const long lCurrentTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualDataSource::GetWebData(void) {
-	if (HaveInquiry() && !IsInquireWebDataThreadRunning()) {
+	if (HaveInquiry()) {
 		ASSERT(IsInquiring());
 		GetCurrentProduct();
 		CreateInquiryMessageFromCurrentProduct();
 		ProcessInquiryMessage();
+		if (!IsInquiring()) { // processInquiryMessage出现问题，重置了IsInquiry.
+			return false;
+		}
 		return true;
 	}
 	return false;
@@ -90,11 +115,12 @@ bool CVirtualDataSource::GetWebData(void) {
 //
 //////////////////////////////////////////////
 bool CVirtualDataSource::ProcessWebDataReceived(void) {
+	bool bProcessed = false;
+	ASSERT(IsInquiring());
 	if (HaveReceivedData()) {
 		// 处理当前网络数据
-		ASSERT(IsInquiring());
 		ASSERT(m_pCurrentProduct != nullptr);
-		CWebDataPtr pWebData = GetReceivedData();
+		const CWebDataPtr pWebData = GetReceivedData();
 		if (pWebData->IsParsed()) {
 			m_pCurrentProduct->CheckNoRightToAccess(pWebData);
 			if (m_pCurrentProduct->IsNoRightToAccess()) {
@@ -104,39 +130,14 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 				m_pCurrentProduct->AddInaccessibleExchangeIfNeeded(); // 检查是否无权查询
 			}
 		}
-		ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
-		if (!HaveInquiry()) { // 没有现存的申请时
-			SetInquiring(false); // 此标识的重置需要位于位于最后一步
-		}
-		// 有些网络数据比较大，处理需要的时间超长（如美国市场的股票代码有5M，处理时间为。。。）， 故而需要将ProductWebData的函数ParseAndStoreWebData()线程化。
-		// 本线程必须位于本函数的最后，因其调用SetInquiry(false)后，启动了下次申请，故而能防止发生重入问题。
-		thread thread1(ThreadWebSourceParseAndStoreWebData, this, m_pCurrentProduct, pWebData);
-		thread1.detach();
-		return true;
+		m_pCurrentProduct->ParseAndStoreWebData(pWebData);
+		bProcessed = true;
 	}
-	return false;
-}
-
-UINT ThreadWebSourceParseAndStoreWebData(CVirtualDataSource* pDataSource, CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
-	CVirtualDataSource* pSource = pDataSource; // 使用局部变量，防止外部影响
-	const CVirtualProductWebDataPtr pProduct = pProductWebData;// 使用局部变量，防止外部影响
-	const CWebDataPtr pData = pWebData;// 使用局部变量，防止外部影响
-	gl_WebSourceParseAndStoreData.acquire();
-	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-	pSource->ParseAndStoreData(pProduct, pData);
-	gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-	gl_WebSourceParseAndStoreData.release();
-
-	return 203;
-}
-
-/// <summary>
-///
-/// </summary>
-/// <param name="pProductWebData"></param>
-/// <param name="pWebData"></param>
-void CVirtualDataSource::ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData) {
-	pProductWebData->ParseAndStoreWebData(pWebData);
+	ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
+	if (!HaveInquiry()) { // 没有现存的申请时
+		SetInquiring(false); // 此标识的重置需要位于位于最后一步
+	}
+	return bProcessed;
 }
 
 void CVirtualDataSource::SetDefaultSessionOption(void) {
@@ -158,15 +159,8 @@ void CVirtualDataSource::CreateInquiryMessageFromCurrentProduct(void) {
 	CreateTotalInquiringString();
 }
 
-/////////////////////////////////////////////////////////////////////////
-//
-// 这是此类唯一的接口函数
-//
-//////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::ProcessInquiryMessage(void) {
 	ASSERT(IsInquiring());
-	ASSERT(!IsInquireWebDataThreadRunning());
-	SetInquireWebDataThreadRunning(true); // 在启动工作线程前就设置，以防由于线程延迟导致重入。
 	StartReadingThread();
 }
 
@@ -174,22 +168,10 @@ void CVirtualDataSource::PrepareReadingWebData(void) {
 	ConfigureSession();
 }
 
-void CVirtualDataSource::StartReadingThread(void) {
-	thread thread1(ThreadReadVirtualWebData, this);
-	thread1.detach();
-}
-
-UINT ThreadReadVirtualWebData(not_null<CVirtualDataSource*> pVirtualDataSource) {
-	CVirtualDataSource* pSource = pVirtualDataSource;// 使用局部变量，防止外部影响
-	pSource->Read();
-	return 1;
-}
-
 void CVirtualDataSource::Read(void) {
 	CHighPerformanceCounter counter;
 
 	ASSERT(IsInquiring());
-	ASSERT(IsInquireWebDataThreadRunning());
 	PrepareReadingWebData();
 	counter.start();
 	ReadWebData();
@@ -211,8 +193,6 @@ void CVirtualDataSource::Read(void) {
 	}
 	counter.stop();
 	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
-
-	SetInquireWebDataThreadRunning(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -228,8 +208,6 @@ void CVirtualDataSource::Read(void) {
 ///////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::ReadWebData(void) {
 	ASSERT(IsInquiring());
-	ASSERT(IsInquireWebDataThreadRunning());
-	gl_ThreadStatus.IncreaseWebInquiringThread();
 	SetByteRead(0);
 
 	ASSERT(m_pFile == nullptr);
@@ -258,7 +236,6 @@ void CVirtualDataSource::ReadWebData(void) {
 	}
 	DeleteWebFile();
 	ASSERT(IsInquiring());
-	gl_ThreadStatus.DecreaseWebInquiringThread();
 }
 
 // <summary>

@@ -33,15 +33,18 @@ public:
 
 	void Run(long lCurrentTime);
 	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
+	virtual void CreateThreadGetWebDataAndProcessIt();
+	bool GetWebDataAndProcessIt();
 	virtual bool GetWebData(void);
+	virtual void CreateInquiryMessageFromCurrentProduct(void);
+	virtual void ProcessInquiryMessage(void);
 	virtual bool ProcessWebDataReceived(void);
-	virtual void ParseAndStoreData(CVirtualProductWebDataPtr pProductWebData, CWebDataPtr pWebData); // 默认是在处理完本次数据后方才允许再次接收。
 	virtual void UpdateStatus(void) { }
 
 	void SetDefaultSessionOption(void);
 
-	virtual void StartReadingThread(void); // 调用网络读取线程。为了Mock方便，声明为虚函数。
 	void Read(void); // 实际读取处理函数，完成工作线程的实际功能
+	virtual void StartReadingThread(void) { Read(); } // 网络读取。为了Mock方便，声明为虚函数。
 	virtual void ReadWebData(void); // 网络实际读取函数
 	virtual void OpenFile(const CString& strInquiring);
 	virtual void GetFileHeaderInformation();
@@ -50,7 +53,6 @@ public:
 	virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
 	void XferReadingToBuffer(long lPosition, UINT uByteRead);
 	bool IncreaseBufferSizeIfNeeded(long lIncreaseSize = 1024 * 1024);
-
 	virtual CWebDataPtr CreateWebDataAfterSucceedReading();
 
 	void VerifyDataLength() const;
@@ -61,12 +63,6 @@ public:
 		return false;
 	} //解析接收到的数据。继承类必须实现此函数。
 	void ResetBuffer(void) { m_sBuffer.resize(DefaultWebDataBufferSize_); }
-
-	virtual void ProcessInquiryMessage(void);
-
-	// 下列为继承类必须实现的几个功能函数，完成具体任务。不允许调用本基类函数
-	// 由于测试的原因，此处保留了函数定义，没有将其声明为=0.
-	virtual void CreateInquiryMessageFromCurrentProduct(void);
 
 	virtual void PrepareReadingWebData(void); // 在读取网络数据前的准备工作，默认为设置m_pSession状态。
 	virtual void ConfigureSession(void) {
@@ -118,14 +114,13 @@ public:
 
 	bool IsInquiring(void) const noexcept { return m_fInquiring; }
 	void SetInquiring(const bool fFlag) noexcept { m_fInquiring = fFlag; }
+	bool IsGetWebDataAndProcessItThreadRunning() const noexcept { return m_bIsGetWebDataAndProcessItThreadRunning; }
+	void SetGetWebDataAndProcessItThreadRunning(bool fFlag) noexcept { m_bIsGetWebDataAndProcessItThreadRunning = fFlag; }
 
 	bool IsInquiringAndClearFlag(void) noexcept {
 		const bool fInquiring = m_fInquiring.exchange(false);
 		return fInquiring;
 	}
-
-	bool IsInquireWebDataThreadRunning(void) const noexcept { return m_fInquireWebDataThreadRunning; }
-	void SetInquireWebDataThreadRunning(const bool fFlag) noexcept { m_fInquireWebDataThreadRunning = fFlag; }
 
 	bool IsEnable(void) const noexcept { return m_fEnable; }
 	void Enable(const bool fFlag) noexcept { m_fEnable = fFlag; }
@@ -200,7 +195,7 @@ protected:
 
 	bool m_fEnable; // 允许执行标识
 	atomic_bool m_fInquiring;
-	atomic_bool m_fInquireWebDataThreadRunning; // 接收实时数据线程是否执行标识
+	atomic_bool m_bIsGetWebDataAndProcessItThreadRunning;
 
 private:
 	char m_dataBuffer[DATA_BUFFER_SIZE_]; //网络数据缓存

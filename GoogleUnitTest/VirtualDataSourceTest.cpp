@@ -41,7 +41,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(dataSource.GetInquiryFunction(), _T(""));
 		EXPECT_STREQ(dataSource.GetInquiryToken(), _T(""));
 		EXPECT_EQ(dataSource.GetByteRead(), 0);
-		EXPECT_FALSE(dataSource.IsInquireWebDataThreadRunning());
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestInquire) {
@@ -159,14 +158,6 @@ namespace FireBirdTest {
 		dataSource.SetInquirySuffix(_T("abcdef"));
 		dataSource.CreateTotalInquiringString();
 		EXPECT_STREQ(dataSource.GetInquiringString(), _T("abcdef"));
-	}
-
-	TEST_F(CVirtualDataSourceTest, TestIsReadingWebData) {
-		EXPECT_FALSE(dataSource.IsInquireWebDataThreadRunning());
-		dataSource.SetInquireWebDataThreadRunning(true);
-		EXPECT_TRUE(dataSource.IsInquireWebDataThreadRunning());
-		dataSource.SetInquireWebDataThreadRunning(false);
-		EXPECT_FALSE(dataSource.IsInquireWebDataThreadRunning());
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestIsWebError) {

@@ -163,55 +163,41 @@ namespace FireBirdTest {
 		}
 	}
 
-	TEST_F(CTiingoDataSourceTest, TestProcessTiingoInquiringMessage01) {
-		while (m_TiingoDataSource.GetInquiryQueueSize() > 0) m_TiingoDataSource.GetCurrentProduct();
-		EXPECT_FALSE(m_TiingoDataSource.GetWebData());
-	}
-
-	TEST_F(CTiingoDataSourceTest, TestProcessTiingoInquiringMessage02) {
-		const CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockSymbol>();
-		m_TiingoDataSource.StoreInquiry(p);
-		EXPECT_EQ(m_TiingoDataSource.GetInquiryQueueSize(), 1);
-		m_TiingoDataSource.SetInquireWebDataThreadRunning(true);
-		m_TiingoDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_TiingoDataSource.GetWebData()) << "Tiingo web data尚未接受到";
-		EXPECT_TRUE(m_TiingoDataSource.IsInquiring()) << "没有处理，故此标识没有重置";
-
-		// 恢复原状
-		m_TiingoDataSource.GetCurrentProduct();
-		m_TiingoDataSource.SetInquiring(false);
-	}
-
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived01) {
-		m_TiingoDataSource.SetInquireWebDataThreadRunning(true);
 		m_TiingoDataSource.SetCurrentInquiry(nullptr);
+		m_TiingoDataSource.SetInquiring(true);
 
 		EXPECT_FALSE(m_TiingoDataSource.ProcessWebDataReceived()) << "CurrentInquiry为nullptr";
+
+		// 恢复原状
+		m_TiingoDataSource.SetInquiring(false);
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived02) {
 		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 
-		m_TiingoDataSource.SetInquireWebDataThreadRunning(true);
 		m_TiingoDataSource.SetCurrentInquiry(p);
+		m_TiingoDataSource.SetInquiring(true);
 
 		EXPECT_FALSE(m_TiingoDataSource.ProcessWebDataReceived()) << "DataReceived标识为假";
 
 		// 恢复原状
 		m_TiingoDataSource.SetCurrentInquiry(nullptr);
+		m_TiingoDataSource.SetInquiring(false);
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived03) {
 		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 
-		m_TiingoDataSource.SetInquireWebDataThreadRunning(true);
 		m_TiingoDataSource.SetCurrentInquiry(p);
+		m_TiingoDataSource.SetInquiring(true);
 		while (m_TiingoDataSource.GetReceivedDataSize() > 0) m_TiingoDataSource.GetReceivedData();
 
 		EXPECT_FALSE(m_TiingoDataSource.ProcessWebDataReceived()) << "Received队列为空";
 
 		// 恢复原状
 		m_TiingoDataSource.SetCurrentInquiry(nullptr);
+		m_TiingoDataSource.SetInquiring(false);
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestProcessTiingoWebDataReceived04) {
@@ -223,7 +209,6 @@ namespace FireBirdTest {
 
 		m_TiingoDataSource.StoreReceivedData(pData);
 		m_TiingoDataSource.SetCurrentInquiry(p);
-		m_TiingoDataSource.SetInquireWebDataThreadRunning(false);
 		m_TiingoDataSource.SetInquiring(true);
 
 		EXPECT_TRUE(m_TiingoDataSource.ProcessWebDataReceived());

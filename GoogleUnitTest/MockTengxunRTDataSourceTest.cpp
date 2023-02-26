@@ -122,14 +122,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockTengxunRTDataSourceTest, TestProcessInquiryMessage) {
-		m_pMockTengxunRTDataSource->SetInquireWebDataThreadRunning(false);
 		m_pMockTengxunRTDataSource->SetInquiring(true);
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_CALL(*m_pMockTengxunRTDataSource, StartReadingThread)
 		.Times(1);
 
 		m_pMockTengxunRTDataSource->ProcessInquiryMessage();
-
-		EXPECT_TRUE(m_pMockTengxunRTDataSource->IsInquireWebDataThreadRunning()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
 	}
 }

@@ -43,6 +43,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040);
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "测试数据库装载的股票数";
 		}
 	}
 
