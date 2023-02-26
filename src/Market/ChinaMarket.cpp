@@ -758,8 +758,12 @@ bool CChinaMarket::TaskCheckDayLineDB(void) {
 }
 
 bool CChinaMarket::TaskCheckFastReceivingData(long lCurrentTime) {
-	if (gl_systemConfiguration.IsFastInquiringRTData()) { m_fFastReceivingRTData = true; }
-	else { m_fFastReceivingRTData = IsWorkingTime(lCurrentTime); }
+	if (gl_systemConfiguration.IsFastInquiringRTData()) {
+		m_fFastReceivingRTData = true;
+	}
+	else {
+		m_fFastReceivingRTData = IsWorkingTime(lCurrentTime);
+	}
 
 	return m_fFastReceivingRTData;
 }

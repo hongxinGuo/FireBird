@@ -28,7 +28,7 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 			m_llLastTimeTickCount = llTickCount + 10000; //网络出现错误时，延迟十秒再查询
 		}
 		else {
-			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady()) {
+			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady() && !gl_systemConfiguration.IsDebugMode()) {
 				m_llLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
 			}
 			else {

@@ -73,23 +73,25 @@ void CVirtualDataSource::CreateThreadGetWebDataAndProcessIt() {
 }
 
 bool CVirtualDataSource::GetWebDataAndProcessIt() {
+	CHighPerformanceCounter counter;
+	bool bSucceedGetWebData = false, bSucceedProcessWebData = false;
+
 	ASSERT(IsInquiring());
 	ASSERT(HaveInquiry());
-	if (GetWebData()) {
-		if (ProcessWebDataReceived()) {
-			UpdateStatus();
-			return true;
-		}
+	counter.start();
+	bSucceedGetWebData = GetWebData();
+	bSucceedProcessWebData = ProcessWebDataReceived();
+	counter.stop();
+	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
+
+	if (bSucceedGetWebData && bSucceedProcessWebData) {
+		UpdateStatus();
+		return true;
 	}
 
 	return false;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////
-//
-// DataSource读取函数采用申请和接收轮换执行方式，故而至少调用两次才完成一个轮回。
-//
-/////////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualDataSource::GetWebData(void) {
 	ASSERT(IsInquiring());
 	ASSERT(HaveInquiry());
@@ -168,11 +170,8 @@ void CVirtualDataSource::PrepareReadingWebData(void) {
 }
 
 void CVirtualDataSource::Read(void) {
-	CHighPerformanceCounter counter;
-
 	ASSERT(IsInquiring());
 	PrepareReadingWebData();
-	counter.start();
 	ReadWebData();
 	if (!IsWebError()) {
 		ASSERT(IsInquiring());
@@ -190,8 +189,6 @@ void CVirtualDataSource::Read(void) {
 		DiscardReceivedData();
 		SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
-	counter.stop();
-	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
 }
 
 ///////////////////////////////////////////////////////////////////////////
