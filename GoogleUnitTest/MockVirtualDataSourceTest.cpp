@@ -7,6 +7,7 @@
 #include"MockVirtualDataSource.h"
 
 #include"GeneralCheck.h"
+#include "ProductTiingoStockSymbol.h"
 
 using namespace testing;
 

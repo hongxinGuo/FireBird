@@ -81,12 +81,6 @@ namespace FireBirdTest {
 		m_pTiingoDataSource->SetInquiring(false);
 	}
 
-	TEST_F(CMockTiingoDataSourceTest, TestProcessTiingoInquiringMessage01) {
-		while (m_pTiingoDataSource->GetInquiryQueueSize() > 0) m_pTiingoDataSource->GetCurrentProduct();
-
-		EXPECT_FALSE(m_pTiingoDataSource->GetWebData());
-	}
-
 	TEST_F(CMockTiingoDataSourceTest, TestProcessTiingoInquiringMessage02) {
 		const CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockSymbol>();
 		m_pTiingoDataSource->StoreInquiry(p);
@@ -96,7 +90,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(m_pTiingoDataSource->GetWebData());
 
-		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring()) << "没有处理，故此标识没有重置";
+		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
 	}
 
 	TEST_F(CMockTiingoDataSourceTest, TestParseTiingoInquiringMessage_STOCK_CANDLES_) {

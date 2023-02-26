@@ -89,23 +89,30 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pMockFinnhubDataSource->IsInquiring());
 	}
 	*/
-
-	TEST_F(CMockFinnhubDataSourceTest, TestProcessInquiringMessage01) {
-		while (m_pMockFinnhubDataSource->GetInquiryQueueSize() > 0) m_pMockFinnhubDataSource->GetCurrentProduct();
-
-		EXPECT_FALSE(m_pMockFinnhubDataSource->GetWebData());
-	}
-
-	TEST_F(CMockFinnhubDataSourceTest, TestProcessFinnhubInquiringMessage02) {
-		CVirtualProductWebDataPtr p = make_shared<CProductFinnhubCompanyProfileConcise>();
-		p->SetMarket(gl_pWorldMarket.get());
-		p->SetIndex(0);
+	TEST_F(CMockFinnhubDataSourceTest, TestGetWebData1) {
+		const CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockSymbol>();
 		m_pMockFinnhubDataSource->StoreInquiry(p);
 		EXPECT_EQ(m_pMockFinnhubDataSource->GetInquiryQueueSize(), 1);
 		m_pMockFinnhubDataSource->SetInquiring(true);
-		EXPECT_CALL(*m_pMockFinnhubDataSource, StartReadingThread).Times(1);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, StartReadingThread).Times(1)
+		.WillOnce(Invoke([]() { m_pMockFinnhubDataSource->SetInquiring(true); })); // 顺利读取了网络数据
 
 		EXPECT_TRUE(m_pMockFinnhubDataSource->GetWebData());
+
+		EXPECT_TRUE(m_pMockFinnhubDataSource->IsInquiring());
+	}
+
+	TEST_F(CMockFinnhubDataSourceTest, TestGetWebData2) {
+		const CVirtualProductWebDataPtr p = make_shared<CProductTiingoStockSymbol>();
+		m_pMockFinnhubDataSource->StoreInquiry(p);
+		EXPECT_EQ(m_pMockFinnhubDataSource->GetInquiryQueueSize(), 1);
+		m_pMockFinnhubDataSource->SetInquiring(true);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, StartReadingThread).Times(1)
+		.WillOnce(Invoke([]() { m_pMockFinnhubDataSource->SetInquiring(false); })); // 读取网络数据时出现网络错误，直接返回
+
+		EXPECT_FALSE(m_pMockFinnhubDataSource->GetWebData());
+
+		EXPECT_FALSE(m_pMockFinnhubDataSource->IsInquiring());
 	}
 
 	TEST_F(CMockFinnhubDataSourceTest, TestInquiryFinnhub1) {

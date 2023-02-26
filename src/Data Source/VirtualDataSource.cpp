@@ -74,6 +74,7 @@ void CVirtualDataSource::CreateThreadGetWebDataAndProcessIt() {
 
 bool CVirtualDataSource::GetWebDataAndProcessIt() {
 	ASSERT(IsInquiring());
+	ASSERT(HaveInquiry());
 	if (GetWebData()) {
 		if (ProcessWebDataReceived()) {
 			UpdateStatus();
@@ -90,17 +91,15 @@ bool CVirtualDataSource::GetWebDataAndProcessIt() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualDataSource::GetWebData(void) {
-	if (HaveInquiry()) {
-		ASSERT(IsInquiring());
-		GetCurrentProduct();
-		CreateInquiryMessageFromCurrentProduct();
-		ProcessInquiryMessage();
-		if (!IsInquiring()) { // processInquiryMessage出现问题，重置了IsInquiry.
-			return false;
-		}
-		return true;
+	ASSERT(IsInquiring());
+	ASSERT(HaveInquiry());
+	GetCurrentProduct();
+	CreateInquiryMessageFromCurrentProduct();
+	ProcessInquiryMessage();
+	if (!IsInquiring()) { // processInquiryMessage出现问题，重置了IsInquiry.
+		return false;
 	}
-	return false;
+	return true;
 }
 
 //////////////////////////////////////////////
