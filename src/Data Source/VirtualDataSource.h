@@ -35,16 +35,14 @@ public:
 	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual void CreateThreadGetWebDataAndProcessIt();
 	bool GetWebDataAndProcessIt();
-	virtual bool GetWebData(void);
-	virtual void CreateInquiryMessageFromCurrentProduct(void);
-	virtual void ProcessInquiryMessage(void);
+	virtual void GenerateCurrentInquiryMessage(void);
+	virtual bool GetWebData(void); // 网络读取。为了Mock方便，声明为虚函数。
 	virtual bool ProcessWebDataReceived(void);
 	virtual void UpdateStatus(void) { }
 
 	void SetDefaultSessionOption(void);
 
-	void Read(void); // 实际读取处理函数，完成工作线程的实际功能
-	virtual void StartReadingThread(void) { Read(); } // 网络读取。为了Mock方便，声明为虚函数。
+	bool Read(void); // 实际读取处理函数，完成工作线程的实际功能
 	virtual void ReadWebData(void); // 网络实际读取函数
 	virtual void OpenFile(const CString& strInquiring);
 	virtual void GetFileHeaderInformation();

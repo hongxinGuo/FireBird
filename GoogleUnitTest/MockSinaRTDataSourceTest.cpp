@@ -82,13 +82,4 @@ namespace FireBirdTest {
 		// »Ö¸´Ô­×´
 		gl_pChinaMarket->SetSystemReady(true);
 	}
-
-	TEST_F(CMockSinaRTDataSourceTest, TestProcessInquiryMessage) {
-		m_pMockSinaRTDataSource->SetInquiring(true);
-		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_CALL(*m_pMockSinaRTDataSource, StartReadingThread)
-		.Times(1);
-
-		m_pMockSinaRTDataSource->ProcessInquiryMessage();
-	}
 }

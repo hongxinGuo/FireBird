@@ -145,7 +145,7 @@ bool CTengxunDayLineDataSource::ParseData(CWebDataPtr pWebData) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-void CTengxunDayLineDataSource::CreateInquiryMessageFromCurrentProduct(void) {
+void CTengxunDayLineDataSource::GenerateCurrentInquiryMessage(void) {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();// 腾讯日线的查询字符串，在生成product时即完成了
 }
 

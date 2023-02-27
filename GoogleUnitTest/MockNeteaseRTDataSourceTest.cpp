@@ -85,21 +85,12 @@ namespace FireBirdTest {
 		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductNeteaseRT"));
 	}
 
-	TEST_F(CMockNeteaseRTDataSourceTest, TestProcessInquiryMessage) {
-		m_pMockNeteaseRTDataSource->SetInquiring(true);
-		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_CALL(*m_pMockNeteaseRTDataSource, StartReadingThread)
-		.Times(1);
-
-		m_pMockNeteaseRTDataSource->ProcessInquiryMessage();
-	}
-
 	TEST_F(CMockNeteaseRTDataSourceTest, TestPrepareNextInquiringStr) {
 		gl_pChinaMarket->SetSystemReady(true);
 		auto p = make_shared<CProductNeteaseRT>();
 		p->SetInquiryFunction(_T("http://api.money.126.net/data/feed/"));
 		m_pMockNeteaseRTDataSource->SetCurrentInquiry(p);
-		m_pMockNeteaseRTDataSource->CreateInquiryMessageFromCurrentProduct();
+		m_pMockNeteaseRTDataSource->GenerateCurrentInquiryMessage();
 		const CString str = m_pMockNeteaseRTDataSource->GetInquiringString();
 		EXPECT_STREQ(str.Left(35), _T("http://api.money.126.net/data/feed/"));
 	}

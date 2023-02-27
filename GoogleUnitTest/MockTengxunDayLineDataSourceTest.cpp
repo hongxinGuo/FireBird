@@ -54,18 +54,6 @@ namespace FireBirdTest {
 	protected:
 	};
 
-	TEST_F(CMockTengxunDayLineDataSourceTest, TestGetWebData) {
-		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-		m_pMockTengxunDayLineDataSource->SetInquiring(true);
-		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, StartReadingThread)
-		.Times(1);
-		m_pMockTengxunDayLineDataSource->ProcessInquiryMessage();
-		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-
-		gl_pChinaMarket->GetStock(0)->SetDayLineNeedUpdate(true);
-	}
-
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage1) {
 		gl_pSinaRTDataSource->SetErrorCode(12002);
 		gl_pNeteaseRTDataSource->SetErrorCode(0);

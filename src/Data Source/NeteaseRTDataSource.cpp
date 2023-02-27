@@ -71,7 +71,7 @@ bool CNeteaseRTDataSource::ParseData(CWebDataPtr pWebData) {
 	return false;
 }
 
-void CNeteaseRTDataSource::CreateInquiryMessageFromCurrentProduct(void) {
+void CNeteaseRTDataSource::GenerateCurrentInquiryMessage(void) {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
 

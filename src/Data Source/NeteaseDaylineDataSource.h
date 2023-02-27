@@ -15,7 +15,7 @@ public:
 	void CreateProduct();
 
 	void ConfigureSession(void) override; // 在读取网络数据前的准备工作，默认为设置Netease DayLine的m_pSession状态。
-	void CreateInquiryMessageFromCurrentProduct(void) override;
+	void GenerateCurrentInquiryMessage(void) override;
 	void UpdateStatusAfterReading(CWebDataPtr pData) override; // 成功接收后更新系统状态, 此处更新其股票代码
 	bool ParseData(CWebDataPtr pWebData) override { return false; } // 数据为非JSon格式，不解析
 

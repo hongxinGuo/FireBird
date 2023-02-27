@@ -5,8 +5,8 @@
 namespace testing {
 	class CMockTengxunDayLineDataSource final : public CTengxunDayLineDataSource {
 	public:
-		MOCK_METHOD(void, CreateInquiryMessageFromCurrentProduct, (), (override));
-		MOCK_METHOD(void, StartReadingThread, (), (override));
+		MOCK_METHOD(void, GenerateCurrentInquiryMessage, (), (override));
+		MOCK_METHOD(bool, GetWebData, (), (override));
 		MOCK_METHOD(void, ReadWebData, (), (override));
 		MOCK_METHOD(bool, InquireDayLine, (), (override));
 		MOCK_METHOD(ULONGLONG, GetTickCount, (), (override));

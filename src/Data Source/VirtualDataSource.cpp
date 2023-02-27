@@ -53,16 +53,15 @@ void CVirtualDataSource::Run(const long lCurrentTime) {
 	}
 
 	if (HaveInquiry() && !IsGetWebDataAndProcessItThreadRunning()) {
+		GetCurrentProduct();
+		GenerateCurrentInquiryMessage();
 		CreateThreadGetWebDataAndProcessIt();
 	}
 }
 
 UINT ThreadGetWebDataAndProcessIt(CVirtualDataSource* pDataSource) {
 	gl_ThreadStatus.IncreaseWebInquiringThread();
-	CVirtualDataSource* pSource = pDataSource;
-	pSource->SetGetWebDataAndProcessItThreadRunning(true);
-	pSource->GetWebDataAndProcessIt();
-	pSource->SetGetWebDataAndProcessItThreadRunning(false);
+	pDataSource->GetWebDataAndProcessIt();
 	gl_ThreadStatus.DecreaseWebInquiringThread();
 	return 205;
 }
@@ -74,50 +73,36 @@ void CVirtualDataSource::CreateThreadGetWebDataAndProcessIt() {
 
 bool CVirtualDataSource::GetWebDataAndProcessIt() {
 	CHighPerformanceCounter counter;
-	bool bSucceedGetWebData = false, bSucceedProcessWebData = false;
+	bool bSucceed = false;
 
 	ASSERT(IsInquiring());
-	ASSERT(HaveInquiry());
+	SetGetWebDataAndProcessItThreadRunning(true);
 	counter.start();
-	bSucceedGetWebData = GetWebData();
-	bSucceedProcessWebData = ProcessWebDataReceived();
+	if (GetWebData()) {
+		ASSERT(!IsWebError());
+		if (ProcessWebDataReceived()) {
+			UpdateStatus();
+			bSucceed = true;
+		}
+	}
 	counter.stop();
 	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
-
-	if (bSucceedGetWebData && bSucceedProcessWebData) {
-		UpdateStatus();
-		return true;
-	}
-
-	return false;
-}
-
-bool CVirtualDataSource::GetWebData(void) {
-	ASSERT(IsInquiring());
-	ASSERT(HaveInquiry());
-	GetCurrentProduct();
-	CreateInquiryMessageFromCurrentProduct();
-	ProcessInquiryMessage();
-	if (!IsInquiring()) { // processInquiryMessage出现问题，重置了IsInquiry.
-		return false;
-	}
-	return true;
+	SetGetWebDataAndProcessItThreadRunning(false);
+	return bSucceed;
 }
 
 //////////////////////////////////////////////
 //
-// 处理工作线程接收到的网络信息。
 //
 // 只允许同时处理一条信息。即信息从申请至处理完之前，不允许处理下一条信息。这样能够保证同一性。且由于Finnhub网站有速度限制，
 // 每分钟只允许60次申请，故而没有必要强调处理速度。
 //
-// 目前已将中国市场的SinaRT、NeteaseRT、TengxunRT和NeteaseDayLine的数据使用此数据源实现了。由于SinaRT和NeteaseRT要求的实时性比较强，
-// 故而该两个数据源采用先返回后处理数据的模式。--20221120
 //
 //////////////////////////////////////////////
 bool CVirtualDataSource::ProcessWebDataReceived(void) {
 	bool bProcessed = false;
 	ASSERT(IsInquiring());
+	ASSERT(HaveReceivedData());
 	if (HaveReceivedData()) {
 		// 处理当前网络数据
 		ASSERT(m_pCurrentProduct != nullptr);
@@ -154,41 +139,38 @@ void CVirtualDataSource::SetDefaultSessionOption(void) {
 	m_pSession->QueryOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, dwValue); // 查询接收超时时间
 }
 
-void CVirtualDataSource::CreateInquiryMessageFromCurrentProduct(void) {
+void CVirtualDataSource::GenerateCurrentInquiryMessage(void) {
 	ASSERT(m_pCurrentProduct != nullptr);
 	m_strInquiryFunction = m_pCurrentProduct->CreateMessage();
 	CreateTotalInquiringString();
 }
 
-void CVirtualDataSource::ProcessInquiryMessage(void) {
-	ASSERT(IsInquiring());
-	StartReadingThread();
+bool CVirtualDataSource::GetWebData(void) {
+	return Read();
 }
 
 void CVirtualDataSource::PrepareReadingWebData(void) {
 	ConfigureSession();
 }
 
-void CVirtualDataSource::Read(void) {
-	ASSERT(IsInquiring());
+bool CVirtualDataSource::Read(void) {
 	PrepareReadingWebData();
 	ReadWebData();
 	if (!IsWebError()) {
-		ASSERT(IsInquiring());
 		VerifyDataLength();
 		const auto pWebData = CreateWebDataAfterSucceedReading();
-		ASSERT(IsInquiring());
 		StoreReceivedData(pWebData);
-		ASSERT(IsInquiring());
 		ResetBuffer();
-		ASSERT(IsInquiring());
 	}
 	else {
 		// error handling
-		DiscardProduct(); // 当一次查询产生多次申请时，这些申请都是各自相关的，只有出现一次错误，其他的申请就无意义了。
+		DiscardProduct(); // 当一次查询产生多次申请时，这些申请都是各自相关的，只要出现一次错误，其他的申请就无意义了。
 		DiscardReceivedData();
+		ASSERT(IsInquiring());
 		SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
+
+	return IsInquiring();
 }
 
 ///////////////////////////////////////////////////////////////////////////

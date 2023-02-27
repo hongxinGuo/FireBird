@@ -69,7 +69,7 @@ bool CSinaRTDataSource::InquireRTData(const long) {
 // 目前只提取前12000个股票的实时数据。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CSinaRTDataSource::CreateInquiryMessageFromCurrentProduct(void) {
+void CSinaRTDataSource::GenerateCurrentInquiryMessage(void) {
 	ASSERT(m_pCurrentProduct != nullptr);
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }

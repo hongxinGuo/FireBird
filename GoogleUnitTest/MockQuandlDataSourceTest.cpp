@@ -69,14 +69,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pMockQuandlDataSource->IsInquiring());
 	}
 
-	TEST_F(CMockQuandlDataSourceTest, TestProcessInquiryMessage) {
-		m_pMockQuandlDataSource->SetInquiring(true);
-		gl_pWorldMarket->SetSystemReady(true);
-		EXPECT_CALL(*m_pMockQuandlDataSource, StartReadingThread).Times(1);
-
-		m_pMockQuandlDataSource->ProcessInquiryMessage();
-	}
-
 	/// <summary>
 	/// 测试Mock函数时，互相调用的函数不能同时声明为Mock函数，否则就无法测试了。
 	/// 在这里测试CVirtualDataSource类中的Read函数。

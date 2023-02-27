@@ -120,13 +120,4 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->HaveInquiry());
 		while (m_pMockTengxunRTDataSource->HaveInquiry()) m_pMockTengxunRTDataSource->GetCurrentProduct();
 	}
-
-	TEST_F(CMockTengxunRTDataSourceTest, TestProcessInquiryMessage) {
-		m_pMockTengxunRTDataSource->SetInquiring(true);
-		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_CALL(*m_pMockTengxunRTDataSource, StartReadingThread)
-		.Times(1);
-
-		m_pMockTengxunRTDataSource->ProcessInquiryMessage();
-	}
 }

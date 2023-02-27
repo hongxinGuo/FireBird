@@ -212,16 +212,4 @@ namespace FireBirdTest {
 		// restore
 		gl_systemStatus.SetExitingSystem(false);
 	}
-
-	TEST_F(CMockVirtualDataSourceTest, TestProcessInquiryMessage) {
-		m_pVirtualDataSource->SetInquiring(true);
-		EXPECT_CALL(*m_pVirtualDataSource, StartReadingThread()).Times(1);
-
-		m_pVirtualDataSource->ProcessInquiryMessage();
-	}
-
-	TEST_F(CMockVirtualDataSourceTest, TestStartReadingThread) {
-		EXPECT_CALL(*m_pVirtualDataSource, StartReadingThread()).Times(1);
-		m_pVirtualDataSource->StartReadingThread();
-	}
 }

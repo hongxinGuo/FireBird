@@ -54,7 +54,7 @@ bool CTengxunRTDataSource::InquireRTData(const long lCurrentTime) {
 	return false;
 }
 
-void CTengxunRTDataSource::CreateInquiryMessageFromCurrentProduct(void) {
+void CTengxunRTDataSource::GenerateCurrentInquiryMessage(void) {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
 
