@@ -38,9 +38,10 @@ public:
 	virtual void GenerateCurrentInquiryMessage(void);
 	virtual bool GetWebData(void); // 网络读取。为了Mock方便，声明为虚函数。
 	virtual bool ProcessWebDataReceived(void);
+	void CheckInaccessible(CWebDataPtr pWebData) const;
 	virtual void UpdateStatus(void) { }
 
-	void SetDefaultSessionOption(void);
+	void SetDefaultSessionOption(void) const;
 
 	bool Read(void); // 实际读取处理函数，完成工作线程的实际功能
 	virtual void ReadWebData(void); // 网络实际读取函数

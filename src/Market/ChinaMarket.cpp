@@ -65,7 +65,6 @@ CChinaMarket::~CChinaMarket() {
 }
 
 void CChinaMarket::ResetMarket(void) {
-	TRACE(_T("重置中国股市\n"));
 	CString str = _T("重置中国股市于北京标准时间：");
 	str += GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(str);
@@ -492,15 +491,17 @@ bool CChinaMarket::SchedulingTask(void) {
 	CVirtualMarket::SchedulingTask();
 
 	const long lCurrentTime = GetMarketTime();
+	const time_t tUTC = GetUTCTime();
+	const long lTimeDiffer = tUTC > m_lastTimeSchedulingTask;
 
 	// 抓取实时数据(新浪、腾讯和网易）。每250毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
 	// 调用各Web data source，进行网络数据的接收和处理。
 	RunDataSource(lCurrentTime);
 
 	//根据时间，调度各项定时任务.每秒调度一次
-	if (GetUTCTime() > m_lastTimeSchedulingTask) {
-		SchedulingTaskPerSecond(GetUTCTime() - m_lastTimeSchedulingTask, lCurrentTime);
-		m_lastTimeSchedulingTask = GetUTCTime();
+	if (lTimeDiffer > 0) {
+		SchedulingTaskPerSecond(lTimeDiffer, lCurrentTime);
+		m_lastTimeSchedulingTask = tUTC;
 	}
 
 	// 系统准备好了之后需要完成的各项工作
@@ -531,19 +532,19 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	m_iCount5Minute -= lSecond;
 	m_iCount1Hour -= lSecond;
 	if (m_iCount1Hour < 0) {
-		m_iCount1Hour = 3599;
+		m_iCount1Hour = 3600 - lSecond;
 		SchedulingTaskPerHour(lCurrentTime);
 	}
 	if (m_iCount5Minute < 0) {
-		m_iCount5Minute = 299;
+		m_iCount5Minute = 300 - lSecond;
 		SchedulingTaskPer5Minutes(lCurrentTime);
 	}
 	if (m_iCount1Minute < 0) {
-		m_iCount1Minute = 59;
+		m_iCount1Minute = 60 - lSecond;
 		SchedulingTaskPerMinute(lCurrentTime);
 	}
 	if (m_iCount10Second < 0) {
-		m_iCount10Second = 9;
+		m_iCount10Second = 10 - lSecond;
 		SchedulingTaskPer10Seconds(lCurrentTime);
 	}
 

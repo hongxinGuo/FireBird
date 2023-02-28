@@ -172,6 +172,7 @@
     <ClCompile Include="TimeConvertTest.cpp" />
     <ClCompile Include="VirtualDataSourceTest.cpp" />
     <ClCompile Include="VirtualRecordsetTest.cpp" />
+    <ClCompile Include="VirtualWebProductTest.cpp" />
     <ClCompile Include="WorldMarketTest.cpp" />
     <ClCompile Include="WorldStockTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />

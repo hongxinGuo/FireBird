@@ -137,6 +137,8 @@ bool CWorldMarket::SchedulingTask(void) {
 	CVirtualMarket::SchedulingTask();
 
 	const long lCurrentTime = GetMarketTime();
+	const time_t tUTC = GetUTCTime();
+	const long lTimeDiffer = tUTC > m_lastTimeSchedulingTask;
 
 	TaskCheckSystemReady();
 
@@ -144,9 +146,9 @@ bool CWorldMarket::SchedulingTask(void) {
 	RunDataSource(lCurrentTime);
 
 	//根据时间，调度各项定时任务.每秒调度一次
-	if (GetUTCTime() > m_lastTimeSchedulingTask) {
-		SchedulingTaskPerSecond(GetUTCTime() - m_lastTimeSchedulingTask, lCurrentTime);
-		m_lastTimeSchedulingTask = GetUTCTime();
+	if (lTimeDiffer > 0) {
+		SchedulingTaskPerSecond(lTimeDiffer, lCurrentTime);
+		m_lastTimeSchedulingTask = tUTC;
 	}
 
 	return true;
@@ -158,19 +160,19 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	m_iCount5Minute -= lSecond;
 	m_iCount1Hour -= lSecond;
 	if (m_iCount1Hour < 0) {
-		m_iCount1Hour = 3599;
+		m_iCount1Hour = 3600 - lSecond;
 		SchedulingTaskPerHour(lCurrentTime);
 	}
 	if (m_iCount5Minute < 0) {
-		m_iCount5Minute = 299;
+		m_iCount5Minute = 300 - lSecond;
 		SchedulingTaskPer5Minute(lCurrentTime);
 	}
 	if (m_iCount1Minute < 0) {
-		m_iCount1Minute = 59;
+		m_iCount1Minute = 60 - lSecond;
 		SchedulingTaskPerMinute(lCurrentTime);
 	}
 	if (m_iCount10Second < 0) {
-		m_iCount10Second = 9;
+		m_iCount10Second = 10 - lSecond;
 		SchedulingTaskPer10Seconds(lCurrentTime);
 	}
 

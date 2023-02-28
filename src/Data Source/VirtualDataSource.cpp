@@ -47,12 +47,11 @@ void CVirtualDataSource::Run(const long lCurrentTime) {
 	ASSERT(m_fEnable);
 
 	if (!IsInquiring()) {
-		if (GenerateInquiryMessage(lCurrentTime)) {
-			ASSERT(IsInquiring());
-		}
+		GenerateInquiryMessage(lCurrentTime);
 	}
 
 	if (HaveInquiry() && !IsGetWebDataAndProcessItThreadRunning()) {
+		ASSERT(IsInquiring());
 		GetCurrentProduct();
 		GenerateCurrentInquiryMessage();
 		CreateThreadGetWebDataAndProcessIt();
@@ -75,11 +74,9 @@ bool CVirtualDataSource::GetWebDataAndProcessIt() {
 	CHighPerformanceCounter counter;
 	bool bSucceed = false;
 
-	ASSERT(IsInquiring());
 	SetGetWebDataAndProcessItThreadRunning(true);
 	counter.start();
 	if (GetWebData()) {
-		ASSERT(!IsWebError());
 		if (ProcessWebDataReceived()) {
 			UpdateStatus();
 			bSucceed = true;
@@ -101,21 +98,12 @@ bool CVirtualDataSource::GetWebDataAndProcessIt() {
 //////////////////////////////////////////////
 bool CVirtualDataSource::ProcessWebDataReceived(void) {
 	bool bProcessed = false;
-	ASSERT(IsInquiring());
-	ASSERT(HaveReceivedData());
+	//ASSERT(HaveReceivedData());
 	if (HaveReceivedData()) {
 		// 处理当前网络数据
 		ASSERT(m_pCurrentProduct != nullptr);
 		const CWebDataPtr pWebData = GetReceivedData();
-		if (pWebData->IsParsed()) {
-			m_pCurrentProduct->CheckNoRightToAccess(pWebData);
-			if (m_pCurrentProduct->IsNoRightToAccess()) {
-				// 如果系统报告无权查询此类数据
-				// 目前先在软件系统消息中报告
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
-				m_pCurrentProduct->AddInaccessibleExchangeIfNeeded(); // 检查是否无权查询
-			}
-		}
+		CheckInaccessible(pWebData);
 		m_pCurrentProduct->ParseAndStoreWebData(pWebData);
 		bProcessed = true;
 	}
@@ -126,7 +114,15 @@ bool CVirtualDataSource::ProcessWebDataReceived(void) {
 	return bProcessed;
 }
 
-void CVirtualDataSource::SetDefaultSessionOption(void) {
+void CVirtualDataSource::CheckInaccessible(CWebDataPtr pWebData) const {
+	ASSERT(m_pCurrentProduct != nullptr);
+	if (m_pCurrentProduct->CheckInaccessible(pWebData)) {
+		// 如果系统报告无权查询此类数据, 目前先在软件系统消息中报告
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
+	}
+}
+
+void CVirtualDataSource::SetDefaultSessionOption(void) const {
 	DWORD dwValue = 0;
 
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
@@ -154,6 +150,7 @@ void CVirtualDataSource::PrepareReadingWebData(void) {
 }
 
 bool CVirtualDataSource::Read(void) {
+	bool bSucceed = true;
 	PrepareReadingWebData();
 	ReadWebData();
 	if (!IsWebError()) {
@@ -164,13 +161,14 @@ bool CVirtualDataSource::Read(void) {
 	}
 	else {
 		// error handling
+		bSucceed = false;
 		DiscardProduct(); // 当一次查询产生多次申请时，这些申请都是各自相关的，只要出现一次错误，其他的申请就无意义了。
 		DiscardReceivedData();
 		ASSERT(IsInquiring());
 		SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
 
-	return IsInquiring();
+	return bSucceed;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -185,7 +183,6 @@ bool CVirtualDataSource::Read(void) {
 //
 ///////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::ReadWebData(void) {
-	ASSERT(IsInquiring());
 	SetByteRead(0);
 
 	ASSERT(m_pFile == nullptr);
@@ -213,7 +210,6 @@ void CVirtualDataSource::ReadWebData(void) {
 		exception->Delete();
 	}
 	DeleteWebFile();
-	ASSERT(IsInquiring());
 }
 
 // <summary>

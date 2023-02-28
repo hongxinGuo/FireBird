@@ -21,13 +21,8 @@ public:
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) { return true; };
 	virtual bool AddInaccessibleExchangeIfNeeded(void) { return true; } // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 
-	bool CheckVoidJson(const CWebDataPtr& pWebData) {
-		if (pWebData->IsVoidJson()) {
-			m_iReceivedDataStatus = VOID_DATA_;
-			return true;
-		}
-		else return false;
-	}
+	bool CheckInaccessible(CWebDataPtr pWebData);
+	bool CheckVoidJson(const CWebDataPtr& pWebData);
 
 	bool IsVoidData(void) const noexcept { return m_iReceivedDataStatus == VOID_DATA_; }
 	virtual bool CheckNoRightToAccess(CWebDataPtr pWebData) { return false; }
@@ -46,7 +41,7 @@ public:
 
 	void SetInquiringExchange(const CString& exchange) noexcept { m_strInquiringExchange = exchange; }
 	CString GetInquiringExchange(void) const noexcept { return m_strInquiringExchange; }
-	bool IsUSMarket(void); // 如果是美国市场
+	bool IsUSMarket(void) const; // 如果是美国市场
 
 	void SetProductType(const int iProductType) noexcept { m_iProductType = iProductType; }
 	int GetProductType(void) const noexcept { return m_iProductType; }
@@ -59,8 +54,7 @@ protected:
 	CString m_strInquiringExchange; // 目前查询的交易所代码
 	long m_lIndex;
 	int m_iProductType;
-	int m_iReceivedDataStatus;
-	// 0:有效数据；1:void data(只有{}两个数据); 2:没有权利申请（{"error": "You don't have access to this resource."}）
+	int m_iReceivedDataStatus; // 0:有效数据；1:void data(只有{}两个数据); 2:没有权利申请（{"error": "You don't have access to this resource."}）
 };
 
 using CVirtualWebProductPtr = shared_ptr<CVirtualWebProduct>;

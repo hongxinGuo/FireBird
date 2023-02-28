@@ -407,8 +407,8 @@ bool CMainFrame::SchedulingTask(void) {
 bool CMainFrame::ResetMarket(void) {
 	for (const auto& pMarket : gl_vMarketPtr) {
 		if (pMarket->IsResetMarket()) {
-			pMarket->ResetMarket();
 			pMarket->SetResetMarket(false);
+			pMarket->ResetMarket();
 		}
 	}
 	return true;

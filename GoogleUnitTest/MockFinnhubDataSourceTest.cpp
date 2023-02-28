@@ -110,18 +110,4 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(m_pMockFinnhubDataSource->InquireFinnhub(120000));
 	}
-
-	//todo 以下测试尚未完成
-	TEST_F(CMockFinnhubDataSourceTest, TestProcessFinnhubWebDataReceived01) {
-		m_pMockFinnhubDataSource->SetInquiring(true);
-
-		EXPECT_FALSE(m_pMockFinnhubDataSource->ProcessWebDataReceived());
-	}
-
-	TEST_F(CMockFinnhubDataSourceTest, TestProcessFinnhubWebDataReceived02) {
-		m_pMockFinnhubDataSource->SetInquiring(true);
-		while (m_pMockFinnhubDataSource->GetInquiryQueueSize() > 0) m_pMockFinnhubDataSource->GetCurrentProduct();
-
-		EXPECT_FALSE(m_pMockFinnhubDataSource->ProcessWebDataReceived());
-	}
 }

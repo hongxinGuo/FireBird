@@ -576,6 +576,9 @@
     <ClCompile Include="TengxunRTDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
+    <ClCompile Include="VirtualWebProductTest.cpp">
+      <Filter>Test源文件\Factory Product</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
