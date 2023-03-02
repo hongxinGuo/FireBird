@@ -97,17 +97,52 @@ Included items must then not match any entries in the exclude list to remain inc
 	              <Function>CMainFrame::OnToolbarCreateNew</Function>
 								<Function>CMainFrame::GetThisMessageMap</Function>
 	              <Function>CMainFrame::CreateDockingWindows</Function>
+	              <Function>CMainFrame::SetDockingWindowIcons</Function>
+	              <Function>CMainFrame::PreCreateWindow</Function>
+	              <Function>CMainFrame::OnWindowManager</Function>
+	              <Function>CMainFrame::OnViewCustomize</Function>
+	              <Function>CMainFrame::OnSettingChange</Function>
 
 	              <Function>CWorldMarket::SchedulingTaskPerSecond</Function>
-	              <Function>CChinaMarket::SchedulingTaskPer10Seconds</Function>
+	              <Function>CWorldMarket::SchedulingTaskPer10Seconds</Function>
 	              <Function>CWorldMarket::SchedulingTaskPerMinute</Function>
 	              <Function>CWorldMarket::SchedulingTaskPer5Minute</Function>
 	              <Function>CWorldMarket::SchedulingTaskPerHour</Function>
 								<Function>CWorldMarket::SchedulingTask</Function>
 
-	              <Function>CVirtualDataHistoryCandleExtend::ShowData</Function>
-	             
-              </Exclude>
+								<Function>CVirtualDataHistoryCandleExtend::ShowData</Function>
+
+								<Function>CTodayTempDB::DeleteCurrentContent</Function>
+
+								<Function>CVirtualDataSource::VerifyDataLength</Function>
+								<Function>CVirtualDataSource::QueryDataLength</Function>
+								<Function>CVirtualDataSource::TESTSetBuffer</Function>
+								<Function>CVirtualDataSource::ReadWebFileOneTime</Function>
+	              <Function>CVirtualDataSource::DeleteWebFile</Function>
+								<Function>CVirtualDataSource::GetFileHeaderInformation</Function>
+								<Function>CVirtualDataSource::OpenFile</Function>
+								<Function>CVirtualDataSource::CreateThreadGetWebDataAndProcessIt</Function>
+								<Function>CVirtualDataSource::Reset</Function>
+	              <Function>CVirtualDataSource::GetTickCount</Function>
+								<Function>CVirtualDataSource::ConfigureSession</Function>
+								<Function>CVirtualDataSource::UpdateStatus</Function>
+
+								<Function>CVirtualWebSocket::Connecting</Function>
+								<Function>CVirtualWebSocket::CreateThreadDisconnectWebSocket</Function>
+								<Function>CVirtualWebSocket::Connect</Function>
+								<Function>CVirtualWebSocket::Send</Function>
+								<Function>CVirtualWebSocket::StartWebSocket</Function>
+								<Function>CVirtualWebSocket::StopWebSocket</Function>
+								<Function>CVirtualWebSocket::SendString</Function>
+
+								<Function>CFinnhubWebSocket::Connect</Function>
+								<Function>CFinnhubWebSocket::Send</Function>
+								<Function>CFinnhubWebSocket::CreateThreadConnectWebSocket</Function>
+
+								<Function></Function>
+	              <Function></Function>
+
+							</Exclude>
             </Functions>
 
             <!-- Match attributes on any code element: -->

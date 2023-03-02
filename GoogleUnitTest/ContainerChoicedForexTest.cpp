@@ -2,8 +2,8 @@
 
 #include"GeneralCheck.h"
 
-#include"ContainerChosenForex.h"
 #include "FinnhubForexSymbol.h"
+#include"ContainerChosenForex.h"
 
 using namespace testing;
 
@@ -41,7 +41,7 @@ namespace FireBirdTest {
 		m_containerChosenForex.LoadDB();
 		EXPECT_EQ(m_containerChosenForex.Size(), 3) << "默认状态下装载3个代码";
 
-		CForexSymbolPtr pForex = dynamic_pointer_cast<CFinnhubForexSymbol>(m_containerChosenForex.Get(2));
+		const CForexSymbolPtr pForex = m_containerChosenForex.GetForexSymbol(2);
 		EXPECT_STREQ(pForex->GetSymbol(), _T("OANDA:AUD_SGD")) << "装载时没有排序，使用的是原始位置";
 	}
 }

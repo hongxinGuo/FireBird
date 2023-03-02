@@ -38,7 +38,7 @@
     <ClInclude Include="..\src\Data Container\DataFinnhubCountry.h" />
     <ClInclude Include="..\src\Data Container\DataFinnhubCryptoExchange.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubCryptoSymbol.h" />
-    <ClInclude Include="..\src\Data Container\DataFinnhubEconomicCalendar.h" />
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.h" />
     <ClInclude Include="..\src\Data Container\DataFinnhubForexExchange.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubForexSymbol.h" />
     <ClInclude Include="..\src\Data Container\DataFinnhubStockExchange.h" />
@@ -46,7 +46,7 @@
     <ClInclude Include="..\src\Data Container\DataNaicsIndustry.h" />
     <ClInclude Include="..\src\Data Container\DataSICIndustry.h" />
     <ClInclude Include="..\src\Data Container\DataStockSymbol.h" />
-    <ClInclude Include="..\src\Data Container\DataTiingoCryptoSymbol.h" />
+    <ClInclude Include="..\src\Data Container\ContainerTiingoCryptoSymbol.h" />
     <ClInclude Include="..\src\Data Container\DataTiingoIndustry.h" />
     <ClInclude Include="..\src\Data Container\DataTiingoStock.h" />
     <ClInclude Include="..\src\Data Container\ContainerWorldStock.h" />
@@ -229,13 +229,13 @@
     <ClCompile Include="..\src\Data Container\DataFinnhubCountry.cpp" />
     <ClCompile Include="..\src\Data Container\DataFinnhubCryptoExchange.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerFinnhubCryptoSymbol.cpp" />
-    <ClCompile Include="..\src\Data Container\DataFinnhubEconomicCalendar.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.cpp" />
     <ClCompile Include="..\src\Data Container\DataFinnhubForexExchange.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerFinnhubForexSymbol.cpp" />
     <ClCompile Include="..\src\Data Container\DataFinnhubStockExchange.cpp" />
     <ClCompile Include="..\src\Data Container\DataForexDayLine.cpp" />
     <ClCompile Include="..\src\Data Container\DataStockSymbol.cpp" />
-    <ClCompile Include="..\src\Data Container\DataTiingoCryptoSymbol.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerTiingoCryptoSymbol.cpp" />
     <ClCompile Include="..\src\Data Container\DataTiingoStock.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerWorldStock.cpp" />
     <ClCompile Include="..\src\Data Container\DataWorldStockDayLine.cpp" />

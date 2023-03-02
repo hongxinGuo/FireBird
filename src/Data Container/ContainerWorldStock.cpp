@@ -91,7 +91,7 @@ bool CContainerWorldStock::LoadDB(void) {
 		}
 		setWorldStock.MoveNext();
 
-		//CheckStockSymbol(pWorldStock);
+		//ValidateStockSymbol(pWorldStock);
 	}
 	setWorldStock.m_pDatabase->CommitTrans();
 	setWorldStock.Close();
@@ -278,14 +278,13 @@ void CContainerWorldStock::ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> 
 	}
 }
 
-bool CContainerWorldStock::CheckStockSymbol(CWorldStockPtr pStock) {
+bool CContainerWorldStock::ValidateStockSymbol(CWorldStockPtr pStock) {
 	const CString strSymbol = pStock->GetSymbol();
 	const CString strExchangeCode = pStock->GetExchangeCode();
 
 	if (strExchangeCode.Compare(_T("US")) == 0) return true;
 	const int pos = strSymbol.Find(_T(".") + strExchangeCode);
 	if ((pos + 1) < (strSymbol.GetLength() - strExchangeCode.GetLength())) {
-		gl_systemMessage.PushErrorMessage(_T("stock sysmbol Error: ") + strSymbol);
 		return false;
 	}
 	return true;

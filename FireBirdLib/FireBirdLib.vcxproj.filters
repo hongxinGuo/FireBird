@@ -660,7 +660,7 @@
     <ClInclude Include="..\src\Data Container\ContainerFinnhubCryptoSymbol.h">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataFinnhubEconomicCalendar.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.h">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\DataFinnhubForexExchange.h">
@@ -672,7 +672,7 @@
     <ClInclude Include="..\src\Data Container\DataFinnhubStockExchange.h">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataTiingoCryptoSymbol.h">
+    <ClInclude Include="..\src\Data Container\ContainerTiingoCryptoSymbol.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\DataTiingoIndustry.h">
@@ -1244,7 +1244,7 @@
     <ClCompile Include="..\src\Data Container\ContainerFinnhubCryptoSymbol.cpp">
       <Filter>源文件\Data container\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\DataFinnhubEconomicCalendar.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.cpp">
       <Filter>源文件\Data container\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\DataFinnhubForexExchange.cpp">
@@ -1253,7 +1253,7 @@
     <ClCompile Include="..\src\Data Container\ContainerFinnhubForexSymbol.cpp">
       <Filter>源文件\Data container\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\DataTiingoCryptoSymbol.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerTiingoCryptoSymbol.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\DataTiingoStock.cpp">

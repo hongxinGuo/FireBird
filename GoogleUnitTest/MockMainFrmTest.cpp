@@ -57,17 +57,6 @@ namespace FireBirdTest {
 		}
 	};
 
-	TEST_F(CMockMainFrameTest, TestFormatToMK) {
-		CString str = gl_pMockMainFrame->FormatToMK(123);
-		EXPECT_STREQ(str, _T(" 123"));
-		str = gl_pMockMainFrame->FormatToMK(12 * 1024);
-		EXPECT_STREQ(str, _T("  12K"));
-		str = gl_pMockMainFrame->FormatToMK(12 * 1024 * 1024);
-		EXPECT_STREQ(str, _T("  12M"));
-		str = gl_pMockMainFrame->FormatToMK(static_cast<long long>(12345) * 1024 * 1024);
-		EXPECT_STREQ(str, _T("12345M"));
-	}
-
 	TEST_F(CMockMainFrameTest, TestCreateMarketContainer) {
 		EXPECT_TRUE(gl_pMockMainFrame->CreateMarketContainer());
 		EXPECT_EQ(gl_vMarketPtr.size(), 4);

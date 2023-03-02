@@ -57,7 +57,6 @@ public:
 
 	// 实现
 public:
-	CString FormatToMK(long long iNumber); // 将数字转换成以M或者K为单位
 
 protected:
 	UINT m_uIdTimer;

@@ -5,10 +5,6 @@
 #include<memory>
 using std::vector;
 
-class CDayLine;
-using CDayLinePtr = shared_ptr<CDayLine>;
-using CDayLineVectorPtr = shared_ptr<vector<CDayLinePtr>>;
-
 class CDayLine final : public CVirtualHistoryCandleExtend {
 public:
 	CDayLine();
@@ -16,3 +12,6 @@ public:
 
 private:
 };
+
+using CDayLinePtr = shared_ptr<CDayLine>;
+using CDayLineVectorPtr = shared_ptr<vector<CDayLinePtr>>;

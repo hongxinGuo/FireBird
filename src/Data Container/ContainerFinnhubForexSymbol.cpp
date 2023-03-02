@@ -51,7 +51,7 @@ bool CContainerFinnhubForexSymbol::UpdateDB(void) {
 		setForexSymbol.Open();
 		setForexSymbol.m_pDatabase->BeginTrans();
 		for (auto l = m_lastTotalSymbol; l < lTotalForexSymbol; l++) {
-			pSymbol = dynamic_pointer_cast<CFinnhubForexSymbol>(m_vStock.at(l));
+			pSymbol = GetSymbol(l);
 			pSymbol->AppendSymbol(setForexSymbol);
 		}
 		setForexSymbol.m_pDatabase->CommitTrans();
@@ -70,7 +70,7 @@ bool CContainerFinnhubForexSymbol::UpdateDB(void) {
 		setForexSymbol.m_pDatabase->BeginTrans();
 		while (!setForexSymbol.IsEOF()) {
 			if (m_mapSymbol.contains(setForexSymbol.m_Symbol)) {
-				pSymbol = dynamic_pointer_cast<CFinnhubForexSymbol>(m_vStock.at(m_mapSymbol.at(setForexSymbol.m_Symbol)));
+				pSymbol = GetSymbol(setForexSymbol.m_Symbol);
 				if (pSymbol->IsUpdateProfileDB()) {
 					pSymbol->UpdateSymbol(setForexSymbol);
 					pSymbol->SetUpdateProfileDB(false);

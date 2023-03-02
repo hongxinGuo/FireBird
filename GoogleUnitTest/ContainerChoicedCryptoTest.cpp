@@ -2,8 +2,8 @@
 
 #include"GeneralCheck.h"
 
-#include"containerChosenCrypto.h"
 #include"FinnhubCryptoSymbol.h"
+#include"containerChosenCrypto.h"
 
 using namespace testing;
 
@@ -41,7 +41,7 @@ namespace FireBirdTest {
 		m_containerChosenCrypto.LoadDB();
 		EXPECT_EQ(m_containerChosenCrypto.Size(), 11) << "默认状态下装载12个代码,但其中的代码DKAETH不属于Crypto代码集，故而只装载了11个";
 
-		const CFinnhubCryptoSymbolPtr pCrypto = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_containerChosenCrypto.Get(2));
+		const CFinnhubCryptoSymbolPtr pCrypto = m_containerChosenCrypto.GetCryptoSymbol(2);
 		EXPECT_STREQ(pCrypto->GetSymbol(), _T("BINANCE:OCEANBTC")) << "装载时没有排序，使用的是原始位置";
 	}
 }

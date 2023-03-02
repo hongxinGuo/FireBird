@@ -74,6 +74,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="CompanyNewsTest.cpp" />
+    <ClCompile Include="ContainerFinnhubEconomicCalendarTest.cpp" />
     <ClCompile Include="ContainerVirtualStockTest.cpp" />
     <ClCompile Include="ConvertToStringTest.cpp" />
     <ClCompile Include="ContainerChinaStockTest.cpp" />
@@ -105,7 +106,7 @@
     <ClCompile Include="ProductTengxunDayLineTest.cpp" />
     <ClCompile Include="ProductTengxunRTTest.cpp" />
     <ClCompile Include="DataStockSymbolTest.cpp" />
-    <ClCompile Include="DataTiingoCryptoSymbolTest.cpp" />
+    <ClCompile Include="ContainerTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="DataWorldStockDayLineTest.cpp" />
     <ClCompile Include="FinnhubCompanyNewsTest.cpp" />
     <ClCompile Include="FinnhubINquiryTypeTest.cpp" />

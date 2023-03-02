@@ -30,6 +30,7 @@
 
 #include<exception>
 
+#include "ConvertToString.h"
 #include "TimeConvert.h"
 
 bool CMainFrame::sm_fGlobeInit = false;
@@ -81,8 +82,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildRebuildCurrentWeekLine)
 	ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekLine)
 	ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable)
-	ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE,
-	                     &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable)
+	ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable)
 	ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStockSection)
 	ON_COMMAND(ID_UPDATE_STOCK_CODE, &CMainFrame::OnUpdateStockCode)
 	ON_COMMAND(ID_REBUILD_EPS_SURPRISE, &CMainFrame::OnRebuildEpsSurprise)
@@ -175,7 +175,9 @@ CMainFrame::~CMainFrame() {
 		ix::uninitNetSystem();// 退出系统时，析构IXWebSocket库，且只能析构一次。
 	}
 
-	if (gl_pChinaMarket->IsUpdateOptionDB()) { gl_pChinaMarket->UpdateOptionDB(); }
+	if (gl_pChinaMarket->IsUpdateOptionDB()) {
+		gl_pChinaMarket->UpdateOptionDB();
+	}
 
 	if (gl_pChinaMarket->IsUpdateChosenStockDB()) {
 		gl_pChinaMarket->UpdateChosenStockDB(); // 这里直接调用存储函数，不采用工作线程的模式。
@@ -447,24 +449,6 @@ BOOL CMainFrame::CreateDockingWindows() {
 	return TRUE;
 }
 
-// CMainFrame 诊断
-
-CString CMainFrame::FormatToMK(long long iNumber) {
-	char buffer[100];
-	if (iNumber > 1024 * 1024) {
-		// 1M以上的流量？
-		sprintf_s(buffer, _T("%4lldM"), iNumber / (1024 * 1024));
-	}
-	else if (iNumber > 1024) {
-		// 1K以上的流量？
-		sprintf_s(buffer, _T("%4lldK"), iNumber / 1024);
-	}
-	else { sprintf_s(buffer, _T("%4lld"), iNumber); }
-	CString str = buffer;
-
-	return str;
-}
-
 // CMainFrame 消息处理程序
 
 void CMainFrame::OnWindowManager() {
@@ -717,11 +701,19 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 
 void CMainFrame::OnCalculateTodayRS() { CalculateTodayRS(); }
 
-void CMainFrame::CalculateTodayRS(void) { gl_pChinaMarket->CreatingThreadBuildDayLineRS(gl_pChinaMarket->GetMarketDate()); }
+void CMainFrame::CalculateTodayRS(void) {
+	gl_pChinaMarket->CreatingThreadBuildDayLineRS(gl_pChinaMarket->GetMarketDate());
+}
 
-void CMainFrame::OnProcessTodayStock() { if (gl_pChinaMarket->IsSystemReady()) { ProcessChinaMarketStock(); } }
+void CMainFrame::OnProcessTodayStock() {
+	if (gl_pChinaMarket->IsSystemReady()) {
+		ProcessChinaMarketStock();
+	}
+}
 
-void CMainFrame::ProcessChinaMarketStock() { gl_pChinaMarket->CreatingThreadProcessTodayStock(); }
+void CMainFrame::ProcessChinaMarketStock() {
+	gl_pChinaMarket->CreatingThreadProcessTodayStock();
+}
 
 void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
 	if (gl_pChinaMarket->IsSystemReady()) {
@@ -733,10 +725,16 @@ void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateCalculateTodayRS(CCmdUI* pCmdUI) {
 	if (gl_pChinaMarket->IsSystemReady()) {
-		if (gl_pChinaMarket->IsCalculatingDayLineRS()) { SysCallCmdUIEnable(pCmdUI, false); }
-		else { SysCallCmdUIEnable(pCmdUI, true); }
+		if (gl_pChinaMarket->IsCalculatingDayLineRS()) {
+			SysCallCmdUIEnable(pCmdUI, false);
+		}
+		else {
+			SysCallCmdUIEnable(pCmdUI, true);
+		}
 	}
-	else { SysCallCmdUIEnable(pCmdUI, false); }
+	else {
+		SysCallCmdUIEnable(pCmdUI, false);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -746,7 +744,9 @@ void CMainFrame::OnUpdateCalculateTodayRS(CCmdUI* pCmdUI) {
 //
 //////////////////////////////////////////////////////////////////
 BOOL CMainFrame::PreTranslateMessage(MSG* pMsg) {
-	if ((pMsg->message == WM_CHAR) || (pMsg->message == WM_KEYUP)) { SysCallSendMessage(pMsg->message, pMsg->wParam, pMsg->lParam); }
+	if ((pMsg->message == WM_CHAR) || (pMsg->message == WM_KEYUP)) {
+		SysCallSendMessage(pMsg->message, pMsg->wParam, pMsg->lParam);
+	}
 
 	return SysCallPreTranslateMessage(pMsg);
 }
@@ -799,9 +799,11 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		break;
 	}
 	if (gl_pChinaMarket->IsCurrentStockChanged()) {
-		auto pChild = static_cast<CMDIChildWnd*>(GetActiveFrame());
-		auto pView = static_cast<CFireBirdView*>(pChild->GetActiveView());
-		if (pView != nullptr) { pView->UpdateHistoryDataContainer(gl_pChinaMarket->GetCurrentStock()); }
+		const auto pChild = static_cast<CMDIChildWnd*>(GetActiveFrame());
+		const auto pView = static_cast<CFireBirdView*>(pChild->GetActiveView());
+		if (pView != nullptr) {
+			pView->UpdateHistoryDataContainer(gl_pChinaMarket->GetCurrentStock());
+		}
 	}
 
 	SysCallOnChar(nChar, nRepCnt, nFlags);
@@ -834,11 +836,15 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 			break;
 		case 45: // Ins, 加入自选股票
 			pCurrentStock->SetChosen(true);
-			if (gl_pChinaMarket->AddChosenStock(pCurrentStock)) { gl_pChinaMarket->SetUpdateChosenStockDB(true); }
+			if (gl_pChinaMarket->AddChosenStock(pCurrentStock)) {
+				gl_pChinaMarket->SetUpdateChosenStockDB(true);
+			}
 			break;
 		case 46: // delete,从自选股票池中删除
 			pCurrentStock->SetChosen(false);
-			if (gl_pChinaMarket->DeleteChosenStock(pCurrentStock)) { gl_pChinaMarket->SetUpdateChosenStockDB(true); }
+			if (gl_pChinaMarket->DeleteChosenStock(pCurrentStock)) {
+				gl_pChinaMarket->SetUpdateChosenStockDB(true);
+			}
 			break;
 		default:
 			// 无需处理字符，略过
@@ -858,7 +864,9 @@ void CMainFrame::OnRebuildDayLineRS() {
 }
 
 void CMainFrame::OnBuildResetMarket() {
-	for (const auto& pMarket : gl_vMarketPtr) { pMarket->SetResetMarket(true); }
+	for (const auto& pMarket : gl_vMarketPtr) {
+		pMarket->SetResetMarket(true);
+	}
 }
 
 void CMainFrame::OnUpdateRebuildDayLineRS(CCmdUI* pCmdUI) {
@@ -880,8 +888,12 @@ void CMainFrame::OnAbortBuildingRS() {
 }
 
 void CMainFrame::OnUpdateAbortBuildingRS(CCmdUI* pCmdUI) {
-	if (gl_pChinaMarket->IsCalculatingDayLineRS()) { SysCallCmdUIEnable(pCmdUI, true); }
-	else { SysCallCmdUIEnable(pCmdUI, false); }
+	if (gl_pChinaMarket->IsCalculatingDayLineRS()) {
+		SysCallCmdUIEnable(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUIEnable(pCmdUI, false);
+	}
 }
 
 void CMainFrame::OnRecordRTData() {
@@ -910,21 +922,29 @@ void CMainFrame::OnCalculate10dayRS() {
 }
 
 void CMainFrame::OnUpdateCalculate10dayRS1(CCmdUI* pCmdUI) {
-	if ((gl_pChinaMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaMarket->GetDayLineNeedSaveNumber() > 0)) { SysCallCmdUIEnable(pCmdUI, false); }
+	if ((gl_pChinaMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaMarket->GetDayLineNeedSaveNumber() > 0)) {
+		SysCallCmdUIEnable(pCmdUI, false);
+	}
 	else SysCallCmdUIEnable(pCmdUI, true);
 }
 
 void CMainFrame::OnUpdateCalculate10dayRS2(CCmdUI* pCmdUI) {
-	if ((gl_pChinaMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaMarket->GetDayLineNeedSaveNumber() > 0)) { SysCallCmdUIEnable(pCmdUI, false); }
+	if ((gl_pChinaMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaMarket->GetDayLineNeedSaveNumber() > 0)) {
+		SysCallCmdUIEnable(pCmdUI, false);
+	}
 	else SysCallCmdUIEnable(pCmdUI, true);
 }
 
 void CMainFrame::OnUpdateCalculate10dayRS(CCmdUI* pCmdUI) {
-	if ((gl_pChinaMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaMarket->GetDayLineNeedSaveNumber() > 0)) { SysCallCmdUIEnable(pCmdUI, false); }
+	if ((gl_pChinaMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaMarket->GetDayLineNeedSaveNumber() > 0)) {
+		SysCallCmdUIEnable(pCmdUI, false);
+	}
 	else SysCallCmdUIEnable(pCmdUI, true);
 }
 
-void CMainFrame::OnStopUpdateDayLine() { gl_pChinaMarket->ClearDayLineNeedUpdateStatus(); }
+void CMainFrame::OnStopUpdateDayLine() {
+	gl_pChinaMarket->ClearDayLineNeedUpdateStatus();
+}
 
 void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
 	gl_systemConfiguration.SetChinaMarketRealtimeServer(1);
@@ -939,41 +959,63 @@ void CMainFrame::OnUsingSinaRealtimeDataServer() {
 }
 
 void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
-	if (gl_systemConfiguration.IsUsingNeteaseRTServer()) { SysCallCmdUISetCheck(pCmdUI, true); }
-	else { SysCallCmdUISetCheck(pCmdUI, false); }
+	if (gl_systemConfiguration.IsUsingNeteaseRTServer()) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
 }
 
 void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
-	if (gl_systemConfiguration.IsUsingSinaRTServer()) { SysCallCmdUISetCheck(pCmdUI, true); }
-	else { SysCallCmdUISetCheck(pCmdUI, false); }
+	if (gl_systemConfiguration.IsUsingSinaRTServer()) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
 }
 
-void CMainFrame::OnBuildCreateWeekLine() { gl_pChinaMarket->CreatingThreadBuildWeekLine(19900101); }
+void CMainFrame::OnBuildCreateWeekLine() {
+	gl_pChinaMarket->CreatingThreadBuildWeekLine(19900101);
+}
 
 void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
 }
 
-void CMainFrame::OnRebuildWeekLineRS() { gl_pChinaMarket->CreatingThreadBuildWeekLineRS(); }
+void CMainFrame::OnRebuildWeekLineRS() {
+	gl_pChinaMarket->CreatingThreadBuildWeekLineRS();
+}
 
 void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
 }
 
-void CMainFrame::OnBuildCurrentWeekLine() { gl_pChinaMarket->CreatingThreadBuildWeekLineOfCurrentWeek(); }
-
-void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
-	if ((gl_pChinaMarket->GetMarketTime() > 151000)) { SysCallCmdUIEnable(pCmdUI, true); }
-	else { SysCallCmdUIEnable(pCmdUI, false); }
+void CMainFrame::OnBuildCurrentWeekLine() {
+	gl_pChinaMarket->CreatingThreadBuildWeekLineOfCurrentWeek();
 }
 
-void CMainFrame::OnBuildRebuildCurrentWeekLine() { gl_pChinaMarket->CreatingThreadBuildWeekLine(gl_pChinaMarket->GetMarketDate()); }
+void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
+	if ((gl_pChinaMarket->GetMarketTime() > 151000)) {
+		SysCallCmdUIEnable(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUIEnable(pCmdUI, false);
+	}
+}
+
+void CMainFrame::OnBuildRebuildCurrentWeekLine() {
+	gl_pChinaMarket->CreatingThreadBuildWeekLine(gl_pChinaMarket->GetMarketDate());
+}
 
 void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
 }
 
-void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() { gl_pChinaMarket->CreatingThreadBuildCurrentWeekWeekLineTable(); }
+void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
+	gl_pChinaMarket->CreatingThreadBuildCurrentWeekWeekLineTable();
+}
 
 void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
@@ -992,11 +1034,17 @@ void CMainFrame::OnRebuildEpsSurprise() {
 	gl_pWorldMarket->RebuildEPSSurprise();
 }
 
-void CMainFrame::OnRebuildPeer() { gl_pWorldMarket->RebuildPeer(); }
+void CMainFrame::OnRebuildPeer() {
+	gl_pWorldMarket->RebuildPeer();
+}
 
-void CMainFrame::OnRebuildDayLine() { gl_pWorldMarket->RebuildStockDayLineDB(); }
+void CMainFrame::OnRebuildDayLine() {
+	gl_pWorldMarket->RebuildStockDayLineDB();
+}
 
-void CMainFrame::OnUpdateWorldStockDayLineStartEnd() { gl_pWorldMarket->TaskUpdateDayLineStartEndDate(); }
+void CMainFrame::OnUpdateWorldStockDayLineStartEnd() {
+	gl_pWorldMarket->TaskUpdateDayLineStartEndDate();
+}
 
 void CMainFrame::OnRecordFinnhubWebSocket() {
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) {
@@ -1010,8 +1058,12 @@ void CMainFrame::OnRecordFinnhubWebSocket() {
 }
 
 void CMainFrame::OnUpdateRecordFinnhubWebSocket(CCmdUI* pCmdUI) {
-	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) { SysCallCmdUISetCheck(pCmdUI, true); }
-	else { SysCallCmdUISetCheck(pCmdUI, false); }
+	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
 }
 
 void CMainFrame::OnRecordTiingoCryptoWebSocket() {
@@ -1026,8 +1078,12 @@ void CMainFrame::OnRecordTiingoCryptoWebSocket() {
 }
 
 void CMainFrame::OnUpdateRecordTiingoCryptoWebSocket(CCmdUI* pCmdUI) {
-	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) { SysCallCmdUISetCheck(pCmdUI, true); }
-	else { SysCallCmdUISetCheck(pCmdUI, false); }
+	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
 }
 
 void CMainFrame::OnRecordTiingoForexWebSocket() {
@@ -1042,8 +1098,12 @@ void CMainFrame::OnRecordTiingoForexWebSocket() {
 }
 
 void CMainFrame::OnUpdateRecordTiingoForexWebSocket(CCmdUI* pCmdUI) {
-	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) { SysCallCmdUISetCheck(pCmdUI, true); }
-	else { SysCallCmdUISetCheck(pCmdUI, false); }
+	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
 }
 
 void CMainFrame::OnRecordTiingoIexWebSocket() {
@@ -1058,8 +1118,12 @@ void CMainFrame::OnRecordTiingoIexWebSocket() {
 }
 
 void CMainFrame::OnUpdateRecordTiingoIexWebSocket(CCmdUI* pCmdUI) {
-	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) { SysCallCmdUISetCheck(pCmdUI, true); }
-	else { SysCallCmdUISetCheck(pCmdUI, false); }
+	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
 }
 
 void CMainFrame::OnRebuildBasicFinancial() {
@@ -1103,8 +1167,12 @@ void CMainFrame::OnUsingNeteaseDayLineDataServer() {
 }
 
 void CMainFrame::OnUpdateUsingNeteaseDayLineDataServer(CCmdUI* pCmdUI) {
-	if (gl_systemConfiguration.IsUsingNeteaseDayLineServer()) { SysCallCmdUISetCheck(pCmdUI, true); }
-	else { SysCallCmdUISetCheck(pCmdUI, false); }
+	if (gl_systemConfiguration.IsUsingNeteaseDayLineServer()) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
 }
 
 void CMainFrame::OnUsingTengxunDayLineDataServer() {
@@ -1114,6 +1182,10 @@ void CMainFrame::OnUsingTengxunDayLineDataServer() {
 }
 
 void CMainFrame::OnUpdateUsingTengxunDayLineDataServer(CCmdUI* pCmdUI) {
-	if (gl_systemConfiguration.IsUsingTengxunDayLineServer()) { SysCallCmdUISetCheck(pCmdUI, true); }
-	else { SysCallCmdUISetCheck(pCmdUI, false); }
+	if (gl_systemConfiguration.IsUsingTengxunDayLineServer()) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
 }

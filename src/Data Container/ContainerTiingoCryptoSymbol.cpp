@@ -1,18 +1,18 @@
 #include "pch.h"
-#include "DataTiingoCryptoSymbol.h"
+#include "ContainerTiingoCryptoSymbol.h"
 
 #include<memory>
 using std::make_shared;
 
-CDataTiingoCryptoSymbol::CDataTiingoCryptoSymbol() { Reset(); }
+CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() { Reset(); }
 
-void CDataTiingoCryptoSymbol::Reset(void) {
+void CContainerTiingoCryptoSymbol::Reset(void) {
 	m_vTiingoCrypto.resize(0);
 	m_mapTiingoCrypto.clear();
 	m_lLastTotalTiingoCrypto = 0;
 }
 
-bool CDataTiingoCryptoSymbol::Delete(CTiingoCryptoSymbolPtr pCryptoSymbol) {
+bool CContainerTiingoCryptoSymbol::Delete(CTiingoCryptoSymbolPtr pCryptoSymbol) {
 	if (pCryptoSymbol == nullptr) return false;
 	if (!IsTiingoCryptoSymbol(pCryptoSymbol->m_strTicker)) return false;
 
@@ -22,13 +22,13 @@ bool CDataTiingoCryptoSymbol::Delete(CTiingoCryptoSymbolPtr pCryptoSymbol) {
 	return true;
 }
 
-void CDataTiingoCryptoSymbol::Add(CTiingoCryptoSymbolPtr pCryptoSymbol) {
+void CContainerTiingoCryptoSymbol::Add(CTiingoCryptoSymbolPtr pCryptoSymbol) {
 	ASSERT(!m_mapTiingoCrypto.contains(pCryptoSymbol->m_strTicker));
 	m_mapTiingoCrypto[pCryptoSymbol->m_strTicker] = m_mapTiingoCrypto.size();
 	m_vTiingoCrypto.push_back(pCryptoSymbol);
 }
 
-bool CDataTiingoCryptoSymbol::LoadDB(void) {
+bool CContainerTiingoCryptoSymbol::LoadDB(void) {
 	CSetTiingoCrypto setCryptoSymbol;
 
 	setCryptoSymbol.m_strSort = _T("[Ticker]");
@@ -50,7 +50,7 @@ bool CDataTiingoCryptoSymbol::LoadDB(void) {
 	return true;
 }
 
-bool CDataTiingoCryptoSymbol::UpdateDB(void) {
+bool CContainerTiingoCryptoSymbol::UpdateDB(void) {
 	const long lTotalTiingoCryptoSymbol = m_vTiingoCrypto.size();
 
 	if (m_lLastTotalTiingoCrypto < lTotalTiingoCryptoSymbol) {

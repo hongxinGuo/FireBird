@@ -2,10 +2,10 @@
 
 #include <TiingoCryptoSymbol.h>
 
-class CDataTiingoCryptoSymbol final {
+class CContainerTiingoCryptoSymbol final {
 public:
-	CDataTiingoCryptoSymbol();
-	~CDataTiingoCryptoSymbol() = default;
+	CContainerTiingoCryptoSymbol();
+	~CContainerTiingoCryptoSymbol() = default;
 	void Reset(void);
 
 	void Add(CTiingoCryptoSymbolPtr pTiingoCrypto);

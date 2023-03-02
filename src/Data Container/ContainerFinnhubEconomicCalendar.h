@@ -2,10 +2,10 @@
 
 #include"EconomicCalendar.h"
 
-class CDataFinnhubEconomicCalendar final {
+class CContainerFinnhubEconomicCalendar final {
 public:
-	CDataFinnhubEconomicCalendar();
-	~CDataFinnhubEconomicCalendar() = default;
+	CContainerFinnhubEconomicCalendar();
+	~CContainerFinnhubEconomicCalendar() = default;
 	void Reset(void);
 
 	bool LoadDB(void);

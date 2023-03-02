@@ -52,7 +52,7 @@ bool CContainerFinnhubCryptoSymbol::UpdateDB(void) {
 		setCryptoSymbol.Open();
 		setCryptoSymbol.m_pDatabase->BeginTrans();
 		for (auto l = m_lLastTotalSymbol; l < lTotalCryptoSymbol; l++) {
-			pSymbol = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_vStock.at(l));
+			pSymbol = GetSymbol(l);
 			pSymbol->AppendSymbol(setCryptoSymbol);
 		}
 		setCryptoSymbol.m_pDatabase->CommitTrans();
@@ -71,7 +71,7 @@ bool CContainerFinnhubCryptoSymbol::UpdateDB(void) {
 		setCryptoSymbol.m_pDatabase->BeginTrans();
 		while (!setCryptoSymbol.IsEOF()) {
 			if (m_mapSymbol.contains(setCryptoSymbol.m_Symbol)) {
-				pSymbol = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_vStock.at(m_mapSymbol.at(setCryptoSymbol.m_Symbol)));
+				pSymbol = GetSymbol(setCryptoSymbol.m_Symbol);
 				if (pSymbol->IsUpdateProfileDB()) {
 					pSymbol->UpdateSymbol(setCryptoSymbol);
 					pSymbol->SetUpdateProfileDB(false);

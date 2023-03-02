@@ -4,12 +4,12 @@
 
 #include"WorldMarket.h"
 
-#include"DataTiingoCryptoSymbol.h"
+#include"ContainerTiingoCryptoSymbol.h"
 
 using namespace testing;
 
 namespace FireBirdTest {
-	class CDataTiingoCryptoSymbolTest : public ::testing::Test {
+	class CContainerTiingoCryptoSymbolTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -29,15 +29,15 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CDataTiingoCryptoSymbol m_dataTiingoCryptoSymbol;
+		CContainerTiingoCryptoSymbol m_dataTiingoCryptoSymbol;
 	};
 
-	TEST_F(CDataTiingoCryptoSymbolTest, TestInitialize) {
+	TEST_F(CContainerTiingoCryptoSymbolTest, TestInitialize) {
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetCryptoSymbolSize(), 0);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetLastCryptoSymbolSize(), 0);
 	}
 
-	TEST_F(CDataTiingoCryptoSymbolTest, TestIsNeedUpdate) {
+	TEST_F(CContainerTiingoCryptoSymbolTest, TestIsNeedUpdate) {
 		auto pCrypto = make_shared<CTiingoCryptoSymbol>();
 
 		EXPECT_FALSE(m_dataTiingoCryptoSymbol.IsNeedUpdate());
@@ -45,13 +45,13 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsNeedUpdate());
 	}
 
-	TEST_F(CDataTiingoCryptoSymbolTest, TestAddDelete) {
+	TEST_F(CContainerTiingoCryptoSymbolTest, TestAddDelete) {
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetCryptoSymbolSize(), 0);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetLastCryptoSymbolSize(), 0);
 
-		auto pTiingoCrypto = make_shared<CTiingoCryptoSymbol>();
+		const auto pTiingoCrypto = make_shared<CTiingoCryptoSymbol>();
 		pTiingoCrypto->m_strTicker = _T("SS.SS");
-		auto pTiingoCrypto2 = make_shared<CTiingoCryptoSymbol>();
+		const auto pTiingoCrypto2 = make_shared<CTiingoCryptoSymbol>();
 		pTiingoCrypto2->m_strTicker = _T("SS.SS.SS");
 		m_dataTiingoCryptoSymbol.Add(pTiingoCrypto);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetCryptoSymbolSize(), 1);
@@ -63,7 +63,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetCryptoSymbolSize(), 0);
 	}
 
-	TEST_F(CDataTiingoCryptoSymbolTest, TestLoadUpdate) {
+	TEST_F(CContainerTiingoCryptoSymbolTest, TestLoadUpdate) {
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetLastCryptoSymbolSize(), 0) << "³õÊ¼Î´×°ÔØCrypto´úÂë";
 
 		m_dataTiingoCryptoSymbol.LoadDB();

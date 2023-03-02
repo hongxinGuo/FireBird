@@ -9,8 +9,8 @@ public:
 	~CContainerWorldStock() override = default;
 	void Reset(void) override;
 
-	CWorldStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CWorldStock>(Get(lIndex)); };
-	CWorldStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CWorldStock>(Get(strStockCode)); };
+	CWorldStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CWorldStock>(Get(lIndex)); }
+	CWorldStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CWorldStock>(Get(strStockCode)); }
 
 	void ResetEPSSurprise(void);
 	void ResetPeer(void);
@@ -26,7 +26,7 @@ public:
 	bool UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock);
 	static void ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStock);
 
-	static bool CheckStockSymbol(CWorldStockPtr pStock);
+	static bool ValidateStockSymbol(CWorldStockPtr pStock);
 
 	bool IsUpdateCompanyNewsDB(void);
 	bool IsUpdateBasicFinancialDB(void);

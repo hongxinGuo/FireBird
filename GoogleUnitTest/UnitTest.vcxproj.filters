@@ -255,7 +255,7 @@
     <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="DataTiingoCryptoSymbolTest.cpp">
+    <ClCompile Include="ContainerTiingoCryptoSymbolTest.cpp">
       <Filter>Test源文件\Data Container\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="ContainerChinaStockTest.cpp">
@@ -578,6 +578,9 @@
     </ClCompile>
     <ClCompile Include="VirtualWebProductTest.cpp">
       <Filter>Test源文件\Factory Product</Filter>
+    </ClCompile>
+    <ClCompile Include="ContainerFinnhubEconomicCalendarTest.cpp">
+      <Filter>Test源文件\Data Container\Finnhub</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -300,7 +300,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 		if (gl_systemStatus.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
-		pSymbol = dynamic_pointer_cast<CFinnhubForexSymbol>(m_dataFinnhubForexSymbol.Get(i));
+		pSymbol = m_dataFinnhubForexSymbol.GetSymbol(i);
 		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {
 			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
@@ -345,7 +345,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
 		if (gl_systemStatus.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
-		pSymbol = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_dataFinnhubCryptoSymbol.Get(i));
+		pSymbol = m_dataFinnhubCryptoSymbol.GetSymbol(i);
 		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {
 			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
@@ -383,7 +383,7 @@ bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
 
 	CWorldStockPtr pStock = nullptr;
 	for (long l = 0; l < m_containerStock.Size(); ++l) {
-		pStock = dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(l));
+		pStock = m_containerStock.GetStock(l);
 		if (pStock->IsEPSSurpriseNeedSaveAndClearFlag()) {
 			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			thread thread1(ThreadUpdateEPSSurpriseDB, pStock.get());
@@ -529,7 +529,7 @@ bool CWorldMarket::UpdateStockDayLineDB(void) {
 
 bool CWorldMarket::UpdateCompanyNewsDB(void) {
 	for (long l = 0; l < m_containerStock.Size(); l++) {
-		const auto pStock = dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(l));
+		const auto pStock = m_containerStock.GetStock(l);
 		if (pStock->IsUpdateCompanyNewsDBAndClearFlag()) {
 			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			pStock->UpdateCompanyNewsDB();
@@ -626,7 +626,7 @@ bool CWorldMarket::UpdateStockDayLineStartEndDate(void) {
 	CSetWorldStockDayLine setWorldStockDayLine;
 
 	for (long l = 0; l < m_containerStock.Size(); l++) {
-		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(l));
+		const auto pStock = m_containerStock.GetStock(l);
 		setWorldStockDayLine.m_strFilter = strFilterPrefix + pStock->GetSymbol() + _T("'");
 		setWorldStockDayLine.m_strSort = _T("[Date]");
 		setWorldStockDayLine.Open();
@@ -654,17 +654,17 @@ vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector(void) {
 	vectorString vSymbol;
 
 	for (long l = 0; l < m_containerChosenStock.Size(); l++) {
-		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(m_containerChosenStock.Get(l));
+		const CWorldStockPtr pStock = m_containerChosenStock.GetStock(l);
 		vSymbol.push_back(pStock->GetSymbol().GetBuffer());
 	}
 
 	for (long l = 0; l < m_containerChosenCrypto.Size(); l++) {
-		const CFinnhubCryptoSymbolPtr pCrypto = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_containerChosenCrypto.Get(l));
+		const CFinnhubCryptoSymbolPtr pCrypto = m_containerChosenCrypto.GetCryptoSymbol(l);
 		vSymbol.push_back(pCrypto->GetSymbol().GetBuffer());
 	}
 
 	for (long l = 0; l < m_containerChosenForex.Size(); l++) {
-		const CForexSymbolPtr pForex = dynamic_pointer_cast<CFinnhubForexSymbol>(m_containerChosenForex.Get(l));
+		const CForexSymbolPtr pForex = m_containerChosenForex.GetForexSymbol(l);
 		vSymbol.push_back(pForex->GetSymbol().GetBuffer());
 	}
 
@@ -691,7 +691,7 @@ vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector(void) {
 vectorString CWorldMarket::GetTiingoIEXWebSocketSymbolVector(void) {
 	vectorString vSymbol;
 	for (long l = 0; l < m_containerChosenStock.Size(); l++) {
-		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldStock>(m_containerChosenStock.Get(l));
+		const CWorldStockPtr pStock = m_containerChosenStock.GetStock(l);
 		vSymbol.push_back(pStock->GetSymbol().GetBuffer());
 	}
 
@@ -709,7 +709,7 @@ vectorString CWorldMarket::GetTiingoIEXWebSocketSymbolVector(void) {
 vectorString CWorldMarket::GetTiingoCryptoWebSocketSymbolVector(void) {
 	vectorString vSymbol;
 	for (long l = 0; l < m_containerChosenCrypto.Size(); l++) {
-		const CFinnhubCryptoSymbolPtr pCrypto = dynamic_pointer_cast<CFinnhubCryptoSymbol>(m_containerChosenCrypto.Get(l));
+		const CFinnhubCryptoSymbolPtr pCrypto = m_containerChosenCrypto.GetCryptoSymbol(l);
 		vSymbol.push_back(pCrypto->GetSymbol().GetBuffer());
 	}
 
@@ -727,7 +727,7 @@ vectorString CWorldMarket::GetTiingoCryptoWebSocketSymbolVector(void) {
 vectorString CWorldMarket::GetTiingoForexWebSocketSymbolVector(void) {
 	vectorString vSymbol;
 	for (long l = 0; l < m_containerChosenForex.Size(); l++) {
-		const CForexSymbolPtr pForex = dynamic_pointer_cast<CFinnhubForexSymbol>(m_containerChosenForex.Get(l));
+		const CForexSymbolPtr pForex = m_containerChosenForex.GetForexSymbol(l);
 		vSymbol.push_back(pForex->GetSymbol().GetBuffer());
 	}
 

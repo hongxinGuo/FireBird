@@ -14,7 +14,7 @@ using namespace testing;
 CContainerWorldStock m_containerStock{};
 
 namespace FireBirdTest {
-	class CDataWorldStockTest : public Test {
+	class CContainerWorldStockTest : public Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
@@ -40,7 +40,31 @@ namespace FireBirdTest {
 	protected:
 	};
 
-	TEST_F(CDataWorldStockTest, TestIsNeedSaveDayLine) {
+	TEST_F(CContainerWorldStockTest, TestValidateStockSymbol1) {
+		const auto pStock = make_shared<CWorldStock>();
+		pStock->SetSymbol(_T("AAPL"));
+		pStock->SetExchangeCode(_T("US"));
+
+		EXPECT_TRUE(m_containerStock.ValidateStockSymbol(pStock));
+	}
+
+	TEST_F(CContainerWorldStockTest, TestValidateStockSymbol2) {
+		const auto pStock = make_shared<CWorldStock>();
+		pStock->SetSymbol(_T("600601.SS"));
+		pStock->SetExchangeCode(_T("SS"));
+
+		EXPECT_TRUE(m_containerStock.ValidateStockSymbol(pStock));
+	}
+
+	TEST_F(CContainerWorldStockTest, TestValidateStockSymbol3) {
+		const auto pStock = make_shared<CWorldStock>();
+		pStock->SetSymbol(_T("600601SS"));
+		pStock->SetExchangeCode(_T("SS"));
+
+		EXPECT_FALSE(m_containerStock.ValidateStockSymbol(pStock));
+	}
+
+	TEST_F(CContainerWorldStockTest, TestIsNeedSaveDayLine) {
 		EXPECT_FALSE(m_containerStock.IsDayLineNeedSaving());
 		m_containerStock.Get(0)->SetDayLineNeedSaving(true);
 
@@ -49,39 +73,39 @@ namespace FireBirdTest {
 		m_containerStock.Get(0)->SetDayLineNeedSaving(false);
 	}
 
-	TEST_F(CDataWorldStockTest, TestIsSaveInsiderTransaction) {
+	TEST_F(CContainerWorldStockTest, TestIsSaveInsiderTransaction) {
 		EXPECT_FALSE(m_containerStock.IsSaveInsiderTransaction());
-		dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(0))->SetSaveInsiderTransaction(true);
+		m_containerStock.GetStock(0)->SetSaveInsiderTransaction(true);
 
 		EXPECT_TRUE(m_containerStock.IsSaveInsiderTransaction());
 
-		dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(0))->SetSaveInsiderTransaction(false);
+		m_containerStock.GetStock(0)->SetSaveInsiderTransaction(false);
 	}
 
-	TEST_F(CDataWorldStockTest, TestIsSaveInsiderSentiment) {
+	TEST_F(CContainerWorldStockTest, TestIsSaveInsiderSentiment) {
 		EXPECT_FALSE(m_containerStock.IsSaveInsiderSentiment());
-		dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(0))->SetSaveInsiderSentiment(true);
+		m_containerStock.GetStock(0)->SetSaveInsiderSentiment(true);
 
 		EXPECT_TRUE(m_containerStock.IsSaveInsiderSentiment());
 
-		dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(0))->SetSaveInsiderSentiment(false);
+		m_containerStock.GetStock(0)->SetSaveInsiderSentiment(false);
 	}
 
-	TEST_F(CDataWorldStockTest, TestIsUpdateBasicFinancialDB) {
+	TEST_F(CContainerWorldStockTest, TestIsUpdateBasicFinancialDB) {
 		EXPECT_FALSE(m_containerStock.IsUpdateBasicFinancialDB());
-		dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(0))->SetUpdateBasicFinancialDB(true);
+		m_containerStock.GetStock(0)->SetUpdateBasicFinancialDB(true);
 
 		EXPECT_TRUE(m_containerStock.IsUpdateBasicFinancialDB());
 
-		dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(0))->SetUpdateBasicFinancialDB(false);
+		m_containerStock.GetStock(0)->SetUpdateBasicFinancialDB(false);
 	}
 
-	TEST_F(CDataWorldStockTest, TestIsUpdateCompanyNewsDB) {
+	TEST_F(CContainerWorldStockTest, TestIsUpdateCompanyNewsDB) {
 		EXPECT_FALSE(m_containerStock.IsUpdateCompanyNewsDB());
-		dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(0))->SetUpdateCompanyNewsDB(true);
+		m_containerStock.GetStock(0)->SetUpdateCompanyNewsDB(true);
 
 		EXPECT_TRUE(m_containerStock.IsUpdateCompanyNewsDB());
 
-		dynamic_pointer_cast<CWorldStock>(m_containerStock.Get(0))->SetUpdateCompanyNewsDB(false);
+		m_containerStock.GetStock(0)->SetUpdateCompanyNewsDB(false);
 	}
 }

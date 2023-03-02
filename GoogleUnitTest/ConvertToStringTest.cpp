@@ -33,7 +33,7 @@ namespace FireBirdTest {
 		void SetUp(void) override {
 			GeneralCheck();
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
-			StrConvertDoubleToString* pData = GetParam();
+			const StrConvertDoubleToString* pData = GetParam();
 			dValue = pData->m_dValue;
 			CValueOfPeriod = pData->m_strValue;
 			lDividend = pData->m_lDividend;
@@ -54,7 +54,7 @@ namespace FireBirdTest {
 		                         , &Data5));
 
 	TEST_P(ConvertDoubleToStringTest, TestDouble) {
-		CString str = ConvertValueToString(dValue, lDividend);
+		const CString str = ConvertValueToString(dValue, lDividend);
 		EXPECT_STREQ(str, CValueOfPeriod);
 	}
 
@@ -91,7 +91,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
-			StrConvertLongToString* pData = GetParam();
+			const StrConvertLongToString* pData = GetParam();
 			lValue = pData->m_lValue;
 			CValueOfPeriod = pData->m_strValue;
 			lDividend = pData->m_lDividend;
@@ -111,7 +111,7 @@ namespace FireBirdTest {
 		                         &Data12, &Data13, &Data14, &Data15));
 
 	TEST_P(ConvertLongToStringTest, TestLong) {
-		CString str = ConvertValueToString(lValue, lDividend);
+		const CString str = ConvertValueToString(lValue, lDividend);
 		EXPECT_STREQ(str, CValueOfPeriod);
 	}
 
@@ -148,7 +148,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
-			StrConvertIntegerToString* pData = GetParam();
+			const StrConvertIntegerToString* pData = GetParam();
 			iValue = pData->m_iValue;
 			CValueOfPeriod = pData->m_strValue;
 			lDividend = pData->m_lDividend;
@@ -168,7 +168,7 @@ namespace FireBirdTest {
 		                         &Data22, &Data23, &Data24, &Data25));
 
 	TEST_P(ConvertIntegerToStringTest, TestInteger) {
-		CString str = ConvertValueToString(iValue, lDividend);
+		const CString str = ConvertValueToString(iValue, lDividend);
 		EXPECT_STREQ(str, CValueOfPeriod);
 	}
 
@@ -205,7 +205,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp(void) override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
-			StrConvertINT64ToString* pData = GetParam();
+			const StrConvertINT64ToString* pData = GetParam();
 			iValue = pData->m_iValue;
 			CValueOfPeriod = pData->m_strValue;
 			lDividend = pData->m_lDividend;
@@ -225,7 +225,7 @@ namespace FireBirdTest {
 		                         &Data42, &Data43, &Data44, &Data45));
 
 	TEST_P(ConvertINT64ToStringTest, TestINT64) {
-		CString str = ConvertValueToString(iValue, lDividend);
+		const CString str = ConvertValueToString(iValue, lDividend);
 		EXPECT_STREQ(str, CValueOfPeriod);
 	}
 
@@ -238,12 +238,23 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CRSReferenceTest, TestInitialize) {
-		CRSReference RSReference;
+		const CRSReference RSReference;
 		EXPECT_FALSE(RSReference.m_fActive);
 		for (int i = 0; i < 4; i++) {
 			EXPECT_EQ(RSReference.m_lStrongDayLength[i], 0);
 			EXPECT_EQ(RSReference.m_lDayLength[i], 0);
 			EXPECT_DOUBLE_EQ(RSReference.m_dRSStrong[i], 50.0);
 		}
+	}
+
+	TEST(FormatToMKTest, TestFormatToMK) {
+		CString str = FormatToMK(123);
+		EXPECT_STREQ(str, _T(" 123"));
+		str = FormatToMK(12 * 1024);
+		EXPECT_STREQ(str, _T("  12K"));
+		str = FormatToMK(12 * 1024 * 1024);
+		EXPECT_STREQ(str, _T("  12M"));
+		str = FormatToMK(static_cast<long long>(12345) * 1024 * 1024);
+		EXPECT_STREQ(str, _T("12345M"));
 	}
 }

@@ -2,7 +2,6 @@
 #include "framework.h"
 
 #include "PropertiesWnd.h"
-#include "Resource.h"
 #include "MainFrm.h"
 #include "FireBird.h"
 

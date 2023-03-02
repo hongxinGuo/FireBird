@@ -1,19 +1,19 @@
 #include "pch.h"
-#include "DataFinnhubEconomicCalendar.h"
+#include "ContainerFinnhubEconomicCalendar.h"
 #include"SetEconomicCalendar.h"
 
 #include<memory>
 using std::make_shared;
 
-CDataFinnhubEconomicCalendar::CDataFinnhubEconomicCalendar() { Reset(); }
+CContainerFinnhubEconomicCalendar::CContainerFinnhubEconomicCalendar() { Reset(); }
 
-void CDataFinnhubEconomicCalendar::Reset(void) {
+void CContainerFinnhubEconomicCalendar::Reset(void) {
 	m_lLastTotalEconomicCalendar = 0;
 	m_mapEconomicCalendar.clear();
 	m_vEconomicCalendar.resize(0);
 }
 
-bool CDataFinnhubEconomicCalendar::LoadDB(void) {
+bool CContainerFinnhubEconomicCalendar::LoadDB(void) {
 	CSetEconomicCalendar setEconomicCalendar;
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
 	CString strSymbol = _T("");
@@ -33,7 +33,7 @@ bool CDataFinnhubEconomicCalendar::LoadDB(void) {
 	return true;
 }
 
-bool CDataFinnhubEconomicCalendar::UpdateDB(void) {
+bool CContainerFinnhubEconomicCalendar::UpdateDB(void) {
 	if (m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size()) {
 		CSetEconomicCalendar setEconomicCalendar;
 		setEconomicCalendar.Open();
@@ -50,7 +50,7 @@ bool CDataFinnhubEconomicCalendar::UpdateDB(void) {
 	return true;
 }
 
-bool CDataFinnhubEconomicCalendar::Update(vector<CEconomicCalendarPtr> vEconomicCalendar) {
+bool CContainerFinnhubEconomicCalendar::Update(vector<CEconomicCalendarPtr> vEconomicCalendar) {
 	CString strSymbol = _T("");
 
 	for (auto& pEconomicCalendar : vEconomicCalendar) {
