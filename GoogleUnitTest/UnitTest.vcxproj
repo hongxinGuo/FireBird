@@ -85,6 +85,7 @@
     <ClCompile Include="ContainerForexDayLineTest.cpp" />
     <ClCompile Include="ContainerWorldStockTest.cpp" />
     <ClCompile Include="FinnhubDataSourceTest.cpp" />
+    <ClCompile Include="MockContainerChinaStockTest.cpp" />
     <ClCompile Include="MockFinnhubDataSourceTest.cpp" />
     <ClCompile Include="FinnhubProductTest.cpp" />
     <ClCompile Include="JsonGetValueTest.cpp" />
@@ -198,6 +199,7 @@
     <ClCompile Include="MockMainFrmTest.cpp" />
     <ClCompile Include="XferFinnhubInquiryTest.cpp" />
     <ClInclude Include="GeneralCheck.h" />
+    <ClInclude Include="MockContainerChinaStock.h" />
     <ClInclude Include="MockFinnhubCryptoSymbol.h" />
     <ClInclude Include="MockFinnhubDataSource.h" />
     <ClInclude Include="MockFinnhubForexSymbol.h" />
@@ -225,7 +227,6 @@
     <ClCompile Include="WeekLineTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EnvironmentSetUp.h" />
     <ClInclude Include="MockChinaMarket.h" />
     <ClInclude Include="MockChinaStock.h" />
     <ClInclude Include="MockDataChinaDayLine.h" />

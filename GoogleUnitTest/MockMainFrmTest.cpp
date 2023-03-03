@@ -168,6 +168,50 @@ namespace FireBirdTest {
 		gl_pMockMainFrame->OnUpdateProcessTodayStock(&cmdUI);
 	}
 
+	TEST_F(CMockMainFrameTest, TestOnUpdateRecordFinnhubWebSocket) {
+		EXPECT_TRUE(gl_systemConfiguration.IsUsingFinnhubWebSocket());
+		CCmdUI cmdUI;
+		gl_systemConfiguration.SetUsingFinnhubWebSocket(false);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, false)).Times(1);
+		gl_pMockMainFrame->OnUpdateRecordFinnhubWebSocket(&cmdUI);
+		gl_systemConfiguration.SetUsingFinnhubWebSocket(true);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, true)).Times(1);
+		gl_pMockMainFrame->OnUpdateRecordFinnhubWebSocket(&cmdUI);
+	}
+
+	TEST_F(CMockMainFrameTest, TestOnUpdateRecordTiingoIEXWebSocket) {
+		EXPECT_TRUE(gl_systemConfiguration.IsUsingTiingoIEXWebSocket());
+		CCmdUI cmdUI;
+		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(false);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, false)).Times(1);
+		gl_pMockMainFrame->OnUpdateRecordTiingoIEXWebSocket(&cmdUI);
+		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(true);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, true)).Times(1);
+		gl_pMockMainFrame->OnUpdateRecordTiingoIEXWebSocket(&cmdUI);
+	}
+
+	TEST_F(CMockMainFrameTest, TestOnUpdateRecordTiingoForexWebSocket) {
+		EXPECT_TRUE(gl_systemConfiguration.IsUsingTiingoForexWebSocket());
+		CCmdUI cmdUI;
+		gl_systemConfiguration.SetUsingTiingoForexWebSocket(false);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, false)).Times(1);
+		gl_pMockMainFrame->OnUpdateRecordTiingoForexWebSocket(&cmdUI);
+		gl_systemConfiguration.SetUsingTiingoForexWebSocket(true);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, true)).Times(1);
+		gl_pMockMainFrame->OnUpdateRecordTiingoForexWebSocket(&cmdUI);
+	}
+
+	TEST_F(CMockMainFrameTest, TestOnUpdateRecordTiingoCryptoWebSocket) {
+		EXPECT_TRUE(gl_systemConfiguration.IsUsingTiingoCryptoWebSocket());
+		CCmdUI cmdUI;
+		gl_systemConfiguration.SetUsingTiingoCryptoWebSocket(false);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, false)).Times(1);
+		gl_pMockMainFrame->OnUpdateRecordTiingoCryptoWebSocket(&cmdUI);
+		gl_systemConfiguration.SetUsingTiingoCryptoWebSocket(true);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, true)).Times(1);
+		gl_pMockMainFrame->OnUpdateRecordTiingoCryptoWebSocket(&cmdUI);
+	}
+
 	TEST_F(CMockMainFrameTest, TestOnUpdateCalculateTodayRS) {
 		CCmdUI cmdUI;
 		gl_pChinaMarket->SetSystemReady(false);

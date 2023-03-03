@@ -50,6 +50,65 @@ namespace FireBirdTest {
 	protected:
 	};
 
+	TEST_F(CMockFinnhubDataSourceTest, TestGenerateInquiryMessage1) {
+		EXPECT_FALSE(m_pMockFinnhubDataSource->IsInquiring());
+		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
+		gl_pSinaRTDataSource->SetErrorCode(12002);
+		EXPECT_TRUE(gl_systemStatus.IsWebBusy());
+
+		m_pMockFinnhubDataSource->SetErrorCode(12002);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, GetTickCount()).Times(1)
+		.WillOnce(Return(1));
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEconomicCalendar()).Times(0);
+
+		EXPECT_FALSE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120000)) << "网络报错，不申请数据";
+		EXPECT_FALSE(m_pMockFinnhubDataSource->IsInquiring());
+
+		// 恢复原状
+		gl_pSinaRTDataSource->SetErrorCode(0);
+	}
+
+	TEST_F(CMockFinnhubDataSourceTest, TestGenerateInquiryMessage3) {
+		EXPECT_FALSE(m_pMockFinnhubDataSource->IsInquiring());
+		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
+		EXPECT_FALSE(gl_systemStatus.IsWebBusy());
+
+		m_pMockFinnhubDataSource->SetErrorCode(12002);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, GetTickCount()).Times(3)
+		.WillOnce(Return(1 + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()))
+		.WillOnce(Return(300000 + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()))
+		.WillOnce(Return(300000 + 100000));
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEconomicCalendar()).Times(2)
+		.WillRepeatedly(DoAll(Invoke([]() { m_pMockFinnhubDataSource->SetInquiring(true); }), Return(true)));
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCountryList()).Times(2);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireForexExchange()).Times(2);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCryptoExchange()).Times(2);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCompanySymbol()).Times(2);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireForexSymbol()).Times(2);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCryptoSymbol()).Times(2);
+
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCompanyProfileConcise()).Times(2);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCompanyNews()).Times(2);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCompanyBasicFinancial()).Times(2);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquirePeer()).Times(2);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireInsiderTransaction()).Times(2);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireInsiderSentiment()).Times(2);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCryptoDayLine()).Times(2);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireStockDayLine()).Times(2);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireForexDayLine()).Times(2);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEPSSurprise()).Times(0);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireRTQuote()).Times(0);
+
+		EXPECT_TRUE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120000)) << "网络报错，延后五分钟";
+		EXPECT_TRUE(m_pMockFinnhubDataSource->IsInquiring());
+		m_pMockFinnhubDataSource->SetInquiring(false);
+		m_pMockFinnhubDataSource->SetErrorCode(0);
+		EXPECT_FALSE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120500)) << "未过五分钟，继续等待";
+		EXPECT_TRUE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120500)) << "已过五分钟，申请数据";
+
+		EXPECT_TRUE(m_pMockFinnhubDataSource->IsInquiring());
+	}
+
 	TEST_F(CMockFinnhubDataSourceTest, TestInquiryFinnhub1) {
 		m_pMockFinnhubDataSource->SetInquiring(false);
 		EXPECT_FALSE(m_pMockFinnhubDataSource->InquireFinnhub(165700));

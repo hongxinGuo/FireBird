@@ -50,7 +50,23 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>^FireBirdTest::.*</Function>
                 <Function>.*::__GetTestMethodInfo.*</Function>
                 <Function>^Microsoft::VisualStudio::CppCodeCoverageFramework::.*</Function>
-                <Function>^Microsoft::VisualStudio::CppUnitTestFramework::.*</Function>
+								<Function>^Microsoft::VisualStudio::CppUnitTestFramework::.*</Function>
+
+								<Function>ThreadUpdateBasicFinancialAnnualDB</Function>
+								<Function>ThreadUpdateBasicFinancialQuarterlyDB</Function>
+								<Function>ThreadConnectFinnhubWebSocketAndSendMessage</Function>
+								<Function>ThreadConnectTiingoCryptoWebSocketAndSendMessage</Function>
+								<Function>ThreadConnectTiingoForexWebSocketAndSendMessage</Function>
+								<Function>ThreadConnectTiingoIEXWebSocketAndSendMessage</Function>
+								<Function>ThreadUpdateTiingoCryptoSymbolDB</Function>
+								<Function>ThreadUpdateCompanyNewsDB</Function>
+								<Function>ThreadDisconnectWebSocket</Function>
+								<Function>ThreadGetWebDataAndProcessIt</Function>
+								<Function>ThreadProcessRTData</Function>
+								<Function>ThreadUpdateBasicFinancialDB</Function>
+								<Function>ReportJsonError</Function>
+								<Function>ReportWebError</Function>
+	              <Function>to_byte_string</Function>
 
 								<Function>CChinaStock::Calculate10RSStrongStockSet</Function>
 								<Function>CChinaStock::Calculate10RSStrong1StockSet</Function>
@@ -58,12 +74,14 @@ Included items must then not match any entries in the exclude list to remain inc
 	              <Function>CChinaStock::CalculateWeekLine</Function>
 	              <Function>CChinaStock::ReportGuadan</Function>
 								<Function>CChinaStock::BuildWeekLine</Function>
-	              <Function>CChinaStock::CalculatingWeekLine</Function>
+								<Function>CChinaStock::CalculatingWeekLine</Function>
 
-	              <Function>CChinaMarket::SchedulingTaskPerSecond</Function>
+	              <Function>CContainerChinaStock::CreateThreadSaveDayLineBasicInfoOfStock</Function>
+
+								<Function>CChinaMarket::SchedulingTaskPerSecond</Function>
 								<Function>CChinaMarket::SchedulingTaskPer10Seconds</Function>
 	              <Function>CChinaMarket::SchedulingTaskPerMinute</Function>
-								<Function>CChinaMarket::SchedulingTaskPer5Minute</Function>
+								<Function>CChinaMarket::SchedulingTaskPer5Minutes</Function>
 								<Function>CChinaMarket::SchedulingTaskPerHour</Function>
 	              <Function>CChinaMarket::SchedulingTask</Function>
 	              <Function>CChinaMarket::BuildCurrentWeekWeekLineTable</Function>
@@ -75,7 +93,21 @@ Included items must then not match any entries in the exclude list to remain inc
 	              <Function>CChinaMarket::CreatingThreadChoice10RSStrongStockSet</Function>
 	              <Function>CChinaMarket::DeleteWeekLine</Function>
 								<Function>CChinaMarket::SaveRTData</Function>
-	              <Function>CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDate</Function>
+								<Function>CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDate</Function>
+								<Function>CChinaMarket::CreatingThreadBuildDayLineRS</Function>
+								<Function>CChinaMarket::CreatingThreadBuildDayLineRSOfDate</Function>
+								<Function>CChinaMarket::CreatingThreadBuildWeekLine</Function>
+								<Function>CChinaMarket::CreatingThreadBuildWeekLineOfStock</Function>
+								<Function>CChinaMarket::CreatingThreadBuildWeekLineRS</Function>
+								<Function>CChinaMarket::CreatingThreadBuildWeekLineRSOfDate</Function>
+								<Function>CChinaMarket::CreatingThreadBuildWeekLineOfCurrentWeek</Function>
+								<Function>CChinaMarket::CreatingThreadBuildCurrentWeekWeekLineTable</Function>
+								<Function>CChinaMarket::CreatingThreadChoice10RSStrong1StockSet</Function>
+								<Function>CChinaMarket::CreatingThreadChoice10RSStrong2StockSet</Function>
+								<Function>CChinaMarket::CreatingThreadLoadDayLine</Function>
+								<Function>CChinaMarket::CreatingThreadLoadWeekLine</Function>
+								<Function>CChinaMarket::CreatingThreadProcessTodayStock</Function>
+	              <Function>CChinaMarket::CreatingThreadUpdateStockProfileDB</Function>
 
 								<Function>CContainerChinaStock::BuildDayLine</Function>
 	              <Function>CContainerChinaStock::BuildDayLineRS</Function>
@@ -100,10 +132,26 @@ Included items must then not match any entries in the exclude list to remain inc
 	              <Function>CMainFrame::SetDockingWindowIcons</Function>
 	              <Function>CMainFrame::PreCreateWindow</Function>
 	              <Function>CMainFrame::OnWindowManager</Function>
-	              <Function>CMainFrame::OnViewCustomize</Function>
+								<Function>CMainFrame::OnViewCustomize</Function>
+	              <Function>CMainFrame::OnSize</Function>
 	              <Function>CMainFrame::OnSettingChange</Function>
+								<Function>CMainFrame::OnUpdateWorldStockDayLineStartEnd</Function>
+								<Function>CMainFrame::OnRecordTiingoCryptoWebSocket</Function>
+								<Function>CMainFrame::OnRecordTiingoForexWebSocket</Function>
+								<Function>CMainFrame::OnRecordTiingoIEXWebSocket</Function>
+	              <Function>CMainFrame::OnRecordFinnhubWebSocket</Function>
+								<Function>CMainFrame::OnCalculate10dayRS1</Function>
+								<Function>CMainFrame::OnCalculate10dayRS2</Function>
+								<Function>CMainFrame::OnCalculate10dayRS</Function>
+								<Function>CMainFrame::OnUpdateStockSection</Function>
+								<Function>CMainFrame::ProcessChinaMarketStock</Function>
+								<Function>CMainFrame::~CMainFrame</Function>
+								<Function>CMainFrame::OnRebuildDayLineRS</Function>
+								<Function>CMainFrame::OnRebuildWeekLineRS</Function>
+								<Function>CMainFrame::OnBuildCurrentWeekLine</Function>
+	              <Function>CMainFrame::OnBuildRebuildCurrentWeekLine</Function>
 
-	              <Function>CWorldMarket::SchedulingTaskPerSecond</Function>
+								<Function>CWorldMarket::SchedulingTaskPerSecond</Function>
 	              <Function>CWorldMarket::SchedulingTaskPer10Seconds</Function>
 	              <Function>CWorldMarket::SchedulingTaskPerMinute</Function>
 	              <Function>CWorldMarket::SchedulingTaskPer5Minute</Function>
@@ -138,6 +186,18 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CFinnhubWebSocket::Connect</Function>
 								<Function>CFinnhubWebSocket::Send</Function>
 								<Function>CFinnhubWebSocket::CreateThreadConnectWebSocket</Function>
+
+								<Function>CTiingoForexWebSocket::Connect</Function>
+								<Function>CTiingoForexWebSocket::Send</Function>
+								<Function>CTiingoForexWebSocket::CreateThreadConnectWebSocket</Function>
+
+								<Function>CTiingoCryptoWebSocket::Connect</Function>
+	              <Function>CTiingoCryptoWebSocket::Send</Function>
+	              <Function>CTiingoCryptoWebSocket::CreateThreadConnectWebSocket</Function>
+
+	              <Function>CTiingoIEXWebSocket::Connect</Function>
+	              <Function>CTiingoIEXWebSocket::Send</Function>
+	              <Function>CTiingoIEXWebSocket::CreateThreadConnectWebSocket</Function>
 
 							</Exclude>
             </Functions>

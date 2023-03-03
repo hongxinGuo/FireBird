@@ -1333,61 +1333,52 @@ bool CChinaMarket::TaskLoadCurrentStockHistoryData(void) {
 	return true;
 }
 
-bool CChinaMarket::CreatingThreadProcessTodayStock(void) {
+void CChinaMarket::CreatingThreadProcessTodayStock(void) {
 	thread thread1(ThreadProcessTodayStock, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CChinaMarket::CreatingThreadBuildDayLineRS(long lStartCalculatingDay) {
+void CChinaMarket::CreatingThreadBuildDayLineRS(long lStartCalculatingDay) {
 	thread thread1(ThreadBuildDayLineRS, this, lStartCalculatingDay);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CChinaMarket::CreatingThreadBuildDayLineRSOfDate(long lThisDay) {
+void CChinaMarket::CreatingThreadBuildDayLineRSOfDate(long lThisDay) {
 	thread thread1(ThreadBuildDayLineRSOfDate, this, lThisDay);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CChinaMarket::CreatingThreadBuildWeekLineRSOfDate(long lThisDay) {
+void CChinaMarket::CreatingThreadBuildWeekLineRSOfDate(long lThisDay) {
 	thread thread1(ThreadBuildWeekLineRSOfDate, this, lThisDay);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CChinaMarket::CreatingThreadLoadDayLine(CChinaStock* pCurrentStock) {
+void CChinaMarket::CreatingThreadLoadDayLine(CChinaStock* pCurrentStock) {
 	thread thread1(ThreadLoadDayLine, pCurrentStock);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CChinaMarket::CreatingThreadLoadWeekLine(CChinaStock* pCurrentStock) {
+void CChinaMarket::CreatingThreadLoadWeekLine(CChinaStock* pCurrentStock) {
 	thread thread1(ThreadLoadWeekLine, pCurrentStock);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CChinaMarket::CreatingThreadUpdateStockProfileDB(void) {
+void CChinaMarket::CreatingThreadUpdateStockProfileDB(void) {
 	thread thread1(ThreadUpdateChinaStockProfileDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CChinaMarket::CreatingThreadChoice10RSStrong2StockSet(void) {
+void CChinaMarket::CreatingThreadChoice10RSStrong2StockSet(void) {
 	thread thread1(ThreadChoice10RSStrong2StockSet, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CChinaMarket::CreatingThreadChoice10RSStrong1StockSet(void) {
+void CChinaMarket::CreatingThreadChoice10RSStrong1StockSet(void) {
 	thread thread1(ThreadChoice10RSStrong1StockSet, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CChinaMarket::CreatingThreadChoice10RSStrongStockSet(void) {
+void CChinaMarket::CreatingThreadChoice10RSStrongStockSet(void) {
 	for (int i = 0; i < 10; i++) {
 		if (m_aRSStrongOption.at(i).m_fActive) {
 			thread thread1(ThreadChoice10RSStrongStockSet, this, &(m_aRSStrongOption.at(i)), i);
@@ -1396,42 +1387,31 @@ bool CChinaMarket::CreatingThreadChoice10RSStrongStockSet(void) {
 	}
 	SetUpdatedDateFor10DaysRS(GetMarketDate());
 	SetUpdateOptionDB(true); // 更新选项数据库.此时计算工作线程只是刚刚启动，需要时间去完成。
-
-	return true;
 }
 
-bool CChinaMarket::CreatingThreadBuildWeekLine(long lStartDate) {
+void CChinaMarket::CreatingThreadBuildWeekLine(long lStartDate) {
 	thread thread1(ThreadBuildWeekLine, this, lStartDate);
 	thread1.detach();
-	return true;
 }
 
-bool CChinaMarket::CreatingThreadBuildWeekLineOfStock(CChinaStock* pStock, long lStartDate) {
+void CChinaMarket::CreatingThreadBuildWeekLineOfStock(CChinaStock* pStock, long lStartDate) {
 	thread thread1(ThreadBuildWeekLineOfStock, pStock, lStartDate);
 	thread1.detach();
-
-	return true;
 }
 
-bool CChinaMarket::CreatingThreadBuildWeekLineRS(void) {
+void CChinaMarket::CreatingThreadBuildWeekLineRS(void) {
 	thread thread1(ThreadBuildWeekLineRS, this, _CHINA_MARKET_BEGIN_DATE_);
 	thread1.detach();
-
-	return true;
 }
 
-bool CChinaMarket::CreatingThreadBuildWeekLineOfCurrentWeek(void) {
+void CChinaMarket::CreatingThreadBuildWeekLineOfCurrentWeek(void) {
 	thread thread1(ThreadBuildWeekLineOfCurrentWeek, this);
 	thread1.detach();
-
-	return true;
 }
 
-bool CChinaMarket::CreatingThreadBuildCurrentWeekWeekLineTable(void) {
+void CChinaMarket::CreatingThreadBuildCurrentWeekWeekLineTable(void) {
 	thread thread1(ThreadBuildCurrentWeekWeekLineTable, this);
 	thread1.detach();
-
-	return true;
 }
 
 bool CChinaMarket::DeleteDayLine(long lDate) {

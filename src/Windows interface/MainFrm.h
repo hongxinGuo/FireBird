@@ -138,8 +138,8 @@ public:
 	afx_msg void OnUpdateRecordTiingoCryptoWebSocket(CCmdUI* pCmdUI);
 	afx_msg void OnRecordTiingoForexWebSocket();
 	afx_msg void OnUpdateRecordTiingoForexWebSocket(CCmdUI* pCmdUI);
-	afx_msg void OnRecordTiingoIexWebSocket();
-	afx_msg void OnUpdateRecordTiingoIexWebSocket(CCmdUI* pCmdUI);
+	afx_msg void OnRecordTiingoIEXWebSocket();
+	afx_msg void OnUpdateRecordTiingoIEXWebSocket(CCmdUI* pCmdUI);
 	afx_msg void OnRebuildBasicFinancial();
 	afx_msg void OnMaintainDayLine();
 	afx_msg void OnUpdateMaintainDayLine(CCmdUI* pCmdUI);

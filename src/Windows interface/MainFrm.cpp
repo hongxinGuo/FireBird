@@ -95,8 +95,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_CRYPTO_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoCryptoWebSocket)
 	ON_COMMAND(ID_RECORD_TIINGO_FOREX_WEB_SOCKET, &CMainFrame::OnRecordTiingoForexWebSocket)
 	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_FOREX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoForexWebSocket)
-	ON_COMMAND(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnRecordTiingoIexWebSocket)
-	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoIexWebSocket)
+	ON_COMMAND(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnRecordTiingoIEXWebSocket)
+	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoIEXWebSocket)
 	ON_COMMAND(ID_REBUILD_BASIC_FINANCIAL, &CMainFrame::OnRebuildBasicFinancial)
 	ON_COMMAND(ID_MAINTAIN_DAYLINE, &CMainFrame::OnMaintainDayLine)
 	ON_UPDATE_COMMAND_UI(ID_MAINTAIN_DAYLINE, &CMainFrame::OnUpdateMaintainDayLine)
@@ -524,6 +524,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	catch (std::exception* e) {
 		CString str = _T("Unhandled exception founded : ");
 		str += e->what();
+		gl_systemMessage.PushInformationMessage(str);
 		gl_systemMessage.PushErrorMessage(str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
@@ -699,7 +700,9 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	SysCallOnSysCommand(nID, lParam);
 }
 
-void CMainFrame::OnCalculateTodayRS() { CalculateTodayRS(); }
+void CMainFrame::OnCalculateTodayRS() {
+	CalculateTodayRS();
+}
 
 void CMainFrame::CalculateTodayRS(void) {
 	gl_pChinaMarket->CreatingThreadBuildDayLineRS(gl_pChinaMarket->GetMarketDate());
@@ -1106,7 +1109,7 @@ void CMainFrame::OnUpdateRecordTiingoForexWebSocket(CCmdUI* pCmdUI) {
 	}
 }
 
-void CMainFrame::OnRecordTiingoIexWebSocket() {
+void CMainFrame::OnRecordTiingoIEXWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) {
 		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(false);
 		gl_tiingoIEXWebSocket.CreateThreadDisconnectWebSocket();
@@ -1117,7 +1120,7 @@ void CMainFrame::OnRecordTiingoIexWebSocket() {
 	}
 }
 
-void CMainFrame::OnUpdateRecordTiingoIexWebSocket(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateRecordTiingoIEXWebSocket(CCmdUI* pCmdUI) {
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}

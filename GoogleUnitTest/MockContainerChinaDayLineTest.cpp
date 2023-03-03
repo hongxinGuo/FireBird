@@ -10,6 +10,8 @@ using std::make_shared;
 using namespace testing;
 
 namespace FireBirdTest {
+	CMockDataChinaDayLinePtr s_pMockDayLine;
+
 	class CMockDataChinaDayLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
@@ -22,67 +24,68 @@ namespace FireBirdTest {
 
 		void SetUp(void) override {
 			GeneralCheck();
-			pDayLine = make_shared<CMockDataChinaDayLine>();
+			s_pMockDayLine = make_shared<CMockDataChinaDayLine>();
 		}
 
 		void TearDown(void) override {
 			// clearUp
+			s_pMockDayLine = nullptr;
+
 			GeneralCheck();
 		}
 
 	protected:
-		CMockDataChinaDayLinePtr pDayLine;
 	};
 
 	TEST_F(CMockDataChinaDayLineTest, TestCalculateDayLineRS) {
 		InSequence Seq;
-		EXPECT_CALL(*pDayLine, CalculateRS1(3))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRS1(3))
 		.Times(1);
-		EXPECT_CALL(*pDayLine, CalculateRS1(5))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRS1(5))
 		.Times(1);
-		EXPECT_CALL(*pDayLine, CalculateRS1(10))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRS1(10))
 		.Times(1);
-		EXPECT_CALL(*pDayLine, CalculateRS1(30))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRS1(30))
 		.Times(1);
-		EXPECT_CALL(*pDayLine, CalculateRS1(60))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRS1(60))
 		.Times(1);
-		EXPECT_CALL(*pDayLine, CalculateRS1(120))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRS1(120))
 		.Times(1);
-		pDayLine->CalculateRS0();
+		s_pMockDayLine->CalculateRS0();
 	}
 
 	TEST_F(CMockDataChinaDayLineTest, TestCalculateDayLineRSLogarithm) {
 		InSequence Seq;
-		EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(3))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRSLogarithm1(3))
 		.Times(1);
-		EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(5))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRSLogarithm1(5))
 		.Times(1);
-		EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(10))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRSLogarithm1(10))
 		.Times(1);
-		EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(30))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRSLogarithm1(30))
 		.Times(1);
-		EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(60))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRSLogarithm1(60))
 		.Times(1)
 		.WillOnce(Return(true));
-		EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(120))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRSLogarithm1(120))
 		.Times(1);
-		pDayLine->CalculateRSLogarithm0();
+		s_pMockDayLine->CalculateRSLogarithm0();
 	}
 
 	TEST_F(CMockDataChinaDayLineTest, TestCalculateDayLineRSIndex) {
 		InSequence Seq;
-		EXPECT_CALL(*pDayLine, CalculateRSIndex1(3))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRSIndex1(3))
 		.Times(1);
-		EXPECT_CALL(*pDayLine, CalculateRSIndex1(5))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRSIndex1(5))
 		.Times(1);
-		EXPECT_CALL(*pDayLine, CalculateRSIndex1(10))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRSIndex1(10))
 		.Times(1);
-		EXPECT_CALL(*pDayLine, CalculateRSIndex1(30))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRSIndex1(30))
 		.Times(1);
-		EXPECT_CALL(*pDayLine, CalculateRSIndex1(60))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRSIndex1(60))
 		.Times(1);
-		EXPECT_CALL(*pDayLine, CalculateRSIndex1(120))
+		EXPECT_CALL(*s_pMockDayLine, CalculateRSIndex1(120))
 		.Times(1);
-		pDayLine->CalculateRSIndex0();
+		s_pMockDayLine->CalculateRSIndex0();
 	}
 }

@@ -300,9 +300,7 @@ namespace FireBirdTest {
 		gl_pMockChinaMarket->SetCalculatingDayLineRS(true);
 		gl_pMockChinaMarket->SetRSEndDate(0);
 		gl_pMockChinaMarket->SetUpdateOptionDB(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadBuildDayLineRSOfDate(_))
-		.Times(5)
-		.WillRepeatedly(Return(true));
+		EXPECT_CALL(*gl_pMockChinaMarket, CreatingThreadBuildDayLineRSOfDate(_)).Times(5);
 		EXPECT_EQ(ThreadBuildDayLineRS(gl_pMockChinaMarket.get(), lStartDate), static_cast<UINT>(11));
 		EXPECT_FALSE(gl_pMockChinaMarket->IsUpdateOptionDB()) << _T("被打断后不设置此标识");
 		EXPECT_EQ(gl_pMockChinaMarket->GetRSEndDate(), 0);

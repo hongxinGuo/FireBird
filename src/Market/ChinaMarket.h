@@ -90,21 +90,21 @@ public:
 	bool TaskLoadCurrentStockHistoryData(void);
 
 	// 各工作线程调用包裹函数
-	virtual bool CreatingThreadBuildDayLineRS(long lStartCalculatingDay);
-	virtual bool CreatingThreadBuildDayLineRSOfDate(long lThisDay);
-	virtual bool CreatingThreadBuildWeekLine(long lStartDate);
-	virtual bool CreatingThreadBuildWeekLineOfStock(CChinaStock* pStock, long lStartDate);
-	virtual bool CreatingThreadBuildWeekLineRS(void);
-	virtual bool CreatingThreadBuildWeekLineRSOfDate(long lThisDay);
-	virtual bool CreatingThreadBuildWeekLineOfCurrentWeek(void);
-	virtual bool CreatingThreadBuildCurrentWeekWeekLineTable(void);
-	virtual bool CreatingThreadChoice10RSStrong1StockSet(void);
-	virtual bool CreatingThreadChoice10RSStrongStockSet(void);
-	virtual bool CreatingThreadChoice10RSStrong2StockSet(void);
-	virtual bool CreatingThreadLoadDayLine(CChinaStock* pCurrentStock);
-	virtual bool CreatingThreadLoadWeekLine(CChinaStock* pCurrentStock);
-	virtual bool CreatingThreadProcessTodayStock(void);
-	virtual bool CreatingThreadUpdateStockProfileDB(void);
+	virtual void CreatingThreadBuildDayLineRS(long lStartCalculatingDay);
+	virtual void CreatingThreadBuildDayLineRSOfDate(long lThisDay);
+	virtual void CreatingThreadBuildWeekLine(long lStartDate);
+	virtual void CreatingThreadBuildWeekLineOfStock(CChinaStock* pStock, long lStartDate);
+	virtual void CreatingThreadBuildWeekLineRS(void);
+	virtual void CreatingThreadBuildWeekLineRSOfDate(long lThisDay);
+	virtual void CreatingThreadBuildWeekLineOfCurrentWeek(void);
+	virtual void CreatingThreadBuildCurrentWeekWeekLineTable(void);
+	virtual void CreatingThreadChoice10RSStrong1StockSet(void);
+	virtual void CreatingThreadChoice10RSStrongStockSet(void);
+	virtual void CreatingThreadChoice10RSStrong2StockSet(void);
+	virtual void CreatingThreadLoadDayLine(CChinaStock* pCurrentStock);
+	virtual void CreatingThreadLoadWeekLine(CChinaStock* pCurrentStock);
+	virtual void CreatingThreadProcessTodayStock(void);
+	virtual void CreatingThreadUpdateStockProfileDB(void);
 	// interface function
 
 public:
@@ -213,7 +213,7 @@ public:
 	bool DeleteWeekLineBasicInfo(long lMonday);
 	bool DeleteWeekLineExtendInfo(long lMonday);
 
-	void MaintainDayLine(void) const { m_containerChinaStock.SetAllDayLineNeedMaintain(); }
+	void MaintainDayLine(void) const { m_containerChinaStock.SetDayLineNeedMaintain(); }
 
 	bool DeleteDayLine(long lDate);
 	bool DeleteDayLineBasicInfo(long lDate);

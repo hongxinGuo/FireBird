@@ -5,20 +5,20 @@
 namespace testing {
 	class CMockChinaMarket final : public CChinaMarket {
 	public:
-		MOCK_METHOD(bool, CreatingThreadProcessTodayStock, (), (override));
-		MOCK_METHOD(bool, CreatingThreadBuildDayLineRS, (long lStartCalculatingDate), (override));
-		MOCK_METHOD(bool, CreatingThreadBuildDayLineRSOfDate, (long lThisDate), (override));
-		MOCK_METHOD(bool, CreatingThreadLoadDayLine, (CChinaStock* pCurrentStock), (override));
-		MOCK_METHOD(bool, CreatingThreadLoadWeekLine, (CChinaStock* pCurrentStock), (override));
-		MOCK_METHOD(bool, CreatingThreadUpdateStockProfileDB, (), (override));
-		MOCK_METHOD(bool, CreatingThreadChoice10RSStrong2StockSet, (), (override));
-		MOCK_METHOD(bool, CreatingThreadChoice10RSStrong1StockSet, (), (override));
-		MOCK_METHOD(bool, CreatingThreadChoice10RSStrongStockSet, (), (override));
-		MOCK_METHOD(bool, CreatingThreadBuildWeekLine, (long lStartDate), (override));
-		MOCK_METHOD(bool, CreatingThreadBuildWeekLineOfStock, (CChinaStock* pStock, long lStartDate), (override));
-		MOCK_METHOD(bool, CreatingThreadBuildWeekLineRS, (), (override));
-		MOCK_METHOD(bool, CreatingThreadBuildWeekLineRSOfDate, (long lThisDate), (override));
-		MOCK_METHOD(bool, CreatingThreadBuildWeekLineOfCurrentWeek, (), (override));
+		MOCK_METHOD(void, CreatingThreadProcessTodayStock, (), (override));
+		MOCK_METHOD(void, CreatingThreadBuildDayLineRS, (long lStartCalculatingDate), (override));
+		MOCK_METHOD(void, CreatingThreadBuildDayLineRSOfDate, (long lThisDate), (override));
+		MOCK_METHOD(void, CreatingThreadLoadDayLine, (CChinaStock* pCurrentStock), (override));
+		MOCK_METHOD(void, CreatingThreadLoadWeekLine, (CChinaStock* pCurrentStock), (override));
+		MOCK_METHOD(void, CreatingThreadUpdateStockProfileDB, (), (override));
+		MOCK_METHOD(void, CreatingThreadChoice10RSStrong2StockSet, (), (override));
+		MOCK_METHOD(void, CreatingThreadChoice10RSStrong1StockSet, (), (override));
+		MOCK_METHOD(void, CreatingThreadChoice10RSStrongStockSet, (), (override));
+		MOCK_METHOD(void, CreatingThreadBuildWeekLine, (long lStartDate), (override));
+		MOCK_METHOD(void, CreatingThreadBuildWeekLineOfStock, (CChinaStock* pStock, long lStartDate), (override));
+		MOCK_METHOD(void, CreatingThreadBuildWeekLineRS, (), (override));
+		MOCK_METHOD(void, CreatingThreadBuildWeekLineRSOfDate, (long lThisDate), (override));
+		MOCK_METHOD(void, CreatingThreadBuildWeekLineOfCurrentWeek, (), (override));
 
 		MOCK_METHOD(bool, UpdateOptionDB, (), (override));
 		MOCK_METHOD(bool, UpdateStockProfileDB, (), (override));

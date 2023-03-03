@@ -609,7 +609,9 @@ bool CProductFinnhubCompanyBasicFinancial::GetSeasonData(json* pjs, vector<CValu
 		ptChild = jsonGetChild(pjs, szMsg);
 		vector<CValueOfPeriod> vDataTemp;
 		ParseVector(&ptChild, vDataTemp);
-		for (size_t i = 0; i < vDataTemp.size(); i++) { vData.push_back(vDataTemp[i]); }
+		for (size_t i = 0; i < vDataTemp.size(); i++) {
+			vData.push_back(vDataTemp[i]);
+		}
 	}
 	catch (json::exception&) {
 		// do nothing

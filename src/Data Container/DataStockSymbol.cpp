@@ -92,7 +92,7 @@ bool CDataStockSymbol::UpdateStockSectionDB(void) {
 	if (setStockSection.IsEOF()) {
 		// ¿Õ±í
 		for (int i = 0; i < 2000; i++) {
-			CStockSectionPtr pStockSection = m_vStockSection.at(i);
+			const CStockSectionPtr pStockSection = m_vStockSection.at(i);
 			setStockSection.AddNew();
 			setStockSection.m_ID = i;
 			setStockSection.m_Active = pStockSection->IsActive();

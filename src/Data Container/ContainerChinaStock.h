@@ -7,7 +7,7 @@
 #include <memory>
 using std::dynamic_pointer_cast;
 
-class CContainerChinaStock final : public CContainerVirtualStock {
+class CContainerChinaStock : public CContainerVirtualStock {
 public:
 	CContainerChinaStock();
 	// 只能有一个实例,不允许赋值。
@@ -40,8 +40,8 @@ public:
 
 	[[nodiscard]] bool IsDayLineDBUpdated(void) noexcept;
 
-	void SetAllDayLineNeedMaintain(void) const;
-	void SetAllDayLineNeedUpdate(void) const;
+	void SetDayLineNeedMaintain(void) const;
+	void SetDayLineNeedUpdate(void) const;
 
 	void ClearDayLineDBUpdatedFlag(void) noexcept;
 	void ClearDayLineNeedUpdateStatus(void) const;
@@ -59,6 +59,7 @@ public:
 
 	[[nodiscard]] bool ProcessRTData(void);
 	bool SaveDayLineData(void);
+	virtual void CreateThreadSaveDayLineBasicInfoOfStock(CChinaStockPtr pStock);
 
 	[[nodiscard]] long GetDayLineNeedUpdateNumber(void) const;
 	[[nodiscard]] long GetDayLineNeedSaveNumber(void) const;

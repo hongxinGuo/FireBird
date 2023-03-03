@@ -142,6 +142,9 @@
     <Filter Include="Mock class\WebSocket">
       <UniqueIdentifier>{827eae04-a51b-40ea-95e7-e913b9681254}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mock class\Data Container">
+      <UniqueIdentifier>{0f8041e7-12c6-4ece-9038-3a8821de651d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -582,11 +585,11 @@
     <ClCompile Include="ContainerFinnhubEconomicCalendarTest.cpp">
       <Filter>Test源文件\Data Container\Finnhub</Filter>
     </ClCompile>
+    <ClCompile Include="MockContainerChinaStockTest.cpp">
+      <Filter>Test源文件\Data Container\China Market</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EnvironmentSetUp.h">
-      <Filter>Test源文件</Filter>
-    </ClInclude>
     <ClInclude Include="MockMainFrm.h">
       <Filter>Mock class\Windows interface</Filter>
     </ClInclude>
@@ -652,6 +655,9 @@
     </ClInclude>
     <ClInclude Include="MockVirtualWebSocket.h">
       <Filter>Mock class\WebSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="MockContainerChinaStock.h">
+      <Filter>Mock class\Data Container</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
