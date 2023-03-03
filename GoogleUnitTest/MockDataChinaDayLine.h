@@ -1,9 +1,9 @@
 #pragma once
 
-#include"DataChinaDayLine.h"
+#include"ContainerChinaDayLine.h"
 
 namespace testing {
-	class CMockDataChinaDayLine final : public CDataChinaDayLine {
+	class CMockDataChinaDayLine final : public CContainerChinaDayLine {
 	public:
 		MOCK_METHOD(bool, CalculateRS1, (INT64 lNumber), (override));
 		MOCK_METHOD(bool, CalculateRSLogarithm1, (INT64 lNumber), (override));

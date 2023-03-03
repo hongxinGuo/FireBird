@@ -3,23 +3,23 @@
 #include"TimeConvert.h"
 
 #include"DayLine.h"
-#include "DataChinaDayLine.h"
+#include "ContainerChinaDayLine.h"
 #include"SetDayLineBasicInfo.h"
 #include"SetDayLineExtendInfo.h"
 
 #include<memory>
 using std::make_shared;
 
-CDataChinaDayLine::CDataChinaDayLine() {}
+CContainerChinaDayLine::CContainerChinaDayLine() {}
 
-bool CDataChinaDayLine::SaveDB(const CString& strStockSymbol) {
+bool CContainerChinaDayLine::SaveDB(const CString& strStockSymbol) {
 	CSetDayLineBasicInfo setDayLineBasic;
 	UpdateBasicDB(&setDayLineBasic, strStockSymbol);
 
 	return true;
 }
 
-bool CDataChinaDayLine::LoadDB(const CString& strStockSymbol) {
+bool CContainerChinaDayLine::LoadDB(const CString& strStockSymbol) {
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
@@ -49,7 +49,7 @@ bool CDataChinaDayLine::LoadDB(const CString& strStockSymbol) {
 	return true;
 }
 
-bool CDataChinaDayLine::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) {
+bool CContainerChinaDayLine::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) {
 	ASSERT(IsDataLoaded());
 	ASSERT(Size() > 0);
 	long lCurrentDayLinePos = 0;
@@ -65,7 +65,7 @@ bool CDataChinaDayLine::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) {
 	return true;
 }
 
-CWeekLinePtr CDataChinaDayLine::CreateNewWeekLine(long& lCurrentDayLinePos) {
+CWeekLinePtr CContainerChinaDayLine::CreateNewWeekLine(long& lCurrentDayLinePos) {
 	ASSERT(Size() > 0);
 	ASSERT(lCurrentDayLinePos < Size());
 

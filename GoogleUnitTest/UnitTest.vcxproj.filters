@@ -261,25 +261,25 @@
     <ClCompile Include="ContainerChinaStockTest.cpp">
       <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="DataStockSymbolTest.cpp">
+    <ClCompile Include="ContainerStockSymbolTest.cpp">
       <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="DataCryptoDayLineTest.cpp">
+    <ClCompile Include="ContainerCryptoDayLineTest.cpp">
       <Filter>Test源文件\Data Container\World Market</Filter>
     </ClCompile>
-    <ClCompile Include="DataForexDayLineTest.cpp">
+    <ClCompile Include="ContainerForexDayLineTest.cpp">
       <Filter>Test源文件\Data Container\World Market</Filter>
     </ClCompile>
-    <ClCompile Include="DataWorldStockDayLineTest.cpp">
+    <ClCompile Include="ContainerWorldStockDayLineTest.cpp">
       <Filter>Test源文件\Data Container\World Market</Filter>
     </ClCompile>
-    <ClCompile Include="DataChinaDayLineTest.cpp">
+    <ClCompile Include="ContainerChinaDayLineTest.cpp">
       <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="DataChinaWeekLineTest.cpp">
+    <ClCompile Include="ContainerChinaWeekLineTest.cpp">
       <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="MockDataChinaDayLineTest.cpp">
+    <ClCompile Include="MockContainerChinaDayLineTest.cpp">
       <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
     <ClCompile Include="MockDataChinaWeekLineTest.cpp">

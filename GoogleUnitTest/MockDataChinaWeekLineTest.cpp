@@ -10,7 +10,7 @@ using std::make_shared;
 using namespace testing;
 
 namespace FireBirdTest {
-	class CMockDataChinaDayLineTest : public ::testing::Test {
+	class CMockContainerChinaDayLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) { // 本测试类的初始化函数
 			GeneralCheck();
@@ -34,7 +34,7 @@ namespace FireBirdTest {
 		CMockDataChinaWeekLinePtr pWeekLine;
 	};
 
-	TEST_F(CMockDataChinaDayLineTest, TestCalculateRS) {
+	TEST_F(CMockContainerChinaDayLineTest, TestCalculateRS) {
 		InSequence Seq;
 		EXPECT_CALL(*pWeekLine, CalculateRS1(3))
 		.Times(1);
@@ -51,7 +51,7 @@ namespace FireBirdTest {
 		pWeekLine->CalculateRS0();
 	}
 
-	TEST_F(CMockDataChinaDayLineTest, TestCalculateRSLogarithm) {
+	TEST_F(CMockContainerChinaDayLineTest, TestCalculateRSLogarithm) {
 		InSequence Seq;
 		EXPECT_CALL(*pWeekLine, CalculateRSLogarithm1(3))
 		.Times(1);
@@ -69,7 +69,7 @@ namespace FireBirdTest {
 		pWeekLine->CalculateRSLogarithm0();
 	}
 
-	TEST_F(CMockDataChinaDayLineTest, TestCalculateRSIndex) {
+	TEST_F(CMockContainerChinaDayLineTest, TestCalculateRSIndex) {
 		InSequence Seq;
 		EXPECT_CALL(*pWeekLine, CalculateRSIndex1(3))
 		.Times(1);

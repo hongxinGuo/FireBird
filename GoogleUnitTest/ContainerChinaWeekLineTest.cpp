@@ -5,7 +5,7 @@
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
-#include"DataChinaWeekLine.h"
+#include"ContainerChinaWeekLine.h"
 
 #include"SetCurrentWeekLine.h"
 
@@ -42,7 +42,7 @@ namespace FireBirdTest {
 		pWeekLine2->SetHigh(11000);
 		pWeekLine2->SetLow(1200);
 
-		CDataChinaWeekLine dataChinaWeekLine;
+		CContainerChinaWeekLine dataChinaWeekLine;
 		vector<CWeekLinePtr> vWeekLine;
 
 		vWeekLine.push_back(pWeekLine);
@@ -74,7 +74,7 @@ namespace FireBirdTest {
 		pWeekLine->SetLow(200);
 		pWeekLine->SetTransactionNumber(1);
 
-		CDataChinaWeekLine dataChinaWeekLine;
+		CContainerChinaWeekLine dataChinaWeekLine;
 
 		dataChinaWeekLine.StoreData(pWeekLine);
 		dataChinaWeekLine.UpdateData(pDayLine);
@@ -97,7 +97,7 @@ namespace FireBirdTest {
 		pWeekLine2->SetHigh(11000);
 		pWeekLine2->SetLow(1200);
 
-		CDataChinaWeekLine dataChinaWeekLine;
+		CContainerChinaWeekLine dataChinaWeekLine;
 		vector<CWeekLinePtr> vWeekLine;
 
 		vWeekLine.push_back(pWeekLine);
@@ -125,7 +125,7 @@ namespace FireBirdTest {
 	TEST_F(CStockDataChinaWeekLineTest, TestSaveLoadCurrentWeekLine) {
 		CSetCurrentWeekLine setCurrentWeekLine, setCurrentWeekLine2;
 		auto pWeekLine = make_shared<CWeekLine>();
-		CDataChinaWeekLine dataChinaWeekLine, weekLineContainer2;
+		CContainerChinaWeekLine dataChinaWeekLine, weekLineContainer2;
 
 		pWeekLine->SetStockSymbol(_T("600000.SS"));
 		pWeekLine->SetDate(GetCurrentMonday(20200101)); // 此日期为星期三，20191230为星期一。
@@ -145,7 +145,7 @@ namespace FireBirdTest {
 
 	TEST_F(CStockDataChinaWeekLineTest, TestSaveDB) {
 		vector<CWeekLinePtr> vWeekLine;
-		CDataChinaWeekLine dataChinaWeekLine;
+		CContainerChinaWeekLine dataChinaWeekLine;
 
 		const CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
 		pWeekLine->SetDate(19901224); // 测试数据库中000003.SZ最早的日期为19901231，故此数据位于最前面

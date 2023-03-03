@@ -3,7 +3,7 @@
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
-#include"DataChinaDayLine.h"
+#include"ContainerChinaDayLine.h"
 
 using namespace testing;
 
@@ -29,7 +29,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CDataChinaDayLineTest, TestGetStartEndDate) {
-		CDataChinaDayLine dataChinaDayLine;
+		CContainerChinaDayLine dataChinaDayLine;
 
 		vector<CDayLinePtr> vDayLine;
 
@@ -72,7 +72,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataChinaDayLineTest, TestUpdateData1) {
-		CDataChinaDayLine dataChinaDayLine;
+		CContainerChinaDayLine dataChinaDayLine;
 
 		vector<CDayLinePtr> vDayLine;
 
@@ -116,7 +116,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataChinaDayLineTest, TestCreateNewWeekLine) {
-		CDataChinaDayLine dataChinaDayLine;
+		CContainerChinaDayLine dataChinaDayLine;
 
 		vector<CDayLinePtr> vDayLine;
 		long lCurrentDayLinePos = 0;
@@ -191,7 +191,7 @@ namespace FireBirdTest {
 
 	TEST_F(CDataChinaDayLineTest, TestBuildWeekLine) {
 		vector<CWeekLinePtr> vWeekLine;
-		CDataChinaDayLine dataChinaDayLine;
+		CContainerChinaDayLine dataChinaDayLine;
 		vector<CDayLinePtr> vDayLine;
 
 		auto pDayLine = make_shared<CDayLine>();
@@ -261,7 +261,7 @@ namespace FireBirdTest {
 
 	TEST_F(CDataChinaDayLineTest, TestSaveDB) {
 		vector<CDayLinePtr> vDayLine;
-		CDataChinaDayLine dataChinaDayLine;
+		CContainerChinaDayLine dataChinaDayLine;
 
 		const auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(19910102); // 测试数据库中最早的日期为19910103，故此数据位于最前面

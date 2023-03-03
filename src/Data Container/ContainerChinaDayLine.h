@@ -3,10 +3,10 @@
 #include"WeekLine.h"
 #include "VirtualDataHistoryCandleExtend.h"
 
-class CDataChinaDayLine : public CVirtualDataHistoryCandleExtend {
+class CContainerChinaDayLine : public CVirtualDataHistoryCandleExtend {
 public:
-	CDataChinaDayLine();
-	~CDataChinaDayLine() override = default;
+	CContainerChinaDayLine();
+	~CContainerChinaDayLine() override = default;
 
 public:
 	bool SaveDB(const CString& strStockSymbol) final;
@@ -24,4 +24,4 @@ public:
 private:
 };
 
-using CDataChinaDayLinePtr = shared_ptr<CDataChinaDayLine>;
+using CDataChinaDayLinePtr = shared_ptr<CContainerChinaDayLine>;

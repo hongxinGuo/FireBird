@@ -81,8 +81,8 @@
     <ClCompile Include="ContainerChoicedCryptoTest.cpp" />
     <ClCompile Include="ContainerChoicedForexTest.cpp" />
     <ClCompile Include="ContainerChoicedIEXTest.cpp" />
-    <ClCompile Include="DataCryptoDayLineTest.cpp" />
-    <ClCompile Include="DataForexDayLineTest.cpp" />
+    <ClCompile Include="ContainerCryptoDayLineTest.cpp" />
+    <ClCompile Include="ContainerForexDayLineTest.cpp" />
     <ClCompile Include="ContainerWorldStockTest.cpp" />
     <ClCompile Include="FinnhubDataSourceTest.cpp" />
     <ClCompile Include="MockFinnhubDataSourceTest.cpp" />
@@ -105,9 +105,9 @@
     <ClCompile Include="ProductSinaRTTest.cpp" />
     <ClCompile Include="ProductTengxunDayLineTest.cpp" />
     <ClCompile Include="ProductTengxunRTTest.cpp" />
-    <ClCompile Include="DataStockSymbolTest.cpp" />
+    <ClCompile Include="ContainerStockSymbolTest.cpp" />
     <ClCompile Include="ContainerTiingoCryptoSymbolTest.cpp" />
-    <ClCompile Include="DataWorldStockDayLineTest.cpp" />
+    <ClCompile Include="ContainerWorldStockDayLineTest.cpp" />
     <ClCompile Include="FinnhubCompanyNewsTest.cpp" />
     <ClCompile Include="FinnhubINquiryTypeTest.cpp" />
     <ClCompile Include="InaccessibleExchangesTest.cpp" />
@@ -130,7 +130,7 @@
     <ClCompile Include="TiingoDataSourceTest.cpp" />
     <ClCompile Include="TiingoForexWebSocketTest.cpp" />
     <ClCompile Include="TiingoIEXWebSocketTest.cpp" />
-    <ClCompile Include="DataChinaDayLineTest.cpp" />
+    <ClCompile Include="ContainerChinaDayLineTest.cpp" />
     <ClCompile Include="ProductFinnhubCompanyPeerTest.cpp" />
     <ClCompile Include="ProductFinnhubCompanyProfileConciseTest.cpp" />
     <ClCompile Include="ProductFinnhubCompanyProfileTest.cpp" />
@@ -194,7 +194,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ChinaMarketTest.cpp" />
     <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp" />
-    <ClCompile Include="MockDataChinaDayLineTest.cpp" />
+    <ClCompile Include="MockContainerChinaDayLineTest.cpp" />
     <ClCompile Include="MockMainFrmTest.cpp" />
     <ClCompile Include="XferFinnhubInquiryTest.cpp" />
     <ClInclude Include="GeneralCheck.h" />
@@ -221,7 +221,7 @@
     <ClCompile Include="ThreadStatusTest.cpp" />
     <ClCompile Include="TengxunWebRTDataTest.cpp" />
     <ClCompile Include="VirtualMarketTest.cpp" />
-    <ClCompile Include="DataChinaWeekLineTest.cpp" />
+    <ClCompile Include="ContainerChinaWeekLineTest.cpp" />
     <ClCompile Include="WeekLineTest.cpp" />
   </ItemGroup>
   <ItemGroup>

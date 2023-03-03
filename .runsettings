@@ -139,9 +139,6 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CFinnhubWebSocket::Send</Function>
 								<Function>CFinnhubWebSocket::CreateThreadConnectWebSocket</Function>
 
-								<Function></Function>
-	              <Function></Function>
-
 							</Exclude>
             </Functions>
 

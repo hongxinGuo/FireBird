@@ -28,8 +28,8 @@ enum {
 #include"OneDeal.h"
 
 #include"DayLine.h"
-#include"DataChinaWeekLine.h"
-#include"DataChinaDayLine.h"
+#include"ContainerChinaWeekLine.h"
+#include"ContainerChinaDayLine.h"
 
 class CChinaStock;
 using CChinaStockPtr = shared_ptr<CChinaStock>;
@@ -529,9 +529,9 @@ protected:
 	CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
 
 	// 日线容器
-	CDataChinaDayLine m_dataDayLine;
+	CContainerChinaDayLine m_dataDayLine;
 	// 周线容器
-	CDataChinaWeekLine m_dataWeekLine;
+	CContainerChinaWeekLine m_dataWeekLine;
 
 	bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
 };

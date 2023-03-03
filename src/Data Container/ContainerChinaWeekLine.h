@@ -3,10 +3,10 @@
 #include "VirtualDataHistoryCandleExtend.h"
 #include"WeekLine.h"
 
-class CDataChinaWeekLine : public CVirtualDataHistoryCandleExtend {
+class CContainerChinaWeekLine : public CVirtualDataHistoryCandleExtend {
 public:
-	CDataChinaWeekLine();
-	~CDataChinaWeekLine() override = default;
+	CContainerChinaWeekLine();
+	~CContainerChinaWeekLine() override = default;
 
 	bool LoadDB(const CString& strStockSymbol) final;
 	bool SaveDB(const CString& strStockSymbol) final;
@@ -20,4 +20,4 @@ public:
 	bool StoreVectorData(vector<CWeekLinePtr>& vWeekLine);
 };
 
-using CDataChinaWeekLinePtr = shared_ptr<CDataChinaWeekLine>;
+using CContainerChinaWeekLinePtr = shared_ptr<CContainerChinaWeekLine>;

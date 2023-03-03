@@ -201,7 +201,7 @@ public:
 	bool UpdateTempRTData(void);
 	virtual bool UpdateTodayTempDB(void) { return m_containerChinaStock.UpdateTodayTempDB(); }
 	bool LoadTodayTempDB(long lTheDay);
-	bool LoadDayLine(CDataChinaDayLine& dataChinaDayLine, long lDate);
+	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate);
 	virtual bool SaveStockSection(void) { return m_containerStockSymbol.UpdateStockSectionDB(); }
 
 	bool ChangeDayLineStockCodeToStandard(void);

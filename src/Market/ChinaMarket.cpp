@@ -992,8 +992,8 @@ void CChinaMarket::ResetCurrentStock(void) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
-	CDataChinaDayLine dataChinaDayLine;
-	CDataChinaWeekLine dataChinaWeekLine;
+	CContainerChinaDayLine dataChinaDayLine;
+	CContainerChinaWeekLine dataChinaWeekLine;
 	set<CString> setDayLineStockCode;
 	set<CString> setWeekLineStockCode;
 	const long lCurrentMonday = GetCurrentMonday(GetMarketDate());
@@ -1057,7 +1057,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 	CSetWeekLineExtendInfo setWeekLineExtendInfo;
 	char buffer[10];
 	CWeekLinePtr pWeekLine = nullptr;
-	CDataChinaWeekLine dataChinaWeekLine;
+	CContainerChinaWeekLine dataChinaWeekLine;
 
 	DeleteCurrentWeekWeekLine();
 
@@ -1093,7 +1093,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 	return true;
 }
 
-bool CChinaMarket::LoadDayLine(CDataChinaDayLine& dataChinaDayLine, long lDate) {
+bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) {
 	CString strSQL;
 	char pch[30];
 	//CTime ctTime;

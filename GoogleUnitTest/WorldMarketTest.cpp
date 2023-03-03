@@ -168,16 +168,15 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestAddStock) {
 		const auto pStock = make_shared<CWorldStock>();
-		const auto lTotalStock = gl_pWorldMarket->GetStockSize();
 		pStock->SetSymbol(_T("000001.SZ"));
 
 		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
 		gl_pWorldMarket->AddStock(pStock);
 		EXPECT_TRUE(gl_pWorldMarket->IsStock(pStock));
-		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), lTotalStock + 1);
+		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4848);
 		gl_pWorldMarket->DeleteStock(pStock);
 		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
-		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), lTotalStock);
+		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4847);
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteStock) {
@@ -462,6 +461,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(pStock->GetCurrency(), _T("No Currency"));
 		pStock->SetCurrency(_T(""));
 		while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4847);
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateDayLineDB) {

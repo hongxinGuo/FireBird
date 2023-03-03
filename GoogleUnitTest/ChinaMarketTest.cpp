@@ -1224,7 +1224,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestLoadDayLine) {
-		CDataChinaDayLine dataChinaDayLine;
+		CContainerChinaDayLine dataChinaDayLine;
 		const long lDate = GetCurrentMonday(20200101);
 
 		gl_pChinaMarket->LoadDayLine(dataChinaDayLine, lDate);
