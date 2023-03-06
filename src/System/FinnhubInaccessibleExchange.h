@@ -67,7 +67,7 @@ public:
 	CString GetDefaultFileName(void) { return m_strFileName; }
 
 	void SetUpdateDate(const long lDate) noexcept { m_lUpdateDate = lDate; }
-	long GetUpdateDate() { return m_lUpdateDate; }
+	long GetUpdateDate() const { return m_lUpdateDate; }
 
 	int GetFinnhubInquiryIndex(const CString& sString) const { return gl_FinnhubInquiryType.GetInquiryType(sString); }
 	CInaccessibleExchangesPtr GetInaccessibleExchange(int iInquiryType);

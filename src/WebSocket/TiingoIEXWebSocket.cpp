@@ -110,7 +110,7 @@ string CTiingoIEXWebSocket::CreateMessage(vectorString vSymbol) {
 	return jsonMessage.dump();
 }
 
-bool CTiingoIEXWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
+bool CTiingoIEXWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
 	thread thread1(ThreadConnectTiingoIEXWebSocketAndSendMessage, this, vSymbol);
 	thread1.detach();
 

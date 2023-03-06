@@ -85,6 +85,8 @@
     <ClCompile Include="ContainerForexDayLineTest.cpp" />
     <ClCompile Include="ContainerWorldStockTest.cpp" />
     <ClCompile Include="FinnhubDataSourceTest.cpp" />
+    <ClCompile Include="MarketTaskQueueTest.cpp" />
+    <ClCompile Include="MarketTaskTest.cpp" />
     <ClCompile Include="MockContainerChinaStockTest.cpp" />
     <ClCompile Include="MockFinnhubDataSourceTest.cpp" />
     <ClCompile Include="FinnhubProductTest.cpp" />

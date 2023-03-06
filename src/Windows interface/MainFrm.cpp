@@ -705,7 +705,7 @@ void CMainFrame::OnCalculateTodayRS() {
 }
 
 void CMainFrame::CalculateTodayRS(void) {
-	gl_pChinaMarket->CreatingThreadBuildDayLineRS(gl_pChinaMarket->GetMarketDate());
+	gl_pChinaMarket->CreateThreadBuildDayLineRS(gl_pChinaMarket->GetMarketDate());
 }
 
 void CMainFrame::OnProcessTodayStock() {
@@ -715,7 +715,7 @@ void CMainFrame::OnProcessTodayStock() {
 }
 
 void CMainFrame::ProcessChinaMarketStock() {
-	gl_pChinaMarket->CreatingThreadProcessTodayStock();
+	gl_pChinaMarket->CreateThreadProcessTodayStock();
 }
 
 void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
@@ -863,7 +863,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 }
 
 void CMainFrame::OnRebuildDayLineRS() {
-	gl_pChinaMarket->CreatingThreadBuildDayLineRS(_CHINA_MARKET_BEGIN_DATE_);
+	gl_pChinaMarket->CreateThreadBuildDayLineRS(_CHINA_MARKET_BEGIN_DATE_);
 }
 
 void CMainFrame::OnBuildResetMarket() {
@@ -910,17 +910,17 @@ void CMainFrame::OnUpdateRecordRTData(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnCalculate10dayRS1() {
-	gl_pChinaMarket->CreatingThreadChoice10RSStrong1StockSet();
+	gl_pChinaMarket->CreateThreadChoice10RSStrong1StockSet();
 	gl_pChinaMarket->SetChosen10RSStrong1StockSet(true);
 }
 
 void CMainFrame::OnCalculate10dayRS2() {
-	gl_pChinaMarket->CreatingThreadChoice10RSStrong2StockSet();
+	gl_pChinaMarket->CreateThreadChoice10RSStrong2StockSet();
 	gl_pChinaMarket->SetChosen10RSStrong2StockSet(true);
 }
 
 void CMainFrame::OnCalculate10dayRS() {
-	gl_pChinaMarket->CreatingThreadChoice10RSStrongStockSet();
+	gl_pChinaMarket->CreateThreadChoice10RSStrongStockSet();
 	gl_pChinaMarket->SetChosen10RSStrongStockSet(true);
 }
 
@@ -980,7 +980,7 @@ void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnBuildCreateWeekLine() {
-	gl_pChinaMarket->CreatingThreadBuildWeekLine(19900101);
+	gl_pChinaMarket->CreateThreadBuildWeekLine(19900101);
 }
 
 void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
@@ -988,7 +988,7 @@ void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnRebuildWeekLineRS() {
-	gl_pChinaMarket->CreatingThreadBuildWeekLineRS();
+	gl_pChinaMarket->CreateThreadBuildWeekLineRS();
 }
 
 void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {
@@ -996,7 +996,7 @@ void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnBuildCurrentWeekLine() {
-	gl_pChinaMarket->CreatingThreadBuildWeekLineOfCurrentWeek();
+	gl_pChinaMarket->CreateThreadBuildWeekLineOfCurrentWeek();
 }
 
 void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
@@ -1009,7 +1009,7 @@ void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnBuildRebuildCurrentWeekLine() {
-	gl_pChinaMarket->CreatingThreadBuildWeekLine(gl_pChinaMarket->GetMarketDate());
+	gl_pChinaMarket->CreateThreadBuildWeekLine(gl_pChinaMarket->GetMarketDate());
 }
 
 void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
@@ -1017,7 +1017,7 @@ void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
-	gl_pChinaMarket->CreatingThreadBuildCurrentWeekWeekLineTable();
+	gl_pChinaMarket->CreateThreadBuildCurrentWeekWeekLineTable();
 }
 
 void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {
@@ -1030,7 +1030,7 @@ void CMainFrame::OnUpdateStockSection() {
 }
 
 void CMainFrame::OnUpdateStockCode() {
-	gl_pChinaMarket->CreatingThreadUpdateStockProfileDB();
+	gl_pChinaMarket->CreateThreadUpdateStockProfileDB();
 }
 
 void CMainFrame::OnRebuildEpsSurprise() {

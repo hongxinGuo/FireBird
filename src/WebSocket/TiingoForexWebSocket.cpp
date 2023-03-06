@@ -117,7 +117,7 @@ string CTiingoForexWebSocket::CreateMessage(vectorString vSymbol) {
 	return jsonMessage.dump();
 }
 
-bool CTiingoForexWebSocket::CreatingThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
+bool CTiingoForexWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
 	thread thread1(ThreadConnectTiingoForexWebSocketAndSendMessage, this, vSymbol);
 	thread1.detach();
 

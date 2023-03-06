@@ -149,7 +149,24 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CMainFrame::OnRebuildDayLineRS</Function>
 								<Function>CMainFrame::OnRebuildWeekLineRS</Function>
 								<Function>CMainFrame::OnBuildCurrentWeekLine</Function>
-	              <Function>CMainFrame::OnBuildRebuildCurrentWeekLine</Function>
+								<Function>CMainFrame::OnBuildRebuildCurrentWeekLine</Function>
+								<Function>CMainFrame::SchedulingTask</Function>
+								<Function>CMainFrame::CalculateTodayRS</Function>
+								<Function>CMainFrame::OnStopUpdateDayLine</Function>
+								<Function>CMainFrame::OnBuildCreateWeekLine</Function>
+								<Function>CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable</Function>
+								<Function>CMainFrame::OnUpdateStockCode</Function>
+								<Function>CMainFrame::OnRebuildEpsSurprise</Function>
+								<Function>CMainFrame::OnRebuildPeer</Function>
+								<Function>CMainFrame::OnRebuildDayLine</Function>
+								<Function>CMainFrame::OnRebuildBasicFinancial</Function>
+								<Function>CMainFrame::OnMaintainDayLine</Function>
+								<Function>CMainFrame::</Function>
+								<Function>CMainFrame::</Function>
+								<Function>CMainFrame::</Function>
+								<Function>CMainFrame::</Function>
+								<Function>CMainFrame::</Function>
+	              <Function>CMainFrame::</Function>
 
 								<Function>CWorldMarket::SchedulingTaskPerSecond</Function>
 	              <Function>CWorldMarket::SchedulingTaskPer10Seconds</Function>

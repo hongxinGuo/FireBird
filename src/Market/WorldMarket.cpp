@@ -757,7 +757,7 @@ void CWorldMarket::StartFinnhubWebSocket(void) {
 void CWorldMarket::StartTiingoIEXWebSocket(void) {
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
 		if (gl_tiingoIEXWebSocket.IsClosed()) {
-			gl_tiingoIEXWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
+			gl_tiingoIEXWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
 		}
 	}
 }
@@ -773,7 +773,7 @@ void CWorldMarket::StartTiingoCryptoWebSocket(void) {
 void CWorldMarket::StartTiingoForexWebSocket(void) {
 	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
 		if (gl_tiingoForexWebSocket.IsClosed()) {
-			gl_tiingoForexWebSocket.CreatingThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
+			gl_tiingoForexWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
 		}
 	}
 }

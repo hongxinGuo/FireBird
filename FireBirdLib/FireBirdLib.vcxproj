@@ -13,6 +13,8 @@
   <ItemGroup>
     <ClInclude Include="..\src\accessory\accessory.h" />
     <ClInclude Include="..\src\accessory\CallableFunction.h" />
+    <ClInclude Include="..\src\accessory\MarketTaskQueue.h" />
+    <ClInclude Include="..\src\accessory\MarketTask.h" />
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h" />
     <ClInclude Include="..\src\accessory\ConvertToString.h" />
     <ClInclude Include="..\src\accessory\HighPerformanceCounter.h" />
@@ -199,12 +201,14 @@
   <ItemGroup>
     <ClCompile Include="..\src\accessory\accessory.cpp" />
     <ClCompile Include="..\src\accessory\CallableFunction.cpp" />
+    <ClCompile Include="..\src\accessory\MarketTask.cpp" />
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp" />
     <ClCompile Include="..\src\accessory\ConvertToString.cpp" />
     <ClCompile Include="..\src\accessory\HighPerformanceCounter.cpp" />
     <ClCompile Include="..\src\accessory\InfoReport.cpp" />
     <ClCompile Include="..\src\accessory\JsonGetValue.cpp" />
     <ClCompile Include="..\src\accessory\JsonParse.cpp" />
+    <ClCompile Include="..\src\accessory\MarketTaskQueue.cpp" />
     <ClCompile Include="..\src\accessory\NeteaseRTDataParser.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>

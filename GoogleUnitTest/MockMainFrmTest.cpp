@@ -551,15 +551,20 @@ namespace FireBirdTest {
 		gl_pMockMainFrame->OnUsingNeteaseRealtimeDataServer();
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseRTServer());
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingSinaRTServer());
-		gl_pMockMainFrame->OnUsingNeteaseRealtimeDataServer();
-		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseRTServer());
-		EXPECT_FALSE(gl_systemConfiguration.IsUsingSinaRTServer());
 		gl_pMockMainFrame->OnUsingSinaRealtimeDataServer();
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingNeteaseRTServer());
-		gl_pMockMainFrame->OnUsingSinaRealtimeDataServer();
-		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());
+	}
+
+	TEST_F(CMockMainFrameTest, TestOnUsingDayLineDataServer) {
+		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunDayLineServer());
+		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
+		gl_pMockMainFrame->OnUsingTengxunDayLineDataServer();
+		EXPECT_TRUE(gl_systemConfiguration.IsUsingTengxunDayLineServer());
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingNeteaseRTServer());
+		gl_pMockMainFrame->OnUsingNeteaseDayLineDataServer();
+		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
+		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunDayLineServer());
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateUsingNeteaseRealtimeDataServer) {

@@ -31,6 +31,8 @@ namespace FireBirdTest {
 
 	void SystemConfigurationCheck() {
 		//EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate());
+		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());
+		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
 	}
 
 	void ChinaMarketCheck(void) {

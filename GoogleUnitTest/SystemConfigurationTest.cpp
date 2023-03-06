@@ -124,9 +124,9 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetChinaMarketDayLineServer(0);
 	}
 
-	TEST_F(CSystemConfigurationTest, TestChangeFinnhubAccountToFree) {
+	TEST_F(CSystemConfigurationTest, TestChangeFinnhubAccountType) {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100);
-		bool bSaved = gl_systemConfiguration.IsNeedUpdate();
+		const bool bSaved = gl_systemConfiguration.IsNeedUpdate();
 		gl_systemConfiguration.SetUpdate(false);
 		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(220);
 
@@ -135,6 +135,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100);
 		EXPECT_TRUE(gl_systemConfiguration.IsNeedUpdate());
 
+		gl_systemConfiguration.ChangeFinnhubAccountTypeToPaid();
+
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 220);
+		EXPECT_TRUE(gl_systemConfiguration.IsNeedUpdate());
+
+		// »Ö¸´Ô­×´
+		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(1100);
 		gl_systemConfiguration.SetUpdate(bSaved);
 	}
 
@@ -154,5 +161,43 @@ namespace FireBirdTest {
 			EXPECT_TRUE(sTemp==_T("sina"));
 		}
 		catch (json::type_error&) { EXPECT_TRUE(FALSE); }
+	}
+
+	TEST_F(CSystemConfigurationTest, TestSetSystemDisplayRect) {
+		EXPECT_EQ(gl_systemConfiguration.GetSystemDisplayHeight(), 1600);
+		EXPECT_EQ(gl_systemConfiguration.GetSystemDisplayWidth(), 2600);
+
+		gl_systemConfiguration.SetSystemDisplayRect(400, 200);
+
+		EXPECT_EQ(gl_systemConfiguration.GetSystemDisplayHeight(), 200);
+		EXPECT_EQ(gl_systemConfiguration.GetSystemDisplayWidth(), 400);
+
+		const CRect rect(0, 0, 1000, 500);
+
+		gl_systemConfiguration.SetSystemDisplayRect(rect);
+
+		EXPECT_EQ(gl_systemConfiguration.GetSystemDisplayHeight(), 500);
+		EXPECT_EQ(gl_systemConfiguration.GetSystemDisplayWidth(), 1000);
+
+		gl_systemConfiguration.SetSystemDisplayRect(2600, 1600);
+	}
+
+	TEST_F(CSystemConfigurationTest, TestSetCurrentWindowRect) {
+		EXPECT_EQ(gl_systemConfiguration.GetCurrentWindowHeight(), 1600);
+		EXPECT_EQ(gl_systemConfiguration.GetCurrentWindowWidth(), 2600);
+
+		gl_systemConfiguration.SetCurrentWindowRect(400, 200);
+
+		EXPECT_EQ(gl_systemConfiguration.GetCurrentWindowHeight(), 200);
+		EXPECT_EQ(gl_systemConfiguration.GetCurrentWindowWidth(), 400);
+
+		const CRect rect(0, 0, 1000, 500);
+
+		gl_systemConfiguration.SetCurrentWindowRect(rect);
+
+		EXPECT_EQ(gl_systemConfiguration.GetCurrentWindowHeight(), 500);
+		EXPECT_EQ(gl_systemConfiguration.GetCurrentWindowWidth(), 1000);
+
+		gl_systemConfiguration.SetCurrentWindowRect(2600, 1600);
 	}
 }

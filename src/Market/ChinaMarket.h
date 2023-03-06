@@ -90,21 +90,21 @@ public:
 	bool TaskLoadCurrentStockHistoryData(void);
 
 	// 各工作线程调用包裹函数
-	virtual void CreatingThreadBuildDayLineRS(long lStartCalculatingDay);
-	virtual void CreatingThreadBuildDayLineRSOfDate(long lThisDay);
-	virtual void CreatingThreadBuildWeekLine(long lStartDate);
-	virtual void CreatingThreadBuildWeekLineOfStock(CChinaStock* pStock, long lStartDate);
-	virtual void CreatingThreadBuildWeekLineRS(void);
-	virtual void CreatingThreadBuildWeekLineRSOfDate(long lThisDay);
-	virtual void CreatingThreadBuildWeekLineOfCurrentWeek(void);
-	virtual void CreatingThreadBuildCurrentWeekWeekLineTable(void);
-	virtual void CreatingThreadChoice10RSStrong1StockSet(void);
-	virtual void CreatingThreadChoice10RSStrongStockSet(void);
-	virtual void CreatingThreadChoice10RSStrong2StockSet(void);
-	virtual void CreatingThreadLoadDayLine(CChinaStock* pCurrentStock);
-	virtual void CreatingThreadLoadWeekLine(CChinaStock* pCurrentStock);
-	virtual void CreatingThreadProcessTodayStock(void);
-	virtual void CreatingThreadUpdateStockProfileDB(void);
+	virtual void CreateThreadBuildDayLineRS(long lStartCalculatingDay);
+	virtual void CreateThreadBuildDayLineRSOfDate(long lThisDay);
+	virtual void CreateThreadBuildWeekLine(long lStartDate);
+	virtual void CreateThreadBuildWeekLineOfStock(CChinaStock* pStock, long lStartDate);
+	virtual void CreateThreadBuildWeekLineRS(void);
+	virtual void CreateThreadBuildWeekLineRSOfDate(long lThisDay);
+	virtual void CreateThreadBuildWeekLineOfCurrentWeek(void);
+	virtual void CreateThreadBuildCurrentWeekWeekLineTable(void);
+	virtual void CreateThreadChoice10RSStrong1StockSet(void);
+	virtual void CreateThreadChoice10RSStrongStockSet(void);
+	virtual void CreateThreadChoice10RSStrong2StockSet(void);
+	virtual void CreateThreadLoadDayLine(CChinaStock* pCurrentStock);
+	virtual void CreateThreadLoadWeekLine(CChinaStock* pCurrentStock);
+	virtual void CreateThreadProcessTodayStock(void);
+	virtual void CreateThreadUpdateStockProfileDB(void);
 	// interface function
 
 public:
@@ -198,7 +198,7 @@ public:
 	bool UpdateChosenStockDB(void);
 	virtual bool AppendChosenStockDB(void);
 	void LoadChosenStockDB(void);
-	bool UpdateTempRTData(void);
+	virtual bool CreateThreadUpdateTempRTData(void);
 	virtual bool UpdateTodayTempDB(void) { return m_containerChinaStock.UpdateTodayTempDB(); }
 	bool LoadTodayTempDB(long lTheDay);
 	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate);
@@ -294,7 +294,7 @@ public:
 	long GetRTDataReceivedInOrdinaryTradeTime(void) const noexcept { return m_lRTDataReceivedInOrdinaryTradeTime; }
 	long GetNewRTDataReceivedInOrdinaryTradeTime(void) const noexcept { return m_lNewRTDataReceivedInOrdinaryTradeTime; }
 
-	void TaskSaveTempDataIntoDB(long lCurrentTime);
+	void TaskSaveTempData(long lCurrentTime);
 
 	// 状态反馈
 	bool IsUsingSinaRTDataReceiver(void) const noexcept { return m_fUsingSinaRTDataReceiver; }

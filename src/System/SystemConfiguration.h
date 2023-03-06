@@ -26,7 +26,9 @@ public:
 	void Update(void);
 	void UpdateJson(void);
 
-	void UpdateSystem(void); // 使用本参数去更新系统
+	void UpdateSystem(void) const; // 使用本参数去更新系统
+
+	void IncreaseMaxBackgroundThread() const;
 
 	void ChangeFinnhubAccountTypeToFree();
 	void ChangeFinnhubAccountTypeToPaid();

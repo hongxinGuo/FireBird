@@ -588,6 +588,12 @@
     <ClCompile Include="MockContainerChinaStockTest.cpp">
       <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
+    <ClCompile Include="MarketTaskTest.cpp">
+      <Filter>Test源文件\accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="MarketTaskQueueTest.cpp">
+      <Filter>Test源文件\accessory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockMainFrm.h">

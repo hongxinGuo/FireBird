@@ -95,7 +95,7 @@ CSystemConfiguration::CSystemConfiguration() {
 
 	// China Market
 	m_iChinaMarketRealtimeServer = 0; // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
-	m_iChinaMarketDayLineServer = 0; // 日线数据服务器。
+	m_iChinaMarketDayLineServer = 0; // 日线数据服务器。0:网易日线服务器；1：腾讯日线服务器
 	m_iChinaMarketRTDataInquiryTime = 250; // 默认实时数据查询时间间隔为250毫秒
 	m_iSavingChinaMarketStockDayLineThread = 4; // 默认中国股票历史数据存储线程数为4
 #ifdef DEBUG
@@ -385,7 +385,11 @@ void CSystemConfiguration::UpdateJson(void) {
 	m_systemConfiguration["TestConfiguration"]["BenchmarkTestFileDirectory"] = m_strBenchmarkTestFileDirectory;
 }
 
-void CSystemConfiguration::UpdateSystem(void) {
+void CSystemConfiguration::UpdateSystem(void) const {
+	IncreaseMaxBackgroundThread();
+}
+
+void CSystemConfiguration::IncreaseMaxBackgroundThread() const {
 	if (m_iBackgroundThreadPermittedNumber > 8) {
 		for (int i = 8; i < m_iSavingThreadPermittedNumber; i++) {
 			gl_BackGroundTaskThread.release();

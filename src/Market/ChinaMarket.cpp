@@ -601,7 +601,7 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lCurrentTime) {
 	TaskUpdateStockCodeDB();
 
 	if (IsSavingTempData()) {
-		TaskSaveTempDataIntoDB(lCurrentTime);
+		TaskSaveTempData(lCurrentTime);
 	}
 
 	return true;
@@ -612,12 +612,12 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lCurrentTime) {
 // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
+void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
 	if (IsSystemReady() && m_fMarketOpened) {
 		if (((lCurrentTime > 93000) && (lCurrentTime < 113600)) || ((lCurrentTime > 130000) && (lCurrentTime < 150600))) {
 			const CString str = "存储临时数据";
 			gl_systemMessage.PushDayLineInfoMessage(str);
-			UpdateTempRTData();
+			CreateThreadUpdateTempRTData();
 		}
 	}
 }
@@ -684,7 +684,7 @@ bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
 
 bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
 	if (IsSystemReady() && !m_fChosen10RSStrong1StockSet && (lCurrentTime > 151100) && IsWorkingDay()) {
-		CreatingThreadChoice10RSStrong1StockSet();
+		CreateThreadChoice10RSStrong1StockSet();
 		m_fChosen10RSStrong1StockSet = true;
 		return true;
 	}
@@ -693,7 +693,7 @@ bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
 
 bool CChinaMarket::TaskChoice10RSStrong2StockSet(long lCurrentTime) {
 	if (IsSystemReady() && !m_fChosen10RSStrong2StockSet && (lCurrentTime > 151200) && IsWorkingDay()) {
-		CreatingThreadChoice10RSStrong2StockSet();
+		CreateThreadChoice10RSStrong2StockSet();
 		m_fChosen10RSStrong2StockSet = true;
 		return true;
 	}
@@ -702,7 +702,7 @@ bool CChinaMarket::TaskChoice10RSStrong2StockSet(long lCurrentTime) {
 
 bool CChinaMarket::TaskChoice10RSStrongStockSet(long lCurrentTime) {
 	if (IsSystemReady() && !m_fChosen10RSStrongStockSet && (lCurrentTime > 151000) && IsWorkingDay()) {
-		CreatingThreadChoice10RSStrongStockSet();
+		CreateThreadChoice10RSStrongStockSet();
 		m_fChosen10RSStrongStockSet = true;
 		return true;
 	}
@@ -711,7 +711,7 @@ bool CChinaMarket::TaskChoice10RSStrongStockSet(long lCurrentTime) {
 
 bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
 	if (IsSystemReady() && (lCurrentTime >= 150400) && IsTodayStockNotProcessed() && IsWorkingDay()) {
-		CreatingThreadProcessTodayStock();
+		CreateThreadProcessTodayStock();
 		return true;
 	}
 	return false;
@@ -823,7 +823,7 @@ bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
 
 bool CChinaMarket::TaskUpdateStockCodeDB(void) {
 	if (IsUpdateStockCodeDB()) {
-		CreatingThreadUpdateStockProfileDB();
+		CreateThreadUpdateStockProfileDB();
 		return true;
 	}
 	return false;
@@ -1322,63 +1322,63 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeteaseServer(void) {
 bool CChinaMarket::TaskLoadCurrentStockHistoryData(void) {
 	if (m_pCurrentStock != nullptr) {
 		if (!m_pCurrentStock->IsDayLineLoaded()) {
-			CreatingThreadLoadDayLine(m_pCurrentStock.get());
+			CreateThreadLoadDayLine(m_pCurrentStock.get());
 			m_pCurrentStock->SetDayLineLoaded(true);
 		}
 		if (!m_pCurrentStock->IsWeekLineLoaded()) {
-			CreatingThreadLoadWeekLine(m_pCurrentStock.get());
+			CreateThreadLoadWeekLine(m_pCurrentStock.get());
 			m_pCurrentStock->SetWeekLineLoaded(true);
 		}
 	}
 	return true;
 }
 
-void CChinaMarket::CreatingThreadProcessTodayStock(void) {
+void CChinaMarket::CreateThreadProcessTodayStock(void) {
 	thread thread1(ThreadProcessTodayStock, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CChinaMarket::CreatingThreadBuildDayLineRS(long lStartCalculatingDay) {
+void CChinaMarket::CreateThreadBuildDayLineRS(long lStartCalculatingDay) {
 	thread thread1(ThreadBuildDayLineRS, this, lStartCalculatingDay);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CChinaMarket::CreatingThreadBuildDayLineRSOfDate(long lThisDay) {
+void CChinaMarket::CreateThreadBuildDayLineRSOfDate(long lThisDay) {
 	thread thread1(ThreadBuildDayLineRSOfDate, this, lThisDay);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CChinaMarket::CreatingThreadBuildWeekLineRSOfDate(long lThisDay) {
+void CChinaMarket::CreateThreadBuildWeekLineRSOfDate(long lThisDay) {
 	thread thread1(ThreadBuildWeekLineRSOfDate, this, lThisDay);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CChinaMarket::CreatingThreadLoadDayLine(CChinaStock* pCurrentStock) {
+void CChinaMarket::CreateThreadLoadDayLine(CChinaStock* pCurrentStock) {
 	thread thread1(ThreadLoadDayLine, pCurrentStock);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CChinaMarket::CreatingThreadLoadWeekLine(CChinaStock* pCurrentStock) {
+void CChinaMarket::CreateThreadLoadWeekLine(CChinaStock* pCurrentStock) {
 	thread thread1(ThreadLoadWeekLine, pCurrentStock);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CChinaMarket::CreatingThreadUpdateStockProfileDB(void) {
+void CChinaMarket::CreateThreadUpdateStockProfileDB(void) {
 	thread thread1(ThreadUpdateChinaStockProfileDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CChinaMarket::CreatingThreadChoice10RSStrong2StockSet(void) {
+void CChinaMarket::CreateThreadChoice10RSStrong2StockSet(void) {
 	thread thread1(ThreadChoice10RSStrong2StockSet, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CChinaMarket::CreatingThreadChoice10RSStrong1StockSet(void) {
+void CChinaMarket::CreateThreadChoice10RSStrong1StockSet(void) {
 	thread thread1(ThreadChoice10RSStrong1StockSet, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CChinaMarket::CreatingThreadChoice10RSStrongStockSet(void) {
+void CChinaMarket::CreateThreadChoice10RSStrongStockSet(void) {
 	for (int i = 0; i < 10; i++) {
 		if (m_aRSStrongOption.at(i).m_fActive) {
 			thread thread1(ThreadChoice10RSStrongStockSet, this, &(m_aRSStrongOption.at(i)), i);
@@ -1389,27 +1389,27 @@ void CChinaMarket::CreatingThreadChoice10RSStrongStockSet(void) {
 	SetUpdateOptionDB(true); // 更新选项数据库.此时计算工作线程只是刚刚启动，需要时间去完成。
 }
 
-void CChinaMarket::CreatingThreadBuildWeekLine(long lStartDate) {
+void CChinaMarket::CreateThreadBuildWeekLine(long lStartDate) {
 	thread thread1(ThreadBuildWeekLine, this, lStartDate);
 	thread1.detach();
 }
 
-void CChinaMarket::CreatingThreadBuildWeekLineOfStock(CChinaStock* pStock, long lStartDate) {
+void CChinaMarket::CreateThreadBuildWeekLineOfStock(CChinaStock* pStock, long lStartDate) {
 	thread thread1(ThreadBuildWeekLineOfStock, pStock, lStartDate);
 	thread1.detach();
 }
 
-void CChinaMarket::CreatingThreadBuildWeekLineRS(void) {
+void CChinaMarket::CreateThreadBuildWeekLineRS(void) {
 	thread thread1(ThreadBuildWeekLineRS, this, _CHINA_MARKET_BEGIN_DATE_);
 	thread1.detach();
 }
 
-void CChinaMarket::CreatingThreadBuildWeekLineOfCurrentWeek(void) {
+void CChinaMarket::CreateThreadBuildWeekLineOfCurrentWeek(void) {
 	thread thread1(ThreadBuildWeekLineOfCurrentWeek, this);
 	thread1.detach();
 }
 
-void CChinaMarket::CreatingThreadBuildCurrentWeekWeekLineTable(void) {
+void CChinaMarket::CreateThreadBuildCurrentWeekWeekLineTable(void) {
 	thread thread1(ThreadBuildCurrentWeekWeekLineTable, this);
 	thread1.detach();
 }
@@ -1756,7 +1756,7 @@ void CChinaMarket::LoadChosenStockDB(void) {
 	setChinaChosenStock.Close();
 }
 
-bool CChinaMarket::UpdateTempRTData(void) {
+bool CChinaMarket::CreateThreadUpdateTempRTData(void) {
 	thread thread1(ThreadSaveTempRTData, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;

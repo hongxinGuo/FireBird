@@ -27,8 +27,8 @@ namespace FireBirdTest {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundThreadsWorking());
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfBackGroundWorkingThread(), 0);
-		int iCreatingThread = gl_ThreadStatus.GetNumberOfSavingThread();
-		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreatingThread);
+		int iCreateThread = gl_ThreadStatus.GetNumberOfSavingThread();
+		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreateThread);
 
 		size_t l = gl_systemMessage.InformationSize();
 		CThreadStatus threadStatus; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
@@ -53,42 +53,42 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(ThreadStatusTest, TestIsSavThreadRunning) {
-		int iCreatingThread = gl_ThreadStatus.GetNumberOfSavingThread();
-		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreatingThread);
+		int iCreateThread = gl_ThreadStatus.GetNumberOfSavingThread();
+		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreateThread);
 		EXPECT_FALSE(gl_ThreadStatus.IsSavingThreadRunning());
 		gl_ThreadStatus.IncreaseSavingThread();
-		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreatingThread + 1);
+		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreateThread + 1);
 		EXPECT_TRUE(gl_ThreadStatus.IsSavingThreadRunning());
 		gl_ThreadStatus.DecreaseSavingThread();
-		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreatingThread);
+		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreateThread);
 		EXPECT_FALSE(gl_ThreadStatus.IsSavingThreadRunning());
 		gl_ThreadStatus.DecreaseSavingThread();
-		if (iCreatingThread <= 0) {
-			EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreatingThread);
+		if (iCreateThread <= 0) {
+			EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreateThread);
 			EXPECT_FALSE(gl_ThreadStatus.IsSavingThreadRunning());
 		}
 		else {
-			EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreatingThread - 1);
+			EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreateThread - 1);
 		}
 	}
 
 	TEST_F(ThreadStatusTest, TestIsWebInquiringThreadRunning) {
-		int iCreatingThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
-		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
+		int iCreateThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
+		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreateThread);
 		EXPECT_FALSE(gl_ThreadStatus.IsWebInquiringThreadRunning());
 		gl_ThreadStatus.IncreaseWebInquiringThread();
-		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread + 1);
+		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreateThread + 1);
 		EXPECT_TRUE(gl_ThreadStatus.IsWebInquiringThreadRunning());
 		gl_ThreadStatus.DecreaseWebInquiringThread();
-		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
+		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreateThread);
 		EXPECT_FALSE(gl_ThreadStatus.IsWebInquiringThreadRunning());
 		gl_ThreadStatus.DecreaseWebInquiringThread();
-		if (iCreatingThread <= 0) {
-			EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread);
+		if (iCreateThread <= 0) {
+			EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreateThread);
 			EXPECT_FALSE(gl_ThreadStatus.IsWebInquiringThreadRunning());
 		}
 		else {
-			EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreatingThread - 1);
+			EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreateThread - 1);
 		}
 	}
 }

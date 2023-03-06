@@ -35,7 +35,7 @@ public:
 	bool Connect(void) override;
 	bool Send(vectorString vSymbol) override;
 
-	bool CreatingThreadConnectWebSocketAndSendMessage(vectorString vSymbol);
+	bool CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol);
 
 	string CreateMessage(vectorString vSymbol);
 	bool ParseTiingoForexWebSocketData(shared_ptr<string> pData);
