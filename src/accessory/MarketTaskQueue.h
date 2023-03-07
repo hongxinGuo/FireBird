@@ -10,7 +10,7 @@ public:
 	CMarketTaskQueue();
 	~CMarketTaskQueue() = default;
 
-	void SetTask(CMarketTaskPtr pTask) { m_vMarketTask.push(pTask); }
+	void StoreTask(CMarketTaskPtr pTask) { m_vMarketTask.push(pTask); }
 
 	CMarketTaskPtr GetTask() {
 		CMarketTaskPtr pTask = m_vMarketTask.top();

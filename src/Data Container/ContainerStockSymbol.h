@@ -2,15 +2,15 @@
 
 #include"StockSection.h"
 
-class CDataStockSymbol final {
+class CContainerStockSymbol final {
 public:
-	CDataStockSymbol();
+	CContainerStockSymbol();
 	// 只能有一个实例,不允许赋值。
-	CDataStockSymbol(const CDataStockSymbol&) = delete;
-	CDataStockSymbol& operator=(const CDataStockSymbol&) = delete;
-	CDataStockSymbol(const CDataStockSymbol&&) noexcept = delete;
-	CDataStockSymbol& operator=(const CDataStockSymbol&&) noexcept = delete;
-	~CDataStockSymbol() = default;
+	CContainerStockSymbol(const CContainerStockSymbol&) = delete;
+	CContainerStockSymbol& operator=(const CContainerStockSymbol&) = delete;
+	CContainerStockSymbol(const CContainerStockSymbol&&) noexcept = delete;
+	CContainerStockSymbol& operator=(const CContainerStockSymbol&&) noexcept = delete;
+	~CContainerStockSymbol() = default;
 	void Reset(void);
 	bool CreateTotalStockContainer(void);
 
@@ -59,4 +59,4 @@ private:
 	long m_lNeteaseRTDataInquiryIndex;
 };
 
-using CDataStockSymbolPtr = shared_ptr<CDataStockSymbol>;
+using CContainerStockSymbolPtr = shared_ptr<CContainerStockSymbol>;

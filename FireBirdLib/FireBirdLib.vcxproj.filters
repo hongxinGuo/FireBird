@@ -702,7 +702,7 @@
     <ClInclude Include="..\src\Data Container\DataSICIndustry.h">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataStockSymbol.h">
+    <ClInclude Include="..\src\Data Container\ContainerStockSymbol.h">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
     <ClInclude Include="..\src\globedef.h">
@@ -1280,7 +1280,7 @@
     <ClCompile Include="..\src\Data Container\DataForexDayLine.cpp">
       <Filter>源文件\Data container</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\DataStockSymbol.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerStockSymbol.cpp">
       <Filter>源文件\Data container</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Windows interface\FireBirdDoc.cpp">

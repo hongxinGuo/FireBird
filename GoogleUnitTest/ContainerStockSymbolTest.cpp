@@ -10,13 +10,13 @@ using std::make_shared;
 using namespace testing;
 
 namespace FireBirdTest {
-	static CDataStockSymbolPtr s_pDataStockSymbol = nullptr;
+	static CContainerStockSymbolPtr s_pDataStockSymbol = nullptr;
 
 	class CDataStockSymbolTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
-			s_pDataStockSymbol = make_shared<CDataStockSymbol>();
+			s_pDataStockSymbol = make_shared<CContainerStockSymbol>();
 
 			EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());
 			EXPECT_EQ(s_pDataStockSymbol->GetStockSize(), 14000) << "默认装入的StockSymbol数为14000";

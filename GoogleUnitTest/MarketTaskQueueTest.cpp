@@ -26,11 +26,11 @@ namespace FireBirdTest {
 		CMarketTaskPtr pTask = make_shared<CMarketTask>();
 		pTask->SetTime(101010);
 		pTask->SetType(CHINA_MARKET_BUILD_TODAY_DATABASE__);
-		marketTaskQueue.SetTask(pTask);
+		marketTaskQueue.StoreTask(pTask);
 		pTask = make_shared<CMarketTask>();
 		pTask->SetTime(10000);
 		pTask->SetType(CHINA_MARKET_PROCESS_TODAY_RT_DATA__);
-		marketTaskQueue.SetTask(pTask);
+		marketTaskQueue.StoreTask(pTask);
 
 		EXPECT_EQ(marketTaskQueue.Size(), 2);
 		EXPECT_FALSE(marketTaskQueue.IsEmpty());

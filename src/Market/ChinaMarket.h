@@ -4,8 +4,10 @@
 
 #include"DayLineWebData.h"
 
-#include"DataStockSymbol.h"
+#include"ContainerStockSymbol.h"
 #include"ContainerChinaStock.h"
+
+#include"MarketTaskQueue.h"
 
 #include<semaphore>
 #include<set>
@@ -53,8 +55,13 @@ public:
 	bool SchedulingTaskPer5Minutes(long lCurrentTime); // 每五分钟调度一次
 	bool SchedulingTaskPerHour(long lCurrentTime); // 每小时调度一次
 
+	// 每日定时任务调度
+	bool ProcessEveryDayTask(long lSeconds, long lCurrentTime); // 由SchedulingTaskPerSecond调度
+	bool IsMarketTaskEmpty() const { return m_marketTask.IsEmpty(); }
+	void StoreMarketTask(CMarketTaskPtr pTask) { m_marketTask.StoreTask(pTask); }
+	CMarketTaskPtr GetCurrentMarketTask() const { return m_pCurrentMarketTask; }
+
 	// 各种任务
-	bool TaskProcessTengxunRTData(void); // 处理腾讯实时数据
 	bool TaskSetCheckActiveStockFlag(long lCurrentTime);
 	bool TaskChoice10RSStrong1StockSet(long lCurrentTime);
 	bool TaskChoice10RSStrong2StockSet(long lCurrentTime);
@@ -80,14 +87,13 @@ public:
 
 	void TaskGetActiveStockSize(void);
 
-	//处理个股票的实时数据，计算挂单变化等。
-	bool TaskProcessRTData(void) { return m_containerChinaStock.ProcessRTData(); }
-
 	// 是否所有股票的历史日线数据都查询过一遍了
 	bool TaskProcessDayLineGetFromNeteaseServer(void);
 
 	// 装载当前股票日线任务
 	bool TaskLoadCurrentStockHistoryData(void);
+
+	void TaskSaveTempData(long lCurrentTime);
 
 	// 各工作线程调用包裹函数
 	virtual void CreateThreadBuildDayLineRS(long lStartCalculatingDay);
@@ -108,6 +114,10 @@ public:
 	// interface function
 
 public:
+	//处理个股票的实时数据，计算挂单变化等。
+	bool ProcessRTData(void) { return m_containerChinaStock.ProcessRTData(); }
+	bool ProcessTengxunRTData(void); // 处理腾讯实时数据
+
 	// 系统状态区
 	bool IsFastReceivingRTData(void) noexcept { return m_fFastReceivingRTData; }
 
@@ -189,7 +199,7 @@ public:
 
 	// 数据库读取存储操作
 	virtual bool SaveRTData(void); // 实时数据处理函数，将读取到的实时数据存入数据库中
-	bool TaskSaveDayLineData(void) { return m_containerChinaStock.SaveDayLineData(); } // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
+	bool SaveDayLineData(void) { return m_containerChinaStock.SaveDayLineData(); } // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
 	virtual bool UpdateStockProfileDB(void) { return m_containerChinaStock.UpdateStockProfileDB(); }
 	void LoadStockProfileDB(void) { m_lStockDayLineNeedUpdate = m_containerChinaStock.LoadStockProfileDB(); }
 
@@ -287,14 +297,12 @@ public:
 	void StoreChoiceRTData(const CWebRTDataPtr pRTData) { m_qRTData.push(pRTData); }
 
 	//处理实时股票变化等
-	bool TaskDistributeSinaRTDataToStock(void);
-	bool TaskDistributeNeteaseRTDataToStock(void);
+	bool DistributeSinaRTDataToStock(void);
+	bool DistributeNeteaseRTDataToStock(void);
 	bool DistributeRTDataToStock(CWebRTDataPtr pRTData);
 
 	long GetRTDataReceivedInOrdinaryTradeTime(void) const noexcept { return m_lRTDataReceivedInOrdinaryTradeTime; }
 	long GetNewRTDataReceivedInOrdinaryTradeTime(void) const noexcept { return m_lNewRTDataReceivedInOrdinaryTradeTime; }
-
-	void TaskSaveTempData(long lCurrentTime);
 
 	// 状态反馈
 	bool IsUsingSinaRTDataReceiver(void) const noexcept { return m_fUsingSinaRTDataReceiver; }
@@ -428,8 +436,11 @@ protected:
 
 	// 变量区
 protected:
+	CMarketTaskQueue m_marketTask;
+	CMarketTaskPtr m_pCurrentMarketTask;
+
 	CContainerChinaStock m_containerChinaStock;
-	CDataStockSymbol m_containerStockSymbol;
+	CContainerStockSymbol m_containerStockSymbol;
 
 	vector<CChinaStockPtr> m_v10RSStrong1Stock; // 10日强势股票集
 	vector<CChinaStockPtr> m_v10RSStrong2Stock; // 10日强势股票集

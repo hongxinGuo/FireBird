@@ -32,6 +32,9 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 	if (static int siInstance = 0; ++siInstance > 1) { TRACE(_T("ChinaMarket市场变量只允许存在一个实例\n")); }
 	m_strMarketId = _T("中国股票市场");
 	m_lMarketTimeZone = -8 * 3600; // 北京标准时间位于东八区，超前GMT8小时
+
+	m_pCurrentMarketTask = nullptr;
+
 	m_fSaveRTData = false; // 此存储实时数据标识，用于存储供测试函数用的实时数据。目前任务已经完成。
 	m_fFastReceivingRTData = true;
 	m_RTDataNeedCalculate = false;
@@ -349,7 +352,7 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) {
 // 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股的挂单情况。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::TaskDistributeSinaRTDataToStock(void) {
+bool CChinaMarket::DistributeSinaRTDataToStock(void) {
 	const size_t lTotalNumber = SinaRTSize();
 	CString strVolume;
 	CString strStandardStockCode;
@@ -411,7 +414,7 @@ bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
 // 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股的挂单情况。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::TaskDistributeNeteaseRTDataToStock(void) {
+bool CChinaMarket::DistributeNeteaseRTDataToStock(void) {
 	CChinaStockPtr pStock;
 	const size_t lTotalNumber = NeteaseRTSize();
 	CString strVolume;
@@ -465,7 +468,7 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const CString& str) {
 	return true;
 }
 
-bool CChinaMarket::TaskProcessTengxunRTData(void) {
+bool CChinaMarket::ProcessTengxunRTData(void) {
 	const size_t lTotalData = TengxunRTSize();
 
 	for (int i = 0; i < lTotalData; i++) {
@@ -563,11 +566,11 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 
 	// 将接收到的实时数据分发至各相关股票的实时数据队列中。
 	// 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，故而需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
-	TaskDistributeSinaRTDataToStock();
+	DistributeSinaRTDataToStock();
 	// 分发网易实时数据至各相关股票中。
-	TaskDistributeNeteaseRTDataToStock();
+	DistributeNeteaseRTDataToStock();
 
-	TaskProcessTengxunRTData();
+	ProcessTengxunRTData();
 
 	// 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
 	// 此计算任务要在TaskDistributeSinaRTDataStock和TaskDistributeNeteaseRTDataToStock之后执行，以防止出现同步问题。
@@ -592,6 +595,24 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 bool CChinaMarket::SchedulingTaskPerHour(long lCurrentTime) {
 	// 计算每一小时一次的任务
 	return true;
+}
+
+bool CChinaMarket::ProcessEveryDayTask(long lSeconds, long lCurrentTime) {
+	//todo
+	if (m_marketTask.IsEmpty() && (m_pCurrentMarketTask == nullptr)) return false;
+	if (m_pCurrentMarketTask == nullptr) m_pCurrentMarketTask = m_marketTask.GetTask();
+	if (m_pCurrentMarketTask->GetTime() <= lCurrentTime) {
+		switch (m_pCurrentMarketTask->GetType()) {
+		case CHINA_MARKET_BUILD_TODAY_DATABASE__:
+			break;
+		default:
+			break;
+		}
+
+		m_pCurrentMarketTask = nullptr; // 当前任务处理完成后，抛弃掉。
+		return true;
+	}
+	return false;
 }
 
 bool CChinaMarket::SchedulingTaskPer5Minutes(long lCurrentTime) {
@@ -791,10 +812,8 @@ bool CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
 bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 	// 九点十三分重启系统
 	// 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
-	if (HaveResetMarketPermission()) {
-		// 如果允许重置系统
-		if ((lCurrentTime >= 91300) && (lCurrentTime < 91400) && IsWorkingDay()) {
-			// 交易日九点十五分重启系统
+	if (HaveResetMarketPermission()) { // 如果允许重置系统
+		if ((lCurrentTime >= 91300) && (lCurrentTime < 91400) && IsWorkingDay()) { // 交易日九点十五分重启系统
 			if (!TooManyStockDayLineNeedUpdate()) {
 				// 当有工作日作为休假日后，所有的日线数据都需要检查一遍，此时不在0915时重置系统以避免更新日线函数尚在执行。
 				SetResetMarket(true); // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
@@ -807,11 +826,9 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 
 bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
 	// 九点二十五分再次重启系统
-	if (HaveResetMarketPermission()) {
-		// 如果允许重置系统
+	if (HaveResetMarketPermission()) {// 如果允许重置系统
 		if ((lCurrentTime >= 92500)) {
-			if ((lCurrentTime <= 92700) && IsWorkingDay()) {
-				// 交易日九点二十五分再次重启系统
+			if ((lCurrentTime <= 92700) && IsWorkingDay()) {// 交易日九点二十五分再次重启系统
 				SetResetMarket(true); // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
 				SetSystemReady(false);
 			}
@@ -929,7 +946,7 @@ bool CChinaMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
 	// 判断是否存储日线库和股票代码库
 	if (IsDayLineNeedSaving()) {
 		m_fSaveDayLine = true;
-		TaskSaveDayLineData();
+		SaveDayLineData();
 	}
 
 	TaskGetActiveStockSize();

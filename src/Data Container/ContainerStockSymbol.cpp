@@ -8,7 +8,7 @@
 #include<memory>
 using std::make_shared;
 
-CDataStockSymbol::CDataStockSymbol() {
+CContainerStockSymbol::CContainerStockSymbol() {
 	m_vStockSection.resize(2000); // 沪深各1000个段。
 	for (int i = 0; i < 2000; i++) {
 		const auto pStockSection = make_shared<CStockSection>();
@@ -21,7 +21,7 @@ CDataStockSymbol::CDataStockSymbol() {
 	Reset();
 }
 
-void CDataStockSymbol::Reset(void) {
+void CContainerStockSymbol::Reset(void) {
 	m_fUpdateStockSection = false;
 	m_vStockSymbol.resize(0);
 	m_mapStockSymbol.clear();
@@ -57,17 +57,17 @@ void CDataStockSymbol::Reset(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 初始化所有可能的股票代码池，只被CDataStockSymbol的初始化函数Reset调用一次。
+// 初始化所有可能的股票代码池，只被CContainerStockSymbol的初始化函数Reset调用一次。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CDataStockSymbol::CreateTotalStockContainer(void) {
+bool CContainerStockSymbol::CreateTotalStockContainer(void) {
 	CChinaStockPtr pStock = nullptr;
 
 	for (int i = 0; i < m_vCurrentSectionStockCode.size(); i++) { CreateStockSection(m_vCurrentSectionStockCode.at(i)); }
 	return true;
 }
 
-void CDataStockSymbol::LoadStockSectionDB(void) {
+void CContainerStockSymbol::LoadStockSectionDB(void) {
 	CSetStockSection setStockSection;
 
 	setStockSection.Open();
@@ -83,7 +83,7 @@ void CDataStockSymbol::LoadStockSectionDB(void) {
 	setStockSection.Close();
 }
 
-bool CDataStockSymbol::UpdateStockSectionDB(void) {
+bool CContainerStockSymbol::UpdateStockSectionDB(void) {
 	CSetStockSection setStockSection;
 
 	setStockSection.m_strSort = _T("[ID]");
@@ -124,7 +124,7 @@ bool CDataStockSymbol::UpdateStockSectionDB(void) {
 	return true;
 }
 
-void CDataStockSymbol::CreateStockSection(const CString& strFirstStockCode) {
+void CContainerStockSymbol::CreateStockSection(const CString& strFirstStockCode) {
 	CString strCode = GetStockSymbol(strFirstStockCode);
 	CString str = _T("");
 	const int iCode = atoi(strCode.GetBuffer());
@@ -153,7 +153,7 @@ void CDataStockSymbol::CreateStockSection(const CString& strFirstStockCode) {
 	m_vStockSection.at(iCode / 1000 + iMarket)->SetBuildStockPtr(true); // 已经在证券池中建立了
 }
 
-bool CDataStockSymbol::UpdateStockSection(const CString& strStockCode) const {
+bool CContainerStockSymbol::UpdateStockSection(const CString& strStockCode) const {
 	CString strCode = GetStockSymbol(strStockCode);
 	char* pChar;
 	const int iCode = strtol(strCode.GetBuffer(), &pChar, 10);
@@ -170,7 +170,7 @@ bool CDataStockSymbol::UpdateStockSection(const CString& strStockCode) const {
 	return UpdateStockSection(iCode / 1000 + iMarket);
 }
 
-bool CDataStockSymbol::UpdateStockSection(const long lIndex) const {
+bool CContainerStockSymbol::UpdateStockSection(const long lIndex) const {
 	if (!m_vStockSection.at(lIndex)->IsActive()) {
 		m_vStockSection.at(lIndex)->SetActive(true);
 		return true;
@@ -178,7 +178,7 @@ bool CDataStockSymbol::UpdateStockSection(const long lIndex) const {
 	return false;
 }
 
-bool CDataStockSymbol::Delete(const CString& strSymbol) {
+bool CContainerStockSymbol::Delete(const CString& strSymbol) {
 	if (!IsStockSymbol(strSymbol)) return false;
 
 	m_vStockSymbol.erase(m_vStockSymbol.begin() + m_mapStockSymbol.at(strSymbol));
@@ -187,12 +187,12 @@ bool CDataStockSymbol::Delete(const CString& strSymbol) {
 	return true;
 }
 
-void CDataStockSymbol::Add(const CString& strSymbol) {
+void CContainerStockSymbol::Add(const CString& strSymbol) {
 	m_mapStockSymbol[strSymbol] = m_vStockSymbol.size();
 	m_vStockSymbol.push_back(strSymbol);
 }
 
-CString CDataStockSymbol::GetNextSinaStockInquiringMiddleStr(long lTotalNumber) {
+CString CContainerStockSymbol::GetNextSinaStockInquiringMiddleStr(long lTotalNumber) {
 	const CString strSuffix = _T(",");
 
 	if (m_vStockSymbol.empty()) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
@@ -210,7 +210,7 @@ CString CDataStockSymbol::GetNextSinaStockInquiringMiddleStr(long lTotalNumber) 
 	return strReturn;
 }
 
-CString CDataStockSymbol::GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber) {
+CString CContainerStockSymbol::GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber) {
 	const CString strSuffix = _T(",");
 
 	if (m_vStockSymbol.empty()) return _T("0600000"); // 当没有证券可查询时，返回一个有效字符串
@@ -228,7 +228,7 @@ CString CDataStockSymbol::GetNextNeteaseStockInquiringMiddleStr(long lTotalNumbe
 	return strReturn;
 }
 
-long CDataStockSymbol::GetNextIndex(long lIndex) {
+long CContainerStockSymbol::GetNextIndex(long lIndex) {
 	if (++lIndex >= m_vStockSymbol.size()) { lIndex = 0; }
 	return lIndex;
 }

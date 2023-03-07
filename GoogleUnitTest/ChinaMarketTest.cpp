@@ -148,6 +148,44 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->GetTengxunRTDataInquiringIndex(), 0);
 	}
 
+	TEST_F(CChinaMarketTest, TestProcessEveryDayTask1) {
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr);
+
+		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask(1, 101010)) << "没有任务可执行";
+	}
+
+	TEST_F(CChinaMarketTest, TestProcessEveryDayTask2) {
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr);
+
+		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask(1, 101010)) << "没有任务可执行";
+
+		const auto pTask1 = make_shared<CMarketTask>();
+		pTask1->SetTime(100101);
+		gl_pChinaMarket->StoreMarketTask(pTask1);
+		const auto pTask2 = make_shared<CMarketTask>();
+		pTask2->SetTime(110101);
+		gl_pChinaMarket->StoreMarketTask(pTask2);
+
+		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr);
+
+		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask(1, 100001)) << "有任务需要执行，但时间未到";
+
+		EXPECT_FALSE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr) << "已分配当前任务";
+		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == pTask1);
+
+		EXPECT_TRUE(gl_pChinaMarket->ProcessEveryDayTask(1, 101002)) << "时间到, 执行第一个任务";
+
+		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr) << "当前分配的任务已执行，清除之";
+		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		EXPECT_TRUE(gl_pChinaMarket->ProcessEveryDayTask(1, 111002)) << "时间到, 执行第二个任务";
+
+		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr) << "当前分配的任务已执行，清除之";
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+	}
+
 	TEST_F(CChinaMarketTest, TestClearUpdateStockCodeDBFlag) {
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated());
 		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
@@ -713,9 +751,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(i, 0);
 	}
 
-	TEST_F(CChinaMarketTest, TestTaskProcessRTData) {
+	TEST_F(CChinaMarketTest, TestProcessRTData) {
 		gl_pChinaMarket->SetRTDataNeedCalculate(true);
-		EXPECT_TRUE(gl_pChinaMarket->TaskProcessRTData());
+		EXPECT_TRUE(gl_pChinaMarket->ProcessRTData());
 		gl_pChinaMarket->SetRTDataNeedCalculate(false);
 	}
 
@@ -1385,7 +1423,7 @@ namespace FireBirdTest {
 		EXPECT_THAT(pStock->GetHighLimit(), 0);
 		EXPECT_THAT(pStock->GetLowLimit(), 0);
 
-		EXPECT_TRUE(gl_pChinaMarket->TaskProcessTengxunRTData());
+		EXPECT_TRUE(gl_pChinaMarket->ProcessTengxunRTData());
 
 		pStock = gl_pChinaMarket->GetStock(_T("600000.SS"));
 		EXPECT_THAT(pStock->GetTotalValue(), 101010101010);
