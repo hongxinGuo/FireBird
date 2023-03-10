@@ -152,14 +152,14 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr);
 
-		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask(1, 101010)) << "没有任务可执行";
+		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask( 101010)) << "没有任务可执行";
 	}
 
 	TEST_F(CChinaMarketTest, TestProcessEveryDayTask2) {
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr);
 
-		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask(1, 101010)) << "没有任务可执行";
+		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask(101010)) << "没有任务可执行";
 
 		const auto pTask1 = make_shared<CMarketTask>();
 		pTask1->SetTime(100101);
@@ -170,26 +170,188 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr);
 
-		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask(1, 100001)) << "有任务需要执行，但时间未到";
+		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask(100001)) << "有任务需要执行，但时间未到";
 
 		EXPECT_FALSE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr) << "已分配当前任务";
 		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == pTask1);
 
-		EXPECT_TRUE(gl_pChinaMarket->ProcessEveryDayTask(1, 101002)) << "时间到, 执行第一个任务";
+		EXPECT_TRUE(gl_pChinaMarket->ProcessEveryDayTask( 101002)) << "时间到, 执行第一个任务";
 
 		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr) << "当前分配的任务已执行，清除之";
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		EXPECT_TRUE(gl_pChinaMarket->ProcessEveryDayTask(1, 111002)) << "时间到, 执行第二个任务";
+		EXPECT_TRUE(gl_pChinaMarket->ProcessEveryDayTask(111002)) << "时间到, 执行第二个任务";
 
 		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr) << "当前分配的任务已执行，清除之";
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 	}
 
+	TEST_F(CChinaMarketTest, TestTaskCreateTask1) {
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		gl_pChinaMarket->TaskCreateTask(10000);
+
+		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
+		auto pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_RESET__);
+		EXPECT_EQ(pTask->GetTime(), 91300);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 91500);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 91500);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_RESET_AGAIN__);
+		EXPECT_EQ(pTask->GetTime(), 92600);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 93000);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
+		EXPECT_EQ(pTask->GetTime(), 150500);
+		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() != nullptr);
+
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		gl_pChinaMarket->ClearCurrentMarketTask();
+	}
+
+	TEST_F(CChinaMarketTest, TestTaskCreateTask2) {
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		gl_pChinaMarket->TaskCreateTask(91500);
+
+		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		auto pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 91500);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 91500);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_RESET_AGAIN__);
+		EXPECT_EQ(pTask->GetTime(), 92600);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 93000);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
+		EXPECT_EQ(pTask->GetTime(), 150500);
+		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() != nullptr);
+
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		gl_pChinaMarket->ClearCurrentMarketTask();
+	}
+
+	TEST_F(CChinaMarketTest, TestTaskCreateTask3) {
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		gl_pChinaMarket->TaskCreateTask(93000);
+
+		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		auto pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 91500);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 91500);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 93000);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
+		EXPECT_EQ(pTask->GetTime(), 150500);
+		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() != nullptr);
+
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		gl_pChinaMarket->ClearCurrentMarketTask();
+	}
+
+	TEST_F(CChinaMarketTest, TestTaskCreateTask4) {
+		tm tm_;
+		tm_.tm_year = 2019 - 1900;
+		tm_.tm_mon = 10;
+		tm_.tm_mday = 7; // 2019年11月9日是星期四。
+		tm_.tm_hour = 16;
+		tm_.tm_min = 0;
+		tm_.tm_sec = 0;
+		time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
+		gl_pChinaMarket->TEST_SetMarketTM(tm_);
+
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		gl_pChinaMarket->TaskCreateTask(150601);
+
+		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		auto pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 91500);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 91500);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 93000);
+
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
+
+		gl_pChinaMarket->ClearCurrentMarketTask();
+	}
+
+	TEST_F(CChinaMarketTest, TestTaskCreateTask6) {
+		tm tm_;
+		tm_.tm_year = 2019 - 1900;
+		tm_.tm_mon = 10;
+		tm_.tm_mday = 9; // 2019年11月9日是星期六。
+		tm_.tm_hour = 16;
+		tm_.tm_min = 0;
+		tm_.tm_sec = 0;
+		time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
+		gl_pChinaMarket->TEST_SetMarketTM(tm_);
+
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		gl_pChinaMarket->TaskCreateTask(150601);
+
+		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		auto pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 91500);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 91500);
+
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
+		gl_pChinaMarket->ClearCurrentMarketTask();
+		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr);
+	}
+
 	TEST_F(CChinaMarketTest, TestClearUpdateStockCodeDBFlag) {
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated());
 		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
-			CChinaStockPtr pStock = gl_pChinaMarket->GetStock(i);
+			const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(i);
 			pStock->SetDayLineDBUpdated(true);
 		}
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineDBUpdated());
@@ -352,19 +514,6 @@ namespace FireBirdTest {
 		gl_pChinaMarket->SetSystemReady(true); // 恢复原态
 	}
 
-	TEST_F(CChinaMarketTest, TestIsTodayStockProcessed) {
-		gl_pChinaMarket->SetTodayStockProcessed(true);
-		EXPECT_TRUE(gl_pChinaMarket->IsTodayStockProcessed());
-		EXPECT_FALSE(gl_pChinaMarket->IsProcessingTodayStock());
-		EXPECT_FALSE(gl_pChinaMarket->IsTodayStockNotProcessed());
-		gl_pChinaMarket->SetTodayStockProcessed(false);
-		EXPECT_TRUE(gl_pChinaMarket->IsTodayStockNotProcessed());
-		EXPECT_FALSE(gl_pChinaMarket->IsTodayStockProcessed());
-		EXPECT_FALSE(gl_pChinaMarket->IsProcessingTodayStock());
-		gl_pChinaMarket->SetProcessingTodayStock();
-		EXPECT_TRUE(gl_pChinaMarket->IsProcessingTodayStock());
-	}
-
 	TEST_F(CChinaMarketTest, TestGetCurrentSelectedPosition) {
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedPosition(), 0);
 		gl_pChinaMarket->SetCurrentSelectedPosition(10101010);
@@ -511,119 +660,38 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskResetMarket1) {
-		tm tm_{};
-		tm_.tm_wday = 1; // 星期一
-		gl_pChinaMarket->TEST_SetMarketTM(tm_);
-		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPermission());
-		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
-		gl_pChinaMarket->SetSystemReady(true);
 		gl_pChinaMarket->SetResetMarket(false);
-		gl_pChinaMarket->TaskResetMarket(91259);
-		EXPECT_FALSE(gl_pChinaMarket->IsResetMarket());
-		gl_pChinaMarket->TaskResetMarket(91400);
-		EXPECT_FALSE(gl_pChinaMarket->IsResetMarket()) << _T("第一次重启市场，其结束时间必须在9:14之前，这样才能保证只运行了一次（此函数必须每分钟调度一次");
 		gl_pChinaMarket->SetSystemReady(true);
-		gl_pChinaMarket->TaskResetMarket(91300);
-		if (gl_pChinaMarket->TooManyStockDayLineNeedUpdate()) {
-			EXPECT_FALSE(gl_pChinaMarket->IsResetMarket());
-			EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPermission());
-			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
-		}
-		else {
-			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
-			EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPermission());
-			EXPECT_FALSE(gl_pChinaMarket->IsSystemReady());
-		}
+		gl_pChinaMarket->SetStockDayLineNeedUpdate(gl_pChinaMarket->GetTotalStock());
+
+		EXPECT_FALSE(gl_pChinaMarket->TaskResetMarket(91300));
+
+		EXPECT_FALSE(gl_pChinaMarket->IsResetMarket());
+		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskResetMarket2) {
-		tm tm_{};
-		tm_.tm_wday = 0; // 星期日, 休息日
-		gl_pChinaMarket->TEST_SetMarketTM(tm_);
-		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPermission());
-		gl_pChinaMarket->SetSystemReady(true);
 		gl_pChinaMarket->SetResetMarket(false);
-		gl_pChinaMarket->TaskResetMarket(91259);
-		EXPECT_FALSE(gl_pChinaMarket->IsResetMarket());
-		gl_pChinaMarket->TaskResetMarket(91401);
-		EXPECT_FALSE(gl_pChinaMarket->IsResetMarket());
-		gl_pChinaMarket->TaskResetMarket(91300);
-		EXPECT_FALSE(gl_pChinaMarket->IsResetMarket());
-		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPermission());
-		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
-	}
-
-	TEST_F(CChinaMarketTest, TestTaskResetMarket3) {
-		tm tm_{};
-		tm_.tm_wday = 1; // 星期一
-		gl_pChinaMarket->TEST_SetMarketTM(tm_);
 		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_TRUE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate());
-		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPermission());
-		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
-		gl_pChinaMarket->SetResetMarket(false);
-		gl_pChinaMarket->TaskResetMarket(91259);
-		EXPECT_FALSE(gl_pChinaMarket->IsResetMarket());
-		gl_pChinaMarket->TaskResetMarket(91400);
-		EXPECT_FALSE(gl_pChinaMarket->IsResetMarket()) << _T("第一次重启市场，其结束时间必须在9:14之前，这样才能保证只运行了一次（此函数必须每分钟调度一次");
-		gl_pChinaMarket->SetSystemReady(true);
-		gl_pChinaMarket->TaskResetMarket(91300);
-		EXPECT_FALSE(gl_pChinaMarket->IsResetMarket());
-		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPermission());
-		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
+		gl_pChinaMarket->SetStockDayLineNeedUpdate(4);
 
-		// 恢复系统原态
-		gl_pChinaMarket->SetStockDayLineNeedUpdate(gl_pChinaMarket->GetTotalStock());
-	}
+		EXPECT_TRUE(gl_pChinaMarket->TaskResetMarket(91300));
 
-	TEST_F(CChinaMarketTest, TestTaskResetMarket4) {
-		tm tm_{};
-		tm_.tm_wday = 1; // 星期一
-		gl_pChinaMarket->TEST_SetMarketTM(tm_);
-		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_TRUE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate());
-		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPermission());
-		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
-
-		gl_pChinaMarket->SetStockDayLineNeedUpdate(999);
-		gl_pChinaMarket->SetResetMarket(false);
-		gl_pChinaMarket->TaskResetMarket(91259);
-		EXPECT_FALSE(gl_pChinaMarket->IsResetMarket());
-		gl_pChinaMarket->TaskResetMarket(91400);
-		EXPECT_FALSE(gl_pChinaMarket->IsResetMarket()) << _T("第一次重启市场，其结束时间必须在9:14之前，这样才能保证只运行了一次（此函数必须每分钟调度一次");
-		gl_pChinaMarket->SetSystemReady(true);
-		gl_pChinaMarket->TaskResetMarket(91300);
-		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPermission());
 		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 		EXPECT_FALSE(gl_pChinaMarket->IsSystemReady());
 
 		// 恢复系统原态
-		gl_pChinaMarket->SetStockDayLineNeedUpdate(4800);
+		gl_pChinaMarket->SetSystemReady(true);
 		gl_pChinaMarket->SetStockDayLineNeedUpdate(gl_pChinaMarket->GetTotalStock());
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskResetMarketAgain) {
-		tm tm_{};
-		tm_.tm_wday = 1;
-		gl_pChinaMarket->SetSystemReady(false);
-		gl_pChinaMarket->TEST_SetMarketTM(tm_);
-		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPermission());
-		EXPECT_FALSE(gl_pChinaMarket->IsSystemReady());
-		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
-		EXPECT_TRUE(gl_pChinaMarket->TaskResetMarketAgain(92459));
-		EXPECT_FALSE(gl_pChinaMarket->IsSystemReady());
-		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
-		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPermission());
-		EXPECT_TRUE(gl_pChinaMarket->TaskResetMarketAgain(92701));
-		EXPECT_FALSE(gl_pChinaMarket->IsSystemReady());
-		EXPECT_FALSE(gl_pChinaMarket->HaveResetMarketPermission());
-		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 		gl_pChinaMarket->SetResetMarket(false);
-		gl_pChinaMarket->SetSystemReady(false);
-		gl_pChinaMarket->SetResetMarketPermission(true);
+		gl_pChinaMarket->SetSystemReady(true);
+
 		EXPECT_TRUE(gl_pChinaMarket->TaskResetMarketAgain(92500));
+
 		EXPECT_FALSE(gl_pChinaMarket->IsSystemReady());
-		EXPECT_FALSE(gl_pChinaMarket->HaveResetMarketPermission());
 		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 	}
 

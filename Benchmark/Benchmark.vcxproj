@@ -110,6 +110,7 @@
     <ClCompile Include="JsonParseBenchmark.cpp" />
     <ClCompile Include="FinnhubInaccessibleExchangeBenchmark.cpp" />
     <ClCompile Include="LoadJsonParameterBenchmark.cpp" />
+    <ClCompile Include="TimeConvertBenchmark.cpp" />
     <ClCompile Include="WebRTDataBenchmark.cpp" />
   </ItemGroup>
   <ItemGroup>

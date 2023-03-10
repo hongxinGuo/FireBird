@@ -29,15 +29,30 @@ namespace FireBirdTest {
 		marketTaskQueue.StoreTask(pTask);
 		pTask = make_shared<CMarketTask>();
 		pTask->SetTime(10000);
-		pTask->SetType(CHINA_MARKET_PROCESS_TODAY_RT_DATA__);
+		pTask->SetType(CHINA_MARKET_PROCESS_RT_DATA__);
 		marketTaskQueue.StoreTask(pTask);
 
-		EXPECT_EQ(marketTaskQueue.Size(), 2);
+		pTask = make_shared<CMarketTask>();
+		pTask->SetTime(1);
+		pTask->SetType(CHINA_MARKET_PROCESS_RT_DATA__);
+		marketTaskQueue.StoreTask(pTask);
+		pTask = make_shared<CMarketTask>();
+		pTask->SetTime(1);
+		pTask->SetType(CHINA_MARKET_CHOICE_10_RS_STRONG_1_STOCK_SET__);
+		marketTaskQueue.StoreTask(pTask);
+
+		EXPECT_EQ(marketTaskQueue.Size(), 4);
 		EXPECT_FALSE(marketTaskQueue.IsEmpty());
 
 		pTask = marketTaskQueue.GetTask();
+		EXPECT_EQ(pTask->GetTime(), 1) << "任务按时间顺序排列,较早的排在前面";
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_RT_DATA__);
+		pTask = marketTaskQueue.GetTask();
+		EXPECT_EQ(pTask->GetTime(), 1);
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHOICE_10_RS_STRONG_1_STOCK_SET__) << "相同时间的任务，排列顺序按入列先后";
+		pTask = marketTaskQueue.GetTask();
 		EXPECT_EQ(pTask->GetTime(), 10000) << "任务按时间顺序排列,较早的排在前面";
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_TODAY_RT_DATA__);
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_RT_DATA__);
 		pTask = marketTaskQueue.GetTask();
 		EXPECT_EQ(pTask->GetTime(), 101010) << "任务按时间顺序排列,较早的排在前面";
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);

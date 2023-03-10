@@ -194,6 +194,11 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetSystemReady(true);
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
+			while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->GetMarketTask();
+			gl_pChinaMarket->SetCurrentMarketTask(nullptr);
+			while (!gl_pMockChinaMarket->IsMarketTaskEmpty()) gl_pMockChinaMarket->GetMarketTask();
+			gl_pMockChinaMarket->SetCurrentMarketTask(nullptr);
+
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 
 			gl_pWorldMarket->SetSystemReady(true);

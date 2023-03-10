@@ -34,6 +34,7 @@ UINT ThreadSaveTempRTData(not_null<CChinaMarket*> pMarket) {
 UINT ThreadProcessRTData(not_null<CChinaMarket*> pMarket) {
 	gl_ProcessChinaMarketRTData.acquire();
 	pMarket->ProcessRTData();
+	pMarket->ProcessTengxunRTData();
 	gl_ProcessChinaMarketRTData.release();
 	return 107;
 }

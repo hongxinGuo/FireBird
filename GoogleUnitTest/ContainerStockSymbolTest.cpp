@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"DataStockSymbol.h"
+#include"ContainerStockSymbol.h"
 
 #include<memory>
 using std::make_shared;

@@ -52,16 +52,32 @@ public:
 	bool SchedulingTaskPerSecond(long lSecondNumber, long lCurrentTime); // 每秒调度一次
 	bool SchedulingTaskPer10Seconds(long lCurrentTime); // 每十秒调度一次
 	bool SchedulingTaskPerMinute(long lCurrentTime); // 每一分钟调度一次
+	void CreateTaskOfReset();
 	bool SchedulingTaskPer5Minutes(long lCurrentTime); // 每五分钟调度一次
 	bool SchedulingTaskPerHour(long lCurrentTime); // 每小时调度一次
 
 	// 每日定时任务调度
-	bool ProcessEveryDayTask(long lSeconds, long lCurrentTime); // 由SchedulingTaskPerSecond调度
+	bool ProcessEveryDayTask(long lCurrentTime); // 由SchedulingTaskPerSecond调度
+
 	bool IsMarketTaskEmpty() const { return m_marketTask.IsEmpty(); }
 	void StoreMarketTask(CMarketTaskPtr pTask) { m_marketTask.StoreTask(pTask); }
+
+	CMarketTaskPtr GetMarketTask() {
+		m_pCurrentMarketTask = m_marketTask.GetTask();
+		return m_pCurrentMarketTask;
+	}
+
 	CMarketTaskPtr GetCurrentMarketTask() const { return m_pCurrentMarketTask; }
+	void SetCurrentMarketTask(CMarketTaskPtr pTask) { m_pCurrentMarketTask = pTask; }
+	void ClearCurrentMarketTask() { m_pCurrentMarketTask = nullptr; }
 
 	// 各种任务
+	virtual bool TaskCreateTask(long lCurrentTime);
+	virtual bool TaskResetMarket(long lCurrentTime);
+	virtual bool TaskResetMarketAgain(long lCurrentTime);
+	virtual void TaskDistributeRTDataToStock(long lCurrentTime);
+	void TaskProcessRTData(long lCurrentTime);
+	void TaskSaveTempData(long lCurrentTime);
 	bool TaskSetCheckActiveStockFlag(long lCurrentTime);
 	bool TaskChoice10RSStrong1StockSet(long lCurrentTime);
 	bool TaskChoice10RSStrong2StockSet(long lCurrentTime);
@@ -71,8 +87,6 @@ public:
 	bool TaskCheckDayLineDB(void);
 	bool TaskCheckFastReceivingData(long lCurrentTime);
 	bool TaskCheckMarketOpen(long lCurrentTime);
-	bool TaskResetMarket(long lCurrentTime);
-	bool TaskResetMarketAgain(long lCurrentTime);
 
 	bool TaskUpdateStockCodeDB(void);
 	bool TaskUpdateOptionDB(void);
@@ -93,9 +107,8 @@ public:
 	// 装载当前股票日线任务
 	bool TaskLoadCurrentStockHistoryData(void);
 
-	void TaskSaveTempData(long lCurrentTime);
-
 	// 各工作线程调用包裹函数
+	virtual void CreateThreadProcessRTData();
 	virtual void CreateThreadBuildDayLineRS(long lStartCalculatingDay);
 	virtual void CreateThreadBuildDayLineRSOfDate(long lThisDay);
 	virtual void CreateThreadBuildWeekLine(long lStartDate);
@@ -159,28 +172,6 @@ public:
 	void SetCurrentStockChanged(const bool fFlag) noexcept { m_fCurrentStockChanged = fFlag; }
 
 	long GetMinLineOffset(time_t tUTC);
-
-	bool IsTodayStockNotProcessed(void) const noexcept {
-		if (m_iTodayStockProcessed == 0) return true;
-		return false;
-	}
-
-	bool IsProcessingTodayStock(void) const noexcept {
-		if (m_iTodayStockProcessed == 1) return true;
-		return false;
-	}
-
-	bool IsTodayStockProcessed(void) const noexcept {
-		if (m_iTodayStockProcessed == 0) return false;
-		return true;
-	}
-
-	void SetProcessingTodayStock(void) noexcept { m_iTodayStockProcessed = 1; }
-
-	void SetTodayStockProcessed(const bool fFlag) noexcept {
-		if (fFlag) m_iTodayStockProcessed = 2;
-		else m_iTodayStockProcessed = 0;
-	}
 
 	long GetCurrentSelectedPosition(void) const noexcept { return m_lCurrentSelectedPosition; }
 	void SetCurrentSelectedPosition(const long lIndex) noexcept { m_lCurrentSelectedPosition = lIndex; }
@@ -512,7 +503,6 @@ protected:
 	INT64 m_lTotalMarketSell; // 沪深市场中的A股向下卖出金额
 
 	// 系统状态区
-	int m_iTodayStockProcessed; // 今日是否执行了股票收盘.0:尚未执行；1：正在执行中；2：已执行完。
 	bool m_fCheckActiveStock; // 是否查询今日活跃股票代码
 	bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
 	long m_lTotalActiveStock;

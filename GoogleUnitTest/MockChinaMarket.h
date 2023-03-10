@@ -5,6 +5,12 @@
 namespace testing {
 	class CMockChinaMarket final : public CChinaMarket {
 	public:
+		MOCK_METHOD(bool, TaskCreateTask, (long), (override));
+		MOCK_METHOD(bool, TaskResetMarket, (long lCurrentTime), (override));
+		MOCK_METHOD(bool, TaskResetMarketAgain, (long lCurrentTime), (override));
+		MOCK_METHOD(void, TaskDistributeRTDataToStock, (long), (override));
+
+		MOCK_METHOD(void, CreateThreadProcessRTData, (), (override));
 		MOCK_METHOD(void, CreateThreadProcessTodayStock, (), (override));
 		MOCK_METHOD(void, CreateThreadBuildDayLineRS, (long lStartCalculatingDate), (override));
 		MOCK_METHOD(void, CreateThreadBuildDayLineRSOfDate, (long lThisDate), (override));

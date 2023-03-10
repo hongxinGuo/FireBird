@@ -171,6 +171,26 @@ namespace FireBirdTest {
 		EXPECT_EQ(20200713, GetCurrentMonday(20200719));
 	}
 
+	TEST_F(TimeConvertTest, TestGetNextSecond) {
+		EXPECT_EQ(1, GetNextSecond(0));
+		EXPECT_EQ(59, GetNextSecond(58));
+		EXPECT_EQ(100, GetNextSecond(59));
+		EXPECT_EQ(159, GetNextSecond(158));
+		EXPECT_EQ(200, GetNextSecond(159));
+		EXPECT_EQ(10100, GetNextSecond(10059));
+		EXPECT_EQ(20000, GetNextSecond(15959));
+		EXPECT_EQ(20059, GetNextSecond(20058));
+		EXPECT_EQ(20200, GetNextSecond(20159));
+		EXPECT_EQ(235959, GetNextSecond(235958));
+		EXPECT_EQ(0, GetNextSecond(235959));
+	}
+
+	TEST_F(TimeConvertTest, TestGetNextTime) {
+		EXPECT_EQ(122304, GetNextTime(112158, 1, 1, 6));
+		EXPECT_EQ(121212, GetNextTime(115800, 0, 14,12));
+		EXPECT_EQ(21202, GetNextTime(221200, 4, 0, 2));
+	}
+
 	TEST_F(TimeConvertTest, TestTransferToTTime) {
 		EXPECT_EQ(315601200, ConvertToTTime(19800101, gl_pWorldMarket->GetMarketTimeZone(), 150000)) << "美东标准时间的19800101150000，其UTC时间为315601200";
 		EXPECT_EQ(315558000, ConvertToTTime(19800101, gl_pChinaMarket->GetMarketTimeZone(), 150000)) << "北京标准时间的19800101150000，其UTC时间为315558000";
@@ -260,7 +280,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestConvertBufferToTime, ConvertBufferToTimeTest, testing::Values(&Data101, &Data102, &Data103,
-		&Data104, &Data105, &Data106));
+		                         &Data104, &Data105, &Data106));
 
 	TEST_P(ConvertBufferToTimeTest, TestConvertBufferToTime) {
 		const time_t tt = ConvertBufferToTime(strFormat, strBuffer.GetBuffer());

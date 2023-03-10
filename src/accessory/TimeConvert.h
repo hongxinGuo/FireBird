@@ -22,6 +22,8 @@ long GetPrevDay(long lDate, long lTimeSpanDays = 1) noexcept;
 [[nodiscard]] long GetNextMonday(const long lDate); // 找到lDate的下一个星期一的数值
 [[nodiscard]] long GetPrevMonday(const long lDate); // 找到lDate的上一个星期一的数值
 [[nodiscard]] long GetCurrentMonday(const long lDate); // 找到包含lDate的那个星期的星期一
+[[nodiscard]] long GetNextSecond(const long lTime); // 得到lTime的下一秒时间（HHMMSS制式）
+[[nodiscard]] long GetNextTime(const long lTime, long hh, long mm, long ss);
 
 // 时间支持函数
 void GetUTCTimeStruct(tm* tm_, const time_t* tUTC);

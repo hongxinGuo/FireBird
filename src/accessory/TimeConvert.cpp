@@ -227,6 +227,60 @@ long GetCurrentMonday(long lDate) {
 	return lCurrentMonday;
 }
 
+long GetNextSecond(const long lTime) {
+	const long ss = lTime - (lTime / 100) * 100;
+	if (ss == 59) {
+		const long mm = lTime / 100 - (lTime / 10000) * 100;
+		if (mm == 59) {
+			const long hh = lTime / 10000;
+			ASSERT(hh < 24);
+			if (hh == 23) {
+				return 0;
+			}
+			else {
+				return (hh + 1) * 10000;
+			}
+		}
+		else {
+			return (lTime / 100 + 1) * 100;
+		}
+	}
+	else {
+		return lTime + 1;
+	}
+}
+
+long GetNextTime(const long lTime, long hh, long mm, long ss) {
+	long h = lTime / 10000;
+	long m = (lTime - h * 10000) / 100;
+	long s = lTime - h * 10000 - m * 100;
+	long mTemp = 0;
+	long hTemp = 0;
+	long hEnd, mEnd, sEnd;
+	if ((s + ss) > 59) {
+		mTemp = 1;
+		sEnd = s + ss - 60;
+	}
+	else {
+		sEnd = s + ss;
+	}
+	if ((m + mm + mTemp) > 59) {
+		hTemp = 1;
+		mEnd = m + mm + mTemp - 60;
+	}
+	else {
+		mEnd = m + mm + mTemp;
+	}
+	if ((h + hh + hTemp) > 23) {
+		hEnd = h + hh + hTemp - 24;
+	}
+	else {
+		hEnd = h + hh + hTemp;
+	}
+
+	return hEnd * 10000 + mEnd * 100 + sEnd;
+}
+
 void GetUTCTimeStruct(tm* tm_, const time_t* tUTC) { gmtime_s(tm_, tUTC); }
 
 void GetMarketTimeStruct(tm* tm_, const time_t tUTC, const time_t tTimeZone) {

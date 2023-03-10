@@ -87,7 +87,7 @@ bool IsFireBirdAlreadyRunning(CString strProgramToken) {
 
 // CFireBirdApp 初始化
 BOOL CFireBirdApp::InitInstance() {
-	if (IsFireBirdAlreadyRunning(_T("FireBirdAlreadyRun"))) {
+	if (IsFireBirdAlreadyRunning(_T("FireBirdStockAnalysis"))) {
 		MessageBox(nullptr,
 			"Only one instance can run!",
 			"FireBird Warning:",
