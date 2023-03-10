@@ -35,18 +35,14 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 
 	m_pCurrentMarketTask = nullptr;
 
-	m_fSaveRTData = false; // 此存储实时数据标识，用于存储供测试函数用的实时数据。目前任务已经完成。
-	m_fFastReceivingRTData = true;
-	m_RTDataNeedCalculate = false;
-	m_CalculatingDayLineRS = false;
-	m_CalculatingWeekLineRS = false;
-
 	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
 	m_fUsingTengxunRTDataReceiver = true; // 使用腾讯实时数据提取器
 	m_fUsingNeteaseRTDataReceiver = false; // 不使用网易实时数据提取器
 
 	m_avChosenStock.resize(30);
 	m_aRSStrongOption.resize(10);
+
+	m_fUpdateOptionDB = false;
 
 	Reset();
 
@@ -90,54 +86,66 @@ void CChinaMarket::ResetMarket(void) {
 
 void CChinaMarket::Reset(void) {
 	CalculateTime(); // 初始化市场时间
-
-	m_llRTDataReceived = 0;
-	m_lStockDayLineNeedUpdate = 0;
-
-	m_fLoadedSelectedStock = false;
 	SetSystemReady(false); // 市场初始状态为未设置好。
-	m_fCurrentStockChanged = false;
+
+	m_containerChinaStock.Reset();
+	m_containerStockSymbol.Reset();
+
+	m_v10RSStrong1Stock.resize(0);
+	m_v10RSStrong2Stock.resize(0);
+	m_lCurrentSelectedPosition = 0;
+	m_lCurrentRSStrongIndex = 0;
+	m_lCurrentSelectedStockSet = -1; // 选择使用全体股票集、
 	m_fChosen10RSStrong1StockSet = false;
 	m_fChosen10RSStrong2StockSet = false;
 	m_fChosen10RSStrongStockSet = false;
-	m_fCurrentEditStockChanged = false;
 	m_fCalculateChosen10RS = false;
 
-	m_lTotalMarketBuy = m_lTotalMarketSell = 0;
+	m_llRTDataReceived = 0;
+	m_lRTDataReceivedInOrdinaryTradeTime = 0;
+	m_lNewRTDataReceivedInOrdinaryTradeTime = 0;
+
+	m_lStockDayLineNeedUpdate = 0;
+
+	while (m_qSinaRT.Size() > 0) m_qSinaRT.PopData();
+	while (m_qNeteaseRT.Size() > 0) m_qNeteaseRT.PopData();
+	while (m_qTengxunRT.Size() > 0) m_qTengxunRT.PopData();
+	while (m_qDayLine.Size() > 0) m_qDayLine.PopData();
+	while (m_qRTData.size() > 0) m_qRTData.pop();
+
+	m_RTDataNeedCalculate = false;
+	m_CalculatingDayLineRS = false;
+	m_CalculatingWeekLineRS = false;
+
+	m_fSaveRTData = false; // 此存储实时数据标识，用于存储供测试函数用的实时数据。目前任务已经完成。
+
+	m_fCurrentEditStockChanged = false;
+	m_fFastReceivingRTData = true;
+	m_fSaveDayLine = false;
+	m_fRTDataSetCleared = false;
+	m_fSaveTempData = true;
+	m_pCurrentStock = nullptr;
 
 	m_ttNewestTransactionTime = 0;
+
+	m_iCountDownTengxunNumber = 10;
 
 	m_lRSEndDate = m_lRSStartDate = m_lLastLoginDate = _CHINA_MARKET_BEGIN_DATE_;
 	m_lLastLoginTime = 0;
 	m_lUpdatedDateFor10DaysRS2 = m_lUpdatedDateFor10DaysRS1 = m_lUpdatedDateFor10DaysRS = _CHINA_MARKET_BEGIN_DATE_;
 
-	m_fSaveDayLine = false;
-	m_fMarketOpened = false;
-	m_fSaveTempData = true;
+	m_fLoadedSelectedStock = false;
 
-	m_fTodayTempDataLoaded = false;
-
-	m_lCurrentRSStrongIndex = 0;
-	m_lCurrentSelectedStockSet = -1; // 选择使用全体股票集、
-	m_lCurrentSelectedPosition = 0;
-
-	m_fRTDataSetCleared = false;
+	m_fCurrentStockChanged = false;
+	m_lTotalMarketBuy = m_lTotalMarketSell = 0;
 
 	m_fCheckActiveStock = true; //检查当日活跃股票，必须为真。
-
-	m_iCountDownTengxunNumber = 10;
-
-	m_fUpdateChosenStockDB = false;
-
+	m_fTodayTempDataLoaded = false;
 	m_lTotalActiveStock = 0;
 
-	m_pCurrentStock = nullptr;
+	m_fMarketOpened = false;
 
-	m_containerChinaStock.Reset();
-	m_containerStockSymbol.Reset();
-
-	m_lRTDataReceivedInOrdinaryTradeTime = 0;
-	m_lNewRTDataReceivedInOrdinaryTradeTime = 0;
+	m_fUpdateChosenStockDB = false;
 
 	for (const auto& pDataSource : m_vDataSource) {
 		pDataSource->Reset();
@@ -658,17 +666,17 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 		StoreMarketTask(pTask);
 	}
 	// 再次初始化系统
-	if (lCurrentTime < 92500) {
+	if (lCurrentTime < 92600) {
 		pTask = make_shared<CMarketTask>();
 		pTask->SetType(CHINA_MARKET_RESET_AGAIN__);
 		pTask->SetTime(92600); // 执行时间为：92600
 		StoreMarketTask(pTask);
 	}
 
-	// 每秒一次处理实时数据
+	// 每秒一次分配实时数据
 	pTask = make_shared<CMarketTask>();
 	pTask->SetType(CHINA_MARKET_DISTRIBUTE_RT_DATA__);
-	pTask->SetTime(91500); // 开始执行时间为：91500
+	pTask->SetTime(1); // 开始执行时间为：1
 	StoreMarketTask(pTask);
 	// 每秒一次处理实时数据
 	pTask = make_shared<CMarketTask>();

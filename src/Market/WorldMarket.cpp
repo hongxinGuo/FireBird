@@ -61,10 +61,6 @@ void CWorldMarket::Reset(void) {
 }
 
 void CWorldMarket::ResetFinnhub(void) {
-	m_dataFinnhubStockExchange.Reset();
-	m_dataFinnhubForexExchange.Reset();
-
-	m_fRebuildDayLine = false;
 	SetSystemReady(false); // 市场初始状态为未设置好。
 	if (IsEarlyThen(gl_finnhubInaccessibleExchange.GetUpdateDate(), GetMarketDate(), 7)) {
 		gl_finnhubInaccessibleExchange.Clear(); // 不使用更新时间早于一周的数据。清除之，让系统自动查验新的状态。
@@ -72,9 +68,9 @@ void CWorldMarket::ResetFinnhub(void) {
 	}
 }
 
-void CWorldMarket::ResetQuandl(void) {}
+void CWorldMarket::ResetQuandl(void) { }
 
-void CWorldMarket::ResetTiingo(void) {}
+void CWorldMarket::ResetTiingo(void) { }
 
 void CWorldMarket::ResetDataClass(void) {
 	m_dataFinnhubStockExchange.Reset();
@@ -86,7 +82,9 @@ void CWorldMarket::ResetDataClass(void) {
 	m_dataFinnhubEconomicCalendar.Reset();
 
 	m_containerStock.Reset();
+
 	m_dataTiingoStock.Reset();
+	m_dataTiingoCryptoSymbol.Reset();
 
 	m_containerChosenStock.Reset();
 	m_containerChosenForex.Reset();

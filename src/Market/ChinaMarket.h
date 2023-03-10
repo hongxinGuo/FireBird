@@ -456,15 +456,13 @@ protected:
 	CPriorityQueueWebRTData m_qNeteaseRT; // 中国市场实时数据队列。
 	CPriorityQueueWebRTData m_qTengxunRT; // 中国市场实时数据队列。
 	CTemplateMutexAccessQueue<CDayLineWebData> m_qDayLine; // 网易日线数据
+	queue<CWebRTDataPtr> m_qRTData;
 
 	bool m_RTDataNeedCalculate;
 	bool m_CalculatingDayLineRS;
 	bool m_CalculatingWeekLineRS;
 
-	queue<CWebRTDataPtr> m_qRTData;
 	bool m_fSaveRTData;
-
-	int m_iMarketOpenOffset; // 开市的偏移量。以分钟为单位，0930 = 0，1129 = 120， 1300 = 121， 1459 = 240。
 
 	bool m_fCurrentEditStockChanged;
 	bool m_fMarketOpened; // 是否开市
@@ -481,11 +479,6 @@ protected:
 	bool m_fUsingTengxunRTDataReceiver; // 使用腾讯实时数据提取器
 	int m_iCountDownTengxunNumber;
 
-	CString m_strSinaRTDataInquiringStr;
-	CString m_strTengxunRTDataInquiringStr;
-	CString m_strNeteaseRTDataInquiringStr;
-	CString m_strNeteaseDayLineDataInquiringStr;
-
 	// Option各选项
 	long m_lRSStartDate;
 	long m_lRSEndDate;
@@ -495,7 +488,6 @@ protected:
 	long m_lUpdatedDateFor10DaysRS1;
 	long m_lUpdatedDateFor10DaysRS;
 
-	vector<CChinaStockPtr> m_vpSelectedStock; // 当前选择的股票
 	bool m_fLoadedSelectedStock;
 
 	bool m_fCurrentStockChanged; // 当前选择的股票改变了

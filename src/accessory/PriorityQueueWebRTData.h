@@ -14,7 +14,7 @@ public:
 
 	// 通用接口函数
 	void PushData(CWebRTDataPtr pData);
-	[[nodiscard]] CWebRTDataPtr PopData(void);
+	CWebRTDataPtr PopData(void);
 	[[nodiscard]] CWebRTDataPtr GetHead(void) const noexcept { return m_priorityQueueWebRTData.top(); }
 	[[nodiscard]] size_t Size(void);
 

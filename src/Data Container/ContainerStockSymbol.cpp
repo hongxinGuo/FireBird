@@ -9,20 +9,10 @@
 using std::make_shared;
 
 CContainerStockSymbol::CContainerStockSymbol() {
-	m_vStockSection.resize(2000); // 沪深各1000个段。
-	for (int i = 0; i < 2000; i++) {
-		const auto pStockSection = make_shared<CStockSection>();
-		pStockSection->SetIndexNumber(i);
-		if (i < 1000) pStockSection->SetMarket(_SHANGHAI_MARKET_);
-		else pStockSection->SetMarket(_SHENZHEN_MARKET_);
-		m_vStockSection.at(i) = pStockSection;
-	}
-
 	Reset();
 }
 
 void CContainerStockSymbol::Reset(void) {
-	m_fUpdateStockSection = false;
 	m_vStockSymbol.resize(0);
 	m_mapStockSymbol.clear();
 	m_vCurrentSectionStockCode.resize(0);
@@ -44,7 +34,19 @@ void CContainerStockSymbol::Reset(void) {
 	// 从股票代码集数据库中读入其他股票集
 
 	//重置StockSection
-	for (int i = 0; i < m_vStockSection.size(); i++) { m_vStockSection.at(i)->SetBuildStockPtr(false); }
+	m_vStockSection.resize(0);
+	m_vStockSection.resize(2000); // 沪深各1000个段。
+	for (int i = 0; i < 2000; i++) {
+		const auto pStockSection = make_shared<CStockSection>();
+		pStockSection->SetIndexNumber(i);
+		if (i < 1000) pStockSection->SetMarket(_SHANGHAI_MARKET_);
+		else pStockSection->SetMarket(_SHENZHEN_MARKET_);
+		m_vStockSection.at(i) = pStockSection;
+	}
+	for (int i = 0; i < m_vStockSection.size(); i++) {
+		m_vStockSection.at(i)->SetBuildStockPtr(false);
+	}
+	m_fUpdateStockSection = false;
 
 	LoadStockSectionDB();
 

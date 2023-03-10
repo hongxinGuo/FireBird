@@ -187,18 +187,20 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask1) {
+		CMarketTaskPtr pTask;
+
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
 		gl_pChinaMarket->TaskCreateTask(10000);
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
-		auto pTask = gl_pChinaMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_RESET__);
-		EXPECT_EQ(pTask->GetTime(), 91300);
-
 		pTask = gl_pChinaMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_RT_DATA__);
-		EXPECT_EQ(pTask->GetTime(), 91500);
+		EXPECT_EQ(pTask->GetTime(), 1);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_RESET__);
+		EXPECT_EQ(pTask->GetTime(), 91300);
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_RT_DATA__);
@@ -223,15 +225,17 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask2) {
+		CMarketTaskPtr pTask;
+
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
 		gl_pChinaMarket->TaskCreateTask(91500);
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		auto pTask = gl_pChinaMarket->GetMarketTask();
+		pTask = gl_pChinaMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_RT_DATA__);
-		EXPECT_EQ(pTask->GetTime(), 91500);
+		EXPECT_EQ(pTask->GetTime(), 1);
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_RT_DATA__);
@@ -256,15 +260,17 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask3) {
+		CMarketTaskPtr pTask;
+
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
 		gl_pChinaMarket->TaskCreateTask(93000);
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		auto pTask = gl_pChinaMarket->GetMarketTask();
+		pTask = gl_pChinaMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_RT_DATA__);
-		EXPECT_EQ(pTask->GetTime(), 91500);
+		EXPECT_EQ(pTask->GetTime(), 1);
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_RT_DATA__);
@@ -285,6 +291,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask4) {
+		CMarketTaskPtr pTask;
 		tm tm_;
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
@@ -301,9 +308,9 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		auto pTask = gl_pChinaMarket->GetMarketTask();
+		pTask = gl_pChinaMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_RT_DATA__);
-		EXPECT_EQ(pTask->GetTime(), 91500);
+		EXPECT_EQ(pTask->GetTime(), 1);
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_RT_DATA__);
@@ -319,6 +326,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask6) {
+		CMarketTaskPtr pTask;
 		tm tm_;
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
@@ -335,9 +343,9 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		auto pTask = gl_pChinaMarket->GetMarketTask();
+		pTask = gl_pChinaMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_RT_DATA__);
-		EXPECT_EQ(pTask->GetTime(), 91500);
+		EXPECT_EQ(pTask->GetTime(), 1);
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_RT_DATA__);

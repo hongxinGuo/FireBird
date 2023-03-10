@@ -283,12 +283,6 @@ protected:
 
 	CString m_strCurrentFunction; // 当前任务和处理的证券名称
 
-	int m_iWebSocketReceivedDataPerSecond; // 每秒接收到的数据量
-	string m_strMessage;
-
-	//
-	bool m_fRebuildDayLine; // 重建日线历史数据。
-
 	bool m_bFinnhubWebSiteAccessible; // 由于finnhub.io不时被墙，故而需要此标识。
 
 private:

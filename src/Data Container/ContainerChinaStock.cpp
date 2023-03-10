@@ -29,6 +29,8 @@ CContainerChinaStock::CContainerChinaStock() {
 void CContainerChinaStock::Reset(void) {
 	CContainerVirtualStock::Reset();
 
+	m_lLoadedStock = 0;
+
 	m_lNeteaseRTDataInquiringIndex = 0;
 	m_lSinaRTDataInquiringIndex = 0;
 	m_lTengxunRTDataInquiringIndex = 0;
