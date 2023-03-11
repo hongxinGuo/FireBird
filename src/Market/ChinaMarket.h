@@ -75,8 +75,7 @@ public:
 	virtual bool TaskCreateTask(long lCurrentTime);
 	virtual bool TaskResetMarket(long lCurrentTime);
 	virtual bool TaskResetMarketAgain(long lCurrentTime);
-	virtual void TaskDistributeRTDataToStock(long lCurrentTime);
-	void TaskProcessRTData(long lCurrentTime);
+	virtual void TaskDistributeAndCalculateRTData(long lCurrentTime);
 	void TaskSaveTempData(long lCurrentTime);
 	bool TaskSetCheckActiveStockFlag(long lCurrentTime);
 	bool TaskChoice10RSStrong1StockSet(long lCurrentTime);

@@ -413,7 +413,7 @@ bool IsFireBirdAlreadyRunning(CString strProgramToken) {
 }
 
 void CWatchdogMainFrame::OnTimer(UINT_PTR nIDEvent) {
-	if (!IsFireBirdAlreadyRunning(_T("FireBirdAlreadyRun"))) {
+	if (!IsFireBirdAlreadyRunning(_T("FireBirdStockAnalysis"))) {
 		const UINT iReturnCode = WinExec(("C:\\FireBird\\FireBird.exe"), SW_SHOW);
 		m_wndOutput.ReportInfo(_T("Æô¶¯FireBird"));
 		ASSERT(iReturnCode > 31);

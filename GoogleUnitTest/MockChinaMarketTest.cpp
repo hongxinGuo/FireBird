@@ -125,40 +125,16 @@ namespace FireBirdTest {
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask4) {
 		auto pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_DISTRIBUTE_RT_DATA__);
+		pTask->SetType(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
 		pTask->SetTime(91500);
 		gl_pMockChinaMarket->StoreMarketTask(pTask);
 
-		EXPECT_CALL(*gl_pMockChinaMarket, TaskDistributeRTDataToStock(93000)).Times(1);
+		EXPECT_CALL(*gl_pMockChinaMarket, TaskDistributeAndCalculateRTData(93000)).Times(1);
 
 		EXPECT_TRUE(gl_pMockChinaMarket->ProcessEveryDayTask(93000));
 
 		EXPECT_TRUE(gl_pMockChinaMarket->IsMarketTaskEmpty());
 		EXPECT_TRUE(gl_pMockChinaMarket->GetCurrentMarketTask() == nullptr);
-	}
-
-	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask5) {
-		auto pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_PROCESS_RT_DATA__);
-		pTask->SetTime(93300);
-		gl_pMockChinaMarket->StoreMarketTask(pTask);
-
-		EXPECT_TRUE(gl_pMockChinaMarket->IsSystemReady());
-		gl_pMockChinaMarket->SetTodayTempRTDataLoaded(true);
-		gl_pMockChinaMarket->SetRTDataNeedCalculate(true);
-
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadProcessRTData()).Times(1);
-
-		EXPECT_TRUE(gl_pMockChinaMarket->ProcessEveryDayTask(93300));
-
-		EXPECT_FALSE(gl_pMockChinaMarket->IsMarketTaskEmpty()) << "ÔçÓÚ150300";
-		EXPECT_TRUE(gl_pMockChinaMarket->GetCurrentMarketTask() == nullptr);
-		pTask = gl_pMockChinaMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 93301);
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_RT_DATA__);
-
-		// »Ö¸´Ô­×´
-		gl_pMockChinaMarket->SetCurrentMarketTask(nullptr);
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask6) {

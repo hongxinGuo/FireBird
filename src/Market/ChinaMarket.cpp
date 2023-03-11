@@ -571,16 +571,6 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	// 判断中国股票市场开市状态
 	TaskCheckMarketOpen(lCurrentTime);
 
-	// 将接收到的实时数据分发至各相关股票的实时数据队列中。
-	// 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
-	//TaskDistributeRTDataToStock(lCurrentTime);
-
-	// 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
-	// 此计算任务要在TaskDistributeSinaRTDataStock和TaskDistributeNeteaseRTDataToStock之后执行，以防止出现同步问题。
-	// 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。如果系统正在存储临时实时数据，则等待一秒后的下一次轮询时再计算实时数据
-	// 使用线程同步模式，就解决了这个问题。无需等待。
-	//TaskProcessRTData(lCurrentTime);
-
 	TaskShowCurrentTransaction();
 
 	// 装载当前股票日线数据
@@ -589,24 +579,23 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	return true;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
 // 将接收到的实时数据分发至各相关股票的实时数据队列中。
 // 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
-void CChinaMarket::TaskDistributeRTDataToStock(long lCurrentTime) {
+// 实时数据的计算过程必须位于分配过程之后，这样才能保证不会出现数据同步问题
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
 	DistributeSinaRTDataToStock();
 	DistributeNeteaseRTDataToStock();
-	const auto pTask = make_shared<CMarketTask>();
-	pTask->SetType(CHINA_MARKET_DISTRIBUTE_RT_DATA__);
-	pTask->SetTime(GetNextSecond(lCurrentTime));
-	StoreMarketTask(pTask);
-}
-
-void CChinaMarket::TaskProcessRTData(long lCurrentTime) {
 	if (IsSystemReady() && IsTodayTempRTDataLoaded() && IsRTDataNeedCalculate()) {
 		CreateThreadProcessRTData();
 		SetRTDataNeedCalculate(false);
 	}
+
 	const auto pTask = make_shared<CMarketTask>();
-	pTask->SetType(CHINA_MARKET_PROCESS_RT_DATA__);
+	pTask->SetType(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
 	pTask->SetTime(GetNextSecond(lCurrentTime));
 	StoreMarketTask(pTask);
 }
@@ -631,11 +620,8 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 		case CHINA_MARKET_RESET_AGAIN__: // 92600再次重启系统
 			TaskResetMarketAgain(lCurrentTime);
 			break;
-		case CHINA_MARKET_DISTRIBUTE_RT_DATA__:
-			TaskDistributeRTDataToStock(lCurrentTime);
-			break;
-		case CHINA_MARKET_PROCESS_RT_DATA__:
-			TaskProcessRTData(lCurrentTime);
+		case CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__:
+			TaskDistributeAndCalculateRTData(lCurrentTime);
 			break;
 		case CHINA_MARKET_SAVE_TEMP_RT_DATA__:
 			TaskSaveTempData(lCurrentTime);
@@ -656,6 +642,8 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	CMarketTaskPtr pTask;
 
+	SetResetMarketPermission(false); // 今天不再允许重置系统。
+
 	while (!IsMarketTaskEmpty()) GetMarketTask();
 
 	// 初始化系统
@@ -675,13 +663,8 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 
 	// 每秒一次分配实时数据
 	pTask = make_shared<CMarketTask>();
-	pTask->SetType(CHINA_MARKET_DISTRIBUTE_RT_DATA__);
+	pTask->SetType(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
 	pTask->SetTime(1); // 开始执行时间为：1
-	StoreMarketTask(pTask);
-	// 每秒一次处理实时数据
-	pTask = make_shared<CMarketTask>();
-	pTask->SetType(CHINA_MARKET_PROCESS_RT_DATA__);
-	pTask->SetTime(91500); // 开始执行时间为：91500
 	StoreMarketTask(pTask);
 
 	if (IsWorkingDay()) {
@@ -760,9 +743,6 @@ bool CChinaMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	// 在开市前和中午暂停时查询所有股票池，找到当天活跃股票。
 	TaskSetCheckActiveStockFlag(lCurrentTime);
 
-	// 下午三点三分开始处理当日实时数据。
-	//TaskProcessTodayStock(lCurrentTime);
-
 	TaskSaveChosenRTData();
 
 	TaskClearChosenRTDataSet(lCurrentTime);
@@ -783,9 +763,8 @@ void CChinaMarket::CreateTaskOfReset() {
 	if (HaveResetMarketPermission()) { // 如果允许重置系统
 		const auto pTask = make_shared<CMarketTask>();
 		pTask->SetType(CHINA_MARKET_CREATE_TASK__);
-		pTask->SetTime(10000); // 午夜一时整
+		pTask->SetTime(3000); // 午夜零时三十分整重置系统
 		StoreMarketTask(pTask);
-		SetResetMarketPermission(false); // 今天不再允许重置系统。
 	}
 }
 
