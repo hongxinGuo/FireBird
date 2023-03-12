@@ -35,8 +35,6 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 	m_strMarketId = _T("中国股票市场");
 	m_lMarketTimeZone = -8 * 3600; // 北京标准时间位于东八区，超前GMT8小时
 
-	m_pCurrentMarketTask = nullptr;
-
 	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
 	m_fUsingTengxunRTDataReceiver = true; // 使用腾讯实时数据提取器
 	m_fUsingNeteaseRTDataReceiver = false; // 不使用网易实时数据提取器
@@ -588,17 +586,17 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
+	const auto pTask = make_shared<CMarketTask>();
+	pTask->SetType(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
+	pTask->SetTime(GetNextSecond(lCurrentTime));
+	StoreMarketTask(pTask);
+
 	DistributeSinaRTDataToStock();
 	DistributeNeteaseRTDataToStock();
 	if (IsSystemReady() && IsTodayTempRTDataLoaded() && IsRTDataNeedCalculate()) {
 		CreateThreadProcessRTData();
 		SetRTDataNeedCalculate(false);
 	}
-
-	const auto pTask = make_shared<CMarketTask>();
-	pTask->SetType(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
-	pTask->SetTime(GetNextSecond(lCurrentTime));
-	StoreMarketTask(pTask);
 }
 
 bool CChinaMarket::SchedulingTaskPerHour(long lCurrentTime) {
@@ -607,11 +605,11 @@ bool CChinaMarket::SchedulingTaskPerHour(long lCurrentTime) {
 }
 
 bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
-	//todo
-	if (m_marketTask.IsEmpty() && (m_pCurrentMarketTask == nullptr)) return false;
-	if (m_pCurrentMarketTask == nullptr) m_pCurrentMarketTask = m_marketTask.GetTask();
-	if (lCurrentTime >= m_pCurrentMarketTask->GetTime()) {
-		switch (m_pCurrentMarketTask->GetType()) {
+	if (m_marketTask.IsEmpty()) return false;
+	const auto pTask = m_marketTask.GetTask();
+	if (lCurrentTime >= pTask->GetTime()) {
+		m_marketTask.DiscardTask();
+		switch (pTask->GetType()) {
 		case CHINA_MARKET_CREATE_TASK__: // 生成其他任务
 			TaskCreateTask(lCurrentTime);
 			break;
@@ -631,10 +629,9 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 			TaskProcessTodayStock(lCurrentTime);
 			break;
 		default:
+			ASSERT(0); // 非法任务
 			break;
 		}
-
-		m_pCurrentMarketTask = nullptr; // 当前任务处理完成后，抛弃掉。
 		return true;
 	}
 	return false;
@@ -645,7 +642,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 
 	SetResetMarketPermission(false); // 今天不再允许重置系统。
 
-	while (!IsMarketTaskEmpty()) GetMarketTask();
+	while (!IsMarketTaskEmpty()) DiscardCurrentMarketTask();
 
 	// 初始化系统
 	if (lCurrentTime < 91300) {

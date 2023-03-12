@@ -1,4 +1,4 @@
-#include"pch.h"
+Ôªø#include"pch.h"
 
 #include"TimeConvert.h"
 #include"ChinaStockCodeConverter.h"
@@ -24,7 +24,7 @@ namespace FireBirdTest {
 		static void SetUpTestSuite(void) {
 			GeneralCheck();
 
-			gl_pChinaMarket->Load10DaysRSStrongStockDB(); // ◊∞»Î∏˜ Æ»’«ø∂»π…∆±ºØ
+			gl_pChinaMarket->Load10DaysRSStrongStockDB(); // Ë£ÖÂÖ•ÂêÑÂçÅÊó•Âº∫Â∫¶ËÇ°Á•®ÈõÜ
 			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(10) > 0);
 			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(11) > 0);
 			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(12) > 0);
@@ -44,8 +44,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
-			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "≤‚ ‘ ˝æ›ø‚÷–µƒπ…∆±¥˙¬Î◊‹ ˝Œ™5040";
-			EXPECT_EQ(gl_pChinaMarket->GetTotalLoadedStock(), 5040) << "≤‚ ‘¥˙¬Îø‚÷–µƒπ…∆±¥˙¬Î◊‹ ˝Œ™5040";
+			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "ÊµãËØïÊï∞ÊçÆÂ∫ì‰∏≠ÁöÑËÇ°Á•®‰ª£Á†ÅÊÄªÊï∞‰∏∫5040";
+			EXPECT_EQ(gl_pChinaMarket->GetTotalLoadedStock(), 5040) << "ÊµãËØï‰ª£Á†ÅÂ∫ì‰∏≠ÁöÑËÇ°Á•®‰ª£Á†ÅÊÄªÊï∞‰∏∫5040";
 		}
 
 		static void TearDownTestSuite(void) {
@@ -58,7 +58,7 @@ namespace FireBirdTest {
 			}
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
-			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "≤‚ ‘ ˝æ›ø‚÷–µƒπ…∆±¥˙¬Î◊‹ ˝Œ™5040";
+			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "ÊµãËØïÊï∞ÊçÆÂ∫ì‰∏≠ÁöÑËÇ°Á•®‰ª£Á†ÅÊÄªÊï∞‰∏∫5040";
 
 			GeneralCheck();
 		}
@@ -72,11 +72,11 @@ namespace FireBirdTest {
 			gl_pChinaMarket->CalculateTime();
 			gl_pChinaMarket->SetSinaStockRTDataInquiringIndex(0);
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);
-			gl_pChinaMarket->SetSystemReady(true); // ≤‚ ‘ –≥° ±£¨ƒ¨»œœµÕ≥“—æ≠◊º±∏∫√
+			gl_pChinaMarket->SetSystemReady(true); // ÊµãËØïÂ∏ÇÂú∫Êó∂ÔºåÈªòËÆ§Á≥ªÁªüÂ∑≤ÁªèÂáÜÂ§áÂ•Ω
 			gl_pChinaMarket->SetResetMarketPermission(true);
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
-			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "≤‚ ‘ ˝æ›ø‚÷–µƒπ…∆±¥˙¬Î◊‹ ˝Œ™5040";
+			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "ÊµãËØïÊï∞ÊçÆÂ∫ì‰∏≠ÁöÑËÇ°Á•®‰ª£Á†ÅÊÄªÊï∞‰∏∫5040";
 		}
 
 		void TearDown(void) override {
@@ -91,7 +91,7 @@ namespace FireBirdTest {
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 			gl_pChinaMarket->SetResetMarketPermission(true);
 			gl_pChinaMarket->SetUpdateOptionDB(false);
-			gl_pChinaMarket->SetSystemReady(true); // ¿Îø™¥À≤‚ ‘ ±£¨ƒ¨»œœµÕ≥“—◊º±∏∫√°£
+			gl_pChinaMarket->SetSystemReady(true); // Á¶ªÂºÄÊ≠§ÊµãËØïÊó∂ÔºåÈªòËÆ§Á≥ªÁªüÂ∑≤ÂáÜÂ§áÂ•Ω„ÄÇ
 			EXPECT_TRUE(gl_pChinaMarket->IsCheckingActiveStock());
 
 			gl_pChinaMarket->ResetCurrentStock();
@@ -105,7 +105,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
 			EXPECT_THAT(gl_pChinaMarket->GetTotalStock(), Eq(5040));
 
-			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "≤‚ ‘ ˝æ›ø‚÷–µƒπ…∆±¥˙¬Î◊‹ ˝Œ™5040";
+			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "ÊµãËØïÊï∞ÊçÆÂ∫ì‰∏≠ÁöÑËÇ°Á•®‰ª£Á†ÅÊÄªÊï∞‰∏∫5040";
 
 			gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
 
@@ -132,8 +132,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->GetTotalAttackBuyAmount(), 0);
 		EXPECT_EQ(gl_pChinaMarket->GetTotalAttackSellAmount(), 0);
 		EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
-		EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 0); // ‘⁄»´æ÷±‰¡øgl_ChinaStockMarket≥ı ºªØ ±æÕ…˙≥…¡À»´≤øπ…∆±¥˙¬Î≥ÿ
-		EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "≤‚ ‘ ˝æ›ø‚÷–µƒπ…∆±¥˙¬Î◊‹ ˝Œ™5040";
+		EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 0); // Âú®ÂÖ®Â±ÄÂèòÈáègl_ChinaStockMarketÂàùÂßãÂåñÊó∂Â∞±ÁîüÊàê‰∫ÜÂÖ®ÈÉ®ËÇ°Á•®‰ª£Á†ÅÊ±†
+		EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "ÊµãËØïÊï∞ÊçÆÂ∫ì‰∏≠ÁöÑËÇ°Á•®‰ª£Á†ÅÊÄªÊï∞‰∏∫5040";
 		pStock = gl_pChinaMarket->GetStock(0);
 		EXPECT_STREQ(pStock->GetSymbol(), _T("000001.SS"));
 		EXPECT_EQ(gl_pChinaMarket->GetStockOffset(_T("000001.SS")), 0);
@@ -150,39 +150,32 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestProcessEveryDayTask1) {
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
-		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr);
 
-		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask( 101010)) << "√ª”–»ŒŒÒø…÷¥––";
+		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask( 101010)) << "Ê≤°Êúâ‰ªªÂä°ÂèØÊâßË°å";
 	}
 
 	TEST_F(CChinaMarketTest, TestProcessEveryDayTask2) {
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
-		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr);
 
-		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask(101010)) << "√ª”–»ŒŒÒø…÷¥––";
+		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask(101010)) << "Ê≤°Êúâ‰ªªÂä°ÂèØÊâßË°å";
 
 		const auto pTask1 = make_shared<CMarketTask>();
 		pTask1->SetTime(100101);
+		pTask1->SetType(CHINA_MARKET_SAVE_TEMP_RT_DATA__);
 		gl_pChinaMarket->StoreMarketTask(pTask1);
 		const auto pTask2 = make_shared<CMarketTask>();
 		pTask2->SetTime(110101);
+		pTask2->SetType(CHINA_MARKET_SAVE_TEMP_RT_DATA__);
 		gl_pChinaMarket->StoreMarketTask(pTask2);
 
-		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr);
+		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask(100001)) << "Êúâ‰ªªÂä°ÈúÄË¶ÅÊâßË°åÔºå‰ΩÜÊó∂Èó¥Êú™Âà∞";
 
-		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask(100001)) << "”–»ŒŒÒ–Ë“™÷¥––£¨µ´ ±º‰Œ¥µΩ";
+		EXPECT_TRUE(gl_pChinaMarket->ProcessEveryDayTask(101002)) << "Êó∂Èó¥Âà∞, ÊâßË°åÁ¨¨‰∏Ä‰∏™‰ªªÂä°";
 
-		EXPECT_FALSE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr) << "“—∑÷≈‰µ±«∞»ŒŒÒ";
-		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == pTask1);
-
-		EXPECT_TRUE(gl_pChinaMarket->ProcessEveryDayTask( 101002)) << " ±º‰µΩ, ÷¥––µ⁄“ª∏ˆ»ŒŒÒ";
-
-		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr) << "µ±«∞∑÷≈‰µƒ»ŒŒÒ“—÷¥––£¨«Â≥˝÷Æ";
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		EXPECT_TRUE(gl_pChinaMarket->ProcessEveryDayTask(111002)) << " ±º‰µΩ, ÷¥––µ⁄∂˛∏ˆ»ŒŒÒ";
+		EXPECT_TRUE(gl_pChinaMarket->ProcessEveryDayTask(111002)) << "Êó∂Èó¥Âà∞, ÊâßË°åÁ¨¨‰∫å‰∏™‰ªªÂä°";
 
-		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr) << "µ±«∞∑÷≈‰µƒ»ŒŒÒ“—÷¥––£¨«Â≥˝÷Æ";
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 	}
 
@@ -195,30 +188,32 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
 		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
 		EXPECT_EQ(pTask->GetTime(), 1);
 
 		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_RESET__);
 		EXPECT_EQ(pTask->GetTime(), 91300);
 
 		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_RESET_AGAIN__);
 		EXPECT_EQ(pTask->GetTime(), 92600);
 
 		if (gl_pChinaMarket->IsWorkingDay()) {
 			pTask = gl_pChinaMarket->GetMarketTask();
+			gl_pChinaMarket->DiscardCurrentMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
 			EXPECT_EQ(pTask->GetTime(), 93000);
 
 			pTask = gl_pChinaMarket->GetMarketTask();
+			gl_pChinaMarket->DiscardCurrentMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
 			EXPECT_EQ(pTask->GetTime(), 150500);
-			EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() != nullptr);
 		}
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
-
-		gl_pChinaMarket->ClearCurrentMarketTask();
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask2) {
@@ -231,26 +226,27 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
 
 		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
 		EXPECT_EQ(pTask->GetTime(), 1);
 
 		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_RESET_AGAIN__);
 		EXPECT_EQ(pTask->GetTime(), 92600);
 
 		if (gl_pChinaMarket->IsWorkingDay()) {
 			pTask = gl_pChinaMarket->GetMarketTask();
+			gl_pChinaMarket->DiscardCurrentMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
 			EXPECT_EQ(pTask->GetTime(), 93000);
 
 			pTask = gl_pChinaMarket->GetMarketTask();
+			gl_pChinaMarket->DiscardCurrentMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
 			EXPECT_EQ(pTask->GetTime(), 150500);
-			EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() != nullptr);
 		}
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
-
-		gl_pChinaMarket->ClearCurrentMarketTask();
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask3) {
@@ -263,35 +259,34 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
 
 		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
 		EXPECT_EQ(pTask->GetTime(), 1);
 
 		if (gl_pChinaMarket->IsWorkingDay()) {
 			pTask = gl_pChinaMarket->GetMarketTask();
+			gl_pChinaMarket->DiscardCurrentMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
 			EXPECT_EQ(pTask->GetTime(), 93000);
 
 			pTask = gl_pChinaMarket->GetMarketTask();
+			gl_pChinaMarket->DiscardCurrentMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
 			EXPECT_EQ(pTask->GetTime(), 150500);
-			EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() != nullptr);
 		}
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
-
-		gl_pChinaMarket->ClearCurrentMarketTask();
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask4) {
-		CMarketTaskPtr pTask;
-		tm tm_;
+		tm tm_{0};
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
-		tm_.tm_mday = 7; // 2019ƒÍ11‘¬9»’ «–«∆⁄Àƒ°£
+		tm_.tm_mday = 7; // 2019Âπ¥11Êúà9Êó•ÊòØÊòüÊúüÂõõ„ÄÇ
+		tm_.tm_wday = 4;
 		tm_.tm_hour = 16;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		gl_pChinaMarket->TEST_SetMarketTM(tm_);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
@@ -300,29 +295,28 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		pTask = gl_pChinaMarket->GetMarketTask();
+		CMarketTaskPtr pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
 		EXPECT_EQ(pTask->GetTime(), 1);
 
 		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
 		EXPECT_EQ(pTask->GetTime(), 93000);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
-
-		gl_pChinaMarket->ClearCurrentMarketTask();
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask6) {
-		CMarketTaskPtr pTask;
-		tm tm_;
+		tm tm_{0};
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
-		tm_.tm_mday = 9; // 2019ƒÍ11‘¬9»’ «–«∆⁄¡˘°£
+		tm_.tm_mday = 9; // 2019Âπ¥11Êúà9Êó•ÊòØÊòüÊúüÂÖ≠„ÄÇ
+		tm_.tm_wday = 6;
 		tm_.tm_hour = 16;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		gl_pChinaMarket->TEST_SetMarketTM(tm_);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
@@ -331,13 +325,12 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		pTask = gl_pChinaMarket->GetMarketTask();
+		const CMarketTaskPtr pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
 		EXPECT_EQ(pTask->GetTime(), 1);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
-		gl_pChinaMarket->ClearCurrentMarketTask();
-		EXPECT_TRUE(gl_pChinaMarket->GetCurrentMarketTask() == nullptr);
 	}
 
 	TEST_F(CChinaMarketTest, TestClearUpdateStockCodeDBFlag) {
@@ -353,7 +346,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestGetNeteaseDayLineInquiringStr) {
 		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(0);
-		EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("≤‚ ‘ ± π”√teststock ˝æ›ø‚£¨¥À ˝æ›ø‚±»Ωœæ…£¨◊Ó∫Û∏¸–¬ ±º‰≤ª «◊Ú»’£¨π ∂¯ªÓ‘æπ…∆±“≤–Ë“™∏¸–¬»’œﬂ");
+		EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("ÊµãËØïÊó∂‰ΩøÁî®teststockÊï∞ÊçÆÂ∫ìÔºåÊ≠§Êï∞ÊçÆÂ∫ìÊØîËæÉÊóßÔºåÊúÄÂêéÊõ¥Êñ∞Êó∂Èó¥‰∏çÊòØÊò®Êó•ÔºåÊïÖËÄåÊ¥ªË∑ÉËÇ°Á•®‰πüÈúÄË¶ÅÊõ¥Êñ∞Êó•Á∫ø");
 
 		pStock->SetDayLineNeedUpdate(false);
 		pStock = gl_pChinaMarket->GetStock(1);
@@ -371,7 +364,7 @@ namespace FireBirdTest {
 		str = gl_pChinaMarket->CreateNeteaseDayLineInquiringStr();
 		EXPECT_STREQ(str, _T("1000002"));
 
-		gl_pChinaMarket->GetStock(2)->SetDayLineEndDate(lDate); // ª÷∏¥‘≠◊¥°£
+		gl_pChinaMarket->GetStock(2)->SetDayLineEndDate(lDate); // ÊÅ¢Â§çÂéüÁä∂„ÄÇ
 	}
 
 	TEST_F(CChinaMarketTest, TestGetMinLineOffset) {
@@ -458,9 +451,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestGetStockName) {
-		//todo Œ¥ µœ÷.”…”⁄stockName¥Ê¥¢ ± π”√µƒ «UniCode÷∆ Ω£¨∂¯±æœµÕ≥ƒ¨»œ «Ansi÷∆ Ω£¨µº÷¬Œﬁ∑®Ω¯––◊÷∑˚¥Æ∂‘±»°£‘› ±≤ªΩ¯––≤‚ ‘¡À°£
-		//EXPECT_STREQ(gl_pChinaMarket->GetStockName(_T("600000.SS")), _T("∆÷∑¢“¯––"));
-		EXPECT_STREQ(gl_pChinaMarket->GetStockName(_T("60000.SS")), _T("")); // √ª’“µΩ∑µªÿø’◊÷∑˚¥Æ
+		//todo Êú™ÂÆûÁé∞.Áî±‰∫éstockNameÂ≠òÂÇ®Êó∂‰ΩøÁî®ÁöÑÊòØUniCodeÂà∂ÂºèÔºåËÄåÊú¨Á≥ªÁªüÈªòËÆ§ÊòØAnsiÂà∂ÂºèÔºåÂØºËá¥Êó†Ê≥ïËøõË°åÂ≠óÁ¨¶‰∏≤ÂØπÊØî„ÄÇÊöÇÊó∂‰∏çËøõË°åÊµãËØï‰∫Ü„ÄÇ
+		//EXPECT_STREQ(gl_pChinaMarket->GetStockName(_T("600000.SS")), _T("Êµ¶ÂèëÈì∂Ë°å"));
+		EXPECT_STREQ(gl_pChinaMarket->GetStockName(_T("60000.SS")), _T("")); // Ê≤°ÊâæÂà∞ËøîÂõûÁ©∫Â≠óÁ¨¶‰∏≤
 	}
 
 	TEST_F(CChinaMarketTest, TestGetStockCode) {
@@ -497,13 +490,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestMarketReady) {
-		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady()) << "÷–π˙π…∆± –≥°ƒ¨»œŒ™ºŸ, µ´≤‚ ‘œµÕ≥ƒ¨»œŒ™’Ê";
+		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady()) << "‰∏≠ÂõΩËÇ°Á•®Â∏ÇÂú∫ÈªòËÆ§‰∏∫ÂÅá, ‰ΩÜÊµãËØïÁ≥ªÁªüÈªòËÆ§‰∏∫Áúü";
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 		gl_pChinaMarket->SetSystemReady(false);
 		EXPECT_FALSE(gl_pChinaMarket->IsSystemReady());
 
-		gl_pChinaMarket->SetSystemReady(true); // ª÷∏¥‘≠Ã¨
+		gl_pChinaMarket->SetSystemReady(true); // ÊÅ¢Â§çÂéüÊÄÅ
 	}
 
 	TEST_F(CChinaMarketTest, TestGetCurrentSelectedPosition) {
@@ -566,7 +559,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestIsDayLineNeedProcess) {
-		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess()) << "ƒ¨»œ◊¥Ã¨œ¬Œﬁ–Ë¥¶¿Ì";
+		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess()) << "ÈªòËÆ§Áä∂ÊÄÅ‰∏ãÊó†ÈúÄÂ§ÑÁêÜ";
 		const auto pData = make_shared<CDayLineWebData>();
 		gl_pChinaMarket->PushDayLine(pData);
 
@@ -672,7 +665,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 		EXPECT_FALSE(gl_pChinaMarket->IsSystemReady());
 
-		// ª÷∏¥œµÕ≥‘≠Ã¨
+		// ÊÅ¢Â§çÁ≥ªÁªüÂéüÊÄÅ
 		gl_pChinaMarket->SetSystemReady(true);
 		gl_pChinaMarket->SetStockDayLineNeedUpdate(gl_pChinaMarket->GetTotalStock());
 	}
@@ -754,7 +747,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestCheckFastReceivingRTData) {
-		EXPECT_FALSE(gl_systemConfiguration.IsFastInquiringRTData()) << "DEBUGƒ£ Ω ±ƒ¨»œŒ™ºŸ";
+		EXPECT_FALSE(gl_systemConfiguration.IsFastInquiringRTData()) << "DEBUGÊ®°ÂºèÊó∂ÈªòËÆ§‰∏∫ÂÅá";
 		tm tm_;
 		tm_.tm_wday = 1;
 		gl_pChinaMarket->TEST_SetMarketTM(tm_);
@@ -793,7 +786,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pChinaMarket->TaskCheckFastReceivingData(150631));
 		EXPECT_FALSE(gl_pChinaMarket->IsFastReceivingRTData());
 
-		// ª÷∏¥‘≠◊¥
+		// ÊÅ¢Â§çÂéüÁä∂
 		gl_systemConfiguration.SetFastInquiringRTData(false);
 	}
 
@@ -818,10 +811,10 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestSetCheckActiveStockFlag1) {
-		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady()) << "µ•‘™≤‚ ‘ ±£¨œµÕ≥◊¥Ã¨”¿‘∂Œ™◊º±∏∫√¡À";
+		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady()) << "ÂçïÂÖÉÊµãËØïÊó∂ÔºåÁ≥ªÁªüÁä∂ÊÄÅÊ∞∏Ëøú‰∏∫ÂáÜÂ§áÂ•Ω‰∫Ü";
 		gl_pChinaMarket->SetSystemReady(false);
 		gl_pChinaMarket->TaskSetCheckActiveStockFlag(93500);
-		EXPECT_TRUE(gl_pChinaMarket->IsCheckingActiveStock()) << "µ±œµÕ≥…–Œ¥◊º±∏∫√ ±£¨ºÏ≤‚ªÓ‘æπ…∆±µƒ±Í ∂”¿‘∂Œ™’Ê";
+		EXPECT_TRUE(gl_pChinaMarket->IsCheckingActiveStock()) << "ÂΩìÁ≥ªÁªüÂ∞öÊú™ÂáÜÂ§áÂ•ΩÊó∂ÔºåÊ£ÄÊµãÊ¥ªË∑ÉËÇ°Á•®ÁöÑÊ†áËØÜÊ∞∏Ëøú‰∏∫Áúü";
 		gl_pChinaMarket->SetSystemReady(true);
 	}
 
@@ -847,7 +840,7 @@ namespace FireBirdTest {
 		gl_pChinaMarket->TaskSetCheckActiveStockFlag(150000);
 		EXPECT_FALSE(gl_pChinaMarket->IsCheckingActiveStock());
 
-		gl_pChinaMarket->SetCheckActiveStock(true); // ª÷∏¥‘≠Ã¨
+		gl_pChinaMarket->SetCheckActiveStock(true); // ÊÅ¢Â§çÂéüÊÄÅ
 	}
 
 	TEST_F(CChinaMarketTest, TestLoadStockCodeDB) {
@@ -855,7 +848,7 @@ namespace FireBirdTest {
 		EXPECT_THAT(pStock->IsIPOed(), IsTrue());
 		EXPECT_STREQ(pStock->GetSymbol(), _T("000001.SS"));
 		EXPECT_EQ(pStock->GetDayLineStartDate(), 19901220);
-		EXPECT_FALSE(pStock->IsActive()) << "◊∞‘ÿπ…∆±¥˙¬Î ±”¿‘∂…Ë÷√Œ™ºŸ";
+		EXPECT_FALSE(pStock->IsActive()) << "Ë£ÖËΩΩËÇ°Á•®‰ª£Á†ÅÊó∂Ê∞∏ËøúËÆæÁΩÆ‰∏∫ÂÅá";
 		pStock = gl_pChinaMarket->GetStock(_T("600002.SS"));
 		EXPECT_TRUE(pStock->IsDelisted());
 		EXPECT_EQ(pStock->GetDayLineStartDate(), 19980409);
@@ -1047,7 +1040,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestChangeCurrentStockToNextStock2) {
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
-		gl_pChinaMarket->SetCurrentSelectedStockSet(10); // 10°¢11°¢12π…∆±ºØ÷–”–π…∆±
+		gl_pChinaMarket->SetCurrentSelectedStockSet(10); // 10„ÄÅ11„ÄÅ12ËÇ°Á•®ÈõÜ‰∏≠ÊúâËÇ°Á•®
 		EXPECT_TRUE(gl_pChinaMarket->GetCurrentSelectedStock() != nullptr);
 		gl_pChinaMarket->SetCurrentStock(gl_pChinaMarket->GetCurrentSelectedStock());
 
@@ -1067,17 +1060,17 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock1) {
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
-		gl_pChinaMarket->SetCurrentStock(gl_pChinaMarket->GetStock(1)); // —°»°Aπ…÷∏ ˝
+		gl_pChinaMarket->SetCurrentStock(gl_pChinaMarket->GetStock(1)); // ÈÄâÂèñAËÇ°ÊåáÊï∞
 		gl_pChinaMarket->ChangeToPrevStock();
 		gl_pChinaMarket->ChangeToPrevStock();
-		EXPECT_EQ(gl_pChinaMarket->GetStockIndex(gl_pChinaMarket->GetCurrentStock()), gl_pChinaMarket->GetTotalStock() - 1) << _T("…œ÷§÷∏ ˝«∞µƒŒ™ø’£¨»ª∫ÛæÕ◊™µΩ◊Ó∫Û√Êµƒ÷–÷§√∫Ãø¡À");
+		EXPECT_EQ(gl_pChinaMarket->GetStockIndex(gl_pChinaMarket->GetCurrentStock()), gl_pChinaMarket->GetTotalStock() - 1) << _T("‰∏äËØÅÊåáÊï∞ÂâçÁöÑ‰∏∫Á©∫ÔºåÁÑ∂ÂêéÂ∞±ËΩ¨Âà∞ÊúÄÂêéÈù¢ÁöÑ‰∏≠ËØÅÁÖ§ÁÇ≠‰∫Ü");
 		gl_pChinaMarket->SetCurrentStockChanged(false);
 		gl_pChinaMarket->SetCurrentSelectedPosition(0);
 	}
 
 	TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock2) {
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
-		gl_pChinaMarket->SetCurrentSelectedStockSet(10); // 10°¢11°¢12π…∆±ºØ÷–”–π…∆±
+		gl_pChinaMarket->SetCurrentSelectedStockSet(10); // 10„ÄÅ11„ÄÅ12ËÇ°Á•®ÈõÜ‰∏≠ÊúâËÇ°Á•®
 		EXPECT_TRUE(gl_pChinaMarket->GetCurrentSelectedStock() != nullptr);
 		gl_pChinaMarket->SetCurrentStock(gl_pChinaMarket->GetCurrentSelectedStock());
 
@@ -1211,7 +1204,7 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(gl_pChinaMarket->GetRSStartDate(), 20100101);
 		EXPECT_EQ(gl_pChinaMarket->GetRSEndDate(), 20100202);
-		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), gl_pChinaMarket->GetMarketDate()) << _T("”¿‘∂ «µ±«∞»’∆⁄\n");
+		EXPECT_EQ(gl_pChinaMarket->GetLastLoginDate(), gl_pChinaMarket->GetMarketDate()) << _T("Ê∞∏ËøúÊòØÂΩìÂâçÊó•Êúü\n");
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS1(), 19980101);
 		EXPECT_FALSE(gl_pChinaMarket->IsChosen10RSStrong1StockSet());
 		EXPECT_EQ(gl_pChinaMarket->GetUpdatedDateFor10DaysRS2(), 19980202);
@@ -1245,7 +1238,7 @@ namespace FireBirdTest {
 		gl_pChinaMarket->SetStockDayLineNeedUpdate(0);
 		EXPECT_FALSE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate());
 
-		// ª÷∏¥‘≠◊¥
+		// ÊÅ¢Â§çÂéüÁä∂
 		gl_pChinaMarket->SetStockDayLineNeedUpdate(gl_pChinaMarket->GetTotalStock());
 	}
 
@@ -1390,13 +1383,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestUpdateStockProfileDB) {
-		ASSERT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse()) << "¥À≤‚ ‘ø™ º ±£¨±ÿ–Î±£÷§√ª”–…Ë÷√∏¸–¬¥˙¬Îø‚µƒ±Í ∂£¨∑Ò‘Úª·’Ê’˝∏¸–¬¡À≤‚ ‘¥˙¬Îø‚";
+		ASSERT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse()) << "Ê≠§ÊµãËØïÂºÄÂßãÊó∂ÔºåÂøÖÈ°ª‰øùËØÅÊ≤°ÊúâËÆæÁΩÆÊõ¥Êñ∞‰ª£Á†ÅÂ∫ìÁöÑÊ†áËØÜÔºåÂê¶Âàô‰ºöÁúüÊ≠£Êõ¥Êñ∞‰∫ÜÊµãËØï‰ª£Á†ÅÂ∫ì";
 
 		auto pStock = make_shared<CChinaStock>();
 		pStock->SetSymbol(_T("SS.SS.SS"));
 		pStock->SetTodayNewStock(true);
 		pStock->SetUpdateProfileDB(true);
-		EXPECT_FALSE(gl_pChinaMarket->IsStock(pStock->GetSymbol())); // »∑±£ «“ª∏ˆ–¬π…∆±¥˙¬Î
+		EXPECT_FALSE(gl_pChinaMarket->IsStock(pStock->GetSymbol())); // Á°Æ‰øùÊòØ‰∏Ä‰∏™Êñ∞ËÇ°Á•®‰ª£Á†Å
 		gl_pChinaMarket->AddStock(pStock);
 		pStock = gl_pChinaMarket->GetStock(_T("000001.SS"));
 		EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_IPOED_);
@@ -1427,10 +1420,10 @@ namespace FireBirdTest {
 		setChinaStock.Close();
 
 		pStock = gl_pChinaMarket->GetStock(_T("000001.SS"));
-		pStock->SetIPOStatus(_STOCK_IPOED_); // ª÷∏¥‘≠◊¥
+		pStock->SetIPOStatus(_STOCK_IPOED_); // ÊÅ¢Â§çÂéüÁä∂
 		pStock = gl_pChinaMarket->GetStock(_T("SS.SS.SS"));
 		EXPECT_TRUE(pStock != nullptr);
-		gl_pChinaMarket->DeleteStock(pStock); // ª÷∏¥‘≠◊¥
+		gl_pChinaMarket->DeleteStock(pStock); // ÊÅ¢Â§çÂéüÁä∂
 
 		EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
 
@@ -1532,32 +1525,32 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedSaving());
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated());
 
-		EXPECT_FALSE(gl_pChinaMarket->TaskCheckDayLineDB()) << "IsSaveDayLineŒ™ºŸ";
+		EXPECT_FALSE(gl_pChinaMarket->TaskCheckDayLineDB()) << "IsSaveDayLine‰∏∫ÂÅá";
 
 		gl_pChinaMarket->SetSaveDayLine(true);
 		pStock = gl_pChinaMarket->GetStock(0);
 		pStock->SetDayLineNeedSaving(true);
 		pStock->SetDayLineDBUpdated(true);
-		EXPECT_FALSE(gl_pChinaMarket->TaskCheckDayLineDB()) << "IsDayLineNeedUpdateµ»Ω‘Œ™’Ê";
+		EXPECT_FALSE(gl_pChinaMarket->TaskCheckDayLineDB()) << "IsDayLineNeedUpdateÁ≠âÁöÜ‰∏∫Áúü";
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineDBUpdated());
 
-		EXPECT_FALSE(gl_pChinaMarket->TaskCheckDayLineDB()) << "IsDayLineNeedUpdate∫ÕIsDayLineNeedSavingŒ™’Ê";
+		EXPECT_FALSE(gl_pChinaMarket->TaskCheckDayLineDB()) << "IsDayLineNeedUpdateÂíåIsDayLineNeedSaving‰∏∫Áúü";
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineDBUpdated());
 
 		pStock->SetDayLineNeedSaving(false);
-		EXPECT_FALSE(gl_pChinaMarket->TaskCheckDayLineDB()) << "IsDayLineNeedUpdateŒ™’Ê";
+		EXPECT_FALSE(gl_pChinaMarket->TaskCheckDayLineDB()) << "IsDayLineNeedUpdate‰∏∫Áúü";
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineDBUpdated());
 
 		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 			auto pstock = gl_pChinaMarket->GetStock(i);
 			pstock->SetDayLineNeedUpdate(false);
 		}
-		EXPECT_TRUE(gl_pChinaMarket->TaskCheckDayLineDB()) << "Ãıº˛¬˙◊„¡À";
-		EXPECT_FALSE(gl_pChinaMarket->IsSaveDayLine()) << "¥À±Í ∂±ª÷ÿ÷√";
+		EXPECT_TRUE(gl_pChinaMarket->TaskCheckDayLineDB()) << "Êù°‰ª∂Êª°Ë∂≥‰∫Ü";
+		EXPECT_FALSE(gl_pChinaMarket->IsSaveDayLine()) << "Ê≠§Ê†áËØÜË¢´ÈáçÁΩÆ";
 		EXPECT_FALSE(pStock->IsDayLineDBUpdated());
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("÷–π˙ –≥°»’œﬂ¿˙ ∑ ˝æ›∏¸–¬ÕÍ±œ"));
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("‰∏≠ÂõΩÂ∏ÇÂú∫Êó•Á∫øÂéÜÂè≤Êï∞ÊçÆÊõ¥Êñ∞ÂÆåÊØï"));
 
 		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 			auto pstock = gl_pChinaMarket->GetStock(i);
@@ -1600,7 +1593,7 @@ namespace FireBirdTest {
 
 		gl_pChinaMarket->UpdateChosenStockDB();
 
-		// ª÷∏¥‘≠◊¥
+		// ÊÅ¢Â§çÂéüÁä∂
 		pStock = gl_pChinaMarket->GetStock(_T("600000.SS"));
 		gl_pChinaMarket->DeleteChosenStock(pStock);
 		pStock = gl_pChinaMarket->GetStock(_T("000002.SZ"));
@@ -1627,7 +1620,7 @@ namespace FireBirdTest {
 		pStock->SetUnknownVolume(0);
 		pStock->SetTransactionNumber(0);
 
-		gl_pChinaMarket->LoadTodayTempDB(20210715); // ≤‚ ‘ø‚today±Ì÷–µƒ»’∆⁄Œ™20210715°£
+		gl_pChinaMarket->LoadTodayTempDB(20210715); // ÊµãËØïÂ∫ìtodayË°®‰∏≠ÁöÑÊó•Êúü‰∏∫20210715„ÄÇ
 
 		EXPECT_EQ(pStock->GetUnknownVolume(), 10517770);
 		EXPECT_EQ(pStock->GetTransactionNumber(), 2183);

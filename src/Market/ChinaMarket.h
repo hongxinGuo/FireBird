@@ -62,14 +62,9 @@ public:
 	bool IsMarketTaskEmpty() const { return m_marketTask.IsEmpty(); }
 	void StoreMarketTask(CMarketTaskPtr pTask) { m_marketTask.StoreTask(pTask); }
 
-	CMarketTaskPtr GetMarketTask() {
-		m_pCurrentMarketTask = m_marketTask.GetTask();
-		return m_pCurrentMarketTask;
-	}
+	CMarketTaskPtr GetMarketTask() const { return m_marketTask.GetTask(); }
+	void DiscardCurrentMarketTask() { m_marketTask.DiscardTask(); }
 
-	CMarketTaskPtr GetCurrentMarketTask() const { return m_pCurrentMarketTask; }
-	void SetCurrentMarketTask(CMarketTaskPtr pTask) { m_pCurrentMarketTask = pTask; }
-	void ClearCurrentMarketTask() { m_pCurrentMarketTask = nullptr; }
 	vector<CMarketTaskPtr> GetMarketTaskVector() { return m_marketTask.GetVector(); }
 
 	// 各种任务
@@ -428,7 +423,6 @@ protected:
 	// 变量区
 protected:
 	CMarketTaskQueue m_marketTask;
-	CMarketTaskPtr m_pCurrentMarketTask;
 
 	CContainerChinaStock m_containerChinaStock;
 	CContainerStockSymbol m_containerStockSymbol;

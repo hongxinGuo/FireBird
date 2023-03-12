@@ -142,15 +142,14 @@ void COutputWnd::UpdateFonts() {
 /////////////////////////////////////////////////////////////////////////////////////////
 void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	CString str2;
-	size_t lTotal;
 	long lCurrentPos;
 	bool fUpdate = false;
-	CString strTime = gl_pChinaMarket->GetStringOfLocalDateTime(); // 消息的前缀，使用当地时间
+	const CString strTime = gl_pChinaMarket->GetStringOfLocalDateTime(); // 消息的前缀，使用当地时间
 
 	// 如果显示列表超过10000个，则删除前面的1000个。
 	if (m_wndOutputInformation.GetCount() > 10000) m_wndOutputInformation.TruncateList(1000);
 	// 将输出信息拷贝到消息队列中。
-	if ((lTotal = gl_systemMessage.InformationSize()) > 0) {
+	if ((gl_systemMessage.InformationSize()) > 0) {
 		lCurrentPos = m_wndOutputInformation.GetCurSel();
 		if (m_wndOutputInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
 		gl_systemMessage.DisplayInformation(&m_wndOutputInformation, strTime);
@@ -161,7 +160,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 
 	if (m_wndOutputDayLineInfo.GetCount() > 10000) m_wndOutputDayLineInfo.TruncateList(1000);
 	fUpdate = false;
-	if ((lTotal = gl_systemMessage.DayLineInfoSize()) > 0) {
+	if ((gl_systemMessage.DayLineInfoSize()) > 0) {
 		lCurrentPos = m_wndOutputDayLineInfo.GetCurSel();
 		if (m_wndOutputDayLineInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
 		gl_systemMessage.DisplayDayLineInfo(&m_wndOutputDayLineInfo, strTime);
@@ -172,7 +171,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 
 	if (m_wndOutputTransaction.GetCount() > 10000) m_wndOutputTransaction.TruncateList(1000);
 	fUpdate = false;
-	if ((lTotal = gl_systemMessage.TransactionInfoSize()) > 0) {
+	if ((gl_systemMessage.TransactionInfoSize()) > 0) {
 		lCurrentPos = m_wndOutputTransaction.GetCurSel();
 		if (m_wndOutputTransaction.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
 		gl_systemMessage.DisplayTransaction(&m_wndOutputTransaction, strTime);
@@ -183,7 +182,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 
 	if (m_wndOutputCancelSell.GetCount() > 10000) m_wndOutputCancelSell.TruncateList(1000);
 	fUpdate = false;
-	if ((lTotal = gl_systemMessage.CancelSellInfoSize()) > 0) {
+	if ((gl_systemMessage.CancelSellInfoSize()) > 0) {
 		lCurrentPos = m_wndOutputCancelSell.GetCurSel();
 		if (m_wndOutputCancelSell.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
 		gl_systemMessage.DisplayCancelSell(&m_wndOutputCancelSell, strTime);
@@ -194,7 +193,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 
 	if (m_wndOutputCancelBuy.GetCount() > 10000) m_wndOutputCancelBuy.TruncateList(1000);
 	fUpdate = false;
-	if ((lTotal = gl_systemMessage.CancelBuyInfoSize()) > 0) {
+	if ((gl_systemMessage.CancelBuyInfoSize()) > 0) {
 		lCurrentPos = m_wndOutputCancelBuy.GetCurSel();
 		if (m_wndOutputCancelBuy.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
 		gl_systemMessage.DisplayCancelBuy(&m_wndOutputCancelBuy, strTime);
@@ -205,7 +204,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 
 	if (m_wndOutputTrace2.GetCount() > 10000) m_wndOutputTrace2.TruncateList(1000);
 	fUpdate = false;
-	if ((lTotal = gl_systemMessage.Trace2Size()) > 0) {
+	if ((gl_systemMessage.Trace2Size()) > 0) {
 		lCurrentPos = m_wndOutputTrace2.GetCurSel();
 		if (m_wndOutputTrace2.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
 		gl_systemMessage.DisplayTrace2(&m_wndOutputTrace2, strTime);
@@ -216,7 +215,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 
 	if (m_wndOutputWebSocketInfo.GetCount() > 10000) m_wndOutputWebSocketInfo.TruncateList(1000);
 	fUpdate = false;
-	if ((lTotal = gl_systemMessage.WebSocketInfoSize()) > 0) {
+	if ((gl_systemMessage.WebSocketInfoSize()) > 0) {
 		lCurrentPos = m_wndOutputWebSocketInfo.GetCurSel();
 		if (m_wndOutputWebSocketInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
 		gl_systemMessage.DisplayWebSocketInfo(&m_wndOutputWebSocketInfo, strTime);
@@ -227,7 +226,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 
 	if (m_wndOutputInnerSystemInformation.GetCount() > 10000) m_wndOutputInnerSystemInformation.TruncateList(1000);
 	fUpdate = false;
-	if ((lTotal = gl_systemMessage.InnerSystemInfoSize()) > 0) {
+	if ((gl_systemMessage.InnerSystemInfoSize()) > 0) {
 		lCurrentPos = m_wndOutputInnerSystemInformation.GetCurSel();
 		if (m_wndOutputInnerSystemInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
 		gl_systemMessage.DisplayInnerSystemInformation(&m_wndOutputInnerSystemInformation, strTime);
@@ -238,7 +237,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 
 	if (m_wndErrorMessage.GetCount() > 10000) m_wndErrorMessage.TruncateList(1000);
 	fUpdate = false;
-	if ((lTotal = gl_systemMessage.ErrorMessageSize()) > 0) {
+	if ((gl_systemMessage.ErrorMessageSize()) > 0) {
 		lCurrentPos = m_wndErrorMessage.GetCurSel();
 		if (m_wndErrorMessage.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
 		gl_systemMessage.DisplayErrorMessage(&m_wndErrorMessage, strTime);
@@ -247,7 +246,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		}
 	}
 
-	m_wndChinaMarketTaskQueue.TruncateList(100);
+	if (m_wndChinaMarketTaskQueue.GetCount() > 0) m_wndChinaMarketTaskQueue.TruncateList(m_wndChinaMarketTaskQueue.GetCount());
 	char buffer[50];
 	const vector<CMarketTaskPtr> vTask = gl_pChinaMarket->GetMarketTaskVector();
 	for (auto& pTask : vTask) {
