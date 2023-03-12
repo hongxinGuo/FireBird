@@ -47,7 +47,7 @@ public:
 
 public:
 	// 定时更新，完成具体调度任务。由主线程CMainFrame的OnTimer函数调用。其后跟随各被调度函数
-	bool SchedulingTask(void) final; // 由程序的定时器调度，大约每100毫秒一次
+	bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
 
 	bool SchedulingTaskPerSecond(long lSecondNumber, long lCurrentTime); // 每秒调度一次
 	bool SchedulingTaskPer10Seconds(long lCurrentTime); // 每十秒调度一次
@@ -70,6 +70,7 @@ public:
 	CMarketTaskPtr GetCurrentMarketTask() const { return m_pCurrentMarketTask; }
 	void SetCurrentMarketTask(CMarketTaskPtr pTask) { m_pCurrentMarketTask = pTask; }
 	void ClearCurrentMarketTask() { m_pCurrentMarketTask = nullptr; }
+	vector<CMarketTaskPtr> GetMarketTaskVector() { return m_marketTask.GetVector(); }
 
 	// 各种任务
 	virtual bool TaskCreateTask(long lCurrentTime);
@@ -102,9 +103,6 @@ public:
 
 	// 是否所有股票的历史日线数据都查询过一遍了
 	bool TaskProcessDayLineGetFromNeteaseServer(void);
-
-	// 装载当前股票日线任务
-	bool TaskLoadCurrentStockHistoryData(void);
 
 	// 各工作线程调用包裹函数
 	virtual void CreateThreadProcessRTData();
@@ -235,6 +233,9 @@ public:
 	virtual bool BuildWeekLineOfCurrentWeek(void);
 	bool CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CVirtualHistoryCandleExtendPtr>*> pvData);
 	virtual bool BuildCurrentWeekWeekLineTable(void); // 使用周线表构建当前周周线表
+
+	// 装载当前股票日线
+	bool TaskLoadCurrentStockHistoryData(void);
 
 	// 股票历史数据处理
 	virtual bool Choice10RSStrong2StockSet(void) { return m_containerChinaStock.Choice10RSStrong2StockSet(); }

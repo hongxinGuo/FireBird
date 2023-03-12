@@ -17,7 +17,7 @@ FireBird从网络股票行情服务器中提取实时行情和历史数据，将处理后的信息存储于数据库
 
 3.分析提取的实时数据其具体交易情况。
 
-4.从网易历史数据服务器中提取日线历史数据。
+4.从网易历史数据服务器和腾讯历史数据服务器中提取日线历史数据。
 
 #### 使用方法
 
@@ -36,8 +36,6 @@ FireBird从网络股票行情服务器中提取实时行情和历史数据，将处理后的信息存储于数据库
 5.Nlohmann json(https://github.com/nlohmann/json)。
 
 6.Google benchmark(https://github.com/google/benchmark)。
-
-7.curl(https://github.com/curl/curl)。
 
 8.zlib(https://github.com/madler/zlib)。
 

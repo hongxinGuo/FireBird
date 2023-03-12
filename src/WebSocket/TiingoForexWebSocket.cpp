@@ -53,7 +53,9 @@ UINT ThreadConnectTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWebSoc
 	return 73;
 }
 
-CTiingoForexWebSocket::CTiingoForexWebSocket() : CVirtualWebSocket() { m_url = _T("wss://api.tiingo.com/fx"); }
+CTiingoForexWebSocket::CTiingoForexWebSocket() : CVirtualWebSocket() {
+	m_url = _T("wss://api.tiingo.com/fx");
+}
 
 CTiingoForexWebSocket::~CTiingoForexWebSocket(void) {}
 

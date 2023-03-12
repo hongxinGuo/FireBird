@@ -32,19 +32,6 @@ CVirtualMarket::CVirtualMarket(void) {
 	m_iCount10Second = 9;
 }
 
-bool CVirtualMarket::SchedulingTask(void) {
-	CalculateTime();
-
-	const time_t tDiffer = gl_tUTC - m_tLastTime;
-	//根据时间，调度各项定时任务.每秒调度一次
-	if (tDiffer > 0) {
-		SchedulingTaskPerSecond(tDiffer);
-		m_tLastTime = gl_tUTC;
-		return true;
-	}
-	return false;
-}
-
 /// <summary>
 /// 申请并处理Data source的数据，由最终衍生类的SchedulingTask调度。
 /// 此函数在VirtualMarket中定义，但由最终衍生类来调用，应为lCurrentTime必须为该衍生类的当前市场时间。
@@ -143,40 +130,6 @@ bool CVirtualMarket::IsWorkingDay(long lDate) const noexcept {
 	return true;
 }
 
-/*
-bool CVirtualMarket::IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) const noexcept {
-	const CTimeSpan ts(lTimeSpawnOfDays, 0, 0, 0);
-	const long year = lEarlyDate / 10000;
-	const long month = lEarlyDate / 100 - year * 100;
-	const long day = lEarlyDate - year * 10000 - month * 100;
-	CTime ctEarly(year, month, day, 12, 0, 0);
-	ctEarly += ts;
-	const long lNewDate = ctEarly.GetYear() * 10000 + ctEarly.GetMonth() * 100 + ctEarly.GetDay();
-	return (lNewDate < lLatelyDate);
-}
-
-long CVirtualMarket::GetNextDay(long lDate, long lTimeSpanDays) const noexcept {
-	const CTimeSpan ts(lTimeSpanDays, 0, 0, 0);
-	const long year = lDate / 10000;
-	const long month = lDate / 100 - year * 100;
-	const long day = lDate - year * 10000 - month * 100;
-	CTime ctDay(year, month, day, 12, 0, 0);
-	ctDay += ts;
-	const long lNewDate = ctDay.GetYear() * 10000 + ctDay.GetMonth() * 100 + ctDay.GetDay();
-	return (lNewDate);
-}
-
-long CVirtualMarket::GetPrevDay(long lDate, long lTimeSpanDays) const noexcept {
-	const CTimeSpan ts(lTimeSpanDays, 0, 0, 0);
-	const long year = lDate / 10000;
-	const long month = lDate / 100 - year * 100;
-	const long day = lDate - year * 10000 - month * 100;
-	CTime ctDay(year, month, day, 12, 0, 0);
-	ctDay -= ts;
-	const long lNewDate = ctDay.GetYear() * 10000 + ctDay.GetMonth() * 100 + ctDay.GetDay();
-	return (lNewDate);
-}
-*/
 CString CVirtualMarket::GetStringOfLocalTime(void) const {
 	char buffer[30];
 	tm tmLocal;
@@ -226,24 +179,4 @@ void CVirtualMarket::TaskResetMarketFlagAtMidnight(long lCurrentTime) {
 		TRACE(_T("%S \n"), str.GetBuffer());
 		gl_systemMessage.PushInformationMessage(str);
 	}
-}
-
-bool CVirtualMarket::SchedulingTaskPerSecond(long lSeconds) {
-	const long lCurrentTime = GetMarketTime();
-
-	// 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
-	SchedulingTaskPerMinute(lSeconds, lCurrentTime);
-
-	return true;
-}
-
-bool CVirtualMarket::SchedulingTaskPerMinute(long lSeconds, long lCurrentTime) {
-	// 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
-	m_i1MinuteCounter -= lSeconds;
-	if (m_i1MinuteCounter < 0) {
-		m_i1MinuteCounter = 59; // 重置计数器
-		TaskResetMarketFlagAtMidnight(lCurrentTime);
-		return true;
-	}
-	return false;
 }

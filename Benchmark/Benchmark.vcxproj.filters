@@ -39,5 +39,8 @@
     <ClCompile Include="TimeConvertBenchmark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ChinaMarketBenchmark.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

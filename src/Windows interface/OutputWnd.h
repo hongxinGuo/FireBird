@@ -44,6 +44,7 @@ protected:
 	COutputList m_wndOutputWebSocketInfo;
 	COutputList m_wndOutputInnerSystemInformation;
 	COutputList m_wndErrorMessage;
+	COutputList m_wndChinaMarketTaskQueue;
 
 	UINT m_uIdTimer;
 

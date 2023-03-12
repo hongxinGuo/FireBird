@@ -373,18 +373,5 @@ namespace FireBirdTest {
 		gl_systemMessage.PopInformationMessage();
 	}
 
-	TEST_F(CVirtualMarketTest, TestSchedulingTask) {
-		EXPECT_TRUE(gl_pVirtualMarket->SchedulingTask()) << "第一次调用时，内部时间初值为0，故而返回真";
-		EXPECT_FALSE(gl_pVirtualMarket->SchedulingTask()) << "第二次调用时，内部时间已经设置为当前时间了，间隔不超过一秒，故而返回假";
-	}
-
-	TEST_F(CVirtualMarketTest, TestSchedulingTaskPerSecond) { EXPECT_TRUE(gl_pVirtualMarket->SchedulingTaskPerSecond(90000)); }
-
-	TEST_F(CVirtualMarketTest, TestSchedulingTaskPerMinute) {
-		EXPECT_TRUE(gl_pVirtualMarket->SchedulingTaskPerMinute(60, 10000));
-		EXPECT_FALSE(gl_pVirtualMarket->SchedulingTaskPerMinute(59, 12000));
-		EXPECT_TRUE(gl_pVirtualMarket->SchedulingTaskPerMinute(1, 12010));
-	}
-
 	TEST_F(CVirtualMarketTest, TestUpdateMarketInfo) { EXPECT_TRUE(gl_pVirtualMarket->UpdateMarketInfo()); }
 }

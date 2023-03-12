@@ -55,7 +55,7 @@ public:
 		return false;
 	}
 
-	bool SchedulingTask(void) final;
+	bool SchedulingTask(void) override;
 
 	bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
 	bool SchedulingTaskPer10Seconds(long lCurrentTime);

@@ -132,7 +132,7 @@ bool CWorldMarket::PreparingExitMarket(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::SchedulingTask(void) {
-	CVirtualMarket::SchedulingTask();
+	CalculateTime();
 
 	const long lCurrentTime = GetMarketTime();
 	const time_t tUTC = GetUTCTime();
@@ -174,8 +174,7 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 		SchedulingTaskPer10Seconds(lCurrentTime);
 	}
 
-	if (!IsTimeToResetSystem(lCurrentTime)) {
-		// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新。
+	if (!IsTimeToResetSystem(lCurrentTime)) {	// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新。
 		TaskProcessWebSocketData();
 		TaskUpdateWorldStockFromWebSocket();
 	}
@@ -192,12 +191,15 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	// 建立WebSocket连接
 	StartAllWebSocket();
 
+	TaskResetMarketFlagAtMidnight(lCurrentTime);
+
 	TaskResetMarket(lCurrentTime);
 
 	// 这个必须是最后一个任务。因其在执行完毕后返回了。
-	if (!IsTimeToResetSystem(lCurrentTime)) {
-		// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
-		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) { TaskUpdateCountryListDB(); }
+	if (!IsTimeToResetSystem(lCurrentTime)) {	// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
+		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
+			TaskUpdateCountryListDB();
+		}
 		if (IsUpdateForexExchangeDB()) TaskUpdateForexExchangeDB();
 		if (IsUpdateForexSymbolDB()) TaskUpdateForexSymbolDB();
 		if (IsUpdateCryptoExchangeDB()) TaskUpdateCryptoExchangeDB();
@@ -238,10 +240,8 @@ bool CWorldMarket::SchedulingTaskPerHour(long lCurrentTime) { return true; }
 /// <returns></returns>
 bool CWorldMarket::TaskResetMarket(long lCurrentTime) {
 	// 市场时间十七时重启系统
-	if (HaveResetMarketPermission()) {
-		// 如果允许重置系统
-		if ((lCurrentTime > 170000) && (lCurrentTime <= 170100)) {
-			// 本市场时间的下午五时(北京时间上午五时重启本市场。这样有利于接收日线数据。
+	if (HaveResetMarketPermission()) {// 如果允许重置系统
+		if ((lCurrentTime > 170000) && (lCurrentTime <= 170100)) {// 本市场时间的下午五时(北京时间上午五时重启本市场。这样有利于接收日线数据。
 			SetResetMarket(true); // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
 			SetResetMarketPermission(false); // 今天不再允许重启系统。
 			SetSystemReady(false);
@@ -299,8 +299,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 		pSymbol = m_dataFinnhubForexSymbol.GetSymbol(i);
-		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {
-			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
 					thread thread1(ThreadUpdateForexDayLineDB, pSymbol.get());
@@ -310,8 +309,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 				}
 				else pSymbol->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
 			}
-			else {
-				// 此种情况为有股票代码，但此代码尚未上市
+			else { // 此种情况为有股票代码，但此代码尚未上市
 				pSymbol->SetIPOStatus(_STOCK_NOT_YET_LIST_);
 				CString str1 = pSymbol->GetSymbol();
 				str1 += _T(" 为未上市股票代码");
@@ -344,8 +342,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 		pSymbol = m_dataFinnhubCryptoSymbol.GetSymbol(i);
-		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {
-			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
 					thread thread1(ThreadUpdateCryptoDayLineDB, pSymbol.get());
@@ -355,15 +352,12 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
 				}
 				else pSymbol->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
 			}
-			else {
-				// 此种情况为有股票代码，但此代码尚未上市；或者是已退市股票
-				if (pSymbol->GetDayLineEndDate() > 19800101) {
-					// 已退市
+			else {// 此种情况为有股票代码，但此代码尚未上市；或者是已退市股票
+				if (pSymbol->GetDayLineEndDate() > 19800101) {// 已退市
 					pSymbol->SetIPOStatus(_STOCK_DELISTED_);
 					pSymbol->SetUpdateProfileDB(true);
 				}
-				else {
-					// 此种情况为有股票代码，但此代码尚未上市
+				else {// 此种情况为有股票代码，但此代码尚未上市
 					pSymbol->SetIPOStatus(_STOCK_NOT_YET_LIST_);
 					CString str1 = pSymbol->GetSymbol();
 					str1 += _T(" 为未上市股票代码");
@@ -382,8 +376,7 @@ bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
 	CWorldStockPtr pStock = nullptr;
 	for (long l = 0; l < m_containerStock.Size(); ++l) {
 		pStock = m_containerStock.GetStock(l);
-		if (pStock->IsEPSSurpriseNeedSaveAndClearFlag()) {
-			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pStock->IsEPSSurpriseNeedSaveAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			thread thread1(ThreadUpdateEPSSurpriseDB, pStock.get());
 			thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 			TRACE("更新%s EPS surprise数据\n", pStock->GetSymbol().GetBuffer());
@@ -504,12 +497,24 @@ bool CWorldMarket::TaskUpdateEconomicCalendarDB(void) {
 bool CWorldMarket::UpdateToken(void) {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 
-	if (gl_systemConfiguration.GetFinnhubToken().GetLength() > 5) { gl_pFinnhubDataSource->SetInquiryToken(gl_systemConfiguration.GetFinnhubToken()); }
-	else { gl_systemMessage.PushInformationMessage(_T("Finnhub Token Needed")); }
-	if (gl_systemConfiguration.GetTiingoToken().GetLength() > 5) { gl_pTiingoDataSource->SetInquiryToken(gl_systemConfiguration.GetTiingoToken()); }
-	else { gl_systemMessage.PushInformationMessage(_T("Tiingo Token Needed")); }
-	if (gl_systemConfiguration.GetQuandlToken().GetLength() > 5) { gl_pQuandlDataSource->SetInquiryToken(gl_systemConfiguration.GetQuandlToken()); }
-	else { gl_systemMessage.PushInformationMessage(_T("Quandl Token Needed")); }
+	if (gl_systemConfiguration.GetFinnhubToken().GetLength() > 5) {
+		gl_pFinnhubDataSource->SetInquiryToken(gl_systemConfiguration.GetFinnhubToken());
+	}
+	else {
+		gl_systemMessage.PushInformationMessage(_T("Finnhub Token Needed"));
+	}
+	if (gl_systemConfiguration.GetTiingoToken().GetLength() > 5) {
+		gl_pTiingoDataSource->SetInquiryToken(gl_systemConfiguration.GetTiingoToken());
+	}
+	else {
+		gl_systemMessage.PushInformationMessage(_T("Tiingo Token Needed"));
+	}
+	if (gl_systemConfiguration.GetQuandlToken().GetLength() > 5) {
+		gl_pQuandlDataSource->SetInquiryToken(gl_systemConfiguration.GetQuandlToken());
+	}
+	else {
+		gl_systemMessage.PushInformationMessage(_T("Quandl Token Needed"));
+	}
 
 	return true;
 }
@@ -528,8 +533,7 @@ bool CWorldMarket::UpdateStockDayLineDB(void) {
 bool CWorldMarket::UpdateCompanyNewsDB(void) {
 	for (long l = 0; l < m_containerStock.Size(); l++) {
 		const auto pStock = m_containerStock.GetStock(l);
-		if (pStock->IsUpdateCompanyNewsDBAndClearFlag()) {
-			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pStock->IsUpdateCompanyNewsDBAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			pStock->UpdateCompanyNewsDB();
 		}
 		if (gl_systemStatus.IsExitingSystem()) {
@@ -566,7 +570,6 @@ bool CWorldMarket::UpdateInsiderSentimentDB(void) {
 				pStock->SaveInsiderSentiment();
 				const CString str = pStock->GetSymbol() + _T("内部交易情绪资料更新完成");
 				gl_systemMessage.PushDayLineInfoMessage(str);
-				//TRACE("更新%s内部交易数据\n", pStock->GetSymbol().GetBuffer());
 			}
 		}
 		if (gl_systemStatus.IsExitingSystem()) {

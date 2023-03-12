@@ -986,6 +986,29 @@ namespace FireBirdTest {
 		}
 	}
 
+	TEST_F(CChinaMarketTest, TestIsDummyTime) {
+		if (gl_pChinaMarket->IsWorkingDay()) {
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(91159));
+			EXPECT_FALSE(gl_pChinaMarket->IsDummyTime(91200));
+			EXPECT_FALSE(gl_pChinaMarket->IsDummyTime(114500));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(114501));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(124459));
+			EXPECT_FALSE(gl_pChinaMarket->IsDummyTime(124500));
+			EXPECT_FALSE(gl_pChinaMarket->IsDummyTime(150630));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(150631));
+		}
+		else {
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(91159));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(91200));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(114500));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(114501));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(124459));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(124500));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(150630));
+			EXPECT_TRUE(gl_pChinaMarket->IsDummyTime(150631));
+		}
+	}
+
 	TEST_F(CChinaMarketTest, TestCheckMarketReady) {
 		gl_pChinaMarket->SetResetMarket(false);
 		gl_pChinaMarket->SetSystemReady(true);
