@@ -3,6 +3,8 @@
 #include "globedef.h"
 #include"VirtualDataSource.h"
 
+#include"MarketTaskQueue.h"
+
 class CVirtualMarket {
 public:
 	CVirtualMarket(void);
@@ -21,6 +23,13 @@ public:
 
 	virtual void ResetMarket(void);
 	virtual bool UpdateMarketInfo(void); // 更新本市场信息。
+
+	// MarketTask
+	bool IsMarketTaskEmpty() const { return m_marketTask.IsEmpty(); }
+	void StoreMarketTask(CMarketTaskPtr pTask) { m_marketTask.StoreTask(pTask); }
+	CMarketTaskPtr GetMarketTask() const { return m_marketTask.GetTask(); }
+	void DiscardCurrentMarketTask() { m_marketTask.DiscardTask(); }
+	vector<CMarketTaskPtr> GetMarketTaskVector() { return m_marketTask.GetVector(); }
 
 	// 时间函数
 	tm TransferToMarketTime(time_t tUTC = gl_tUTC) const; // 得到本市场的时间（从UTC时间）
@@ -87,6 +96,8 @@ public:
 	void TEST_SetFormattedMarketDate(long lDate) noexcept { m_lMarketDate = lDate; }
 
 protected:
+	CMarketTaskQueue m_marketTask;
+
 	// Finnhub.io提供的信息
 	CString m_strCode;
 	CString m_strName;

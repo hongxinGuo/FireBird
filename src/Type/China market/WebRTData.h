@@ -111,8 +111,6 @@ enum {
 	NETEASE_RT_WEB_DATA_ = 3,
 };
 
-#include"SetRealTimeData.h"
-
 using std::array;
 using std::shared_ptr;
 
@@ -133,11 +131,6 @@ public:
 	~CWebRTData(void) = default;
 
 	void Reset(void);
-
-	// 数据库存储和读取
-	void SaveData(CSetRealTimeData& setRTData);
-	void AppendData(CSetRealTimeData& setRTData);
-	void LoadData(CSetRealTimeData& setRTData);
 
 public:
 	// 读取新浪实时数据函数

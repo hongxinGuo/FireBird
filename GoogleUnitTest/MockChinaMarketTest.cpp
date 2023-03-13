@@ -180,7 +180,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pMockChinaMarket->IsMarketTaskEmpty());
 		const auto pTask = gl_pMockChinaMarket->GetMarketTask();
 		gl_pMockChinaMarket->DiscardCurrentMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 120500);
+		EXPECT_EQ(pTask->GetTime(), 130000) << "中午休市时不存储临时实时数据，到13时开市时才存储";
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
 		gl_systemMessage.PopDayLineInfoMessage();
@@ -378,13 +378,6 @@ namespace FireBirdTest {
 		.Times(1);
 		gl_pMockChinaMarket->SetSystemReady(true);
 		EXPECT_EQ(ThreadSaveTempRTData(gl_pMockChinaMarket.get()), static_cast<UINT>(13));
-	}
-
-	TEST_F(CMockChinaMarketTest, TestThreadSaveRTData) {
-		EXPECT_CALL(*gl_pMockChinaMarket, SaveRTData)
-		.Times(1);
-		gl_pMockChinaMarket->SetSystemReady(true);
-		EXPECT_EQ(ThreadSaveRTData(gl_pMockChinaMarket.get()), static_cast<UINT>(19));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadMaintainDayLineDatabase) {

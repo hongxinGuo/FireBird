@@ -605,10 +605,10 @@ bool CChinaMarket::SchedulingTaskPerHour(long lCurrentTime) {
 }
 
 bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
-	if (m_marketTask.IsEmpty()) return false;
-	const auto pTask = m_marketTask.GetTask();
+	if (IsMarketTaskEmpty()) return false;
+	const auto pTask = GetMarketTask();
 	if (lCurrentTime >= pTask->GetTime()) {
-		m_marketTask.DiscardTask();
+		DiscardCurrentMarketTask();
 		switch (pTask->GetType()) {
 		case CHINA_MARKET_CREATE_TASK__: // 生成其他任务
 			TaskCreateTask(lCurrentTime);
@@ -705,8 +705,10 @@ void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
 		CreateThreadUpdateTempRTData();
 		if (lCurrentTime < 150600) { // 中国市场股票交易截止时间为150000，多加六分钟。
 			const auto pTask = make_shared<CMarketTask>();
+			long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
+			if (lNextTime >= 113500) lNextTime = 130000;
 			pTask->SetType(CHINA_MARKET_SAVE_TEMP_RT_DATA__);
-			pTask->SetTime(GetNextTime(lCurrentTime, 0, 5, 0));
+			pTask->SetTime(lNextTime);
 			StoreMarketTask(pTask);
 		}
 	}
@@ -736,10 +738,6 @@ bool CChinaMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 
 	// 在开市前和中午暂停时查询所有股票池，找到当天活跃股票。
 	TaskSetCheckActiveStockFlag(lCurrentTime);
-
-	TaskSaveChosenRTData();
-
-	TaskClearChosenRTDataSet(lCurrentTime);
 
 	TaskUpdateChosenStockDB();
 
@@ -932,41 +930,6 @@ bool CChinaMarket::TaskShowCurrentTransaction(void) {
 		}
 	}
 
-	return true;
-}
-
-bool CChinaMarket::TaskSaveChosenRTData(void) {
-	if (IsSystemReady() && m_fSaveRTData) {
-		thread thread1(ThreadSaveRTData, this);
-		thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-		return true;
-	}
-	return false;
-}
-
-/////////////////////////////////////////////////////////////////////
-//
-// 九点二十五分至九点三十分内清除昨日的实时数据。
-//
-/////////////////////////////////////////////////////////////////////
-bool CChinaMarket::TaskClearChosenRTDataSet(long lCurrentTime) {
-	if (lCurrentTime > 93100) { m_fRTDataSetCleared = true; }
-
-	if (!m_fRTDataSetCleared) {
-		if ((lCurrentTime > 92900) && (lCurrentTime < 93100)) {
-			CSetRealTimeData setRTData;
-			setRTData.Open();
-			setRTData.m_pDatabase->BeginTrans();
-			while (!setRTData.IsEOF()) {
-				setRTData.Delete();
-				setRTData.MoveNext();
-			}
-			setRTData.m_pDatabase->CommitTrans();
-			setRTData.Close();
-
-			m_fRTDataSetCleared = true;
-		}
-	}
 	return true;
 }
 
@@ -1349,31 +1312,6 @@ CChinaStockPtr CChinaMarket::GetCurrentSelectedStock(void) {
 		return m_avChosenStock.at(m_lCurrentSelectedStockSet).at(0);
 	}
 	return GetStock(0);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-//	将实时数据存入数据库．默认数据库为空。
-//
-//
-//////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::SaveRTData(void) {
-	const size_t lTotal = m_qRTData.size();
-
-	if (lTotal > 0) {
-		CSetRealTimeData setRTData;
-		setRTData.m_strFilter = _T("[ID] = 1");
-		setRTData.Open();
-		setRTData.m_pDatabase->BeginTrans();
-		for (size_t i = 0; i < lTotal; i++) {
-			const CWebRTDataPtr pRTData = m_qRTData.front();
-			m_qRTData.pop(); // 抛掉最前面这个数据
-			pRTData->AppendData(setRTData);
-		}
-		setRTData.m_pDatabase->CommitTrans();
-		setRTData.Close();
-	}
-	return (true);
 }
 
 bool CChinaMarket::IsDayLineNeedProcess(void) {

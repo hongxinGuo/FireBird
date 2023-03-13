@@ -7,8 +7,6 @@
 #include"ContainerStockSymbol.h"
 #include"ContainerChinaStock.h"
 
-#include"MarketTaskQueue.h"
-
 #include<semaphore>
 #include<set>
 #include<atomic>
@@ -59,14 +57,6 @@ public:
 	// 每日定时任务调度
 	bool ProcessEveryDayTask(long lCurrentTime); // 由SchedulingTaskPerSecond调度
 
-	bool IsMarketTaskEmpty() const { return m_marketTask.IsEmpty(); }
-	void StoreMarketTask(CMarketTaskPtr pTask) { m_marketTask.StoreTask(pTask); }
-
-	CMarketTaskPtr GetMarketTask() const { return m_marketTask.GetTask(); }
-	void DiscardCurrentMarketTask() { m_marketTask.DiscardTask(); }
-
-	vector<CMarketTaskPtr> GetMarketTaskVector() { return m_marketTask.GetVector(); }
-
 	// 各种任务
 	virtual bool TaskCreateTask(long lCurrentTime);
 	virtual bool TaskResetMarket(long lCurrentTime);
@@ -88,9 +78,6 @@ public:
 	bool TaskUpdateChosenStockDB(void);
 
 	bool TaskShowCurrentTransaction(void);
-
-	bool TaskSaveChosenRTData(void);
-	bool TaskClearChosenRTDataSet(long lCurrentTime);
 
 	bool TaskSaveStockSection(void); //
 
@@ -181,7 +168,6 @@ public:
 	void SetCalculateChosen10RS(const bool fFlag) noexcept { m_fCalculateChosen10RS = fFlag; }
 
 	// 数据库读取存储操作
-	virtual bool SaveRTData(void); // 实时数据处理函数，将读取到的实时数据存入数据库中
 	bool SaveDayLineData(void) { return m_containerChinaStock.SaveDayLineData(); } // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
 	virtual bool UpdateStockProfileDB(void) { return m_containerChinaStock.UpdateStockProfileDB(); }
 	void LoadStockProfileDB(void) { m_lStockDayLineNeedUpdate = m_containerChinaStock.LoadStockProfileDB(); }
@@ -422,8 +408,6 @@ protected:
 
 	// 变量区
 protected:
-	CMarketTaskQueue m_marketTask;
-
 	CContainerChinaStock m_containerChinaStock;
 	CContainerStockSymbol m_containerStockSymbol;
 

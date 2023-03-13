@@ -234,9 +234,6 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetOption.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetRealTimeData.h">
-      <Filter>头文件\database\ChinaMarket</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetRSOption.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
@@ -773,9 +770,6 @@
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetOption.cpp">
       <Filter>源文件\database\ChinaMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\DataBase\ChinaMarket\SetRealTimeData.cpp">
-      <Filter>源文件\database\ChinaMarket</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSOption.cpp">
       <Filter>源文件\database\ChinaMarket</Filter>
     </ClCompile>
@@ -1098,9 +1092,6 @@
       <Filter>源文件\Working thread\China market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\China market\ThreadSaveDayLine.cpp">
-      <Filter>源文件\Working thread\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Working thread\China market\ThreadSaveRTData.cpp">
       <Filter>源文件\Working thread\China market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\China market\ThreadSaveTempRTData.cpp">

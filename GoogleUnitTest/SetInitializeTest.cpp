@@ -7,7 +7,6 @@
 #include"SetDayLineExtendInfo.h"
 #include"SetDayLineTodaySaved.h"
 #include"SetOption.h"
-#include"SetRealTimeData.h"
 #include"SetRSOption.h"
 #include"SetRSStrong1Stock.h"
 #include"SetRSStrong2Stock.h"
@@ -123,18 +122,6 @@ namespace FireBirdTest {
 		gl_systemStatus.SetWorkingMode(false);
 
 		EXPECT_STREQ(setOption.GetDefaultSQL(), _T("[options]"));
-	}
-
-	TEST_F(SetInitializeTest, TestRealTimeDataInitialize) {
-		CSetRealTimeData setRealTimeData;
-
-		EXPECT_FALSE(gl_systemStatus.IsWorkingMode());
-		EXPECT_STREQ(setRealTimeData.GetDefaultConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-		gl_systemStatus.SetWorkingMode(true);
-		EXPECT_STREQ(setRealTimeData.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-		gl_systemStatus.SetWorkingMode(false);
-
-		EXPECT_STREQ(setRealTimeData.GetDefaultSQL(), _T("[RealTimeData]"));
 	}
 
 	TEST_F(SetInitializeTest, TestRSOptionInitialize) {

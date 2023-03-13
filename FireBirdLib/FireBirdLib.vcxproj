@@ -69,7 +69,6 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetDayLineExtendInfo.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetDayLineTodaySaved.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetOption.h" />
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetRealTimeData.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetRSOption.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetRSStrong1Stock.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetRSStrong2Stock.h" />
@@ -253,7 +252,6 @@
     <ClCompile Include="..\src\Data Source\TiingoDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\VirtualDataSource.cpp" />
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetOption.cpp" />
-    <ClCompile Include="..\src\DataBase\ChinaMarket\SetRealTimeData.cpp" />
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSOption.cpp" />
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSStrong1Stock.cpp" />
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetRSStrong2Stcok.cpp" />
@@ -399,7 +397,6 @@
     <ClCompile Include="..\src\Working thread\China market\ThreadProcessCurrentTradeDayStock.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadSaveActiveStockCode.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadSaveDayLine.cpp" />
-    <ClCompile Include="..\src\Working thread\China market\ThreadSaveRTData.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadUpdateChinaStockProfileDB.cpp" />
   </ItemGroup>
