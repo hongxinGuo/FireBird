@@ -33,7 +33,7 @@ UINT ThreadSaveTempRTData(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎ
 // ¼ÆËãºÍ´æ´¢µ±Ç°½»Ò×ÈÕÊı¾İÏß³Ì
 UINT ThreadProcessTodayStock(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª14
 // ´æ´¢Ò»¸ö¹ÉÆ±µÄÈÕÏßÀúÊ·Êı¾İ¡£
-UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStockInput); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª15, ²ÎÊıÎªĞ¯´øÖÇÄÜÖ¸ÕëµÄÒ»¸ö½á¹¹Ö¸Õë
+UINT ThreadSaveDayLineBasicInfo(not_null<CChinaStock*> pStock); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª15, ²ÎÊıÎªĞ¯´øÖÇÄÜÖ¸ÕëµÄÒ»¸ö½á¹¹Ö¸Õë
 // ´ÓÊı¾İ¿âÖĞ¶ÁÈ¡ÈÕÏßÀúÊ·Êı¾İÏß³Ì
 UINT ThreadLoadDayLine(not_null<CChinaStock*> pStockInput); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª16
 // Î¬»¤ÈÕÏßÊı¾İ¿âÏß³Ì£¨ÉĞÎ´ÊµÏÖ£©

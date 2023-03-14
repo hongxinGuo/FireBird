@@ -52,7 +52,7 @@ namespace FireBirdTest {
 		pDayLine->m_lDate = GetNextDay(s_pMockContainerChinaStock->GetStock(10)->GetDayLineEndDate()); // 确保是新数据
 		s_pMockContainerChinaStock->GetStock(10)->StoreDayLine(pDayLine);
 
-		EXPECT_CALL(*s_pMockContainerChinaStock, CreateThreadSaveDayLineBasicInfoOfStock).Times(1);
+		EXPECT_CALL(*s_pMockContainerChinaStock, CreateThreadSaveDayLineBasicInfo).Times(1);
 
 		EXPECT_TRUE(s_pMockContainerChinaStock->SaveDayLineData()) << "存储了一个";
 

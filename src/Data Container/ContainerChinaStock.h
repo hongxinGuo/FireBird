@@ -59,7 +59,7 @@ public:
 
 	[[nodiscard]] bool ProcessRTData(void);
 	bool SaveDayLineData(void);
-	virtual void CreateThreadSaveDayLineBasicInfoOfStock(CChinaStockPtr pStock);
+	virtual void CreateThreadSaveDayLineBasicInfo(CChinaStockPtr pStock);
 
 	[[nodiscard]] long GetDayLineNeedUpdateNumber(void) const;
 	[[nodiscard]] long GetDayLineNeedSaveNumber(void) const;

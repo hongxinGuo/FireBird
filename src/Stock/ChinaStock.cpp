@@ -119,7 +119,9 @@ void CChinaStock::Reset(void) {
 
 void CChinaStock::ClearRTDataDeque(void) {
 	const auto lTotalNumber = GetRTDataQueueSize();
-	for (auto i = 0; i < lTotalNumber; i++) { CWebRTDataPtr pRTData = PopRTData(); }
+	for (auto i = 0; i < lTotalNumber; i++) {
+		CWebRTDataPtr pRTData = PopRTData();
+	}
 }
 
 bool CChinaStock::HaveNewDayLineData(void) {
@@ -289,7 +291,9 @@ void CChinaStock::UpdateDayLineStartEndDate(void) {
 			fUpdated = true;
 		}
 	}
-	if (fUpdated) { SetUpdateProfileDB(true); }
+	if (fUpdated) {
+		SetUpdateProfileDB(true);
+	}
 }
 
 void CChinaStock::AppendTodayExtendInfo(CSetDayLineExtendInfo* pSetDayLineExtendInfo) {
@@ -1135,7 +1139,7 @@ void CChinaStock::ReportGuadanTransaction(void) {
 	sprintf_s(buffer, _T("%02d:%02d:%02d"), ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond());
 	const CString strTime = buffer;
 	sprintf_s(buffer, _T(" %s %I64d股成交于%10.3f    "), GetSymbol().GetBuffer(),
-		m_lCurrentGuadanTransactionVolume, m_dCurrentGuadanTransactionPrice);
+	          m_lCurrentGuadanTransactionVolume, m_dCurrentGuadanTransactionPrice);
 	CString str = strTime;
 	str += buffer;
 	CString str1;
@@ -1310,7 +1314,7 @@ bool CChinaStock::IsVolumeConsistence(void) noexcept {
 		+ GetAttackSellVolume() + GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume()) {
 		TRACE(_T("%14Id %s股数%d\n"), ConvertToDateTime(m_TransactionTime), GetSymbol().GetBuffer(), GetVolume());
 		TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
-			GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
+		      GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
 		return false;
 	}
 	return true;
@@ -1330,7 +1334,8 @@ bool CChinaStock::CalculatingWeekLine(long lStartDate) {
 		do {
 			pWeekLine = m_dataDayLine.CreateNewWeekLine(i);
 			m_dataWeekLine.StoreData(pWeekLine);
-		} while (i < m_dataDayLine.Size());
+		}
+		while (i < m_dataDayLine.Size());
 		m_dataWeekLine.SetDataLoaded(true);
 		return true;
 	}

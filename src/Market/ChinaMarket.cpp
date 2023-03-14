@@ -118,7 +118,6 @@ void CChinaMarket::Reset(void) {
 
 	m_fCurrentEditStockChanged = false;
 	m_fFastReceivingRTData = true;
-	m_fSaveDayLine = false;
 	m_fRTDataSetCleared = false;
 	m_fSaveTempData = true;
 	m_pCurrentStock = nullptr;
@@ -138,7 +137,6 @@ void CChinaMarket::Reset(void) {
 
 	m_fCheckActiveStock = true; //检查当日活跃股票，必须为真。
 	m_fTodayTempDataLoaded = false;
-	m_lTotalActiveStock = 0;
 
 	m_fMarketOpened = false;
 
@@ -532,16 +530,11 @@ bool CChinaMarket::SchedulingTask(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
-	m_iCount10Second -= lSecond;
 	m_iCount1Minute -= lSecond;
 
 	if (m_iCount1Minute < 0) {
 		m_iCount1Minute = 60 - lSecond;
 		SchedulingTaskPerMinute(lCurrentTime);
-	}
-	if (m_iCount10Second < 0) {
-		m_iCount10Second = 10 - lSecond;
-		SchedulingTaskPer10Seconds(lCurrentTime);
 	}
 
 	CheckMarketReady(); // 检查市场是否完成初始化
@@ -616,6 +609,9 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 		case CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__:
 			TaskUpdateStockProfileDB(lCurrentTime);
 			break;
+		case CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__:
+			TaskProcessAndSaveDayLine(lCurrentTime);
+			break;
 		default:
 			ASSERT(0); // 非法任务
 			break;
@@ -627,7 +623,7 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 
 bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	CMarketTaskPtr pTask;
-	long lTime = (lCurrentTime / 100) * 100; // 当前小时和分钟
+	const long lTime = (lCurrentTime / 100) * 100; // 当前小时和分钟
 
 	SetResetMarketPermission(false); // 今天不再允许重置系统。
 
@@ -660,10 +656,16 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	pTask->SetTime(GetNextTime(lTime + 5, 0, 3, 0)); // 开始执行时间为启动之后的三分钟。
 	StoreMarketTask(pTask);
 
-	// 每五分钟存储一次股票扼要数据库
+	// 每五分钟存储一次股票简要数据库
 	pTask = make_shared<CMarketTask>();
 	pTask->SetType(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__);
-	pTask->SetTime(GetNextTime(lCurrentTime + 10, 0, 4, 0)); // 开始执行时间为启动之后的四分钟。
+	pTask->SetTime(GetNextTime(lTime + 10, 0, 4, 0)); // 开始执行时间为启动之后的四分钟。
+	StoreMarketTask(pTask);
+
+	// 每十秒钟存储一次日线历史数据
+	pTask = make_shared<CMarketTask>();
+	pTask->SetType(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__);
+	pTask->SetTime(lCurrentTime);
 	StoreMarketTask(pTask);
 
 	if (IsWorkingDay()) {
@@ -697,11 +699,11 @@ void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
 		if ((lNextTime >= 113500) && (lNextTime < 130000)) lNextTime = 130300;
 		pTask->SetType(CHINA_MARKET_SAVE_TEMP_RT_DATA__);
 		pTask->SetTime(lNextTime);
+		StoreMarketTask(pTask);
 		if (IsSystemReady() && m_fMarketOpened) {
 			const CString str = "存储临时数据";
 			gl_systemMessage.PushDayLineInfoMessage(str);
 			CreateThreadUpdateTempRTData();
-			StoreMarketTask(pTask);
 		}
 	}
 }
@@ -732,8 +734,6 @@ bool CChinaMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	TaskSetCheckActiveStockFlag(lCurrentTime);
 
 	TaskUpdateChosenStockDB();
-
-	TaskCheckDayLineDB();
 
 	if (m_containerStockSymbol.IsUpdateStockSection()) {
 		TaskSaveStockSection();
@@ -826,9 +826,10 @@ void CChinaMarket::ProcessTodayStock(void) {
 	gl_systemMessage.PushInformationMessage(str);
 }
 
-bool CChinaMarket::TaskCheckDayLineDB(void) {
-	if (m_fSaveDayLine && (!IsDayLineNeedSaving()) && (!IsDayLineNeedUpdate()) && (!IsDayLineNeedProcess())) {
-		m_fSaveDayLine = false;
+bool CChinaMarket::CheckDayLineDB(void) {
+	static bool s_bHaveSavedDayLine = false;
+	if (s_bHaveSavedDayLine && (!IsDayLineNeedSaving()) && (!IsDayLineNeedUpdate()) && (!IsDayLineNeedProcess())) {
+		s_bHaveSavedDayLine = false;
 		TRACE("日线历史数据更新完毕\n");
 		const CString str = "中国市场日线历史数据更新完毕";
 		gl_systemMessage.PushInformationMessage(str);
@@ -837,6 +838,33 @@ bool CChinaMarket::TaskCheckDayLineDB(void) {
 		}
 		return true;
 	}
+	if (!s_bHaveSavedDayLine) {
+		if (IsDayLineNeedUpdate() || IsDayLineNeedProcess() || IsDayLineNeedSaving()) {
+			s_bHaveSavedDayLine = true;
+		}
+	}
+	return false;
+}
+
+bool CChinaMarket::TaskCheckDayLineDB2(void) {
+	static bool s_bHaveSavedDayLine = false;
+	if (s_bHaveSavedDayLine && (!IsDayLineNeedSaving()) && (!IsDayLineNeedUpdate()) && (!IsDayLineNeedProcess())) {
+		s_bHaveSavedDayLine = false;
+		TRACE("日线历史数据更新完毕\n");
+		const CString str = "中国市场日线历史数据更新完毕";
+		gl_systemMessage.PushInformationMessage(str);
+		if (IsDayLineDBUpdated()) { // 更新股票池数据库
+			ClearDayLineDBUpdatedFlag();
+		}
+		return true;
+	}
+	if (!s_bHaveSavedDayLine) {
+		if (IsDayLineNeedUpdate() || IsDayLineNeedProcess() || IsDayLineNeedSaving()) {
+			s_bHaveSavedDayLine = true;
+		}
+	}
+	auto pTask = make_shared<CMarketTask>();
+	//pTask->SetType(CHINA)
 	return false;
 }
 
@@ -941,10 +969,6 @@ bool CChinaMarket::TaskSaveStockSection(void) {
 	return true;
 }
 
-void CChinaMarket::TaskGetActiveStockSize(void) {
-	m_lTotalActiveStock = m_containerChinaStock.GetActiveStockSize();
-}
-
 bool CChinaMarket::ChangeDayLineStockCodeToStandard(void) {
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
@@ -962,21 +986,22 @@ bool CChinaMarket::ChangeDayLineStockCodeToStandard(void) {
 	return false;
 }
 
-bool CChinaMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
-	// 计算每十秒钟一次的任务
-	// 将处理日线历史数据的函数改为定时查询，读取和存储采用工作进程。
+bool CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 	if (IsDayLineNeedProcess()) {
-		TaskProcessDayLineGetFromNeteaseServer();
+		ProcessDayLine();
 	}
 
 	// 判断是否存储日线库和股票代码库
 	if (IsDayLineNeedSaving()) {
-		m_fSaveDayLine = true;
 		SaveDayLineData();
 	}
 
-	TaskGetActiveStockSize();
-
+	if (!CheckDayLineDB()) {// 当尚未更新完日线历史数据时
+		const auto pTask = make_shared<CMarketTask>();
+		pTask->SetType(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__);
+		pTask->SetTime(GetNextTime(lCurrentTime, 0, 0, 10));
+		StoreMarketTask(pTask);
+	}
 	return true;
 }
 
@@ -1317,12 +1342,12 @@ CChinaStockPtr CChinaMarket::GetCurrentSelectedStock(void) {
 }
 
 bool CChinaMarket::IsDayLineNeedProcess(void) {
-	if (DayLineSize() > 0) return true;
+	if (DayLineQueueSize() > 0) return true;
 	return false;
 }
 
-bool CChinaMarket::TaskProcessDayLineGetFromNeteaseServer(void) {
-	while (DayLineSize() > 0) {
+bool CChinaMarket::ProcessDayLine(void) {
+	while (DayLineQueueSize() > 0) {
 		CDayLineWebDataPtr pData = PopDayLine();
 		ASSERT(gl_pChinaMarket->IsStock(pData->GetStockCode()));
 		const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(pData->GetStockCode());

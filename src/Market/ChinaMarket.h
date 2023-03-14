@@ -48,7 +48,6 @@ public:
 	bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
 
 	bool SchedulingTaskPerSecond(long lSecondNumber, long lCurrentTime); // 每秒调度一次
-	bool SchedulingTaskPer10Seconds(long lCurrentTime); // 每十秒调度一次
 	bool SchedulingTaskPerMinute(long lCurrentTime); // 每一分钟调度一次
 	void CreateTaskOfReset();
 
@@ -60,6 +59,7 @@ public:
 	virtual bool TaskResetMarket(long lCurrentTime);
 	virtual bool TaskResetMarketAgain(long lCurrentTime);
 	virtual void TaskDistributeAndCalculateRTData(long lCurrentTime);
+	bool TaskProcessAndSaveDayLine(long lCurrentTime);
 	void TaskSaveTempData(long lCurrentTime);
 	bool TaskSetCheckActiveStockFlag(long lCurrentTime);
 	bool TaskChoice10RSStrong1StockSet(long lCurrentTime);
@@ -67,7 +67,8 @@ public:
 	bool TaskChoice10RSStrongStockSet(long lCurrentTime);
 	bool TaskProcessTodayStock(long lCurrentTime);
 	void ProcessTodayStock(void);
-	bool TaskCheckDayLineDB(void);
+	bool CheckDayLineDB(void);
+	bool TaskCheckDayLineDB2(void);
 	bool TaskCheckFastReceivingData(long lCurrentTime);
 	bool TaskCheckMarketOpen(long lCurrentTime);
 
@@ -79,10 +80,7 @@ public:
 
 	bool TaskSaveStockSection(void); //
 
-	void TaskGetActiveStockSize(void);
-
-	// 是否所有股票的历史日线数据都查询过一遍了
-	bool TaskProcessDayLineGetFromNeteaseServer(void);
+	bool ProcessDayLine(void);
 
 	// 各工作线程调用包裹函数
 	virtual void CreateThreadProcessRTData();
@@ -285,15 +283,13 @@ public:
 	void SetCountDownTengxunNumber(const int iValue) noexcept { m_iCountDownTengxunNumber = iValue; }
 
 	size_t GetTotalStock(void) const noexcept { return m_containerChinaStock.Size(); }
-	long GetTotalActiveStock(void) const noexcept { return m_lTotalActiveStock; }
+	long GetTotalActiveStock(void) const noexcept { return m_containerChinaStock.GetActiveStockSize(); }
 	long GetTotalLoadedStock(void) const noexcept { return m_containerChinaStock.GetLoadedStockSize(); }
 	void SetNewestTransactionTime(const time_t tt) noexcept { m_ttNewestTransactionTime = tt; }
 	time_t GetNewestTransactionTime(void) const noexcept { return m_ttNewestTransactionTime; }
 	bool IsMarketOpened(void) const noexcept { return m_fMarketOpened; }
 	void SetMarketOpened(const bool fFlag) noexcept { m_fMarketOpened = fFlag; }
 	bool IsFastReceivingRTData(void) const noexcept { return m_fFastReceivingRTData; }
-	bool IsSaveDayLine(void) const noexcept { return m_fSaveDayLine; }
-	void SetSaveDayLine(const bool fFlag) noexcept { m_fSaveDayLine = fFlag; }
 	bool IsRTDataSetCleared(void) const noexcept { return m_fRTDataSetCleared; }
 	void SetRTDataSetCleared(const bool fFlag) noexcept { m_fRTDataSetCleared = fFlag; }
 	bool IsSavingTempData(void) const noexcept { return m_fSaveTempData; }
@@ -311,7 +307,7 @@ public:
 	size_t TengxunRTSize(void) noexcept { return m_qTengxunRT.Size(); }
 	void PushTengxunRT(const CWebRTDataPtr pData) noexcept { m_qTengxunRT.PushData(pData); }
 	CWebRTDataPtr PopTengxunRT(void) { return m_qTengxunRT.PopData(); }
-	size_t DayLineSize(void) noexcept { return m_qDayLine.Size(); }
+	size_t DayLineQueueSize(void) noexcept { return m_qDayLine.Size(); }
 	void PushDayLine(const CDayLineWebDataPtr pData) noexcept { m_qDayLine.PushData(pData); }
 	CDayLineWebDataPtr PopDayLine(void) { return m_qDayLine.PopData(); }
 
@@ -435,7 +431,6 @@ protected:
 	bool m_fCurrentEditStockChanged;
 	bool m_fMarketOpened; // 是否开市
 	bool m_fFastReceivingRTData; // 是否开始接收实时数据
-	bool m_fSaveDayLine; // 将读取的日线存入数据库标识
 	bool m_fRTDataSetCleared; // 实时数据库已清除标识。九点三十分之前为假，之后设置为真。
 	bool m_fSaveTempData; // 存储临时实时数据标识
 	CChinaStockPtr m_pCurrentStock; // 当前显示的股票
@@ -465,7 +460,6 @@ protected:
 	// 系统状态区
 	bool m_fCheckActiveStock; // 是否查询今日活跃股票代码
 	bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
-	long m_lTotalActiveStock;
 
 	// 更新股票代码数据库标识
 	atomic_bool m_fUpdateOptionDB;

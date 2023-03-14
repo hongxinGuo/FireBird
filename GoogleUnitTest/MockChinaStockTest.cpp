@@ -67,7 +67,7 @@ namespace FireBirdTest {
 		pStock->SetDayLineLoaded(true);
 		pStock->SetSymbol(_T("601111.SS"));
 		gl_systemStatus.SetExitingSystem(true);
-		EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock.get()), static_cast<UINT>(15));
+		EXPECT_EQ(ThreadSaveDayLineBasicInfo(pStock.get()), static_cast<UINT>(15));
 		EXPECT_TRUE(pStock->IsDayLineLoaded());
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
@@ -77,7 +77,7 @@ namespace FireBirdTest {
 		pStock->SetDayLineLoaded(true);
 		pStock->SetSymbol(_T("601111.SS"));
 		gl_systemStatus.SetExitingSystem(false);
-		EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock.get()), static_cast<UINT>(15));
+		EXPECT_EQ(ThreadSaveDayLineBasicInfo(pStock.get()), static_cast<UINT>(15));
 		EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
@@ -87,7 +87,7 @@ namespace FireBirdTest {
 		pStock->SetDayLineLoaded(true);
 		pStock->SetSymbol(_T("601111.SS"));
 		gl_systemStatus.SetExitingSystem(false);
-		EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock.get()), static_cast<UINT>(15));
+		EXPECT_EQ(ThreadSaveDayLineBasicInfo(pStock.get()), static_cast<UINT>(15));
 		EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
 		CString str = gl_systemMessage.PopDayLineInfoMessage();

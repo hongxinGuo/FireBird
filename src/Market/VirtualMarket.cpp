@@ -172,8 +172,7 @@ CString CVirtualMarket::GetStringOfMarketDate(void) const {
 
 void CVirtualMarket::TaskResetMarketFlagAtMidnight(long lCurrentTime) {
 	// 午夜过后重置各种标识
-	if (lCurrentTime <= 1500 && !HaveResetMarketPermission()) {
-		// 在零点到零点十五分，重置系统标识
+	if (lCurrentTime <= 1500 && !HaveResetMarketPermission()) {	// 在零点到零点十五分，重置系统标识
 		m_fResetMarketPermission = true;
 		CString str = m_strMarketId + _T("重置系统重置标识");
 		TRACE(_T("%S \n"), str.GetBuffer());

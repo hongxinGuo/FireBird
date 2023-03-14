@@ -16,6 +16,8 @@ enum {
 	CHINA_MARKET_UPDATE_OPTION_DB__, // 每五分钟更新一次系统选项数据库
 	CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, // 每五分钟更新一次股票扼要数据库
 
+	CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, // 每十秒钟检查一次，有待处理的日线数据就处理
+
 	WORLD_MARKET_CREATE_TASK_ = 1001,
 };
 
