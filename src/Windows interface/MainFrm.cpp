@@ -60,8 +60,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDayLineRS)
 	ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnAbortBuildingRS)
 	ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuildingRS)
-	ON_COMMAND(ID_RECORD_RT_DATA, &CMainFrame::OnRecordRTData)
-	ON_UPDATE_COMMAND_UI(ID_RECORD_RT_DATA, &CMainFrame::OnUpdateRecordRTData)
+	//	ON_COMMAND(ID_RECORD_RT_DATA, &CMainFrame::OnRecordRTData)
+	//	ON_UPDATE_COMMAND_UI(ID_RECORD_RT_DATA, &CMainFrame::OnUpdateRecordRTData)
 	ON_COMMAND(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnCalculate10dayRS1)
 	ON_COMMAND(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnCalculate10dayRS2)
 	ON_COMMAND(ID_CALCULATE_10DAY_RS, &CMainFrame::OnCalculate10dayRS)
@@ -191,7 +191,7 @@ CMainFrame::~CMainFrame() {
 
 	// 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
 	// 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
-	if (gl_pChinaMarket->IsUpdateStockCodeDB()) {
+	if (gl_pChinaMarket->IsUpdateStockProfileDB()) {
 		ASSERT(!gl_ThreadStatus.IsSavingThreadRunning());
 		gl_pChinaMarket->UpdateStockProfileDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
@@ -897,16 +897,6 @@ void CMainFrame::OnUpdateAbortBuildingRS(CCmdUI* pCmdUI) {
 	else {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
-}
-
-void CMainFrame::OnRecordRTData() {
-	if (gl_pChinaMarket->IsRecordingRTData()) gl_pChinaMarket->SetRecordRTData(false);
-	else gl_pChinaMarket->SetRecordRTData(true);
-}
-
-void CMainFrame::OnUpdateRecordRTData(CCmdUI* pCmdUI) {
-	if (gl_pChinaMarket->IsRecordingRTData()) SysCallCmdUISetCheck(pCmdUI, true);
-	else SysCallCmdUISetCheck(pCmdUI, false);
 }
 
 void CMainFrame::OnCalculate10dayRS1() {

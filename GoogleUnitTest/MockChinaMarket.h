@@ -25,7 +25,8 @@ namespace testing {
 		MOCK_METHOD(void, CreateThreadBuildWeekLineRS, (), (override));
 		MOCK_METHOD(void, CreateThreadBuildWeekLineRSOfDate, (long lThisDate), (override));
 		MOCK_METHOD(void, CreateThreadBuildWeekLineOfCurrentWeek, (), (override));
-		MOCK_METHOD(bool, CreateThreadUpdateTempRTData, (), (override));
+		MOCK_METHOD(void, CreateThreadUpdateTempRTData, (), (override));
+		MOCK_METHOD(void, CreateThreadUpdateOptionDB, (), (override));
 
 		MOCK_METHOD(bool, UpdateOptionDB, (), (override));
 		MOCK_METHOD(bool, UpdateStockProfileDB, (), (override));

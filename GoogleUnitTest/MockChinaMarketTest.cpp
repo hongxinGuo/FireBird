@@ -169,6 +169,24 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pMockChinaMarket->IsMarketTaskEmpty());
 	}
 
+	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask8) {
+		auto pTask = make_shared<CMarketTask>();
+		pTask->SetType(CHINA_MARKET_UPDATE_OPTION_DB__);
+		pTask->SetTime(150600);
+		gl_pMockChinaMarket->StoreMarketTask(pTask);
+
+		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadUpdateOptionDB()).Times(1);
+
+		EXPECT_TRUE(gl_pMockChinaMarket->ProcessEveryDayTask(150600));
+		EXPECT_FALSE(gl_pMockChinaMarket->IsMarketTaskEmpty()) << "又生成一个任务";
+		pTask = gl_pMockChinaMarket->GetMarketTask();
+		gl_pMockChinaMarket->DiscardCurrentMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_OPTION_DB__);
+		EXPECT_EQ(pTask->GetTime(), 151100) << "每五分钟一次";
+
+		EXPECT_TRUE(gl_pMockChinaMarket->IsMarketTaskEmpty());
+	}
+
 	TEST_F(CMockChinaMarketTest, TestTaskSaveTempData1) {
 		EXPECT_TRUE(gl_pMockChinaMarket->IsSystemReady());
 		gl_pMockChinaMarket->SetMarketOpened(true);
@@ -180,7 +198,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pMockChinaMarket->IsMarketTaskEmpty());
 		const auto pTask = gl_pMockChinaMarket->GetMarketTask();
 		gl_pMockChinaMarket->DiscardCurrentMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 130000) << "中午休市时不存储临时实时数据，到13时开市时才存储";
+		EXPECT_EQ(pTask->GetTime(), 130300) << "中午休市时不存储临时实时数据，到13时开市时才存储";
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
 		gl_systemMessage.PopDayLineInfoMessage();
@@ -227,14 +245,16 @@ namespace FireBirdTest {
 	TEST_F(CMockChinaMarketTest, TestTaskUpdateStockProfileDB) {
 		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadUpdateStockProfileDB())
 		.Times(0);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskUpdateStockCodeDB());
+		EXPECT_FALSE(gl_pMockChinaMarket->TaskUpdateStockProfileDB(0));
 
 		gl_pMockChinaMarket->GetStock(1)->SetUpdateProfileDB(true);
 		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadUpdateStockProfileDB())
 		.Times(1);
-		EXPECT_TRUE(gl_pMockChinaMarket->TaskUpdateStockCodeDB());
+		EXPECT_TRUE(gl_pMockChinaMarket->TaskUpdateStockProfileDB(0));
 
+		// 恢复原状
 		gl_pMockChinaMarket->GetStock(1)->SetUpdateProfileDB(false);
+		while (!gl_pMockChinaMarket->IsMarketTaskEmpty()) gl_pMockChinaMarket->DiscardCurrentMarketTask();
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskChoice10RSStrong2StockSet) {
@@ -358,7 +378,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadUpdateStockProfileDB) {
-		ASSERT_THAT(gl_pMockChinaMarket->IsUpdateStockCodeDB(), IsFalse()) << "此测试开始时，必须保证没有设置更新代码库的标识，否则会真正更新了测试代码库";
+		ASSERT_THAT(gl_pMockChinaMarket->IsUpdateStockProfileDB(), IsFalse()) << "此测试开始时，必须保证没有设置更新代码库的标识，否则会真正更新了测试代码库";
 
 		EXPECT_CALL(*gl_pMockChinaMarket, UpdateStockProfileDB)
 		.Times(1);

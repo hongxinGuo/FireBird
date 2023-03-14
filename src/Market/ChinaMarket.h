@@ -51,8 +51,6 @@ public:
 	bool SchedulingTaskPer10Seconds(long lCurrentTime); // 每十秒调度一次
 	bool SchedulingTaskPerMinute(long lCurrentTime); // 每一分钟调度一次
 	void CreateTaskOfReset();
-	bool SchedulingTaskPer5Minutes(long lCurrentTime); // 每五分钟调度一次
-	bool SchedulingTaskPerHour(long lCurrentTime); // 每小时调度一次
 
 	// 每日定时任务调度
 	bool ProcessEveryDayTask(long lCurrentTime); // 由SchedulingTaskPerSecond调度
@@ -73,8 +71,8 @@ public:
 	bool TaskCheckFastReceivingData(long lCurrentTime);
 	bool TaskCheckMarketOpen(long lCurrentTime);
 
-	bool TaskUpdateStockCodeDB(void);
-	bool TaskUpdateOptionDB(void);
+	bool TaskUpdateStockProfileDB(long lCurrentTime);
+	bool TaskUpdateOptionDB(long lCurrentTime);
 	bool TaskUpdateChosenStockDB(void);
 
 	bool TaskShowCurrentTransaction(void);
@@ -103,6 +101,8 @@ public:
 	virtual void CreateThreadLoadWeekLine(CChinaStock* pCurrentStock);
 	virtual void CreateThreadProcessTodayStock(void);
 	virtual void CreateThreadUpdateStockProfileDB(void);
+	virtual void CreateThreadUpdateOptionDB(void);
+	virtual void CreateThreadUpdateTempRTData(void);
 	// interface function
 
 public:
@@ -177,7 +177,6 @@ public:
 	bool UpdateChosenStockDB(void);
 	virtual bool AppendChosenStockDB(void);
 	void LoadChosenStockDB(void);
-	virtual bool CreateThreadUpdateTempRTData(void);
 	virtual bool UpdateTodayTempDB(void) { return m_containerChinaStock.UpdateTodayTempDB(); }
 	bool LoadTodayTempDB(long lTheDay);
 	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate);
@@ -341,14 +340,7 @@ public:
 
 	void ClearDayLineNeedUpdateStatus(void) const { m_containerChinaStock.ClearDayLineNeedUpdateStatus(); }
 
-	void SetRecordRTData(const bool fFlag) noexcept { m_fSaveRTData = fFlag; }
-
-	bool IsRecordingRTData(void) const noexcept {
-		if (m_fSaveRTData) return true;
-		return false;
-	}
-
-	bool IsUpdateStockCodeDB(void) { return m_containerChinaStock.IsUpdateProfileDB(); }
+	bool IsUpdateStockProfileDB(void) { return m_containerChinaStock.IsUpdateProfileDB(); }
 	void SetUpdateOptionDB(const bool fFlag) noexcept { m_fUpdateOptionDB = fFlag; }
 
 	bool IsUpdateOptionDB(void) const noexcept {
@@ -440,8 +432,6 @@ protected:
 	bool m_CalculatingDayLineRS;
 	bool m_CalculatingWeekLineRS;
 
-	bool m_fSaveRTData;
-
 	bool m_fCurrentEditStockChanged;
 	bool m_fMarketOpened; // 是否开市
 	bool m_fFastReceivingRTData; // 是否开始接收实时数据
@@ -482,8 +472,6 @@ protected:
 	bool m_fUpdateChosenStockDB;
 
 private:
-	int m_iCount1Hour; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
-	int m_iCount5Minute; // 与一分钟每次的错开11秒钟
 	int m_iCount1Minute; // 与10秒每次的错开1秒钟
 	int m_iCount10Second;
 };

@@ -116,8 +116,6 @@ void CChinaMarket::Reset(void) {
 	m_CalculatingDayLineRS = false;
 	m_CalculatingWeekLineRS = false;
 
-	m_fSaveRTData = false; // 此存储实时数据标识，用于存储供测试函数用的实时数据。目前任务已经完成。
-
 	m_fCurrentEditStockChanged = false;
 	m_fFastReceivingRTData = true;
 	m_fSaveDayLine = false;
@@ -151,8 +149,6 @@ void CChinaMarket::Reset(void) {
 	}
 
 	m_lastTimeSchedulingTask = 0;
-	m_iCount1Hour = 3576; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
-	m_iCount5Minute = 287; // 与一分钟每次的错开11秒钟
 	m_iCount1Minute = 58; // 与10秒每次的错开1秒钟
 	m_iCount10Second = 9;
 }
@@ -538,16 +534,7 @@ bool CChinaMarket::SchedulingTask(void) {
 bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	m_iCount10Second -= lSecond;
 	m_iCount1Minute -= lSecond;
-	m_iCount5Minute -= lSecond;
-	m_iCount1Hour -= lSecond;
-	if (m_iCount1Hour < 0) {
-		m_iCount1Hour = 3600 - lSecond;
-		SchedulingTaskPerHour(lCurrentTime);
-	}
-	if (m_iCount5Minute < 0) {
-		m_iCount5Minute = 300 - lSecond;
-		SchedulingTaskPer5Minutes(lCurrentTime);
-	}
+
 	if (m_iCount1Minute < 0) {
 		m_iCount1Minute = 60 - lSecond;
 		SchedulingTaskPerMinute(lCurrentTime);
@@ -599,11 +586,6 @@ void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
 	}
 }
 
-bool CChinaMarket::SchedulingTaskPerHour(long lCurrentTime) {
-	// 计算每一小时一次的任务
-	return true;
-}
-
 bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 	if (IsMarketTaskEmpty()) return false;
 	const auto pTask = GetMarketTask();
@@ -628,6 +610,12 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 		case CHINA_MARKET_BUILD_TODAY_DATABASE__:
 			TaskProcessTodayStock(lCurrentTime);
 			break;
+		case CHINA_MARKET_UPDATE_OPTION_DB__:
+			TaskUpdateOptionDB(lCurrentTime);
+			break;
+		case CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__:
+			TaskUpdateStockProfileDB(lCurrentTime);
+			break;
 		default:
 			ASSERT(0); // 非法任务
 			break;
@@ -639,6 +627,7 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 
 bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	CMarketTaskPtr pTask;
+	long lTime = (lCurrentTime / 100) * 100; // 当前小时和分钟
 
 	SetResetMarketPermission(false); // 今天不再允许重置系统。
 
@@ -665,11 +654,23 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	pTask->SetTime(1); // 开始执行时间为：1
 	StoreMarketTask(pTask);
 
+	// 每五分钟存储一次系统选项数据库
+	pTask = make_shared<CMarketTask>();
+	pTask->SetType(CHINA_MARKET_UPDATE_OPTION_DB__);
+	pTask->SetTime(GetNextTime(lTime + 5, 0, 3, 0)); // 开始执行时间为启动之后的三分钟。
+	StoreMarketTask(pTask);
+
+	// 每五分钟存储一次股票扼要数据库
+	pTask = make_shared<CMarketTask>();
+	pTask->SetType(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__);
+	pTask->SetTime(GetNextTime(lCurrentTime + 10, 0, 4, 0)); // 开始执行时间为启动之后的四分钟。
+	StoreMarketTask(pTask);
+
 	if (IsWorkingDay()) {
 		// 每五分钟存储一次临时数据
 		pTask = make_shared<CMarketTask>();
 		pTask->SetType(CHINA_MARKET_SAVE_TEMP_RT_DATA__);
-		pTask->SetTime(93000); // 开始执行时间为：93000
+		pTask->SetTime(93230); // 开始执行时间为：93230
 		StoreMarketTask(pTask);
 	}
 
@@ -677,18 +678,9 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 		// 生成本日历史数据
 		pTask = make_shared<CMarketTask>();
 		pTask->SetType(CHINA_MARKET_BUILD_TODAY_DATABASE__);
-		pTask->SetTime(150500); // 开始执行时间为：93000
+		pTask->SetTime(150530); // 开始执行时间为：150530
 		StoreMarketTask(pTask);
 	}
-
-	return true;
-}
-
-bool CChinaMarket::SchedulingTaskPer5Minutes(long lCurrentTime) {
-	// 计算每五分钟一次的任务。
-
-	TaskUpdateOptionDB();
-	TaskUpdateStockCodeDB();
 
 	return true;
 }
@@ -703,10 +695,10 @@ void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
 		const CString str = "存储临时数据";
 		gl_systemMessage.PushDayLineInfoMessage(str);
 		CreateThreadUpdateTempRTData();
-		if (lCurrentTime < 150600) { // 中国市场股票交易截止时间为150000，多加六分钟。
+		if (lCurrentTime < 150000) { // 中国市场股票交易截止时间为150000。
 			const auto pTask = make_shared<CMarketTask>();
 			long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
-			if (lNextTime >= 113500) lNextTime = 130000;
+			if ((lNextTime >= 113500) && (lNextTime < 130000)) lNextTime = 130300;
 			pTask->SetType(CHINA_MARKET_SAVE_TEMP_RT_DATA__);
 			pTask->SetTime(lNextTime);
 			StoreMarketTask(pTask);
@@ -895,17 +887,27 @@ bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
 	return true;
 }
 
-bool CChinaMarket::TaskUpdateStockCodeDB(void) {
-	if (IsUpdateStockCodeDB()) {
+bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
+	const auto pTask = make_shared<CMarketTask>();
+	pTask->SetType(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__);
+	pTask->SetTime(GetNextTime(lCurrentTime, 0, 5, 0));
+	StoreMarketTask(pTask);
+
+	if (IsUpdateStockProfileDB()) {
 		CreateThreadUpdateStockProfileDB();
 		return true;
 	}
 	return false;
 }
 
-bool CChinaMarket::TaskUpdateOptionDB(void) {
-	thread thread1(ThreadUpdateOptionDB, this);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
+bool CChinaMarket::TaskUpdateOptionDB(long lCurrentTime) {
+	const auto pTask = make_shared<CMarketTask>();
+	pTask->SetType(CHINA_MARKET_UPDATE_OPTION_DB__);
+	pTask->SetTime(GetNextTime(lCurrentTime, 0, 5, 0));
+	StoreMarketTask(pTask);
+
+	CreateThreadUpdateOptionDB();
+
 	return true;
 }
 
@@ -1389,6 +1391,11 @@ void CChinaMarket::CreateThreadUpdateStockProfileDB(void) {
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
+void CChinaMarket::CreateThreadUpdateOptionDB(void) {
+	thread thread1(ThreadUpdateOptionDB, this);
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
+}
+
 void CChinaMarket::CreateThreadChoice10RSStrong2StockSet(void) {
 	thread thread1(ThreadChoice10RSStrong2StockSet, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
@@ -1790,8 +1797,7 @@ void CChinaMarket::LoadChosenStockDB(void) {
 	setChinaChosenStock.Close();
 }
 
-bool CChinaMarket::CreateThreadUpdateTempRTData(void) {
+void CChinaMarket::CreateThreadUpdateTempRTData(void) {
 	thread thread1(ThreadSaveTempRTData, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }

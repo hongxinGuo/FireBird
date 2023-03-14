@@ -38,7 +38,7 @@ namespace FireBirdTest {
 	void ChinaMarketCheck(void) {
 		if (gl_pChinaMarket != nullptr) {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
-			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse());
+			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockProfileDB(), IsFalse());
 			//EXPECT_THAT(gl_pChinaMarket->)
 			EXPECT_THAT(gl_pChinaMarket->IsCalculatingDayLineRS(), IsFalse());
 			EXPECT_THAT(gl_pChinaMarket->IsCalculatingWeekLineRS(), IsFalse());

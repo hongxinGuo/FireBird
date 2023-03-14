@@ -506,16 +506,6 @@ namespace FireBirdTest {
 		gl_pMockMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
 	}
 
-	TEST_F(CMockMainFrameTest, TestOnUpdateRecordRTData) {
-		CCmdUI cmdUI;
-		gl_pChinaMarket->SetRecordRTData(true);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, true)).Times(1);
-		gl_pMockMainFrame->OnUpdateRecordRTData(&cmdUI);
-		gl_pChinaMarket->SetRecordRTData(false);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, false)).Times(1);
-		gl_pMockMainFrame->OnUpdateRecordRTData(&cmdUI);
-	}
-
 	TEST_F(CMockMainFrameTest, TestOnAbortBuildingRS) {
 		gl_systemStatus.SetExitingCalculatingRS(false);
 		gl_pMockMainFrame->OnAbortBuildingRS();
@@ -536,14 +526,6 @@ namespace FireBirdTest {
 		.Times(1)
 		.RetiresOnSaturation();
 		gl_pMockMainFrame->OnUpdateAbortBuildingRS(&cmdUI);
-	}
-
-	TEST_F(CMockMainFrameTest, TestOnRecordRTData) {
-		gl_pChinaMarket->SetRecordRTData(false);
-		gl_pMockMainFrame->OnRecordRTData();
-		EXPECT_TRUE(gl_pChinaMarket->IsRecordingRTData());
-		gl_pMockMainFrame->OnRecordRTData();
-		EXPECT_FALSE(gl_pChinaMarket->IsRecordingRTData());
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnUsingRealtimeDataServer) {

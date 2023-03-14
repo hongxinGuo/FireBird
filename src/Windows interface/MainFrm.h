@@ -103,8 +103,6 @@ public:
 	afx_msg void OnUpdateRebuildDayLineRS(CCmdUI* pCmdUI);
 	afx_msg void OnAbortBuildingRS();
 	afx_msg void OnUpdateAbortBuildingRS(CCmdUI* pCmdUI);
-	afx_msg void OnRecordRTData();
-	afx_msg void OnUpdateRecordRTData(CCmdUI* pCmdUI);
 	afx_msg void OnCalculate10dayRS1();
 	afx_msg void OnCalculate10dayRS2();
 	afx_msg void OnCalculate10dayRS();

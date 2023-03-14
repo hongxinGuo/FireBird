@@ -236,7 +236,7 @@ namespace FireBirdTest {
 				pStock->SetUpdateProfileDB(false);
 				// gl_pMockMainFrame使用了真正的gl_pChinaMarket,此处重置此标识，防止解构gl_pMockMainFrame时更新数据库。
 			}
-			ASSERT_THAT(gl_pChinaMarket->IsUpdateStockCodeDB(), IsFalse()) << "退出时必须保证无需更新代码库";
+			ASSERT_THAT(gl_pChinaMarket->IsUpdateStockProfileDB(), IsFalse()) << "退出时必须保证无需更新代码库";
 
 			gl_systemStatus.SetExitingSystem(false);
 			gl_pMockMainFrame = nullptr;
