@@ -717,9 +717,6 @@
     <ClInclude Include="..\src\Windows interface\PropertiesWnd.h">
       <Filter>头文件\Windows interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\TodayTempDB.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\accessory\MarketTask.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
@@ -1291,9 +1288,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Windows interface\PropertiesWnd.cpp">
       <Filter>源文件\windows interface</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\accessory\TodayTempDB.cpp">
-      <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\accessory\MarketTask.cpp">
       <Filter>源文件\Accessory</Filter>

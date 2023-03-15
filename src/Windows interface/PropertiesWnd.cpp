@@ -70,6 +70,7 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	m_wndObjectCombo.AddString(_T("Application"));
 	m_wndObjectCombo.AddString(_T("Properties Window"));
+	m_wndObjectCombo.AddString(_T("Properties2"));
 	m_wndObjectCombo.SetCurSel(0);
 
 	CRect rectCombo;
@@ -145,7 +146,7 @@ void CPropertiesWnd::InitPropList() {
 
 	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("Appearance"));
 
-	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("3D Look"), (_variant_t)false, _T("Specifies the window's font will be non-bold and controls will have a 3D border")));
+	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("µ÷ÊÔÄ£Ê½"), (_variant_t)gl_systemConfiguration.IsDebugMode(), _T("Specifies the window's font will be non-bold and controls will have a 3D border")));
 
 	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T("Border"), _T("Dialog Frame"), _T("One of: None, Thin, Resizable, or Dialog Frame"));
 	pProp->AddOption(_T("None"));

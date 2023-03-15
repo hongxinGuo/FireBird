@@ -16,10 +16,6 @@
 #include"SetRSStrong1Stock.h"
 #include"SetRSStrong2Stock.h"
 
-#include"TodayTempDB.h"
-
-static CTodayTempDB todayTempDB;
-
 using namespace std;
 
 CContainerChinaStock::CContainerChinaStock() {
@@ -670,11 +666,12 @@ bool CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
 bool CContainerChinaStock::UpdateTodayTempDB(void) {
 	CSetDayLineTodaySaved setDayLineTemp;
 
-	DeleteTodayTempDB();
-
 	setDayLineTemp.Open();
 	setDayLineTemp.m_pDatabase->BeginTrans();
-
+	while (!setDayLineTemp.IsEOF()) {
+		setDayLineTemp.Delete();
+		setDayLineTemp.MoveNext();
+	}
 	// 存储今日生成的数据于DayLineToday表中。
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
@@ -693,20 +690,6 @@ bool CContainerChinaStock::UpdateTodayTempDB(void) {
 	}
 	setDayLineTemp.m_pDatabase->CommitTrans();
 	setDayLineTemp.Close();
-
-	return true;
-}
-
-////////////////////////////////////////////////////////////////////
-//
-// 此函数使用硬编码，不允许测试
-//
-// 使用原始的Delete数据模式，删除today表需要几秒钟的时间。
-//
-//
-////////////////////////////////////////////////////////////////////
-bool CContainerChinaStock::DeleteTodayTempDB(void) {
-	todayTempDB.DeleteCurrentContent();
 
 	return true;
 }

@@ -217,7 +217,7 @@ namespace FireBirdTest {
 			pTask = gl_pChinaMarket->GetMarketTask();
 			gl_pChinaMarket->DiscardCurrentMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
-			EXPECT_EQ(pTask->GetTime(), 93230);
+			EXPECT_EQ(pTask->GetTime(), 92730);
 
 			pTask = gl_pChinaMarket->GetMarketTask();
 			gl_pChinaMarket->DiscardCurrentMarketTask();
@@ -261,7 +261,7 @@ namespace FireBirdTest {
 			pTask = gl_pChinaMarket->GetMarketTask();
 			gl_pChinaMarket->DiscardCurrentMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
-			EXPECT_EQ(pTask->GetTime(), 93230);
+			EXPECT_EQ(pTask->GetTime(), 92730);
 
 			pTask = gl_pChinaMarket->GetMarketTask();
 			gl_pChinaMarket->DiscardCurrentMarketTask();
@@ -283,17 +283,17 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
 		EXPECT_EQ(pTask->GetTime(), 1);
 
-		pTask = gl_pChinaMarket->GetMarketTask();
-		gl_pChinaMarket->DiscardCurrentMarketTask();
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__);
-		EXPECT_EQ(pTask->GetTime(), 93000);
-
 		if (gl_pChinaMarket->IsWorkingDay()) {
 			pTask = gl_pChinaMarket->GetMarketTask();
 			gl_pChinaMarket->DiscardCurrentMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
-			EXPECT_EQ(pTask->GetTime(), 93230);
+			EXPECT_EQ(pTask->GetTime(), 92730);
 		}
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardCurrentMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__);
+		EXPECT_EQ(pTask->GetTime(), 93000);
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
@@ -340,7 +340,7 @@ namespace FireBirdTest {
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
-		EXPECT_EQ(pTask->GetTime(), 93230);
+		EXPECT_EQ(pTask->GetTime(), 92730);
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();

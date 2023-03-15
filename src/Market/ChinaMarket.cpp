@@ -662,7 +662,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	pTask->SetTime(GetNextTime(lTime + 10, 0, 4, 0)); // 开始执行时间为启动之后的四分钟。
 	StoreMarketTask(pTask);
 
-	// 每十秒钟存储一次日线历史数据
+	// 每十秒钟存储一次日线历史数据。
 	pTask = make_shared<CMarketTask>();
 	pTask->SetType(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__);
 	pTask->SetTime(lCurrentTime);
@@ -672,7 +672,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 		// 每五分钟存储一次临时数据
 		pTask = make_shared<CMarketTask>();
 		pTask->SetType(CHINA_MARKET_SAVE_TEMP_RT_DATA__);
-		pTask->SetTime(93230); // 开始执行时间为：93230
+		pTask->SetTime(92730); // 开始执行时间为：93230
 		StoreMarketTask(pTask);
 	}
 
@@ -693,7 +693,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
-	if (lCurrentTime < 150000) { // 中国市场股票交易截止时间为150000。
+	if (lCurrentTime < 150100) { // 中国市场股票交易截止时间为150000。
 		const auto pTask = make_shared<CMarketTask>();
 		long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
 		if ((lNextTime >= 113500) && (lNextTime < 130000)) lNextTime = 130300;

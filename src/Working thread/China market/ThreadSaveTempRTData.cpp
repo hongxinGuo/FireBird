@@ -16,11 +16,7 @@ UINT ThreadSaveTempRTData(not_null<CChinaMarket*> pMarket) {
 	ASSERT(pMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
 	gl_ProcessChinaMarketRTData.acquire();
-	gl_ThreadStatus.IncreaseSavingThread();
-
 	pMarket->UpdateTodayTempDB();
-
-	gl_ThreadStatus.DecreaseSavingThread();
 	gl_ProcessChinaMarketRTData.release();
 
 	return 13;
