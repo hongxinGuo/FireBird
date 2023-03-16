@@ -1079,15 +1079,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsRTDataCalculated());
 	}
 
-	TEST_F(CChinaStockTest, TestIsRecordRTData) {
-		CChinaStock stock;
-		EXPECT_FALSE(stock.IsRecordRTData());
-		stock.SetRecordRTData(true);
-		EXPECT_TRUE(stock.IsRecordRTData());
-		stock.SetRecordRTData(false);
-		EXPECT_FALSE(stock.IsRecordRTData());
-	}
-
 	TEST_F(CChinaStockTest, TestIsStartCalculating) {
 		CChinaStock stock;
 		EXPECT_FALSE(stock.HaveFirstRTData());

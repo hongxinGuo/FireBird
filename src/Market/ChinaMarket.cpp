@@ -110,7 +110,6 @@ void CChinaMarket::Reset(void) {
 	while (m_qNeteaseRT.Size() > 0) m_qNeteaseRT.PopData();
 	while (m_qTengxunRT.Size() > 0) m_qTengxunRT.PopData();
 	while (m_qDayLine.Size() > 0) m_qDayLine.PopData();
-	while (m_qRTData.size() > 0) m_qRTData.pop();
 
 	m_RTDataNeedCalculate = false;
 	m_CalculatingDayLineRS = false;
@@ -392,7 +391,6 @@ bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
 		if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
 			if (IsOrdinaryTradeTime()) m_lNewRTDataReceivedInOrdinaryTradeTime++;
 			pStock->PushRTData(pRTData); // 存储新的数据至数据池
-			if (pStock->IsRecordRTData()) StoreChoiceRTData(pRTData);
 			pStock->SetTransactionTime(pRTData->GetTransactionTime()); // 设置最新接受到实时数据的时间
 		}
 	}
@@ -622,7 +620,7 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 
 bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	CMarketTaskPtr pTask;
-	const long lTime = (lCurrentTime / 100) * 100; // 当前小时和分钟
+	const long lTimeMinute = (lCurrentTime / 100) * 100; // 当前小时和分钟
 
 	SetResetMarketPermission(false); // 今天不再允许重置系统。
 
@@ -652,13 +650,13 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	// 每五分钟存储一次系统选项数据库
 	pTask = make_shared<CMarketTask>();
 	pTask->SetType(CHINA_MARKET_UPDATE_OPTION_DB__);
-	pTask->SetTime(GetNextTime(lTime + 5, 0, 3, 0)); // 开始执行时间为启动之后的三分钟。
+	pTask->SetTime(GetNextTime(lTimeMinute + 5, 0, 3, 0)); // 开始执行时间为启动之后的三分钟。
 	StoreMarketTask(pTask);
 
 	// 每五分钟存储一次股票简要数据库
 	pTask = make_shared<CMarketTask>();
 	pTask->SetType(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__);
-	pTask->SetTime(GetNextTime(lTime + 10, 0, 4, 0)); // 开始执行时间为启动之后的四分钟。
+	pTask->SetTime(GetNextTime(lTimeMinute + 10, 0, 4, 0)); // 开始执行时间为启动之后的四分钟。
 	StoreMarketTask(pTask);
 
 	// 每十秒钟存储一次日线历史数据。
@@ -677,7 +675,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 		// 每五分钟存储一次临时数据
 		pTask = make_shared<CMarketTask>();
 		pTask->SetType(CHINA_MARKET_SAVE_TEMP_RT_DATA__);
-		pTask->SetTime(92730); // 开始执行时间为：93230
+		pTask->SetTime(92730); // 开始执行时间为：92730.要确保第一次执行的时间早于93000，这样启动数据库的时间较短，否则容易导致系统崩溃（原因不明）。
 		StoreMarketTask(pTask);
 	}
 
@@ -994,17 +992,17 @@ void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
 	if (pStock != nullptr) {
 		if (m_pCurrentStock != nullptr) {
 			if (!m_pCurrentStock->IsSameStock(pStock)) {
-				m_pCurrentStock->SetRecordRTData(false);
 				fSet = true;
 			}
 		}
-		else { fSet = true; }
+		else {
+			fSet = true;
+		}
 	}
 	else {
 		m_pCurrentStock = nullptr;
 	}
 	if (fSet) {
-		pStock->SetRecordRTData(true);
 		m_pCurrentStock = pStock;
 		SetCurrentStockChanged(true);
 		m_pCurrentStock->SetDayLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
@@ -1013,7 +1011,6 @@ void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
 
 void CChinaMarket::ResetCurrentStock(void) {
 	if (m_pCurrentStock != nullptr) {
-		m_pCurrentStock->SetRecordRTData(false);
 		m_pCurrentStock = nullptr;
 	}
 }

@@ -9,7 +9,6 @@
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
 #include"CallableFunction.h"
-#include "QuandlDataSource.h"
 #include"RSReference.h"
 #include"Thread.h"
 
@@ -667,10 +666,7 @@ bool CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
 //
 //////////////////////////////////////////////////////////////////////////////////
 bool CContainerChinaStock::UpdateTodayTempDB(void) {
-	//CHighPerformanceCounter counter;
 	CSetDayLineTodaySaved setDayLineTemp;
-
-	//counter.start();
 
 	setDayLineTemp.Open();
 	setDayLineTemp.m_pDatabase->BeginTrans();
@@ -696,13 +692,6 @@ bool CContainerChinaStock::UpdateTodayTempDB(void) {
 	}
 	setDayLineTemp.m_pDatabase->CommitTrans();
 	setDayLineTemp.Close();
-	//counter.stop();
-
-	//char buffer[50];
-	//sprintf_s(buffer, _T("%6d"), counter.GetElapsedMilliSecond());
-	//CString strMessage = _T("存储临时数据用时：");
-	//strMessage += buffer;
-	//gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 
 	return true;
 }

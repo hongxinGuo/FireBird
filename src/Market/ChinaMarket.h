@@ -259,8 +259,6 @@ public:
 
 	size_t GetStockOffset(const CString& str) const { return m_containerChinaStock.GetOffset(str); }
 
-	void StoreChoiceRTData(const CWebRTDataPtr pRTData) { m_qRTData.push(pRTData); }
-
 	//处理实时股票变化等
 	bool DistributeSinaRTDataToStock(void);
 	bool DistributeNeteaseRTDataToStock(void);
@@ -322,8 +320,6 @@ public:
 	size_t GetChosenStockSize(void) const { return m_avChosenStock.at(0).size(); }
 	size_t GetChosenStockSize(const long lIndex) const { return m_avChosenStock.at(lIndex).size(); }
 	void ClearChoiceStockContainer(void) { m_avChosenStock.at(0).clear(); }
-	size_t GetChosenRTDataSize(void) const noexcept { return m_qRTData.size(); }
-	void ClearChosenRTDataQueue(void) noexcept { while (!m_qRTData.empty()) m_qRTData.pop(); }
 
 	void SetSinaStockRTDataInquiringIndex(const long lIndex) noexcept { m_containerChinaStock.SetSinaRTDataInquiringIndex(lIndex); }
 	long GetSinaStockRTDataInquiringIndex(void) const noexcept { return m_containerChinaStock.GetSinaRTDataInquiringIndex(); }
@@ -418,7 +414,6 @@ protected:
 	CPriorityQueueWebRTData m_qNeteaseRT; // 中国市场实时数据队列。
 	CPriorityQueueWebRTData m_qTengxunRT; // 中国市场实时数据队列。
 	CTemplateMutexAccessQueue<CDayLineWebData> m_qDayLine; // 网易日线数据
-	queue<CWebRTDataPtr> m_qRTData;
 
 	bool m_RTDataNeedCalculate;
 	bool m_CalculatingDayLineRS;

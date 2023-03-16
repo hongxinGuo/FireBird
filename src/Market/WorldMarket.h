@@ -57,11 +57,13 @@ public:
 
 	bool SchedulingTask(void) override;
 
+	void CreateTaskOfReset();
+	bool ProcessEveryDayTask(long lCurrentTime); // 每日定时任务调度,由SchedulingTaskPerSecond调度
+
 	bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
 	bool SchedulingTaskPer10Seconds(long lCurrentTime);
 	bool SchedulingTaskPerMinute(long lCurrentTime);
 	bool SchedulingTaskPer5Minute(long lCurrentTime);
-	bool SchedulingTaskPerHour(long lCurrentTime);
 	bool TaskResetMarket(long lCurrentTime);
 
 	virtual bool TaskUpdateTiingoIndustry(void);
@@ -286,7 +288,6 @@ protected:
 	bool m_bFinnhubWebSiteAccessible; // 由于finnhub.io不时被墙，故而需要此标识。
 
 private:
-	int m_iCount1Hour; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
 	int m_iCount5Minute; // 与一分钟每次的错开11秒钟
 	int m_iCount1Minute; // 与10秒每次的错开1秒钟
 	int m_iCount10Second;

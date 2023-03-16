@@ -152,15 +152,29 @@ bool CWorldMarket::SchedulingTask(void) {
 	return true;
 }
 
+void CWorldMarket::CreateTaskOfReset() {
+	if (HaveResetMarketPermission()) { // 如果允许重置系统
+		const auto pTask = make_shared<CMarketTask>();
+		pTask->SetType(WORLD_MARKET_CREATE_TASK__);
+		pTask->SetTime(3000); // 午夜零时三十分整重置系统
+		StoreMarketTask(pTask);
+	}
+}
+
+bool CWorldMarket::ProcessEveryDayTask(long lCurrentTime) {
+	if (IsMarketTaskEmpty()) return false;
+	const auto pTask = GetMarketTask();
+	if (lCurrentTime >= pTask->GetTime()) { }
+	return true;
+}
+
 bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
+	ResetMarketFlagAtMidnight(lCurrentTime);
+
 	m_iCount10Second -= lSecond;
 	m_iCount1Minute -= lSecond;
 	m_iCount5Minute -= lSecond;
-	m_iCount1Hour -= lSecond;
-	if (m_iCount1Hour < 0) {
-		m_iCount1Hour = 3600 - lSecond;
-		SchedulingTaskPerHour(lCurrentTime);
-	}
+
 	if (m_iCount5Minute < 0) {
 		m_iCount5Minute = 300 - lSecond;
 		SchedulingTaskPer5Minute(lCurrentTime);
@@ -226,10 +240,6 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 		TaskUpdateStockProfileDB();
 	}
 
-	return true;
-}
-
-bool CWorldMarket::SchedulingTaskPerHour(long lCurrentTime) {
 	return true;
 }
 

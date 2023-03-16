@@ -84,7 +84,6 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			gl_pChinaMarket->SetRTDataSetCleared(false);
 			gl_pChinaMarket->SetUpdateOptionDB(false);
-			gl_pChinaMarket->ClearChosenRTDataQueue();
 			gl_pChinaMarket->SetResetMarket(true);
 			gl_pChinaMarket->SetSinaStockRTDataInquiringIndex(0);
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);
@@ -556,21 +555,16 @@ namespace FireBirdTest {
 
 		gl_pChinaMarket->SetCurrentStock(pStock);
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), pStock);
-		EXPECT_TRUE(pStock->IsRecordRTData());
 		EXPECT_TRUE(gl_pChinaMarket->IsCurrentStockChanged());
 		gl_pChinaMarket->SetCurrentStockChanged(false);
 		gl_pChinaMarket->SetCurrentStock(pStock);
 		EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
-		EXPECT_FALSE(pStock2->IsRecordRTData());
 		gl_pChinaMarket->SetCurrentStock(pStock2);
 		EXPECT_TRUE(gl_pChinaMarket->IsCurrentStockChanged());
-		EXPECT_TRUE(pStock2->IsRecordRTData());
 		gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
 		pStock = gl_pChinaMarket->GetCurrentStock();
-		EXPECT_TRUE(pStock->IsRecordRTData());
 		EXPECT_STREQ(pStock->GetSymbol(), _T("600000.SS"));
 		gl_pChinaMarket->ResetCurrentStock();
-		EXPECT_FALSE(pStock->IsRecordRTData());
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr);
 
 		gl_pChinaMarket->SetCurrentStockChanged(false);
@@ -960,21 +954,16 @@ namespace FireBirdTest {
 		EXPECT_STREQ(pStock->GetSymbol(), _T("600000.SS"));
 	}
 
-	TEST_F(CChinaMarketTest, TestStoreChosenRTData) {
-		EXPECT_EQ(gl_pChinaMarket->GetChosenRTDataSize(), 0);
-		auto pRTData = make_shared<CWebRTData>();
-		gl_pChinaMarket->StoreChoiceRTData(pRTData);
-		EXPECT_EQ(gl_pChinaMarket->GetChosenRTDataSize(), 1);
-		gl_pChinaMarket->ClearChosenRTDataQueue();
-		EXPECT_EQ(gl_pChinaMarket->GetChosenRTDataSize(), 0);
-	}
-
 	TEST_F(CChinaMarketTest, TestClearDayLineNeedUpdaeStatus) {
 		gl_pChinaMarket->ClearDayLineNeedUpdateStatus();
 
-		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) { EXPECT_FALSE(gl_pChinaMarket->GetStock(i)->IsDayLineNeedUpdate()); }
+		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
+			EXPECT_FALSE(gl_pChinaMarket->GetStock(i)->IsDayLineNeedUpdate());
+		}
 
-		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) { gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true); }
+		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
+			gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
+		}
 	}
 
 	TEST_F(CChinaMarketTest, TestGetRTDataReceived) {
