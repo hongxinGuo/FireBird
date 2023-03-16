@@ -698,9 +698,9 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
-	if (lCurrentTime < 170100) { // 中国市场股票交易截止时间为150000。
+	if (lCurrentTime < 150100) { // 中国市场股票交易截止时间为150000。
 		const auto pTask = make_shared<CMarketTask>();
-		long lNextTime = GetNextTime(lCurrentTime, 0, 1, 0);
+		long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
 		if ((lNextTime >= 113500) && (lNextTime < 130000)) lNextTime = 130300;
 		pTask->SetType(CHINA_MARKET_SAVE_TEMP_RT_DATA__);
 		pTask->SetTime(lNextTime);
