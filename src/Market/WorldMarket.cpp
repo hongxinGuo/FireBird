@@ -191,8 +191,6 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	// 建立WebSocket连接
 	StartAllWebSocket();
 
-	TaskResetMarketFlagAtMidnight(lCurrentTime);
-
 	TaskResetMarket(lCurrentTime);
 
 	// 这个必须是最后一个任务。因其在执行完毕后返回了。
@@ -231,7 +229,9 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 	return true;
 }
 
-bool CWorldMarket::SchedulingTaskPerHour(long lCurrentTime) { return true; }
+bool CWorldMarket::SchedulingTaskPerHour(long lCurrentTime) {
+	return true;
+}
 
 /// <summary>
 /// /////////////////////////////////////////////////////////////////////////////////

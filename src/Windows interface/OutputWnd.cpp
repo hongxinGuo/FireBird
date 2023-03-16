@@ -5,6 +5,7 @@
 #include "MainFrm.h"
 
 #include"ChinaMarket.h"
+#include "WorldMarket.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // COutputBar
@@ -45,7 +46,8 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 		!m_wndOutputWebSocketInfo.Create(dwStyle, rectDummy, &m_wndTabs, 8) ||
 		!m_wndOutputInnerSystemInformation.Create(dwStyle, rectDummy, &m_wndTabs, 9) ||
 		!m_wndChinaMarketTaskQueue.Create(dwStyle, rectDummy, &m_wndTabs, 10) ||
-		!m_wndErrorMessage.Create(dwStyle, rectDummy, &m_wndTabs, 11)) {
+		!m_wndWorldMarketTaskQueue.Create(dwStyle, rectDummy, &m_wndTabs, 11) ||
+		!m_wndErrorMessage.Create(dwStyle, rectDummy, &m_wndTabs, 12)) {
 		TRACE0("未能创建输出窗口\n");
 		return -1;      // 未能创建
 	}
@@ -65,27 +67,30 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	bNameValid = strTabName.LoadString(IDS_CHINA_MARKET_TASK_QUEUE);
 	ASSERT(bNameValid);
 	m_wndTabs.AddTab(&m_wndChinaMarketTaskQueue, strTabName, (UINT)2);  // 错误消息
+	bNameValid = strTabName.LoadString(IDS_WORLD_MARKET_TASK_QUEUE);
+	ASSERT(bNameValid);
+	m_wndTabs.AddTab(&m_wndWorldMarketTaskQueue, strTabName, (UINT)3);  // 错误消息
 	bNameValid = strTabName.LoadString(IDS_TRANSACTION_TAB);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputTransaction, strTabName, (UINT)3);
+	m_wndTabs.AddTab(&m_wndOutputTransaction, strTabName, (UINT)4);
 	bNameValid = strTabName.LoadString(IDS_CANCEL_SELL_TAB);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputCancelSell, strTabName, (UINT)4);
+	m_wndTabs.AddTab(&m_wndOutputCancelSell, strTabName, (UINT)5);
 	bNameValid = strTabName.LoadString(IDS_CANCEL_BUY_TAB);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputCancelBuy, strTabName, (UINT)5);
+	m_wndTabs.AddTab(&m_wndOutputCancelBuy, strTabName, (UINT)6);
 	bNameValid = strTabName.LoadString(IDS_TRACE2_TAB);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputTrace2, strTabName, (UINT)6);
+	m_wndTabs.AddTab(&m_wndOutputTrace2, strTabName, (UINT)7);
 	bNameValid = strTabName.LoadString(IDS_WEB_SOCKET_INFO_TAB);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputWebSocketInfo, strTabName, (UINT)7);
+	m_wndTabs.AddTab(&m_wndOutputWebSocketInfo, strTabName, (UINT)8);
 	bNameValid = strTabName.LoadString(IDS_INNER_SYSTEM_INFORMATION_TAB2); // WebSocket消息
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputInnerSystemInformation, strTabName, (UINT)8); // 软件系统消息
+	m_wndTabs.AddTab(&m_wndOutputInnerSystemInformation, strTabName, (UINT)9); // 软件系统消息
 	bNameValid = strTabName.LoadString(IDS_ERROR_MESSAGE);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)9);  // 错误消息
+	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)10);  // 错误消息
 
 	// 设置1000毫秒每次的软调度
 	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(3), 1000, nullptr);
@@ -130,6 +135,7 @@ void COutputWnd::UpdateFonts() {
 	m_wndOutputWebSocketInfo.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputInnerSystemInformation.SetFont(&afxGlobalData.fontRegular);
 	m_wndChinaMarketTaskQueue.SetFont(&afxGlobalData.fontRegular);
+	m_wndWorldMarketTaskQueue.SetFont(&afxGlobalData.fontRegular);
 	m_wndErrorMessage.SetFont(&afxGlobalData.fontRegular);
 }
 
@@ -246,16 +252,27 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		}
 	}
 
-	if (m_wndChinaMarketTaskQueue.GetCount() > 0) m_wndChinaMarketTaskQueue.TruncateList(m_wndChinaMarketTaskQueue.GetCount());
 	char buffer[50];
-	const vector<CMarketTaskPtr> vTask = gl_pChinaMarket->GetMarketTaskVector();
-	for (auto& pTask : vTask) {
+	const vector<CMarketTaskPtr> vChinaTask = gl_pChinaMarket->GetMarketTaskVector();
+	if (m_wndChinaMarketTaskQueue.GetCount() > 0) m_wndChinaMarketTaskQueue.TruncateList(m_wndChinaMarketTaskQueue.GetCount());
+	for (auto& pTask : vChinaTask) {
 		CString str = strTime + _T(": ");
 		sprintf_s(buffer, _T("%06d"), pTask->GetTime());
 		str += buffer;
 		str += _T(": ");
 		str += gl_mapMarketMapIndex.at(pTask->GetType());
 		m_wndChinaMarketTaskQueue.AddString(str);
+	}
+
+	const vector<CMarketTaskPtr> vWorldTask = gl_pWorldMarket->GetMarketTaskVector();
+	if (m_wndWorldMarketTaskQueue.GetCount() > 0) m_wndWorldMarketTaskQueue.TruncateList(m_wndWorldMarketTaskQueue.GetCount());
+	for (auto& pTask : vWorldTask) {
+		CString str = strTime + _T(": ");
+		sprintf_s(buffer, _T("%06d"), pTask->GetTime());
+		str += buffer;
+		str += _T(": ");
+		str += gl_mapMarketMapIndex.at(pTask->GetType());
+		m_wndWorldMarketTaskQueue.AddString(str);
 	}
 
 	// 调用基类的OnTimer函数

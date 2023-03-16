@@ -70,7 +70,7 @@ public:
 
 	void CalculateTime(void) noexcept; // 计算本市场的各时间
 	void CalculateLastTradeDate(void) noexcept;
-	void TaskResetMarketFlagAtMidnight(long lCurrentTime);
+	void ResetMarketFlagAtMidnight(long lCurrentTime);
 
 	bool IsReadyToRun(void) const noexcept { return m_fReadyToRun; }
 	void SetReadyToRun(bool fFlag) noexcept { m_fReadyToRun = fFlag; }

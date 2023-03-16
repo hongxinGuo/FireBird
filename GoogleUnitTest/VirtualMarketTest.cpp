@@ -112,18 +112,17 @@ namespace FireBirdTest {
 		gl_pVirtualMarket->CalculateLastTradeDate();
 		EXPECT_EQ(gl_pVirtualMarket->GetDayOfWeek(), tm_.tm_wday);
 
-		long day = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+		const long day = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
 		EXPECT_EQ(gl_pVirtualMarket->GetMarketDate(), day);
 		EXPECT_EQ(gl_pVirtualMarket->GetMonthOfYear(), tm_.tm_mon + 1);
 		EXPECT_EQ(gl_pVirtualMarket->GetDateOfMonth(), tm_.tm_mday);
 		EXPECT_EQ(gl_pVirtualMarket->GetYear(), tm_.tm_year + 1900);
 
-		long time = tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec;
+		const long time = tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec;
 		EXPECT_EQ(gl_pVirtualMarket->GetMarketTime(), time);
 		char buffer[30];
 		sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-		CString str;
-		str = buffer;
+		CString str = buffer;
 
 		EXPECT_EQ(str.Compare(gl_pVirtualMarket->GetStringOfLocalTime()), 0);
 
@@ -145,18 +144,18 @@ namespace FireBirdTest {
 			tUTC -= 24 * 3600; //
 		}
 		GetMarketTimeStruct(&tm_, tUTC, gl_pVirtualMarket->GetMarketTimeZone());
-		long LastTradeDate = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+		const long LastTradeDate = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
 		EXPECT_EQ(gl_pVirtualMarket->GetLastTradeDate(), LastTradeDate);
 	}
 
 	TEST_F(CVirtualMarketTest, TestTransferToMarketTime) {
-		tm tm_, tm2_;
+		tm tm2_;
 		time_t tt;
 
 		gl_pVirtualMarket->CalculateTime();
 		time(&tt);
 		gmtime_s(&tm2_, &tt);
-		tm_ = gl_pVirtualMarket->TransferToMarketTime();
+		const tm tm_ = gl_pVirtualMarket->TransferToMarketTime();
 		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour + 8) || (tm_.tm_hour == tm2_.tm_hour - 16))) << "VirtualMarket默认为东八区";
 	}
 
@@ -251,25 +250,25 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsWorkingDay) {
-		CTime time1(2019, 11, 25, 0, 0, 0); // 此日为星期一
+		const CTime time1(2019, 11, 25, 0, 0, 0); // 此日为星期一
 		EXPECT_TRUE(gl_pVirtualMarket->IsWorkingDay(time1));
 		EXPECT_TRUE(gl_pVirtualMarket->IsWorkingDay(20191125));
-		CTime time2(2019, 11, 26, 0, 0, 0); // 此日为星期二
+		const CTime time2(2019, 11, 26, 0, 0, 0); // 此日为星期二
 		EXPECT_TRUE(gl_pVirtualMarket->IsWorkingDay(time2));
 		EXPECT_TRUE(gl_pVirtualMarket->IsWorkingDay(20191126));
-		CTime time3(2019, 11, 27, 0, 0, 0); // 此日为星期三
+		const CTime time3(2019, 11, 27, 0, 0, 0); // 此日为星期三
 		EXPECT_TRUE(gl_pVirtualMarket->IsWorkingDay(time3));
 		EXPECT_TRUE(gl_pVirtualMarket->IsWorkingDay(20191127));
-		CTime time4(2019, 11, 28, 0, 0, 0); // 此日为星期四
+		const CTime time4(2019, 11, 28, 0, 0, 0); // 此日为星期四
 		EXPECT_TRUE(gl_pVirtualMarket->IsWorkingDay(time4));
 		EXPECT_TRUE(gl_pVirtualMarket->IsWorkingDay(20191128));
-		CTime time5(2019, 11, 29, 0, 0, 0); // 此日为星期五
+		const CTime time5(2019, 11, 29, 0, 0, 0); // 此日为星期五
 		EXPECT_TRUE(gl_pVirtualMarket->IsWorkingDay(time5));
 		EXPECT_TRUE(gl_pVirtualMarket->IsWorkingDay(20191129));
-		CTime time6(2019, 11, 30, 0, 0, 0); // 此日为星期六
+		const CTime time6(2019, 11, 30, 0, 0, 0); // 此日为星期六
 		EXPECT_FALSE(gl_pVirtualMarket->IsWorkingDay(time6));
 		EXPECT_FALSE(gl_pVirtualMarket->IsWorkingDay(20191130));
-		CTime time7(2019, 12, 1, 0, 0, 0); // 此日为星期日
+		const CTime time7(2019, 12, 1, 0, 0, 0); // 此日为星期日
 		EXPECT_FALSE(gl_pVirtualMarket->IsWorkingDay(time7));
 		EXPECT_FALSE(gl_pVirtualMarket->IsWorkingDay(20191201));
 	}
@@ -284,21 +283,20 @@ namespace FireBirdTest {
 
 		localtime_s(&tmLocal, &tUTC);
 		sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-		CString str = buffer;
+		const CString str = buffer;
 		EXPECT_STREQ(gl_pVirtualMarket->GetStringOfLocalTime(), str);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfLocalDateTime) {
 		gl_pVirtualMarket->CalculateTime();
 
-		time_t tUTC = GetUTCTime();
+		const time_t tUTC = GetUTCTime();
 		tm tmLocal;
 		char buffer[100];
-		CString str;
 
 		localtime_s(&tmLocal, &tUTC);
 		sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-		str = buffer;
+		const CString str = buffer;
 		EXPECT_STREQ(gl_pVirtualMarket->GetStringOfLocalDateTime(), str);
 	}
 
@@ -308,10 +306,9 @@ namespace FireBirdTest {
 		tm tmMarket;
 		GetMarketTimeStruct(&tmMarket, GetUTCTime(), gl_pVirtualMarket->GetMarketTimeZone());
 		char buffer[30];
-		CString str;
 
 		sprintf_s(buffer, _T("%02d:%02d:%02d "), tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
-		str = buffer;
+		CString str = buffer;
 		EXPECT_STREQ(gl_pVirtualMarket->GetStringOfMarketTime(), str);
 	}
 
@@ -320,24 +317,22 @@ namespace FireBirdTest {
 
 		tm tmMarket;
 		char buffer[100];
-		CString str;
 
 		GetMarketTimeStruct(&tmMarket, GetUTCTime(), gl_pVirtualMarket->GetMarketTimeZone());
 		sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
-		str = buffer;
+		const CString str = buffer;
 		EXPECT_STREQ(gl_pVirtualMarket->GetStringOfMarketDateTime(), str);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfMarketDate) {
 		char buffer[30];
-		CString str;
 
-		long lDate = gl_pVirtualMarket->GetMarketDate();
-		long year = lDate / 10000;
-		long month = lDate / 100 - year * 100;
-		long day = lDate - year * 10000 - month * 100;
+		const long lDate = gl_pVirtualMarket->GetMarketDate();
+		const long year = lDate / 10000;
+		const long month = lDate / 100 - year * 100;
+		const long day = lDate - year * 10000 - month * 100;
 		sprintf_s(buffer, _T("%4d年%2d月%2d日"), year, month, day);
-		str = buffer;
+		const CString str = buffer;
 		EXPECT_STREQ(gl_pVirtualMarket->GetStringOfMarketDate(), str);
 	}
 
@@ -360,12 +355,12 @@ namespace FireBirdTest {
 		// 这个其实是测试的CVirtualMarket类中的函数。
 		EXPECT_TRUE(gl_pVirtualMarket->HaveResetMarketPermission());
 		gl_pVirtualMarket->SetResetMarketPermission(false);
-		gl_pVirtualMarket->TaskResetMarketFlagAtMidnight(0);
+		gl_pVirtualMarket->ResetMarketFlagAtMidnight(0);
 		EXPECT_TRUE(gl_pVirtualMarket->HaveResetMarketPermission());
 		gl_pVirtualMarket->SetResetMarketPermission(false);
-		gl_pVirtualMarket->TaskResetMarketFlagAtMidnight(1501);
+		gl_pVirtualMarket->ResetMarketFlagAtMidnight(1501);
 		EXPECT_FALSE(gl_pVirtualMarket->HaveResetMarketPermission());
-		gl_pVirtualMarket->TaskResetMarketFlagAtMidnight(1500);
+		gl_pVirtualMarket->ResetMarketFlagAtMidnight(1500);
 		EXPECT_TRUE(gl_pVirtualMarket->HaveResetMarketPermission());
 
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 2);
@@ -373,5 +368,7 @@ namespace FireBirdTest {
 		gl_systemMessage.PopInformationMessage();
 	}
 
-	TEST_F(CVirtualMarketTest, TestUpdateMarketInfo) { EXPECT_TRUE(gl_pVirtualMarket->UpdateMarketInfo()); }
+	TEST_F(CVirtualMarketTest, TestUpdateMarketInfo) {
+		EXPECT_TRUE(gl_pVirtualMarket->UpdateMarketInfo());
+	}
 }

@@ -9,6 +9,7 @@
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
 #include"CallableFunction.h"
+#include "QuandlDataSource.h"
 #include"RSReference.h"
 #include"Thread.h"
 
@@ -661,10 +662,15 @@ bool CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
 //
 // 将当日处理好的数据储存于数据库中，以备万一系统崩溃时重新装入。
 //
+// 调试模式下，使用原始的逐项删除法，耗时3.5秒左右,使用ExecuteSQL(_T("TRUNCATE `chinamarket`.`today`;"))耗时3.1秒。没有显著的改善。
+// 决定只使用原始的逐项删除模式。
 //
 //////////////////////////////////////////////////////////////////////////////////
 bool CContainerChinaStock::UpdateTodayTempDB(void) {
+	//CHighPerformanceCounter counter;
 	CSetDayLineTodaySaved setDayLineTemp;
+
+	//counter.start();
 
 	setDayLineTemp.Open();
 	setDayLineTemp.m_pDatabase->BeginTrans();
@@ -690,6 +696,13 @@ bool CContainerChinaStock::UpdateTodayTempDB(void) {
 	}
 	setDayLineTemp.m_pDatabase->CommitTrans();
 	setDayLineTemp.Close();
+	//counter.stop();
+
+	//char buffer[50];
+	//sprintf_s(buffer, _T("%6d"), counter.GetElapsedMilliSecond());
+	//CString strMessage = _T("存储临时数据用时：");
+	//strMessage += buffer;
+	//gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 
 	return true;
 }

@@ -37,6 +37,8 @@ protected:
 
 	COutputList m_wndOutputInformation;
 	COutputList m_wndOutputDayLineInfo;
+	COutputList m_wndChinaMarketTaskQueue;
+	COutputList m_wndWorldMarketTaskQueue;
 	COutputList m_wndOutputTransaction;
 	COutputList m_wndOutputCancelSell;
 	COutputList m_wndOutputCancelBuy;
@@ -44,7 +46,6 @@ protected:
 	COutputList m_wndOutputWebSocketInfo;
 	COutputList m_wndOutputInnerSystemInformation;
 	COutputList m_wndErrorMessage;
-	COutputList m_wndChinaMarketTaskQueue;
 
 	UINT m_uIdTimer;
 

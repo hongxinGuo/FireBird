@@ -46,13 +46,10 @@ public:
 public:
 	// 定时更新，完成具体调度任务。由主线程CMainFrame的OnTimer函数调用。其后跟随各被调度函数
 	bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
-
 	bool SchedulingTaskPerSecond(long lSecondNumber, long lCurrentTime); // 每秒调度一次
-	bool SchedulingTaskPerMinute(long lCurrentTime); // 每一分钟调度一次
-	void CreateTaskOfReset();
 
-	// 每日定时任务调度
-	bool ProcessEveryDayTask(long lCurrentTime); // 由SchedulingTaskPerSecond调度
+	void CreateTaskOfReset();
+	bool ProcessEveryDayTask(long lCurrentTime); // 每日定时任务调度,由SchedulingTaskPerSecond调度
 
 	// 各种任务
 	virtual bool TaskCreateTask(long lCurrentTime);
@@ -68,7 +65,6 @@ public:
 	bool TaskProcessTodayStock(long lCurrentTime);
 	void ProcessTodayStock(void);
 	bool CheckDayLineDB(void);
-	bool TaskCheckDayLineDB2(void);
 	bool TaskCheckFastReceivingData(long lCurrentTime);
 	bool TaskCheckMarketOpen(long lCurrentTime);
 
@@ -176,7 +172,7 @@ public:
 	virtual bool AppendChosenStockDB(void);
 	void LoadChosenStockDB(void);
 	virtual bool UpdateTodayTempDB(void) { return m_containerChinaStock.UpdateTodayTempDB(); }
-	bool LoadTodayTempDB(long lTheDay);
+	bool TaskLoadTempRTData(long lTheDay, long lCurrentTime);
 	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate);
 	virtual bool SaveStockSection(void) { return m_containerStockSymbol.UpdateStockSectionDB(); }
 
@@ -466,8 +462,6 @@ protected:
 	bool m_fUpdateChosenStockDB;
 
 private:
-	int m_iCount1Minute; // 与10秒每次的错开1秒钟
-	int m_iCount10Second;
 };
 
 using CChinaMarketPtr = shared_ptr<CChinaMarket>;

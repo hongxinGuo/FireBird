@@ -47,6 +47,7 @@
 #define IDS_WEB_SOCKET_INFO_TAB         409
 #define IDS_STRING410                   410
 #define IDS_CHINA_MARKET_TASK_QUEUE     410
+#define IDS_WORLD_MARKET_TASK_QUEUE     411
 #define IDC_COMBO_DISPLAY_RS            1003
 #define IDC_COMBO_OPTION_DISPLAY_RS     1003
 #define IDC_MFCCOLORBUTTON1             1004
