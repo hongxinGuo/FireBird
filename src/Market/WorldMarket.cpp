@@ -138,10 +138,11 @@ bool CWorldMarket::SchedulingTask(void) {
 	const time_t tUTC = GetUTCTime();
 	const long lTimeDiffer = tUTC > m_lastTimeSchedulingTask;
 
-	TaskCheckSystemReady();
-
 	// 调用各Web data source，进行网络数据的接收和处理。
 	RunDataSource(lCurrentTime);
+
+	// 执行本市场各项定时任务
+	ProcessEveryDayTask(lCurrentTime);
 
 	//根据时间，调度各项定时任务.每秒调度一次
 	if (lTimeDiffer > 0) {
@@ -156,20 +157,58 @@ void CWorldMarket::CreateTaskOfReset() {
 	if (HaveResetMarketPermission()) { // 如果允许重置系统
 		const auto pTask = make_shared<CMarketTask>();
 		pTask->SetType(WORLD_MARKET_CREATE_TASK__);
-		pTask->SetTime(3000); // 午夜零时三十分整重置系统
+		pTask->SetTime(1000); // 零时十分重置系统
 		StoreMarketTask(pTask);
+		SetResetMarketPermission(false);
 	}
 }
 
 bool CWorldMarket::ProcessEveryDayTask(long lCurrentTime) {
 	if (IsMarketTaskEmpty()) return false;
 	const auto pTask = GetMarketTask();
-	if (lCurrentTime >= pTask->GetTime()) { }
+	if (lCurrentTime >= pTask->GetTime()) {
+		DiscardCurrentMarketTask();
+		switch (pTask->GetType()) {
+		case WORLD_MARKET_CREATE_TASK__: // 生成其他任务
+			TaskCreateTask(lCurrentTime);
+			break;
+		case WORLD_MARKET_CHECK_SYSTEM__: // 170000重启系统
+			TaskCheckMarketReady(lCurrentTime);
+			break;
+		case WORLD_MARKET_RESET__: // 170000重启系统
+			TaskResetMarket(lCurrentTime);
+			break;
+		case WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__:
+			//TaskUpdateStockProfileDB(lCurrentTime);
+			break;
+		default:
+			ASSERT(0); // 非法任务
+			break;
+		}
+		return true;
+	}
+	return false;
+}
+
+bool CWorldMarket::TaskCreateTask(long lCurrentTime) {
+	CMarketTaskPtr pTask;
+	const long lTimeMinute = (lCurrentTime / 100) * 100; // 当前小时和分钟
+
+	while (!IsMarketTaskEmpty()) DiscardCurrentMarketTask();
+
+	// 胸痛初始化检查
+	AddTask(WORLD_MARKET_CHECK_SYSTEM__, 1);
+
+	// 重置系统
+	if (lCurrentTime < 170000) {
+		AddTask(WORLD_MARKET_RESET__, 170000); // 执行时间为：170000
+	}
 	return true;
 }
 
 bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	ResetMarketFlagAtMidnight(lCurrentTime);
+	CreateTaskOfReset();
 
 	m_iCount10Second -= lSecond;
 	m_iCount1Minute -= lSecond;
@@ -205,8 +244,6 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 	// 建立WebSocket连接
 	StartAllWebSocket();
 
-	TaskResetMarket(lCurrentTime);
-
 	// 这个必须是最后一个任务。因其在执行完毕后返回了。
 	if (!IsTimeToResetSystem(lCurrentTime)) {	// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
 		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
@@ -237,28 +274,18 @@ bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
 
 	// 更新股票基本情况最好放在最后。
 	if (!gl_pFinnhubDataSource->IsUpdateSymbol() && IsUpdateStockProfileDB()) {
-		TaskUpdateStockProfileDB();
+		TaskUpdateStockProfileDB(lCurrentTime);
 	}
 
 	return true;
 }
 
-/// <summary>
-/// /////////////////////////////////////////////////////////////////////////////////
-///
-/// 此任务必须放置于每分钟执行一次的调度中。
-/// <returns></returns>
 bool CWorldMarket::TaskResetMarket(long lCurrentTime) {
 	// 市场时间十七时重启系统
-	if (HaveResetMarketPermission()) {// 如果允许重置系统
-		if ((lCurrentTime > 170000) && (lCurrentTime <= 170100)) {// 本市场时间的下午五时(北京时间上午五时重启本市场。这样有利于接收日线数据。
-			SetResetMarket(true); // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
-			SetResetMarketPermission(false); // 今天不再允许重启系统。
-			SetSystemReady(false);
-			return true;
-		}
-	}
-	return false;
+	SetResetMarket(true); // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+	SetSystemReady(false);
+
+	return true;
 }
 
 bool CWorldMarket::TaskUpdateTiingoIndustry(void) {
@@ -399,18 +426,17 @@ bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
 	return (true);
 }
 
-bool CWorldMarket::TaskCheckSystemReady(void) {
+bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
 	if (!IsSystemReady()) {
 		if (!gl_pFinnhubDataSource->IsUpdateSymbol() && !gl_pFinnhubDataSource->IsUpdateForexExchange() && !gl_pFinnhubDataSource->IsUpdateForexSymbol()
 			&& !gl_pFinnhubDataSource->IsUpdateCryptoExchange() && !gl_pFinnhubDataSource->IsUpdateCryptoSymbol()) {
 			const CString str = "世界市场初始化完毕";
 			gl_systemMessage.PushInformationMessage(str);
 			SetSystemReady(true);
-			return true;
 		}
-		return false;
 	}
-	return true;
+	if (!IsSystemReady()) AddTask(WORLD_MARKET_CHECK_SYSTEM__, GetNextSecond(lCurrentTime));
+	return IsSystemReady();
 }
 
 bool CWorldMarket::TaskUpdateDayLineStartEndDate(void) {
@@ -425,7 +451,7 @@ bool CWorldMarket::TaskUpdateDayLineDB() {
 	return true;
 }
 
-bool CWorldMarket::TaskUpdateStockProfileDB(void) {
+bool CWorldMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 	thread thread1(ThreadUpdateWorldMarketStockProfileDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 	return true;

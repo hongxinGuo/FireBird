@@ -143,7 +143,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL) << "在生成MainFrame时，会生成一个视觉管理器。在退出时需要删除之";
 
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
-				auto pStock = gl_pChinaMarket->GetStock(i);
+				const auto pStock = gl_pChinaMarket->GetStock(i);
 				pStock->SetDayLineNeedUpdate(true);
 				if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
 
@@ -156,7 +156,7 @@ namespace FireBirdTest {
 			}
 
 			for (int i = 0; i < gl_pMockChinaMarket->GetTotalStock(); i++) {
-				auto pStock = gl_pMockChinaMarket->GetStock(i);
+				const auto pStock = gl_pMockChinaMarket->GetStock(i);
 				pStock->SetDayLineNeedUpdate(true);
 				if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
 
@@ -168,29 +168,9 @@ namespace FireBirdTest {
 				}
 			}
 
-			if (gl_pChinaMarket->GetMarketDate() >= 20210531) {
-				// 目前测试数据库的日线结束日期为20210430
-				if (gl_pChinaMarket->GetDayOfWeek() == 1) {
-					// 如果是星期一
-					EXPECT_TRUE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate()) << "每星期一重新检查摘牌股票";
-					EXPECT_TRUE(gl_pMockChinaMarket->TooManyStockDayLineNeedUpdate()) << "每星期一重新检查摘牌股票";
-				}
-				else {
-					EXPECT_FALSE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate()) << "所有的活跃股票都被视为摘牌了";
-					EXPECT_FALSE(gl_pMockChinaMarket->TooManyStockDayLineNeedUpdate()) << "所有的活跃股票都被视为摘牌了";
-				}
-				gl_pChinaMarket->SetStockDayLineNeedUpdate(gl_pChinaMarket->GetTotalStock()); // 伪装此标识
-				gl_pMockChinaMarket->SetStockDayLineNeedUpdate(gl_pChinaMarket->GetTotalStock()); // 伪装此标识
-			}
-			else {
-				EXPECT_TRUE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate());
-				EXPECT_TRUE(gl_pMockChinaMarket->TooManyStockDayLineNeedUpdate());
-			}
-
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
 			EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 4800);
-			EXPECT_TRUE(gl_pChinaMarket->TooManyStockDayLineNeedUpdate());
 			gl_pChinaMarket->SetSystemReady(true);
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
@@ -200,7 +180,7 @@ namespace FireBirdTest {
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 
 			gl_pWorldMarket->SetSystemReady(true);
-			auto pStock1 = gl_pWorldMarket->GetStock(_T("AAPL"));
+			const auto pStock1 = gl_pWorldMarket->GetStock(_T("AAPL"));
 			pStock1->SetUpdateCompanyProfile(true);
 
 			// 清空预装入的finnhubInaccessibleExchange

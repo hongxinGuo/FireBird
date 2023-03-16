@@ -46,28 +46,6 @@ namespace FireBirdTest {
 	protected:
 	};
 
-	TEST_F(CWorldMarketTest, TestTaskResetMarket) {
-		gl_pWorldMarket->SetSystemReady(true);
-		gl_pWorldMarket->SetResetMarketPermission(false);
-		EXPECT_FALSE(gl_pWorldMarket->TaskResetMarket(101010)) << "不允许重置系统时，永远返回假";
-
-		gl_pWorldMarket->SetResetMarketPermission(true);
-		EXPECT_FALSE(gl_pWorldMarket->TaskResetMarket(170000));
-		gl_pWorldMarket->SetResetMarketPermission(true);
-		EXPECT_FALSE(gl_pWorldMarket->TaskResetMarket(170101));
-		gl_pWorldMarket->SetResetMarketPermission(true);
-		EXPECT_TRUE(gl_pWorldMarket->TaskResetMarket(170001));
-		gl_pWorldMarket->SetResetMarketPermission(true);
-		EXPECT_TRUE(gl_pWorldMarket->TaskResetMarket(170100));
-		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
-		EXPECT_FALSE(gl_pWorldMarket->HaveResetMarketPermission());
-		EXPECT_TRUE(gl_pWorldMarket->IsResetMarket());
-
-		gl_pWorldMarket->SetResetMarketPermission(true);
-		gl_pWorldMarket->SetSystemReady(true);
-		gl_pWorldMarket->SetResetMarket(false);
-	}
-
 	TEST_F(CWorldMarketTest, TestIsResetSystemTime) {
 		EXPECT_FALSE(gl_pWorldMarket->IsTimeToResetSystem(165759));
 		EXPECT_TRUE(gl_pWorldMarket->IsTimeToResetSystem(165800));

@@ -358,9 +358,9 @@ namespace FireBirdTest {
 		gl_pVirtualMarket->ResetMarketFlagAtMidnight(0);
 		EXPECT_TRUE(gl_pVirtualMarket->HaveResetMarketPermission());
 		gl_pVirtualMarket->SetResetMarketPermission(false);
-		gl_pVirtualMarket->ResetMarketFlagAtMidnight(1501);
+		gl_pVirtualMarket->ResetMarketFlagAtMidnight(101);
 		EXPECT_FALSE(gl_pVirtualMarket->HaveResetMarketPermission());
-		gl_pVirtualMarket->ResetMarketFlagAtMidnight(1500);
+		gl_pVirtualMarket->ResetMarketFlagAtMidnight(100);
 		EXPECT_TRUE(gl_pVirtualMarket->HaveResetMarketPermission());
 
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 2);

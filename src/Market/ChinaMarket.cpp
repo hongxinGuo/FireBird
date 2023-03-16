@@ -104,8 +104,6 @@ void CChinaMarket::Reset(void) {
 	m_lRTDataReceivedInOrdinaryTradeTime = 0;
 	m_lNewRTDataReceivedInOrdinaryTradeTime = 0;
 
-	m_lStockDayLineNeedUpdate = 0;
-
 	while (m_qSinaRT.Size() > 0) m_qSinaRT.PopData();
 	while (m_qNeteaseRT.Size() > 0) m_qNeteaseRT.PopData();
 	while (m_qTengxunRT.Size() > 0) m_qTengxunRT.PopData();
@@ -191,7 +189,7 @@ bool CChinaMarket::IsDummyTime(void) {
 	return !IsWorkingTime();
 }
 
-bool CChinaMarket::CheckMarketReady(void) {
+bool CChinaMarket::TaskCheckMarketReady(long lCurrentTime) {
 	if (!IsSystemReady()) {
 		if (IsResetMarket()) return false;
 		const auto lMax = GetTotalStock() > 12000 ? GetTotalStock() * 2 : 24000;
@@ -200,6 +198,8 @@ bool CChinaMarket::CheckMarketReady(void) {
 			gl_systemMessage.PushInformationMessage(_T("中国股票市场初始化完毕"));
 		}
 	}
+	if (!IsSystemReady()) AddTask(CHINA_MARKET_CHECK_SYSTEM__, GetNextSecond(lCurrentTime));
+
 	return IsSystemReady();
 }
 
@@ -522,8 +522,6 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	ResetMarketFlagAtMidnight(lCurrentTime);
 	CreateTaskOfReset();
 
-	CheckMarketReady(); // 检查市场是否完成初始化
-
 	if ((GetDayLineNeedUpdateNumber() <= 0) && (GetDayLineNeedSaveNumber() <= 0) && m_fCalculateChosen10RS) {
 		TaskChoice10RSStrongStockSet(lCurrentTime);
 		TaskChoice10RSStrong1StockSet(lCurrentTime);
@@ -582,11 +580,11 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 		case CHINA_MARKET_CREATE_TASK__: // 生成其他任务
 			TaskCreateTask(lCurrentTime);
 			break;
+		case CHINA_MARKET_CHECK_SYSTEM__:
+			TaskCheckMarketReady(lCurrentTime);
+			break;
 		case CHINA_MARKET_RESET__: // 91300重启系统
 			TaskResetMarket(lCurrentTime);
-			break;
-		case CHINA_MARKET_RESET_AGAIN__: // 92600再次重启系统
-			TaskResetMarketAgain(lCurrentTime);
 			break;
 		case CHINA_MARKET_LOAD_TEMP_RT_DATA__:
 			TaskLoadTempRTData(GetMarketDate(), lCurrentTime);
@@ -619,72 +617,45 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
-	CMarketTaskPtr pTask;
 	const long lTimeMinute = (lCurrentTime / 100) * 100; // 当前小时和分钟
-
-	SetResetMarketPermission(false); // 今天不再允许重置系统。
 
 	while (!IsMarketTaskEmpty()) DiscardCurrentMarketTask();
 
+	// 系统初始化检查
+	AddTask(CHINA_MARKET_CHECK_SYSTEM__, 1);
+
 	// 初始化系统
 	if (lCurrentTime < 91300) {
-		pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_RESET__);
-		pTask->SetTime(91300); // 执行时间为：91300
-		StoreMarketTask(pTask);
+		AddTask(CHINA_MARKET_RESET__, 91300); // 执行时间为：91300
 	}
 	// 再次初始化系统
 	if (lCurrentTime < 92600) {
-		pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_RESET_AGAIN__);
-		pTask->SetTime(92600); // 执行时间为：92600
-		StoreMarketTask(pTask);
+		AddTask(CHINA_MARKET_RESET__, 92600); // 执行时间为：92600
 	}
 
 	// 每秒一次分配实时数据
-	pTask = make_shared<CMarketTask>();
-	pTask->SetType(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
-	pTask->SetTime(1); // 开始执行时间为：1
-	StoreMarketTask(pTask);
-
-	// 每五分钟存储一次系统选项数据库
-	pTask = make_shared<CMarketTask>();
-	pTask->SetType(CHINA_MARKET_UPDATE_OPTION_DB__);
-	pTask->SetTime(GetNextTime(lTimeMinute + 5, 0, 3, 0)); // 开始执行时间为启动之后的三分钟。
-	StoreMarketTask(pTask);
-
-	// 每五分钟存储一次股票简要数据库
-	pTask = make_shared<CMarketTask>();
-	pTask->SetType(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__);
-	pTask->SetTime(GetNextTime(lTimeMinute + 10, 0, 4, 0)); // 开始执行时间为启动之后的四分钟。
-	StoreMarketTask(pTask);
-
-	// 每十秒钟存储一次日线历史数据。
-	pTask = make_shared<CMarketTask>();
-	pTask->SetType(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__);
-	pTask->SetTime(lCurrentTime);
-	StoreMarketTask(pTask);
+	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 1); // 开始执行时间为：1
 
 	// 装载本日之前存储的实时数据（如果有的话）
-	pTask = make_shared<CMarketTask>();
-	pTask->SetType(CHINA_MARKET_LOAD_TEMP_RT_DATA__);
-	pTask->SetTime(lCurrentTime);
-	StoreMarketTask(pTask);
+	AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, lCurrentTime);
+
+	// 每十秒钟存储一次日线历史数据。
+	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(lCurrentTime, 0, 0, 10));
+
+	// 每五分钟存储一次系统选项数据库
+	AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, GetNextTime(lTimeMinute + 5, 0, 3, 0)); // 开始执行时间为启动之后的三分钟。
+
+	// 每五分钟存储一次股票简要数据库
+	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, GetNextTime(lTimeMinute + 10, 0, 4, 0)); // 开始执行时间为启动之后的四分钟。
 
 	if (IsWorkingDay()) {
 		// 每五分钟存储一次临时数据
-		pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_SAVE_TEMP_RT_DATA__);
-		pTask->SetTime(92730); // 开始执行时间为：92730.要确保第一次执行的时间早于93000，这样启动数据库的时间较短，否则容易导致系统崩溃（原因不明）。
-		StoreMarketTask(pTask);
+		AddTask(CHINA_MARKET_SAVE_TEMP_RT_DATA__, 92730); // 开始执行时间为：92730.要确保第一次执行的时间早于93000，这样启动数据库的时间较短，否则容易导致系统崩溃（原因不明）。
 	}
 
 	if (IsWorkingDay() && lCurrentTime < 150300) {
 		// 生成本日历史数据
-		pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_BUILD_TODAY_DATABASE__);
-		pTask->SetTime(150530); // 开始执行时间为：150530
-		StoreMarketTask(pTask);
+		AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, 150530); // 开始执行时间为：150530
 	}
 
 	return true;
@@ -735,6 +706,7 @@ void CChinaMarket::CreateTaskOfReset() {
 		pTask->SetType(CHINA_MARKET_CREATE_TASK__);
 		pTask->SetTime(3000); // 午夜零时三十分整重置系统
 		StoreMarketTask(pTask);
+		SetResetMarketPermission(false);
 	}
 }
 
@@ -853,25 +825,9 @@ bool CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
 	return m_fMarketOpened;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 此任务必须每分钟调度一次，因其实现机制采用了
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 	// 九点十三分重启系统
 	// 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
-	if (!TooManyStockDayLineNeedUpdate()) {
-		// 当有工作日作为休假日后，所有的日线数据都需要检查一遍，此时不在0915时重置系统以避免更新日线函数尚在执行。
-		SetResetMarket(true); // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
-		SetSystemReady(false);
-		return true;
-	}
-	return false;
-}
-
-bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
-	// 九点二十五分再次重启系统
 	SetResetMarket(true); // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
 	SetSystemReady(false);
 	return true;

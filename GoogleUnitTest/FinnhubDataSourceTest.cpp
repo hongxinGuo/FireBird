@@ -975,32 +975,33 @@ namespace FireBirdTest {
 		gl_pFinnhubDataSource->SetUpdateForexExchange(true);
 		gl_pFinnhubDataSource->SetUpdateCryptoSymbol(true);
 		gl_pFinnhubDataSource->SetUpdateForexSymbol(true);
-		EXPECT_FALSE(gl_pWorldMarket->TaskCheckSystemReady());
+		EXPECT_FALSE(gl_pWorldMarket->TaskCheckMarketReady(0));
 		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
 
 		gl_pFinnhubDataSource->SetUpdateSymbol(false);
-		EXPECT_FALSE(gl_pWorldMarket->TaskCheckSystemReady());
+		EXPECT_FALSE(gl_pWorldMarket->TaskCheckMarketReady(0));
 		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
 
 		gl_pFinnhubDataSource->SetUpdateForexExchange(false);
-		EXPECT_FALSE(gl_pWorldMarket->TaskCheckSystemReady());
+		EXPECT_FALSE(gl_pWorldMarket->TaskCheckMarketReady(0));
 		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
 
 		gl_pFinnhubDataSource->SetUpdateForexSymbol(false);
-		EXPECT_FALSE(gl_pWorldMarket->TaskCheckSystemReady());
+		EXPECT_FALSE(gl_pWorldMarket->TaskCheckMarketReady(0));
 		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
 
 		gl_pFinnhubDataSource->SetUpdateCryptoExchange(false);
-		EXPECT_FALSE(gl_pWorldMarket->TaskCheckSystemReady());
+		EXPECT_FALSE(gl_pWorldMarket->TaskCheckMarketReady(0));
 		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
 
 		gl_pFinnhubDataSource->SetUpdateCryptoSymbol(false);
-		EXPECT_TRUE(gl_pWorldMarket->TaskCheckSystemReady());
+		EXPECT_TRUE(gl_pWorldMarket->TaskCheckMarketReady(0));
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		const CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("世界市场初始化完毕"));
 
 		// 恢复原状
+		while (!gl_pWorldMarket->IsMarketTaskEmpty()) gl_pWorldMarket->DiscardCurrentMarketTask();
 		gl_pFinnhubDataSource->SetUpdateSymbol(true);
 		gl_pFinnhubDataSource->SetUpdateCryptoExchange(true);
 		gl_pFinnhubDataSource->SetUpdateForexExchange(true);

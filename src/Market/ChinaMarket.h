@@ -53,8 +53,8 @@ public:
 
 	// 各种任务
 	virtual bool TaskCreateTask(long lCurrentTime);
+	bool TaskCheckMarketReady(long lCurrentTime);
 	virtual bool TaskResetMarket(long lCurrentTime);
-	virtual bool TaskResetMarketAgain(long lCurrentTime);
 	virtual void TaskDistributeAndCalculateRTData(long lCurrentTime);
 	bool TaskProcessAndSaveDayLine(long lCurrentTime);
 	void TaskSaveTempData(long lCurrentTime);
@@ -164,7 +164,7 @@ public:
 	// 数据库读取存储操作
 	bool SaveDayLineData(void) { return m_containerChinaStock.SaveDayLineData(); } // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
 	virtual bool UpdateStockProfileDB(void) { return m_containerChinaStock.UpdateStockProfileDB(); }
-	void LoadStockProfileDB(void) { m_lStockDayLineNeedUpdate = m_containerChinaStock.LoadStockProfileDB(); }
+	void LoadStockProfileDB(void) { m_containerChinaStock.LoadStockProfileDB(); }
 
 	virtual bool UpdateOptionDB(void);
 	void LoadOptionDB(void);
@@ -347,8 +347,6 @@ public:
 	void SetRTDataReceived(const INT64 llValue) noexcept { m_llRTDataReceived = llValue; }
 	void IncreaseRTDataReceived(const INT64 llValue = 1) noexcept { m_llRTDataReceived += llValue; }
 
-	bool CheckMarketReady(void);
-
 	bool ChangeToNextStock(void);
 	bool ChangeToPrevStock(void);
 	bool ChangeToPrevStockSet(void);
@@ -360,13 +358,6 @@ public:
 	}
 
 	size_t GetCurrentStockSetSize(void);
-
-	void SetStockDayLineNeedUpdate(const long lValue) noexcept { m_lStockDayLineNeedUpdate = lValue; }
-
-	bool TooManyStockDayLineNeedUpdate(void) const noexcept {
-		if (m_lStockDayLineNeedUpdate > 1000) return true;
-		return false;
-	}
 
 	void SetUpdateStockSection(const bool fFlag) noexcept { m_containerStockSymbol.SetUpdateStockSection(fFlag); }
 	bool IsUpdateStockSection(void) const noexcept { return m_containerStockSymbol.IsUpdateStockSection(); }
@@ -406,8 +397,6 @@ protected:
 	atomic_int64_t m_llRTDataReceived; // 接收到的实时数据数量
 	long m_lRTDataReceivedInOrdinaryTradeTime; // 本日正常交易时间内接收到的实时数据数量
 	long m_lNewRTDataReceivedInOrdinaryTradeTime; // 本日正常交易时间内接收到的新实时数据数量
-
-	long m_lStockDayLineNeedUpdate; // 股票历史日线今日需要更新数
 
 	// 处理后的各种数据
 	CPriorityQueueWebRTData m_qSinaRT; // 中国市场实时数据队列。

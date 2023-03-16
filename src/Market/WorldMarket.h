@@ -64,13 +64,16 @@ public:
 	bool SchedulingTaskPer10Seconds(long lCurrentTime);
 	bool SchedulingTaskPerMinute(long lCurrentTime);
 	bool SchedulingTaskPer5Minute(long lCurrentTime);
+
+	bool TaskCreateTask(long lCurrentTime);
 	bool TaskResetMarket(long lCurrentTime);
+	bool TaskCheckMarketReady(long lCurrentTime);
 
 	virtual bool TaskUpdateTiingoIndustry(void);
 	virtual bool TaskUpdateSICIndustry(void);
 	virtual bool TaskUpdateNaicsIndustry(void);
 
-	bool TaskUpdateStockProfileDB(void);
+	bool TaskUpdateStockProfileDB(long lCurrentTime);
 	bool TaskUpdateCompanyNewsDB(void);
 	bool TaskUpdateBasicFinancialDB(void);
 	bool TaskUpdateDayLineDB(void);
@@ -87,8 +90,6 @@ public:
 	bool TaskUpdateInsiderSentimentDB(void);
 	bool TaskUpdateTiingoStockDB(void);
 	bool TaskUpdateTiingoCryptoSymbolDB(void);
-
-	bool TaskCheckSystemReady(void);
 
 	bool TaskUpdateDayLineStartEndDate(void);
 

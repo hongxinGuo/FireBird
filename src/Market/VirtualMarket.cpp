@@ -52,6 +52,13 @@ bool CVirtualMarket::UpdateMarketInfo(void) {
 	return true;
 }
 
+void CVirtualMarket::AddTask(long lTaskType, long lExecuteTime) {
+	const auto pTask = make_shared<CMarketTask>();
+	pTask->SetType(lTaskType);
+	pTask->SetTime(lExecuteTime);
+	StoreMarketTask(pTask);
+}
+
 tm CVirtualMarket::TransferToMarketTime(time_t tUTC) const {
 	tm tm_{};
 
@@ -172,7 +179,7 @@ CString CVirtualMarket::GetStringOfMarketDate(void) const {
 
 void CVirtualMarket::ResetMarketFlagAtMidnight(long lCurrentTime) {
 	// 午夜过后重置各种标识
-	if (!HaveResetMarketPermission() && lCurrentTime <= 1500) {	// 在零点到零点十五分，重置系统标识
+	if (!HaveResetMarketPermission() && lCurrentTime <= 100) {	// 在零点到零点十五分，重置系统标识
 		m_fResetMarketPermission = true;
 		CString str = m_strMarketId + _T("重置系统重置标识");
 		TRACE(_T("%S \n"), str.GetBuffer());

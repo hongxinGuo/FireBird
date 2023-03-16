@@ -107,11 +107,11 @@ namespace FireBirdTest {
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask3) {
 		const auto pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_RESET_AGAIN__);
+		pTask->SetType(CHINA_MARKET_RESET__);
 		pTask->SetTime(92600);
 		gl_pMockChinaMarket->StoreMarketTask(pTask);
 
-		EXPECT_CALL(*gl_pMockChinaMarket, TaskResetMarketAgain(92700)).Times(1);
+		EXPECT_CALL(*gl_pMockChinaMarket, TaskResetMarket(92700)).Times(1);
 
 		EXPECT_TRUE(gl_pMockChinaMarket->ProcessEveryDayTask(92700));
 
