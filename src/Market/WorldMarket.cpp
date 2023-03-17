@@ -167,7 +167,7 @@ bool CWorldMarket::ProcessEveryDayTask(long lCurrentTime) {
 	if (IsMarketTaskEmpty()) return false;
 	const auto pTask = GetMarketTask();
 	if (lCurrentTime >= pTask->GetTime()) {
-		DiscardCurrentMarketTask();
+		DiscardMarketTask();
 		switch (pTask->GetType()) {
 		case WORLD_MARKET_CREATE_TASK__: // 生成其他任务
 			TaskCreateTask(lCurrentTime);
@@ -194,7 +194,7 @@ bool CWorldMarket::TaskCreateTask(long lCurrentTime) {
 	CMarketTaskPtr pTask;
 	const long lTimeMinute = (lCurrentTime / 100) * 100; // 当前小时和分钟
 
-	while (!IsMarketTaskEmpty()) DiscardCurrentMarketTask();
+	while (!IsMarketTaskEmpty()) DiscardMarketTask();
 
 	// 胸痛初始化检查
 	AddTask(WORLD_MARKET_CHECK_SYSTEM__, 1);

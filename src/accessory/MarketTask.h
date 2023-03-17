@@ -20,6 +20,7 @@ enum {
 	CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, // 每十秒钟检查一次，有待处理的日线数据就处理
 
 	CHINA_LOAD_CURRENT_STOCK_DAY_LINE__,
+	CHINA_ACCESSORY_TASK__, // 其他辅助任务（如确定工作时间与否、是否快速接收数据等等）
 
 	WORLD_MARKET_CREATE_TASK__ = 1001,
 	WORLD_MARKET_CHECK_SYSTEM__, // 系统初始化检查

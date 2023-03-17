@@ -28,13 +28,13 @@ namespace FireBirdTest {
 			pMockStock = make_shared<CMockChinaStock>();
 
 			//»Ö¸´Ô­×´
-			while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+			while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
 		}
 
 		void TearDown(void) override {
 			gl_pChinaMarket->SetCurrentStock(nullptr);
 			//»Ö¸´Ô­×´
-			while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+			while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
 
 			pMockStock = nullptr;
 			vStock.resize(0);

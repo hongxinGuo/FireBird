@@ -58,17 +58,18 @@ public:
 	virtual void TaskDistributeAndCalculateRTData(long lCurrentTime);
 	bool TaskProcessAndSaveDayLine(long lCurrentTime);
 	void TaskSaveTempData(long lCurrentTime);
-	bool TaskLoadCurrentStockHistoryData(void);// 装载当前股票日线
+	void TaskLoadCurrentStockHistoryData(void);// 装载当前股票日线
+	void TaskAccessoryTask(long lCurrentTime); // 其他辅助任务
 
-	bool TaskSetCheckActiveStockFlag(long lCurrentTime);
+	bool SetCheckActiveStockFlag(long lCurrentTime);
 	bool TaskChoice10RSStrong1StockSet(long lCurrentTime);
 	bool TaskChoice10RSStrong2StockSet(long lCurrentTime);
 	bool TaskChoice10RSStrongStockSet(long lCurrentTime);
 	bool TaskProcessTodayStock(long lCurrentTime);
 	void ProcessTodayStock(void);
 	bool CheckDayLineDB(void);
-	bool TaskCheckFastReceivingData(long lCurrentTime);
-	bool TaskCheckMarketOpen(long lCurrentTime);
+	bool CheckFastReceivingData(long lCurrentTime);
+	bool CheckMarketOpen(long lCurrentTime);
 
 	bool TaskUpdateStockProfileDB(long lCurrentTime);
 	bool TaskUpdateOptionDB(long lCurrentTime);

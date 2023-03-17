@@ -20,7 +20,7 @@ public:
 		else return false;
 	}
 
-	vector<CMarketTaskPtr> GetVector();
+	vector<CMarketTaskPtr> GetTaskVector();
 
 protected:
 	void CreateIndexMap();

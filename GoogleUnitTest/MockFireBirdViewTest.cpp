@@ -246,7 +246,7 @@ namespace FireBirdTest {
 		s_pFireBirdView->OnShowRsIndex();
 
 		//»Ö¸´Ô­×´
-		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
 	}
 
 	TEST_F(CMockFireBirdViewTest, TestOnUpdateShowRSInLinear) {
@@ -274,7 +274,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(s_pFireBirdView->IsShowRSInLinear());
 
 		//»Ö¸´Ô­×´
-		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
 	}
 
 	TEST_F(CMockFireBirdViewTest, TestOnUpdateShowRSIndex) {
@@ -303,7 +303,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(s_pFireBirdView->IsShowRSInIndex());
 
 		//»Ö¸´Ô­×´
-		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
 	}
 
 	TEST_F(CMockFireBirdViewTest, TestOnShowDayLine) {
@@ -381,7 +381,7 @@ namespace FireBirdTest {
 		s_pFireBirdView->Show(&dc);
 
 		//»Ö¸´Ô­×´
-		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
 		gl_pChinaMarket->GetCurrentStock()->SetDayLineLoaded(false);
 	}
 

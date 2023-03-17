@@ -512,33 +512,18 @@ bool CChinaMarket::SchedulingTask(void) {
 //
 // 定时调度函数，每秒一次。
 //
-// 各种任务之间有可能出现互斥的现象，如存储临时实时数据的工作线程与计算实时数据的工作线程之间就不允许同时运行，
-// 故而所有的定时任务，要按照时间间隔从长到短排列，即先执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
-// 为了尽量将各定时任务分别执行，预设数值的尾数要错开。
-//
-//
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	ResetMarketFlagAtMidnight(lCurrentTime);
 	CreateTaskOfReset();
 
-	if ((GetDayLineNeedUpdateNumber() <= 0) && (GetDayLineNeedSaveNumber() <= 0) && m_fCalculateChosen10RS) {
+	if (m_fCalculateChosen10RS && GetDayLineNeedUpdateNumber() <= 0 && GetDayLineNeedSaveNumber() <= 0) {
 		TaskChoice10RSStrongStockSet(lCurrentTime);
 		TaskChoice10RSStrong1StockSet(lCurrentTime);
 		TaskChoice10RSStrong2StockSet(lCurrentTime);
 	}
 
-	// 判断是否开始快速收集数据
-	TaskCheckFastReceivingData(lCurrentTime);
-	// 判断中国股票市场开市状态
-	TaskCheckMarketOpen(lCurrentTime);
-
 	TaskShowCurrentTransaction();
-
-	// 装载当前股票日线数据
-	//TaskLoadCurrentStockHistoryData();
-
-	TaskSetCheckActiveStockFlag(lCurrentTime);
 
 	TaskUpdateChosenStockDB();
 
@@ -575,7 +560,7 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 	if (IsMarketTaskEmpty()) return false;
 	const auto pTask = GetMarketTask();
 	if (lCurrentTime >= pTask->GetTime()) {
-		DiscardCurrentMarketTask();
+		DiscardMarketTask();
 		switch (pTask->GetType()) {
 		case CHINA_MARKET_CREATE_TASK__: // 生成其他任务
 			TaskCreateTask(lCurrentTime);
@@ -622,10 +607,13 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	const long lTimeMinute = (lCurrentTime / 100) * 100; // 当前小时和分钟
 
-	while (!IsMarketTaskEmpty()) DiscardCurrentMarketTask();
+	while (!IsMarketTaskEmpty()) DiscardMarketTask();
 
 	// 系统初始化检查
 	AddTask(CHINA_MARKET_CHECK_SYSTEM__, 1);
+
+	// 辅助任务
+	AddTask(CHINA_ACCESSORY_TASK__, lTimeMinute);
 
 	// 初始化系统
 	if (lCurrentTime < 91300) {
@@ -685,6 +673,27 @@ void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
 	}
 }
 
+void CChinaMarket::TaskLoadCurrentStockHistoryData(void) {
+	if (m_pCurrentStock != nullptr) {
+		if (!m_pCurrentStock->IsDayLineLoaded()) {
+			CreateThreadLoadDayLine(m_pCurrentStock.get());
+			m_pCurrentStock->SetDayLineLoaded(true);
+		}
+		if (!m_pCurrentStock->IsWeekLineLoaded()) {
+			CreateThreadLoadWeekLine(m_pCurrentStock.get());
+			m_pCurrentStock->SetWeekLineLoaded(true);
+		}
+	}
+}
+
+void CChinaMarket::TaskAccessoryTask(long lCurrentTime) {
+	CheckFastReceivingData(lCurrentTime);
+	CheckMarketOpen(lCurrentTime);// 判断中国股票市场开市状态
+	SetCheckActiveStockFlag(lCurrentTime);
+
+	AddTask(CHINA_ACCESSORY_TASK__, GetNextTime(lCurrentTime, 0, 1, 0)); // 每分钟执行一次
+}
+
 bool CChinaMarket::AddChosenStock(CChinaStockPtr pStock) {
 	if (ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
 		m_avChosenStock.at(0).push_back(pStock);
@@ -713,13 +722,13 @@ void CChinaMarket::CreateTaskOfReset() {
 	}
 }
 
-bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
+bool CChinaMarket::SetCheckActiveStockFlag(long lCurrentTime) {
 	if (!IsSystemReady()) {
 		m_fCheckActiveStock = true;
 		return true;
 	}
-	if (((lCurrentTime >= 91500) && (lCurrentTime < 92700))
-		|| ((lCurrentTime >= 113300) && (lCurrentTime < 125900))
+	if (((lCurrentTime > 91459) && (lCurrentTime < 92700))
+		|| ((lCurrentTime > 113259) && (lCurrentTime < 125900))
 		|| (lCurrentTime > 150300)) {
 		m_fCheckActiveStock = true;
 		return true;
@@ -805,7 +814,7 @@ bool CChinaMarket::CheckDayLineDB(void) {
 	return false;
 }
 
-bool CChinaMarket::TaskCheckFastReceivingData(long lCurrentTime) {
+bool CChinaMarket::CheckFastReceivingData(long lCurrentTime) {
 	if (gl_systemConfiguration.IsFastInquiringRTData()) {
 		m_fFastReceivingRTData = true;
 	}
@@ -816,11 +825,11 @@ bool CChinaMarket::TaskCheckFastReceivingData(long lCurrentTime) {
 	return m_fFastReceivingRTData;
 }
 
-bool CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
+bool CChinaMarket::CheckMarketOpen(long lCurrentTime) {
 	if (!IsWorkingDay()) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
 		m_fMarketOpened = false;
 	}
-	else if ((lCurrentTime > 92800) && (lCurrentTime < 150600)) {	// 市场结束接收数据的时间，皆定为150600（与停止存储临时数据的时间一样）
+	else if ((lCurrentTime > 92759) && (lCurrentTime < 150600)) {	// 市场结束接收数据的时间，皆定为150600（与停止存储临时数据的时间一样）
 		m_fMarketOpened = true;
 	}
 	else m_fMarketOpened = false;
@@ -1280,20 +1289,6 @@ bool CChinaMarket::ProcessDayLine(void) {
 		pStock->SetDayLineNeedSaving(true); // 设置存储日线标识
 
 		pData = nullptr;
-	}
-	return true;
-}
-
-bool CChinaMarket::TaskLoadCurrentStockHistoryData(void) {
-	if (m_pCurrentStock != nullptr) {
-		if (!m_pCurrentStock->IsDayLineLoaded()) {
-			CreateThreadLoadDayLine(m_pCurrentStock.get());
-			m_pCurrentStock->SetDayLineLoaded(true);
-		}
-		if (!m_pCurrentStock->IsWeekLineLoaded()) {
-			CreateThreadLoadWeekLine(m_pCurrentStock.get());
-			m_pCurrentStock->SetWeekLineLoaded(true);
-		}
 	}
 	return true;
 }

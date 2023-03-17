@@ -5,7 +5,7 @@ CMarketTaskQueue::CMarketTaskQueue() {
 	CreateIndexMap();
 }
 
-vector<CMarketTaskPtr> CMarketTaskQueue::GetVector() {
+vector<CMarketTaskPtr> CMarketTaskQueue::GetTaskVector() {
 	vector<CMarketTaskPtr> vTask;
 
 	while (!m_vMarketTask.empty()) {
@@ -35,4 +35,5 @@ void CMarketTaskQueue::CreateIndexMap() {
 	gl_mapMarketMapIndex[WORLD_MARKET_CREATE_TASK__] = _T("生成各项任务");
 	gl_mapMarketMapIndex[WORLD_MARKET_CHECK_SYSTEM__] = "系统初始化检查";
 	gl_mapMarketMapIndex[WORLD_MARKET_RESET__] = "重置系统";
+	gl_mapMarketMapIndex[WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__] = "更新股票简介数据库";
 }

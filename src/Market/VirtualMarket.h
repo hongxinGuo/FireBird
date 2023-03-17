@@ -29,8 +29,8 @@ public:
 	void StoreMarketTask(CMarketTaskPtr pTask) { m_marketTask.StoreTask(pTask); }
 	void AddTask(long lTaskType, long lExecuteTime);
 	CMarketTaskPtr GetMarketTask() const { return m_marketTask.GetTask(); }
-	void DiscardCurrentMarketTask() { m_marketTask.DiscardTask(); }
-	vector<CMarketTaskPtr> GetMarketTaskVector() { return m_marketTask.GetVector(); }
+	void DiscardMarketTask() { m_marketTask.DiscardTask(); }
+	vector<CMarketTaskPtr> GetMarketTaskVector() { return m_marketTask.GetTaskVector(); }
 
 	// 时间函数
 	tm TransferToMarketTime(time_t tUTC = gl_tUTC) const; // 得到本市场的时间（从UTC时间）

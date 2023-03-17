@@ -35,6 +35,51 @@ namespace FireBirdTest {
 		}
 	};
 
+	TEST_F(CVirtualMarketTest, TestAddTask) {
+		gl_pVirtualMarket->AddTask(3, 10000);
+		gl_pVirtualMarket->AddTask(3, 20000);
+		gl_pVirtualMarket->AddTask(4, 10000);
+		gl_pVirtualMarket->AddTask(1, 10000);
+		gl_pVirtualMarket->AddTask(6, 1);
+		gl_pVirtualMarket->AddTask(5, 1);
+		gl_pVirtualMarket->AddTask(2, 10000);
+
+		auto pTask = gl_pVirtualMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), 6) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), 1);
+		gl_pVirtualMarket->DiscardMarketTask();
+
+		pTask = gl_pVirtualMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), 5) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), 1);
+		gl_pVirtualMarket->DiscardMarketTask();
+
+		pTask = gl_pVirtualMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), 4) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), 10000);
+		gl_pVirtualMarket->DiscardMarketTask();
+
+		pTask = gl_pVirtualMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), 2) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), 10000);
+		gl_pVirtualMarket->DiscardMarketTask();
+
+		pTask = gl_pVirtualMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), 1) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), 10000);
+		gl_pVirtualMarket->DiscardMarketTask();
+
+		pTask = gl_pVirtualMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), 3) << "相同时间的任务，随机排列";
+		EXPECT_EQ(pTask->GetTime(), 10000);
+		gl_pVirtualMarket->DiscardMarketTask();
+
+		pTask = gl_pVirtualMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), 3);
+		EXPECT_EQ(pTask->GetTime(), 20000);
+		gl_pVirtualMarket->DiscardMarketTask();
+	}
+
 	TEST_F(CVirtualMarketTest, TestIsOrdinaryTradeTime1) {
 		EXPECT_TRUE(gl_pVirtualMarket->IsOrdinaryTradeTime());
 	}

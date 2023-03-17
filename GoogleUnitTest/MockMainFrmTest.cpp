@@ -105,7 +105,7 @@ namespace FireBirdTest {
 		gl_pMockMainFrame->UpdateStatus();
 
 		//恢复原状
-		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
 	}
 
 	TEST_F(CMockMainFrameTest, TestUpdateInnerSystemStatus) {
@@ -325,7 +325,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(gl_pChinaMarket->GetCurrentStock()->GetSymbol(), _T("601872.SS")) << "小写的s转换为大写";
 
 		//恢复原状
-		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnChar2) {
@@ -389,7 +389,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(gl_pChinaMarket->GetCurrentStock()->GetSymbol(), _T("000001.SZ")) << "小写的z转换为大写";
 
 		//恢复原状
-		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnChar3) {
@@ -453,7 +453,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(gl_pChinaMarket->GetCurrentStock()->GetSymbol(), _T("600604.SS")) << "000289.SZ为无效股票代码，故而没有设置新代码";
 
 		//恢复原状
-		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnKeyUp) {
@@ -490,7 +490,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
 		//恢复原状
-		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
 		gl_pChinaMarket->ClearChoiceStockContainer();
 		gl_pChinaMarket->SetUpdateChosenStockDB(false);
 	}
