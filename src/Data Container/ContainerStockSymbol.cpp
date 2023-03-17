@@ -6,6 +6,8 @@
 #include"SetStockSection.h"
 
 #include<memory>
+
+#include "ChinaMarket.h"
 using std::make_shared;
 
 CContainerStockSymbol::CContainerStockSymbol() {
@@ -65,7 +67,9 @@ void CContainerStockSymbol::Reset(void) {
 bool CContainerStockSymbol::CreateTotalStockContainer(void) {
 	CChinaStockPtr pStock = nullptr;
 
-	for (int i = 0; i < m_vCurrentSectionStockCode.size(); i++) { CreateStockSection(m_vCurrentSectionStockCode.at(i)); }
+	for (int i = 0; i < m_vCurrentSectionStockCode.size(); i++) {
+		CreateStockSection(m_vCurrentSectionStockCode.at(i));
+	}
 	return true;
 }
 
@@ -151,7 +155,9 @@ void CContainerStockSymbol::CreateStockSection(const CString& strFirstStockCode)
 		const CString strStockCode = CreateStockCode(strExchange, strStockSymbol);
 		Add(strStockCode);
 	}
-	if (UpdateStockSection(iCode / 1000 + iMarket)) { SetUpdateStockSection(true); }
+	if (UpdateStockSection(iCode / 1000 + iMarket)) {
+		SetUpdateStockSection(true);
+	}
 	m_vStockSection.at(iCode / 1000 + iMarket)->SetBuildStockPtr(true); // 已经在证券池中建立了
 }
 

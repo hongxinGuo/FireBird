@@ -852,10 +852,13 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		}
 	}
 	if (gl_pChinaMarket->IsCurrentStockChanged()) {
-		auto pChild = static_cast<CMDIChildWnd*>(GetActiveFrame());
-		auto pView = static_cast<CFireBirdView*>(pChild->GetActiveView());
-		if (pView != nullptr) { pView->UpdateHistoryDataContainer(gl_pChinaMarket->GetCurrentStock()); }
+		const auto pChild = static_cast<CMDIChildWnd*>(GetActiveFrame());
+		const auto pView = static_cast<CFireBirdView*>(pChild->GetActiveView());
+		if (pView != nullptr) {
+			pView->UpdateHistoryDataContainer(gl_pChinaMarket->GetCurrentStock());
+		}
 	}
+	gl_pChinaMarket->AddTask(CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__, 1); // 立即更新自选股数据库
 	SysCallOnKeyUp(nChar, nRepCnt, nFlags);
 }
 
@@ -1013,7 +1016,7 @@ void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateStockSection() {
 	gl_pChinaMarket->SetUpdateStockSection(true);
-	gl_pChinaMarket->TaskSaveStockSection();
+	gl_pChinaMarket->AddTask(CHINA_MARKET_UPDATE_STOCK_SECTION__, 1);
 }
 
 void CMainFrame::OnUpdateStockCode() {

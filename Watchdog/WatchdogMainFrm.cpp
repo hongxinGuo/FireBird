@@ -181,8 +181,8 @@ int CWatchdogMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// improves the usability of the taskbar because the document name is visible with the thumbnail.
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
-	// 设置1秒每次的软调度，用于检查重启FireBird主程序。
-	m_uTimerID = SetTimer(1, 1000, nullptr);
+	// 设置五秒每次的软调度，用于检查重启FireBird主程序。
+	m_uTimerID = SetTimer(1, 5000, nullptr);
 	if (m_uTimerID == 0) {
 		TRACE(_T("生成1s时钟时失败\n"));
 	}

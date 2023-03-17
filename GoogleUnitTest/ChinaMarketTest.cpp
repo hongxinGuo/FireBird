@@ -175,7 +175,8 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_pChinaMarket->ProcessEveryDayTask(111002)) << "时间到, 执行第二个任务";
 
-		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
+		// 恢复原状
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask1) {
@@ -771,6 +772,13 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pChinaMarket->IsSystemReady());
 		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
+		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
+		const auto pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_STOCK_SECTION__);
+		EXPECT_EQ(pTask->GetTime(), 93000);
+
+		// 恢复原状
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
 	}
 
 	TEST_F(CChinaMarketTest, TestIsCurrentEditStockChanged) {

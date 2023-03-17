@@ -77,7 +77,7 @@ public:
 
 	bool TaskShowCurrentTransaction(void);
 
-	bool TaskSaveStockSection(void); //
+	bool TaskUpdateStockSection(void); //
 
 	bool ProcessDayLine(void);
 
@@ -337,11 +337,7 @@ public:
 	}
 
 	void SetUpdateChosenStockDB(const bool fFlag) noexcept { m_fUpdateChosenStockDB = fFlag; }
-
-	bool IsUpdateChosenStockDB(void) const noexcept {
-		const bool fFlag = m_fUpdateChosenStockDB;
-		return fFlag;
-	}
+	bool IsUpdateChosenStockDB(void) const noexcept { return m_fUpdateChosenStockDB; }
 
 	INT64 GetRTDataReceived(void) const noexcept { return m_llRTDataReceived; }
 	void SetRTDataReceived(const INT64 llValue) noexcept { m_llRTDataReceived = llValue; }

@@ -525,13 +525,6 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 
 	TaskShowCurrentTransaction();
 
-	TaskUpdateChosenStockDB();
-
-	if (m_containerStockSymbol.IsUpdateStockSection()) {
-		TaskSaveStockSection();
-		m_containerStockSymbol.SetUpdateStockSection(false);
-	}
-
 	return true;
 }
 
@@ -588,6 +581,12 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 			break;
 		case CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__:
 			TaskUpdateStockProfileDB(lCurrentTime);
+			break;
+		case CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__:
+			TaskUpdateChosenStockDB();
+			break;
+		case CHINA_MARKET_UPDATE_STOCK_SECTION__:
+			TaskUpdateStockSection();
 			break;
 		case CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__:
 			TaskProcessAndSaveDayLine(lCurrentTime);
@@ -842,6 +841,8 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 	// 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
 	SetResetMarket(true); // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
 	SetSystemReady(false);
+	gl_pChinaMarket->AddTask(CHINA_MARKET_UPDATE_STOCK_SECTION__, GetNextTime(lCurrentTime, 0, 5, 0)); // 五分钟后再更新此数据库
+
 	return true;
 }
 
@@ -893,10 +894,14 @@ bool CChinaMarket::TaskShowCurrentTransaction(void) {
 	return true;
 }
 
-bool CChinaMarket::TaskSaveStockSection(void) {
-	thread thread1(ThreadSaveStockSection, this);
-	thread1.detach();
-	return true;
+bool CChinaMarket::TaskUpdateStockSection(void) {
+	if (m_containerStockSymbol.IsUpdateStockSection()) {
+		thread thread1(ThreadSaveStockSection, this);
+		thread1.detach();
+		m_containerStockSymbol.SetUpdateStockSection(false);
+		return true;
+	}
+	return false;
 }
 
 bool CChinaMarket::ChangeDayLineStockCodeToStandard(void) {

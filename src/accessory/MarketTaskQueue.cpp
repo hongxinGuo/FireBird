@@ -30,6 +30,8 @@ void CMarketTaskQueue::CreateIndexMap() {
 	gl_mapMarketMapIndex[CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__] = _T("分配并处理实时数据");
 	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_OPTION_DB__] = _T("更新系统选项数据库");
 	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__] = _T("更新股票简介数据库");
+	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__] = _T("更新自选股数据库");
+	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_STOCK_SECTION__] = _T("更新全段股票数据库");
 	gl_mapMarketMapIndex[CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__] = _T("更新日线历史数据");
 
 	gl_mapMarketMapIndex[WORLD_MARKET_CREATE_TASK__] = _T("生成各项任务");
