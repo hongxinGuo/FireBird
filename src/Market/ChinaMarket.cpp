@@ -536,7 +536,7 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	TaskShowCurrentTransaction();
 
 	// 装载当前股票日线数据
-	TaskLoadCurrentStockHistoryData();
+	//TaskLoadCurrentStockHistoryData();
 
 	TaskSetCheckActiveStockFlag(lCurrentTime);
 
@@ -606,6 +606,9 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 			break;
 		case CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__:
 			TaskProcessAndSaveDayLine(lCurrentTime);
+			break;
+		case CHINA_LOAD_CURRENT_STOCK_DAY_LINE__:
+			TaskLoadCurrentStockHistoryData();
 			break;
 		default:
 			ASSERT(0); // 非法任务
@@ -933,6 +936,7 @@ void CChinaMarket::SetCurrentStock(const CString& strStockCode) {
 	const CChinaStockPtr pStock = GetStock(strStockCode);
 	SetCurrentStock(pStock);
 	ASSERT(m_pCurrentStock != nullptr);
+	AddTask(CHINA_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -963,6 +967,7 @@ void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
 		SetCurrentStockChanged(true);
 		m_pCurrentStock->SetDayLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
 	}
+	AddTask(CHINA_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
 }
 
 void CChinaMarket::ResetCurrentStock(void) {

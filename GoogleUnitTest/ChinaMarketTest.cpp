@@ -578,7 +578,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestGetCurrentStock) {
 		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(7);
-		CChinaStockPtr pStock2 = gl_pChinaMarket->GetStock(4);
+		const CChinaStockPtr pStock2 = gl_pChinaMarket->GetStock(4);
 
 		gl_pChinaMarket->SetCurrentStock(pStock);
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), pStock);
@@ -594,6 +594,8 @@ namespace FireBirdTest {
 		gl_pChinaMarket->ResetCurrentStock();
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr);
 
+		//恢复原状
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
 		gl_pChinaMarket->SetCurrentStockChanged(false);
 	}
 
@@ -646,7 +648,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestIsDayLineNeedSaving) {
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedSaving());
-		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(0);
+		const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(0);
 		pStock->SetDayLineNeedSaving(true);
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedSaving());
 		pStock->SetDayLineNeedSaving(false);
@@ -678,7 +680,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestProcessDayLine) {
-		auto pData = make_shared<CDayLineWebData>();
+		const auto pData = make_shared<CDayLineWebData>();
 		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600666.SS"));
 		CString strTest = _T("");
 
@@ -1092,6 +1094,9 @@ namespace FireBirdTest {
 
 		gl_pChinaMarket->SetCurrentSelectedPosition(0);
 		gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
+
+		//恢复原状
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
 	}
 
 	TEST_F(CChinaMarketTest, TestChangeCurrentStockToNextStock2) {
@@ -1112,6 +1117,9 @@ namespace FireBirdTest {
 
 		gl_pChinaMarket->SetCurrentSelectedPosition(0);
 		gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
+
+		//恢复原状
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
 	}
 
 	TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock1) {
@@ -1122,6 +1130,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->GetStockIndex(gl_pChinaMarket->GetCurrentStock()), gl_pChinaMarket->GetTotalStock() - 1) << _T("上证指数前的为空，然后就转到最后面的中证煤炭了");
 		gl_pChinaMarket->SetCurrentStockChanged(false);
 		gl_pChinaMarket->SetCurrentSelectedPosition(0);
+
+		//恢复原状
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
 	}
 
 	TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock2) {
@@ -1140,6 +1151,9 @@ namespace FireBirdTest {
 
 		gl_pChinaMarket->SetCurrentSelectedPosition(0);
 		gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
+
+		//恢复原状
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
 	}
 
 	TEST_F(CChinaMarketTest, TestChangeToPrevStockSet) {

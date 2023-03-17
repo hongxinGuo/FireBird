@@ -62,7 +62,7 @@ namespace FireBirdTest {
 
 		pStock->SetVolume(10000);
 		EXPECT_CALL(*s_pFireBirdView, SysCallFillSolidRect(&DC, _, _))
-			.Times(14);
+		.Times(14);
 
 		s_pFireBirdView->ShowOrdinaryBuySell(&DC, pStock, rectArea);
 	}
@@ -74,7 +74,7 @@ namespace FireBirdTest {
 
 		pStock->SetCanceledBuyVolume(10000);
 		EXPECT_CALL(*s_pFireBirdView, SysCallFillSolidRect(&DC, _, _))
-			.Times(14);
+		.Times(14);
 
 		s_pFireBirdView->ShowCanceledBuySell(&DC, pStock, rectArea);
 	}
@@ -85,9 +85,9 @@ namespace FireBirdTest {
 		CRect rect(0, 0, 100, 100);
 		s_pFireBirdView->SetClientSize(rect);
 		EXPECT_CALL(*s_pFireBirdView, SysCallMoveTo(&DC, 99, 85))
-			.Times(1);
+		.Times(1);
 		EXPECT_CALL(*s_pFireBirdView, SysCallLineTo(&DC, _, _))
-			.Times(2);
+		.Times(2);
 		s_pFireBirdView->ShowCurrentRS(&DC, vRS);
 	}
 
@@ -96,24 +96,24 @@ namespace FireBirdTest {
 		CRect rect(0, 0, 100, 100);
 		s_pFireBirdView->SetClientSize(rect);
 		EXPECT_CALL(*s_pFireBirdView, SysCallLineTo(&DC, 69, 75))
-			.Times(1)
-			.WillOnce(Return(TRUE));
+		.Times(1)
+		.WillOnce(Return(TRUE));
 		EXPECT_TRUE(s_pFireBirdView->RSLineTo(&DC, 10, 50.0, 100));
 
 		EXPECT_CALL(*s_pFireBirdView, SysCallLineTo(&DC, -21, 75))
-			.Times(1)
-			.WillOnce(Return(TRUE));
+		.Times(1)
+		.WillOnce(Return(TRUE));
 		EXPECT_FALSE(s_pFireBirdView->RSLineTo(&DC, 40, 50.0, 100));
 
 		EXPECT_CALL(*s_pFireBirdView, SysCallLineTo(&DC, 39, 75))
-			.Times(1)
-			.WillOnce(Return(TRUE));
+		.Times(1)
+		.WillOnce(Return(TRUE));
 		EXPECT_FALSE(s_pFireBirdView->RSLineTo(&DC, 20, 50.0, 50));
 	}
 
 	TEST_F(CMockFireBirdViewTest, TestOnSize) {
 		EXPECT_CALL(*s_pFireBirdView, SysCallOnSize(1, 100, 200))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnSize(1, 100, 200);
 		CRect rect = s_pFireBirdView->GetClientSize();
 		EXPECT_EQ(rect.Height(), 200);
@@ -124,12 +124,12 @@ namespace FireBirdTest {
 		CCmdUI cmdUI;
 		EXPECT_FALSE(s_pFireBirdView->IsShow3DaysRS());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 0))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRs3(&cmdUI);
 		s_pFireBirdView->OnShowRs3();
 		EXPECT_TRUE(s_pFireBirdView->IsShow3DaysRS());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 1))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRs3(&cmdUI);
 		s_pFireBirdView->OnShowRs3();
 		EXPECT_FALSE(s_pFireBirdView->IsShow3DaysRS());
@@ -139,12 +139,12 @@ namespace FireBirdTest {
 		CCmdUI cmdUI;
 		EXPECT_FALSE(s_pFireBirdView->IsShow5DaysRS());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 0))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRs5(&cmdUI);
 		s_pFireBirdView->OnShowRs5();
 		EXPECT_TRUE(s_pFireBirdView->IsShow5DaysRS());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 1))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRs5(&cmdUI);
 		s_pFireBirdView->OnShowRs5();
 		EXPECT_FALSE(s_pFireBirdView->IsShow5DaysRS());
@@ -154,12 +154,12 @@ namespace FireBirdTest {
 		CCmdUI cmdUI;
 		EXPECT_TRUE(s_pFireBirdView->IsShow10DaysRS());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 1))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRs10(&cmdUI);
 		s_pFireBirdView->OnShowRs10();
 		EXPECT_FALSE(s_pFireBirdView->IsShow10DaysRS());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 0))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRs10(&cmdUI);
 		s_pFireBirdView->OnShowRs10();
 		EXPECT_TRUE(s_pFireBirdView->IsShow10DaysRS());
@@ -169,12 +169,12 @@ namespace FireBirdTest {
 		CCmdUI cmdUI;
 		EXPECT_TRUE(s_pFireBirdView->IsShow30DaysRS());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 1))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRs30(&cmdUI);
 		s_pFireBirdView->OnShowRs30();
 		EXPECT_FALSE(s_pFireBirdView->IsShow30DaysRS());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 0))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRs30(&cmdUI);
 		s_pFireBirdView->OnShowRs30();
 		EXPECT_TRUE(s_pFireBirdView->IsShow30DaysRS());
@@ -184,12 +184,12 @@ namespace FireBirdTest {
 		CCmdUI cmdUI;
 		EXPECT_FALSE(s_pFireBirdView->IsShow60DaysRS());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 0))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRs60(&cmdUI);
 		s_pFireBirdView->OnShowRs60();
 		EXPECT_TRUE(s_pFireBirdView->IsShow60DaysRS());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 1))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRs60(&cmdUI);
 		s_pFireBirdView->OnShowRs60();
 		EXPECT_FALSE(s_pFireBirdView->IsShow60DaysRS());
@@ -199,12 +199,12 @@ namespace FireBirdTest {
 		CCmdUI cmdUI;
 		EXPECT_FALSE(s_pFireBirdView->IsShow120DaysRS());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 0))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRs120(&cmdUI);
 		s_pFireBirdView->OnShowRs120();
 		EXPECT_TRUE(s_pFireBirdView->IsShow120DaysRS());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 1))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRs120(&cmdUI);
 		s_pFireBirdView->OnShowRs120();
 		EXPECT_FALSE(s_pFireBirdView->IsShow120DaysRS());
@@ -214,24 +214,24 @@ namespace FireBirdTest {
 		CCmdUI cmdUI;
 		gl_pChinaMarket->ResetCurrentStock();
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUIEnable(_, false))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRsInLogarithm(&cmdUI);
 
 		gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
 		EXPECT_TRUE(gl_pChinaMarket->GetCurrentStock() != nullptr);
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUIEnable(_, true))
-			.Times(1);
+		.Times(1);
 		EXPECT_FALSE(s_pFireBirdView->IsShowRSInLogarithm());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 0))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRsInLogarithm(&cmdUI);
 
 		s_pFireBirdView->OnShowRsInLogarithm();
 		EXPECT_TRUE(s_pFireBirdView->IsShowRSInLogarithm());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUIEnable(_, true))
-			.Times(1);
+		.Times(1);
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 1))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRsInLogarithm(&cmdUI);
 		s_pFireBirdView->OnShowRsInLinear();
 
@@ -239,62 +239,71 @@ namespace FireBirdTest {
 		EXPECT_FALSE(s_pFireBirdView->IsShowRSInIndex());
 		EXPECT_TRUE(s_pFireBirdView->IsShowRSInLinear());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUIEnable(_, true))
-			.Times(1);
+		.Times(1);
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 1))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRsInLinear(&cmdUI);
 		s_pFireBirdView->OnShowRsIndex();
+
+		//»Ö¸´Ô­×´
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
 	}
 
 	TEST_F(CMockFireBirdViewTest, TestOnUpdateShowRSInLinear) {
 		CCmdUI cmdUI;
 		gl_pChinaMarket->ResetCurrentStock();
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUIEnable(_, false))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRsInLinear(&cmdUI);
 		gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
 		EXPECT_TRUE(gl_pChinaMarket->GetCurrentStock() != nullptr);
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUIEnable(_, true))
-			.Times(1);
+		.Times(1);
 		EXPECT_FALSE(s_pFireBirdView->IsShowRSInLinear());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 0))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRsInLinear(&cmdUI);
 		s_pFireBirdView->OnShowRsInLinear();
 		EXPECT_TRUE(s_pFireBirdView->IsShowRSInLinear());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUIEnable(_, true))
-			.Times(1);
+		.Times(1);
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 1))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRsInLinear(&cmdUI);
 		s_pFireBirdView->OnShowRsIndex();
 		EXPECT_FALSE(s_pFireBirdView->IsShowRSInLinear());
+
+		//»Ö¸´Ô­×´
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
 	}
 
 	TEST_F(CMockFireBirdViewTest, TestOnUpdateShowRSIndex) {
 		CCmdUI cmdUI;
 		gl_pChinaMarket->ResetCurrentStock();
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUIEnable(_, false))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRsIndex(&cmdUI);
 		gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
 		s_pFireBirdView->SetShowRSOption(2);
 		EXPECT_TRUE(gl_pChinaMarket->GetCurrentStock() != nullptr);
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUIEnable(_, true))
-			.Times(1);
+		.Times(1);
 		EXPECT_FALSE(s_pFireBirdView->IsShowRSInIndex());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 0))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRsIndex(&cmdUI);
 		s_pFireBirdView->OnShowRsIndex();
 		EXPECT_TRUE(s_pFireBirdView->IsShowRSInIndex());
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUIEnable(_, true))
-			.Times(1);
+		.Times(1);
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 1))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRsIndex(&cmdUI);
 		s_pFireBirdView->OnShowRsInLinear();
 		EXPECT_FALSE(s_pFireBirdView->IsShowRSInIndex());
+
+		//»Ö¸´Ô­×´
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
 	}
 
 	TEST_F(CMockFireBirdViewTest, TestOnShowDayLine) {
@@ -314,11 +323,11 @@ namespace FireBirdTest {
 	TEST_F(CMockFireBirdViewTest, TestOnUpdateShowDayLine) {
 		CCmdUI cmdUI;
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 1))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowDayLine(&cmdUI);
 		s_pFireBirdView->SetCurrentShowType(2);
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 0))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowDayLine(&cmdUI);
 
 		s_pFireBirdView->SetCurrentShowType(1);
@@ -328,11 +337,11 @@ namespace FireBirdTest {
 		CCmdUI cmdUI;
 		s_pFireBirdView->SetCurrentShowType(_SHOW_DAY_LINE_DATA_);
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 0))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRealTime(&cmdUI);
 		s_pFireBirdView->SetCurrentShowType(_SHOW_REAL_TIME_DATA_);
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 1))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowRealTime(&cmdUI);
 	}
 
@@ -340,11 +349,11 @@ namespace FireBirdTest {
 		CCmdUI cmdUI;
 		s_pFireBirdView->SetCurrentShowType(_SHOW_DAY_LINE_DATA_);
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 0))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowWeekLine(&cmdUI);
 		s_pFireBirdView->SetCurrentShowType(_SHOW_WEEK_LINE_DATA_);
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUISetCheck(_, 1))
-			.Times(1);
+		.Times(1);
 		s_pFireBirdView->OnUpdateShowWeekLine(&cmdUI);
 	}
 
@@ -354,23 +363,25 @@ namespace FireBirdTest {
 		gl_pChinaMarket->GetCurrentStock()->SetDayLineLoaded(true);
 		s_pFireBirdView->SetCurrentShowType(1);
 		EXPECT_CALL(*s_pFireBirdView, SysCallGetClientRect(_))
-			.Times(1);
+		.Times(1);
 		EXPECT_CALL(*s_pFireBirdView, ShowStockHistoryDataLine(_))
-			.Times(1);
+		.Times(1);
 		EXPECT_CALL(*s_pFireBirdView, SysCallBitBlt(&dc, 0, 0, _, _, _, 0, 0, SRCCOPY))
-			.Times(1)
-			.WillOnce(Return(TRUE));
+		.Times(1)
+		.WillOnce(Return(TRUE));
 		s_pFireBirdView->Show(&dc);
 		EXPECT_CALL(*s_pFireBirdView, SysCallGetClientRect(_))
-			.Times(1);
+		.Times(1);
 		EXPECT_CALL(*s_pFireBirdView, ShowRealtimeData(_))
-			.Times(1);
+		.Times(1);
 		EXPECT_CALL(*s_pFireBirdView, SysCallBitBlt(&dc, 0, 0, _, _, _, 0, 0, SRCCOPY))
-			.Times(1)
-			.WillOnce(Return(TRUE));
+		.Times(1)
+		.WillOnce(Return(TRUE));
 		s_pFireBirdView->SetCurrentShowType(2);
 		s_pFireBirdView->Show(&dc);
 
+		//»Ö¸´Ô­×´
+		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
 		gl_pChinaMarket->GetCurrentStock()->SetDayLineLoaded(false);
 	}
 

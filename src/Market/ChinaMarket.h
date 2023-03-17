@@ -58,6 +58,8 @@ public:
 	virtual void TaskDistributeAndCalculateRTData(long lCurrentTime);
 	bool TaskProcessAndSaveDayLine(long lCurrentTime);
 	void TaskSaveTempData(long lCurrentTime);
+	bool TaskLoadCurrentStockHistoryData(void);// 装载当前股票日线
+
 	bool TaskSetCheckActiveStockFlag(long lCurrentTime);
 	bool TaskChoice10RSStrong1StockSet(long lCurrentTime);
 	bool TaskChoice10RSStrong2StockSet(long lCurrentTime);
@@ -207,9 +209,6 @@ public:
 	virtual bool BuildWeekLineOfCurrentWeek(void);
 	bool CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CVirtualHistoryCandleExtendPtr>*> pvData);
 	virtual bool BuildCurrentWeekWeekLineTable(void); // 使用周线表构建当前周周线表
-
-	// 装载当前股票日线
-	bool TaskLoadCurrentStockHistoryData(void);
 
 	// 股票历史数据处理
 	virtual bool Choice10RSStrong2StockSet(void) { return m_containerChinaStock.Choice10RSStrong2StockSet(); }

@@ -226,6 +226,9 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pMockChinaMarket->TaskLoadCurrentStockHistoryData());
 		EXPECT_TRUE(gl_pMockChinaMarket->GetCurrentStock()->IsDayLineLoaded());
 		EXPECT_TRUE(gl_pMockChinaMarket->GetCurrentStock()->IsWeekLineLoaded());
+
+		//»Ö¸´Ô­×´
+		while (!gl_pMockChinaMarket->IsMarketTaskEmpty()) gl_pMockChinaMarket->DiscardCurrentMarketTask();
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskLoadCurrentStockDayLine3) {
@@ -240,6 +243,9 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pMockChinaMarket->TaskLoadCurrentStockHistoryData());
 		EXPECT_TRUE(gl_pMockChinaMarket->GetCurrentStock()->IsDayLineLoaded());
 		EXPECT_TRUE(gl_pMockChinaMarket->GetCurrentStock()->IsWeekLineLoaded());
+
+		//»Ö¸´Ô­×´
+		while (!gl_pMockChinaMarket->IsMarketTaskEmpty()) gl_pMockChinaMarket->DiscardCurrentMarketTask();
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskUpdateStockProfileDB) {
