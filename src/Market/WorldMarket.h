@@ -55,43 +55,38 @@ public:
 		return false;
 	}
 
-	bool SchedulingTask(void) override;
-
-	void CreateTaskOfReset();
-	bool ProcessEveryDayTask(long lCurrentTime); // 每日定时任务调度,由SchedulingTaskPerSecond调度
-
-	bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
-	bool SchedulingTaskPer10Seconds(long lCurrentTime);
-	bool SchedulingTaskPerMinute(long lCurrentTime);
-	bool SchedulingTaskPer5Minute(long lCurrentTime);
+	bool ProcessEveryDayTask(long lCurrentTime) override; // 每日定时任务调度,由SchedulingTaskPerSecond调度
 
 	bool TaskCreateTask(long lCurrentTime);
 	bool TaskResetMarket(long lCurrentTime);
 	bool TaskCheckMarketReady(long lCurrentTime);
+	void TaskProcessWebSocketData(long lCurrentTime);
+	void TaskMonitoringWebSocketStatus(long lCurrentTime);
+	void TaskUpdateStockProfileDB(long lCurrentTime);
 
 	virtual bool TaskUpdateTiingoIndustry(void);
 	virtual bool TaskUpdateSICIndustry(void);
 	virtual bool TaskUpdateNaicsIndustry(void);
 
-	bool TaskUpdateStockProfileDB(long lCurrentTime);
-	bool TaskUpdateCompanyNewsDB(void);
-	bool TaskUpdateBasicFinancialDB(void);
-	bool TaskUpdateDayLineDB(void);
-	bool TaskUpdateForexExchangeDB(void);
-	bool TaskUpdateForexSymbolDB(void);
-	bool TaskUpdateForexDayLineDB(void);
-	bool TaskUpdateCryptoExchangeDB(void);
-	bool TaskUpdateFinnhubCryptoSymbolDB(void);
-	bool TaskUpdateCryptoDayLineDB(void);
-	bool TaskUpdateCountryListDB(void);
-	bool TaskUpdateEPSSurpriseDB(void);
-	bool TaskUpdateEconomicCalendarDB(void);
-	bool TaskUpdateInsiderTransactionDB(void);
-	bool TaskUpdateInsiderSentimentDB(void);
-	bool TaskUpdateTiingoStockDB(void);
-	bool TaskUpdateTiingoCryptoSymbolDB(void);
+	void CreateThreadUpdateCompanyNewsDB(void);
+	void CreateThreadUpdateBasicFinancialDB(void);
+	void CreateThreadUpdateDayLineDB(void);
+	void CreateThreadUpdateForexExchangeDB(void);
+	void CreateThreadUpdateForexSymbolDB(void);
+	void CreateThreadUpdateCryptoExchangeDB(void);
+	void CreateThreadUpdateFinnhubCryptoSymbolDB(void);
+	void CreateThreadUpdateCountryListDB(void);
+	void CreateThreadUpdateEconomicCalendarDB(void);
+	void CreateThreadUpdateInsiderTransactionDB(void);
+	void CreateThreadUpdateInsiderSentimentDB(void);
+	void CreateThreadUpdateTiingoStockDB(void);
+	void CreateThreadUpdateTiingoCryptoSymbolDB(void);
+	void CreateThreadUpdateDayLineStartEndDate(void);
+	void CreateThreadUpdateStockProfileDB();
 
-	bool TaskUpdateDayLineStartEndDate(void);
+	bool UpdateForexDayLineDB(void);
+	bool UpdateCryptoDayLineDB(void);
+	bool UpdateEPSSurpriseDB(void);
 
 	void ClearEconomicCalendar(void) { m_dataFinnhubEconomicCalendar.Reset(); }
 
@@ -104,7 +99,7 @@ public:
 
 	bool IsUpdateStockProfileDB(void) { return m_containerStock.IsUpdateProfileDB(); }
 
-	void AddStock(const CWorldStockPtr pStock) { m_containerStock.Add(pStock); }
+	bool AddStock(const CWorldStockPtr pStock) { return m_containerStock.Add(pStock); }
 	bool DeleteStock(const CWorldStockPtr pStock) { return m_containerStock.Delete(pStock); }
 	size_t GetStockSize(void) const noexcept { return m_containerStock.Size(); }
 	void AddTiingoStock(const CTiingoStockPtr pTiingoStock) { m_dataTiingoStock.Add(pTiingoStock); }
@@ -244,7 +239,7 @@ public:
 	void StartTiingoIEXWebSocket(void);
 	void StartTiingoCryptoWebSocket(void);
 	void StartTiingoForexWebSocket(void);
-	void DisconnectAllWebSocket(void); // // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
+	void DisconnectAllWebSocket(void); // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
 	void StopWebSocketsIfTimeOut(void); // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
 	void StopFinnhubWebSocketIfTimeOut(void);
 	void StopTiingoIEXWebSocketIfTimeOut(void);
@@ -289,9 +284,6 @@ protected:
 	bool m_bFinnhubWebSiteAccessible; // 由于finnhub.io不时被墙，故而需要此标识。
 
 private:
-	int m_iCount5Minute; // 与一分钟每次的错开11秒钟
-	int m_iCount1Minute; // 与10秒每次的错开1秒钟
-	int m_iCount10Second;
 };
 
 using CWorldMarketPtr = shared_ptr<CWorldMarket>;

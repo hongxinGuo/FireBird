@@ -16,7 +16,12 @@ public:
 	virtual ~CVirtualMarket(void) = default;
 
 public:
-	virtual bool SchedulingTask() { return true; }
+	void SchedulingTask();
+	void SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
+
+	void CreateTaskOfReset();
+	virtual bool ProcessEveryDayTask(long lCurrentTime) { return true; } // 每日定时任务调度,由SchedulingTaskPerSecond调度
+
 	// 申请并处理Data source的数据，被最终衍生类的SchedulingTask函数来调度。
 	// 此函数在VirtualMarket中定义，但由最终衍生类来调用，因为lCurrentTime必须为该衍生类的当前市场时间。
 	void RunDataSource(long lCurrentTime) const;
@@ -26,8 +31,8 @@ public:
 
 	// MarketTask
 	bool IsMarketTaskEmpty() const { return m_marketTask.IsEmpty(); }
-	void StoreMarketTask(CMarketTaskPtr pTask) { m_marketTask.StoreTask(pTask); }
-	void AddTask(long lTaskType, long lExecuteTime);
+	void AddTask(CMarketTaskPtr pTask) { m_marketTask.AddTask(pTask); }
+	void AddTask(long lTaskType, long lExecuteTime) { m_marketTask.AddTask(lTaskType, lExecuteTime); }
 	CMarketTaskPtr GetMarketTask() const { return m_marketTask.GetTask(); }
 	void DiscardMarketTask() { m_marketTask.DiscardTask(); }
 	vector<CMarketTaskPtr> GetMarketTaskVector() { return m_marketTask.GetTaskVector(); }
@@ -124,10 +129,6 @@ protected:
 	bool m_fSystemReady; // 市场初始态已经设置好
 
 	time_t m_lastTimeSchedulingTask;
-	int m_iCount1Hour; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
-	int m_iCount5Minute; // 与一分钟每次的错开11秒钟
-	int m_iCount1Minute; // 与10秒每次的错开1秒钟
-	int m_iCount10Second;
 
 private:
 	time_t m_tLastTime;
@@ -135,11 +136,6 @@ private:
 	bool m_fReadyToRun; // 市场准备好运行标识。目前永远为真。
 	bool m_fResetMarketPermission; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统）初始值必须为真。
 	bool m_fResetMarket; // 重启系统标识
-
-	int m_i10SecondCounter; // 十秒一次的计数器
-	int m_i1MinuteCounter; // 一分钟一次的计数器
-	int m_i5MinuteCounter; // 五分钟一次的计数器
-	int m_i1HourCounter; // 一小时一次的计数器
 };
 
 using CVirtualMarketPtr = shared_ptr<CVirtualMarket>;

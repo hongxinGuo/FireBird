@@ -480,52 +480,29 @@ bool CChinaMarket::ProcessTengxunRTData(void) {
 	return true;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
-//
-///////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::SchedulingTask(void) {
-	CalculateTime();
-
-	const long lCurrentTime = GetMarketTime();
-	const time_t tUTC = GetUTCTime();
-	const long lTimeDiffer = tUTC > m_lastTimeSchedulingTask;
-
-	// 抓取实时数据(新浪、腾讯和网易）。每250毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
-	// 调用各Web data source，进行网络数据的接收和处理。
-	RunDataSource(lCurrentTime);
-
-	// 执行本市场各项定时任务
-	ProcessEveryDayTask(lCurrentTime);
-
-	//根据时间，调度各项定时任务.每秒调度一次
-	if (lTimeDiffer > 0) {
-		SchedulingTaskPerSecond(lTimeDiffer, lCurrentTime);
-		m_lastTimeSchedulingTask = tUTC;
-	}
-
-	return true;
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 定时调度函数，每秒一次。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
-	ResetMarketFlagAtMidnight(lCurrentTime);
-	CreateTaskOfReset();
+//void CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
+//ResetMarketFlagAtMidnight(lCurrentTime);
+//CreateTaskOfReset();
 
-	if (m_fCalculateChosen10RS && GetDayLineNeedUpdateNumber() <= 0 && GetDayLineNeedSaveNumber() <= 0) {
-		TaskChoice10RSStrongStockSet(lCurrentTime);
-		TaskChoice10RSStrong1StockSet(lCurrentTime);
-		TaskChoice10RSStrong2StockSet(lCurrentTime);
+//TaskShowCurrentTransaction();
+//}
+
+void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
+	if (m_fCalculateChosen10RS) {
+		if (GetDayLineNeedUpdateNumber() <= 0 && GetDayLineNeedSaveNumber() <= 0) {
+			TaskChoice10RSStrongStockSet(lCurrentTime);
+			TaskChoice10RSStrong1StockSet(lCurrentTime);
+			TaskChoice10RSStrong2StockSet(lCurrentTime);
+		}
+		else {
+			AddTask(CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__, GetNextTime(lCurrentTime, 0, 1, 0));
+		}
 	}
-
-	TaskShowCurrentTransaction();
-
-	return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -536,10 +513,7 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
-	const auto pTask = make_shared<CMarketTask>();
-	pTask->SetType(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
-	pTask->SetTime(GetNextSecond(lCurrentTime));
-	StoreMarketTask(pTask);
+	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, GetNextSecond(lCurrentTime));
 
 	DistributeSinaRTDataToStock();
 	DistributeNeteaseRTDataToStock();
@@ -555,7 +529,7 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 	if (lCurrentTime >= pTask->GetTime()) {
 		DiscardMarketTask();
 		switch (pTask->GetType()) {
-		case CHINA_MARKET_CREATE_TASK__: // 生成其他任务
+		case CREATE_TASK__: // 生成其他任务
 			TaskCreateTask(lCurrentTime);
 			break;
 		case CHINA_MARKET_CHECK_SYSTEM__:
@@ -591,8 +565,14 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 		case CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__:
 			TaskProcessAndSaveDayLine(lCurrentTime);
 			break;
-		case CHINA_LOAD_CURRENT_STOCK_DAY_LINE__:
+		case CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__:
 			TaskLoadCurrentStockHistoryData();
+			break;
+		case CHINA_MARKET_ACCESSORY_TASK__:
+			TaskAccessoryTask(lCurrentTime);
+			break;
+		case CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__:
+			TaskChoiceRSSet(lCurrentTime);
 			break;
 		default:
 			ASSERT(0); // 非法任务
@@ -612,7 +592,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	AddTask(CHINA_MARKET_CHECK_SYSTEM__, 1);
 
 	// 辅助任务
-	AddTask(CHINA_ACCESSORY_TASK__, lTimeMinute);
+	AddTask(CHINA_MARKET_ACCESSORY_TASK__, lTimeMinute);
 
 	// 初始化系统
 	if (lCurrentTime < 91300) {
@@ -641,6 +621,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	if (IsWorkingDay()) {
 		// 每五分钟存储一次临时数据
 		AddTask(CHINA_MARKET_SAVE_TEMP_RT_DATA__, 92730); // 开始执行时间为：92730.要确保第一次执行的时间早于93000，这样启动数据库的时间较短，否则容易导致系统崩溃（原因不明）。
+		AddTask(CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__, 150700); // 
 	}
 
 	if (IsWorkingDay() && lCurrentTime < 150300) {
@@ -658,12 +639,9 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 /////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
 	if (lCurrentTime < 150100) { // 中国市场股票交易截止时间为150000。
-		const auto pTask = make_shared<CMarketTask>();
 		long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
-		if ((lNextTime >= 113500) && (lNextTime < 130000)) lNextTime = 130300;
-		pTask->SetType(CHINA_MARKET_SAVE_TEMP_RT_DATA__);
-		pTask->SetTime(lNextTime);
-		StoreMarketTask(pTask);
+		if ((lNextTime >= 113500) && (lNextTime < 125730)) lNextTime = 125730;
+		AddTask(CHINA_MARKET_SAVE_TEMP_RT_DATA__, lNextTime);
 		if (IsSystemReady()) {
 			const CString str = "存储临时数据";
 			gl_systemMessage.PushDayLineInfoMessage(str);
@@ -690,7 +668,7 @@ void CChinaMarket::TaskAccessoryTask(long lCurrentTime) {
 	CheckMarketOpen(lCurrentTime);// 判断中国股票市场开市状态
 	SetCheckActiveStockFlag(lCurrentTime);
 
-	AddTask(CHINA_ACCESSORY_TASK__, GetNextTime(lCurrentTime, 0, 1, 0)); // 每分钟执行一次
+	AddTask(CHINA_MARKET_ACCESSORY_TASK__, GetNextTime(lCurrentTime, 0, 1, 0)); // 每分钟执行一次
 }
 
 bool CChinaMarket::AddChosenStock(CChinaStockPtr pStock) {
@@ -709,16 +687,6 @@ bool CChinaMarket::DeleteChosenStock(CChinaStockPtr pStock) {
 	(*it)->SetSaveToChosenStockDB(false);
 	m_avChosenStock.at(0).erase(it);
 	return true;
-}
-
-void CChinaMarket::CreateTaskOfReset() {
-	if (HaveResetMarketPermission()) { // 如果允许重置系统
-		const auto pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_CREATE_TASK__);
-		pTask->SetTime(3000); // 午夜零时三十分整重置系统
-		StoreMarketTask(pTask);
-		SetResetMarketPermission(false);
-	}
 }
 
 bool CChinaMarket::SetCheckActiveStockFlag(long lCurrentTime) {
@@ -847,10 +815,7 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
-	const auto pTask = make_shared<CMarketTask>();
-	pTask->SetType(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__);
-	pTask->SetTime(GetNextTime(lCurrentTime, 0, 5, 0));
-	StoreMarketTask(pTask);
+	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, GetNextTime(lCurrentTime, 0, 5, 0));
 
 	if (IsUpdateStockProfileDB()) {
 		CreateThreadUpdateStockProfileDB();
@@ -860,10 +825,7 @@ bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskUpdateOptionDB(long lCurrentTime) {
-	const auto pTask = make_shared<CMarketTask>();
-	pTask->SetType(CHINA_MARKET_UPDATE_OPTION_DB__);
-	pTask->SetTime(GetNextTime(lCurrentTime, 0, 5, 0));
-	StoreMarketTask(pTask);
+	AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, GetNextTime(lCurrentTime, 0, 5, 0));
 
 	CreateThreadUpdateOptionDB();
 
@@ -932,10 +894,7 @@ bool CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 	}
 
 	if (!CheckDayLineDB()) {// 当尚未更新完日线历史数据时
-		const auto pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__);
-		pTask->SetTime(GetNextTime(lCurrentTime, 0, 0, 10));
-		StoreMarketTask(pTask);
+		AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(lCurrentTime, 0, 0, 10));
 	}
 	return true;
 }
@@ -950,7 +909,7 @@ void CChinaMarket::SetCurrentStock(const CString& strStockCode) {
 	const CChinaStockPtr pStock = GetStock(strStockCode);
 	SetCurrentStock(pStock);
 	ASSERT(m_pCurrentStock != nullptr);
-	AddTask(CHINA_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
+	AddTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -981,7 +940,7 @@ void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
 		SetCurrentStockChanged(true);
 		m_pCurrentStock->SetDayLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
 	}
-	AddTask(CHINA_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
+	AddTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
 }
 
 void CChinaMarket::ResetCurrentStock(void) {
@@ -1471,10 +1430,7 @@ bool CChinaMarket::TaskLoadTempRTData(long lTheDay, long lCurrentTime) {
 		return true;
 	}
 
-	const auto pTask = make_shared<CMarketTask>();
-	pTask->SetType(CHINA_MARKET_LOAD_TEMP_RT_DATA__);
-	pTask->SetTime(GetNextSecond(lCurrentTime));
-	StoreMarketTask(pTask);
+	AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, GetNextSecond(lCurrentTime));
 	return false;
 }
 

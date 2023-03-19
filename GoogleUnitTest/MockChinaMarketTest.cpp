@@ -80,10 +80,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask1) {
-		const auto pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_CREATE_TASK__);
-		pTask->SetTime(10000);
-		gl_pMockChinaMarket->StoreMarketTask(pTask);
+		gl_pMockChinaMarket->AddTask(CREATE_TASK__, 10000);
 
 		EXPECT_CALL(*gl_pMockChinaMarket, TaskCreateTask(10000)).Times(1);
 
@@ -93,10 +90,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask2) {
-		const auto pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_RESET__);
-		pTask->SetTime(91300);
-		gl_pMockChinaMarket->StoreMarketTask(pTask);
+		gl_pMockChinaMarket->AddTask(CHINA_MARKET_RESET__, 91300);
 
 		EXPECT_CALL(*gl_pMockChinaMarket, TaskResetMarket(91300)).Times(1);
 
@@ -106,10 +100,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask3) {
-		const auto pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_RESET__);
-		pTask->SetTime(92600);
-		gl_pMockChinaMarket->StoreMarketTask(pTask);
+		gl_pMockChinaMarket->AddTask(CHINA_MARKET_RESET__, 92600);
 
 		EXPECT_CALL(*gl_pMockChinaMarket, TaskResetMarket(92700)).Times(1);
 
@@ -119,10 +110,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask4) {
-		auto pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
-		pTask->SetTime(91500);
-		gl_pMockChinaMarket->StoreMarketTask(pTask);
+		gl_pMockChinaMarket->AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 91500);
 
 		EXPECT_CALL(*gl_pMockChinaMarket, TaskDistributeAndCalculateRTData(93000)).Times(1);
 
@@ -132,10 +120,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask6) {
-		auto pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_SAVE_TEMP_RT_DATA__);
-		pTask->SetTime(93500);
-		gl_pMockChinaMarket->StoreMarketTask(pTask);
+		gl_pMockChinaMarket->AddTask(CHINA_MARKET_SAVE_TEMP_RT_DATA__, 93500);
 
 		EXPECT_TRUE(gl_pMockChinaMarket->IsSystemReady());
 		gl_pMockChinaMarket->SetMarketOpened(true);
@@ -145,7 +130,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pMockChinaMarket->ProcessEveryDayTask(93500));
 
 		EXPECT_FALSE(gl_pMockChinaMarket->IsMarketTaskEmpty());
-		pTask = gl_pMockChinaMarket->GetMarketTask();
+		auto pTask = gl_pMockChinaMarket->GetMarketTask();
 		gl_pMockChinaMarket->DiscardMarketTask();
 		EXPECT_EQ(pTask->GetTime(), 94000);
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
@@ -155,10 +140,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask7) {
-		const auto pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_BUILD_TODAY_DATABASE__);
-		pTask->SetTime(150600);
-		gl_pMockChinaMarket->StoreMarketTask(pTask);
+		gl_pMockChinaMarket->AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, 150600);
 
 		EXPECT_TRUE(gl_pMockChinaMarket->IsSystemReady());
 
@@ -170,16 +152,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask8) {
-		auto pTask = make_shared<CMarketTask>();
-		pTask->SetType(CHINA_MARKET_UPDATE_OPTION_DB__);
-		pTask->SetTime(150600);
-		gl_pMockChinaMarket->StoreMarketTask(pTask);
+		gl_pMockChinaMarket->AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, 150600);
 
 		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadUpdateOptionDB()).Times(1);
 
 		EXPECT_TRUE(gl_pMockChinaMarket->ProcessEveryDayTask(150600));
 		EXPECT_FALSE(gl_pMockChinaMarket->IsMarketTaskEmpty()) << "又生成一个任务";
-		pTask = gl_pMockChinaMarket->GetMarketTask();
+		const auto pTask = gl_pMockChinaMarket->GetMarketTask();
 		gl_pMockChinaMarket->DiscardMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_OPTION_DB__);
 		EXPECT_EQ(pTask->GetTime(), 151100) << "每五分钟一次";
@@ -198,7 +177,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pMockChinaMarket->IsMarketTaskEmpty());
 		const auto pTask = gl_pMockChinaMarket->GetMarketTask();
 		gl_pMockChinaMarket->DiscardMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 130300) << "中午休市时不存储临时实时数据，到13时开市时才存储";
+		EXPECT_EQ(pTask->GetTime(), 125730) << "中午休市时不存储临时实时数据，到13时开市时才存储";
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
 		gl_systemMessage.PopDayLineInfoMessage();

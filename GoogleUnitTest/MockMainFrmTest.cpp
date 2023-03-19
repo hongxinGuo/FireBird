@@ -686,12 +686,9 @@ namespace FireBirdTest {
 		gl_systemMessage.SetProcessedTiingoCryptoWebSocket(1);
 		gl_systemMessage.SetProcessedTiingoForexWebSocket(1);
 
-		EXPECT_CALL(*gl_pMockMainFrame, ResetMarket())
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SchedulingTask())
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallOnTimer(STOCK_ANALYSIS_TIMER_))
-		.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, ResetMarket()).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SchedulingTask()).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallOnTimer(STOCK_ANALYSIS_TIMER_)).Times(1);
 
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(4, _))
 		.Times(1);

@@ -395,17 +395,19 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateStockProfileDB) {
+		//todo 此测试有问题：出现unknown c++ exception thrown
 		auto pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("SS.SS.US"));
-		pStock->SetUpdateProfileDB(true);
 		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock)); // 确保是一个新股票代码
 		pStock->SetTodayNewStock(true);
 		pStock->SetUpdateProfileDB(true);
-		gl_pWorldMarket->AddStock(pStock);
+		EXPECT_TRUE(gl_pWorldMarket->AddStock(pStock));
 		pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
+		EXPECT_TRUE(pStock != nullptr);
 		EXPECT_STREQ(pStock->GetCurrency(), _T(""));
 		pStock->SetUpdateProfileDB(true);
 		pStock->SetCurrency(_T("No Currency")); // 更新这个条目
+		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4848);
 
 		gl_pWorldMarket->UpdateStockProfileDB();
 
@@ -434,8 +436,10 @@ namespace FireBirdTest {
 
 		// 恢复原状
 		pStock = gl_pWorldMarket->GetStock(_T("SS.SS.US"));
-		gl_pWorldMarket->DeleteStock(pStock);
+		EXPECT_TRUE(pStock != nullptr);
+		EXPECT_TRUE(gl_pWorldMarket->DeleteStock(pStock));
 		pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
+		EXPECT_TRUE(pStock != nullptr);
 		EXPECT_STREQ(pStock->GetCurrency(), _T("No Currency"));
 		pStock->SetCurrency(_T(""));
 		while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();

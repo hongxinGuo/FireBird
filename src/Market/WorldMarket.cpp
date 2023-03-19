@@ -50,11 +50,6 @@ CWorldMarket::~CWorldMarket() {
 }
 
 void CWorldMarket::Reset(void) {
-	m_iCount1Hour = 3576; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
-	m_iCount5Minute = 287; // 与一分钟每次的错开11秒钟
-	m_iCount1Minute = 58; // 与10秒每次的错开1秒钟
-	m_iCount10Second = 9;
-
 	ResetFinnhub();
 	ResetTiingo();
 	ResetDataClass();
@@ -126,50 +121,13 @@ bool CWorldMarket::PreparingExitMarket(void) {
 	return true;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 默认每100毫秒执行一次。
-//
-/////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::SchedulingTask(void) {
-	CalculateTime();
-
-	const long lCurrentTime = GetMarketTime();
-	const time_t tUTC = GetUTCTime();
-	const long lTimeDiffer = tUTC > m_lastTimeSchedulingTask;
-
-	// 调用各Web data source，进行网络数据的接收和处理。
-	RunDataSource(lCurrentTime);
-
-	// 执行本市场各项定时任务
-	ProcessEveryDayTask(lCurrentTime);
-
-	//根据时间，调度各项定时任务.每秒调度一次
-	if (lTimeDiffer > 0) {
-		SchedulingTaskPerSecond(lTimeDiffer, lCurrentTime);
-		m_lastTimeSchedulingTask = tUTC;
-	}
-
-	return true;
-}
-
-void CWorldMarket::CreateTaskOfReset() {
-	if (HaveResetMarketPermission()) { // 如果允许重置系统
-		const auto pTask = make_shared<CMarketTask>();
-		pTask->SetType(WORLD_MARKET_CREATE_TASK__);
-		pTask->SetTime(1000); // 零时十分重置系统
-		StoreMarketTask(pTask);
-		SetResetMarketPermission(false);
-	}
-}
-
 bool CWorldMarket::ProcessEveryDayTask(long lCurrentTime) {
 	if (IsMarketTaskEmpty()) return false;
 	const auto pTask = GetMarketTask();
 	if (lCurrentTime >= pTask->GetTime()) {
 		DiscardMarketTask();
 		switch (pTask->GetType()) {
-		case WORLD_MARKET_CREATE_TASK__: // 生成其他任务
+		case CREATE_TASK__: // 生成其他任务
 			TaskCreateTask(lCurrentTime);
 			break;
 		case WORLD_MARKET_CHECK_SYSTEM__: // 170000重启系统
@@ -179,8 +137,15 @@ bool CWorldMarket::ProcessEveryDayTask(long lCurrentTime) {
 			TaskResetMarket(lCurrentTime);
 			break;
 		case WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__:
-			//TaskUpdateStockProfileDB(lCurrentTime);
+			TaskUpdateStockProfileDB(lCurrentTime);
 			break;
+		case WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__:
+			TaskMonitoringWebSocketStatus(lCurrentTime);
+			break;
+		case WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__:
+			TaskProcessWebSocketData(lCurrentTime);
+			break;
+
 		default:
 			ASSERT(0); // 非法任务
 			break;
@@ -196,88 +161,34 @@ bool CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	while (!IsMarketTaskEmpty()) DiscardMarketTask();
 
-	// 胸痛初始化检查
+	// 系统初始化检查
 	AddTask(WORLD_MARKET_CHECK_SYSTEM__, 1);
 
 	// 重置系统
 	if (lCurrentTime < 170000) {
 		AddTask(WORLD_MARKET_RESET__, 170000); // 执行时间为：170000
 	}
+
+	AddTask(WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__, lTimeMinute + 40);// 更新股票简介数据库的任务
+
+	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lCurrentTime);
+	AddTask(WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__, lCurrentTime);
+
 	return true;
 }
 
-bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
-	ResetMarketFlagAtMidnight(lCurrentTime);
-	CreateTaskOfReset();
-
-	m_iCount10Second -= lSecond;
-	m_iCount1Minute -= lSecond;
-	m_iCount5Minute -= lSecond;
-
-	if (m_iCount5Minute < 0) {
-		m_iCount5Minute = 300 - lSecond;
-		SchedulingTaskPer5Minute(lCurrentTime);
-	}
-	if (m_iCount1Minute < 0) {
-		m_iCount1Minute = 60 - lSecond;
-		SchedulingTaskPerMinute(lCurrentTime);
-	}
-	if (m_iCount10Second < 0) {
-		m_iCount10Second = 10 - lSecond;
-		SchedulingTaskPer10Seconds(lCurrentTime);
-	}
-
+void CWorldMarket::TaskProcessWebSocketData(long lCurrentTime) {
 	if (!IsTimeToResetSystem(lCurrentTime)) {	// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新。
 		TaskProcessWebSocketData();
 		TaskUpdateWorldStockFromWebSocket();
 	}
-
-	return true;
+	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, GetNextSecond(lCurrentTime));
 }
 
-bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
+void CWorldMarket::TaskMonitoringWebSocketStatus(long lCurrentTime) {
 	StopWebSocketsIfTimeOut();
-	return true;
-}
-
-bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
-	// 建立WebSocket连接
 	StartAllWebSocket();
-
-	// 这个必须是最后一个任务。因其在执行完毕后返回了。
-	if (!IsTimeToResetSystem(lCurrentTime)) {	// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
-		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
-			TaskUpdateCountryListDB();
-		}
-		if (IsUpdateForexExchangeDB()) TaskUpdateForexExchangeDB();
-		if (IsUpdateForexSymbolDB()) TaskUpdateForexSymbolDB();
-		if (IsUpdateCryptoExchangeDB()) TaskUpdateCryptoExchangeDB();
-		if (IsUpdateCryptoSymbolDB()) TaskUpdateFinnhubCryptoSymbolDB();
-		if (IsUpdateInsiderTransactionDB()) TaskUpdateInsiderTransactionDB();
-		if (IsUpdateInsiderSentimentDB()) TaskUpdateInsiderSentimentDB();
-		TaskUpdateForexDayLineDB();
-		TaskUpdateCryptoDayLineDB();
-		if (IsSaveStockDayLineDB()) TaskUpdateDayLineDB();
-		TaskUpdateEPSSurpriseDB();
-		if (IsUpdateEconomicCalendarDB()) TaskUpdateEconomicCalendarDB();
-		return true;
-	}
-
-	return false;
-}
-
-bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
-	if (IsUpdateCompanyNewsDB()) TaskUpdateCompanyNewsDB();
-	if (IsUpdateBasicFinancialDB()) TaskUpdateBasicFinancialDB();
-	if (IsNeedUpdateTiingoStock()) TaskUpdateTiingoStockDB();
-	if (IsNeedUpdateTiingoCryptoSymbol()) TaskUpdateTiingoCryptoSymbolDB();
-
-	// 更新股票基本情况最好放在最后。
-	if (!gl_pFinnhubDataSource->IsUpdateSymbol() && IsUpdateStockProfileDB()) {
-		TaskUpdateStockProfileDB(lCurrentTime);
-	}
-
-	return true;
+	AddTask(WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__, GetNextTime(lCurrentTime, 0, 0, 10));
 }
 
 bool CWorldMarket::TaskResetMarket(long lCurrentTime) {
@@ -326,7 +237,7 @@ bool CWorldMarket::TaskUpdateNaicsIndustry(void) {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
+bool CWorldMarket::UpdateForexDayLineDB(void) {
 	CString str;
 	bool fUpdated = false;
 	CForexSymbolPtr pSymbol = nullptr;
@@ -369,7 +280,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
+bool CWorldMarket::UpdateCryptoDayLineDB(void) {
 	CString str;
 	bool fUpdated = false;
 	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
@@ -407,7 +318,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB(void) {
 	return (fUpdated);
 }
 
-bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
+bool CWorldMarket::UpdateEPSSurpriseDB(void) {
 	CString str;
 
 	CWorldStockPtr pStock = nullptr;
@@ -439,95 +350,108 @@ bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
 	return IsSystemReady();
 }
 
-bool CWorldMarket::TaskUpdateDayLineStartEndDate(void) {
+void CWorldMarket::CreateThreadUpdateDayLineStartEndDate(void) {
 	thread thread1(ThreadUpdateWorldStockDayLineStartEndDate, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CWorldMarket::TaskUpdateDayLineDB() {
+void CWorldMarket::CreateThreadUpdateDayLineDB() {
 	thread thread1(ThreadUpdateWorldStockDayLineDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CWorldMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
+void CWorldMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
+	if (!IsTimeToResetSystem(lCurrentTime)) {	// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
+		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
+			CreateThreadUpdateCountryListDB();
+		}
+		if (IsUpdateForexExchangeDB()) CreateThreadUpdateForexExchangeDB();
+		if (IsUpdateForexSymbolDB()) CreateThreadUpdateForexSymbolDB();
+		if (IsUpdateCryptoExchangeDB()) CreateThreadUpdateCryptoExchangeDB();
+		if (IsUpdateCryptoSymbolDB()) CreateThreadUpdateFinnhubCryptoSymbolDB();
+		if (IsUpdateInsiderTransactionDB()) CreateThreadUpdateInsiderTransactionDB();
+		if (IsUpdateInsiderSentimentDB()) CreateThreadUpdateInsiderSentimentDB();
+		if (IsSaveStockDayLineDB()) CreateThreadUpdateDayLineDB();
+		if (IsUpdateEconomicCalendarDB()) CreateThreadUpdateEconomicCalendarDB();
+		if (IsUpdateCompanyNewsDB()) CreateThreadUpdateCompanyNewsDB();
+		if (IsUpdateBasicFinancialDB()) CreateThreadUpdateBasicFinancialDB();
+		if (IsNeedUpdateTiingoStock()) CreateThreadUpdateTiingoStockDB();
+		if (IsNeedUpdateTiingoCryptoSymbol()) CreateThreadUpdateTiingoCryptoSymbolDB();
+
+		UpdateForexDayLineDB();
+		UpdateCryptoDayLineDB();
+		UpdateEPSSurpriseDB();
+
+		if (!gl_pFinnhubDataSource->IsUpdateSymbol() && IsUpdateStockProfileDB()) {
+			CreateThreadUpdateStockProfileDB();
+		}
+	}
+	AddTask(WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__, GetNextTime(lCurrentTime, 0, 5, 0)); // 每五分钟更新一次
+}
+
+void CWorldMarket::CreateThreadUpdateStockProfileDB() {
 	thread thread1(ThreadUpdateWorldMarketStockProfileDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CWorldMarket::TaskUpdateCompanyNewsDB(void) {
+void CWorldMarket::CreateThreadUpdateCompanyNewsDB(void) {
 	thread thread1(ThreadUpdateCompanyNewsDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CWorldMarket::TaskUpdateBasicFinancialDB(void) {
+void CWorldMarket::CreateThreadUpdateBasicFinancialDB(void) {
 	thread thread1(ThreadUpdateBasicFinancialDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CWorldMarket::TaskUpdateCountryListDB(void) {
+void CWorldMarket::CreateThreadUpdateCountryListDB(void) {
 	thread thread1(ThreadUpdateCountryListDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CWorldMarket::TaskUpdateInsiderTransactionDB(void) {
+void CWorldMarket::CreateThreadUpdateInsiderTransactionDB(void) {
 	thread thread1(ThreadUpdateInsiderTransactionDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CWorldMarket::TaskUpdateInsiderSentimentDB(void) {
+void CWorldMarket::CreateThreadUpdateInsiderSentimentDB(void) {
 	thread thread1(ThreadUpdateInsiderSentimentDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CWorldMarket::TaskUpdateTiingoStockDB(void) {
+void CWorldMarket::CreateThreadUpdateTiingoStockDB(void) {
 	thread thread1(ThreadUpdateTiingoStockDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CWorldMarket::TaskUpdateTiingoCryptoSymbolDB(void) {
+void CWorldMarket::CreateThreadUpdateTiingoCryptoSymbolDB(void) {
 	thread thread1(ThreadUpdateTiingoCryptoSymbolDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CWorldMarket::TaskUpdateForexExchangeDB(void) {
+void CWorldMarket::CreateThreadUpdateForexExchangeDB(void) {
 	thread thread1(ThreadUpdateForexExchangeDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CWorldMarket::TaskUpdateForexSymbolDB() {
+void CWorldMarket::CreateThreadUpdateForexSymbolDB() {
 	thread thread1(ThreadUpdateForexSymbolDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CWorldMarket::TaskUpdateCryptoExchangeDB(void) {
+void CWorldMarket::CreateThreadUpdateCryptoExchangeDB(void) {
 	thread thread1(ThreadUpdateCryptoExchangeDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CWorldMarket::TaskUpdateFinnhubCryptoSymbolDB() {
+void CWorldMarket::CreateThreadUpdateFinnhubCryptoSymbolDB() {
 	thread thread1(ThreadUpdateFinnhubCryptoSymbolDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-	return true;
 }
 
-bool CWorldMarket::TaskUpdateEconomicCalendarDB(void) {
+void CWorldMarket::CreateThreadUpdateEconomicCalendarDB(void) {
 	thread thread1(ThreadUpdateEconomicCalendarDB, this);
 	thread1.detach();
-
-	return true;
 }
 
 bool CWorldMarket::UpdateToken(void) {

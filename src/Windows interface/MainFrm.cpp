@@ -399,11 +399,10 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
 //系统更新任务由各CVirtualMarket类中的调度函数完成，
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
-bool CMainFrame::SchedulingTask(void) {
+void CMainFrame::SchedulingTask(void) {
 	for (const auto& pVirtualMarket : gl_vMarketPtr) {
 		if (pVirtualMarket->IsReadyToRun()) pVirtualMarket->SchedulingTask();
 	}
-	return true;
 }
 
 bool CMainFrame::ResetMarket(void) {
@@ -1036,7 +1035,7 @@ void CMainFrame::OnRebuildDayLine() {
 }
 
 void CMainFrame::OnUpdateWorldStockDayLineStartEnd() {
-	gl_pWorldMarket->TaskUpdateDayLineStartEndDate();
+	gl_pWorldMarket->CreateThreadUpdateDayLineStartEndDate();
 }
 
 void CMainFrame::OnRecordFinnhubWebSocket() {

@@ -10,7 +10,8 @@ public:
 	CMarketTaskQueue();
 	~CMarketTaskQueue() = default;
 
-	void StoreTask(CMarketTaskPtr pTask) { m_vMarketTask.push(pTask); }
+	void AddTask(CMarketTaskPtr pTask) { m_vMarketTask.push(pTask); }
+	void AddTask(long lTaskType, long lExecuteTime);
 	CMarketTaskPtr GetTask() const { return m_vMarketTask.top(); }
 	void DiscardTask() { m_vMarketTask.pop(); }
 	size_t Size() const { return m_vMarketTask.size(); }

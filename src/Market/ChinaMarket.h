@@ -44,12 +44,7 @@ public:
 	bool IsDummyTime(long lTime) final;
 
 public:
-	// 定时更新，完成具体调度任务。由主线程CMainFrame的OnTimer函数调用。其后跟随各被调度函数
-	bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
-	bool SchedulingTaskPerSecond(long lSecondNumber, long lCurrentTime); // 每秒调度一次
-
-	void CreateTaskOfReset();
-	bool ProcessEveryDayTask(long lCurrentTime); // 每日定时任务调度,由SchedulingTaskPerSecond调度
+	bool ProcessEveryDayTask(long lCurrentTime) override; // 每日定时任务调度,由SchedulingTaskPerSecond调度
 
 	// 各种任务
 	virtual bool TaskCreateTask(long lCurrentTime);
@@ -60,6 +55,7 @@ public:
 	void TaskSaveTempData(long lCurrentTime);
 	void TaskLoadCurrentStockHistoryData(void);// 装载当前股票日线
 	void TaskAccessoryTask(long lCurrentTime); // 其他辅助任务
+	void TaskChoiceRSSet(long lCurrentTime);
 
 	bool SetCheckActiveStockFlag(long lCurrentTime);
 	bool TaskChoice10RSStrong1StockSet(long lCurrentTime);

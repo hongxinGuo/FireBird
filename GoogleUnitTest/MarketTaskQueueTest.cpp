@@ -23,35 +23,23 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMarketTaskQueueTest, TestGetSet) {
-		CMarketTaskPtr pTask = make_shared<CMarketTask>();
-		pTask->SetTime(101010);
-		pTask->SetType(CHINA_MARKET_BUILD_TODAY_DATABASE__);
-		marketTaskQueue.StoreTask(pTask);
-		pTask = make_shared<CMarketTask>();
-		pTask->SetTime(10000);
-		pTask->SetType(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
-		marketTaskQueue.StoreTask(pTask);
+		marketTaskQueue.AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, 101010);
+		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 10000);
 
-		pTask = make_shared<CMarketTask>();
-		pTask->SetTime(1);
-		pTask->SetType(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
-		marketTaskQueue.StoreTask(pTask);
-		pTask = make_shared<CMarketTask>();
-		pTask->SetTime(1);
-		pTask->SetType(CHINA_MARKET_CHOICE_10_RS_STRONG_1_STOCK_SET__);
-		marketTaskQueue.StoreTask(pTask);
+		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 1);
+		marketTaskQueue.AddTask(CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__, 1);
 
 		EXPECT_EQ(marketTaskQueue.Size(), 4);
 		EXPECT_FALSE(marketTaskQueue.IsEmpty());
 
-		pTask = marketTaskQueue.GetTask();
+		auto pTask = marketTaskQueue.GetTask();
 		marketTaskQueue.DiscardTask();
 		EXPECT_EQ(pTask->GetTime(), 1) << "任务按时间顺序排列,较早的排在前面";
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
 		pTask = marketTaskQueue.GetTask();
 		marketTaskQueue.DiscardTask();
 		EXPECT_EQ(pTask->GetTime(), 1);
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHOICE_10_RS_STRONG_1_STOCK_SET__) << "相同时间的任务，排列顺序按入列先后";
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__) << "相同时间的任务，排列顺序按入列先后";
 		pTask = marketTaskQueue.GetTask();
 		marketTaskQueue.DiscardTask();
 		EXPECT_EQ(pTask->GetTime(), 10000) << "任务按时间顺序排列,较早的排在前面";

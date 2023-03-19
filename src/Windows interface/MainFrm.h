@@ -21,7 +21,7 @@ public:
 public:
 	// 操作
 public:
-	virtual bool SchedulingTask(void);
+	virtual void SchedulingTask(void);
 	void UpdateStatus(void);
 	void UpdateInnerSystemStatus(void);
 	bool CreateMarketContainer(void); // 生成各市场容器（只用于调度）

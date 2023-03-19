@@ -20,26 +20,62 @@ CVirtualMarket::CVirtualMarket(void) {
 	m_strMarketId = _T("Warning: CVirtualMarket Called.");
 	m_lMarketTimeZone = -8 * 3600; // 本系统默认标准时间为东八区（北京标准时间）。
 
-	m_i10SecondCounter = 9; // 十秒一次的计数器
-	m_i1MinuteCounter = 59; // 一分钟一次的计数器
-	m_i5MinuteCounter = 299; // 五分钟一次的计数器
-	m_i1HourCounter = 3599; // 一小时一次的计数器
-
 	m_lastTimeSchedulingTask = 0;
-	m_iCount1Hour = 3576; // 与五分钟每次的错开11秒钟，与一分钟每次的错开22秒钟
-	m_iCount5Minute = 287; // 与一分钟每次的错开11秒钟
-	m_iCount1Minute = 58; // 与10秒每次的错开1秒钟
-	m_iCount10Second = 9;
 }
 
-/// <summary>
-/// 申请并处理Data source的数据，由最终衍生类的SchedulingTask调度。
-/// 此函数在VirtualMarket中定义，但由最终衍生类来调用，应为lCurrentTime必须为该衍生类的当前市场时间。
-/// </summary>
-/// <param name="lCurrentTime"></param>
+void CVirtualMarket::SchedulingTask() {
+	CalculateTime();
+
+	const long lCurrentMarketTime = GetMarketTime();
+	const time_t tUTC = GetUTCTime();
+	const long lTimeDiffer = tUTC > m_lastTimeSchedulingTask;
+
+	// 调用各Web data source，进行网络数据的接收和处理。
+	RunDataSource(lCurrentMarketTime);
+
+	// 执行本市场各项定时任务
+	ProcessEveryDayTask(lCurrentMarketTime);
+
+	//根据时间，调度各项定时任务.每秒调度一次
+	if (lTimeDiffer > 0) {
+		SchedulingTaskPerSecond(lTimeDiffer, lCurrentMarketTime);
+		m_lastTimeSchedulingTask = tUTC;
+	}
+}
+
+void CVirtualMarket::CalculateTime(void) noexcept {
+	time(&gl_tUTC);
+
+	m_tmMarket = TransferToMarketTime();
+	m_lMarketDate = (m_tmMarket.tm_year + 1900) * 10000 + (m_tmMarket.tm_mon + 1) * 100 + m_tmMarket.tm_mday;
+	m_lMarketTime = m_tmMarket.tm_hour * 10000 + m_tmMarket.tm_min * 100 + m_tmMarket.tm_sec;
+}
+
 void CVirtualMarket::RunDataSource(long lCurrentTime) const {
 	for (const auto& pDataSource : m_vDataSource) {
 		if (pDataSource->IsEnable()) pDataSource->Run(lCurrentTime);
+	}
+}
+
+void CVirtualMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
+	ResetMarketFlagAtMidnight(lCurrentTime);
+	CreateTaskOfReset();
+}
+
+void CVirtualMarket::ResetMarketFlagAtMidnight(long lCurrentTime) {
+	// 午夜过后重置各种标识
+	if (!HaveResetMarketPermission() && lCurrentTime <= 100) {	// 在零点到零点一分，重置系统标识
+		m_fResetMarketPermission = true;
+		CString str = m_strMarketId + _T("重置系统重置标识");
+		TRACE(_T("%S \n"), str.GetBuffer());
+		gl_systemMessage.PushInformationMessage(str);
+	}
+}
+
+void CVirtualMarket::CreateTaskOfReset() {
+	if (HaveResetMarketPermission()) { // 如果允许重置系统
+		AddTask(CREATE_TASK__, 1000);
+		SetResetMarketPermission(false);
 	}
 }
 
@@ -50,13 +86,6 @@ void CVirtualMarket::ResetMarket(void) {
 bool CVirtualMarket::UpdateMarketInfo(void) {
 	// do nothing
 	return true;
-}
-
-void CVirtualMarket::AddTask(long lTaskType, long lExecuteTime) {
-	const auto pTask = make_shared<CMarketTask>();
-	pTask->SetType(lTaskType);
-	pTask->SetTime(lExecuteTime);
-	StoreMarketTask(pTask);
 }
 
 tm CVirtualMarket::TransferToMarketTime(time_t tUTC) const {
@@ -81,14 +110,6 @@ long CVirtualMarket::TransferToMarketDate(time_t tUTC) const {
 	GetMarketTimeStruct(&tm_, tUTC, m_lMarketTimeZone);
 
 	return (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
-}
-
-void CVirtualMarket::CalculateTime(void) noexcept {
-	time(&gl_tUTC);
-
-	m_tmMarket = TransferToMarketTime();
-	m_lMarketDate = (m_tmMarket.tm_year + 1900) * 10000 + (m_tmMarket.tm_mon + 1) * 100 + m_tmMarket.tm_mday;
-	m_lMarketTime = m_tmMarket.tm_hour * 10000 + m_tmMarket.tm_min * 100 + m_tmMarket.tm_sec;
 }
 
 void CVirtualMarket::CalculateLastTradeDate(void) noexcept {
@@ -175,14 +196,4 @@ CString CVirtualMarket::GetStringOfMarketDateTime(void) const {
 
 CString CVirtualMarket::GetStringOfMarketDate(void) const {
 	return ConvertDateToChineseTimeStampString(m_lMarketDate);
-}
-
-void CVirtualMarket::ResetMarketFlagAtMidnight(long lCurrentTime) {
-	// 午夜过后重置各种标识
-	if (!HaveResetMarketPermission() && lCurrentTime <= 100) {	// 在零点到零点十五分，重置系统标识
-		m_fResetMarketPermission = true;
-		CString str = m_strMarketId + _T("重置系统重置标识");
-		TRACE(_T("%S \n"), str.GetBuffer());
-		gl_systemMessage.PushInformationMessage(str);
-	}
 }
