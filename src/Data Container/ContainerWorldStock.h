@@ -18,7 +18,7 @@ public:
 	void ResetDayLine(void);
 
 	bool LoadDB(void);
-	bool UpdateProfileDB(void);
+	void UpdateProfileDB(void);
 
 	bool UpdateBasicFinancialDB(void);
 	static bool UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock);

@@ -19,7 +19,7 @@ using namespace testing;
 #include<memory>
 
 namespace FireBirdTest {
-	extern CMockChinaMarketPtr gl_pMockChinaMarket;
+	CMockChinaMarketPtr s_pMockChinaMarket;
 
 	class CMockChinaMarketTest : public Test {
 	protected:
@@ -28,22 +28,45 @@ namespace FireBirdTest {
 
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
-			EXPECT_TRUE(gl_pMockChinaMarket != nullptr) << "此Mock变量在EnvironmentSetUp.h中生成";
-			EXPECT_FALSE(gl_pMockChinaMarket->IsDayLineNeedSaving());
-			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
+			s_pMockChinaMarket = make_shared<CMockChinaMarket>();
+			s_pMockChinaMarket->ResetMarket();
+			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
+			EXPECT_LE(s_pMockChinaMarket->GetDayLineNeedUpdateNumber(), s_pMockChinaMarket->GetTotalStock());
+
+			for (int i = 0; i < s_pMockChinaMarket->GetTotalStock(); i++) {
+				const auto pStock = s_pMockChinaMarket->GetStock(i);
+				pStock->SetDayLineNeedUpdate(true);
+				if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
+
+				if (IsEarlyThen(pStock->GetDayLineEndDate(), s_pMockChinaMarket->GetMarketDate(), 30)) {
+					if (pStock->GetDayLineEndDate() == 20210430) {
+						EXPECT_TRUE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol(); //"当股票日线结束日期早于30日时，装入股票代码数据库时要求更新代码库";
+						pStock->SetUpdateProfileDB(false);
+					}
+				}
+			}
+			EXPECT_EQ(s_pMockChinaMarket->GetDayLineNeedUpdateNumber(), s_pMockChinaMarket->GetTotalStock());
+			while (!s_pMockChinaMarket->IsMarketTaskEmpty()) s_pMockChinaMarket->DiscardMarketTask();
+
+			EXPECT_TRUE(s_pMockChinaMarket != nullptr) << "此Mock变量在EnvironmentSetUp.h中生成";
+			EXPECT_FALSE(s_pMockChinaMarket->IsDayLineNeedSaving());
+			EXPECT_EQ(s_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
 
 			ASSERT_THAT(gl_pNeteaseDayLineDataSource, NotNull());
 
-			gl_pMockChinaMarket->SetSystemReady(true);
+			s_pMockChinaMarket->SetSystemReady(true);
 		}
 
 		static void TearDownTestSuite(void) {
-			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
-			EXPECT_FALSE(gl_pMockChinaMarket->IsDayLineNeedSaving());
-			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
+			EXPECT_EQ(s_pMockChinaMarket->GetDayLineNeedUpdateNumber(), s_pMockChinaMarket->GetTotalStock());
+			EXPECT_FALSE(s_pMockChinaMarket->IsDayLineNeedSaving());
+			EXPECT_EQ(s_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
 
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
+
+			// 重置以下指针，以测试是否存在没有配对的Mock。
+			s_pMockChinaMarket = nullptr;
 
 			GeneralCheck();
 		}
@@ -52,86 +75,86 @@ namespace FireBirdTest {
 			GeneralCheck();
 
 			//EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
-			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
-			EXPECT_TRUE(gl_pMockChinaMarket->IsMarketTaskEmpty()) << gl_pMockChinaMarket->GetMarketTask()->GetTime();
+			EXPECT_EQ(s_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
+			EXPECT_EQ(s_pMockChinaMarket->GetDayLineNeedUpdateNumber(), s_pMockChinaMarket->GetTotalStock());
+			EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << s_pMockChinaMarket->GetMarketTask()->GetTime();
 
-			gl_pMockChinaMarket->SetRSEndDate(19900101);
+			s_pMockChinaMarket->SetRSEndDate(19900101);
 		}
 
 		void TearDown(void) override {
 			// clearUp
-			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
-			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
-			if (gl_pMockChinaMarket->GetDayLineNeedSaveNumber() > 0) {
-				for (int i = 0; i < gl_pMockChinaMarket->GetTotalStock(); i++) {
-					const CChinaStockPtr pStock = gl_pMockChinaMarket->GetStock(i);
+			EXPECT_EQ(s_pMockChinaMarket->GetDayLineNeedUpdateNumber(), s_pMockChinaMarket->GetTotalStock());
+			EXPECT_EQ(s_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
+			if (s_pMockChinaMarket->GetDayLineNeedSaveNumber() > 0) {
+				for (int i = 0; i < s_pMockChinaMarket->GetTotalStock(); i++) {
+					const CChinaStockPtr pStock = s_pMockChinaMarket->GetStock(i);
 					if (pStock->IsDayLineNeedSaving()) { EXPECT_STREQ(pStock->GetSymbol(), _T("")); }
 				}
 			}
-			gl_pMockChinaMarket->SetRSEndDate(19900101);
-			gl_pMockChinaMarket->SetUpdateOptionDB(false);
+			s_pMockChinaMarket->SetRSEndDate(19900101);
+			s_pMockChinaMarket->SetUpdateOptionDB(false);
 
-			EXPECT_TRUE(gl_pMockChinaMarket->IsSystemReady());
-			EXPECT_TRUE(gl_pMockChinaMarket->IsMarketTaskEmpty()) << gl_pMockChinaMarket->GetMarketTask()->GetTime();
+			EXPECT_TRUE(s_pMockChinaMarket->IsSystemReady());
+			EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << s_pMockChinaMarket->GetMarketTask()->GetTime();
 
 			GeneralCheck();
 		}
 	};
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask1) {
-		gl_pMockChinaMarket->AddTask(CREATE_TASK__, 10000);
+		s_pMockChinaMarket->AddTask(CREATE_TASK__, 10000);
 
-		EXPECT_CALL(*gl_pMockChinaMarket, TaskCreateTask(10000)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, TaskCreateTask(10000)).Times(1);
 
-		EXPECT_TRUE(gl_pMockChinaMarket->ProcessEveryDayTask(10000));
+		EXPECT_TRUE(s_pMockChinaMarket->ProcessEveryDayTask(10000));
 
-		EXPECT_TRUE(gl_pMockChinaMarket->IsMarketTaskEmpty()) << gl_pMockChinaMarket->GetMarketTask()->GetTime();
+		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << s_pMockChinaMarket->GetMarketTask()->GetTime();
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask2) {
-		gl_pMockChinaMarket->AddTask(CHINA_MARKET_RESET__, 91300);
+		s_pMockChinaMarket->AddTask(CHINA_MARKET_RESET__, 91300);
 
-		EXPECT_CALL(*gl_pMockChinaMarket, TaskResetMarket(91300)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, TaskResetMarket(91300)).Times(1);
 
-		EXPECT_TRUE(gl_pMockChinaMarket->ProcessEveryDayTask(91300));
+		EXPECT_TRUE(s_pMockChinaMarket->ProcessEveryDayTask(91300));
 
-		EXPECT_TRUE(gl_pMockChinaMarket->IsMarketTaskEmpty());
+		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask3) {
-		gl_pMockChinaMarket->AddTask(CHINA_MARKET_RESET__, 92600);
+		s_pMockChinaMarket->AddTask(CHINA_MARKET_RESET__, 92600);
 
-		EXPECT_CALL(*gl_pMockChinaMarket, TaskResetMarket(92700)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, TaskResetMarket(92700)).Times(1);
 
-		EXPECT_TRUE(gl_pMockChinaMarket->ProcessEveryDayTask(92700));
+		EXPECT_TRUE(s_pMockChinaMarket->ProcessEveryDayTask(92700));
 
-		EXPECT_TRUE(gl_pMockChinaMarket->IsMarketTaskEmpty());
+		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask4) {
-		gl_pMockChinaMarket->AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 91500);
+		s_pMockChinaMarket->AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 91500);
 
-		EXPECT_CALL(*gl_pMockChinaMarket, TaskDistributeAndCalculateRTData(93000)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, TaskDistributeAndCalculateRTData(93000)).Times(1);
 
-		EXPECT_TRUE(gl_pMockChinaMarket->ProcessEveryDayTask(93000));
+		EXPECT_TRUE(s_pMockChinaMarket->ProcessEveryDayTask(93000));
 
-		EXPECT_TRUE(gl_pMockChinaMarket->IsMarketTaskEmpty());
+		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask6) {
-		gl_pMockChinaMarket->AddTask(CHINA_MARKET_SAVE_TEMP_RT_DATA__, 93500);
+		s_pMockChinaMarket->AddTask(CHINA_MARKET_SAVE_TEMP_RT_DATA__, 93500);
 
-		EXPECT_TRUE(gl_pMockChinaMarket->IsSystemReady());
-		gl_pMockChinaMarket->SetMarketOpened(true);
+		EXPECT_TRUE(s_pMockChinaMarket->IsSystemReady());
+		s_pMockChinaMarket->SetMarketOpened(true);
 
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadUpdateTempRTData()).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadUpdateTempRTData()).Times(1);
 
-		EXPECT_TRUE(gl_pMockChinaMarket->ProcessEveryDayTask(93500));
+		EXPECT_TRUE(s_pMockChinaMarket->ProcessEveryDayTask(93500));
 
-		EXPECT_FALSE(gl_pMockChinaMarket->IsMarketTaskEmpty());
-		auto pTask = gl_pMockChinaMarket->GetMarketTask();
-		gl_pMockChinaMarket->DiscardMarketTask();
+		EXPECT_FALSE(s_pMockChinaMarket->IsMarketTaskEmpty());
+		auto pTask = s_pMockChinaMarket->GetMarketTask();
+		s_pMockChinaMarket->DiscardMarketTask();
 		EXPECT_EQ(pTask->GetTime(), 94000);
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
 
@@ -140,219 +163,219 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask7) {
-		gl_pMockChinaMarket->AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, 150600);
+		s_pMockChinaMarket->AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, 150600);
 
-		EXPECT_TRUE(gl_pMockChinaMarket->IsSystemReady());
+		EXPECT_TRUE(s_pMockChinaMarket->IsSystemReady());
 
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadProcessTodayStock()).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadProcessTodayStock()).Times(1);
 
-		EXPECT_TRUE(gl_pMockChinaMarket->ProcessEveryDayTask(150600));
+		EXPECT_TRUE(s_pMockChinaMarket->ProcessEveryDayTask(150600));
 
-		EXPECT_TRUE(gl_pMockChinaMarket->IsMarketTaskEmpty());
+		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask8) {
-		gl_pMockChinaMarket->AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, 150600);
+		s_pMockChinaMarket->AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, 150600);
 
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadUpdateOptionDB()).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadUpdateOptionDB()).Times(1);
 
-		EXPECT_TRUE(gl_pMockChinaMarket->ProcessEveryDayTask(150600));
-		EXPECT_FALSE(gl_pMockChinaMarket->IsMarketTaskEmpty()) << "又生成一个任务";
-		const auto pTask = gl_pMockChinaMarket->GetMarketTask();
-		gl_pMockChinaMarket->DiscardMarketTask();
+		EXPECT_TRUE(s_pMockChinaMarket->ProcessEveryDayTask(150600));
+		EXPECT_FALSE(s_pMockChinaMarket->IsMarketTaskEmpty()) << "又生成一个任务";
+		const auto pTask = s_pMockChinaMarket->GetMarketTask();
+		s_pMockChinaMarket->DiscardMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_OPTION_DB__);
 		EXPECT_EQ(pTask->GetTime(), 151100) << "每五分钟一次";
 
-		EXPECT_TRUE(gl_pMockChinaMarket->IsMarketTaskEmpty());
+		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskSaveTempData1) {
-		EXPECT_TRUE(gl_pMockChinaMarket->IsSystemReady());
-		gl_pMockChinaMarket->SetMarketOpened(true);
+		EXPECT_TRUE(s_pMockChinaMarket->IsSystemReady());
+		s_pMockChinaMarket->SetMarketOpened(true);
 
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadUpdateTempRTData()).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadUpdateTempRTData()).Times(1);
 
-		gl_pMockChinaMarket->TaskSaveTempData(120000);
+		s_pMockChinaMarket->TaskSaveTempData(120000);
 
-		EXPECT_FALSE(gl_pMockChinaMarket->IsMarketTaskEmpty());
-		const auto pTask = gl_pMockChinaMarket->GetMarketTask();
-		gl_pMockChinaMarket->DiscardMarketTask();
+		EXPECT_FALSE(s_pMockChinaMarket->IsMarketTaskEmpty());
+		const auto pTask = s_pMockChinaMarket->GetMarketTask();
+		s_pMockChinaMarket->DiscardMarketTask();
 		EXPECT_EQ(pTask->GetTime(), 125730) << "中午休市时不存储临时实时数据，到13时开市时才存储";
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
 		gl_systemMessage.PopDayLineInfoMessage();
 
 		// 恢复原状
-		gl_pMockChinaMarket->SetMarketOpened(false);
+		s_pMockChinaMarket->SetMarketOpened(false);
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskLoadCurrentStockDayLine1) {
-		gl_pMockChinaMarket->ResetCurrentStock();
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadLoadDayLine(_))
+		s_pMockChinaMarket->ResetCurrentStock();
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadLoadDayLine(_))
 		.Times(0);
 
-		gl_pMockChinaMarket->TaskLoadCurrentStockHistoryData();
+		s_pMockChinaMarket->TaskLoadCurrentStockHistoryData();
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskLoadCurrentStockDayLine2) {
-		gl_pMockChinaMarket->ResetCurrentStock();
-		gl_pMockChinaMarket->SetCurrentStock(_T("600000.SS"));
-		gl_pMockChinaMarket->GetCurrentStock()->SetDayLineLoaded(true);
-		gl_pMockChinaMarket->GetCurrentStock()->SetWeekLineLoaded(true);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadLoadDayLine(_))
+		s_pMockChinaMarket->ResetCurrentStock();
+		s_pMockChinaMarket->SetCurrentStock(_T("600000.SS"));
+		s_pMockChinaMarket->GetCurrentStock()->SetDayLineLoaded(true);
+		s_pMockChinaMarket->GetCurrentStock()->SetWeekLineLoaded(true);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadLoadDayLine(_))
 		.Times(0);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadLoadWeekLine(_))
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadLoadWeekLine(_))
 		.Times(0);
 
-		gl_pMockChinaMarket->TaskLoadCurrentStockHistoryData();
+		s_pMockChinaMarket->TaskLoadCurrentStockHistoryData();
 
-		EXPECT_TRUE(gl_pMockChinaMarket->GetCurrentStock()->IsDayLineLoaded());
-		EXPECT_TRUE(gl_pMockChinaMarket->GetCurrentStock()->IsWeekLineLoaded());
+		EXPECT_TRUE(s_pMockChinaMarket->GetCurrentStock()->IsDayLineLoaded());
+		EXPECT_TRUE(s_pMockChinaMarket->GetCurrentStock()->IsWeekLineLoaded());
 
 		//恢复原状
-		while (!gl_pMockChinaMarket->IsMarketTaskEmpty()) gl_pMockChinaMarket->DiscardMarketTask();
+		while (!s_pMockChinaMarket->IsMarketTaskEmpty()) s_pMockChinaMarket->DiscardMarketTask();
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskLoadCurrentStockDayLine3) {
-		gl_pMockChinaMarket->ResetCurrentStock();
-		gl_pMockChinaMarket->SetCurrentStock(_T("600000.SS"));
-		gl_pMockChinaMarket->GetCurrentStock()->SetDayLineLoaded(false);
-		gl_pMockChinaMarket->GetCurrentStock()->SetWeekLineLoaded(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadLoadDayLine(_))
+		s_pMockChinaMarket->ResetCurrentStock();
+		s_pMockChinaMarket->SetCurrentStock(_T("600000.SS"));
+		s_pMockChinaMarket->GetCurrentStock()->SetDayLineLoaded(false);
+		s_pMockChinaMarket->GetCurrentStock()->SetWeekLineLoaded(false);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadLoadDayLine(_))
 		.Times(1);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadLoadWeekLine(_))
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadLoadWeekLine(_))
 		.Times(1);
 
-		gl_pMockChinaMarket->TaskLoadCurrentStockHistoryData();
+		s_pMockChinaMarket->TaskLoadCurrentStockHistoryData();
 
-		EXPECT_TRUE(gl_pMockChinaMarket->GetCurrentStock()->IsDayLineLoaded());
-		EXPECT_TRUE(gl_pMockChinaMarket->GetCurrentStock()->IsWeekLineLoaded());
+		EXPECT_TRUE(s_pMockChinaMarket->GetCurrentStock()->IsDayLineLoaded());
+		EXPECT_TRUE(s_pMockChinaMarket->GetCurrentStock()->IsWeekLineLoaded());
 
 		//恢复原状
-		while (!gl_pMockChinaMarket->IsMarketTaskEmpty()) gl_pMockChinaMarket->DiscardMarketTask();
+		while (!s_pMockChinaMarket->IsMarketTaskEmpty()) s_pMockChinaMarket->DiscardMarketTask();
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskUpdateStockProfileDB) {
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadUpdateStockProfileDB())
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadUpdateStockProfileDB())
 		.Times(0);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskUpdateStockProfileDB(0));
+		EXPECT_FALSE(s_pMockChinaMarket->TaskUpdateStockProfileDB(0));
 
-		gl_pMockChinaMarket->GetStock(1)->SetUpdateProfileDB(true);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadUpdateStockProfileDB())
+		s_pMockChinaMarket->GetStock(1)->SetUpdateProfileDB(true);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadUpdateStockProfileDB())
 		.Times(1);
-		EXPECT_TRUE(gl_pMockChinaMarket->TaskUpdateStockProfileDB(0));
+		EXPECT_TRUE(s_pMockChinaMarket->TaskUpdateStockProfileDB(0));
 
 		// 恢复原状
-		gl_pMockChinaMarket->GetStock(1)->SetUpdateProfileDB(false);
-		while (!gl_pMockChinaMarket->IsMarketTaskEmpty()) gl_pMockChinaMarket->DiscardMarketTask();
+		s_pMockChinaMarket->GetStock(1)->SetUpdateProfileDB(false);
+		while (!s_pMockChinaMarket->IsMarketTaskEmpty()) s_pMockChinaMarket->DiscardMarketTask();
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskChoice10RSStrong2StockSet) {
 		tm tm_{};
 		tm_.tm_wday = 1; // 星期一
-		gl_pMockChinaMarket->TEST_SetMarketTM(tm_);
-		gl_pMockChinaMarket->SetSystemReady(false);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151200));
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151201));
-		gl_pMockChinaMarket->SetSystemReady(true);
-		gl_pMockChinaMarket->SetChosen10RSStrong2StockSet(true);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151200));
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151201));
-		gl_pMockChinaMarket->SetSystemReady(true);
-		gl_pMockChinaMarket->SetChosen10RSStrong2StockSet(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadChoice10RSStrong2StockSet)
+		s_pMockChinaMarket->TEST_SetMarketTM(tm_);
+		s_pMockChinaMarket->SetSystemReady(false);
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151200));
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151201));
+		s_pMockChinaMarket->SetSystemReady(true);
+		s_pMockChinaMarket->SetChosen10RSStrong2StockSet(true);
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151200));
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151201));
+		s_pMockChinaMarket->SetSystemReady(true);
+		s_pMockChinaMarket->SetChosen10RSStrong2StockSet(false);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadChoice10RSStrong2StockSet)
 		.Times(1);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151200));
-		EXPECT_TRUE(gl_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151201));
-		EXPECT_TRUE(gl_pMockChinaMarket->IsChosen10RSStrong2StockSet());
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151200));
+		EXPECT_TRUE(s_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151201));
+		EXPECT_TRUE(s_pMockChinaMarket->IsChosen10RSStrong2StockSet());
 
 		tm_.tm_wday = 0; // 星期日
-		gl_pMockChinaMarket->TEST_SetMarketTM(tm_);
-		gl_pMockChinaMarket->SetChosen10RSStrong2StockSet(false);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151201));
-		EXPECT_FALSE(gl_pMockChinaMarket->IsChosen10RSStrong2StockSet()) << _T("休息日不处理");
+		s_pMockChinaMarket->TEST_SetMarketTM(tm_);
+		s_pMockChinaMarket->SetChosen10RSStrong2StockSet(false);
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrong2StockSet(151201));
+		EXPECT_FALSE(s_pMockChinaMarket->IsChosen10RSStrong2StockSet()) << _T("休息日不处理");
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskChoice10RSStrong1StockSet) {
 		tm tm_{};
 		tm_.tm_wday = 1; // 星期一
-		gl_pMockChinaMarket->TEST_SetMarketTM(tm_);
-		gl_pMockChinaMarket->SetSystemReady(false);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151100));
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151101));
-		gl_pMockChinaMarket->SetSystemReady(true);
-		gl_pMockChinaMarket->SetChosen10RSStrong1StockSet(true);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151100));
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151101));
-		gl_pMockChinaMarket->SetSystemReady(true);
-		gl_pMockChinaMarket->SetChosen10RSStrong1StockSet(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadChoice10RSStrong1StockSet)
+		s_pMockChinaMarket->TEST_SetMarketTM(tm_);
+		s_pMockChinaMarket->SetSystemReady(false);
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151100));
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151101));
+		s_pMockChinaMarket->SetSystemReady(true);
+		s_pMockChinaMarket->SetChosen10RSStrong1StockSet(true);
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151100));
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151101));
+		s_pMockChinaMarket->SetSystemReady(true);
+		s_pMockChinaMarket->SetChosen10RSStrong1StockSet(false);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadChoice10RSStrong1StockSet)
 		.Times(1);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151100));
-		EXPECT_TRUE(gl_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151101));
-		EXPECT_TRUE(gl_pMockChinaMarket->IsChosen10RSStrong1StockSet());
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151100));
+		EXPECT_TRUE(s_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151101));
+		EXPECT_TRUE(s_pMockChinaMarket->IsChosen10RSStrong1StockSet());
 
 		tm_.tm_wday = 0; // 星期日
-		gl_pMockChinaMarket->TEST_SetMarketTM(tm_);
-		gl_pMockChinaMarket->SetChosen10RSStrong1StockSet(false);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151101));
-		EXPECT_FALSE(gl_pMockChinaMarket->IsChosen10RSStrong1StockSet()) << _T("休息日不处理");
+		s_pMockChinaMarket->TEST_SetMarketTM(tm_);
+		s_pMockChinaMarket->SetChosen10RSStrong1StockSet(false);
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrong1StockSet(151101));
+		EXPECT_FALSE(s_pMockChinaMarket->IsChosen10RSStrong1StockSet()) << _T("休息日不处理");
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskChoice10RSStrongStockSet) {
 		tm tm_{};
 		tm_.tm_wday = 1; // 星期一
-		gl_pMockChinaMarket->TEST_SetMarketTM(tm_);
-		gl_pMockChinaMarket->SetSystemReady(false);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrongStockSet(151000));
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
-		gl_pMockChinaMarket->SetSystemReady(true);
-		gl_pMockChinaMarket->SetChosen10RSStrongStockSet(true);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrongStockSet(151000));
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
-		gl_pMockChinaMarket->SetSystemReady(true);
-		gl_pMockChinaMarket->SetChosen10RSStrongStockSet(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadChoice10RSStrongStockSet)
+		s_pMockChinaMarket->TEST_SetMarketTM(tm_);
+		s_pMockChinaMarket->SetSystemReady(false);
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151000));
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
+		s_pMockChinaMarket->SetSystemReady(true);
+		s_pMockChinaMarket->SetChosen10RSStrongStockSet(true);
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151000));
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
+		s_pMockChinaMarket->SetSystemReady(true);
+		s_pMockChinaMarket->SetChosen10RSStrongStockSet(false);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadChoice10RSStrongStockSet)
 		.Times(1);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrongStockSet(151000));
-		EXPECT_TRUE(gl_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
-		EXPECT_TRUE(gl_pMockChinaMarket->IsChosen10RSStrongStockSet());
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151000));
+		EXPECT_TRUE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
+		EXPECT_TRUE(s_pMockChinaMarket->IsChosen10RSStrongStockSet());
 
 		tm_.tm_wday = 0; // 星期日
-		gl_pMockChinaMarket->TEST_SetMarketTM(tm_);
-		gl_pMockChinaMarket->SetChosen10RSStrongStockSet(false);
-		EXPECT_FALSE(gl_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
-		EXPECT_FALSE(gl_pMockChinaMarket->IsChosen10RSStrongStockSet()) << _T("休息日不处理");
+		s_pMockChinaMarket->TEST_SetMarketTM(tm_);
+		s_pMockChinaMarket->SetChosen10RSStrongStockSet(false);
+		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
+		EXPECT_FALSE(s_pMockChinaMarket->IsChosen10RSStrongStockSet()) << _T("休息日不处理");
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadCalculateDayLineRS) {
-		gl_pMockChinaMarket->CalculateTime();
+		s_pMockChinaMarket->CalculateTime();
 		time_t tStart = GetUTCTime() - 3600 * 24 * 6; // 从一周前开始计算
 		tm _tm;
-		GetMarketTimeStruct(&_tm, tStart, gl_pMockChinaMarket->GetMarketTimeZone());
+		GetMarketTimeStruct(&_tm, tStart, s_pMockChinaMarket->GetMarketTimeZone());
 		long lStartDate = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
 		gl_systemStatus.SetExitingCalculatingRS(true); // 中间被打断
-		gl_pMockChinaMarket->SetCalculatingDayLineRS(true);
-		gl_pMockChinaMarket->SetRSEndDate(0);
-		gl_pMockChinaMarket->SetUpdateOptionDB(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadBuildDayLineRSOfDate(_)).Times(5);
-		EXPECT_EQ(ThreadBuildDayLineRS(gl_pMockChinaMarket.get(), lStartDate), static_cast<UINT>(11));
-		EXPECT_FALSE(gl_pMockChinaMarket->IsUpdateOptionDB()) << _T("被打断后不设置此标识");
-		EXPECT_EQ(gl_pMockChinaMarket->GetRSEndDate(), 0);
+		s_pMockChinaMarket->SetCalculatingDayLineRS(true);
+		s_pMockChinaMarket->SetRSEndDate(0);
+		s_pMockChinaMarket->SetUpdateOptionDB(false);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildDayLineRSOfDate(_)).Times(5);
+		EXPECT_EQ(ThreadBuildDayLineRS(s_pMockChinaMarket.get(), lStartDate), static_cast<UINT>(11));
+		EXPECT_FALSE(s_pMockChinaMarket->IsUpdateOptionDB()) << _T("被打断后不设置此标识");
+		EXPECT_EQ(s_pMockChinaMarket->GetRSEndDate(), 0);
 		EXPECT_FALSE(gl_systemStatus.IsExitingCalculatingRS());
-		EXPECT_FALSE(gl_pMockChinaMarket->IsCalculatingDayLineRS());
+		EXPECT_FALSE(s_pMockChinaMarket->IsCalculatingDayLineRS());
 
 		tStart = GetUTCTime() - 3600 * 24 * 6; // 从一周前开始计算
-		GetMarketTimeStruct(&_tm, tStart, gl_pMockChinaMarket->GetMarketTimeZone());
+		GetMarketTimeStruct(&_tm, tStart, s_pMockChinaMarket->GetMarketTimeZone());
 		lStartDate = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
 		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_pMockChinaMarket->SetCalculatingDayLineRS(true);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadBuildDayLineRSOfDate(_))
+		s_pMockChinaMarket->SetCalculatingDayLineRS(true);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildDayLineRSOfDate(_))
 		.Times(5);
-		EXPECT_EQ(ThreadBuildDayLineRS(gl_pMockChinaMarket.get(), lStartDate), static_cast<UINT>(11));
-		EXPECT_TRUE(gl_pMockChinaMarket->IsUpdateOptionDB());
-		EXPECT_EQ(gl_pMockChinaMarket->GetRSEndDate(), gl_pMockChinaMarket->GetMarketDate());
-		EXPECT_FALSE(gl_pMockChinaMarket->IsCalculatingDayLineRS());
+		EXPECT_EQ(ThreadBuildDayLineRS(s_pMockChinaMarket.get(), lStartDate), static_cast<UINT>(11));
+		EXPECT_TRUE(s_pMockChinaMarket->IsUpdateOptionDB());
+		EXPECT_EQ(s_pMockChinaMarket->GetRSEndDate(), s_pMockChinaMarket->GetMarketDate());
+		EXPECT_FALSE(s_pMockChinaMarket->IsCalculatingDayLineRS());
 
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 4); // 共两次调用，有四个信息
 		gl_systemMessage.PopInformationMessage();
@@ -362,32 +385,32 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadUpdateOptionDB) {
-		EXPECT_CALL(*gl_pMockChinaMarket, UpdateOptionDB)
+		EXPECT_CALL(*s_pMockChinaMarket, UpdateOptionDB)
 		.Times(1);
-		EXPECT_EQ(ThreadUpdateOptionDB(gl_pMockChinaMarket.get()), static_cast<UINT>(20));
+		EXPECT_EQ(ThreadUpdateOptionDB(s_pMockChinaMarket.get()), static_cast<UINT>(20));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadUpdateStockProfileDB) {
-		ASSERT_THAT(gl_pMockChinaMarket->IsUpdateStockProfileDB(), IsFalse()) << "此测试开始时，必须保证没有设置更新代码库的标识，否则会真正更新了测试代码库";
+		ASSERT_THAT(s_pMockChinaMarket->IsUpdateStockProfileDB(), IsFalse()) << "此测试开始时，必须保证没有设置更新代码库的标识，否则会真正更新了测试代码库";
 
-		EXPECT_CALL(*gl_pMockChinaMarket, UpdateStockProfileDB)
+		EXPECT_CALL(*s_pMockChinaMarket, UpdateStockProfileDB)
 		.Times(1);
-		gl_pMockChinaMarket->SetSystemReady(true);
-		EXPECT_EQ(ThreadUpdateChinaStockProfileDB(gl_pMockChinaMarket.get()), static_cast<UINT>(18));
+		s_pMockChinaMarket->SetSystemReady(true);
+		EXPECT_EQ(ThreadUpdateChinaStockProfileDB(s_pMockChinaMarket.get()), static_cast<UINT>(18));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadUpdateChosenStockDB) {
-		EXPECT_CALL(*gl_pMockChinaMarket, AppendChosenStockDB)
+		EXPECT_CALL(*s_pMockChinaMarket, AppendChosenStockDB)
 		.Times(1);
-		gl_pMockChinaMarket->SetSystemReady(true);
-		EXPECT_EQ(ThreadAppendChosenStockDB(gl_pMockChinaMarket.get()), static_cast<UINT>(22));
+		s_pMockChinaMarket->SetSystemReady(true);
+		EXPECT_EQ(ThreadAppendChosenStockDB(s_pMockChinaMarket.get()), static_cast<UINT>(22));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadSaveTempRTData) {
-		EXPECT_CALL(*gl_pMockChinaMarket, UpdateTodayTempDB)
+		EXPECT_CALL(*s_pMockChinaMarket, UpdateTodayTempDB)
 		.Times(1);
-		gl_pMockChinaMarket->SetSystemReady(true);
-		EXPECT_EQ(ThreadSaveTempRTData(gl_pMockChinaMarket.get()), static_cast<UINT>(13));
+		s_pMockChinaMarket->SetSystemReady(true);
+		EXPECT_EQ(ThreadSaveTempRTData(s_pMockChinaMarket.get()), static_cast<UINT>(13));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadMaintainDayLineDatabase) {
@@ -395,81 +418,81 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineOfCurrentWeek) {
-		EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineOfCurrentWeek)
+		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineOfCurrentWeek)
 		.Times(1);
-		EXPECT_EQ(ThreadBuildWeekLineOfCurrentWeek(gl_pMockChinaMarket.get()), static_cast<UINT>(32));
+		EXPECT_EQ(ThreadBuildWeekLineOfCurrentWeek(s_pMockChinaMarket.get()), static_cast<UINT>(32));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildCurrentWeekWeekLineTable) {
-		EXPECT_CALL(*gl_pMockChinaMarket, DeleteCurrentWeekWeekLine).Times(1);
-		EXPECT_CALL(*gl_pMockChinaMarket, BuildCurrentWeekWeekLineTable).Times(1);
-		EXPECT_EQ(ThreadBuildCurrentWeekWeekLineTable(gl_pMockChinaMarket.get()), static_cast<UINT>(33));
+		EXPECT_CALL(*s_pMockChinaMarket, DeleteCurrentWeekWeekLine).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, BuildCurrentWeekWeekLineTable).Times(1);
+		EXPECT_EQ(ThreadBuildCurrentWeekWeekLineTable(s_pMockChinaMarket.get()), static_cast<UINT>(33));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadSaveStockSection) {
-		EXPECT_CALL(*gl_pMockChinaMarket, SaveStockSection)
+		EXPECT_CALL(*s_pMockChinaMarket, SaveStockSection)
 		.Times(1);
-		EXPECT_EQ(ThreadSaveStockSection(gl_pMockChinaMarket.get()), static_cast<UINT>(35));
+		EXPECT_EQ(ThreadSaveStockSection(s_pMockChinaMarket.get()), static_cast<UINT>(35));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineRSOfDate) {
 		long lPrevMonday = GetPrevMonday(20200101);
 		gl_systemStatus.SetExitingSystem(true);
-		EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRS(_)).Times(0);
-		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(gl_pMockChinaMarket.get(), lPrevMonday), static_cast<UINT>(31));
+		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineRS(_)).Times(0);
+		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(s_pMockChinaMarket.get(), lPrevMonday), static_cast<UINT>(31));
 
 		gl_systemStatus.SetExitingSystem(false);
 		gl_systemStatus.SetExitingCalculatingRS(true);
-		EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRS(_)).Times(0);
-		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(gl_pMockChinaMarket.get(), lPrevMonday), static_cast<UINT>(31));
+		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineRS(_)).Times(0);
+		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(s_pMockChinaMarket.get(), lPrevMonday), static_cast<UINT>(31));
 
 		gl_systemStatus.SetExitingCalculatingRS(false);
-		EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLineRS(lPrevMonday)).Times(1);
-		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(gl_pMockChinaMarket.get(), lPrevMonday), static_cast<UINT>(31));
+		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineRS(lPrevMonday)).Times(1);
+		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(s_pMockChinaMarket.get(), lPrevMonday), static_cast<UINT>(31));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineRS) {
-		gl_pMockChinaMarket->CalculateTime();
-		const long lPrevMonday4 = GetPrevMonday(gl_pMockChinaMarket->GetMarketDate());
+		s_pMockChinaMarket->CalculateTime();
+		const long lPrevMonday4 = GetPrevMonday(s_pMockChinaMarket->GetMarketDate());
 		const long lPrevMonday3 = GetPrevMonday(lPrevMonday4);
 		const long lPrevMonday2 = GetPrevMonday(lPrevMonday3);
 		const long lPrevMonday1 = GetPrevMonday(lPrevMonday2);
 		const long lPrevMonday = GetPrevMonday(lPrevMonday1);
 		InSequence seq;
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(lPrevMonday)).Times(1);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(lPrevMonday1)).Times(1);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(lPrevMonday2)).Times(1);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(lPrevMonday3)).Times(1);
-		EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(lPrevMonday4)).Times(1);
-		if (gl_pMockChinaMarket->GetDayOfWeek() == 1) {
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(lPrevMonday)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(lPrevMonday1)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(lPrevMonday2)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(lPrevMonday3)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(lPrevMonday4)).Times(1);
+		if (s_pMockChinaMarket->GetDayOfWeek() == 1) {
 			// 本日是星期一
-			EXPECT_CALL(*gl_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(gl_pMockChinaMarket->GetMarketDate())).Times(1); // 当前日为星期一时，要计算当前日
+			EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(s_pMockChinaMarket->GetMarketDate())).Times(1); // 当前日为星期一时，要计算当前日
 		}
-		EXPECT_EQ(ThreadBuildWeekLineRS(gl_pMockChinaMarket.get(), lPrevMonday1), static_cast<UINT>(30));
+		EXPECT_EQ(ThreadBuildWeekLineRS(s_pMockChinaMarket.get(), lPrevMonday1), static_cast<UINT>(30));
 
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
 		gl_systemMessage.PopInformationMessage();
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLine1) {
-		EXPECT_CALL(*gl_pMockChinaMarket, DeleteWeekLine()).Times(1)
+		EXPECT_CALL(*s_pMockChinaMarket, DeleteWeekLine()).Times(1)
 		.RetiresOnSaturation();
-		EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLine(19900101)).Times(1)
+		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLine(19900101)).Times(1)
 		.RetiresOnSaturation();
-		EXPECT_CALL(*gl_pMockChinaMarket, DeleteCurrentWeekWeekLine()).Times(1);
-		EXPECT_CALL(*gl_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1)
+		EXPECT_CALL(*s_pMockChinaMarket, DeleteCurrentWeekWeekLine()).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1)
 		.RetiresOnSaturation();
-		EXPECT_EQ(ThreadBuildWeekLine(gl_pMockChinaMarket.get(), 19900101), static_cast<UINT>(25));
+		EXPECT_EQ(ThreadBuildWeekLine(s_pMockChinaMarket.get(), 19900101), static_cast<UINT>(25));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLine2) {
-		gl_pMockChinaMarket->CalculateTime();
-		const long lCurrentMonday = GetCurrentMonday(gl_pMockChinaMarket->GetMarketDate());
-		EXPECT_CALL(*gl_pMockChinaMarket, DeleteWeekLine(lCurrentMonday)).Times(1);
-		EXPECT_CALL(*gl_pMockChinaMarket, BuildWeekLine(lCurrentMonday)).Times(1);
-		EXPECT_CALL(*gl_pMockChinaMarket, DeleteCurrentWeekWeekLine()).Times(1);
-		EXPECT_CALL(*gl_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1);
-		EXPECT_EQ(ThreadBuildWeekLine(gl_pMockChinaMarket.get(), lCurrentMonday), static_cast<UINT>(25));
+		s_pMockChinaMarket->CalculateTime();
+		const long lCurrentMonday = GetCurrentMonday(s_pMockChinaMarket->GetMarketDate());
+		EXPECT_CALL(*s_pMockChinaMarket, DeleteWeekLine(lCurrentMonday)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLine(lCurrentMonday)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, DeleteCurrentWeekWeekLine()).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1);
+		EXPECT_EQ(ThreadBuildWeekLine(s_pMockChinaMarket.get(), lCurrentMonday), static_cast<UINT>(25));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestUpdateTempRTData) { }

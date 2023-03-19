@@ -112,12 +112,10 @@ bool CContainerWorldStock::LoadDB(void) {
 /// <summary>
 /// 这种查询方式比较晦涩，但结果正确。目前使用此函数。(可能出现存储多个相同代码的问题，研究之）
 /// </summary>
-bool CContainerWorldStock::UpdateProfileDB(void) {
-	// ReSharper disable once CppTooWideScope
-	CSetWorldStock setWorldStock;
-
+void CContainerWorldStock::UpdateProfileDB(void) {
 	//更新原有的代码集状态
 	if (IsUpdateProfileDB()) {
+		CSetWorldStock setWorldStock;
 		int iCurrentUpdated = 0;
 		int iStockNeedUpdate = 0;
 		for (const auto& pStock : m_vStock) {
@@ -130,6 +128,7 @@ bool CContainerWorldStock::UpdateProfileDB(void) {
 		while (iCurrentUpdated < iStockNeedUpdate) {
 			if (setWorldStock.IsEOF()) break;
 			const CWorldStockPtr pStock = GetStock(setWorldStock.m_Symbol);
+			ASSERT(pStock != nullptr);
 			if (pStock->IsUpdateProfileDB()) {
 				iCurrentUpdated++;
 				pStock->Update(setWorldStock);
@@ -144,6 +143,7 @@ bool CContainerWorldStock::UpdateProfileDB(void) {
 			}
 			for (size_t l = 0; l < m_vStock.size(); l++) {
 				const CWorldStockPtr pStock = GetStock(l);
+				ASSERT(pStock != nullptr);
 				if (pStock->IsUpdateProfileDB()) {
 					iCurrentUpdated++;
 					pStock->Append(setWorldStock);
@@ -156,8 +156,6 @@ bool CContainerWorldStock::UpdateProfileDB(void) {
 		setWorldStock.m_pDatabase->CommitTrans();
 		setWorldStock.Close();
 	}
-
-	return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

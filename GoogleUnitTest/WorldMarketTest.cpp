@@ -394,7 +394,7 @@ namespace FireBirdTest {
 		setCountry.Close();
 	}
 
-	TEST_F(CWorldMarketTest, TestUpdateStockProfileDB) {
+	TEST_F(CWorldMarketTest, TestUpdateStockProfileDB3) {
 		//todo 此测试有问题：出现unknown c++ exception thrown
 		auto pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("SS.SS.US"));
@@ -402,12 +402,37 @@ namespace FireBirdTest {
 		pStock->SetTodayNewStock(true);
 		pStock->SetUpdateProfileDB(true);
 		EXPECT_TRUE(gl_pWorldMarket->AddStock(pStock));
-		pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
+
+		gl_pWorldMarket->UpdateStockProfileDB();
+
+		CSetWorldStock setWorldStock2;
+		setWorldStock2.m_strFilter = _T("[Symbol] = 'SS.SS.US'");
+		setWorldStock2.Open();
+		EXPECT_FALSE(setWorldStock2.IsEOF());
+		setWorldStock2.m_pDatabase->BeginTrans();
+		while (!setWorldStock2.IsEOF()) {
+			setWorldStock2.Delete();
+			setWorldStock2.MoveNext();
+		}
+		setWorldStock2.m_pDatabase->CommitTrans();
+		setWorldStock2.Close();
+
+		// 恢复原状
+		pStock = gl_pWorldMarket->GetStock(_T("SS.SS.US"));
+		EXPECT_TRUE(pStock != nullptr);
+		EXPECT_TRUE(gl_pWorldMarket->DeleteStock(pStock));
+		while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4847);
+	}
+
+	TEST_F(CWorldMarketTest, TestUpdateStockProfileDB2) {
+		//todo 此测试有问题：出现unknown c++ exception thrown
+
+		auto pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
 		EXPECT_TRUE(pStock != nullptr);
 		EXPECT_STREQ(pStock->GetCurrency(), _T(""));
 		pStock->SetUpdateProfileDB(true);
 		pStock->SetCurrency(_T("No Currency")); // 更新这个条目
-		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4848);
 
 		gl_pWorldMarket->UpdateStockProfileDB();
 
@@ -423,24 +448,9 @@ namespace FireBirdTest {
 		setWorldStock.m_pDatabase->CommitTrans();
 		setWorldStock.Close();
 
-		setWorldStock.m_strFilter = _T("[Symbol] = 'SS.SS.US'");
-		setWorldStock.Open();
-		EXPECT_FALSE(setWorldStock.IsEOF());
-		setWorldStock.m_pDatabase->BeginTrans();
-		while (!setWorldStock.IsEOF()) {
-			setWorldStock.Delete();
-			setWorldStock.MoveNext();
-		}
-		setWorldStock.m_pDatabase->CommitTrans();
-		setWorldStock.Close();
-
 		// 恢复原状
-		pStock = gl_pWorldMarket->GetStock(_T("SS.SS.US"));
-		EXPECT_TRUE(pStock != nullptr);
-		EXPECT_TRUE(gl_pWorldMarket->DeleteStock(pStock));
 		pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
 		EXPECT_TRUE(pStock != nullptr);
-		EXPECT_STREQ(pStock->GetCurrency(), _T("No Currency"));
 		pStock->SetCurrency(_T(""));
 		while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4847);

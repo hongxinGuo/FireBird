@@ -56,8 +56,7 @@
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 
-#include"MockWorldMarket.h"
-#include"MockChinaMarket.h"
+#include"WorldMarket.h"
 
 #include"MockMainFrm.h"
 
@@ -85,8 +84,6 @@ static char THIS_FILE[] = __FILE__;
 
 namespace FireBirdTest {
 	// 构造析构时开销大的Mock类声明为全局变量，在测试系统退出时才析构,这样容易在测试信息窗口中发现故障
-	CMockWorldMarketPtr gl_pMockWorldMarket;
-	CMockChinaMarketPtr gl_pMockChinaMarket;
 	CMockMainFramePtr gl_pMockMainFrame; // 此Mock类使用真实的各市场类(gl_pChinaMarket, gl_pWorldMarket, ...)
 
 	class TestEnvironment : public Environment {
@@ -128,12 +125,6 @@ namespace FireBirdTest {
 			gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
 			gl_vMarketPtr.push_back(gl_pChinaMarket); // 中国股票市场
 
-			gl_pMockChinaMarket = make_shared<CMockChinaMarket>();
-			gl_pMockChinaMarket->ResetMarket();
-			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
-			gl_pMockWorldMarket = make_shared<CMockWorldMarket>(); // 在此生成，在全局TearDown才赋值nullptr.这样容易看到错误信息
-			gl_pMockWorldMarket->ResetMarket();
-			EXPECT_LE(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
 			EXPECT_LE(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
@@ -155,27 +146,12 @@ namespace FireBirdTest {
 				}
 			}
 
-			for (int i = 0; i < gl_pMockChinaMarket->GetTotalStock(); i++) {
-				const auto pStock = gl_pMockChinaMarket->GetStock(i);
-				pStock->SetDayLineNeedUpdate(true);
-				if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
-
-				if (IsEarlyThen(pStock->GetDayLineEndDate(), gl_pMockChinaMarket->GetMarketDate(), 30)) {
-					if (pStock->GetDayLineEndDate() == 20210430) {
-						EXPECT_TRUE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol(); //"当股票日线结束日期早于30日时，装入股票代码数据库时要求更新代码库";
-						pStock->SetUpdateProfileDB(false);
-					}
-				}
-			}
-
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-			EXPECT_EQ(gl_pMockChinaMarket->GetDayLineNeedUpdateNumber(), gl_pMockChinaMarket->GetTotalStock());
 			EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 4800);
 			gl_pChinaMarket->SetSystemReady(true);
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
 			while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
-			while (!gl_pMockChinaMarket->IsMarketTaskEmpty()) gl_pMockChinaMarket->DiscardMarketTask();
 
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 
@@ -202,19 +178,15 @@ namespace FireBirdTest {
 			}
 
 			gl_systemStatus.SetExitingSystem(true);
-			// 重置以下指针，以测试是否存在没有配对的Mock。
-			gl_pMockChinaMarket = nullptr;
-			gl_pMockWorldMarket = nullptr;
 
 			if (CMFCVisualManager::GetInstance() != nullptr) {
-				delete CMFCVisualManager::GetInstance(); // 在生成MainFrame时，会生成一个视觉管理器。故而在此删除之。
+				delete CMFCVisualManager::GetInstance(); // 在生成gl_pMockMainFrame时，会生成一个视觉管理器。故而在此删除之。
 			}
 
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 				const auto pStock = gl_pChinaMarket->GetStock(i);
 				EXPECT_FALSE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol();
-				pStock->SetUpdateProfileDB(false);
-				// gl_pMockMainFrame使用了真正的gl_pChinaMarket,此处重置此标识，防止解构gl_pMockMainFrame时更新数据库。
+				pStock->SetUpdateProfileDB(false);	// gl_pMockMainFrame使用了真正的gl_pChinaMarket,此处重置此标识，防止解构gl_pMockMainFrame时更新数据库。
 			}
 			ASSERT_THAT(gl_pChinaMarket->IsUpdateStockProfileDB(), IsFalse()) << "退出时必须保证无需更新代码库";
 

@@ -193,7 +193,7 @@ public:
 	bool LoadWorldChosenStock(void) { return m_containerChosenStock.LoadDB(); }
 
 	virtual bool UpdateCountryListDB(void) { return m_dataFinnhubCountry.UpdateDB(); }
-	virtual bool UpdateStockProfileDB(void) { return m_containerStock.UpdateProfileDB(); }
+	virtual void UpdateStockProfileDB(void) { m_containerStock.UpdateProfileDB(); }
 	virtual bool UpdateCompanyNewsDB(void);
 	virtual bool UpdateBasicFinancialDB(void) { return m_containerStock.UpdateBasicFinancialDB(); }
 	virtual bool UpdateStockDayLineDB(void);
