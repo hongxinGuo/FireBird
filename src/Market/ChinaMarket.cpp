@@ -81,7 +81,6 @@ void CChinaMarket::ResetMarket(void) {
 	LoadCalculatingRSOption();
 	Load10DaysRSStrongStockDB();
 
-	AddTask(CHINA_MARKET_CHECK_SYSTEM_READY__, 1); // 每次重置系统时，必须进行系统初始化状态检查
 	gl_ProcessChinaMarketRTData.release();
 }
 
@@ -819,6 +818,7 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 	SetResetMarket(true); // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
 	SetSystemReady(false);
 	gl_pChinaMarket->AddTask(CHINA_MARKET_UPDATE_STOCK_SECTION__, GetNextTime(lCurrentTime, 0, 5, 0)); // 五分钟后再更新此数据库
+	AddTask(CHINA_MARKET_CHECK_SYSTEM_READY__, lCurrentTime); // 每次重置系统时，必须进行系统初始化状态检查
 
 	return true;
 }

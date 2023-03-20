@@ -109,8 +109,6 @@ void CWorldMarket::ResetMarket(void) {
 		pDataSource->Reset();
 	}
 
-	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, 1); // 每次重置系统时，必须设置系统状态检查任务
-
 	CString str = _T("重置World Market于美东标准时间：");
 	str += GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(str);
@@ -197,6 +195,8 @@ bool CWorldMarket::TaskResetMarket(long lCurrentTime) {
 	// 市场时间十七时重启系统
 	SetResetMarket(true); // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
 	SetSystemReady(false);
+
+	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, lCurrentTime); // 每次重置系统时，必须设置系统状态检查任务
 
 	return true;
 }
