@@ -30,12 +30,13 @@ vector<CMarketTaskPtr> CMarketTaskQueue::GetTaskVector() {
 void CMarketTaskQueue::CreateIndexMap() {
 	gl_mapMarketMapIndex[CREATE_TASK__] = _T("生成各项任务");
 
-	gl_mapMarketMapIndex[CHINA_MARKET_CHECK_SYSTEM__] = "系统初始化检查";
+	gl_mapMarketMapIndex[CHINA_MARKET_CHECK_SYSTEM_READY__] = "系统初始化检查";
 	gl_mapMarketMapIndex[CHINA_MARKET_RESET__] = "重置系统";
 	gl_mapMarketMapIndex[CHINA_MARKET_LOAD_TEMP_RT_DATA__] = _T("装载本日临时存储的实时数据");
 	gl_mapMarketMapIndex[CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__] = _T("分配并处理实时数据");
 	gl_mapMarketMapIndex[CHINA_MARKET_SAVE_TEMP_RT_DATA__] = _T("保存实时数据");
 	gl_mapMarketMapIndex[CHINA_MARKET_BUILD_TODAY_DATABASE__] = _T("创建今日数据");
+	gl_mapMarketMapIndex[CHINA_MARKET_VALIDATE_TODAY_DATABASE__] = _T("检测今日数据完整性");
 	gl_mapMarketMapIndex[CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__] = _T("计算10日强度股票集");
 
 	gl_mapMarketMapIndex[CHINA_MARKET_UPDATE_OPTION_DB__] = _T("更新系统选项数据库");
@@ -47,7 +48,7 @@ void CMarketTaskQueue::CreateIndexMap() {
 	gl_mapMarketMapIndex[CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__] = _T("加载当前股票日线");
 	gl_mapMarketMapIndex[CHINA_MARKET_ACCESSORY_TASK__] = _T("系统状态监测");
 
-	gl_mapMarketMapIndex[WORLD_MARKET_CHECK_SYSTEM__] = "系统初始化检查";
+	gl_mapMarketMapIndex[WORLD_MARKET_CHECK_SYSTEM_READY__] = "系统初始化检查";
 	gl_mapMarketMapIndex[WORLD_MARKET_RESET__] = "重置系统";
 	gl_mapMarketMapIndex[WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__] = "更新股票简介数据库";
 	gl_mapMarketMapIndex[WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__] = "处理WebSocket数据";

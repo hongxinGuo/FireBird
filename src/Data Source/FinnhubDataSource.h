@@ -77,18 +77,18 @@ protected:
 	long m_lCurrentUpdateDayLinePos; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
 	long m_lCurrentUpdateEPSSurprisePos; // 此变量无需每日更新
 
-	bool m_fUpdateCountryList;
 	bool m_fUpdateSymbol; // 每日更新公司代码库
+	bool m_fUpdateForexExchange; // 每日更新Forex交易所
+	bool m_fUpdateForexSymbol; // 每日更新Forex交易所代码
+	bool m_fUpdateCryptoExchange; // 每日更新Crypto交易所
+	bool m_fUpdateCryptoSymbol; // 每日更新Crypto交易所代码
+	bool m_fUpdateCountryList;
 	bool m_fUpdateStockProfile; // 每日更新公司简介
 	bool m_fUpdateCompanyNews; // 每日更新公司新闻
 	bool m_fUpdateCompanyPriceMetrics;
 	bool m_fUpdateStockBasicFinancial; // 每日更新公司日线
 	bool m_fUpdateStockDayLine; // 每日更新公司日线数据
-	bool m_fUpdateForexExchange; // 每日更新Forex交易所
-	bool m_fUpdateForexSymbol; // 每日更新Forex交易所代码
 	bool m_fUpdateForexDayLine; // 每日更新Forex日线数据
-	bool m_fUpdateCryptoExchange; // 每日更新Crypto交易所
-	bool m_fUpdateCryptoSymbol; // 每日更新Crypto交易所代码
 	bool m_fUpdateCryptoDayLine; // 每日更新Crypto日线数据
 	bool m_fUpdatePeer; // 每90天更新Peers数据
 	bool m_fUpdateInsiderTransaction; // 每30天更新InsiderTransaction数据

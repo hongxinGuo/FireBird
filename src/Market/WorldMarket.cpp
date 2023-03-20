@@ -109,6 +109,8 @@ void CWorldMarket::ResetMarket(void) {
 		pDataSource->Reset();
 	}
 
+	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, 1); // 每次重置系统时，必须设置系统状态检查任务
+
 	CString str = _T("重置World Market于美东标准时间：");
 	str += GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(str);
@@ -130,7 +132,7 @@ bool CWorldMarket::ProcessEveryDayTask(long lCurrentTime) {
 		case CREATE_TASK__: // 生成其他任务
 			TaskCreateTask(lCurrentTime);
 			break;
-		case WORLD_MARKET_CHECK_SYSTEM__: // 170000重启系统
+		case WORLD_MARKET_CHECK_SYSTEM_READY__: // 170000重启系统
 			TaskCheckMarketReady(lCurrentTime);
 			break;
 		case WORLD_MARKET_RESET__: // 170000重启系统
@@ -162,7 +164,7 @@ bool CWorldMarket::TaskCreateTask(long lCurrentTime) {
 	while (!IsMarketTaskEmpty()) DiscardMarketTask();
 
 	// 系统初始化检查
-	AddTask(WORLD_MARKET_CHECK_SYSTEM__, 1);
+	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, 1);
 
 	// 重置系统
 	if (lCurrentTime < 170000) {
@@ -346,7 +348,9 @@ bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
 			SetSystemReady(true);
 		}
 	}
-	if (!IsSystemReady()) AddTask(WORLD_MARKET_CHECK_SYSTEM__, GetNextSecond(lCurrentTime));
+	if (!IsSystemReady()) {
+		AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, GetNextSecond(lCurrentTime));
+	}
 	return IsSystemReady();
 }
 

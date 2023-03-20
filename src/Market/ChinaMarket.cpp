@@ -80,6 +80,8 @@ void CChinaMarket::ResetMarket(void) {
 	Load10DaysRSStrong2StockSet();
 	LoadCalculatingRSOption();
 	Load10DaysRSStrongStockDB();
+
+	AddTask(CHINA_MARKET_CHECK_SYSTEM_READY__, 1); // 每次重置系统时，必须进行系统初始化状态检查
 	gl_ProcessChinaMarketRTData.release();
 }
 
@@ -198,7 +200,7 @@ bool CChinaMarket::TaskCheckMarketReady(long lCurrentTime) {
 			gl_systemMessage.PushInformationMessage(_T("中国股票市场初始化完毕"));
 		}
 	}
-	if (!IsSystemReady()) AddTask(CHINA_MARKET_CHECK_SYSTEM__, GetNextSecond(lCurrentTime));
+	if (!IsSystemReady()) AddTask(CHINA_MARKET_CHECK_SYSTEM_READY__, GetNextSecond(lCurrentTime));
 
 	return IsSystemReady();
 }
@@ -532,7 +534,7 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 		case CREATE_TASK__: // 生成其他任务
 			TaskCreateTask(lCurrentTime);
 			break;
-		case CHINA_MARKET_CHECK_SYSTEM__:
+		case CHINA_MARKET_CHECK_SYSTEM_READY__:
 			TaskCheckMarketReady(lCurrentTime);
 			break;
 		case CHINA_MARKET_RESET__: // 91300重启系统
@@ -549,6 +551,8 @@ bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
 			break;
 		case CHINA_MARKET_BUILD_TODAY_DATABASE__:
 			TaskProcessTodayStock(lCurrentTime);
+			break;
+		case CHINA_MARKET_VALIDATE_TODAY_DATABASE__:
 			break;
 		case CHINA_MARKET_UPDATE_OPTION_DB__:
 			TaskUpdateOptionDB(lCurrentTime);
@@ -589,7 +593,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	while (!IsMarketTaskEmpty()) DiscardMarketTask();
 
 	// 系统初始化检查
-	AddTask(CHINA_MARKET_CHECK_SYSTEM__, 1);
+	AddTask(CHINA_MARKET_CHECK_SYSTEM_READY__, 1);
 
 	// 辅助任务
 	AddTask(CHINA_MARKET_ACCESSORY_TASK__, lTimeMinute);
@@ -624,9 +628,14 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 		AddTask(CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__, 150700); // 
 	}
 
-	if (IsWorkingDay() && lCurrentTime < 150300) {
-		// 生成本日历史数据
-		AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, 150530); // 开始执行时间为：150530
+	if (IsWorkingDay()) {
+		if (lCurrentTime < 150300) {
+			// 生成本日历史数据
+			AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, 150530); // 开始执行时间为：150530
+		}
+		else {
+			AddTask(CHINA_MARKET_VALIDATE_TODAY_DATABASE__, 151000); // 检查今日数据完整性
+		}
 	}
 
 	return true;
