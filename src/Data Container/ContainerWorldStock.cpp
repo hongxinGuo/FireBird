@@ -125,43 +125,33 @@ void CContainerWorldStock::UpdateProfileDB(void) {
 		setWorldStock.m_strSort = _T("[Symbol]");
 		setWorldStock.Open();
 		setWorldStock.m_pDatabase->BeginTrans();
-		try {
-			while (iCurrentUpdated < iStockNeedUpdate) {
-				if (setWorldStock.IsEOF()) break;
-				const CWorldStockPtr pStock = GetStock(setWorldStock.m_Symbol);
+		while (iCurrentUpdated < iStockNeedUpdate) {
+			if (setWorldStock.IsEOF()) break;
+			const CWorldStockPtr pStock = GetStock(setWorldStock.m_Symbol);
+			ASSERT(pStock != nullptr);
+			if (pStock->IsUpdateProfileDB()) {
+				iCurrentUpdated++;
+				pStock->Update(setWorldStock);
+				pStock->SetUpdateProfileDB(false);
+			}
+			setWorldStock.MoveNext();
+		}
+		if (iCurrentUpdated < iStockNeedUpdate) {
+			if (!setWorldStock.IsEOF()) {
+				setWorldStock.MoveLast();
+				setWorldStock.MoveNext();
+			}
+			for (size_t l = 0; l < m_vStock.size(); l++) {
+				const CWorldStockPtr pStock = GetStock(l);
 				ASSERT(pStock != nullptr);
 				if (pStock->IsUpdateProfileDB()) {
 					iCurrentUpdated++;
-					pStock->Update(setWorldStock);
+					pStock->Append(setWorldStock);
 					pStock->SetUpdateProfileDB(false);
+					pStock->SetTodayNewStock(false);
 				}
-				setWorldStock.MoveNext();
+				if (iCurrentUpdated >= iStockNeedUpdate) break;
 			}
-		}
-		catch (exception& e) {
-			ASSERT_EQ(1, 0) << e.what();
-		}
-		try {
-			if (iCurrentUpdated < iStockNeedUpdate) {
-				if (!setWorldStock.IsEOF()) {
-					setWorldStock.MoveLast();
-					setWorldStock.MoveNext();
-				}
-				for (size_t l = 0; l < m_vStock.size(); l++) {
-					const CWorldStockPtr pStock = GetStock(l);
-					ASSERT(pStock != nullptr);
-					if (pStock->IsUpdateProfileDB()) {
-						iCurrentUpdated++;
-						pStock->Append(setWorldStock);
-						pStock->SetUpdateProfileDB(false);
-						pStock->SetTodayNewStock(false);
-					}
-					if (iCurrentUpdated >= iStockNeedUpdate) break;
-				}
-			}
-		}
-		catch (exception& e) {
-			ASSERT_EQ(1, 0) << e.what();
 		}
 		setWorldStock.m_pDatabase->CommitTrans();
 		setWorldStock.Close();
