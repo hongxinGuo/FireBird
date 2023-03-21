@@ -46,7 +46,7 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 
 	Reset();
 
-	CreateTaskOfReset();
+	AddTask(CREATE_TASK__, 1);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -524,7 +524,7 @@ void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
 	}
 }
 
-bool CChinaMarket::ProcessEveryDayTask(long lCurrentTime) {
+bool CChinaMarket::ProcessTask(long lCurrentTime) {
 	if (IsMarketTaskEmpty()) return false;
 	const auto pTask = GetMarketTask();
 	if (lCurrentTime >= pTask->GetTime()) {
@@ -590,6 +590,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	const long lTimeMinute = (lCurrentTime / 100) * 100; // 当前小时和分钟
 
 	while (!IsMarketTaskEmpty()) DiscardMarketTask();
+	SetResetMarketPermission(false);
 
 	// 系统初始化检查
 	AddTask(CHINA_MARKET_CHECK_SYSTEM_READY__, 1);
@@ -613,7 +614,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, lCurrentTime);
 
 	// 每十秒钟存储一次日线历史数据。
-	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(lCurrentTime, 0, 0, 10));
+	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, 113510); // 中午休市时开始。
 
 	// 每五分钟存储一次系统选项数据库
 	AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, GetNextTime(lTimeMinute + 5, 0, 3, 0)); // 开始执行时间为启动之后的三分钟。
@@ -817,8 +818,8 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 	// 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
 	SetResetMarket(true); // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
 	SetSystemReady(false);
-	gl_pChinaMarket->AddTask(CHINA_MARKET_UPDATE_STOCK_SECTION__, GetNextTime(lCurrentTime, 0, 5, 0)); // 五分钟后再更新此数据库
 	AddTask(CHINA_MARKET_CHECK_SYSTEM_READY__, lCurrentTime); // 每次重置系统时，必须进行系统初始化状态检查
+	AddTask(CHINA_MARKET_UPDATE_STOCK_SECTION__, GetNextTime(lCurrentTime, 0, 5, 0)); // 五分钟后再更新此数据库
 
 	return true;
 }

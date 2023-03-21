@@ -44,7 +44,7 @@ public:
 	bool IsDummyTime(long lTime) final;
 
 public:
-	bool ProcessEveryDayTask(long lCurrentTime) override; // 每日定时任务调度,由SchedulingTaskPerSecond调度
+	bool ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由SchedulingTaskPerSecond调度
 
 	// 各种任务
 	virtual bool TaskCreateTask(long lCurrentTime);

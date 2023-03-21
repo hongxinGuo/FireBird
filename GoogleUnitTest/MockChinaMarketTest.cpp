@@ -107,7 +107,7 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskCreateTask(10000)).Times(1);
 
-		EXPECT_TRUE(s_pMockChinaMarket->ProcessEveryDayTask(10000));
+		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask(10000));
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << s_pMockChinaMarket->GetMarketTask()->GetTime();
 	}
@@ -117,7 +117,7 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskResetMarket(91300)).Times(1);
 
-		EXPECT_TRUE(s_pMockChinaMarket->ProcessEveryDayTask(91300));
+		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask(91300));
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 	}
@@ -127,7 +127,7 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskResetMarket(92700)).Times(1);
 
-		EXPECT_TRUE(s_pMockChinaMarket->ProcessEveryDayTask(92700));
+		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask(92700));
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 	}
@@ -137,7 +137,7 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskDistributeAndCalculateRTData(93000)).Times(1);
 
-		EXPECT_TRUE(s_pMockChinaMarket->ProcessEveryDayTask(93000));
+		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask(93000));
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 	}
@@ -150,7 +150,7 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadUpdateTempRTData()).Times(1);
 
-		EXPECT_TRUE(s_pMockChinaMarket->ProcessEveryDayTask(93500));
+		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask(93500));
 
 		EXPECT_FALSE(s_pMockChinaMarket->IsMarketTaskEmpty());
 		auto pTask = s_pMockChinaMarket->GetMarketTask();
@@ -169,7 +169,7 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadProcessTodayStock()).Times(1);
 
-		EXPECT_TRUE(s_pMockChinaMarket->ProcessEveryDayTask(150600));
+		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask(150600));
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 	}
@@ -179,7 +179,7 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadUpdateOptionDB()).Times(1);
 
-		EXPECT_TRUE(s_pMockChinaMarket->ProcessEveryDayTask(150600));
+		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask(150600));
 		EXPECT_FALSE(s_pMockChinaMarket->IsMarketTaskEmpty()) << "又生成一个任务";
 		const auto pTask = s_pMockChinaMarket->GetMarketTask();
 		s_pMockChinaMarket->DiscardMarketTask();

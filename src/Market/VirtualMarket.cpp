@@ -34,7 +34,7 @@ void CVirtualMarket::SchedulingTask() {
 	RunDataSource(lCurrentMarketTime);
 
 	// 执行本市场各项定时任务
-	ProcessEveryDayTask(lCurrentMarketTime);
+	ProcessTask(lCurrentMarketTime);
 
 	//根据时间，调度各项定时任务.每秒调度一次
 	if (lTimeDiffer > 0) {
@@ -59,23 +59,16 @@ void CVirtualMarket::RunDataSource(long lCurrentTime) const {
 
 void CVirtualMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 	ResetMarketFlagAtMidnight(lCurrentTime);
-	CreateTaskOfReset();
 }
 
 void CVirtualMarket::ResetMarketFlagAtMidnight(long lCurrentTime) {
 	// 午夜过后重置各种标识
 	if (!HaveResetMarketPermission() && lCurrentTime <= 100) {	// 在零点到零点一分，重置系统标识
+		AddTask(CREATE_TASK__, 1000);
 		m_fResetMarketPermission = true;
 		CString str = m_strMarketId + _T("重置系统重置标识");
 		TRACE(_T("%S \n"), str.GetBuffer());
 		gl_systemMessage.PushInformationMessage(str);
-	}
-}
-
-void CVirtualMarket::CreateTaskOfReset() {
-	if (HaveResetMarketPermission()) { // 如果允许重置系统
-		AddTask(CREATE_TASK__, 1000);
-		SetResetMarketPermission(false);
 	}
 }
 

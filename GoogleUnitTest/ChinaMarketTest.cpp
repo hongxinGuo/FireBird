@@ -150,24 +150,24 @@ namespace FireBirdTest {
 	TEST_F(CChinaMarketTest, TestProcessEveryDayTask1) {
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask(101010)) << "没有任务可执行";
+		EXPECT_FALSE(gl_pChinaMarket->ProcessTask(101010)) << "没有任务可执行";
 	}
 
 	TEST_F(CChinaMarketTest, TestProcessEveryDayTask2) {
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask(101010)) << "没有任务可执行";
+		EXPECT_FALSE(gl_pChinaMarket->ProcessTask(101010)) << "没有任务可执行";
 
 		gl_pChinaMarket->AddTask(CHINA_MARKET_RESET__, 100101);
 		gl_pChinaMarket->AddTask(CHINA_MARKET_RESET__, 110101);
 
-		EXPECT_FALSE(gl_pChinaMarket->ProcessEveryDayTask(100001)) << "有任务需要执行，但时间未到";
+		EXPECT_FALSE(gl_pChinaMarket->ProcessTask(100001)) << "有任务需要执行，但时间未到";
 
-		EXPECT_TRUE(gl_pChinaMarket->ProcessEveryDayTask(101002)) << "时间到, 执行第一个任务";
+		EXPECT_TRUE(gl_pChinaMarket->ProcessTask(101002)) << "时间到, 执行第一个任务";
 
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-		EXPECT_TRUE(gl_pChinaMarket->ProcessEveryDayTask(111002)) << "时间到, 执行第二个任务";
+		EXPECT_TRUE(gl_pChinaMarket->ProcessTask(111002)) << "时间到, 执行第二个任务";
 
 		// 恢复原状
 		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
@@ -794,7 +794,12 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsSystemReady());
 		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
-		const auto pTask = gl_pChinaMarket->GetMarketTask();
+		auto pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY__); // 重置系统时，也同时生成检查系统初始化完成与否的任务
+		EXPECT_EQ(pTask->GetTime(), 92500);
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_STOCK_SECTION__);
 		EXPECT_EQ(pTask->GetTime(), 93000);
 

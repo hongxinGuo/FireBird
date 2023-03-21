@@ -19,8 +19,7 @@ public:
 	void SchedulingTask();
 	void SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
 
-	void CreateTaskOfReset();
-	virtual bool ProcessEveryDayTask(long lCurrentTime) { return true; } // 每日定时任务调度,由SchedulingTaskPerSecond调度
+	virtual bool ProcessTask(long) { return true; } // 每日定时任务调度,由SchedulingTaskPerSecond调度，由各市场定义其各自的任务
 
 	// 申请并处理Data source的数据，被最终衍生类的SchedulingTask函数来调度。
 	// 此函数在VirtualMarket中定义，但由最终衍生类来调用，因为lCurrentTime必须为该衍生类的当前市场时间。
