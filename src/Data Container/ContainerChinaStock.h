@@ -34,6 +34,7 @@ public:
 	bool BuildWeekLine(long lStartDate);
 	long BuildDayLine(long lCurrentTradeDay);
 	bool UpdateTodayTempDB(void);
+	void DeleteTempRTData();
 	bool BuildDayLineRS(long lDate);
 	bool BuildWeekLineRS(long lDate);
 

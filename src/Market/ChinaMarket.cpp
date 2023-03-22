@@ -1416,33 +1416,31 @@ bool CChinaMarket::DeleteDayLineExtendInfo(long lDate) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskLoadTempRTData(long lTheDay, long lCurrentTime) {
 	CSetDayLineTodaySaved setDayLineTemp;
-	//CWebRTDataPtr pRTData;
+	ASSERT(!m_fTodayTempDataLoaded);
 
-	if (!m_fTodayTempDataLoaded) {
-		if (IsSystemReady()) {
-			m_fTodayTempDataLoaded = true;
-			gl_ProcessChinaMarketRTData.acquire();
-			// 读取今日生成的数据于DayLineToday表中。
-			setDayLineTemp.Open();
-			if (!setDayLineTemp.IsEOF()) {
-				if (setDayLineTemp.m_Date == lTheDay) {	// 如果是当天的行情，则载入，否则放弃（默认所有的数据日期皆为同一个时间）
-					while (!setDayLineTemp.IsEOF()) {
-						if (IsStock(setDayLineTemp.m_Symbol)) {
-							const CChinaStockPtr pStock = GetStock(setDayLineTemp.m_Symbol);
-							ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
-							pStock->LoadTodaySavedInfo(&setDayLineTemp);
-						}
-						setDayLineTemp.MoveNext();
+	if (IsSystemReady()) {
+		m_fTodayTempDataLoaded = true;
+		gl_ProcessChinaMarketRTData.acquire();
+		// 读取今日生成的数据于DayLineToday表中。
+		setDayLineTemp.Open();
+		if (!setDayLineTemp.IsEOF()) {
+			if (setDayLineTemp.m_Date == lTheDay) {	// 如果是当天的行情，则载入，否则放弃（默认所有的数据日期皆为同一个时间）
+				while (!setDayLineTemp.IsEOF()) {
+					if (IsStock(setDayLineTemp.m_Symbol)) {
+						const CChinaStockPtr pStock = GetStock(setDayLineTemp.m_Symbol);
+						ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
+						pStock->LoadTodaySavedInfo(&setDayLineTemp);
 					}
+					setDayLineTemp.MoveNext();
 				}
 			}
-			setDayLineTemp.Close();
-			gl_ProcessChinaMarketRTData.release();
-			return true;
 		}
-		else {
-			AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, GetNextSecond(lCurrentTime));
-		}
+		setDayLineTemp.Close();
+		gl_ProcessChinaMarketRTData.release();
+		return true;
+	}
+	else {
+		AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, GetNextSecond(lCurrentTime));
 	}
 	return false;
 }

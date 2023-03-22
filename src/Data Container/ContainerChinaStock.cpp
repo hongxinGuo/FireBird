@@ -1,3 +1,4 @@
+#include "ContainerChinaStock.h"
 #include"pch.h"
 
 #include"ConvertToString.h"
@@ -667,13 +668,13 @@ bool CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
 //////////////////////////////////////////////////////////////////////////////////
 bool CContainerChinaStock::UpdateTodayTempDB(void) {
 	CSetDayLineTodaySaved setDayLineTemp;
+	CHighPerformanceCounter counter;
+
+	counter.start();
+	DeleteTempRTData();
 
 	setDayLineTemp.Open();
 	setDayLineTemp.m_pDatabase->BeginTrans();
-	while (!setDayLineTemp.IsEOF()) {
-		setDayLineTemp.Delete();
-		setDayLineTemp.MoveNext();
-	}
 	// 存储今日生成的数据于DayLineToday表中。
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
@@ -692,8 +693,28 @@ bool CContainerChinaStock::UpdateTodayTempDB(void) {
 	}
 	setDayLineTemp.m_pDatabase->CommitTrans();
 	setDayLineTemp.Close();
+	counter.stop();
+
+	char buffer[50];
+	sprintf_s(buffer, _T("%d"), counter.GetElapsedMilliSecond());
+	CString str = _T("delete temp RT Data：");
+	str += buffer;
+	gl_systemMessage.PushInnerSystemInformationMessage(str);
 
 	return true;
+}
+
+void CContainerChinaStock::DeleteTempRTData() {
+	CSetDayLineTodaySaved setDayLineTemp;
+
+	setDayLineTemp.Open();
+	setDayLineTemp.m_pDatabase->BeginTrans();
+	while (!setDayLineTemp.IsEOF()) {
+		setDayLineTemp.Delete();
+		setDayLineTemp.MoveNext();
+	}
+	setDayLineTemp.m_pDatabase->CommitTrans();
+	setDayLineTemp.Close();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

@@ -1730,9 +1730,24 @@ namespace FireBirdTest {
 		setChinaChosenStock.Close();
 	}
 
-	TEST_F(CChinaMarketTest, TestLoadTodayTempDB) {
-		CSetDayLineTodaySaved setDayLineTemp;
+	TEST_F(CChinaMarketTest, TestLoadTodayTempDB1) {
+		EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
+		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
+		gl_pChinaMarket->SetSystemReady(false);
 
+		EXPECT_FALSE(gl_pChinaMarket->TaskLoadTempRTData(20210715, 10000));
+
+		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
+		const auto pTask = gl_pChinaMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_LOAD_TEMP_RT_DATA__) << "系统初始化尚未完成时，继续生成装载任务";
+		EXPECT_EQ(pTask->GetTime(), 10001);
+		gl_pChinaMarket->DiscardMarketTask();
+
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+		EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
+	}
+
+	TEST_F(CChinaMarketTest, TestLoadTodayTempDB2) {
 		const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("000001.SZ"));
 		pStock->SetUnknownVolume(0);
 		pStock->SetTransactionNumber(0);
