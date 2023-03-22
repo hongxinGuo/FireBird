@@ -1747,21 +1747,15 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
 	}
 
-	TEST_F(CChinaMarketTest, TestLoadTodayTempDB2) {
+	TEST_F(CChinaMarketTest, TestLoadTempRTData) {
 		const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("000001.SZ"));
 		pStock->SetUnknownVolume(0);
 		pStock->SetTransactionNumber(0);
 
-		EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
-
-		EXPECT_TRUE(gl_pChinaMarket->TaskLoadTempRTData(20210715, 10000)); // 测试库today表中的日期为20210715。
+		gl_pChinaMarket->LoadTempRTData(20210715); // 测试库today表中的日期为20210715。
 
 		EXPECT_EQ(pStock->GetUnknownVolume(), 10517770);
 		EXPECT_EQ(pStock->GetTransactionNumber(), 2183);
-		EXPECT_TRUE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
-
-		// 恢复原状
-		gl_pChinaMarket->SetTodayTempRTDataLoaded(false);
 	}
 
 	TEST_F(CChinaMarketTest, TestIsRTDataNeedCalculate) {

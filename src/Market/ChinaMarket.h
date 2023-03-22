@@ -96,6 +96,8 @@ public:
 	virtual void CreateThreadUpdateStockProfileDB();
 	virtual void CreateThreadUpdateOptionDB();
 	virtual void CreateThreadUpdateTempRTData();
+	virtual void CreateThreadLoadTempRTData(long lTheDay);
+
 	// interface function
 
 public:
@@ -172,6 +174,7 @@ public:
 	void LoadChosenStockDB();
 	virtual bool UpdateTodayTempDB() { return m_containerChinaStock.UpdateTodayTempDB(); }
 	bool TaskLoadTempRTData(long lTheDay, long lCurrentTime);
+	void LoadTempRTData(long lTheDay);
 	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate);
 	virtual bool SaveStockSection() { return m_containerStockSymbol.UpdateStockSectionDB(); }
 
