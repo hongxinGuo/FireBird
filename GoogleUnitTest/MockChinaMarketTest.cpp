@@ -153,7 +153,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask(93500));
 
 		EXPECT_FALSE(s_pMockChinaMarket->IsMarketTaskEmpty());
-		auto pTask = s_pMockChinaMarket->GetMarketTask();
+		const auto pTask = s_pMockChinaMarket->GetMarketTask();
 		s_pMockChinaMarket->DiscardMarketTask();
 		EXPECT_EQ(pTask->GetTime(), 94000);
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
@@ -436,7 +436,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineRSOfDate) {
-		long lPrevMonday = GetPrevMonday(20200101);
+		const long lPrevMonday = GetPrevMonday(20200101);
 		gl_systemStatus.SetExitingSystem(true);
 		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineRS(_)).Times(0);
 		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(s_pMockChinaMarket.get(), lPrevMonday), static_cast<UINT>(31));
@@ -495,5 +495,17 @@ namespace FireBirdTest {
 		EXPECT_EQ(ThreadBuildWeekLine(s_pMockChinaMarket.get(), lCurrentMonday), static_cast<UINT>(25));
 	}
 
-	TEST_F(CMockChinaMarketTest, TestUpdateTempRTData) { }
+	TEST_F(CMockChinaMarketTest, TestTaskLoadTempRTData) {
+		EXPECT_FALSE(s_pMockChinaMarket->IsTodayTempRTDataLoaded());
+		EXPECT_TRUE(s_pMockChinaMarket->IsSystemReady());
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadLoadTempRTData(20190517)).Times(1);
+
+		EXPECT_TRUE(s_pMockChinaMarket->TaskLoadTempRTData(20190517, 10000));
+
+		EXPECT_TRUE(s_pMockChinaMarket->IsTodayTempRTDataLoaded());
+		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << "不再生成装载临时数据的任务";
+
+		// 恢复原状
+		s_pMockChinaMarket->SetTodayTempRTDataLoaded(false);
+	}
 }

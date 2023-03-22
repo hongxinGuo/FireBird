@@ -110,7 +110,8 @@ Included items must then not match any entries in the exclude list to remain inc
 	              <Function>CChinaMarket::CreateThreadUpdateStockProfileDB</Function>
 	              <Function>CChinaMarket::CreateThreadProcessRTData</Function>
 								<Function>CChinaMarket::CreateThreadChoice10RSStrongStockSet</Function>
-	              <Function>CChinaMarket::CreateThreadUpdateTempRTData</Function>
+								<Function>CChinaMarket::CreateThreadUpdateTempRTData</Function>
+	              <Function>CChinaMarket::CreateThreadLoadTempRTData</Function>
 
 								<Function>CContainerChinaStock::BuildDayLine</Function>
 	              <Function>CContainerChinaStock::BuildDayLineRS</Function>

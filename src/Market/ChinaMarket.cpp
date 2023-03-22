@@ -594,6 +594,8 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 
 	// 系统初始化检查
 	AddTask(CHINA_MARKET_CHECK_SYSTEM_READY__, 1);
+	// 每秒一次分配实时数据
+	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 1); // 开始执行时间为：1
 
 	// 辅助任务
 	AddTask(CHINA_MARKET_ACCESSORY_TASK__, lTimeMinute);
@@ -607,11 +609,8 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 		AddTask(CHINA_MARKET_RESET__, 92600); // 执行时间为：92600
 	}
 
-	// 每秒一次分配实时数据
-	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 1); // 开始执行时间为：1
-
 	// 装载本日之前存储的实时数据（如果有的话）
-	AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, lCurrentTime);
+	AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, 92630);
 
 	// 每十秒钟存储一次日线历史数据。
 	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, 113510); // 中午休市时开始。
@@ -867,12 +866,16 @@ bool CChinaMarket::TaskShowCurrentTransaction() {
 
 bool CChinaMarket::TaskUpdateStockSection() {
 	if (m_containerStockSymbol.IsUpdateStockSection()) {
-		thread thread1(ThreadSaveStockSection, this);
-		thread1.detach();
+		CreateThreadSaveStockSection();
 		m_containerStockSymbol.SetUpdateStockSection(false);
 		return true;
 	}
 	return false;
+}
+
+void CChinaMarket::CreateThreadSaveStockSection() {
+	thread thread1(ThreadSaveStockSection, this);
+	thread1.detach();
 }
 
 bool CChinaMarket::ChangeDayLineStockCodeToStandard() {
