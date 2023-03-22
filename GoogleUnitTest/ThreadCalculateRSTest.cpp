@@ -11,17 +11,17 @@ using namespace testing;
 namespace FireBirdTest {
 	class CThreadCalculateRSTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			gl_pChinaMarket->ResetCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 
 			gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
@@ -31,7 +31,7 @@ namespace FireBirdTest {
 			while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			gl_pChinaMarket->SetCurrentStock(nullptr);
 			//»Ö¸´Ô­×´
 			while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();

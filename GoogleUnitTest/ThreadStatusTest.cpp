@@ -9,15 +9,15 @@ using namespace testing;
 namespace FireBirdTest {
 	class ThreadStatusTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}

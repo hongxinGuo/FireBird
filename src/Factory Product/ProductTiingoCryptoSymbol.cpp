@@ -16,7 +16,7 @@ CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() : CVirtualWebProduct() 
 	m_ratio = 3;
 }
 
-CString CProductTiingoCryptoSymbol::CreateMessage(void) {
+CString CProductTiingoCryptoSymbol::CreateMessage() {
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
 }

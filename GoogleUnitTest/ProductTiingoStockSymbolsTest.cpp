@@ -14,19 +14,19 @@ using namespace testing;
 namespace FireBirdTest {
 	class CProductTiingoStockSymbolsTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -61,7 +61,7 @@ namespace FireBirdTest {
 
 	class ParseTiingoStockTest : public TestWithParam<TiingoWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			const TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -70,7 +70,7 @@ namespace FireBirdTest {
 			m_pWebData->SetJSonContentType(true);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -145,7 +145,7 @@ namespace FireBirdTest {
 
 	class ProcessTiingoStockTest : public TestWithParam<TiingoWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			const TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -158,7 +158,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pWorldMarket->IsUpdateStockProfileDB());
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();

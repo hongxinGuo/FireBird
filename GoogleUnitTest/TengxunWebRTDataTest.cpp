@@ -12,19 +12,19 @@ using namespace testing;
 namespace FireBirdTest {
 	class CWebRTDataTest1 : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -197,7 +197,7 @@ namespace FireBirdTest {
 
 	class CalculateTengxunWebRTDataTest : public::testing::TestWithParam<TengxunRTData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 
 			TengxunRTData* pData = GetParam();
@@ -226,7 +226,7 @@ namespace FireBirdTest {
 			m_RTData.SetBuy(-1);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			// clearUp
 			GeneralCheck();
@@ -767,7 +767,7 @@ namespace FireBirdTest {
 
 	class ReadTengxunOneValueTest : public::testing::TestWithParam<ReadTengxunOneValueData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 
 			ReadTengxunOneValueData* pData = GetParam();
@@ -781,7 +781,7 @@ namespace FireBirdTest {
 			m_pTengxunWebRTData->ResetCurrentPos();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 

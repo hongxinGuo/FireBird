@@ -50,7 +50,7 @@ namespace FireBirdTest {
 
 	class ProcessFinnhubWebSocketTest : public TestWithParam<WebSocketMessageData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 
 			EXPECT_THAT(gl_finnhubWebSocket.DataSize(), 0);
@@ -63,7 +63,7 @@ namespace FireBirdTest {
 			m_pMsg->errorInfo.reason = pMsg->m_strError;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -127,7 +127,7 @@ namespace FireBirdTest {
 
 	class ProcessTiingoIEXWebSocketTest : public TestWithParam<WebSocketMessageData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 
 			EXPECT_THAT(gl_tiingoIEXWebSocket.DataSize(), 0);
@@ -140,7 +140,7 @@ namespace FireBirdTest {
 			m_pMsg->errorInfo.reason = pMsg->m_strError;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -204,7 +204,7 @@ namespace FireBirdTest {
 
 	class ProcessTiingoCryptoWebSocketTest : public TestWithParam<WebSocketMessageData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 
 			EXPECT_THAT(gl_tiingoCryptoWebSocket.DataSize(), 0);
@@ -217,7 +217,7 @@ namespace FireBirdTest {
 			m_pMsg->errorInfo.reason = pMsg->m_strError;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -282,7 +282,7 @@ namespace FireBirdTest {
 
 	class ProcessTiingoForexWebSocketTest : public TestWithParam<WebSocketMessageData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 
 			EXPECT_THAT(gl_tiingoForexWebSocket.DataSize(), 0);
@@ -295,7 +295,7 @@ namespace FireBirdTest {
 			m_pMsg->errorInfo.reason = pMsg->m_strError;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}

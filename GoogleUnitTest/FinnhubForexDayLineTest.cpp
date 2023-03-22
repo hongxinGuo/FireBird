@@ -12,19 +12,19 @@ using namespace testing;
 namespace FireBirdTest {
 	class CFinnhubForexDayLineTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -96,7 +96,7 @@ namespace FireBirdTest {
 
 	class ParseFinnhubForexCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 			m_pWebData->SetJSonContentType(true);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 
 			GeneralCheck();
@@ -177,7 +177,7 @@ namespace FireBirdTest {
 
 	class ProcessFinnhubForexCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -189,7 +189,7 @@ namespace FireBirdTest {
 			m_finnhubForexDayLine.SetIndex(0);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 
 			GeneralCheck();

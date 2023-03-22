@@ -57,13 +57,13 @@ CTiingoForexWebSocket::CTiingoForexWebSocket() : CVirtualWebSocket() {
 	m_url = _T("wss://api.tiingo.com/fx");
 }
 
-CTiingoForexWebSocket::~CTiingoForexWebSocket(void) {}
+CTiingoForexWebSocket::~CTiingoForexWebSocket() {}
 
 /// <summary>
 /// Tiingo Forex的数据源格式：wss://api.tiingo.com/fx，其密钥是随后发送的。
 /// </summary>
 /// <returns></returns>
-bool CTiingoForexWebSocket::Connect(void) {
+bool CTiingoForexWebSocket::Connect() {
 	Connecting(m_url, ProcessTiingoForexWebSocket);
 	return true;
 }

@@ -10,13 +10,13 @@ class CPriorityQueueWebRTData final {
 public:
 	CPriorityQueueWebRTData();
 	~CPriorityQueueWebRTData();
-	void Reset(void);
+	void Reset();
 
 	// 通用接口函数
 	void PushData(CWebRTDataPtr pData);
-	CWebRTDataPtr PopData(void);
-	[[nodiscard]] CWebRTDataPtr GetHead(void) const noexcept { return m_priorityQueueWebRTData.top(); }
-	[[nodiscard]] size_t Size(void);
+	CWebRTDataPtr PopData();
+	[[nodiscard]] CWebRTDataPtr GetHead() const noexcept { return m_priorityQueueWebRTData.top(); }
+	[[nodiscard]] size_t Size();
 
 protected:
 	// 需要定义下述结构，结构中重载（）运算符，定义如何确定指针的大小（按时间顺序从小到大排列,相同时间的按先后放入的顺序排列）。

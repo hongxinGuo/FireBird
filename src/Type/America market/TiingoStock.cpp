@@ -6,7 +6,7 @@ CTiingoStock::CTiingoStock() {
 	Reset();
 }
 
-void CTiingoStock::Reset(void) {
+void CTiingoStock::Reset() {
 	m_strTiingoPermaTicker = _T("");
 	m_strTicker = _T("");
 	m_strName = _T("");

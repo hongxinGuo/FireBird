@@ -35,7 +35,7 @@ bool CVirtualWebProduct::CheckInaccessible(CWebDataPtr pWebData) {
 	return bInaccessible;
 }
 
-bool CVirtualWebProduct::IsUSMarket(void) const {
+bool CVirtualWebProduct::IsUSMarket() const {
 	if (m_strInquiringExchange.Compare(_T("US")) == 0) return true;
 	else return false;
 }

@@ -6,7 +6,7 @@ CProductTiingoCompanyProfile::CProductTiingoCompanyProfile() {
 	ASSERT(0); // ��δʵ��
 }
 
-CString CProductTiingoCompanyProfile::CreateMessage(void) {
+CString CProductTiingoCompanyProfile::CreateMessage() {
 	m_strInquiry = _T("");
 	return m_strInquiry;
 }

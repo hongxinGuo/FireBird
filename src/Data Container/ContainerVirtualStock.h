@@ -19,9 +19,9 @@ public:
 		return false;
 	}
 
-	bool IsUpdateProfileDB(void);
-	bool IsDayLineNeedUpdate(void) noexcept;
-	bool IsDayLineNeedSaving(void);
+	bool IsUpdateProfileDB();
+	bool IsDayLineNeedUpdate() noexcept;
+	bool IsDayLineNeedSaving();
 
 	CVirtualStockPtr Get(const size_t lIndex) {
 		try { return m_vStock.at(lIndex); }

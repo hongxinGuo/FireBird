@@ -14,7 +14,7 @@ public:
 	void Load(CSetFinnhubStockExchange& setFinnhubExchange);
 
 	void SetUpdated(const bool fFlag) noexcept { m_fUpdated = fFlag; }
-	bool IsUpdated(void) const noexcept { return m_fUpdated; }
+	bool IsUpdated() const noexcept { return m_fUpdated; }
 
 public:
 	CString m_strCode; // 两位的交易所代码。上海市场为SS， 美国市场为US，。。。

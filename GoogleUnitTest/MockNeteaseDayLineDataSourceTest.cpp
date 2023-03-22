@@ -12,17 +12,17 @@ namespace FireBirdTest {
 
 	class CMockNeteaseDayLineDataSourceTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			gl_pMockNeteaseDayLineDataSource = make_shared<CMockNeteaseDayLineDataSource>();
@@ -31,7 +31,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());

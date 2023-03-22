@@ -6,10 +6,10 @@ class CDataFinnhubCountry final {
 public:
 	CDataFinnhubCountry();
 	~CDataFinnhubCountry() = default;
-	void Reset(void);
+	void Reset();
 
-	size_t GetTotalCountry(void) const noexcept { return m_vCountry.size(); }
-	long GetLastTotalCountry(void) const noexcept { return m_lLastTotalCountry; }
+	size_t GetTotalCountry() const noexcept { return m_vCountry.size(); }
+	long GetLastTotalCountry() const noexcept { return m_lLastTotalCountry; }
 
 	bool IsCountry(const CString& strCountry) const noexcept {
 		if (m_mapCountry.contains(strCountry)) return true;
@@ -21,8 +21,8 @@ public:
 	bool Delete(CCountryPtr pCountry);
 	CCountryPtr GetCountry(const CString& strCountry) { return m_vCountry.at(m_mapCountry.at(strCountry)); }
 
-	bool UpdateDB(void);
-	bool LoadDB(void);
+	bool UpdateDB();
+	bool LoadDB();
 
 protected:
 	vector<CCountryPtr> m_vCountry;

@@ -6,12 +6,12 @@ class CContainerTiingoCryptoSymbol final {
 public:
 	CContainerTiingoCryptoSymbol();
 	~CContainerTiingoCryptoSymbol() = default;
-	void Reset(void);
+	void Reset();
 
 	void Add(CTiingoCryptoSymbolPtr pTiingoCrypto);
 	bool Delete(CTiingoCryptoSymbolPtr pCrypto);
-	size_t GetCryptoSymbolSize(void) const noexcept { return m_vTiingoCrypto.size(); }
-	long GetLastCryptoSymbolSize(void) const noexcept { return m_lLastTotalTiingoCrypto; }
+	size_t GetCryptoSymbolSize() const noexcept { return m_vTiingoCrypto.size(); }
+	long GetLastCryptoSymbolSize() const noexcept { return m_lLastTotalTiingoCrypto; }
 
 	bool IsTiingoCryptoSymbol(const CString& strSymbol) const {
 		if (m_mapTiingoCrypto.contains(strSymbol)) return true;
@@ -23,10 +23,10 @@ public:
 
 	CTiingoCryptoSymbolPtr GetCryptoSymbol(const CString& strTicker) const { return m_vTiingoCrypto.at(m_mapTiingoCrypto.at(strTicker)); }
 
-	bool UpdateDB(void);
-	bool LoadDB(void);
+	bool UpdateDB();
+	bool LoadDB();
 
-	bool IsNeedUpdate(void) const noexcept {
+	bool IsNeedUpdate() const noexcept {
 		if (m_lLastTotalTiingoCrypto < m_vTiingoCrypto.size()) return true;
 		return false;
 	}

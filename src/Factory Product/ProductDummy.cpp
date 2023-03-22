@@ -10,7 +10,7 @@ CProductDummy::CProductDummy() {
 	m_lIndex = -1;
 }
 
-CString CProductDummy::CreateMessage(void) {
+CString CProductDummy::CreateMessage() {
 	return _T("");
 }
 

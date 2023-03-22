@@ -158,7 +158,7 @@ CMainFrame::CMainFrame() {
 	Reset();
 }
 
-void CMainFrame::Reset(void) {
+void CMainFrame::Reset() {
 	// 在此之前已经准备好了全局股票池（在CChinaMarket的构造函数中）。
 	m_lCurrentPos = 0;
 	m_timeLast = 0;
@@ -202,13 +202,13 @@ CMainFrame::~CMainFrame() {
 	TRACE("finally exited\n");
 }
 
-bool CMainFrame::CreateMarketContainer(void) {
+bool CMainFrame::CreateMarketContainer() {
 	gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
 	gl_vMarketPtr.push_back(gl_pChinaMarket); // 中国股票市场
 	return true;
 }
 
-void CMainFrame::InitializeDataSourceAndWebInquiry(void) {
+void CMainFrame::InitializeDataSourceAndWebInquiry() {
 	ASSERT(gl_pChinaMarket != nullptr);
 	ASSERT(gl_pWorldMarket != nullptr);
 
@@ -399,13 +399,13 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
 //系统更新任务由各CVirtualMarket类中的调度函数完成，
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
-void CMainFrame::SchedulingTask(void) {
+void CMainFrame::SchedulingTask() {
 	for (const auto& pVirtualMarket : gl_vMarketPtr) {
 		if (pVirtualMarket->IsReadyToRun()) pVirtualMarket->SchedulingTask();
 	}
 }
 
-bool CMainFrame::ResetMarket(void) {
+bool CMainFrame::ResetMarket() {
 	for (const auto& pMarket : gl_vMarketPtr) {
 		if (pMarket->IsResetMarket()) {
 			pMarket->SetResetMarket(false);
@@ -541,7 +541,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	SysCallOnTimer(nIDEvent);
 }
 
-void CMainFrame::UpdateStatus(void) {
+void CMainFrame::UpdateStatus() {
 	CString str;
 	char buffer[30]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -614,7 +614,7 @@ void CMainFrame::UpdateStatus(void) {
 	SysCallSetPaneText(13, gl_pChinaMarket->GetStringOfLocalTime());
 }
 
-void CMainFrame::UpdateInnerSystemStatus(void) {
+void CMainFrame::UpdateInnerSystemStatus() {
 	char buffer[30];
 
 	// 更新新浪实时数据读取时间
@@ -700,7 +700,7 @@ void CMainFrame::OnCalculateTodayRS() {
 	CalculateTodayRS();
 }
 
-void CMainFrame::CalculateTodayRS(void) {
+void CMainFrame::CalculateTodayRS() {
 	gl_pChinaMarket->CreateThreadBuildDayLineRS(gl_pChinaMarket->GetMarketDate());
 }
 

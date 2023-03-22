@@ -3,7 +3,7 @@
 #include"globedef.h"
 
 // 时间转换辅助函数。time_t使用UTC（GMT）标准，其他形式的时间为该市场的标准时间，默认采用东八区标准时间。
-[[nodiscard]] long GetDayOfWeek(void);
+[[nodiscard]] long GetDayOfWeek();
 [[nodiscard]] time_t ConvertToTTime(const long lDate, const time_t tTimeZone, const long lTime); // 将整型(YYYYMMDD)转变为time_t形式.
 [[nodiscard]] long ConvertToDate(const time_t tUTC, const time_t tTimeZone = -8 * 3600) noexcept;// 将时间转变为整型(YYYYMMDD)形式, 默认东八区标准时间
 [[nodiscard]] long ConvertToTime(const time_t tUTC, const time_t tTimeZone = -8 * 3600) noexcept; // 将时间转变为整数（HHMMSS)形式, 默认东八区标准时间
@@ -38,5 +38,5 @@ void GetMarketTimeStruct(tm* tm_, time_t tUTC, const time_t tTimeZone);
 
 [[nodiscard]] time_t XferToTTime(CString strTime, CString strFormat);
 
-inline time_t GetUTCTime(void) noexcept { return gl_tUTC; }
+inline time_t GetUTCTime() noexcept { return gl_tUTC; }
 inline void TestSetUTCTime(time_t time) noexcept { gl_tUTC = time; }

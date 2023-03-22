@@ -26,21 +26,21 @@ namespace FireBirdTest {
 
 	class CMockFinnhubDataSourceTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 			ASSERT_THAT(gl_pFinnhubDataSource, NotNull());
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			m_pMockFinnhubDataSource = make_shared<CMockFinnhubDataSource>();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			m_pMockFinnhubDataSource = nullptr;
 			gl_pWorldMarket->SetSystemReady(true);

@@ -12,11 +12,11 @@
 namespace FireBirdTest {
 	class SystemMessageTest : public ::testing::Test {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();

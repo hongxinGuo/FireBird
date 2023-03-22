@@ -20,7 +20,7 @@ bool CContainerChinaWeekLine::SaveDB(const CString& strStockSymbol) {
 	return true;
 }
 
-bool CContainerChinaWeekLine::SaveCurrentWeekLine(void) {
+bool CContainerChinaWeekLine::SaveCurrentWeekLine() {
 	CSetCurrentWeekLine setCurrentWeekLineInfo;
 	CWeekLinePtr pWeekLine = nullptr;
 
@@ -68,7 +68,7 @@ bool CContainerChinaWeekLine::LoadDB(const CString& strStockCode) {
 	return true;
 }
 
-bool CContainerChinaWeekLine::LoadCurrentWeekLine(void) {
+bool CContainerChinaWeekLine::LoadCurrentWeekLine() {
 	CSetCurrentWeekLine setCurrentWeekLineInfo;
 
 	setCurrentWeekLineInfo.Open();

@@ -7,12 +7,12 @@ public:
 	CNeteaseRTDataSource();
 	~CNeteaseRTDataSource() override = default;
 
-	bool Reset(void) override;
+	bool Reset() override;
 
 	bool GenerateInquiryMessage(const long lCurrentTime) override;
 
-	void ConfigureSession(void) override; // 在读取网络数据前的准备工作，默认为设置NeteaseRT的m_pSession状态。
-	void GenerateCurrentInquiryMessage(void) override;
+	void ConfigureSession() override; // 在读取网络数据前的准备工作，默认为设置NeteaseRT的m_pSession状态。
+	void GenerateCurrentInquiryMessage() override;
 	bool ParseData(CWebDataPtr pWebData) override;
 
 	virtual bool InquireRTData(const long lCurrentTime);

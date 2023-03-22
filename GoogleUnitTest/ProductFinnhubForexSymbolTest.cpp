@@ -9,19 +9,19 @@ using namespace testing;
 namespace FireBirdTest {
 	class CProductFinnhubForexSymbolTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -58,7 +58,7 @@ namespace FireBirdTest {
 
 	class ParseFinnhubForexSymbolTest : public TestWithParam<FinnhubWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -68,7 +68,7 @@ namespace FireBirdTest {
 			m_pvForexSymbol = nullptr;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -118,7 +118,7 @@ namespace FireBirdTest {
 
 	class ProcessFinnhubForexSymbolTest : public TestWithParam<FinnhubWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -129,7 +129,7 @@ namespace FireBirdTest {
 			m_productFinnhubForexSymbol.SetIndex(0);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();

@@ -18,7 +18,7 @@ CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment()
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubCompanyInsiderSentiment::CreateMessage(void) {
+CString CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 

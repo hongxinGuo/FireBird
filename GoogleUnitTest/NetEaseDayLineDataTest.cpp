@@ -45,7 +45,7 @@ namespace FireBirdTest {
 
 	class ProcessNeteaseDayLineTest : public::testing::TestWithParam<NetEaseDayLineData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			NetEaseDayLineData* pData = GetParam();
 			m_iCount = pData->m_iCount;
@@ -83,7 +83,7 @@ namespace FireBirdTest {
 			pDownLoadedDayLine->SetStockCode(_T("600000.SS"));
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -195,7 +195,7 @@ namespace FireBirdTest {
 
 	class ReadDayLineOneValueTest2 : public::testing::TestWithParam<ReadDayLineOneValueData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			ReadDayLineOneValueData* pData = GetParam();
 			m_iCount = pData->m_iCount;
@@ -207,7 +207,7 @@ namespace FireBirdTest {
 			m_lCountPos = 0;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}

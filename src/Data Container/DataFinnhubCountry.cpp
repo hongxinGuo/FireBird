@@ -5,7 +5,7 @@ using namespace std;
 
 CDataFinnhubCountry::CDataFinnhubCountry() { Reset(); }
 
-void CDataFinnhubCountry::Reset(void) {
+void CDataFinnhubCountry::Reset() {
 	m_vCountry.resize(0);
 	m_mapCountry.clear();
 	m_lLastTotalCountry = 0;
@@ -32,7 +32,7 @@ bool CDataFinnhubCountry::Delete(CCountryPtr pCountry) {
 // 此种更新方法，是默认新的国家代码附加在最后。
 //
 //////////////////////////////////////////////////////////////////////////
-bool CDataFinnhubCountry::UpdateDB(void) {
+bool CDataFinnhubCountry::UpdateDB() {
 	if (m_lLastTotalCountry < m_vCountry.size()) {
 		CSetCountry setCountry;
 		setCountry.Open();
@@ -48,7 +48,7 @@ bool CDataFinnhubCountry::UpdateDB(void) {
 	return true;
 }
 
-bool CDataFinnhubCountry::LoadDB(void) {
+bool CDataFinnhubCountry::LoadDB() {
 	CSetCountry setCountry;
 	CCountryPtr pCountry = nullptr;
 

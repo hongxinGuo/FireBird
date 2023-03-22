@@ -18,7 +18,7 @@ CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubForexDayLine::CreateMessage(void) {
+CString CProductFinnhubForexDayLine::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pForexSymbol = static_cast<CWorldMarket*>(m_pMarket)->GetForexSymbol(m_lIndex);

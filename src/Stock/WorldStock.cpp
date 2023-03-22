@@ -26,7 +26,7 @@ CWorldStock::CWorldStock() : CVirtualStock() {
 
 CWorldStock::~CWorldStock() {}
 
-void CWorldStock::Reset(void) {
+void CWorldStock::Reset() {
 	CVirtualStock::Reset();
 
 	ResetAllUpdateDate();
@@ -104,7 +104,7 @@ void CWorldStock::Reset(void) {
 ///
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CWorldStock::ResetAllUpdateDate(void) {
+void CWorldStock::ResetAllUpdateDate() {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyProfileConcise"] = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyNews"] = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsBasicFinancials"] = 19800101;
@@ -352,7 +352,7 @@ void CWorldStock::Append(CSetWorldStock& setWorldStock) {
 	setWorldStock.Update();
 }
 
-void CWorldStock::SaveInsiderTransaction(void) {
+void CWorldStock::SaveInsiderTransaction() {
 	CSetInsiderTransaction setInsiderTransaction, setSaveInsiderTransaction;
 
 	vector<CInsiderTransactionPtr> vInsiderTransaction;
@@ -396,7 +396,7 @@ void CWorldStock::SaveInsiderTransaction(void) {
 	setSaveInsiderTransaction.Close();
 }
 
-void CWorldStock::SaveInsiderSentiment(void) {
+void CWorldStock::SaveInsiderSentiment() {
 	CSetInsiderSentiment setInsiderSentiment, setSaveInsiderSentiment;
 
 	vector<CInsiderSentimentPtr> vInsiderSentiment;
@@ -443,7 +443,7 @@ void CWorldStock::SaveInsiderSentiment(void) {
 // 接收到的新闻事先已经按时间顺序存于vector中，只存储数据库中没有的时间点的新闻。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldStock::UpdateCompanyNewsDB(void) {
+bool CWorldStock::UpdateCompanyNewsDB() {
 	ASSERT(m_vCompanyNews.size() > 0);
 	const long lSize = static_cast<long>(m_vCompanyNews.size());
 	if (m_strSymbol.GetLength() > 0) {
@@ -476,7 +476,7 @@ bool CWorldStock::UpdateCompanyNewsDB(void) {
 	return true;
 }
 
-bool CWorldStock::UpdateEPSSurpriseDB(void) {
+bool CWorldStock::UpdateEPSSurpriseDB() {
 	CSetEPSSurprise setEPSSurprise;
 	const long lLastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
 
@@ -498,7 +498,7 @@ bool CWorldStock::UpdateEPSSurpriseDB(void) {
 	return true;
 }
 
-bool CWorldStock::UpdateDayLineDB(void) {
+bool CWorldStock::UpdateDayLineDB() {
 	if (IsDayLineNeedSavingAndClearFlag()) {
 		// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 		if (GetDayLineSize() > 0) {
@@ -518,7 +518,7 @@ bool CWorldStock::UpdateDayLineDB(void) {
 	return false;
 }
 
-void CWorldStock::AppendBasicFinancialAnnual(void) {
+void CWorldStock::AppendBasicFinancialAnnual() {
 	CSetFinnhubStockBasicFinancialAnnual setAnnual;
 
 	setAnnual.m_strFilter = _T("[ID] = 1");
@@ -529,7 +529,7 @@ void CWorldStock::AppendBasicFinancialAnnual(void) {
 	setAnnual.Close();
 }
 
-void CWorldStock::AppendBasicFinancialQuarter(void) {
+void CWorldStock::AppendBasicFinancialQuarter() {
 	CSetFinnhubStockBasicFinancialQuarter setQuarter;
 
 	setQuarter.m_strFilter = _T("[ID] = 1");
@@ -595,7 +595,7 @@ void CWorldStock::UpdateStockProfile(CTiingoStockPtr pTiingoStock) {
 	SetTiingoStatementUpdateDate(pTiingoStock->m_lStatementUpdateDate);
 }
 
-void CWorldStock::UpdateDayLineStartEndDate(void) {
+void CWorldStock::UpdateDayLineStartEndDate() {
 	long lStartDate = 0, lEndDate = 0;
 	bool fSucceed = m_dataDayLine.GetStartEndDate(lStartDate, lEndDate);
 	if (fSucceed) {
@@ -610,7 +610,7 @@ void CWorldStock::UpdateDayLineStartEndDate(void) {
 	}
 }
 
-bool CWorldStock::HaveNewDayLineData(void) {
+bool CWorldStock::HaveNewDayLineData() {
 	if (m_dataDayLine.Size() == 0) return false;
 	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate)
 		|| (m_dataDayLine.GetData(0)->GetMarketDate() < m_lDayLineStartDate))
@@ -643,7 +643,7 @@ bool CWorldStock::CheckEPSSurpriseStatus(long lCurrentDate) {
 	return m_fEPSSurpriseUpdated;
 }
 
-bool CWorldStock::IsEPSSurpriseNeedSaveAndClearFlag(void) {
+bool CWorldStock::IsEPSSurpriseNeedSaveAndClearFlag() {
 	const bool fNeedSave = m_fEPSSurpriseNeedSave.exchange(false);
 	return fNeedSave;
 }
@@ -694,7 +694,7 @@ bool CWorldStock::CheckInsiderSentimentStatus(long lCurrentDate) {
 	return m_fUpdateFinnhubInsiderSentiment;
 }
 
-long CWorldStock::GetProfileUpdateDate(void) {
+long CWorldStock::GetProfileUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsCompanyProfileConcise");
 		return lDate;
@@ -708,7 +708,7 @@ void CWorldStock::SetProfileUpdateDate(const long lProfileUpdateDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyProfileConcise"] = lProfileUpdateDate;
 }
 
-long CWorldStock::GetCompanyNewsUpdateDate(void) {
+long CWorldStock::GetCompanyNewsUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsCompanyNews");
 		return lDate;
@@ -722,7 +722,7 @@ void CWorldStock::SetCompanyNewsUpdateDate(const long lCompanyNewsUpdateDate) no
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyNews"] = lCompanyNewsUpdateDate;
 }
 
-long CWorldStock::GetBasicFinancialUpdateDate(void) {
+long CWorldStock::GetBasicFinancialUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsBasicFinancials");
 		return lDate;
@@ -736,7 +736,7 @@ void CWorldStock::SetBasicFinancialUpdateDate(const long lBasicFinancialUpdateDa
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsBasicFinancials"] = lBasicFinancialUpdateDate;
 }
 
-long CWorldStock::GetLastRTDataUpdateDate(void) {
+long CWorldStock::GetLastRTDataUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockPriceQuote");
 		return lDate;
@@ -750,7 +750,7 @@ void CWorldStock::SetLastRTDataUpdateDate(const long lDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockPriceQuote"] = lDate;
 }
 
-long CWorldStock::GetPeerUpdateDate(void) {
+long CWorldStock::GetPeerUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsPeer");
 		return lDate;
@@ -764,7 +764,7 @@ void CWorldStock::SetPeerUpdateDate(const long lDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsPeer"] = lDate;
 }
 
-long CWorldStock::GetInsiderTransactionUpdateDate(void) {
+long CWorldStock::GetInsiderTransactionUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsInsiderTransaction");
 		return lDate;
@@ -778,7 +778,7 @@ void CWorldStock::SetInsiderTransactionUpdateDate(const long lDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderTransaction"] = lDate;
 }
 
-long CWorldStock::GetInsiderSentimentUpdateDate(void) {
+long CWorldStock::GetInsiderSentimentUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsInsiderSentiment");
 		return lDate;
@@ -792,7 +792,7 @@ void CWorldStock::SetInsiderSentimentUpdateDate(const long lDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderSentiment"] = lDate;
 }
 
-long CWorldStock::GetLastEPSSurpriseUpdateDate(void) {
+long CWorldStock::GetLastEPSSurpriseUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockEstimatesEPSSurprise");
 		return lDate;
@@ -806,7 +806,7 @@ void CWorldStock::SetLastEPSSurpriseUpdateDate(const long lDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = lDate;
 }
 
-long CWorldStock::GetTiingoStatementUpdateDate(void) {
+long CWorldStock::GetTiingoStatementUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Tiingo")).at("StockFundamentalsCompanyProfile");
 		return lDate;
@@ -820,7 +820,7 @@ void CWorldStock::SetTiingoStatementUpdateDate(const long lStatementUpdateDate) 
 	m_jsonUpdateDate["Tiingo"]["StockFundamentalsCompanyProfile"] = lStatementUpdateDate;
 }
 
-long CWorldStock::GetTiingoDailyDataUpdateDate(void) {
+long CWorldStock::GetTiingoDailyDataUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Tiingo")).at("StockPriceCandles");
 		return lDate;
@@ -877,7 +877,7 @@ CString CWorldStock::GetTiingoDayLineInquiryParam(long lStartDate, long lCurrent
 	return strParam;
 }
 
-bool CWorldStock::IsUSMarket(void) const {
+bool CWorldStock::IsUSMarket() const {
 	if (m_strExchangeCode.Compare(_T("US")) == 0) return true;
 	return false;
 }

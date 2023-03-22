@@ -11,11 +11,11 @@ public:
 	CContainerStockSymbol(const CContainerStockSymbol&&) noexcept = delete;
 	CContainerStockSymbol& operator=(const CContainerStockSymbol&&) noexcept = delete;
 	~CContainerStockSymbol() = default;
-	void Reset(void);
-	bool CreateTotalStockContainer(void);
+	void Reset();
+	bool CreateTotalStockContainer();
 
 	[[nodiscard]] size_t GetIndex(const CString& strSymbol) const { return m_mapStockSymbol.at(strSymbol); }
-	[[nodiscard]] size_t GetStockSize(void) const noexcept { return m_vStockSymbol.size(); }
+	[[nodiscard]] size_t GetStockSize() const noexcept { return m_vStockSymbol.size(); }
 
 	[[nodiscard]] bool IsStockSymbol(const CString& strSymbol) const {
 		if (m_mapStockSymbol.contains(strSymbol)) return true;
@@ -28,11 +28,11 @@ public:
 	CString GetNextSinaStockInquiringMiddleStr(long lTotalNumber);
 	CString GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber);
 
-	void LoadStockSectionDB(void);
-	bool UpdateStockSectionDB(void);
+	void LoadStockSectionDB();
+	bool UpdateStockSectionDB();
 
 	void SetUpdateStockSection(const bool fFlag) noexcept { m_fUpdateStockSection = fFlag; }
-	[[nodiscard]] bool IsUpdateStockSection(void) const noexcept { return m_fUpdateStockSection; }
+	[[nodiscard]] bool IsUpdateStockSection() const noexcept { return m_fUpdateStockSection; }
 
 	void SetStockSectionActiveFlag(const long lIndex, const bool fFlag) const noexcept { m_vStockSection.at(lIndex)->SetActive(fFlag); }
 

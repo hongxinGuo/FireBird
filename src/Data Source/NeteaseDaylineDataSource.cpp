@@ -16,7 +16,7 @@ CNeteaseDayLineDataSource::CNeteaseDayLineDataSource() {
 	CNeteaseDayLineDataSource::Reset();
 }
 
-bool CNeteaseDayLineDataSource::Reset(void) {
+bool CNeteaseDayLineDataSource::Reset() {
 	return true;
 }
 
@@ -68,11 +68,11 @@ void CNeteaseDayLineDataSource::CreateProduct() {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-void CNeteaseDayLineDataSource::GenerateCurrentInquiryMessage(void) {
+void CNeteaseDayLineDataSource::GenerateCurrentInquiryMessage() {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
 
-void CNeteaseDayLineDataSource::ConfigureSession(void) {
+void CNeteaseDayLineDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 60000); // 正常情况下Netease日线数据接收时间不超过1秒。
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 60000); // 设置接收超时时间为5秒

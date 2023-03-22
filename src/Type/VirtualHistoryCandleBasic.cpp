@@ -36,7 +36,7 @@ void CVirtualHistoryCandleBasic::CalculateRSLogarithm1(double dRS) {
 	else m_dRSLogarithm = 50;
 }
 
-bool CVirtualHistoryCandleBasic::IsActive(void) const {
+bool CVirtualHistoryCandleBasic::IsActive() const {
 	if (GetClose() != 0) {
 		return true;
 	}

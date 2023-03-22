@@ -7,10 +7,10 @@ class CContainerFinnhubForexSymbol : public CContainerVirtualStock {
 public:
 	CContainerFinnhubForexSymbol();
 	~CContainerFinnhubForexSymbol() override = default;
-	void Reset(void) override;
+	void Reset() override;
 
-	bool LoadDB(void);
-	bool UpdateDB(void);
+	bool LoadDB();
+	bool UpdateDB();
 
 	CForexSymbolPtr GetSymbol(const size_t lIndex) { return dynamic_pointer_cast<CFinnhubForexSymbol>(Get(lIndex)); }
 	CForexSymbolPtr GetSymbol(const CString& strStockCode) { return dynamic_pointer_cast<CFinnhubForexSymbol>(Get(strStockCode)); }

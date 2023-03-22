@@ -7,13 +7,13 @@
 
 class CVirtualMarket {
 public:
-	CVirtualMarket(void);
+	CVirtualMarket();
 	// 不允许赋值。
 	CVirtualMarket(const CVirtualMarket&) = delete;
 	CVirtualMarket& operator=(const CVirtualMarket&) = delete;
 	CVirtualMarket(const CVirtualMarket&&) noexcept = delete;
 	CVirtualMarket& operator=(const CVirtualMarket&&) noexcept = delete;
-	virtual ~CVirtualMarket(void) = default;
+	virtual ~CVirtualMarket() = default;
 
 public:
 	void SchedulingTask();
@@ -25,8 +25,8 @@ public:
 	// 此函数在VirtualMarket中定义，但由最终衍生类来调用，因为lCurrentTime必须为该衍生类的当前市场时间。
 	void RunDataSource(long lCurrentTime) const;
 
-	virtual void ResetMarket(void);
-	virtual bool UpdateMarketInfo(void); // 更新本市场信息。
+	virtual void ResetMarket();
+	virtual bool UpdateMarketInfo(); // 更新本市场信息。
 
 	// MarketTask
 	bool IsMarketTaskEmpty() const { return m_marketTask.IsEmpty(); }
@@ -42,53 +42,53 @@ public:
 	time_t TransferToUTCTime(long lMarketDate, long lMarketTime = 150000) const; // 将市场时间结构转化为UTC时间
 	long TransferToMarketDate(time_t tUTC = gl_tUTC) const; // 得到本市场的日期
 
-	long GetMarketTimeZone(void) const noexcept { return m_lMarketTimeZone; }
-	CString GetMarketID(void) const noexcept { return m_strMarketId; }
-	long GetMarketTime(void) const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
-	long GetMarketDate(void) const noexcept { return m_lMarketDate; } // 得到本市场的当地日期， 格式为：yyyymmdd
-	long GetDayOfWeek(void) const noexcept { return m_tmMarket.tm_wday; } // days since Sunday - [0, 6]
-	long GetMonthOfYear(void) const noexcept { return m_tmMarket.tm_mon + 1; }
-	long GetDateOfMonth(void) const noexcept { return m_tmMarket.tm_mday; }
-	long GetYear(void) const noexcept { return m_tmMarket.tm_year + 1900; }
+	long GetMarketTimeZone() const noexcept { return m_lMarketTimeZone; }
+	CString GetMarketID() const noexcept { return m_strMarketId; }
+	long GetMarketTime() const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
+	long GetMarketDate() const noexcept { return m_lMarketDate; } // 得到本市场的当地日期， 格式为：yyyymmdd
+	long GetDayOfWeek() const noexcept { return m_tmMarket.tm_wday; } // days since Sunday - [0, 6]
+	long GetMonthOfYear() const noexcept { return m_tmMarket.tm_mon + 1; }
+	long GetDateOfMonth() const noexcept { return m_tmMarket.tm_mday; }
+	long GetYear() const noexcept { return m_tmMarket.tm_year + 1900; }
 
-	long GetLastTradeDate(void) noexcept {
+	long GetLastTradeDate() noexcept {
 		CalculateLastTradeDate();
 		return m_lMarketLastTradeDate;
 	}
 
-	bool IsWorkingDay(void) const noexcept;
+	bool IsWorkingDay() const noexcept;
 	bool IsWorkingDay(CTime timeCurrent) const noexcept;
 	bool IsWorkingDay(long lDate) const noexcept;
 
-	virtual bool IsOrdinaryTradeTime(void) { return true; } // 日常交易时间
+	virtual bool IsOrdinaryTradeTime() { return true; } // 日常交易时间
 	virtual bool IsOrdinaryTradeTime(long) { return true; } // 参数为市场当前时间hhmmss
-	virtual bool IsWorkingTime(void) { return true; } // 工作时间（日常交易时间 + 延长的交易时间）
+	virtual bool IsWorkingTime() { return true; } // 工作时间（日常交易时间 + 延长的交易时间）
 	virtual bool IsWorkingTime(long) { return true; } // 参数为市场当前时间hhmmss
-	virtual bool IsDummyTime(void) { return false; } // 空闲时间
+	virtual bool IsDummyTime() { return false; } // 空闲时间
 	virtual bool IsDummyTime(long) { return false; } // 参数为市场当前时间hhmmss
 
-	CString GetStringOfLocalTime(void) const; // 得到本地时间的字符串
-	CString GetStringOfLocalDateTime(void) const;
-	CString GetStringOfMarketTime(void) const; // 得到本市场时间的字符串
-	CString GetStringOfMarketDate(void) const;
-	CString GetStringOfMarketDateTime(void) const;
+	CString GetStringOfLocalTime() const; // 得到本地时间的字符串
+	CString GetStringOfLocalDateTime() const;
+	CString GetStringOfMarketTime() const; // 得到本市场时间的字符串
+	CString GetStringOfMarketDate() const;
+	CString GetStringOfMarketDateTime() const;
 
-	void CalculateTime(void) noexcept; // 计算本市场的各时间
-	void CalculateLastTradeDate(void) noexcept;
+	void CalculateTime() noexcept; // 计算本市场的各时间
+	void CalculateLastTradeDate() noexcept;
 	void ResetMarketFlagAtMidnight(long lCurrentTime);
 
-	bool IsReadyToRun(void) const noexcept { return m_fReadyToRun; }
+	bool IsReadyToRun() const noexcept { return m_fReadyToRun; }
 	void SetReadyToRun(bool fFlag) noexcept { m_fReadyToRun = fFlag; }
-	bool HaveResetMarketPermission(void) const noexcept { return m_fResetMarketPermission; }
+	bool HaveResetMarketPermission() const noexcept { return m_fResetMarketPermission; }
 	void SetResetMarketPermission(bool fFlag) noexcept { m_fResetMarketPermission = fFlag; }
-	bool IsResetMarket(void) const noexcept { return m_fResetMarket; }
+	bool IsResetMarket() const noexcept { return m_fResetMarket; }
 	void SetResetMarket(bool fFlag) noexcept { m_fResetMarket = fFlag; }
 
 	virtual bool IsTimeToResetSystem(long) { return false; } // 默认永远处于非重启市场状态，继承类需要各自设置之
-	virtual bool IsSystemReady(void) const noexcept { return m_fSystemReady; }
+	virtual bool IsSystemReady() const noexcept { return m_fSystemReady; }
 	virtual void SetSystemReady(const bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
-	virtual bool PreparingExitMarket(void) { return true; } // 准备退出本市场（完成系统退出前的准备工作）。
+	virtual bool PreparingExitMarket() { return true; } // 准备退出本市场（完成系统退出前的准备工作）。
 
 	// 存储数据源
 	void StoreDataSource(CVirtualDataSourcePtr pDataSource) { m_vDataSource.push_back(pDataSource); }

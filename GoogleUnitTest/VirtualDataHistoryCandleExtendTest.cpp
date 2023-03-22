@@ -10,15 +10,15 @@ using std::make_shared;
 namespace FireBirdTest {
 	class CVirtualDataHistoryCandleExtendTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) { // 本测试类的初始化函数
+		static void SetUpTestSuite() { // 本测试类的初始化函数
 			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() { GeneralCheck(); }
 
-		void SetUp(void) override { GeneralCheck(); }
+		void SetUp() override { GeneralCheck(); }
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}

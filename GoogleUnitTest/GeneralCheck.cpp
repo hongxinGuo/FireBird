@@ -14,14 +14,14 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	void SystemMessageCheck(void) {
+	void SystemMessageCheck() {
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 0) << gl_systemMessage.PopInformationMessage();
 		EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 		EXPECT_THAT(gl_systemMessage.DayLineInfoSize(), 0) << gl_systemMessage.PopDayLineInfoMessage();
 		EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 0) << gl_systemMessage.PopErrorMessage();
 	}
 
-	void EnvironmentCheck(void) {
+	void EnvironmentCheck() {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		EXPECT_FALSE(gl_systemStatus.IsExitingSystem());
 		time_t tt;
@@ -35,7 +35,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
 	}
 
-	void ChinaMarketCheck(void) {
+	void ChinaMarketCheck() {
 		if (gl_pChinaMarket != nullptr) {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockProfileDB(), IsFalse());
@@ -53,7 +53,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	void WorldMarketCheck(void) {
+	void WorldMarketCheck() {
 		if (gl_pWorldMarket != nullptr) {
 			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(_T("AAPL"));
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
@@ -70,7 +70,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	void WebInquirerCheck(void) {
+	void WebInquirerCheck() {
 		EXPECT_THAT(gl_pFinnhubDataSource->GetReceivedDataSize(), 0);
 		EXPECT_EQ(gl_pTiingoDataSource->GetReceivedDataSize(), 0);
 		EXPECT_EQ(gl_pSinaRTDataSource->GetReceivedDataSize(), 0);
@@ -122,14 +122,14 @@ namespace FireBirdTest {
 		EXPECT_THAT(gl_tiingoIEXWebSocket.DataSize(), 0);
 	}
 
-	void DataContainerCheck(void) {
+	void DataContainerCheck() {
 		EXPECT_EQ(gl_pChinaMarket->SinaRTSize(), 0);
 		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 0);
 		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 0);
 		EXPECT_EQ(gl_pChinaMarket->DayLineQueueSize(), 0);
 	}
 
-	void GeneralCheck(void) {
+	void GeneralCheck() {
 		EnvironmentCheck();
 		SystemConfigurationCheck();
 		SystemMessageCheck();

@@ -24,7 +24,7 @@ namespace FireBirdTest {
 
 	class CMockWorldMarketTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 
 			//EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
@@ -37,13 +37,13 @@ namespace FireBirdTest {
 			gl_systemMessage.PopInnerSystemInformationMessage();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			s_pMockWorldMarket = nullptr;
 
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			//EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			GeneralCheck();
 			gl_systemStatus.SetExitingSystem(false);
@@ -51,7 +51,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 

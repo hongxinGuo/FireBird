@@ -14,7 +14,7 @@ public:
 	void Load(CSetNaicsIndustry& setNaicsIndustry);
 
 	void SetUpdated(const bool fFlag) noexcept { m_fUpdated = fFlag; }
-	bool IsUpdated(void) const noexcept { return m_fUpdated; }
+	bool IsUpdated() const noexcept { return m_fUpdated; }
 
 public:
 	CString m_strNaics;

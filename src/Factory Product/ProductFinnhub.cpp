@@ -21,7 +21,7 @@ bool CProductFinnhub::CheckNoRightToAccess(CWebDataPtr pWebData) {
 // 美国市场（交易所代码为US）永远申请，其他交易所根据反馈情况决定是否继续申请。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-bool CProductFinnhub::AddInaccessibleExchangeIfNeeded(void) {
+bool CProductFinnhub::AddInaccessibleExchangeIfNeeded() {
 	if (IsUSMarket()) return false; // 美国市场永远允许查询
 
 	gl_finnhubInaccessibleExchange.SetUpdate(true);

@@ -13,7 +13,7 @@ CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubCryptoExchange::CreateMessage(void) {
+CString CProductFinnhubCryptoExchange::CreateMessage() {
 	ASSERT(m_strInquiringExchange.Compare(_T("ALL")) == 0);
 	m_strInquiringExchange = _T("ALL"); // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	m_strInquiry = m_strInquiryFunction;

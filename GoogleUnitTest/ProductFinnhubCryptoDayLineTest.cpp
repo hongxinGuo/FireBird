@@ -12,19 +12,19 @@ using namespace testing;
 namespace FireBirdTest {
 	class CProductFinnhubCryptoDayLineTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -74,7 +74,7 @@ namespace FireBirdTest {
 
 	class ParseFinnhubCryptoCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -86,7 +86,7 @@ namespace FireBirdTest {
 			m_pvDayLine = nullptr;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			gl_pWorldMarket->GetFinnhubCryptoSymbol(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
@@ -153,7 +153,7 @@ namespace FireBirdTest {
 
 	class ProcessFinnhubCryptoCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -167,7 +167,7 @@ namespace FireBirdTest {
 			m_finnhubCryptoDayLine.SetIndex(0);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			gl_pWorldMarket->GetFinnhubCryptoSymbol(0)->SetIPOStatus(lIPOStatus);

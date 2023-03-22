@@ -13,7 +13,7 @@ public:
 	virtual ~COutputList();
 
 	void TruncateList(long lNumberOfTruncation);
-	void SetCurAtLastLine(void);
+	void SetCurAtLastLine();
 
 protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);

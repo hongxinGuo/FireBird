@@ -10,15 +10,15 @@ using namespace testing;
 namespace FireBirdTest {
 	class CContainerChinaStockTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			CChinaStockPtr pStock = nullptr;
 			for (int i = 0; i < 100; i++) {
@@ -27,7 +27,7 @@ namespace FireBirdTest {
 			}
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}

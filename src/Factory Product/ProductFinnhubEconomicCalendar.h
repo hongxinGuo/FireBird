@@ -8,7 +8,7 @@ public:
 	CProductFinnhubEconomicCalendar();
 	~CProductFinnhubEconomicCalendar() override = default;
 
-	CString CreateMessage(void) final;
+	CString CreateMessage() final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CEconomicCalendarVectorPtr ParseFinnhubEconomicCalendar(CWebDataPtr pWebData);
 };

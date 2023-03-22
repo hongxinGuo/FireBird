@@ -14,24 +14,24 @@ namespace FireBirdTest {
 
 	class CMockQuandlDataSourceTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 			m_fSystemStatus = gl_pWorldMarket->IsSystemReady();
 			gl_pWorldMarket->SetSystemReady(true); // Quandl引擎必须等待系统初始化后才可使用。
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			gl_pWorldMarket->SetSystemReady(m_fSystemStatus);
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			gl_pWorldMarket->CalculateTime();
 			m_pMockQuandlDataSource = make_shared<CMockQuandlDataSource>();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			m_pMockQuandlDataSource = nullptr;
 			gl_pWorldMarket->SetResetMarket(true);

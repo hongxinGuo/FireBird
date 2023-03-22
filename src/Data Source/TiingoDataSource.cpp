@@ -6,7 +6,7 @@
 
 #include"WorldMarket.h"
 
-CTiingoDataSource::CTiingoDataSource(void) {
+CTiingoDataSource::CTiingoDataSource() {
 	m_strInquiryFunction = _T(""); // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strParam = _T("");
 	m_strSuffix = _T("");
@@ -18,7 +18,7 @@ CTiingoDataSource::CTiingoDataSource(void) {
 	CTiingoDataSource::Reset();
 }
 
-bool CTiingoDataSource::Reset(void) {
+bool CTiingoDataSource::Reset() {
 	m_fUpdateStockSymbol = true;
 	m_fUpdateCryptoSymbol = true;
 	m_fUpdateDayLine = true;
@@ -26,7 +26,7 @@ bool CTiingoDataSource::Reset(void) {
 	return true;
 }
 
-void CTiingoDataSource::UpdateStatus(void) {
+void CTiingoDataSource::UpdateStatus() {
 	switch (m_pCurrentProduct->GetProductType()) {
 	case STOCK_SYMBOLS_:
 		m_fUpdateStockSymbol = false;
@@ -106,7 +106,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	return false;
 }
 
-bool CTiingoDataSource::InquireTiingo(void) {
+bool CTiingoDataSource::InquireTiingo() {
 	ASSERT(!IsInquiring());
 	if (gl_pWorldMarket->IsSystemReady()) {
 		InquireCompanySymbol();
@@ -117,7 +117,7 @@ bool CTiingoDataSource::InquireTiingo(void) {
 	return false;
 }
 
-bool CTiingoDataSource::InquireCompanySymbol(void) {
+bool CTiingoDataSource::InquireCompanySymbol() {
 	if (!IsInquiring() && IsUpdateStockSymbol()) {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), STOCK_SYMBOLS_);
 		m_qProduct.push(p);
@@ -129,7 +129,7 @@ bool CTiingoDataSource::InquireCompanySymbol(void) {
 	return false;
 }
 
-bool CTiingoDataSource::InquireCryptoSymbol(void) {
+bool CTiingoDataSource::InquireCryptoSymbol() {
 	if (!IsInquiring() && IsUpdateCryptoSymbol()) {
 		CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), CRYPTO_SYMBOLS_);
 		m_qProduct.push(p);
@@ -149,7 +149,7 @@ bool CTiingoDataSource::InquireCryptoSymbol(void) {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CTiingoDataSource::InquireDayLine(void) {
+bool CTiingoDataSource::InquireDayLine() {
 	const auto lStockSetSize = gl_pWorldMarket->GetChosenStockSize();
 	bool fHaveInquiry = false;
 
@@ -182,7 +182,7 @@ bool CTiingoDataSource::InquireDayLine(void) {
 	return fHaveInquiry;
 }
 
-void CTiingoDataSource::ConfigureSession(void) {
+void CTiingoDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒

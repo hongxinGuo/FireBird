@@ -30,7 +30,7 @@ void CSystemDeque::PushMessage(const CString& str) {
 	m_mutex.unlock();
 }
 
-CString CSystemDeque::PopMessage(void) {
+CString CSystemDeque::PopMessage() {
 	m_mutex.lock();
 	CString str = m_dequeMessage.front();
 	m_dequeMessage.pop_front();
@@ -38,7 +38,7 @@ CString CSystemDeque::PopMessage(void) {
 	return str; // 只能从这里返回
 }
 
-size_t CSystemDeque::Size(void) {
+size_t CSystemDeque::Size() {
 	m_mutex.lock();
 	const size_t lCount = m_dequeMessage.size();
 	m_mutex.unlock();

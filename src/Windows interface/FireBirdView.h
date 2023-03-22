@@ -16,20 +16,20 @@ protected: // 使用protected关键字，以保证仅从序列化创建
 
 	// 特性
 public:
-	~CFireBirdView(void) override = default;
+	~CFireBirdView() override = default;
 	CFireBirdDoc* GetDocument() const;
 
-	CRect GetClientSize(void) const noexcept { return m_rectClient; }
-	bool IsShowRS(void) const noexcept { return m_fShowRS; }
-	bool IsShow3DaysRS(void) const noexcept { return m_fShow3DaysRS; }
-	bool IsShow5DaysRS(void) const noexcept { return m_fShow5DaysRS; }
-	bool IsShow10DaysRS(void) const noexcept { return m_fShow10DaysRS; }
-	bool IsShow30DaysRS(void) const noexcept { return m_fShow30DaysRS; }
-	bool IsShow60DaysRS(void) const noexcept { return m_fShow60DaysRS; }
-	bool IsShow120DaysRS(void) const noexcept { return m_fShow120DaysRS; }
-	bool IsShowRSInLogarithm(void) const noexcept { return (m_iShowRSOption == 2); }
-	bool IsShowRSInLinear(void) const noexcept { return (m_iShowRSOption == 1); }
-	bool IsShowRSInIndex(void) const noexcept { return (m_iShowRSOption == 0); }
+	CRect GetClientSize() const noexcept { return m_rectClient; }
+	bool IsShowRS() const noexcept { return m_fShowRS; }
+	bool IsShow3DaysRS() const noexcept { return m_fShow3DaysRS; }
+	bool IsShow5DaysRS() const noexcept { return m_fShow5DaysRS; }
+	bool IsShow10DaysRS() const noexcept { return m_fShow10DaysRS; }
+	bool IsShow30DaysRS() const noexcept { return m_fShow30DaysRS; }
+	bool IsShow60DaysRS() const noexcept { return m_fShow60DaysRS; }
+	bool IsShow120DaysRS() const noexcept { return m_fShow120DaysRS; }
+	bool IsShowRSInLogarithm() const noexcept { return (m_iShowRSOption == 2); }
+	bool IsShowRSInLinear() const noexcept { return (m_iShowRSOption == 1); }
+	bool IsShowRSInIndex() const noexcept { return (m_iShowRSOption == 0); }
 	void SetShowRSOption(const int iValue) noexcept { m_iShowRSOption = iValue; }
 
 	// 操作
@@ -50,7 +50,7 @@ public:
 
 	void SetClientSize(CRect rect) noexcept { m_rectClient = rect; }
 
-	int GetCurrentShowType(void) const noexcept { return m_iCurrentShowType; }
+	int GetCurrentShowType() const noexcept { return m_iCurrentShowType; }
 	void SetCurrentShowType(const int iValue) noexcept { m_iCurrentShowType = iValue; }
 
 	bool UpdateHistoryDataContainer(CChinaStockPtr pStock);

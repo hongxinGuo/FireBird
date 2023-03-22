@@ -2,7 +2,7 @@
 
 #include "TimeConvert.h"
 
-long GetDayOfWeek(void) {
+long GetDayOfWeek() {
 	time_t tUTC = 0;
 	time(&tUTC);
 	tm tm_;

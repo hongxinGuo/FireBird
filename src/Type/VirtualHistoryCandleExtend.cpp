@@ -7,7 +7,7 @@ CVirtualHistoryCandleExtend::CVirtualHistoryCandleExtend() : CVirtualHistoryCand
 	CVirtualHistoryCandleExtend::Reset();
 }
 
-void CVirtualHistoryCandleExtend::Reset(void) {
+void CVirtualHistoryCandleExtend::Reset() {
 	m_lDate = 0; // ¿‡–Õ
 	m_time = 0;
 	m_strExchange = _T("");

@@ -11,7 +11,7 @@ CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubCompanyPeer::CreateMessage(void) {
+CString CProductFinnhubCompanyPeer::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);

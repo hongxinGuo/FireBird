@@ -6,7 +6,7 @@
 
 #include"WorldMarket.h"
 
-CQuandlDataSource::CQuandlDataSource(void) {
+CQuandlDataSource::CQuandlDataSource() {
 	m_strInquiryFunction = _T(""); // Quandl有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strParam = _T("");
 	m_strSuffix = _T("&api_key=");
@@ -17,11 +17,11 @@ CQuandlDataSource::CQuandlDataSource(void) {
 	CQuandlDataSource::Reset();
 }
 
-bool CQuandlDataSource::Reset(void) {
+bool CQuandlDataSource::Reset() {
 	return true;
 }
 
-void CQuandlDataSource::UpdateStatus(void) {
+void CQuandlDataSource::UpdateStatus() {
 	switch (m_pCurrentProduct->GetProductType()) {
 	case STOCK_SYMBOLS_:
 		break;
@@ -103,7 +103,7 @@ bool CQuandlDataSource::InquireQuandl() {
 	return true;
 }
 
-void CQuandlDataSource::ConfigureSession(void) {
+void CQuandlDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒

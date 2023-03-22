@@ -7,11 +7,11 @@ class CDataTiingoStock final {
 public:
 	CDataTiingoStock();
 	~CDataTiingoStock() = default;
-	void Reset(void);
+	void Reset();
 
 	void Add(CTiingoStockPtr pTiingoStock);
 	bool Delete(CTiingoStockPtr pStock);
-	size_t GetTotalStock(void) const noexcept { return m_vTiingoStock.size(); }
+	size_t GetTotalStock() const noexcept { return m_vTiingoStock.size(); }
 
 	bool IsStock(const CString& strSymbol) const noexcept {
 		if (m_mapTiingoStock.contains(strSymbol)) return true;
@@ -23,10 +23,10 @@ public:
 	CTiingoStockPtr GetStock(const size_t lIndex) const { return m_vTiingoStock.at(lIndex); }
 	CTiingoStockPtr GetStock(const CString& strTicker) const { return m_vTiingoStock.at(m_mapTiingoStock.at(strTicker)); }
 
-	bool UpdateDB(void);
-	bool LoadDB(void);
+	bool UpdateDB();
+	bool LoadDB();
 
-	bool IsNeedUpdate(void) const noexcept {
+	bool IsNeedUpdate() const noexcept {
 		if (m_lLastTotalTiingoStock < m_vTiingoStock.size()) return true;
 		return false;
 	}

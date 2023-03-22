@@ -6,10 +6,10 @@ class CDataNaicsIndustry final {
 public:
 	CDataNaicsIndustry();
 	~CDataNaicsIndustry() = default;
-	void Reset(void);
+	void Reset();
 
-	size_t GetTotalNaicsIndustry(void) const noexcept { return m_vNaicsIndustry.size(); }
-	long GetLastTotalNaicsIndustry(void) const noexcept { return m_lLastTotalNaicsIndustry; }
+	size_t GetTotalNaicsIndustry() const noexcept { return m_vNaicsIndustry.size(); }
+	long GetLastTotalNaicsIndustry() const noexcept { return m_lLastTotalNaicsIndustry; }
 
 	bool IsNaicsIndustry(const CString& strNaicsIndustry) const {
 		if (!m_mapNaicsIndustry.contains(strNaicsIndustry)) return true;
@@ -20,8 +20,8 @@ public:
 	void Add(CNaicsIndustryPtr pNaicsIndustry);
 	bool Delete(CNaicsIndustryPtr pNaicsIndustry);
 
-	bool UpdateDB(void);
-	bool LoadDB(void);
+	bool UpdateDB();
+	bool LoadDB();
 
 protected:
 	vector<CNaicsIndustryPtr> m_vNaicsIndustry;

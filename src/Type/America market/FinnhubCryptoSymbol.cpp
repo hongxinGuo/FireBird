@@ -7,7 +7,7 @@ CFinnhubCryptoSymbol::CFinnhubCryptoSymbol() : CVirtualStock() {
 	CFinnhubCryptoSymbol::Reset();
 }
 
-void CFinnhubCryptoSymbol::Reset(void) {
+void CFinnhubCryptoSymbol::Reset() {
 	CVirtualStock::Reset();
 	m_strDescription = _T(" ");
 	m_strDisplaySymbol = _T(" ");
@@ -17,7 +17,7 @@ void CFinnhubCryptoSymbol::Reset(void) {
 	m_lDayLineEndDate = 19800101;
 }
 
-void CFinnhubCryptoSymbol::SetCheckingDayLineStatus(void) {
+void CFinnhubCryptoSymbol::SetCheckingDayLineStatus() {
 	ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
 	if (IsNullStock()) {
 		SetDayLineNeedUpdate(false);
@@ -52,7 +52,7 @@ CString CFinnhubCryptoSymbol::GetFinnhubDayLineInquiryParam(time_t tCurrentTime)
 	return strParam;
 }
 
-void CFinnhubCryptoSymbol::UpdateDayLineStartEndDate(void) {
+void CFinnhubCryptoSymbol::UpdateDayLineStartEndDate() {
 	long lStartDate = 0, lEndDate = 0;
 	const bool fSucceed = m_dataDayLine.GetStartEndDate(lStartDate, lEndDate);
 	if (!fSucceed) {
@@ -71,7 +71,7 @@ void CFinnhubCryptoSymbol::UpdateDayLineStartEndDate(void) {
 	}
 }
 
-bool CFinnhubCryptoSymbol::HaveNewDayLineData(void) {
+bool CFinnhubCryptoSymbol::HaveNewDayLineData() {
 	if (m_dataDayLine.Size() == 0) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate) return true;
 	return false;

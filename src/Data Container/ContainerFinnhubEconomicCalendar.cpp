@@ -7,13 +7,13 @@ using std::make_shared;
 
 CContainerFinnhubEconomicCalendar::CContainerFinnhubEconomicCalendar() { Reset(); }
 
-void CContainerFinnhubEconomicCalendar::Reset(void) {
+void CContainerFinnhubEconomicCalendar::Reset() {
 	m_lLastTotalEconomicCalendar = 0;
 	m_mapEconomicCalendar.clear();
 	m_vEconomicCalendar.resize(0);
 }
 
-bool CContainerFinnhubEconomicCalendar::LoadDB(void) {
+bool CContainerFinnhubEconomicCalendar::LoadDB() {
 	CSetEconomicCalendar setEconomicCalendar;
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
 	CString strSymbol = _T("");
@@ -33,7 +33,7 @@ bool CContainerFinnhubEconomicCalendar::LoadDB(void) {
 	return true;
 }
 
-bool CContainerFinnhubEconomicCalendar::UpdateDB(void) {
+bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 	if (m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size()) {
 		CSetEconomicCalendar setEconomicCalendar;
 		setEconomicCalendar.Open();

@@ -13,7 +13,7 @@ CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubStockSymbol::CreateMessage(void) {
+CString CProductFinnhubStockSymbol::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto strParam = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStockExchangeCode(m_lIndex);

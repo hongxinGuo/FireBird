@@ -21,7 +21,7 @@ void CDataFinnhubStockExchange::Reset() {
 	m_mapFinnhubStockExchange.clear();
 }
 
-bool CDataFinnhubStockExchange::LoadDB(void) {
+bool CDataFinnhubStockExchange::LoadDB() {
 	CFinnhubStockExchangePtr pExchange = nullptr;
 
 	if (m_vFinnhubStockExchange.size() == 0) {

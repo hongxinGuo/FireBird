@@ -11,7 +11,7 @@
 namespace FireBirdTest {
 	class CWeekLineTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			// 本测试类的初始化函数
 			GeneralCheck();
 		}
@@ -20,11 +20,11 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}

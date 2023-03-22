@@ -15,7 +15,7 @@ CNeteaseRTDataSource::CNeteaseRTDataSource() {
 	CNeteaseRTDataSource::Reset();
 }
 
-bool CNeteaseRTDataSource::Reset(void) {
+bool CNeteaseRTDataSource::Reset() {
 	return true;
 }
 
@@ -71,7 +71,7 @@ bool CNeteaseRTDataSource::ParseData(CWebDataPtr pWebData) {
 	return false;
 }
 
-void CNeteaseRTDataSource::GenerateCurrentInquiryMessage(void) {
+void CNeteaseRTDataSource::GenerateCurrentInquiryMessage() {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
 
@@ -79,7 +79,7 @@ void CNeteaseRTDataSource::GenerateCurrentInquiryMessage(void) {
 /// 网易实时数据的接收，不时出现错误数据。目前无法确定是服务器本身的错误还是接收中出现的错误。如果服务器本身就发送错了，就无法修正了。
 /// 修改session各参数，试试能否解决问题。
 /// </summary>
-void CNeteaseRTDataSource::ConfigureSession(void) {
+void CNeteaseRTDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 3000); // 设置连接超时时间为4000毫秒。 正常情况下网易实时数据接收时间不超过200毫秒。
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 3000); // 设置接收超时时间为4000毫秒

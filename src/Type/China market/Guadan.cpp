@@ -2,7 +2,7 @@
 
 #include "Guadan.h"
 
-CGuadan::CGuadan(void) {
+CGuadan::CGuadan() {
 	m_lCurrentVolume = 0;
 	ReSet();
 }
@@ -12,7 +12,7 @@ CGuadan::CGuadan(void) {
 //
 //
 /////////////////////////////////////////////////////////////////////////
-void CGuadan::ReSet(void) {
+void CGuadan::ReSet() {
 	m_lCurrentVolume = 0; //
 	m_lFormerVolume = 0; //
 	m_lMaxPos = 0;
@@ -25,7 +25,7 @@ void CGuadan::AddGuadan(COneGuadan oneGuadan) {
 	m_lMaxPos++;
 }
 
-COneGuadan& CGuadan::GetGuadan(void) {
+COneGuadan& CGuadan::GetGuadan() {
 	return (m_vGuadan.at(m_lMaxPos - 1));
 }
 

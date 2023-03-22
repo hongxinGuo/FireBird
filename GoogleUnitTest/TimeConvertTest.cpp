@@ -9,11 +9,11 @@
 
 namespace FireBirdTest {
 	class TimeConvertTest : public ::testing::Test {
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			gl_systemStatus.SetWorkingMode(false);
 
 			GeneralCheck();
@@ -261,7 +261,7 @@ namespace FireBirdTest {
 
 	class ConvertBufferToTimeTest : public::testing::TestWithParam<strConvertBufferToTime*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			const strConvertBufferToTime* pData = GetParam();
 			strBuffer = pData->m_strBuffer;
@@ -269,7 +269,7 @@ namespace FireBirdTest {
 			iTime = pData->m_Time;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 		}
 

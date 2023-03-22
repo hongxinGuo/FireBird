@@ -11,7 +11,7 @@ CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubCryptoSymbol::CreateMessage(void) {
+CString CProductFinnhubCryptoSymbol::CreateMessage() {
 	const CString strParam = dynamic_cast<CWorldMarket*>(m_pMarket)->GetCryptoExchange(m_lIndex);
 
 	m_strInquiringExchange = strParam;

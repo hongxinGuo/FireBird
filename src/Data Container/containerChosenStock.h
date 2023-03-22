@@ -6,10 +6,10 @@ class CContainerChosenStock : public CContainerVirtualStock {
 public:
 	CContainerChosenStock();
 	~CContainerChosenStock() override = default;
-	void Reset(void) override;
+	void Reset() override;
 
-	bool LoadDB(void);
-	//bool UpdateDB(void);
+	bool LoadDB();
+	//bool UpdateDB();
 
 	CWorldStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CWorldStock>(Get(lIndex)); };
 	CWorldStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CWorldStock>(Get(strStockCode)); };

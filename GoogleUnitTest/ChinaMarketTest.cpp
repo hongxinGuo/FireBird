@@ -21,7 +21,7 @@ using namespace testing;
 namespace FireBirdTest {
 	class CChinaMarketTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 
 			gl_pChinaMarket->Load10DaysRSStrongStockDB(); // 装入各十日强度股票集
@@ -48,7 +48,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_pChinaMarket->GetTotalLoadedStock(), 5040) << "测试代码库中的股票代码总数为5040";
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			gl_pChinaMarket->SetCurrentStockChanged(false);
@@ -63,7 +63,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
@@ -79,7 +79,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "测试数据库中的股票代码总数为5040";
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			gl_pChinaMarket->SetRTDataSetCleared(false);

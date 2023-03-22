@@ -12,15 +12,15 @@ void CContainerVirtualStock::Reset() {
 	m_mapSymbol.clear();
 }
 
-bool CContainerVirtualStock::IsUpdateProfileDB(void) {
+bool CContainerVirtualStock::IsUpdateProfileDB() {
 	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsUpdateProfileDB(); });
 }
 
-bool CContainerVirtualStock::IsDayLineNeedUpdate(void) noexcept {
+bool CContainerVirtualStock::IsDayLineNeedUpdate() noexcept {
 	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsDayLineNeedUpdate(); });
 }
 
-bool CContainerVirtualStock::IsDayLineNeedSaving(void) {
+bool CContainerVirtualStock::IsDayLineNeedSaving() {
 	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsDayLineNeedSaving(); });
 }
 

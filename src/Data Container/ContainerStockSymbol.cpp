@@ -14,7 +14,7 @@ CContainerStockSymbol::CContainerStockSymbol() {
 	Reset();
 }
 
-void CContainerStockSymbol::Reset(void) {
+void CContainerStockSymbol::Reset() {
 	m_vStockSymbol.resize(0);
 	m_mapStockSymbol.clear();
 	m_vCurrentSectionStockCode.resize(0);
@@ -64,7 +64,7 @@ void CContainerStockSymbol::Reset(void) {
 // 初始化所有可能的股票代码池，只被CContainerStockSymbol的初始化函数Reset调用一次。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CContainerStockSymbol::CreateTotalStockContainer(void) {
+bool CContainerStockSymbol::CreateTotalStockContainer() {
 	CChinaStockPtr pStock = nullptr;
 
 	for (int i = 0; i < m_vCurrentSectionStockCode.size(); i++) {
@@ -73,7 +73,7 @@ bool CContainerStockSymbol::CreateTotalStockContainer(void) {
 	return true;
 }
 
-void CContainerStockSymbol::LoadStockSectionDB(void) {
+void CContainerStockSymbol::LoadStockSectionDB() {
 	CSetStockSection setStockSection;
 
 	setStockSection.Open();
@@ -89,7 +89,7 @@ void CContainerStockSymbol::LoadStockSectionDB(void) {
 	setStockSection.Close();
 }
 
-bool CContainerStockSymbol::UpdateStockSectionDB(void) {
+bool CContainerStockSymbol::UpdateStockSectionDB() {
 	CSetStockSection setStockSection;
 
 	setStockSection.m_strSort = _T("[ID]");

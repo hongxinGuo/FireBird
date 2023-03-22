@@ -10,25 +10,25 @@ class CDayLineWebData final {
 public:
 	CDayLineWebData();
 	~CDayLineWebData() = default;
-	void Reset(void);
+	void Reset();
 
 	// 提取网易日线历史数据各函数
 	void ClearDayLine() noexcept { m_vTempDayLine.clear(); }
-	std::vector<CDayLinePtr>& GetProcessedDayLine(void) { return m_vTempDayLine; }
+	std::vector<CDayLinePtr>& GetProcessedDayLine() { return m_vTempDayLine; }
 	void AppendDayLine(const CDayLinePtr pData) { m_vTempDayLine.push_back(pData); }
 	//void SetStockCode(CNeteaseDayLineDataSourcePtr pNeteaseWebDayLineData) noexcept { SetStockCode(pNeteaseWebDayLineData->GetDownLoadingStockCode()); }
 	void SetStockCode(const CString strSymbol) noexcept { m_strStockCode = strSymbol; }
-	CString GetStockCode(void) { return m_strStockCode; }
+	CString GetStockCode() { return m_strStockCode; }
 
 	bool TransferWebDataToBuffer(CWebDataPtr pWebData);
 	string GetBuffer() { return m_sDataBuffer; }
 	bool ProcessNeteaseDayLineData();
-	CDayLinePtr ProcessOneNeteaseDayLineData(void);
-	INT64 GetBufferLength(void) const noexcept { return m_lBufferLength; }
-	INT64 GetCurrentPos(void) const noexcept { return m_lCurrentPos; }
+	CDayLinePtr ProcessOneNeteaseDayLineData();
+	INT64 GetBufferLength() const noexcept { return m_lBufferLength; }
+	INT64 GetCurrentPos() const noexcept { return m_lCurrentPos; }
 	void SetCurrentPos(const INT64 lValue) noexcept { m_lCurrentPos = lValue; }
 	bool SkipNeteaseDayLineInformationHeader(string& sDataBuffer, INT64& lCurrentPos);
-	void ReportDayLineDownLoaded(void);
+	void ReportDayLineDownLoaded();
 
 	// 虽然这个函数与读取新浪实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
 	bool ReadOneValueOfNeteaseDayLine(string& pBuffer, char* buffer, INT64& lCurrentPos);

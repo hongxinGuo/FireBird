@@ -51,13 +51,13 @@ CWorldMarket::~CWorldMarket() {
 	PreparingExitMarket();
 }
 
-void CWorldMarket::Reset(void) {
+void CWorldMarket::Reset() {
 	ResetFinnhub();
 	ResetTiingo();
 	ResetDataClass();
 }
 
-void CWorldMarket::ResetFinnhub(void) {
+void CWorldMarket::ResetFinnhub() {
 	SetSystemReady(false); // 市场初始状态为未设置好。
 	if (IsEarlyThen(gl_finnhubInaccessibleExchange.GetUpdateDate(), GetMarketDate(), 7)) {
 		gl_finnhubInaccessibleExchange.Clear(); // 不使用更新时间早于一周的数据。清除之，让系统自动查验新的状态。
@@ -65,11 +65,11 @@ void CWorldMarket::ResetFinnhub(void) {
 	}
 }
 
-void CWorldMarket::ResetQuandl(void) { }
+void CWorldMarket::ResetQuandl() { }
 
-void CWorldMarket::ResetTiingo(void) { }
+void CWorldMarket::ResetTiingo() { }
 
-void CWorldMarket::ResetDataClass(void) {
+void CWorldMarket::ResetDataClass() {
 	m_dataFinnhubStockExchange.Reset();
 	m_dataFinnhubForexExchange.Reset();
 	m_dataFinnhubCryptoExchange.Reset();
@@ -88,7 +88,7 @@ void CWorldMarket::ResetDataClass(void) {
 	m_containerChosenCrypto.Reset();
 }
 
-void CWorldMarket::ResetMarket(void) {
+void CWorldMarket::ResetMarket() {
 	Reset();
 
 	UpdateToken();
@@ -116,7 +116,7 @@ void CWorldMarket::ResetMarket(void) {
 	gl_systemMessage.PushInformationMessage(str);
 }
 
-bool CWorldMarket::PreparingExitMarket(void) {
+bool CWorldMarket::PreparingExitMarket() {
 	//ASSERT(gl_systemStatus.IsExitingSystem());
 	DisconnectAllWebSocket();
 
@@ -203,7 +203,7 @@ bool CWorldMarket::TaskResetMarket(long lCurrentTime) {
 	return true;
 }
 
-bool CWorldMarket::TaskUpdateTiingoIndustry(void) {
+bool CWorldMarket::TaskUpdateTiingoIndustry() {
 	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) { // 更新tiingo stock profile与finnhub更新stock profile互斥
 		thread thread1(ThreadUpdateTiingoIndustry, this);
 		thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
@@ -212,7 +212,7 @@ bool CWorldMarket::TaskUpdateTiingoIndustry(void) {
 	return false;
 }
 
-bool CWorldMarket::TaskUpdateSICIndustry(void) {
+bool CWorldMarket::TaskUpdateSICIndustry() {
 	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) {// 更新tiingo stock profile与finnhub更新stock profile互斥
 		thread thread1(ThreadUpdateSICIndustry, this);
 		thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
@@ -221,7 +221,7 @@ bool CWorldMarket::TaskUpdateSICIndustry(void) {
 	return false;
 }
 
-bool CWorldMarket::TaskUpdateNaicsIndustry(void) {
+bool CWorldMarket::TaskUpdateNaicsIndustry() {
 	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) {// 更新tiingo stock profile与finnhub更新stock profile互斥
 		thread thread1(ThreadUpdateNaicsIndustry, this);
 		thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
@@ -241,7 +241,7 @@ bool CWorldMarket::TaskUpdateNaicsIndustry(void) {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::UpdateForexDayLineDB(void) {
+bool CWorldMarket::UpdateForexDayLineDB() {
 	CString str;
 	bool fUpdated = false;
 	CForexSymbolPtr pSymbol = nullptr;
@@ -284,7 +284,7 @@ bool CWorldMarket::UpdateForexDayLineDB(void) {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::UpdateCryptoDayLineDB(void) {
+bool CWorldMarket::UpdateCryptoDayLineDB() {
 	CString str;
 	bool fUpdated = false;
 	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
@@ -322,7 +322,7 @@ bool CWorldMarket::UpdateCryptoDayLineDB(void) {
 	return (fUpdated);
 }
 
-bool CWorldMarket::UpdateEPSSurpriseDB(void) {
+bool CWorldMarket::UpdateEPSSurpriseDB() {
 	CString str;
 
 	CWorldStockPtr pStock = nullptr;
@@ -356,7 +356,7 @@ bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
 	return IsSystemReady();
 }
 
-void CWorldMarket::CreateThreadUpdateDayLineStartEndDate(void) {
+void CWorldMarket::CreateThreadUpdateDayLineStartEndDate() {
 	thread thread1(ThreadUpdateWorldStockDayLineStartEndDate, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
@@ -400,42 +400,42 @@ void CWorldMarket::CreateThreadUpdateStockProfileDB() {
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CWorldMarket::CreateThreadUpdateCompanyNewsDB(void) {
+void CWorldMarket::CreateThreadUpdateCompanyNewsDB() {
 	thread thread1(ThreadUpdateCompanyNewsDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CWorldMarket::CreateThreadUpdateBasicFinancialDB(void) {
+void CWorldMarket::CreateThreadUpdateBasicFinancialDB() {
 	thread thread1(ThreadUpdateBasicFinancialDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CWorldMarket::CreateThreadUpdateCountryListDB(void) {
+void CWorldMarket::CreateThreadUpdateCountryListDB() {
 	thread thread1(ThreadUpdateCountryListDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CWorldMarket::CreateThreadUpdateInsiderTransactionDB(void) {
+void CWorldMarket::CreateThreadUpdateInsiderTransactionDB() {
 	thread thread1(ThreadUpdateInsiderTransactionDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CWorldMarket::CreateThreadUpdateInsiderSentimentDB(void) {
+void CWorldMarket::CreateThreadUpdateInsiderSentimentDB() {
 	thread thread1(ThreadUpdateInsiderSentimentDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CWorldMarket::CreateThreadUpdateTiingoStockDB(void) {
+void CWorldMarket::CreateThreadUpdateTiingoStockDB() {
 	thread thread1(ThreadUpdateTiingoStockDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CWorldMarket::CreateThreadUpdateTiingoCryptoSymbolDB(void) {
+void CWorldMarket::CreateThreadUpdateTiingoCryptoSymbolDB() {
 	thread thread1(ThreadUpdateTiingoCryptoSymbolDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CWorldMarket::CreateThreadUpdateForexExchangeDB(void) {
+void CWorldMarket::CreateThreadUpdateForexExchangeDB() {
 	thread thread1(ThreadUpdateForexExchangeDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
@@ -445,7 +445,7 @@ void CWorldMarket::CreateThreadUpdateForexSymbolDB() {
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CWorldMarket::CreateThreadUpdateCryptoExchangeDB(void) {
+void CWorldMarket::CreateThreadUpdateCryptoExchangeDB() {
 	thread thread1(ThreadUpdateCryptoExchangeDB, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
@@ -455,12 +455,12 @@ void CWorldMarket::CreateThreadUpdateFinnhubCryptoSymbolDB() {
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CWorldMarket::CreateThreadUpdateEconomicCalendarDB(void) {
+void CWorldMarket::CreateThreadUpdateEconomicCalendarDB() {
 	thread thread1(ThreadUpdateEconomicCalendarDB, this);
 	thread1.detach();
 }
 
-bool CWorldMarket::UpdateToken(void) {
+bool CWorldMarket::UpdateToken() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 
 	if (gl_systemConfiguration.GetFinnhubToken().GetLength() > 5) {
@@ -485,7 +485,7 @@ bool CWorldMarket::UpdateToken(void) {
 	return true;
 }
 
-bool CWorldMarket::UpdateStockDayLineDB(void) {
+bool CWorldMarket::UpdateStockDayLineDB() {
 	for (long i = 0; i < GetStockSize(); i++) {
 		const CWorldStockPtr pStock = GetStock(i);
 		pStock->UpdateDayLineDB();
@@ -496,7 +496,7 @@ bool CWorldMarket::UpdateStockDayLineDB(void) {
 	return true;
 }
 
-bool CWorldMarket::UpdateCompanyNewsDB(void) {
+bool CWorldMarket::UpdateCompanyNewsDB() {
 	for (long l = 0; l < m_containerStock.Size(); l++) {
 		const auto pStock = m_containerStock.GetStock(l);
 		if (pStock->IsUpdateCompanyNewsDBAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
@@ -510,7 +510,7 @@ bool CWorldMarket::UpdateCompanyNewsDB(void) {
 	return (true);
 }
 
-bool CWorldMarket::UpdateInsiderTransactionDB(void) {
+bool CWorldMarket::UpdateInsiderTransactionDB() {
 	for (long i = 0; i < GetStockSize(); i++) {
 		const CWorldStockPtr pStock = GetStock(i);
 		if (pStock->IsSaveInsiderTransactionAndClearFlag()) {
@@ -528,7 +528,7 @@ bool CWorldMarket::UpdateInsiderTransactionDB(void) {
 	return true;
 }
 
-bool CWorldMarket::UpdateInsiderSentimentDB(void) {
+bool CWorldMarket::UpdateInsiderSentimentDB() {
 	for (long i = 0; i < GetStockSize(); i++) {
 		const CWorldStockPtr pStock = GetStock(i);
 		if (pStock->IsSaveInsiderSentimentAndClearFlag()) {
@@ -545,50 +545,50 @@ bool CWorldMarket::UpdateInsiderSentimentDB(void) {
 	return true;
 }
 
-bool CWorldMarket::UpdateTiingoIndustry(void) {
+bool CWorldMarket::UpdateTiingoIndustry() {
 	// 尚未实现
 	return false;
 }
 
-bool CWorldMarket::UpdateSICIndustry(void) {
+bool CWorldMarket::UpdateSICIndustry() {
 	// 尚未实现
 	return false;
 }
 
-bool CWorldMarket::UpdateNaicsIndustry(void) {
+bool CWorldMarket::UpdateNaicsIndustry() {
 	// 尚未实现
 	return false;
 }
 
-bool CWorldMarket::RebuildEPSSurprise(void) {
+bool CWorldMarket::RebuildEPSSurprise() {
 	m_containerStock.ResetEPSSurprise();
 	gl_pFinnhubDataSource->SetUpdateEPSSurprise(true);
 
 	return true;
 }
 
-bool CWorldMarket::RebuildPeer(void) {
+bool CWorldMarket::RebuildPeer() {
 	m_containerStock.ResetPeer();
 	gl_pFinnhubDataSource->SetUpdatePeer(true);
 
 	return true;
 }
 
-bool CWorldMarket::RebuildBasicFinancial(void) {
+bool CWorldMarket::RebuildBasicFinancial() {
 	m_containerStock.ResetBasicFinancial();
 	gl_pFinnhubDataSource->SetUpdateStockBasicFinancial(true);
 
 	return true;
 }
 
-bool CWorldMarket::RebuildStockDayLineDB(void) {
+bool CWorldMarket::RebuildStockDayLineDB() {
 	m_containerStock.ResetDayLine();
 	gl_pFinnhubDataSource->SetUpdateStockProfile(true);
 
 	return true;
 }
 
-bool CWorldMarket::UpdateStockDayLineStartEndDate(void) {
+bool CWorldMarket::UpdateStockDayLineStartEndDate() {
 	const CString strFilterPrefix = _T("[Symbol] = '");
 	CSetWorldStockDayLine setWorldStockDayLine;
 
@@ -617,7 +617,7 @@ bool CWorldMarket::UpdateStockDayLineStartEndDate(void) {
 /// <summary>
 /// Finnhub WebSocket的免费账户最多只能发送50个证券的数据
 /// </summary>
-vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector(void) {
+vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector() {
 	vectorString vSymbol;
 
 	for (long l = 0; l < m_containerChosenStock.Size(); l++) {
@@ -655,7 +655,7 @@ vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector(void) {
 // thresholdlevel 0: ALL Top-of-Book AND Last Trade updates.
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-vectorString CWorldMarket::GetTiingoIEXWebSocketSymbolVector(void) {
+vectorString CWorldMarket::GetTiingoIEXWebSocketSymbolVector() {
 	vectorString vSymbol;
 	for (long l = 0; l < m_containerChosenStock.Size(); l++) {
 		const CWorldStockPtr pStock = m_containerChosenStock.GetStock(l);
@@ -673,7 +673,7 @@ vectorString CWorldMarket::GetTiingoIEXWebSocketSymbolVector(void) {
 // thresholdLevel 5: only Last Trade updates.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-vectorString CWorldMarket::GetTiingoCryptoWebSocketSymbolVector(void) {
+vectorString CWorldMarket::GetTiingoCryptoWebSocketSymbolVector() {
 	vectorString vSymbol;
 	for (long l = 0; l < m_containerChosenCrypto.Size(); l++) {
 		const CFinnhubCryptoSymbolPtr pCrypto = m_containerChosenCrypto.GetCryptoSymbol(l);
@@ -691,7 +691,7 @@ vectorString CWorldMarket::GetTiingoCryptoWebSocketSymbolVector(void) {
 // thresholdLevel 7: A top-of-book update that is due to a change in either the bid/ask price or size.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-vectorString CWorldMarket::GetTiingoForexWebSocketSymbolVector(void) {
+vectorString CWorldMarket::GetTiingoForexWebSocketSymbolVector() {
 	vectorString vSymbol;
 	for (long l = 0; l < m_containerChosenForex.Size(); l++) {
 		const CForexSymbolPtr pForex = m_containerChosenForex.GetForexSymbol(l);
@@ -701,7 +701,7 @@ vectorString CWorldMarket::GetTiingoForexWebSocketSymbolVector(void) {
 	return vSymbol;
 }
 
-bool CWorldMarket::StartAllWebSocket(void) {
+bool CWorldMarket::StartAllWebSocket() {
 	if (IsSystemReady()) {
 		if (!gl_pFinnhubDataSource->IsWebError()) StartFinnhubWebSocket();
 		if (!gl_pTiingoDataSource->IsWebError()) {
@@ -713,7 +713,7 @@ bool CWorldMarket::StartAllWebSocket(void) {
 	return true;
 }
 
-void CWorldMarket::StartFinnhubWebSocket(void) {
+void CWorldMarket::StartFinnhubWebSocket() {
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket() && !gl_pFinnhubDataSource->IsTimeout()) {
 		if (gl_finnhubWebSocket.IsClosed()) {
 			gl_finnhubWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
@@ -721,7 +721,7 @@ void CWorldMarket::StartFinnhubWebSocket(void) {
 	}
 }
 
-void CWorldMarket::StartTiingoIEXWebSocket(void) {
+void CWorldMarket::StartTiingoIEXWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
 		if (gl_tiingoIEXWebSocket.IsClosed()) {
 			gl_tiingoIEXWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
@@ -729,7 +729,7 @@ void CWorldMarket::StartTiingoIEXWebSocket(void) {
 	}
 }
 
-void CWorldMarket::StartTiingoCryptoWebSocket(void) {
+void CWorldMarket::StartTiingoCryptoWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
 		if (gl_tiingoCryptoWebSocket.IsClosed()) {
 			gl_tiingoCryptoWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
@@ -737,7 +737,7 @@ void CWorldMarket::StartTiingoCryptoWebSocket(void) {
 	}
 }
 
-void CWorldMarket::StartTiingoForexWebSocket(void) {
+void CWorldMarket::StartTiingoForexWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
 		if (gl_tiingoForexWebSocket.IsClosed()) {
 			gl_tiingoForexWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
@@ -748,7 +748,7 @@ void CWorldMarket::StartTiingoForexWebSocket(void) {
 /// <summary>
 /// // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
 /// </summary>
-void CWorldMarket::DisconnectAllWebSocket(void) {
+void CWorldMarket::DisconnectAllWebSocket() {
 	//ASSERT(gl_systemStatus.IsExitingSystem()); //本函数只在系统退出时调用
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) gl_finnhubWebSocket.Disconnect();
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) gl_tiingoIEXWebSocket.Disconnect();
@@ -759,7 +759,7 @@ void CWorldMarket::DisconnectAllWebSocket(void) {
 /// <summary>
 /// 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
 /// </summary>
-void CWorldMarket::StopWebSocketsIfTimeOut(void) {
+void CWorldMarket::StopWebSocketsIfTimeOut() {
 	if (IsSystemReady()) {
 		StopFinnhubWebSocketIfTimeOut();
 		StopTiingoIEXWebSocketIfTimeOut();
@@ -768,35 +768,35 @@ void CWorldMarket::StopWebSocketsIfTimeOut(void) {
 	}
 }
 
-void CWorldMarket::StopFinnhubWebSocketIfTimeOut(void) {
+void CWorldMarket::StopFinnhubWebSocketIfTimeOut() {
 	if ((gl_pFinnhubDataSource->IsTimeout()) && !gl_finnhubWebSocket.IsClosed()) {
 		gl_finnhubWebSocket.CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub web故障12002，关闭Web socket服务"));
 	}
 }
 
-void CWorldMarket::StopTiingoIEXWebSocketIfTimeOut(void) {
+void CWorldMarket::StopTiingoIEXWebSocketIfTimeOut() {
 	if ((gl_pTiingoDataSource->IsTimeout()) && !gl_tiingoIEXWebSocket.IsClosed()) {
 		gl_tiingoIEXWebSocket.CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX web故障12002，关闭Web socket服务"));
 	}
 }
 
-void CWorldMarket::StopTiingoCryptoWebSocketIfTimeOut(void) {
+void CWorldMarket::StopTiingoCryptoWebSocketIfTimeOut() {
 	if ((gl_pTiingoDataSource->IsTimeout()) && !gl_tiingoCryptoWebSocket.IsClosed()) {
 		gl_tiingoCryptoWebSocket.CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto web故障12002，关闭Web socket服务"));
 	}
 }
 
-void CWorldMarket::StopTiingoForexWebSocketIfTimeOut(void) {
+void CWorldMarket::StopTiingoForexWebSocketIfTimeOut() {
 	if ((gl_pTiingoDataSource->IsTimeout()) && !gl_tiingoForexWebSocket.IsClosed()) {
 		gl_tiingoForexWebSocket.CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex web故障12002，关闭Web socket服务"));
 	}
 }
 
-bool CWorldMarket::TaskProcessWebSocketData(void) {
+bool CWorldMarket::TaskProcessWebSocketData() {
 	if (gl_finnhubWebSocket.DataSize() > 0) ProcessFinnhubWebSocketData();
 	if (gl_tiingoIEXWebSocket.DataSize() > 0) ProcessTiingoIEXWebSocketData();
 	if (gl_tiingoCryptoWebSocket.DataSize() > 0) ProcessTiingoCryptoWebSocketData();
@@ -872,7 +872,7 @@ bool CWorldMarket::ProcessTiingoForexWebSocketData() {
 /// 目前只使用IEX和Crypto的数据，其他数据抛弃掉
 /// </summary>
 /// <returns></returns>
-bool CWorldMarket::TaskUpdateWorldStockFromWebSocket(void) {
+bool CWorldMarket::TaskUpdateWorldStockFromWebSocket() {
 	auto total = gl_SystemData.GetTiingoIEXSocketSize();
 	for (auto i = 0; i < total; i++) {
 		const CTiingoIEXSocketPtr pIEXData = gl_SystemData.PopTiingoIEXSocket();

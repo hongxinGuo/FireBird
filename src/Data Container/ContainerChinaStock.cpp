@@ -1,4 +1,3 @@
-#include "ContainerChinaStock.h"
 #include"pch.h"
 
 #include"ConvertToString.h"
@@ -9,7 +8,6 @@
 
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
-#include"CallableFunction.h"
 #include"RSReference.h"
 #include"Thread.h"
 
@@ -23,7 +21,7 @@ CContainerChinaStock::CContainerChinaStock() {
 	CContainerChinaStock::Reset();
 }
 
-void CContainerChinaStock::Reset(void) {
+void CContainerChinaStock::Reset() {
 	CContainerVirtualStock::Reset();
 
 	m_lLoadedStock = 0;
@@ -33,7 +31,7 @@ void CContainerChinaStock::Reset(void) {
 	m_lTengxunRTDataInquiringIndex = 0;
 }
 
-long CContainerChinaStock::GetActiveStockSize(void) const {
+long CContainerChinaStock::GetActiveStockSize() const {
 	long lTotalActiveStock = 0;
 	for (const auto& pStock : m_vStock) {
 		if (pStock->IsActive()) lTotalActiveStock++;
@@ -68,7 +66,7 @@ bool CContainerChinaStock::IsAStock(const CString& strStockCode) {
 	return (false);
 }
 
-long CContainerChinaStock::LoadStockProfileDB(void) {
+long CContainerChinaStock::LoadStockProfileDB() {
 	CSetChinaStockSymbol setChinaStockSymbol;
 	char buffer[30]{0, 0, 0};
 	CString str;
@@ -109,7 +107,7 @@ long CContainerChinaStock::LoadStockProfileDB(void) {
 	return lDayLineNeedCheck;
 }
 
-bool CContainerChinaStock::UpdateStockProfileDB(void) {
+bool CContainerChinaStock::UpdateStockProfileDB() {
 	int iStockCodeNeedUpdate = 0;
 	int iCount = 0;
 
@@ -151,18 +149,18 @@ bool CContainerChinaStock::UpdateStockProfileDB(void) {
 	return true;
 }
 
-bool CContainerChinaStock::IsDayLineDBUpdated(void) noexcept {
+bool CContainerChinaStock::IsDayLineDBUpdated() noexcept {
 	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CChinaStock>(pStock)->IsDayLineDBUpdated(); });
 }
 
-void CContainerChinaStock::ClearDayLineDBUpdatedFlag(void) noexcept {
+void CContainerChinaStock::ClearDayLineDBUpdatedFlag() noexcept {
 	for (long l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
 		pStock->SetDayLineDBUpdated(false);
 	}
 }
 
-INT64 CContainerChinaStock::GetTotalAttackBuyAmount(void) {
+INT64 CContainerChinaStock::GetTotalAttackBuyAmount() {
 	INT64 lAmount = 0;
 	for (long l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
@@ -173,7 +171,7 @@ INT64 CContainerChinaStock::GetTotalAttackBuyAmount(void) {
 	return (lAmount);
 }
 
-INT64 CContainerChinaStock::GetTotalAttackSellAmount(void) {
+INT64 CContainerChinaStock::GetTotalAttackSellAmount() {
 	INT64 lAmount = 0;
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
@@ -317,7 +315,7 @@ long CContainerChinaStock::GetNextIndex(long lIndex) const {
 	return lIndex;
 }
 
-bool CContainerChinaStock::ProcessRTData(void) {
+bool CContainerChinaStock::ProcessRTData() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
 		if (pStock->IsActive()) {
@@ -327,7 +325,7 @@ bool CContainerChinaStock::ProcessRTData(void) {
 	return true;
 }
 
-void CContainerChinaStock::ClearDayLineNeedUpdateStatus(void) const {
+void CContainerChinaStock::ClearDayLineNeedUpdateStatus() const {
 	for (const auto& pStock : m_vStock) {
 		pStock->SetDayLineNeedUpdate(false);
 	}
@@ -346,7 +344,7 @@ CString CContainerChinaStock::GetStockName(const CString& strStockCode) {
 	}
 }
 
-bool CContainerChinaStock::UnloadDayLine(void) noexcept {
+bool CContainerChinaStock::UnloadDayLine() noexcept {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
 		pStock->UnloadDayLine();
@@ -354,20 +352,20 @@ bool CContainerChinaStock::UnloadDayLine(void) noexcept {
 	return true;
 }
 
-void CContainerChinaStock::SetDayLineNeedMaintain(void) const {
+void CContainerChinaStock::SetDayLineNeedMaintain() const {
 	SetDayLineNeedUpdate();
 	for (auto& pStock : m_vStock) {
 		pStock->SetDayLineEndDate(19900101);
 	}
 }
 
-void CContainerChinaStock::SetDayLineNeedUpdate(void) const {
+void CContainerChinaStock::SetDayLineNeedUpdate() const {
 	for (const auto& pStock : m_vStock) {
 		pStock->SetDayLineNeedUpdate(true);
 	}
 }
 
-long CContainerChinaStock::GetDayLineNeedUpdateNumber(void) const {
+long CContainerChinaStock::GetDayLineNeedUpdateNumber() const {
 	long l = 0;
 	for (const auto& pStock : m_vStock) {
 		if (pStock->IsDayLineNeedUpdate()) l++;
@@ -375,7 +373,7 @@ long CContainerChinaStock::GetDayLineNeedUpdateNumber(void) const {
 	return l;
 }
 
-long CContainerChinaStock::GetDayLineNeedSaveNumber(void) const {
+long CContainerChinaStock::GetDayLineNeedSaveNumber() const {
 	long l = 0;
 	for (const auto& pStock : m_vStock) {
 		if (pStock->IsDayLineNeedSaving()) ++l;
@@ -393,7 +391,7 @@ long CContainerChinaStock::GetDayLineNeedSaveNumber(void) const {
 // 主线程的删除函数只在不调用工作线程（无需存储日线数据）的情况下方才执行。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CContainerChinaStock::SaveDayLineData(void) {
+bool CContainerChinaStock::SaveDayLineData() {
 	CString str;
 	bool fSave = false;
 
@@ -442,7 +440,7 @@ bool CContainerChinaStock::BuildWeekLine(long lStartDate) {
 	return true;
 }
 
-bool CContainerChinaStock::Choice10RSStrong2StockSet(void) {
+bool CContainerChinaStock::Choice10RSStrong2StockSet() {
 	vector<CChinaStockPtr> v10RSStrongStock;
 
 	for (size_t l = 0; l < m_vStock.size(); l++) {
@@ -465,7 +463,7 @@ bool CContainerChinaStock::Choice10RSStrong2StockSet(void) {
 	}
 	setRSStrong2.m_pDatabase->CommitTrans();
 	setRSStrong2.m_pDatabase->BeginTrans();
-	for (auto& pStock : v10RSStrongStock) {
+	for (const auto& pStock : v10RSStrongStock) {
 		setRSStrong2.AddNew();
 		setRSStrong2.m_Symbol = pStock->GetSymbol();
 		setRSStrong2.Update();
@@ -476,7 +474,7 @@ bool CContainerChinaStock::Choice10RSStrong2StockSet(void) {
 	return true;
 }
 
-bool CContainerChinaStock::Choice10RSStrong1StockSet(void) {
+bool CContainerChinaStock::Choice10RSStrong1StockSet() {
 	vector<CChinaStockPtr> v10RSStrongStock;
 
 	for (size_t l = 0; l < m_vStock.size(); l++) {
@@ -666,11 +664,9 @@ bool CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
 // 决定只使用原始的逐项删除模式。
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CContainerChinaStock::UpdateTodayTempDB(void) {
+bool CContainerChinaStock::UpdateTodayTempDB() {
 	CSetDayLineTodaySaved setDayLineTemp;
-	CHighPerformanceCounter counter;
 
-	counter.start();
 	DeleteTempRTData();
 
 	setDayLineTemp.Open();
@@ -693,13 +689,6 @@ bool CContainerChinaStock::UpdateTodayTempDB(void) {
 	}
 	setDayLineTemp.m_pDatabase->CommitTrans();
 	setDayLineTemp.Close();
-	counter.stop();
-
-	char buffer[50];
-	sprintf_s(buffer, _T("%d"), counter.GetElapsedMilliSecond());
-	CString str = _T("delete temp RT Data：");
-	str += buffer;
-	gl_systemMessage.PushInnerSystemInformationMessage(str);
 
 	return true;
 }

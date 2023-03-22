@@ -14,7 +14,7 @@ namespace FireBirdTest {
 
 	class CMockDataChinaDayLineTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) { // 本测试类的初始化函数
+		static void SetUpTestSuite() { // 本测试类的初始化函数
 			GeneralCheck();
 		}
 
@@ -22,12 +22,12 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			s_pMockDayLine = make_shared<CMockDataChinaDayLine>();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			s_pMockDayLine = nullptr;
 

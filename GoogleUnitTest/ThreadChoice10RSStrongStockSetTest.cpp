@@ -10,19 +10,19 @@ using namespace testing;
 namespace FireBirdTest {
 	class CThreadChoice10RSStrong1StockSet : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			GeneralCheck();
 		}
 
@@ -43,15 +43,15 @@ namespace FireBirdTest {
 
 	class CThreadChoice10RSStrong2StockSet : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) { }
+		static void SetUpTestSuite() { }
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override { }
+		void SetUp() override { }
 
-		void TearDown(void) override {
+		void TearDown() override {
 			GeneralCheck();
 		}
 
@@ -72,15 +72,15 @@ namespace FireBirdTest {
 
 	class CThreadChoice10RSStrongStockSet : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) { }
+		static void TearDownTestSuite() { }
 
-		void SetUp(void) override { }
+		void SetUp() override { }
 
-		void TearDown(void) override {
+		void TearDown() override {
 			GeneralCheck();
 		}
 

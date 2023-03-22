@@ -9,19 +9,19 @@ using namespace testing;
 namespace FireBirdTest {
 	class CFinnhubCompanySymbolProductTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -60,7 +60,7 @@ namespace FireBirdTest {
 
 	class ParseFinnhubStockSymbolTest : public TestWithParam<FinnhubWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -73,7 +73,7 @@ namespace FireBirdTest {
 			m_pvStock = nullptr;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateCompanyProfile(true);
@@ -122,7 +122,7 @@ namespace FireBirdTest {
 
 	class ProcessFinnhubStockSymbolTest : public TestWithParam<FinnhubWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -134,7 +134,7 @@ namespace FireBirdTest {
 			m_finnhubStockSymbolProduct.SetIndex(0); // 第一个交易所（AS)
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 

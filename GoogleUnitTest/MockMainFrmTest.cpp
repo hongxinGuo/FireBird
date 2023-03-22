@@ -14,7 +14,7 @@ namespace FireBirdTest {
 
 	class CMockMainFrameTest : public Test {
 	public:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
@@ -24,7 +24,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
@@ -38,14 +38,14 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			gl_systemStatus.SetExitingSystem(false);
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			gl_pChinaMarket->ResetCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);

@@ -38,9 +38,9 @@ using CTiingoIEXSocketPtr = shared_ptr<CTiingoIEXSocket>;
 class CTiingoIEXWebSocket final : public CVirtualWebSocket {
 public:
 	CTiingoIEXWebSocket();
-	~CTiingoIEXWebSocket(void) override = default;
+	~CTiingoIEXWebSocket() override = default;
 
-	bool Connect(void) override;
+	bool Connect() override;
 	bool Send(vectorString vSymbol) override;
 
 	bool CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol);

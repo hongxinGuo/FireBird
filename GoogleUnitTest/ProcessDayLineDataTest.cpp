@@ -49,7 +49,7 @@ namespace FireBirdTest {
 
 	class NeteaseDayLineTest : public::testing::TestWithParam<NeteaseDayLineData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 
 			const NeteaseDayLineData* pData = GetParam();
@@ -62,7 +62,7 @@ namespace FireBirdTest {
 			m_iCount = pData->m_iCount;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 

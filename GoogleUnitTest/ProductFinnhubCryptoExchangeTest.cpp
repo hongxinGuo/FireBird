@@ -12,19 +12,19 @@ using namespace testing;
 namespace FireBirdTest {
 	class CProductFinnhubCryptoExchangeTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -55,7 +55,7 @@ namespace FireBirdTest {
 
 	class ParseFinnhubCryptoExchangeTest : public TestWithParam<FinnhubWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -65,7 +65,7 @@ namespace FireBirdTest {
 			m_pvExchange = nullptr;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 
 	class ProcessFinnhubCryptoExchangeTest : public TestWithParam<FinnhubWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -119,7 +119,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14) << "最初装载了14个";
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			gl_pFinnhubDataSource->SetUpdateCryptoExchange(true);
 

@@ -24,7 +24,7 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() : CVirtualWebProduct() 
 ///	Finnhub的免费日线只提供一年的。本系统最初的执行时间为2019年，即finnhub没有2018年以前的日线。
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
-CString CProductTiingoStockDayLine::CreateMessage(void) {
+CString CProductTiingoStockDayLine::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(GetIndex());

@@ -6,10 +6,10 @@ class CDataSICIndustry {
 public:
 	CDataSICIndustry();
 	virtual ~CDataSICIndustry() = default;
-	void Reset(void);
+	void Reset();
 
-	size_t GetTotalSICIndustry(void) const noexcept { return m_vSICIndustry.size(); }
-	long GetLastTotalSICIndustry(void) const noexcept { return m_lLastTotalSICIndustry; }
+	size_t GetTotalSICIndustry() const noexcept { return m_vSICIndustry.size(); }
+	long GetLastTotalSICIndustry() const noexcept { return m_lLastTotalSICIndustry; }
 
 	bool IsSICIndustry(const long lSICCode) const {
 		if (!m_mapSICIndustry.contains(lSICCode)) return true;
@@ -20,8 +20,8 @@ public:
 	void Add(CSICIndustryPtr pSICIndustry);
 	bool Delete(CSICIndustryPtr pSICIndustry);
 
-	bool UpdateDB(void);
-	bool LoadDB(void);
+	bool UpdateDB();
+	bool LoadDB();
 
 protected:
 	vector<CSICIndustryPtr> m_vSICIndustry;

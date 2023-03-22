@@ -12,7 +12,7 @@ public:
 	CProductTiingoCompanyProfile();
 	~CProductTiingoCompanyProfile() override = default;
 
-	CString CreateMessage(void) final;
+	CString CreateMessage() final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 };
 

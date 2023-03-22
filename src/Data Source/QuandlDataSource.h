@@ -5,17 +5,17 @@
 
 class CQuandlDataSource : public CVirtualDataSource {
 public:
-	CQuandlDataSource(void);
-	~CQuandlDataSource(void) override = default;
+	CQuandlDataSource();
+	~CQuandlDataSource() override = default;
 
-	bool Reset(void) override;
-	void UpdateStatus(void) override;
+	bool Reset() override;
+	void UpdateStatus() override;
 
 	bool GenerateInquiryMessage(const long lCurrentTime) override;
 
 	virtual bool InquireQuandl();
 
-	void ConfigureSession(void) override;
+	void ConfigureSession() override;
 	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 
 protected:

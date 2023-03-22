@@ -8,7 +8,7 @@ public:
 	CProductFinnhubEconomicCountryList();
 	~CProductFinnhubEconomicCountryList() override = default;
 
-	CString CreateMessage(void) final;
+	CString CreateMessage() final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CCountryVectorPtr ParseFinnhubCountryList(CWebDataPtr pWebData);
 };

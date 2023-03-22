@@ -9,22 +9,22 @@
 namespace FireBirdTest {
 	class CVirtualMarketTest : public testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			virtualMarket.SetResetMarketPermission(true);
 			virtualMarket.SetReadyToRun(true);
 			virtualMarket.SetResetMarket(true);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}

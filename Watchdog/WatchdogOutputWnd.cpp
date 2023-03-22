@@ -14,7 +14,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-CString GetStringOfLocalDateTime(void) {
+CString GetStringOfLocalDateTime() {
 	char buffer[100];
 	tm tmLocal;
 	time_t tUTC;
@@ -223,7 +223,7 @@ void COutputList::TruncateList(long lNumberOfTruncation) {
 	}
 }
 
-void COutputList::SetCurAtLastLine(void) {
+void COutputList::SetCurAtLastLine() {
 	SetCurSel(GetCount() - 1);
 	SetTopIndex(GetCount() - 1);
 }

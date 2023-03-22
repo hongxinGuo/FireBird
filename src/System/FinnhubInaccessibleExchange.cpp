@@ -28,7 +28,7 @@ std::string gl_sFinnhubInaccessibleExchange = R"(
 }
 ]})";
 
-CInaccessibleExchanges::CInaccessibleExchanges(void) {
+CInaccessibleExchanges::CInaccessibleExchanges() {
 	m_sFunction = _T("");
 	m_iFunction = 0;
 	m_vExchange.clear();
@@ -81,7 +81,7 @@ bool CInaccessibleExchanges::HaveExchange(const CString& sExchange) const {
 	return false;
 }
 
-bool CInaccessibleExchanges::HaveExchange(void) const {
+bool CInaccessibleExchanges::HaveExchange() const {
 	if (m_vExchange.empty()) return false;
 	return true;
 }
@@ -115,7 +115,7 @@ CFinnhubInaccessibleExchange::~CFinnhubInaccessibleExchange() {
 	}
 }
 
-bool CFinnhubInaccessibleExchange::LoadDB(void) {
+bool CFinnhubInaccessibleExchange::LoadDB() {
 	fstream f(gl_systemConfiguration.GetDefaultFileDirectory() + m_strFileName, ios::in);
 	if (f.is_open()) {
 		f >> m_finnhubInaccessibleExchange;
@@ -133,13 +133,13 @@ bool CFinnhubInaccessibleExchange::LoadDB(CString strFileDirectory) {
 	return false;
 }
 
-void CFinnhubInaccessibleExchange::SaveDB(void) const {
+void CFinnhubInaccessibleExchange::SaveDB() const {
 	fstream f(gl_systemConfiguration.GetDefaultFileDirectory() + m_strFileName, ios::out);
 	f << m_finnhubInaccessibleExchange;
 	f.close();
 }
 
-void CFinnhubInaccessibleExchange::Update(void) {
+void CFinnhubInaccessibleExchange::Update() {
 	try {
 		m_lUpdateDate = m_finnhubInaccessibleExchange.at("UpdateDate");
 	}
@@ -166,7 +166,7 @@ void CFinnhubInaccessibleExchange::Update(void) {
 	}
 }
 
-void CFinnhubInaccessibleExchange::UpdateJson(void) {
+void CFinnhubInaccessibleExchange::UpdateJson() {
 	m_finnhubInaccessibleExchange.clear();
 
 	m_finnhubInaccessibleExchange["UpdateDate"] = m_lUpdateDate;

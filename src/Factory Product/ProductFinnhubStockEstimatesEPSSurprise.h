@@ -8,7 +8,7 @@ public:
 	CProductFinnhubStockEstimatesEPSSurprise();
 	~CProductFinnhubStockEstimatesEPSSurprise() override = default;
 
-	CString CreateMessage(void) final;
+	CString CreateMessage() final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CEPSSurpriseVectorPtr ParseFinnhubEPSSurprise(CWebDataPtr pWebData);
 };

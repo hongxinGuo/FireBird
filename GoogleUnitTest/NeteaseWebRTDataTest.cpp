@@ -13,19 +13,19 @@ using namespace testing;
 namespace FireBirdTest {
 	class CWebRTDataTest2 : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -106,7 +106,7 @@ namespace FireBirdTest {
 
 	class CalculateNeteaseWebRTDataTest : public testing::TestWithParam<NeteaseRTData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 
 			const NeteaseRTData* pData = GetParam();
@@ -137,7 +137,7 @@ namespace FireBirdTest {
 			m_pRTData->SetBuy(-1);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 

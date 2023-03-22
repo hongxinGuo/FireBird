@@ -4,7 +4,7 @@
 
 #include "VirtualMarket.h"
 
-CVirtualMarket::CVirtualMarket(void) {
+CVirtualMarket::CVirtualMarket() {
 	m_tLastTime = 0;
 	m_fResetMarketPermission = true; // 允许系统被重置标识，唯独此标识不允许系统重置。初始时设置为真：允许重置系统。
 	m_fResetMarket = true;
@@ -43,7 +43,7 @@ void CVirtualMarket::SchedulingTask() {
 	}
 }
 
-void CVirtualMarket::CalculateTime(void) noexcept {
+void CVirtualMarket::CalculateTime() noexcept {
 	time(&gl_tUTC);
 
 	m_tmMarket = TransferToMarketTime();
@@ -72,11 +72,11 @@ void CVirtualMarket::ResetMarketFlagAtMidnight(long lCurrentTime) {
 	}
 }
 
-void CVirtualMarket::ResetMarket(void) {
+void CVirtualMarket::ResetMarket() {
 	ASSERT(0); // 不允许调用基类重置市场函数。这里只是为了测试方便的原因才定义一个实现。
 }
 
-bool CVirtualMarket::UpdateMarketInfo(void) {
+bool CVirtualMarket::UpdateMarketInfo() {
 	// do nothing
 	return true;
 }
@@ -105,7 +105,7 @@ long CVirtualMarket::TransferToMarketDate(time_t tUTC) const {
 	return (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
 }
 
-void CVirtualMarket::CalculateLastTradeDate(void) noexcept {
+void CVirtualMarket::CalculateLastTradeDate() noexcept {
 	time_t tMarket;
 
 	switch (m_tmMarket.tm_wday) {
@@ -125,7 +125,7 @@ void CVirtualMarket::CalculateLastTradeDate(void) noexcept {
 	m_lMarketLastTradeDate = (tmMarketTime.tm_year + 1900) * 10000 + (tmMarketTime.tm_mon + 1) * 100 + tmMarketTime.tm_mday;
 }
 
-bool CVirtualMarket::IsWorkingDay(void) const noexcept {
+bool CVirtualMarket::IsWorkingDay() const noexcept {
 	if ((m_tmMarket.tm_wday == 0) || (m_tmMarket.tm_wday == 6)) {
 		return false;
 	}
@@ -151,7 +151,7 @@ bool CVirtualMarket::IsWorkingDay(long lDate) const noexcept {
 	return true;
 }
 
-CString CVirtualMarket::GetStringOfLocalTime(void) const {
+CString CVirtualMarket::GetStringOfLocalTime() const {
 	char buffer[30];
 	tm tmLocal;
 
@@ -161,7 +161,7 @@ CString CVirtualMarket::GetStringOfLocalTime(void) const {
 	return (str);
 }
 
-CString CVirtualMarket::GetStringOfLocalDateTime(void) const {
+CString CVirtualMarket::GetStringOfLocalDateTime() const {
 	char buffer[100];
 	tm tmLocal;
 
@@ -171,7 +171,7 @@ CString CVirtualMarket::GetStringOfLocalDateTime(void) const {
 	return (str);
 }
 
-CString CVirtualMarket::GetStringOfMarketTime(void) const {
+CString CVirtualMarket::GetStringOfMarketTime() const {
 	char buffer[30];
 
 	sprintf_s(buffer, _T("%02d:%02d:%02d "), m_tmMarket.tm_hour, m_tmMarket.tm_min, m_tmMarket.tm_sec);
@@ -179,7 +179,7 @@ CString CVirtualMarket::GetStringOfMarketTime(void) const {
 	return (str);
 }
 
-CString CVirtualMarket::GetStringOfMarketDateTime(void) const {
+CString CVirtualMarket::GetStringOfMarketDateTime() const {
 	char buffer[100];
 
 	sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), m_tmMarket.tm_year + 1900, m_tmMarket.tm_mon + 1, m_tmMarket.tm_mday, m_tmMarket.tm_hour, m_tmMarket.tm_min, m_tmMarket.tm_sec);
@@ -187,6 +187,6 @@ CString CVirtualMarket::GetStringOfMarketDateTime(void) const {
 	return (str);
 }
 
-CString CVirtualMarket::GetStringOfMarketDate(void) const {
+CString CVirtualMarket::GetStringOfMarketDate() const {
 	return ConvertDateToChineseTimeStampString(m_lMarketDate);
 }

@@ -7,7 +7,7 @@ public:
 	CProductFinnhubCompanyProfileConcise();
 	~CProductFinnhubCompanyProfileConcise() override = default;
 
-	CString CreateMessage(void) final;
+	CString CreateMessage() final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	bool ParseFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr pStock);
 };

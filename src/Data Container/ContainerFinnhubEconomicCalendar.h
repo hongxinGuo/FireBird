@@ -6,13 +6,13 @@ class CContainerFinnhubEconomicCalendar final {
 public:
 	CContainerFinnhubEconomicCalendar();
 	~CContainerFinnhubEconomicCalendar() = default;
-	void Reset(void);
+	void Reset();
 
-	bool LoadDB(void);
-	bool UpdateDB(void);
+	bool LoadDB();
+	bool UpdateDB();
 	bool Update(vector<CEconomicCalendarPtr> vEconomicCalendar);
 
-	bool IsNeedUpdate(void) const noexcept {
+	bool IsNeedUpdate() const noexcept {
 		if (m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size()) return true;
 		return false;
 	}

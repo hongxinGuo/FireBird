@@ -31,9 +31,9 @@ public:
 	CFinnhubWebSocket& operator=(const CFinnhubWebSocket&) = delete;
 	CFinnhubWebSocket(const CFinnhubWebSocket&&) noexcept = delete;
 	CFinnhubWebSocket& operator=(const CFinnhubWebSocket&&) noexcept = delete;
-	~CFinnhubWebSocket(void) override = default;
+	~CFinnhubWebSocket() override = default;
 
-	bool Connect(void) override;
+	bool Connect() override;
 	bool Send(vectorString vSymbol) override;
 	string CreateFinnhubWebSocketString(string sSymbol);
 

@@ -6,7 +6,7 @@ using std::make_shared;
 
 CDataTiingoStock::CDataTiingoStock() { Reset(); }
 
-void CDataTiingoStock::Reset(void) {
+void CDataTiingoStock::Reset() {
 	m_vTiingoStock.resize(0);
 	m_mapTiingoStock.clear();
 	m_lLastTotalTiingoStock = 0;
@@ -27,7 +27,7 @@ bool CDataTiingoStock::Delete(CTiingoStockPtr pTiingoStock) {
 	return true;
 }
 
-bool CDataTiingoStock::UpdateDB(void) {
+bool CDataTiingoStock::UpdateDB() {
 	if (m_lLastTotalTiingoStock < m_vTiingoStock.size()) {
 		CSetTiingoStock setTiingoStock;
 		setTiingoStock.Open();
@@ -44,7 +44,7 @@ bool CDataTiingoStock::UpdateDB(void) {
 	return true;
 }
 
-bool CDataTiingoStock::LoadDB(void) {
+bool CDataTiingoStock::LoadDB() {
 	CSetTiingoStock setTiingoStock;
 	CString strSymbol = _T("");
 

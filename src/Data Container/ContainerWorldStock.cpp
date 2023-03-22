@@ -19,11 +19,11 @@ CContainerWorldStock::CContainerWorldStock() {
 	CContainerWorldStock::Reset();
 }
 
-void CContainerWorldStock::Reset(void) {
+void CContainerWorldStock::Reset() {
 	CContainerVirtualStock::Reset();
 }
 
-void CContainerWorldStock::ResetEPSSurprise(void) {
+void CContainerWorldStock::ResetEPSSurprise() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CWorldStockPtr pStock = GetStock(l);
 		pStock->SetLastEPSSurpriseUpdateDate(19800101);
@@ -31,7 +31,7 @@ void CContainerWorldStock::ResetEPSSurprise(void) {
 	}
 }
 
-void CContainerWorldStock::ResetPeer(void) {
+void CContainerWorldStock::ResetPeer() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CWorldStockPtr pStock = GetStock(l);
 		if (pStock->GetPeerUpdateDate() != 19800101) {
@@ -42,7 +42,7 @@ void CContainerWorldStock::ResetPeer(void) {
 	}
 }
 
-void CContainerWorldStock::ResetBasicFinancial(void) {
+void CContainerWorldStock::ResetBasicFinancial() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CWorldStockPtr pStock = GetStock(l);
 		if (pStock->GetBasicFinancialUpdateDate() != 19800101) {
@@ -53,7 +53,7 @@ void CContainerWorldStock::ResetBasicFinancial(void) {
 	}
 }
 
-void CContainerWorldStock::ResetDayLine(void) {
+void CContainerWorldStock::ResetDayLine() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CWorldStockPtr pStock = GetStock(l);
 		pStock->SetIPOStatus(_STOCK_NOT_CHECKED_);
@@ -64,7 +64,7 @@ void CContainerWorldStock::ResetDayLine(void) {
 	}
 }
 
-bool CContainerWorldStock::LoadDB(void) {
+bool CContainerWorldStock::LoadDB() {
 	CSetWorldStock setWorldStock;
 	CWorldStockPtr pWorldStock = nullptr;
 	CString str;
@@ -112,7 +112,7 @@ bool CContainerWorldStock::LoadDB(void) {
 /// <summary>
 /// 这种查询方式比较晦涩，但结果正确。目前使用此函数。(可能出现存储多个相同代码的问题，研究之）
 /// </summary>
-void CContainerWorldStock::UpdateProfileDB(void) {
+void CContainerWorldStock::UpdateProfileDB() {
 	//更新原有的代码集状态
 	if (IsUpdateProfileDB()) {
 		CSetWorldStock setWorldStock;
@@ -164,7 +164,7 @@ void CContainerWorldStock::UpdateProfileDB(void) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
-bool CContainerWorldStock::UpdateBasicFinancialDB(void) {
+bool CContainerWorldStock::UpdateBasicFinancialDB() {
 	static bool s_fInProcess = false;
 	vector<CWorldStockPtr> s_vStock{};
 
@@ -288,18 +288,18 @@ bool CContainerWorldStock::ValidateStockSymbol(CWorldStockPtr pStock) {
 	return true;
 }
 
-bool CContainerWorldStock::IsUpdateCompanyNewsDB(void) {
+bool CContainerWorldStock::IsUpdateCompanyNewsDB() {
 	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CWorldStock>(pStock)->IsUpdateCompanyNewsDB(); });
 }
 
-bool CContainerWorldStock::IsUpdateBasicFinancialDB(void) {
+bool CContainerWorldStock::IsUpdateBasicFinancialDB() {
 	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CWorldStock>(pStock)->IsUpdateBasicFinancialDB(); });
 }
 
-bool CContainerWorldStock::IsSaveInsiderTransaction(void) {
+bool CContainerWorldStock::IsSaveInsiderTransaction() {
 	return ranges::any_of(m_vStock, [](CVirtualStockPtr& P) { return dynamic_pointer_cast<CWorldStock>(P)->IsSaveInsiderTransaction(); });
 }
 
-bool CContainerWorldStock::IsSaveInsiderSentiment(void) {
+bool CContainerWorldStock::IsSaveInsiderSentiment() {
 	return ranges::any_of(m_vStock, [](CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsSaveInsiderSentiment(); });
 }

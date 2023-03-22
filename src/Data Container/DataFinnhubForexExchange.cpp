@@ -9,7 +9,7 @@ CDataFinnhubForexExchange::CDataFinnhubForexExchange() {
 	Reset();
 }
 
-void CDataFinnhubForexExchange::Reset(void) {
+void CDataFinnhubForexExchange::Reset() {
 	m_vForexExchange.resize(0);
 	m_mapForexExchange.clear();
 	m_lLastTotalForexExchange = 0;
@@ -30,7 +30,7 @@ void CDataFinnhubForexExchange::Add(CString strForexExchange) {
 	m_vForexExchange.push_back(strForexExchange);
 }
 
-bool CDataFinnhubForexExchange::LoadDB(void) {
+bool CDataFinnhubForexExchange::LoadDB() {
 	CSetFinnhubForexExchange setForexExchange;
 	int i = 0;
 
@@ -46,7 +46,7 @@ bool CDataFinnhubForexExchange::LoadDB(void) {
 	return true;
 }
 
-bool CDataFinnhubForexExchange::UpdateDB(void) {
+bool CDataFinnhubForexExchange::UpdateDB() {
 	if (m_lLastTotalForexExchange < m_vForexExchange.size()) {
 		CSetFinnhubForexExchange setForexExchange;
 		setForexExchange.Open();

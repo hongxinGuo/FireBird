@@ -11,19 +11,19 @@ using namespace testing;
 namespace FireBirdTest {
 	class CProductTiingoStockDayLineTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -101,7 +101,7 @@ namespace FireBirdTest {
 
 	class ParseTiingoStockDayLineTest : public TestWithParam<TiingoWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			const TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -110,7 +110,7 @@ namespace FireBirdTest {
 			m_pWebData->SetJSonContentType(true);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -180,7 +180,7 @@ namespace FireBirdTest {
 
 	class ParseTiingoStockDayLineTest2 : public TestWithParam<TiingoWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			const TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -189,7 +189,7 @@ namespace FireBirdTest {
 			m_pWebData->SetJSonContentType(true);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -259,7 +259,7 @@ namespace FireBirdTest {
 
 	class ProcessTiingoStockDayLineTest : public TestWithParam<TiingoWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			const TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -270,7 +270,7 @@ namespace FireBirdTest {
 			m_tiingoStockPriceCandle.SetIndex(0);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(false);
 			gl_pWorldMarket->GetStock(0)->SetDayLineNeedSaving(false);

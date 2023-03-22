@@ -15,7 +15,7 @@ CProductTiingoStockSymbol::CProductTiingoStockSymbol() : CVirtualWebProduct() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");
 }
 
-CString CProductTiingoStockSymbol::CreateMessage(void) {
+CString CProductTiingoStockSymbol::CreateMessage() {
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
 }

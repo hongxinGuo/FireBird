@@ -9,7 +9,7 @@ CDayLineWebData::CDayLineWebData() {
 	Reset();
 }
 
-void CDayLineWebData::Reset(void) {
+void CDayLineWebData::Reset() {
 	m_strStockCode = _T("");
 	m_sDataBuffer.resize(0);
 	m_vTempDayLine.resize(0);
@@ -38,7 +38,7 @@ bool CDayLineWebData::TransferWebDataToBuffer(CWebDataPtr pWebData) {
 // 日线数据是逆序的，最新日期的在前面。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-bool CDayLineWebData::ProcessNeteaseDayLineData(void) {
+bool CDayLineWebData::ProcessNeteaseDayLineData() {
 	shared_ptr<CDayLine> pDayLine;
 
 	if (m_lBufferLength == 0) {
@@ -84,7 +84,7 @@ bool CDayLineWebData::ProcessNeteaseDayLineData(void) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLineData(void) {
+CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLineData() {
 	char buffer2[200], buffer3[100];
 	int year = 0, month = 0, day = 0;
 	double dTemp;
@@ -218,7 +218,7 @@ bool CDayLineWebData::SkipNeteaseDayLineInformationHeader(string& sDataBuffer, I
 	return true;
 }
 
-void CDayLineWebData::ReportDayLineDownLoaded(void) {
+void CDayLineWebData::ReportDayLineDownLoaded() {
 	//CString strTemp = GetSymbol();
 	//strTemp += _T("日线下载完成.");
 	//gl_systemMessage.PushDayLineInfoMessage(strTemp);

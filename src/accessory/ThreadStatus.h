@@ -19,44 +19,44 @@ public:
 	~CThreadStatus() = default;
 
 	//并发执行计算日线相对强度的计数器，最多允许cMaxBackGroundTaskThreads个线程同时执行
-	void IncreaseBackGroundWorkingThread(void) noexcept { ++m_NumberOfBackGroundWorkingThreads; } //同时运行线程数加一
-	void DecreaseBackGroundWorkingThread(void) noexcept { --m_NumberOfBackGroundWorkingThreads; } //同时运行线程数减一
-	[[nodiscard]] bool IsBackGroundThreadsWorking(void) const noexcept {
+	void IncreaseBackGroundWorkingThread() noexcept { ++m_NumberOfBackGroundWorkingThreads; } //同时运行线程数加一
+	void DecreaseBackGroundWorkingThread() noexcept { --m_NumberOfBackGroundWorkingThreads; } //同时运行线程数减一
+	[[nodiscard]] bool IsBackGroundThreadsWorking() const noexcept {
 		if (m_NumberOfBackGroundWorkingThreads > 0) return true;
 		else return false;
 	} //计算日线的线程是否处于运行中
-	[[nodiscard]] int GetNumberOfBackGroundWorkingThread(void) const noexcept { return m_NumberOfBackGroundWorkingThreads; }
+	[[nodiscard]] int GetNumberOfBackGroundWorkingThread() const noexcept { return m_NumberOfBackGroundWorkingThreads; }
 
-	void IncreaseSavingThread(void) noexcept { ++m_NumberOfSavingThread; }
+	void IncreaseSavingThread() noexcept { ++m_NumberOfSavingThread; }
 
-	void DecreaseSavingThread(void) noexcept {
+	void DecreaseSavingThread() noexcept {
 		if (m_NumberOfSavingThread > 0) --m_NumberOfSavingThread;
 		//else ASSERT(0);
 	}
 
-	[[nodiscard]] int GetNumberOfSavingThread(void) const noexcept {
+	[[nodiscard]] int GetNumberOfSavingThread() const noexcept {
 		const int iNumber = m_NumberOfSavingThread;
 		return iNumber;
 	}
 
-	[[nodiscard]] bool IsSavingThreadRunning(void) const noexcept {
+	[[nodiscard]] bool IsSavingThreadRunning() const noexcept {
 		if (GetNumberOfSavingThread() > 0) return true;
 		else return false;
 	}
 
-	void IncreaseWebInquiringThread(void) noexcept { ++m_NumberOfWebInquiringThread; }
+	void IncreaseWebInquiringThread() noexcept { ++m_NumberOfWebInquiringThread; }
 
-	void DecreaseWebInquiringThread(void) noexcept {
+	void DecreaseWebInquiringThread() noexcept {
 		if (m_NumberOfWebInquiringThread > 0) --m_NumberOfWebInquiringThread;
 		//else ASSERT(0);
 	}
 
-	int GetNumberOfWebInquiringThread(void) const noexcept {
+	int GetNumberOfWebInquiringThread() const noexcept {
 		const int iNumber = m_NumberOfWebInquiringThread;
 		return iNumber;
 	}
 
-	[[nodiscard]] bool IsWebInquiringThreadRunning(void) const noexcept {
+	[[nodiscard]] bool IsWebInquiringThreadRunning() const noexcept {
 		if (GetNumberOfWebInquiringThread() > 0) return true;
 		else return false;
 	}

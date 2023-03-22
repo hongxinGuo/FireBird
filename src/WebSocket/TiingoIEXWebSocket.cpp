@@ -60,7 +60,7 @@ CTiingoIEXWebSocket::CTiingoIEXWebSocket() : CVirtualWebSocket() {
 /// </summary>
 /// 
 /// <returns></returns>
-bool CTiingoIEXWebSocket::Connect(void) {
+bool CTiingoIEXWebSocket::Connect() {
 	Connecting(m_url, ProcessTiingoIEXWebSocket);
 
 	return true;

@@ -9,7 +9,7 @@ CDataFinnhubCryptoExchange::CDataFinnhubCryptoExchange() {
 	Reset();
 }
 
-void CDataFinnhubCryptoExchange::Reset(void) {
+void CDataFinnhubCryptoExchange::Reset() {
 	m_vCryptoExchange.resize(0);
 	m_mapCryptoExchange.clear();
 	m_lLastTotalCryptoExchange = 0;
@@ -30,7 +30,7 @@ void CDataFinnhubCryptoExchange::Add(const string& sCryptoExchange) {
 	m_vCryptoExchange.push_back(sCryptoExchange);
 }
 
-bool CDataFinnhubCryptoExchange::LoadDB(void) {
+bool CDataFinnhubCryptoExchange::LoadDB() {
 	CSetFinnhubCryptoExchange setCryptoExchange;
 	int i = 0;
 
@@ -46,7 +46,7 @@ bool CDataFinnhubCryptoExchange::LoadDB(void) {
 	return true;
 }
 
-bool CDataFinnhubCryptoExchange::UpdateDB(void) {
+bool CDataFinnhubCryptoExchange::UpdateDB() {
 	if (m_lLastTotalCryptoExchange < m_vCryptoExchange.size()) {
 		CSetFinnhubCryptoExchange setCryptoExchange;
 		setCryptoExchange.Open();

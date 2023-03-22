@@ -16,10 +16,10 @@ public:
 	CContainerChinaStock(const CContainerChinaStock&&) noexcept = delete;
 	CContainerChinaStock& operator=(const CContainerChinaStock&&) noexcept = delete;
 	~CContainerChinaStock() override = default;
-	void Reset(void) override;
+	void Reset() override;
 
-	[[nodiscard]] long GetActiveStockSize(void) const;
-	[[nodiscard]] long GetLoadedStockSize(void) const noexcept { return m_lLoadedStock; }
+	[[nodiscard]] long GetActiveStockSize() const;
+	[[nodiscard]] long GetLoadedStockSize() const noexcept { return m_lLoadedStock; }
 
 	static bool IsAStock(const CString& strStockCode);
 	bool IsAStock(const CChinaStockPtr pStock) const { return IsAStock(pStock->GetSymbol()); }
@@ -28,26 +28,26 @@ public:
 	CChinaStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CChinaStock>(Get(lIndex)); }
 	CString GetStockName(const CString& strStockCode);
 
-	long LoadStockProfileDB(void);
-	bool UpdateStockProfileDB(void);
-	bool UnloadDayLine(void) noexcept;
+	long LoadStockProfileDB();
+	bool UpdateStockProfileDB();
+	bool UnloadDayLine() noexcept;
 	bool BuildWeekLine(long lStartDate);
 	long BuildDayLine(long lCurrentTradeDay);
-	bool UpdateTodayTempDB(void);
+	bool UpdateTodayTempDB();
 	void DeleteTempRTData();
 	bool BuildDayLineRS(long lDate);
 	bool BuildWeekLineRS(long lDate);
 
-	[[nodiscard]] bool IsDayLineDBUpdated(void) noexcept;
+	[[nodiscard]] bool IsDayLineDBUpdated() noexcept;
 
-	void SetDayLineNeedMaintain(void) const;
-	void SetDayLineNeedUpdate(void) const;
+	void SetDayLineNeedMaintain() const;
+	void SetDayLineNeedUpdate() const;
 
-	void ClearDayLineDBUpdatedFlag(void) noexcept;
-	void ClearDayLineNeedUpdateStatus(void) const;
+	void ClearDayLineDBUpdatedFlag() noexcept;
+	void ClearDayLineNeedUpdateStatus() const;
 
-	[[nodiscard]] INT64 GetTotalAttackBuyAmount(void);
-	[[nodiscard]] INT64 GetTotalAttackSellAmount(void);
+	[[nodiscard]] INT64 GetTotalAttackBuyAmount();
+	[[nodiscard]] INT64 GetTotalAttackSellAmount();
 
 	CString CreateNeteaseDayLineInquiringStr();
 	CString CreateTengxunDayLineInquiringStr();
@@ -57,25 +57,25 @@ public:
 	CString GetNextTengxunStockInquiringMiddleStr(const long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, _T(","), lTotalNumber); }
 	CString GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber);
 
-	[[nodiscard]] bool ProcessRTData(void);
-	bool SaveDayLineData(void);
+	[[nodiscard]] bool ProcessRTData();
+	bool SaveDayLineData();
 	virtual void CreateThreadSaveDayLineBasicInfo(CChinaStockPtr pStock);
 
-	[[nodiscard]] long GetDayLineNeedUpdateNumber(void) const;
-	[[nodiscard]] long GetDayLineNeedSaveNumber(void) const;
+	[[nodiscard]] long GetDayLineNeedUpdateNumber() const;
+	[[nodiscard]] long GetDayLineNeedSaveNumber() const;
 
-	bool Choice10RSStrong2StockSet(void);
-	bool Choice10RSStrong1StockSet(void);
+	bool Choice10RSStrong2StockSet();
+	bool Choice10RSStrong1StockSet();
 	bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex);
 
 	[[nodiscard]] static double GetUpDownRate(const CString& strClose, const CString& strLastClose) noexcept;
 
 	void SetNeteaseRTDataInquiringIndex(const long lIndex) noexcept { m_lNeteaseRTDataInquiringIndex = lIndex; }
-	[[nodiscard]] long GetNeteaseRTDataInquiringIndex(void) const noexcept { return m_lNeteaseRTDataInquiringIndex; }
+	[[nodiscard]] long GetNeteaseRTDataInquiringIndex() const noexcept { return m_lNeteaseRTDataInquiringIndex; }
 	void SetSinaRTDataInquiringIndex(const long lIndex) noexcept { m_lSinaRTDataInquiringIndex = lIndex; }
-	[[nodiscard]] long GetSinaRTDataInquiringIndex(void) const noexcept { return m_lSinaRTDataInquiringIndex; }
+	[[nodiscard]] long GetSinaRTDataInquiringIndex() const noexcept { return m_lSinaRTDataInquiringIndex; }
 	void SetTengxunRTDataInquiringIndex(const long lIndex) noexcept { m_lTengxunRTDataInquiringIndex = lIndex; }
-	[[nodiscard]] long GetTengxunRTDataInquiringIndex(void) const noexcept { return m_lTengxunRTDataInquiringIndex; }
+	[[nodiscard]] long GetTengxunRTDataInquiringIndex() const noexcept { return m_lTengxunRTDataInquiringIndex; }
 	[[nodiscard]] long GetNextIndex(long lIndex) const;
 
 private:

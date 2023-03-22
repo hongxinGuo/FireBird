@@ -10,11 +10,11 @@ CContainerChosenForex::CContainerChosenForex() {
 	CContainerChosenForex::Reset();
 }
 
-void CContainerChosenForex::Reset(void) {
+void CContainerChosenForex::Reset() {
 	m_lChosenForexPos = 0;
 }
 
-bool CContainerChosenForex::LoadDB(void) {
+bool CContainerChosenForex::LoadDB() {
 	CSetWorldChosenForex setWorldChosenForex;
 	CForexSymbolPtr pForex = nullptr;
 

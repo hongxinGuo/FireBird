@@ -10,18 +10,18 @@ enum {
 
 class COneGuadan {
 public:
-	COneGuadan(void) noexcept {
+	COneGuadan() noexcept {
 		m_time = 0;
 		m_lVolume = 0;
 		m_lStatus = 0;
 	}
 
 	void SetTime(time_t t) noexcept { m_time = t; }
-	time_t GetMarketTime(void) const noexcept { return m_time; }
+	time_t GetMarketTime() const noexcept { return m_time; }
 	void SetVolume(const long lVolume) noexcept { m_lVolume = lVolume; }
-	long GetVolume(void) const noexcept { return m_lVolume; }
+	long GetVolume() const noexcept { return m_lVolume; }
 	void SetStatus(const long lStatus) noexcept { m_lStatus = lStatus; }
-	long GetStatus(void) const noexcept { return m_lStatus; }
+	long GetStatus() const noexcept { return m_lStatus; }
 
 	time_t m_time;
 	long m_lVolume;
@@ -30,24 +30,24 @@ public:
 
 class CGuadan {
 public:
-	CGuadan(void);
-	~CGuadan(void) = default;
+	CGuadan();
+	~CGuadan() = default;
 
 	// ÒÑ²âÊÔº¯Êý
 	void AddGuadan(COneGuadan oneGuadan);
 
-	COneGuadan& GetGuadan(void);
+	COneGuadan& GetGuadan();
 	COneGuadan& GetGuadan(long lIndex);
 
-	long GetCurrentPos(void) const noexcept { return m_lMaxPos; }
-	long GetCompletedPos(void) const noexcept { return m_lCompletedPos; }
+	long GetCurrentPos() const noexcept { return m_lMaxPos; }
+	long GetCompletedPos() const noexcept { return m_lCompletedPos; }
 
-	long GetCurrentVolume(void) const noexcept { return m_lCurrentVolume; }
-	long GetFormerVolume(void) const noexcept { return m_lFormerVolume; }
+	long GetCurrentVolume() const noexcept { return m_lCurrentVolume; }
+	long GetFormerVolume() const noexcept { return m_lFormerVolume; }
 	void SetCurrentVolume(long lVolume);
 
 	// ´ý²âÊÔº¯Êý
-	void ReSet(void);
+	void ReSet();
 	void SetStatus(long lPos, long lStatus);
 	//	void				ProcessGuadan(
 

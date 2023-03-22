@@ -1,10 +1,10 @@
 #pragma once
 
 namespace FireBirdTest {
-	void GeneralCheck(void);
+	void GeneralCheck();
 
-	void SystemMessageCheck(void);
-	void EnvironmentCheck(void);
-	void ChinaMarketCheck(void);
-	void WorldMarketCheck(void);
+	void SystemMessageCheck();
+	void EnvironmentCheck();
+	void ChinaMarketCheck();
+	void WorldMarketCheck();
 }

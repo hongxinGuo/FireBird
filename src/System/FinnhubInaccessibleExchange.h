@@ -22,18 +22,18 @@ public:
 
 	bool Assign(const CString& sFunction, const int iFunction, const vector<CString>& vExchange);
 
-	int GetFunction(void) const noexcept { return m_iFunction; }
+	int GetFunction() const noexcept { return m_iFunction; }
 	void SetFunction(const int iFunction) noexcept { m_iFunction = iFunction; }
-	CString GetFunctionString(void) noexcept { return m_sFunction; }
+	CString GetFunctionString() noexcept { return m_sFunction; }
 	void SetFunctionString(const CString& sFunction) noexcept { m_sFunction = sFunction; }
 
 	bool AddExchange(const CString& sExchangeName);
 	bool DeleteExchange(const CString& sExchangeName);
 
 	bool HaveExchange(const CString& sExchange) const;
-	bool HaveExchange(void) const;
+	bool HaveExchange() const;
 
-	size_t ExchangeSize(void) const noexcept { return m_vExchange.size(); }
+	size_t ExchangeSize() const noexcept { return m_vExchange.size(); }
 	CString GetExchange(const int iIndex) { return m_vExchange.at(iIndex); }
 
 public:
@@ -52,19 +52,19 @@ public:
 	CFinnhubInaccessibleExchange();
 	virtual ~CFinnhubInaccessibleExchange();
 
-	bool LoadDB(void);
+	bool LoadDB();
 	bool LoadDB(CString strFileDirectory);
-	void SaveDB(void) const;
-	void Update(void);
-	void UpdateJson(void);
+	void SaveDB() const;
+	void Update();
+	void UpdateJson();
 
-	void Clear(void) noexcept {
+	void Clear() noexcept {
 		m_mapInaccessibleExchange.clear();
 		m_finnhubInaccessibleExchange.clear();
 	}
 
 	void SetDefaultFileName(const CString& fileName) noexcept { m_strFileName = fileName; }
-	CString GetDefaultFileName(void) { return m_strFileName; }
+	CString GetDefaultFileName() { return m_strFileName; }
 
 	void SetUpdateDate(const long lDate) noexcept { m_lUpdateDate = lDate; }
 	long GetUpdateDate() const { return m_lUpdateDate; }
@@ -72,9 +72,9 @@ public:
 	int GetFinnhubInquiryIndex(const CString& sString) const { return gl_FinnhubInquiryType.GetInquiryType(sString); }
 	CInaccessibleExchangesPtr GetInaccessibleExchange(int iInquiryType);
 	void SetInaccessibleExchange(const int iInquiryType, const CInaccessibleExchangesPtr pExchange) { m_mapInaccessibleExchange[iInquiryType] = pExchange; }
-	size_t GetInaccessibleExchangeSize(void) const noexcept { return m_mapInaccessibleExchange.size(); }
+	size_t GetInaccessibleExchangeSize() const noexcept { return m_mapInaccessibleExchange.size(); }
 
-	bool IsNeedUpdate(void) const noexcept { return m_fUpdate; }
+	bool IsNeedUpdate() const noexcept { return m_fUpdate; }
 	void SetUpdate(const bool fUpdate) noexcept { m_fUpdate = fUpdate; }
 
 	bool IsInaccessible(const int iInquiryType, const CString& strExchangeCode);

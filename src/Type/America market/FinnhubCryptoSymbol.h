@@ -15,20 +15,20 @@ public:
 	CFinnhubCryptoSymbol& operator=(const CFinnhubCryptoSymbol&) = delete;
 	CFinnhubCryptoSymbol(const CFinnhubCryptoSymbol&&) noexcept = delete;
 	CFinnhubCryptoSymbol& operator=(const CFinnhubCryptoSymbol&&) noexcept = delete;
-	virtual void Reset(void);
-	virtual int GetRatio(void) const override final { return 1000; } // 比例为1000
+	virtual void Reset();
+	virtual int GetRatio() const override final { return 1000; } // 比例为1000
 
-	virtual bool UpdateDayLineDB(void) { return m_dataDayLine.SaveDB(m_strSymbol); }
+	virtual bool UpdateDayLineDB() { return m_dataDayLine.SaveDB(m_strSymbol); }
 
-	void SetCheckingDayLineStatus(void);
+	void SetCheckingDayLineStatus();
 
 	CString GetFinnhubDayLineInquiryParam(time_t tCurrentTime);
 
 	void UpdateDayLine(vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
-	void UnloadDayLine(void) { m_dataDayLine.Unload(); }
-	size_t GetDayLineSize(void) const noexcept { return m_dataDayLine.Size(); }
-	void UpdateDayLineStartEndDate(void);
-	bool HaveNewDayLineData(void);
+	void UnloadDayLine() { m_dataDayLine.Unload(); }
+	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
+	void UpdateDayLineStartEndDate();
+	bool HaveNewDayLineData();
 
 public:
 	CDataCryptoDayLine m_dataDayLine;

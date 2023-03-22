@@ -18,7 +18,7 @@ CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubCryptoDayLine::CreateMessage(void) {
+CString CProductFinnhubCryptoDayLine::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 	const auto pCryptoSymbol = dynamic_cast<CWorldMarket*>(m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);
 

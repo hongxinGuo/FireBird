@@ -25,7 +25,7 @@ CSinaRTDataSource::CSinaRTDataSource() {
 	CSinaRTDataSource::Reset();
 }
 
-bool CSinaRTDataSource::Reset(void) {
+bool CSinaRTDataSource::Reset() {
 	return true;
 }
 
@@ -69,7 +69,7 @@ bool CSinaRTDataSource::InquireRTData(const long) {
 // 目前只提取前12000个股票的实时数据。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CSinaRTDataSource::GenerateCurrentInquiryMessage(void) {
+void CSinaRTDataSource::GenerateCurrentInquiryMessage() {
 	ASSERT(m_pCurrentProduct != nullptr);
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
@@ -79,7 +79,7 @@ void CSinaRTDataSource::GenerateCurrentInquiryMessage(void) {
 /// 调整Session的选项可能会改善接收情况。
 /// </summary>
 /// <param name=""></param>
-void CSinaRTDataSource::ConfigureSession(void) {
+void CSinaRTDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 3000); // 正常情况下sina实时数据接收时间不超过50毫秒。
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 3000); // 设置接收超时时间为4000毫秒

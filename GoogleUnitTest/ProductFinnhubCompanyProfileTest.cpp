@@ -11,19 +11,19 @@ using namespace testing;
 namespace FireBirdTest {
 	class CFinnhubCompanyProfileTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -58,7 +58,7 @@ namespace FireBirdTest {
 
 	class ProcessFinnhubStockProfileTest : public TestWithParam<FinnhubWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -74,7 +74,7 @@ namespace FireBirdTest {
 			m_finnhubCompanyProfile.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetProfileUpdateDate(19800101);

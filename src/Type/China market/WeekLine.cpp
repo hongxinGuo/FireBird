@@ -7,7 +7,7 @@ CWeekLine::CWeekLine() : CVirtualHistoryCandleExtend() {
 	CWeekLine::Reset();
 }
 
-void CWeekLine::Reset(void) {
+void CWeekLine::Reset() {
 	CVirtualHistoryCandleExtend::Reset();
 }
 

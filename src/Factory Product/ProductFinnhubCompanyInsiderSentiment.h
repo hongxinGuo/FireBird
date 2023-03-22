@@ -8,7 +8,7 @@ public:
 	CProductFinnhubCompanyInsiderSentiment();
 	~CProductFinnhubCompanyInsiderSentiment() override = default;
 
-	CString CreateMessage(void) override;
+	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CInsiderSentimentVectorPtr ParseFinnhubStockInsiderSentiment(CWebDataPtr pWebData);
 };

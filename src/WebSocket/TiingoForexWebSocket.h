@@ -30,9 +30,9 @@ using CTiingoForexSocketPtr = shared_ptr<CTiingoForexSocket>;
 class CTiingoForexWebSocket : public CVirtualWebSocket {
 public:
 	CTiingoForexWebSocket();
-	~CTiingoForexWebSocket(void) override;
+	~CTiingoForexWebSocket() override;
 
-	bool Connect(void) override;
+	bool Connect() override;
 	bool Send(vectorString vSymbol) override;
 
 	bool CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol);

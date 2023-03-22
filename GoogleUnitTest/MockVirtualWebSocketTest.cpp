@@ -13,20 +13,20 @@ CMockVirtualWebSocketPtr gl_pMockVirtualWebSocket;
 namespace FireBirdTest {
 	class CMockVirtualWebSocketTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			gl_pMockVirtualWebSocket = make_shared<CMockVirtualWebSocket>();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 

@@ -316,7 +316,7 @@ void CSystemConfiguration::Update() {
 	}
 }
 
-void CSystemConfiguration::UpdateJson(void) {
+void CSystemConfiguration::UpdateJson() {
 	m_systemConfiguration.clear(); // 清除之前的数据。
 	// system
 	m_systemConfiguration["SystemConfiguration"]["UsingFastCPU"] = m_bUsingFastCPU;
@@ -385,7 +385,7 @@ void CSystemConfiguration::UpdateJson(void) {
 	m_systemConfiguration["TestConfiguration"]["BenchmarkTestFileDirectory"] = m_strBenchmarkTestFileDirectory;
 }
 
-void CSystemConfiguration::UpdateSystem(void) const {
+void CSystemConfiguration::UpdateSystem() const {
 	IncreaseMaxBackgroundThread();
 }
 

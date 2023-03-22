@@ -15,18 +15,18 @@ public:
 	CMainFrame();
 	~CMainFrame() override;
 
-	void Reset(void);
+	void Reset();
 
 	// 特性
 public:
 	// 操作
 public:
-	virtual void SchedulingTask(void);
-	void UpdateStatus(void);
-	void UpdateInnerSystemStatus(void);
-	bool CreateMarketContainer(void); // 生成各市场容器（只用于调度）
+	virtual void SchedulingTask();
+	void UpdateStatus();
+	void UpdateInnerSystemStatus();
+	bool CreateMarketContainer(); // 生成各市场容器（只用于调度）
 
-	void InitializeDataSourceAndWebInquiry(void);
+	void InitializeDataSourceAndWebInquiry();
 
 public:
 	// 需包裹的调用系统函数的函数（以便于使用GMock），前缀为SysCall
@@ -38,17 +38,17 @@ public:
 	virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->SetCheck(fFlag); }
 	virtual LRESULT SysCallSendMessage(UINT message, WPARAM wParam, LPARAM lParam) { return SendMessage(message, wParam, lParam); }
 	virtual BOOL SysCallPreTranslateMessage(MSG* pMsg) { return CFrameWndEx::PreTranslateMessage(pMsg); }
-	virtual void SysCallInvalidate(void) { Invalidate(); }
+	virtual void SysCallInvalidate() { Invalidate(); }
 	virtual void SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags) { CFrameWndEx::OnChar(nChar, nRepCnt, nFlags); }
 	virtual void SysCallOnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) { CFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags); }
-	virtual void CalculateTodayRS(void);
-	virtual void ProcessChinaMarketStock(void);
+	virtual void CalculateTodayRS();
+	virtual void ProcessChinaMarketStock();
 
 public:
 	// 重置系统（恢复系统的初始态，准备第二天继续工作。
-	virtual bool ResetMarket(void);
+	virtual bool ResetMarket();
 
-	long GetCurrentPos(void) const noexcept { return m_lCurrentPos; }
+	long GetCurrentPos() const noexcept { return m_lCurrentPos; }
 
 	// 重写
 public:

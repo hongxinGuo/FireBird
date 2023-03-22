@@ -11,19 +11,19 @@ using namespace testing;
 namespace FireBirdTest {
 	class CFinnhubStockPriceQuoteTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -66,7 +66,7 @@ namespace FireBirdTest {
 
 	class ProcessFinnhubStockQuoteTest : public TestWithParam<FinnhubWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -85,7 +85,7 @@ namespace FireBirdTest {
 			m_finnhubStockPriceQuote.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			m_pStock->SetNew(0);
 			m_pStock->SetHigh(0);

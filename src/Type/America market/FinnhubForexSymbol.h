@@ -14,20 +14,20 @@ public:
 	CFinnhubForexSymbol& operator=(const CFinnhubForexSymbol&) = delete;
 	CFinnhubForexSymbol(const CFinnhubForexSymbol&&) noexcept = delete;
 	CFinnhubForexSymbol& operator=(const CFinnhubForexSymbol&&) noexcept = delete;
-	void Reset(void) override;
-	int GetRatio(void) const final { return 1000; }
+	void Reset() override;
+	int GetRatio() const final { return 1000; }
 
-	virtual bool UpdateDayLineDB(void) { return m_dataDayLine.SaveDB(m_strSymbol); }
+	virtual bool UpdateDayLineDB() { return m_dataDayLine.SaveDB(m_strSymbol); }
 
-	void SetCheckingDayLineStatus(void);
+	void SetCheckingDayLineStatus();
 
 	CString GetFinnhubDayLineInquiryParam(time_t tCurrentTime);
 
 	void UpdateDayLine(vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
-	void UnloadDayLine(void) { m_dataDayLine.Unload(); }
-	size_t GetDayLineSize(void) const noexcept { return m_dataDayLine.Size(); }
-	void UpdateDayLineStartEndDate(void);
-	bool HaveNewDayLineData(void);
+	void UnloadDayLine() { m_dataDayLine.Unload(); }
+	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
+	void UpdateDayLineStartEndDate();
+	bool HaveNewDayLineData();
 
 public:
 	CDataForexDayLine m_dataDayLine;

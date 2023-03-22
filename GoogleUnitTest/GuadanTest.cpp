@@ -7,7 +7,7 @@
 namespace FireBirdTest {
 	class COneGuadanTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) { // 本测试类的初始化函数
+		static void SetUpTestSuite() { // 本测试类的初始化函数
 			GeneralCheck();
 		}
 
@@ -15,11 +15,11 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -50,17 +50,17 @@ namespace FireBirdTest {
 namespace FireBirdTest {
 	class CGuadanTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) { // 本测试类的初始化函数
+		static void SetUpTestSuite() { // 本测试类的初始化函数
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		}
 
 		static void TearDownTestSuite() { }
 
-		void SetUp(void) override {
+		void SetUp() override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 		}
 	};

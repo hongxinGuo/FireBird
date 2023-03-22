@@ -23,7 +23,7 @@ namespace FireBirdTest {
 
 	class CMockChinaMarketTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
@@ -57,7 +57,7 @@ namespace FireBirdTest {
 			s_pMockChinaMarket->SetSystemReady(true);
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			EXPECT_EQ(s_pMockChinaMarket->GetDayLineNeedUpdateNumber(), s_pMockChinaMarket->GetTotalStock());
 			EXPECT_FALSE(s_pMockChinaMarket->IsDayLineNeedSaving());
 			EXPECT_EQ(s_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
@@ -71,7 +71,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 
 			//EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
@@ -82,7 +82,7 @@ namespace FireBirdTest {
 			s_pMockChinaMarket->SetRSEndDate(19900101);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			EXPECT_EQ(s_pMockChinaMarket->GetDayLineNeedUpdateNumber(), s_pMockChinaMarket->GetTotalStock());
 			EXPECT_EQ(s_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);

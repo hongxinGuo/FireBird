@@ -12,22 +12,22 @@ namespace FireBirdTest {
 	CMockTengxunRTDataSourcePtr m_pMockTengxunRTDataSource; // 腾讯实时数据采集
 	class CMockTengxunRTDataSourceTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);
 			m_pMockTengxunRTDataSource = make_shared<CMockTengxunRTDataSource>();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			EXPECT_FALSE(m_pMockTengxunRTDataSource->HaveInquiry());
 			m_pMockTengxunRTDataSource = nullptr;

@@ -13,19 +13,19 @@ using namespace testing;
 namespace FireBirdTest {
 	class CFinnhubEconomicCountryListTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -60,7 +60,7 @@ namespace FireBirdTest {
 
 	class ParseFinnhubCountryListTest : public TestWithParam<FinnhubWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -70,7 +70,7 @@ namespace FireBirdTest {
 			m_pvCountry = nullptr;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -130,7 +130,7 @@ namespace FireBirdTest {
 
 	class ProcessFinnhubCountryListTest : public TestWithParam<FinnhubWebData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -140,7 +140,7 @@ namespace FireBirdTest {
 			m_finnhubEconomicCountryList.SetMarket(gl_pWorldMarket.get());
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			if (gl_pWorldMarket->IsCountry(_T("Zero"))) {
 				const auto pCountry = gl_pWorldMarket->GetCountry(_T("Zero"));

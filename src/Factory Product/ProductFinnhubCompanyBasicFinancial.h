@@ -10,7 +10,7 @@ public:
 	CProductFinnhubCompanyBasicFinancial();
 	~CProductFinnhubCompanyBasicFinancial() override = default;
 
-	CString CreateMessage(void) override;
+	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	bool ParseFinnhubStockBasicFinancial(CFinnhubStockBasicFinancialPtr& pBasicFinancial, CWebDataPtr pWebData);
 	bool GetSeasonData(json* pjs, vector<CValueOfPeriod>& vData, const char* szMsg);

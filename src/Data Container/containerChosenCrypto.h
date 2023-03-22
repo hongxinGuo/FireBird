@@ -6,10 +6,10 @@ class CContainerChosenCrypto : public CContainerVirtualStock {
 public:
 	CContainerChosenCrypto();
 	~CContainerChosenCrypto() override = default;
-	void Reset(void) override;
+	void Reset() override;
 
-	bool LoadDB(void);
-	//bool UpdateDB(void);
+	bool LoadDB();
+	//bool UpdateDB();
 
 	CFinnhubCryptoSymbolPtr GetCryptoSymbol(size_t lIndex) { return dynamic_pointer_cast<CFinnhubCryptoSymbol>(Get(lIndex)); }
 	CFinnhubCryptoSymbolPtr GetCryptoSymbol(const CString& strStockCode) { return dynamic_pointer_cast<CFinnhubCryptoSymbol>(Get(strStockCode)); }

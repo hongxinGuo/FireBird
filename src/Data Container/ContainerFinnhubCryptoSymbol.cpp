@@ -11,11 +11,11 @@ CContainerFinnhubCryptoSymbol::CContainerFinnhubCryptoSymbol() {
 	CContainerFinnhubCryptoSymbol::Reset();
 }
 
-void CContainerFinnhubCryptoSymbol::Reset(void) {
+void CContainerFinnhubCryptoSymbol::Reset() {
 	m_lLastTotalSymbol = 0;
 }
 
-bool CContainerFinnhubCryptoSymbol::LoadDB(void) {
+bool CContainerFinnhubCryptoSymbol::LoadDB() {
 	CSetFinnhubCryptoSymbol setCryptoSymbol;
 	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
 
@@ -42,7 +42,7 @@ bool CContainerFinnhubCryptoSymbol::LoadDB(void) {
 	return true;
 }
 
-bool CContainerFinnhubCryptoSymbol::UpdateDB(void) {
+bool CContainerFinnhubCryptoSymbol::UpdateDB() {
 	const long lTotalCryptoSymbol = static_cast<long>(m_vStock.size());
 	CFinnhubCryptoSymbolPtr pSymbol;
 	CSetFinnhubCryptoSymbol setCryptoSymbol;

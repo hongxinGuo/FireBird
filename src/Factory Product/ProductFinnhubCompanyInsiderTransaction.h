@@ -8,7 +8,7 @@ public:
 	CProductFinnhubCompanyInsiderTransaction();
 	~CProductFinnhubCompanyInsiderTransaction() override = default;
 
-	CString CreateMessage(void) override;
+	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CInsiderTransactionVectorPtr ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData);
 };

@@ -30,7 +30,7 @@ namespace FireBirdTest {
 
 	class ConvertDoubleToStringTest : public testing::TestWithParam<StrConvertDoubleToString*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			const StrConvertDoubleToString* pData = GetParam();
@@ -39,7 +39,7 @@ namespace FireBirdTest {
 			lDividend = pData->m_lDividend;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -89,7 +89,7 @@ namespace FireBirdTest {
 
 	class ConvertLongToStringTest : public testing::TestWithParam<StrConvertLongToString*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			const StrConvertLongToString* pData = GetParam();
 			lValue = pData->m_lValue;
@@ -97,7 +97,7 @@ namespace FireBirdTest {
 			lDividend = pData->m_lDividend;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 		}
 
@@ -146,7 +146,7 @@ namespace FireBirdTest {
 
 	class ConvertIntegerToStringTest : public testing::TestWithParam<StrConvertIntegerToString*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			const StrConvertIntegerToString* pData = GetParam();
 			iValue = pData->m_iValue;
@@ -154,7 +154,7 @@ namespace FireBirdTest {
 			lDividend = pData->m_lDividend;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 		}
 
@@ -203,7 +203,7 @@ namespace FireBirdTest {
 
 	class ConvertINT64ToStringTest : public testing::TestWithParam<StrConvertINT64ToString*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			const StrConvertINT64ToString* pData = GetParam();
 			iValue = pData->m_iValue;
@@ -211,7 +211,7 @@ namespace FireBirdTest {
 			lDividend = pData->m_lDividend;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 		}
 
@@ -230,9 +230,9 @@ namespace FireBirdTest {
 	}
 
 	class CRSReferenceTest : public testing::Test {
-		void SetUp(void) override { }
+		void SetUp() override { }
 
-		void TearDown(void) override {
+		void TearDown() override {
 			gl_systemStatus.SetWorkingMode(false);
 		}
 	};

@@ -5,27 +5,27 @@
 
 class CTiingoDataSource : public CVirtualDataSource {
 public:
-	CTiingoDataSource(void);
-	~CTiingoDataSource(void) override = default;
+	CTiingoDataSource();
+	~CTiingoDataSource() override = default;
 
-	bool Reset(void) override;
-	void UpdateStatus(void) override;
+	bool Reset() override;
+	void UpdateStatus() override;
 
 	bool GenerateInquiryMessage(const long lCurrentTime) override;
 
-	void ConfigureSession(void) override; // 设置m_pSession状态。
+	void ConfigureSession() override; // 设置m_pSession状态。
 	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 
-	bool InquireTiingo(void);
-	virtual bool InquireCompanySymbol(void);
-	virtual bool InquireCryptoSymbol(void);
-	virtual bool InquireDayLine(void);
+	bool InquireTiingo();
+	virtual bool InquireCompanySymbol();
+	virtual bool InquireCryptoSymbol();
+	virtual bool InquireDayLine();
 
-	bool IsUpdateStockSymbol(void) const noexcept { return m_fUpdateStockSymbol; }
+	bool IsUpdateStockSymbol() const noexcept { return m_fUpdateStockSymbol; }
 	void SetUpdateStockSymbol(bool fFlag) noexcept { m_fUpdateStockSymbol = fFlag; }
-	bool IsUpdateCryptoSymbol(void) const noexcept { return m_fUpdateCryptoSymbol; }
+	bool IsUpdateCryptoSymbol() const noexcept { return m_fUpdateCryptoSymbol; }
 	void SetUpdateCryptoSymbol(bool fFlag) noexcept { m_fUpdateCryptoSymbol = fFlag; }
-	bool IsUpdateDayLine(void) const noexcept { return m_fUpdateDayLine; }
+	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
 
 protected:

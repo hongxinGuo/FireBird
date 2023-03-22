@@ -7,12 +7,12 @@ public:
 	CSinaRTDataSource();
 	~CSinaRTDataSource() override = default;
 
-	bool Reset(void) override;
+	bool Reset() override;
 
 	bool GenerateInquiryMessage(const long lCurrentTime) override;
 
-	void ConfigureSession(void) override; // 在读取网络数据前的准备工作，默认为设置Sina RT的m_pSession状态。
-	void GenerateCurrentInquiryMessage(void) override;
+	void ConfigureSession() override; // 在读取网络数据前的准备工作，默认为设置Sina RT的m_pSession状态。
+	void GenerateCurrentInquiryMessage() override;
 	bool ParseData(CWebDataPtr pWebData) override { return false; } // 数据为非JSon格式，不解析
 
 	bool InquireRTData(const long lCurrentTime);

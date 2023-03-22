@@ -12,7 +12,7 @@ using namespace testing;
 namespace FireBirdTest {
 	class CFinnhubForexSymbolTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) { // 本测试类的初始化函数
+		static void SetUpTestSuite() { // 本测试类的初始化函数
 			GeneralCheck();
 		}
 
@@ -20,11 +20,11 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}

@@ -16,23 +16,23 @@ namespace FireBirdTest {
 
 	class CMockVirtualDataSourceTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 			m_pVirtualDataSource = nullptr;
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			m_pVirtualDataSource = nullptr;
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 
 			m_pVirtualDataSource = make_shared<CMockVirtualDataSource>();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 
 			m_pVirtualDataSource->SetInquiringString(_T(""));

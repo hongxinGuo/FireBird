@@ -17,97 +17,97 @@ public:
 	CVirtualStock(const CVirtualStock&&) noexcept = delete;
 	CVirtualStock& operator=(const CVirtualStock&&) noexcept = delete;
 	virtual ~CVirtualStock() = default;
-	virtual void Reset(void);
-	virtual int GetRatio(void) const = 0;
+	virtual void Reset();
+	virtual int GetRatio() const = 0;
 
 	virtual void LoadSymbol(CVirtualSetStockSymbol& setStockSymbol);
 	virtual void AppendSymbol(CVirtualSetStockSymbol& setStockSymbol);
 	virtual void UpdateSymbol(CVirtualSetStockSymbol& setStockSymbol);
 	virtual void SaveSymbol(CVirtualSetStockSymbol& setStockSymbol);
 
-	CString GetDescription(void) const noexcept { return m_strDescription; }
+	CString GetDescription() const noexcept { return m_strDescription; }
 	void SetDescription(const CString& strDescription) noexcept { m_strDescription = strDescription; }
-	CString GetExchangeCode(void) const noexcept { return m_strExchangeCode; }
+	CString GetExchangeCode() const noexcept { return m_strExchangeCode; }
 	void SetExchangeCode(const CString& strExchangeCode) noexcept { m_strExchangeCode = strExchangeCode; }
-	CString GetSymbol(void) const noexcept { return m_strSymbol; }
+	CString GetSymbol() const noexcept { return m_strSymbol; }
 	void SetSymbol(const CString& str) noexcept { m_strSymbol = str; }
-	CString GetDisplaySymbol(void) const noexcept { return m_strDisplaySymbol; }
+	CString GetDisplaySymbol() const noexcept { return m_strDisplaySymbol; }
 	void SetDisplaySymbol(const CString& str) noexcept { m_strDisplaySymbol = str; }
 
 	// 基本实时数据，需要更新
-	time_t GetTransactionTime(void) const noexcept { return m_TransactionTime; }
+	time_t GetTransactionTime() const noexcept { return m_TransactionTime; }
 	virtual void SetTransactionTime(const time_t time) noexcept { m_TransactionTime = time; }
-	long GetLastClose(void) const noexcept { return m_lLastClose; }
+	long GetLastClose() const noexcept { return m_lLastClose; }
 	virtual void SetLastClose(const long lValue) noexcept { m_lLastClose = lValue; }
-	long GetOpen(void) const noexcept { return m_lOpen; }
+	long GetOpen() const noexcept { return m_lOpen; }
 	virtual void SetOpen(const long lValue) noexcept { m_lOpen = lValue; }
-	long GetHigh(void) const noexcept { return m_lHigh; }
+	long GetHigh() const noexcept { return m_lHigh; }
 	virtual void SetHigh(const long lValue) noexcept { m_lHigh = lValue; }
-	long GetLow(void) const noexcept { return m_lLow; }
+	long GetLow() const noexcept { return m_lLow; }
 	virtual void SetLow(const long lValue) noexcept { m_lLow = lValue; }
-	long GetNew(void) const noexcept { return m_lNew; }
+	long GetNew() const noexcept { return m_lNew; }
 	virtual void SetNew(const long lValue) noexcept { m_lNew = lValue; }
-	INT64 GetAmount(void) const noexcept { return m_llAmount; }
+	INT64 GetAmount() const noexcept { return m_llAmount; }
 	virtual void SetAmount(const INT64 llValue) noexcept { m_llAmount = llValue; }
-	INT64 GetVolume(void) const noexcept { return m_llVolume; }
+	INT64 GetVolume() const noexcept { return m_llVolume; }
 	virtual void SetVolume(const INT64 llValue) noexcept { m_llVolume = llValue; }
 
-	long GetUpDown(void) const noexcept { return m_lUpDown; }
+	long GetUpDown() const noexcept { return m_lUpDown; }
 	virtual void SetUpDown(const long lValue) noexcept { m_lUpDown = lValue; }
-	double GetUpDownRate(void) const noexcept { return m_dUpDownRate; }
+	double GetUpDownRate() const noexcept { return m_dUpDownRate; }
 	virtual void SetUpDownRate(const double dValue) noexcept { m_dUpDownRate = dValue; }
-	double GetChangeHandRate(void) const noexcept { return m_dChangeHandRate; }
+	double GetChangeHandRate() const noexcept { return m_dChangeHandRate; }
 	virtual void SetChangeHandRate(const double dValue) noexcept { m_dChangeHandRate = dValue; }
-	INT64 GetTotalValue(void) const noexcept { return m_llTotalValue; }
+	INT64 GetTotalValue() const noexcept { return m_llTotalValue; }
 	virtual void SetTotalValue(const INT64 llValue) noexcept { m_llTotalValue = llValue; }
-	INT64 GetCurrentValue(void) const noexcept { return m_llCurrentValue; }
+	INT64 GetCurrentValue() const noexcept { return m_llCurrentValue; }
 	virtual void SetCurrentValue(const INT64 llValue) noexcept { m_llCurrentValue = llValue; }
 
 	//
-	bool IsTodayNewStock(void) const noexcept { return m_fTodayNewStock; }
+	bool IsTodayNewStock() const noexcept { return m_fTodayNewStock; }
 	void SetTodayNewStock(const bool fFlag) noexcept { m_fTodayNewStock = fFlag; }
 
-	bool IsUpdateProfileDB(void) const noexcept { return m_fUpdateProfileDB; }
+	bool IsUpdateProfileDB() const noexcept { return m_fUpdateProfileDB; }
 
-	bool IsUpdateProfileDBAndClearFlag(void) noexcept {
+	bool IsUpdateProfileDBAndClearFlag() noexcept {
 		const bool fNeedSaving = m_fUpdateProfileDB.exchange(false);
 		return fNeedSaving;
 	}
 
 	void SetUpdateProfileDB(const bool fFlag) noexcept { m_fUpdateProfileDB = fFlag; }
 
-	bool IsUpdateCompanyNewsDB(void) const noexcept { return m_fUpdateCompanyNewsDB; }
+	bool IsUpdateCompanyNewsDB() const noexcept { return m_fUpdateCompanyNewsDB; }
 
-	bool IsUpdateCompanyNewsDBAndClearFlag(void) noexcept {
+	bool IsUpdateCompanyNewsDBAndClearFlag() noexcept {
 		const bool fNeedSaving = m_fUpdateCompanyNewsDB.exchange(false);
 		return fNeedSaving;
 	}
 
 	void SetUpdateCompanyNewsDB(const bool fFlag) noexcept { m_fUpdateCompanyNewsDB = fFlag; }
 
-	bool IsActive(void) const noexcept { return m_fActive; }
+	bool IsActive() const noexcept { return m_fActive; }
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
 
-	long GetDayLineStartDate(void) const noexcept { return m_lDayLineStartDate; }
+	long GetDayLineStartDate() const noexcept { return m_lDayLineStartDate; }
 	void SetDayLineStartDate(const long lDate) noexcept { m_lDayLineStartDate = lDate; }
-	long GetDayLineEndDate(void) const noexcept { return m_lDayLineEndDate; }
+	long GetDayLineEndDate() const noexcept { return m_lDayLineEndDate; }
 	void SetDayLineEndDate(const long lDate) noexcept { m_lDayLineEndDate = lDate; }
 
-	long GetIPOStatus(void) const noexcept { return m_lIPOStatus; }
+	long GetIPOStatus() const noexcept { return m_lIPOStatus; }
 	void SetIPOStatus(const long lValue) noexcept { m_lIPOStatus = lValue; }
-	bool IsDelisted(void) const noexcept { return (m_lIPOStatus == _STOCK_DELISTED_); }
-	bool IsNotYetList(void) const noexcept { return (m_lIPOStatus == _STOCK_NOT_YET_LIST_); }
-	bool IsNullStock(void) const noexcept { return (m_lIPOStatus == _STOCK_NULL_); }
-	bool IsIPOed(void) const noexcept { return (m_lIPOStatus == _STOCK_IPOED_); }
-	bool IsNotChecked(void) const noexcept { return (m_lIPOStatus == _STOCK_NOT_CHECKED_); }
+	bool IsDelisted() const noexcept { return (m_lIPOStatus == _STOCK_DELISTED_); }
+	bool IsNotYetList() const noexcept { return (m_lIPOStatus == _STOCK_NOT_YET_LIST_); }
+	bool IsNullStock() const noexcept { return (m_lIPOStatus == _STOCK_NULL_); }
+	bool IsIPOed() const noexcept { return (m_lIPOStatus == _STOCK_IPOED_); }
+	bool IsNotChecked() const noexcept { return (m_lIPOStatus == _STOCK_NOT_CHECKED_); }
 
 	// 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
-	bool IsDayLineNeedUpdate(void) const noexcept { return m_fDayLineNeedUpdate; }
+	bool IsDayLineNeedUpdate() const noexcept { return m_fDayLineNeedUpdate; }
 	void SetDayLineNeedUpdate(const bool fFlag) noexcept { m_fDayLineNeedUpdate = fFlag; }
-	bool IsDayLineNeedSaving(void) const noexcept { return m_fDayLineNeedSaving; }
+	bool IsDayLineNeedSaving() const noexcept { return m_fDayLineNeedSaving; }
 	void SetDayLineNeedSaving(const bool fFlag) noexcept { m_fDayLineNeedSaving = fFlag; }
 
-	bool IsDayLineNeedSavingAndClearFlag(void) noexcept {
+	bool IsDayLineNeedSavingAndClearFlag() noexcept {
 		const bool fNeedSaving = m_fDayLineNeedSaving.exchange(false);
 		return fNeedSaving;
 	}

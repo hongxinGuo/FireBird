@@ -146,7 +146,7 @@ namespace FireBirdTest {
 
 	class CStockTest2 : public::testing::TestWithParam<RTData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			RTData* pData = GetParam();
 			pCurrentData = make_shared<CWebRTData>();
@@ -170,7 +170,7 @@ namespace FireBirdTest {
 			iCount = pData->iCount;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -340,19 +340,19 @@ namespace FireBirdTest {
 
 	class CStockTest3 : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}

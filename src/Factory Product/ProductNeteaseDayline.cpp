@@ -10,7 +10,7 @@ CProductNeteaseDayLine::CProductNeteaseDayLine() {
 	m_strInquiryFunction = _T("http://quotes.money.163.com/service/chddata.html?code=");
 }
 
-CString CProductNeteaseDayLine::CreateMessage(void) {
+CString CProductNeteaseDayLine::CreateMessage() {
 	return m_strInquiryFunction; // 新浪实时数据的申请字符串由CNeteaseDayLineWebInquiry类完成，本Product无需动作。
 }
 

@@ -37,27 +37,27 @@ using CChinaStockPtr = shared_ptr<CChinaStock>;
 // 证券名称数据包
 class CChinaStock : public CVirtualStock {
 public:
-	CChinaStock(void);
+	CChinaStock();
 	// 不允许赋值。
 	CChinaStock(const CChinaStock&) = delete;
 	CChinaStock& operator=(const CChinaStock&) = delete;
 	CChinaStock(const CChinaStock&&) noexcept = delete;
 	CChinaStock& operator=(const CChinaStock&&) noexcept = delete;
-	~CChinaStock(void) override = default;
-	void Reset(void) override;
-	int GetRatio(void) const final { return 1000; }
+	~CChinaStock() override = default;
+	void Reset() override;
+	int GetRatio() const final { return 1000; }
 
 public:
 	void UpdateStatus(CWebRTDataPtr pRTData);
 
 	// 本股票各变量状态
-	long GetHighLimit(void) const noexcept { return m_lHighLimit; }
+	long GetHighLimit() const noexcept { return m_lHighLimit; }
 	void SetHighLimit(const long lValue) noexcept { m_lHighLimit = lValue; }
-	long GetLowLimit(void) const noexcept { return m_lLowLimit; }
+	long GetLowLimit() const noexcept { return m_lLowLimit; }
 	void SetLowLimit(const long lValue) noexcept { m_lLowLimit = lValue; }
-	long GetHighLimit2(void) const noexcept { return m_lHighLimit2; }
+	long GetHighLimit2() const noexcept { return m_lHighLimit2; }
 	void SetHighLimit2(const long lValue) noexcept { m_lHighLimit2 = lValue; }
-	long GetLowLimit2(void) const noexcept { return m_lLowLimit2; }
+	long GetLowLimit2() const noexcept { return m_lLowLimit2; }
 	void SetLowLimit2(const long lValue) noexcept { m_lLowLimit2 = lValue; }
 	long GetPBuy(const int iIndex) const { return m_lPBuy.at(iIndex); }
 	long GetVBuy(const int iIndex) const { return m_lVBuy.at(iIndex); }
@@ -67,28 +67,28 @@ public:
 	void SetVBuy(const int iIndex, const long value) { m_lVBuy.at(iIndex) = value; }
 	void SetPSell(const int iIndex, const long value) { m_lPSell.at(iIndex) = value; }
 	void SetVSell(const int iIndex, const long value) { m_lVSell.at(iIndex) = value; }
-	double GetRS(void) const noexcept { return m_dRealtimeRS; }
+	double GetRS() const noexcept { return m_dRealtimeRS; }
 	void SetRS(const double value) noexcept { m_dRealtimeRS = value; }
-	double GetRSIndex(void) const noexcept { return m_dRealtimeRSIndex; }
+	double GetRSIndex() const noexcept { return m_dRealtimeRSIndex; }
 	void SetRSIndex(const double value) noexcept { m_dRealtimeRSIndex = value; }
 
-	INT64 GetCurrentCanceledBuyVolume(void) const noexcept { return m_lCurrentCanceledBuyVolume; }
-	INT64 GetCurrentCanceledSellVolume(void) const noexcept { return m_lCurrentCanceledSellVolume; }
+	INT64 GetCurrentCanceledBuyVolume() const noexcept { return m_lCurrentCanceledBuyVolume; }
+	INT64 GetCurrentCanceledSellVolume() const noexcept { return m_lCurrentCanceledSellVolume; }
 
-	INT64 GetCanceledBuyVolumeBelow5000(void) const noexcept { return m_lCanceledBuyVolumeBelow5000; }
-	INT64 GetCanceledBuyVolumeBelow10000(void) const noexcept { return m_lCanceledBuyVolumeBelow10000; }
-	INT64 GetCanceledBuyVolumeBelow20000(void) const noexcept { return m_lCanceledBuyVolumeBelow20000; }
-	INT64 GetCanceledBuyVolumeBelow50000(void) const noexcept { return m_lCanceledBuyVolumeBelow50000; }
-	INT64 GetCanceledBuyVolumeBelow100000(void) const noexcept { return m_lCanceledBuyVolumeBelow100000; }
-	INT64 GetCanceledBuyVolumeBelow200000(void) const noexcept { return m_lCanceledBuyVolumeBelow200000; }
-	INT64 GetCanceledBuyVolumeAbove200000(void) const noexcept { return m_lCanceledBuyVolumeAbove200000; }
-	INT64 GetCanceledSellVolumeBelow5000(void) const noexcept { return m_lCanceledSellVolumeBelow5000; }
-	INT64 GetCanceledSellVolumeBelow10000(void) const noexcept { return m_lCanceledSellVolumeBelow10000; }
-	INT64 GetCanceledSellVolumeBelow20000(void) const noexcept { return m_lCanceledSellVolumeBelow20000; }
-	INT64 GetCanceledSellVolumeBelow50000(void) const noexcept { return m_lCanceledSellVolumeBelow50000; }
-	INT64 GetCanceledSellVolumeBelow100000(void) const noexcept { return m_lCanceledSellVolumeBelow100000; }
-	INT64 GetCanceledSellVolumeBelow200000(void) const noexcept { return m_lCanceledSellVolumeBelow200000; }
-	INT64 GetCanceledSellVolumeAbove200000(void) const noexcept { return m_lCanceledSellVolumeAbove200000; }
+	INT64 GetCanceledBuyVolumeBelow5000() const noexcept { return m_lCanceledBuyVolumeBelow5000; }
+	INT64 GetCanceledBuyVolumeBelow10000() const noexcept { return m_lCanceledBuyVolumeBelow10000; }
+	INT64 GetCanceledBuyVolumeBelow20000() const noexcept { return m_lCanceledBuyVolumeBelow20000; }
+	INT64 GetCanceledBuyVolumeBelow50000() const noexcept { return m_lCanceledBuyVolumeBelow50000; }
+	INT64 GetCanceledBuyVolumeBelow100000() const noexcept { return m_lCanceledBuyVolumeBelow100000; }
+	INT64 GetCanceledBuyVolumeBelow200000() const noexcept { return m_lCanceledBuyVolumeBelow200000; }
+	INT64 GetCanceledBuyVolumeAbove200000() const noexcept { return m_lCanceledBuyVolumeAbove200000; }
+	INT64 GetCanceledSellVolumeBelow5000() const noexcept { return m_lCanceledSellVolumeBelow5000; }
+	INT64 GetCanceledSellVolumeBelow10000() const noexcept { return m_lCanceledSellVolumeBelow10000; }
+	INT64 GetCanceledSellVolumeBelow20000() const noexcept { return m_lCanceledSellVolumeBelow20000; }
+	INT64 GetCanceledSellVolumeBelow50000() const noexcept { return m_lCanceledSellVolumeBelow50000; }
+	INT64 GetCanceledSellVolumeBelow100000() const noexcept { return m_lCanceledSellVolumeBelow100000; }
+	INT64 GetCanceledSellVolumeBelow200000() const noexcept { return m_lCanceledSellVolumeBelow200000; }
+	INT64 GetCanceledSellVolumeAbove200000() const noexcept { return m_lCanceledSellVolumeAbove200000; }
 	void SetCanceledBuyVolumeBelow5000(const INT64 lValue) noexcept { m_lCanceledBuyVolumeBelow5000 = lValue; }
 	void SetCanceledBuyVolumeBelow10000(const INT64 lValue) noexcept { m_lCanceledBuyVolumeBelow10000 = lValue; }
 	void SetCanceledBuyVolumeBelow20000(const INT64 lValue) noexcept { m_lCanceledBuyVolumeBelow20000 = lValue; }
@@ -104,62 +104,62 @@ public:
 	void SetCanceledSellVolumeBelow200000(const INT64 lValue) noexcept { m_lCanceledSellVolumeBelow200000 = lValue; }
 	void SetCanceledSellVolumeAbove200000(const INT64 lValue) noexcept { m_lCanceledSellVolumeAbove200000 = lValue; }
 
-	int GetCurrentTransactionType(void) const noexcept { return m_nCurrentTransactionType; }
+	int GetCurrentTransactionType() const noexcept { return m_nCurrentTransactionType; }
 	void SetCurrentTransactionType(const int nType) noexcept { m_nCurrentTransactionType = nType; }
-	INT64 GetCurrentTransactionVolume(void) const noexcept { return m_lCurrentGuadanTransactionVolume; }
+	INT64 GetCurrentTransactionVolume() const noexcept { return m_lCurrentGuadanTransactionVolume; }
 	void SetCurrentTransactionVolume(const INT64 value) noexcept { m_lCurrentGuadanTransactionVolume = value; }
 
-	INT64 GetAttackBuyAmount(void) const noexcept { return m_lAttackBuyAmount; }
-	INT64 GetAttackSellAmount(void) const noexcept { return m_lAttackSellAmount; }
-	INT64 GetOrdinaryBuyVolume(void) const noexcept { return m_lOrdinaryBuyVolume; }
-	INT64 GetOrdinarySellVolume(void) const noexcept { return m_lOrdinarySellVolume; }
-	INT64 GetAttackBuyVolume(void) const noexcept { return m_lAttackBuyVolume; } // 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
-	INT64 GetStrongBuyVolume(void) const noexcept { return m_lStrongBuyVolume; } // 向上强力买入,成交价超过之前的卖二报价
-	INT64 GetCurrentAttackBuy(void) const noexcept { return m_lCurrentAttackBuy; }
-	INT64 GetCurrentStrongBuy(void) const noexcept { return m_lCurrentStrongBuy; }
-	INT64 GetAttackSellVolume(void) const noexcept { return m_lAttackSellVolume; } // 向下卖出。成交价低于买一价但高于买二价。
-	INT64 GetStrongSellVolume(void) const noexcept { return m_lStrongSellVolume; }
-	INT64 GetCurrentAttackSell(void) const noexcept { return m_lCurrentAttackSell; }
-	INT64 GetCurrentStrongSell(void) const noexcept { return m_lCurrentStrongSell; }
-	INT64 GetUnknownVolume(void) const noexcept { return m_lUnknownVolume; }
-	INT64 GetCurrentUnknown(void) const noexcept { return m_lCurrentUnknown; }
-	INT64 GetCanceledBuyVolume(void) const noexcept { return m_lCanceledBuyVolume; }
-	INT64 GetCanceledSellVolume(void) const noexcept { return m_lCanceledSellVolume; }
+	INT64 GetAttackBuyAmount() const noexcept { return m_lAttackBuyAmount; }
+	INT64 GetAttackSellAmount() const noexcept { return m_lAttackSellAmount; }
+	INT64 GetOrdinaryBuyVolume() const noexcept { return m_lOrdinaryBuyVolume; }
+	INT64 GetOrdinarySellVolume() const noexcept { return m_lOrdinarySellVolume; }
+	INT64 GetAttackBuyVolume() const noexcept { return m_lAttackBuyVolume; } // 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
+	INT64 GetStrongBuyVolume() const noexcept { return m_lStrongBuyVolume; } // 向上强力买入,成交价超过之前的卖二报价
+	INT64 GetCurrentAttackBuy() const noexcept { return m_lCurrentAttackBuy; }
+	INT64 GetCurrentStrongBuy() const noexcept { return m_lCurrentStrongBuy; }
+	INT64 GetAttackSellVolume() const noexcept { return m_lAttackSellVolume; } // 向下卖出。成交价低于买一价但高于买二价。
+	INT64 GetStrongSellVolume() const noexcept { return m_lStrongSellVolume; }
+	INT64 GetCurrentAttackSell() const noexcept { return m_lCurrentAttackSell; }
+	INT64 GetCurrentStrongSell() const noexcept { return m_lCurrentStrongSell; }
+	INT64 GetUnknownVolume() const noexcept { return m_lUnknownVolume; }
+	INT64 GetCurrentUnknown() const noexcept { return m_lCurrentUnknown; }
+	INT64 GetCanceledBuyVolume() const noexcept { return m_lCanceledBuyVolume; }
+	INT64 GetCanceledSellVolume() const noexcept { return m_lCanceledSellVolume; }
 
-	INT64 GetTransactionNumber(void) const noexcept { return m_lTransactionNumber; }
-	INT64 GetTransactionNumberBelow5000(void) const noexcept { return m_lTransactionNumberBelow5000; }
-	INT64 GetTransactionNumberBelow50000(void) const noexcept { return m_lTransactionNumberBelow50000; }
-	INT64 GetTransactionNumberBelow200000(void) const noexcept { return m_lTransactionNumberBelow200000; }
-	INT64 GetTransactionNumberAbove200000(void) const noexcept { return m_lTransactionNumberAbove200000; }
+	INT64 GetTransactionNumber() const noexcept { return m_lTransactionNumber; }
+	INT64 GetTransactionNumberBelow5000() const noexcept { return m_lTransactionNumberBelow5000; }
+	INT64 GetTransactionNumberBelow50000() const noexcept { return m_lTransactionNumberBelow50000; }
+	INT64 GetTransactionNumberBelow200000() const noexcept { return m_lTransactionNumberBelow200000; }
+	INT64 GetTransactionNumberAbove200000() const noexcept { return m_lTransactionNumberAbove200000; }
 
-	INT64 GetOrdinaryBuyNumberBelow5000(void) const noexcept { return m_lOrdinaryBuyNumberBelow5000; }
-	INT64 GetOrdinaryBuyNumberBelow10000(void) const noexcept { return m_lOrdinaryBuyNumberBelow10000; }
-	INT64 GetOrdinaryBuyNumberBelow20000(void) const noexcept { return m_lOrdinaryBuyNumberBelow20000; }
-	INT64 GetOrdinaryBuyNumberBelow50000(void) const noexcept { return m_lOrdinaryBuyNumberBelow50000; }
-	INT64 GetOrdinaryBuyNumberBelow100000(void) const noexcept { return m_lOrdinaryBuyNumberBelow100000; }
-	INT64 GetOrdinaryBuyNumberBelow200000(void) const noexcept { return m_lOrdinaryBuyNumberBelow200000; }
-	INT64 GetOrdinaryBuyNumberAbove200000(void) const noexcept { return m_lOrdinaryBuyNumberAbove200000; }
-	INT64 GetOrdinarySellNumberBelow5000(void) const noexcept { return m_lOrdinarySellNumberBelow5000; }
-	INT64 GetOrdinarySellNumberBelow10000(void) const noexcept { return m_lOrdinarySellNumberBelow10000; }
-	INT64 GetOrdinarySellNumberBelow20000(void) const noexcept { return m_lOrdinarySellNumberBelow20000; }
-	INT64 GetOrdinarySellNumberBelow50000(void) const noexcept { return m_lOrdinarySellNumberBelow50000; }
-	INT64 GetOrdinarySellNumberBelow100000(void) const noexcept { return m_lOrdinarySellNumberBelow100000; }
-	INT64 GetOrdinarySellNumberBelow200000(void) const noexcept { return m_lOrdinarySellNumberBelow200000; }
-	INT64 GetOrdinarySellNumberAbove200000(void) const noexcept { return m_lOrdinarySellNumberAbove200000; }
-	INT64 GetOrdinaryBuyVolumeBelow5000(void) const noexcept { return m_lOrdinaryBuyVolumeBelow5000; }
-	INT64 GetOrdinaryBuyVolumeBelow10000(void) const noexcept { return m_lOrdinaryBuyVolumeBelow10000; }
-	INT64 GetOrdinaryBuyVolumeBelow20000(void) const noexcept { return m_lOrdinaryBuyVolumeBelow20000; }
-	INT64 GetOrdinaryBuyVolumeBelow50000(void) const noexcept { return m_lOrdinaryBuyVolumeBelow50000; }
-	INT64 GetOrdinaryBuyVolumeBelow100000(void) const noexcept { return m_lOrdinaryBuyVolumeBelow100000; }
-	INT64 GetOrdinaryBuyVolumeBelow200000(void) const noexcept { return m_lOrdinaryBuyVolumeBelow200000; }
-	INT64 GetOrdinaryBuyVolumeAbove200000(void) const noexcept { return m_lOrdinaryBuyVolumeAbove200000; }
-	INT64 GetOrdinarySellVolumeBelow5000(void) const noexcept { return m_lOrdinarySellVolumeBelow5000; }
-	INT64 GetOrdinarySellVolumeBelow10000(void) const noexcept { return m_lOrdinarySellVolumeBelow10000; }
-	INT64 GetOrdinarySellVolumeBelow20000(void) const noexcept { return m_lOrdinarySellVolumeBelow20000; }
-	INT64 GetOrdinarySellVolumeBelow50000(void) const noexcept { return m_lOrdinarySellVolumeBelow50000; }
-	INT64 GetOrdinarySellVolumeBelow100000(void) const noexcept { return m_lOrdinarySellVolumeBelow100000; }
-	INT64 GetOrdinarySellVolumeBelow200000(void) const noexcept { return m_lOrdinarySellVolumeBelow200000; }
-	INT64 GetOrdinarySellVolumeAbove200000(void) const noexcept { return m_lOrdinarySellVolumeAbove200000; }
+	INT64 GetOrdinaryBuyNumberBelow5000() const noexcept { return m_lOrdinaryBuyNumberBelow5000; }
+	INT64 GetOrdinaryBuyNumberBelow10000() const noexcept { return m_lOrdinaryBuyNumberBelow10000; }
+	INT64 GetOrdinaryBuyNumberBelow20000() const noexcept { return m_lOrdinaryBuyNumberBelow20000; }
+	INT64 GetOrdinaryBuyNumberBelow50000() const noexcept { return m_lOrdinaryBuyNumberBelow50000; }
+	INT64 GetOrdinaryBuyNumberBelow100000() const noexcept { return m_lOrdinaryBuyNumberBelow100000; }
+	INT64 GetOrdinaryBuyNumberBelow200000() const noexcept { return m_lOrdinaryBuyNumberBelow200000; }
+	INT64 GetOrdinaryBuyNumberAbove200000() const noexcept { return m_lOrdinaryBuyNumberAbove200000; }
+	INT64 GetOrdinarySellNumberBelow5000() const noexcept { return m_lOrdinarySellNumberBelow5000; }
+	INT64 GetOrdinarySellNumberBelow10000() const noexcept { return m_lOrdinarySellNumberBelow10000; }
+	INT64 GetOrdinarySellNumberBelow20000() const noexcept { return m_lOrdinarySellNumberBelow20000; }
+	INT64 GetOrdinarySellNumberBelow50000() const noexcept { return m_lOrdinarySellNumberBelow50000; }
+	INT64 GetOrdinarySellNumberBelow100000() const noexcept { return m_lOrdinarySellNumberBelow100000; }
+	INT64 GetOrdinarySellNumberBelow200000() const noexcept { return m_lOrdinarySellNumberBelow200000; }
+	INT64 GetOrdinarySellNumberAbove200000() const noexcept { return m_lOrdinarySellNumberAbove200000; }
+	INT64 GetOrdinaryBuyVolumeBelow5000() const noexcept { return m_lOrdinaryBuyVolumeBelow5000; }
+	INT64 GetOrdinaryBuyVolumeBelow10000() const noexcept { return m_lOrdinaryBuyVolumeBelow10000; }
+	INT64 GetOrdinaryBuyVolumeBelow20000() const noexcept { return m_lOrdinaryBuyVolumeBelow20000; }
+	INT64 GetOrdinaryBuyVolumeBelow50000() const noexcept { return m_lOrdinaryBuyVolumeBelow50000; }
+	INT64 GetOrdinaryBuyVolumeBelow100000() const noexcept { return m_lOrdinaryBuyVolumeBelow100000; }
+	INT64 GetOrdinaryBuyVolumeBelow200000() const noexcept { return m_lOrdinaryBuyVolumeBelow200000; }
+	INT64 GetOrdinaryBuyVolumeAbove200000() const noexcept { return m_lOrdinaryBuyVolumeAbove200000; }
+	INT64 GetOrdinarySellVolumeBelow5000() const noexcept { return m_lOrdinarySellVolumeBelow5000; }
+	INT64 GetOrdinarySellVolumeBelow10000() const noexcept { return m_lOrdinarySellVolumeBelow10000; }
+	INT64 GetOrdinarySellVolumeBelow20000() const noexcept { return m_lOrdinarySellVolumeBelow20000; }
+	INT64 GetOrdinarySellVolumeBelow50000() const noexcept { return m_lOrdinarySellVolumeBelow50000; }
+	INT64 GetOrdinarySellVolumeBelow100000() const noexcept { return m_lOrdinarySellVolumeBelow100000; }
+	INT64 GetOrdinarySellVolumeBelow200000() const noexcept { return m_lOrdinarySellVolumeBelow200000; }
+	INT64 GetOrdinarySellVolumeAbove200000() const noexcept { return m_lOrdinarySellVolumeAbove200000; }
 	void SetOrdinaryBuyNumberBelow5000(const INT64 lValue) noexcept { m_lOrdinaryBuyNumberBelow5000 = lValue; }
 	void SetOrdinaryBuyNumberBelow10000(const INT64 lValue) noexcept { m_lOrdinaryBuyNumberBelow10000 = lValue; }
 	void SetOrdinaryBuyNumberBelow20000(const INT64 lValue) noexcept { m_lOrdinaryBuyNumberBelow20000 = lValue; }
@@ -189,12 +189,12 @@ public:
 	void SetOrdinarySellVolumeBelow200000(const INT64 lValue) noexcept { m_lOrdinarySellVolumeBelow200000 = lValue; }
 	void SetOrdinarySellVolumeAbove200000(const INT64 lValue) noexcept { m_lOrdinarySellVolumeAbove200000 = lValue; }
 
-	INT64 GetAttackBuyBelow50000(void) const noexcept { return m_lAttackBuyBelow50000; }
-	INT64 GetAttackBuyBelow200000(void) const noexcept { return m_lAttackBuyBelow200000; }
-	INT64 GetAttackBuyAbove200000(void) const noexcept { return m_lAttackBuyAbove200000; }
-	INT64 GetAttackSellBelow50000(void) const noexcept { return m_lAttackSellBelow50000; }
-	INT64 GetAttackSellBelow200000(void) const noexcept { return m_lAttackSellBelow200000; }
-	INT64 GetAttackSellAbove200000(void) const noexcept { return m_lAttackSellAbove200000; }
+	INT64 GetAttackBuyBelow50000() const noexcept { return m_lAttackBuyBelow50000; }
+	INT64 GetAttackBuyBelow200000() const noexcept { return m_lAttackBuyBelow200000; }
+	INT64 GetAttackBuyAbove200000() const noexcept { return m_lAttackBuyAbove200000; }
+	INT64 GetAttackSellBelow50000() const noexcept { return m_lAttackSellBelow50000; }
+	INT64 GetAttackSellBelow200000() const noexcept { return m_lAttackSellBelow200000; }
+	INT64 GetAttackSellAbove200000() const noexcept { return m_lAttackSellAbove200000; }
 
 	void SetAttackBuyAmount(const INT64 value) noexcept { m_lAttackBuyAmount = value; }
 	void SetAttackSellAmount(const INT64 value) noexcept { m_lAttackSellAmount = value; }
@@ -228,18 +228,18 @@ public:
 
 	// 更新当前各变量状态
 	void SetLastSavedVolume(const INT64 llVolume) noexcept { m_llLastSavedVolume = llVolume; }
-	INT64 GetLastSavedVolume(void) const noexcept { return m_llLastSavedVolume; }
+	INT64 GetLastSavedVolume() const noexcept { return m_llLastSavedVolume; }
 
 	// 各种状态标识提取和设置
-	bool IsChosen(void) const noexcept { return m_fChosen; }
+	bool IsChosen() const noexcept { return m_fChosen; }
 	void SetChosen(const bool fChosen) noexcept { m_fChosen = fChosen; }
-	bool IsSaveToChosenStockDB(void) const noexcept { return m_fSaveToChosenStockDB; }
+	bool IsSaveToChosenStockDB() const noexcept { return m_fSaveToChosenStockDB; }
 	void SetSaveToChosenStockDB(const bool fSaved) noexcept { m_fSaveToChosenStockDB = fSaved; }
 
 	bool IsSameStock(const CChinaStockPtr& pStock) const;
 
 	// 第一个实时数据判断和设置
-	bool HaveFirstRTData(void) const noexcept { return m_fHaveFirstRTData; }
+	bool HaveFirstRTData() const noexcept { return m_fHaveFirstRTData; }
 
 	bool SetHavingFirstRTData(const bool fFlag) noexcept {
 		if (m_fHaveFirstRTData || !fFlag) return false;
@@ -248,17 +248,17 @@ public:
 	}
 
 	void SetNeedProcessRTData(const bool fFlag) noexcept { m_fNeedProcessRTData = fFlag; }
-	bool IsNeedProcessRTData(void) const noexcept { return m_fNeedProcessRTData; }
+	bool IsNeedProcessRTData() const noexcept { return m_fNeedProcessRTData; }
 	void SetRTDataCalculated(const bool fFlag) noexcept { m_fRTDataCalculated = fFlag; }
-	bool IsRTDataCalculated(void) const noexcept { return m_fRTDataCalculated; }
+	bool IsRTDataCalculated() const noexcept { return m_fRTDataCalculated; }
 
-	bool IsTodayDataActive(void) const; //采用最高价、最低价、成交量和成交额来判断，如果都为零，则认为此股今日没有有效数据。当然在m_fActive为真状态下。
-	bool IsTodayDataChanged(void) const; // 如果最高价、最低价、成交量和成交额中有数据不为零，则返回真。
+	bool IsTodayDataActive() const; //采用最高价、最低价、成交量和成交额来判断，如果都为零，则认为此股今日没有有效数据。当然在m_fActive为真状态下。
+	bool IsTodayDataChanged() const; // 如果最高价、最低价、成交量和成交额中有数据不为零，则返回真。
 
 	// 数据库的提取和存储
 	// 日线装载函数，由工作线程ThreadLoadDayLine调用
 	virtual bool LoadDayLine(const CString& strStockCode) { return m_dataDayLine.LoadDB(strStockCode); }
-	virtual bool SaveDayLineBasicInfo(void) { return m_dataDayLine.SaveDB(GetSymbol()); }
+	virtual bool SaveDayLineBasicInfo() { return m_dataDayLine.SaveDB(GetSymbol()); }
 
 	bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* pSetDayLineBasicInfo) { return m_dataDayLine.LoadBasicDB(pSetDayLineBasicInfo); }
 
@@ -266,10 +266,10 @@ public:
 	void AppendTodayExtendInfo(CSetDayLineExtendInfo* pSetDayLineExtendInfo);
 	void SaveTempInfo(CSetDayLineTodaySaved* pSetDayLineTemp); // 存储当日计算出的数据
 	void UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pBeUpdated); // 用当前状态更新历史数据
-	void UpdateDayLineStartEndDate(void);
+	void UpdateDayLineStartEndDate();
 	void LoadTodaySavedInfo(CSetDayLineTodaySaved* pSetDayLineTemp);
 	bool LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol);
-	bool CheckDayLineStatus(void);
+	bool CheckDayLineStatus();
 	//周线历史数据存取
 	virtual bool LoadWeekLine() { return m_dataWeekLine.LoadDB(GetSymbol()); }
 	virtual bool SaveWeekLine() { return m_dataWeekLine.SaveDB(GetSymbol()); }
@@ -279,37 +279,37 @@ public:
 	virtual bool BuildWeekLine(long lStartDate = 19900101);
 
 	// 挂单情况
-	double GetCurrentGuadanTransactionPrice(void) const noexcept { return m_dCurrentGuadanTransactionPrice; }
+	double GetCurrentGuadanTransactionPrice() const noexcept { return m_dCurrentGuadanTransactionPrice; }
 	void SetCurrentGuadanTransactionPrice(const double dValue) noexcept { m_dCurrentGuadanTransactionPrice = dValue; }
 	INT64 GetGuadan(const INT64 lPrice) const { return m_mapGuadan.at(lPrice); }
 	void SetGuadan(const INT64 lPrice, const INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; }
 	bool HaveGuadan(INT64 lPrice);
 
 	// 判断10日强势股票
-	virtual bool Calculate10RSStrong1StockSet(void);
-	virtual bool Calculate10RSStrong2StockSet(void);
+	virtual bool Calculate10RSStrong1StockSet();
+	virtual bool Calculate10RSStrong2StockSet();
 
 	virtual bool Calculate10RSStrongStockSet(const CRSReference* pRef);
 
 	// 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
-	bool ProcessRTData(void);
+	bool ProcessRTData();
 	bool ProcessOneRTData(const CWebRTDataPtr& pRTData);
 	void CalculateHighLowLimit(CWebRTDataPtr pRTData);
 	void CalculateOneDeal(CWebRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice);
-	void IncreaseTransactionNumber(void);
+	void IncreaseTransactionNumber();
 	void CalculateOneRTData(CWebRTDataPtr pRTData);
 	void CalculateOrdinaryBuySell(INT64 lCurrentGuadanTransactionPrice);
-	void CalculateOrdinaryBuyVolume(void);
-	void CalculateOrdinarySellVolume(void);
-	void CalculateAttackBuy(void);
-	void CalculateStrongBuy(void);
-	void CalculateAttackBuyVolume(void);
-	void CalculateAttackSell(void);
-	void CalculateStrongSell(void);
-	void CalculateAttackSellVolume(void);
-	void ResetCalculatingData(void);
+	void CalculateOrdinaryBuyVolume();
+	void CalculateOrdinarySellVolume();
+	void CalculateAttackBuy();
+	void CalculateStrongBuy();
+	void CalculateAttackBuyVolume();
+	void CalculateAttackSell();
+	void CalculateStrongSell();
+	void CalculateAttackSellVolume();
+	void ResetCalculatingData();
 	void SetLastRTData(const CWebRTDataPtr& pLastRTData) noexcept { m_pLastRTData = pLastRTData; }
-	CWebRTDataPtr GetLastRTData(void) noexcept { return m_pLastRTData; }
+	CWebRTDataPtr GetLastRTData() noexcept { return m_pLastRTData; }
 	void InitializeCalculatingRTDataEnvironment(CWebRTDataPtr pRTData);
 
 	bool AnalysisGuadan(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice);
@@ -322,25 +322,25 @@ public:
 	void CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i);
 	void CalculateCanceledBuyVolume(INT64 lCurrentCanceledBuyVolume);
 	bool CheckCurrentRTData();
-	void ShowCurrentTransaction(void);
-	void ShowCurrentInformationOfCancelingGuadan(void);
-	virtual void ReportGuadanTransaction(void);
-	virtual void ReportGuadan(void);
+	void ShowCurrentTransaction();
+	void ShowCurrentInformationOfCancelingGuadan();
+	virtual void ReportGuadanTransaction();
+	virtual void ReportGuadan();
 
 	void PushRTData(const CWebRTDataPtr& pData) { m_qRTData.PushData(pData); }
-	CWebRTDataPtr PopRTData(void) { return m_qRTData.PopData(); }
-	CWebRTDataPtr GetRTDataAtHead(void) const { return m_qRTData.GetHead(); }
-	auto GetRTDataQueueSize(void) { return m_qRTData.Size(); }
+	CWebRTDataPtr PopRTData() { return m_qRTData.PopData(); }
+	CWebRTDataPtr GetRTDataAtHead() const { return m_qRTData.GetHead(); }
+	auto GetRTDataQueueSize() { return m_qRTData.Size(); }
 	// 清空存储实时数据的队列
-	void ClearRTDataDeque(void);
+	void ClearRTDataDeque();
 
-	bool IsVolumeConsistence(void) noexcept;
+	bool IsVolumeConsistence() noexcept;
 
 	//日线相关函数
 	// 日线历史数据
-	size_t GetDayLineSize(void) const noexcept { return m_dataDayLine.Size(); }
-	bool HaveNewDayLineData(void);
-	void UnloadDayLine(void) noexcept { m_dataDayLine.Unload(); }
+	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
+	bool HaveNewDayLineData();
+	void UnloadDayLine() noexcept { m_dataDayLine.Unload(); }
 	bool StoreDayLine(const CDayLinePtr& pDayLine) { return m_dataDayLine.StoreData(pDayLine); }
 	CDayLinePtr GetDayLine(const long lIndex) const { return static_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
 	void ShowDayLine(CDC* pDC, const CRect rectClient) { m_dataDayLine.ShowData(pDC, rectClient); }
@@ -356,38 +356,38 @@ public:
 	void Get120DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS120(vRS); }
 
 	// 日线相对强度计算
-	bool CalculateDayLineRS(void) { return m_dataDayLine.CalculateRS0(); }
-	bool CalculateDayLineRSIndex(void) { return m_dataDayLine.CalculateRSIndex0(); }
-	bool CalculateDayLineRSLogarithm(void) { return m_dataDayLine.CalculateRSLogarithm0(); }
+	bool CalculateDayLineRS() { return m_dataDayLine.CalculateRS0(); }
+	bool CalculateDayLineRSIndex() { return m_dataDayLine.CalculateRSIndex0(); }
+	bool CalculateDayLineRSLogarithm() { return m_dataDayLine.CalculateRSLogarithm0(); }
 
-	bool IsDayLineDBUpdated(void) const noexcept { return (m_fDayLineDBUpdated); }
+	bool IsDayLineDBUpdated() const noexcept { return (m_fDayLineDBUpdated); }
 	void SetDayLineDBUpdated(const bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
-	bool IsDayLineLoaded(void) const noexcept { return m_dataDayLine.IsDataLoaded(); }
+	bool IsDayLineLoaded() const noexcept { return m_dataDayLine.IsDataLoaded(); }
 	void SetDayLineLoaded(const bool fFlag) noexcept { m_dataDayLine.SetDataLoaded(fFlag); }
 
 	// 提取网易日线历史数据各函数
-	void UpdateStatusByDownloadedDayLine(void);
+	void UpdateStatusByDownloadedDayLine();
 
 	void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine) { m_dataDayLine.UpdateData(vTempDayLine); }
 
-	void ReportDayLineDownLoaded(void);
+	void ReportDayLineDownLoaded();
 
 	// 周线相关函数
-	size_t GetWeekLineSize(void) const noexcept { return m_dataWeekLine.Size(); }
+	size_t GetWeekLineSize() const noexcept { return m_dataWeekLine.Size(); }
 	CWeekLinePtr GetWeekLine(const long lIndex) const { return static_pointer_cast<CWeekLine>(m_dataWeekLine.GetData(lIndex)); }
-	void UnloadWeekLine(void) noexcept { m_dataWeekLine.Unload(); }
+	void UnloadWeekLine() noexcept { m_dataWeekLine.Unload(); }
 	bool CalculatingWeekLine(long lStartDate);
 	bool StoreWeekLine(const CWeekLinePtr& pWeekLine) { return m_dataWeekLine.StoreData(pWeekLine); }
-	bool IsWeekLineLoaded(void) const noexcept { return m_dataWeekLine.IsDataLoaded(); }
+	bool IsWeekLineLoaded() const noexcept { return m_dataWeekLine.IsDataLoaded(); }
 	void SetWeekLineLoaded(const bool fFlag) noexcept { m_dataWeekLine.SetDataLoaded(fFlag); }
 	// 周线相对强度计算
-	bool CalculateWeekLineRS(void) { return m_dataWeekLine.CalculateRS0(); }
-	bool CalculateWeekLineRSIndex(void) { return m_dataWeekLine.CalculateRSIndex0(); }
-	bool CalculateWeekLineRSLogarithm(void) { return m_dataWeekLine.CalculateRSLogarithm0(); }
+	bool CalculateWeekLineRS() { return m_dataWeekLine.CalculateRS0(); }
+	bool CalculateWeekLineRSIndex() { return m_dataWeekLine.CalculateRSIndex0(); }
+	bool CalculateWeekLineRSLogarithm() { return m_dataWeekLine.CalculateRSLogarithm0(); }
 
 	// 当前被处理历史数据容器
-	CVirtualDataHistoryCandleExtend* GetDataChinaDayLine(void) noexcept { return &m_dataDayLine; }
-	CVirtualDataHistoryCandleExtend* GetDataChinaWeekLine(void) noexcept { return &m_dataWeekLine; }
+	CVirtualDataHistoryCandleExtend* GetDataChinaDayLine() noexcept { return &m_dataDayLine; }
+	CVirtualDataHistoryCandleExtend* GetDataChinaWeekLine() noexcept { return &m_dataWeekLine; }
 
 public:
 	// 测试专用函数

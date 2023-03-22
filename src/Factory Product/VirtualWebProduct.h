@@ -17,34 +17,34 @@ public:
 	CVirtualWebProduct();
 	virtual ~CVirtualWebProduct() = default;
 
-	virtual CString CreateMessage(void) { return _T(""); };
+	virtual CString CreateMessage() { return _T(""); };
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) { return true; };
-	virtual bool AddInaccessibleExchangeIfNeeded(void) { return true; } // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
+	virtual bool AddInaccessibleExchangeIfNeeded() { return true; } // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 
 	bool CheckInaccessible(CWebDataPtr pWebData);
 	bool CheckVoidJson(const CWebDataPtr& pWebData);
 
-	bool IsVoidData(void) const noexcept { return m_iReceivedDataStatus == VOID_DATA_; }
+	bool IsVoidData() const noexcept { return m_iReceivedDataStatus == VOID_DATA_; }
 	virtual bool CheckNoRightToAccess(CWebDataPtr pWebData) { return false; }
-	bool IsNoRightToAccess(void) const noexcept { return m_iReceivedDataStatus == NO_ACCESS_RIGHT_; }
+	bool IsNoRightToAccess() const noexcept { return m_iReceivedDataStatus == NO_ACCESS_RIGHT_; }
 
-	CString GetClassName(void) const noexcept { return m_strClassName; }
-	CString GetInquiry(void) const noexcept { return m_strInquiry; }
-	CString GetInquiryFunction(void) const noexcept { return m_strInquiryFunction; }
+	CString GetClassName() const noexcept { return m_strClassName; }
+	CString GetInquiry() const noexcept { return m_strInquiry; }
+	CString GetInquiryFunction() const noexcept { return m_strInquiryFunction; }
 	void SetInquiryFunction(CString strMessage) noexcept { m_strInquiryFunction = strMessage; }
 
-	long GetIndex(void) const noexcept { return m_lIndex; }
+	long GetIndex() const noexcept { return m_lIndex; }
 	void SetIndex(const long lIndex) noexcept { m_lIndex = lIndex; }
 
-	[[nodiscard]] CVirtualMarket* GetMarket(void) const noexcept { return m_pMarket; }
+	[[nodiscard]] CVirtualMarket* GetMarket() const noexcept { return m_pMarket; }
 	void SetMarket(CVirtualMarket* pMarket) noexcept { m_pMarket = pMarket; }
 
 	void SetInquiringExchange(const CString& exchange) noexcept { m_strInquiringExchange = exchange; }
-	CString GetInquiringExchange(void) const noexcept { return m_strInquiringExchange; }
-	bool IsUSMarket(void) const; // 如果是美国市场
+	CString GetInquiringExchange() const noexcept { return m_strInquiringExchange; }
+	bool IsUSMarket() const; // 如果是美国市场
 
 	void SetProductType(const int iProductType) noexcept { m_iProductType = iProductType; }
-	int GetProductType(void) const noexcept { return m_iProductType; }
+	int GetProductType() const noexcept { return m_iProductType; }
 
 protected:
 	CVirtualMarket* m_pMarket; // 该产品所属的市场

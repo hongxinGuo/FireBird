@@ -10,7 +10,7 @@ public:
 
 	// 实现
 	void TruncateList(long lNumberOfTruncation = 1000);
-	void SetCurAtLastLine(void);
+	void SetCurAtLastLine();
 
 public:
 	~COutputList() override;

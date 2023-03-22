@@ -5,17 +5,17 @@
 class CStockSection {
 public:
 	CStockSection();
-	virtual ~CStockSection(void) = default;
+	virtual ~CStockSection() = default;
 
-	bool IsActive(void) const noexcept { return m_fActive; }
+	bool IsActive() const noexcept { return m_fActive; }
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
-	long GetIndexNumber(void) const noexcept { return m_lIndexNumber; }
+	long GetIndexNumber() const noexcept { return m_lIndexNumber; }
 	void SetIndexNumber(const long lNumber) noexcept { m_lIndexNumber = lNumber; }
-	WORD GetMarket(void) const noexcept { return m_wMarket; }
+	WORD GetMarket() const noexcept { return m_wMarket; }
 	void SetMarket(const WORD wMarket) noexcept { m_wMarket = wMarket; }
-	CString GetComment(void) const { return m_strComment; }
+	CString GetComment() const { return m_strComment; }
 	void SetComment(const CString strComment) { m_strComment = strComment; }
-	bool IsBuildStockPtr(void) const noexcept { return m_fBuildStockPtr; }
+	bool IsBuildStockPtr() const noexcept { return m_fBuildStockPtr; }
 	void SetBuildStockPtr(const bool fFlag) noexcept { m_fBuildStockPtr = fFlag; }
 
 protected:

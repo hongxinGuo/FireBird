@@ -11,11 +11,11 @@ using std::make_shared;
 
 namespace FireBirdTest {
 	class jsonParseTest : public testing::Test {
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			gl_systemStatus.SetWorkingMode(false);
 
 			GeneralCheck();

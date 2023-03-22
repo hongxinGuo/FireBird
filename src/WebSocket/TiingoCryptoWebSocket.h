@@ -32,9 +32,9 @@ using CTiingoCryptoSocketPtr = shared_ptr<CTiingoCryptoSocket>;
 class CTiingoCryptoWebSocket : public CVirtualWebSocket {
 public:
 	CTiingoCryptoWebSocket();
-	~CTiingoCryptoWebSocket(void) override = default;
+	~CTiingoCryptoWebSocket() override = default;
 
-	bool Connect(void) override;
+	bool Connect() override;
 	bool Send(vectorString vSymbol) override;
 
 	bool CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol);

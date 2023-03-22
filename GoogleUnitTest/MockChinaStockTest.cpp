@@ -14,23 +14,23 @@ using namespace testing;
 namespace FireBirdTest {
 	class CMockChinaStockTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 
 			pStock = make_shared<CMockChinaStock>();
 			gl_pChinaMarket->CalculateTime();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			gl_systemStatus.SetExitingSystem(false);
 			gl_pChinaMarket->CalculateTime();

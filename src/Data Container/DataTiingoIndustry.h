@@ -6,10 +6,10 @@ class CDataTiingoIndustry {
 public:
 	CDataTiingoIndustry();
 	virtual ~CDataTiingoIndustry() = default;
-	void Reset(void);
+	void Reset();
 
-	size_t GetTotalTiingoIndustry(void) const noexcept { return m_vTiingoIndustry.size(); }
-	long GetLastTotalTiingoIndustry(void) const noexcept { return m_lLastTotalTiingoIndustry; }
+	size_t GetTotalTiingoIndustry() const noexcept { return m_vTiingoIndustry.size(); }
+	long GetLastTotalTiingoIndustry() const noexcept { return m_lLastTotalTiingoIndustry; }
 
 	bool IsTiingoIndustry(const CString& strTiingoIndustry) const {
 		if (!m_mapTiingoIndustry.contains(strTiingoIndustry)) return true;
@@ -21,8 +21,8 @@ public:
 	void Add(CTiingoIndustryPtr pTiingoIndustry);
 	bool Delete(CTiingoIndustryPtr pTiingoIndustry);
 
-	bool UpdateDB(void);
-	bool LoadDB(void);
+	bool UpdateDB();
+	bool LoadDB();
 
 protected:
 	vector<CTiingoIndustryPtr> m_vTiingoIndustry;

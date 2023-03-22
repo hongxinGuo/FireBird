@@ -7,20 +7,20 @@ class CContainerWorldStock final : public CContainerVirtualStock {
 public:
 	CContainerWorldStock();
 	~CContainerWorldStock() override = default;
-	void Reset(void) override;
+	void Reset() override;
 
 	CWorldStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CWorldStock>(Get(lIndex)); }
 	CWorldStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CWorldStock>(Get(strStockCode)); }
 
-	void ResetEPSSurprise(void);
-	void ResetPeer(void);
-	void ResetBasicFinancial(void);
-	void ResetDayLine(void);
+	void ResetEPSSurprise();
+	void ResetPeer();
+	void ResetBasicFinancial();
+	void ResetDayLine();
 
-	bool LoadDB(void);
-	void UpdateProfileDB(void);
+	bool LoadDB();
+	void UpdateProfileDB();
 
-	bool UpdateBasicFinancialDB(void);
+	bool UpdateBasicFinancialDB();
 	static bool UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock);
 	static bool UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock);
 	bool UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock);
@@ -28,10 +28,10 @@ public:
 
 	static bool ValidateStockSymbol(CWorldStockPtr pStock);
 
-	bool IsUpdateCompanyNewsDB(void);
-	bool IsUpdateBasicFinancialDB(void);
-	bool IsSaveInsiderTransaction(void);
-	bool IsSaveInsiderSentiment(void);
+	bool IsUpdateCompanyNewsDB();
+	bool IsUpdateBasicFinancialDB();
+	bool IsSaveInsiderTransaction();
+	bool IsSaveInsiderSentiment();
 
 protected:
 };

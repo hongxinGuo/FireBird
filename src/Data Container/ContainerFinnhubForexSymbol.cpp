@@ -10,13 +10,13 @@ CContainerFinnhubForexSymbol::CContainerFinnhubForexSymbol() {
 	CContainerFinnhubForexSymbol::Reset();
 }
 
-void CContainerFinnhubForexSymbol::Reset(void) {
+void CContainerFinnhubForexSymbol::Reset() {
 	CContainerVirtualStock::Reset();
 
 	m_lastTotalSymbol = 0;
 }
 
-bool CContainerFinnhubForexSymbol::LoadDB(void) {
+bool CContainerFinnhubForexSymbol::LoadDB() {
 	CSetFinnhubForexSymbol setForexSymbol;
 
 	setForexSymbol.m_strSort = _T("[Symbol]");
@@ -41,7 +41,7 @@ bool CContainerFinnhubForexSymbol::LoadDB(void) {
 	return true;
 }
 
-bool CContainerFinnhubForexSymbol::UpdateDB(void) {
+bool CContainerFinnhubForexSymbol::UpdateDB() {
 	const auto lTotalForexSymbol = m_vStock.size();
 	CForexSymbolPtr pSymbol;
 	CSetFinnhubForexSymbol setForexSymbol;

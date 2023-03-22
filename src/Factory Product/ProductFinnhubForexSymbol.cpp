@@ -13,7 +13,7 @@ CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubForexSymbol::CreateMessage(void) {
+CString CProductFinnhubForexSymbol::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto strParam = dynamic_cast<CWorldMarket*>(m_pMarket)->GetForexExchange(m_lIndex);

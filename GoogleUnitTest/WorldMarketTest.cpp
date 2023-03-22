@@ -23,20 +23,20 @@ using namespace testing;
 namespace FireBirdTest {
 	class CWorldMarketTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			EXPECT_THAT(gl_systemMessage.InformationSize(), 0);
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			gl_pFinnhubDataSource->SetInquiring(false);
 

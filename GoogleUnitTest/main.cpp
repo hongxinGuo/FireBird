@@ -89,11 +89,11 @@ namespace FireBirdTest {
 	class TestEnvironment : public Environment {
 		// 全局初始化，由main()函数调用。
 	public:
-		TestEnvironment(void) = default;
+		TestEnvironment() = default;
 
 		~TestEnvironment() override = default;
 
-		void SetUp(void) override {
+		void SetUp() override {
 			ASSERT(!gl_systemStatus.IsWorkingMode());
 			time(&gl_tUTC);
 
@@ -165,7 +165,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// 这里要故意将几个Mock全局变量设置为nullptr，这样就能够在测试输出窗口（不是Test Expxplorer窗口）中得到测试结果。
 			GeneralCheck();
 

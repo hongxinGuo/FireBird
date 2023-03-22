@@ -14,13 +14,13 @@ namespace FireBirdTest {
 	template <typename T>
 	class CTemplateMutexAccessQueueTest : public ::testing::Test {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			m_data1 = make_shared<T>();
 			m_data2 = make_shared<T>();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			m_qDataTest.Reset();
 			GeneralCheck();

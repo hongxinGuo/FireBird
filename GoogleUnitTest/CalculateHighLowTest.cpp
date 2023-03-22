@@ -60,7 +60,7 @@ namespace FireBirdTest {
 
 	class StockHighLlowLImitTest : public::testing::TestWithParam<HighLowData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			HighLowData* pData = GetParam();
 			pRTData = make_shared<CWebRTData>();
@@ -73,7 +73,7 @@ namespace FireBirdTest {
 			m_stock.SetSymbol(pData->m_strSymbol);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}

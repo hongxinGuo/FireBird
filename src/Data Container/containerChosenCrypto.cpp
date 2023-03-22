@@ -10,11 +10,11 @@ CContainerChosenCrypto::CContainerChosenCrypto() {
 	CContainerChosenCrypto::Reset();
 }
 
-void CContainerChosenCrypto::Reset(void) {
+void CContainerChosenCrypto::Reset() {
 	m_lChosenCryptoPos = 0;
 }
 
-bool CContainerChosenCrypto::LoadDB(void) {
+bool CContainerChosenCrypto::LoadDB() {
 	CSetWorldChosenCrypto setWorldChosenCrypto;
 	CFinnhubCryptoSymbolPtr pCrypto = nullptr;
 

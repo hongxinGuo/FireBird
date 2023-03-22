@@ -14,7 +14,7 @@ CProductFinnhubCompanyBasicFinancial::CProductFinnhubCompanyBasicFinancial() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubCompanyBasicFinancial::CreateMessage(void) {
+CString CProductFinnhubCompanyBasicFinancial::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	CString strMessage;

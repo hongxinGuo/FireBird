@@ -10,7 +10,7 @@ public:
 	CTiingoCryptoSymbol();
 	~CTiingoCryptoSymbol() = default;
 
-	void Reset(void);
+	void Reset();
 
 	void Load(CSetTiingoCrypto& setTiingoCrypto);
 	void Append(CSetTiingoCrypto& setTiingoCrypto);

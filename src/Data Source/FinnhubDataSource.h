@@ -5,72 +5,72 @@
 
 class CFinnhubDataSource : public CVirtualDataSource {
 public:
-	CFinnhubDataSource(void);
-	~CFinnhubDataSource(void) override = default;
+	CFinnhubDataSource();
+	~CFinnhubDataSource() override = default;
 
-	bool Reset(void) override;
-	void UpdateStatus(void) override;
+	bool Reset() override;
+	void UpdateStatus() override;
 	bool GenerateInquiryMessage(long lCurrentTime) override;
 
-	void ConfigureSession(void) override;
+	void ConfigureSession() override;
 	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 
 	bool InquireFinnhub(long lCurrentTime);
 
-	virtual bool InquireCountryList(void);
-	virtual bool InquireCompanySymbol(void);
-	virtual bool InquireCompanyProfileConcise(void);
-	virtual bool InquireCompanyNews(void);
+	virtual bool InquireCountryList();
+	virtual bool InquireCompanySymbol();
+	virtual bool InquireCompanyProfileConcise();
+	virtual bool InquireCompanyNews();
 	virtual bool InquireCompanyBasicFinancial();
-	virtual bool InquireStockDayLine(void);
-	virtual bool InquireRTQuote(void);
-	virtual bool InquirePeer(void);
-	virtual bool InquireInsiderTransaction(void);
-	virtual bool InquireInsiderSentiment(void);
-	virtual bool InquireEconomicCalendar(void);
-	virtual bool InquireEPSSurprise(void);
-	virtual bool InquireForexExchange(void);
-	virtual bool InquireForexSymbol(void);
-	virtual bool InquireForexDayLine(void);
-	virtual bool InquireCryptoExchange(void);
-	virtual bool InquireCryptoSymbol(void);
-	virtual bool InquireCryptoDayLine(void);
+	virtual bool InquireStockDayLine();
+	virtual bool InquireRTQuote();
+	virtual bool InquirePeer();
+	virtual bool InquireInsiderTransaction();
+	virtual bool InquireInsiderSentiment();
+	virtual bool InquireEconomicCalendar();
+	virtual bool InquireEPSSurprise();
+	virtual bool InquireForexExchange();
+	virtual bool InquireForexSymbol();
+	virtual bool InquireForexDayLine();
+	virtual bool InquireCryptoExchange();
+	virtual bool InquireCryptoSymbol();
+	virtual bool InquireCryptoDayLine();
 
-	bool IsUpdateCountryList(void) const noexcept { return m_fUpdateCountryList; }
+	bool IsUpdateCountryList() const noexcept { return m_fUpdateCountryList; }
 	void SetUpdateCountryList(const bool fFlag) noexcept { m_fUpdateCountryList = fFlag; }
-	bool IsUpdateSymbol(void) const noexcept { return m_fUpdateSymbol; }
+	bool IsUpdateSymbol() const noexcept { return m_fUpdateSymbol; }
 	void SetUpdateSymbol(const bool fFlag) noexcept { m_fUpdateSymbol = fFlag; }
-	bool IsUpdateStockProfile(void) const noexcept { return m_fUpdateStockProfile; }
+	bool IsUpdateStockProfile() const noexcept { return m_fUpdateStockProfile; }
 	void SetUpdateStockProfile(const bool fFlag) noexcept { m_fUpdateStockProfile = fFlag; }
-	bool IsUpdateCompanyNews(void) const noexcept { return m_fUpdateCompanyNews; }
+	bool IsUpdateCompanyNews() const noexcept { return m_fUpdateCompanyNews; }
 	void SetUpdateCompanyNews(const bool fFlag) noexcept { m_fUpdateCompanyNews = fFlag; }
-	bool IsUpdateCompanyPriceMetrics(void) const noexcept { return m_fUpdateCompanyPriceMetrics; }
+	bool IsUpdateCompanyPriceMetrics() const noexcept { return m_fUpdateCompanyPriceMetrics; }
 	void SetUpdateCompanyPriceMetrics(const bool fFlag) noexcept { m_fUpdateCompanyPriceMetrics = fFlag; }
-	bool IsUpdateStockBasicFinancial(void) const noexcept { return m_fUpdateStockBasicFinancial; }
+	bool IsUpdateStockBasicFinancial() const noexcept { return m_fUpdateStockBasicFinancial; }
 	void SetUpdateStockBasicFinancial(const bool fFlag) noexcept { m_fUpdateStockBasicFinancial = fFlag; }
-	bool IsUpdateStockDayLine(void) const noexcept { return m_fUpdateStockDayLine; }
+	bool IsUpdateStockDayLine() const noexcept { return m_fUpdateStockDayLine; }
 	void SetUpdateStockDayLine(const bool fFlag) noexcept { m_fUpdateStockDayLine = fFlag; }
-	bool IsUpdateForexExchange(void) const noexcept { return m_fUpdateForexExchange; }
+	bool IsUpdateForexExchange() const noexcept { return m_fUpdateForexExchange; }
 	void SetUpdateForexExchange(const bool fFlag) noexcept { m_fUpdateForexExchange = fFlag; }
-	bool IsUpdateForexSymbol(void) const noexcept { return m_fUpdateForexSymbol; }
+	bool IsUpdateForexSymbol() const noexcept { return m_fUpdateForexSymbol; }
 	void SetUpdateForexSymbol(const bool fFlag) noexcept { m_fUpdateForexSymbol = fFlag; }
-	bool IsUpdateForexDayLine(void) const noexcept { return m_fUpdateForexDayLine; }
+	bool IsUpdateForexDayLine() const noexcept { return m_fUpdateForexDayLine; }
 	void SetUpdateForexDayLine(const bool fFlag) noexcept { m_fUpdateForexDayLine = fFlag; }
-	bool IsUpdateCryptoExchange(void) const noexcept { return m_fUpdateCryptoExchange; }
+	bool IsUpdateCryptoExchange() const noexcept { return m_fUpdateCryptoExchange; }
 	void SetUpdateCryptoExchange(const bool fFlag) noexcept { m_fUpdateCryptoExchange = fFlag; }
-	bool IsUpdateCryptoSymbol(void) const noexcept { return m_fUpdateCryptoSymbol; }
+	bool IsUpdateCryptoSymbol() const noexcept { return m_fUpdateCryptoSymbol; }
 	void SetUpdateCryptoSymbol(const bool fFlag) noexcept { m_fUpdateCryptoSymbol = fFlag; }
-	bool IsUpdateCryptoDayLine(void) const noexcept { return m_fUpdateCryptoDayLine; }
+	bool IsUpdateCryptoDayLine() const noexcept { return m_fUpdateCryptoDayLine; }
 	void SetUpdateCryptoDayLine(const bool fFlag) noexcept { m_fUpdateCryptoDayLine = fFlag; }
-	bool IsUpdatePeer(void) const noexcept { return m_fUpdatePeer; }
+	bool IsUpdatePeer() const noexcept { return m_fUpdatePeer; }
 	void SetUpdatePeer(const bool fFlag) noexcept { m_fUpdatePeer = fFlag; }
-	bool IsUpdateInsiderTransaction(void) const noexcept { return m_fUpdateInsiderTransaction; }
+	bool IsUpdateInsiderTransaction() const noexcept { return m_fUpdateInsiderTransaction; }
 	void SetUpdateInsiderTransaction(const bool fFlag) noexcept { m_fUpdateInsiderTransaction = fFlag; }
-	bool IsUpdateInsiderSentiment(void) const noexcept { return m_fUpdateInsiderSentiment; }
+	bool IsUpdateInsiderSentiment() const noexcept { return m_fUpdateInsiderSentiment; }
 	void SetUpdateInsiderSentiment(const bool fFlag) noexcept { m_fUpdateInsiderSentiment = fFlag; }
-	bool IsUpdateEconomicCalendar(void) const noexcept { return m_fUpdateEconomicCalendar; }
+	bool IsUpdateEconomicCalendar() const noexcept { return m_fUpdateEconomicCalendar; }
 	void SetUpdateEconomicCalendar(const bool fFlag) noexcept { m_fUpdateEconomicCalendar = fFlag; }
-	bool IsUpdateEPSSurprise(void) const noexcept { return m_fUpdateEPSSurprise; }
+	bool IsUpdateEPSSurprise() const noexcept { return m_fUpdateEPSSurprise; }
 	void SetUpdateEPSSurprise(const bool fFlag) noexcept { m_fUpdateEPSSurprise = fFlag; }
 
 protected:

@@ -226,7 +226,7 @@ bool CVirtualDataHistoryCandleExtend::GetStartEndDate(long& lStartDate, long& lE
 	return true;
 }
 
-void CVirtualDataHistoryCandleExtend::Reset(void) {
+void CVirtualDataHistoryCandleExtend::Reset() {
 	m_vHistoryData.clear();
 
 	m_fDataLoaded = false;
@@ -235,7 +235,7 @@ void CVirtualDataHistoryCandleExtend::Reset(void) {
 	m_fLoadDataFirst = false;
 }
 
-bool CVirtualDataHistoryCandleExtend::CalculateRS0(void) {
+bool CVirtualDataHistoryCandleExtend::CalculateRS0() {
 	CalculateRS1(3);
 	CalculateRS1(5);
 	CalculateRS1(10);
@@ -245,7 +245,7 @@ bool CVirtualDataHistoryCandleExtend::CalculateRS0(void) {
 	return true;
 }
 
-bool CVirtualDataHistoryCandleExtend::CalculateRSLogarithm0(void) {
+bool CVirtualDataHistoryCandleExtend::CalculateRSLogarithm0() {
 	CalculateRSLogarithm1(3);
 	CalculateRSLogarithm1(5);
 	CalculateRSLogarithm1(10);
@@ -255,7 +255,7 @@ bool CVirtualDataHistoryCandleExtend::CalculateRSLogarithm0(void) {
 	return true;
 }
 
-bool CVirtualDataHistoryCandleExtend::CalculateRSIndex0(void) {
+bool CVirtualDataHistoryCandleExtend::CalculateRSIndex0() {
 	CalculateRSIndex1(3);
 	CalculateRSIndex1(5);
 	CalculateRSIndex1(10);

@@ -19,10 +19,10 @@ public:
 
 	~CProductTengxunDayLine() override = default;
 
-	CString CreateMessage(void) final;
+	CString CreateMessage() final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
-	bool ReceivedAllData(void);
+	bool ReceivedAllData();
 
 	static void Reset() {
 		sm_vDayLinePtr.resize(0);

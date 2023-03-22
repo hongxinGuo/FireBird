@@ -18,7 +18,7 @@ CProductTengxunDayLine::CProductTengxunDayLine() {
 	m_lCurrentStockPosition = 0;
 }
 
-CString CProductTengxunDayLine::CreateMessage(void) {
+CString CProductTengxunDayLine::CreateMessage() {
 	return m_strInquiryFunction; // 腾讯日线数据的申请字符串目前由CTengxunDayLineDataSource类完成，本Product无需动作。
 }
 
@@ -95,7 +95,7 @@ void CProductTengxunDayLine::CheckAndPrepareDayLine() {
 	}
 }
 
-bool CProductTengxunDayLine::ReceivedAllData(void) {
+bool CProductTengxunDayLine::ReceivedAllData() {
 	if (sm_iCurrentNumber >= sm_iInquiryNumber) return true;
 	return false;
 }

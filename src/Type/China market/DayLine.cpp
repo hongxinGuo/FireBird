@@ -6,6 +6,6 @@ CDayLine::CDayLine() : CVirtualHistoryCandleExtend() {
 	CDayLine::Reset();
 }
 
-void CDayLine::Reset(void) {
+void CDayLine::Reset() {
 	CVirtualHistoryCandleExtend::Reset();
 }

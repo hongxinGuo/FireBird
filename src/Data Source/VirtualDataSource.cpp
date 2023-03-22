@@ -13,7 +13,7 @@ using std::thread;
 
 atomic_long CVirtualDataSource::sm_lTotalByteRead = 0;
 
-CVirtualDataSource::CVirtualDataSource(void) {
+CVirtualDataSource::CVirtualDataSource() {
 	m_pCurrentProduct = nullptr;
 	m_fEnable = true; // 默认为允许执行
 
@@ -96,7 +96,7 @@ bool CVirtualDataSource::GetWebDataAndProcessIt() {
 //
 //
 //////////////////////////////////////////////
-bool CVirtualDataSource::ProcessWebDataReceived(void) {
+bool CVirtualDataSource::ProcessWebDataReceived() {
 	bool bProcessed = false;
 	//ASSERT(HaveReceivedData());
 	if (HaveReceivedData()) {
@@ -122,7 +122,7 @@ void CVirtualDataSource::CheckInaccessible(CWebDataPtr pWebData) const {
 	}
 }
 
-void CVirtualDataSource::SetDefaultSessionOption(void) const {
+void CVirtualDataSource::SetDefaultSessionOption() const {
 	DWORD dwValue = 0;
 
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
@@ -135,21 +135,21 @@ void CVirtualDataSource::SetDefaultSessionOption(void) const {
 	m_pSession->QueryOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, dwValue); // 查询接收超时时间
 }
 
-void CVirtualDataSource::GenerateCurrentInquiryMessage(void) {
+void CVirtualDataSource::GenerateCurrentInquiryMessage() {
 	ASSERT(m_pCurrentProduct != nullptr);
 	m_strInquiryFunction = m_pCurrentProduct->CreateMessage();
 	CreateTotalInquiringString();
 }
 
-bool CVirtualDataSource::GetWebData(void) {
+bool CVirtualDataSource::GetWebData() {
 	return Read();
 }
 
-void CVirtualDataSource::PrepareReadingWebData(void) {
+void CVirtualDataSource::PrepareReadingWebData() {
 	ConfigureSession();
 }
 
-bool CVirtualDataSource::Read(void) {
+bool CVirtualDataSource::Read() {
 	bool bSucceed = true;
 	PrepareReadingWebData();
 	ReadWebData();
@@ -182,7 +182,7 @@ bool CVirtualDataSource::Read(void) {
 // 设置连接120秒超时和接收120秒超时、发送2秒超时、重复2次，这样应该能够满足所有网络要求。目前接收数据最长的是申请Tiingo stock，大致为60秒。--20220514
 //
 ///////////////////////////////////////////////////////////////////////////
-void CVirtualDataSource::ReadWebData(void) {
+void CVirtualDataSource::ReadWebData() {
 	SetByteRead(0);
 
 	ASSERT(m_pFile == nullptr);
@@ -259,7 +259,7 @@ long CVirtualDataSource::QueryDataLength() {
 // 此函数的耗时，皆在Read函数，故而无法加快执行速度了。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
-UINT CVirtualDataSource::ReadWebFileOneTime(void) {
+UINT CVirtualDataSource::ReadWebFileOneTime() {
 	const UINT uByteRead = m_pFile->Read(m_dataBuffer, DATA_BUFFER_SIZE_);
 	return uByteRead;
 }

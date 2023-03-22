@@ -6,7 +6,7 @@ using std::make_shared;
 
 CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() { Reset(); }
 
-void CContainerTiingoCryptoSymbol::Reset(void) {
+void CContainerTiingoCryptoSymbol::Reset() {
 	m_vTiingoCrypto.resize(0);
 	m_mapTiingoCrypto.clear();
 	m_lLastTotalTiingoCrypto = 0;
@@ -28,7 +28,7 @@ void CContainerTiingoCryptoSymbol::Add(CTiingoCryptoSymbolPtr pCryptoSymbol) {
 	m_vTiingoCrypto.push_back(pCryptoSymbol);
 }
 
-bool CContainerTiingoCryptoSymbol::LoadDB(void) {
+bool CContainerTiingoCryptoSymbol::LoadDB() {
 	CSetTiingoCrypto setCryptoSymbol;
 
 	setCryptoSymbol.m_strSort = _T("[Ticker]");
@@ -50,7 +50,7 @@ bool CContainerTiingoCryptoSymbol::LoadDB(void) {
 	return true;
 }
 
-bool CContainerTiingoCryptoSymbol::UpdateDB(void) {
+bool CContainerTiingoCryptoSymbol::UpdateDB() {
 	const long lTotalTiingoCryptoSymbol = m_vTiingoCrypto.size();
 
 	if (m_lLastTotalTiingoCrypto < lTotalTiingoCryptoSymbol) {

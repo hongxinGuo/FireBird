@@ -22,7 +22,7 @@ public:
 
 	~CTemplateMutexAccessQueue() { }
 
-	void Reset(void) {
+	void Reset() {
 		m_MutexAccessData.lock();
 		const auto lTotal = m_qData.size();
 		for (int i = 0; i < lTotal; i++) { m_qData.pop(); }
@@ -43,7 +43,7 @@ public:
 		m_MutexAccessData.unlock();
 	}
 
-	shared_ptr<T> PopData(void) {
+	shared_ptr<T> PopData() {
 		ASSERT(m_qData.size() > 0);
 		m_MutexAccessData.lock();
 		shared_ptr<T> pData = m_qData.front();
@@ -52,7 +52,7 @@ public:
 		return pData;
 	}
 
-	size_t Size(void) {
+	size_t Size() {
 		m_MutexAccessData.lock();
 		const size_t size = m_qData.size();
 		m_MutexAccessData.unlock();

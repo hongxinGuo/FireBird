@@ -11,15 +11,15 @@ using namespace testing;
 namespace FireBirdTest {
 	class CMockFireBirdViewTest : public ::testing::Test {
 	public:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 
 			s_pFireBirdView = make_shared<CMockFireBirdView>();
@@ -36,7 +36,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(s_pFireBirdView->IsShowRSInLinear());
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			gl_pChinaMarket->ResetCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			s_pFireBirdView = nullptr;

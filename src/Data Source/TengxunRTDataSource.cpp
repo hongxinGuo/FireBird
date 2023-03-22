@@ -15,7 +15,7 @@ CTengxunRTDataSource::CTengxunRTDataSource() {
 	CTengxunRTDataSource::Reset();
 }
 
-bool CTengxunRTDataSource::Reset(void) {
+bool CTengxunRTDataSource::Reset() {
 	return true;
 }
 
@@ -54,11 +54,11 @@ bool CTengxunRTDataSource::InquireRTData(const long lCurrentTime) {
 	return false;
 }
 
-void CTengxunRTDataSource::GenerateCurrentInquiryMessage(void) {
+void CTengxunRTDataSource::GenerateCurrentInquiryMessage() {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
 
-void CTengxunRTDataSource::ConfigureSession(void) {
+void CTengxunRTDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 4000); // 正常情况下Tengxun实时数据接收时间大致为300毫秒。
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 4000); // 设置接收超时时间为4000毫秒

@@ -15,7 +15,7 @@ public:
 	CTiingoStock& operator=(const CTiingoStock&&) noexcept = delete;
 	~CTiingoStock() = default;
 
-	void Reset(void);
+	void Reset();
 
 	void Load(CSetTiingoStock& setTiingoStock);
 	void Append(CSetTiingoStock& setTiingoStock);

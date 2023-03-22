@@ -20,11 +20,11 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
@@ -420,7 +420,7 @@ namespace FireBirdTest {
 
 	class CalculateSinaRTDataTest : public testing::TestWithParam<SinaRTData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			SinaRTData* pData = GetParam();
@@ -447,7 +447,7 @@ namespace FireBirdTest {
 			m_RTData.SetBuy(-1);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
@@ -1313,7 +1313,7 @@ namespace FireBirdTest {
 
 	class ReadOneValueTest : public testing::TestWithParam<ReadSinaOneCalueData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			ReadSinaOneCalueData* pData = GetParam();
 			m_pSinaWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;
@@ -1325,7 +1325,7 @@ namespace FireBirdTest {
 			m_pSinaWebRTData->ResetCurrentPos();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();

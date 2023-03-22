@@ -46,7 +46,7 @@ namespace FireBirdTest {
 
 	class TaskDistributeNeteaseRTDataToProperStockTest : public TestWithParam<NeteaseData*> {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 
 			CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
@@ -55,14 +55,14 @@ namespace FireBirdTest {
 			s_tCurrentMarketTime = GetUTCTime();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
 			pStock->SetActive(true);
 
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 
 			EXPECT_FALSE(gl_pChinaMarket->IsRTDataNeedCalculate());
@@ -81,7 +81,7 @@ namespace FireBirdTest {
 			pRTData->SetTransactionTime(s_tCurrentMarketTime + pData->m_tt);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();

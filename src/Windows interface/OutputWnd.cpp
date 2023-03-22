@@ -290,7 +290,7 @@ void COutputList::TruncateList(long lNumberOfTruncation) {
 	}
 }
 
-void COutputList::SetCurAtLastLine(void) {
+void COutputList::SetCurAtLastLine() {
 	SetCurSel(GetCount() - 1);
 	SetTopIndex(GetCount() - 1);
 }

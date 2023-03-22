@@ -21,13 +21,13 @@ using std::make_shared;
 namespace FireBirdTest {
 	class CMockFinnhubForexSymbolTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) { GeneralCheck(); }
+		static void SetUpTestSuite() { GeneralCheck(); }
 
-		static void TearDownTestSuite(void) { GeneralCheck(); }
+		static void TearDownTestSuite() { GeneralCheck(); }
 
-		void SetUp(void) override { GeneralCheck(); }
+		void SetUp() override { GeneralCheck(); }
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}

@@ -6,7 +6,7 @@ CTiingoCryptoSymbol::CTiingoCryptoSymbol() {
 	Reset();
 }
 
-void CTiingoCryptoSymbol::Reset(void) {
+void CTiingoCryptoSymbol::Reset() {
 	m_strTicker = _T("");
 	m_strName = _T("");
 	m_strDescription = _T("");

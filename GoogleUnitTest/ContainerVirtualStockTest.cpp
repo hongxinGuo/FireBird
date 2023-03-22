@@ -10,15 +10,15 @@ using namespace testing;
 namespace FireBirdTest {
 	class CContainerVirtualStockTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			CChinaStockPtr pStock = nullptr;
 
@@ -28,7 +28,7 @@ namespace FireBirdTest {
 			}
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			EXPECT_EQ(m_containerVirtualStock.Size(), 100);
 			// clearUp
 			GeneralCheck();

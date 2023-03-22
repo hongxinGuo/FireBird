@@ -11,19 +11,19 @@ using namespace testing;
 namespace FireBirdTest {
 	class CThreadBuildDayLineRSOfDateTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			gl_systemStatus.SetExitingSystem(false);
 			GeneralCheck();
 		}

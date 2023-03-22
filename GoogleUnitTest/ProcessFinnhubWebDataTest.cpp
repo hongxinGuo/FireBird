@@ -65,7 +65,7 @@ namespace FireBirdTest {
 
 	class ProcessOneFinnhubWebSocketDataTest : public::testing::TestWithParam<FinnhubWebSocketData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			EXPECT_FALSE(m_finnhubWebSocket.IsReceivingData());
 
@@ -75,7 +75,7 @@ namespace FireBirdTest {
 			m_pWebData = make_shared<string>(pData->m_pData);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();

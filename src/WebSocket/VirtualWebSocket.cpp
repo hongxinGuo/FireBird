@@ -23,7 +23,7 @@ CVirtualWebSocket::~CVirtualWebSocket() {
 	CVirtualWebSocket::Disconnect();
 }
 
-void CVirtualWebSocket::Reset(void) {
+void CVirtualWebSocket::Reset() {
 	m_iSubscriptionId = 0;
 	m_fReceivingData = false;
 }
@@ -75,7 +75,7 @@ bool CVirtualWebSocket::DeleteSymbol(const string& sSymbol) {
 	return true;
 }
 
-void CVirtualWebSocket::ClearSymbol(void) {
+void CVirtualWebSocket::ClearSymbol() {
 	m_vSymbol.resize(0);
 	m_mapSymbol.clear();
 }
@@ -105,7 +105,7 @@ bool CVirtualWebSocket::Connecting(string url, const ix::OnMessageCallback& call
 	return true;
 }
 
-bool CVirtualWebSocket::Disconnect(void) {
+bool CVirtualWebSocket::Disconnect() {
 	if (GetState() != ix::ReadyState::Closed) {
 		StopWebSocket();
 	}
@@ -124,14 +124,14 @@ UINT ThreadDisconnectWebSocket(not_null<CVirtualWebSocket*> pWebSocket) {
 	return 70;
 }
 
-bool CVirtualWebSocket::CreateThreadDisconnectWebSocket(void) {
+bool CVirtualWebSocket::CreateThreadDisconnectWebSocket() {
 	thread thread1(ThreadDisconnectWebSocket, this);
 	thread1.detach();
 
 	return true;
 }
 
-bool CVirtualWebSocket::DisconnectWithoutWaitingSucceed(void) {
+bool CVirtualWebSocket::DisconnectWithoutWaitingSucceed() {
 	if (GetState() != ix::ReadyState::Closed) {
 		StopWebSocket();
 	}

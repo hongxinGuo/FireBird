@@ -12,21 +12,21 @@ namespace FireBirdTest {
 	CMockNeteaseRTDataSourcePtr m_pMockNeteaseRTDataSource; // 网易实时数据采集
 	class CMockNeteaseRTDataSourceTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			m_pMockNeteaseRTDataSource = make_shared<CMockNeteaseRTDataSource>();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			m_pMockNeteaseRTDataSource = nullptr;
 			GeneralCheck();

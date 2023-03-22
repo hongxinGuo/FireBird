@@ -17,7 +17,7 @@ CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubEconomicCountryList::CreateMessage(void) {
+CString CProductFinnhubEconomicCountryList::CreateMessage() {
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
 }

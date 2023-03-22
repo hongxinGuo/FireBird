@@ -60,7 +60,7 @@ CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() : CVirtualWebSocket() { m_url =
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
-bool CTiingoCryptoWebSocket::Connect(void) {
+bool CTiingoCryptoWebSocket::Connect() {
 	Connecting(m_url, ProcessTiingoCryptoWebSocket);
 
 	return true;

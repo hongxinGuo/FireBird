@@ -19,7 +19,7 @@ class CVirtualDataHistoryCandleExtend {
 public:
 	CVirtualDataHistoryCandleExtend();
 	virtual ~CVirtualDataHistoryCandleExtend() = default;
-	void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
+	void Reset(); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
 	// 所有的派生类皆需要定义此两个存储和提取函数，不允许调用此基类函数
 	virtual bool SaveDB(const CString&) {
@@ -46,12 +46,12 @@ protected:
 	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, const CString& strStockSymbol = _T(""));
 
 public:
-	vector<CVirtualHistoryCandleExtendPtr>* GetContainer(void) noexcept { return &m_vHistoryData; }
+	vector<CVirtualHistoryCandleExtendPtr>* GetContainer() noexcept { return &m_vHistoryData; }
 
-	long Size(void) const noexcept { return static_cast<long>(m_vHistoryData.size()); }
+	long Size() const noexcept { return static_cast<long>(m_vHistoryData.size()); }
 	bool GetStartEndDate(long& lStartDate, long& lEndDate);
 
-	void Unload(void) noexcept {
+	void Unload() noexcept {
 		m_vHistoryData.clear();
 		m_fDataLoaded = false;
 	}
@@ -63,16 +63,16 @@ public:
 		return true;
 	}
 
-	bool IsDatabaseTodayUpdated(void) const noexcept { return (m_fDatabaseTodayUpdated); }
+	bool IsDatabaseTodayUpdated() const noexcept { return (m_fDatabaseTodayUpdated); }
 	void SetDatabaseTodayUpdated(const bool fUpdate) noexcept { m_fDatabaseTodayUpdated = fUpdate; }
-	bool IsDataLoaded(void) const noexcept { return m_fDataLoaded; }
+	bool IsDataLoaded() const noexcept { return m_fDataLoaded; }
 	void SetDataLoaded(const bool fFlag) noexcept { m_fDataLoaded = fFlag; }
 
-	bool CalculateRS0(void);
+	bool CalculateRS0();
 	virtual bool CalculateRS1(INT64 lNumber);
-	bool CalculateRSIndex0(void);
+	bool CalculateRSIndex0();
 	virtual bool CalculateRSIndex1(INT64 lNumber);
-	bool CalculateRSLogarithm0(void);
+	bool CalculateRSLogarithm0();
 	virtual bool CalculateRSLogarithm1(INT64 lNumber);
 
 	void GetRS1(vector<double>& vRS);

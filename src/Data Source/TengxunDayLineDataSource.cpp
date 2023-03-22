@@ -28,7 +28,7 @@ CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 	CTengxunDayLineDataSource::Reset();
 }
 
-bool CTengxunDayLineDataSource::Reset(void) {
+bool CTengxunDayLineDataSource::Reset() {
 	m_fUpdateDayLine = true;
 	return true;
 }
@@ -54,7 +54,7 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) 
 	return false;
 }
 
-bool CTengxunDayLineDataSource::InquireDayLine(void) {
+bool CTengxunDayLineDataSource::InquireDayLine() {
 	const auto lStockSetSize = gl_pChinaMarket->GetTotalStock();
 
 	if (!IsInquiring() && IsUpdateDayLine()) {
@@ -145,11 +145,11 @@ bool CTengxunDayLineDataSource::ParseData(CWebDataPtr pWebData) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-void CTengxunDayLineDataSource::GenerateCurrentInquiryMessage(void) {
+void CTengxunDayLineDataSource::GenerateCurrentInquiryMessage() {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();// 腾讯日线的查询字符串，在生成product时即完成了
 }
 
-void CTengxunDayLineDataSource::ConfigureSession(void) {
+void CTengxunDayLineDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 60000); // 正常情况下Tengxun日线数据接收时间不超过1秒。
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 60000); // 设置接收超时时间为5秒

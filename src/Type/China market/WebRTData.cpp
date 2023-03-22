@@ -10,7 +10,7 @@
 #include"WebRTData.h"
 #include"ChinaMarket.h"
 
-void CWebRTData::Reset(void) {
+void CWebRTData::Reset() {
 	m_lDataSource = INVALID_RT_WEB_DATA_;
 	m_time = 0;
 	m_strSymbol = _T("");
@@ -36,7 +36,7 @@ void CWebRTData::Reset(void) {
 	m_fActive = false;
 }
 
-CWebRTData::CWebRTData(void) {
+CWebRTData::CWebRTData() {
 	Reset();
 }
 
@@ -263,7 +263,7 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 	}
 }
 
-bool CWebRTData::CheckSinaRTDataActive(void) {
+bool CWebRTData::CheckSinaRTDataActive() {
 	if (IsValidTime(14)) m_fActive = true;
 	else m_fActive = false;
 
@@ -786,7 +786,7 @@ bool CWebRTData::ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, char*
 	}
 }
 
-bool CWebRTData::CheckNeteaseRTDataActive(void) {
+bool CWebRTData::CheckNeteaseRTDataActive() {
 	m_fActive = false;
 	if (!IsValidTime(14)) {
 		// 非活跃股票的update时间为0，转换为time_t时为-1.

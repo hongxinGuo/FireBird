@@ -1,4 +1,4 @@
-#include"pch.h"
+Ôªø#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -31,20 +31,20 @@ using namespace testing;
 namespace FireBirdTest {
 	class CFinnhubDataSourceTest : public Test {
 	protected:
-		static void SetUpTestSuite(void) {
+		static void SetUpTestSuite() {
 			GeneralCheck();
 			ASSERT_THAT(gl_pFinnhubDataSource, NotNull());
 		}
 
-		static void TearDownTestSuite(void) {
+		static void TearDownTestSuite() {
 			GeneralCheck();
 		}
 
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 
 			GeneralCheck();
@@ -201,7 +201,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubDataSourceTest, TestUpdateStatus1) {
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateCountryList());
 
-		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
+		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 		m_FinnhubDataSource.SetCurrentInquiry(p);
 
 		p->SetProductType(ECONOMIC_COUNTRY_LIST_);
@@ -211,17 +211,17 @@ namespace FireBirdTest {
 
 		p->SetProductType(COMPANY_PROFILE_);
 		m_FinnhubDataSource.UpdateStatus();
-		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateStockProfile()) << "UpdateStatus≤ª–ﬁ∏ƒStockProfileœÓ";
+		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateStockProfile()) << "UpdateStatus‰∏ç‰øÆÊîπStockProfileÈ°π";
 		m_FinnhubDataSource.SetUpdateStockProfile(true);
 
 		p->SetProductType(COMPANY_PROFILE_CONCISE_);
 		m_FinnhubDataSource.UpdateStatus();
-		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateStockProfile()) << "UpdateStatus≤ª–ﬁ∏ƒStockProfileœÓ";
+		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateStockProfile()) << "UpdateStatus‰∏ç‰øÆÊîπStockProfileÈ°π";
 		m_FinnhubDataSource.SetUpdateStockProfile(true);
 
 		p->SetProductType(PEERS_);
 		m_FinnhubDataSource.UpdateStatus();
-		EXPECT_TRUE(m_FinnhubDataSource.IsUpdatePeer()) << "UpdateStatus≤ª–ﬁ∏ƒPeerœÓ";
+		EXPECT_TRUE(m_FinnhubDataSource.IsUpdatePeer()) << "UpdateStatus‰∏ç‰øÆÊîπPeerÈ°π";
 		m_FinnhubDataSource.SetUpdatePeer(true);
 
 		p->SetProductType(FOREX_EXCHANGE_);
@@ -236,7 +236,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestUpdateStatus2) {
-		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
+		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 		m_FinnhubDataSource.SetCurrentInquiry(p);
 
 		p->SetProductType(ECONOMIC_CALENDAR_);
@@ -253,7 +253,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateCountryList());
 		m_FinnhubDataSource.SetUpdateCountryList(false);
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireCountryList()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireCountryList()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_FALSE(m_FinnhubDataSource.InquireCountryList());
@@ -265,7 +265,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Inquiring Finnhub economic country List"));
-		CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
+		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(p->GetClassName(), _T("Finnhub economic country list"));
 		EXPECT_EQ(m_FinnhubDataSource.GetInquiryQueueSize(), 0);
 	}
@@ -286,15 +286,15 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetUpdateSymbol(true);
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanySymbol()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanySymbol()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireCompanySymbol());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockSymbol"));
-		EXPECT_EQ(p->GetIndex(), 1) << "µ⁄“ª∏ˆ¥˝≤È—ØΩª“◊À˘À˜“˝";
-		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(1)->m_fUpdated) << "≤È—Ø ±≤ª∏¸–¬£¨∏√±Í ∂‘⁄Ω” ’µΩÕ¯¬Á ˝æ›∫Û≤≈∏¸–¬";
+		EXPECT_EQ(p->GetIndex(), 1) << "Á¨¨‰∏Ä‰∏™ÂæÖÊü•ËØ¢‰∫§ÊòìÊâÄÁ¥¢Âºï";
+		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(1)->m_fUpdated) << "Êü•ËØ¢Êó∂‰∏çÊõ¥Êñ∞ÔºåËØ•Ê†áËØÜÂú®Êé•Êî∂Âà∞ÁΩëÁªúÊï∞ÊçÆÂêéÊâçÊõ¥Êñ∞";
 		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(10)->m_fUpdated);
 
 		m_FinnhubDataSource.SetInquiring(false);
@@ -303,20 +303,20 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.InquireCompanySymbol());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockSymbol"));
-		EXPECT_EQ(p->GetIndex(), 10) << "µ⁄∂˛∏ˆ¥˝≤È—ØΩª“◊À˘À˜“˝";
-		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(10)->m_fUpdated) << "≤È—Ø ±≤ª∏¸–¬£¨∏√±Í ∂‘⁄Ω” ’µΩÕ¯¬Á ˝æ›∫Û≤≈∏¸–¬";
+		EXPECT_EQ(p->GetIndex(), 10) << "Á¨¨‰∫å‰∏™ÂæÖÊü•ËØ¢‰∫§ÊòìÊâÄÁ¥¢Âºï";
+		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(10)->m_fUpdated) << "Êü•ËØ¢Êó∂‰∏çÊõ¥Êñ∞ÔºåËØ•Ê†áËØÜÂú®Êé•Êî∂Âà∞ÁΩëÁªúÊï∞ÊçÆÂêéÊâçÊõ¥Êñ∞";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		gl_pWorldMarket->GetStockExchange(10)->m_fUpdated = true;
-		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanySymbol()) << "µ⁄»˝¥Œ≤È—Ø ±√ª”–’“µΩ¥˝≤È—ØµƒΩª“◊À˘";
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateSymbol()) << "Ωª“◊À˘∂º≤È—ØÕÍ¡À";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanySymbol()) << "Á¨¨‰∏âÊ¨°Êü•ËØ¢Êó∂Ê≤°ÊúâÊâæÂà∞ÂæÖÊü•ËØ¢ÁöÑ‰∫§ÊòìÊâÄ";
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateSymbol()) << "‰∫§ÊòìÊâÄÈÉΩÊü•ËØ¢ÂÆå‰∫Ü";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock symbol..."));
 		str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("FinnhubΩª“◊À˘¥˙¬Î ˝æ›≤È—ØÕÍ±œ"));
+		EXPECT_STREQ(str, _T("Finnhub‰∫§ÊòìÊâÄ‰ª£Á†ÅÊï∞ÊçÆÊü•ËØ¢ÂÆåÊØï"));
 
-		// ª÷∏¥‘≠◊¥
+		// ÊÅ¢Â§çÂéüÁä∂
 		m_FinnhubDataSource.SetUpdateSymbol(true);
 	}
 
@@ -336,15 +336,15 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetUpdateStockProfile(true);
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanyProfileConcise()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanyProfileConcise()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireCompanyProfileConcise());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyProfileConcise"));
-		EXPECT_EQ(p->GetIndex(), 1) << "µ⁄“ª∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateCompanyProfile()) << "¥À∏¸–¬±Í ∂–Ë“™µ»¥˝¥¶¿ÌÕÍ ˝æ›∫Û≤≈…Ë÷√";
+		EXPECT_EQ(p->GetIndex(), 1) << "Á¨¨‰∏Ä‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateCompanyProfile()) << "Ê≠§Êõ¥Êñ∞Ê†áËØÜÈúÄË¶ÅÁ≠âÂæÖÂ§ÑÁêÜÂÆåÊï∞ÊçÆÂêéÊâçËÆæÁΩÆ";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdateCompanyProfile());
 		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyProfile(false);
 
@@ -352,19 +352,19 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.InquireCompanyProfileConcise());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyProfileConcise"));
-		EXPECT_EQ(p->GetIndex(), 10) << "µ⁄∂˛∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
+		EXPECT_EQ(p->GetIndex(), 10) << "Á¨¨‰∫å‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsUpdateCompanyProfile());
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdateCompanyProfile()) << "¥À∏¸–¬±Í ∂–Ë“™µ»¥˝¥¶¿ÌÕÍ ˝æ›∫Û≤≈…Ë÷√";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdateCompanyProfile()) << "Ê≠§Êõ¥Êñ∞Ê†áËØÜÈúÄË¶ÅÁ≠âÂæÖÂ§ÑÁêÜÂÆåÊï∞ÊçÆÂêéÊâçËÆæÁΩÆ";
 		gl_pWorldMarket->GetStock(10)->SetUpdateCompanyProfile(false);
 
 		m_FinnhubDataSource.SetInquiring(false);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanyProfileConcise()) << "µ⁄»˝¥Œ≤È—Ø ±√ª”–’“µΩ¥˝≤È—Øµƒπ…∆±";
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateStockProfile()) << "π…∆±∂º≤È—ØÕÍ¡À";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanyProfileConcise()) << "Á¨¨‰∏âÊ¨°Êü•ËØ¢Êó∂Ê≤°ÊúâÊâæÂà∞ÂæÖÊü•ËØ¢ÁöÑËÇ°Á•®";
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateStockProfile()) << "ËÇ°Á•®ÈÉΩÊü•ËØ¢ÂÆå‰∫Ü";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock profile..."));
 		str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhubπ…∆±ºÚΩÈ∏¸–¬ÕÍ±œ"));
+		EXPECT_STREQ(str, _T("FinnhubËÇ°Á•®ÁÆÄ‰ªãÊõ¥Êñ∞ÂÆåÊØï"));
 
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
@@ -389,15 +389,15 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetUpdateCompanyNews(true);
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanyNews()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanyNews()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireCompanyNews());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyNews"));
-		EXPECT_EQ(p->GetIndex(), 1) << "µ⁄“ª∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateCompanyNews()) << "¥À∏¸–¬±Í ∂–Ë“™µ»¥˝¥¶¿ÌÕÍ ˝æ›∫Û≤≈…Ë÷√";
+		EXPECT_EQ(p->GetIndex(), 1) << "Á¨¨‰∏Ä‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateCompanyNews()) << "Ê≠§Êõ¥Êñ∞Ê†áËØÜÈúÄË¶ÅÁ≠âÂæÖÂ§ÑÁêÜÂÆåÊï∞ÊçÆÂêéÊâçËÆæÁΩÆ";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdateCompanyNews());
 		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyNews(false);
 
@@ -405,19 +405,19 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.InquireCompanyNews());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyNews"));
-		EXPECT_EQ(p->GetIndex(), 10) << "µ⁄∂˛∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
+		EXPECT_EQ(p->GetIndex(), 10) << "Á¨¨‰∫å‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsUpdateCompanyNews());
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdateCompanyNews()) << "¥À∏¸–¬±Í ∂–Ë“™µ»¥˝¥¶¿ÌÕÍ ˝æ›∫Û≤≈…Ë÷√";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdateCompanyNews()) << "Ê≠§Êõ¥Êñ∞Ê†áËØÜÈúÄË¶ÅÁ≠âÂæÖÂ§ÑÁêÜÂÆåÊï∞ÊçÆÂêéÊâçËÆæÁΩÆ";
 		gl_pWorldMarket->GetStock(10)->SetUpdateCompanyNews(false);
 
 		m_FinnhubDataSource.SetInquiring(false);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanyNews()) << "µ⁄»˝¥Œ≤È—Ø ±√ª”–’“µΩ¥˝≤È—Øµƒπ…∆±";
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateCompanyNews()) << "π…∆±∂º≤È—ØÕÍ¡À";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanyNews()) << "Á¨¨‰∏âÊ¨°Êü•ËØ¢Êó∂Ê≤°ÊúâÊâæÂà∞ÂæÖÊü•ËØ¢ÁöÑËÇ°Á•®";
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateCompanyNews()) << "ËÇ°Á•®ÈÉΩÊü•ËØ¢ÂÆå‰∫Ü";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub company news..."));
 		str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhubπ´Àæ–¬Œ≈∏¸–¬ÕÍ±œ"));
+		EXPECT_STREQ(str, _T("FinnhubÂÖ¨Âè∏Êñ∞ÈóªÊõ¥Êñ∞ÂÆåÊØï"));
 
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
@@ -442,15 +442,15 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetUpdateInsiderSentiment(true);
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireInsiderSentiment()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireInsiderSentiment()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireInsiderSentiment());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyInsiderSentiment"));
-		EXPECT_EQ(p->GetIndex(), 1) << "µ⁄“ª∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateInsiderSentiment()) << "¥À∏¸–¬±Í ∂–Ë“™µ»¥˝¥¶¿ÌÕÍ ˝æ›∫Û≤≈…Ë÷√";
+		EXPECT_EQ(p->GetIndex(), 1) << "Á¨¨‰∏Ä‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateInsiderSentiment()) << "Ê≠§Êõ¥Êñ∞Ê†áËØÜÈúÄË¶ÅÁ≠âÂæÖÂ§ÑÁêÜÂÆåÊï∞ÊçÆÂêéÊâçËÆæÁΩÆ";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdateInsiderSentiment());
 		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderSentiment(false);
 
@@ -458,19 +458,19 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.InquireInsiderSentiment());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyInsiderSentiment"));
-		EXPECT_EQ(p->GetIndex(), 10) << "µ⁄∂˛∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
+		EXPECT_EQ(p->GetIndex(), 10) << "Á¨¨‰∫å‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsUpdateInsiderSentiment());
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdateInsiderSentiment()) << "¥À∏¸–¬±Í ∂–Ë“™µ»¥˝¥¶¿ÌÕÍ ˝æ›∫Û≤≈…Ë÷√";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdateInsiderSentiment()) << "Ê≠§Êõ¥Êñ∞Ê†áËØÜÈúÄË¶ÅÁ≠âÂæÖÂ§ÑÁêÜÂÆåÊï∞ÊçÆÂêéÊâçËÆæÁΩÆ";
 		gl_pWorldMarket->GetStock(10)->SetUpdateInsiderSentiment(false);
 
 		m_FinnhubDataSource.SetInquiring(false);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireInsiderSentiment()) << "µ⁄»˝¥Œ≤È—Ø ±√ª”–’“µΩ¥˝≤È—Øµƒπ…∆±";
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateInsiderSentiment()) << "π…∆±∂º≤È—ØÕÍ¡À";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireInsiderSentiment()) << "Á¨¨‰∏âÊ¨°Êü•ËØ¢Êó∂Ê≤°ÊúâÊâæÂà∞ÂæÖÊü•ËØ¢ÁöÑËÇ°Á•®";
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateInsiderSentiment()) << "ËÇ°Á•®ÈÉΩÊü•ËØ¢ÂÆå‰∫Ü";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock insider sentiment..."));
 		str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("US Market Insider Sentiment ˝æ›∏¸–¬ÕÍ±œ"));
+		EXPECT_STREQ(str, _T("US Market Insider SentimentÊï∞ÊçÆÊõ¥Êñ∞ÂÆåÊØï"));
 
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
@@ -495,15 +495,15 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetUpdateStockBasicFinancial(true);
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanyBasicFinancial()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanyBasicFinancial()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireCompanyBasicFinancial());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyBasicFinancial"));
-		EXPECT_EQ(p->GetIndex(), 1) << "µ⁄“ª∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateBasicFinancial()) << "¥À∏¸–¬±Í ∂–Ë“™µ»¥˝¥¶¿ÌÕÍ ˝æ›∫Û≤≈…Ë÷√";
+		EXPECT_EQ(p->GetIndex(), 1) << "Á¨¨‰∏Ä‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateBasicFinancial()) << "Ê≠§Êõ¥Êñ∞Ê†áËØÜÈúÄË¶ÅÁ≠âÂæÖÂ§ÑÁêÜÂÆåÊï∞ÊçÆÂêéÊâçËÆæÁΩÆ";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdateBasicFinancial());
 		gl_pWorldMarket->GetStock(1)->SetUpdateBasicFinancial(false);
 
@@ -511,19 +511,19 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.InquireCompanyBasicFinancial());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyBasicFinancial"));
-		EXPECT_EQ(p->GetIndex(), 10) << "µ⁄∂˛∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
+		EXPECT_EQ(p->GetIndex(), 10) << "Á¨¨‰∫å‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsUpdateBasicFinancial());
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdateBasicFinancial()) << "¥À∏¸–¬±Í ∂–Ë“™µ»¥˝¥¶¿ÌÕÍ ˝æ›∫Û≤≈…Ë÷√";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdateBasicFinancial()) << "Ê≠§Êõ¥Êñ∞Ê†áËØÜÈúÄË¶ÅÁ≠âÂæÖÂ§ÑÁêÜÂÆåÊï∞ÊçÆÂêéÊâçËÆæÁΩÆ";
 		gl_pWorldMarket->GetStock(10)->SetUpdateBasicFinancial(false);
 
 		m_FinnhubDataSource.SetInquiring(false);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanyBasicFinancial()) << "µ⁄»˝¥Œ≤È—Ø ±√ª”–’“µΩ¥˝≤È—Øµƒπ…∆±";
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateStockBasicFinancial()) << "π…∆±∂º≤È—ØÕÍ¡À";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireCompanyBasicFinancial()) << "Á¨¨‰∏âÊ¨°Êü•ËØ¢Êó∂Ê≤°ÊúâÊâæÂà∞ÂæÖÊü•ËØ¢ÁöÑËÇ°Á•®";
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateStockBasicFinancial()) << "ËÇ°Á•®ÈÉΩÊü•ËØ¢ÂÆå‰∫Ü";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock basic financials..."));
 		str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhubπ…∆±ª˘±æ≤∆ŒÒ«Èøˆ∏¸–¬ÕÍ±œ"));
+		EXPECT_STREQ(str, _T("FinnhubËÇ°Á•®Âü∫Êú¨Ë¥¢Âä°ÊÉÖÂÜµÊõ¥Êñ∞ÂÆåÊØï"));
 
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
@@ -542,22 +542,22 @@ namespace FireBirdTest {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetDayLineNeedUpdate(false);
 		}
-		gl_pWorldMarket->GetStock(3001)->SetDayLineNeedUpdate(true); // ≤‚ ‘ ˝æ›ø‚÷–£¨…œ∫£ –≥°µƒπ…∆±≈≈‘⁄«∞√Ê£®π≤2462∏ˆ£©£¨√¿π˙ –≥°µƒπ…∆±≈≈‘⁄∫Û√Ê
+		gl_pWorldMarket->GetStock(3001)->SetDayLineNeedUpdate(true); // ÊµãËØïÊï∞ÊçÆÂ∫ì‰∏≠Ôºå‰∏äÊµ∑Â∏ÇÂú∫ÁöÑËÇ°Á•®ÊéíÂú®ÂâçÈù¢ÔºàÂÖ±2462‰∏™ÔºâÔºåÁæéÂõΩÂ∏ÇÂú∫ÁöÑËÇ°Á•®ÊéíÂú®ÂêéÈù¢
 		gl_pWorldMarket->GetStock(3010)->SetDayLineNeedUpdate(true);
 		m_FinnhubDataSource.SetUpdateStockDayLine(false);
 		EXPECT_FALSE(m_FinnhubDataSource.InquireStockDayLine()) << "DayLine Updated";
 
 		m_FinnhubDataSource.SetUpdateStockDayLine(true);
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireStockDayLine()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireStockDayLine()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireStockDayLine());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockDayLine"));
-		EXPECT_EQ(p->GetIndex(), 3001) << "µ⁄“ª∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(3001)->IsDayLineNeedUpdate()) << "≤È—Ø ±≤ª∏¸–¬£¨∏√±Í ∂‘⁄Ω” ’µΩÕ¯¬Á ˝æ›∫Û≤≈∏¸–¬";
+		EXPECT_EQ(p->GetIndex(), 3001) << "Á¨¨‰∏Ä‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(3001)->IsDayLineNeedUpdate()) << "Êü•ËØ¢Êó∂‰∏çÊõ¥Êñ∞ÔºåËØ•Ê†áËØÜÂú®Êé•Êî∂Âà∞ÁΩëÁªúÊï∞ÊçÆÂêéÊâçÊõ¥Êñ∞";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(3010)->IsDayLineNeedUpdate());
 
 		m_FinnhubDataSource.SetInquiring(false);
@@ -565,20 +565,20 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.InquireStockDayLine());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockDayLine"));
-		EXPECT_EQ(p->GetIndex(), 3010) << "µ⁄“ª∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(3010)->IsDayLineNeedUpdate()) << "≤È—Ø ±≤ª∏¸–¬£¨∏√±Í ∂‘⁄Ω” ’µΩÕ¯¬Á ˝æ›∫Û≤≈∏¸–¬";
+		EXPECT_EQ(p->GetIndex(), 3010) << "Á¨¨‰∏Ä‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(3010)->IsDayLineNeedUpdate()) << "Êü•ËØ¢Êó∂‰∏çÊõ¥Êñ∞ÔºåËØ•Ê†áËØÜÂú®Êé•Êî∂Âà∞ÁΩëÁªúÊï∞ÊçÆÂêéÊâçÊõ¥Êñ∞";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		gl_pWorldMarket->GetStock(3010)->SetDayLineNeedUpdate(false);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireStockDayLine()) << "µ⁄»˝¥Œ≤È—Ø ±√ª”–’“µΩ¥˝≤È—Øµƒπ…∆±";
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateStockDayLine()) << "π…∆±∂º≤È—ØÕÍ¡À";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireStockDayLine()) << "Á¨¨‰∏âÊ¨°Êü•ËØ¢Êó∂Ê≤°ÊúâÊâæÂà∞ÂæÖÊü•ËØ¢ÁöÑËÇ°Á•®";
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateStockDayLine()) << "ËÇ°Á•®ÈÉΩÊü•ËØ¢ÂÆå‰∫Ü";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock day line..."));
 		str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("US Market»’œﬂ¿˙ ∑ ˝æ›∏¸–¬ÕÍ±œ"));
+		EXPECT_STREQ(str, _T("US MarketÊó•Á∫øÂéÜÂè≤Êï∞ÊçÆÊõ¥Êñ∞ÂÆåÊØï"));
 
-		// ª÷∏¥‘≠◊¥
+		// ÊÅ¢Â§çÂéüÁä∂
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetDayLineNeedUpdate(true);
@@ -607,23 +607,23 @@ namespace FireBirdTest {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetUpdatePeer(false);
 		}
-		gl_pWorldMarket->GetStock(1)->SetUpdatePeer(true); // ≤‚ ‘ ˝æ›ø‚÷–£¨…œ∫£ –≥°µƒπ…∆±≈≈‘⁄«∞√Ê£®π≤2462∏ˆ£©£¨√¿π˙ –≥°µƒπ…∆±≈≈‘⁄∫Û√Ê
+		gl_pWorldMarket->GetStock(1)->SetUpdatePeer(true); // ÊµãËØïÊï∞ÊçÆÂ∫ì‰∏≠Ôºå‰∏äÊµ∑Â∏ÇÂú∫ÁöÑËÇ°Á•®ÊéíÂú®ÂâçÈù¢ÔºàÂÖ±2462‰∏™ÔºâÔºåÁæéÂõΩÂ∏ÇÂú∫ÁöÑËÇ°Á•®ÊéíÂú®ÂêéÈù¢
 		gl_pWorldMarket->GetStock(10)->SetUpdatePeer(true);
 		m_FinnhubDataSource.SetUpdatePeer(false);
 		EXPECT_FALSE(m_FinnhubDataSource.InquirePeer()) << "Peers Updated";
 
 		m_FinnhubDataSource.SetUpdatePeer(true);
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquirePeer()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquirePeer()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquirePeer());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyPeer"));
-		EXPECT_EQ(p->GetIndex(), 1) << "µ⁄“ª∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
+		EXPECT_EQ(p->GetIndex(), 1) << "Á¨¨‰∏Ä‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
 
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdatePeer()) << "¥À∏¸–¬±Í ∂–Ë“™µ»¥˝¥¶¿ÌÕÍ ˝æ›∫Û≤≈…Ë÷√";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdatePeer()) << "Ê≠§Êõ¥Êñ∞Ê†áËØÜÈúÄË¶ÅÁ≠âÂæÖÂ§ÑÁêÜÂÆåÊï∞ÊçÆÂêéÊâçËÆæÁΩÆ";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdatePeer());
 		gl_pWorldMarket->GetStock(1)->SetUpdatePeer(false);
 
@@ -631,21 +631,21 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.InquirePeer());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyPeer"));
-		EXPECT_EQ(p->GetIndex(), 10) << "µ⁄∂˛∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
+		EXPECT_EQ(p->GetIndex(), 10) << "Á¨¨‰∫å‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsUpdatePeer());
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdatePeer()) << "¥À∏¸–¬±Í ∂–Ë“™µ»¥˝¥¶¿ÌÕÍ ˝æ›∫Û≤≈…Ë÷√";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsUpdatePeer()) << "Ê≠§Êõ¥Êñ∞Ê†áËØÜÈúÄË¶ÅÁ≠âÂæÖÂ§ÑÁêÜÂÆåÊï∞ÊçÆÂêéÊâçËÆæÁΩÆ";
 		gl_pWorldMarket->GetStock(10)->SetUpdatePeer(false);
 
 		m_FinnhubDataSource.SetInquiring(false);
-		EXPECT_FALSE(m_FinnhubDataSource.InquirePeer()) << "µ⁄»˝¥Œ≤È—Ø ±√ª”–’“µΩ¥˝≤È—Øµƒπ…∆±";
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdatePeer()) << "π…∆±∂º≤È—ØÕÍ¡À";
+		EXPECT_FALSE(m_FinnhubDataSource.InquirePeer()) << "Á¨¨‰∏âÊ¨°Êü•ËØ¢Êó∂Ê≤°ÊúâÊâæÂà∞ÂæÖÊü•ËØ¢ÁöÑËÇ°Á•®";
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdatePeer()) << "ËÇ°Á•®ÈÉΩÊü•ËØ¢ÂÆå‰∫Ü";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock peer..."));
 		str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Finnhub Peer Updated"));
 
-		// ª÷∏¥‘≠◊¥
+		// ÊÅ¢Â§çÂéüÁä∂
 		m_FinnhubDataSource.SetUpdatePeer(true);
 	}
 
@@ -653,30 +653,30 @@ namespace FireBirdTest {
 		CWorldStockPtr pStock;
 		CVirtualProductWebDataPtr p = nullptr;
 
-		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateInsiderTransaction()) << "π…∆±¥˝≤È—Ø";
+		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateInsiderTransaction()) << "ËÇ°Á•®ÂæÖÊü•ËØ¢";
 
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetUpdateInsiderTransaction(false);
 		}
-		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderTransaction(true); // ≤‚ ‘ ˝æ›ø‚÷–£¨…œ∫£ –≥°µƒπ…∆±≈≈‘⁄«∞√Ê£®π≤2462∏ˆ£©£¨√¿π˙ –≥°µƒπ…∆±≈≈‘⁄∫Û√Ê
-		gl_pWorldMarket->GetStock(2500)->SetUpdateInsiderTransaction(true); // ’‚∏ˆ «√¿π˙π…∆±
+		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderTransaction(true); // ÊµãËØïÊï∞ÊçÆÂ∫ì‰∏≠Ôºå‰∏äÊµ∑Â∏ÇÂú∫ÁöÑËÇ°Á•®ÊéíÂú®ÂâçÈù¢ÔºàÂÖ±2462‰∏™ÔºâÔºåÁæéÂõΩÂ∏ÇÂú∫ÁöÑËÇ°Á•®ÊéíÂú®ÂêéÈù¢
+		gl_pWorldMarket->GetStock(2500)->SetUpdateInsiderTransaction(true); // Ëøô‰∏™ÊòØÁæéÂõΩËÇ°Á•®
 		m_FinnhubDataSource.SetUpdateInsiderTransaction(false);
 		EXPECT_FALSE(m_FinnhubDataSource.InquireInsiderTransaction()) << "InsiderTransactions Updated";
 
 		m_FinnhubDataSource.SetUpdateInsiderTransaction(true);
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireInsiderTransaction()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireInsiderTransaction()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireInsiderTransaction());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyInsiderTransaction"));
-		EXPECT_EQ(p->GetIndex(), 1) << "µ⁄“ª∏ˆ¥˝≤È—Øπ…∆±Œ™÷–π˙π…∆±";
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateInsiderTransaction()) << "µ⁄“ª∏ˆπ…∆±Œ™÷–π˙π…∆±£¨√ª”–∏¥‘≠";
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(2500)->IsUpdateInsiderTransaction()) << "–Ë“™Ω” ’µΩ ˝æ›∫Û∑Ω≤≈…Ë÷√¥À±Í ∂";
+		EXPECT_EQ(p->GetIndex(), 1) << "Á¨¨‰∏Ä‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰∏∫‰∏≠ÂõΩËÇ°Á•®";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateInsiderTransaction()) << "Á¨¨‰∏Ä‰∏™ËÇ°Á•®‰∏∫‰∏≠ÂõΩËÇ°Á•®ÔºåÊ≤°ÊúâÂ§çÂéü";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(2500)->IsUpdateInsiderTransaction()) << "ÈúÄË¶ÅÊé•Êî∂Âà∞Êï∞ÊçÆÂêéÊñπÊâçËÆæÁΩÆÊ≠§Ê†áËØÜ";
 		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderTransaction(false);
 
 		m_FinnhubDataSource.SetInquiring(false);
@@ -684,21 +684,21 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCompanyInsiderTransaction"));
-		EXPECT_EQ(p->GetIndex(), 2500) << "µ⁄∂˛¥Œ¥˝≤È—Øπ…∆±Œ™√¿π˙π…∆±£¨Œª”⁄2500";
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsUpdateInsiderTransaction()) << "µ⁄“ª∏ˆπ…∆±“—∏¥‘≠";
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(2500)->IsUpdateInsiderTransaction()) << "–Ë“™Ω” ’µΩ ˝æ›∫Û∑Ω≤≈…Ë÷√¥À±Í ∂";
+		EXPECT_EQ(p->GetIndex(), 2500) << "Á¨¨‰∫åÊ¨°ÂæÖÊü•ËØ¢ËÇ°Á•®‰∏∫ÁæéÂõΩËÇ°Á•®Ôºå‰Ωç‰∫é2500";
+		EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsUpdateInsiderTransaction()) << "Á¨¨‰∏Ä‰∏™ËÇ°Á•®Â∑≤Â§çÂéü";
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(2500)->IsUpdateInsiderTransaction()) << "ÈúÄË¶ÅÊé•Êî∂Âà∞Êï∞ÊçÆÂêéÊñπÊâçËÆæÁΩÆÊ≠§Ê†áËØÜ";
 		gl_pWorldMarket->GetStock(2500)->SetUpdateInsiderTransaction(false);
 
 		m_FinnhubDataSource.SetInquiring(false);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireInsiderTransaction()) << "µ⁄»˝¥Œ≤È—Ø ±√ª”–’“µΩ¥˝≤È—Øµƒπ…∆±";
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateInsiderTransaction()) << "π…∆±∂º≤È—ØÕÍ¡À";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireInsiderTransaction()) << "Á¨¨‰∏âÊ¨°Êü•ËØ¢Êó∂Ê≤°ÊúâÊâæÂà∞ÂæÖÊü•ËØ¢ÁöÑËÇ°Á•®";
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateInsiderTransaction()) << "ËÇ°Á•®ÈÉΩÊü•ËØ¢ÂÆå‰∫Ü";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock insider transaction..."));
 		str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("US Market Insider Transaction ˝æ›∏¸–¬ÕÍ±œ"));
+		EXPECT_STREQ(str, _T("US Market Insider TransactionÊï∞ÊçÆÊõ¥Êñ∞ÂÆåÊØï"));
 
-		// ª÷∏¥‘≠◊¥
+		// ÊÅ¢Â§çÂéüÁä∂
 		m_FinnhubDataSource.SetUpdateInsiderTransaction(true);
 	}
 
@@ -708,12 +708,12 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetUpdateEconomicCalendar(true);
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireEconomicCalendar()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireEconomicCalendar()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireEconomicCalendar());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
-		CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
+		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(p->GetClassName(), _T("Finnhub economic calendar"));
 
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
@@ -726,21 +726,21 @@ namespace FireBirdTest {
 			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetEPSSurpriseUpdated(true);
 		}
-		gl_pWorldMarket->GetStock(1)->SetEPSSurpriseUpdated(false); // ≤‚ ‘ ˝æ›ø‚÷–£¨…œ∫£ –≥°µƒπ…∆±≈≈‘⁄«∞√Ê£®π≤2462∏ˆ£©£¨√¿π˙ –≥°µƒπ…∆±≈≈‘⁄∫Û√Ê
+		gl_pWorldMarket->GetStock(1)->SetEPSSurpriseUpdated(false); // ÊµãËØïÊï∞ÊçÆÂ∫ì‰∏≠Ôºå‰∏äÊµ∑Â∏ÇÂú∫ÁöÑËÇ°Á•®ÊéíÂú®ÂâçÈù¢ÔºàÂÖ±2462‰∏™ÔºâÔºåÁæéÂõΩÂ∏ÇÂú∫ÁöÑËÇ°Á•®ÊéíÂú®ÂêéÈù¢
 		gl_pWorldMarket->GetStock(10)->SetEPSSurpriseUpdated(false);
 		m_FinnhubDataSource.SetUpdateEPSSurprise(false);
 		EXPECT_FALSE(m_FinnhubDataSource.InquireEPSSurprise()) << "Finnhub EPS Surprise  Updated";
 
 		m_FinnhubDataSource.SetUpdateEPSSurprise(true);
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireEPSSurprise()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireEPSSurprise()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireEPSSurprise());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockEstimatesEPSSurprise"));
-		EXPECT_EQ(p->GetIndex(), 1) << "µ⁄“ª∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
+		EXPECT_EQ(p->GetIndex(), 1) << "Á¨¨‰∏Ä‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsEPSSurpriseUpdated());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsEPSSurpriseUpdated());
 		gl_pWorldMarket->GetStock(1)->SetEPSSurpriseUpdated(true);
@@ -749,14 +749,14 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.InquireEPSSurprise());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockEstimatesEPSSurprise"));
-		EXPECT_EQ(p->GetIndex(), 10) << "µ⁄∂˛∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
+		EXPECT_EQ(p->GetIndex(), 10) << "Á¨¨‰∫å‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsEPSSurpriseUpdated());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(10)->IsEPSSurpriseUpdated());
 		gl_pWorldMarket->GetStock(10)->SetUpdatePeer(false);
 
 		m_FinnhubDataSource.SetInquiring(false);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireEPSSurprise()) << "µ⁄»˝¥Œ≤È—Ø ±√ª”–’“µΩ¥˝≤È—Øµƒπ…∆±";
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateEPSSurprise()) << "π…∆±∂º≤È—ØÕÍ¡À";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireEPSSurprise()) << "Á¨¨‰∏âÊ¨°Êü•ËØ¢Êó∂Ê≤°ÊúâÊâæÂà∞ÂæÖÊü•ËØ¢ÁöÑËÇ°Á•®";
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateEPSSurprise()) << "ËÇ°Á•®ÈÉΩÊü•ËØ¢ÂÆå‰∫Ü";
 		const CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Finnhub EPS Surprise Updated"));
 	}
@@ -767,16 +767,16 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetUpdateForexExchange(true);
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireForexExchange()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireForexExchange()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireForexExchange());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(p->GetClassName(), _T("Finnhub forex exchange"));
-		CString str = gl_systemMessage.PopInformationMessage();
+		const CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring Finnhub forex exchange"));
-		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateForexExchange()) << "¥À±Í ∂–Ë“™µ»¥¶¿ÌÕÍ ˝æ›∫Û∑Ω…Ë÷√";
+		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateForexExchange()) << "Ê≠§Ê†áËØÜÈúÄË¶ÅÁ≠âÂ§ÑÁêÜÂÆåÊï∞ÊçÆÂêéÊñπËÆæÁΩÆ";
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryForexSymbol) {
@@ -797,7 +797,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_FinnhubDataSource.IsUpdateForexSymbol());
 		}
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireForexSymbol()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireForexSymbol()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireForexSymbol());
@@ -807,7 +807,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(p->GetIndex(), lTotal - 1);
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateForexSymbol());
 		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Inquiring Finnhub Forex symbols..."));
-		m_FinnhubDataSource.SetUpdateForexSymbol(true); //ª÷∏¥‘≠◊¥
+		m_FinnhubDataSource.SetUpdateForexSymbol(true); //ÊÅ¢Â§çÂéüÁä∂
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryForexDayLine) {
@@ -825,15 +825,15 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetUpdateForexDayLine(true);
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireForexDayLine()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireForexDayLine()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireForexDayLine());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexDayLine"));
-		EXPECT_EQ(p->GetIndex(), 1) << "µ⁄“ª∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
-		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate()) << "≤È—Ø ±≤ª∏¸–¬£¨∏√±Í ∂‘⁄Ω” ’µΩÕ¯¬Á ˝æ›∫Û≤≈∏¸–¬";
+		EXPECT_EQ(p->GetIndex(), 1) << "Á¨¨‰∏Ä‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
+		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate()) << "Êü•ËØ¢Êó∂‰∏çÊõ¥Êñ∞ÔºåËØ•Ê†áËØÜÂú®Êé•Êî∂Âà∞ÁΩëÁªúÊï∞ÊçÆÂêéÊâçÊõ¥Êñ∞";
 		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(10)->IsDayLineNeedUpdate());
 
 		m_FinnhubDataSource.SetInquiring(false);
@@ -841,13 +841,13 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.InquireForexDayLine());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexDayLine"));
-		EXPECT_EQ(p->GetIndex(), 10) << "µ⁄∂˛∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
-		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(10)->IsDayLineNeedUpdate()) << "≤È—Ø ±≤ª∏¸–¬£¨∏√±Í ∂‘⁄Ω” ’µΩÕ¯¬Á ˝æ›∫Û≤≈∏¸–¬";
+		EXPECT_EQ(p->GetIndex(), 10) << "Á¨¨‰∫å‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
+		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(10)->IsDayLineNeedUpdate()) << "Êü•ËØ¢Êó∂‰∏çÊõ¥Êñ∞ÔºåËØ•Ê†áËØÜÂú®Êé•Êî∂Âà∞ÁΩëÁªúÊï∞ÊçÆÂêéÊâçÊõ¥Êñ∞";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		gl_pWorldMarket->GetForexSymbol(10)->SetDayLineNeedUpdate(false);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireForexDayLine()) << "µ⁄»˝¥Œ≤È—Ø ±√ª”–’“µΩ¥˝≤È—Øµƒπ…∆±";
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateForexDayLine()) << "π…∆±∂º≤È—ØÕÍ¡À";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireForexDayLine()) << "Á¨¨‰∏âÊ¨°Êü•ËØ¢Êó∂Ê≤°ÊúâÊâæÂà∞ÂæÖÊü•ËØ¢ÁöÑËÇ°Á•®";
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateForexDayLine()) << "ËÇ°Á•®ÈÉΩÊü•ËØ¢ÂÆå‰∫Ü";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub forex day line..."));
@@ -859,7 +859,7 @@ namespace FireBirdTest {
 			pStock->SetDayLineNeedUpdate(true);
 		}
 
-		// ª÷∏¥‘≠◊¥
+		// ÊÅ¢Â§çÂéüÁä∂
 		m_FinnhubDataSource.SetUpdateForexDayLine(true);
 	}
 
@@ -869,16 +869,16 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetUpdateCryptoExchange(true);
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireCryptoExchange()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireCryptoExchange()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireCryptoExchange());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(p->GetClassName(), _T("Finnhub crypto exchange"));
-		CString str = gl_systemMessage.PopInformationMessage();
+		const CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring Finnhub crypto exchange"));
-		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateCryptoExchange()) << "¥À±Í ∂–Ë“™µ»¥¶¿ÌÕÍ ˝æ›∫Û∑Ω…Ë÷√";
+		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateCryptoExchange()) << "Ê≠§Ê†áËØÜÈúÄË¶ÅÁ≠âÂ§ÑÁêÜÂÆåÊï∞ÊçÆÂêéÊñπËÆæÁΩÆ";
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryCryptoSymbol) {
@@ -899,7 +899,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_FinnhubDataSource.IsUpdateCryptoSymbol());
 		}
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireCryptoSymbol()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireCryptoSymbol()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireCryptoSymbol());
@@ -909,7 +909,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(p->GetIndex(), lTotal - 1);
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateCryptoSymbol());
 		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Inquiring Finnhub Crypto symbols"));
-		m_FinnhubDataSource.SetUpdateCryptoSymbol(true); //ª÷∏¥‘≠◊¥
+		m_FinnhubDataSource.SetUpdateCryptoSymbol(true); //ÊÅ¢Â§çÂéüÁä∂
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryCryptoDayLine) {
@@ -927,15 +927,15 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetUpdateCryptoDayLine(true);
 		m_FinnhubDataSource.SetInquiring(true);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireCryptoDayLine()) << "∆‰À˚FinnhubInquiry’˝‘⁄Ω¯––";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireCryptoDayLine()) << "ÂÖ∂‰ªñFinnhubInquiryÊ≠£Âú®ËøõË°å";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireCryptoDayLine());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCryptoDayLine"));
-		EXPECT_EQ(p->GetIndex(), 1) << "µ⁄“ª∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
-		EXPECT_TRUE(gl_pWorldMarket->GetFinnhubCryptoSymbol(1)->IsDayLineNeedUpdate()) << "≤È—Ø ±≤ª∏¸–¬£¨∏√±Í ∂‘⁄Ω” ’µΩÕ¯¬Á ˝æ›∫Û≤≈∏¸–¬";
+		EXPECT_EQ(p->GetIndex(), 1) << "Á¨¨‰∏Ä‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
+		EXPECT_TRUE(gl_pWorldMarket->GetFinnhubCryptoSymbol(1)->IsDayLineNeedUpdate()) << "Êü•ËØ¢Êó∂‰∏çÊõ¥Êñ∞ÔºåËØ•Ê†áËØÜÂú®Êé•Êî∂Âà∞ÁΩëÁªúÊï∞ÊçÆÂêéÊâçÊõ¥Êñ∞";
 		EXPECT_TRUE(gl_pWorldMarket->GetFinnhubCryptoSymbol(10)->IsDayLineNeedUpdate());
 
 		m_FinnhubDataSource.SetInquiring(false);
@@ -943,13 +943,13 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.InquireCryptoDayLine());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCryptoDayLine"));
-		EXPECT_EQ(p->GetIndex(), 10) << "µ⁄∂˛∏ˆ¥˝≤È—Øπ…∆±Œª÷√";
-		EXPECT_TRUE(gl_pWorldMarket->GetFinnhubCryptoSymbol(10)->IsDayLineNeedUpdate()) << "≤È—Ø ±≤ª∏¸–¬£¨∏√±Í ∂‘⁄Ω” ’µΩÕ¯¬Á ˝æ›∫Û≤≈∏¸–¬";
+		EXPECT_EQ(p->GetIndex(), 10) << "Á¨¨‰∫å‰∏™ÂæÖÊü•ËØ¢ËÇ°Á•®‰ΩçÁΩÆ";
+		EXPECT_TRUE(gl_pWorldMarket->GetFinnhubCryptoSymbol(10)->IsDayLineNeedUpdate()) << "Êü•ËØ¢Êó∂‰∏çÊõ¥Êñ∞ÔºåËØ•Ê†áËØÜÂú®Êé•Êî∂Âà∞ÁΩëÁªúÊï∞ÊçÆÂêéÊâçÊõ¥Êñ∞";
 
 		m_FinnhubDataSource.SetInquiring(false);
 		gl_pWorldMarket->GetFinnhubCryptoSymbol(10)->SetDayLineNeedUpdate(false);
-		EXPECT_FALSE(m_FinnhubDataSource.InquireCryptoDayLine()) << "µ⁄»˝¥Œ≤È—Ø ±√ª”–’“µΩ¥˝≤È—Øµƒπ…∆±";
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateCryptoDayLine()) << "π…∆±∂º≤È—ØÕÍ¡À";
+		EXPECT_FALSE(m_FinnhubDataSource.InquireCryptoDayLine()) << "Á¨¨‰∏âÊ¨°Êü•ËØ¢Êó∂Ê≤°ÊúâÊâæÂà∞ÂæÖÊü•ËØ¢ÁöÑËÇ°Á•®";
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateCryptoDayLine()) << "ËÇ°Á•®ÈÉΩÊü•ËØ¢ÂÆå‰∫Ü";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub crypto day line..."));
@@ -961,7 +961,7 @@ namespace FireBirdTest {
 			pStock->SetDayLineNeedUpdate(true);
 		}
 
-		// ª÷∏¥‘≠◊¥
+		// ÊÅ¢Â§çÂéüÁä∂
 		m_FinnhubDataSource.SetUpdateCryptoDayLine(true);
 	}
 
@@ -998,9 +998,9 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->TaskCheckMarketReady(0));
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T(" ¿ΩÁ –≥°≥ı ºªØÕÍ±œ"));
+		EXPECT_STREQ(str, _T("‰∏ñÁïåÂ∏ÇÂú∫ÂàùÂßãÂåñÂÆåÊØï"));
 
-		// ª÷∏¥‘≠◊¥
+		// ÊÅ¢Â§çÂéüÁä∂
 		while (!gl_pWorldMarket->IsMarketTaskEmpty()) gl_pWorldMarket->DiscardMarketTask();
 		gl_pFinnhubDataSource->SetUpdateSymbol(true);
 		gl_pFinnhubDataSource->SetUpdateCryptoExchange(true);
@@ -1017,8 +1017,8 @@ namespace FireBirdTest {
 		const auto pWebData = m_FinnhubDataSource.CreateWebDataAfterSucceedReading();
 
 		EXPECT_TRUE(pWebData != nullptr);
-		EXPECT_TRUE(pWebData->IsParsed()) << "finnhub data sourceª·µ˜”√Parse£¨…˙≥…json ˝æ›";
-		EXPECT_EQ(pWebData->GetTime(), 0) << "…Ë÷√Œ™µ±«∞µƒUTCTime";
+		EXPECT_TRUE(pWebData->IsParsed()) << "finnhub data source‰ºöË∞ÉÁî®ParseÔºåÁîüÊàêjsonÊï∞ÊçÆ";
+		EXPECT_EQ(pWebData->GetTime(), 0) << "ËÆæÁΩÆ‰∏∫ÂΩìÂâçÁöÑUTCTime";
 		EXPECT_TRUE(pWebData->GetDataBuffer() == _T("{ \"data\": 2}"));
 
 		// restore

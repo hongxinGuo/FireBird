@@ -10,11 +10,11 @@ CContainerChosenStock::CContainerChosenStock() {
 	CContainerChosenStock::Reset();
 }
 
-void CContainerChosenStock::Reset(void) {
+void CContainerChosenStock::Reset() {
 	m_lChosenStockPos = 0;
 }
 
-bool CContainerChosenStock::LoadDB(void) {
+bool CContainerChosenStock::LoadDB() {
 	CSetWorldChosenStock setWorldChosenStock;
 	CWorldStockPtr pStock = nullptr;
 

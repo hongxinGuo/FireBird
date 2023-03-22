@@ -152,7 +152,7 @@ namespace FireBirdTest {
 
 	class RTDataGuadanTest : public testing::TestWithParam<GuadanData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			GuadanData* pData = GetParam();
 			// 预设20个挂单
@@ -182,7 +182,7 @@ namespace FireBirdTest {
 			iCount = pData->iCount;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}
@@ -394,7 +394,7 @@ namespace FireBirdTest {
 
 	class NeedCheckTest : public testing::TestWithParam<GuadanData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			GuadanData* pData = GetParam();
 			// 预设20个挂单
@@ -426,7 +426,7 @@ namespace FireBirdTest {
 			m_stock.SetCanceledSellVolume(0);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			GeneralCheck();
 		}

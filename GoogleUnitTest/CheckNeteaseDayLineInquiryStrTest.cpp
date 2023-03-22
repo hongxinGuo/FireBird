@@ -28,14 +28,14 @@ namespace FireBirdTest {
 
 	class CheckNeteaseDayLineInquiryStrTest : public::testing::TestWithParam<CheckNeteaseDayLineInquiryStrData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			CheckNeteaseDayLineInquiryStrData* pData = GetParam();
 			m_iCount = pData->m_iCount;
 			m_strCode = pData->m_strData;
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 

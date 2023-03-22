@@ -7,7 +7,7 @@ CFinnhubForexSymbol::CFinnhubForexSymbol() : CVirtualStock() {
 	CFinnhubForexSymbol::Reset();
 }
 
-void CFinnhubForexSymbol::Reset(void) {
+void CFinnhubForexSymbol::Reset() {
 	CVirtualStock::Reset();
 	m_strDescription = _T(" ");
 	m_strDisplaySymbol = _T(" ");
@@ -17,7 +17,7 @@ void CFinnhubForexSymbol::Reset(void) {
 	m_lDayLineEndDate = 19800101;
 }
 
-void CFinnhubForexSymbol::SetCheckingDayLineStatus(void) {
+void CFinnhubForexSymbol::SetCheckingDayLineStatus() {
 	ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
 	if (m_lIPOStatus == _STOCK_NULL_) {
 		SetDayLineNeedUpdate(false);
@@ -52,7 +52,7 @@ CString CFinnhubForexSymbol::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) 
 	return strParam;
 }
 
-void CFinnhubForexSymbol::UpdateDayLineStartEndDate(void) {
+void CFinnhubForexSymbol::UpdateDayLineStartEndDate() {
 	long lStartDate = 0, lEndDate = 0;
 	const bool fSucceed = m_dataDayLine.GetStartEndDate(lStartDate, lEndDate);
 	if (!fSucceed) {
@@ -71,7 +71,7 @@ void CFinnhubForexSymbol::UpdateDayLineStartEndDate(void) {
 	}
 }
 
-bool CFinnhubForexSymbol::HaveNewDayLineData(void) {
+bool CFinnhubForexSymbol::HaveNewDayLineData() {
 	if (m_dataDayLine.Size() == 0) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate) return true;
 	return false;

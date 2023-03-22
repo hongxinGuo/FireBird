@@ -11,7 +11,7 @@ CProductSinaRT::CProductSinaRT() {
 	m_strInquiryFunction = _T("https://hq.sinajs.cn/list=");
 }
 
-CString CProductSinaRT::CreateMessage(void) {
+CString CProductSinaRT::CreateMessage() {
 	// 申请下一批次股票实时数据
 	// 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
 	// 开市时使用今日活跃股票池

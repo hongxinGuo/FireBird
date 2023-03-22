@@ -67,7 +67,7 @@ namespace FireBirdTest {
 
 	class ProcessOneTiingoForexWebSocketDataTest : public TestWithParam<TiingoWebSocketData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			EXPECT_FALSE(gl_tiingoForexWebSocket.IsReceivingData());
 			TiingoWebSocketData* pData = GetParam();
@@ -76,7 +76,7 @@ namespace FireBirdTest {
 			m_pWebData = make_shared<string>(pData->m_pData);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
@@ -178,7 +178,7 @@ namespace FireBirdTest {
 
 	class ProcessOneTiingoCryptoWebSocketDataTest : public TestWithParam<TiingoWebSocketData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			EXPECT_FALSE(gl_tiingoCryptoWebSocket.IsReceivingData());
 			TiingoWebSocketData* pData = GetParam();
@@ -187,7 +187,7 @@ namespace FireBirdTest {
 			m_pWebData = make_shared<string>(pData->m_pData);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			GeneralCheck();
@@ -312,7 +312,7 @@ namespace FireBirdTest {
 
 	class ProcessOneTiingoIEXWebSocketDataTest : public TestWithParam<TiingoWebSocketData*> {
 	protected:
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 			EXPECT_FALSE(gl_tiingoIEXWebSocket.IsReceivingData());
 
@@ -323,7 +323,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_tiingoIEXWebSocket.m_vCurrentSymbol.size(), 0);
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 

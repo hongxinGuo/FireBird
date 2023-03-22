@@ -37,7 +37,7 @@ UINT ThreadSaveDayLineBasicInfo(not_null<CChinaStock*> pStock); // ´Ë¹¤×÷Ïß³Ì·µ»
 // ´ÓÊı¾İ¿âÖĞ¶ÁÈ¡ÈÕÏßÀúÊ·Êı¾İÏß³Ì
 UINT ThreadLoadDayLine(not_null<CChinaStock*> pStockInput); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª16
 // Î¬»¤ÈÕÏßÊı¾İ¿âÏß³Ì£¨ÉĞÎ´ÊµÏÖ£©
-UINT ThreadMaintainDayLineDataBase(void); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª17
+UINT ThreadMaintainDayLineDataBase(); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª17
 //¸üĞÂ¹ÉÆ±´úÂëÊı¾İ¿âÏß³Ì
 UINT ThreadUpdateChinaStockProfileDB(not_null<CChinaMarket*> pMarket); // ´ËÏß³Ì·µ»ØÖµÎª18
 // ¸üĞÂÑ¡ÏîÊı¾İ¿â

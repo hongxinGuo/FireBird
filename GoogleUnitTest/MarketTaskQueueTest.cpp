@@ -5,11 +5,11 @@
 
 namespace FireBirdTest {
 	class CMarketTaskQueueTest : public testing::Test {
-		void SetUp(void) override {
+		void SetUp() override {
 			GeneralCheck();
 		}
 
-		void TearDown(void) override {
+		void TearDown() override {
 			GeneralCheck();
 		}
 
