@@ -37,7 +37,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(19) > 0);
 
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
-				CChinaStockPtr pStock = gl_pChinaMarket->GetStock(i);
+				const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(i);
 				EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetSymbol();
 			}
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
@@ -53,7 +53,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
-				CChinaStockPtr pStock = gl_pChinaMarket->GetStock(i);
+				const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(i);
 				EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetSymbol();
 			}
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
@@ -96,7 +96,7 @@ namespace FireBirdTest {
 			gl_pChinaMarket->ResetCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
-				CChinaStockPtr pStock = gl_pChinaMarket->GetStock(i);
+				const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(i);
 				if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
 				if (pStock->IsDayLineNeedSaving()) pStock->SetDayLineNeedSaving(false);
 			}
@@ -213,11 +213,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_RESET__);
 		EXPECT_EQ(pTask->GetTime(), 92600);
 
-		pTask = gl_pChinaMarket->GetMarketTask();
-		gl_pChinaMarket->DiscardMarketTask();
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_LOAD_TEMP_RT_DATA__);
-		EXPECT_EQ(pTask->GetTime(), 92630);
-
 		if (gl_pChinaMarket->IsWorkingDay()) {
 			pTask = gl_pChinaMarket->GetMarketTask();
 			gl_pChinaMarket->DiscardMarketTask();
@@ -280,11 +275,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_RESET__);
 		EXPECT_EQ(pTask->GetTime(), 92600);
 
-		pTask = gl_pChinaMarket->GetMarketTask();
-		gl_pChinaMarket->DiscardMarketTask();
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_LOAD_TEMP_RT_DATA__);
-		EXPECT_EQ(pTask->GetTime(), 92630);
-
 		if (gl_pChinaMarket->IsWorkingDay()) {
 			pTask = gl_pChinaMarket->GetMarketTask();
 			gl_pChinaMarket->DiscardMarketTask();
@@ -328,11 +318,6 @@ namespace FireBirdTest {
 		gl_pChinaMarket->DiscardMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
 		EXPECT_EQ(pTask->GetTime(), 1);
-
-		pTask = gl_pChinaMarket->GetMarketTask();
-		gl_pChinaMarket->DiscardMarketTask();
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_LOAD_TEMP_RT_DATA__);
-		EXPECT_EQ(pTask->GetTime(), 92630);
 
 		if (gl_pChinaMarket->IsWorkingDay()) {
 			pTask = gl_pChinaMarket->GetMarketTask();
@@ -571,15 +556,15 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestIsAStock) {
-		auto pstock = make_shared<CChinaStock>();
-		pstock->SetSymbol(_T("600000.SS"));
-		EXPECT_TRUE(gl_pChinaMarket->IsAStock(pstock));
-		pstock->SetSymbol(_T("600000.SA"));
-		EXPECT_FALSE(gl_pChinaMarket->IsAStock(pstock));
-		pstock->SetSymbol(_T("000001.SZ"));
-		EXPECT_TRUE(gl_pChinaMarket->IsAStock(pstock));
-		pstock->SetSymbol(_T("10001.SZ"));
-		EXPECT_FALSE(gl_pChinaMarket->IsAStock(pstock));
+		const auto pStock = make_shared<CChinaStock>();
+		pStock->SetSymbol(_T("600000.SS"));
+		EXPECT_TRUE(gl_pChinaMarket->IsAStock(pStock));
+		pStock->SetSymbol(_T("600000.SA"));
+		EXPECT_FALSE(gl_pChinaMarket->IsAStock(pStock));
+		pStock->SetSymbol(_T("000001.SZ"));
+		EXPECT_TRUE(gl_pChinaMarket->IsAStock(pStock));
+		pStock->SetSymbol(_T("10001.SZ"));
+		EXPECT_FALSE(gl_pChinaMarket->IsAStock(pStock));
 	}
 
 	TEST_F(CChinaMarketTest, TestIsAStock2) {
@@ -617,9 +602,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestGetStockName) {
-		//todo 未实现.由于stockName存储时使用的是UniCode制式，而本系统默认是Ansi制式，导致无法进行字符串对比。暂时不进行测试了。
-		//EXPECT_STREQ(gl_pChinaMarket->GetStockName(_T("600000.SS")), _T("浦发银行"));
-		EXPECT_STREQ(gl_pChinaMarket->GetStockName(_T("60000.SS")), _T("")); // 没找到返回空字符串
+		//not implemented. 由于stockName存储时使用的是UniCode制式，而本系统默认是Ansi制式，导致无法进行字符串对比。暂时不进行测试了。
+		// EXPECT_STREQ(gl_pChinaMarket->GetStockName(_T("600000.SS")), _T("浦发银行"));
+		EXPECT_STREQ(gl_pChinaMarket->GetStockName(_T("60000.SS")), _T("")); // 没找到时返回空字符串
 	}
 
 	TEST_F(CChinaMarketTest, TestGetStockCode) {
@@ -841,7 +826,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestAddChosenStock2) {
 		EXPECT_EQ(gl_pChinaMarket->GetChosenStockSize(), 0);
-		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(0);
+		const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(0);
 		gl_pChinaMarket->AddChosenStock(pStock);
 		EXPECT_EQ(gl_pChinaMarket->GetChosenStockSize(), 1);
 		gl_pChinaMarket->ClearChoiceStockContainer();
@@ -1499,9 +1484,9 @@ namespace FireBirdTest {
 		set<CString> setStockCode;
 		gl_pChinaMarket->CreateStockCodeSet(setStockCode, &vData);
 
-		EXPECT_TRUE(setStockCode.find(_T("600000.SS")) != setStockCode.end());
-		EXPECT_TRUE(setStockCode.find(_T("600004.SS")) != setStockCode.end());
-		EXPECT_FALSE(setStockCode.find(_T("600001.SS")) != setStockCode.end());
+		EXPECT_TRUE(setStockCode.contains(_T("600000.SS")));
+		EXPECT_TRUE(setStockCode.contains(_T("600004.SS")));
+		EXPECT_FALSE(setStockCode.contains(_T("600001.SS")));
 	}
 
 	TEST_F(CChinaMarketTest, TestUpdateStockProfileDB) {
@@ -1517,6 +1502,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_IPOED_);
 		pStock->SetUpdateProfileDB(true);
 		pStock->SetIPOStatus(_STOCK_DELISTED_);
+
 		gl_pChinaMarket->UpdateStockProfileDB();
 
 		CSetChinaStockSymbol setChinaStock;
@@ -1547,7 +1533,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(pStock != nullptr);
 		gl_pChinaMarket->DeleteStock(pStock); // 恢复原状
 
-		EXPECT_THAT(gl_pChinaMarket->IsUpdateStockProfileDB(), IsFalse());
+		EXPECT_THAT(gl_pChinaMarket->IsUpdateStockProfileDB(), IsFalse()) << "此测试结束时，必须保证没有设置更新代码库的标识，否则会真正更新了测试代码库";
 
 		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 			pStock = gl_pChinaMarket->GetStock(i);
@@ -1564,7 +1550,7 @@ namespace FireBirdTest {
 
 		pStock = make_shared<CChinaStock>();
 		pStock->SetSymbol(_T("SS.SS.SS"));
-		auto lTotal = gl_pChinaMarket->GetTotalStock();
+		const auto lTotal = gl_pChinaMarket->GetTotalStock();
 		EXPECT_FALSE(gl_pChinaMarket->IsStock(pStock->GetSymbol()));
 		EXPECT_TRUE(gl_pChinaMarket->AddStock(pStock));
 		EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), lTotal + 1);
@@ -1639,8 +1625,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCheckDayLineDB) {
-		CChinaStockPtr pStock;
-
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedUpdate());
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess());
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedSaving());
@@ -1648,7 +1632,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pChinaMarket->CheckDayLineDB()) << "IsSaveDayLine为假";
 
-		pStock = gl_pChinaMarket->GetStock(0);
+		const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(0);
 		pStock->SetDayLineNeedSaving(true);
 		pStock->SetDayLineDBUpdated(true);
 		EXPECT_FALSE(gl_pChinaMarket->CheckDayLineDB()) << "IsDayLineNeedUpdate等皆为真";
@@ -1755,8 +1739,12 @@ namespace FireBirdTest {
 
 		gl_pChinaMarket->LoadTempRTData(20210715); // 测试库today表中的日期为20210715。
 
+		EXPECT_TRUE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
 		EXPECT_EQ(pStock->GetUnknownVolume(), 10517770);
 		EXPECT_EQ(pStock->GetTransactionNumber(), 2183);
+
+		// 恢复原状
+		gl_pChinaMarket->SetTodayTempRTDataLoaded(false);
 	}
 
 	TEST_F(CChinaMarketTest, TestIsRTDataNeedCalculate) {

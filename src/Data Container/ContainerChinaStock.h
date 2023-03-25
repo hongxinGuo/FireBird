@@ -30,7 +30,7 @@ public:
 
 	long LoadStockProfileDB();
 	bool UpdateStockProfileDB();
-	bool UnloadDayLine() noexcept;
+	void UnloadDayLine() noexcept;
 	bool BuildWeekLine(long lStartDate);
 	long BuildDayLine(long lCurrentTradeDay);
 	bool UpdateTodayTempDB();

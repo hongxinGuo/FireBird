@@ -344,12 +344,11 @@ CString CContainerChinaStock::GetStockName(const CString& strStockCode) {
 	}
 }
 
-bool CContainerChinaStock::UnloadDayLine() noexcept {
+void CContainerChinaStock::UnloadDayLine() noexcept {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
 		pStock->UnloadDayLine();
 	}
-	return true;
 }
 
 void CContainerChinaStock::SetDayLineNeedMaintain() const {

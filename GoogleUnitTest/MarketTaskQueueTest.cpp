@@ -50,4 +50,22 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
 		EXPECT_EQ(marketTaskQueue.Size(), 0);
 	}
+
+	TEST_F(CMarketTaskQueueTest, TestGetTaskVector) {
+		marketTaskQueue.AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, 1);
+		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 3);
+		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 4);
+		marketTaskQueue.AddTask(CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__, 2);
+
+		const auto vTask = marketTaskQueue.GetTaskVector();
+
+		EXPECT_EQ(vTask.at(0)->GetTime(), 1);
+		EXPECT_EQ(vTask.at(0)->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
+		EXPECT_EQ(vTask.at(1)->GetTime(), 2);
+		EXPECT_EQ(vTask.at(1)->GetType(), CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__);
+		EXPECT_EQ(vTask.at(2)->GetTime(), 3);
+		EXPECT_EQ(vTask.at(2)->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
+		EXPECT_EQ(vTask.at(3)->GetTime(), 4);
+		EXPECT_EQ(vTask.at(3)->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
+	}
 }

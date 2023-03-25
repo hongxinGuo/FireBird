@@ -394,8 +394,8 @@ namespace FireBirdTest {
 		setCountry.Close();
 	}
 
-	TEST_F(CWorldMarketTest, TestUpdateStockProfileDB3) {
-		//todo 此测试有问题：出现unknown c++ exception thrown
+	TEST_F(CWorldMarketTest, TestUpdateStockProfileDB) {
+		//bug 此测试有问题：出现unknown c++ exception thrown。初步判断原因在函数UpdateStockProfileDB()中。
 		auto pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("SS.SS.US"));
 		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock)); // 确保是一个新股票代码
@@ -408,7 +408,12 @@ namespace FireBirdTest {
 		pStock->SetUpdateProfileDB(true);
 		pStock->SetCurrency(_T("No Currency")); // 更新这个条目
 
-		gl_pWorldMarket->UpdateStockProfileDB();
+		try {
+			gl_pWorldMarket->UpdateStockProfileDB();
+		}
+		catch (std::exception& e) {
+			EXPECT_TRUE(false) << e.what(); // todo 看看出现什么样的exception错误
+		}
 
 		CSetWorldStock setWorldStock;
 		setWorldStock.m_strFilter = _T("[Symbol] = '000001.SS'");

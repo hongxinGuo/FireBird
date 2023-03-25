@@ -125,13 +125,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestMarketReady) {
-		EXPECT_TRUE(virtualMarket.IsSystemReady()) << "市场基类默认为真";
-		virtualMarket.SetSystemReady(true);
-		EXPECT_TRUE(virtualMarket.IsSystemReady());
+		EXPECT_FALSE(virtualMarket.IsSystemReady()) << "市场基类默认为假";
 		virtualMarket.SetSystemReady(false);
 		EXPECT_FALSE(virtualMarket.IsSystemReady());
-
-		virtualMarket.SetSystemReady(true); // 恢复原态
+		virtualMarket.SetSystemReady(true);
+		EXPECT_TRUE(virtualMarket.IsSystemReady());
 	}
 
 	TEST_F(CVirtualMarketTest, TestCalculateMarketTime) {

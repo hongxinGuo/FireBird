@@ -19,11 +19,10 @@ public:
 	void SchedulingTask();
 	void SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
 
-	virtual bool ProcessTask(long) { return true; } // 每日定时任务调度,由SchedulingTaskPerSecond调度，由各市场定义其各自的任务
-
 	// 申请并处理Data source的数据，被最终衍生类的SchedulingTask函数来调度。
 	// 此函数在VirtualMarket中定义，但由最终衍生类来调用，因为lCurrentTime必须为该衍生类的当前市场时间。
 	void RunDataSource(long lCurrentTime) const;
+	virtual bool ProcessTask(long);
 
 	virtual void ResetMarket();
 	virtual bool UpdateMarketInfo(); // 更新本市场信息。
@@ -85,8 +84,8 @@ public:
 	void SetResetMarket(bool fFlag) noexcept { m_fResetMarket = fFlag; }
 
 	virtual bool IsTimeToResetSystem(long) { return false; } // 默认永远处于非重启市场状态，继承类需要各自设置之
-	virtual bool IsSystemReady() const noexcept { return m_fSystemReady; }
-	virtual void SetSystemReady(const bool fFlag) noexcept { m_fSystemReady = fFlag; }
+	bool IsSystemReady() const noexcept { return m_fSystemReady; }
+	void SetSystemReady(const bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
 	virtual bool PreparingExitMarket() { return true; } // 准备退出本市场（完成系统退出前的准备工作）。
 
@@ -95,13 +94,16 @@ public:
 
 public:
 	// 测试用函数
-	void TEST_SetUTCTime(time_t Time) noexcept { gl_tUTC = Time; }
+	static void TEST_SetUTCTime(time_t Time) noexcept { gl_tUTC = Time; }
 	void TEST_SetFormattedMarketTime(long lTime) noexcept { m_lMarketTime = lTime; } // 此函数只用于测试
 	void TEST_SetMarketTM(tm tm_) noexcept { m_tmMarket = tm_; }
 	void TEST_SetFormattedMarketDate(long lDate) noexcept { m_lMarketDate = lDate; }
 
 protected:
+	CString m_strMarketId{_T("Warning: CVirtualMarket Called.")}; // 该市场标识字符串
+
 	CMarketTaskQueue m_marketTask;
+	vector<CVirtualDataSourcePtr> m_vDataSource; // 本市场中的网络数据源。
 
 	// Finnhub.io提供的信息
 	CString m_strCode;
@@ -113,28 +115,22 @@ protected:
 	CString m_strCountry;
 	CString m_strSource;
 
-	vector<CVirtualDataSourcePtr> m_vDataSource; // 本市场中的网络数据源。
-
-	long m_lMarketTimeZone; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。与_get_timezone函数相符。
-	CString m_strMarketId; // 该市场标识字符串
+	long m_lMarketTimeZone{-8 * 3600}; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。与_get_timezone函数相符。
 
 	// 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
-	long m_lMarketDate; //本市场的日期
-	long m_lMarketTime; // 本市场的时间
-	long m_lMarketLastTradeDate; // 本市场的上次交易日期
+	long m_lMarketDate{0}; //本市场的日期
+	long m_lMarketTime{0}; // 本市场的时间
+	long m_lMarketLastTradeDate{0}; // 本市场的上次交易日期
 	tm m_tmMarket{0, 0, 0, 1, 0, 1970}; // 本市场时间结构
 
 	//系统状态区
-	bool m_fSystemReady; // 市场初始态已经设置好
-
-	time_t m_lastTimeSchedulingTask;
+	bool m_fSystemReady{false}; // 市场初始态已经设置好.默认为假
 
 private:
-	time_t m_tLastTime;
-
-	bool m_fReadyToRun; // 市场准备好运行标识。目前永远为真。
-	bool m_fResetMarketPermission; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统）初始值必须为真。
-	bool m_fResetMarket; // 重启系统标识
+	time_t m_lastTimeSchedulingTask{0};
+	bool m_fReadyToRun{true}; // 市场准备好运行标识。目前永远为真。
+	bool m_fResetMarketPermission{true}; // 允许重置系统（如果不停机多日运行的话，需要每日重置系统）初始值必须为真。
+	bool m_fResetMarket{true}; // 重启系统标识
 };
 
 using CVirtualMarketPtr = shared_ptr<CVirtualMarket>;

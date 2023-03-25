@@ -77,14 +77,9 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CChinaStock::CalculatingWeekLine</Function>
 
 	              <Function>CContainerChinaStock::CreateThreadSaveDayLineBasicInfoOfStock</Function>
+	              <Function>CContainerChinaStock::CreateThreadSaveDayLineBasicInfo</Function>
 
-								<Function>CChinaMarket::SchedulingTaskPerSecond</Function>
-								<Function>CChinaMarket::SchedulingTaskPer10Seconds</Function>
-	              <Function>CChinaMarket::SchedulingTaskPerMinute</Function>
-								<Function>CChinaMarket::SchedulingTaskPer5Minutes</Function>
-								<Function>CChinaMarket::SchedulingTaskPerHour</Function>
-	              <Function>CChinaMarket::SchedulingTask</Function>
-	              <Function>CChinaMarket::BuildCurrentWeekWeekLineTable</Function>
+								<Function>CChinaMarket::BuildCurrentWeekWeekLineTable</Function>
 								<Function>CChinaMarket::BuildWeekLineOfCurrentWeek</Function>
 								<Function>CChinaMarket::DeleteWeekLineBasicInfo</Function>
 								<Function>CChinaMarket::DeleteWeekLineExtendInfo</Function>
@@ -111,7 +106,10 @@ Included items must then not match any entries in the exclude list to remain inc
 	              <Function>CChinaMarket::CreateThreadProcessRTData</Function>
 								<Function>CChinaMarket::CreateThreadChoice10RSStrongStockSet</Function>
 								<Function>CChinaMarket::CreateThreadUpdateTempRTData</Function>
-	              <Function>CChinaMarket::CreateThreadLoadTempRTData</Function>
+								<Function>CChinaMarket::CreateThreadLoadTempRTData</Function>
+								<Function>CChinaMarket::CreateThreadUpdateChoseStockDB</Function>
+								<Function>CChinaMarket::CreateThreadUpdateStockProfileDB</Function>
+	              <Function>CChinaMarket::CreateThreadSaveStockSection</Function>
 
 								<Function>CContainerChinaStock::BuildDayLine</Function>
 	              <Function>CContainerChinaStock::BuildDayLineRS</Function>
@@ -165,19 +163,23 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CMainFrame::OnRebuildDayLine</Function>
 								<Function>CMainFrame::OnRebuildBasicFinancial</Function>
 								<Function>CMainFrame::OnMaintainDayLine</Function>
-								<Function>CMainFrame::</Function>
-								<Function>CMainFrame::</Function>
-								<Function>CMainFrame::</Function>
-								<Function>CMainFrame::</Function>
-								<Function>CMainFrame::</Function>
-	              <Function>CMainFrame::</Function>
+	              <Function>CMainFrame::SysCallOnTimer</Function>
+	              <Function>CMainFrame::SysCallSetPaneText</Function>
+	              <Function>CMainFrame::SysCallSetInnerSystemPaneText</Function>
+	              <Function>CMainFrame::SysCallOnSysCommand</Function>
+	              <Function>CMainFrame::SysCallCmdUIEnable</Function>
+	              <Function>CMainFrame::SysCallCmdUISetCheck</Function>
+	              <Function>CMainFrame::SysCallSendMessage</Function>
+	              <Function>CMainFrame::SysCallPreTranslateMessage</Function>
+								<Function>CMainFrame::SysCallInvalidate</Function>
+								<Function>CMainFrame::SysCallOnChar</Function>
+								<Function>CMainFrame::SysCallOnKeyUp</Function>
 
-								<Function>CWorldMarket::SchedulingTaskPerSecond</Function>
-	              <Function>CWorldMarket::SchedulingTaskPer10Seconds</Function>
-	              <Function>CWorldMarket::SchedulingTaskPerMinute</Function>
-	              <Function>CWorldMarket::SchedulingTaskPer5Minute</Function>
-	              <Function>CWorldMarket::SchedulingTaskPerHour</Function>
-								<Function>CWorldMarket::SchedulingTask</Function>
+								<Function>CVirtualMarket::SchedulingTask</Function>
+								<Function>CVirtualMarket::SchedulingTaskPerSecond</Function>
+								<Function>CVirtualMarket::RunDataSource</Function>
+	              <Function>CVirtualMarket::ProcessTask</Function>
+	              <Function>CVirtualMarket::ResetMarket</Function>
 
 								<Function>CVirtualDataHistoryCandleExtend::ShowData</Function>
 
@@ -270,6 +272,8 @@ Included items must then not match any entries in the exclude list to remain inc
 	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdView.h</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\OutputWnd.cpp</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\OutputWnd.h</Source>
+								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertiesWnd.cpp</Source>
+								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertiesWnd.h</Source>
               </Exclude>
             </Sources>
 

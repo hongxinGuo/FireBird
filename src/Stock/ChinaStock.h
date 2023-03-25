@@ -267,7 +267,7 @@ public:
 	void SaveTempInfo(CSetDayLineTodaySaved* pSetDayLineTemp); // 存储当日计算出的数据
 	void UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pBeUpdated); // 用当前状态更新历史数据
 	void UpdateDayLineStartEndDate();
-	void LoadTodaySavedInfo(CSetDayLineTodaySaved* pSetDayLineTemp);
+	void LoadTodaySavedInfo(const CSetDayLineTodaySaved* pSetDayLineTemp);
 	bool LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol);
 	bool CheckDayLineStatus();
 	//周线历史数据存取

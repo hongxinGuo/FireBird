@@ -518,7 +518,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 		SchedulingTask();
 	}
 	catch (std::exception* e) {
-		CString str = _T("Unhandled exception founded : ");
+		CString str = _T("SchedulingTask unhandled exception founded : ");
 		str += e->what();
 		gl_systemMessage.PushInformationMessage(str);
 		gl_systemMessage.PushErrorMessage(str);

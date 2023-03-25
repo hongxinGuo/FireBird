@@ -112,6 +112,7 @@ bool CContainerWorldStock::LoadDB() {
 /// <summary>
 /// 这种查询方式比较晦涩，但结果正确。目前使用此函数。(可能出现存储多个相同代码的问题，研究之）
 /// </summary>
+// bug. 此函数在测试时偶尔会出现unknown c++ exception thrown，原因待查。
 void CContainerWorldStock::UpdateProfileDB() {
 	//更新原有的代码集状态
 	if (IsUpdateProfileDB()) {
@@ -136,11 +137,10 @@ void CContainerWorldStock::UpdateProfileDB() {
 			}
 			setWorldStock.MoveNext();
 		}
-		if (iCurrentUpdated < iStockNeedUpdate) {
-			if (!setWorldStock.IsEOF()) {
-				setWorldStock.MoveLast();
-				setWorldStock.MoveNext();
-			}
+		if (iCurrentUpdated < iStockNeedUpdate) { // 添加新的股票简介
+			//if (!setWorldStock.IsEOF()) setWorldStock.MoveLast();
+			//if (!setWorldStock.IsEOF()) setWorldStock.MoveNext();
+			//ASSERT(setWorldStock.IsEOF());
 			for (size_t l = 0; l < m_vStock.size(); l++) {
 				const CWorldStockPtr pStock = GetStock(l);
 				ASSERT(pStock != nullptr);

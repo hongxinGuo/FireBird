@@ -98,6 +98,7 @@ public:
 	virtual void CreateThreadUpdateTempRTData();
 	virtual void CreateThreadLoadTempRTData(long lTheDay);
 	virtual void CreateThreadSaveStockSection();
+	virtual void CreateThreadUpdateChoseStockDB();
 
 	// interface function
 

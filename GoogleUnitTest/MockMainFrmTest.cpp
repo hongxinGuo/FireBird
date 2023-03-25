@@ -179,6 +179,7 @@ namespace FireBirdTest {
 		gl_pMockMainFrame->OnUpdateRecordFinnhubWebSocket(&cmdUI);
 		gl_systemConfiguration.SetUsingFinnhubWebSocket(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, true)).Times(1);
+
 		gl_pMockMainFrame->OnUpdateRecordFinnhubWebSocket(&cmdUI);
 	}
 
@@ -190,6 +191,7 @@ namespace FireBirdTest {
 		gl_pMockMainFrame->OnUpdateRecordTiingoIEXWebSocket(&cmdUI);
 		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, true)).Times(1);
+
 		gl_pMockMainFrame->OnUpdateRecordTiingoIEXWebSocket(&cmdUI);
 	}
 
@@ -201,6 +203,7 @@ namespace FireBirdTest {
 		gl_pMockMainFrame->OnUpdateRecordTiingoForexWebSocket(&cmdUI);
 		gl_systemConfiguration.SetUsingTiingoForexWebSocket(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, true)).Times(1);
+
 		gl_pMockMainFrame->OnUpdateRecordTiingoForexWebSocket(&cmdUI);
 	}
 
@@ -212,6 +215,7 @@ namespace FireBirdTest {
 		gl_pMockMainFrame->OnUpdateRecordTiingoCryptoWebSocket(&cmdUI);
 		gl_systemConfiguration.SetUsingTiingoCryptoWebSocket(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, true)).Times(1);
+
 		gl_pMockMainFrame->OnUpdateRecordTiingoCryptoWebSocket(&cmdUI);
 	}
 
@@ -219,18 +223,15 @@ namespace FireBirdTest {
 		CCmdUI cmdUI;
 		gl_pChinaMarket->SetSystemReady(false);
 		gl_pChinaMarket->SetCalculatingDayLineRS(false);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
 		gl_pChinaMarket->SetSystemReady(true);
 		gl_pChinaMarket->SetCalculatingDayLineRS(false);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
 		gl_pChinaMarket->SetSystemReady(false);
 		gl_pChinaMarket->SetCalculatingDayLineRS(true);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
 		gl_pChinaMarket->SetSystemReady(true);
 		gl_pChinaMarket->SetCalculatingDayLineRS(true);
@@ -516,6 +517,7 @@ namespace FireBirdTest {
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(83000);
 		gl_pChinaMarket->SetCalculatingDayLineRS(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
+
 		gl_pMockMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
 	}
 
@@ -530,15 +532,26 @@ namespace FireBirdTest {
 	TEST_F(CMockMainFrameTest, TestOnUpdateAbortBuindingRS) {
 		CCmdUI cmdUI;
 		gl_pChinaMarket->SetCalculatingDayLineRS(true);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true))
-		.Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateAbortBuildingRS(&cmdUI);
 		gl_pChinaMarket->SetCalculatingDayLineRS(false);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false))
-		.Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
 		gl_pMockMainFrame->OnUpdateAbortBuildingRS(&cmdUI);
+	}
+
+	TEST_F(CMockMainFrameTest, TestOnUpdateMaintainDayLine) {
+		CCmdUI cmdUI;
+		const tm tm_{0, 0, 0, 0, 0, 0, 4}; // 星期四
+		gl_pChinaMarket->TEST_SetMarketTM(tm_);
+		gl_pChinaMarket->TEST_SetFormattedMarketTime(180000); // DummyTime
+		EXPECT_TRUE(gl_pChinaMarket->IsDummyTime());
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
+		gl_pMockMainFrame->OnUpdateMaintainDayLine(&cmdUI);
+
+		gl_pChinaMarket->TEST_SetFormattedMarketTime(110000); // WorkingTime
+		EXPECT_FALSE(gl_pChinaMarket->IsDummyTime());
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
+		gl_pMockMainFrame->OnUpdateMaintainDayLine(&cmdUI);
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnUsingRealtimeDataServer) {
@@ -589,16 +602,13 @@ namespace FireBirdTest {
 		CCmdUI cmdUI;
 		const long lTime = gl_pChinaMarket->GetMarketTime();
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(150959);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
 		gl_pMockMainFrame->OnUpdateBuildCurrentWeekLine(&cmdUI);
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(151000);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
 		gl_pMockMainFrame->OnUpdateBuildCurrentWeekLine(&cmdUI);
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(151001);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateBuildCurrentWeekLine(&cmdUI);
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(lTime);
 	}
@@ -607,24 +617,20 @@ namespace FireBirdTest {
 		CCmdUI cmdUI;
 		EXPECT_THAT(gl_pChinaMarket->IsDayLineDBUpdated(), IsFalse());
 		EXPECT_THAT(gl_pChinaMarket->IsDayLineNeedSaving(), IsFalse());
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
 
 		const auto pStock = gl_pChinaMarket->GetStock(1);
 		pStock->SetDayLineDBUpdated(true);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
 		pStock->SetDayLineNeedSaving(true);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
 
 		pStock->SetDayLineDBUpdated(false);
 		pStock->SetDayLineNeedSaving(false);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
 	}
 
@@ -632,49 +638,75 @@ namespace FireBirdTest {
 		CCmdUI cmdUI;
 		EXPECT_THAT(gl_pChinaMarket->IsDayLineDBUpdated(), IsFalse());
 		EXPECT_THAT(gl_pChinaMarket->IsDayLineNeedSaving(), IsFalse());
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
 
 		const auto pStock = gl_pChinaMarket->GetStock(1);
 		pStock->SetDayLineDBUpdated(true);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
 		pStock->SetDayLineNeedSaving(true);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
 
 		pStock->SetDayLineDBUpdated(false);
 		pStock->SetDayLineNeedSaving(false);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
+	}
+
+	TEST_F(CMockMainFrameTest, TestOnUpdateUsingNeteaseDayLineDataServer) {
+		CCmdUI cmdUI;
+		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
+
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(&cmdUI, true)).Times(1);
+
+		gl_pMockMainFrame->OnUpdateUsingNeteaseDayLineDataServer(&cmdUI);
+
+		gl_systemConfiguration.SetChinaMarketDayLineServer(1); // 腾讯日线服务器
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(&cmdUI, false)).Times(1);
+
+		gl_pMockMainFrame->OnUpdateUsingNeteaseDayLineDataServer(&cmdUI);
+
+		// 恢复原状
+		gl_systemConfiguration.SetChinaMarketDayLineServer(0); // 腾讯日线服务器
+	}
+
+	TEST_F(CMockMainFrameTest, TestOnUpdateUsingTengxunDayLineDataServer) {
+		CCmdUI cmdUI;
+		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunDayLineServer());
+
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(&cmdUI, false)).Times(1);
+
+		gl_pMockMainFrame->OnUpdateUsingTengxunDayLineDataServer(&cmdUI);
+
+		gl_systemConfiguration.SetChinaMarketDayLineServer(1); // 腾讯日线服务器
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(&cmdUI, true)).Times(1);
+
+		gl_pMockMainFrame->OnUpdateUsingTengxunDayLineDataServer(&cmdUI);
+
+		// 恢复原状
+		gl_systemConfiguration.SetChinaMarketDayLineServer(0); // 腾讯日线服务器
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS2) {
 		CCmdUI cmdUI;
 		EXPECT_THAT(gl_pChinaMarket->IsDayLineDBUpdated(), IsFalse());
 		EXPECT_THAT(gl_pChinaMarket->IsDayLineNeedSaving(), IsFalse());
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
 
-		auto pStock = gl_pChinaMarket->GetStock(1);
+		const auto pStock = gl_pChinaMarket->GetStock(1);
 		pStock->SetDayLineDBUpdated(true);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
 		pStock->SetDayLineNeedSaving(true);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
 
 		pStock->SetDayLineDBUpdated(false);
 		pStock->SetDayLineNeedSaving(false);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
 	}
 

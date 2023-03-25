@@ -41,6 +41,7 @@ public:
 	virtual void SysCallInvalidate() { Invalidate(); }
 	virtual void SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags) { CFrameWndEx::OnChar(nChar, nRepCnt, nFlags); }
 	virtual void SysCallOnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) { CFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags); }
+
 	virtual void CalculateTodayRS();
 	virtual void ProcessChinaMarketStock();
 

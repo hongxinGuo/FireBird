@@ -142,8 +142,6 @@ void CChinaMarket::Reset() {
 	for (const auto& pDataSource : m_vDataSource) {
 		pDataSource->Reset();
 	}
-
-	m_lastTimeSchedulingTask = 0;
 }
 
 bool CChinaMarket::PreparingExitMarket() {
@@ -513,14 +511,13 @@ void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
-	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, GetNextSecond(lCurrentTime));
-
 	DistributeSinaRTDataToStock();
 	DistributeNeteaseRTDataToStock();
 	if (IsSystemReady() && IsTodayTempRTDataLoaded() && IsRTDataNeedCalculate()) {
 		CreateThreadProcessRTData();
 		SetRTDataNeedCalculate(false);
 	}
+	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, GetNextSecond(lCurrentTime));
 }
 
 bool CChinaMarket::ProcessTask(long lCurrentTime) {
@@ -551,7 +548,7 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 			TaskProcessTodayStock(lCurrentTime);
 			break;
 		case CHINA_MARKET_VALIDATE_TODAY_DATABASE__:
-			// todo
+			// todo not implemented
 			break;
 		case CHINA_MARKET_UPDATE_OPTION_DB__:
 			TaskUpdateOptionDB(lCurrentTime);
@@ -610,7 +607,9 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	}
 
 	// 装载本日之前存储的实时数据（如果有的话）
-	AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, 92630);
+	if (lCurrentTime > 93000) { // 重启系统时的时间是1000，故而不设置此任务
+		AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, 92630);
+	}
 
 	// 每十秒钟存储一次日线历史数据。
 	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, 113510); // 中午休市时开始。
@@ -842,11 +841,15 @@ bool CChinaMarket::TaskUpdateOptionDB(long lCurrentTime) {
 
 bool CChinaMarket::TaskUpdateChosenStockDB() {
 	if (IsUpdateChosenStockDB()) {
-		thread thread1(ThreadAppendChosenStockDB, this);
-		thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
+		CreateThreadUpdateChoseStockDB();
 		return true;
 	}
 	return false;
+}
+
+void CChinaMarket::CreateThreadUpdateChoseStockDB() {
+	thread thread1(ThreadAppendChosenStockDB, this);
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 bool CChinaMarket::TaskShowCurrentTransaction() {
@@ -1411,7 +1414,6 @@ bool CChinaMarket::TaskLoadTempRTData(long lTheDay, long lCurrentTime) {
 	ASSERT(!m_fTodayTempDataLoaded);
 
 	if (IsSystemReady()) {
-		m_fTodayTempDataLoaded = true;
 		CreateThreadLoadTempRTData(lTheDay);
 		return true;
 	}
@@ -1440,8 +1442,10 @@ void CChinaMarket::LoadTempRTData(long lTheDay) {
 	// 读取今日生成的数据于DayLineToday表中。
 	setDayLineTemp.Open();
 	if (!setDayLineTemp.IsEOF()) {
-		if (setDayLineTemp.m_Date == lTheDay) {	// 如果是当天的行情，则载入，否则放弃（默认所有的数据日期皆为同一个时间）
+		const long lTempDataDate = setDayLineTemp.m_Date;
+		if (lTempDataDate == lTheDay) {	// 如果是当天的行情，则载入，否则放弃（默认所有的数据日期皆为同一个时间）
 			while (!setDayLineTemp.IsEOF()) {
+				ASSERT(setDayLineTemp.m_Date == lTempDataDate);
 				if (IsStock(setDayLineTemp.m_Symbol)) {
 					const CChinaStockPtr pStock = GetStock(setDayLineTemp.m_Symbol);
 					ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
@@ -1452,6 +1456,8 @@ void CChinaMarket::LoadTempRTData(long lTheDay) {
 		}
 	}
 	setDayLineTemp.Close();
+
+	m_fTodayTempDataLoaded = true;
 }
 
 bool CChinaMarket::Load10DaysRSStrong1StockSet() {

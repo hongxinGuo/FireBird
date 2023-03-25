@@ -99,7 +99,7 @@ bool CQuandlDataSource::GenerateInquiryMessage(long lCurrentTime) {
 }
 
 bool CQuandlDataSource::InquireQuandl() {
-	// todo
+	// todo NotImplemented
 	return true;
 }
 

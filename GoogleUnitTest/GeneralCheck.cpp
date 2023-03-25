@@ -50,6 +50,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
+			EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
 		}
 	}
 

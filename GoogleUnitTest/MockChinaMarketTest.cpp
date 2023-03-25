@@ -54,7 +54,8 @@ namespace FireBirdTest {
 
 			ASSERT_THAT(gl_pNeteaseDayLineDataSource, NotNull());
 
-			s_pMockChinaMarket->SetSystemReady(true);
+			EXPECT_FALSE(s_pMockChinaMarket->IsSystemReady());
+			s_pMockChinaMarket->SetSystemReady(true);// 测试系统默认为准备好了
 		}
 
 		static void TearDownTestSuite() {
@@ -475,13 +476,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLine1) {
-		EXPECT_CALL(*s_pMockChinaMarket, DeleteWeekLine()).Times(1)
-		.RetiresOnSaturation();
-		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLine(19900101)).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*s_pMockChinaMarket, DeleteWeekLine()).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLine(19900101)).Times(1);
 		EXPECT_CALL(*s_pMockChinaMarket, DeleteCurrentWeekWeekLine()).Times(1);
-		EXPECT_CALL(*s_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1)
-		.RetiresOnSaturation();
+		EXPECT_CALL(*s_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1);
+
 		EXPECT_EQ(ThreadBuildWeekLine(s_pMockChinaMarket.get(), 19900101), static_cast<UINT>(25));
 	}
 
@@ -498,7 +497,8 @@ namespace FireBirdTest {
 	TEST_F(CMockChinaMarketTest, TestTaskLoadTempRTData) {
 		EXPECT_FALSE(s_pMockChinaMarket->IsTodayTempRTDataLoaded());
 		EXPECT_TRUE(s_pMockChinaMarket->IsSystemReady());
-		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadLoadTempRTData(20190517)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadLoadTempRTData(20190517)).Times(1)
+		.WillOnce(Invoke([] { s_pMockChinaMarket->SetTodayTempRTDataLoaded(true); })); // LoadTempRTData执行时设置此标识
 
 		EXPECT_TRUE(s_pMockChinaMarket->TaskLoadTempRTData(20190517, 10000));
 

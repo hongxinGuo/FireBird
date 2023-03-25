@@ -148,14 +148,16 @@ namespace FireBirdTest {
 
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 4800);
-			gl_pChinaMarket->SetSystemReady(true);
+			EXPECT_FALSE(gl_pChinaMarket->IsSystemReady()) << "市场默认为尚未准备好";
+			gl_pChinaMarket->SetSystemReady(true); // 测试系统默认为准备好了
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
 			while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
 
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 
-			gl_pWorldMarket->SetSystemReady(true);
+			EXPECT_FALSE(gl_pWorldMarket->IsSystemReady()) << "市场默认为尚未准备好";
+			gl_pWorldMarket->SetSystemReady(true);// 测试系统默认为准备好了
 			const auto pStock1 = gl_pWorldMarket->GetStock(_T("AAPL"));
 			pStock1->SetUpdateCompanyProfile(true);
 

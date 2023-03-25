@@ -383,7 +383,7 @@ void CFinnhubStockBasicFinancial::SaveQuarterData(CSetFinnhubStockBasicFinancial
 }
 
 void CFinnhubStockBasicFinancial::LoadQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData) {
-	// TODO
+	// TODO not implemented
 }
 
 void CFinnhubStockBasicFinancial::SaveAllAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<CItemOfBasicFinancialSeasonData>& vDBData) {

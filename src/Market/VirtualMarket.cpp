@@ -5,11 +5,9 @@
 #include "VirtualMarket.h"
 
 CVirtualMarket::CVirtualMarket() {
-	m_tLastTime = 0;
-	m_fResetMarketPermission = true; // 允许系统被重置标识，唯独此标识不允许系统重置。初始时设置为真：允许重置系统。
+	ASSERT(m_fResetMarketPermission == true); // 允许系统被重置标识，唯独此标识不允许系统重置。初始时设置为真：允许重置系统。
 	m_fResetMarket = true;
 	m_fReadyToRun = true;
-	m_fSystemReady = true; // 默认为真
 
 	m_lMarketLastTradeDate = 0;
 	m_lMarketTime = 0;
@@ -55,6 +53,11 @@ void CVirtualMarket::RunDataSource(long lCurrentTime) const {
 	for (const auto& pDataSource : m_vDataSource) {
 		if (pDataSource->IsEnable()) pDataSource->Run(lCurrentTime);
 	}
+}
+
+bool CVirtualMarket::ProcessTask(long) {
+	ASSERT(0);// 每日定时任务调度,由SchedulingTaskPerSecond调度，由各市场定义其各自的任务,不允许调用本基类函数
+	return true;
 }
 
 void CVirtualMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
