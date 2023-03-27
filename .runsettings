@@ -77,7 +77,10 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CChinaStock::CalculatingWeekLine</Function>
 
 	              <Function>CContainerChinaStock::CreateThreadSaveDayLineBasicInfoOfStock</Function>
-	              <Function>CContainerChinaStock::CreateThreadSaveDayLineBasicInfo</Function>
+								<Function>CContainerChinaStock::CreateThreadSaveDayLineBasicInfo</Function>
+								<Function>CContainerChinaStock::DeleteTempRTData</Function>
+								<Function>CContainerChinaStock::SaveTempRTData</Function>
+	              <Function>CContainerChinaStock::UnloadDayLine</Function>
 
 								<Function>CChinaMarket::BuildCurrentWeekWeekLineTable</Function>
 								<Function>CChinaMarket::BuildWeekLineOfCurrentWeek</Function>

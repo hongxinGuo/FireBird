@@ -663,8 +663,10 @@ bool CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
 // 决定只使用原始的逐项删除模式。
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CContainerChinaStock::UpdateTodayTempDB() {
+bool CContainerChinaStock::SaveTempRTData() {
 	CSetDayLineTodaySaved setDayLineTemp;
+	CHighPerformanceCounter counter;
+	counter.start();
 
 	DeleteTempRTData();
 
@@ -688,6 +690,12 @@ bool CContainerChinaStock::UpdateTodayTempDB() {
 	}
 	setDayLineTemp.m_pDatabase->CommitTrans();
 	setDayLineTemp.Close();
+	counter.stop();
+	char buffer[30];
+	sprintf_s(buffer, _T("%lld"), counter.GetElapsedMilliSecond());
+	CString str = "存储实时数据用时：";
+	str += buffer;
+	gl_systemMessage.PushInnerSystemInformationMessage(str);
 
 	return true;
 }

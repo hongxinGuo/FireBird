@@ -768,7 +768,7 @@ void CChinaMarket::ProcessTodayStock() {
 	gl_systemMessage.PushInformationMessage(str);
 }
 
-bool CChinaMarket::CheckDayLineDB() {
+bool CChinaMarket::IsFinishedSavingDayLineDB() {
 	static bool s_bHaveSavedDayLine = false;
 	if (s_bHaveSavedDayLine && (!IsDayLineNeedSaving()) && (!IsDayLineNeedUpdate()) && (!IsDayLineNeedProcess())) {
 		s_bHaveSavedDayLine = false;
@@ -884,7 +884,7 @@ void CChinaMarket::CreateThreadSaveStockSection() {
 bool CChinaMarket::ChangeDayLineStockCodeToStandard() {
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
-	setDayLineExtendInfo.Open(AFX_DB_USE_DEFAULT_TYPE, nullptr, CRecordset::executeDirect);
+	setDayLineExtendInfo.Open();
 	setDayLineExtendInfo.m_pDatabase->BeginTrans();
 	while (!setDayLineExtendInfo.IsEOF()) {
 		setDayLineExtendInfo.Edit();
@@ -908,7 +908,7 @@ bool CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 		SaveDayLineData();
 	}
 
-	if (!CheckDayLineDB()) {// 当尚未更新完日线历史数据时
+	if (!IsFinishedSavingDayLineDB()) {// 当尚未更新完日线历史数据时
 		AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(lCurrentTime, 0, 0, 10));
 	}
 	return true;

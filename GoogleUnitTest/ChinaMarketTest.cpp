@@ -1630,26 +1630,26 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedSaving());
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated());
 
-		EXPECT_FALSE(gl_pChinaMarket->CheckDayLineDB()) << "IsSaveDayLine为假";
+		EXPECT_FALSE(gl_pChinaMarket->IsFinishedSavingDayLineDB()) << "IsSaveDayLine为假";
 
 		const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(0);
 		pStock->SetDayLineNeedSaving(true);
 		pStock->SetDayLineDBUpdated(true);
-		EXPECT_FALSE(gl_pChinaMarket->CheckDayLineDB()) << "IsDayLineNeedUpdate等皆为真";
+		EXPECT_FALSE(gl_pChinaMarket->IsFinishedSavingDayLineDB()) << "IsDayLineNeedUpdate等皆为真";
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineDBUpdated());
 
-		EXPECT_FALSE(gl_pChinaMarket->CheckDayLineDB()) << "IsDayLineNeedUpdate和IsDayLineNeedSaving为真";
+		EXPECT_FALSE(gl_pChinaMarket->IsFinishedSavingDayLineDB()) << "IsDayLineNeedUpdate和IsDayLineNeedSaving为真";
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineDBUpdated());
 
 		pStock->SetDayLineNeedSaving(false);
-		EXPECT_FALSE(gl_pChinaMarket->CheckDayLineDB()) << "IsDayLineNeedUpdate为真";
+		EXPECT_FALSE(gl_pChinaMarket->IsFinishedSavingDayLineDB()) << "IsDayLineNeedUpdate为真";
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineDBUpdated());
 
 		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 			const auto china_stock_ptr = gl_pChinaMarket->GetStock(i);
 			china_stock_ptr->SetDayLineNeedUpdate(false);
 		}
-		EXPECT_TRUE(gl_pChinaMarket->CheckDayLineDB()) << "条件满足了";
+		EXPECT_TRUE(gl_pChinaMarket->IsFinishedSavingDayLineDB()) << "条件满足了";
 		EXPECT_FALSE(pStock->IsDayLineDBUpdated());
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);

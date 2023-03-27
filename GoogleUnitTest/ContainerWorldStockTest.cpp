@@ -40,6 +40,55 @@ namespace FireBirdTest {
 	protected:
 	};
 
+	TEST_F(CContainerWorldStockTest, TestResetBasicFinancial) {
+		for (long l = 0; l < m_containerStock.Size(); l++) {
+			const auto pStock = m_containerStock.GetStock(l);
+			EXPECT_TRUE(pStock->IsUpdateBasicFinancial());
+			EXPECT_EQ(pStock->GetBasicFinancialUpdateDate(), 19800101);
+			EXPECT_FALSE(pStock->IsUpdateProfileDB());
+
+			pStock->SetUpdateBasicFinancial(false);
+			pStock->SetUpdateProfileDB(false);
+			pStock->SetBasicFinancialUpdateDate(20000101);
+		}
+
+		m_containerStock.ResetBasicFinancial();
+
+		for (long l = 0; l < m_containerStock.Size(); l++) {
+			const auto pStock = m_containerStock.GetStock(l);
+			EXPECT_TRUE(pStock->IsUpdateBasicFinancial());
+			EXPECT_EQ(pStock->GetBasicFinancialUpdateDate(), 19800101);
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
+
+			//pStock->SetUpdateBasicFinancial(false);
+			pStock->SetUpdateProfileDB(false);
+			//pStock->SetBasicFinancialUpdateDate(20000101);
+		}
+	}
+
+	TEST_F(CContainerWorldStockTest, TestClearUpdateBasicFinancialFlag) {
+		for (long l = 0; l < m_containerStock.Size(); l++) {
+			const auto pStock = m_containerStock.GetStock(l);
+			EXPECT_TRUE(pStock->IsUpdateBasicFinancial());
+			pStock->SetUpdateBasicFinancial(true);
+		}
+		vector<CWorldStockPtr> vStock;
+		for (long l = 0; l < m_containerStock.Size(); l++) {
+			const auto pStock = m_containerStock.GetStock(l);
+			vStock.push_back(pStock);
+		}
+
+		m_containerStock.ClearUpdateBasicFinancialFlag(vStock);
+
+		for (long l = 0; l < m_containerStock.Size(); l++) {
+			const auto pStock = m_containerStock.GetStock(l);
+			EXPECT_TRUE(pStock->IsUpdateBasicFinancial());
+		}
+
+		// »Ö¸´Ô­×´
+		while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
+	}
+
 	TEST_F(CContainerWorldStockTest, TestValidateStockSymbol1) {
 		const auto pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("AAPL"));

@@ -63,7 +63,7 @@ public:
 	bool TaskChoice10RSStrongStockSet(long lCurrentTime);
 	bool TaskProcessTodayStock(long lCurrentTime);
 	void ProcessTodayStock();
-	bool CheckDayLineDB();
+	bool IsFinishedSavingDayLineDB();
 	bool CheckFastReceivingData(long lCurrentTime);
 	bool CheckMarketOpen(long lCurrentTime);
 
@@ -174,7 +174,7 @@ public:
 	bool UpdateChosenStockDB();
 	virtual bool AppendChosenStockDB();
 	void LoadChosenStockDB();
-	virtual bool UpdateTodayTempDB() { return m_containerChinaStock.UpdateTodayTempDB(); }
+	virtual bool SaveTempRTData() { return m_containerChinaStock.SaveTempRTData(); }
 	bool TaskLoadTempRTData(long lTheDay, long lCurrentTime);
 	void LoadTempRTData(long lTheDay);
 	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate);

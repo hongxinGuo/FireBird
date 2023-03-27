@@ -408,7 +408,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadSaveTempRTData) {
-		EXPECT_CALL(*s_pMockChinaMarket, UpdateTodayTempDB)
+		EXPECT_CALL(*s_pMockChinaMarket, SaveTempRTData)
 		.Times(1);
 		s_pMockChinaMarket->SetSystemReady(true);
 		EXPECT_EQ(ThreadSaveTempRTData(s_pMockChinaMarket.get()), static_cast<UINT>(13));
@@ -507,5 +507,81 @@ namespace FireBirdTest {
 
 		// »Ö¸´Ô­×´
 		s_pMockChinaMarket->SetTodayTempRTDataLoaded(false);
+	}
+
+	TEST_F(CMockChinaMarketTest, TestProcessTodayStock1) {
+		s_pMockChinaMarket->SetNewestTransactionTime(GetUTCTime());
+		const long lDate = s_pMockChinaMarket->GetMarketDate();
+
+		EXPECT_TRUE(s_pMockChinaMarket->IsSystemReady());
+		s_pMockChinaMarket->TEST_SetFormattedMarketTime(60000);
+		s_pMockChinaMarket->TEST_SetFormattedMarketDate(19800101);
+
+		EXPECT_CALL(*s_pMockChinaMarket, BuildDayLine(_)).Times(0);
+		EXPECT_CALL(*s_pMockChinaMarket, BuildDayLineRS(_)).Times(0);
+		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineOfCurrentWeek()).Times(0);
+		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineRS(_)).Times(0);
+		EXPECT_CALL(*s_pMockChinaMarket, UpdateStockProfileDB()).Times(0);
+
+		s_pMockChinaMarket->ProcessTodayStock();
+
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
+
+		// »Ö¸´Ô­×´
+		gl_systemMessage.PopInformationMessage();
+		s_pMockChinaMarket->TEST_SetFormattedMarketDate(lDate);
+	}
+
+	TEST_F(CMockChinaMarketTest, TestProcessTodayStock2) {
+		s_pMockChinaMarket->SetNewestTransactionTime(GetUTCTime());
+		const tm tm1 = s_pMockChinaMarket->TransferToMarketTime();
+		const long lDate = (tm1.tm_year + 1900) * 10000 + (tm1.tm_mon + 1) * 100 + tm1.tm_mday;
+		const long lWeekBeginDate = GetCurrentMonday(lDate);
+
+		EXPECT_TRUE(s_pMockChinaMarket->IsSystemReady());
+		s_pMockChinaMarket->TEST_SetFormattedMarketTime(60000);
+		s_pMockChinaMarket->SetRSEndDate(19800101);
+		s_pMockChinaMarket->SetUpdateOptionDB(false);
+
+		EXPECT_CALL(*s_pMockChinaMarket, BuildDayLine(lDate)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, BuildDayLineRS(lDate)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineOfCurrentWeek()).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineRS(lWeekBeginDate)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, UpdateStockProfileDB()).Times(1);
+
+		s_pMockChinaMarket->ProcessTodayStock();
+
+		EXPECT_FALSE(s_pMockChinaMarket->IsUpdateOptionDB());
+		EXPECT_EQ(s_pMockChinaMarket->GetRSEndDate(), 19800101);
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
+		gl_systemMessage.PopInformationMessage();
+	}
+
+	TEST_F(CMockChinaMarketTest, TestProcessTodayStock3) {
+		s_pMockChinaMarket->SetNewestTransactionTime(GetUTCTime());
+		const tm tm1 = s_pMockChinaMarket->TransferToMarketTime();
+		const long lDate = (tm1.tm_year + 1900) * 10000 + (tm1.tm_mon + 1) * 100 + tm1.tm_mday;
+		const long lWeekBeginDate = GetCurrentMonday(lDate);
+
+		EXPECT_TRUE(s_pMockChinaMarket->IsSystemReady());
+		s_pMockChinaMarket->TEST_SetFormattedMarketTime(160000);
+		s_pMockChinaMarket->SetRSEndDate(19800101);
+		s_pMockChinaMarket->SetUpdateOptionDB(false);
+
+		EXPECT_CALL(*s_pMockChinaMarket, BuildDayLine(lDate)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, BuildDayLineRS(lDate)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineOfCurrentWeek()).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineRS(lWeekBeginDate)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, UpdateStockProfileDB()).Times(1);
+
+		s_pMockChinaMarket->ProcessTodayStock();
+
+		EXPECT_EQ(s_pMockChinaMarket->GetRSEndDate(), lDate);
+		EXPECT_TRUE(s_pMockChinaMarket->IsUpdateOptionDB());
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
+
+		// »Ö¸´Ô­×´
+		s_pMockChinaMarket->SetUpdateOptionDB(false);
+		gl_systemMessage.PopInformationMessage();
 	}
 }

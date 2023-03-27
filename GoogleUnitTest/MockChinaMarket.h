@@ -31,7 +31,7 @@ namespace testing {
 		MOCK_METHOD(bool, UpdateOptionDB, (), (override));
 		MOCK_METHOD(bool, UpdateStockProfileDB, (), (override));
 		MOCK_METHOD(bool, AppendChosenStockDB, (), (override));
-		MOCK_METHOD(bool, UpdateTodayTempDB, (), (override));
+		MOCK_METHOD(bool, SaveTempRTData, (), (override));
 		MOCK_METHOD(long, BuildDayLine, (long lCurrentTradeDate), (override));
 		MOCK_METHOD(bool, Choice10RSStrong2StockSet, (), (override));
 		MOCK_METHOD(bool, Choice10RSStrong1StockSet, (), (override));

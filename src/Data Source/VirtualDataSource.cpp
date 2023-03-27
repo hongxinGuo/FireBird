@@ -54,6 +54,7 @@ void CVirtualDataSource::Run(const long lCurrentTime) {
 		ASSERT(IsInquiring());
 		GetCurrentProduct();
 		GenerateCurrentInquiryMessage();
+		SetGetWebDataAndProcessItThreadRunning(true); // 在调用工作线程前即设置该值
 		CreateThreadGetWebDataAndProcessIt();
 	}
 }
@@ -74,7 +75,7 @@ bool CVirtualDataSource::GetWebDataAndProcessIt() {
 	CHighPerformanceCounter counter;
 	bool bSucceed = false;
 
-	SetGetWebDataAndProcessItThreadRunning(true);
+	ASSERT(IsGetWebDataAndProcessItThreadRunning());// 在调用工作线程前即设置
 	counter.start();
 	if (GetWebData()) {
 		if (ProcessWebDataReceived()) {
