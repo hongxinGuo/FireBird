@@ -5,21 +5,21 @@
 #include"WorldMarket.h"
 
 UINT ThreadUpdateWorldMarketStockProfileDB(not_null<CWorldMarket*> pMarket) {
-	static bool sm_fInProcess = false;
+	static bool sm_fProcessing = false;
 
-	if (sm_fInProcess) {
+	if (sm_fProcessing) {
 		gl_systemMessage.PushErrorMessage(_T("UpdateWorldMarektStockProfileDB任务用时超过五分钟"));
-		return false;
+		return 37;
 	}
 	else {
-		sm_fInProcess = true;
+		sm_fProcessing = true;
 	}
 	gl_UpdateWorldMarketDB.acquire();
 	gl_ThreadStatus.IncreaseSavingThread();
 	pMarket->UpdateStockProfileDB();
 	gl_ThreadStatus.DecreaseSavingThread();
 	gl_UpdateWorldMarketDB.release();
-	sm_fInProcess = false;
+	sm_fProcessing = false;
 
 	return 37;
 }

@@ -138,9 +138,6 @@ void CContainerWorldStock::UpdateProfileDB() {
 			setWorldStock.MoveNext();
 		}
 		if (iCurrentUpdated < iStockNeedUpdate) { // 添加新的股票简介
-			//if (!setWorldStock.IsEOF()) setWorldStock.MoveLast();
-			//if (!setWorldStock.IsEOF()) setWorldStock.MoveNext();
-			//ASSERT(setWorldStock.IsEOF());
 			for (size_t l = 0; l < m_vStock.size(); l++) {
 				const CWorldStockPtr pStock = GetStock(l);
 				ASSERT(pStock != nullptr);

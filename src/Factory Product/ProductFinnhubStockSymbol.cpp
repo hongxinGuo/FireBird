@@ -26,8 +26,6 @@ CString CProductFinnhubStockSymbol::CreateMessage() {
 bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 	gl_counter.start();
-	// 临时输出数据至文件中。
-	// SaveToFile(_T("C:\\FireBird\\StockSymbol.json"), pWebData->GetDataBuffer());
 
 	const auto strExchangeCode = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStockExchangeCode(m_lIndex);
 	const auto pvStock = ParseFinnhubStockSymbol(pWebData);
@@ -54,6 +52,12 @@ bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		}
 	}
 	gl_counter.stop();
+	char buffer[30];
+	sprintf_s(buffer, _T("%lld"), pvStock->size());
+	CString str = _T("今日美国市场股票总数为：");
+	str += buffer;
+	gl_systemMessage.PushInnerSystemInformationMessage(str);
+
 	return true;
 }
 

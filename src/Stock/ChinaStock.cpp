@@ -1293,7 +1293,7 @@ bool CChinaStock::IsTodayDataActive() const {
 //
 ////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::IsTodayDataChanged() const {
-	if ((GetHigh() != 0) || (GetLow() != 0) || (GetAmount() != 0) || (GetVolume() != 0)) {
+	if ((GetHigh() != 0) || (GetLow() != 0) || (GetVolume() != 0) || (GetAmount() != 0)) {
 		return true;
 	}
 	return false;
