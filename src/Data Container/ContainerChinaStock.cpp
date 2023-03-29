@@ -698,16 +698,13 @@ bool CContainerChinaStock::SaveTempRTData() {
 }
 
 void CContainerChinaStock::DeleteTempRTData() {
-	CSetDayLineTodaySaved setDayLineTemp;
+	CDatabase database;
 
-	setDayLineTemp.Open();
-	setDayLineTemp.m_pDatabase->BeginTrans();
-	while (!setDayLineTemp.IsEOF()) {
-		setDayLineTemp.Delete();
-		setDayLineTemp.MoveNext();
-	}
-	setDayLineTemp.m_pDatabase->CommitTrans();
-	setDayLineTemp.Close();
+	database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+	database.BeginTrans();
+	database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`today`;"));
+	database.CommitTrans();
+	database.Close();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
