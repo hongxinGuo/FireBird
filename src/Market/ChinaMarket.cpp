@@ -600,10 +600,8 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 		AddTask(CHINA_MARKET_RESET__, 92600); // 执行时间为：92600
 	}
 
-	// 装载本日之前存储的实时数据（如果有的话）
-	if (lCurrentTime > 93000) { // 重启系统时的时间是1000，故而不设置此任务
-		AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, 92630);
-	}
+	// 装载本日之前存储的实时数据。无论是否存在，都需要执行此任务，这样才能保证m_fLoadTodayRTData变量正常设置
+	AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, 92630);
 
 	// 每十秒钟存储一次日线历史数据。
 	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, 113510); // 中午休市时开始。
@@ -1408,13 +1406,18 @@ bool CChinaMarket::TaskLoadTempRTData(long lTheDay, long lCurrentTime) {
 	ASSERT(!m_fTodayTempDataLoaded);
 
 	if (IsSystemReady()) {
-		LoadTempRTData(lTheDay);
+		CreateThreadLoadTempRTData(lTheDay);
 		return true;
 	}
 	else {
 		AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, GetNextSecond(lCurrentTime));
 	}
 	return false;
+}
+
+void CChinaMarket::CreateThreadLoadTempRTData(long lTheDay) {
+	thread thread1(ThreadLoadTempRTData, this, lTheDay);
+	thread1.detach();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1443,6 +1446,7 @@ void CChinaMarket::LoadTempRTData(long lTheDay) {
 	}
 	setDayLineTemp.Close();
 
+	ASSERT(m_fTodayTempDataLoaded == false);
 	m_fTodayTempDataLoaded = true;
 }
 

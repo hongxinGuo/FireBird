@@ -30,6 +30,8 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
 UINT ThreadBuildDayLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate); // 此工作线程返回值也为12
 // 存储临时系统状态线程
 UINT ThreadSaveTempRTData(not_null<CChinaMarket*> pMarket); // 此工作线程返回值为13
+// 装载临时存储的实时数据线程
+UINT ThreadLoadTempRTData(not_null<CChinaMarket*> pMarket, long lTheDay); // 此线程返回值为19
 // 计算和存储当前交易日数据线程
 UINT ThreadProcessTodayStock(not_null<CChinaMarket*> pMarket); // 此工作线程返回值为14
 // 存储一个股票的日线历史数据。
