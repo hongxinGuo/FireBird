@@ -588,8 +588,8 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	// 每秒一次分配实时数据
 	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 1); // 开始执行时间为：1
 
-	// 辅助任务
-	AddTask(CHINA_MARKET_ACCESSORY_TASK__, lCurrentTime);
+	// 辅助任务。在随后的正点分钟执行。
+	AddTask(CHINA_MARKET_ACCESSORY_TASK__, GetNextTime(lTimeMinute, 0, 1, 0));
 
 	// 初始化系统
 	if (lCurrentTime < 91300) {
@@ -601,7 +601,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	}
 
 	// 装载本日之前存储的实时数据。无论是否存在，都需要执行此任务，这样才能保证m_fLoadTodayRTData变量正常设置
-	AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, 92630);
+	AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, lCurrentTime);
 
 	// 每十秒钟存储一次日线历史数据。
 	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, 113510); // 中午休市时开始。
@@ -614,7 +614,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 
 	if (IsWorkingDay()) {
 		// 每五分钟存储一次临时数据
-		AddTask(CHINA_MARKET_SAVE_TEMP_RT_DATA__, 50230); // 开始执行时间为：92730.要确保第一次执行的时间早于93000，这样启动数据库的时间较短，否则容易导致系统崩溃（原因不明）。
+		AddTask(CHINA_MARKET_SAVE_TEMP_RT_DATA__, 92730); // 开始执行时间为：92730.要确保第一次执行的时间早于93000，这样启动数据库的时间较短，否则容易导致系统崩溃（原因不明）。
 		AddTask(CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__, 150700); // 
 	}
 
@@ -639,7 +639,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
 	if (lCurrentTime < 170000) { // 中国市场股票交易截止时间为150000。
 		long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
-		//if ((lNextTime >= 113500) && (lNextTime < 125730)) lNextTime = 125730;
+		if ((lNextTime >= 113500) && (lNextTime < 125730)) lNextTime = 125730;
 		AddTask(CHINA_MARKET_SAVE_TEMP_RT_DATA__, lNextTime);
 	}
 	if (IsSystemReady()) {

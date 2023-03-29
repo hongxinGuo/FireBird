@@ -190,7 +190,6 @@ void CWorldStock::ResetAllUpdateDate() {
 }
 
 void CWorldStock::Load(CSetWorldStock& setWorldStock) {
-	bool bSucceed;
 	m_strSymbol = setWorldStock.m_Symbol;
 	m_strExchangeCode = setWorldStock.m_ExchangeCode;
 	m_strDescription = setWorldStock.m_Description;
@@ -226,7 +225,8 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 	m_strLogo = setWorldStock.m_Logo;
 	m_strFinnhubIndustry = setWorldStock.m_FinnhubIndustry;
 	if (setWorldStock.m_Peer.GetLength() > 2) {
-		bSucceed = CreateJsonWithNlohmann(m_jsonPeer, setWorldStock.m_Peer);
+		// ReSharper disable once CppNoDiscardExpression
+		CreateJsonWithNlohmann(m_jsonPeer, setWorldStock.m_Peer);
 	}
 	m_lDayLineStartDate = setWorldStock.m_DayLineStartDate;
 	m_lDayLineEndDate = setWorldStock.m_DayLineEndDate;
@@ -234,7 +234,8 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 		ResetAllUpdateDate();
 	}
 	else {
-		bSucceed = CreateJsonWithNlohmann(m_jsonUpdateDate, setWorldStock.m_UpdateDate);
+		// ReSharper disable once CppNoDiscardExpression
+		CreateJsonWithNlohmann(m_jsonUpdateDate, setWorldStock.m_UpdateDate);
 	}
 	m_lIPOStatus = setWorldStock.m_IPOStatus;
 
