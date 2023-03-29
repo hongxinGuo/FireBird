@@ -9,7 +9,10 @@
 
 #include"DayLine.h"
 #include"DataWorldStockDayLine.h"
+#include "EPSSurprise.h"
 #include"FinnhubCompanyNews.h"
+#include "InsiderSentiment.h"
+#include "InsiderTransaction.h"
 
 #include"SetWorldStock.h"
 

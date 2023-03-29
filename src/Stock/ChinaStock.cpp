@@ -11,7 +11,108 @@
 #include<gsl/gsl>
 using namespace gsl;
 
-CChinaStock::CChinaStock() { CChinaStock::Reset(); }
+CChinaStock::CChinaStock() {
+	m_lDayLineStartDate = _CHINA_MARKET_BEGIN_DATE_; //
+	m_lDayLineEndDate = _CHINA_MARKET_BEGIN_DATE_; //
+	m_nHand = 100;
+
+	m_lHighLimit = m_lLowLimit = 0;
+	m_lHighLimit2 = m_lLowLimit2 = 0;
+	for (int i = 0; i < 5; i++) {
+		m_lPBuy.at(i) = m_lPSell.at(i) = 0;
+		m_lVBuy.at(i) = m_lVSell.at(i) = 0;
+	}
+	m_dRealtimeRS = 0;
+	m_dRealtimeRSIndex = 0;
+
+	m_lAttackBuyAmount = 0;
+	m_lAttackSellAmount = 0;
+	m_lAttackBuyVolume = 0;
+	m_lCurrentAttackBuy = 0;
+	m_lAttackSellVolume = 0;
+	m_lCurrentAttackSell = 0;
+	m_lStrongBuyVolume = 0;
+	m_lCurrentStrongBuy = 0;
+	m_lStrongSellVolume = 0;
+	m_lCurrentStrongSell = 0;
+	m_lUnknownVolume = 0;
+	m_lCurrentUnknown = 0;
+	m_lCanceledBuyVolume = 0;
+	m_lCanceledSellVolume = 0;
+	m_lTransactionNumber = 0;
+	m_lTransactionNumberBelow5000 = 0;
+	m_lTransactionNumberBelow50000 = 0;
+	m_lTransactionNumberBelow200000 = 0;
+	m_lTransactionNumberAbove200000 = 0;
+
+	m_lOrdinaryBuyNumberBelow5000 = 0;
+	m_lOrdinaryBuyNumberBelow10000 = 0;
+	m_lOrdinaryBuyNumberBelow20000 = 0;
+	m_lOrdinaryBuyNumberBelow50000 = 0;
+	m_lOrdinaryBuyNumberBelow100000 = 0;
+	m_lOrdinaryBuyNumberBelow200000 = 0;
+	m_lOrdinaryBuyNumberAbove200000 = 0;
+	m_lOrdinarySellNumberBelow5000 = 0;
+	m_lOrdinarySellNumberBelow10000 = 0;
+	m_lOrdinarySellNumberBelow20000 = 0;
+	m_lOrdinarySellNumberBelow50000 = 0;
+	m_lOrdinarySellNumberBelow100000 = 0;
+	m_lOrdinarySellNumberBelow200000 = 0;
+	m_lOrdinarySellNumberAbove200000 = 0;
+	m_lOrdinaryBuyVolumeBelow5000 = 0;
+	m_lOrdinaryBuyVolumeBelow10000 = 0;
+	m_lOrdinaryBuyVolumeBelow20000 = 0;
+	m_lOrdinaryBuyVolumeBelow50000 = 0;
+	m_lOrdinaryBuyVolumeBelow100000 = 0;
+	m_lOrdinaryBuyVolumeBelow200000 = 0;
+	m_lOrdinaryBuyVolumeAbove200000 = 0;
+	m_lOrdinarySellVolumeBelow5000 = 0;
+	m_lOrdinarySellVolumeBelow10000 = 0;
+	m_lOrdinarySellVolumeBelow20000 = 0;
+	m_lOrdinarySellVolumeBelow50000 = 0;
+	m_lOrdinarySellVolumeBelow100000 = 0;
+	m_lOrdinarySellVolumeBelow200000 = 0;
+	m_lOrdinarySellVolumeAbove200000 = 0;
+
+	m_lCanceledBuyVolumeBelow5000 = 0;
+	m_lCanceledBuyVolumeBelow10000 = 0;
+	m_lCanceledBuyVolumeBelow20000 = 0;
+	m_lCanceledBuyVolumeBelow50000 = 0;
+	m_lCanceledBuyVolumeBelow100000 = 0;
+	m_lCanceledBuyVolumeBelow200000 = 0;
+	m_lCanceledBuyVolumeAbove200000 = 0;
+	m_lCanceledSellVolumeBelow5000 = 0;
+	m_lCanceledSellVolumeBelow10000 = 0;
+	m_lCanceledSellVolumeBelow20000 = 0;
+	m_lCanceledSellVolumeBelow50000 = 0;
+	m_lCanceledSellVolumeBelow100000 = 0;
+	m_lCanceledSellVolumeBelow200000 = 0;
+	m_lCanceledSellVolumeAbove200000 = 0;
+
+	m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
+	m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
+
+	m_llLastSavedVolume = 0;
+
+	m_lCurrentCanceledSellVolume = m_lCurrentCanceledBuyVolume = m_lCurrentGuadanTransactionVolume = 0;
+
+	m_dCurrentGuadanTransactionPrice = 0;
+	m_nCurrentTransactionType = 0;
+
+	m_fChosen = false;
+	m_fSaveToChosenStockDB = false;
+
+	m_fDayLineDBUpdated = false;
+
+	m_fHaveFirstRTData = false; // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
+	m_fNeedProcessRTData = true;
+	m_fRTDataCalculated = false;
+	m_pLastRTData = nullptr;
+
+	m_fMinLineUpdated = false;
+
+	CChinaStock::Reset();
+}
 
 void CChinaStock::Reset() {
 	CVirtualStock::Reset();
@@ -273,6 +374,14 @@ void CChinaStock::UpdateStatus(CWebRTDataPtr pRTData) {
 		SetPSell(i, pRTData->GetPSell(i));
 		SetVSell(i, pRTData->GetVSell(i));
 	}
+}
+
+void CChinaStock::UpdateProfile(CWebRTDataPtr pRTData) {
+	SetActive(true);
+	SetDayLineLoaded(false);
+	SetSymbol(pRTData->GetSymbol()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+	if (pRTData->GetStockName() != _T("")) SetDisplaySymbol(pRTData->GetStockName()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+	SetIPOStatus(_STOCK_IPOED_);
 }
 
 void CChinaStock::UpdateDayLineStartEndDate() {

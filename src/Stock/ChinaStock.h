@@ -49,6 +49,7 @@ public:
 
 public:
 	void UpdateStatus(CWebRTDataPtr pRTData);
+	void UpdateProfile(CWebRTDataPtr pRTData);
 
 	// 本股票各变量状态
 	long GetHighLimit() const noexcept { return m_lHighLimit; }
@@ -392,7 +393,7 @@ public:
 public:
 	// 测试专用函数
 	void TestSetGuadanDeque(const INT64 lPrice, const INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
-public:
+
 protected:
 	short m_nHand; // 每手股数
 

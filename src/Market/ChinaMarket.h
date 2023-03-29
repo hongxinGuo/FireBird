@@ -96,7 +96,6 @@ public:
 	virtual void CreateThreadUpdateStockProfileDB();
 	virtual void CreateThreadUpdateOptionDB();
 	virtual void CreateThreadUpdateTempRTData();
-	virtual void CreateThreadLoadTempRTData(long lTheDay);
 	virtual void CreateThreadSaveStockSection();
 	virtual void CreateThreadUpdateChoseStockDB();
 
@@ -176,7 +175,7 @@ public:
 	void LoadChosenStockDB();
 	virtual bool SaveTempRTData() { return m_containerChinaStock.SaveTempRTData(); }
 	bool TaskLoadTempRTData(long lTheDay, long lCurrentTime);
-	void LoadTempRTData(long lTheDay);
+	virtual void LoadTempRTData(long lTheDay);
 	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate);
 	virtual bool SaveStockSection() { return m_containerStockSymbol.UpdateStockSectionDB(); }
 

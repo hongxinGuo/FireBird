@@ -245,8 +245,9 @@ bool CWorldMarket::UpdateForexDayLineDB() {
 	CString str;
 	bool fUpdated = false;
 	CForexSymbolPtr pSymbol = nullptr;
+	size_t symbolSize = m_dataFinnhubForexSymbol.Size();
 
-	for (int i = 0; i < m_dataFinnhubForexSymbol.Size(); i++) {
+	for (int i = 0; i < symbolSize; i++) {
 		if (gl_systemStatus.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
@@ -288,8 +289,9 @@ bool CWorldMarket::UpdateCryptoDayLineDB() {
 	CString str;
 	bool fUpdated = false;
 	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
+	size_t symbolSize = m_dataFinnhubCryptoSymbol.Size();
 
-	for (int i = 0; i < m_dataFinnhubCryptoSymbol.Size(); ++i) {
+	for (int i = 0; i < symbolSize; ++i) {
 		if (gl_systemStatus.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
@@ -324,9 +326,10 @@ bool CWorldMarket::UpdateCryptoDayLineDB() {
 
 bool CWorldMarket::UpdateEPSSurpriseDB() {
 	CString str;
+	size_t stockSize = m_containerStock.Size();
 
 	CWorldStockPtr pStock = nullptr;
-	for (long l = 0; l < m_containerStock.Size(); ++l) {
+	for (long l = 0; l < stockSize; ++l) {
 		pStock = m_containerStock.GetStock(l);
 		if (pStock->IsEPSSurpriseNeedSaveAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			thread thread1(ThreadUpdateEPSSurpriseDB, pStock.get());

@@ -56,7 +56,7 @@ bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	sprintf_s(buffer, _T("%lld"), pvStock->size());
 	CString str = _T("今日美国市场股票总数为：");
 	str += buffer;
-	gl_systemMessage.PushInnerSystemInformationMessage(str);
+	//gl_systemMessage.PushInnerSystemInformationMessage(str);
 
 	return true;
 }

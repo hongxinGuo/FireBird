@@ -577,7 +577,7 @@ bool CFinnhubDataSource::InquirePeer() {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
+			const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
 			product->SetIndex(lCurrentUpdatePeerPos);
 			StoreInquiry(product);
 			SetInquiring(true);
@@ -791,9 +791,9 @@ bool CFinnhubDataSource::InquireCryptoDayLine() {
 
 void CFinnhubDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 45000); // 设置连接超时时间为15秒。 正常情况下Finnhub.io数据接收时间不超过5秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 45000); // 设置接收超时时间为15秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 1000); // 设置发送超时时间为1秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 45000); // 设置连接超时时间为45秒。Finnhub.io已经开始限速，估计为1M/s，故而增加时间
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 45000); // 设置接收超时时间为45秒。Finnhub.io已经开始限速，估计为1M/s，故而增加时间
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为1秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
 

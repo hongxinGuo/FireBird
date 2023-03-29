@@ -52,16 +52,9 @@ CChinaMarket::CChinaMarket() : CVirtualMarket() {
 //
 // 全局变量的解析位于程序退出的最后，要晚于CMainFrame的解析。故而如果要想将系统退出的过程放在这里，需要研究。
 // 目前不允许此析构函数完成任何功能。
-// 此市场退出时，要保证其后台工作线程已提前退出。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CChinaMarket::~CChinaMarket() {
-	if (!gl_systemStatus.IsExitingSystem()) {	// 此种情况为运行单元测试，此时没有设置gl_systemStatus.IsExitingSystem()
-		gl_systemStatus.SetExitingSystem(true);
-		gl_systemStatus.SetExitingSystem(false);
-	}
-	else { }
-}
+CChinaMarket::~CChinaMarket() {}
 
 void CChinaMarket::ResetMarket() {
 	CString str = _T("重置中国股市于北京标准时间：");
@@ -291,7 +284,6 @@ size_t CChinaMarket::GetCurrentStockSetSize() {
 
 bool CChinaMarket::CreateStock(CString strStockCode, CString strStockName, bool fProcessRTData) {
 	const auto pStock = make_shared<CChinaStock>();
-	pStock->SetActive(false);
 	pStock->SetTodayNewStock(true);
 	pStock->SetSymbol(strStockCode);
 	pStock->SetDisplaySymbol(strStockName);
@@ -372,18 +364,20 @@ bool CChinaMarket::DistributeSinaRTDataToStock() {
 
 bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
 	const CString strSymbol = pRTData->GetSymbol();
-	if (IsCheckingActiveStock()) { if (!IsStock(strSymbol) && pRTData->IsActive()) { if (strSymbol.GetLength() == 9) { CreateStock(strSymbol, pRTData->GetStockName(), true); } } }
+	if (IsCheckingActiveStock()) {
+		if (!IsStock(strSymbol) && pRTData->IsActive()) {
+			if (strSymbol.GetLength() == 9) {
+				CreateStock(strSymbol, pRTData->GetStockName(), true);
+			}
+		}
+	}
 	else if (!IsStock(pRTData->GetSymbol())) { return false; }
 	if (pRTData->IsActive()) { // 此实时数据有效？
 		if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) { m_ttNewestTransactionTime = pRTData->GetTransactionTime(); }
 		const auto pStock = GetStock(pRTData->GetSymbol());
 		if (!pStock->IsActive()) {
 			if (pRTData->IsValidTime(14)) {
-				pStock->SetActive(true);
-				pStock->SetDayLineLoaded(false);
-				pStock->SetSymbol(pRTData->GetSymbol()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-				if (pRTData->GetStockName() != _T("")) pStock->SetDisplaySymbol(pRTData->GetStockName()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-				pStock->SetIPOStatus(_STOCK_IPOED_);
+				pStock->UpdateProfile(pRTData);
 			}
 		}
 		if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
@@ -595,7 +589,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 1); // 开始执行时间为：1
 
 	// 辅助任务
-	AddTask(CHINA_MARKET_ACCESSORY_TASK__, lTimeMinute);
+	AddTask(CHINA_MARKET_ACCESSORY_TASK__, lCurrentTime);
 
 	// 初始化系统
 	if (lCurrentTime < 91300) {
@@ -622,7 +616,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 
 	if (IsWorkingDay()) {
 		// 每五分钟存储一次临时数据
-		AddTask(CHINA_MARKET_SAVE_TEMP_RT_DATA__, lCurrentTime); // 开始执行时间为：92730.要确保第一次执行的时间早于93000，这样启动数据库的时间较短，否则容易导致系统崩溃（原因不明）。
+		AddTask(CHINA_MARKET_SAVE_TEMP_RT_DATA__, 50230); // 开始执行时间为：92730.要确保第一次执行的时间早于93000，这样启动数据库的时间较短，否则容易导致系统崩溃（原因不明）。
 		AddTask(CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__, 150700); // 
 	}
 
@@ -647,7 +641,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
 	if (lCurrentTime < 150000) { // 中国市场股票交易截止时间为150000。
 		long lNextTime = GetNextTime(lCurrentTime, 0, 1, 0);
-		if ((lNextTime >= 113500) && (lNextTime < 125730)) lNextTime = 125730;
+		//if ((lNextTime >= 113500) && (lNextTime < 125730)) lNextTime = 125730;
 		AddTask(CHINA_MARKET_SAVE_TEMP_RT_DATA__, lNextTime);
 	}
 	if (IsSystemReady()) {
@@ -675,7 +669,7 @@ void CChinaMarket::TaskAccessoryTask(long lCurrentTime) {
 	CheckMarketOpen(lCurrentTime);// 判断中国股票市场开市状态
 	SetCheckActiveStockFlag(lCurrentTime);
 
-	AddTask(CHINA_MARKET_ACCESSORY_TASK__, GetNextTime(lCurrentTime, 0, 1, 0)); // 每分钟执行一次
+	AddTask(CHINA_MARKET_ACCESSORY_TASK__, GetNextTime(lCurrentTime, 0, 1, 0)); // 每分钟整点执行一次
 }
 
 bool CChinaMarket::AddChosenStock(CChinaStockPtr pStock) {
@@ -1414,18 +1408,13 @@ bool CChinaMarket::TaskLoadTempRTData(long lTheDay, long lCurrentTime) {
 	ASSERT(!m_fTodayTempDataLoaded);
 
 	if (IsSystemReady()) {
-		CreateThreadLoadTempRTData(lTheDay);
+		LoadTempRTData(lTheDay);
 		return true;
 	}
 	else {
 		AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, GetNextSecond(lCurrentTime));
 	}
 	return false;
-}
-
-void CChinaMarket::CreateThreadLoadTempRTData(long lTheDay) {
-	thread thread1(ThreadLoadTempRTData, this, lTheDay);
-	thread1.detach();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1440,19 +1429,16 @@ void CChinaMarket::CreateThreadLoadTempRTData(long lTheDay) {
 void CChinaMarket::LoadTempRTData(long lTheDay) {
 	CSetDayLineTodaySaved setDayLineTemp;
 	// 读取今日生成的数据于DayLineToday表中。
+	setDayLineTemp.m_strSort = _T("[ID]");
 	setDayLineTemp.Open();
 	if (!setDayLineTemp.IsEOF()) {
-		const long lTempDataDate = setDayLineTemp.m_Date;
-		if (lTempDataDate == lTheDay) {	// 如果是当天的行情，则载入，否则放弃（默认所有的数据日期皆为同一个时间）
-			while (!setDayLineTemp.IsEOF()) {
-				ASSERT(setDayLineTemp.m_Date == lTempDataDate);
-				if (IsStock(setDayLineTemp.m_Symbol)) {
-					const CChinaStockPtr pStock = GetStock(setDayLineTemp.m_Symbol);
-					ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
-					pStock->LoadTodaySavedInfo(&setDayLineTemp);
-				}
-				setDayLineTemp.MoveNext();
+		while (!setDayLineTemp.IsEOF()) {
+			if (setDayLineTemp.m_Date == lTheDay && IsStock(setDayLineTemp.m_Symbol)) {// 如果是当天的行情，则载入，否则放弃
+				const CChinaStockPtr pStock = GetStock(setDayLineTemp.m_Symbol);
+				ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
+				pStock->LoadTodaySavedInfo(&setDayLineTemp);
 			}
+			setDayLineTemp.MoveNext();
 		}
 	}
 	setDayLineTemp.Close();

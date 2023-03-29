@@ -497,7 +497,7 @@ namespace FireBirdTest {
 	TEST_F(CMockChinaMarketTest, TestTaskLoadTempRTData) {
 		EXPECT_FALSE(s_pMockChinaMarket->IsTodayTempRTDataLoaded());
 		EXPECT_TRUE(s_pMockChinaMarket->IsSystemReady());
-		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadLoadTempRTData(20190517)).Times(1)
+		EXPECT_CALL(*s_pMockChinaMarket, LoadTempRTData(20190517)).Times(1)
 		.WillOnce(Invoke([] { s_pMockChinaMarket->SetTodayTempRTDataLoaded(true); })); // LoadTempRTData执行时设置此标识
 
 		EXPECT_TRUE(s_pMockChinaMarket->TaskLoadTempRTData(20190517, 10000));

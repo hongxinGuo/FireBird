@@ -1,4 +1,3 @@
-#include "WorldStock.h"
 #include"pch.h"
 
 #include"CallableFunction.h"
@@ -21,6 +20,75 @@
 using namespace std;
 
 CWorldStock::CWorldStock() : CVirtualStock() {
+	// Finnhub Symbol数据
+	m_strIPODate = _T(" ");
+	m_strCurrency = _T(" ");
+	m_strType = _T(" ");
+	m_strMic = _T(" ");
+	m_strFigi = _T(" ");
+	m_strShareClassFIGI = _T("");
+	m_strSymbol2 = _T("");
+	m_strCountry = _T(" ");
+	m_strListedExchange = _T(" ");
+	m_strFinnhubIndustry = _T(" ");
+	m_jsonPeer = json({});
+	m_strLogo = _T(" ");
+	m_strName = _T(" ");
+	m_strPhone = _T(" ");
+	m_strExchangeCode = _T("US");
+	m_strTicker = _T(" ");
+	m_strWebURL = _T(" ");
+	m_strAddress = _T(" ");
+	m_strCity = _T(" ");
+	m_strCusip = _T(" ");
+	m_strIsin = _T(" ");
+	m_strSedol = _T(" ");
+	m_strGgroup = _T(" ");
+	m_strGind = _T(" ");
+	m_strGsector = _T(" ");
+	m_strGsubind = _T(" ");
+	m_strNaics = _T(" ");
+	m_strNaicsNationalIndustry = _T(" ");
+	m_strNaicsSector = _T(" ");
+	m_strNaicsSubsector = _T(" ");
+	m_strState = _T(" ");
+	m_lDayLineStartDate = 29900101;
+	m_lDayLineEndDate = 19800101;
+
+	// Tiingo Symbol数据
+	m_strTiingoPermaTicker = _T("");
+	m_fIsActive = false;
+	m_fIsADR = false;
+	m_strTiingoIndustry = _T("");
+	m_strTiingoSector = _T("");
+	m_iSICCode = 0;
+	m_strSICIndustry = _T("");
+	m_strSICSector = _T("");
+	m_strCompanyWebSite = _T("");
+	m_strSECFilingWebSite = _T("");
+
+	m_lEmployeeTotal = 0;
+	m_dMarketCapitalization = 0;
+	m_dShareOutstanding = 0;
+
+	m_fUpdateCompanyProfile = true;
+	m_fUpdateCompanyNews = true;
+	m_fUpdateBasicFinancial = true;
+	m_fEPSSurpriseUpdated = false;
+	m_fEPSSurpriseNeedSave = false;
+	m_fUpdateFinnhubPeer = true;
+
+	m_fUpdateFinnhubInsiderTransaction = true;
+	m_fSaveFinnhubInsiderTransaction = false;
+	m_fUpdateFinnhubInsiderSentiment = true;
+	m_fSaveFinnhubInsiderSentiment = false;
+	m_fUpdateFinnhubBasicFinancialDB = false;
+
+	m_lInsiderSentimentStartDate = 19800101;
+	m_lInsiderTransactionStartDate = 19800101;
+
+	m_pBasicFinancial = nullptr;
+
 	CWorldStock::Reset();
 }
 
@@ -93,6 +161,9 @@ void CWorldStock::Reset() {
 	m_fUpdateFinnhubInsiderSentiment = true;
 	m_fSaveFinnhubInsiderSentiment = false;
 	m_fUpdateFinnhubBasicFinancialDB = false;
+
+	m_lInsiderSentimentStartDate = 19800101;
+	m_lInsiderTransactionStartDate = 19800101;
 
 	m_pBasicFinancial = nullptr;
 }
@@ -661,7 +732,7 @@ bool CWorldStock::CheckPeerStatus(long lCurrentDate) {
 void CWorldStock::UpdateInsiderTransaction(vector<CInsiderTransactionPtr>& vInsiderTransaction) {
 	m_vInsiderTransaction.resize(0);
 
-	for (auto pInsiderTransacton : vInsiderTransaction) { m_vInsiderTransaction.push_back(pInsiderTransacton); }
+	for (auto pInsiderTransaction : vInsiderTransaction) { m_vInsiderTransaction.push_back(pInsiderTransaction); }
 }
 
 bool CWorldStock::CheckInsiderTransactionStatus(long lCurrentDate) {

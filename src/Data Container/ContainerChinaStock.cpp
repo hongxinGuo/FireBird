@@ -663,27 +663,25 @@ bool CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
 //////////////////////////////////////////////////////////////////////////////////
 bool CContainerChinaStock::SaveTempRTData() {
 	CSetDayLineTodaySaved setDayLineTemp;
-	long lInactiveStock = 0, lActiveStock = 0;
+	long lStock = 0;
 	CHighPerformanceCounter counter;
 	counter.start();
 
 	DeleteTempRTData();
 
+	setDayLineTemp.m_strFilter = _T("[ID] = 1");
 	setDayLineTemp.Open();
 	setDayLineTemp.m_pDatabase->BeginTrans();
+
 	// 存储今日生成的数据于DayLineToday表中。
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
-		if (!pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
-			lInactiveStock++;
-			continue;
-		}
 		if (pStock->IsNeedProcessRTData() && (!pStock->IsVolumeConsistence())) {
 			CString str = pStock->GetSymbol();
 			str += _T(" 股数不正确");
 			gl_systemMessage.PushInnerSystemInformationMessage(str);
 		}
-		lActiveStock++;
+		lStock++;
 		setDayLineTemp.AddNew();
 		pStock->SaveTempInfo(&setDayLineTemp);
 		setDayLineTemp.Update();
@@ -692,7 +690,7 @@ bool CContainerChinaStock::SaveTempRTData() {
 	setDayLineTemp.Close();
 	counter.stop();
 	char buffer[200];
-	sprintf_s(buffer, _T("存储实时数据用时：%lld, 活跃股票总数：%d, 不活跃股票总量为：%d"), counter.GetElapsedMilliSecond(), lActiveStock, lInactiveStock);
+	sprintf_s(buffer, _T("存储实时数据用时：%lld, 股票总数：%d"), counter.GetElapsedMilliSecond(), lStock);
 	const CString str = buffer;
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
 
