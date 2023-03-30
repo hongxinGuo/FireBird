@@ -234,12 +234,7 @@ long GetNextSecond(const long lTime) {
 		if (mm == 59) {
 			const long hh = lTime / 10000;
 			ASSERT(hh < 24);
-			if (hh == 23) {
-				return 0;
-			}
-			else {
-				return (hh + 1) * 10000;
-			}
+			return (hh + 1) * 10000;
 		}
 		else {
 			return (lTime / 100 + 1) * 100;
@@ -256,7 +251,7 @@ long GetNextTime(const long lTime, long hh, long mm, long ss) {
 	long s = lTime - h * 10000 - m * 100;
 	long mTemp = 0;
 	long hTemp = 0;
-	long hEnd, mEnd, sEnd;
+	long mEnd, sEnd;
 	if ((s + ss) > 59) {
 		mTemp = 1;
 		sEnd = s + ss - 60;
@@ -271,12 +266,7 @@ long GetNextTime(const long lTime, long hh, long mm, long ss) {
 	else {
 		mEnd = m + mm + mTemp;
 	}
-	if ((h + hh + hTemp) > 23) {
-		hEnd = h + hh + hTemp - 24;
-	}
-	else {
-		hEnd = h + hh + hTemp;
-	}
+	const long hEnd = h + hh + hTemp;
 
 	return hEnd * 10000 + mEnd * 100 + sEnd;
 }

@@ -34,6 +34,7 @@ public:
 	CMarketTaskPtr GetMarketTask() const { return m_marketTask.GetTask(); }
 	void DiscardMarketTask() { m_marketTask.DiscardTask(); }
 	vector<CMarketTaskPtr> GetMarketTaskVector() { return m_marketTask.GetTaskVector(); }
+	void RectifyTaskTime();
 
 	// 时间函数
 	tm TransferToMarketTime(time_t tUTC = gl_tUTC) const; // 得到本市场的时间（从UTC时间）

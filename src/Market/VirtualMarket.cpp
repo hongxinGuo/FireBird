@@ -84,6 +84,29 @@ bool CVirtualMarket::UpdateMarketInfo() {
 	return true;
 }
 
+///////////////////////////////////////////////////////////////
+//
+// 如果任务队列中的时间皆超过240000，则将所有的时间减去240000.
+//
+///////////////////////////////////////////////////////////////
+void CVirtualMarket::RectifyTaskTime() {
+	if (m_marketTask.IsEmpty()) return;
+	const auto pTask = m_marketTask.GetTask();
+	if (pTask->GetTime() >= 240000) {
+		vector<CMarketTaskPtr> vTask;
+		while (!m_marketTask.IsEmpty()) {
+			vTask.push_back(m_marketTask.GetTask());
+			m_marketTask.DiscardTask();
+		}
+		ASSERT(m_marketTask.IsEmpty());
+		for (const auto& pMarketTask : vTask) {
+			ASSERT(pMarketTask->GetTime() >= 240000);
+			pMarketTask->SetTime(pMarketTask->GetTime() - 240000);
+			m_marketTask.AddTask(pMarketTask);
+		}
+	}
+}
+
 tm CVirtualMarket::TransferToMarketTime(time_t tUTC) const {
 	tm tm_{};
 

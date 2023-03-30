@@ -72,6 +72,47 @@ namespace FireBirdTest {
 		virtualMarket.DiscardMarketTask();
 	}
 
+	TEST_F(CVirtualMarketTest, TestRectifyTaskTime1) {
+		auto pTask = make_shared<CMarketTask>();
+		pTask->SetTime(20);
+		virtualMarket.AddTask(pTask);
+		pTask = make_shared<CMarketTask>();
+		pTask->SetTime(30);
+		virtualMarket.AddTask(pTask);
+		pTask = make_shared<CMarketTask>();
+		pTask->SetTime(240510);
+		virtualMarket.AddTask(pTask);
+
+		virtualMarket.RectifyTaskTime();
+
+		pTask = virtualMarket.GetMarketTask();
+		EXPECT_EQ(pTask->GetTime(), 20);
+	}
+
+	TEST_F(CVirtualMarketTest, TestRectifyTaskTime2) {
+		auto pTask = make_shared<CMarketTask>();
+		pTask->SetTime(240350);
+		virtualMarket.AddTask(pTask);
+		pTask = make_shared<CMarketTask>();
+		pTask->SetTime(300000);
+		virtualMarket.AddTask(pTask);
+		pTask = make_shared<CMarketTask>();
+		pTask->SetTime(274010);
+		virtualMarket.AddTask(pTask);
+
+		virtualMarket.RectifyTaskTime();
+
+		pTask = virtualMarket.GetMarketTask();
+		EXPECT_EQ(pTask->GetTime(), 350) << "所有的时间皆大于240000，故而皆减去240000";
+		virtualMarket.DiscardMarketTask();
+		pTask = virtualMarket.GetMarketTask();
+		EXPECT_EQ(pTask->GetTime(), 34010) << "所有的时间皆大于240000，故而皆减去240000";
+		virtualMarket.DiscardMarketTask();
+		pTask = virtualMarket.GetMarketTask();
+		EXPECT_EQ(pTask->GetTime(), 60000) << "所有的时间皆大于240000，故而皆减去240000";
+		virtualMarket.DiscardMarketTask();
+	}
+
 	TEST_F(CVirtualMarketTest, TestIsOrdinaryTradeTime1) {
 		EXPECT_TRUE(virtualMarket.IsOrdinaryTradeTime());
 	}
