@@ -4,7 +4,6 @@
 #include"ProductSinaRT.h"
 
 #include"ChinaMarket.h"
-#include "ChinaStockCodeConverter.h"
 
 /// <summary>
 /// 新浪实时数据服务器要求提供报头验证数据。
@@ -78,7 +77,6 @@ void CSinaRTDataSource::GenerateCurrentInquiryMessage() {
 /// 网易实时数据接收时，不时会出现解析失败的情况。感觉原因出在网易数据服务器发送错误，但还要继续观察。
 /// 调整Session的选项可能会改善接收情况。
 /// </summary>
-/// <param name=""></param>
 void CSinaRTDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 3000); // 正常情况下sina实时数据接收时间不超过50毫秒。

@@ -152,7 +152,6 @@ bool CWorldMarket::ProcessTask(long lCurrentTime) {
 			ASSERT(0); // 非法任务
 			break;
 		}
-		RectifyTaskTime();
 		return true;
 	}
 	return false;

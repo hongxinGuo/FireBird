@@ -246,9 +246,9 @@ long GetNextSecond(const long lTime) {
 }
 
 long GetNextTime(const long lTime, long hh, long mm, long ss) {
-	long h = lTime / 10000;
-	long m = (lTime - h * 10000) / 100;
-	long s = lTime - h * 10000 - m * 100;
+	const long h = lTime / 10000;
+	const long m = (lTime - h * 10000) / 100;
+	const long s = lTime - h * 10000 - m * 100;
 	long mTemp = 0;
 	long hTemp = 0;
 	long mEnd, sEnd;
@@ -298,11 +298,11 @@ CString ConvertDateToChineseTimeStampString(const long lDate) {
 	return (ConvertDateToString(lDate, _T("%4dƒÍ%2d‘¬%2d»’")));
 }
 
-time_t ConvertBufferToTime(CString strFormat, char* bufferMarketTime, const time_t tTimeZoneOffset) {
+time_t ConvertBufferToTime(CString strFormat, char* BufferMarketTime, const time_t tTimeZoneOffset) {
 	tm tm_{0, 0, 0, 0, 0, 0};
 	int year, month, day, hour, minute, second;
 
-	sscanf_s(bufferMarketTime, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
+	sscanf_s(BufferMarketTime, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
 	tm_.tm_year = year - 1900;
 	tm_.tm_mon = month - 1;
 	tm_.tm_mday = day;

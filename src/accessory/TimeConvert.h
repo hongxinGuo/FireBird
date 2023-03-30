@@ -33,7 +33,7 @@ void GetMarketTimeStruct(tm* tm_, time_t tUTC, const time_t tTimeZone);
 [[nodiscard]] CString ConvertDateToString(const long lDate, CString strFormat);
 [[nodiscard]] CString ConvertDateToTimeStamp(const long lDate);
 [[nodiscard]] CString ConvertDateToChineseTimeStampString(const long lDate);
-[[nodiscard]] time_t ConvertBufferToTime(CString strFormat, char* bufferMarketTime, const time_t tTimeZoneOffset = -8 * 3600); // 默认采用东八区标准时间
+[[nodiscard]] time_t ConvertBufferToTime(CString strFormat, char* BufferMarketTime, const time_t tTimeZoneOffset = -8 * 3600); // 默认采用东八区标准时间
 [[nodiscard]] time_t ConvertStringToTime(CString strFormat, CString strMarketTime, const time_t tTimeZoneOffset = -8 * 3600); // 默认采用东八区标准时间
 
 [[nodiscard]] time_t XferToTTime(CString strTime, CString strFormat);

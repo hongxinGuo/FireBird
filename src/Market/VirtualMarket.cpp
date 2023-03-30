@@ -28,6 +28,10 @@ void CVirtualMarket::SchedulingTask() {
 	const time_t tUTC = GetUTCTime();
 	const long lTimeDiffer = tUTC > m_lastTimeSchedulingTask;
 
+	if (lCurrentMarketTime < 100) { // 每日最初的一分钟内。保证每日执行一次
+		RectifyTaskTime(); // 当任务队列中都是明日的时间时，将时间调减24小时
+	}
+
 	// 调用各Web data source，进行网络数据的接收和处理。
 	RunDataSource(lCurrentMarketTime);
 
