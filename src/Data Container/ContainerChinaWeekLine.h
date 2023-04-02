@@ -11,7 +11,7 @@ public:
 	bool LoadDB(const CString& strStockSymbol) final;
 	bool SaveDB(const CString& strStockSymbol) final;
 
-	bool SaveCurrentWeekLine();
+	void SaveCurrentWeekLine() const;
 	bool LoadCurrentWeekLine();
 
 	void UpdateData(vector<CWeekLinePtr>& vTempWeekLine);

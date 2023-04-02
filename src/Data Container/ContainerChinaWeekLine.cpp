@@ -27,21 +27,24 @@ bool CContainerChinaWeekLine::SaveDB(const CString& strStockSymbol) {
 	return true;
 }
 
-bool CContainerChinaWeekLine::SaveCurrentWeekLine() {
-	CSetCurrentWeekLine setCurrentWeekLineInfo;
-	CWeekLinePtr pWeekLine = nullptr;
+void CContainerChinaWeekLine::SaveCurrentWeekLine() const {
+	try {
+		CSetCurrentWeekLine setCurrentWeekLineInfo;
+		CWeekLinePtr pWeekLine = nullptr;
 
-	ASSERT(!m_vHistoryData.empty());
+		ASSERT(!m_vHistoryData.empty());
 
-	setCurrentWeekLineInfo.m_strFilter = _T("[ID] = 1");
-	setCurrentWeekLineInfo.Open();
-	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
-	for (const auto& pData : m_vHistoryData) { pData->Append(&setCurrentWeekLineInfo); }
-	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
-	setCurrentWeekLineInfo.Close();
-	TRACE("存储了%d个当前周周线数据\n", m_vHistoryData.size());
-
-	return true;
+		setCurrentWeekLineInfo.m_strFilter = _T("[ID] = 1");
+		setCurrentWeekLineInfo.Open();
+		setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
+		for (const auto& pData : m_vHistoryData) { pData->Append(&setCurrentWeekLineInfo); }
+		setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
+		setCurrentWeekLineInfo.Close();
+		TRACE("存储了%d个当前周周线数据\n", m_vHistoryData.size());
+	}
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 }
 
 bool CContainerChinaWeekLine::LoadDB(const CString& strStockCode) {

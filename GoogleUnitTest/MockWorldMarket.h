@@ -14,7 +14,7 @@ namespace testing {
 		MOCK_METHOD(bool, UpdateCryptoExchangeDB, (), (override));
 		MOCK_METHOD(bool, UpdateInsiderTransactionDB, (), (override));
 		MOCK_METHOD(bool, UpdateInsiderSentimentDB, (), (override));
-		MOCK_METHOD(bool, UpdateStockDayLineStartEndDate, (), (override));
+		MOCK_METHOD(void, UpdateStockDayLineStartEndDate, (), (override));
 		MOCK_METHOD(bool, UpdateTiingoStockDB, (), (override));
 		MOCK_METHOD(bool, UpdateTiingoIndustry, (), (override));
 		MOCK_METHOD(bool, UpdateSICIndustry, (), (override));

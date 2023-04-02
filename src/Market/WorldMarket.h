@@ -224,7 +224,7 @@ public:
 	bool LoadTiingoCryptoSymbol() { return m_dataTiingoCryptoSymbol.LoadDB(); }
 
 	bool RebuildStockDayLineDB();
-	virtual bool UpdateStockDayLineStartEndDate();
+	virtual void UpdateStockDayLineStartEndDate();
 	bool RebuildEPSSurprise();
 	bool RebuildPeer();
 	bool RebuildBasicFinancial();

@@ -22,6 +22,7 @@
 #include<thread>
 #include<memory>
 
+#include "InfoReport.h"
 #include "QuandlDataSource.h"
 #include "TiingoDataSource.h"
 #include "TimeConvert.h"
@@ -592,30 +593,33 @@ bool CWorldMarket::RebuildStockDayLineDB() {
 	return true;
 }
 
-bool CWorldMarket::UpdateStockDayLineStartEndDate() {
-	const CString strFilterPrefix = _T("[Symbol] = '");
-	CSetWorldStockDayLine setWorldStockDayLine;
+void CWorldMarket::UpdateStockDayLineStartEndDate() {
+	try {
+		const CString strFilterPrefix = _T("[Symbol] = '");
+		CSetWorldStockDayLine setWorldStockDayLine;
 
-	for (long l = 0; l < m_containerStock.Size(); l++) {
-		const auto pStock = m_containerStock.GetStock(l);
-		setWorldStockDayLine.m_strFilter = strFilterPrefix + pStock->GetSymbol() + _T("'");
-		setWorldStockDayLine.m_strSort = _T("[Date]");
-		setWorldStockDayLine.Open();
-		if (!setWorldStockDayLine.IsEOF()) {
-			if (setWorldStockDayLine.m_Date < pStock->GetDayLineStartDate()) {
-				pStock->SetDayLineStartDate(setWorldStockDayLine.m_Date);
-				pStock->SetUpdateProfileDB(true);
+		for (long l = 0; l < m_containerStock.Size(); l++) {
+			const auto pStock = m_containerStock.GetStock(l);
+			setWorldStockDayLine.m_strFilter = strFilterPrefix + pStock->GetSymbol() + _T("'");
+			setWorldStockDayLine.m_strSort = _T("[Date]");
+			setWorldStockDayLine.Open();
+			if (!setWorldStockDayLine.IsEOF()) {
+				if (setWorldStockDayLine.m_Date < pStock->GetDayLineStartDate()) {
+					pStock->SetDayLineStartDate(setWorldStockDayLine.m_Date);
+					pStock->SetUpdateProfileDB(true);
+				}
+				setWorldStockDayLine.MoveLast();
+				if (setWorldStockDayLine.m_Date > pStock->GetDayLineEndDate()) {
+					pStock->SetDayLineEndDate(setWorldStockDayLine.m_Date);
+					pStock->SetUpdateProfileDB(true);
+				}
 			}
-			setWorldStockDayLine.MoveLast();
-			if (setWorldStockDayLine.m_Date > pStock->GetDayLineEndDate()) {
-				pStock->SetDayLineEndDate(setWorldStockDayLine.m_Date);
-				pStock->SetUpdateProfileDB(true);
-			}
+			setWorldStockDayLine.Close();
 		}
-		setWorldStockDayLine.Close();
 	}
-
-	return true;
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 }
 
 /// <summary>

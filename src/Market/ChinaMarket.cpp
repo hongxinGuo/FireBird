@@ -1024,43 +1024,48 @@ bool CChinaMarket::CreateStockCodeSet(set<CString>& setStockCode, not_null<vecto
 }
 
 bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
-	const long lCurrentMonday = GetCurrentMonday(GetMarketDate());
-	CSetWeekLineBasicInfo setWeekLineBasicInfo;
-	CSetWeekLineExtendInfo setWeekLineExtendInfo;
-	char buffer[10];
-	CWeekLinePtr pWeekLine = nullptr;
-	CContainerChinaWeekLine dataChinaWeekLine;
+	try {
+		const long lCurrentMonday = GetCurrentMonday(GetMarketDate());
+		CSetWeekLineBasicInfo setWeekLineBasicInfo;
+		CSetWeekLineExtendInfo setWeekLineExtendInfo;
+		char buffer[10];
+		CWeekLinePtr pWeekLine = nullptr;
+		CContainerChinaWeekLine dataChinaWeekLine;
 
-	DeleteCurrentWeekWeekLine();
+		DeleteCurrentWeekWeekLine();
 
-	static_cast<void>(sprintf_s(buffer, _T("%08d"), lCurrentMonday));
-	const CString strDate = buffer;
-	setWeekLineBasicInfo.m_strFilter = _T("[Date] = ");
-	setWeekLineBasicInfo.m_strFilter += strDate;
-	setWeekLineBasicInfo.m_strSort = _T("[Symbol]");
-	setWeekLineBasicInfo.Open();
+		static_cast<void>(sprintf_s(buffer, _T("%08d"), lCurrentMonday));
+		const CString strDate = buffer;
+		setWeekLineBasicInfo.m_strFilter = _T("[Date] = ");
+		setWeekLineBasicInfo.m_strFilter += strDate;
+		setWeekLineBasicInfo.m_strSort = _T("[Symbol]");
+		setWeekLineBasicInfo.Open();
 
-	setWeekLineExtendInfo.m_strFilter = _T("[Date] = ");
-	setWeekLineExtendInfo.m_strFilter += strDate;
-	setWeekLineExtendInfo.m_strSort = _T("[Symbol]");
-	setWeekLineExtendInfo.Open();
+		setWeekLineExtendInfo.m_strFilter = _T("[Date] = ");
+		setWeekLineExtendInfo.m_strFilter += strDate;
+		setWeekLineExtendInfo.m_strSort = _T("[Symbol]");
+		setWeekLineExtendInfo.Open();
 
-	while (!setWeekLineBasicInfo.IsEOF()) {
-		pWeekLine = make_shared<CWeekLine>();
-		pWeekLine->LoadBasicData(&setWeekLineBasicInfo);
-		while (!setWeekLineExtendInfo.IsEOF() && (setWeekLineBasicInfo.m_Symbol > setWeekLineExtendInfo.m_Symbol)) { setWeekLineExtendInfo.MoveNext(); }
-		if (setWeekLineExtendInfo.IsEOF()) { setWeekLineExtendInfo.MoveFirst(); }
-		else if (setWeekLineBasicInfo.m_Symbol == setWeekLineExtendInfo.m_Symbol) {
-			// 由于存在事后补数据的缘故，此两个表的股票可能不是一一对应
-			pWeekLine->LoadExtendData(&setWeekLineExtendInfo);
-			dataChinaWeekLine.StoreData(pWeekLine);
-			setWeekLineExtendInfo.MoveNext();
+		while (!setWeekLineBasicInfo.IsEOF()) {
+			pWeekLine = make_shared<CWeekLine>();
+			pWeekLine->LoadBasicData(&setWeekLineBasicInfo);
+			while (!setWeekLineExtendInfo.IsEOF() && (setWeekLineBasicInfo.m_Symbol > setWeekLineExtendInfo.m_Symbol)) { setWeekLineExtendInfo.MoveNext(); }
+			if (setWeekLineExtendInfo.IsEOF()) { setWeekLineExtendInfo.MoveFirst(); }
+			else if (setWeekLineBasicInfo.m_Symbol == setWeekLineExtendInfo.m_Symbol) {
+				// 由于存在事后补数据的缘故，此两个表的股票可能不是一一对应
+				pWeekLine->LoadExtendData(&setWeekLineExtendInfo);
+				dataChinaWeekLine.StoreData(pWeekLine);
+				setWeekLineExtendInfo.MoveNext();
+			}
+			else { setWeekLineExtendInfo.MoveFirst(); }
+			setWeekLineBasicInfo.MoveNext();
 		}
-		else { setWeekLineExtendInfo.MoveFirst(); }
-		setWeekLineBasicInfo.MoveNext();
-	}
 
-	dataChinaWeekLine.SaveCurrentWeekLine();
+		dataChinaWeekLine.SaveCurrentWeekLine();
+	}
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 
 	return true;
 }
@@ -1577,36 +1582,40 @@ bool CChinaMarket::LoadOne10DaysRSStrongStockDB(long lIndex) {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::UpdateOptionDB() {
-	CSetOption setOption;
+void CChinaMarket::UpdateOptionDB() {
+	try {
+		CSetOption setOption;
 
-	setOption.Open();
-	setOption.m_pDatabase->BeginTrans();
-	if (setOption.IsEOF()) {
-		setOption.AddNew();
-		setOption.m_RSEndDate = GetRSEndDate();
-		setOption.m_RSStartDate = GetRSStartDate();
-		setOption.m_LastLoginDate = GetMarketDate();
-		setOption.m_LastLoginTime = GetMarketTime();
-		setOption.m_UpdatedDateFor10DaysRS1 = GetUpdatedDateFor10DaysRS1();
-		setOption.m_UpdatedDateFor10DaysRS2 = GetUpdatedDateFor10DaysRS2();
-		setOption.m_UpdatedDateFor10DaysRS = GetUpdatedDateFor10DaysRS();
-		setOption.Update();
+		setOption.Open();
+		setOption.m_pDatabase->BeginTrans();
+		if (setOption.IsEOF()) {
+			setOption.AddNew();
+			setOption.m_RSEndDate = GetRSEndDate();
+			setOption.m_RSStartDate = GetRSStartDate();
+			setOption.m_LastLoginDate = GetMarketDate();
+			setOption.m_LastLoginTime = GetMarketTime();
+			setOption.m_UpdatedDateFor10DaysRS1 = GetUpdatedDateFor10DaysRS1();
+			setOption.m_UpdatedDateFor10DaysRS2 = GetUpdatedDateFor10DaysRS2();
+			setOption.m_UpdatedDateFor10DaysRS = GetUpdatedDateFor10DaysRS();
+			setOption.Update();
+		}
+		else {
+			setOption.Edit();
+			setOption.m_RSEndDate = GetRSEndDate();
+			setOption.m_RSStartDate = GetRSStartDate();
+			setOption.m_LastLoginDate = GetMarketDate();
+			setOption.m_LastLoginTime = GetMarketTime();
+			setOption.m_UpdatedDateFor10DaysRS1 = GetUpdatedDateFor10DaysRS1();
+			setOption.m_UpdatedDateFor10DaysRS2 = GetUpdatedDateFor10DaysRS2();
+			setOption.m_UpdatedDateFor10DaysRS = GetUpdatedDateFor10DaysRS();
+			setOption.Update();
+		}
+		setOption.m_pDatabase->CommitTrans();
+		setOption.Close();
 	}
-	else {
-		setOption.Edit();
-		setOption.m_RSEndDate = GetRSEndDate();
-		setOption.m_RSStartDate = GetRSStartDate();
-		setOption.m_LastLoginDate = GetMarketDate();
-		setOption.m_LastLoginTime = GetMarketTime();
-		setOption.m_UpdatedDateFor10DaysRS1 = GetUpdatedDateFor10DaysRS1();
-		setOption.m_UpdatedDateFor10DaysRS2 = GetUpdatedDateFor10DaysRS2();
-		setOption.m_UpdatedDateFor10DaysRS = GetUpdatedDateFor10DaysRS();
-		setOption.Update();
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
 	}
-	setOption.m_pDatabase->CommitTrans();
-	setOption.Close();
-	return true;
 }
 
 void CChinaMarket::LoadOptionDB() {
@@ -1662,28 +1671,31 @@ void CChinaMarket::LoadOptionDB() {
 	setOption.Close();
 }
 
-bool CChinaMarket::UpdateChosenStockDB() {
-	CSetChinaChosenStock setChinaChosenStock;
+void CChinaMarket::UpdateChosenStockDB() const {
+	try {
+		CSetChinaChosenStock setChinaChosenStock;
 
-	setChinaChosenStock.Open();
-	setChinaChosenStock.m_pDatabase->BeginTrans();
-	while (!setChinaChosenStock.IsEOF()) {
-		setChinaChosenStock.Delete();
-		setChinaChosenStock.MoveNext();
+		setChinaChosenStock.Open();
+		setChinaChosenStock.m_pDatabase->BeginTrans();
+		while (!setChinaChosenStock.IsEOF()) {
+			setChinaChosenStock.Delete();
+			setChinaChosenStock.MoveNext();
+		}
+		setChinaChosenStock.m_pDatabase->CommitTrans();
+		setChinaChosenStock.m_pDatabase->BeginTrans();
+		for (const auto& pStock : m_avChosenStock.at(0)) {
+			ASSERT(pStock->IsChosen());
+			setChinaChosenStock.AddNew();
+			setChinaChosenStock.m_Symbol = pStock->GetSymbol();
+			setChinaChosenStock.Update();
+			pStock->SetSaveToChosenStockDB(true);
+		}
+		setChinaChosenStock.m_pDatabase->CommitTrans();
+		setChinaChosenStock.Close();
 	}
-	setChinaChosenStock.m_pDatabase->CommitTrans();
-	setChinaChosenStock.m_pDatabase->BeginTrans();
-	for (const auto& pStock : m_avChosenStock.at(0)) {
-		ASSERT(pStock->IsChosen());
-		setChinaChosenStock.AddNew();
-		setChinaChosenStock.m_Symbol = pStock->GetSymbol();
-		setChinaChosenStock.Update();
-		pStock->SetSaveToChosenStockDB(true);
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
 	}
-	setChinaChosenStock.m_pDatabase->CommitTrans();
-	setChinaChosenStock.Close();
-
-	return true;
 }
 
 void CChinaMarket::AppendChosenStockDB() {

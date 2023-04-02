@@ -107,13 +107,11 @@ long CContainerChinaStock::LoadStockProfileDB() {
 	return lDayLineNeedCheck;
 }
 
-bool CContainerChinaStock::UpdateStockProfileDB() {
-	int iStockCodeNeedUpdate = 0;
-	int iCount = 0;
-
-	//更新原有的代码集状态
+void CContainerChinaStock::UpdateStockProfileDB() {
 	if (IsUpdateProfileDB()) {
 		try {
+			int iCount = 0;
+			int iStockCodeNeedUpdate = 0;
 			CSetChinaStockSymbol setChinaStockSymbol;
 			for (const auto& pStock2 : m_vStock) {
 				if (pStock2->IsUpdateProfileDB()) iStockCodeNeedUpdate++;
@@ -121,7 +119,7 @@ bool CContainerChinaStock::UpdateStockProfileDB() {
 			setChinaStockSymbol.m_strSort = _T("[Symbol]");
 			setChinaStockSymbol.Open();
 			setChinaStockSymbol.m_pDatabase->BeginTrans();
-			while (iCount < iStockCodeNeedUpdate) {
+			while (iCount < iStockCodeNeedUpdate) {	//更新原有的代码集状态
 				if (setChinaStockSymbol.IsEOF()) break;
 				const CChinaStockPtr pStock = GetStock(setChinaStockSymbol.m_Symbol);
 				if (pStock->IsUpdateProfileDBAndClearFlag()) {
@@ -131,7 +129,7 @@ bool CContainerChinaStock::UpdateStockProfileDB() {
 				}
 				setChinaStockSymbol.MoveNext();
 			}
-			if (iCount < iStockCodeNeedUpdate) {
+			if (iCount < iStockCodeNeedUpdate) { // 添加新股票代码
 				for (const auto& pStock3 : m_vStock) {
 					if (pStock3->IsUpdateProfileDBAndClearFlag()) {
 						ASSERT(pStock3->IsTodayNewStock());
@@ -151,7 +149,6 @@ bool CContainerChinaStock::UpdateStockProfileDB() {
 			DeleteExceptionAndReportError(e);
 		}
 	}
-	return true;
 }
 
 bool CContainerChinaStock::IsDayLineDBUpdated() noexcept {
@@ -558,62 +555,67 @@ bool CContainerChinaStock::Choice10RSStrongStockSet(CRSReference* pRef, int iInd
 //
 //////////////////////////////////////////////////////////////////////////////////
 long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
-	char buffer[20]{0};
-	CSetDayLineBasicInfo setDayLineBasicInfo;
-	CSetDayLineExtendInfo setDayLineExtendInfo;
 	long iCount = 0;
+	try {
+		char buffer[20]{0};
+		CSetDayLineBasicInfo setDayLineBasicInfo;
+		CSetDayLineExtendInfo setDayLineExtendInfo;
 
-	CString str = "开始处理";
-	str += ConvertDateToChineseTimeStampString(lCurrentTradeDay);
-	str += _T("的实时数据");
-	gl_systemMessage.PushInformationMessage(str);
+		CString str = "开始处理";
+		str += ConvertDateToChineseTimeStampString(lCurrentTradeDay);
+		str += _T("的实时数据");
+		gl_systemMessage.PushInformationMessage(str);
 
-	DeleteDayLineBasicInfo(lCurrentTradeDay);
-	DeleteDayLineExtendInfo(lCurrentTradeDay);
+		DeleteDayLineBasicInfo(lCurrentTradeDay);
+		DeleteDayLineExtendInfo(lCurrentTradeDay);
 
-	// 存储当前交易日的数据
-	_ltoa_s(lCurrentTradeDay, buffer, 10);
-	CString strDate = buffer;
-	setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
-	setDayLineBasicInfo.Open();
-	setDayLineBasicInfo.m_pDatabase->BeginTrans();
-	for (size_t l = 0; l < m_vStock.size(); l++) {
-		const CChinaStockPtr pStock = GetStock(l);
-		if (!pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
-			continue;
+		// 存储当前交易日的数据
+		_ltoa_s(lCurrentTradeDay, buffer, 10);
+		CString strDate = buffer;
+		setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
+		setDayLineBasicInfo.Open();
+		setDayLineBasicInfo.m_pDatabase->BeginTrans();
+		for (size_t l = 0; l < m_vStock.size(); l++) {
+			const CChinaStockPtr pStock = GetStock(l);
+			if (!pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
+				continue;
+			}
+			iCount++;
+			pStock->SetDayLineEndDate(lCurrentTradeDay);
+			pStock->SetIPOStatus(_STOCK_IPOED_); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
+			pStock->SetUpdateProfileDB(true);
+			pStock->AppendTodayBasicInfo(&setDayLineBasicInfo);
 		}
-		iCount++;
-		pStock->SetDayLineEndDate(lCurrentTradeDay);
-		pStock->SetIPOStatus(_STOCK_IPOED_); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
-		pStock->SetUpdateProfileDB(true);
-		pStock->AppendTodayBasicInfo(&setDayLineBasicInfo);
-	}
-	setDayLineBasicInfo.m_pDatabase->CommitTrans();
-	setDayLineBasicInfo.Close();
+		setDayLineBasicInfo.m_pDatabase->CommitTrans();
+		setDayLineBasicInfo.Close();
 
-	// 存储今日生成的数据于DayLineExtendInfo表中。
-	setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
-	setDayLineExtendInfo.Open();
-	setDayLineExtendInfo.m_pDatabase->BeginTrans();
-	for (size_t l = 0; l < m_vStock.size(); l++) {
-		const CChinaStockPtr pStock = GetStock(l);
-		if (!pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
-			continue;
+		// 存储今日生成的数据于DayLineExtendInfo表中。
+		setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
+		setDayLineExtendInfo.Open();
+		setDayLineExtendInfo.m_pDatabase->BeginTrans();
+		for (size_t l = 0; l < m_vStock.size(); l++) {
+			const CChinaStockPtr pStock = GetStock(l);
+			if (!pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
+				continue;
+			}
+			pStock->AppendTodayExtendInfo(&setDayLineExtendInfo);
 		}
-		pStock->AppendTodayExtendInfo(&setDayLineExtendInfo);
+		setDayLineExtendInfo.m_pDatabase->CommitTrans();
+		setDayLineExtendInfo.Close();
+
+		str = ConvertDateToChineseTimeStampString(lCurrentTradeDay);
+		str += _T("的日线数据已生成");
+		gl_systemMessage.PushInformationMessage(str);
+
+		sprintf_s(buffer, _T("%d"), iCount);
+		str = _T("今日处理了");
+		str += buffer;
+		str += _T("个股票");
+		gl_systemMessage.PushInformationMessage(str);
 	}
-	setDayLineExtendInfo.m_pDatabase->CommitTrans();
-	setDayLineExtendInfo.Close();
-
-	str = ConvertDateToChineseTimeStampString(lCurrentTradeDay);
-	str += _T("的日线数据已生成");
-	gl_systemMessage.PushInformationMessage(str);
-
-	sprintf_s(buffer, _T("%d"), iCount);
-	str = _T("今日处理了");
-	str += buffer;
-	str += _T("个股票");
-	gl_systemMessage.PushInformationMessage(str);
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 
 	return iCount;
 }

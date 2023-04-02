@@ -166,12 +166,12 @@ public:
 
 	// 数据库读取存储操作
 	bool SaveDayLineData() { return m_containerChinaStock.SaveDayLineData(); } // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
-	virtual bool UpdateStockProfileDB() { return m_containerChinaStock.UpdateStockProfileDB(); }
+	virtual void UpdateStockProfileDB() { m_containerChinaStock.UpdateStockProfileDB(); }
 	void LoadStockProfileDB() { m_containerChinaStock.LoadStockProfileDB(); }
 
-	virtual bool UpdateOptionDB();
+	virtual void UpdateOptionDB();
 	void LoadOptionDB();
-	bool UpdateChosenStockDB();
+	void UpdateChosenStockDB() const;
 	virtual void AppendChosenStockDB();
 	void LoadChosenStockDB();
 	virtual void SaveTempRTData() { m_containerChinaStock.SaveTempRTData(); }

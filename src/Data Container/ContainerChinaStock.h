@@ -29,7 +29,7 @@ public:
 	CString GetStockName(const CString& strStockCode);
 
 	long LoadStockProfileDB();
-	bool UpdateStockProfileDB();
+	void UpdateStockProfileDB();
 	void UnloadDayLine() noexcept;
 	bool BuildWeekLine(long lStartDate);
 	long BuildDayLine(long lCurrentTradeDay);
