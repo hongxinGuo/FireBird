@@ -21,9 +21,9 @@ public:
 	void UpdateProfileDB();
 
 	bool UpdateBasicFinancialDB();
-	static bool UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock);
-	static bool UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock);
-	bool UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock);
+	static void UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock);
+	static void UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock);
+	void UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock);
 	static void ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStock);
 
 	static bool ValidateStockSymbol(CWorldStockPtr pStock);

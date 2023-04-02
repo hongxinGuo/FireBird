@@ -113,39 +113,44 @@ bool CContainerChinaStock::UpdateStockProfileDB() {
 
 	//更新原有的代码集状态
 	if (IsUpdateProfileDB()) {
-		CSetChinaStockSymbol setChinaStockSymbol;
-		for (const auto& pStock2 : m_vStock) {
-			if (pStock2->IsUpdateProfileDB()) iStockCodeNeedUpdate++;
-		}
-		setChinaStockSymbol.m_strSort = _T("[Symbol]");
-		setChinaStockSymbol.Open();
-		setChinaStockSymbol.m_pDatabase->BeginTrans();
-		while (iCount < iStockCodeNeedUpdate) {
-			if (setChinaStockSymbol.IsEOF()) break;
-			const CChinaStockPtr pStock = GetStock(setChinaStockSymbol.m_Symbol);
-			if (pStock->IsUpdateProfileDBAndClearFlag()) {
-				//ASSERT(!pStock3->IsTodayNewStock());
-				iCount++;
-				pStock->UpdateSymbol(setChinaStockSymbol);
+		try {
+			CSetChinaStockSymbol setChinaStockSymbol;
+			for (const auto& pStock2 : m_vStock) {
+				if (pStock2->IsUpdateProfileDB()) iStockCodeNeedUpdate++;
 			}
-			setChinaStockSymbol.MoveNext();
-		}
-		if (iCount < iStockCodeNeedUpdate) {
-			for (const auto& pStock3 : m_vStock) {
-				if (pStock3->IsUpdateProfileDBAndClearFlag()) {
-					ASSERT(pStock3->IsTodayNewStock());
+			setChinaStockSymbol.m_strSort = _T("[Symbol]");
+			setChinaStockSymbol.Open();
+			setChinaStockSymbol.m_pDatabase->BeginTrans();
+			while (iCount < iStockCodeNeedUpdate) {
+				if (setChinaStockSymbol.IsEOF()) break;
+				const CChinaStockPtr pStock = GetStock(setChinaStockSymbol.m_Symbol);
+				if (pStock->IsUpdateProfileDBAndClearFlag()) {
+					//ASSERT(!pStock3->IsTodayNewStock());
 					iCount++;
-					pStock3->AppendSymbol(setChinaStockSymbol);
-					pStock3->SetTodayNewStock(false);
+					pStock->UpdateSymbol(setChinaStockSymbol);
 				}
-				if (iCount >= iStockCodeNeedUpdate) break;
+				setChinaStockSymbol.MoveNext();
 			}
+			if (iCount < iStockCodeNeedUpdate) {
+				for (const auto& pStock3 : m_vStock) {
+					if (pStock3->IsUpdateProfileDBAndClearFlag()) {
+						ASSERT(pStock3->IsTodayNewStock());
+						iCount++;
+						pStock3->AppendSymbol(setChinaStockSymbol);
+						pStock3->SetTodayNewStock(false);
+					}
+					if (iCount >= iStockCodeNeedUpdate) break;
+				}
+			}
+			setChinaStockSymbol.m_pDatabase->CommitTrans();
+			setChinaStockSymbol.Close();
+			m_lLoadedStock = m_vStock.size();
+			ASSERT(iCount == iStockCodeNeedUpdate);
 		}
-		setChinaStockSymbol.m_pDatabase->CommitTrans();
-		setChinaStockSymbol.Close();
-		m_lLoadedStock = m_vStock.size();
+		catch (CException* e) {
+			DeleteExceptionAndReportError(e);
+		}
 	}
-	ASSERT(iCount == iStockCodeNeedUpdate);
 	return true;
 }
 
@@ -661,40 +666,43 @@ bool CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
 // 决定只使用原始的逐项删除模式。
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CContainerChinaStock::SaveTempRTData() {
-	CSetDayLineTodaySaved setDayLineTemp;
-	long lStock = 0;
-	CHighPerformanceCounter counter;
-	counter.start();
+void CContainerChinaStock::SaveTempRTData() {
+	try {
+		CSetDayLineTodaySaved setDayLineTemp;
+		long lStock = 0;
+		CHighPerformanceCounter counter;
+		counter.start();
 
-	DeleteTempRTData();
+		DeleteTempRTData();
 
-	setDayLineTemp.m_strFilter = _T("[ID] = 1");
-	setDayLineTemp.Open();
-	setDayLineTemp.m_pDatabase->BeginTrans();
+		setDayLineTemp.m_strFilter = _T("[ID] = 1");
+		setDayLineTemp.Open();
+		setDayLineTemp.m_pDatabase->BeginTrans();
 
-	// 存储今日生成的数据于DayLineToday表中。
-	for (size_t l = 0; l < m_vStock.size(); l++) {
-		const CChinaStockPtr pStock = GetStock(l);
-		if (pStock->IsNeedProcessRTData() && (!pStock->IsVolumeConsistence())) {
-			CString str = pStock->GetSymbol();
-			str += _T(" 股数不正确");
-			gl_systemMessage.PushInnerSystemInformationMessage(str);
+		// 存储今日生成的数据于DayLineToday表中。
+		for (size_t l = 0; l < m_vStock.size(); l++) {
+			const CChinaStockPtr pStock = GetStock(l);
+			if (pStock->IsNeedProcessRTData() && (!pStock->IsVolumeConsistence())) {
+				CString str = pStock->GetSymbol();
+				str += _T(" 股数不正确");
+				gl_systemMessage.PushInnerSystemInformationMessage(str);
+			}
+			lStock++;
+			setDayLineTemp.AddNew();
+			pStock->SaveTempInfo(&setDayLineTemp);
+			setDayLineTemp.Update();
 		}
-		lStock++;
-		setDayLineTemp.AddNew();
-		pStock->SaveTempInfo(&setDayLineTemp);
-		setDayLineTemp.Update();
+		setDayLineTemp.m_pDatabase->CommitTrans();
+		setDayLineTemp.Close();
+		counter.stop();
+		char buffer[200];
+		sprintf_s(buffer, _T("存储实时数据用时：%lld, 股票总数：%d"), counter.GetElapsedMilliSecond(), lStock);
+		const CString str = buffer;
+		gl_systemMessage.PushInnerSystemInformationMessage(str);
 	}
-	setDayLineTemp.m_pDatabase->CommitTrans();
-	setDayLineTemp.Close();
-	counter.stop();
-	char buffer[200];
-	sprintf_s(buffer, _T("存储实时数据用时：%lld, 股票总数：%d"), counter.GetElapsedMilliSecond(), lStock);
-	const CString str = buffer;
-	gl_systemMessage.PushInnerSystemInformationMessage(str);
-
-	return true;
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 }
 
 void CContainerChinaStock::DeleteTempRTData() {

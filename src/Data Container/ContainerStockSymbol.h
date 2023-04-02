@@ -29,7 +29,7 @@ public:
 	CString GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber);
 
 	void LoadStockSectionDB();
-	bool UpdateStockSectionDB();
+	void UpdateStockSectionDB();
 
 	void SetUpdateStockSection(const bool fFlag) noexcept { m_fUpdateStockSection = fFlag; }
 	[[nodiscard]] bool IsUpdateStockSection() const noexcept { return m_fUpdateStockSection; }

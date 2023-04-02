@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "DataFinnhubCountry.h"
 
+#include "InfoReport.h"
+
 using namespace std;
 
 CDataFinnhubCountry::CDataFinnhubCountry() { Reset(); }
@@ -32,20 +34,24 @@ bool CDataFinnhubCountry::Delete(CCountryPtr pCountry) {
 // 此种更新方法，是默认新的国家代码附加在最后。
 //
 //////////////////////////////////////////////////////////////////////////
-bool CDataFinnhubCountry::UpdateDB() {
-	if (m_lLastTotalCountry < m_vCountry.size()) {
-		CSetCountry setCountry;
-		setCountry.Open();
-		setCountry.m_pDatabase->BeginTrans();
-		for (long l = m_lLastTotalCountry; l < m_vCountry.size(); l++) {
-			const CCountryPtr pCountry = m_vCountry.at(l);
-			pCountry->Append(setCountry);
+void CDataFinnhubCountry::UpdateDB() {
+	try {
+		if (m_lLastTotalCountry < m_vCountry.size()) {
+			CSetCountry setCountry;
+			setCountry.Open();
+			setCountry.m_pDatabase->BeginTrans();
+			for (long l = m_lLastTotalCountry; l < m_vCountry.size(); l++) {
+				const CCountryPtr pCountry = m_vCountry.at(l);
+				pCountry->Append(setCountry);
+			}
+			setCountry.m_pDatabase->CommitTrans();
+			setCountry.Close();
+			m_lLastTotalCountry = m_vCountry.size();
 		}
-		setCountry.m_pDatabase->CommitTrans();
-		setCountry.Close();
-		m_lLastTotalCountry = m_vCountry.size();
 	}
-	return true;
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 }
 
 bool CDataFinnhubCountry::LoadDB() {

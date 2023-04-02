@@ -8,6 +8,7 @@
 #include<memory>
 
 #include "ChinaMarket.h"
+#include "InfoReport.h"
 using std::make_shared;
 
 CContainerStockSymbol::CContainerStockSymbol() {
@@ -89,45 +90,48 @@ void CContainerStockSymbol::LoadStockSectionDB() {
 	setStockSection.Close();
 }
 
-bool CContainerStockSymbol::UpdateStockSectionDB() {
-	CSetStockSection setStockSection;
+void CContainerStockSymbol::UpdateStockSectionDB() {
+	try {
+		CSetStockSection setStockSection;
 
-	setStockSection.m_strSort = _T("[ID]");
-	setStockSection.Open();
-	setStockSection.m_pDatabase->BeginTrans();
-	if (setStockSection.IsEOF()) {
-		// 空表
-		for (int i = 0; i < 2000; i++) {
-			const CStockSectionPtr pStockSection = m_vStockSection.at(i);
-			setStockSection.AddNew();
-			setStockSection.m_ID = i;
-			setStockSection.m_Active = pStockSection->IsActive();
-			setStockSection.m_Market = pStockSection->GetMarket();
-			setStockSection.m_IndexNumber = pStockSection->GetIndexNumber();
-			setStockSection.m_Comment = pStockSection->GetComment();
-			setStockSection.Update();
-		}
-	}
-	else {
-		// 表已存在
-		while (!setStockSection.IsEOF()) {
-			if (setStockSection.m_Active != m_vStockSection.at(setStockSection.m_ID)->IsActive()) {
-				setStockSection.Edit();
-				setStockSection.m_Active = m_vStockSection.at(setStockSection.m_ID)->IsActive();
-				setStockSection.m_Market = m_vStockSection.at(setStockSection.m_ID)->GetMarket();
-				setStockSection.m_IndexNumber = m_vStockSection.at(setStockSection.m_ID)->GetIndexNumber();
-				setStockSection.m_Comment = m_vStockSection.at(setStockSection.m_ID)->GetComment();
+		setStockSection.m_strSort = _T("[ID]");
+		setStockSection.Open();
+		setStockSection.m_pDatabase->BeginTrans();
+		if (setStockSection.IsEOF()) {
+			// 空表
+			for (int i = 0; i < 2000; i++) {
+				const CStockSectionPtr pStockSection = m_vStockSection.at(i);
+				setStockSection.AddNew();
+				setStockSection.m_ID = i;
+				setStockSection.m_Active = pStockSection->IsActive();
+				setStockSection.m_Market = pStockSection->GetMarket();
+				setStockSection.m_IndexNumber = pStockSection->GetIndexNumber();
+				setStockSection.m_Comment = pStockSection->GetComment();
 				setStockSection.Update();
 			}
-			setStockSection.MoveNext();
 		}
+		else {
+			// 表已存在
+			while (!setStockSection.IsEOF()) {
+				if (setStockSection.m_Active != m_vStockSection.at(setStockSection.m_ID)->IsActive()) {
+					setStockSection.Edit();
+					setStockSection.m_Active = m_vStockSection.at(setStockSection.m_ID)->IsActive();
+					setStockSection.m_Market = m_vStockSection.at(setStockSection.m_ID)->GetMarket();
+					setStockSection.m_IndexNumber = m_vStockSection.at(setStockSection.m_ID)->GetIndexNumber();
+					setStockSection.m_Comment = m_vStockSection.at(setStockSection.m_ID)->GetComment();
+					setStockSection.Update();
+				}
+				setStockSection.MoveNext();
+			}
+		}
+		setStockSection.m_pDatabase->CommitTrans();
+		setStockSection.Close();
+
+		m_fUpdateStockSection = false;
 	}
-	setStockSection.m_pDatabase->CommitTrans();
-	setStockSection.Close();
-
-	m_fUpdateStockSection = false;
-
-	return true;
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 }
 
 void CContainerStockSymbol::CreateStockSection(const CString& strFirstStockCode) {

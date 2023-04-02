@@ -12,6 +12,7 @@
 #include"WorldMarket.h"
 
 #include"FinnhubCompanyNews.h"
+#include "InfoReport.h"
 #include "JsonParse.h"
 
 #include"SetInsiderSentiment.h"
@@ -391,12 +392,14 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) {
 	setWorldStock.m_Logo = m_strLogo.Left(110);
 	setWorldStock.m_FinnhubIndustry = m_strFinnhubIndustry.Left(100);
 	const string sPeer = m_jsonPeer.dump();
+	ASSERT(sPeer.size() < 2000);
 	setWorldStock.m_Peer = sPeer.c_str();
 	setWorldStock.m_DayLineStartDate = m_lDayLineStartDate;
 	setWorldStock.m_DayLineEndDate = m_lDayLineEndDate;
 
 	const string sUpdateDate = m_jsonUpdateDate.dump();
 	setWorldStock.m_UpdateDate = sUpdateDate.c_str();
+	ASSERT(sUpdateDate.size() < 10000);
 	setWorldStock.m_IPOStatus = m_lIPOStatus;
 
 	// Tiingo信息
@@ -425,88 +428,98 @@ void CWorldStock::Append(CSetWorldStock& setWorldStock) {
 }
 
 void CWorldStock::SaveInsiderTransaction() {
-	CSetInsiderTransaction setInsiderTransaction, setSaveInsiderTransaction;
+	try {
+		CSetInsiderTransaction setInsiderTransaction, setSaveInsiderTransaction;
 
-	vector<CInsiderTransactionPtr> vInsiderTransaction;
-	CInsiderTransactionPtr pInsiderTransaction = nullptr;
-	long lSizeOfOldInsiderTransaction = 0;
+		vector<CInsiderTransactionPtr> vInsiderTransaction;
+		CInsiderTransactionPtr pInsiderTransaction = nullptr;
+		long lSizeOfOldInsiderTransaction = 0;
 
-	ASSERT(!m_vInsiderTransaction.empty());
+		ASSERT(!m_vInsiderTransaction.empty());
 
-	setInsiderTransaction.m_strFilter = _T("[Symbol] = '");
-	setInsiderTransaction.m_strFilter += m_strSymbol + _T("'");
-	setInsiderTransaction.m_strSort = _T("[TransactionDate]");
+		setInsiderTransaction.m_strFilter = _T("[Symbol] = '");
+		setInsiderTransaction.m_strFilter += m_strSymbol + _T("'");
+		setInsiderTransaction.m_strSort = _T("[TransactionDate]");
 
-	setInsiderTransaction.Open();
-	while (!setInsiderTransaction.IsEOF()) {
-		pInsiderTransaction = make_shared<CInsiderTransaction>();
-		pInsiderTransaction->Load(setInsiderTransaction);
-		vInsiderTransaction.push_back(pInsiderTransaction);
-		lSizeOfOldInsiderTransaction++;
-		setInsiderTransaction.MoveNext();
-	}
-	if (lSizeOfOldInsiderTransaction > 0) { if (vInsiderTransaction.at(0)->m_lTransactionDate < m_lInsiderTransactionStartDate) { m_lInsiderTransactionStartDate = vInsiderTransaction.at(0)->m_lTransactionDate; } }
-	setInsiderTransaction.Close();
-
-	setSaveInsiderTransaction.m_strFilter = _T("[ID] = 1");
-	setSaveInsiderTransaction.Open();
-	setSaveInsiderTransaction.m_pDatabase->BeginTrans();
-	for (int i = 0; i < m_vInsiderTransaction.size(); i++) {
-		pInsiderTransaction = m_vInsiderTransaction.at(i);
-		if (find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
-		            [pInsiderTransaction](CInsiderTransactionPtr& p) {
-			            return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
-				            && (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
-				            && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
-				            && (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
-		            }) == vInsiderTransaction.end()) {
-			// 如果股票代码、人名、交易日期或者交易细节为新的数据，则存储该数据
-			pInsiderTransaction->Append(setSaveInsiderTransaction);
+		setInsiderTransaction.Open();
+		while (!setInsiderTransaction.IsEOF()) {
+			pInsiderTransaction = make_shared<CInsiderTransaction>();
+			pInsiderTransaction->Load(setInsiderTransaction);
+			vInsiderTransaction.push_back(pInsiderTransaction);
+			lSizeOfOldInsiderTransaction++;
+			setInsiderTransaction.MoveNext();
 		}
+		if (lSizeOfOldInsiderTransaction > 0) { if (vInsiderTransaction.at(0)->m_lTransactionDate < m_lInsiderTransactionStartDate) { m_lInsiderTransactionStartDate = vInsiderTransaction.at(0)->m_lTransactionDate; } }
+		setInsiderTransaction.Close();
+
+		setSaveInsiderTransaction.m_strFilter = _T("[ID] = 1");
+		setSaveInsiderTransaction.Open();
+		setSaveInsiderTransaction.m_pDatabase->BeginTrans();
+		for (int i = 0; i < m_vInsiderTransaction.size(); i++) {
+			pInsiderTransaction = m_vInsiderTransaction.at(i);
+			if (find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
+			            [pInsiderTransaction](CInsiderTransactionPtr& p) {
+				            return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
+					            && (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
+					            && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
+					            && (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
+			            }) == vInsiderTransaction.end()) {
+				// 如果股票代码、人名、交易日期或者交易细节为新的数据，则存储该数据
+				pInsiderTransaction->Append(setSaveInsiderTransaction);
+			}
+		}
+		setSaveInsiderTransaction.m_pDatabase->CommitTrans();
+		setSaveInsiderTransaction.Close();
 	}
-	setSaveInsiderTransaction.m_pDatabase->CommitTrans();
-	setSaveInsiderTransaction.Close();
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 }
 
 void CWorldStock::SaveInsiderSentiment() {
-	CSetInsiderSentiment setInsiderSentiment, setSaveInsiderSentiment;
+	try {
+		CSetInsiderSentiment setInsiderSentiment, setSaveInsiderSentiment;
 
-	vector<CInsiderSentimentPtr> vInsiderSentiment;
-	CInsiderSentimentPtr pInsiderSentiment = nullptr;
-	long lSizeOfOldInsiderSentiment = 0;
+		vector<CInsiderSentimentPtr> vInsiderSentiment;
+		CInsiderSentimentPtr pInsiderSentiment = nullptr;
+		long lSizeOfOldInsiderSentiment = 0;
 
-	ASSERT(!m_vInsiderSentiment.empty());
+		ASSERT(!m_vInsiderSentiment.empty());
 
-	setInsiderSentiment.m_strFilter = _T("[Symbol] = '");
-	setInsiderSentiment.m_strFilter += m_strSymbol + _T("'");
-	setInsiderSentiment.m_strSort = _T("[Date]");
+		setInsiderSentiment.m_strFilter = _T("[Symbol] = '");
+		setInsiderSentiment.m_strFilter += m_strSymbol + _T("'");
+		setInsiderSentiment.m_strSort = _T("[Date]");
 
-	setInsiderSentiment.Open();
-	while (!setInsiderSentiment.IsEOF()) {
-		pInsiderSentiment = make_shared<CInsiderSentiment>();
-		pInsiderSentiment->Load(setInsiderSentiment);
-		vInsiderSentiment.push_back(pInsiderSentiment);
-		lSizeOfOldInsiderSentiment++;
-		setInsiderSentiment.MoveNext();
-	}
-	if (lSizeOfOldInsiderSentiment > 0) { if (vInsiderSentiment.at(0)->m_lDate < m_lInsiderSentimentStartDate) { m_lInsiderSentimentStartDate = vInsiderSentiment.at(0)->m_lDate; } }
-	setInsiderSentiment.Close();
-
-	setSaveInsiderSentiment.m_strFilter = _T("[ID] = 1");
-	setSaveInsiderSentiment.Open();
-	setSaveInsiderSentiment.m_pDatabase->BeginTrans();
-	for (int i = 0; i < m_vInsiderSentiment.size(); i++) {
-		pInsiderSentiment = m_vInsiderSentiment.at(i);
-		if (find_if(vInsiderSentiment.begin(), vInsiderSentiment.end(),
-		            [pInsiderSentiment](CInsiderSentimentPtr& p) {
-			            return (p->m_lDate == pInsiderSentiment->m_lDate); // 报告时间
-		            }) == vInsiderSentiment.end()) {
-			// 如果报告日期为新的数据，则存储该数据
-			pInsiderSentiment->Append(setSaveInsiderSentiment);
+		setInsiderSentiment.Open();
+		while (!setInsiderSentiment.IsEOF()) {
+			pInsiderSentiment = make_shared<CInsiderSentiment>();
+			pInsiderSentiment->Load(setInsiderSentiment);
+			vInsiderSentiment.push_back(pInsiderSentiment);
+			lSizeOfOldInsiderSentiment++;
+			setInsiderSentiment.MoveNext();
 		}
+		if (lSizeOfOldInsiderSentiment > 0) { if (vInsiderSentiment.at(0)->m_lDate < m_lInsiderSentimentStartDate) { m_lInsiderSentimentStartDate = vInsiderSentiment.at(0)->m_lDate; } }
+		setInsiderSentiment.Close();
+
+		setSaveInsiderSentiment.m_strFilter = _T("[ID] = 1");
+		setSaveInsiderSentiment.Open();
+		setSaveInsiderSentiment.m_pDatabase->BeginTrans();
+		for (int i = 0; i < m_vInsiderSentiment.size(); i++) {
+			pInsiderSentiment = m_vInsiderSentiment.at(i);
+			if (find_if(vInsiderSentiment.begin(), vInsiderSentiment.end(),
+			            [pInsiderSentiment](CInsiderSentimentPtr& p) {
+				            return (p->m_lDate == pInsiderSentiment->m_lDate); // 报告时间
+			            }) == vInsiderSentiment.end()) {
+				// 如果报告日期为新的数据，则存储该数据
+				pInsiderSentiment->Append(setSaveInsiderSentiment);
+			}
+		}
+		setSaveInsiderSentiment.m_pDatabase->CommitTrans();
+		setSaveInsiderSentiment.Close();
 	}
-	setSaveInsiderSentiment.m_pDatabase->CommitTrans();
-	setSaveInsiderSentiment.Close();
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -590,26 +603,35 @@ bool CWorldStock::UpdateDayLineDB() {
 	return false;
 }
 
-void CWorldStock::AppendBasicFinancialAnnual() {
-	CSetFinnhubStockBasicFinancialAnnual setAnnual;
-
-	setAnnual.m_strFilter = _T("[ID] = 1");
-	setAnnual.Open();
-	setAnnual.m_pDatabase->BeginTrans();
-	m_pBasicFinancial->AppendAnnualData(setAnnual);
-	setAnnual.m_pDatabase->CommitTrans();
-	setAnnual.Close();
+void CWorldStock::AppendBasicFinancialAnnual() const {
+	try {
+		CSetFinnhubStockBasicFinancialAnnual setAnnual;
+		setAnnual.m_strFilter = _T("[ID] = 1");
+		setAnnual.Open();
+		setAnnual.m_pDatabase->BeginTrans();
+		m_pBasicFinancial->AppendAnnualData(setAnnual);
+		setAnnual.m_pDatabase->CommitTrans();
+		setAnnual.Close();
+	}
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 }
 
-void CWorldStock::AppendBasicFinancialQuarter() {
-	CSetFinnhubStockBasicFinancialQuarter setQuarter;
+void CWorldStock::AppendBasicFinancialQuarter() const {
+	try {
+		CSetFinnhubStockBasicFinancialQuarter setQuarter;
 
-	setQuarter.m_strFilter = _T("[ID] = 1");
-	setQuarter.Open();
-	setQuarter.m_pDatabase->BeginTrans();
-	m_pBasicFinancial->AppendQuarterData(setQuarter);
-	setQuarter.m_pDatabase->CommitTrans();
-	setQuarter.Close();
+		setQuarter.m_strFilter = _T("[ID] = 1");
+		setQuarter.Open();
+		setQuarter.m_pDatabase->BeginTrans();
+		m_pBasicFinancial->AppendQuarterData(setQuarter);
+		setQuarter.m_pDatabase->CommitTrans();
+		setQuarter.Close();
+	}
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 }
 
 void CWorldStock::UpdateCompanyNews(CCompanyNewsVectorPtr pvCompanyNews) {

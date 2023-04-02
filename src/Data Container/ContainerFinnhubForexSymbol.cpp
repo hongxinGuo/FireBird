@@ -3,6 +3,7 @@
 #include"containerFinnhubForexSymbol.h"
 #include"SetFinnhubForexSymbol.h"
 #include"FinnhubForexSymbol.h"
+#include "InfoReport.h"
 
 using namespace std;
 
@@ -42,44 +43,49 @@ bool CContainerFinnhubForexSymbol::LoadDB() {
 }
 
 bool CContainerFinnhubForexSymbol::UpdateDB() {
-	const auto lTotalForexSymbol = m_vStock.size();
-	CForexSymbolPtr pSymbol;
-	CSetFinnhubForexSymbol setForexSymbol;
-	bool fUpdateSymbol = false;
+	try {
+		const auto lTotalForexSymbol = m_vStock.size();
+		CForexSymbolPtr pSymbol;
+		CSetFinnhubForexSymbol setForexSymbol;
+		bool fUpdateSymbol = false;
 
-	if (m_lastTotalSymbol < lTotalForexSymbol) {
-		setForexSymbol.Open();
-		setForexSymbol.m_pDatabase->BeginTrans();
-		for (auto l = m_lastTotalSymbol; l < lTotalForexSymbol; l++) {
-			pSymbol = GetSymbol(l);
-			pSymbol->AppendSymbol(setForexSymbol);
-		}
-		setForexSymbol.m_pDatabase->CommitTrans();
-		setForexSymbol.Close();
-		m_lastTotalSymbol = lTotalForexSymbol;
-	}
-
-	for (const auto& pSymbol2 : m_vStock) {
-		if (pSymbol2->IsUpdateProfileDB()) {
-			fUpdateSymbol = true;
-			break;
-		}
-	}
-	if (fUpdateSymbol) {
-		setForexSymbol.Open();
-		setForexSymbol.m_pDatabase->BeginTrans();
-		while (!setForexSymbol.IsEOF()) {
-			if (m_mapSymbol.contains(setForexSymbol.m_Symbol)) {
-				pSymbol = GetSymbol(setForexSymbol.m_Symbol);
-				if (pSymbol->IsUpdateProfileDB()) {
-					pSymbol->UpdateSymbol(setForexSymbol);
-					pSymbol->SetUpdateProfileDB(false);
-				}
+		if (m_lastTotalSymbol < lTotalForexSymbol) {
+			setForexSymbol.Open();
+			setForexSymbol.m_pDatabase->BeginTrans();
+			for (auto l = m_lastTotalSymbol; l < lTotalForexSymbol; l++) {
+				pSymbol = GetSymbol(l);
+				pSymbol->AppendSymbol(setForexSymbol);
 			}
-			setForexSymbol.MoveNext();
+			setForexSymbol.m_pDatabase->CommitTrans();
+			setForexSymbol.Close();
+			m_lastTotalSymbol = lTotalForexSymbol;
 		}
-		setForexSymbol.m_pDatabase->CommitTrans();
-		setForexSymbol.Close();
+
+		for (const auto& pSymbol2 : m_vStock) {
+			if (pSymbol2->IsUpdateProfileDB()) {
+				fUpdateSymbol = true;
+				break;
+			}
+		}
+		if (fUpdateSymbol) {
+			setForexSymbol.Open();
+			setForexSymbol.m_pDatabase->BeginTrans();
+			while (!setForexSymbol.IsEOF()) {
+				if (m_mapSymbol.contains(setForexSymbol.m_Symbol)) {
+					pSymbol = GetSymbol(setForexSymbol.m_Symbol);
+					if (pSymbol->IsUpdateProfileDB()) {
+						pSymbol->UpdateSymbol(setForexSymbol);
+						pSymbol->SetUpdateProfileDB(false);
+					}
+				}
+				setForexSymbol.MoveNext();
+			}
+			setForexSymbol.m_pDatabase->CommitTrans();
+			setForexSymbol.Close();
+		}
+	}
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
 	}
 
 	return true;

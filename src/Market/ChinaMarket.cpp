@@ -10,6 +10,7 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
+#include "InfoReport.h"
 #include"SetDayLineExtendInfo.h"
 #include"SetDayLineTodaySaved.h"
 #include"SetOption.h"
@@ -1685,24 +1686,27 @@ bool CChinaMarket::UpdateChosenStockDB() {
 	return true;
 }
 
-bool CChinaMarket::AppendChosenStockDB() {
-	CSetChinaChosenStock setChinaChosenStock;
+void CChinaMarket::AppendChosenStockDB() {
+	try {
+		CSetChinaChosenStock setChinaChosenStock;
 
-	setChinaChosenStock.Open();
-	setChinaChosenStock.m_pDatabase->BeginTrans();
-	for (const auto& pStock : m_avChosenStock.at(0)) {
-		ASSERT(pStock->IsChosen());
-		if (!pStock->IsSaveToChosenStockDB()) {
-			setChinaChosenStock.AddNew();
-			setChinaChosenStock.m_Symbol = pStock->GetSymbol();
-			setChinaChosenStock.Update();
-			pStock->SetSaveToChosenStockDB(true);
+		setChinaChosenStock.Open();
+		setChinaChosenStock.m_pDatabase->BeginTrans();
+		for (const auto& pStock : m_avChosenStock.at(0)) {
+			ASSERT(pStock->IsChosen());
+			if (!pStock->IsSaveToChosenStockDB()) {
+				setChinaChosenStock.AddNew();
+				setChinaChosenStock.m_Symbol = pStock->GetSymbol();
+				setChinaChosenStock.Update();
+				pStock->SetSaveToChosenStockDB(true);
+			}
 		}
+		setChinaChosenStock.m_pDatabase->CommitTrans();
+		setChinaChosenStock.Close();
 	}
-	setChinaChosenStock.m_pDatabase->CommitTrans();
-	setChinaChosenStock.Close();
-
-	return true;
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 }
 
 void CChinaMarket::LoadChosenStockDB() {

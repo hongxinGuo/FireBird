@@ -5,7 +5,7 @@
 namespace testing {
 	class CMockWorldMarket final : public CWorldMarket {
 	public:
-		MOCK_METHOD(bool, UpdateCountryListDB, (), (override));
+		MOCK_METHOD(void, UpdateCountryListDB, (), (override));
 		MOCK_METHOD(void, UpdateStockProfileDB, (), (override));
 		MOCK_METHOD(bool, UpdateStockDayLineDB, (), (override));
 		MOCK_METHOD(bool, UpdateForexSymbolDB, (), (override));

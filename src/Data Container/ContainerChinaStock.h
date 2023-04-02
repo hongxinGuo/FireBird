@@ -33,7 +33,7 @@ public:
 	void UnloadDayLine() noexcept;
 	bool BuildWeekLine(long lStartDate);
 	long BuildDayLine(long lCurrentTradeDay);
-	bool SaveTempRTData();
+	void SaveTempRTData();
 	void DeleteTempRTData();
 	bool BuildDayLineRS(long lDate);
 	bool BuildWeekLineRS(long lDate);

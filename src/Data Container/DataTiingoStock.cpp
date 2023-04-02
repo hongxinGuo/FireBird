@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "DataTiingoStock.h"
+#include "InfoReport.h"
 
 #include<memory>
 using std::make_shared;
@@ -29,16 +30,21 @@ bool CDataTiingoStock::Delete(CTiingoStockPtr pTiingoStock) {
 
 bool CDataTiingoStock::UpdateDB() {
 	if (m_lLastTotalTiingoStock < m_vTiingoStock.size()) {
-		CSetTiingoStock setTiingoStock;
-		setTiingoStock.Open();
-		setTiingoStock.m_pDatabase->BeginTrans();
-		for (long l = m_lLastTotalTiingoStock; l < m_vTiingoStock.size(); l++) {
-			const CTiingoStockPtr pTiingoStock = m_vTiingoStock.at(l);
-			pTiingoStock->Append(setTiingoStock);
+		try {
+			CSetTiingoStock setTiingoStock;
+			setTiingoStock.Open();
+			setTiingoStock.m_pDatabase->BeginTrans();
+			for (long l = m_lLastTotalTiingoStock; l < m_vTiingoStock.size(); l++) {
+				const CTiingoStockPtr pTiingoStock = m_vTiingoStock.at(l);
+				pTiingoStock->Append(setTiingoStock);
+			}
+			setTiingoStock.m_pDatabase->CommitTrans();
+			setTiingoStock.Close();
+			m_lLastTotalTiingoStock = m_vTiingoStock.size();
 		}
-		setTiingoStock.m_pDatabase->CommitTrans();
-		setTiingoStock.Close();
-		m_lLastTotalTiingoStock = m_vTiingoStock.size();
+		catch (CException* e) {
+			DeleteExceptionAndReportError(e);
+		}
 	}
 
 	return true;

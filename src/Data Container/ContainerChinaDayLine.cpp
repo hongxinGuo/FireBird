@@ -8,13 +8,20 @@
 #include"SetDayLineExtendInfo.h"
 
 #include<memory>
+
+#include "InfoReport.h"
 using std::make_shared;
 
 CContainerChinaDayLine::CContainerChinaDayLine() {}
 
 bool CContainerChinaDayLine::SaveDB(const CString& strStockSymbol) {
-	CSetDayLineBasicInfo setDayLineBasic;
-	UpdateBasicDB(&setDayLineBasic, strStockSymbol);
+	try {
+		CSetDayLineBasicInfo setDayLineBasic;
+		UpdateBasicDB(&setDayLineBasic, strStockSymbol);
+	}
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 
 	return true;
 }

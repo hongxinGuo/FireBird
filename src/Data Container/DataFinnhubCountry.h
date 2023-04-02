@@ -21,7 +21,7 @@ public:
 	bool Delete(CCountryPtr pCountry);
 	CCountryPtr GetCountry(const CString& strCountry) { return m_vCountry.at(m_mapCountry.at(strCountry)); }
 
-	bool UpdateDB();
+	void UpdateDB();
 	bool LoadDB();
 
 protected:

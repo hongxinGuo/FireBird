@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include "DataFinnhubForexExchange.h"
+
+#include "InfoReport.h"
 #include"SetFinnhubForexExchange.h"
 
 using namespace std;
@@ -48,17 +50,22 @@ bool CDataFinnhubForexExchange::LoadDB() {
 
 bool CDataFinnhubForexExchange::UpdateDB() {
 	if (m_lLastTotalForexExchange < m_vForexExchange.size()) {
-		CSetFinnhubForexExchange setForexExchange;
-		setForexExchange.Open();
-		setForexExchange.m_pDatabase->BeginTrans();
-		for (long l = m_lLastTotalForexExchange; l < m_vForexExchange.size(); l++) {
-			setForexExchange.AddNew();
-			setForexExchange.m_Code = m_vForexExchange.at(l);
-			setForexExchange.Update();
+		try {
+			CSetFinnhubForexExchange setForexExchange;
+			setForexExchange.Open();
+			setForexExchange.m_pDatabase->BeginTrans();
+			for (long l = m_lLastTotalForexExchange; l < m_vForexExchange.size(); l++) {
+				setForexExchange.AddNew();
+				setForexExchange.m_Code = m_vForexExchange.at(l);
+				setForexExchange.Update();
+			}
+			setForexExchange.m_pDatabase->CommitTrans();
+			setForexExchange.Close();
+			m_lLastTotalForexExchange = static_cast<long>(m_vForexExchange.size());
 		}
-		setForexExchange.m_pDatabase->CommitTrans();
-		setForexExchange.Close();
-		m_lLastTotalForexExchange = static_cast<long>(m_vForexExchange.size());
+		catch (CException* e) {
+			DeleteExceptionAndReportError(e);
+		}
 		return true;
 	}
 	return false;

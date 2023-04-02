@@ -69,9 +69,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateCountryListDB) {
-		EXPECT_CALL(*s_pMockWorldMarket, UpdateCountryListDB)
-		.Times(1)
-		.WillOnce(Return(true));
+		EXPECT_CALL(*s_pMockWorldMarket, UpdateCountryListDB).Times(1);
+
 		EXPECT_EQ(ThreadUpdateCountryListDB(s_pMockWorldMarket.get()), static_cast<UINT>(40));
 	}
 

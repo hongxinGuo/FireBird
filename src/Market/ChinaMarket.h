@@ -172,13 +172,13 @@ public:
 	virtual bool UpdateOptionDB();
 	void LoadOptionDB();
 	bool UpdateChosenStockDB();
-	virtual bool AppendChosenStockDB();
+	virtual void AppendChosenStockDB();
 	void LoadChosenStockDB();
-	virtual bool SaveTempRTData() { return m_containerChinaStock.SaveTempRTData(); }
+	virtual void SaveTempRTData() { m_containerChinaStock.SaveTempRTData(); }
 	bool TaskLoadTempRTData(long lTheDay, long lCurrentTime);
 	void LoadTempRTData(long lTheDay);
 	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate);
-	virtual bool SaveStockSection() { return m_containerStockSymbol.UpdateStockSectionDB(); }
+	virtual void SaveStockSection() { m_containerStockSymbol.UpdateStockSectionDB(); }
 
 	bool ChangeDayLineStockCodeToStandard();
 

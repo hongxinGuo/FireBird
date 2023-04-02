@@ -3,6 +3,8 @@
 #include"SetEconomicCalendar.h"
 
 #include<memory>
+
+#include "InfoReport.h"
 using std::make_shared;
 
 CContainerFinnhubEconomicCalendar::CContainerFinnhubEconomicCalendar() { Reset(); }
@@ -35,16 +37,21 @@ bool CContainerFinnhubEconomicCalendar::LoadDB() {
 
 bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 	if (m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size()) {
-		CSetEconomicCalendar setEconomicCalendar;
-		setEconomicCalendar.Open();
-		setEconomicCalendar.m_pDatabase->BeginTrans();
-		for (long l = m_lLastTotalEconomicCalendar; l < m_vEconomicCalendar.size(); l++) {
-			const CEconomicCalendarPtr pEconomicCalendar = m_vEconomicCalendar.at(l);
-			pEconomicCalendar->Append(setEconomicCalendar);
+		try {
+			CSetEconomicCalendar setEconomicCalendar;
+			setEconomicCalendar.Open();
+			setEconomicCalendar.m_pDatabase->BeginTrans();
+			for (long l = m_lLastTotalEconomicCalendar; l < m_vEconomicCalendar.size(); l++) {
+				const CEconomicCalendarPtr pEconomicCalendar = m_vEconomicCalendar.at(l);
+				pEconomicCalendar->Append(setEconomicCalendar);
+			}
+			setEconomicCalendar.m_pDatabase->CommitTrans();
+			setEconomicCalendar.Close();
+			m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
 		}
-		setEconomicCalendar.m_pDatabase->CommitTrans();
-		setEconomicCalendar.Close();
-		m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
+		catch (CException* e) {
+			DeleteExceptionAndReportError(e);
+		}
 	}
 
 	return true;

@@ -5,6 +5,8 @@
 #include"FinnhubCryptoSymbol.h"
 
 #include<memory>
+
+#include "InfoReport.h"
 using std::make_shared;
 
 CContainerFinnhubCryptoSymbol::CContainerFinnhubCryptoSymbol() {
@@ -43,44 +45,49 @@ bool CContainerFinnhubCryptoSymbol::LoadDB() {
 }
 
 bool CContainerFinnhubCryptoSymbol::UpdateDB() {
-	const long lTotalCryptoSymbol = static_cast<long>(m_vStock.size());
-	CFinnhubCryptoSymbolPtr pSymbol;
-	CSetFinnhubCryptoSymbol setCryptoSymbol;
-	bool fUpdateSymbol = false;
+	try {
+		const long lTotalCryptoSymbol = static_cast<long>(m_vStock.size());
+		CFinnhubCryptoSymbolPtr pSymbol;
+		CSetFinnhubCryptoSymbol setCryptoSymbol;
+		bool fUpdateSymbol = false;
 
-	if (m_lLastTotalSymbol < lTotalCryptoSymbol) {
-		setCryptoSymbol.Open();
-		setCryptoSymbol.m_pDatabase->BeginTrans();
-		for (auto l = m_lLastTotalSymbol; l < lTotalCryptoSymbol; l++) {
-			pSymbol = GetSymbol(l);
-			pSymbol->AppendSymbol(setCryptoSymbol);
-		}
-		setCryptoSymbol.m_pDatabase->CommitTrans();
-		setCryptoSymbol.Close();
-		m_lLastTotalSymbol = lTotalCryptoSymbol;
-	}
-
-	for (const auto& pSymbol2 : m_vStock) {
-		if (pSymbol2->IsUpdateProfileDB()) {
-			fUpdateSymbol = true;
-			break;
-		}
-	}
-	if (fUpdateSymbol) {
-		setCryptoSymbol.Open();
-		setCryptoSymbol.m_pDatabase->BeginTrans();
-		while (!setCryptoSymbol.IsEOF()) {
-			if (m_mapSymbol.contains(setCryptoSymbol.m_Symbol)) {
-				pSymbol = GetSymbol(setCryptoSymbol.m_Symbol);
-				if (pSymbol->IsUpdateProfileDB()) {
-					pSymbol->UpdateSymbol(setCryptoSymbol);
-					pSymbol->SetUpdateProfileDB(false);
-				}
+		if (m_lLastTotalSymbol < lTotalCryptoSymbol) {
+			setCryptoSymbol.Open();
+			setCryptoSymbol.m_pDatabase->BeginTrans();
+			for (auto l = m_lLastTotalSymbol; l < lTotalCryptoSymbol; l++) {
+				pSymbol = GetSymbol(l);
+				pSymbol->AppendSymbol(setCryptoSymbol);
 			}
-			setCryptoSymbol.MoveNext();
+			setCryptoSymbol.m_pDatabase->CommitTrans();
+			setCryptoSymbol.Close();
+			m_lLastTotalSymbol = lTotalCryptoSymbol;
 		}
-		setCryptoSymbol.m_pDatabase->CommitTrans();
-		setCryptoSymbol.Close();
+
+		for (const auto& pSymbol2 : m_vStock) {
+			if (pSymbol2->IsUpdateProfileDB()) {
+				fUpdateSymbol = true;
+				break;
+			}
+		}
+		if (fUpdateSymbol) {
+			setCryptoSymbol.Open();
+			setCryptoSymbol.m_pDatabase->BeginTrans();
+			while (!setCryptoSymbol.IsEOF()) {
+				if (m_mapSymbol.contains(setCryptoSymbol.m_Symbol)) {
+					pSymbol = GetSymbol(setCryptoSymbol.m_Symbol);
+					if (pSymbol->IsUpdateProfileDB()) {
+						pSymbol->UpdateSymbol(setCryptoSymbol);
+						pSymbol->SetUpdateProfileDB(false);
+					}
+				}
+				setCryptoSymbol.MoveNext();
+			}
+			setCryptoSymbol.m_pDatabase->CommitTrans();
+			setCryptoSymbol.Close();
+		}
+	}
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
 	}
 
 	return true;

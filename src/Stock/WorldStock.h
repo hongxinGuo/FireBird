@@ -49,8 +49,8 @@ public:
 
 	void UpdateBasicFinancialMetric(CSetFinnhubStockBasicFinancialMetric& set) const { m_pBasicFinancial->UpdateMetric(set); }
 	void AppendBasicFinancialMetric(CSetFinnhubStockBasicFinancialMetric& set) const { m_pBasicFinancial->AppendMetric(set); }
-	void AppendBasicFinancialAnnual();
-	void AppendBasicFinancialQuarter();
+	void AppendBasicFinancialAnnual() const;
+	void AppendBasicFinancialQuarter() const;
 
 	void UpdateDayLine(vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UpdateCompanyNews(CCompanyNewsVectorPtr pvCompanyNews);

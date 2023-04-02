@@ -1,13 +1,19 @@
 #include "pch.h"
 #include "DataCryptoDayLine.h"
+
+#include "InfoReport.h"
 #include"SetCryptoDayLine.h"
 
-CDataCryptoDayLine::CDataCryptoDayLine() {
-}
+CDataCryptoDayLine::CDataCryptoDayLine() {}
 
 bool CDataCryptoDayLine::SaveDB(const CString& strCryptoSymbol) {
-	CSetCryptoDayLine setCryptoDayLineBasic;
-	UpdateBasicDB(&setCryptoDayLineBasic, strCryptoSymbol);
+	try {
+		CSetCryptoDayLine setCryptoDayLineBasic;
+		UpdateBasicDB(&setCryptoDayLineBasic, strCryptoSymbol);
+	}
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 
 	return true;
 }

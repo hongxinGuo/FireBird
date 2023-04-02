@@ -1,13 +1,19 @@
 #include "pch.h"
 #include "DataForexDayLine.h"
+
+#include "InfoReport.h"
 #include"SetForexDayLine.h"
 
-CDataForexDayLine::CDataForexDayLine() {
-}
+CDataForexDayLine::CDataForexDayLine() {}
 
 bool CDataForexDayLine::SaveDB(const CString& strCryptoSymbol) {
-	CSetForexDayLine setForexDayLineBasic;
-	UpdateBasicDB(&setForexDayLineBasic, strCryptoSymbol);
+	try {
+		CSetForexDayLine setForexDayLineBasic;
+		UpdateBasicDB(&setForexDayLineBasic, strCryptoSymbol);
+	}
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 
 	return true;
 }

@@ -7,15 +7,22 @@
 #include"SetCurrentWeekLine.h"
 
 #include<memory>
+
+#include "InfoReport.h"
 using std::make_shared;
 
 CContainerChinaWeekLine::CContainerChinaWeekLine() {}
 
 bool CContainerChinaWeekLine::SaveDB(const CString& strStockSymbol) {
-	CSetWeekLineBasicInfo setWeekLineBasic;
-	CSetWeekLineExtendInfo setWeekLineExtend;
-	UpdateBasicDB(&setWeekLineBasic, strStockSymbol);
-	SaveExtendDB(&setWeekLineExtend);
+	try {
+		CSetWeekLineBasicInfo setWeekLineBasic;
+		CSetWeekLineExtendInfo setWeekLineExtend;
+		UpdateBasicDB(&setWeekLineBasic, strStockSymbol);
+		SaveExtendDB(&setWeekLineExtend);
+	}
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 
 	return true;
 }

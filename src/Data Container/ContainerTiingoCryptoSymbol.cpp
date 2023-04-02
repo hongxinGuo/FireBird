@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "ContainerTiingoCryptoSymbol.h"
 
+#include "InfoReport.h"
+
 #include<memory>
 using std::make_shared;
 
@@ -54,16 +56,21 @@ bool CContainerTiingoCryptoSymbol::UpdateDB() {
 	const long lTotalTiingoCryptoSymbol = m_vTiingoCrypto.size();
 
 	if (m_lLastTotalTiingoCrypto < lTotalTiingoCryptoSymbol) {
-		CSetTiingoCrypto setCryptoSymbol;
-		setCryptoSymbol.Open();
-		setCryptoSymbol.m_pDatabase->BeginTrans();
-		for (long l = m_lLastTotalTiingoCrypto; l < lTotalTiingoCryptoSymbol; l++) {
-			const CTiingoCryptoSymbolPtr pSymbol = m_vTiingoCrypto.at(l);
-			pSymbol->Append(setCryptoSymbol);
+		try {
+			CSetTiingoCrypto setCryptoSymbol;
+			setCryptoSymbol.Open();
+			setCryptoSymbol.m_pDatabase->BeginTrans();
+			for (long l = m_lLastTotalTiingoCrypto; l < lTotalTiingoCryptoSymbol; l++) {
+				const CTiingoCryptoSymbolPtr pSymbol = m_vTiingoCrypto.at(l);
+				pSymbol->Append(setCryptoSymbol);
+			}
+			setCryptoSymbol.m_pDatabase->CommitTrans();
+			setCryptoSymbol.Close();
+			m_lLastTotalTiingoCrypto = lTotalTiingoCryptoSymbol;
 		}
-		setCryptoSymbol.m_pDatabase->CommitTrans();
-		setCryptoSymbol.Close();
-		m_lLastTotalTiingoCrypto = lTotalTiingoCryptoSymbol;
+		catch (CException* e) {
+			DeleteExceptionAndReportError(e);
+		}
 	}
 
 	return true;

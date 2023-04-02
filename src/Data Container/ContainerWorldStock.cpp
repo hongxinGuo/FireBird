@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
+#include "InfoReport.h"
 #include"thread.h"
 #include"WorldMarket.h"
 
@@ -112,46 +113,49 @@ bool CContainerWorldStock::LoadDB() {
 /// <summary>
 /// 这种查询方式比较晦涩，但结果正确。目前使用此函数。(可能出现存储多个相同代码的问题，研究之）
 /// </summary>
-// bug. 此函数在测试时偶尔会出现unknown c++ exception thrown，原因待查。
 void CContainerWorldStock::UpdateProfileDB() {
-	//更新原有的代码集状态
 	if (IsUpdateProfileDB()) {
-		CSetWorldStock setWorldStock;
-		int iCurrentUpdated = 0;
-		int iStockNeedUpdate = 0;
-		for (const auto& pStock : m_vStock) {
-			if (pStock->IsUpdateProfileDB()) iStockNeedUpdate++;
-		}
-		if (iStockNeedUpdate > 500) iStockNeedUpdate = 500; // 每次更新500个,保证此任务不占用过多时间（500个大致需要2-5秒钟）。每秒申请一次的话，五分钟最多300个。
-		setWorldStock.m_strSort = _T("[Symbol]");
-		setWorldStock.Open();
-		setWorldStock.m_pDatabase->BeginTrans();
-		while (iCurrentUpdated < iStockNeedUpdate) {
-			if (setWorldStock.IsEOF()) break;
-			const CWorldStockPtr pStock = GetStock(setWorldStock.m_Symbol);
-			ASSERT(pStock != nullptr);
-			if (pStock->IsUpdateProfileDB()) {
-				iCurrentUpdated++;
-				pStock->Update(setWorldStock);
-				pStock->SetUpdateProfileDB(false);
+		try {
+			CSetWorldStock setWorldStock;
+			int iCurrentUpdated = 0;
+			int iStockNeedUpdate = 0;
+			for (const auto& pStock : m_vStock) {
+				if (pStock->IsUpdateProfileDB()) iStockNeedUpdate++;
 			}
-			setWorldStock.MoveNext();
-		}
-		if (iCurrentUpdated < iStockNeedUpdate) { // 添加新的股票简介
-			for (size_t l = 0; l < m_vStock.size(); l++) {
-				const CWorldStockPtr pStock = GetStock(l);
+			if (iStockNeedUpdate > 500) iStockNeedUpdate = 500; // 每次更新500个,保证此任务不占用过多时间（500个大致需要2-5秒钟）。每秒申请一次的话，五分钟最多300个。
+			setWorldStock.m_strSort = _T("[Symbol]");
+			setWorldStock.Open();
+			setWorldStock.m_pDatabase->BeginTrans();
+			while (iCurrentUpdated < iStockNeedUpdate) {	//更新原有的代码集状态
+				if (setWorldStock.IsEOF()) break;
+				const CWorldStockPtr pStock = GetStock(setWorldStock.m_Symbol);
 				ASSERT(pStock != nullptr);
 				if (pStock->IsUpdateProfileDB()) {
 					iCurrentUpdated++;
-					pStock->Append(setWorldStock);
+					pStock->Update(setWorldStock);
 					pStock->SetUpdateProfileDB(false);
-					pStock->SetTodayNewStock(false);
 				}
-				if (iCurrentUpdated >= iStockNeedUpdate) break;
+				setWorldStock.MoveNext();
 			}
+			if (iCurrentUpdated < iStockNeedUpdate) { // 添加新的股票简介
+				for (size_t l = 0; l < m_vStock.size(); l++) {
+					const CWorldStockPtr pStock = GetStock(l);
+					ASSERT(pStock != nullptr);
+					if (pStock->IsUpdateProfileDB()) {
+						iCurrentUpdated++;
+						pStock->Append(setWorldStock);
+						pStock->SetUpdateProfileDB(false);
+						pStock->SetTodayNewStock(false);
+					}
+					if (iCurrentUpdated >= iStockNeedUpdate) break;
+				}
+			}
+			setWorldStock.m_pDatabase->CommitTrans();
+			setWorldStock.Close();
 		}
-		setWorldStock.m_pDatabase->CommitTrans();
-		setWorldStock.Close();
+		catch (CException* e) {
+			DeleteExceptionAndReportError(e);
+		}
 	}
 }
 
@@ -198,12 +202,11 @@ bool CContainerWorldStock::UpdateBasicFinancialDB() {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CContainerWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock) {
+void CContainerWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock) {
 	for (const auto& pStock : vStock) {
 		if (gl_systemStatus.IsExitingSystem()) break;
 		pStock->AppendBasicFinancialQuarter();
 	}
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -214,52 +217,54 @@ bool CContainerWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> 
 // 决定还是使用串行方式，不再生成线程。--20221101
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CContainerWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock) {
+void CContainerWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock) {
 	for (const auto& pStock : vStock) {
 		if (gl_systemStatus.IsExitingSystem()) break;
 		pStock->AppendBasicFinancialAnnual();
 	}
-	return true;
 }
 
-bool CContainerWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock) {
-	CSetFinnhubStockBasicFinancialMetric setBasicFinancialMetric;
-	const auto iBasicFinancialNeedUpdate = vStock.size();
-	size_t iCurrentUpdated = 0;
+void CContainerWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock) {
+	try {
+		CSetFinnhubStockBasicFinancialMetric setBasicFinancialMetric;
+		const auto iBasicFinancialNeedUpdate = vStock.size();
+		size_t iCurrentUpdated = 0;
 
-	ASSERT(IsUpdateBasicFinancialDB());
-	setBasicFinancialMetric.m_strSort = _T("[Symbol]");
-	setBasicFinancialMetric.Open();
-	setBasicFinancialMetric.m_pDatabase->BeginTrans();
-	//更新原有的基本财务信息
-	while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
-		if (setBasicFinancialMetric.IsEOF()) break;
-		CWorldStockPtr pStockNeedUpdate = GetStock(setBasicFinancialMetric.m_symbol);
-		if (vStock.end() != ranges::find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
-			iCurrentUpdated++;
-			pStockNeedUpdate->UpdateBasicFinancialMetric(setBasicFinancialMetric);
-			pStockNeedUpdate->SetUpdateBasicFinancialDB(false);
-		}
-		setBasicFinancialMetric.MoveNext();
-	}
-	// 添加新的基本财务数据
-	if (iCurrentUpdated < iBasicFinancialNeedUpdate) {
-		ASSERT(setBasicFinancialMetric.IsEOF());
-		for (int i = 0; i < iBasicFinancialNeedUpdate; i++) {
-			const auto& pStockNeedAppend = vStock.at(i);
-			if (pStockNeedAppend->IsUpdateBasicFinancialDB()) {
+		ASSERT(IsUpdateBasicFinancialDB());
+		setBasicFinancialMetric.m_strSort = _T("[Symbol]");
+		setBasicFinancialMetric.Open();
+		setBasicFinancialMetric.m_pDatabase->BeginTrans();
+		//更新原有的基本财务信息
+		while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
+			if (setBasicFinancialMetric.IsEOF()) break;
+			CWorldStockPtr pStockNeedUpdate = GetStock(setBasicFinancialMetric.m_symbol);
+			if (vStock.end() != ranges::find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
 				iCurrentUpdated++;
-				pStockNeedAppend->AppendBasicFinancialMetric(setBasicFinancialMetric);
-				pStockNeedAppend->SetUpdateBasicFinancialDB(false);
-				ASSERT(iCurrentUpdated <= iBasicFinancialNeedUpdate);
+				pStockNeedUpdate->UpdateBasicFinancialMetric(setBasicFinancialMetric);
+				pStockNeedUpdate->SetUpdateBasicFinancialDB(false);
+			}
+			setBasicFinancialMetric.MoveNext();
+		}
+		// 添加新的基本财务数据
+		if (iCurrentUpdated < iBasicFinancialNeedUpdate) {
+			ASSERT(setBasicFinancialMetric.IsEOF());
+			for (int i = 0; i < iBasicFinancialNeedUpdate; i++) {
+				const auto& pStockNeedAppend = vStock.at(i);
+				if (pStockNeedAppend->IsUpdateBasicFinancialDB()) {
+					iCurrentUpdated++;
+					pStockNeedAppend->AppendBasicFinancialMetric(setBasicFinancialMetric);
+					pStockNeedAppend->SetUpdateBasicFinancialDB(false);
+					ASSERT(iCurrentUpdated <= iBasicFinancialNeedUpdate);
+				}
 			}
 		}
+		setBasicFinancialMetric.m_pDatabase->CommitTrans();
+		setBasicFinancialMetric.Close();
+		ASSERT(iCurrentUpdated == iBasicFinancialNeedUpdate);
 	}
-	setBasicFinancialMetric.m_pDatabase->CommitTrans();
-	setBasicFinancialMetric.Close();
-	ASSERT(iCurrentUpdated == iBasicFinancialNeedUpdate);
-
-	return true;
+	catch (CException* e) {
+		DeleteExceptionAndReportError(e);
+	}
 }
 
 void CContainerWorldStock::ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStock) {
