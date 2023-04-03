@@ -14,10 +14,10 @@ public:
 	void SaveCurrentWeekLine() const;
 	bool LoadCurrentWeekLine();
 
-	void UpdateData(vector<CWeekLinePtr>& vTempWeekLine);
-	bool UpdateData(CVirtualHistoryCandleExtendPtr pHistoryCandleExtend);
+	void UpdateData(const vector<CWeekLinePtr>& vTempWeekLine);
+	void UpdateData(CVirtualHistoryCandleExtendPtr pHistoryCandleExtend) const;
 
-	bool StoreVectorData(vector<CWeekLinePtr>& vWeekLine);
+	void StoreVectorData(const vector<CWeekLinePtr>& vWeekLine);
 };
 
 using CContainerChinaWeekLinePtr = shared_ptr<CContainerChinaWeekLine>;

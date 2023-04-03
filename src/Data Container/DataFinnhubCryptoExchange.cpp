@@ -64,7 +64,7 @@ bool CDataFinnhubCryptoExchange::UpdateDB() {
 			m_lLastTotalCryptoExchange = static_cast<long>(m_vCryptoExchange.size());
 		}
 		catch (CException* e) {
-			DeleteExceptionAndReportError(e);
+			ReportErrorAndDeleteException(e);
 		}
 		return true;
 	}

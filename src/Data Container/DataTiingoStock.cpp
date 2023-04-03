@@ -43,7 +43,7 @@ bool CDataTiingoStock::UpdateDB() {
 			m_lLastTotalTiingoStock = m_vTiingoStock.size();
 		}
 		catch (CException* e) {
-			DeleteExceptionAndReportError(e);
+			ReportErrorAndDeleteException(e);
 		}
 	}
 

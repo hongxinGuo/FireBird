@@ -71,7 +71,7 @@ public:
 	bool TaskUpdateOptionDB(long lCurrentTime);
 	bool TaskUpdateChosenStockDB();
 
-	bool TaskShowCurrentTransaction();
+	bool TaskShowCurrentTransaction() const;
 
 	bool TaskUpdateStockSection(); //
 
@@ -116,7 +116,7 @@ public:
 	CString GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet);
 	CString GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet);
 	CString GetNextNeteaseStockInquiringMiddleStr(const long lTotalNumber) { return m_containerChinaStock.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber); }
-	bool CheckValidOfNeteaseDayLineInquiringStr(const CString& str);
+	bool CheckValidOfNeteaseDayLineInquiringStr(const CString& str) const;
 	CString GetNextSinaStockInquiringMiddleStrFromTotalStockSet(const long lTotalNumber) { return m_containerStockSymbol.GetNextSinaStockInquiringMiddleStr(lTotalNumber); }
 	CString GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(const long lTotalNumber) { return m_containerStockSymbol.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber); }
 	CString GetNextSinaStockInquiringMiddleStr(const long lTotalNumber) { return m_containerChinaStock.GetNextSinaStockInquiringMiddleStr(lTotalNumber); }
@@ -126,7 +126,7 @@ public:
 	CString CreateNeteaseDayLineInquiringStr() { return m_containerChinaStock.CreateNeteaseDayLineInquiringStr(); }
 	CString CreateTengxunDayLineInquiringStr() { return m_containerChinaStock.CreateTengxunDayLineInquiringStr(); }
 
-	long IncreaseStockInquiringIndex(long& lIndex, long lEndPosition);
+	static long IncreaseStockInquiringIndex(long& lIndex, long lEndPosition);
 
 	bool IsAStock(const not_null<CChinaStockPtr> pStock) const { return m_containerChinaStock.IsAStock(pStock->GetSymbol()); } // 是否为沪深A股
 	bool IsAStock(const CString& strStockCode) const { return m_containerChinaStock.IsAStock(strStockCode); } // 是否为沪深A股
@@ -147,7 +147,7 @@ public:
 	bool IsCurrentStockChanged() const noexcept { return m_fCurrentStockChanged; }
 	void SetCurrentStockChanged(const bool fFlag) noexcept { m_fCurrentStockChanged = fFlag; }
 
-	long GetMinLineOffset(time_t tUTC);
+	long GetMinLineOffset(time_t tUTC) const;
 
 	long GetCurrentSelectedPosition() const noexcept { return m_lCurrentSelectedPosition; }
 	void SetCurrentSelectedPosition(const long lIndex) noexcept { m_lCurrentSelectedPosition = lIndex; }
@@ -177,39 +177,39 @@ public:
 	virtual void SaveTempRTData() { m_containerChinaStock.SaveTempRTData(); }
 	bool TaskLoadTempRTData(long lTheDay, long lCurrentTime);
 	void LoadTempRTData(long lTheDay);
-	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate);
+	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) const;
 	virtual void SaveStockSection() { m_containerStockSymbol.UpdateStockSectionDB(); }
 
-	bool ChangeDayLineStockCodeToStandard();
+	static bool ChangeDayLineStockCodeToStandard();
 
 	virtual bool DeleteWeekLine();
-	bool DeleteWeekLineBasicInfo();
-	bool DeleteWeekLineExtendInfo();
-	virtual bool DeleteWeekLine(long lMonday);
-	bool DeleteWeekLineBasicInfo(long lMonday);
-	bool DeleteWeekLineExtendInfo(long lMonday);
+	static void DeleteWeekLineBasicInfo();
+	static void DeleteWeekLineExtendInfo();
+	virtual void DeleteWeekLine(long lMonday);
+	void DeleteWeekLineBasicInfo(long lMonday) const;
+	void DeleteWeekLineExtendInfo(long lMonday) const;
 
 	void MaintainDayLine() const { m_containerChinaStock.SetDayLineNeedMaintain(); }
 
-	bool DeleteDayLine(long lDate);
-	bool DeleteDayLineBasicInfo(long lDate);
-	bool DeleteDayLineExtendInfo(long lDate);
+	void DeleteDayLine(long lDate) const;
+	void DeleteDayLineBasicInfo(long lDate) const;
+	void DeleteDayLineExtendInfo(long lDate) const;
 
 	virtual bool DeleteCurrentWeekWeekLine();
-	bool DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate);
+	static bool DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate);
 
 	bool Load10DaysRSStrong1StockSet();
 	bool Load10DaysRSStrong2StockSet();
 
 	bool LoadCalculatingRSOption();
-	void SaveCalculatingRSOption();
+	void SaveCalculatingRSOption() const;
 
 	bool Load10DaysRSStrongStockDB();
 	bool LoadOne10DaysRSStrongStockDB(long lIndex);
 
 	virtual bool BuildWeekLine(const long lStartDate) { return m_containerChinaStock.BuildWeekLine(lStartDate); }
 	virtual bool BuildWeekLineOfCurrentWeek();
-	bool CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CVirtualHistoryCandleExtendPtr>*> pvData);
+	static bool CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CVirtualHistoryCandleExtendPtr>*> pvData);
 	virtual bool BuildCurrentWeekWeekLineTable(); // 使用周线表构建当前周周线表
 
 	// 股票历史数据处理
@@ -354,7 +354,7 @@ public:
 		return false;
 	}
 
-	size_t GetCurrentStockSetSize();
+	size_t GetCurrentStockSetSize() const;
 
 	void SetUpdateStockSection(const bool fFlag) noexcept { m_containerStockSymbol.SetUpdateStockSection(fFlag); }
 	bool IsUpdateStockSection() const noexcept { return m_containerStockSymbol.IsUpdateStockSection(); }
@@ -368,14 +368,6 @@ public:
 protected:
 	// 初始化
 
-public:
-	// 测试专用函数
-
-protected:
-	// 本市场各选项
-
-	// 变量区
-protected:
 	CContainerChinaStock m_containerChinaStock;
 	CContainerStockSymbol m_containerStockSymbol;
 
@@ -441,8 +433,6 @@ protected:
 	// 更新股票代码数据库标识
 	atomic_bool m_fUpdateOptionDB;
 	bool m_fUpdateChosenStockDB;
-
-private:
 };
 
 using CChinaMarketPtr = shared_ptr<CChinaMarket>;

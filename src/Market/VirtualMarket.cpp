@@ -162,14 +162,14 @@ bool CVirtualMarket::IsWorkingDay() const noexcept {
 	return true;
 }
 
-bool CVirtualMarket::IsWorkingDay(CTime timeCurrent) const noexcept {
+bool CVirtualMarket::IsWorkingDay(CTime timeCurrent) noexcept {
 	if ((timeCurrent.GetDayOfWeek() == 1) || (timeCurrent.GetDayOfWeek() == 7)) {
 		return false;
 	}
 	return true;
 }
 
-bool CVirtualMarket::IsWorkingDay(long lDate) const noexcept {
+bool CVirtualMarket::IsWorkingDay(long lDate) noexcept {
 	const long year = lDate / 10000;
 	const long month = lDate / 100 - year * 100;
 	const long day = lDate - year * 10000 - month * 100;

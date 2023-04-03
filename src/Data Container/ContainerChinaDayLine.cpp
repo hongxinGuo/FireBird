@@ -20,7 +20,7 @@ bool CContainerChinaDayLine::SaveDB(const CString& strStockSymbol) {
 		UpdateBasicDB(&setDayLineBasic, strStockSymbol);
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 
 	return true;

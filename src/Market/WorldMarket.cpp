@@ -618,7 +618,7 @@ void CWorldMarket::UpdateStockDayLineStartEndDate() {
 		}
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 }
 

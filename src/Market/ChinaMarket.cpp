@@ -278,7 +278,7 @@ bool CChinaMarket::ChangeToNextStockSet() {
 	return true;
 }
 
-size_t CChinaMarket::GetCurrentStockSetSize() {
+size_t CChinaMarket::GetCurrentStockSetSize() const {
 	if (IsTotalStockSetSelected()) return GetTotalStock();
 	return m_avChosenStock.at(m_lCurrentSelectedStockSet).size();
 }
@@ -311,7 +311,7 @@ long CChinaMarket::IncreaseStockInquiringIndex(long& lIndex, long lEndPosition) 
 //
 //
 ////////////////////////////////////////////////////////////////////////
-long CChinaMarket::GetMinLineOffset(time_t tUTC) {
+long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 	ASSERT(tUTC >= 0);
 	tm tmMarketTime;
 
@@ -442,7 +442,7 @@ CString CChinaMarket::GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool 
 	return GetNextNeteaseStockInquiringMiddleStr(lTotalNumber);
 }
 
-bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const CString& str) {
+bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const CString& str) const {
 	const CString strNetease = str.Left(7);
 	CString strStockCode = XferNeteaseToStandard(strNetease);
 	if (!IsStock(strStockCode)) {
@@ -846,7 +846,7 @@ void CChinaMarket::CreateThreadUpdateChoseStockDB() {
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-bool CChinaMarket::TaskShowCurrentTransaction() {
+bool CChinaMarket::TaskShowCurrentTransaction() const {
 	// 显示当前交易情况
 	const CChinaStockPtr pCurrentStock = GetCurrentStock();
 
@@ -1064,13 +1064,13 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
 		dataChinaWeekLine.SaveCurrentWeekLine();
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 
 	return true;
 }
 
-bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) {
+bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) const {
 	CString strSQL;
 	char pch[30];
 	//CTime ctTime;
@@ -1117,11 +1117,9 @@ bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lD
 	return true;
 }
 
-bool CChinaMarket::DeleteWeekLine(long lMonday) {
+void CChinaMarket::DeleteWeekLine(long lMonday) {
 	DeleteWeekLineBasicInfo(lMonday);
 	DeleteWeekLineExtendInfo(lMonday);
-
-	return true;
 }
 
 bool CChinaMarket::DeleteWeekLine() {
@@ -1134,7 +1132,7 @@ bool CChinaMarket::DeleteWeekLine() {
 	return true;
 }
 
-bool CChinaMarket::DeleteWeekLineBasicInfo() {
+void CChinaMarket::DeleteWeekLineBasicInfo() {
 	CDatabase database;
 
 	if (!gl_systemStatus.IsWorkingMode()) {
@@ -1147,11 +1145,9 @@ bool CChinaMarket::DeleteWeekLineBasicInfo() {
 	database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`weekline`;"));
 	database.CommitTrans();
 	database.Close();
-
-	return true;
 }
 
-bool CChinaMarket::DeleteWeekLineExtendInfo() {
+void CChinaMarket::DeleteWeekLineExtendInfo() {
 	CDatabase database;
 
 	if (!gl_systemStatus.IsWorkingMode()) {
@@ -1164,11 +1160,9 @@ bool CChinaMarket::DeleteWeekLineExtendInfo() {
 	database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`weeklineinfo`;"));
 	database.CommitTrans();
 	database.Close();
-
-	return true;
 }
 
-bool CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) {
+void CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) const {
 	CString strSQL;
 	char pch[30];
 	//CTime ctTime;
@@ -1186,11 +1180,9 @@ bool CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) {
 	}
 	setWeekLineBasicInfo.m_pDatabase->CommitTrans();
 	setWeekLineBasicInfo.Close();
-
-	return true;
 }
 
-bool CChinaMarket::DeleteWeekLineExtendInfo(long lMonday) {
+void CChinaMarket::DeleteWeekLineExtendInfo(long lMonday) const {
 	CString strSQL;
 	char pch[30];
 	CSetWeekLineExtendInfo setWeekLineExtendInfo;
@@ -1207,8 +1199,6 @@ bool CChinaMarket::DeleteWeekLineExtendInfo(long lMonday) {
 	}
 	setWeekLineExtendInfo.m_pDatabase->CommitTrans();
 	setWeekLineExtendInfo.Close();
-
-	return true;
 }
 
 bool CChinaMarket::DeleteCurrentWeekWeekLine() {
@@ -1362,14 +1352,12 @@ void CChinaMarket::CreateThreadBuildCurrentWeekWeekLineTable() {
 	thread1.detach();
 }
 
-bool CChinaMarket::DeleteDayLine(long lDate) {
+void CChinaMarket::DeleteDayLine(long lDate) const {
 	DeleteDayLineBasicInfo(lDate);
 	DeleteDayLineExtendInfo(lDate);
-
-	return true;
 }
 
-bool CChinaMarket::DeleteDayLineBasicInfo(long lDate) {
+void CChinaMarket::DeleteDayLineBasicInfo(long lDate) const {
 	char buffer[20]{0x000};
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 
@@ -1385,11 +1373,9 @@ bool CChinaMarket::DeleteDayLineBasicInfo(long lDate) {
 	}
 	setDayLineBasicInfo.m_pDatabase->CommitTrans();
 	setDayLineBasicInfo.Close();
-
-	return true;
 }
 
-bool CChinaMarket::DeleteDayLineExtendInfo(long lDate) {
+void CChinaMarket::DeleteDayLineExtendInfo(long lDate) const {
 	char buffer[20]{0x000};
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
@@ -1405,8 +1391,6 @@ bool CChinaMarket::DeleteDayLineExtendInfo(long lDate) {
 	}
 	setDayLineExtendInfo.m_pDatabase->CommitTrans();
 	setDayLineExtendInfo.Close();
-
-	return true;
 }
 
 bool CChinaMarket::TaskLoadTempRTData(long lTheDay, long lCurrentTime) {
@@ -1515,7 +1499,7 @@ bool CChinaMarket::LoadCalculatingRSOption() {
 	return true;
 }
 
-void CChinaMarket::SaveCalculatingRSOption() {
+void CChinaMarket::SaveCalculatingRSOption() const {
 	CSetRSOption setRSOption;
 
 	setRSOption.Open();
@@ -1614,7 +1598,7 @@ void CChinaMarket::UpdateOptionDB() {
 		setOption.Close();
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 }
 
@@ -1694,7 +1678,7 @@ void CChinaMarket::UpdateChosenStockDB() const {
 		setChinaChosenStock.Close();
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 }
 
@@ -1717,7 +1701,7 @@ void CChinaMarket::AppendChosenStockDB() {
 		setChinaChosenStock.Close();
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 }
 

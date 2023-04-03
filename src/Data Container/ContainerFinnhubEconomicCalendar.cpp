@@ -50,7 +50,7 @@ bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 			m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
 		}
 		catch (CException* e) {
-			DeleteExceptionAndReportError(e);
+			ReportErrorAndDeleteException(e);
 		}
 	}
 

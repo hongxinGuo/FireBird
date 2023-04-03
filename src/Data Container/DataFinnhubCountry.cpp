@@ -50,7 +50,7 @@ void CDataFinnhubCountry::UpdateDB() {
 		}
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 }
 

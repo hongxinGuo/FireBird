@@ -263,10 +263,10 @@ public:
 
 	bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* pSetDayLineBasicInfo) { return m_dataDayLine.LoadBasicDB(pSetDayLineBasicInfo); }
 
-	void AppendTodayBasicInfo(CSetDayLineBasicInfo* pSetDayLine); // 存储当日基本数据
-	void AppendTodayExtendInfo(CSetDayLineExtendInfo* pSetDayLineExtendInfo);
-	void SaveTempInfo(CSetDayLineTodaySaved* pSetDayLineTemp); // 存储当日计算出的数据
-	void UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pBeUpdated); // 用当前状态更新历史数据
+	void AppendTodayBasicInfo(CSetDayLineBasicInfo* pSetDayLine) const; // 存储当日基本数据
+	void AppendTodayExtendInfo(CSetDayLineExtendInfo* pSetDayLineExtendInfo) const;
+	void SaveTempInfo(CSetDayLineTodaySaved* pSetDayLineTemp) const; // 存储当日计算出的数据
+	void UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pBeUpdated) const; // 用当前状态更新历史数据
 	void UpdateDayLineStartEndDate();
 	void LoadTodaySavedInfo(const CSetDayLineTodaySaved* pSetDayLineTemp);
 	bool LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol);
@@ -284,7 +284,7 @@ public:
 	void SetCurrentGuadanTransactionPrice(const double dValue) noexcept { m_dCurrentGuadanTransactionPrice = dValue; }
 	INT64 GetGuadan(const INT64 lPrice) const { return m_mapGuadan.at(lPrice); }
 	void SetGuadan(const INT64 lPrice, const INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; }
-	bool HaveGuadan(INT64 lPrice);
+	bool HaveGuadan(INT64 lPrice) const;
 
 	// 判断10日强势股票
 	virtual bool Calculate10RSStrong1StockSet();
@@ -314,13 +314,12 @@ public:
 	void InitializeCalculatingRTDataEnvironment(CWebRTDataPtr pRTData);
 
 	bool AnalysisGuadan(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice);
-	void SelectGuadanThatNeedToCalculate(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice,
-	                                     array<bool, 10>& fNeedCheck);
+	void SelectGuadanThatNeedToCalculate(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) const;
 	void SetCurrentGuadan(CWebRTDataPtr pCurrentRTData);
-	void CheckGuadan(CWebRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck);
-	void CheckSellGuadan(array<bool, 10>& fNeedCheck, int i);
+	void CheckGuadan(CWebRTDataPtr pCurrentRTData, const array<bool, 10>& fNeedCheck);
+	void CheckSellGuadan(const array<bool, 10>& fNeedCheck, int i);
 	void CalculateCanceledSellVolume(INT64 lCurrentCanceledSellVolume);
-	void CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i);
+	void CheckBuyGuadan(const array<bool, 10>& fNeedCheck, int i);
 	void CalculateCanceledBuyVolume(INT64 lCurrentCanceledBuyVolume);
 	bool CheckCurrentRTData();
 	void ShowCurrentTransaction();
@@ -340,7 +339,7 @@ public:
 	//日线相关函数
 	// 日线历史数据
 	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
-	bool HaveNewDayLineData();
+	bool HaveNewDayLineData() const;
 	void UnloadDayLine() noexcept { m_dataDayLine.Unload(); }
 	bool StoreDayLine(const CDayLinePtr& pDayLine) { return m_dataDayLine.StoreData(pDayLine); }
 	CDayLinePtr GetDayLine(const long lIndex) const { return static_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
@@ -371,7 +370,7 @@ public:
 
 	void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine) { m_dataDayLine.UpdateData(vTempDayLine); }
 
-	void ReportDayLineDownLoaded();
+	static void ReportDayLineDownLoaded();
 
 	// 周线相关函数
 	size_t GetWeekLineSize() const noexcept { return m_dataWeekLine.Size(); }

@@ -21,7 +21,7 @@ bool CContainerChinaWeekLine::SaveDB(const CString& strStockSymbol) {
 		SaveExtendDB(&setWeekLineExtend);
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 
 	return true;
@@ -43,7 +43,7 @@ void CContainerChinaWeekLine::SaveCurrentWeekLine() const {
 		TRACE("存储了%d个当前周周线数据\n", m_vHistoryData.size());
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 }
 
@@ -95,11 +95,9 @@ bool CContainerChinaWeekLine::LoadCurrentWeekLine() {
 	return true;
 }
 
-bool CContainerChinaWeekLine::StoreVectorData(vector<CWeekLinePtr>& vWeekLine) {
+void CContainerChinaWeekLine::StoreVectorData(const vector<CWeekLinePtr>& vWeekLine) {
 	for (const auto& pWeekLine : vWeekLine) { StoreData(pWeekLine); }
 	SetDataLoaded(true);
-
-	return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -107,14 +105,14 @@ bool CContainerChinaWeekLine::StoreVectorData(vector<CWeekLinePtr>& vWeekLine) {
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CContainerChinaWeekLine::UpdateData(vector<CWeekLinePtr>& vTempWeekLine) {
+void CContainerChinaWeekLine::UpdateData(const vector<CWeekLinePtr>& vTempWeekLine) {
 	Unload(); // 清除已载入的周线数据（如果有的话）
 	// 将日线数据以时间为正序存入
 	for (const auto& pWeekLine : vTempWeekLine) { StoreData(pWeekLine); }
 	SetDataLoaded(true);
 }
 
-bool CContainerChinaWeekLine::UpdateData(CVirtualHistoryCandleExtendPtr pHistoryCandleExtend) {
+void CContainerChinaWeekLine::UpdateData(CVirtualHistoryCandleExtendPtr pHistoryCandleExtend) const {
 	for (const auto& pData : m_vHistoryData) {
 		if (strcmp(pData->GetStockSymbol(), pHistoryCandleExtend->GetStockSymbol()) == 0) {
 			//
@@ -122,5 +120,4 @@ bool CContainerChinaWeekLine::UpdateData(CVirtualHistoryCandleExtendPtr pHistory
 			break;
 		}
 	}
-	return true;
 }

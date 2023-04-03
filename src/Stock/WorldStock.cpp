@@ -472,7 +472,7 @@ void CWorldStock::SaveInsiderTransaction() {
 		setSaveInsiderTransaction.Close();
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 }
 
@@ -518,7 +518,7 @@ void CWorldStock::SaveInsiderSentiment() {
 		setSaveInsiderSentiment.Close();
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 }
 
@@ -614,7 +614,7 @@ void CWorldStock::AppendBasicFinancialAnnual() const {
 		setAnnual.Close();
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 }
 
@@ -630,7 +630,7 @@ void CWorldStock::AppendBasicFinancialQuarter() const {
 		setQuarter.Close();
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 }
 

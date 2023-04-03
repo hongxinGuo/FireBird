@@ -130,7 +130,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 		m_fUpdateStockSection = false;
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 }
 

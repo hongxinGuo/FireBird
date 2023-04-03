@@ -12,7 +12,7 @@ bool CDataCryptoDayLine::SaveDB(const CString& strCryptoSymbol) {
 		UpdateBasicDB(&setCryptoDayLineBasic, strCryptoSymbol);
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 
 	return true;

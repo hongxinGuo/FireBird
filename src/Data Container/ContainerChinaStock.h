@@ -34,7 +34,7 @@ public:
 	bool BuildWeekLine(long lStartDate);
 	long BuildDayLine(long lCurrentTradeDay);
 	void SaveTempRTData();
-	void DeleteTempRTData();
+	static void DeleteTempRTData();
 	bool BuildDayLineRS(long lDate);
 	bool BuildWeekLineRS(long lDate);
 
@@ -79,8 +79,8 @@ public:
 	[[nodiscard]] long GetNextIndex(long lIndex) const;
 
 private:
-	bool DeleteDayLineBasicInfo(long lDate);
-	bool DeleteDayLineExtendInfo(long lDate);
+	void DeleteDayLineBasicInfo(long lDate) const;
+	void DeleteDayLineExtendInfo(long lDate) const;
 
 protected:
 	long m_lLoadedStock; // 本次装载的股票总数

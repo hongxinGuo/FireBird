@@ -224,7 +224,7 @@ void CChinaStock::ClearRTDataDeque() {
 	}
 }
 
-bool CChinaStock::HaveNewDayLineData() {
+bool CChinaStock::HaveNewDayLineData() const {
 	if (m_dataDayLine.Size() <= 0) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > GetDayLineEndDate()) return true;
 	return false;
@@ -247,7 +247,7 @@ void CChinaStock::ReportDayLineDownLoaded() {
 	//gl_systemMessage.PushDayLineInfoMessage(strTemp);
 }
 
-void CChinaStock::AppendTodayBasicInfo(CSetDayLineBasicInfo* pSetDayLineBasicInfo) {
+void CChinaStock::AppendTodayBasicInfo(CSetDayLineBasicInfo* pSetDayLineBasicInfo) const {
 	const auto pDayLine = make_shared<CDayLine>();
 
 	ASSERT(pSetDayLineBasicInfo->IsOpen());
@@ -256,7 +256,7 @@ void CChinaStock::AppendTodayBasicInfo(CSetDayLineBasicInfo* pSetDayLineBasicInf
 	pDayLine->AppendBasicData(pSetDayLineBasicInfo);
 }
 
-void CChinaStock::SaveTempInfo(CSetDayLineTodaySaved* pSetDayLineTemp) {
+void CChinaStock::SaveTempInfo(CSetDayLineTodaySaved* pSetDayLineTemp) const {
 	const auto pDayLine = make_shared<CDayLine>();
 
 	ASSERT(pSetDayLineTemp->IsOpen());
@@ -265,7 +265,7 @@ void CChinaStock::SaveTempInfo(CSetDayLineTodaySaved* pSetDayLineTemp) {
 	pDayLine->Save(pSetDayLineTemp);
 }
 
-void CChinaStock::UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pBeUpdated) {
+void CChinaStock::UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pBeUpdated) const {
 	pBeUpdated->SetDate(ConvertToDate(m_TransactionTime));
 	pBeUpdated->SetExchange(m_strExchangeCode);
 	pBeUpdated->SetStockSymbol(m_strSymbol);
@@ -404,7 +404,7 @@ void CChinaStock::UpdateDayLineStartEndDate() {
 	}
 }
 
-void CChinaStock::AppendTodayExtendInfo(CSetDayLineExtendInfo* pSetDayLineExtendInfo) {
+void CChinaStock::AppendTodayExtendInfo(CSetDayLineExtendInfo* pSetDayLineExtendInfo) const {
 	const auto pDayLine = make_shared<CDayLine>();
 
 	ASSERT(pSetDayLineExtendInfo->IsOpen());
@@ -1071,7 +1071,7 @@ bool CChinaStock::AnalysisGuadan(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTra
 	return (true);
 }
 
-void CChinaStock::SelectGuadanThatNeedToCalculate(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) {
+void CChinaStock::SelectGuadanThatNeedToCalculate(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) const {
 	// 确定需要计算哪些挂单。一共有十个，没有受到交易影响的都要计算。
 	switch (m_nCurrentTransactionType) {
 	case NO_TRANSACTION_: // 没有成交，则减少的量就是相应价位上的撤单。
@@ -1148,14 +1148,14 @@ void CChinaStock::SetCurrentGuadan(CWebRTDataPtr pCurrentRTData) {
 	}
 }
 
-void CChinaStock::CheckGuadan(CWebRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck) {
+void CChinaStock::CheckGuadan(CWebRTDataPtr pCurrentRTData, const array<bool, 10>& fNeedCheck) {
 	for (int i = 0; i < 5; i++) {
 		CheckSellGuadan(fNeedCheck, i);
 		CheckBuyGuadan(fNeedCheck, i);
 	}
 }
 
-void CChinaStock::CheckSellGuadan(array<bool, 10>& fNeedCheck, int i) {
+void CChinaStock::CheckSellGuadan(const array<bool, 10>& fNeedCheck, int i) {
 	ASSERT((i < 5) && (i >= 0));
 	if (fNeedCheck.at(4 - i)) {
 		if (GetGuadan(m_pLastRTData->GetPSell(i)) < m_pLastRTData->GetVSell(i)) {
@@ -1181,7 +1181,7 @@ void CChinaStock::CalculateCanceledSellVolume(INT64 lCurrentCanceledSellVolume) 
 	else { m_lCanceledSellVolumeAbove200000 += lCurrentCanceledSellVolume; }
 }
 
-void CChinaStock::CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i) {
+void CChinaStock::CheckBuyGuadan(const array<bool, 10>& fNeedCheck, int i) {
 	ASSERT((i < 5) && (i >= 0));
 	if (fNeedCheck.at(5 + i)) {
 		if (GetGuadan(m_pLastRTData->GetPBuy(i)) < m_pLastRTData->GetVBuy(i)) {
@@ -1207,7 +1207,7 @@ void CChinaStock::CalculateCanceledBuyVolume(INT64 lCurrentCanceledBuyVolume) {
 	else { m_lCanceledBuyVolumeAbove200000 += lCurrentCanceledBuyVolume; }
 }
 
-bool CChinaStock::HaveGuadan(INT64 lPrice) {
+bool CChinaStock::HaveGuadan(INT64 lPrice) const {
 	if (!m_mapGuadan.contains(lPrice)) return false;
 	if (m_mapGuadan.at(lPrice) == 0) return false;
 	return true;
@@ -1243,8 +1243,8 @@ void CChinaStock::ShowCurrentInformationOfCancelingGuadan() {
 
 void CChinaStock::ReportGuadanTransaction() {
 	char buffer[100];
-	const CTime ctime(m_pLastRTData->GetTransactionTime());
-	sprintf_s(buffer, _T("%02d:%02d:%02d"), ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond());
+	const CTime cTime(m_pLastRTData->GetTransactionTime());
+	sprintf_s(buffer, _T("%02d:%02d:%02d"), cTime.GetHour(), cTime.GetMinute(), cTime.GetSecond());
 	const CString strTime = buffer;
 	sprintf_s(buffer, _T(" %s %I64d股成交于%10.3f    "), GetSymbol().GetBuffer(),
 	          m_lCurrentGuadanTransactionVolume, m_dCurrentGuadanTransactionPrice);

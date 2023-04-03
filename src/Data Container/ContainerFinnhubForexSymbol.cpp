@@ -85,7 +85,7 @@ bool CContainerFinnhubForexSymbol::UpdateDB() {
 		}
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 
 	return true;

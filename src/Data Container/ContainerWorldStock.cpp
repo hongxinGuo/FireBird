@@ -154,7 +154,7 @@ void CContainerWorldStock::UpdateProfileDB() {
 			setWorldStock.Close();
 		}
 		catch (CException* e) {
-			DeleteExceptionAndReportError(e);
+			ReportErrorAndDeleteException(e);
 		}
 	}
 }
@@ -263,7 +263,7 @@ void CContainerWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> v
 		ASSERT(iCurrentUpdated == iBasicFinancialNeedUpdate);
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 }
 

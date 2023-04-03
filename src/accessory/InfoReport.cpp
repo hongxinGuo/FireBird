@@ -2,7 +2,7 @@
 
 #include "InfoReport.h"
 
-void ReportErrorToSystemMessage(const CString& strPrefix, exception& e) {
+void ReportErrorToSystemMessage(const CString& strPrefix, const exception& e) {
 	CString strError = strPrefix;
 	strError += e.what();
 	gl_systemMessage.PushErrorMessage(strError);
@@ -33,9 +33,9 @@ void ReportWebError(const DWORD dwErrorNo, const long long llTime, const CString
 	gl_systemMessage.PushErrorMessage(strMessage);
 }
 
-void DeleteExceptionAndReportError(CException* e) {
-	char buffer[100];
-	e->GetErrorMessage(buffer, 100);
+void ReportErrorAndDeleteException(CException* e) {
+	char buffer[200];
+	e->GetErrorMessage(buffer, 200);
 	const CString str = buffer;
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
 	delete e;

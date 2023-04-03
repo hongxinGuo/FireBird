@@ -12,7 +12,7 @@ bool CDataForexDayLine::SaveDB(const CString& strCryptoSymbol) {
 		UpdateBasicDB(&setForexDayLineBasic, strCryptoSymbol);
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 
 	return true;

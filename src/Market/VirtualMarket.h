@@ -57,8 +57,8 @@ public:
 	}
 
 	bool IsWorkingDay() const noexcept;
-	bool IsWorkingDay(CTime timeCurrent) const noexcept;
-	bool IsWorkingDay(long lDate) const noexcept;
+	static bool IsWorkingDay(CTime timeCurrent) noexcept;
+	static bool IsWorkingDay(long lDate) noexcept;
 
 	virtual bool IsOrdinaryTradeTime() { return true; } // 日常交易时间
 	virtual bool IsOrdinaryTradeTime(long) { return true; } // 参数为市场当前时间hhmmss

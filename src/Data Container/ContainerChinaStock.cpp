@@ -146,7 +146,7 @@ void CContainerChinaStock::UpdateStockProfileDB() {
 			ASSERT(iCount == iStockCodeNeedUpdate);
 		}
 		catch (CException* e) {
-			DeleteExceptionAndReportError(e);
+			ReportErrorAndDeleteException(e);
 		}
 	}
 }
@@ -614,13 +614,13 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 		gl_systemMessage.PushInformationMessage(str);
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 
 	return iCount;
 }
 
-bool CContainerChinaStock::DeleteDayLineBasicInfo(long lDate) {
+void CContainerChinaStock::DeleteDayLineBasicInfo(long lDate) const {
 	char buffer[20]{0x000};
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 
@@ -636,11 +636,9 @@ bool CContainerChinaStock::DeleteDayLineBasicInfo(long lDate) {
 	}
 	setDayLineBasicInfo.m_pDatabase->CommitTrans();
 	setDayLineBasicInfo.Close();
-
-	return true;
 }
 
-bool CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
+void CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) const {
 	char buffer[20]{0x000};
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
@@ -656,24 +654,19 @@ bool CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
 	}
 	setDayLineExtendInfo.m_pDatabase->CommitTrans();
 	setDayLineExtendInfo.Close();
-
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 // 将当日处理好的数据储存于数据库中，以备万一系统崩溃时重新装入。
 //
-// 调试模式下，使用原始的逐项删除法，耗时3.5秒左右,使用ExecuteSQL(_T("TRUNCATE `chinamarket`.`today`;"))耗时3.1秒。没有显著的改善。
-// 决定只使用原始的逐项删除模式。
+// 使用ExecuteSQL(_T("TRUNCATE `chinamarket`.`today`;"))，保证能够快速删除任意大小的记录集。
 //
 //////////////////////////////////////////////////////////////////////////////////
 void CContainerChinaStock::SaveTempRTData() {
 	try {
 		CSetDayLineTodaySaved setDayLineTemp;
 		long lStock = 0;
-		CHighPerformanceCounter counter;
-		counter.start();
 
 		DeleteTempRTData();
 
@@ -696,14 +689,9 @@ void CContainerChinaStock::SaveTempRTData() {
 		}
 		setDayLineTemp.m_pDatabase->CommitTrans();
 		setDayLineTemp.Close();
-		counter.stop();
-		char buffer[200];
-		sprintf_s(buffer, _T("存储实时数据用时：%lld, 股票总数：%d"), counter.GetElapsedMilliSecond(), lStock);
-		const CString str = buffer;
-		gl_systemMessage.PushInnerSystemInformationMessage(str);
 	}
 	catch (CException* e) {
-		DeleteExceptionAndReportError(e);
+		ReportErrorAndDeleteException(e);
 	}
 }
 

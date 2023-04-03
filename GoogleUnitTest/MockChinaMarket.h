@@ -45,7 +45,7 @@ namespace testing {
 		MOCK_METHOD(bool, DeleteCurrentWeekWeekLine, (), (override));
 		MOCK_METHOD(bool, BuildWeekLine, (long lStartDate), (override));
 		MOCK_METHOD(bool, DeleteWeekLine, (), (override));
-		MOCK_METHOD(bool, DeleteWeekLine, (long lMonday), (override));
+		MOCK_METHOD(void, DeleteWeekLine, (long lMonday), (override));
 	};
 
 	using CMockChinaMarketPtr = shared_ptr<CMockChinaMarket>;
