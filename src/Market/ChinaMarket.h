@@ -32,7 +32,7 @@ public:
 	void ResetMarket() final;
 	void Reset();
 
-	bool PreparingExitMarket() final;
+	void PreparingExitMarket() final;
 
 	bool IsTimeToResetSystem(long lCurrentTime) final;
 

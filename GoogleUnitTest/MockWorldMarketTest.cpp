@@ -15,6 +15,7 @@
 
 #include"PRoductFinnhubForexSymbol.h"
 #include"FinnhubDataSource.h"
+#include "TiingoDataSource.h"
 
 using namespace testing;
 #include<memory>
@@ -38,6 +39,8 @@ namespace FireBirdTest {
 			gl_systemMessage.PopInformationMessage();
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
+
+			while (!s_pMockWorldMarket->IsMarketTaskEmpty()) s_pMockWorldMarket->DiscardMarketTask();
 		}
 
 		static void TearDownTestSuite() {
@@ -52,6 +55,7 @@ namespace FireBirdTest {
 			gl_systemStatus.SetExitingSystem(false);
 			gl_pFinnhubDataSource->SetUpdateStockProfile(true);
 			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
+			EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
 		}
 
 		void TearDown() override {
@@ -59,6 +63,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 
 			EXPECT_TRUE(s_pMockWorldMarket->IsSystemReady());
+			EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
 
 			GeneralCheck();
 		}
@@ -156,5 +161,31 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockWorldMarket, UpdateEconomicCalendarDB)
 		.Times(1);
 		EXPECT_EQ(ThreadUpdateEconomicCalendarDB(s_pMockWorldMarket.get()), static_cast<UINT>(50));
+	}
+
+	TEST_F(CMockWorldMarketTest, TestTaskMonitoringWebSocketStatus) {
+		EXPECT_TRUE(s_pMockWorldMarket->IsSystemReady());
+		EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
+		//gl_pTiingoDataSource->SetErrorCode(10020); // 确保不调用tiingo WebSocket
+		EXPECT_TRUE(gl_finnhubWebSocket.IsIdle());
+		EXPECT_TRUE(gl_tiingoIEXWebSocket.IsIdle());
+		EXPECT_TRUE(gl_tiingoCryptoWebSocket.IsIdle());
+		EXPECT_TRUE(gl_tiingoForexWebSocket.IsIdle());
+		EXPECT_CALL(*s_pMockWorldMarket, StartFinnhubWebSocket).Times(1);
+		EXPECT_CALL(*s_pMockWorldMarket, StartTiingoIEXWebSocket).Times(1);
+		EXPECT_CALL(*s_pMockWorldMarket, StartTiingoCryptoWebSocket).Times(1);
+		EXPECT_CALL(*s_pMockWorldMarket, StartTiingoForexWebSocket).Times(1);
+
+		s_pMockWorldMarket->TaskMonitoringWebSocketStatus(10000);
+
+		EXPECT_FALSE(s_pMockWorldMarket->IsMarketTaskEmpty());
+		const auto pTask = s_pMockWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__);
+		EXPECT_EQ(pTask->GetTime(), 10100);
+
+		// 恢复原状
+		s_pMockWorldMarket->DiscardMarketTask();
+		EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
+		gl_pTiingoDataSource->SetErrorCode(0);
 	}
 }

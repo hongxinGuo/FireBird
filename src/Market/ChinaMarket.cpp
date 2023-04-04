@@ -138,10 +138,8 @@ void CChinaMarket::Reset() {
 	}
 }
 
-bool CChinaMarket::PreparingExitMarket() {
+void CChinaMarket::PreparingExitMarket() {
 	ASSERT(gl_systemStatus.IsExitingSystem());
-
-	return true;
 }
 
 bool CChinaMarket::IsTimeToResetSystem(long lCurrentTime) {

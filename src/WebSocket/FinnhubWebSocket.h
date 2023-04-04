@@ -37,7 +37,7 @@ public:
 	void Send(vectorString vSymbol) override;
 	string CreateFinnhubWebSocketString(string sSymbol);
 
-	bool CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol);
+	void CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) override;
 
 	bool ParseFinnhubWebSocketData(shared_ptr<string> pData);
 };

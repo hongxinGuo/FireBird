@@ -101,11 +101,9 @@ string CFinnhubWebSocket::CreateFinnhubWebSocketString(string sSymbol) {
 	return symbol.dump();
 }
 
-bool CFinnhubWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
+void CFinnhubWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
 	thread thread1(ThreadConnectFinnhubWebSocketAndSendMessage, this, vSymbol);
 	thread1.detach();
-
-	return true;
 }
 
 /// <summary>

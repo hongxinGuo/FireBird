@@ -42,7 +42,7 @@ public:
 	~CWorldMarket() override;
 	void ResetMarket() final;
 
-	bool PreparingExitMarket() final;
+	void PreparingExitMarket() final;
 
 	void Reset();
 	void ResetFinnhub();
@@ -57,16 +57,16 @@ public:
 
 	bool ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由SchedulingTaskPerSecond调度
 
-	bool TaskCreateTask(long lCurrentTime);
-	bool TaskResetMarket(long lCurrentTime);
+	void TaskCreateTask(long lCurrentTime);
+	void TaskResetMarket(long lCurrentTime);
 	bool TaskCheckMarketReady(long lCurrentTime);
 	void TaskProcessWebSocketData(long lCurrentTime);
 	void TaskMonitoringWebSocketStatus(long lCurrentTime);
 	void TaskUpdateStockProfileDB(long lCurrentTime);
 
-	virtual bool TaskUpdateTiingoIndustry();
-	virtual bool TaskUpdateSICIndustry();
-	virtual bool TaskUpdateNaicsIndustry();
+	virtual bool CreateThreadUpdateTiingoIndustry();
+	virtual bool CreateThreadUpdateSICIndustry();
+	virtual bool CreateThreadUpdateNaicsIndustry();
 
 	void CreateThreadUpdateCompanyNewsDB();
 	void CreateThreadUpdateBasicFinancialDB();
@@ -210,35 +210,35 @@ public:
 	virtual bool UpdateSICIndustry();
 	virtual bool UpdateNaicsIndustry();
 
-	bool LoadForexExchange() { return m_dataFinnhubForexExchange.LoadDB(); }
-	bool LoadFinnhubForexSymbol() { return m_dataFinnhubForexSymbol.LoadDB(); }
-	bool LoadCryptoExchange() { return m_dataFinnhubCryptoExchange.LoadDB(); }
-	bool LoadFinnhubCryptoSymbol() { return m_dataFinnhubCryptoSymbol.LoadDB(); }
-	bool LoadWorldChosenForex() { return m_containerChosenForex.LoadDB(); }
-	bool LoadWorldChosenCrypto() { return m_containerChosenCrypto.LoadDB(); }
+	void LoadForexExchange() { m_dataFinnhubForexExchange.LoadDB(); }
+	void LoadFinnhubForexSymbol() { m_dataFinnhubForexSymbol.LoadDB(); }
+	void LoadCryptoExchange() { m_dataFinnhubCryptoExchange.LoadDB(); }
+	void LoadFinnhubCryptoSymbol() { m_dataFinnhubCryptoSymbol.LoadDB(); }
+	void LoadWorldChosenForex() { m_containerChosenForex.LoadDB(); }
+	void LoadWorldChosenCrypto() { m_containerChosenCrypto.LoadDB(); }
 
-	bool LoadCountryDB() { return m_dataFinnhubCountry.LoadDB(); }
-	bool LoadEconomicCalendarDB() { return m_dataFinnhubEconomicCalendar.LoadDB(); }
+	void LoadCountryDB() { m_dataFinnhubCountry.LoadDB(); }
+	void LoadEconomicCalendarDB() { m_dataFinnhubEconomicCalendar.LoadDB(); }
 
-	bool LoadTiingoStock() { return m_dataTiingoStock.LoadDB(); }
-	bool LoadTiingoCryptoSymbol() { return m_dataTiingoCryptoSymbol.LoadDB(); }
+	void LoadTiingoStock() { m_dataTiingoStock.LoadDB(); }
+	void LoadTiingoCryptoSymbol() { m_dataTiingoCryptoSymbol.LoadDB(); }
 
-	bool RebuildStockDayLineDB();
+	void RebuildStockDayLineDB();
 	virtual void UpdateStockDayLineStartEndDate();
-	bool RebuildEPSSurprise();
-	bool RebuildPeer();
-	bool RebuildBasicFinancial();
+	void RebuildEPSSurprise();
+	void RebuildPeer();
+	void RebuildBasicFinancial();
 
 	vectorString GetFinnhubWebSocketSymbolVector();
 	vectorString GetTiingoIEXWebSocketSymbolVector();
 	vectorString GetTiingoCryptoWebSocketSymbolVector();
 	vectorString GetTiingoForexWebSocketSymbolVector();
 
-	bool StartAllWebSocket();
-	void StartFinnhubWebSocket();
-	void StartTiingoIEXWebSocket();
-	void StartTiingoCryptoWebSocket();
-	void StartTiingoForexWebSocket();
+	void StartAllWebSocket();
+	virtual void StartFinnhubWebSocket();
+	virtual void StartTiingoIEXWebSocket();
+	virtual void StartTiingoCryptoWebSocket();
+	virtual void StartTiingoForexWebSocket();
 	void DisconnectAllWebSocket(); // 停止WebSocket。此函数等待其停止后方返回。是系统退出前的准备工作。
 	void StopWebSocketsIfTimeOut(); // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。是系统运行中的停止接收。
 	void StopFinnhubWebSocketIfTimeOut();
@@ -246,15 +246,15 @@ public:
 	void StopTiingoCryptoWebSocketIfTimeOut();
 	void StopTiingoForexWebSocketIfTimeOut();
 
-	bool TaskProcessWebSocketData();
-	bool ProcessFinnhubWebSocketData();
-	bool ProcessTiingoIEXWebSocketData();
-	bool ProcessTiingoCryptoWebSocketData();
-	bool ProcessTiingoForexWebSocketData();
+	void ProcessWebSocketData();
+	void ProcessFinnhubWebSocketData();
+	void ProcessTiingoIEXWebSocketData();
+	void ProcessTiingoCryptoWebSocketData();
+	void ProcessTiingoForexWebSocketData();
 
-	bool TaskUpdateWorldStockFromWebSocket();
-	bool UpdateWorldStockFromTiingoIEXSocket(CTiingoIEXSocketPtr pTiingoIEX);
-	bool UpdateWorldStockFromFinnhubSocket(CFinnhubSocketPtr pFinnhub);
+	void UpdateWorldStockFromWebSocket();
+	void UpdateWorldStockFromTiingoIEXSocket(CTiingoIEXSocketPtr pTiingoIEX);
+	void UpdateWorldStockFromFinnhubSocket(CFinnhubSocketPtr pFinnhub);
 
 	// check function
 

@@ -39,9 +39,9 @@ public:
 	void Connect() override;
 	void Send(vectorString vSymbol) override;
 
-	bool CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol);
+	void CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) override;
 
-	string CreateMessage(vectorString vSymbol);
+	static string CreateMessage(vectorString vSymbol);
 	bool ParseTiingoCryptoWebSocketData(shared_ptr<string> pData);
 };
 

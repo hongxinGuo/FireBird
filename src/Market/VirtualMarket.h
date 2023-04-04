@@ -88,7 +88,7 @@ public:
 	bool IsSystemReady() const noexcept { return m_fSystemReady; }
 	void SetSystemReady(const bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
-	virtual bool PreparingExitMarket() { return true; } // 准备退出本市场（完成系统退出前的准备工作）。
+	virtual void PreparingExitMarket() {} // 准备退出本市场（完成系统退出前的准备工作）。
 
 	// 存储数据源
 	void StoreDataSource(CVirtualDataSourcePtr pDataSource) { m_vDataSource.push_back(pDataSource); }

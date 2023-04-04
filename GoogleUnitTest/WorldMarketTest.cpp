@@ -814,7 +814,7 @@ namespace FireBirdTest {
 		}
 		gl_pFinnhubDataSource->SetUpdateEPSSurprise(false);
 
-		EXPECT_TRUE(gl_pWorldMarket->RebuildEPSSurprise());
+		gl_pWorldMarket->RebuildEPSSurprise();
 
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
@@ -834,7 +834,7 @@ namespace FireBirdTest {
 		}
 		gl_pFinnhubDataSource->SetUpdatePeer(false);
 
-		EXPECT_TRUE(gl_pWorldMarket->RebuildPeer());
+		gl_pWorldMarket->RebuildPeer();
 
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);
@@ -863,7 +863,7 @@ namespace FireBirdTest {
 		}
 		gl_pFinnhubDataSource->SetUpdateStockProfile(false);
 
-		EXPECT_TRUE(gl_pWorldMarket->RebuildStockDayLineDB());
+		gl_pWorldMarket->RebuildStockDayLineDB();
 
 		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
 			pStock = gl_pWorldMarket->GetStock(i);

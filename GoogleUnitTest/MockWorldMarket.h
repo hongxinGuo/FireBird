@@ -20,6 +20,10 @@ namespace testing {
 		MOCK_METHOD(bool, UpdateSICIndustry, (), (override));
 		MOCK_METHOD(bool, UpdateNaicsIndustry, (), (override));
 		MOCK_METHOD(bool, UpdateEconomicCalendarDB, (), (override));
+		MOCK_METHOD(void, StartFinnhubWebSocket, (), (override));
+		MOCK_METHOD(void, StartTiingoIEXWebSocket, (), (override));;
+		MOCK_METHOD(void, StartTiingoCryptoWebSocket, (), (override));
+		MOCK_METHOD(void, StartTiingoForexWebSocket, (), (override));
 	};
 
 	using CMockWorldMarketPtr = shared_ptr<CMockWorldMarket>;

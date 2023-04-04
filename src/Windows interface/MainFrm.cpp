@@ -689,7 +689,9 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 		// 如果是退出系统
 		gl_systemStatus.SetExitingSystem(true); // 提示各工作线程中途退出
 		TRACE("应用户申请，准备退出程序\n");
-		for (const auto& pMarket : gl_vMarketPtr) { pMarket->PreparingExitMarket(); }
+		for (const auto& pMarket : gl_vMarketPtr) {
+			pMarket->PreparingExitMarket();
+		}
 	}
 
 	//CMDIFrameWndEx::OnSysCommand(nID, lParam);

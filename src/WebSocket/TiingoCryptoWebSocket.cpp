@@ -54,7 +54,9 @@ UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebS
 	return 73;
 }
 
-CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() : CVirtualWebSocket() { m_url = _T("wss://api.tiingo.com/crypto"); }
+CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() : CVirtualWebSocket() {
+	m_url = _T("wss://api.tiingo.com/crypto");
+}
 
 /// <summary>
 /// Tiingo Crypto的数据源格式：wss://api.tiingo.com/crypto，其密钥是随后发送的。
@@ -115,11 +117,9 @@ string CTiingoCryptoWebSocket::CreateMessage(vectorString vSymbol) {
 	return message.dump();
 }
 
-bool CTiingoCryptoWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
+void CTiingoCryptoWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
 	thread thread1(ThreadConnectTiingoCryptoWebSocketAndSendMessage, this, vSymbol);
 	thread1.detach();
-
-	return true;
 }
 
 // <summary>

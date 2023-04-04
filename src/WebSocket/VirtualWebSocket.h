@@ -32,6 +32,8 @@ public:
 	virtual void Send(vector<string> vSymbol) { ASSERT(FALSE); }
 	auto SendString(const string& strMessage) { return m_webSocket.send(strMessage); }
 
+	virtual void CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) { ASSERT(false); } // 继承类必须实现各自的功能
+
 	bool IsSymbol(string sSymbol);
 	void AppendSymbol(vectorString vSymbol);
 	bool AddSymbol(const string& sSymbol);
