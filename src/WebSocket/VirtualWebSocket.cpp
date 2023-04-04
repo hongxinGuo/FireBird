@@ -4,6 +4,8 @@
 
 #include <ixwebsocket/IXNetSystem.h>
 
+#include "TimeConvert.h"
+
 using namespace std;
 
 #include<gsl/gsl>
@@ -20,12 +22,13 @@ CVirtualWebSocket::CVirtualWebSocket(bool fHaveSubscription) {
 }
 
 CVirtualWebSocket::~CVirtualWebSocket() {
-	CVirtualWebSocket::Disconnect();
+	Disconnect();
 }
 
 void CVirtualWebSocket::Reset() {
 	m_iSubscriptionId = 0;
 	m_fReceivingData = false;
+	m_HeartbeatTime = 0;
 }
 
 bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vectorString vSymbol) {
@@ -80,7 +83,12 @@ void CVirtualWebSocket::ClearSymbol() {
 	m_mapSymbol.clear();
 }
 
-bool CVirtualWebSocket::Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {
+bool CVirtualWebSocket::IsIdle(time_t tPeriod) const {
+	if (GetUTCTime() > (m_HeartbeatTime + tPeriod)) return true;
+	else return false;
+}
+
+void CVirtualWebSocket::Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {
 	ix::SocketTLSOptions TLSOption;
 
 	ASSERT(GetState() == ix::ReadyState::Closed);
@@ -94,25 +102,25 @@ bool CVirtualWebSocket::Connecting(string url, const ix::OnMessageCallback& call
 	m_webSocket.setPingInterval(iPingPeriod);
 
 	// Per message deflate connection is enabled by default. You can tweak its parameters or disable it
-	if (fDeflate) m_webSocket.disablePerMessageDeflate();
+	//if (fDeflate) m_webSocket.disablePerMessageDeflate();
+
+	// enable auto reconnecting
+	const bool bEnabled = m_webSocket.isAutomaticReconnectionEnabled();
+	if (!bEnabled) m_webSocket.enableAutomaticReconnection();
 
 	// Setup a callback to be fired when a message or an event (open, close, error) is received
 	m_webSocket.setOnMessageCallback(callback);
 
 	// Now that our callback is setup, we can start our background thread and receive messages
 	StartWebSocket();
-
-	return true;
 }
 
-bool CVirtualWebSocket::Disconnect() {
+void CVirtualWebSocket::Disconnect() {
 	if (GetState() != ix::ReadyState::Closed) {
 		StopWebSocket();
 	}
 	while (GetState() != ix::ReadyState::Closed) Sleep(1);
 	m_iSubscriptionId = 0;
-
-	return true;
 }
 
 UINT ThreadDisconnectWebSocket(not_null<CVirtualWebSocket*> pWebSocket) {

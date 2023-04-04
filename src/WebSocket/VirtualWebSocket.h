@@ -27,18 +27,9 @@ public:
 	bool ConnectWebSocketAndSendMessage(vectorString vSymbol);
 	void Reset();
 
-	virtual bool Connect() {
-		ASSERT(false);
-		return false;
-	}
-
-	bool Disconnect();
-
-	virtual bool Send(vector<string> vSymbol) {
-		ASSERT(FALSE);
-		return false;
-	}
-
+	virtual void Connect() { ASSERT(false); }
+	void Disconnect();
+	virtual void Send(vector<string> vSymbol) { ASSERT(FALSE); }
 	auto SendString(const string& strMessage) { return m_webSocket.send(strMessage); }
 
 	bool IsSymbol(string sSymbol);
@@ -82,10 +73,13 @@ public:
 	bool IsReceivingData() const noexcept { return m_fReceivingData; }
 	void SetReceivingData(const bool fFlag) noexcept { m_fReceivingData = fFlag; }
 
+	time_t GetHeartbeatTime() const noexcept { return m_HeartbeatTime; }
+	void SetHeartbeatTime(const time_t tt) noexcept { m_HeartbeatTime = tt; }
+	bool IsIdle(time_t tPeriod = 300) const; // 默认五分钟
+
 	// 实现
-	bool Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
-	bool CreateThreadDisconnectWebSocket();
-	// 用于系统退出时。
+	void Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
+	bool CreateThreadDisconnectWebSocket();	// 用于系统退出时。
 	bool DisconnectWithoutWaitingSucceed(); // 用于程序运行中途时切断网络链接，此时无需等待。
 
 	vectorString m_vCurrentSymbol;
@@ -114,5 +108,7 @@ protected:
 	string m_inputMessage;
 
 	bool m_fReceivingData; // 正在接收数据
+	time_t m_HeartbeatTime; // 最新心跳时间， UTC制式
+
 	CTemplateMutexAccessQueue<string> m_qWebSocketData; // 接收到的WebSocket数据
 };

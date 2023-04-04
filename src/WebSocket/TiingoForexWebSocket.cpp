@@ -63,9 +63,8 @@ CTiingoForexWebSocket::~CTiingoForexWebSocket() {}
 /// Tiingo Forex的数据源格式：wss://api.tiingo.com/fx，其密钥是随后发送的。
 /// </summary>
 /// <returns></returns>
-bool CTiingoForexWebSocket::Connect() {
+void CTiingoForexWebSocket::Connect() {
 	Connecting(m_url, ProcessTiingoForexWebSocket);
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,14 +77,12 @@ bool CTiingoForexWebSocket::Connect() {
 // {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTiingoForexWebSocket::Send(vectorString vSymbol) {
+void CTiingoForexWebSocket::Send(vectorString vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
 	ix::WebSocketSendInfo info = SendString(messageAuth);
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
-
-	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -172,6 +169,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				}
 				break;
 			case 'H': // HeartBeat {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
+				//m_HeartbeatTime = GetUTCTime();
 				js3 = jsonGetChild(&js, _T("response"));
 				m_iStatusCode = js3.at(_T("code"));
 				m_statusMessage = js3.at(_T("message"));
@@ -191,7 +189,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				pForexData->m_chMessageType = sMessageType.at(0);
 				pForexData->m_sSymbol = jsonGetString(++it); // 证券名称
 				sDatetime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
-				pForexData->tTime = XferToTTime(sDatetime.c_str(), _T("%4d-%02d-%02dT%02d:%02d:%02d.%06d+%02d:%02d"));
+				pForexData->m_tTime = XferToTTime(sDatetime.c_str(), _T("%4d-%02d-%02dT%02d:%02d:%02d.%06d+%02d:%02d"));
 				pForexData->m_dBidSize = jsonGetDouble(++it); // 买价数量
 				pForexData->m_dBidPrice = jsonGetDouble(++it); // 买价
 				pForexData->m_dMidPrice = jsonGetDouble(++it); // 中间价 （BidPrice + AskPrice)/2

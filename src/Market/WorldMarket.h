@@ -239,8 +239,8 @@ public:
 	void StartTiingoIEXWebSocket();
 	void StartTiingoCryptoWebSocket();
 	void StartTiingoForexWebSocket();
-	void DisconnectAllWebSocket(); // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
-	void StopWebSocketsIfTimeOut(); // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
+	void DisconnectAllWebSocket(); // 停止WebSocket。此函数等待其停止后方返回。是系统退出前的准备工作。
+	void StopWebSocketsIfTimeOut(); // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。是系统运行中的停止接收。
 	void StopFinnhubWebSocketIfTimeOut();
 	void StopTiingoIEXWebSocketIfTimeOut();
 	void StopTiingoCryptoWebSocketIfTimeOut();

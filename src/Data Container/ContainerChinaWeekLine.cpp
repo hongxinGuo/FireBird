@@ -21,7 +21,7 @@ bool CContainerChinaWeekLine::SaveDB(const CString& strStockSymbol) {
 		SaveExtendDB(&setWeekLineExtend);
 	}
 	catch (CException* e) {
-		ReportErrorAndDeleteException(e);
+		ReportInformationAndDeleteException(e);
 	}
 
 	return true;
@@ -43,7 +43,7 @@ void CContainerChinaWeekLine::SaveCurrentWeekLine() const {
 		TRACE("存储了%d个当前周周线数据\n", m_vHistoryData.size());
 	}
 	catch (CException* e) {
-		ReportErrorAndDeleteException(e);
+		ReportInformationAndDeleteException(e);
 	}
 }
 

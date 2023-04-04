@@ -64,7 +64,7 @@ bool CDataFinnhubForexExchange::UpdateDB() {
 			m_lLastTotalForexExchange = static_cast<long>(m_vForexExchange.size());
 		}
 		catch (CException* e) {
-			ReportErrorAndDeleteException(e);
+			ReportInformationAndDeleteException(e);
 		}
 		return true;
 	}

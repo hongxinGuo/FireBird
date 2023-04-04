@@ -1064,7 +1064,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
 		dataChinaWeekLine.SaveCurrentWeekLine();
 	}
 	catch (CException* e) {
-		ReportErrorAndDeleteException(e);
+		ReportInformationAndDeleteException(e);
 	}
 
 	return true;
@@ -1598,7 +1598,7 @@ void CChinaMarket::UpdateOptionDB() {
 		setOption.Close();
 	}
 	catch (CException* e) {
-		ReportErrorAndDeleteException(e);
+		ReportInformationAndDeleteException(e);
 	}
 }
 
@@ -1678,7 +1678,7 @@ void CChinaMarket::UpdateChosenStockDB() const {
 		setChinaChosenStock.Close();
 	}
 	catch (CException* e) {
-		ReportErrorAndDeleteException(e);
+		ReportInformationAndDeleteException(e);
 	}
 }
 
@@ -1701,7 +1701,7 @@ void CChinaMarket::AppendChosenStockDB() {
 		setChinaChosenStock.Close();
 	}
 	catch (CException* e) {
-		ReportErrorAndDeleteException(e);
+		ReportInformationAndDeleteException(e);
 	}
 }
 

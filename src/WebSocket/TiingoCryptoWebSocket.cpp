@@ -6,6 +6,7 @@
 #include "TiingoCryptoWebSocket.h"
 
 #include "TiingoDataSource.h"
+#include "TimeConvert.h"
 
 using namespace std;
 
@@ -58,12 +59,9 @@ CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() : CVirtualWebSocket() { m_url =
 /// <summary>
 /// Tiingo Crypto的数据源格式：wss://api.tiingo.com/crypto，其密钥是随后发送的。
 /// </summary>
-/// <param name=""></param>
-/// <returns></returns>
-bool CTiingoCryptoWebSocket::Connect() {
+/// 
+void CTiingoCryptoWebSocket::Connect() {
 	Connecting(m_url, ProcessTiingoCryptoWebSocket);
-
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,7 +72,7 @@ bool CTiingoCryptoWebSocket::Connect() {
 // thresholdLevel 5: only Last Trade updates.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-bool CTiingoCryptoWebSocket::Send(vectorString vSymbol) {
+void CTiingoCryptoWebSocket::Send(vectorString vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
@@ -83,8 +81,6 @@ bool CTiingoCryptoWebSocket::Send(vectorString vSymbol) {
 
 	ix::WebSocketSendInfo info = SendString(messageAuth);
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
-
-	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -150,7 +146,6 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 		if (json js; CreateJsonWithNlohmann(js, *pData)) {
 			CTiingoCryptoSocketPtr pCryptoData;
 			string sService;
-			string sDatetime;
 			string sMessageType;
 			char chType;
 			string sType;
@@ -175,6 +170,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				}
 				break;
 			case 'H': // heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
+				m_HeartbeatTime = GetUTCTime();
 				js3 = jsonGetChild(&js, _T("response"));
 				m_iStatusCode = js3.at(_T("code"));
 				m_statusMessage = js3.at(_T("message"));
@@ -190,7 +186,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					//last trade message {\"service\":\"crypto_data\",\"data\":[\"T\",\"jstusdt\",\"2021-08-10T23:56:55.237000+00:00\",\"huobi\",3952.5,0.062108],\"messageType\":\"A\"}
 					pCryptoData->m_chMessageType = 'T';
 					pCryptoData->m_sSymbol = jsonGetString(++it); // 证券名称
-					sDatetime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
+					pCryptoData->m_sDateTime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
 					pCryptoData->m_strExchange = jsonGetString(++it); // 交易所
 					pCryptoData->m_dLastSize = jsonGetDouble(++it); // 最新数量
 					pCryptoData->m_dLastPrice = jsonGetDouble(++it); // 最新价格
@@ -199,7 +195,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					// 'Q' top-of-book update message.
 					pCryptoData->m_chMessageType = 'Q';
 					pCryptoData->m_sSymbol = jsonGetString(++it); // 证券名称
-					sDatetime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
+					pCryptoData->m_sDateTime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
 					pCryptoData->m_strExchange = jsonGetString(++it);// 交易所
 					pCryptoData->m_dBidSize = jsonGetDouble(++it); // 买价数量
 					pCryptoData->m_dBidPrice = jsonGetDouble(++it); // 买价

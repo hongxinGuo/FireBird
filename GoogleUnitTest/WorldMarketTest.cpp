@@ -415,7 +415,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(false) << e.what();
 		}
 		catch (CException* e) {
-			ReportErrorAndDeleteException(e);
+			ReportInformationAndDeleteException(e);
 		}
 		catch (...) {
 			EXPECT_TRUE(false) << "δ֪exception";

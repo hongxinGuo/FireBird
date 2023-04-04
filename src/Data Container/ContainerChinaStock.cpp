@@ -146,7 +146,7 @@ void CContainerChinaStock::UpdateStockProfileDB() {
 			ASSERT(iCount == iStockCodeNeedUpdate);
 		}
 		catch (CException* e) {
-			ReportErrorAndDeleteException(e);
+			ReportInformationAndDeleteException(e);
 		}
 	}
 }
@@ -614,7 +614,7 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 		gl_systemMessage.PushInformationMessage(str);
 	}
 	catch (CException* e) {
-		ReportErrorAndDeleteException(e);
+		ReportInformationAndDeleteException(e);
 	}
 
 	return iCount;
@@ -691,7 +691,7 @@ void CContainerChinaStock::SaveTempRTData() {
 		setDayLineTemp.Close();
 	}
 	catch (CException* e) {
-		ReportErrorAndDeleteException(e);
+		ReportInformationAndDeleteException(e);
 	}
 }
 

@@ -11,6 +11,7 @@
 #include<memory>
 
 #include "FinnhubDataSource.h"
+#include "TimeConvert.h"
 using std::thread;
 using std::make_shared;
 
@@ -20,7 +21,9 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	case ix::WebSocketMessageType::Message:
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
 		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
-		if (!gl_systemStatus.IsExitingSystem()) { gl_finnhubWebSocket.PushData(msg->str); }
+		if (!gl_systemStatus.IsExitingSystem()) {
+			gl_finnhubWebSocket.PushData(msg->str);
+		}
 		break;
 	case ix::WebSocketMessageType::Error:
 		str = _T("Finnhub WebSocket Error: ");
@@ -68,15 +71,15 @@ CFinnhubWebSocket::CFinnhubWebSocket() : CVirtualWebSocket() {
 /// <summary>
 /// finnhub数据源的格式：wss://ws.finnhub.io/?token=c1i57rv48v6vit20lrc0。
 /// </summary>
-bool CFinnhubWebSocket::Connect() {
+void CFinnhubWebSocket::Connect() {
 	CString strToken = gl_pFinnhubDataSource->GetInquiryToken();
 	strToken = "/?token=" + strToken;
 	const string urlAndAuth = m_url + strToken.GetBuffer();
 
-	return Connecting(urlAndAuth, ProcessFinnhubWebSocket);
+	Connecting(urlAndAuth, ProcessFinnhubWebSocket);
 }
 
-bool CFinnhubWebSocket::Send(vectorString vSymbol) {
+void CFinnhubWebSocket::Send(vectorString vSymbol) {
 	string strMessage;
 
 	ASSERT(IsOpen());
@@ -85,8 +88,6 @@ bool CFinnhubWebSocket::Send(vectorString vSymbol) {
 		SendString(strMessage);
 		gl_systemMessage.PushInnerSystemInformationMessage(strMessage.c_str());
 	}
-
-	return true;
 }
 
 /// <summary>
@@ -144,7 +145,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 			}
 			else if (sType == _T("ping")) {
 				// ping  {\"type\":\"ping\"}
-				//
+				m_HeartbeatTime = GetUTCTime();
 			}
 			else if (sType == _T("error")) {
 				// ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}

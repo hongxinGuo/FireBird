@@ -33,8 +33,8 @@ public:
 	CFinnhubWebSocket& operator=(const CFinnhubWebSocket&&) noexcept = delete;
 	~CFinnhubWebSocket() override = default;
 
-	bool Connect() override;
-	bool Send(vectorString vSymbol) override;
+	void Connect() override;
+	void Send(vectorString vSymbol) override;
 	string CreateFinnhubWebSocketString(string sSymbol);
 
 	bool CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol);

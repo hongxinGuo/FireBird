@@ -33,7 +33,7 @@ void ReportWebError(const DWORD dwErrorNo, const long long llTime, const CString
 	gl_systemMessage.PushErrorMessage(strMessage);
 }
 
-void ReportErrorAndDeleteException(CException* e) {
+void ReportInformationAndDeleteException(CException* e) {
 	char buffer[200];
 	e->GetErrorMessage(buffer, 200);
 	const CString str = buffer;

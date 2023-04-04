@@ -13,7 +13,7 @@ bool CDataWorldStockDayLine::SaveDB(const CString& strStockSymbol) {
 		UpdateBasicDB(&setWorldStockDayLineBasic, strStockSymbol);
 	}
 	catch (CException* e) {
-		ReportErrorAndDeleteException(e);
+		ReportInformationAndDeleteException(e);
 	}
 
 	return true;
@@ -35,7 +35,7 @@ bool CDataWorldStockDayLine::LoadDB(const CString& strStockSymbol) {
 		m_fDataLoaded = true;
 	}
 	catch (CException* e) {
-		ReportErrorAndDeleteException(e);
+		ReportInformationAndDeleteException(e);
 	}
 	return true;
 }

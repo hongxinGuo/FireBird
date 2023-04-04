@@ -87,7 +87,7 @@ bool CContainerFinnhubCryptoSymbol::UpdateDB() {
 		}
 	}
 	catch (CException* e) {
-		ReportErrorAndDeleteException(e);
+		ReportInformationAndDeleteException(e);
 	}
 
 	return true;

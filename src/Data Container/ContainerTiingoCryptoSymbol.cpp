@@ -69,7 +69,7 @@ bool CContainerTiingoCryptoSymbol::UpdateDB() {
 			m_lLastTotalTiingoCrypto = lTotalTiingoCryptoSymbol;
 		}
 		catch (CException* e) {
-			ReportErrorAndDeleteException(e);
+			ReportInformationAndDeleteException(e);
 		}
 	}
 

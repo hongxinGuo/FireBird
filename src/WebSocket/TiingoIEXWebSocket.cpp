@@ -6,6 +6,7 @@
 #include "TiingoIEXWebSocket.h"
 
 #include "TiingoDataSource.h"
+#include "TimeConvert.h"
 
 using namespace std;
 
@@ -60,21 +61,17 @@ CTiingoIEXWebSocket::CTiingoIEXWebSocket() : CVirtualWebSocket() {
 /// </summary>
 /// 
 /// <returns></returns>
-bool CTiingoIEXWebSocket::Connect() {
+void CTiingoIEXWebSocket::Connect() {
 	Connecting(m_url, ProcessTiingoIEXWebSocket);
-
-	return true;
 }
 
-bool CTiingoIEXWebSocket::Send(vectorString vSymbol) {
+void CTiingoIEXWebSocket::Send(vectorString vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
 	SendString(messageAuth);
 
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
-
-	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -140,7 +137,6 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 		if (json js; CreateJsonWithNlohmann(js, *pData)) {
 			int i = 0;
 			string sMessageType;
-			string sDatetime;
 			char chType;
 			string sService;
 			string sType;
@@ -160,7 +156,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				pIEXData->m_chMessageType = chType;
 				switch (chType) {
 				case 'Q': // top-of-book update message
-					sDatetime = jsonGetString(++it);
+					pIEXData->m_sDateTime = jsonGetString(++it);
 					pIEXData->m_iNanoseconds = jsonGetLongLong(++it);
 					pIEXData->m_sSymbol = jsonGetString(++it);
 					pIEXData->m_dBidSize = jsonGetDouble(++it);
@@ -176,7 +172,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 					pIEXData->m_iNMSRule611 = jsonGetInt(++it);
 					break;
 				case 'T': // 'T' last trade message
-					sDatetime = jsonGetString(++it);
+					pIEXData->m_sDateTime = jsonGetString(++it);
 					pIEXData->m_iNanoseconds = jsonGetLongLong(++it);
 					pIEXData->m_sSymbol = jsonGetString(++it);
 					pIEXData->m_dBidSize = jsonGetDouble(++it);
@@ -216,6 +212,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				}
 				break;
 			case 'H': //Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
+				m_HeartbeatTime = GetUTCTime();
 				js3 = jsonGetChild(&js, _T("response"));
 				m_iStatusCode = js3.at(_T("code"));
 				m_statusMessage = js3.at(_T("message"));
