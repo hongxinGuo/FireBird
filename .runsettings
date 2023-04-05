@@ -115,6 +115,25 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CChinaMarket::CreateThreadSaveStockSection</Function>
 	              <Function>CChinaMarket::CreateThreadUpdateOptionDB</Function>
 
+	              <Function>CWorldMarket::CreateThreadUpdateTiingoIndustry</Function>
+								<Function>CWorldMarket::CreateThreadUpdateSICIndustry</Function>
+								<Function>CWorldMarket::CreateThreadUpdateNaicsIndustry</Function>
+								<Function>CWorldMarket::CreateThreadUpdateStockProfileDB</Function>
+								<Function>CWorldMarket::CreateThreadUpdateCompanyNewsDB</Function>
+								<Function>CWorldMarket::CreateThreadUpdateBasicFinancialDB</Function>
+								<Function>CWorldMarket::CreateThreadUpdateCountryListDB</Function>
+								<Function>CWorldMarket::CreateThreadUpdateInsiderTransactionDB</Function>
+								<Function>CWorldMarket::CreateThreadUpdateInsiderSentimentDB</Function>
+								<Function>CWorldMarket::CreateThreadUpdateTiingoStockDB</Function>
+								<Function>CWorldMarket::CreateThreadUpdateTiingoCryptoSymbolDB</Function>
+								<Function>CWorldMarket::CreateThreadUpdateForexExchangeDB</Function>
+								<Function>CWorldMarket::CreateThreadUpdateForexSymbolDB</Function>
+								<Function>CWorldMarket::CreateThreadUpdateCryptoExchangeDB</Function>
+								<Function>CWorldMarket::CreateThreadUpdateFinnhubCryptoSymbolDB</Function>
+								<Function>CWorldMarket::CreateThreadUpdateEconomicCalendarDB</Function>
+								<Function>CWorldMarket::CreateThreadUpdateDayLineDB</Function>
+	              <Function>CWorldMarket::CreateThreadUpdateDayLineStartEndDate</Function>
+
 								<Function>CContainerChinaStock::BuildDayLine</Function>
 	              <Function>CContainerChinaStock::BuildDayLineRS</Function>
 	              <Function>CContainerChinaStock::BuildWeekLine</Function>
@@ -126,7 +145,8 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CContainerChinaStock::DeleteDayLineExtendInfo</Function>
 								<Function>CContainerChinaStock::DeleteTodayTempDB</Function>
 								<Function>CContainerChinaStock::UpdateTodayTempDB</Function>
-	              <Function>CContainerChinaStock::TaskSaveDayLineData</Function>
+								<Function>CContainerChinaStock::TaskSaveDayLineData</Function>
+
 
 								<Function>CMainFrame::ResetMarket</Function>
 	              <Function>CMainFrame::OnCreate</Function>
