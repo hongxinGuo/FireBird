@@ -13,7 +13,7 @@ public:
 	void Update(CSetInsiderSentiment& setInsiderTransaction);
 
 	void Save(CSetInsiderSentiment& setInsiderTransaction);
-	void Load(CSetInsiderSentiment& setInsiderTransaction);
+	void Load(const CSetInsiderSentiment& setInsiderTransaction);
 
 public:
 	CString m_strSymbol;

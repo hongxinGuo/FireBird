@@ -5,7 +5,6 @@
 #include "VirtualMarket.h"
 
 CVirtualMarket::CVirtualMarket() {
-	ASSERT(m_fResetMarketPermission == true); // 允许系统被重置标识，唯独此标识不允许系统重置。初始时设置为真：允许重置系统。
 	m_fResetMarket = true;
 	m_fReadyToRun = true;
 
@@ -17,8 +16,6 @@ CVirtualMarket::CVirtualMarket() {
 
 	m_strMarketId = _T("Warning: CVirtualMarket Called.");
 	m_lMarketTimeZone = -8 * 3600; // 本系统默认标准时间为东八区（北京标准时间）。
-
-	m_lastTimeSchedulingTask = 0;
 }
 
 void CVirtualMarket::SchedulingTask() {
@@ -26,7 +23,6 @@ void CVirtualMarket::SchedulingTask() {
 
 	const long lCurrentMarketTime = GetMarketTime();
 	const time_t tUTC = GetUTCTime();
-	const long lTimeDiffer = tUTC > m_lastTimeSchedulingTask;
 
 	if (lCurrentMarketTime < 100) { // 每日最初的一分钟内。保证每日执行一次
 		RectifyTaskTime(); // 当任务队列中都是明日的时间时，将时间调减24小时
@@ -37,12 +33,6 @@ void CVirtualMarket::SchedulingTask() {
 
 	// 执行本市场各项定时任务
 	ProcessTask(lCurrentMarketTime);
-
-	//根据时间，调度各项定时任务.每秒调度一次
-	if (lTimeDiffer > 0) {
-		SchedulingTaskPerSecond(lTimeDiffer, lCurrentMarketTime);
-		m_lastTimeSchedulingTask = tUTC;
-	}
 }
 
 void CVirtualMarket::CalculateTime() noexcept {
@@ -62,21 +52,6 @@ void CVirtualMarket::RunDataSource(long lCurrentTime) const {
 bool CVirtualMarket::ProcessTask(long) {
 	ASSERT(0);// 每日定时任务调度,由SchedulingTaskPerSecond调度，由各市场定义其各自的任务,不允许调用本基类函数
 	return true;
-}
-
-void CVirtualMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
-	ResetMarketFlagAtMidnight(lCurrentTime);
-}
-
-void CVirtualMarket::ResetMarketFlagAtMidnight(long lCurrentTime) {
-	// 午夜过后重置各种标识
-	if (!HaveResetMarketPermission() && lCurrentTime <= 100) {	// 在零点到零点一分，重置系统标识
-		AddTask(CREATE_TASK__, 1000);
-		m_fResetMarketPermission = true;
-		CString str = m_strMarketId + _T("重置系统重置标识");
-		TRACE(_T("%S \n"), str.GetBuffer());
-		gl_systemMessage.PushInformationMessage(str);
-	}
 }
 
 void CVirtualMarket::ResetMarket() {

@@ -581,7 +581,6 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	const long lTimeMinute = (lCurrentTime / 100) * 100; // 当前小时和分钟
 
 	while (!IsMarketTaskEmpty()) DiscardMarketTask();
-	SetResetMarketPermission(false);
 
 	// 系统初始化检查
 	AddTask(CHINA_MARKET_CHECK_SYSTEM_READY__, 1);
@@ -614,7 +613,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 
 	if (IsWorkingDay()) {
 		// 每五分钟存储一次临时数据
-		AddTask(CHINA_MARKET_SAVE_TEMP_RT_DATA__, 92730); // 开始执行时间为：92730.要确保第一次执行的时间早于93000，这样启动数据库的时间较短，否则容易导致系统崩溃（原因不明）。
+		AddTask(CHINA_MARKET_SAVE_TEMP_RT_DATA__, 93230); // 开始执行时间为：92730.要确保第一次执行的时间早于93000，这样启动数据库的时间较短，否则容易导致系统崩溃（原因不明）。
 		AddTask(CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__, 150700); // 
 	}
 
@@ -627,6 +626,8 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 			AddTask(CHINA_MARKET_VALIDATE_TODAY_DATABASE__, 151000); // 检查今日数据完整性
 		}
 	}
+
+	AddTask(CREATE_TASK__, 240000); // 重启市场任务的任务每日零时时执行
 
 	return true;
 }

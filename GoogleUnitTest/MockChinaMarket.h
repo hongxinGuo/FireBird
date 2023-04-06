@@ -27,6 +27,8 @@ namespace testing {
 		MOCK_METHOD(void, CreateThreadLoadTempRTData, (long lTheDay), (override));
 		MOCK_METHOD(void, CreateThreadUpdateTempRTData, (), (override));
 		MOCK_METHOD(void, CreateThreadUpdateOptionDB, (), (override));
+		MOCK_METHOD(void, CreateThreadSaveStockSection, (), (override));
+		MOCK_METHOD(void, CreateThreadUpdateChoseStockDB, (), (override));
 
 		MOCK_METHOD(void, UpdateOptionDB, (), (override));
 		MOCK_METHOD(void, UpdateStockProfileDB, (), (override));

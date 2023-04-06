@@ -98,6 +98,7 @@ namespace FireBirdTest {
 
 			EXPECT_TRUE(s_pMockChinaMarket->IsSystemReady());
 			EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << s_pMockChinaMarket->GetMarketTask()->GetTime();
+			EXPECT_FALSE(s_pMockChinaMarket->IsUpdateChosenStockDB());
 
 			GeneralCheck();
 		}
@@ -583,5 +584,36 @@ namespace FireBirdTest {
 		// »Ö¸´Ô­×´
 		s_pMockChinaMarket->SetUpdateOptionDB(false);
 		gl_systemMessage.PopInformationMessage();
+	}
+
+	TEST_F(CMockChinaMarketTest, TestTaskUpdateStockSection) {
+		EXPECT_FALSE(s_pMockChinaMarket->IsUpdateStockSection());
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadSaveStockSection).Times(0);
+
+		EXPECT_FALSE(s_pMockChinaMarket->TaskUpdateStockSection());
+
+		s_pMockChinaMarket->SetUpdateStockSection(true);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadSaveStockSection).Times(1);
+
+		EXPECT_TRUE(s_pMockChinaMarket->TaskUpdateStockSection());
+
+		EXPECT_FALSE(s_pMockChinaMarket->IsUpdateStockSection());
+	}
+
+	TEST_F(CMockChinaMarketTest, TestTaskUpdateChosenStockDB) {
+		EXPECT_FALSE(s_pMockChinaMarket->IsUpdateChosenStockDB());
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadUpdateChoseStockDB).Times(0);
+
+		EXPECT_FALSE(s_pMockChinaMarket->TaskUpdateChosenStockDB());
+
+		s_pMockChinaMarket->SetUpdateChosenStockDB(true);
+		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadUpdateChoseStockDB).Times(1);
+
+		EXPECT_TRUE(s_pMockChinaMarket->TaskUpdateChosenStockDB());
+
+		EXPECT_TRUE(s_pMockChinaMarket->IsUpdateChosenStockDB());
+
+		// »Ö¸´Ô­×´
+		s_pMockChinaMarket->SetUpdateChosenStockDB(false);
 	}
 }

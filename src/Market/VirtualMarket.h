@@ -17,7 +17,6 @@ public:
 
 public:
 	void SchedulingTask();
-	void SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
 
 	// 申请并处理Data source的数据，被最终衍生类的SchedulingTask函数来调度。
 	// 此函数在VirtualMarket中定义，但由最终衍生类来调用，因为lCurrentTime必须为该衍生类的当前市场时间。
@@ -79,8 +78,6 @@ public:
 
 	bool IsReadyToRun() const noexcept { return m_fReadyToRun; }
 	void SetReadyToRun(bool fFlag) noexcept { m_fReadyToRun = fFlag; }
-	bool HaveResetMarketPermission() const noexcept { return m_fResetMarketPermission; }
-	void SetResetMarketPermission(bool fFlag) noexcept { m_fResetMarketPermission = fFlag; }
 	bool IsResetMarket() const noexcept { return m_fResetMarket; }
 	void SetResetMarket(bool fFlag) noexcept { m_fResetMarket = fFlag; }
 
@@ -128,9 +125,7 @@ protected:
 	bool m_fSystemReady{false}; // 市场初始态已经设置好.默认为假
 
 private:
-	time_t m_lastTimeSchedulingTask{0};
 	bool m_fReadyToRun{true}; // 市场准备好运行标识。目前永远为真。
-	bool m_fResetMarketPermission{true}; // 允许重置系统（如果不停机多日运行的话，需要每日重置系统）初始值必须为真。
 	bool m_fResetMarket{true}; // 重启系统标识
 };
 

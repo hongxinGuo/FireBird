@@ -1,4 +1,3 @@
-// ReSharper disable All
 #include"pch.h"
 
 #include "WorldMarket.h"
@@ -161,7 +160,6 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 	const long lTimeMinute = (lCurrentTime / 100) * 100; // 当前小时和分钟
 
 	while (!IsMarketTaskEmpty()) DiscardMarketTask();
-	SetResetMarketPermission(false);
 
 	// 系统初始化检查
 	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, 1);
@@ -175,6 +173,8 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lCurrentTime);
 	AddTask(WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__, lCurrentTime);
+
+	AddTask(CREATE_TASK__, 240000); // 重启市场任务的任务每日的零时时执行
 }
 
 void CWorldMarket::TaskProcessWebSocketData(long lCurrentTime) {
@@ -240,7 +240,7 @@ bool CWorldMarket::UpdateForexDayLineDB() {
 	CString str;
 	bool fUpdated = false;
 	CForexSymbolPtr pSymbol = nullptr;
-	size_t symbolSize = m_dataFinnhubForexSymbol.Size();
+	const size_t symbolSize = m_dataFinnhubForexSymbol.Size();
 
 	for (int i = 0; i < symbolSize; i++) {
 		if (gl_systemStatus.IsExitingSystem()) {
@@ -284,7 +284,7 @@ bool CWorldMarket::UpdateCryptoDayLineDB() {
 	CString str;
 	bool fUpdated = false;
 	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
-	size_t symbolSize = m_dataFinnhubCryptoSymbol.Size();
+	const size_t symbolSize = m_dataFinnhubCryptoSymbol.Size();
 
 	for (int i = 0; i < symbolSize; ++i) {
 		if (gl_systemStatus.IsExitingSystem()) {
@@ -321,7 +321,7 @@ bool CWorldMarket::UpdateCryptoDayLineDB() {
 
 bool CWorldMarket::UpdateEPSSurpriseDB() {
 	CString str;
-	size_t stockSize = m_containerStock.Size();
+	const size_t stockSize = m_containerStock.Size();
 
 	CWorldStockPtr pStock = nullptr;
 	for (long l = 0; l < stockSize; ++l) {

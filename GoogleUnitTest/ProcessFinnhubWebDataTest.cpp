@@ -5,9 +5,7 @@
 #include"WebData.h"
 
 #include"FinnhubWebSocket.h"
-
-#include<memory>
-using std::make_shared;
+#include "TimeConvert.h"
 
 using namespace testing;
 
@@ -115,6 +113,7 @@ namespace FireBirdTest {
 			break;
 		case 2: // ping
 			EXPECT_TRUE(fSucceed);
+			EXPECT_EQ(m_finnhubWebSocket.GetHeartbeatTime(), GetUTCTime());
 			break;
 		case 3: // json∏Ò Ω¥ÌŒÛ
 			EXPECT_FALSE(fSucceed);

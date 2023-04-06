@@ -1,7 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 尝试将ixWebSocket变量封装于此类中。
-// 牵涉太多，不容易封装。
 // 此类负责ixWebSocket的初始化。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -34,7 +33,7 @@ public:
 
 	virtual void CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) { ASSERT(false); } // 继承类必须实现各自的功能
 
-	bool IsSymbol(string sSymbol);
+	bool IsSymbol(string sSymbol) const;
 	void AppendSymbol(vectorString vSymbol);
 	bool AddSymbol(const string& sSymbol);
 	bool DeleteSymbol(const string& sSymbol);

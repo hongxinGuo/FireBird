@@ -7,11 +7,9 @@
 
 #include <ixwebsocket/IXWebSocket.h>
 
-#include<thread>
-#include<memory>
-
 #include "FinnhubDataSource.h"
 #include "TimeConvert.h"
+
 using std::thread;
 using std::make_shared;
 

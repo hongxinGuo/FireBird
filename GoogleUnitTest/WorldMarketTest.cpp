@@ -891,4 +891,46 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestUpdateNaicsIndustry) {
 		EXPECT_THAT(gl_pWorldMarket->UpdateNaicsIndustry(), IsFalse());
 	}
+
+	TEST_F(CWorldMarketTest, TestTaskResetMarket1) {
+		EXPECT_TRUE(gl_pWorldMarket->IsResetMarket());
+		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
+		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
+
+		gl_pWorldMarket->TaskResetMarket(1000);
+
+		EXPECT_TRUE(gl_pWorldMarket->IsResetMarket());
+		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
+		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());
+		const auto pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CHECK_SYSTEM_READY__);
+		EXPECT_EQ(pTask->GetTime(), 1000);
+		gl_pWorldMarket->DiscardMarketTask();
+
+		// »Ö¸´Ô­×´
+		gl_pWorldMarket->SetResetMarket(true);
+		gl_pWorldMarket->SetSystemReady(true);
+	}
+
+	TEST_F(CWorldMarketTest, TestTaskResetMarket2) {
+		EXPECT_TRUE(gl_pWorldMarket->IsResetMarket());
+		gl_pWorldMarket->SetResetMarket(false);
+		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
+		gl_pWorldMarket->SetSystemReady(false);
+		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
+
+		gl_pWorldMarket->TaskResetMarket(1000);
+
+		EXPECT_TRUE(gl_pWorldMarket->IsResetMarket());
+		EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
+		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());
+		const auto pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CHECK_SYSTEM_READY__);
+		EXPECT_EQ(pTask->GetTime(), 1000);
+		gl_pWorldMarket->DiscardMarketTask();
+
+		// »Ö¸´Ô­×´
+		gl_pWorldMarket->SetResetMarket(true);
+		gl_pWorldMarket->SetSystemReady(true);
+	}
 }

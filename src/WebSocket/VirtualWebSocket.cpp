@@ -48,7 +48,7 @@ bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vectorString vSymbol) {
 	return true;
 }
 
-bool CVirtualWebSocket::IsSymbol(string sSymbol) {
+bool CVirtualWebSocket::IsSymbol(string sSymbol) const {
 	if (!m_mapSymbol.contains(sSymbol)) {	// ÐÂ·ûºÅ£¿
 		return false;
 	}

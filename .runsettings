@@ -132,7 +132,21 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CWorldMarket::CreateThreadUpdateFinnhubCryptoSymbolDB</Function>
 								<Function>CWorldMarket::CreateThreadUpdateEconomicCalendarDB</Function>
 								<Function>CWorldMarket::CreateThreadUpdateDayLineDB</Function>
-	              <Function>CWorldMarket::CreateThreadUpdateDayLineStartEndDate</Function>
+								<Function>CWorldMarket::CreateThreadUpdateDayLineStartEndDate</Function>
+
+	              <Function>CWorldMarket::StartFinnhubWebSocket</Function>
+								<Function>CWorldMarket::StartTiingoIEXWebSocket</Function>
+								<Function>CWorldMarket::StartTiingoCryptoWebSocket</Function>
+								<Function>CWorldMarket::StartTiingoForexWebSocket</Function>
+								<Function>CWorldMarket::StopFinnhubWebSocketIfTimeOut</Function>
+								<Function>CWorldMarket::StopTiingoIEXWebSocketIfTimeOut</Function>
+								<Function>CWorldMarket::StopTiingoCryptoWebSocketIfTimeOut</Function>
+	              <Function>CWorldMarket::StopTiingoForexWebSocketIfTimeOut</Function>
+								<Function>CWorldMarket::ProcessWebSocketData</Function>
+	              <Function>CWorldMarket::ProcessFinnhubWebSocketData</Function>
+								<Function>CWorldMarket::ProcessTiingoIEXWebSocketData</Function>
+								<Function>CWorldMarket::ProcessTiingoCryptoWebSocketData</Function>
+	              <Function>CWorldMarket::ProcessTiingoForexWebSocketData</Function>
 
 								<Function>CContainerChinaStock::BuildDayLine</Function>
 	              <Function>CContainerChinaStock::BuildDayLineRS</Function>

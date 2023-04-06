@@ -28,7 +28,7 @@ void CInsiderSentiment::Save(CSetInsiderSentiment& setInsiderSentiment) {
 	setInsiderSentiment.m_mspr = m_mspr;
 }
 
-void CInsiderSentiment::Load(CSetInsiderSentiment& setInsiderSentiment) {
+void CInsiderSentiment::Load(const CSetInsiderSentiment& setInsiderSentiment) {
 	m_strSymbol = setInsiderSentiment.m_Symbol;
 	m_lDate = setInsiderSentiment.m_Date;
 	m_lChange = setInsiderSentiment.m_Change;

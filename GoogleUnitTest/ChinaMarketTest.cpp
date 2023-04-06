@@ -73,7 +73,6 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetSinaStockRTDataInquiringIndex(0);
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);
 			gl_pChinaMarket->SetSystemReady(true); // 测试市场时，默认系统已经准备好
-			gl_pChinaMarket->SetResetMarketPermission(true);
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "测试数据库中的股票代码总数为5040";
@@ -88,7 +87,6 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetSinaStockRTDataInquiringIndex(0);
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
-			gl_pChinaMarket->SetResetMarketPermission(true);
 			gl_pChinaMarket->SetUpdateOptionDB(false);
 			gl_pChinaMarket->SetSystemReady(true); // 离开此测试时，默认系统已准备好。
 			EXPECT_TRUE(gl_pChinaMarket->IsCheckingActiveStock());
@@ -137,7 +135,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(pStock->GetSymbol(), _T("000001.SS"));
 		EXPECT_EQ(gl_pChinaMarket->GetStockOffset(_T("000001.SS")), 0);
 
-		EXPECT_TRUE(gl_pChinaMarket->HaveResetMarketPermission());
 		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedSaveNumber(), 0);
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataReceiver());
 		EXPECT_TRUE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
@@ -222,7 +219,7 @@ namespace FireBirdTest {
 			pTask = gl_pChinaMarket->GetMarketTask();
 			gl_pChinaMarket->DiscardMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
-			EXPECT_EQ(pTask->GetTime(), 92730);
+			EXPECT_EQ(pTask->GetTime(), 93230);
 		}
 
 		pTask = gl_pChinaMarket->GetMarketTask();
@@ -241,6 +238,11 @@ namespace FireBirdTest {
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__);
 			EXPECT_EQ(pTask->GetTime(), 150700);
 		}
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CREATE_TASK__);
+		EXPECT_EQ(pTask->GetTime(), 240000);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 	}
@@ -289,7 +291,7 @@ namespace FireBirdTest {
 			pTask = gl_pChinaMarket->GetMarketTask();
 			gl_pChinaMarket->DiscardMarketTask();
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
-			EXPECT_EQ(pTask->GetTime(), 92730);
+			EXPECT_EQ(pTask->GetTime(), 93230);
 		}
 
 		pTask = gl_pChinaMarket->GetMarketTask();
@@ -308,6 +310,11 @@ namespace FireBirdTest {
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__);
 			EXPECT_EQ(pTask->GetTime(), 150700);
 		}
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CREATE_TASK__);
+		EXPECT_EQ(pTask->GetTime(), 240000);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 	}
@@ -334,17 +341,17 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_LOAD_TEMP_RT_DATA__);
 		EXPECT_EQ(pTask->GetTime(), 92700);
 
-		if (gl_pChinaMarket->IsWorkingDay()) {
-			pTask = gl_pChinaMarket->GetMarketTask();
-			gl_pChinaMarket->DiscardMarketTask();
-			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
-			EXPECT_EQ(pTask->GetTime(), 92730);
-		}
-
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_ACCESSORY_TASK__);
 		EXPECT_EQ(pTask->GetTime(), 93100);
+
+		if (gl_pChinaMarket->IsWorkingDay()) {
+			pTask = gl_pChinaMarket->GetMarketTask();
+			gl_pChinaMarket->DiscardMarketTask();
+			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
+			EXPECT_EQ(pTask->GetTime(), 93230);
+		}
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardMarketTask();
@@ -372,6 +379,11 @@ namespace FireBirdTest {
 			EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__);
 			EXPECT_EQ(pTask->GetTime(), 150700);
 		}
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CREATE_TASK__);
+		EXPECT_EQ(pTask->GetTime(), 240000);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 	}
@@ -411,7 +423,7 @@ namespace FireBirdTest {
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_SAVE_TEMP_RT_DATA__);
-		EXPECT_EQ(pTask->GetTime(), 92730);
+		EXPECT_EQ(pTask->GetTime(), 93230);
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardMarketTask();
@@ -442,6 +454,11 @@ namespace FireBirdTest {
 		gl_pChinaMarket->DiscardMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__);
 		EXPECT_EQ(pTask->GetTime(), 151010);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CREATE_TASK__);
+		EXPECT_EQ(pTask->GetTime(), 240000);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
 	}
@@ -495,6 +512,11 @@ namespace FireBirdTest {
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CREATE_TASK__);
+		EXPECT_EQ(pTask->GetTime(), 240000);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
 	}

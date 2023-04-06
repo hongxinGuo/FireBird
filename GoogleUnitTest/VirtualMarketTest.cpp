@@ -19,7 +19,6 @@ namespace FireBirdTest {
 
 		void SetUp() override {
 			GeneralCheck();
-			virtualMarket.SetResetMarketPermission(true);
 			virtualMarket.SetReadyToRun(true);
 			virtualMarket.SetResetMarket(true);
 		}
@@ -155,14 +154,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(virtualMarket.IsReadyToRun());
 		virtualMarket.SetReadyToRun(true);
 		EXPECT_TRUE(virtualMarket.IsReadyToRun());
-	}
-
-	TEST_F(CVirtualMarketTest, TestIsPermitResetMarket) {
-		EXPECT_TRUE(virtualMarket.HaveResetMarketPermission()) << "PermitResetMarket should be true\n";
-		virtualMarket.SetResetMarketPermission(false);
-		EXPECT_FALSE(virtualMarket.HaveResetMarketPermission());
-		virtualMarket.SetResetMarketPermission(true);
-		EXPECT_TRUE(virtualMarket.HaveResetMarketPermission());
 	}
 
 	TEST_F(CVirtualMarketTest, TestMarketReady) {
@@ -421,23 +412,6 @@ namespace FireBirdTest {
 
 		virtualMarket.CalculateTime();
 		EXPECT_EQ(virtualMarket.GetDayOfWeek(), tm_.tm_wday);
-	}
-
-	TEST_F(CVirtualMarketTest, TestTaskResetMarketFlagAtMidnight) {
-		// 这个其实是测试的CVirtualMarket类中的函数。
-		EXPECT_TRUE(virtualMarket.HaveResetMarketPermission());
-		virtualMarket.SetResetMarketPermission(false);
-		virtualMarket.ResetMarketFlagAtMidnight(0);
-		EXPECT_TRUE(virtualMarket.HaveResetMarketPermission());
-		virtualMarket.SetResetMarketPermission(false);
-		virtualMarket.ResetMarketFlagAtMidnight(101);
-		EXPECT_FALSE(virtualMarket.HaveResetMarketPermission());
-		virtualMarket.ResetMarketFlagAtMidnight(100);
-		EXPECT_TRUE(virtualMarket.HaveResetMarketPermission());
-
-		EXPECT_THAT(gl_systemMessage.InformationSize(), 2);
-		gl_systemMessage.PopInformationMessage();
-		gl_systemMessage.PopInformationMessage();
 	}
 
 	TEST_F(CVirtualMarketTest, TestUpdateMarketInfo) {
