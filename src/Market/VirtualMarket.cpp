@@ -22,7 +22,6 @@ void CVirtualMarket::SchedulingTask() {
 	CalculateTime();
 
 	const long lCurrentMarketTime = GetMarketTime();
-	const time_t tUTC = GetUTCTime();
 
 	if (lCurrentMarketTime < 100) { // 每日最初的一分钟内。保证每日执行一次
 		RectifyTaskTime(); // 当任务队列中都是明日的时间时，将时间调减24小时

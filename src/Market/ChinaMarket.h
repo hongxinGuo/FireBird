@@ -128,7 +128,7 @@ public:
 
 	static long IncreaseStockInquiringIndex(long& lIndex, long lEndPosition);
 
-	bool IsAStock(const not_null<CChinaStockPtr> pStock) const { return m_containerChinaStock.IsAStock(pStock->GetSymbol()); } // 是否为沪深A股
+	bool IsAStock(const not_null<CChinaStockPtr>& pStock) const { return m_containerChinaStock.IsAStock(pStock->GetSymbol()); } // 是否为沪深A股
 	bool IsAStock(const CString& strStockCode) const { return m_containerChinaStock.IsAStock(strStockCode); } // 是否为沪深A股
 	bool IsStock(const CString& strStockCode) const { return m_containerChinaStock.IsSymbol(strStockCode); } // 是否为正确的股票代码
 
@@ -137,7 +137,7 @@ public:
 	// 得到股票指针
 	CChinaStockPtr GetStock(const CString& strStockCode) { return m_containerChinaStock.GetStock(strStockCode); }
 	CChinaStockPtr GetStock(const size_t lIndex) { return m_containerChinaStock.GetStock(lIndex); }
-	size_t GetStockIndex(const CChinaStockPtr pStock) const { return m_containerChinaStock.GetOffset(pStock->GetSymbol()); }
+	size_t GetStockIndex(const not_null<CChinaStockPtr>& pStock) const { return m_containerChinaStock.GetOffset(pStock->GetSymbol()); }
 
 	// 得到当前显示股票
 	CChinaStockPtr GetCurrentStock() const noexcept { return m_pCurrentStock; }
@@ -294,16 +294,16 @@ public:
 	void SetCurrentEditStockChanged(const bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
 
 	size_t SinaRTSize() noexcept { return m_qSinaRT.Size(); }
-	void PushSinaRT(const CWebRTDataPtr pData) noexcept { m_qSinaRT.PushData(pData); }
+	void PushSinaRT(const not_null<CWebRTDataPtr>& pData) noexcept { m_qSinaRT.PushData(pData); }
 	CWebRTDataPtr PopSinaRT() { return m_qSinaRT.PopData(); }
 	size_t NeteaseRTSize() noexcept { return m_qNeteaseRT.Size(); }
-	void PushNeteaseRT(const CWebRTDataPtr pData) noexcept { m_qNeteaseRT.PushData(pData); }
+	void PushNeteaseRT(const not_null<CWebRTDataPtr>& pData) noexcept { m_qNeteaseRT.PushData(pData); }
 	CWebRTDataPtr PopNeteaseRT() { return m_qNeteaseRT.PopData(); }
 	size_t TengxunRTSize() noexcept { return m_qTengxunRT.Size(); }
-	void PushTengxunRT(const CWebRTDataPtr pData) noexcept { m_qTengxunRT.PushData(pData); }
+	void PushTengxunRT(const not_null<CWebRTDataPtr>& pData) noexcept { m_qTengxunRT.PushData(pData); }
 	CWebRTDataPtr PopTengxunRT() { return m_qTengxunRT.PopData(); }
 	size_t DayLineQueueSize() noexcept { return m_qDayLine.Size(); }
-	void PushDayLine(const CDayLineWebDataPtr pData) noexcept { m_qDayLine.PushData(pData); }
+	void PushDayLine(const not_null<CDayLineWebDataPtr>& pData) noexcept { m_qDayLine.PushData(pData); }
 	CDayLineWebDataPtr PopDayLine() { return m_qDayLine.PopData(); }
 
 	// 实时数据需要计算与否和设置
@@ -359,8 +359,8 @@ public:
 	void SetUpdateStockSection(const bool fFlag) noexcept { m_containerStockSymbol.SetUpdateStockSection(fFlag); }
 	bool IsUpdateStockSection() const noexcept { return m_containerStockSymbol.IsUpdateStockSection(); }
 
-	bool AddStock(CChinaStockPtr pStock) { return m_containerChinaStock.Add(pStock); }
-	bool DeleteStock(CChinaStockPtr pStock) { return m_containerChinaStock.Delete(pStock); }
+	bool AddStock(const CChinaStockPtr& pStock) { return m_containerChinaStock.Add(pStock); }
+	bool DeleteStock(const CChinaStockPtr& pStock) { return m_containerChinaStock.Delete(pStock); }
 	bool CreateStock(CString strStockCode, CString strStockName, bool fProcessRTData);
 
 	void SetCurrentRSStrongIndex(const long lIndex) noexcept { m_lCurrentRSStrongIndex = lIndex; }

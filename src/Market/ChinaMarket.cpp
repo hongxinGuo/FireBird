@@ -516,7 +516,6 @@ void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
 bool CChinaMarket::ProcessTask(long lCurrentTime) {
 	if (IsMarketTaskEmpty()) return false;
 	const auto pTask = GetMarketTask();
-	ASSERT(pTask->GetTime() < 240000);
 	if (lCurrentTime >= pTask->GetTime()) {
 		DiscardMarketTask();
 		switch (pTask->GetType()) {
@@ -627,7 +626,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 		}
 	}
 
-	AddTask(CREATE_TASK__, 240000); // 重启市场任务的任务每日零时时执行
+	AddTask(CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 
 	return true;
 }

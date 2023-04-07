@@ -28,7 +28,7 @@ vector<CMarketTaskPtr> CMarketTaskQueue::GetTaskVector() {
 }
 
 void CMarketTaskQueue::CreateIndexMap() {
-	gl_mapMarketMapIndex[CREATE_TASK__] = _T("生成各项任务");
+	gl_mapMarketMapIndex[CREATE_TASK__] = _T("重新生成本市场各项任务");
 
 	gl_mapMarketMapIndex[CHINA_MARKET_CHECK_SYSTEM_READY__] = "系统初始化检查";
 	gl_mapMarketMapIndex[CHINA_MARKET_RESET__] = "重置系统";

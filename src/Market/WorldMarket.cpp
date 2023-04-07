@@ -124,7 +124,6 @@ void CWorldMarket::PreparingExitMarket() {
 bool CWorldMarket::ProcessTask(long lCurrentTime) {
 	if (IsMarketTaskEmpty()) return false;
 	const auto pTask = GetMarketTask();
-	ASSERT(pTask->GetTime() < 240000);
 	if (lCurrentTime >= pTask->GetTime()) {
 		DiscardMarketTask();
 		switch (pTask->GetType()) {
@@ -174,7 +173,7 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lCurrentTime);
 	AddTask(WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__, lCurrentTime);
 
-	AddTask(CREATE_TASK__, 240000); // 重启市场任务的任务每日的零时时执行
+	AddTask(CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
 
 void CWorldMarket::TaskProcessWebSocketData(long lCurrentTime) {
@@ -643,10 +642,10 @@ vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector() {
 //
 // Tiingo对免费账户的流量限制，为500次/小时， 20000次/天， 5GB/月。
 //
-// thresholdlevel 0接收所有的IEX数据时，每秒数据量为1M-9M;thresholdlevel5接收所有IEX数据时，每秒数据量为10-50K。
+// thresholdLevel 0接收所有的IEX数据时，每秒数据量为1M-9M;thresholdLevel5接收所有IEX数据时，每秒数据量为10-50K。
 //
-// thresholdlevel 5：all Last Trade updates and only Quote updates that are deemed major updates by our system.
-// thresholdlevel 0: ALL Top-of-Book AND Last Trade updates.
+// thresholdLevel 5：all Last Trade updates and only Quote updates that are deemed major updates by our system.
+// thresholdLevel 0: ALL Top-of-Book AND Last Trade updates.
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 vectorString CWorldMarket::GetTiingoIEXWebSocketSymbolVector() {
@@ -749,7 +748,7 @@ void CWorldMarket::DisconnectAllWebSocket() {
 /// <summary>
 /// 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
 /// </summary>
-void CWorldMarket::StopWebSocketsIfTimeOut() {
+void CWorldMarket::StopWebSocketsIfTimeOut() const {
 	if (IsSystemReady()) {
 		StopFinnhubWebSocketIfTimeOut();
 		StopTiingoIEXWebSocketIfTimeOut();
@@ -883,7 +882,7 @@ void CWorldMarket::UpdateWorldStockFromWebSocket() {
 	}
 }
 
-void CWorldMarket::UpdateWorldStockFromTiingoIEXSocket(CTiingoIEXSocketPtr pTiingoIEXbData) {
+void CWorldMarket::UpdateWorldStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr& pTiingoIEXbData) {
 	if (IsStock(pTiingoIEXbData->m_sSymbol.c_str())) {
 		const CWorldStockPtr pStock = GetStock(pTiingoIEXbData->m_sSymbol.c_str());
 		pStock->SetActive(true);
@@ -901,7 +900,7 @@ void CWorldMarket::UpdateWorldStockFromTiingoIEXSocket(CTiingoIEXSocketPtr pTiin
 	}
 }
 
-void CWorldMarket::UpdateWorldStockFromFinnhubSocket(CFinnhubSocketPtr pFinnhubData) {
+void CWorldMarket::UpdateWorldStockFromFinnhubSocket(const CFinnhubSocketPtr& pFinnhubData) {
 	if (IsStock(pFinnhubData->m_sSymbol.c_str())) {
 		const CWorldStockPtr pStock = GetStock(pFinnhubData->m_sSymbol.c_str());
 		pStock->SetActive(true);

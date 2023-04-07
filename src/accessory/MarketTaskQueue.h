@@ -10,7 +10,7 @@ public:
 	CMarketTaskQueue();
 	~CMarketTaskQueue() = default;
 
-	void AddTask(CMarketTaskPtr pTask) { m_vMarketTask.push(pTask); }
+	void AddTask(const CMarketTaskPtr& pTask) { m_vMarketTask.push(pTask); }
 	void AddTask(long lTaskType, long lExecuteTime);
 	CMarketTaskPtr GetTask() const { return m_vMarketTask.top(); }
 	void DiscardTask() { m_vMarketTask.pop(); }
@@ -24,7 +24,7 @@ public:
 	vector<CMarketTaskPtr> GetTaskVector();
 
 protected:
-	void CreateIndexMap();
+	static void CreateIndexMap();
 
 protected:
 	// 需要定义下述结构，结构中重载（）运算符，定义如何确定指针的大小（按时间顺序从小到大排列,相同时间的按先后放入的顺序排列）。

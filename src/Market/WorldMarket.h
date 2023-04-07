@@ -46,8 +46,8 @@ public:
 
 	void Reset();
 	void ResetFinnhub();
-	void ResetQuandl();
-	void ResetTiingo();
+	static void ResetQuandl();
+	static void ResetTiingo();
 	void ResetDataClass();
 
 	bool IsTimeToResetSystem(long lCurrentTime) final {
@@ -90,7 +90,7 @@ public:
 
 	void ClearEconomicCalendar() { m_dataFinnhubEconomicCalendar.Reset(); }
 
-	bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar) { return m_dataFinnhubEconomicCalendar.Update(vEconomicCalendar); }
+	bool UpdateEconomicCalendar(const vector<CEconomicCalendarPtr>& vEconomicCalendar) { return m_dataFinnhubEconomicCalendar.Update(vEconomicCalendar); }
 
 	// 各种状态
 	CFinnhubStockExchangePtr GetStockExchange(const long lIndex) const { return m_dataFinnhubStockExchange.GetExchange(lIndex); }
@@ -99,17 +99,17 @@ public:
 
 	bool IsUpdateStockProfileDB() { return m_containerStock.IsUpdateProfileDB(); }
 
-	bool AddStock(const CWorldStockPtr pStock) { return m_containerStock.Add(pStock); }
-	bool DeleteStock(const CWorldStockPtr pStock) { return m_containerStock.Delete(pStock); }
+	bool AddStock(const CWorldStockPtr& pStock) { return m_containerStock.Add(pStock); }
+	bool DeleteStock(const CWorldStockPtr& pStock) { return m_containerStock.Delete(pStock); }
 	size_t GetStockSize() const noexcept { return m_containerStock.Size(); }
-	void AddTiingoStock(const CTiingoStockPtr pTiingoStock) { m_dataTiingoStock.Add(pTiingoStock); }
-	bool DeleteTiingoStock(const CTiingoStockPtr pStock) { return m_dataTiingoStock.Delete(pStock); }
+	void AddTiingoStock(const CTiingoStockPtr& pTiingoStock) { m_dataTiingoStock.Add(pTiingoStock); }
+	bool DeleteTiingoStock(const CTiingoStockPtr& pStock) { return m_dataTiingoStock.Delete(pStock); }
 	size_t GetTotalTiingoStock() const noexcept { return m_dataTiingoStock.GetTotalStock(); }
-	bool IsStock(const CString strSymbol) const { return m_containerStock.IsSymbol(strSymbol); }
-	bool IsStock(const CWorldStockPtr pStock) const { return IsStock(pStock->GetSymbol()); }
+	bool IsStock(const CString& strSymbol) const { return m_containerStock.IsSymbol(strSymbol); }
+	bool IsStock(const CWorldStockPtr& pStock) const { return IsStock(pStock->GetSymbol()); }
 	CWorldStockPtr GetStock(const size_t lIndex) { return m_containerStock.GetStock(lIndex); }
-	CWorldStockPtr GetStock(const CString strSymbol) { return m_containerStock.GetStock(strSymbol); }
-	size_t GetStockIndex(const CString strSymbol) const { return m_containerStock.GetOffset(strSymbol); }
+	CWorldStockPtr GetStock(const CString& strSymbol) { return m_containerStock.GetStock(strSymbol); }
+	size_t GetStockIndex(const CString& strSymbol) const { return m_containerStock.GetOffset(strSymbol); }
 	void SortStock() { m_containerStock.Sort(); }
 
 	bool IsUpdateCompanyNewsDB() { return m_containerStock.IsUpdateCompanyNewsDB(); }
@@ -118,25 +118,25 @@ public:
 	CWorldStockPtr GetChosenStock(const long lIndex) { return m_containerChosenStock.GetStock(lIndex); }
 	size_t GetChosenStockSize() const noexcept { return m_containerChosenStock.Size(); }
 
-	bool IsTiingoStock(const CString strSymbol) const { return m_dataTiingoStock.IsStock(strSymbol); }
-	bool IsTiingoStock(const CWorldStockPtr pStock) const { return m_dataTiingoStock.IsStock(pStock); }
-	bool IsTiingoStock(const CTiingoStockPtr pTiingoStock) const { return m_dataTiingoStock.IsStock(pTiingoStock); }
+	bool IsTiingoStock(const CString& strSymbol) const { return m_dataTiingoStock.IsStock(strSymbol); }
+	bool IsTiingoStock(const CWorldStockPtr& pStock) const { return m_dataTiingoStock.IsStock(pStock); }
+	bool IsTiingoStock(const CTiingoStockPtr& pTiingoStock) const { return m_dataTiingoStock.IsStock(pTiingoStock); }
 	CTiingoStockPtr GetTiingoStock(const size_t lIndex) const { return m_dataTiingoStock.GetStock(lIndex); }
-	CTiingoStockPtr GetTiingoStock(const CString strTicker) const { return m_dataTiingoStock.GetStock(strTicker); }
+	CTiingoStockPtr GetTiingoStock(const CString& strTicker) const { return m_dataTiingoStock.GetStock(strTicker); }
 
-	bool IsForexExchange(const CString strForexExchange) const { return m_dataFinnhubForexExchange.IsForexExchange(strForexExchange); }
+	bool IsForexExchange(const CString& strForexExchange) const { return m_dataFinnhubForexExchange.IsForexExchange(strForexExchange); }
 
-	void AddForexExchange(const CString strForexExchange) { m_dataFinnhubForexExchange.Add(strForexExchange); }
-	bool DeleteForexExchange(const CString strForexExchange) { return m_dataFinnhubForexExchange.Delete(strForexExchange); }
+	void AddForexExchange(const CString& strForexExchange) { m_dataFinnhubForexExchange.Add(strForexExchange); }
+	bool DeleteForexExchange(const CString& strForexExchange) { return m_dataFinnhubForexExchange.Delete(strForexExchange); }
 	size_t GetForexExchangeSize() const noexcept { return m_dataFinnhubForexExchange.GetForexExchangeSize(); }
 	CString GetForexExchange(const size_t lIndex) const { return m_dataFinnhubForexExchange.GetForexExchange(lIndex); }
 
-	bool IsForexSymbol(const CString strForexSymbol) const { return m_dataFinnhubForexSymbol.IsSymbol(strForexSymbol); }
-	bool IsForexSymbol(const CForexSymbolPtr pForexSymbol) const { return IsForexSymbol(pForexSymbol->GetSymbol()); }
-	void AddForexSymbol(const CForexSymbolPtr pForexSymbol) { m_dataFinnhubForexSymbol.Add(pForexSymbol); }
-	bool DeleteForexSymbol(const CForexSymbolPtr pForexSymbol) { return m_dataFinnhubForexSymbol.Delete(pForexSymbol); }
+	bool IsForexSymbol(const CString& strForexSymbol) const { return m_dataFinnhubForexSymbol.IsSymbol(strForexSymbol); }
+	bool IsForexSymbol(const CForexSymbolPtr& pForexSymbol) const { return IsForexSymbol(pForexSymbol->GetSymbol()); }
+	void AddForexSymbol(const CForexSymbolPtr& pForexSymbol) { m_dataFinnhubForexSymbol.Add(pForexSymbol); }
+	bool DeleteForexSymbol(const CForexSymbolPtr& pForexSymbol) { return m_dataFinnhubForexSymbol.Delete(pForexSymbol); }
 	CForexSymbolPtr GetForexSymbol(const size_t lIndex) { return m_dataFinnhubForexSymbol.GetSymbol(lIndex); }
-	CForexSymbolPtr GetForexSymbol(CString strSymbol) { return m_dataFinnhubForexSymbol.GetSymbol(strSymbol); }
+	CForexSymbolPtr GetForexSymbol(const CString& strSymbol) { return m_dataFinnhubForexSymbol.GetSymbol(strSymbol); }
 	size_t GetForexSymbolSize() const noexcept { return m_dataFinnhubForexSymbol.Size(); }
 
 	bool IsCryptoExchange(CString strCryptoExchange) const { return m_dataFinnhubCryptoExchange.IsCryptoExchange(strCryptoExchange.GetBuffer()); }
@@ -146,31 +146,31 @@ public:
 	size_t GetCryptoExchangeSize() const noexcept { return m_dataFinnhubCryptoExchange.GetCryptoExchangeSize(); }
 	CString GetCryptoExchange(const size_t lIndex) const { return m_dataFinnhubCryptoExchange.GetCryptoExchange(lIndex).c_str(); }
 
-	bool IsFinnhubCryptoSymbol(const CString strSymbol) const { return m_dataFinnhubCryptoSymbol.IsSymbol(strSymbol); }
-	bool IsFinnhubCryptoSymbol(CFinnhubCryptoSymbolPtr pCryptoSymbol) const { return IsFinnhubCryptoSymbol(pCryptoSymbol->GetSymbol()); }
-	void AddFinnhubCryptoSymbol(CFinnhubCryptoSymbolPtr pCryptoSymbol) { m_dataFinnhubCryptoSymbol.Add(pCryptoSymbol); }
-	bool DeleteFinnhubCryptoSymbol(const CFinnhubCryptoSymbolPtr pCryptoSymbol) { return m_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); }
+	bool IsFinnhubCryptoSymbol(const CString& strSymbol) const { return m_dataFinnhubCryptoSymbol.IsSymbol(strSymbol); }
+	bool IsFinnhubCryptoSymbol(const CFinnhubCryptoSymbolPtr& pCryptoSymbol) const { return IsFinnhubCryptoSymbol(pCryptoSymbol->GetSymbol()); }
+	void AddFinnhubCryptoSymbol(const CFinnhubCryptoSymbolPtr& pCryptoSymbol) { m_dataFinnhubCryptoSymbol.Add(pCryptoSymbol); }
+	bool DeleteFinnhubCryptoSymbol(const CFinnhubCryptoSymbolPtr& pCryptoSymbol) { return m_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); }
 	CFinnhubCryptoSymbolPtr GetFinnhubCryptoSymbol(const size_t lIndex) { return m_dataFinnhubCryptoSymbol.GetSymbol(lIndex); }
-	CFinnhubCryptoSymbolPtr GetFinnhubCryptoSymbol(CString strSymbol) { return m_dataFinnhubCryptoSymbol.GetSymbol(strSymbol); }
+	CFinnhubCryptoSymbolPtr GetFinnhubCryptoSymbol(const CString& strSymbol) { return m_dataFinnhubCryptoSymbol.GetSymbol(strSymbol); }
 	size_t GetFinnhubCryptoSymbolSize() const noexcept { return m_dataFinnhubCryptoSymbol.Size(); }
 
-	bool IsTiingoCryptoSymbol(const CString strSymbol) const { return m_dataTiingoCryptoSymbol.IsTiingoCryptoSymbol(strSymbol); }
-	bool IsTiingoCryptoSymbol(CTiingoCryptoSymbolPtr pCryptoSymbol) const { return IsTiingoCryptoSymbol(pCryptoSymbol->m_strTicker); }
-	void AddTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr pCryptoSymbol) { m_dataTiingoCryptoSymbol.Add(pCryptoSymbol); }
-	bool DeleteTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr pCryptoSymbol) { return m_dataTiingoCryptoSymbol.Delete(pCryptoSymbol); }
+	bool IsTiingoCryptoSymbol(const CString& strSymbol) const { return m_dataTiingoCryptoSymbol.IsTiingoCryptoSymbol(strSymbol); }
+	bool IsTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr& pCryptoSymbol) const { return IsTiingoCryptoSymbol(pCryptoSymbol->m_strTicker); }
+	void AddTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr& pCryptoSymbol) { m_dataTiingoCryptoSymbol.Add(pCryptoSymbol); }
+	bool DeleteTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr& pCryptoSymbol) { return m_dataTiingoCryptoSymbol.Delete(pCryptoSymbol); }
 	CTiingoCryptoSymbolPtr GetTiingoCryptoSymbol(const long lIndex) const { return m_dataTiingoCryptoSymbol.GetCryptoSymbol(lIndex); }
-	CTiingoCryptoSymbolPtr GetTiingoCryptoSymbol(const CString strSymbol) const { return m_dataTiingoCryptoSymbol.GetCryptoSymbol(strSymbol); }
+	CTiingoCryptoSymbolPtr GetTiingoCryptoSymbol(const CString& strSymbol) const { return m_dataTiingoCryptoSymbol.GetCryptoSymbol(strSymbol); }
 	size_t GetTiingoCryptoSymbolSize() const noexcept { return m_dataTiingoCryptoSymbol.GetCryptoSymbolSize(); }
 
 	size_t GetTotalCountry() const noexcept { return m_dataFinnhubCountry.GetTotalCountry(); }
-	bool IsCountry(const CString strCountry) const { return m_dataFinnhubCountry.IsCountry(strCountry); }
-	bool IsCountry(const CCountryPtr pCountry) const { return m_dataFinnhubCountry.IsCountry(pCountry); }
-	void AddCountry(const CCountryPtr pCountry) { m_dataFinnhubCountry.Add(pCountry); }
-	bool DeleteCountry(const CCountryPtr pCountry) { return m_dataFinnhubCountry.Delete(pCountry); }
-	CCountryPtr GetCountry(const CString strCountry) { return m_dataFinnhubCountry.GetCountry(strCountry); }
+	bool IsCountry(const CString& strCountry) const { return m_dataFinnhubCountry.IsCountry(strCountry); }
+	bool IsCountry(const CCountryPtr& pCountry) const { return m_dataFinnhubCountry.IsCountry(pCountry); }
+	void AddCountry(const CCountryPtr& pCountry) { m_dataFinnhubCountry.Add(pCountry); }
+	bool DeleteCountry(const CCountryPtr& pCountry) { return m_dataFinnhubCountry.Delete(pCountry); }
+	CCountryPtr GetCountry(const CString& strCountry) { return m_dataFinnhubCountry.GetCountry(strCountry); }
 
 	CString GetCurrentFunction() { return m_strCurrentFunction; }
-	void SetCurrentFunction(const CString str) { m_strCurrentFunction = str; }
+	void SetCurrentFunction(const CString& str) { m_strCurrentFunction = str; }
 
 	bool IsUpdateForexExchangeDB() const noexcept { return m_dataFinnhubForexExchange.IsNeedUpdate(); }
 	bool IsUpdateForexSymbolDB() noexcept { return m_dataFinnhubForexSymbol.IsUpdateProfileDB(); }
@@ -184,7 +184,7 @@ public:
 	bool IsNeedUpdateTiingoStock() const noexcept { return m_dataTiingoStock.IsNeedUpdate(); }
 	bool IsNeedUpdateTiingoCryptoSymbol() const noexcept { return m_dataTiingoCryptoSymbol.IsNeedUpdate(); }
 
-	bool UpdateToken();
+	static bool UpdateToken();
 
 	// 数据库操作
 	bool LoadWorldExchangeDB() { return m_dataFinnhubStockExchange.LoadDB(); }
@@ -239,22 +239,22 @@ public:
 	virtual void StartTiingoIEXWebSocket();
 	virtual void StartTiingoCryptoWebSocket();
 	virtual void StartTiingoForexWebSocket();
-	void DisconnectAllWebSocket(); // 停止WebSocket。此函数等待其停止后方返回。是系统退出前的准备工作。
-	void StopWebSocketsIfTimeOut(); // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。是系统运行中的停止接收。
-	void StopFinnhubWebSocketIfTimeOut();
-	void StopTiingoIEXWebSocketIfTimeOut();
-	void StopTiingoCryptoWebSocketIfTimeOut();
-	void StopTiingoForexWebSocketIfTimeOut();
+	static void DisconnectAllWebSocket(); // 停止WebSocket。此函数等待其停止后方返回。是系统退出前的准备工作。
+	void StopWebSocketsIfTimeOut() const; // 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。是系统运行中的停止接收。
+	static void StopFinnhubWebSocketIfTimeOut();
+	static void StopTiingoIEXWebSocketIfTimeOut();
+	static void StopTiingoCryptoWebSocketIfTimeOut();
+	static void StopTiingoForexWebSocketIfTimeOut();
 
-	void ProcessWebSocketData();
-	void ProcessFinnhubWebSocketData();
-	void ProcessTiingoIEXWebSocketData();
-	void ProcessTiingoCryptoWebSocketData();
-	void ProcessTiingoForexWebSocketData();
+	static void ProcessWebSocketData();
+	static void ProcessFinnhubWebSocketData();
+	static void ProcessTiingoIEXWebSocketData();
+	static void ProcessTiingoCryptoWebSocketData();
+	static void ProcessTiingoForexWebSocketData();
 
 	void UpdateWorldStockFromWebSocket();
-	void UpdateWorldStockFromTiingoIEXSocket(CTiingoIEXSocketPtr pTiingoIEX);
-	void UpdateWorldStockFromFinnhubSocket(CFinnhubSocketPtr pFinnhub);
+	void UpdateWorldStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr& pTiingoIEXbData);
+	void UpdateWorldStockFromFinnhubSocket(const CFinnhubSocketPtr& pFinnhub);
 
 	// check function
 
@@ -282,8 +282,6 @@ protected:
 	CString m_strCurrentFunction; // 当前任务和处理的证券名称
 
 	bool m_bFinnhubWebSiteAccessible; // 由于finnhub.io不时被墙，故而需要此标识。
-
-private:
 };
 
 using CWorldMarketPtr = shared_ptr<CWorldMarket>;

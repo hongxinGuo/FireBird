@@ -28,8 +28,8 @@ public:
 
 	// MarketTask
 	bool IsMarketTaskEmpty() const { return m_marketTask.IsEmpty(); }
-	void AddTask(CMarketTaskPtr pTask) { m_marketTask.AddTask(pTask); }
-	void AddTask(long lTaskType, long lExecuteTime) { m_marketTask.AddTask(lTaskType, lExecuteTime); }
+	void AddTask(const CMarketTaskPtr& pTask) { m_marketTask.AddTask(pTask); }
+	void AddTask(const long lTaskType, const long lExecuteTime) { m_marketTask.AddTask(lTaskType, lExecuteTime); }
 	CMarketTaskPtr GetMarketTask() const { return m_marketTask.GetTask(); }
 	void DiscardMarketTask() { m_marketTask.DiscardTask(); }
 	vector<CMarketTaskPtr> GetMarketTaskVector() { return m_marketTask.GetTaskVector(); }
@@ -74,12 +74,11 @@ public:
 
 	void CalculateTime() noexcept; // 计算本市场的各时间
 	void CalculateLastTradeDate() noexcept;
-	void ResetMarketFlagAtMidnight(long lCurrentTime);
 
 	bool IsReadyToRun() const noexcept { return m_fReadyToRun; }
-	void SetReadyToRun(bool fFlag) noexcept { m_fReadyToRun = fFlag; }
+	void SetReadyToRun(const bool fFlag) noexcept { m_fReadyToRun = fFlag; }
 	bool IsResetMarket() const noexcept { return m_fResetMarket; }
-	void SetResetMarket(bool fFlag) noexcept { m_fResetMarket = fFlag; }
+	void SetResetMarket(const bool fFlag) noexcept { m_fResetMarket = fFlag; }
 
 	virtual bool IsTimeToResetSystem(long) { return false; } // 默认永远处于非重启市场状态，继承类需要各自设置之
 	bool IsSystemReady() const noexcept { return m_fSystemReady; }
@@ -88,14 +87,14 @@ public:
 	virtual void PreparingExitMarket() {} // 准备退出本市场（完成系统退出前的准备工作）。
 
 	// 存储数据源
-	void StoreDataSource(CVirtualDataSourcePtr pDataSource) { m_vDataSource.push_back(pDataSource); }
+	void StoreDataSource(const CVirtualDataSourcePtr& pDataSource) { m_vDataSource.push_back(pDataSource); }
 
 public:
 	// 测试用函数
-	static void TEST_SetUTCTime(time_t Time) noexcept { gl_tUTC = Time; }
-	void TEST_SetFormattedMarketTime(long lTime) noexcept { m_lMarketTime = lTime; } // 此函数只用于测试
-	void TEST_SetMarketTM(tm tm_) noexcept { m_tmMarket = tm_; }
-	void TEST_SetFormattedMarketDate(long lDate) noexcept { m_lMarketDate = lDate; }
+	static void TEST_SetUTCTime(const time_t Time) noexcept { gl_tUTC = Time; }
+	void TEST_SetFormattedMarketTime(const long lTime) noexcept { m_lMarketTime = lTime; } // 此函数只用于测试
+	void TEST_SetMarketTM(const tm& tm_) noexcept { m_tmMarket = tm_; }
+	void TEST_SetFormattedMarketDate(const long lDate) noexcept { m_lMarketDate = lDate; }
 
 protected:
 	CString m_strMarketId{_T("Warning: CVirtualMarket Called.")}; // 该市场标识字符串
