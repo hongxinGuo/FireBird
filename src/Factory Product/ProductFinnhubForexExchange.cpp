@@ -33,7 +33,7 @@ bool CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	return true;
 }
 
-shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExchange(CWebDataPtr pWebData) {
+shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExchange(const CWebDataPtr& pWebData) {
 	auto pvExchange = make_shared<vector<CString>>();
 	string s;
 	CString str = _T("");

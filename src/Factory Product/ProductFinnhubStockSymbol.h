@@ -8,10 +8,10 @@ public:
 	CProductFinnhubStockSymbol();
 	~CProductFinnhubStockSymbol() override = default;
 
-	CString CreateMessage() final;
+	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	bool IsNeedAddExchangeCode(CString strStockSymbol, CString strExchangeCode);
-	CWorldStockVectorPtr ParseFinnhubStockSymbol(CWebDataPtr pWebData);
+	static bool IsNeedAddExchangeCode(const CString& strStockSymbol, const CString& strExchangeCode);
+	CWorldStockVectorPtr ParseFinnhubStockSymbol(const CWebDataPtr& pWebData);
 };
 
 using CProductFinnhubCompanySymbolPtr = shared_ptr<CProductFinnhubStockSymbol>;

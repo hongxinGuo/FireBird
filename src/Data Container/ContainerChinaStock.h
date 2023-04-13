@@ -21,9 +21,6 @@ public:
 	[[nodiscard]] long GetActiveStockSize() const;
 	[[nodiscard]] long GetLoadedStockSize() const noexcept { return m_lLoadedStock; }
 
-	static bool IsAStock(const CString& strStockCode);
-	bool IsAStock(const CChinaStockPtr pStock) const { return IsAStock(pStock->GetSymbol()); }
-
 	CChinaStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CChinaStock>(Get(strStockCode)); }
 	CChinaStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CChinaStock>(Get(lIndex)); }
 	CString GetStockName(const CString& strStockCode);
@@ -51,7 +48,7 @@ public:
 
 	CString CreateNeteaseDayLineInquiringStr();
 	CString CreateTengxunDayLineInquiringStr();
-	CString GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber);
+	CString GetNextStockInquiringMiddleStr(long& iStockIndex, const CString& strPostfix, const long lTotalNumber);
 
 	CString GetNextSinaStockInquiringMiddleStr(const long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lSinaRTDataInquiringIndex, _T(","), lTotalNumber); }
 	CString GetNextTengxunStockInquiringMiddleStr(const long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, _T(","), lTotalNumber); }

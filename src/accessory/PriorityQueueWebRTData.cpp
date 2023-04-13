@@ -2,11 +2,9 @@
 
 #include"PriorityQueueWebRTData.h"
 
-CPriorityQueueWebRTData::CPriorityQueueWebRTData() {
-}
+CPriorityQueueWebRTData::CPriorityQueueWebRTData() {}
 
-CPriorityQueueWebRTData::~CPriorityQueueWebRTData() {
-}
+CPriorityQueueWebRTData::~CPriorityQueueWebRTData() {}
 
 void CPriorityQueueWebRTData::Reset() {
 	m_MutexAccessData.lock();
@@ -18,7 +16,7 @@ void CPriorityQueueWebRTData::Reset() {
 	m_MutexAccessData.unlock();
 }
 
-void CPriorityQueueWebRTData::PushData(CWebRTDataPtr pData) {
+void CPriorityQueueWebRTData::PushData(const CWebRTDataPtr& pData) {
 	m_MutexAccessData.lock();
 	m_priorityQueueWebRTData.push(pData);
 	m_MutexAccessData.unlock();

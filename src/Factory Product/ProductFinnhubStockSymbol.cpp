@@ -61,10 +61,10 @@ bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	return true;
 }
 
-bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(CString strStockSymbol, CString strExchangeCode) {
-	int iLength = strExchangeCode.GetLength();
-	int iSymbolLength = strStockSymbol.GetLength();
-	CString strRight = strStockSymbol.Right(iLength);
+bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(const CString& strStockSymbol, const CString& strExchangeCode) {
+	const int iLength = strExchangeCode.GetLength();
+	const int iSymbolLength = strStockSymbol.GetLength();
+	const CString strRight = strStockSymbol.Right(iLength);
 	if ((strRight.CompareNoCase(strExchangeCode) == 0) && (strStockSymbol.GetAt(iSymbolLength - iLength - 1) == '.')) {
 		return true;
 	}
@@ -89,7 +89,7 @@ bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(CString strStockSymbol, C
 // }
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(CWebDataPtr pWebData) {
+CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWebDataPtr& pWebData) {
 	auto pvStock = make_shared<vector<CWorldStockPtr>>();
 	CWorldStockPtr pStock = nullptr;
 	string s, sError;

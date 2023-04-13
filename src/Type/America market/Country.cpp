@@ -21,7 +21,7 @@ void CCountry::Append(CSetCountry& setCountry) {
 	setCountry.Update();
 }
 
-void CCountry::Load(CSetCountry& setCountry) {
+void CCountry::Load(const CSetCountry& setCountry) {
 	m_strCode2 = setCountry.m_Code2;
 	m_strCode3 = setCountry.m_Code3;
 	m_strCodeNo = setCountry.m_CodeNo;

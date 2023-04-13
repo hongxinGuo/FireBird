@@ -74,7 +74,7 @@ bool CContainerStockSymbol::CreateTotalStockContainer() {
 	return true;
 }
 
-void CContainerStockSymbol::LoadStockSectionDB() {
+void CContainerStockSymbol::LoadStockSectionDB() const {
 	CSetStockSection setStockSection;
 
 	setStockSection.Open();
@@ -240,7 +240,7 @@ CString CContainerStockSymbol::GetNextNeteaseStockInquiringMiddleStr(long lTotal
 	return strReturn;
 }
 
-long CContainerStockSymbol::GetNextIndex(long lIndex) {
+long CContainerStockSymbol::GetNextIndex(long lIndex) const {
 	if (++lIndex >= m_vStockSymbol.size()) { lIndex = 0; }
 	return lIndex;
 }

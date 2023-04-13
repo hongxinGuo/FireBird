@@ -23,7 +23,7 @@ bool CVirtualWebProduct::CheckVoidJson(const CWebDataPtr& pWebData) {
 	else return false;
 }
 
-bool CVirtualWebProduct::CheckInaccessible(CWebDataPtr pWebData) {
+bool CVirtualWebProduct::CheckInaccessible(const CWebDataPtr& pWebData) {
 	bool bInaccessible = false;
 	if (pWebData->IsParsed()) {
 		CheckNoRightToAccess(pWebData);

@@ -8,8 +8,8 @@ public:
 	~CContainerTiingoCryptoSymbol() = default;
 	void Reset();
 
-	void Add(CTiingoCryptoSymbolPtr pTiingoCrypto);
-	bool Delete(CTiingoCryptoSymbolPtr pCrypto);
+	void Add(const CTiingoCryptoSymbolPtr& pTiingoCrypto);
+	bool Delete(const CTiingoCryptoSymbolPtr& pCrypto);
 	size_t GetCryptoSymbolSize() const noexcept { return m_vTiingoCrypto.size(); }
 	long GetLastCryptoSymbolSize() const noexcept { return m_lLastTotalTiingoCrypto; }
 

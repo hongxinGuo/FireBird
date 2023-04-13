@@ -13,12 +13,12 @@ void CDataFinnhubCountry::Reset() {
 	m_lLastTotalCountry = 0;
 }
 
-void CDataFinnhubCountry::Add(CCountryPtr pCountry) {
+void CDataFinnhubCountry::Add(const CCountryPtr& pCountry) {
 	m_mapCountry[pCountry->m_strCountry] = m_vCountry.size();
 	m_vCountry.push_back(pCountry);
 }
 
-bool CDataFinnhubCountry::Delete(CCountryPtr pCountry) {
+bool CDataFinnhubCountry::Delete(const CCountryPtr& pCountry) {
 	if (pCountry == nullptr) return false;
 	if (!IsCountry(pCountry->m_strCountry)) return false;
 

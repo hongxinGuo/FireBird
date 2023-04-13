@@ -41,8 +41,8 @@ public:
 
 	size_t GetOffset(const CString& strSymbol) const { return m_mapSymbol.at(strSymbol); }
 
-	bool Add(CVirtualStockPtr pStock);
-	bool Delete(CVirtualStockPtr pStock);
+	bool Add(const CVirtualStockPtr& pStock);
+	bool Delete(const CVirtualStockPtr& pStock);
 	bool UpdateSymbolMap();
 	void Sort();
 	size_t Size() const { return m_vStock.size(); }

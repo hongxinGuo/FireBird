@@ -13,12 +13,12 @@ void CDataTiingoStock::Reset() {
 	m_lLastTotalTiingoStock = 0;
 }
 
-void CDataTiingoStock::Add(CTiingoStockPtr pTiingoStock) {
+void CDataTiingoStock::Add(const CTiingoStockPtr& pTiingoStock) {
 	m_mapTiingoStock[pTiingoStock->m_strTicker] = m_vTiingoStock.size();
 	m_vTiingoStock.push_back(pTiingoStock);
 }
 
-bool CDataTiingoStock::Delete(CTiingoStockPtr pTiingoStock) {
+bool CDataTiingoStock::Delete(const CTiingoStockPtr& pTiingoStock) {
 	if (pTiingoStock == nullptr) return false;
 	if (!IsStock(pTiingoStock)) return false;
 

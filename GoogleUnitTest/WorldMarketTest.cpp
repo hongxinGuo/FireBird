@@ -933,4 +933,46 @@ namespace FireBirdTest {
 		gl_pWorldMarket->SetResetMarket(true);
 		gl_pWorldMarket->SetSystemReady(true);
 	}
+
+	TEST_F(CWorldMarketTest, TestGetTiingoIEXWebSocketSymbolVector) {
+		const vectorString vString = gl_pWorldMarket->GetTiingoIEXWebSocketSymbolVector();
+
+		EXPECT_STREQ(vString.at(0).c_str(), _T("A"));
+		EXPECT_STREQ(vString.at(1).c_str(), _T("AA"));
+		EXPECT_STREQ(vString.at(2).c_str(), _T("AAL"));
+		EXPECT_STREQ(vString.at(3).c_str(), _T("AAPL"));
+	}
+
+	TEST_F(CWorldMarketTest, TestGetTiingoCryptoWebSocketSymbolVector) {
+		const vectorString vString = gl_pWorldMarket->GetTiingoCryptoWebSocketSymbolVector();
+
+		EXPECT_STREQ(vString.at(0).c_str(), _T("BINANCE:IDEXBUSD"));
+		EXPECT_STREQ(vString.at(1).c_str(), _T("BINANCE:MDAETH"));
+		EXPECT_STREQ(vString.at(2).c_str(), _T("BINANCE:OCEANBTC"));
+	}
+
+	TEST_F(CWorldMarketTest, TestGetTiingoForexWebSocketSymbolVector) {
+		const vectorString vString = gl_pWorldMarket->GetTiingoForexWebSocketSymbolVector();
+
+		EXPECT_STREQ(vString.at(0).c_str(), _T("FXCM:USD/JPY"));
+		EXPECT_STREQ(vString.at(1).c_str(), _T("IC MARKETS:1"));
+		EXPECT_STREQ(vString.at(2).c_str(), _T("OANDA:AUD_SGD"));
+	}
+
+	TEST_F(CWorldMarketTest, TestGetFinnhubWebSocketSymbolVector) {
+		const vectorString vString = gl_pWorldMarket->GetFinnhubWebSocketSymbolVector();
+
+		EXPECT_STREQ(vString.at(0).c_str(), _T("A"));
+		EXPECT_STREQ(vString.at(1).c_str(), _T("AA"));
+		EXPECT_STREQ(vString.at(2).c_str(), _T("AAL"));
+		EXPECT_STREQ(vString.at(3).c_str(), _T("AAPL"));
+
+		EXPECT_STREQ(vString.at(4).c_str(), _T("FXCM:USD/JPY"));
+		EXPECT_STREQ(vString.at(5).c_str(), _T("IC MARKETS:1"));
+		EXPECT_STREQ(vString.at(6).c_str(), _T("OANDA:AUD_SGD"));
+
+		EXPECT_STREQ(vString.at(7).c_str(), _T("BINANCE:IDEXBUSD"));
+		EXPECT_STREQ(vString.at(8).c_str(), _T("BINANCE:MDAETH"));
+		EXPECT_STREQ(vString.at(9).c_str(), _T("BINANCE:OCEANBTC"));
+	}
 }

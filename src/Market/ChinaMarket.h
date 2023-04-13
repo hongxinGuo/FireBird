@@ -128,8 +128,6 @@ public:
 
 	static long IncreaseStockInquiringIndex(long& lIndex, long lEndPosition);
 
-	bool IsAStock(const not_null<CChinaStockPtr>& pStock) const { return m_containerChinaStock.IsAStock(pStock->GetSymbol()); } // 是否为沪深A股
-	bool IsAStock(const CString& strStockCode) const { return m_containerChinaStock.IsAStock(strStockCode); } // 是否为沪深A股
 	bool IsStock(const CString& strStockCode) const { return m_containerChinaStock.IsSymbol(strStockCode); } // 是否为正确的股票代码
 
 	CString GetStockName(const CString& strStockCode) { return m_containerChinaStock.GetStockName(strStockCode); }
@@ -142,7 +140,7 @@ public:
 	// 得到当前显示股票
 	CChinaStockPtr GetCurrentStock() const noexcept { return m_pCurrentStock; }
 	void SetCurrentStock(const CString& strStockCode);
-	void SetCurrentStock(CChinaStockPtr pStock);
+	void SetCurrentStock(const CChinaStockPtr& pStock);
 	void ResetCurrentStock();
 	bool IsCurrentStockChanged() const noexcept { return m_fCurrentStockChanged; }
 	void SetCurrentStockChanged(const bool fFlag) noexcept { m_fCurrentStockChanged = fFlag; }
@@ -263,7 +261,7 @@ public:
 	//处理实时股票变化等
 	bool DistributeSinaRTDataToStock();
 	bool DistributeNeteaseRTDataToStock();
-	bool DistributeRTDataToStock(CWebRTDataPtr pRTData);
+	bool DistributeRTDataToStock(const CWebRTDataPtr& pRTData);
 
 	long GetRTDataReceivedInOrdinaryTradeTime() const noexcept { return m_lRTDataReceivedInOrdinaryTradeTime; }
 	long GetNewRTDataReceivedInOrdinaryTradeTime() const noexcept { return m_lNewRTDataReceivedInOrdinaryTradeTime; }
@@ -316,8 +314,8 @@ public:
 	void SetCalculatingWeekLineRS(const bool fFlag) noexcept { m_CalculatingWeekLineRS = fFlag; }
 	bool IsCalculatingWeekLineRS() const noexcept { return m_CalculatingWeekLineRS; }
 
-	bool AddChosenStock(CChinaStockPtr pStock);
-	bool DeleteChosenStock(CChinaStockPtr pStock);
+	bool AddChosenStock(const CChinaStockPtr& pStock);
+	bool DeleteChosenStock(const CChinaStockPtr& pStock);
 	size_t GetChosenStockSize() const { return m_avChosenStock.at(0).size(); }
 	size_t GetChosenStockSize(const long lIndex) const { return m_avChosenStock.at(lIndex).size(); }
 	void ClearChoiceStockContainer() { m_avChosenStock.at(0).clear(); }
@@ -361,7 +359,7 @@ public:
 
 	bool AddStock(const CChinaStockPtr& pStock) { return m_containerChinaStock.Add(pStock); }
 	bool DeleteStock(const CChinaStockPtr& pStock) { return m_containerChinaStock.Delete(pStock); }
-	bool CreateStock(CString strStockCode, CString strStockName, bool fProcessRTData);
+	bool CreateStock(const CString& strStockCode, const CString& strStockName, const bool fProcessRTData);
 
 	void SetCurrentRSStrongIndex(const long lIndex) noexcept { m_lCurrentRSStrongIndex = lIndex; }
 

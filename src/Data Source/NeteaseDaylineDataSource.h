@@ -19,7 +19,7 @@ public:
 	void UpdateStatusAfterReading(CWebDataPtr pData) override; // 成功接收后更新系统状态, 此处更新其股票代码
 	bool ParseData(CWebDataPtr pWebData) override { return false; } // 数据为非JSon格式，不解析
 
-	void SetDownLoadingStockCode(CString strStockCode);
+	void SetDownLoadingStockCode(const CString& strStockCode);
 	CString GetDownLoadingStockCode() { return m_strDownLoadingStockCode; }
 	void ResetDownLoadingStockCode() { m_strDownLoadingStockCode = _T(""); }
 

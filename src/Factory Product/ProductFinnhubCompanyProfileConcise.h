@@ -9,7 +9,7 @@ public:
 
 	CString CreateMessage() final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	bool ParseFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr pStock);
+	bool ParseFinnhubStockProfileConcise(const CWebDataPtr& pWebData, const CWorldStockPtr& pStock);
 };
 
 using CFinnhubCompanyProfileConcisePtr = shared_ptr<CProductFinnhubCompanyProfileConcise>;

@@ -281,7 +281,7 @@ size_t CChinaMarket::GetCurrentStockSetSize() const {
 	return m_avChosenStock.at(m_lCurrentSelectedStockSet).size();
 }
 
-bool CChinaMarket::CreateStock(CString strStockCode, CString strStockName, bool fProcessRTData) {
+bool CChinaMarket::CreateStock(const CString& strStockCode, const CString& strStockName, const bool fProcessRTData) {
 	const auto pStock = make_shared<CChinaStock>();
 	pStock->SetTodayNewStock(true);
 	pStock->SetSymbol(strStockCode);
@@ -361,7 +361,7 @@ bool CChinaMarket::DistributeSinaRTDataToStock() {
 	return true;
 }
 
-bool CChinaMarket::DistributeRTDataToStock(CWebRTDataPtr pRTData) {
+bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 	const CString strSymbol = pRTData->GetSymbol();
 	if (IsCheckingActiveStock()) {
 		if (!IsStock(strSymbol) && pRTData->IsActive()) {
@@ -670,7 +670,7 @@ void CChinaMarket::TaskAccessoryTask(long lCurrentTime) {
 	AddTask(CHINA_MARKET_ACCESSORY_TASK__, GetNextTime(lCurrentTime, 0, 1, 0)); // 每分钟整点执行一次
 }
 
-bool CChinaMarket::AddChosenStock(CChinaStockPtr pStock) {
+bool CChinaMarket::AddChosenStock(const CChinaStockPtr& pStock) {
 	if (ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
 		m_avChosenStock.at(0).push_back(pStock);
 		ASSERT(!pStock->IsSaveToChosenStockDB());
@@ -679,7 +679,7 @@ bool CChinaMarket::AddChosenStock(CChinaStockPtr pStock) {
 	return false;
 }
 
-bool CChinaMarket::DeleteChosenStock(CChinaStockPtr pStock) {
+bool CChinaMarket::DeleteChosenStock(const CChinaStockPtr& pStock) {
 	const auto it = ranges::find(m_avChosenStock.at(0).cbegin(), m_avChosenStock.at(0).cend(), pStock);
 	if (it == m_avChosenStock.at(0).end()) { return false; }
 	(*it)->SetChosen(false);
@@ -926,7 +926,7 @@ void CChinaMarket::SetCurrentStock(const CString& strStockCode) {
 // 设置相应的股票指针，装载其日线数据。
 //
 /////////////////////////////////////////////////////////////////////////
-void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
+void CChinaMarket::SetCurrentStock(const CChinaStockPtr& pStock) {
 	bool fSet = false;
 
 	if (pStock != nullptr) {

@@ -35,7 +35,7 @@ bool CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebDa
 	return true;
 }
 
-CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(CWebDataPtr pWebData) {
+CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const CWebDataPtr& pWebData) {
 	auto pvCountry = make_shared<vector<CCountryPtr>>();
 	CCountryPtr pCountry = nullptr;
 	string s;
@@ -74,6 +74,6 @@ CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(CW
 		return pvCountry;
 	}
 	ranges::sort(pvCountry->begin(), pvCountry->end(),
-	             [](CCountryPtr& p1, CCountryPtr& p2) { return p1->m_strCountry < p2->m_strCountry; });
+	             [](const CCountryPtr& p1, const CCountryPtr& p2) { return p1->m_strCountry < p2->m_strCountry; });
 	return pvCountry;
 }

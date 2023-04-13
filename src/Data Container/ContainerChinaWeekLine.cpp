@@ -112,7 +112,7 @@ void CContainerChinaWeekLine::UpdateData(const vector<CWeekLinePtr>& vTempWeekLi
 	SetDataLoaded(true);
 }
 
-void CContainerChinaWeekLine::UpdateData(CVirtualHistoryCandleExtendPtr pHistoryCandleExtend) const {
+void CContainerChinaWeekLine::UpdateData(const CVirtualHistoryCandleExtendPtr& pHistoryCandleExtend) const {
 	for (const auto& pData : m_vHistoryData) {
 		if (strcmp(pData->GetStockSymbol(), pHistoryCandleExtend->GetStockSymbol()) == 0) {
 			//

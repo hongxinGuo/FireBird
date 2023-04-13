@@ -6,7 +6,6 @@
 
 using namespace std;
 #include<string>
-//#include<iostream>
 #include<fstream>
 #include<memory>
 using std::fstream;
@@ -124,7 +123,7 @@ bool CFinnhubInaccessibleExchange::LoadDB() {
 	return false;
 }
 
-bool CFinnhubInaccessibleExchange::LoadDB(CString strFileDirectory) {
+bool CFinnhubInaccessibleExchange::LoadDB(const CString& strFileDirectory) {
 	fstream f(strFileDirectory + m_strFileName, ios::in);
 	if (f.is_open()) {
 		f >> m_finnhubInaccessibleExchange;
@@ -143,8 +142,7 @@ void CFinnhubInaccessibleExchange::Update() {
 	try {
 		m_lUpdateDate = m_finnhubInaccessibleExchange.at("UpdateDate");
 	}
-	catch (json::exception&) {
-	}
+	catch (json::exception&) { }
 	try {
 		for (int i = 0; i < m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).size(); i++) {
 			const int size = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).size();
@@ -162,8 +160,7 @@ void CFinnhubInaccessibleExchange::Update() {
 			}
 		}
 	}
-	catch (json::exception&) {
-	}
+	catch (json::exception&) { }
 }
 
 void CFinnhubInaccessibleExchange::UpdateJson() {
@@ -188,7 +185,7 @@ CInaccessibleExchangesPtr CFinnhubInaccessibleExchange::GetInaccessibleExchange(
 	return m_mapInaccessibleExchange.at(iInquiryType);
 }
 
-bool CFinnhubInaccessibleExchange::IsInaccessible(const int iInquiryType, const CString& strExchangeCode) {
+bool CFinnhubInaccessibleExchange::IsInaccessible(const int iInquiryType, const CString& strExchangeCode) const {
 	try {
 		if (m_mapInaccessibleExchange.at(iInquiryType)->HaveExchange(strExchangeCode)) {
 			return true;

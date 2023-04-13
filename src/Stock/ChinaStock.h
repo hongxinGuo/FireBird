@@ -13,6 +13,7 @@ enum {
 	NO_TRANSACTION_ = 8
 };
 
+#include "accessory.h"
 #include"RSReference.h"
 
 #include"VirtualStock.h"
@@ -48,8 +49,8 @@ public:
 	int GetRatio() const final { return 1000; }
 
 public:
-	void UpdateStatus(CWebRTDataPtr pRTData);
-	void UpdateProfile(CWebRTDataPtr pRTData);
+	void UpdateStatus(const CWebRTDataPtr& pRTData);
+	void UpdateProfile(const CWebRTDataPtr& pRTData);
 
 	// 本股票各变量状态
 	long GetHighLimit() const noexcept { return m_lHighLimit; }
@@ -266,7 +267,7 @@ public:
 	void AppendTodayBasicInfo(CSetDayLineBasicInfo* pSetDayLine) const; // 存储当日基本数据
 	void AppendTodayExtendInfo(CSetDayLineExtendInfo* pSetDayLineExtendInfo) const;
 	void SaveTempInfo(CSetDayLineTodaySaved* pSetDayLineTemp) const; // 存储当日计算出的数据
-	void UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pBeUpdated) const; // 用当前状态更新历史数据
+	void UpdateCurrentHistoryCandle(const CVirtualHistoryCandleExtendPtr& pBeUpdated) const; // 用当前状态更新历史数据
 	void UpdateDayLineStartEndDate();
 	void LoadTodaySavedInfo(const CSetDayLineTodaySaved* pSetDayLineTemp);
 	bool LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol);
@@ -295,10 +296,10 @@ public:
 	// 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
 	bool ProcessRTData();
 	bool ProcessOneRTData(const CWebRTDataPtr& pRTData);
-	void CalculateHighLowLimit(CWebRTDataPtr pRTData);
-	void CalculateOneDeal(CWebRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice);
+	void CalculateHighLowLimit(const CWebRTDataPtr& pRTData);
+	void CalculateOneDeal(const CWebRTDataPtr& pRTData, INT64 lCurrentGuadanTransactionPrice);
 	void IncreaseTransactionNumber();
-	void CalculateOneRTData(CWebRTDataPtr pRTData);
+	void CalculateOneRTData(const CWebRTDataPtr& pRTData);
 	void CalculateOrdinaryBuySell(INT64 lCurrentGuadanTransactionPrice);
 	void CalculateOrdinaryBuyVolume();
 	void CalculateOrdinarySellVolume();
@@ -311,17 +312,17 @@ public:
 	void ResetCalculatingData();
 	void SetLastRTData(const CWebRTDataPtr& pLastRTData) noexcept { m_pLastRTData = pLastRTData; }
 	CWebRTDataPtr GetLastRTData() noexcept { return m_pLastRTData; }
-	void InitializeCalculatingRTDataEnvironment(CWebRTDataPtr pRTData);
+	void InitializeCalculatingRTDataEnvironment(const CWebRTDataPtr& pRTData);
 
-	bool AnalysisGuadan(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice);
-	void SelectGuadanThatNeedToCalculate(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) const;
-	void SetCurrentGuadan(CWebRTDataPtr pCurrentRTData);
+	bool AnalysisGuadan(const CWebRTDataPtr& pCurrentRTData, INT64 lCurrentTransactionPrice);
+	void SelectGuadanThatNeedToCalculate(const CWebRTDataPtr& pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) const;
+	void SetCurrentGuadan(const CWebRTDataPtr& pCurrentRTData);
 	void CheckGuadan(CWebRTDataPtr pCurrentRTData, const array<bool, 10>& fNeedCheck);
 	void CheckSellGuadan(const array<bool, 10>& fNeedCheck, int i);
 	void CalculateCanceledSellVolume(INT64 lCurrentCanceledSellVolume);
 	void CheckBuyGuadan(const array<bool, 10>& fNeedCheck, int i);
 	void CalculateCanceledBuyVolume(INT64 lCurrentCanceledBuyVolume);
-	bool CheckCurrentRTData();
+	bool CheckCurrentRTData() const;
 	void ShowCurrentTransaction();
 	void ShowCurrentInformationOfCancelingGuadan();
 	virtual void ReportGuadanTransaction();
@@ -388,6 +389,8 @@ public:
 	// 当前被处理历史数据容器
 	CVirtualDataHistoryCandleExtend* GetDataChinaDayLine() noexcept { return &m_dataDayLine; }
 	CVirtualDataHistoryCandleExtend* GetDataChinaWeekLine() noexcept { return &m_dataWeekLine; }
+
+	bool IsShareA() const { return ::IsShareA(GetSymbol()); }
 
 public:
 	// 测试专用函数

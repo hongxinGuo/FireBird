@@ -18,7 +18,7 @@ void CEPSSurprise::Append(CSetEPSSurprise& setEPSSurprise) {
 	setEPSSurprise.Update();
 }
 
-void CEPSSurprise::Load(CSetEPSSurprise& setEPSSurprise) {
+void CEPSSurprise::Load(const CSetEPSSurprise& setEPSSurprise) {
 	m_strSymbol = setEPSSurprise.m_Symbol;
 	m_lDate = setEPSSurprise.m_Date;
 	m_dActual = setEPSSurprise.m_Actual;

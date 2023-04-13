@@ -19,10 +19,10 @@ public:
 
 	~CProductTengxunDayLine() override = default;
 
-	CString CreateMessage() final;
+	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
-	bool ReceivedAllData();
+	static bool ReceivedAllData();
 
 	static void Reset() {
 		sm_vDayLinePtr.resize(0);
@@ -30,11 +30,11 @@ public:
 		sm_iCurrentNumber = 0;
 	}
 
-	static void SetInquiryNumber(int iNumber) { sm_iInquiryNumber = iNumber; }
+	static void SetInquiryNumber(const int iNumber) { sm_iInquiryNumber = iNumber; }
 	static int GetInquiryNumber() { return sm_iInquiryNumber; }
-	static void AppendDayLine(vector<CDayLinePtr> vDayLine);
+	static void AppendDayLine(const vector<CDayLinePtr>& vDayLine);
 
-	void CheckAndPrepareDayLine();
+	static void CheckAndPrepareDayLine();
 
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置

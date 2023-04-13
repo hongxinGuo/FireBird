@@ -8,9 +8,9 @@ public:
 	CProductFinnhubForexSymbol();
 	~CProductFinnhubForexSymbol() override = default;
 
-	CString CreateMessage() final;
+	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CForexSymbolVectorPtr ParseFinnhubForexSymbol(CWebDataPtr pWebData);
+	CForexSymbolVectorPtr ParseFinnhubForexSymbol(const CWebDataPtr& pWebData);
 };
 
 using CProductFinnhubForexSymbolPtr = shared_ptr<CProductFinnhubForexSymbol>;

@@ -9,7 +9,7 @@ public:
 
 	CString CreateMessage() final;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	shared_ptr<vector<CString>> ParseFinnhubCryptoExchange(CWebDataPtr pWebData);
+	shared_ptr<vector<CString>> ParseFinnhubCryptoExchange(const CWebDataPtr& pWebData);
 };
 
 using CFinnhubCryptoExchangePtr = shared_ptr<CProductFinnhubCryptoExchange>;

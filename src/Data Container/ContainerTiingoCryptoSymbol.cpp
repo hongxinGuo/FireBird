@@ -14,7 +14,7 @@ void CContainerTiingoCryptoSymbol::Reset() {
 	m_lLastTotalTiingoCrypto = 0;
 }
 
-bool CContainerTiingoCryptoSymbol::Delete(CTiingoCryptoSymbolPtr pCryptoSymbol) {
+bool CContainerTiingoCryptoSymbol::Delete(const CTiingoCryptoSymbolPtr& pCryptoSymbol) {
 	if (pCryptoSymbol == nullptr) return false;
 	if (!IsTiingoCryptoSymbol(pCryptoSymbol->m_strTicker)) return false;
 
@@ -24,7 +24,7 @@ bool CContainerTiingoCryptoSymbol::Delete(CTiingoCryptoSymbolPtr pCryptoSymbol) 
 	return true;
 }
 
-void CContainerTiingoCryptoSymbol::Add(CTiingoCryptoSymbolPtr pCryptoSymbol) {
+void CContainerTiingoCryptoSymbol::Add(const CTiingoCryptoSymbolPtr& pCryptoSymbol) {
 	ASSERT(!m_mapTiingoCrypto.contains(pCryptoSymbol->m_strTicker));
 	m_mapTiingoCrypto[pCryptoSymbol->m_strTicker] = m_mapTiingoCrypto.size();
 	m_vTiingoCrypto.push_back(pCryptoSymbol);

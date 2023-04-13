@@ -38,7 +38,7 @@ public:
 	virtual void GenerateCurrentInquiryMessage();
 	virtual bool GetWebData(); // 网络读取。为了Mock方便，声明为虚函数。
 	virtual bool ProcessWebDataReceived();
-	void CheckInaccessible(CWebDataPtr pWebData) const;
+	void CheckInaccessible(const CWebDataPtr& pWebData) const;
 	virtual void UpdateStatus() { }
 
 	void SetDefaultSessionOption() const;
@@ -55,7 +55,7 @@ public:
 	virtual CWebDataPtr CreateWebDataAfterSucceedReading();
 
 	void VerifyDataLength() const;
-	static void SetDataTime(CWebDataPtr pData, time_t time) noexcept { pData->SetTime(time); }
+	static void SetDataTime(const CWebDataPtr& pData, const time_t time) noexcept { pData->SetTime(time); }
 	virtual bool TransferDataToWebData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
 	virtual bool ParseData(CWebDataPtr pWebData) {
 		TRACE("调用了基类函数ParseData()\n");
@@ -102,7 +102,7 @@ public:
 		return true;
 	}
 
-	void StoreReceivedData(const CWebDataPtr pData) noexcept { m_qReceivedData.PushData(pData); }
+	void StoreReceivedData(const CWebDataPtr& pData) noexcept { m_qReceivedData.PushData(pData); }
 	CWebDataPtr GetReceivedData() noexcept { return m_qReceivedData.PopData(); }
 	size_t GetReceivedDataSize() noexcept { return m_qReceivedData.Size(); }
 
@@ -114,7 +114,7 @@ public:
 	bool IsInquiring() const noexcept { return m_fInquiring; }
 	void SetInquiring(const bool fFlag) noexcept { m_fInquiring = fFlag; }
 	bool IsGetWebDataAndProcessItThreadRunning() const noexcept { return m_bIsGetWebDataAndProcessItThreadRunning; }
-	void SetGetWebDataAndProcessItThreadRunning(bool fFlag) noexcept { m_bIsGetWebDataAndProcessItThreadRunning = fFlag; }
+	void SetGetWebDataAndProcessItThreadRunning(const bool fFlag) noexcept { m_bIsGetWebDataAndProcessItThreadRunning = fFlag; }
 
 	bool IsInquiringAndClearFlag() noexcept {
 		const bool fInquiring = m_fInquiring.exchange(false);
@@ -159,9 +159,9 @@ public:
 
 public:
 	// 以下为测试用函数
-	void TESTSetBuffer(char* buffer, INT64 lTotalNumber);
+	void TESTSetBuffer(const char* buffer, const INT64 lTotalNumber);
 	void TESTSetBuffer(CString str);
-	void TESTSetWebBuffer(char* buffer, INT64 lTotalNumber);
+	void TESTSetWebBuffer(const char* buffer, const INT64 lTotalNumber);
 
 protected:
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列

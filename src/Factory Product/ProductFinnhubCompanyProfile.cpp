@@ -26,10 +26,9 @@ CString CProductFinnhubCompanyProfile::CreateMessage() {
 
 bool CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
-	bool fSucceed = false;
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	pStock->SetUpdateCompanyProfile(false);
-	fSucceed = ParseFinnhubStockProfile(pWebData, pStock);
+	const bool fSucceed = ParseFinnhubStockProfile(pWebData, pStock);
 	if (fSucceed || pWebData->IsVoidJson() || pWebData->IsNoRightToAccess()) {
 		pStock->SetProfileUpdateDate(m_pMarket->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
@@ -74,7 +73,6 @@ bool CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 /// <returns></returns>
 bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr pStock) {
 	string s;
-	double d = 0.0;
 
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return false;
@@ -85,6 +83,7 @@ bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebDat
 	}
 	const auto pjs = pWebData->GetJSon();
 	try {
+		double d = 0.0;
 		s = jsonGetString(pjs, _T("address"));
 		pStock->SetAddress(s.c_str());
 		s = jsonGetString(pjs, _T("city"));

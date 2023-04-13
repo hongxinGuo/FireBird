@@ -13,7 +13,7 @@ public:
 	void Reset();
 
 	// 通用接口函数
-	void PushData(CWebRTDataPtr pData);
+	void PushData(const CWebRTDataPtr& pData);
 	CWebRTDataPtr PopData();
 	[[nodiscard]] CWebRTDataPtr GetHead() const noexcept { return m_priorityQueueWebRTData.top(); }
 	[[nodiscard]] size_t Size();

@@ -39,33 +39,6 @@ long CContainerChinaStock::GetActiveStockSize() const {
 	return lTotalActiveStock;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////
-//
-//		判断strStockCode是否为沪深A股主板的股票代码。
-//		沪市A股代码以600或601开头，深市A股代码以000或001开头。
-//
-//
-//
-///////////////////////////////////////////////////////////////////////////////////////////////
-bool CContainerChinaStock::IsAStock(const CString& strStockCode) {
-	const CString strSymbol = GetStockSymbol(strStockCode);
-	if (IsShanghaiExchange(strStockCode)) {
-		if ((strSymbol[0] == '6') && (strSymbol[1] == '0')) {
-			if ((strSymbol[2] == '0') || (strSymbol[2] == '1')) {
-				return true;
-			}
-		}
-	}
-	else if (IsShenzhenExchange(strStockCode)) {
-		if ((strSymbol[0] == '0') && (strSymbol[1] == '0')) {
-			if ((strSymbol[2] == '0') || (strSymbol[2] == '2')) {
-				return true;
-			}
-		}
-	}
-	return (false);
-}
-
 long CContainerChinaStock::LoadStockProfileDB() {
 	CSetChinaStockSymbol setChinaStockSymbol;
 	char buffer[30]{0, 0, 0};
@@ -166,7 +139,7 @@ INT64 CContainerChinaStock::GetTotalAttackBuyAmount() {
 	INT64 lAmount = 0;
 	for (long l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
-		if (pStock->IsActive() && IsAStock(pStock)) {
+		if (pStock->IsActive() && pStock->IsShareA()) {
 			lAmount += pStock->GetAttackBuyAmount();
 		}
 	}
@@ -177,7 +150,7 @@ INT64 CContainerChinaStock::GetTotalAttackSellAmount() {
 	INT64 lAmount = 0;
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
-		if (pStock->IsActive() && IsAStock(pStock)) {
+		if (pStock->IsActive() && pStock->IsShareA()) {
 			lAmount += pStock->GetAttackSellAmount();
 		}
 	}
@@ -231,7 +204,7 @@ CString CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 	return strReturn;
 }
 
-CString CContainerChinaStock::GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber) {
+CString CContainerChinaStock::GetNextStockInquiringMiddleStr(long& iStockIndex, const CString& strPostfix, const long lTotalNumber) {
 	if (m_vStock.empty()) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
 	CString strReturn = XferStandardToSina(GetStock(iStockIndex)->GetSymbol()); // 得到第一个股票代码
 	iStockIndex = GetNextIndex(iStockIndex);
@@ -749,7 +722,7 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 			// 深圳成指
 			dShenzhenIndexUpDownRate = GetUpDownRate(setDayLineBasicInfo.m_Close, setDayLineBasicInfo.m_LastClose);
 		}
-		if (IsAStock(setDayLineBasicInfo.m_Symbol)) {
+		if (IsShareA(setDayLineBasicInfo.m_Symbol)) {
 			const auto lIndex = m_mapSymbol.at(setDayLineBasicInfo.m_Symbol);
 			vStock.push_back(GetStock(lIndex));
 			vIndex.push_back(iStockNumber); // 将A股的索引记录在容器中。
@@ -874,7 +847,7 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 			// 深圳成指
 			dShenzhenIndexUpDownRate = GetUpDownRate(setWeekLineBasicInfo.m_Close, setWeekLineBasicInfo.m_LastClose);
 		}
-		if (IsAStock(setWeekLineBasicInfo.m_Symbol)) {
+		if (IsShareA(setWeekLineBasicInfo.m_Symbol)) {
 			const auto lIndex = m_mapSymbol.at(setWeekLineBasicInfo.m_Symbol);
 			vStock.push_back(GetStock(lIndex));
 			vIndex.push_back(iStockNumber); // 将A股的索引记录在容器中。

@@ -8,9 +8,9 @@ public:
 	CProductFinnhubEconomicCountryList();
 	~CProductFinnhubEconomicCountryList() override = default;
 
-	CString CreateMessage() final;
+	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CCountryVectorPtr ParseFinnhubCountryList(CWebDataPtr pWebData);
+	CCountryVectorPtr ParseFinnhubCountryList(const CWebDataPtr& pWebData);
 };
 
 using CFinnhubEconomicCountryListPtr = shared_ptr<CProductFinnhubEconomicCountryList>;

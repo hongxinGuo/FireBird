@@ -16,7 +16,7 @@ public:
 
 	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CCompanyNewsVectorPtr ParseFinnhubCompanyNews(CWebDataPtr pWebData);
+	CCompanyNewsVectorPtr ParseFinnhubCompanyNews(const CWebDataPtr& pWebData);
 };
 
 using CProductFinnhubCompanyNewsPtr = shared_ptr<CProductFinnhubCompanyNews>;

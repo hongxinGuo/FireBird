@@ -17,7 +17,7 @@ void CDataFinnhubForexExchange::Reset() {
 	m_lLastTotalForexExchange = 0;
 }
 
-bool CDataFinnhubForexExchange::Delete(CString strForexExchange) {
+bool CDataFinnhubForexExchange::Delete(const CString& strForexExchange) {
 	if (!IsForexExchange(strForexExchange)) return false;
 
 	const auto it = ranges::find(m_vForexExchange.begin(), m_vForexExchange.end(), strForexExchange);
@@ -27,7 +27,7 @@ bool CDataFinnhubForexExchange::Delete(CString strForexExchange) {
 	return true;
 }
 
-void CDataFinnhubForexExchange::Add(CString strForexExchange) {
+void CDataFinnhubForexExchange::Add(const CString& strForexExchange) {
 	m_mapForexExchange[strForexExchange] = m_vForexExchange.size();
 	m_vForexExchange.push_back(strForexExchange);
 }

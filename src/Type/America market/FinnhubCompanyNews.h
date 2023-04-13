@@ -36,7 +36,7 @@ public:
 	void Update(CSetCompanyNews& setCompanyNews);
 	void Save(CSetCompanyNews& setCompanyNews);
 
-	void Load(CSetCompanyNews& setCompanyNews);
+	void Load(const CSetCompanyNews& setCompanyNews);
 
 public:
 	CString m_strCompanySymbol;

@@ -8,9 +8,9 @@ public:
 	CProductFinnhubEconomicCalendar();
 	~CProductFinnhubEconomicCalendar() override = default;
 
-	CString CreateMessage() final;
+	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CEconomicCalendarVectorPtr ParseFinnhubEconomicCalendar(CWebDataPtr pWebData);
+	CEconomicCalendarVectorPtr ParseFinnhubEconomicCalendar(const CWebDataPtr& pWebData);
 };
 
 using CFinnhubEconomicCalendarPtr = shared_ptr<CProductFinnhubEconomicCalendar>;

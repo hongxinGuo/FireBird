@@ -7,9 +7,9 @@ public:
 	CProductFinnhubCompanyPeer();
 	~CProductFinnhubCompanyPeer() override = default;
 
-	CString CreateMessage() final;
+	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	json ParseFinnhubStockPeer(CWebDataPtr pWebData);
+	json ParseFinnhubStockPeer(const CWebDataPtr& pWebData);
 };
 
 using CFinnhubCompanyPeerPtr = shared_ptr<CProductFinnhubCompanyPeer>;

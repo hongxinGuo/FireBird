@@ -21,12 +21,12 @@ public:
 	void UpdateProfileDB();
 
 	bool UpdateBasicFinancialDB();
-	static void UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock);
-	static void UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock);
-	void UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock);
-	static void ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStock);
+	static void UpdateBasicFinancialAnnualDB(const vector<CWorldStockPtr>& vStock);
+	static void UpdateBasicFinancialQuarterDB(const vector<CWorldStockPtr>& vStock);
+	void UpdateBasicFinancialMetricDB(const vector<CWorldStockPtr>& vStock);
+	static void ClearUpdateBasicFinancialFlag(const vector<CWorldStockPtr>& vStock);
 
-	static bool ValidateStockSymbol(CWorldStockPtr pStock);
+	static bool ValidateStockSymbol(const CWorldStockPtr& pStock);
 
 	bool IsUpdateCompanyNewsDB();
 	bool IsUpdateBasicFinancialDB();

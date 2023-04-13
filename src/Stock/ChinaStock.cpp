@@ -265,7 +265,7 @@ void CChinaStock::SaveTempInfo(CSetDayLineTodaySaved* pSetDayLineTemp) const {
 	pDayLine->Save(pSetDayLineTemp);
 }
 
-void CChinaStock::UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pBeUpdated) const {
+void CChinaStock::UpdateCurrentHistoryCandle(const CVirtualHistoryCandleExtendPtr& pBeUpdated) const {
 	pBeUpdated->SetDate(ConvertToDate(m_TransactionTime));
 	pBeUpdated->SetExchange(m_strExchangeCode);
 	pBeUpdated->SetStockSymbol(m_strSymbol);
@@ -351,7 +351,7 @@ void CChinaStock::UpdateCurrentHistoryCandle(CVirtualHistoryCandleExtendPtr pBeU
 	pBeUpdated->SetCanceledSellVolumeAbove200000(m_lCanceledSellVolumeAbove200000);
 }
 
-void CChinaStock::UpdateStatus(CWebRTDataPtr pRTData) {
+void CChinaStock::UpdateStatus(const CWebRTDataPtr& pRTData) {
 	SetTransactionTime(pRTData->GetTransactionTime());
 	SetLastClose(pRTData->GetLastClose());
 	SetNew(pRTData->GetNew());
@@ -376,7 +376,7 @@ void CChinaStock::UpdateStatus(CWebRTDataPtr pRTData) {
 	}
 }
 
-void CChinaStock::UpdateProfile(CWebRTDataPtr pRTData) {
+void CChinaStock::UpdateProfile(const CWebRTDataPtr& pRTData) {
 	SetActive(true);
 	SetDayLineLoaded(false);
 	SetSymbol(pRTData->GetSymbol()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
@@ -743,7 +743,7 @@ bool CChinaStock::ProcessOneRTData(const CWebRTDataPtr& pRTData) {
 //
 // 中国股市的涨跌停板价格计算方法目前不知，只能靠摸索。
 
-void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
+void CChinaStock::CalculateHighLowLimit(const CWebRTDataPtr& pRTData) {
 	double d1, d2;
 	int iAdjust = 0;
 	int iCompare;
@@ -830,7 +830,7 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
 // 第一次收到实时数据时，只初始化系统，不计算（因为没有初始数据）
 //
 ////////////////////////////////////////////////////////////////////////////////////////
-void CChinaStock::InitializeCalculatingRTDataEnvironment(CWebRTDataPtr pRTData) {
+void CChinaStock::InitializeCalculatingRTDataEnvironment(const CWebRTDataPtr& pRTData) {
 	SetLastRTData(pRTData);
 	SetHavingFirstRTData(true);
 	// 第一次挂单量无法判断买卖状态，故而设置其为无法判断。如果之前已经运行过系统，此次是开盘中途登录的，则系统存储了临时数据于数据库中，
@@ -846,7 +846,7 @@ void CChinaStock::InitializeCalculatingRTDataEnvironment(CWebRTDataPtr pRTData) 
 	}
 }
 
-void CChinaStock::CalculateOneRTData(CWebRTDataPtr pRTData) {
+void CChinaStock::CalculateOneRTData(const CWebRTDataPtr& pRTData) {
 	long lCurrentGuadanTransactionPrice;
 
 	ResetCalculatingData();
@@ -875,7 +875,7 @@ void CChinaStock::CalculateOneRTData(CWebRTDataPtr pRTData) {
 	SetLastRTData(pRTData);
 }
 
-void CChinaStock::CalculateOneDeal(CWebRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice) {
+void CChinaStock::CalculateOneDeal(const CWebRTDataPtr& pRTData, INT64 lCurrentGuadanTransactionPrice) {
 	IncreaseTransactionNumber();
 	ASSERT(lCurrentGuadanTransactionPrice == ((pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume)); // 生成比较用的价格（放大一千倍后采用长整型）
 	m_dCurrentGuadanTransactionPrice = static_cast<double>(lCurrentGuadanTransactionPrice) / 1000; // 变换成实际价格
@@ -1057,7 +1057,7 @@ void CChinaStock::ResetCalculatingData() {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaStock::AnalysisGuadan(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice) {
+bool CChinaStock::AnalysisGuadan(const CWebRTDataPtr& pCurrentRTData, INT64 lCurrentTransactionPrice) {
 	// 需要检查的挂单位置。顺序为：卖单4, 卖单3, ... 卖单0, 卖单0, .... 买单3, 买单4
 	// 卖单买单谁在前面无所谓，但计算时需要记住此顺序。
 	array<bool, 10> fNeedCheck{true, true, true, true, true, true, true, true, true, true};
@@ -1071,7 +1071,7 @@ bool CChinaStock::AnalysisGuadan(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTra
 	return (true);
 }
 
-void CChinaStock::SelectGuadanThatNeedToCalculate(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) const {
+void CChinaStock::SelectGuadanThatNeedToCalculate(const CWebRTDataPtr& pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) const {
 	// 确定需要计算哪些挂单。一共有十个，没有受到交易影响的都要计算。
 	switch (m_nCurrentTransactionType) {
 	case NO_TRANSACTION_: // 没有成交，则减少的量就是相应价位上的撤单。
@@ -1135,7 +1135,7 @@ void CChinaStock::SelectGuadanThatNeedToCalculate(CWebRTDataPtr pCurrentRTData, 
 	}
 }
 
-void CChinaStock::SetCurrentGuadan(CWebRTDataPtr pCurrentRTData) {
+void CChinaStock::SetCurrentGuadan(const CWebRTDataPtr& pCurrentRTData) {
 	// 空位处可能是成交了，也可能是撤单了，目前不考虑这些细节，统一认为是成交了（不计算撤单）。以后再分析之。
 	// 先清空当前挂单之间的挂单数量，然后填上当前量。如果有空当的话，则自然清空了。
 	for (int i = pCurrentRTData->GetPBuy(4); i <= pCurrentRTData->GetPSell(4); i += 10) {
@@ -1213,7 +1213,7 @@ bool CChinaStock::HaveGuadan(INT64 lPrice) const {
 	return true;
 }
 
-bool CChinaStock::CheckCurrentRTData() {
+bool CChinaStock::CheckCurrentRTData() const {
 	if ((GetOrdinaryBuyVolume() < 0) || (GetOrdinarySellVolume() < 0)
 		|| (GetAttackBuyVolume() < 0) || (GetAttackSellVolume() < 0)
 		|| (GetStrongBuyVolume() < 0) || (GetStrongSellVolume() < 0)) {

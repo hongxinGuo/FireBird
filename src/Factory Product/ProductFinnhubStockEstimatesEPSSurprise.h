@@ -8,9 +8,9 @@ public:
 	CProductFinnhubStockEstimatesEPSSurprise();
 	~CProductFinnhubStockEstimatesEPSSurprise() override = default;
 
-	CString CreateMessage() final;
+	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CEPSSurpriseVectorPtr ParseFinnhubEPSSurprise(CWebDataPtr pWebData);
+	CEPSSurpriseVectorPtr ParseFinnhubEPSSurprise(const CWebDataPtr& pWebData);
 };
 
 using CFinnhubStockEstimatesEPSSurprisePtr = shared_ptr<CProductFinnhubStockEstimatesEPSSurprise>;

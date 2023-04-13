@@ -9,4 +9,4 @@
 
 #include"DayLine.h"
 
-bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2) { return p1->GetMarketDate() < p2->GetMarketDate(); }
+[[nodiscard]] bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2) { return p1->GetMarketDate() < p2->GetMarketDate(); }

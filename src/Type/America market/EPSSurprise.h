@@ -10,7 +10,7 @@ public:
 	~CEPSSurprise() = default;
 
 	void Append(CSetEPSSurprise& setEPSSurprise);
-	void Load(CSetEPSSurprise& setEPSSurprise);
+	void Load(const CSetEPSSurprise& setEPSSurprise);
 
 public:
 	CString m_strSymbol;

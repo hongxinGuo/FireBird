@@ -45,7 +45,7 @@ bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) 
 	return false;
 }
 
-bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr pStock) {
+bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(const CWebDataPtr& pWebData, const CWorldStockPtr& pStock) {
 	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) return false;
 	if (pWebData->IsVoidJson()) {

@@ -597,6 +597,9 @@
     <ClCompile Include="VirtualWebSocketTest.cpp">
       <Filter>Test源文件\Web Socket</Filter>
     </ClCompile>
+    <ClCompile Include="AccessoryTest.cpp">
+      <Filter>Test源文件\accessory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockMainFrm.h">

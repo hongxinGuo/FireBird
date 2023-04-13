@@ -23,6 +23,6 @@ bool CProductNeteaseRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	return true;
 }
 
-shared_ptr<vector<CWebRTDataPtr>> CProductNeteaseRT::ParseNeteaseRT(CWebDataPtr pWebData) {
+shared_ptr<vector<CWebRTDataPtr>> CProductNeteaseRT::ParseNeteaseRT(const CWebDataPtr& pWebData) {
 	return ParseNeteaseRTDataWithNlohmannJSon(pWebData);
 }

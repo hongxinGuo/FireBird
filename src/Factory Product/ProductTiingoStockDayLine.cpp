@@ -11,7 +11,7 @@
 
 using namespace std;
 
-CProductTiingoStockDayLine::CProductTiingoStockDayLine() : CVirtualWebProduct() {
+CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 	m_strClassName = _T("Tiingo stock price candle");
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/daily/");
 	m_lIndex = -1;
@@ -104,7 +104,7 @@ bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // 如果没有股票600600.SS日线数据，则返回：{"detail":"Error:Ticker '600600.SS' not found"}
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(CWebDataPtr pWebData) {
+CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataPtr& pWebData) {
 	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
 	string s;
 	long year, month, day;

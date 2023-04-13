@@ -56,7 +56,7 @@ bool CContainerChinaDayLine::LoadDB(const CString& strStockSymbol) {
 	return true;
 }
 
-bool CContainerChinaDayLine::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) {
+bool CContainerChinaDayLine::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) const {
 	ASSERT(IsDataLoaded());
 	ASSERT(Size() > 0);
 	long lCurrentDayLinePos = 0;
@@ -72,12 +72,12 @@ bool CContainerChinaDayLine::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) {
 	return true;
 }
 
-CWeekLinePtr CContainerChinaDayLine::CreateNewWeekLine(long& lCurrentDayLinePos) {
+CWeekLinePtr CContainerChinaDayLine::CreateNewWeekLine(long& lCurrentDayLinePos) const {
 	ASSERT(Size() > 0);
 	ASSERT(lCurrentDayLinePos < Size());
 
-	long lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetMarketDate());
-	long lNewestDay = GetData(Size() - 1)->GetMarketDate();
+	const long lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetMarketDate());
+	const long lNewestDay = GetData(Size() - 1)->GetMarketDate();
 	auto pWeekLine = make_shared<CWeekLine>();
 	if (lNextMonday < lNewestDay) {
 		// 中间数据

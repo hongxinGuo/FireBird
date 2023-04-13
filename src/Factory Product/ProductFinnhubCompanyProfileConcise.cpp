@@ -26,10 +26,9 @@ CString CProductFinnhubCompanyProfileConcise::CreateMessage() {
 
 bool CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
-	bool fSucceed = false;
 	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	pStock->SetUpdateCompanyProfile(false);
-	fSucceed = ParseFinnhubStockProfileConcise(pWebData, pStock);
+	const bool fSucceed = ParseFinnhubStockProfileConcise(pWebData, pStock);
 	if (fSucceed || pWebData->IsVoidJson() || pWebData->IsNoRightToAccess()) {
 		pStock->SetProfileUpdateDate(m_pMarket->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
@@ -57,7 +56,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWeb
 /// <param name="pWebData"></param>
 /// <param name="pStock"></param>
 /// <returns></returns>
-bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr pStock) {
+bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const CWebDataPtr& pWebData, const CWorldStockPtr& pStock) {
 	string s;
 	string sError;
 

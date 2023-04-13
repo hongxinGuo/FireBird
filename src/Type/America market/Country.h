@@ -10,7 +10,7 @@ public:
 	~CCountry() = default;
 
 	void Append(CSetCountry& setCountry);
-	void Load(CSetCountry& setCountry);
+	void Load(const CSetCountry& setCountry);
 
 public:
 	CString m_strCode2;

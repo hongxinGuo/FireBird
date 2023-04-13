@@ -16,12 +16,12 @@ public:
 	void UpdateStatusAfterReading(CWebDataPtr pData) override; // 成功接收后更新系统状态, 此处更新其股票代码
 
 	virtual bool InquireDayLine();
-	vector<CVirtualWebProductPtr> CreateProduct(CChinaStockPtr pStock);
+	vector<CVirtualWebProductPtr> CreateProduct(const CChinaStockPtr& pStock);
 
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
 
-	void SetDownLoadingStockCode(CString strStockCode);
+	void SetDownLoadingStockCode(const CString& strStockCode);
 	CString GetDownLoadingStockCode() { return m_strDownLoadingStockCode; }
 	void ResetDownLoadingStockCode() { m_strDownLoadingStockCode = _T(""); }
 

@@ -10,7 +10,7 @@ public:
 
 	bool LoadDB();
 	bool UpdateDB();
-	bool Update(vector<CEconomicCalendarPtr> vEconomicCalendar);
+	bool Update(const vector<CEconomicCalendarPtr>& vEconomicCalendar);
 
 	bool IsNeedUpdate() const noexcept {
 		if (m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size()) return true;

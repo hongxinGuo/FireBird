@@ -50,7 +50,7 @@ void CMarketTaskQueue::CreateIndexMap() {
 
 	gl_mapMarketMapIndex[WORLD_MARKET_CHECK_SYSTEM_READY__] = "系统初始化检查";
 	gl_mapMarketMapIndex[WORLD_MARKET_RESET__] = "重置系统";
-	gl_mapMarketMapIndex[WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__] = "更新股票简介数据库";
+	gl_mapMarketMapIndex[WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__] = "更新市场各数据库";
 	gl_mapMarketMapIndex[WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__] = "处理WebSocket数据";
 	gl_mapMarketMapIndex[WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__] = "监测WebSocket运行状态";
 }

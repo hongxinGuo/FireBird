@@ -65,7 +65,6 @@ CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket,
 	case ECONOMIC_COUNTRY_LIST_:
 	case ECONOMIC_CALENDAR_:
 	default:
-		// not impliment yet.
 		p = make_shared<CProductDummy>();
 		gl_systemMessage.PushErrorMessage(_T("Tiingo productŒ¥ µœ÷"));
 		break;

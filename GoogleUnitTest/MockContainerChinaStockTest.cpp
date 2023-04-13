@@ -104,44 +104,4 @@ namespace FireBirdTest {
 			EXPECT_EQ(pStock->GetDayLineEndDate(), 19900101);
 		}
 	}
-
-	TEST_F(CMockContainerChinaStockTest, TestIsAStock) {
-		const auto pStock = make_shared<CChinaStock>();
-		pStock->SetSymbol(_T("600000.SS"));
-		EXPECT_TRUE(s_pMockContainerChinaStock->IsAStock(pStock));
-		pStock->SetSymbol(_T("600000.SA"));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(pStock));
-		pStock->SetSymbol(_T("000001.SZ"));
-		EXPECT_TRUE(s_pMockContainerChinaStock->IsAStock(pStock));
-		pStock->SetSymbol(_T("10001.SZ"));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(pStock));
-	}
-
-	TEST_F(CMockContainerChinaStockTest, TestIsAStock2) {
-		EXPECT_TRUE(s_pMockContainerChinaStock->IsAStock(_T("600000.SS")));
-		EXPECT_TRUE(s_pMockContainerChinaStock->IsAStock(_T("601198.SS")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("602102.SS")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("603604.SS")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("604604.SS")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("605604.SS")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("606604.SS")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("607604.SS")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("608604.SS")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("609604.SS")));
-
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("600000.SZ")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("000001.SA")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("000001.AZ")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("200001.SZ")));
-		EXPECT_TRUE(s_pMockContainerChinaStock->IsAStock(_T("000001.SZ")));
-		EXPECT_TRUE(s_pMockContainerChinaStock->IsAStock(_T("002389.SZ")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("003389.SZ")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("004389.SZ")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("005389.SZ")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("006389.SZ")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("007389.SZ")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("008389.SZ")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("009389.SZ")));
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsAStock(_T("001389.SZ")));
-	}
 }

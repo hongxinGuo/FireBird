@@ -115,7 +115,7 @@ bool CVirtualDataSource::ProcessWebDataReceived() {
 	return bProcessed;
 }
 
-void CVirtualDataSource::CheckInaccessible(CWebDataPtr pWebData) const {
+void CVirtualDataSource::CheckInaccessible(const CWebDataPtr& pWebData) const {
 	ASSERT(m_pCurrentProduct != nullptr);
 	if (m_pCurrentProduct->CheckInaccessible(pWebData)) {
 		// 如果系统报告无权查询此类数据, 目前先在软件系统消息中报告
@@ -330,7 +330,7 @@ void CVirtualDataSource::CreateTotalInquiringString() {
 	m_strInquiry = m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken;
 }
 
-void CVirtualDataSource::TESTSetBuffer(char* buffer, INT64 lTotalNumber) {
+void CVirtualDataSource::TESTSetBuffer(const char* buffer, const INT64 lTotalNumber) {
 	m_sBuffer.resize(lTotalNumber);
 	for (INT64 i = 0; i < lTotalNumber; i++) { m_sBuffer.at(i) = buffer[i]; }
 	m_lByteRead = lTotalNumber;
@@ -345,6 +345,6 @@ void CVirtualDataSource::TESTSetBuffer(CString str) {
 	m_lByteRead = lTotalNumber;
 }
 
-void CVirtualDataSource::TESTSetWebBuffer(char* buffer, INT64 lTotalNumber) {
+void CVirtualDataSource::TESTSetWebBuffer(const char* buffer, const INT64 lTotalNumber) {
 	for (INT64 i = 0; i < lTotalNumber; i++) { m_dataBuffer[i] = buffer[i]; }
 }

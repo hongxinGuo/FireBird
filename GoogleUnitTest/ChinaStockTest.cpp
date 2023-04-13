@@ -2662,5 +2662,17 @@ namespace FireBirdTest {
 		setWeekLineBasicInfo.Close();
 	}
 
+	TEST_F(CChinaStockTest, TestIsAStock) {
+		const auto pStock = make_shared<CChinaStock>();
+		pStock->SetSymbol(_T("600000.SS"));
+		EXPECT_TRUE(pStock->IsShareA());
+		pStock->SetSymbol(_T("600000.SA"));
+		EXPECT_FALSE(pStock->IsShareA());
+		pStock->SetSymbol(_T("000001.SZ"));
+		EXPECT_TRUE(pStock->IsShareA());
+		pStock->SetSymbol(_T("10001.SZ"));
+		EXPECT_FALSE(pStock->IsShareA());
+	}
+
 	//TEST_F_TRAITS();
 }

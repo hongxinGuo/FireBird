@@ -10,7 +10,7 @@
 
 using namespace std;
 
-CProductTiingoStockSymbol::CProductTiingoStockSymbol() : CVirtualWebProduct() {
+CProductTiingoStockSymbol::CProductTiingoStockSymbol() {
 	m_strClassName = _T("Tiingo stock symbols");
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");
 }
@@ -78,7 +78,7 @@ bool CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // ]
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(CWebDataPtr pWebData) {
+CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CWebDataPtr& pWebData) {
 	auto pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
 	string strNotAvailable{_T("Field not available for free/evaluation")}; // Tiingo免费账户有多项内容空缺，会返回此信息。
 	CString strNULL = _T(" ");

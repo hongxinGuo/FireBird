@@ -8,7 +8,7 @@
 #include"TiingoCryptoSymbol.h"
 #include "ProductTiingoCryptoSymbol.h"
 
-CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() : CVirtualWebProduct() {
+CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() {
 	m_strClassName = _T("Tiingo crypto symbols");
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/crypto?");
 	m_differ1 = 0;
@@ -60,7 +60,7 @@ bool CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // ]
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoCryptoVectorPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(CWebDataPtr pWebData) {
+CTiingoCryptoVectorPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWebDataPtr& pWebData) {
 	auto pvTiingoCrypto = make_shared<vector<CTiingoCryptoSymbolPtr>>();
 	CString strNULL = _T(" ");
 	string s;

@@ -16,9 +16,9 @@ public:
 		return false;
 	}
 
-	bool IsCountry(const CCountryPtr pCountry) const noexcept { return IsCountry(pCountry->m_strCountry); }
-	void Add(CCountryPtr pCountry);
-	bool Delete(CCountryPtr pCountry);
+	bool IsCountry(const CCountryPtr& pCountry) const noexcept { return IsCountry(pCountry->m_strCountry); }
+	void Add(const CCountryPtr& pCountry);
+	bool Delete(const CCountryPtr& pCountry);
 	CCountryPtr GetCountry(const CString& strCountry) { return m_vCountry.at(m_mapCountry.at(strCountry)); }
 
 	void UpdateDB();

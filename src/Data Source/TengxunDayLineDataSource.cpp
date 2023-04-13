@@ -94,7 +94,7 @@ bool CTengxunDayLineDataSource::InquireDayLine() {
 	return false;
 }
 
-vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(CChinaStockPtr pStock) {
+vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CChinaStockPtr& pStock) {
 	//long lStartDate = 20100101; // 强迫生成多次申请（测试用）
 	long lStartDate = GetPrevDay(pStock->GetDayLineEndDate()); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
 	const long lCurrentDate = gl_pChinaMarket->GetMarketDate();
@@ -165,6 +165,6 @@ void CTengxunDayLineDataSource::UpdateStatusAfterReading(CWebDataPtr pData) {
 /// 这里的strStockCode为标准制式：600000.SS，000001.SZ，
 /// </summary>
 /// <param name="strStockCode"></param>
-void CTengxunDayLineDataSource::SetDownLoadingStockCode(CString strStockCode) {
+void CTengxunDayLineDataSource::SetDownLoadingStockCode(const CString& strStockCode) {
 	m_strDownLoadingStockCode = strStockCode;
 }

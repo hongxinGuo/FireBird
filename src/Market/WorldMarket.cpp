@@ -177,11 +177,14 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 }
 
 void CWorldMarket::TaskProcessWebSocketData(long lCurrentTime) {
-	if (!IsTimeToResetSystem(lCurrentTime)) {	// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新。
-		ProcessWebSocketData();
-		UpdateWorldStockFromWebSocket();
-	}
-	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, GetNextSecond(lCurrentTime));
+	ASSERT(!IsTimeToResetSystem(lCurrentTime));	// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新。
+
+	ProcessWebSocketData();
+	UpdateWorldStockFromWebSocket();
+
+	long lNextTime = GetNextSecond(lCurrentTime);
+	if (IsTimeToResetSystem(lNextTime)) lNextTime = 170501;
+	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lNextTime);
 }
 
 void CWorldMarket::TaskMonitoringWebSocketStatus(long lCurrentTime) {
@@ -365,32 +368,35 @@ void CWorldMarket::CreateThreadUpdateDayLineDB() {
 }
 
 void CWorldMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
-	if (!IsTimeToResetSystem(lCurrentTime)) {	// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
-		if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
-			CreateThreadUpdateCountryListDB();
-		}
-		if (IsUpdateForexExchangeDB()) CreateThreadUpdateForexExchangeDB();
-		if (IsUpdateForexSymbolDB()) CreateThreadUpdateForexSymbolDB();
-		if (IsUpdateCryptoExchangeDB()) CreateThreadUpdateCryptoExchangeDB();
-		if (IsUpdateCryptoSymbolDB()) CreateThreadUpdateFinnhubCryptoSymbolDB();
-		if (IsUpdateInsiderTransactionDB()) CreateThreadUpdateInsiderTransactionDB();
-		if (IsUpdateInsiderSentimentDB()) CreateThreadUpdateInsiderSentimentDB();
-		if (IsSaveStockDayLineDB()) CreateThreadUpdateDayLineDB();
-		if (IsUpdateEconomicCalendarDB()) CreateThreadUpdateEconomicCalendarDB();
-		if (IsUpdateCompanyNewsDB()) CreateThreadUpdateCompanyNewsDB();
-		if (IsUpdateBasicFinancialDB()) CreateThreadUpdateBasicFinancialDB();
-		if (IsNeedUpdateTiingoStock()) CreateThreadUpdateTiingoStockDB();
-		if (IsNeedUpdateTiingoCryptoSymbol()) CreateThreadUpdateTiingoCryptoSymbolDB();
+	ASSERT(!IsTimeToResetSystem(lCurrentTime));// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
 
-		UpdateForexDayLineDB();
-		UpdateCryptoDayLineDB();
-		UpdateEPSSurpriseDB();
-
-		if (!gl_pFinnhubDataSource->IsUpdateSymbol() && IsUpdateStockProfileDB()) {
-			CreateThreadUpdateStockProfileDB();
-		}
+	if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
+		CreateThreadUpdateCountryListDB();
 	}
-	AddTask(WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__, GetNextTime(lCurrentTime, 0, 5, 0)); // 每五分钟更新一次
+	if (IsUpdateForexExchangeDB()) CreateThreadUpdateForexExchangeDB();
+	if (IsUpdateForexSymbolDB()) CreateThreadUpdateForexSymbolDB();
+	if (IsUpdateCryptoExchangeDB()) CreateThreadUpdateCryptoExchangeDB();
+	if (IsUpdateCryptoSymbolDB()) CreateThreadUpdateFinnhubCryptoSymbolDB();
+	if (IsUpdateInsiderTransactionDB()) CreateThreadUpdateInsiderTransactionDB();
+	if (IsUpdateInsiderSentimentDB()) CreateThreadUpdateInsiderSentimentDB();
+	if (IsSaveStockDayLineDB()) CreateThreadUpdateDayLineDB();
+	if (IsUpdateEconomicCalendarDB()) CreateThreadUpdateEconomicCalendarDB();
+	if (IsUpdateCompanyNewsDB()) CreateThreadUpdateCompanyNewsDB();
+	if (IsUpdateBasicFinancialDB()) CreateThreadUpdateBasicFinancialDB();
+	if (IsNeedUpdateTiingoStock()) CreateThreadUpdateTiingoStockDB();
+	if (IsNeedUpdateTiingoCryptoSymbol()) CreateThreadUpdateTiingoCryptoSymbolDB();
+
+	UpdateForexDayLineDB();
+	UpdateCryptoDayLineDB();
+	UpdateEPSSurpriseDB();
+
+	if (!gl_pFinnhubDataSource->IsUpdateSymbol() && IsUpdateStockProfileDB()) {
+		CreateThreadUpdateStockProfileDB();
+	}
+
+	long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
+	if (IsTimeToResetSystem(lCurrentTime)) lNextTime = 170510;
+	AddTask(WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__, lNextTime); // 每五分钟更新一次
 }
 
 void CWorldMarket::CreateThreadUpdateStockProfileDB() {
@@ -618,14 +624,14 @@ vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector() {
 		vSymbol.push_back(pStock->GetSymbol().GetBuffer());
 	}
 
-	for (long l = 0; l < m_containerChosenCrypto.Size(); l++) {
-		const CFinnhubCryptoSymbolPtr pCrypto = m_containerChosenCrypto.GetCryptoSymbol(l);
-		vSymbol.push_back(pCrypto->GetSymbol().GetBuffer());
-	}
-
 	for (long l = 0; l < m_containerChosenForex.Size(); l++) {
 		const CForexSymbolPtr pForex = m_containerChosenForex.GetForexSymbol(l);
 		vSymbol.push_back(pForex->GetSymbol().GetBuffer());
+	}
+
+	for (long l = 0; l < m_containerChosenCrypto.Size(); l++) {
+		const CFinnhubCryptoSymbolPtr pCrypto = m_containerChosenCrypto.GetCryptoSymbol(l);
+		vSymbol.push_back(pCrypto->GetSymbol().GetBuffer());
 	}
 
 	// Send a message to the server (default to TEXT mode)
@@ -743,18 +749,6 @@ void CWorldMarket::DisconnectAllWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) gl_tiingoIEXWebSocket.Disconnect();
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) gl_tiingoCryptoWebSocket.Disconnect();
 	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) gl_tiingoForexWebSocket.Disconnect();
-}
-
-/// <summary>
-/// 停止WebSocket。此函数是生成工作线程来停止WebSocket，不用等待其停止即返回。用于系统运行中的停止动作。
-/// </summary>
-void CWorldMarket::StopWebSocketsIfTimeOut() const {
-	if (IsSystemReady()) {
-		StopFinnhubWebSocketIfTimeOut();
-		StopTiingoIEXWebSocketIfTimeOut();
-		StopTiingoCryptoWebSocketIfTimeOut();
-		StopTiingoForexWebSocketIfTimeOut();
-	}
 }
 
 void CWorldMarket::StopFinnhubWebSocketIfTimeOut() {

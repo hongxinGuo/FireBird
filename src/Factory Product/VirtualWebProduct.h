@@ -21,7 +21,7 @@ public:
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) { return true; };
 	virtual bool AddInaccessibleExchangeIfNeeded() { return true; } // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 
-	bool CheckInaccessible(CWebDataPtr pWebData);
+	bool CheckInaccessible(const CWebDataPtr& pWebData);
 	bool CheckVoidJson(const CWebDataPtr& pWebData);
 
 	bool IsVoidData() const noexcept { return m_iReceivedDataStatus == VOID_DATA_; }
@@ -31,7 +31,7 @@ public:
 	CString GetClassName() const noexcept { return m_strClassName; }
 	CString GetInquiry() const noexcept { return m_strInquiry; }
 	CString GetInquiryFunction() const noexcept { return m_strInquiryFunction; }
-	void SetInquiryFunction(CString strMessage) noexcept { m_strInquiryFunction = strMessage; }
+	void SetInquiryFunction(const CString& strMessage) noexcept { m_strInquiryFunction = strMessage; }
 
 	long GetIndex() const noexcept { return m_lIndex; }
 	void SetIndex(const long lIndex) noexcept { m_lIndex = lIndex; }
@@ -81,7 +81,7 @@ extern FinnhubWebData finnhubWebData1;
 
 // 此结构只用于测试中
 struct TiingoWebData {
-	TiingoWebData(long lIndex, CString strSymbol, CString strData) {
+	TiingoWebData(const long lIndex, const CString& strSymbol, const CString& strData) {
 		m_lIndex = lIndex;
 		m_strSymbol = strSymbol;
 		m_pData = make_shared<CWebData>();

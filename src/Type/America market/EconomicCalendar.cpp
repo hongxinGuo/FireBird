@@ -14,7 +14,7 @@ CEconomicCalendar::CEconomicCalendar() {
 	m_strUnit = _T(" ");
 }
 
-void CEconomicCalendar::Load(CSetEconomicCalendar& setEconomicCalendar) {
+void CEconomicCalendar::Load(const CSetEconomicCalendar& setEconomicCalendar) {
 	m_strTime = setEconomicCalendar.m_Time;
 	m_strCountry = setEconomicCalendar.m_Country;
 	m_strEvent = setEconomicCalendar.m_Event;

@@ -67,7 +67,7 @@ bool CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr 
 //  }
 //
 //
-CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubStockInsiderTransaction(CWebDataPtr pWebData) {
+CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubStockInsiderTransaction(const CWebDataPtr& pWebData) {
 	auto pvInsiderTransaction = make_shared<vector<CInsiderTransactionPtr>>();
 	json pt1;
 	string sError;
@@ -121,6 +121,6 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 		return pvInsiderTransaction;
 	}
 	ranges::sort(pvInsiderTransaction->begin(), pvInsiderTransaction->end(),
-	             [](CInsiderTransactionPtr& p1, CInsiderTransactionPtr& p2) { return p1->m_lTransactionDate < p2->m_lTransactionDate; });
+	             [](const CInsiderTransactionPtr& p1, const CInsiderTransactionPtr& p2) { return p1->m_lTransactionDate < p2->m_lTransactionDate; });
 	return pvInsiderTransaction;
 }

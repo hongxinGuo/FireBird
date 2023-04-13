@@ -279,7 +279,7 @@ void GetMarketTimeStruct(tm* tm_, const time_t tUTC, const time_t tTimeZone) {
 	gmtime_s(tm_, &tMarket);
 }
 
-CString ConvertDateToString(const long lDate, CString strFormat) {
+CString ConvertDateToString(const long lDate, const CString& strFormat) {
 	char buffer[30];
 	const long year = lDate / 10000;
 	const long month = lDate / 100 - year * 100;
@@ -298,7 +298,7 @@ CString ConvertDateToChineseTimeStampString(const long lDate) {
 	return (ConvertDateToString(lDate, _T("%4dƒÍ%2d‘¬%2d»’")));
 }
 
-time_t ConvertBufferToTime(CString strFormat, char* BufferMarketTime, const time_t tTimeZoneOffset) {
+time_t ConvertBufferToTime(CString strFormat, const char* BufferMarketTime, const time_t tTimeZoneOffset) {
 	tm tm_{0, 0, 0, 0, 0, 0};
 	int year, month, day, hour, minute, second;
 
@@ -336,7 +336,7 @@ time_t ConvertStringToTime(CString strFormat, CString strMarketTime, const time_
 	return tt;
 }
 
-time_t XferToTTime(CString strTime, CString strFormat) {
+time_t XferToTTime(CString strTime, const CString& strFormat) {
 	tm t1{};
 	int hourOffset, minuteOffset;
 	int noUse;

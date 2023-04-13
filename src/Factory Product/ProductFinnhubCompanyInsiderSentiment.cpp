@@ -67,7 +67,7 @@ bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pW
 //  ],
 //  "symbol": "TSLA"}
 //
-CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockInsiderSentiment(CWebDataPtr pWebData) {
+CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockInsiderSentiment(const CWebDataPtr& pWebData) {
 	auto pvInsiderSentiment = make_shared<vector<CInsiderSentimentPtr>>();
 	json pt1;
 	string sError;
@@ -114,6 +114,6 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 		return pvInsiderSentiment;
 	}
 	ranges::sort(pvInsiderSentiment->begin(), pvInsiderSentiment->end(),
-	             [](CInsiderSentimentPtr& p1, CInsiderSentimentPtr& p2) { return p1->m_lDate < p2->m_lDate; });
+	             [](const CInsiderSentimentPtr& p1, const CInsiderSentimentPtr& p2) { return p1->m_lDate < p2->m_lDate; });
 	return pvInsiderSentiment;
 }

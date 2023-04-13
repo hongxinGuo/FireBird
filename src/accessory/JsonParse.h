@@ -12,10 +12,10 @@ void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& str
 [[nodiscard]] wstring to_wide_string(const std::string& input); // 将多字节utf-8制式的字符串转换成utf-16制式的宽字符串。
 [[nodiscard]] std::string to_byte_string(const wstring& input); // 将utf-16制式的宽字符串转换成多字节的utf-8字符串。
 
-shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(CWebDataPtr pWebData);
-shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData);
-CDayLineWebDataPtr ParseNeteaseDayLine(CWebDataPtr pWebData);
-CDayLineWebDataPtr ParseTengxunDayLine(CWebDataPtr pWebData);
+shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData);
+shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(const CWebDataPtr& pWebData);
+CDayLineWebDataPtr ParseNeteaseDayLine(const CWebDataPtr& pWebData);
+CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData);
 shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockCode);
 
 // 以下四个函数的定义在NeteaseRTDataParser.cpp中（为了在调试模式下也能优化）

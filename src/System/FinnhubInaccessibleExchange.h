@@ -53,7 +53,7 @@ public:
 	virtual ~CFinnhubInaccessibleExchange();
 
 	bool LoadDB();
-	bool LoadDB(CString strFileDirectory);
+	bool LoadDB(const CString& strFileDirectory);
 	void SaveDB() const;
 	void Update();
 	void UpdateJson();
@@ -69,15 +69,15 @@ public:
 	void SetUpdateDate(const long lDate) noexcept { m_lUpdateDate = lDate; }
 	long GetUpdateDate() const { return m_lUpdateDate; }
 
-	int GetFinnhubInquiryIndex(const CString& sString) const { return gl_FinnhubInquiryType.GetInquiryType(sString); }
+	static int GetFinnhubInquiryIndex(const CString& sString) { return gl_FinnhubInquiryType.GetInquiryType(sString); }
 	CInaccessibleExchangesPtr GetInaccessibleExchange(int iInquiryType);
-	void SetInaccessibleExchange(const int iInquiryType, const CInaccessibleExchangesPtr pExchange) { m_mapInaccessibleExchange[iInquiryType] = pExchange; }
+	void SetInaccessibleExchange(const int iInquiryType, const CInaccessibleExchangesPtr& pExchange) { m_mapInaccessibleExchange[iInquiryType] = pExchange; }
 	size_t GetInaccessibleExchangeSize() const noexcept { return m_mapInaccessibleExchange.size(); }
 
 	bool IsNeedUpdate() const noexcept { return m_fUpdate; }
 	void SetUpdate(const bool fUpdate) noexcept { m_fUpdate = fUpdate; }
 
-	bool IsInaccessible(const int iInquiryType, const CString& strExchangeCode);
+	bool IsInaccessible(const int iInquiryType, const CString& strExchangeCode) const;
 
 public:
 

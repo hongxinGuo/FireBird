@@ -13,8 +13,8 @@ public:
 
 	size_t GetForexExchangeSize() const noexcept { return m_vForexExchange.size(); }
 	CString GetForexExchange(const size_t lIndex) const { return m_vForexExchange.at(lIndex); }
-	bool Delete(CString strForexExchange);
-	void Add(CString strForexExchange);
+	bool Delete(const CString& strForexExchange);
+	void Add(const CString& strForexExchange);
 
 	bool LoadDB();
 	bool UpdateDB();

@@ -57,7 +57,7 @@ bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 	return true;
 }
 
-bool CContainerFinnhubEconomicCalendar::Update(vector<CEconomicCalendarPtr> vEconomicCalendar) {
+bool CContainerFinnhubEconomicCalendar::Update(const vector<CEconomicCalendarPtr>& vEconomicCalendar) {
 	CString strSymbol = _T("");
 
 	for (auto& pEconomicCalendar : vEconomicCalendar) {

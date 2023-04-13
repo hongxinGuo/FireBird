@@ -9,8 +9,8 @@ public:
 	~CDataTiingoStock() = default;
 	void Reset();
 
-	void Add(CTiingoStockPtr pTiingoStock);
-	bool Delete(CTiingoStockPtr pStock);
+	void Add(const CTiingoStockPtr& pTiingoStock);
+	bool Delete(const CTiingoStockPtr& pStock);
 	size_t GetTotalStock() const noexcept { return m_vTiingoStock.size(); }
 
 	bool IsStock(const CString& strSymbol) const noexcept {

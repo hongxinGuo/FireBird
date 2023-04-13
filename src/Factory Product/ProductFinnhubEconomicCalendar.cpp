@@ -37,7 +37,7 @@ bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData)
 	return true;
 }
 
-CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalendar(CWebDataPtr pWebData) {
+CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalendar(const CWebDataPtr& pWebData) {
 	auto pvEconomicCalendar = make_shared<vector<CEconomicCalendarPtr>>();
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
 	string s;

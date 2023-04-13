@@ -42,7 +42,7 @@ void CFinnhubCompanyNews::Save(CSetCompanyNews& setCompanyNews) {
 	setCompanyNews.m_URL = m_strURL.Left(1000);
 }
 
-void CFinnhubCompanyNews::Load(CSetCompanyNews& setCompanyNews) {
+void CFinnhubCompanyNews::Load(const CSetCompanyNews& setCompanyNews) {
 	m_strCompanySymbol = setCompanyNews.m_CompanySymbol;
 	m_strCategory = setCompanyNews.m_Category;
 	m_llDateTime = atoll(setCompanyNews.m_DateTime);

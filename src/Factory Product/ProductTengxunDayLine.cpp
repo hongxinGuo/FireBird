@@ -76,7 +76,7 @@ bool CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	return true;
 }
 
-void CProductTengxunDayLine::AppendDayLine(vector<CDayLinePtr> vDayLine) {
+void CProductTengxunDayLine::AppendDayLine(const vector<CDayLinePtr>& vDayLine) {
 	for (auto& pDayLine : vDayLine) {
 		sm_vDayLinePtr.push_back(pDayLine);
 	}
@@ -84,7 +84,7 @@ void CProductTengxunDayLine::AppendDayLine(vector<CDayLinePtr> vDayLine) {
 
 void CProductTengxunDayLine::CheckAndPrepareDayLine() {
 	if (sm_vDayLinePtr.size() > 1) {
-		ranges::sort(sm_vDayLinePtr, [](CDayLinePtr p1, CDayLinePtr p2) { return p1->GetMarketDate() < p2->GetMarketDate(); });
+		ranges::sort(sm_vDayLinePtr, [](const CDayLinePtr& p1, const CDayLinePtr& p2) { return p1->GetMarketDate() < p2->GetMarketDate(); });
 
 		for (int i = 0; i < sm_vDayLinePtr.size() - 1; i++) {
 			const auto p1 = sm_vDayLinePtr.at(i);

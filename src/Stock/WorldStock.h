@@ -34,7 +34,7 @@ public:
 	bool CheckCompanyNewsUpdateStatus(long lTodayDate);
 	bool CheckBasicFinancialUpdateStatus(long lTodayDate);
 	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
-	void Save(CSetWorldStock& setWorldStock);
+	void Save(CSetWorldStock& setWorldStock) const;
 	void Update(CSetWorldStock& setWorldStock);
 	void Append(CSetWorldStock& setWorldStock);
 	void SaveDayLine() { m_dataDayLine.SaveDB(m_strSymbol); }
@@ -50,18 +50,18 @@ public:
 	void AppendBasicFinancialQuarter() const;
 
 	void UpdateDayLine(vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
-	void UpdateCompanyNews(CCompanyNewsVectorPtr pvCompanyNews);
-	void UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise);
+	void UpdateCompanyNews(const CCompanyNewsVectorPtr& pvCompanyNews);
+	void UpdateEPSSurprise(const vector<CEPSSurprisePtr>& vEPSSurprise);
 
-	bool IsNeedUpdateProfile(CTiingoStockPtr pTiingoStock);
-	void UpdateStockProfile(CTiingoStockPtr pTiingoStock);
+	bool IsNeedUpdateProfile(const CTiingoStockPtr& pTiingoStock);
+	void UpdateStockProfile(const CTiingoStockPtr& pTiingoStock);
 
 	void UpdateDayLineStartEndDate();
 	long GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	CDayLinePtr GetDayLine(const long lIndex) const { return dynamic_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 
-	bool HaveNewDayLineData();
+	bool HaveNewDayLineData() const;
 
 	bool IsUpdateCompanyProfile() const noexcept { return m_fUpdateCompanyProfile; }
 	void SetUpdateCompanyProfile(const bool fFlag) noexcept { m_fUpdateCompanyProfile = fFlag; }
@@ -81,7 +81,7 @@ public:
 		return fNeedSave;
 	}
 
-	bool UpdateBasicFinancial(CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial);
+	bool UpdateBasicFinancial(const CFinnhubStockBasicFinancialPtr& pFinnhubStockBasicFinancial);
 	CFinnhubStockBasicFinancialPtr GetBasicFinancial() noexcept { return m_pBasicFinancial; }
 
 	bool IsEPSSurpriseUpdated() const noexcept { return m_fEPSSurpriseUpdated; }
@@ -101,7 +101,7 @@ public:
 	}
 
 	void UnloadInsiderTransaction() { m_vInsiderTransaction.resize(0); }
-	void UpdateInsiderTransaction(vector<CInsiderTransactionPtr>& vInsiderTransaction);
+	void UpdateInsiderTransaction(const vector<CInsiderTransactionPtr>& vInsiderTransaction);
 	bool IsUpdateInsiderTransaction() const noexcept { return m_fUpdateFinnhubInsiderTransaction; }
 	void SetUpdateInsiderTransaction(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderTransaction = fFlag; }
 	bool CheckInsiderTransactionStatus(long lCurrentDate);
@@ -240,8 +240,8 @@ public:
 	void SetTiingoStatementUpdateDate(long lStatementUpdateDate) noexcept;
 	long GetTiingoDailyDataUpdateDate();
 	void SetTiingoDailyDataUpdateDate(long lDailyDataUpdateDate) noexcept;
-	CString GetFinnhubDayLineInquiryParam(time_t tCurrentTime);
-	CString GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate);
+	CString GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const;
+	CString GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) const;
 
 	bool IsUSMarket() const;
 

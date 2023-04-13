@@ -8,9 +8,9 @@ public:
 	CProductTiingoCryptoSymbol();
 	~CProductTiingoCryptoSymbol() override = default;
 
-	CString CreateMessage() final;
+	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CTiingoCryptoVectorPtr ParseTiingoCryptoSymbol(CWebDataPtr pWebData);
+	CTiingoCryptoVectorPtr ParseTiingoCryptoSymbol(const CWebDataPtr& pWebData);
 
 	// ≤‚ ‘”√
 	long long m_differ1, m_differ2;

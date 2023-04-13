@@ -44,7 +44,7 @@ bool CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr 
 	return true;
 }
 
-CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurprise(CWebDataPtr pWebData) {
+CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurprise(const CWebDataPtr& pWebData) {
 	auto pvEPSSurprise = make_shared<vector<CEPSSurprisePtr>>();
 	string s;
 	CEPSSurprisePtr pEPSSurprise = nullptr;
@@ -81,6 +81,6 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 		return pvEPSSurprise;
 	}
 	ranges::sort(pvEPSSurprise->begin(), pvEPSSurprise->end(),
-	             [](CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }); // 以日期早晚顺序排列。
+	             [](const CEPSSurprisePtr& p1, const CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }); // 以日期早晚顺序排列。
 	return pvEPSSurprise;
 }

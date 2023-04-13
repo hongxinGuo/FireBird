@@ -14,7 +14,7 @@ public:
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
 public:
-	shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRT(CWebDataPtr pWebData);
+	shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRT(const CWebDataPtr& pWebData);
 
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置

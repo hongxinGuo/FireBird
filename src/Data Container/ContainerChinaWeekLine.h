@@ -15,7 +15,7 @@ public:
 	bool LoadCurrentWeekLine();
 
 	void UpdateData(const vector<CWeekLinePtr>& vTempWeekLine);
-	void UpdateData(CVirtualHistoryCandleExtendPtr pHistoryCandleExtend) const;
+	void UpdateData(const CVirtualHistoryCandleExtendPtr& pHistoryCandleExtend) const;
 
 	void StoreVectorData(const vector<CWeekLinePtr>& vWeekLine);
 };

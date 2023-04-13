@@ -4,8 +4,7 @@
 
 using namespace std;
 
-CContainerVirtualStock::CContainerVirtualStock() {
-}
+CContainerVirtualStock::CContainerVirtualStock() {}
 
 void CContainerVirtualStock::Reset() {
 	m_vStock.resize(0);
@@ -24,7 +23,7 @@ bool CContainerVirtualStock::IsDayLineNeedSaving() {
 	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsDayLineNeedSaving(); });
 }
 
-bool CContainerVirtualStock::Add(CVirtualStockPtr pStock) {
+bool CContainerVirtualStock::Add(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) return false;
 	if (IsSymbol(pStock->GetSymbol())) return false;
 
@@ -34,7 +33,7 @@ bool CContainerVirtualStock::Add(CVirtualStockPtr pStock) {
 	return true;
 }
 
-bool CContainerVirtualStock::Delete(CVirtualStockPtr pStock) {
+bool CContainerVirtualStock::Delete(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) return false;
 	if (!IsSymbol(pStock->GetSymbol())) return false;
 
@@ -56,6 +55,6 @@ bool CContainerVirtualStock::UpdateSymbolMap() {
 }
 
 void CContainerVirtualStock::Sort() {
-	ranges::sort(m_vStock, [](CVirtualStockPtr& p1, CVirtualStockPtr p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); });
+	ranges::sort(m_vStock, [](const CVirtualStockPtr& p1, const CVirtualStockPtr p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); });
 	UpdateSymbolMap();
 }

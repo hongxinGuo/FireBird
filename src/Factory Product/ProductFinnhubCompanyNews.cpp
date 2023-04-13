@@ -68,7 +68,7 @@ bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ///"summary" : "In this article, we discuss the top 10 stock picks of William Von Mueffling¡¯s Cantillon Capital Management. If you want to skip our detailed analysis of Mueffling¡¯s investment philosophy and performance, go directly to Top 5 Stock Picks of William Von Mueffling¡¯s Cantillon Capital Management. William Von Mueffling worked at Lazard Asset Management before launching [¡­]",
 ///"url" : "https://finnhub.io/api/news?id=a0fe8819916603e447eb52cad56f2cc3bb148097c65e81bf335d39961f67b502"
 ///		}
-CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(CWebDataPtr pWebData) {
+CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebDataPtr& pWebData) {
 	string s;
 
 	auto pvFinnhubCompanyNews = make_shared<vector<CCompanyNewsPtr>>();

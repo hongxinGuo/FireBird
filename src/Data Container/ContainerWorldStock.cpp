@@ -202,7 +202,7 @@ bool CContainerWorldStock::UpdateBasicFinancialDB() {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-void CContainerWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> vStock) {
+void CContainerWorldStock::UpdateBasicFinancialQuarterDB(const vector<CWorldStockPtr>& vStock) {
 	for (const auto& pStock : vStock) {
 		if (gl_systemStatus.IsExitingSystem()) break;
 		pStock->AppendBasicFinancialQuarter();
@@ -217,14 +217,14 @@ void CContainerWorldStock::UpdateBasicFinancialQuarterDB(vector<CWorldStockPtr> 
 // 决定还是使用串行方式，不再生成线程。--20221101
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-void CContainerWorldStock::UpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock) {
+void CContainerWorldStock::UpdateBasicFinancialAnnualDB(const vector<CWorldStockPtr>& vStock) {
 	for (const auto& pStock : vStock) {
 		if (gl_systemStatus.IsExitingSystem()) break;
 		pStock->AppendBasicFinancialAnnual();
 	}
 }
 
-void CContainerWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> vStock) {
+void CContainerWorldStock::UpdateBasicFinancialMetricDB(const vector<CWorldStockPtr>& vStock) {
 	try {
 		CSetFinnhubStockBasicFinancialMetric setBasicFinancialMetric;
 		const auto iBasicFinancialNeedUpdate = vStock.size();
@@ -267,7 +267,7 @@ void CContainerWorldStock::UpdateBasicFinancialMetricDB(vector<CWorldStockPtr> v
 	}
 }
 
-void CContainerWorldStock::ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> vStock) {
+void CContainerWorldStock::ClearUpdateBasicFinancialFlag(const vector<CWorldStockPtr>& vStock) {
 	for (const auto& pStock : vStock) {
 		if (pStock->IsUpdateBasicFinancialDB()) {
 			CString strMessage = _T("found stock:") + pStock->GetSymbol() + _T(" need update basic financial data");
@@ -278,7 +278,7 @@ void CContainerWorldStock::ClearUpdateBasicFinancialFlag(vector<CWorldStockPtr> 
 	}
 }
 
-bool CContainerWorldStock::ValidateStockSymbol(CWorldStockPtr pStock) {
+bool CContainerWorldStock::ValidateStockSymbol(const CWorldStockPtr& pStock) {
 	const CString strSymbol = pStock->GetSymbol();
 	const CString strExchangeCode = pStock->GetExchangeCode();
 
@@ -299,9 +299,9 @@ bool CContainerWorldStock::IsUpdateBasicFinancialDB() {
 }
 
 bool CContainerWorldStock::IsSaveInsiderTransaction() {
-	return ranges::any_of(m_vStock, [](CVirtualStockPtr& P) { return dynamic_pointer_cast<CWorldStock>(P)->IsSaveInsiderTransaction(); });
+	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& P) { return dynamic_pointer_cast<CWorldStock>(P)->IsSaveInsiderTransaction(); });
 }
 
 bool CContainerWorldStock::IsSaveInsiderSentiment() {
-	return ranges::any_of(m_vStock, [](CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsSaveInsiderSentiment(); });
+	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsSaveInsiderSentiment(); });
 }

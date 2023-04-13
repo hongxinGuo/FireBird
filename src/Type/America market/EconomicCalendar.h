@@ -9,7 +9,7 @@ public:
 	CEconomicCalendar();
 	~CEconomicCalendar() = default;
 
-	void Load(CSetEconomicCalendar& setEconomicCalendar);
+	void Load(const CSetEconomicCalendar& setEconomicCalendar);
 	void Append(CSetEconomicCalendar& setEconomicCalendar);
 	void Save(CSetEconomicCalendar& setEconomicCalendar);
 

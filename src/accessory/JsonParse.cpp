@@ -126,7 +126,7 @@ void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& str
 // 31：”15:05:32″，时间；（此时间为当地市场的时间，此处为东八区北京标准时间）
 // 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
-shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(CWebDataPtr pWebData) {
+shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData) {
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
 	pWebData->ResetCurrentPos();
@@ -238,7 +238,7 @@ bool IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
 // 腾讯实时数据中，成交量的单位为手，无法达到计算所需的精度（股），故而只能作为数据补充之用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData) {
+shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(const CWebDataPtr& pWebData) {
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
 	pWebData->ResetCurrentPos();
@@ -264,7 +264,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(CWebDataPtr pWebData) {
 // 日线数据是逆序的，最新日期的在前面。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-CDayLineWebDataPtr ParseNeteaseDayLine(CWebDataPtr pWebData) {
+CDayLineWebDataPtr ParseNeteaseDayLine(const CWebDataPtr& pWebData) {
 	auto pData = make_shared<CDayLineWebData>();
 
 	pData->TransferWebDataToBuffer(pWebData);
@@ -311,7 +311,7 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockC
 			sTemp = js5.at(1);
 			pDayLine->SetOpen(atof(sTemp.c_str()) * 1000);
 			sTemp = js5.at(2);
-			double dClose = atof(sTemp.c_str());
+			const double dClose = atof(sTemp.c_str());
 			pDayLine->SetClose(dClose * 1000);
 			dLastClose = dClose;
 			sTemp = js5.at(3);
@@ -347,22 +347,22 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockC
 //	 }
 // }
 //
-CDayLineWebDataPtr ParseTengxunDayLine(CWebDataPtr pData) {
+CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 	auto pDayLineData = make_shared<CDayLineWebData>();
-	const CString strSymbol = pData->GetStockCode();
+	const CString strSymbol = pWebData->GetStockCode();
 	const CString strDisplaySymbol = gl_pChinaMarket->GetStock(strSymbol)->GetDisplaySymbol();
 	bool fProcess = true;
-	if (!pData->IsParsed()) {
-		if (!pData->CreateJson()) {
-			const CString strMessage = pData->GetStockCode() + _T(": Tengxun DayLine data json parse error");
+	if (!pWebData->IsParsed()) {
+		if (!pWebData->CreateJson()) {
+			const CString strMessage = pWebData->GetStockCode() + _T(": Tengxun DayLine data json parse error");
 			gl_systemMessage.PushErrorMessage(strMessage);
 			fProcess = false;
 		}
 	}
-	if (fProcess && pData->IsParsed()) {
-		json* pjs = pData->GetJSon();
-		const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(pjs, XferStandardToTengxun(pData->GetStockCode()));
-		ranges::sort(*pvDayLine, [](CDayLinePtr pData1, CDayLinePtr pData2) { return pData1->GetMarketDate() < pData2->GetMarketDate(); });
+	if (fProcess && pWebData->IsParsed()) {
+		json* pjs = pWebData->GetJSon();
+		const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(pjs, XferStandardToTengxun(pWebData->GetStockCode()));
+		ranges::sort(*pvDayLine, [](const CDayLinePtr& pData1, const CDayLinePtr& pData2) { return pData1->GetMarketDate() < pData2->GetMarketDate(); });
 		for (const auto& pDayLine : *pvDayLine) {
 			pDayLine->SetStockSymbol(strSymbol);
 			pDayLine->SetDisplaySymbol(strDisplaySymbol);

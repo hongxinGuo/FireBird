@@ -131,7 +131,7 @@ bool CTiingoDataSource::InquireCompanySymbol() {
 
 bool CTiingoDataSource::InquireCryptoSymbol() {
 	if (!IsInquiring() && IsUpdateCryptoSymbol()) {
-		CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), CRYPTO_SYMBOLS_);
+		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), CRYPTO_SYMBOLS_);
 		m_qProduct.push(p);
 		SetInquiring(true);
 		//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo crypto symbol"));
@@ -166,7 +166,7 @@ bool CTiingoDataSource::InquireDayLine() {
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), STOCK_PRICE_CANDLES_);
+			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), STOCK_PRICE_CANDLES_);
 			p->SetIndex(gl_pWorldMarket->GetStockIndex(pStock->GetSymbol()));
 			m_qProduct.push(p);
 			//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo StockÈÕÏß£º") + pStock->GetSymbol());

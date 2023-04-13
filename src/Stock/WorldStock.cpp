@@ -20,7 +20,7 @@
 
 using namespace std;
 
-CWorldStock::CWorldStock() : CVirtualStock() {
+CWorldStock::CWorldStock() {
 	// Finnhub Symbol数据
 	m_strIPODate = _T(" ");
 	m_strCurrency = _T(" ");
@@ -355,7 +355,7 @@ bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate,
 	return m_fDayLineNeedUpdate;
 }
 
-void CWorldStock::Save(CSetWorldStock& setWorldStock) {
+void CWorldStock::Save(CSetWorldStock& setWorldStock) const {
 	// 由于数据库的格式为定长的字符串，故而需要限制实际字符串的长度。
 	setWorldStock.m_Symbol = m_strSymbol.Left(20);
 	setWorldStock.m_ExchangeCode = m_strExchangeCode.Left(3);
@@ -634,22 +634,22 @@ void CWorldStock::AppendBasicFinancialQuarter() const {
 	}
 }
 
-void CWorldStock::UpdateCompanyNews(CCompanyNewsVectorPtr pvCompanyNews) {
+void CWorldStock::UpdateCompanyNews(const CCompanyNewsVectorPtr& pvCompanyNews) {
 	m_vCompanyNews.resize(0);
 	for (auto& p : *pvCompanyNews) {
 		m_vCompanyNews.push_back(p);
 	}
-	ranges::sort(m_vCompanyNews, [](CCompanyNewsPtr& p1, CCompanyNewsPtr& p2) { return (p1->m_llDateTime < p2->m_llDateTime); }); // 此序列需要按时间顺序存放，以利于与存储于数据库中的数据作比较。
+	ranges::sort(m_vCompanyNews, [](const CCompanyNewsPtr& p1, const CCompanyNewsPtr& p2) { return (p1->m_llDateTime < p2->m_llDateTime); }); // 此序列需要按时间顺序存放，以利于与存储于数据库中的数据作比较。
 }
 
-void CWorldStock::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {
+void CWorldStock::UpdateEPSSurprise(const vector<CEPSSurprisePtr>& vEPSSurprise) {
 	m_vEPSSurprise.resize(0);
 	for (auto& p : vEPSSurprise) {
 		m_vEPSSurprise.push_back(p);
 	}
 }
 
-bool CWorldStock::IsNeedUpdateProfile(CTiingoStockPtr pTiingoStock) {
+bool CWorldStock::IsNeedUpdateProfile(const CTiingoStockPtr& pTiingoStock) {
 	if (m_strTiingoPermaTicker.Compare(pTiingoStock->m_strTiingoPermaTicker) != 0) return true;
 	if (m_strName.Compare(pTiingoStock->m_strName) != 0) return true;
 	if ((m_fIsActive != pTiingoStock->m_fIsActive)) return true;
@@ -673,7 +673,7 @@ bool CWorldStock::IsNeedUpdateProfile(CTiingoStockPtr pTiingoStock) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-void CWorldStock::UpdateStockProfile(CTiingoStockPtr pTiingoStock) {
+void CWorldStock::UpdateStockProfile(const CTiingoStockPtr& pTiingoStock) {
 	m_strTiingoPermaTicker = pTiingoStock->m_strTiingoPermaTicker;
 	m_strName = pTiingoStock->m_strName;
 	m_fIsActive = pTiingoStock->m_fIsActive;
@@ -691,8 +691,7 @@ void CWorldStock::UpdateStockProfile(CTiingoStockPtr pTiingoStock) {
 
 void CWorldStock::UpdateDayLineStartEndDate() {
 	long lStartDate = 0, lEndDate = 0;
-	bool fSucceed = m_dataDayLine.GetStartEndDate(lStartDate, lEndDate);
-	if (fSucceed) {
+	if (m_dataDayLine.GetStartEndDate(lStartDate, lEndDate)) {
 		if (lStartDate < GetDayLineStartDate()) {
 			SetDayLineStartDate(lStartDate);
 			m_fUpdateProfileDB = true;
@@ -704,7 +703,7 @@ void CWorldStock::UpdateDayLineStartEndDate() {
 	}
 }
 
-bool CWorldStock::HaveNewDayLineData() {
+bool CWorldStock::HaveNewDayLineData() const {
 	if (m_dataDayLine.Size() == 0) return false;
 	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate)
 		|| (m_dataDayLine.GetData(0)->GetMarketDate() < m_lDayLineStartDate))
@@ -712,14 +711,14 @@ bool CWorldStock::HaveNewDayLineData() {
 	return false;
 }
 
-bool CWorldStock::UpdateBasicFinancial(CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial) {
+bool CWorldStock::UpdateBasicFinancial(const CFinnhubStockBasicFinancialPtr& pFinnhubStockBasicFinancial) {
 	m_pBasicFinancial = pFinnhubStockBasicFinancial;
 
 	return true;
 }
 
 bool CWorldStock::CheckEPSSurpriseStatus(long lCurrentDate) {
-	long lLastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
+	const long lLastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
 	if (IsNullStock() || IsDelisted()) { m_fEPSSurpriseUpdated = true; }
 	else if (lLastEPSSurpriseUpdateDate == 19700101) {
 		// 没有数据？
@@ -752,7 +751,7 @@ bool CWorldStock::CheckPeerStatus(long lCurrentDate) {
 	return m_fUpdateFinnhubPeer;
 }
 
-void CWorldStock::UpdateInsiderTransaction(vector<CInsiderTransactionPtr>& vInsiderTransaction) {
+void CWorldStock::UpdateInsiderTransaction(const vector<CInsiderTransactionPtr>& vInsiderTransaction) {
 	m_vInsiderTransaction.resize(0);
 
 	for (auto pInsiderTransaction : vInsiderTransaction) { m_vInsiderTransaction.push_back(pInsiderTransaction); }
@@ -928,7 +927,7 @@ void CWorldStock::SetTiingoDailyDataUpdateDate(const long lDailyDataUpdateDate) 
 	m_jsonUpdateDate["Tiingo"]["StockPriceCandles"] = lDailyDataUpdateDate;
 }
 
-CString CWorldStock::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) {
+CString CWorldStock::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const {
 	CString strParam = _T("");
 	char buffer[50];
 
@@ -947,7 +946,7 @@ CString CWorldStock::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) {
 	return strParam;
 }
 
-CString CWorldStock::GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) {
+CString CWorldStock::GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) const {
 	CString strParam = _T("");
 	char buffer[50];
 	const long year = lCurrentDate / 10000;
