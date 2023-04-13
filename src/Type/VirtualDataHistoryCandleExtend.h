@@ -32,24 +32,24 @@ public:
 		return false;
 	}
 
-	bool SaveExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend);
+	bool SaveExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend) const;
 
 	bool LoadBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic);
 	bool LoadExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend);
 
-	void UpdateData(vector<CVirtualHistoryCandleExtendPtr>& vTempData);
-	void UpdateData(vector<CDayLinePtr>& vTempDayLine);
+	void UpdateData(const vector<CVirtualHistoryCandleExtendPtr>& vTempData);
+	void UpdateData(const vector<CDayLinePtr>& vTempDayLine);
 
 	void ShowData(CDC* pDC, CRect rectClient);
 
 protected:
-	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, const CString& strStockSymbol = _T(""));
+	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, const CString& strStockSymbol = _T("")) const;
 
 public:
 	vector<CVirtualHistoryCandleExtendPtr>* GetContainer() noexcept { return &m_vHistoryData; }
 
 	long Size() const noexcept { return static_cast<long>(m_vHistoryData.size()); }
-	bool GetStartEndDate(long& lStartDate, long& lEndDate);
+	bool GetStartEndDate(long& lStartDate, long& lEndDate) const;
 
 	void Unload() noexcept {
 		m_vHistoryData.clear();
@@ -58,7 +58,7 @@ public:
 
 	CVirtualHistoryCandleExtendPtr GetData(const long lIndex) const { return m_vHistoryData.at(lIndex); }
 
-	bool StoreData(const CVirtualHistoryCandleExtendPtr pData) {
+	bool StoreData(const CVirtualHistoryCandleExtendPtr& pData) {
 		m_vHistoryData.push_back(pData);
 		return true;
 	}
@@ -75,15 +75,15 @@ public:
 	bool CalculateRSLogarithm0();
 	virtual bool CalculateRSLogarithm1(INT64 lNumber);
 
-	void GetRS1(vector<double>& vRS);
-	void GetRSIndex1(vector<double>& vRS);
-	void GetRSLogarithm1(vector<double>& vRS);
-	void GetRS3(vector<double>& vRS);
-	void GetRS5(vector<double>& vRS);
-	void GetRS10(vector<double>& vRS);
-	void GetRS30(vector<double>& vRS);
-	void GetRS60(vector<double>& vRS);
-	void GetRS120(vector<double>& vRS);
+	void GetRS1(vector<double>& vRS) const;
+	void GetRSIndex1(vector<double>& vRS) const;
+	void GetRSLogarithm1(vector<double>& vRS) const;
+	void GetRS3(vector<double>& vRS) const;
+	void GetRS5(vector<double>& vRS) const;
+	void GetRS10(vector<double>& vRS) const;
+	void GetRS30(vector<double>& vRS) const;
+	void GetRS60(vector<double>& vRS) const;
+	void GetRS120(vector<double>& vRS) const;
 
 protected:
 	vector<CVirtualHistoryCandleExtendPtr> m_vHistoryData;

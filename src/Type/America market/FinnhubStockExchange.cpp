@@ -15,7 +15,7 @@ CFinnhubStockExchange::CFinnhubStockExchange() {
 	m_fUpdated = false;
 }
 
-void CFinnhubStockExchange::Append(CSetFinnhubStockExchange& setFinnhubExchange) {
+void CFinnhubStockExchange::Append(CSetFinnhubStockExchange& setFinnhubExchange) const {
 	setFinnhubExchange.AddNew();
 	setFinnhubExchange.m_Code = m_strCode;
 	setFinnhubExchange.m_Name = m_strName;
@@ -28,7 +28,7 @@ void CFinnhubStockExchange::Append(CSetFinnhubStockExchange& setFinnhubExchange)
 	setFinnhubExchange.Update();
 }
 
-void CFinnhubStockExchange::Load(CSetFinnhubStockExchange& setFinnhubExchange) {
+void CFinnhubStockExchange::Load(const CSetFinnhubStockExchange& setFinnhubExchange) {
 	m_strCode = setFinnhubExchange.m_Code;
 	m_strName = setFinnhubExchange.m_Name;
 	m_strMic = setFinnhubExchange.m_Mic;

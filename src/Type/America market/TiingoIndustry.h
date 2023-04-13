@@ -9,8 +9,8 @@ public:
 	CTiingoIndustry();
 	~CTiingoIndustry() = default;
 
-	void Append(CSetTiingoIndustry& setTiingoIndustry);
-	void Load(CSetTiingoIndustry& setTiingoIndustry);
+	void Append(CSetTiingoIndustry& setTiingoIndustry) const;
+	void Load(const CSetTiingoIndustry& setTiingoIndustry);
 
 	void SetUpdated(const bool fFlag) noexcept { m_fUpdated = fFlag; }
 	bool IsUpdated() const noexcept { return m_fUpdated; }

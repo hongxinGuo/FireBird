@@ -40,7 +40,7 @@ void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectTiingoIEXWebSocketAndSendMessage(not_null<CTiingoIEXWebSocket*> pDataTiingoIEXWebSocket, vectorString vSymbol) {
+UINT ThreadConnectTiingoIEXWebSocketAndSendMessage(not_null<CTiingoIEXWebSocket*> pDataTiingoIEXWebSocket, const vectorString& vSymbol) {
 	if (static bool s_fConnecting = false; !s_fConnecting) {
 		s_fConnecting = true;
 		if (pDataTiingoIEXWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
@@ -52,7 +52,7 @@ UINT ThreadConnectTiingoIEXWebSocketAndSendMessage(not_null<CTiingoIEXWebSocket*
 	return 71;
 }
 
-CTiingoIEXWebSocket::CTiingoIEXWebSocket() : CVirtualWebSocket() {
+CTiingoIEXWebSocket::CTiingoIEXWebSocket() {
 	m_url = _T("wss://api.tiingo.com/iex");
 }
 
@@ -65,7 +65,7 @@ void CTiingoIEXWebSocket::Connect() {
 	Connecting(m_url, ProcessTiingoIEXWebSocket);
 }
 
-void CTiingoIEXWebSocket::Send(vectorString vSymbol) {
+void CTiingoIEXWebSocket::Send(const vectorString& vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
@@ -88,7 +88,7 @@ void CTiingoIEXWebSocket::Send(vectorString vSymbol) {
 /// }
 ///
 ///////////////////////////////////////////////////////////////////////
-string CTiingoIEXWebSocket::CreateMessage(vectorString vSymbol) {
+string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
 	vector<string> vSymbols;
 	json jsonMessage;
 	jsonMessage["eventName"] = _T("subscribe");

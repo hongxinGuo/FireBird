@@ -10,7 +10,7 @@ CSICIndustry::CSICIndustry() {
 	m_fUpdated = false;
 }
 
-void CSICIndustry::Append(CSetSICIndustry& setSICIndustry) {
+void CSICIndustry::Append(CSetSICIndustry& setSICIndustry) const {
 	setSICIndustry.AddNew();
 	setSICIndustry.m_Code = m_lCode;
 	setSICIndustry.m_Industry = m_strIndustry;
@@ -18,7 +18,7 @@ void CSICIndustry::Append(CSetSICIndustry& setSICIndustry) {
 	setSICIndustry.Update();
 }
 
-void CSICIndustry::Load(CSetSICIndustry& setSICIndustry) {
+void CSICIndustry::Load(const CSetSICIndustry& setSICIndustry) {
 	m_lCode = setSICIndustry.m_Code;
 	m_strIndustry = setSICIndustry.m_Industry;
 	m_strSector = setSICIndustry.m_Sector;

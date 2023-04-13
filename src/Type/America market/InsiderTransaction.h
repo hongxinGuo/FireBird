@@ -9,11 +9,11 @@ public:
 	CInsiderTransaction();
 	~CInsiderTransaction() = default;
 
-	void Append(CSetInsiderTransaction& setInsiderTransaction);
-	void Update(CSetInsiderTransaction& setInsiderTransaction);
+	void Append(CSetInsiderTransaction& setInsiderTransaction) const;
+	void Update(CSetInsiderTransaction& setInsiderTransaction) const;
 
-	void Save(CSetInsiderTransaction& setInsiderTransaction);
-	void Load(CSetInsiderTransaction& setInsiderTransaction);
+	void Save(CSetInsiderTransaction& setInsiderTransaction) const;
+	void Load(const CSetInsiderTransaction& setInsiderTransaction);
 
 public:
 	CString m_strSymbol;

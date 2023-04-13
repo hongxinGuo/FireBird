@@ -12,7 +12,7 @@ public:
 
 	void Reset();
 
-	void Load(CSetTiingoCrypto& setTiingoCrypto);
+	void Load(const CSetTiingoCrypto& setTiingoCrypto);
 	void Append(CSetTiingoCrypto& setTiingoCrypto);
 	void Save(CSetTiingoCrypto& setTiingoCrypto);
 

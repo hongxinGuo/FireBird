@@ -52,17 +52,17 @@ public:
 	time_t GetTime() const noexcept { return m_tTime; }
 	void SetTime(const time_t tTime) noexcept { m_tTime = tTime; }
 	CString GetStockCode() const noexcept { return m_strStockCode; }
-	void SetStockCode(CString strStockCode) noexcept { m_strStockCode = strStockCode; }
+	void SetStockCode(const CString& strStockCode) noexcept { m_strStockCode = strStockCode; }
 	INT64 GetBufferLength() const noexcept { return m_lBufferLength; }
 	void SetBufferLength(const INT64 lValue) noexcept { m_lBufferLength = lValue; }
 	INT64 GetCurrentPos() const noexcept { return m_lCurrentPos; }
 	void SetCurrentPos(const INT64 lValue) noexcept { m_lCurrentPos = lValue; }
 
 	string GetDataBuffer() noexcept { return m_sDataBuffer; }
-	bool GetData(char* buffer, INT64 lDataLength, INT64 lStartPosition);
-	bool GetData(char* buffer, INT64 lDataLength); // 默认从m_lCurrentPos开始拷贝
-	bool SetData(char* buffer, INT64 lDataLength, INT64 lStartPosition);
-	bool SetData(char* buffer, INT64 lDataLength); // 默认从m_lCurrentPos开始填充。
+	bool GetData(char* buffer, INT64 lDataLength, INT64 lStartPosition) const;
+	bool GetData(char* buffer, INT64 lDataLength) const; // 默认从m_lCurrentPos开始拷贝
+	bool SetData(const char* buffer, INT64 lDataLength, INT64 lStartPosition);
+	bool SetData(const char* buffer, INT64 lDataLength); // 默认从m_lCurrentPos开始填充。
 
 	char GetData(const INT64 lIndex) const { return m_sDataBuffer.at(lIndex); }
 	void SetData(const INT64 lIndex, const char cValue) { m_sDataBuffer.at(lIndex) = cValue; }
@@ -79,7 +79,7 @@ public:
 		return false;
 	}
 
-	bool CheckNoRightToAccess(string sCode = _T("error"), string sMessage = _T("You don't have access to this resource.")); // 默认的为finnhub禁止访问标识（目前只有此选项）
+	bool CheckNoRightToAccess(const string& sCode = _T("error"), const string& sMessage = _T("You don't have access to this resource.")); // 默认的为finnhub禁止访问标识（目前只有此选项）
 	bool IsNoRightToAccess() const noexcept { return m_fNoRightToAccess; }
 
 	// 使用Nlohmann json将数据转换为json格式。

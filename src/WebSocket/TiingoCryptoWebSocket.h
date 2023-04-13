@@ -37,11 +37,11 @@ public:
 	~CTiingoCryptoWebSocket() override = default;
 
 	void Connect() override;
-	void Send(vectorString vSymbol) override;
+	void Send(const vectorString& vSymbol) override;
 
 	void CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) override;
 
-	static string CreateMessage(vectorString vSymbol);
+	static string CreateMessage(const vectorString& vSymbol);
 	bool ParseTiingoCryptoWebSocketData(shared_ptr<string> pData);
 };
 

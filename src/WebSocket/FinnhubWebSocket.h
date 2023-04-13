@@ -34,8 +34,8 @@ public:
 	~CFinnhubWebSocket() override = default;
 
 	void Connect() override;
-	void Send(vectorString vSymbol) override;
-	string CreateFinnhubWebSocketString(string sSymbol);
+	void Send(const vectorString& vSymbol) override;
+	static string CreateFinnhubWebSocketString(string sSymbol);
 
 	void CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) override;
 

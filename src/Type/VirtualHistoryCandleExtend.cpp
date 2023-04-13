@@ -77,7 +77,7 @@ void CVirtualHistoryCandleExtend::Reset() {
 	m_lCanceledSellVolumeAbove200000 = 0;
 }
 
-bool CVirtualHistoryCandleExtend::SaveExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
+bool CVirtualHistoryCandleExtend::SaveExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) const {
 	ASSERT(pVirtualSetHistoryCandleExtend->IsOpen());
 	pVirtualSetHistoryCandleExtend->m_Date = m_lDate;
 	pVirtualSetHistoryCandleExtend->m_Symbol = m_strStockSymbol;
@@ -158,7 +158,7 @@ bool CVirtualHistoryCandleExtend::AppendExtendData(CVirtualSetHistoryCandleExten
 	return true;
 }
 
-bool CVirtualHistoryCandleExtend::LoadExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
+bool CVirtualHistoryCandleExtend::LoadExtendData(const CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
 	ASSERT(pVirtualSetHistoryCandleExtend->IsOpen());
 	m_lTransactionNumber = atol(pVirtualSetHistoryCandleExtend->m_TransactionNumber);
 	m_lTransactionNumberBelow5000 = atol(pVirtualSetHistoryCandleExtend->m_TransactionNumberBelow5000);
@@ -229,7 +229,7 @@ bool CVirtualHistoryCandleExtend::LoadExtendData(CVirtualSetHistoryCandleExtend*
 	return true;
 }
 
-bool CVirtualHistoryCandleExtend::Save(CVirtualSetHistoryCandle* pSet) {
+bool CVirtualHistoryCandleExtend::Save(CVirtualSetHistoryCandle* pSet) const {
 	ASSERT(pSet->IsOpen());
 	pSet->m_Date = GetMarketDate();
 	pSet->m_Exchange = GetExchange();
@@ -328,7 +328,7 @@ bool CVirtualHistoryCandleExtend::Append(CVirtualSetHistoryCandle* pSet) {
 	return true;
 }
 
-bool CVirtualHistoryCandleExtend::Load(CVirtualSetHistoryCandle* pSet) {
+bool CVirtualHistoryCandleExtend::Load(const CVirtualSetHistoryCandle* pSet) {
 	ASSERT(pSet->IsOpen());
 	m_lDate = pSet->m_Date;
 	m_strExchange = pSet->m_Exchange;

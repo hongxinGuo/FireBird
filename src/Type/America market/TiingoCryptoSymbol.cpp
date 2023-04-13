@@ -14,7 +14,7 @@ void CTiingoCryptoSymbol::Reset() {
 	m_strQuoteCurrency = _T("");
 }
 
-void CTiingoCryptoSymbol::Load(CSetTiingoCrypto& setTiingoCrypto) {
+void CTiingoCryptoSymbol::Load(const CSetTiingoCrypto& setTiingoCrypto) {
 	m_strTicker = setTiingoCrypto.m_Ticker;
 	m_strName = setTiingoCrypto.m_Name;
 	m_strDescription = setTiingoCrypto.m_Description;

@@ -9,7 +9,7 @@ CEPSSurprise::CEPSSurprise() {
 	m_dEstimate = 0.0;
 }
 
-void CEPSSurprise::Append(CSetEPSSurprise& setEPSSurprise) {
+void CEPSSurprise::Append(CSetEPSSurprise& setEPSSurprise) const {
 	setEPSSurprise.AddNew();
 	setEPSSurprise.m_Symbol = m_strSymbol;
 	setEPSSurprise.m_Date = m_lDate;

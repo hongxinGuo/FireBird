@@ -18,31 +18,31 @@ CWebData::CWebData() {
 
 CWebData::~CWebData() { m_sDataBuffer.resize(0); }
 
-bool CWebData::GetData(char* buffer, INT64 lDataLength, INT64 lStartPosition) {
+bool CWebData::GetData(char* buffer, INT64 lDataLength, INT64 lStartPosition) const {
 	if (lDataLength + lStartPosition > m_lBufferLength) return false;
 	for (INT64 i = 0; i < lDataLength; i++) { buffer[i] = m_sDataBuffer.at(i + lStartPosition); }
 	return true;
 }
 
-bool CWebData::GetData(char* buffer, INT64 lDataLength) {
+bool CWebData::GetData(char* buffer, INT64 lDataLength) const {
 	if (lDataLength + m_lCurrentPos > m_lBufferLength) return false;
 	for (INT64 i = 0; i < lDataLength; i++) { buffer[i] = m_sDataBuffer.at(i + m_lCurrentPos); }
 	return true;
 }
 
-bool CWebData::SetData(char* buffer, INT64 lDataLength, INT64 lStartPosition) {
+bool CWebData::SetData(const char* buffer, INT64 lDataLength, INT64 lStartPosition) {
 	if (lDataLength + lStartPosition > m_lBufferLength) return false;
 	for (INT64 i = 0; i < lDataLength; i++) { m_sDataBuffer.at(i + lStartPosition) = buffer[i]; }
 	return true;
 }
 
-bool CWebData::SetData(char* buffer, INT64 lDataLength) {
+bool CWebData::SetData(const char* buffer, INT64 lDataLength) {
 	if (lDataLength + m_lCurrentPos > m_lBufferLength) return false;
 	for (INT64 i = 0; i < lDataLength; i++) { m_sDataBuffer.at(i + m_lCurrentPos) = buffer[i]; }
 	return true;
 }
 
-bool CWebData::CheckNoRightToAccess(string sCode, string sMessage) {
+bool CWebData::CheckNoRightToAccess(const string& sCode, const string& sMessage) {
 	string s;
 	ASSERT(m_fParsed);
 	try {

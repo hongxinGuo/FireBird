@@ -9,9 +9,9 @@ public:
 	CNaicsIndustry();
 	~CNaicsIndustry() = default;
 
-	void Append(CSetNaicsIndustry& setNaicsIndustry);
+	void Append(CSetNaicsIndustry& setNaicsIndustry) const;
 
-	void Load(CSetNaicsIndustry& setNaicsIndustry);
+	void Load(const CSetNaicsIndustry& setNaicsIndustry);
 
 	void SetUpdated(const bool fFlag) noexcept { m_fUpdated = fFlag; }
 	bool IsUpdated() const noexcept { return m_fUpdated; }

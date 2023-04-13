@@ -3,7 +3,7 @@
 #include"WorldMarket.h"
 #include "FinnhubCryptoSymbol.h"
 
-CFinnhubCryptoSymbol::CFinnhubCryptoSymbol() : CVirtualStock() {
+CFinnhubCryptoSymbol::CFinnhubCryptoSymbol() {
 	CFinnhubCryptoSymbol::Reset();
 }
 
@@ -33,7 +33,7 @@ void CFinnhubCryptoSymbol::SetCheckingDayLineStatus() {
 	}
 }
 
-CString CFinnhubCryptoSymbol::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) {
+CString CFinnhubCryptoSymbol::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const {
 	CString strParam = _T("");
 	char buffer[50];
 
@@ -71,7 +71,7 @@ void CFinnhubCryptoSymbol::UpdateDayLineStartEndDate() {
 	}
 }
 
-bool CFinnhubCryptoSymbol::HaveNewDayLineData() {
+bool CFinnhubCryptoSymbol::HaveNewDayLineData() const {
 	if (m_dataDayLine.Size() == 0) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate) return true;
 	return false;

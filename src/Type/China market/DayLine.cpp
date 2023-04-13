@@ -2,7 +2,7 @@
 
 #include "DayLine.h"
 
-CDayLine::CDayLine() : CVirtualHistoryCandleExtend() {
+CDayLine::CDayLine() {
 	CDayLine::Reset();
 }
 

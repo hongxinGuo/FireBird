@@ -40,7 +40,7 @@ void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWebSocket*> pDataTiingoForexWebSocket, vectorString vSymbol) {
+UINT ThreadConnectTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWebSocket*> pDataTiingoForexWebSocket, const vectorString& vSymbol) {
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
@@ -53,7 +53,7 @@ UINT ThreadConnectTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWebSoc
 	return 73;
 }
 
-CTiingoForexWebSocket::CTiingoForexWebSocket() : CVirtualWebSocket() {
+CTiingoForexWebSocket::CTiingoForexWebSocket() {
 	m_url = _T("wss://api.tiingo.com/fx");
 }
 
@@ -77,7 +77,7 @@ void CTiingoForexWebSocket::Connect() {
 // {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-void CTiingoForexWebSocket::Send(vectorString vSymbol) {
+void CTiingoForexWebSocket::Send(const vectorString& vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
@@ -99,7 +99,7 @@ void CTiingoForexWebSocket::Send(vectorString vSymbol) {
 /// }
 ///
 ///////////////////////////////////////////////////////////////////////
-string CTiingoForexWebSocket::CreateMessage(vectorString vSymbol) {
+string CTiingoForexWebSocket::CreateMessage(const vectorString& vSymbol) {
 	vectorString vSymbols;
 	json jsonMessage;
 	jsonMessage["eventName"] = _T("subscribe");

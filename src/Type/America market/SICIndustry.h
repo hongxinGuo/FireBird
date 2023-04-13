@@ -9,8 +9,8 @@ public:
 	CSICIndustry();
 	~CSICIndustry() = default;
 
-	void Append(CSetSICIndustry& setSICIndustry);
-	void Load(CSetSICIndustry& setSICIndustry);
+	void Append(CSetSICIndustry& setSICIndustry) const;
+	void Load(const CSetSICIndustry& setSICIndustry);
 
 	void SetUpdated(const bool fFlag) noexcept { m_fUpdated = fFlag; }
 	bool IsUpdated() const noexcept { return m_fUpdated; }

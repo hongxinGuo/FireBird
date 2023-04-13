@@ -20,7 +20,7 @@ public:
 	virtual ~CVirtualHistoryCandleBasic() = default;;
 	virtual void Reset(); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-	bool SaveBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic); // 存储基本数据
+	bool SaveBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) const; // 存储基本数据
 	bool AppendBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic);
 	bool LoadBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic);
 
@@ -45,11 +45,11 @@ public:
 	time_t GetMarketTime() const noexcept { return m_time; }
 	void SetTime(const time_t t) noexcept { m_time = t; }
 	CString GetExchange() const { return m_strExchange; }
-	void SetExchange(const CString strExchange) { m_strExchange = strExchange; }
+	void SetExchange(const CString& strExchange) { m_strExchange = strExchange; }
 	CString GetStockSymbol() const { return m_strStockSymbol; }
-	void SetStockSymbol(const CString str) { m_strStockSymbol = str; }
+	void SetStockSymbol(const CString& str) { m_strStockSymbol = str; }
 	CString GetDisplaySymbol() const { return m_strDisplaySymbol; }
-	void SetDisplaySymbol(const CString str) { m_strDisplaySymbol = str; }
+	void SetDisplaySymbol(const CString& str) { m_strDisplaySymbol = str; }
 
 	long GetLastClose() const noexcept { return m_lLastClose; }
 	void SetLastClose(const long lValue) noexcept { m_lLastClose = lValue; }

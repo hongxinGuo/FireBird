@@ -151,7 +151,7 @@ CFinnhubStockBasicFinancial::CFinnhubStockBasicFinancial() {
 	m_yearToDatePriceReturnDaily = 0.0;
 }
 
-void CFinnhubStockBasicFinancial::LoadMetric(CSetFinnhubStockBasicFinancialMetric& setMetric) {
+void CFinnhubStockBasicFinancial::LoadMetric(const CSetFinnhubStockBasicFinancialMetric& setMetric) {
 	ASSERT(setMetric.IsOpen());
 
 	m_symbol = setMetric.m_symbol;
@@ -368,7 +368,7 @@ void CFinnhubStockBasicFinancial::SaveAllQuarterData(CSetFinnhubStockBasicFinanc
 	SaveQuarterData(SetQuarterData, m_quarter.m_totalRatio, _T("totalRatio"), vDBData);
 }
 
-void CFinnhubStockBasicFinancial::SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, vector<CValueOfPeriod>& vData, CString typeName, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
+void CFinnhubStockBasicFinancial::SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, const vector<CValueOfPeriod>& vData, const CString& typeName, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	ASSERT(SetQuarterData.IsOpen());
 	for (int i = 0; i < vData.size(); i++) {
 		if (IsNewData(typeName, vData.at(i), vDBData)) {
@@ -408,7 +408,7 @@ void CFinnhubStockBasicFinancial::SaveAllAnnualData(CSetFinnhubStockBasicFinanci
 	SaveAnnualData(setAnnualData, m_annual.m_totalRatio, _T("totalRatio"), vDBData);
 }
 
-void CFinnhubStockBasicFinancial::SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<CValueOfPeriod>& vData, CString typeName, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
+void CFinnhubStockBasicFinancial::SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, const vector<CValueOfPeriod>& vData, const CString& typeName, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	ASSERT(setAnnualData.IsOpen());
 	for (int i = 0; i < vData.size(); i++) {
 		if (IsNewData(typeName, vData.at(i), vDBData)) {
@@ -426,7 +426,7 @@ void CFinnhubStockBasicFinancial::LoadAnnualData(CSetFinnhubStockBasicFinancialA
 	// TODO: not yet implementation
 }
 
-bool CFinnhubStockBasicFinancial::IsNewData(CString type, CValueOfPeriod vData, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
+bool CFinnhubStockBasicFinancial::IsNewData(const CString& type, CValueOfPeriod vData, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	for (int i = 0; i < vDBData.size(); i++) {
 		if ((vDBData.at(i).m_type == type) && (vDBData.at(i).m_date == vData.m_period)) {
 			return false;
@@ -449,7 +449,7 @@ void CFinnhubStockBasicFinancial::UpdateMetric(CSetFinnhubStockBasicFinancialMet
 	setMetric.Update();
 }
 
-void CFinnhubStockBasicFinancial::SaveMetric(CSetFinnhubStockBasicFinancialMetric& setMetric) {
+void CFinnhubStockBasicFinancial::SaveMetric(CSetFinnhubStockBasicFinancialMetric& setMetric) const {
 	setMetric.m_symbol = m_symbol;
 	setMetric.m_10DayAverageTradingVolume = m_10DayAverageTradingVolume;
 	setMetric.m_13WeekPriceReturnDaily = m_13WeekPriceReturnDaily;

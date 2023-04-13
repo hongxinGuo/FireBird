@@ -57,7 +57,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	// Stock Estimates
 	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_RECOMMENDATION_TRENDS_] = _T("StockEstimatesRecommendationTrend");
 	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_PRICE_TARGET_] = _T("StockEstimatesPriceTarget");
-	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_UPGRADE_DOWNGRADE_] = _T("StockEstimatesUpgradeDownGrade"); // Primium
+	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_UPGRADE_DOWNGRADE_] = _T("StockEstimatesUpgradeDownGrade"); // Premium
 	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_REVENUE_ESTIMATES_] = _T("StockEstimatesRevenueEstimates"); // Premium
 	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_EPS_ESTIMATES_] = _T("StockEstimatesEPSEstimates"); // Premium
 	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_EBITDA_ESTIMATES_] = _T("StockEstimatesEBITDAEstimates"); // Premium
@@ -164,7 +164,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 	// Stock Estimates
 	m_mapFinnhubInquiryStringToIndex[_T("StockEstimatesRecommendationTrend")] = STOCK_ESTIMATES_RECOMMENDATION_TRENDS_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockEstimatesPriceTarget")] = STOCK_ESTIMATES_PRICE_TARGET_;
-	m_mapFinnhubInquiryStringToIndex[_T("StockEstimatesUpgradeDownGrade")] = STOCK_ESTIMATES_UPGRADE_DOWNGRADE_; // Primium
+	m_mapFinnhubInquiryStringToIndex[_T("StockEstimatesUpgradeDownGrade")] = STOCK_ESTIMATES_UPGRADE_DOWNGRADE_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("StockEstimatesRevenueEstimates")] = STOCK_ESTIMATES_REVENUE_ESTIMATES_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("StockEstimatesEPSEstimates")] = STOCK_ESTIMATES_EPS_ESTIMATES_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("StockEstimatesEBITDAEstimates"] = STOCK_ESTIMATES_EBITDA_ESTIMATES_); // Premium

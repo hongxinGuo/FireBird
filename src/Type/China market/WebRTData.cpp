@@ -276,7 +276,7 @@ bool CWebRTData::CheckSinaRTDataActive() {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, INT64& llReturnValue) {
+bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, INT64& llReturnValue) const {
 	char buffer3[200];
 
 	if (!ReadSinaOneValue(pSinaWebData, buffer3)) { return false; }
@@ -292,7 +292,7 @@ bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, INT64& llRetu
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, long& lReturnValue) {
+bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, long& lReturnValue) const {
 	char buffer3[200];
 
 	if (!ReadSinaOneValue(pSinaWebData, buffer3)) { return false; }
@@ -308,7 +308,7 @@ bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, long& lReturn
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, double& dReturnValue) {
+bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, double& dReturnValue) const {
 	char buffer3[200];
 
 	if (!ReadSinaOneValue(pSinaWebData, buffer3)) { return false; }

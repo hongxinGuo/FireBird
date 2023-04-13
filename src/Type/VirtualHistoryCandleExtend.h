@@ -22,13 +22,13 @@ public:
 	void Reset() override; // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 	int GetRatio() const final { return 1000; };
 
-	bool SaveExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend); // 存储扩展数据
+	bool SaveExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) const; // 存储扩展数据
 	bool AppendExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
-	bool LoadExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
+	bool LoadExtendData(const CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
 
-	bool Save(CVirtualSetHistoryCandle* pSet); // 存储所有的数据
+	bool Save(CVirtualSetHistoryCandle* pSet) const; // 存储所有的数据
 	bool Append(CVirtualSetHistoryCandle* pSet);
-	bool Load(CVirtualSetHistoryCandle* pSet);
+	bool Load(const CVirtualSetHistoryCandle* pSet);
 
 public:
 	INT64 GetTransactionNumber() const noexcept { return m_lTransactionNumber; }

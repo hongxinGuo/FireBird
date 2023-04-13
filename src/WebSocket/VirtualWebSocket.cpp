@@ -31,7 +31,7 @@ void CVirtualWebSocket::Reset() {
 	m_HeartbeatTime = 0;
 }
 
-bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vectorString vSymbol) {
+bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(const vectorString& vSymbol) {
 	try {
 		AppendSymbol(vSymbol);
 		Disconnect();
@@ -48,14 +48,14 @@ bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(vectorString vSymbol) {
 	return true;
 }
 
-bool CVirtualWebSocket::IsSymbol(string sSymbol) const {
+bool CVirtualWebSocket::IsSymbol(const string& sSymbol) const {
 	if (!m_mapSymbol.contains(sSymbol)) {	// ÐÂ·ûºÅ£¿
 		return false;
 	}
 	else return true;
 }
 
-void CVirtualWebSocket::AppendSymbol(vectorString vSymbol) {
+void CVirtualWebSocket::AppendSymbol(const vectorString& vSymbol) {
 	for (auto& sSymbol : vSymbol) {
 		if (!m_mapSymbol.contains(sSymbol)) {	// ÐÂ·ûºÅ£¿
 			AddSymbol(sSymbol);
@@ -88,7 +88,7 @@ bool CVirtualWebSocket::IsIdle(time_t tPeriod) const {
 	else return false;
 }
 
-void CVirtualWebSocket::Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {
+void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {
 	ix::SocketTLSOptions TLSOption;
 
 	ASSERT(GetState() == ix::ReadyState::Closed);

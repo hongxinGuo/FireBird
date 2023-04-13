@@ -17,7 +17,7 @@ public:
 
 	void Reset();
 
-	void Load(CSetTiingoStock& setTiingoStock);
+	void Load(const CSetTiingoStock& setTiingoStock);
 	void Append(CSetTiingoStock& setTiingoStock);
 	void Save(CSetTiingoStock& setTiingoStock);
 

@@ -42,7 +42,7 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebSocket*> pDataTiingoCryptoWebSocket, vectorString vSymbol) {
+UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebSocket*> pDataTiingoCryptoWebSocket, const vectorString& vSymbol) {
 	if (static bool s_fConnecting = false; !s_fConnecting) {
 		s_fConnecting = true;
 		if (pDataTiingoCryptoWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
@@ -54,7 +54,7 @@ UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebS
 	return 73;
 }
 
-CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() : CVirtualWebSocket() {
+CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() {
 	m_url = _T("wss://api.tiingo.com/crypto");
 }
 
@@ -74,7 +74,7 @@ void CTiingoCryptoWebSocket::Connect() {
 // thresholdLevel 5: only Last Trade updates.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-void CTiingoCryptoWebSocket::Send(vectorString vSymbol) {
+void CTiingoCryptoWebSocket::Send(const vectorString& vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
@@ -99,7 +99,7 @@ void CTiingoCryptoWebSocket::Send(vectorString vSymbol) {
 /// }
 ///
 ///////////////////////////////////////////////////////////////////////
-string CTiingoCryptoWebSocket::CreateMessage(vectorString vSymbol) {
+string CTiingoCryptoWebSocket::CreateMessage(const vectorString& vSymbol) {
 	vectorString vSymbols;
 	json message;
 	message["eventName"] = _T("subscribe");

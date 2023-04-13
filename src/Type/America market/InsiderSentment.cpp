@@ -9,19 +9,19 @@ CInsiderSentiment::CInsiderSentiment() {
 	m_mspr = 0.0;
 }
 
-void CInsiderSentiment::Append(CSetInsiderSentiment& setInsiderSentiment) {
+void CInsiderSentiment::Append(CSetInsiderSentiment& setInsiderSentiment) const {
 	setInsiderSentiment.AddNew();
 	Save(setInsiderSentiment);
 	setInsiderSentiment.Update();
 }
 
-void CInsiderSentiment::Update(CSetInsiderSentiment& setInsiderSentiment) {
+void CInsiderSentiment::Update(CSetInsiderSentiment& setInsiderSentiment) const {
 	setInsiderSentiment.Edit();
 	Save(setInsiderSentiment);
 	setInsiderSentiment.Update();
 }
 
-void CInsiderSentiment::Save(CSetInsiderSentiment& setInsiderSentiment) {
+void CInsiderSentiment::Save(CSetInsiderSentiment& setInsiderSentiment) const {
 	setInsiderSentiment.m_Symbol = m_strSymbol;
 	setInsiderSentiment.m_Date = m_lDate;
 	setInsiderSentiment.m_Change = m_lChange;

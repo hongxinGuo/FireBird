@@ -9,9 +9,9 @@ public:
 	CFinnhubStockExchange();
 	~CFinnhubStockExchange() = default;
 
-	void Append(CSetFinnhubStockExchange& setFinnhubExchange);
+	void Append(CSetFinnhubStockExchange& setFinnhubExchange) const;
 
-	void Load(CSetFinnhubStockExchange& setFinnhubExchange);
+	void Load(const CSetFinnhubStockExchange& setFinnhubExchange);
 
 	void SetUpdated(const bool fFlag) noexcept { m_fUpdated = fFlag; }
 	bool IsUpdated() const noexcept { return m_fUpdated; }

@@ -32,9 +32,9 @@ public:
 	CFinnhubCompanyNews();
 	~CFinnhubCompanyNews() = default;
 
-	void Append(CSetCompanyNews& setCompanyNews);
-	void Update(CSetCompanyNews& setCompanyNews);
-	void Save(CSetCompanyNews& setCompanyNews);
+	void Append(CSetCompanyNews& setCompanyNews) const;
+	void Update(CSetCompanyNews& setCompanyNews) const;
+	void Save(CSetCompanyNews& setCompanyNews) const;
 
 	void Load(const CSetCompanyNews& setCompanyNews);
 

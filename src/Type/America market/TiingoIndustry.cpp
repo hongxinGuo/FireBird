@@ -9,14 +9,14 @@ CTiingoIndustry::CTiingoIndustry() {
 	m_fUpdated = false;
 }
 
-void CTiingoIndustry::Append(CSetTiingoIndustry& setTiingoIndustry) {
+void CTiingoIndustry::Append(CSetTiingoIndustry& setTiingoIndustry) const {
 	setTiingoIndustry.AddNew();
 	setTiingoIndustry.m_Industry = m_strIndustry;
 	setTiingoIndustry.m_Sector = m_strSector;
 	setTiingoIndustry.Update();
 }
 
-void CTiingoIndustry::Load(CSetTiingoIndustry& setTiingoIndustry) {
+void CTiingoIndustry::Load(const CSetTiingoIndustry& setTiingoIndustry) {
 	m_strIndustry = setTiingoIndustry.m_Industry;
 	m_strSector = setTiingoIndustry.m_Sector;
 }

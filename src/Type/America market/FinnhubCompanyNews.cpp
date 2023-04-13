@@ -15,19 +15,19 @@ CFinnhubCompanyNews::CFinnhubCompanyNews() {
 	m_strURL = _T("");
 }
 
-void CFinnhubCompanyNews::Append(CSetCompanyNews& setCompanyNews) {
+void CFinnhubCompanyNews::Append(CSetCompanyNews& setCompanyNews) const {
 	setCompanyNews.AddNew();
 	Save(setCompanyNews);
 	setCompanyNews.Update();
 }
 
-void CFinnhubCompanyNews::Update(CSetCompanyNews& setCompanyNews) {
+void CFinnhubCompanyNews::Update(CSetCompanyNews& setCompanyNews) const {
 	setCompanyNews.Update();
 	Save(setCompanyNews);
 	setCompanyNews.Update();
 }
 
-void CFinnhubCompanyNews::Save(CSetCompanyNews& setCompanyNews) {
+void CFinnhubCompanyNews::Save(CSetCompanyNews& setCompanyNews) const {
 	char buffer[30]{0};
 	setCompanyNews.m_CompanySymbol = m_strCompanySymbol.Left(45);
 	setCompanyNews.m_Category = m_strCategory.Left(100);

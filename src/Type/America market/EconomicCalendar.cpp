@@ -25,13 +25,13 @@ void CEconomicCalendar::Load(const CSetEconomicCalendar& setEconomicCalendar) {
 	m_strUnit = setEconomicCalendar.m_Unit;
 }
 
-void CEconomicCalendar::Append(CSetEconomicCalendar& setEconomicCalendar) {
+void CEconomicCalendar::Append(CSetEconomicCalendar& setEconomicCalendar) const {
 	setEconomicCalendar.AddNew();
 	Save(setEconomicCalendar);
 	setEconomicCalendar.Update();
 }
 
-void CEconomicCalendar::Save(CSetEconomicCalendar& setEconomicCalendar) {
+void CEconomicCalendar::Save(CSetEconomicCalendar& setEconomicCalendar) const {
 	setEconomicCalendar.m_Time = m_strTime;
 	setEconomicCalendar.m_Country = m_strCountry;
 	setEconomicCalendar.m_Event = m_strEvent;

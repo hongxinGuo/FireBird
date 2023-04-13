@@ -25,7 +25,7 @@ void CTiingoStock::Reset() {
 	m_lStatementUpdateDate = 19800101;
 }
 
-void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
+void CTiingoStock::Load(const CSetTiingoStock& setTiingoStock) {
 	m_strTiingoPermaTicker = setTiingoStock.m_TiingoPermaTicker;
 	m_strTicker = setTiingoStock.m_Ticker;
 	m_strName = setTiingoStock.m_Name;

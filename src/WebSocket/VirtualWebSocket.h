@@ -23,18 +23,18 @@ class CVirtualWebSocket {
 public:
 	CVirtualWebSocket(bool fHaveSubscriptionId = true);
 	virtual ~CVirtualWebSocket();
-	bool ConnectWebSocketAndSendMessage(vectorString vSymbol);
+	bool ConnectWebSocketAndSendMessage(const vectorString& vSymbol);
 	void Reset();
 
 	virtual void Connect() { ASSERT(false); }
 	void Disconnect();
-	virtual void Send(vector<string> vSymbol) { ASSERT(FALSE); }
+	virtual void Send(const vector<string>& vSymbol) { ASSERT(FALSE); }
 	auto SendString(const string& strMessage) { return m_webSocket.send(strMessage); }
 
 	virtual void CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) { ASSERT(false); } // 继承类必须实现各自的功能
 
-	bool IsSymbol(string sSymbol) const;
-	void AppendSymbol(vectorString vSymbol);
+	bool IsSymbol(const string& sSymbol) const;
+	void AppendSymbol(const vectorString& vSymbol);
 	bool AddSymbol(const string& sSymbol);
 	bool DeleteSymbol(const string& sSymbol);
 	void ClearSymbol();
@@ -79,7 +79,7 @@ public:
 	bool IsIdle(time_t tPeriod = 300) const; // 默认五分钟
 
 	// 实现
-	void Connecting(string url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
+	void Connecting(const string& url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
 	bool CreateThreadDisconnectWebSocket();	// 用于系统退出时。
 	bool DisconnectWithoutWaitingSucceed(); // 用于程序运行中途时切断网络链接，此时无需等待。
 
@@ -92,7 +92,7 @@ public:
 		m_qWebSocketData.PushData(pData);
 	}
 
-	void PushData(const shared_ptr<string> pData) { m_qWebSocketData.PushData(pData); }
+	void PushData(const shared_ptr<string>& pData) { m_qWebSocketData.PushData(pData); }
 	shared_ptr<string> PopData() { return m_qWebSocketData.PopData(); }
 
 protected:

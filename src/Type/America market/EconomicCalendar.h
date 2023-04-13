@@ -10,8 +10,8 @@ public:
 	~CEconomicCalendar() = default;
 
 	void Load(const CSetEconomicCalendar& setEconomicCalendar);
-	void Append(CSetEconomicCalendar& setEconomicCalendar);
-	void Save(CSetEconomicCalendar& setEconomicCalendar);
+	void Append(CSetEconomicCalendar& setEconomicCalendar) const;
+	void Save(CSetEconomicCalendar& setEconomicCalendar) const;
 
 public:
 	INT64 m_iTime; // 不存储这个数据

@@ -10,7 +10,7 @@ CCountry::CCountry() {
 	m_strCurrencyCode = _T(" ");
 }
 
-void CCountry::Append(CSetCountry& setCountry) {
+void CCountry::Append(CSetCountry& setCountry) const {
 	setCountry.AddNew();
 	setCountry.m_Code2 = m_strCode2;
 	setCountry.m_Code3 = m_strCode3;

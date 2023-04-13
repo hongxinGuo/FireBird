@@ -9,7 +9,7 @@ public:
 	CCountry();
 	~CCountry() = default;
 
-	void Append(CSetCountry& setCountry);
+	void Append(CSetCountry& setCountry) const;
 	void Load(const CSetCountry& setCountry);
 
 public:

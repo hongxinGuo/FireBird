@@ -9,7 +9,7 @@ public:
 	CEPSSurprise();
 	~CEPSSurprise() = default;
 
-	void Append(CSetEPSSurprise& setEPSSurprise);
+	void Append(CSetEPSSurprise& setEPSSurprise) const;
 	void Load(const CSetEPSSurprise& setEPSSurprise);
 
 public:

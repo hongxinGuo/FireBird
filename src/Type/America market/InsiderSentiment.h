@@ -9,10 +9,10 @@ public:
 	CInsiderSentiment();
 	~CInsiderSentiment() = default;
 
-	void Append(CSetInsiderSentiment& setInsiderTransaction);
-	void Update(CSetInsiderSentiment& setInsiderTransaction);
+	void Append(CSetInsiderSentiment& setInsiderTransaction) const;
+	void Update(CSetInsiderSentiment& setInsiderTransaction) const;
 
-	void Save(CSetInsiderSentiment& setInsiderTransaction);
+	void Save(CSetInsiderSentiment& setInsiderTransaction) const;
 	void Load(const CSetInsiderSentiment& setInsiderTransaction);
 
 public:

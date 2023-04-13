@@ -11,7 +11,7 @@ CNaicsIndustry::CNaicsIndustry() {
 	m_fUpdated = false;
 }
 
-void CNaicsIndustry::Append(CSetNaicsIndustry& setNaicsIndustry) {
+void CNaicsIndustry::Append(CSetNaicsIndustry& setNaicsIndustry) const {
 	setNaicsIndustry.AddNew();
 	setNaicsIndustry.m_Naics = m_strNaics;
 	setNaicsIndustry.m_NationalIndustry = m_strNationalIndustry;
@@ -20,7 +20,7 @@ void CNaicsIndustry::Append(CSetNaicsIndustry& setNaicsIndustry) {
 	setNaicsIndustry.Update();
 }
 
-void CNaicsIndustry::Load(CSetNaicsIndustry& setNaicsIndustry) {
+void CNaicsIndustry::Load(const CSetNaicsIndustry& setNaicsIndustry) {
 	m_strNaics = setNaicsIndustry.m_Naics;
 	m_strNationalIndustry = setNaicsIndustry.m_NationalIndustry;
 	m_strSector = setNaicsIndustry.m_Sector;

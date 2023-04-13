@@ -43,7 +43,7 @@ bool CVirtualHistoryCandleBasic::IsActive() const {
 	return false;
 }
 
-bool CVirtualHistoryCandleBasic::SaveBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) {
+bool CVirtualHistoryCandleBasic::SaveBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) const {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());
 
 	pVirtualSetHistoryCandleBasic->m_Date = GetMarketDate();

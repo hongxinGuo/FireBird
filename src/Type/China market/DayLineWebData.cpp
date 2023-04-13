@@ -17,7 +17,7 @@ void CDayLineWebData::Reset() {
 	m_lCurrentPos = 0;
 }
 
-bool CDayLineWebData::TransferWebDataToBuffer(CWebDataPtr pWebData) {
+bool CDayLineWebData::TransferWebDataToBuffer(const CWebDataPtr& pWebData) {
 	// 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
 	m_sDataBuffer = std::move(pWebData->m_sDataBuffer);
 
@@ -69,7 +69,7 @@ bool CDayLineWebData::ProcessNeteaseDayLineData() {
 		m_vTempDayLine.push_back(pCurrentDayLine); // 暂存于临时vector中，网易日线数据的时间顺序是颠倒的，最新的在最前面
 	}
 	// 正序排列
-	ranges::sort(m_vTempDayLine, [](CDayLinePtr p1, CDayLinePtr p2) { return p1->GetMarketDate() < p2->GetMarketDate(); });
+	ranges::sort(m_vTempDayLine, [](const CDayLinePtr& p1, const CDayLinePtr& p2) { return p1->GetMarketDate() < p2->GetMarketDate(); });
 	ReportDayLineDownLoaded();
 
 	return true;
@@ -118,7 +118,7 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLineData() {
 
 	// 股票名称
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return nullptr;
-	CString str = buffer2;
+	const CString str = buffer2;
 	pDayLine->SetDisplaySymbol(str);
 
 	// 收盘价
@@ -151,7 +151,6 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLineData() {
 	// 涨跌值
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return nullptr;
 	if (pDayLine->GetOpen() == 0) {
-		//ASSERT(strcmp(buffer2, _T("None") == 0);
 		pDayLine->SetUpDown(0.0);
 	}
 	else pDayLine->SetUpDown(buffer2);
@@ -196,7 +195,7 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLineData() {
 	return pDayLine;
 }
 
-bool CDayLineWebData::SkipNeteaseDayLineInformationHeader(string& sDataBuffer, INT64& lCurrentPos) {
+bool CDayLineWebData::SkipNeteaseDayLineInformationHeader(const string& sDataBuffer, INT64& lCurrentPos) {
 	ASSERT(lCurrentPos == 0);
 	do {
 		if (lCurrentPos >= sDataBuffer.size()) {
@@ -207,7 +206,8 @@ bool CDayLineWebData::SkipNeteaseDayLineInformationHeader(string& sDataBuffer, I
 			lCurrentPos++; // 跨过此\n
 			return false;
 		}
-	} while (sDataBuffer.at(lCurrentPos++) != 0X0d); // 寻找\r
+	}
+	while (sDataBuffer.at(lCurrentPos++) != 0X0d); // 寻找\r
 	if (lCurrentPos >= sDataBuffer.size()) {
 		return false;
 	}
@@ -224,7 +224,7 @@ void CDayLineWebData::ReportDayLineDownLoaded() {
 	//gl_systemMessage.PushDayLineInfoMessage(strTemp);
 }
 
-bool CDayLineWebData::ReadOneValueOfNeteaseDayLine(string& pBuffer, char* buffer, INT64& lCurrentPos) {
+bool CDayLineWebData::ReadOneValueOfNeteaseDayLine(const string& pBuffer, char* buffer, INT64& lCurrentPos) {
 	int i = 0;
 
 	while (pBuffer.at(lCurrentPos) != ',') {

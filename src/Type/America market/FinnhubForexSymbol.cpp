@@ -3,7 +3,7 @@
 #include"WorldMarket.h"
 #include "FinnhubForexSymbol.h"
 
-CFinnhubForexSymbol::CFinnhubForexSymbol() : CVirtualStock() {
+CFinnhubForexSymbol::CFinnhubForexSymbol() {
 	CFinnhubForexSymbol::Reset();
 }
 
@@ -29,7 +29,7 @@ void CFinnhubForexSymbol::SetCheckingDayLineStatus() {
 	}
 }
 
-CString CFinnhubForexSymbol::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) {
+CString CFinnhubForexSymbol::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const {
 	CString strParam = _T("");
 	char buffer[50];
 
@@ -71,7 +71,7 @@ void CFinnhubForexSymbol::UpdateDayLineStartEndDate() {
 	}
 }
 
-bool CFinnhubForexSymbol::HaveNewDayLineData() {
+bool CFinnhubForexSymbol::HaveNewDayLineData() const {
 	if (m_dataDayLine.Size() == 0) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate) return true;
 	return false;

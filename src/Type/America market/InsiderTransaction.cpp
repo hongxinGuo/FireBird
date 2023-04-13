@@ -14,19 +14,19 @@ CInsiderTransaction::CInsiderTransaction() {
 	m_dTransactionPrice = 0.0;
 }
 
-void CInsiderTransaction::Append(CSetInsiderTransaction& setInsiderTransaction) {
+void CInsiderTransaction::Append(CSetInsiderTransaction& setInsiderTransaction) const {
 	setInsiderTransaction.AddNew();
 	Save(setInsiderTransaction);
 	setInsiderTransaction.Update();
 }
 
-void CInsiderTransaction::Update(CSetInsiderTransaction& setInsiderTransaction) {
+void CInsiderTransaction::Update(CSetInsiderTransaction& setInsiderTransaction) const {
 	setInsiderTransaction.Edit();
 	Save(setInsiderTransaction);
 	setInsiderTransaction.Update();
 }
 
-void CInsiderTransaction::Save(CSetInsiderTransaction& setInsiderTransaction) {
+void CInsiderTransaction::Save(CSetInsiderTransaction& setInsiderTransaction) const {
 	setInsiderTransaction.m_Symbol = m_strSymbol;
 	setInsiderTransaction.m_PersonName = m_strPersonName.Left(100); // 人名最多100个字符
 	setInsiderTransaction.m_Share = ConvertValueToString(m_lShare); // 交易股数有可能超过int的范围，故而使用INT64。
@@ -37,7 +37,7 @@ void CInsiderTransaction::Save(CSetInsiderTransaction& setInsiderTransaction) {
 	setInsiderTransaction.m_TransactionPrice = m_dTransactionPrice;
 }
 
-void CInsiderTransaction::Load(CSetInsiderTransaction& setInsiderTransaction) {
+void CInsiderTransaction::Load(const CSetInsiderTransaction& setInsiderTransaction) {
 	m_strSymbol = setInsiderTransaction.m_Symbol;
 	m_strPersonName = setInsiderTransaction.m_PersonName;
 	m_lShare = atoll(setInsiderTransaction.m_Share);

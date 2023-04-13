@@ -49,7 +49,7 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pDataFinnhubWebSocket, vectorString vSymbol) {
+UINT ThreadConnectFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pDataFinnhubWebSocket, const vectorString& vSymbol) {
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
@@ -61,7 +61,7 @@ UINT ThreadConnectFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pD
 	return 70;
 }
 
-CFinnhubWebSocket::CFinnhubWebSocket() : CVirtualWebSocket() {
+CFinnhubWebSocket::CFinnhubWebSocket() {
 	m_url = _T("wss://ws.finnhub.io");
 	SetSubscriptionStatus(false); // finnhub WebSocketÃ»ÓÐ×¢²áID
 }
@@ -77,7 +77,7 @@ void CFinnhubWebSocket::Connect() {
 	Connecting(urlAndAuth, ProcessFinnhubWebSocket);
 }
 
-void CFinnhubWebSocket::Send(vectorString vSymbol) {
+void CFinnhubWebSocket::Send(const vectorString& vSymbol) {
 	string strMessage;
 
 	ASSERT(IsOpen());
