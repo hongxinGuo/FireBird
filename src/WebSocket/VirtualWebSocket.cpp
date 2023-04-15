@@ -41,7 +41,8 @@ bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(const vectorString& vSymb
 		Send(m_vSymbol);
 	}
 	catch (exception& e) {
-		CString sError = e.what();
+		const CString sError = e.what();
+		gl_systemMessage.PushInnerSystemInformationMessage(sError);
 		return false;
 	}
 
@@ -124,7 +125,8 @@ void CVirtualWebSocket::Disconnect() {
 }
 
 UINT ThreadDisconnectWebSocket(not_null<CVirtualWebSocket*> pWebSocket) {
-	if (static bool s_fConnecting = false; !s_fConnecting) {
+	static bool s_fConnecting = false;
+	if (!s_fConnecting) {
 		s_fConnecting = true;
 		pWebSocket->Disconnect();
 		s_fConnecting = false;

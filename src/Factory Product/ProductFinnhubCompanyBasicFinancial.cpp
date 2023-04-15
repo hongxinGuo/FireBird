@@ -541,8 +541,14 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 		try { pBasicFinancial->m_yearToDatePriceReturnDaily = jsonGetDouble(&ptMetric, _T("yearToDatePriceReturnDaily")); }
 		catch (json::exception&) { }
 
-		s = pjs->at(_T("metricType")); // 目前共三种类型："all", "perShare", "marketCapitalization".
-		ASSERT((s == _T("all")) || (s==_T("perShare")) || (s==_T("marketCapitalization")));
+		s = pjs->at(_T("metricType")); // 目前共四种类型："all", "perShare", "marketCapitalization","metric".
+		if (!((s == _T("all")) || (s == _T("perShare")) || (s == _T("marketCapitalization")) || (s == _T("metric")))) {
+			CString str = _T(" metric type out of range: ");
+			str += s.c_str();
+			str += _T("   Inquiry string:  ");
+			str += m_strInquiry;
+			gl_systemMessage.PushInnerSystemInformationMessage(str);
+		}
 
 		ptSeries = jsonGetChild(pjs, _T("series"));
 		if (!ptSeries.empty()) {

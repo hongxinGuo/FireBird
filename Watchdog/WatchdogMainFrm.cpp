@@ -53,8 +53,6 @@ int CWatchdogMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	BOOL bNameValid;
-
 	CMDITabInfo mdiTabParams;
 	mdiTabParams.m_style = CMFCTabCtrl::STYLE_3D_ONENOTE; // other styles available...
 	mdiTabParams.m_bActiveTabCloseButton = TRUE;      // set to FALSE to place close button at right of tab area
@@ -80,7 +78,7 @@ int CWatchdogMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	}
 
 	CString strToolBarName;
-	bNameValid = strToolBarName.LoadString(IDS_TOOLBAR_STANDARD);
+	BOOL bNameValid = strToolBarName.LoadString(IDS_TOOLBAR_STANDARD);
 	ASSERT(bNameValid);
 	m_wndToolBar.SetWindowText(strToolBarName);
 
@@ -200,11 +198,9 @@ BOOL CWatchdogMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 }
 
 BOOL CWatchdogMainFrame::CreateDockingWindows() {
-	BOOL bNameValid;
-
 	// Create class view
 	CString strClassView;
-	bNameValid = strClassView.LoadString(IDS_CLASS_VIEW);
+	BOOL bNameValid = strClassView.LoadString(IDS_CLASS_VIEW);
 	ASSERT(bNameValid);
 	if (!m_wndClassView.Create(strClassView, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_CLASSVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI)) {
 		TRACE0("Failed to create Class View window\n");
@@ -283,7 +279,7 @@ void CWatchdogMainFrame::OnViewCustomize() {
 }
 
 LRESULT CWatchdogMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
-	LRESULT lres = CMDIFrameWndEx::OnToolbarCreateNew(wp, lp);
+	const LRESULT lres = CMDIFrameWndEx::OnToolbarCreateNew(wp, lp);
 	if (lres == 0) {
 		return 0;
 	}
@@ -291,9 +287,8 @@ LRESULT CWatchdogMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
 	CMFCToolBar* pUserToolbar = (CMFCToolBar*)lres;
 	ASSERT_VALID(pUserToolbar);
 
-	BOOL bNameValid;
 	CString strCustomize;
-	bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
+	const BOOL bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
 	ASSERT(bNameValid);
 
 	pUserToolbar->EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
@@ -380,12 +375,11 @@ BOOL CWatchdogMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd*
 	}
 
 	// enable customization button for all user toolbars
-	BOOL bNameValid;
 	CString strCustomize;
-	bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
+	const BOOL bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
 	ASSERT(bNameValid);
 
-	for (int i = 0; i < iMaxUserToolbars; i ++) {
+	for (int i = 0; i < iMaxUserToolbars; i++) {
 		CMFCToolBar* pUserToolbar = GetUserToolBarByIndex(i);
 		if (pUserToolbar != nullptr) {
 			pUserToolbar->EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);

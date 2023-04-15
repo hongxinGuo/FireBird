@@ -43,7 +43,8 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 }
 
 UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebSocket*> pDataTiingoCryptoWebSocket, const vectorString& vSymbol) {
-	if (static bool s_fConnecting = false; !s_fConnecting) {
+	static bool s_fConnecting = false;
+	if (!s_fConnecting) {
 		s_fConnecting = true;
 		if (pDataTiingoCryptoWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("¿ªÆôTiingo Crypto web socket·þÎñ"));

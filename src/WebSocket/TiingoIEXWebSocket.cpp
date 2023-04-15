@@ -15,7 +15,9 @@ void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 	case ix::WebSocketMessageType::Message:
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
 		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
-		if (!gl_systemStatus.IsExitingSystem()) { gl_tiingoIEXWebSocket.PushData(msg->str); }
+		if (!gl_systemStatus.IsExitingSystem()) {
+			gl_tiingoIEXWebSocket.PushData(msg->str);
+		}
 		break;
 	case ix::WebSocketMessageType::Error:
 		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason.c_str());
@@ -41,7 +43,8 @@ void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 }
 
 UINT ThreadConnectTiingoIEXWebSocketAndSendMessage(not_null<CTiingoIEXWebSocket*> pDataTiingoIEXWebSocket, const vectorString& vSymbol) {
-	if (static bool s_fConnecting = false; !s_fConnecting) {
+	static bool s_fConnecting = false;
+	if (!s_fConnecting) {
 		s_fConnecting = true;
 		if (pDataTiingoIEXWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo IEX web socket服务"));

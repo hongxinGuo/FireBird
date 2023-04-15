@@ -104,11 +104,10 @@ BOOL CWatchdogApp::InitInstance() {
 
 	// Register the application's document templates.  Document templates
 	//  serve as the connection between documents, frame windows and views
-	CMultiDocTemplate* pDocTemplate;
-	pDocTemplate = new CMultiDocTemplate(IDR_WatchdogTYPE,
-	                                     RUNTIME_CLASS(CWatchdogDoc),
-	                                     RUNTIME_CLASS(CWatchdogChildFrame), // custom MDI child frame
-	                                     RUNTIME_CLASS(CWatchdogView));
+	CMultiDocTemplate* pDocTemplate = new CMultiDocTemplate(IDR_WatchdogTYPE,
+	                                                        RUNTIME_CLASS(CWatchdogDoc),
+	                                                        RUNTIME_CLASS(CWatchdogChildFrame), // custom MDI child frame
+	                                                        RUNTIME_CLASS(CWatchdogView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
@@ -183,9 +182,8 @@ void CWatchdogApp::OnAppAbout() {
 // CWatchdogApp customization load/save methods
 
 void CWatchdogApp::PreLoadState() {
-	BOOL bNameValid;
 	CString strName;
-	bNameValid = strName.LoadString(IDS_EDIT_MENU);
+	BOOL bNameValid = strName.LoadString(IDS_EDIT_MENU);
 	ASSERT(bNameValid);
 	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);
 	bNameValid = strName.LoadString(IDS_EXPLORER);
