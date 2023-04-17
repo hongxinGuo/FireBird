@@ -6,7 +6,6 @@
 #include"FinnhubInaccessibleExchange.h"
 
 #include"FinnhubDataSource.h"
-//#include"TiingoDataSource.h"
 
 #include"FinnhubWebSocket.h"
 #include"TiingoIEXWebSocket.h"
@@ -252,8 +251,7 @@ bool CWorldMarket::UpdateForexDayLineDB() {
 		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
-					thread thread1(ThreadUpdateForexDayLineDB, pSymbol.get());
-					thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
+					CreateThreadUpdateForexDayLineDB(pSymbol);
 					fUpdated = true;
 					TRACE("更新%s日线数据\n", pSymbol->GetSymbol().GetBuffer());
 				}
@@ -296,8 +294,7 @@ bool CWorldMarket::UpdateCryptoDayLineDB() {
 		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
-					thread thread1(ThreadUpdateCryptoDayLineDB, pSymbol.get());
-					thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
+					CreateThreadUpdateCryptoDayLineDB(pSymbol);
 					fUpdated = true;
 					//TRACE("更新%s日线数据\n", pSymbol->GetSymbol().GetBuffer());
 				}
@@ -329,8 +326,7 @@ bool CWorldMarket::UpdateEPSSurpriseDB() {
 	for (long l = 0; l < stockSize; ++l) {
 		pStock = m_containerStock.GetStock(l);
 		if (pStock->IsEPSSurpriseNeedSaveAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
-			thread thread1(ThreadUpdateEPSSurpriseDB, pStock.get());
-			thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
+			CreateThreadUpdateEPSSurpriseDB(pStock);
 			TRACE("更新%s EPS surprise数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		if (gl_systemStatus.IsExitingSystem()) {
@@ -339,6 +335,21 @@ bool CWorldMarket::UpdateEPSSurpriseDB() {
 	}
 
 	return (true);
+}
+
+void CWorldMarket::CreateThreadUpdateForexDayLineDB(CForexSymbolPtr pSymbol) {
+	thread thread1(ThreadUpdateForexDayLineDB, pSymbol.get());
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
+}
+
+void CWorldMarket::CreateThreadUpdateCryptoDayLineDB(CFinnhubCryptoSymbolPtr pSymbol) {
+	thread thread1(ThreadUpdateCryptoDayLineDB, pSymbol.get());
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
+}
+
+void CWorldMarket::CreateThreadUpdateEPSSurpriseDB(CWorldStockPtr pStock) {
+	thread thread1(ThreadUpdateEPSSurpriseDB, pStock.get());
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
@@ -368,8 +379,6 @@ void CWorldMarket::CreateThreadUpdateDayLineDB() {
 }
 
 void CWorldMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
-	ASSERT(!IsTimeToResetSystem(lCurrentTime));// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
-
 	if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
 		CreateThreadUpdateCountryListDB();
 	}
@@ -395,7 +404,8 @@ void CWorldMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 	}
 
 	long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
-	if (IsTimeToResetSystem(lCurrentTime)) lNextTime = 170510;
+	if (IsTimeToResetSystem(lNextTime)) lNextTime = 170510;
+	ASSERT(!IsTimeToResetSystem(lNextTime));// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
 	AddTask(WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__, lNextTime); // 每五分钟更新一次
 }
 

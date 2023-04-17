@@ -68,28 +68,30 @@ public:
 	virtual bool CreateThreadUpdateSICIndustry();
 	virtual bool CreateThreadUpdateNaicsIndustry();
 
-	void CreateThreadUpdateCompanyNewsDB();
-	void CreateThreadUpdateBasicFinancialDB();
-	void CreateThreadUpdateDayLineDB();
-	void CreateThreadUpdateForexExchangeDB();
-	void CreateThreadUpdateForexSymbolDB();
-	void CreateThreadUpdateCryptoExchangeDB();
-	void CreateThreadUpdateFinnhubCryptoSymbolDB();
-	void CreateThreadUpdateCountryListDB();
-	void CreateThreadUpdateEconomicCalendarDB();
-	void CreateThreadUpdateInsiderTransactionDB();
-	void CreateThreadUpdateInsiderSentimentDB();
-	void CreateThreadUpdateTiingoStockDB();
-	void CreateThreadUpdateTiingoCryptoSymbolDB();
-	void CreateThreadUpdateDayLineStartEndDate();
-	void CreateThreadUpdateStockProfileDB();
+	virtual void CreateThreadUpdateCompanyNewsDB();
+	virtual void CreateThreadUpdateBasicFinancialDB();
+	virtual void CreateThreadUpdateDayLineDB();
+	virtual void CreateThreadUpdateForexExchangeDB();
+	virtual void CreateThreadUpdateForexSymbolDB();
+	virtual void CreateThreadUpdateCryptoExchangeDB();
+	virtual void CreateThreadUpdateFinnhubCryptoSymbolDB();
+	virtual void CreateThreadUpdateCountryListDB();
+	virtual void CreateThreadUpdateEconomicCalendarDB();
+	virtual void CreateThreadUpdateInsiderTransactionDB();
+	virtual void CreateThreadUpdateInsiderSentimentDB();
+	virtual void CreateThreadUpdateTiingoStockDB();
+	virtual void CreateThreadUpdateTiingoCryptoSymbolDB();
+	virtual void CreateThreadUpdateDayLineStartEndDate();
+	virtual void CreateThreadUpdateStockProfileDB();
+	virtual void CreateThreadUpdateForexDayLineDB(CForexSymbolPtr pSymbol);
+	virtual void CreateThreadUpdateCryptoDayLineDB(CFinnhubCryptoSymbolPtr pSymbol);
+	virtual void CreateThreadUpdateEPSSurpriseDB(CWorldStockPtr pStock);
 
 	bool UpdateForexDayLineDB();
 	bool UpdateCryptoDayLineDB();
 	bool UpdateEPSSurpriseDB();
 
 	void ClearEconomicCalendar() { m_dataFinnhubEconomicCalendar.Reset(); }
-
 	bool UpdateEconomicCalendar(const vector<CEconomicCalendarPtr>& vEconomicCalendar) { return m_dataFinnhubEconomicCalendar.Update(vEconomicCalendar); }
 
 	// ¸÷ÖÖ×´Ì¬

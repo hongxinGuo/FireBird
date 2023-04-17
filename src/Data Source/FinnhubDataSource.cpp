@@ -687,7 +687,7 @@ bool CFinnhubDataSource::InquireForexDayLine() {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub forex day line..."));
 			m_fInquiringFinnhubForexDayLine = true;
 		}
-		for (lCurrentUpdateForexDayLinePos = 0; lCurrentUpdateForexDayLinePos < lStockSetSize; lCurrentUpdateForexDayLinePos ++) {
+		for (lCurrentUpdateForexDayLinePos = 0; lCurrentUpdateForexDayLinePos < lStockSetSize; lCurrentUpdateForexDayLinePos++) {
 			pForexSymbol = gl_pWorldMarket->GetForexSymbol(lCurrentUpdateForexDayLinePos);
 			if (pForexSymbol->IsDayLineNeedUpdate()) {
 				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pForexSymbol->GetExchangeCode())) {
@@ -792,7 +792,7 @@ bool CFinnhubDataSource::InquireCryptoDayLine() {
 void CFinnhubDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 45000); // 设置连接超时时间为45秒。Finnhub.io已经开始限速，估计为1M/s，故而增加时间
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 45000); // 设置接收超时时间为45秒。Finnhub.io已经开始限速，估计为1M/s，故而增加时间
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 5000); // 设置接收超时时间为45秒。Finnhub.io已经开始限速，估计为1M/s，故而增加时间
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 1000); // 设置发送超时时间为1秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
