@@ -154,7 +154,6 @@ bool CWorldMarket::ProcessTask(long lCurrentTime) {
 }
 
 void CWorldMarket::TaskCreateTask(long lCurrentTime) {
-	CMarketTaskPtr pTask;
 	const long lTimeMinute = (lCurrentTime / 100) * 100; // 当前小时和分钟
 
 	while (!IsMarketTaskEmpty()) DiscardMarketTask();
@@ -170,7 +169,7 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 	AddTask(WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__, lTimeMinute + 40);// 更新股票简介数据库的任务
 
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lCurrentTime);
-	AddTask(WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__, lCurrentTime);
+	AddTask(WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__, GetNextTime(lTimeMinute, 0, 1, 0));
 
 	AddTask(CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }

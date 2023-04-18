@@ -47,6 +47,8 @@ public:
 	void Resize(const long lSize) {
 		m_sDataBuffer.resize(lSize);
 		m_lBufferLength = lSize;
+		m_pCurrentPos = &m_sDataBuffer.at(0);
+		m_pEndPos = &m_sDataBuffer.at(m_lBufferLength - 1) + 1;
 	}
 
 	time_t GetTime() const noexcept { return m_tTime; }
@@ -55,14 +57,12 @@ public:
 	void SetStockCode(const CString& strStockCode) noexcept { m_strStockCode = strStockCode; }
 	INT64 GetBufferLength() const noexcept { return m_lBufferLength; }
 	void SetBufferLength(const INT64 lValue) noexcept { m_lBufferLength = lValue; }
-	INT64 GetCurrentPos() const noexcept { return m_lCurrentPos; }
-	void SetCurrentPos(const INT64 lValue) noexcept { m_lCurrentPos = lValue; }
 
 	string GetDataBuffer() noexcept { return m_sDataBuffer; }
-	bool GetData(char* buffer, INT64 lDataLength, INT64 lStartPosition) const;
-	bool GetData(char* buffer, INT64 lDataLength) const; // 默认从m_lCurrentPos开始拷贝
-	bool SetData(const char* buffer, INT64 lDataLength, INT64 lStartPosition);
-	bool SetData(const char* buffer, INT64 lDataLength); // 默认从m_lCurrentPos开始填充。
+	INT64 GetCurrentPos() const noexcept { return m_lCurrentPos; }
+	void SetCurrentPos(const INT64 lValue) noexcept { m_lCurrentPos = lValue; }
+	bool GetData(char* buffer, INT64 lDataLength) const; // 从m_lCurrentPos开始拷贝
+	bool SetData(const char* buffer, INT64 lDataLength); // 从m_lCurrentPos开始填充。
 
 	char GetData(const INT64 lIndex) const { return m_sDataBuffer.at(lIndex); }
 	void SetData(const INT64 lIndex, const char cValue) { m_sDataBuffer.at(lIndex) = cValue; }
@@ -96,6 +96,9 @@ protected:
 	string m_sDataBuffer;
 	INT64 m_lBufferLength;
 	INT64 m_lCurrentPos;
+
+	char* m_pCurrentPos;
+	char* m_pEndPos;
 
 	bool m_fJSonContentType;
 	bool m_fParsed;

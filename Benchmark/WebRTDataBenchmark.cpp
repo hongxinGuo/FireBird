@@ -15,7 +15,7 @@ public:
 	void SetUp(const ::benchmark::State& state) override {
 		m_pSinaWebData = make_shared<CWebData>();
 		const long lStringLength = sSinaWebData.GetLength();
-		m_pSinaWebData->SetData(sSinaWebData.GetBuffer(), lStringLength, 0);
+		m_pSinaWebData->SetData(sSinaWebData.GetBuffer(), lStringLength);
 		m_pSinaWebData->Resize(lStringLength);
 	}
 

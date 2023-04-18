@@ -76,7 +76,7 @@ bool CTengxunRTDataSource::IsInvalidTengxunRTData(CWebData& WebDataReceived) {
 	char* pBuffer = buffer;
 	const CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
 
-	WebDataReceived.GetData(pBuffer, 21, WebDataReceived.GetCurrentPos());
+	WebDataReceived.GetData(pBuffer, 21);
 	buffer[21] = 0x000;
 	const CString str1 = buffer;
 

@@ -934,6 +934,107 @@ namespace FireBirdTest {
 		gl_pWorldMarket->SetSystemReady(true);
 	}
 
+	TEST_F(CWorldMarketTest, TestTaskCreateTask1) {
+		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
+
+		gl_pWorldMarket->TaskCreateTask(10010);
+
+		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());
+		auto pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CHECK_SYSTEM_READY__);
+		EXPECT_EQ(pTask->GetTime(), 1);
+		gl_pWorldMarket->DiscardMarketTask();
+
+		pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 10010);
+		gl_pWorldMarket->DiscardMarketTask();
+
+		pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__);
+		EXPECT_EQ(pTask->GetTime(), 10040);
+		gl_pWorldMarket->DiscardMarketTask();
+
+		pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__);
+		EXPECT_EQ(pTask->GetTime(), 10100);
+		gl_pWorldMarket->DiscardMarketTask();
+
+		pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_RESET__);
+		EXPECT_EQ(pTask->GetTime(), 170000);
+		gl_pWorldMarket->DiscardMarketTask();
+
+		pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CREATE_TASK__);
+		EXPECT_EQ(pTask->GetTime(), 240000);
+		gl_pWorldMarket->DiscardMarketTask();
+
+		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
+	}
+
+	TEST_F(CWorldMarketTest, TestTaskCreateTask2) {
+		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
+
+		gl_pWorldMarket->TaskCreateTask(180110);
+
+		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());
+		auto pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CHECK_SYSTEM_READY__);
+		EXPECT_EQ(pTask->GetTime(), 1);
+		gl_pWorldMarket->DiscardMarketTask();
+
+		pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 180110);
+		gl_pWorldMarket->DiscardMarketTask();
+
+		pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__);
+		EXPECT_EQ(pTask->GetTime(), 180140);
+		gl_pWorldMarket->DiscardMarketTask();
+
+		pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__);
+		EXPECT_EQ(pTask->GetTime(), 180200);
+		gl_pWorldMarket->DiscardMarketTask();
+
+		pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), CREATE_TASK__);
+		EXPECT_EQ(pTask->GetTime(), 240000);
+		gl_pWorldMarket->DiscardMarketTask();
+
+		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
+	}
+
+	TEST_F(CWorldMarketTest, TestTaskProcessWebSocketData1) {
+		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
+
+		gl_pWorldMarket->TaskProcessWebSocketData(165758);
+
+		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());
+		const auto pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 165759);
+		gl_pWorldMarket->DiscardMarketTask();
+
+		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
+	}
+
+	TEST_F(CWorldMarketTest, TestTaskProcessWebSocketData2) {
+		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
+
+		gl_pWorldMarket->TaskProcessWebSocketData(165759);
+
+		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());
+		const auto pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 170501);
+		gl_pWorldMarket->DiscardMarketTask();
+
+		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
+	}
+
 	TEST_F(CWorldMarketTest, TestGetTiingoIEXWebSocketSymbolVector) {
 		const vectorString vString = gl_pWorldMarket->GetTiingoIEXWebSocketSymbolVector();
 

@@ -113,7 +113,7 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 		char buffer2[20];
 		char buffer1[100];
 		m_fActive = false; // 初始状态为无效数据
-		pSinaWebData->GetData(buffer1, 12, pSinaWebData->GetCurrentPos()); // 读入“var hq_str_s"
+		pSinaWebData->GetData(buffer1, 12); // 读入“var hq_str_s"
 		buffer1[12] = 0x000;
 		const CString str1 = buffer1;
 		if (strHeader.Compare(str1) != 0) {
@@ -132,7 +132,7 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 		else { throw exception(); }
 		pSinaWebData->IncreaseCurrentPos();
 
-		pSinaWebData->GetData(buffer2, 6, pSinaWebData->GetCurrentPos());
+		pSinaWebData->GetData(buffer2, 6);
 		buffer2[6] = 0x000;
 		const CString strStockSymbol = buffer2;
 		switch (wMarket) {
@@ -149,10 +149,10 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 
 		pSinaWebData->IncreaseCurrentPos(6);
 
-		pSinaWebData->GetData(buffer1, 2, pSinaWebData->GetCurrentPos()); // 读入'="'
+		pSinaWebData->GetData(buffer1, 2); // 读入'="'
 		if ((buffer1[0] != '=') || (buffer1[1] != '"')) { throw exception(); }
 		pSinaWebData->IncreaseCurrentPos(2);
-		pSinaWebData->GetData(buffer1, 2, pSinaWebData->GetCurrentPos());
+		pSinaWebData->GetData(buffer1, 2);
 		if (buffer1[0] == '"') {
 			// 没有数据?
 			if (buffer1[1] != ';') { throw exception(); }
@@ -410,7 +410,7 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		char buffer2[7];
 		char buffer1[200];
 		m_fActive = false; // 初始状态为无效数据
-		pTengxunWebRTData->GetData(buffer1, 3, pTengxunWebRTData->GetCurrentPos()); // 读入“v_s"
+		pTengxunWebRTData->GetData(buffer1, 3); // 读入“v_s"
 		buffer1[3] = 0x000;
 		const CString str1 = buffer1;
 		if (strHeader.Compare(str1) != 0) {
@@ -433,7 +433,7 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		pTengxunWebRTData->IncreaseCurrentPos();
 
 		// 六位股票代码
-		pTengxunWebRTData->GetData(buffer2, 6, pTengxunWebRTData->GetCurrentPos());
+		pTengxunWebRTData->GetData(buffer2, 6);
 		buffer2[6] = 0x000;
 		const CString strStockSymbol = buffer2;
 		switch (wMarket) {
@@ -451,7 +451,7 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		const long lStockCode = atoi(buffer2);
 		pTengxunWebRTData->IncreaseCurrentPos(6);
 
-		pTengxunWebRTData->GetData(buffer1, 2, pTengxunWebRTData->GetCurrentPos()); // 读入'="'
+		pTengxunWebRTData->GetData(buffer1, 2); // 读入'="'
 		if (buffer1[0] != '=') {
 			gl_systemMessage.PushErrorMessage(_T("ReadTengxunData错误：需要'='"));
 			return false;

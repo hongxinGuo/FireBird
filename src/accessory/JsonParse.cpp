@@ -25,42 +25,6 @@
 
 using namespace std;
 
-wstring to_wide_string(const std::string& input) {
-	const long lLength = input.size();
-	const auto pBuffer = new char[lLength + 1];
-
-	for (int i = 0; i < input.size(); i++) { pBuffer[i] = input.at(i); }
-	pBuffer[lLength] = 0x000;
-	const auto pBufferW = new WCHAR[lLength * 2];
-
-	const long lReturnSize = MultiByteToWideChar(CP_UTF8, 0, pBuffer, lLength, pBufferW, lLength * 2);
-	pBufferW[lReturnSize] = 0x000;
-	wstring ws = pBufferW;
-
-	delete[]pBuffer;
-	delete[]pBufferW;
-
-	return ws;
-}
-
-string to_byte_string(const wstring& input) {
-	const long lLength = input.size();
-	const auto pBufferW = new WCHAR[lLength + 1];
-
-	for (int i = 0; i < lLength + 1; i++) pBufferW[i] = 0x000;
-	for (int i = 0; i < input.size(); i++) { pBufferW[i] = input.at(i); }
-	const auto pBuffer = new char[lLength * 2];
-
-	const long lReturnSize = WideCharToMultiByte(CP_UTF8, 0, pBufferW, lLength, pBuffer, lLength * 2, nullptr, nullptr);
-	pBuffer[lReturnSize] = 0x000;
-	string s = pBuffer;
-
-	delete[]pBuffer;
-	delete[]pBufferW;
-
-	return s;
-}
-
 void ReportJsonError(const json::parse_error& e, const std::string& s) {
 	char buffer[180]{}, buffer2[100];
 	int i;
@@ -153,7 +117,7 @@ bool IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
 	char* pBuffer = buffer;
 	const CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
 
-	WebDataReceived.GetData(pBuffer, 21, WebDataReceived.GetCurrentPos());
+	WebDataReceived.GetData(pBuffer, 21);
 	buffer[21] = 0x000;
 	const CString str1 = buffer;
 
@@ -370,16 +334,4 @@ CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 		}
 	}
 	return pDayLineData;
-}
-
-// 将utf-8字符串转化为CString
-CString XferToCString(const std::string& s) {
-	CString strName3;
-	wstring wsName;
-	CStringW strWName;
-
-	wsName = to_wide_string(s); // 将中文utf8转成宽字节字符串
-	strWName = wsName.c_str(); // 将标准库的宽字节字符串转换成CStringW制式，
-	strName3 = strWName; // 将CStringW制式转换成CString
-	return strName3;
 }

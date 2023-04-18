@@ -23,6 +23,7 @@
 #include"stdafx.h"
 #include"ChinaStockCodeConverter.h"
 #include"TimeConvert.h"
+#include"ConvertToString.h"
 #include"SystemMessage.h"
 #include"WebData.h"
 #include"WebRTData.h"
@@ -60,8 +61,6 @@ bool CreateJsonWithNlohmann(json& js, CString& str, const long lBeginPos, const 
 	}
 	return true;
 }
-
-CString XferToCString(const std::string& s);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //

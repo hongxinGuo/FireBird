@@ -71,7 +71,7 @@ namespace FireBirdTest {
 	TEST_F(CTengxunRTDataSourceTest, TestIsTengxunRTDataInValid) {
 		const CWebDataPtr pWebDataReceived = make_shared<CWebData>();
 		CString str = _T("v_pv_none_match=\"1\";\n");
-		pWebDataReceived->SetData(str.GetBuffer(), str.GetLength(), 0);
+		pWebDataReceived->SetData(str.GetBuffer(), str.GetLength());
 		pWebDataReceived->SetBufferLength(str.GetLength());
 		pWebDataReceived->ResetCurrentPos();
 
@@ -79,7 +79,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
 
 		str = _T("v_pv_none_mtch=\"1\";\n");
-		pWebDataReceived->SetData(str.GetBuffer(), str.GetLength(), 0);
+		pWebDataReceived->SetData(str.GetBuffer(), str.GetLength());
 		pWebDataReceived->SetBufferLength(str.GetLength());
 		pWebDataReceived->ResetCurrentPos();
 

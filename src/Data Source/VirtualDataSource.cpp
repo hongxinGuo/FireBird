@@ -256,7 +256,7 @@ long CVirtualDataSource::QueryDataLength() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 每次读取1K数据，然后将读取到的数据存入缓冲区
+// 每次读取16K数据，然后将读取到的数据存入缓冲区
 // 此函数的耗时，皆在Read函数，故而无法加快执行速度了。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -266,11 +266,10 @@ UINT CVirtualDataSource::ReadWebFileOneTime() {
 }
 
 //
-// 使用逐字节拷贝，16KB耗时11微秒（release），使用memcpy函数完成，耗时120纳秒。
+// release编译模式下：使用逐字节拷贝，16KB耗时11微秒，使用memcpy函数完成，耗时120纳秒。
 //
 void CVirtualDataSource::XferReadingToBuffer(long lPosition, UINT uByteRead) {
 	ASSERT((lPosition + uByteRead) < m_sBuffer.size());
-	// for (UINT i = 0; i < uByteRead; i++) { m_sBuffer.at(lPosition++) = m_dataBuffer[i];	}
 	char* p = &m_sBuffer.at(lPosition);
 	memcpy(p, m_dataBuffer, uByteRead);
 }

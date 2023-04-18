@@ -23,10 +23,10 @@ BENCHMARK_F(CDataSourceBenchmark, XferReadingToBufferSize16KB)(benchmark::State&
 	}
 }
 
-BENCHMARK_F(CDataSourceBenchmark, XferReadingToBufferSize16KBUsingMemcpy)(benchmark::State& state) {
-	char destBuffer[1024 * 16];
-	char srcBuffer[1024 * 16];
+char destBuffer[1024 * 1024];
+char srcBuffer[1024 * 1024];
+BENCHMARK_F(CDataSourceBenchmark, XferReadingToBufferSize1MBUsingMemcpy)(benchmark::State& state) {
 	for (auto _ : state) {
-		memcpy(destBuffer, srcBuffer, 1024 * 16);
+		memcpy(destBuffer, srcBuffer, 1024 * 1024);
 	}
 }

@@ -334,7 +334,7 @@ public:
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		pWebData->SetBufferLength(lStringLength);
 		pWebData->Resize(lStringLength);
-		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
+		pWebData->SetData(str.GetBuffer(), lStringLength);
 	}
 
 	void TearDown(const benchmark::State& state) override { }
@@ -362,7 +362,7 @@ public:
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		pWebData->SetBufferLength(lStringLength);
 		pWebData->Resize(lStringLength);
-		pWebData->SetData(str.GetBuffer(), lStringLength, 0);
+		pWebData->SetData(str.GetBuffer(), lStringLength);
 	}
 
 	void TearDown(const benchmark::State& state) override { }
