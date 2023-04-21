@@ -57,7 +57,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWebRTDataTest1, TestTengxunRTDataActive) {
-		time_t t = gl_tUTC;
+		const time_t t = gl_tUTC;
 		CWebRTData id;
 		EXPECT_FALSE(id.CheckTengxunRTDataActive());
 		tm tm_;
@@ -67,14 +67,14 @@ namespace FireBirdTest {
 		tm_.tm_hour = 12;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
+		const time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
 		tm_.tm_mday = 7; // 2019年11月7日是星期三。
 		tm_.tm_hour = 12;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt2 = gl_pChinaMarket->TransferToUTCTime(&tm_);
+		const time_t tt2 = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		gl_pChinaMarket->TEST_SetUTCTime(tt);
 		id.SetTransactionTime(tt2);
 		EXPECT_FALSE(id.IsValidTime(14));
@@ -102,7 +102,7 @@ namespace FireBirdTest {
 	}
 
 	struct TengxunRTData {
-		TengxunRTData(int count, CString Data) {
+		TengxunRTData(int count, const CString& Data) {
 			m_iCount = count;
 			m_strData = Data;
 		}
@@ -200,7 +200,7 @@ namespace FireBirdTest {
 		void SetUp() override {
 			GeneralCheck();
 
-			TengxunRTData* pData = GetParam();
+			const TengxunRTData* pData = GetParam();
 			m_pTengxunWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;
 			m_lStringLength = pData->m_strData.GetLength();
@@ -248,7 +248,7 @@ namespace FireBirdTest {
 
 	TEST_P(CalculateTengxunWebRTDataTest, TestReadTengxunData) {
 		bool fSucceed = m_RTData.ReadTengxunData(m_pTengxunWebRTData);
-		time_t ttime;
+		time_t tTime;
 		tm tm_;
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10 - 1;
@@ -256,7 +256,7 @@ namespace FireBirdTest {
 		tm_.tm_hour = 15; //
 		tm_.tm_min = 58;
 		tm_.tm_sec = 58;
-		ttime = gl_pChinaMarket->TransferToUTCTime(&tm_);
+		tTime = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		switch (m_iCount) {
 		case 0:
 			EXPECT_TRUE(fSucceed); // 没有错误
@@ -289,7 +289,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(4), 12490);
 			EXPECT_EQ(m_RTData.GetHighLimit(), 13160);
 			EXPECT_EQ(m_RTData.GetLowLimit(), 10760);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
+			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
 			break;
 		case 1:
 			EXPECT_TRUE(fSucceed); // 没有错误
@@ -320,7 +320,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 3540);
 			EXPECT_EQ(m_RTData.GetVSell(4), 357700);
 			EXPECT_EQ(m_RTData.GetPSell(4), 3550);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
+			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
 			break;
 		case 2:
 			EXPECT_TRUE(fSucceed); // 没有错误，皆为零
@@ -351,7 +351,7 @@ namespace FireBirdTest {
 			break;
 		case 6:
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -370,7 +370,7 @@ namespace FireBirdTest {
 			break;
 		case 8:
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -393,7 +393,7 @@ namespace FireBirdTest {
 			break;
 		case 12:
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -421,7 +421,7 @@ namespace FireBirdTest {
 			break;
 		case 14:
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -437,7 +437,7 @@ namespace FireBirdTest {
 			break;
 		case 16:
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -488,7 +488,7 @@ namespace FireBirdTest {
 			break;
 		case 20:
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -528,7 +528,7 @@ namespace FireBirdTest {
 			break;
 		case 22:
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -577,7 +577,7 @@ namespace FireBirdTest {
 			break;
 		case 24:
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -632,7 +632,7 @@ namespace FireBirdTest {
 			break;
 		case 26:
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -714,7 +714,7 @@ namespace FireBirdTest {
 			break;
 		case 38: // 有错误，前缀出错
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
 			break;
 		case 39: // 有错误，前缀出错
@@ -736,7 +736,7 @@ namespace FireBirdTest {
 	}
 
 	struct ReadTengxunOneValueData {
-		ReadTengxunOneValueData(int count, CString Data) {
+		ReadTengxunOneValueData(int count, const CString& Data) {
 			m_iCount = count;
 			m_strData = Data;
 		}
@@ -747,33 +747,33 @@ namespace FireBirdTest {
 	};
 
 	// 成功
-	ReadTengxunOneValueData rdata1(1, _T("11.050~"));
+	ReadTengxunOneValueData rData1(1, _T("11.050~"));
 	// 小数点后两位
-	ReadTengxunOneValueData rdata2(2, _T("11.05~"));
+	ReadTengxunOneValueData rData2(2, _T("11.05~"));
 	// 小数点后一位
-	ReadTengxunOneValueData rdata3(3, _T("11.0~"));
+	ReadTengxunOneValueData rData3(3, _T("11.0~"));
 	// 小数点前出现0x00a
-	ReadTengxunOneValueData rdata4(4, _T("1\n1.050~"));
+	ReadTengxunOneValueData rData4(4, _T("1\n1.050~"));
 	// 小数点后出现0x00a
-	ReadTengxunOneValueData rdata5(5, _T("11.0\n50~"));
+	ReadTengxunOneValueData rData5(5, _T("11.0\n50~"));
 	// 缺少','
-	ReadTengxunOneValueData rdata6(6, _T("11.050"));
+	ReadTengxunOneValueData rData6(6, _T("11.050"));
 	// 读取小数点所有的数值
-	ReadTengxunOneValueData rdata7(7, _T("11.050001~"));
+	ReadTengxunOneValueData rData7(7, _T("11.050001~"));
 	// 0x00a出现于‘，’前。
-	ReadTengxunOneValueData rdata8(8, _T("11.05000\n~"));
+	ReadTengxunOneValueData rData8(8, _T("11.05000\n~"));
 	// 只有~
-	ReadTengxunOneValueData rdata9(9, _T("~"));
+	ReadTengxunOneValueData rData9(9, _T("~"));
 
 	class ReadTengxunOneValueTest : public::testing::TestWithParam<ReadTengxunOneValueData*> {
 	protected:
 		void SetUp() override {
 			GeneralCheck();
 
-			ReadTengxunOneValueData* pData = GetParam();
+			const ReadTengxunOneValueData* pData = GetParam();
 			m_pTengxunWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;
-			long lLength = pData->m_strData.GetLength();
+			const long lLength = pData->m_strData.GetLength();
 			for (int i = 0; i < lLength; i++) {
 				m_pTengxunWebRTData->SetData(i, pData->m_strData[i]);
 			}
@@ -795,7 +795,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestReadTengxunOneValue, ReadTengxunOneValueTest,
-	                         testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &rdata9
+	                         testing::Values(&rData1, &rData2, &rData3, &rData4, &rData5, &rData6, &rData7, &rData8, &rData9
 	                         ));
 
 	// 将字符串转换为INT64
@@ -895,9 +895,8 @@ namespace FireBirdTest {
 	// 读入buffer中
 	TEST_P(ReadTengxunOneValueTest, TestReadTengxunOneValue3) {
 		char buffer[30];
-		bool fSucceed = m_RTData.ReadTengxunOneValue(m_pTengxunWebRTData, buffer);
-		CString str;
-		str = buffer;
+		const bool fSucceed = m_RTData.ReadTengxunOneValue(m_pTengxunWebRTData, buffer);
+		const CString str = buffer;
 		switch (m_iCount) {
 		case 1:
 			EXPECT_TRUE(fSucceed);

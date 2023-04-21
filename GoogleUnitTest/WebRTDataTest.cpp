@@ -668,7 +668,7 @@ namespace FireBirdTest {
 		case 10: // 有错误
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -682,7 +682,7 @@ namespace FireBirdTest {
 		case 11:
 			EXPECT_FALSE(fSucceed); // 有错误
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -697,7 +697,7 @@ namespace FireBirdTest {
 		case 12: // 出现负值
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -731,7 +731,7 @@ namespace FireBirdTest {
 		case 14: // 有错误
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -768,7 +768,7 @@ namespace FireBirdTest {
 		case 16: // 有错误
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -809,7 +809,7 @@ namespace FireBirdTest {
 		case 18: // 出现负值
 			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -855,7 +855,7 @@ namespace FireBirdTest {
 		case 20: // 出现负值
 			EXPECT_FALSE(fSucceed); // 有错误
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -909,7 +909,7 @@ namespace FireBirdTest {
 		case 22: // 出现负值
 			EXPECT_FALSE(fSucceed); // 有错误
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -962,7 +962,7 @@ namespace FireBirdTest {
 		case 24: // 出现负值
 			EXPECT_FALSE(fSucceed); // 有错误
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -1019,7 +1019,7 @@ namespace FireBirdTest {
 		case 26: // 出现负值
 			EXPECT_FALSE(fSucceed); // 有错误
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -1081,7 +1081,7 @@ namespace FireBirdTest {
 		case 28: // 出现负值
 			EXPECT_FALSE(fSucceed); // 有错误
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -1148,7 +1148,7 @@ namespace FireBirdTest {
 		case 30: // 出现负值
 			EXPECT_FALSE(fSucceed); // 有错误
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
 			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
@@ -1248,7 +1248,7 @@ namespace FireBirdTest {
 		case 37: // 有错误，前缀出错
 			EXPECT_FALSE(fSucceed); // 有错误
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
 			break;
 		case 38: // 有错误，前缀出错
@@ -1260,7 +1260,7 @@ namespace FireBirdTest {
 		case 39: // 有错误，最后没有符号：';'
 			EXPECT_FALSE(fSucceed); // 有错误
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_GT(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
 			break;
 		default:
