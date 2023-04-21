@@ -1,7 +1,6 @@
 ﻿#include"pch.h"
 #include "globedef.h"
 
-#include"ConvertToString.h"
 #include"TimeConvert.h"
 #include"ChinaStockCodeConverter.h"
 #include"InfoReport.h"
@@ -517,7 +516,6 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		// 内盘
 		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
 			throw exception(_T("内盘"));
-			return false;
 		}
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 读入买一至买五的价格和手数
@@ -666,21 +664,7 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		// 腾讯实时数据的结束符是分号（；），然后跟随一个换行符\n。但将该数据存入txt文件后在读取时，换行符消失了。
 		// 故而要先判断分号，然后用回车符作为附加判断，有否都认可。
 		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
-		while (pTengxunWebRTData->GetCurrentPosData() != '"') {	// 寻找本段数据的结束符（“"”）。
-			pTengxunWebRTData->IncreaseCurrentPos();
-			if (pTengxunWebRTData->OutOfRange()) { return false; }
-		}
-		pTengxunWebRTData->IncreaseCurrentPos();
-		if (pTengxunWebRTData->GetCurrentPosData() != ';') {// 字符'"'后面应该跟随字符';'
-			return false;
-		}
-		pTengxunWebRTData->IncreaseCurrentPos();
-		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
-		if (!pTengxunWebRTData->OutOfRange()) {
-			if (pTengxunWebRTData->GetCurrentPosData() == 0x00a) {
-				pTengxunWebRTData->IncreaseCurrentPos(); // 如果有\n存在则跨过去。
-			}
-		}
+		if (!DiscardEndChars(pTengxunWebRTData)) return false;
 		CheckTengxunRTDataActive();
 		SetDataSource(TENGXUN_RT_WEB_DATA_);
 		return true;
@@ -689,21 +673,33 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		ReportErrorToSystemMessage(_T("ReadTengxunData异常 "), e);
 		strData = strData.Right(strData.GetLength() - lCurrentPos + lStartPos);
 		gl_systemMessage.PushErrorMessage(strData);
-		while (pTengxunWebRTData->GetCurrentPosData() != '"') {	// 寻找本段数据的结束符（“"”）。
-			pTengxunWebRTData->IncreaseCurrentPos();
-			if (pTengxunWebRTData->OutOfRange()) return false;
-		}
-		pTengxunWebRTData->IncreaseCurrentPos(); // 读过'"'
-		if (pTengxunWebRTData->OutOfRange()) return false;
-		pTengxunWebRTData->IncreaseCurrentPos(); // 读过';'
-		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
-		if (!pTengxunWebRTData->OutOfRange()) {
-			if (pTengxunWebRTData->GetCurrentPosData() == 0x00a) {
-				pTengxunWebRTData->IncreaseCurrentPos(); // 如果有\n存在则跨过去。
-			}
-		}
+		DiscardEndChars(pTengxunWebRTData);
 		return false;
 	}
+}
+
+//
+// 排除每段数据的结束符：";\n
+//
+bool CWebRTData::DiscardEndChars(const CWebDataPtr& pTengxunWebRTData) {
+	while (pTengxunWebRTData->GetCurrentPosData() != '"') {	// 寻找本段数据的结束符（“"”）。
+		pTengxunWebRTData->IncreaseCurrentPos();
+		if (pTengxunWebRTData->OutOfRange()) return false;
+	}
+	pTengxunWebRTData->IncreaseCurrentPos(); // 读过'"'
+	if (pTengxunWebRTData->OutOfRange()) return false;
+	if (pTengxunWebRTData->GetCurrentPosData() != ';') {// 字符'"'后面应该跟随字符';'
+		pTengxunWebRTData->IncreaseCurrentPos();
+		return false;
+	}
+	pTengxunWebRTData->IncreaseCurrentPos(); // 读过';'
+	// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
+	if (!pTengxunWebRTData->OutOfRange()) {
+		if (pTengxunWebRTData->GetCurrentPosData() == 0x00a) {
+			pTengxunWebRTData->IncreaseCurrentPos(); // 如果有\n存在则跨过去。
+		}
+	}
+	return true;
 }
 
 bool CWebRTData::CheckTengxunRTDataActive() {
