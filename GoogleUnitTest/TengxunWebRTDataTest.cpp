@@ -689,27 +689,27 @@ namespace FireBirdTest {
 			break;
 		case 33: // 有错误，前缀出错
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
 			break;
 		case 34: // 有错误，前缀出错
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
 			break;
 		case 35: // 有错误，前缀出错
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
 			break;
 		case 36: // 有错误，前缀出错
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
 			break;
 		case 37: // 有错误，前缀出错
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
 			break;
 		case 38: // 有错误，前缀出错
@@ -719,7 +719,7 @@ namespace FireBirdTest {
 			break;
 		case 39: // 有错误，前缀出错
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_GT(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
 			break;
 		case 40:  // 两组正确的数据

@@ -144,7 +144,6 @@ public:
 	// 读取腾讯实时数据函数
 	// 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
 	bool ReadTengxunData(const CWebDataPtr& pTengxunWebRTData);
-	bool DiscardEndChars(const CWebDataPtr& pTengxunWebRTData);
 	bool ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, long& lReturnValue); // 从file中读入一个长整型
 	bool ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, INT64& llReturnValue); // 从file中读入一个INT64整型
 	bool ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, double& dReturnValue); // 从file中读入一个浮点数
