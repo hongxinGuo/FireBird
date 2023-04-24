@@ -397,13 +397,14 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 	float fTemp = 0.0;
 
 	long lCurrentPos = lStartPos;
-	long i = 0;
-	while (pTengxunWebRTData->GetData(lCurrentPos) != '"') {
+	int i = 0;
+	while ((lCurrentPos < pTengxunWebRTData->GetBufferLength()) && (pTengxunWebRTData->GetData(lCurrentPos) != '"')) {
 		buffer[i++] = pTengxunWebRTData->GetData(lCurrentPos++);
-		if (i > 800) break;
+		if (i > 700) break;
 	}
 	buffer[i] = 0x000;
 	CString strData = buffer;
+	lCurrentPos = lStartPos;
 
 	try {
 		CString strTengxunStockCode;
@@ -421,6 +422,7 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 			throw exception(_T("bad head"));
 		}
 		pTengxunWebRTData->IncreaseCurrentPos(3);
+		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		if (pTengxunWebRTData->GetCurrentPosData() == 'h') {
 			// 上海股票
 			wMarket = _SHANGHAI_MARKET_; // 上海股票标识

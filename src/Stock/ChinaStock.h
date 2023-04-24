@@ -346,15 +346,15 @@ public:
 	CDayLinePtr GetDayLine(const long lIndex) const { return static_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
 	void ShowDayLine(CDC* pDC, const CRect rectClient) { m_dataDayLine.ShowData(pDC, rectClient); }
 	void ShowWeekLine(CDC* pDC, const CRect rectClient) { m_dataWeekLine.ShowData(pDC, rectClient); }
-	void Get1DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS1(vRS); }
-	void GetRSIndex1Day(vector<double>& vRS) { m_dataDayLine.GetRSIndex1(vRS); }
-	void GetRSLogarithm1Day(vector<double>& vRS) { m_dataDayLine.GetRSLogarithm1(vRS); }
-	void Get3DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS3(vRS); }
-	void Get5DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS5(vRS); }
-	void Get10DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS10(vRS); }
-	void Get30DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS30(vRS); }
-	void Get60DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS60(vRS); }
-	void Get120DaysRS(vector<double>& vRS) { m_dataDayLine.GetRS120(vRS); }
+	void Get1DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS1(vRS); }
+	void GetRSIndex1Day(vector<double>& vRS) const { m_dataDayLine.GetRSIndex1(vRS); }
+	void GetRSLogarithm1Day(vector<double>& vRS) const { m_dataDayLine.GetRSLogarithm1(vRS); }
+	void Get3DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS3(vRS); }
+	void Get5DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS5(vRS); }
+	void Get10DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS10(vRS); }
+	void Get30DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS30(vRS); }
+	void Get60DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS60(vRS); }
+	void Get120DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS120(vRS); }
 
 	// 日线相对强度计算
 	bool CalculateDayLineRS() { return m_dataDayLine.CalculateRS0(); }
@@ -369,7 +369,7 @@ public:
 	// 提取网易日线历史数据各函数
 	void UpdateStatusByDownloadedDayLine();
 
-	void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine) { m_dataDayLine.UpdateData(vTempDayLine); }
+	void UpdateDayLine(const vector<CDayLinePtr>& vTempDayLine) { m_dataDayLine.UpdateData(vTempDayLine); }
 
 	static void ReportDayLineDownLoaded();
 

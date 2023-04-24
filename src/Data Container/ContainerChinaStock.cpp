@@ -650,9 +650,15 @@ void CContainerChinaStock::SaveTempRTData() {
 		// 存储今日生成的数据于DayLineToday表中。
 		for (size_t l = 0; l < m_vStock.size(); l++) {
 			const CChinaStockPtr pStock = GetStock(l);
-			if (pStock->IsNeedProcessRTData() && (!pStock->IsVolumeConsistence())) {
+			if ((pStock->GetTransactionTime() + 60 * 60 * 24) > GetUTCTime() && !pStock->IsVolumeConsistence()) { // 当天的数据成交量不符
 				CString str = pStock->GetSymbol();
+				char buffer[200];
+				sprintf_s(buffer, _T("%I64d %I64d %I64d %I64d %I64d %I64d %I64d %I64d\n"),
+				          pStock->GetVolume(), pStock->GetOrdinaryBuyVolume(), pStock->GetOrdinarySellVolume(), pStock->GetAttackBuyVolume(),
+				          pStock->GetAttackSellVolume(), pStock->GetStrongBuyVolume(), pStock->GetStrongSellVolume(), pStock->GetUnknownVolume());
+				const CString s = buffer;
 				str += _T(" 股数不正确");
+				str += s;
 				gl_systemMessage.PushInnerSystemInformationMessage(str);
 			}
 			lStock++;

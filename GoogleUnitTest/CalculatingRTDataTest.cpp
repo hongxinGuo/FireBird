@@ -148,7 +148,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp() override {
 			GeneralCheck();
-			RTData* pData = GetParam();
+			const RTData* pData = GetParam();
 			pCurrentData = make_shared<CWebRTData>();
 			pCurrentData->SetAmount(pData->CurrentData.GetAmount());
 			pCurrentData->SetVolume(pData->CurrentData.GetVolume());
@@ -393,7 +393,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockTest3, TestINitializeCalculatingRTDataEnvironment) {
-		auto pRTData = make_shared<CWebRTData>();
+		const auto pRTData = make_shared<CWebRTData>();
 
 		id.SetUnknownVolume(100000);
 		pRTData->SetVolume(10000);
@@ -415,15 +415,15 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockTest3, TestGetLastRTDataPtr) {
-		auto pRTData = make_shared<CWebRTData>();
-		CWebRTDataPtr pRTData2 = pRTData;
+		const auto pRTData = make_shared<CWebRTData>();
+		const CWebRTDataPtr pRTData2 = pRTData;
 
 		id.SetLastRTData(pRTData);
 		EXPECT_EQ(id.GetLastRTData(), pRTData2);
 	}
 
 	TEST_F(CStockTest3, TestCalculateOrdinaryBuySell) {
-		auto pLastRTData = make_shared<CWebRTData>();
+		const auto pLastRTData = make_shared<CWebRTData>();
 
 		pLastRTData->SetPSell(0, 100000);
 		pLastRTData->SetPBuy(0, 99990);
@@ -653,7 +653,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockTest3, TestSetCurrentGuadan) {
-		auto pCurrentRTData = make_shared<CWebRTData>();
+		const auto pCurrentRTData = make_shared<CWebRTData>();
 
 		for (int i = 0; i < 5; i++) {
 			pCurrentRTData->SetPBuy(i, 10080 - i * 20);

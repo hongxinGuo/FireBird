@@ -709,8 +709,7 @@ bool CChinaStock::ProcessRTData() {
 		if (pRTData->IsActive()) {
 			// 数据有效
 			UpdateStatus(pRTData); // 更新股票现时状态。
-			if (gl_pChinaMarket->IsMarketOpened() && IsNeedProcessRTData()) {
-				// 开市时间内计算具体情况。指数类股票无需计算交易情况和挂单变化
+			if (gl_pChinaMarket->IsMarketOpened() && IsNeedProcessRTData()) {// 开市时间内计算具体情况。指数类股票无需计算交易情况和挂单变化
 				ProcessOneRTData(pRTData);
 				CheckCurrentRTData();
 				m_fRTDataCalculated = true;
@@ -728,12 +727,10 @@ bool CChinaStock::ProcessRTData() {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::ProcessOneRTData(const CWebRTDataPtr& pRTData) {
 	CalculateHighLowLimit(pRTData);
-	if (HaveFirstRTData()) {
-		// 如果开始计算（第二次收到实时数据及以后）
+	if (HaveFirstRTData()) {// 如果开始计算（第二次收到实时数据及以后）
 		CalculateOneRTData(pRTData);
 	}
-	else {
-		// 第一次收到实时数据，则只初始化系统而不计算
+	else {// 第一次收到实时数据，则只初始化系统而不计算
 		InitializeCalculatingRTDataEnvironment(pRTData);
 	}
 	return true;
@@ -834,7 +831,7 @@ void CChinaStock::InitializeCalculatingRTDataEnvironment(const CWebRTDataPtr& pR
 	SetLastRTData(pRTData);
 	SetHavingFirstRTData(true);
 	// 第一次挂单量无法判断买卖状态，故而设置其为无法判断。如果之前已经运行过系统，此次是开盘中途登录的，则系统存储了临时数据于数据库中，
-	// 在系统启动时已经将此临时状态读入了，故而m_lUnknownVolume不为零，故而需要重新计算m_lUnknownVolume.
+	// 在系统启动时已经将此临时状态读入了，故而m_lUnknownVolume不为零，需要重新计算m_lUnknownVolume.
 	// m_lUnknownVolume = 当前的成交量 - 之前临时存储的成交量 + 之前存储的m_lUnknownVolume.
 	SetVolume(pRTData->GetVolume());
 	SetUnknownVolume(GetUnknownVolume() + m_pLastRTData->GetVolume() - m_llLastSavedVolume);
@@ -859,8 +856,7 @@ void CChinaStock::CalculateOneRTData(const CWebRTDataPtr& pRTData) {
 	}
 	else {
 		lCurrentGuadanTransactionPrice = (pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume; // 生成比较用的价格（放大一千倍后采用长整型）
-		if ((lCurrentGuadanTransactionPrice == m_lHighLimit) || (lCurrentGuadanTransactionPrice == m_lLowLimit)) {
-			// 涨跌停板时，成交量属于未知成交量。
+		if ((lCurrentGuadanTransactionPrice == m_lHighLimit) || (lCurrentGuadanTransactionPrice == m_lLowLimit)) {// 涨跌停板时，成交量属于未知成交量。
 			IncreaseTransactionNumber();
 			m_nCurrentTransactionType = UNKNOWN_BUYSELL_;
 			m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
