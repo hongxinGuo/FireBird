@@ -11,7 +11,7 @@ public:
 	bool Reset() override;
 	void UpdateStatus() override;
 
-	bool GenerateInquiryMessage(const long lCurrentTime) override;
+	bool GenerateInquiryMessage(long lCurrentTime) override;
 
 	void ConfigureSession() override; // 设置m_pSession状态。
 	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析

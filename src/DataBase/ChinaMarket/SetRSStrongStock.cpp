@@ -2,7 +2,7 @@
 
 #include "SetRSStrongStock.h"
 
-CSetRSStrongStock::CSetRSStrongStock(long lIndex, CString strSchema, CString strTable, CDatabase* pdb)
+CSetRSStrongStock::CSetRSStrongStock(long lIndex, const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	ASSERT((m_lIndex >= 0) && (m_lIndex < 10));
 	m_lIndex = lIndex;

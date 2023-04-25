@@ -4,10 +4,9 @@
 
 class CTiingoFactory final : public CVirtualDataFactory {
 public:
-	CTiingoFactory() {
-	}
+	CTiingoFactory() { }
 
 	~CTiingoFactory() override = default;
 
-	virtual CVirtualProductWebDataPtr CreateProduct(CVirtualMarket* pMarket, int iIndex) override final;
+	CVirtualProductWebDataPtr CreateProduct(CVirtualMarket* pMarket, int iIndex) override;
 };

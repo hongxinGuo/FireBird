@@ -159,9 +159,9 @@ public:
 
 public:
 	// 以下为测试用函数
-	void TESTSetBuffer(const char* buffer, const INT64 lTotalNumber);
+	void TESTSetBuffer(const char* buffer, INT64 lTotalNumber);
 	void TESTSetBuffer(CString str);
-	void TESTSetWebBuffer(const char* buffer, const INT64 lTotalNumber);
+	void TESTSetWebBuffer(const char* buffer, INT64 lTotalNumber);
 
 protected:
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列

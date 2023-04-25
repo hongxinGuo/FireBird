@@ -45,8 +45,6 @@ public:
 
 	long GetNextIndex(long lIndex) const;
 
-private:
-
 protected:
 	vector<CString> m_vStockSymbol;
 	map<CString, size_t> m_mapStockSymbol;

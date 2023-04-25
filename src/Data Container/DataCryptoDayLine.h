@@ -7,14 +7,10 @@ public:
 	CDataCryptoDayLine();
 	~CDataCryptoDayLine() override = default;
 
-public:
-	bool SaveDB(const CString& strCryptoSymbol) final;
-	bool LoadDB(const CString& strCryptoSymbol) final;
+	bool SaveDB(const CString& strCryptoSymbol) override;
+	bool LoadDB(const CString& strCryptoSymbol) override;
 
-public:
 	// ÌØÓÐº¯Êý
-
-private:
 };
 
 using CDataCryptoDayLinePtr = shared_ptr<CDataCryptoDayLine>;

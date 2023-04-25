@@ -39,7 +39,6 @@ public:
 	long m_lStatementUpdateDate;
 	long m_lDailyDataUpdateDate;
 
-protected:
 	// 无需存储数据区
 };
 

@@ -10,7 +10,7 @@ public:
 
 	~CProductNeteaseDayLine() override = default;
 
-	CString CreateMessage() final;
+	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
 protected:

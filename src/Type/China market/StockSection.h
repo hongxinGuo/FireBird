@@ -14,7 +14,7 @@ public:
 	WORD GetMarket() const noexcept { return m_wMarket; }
 	void SetMarket(const WORD wMarket) noexcept { m_wMarket = wMarket; }
 	CString GetComment() const { return m_strComment; }
-	void SetComment(const CString strComment) { m_strComment = strComment; }
+	void SetComment(const CString& strComment) { m_strComment = strComment; }
 	bool IsBuildStockPtr() const noexcept { return m_fBuildStockPtr; }
 	void SetBuildStockPtr(const bool fFlag) noexcept { m_fBuildStockPtr = fFlag; }
 

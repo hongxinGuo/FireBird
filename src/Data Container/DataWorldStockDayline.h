@@ -7,14 +7,10 @@ public:
 	CDataWorldStockDayLine();
 	~CDataWorldStockDayLine() override = default;
 
-public:
-	bool SaveDB(const CString& strStockSymbol) final;
-	bool LoadDB(const CString& strStockSymbol) final;
+	bool SaveDB(const CString& strStockSymbol) override;
+	bool LoadDB(const CString& strStockSymbol) override;
 
-public:
 	// ÌØÓÐº¯Êý
-
-private:
 };
 
 using CDataWorldStockDayLinePtr = shared_ptr<CDataWorldStockDayLine>;

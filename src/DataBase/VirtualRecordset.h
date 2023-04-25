@@ -9,7 +9,7 @@
 class CVirtualRecordset : public CRecordset {
 public:
 	// 本系统使用的数据库类，必须提供Schema和Table两个参数。
-	CVirtualRecordset(CString strSchema, CString strTable, CDatabase* pDatabase = nullptr)
+	CVirtualRecordset(const CString& strSchema, const CString& strTable, CDatabase* pDatabase = nullptr)
 		: CRecordset(pDatabase) {
 		ASSERT((strSchema.Compare(_T("WorldMarket")) == 0) || (strSchema.Compare(_T("ChinaMarket")) == 0)); // 目前使用的schema只有此两个
 		ASSERT(strTable.GetLength() > 0); // 必须传入数据表名称。

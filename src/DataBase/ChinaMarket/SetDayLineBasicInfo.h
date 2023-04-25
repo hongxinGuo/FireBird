@@ -6,7 +6,6 @@
 
 class CSetDayLineBasicInfo : public CVirtualSetHistoryCandleBasic {
 public:
-	CSetDayLineBasicInfo(CString strSchema = _T("ChinaMarket"), CString strTable = _T("dayline"), CDatabase* pDatabase = nullptr)
-		: CVirtualSetHistoryCandleBasic(strSchema, strTable, pDatabase) {
-	}
+	CSetDayLineBasicInfo(const CString& strSchema = _T("ChinaMarket"), const CString& strTable = _T("dayline"), CDatabase* pDatabase = nullptr)
+		: CVirtualSetHistoryCandleBasic(strSchema, strTable, pDatabase) { }
 };

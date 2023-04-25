@@ -5,7 +5,7 @@
 
 class CSetStockSection : public CVirtualRecordset {
 public:
-	CSetStockSection(CString strSchema = _T("ChinaMarket"), CString strTable = _T("Stock_Code_Section"), CDatabase* pDatabase = nullptr);
+	CSetStockSection(const CString& strSchema = _T("ChinaMarket"), const CString& strTable = _T("Stock_Code_Section"), CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 

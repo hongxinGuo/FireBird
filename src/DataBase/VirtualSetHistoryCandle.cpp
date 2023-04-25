@@ -6,7 +6,7 @@
 
 #include "VirtualSetHistoryCandle.h"
 
-CVirtualSetHistoryCandle::CVirtualSetHistoryCandle(CString strSchema, CString strTable, CDatabase* pdb)
+CVirtualSetHistoryCandle::CVirtualSetHistoryCandle(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_Date = 0;

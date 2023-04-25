@@ -36,7 +36,7 @@ namespace FireBirdTest {
 		Sleep(10);
 		counter.stop();
 		EXPECT_GT(counter.GetElapseTick(), 0);
-		EXPECT_LE(counter.GetElapsedMilliSecond() * 1000, counter.GetElapsedMicroSecond()) << "变成毫秒时去掉了小数部分";
+		EXPECT_LE(counter.GetElapsedMillisecond() * 1000, counter.GetElapsedMicroSecond()) << "变成毫秒时去掉了小数部分";
 		EXPECT_GE(counter.GetElapsedNanoSecond(), counter.GetElapsedMicroSecond() * 1000) << "变成微秒时去掉了小数部分";
 	}
 }

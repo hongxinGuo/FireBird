@@ -8,7 +8,7 @@
 
 class CVirtualSetStockSymbol : public CVirtualRecordset {
 public:
-	CVirtualSetStockSymbol(CString strSchema, CString strTable, CDatabase* pDatabase = nullptr);
+	CVirtualSetStockSymbol(const CString& strSchema, const CString& strTable, CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 

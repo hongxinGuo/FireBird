@@ -17,10 +17,10 @@ using std::set;
 class CInaccessibleExchanges {
 public:
 	CInaccessibleExchanges();
-	CInaccessibleExchanges(const CString& sFunction, const int iFunction, const vector<CString>& vExchange);
+	CInaccessibleExchanges(const CString& sFunction, int iFunction, const vector<CString>& vExchange);
 	virtual ~CInaccessibleExchanges() = default;
 
-	bool Assign(const CString& sFunction, const int iFunction, const vector<CString>& vExchange);
+	bool Assign(const CString& sFunction, int iFunction, const vector<CString>& vExchange);
 
 	int GetFunction() const noexcept { return m_iFunction; }
 	void SetFunction(const int iFunction) noexcept { m_iFunction = iFunction; }
@@ -78,8 +78,6 @@ public:
 	void SetUpdate(const bool fUpdate) noexcept { m_fUpdate = fUpdate; }
 
 	bool IsInaccessible(const int iInquiryType, const CString& strExchangeCode) const;
-
-public:
 
 protected:
 	CString m_strFileName; // ≈‰÷√Œƒº˛√˚≥∆

@@ -31,7 +31,7 @@ public:
 	COneDeal();
 	~COneDeal();
 
-	time_t GetMarketTime() noexcept { return m_time; }
+	time_t GetMarketTime() const noexcept { return m_time; }
 	void SetTime(time_t time) noexcept { m_time = time; }
 	long GetType() const noexcept { return m_lType; }
 	void SetType(long lType) noexcept { m_lType = lType; }

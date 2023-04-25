@@ -9,8 +9,8 @@ using std::string;
 // 将PTree中提取的utf-8字符串转化为CString
 [[nodiscard]] CString XferToCString(const std::string& s);
 
-[[nodiscard]] CString ConvertValueToString(const long lValue, const int iDividend = 1);
-[[nodiscard]] CString ConvertValueToString(const INT64 iValue, const int iDividend = 1);
-[[nodiscard]] CString ConvertValueToString(const int iValue, const int iDividend = 1);
-[[nodiscard]] CString ConvertValueToString(const double dValue, const int iDividend = 1);
+[[nodiscard]] CString ConvertValueToString(long lValue, int iDividend = 1);
+[[nodiscard]] CString ConvertValueToString(INT64 iValue, int iDividend = 1);
+[[nodiscard]] CString ConvertValueToString(int iValue, int iDividend = 1);
+[[nodiscard]] CString ConvertValueToString(double dValue, int iDividend = 1);
 [[nodiscard]] CString FormatToMK(long long iNumber);

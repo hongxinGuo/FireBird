@@ -4,8 +4,9 @@
 
 #include "VirtualSetExchange.h"
 
-CVirtualSetExchange::CVirtualSetExchange(CString strSchema, CString strTable, CDatabase* pdb)
+CVirtualSetExchange::CVirtualSetExchange(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
+	m_ID = 0;
 	m_Code = _T("");
 	m_Name = _T("");
 	m_Mic = _T("");

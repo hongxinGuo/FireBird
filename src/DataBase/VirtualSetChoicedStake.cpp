@@ -4,7 +4,7 @@
 
 #include "VirtualSetChosenStake.h"
 
-CVirtualSetChosenStake::CVirtualSetChosenStake(CString strSchema, CString strTable, CDatabase* pDatabase)
+CVirtualSetChosenStake::CVirtualSetChosenStake(const CString& strSchema, const CString& strTable, CDatabase* pDatabase)
 	: CVirtualRecordset(strSchema, strTable, pDatabase) {
 	m_ID = 0;
 	m_Symbol = _T("");

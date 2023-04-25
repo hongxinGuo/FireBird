@@ -23,10 +23,9 @@ public:
 	CSystemData& operator=(const CSystemData&&) noexcept = delete;
 	~CSystemData() = default;
 
-public:
 	// Finnhub Socket缓存数据
 	size_t GetFinnhubSocketSize() const { return m_qFinnhubSocket.size(); }
-	void PushFinnhubSocket(const CFinnhubSocketPtr p) { m_qFinnhubSocket.push(p); }
+	void PushFinnhubSocket(const CFinnhubSocketPtr& p) { m_qFinnhubSocket.push(p); }
 
 	CFinnhubSocketPtr PopFinnhubSocket() {
 		CFinnhubSocketPtr p = m_qFinnhubSocket.front();
@@ -36,7 +35,7 @@ public:
 
 	// TiingoCrypto Socket缓存数据
 	size_t GetTiingoCryptoSocketSize() const { return m_qTiingoCryptoSocket.size(); }
-	void PushTiingoCryptoSocket(const CTiingoCryptoSocketPtr p) { m_qTiingoCryptoSocket.push(p); }
+	void PushTiingoCryptoSocket(const CTiingoCryptoSocketPtr& p) { m_qTiingoCryptoSocket.push(p); }
 
 	CTiingoCryptoSocketPtr PopTiingoCryptoSocket() {
 		CTiingoCryptoSocketPtr p = m_qTiingoCryptoSocket.front();
@@ -46,7 +45,7 @@ public:
 
 	// TiingoIEX Socket缓存数据
 	size_t GetTiingoIEXSocketSize() const { return m_qTiingoIEXSocket.size(); }
-	void PushTiingoIEXSocket(const CTiingoIEXSocketPtr p) { m_qTiingoIEXSocket.push(p); }
+	void PushTiingoIEXSocket(const CTiingoIEXSocketPtr& p) { m_qTiingoIEXSocket.push(p); }
 
 	CTiingoIEXSocketPtr PopTiingoIEXSocket() {
 		CTiingoIEXSocketPtr p = m_qTiingoIEXSocket.front();
@@ -56,7 +55,7 @@ public:
 
 	// TiingoForex Socket缓存数据
 	size_t GetTiingoForexSocketSize() const { return m_qTiingoForexSocket.size(); }
-	void PushTiingoForexSocket(const CTiingoForexSocketPtr p) { m_qTiingoForexSocket.push(p); }
+	void PushTiingoForexSocket(const CTiingoForexSocketPtr& p) { m_qTiingoForexSocket.push(p); }
 
 	CTiingoForexSocketPtr PopTiingoForexSocket() {
 		CTiingoForexSocketPtr p = m_qTiingoForexSocket.front();

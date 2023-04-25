@@ -84,7 +84,7 @@ bool CVirtualDataSource::GetWebDataAndProcessIt() {
 		}
 	}
 	counter.stop();
-	SetCurrentInquiryTime(counter.GetElapsedMilliSecond());
+	SetCurrentInquiryTime(counter.GetElapsedMillisecond());
 	SetGetWebDataAndProcessItThreadRunning(false);
 	return bSucceed;
 }

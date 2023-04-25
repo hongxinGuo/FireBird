@@ -4,8 +4,9 @@
 
 #include "VirtualSetStockSymbol.h"
 
-CVirtualSetStockSymbol::CVirtualSetStockSymbol(CString strSchema, CString strTable, CDatabase* pdb)
+CVirtualSetStockSymbol::CVirtualSetStockSymbol(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
+	m_ID = 0;
 	m_Description = _T(" ");
 	m_Exchange = _T(" ");
 	m_Symbol = _T(" ");

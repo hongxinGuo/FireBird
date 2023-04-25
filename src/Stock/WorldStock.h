@@ -27,7 +27,6 @@ public:
 	void ResetAllUpdateDate();
 	int GetRatio() const final { return 1000; }
 
-public:
 	void Load(CSetWorldStock& setWorldStock);
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckProfileUpdateStatus(long lTodayDate);
@@ -49,7 +48,7 @@ public:
 	void AppendBasicFinancialAnnual() const;
 	void AppendBasicFinancialQuarter() const;
 
-	void UpdateDayLine(vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
+	void UpdateDayLine(const vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UpdateCompanyNews(const CCompanyNewsVectorPtr& pvCompanyNews);
 	void UpdateEPSSurprise(const vector<CEPSSurprisePtr>& vEPSSurprise);
 

@@ -2,7 +2,7 @@
 
 #include "SetRSStrong1Stock.h"
 
-CSetRSStrong1Stock::CSetRSStrong1Stock(CString strSchema, CString strTable, CDatabase* pdb)
+CSetRSStrong1Stock::CSetRSStrong1Stock(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_Symbol = _T("");
 	m_nFields = 1;

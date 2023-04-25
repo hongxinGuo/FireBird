@@ -3,7 +3,7 @@
 
 class CSetRSStrong2Stock : public CVirtualRecordset {
 public:
-	CSetRSStrong2Stock(CString strSchema = _T("ChinaMarket"), CString strTable = _T("10rs2above55"), CDatabase* pDatabase = nullptr);
+	CSetRSStrong2Stock(const CString& strSchema = _T("ChinaMarket"), const CString& strTable = _T("10rs2above55"), CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 

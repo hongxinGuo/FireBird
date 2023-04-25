@@ -2,7 +2,7 @@
 
 #include "SetOption.h"
 
-CSetOption::CSetOption(CString strSchema, CString strTable, CDatabase* pdb)
+CSetOption::CSetOption(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_RSStartDate = _CHINA_MARKET_BEGIN_DATE_;

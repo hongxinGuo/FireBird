@@ -23,16 +23,13 @@ public:
 
 	CString GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const;
 
-	void UpdateDayLine(vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
+	void UpdateDayLine(const vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	void UpdateDayLineStartEndDate();
 	bool HaveNewDayLineData() const;
 
-public:
 	CDataForexDayLine m_dataDayLine;
-
-protected:
 };
 
 using CForexSymbolPtr = shared_ptr<CFinnhubForexSymbol>;

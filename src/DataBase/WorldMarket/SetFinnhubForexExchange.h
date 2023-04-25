@@ -7,7 +7,6 @@
 
 class CSetFinnhubForexExchange : public CVirtualSetExchange {
 public:
-	CSetFinnhubForexExchange(CString strSchema = _T("WorldMarket"), CString strTable = _T("finnhub_forex_exchange"), CDatabase* pDatabase = nullptr)
-		: CVirtualSetExchange(strSchema, strTable, pDatabase) {
-	}
+	CSetFinnhubForexExchange(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("finnhub_forex_exchange"), CDatabase* pDatabase = nullptr)
+		: CVirtualSetExchange(strSchema, strTable, pDatabase) { }
 };

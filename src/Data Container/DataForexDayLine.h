@@ -7,14 +7,10 @@ public:
 	CDataForexDayLine();
 	~CDataForexDayLine() override = default;
 
-public:
-	bool SaveDB(const CString& strCryptoSymbol) final;
-	bool LoadDB(const CString& strCryptoSymbol) final;
+	bool SaveDB(const CString& strCryptoSymbol) override;
+	bool LoadDB(const CString& strCryptoSymbol) override;
 
-public:
 	// ÌØÓÐº¯Êý
-
-private:
 };
 
 using CDataForexDayLinePtr = shared_ptr<CDataForexDayLine>;

@@ -2,7 +2,6 @@
 
 #include"ContainerVirtualStock.h"
 #include "FinnhubCryptoSymbol.h"
-#include "FinnhubForexSymbol.h"
 
 class CContainerFinnhubCryptoSymbol : public CContainerVirtualStock {
 public:

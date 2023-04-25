@@ -2,7 +2,7 @@
 #include"pch.h"
 #include "SetRSOption.h"
 
-CSetRSOption::CSetRSOption(CString strSchema, CString strTable, CDatabase* pdb)
+CSetRSOption::CSetRSOption(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_Index = 0;

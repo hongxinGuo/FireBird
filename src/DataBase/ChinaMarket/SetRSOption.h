@@ -3,7 +3,7 @@
 
 class CSetRSOption : public CVirtualRecordset {
 public:
-	CSetRSOption(CString strSchema = _T("ChinaMarket"), CString strTable = _T("option_calculatingrs"), CDatabase* pDatabase = nullptr);
+	CSetRSOption(const CString& strSchema = _T("ChinaMarket"), const CString& strTable = _T("option_calculatingrs"), CDatabase* pDatabase = nullptr);
 
 	long m_ID;
 	long m_Index;

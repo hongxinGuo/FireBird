@@ -33,8 +33,6 @@ public:
 	// 虽然这个函数与读取新浪实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
 	bool ReadOneValueOfNeteaseDayLine(const string& pBuffer, char* buffer, INT64& lCurrentPos);
 
-protected:
-
 private:
 	//网易日线接收处理相关数据
 	CString m_strStockCode;

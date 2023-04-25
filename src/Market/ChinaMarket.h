@@ -359,7 +359,7 @@ public:
 
 	bool AddStock(const CChinaStockPtr& pStock) { return m_containerChinaStock.Add(pStock); }
 	bool DeleteStock(const CChinaStockPtr& pStock) { return m_containerChinaStock.Delete(pStock); }
-	bool CreateStock(const CString& strStockCode, const CString& strStockName, const bool fProcessRTData);
+	bool CreateStock(const CString& strStockCode, const CString& strStockName, bool fProcessRTData);
 
 	void SetCurrentRSStrongIndex(const long lIndex) noexcept { m_lCurrentRSStrongIndex = lIndex; }
 

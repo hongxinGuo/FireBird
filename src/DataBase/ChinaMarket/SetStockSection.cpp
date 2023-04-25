@@ -3,7 +3,7 @@
 
 #include "SetStockSection.h"
 
-CSetStockSection::CSetStockSection(CString strSchema, CString strTable, CDatabase* pdb)
+CSetStockSection::CSetStockSection(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_Active = false;
 	m_Market = 0;

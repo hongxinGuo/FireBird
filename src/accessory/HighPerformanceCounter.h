@@ -25,7 +25,7 @@ public:
 		return (long long)((m_end.QuadPart - m_start.QuadPart)) / s_performanceFrequency;
 	}
 
-	[[nodiscard]] long long GetElapsedMilliSecond() const {
+	[[nodiscard]] long long GetElapsedMillisecond() const {
 		ASSERT(s_isInitialized);
 		return (long long)((m_end.QuadPart - m_start.QuadPart)) * 1000 / s_performanceFrequency;
 	}

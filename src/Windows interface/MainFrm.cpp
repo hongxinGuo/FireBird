@@ -525,8 +525,8 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 
-	if (gl_counter.GetElapsedMilliSecond() > 20) {
-		sprintf_s(buffer, _T("%6I64d"), gl_counter.GetElapsedMilliSecond());
+	if (gl_counter.GetElapsedMillisecond() > 20) {
+		sprintf_s(buffer, _T("%6I64d"), gl_counter.GetElapsedMillisecond());
 		//str = buffer;
 		m_wndInnerSystemBar.SetPaneText(7, buffer);
 	}

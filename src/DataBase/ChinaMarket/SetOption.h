@@ -3,7 +3,7 @@
 
 class CSetOption : public CVirtualRecordset {
 public:
-	CSetOption(CString strSchema = _T("ChinaMarket"), CString strTable = _T("options"), CDatabase* pDatabase = nullptr);
+	CSetOption(const CString& strSchema = _T("ChinaMarket"), const CString& strTable = _T("options"), CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 

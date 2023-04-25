@@ -9,7 +9,7 @@ public:
 
 	~CProductFinnhubCryptoSymbol() override = default;
 
-	CString CreateMessage() final;
+	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CFinnhubCryptoSymbolVectorPtr ParseFinnhubCryptoSymbol(const CWebDataPtr& pWebData);
 };
