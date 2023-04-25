@@ -19,8 +19,6 @@ namespace FireBirdTest {
 
 			GeneralCheck();
 		}
-
-	protected:
 	};
 
 	TEST_F(CXferFinnhubInquiryTest, TestGetFinnhubInquiryString1) {
@@ -228,7 +226,7 @@ namespace FireBirdTest {
 		// Stock Estimates
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockEstimatesRecommendationTrend")), STOCK_ESTIMATES_RECOMMENDATION_TRENDS_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockEstimatesPriceTarget")), STOCK_ESTIMATES_PRICE_TARGET_);
-		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockEstimatesUpgradeDownGrade")), STOCK_ESTIMATES_UPGRADE_DOWNGRADE_); // Primium
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockEstimatesUpgradeDownGrade")), STOCK_ESTIMATES_UPGRADE_DOWNGRADE_); // Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockEstimatesRevenueEstimates")), STOCK_ESTIMATES_REVENUE_ESTIMATES_); // Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockEstimatesEPSEstimates")), STOCK_ESTIMATES_EPS_ESTIMATES_); // Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockEstimatesEBITDAEstimates")), STOCK_ESTIMATES_EBITDA_ESTIMATES_); // Premium

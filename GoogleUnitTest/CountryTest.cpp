@@ -26,7 +26,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CCountryTest, TestInitialize) {
-		CCountry country;
+		const CCountry country;
 		EXPECT_STREQ(country.m_strCode2, _T(" "));
 		EXPECT_STREQ(country.m_strCode3, _T(" "));
 		EXPECT_STREQ(country.m_strCodeNo, _T(" "));

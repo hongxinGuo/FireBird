@@ -36,7 +36,7 @@ namespace FireBirdTest {
 	TEST_F(CMockFinnhubForexSymbolTest, TestThreadUpdateFinnhubForexSymbolDayLine) {
 		CMockFinnhubForexSymbol symbol;
 		vector<CDayLinePtr> vDayLine;
-		auto pDayLine = make_shared<CDayLine>();
+		const auto pDayLine = make_shared<CDayLine>();
 
 		pDayLine->SetClose(100);
 		vDayLine.push_back(pDayLine);
@@ -47,7 +47,7 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(symbol, UpdateDayLineDB()).Times(1);
 
-		EXPECT_EQ(ThreadUpdateForexDayLineDB(&symbol), (UINT)38);
+		EXPECT_EQ(ThreadUpdateForexDayLineDB(&symbol), 38);
 
 		EXPECT_THAT(symbol.GetDayLineSize(), Eq(0));
 		EXPECT_THAT(gl_systemMessage.DayLineInfoSize(), Eq(1));

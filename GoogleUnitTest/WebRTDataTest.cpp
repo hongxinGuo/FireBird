@@ -200,7 +200,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockWebRTDataTest, TestIsDataTimeAtCurrentDate) {
-		time_t time = gl_tUTC;
+		const time_t time = gl_tUTC;
 		tm tm_;
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
@@ -208,7 +208,7 @@ namespace FireBirdTest {
 		tm_.tm_hour = 12;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
+		const time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		gl_pChinaMarket->TEST_SetUTCTime(tt);
 		CWebRTData data;
 		data.SetTransactionTime(tt);
@@ -249,7 +249,7 @@ namespace FireBirdTest {
 	}
 
 	struct SinaRTData {
-		SinaRTData(int count, CString Data) {
+		SinaRTData(int count, const CString& Data) {
 			m_iCount = count;
 			m_strData = Data;
 		}
@@ -1281,8 +1281,8 @@ namespace FireBirdTest {
 		CString m_strData;
 	};
 
-	struct ReadSinaOneCalueData {
-		ReadSinaOneCalueData(int count, CString Data) {
+	struct ReadSinaOneValueData {
+		ReadSinaOneValueData(int count, const CString& Data) {
 			m_iCount = count;
 			m_strData = Data;
 		}
@@ -1293,28 +1293,28 @@ namespace FireBirdTest {
 	};
 
 	// 成功
-	ReadSinaOneCalueData rdata1(1, _T("11.050,"));
+	ReadSinaOneValueData rdata1(1, _T("11.050,"));
 	// 小数点后两位
-	ReadSinaOneCalueData rdata2(2, _T("11.05,"));
+	ReadSinaOneValueData rdata2(2, _T("11.05,"));
 	// 小数点后一位
-	ReadSinaOneCalueData rdata3(3, _T("11.0,"));
+	ReadSinaOneValueData rdata3(3, _T("11.0,"));
 	// 小数点前出现0x00a
-	ReadSinaOneCalueData rdata4(4, _T("1\n1.050,"));
+	ReadSinaOneValueData rdata4(4, _T("1\n1.050,"));
 	// 小数点后出现0x00a
-	ReadSinaOneCalueData rdata5(5, _T("11.0\n50,"));
+	ReadSinaOneValueData rdata5(5, _T("11.0\n50,"));
 	// 缺少','
-	ReadSinaOneCalueData rdata6(6, _T("11.050"));
+	ReadSinaOneValueData rdata6(6, _T("11.050"));
 	// 读取小数点后三位后，放弃其后多余的数值
-	ReadSinaOneCalueData rdata7(7, _T("11.050000,"));
+	ReadSinaOneValueData rdata7(7, _T("11.050000,"));
 	// 0x00a出现于‘，’前。
-	ReadSinaOneCalueData rdata8(8, _T("11.05000\n,"));
+	ReadSinaOneValueData rdata8(8, _T("11.05000\n,"));
 	// 只有','
-	ReadSinaOneCalueData rdata9(9, _T(","));
+	ReadSinaOneValueData rdata9(9, _T(","));
 
-	class ReadOneValueTest : public testing::TestWithParam<ReadSinaOneCalueData*> {
+	class ReadOneValueTest : public testing::TestWithParam<ReadSinaOneValueData*> {
 	protected:
 		void SetUp() override {
-			ReadSinaOneCalueData* pData = GetParam();
+			ReadSinaOneValueData* pData = GetParam();
 			m_pSinaWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;
 			long lLength = pData->m_strData.GetLength();

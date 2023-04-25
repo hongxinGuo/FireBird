@@ -45,7 +45,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetRatio) {
-		CFinnhubForexSymbol symbol;
+		const CFinnhubForexSymbol symbol;
 
 		EXPECT_EQ(symbol.GetRatio(), 1000);
 	}
@@ -121,8 +121,7 @@ namespace FireBirdTest {
 		CFinnhubForexSymbol symbol;
 		vector<CDayLinePtr> vDayLine;
 
-		CDayLinePtr pDayLine;
-		pDayLine = make_shared<CDayLine>();
+		const CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20300102);
 		pDayLine->SetClose(100);
 		vDayLine.push_back(pDayLine);
@@ -168,19 +167,17 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetFinnhubDayLineInquiringString1) {
 		CFinnhubForexSymbol symbol;
-		CString str;
 
 		symbol.SetSymbol(_T("ABCDE"));
-		str = symbol.GetFinnhubDayLineInquiryParam(123456789);
+		const CString str = symbol.GetFinnhubDayLineInquiryParam(123456789);
 		EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=315601200&to=123456789")) << "当前时间小于19800101，315601200就是美东标准时间的19800101";
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetFinnhubDayLineInquiringString2) {
 		CFinnhubForexSymbol symbol;
-		CString str;
 
 		symbol.SetSymbol(_T("ABCDE"));
-		str = symbol.GetFinnhubDayLineInquiryParam(1131536000);
+		const CString str = symbol.GetFinnhubDayLineInquiryParam(1131536000);
 		EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=1100000000&to=1131536000")) << "365 * 24 * 3600 = 31536000";
 	}
 

@@ -44,7 +44,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubForexExchangeTest, TestProcessWebData) {
-		// not implmented yet
+		// not implemented yet
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
@@ -115,7 +115,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp() override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();

@@ -58,7 +58,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWebRTDataTest2, TestNeteaseRTDataActive) {
-		time_t tTemp = gl_tUTC;
+		const time_t tTemp = gl_tUTC;
 		CWebRTData id;
 		EXPECT_FALSE(id.CheckNeteaseRTDataActive());
 		tm tm_;
@@ -68,7 +68,7 @@ namespace FireBirdTest {
 		tm_.tm_hour = 12;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
+		const time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		gl_pChinaMarket->TEST_SetUTCTime(tt);
 		id.SetTransactionTime(tt);
 		EXPECT_TRUE(id.IsValidTime(14));
@@ -83,7 +83,7 @@ namespace FireBirdTest {
 	}
 
 	struct NeteaseRTData {
-		NeteaseRTData(int count, CString Data) {
+		NeteaseRTData(int count, const CString& Data) {
 			m_iCount = count;
 			m_strData = Data;
 		}

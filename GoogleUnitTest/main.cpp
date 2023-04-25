@@ -169,7 +169,7 @@ namespace FireBirdTest {
 		}
 
 		void TearDown() override {
-			// 这里要故意将几个Mock全局变量设置为nullptr，这样就能够在测试输出窗口（不是Test Expxplorer窗口）中得到测试结果。
+			// 这里要故意将几个Mock全局变量设置为nullptr，这样就能够在测试输出窗口（不是Test Explorer窗口）中得到测试结果。
 			GeneralCheck();
 
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
@@ -219,7 +219,7 @@ FinnhubWebData finnhubWebData1(1, _T("AAPL"), _T("{\"error\":\"You don't have ac
 
 int main(int argc, char* argv[]) {
 	InitGoogleTest(&argc, argv);
-	// gtest takes ownership of the TestEnvironment ptr - we don't delete it.
+	// gTest takes ownership of the TestEnvironment ptr - we don't delete it.
 	AddGlobalTestEnvironment(new TestEnvironment);
 
 	ASSERT(!gl_systemStatus.IsWorkingMode());

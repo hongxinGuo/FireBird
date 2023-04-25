@@ -64,7 +64,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestGet2) {
-		CString strSymbol = gl_pChinaMarket->GetStock(1)->GetSymbol();
+		const CString strSymbol = gl_pChinaMarket->GetStock(1)->GetSymbol();
 
 		EXPECT_STREQ(gl_pChinaMarket->GetStock(strSymbol)->GetSymbol(), m_containerVirtualStock.Get(strSymbol)->GetSymbol());
 	}

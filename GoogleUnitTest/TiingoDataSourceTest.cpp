@@ -7,7 +7,6 @@
 #include"WorldMarket.h"
 
 #include "ProductTiingoStockSymbol.h"
-#include"ProductTiingoStockDayLine.h"
 #include"ProductDummy.h"
 
 using namespace testing;
@@ -62,7 +61,7 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoDataSourceTest, TestUpdateStatus) {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateStockSymbol());
-		CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
+		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 		gl_pTiingoDataSource->SetCurrentInquiry(p);
 
 		p->SetProductType(STOCK_SYMBOLS_);
@@ -88,7 +87,7 @@ namespace FireBirdTest {
 		m_TiingoDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_TiingoDataSource.InquireCompanySymbol());
 		EXPECT_TRUE(m_TiingoDataSource.IsInquiring());
-		CVirtualProductWebDataPtr p = m_TiingoDataSource.GetCurrentProduct();
+		const CVirtualProductWebDataPtr p = m_TiingoDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockSymbol"));
 		EXPECT_TRUE(m_TiingoDataSource.IsUpdateStockSymbol()) << "此标识需要等处理完数据后方设置";
 		const CString str = gl_systemMessage.PopInformationMessage();
@@ -106,7 +105,7 @@ namespace FireBirdTest {
 		m_TiingoDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_TiingoDataSource.InquireCryptoSymbol());
 		EXPECT_TRUE(m_TiingoDataSource.IsInquiring());
-		CVirtualProductWebDataPtr p = m_TiingoDataSource.GetCurrentProduct();
+		const CVirtualProductWebDataPtr p = m_TiingoDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoCryptoSymbol"));
 		EXPECT_TRUE(m_TiingoDataSource.IsUpdateStockSymbol()) << "此标识需要等处理完数据后方设置";
 		const CString str = gl_systemMessage.PopInformationMessage();

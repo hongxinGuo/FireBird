@@ -26,7 +26,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CInsiderTransactionTest, TestInitialize) {
-		CInsiderTransaction insiderTransaction;
+		const CInsiderTransaction insiderTransaction;
 		EXPECT_STREQ(insiderTransaction.m_strSymbol, _T(" "));
 		EXPECT_STREQ(insiderTransaction.m_strPersonName, _T(" "));
 		EXPECT_EQ(insiderTransaction.m_lShare, 0);

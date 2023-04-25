@@ -9,7 +9,7 @@
 
 namespace FireBirdTest {
 	struct StrConvertDoubleToString {
-		StrConvertDoubleToString(double dValue, CString CValueOfPeriod, long lDividend) {
+		StrConvertDoubleToString(double dValue, const CString& CValueOfPeriod, long lDividend) {
 			m_dValue = dValue;
 			m_strValue = CValueOfPeriod;
 			m_lDividend = lDividend;
@@ -59,7 +59,7 @@ namespace FireBirdTest {
 	}
 
 	struct StrConvertLongToString {
-		StrConvertLongToString(long lValue, CString CValueOfPeriod, long lDividend) {
+		StrConvertLongToString(long lValue, const CString& CValueOfPeriod, long lDividend) {
 			m_lValue = lValue;
 			m_strValue = CValueOfPeriod;
 			m_lDividend = lDividend;
@@ -116,7 +116,7 @@ namespace FireBirdTest {
 	}
 
 	struct StrConvertIntegerToString {
-		StrConvertIntegerToString(int iValue, CString CValueOfPeriod, long lDividend) {
+		StrConvertIntegerToString(int iValue, const CString& CValueOfPeriod, long lDividend) {
 			m_iValue = iValue;
 			m_strValue = CValueOfPeriod;
 			m_lDividend = lDividend;
@@ -173,7 +173,7 @@ namespace FireBirdTest {
 	}
 
 	struct StrConvertINT64ToString {
-		StrConvertINT64ToString(INT64 iValue, CString CValueOfPeriod, long lDividend) {
+		StrConvertINT64ToString(INT64 iValue, const CString& CValueOfPeriod, long lDividend) {
 			m_iValue = iValue;
 			m_strValue = CValueOfPeriod;
 			m_lDividend = lDividend;
@@ -238,7 +238,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CRSReferenceTest, TestInitialize) {
-		const CRSReference RSReference;
+		constexpr CRSReference RSReference;
 		EXPECT_FALSE(RSReference.m_fActive);
 		for (int i = 0; i < 4; i++) {
 			EXPECT_EQ(RSReference.m_lStrongDayLength[i], 0);

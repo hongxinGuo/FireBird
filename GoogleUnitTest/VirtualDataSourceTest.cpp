@@ -73,7 +73,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualDataSourceTest, Test_SetInquiry) {
-		auto p = std::make_shared<CVirtualWebProduct>();
+		const auto p = std::make_shared<CVirtualWebProduct>();
 		p->SetIndex(10000);
 
 		EXPECT_EQ(dataSource.GetInquiryQueueSize(), 0);
@@ -91,7 +91,7 @@ namespace FireBirdTest {
 		const auto pProduct = std::make_shared<CVirtualWebProduct>();
 		pProduct->SetIndex(10000);
 
-		auto p = dataSource.GetCurrentInquiry();
+		const auto p = dataSource.GetCurrentInquiry();
 		EXPECT_TRUE(p == nullptr);
 
 		dataSource.SetCurrentInquiry(pProduct);
@@ -216,8 +216,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestDiscardProduct) {
-		auto p = make_shared<CVirtualWebProduct>();
-		auto p2 = make_shared<CVirtualWebProduct>();
+		const auto p = make_shared<CVirtualWebProduct>();
+		const auto p2 = make_shared<CVirtualWebProduct>();
 		dataSource.StoreInquiry(p);
 		dataSource.StoreInquiry(p2);
 		EXPECT_EQ(dataSource.GetInquiryQueueSize(), 2);
@@ -228,8 +228,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestDiscardReceivedData) {
-		auto p = make_shared<CWebData>();
-		auto p2 = make_shared<CWebData>();
+		const auto p = make_shared<CWebData>();
+		const auto p2 = make_shared<CWebData>();
 		dataSource.StoreReceivedData(p);
 		dataSource.StoreReceivedData(p2);
 		EXPECT_EQ(dataSource.GetReceivedDataSize(), 2);

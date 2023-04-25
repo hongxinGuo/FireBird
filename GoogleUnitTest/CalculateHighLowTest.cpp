@@ -9,7 +9,7 @@ using std::make_shared;
 
 namespace FireBirdTest {
 	struct HighLowData {
-		HighLowData(CString strStockCode, long lPBuy0, long lPSell0, long lLastClose, long lHighLimit, long lLowLimit, long lHighLimit2, long lLowLimit2) {
+		HighLowData(const CString& strStockCode, long lPBuy0, long lPSell0, long lLastClose, long lHighLimit, long lLowLimit, long lHighLimit2, long lLowLimit2) {
 			m_strSymbol = strStockCode;
 			m_lPBuy0 = lPBuy0;
 			m_lPSell0 = lPSell0;
@@ -58,11 +58,11 @@ namespace FireBirdTest {
 	HighLowData HighLowData25("600978.SS", 0, 1240, 1300, 1370, 1240, 0, 0);
 	HighLowData HighLowData26("600978.SS", 0, 1240, 1300, 1370, 1240, 0, 0);
 
-	class StockHighLlowLImitTest : public::testing::TestWithParam<HighLowData*> {
+	class StockHighLowLimitTest : public::testing::TestWithParam<HighLowData*> {
 	protected:
 		void SetUp() override {
 			GeneralCheck();
-			HighLowData* pData = GetParam();
+			const HighLowData* pData = GetParam();
 			pRTData = make_shared<CWebRTData>();
 
 			pRTData->SetLastClose(pData->m_lLastClose);
@@ -83,7 +83,7 @@ namespace FireBirdTest {
 		CWebRTDataPtr pRTData;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestGuadanData, StockHighLlowLImitTest, testing::Values(&HighLowData1, &HighLowData2, &HighLowData3,
+	INSTANTIATE_TEST_SUITE_P(TestGuadanData, StockHighLowLimitTest, testing::Values(&HighLowData1, &HighLowData2, &HighLowData3,
 		                         &HighLowData4, &HighLowData5, &HighLowData6,
 		                         &HighLowData7, &HighLowData8, &HighLowData9,
 		                         &HighLowData10, &HighLowData11, &HighLowData12,
@@ -91,7 +91,7 @@ namespace FireBirdTest {
 		                         &HighLowData16, &HighLowData17, &HighLowData18,
 		                         &HighLowData19, &HighLowData20, &HighLowData21));
 
-	TEST_P(StockHighLlowLImitTest, HighLowTest1) {
+	TEST_P(StockHighLowLimitTest, HighLowTest1) {
 		m_stock.CalculateHighLowLimit(pRTData);
 		EXPECT_EQ(m_stock.GetHighLimit2(), m_stock.GetHighLimit());
 		EXPECT_EQ(m_stock.GetLowLimit2(), m_stock.GetLowLimit());

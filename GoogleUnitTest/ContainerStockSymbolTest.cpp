@@ -70,10 +70,10 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataStockSymbolTest, TestUpdateStockSection2) {
-		CString strShanghaiStock = _T("600601.SS");
-		CString strShenzhenStock = _T("000001.SZ");
-		long lIndex = 600;
-		long lIndex2 = 1000;
+		const CString strShanghaiStock = _T("600601.SS");
+		const CString strShenzhenStock = _T("000001.SZ");
+		constexpr long lIndex = 600;
+		constexpr long lIndex2 = 1000;
 
 		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(lIndex)) << "装载预设数据库后如此";
 		s_pDataStockSymbol->SetStockSectionActiveFlag(lIndex, false);

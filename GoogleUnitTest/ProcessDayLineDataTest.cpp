@@ -7,13 +7,12 @@
 #include"WebData.h"
 #include"DayLineWebData.h"
 
-#include<vector>
 #include<memory>
 using std::make_shared;
 
 namespace FireBirdTest {
 	struct NeteaseDayLineData {
-		NeteaseDayLineData(int count, CString Symbol, CString Data) {
+		NeteaseDayLineData(int count, const CString& Symbol, const CString& Data) {
 			m_iCount = count;
 			m_strSymbol = Symbol;
 			m_strData = Data;
@@ -76,9 +75,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, NeteaseDayLineTest,
-		testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
-			&Data9, &Data10, &Data11, &Data12, &Data13, &Data14
-		));
+	                         testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
+		                         &Data9, &Data10, &Data11, &Data12, &Data13, &Data14
+	                         ));
 
 	TEST_P(NeteaseDayLineTest, TestProcessNeteaseDayLineData) {
 		const bool fSucceed = pDownLoadedDayLine->ProcessNeteaseDayLineData();

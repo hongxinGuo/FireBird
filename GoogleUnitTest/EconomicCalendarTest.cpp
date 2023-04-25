@@ -26,7 +26,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CEconomicCalendarTest, TestInitialize) {
-		CEconomicCalendar EconomicCalendar;
+		const CEconomicCalendar EconomicCalendar;
 		EXPECT_STREQ(EconomicCalendar.m_strCountry, _T(" "));
 		EXPECT_STREQ(EconomicCalendar.m_strEvent, _T(" "));
 		EXPECT_STREQ(EconomicCalendar.m_strImpact, _T(" "));

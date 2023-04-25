@@ -39,8 +39,6 @@ namespace FireBirdTest {
 			m_pVirtualDataSource = nullptr;
 			GeneralCheck();
 		}
-
-	public:
 	};
 
 	TEST_F(CMockVirtualDataSourceTest, TestRun1) {
@@ -88,7 +86,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pVirtualDataSource->HaveInquiry());
 		m_pVirtualDataSource->SetInquiring(true);
 		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(false);
-		auto p = make_shared<CVirtualWebProduct>();
+		const auto p = make_shared<CVirtualWebProduct>();
 		m_pVirtualDataSource->StoreInquiry(p);
 
 		EXPECT_CALL(*m_pVirtualDataSource, GenerateInquiryMessage).Times(0);
@@ -106,7 +104,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pVirtualDataSource->HaveInquiry());
 		m_pVirtualDataSource->SetInquiring(true);
 		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(true);
-		auto p = make_shared<CVirtualWebProduct>();
+		const auto p = make_shared<CVirtualWebProduct>();
 		m_pVirtualDataSource->StoreInquiry(p);
 
 		EXPECT_CALL(*m_pVirtualDataSource, GenerateInquiryMessage).Times(0);

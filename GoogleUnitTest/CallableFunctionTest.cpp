@@ -23,14 +23,13 @@ using namespace testing;
 
 namespace FireBirdTest {
 	struct WebSocketMessageData {
-		WebSocketMessageData(long type, string strMessage, string strError) {
+		WebSocketMessageData(long type, const string& strMessage, const string& strError) {
 			m_lType = type;
 			m_strMessage = strMessage;
 			m_strError = strError;
 		}
 
-		~WebSocketMessageData() {
-		}
+		~WebSocketMessageData() { }
 
 	public:
 		long m_lType;
@@ -73,9 +72,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubWebSocket1, ProcessFinnhubWebSocketTest,
-		testing::Values(&finnhubWebSocketMessage1,
-			&finnhubWebSocketMessage2, &finnhubWebSocketMessage3, &finnhubWebSocketMessage4, &
-			finnhubWebSocketMessage5, &finnhubWebSocketMessage6, &finnhubWebSocketMessage7));
+	                         testing::Values(&finnhubWebSocketMessage1,
+		                         &finnhubWebSocketMessage2, &finnhubWebSocketMessage3, &finnhubWebSocketMessage4, &
+		                         finnhubWebSocketMessage5, &finnhubWebSocketMessage6, &finnhubWebSocketMessage7));
 
 	TEST_P(ProcessFinnhubWebSocketTest, TestProcessWebSocket) {
 		shared_ptr<string> pString;
@@ -150,9 +149,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoIEXWebSocket1, ProcessTiingoIEXWebSocketTest,
-		testing::Values(&tiingoIEXWebSocketMessage1,
-			&tiingoIEXWebSocketMessage2, &tiingoIEXWebSocketMessage3, &tiingoIEXWebSocketMessage4, &
-			tiingoIEXWebSocketMessage5, &tiingoIEXWebSocketMessage6, &tiingoIEXWebSocketMessage7));
+	                         testing::Values(&tiingoIEXWebSocketMessage1,
+		                         &tiingoIEXWebSocketMessage2, &tiingoIEXWebSocketMessage3, &tiingoIEXWebSocketMessage4, &
+		                         tiingoIEXWebSocketMessage5, &tiingoIEXWebSocketMessage6, &tiingoIEXWebSocketMessage7));
 
 	TEST_P(ProcessTiingoIEXWebSocketTest, TestProcessWebSocket) {
 		shared_ptr<string> pString;
@@ -227,10 +226,10 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoCryptoWebSocket1, ProcessTiingoCryptoWebSocketTest,
-		testing::Values(&tiingoCryptoWebSocketMessage1,
-			&tiingoCryptoWebSocketMessage2, &tiingoCryptoWebSocketMessage3, &
-			tiingoCryptoWebSocketMessage4, &tiingoCryptoWebSocketMessage5, &
-			tiingoCryptoWebSocketMessage6, &tiingoCryptoWebSocketMessage7));
+	                         testing::Values(&tiingoCryptoWebSocketMessage1,
+		                         &tiingoCryptoWebSocketMessage2, &tiingoCryptoWebSocketMessage3, &
+		                         tiingoCryptoWebSocketMessage4, &tiingoCryptoWebSocketMessage5, &
+		                         tiingoCryptoWebSocketMessage6, &tiingoCryptoWebSocketMessage7));
 
 	TEST_P(ProcessTiingoCryptoWebSocketTest, TestProcessWebSocket) {
 		shared_ptr<string> pString;
@@ -305,10 +304,10 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoForexWebSocket1, ProcessTiingoForexWebSocketTest,
-		testing::Values(&tiingoForexWebSocketMessage1,
-			&tiingoForexWebSocketMessage2, &tiingoForexWebSocketMessage3, &tiingoForexWebSocketMessage4
-			, &tiingoForexWebSocketMessage5, &tiingoForexWebSocketMessage6, &
-			tiingoForexWebSocketMessage7));
+	                         testing::Values(&tiingoForexWebSocketMessage1,
+		                         &tiingoForexWebSocketMessage2, &tiingoForexWebSocketMessage3, &tiingoForexWebSocketMessage4
+		                         , &tiingoForexWebSocketMessage5, &tiingoForexWebSocketMessage6, &
+		                         tiingoForexWebSocketMessage7));
 
 	TEST_P(ProcessTiingoForexWebSocketTest, TestProcessWebSocket) {
 		shared_ptr<string> pString;

@@ -58,7 +58,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(tengxunRTDataSource.HaveInquiry());
 		EXPECT_EQ(tengxunRTDataSource.GetInquiryQueueSize(), 1);
 		tengxunRTDataSource.GetCurrentProduct();
-		auto pProduct = tengxunRTDataSource.GetCurrentInquiry();
+		const auto pProduct = tengxunRTDataSource.GetCurrentInquiry();
 		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductTengxunRT"));
 		EXPECT_FALSE(tengxunRTDataSource.HaveInquiry());
 	}
@@ -90,20 +90,20 @@ namespace FireBirdTest {
 	TEST_F(CTengxunRTDataSourceTest, TestGetTengxunRTDataDuqueSize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 0);
-		auto pRTData = make_shared<CWebRTData>();
+		const auto pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(100100100);
 		gl_pChinaMarket->PushTengxunRT(pRTData);
-		auto pRTData2 = make_shared<CWebRTData>();
+		const auto pRTData2 = make_shared<CWebRTData>();
 		pRTData2->SetTransactionTime(200200200);
 		pRTData2->SetBuy(1);
 		gl_pChinaMarket->PushTengxunRT(pRTData2);
-		auto pRTData3 = make_shared<CWebRTData>();
+		const auto pRTData3 = make_shared<CWebRTData>();
 		pRTData3->SetTransactionTime(200200);
 		gl_pChinaMarket->PushTengxunRT(pRTData3);
-		auto pRTData4 = make_shared<CWebRTData>();
+		const auto pRTData4 = make_shared<CWebRTData>();
 		pRTData4->SetTransactionTime(200);
 		gl_pChinaMarket->PushTengxunRT(pRTData4);
-		auto pRTData5 = make_shared<CWebRTData>();
+		const auto pRTData5 = make_shared<CWebRTData>();
 		pRTData5->SetTransactionTime(200200200);
 		pRTData5->SetBuy(2);
 		gl_pChinaMarket->PushTengxunRT(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后

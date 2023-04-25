@@ -26,7 +26,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CEPSSurpriseTest, TestInitialize) {
-		CEPSSurprise EPSSurprise;
+		const CEPSSurprise EPSSurprise;
 		EXPECT_STREQ(EPSSurprise.m_strSymbol, _T(" "));
 		EXPECT_EQ(EPSSurprise.m_lDate, 0);
 		EXPECT_DOUBLE_EQ(EPSSurprise.m_dActual, 0.0);

@@ -43,7 +43,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestProcessWebData) {
-		// not implmented yet
+		// not implemented yet
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser

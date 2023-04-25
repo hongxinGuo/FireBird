@@ -26,7 +26,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CSICIndustryTest, TestInitialize) {
-		CSICIndustry SICIndustry;
+		const CSICIndustry SICIndustry;
 		EXPECT_EQ(SICIndustry.m_lCode, 0);
 		EXPECT_STREQ(SICIndustry.m_strIndustry, _T(" "));
 		EXPECT_STREQ(SICIndustry.m_strSector, _T(" "));

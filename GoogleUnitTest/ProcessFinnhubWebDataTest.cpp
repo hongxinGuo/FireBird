@@ -11,7 +11,7 @@ using namespace testing;
 
 namespace FireBirdTest {
 	struct FinnhubWebData {
-		FinnhubWebData(long lIndex, CString strSymbol, CString strData) {
+		FinnhubWebData(long lIndex, const CString& strSymbol, const CString& strData) {
 			m_lIndex = lIndex;
 			m_strSymbol = strSymbol;
 			m_pData = make_shared<CWebData>();
@@ -27,7 +27,7 @@ namespace FireBirdTest {
 	};
 
 	struct FinnhubWebSocketData {
-		FinnhubWebSocketData(long lIndex, CString strData) {
+		FinnhubWebSocketData(long lIndex, const CString& strData) {
 			m_lIndex = lIndex;
 			m_pData = strData;
 		}

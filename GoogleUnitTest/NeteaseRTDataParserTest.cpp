@@ -11,7 +11,7 @@ using namespace std;
 namespace FireBirdTest {
 	class CNeteaseRTDataTest {
 	public:
-		CNeteaseRTDataTest(int index, CString strData) {
+		CNeteaseRTDataTest(int index, const CString& strData) {
 			m_iIndex = index;
 			m_strData = strData;
 		}

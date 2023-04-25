@@ -26,7 +26,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CNaicsIndustryTest, TestInitialize) {
-		CNaicsIndustry NaicsIndustry;
+		const CNaicsIndustry NaicsIndustry;
 		EXPECT_STREQ(NaicsIndustry.m_strNaics, _T(" "));
 		EXPECT_STREQ(NaicsIndustry.m_strNationalIndustry, _T(" "));
 		EXPECT_STREQ(NaicsIndustry.m_strSector, _T(" "));

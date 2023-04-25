@@ -33,7 +33,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(market, Choice10RSStrong1StockSet())
 		.Times(1)
 		.WillOnce(Return(true));
-		EXPECT_EQ(ThreadChoice10RSStrong1StockSet(&market), (UINT)101);
+		EXPECT_EQ(ThreadChoice10RSStrong1StockSet(&market), 101);
 		EXPECT_TRUE(market.IsUpdateOptionDB());
 		EXPECT_EQ(market.GetUpdatedDateFor10DaysRS1(), market.GetMarketDate());
 
@@ -62,7 +62,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(market, Choice10RSStrong2StockSet())
 		.Times(1)
 		.WillOnce(Return(true));
-		EXPECT_EQ(ThreadChoice10RSStrong2StockSet(&market), (UINT)102);
+		EXPECT_EQ(ThreadChoice10RSStrong2StockSet(&market), 102);
 		EXPECT_TRUE(market.IsUpdateOptionDB());
 		EXPECT_EQ(market.GetUpdatedDateFor10DaysRS2(), market.GetMarketDate());
 
@@ -94,7 +94,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(market, Choice10RSStrongStockSet(&RSReference, 2))
 		.Times(1)
 		.WillOnce(Return(true));
-		EXPECT_EQ(ThreadChoice10RSStrongStockSet(&market, &RSReference, 2), (UINT)103);
+		EXPECT_EQ(ThreadChoice10RSStrongStockSet(&market, &RSReference, 2), 103);
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 2);
 		while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 	}

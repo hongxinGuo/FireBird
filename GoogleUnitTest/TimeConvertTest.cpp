@@ -218,7 +218,7 @@ namespace FireBirdTest {
 
 	TEST_F(TimeConvertTest, TestGetUTCTimeStruct) {
 		tm tm_;
-		const time_t tUTC = 0;
+		constexpr time_t tUTC = 0;
 
 		GetUTCTimeStruct(&tm_, &tUTC);
 		EXPECT_EQ(tm_.tm_year, 70);
@@ -240,7 +240,7 @@ namespace FireBirdTest {
 	}
 
 	struct strConvertBufferToTime {
-		strConvertBufferToTime(CString strFormat, CString strBuffer, INT64 iTime) {
+		strConvertBufferToTime(const CString& strFormat, const CString& strBuffer, const INT64 iTime) {
 			m_strFormat = strFormat;
 			m_strBuffer = strBuffer;
 			m_Time = iTime;

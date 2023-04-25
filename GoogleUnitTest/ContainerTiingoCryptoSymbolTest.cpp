@@ -38,7 +38,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerTiingoCryptoSymbolTest, TestIsNeedUpdate) {
-		auto pCrypto = make_shared<CTiingoCryptoSymbol>();
+		const auto pCrypto = make_shared<CTiingoCryptoSymbol>();
 
 		EXPECT_FALSE(m_dataTiingoCryptoSymbol.IsNeedUpdate());
 		m_dataTiingoCryptoSymbol.Add(pCrypto);

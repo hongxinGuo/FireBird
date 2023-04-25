@@ -4,19 +4,9 @@
 
 #include"MockFinnhubDataSource.h"
 
-#include"ProductFinnhubCompanyProfile.h"
-#include"ProductFinnhubCompanyProfileConcise.h"
-#include"ProductFinnhubCompanyPeer.h"
-#include"ProductFinnhubCryptoDayLine.h"
-#include"ProductFinnhubForexDayLine.h"
-#include"ProductFinnhubStockDayLine.h"
-#include"ProductFinnhubForexSymbol.h"
-#include"ProductFinnhubCryptoSymbol.h"
 #include"ProductFinnhubStockSymbol.h"
 #include"ProductFinnhubStockEstimatesEPSSurprise.h"
-#include"ProductFinnhubStockPriceQuote.h"
 
-#include"ProductTiingoStockSymbol.h"
 #include "TimeConvert.h"
 
 using namespace testing;

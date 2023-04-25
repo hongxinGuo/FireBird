@@ -679,7 +679,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldStockTest, TestCheckEPSSurpriseStatus) {
-		const long lCurrentDate = 20200101;
+		constexpr long lCurrentDate = 20200101;
 
 		stock.SetEPSSurpriseUpdated(false);
 		stock.SetIPOStatus(_STOCK_NULL_);
@@ -1180,7 +1180,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldStockTest, TestIsNeedUpdateProfile) {
-		auto pTiingoStock = make_shared<CTiingoStock>();
+		const auto pTiingoStock = make_shared<CTiingoStock>();
 
 		stock.SetSymbol(_T("asdjfkajsfkj"));
 
@@ -1380,7 +1380,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldStockTest, TestGetFinnhubDayLineInquiryParam) {
-		const long lDate = 20200101;
+		constexpr long lDate = 20200101;
 
 		const time_t tt = gl_pWorldMarket->TransferToUTCTime(lDate);
 		time_t ttOld = tt - static_cast<time_t>(365) * 24 * 3600;

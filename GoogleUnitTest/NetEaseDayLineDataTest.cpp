@@ -11,7 +11,7 @@
 
 namespace FireBirdTest {
 	struct NetEaseDayLineData {
-		NetEaseDayLineData(int count, CString Data) {
+		NetEaseDayLineData(int count, const CString& Data) {
 			m_iCount = count;
 			m_strData = Data;
 		}
@@ -47,9 +47,9 @@ namespace FireBirdTest {
 	protected:
 		void SetUp() override {
 			GeneralCheck();
-			NetEaseDayLineData* pData = GetParam();
+			const NetEaseDayLineData* pData = GetParam();
 			m_iCount = pData->m_iCount;
-			long lLength = pData->m_strData.GetLength();
+			const long lLength = pData->m_strData.GetLength();
 			m_pData.resize(lLength);
 			for (int i = 0; i < lLength; i++) {
 				m_pData.at(i) = pData->m_strData.GetAt(i);
@@ -100,9 +100,9 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, ProcessNeteaseDayLineTest,
-		testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
-			&Data9, &Data10, &Data11, &Data12, &Data13, &Data14
-		));
+	                         testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
+		                         &Data9, &Data10, &Data11, &Data12, &Data13, &Data14
+	                         ));
 
 	TEST_P(ProcessNeteaseDayLineTest, ProcessOneNeteaseDayLineData) {
 		m_DayLinePtr = pDownLoadedDayLine->ProcessOneNeteaseDayLineData();
@@ -162,7 +162,7 @@ namespace FireBirdTest {
 	}
 
 	struct ReadDayLineOneValueData {
-		ReadDayLineOneValueData(int count, CString Data) {
+		ReadDayLineOneValueData(int count, const CString& Data) {
 			m_iCount = count;
 			m_strData = Data;
 		}
@@ -220,8 +220,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestReadDayLineOneValue, ReadDayLineOneValueTest2,
-		testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &rdata9, &rdata10
-		));
+	                         testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &rdata9, &rdata10
+	                         ));
 
 	TEST_P(ReadDayLineOneValueTest2, TestReadOneValue3) {
 		char buffer[30];

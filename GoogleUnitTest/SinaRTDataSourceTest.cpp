@@ -51,7 +51,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_pSinaRTDataSource->IsInquiring());
 		EXPECT_EQ(gl_pSinaRTDataSource->GetInquiryQueueSize(), 1);
-		auto pProduct = gl_pSinaRTDataSource->GetCurrentProduct();
+		const auto pProduct = gl_pSinaRTDataSource->GetCurrentProduct();
 		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductSinaRT"));
 	}
 

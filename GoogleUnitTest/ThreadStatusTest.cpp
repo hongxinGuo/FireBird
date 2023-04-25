@@ -27,10 +27,10 @@ namespace FireBirdTest {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundThreadsWorking());
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfBackGroundWorkingThread(), 0);
-		int iCreateThread = gl_ThreadStatus.GetNumberOfSavingThread();
+		const int iCreateThread = gl_ThreadStatus.GetNumberOfSavingThread();
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreateThread);
 
-		size_t l = gl_systemMessage.InformationSize();
+		const size_t l = gl_systemMessage.InformationSize();
 		CThreadStatus threadStatus; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
 		EXPECT_EQ(gl_systemMessage.InformationSize(), l + 1); // 系统报警队列
 		for (int i = 0; i < l + 1; i++) {
@@ -53,7 +53,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(ThreadStatusTest, TestIsSavThreadRunning) {
-		int iCreateThread = gl_ThreadStatus.GetNumberOfSavingThread();
+		const int iCreateThread = gl_ThreadStatus.GetNumberOfSavingThread();
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreateThread);
 		EXPECT_FALSE(gl_ThreadStatus.IsSavingThreadRunning());
 		gl_ThreadStatus.IncreaseSavingThread();
@@ -73,7 +73,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(ThreadStatusTest, TestIsWebInquiringThreadRunning) {
-		int iCreateThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
+		const int iCreateThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreateThread);
 		EXPECT_FALSE(gl_ThreadStatus.IsWebInquiringThreadRunning());
 		gl_ThreadStatus.IncreaseWebInquiringThread();

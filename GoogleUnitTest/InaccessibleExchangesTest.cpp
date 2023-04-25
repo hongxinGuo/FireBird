@@ -34,7 +34,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(inaccessibleExchange.HaveExchange(_T("SZ"))) << "默认包括US";
 		EXPECT_TRUE(inaccessibleExchange.HaveExchange(_T("SS"))) << "默认包括US";
 		EXPECT_FALSE(inaccessibleExchange.HaveExchange(_T("FA"))) << "默认不包括FA";
-		vector<CString> v{_T("US2"), _T("SZ2"), _T("SS2")};
+		const vector<CString> v{_T("US2"), _T("SZ2"), _T("SS2")};
 		inaccessibleExchange.Assign(_T("Another"), 2, v);
 
 		EXPECT_TRUE(inaccessibleExchange.HaveExchange(_T("US2")));
@@ -74,14 +74,12 @@ namespace FireBirdTest {
 
 			GeneralCheck();
 		}
-
-	protected:
 	};
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestGlobeVariable) {
 		json jsFinnhubInaccessibleExchange = json::parse(gl_sFinnhubInaccessibleExchange);
 		CInaccessibleExchanges exchange;
-		string s2 = jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Function")];
+		const string s2 = jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Function")];
 		exchange.SetFunctionString(s2.c_str());
 		for (int i = 0; i < jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Exchange")].size(); i++) {
 			string s = jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Exchange")][i];

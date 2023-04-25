@@ -24,7 +24,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CHighPerformanceCounterTest, TestInitialize) {
-		CHighPerformanceCounter counter;
+		const CHighPerformanceCounter counter;
 		EXPECT_TRUE(counter.IsInitialized());
 		EXPECT_EQ(counter.GetElapseTick(), 0);
 	}

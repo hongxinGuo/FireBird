@@ -45,7 +45,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetRatio) {
-		CFinnhubCryptoSymbol symbol;
+		const CFinnhubCryptoSymbol symbol;
 
 		EXPECT_EQ(symbol.GetRatio(), 1000);
 	}
@@ -121,8 +121,7 @@ namespace FireBirdTest {
 		CFinnhubCryptoSymbol symbol;
 		vector<CDayLinePtr> vDayLine;
 
-		CDayLinePtr pDayLine;
-		pDayLine = make_shared<CDayLine>();
+		const CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200102);
 		pDayLine->SetClose(100); // 确保此数据为有效数据
 		vDayLine.push_back(pDayLine);
@@ -168,19 +167,17 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetFinnhubDayLineInquiringString1) {
 		CFinnhubCryptoSymbol symbol;
-		CString str;
 
 		symbol.SetSymbol(_T("ABCDE"));
-		str = symbol.GetFinnhubDayLineInquiryParam(123456789);
+		const CString str = symbol.GetFinnhubDayLineInquiryParam(123456789);
 		EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=91920789&to=123456789")) << "91920789比123456789早一年（365天）";
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetFinnhubDayLineInquiringString2) {
 		CFinnhubCryptoSymbol symbol;
-		CString str;
 
 		symbol.SetSymbol(_T("ABCDE"));
-		str = symbol.GetFinnhubDayLineInquiryParam(1131536000);
+		const CString str = symbol.GetFinnhubDayLineInquiryParam(1131536000);
 		EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=1100000000&to=1131536000")) << "365 * 24 * 3600 = 31536000";
 	}
 

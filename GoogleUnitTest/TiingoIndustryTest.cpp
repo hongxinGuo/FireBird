@@ -26,7 +26,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTiingoIndustryTest, TestInitialize) {
-		CTiingoIndustry TiingoIndustry;
+		const CTiingoIndustry TiingoIndustry;
 		EXPECT_STREQ(TiingoIndustry.m_strIndustry, _T(" "));
 		EXPECT_STREQ(TiingoIndustry.m_strSector, _T(" "));
 		EXPECT_FALSE(TiingoIndustry.m_fUpdated);

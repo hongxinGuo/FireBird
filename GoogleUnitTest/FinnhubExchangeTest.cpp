@@ -26,7 +26,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubExchangeTest, TestInitialize) {
-		CFinnhubStockExchange FinnhubExchange;
+		const CFinnhubStockExchange FinnhubExchange;
 		EXPECT_STREQ(FinnhubExchange.m_strCode, _T(" "));
 		EXPECT_STREQ(FinnhubExchange.m_strName, _T(" "));
 		EXPECT_STREQ(FinnhubExchange.m_strMic, _T(" "));

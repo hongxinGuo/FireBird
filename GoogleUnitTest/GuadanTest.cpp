@@ -103,7 +103,8 @@ namespace FireBirdTest {
 
 	TEST_F(CGuadanTest, TestGetCurrentPos) {
 		CGuadan Guadan;
-		COneGuadan OneGuadan1, OneGuadan2;
+		const COneGuadan OneGuadan1;
+		const COneGuadan OneGuadan2;
 		EXPECT_EQ(Guadan.GetCurrentPos(), 0);
 		EXPECT_EQ(Guadan.GetCompletedPos(), 0);
 		EXPECT_EQ(Guadan.GetCurrentVolume(), 0);

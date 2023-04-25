@@ -579,7 +579,7 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireRTQuote());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
-		CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
+		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockPriceQuote"));
 	}
 

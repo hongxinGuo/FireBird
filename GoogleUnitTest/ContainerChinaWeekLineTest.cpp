@@ -31,7 +31,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CStockDataChinaWeekLineTest, TestUpdateData1) {
-		auto pWeekLine = make_shared<CWeekLine>();
+		const auto pWeekLine = make_shared<CWeekLine>();
 		pWeekLine->SetStockSymbol(_T("600000.SS"));
 		pWeekLine->SetDate(20200101);
 		pWeekLine->SetHigh(1000);
@@ -62,13 +62,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockDataChinaWeekLineTest, TestUpdateData2) {
-		auto pDayLine = make_shared<CDayLine>();
+		const auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetStockSymbol(_T("600000.SS"));
 		pDayLine->SetDate(20200101);
 		pDayLine->SetHigh(10000);
 		pDayLine->SetLow(100);
 		pDayLine->SetTransactionNumber(101);
-		auto pWeekLine = make_shared<CWeekLine>();
+		const auto pWeekLine = make_shared<CWeekLine>();
 		pWeekLine->SetStockSymbol(_T("600000.SS"));
 		pWeekLine->SetHigh(1000);
 		pWeekLine->SetLow(200);
@@ -78,7 +78,7 @@ namespace FireBirdTest {
 
 		dataChinaWeekLine.StoreData(pWeekLine);
 		dataChinaWeekLine.UpdateData(pDayLine);
-		CWeekLinePtr pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(0));
+		const CWeekLinePtr pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(0));
 		EXPECT_EQ(pWeekLine2->GetMarketDate(), GetCurrentMonday(20200101));
 		EXPECT_EQ(pWeekLine2->GetHigh(), 10000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 100);
@@ -86,7 +86,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockDataChinaWeekLineTest, TestStoreData1) {
-		auto pWeekLine = make_shared<CWeekLine>();
+		const auto pWeekLine = make_shared<CWeekLine>();
 		pWeekLine->SetStockSymbol(_T("600000.SS"));
 		pWeekLine->SetDate(20200101);
 		pWeekLine->SetHigh(1000);

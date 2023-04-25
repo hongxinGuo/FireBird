@@ -26,7 +26,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTiingoCryptoSymbolTest, TestInitialize) {
-		CTiingoCryptoSymbol tiingo;
+		const CTiingoCryptoSymbol tiingo;
 
 		EXPECT_STREQ(tiingo.m_strBaseCurrency, _T(""));
 		EXPECT_STREQ(tiingo.m_strTicker, _T(""));

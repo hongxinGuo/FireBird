@@ -57,8 +57,8 @@ namespace FireBirdTest {
 
 	TEST_F(CMockFireBirdViewTest, TestShowOrdinaryBuySell) {
 		CDC DC;
-		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(1);
-		CRect rectArea(0, 0, 300, 300);
+		const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(1);
+		const CRect rectArea(0, 0, 300, 300);
 
 		pStock->SetVolume(10000);
 		EXPECT_CALL(*s_pFireBirdView, SysCallFillSolidRect(&DC, _, _))
@@ -69,8 +69,8 @@ namespace FireBirdTest {
 
 	TEST_F(CMockFireBirdViewTest, TestShowCanceledBuySell) {
 		CDC DC;
-		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(1);
-		CRect rectArea(0, 0, 300, 300);
+		const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(1);
+		const CRect rectArea(0, 0, 300, 300);
 
 		pStock->SetCanceledBuyVolume(10000);
 		EXPECT_CALL(*s_pFireBirdView, SysCallFillSolidRect(&DC, _, _))
@@ -82,7 +82,7 @@ namespace FireBirdTest {
 	TEST_F(CMockFireBirdViewTest, TestShowCurrentRS) {
 		CDC DC;
 		vector<double> vRS{5, 10, 20, 30};
-		CRect rect(0, 0, 100, 100);
+		const CRect rect(0, 0, 100, 100);
 		s_pFireBirdView->SetClientSize(rect);
 		EXPECT_CALL(*s_pFireBirdView, SysCallMoveTo(&DC, 99, 85))
 		.Times(1);
@@ -93,7 +93,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockFireBirdViewTest, TestRSLineTo) {
 		CDC DC;
-		CRect rect(0, 0, 100, 100);
+		const CRect rect(0, 0, 100, 100);
 		s_pFireBirdView->SetClientSize(rect);
 		EXPECT_CALL(*s_pFireBirdView, SysCallLineTo(&DC, 69, 75))
 		.Times(1)
@@ -115,7 +115,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pFireBirdView, SysCallOnSize(1, 100, 200))
 		.Times(1);
 		s_pFireBirdView->OnSize(1, 100, 200);
-		CRect rect = s_pFireBirdView->GetClientSize();
+		const CRect rect = s_pFireBirdView->GetClientSize();
 		EXPECT_EQ(rect.Height(), 200);
 		EXPECT_EQ(rect.Width(), 100);
 	}

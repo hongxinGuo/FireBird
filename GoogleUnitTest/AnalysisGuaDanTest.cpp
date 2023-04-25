@@ -154,7 +154,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp() override {
 			GeneralCheck();
-			GuadanData* pData = GetParam();
+			const GuadanData* pData = GetParam();
 			// 预设20个挂单
 			for (int i = 0; i < 200; i += 10) {
 				m_stock.TestSetGuadanDeque(9900 + i, 10000); // 所有的挂单量皆设置为一万股
@@ -396,7 +396,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp() override {
 			GeneralCheck();
-			GuadanData* pData = GetParam();
+			const GuadanData* pData = GetParam();
 			// 预设20个挂单
 			for (int i = 0; i < 200; i += 10) {
 				m_stock.TestSetGuadanDeque(9900 + i, 10000); // 所有的挂单量皆设置为一万股

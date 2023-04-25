@@ -90,12 +90,12 @@ namespace FireBirdTest {
 		EXPECT_EQ(ThreadSaveDayLineBasicInfo(pStock.get()), static_cast<UINT>(15));
 		EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
-		CString str = gl_systemMessage.PopDayLineInfoMessage();
+		const CString str = gl_systemMessage.PopDayLineInfoMessage();
 		EXPECT_STREQ(str, _T("601111.SS日线资料存储完成"));
 	}
 
 	TEST_F(CMockChinaStockTest, TestThreadLoadDayLine) {
-		auto pDayLine = make_shared<CDayLine>();
+		const auto pDayLine = make_shared<CDayLine>();
 		pStock->StoreDayLine(pDayLine);
 		InSequence seq;
 		EXPECT_CALL(*pStock, LoadDayLine)
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockChinaStockTest, TestThreadLoadWeekLine) {
-		auto pWeekLine = make_shared<CWeekLine>();
+		const auto pWeekLine = make_shared<CWeekLine>();
 		pStock->StoreWeekLine(pWeekLine);
 		EXPECT_CALL(*pStock, LoadWeekLine)
 		.Times(1);

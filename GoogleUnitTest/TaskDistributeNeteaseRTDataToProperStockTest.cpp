@@ -11,7 +11,7 @@ using namespace testing;
 
 namespace FireBirdTest {
 	struct NeteaseData {
-		NeteaseData(int count, CString Symbol, int iType, bool fActive, time_t tt) {
+		NeteaseData(int count, const CString& Symbol, int iType, bool fActive, time_t tt) {
 			m_iCount = count;
 			m_strSymbol = Symbol;
 			m_iSourceType = iType;
@@ -49,14 +49,14 @@ namespace FireBirdTest {
 		static void SetUpTestSuite() {
 			GeneralCheck();
 
-			CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
+			const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
 			pStock->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
 			pStock->SetIPOStatus(_STOCK_NULL_); // 故意将此股票状态设置为未上市。
 			s_tCurrentMarketTime = GetUTCTime();
 		}
 
 		static void TearDownTestSuite() {
-			CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
+			const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
 			pStock->SetActive(true);
 
 			GeneralCheck();
@@ -66,7 +66,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 
 			EXPECT_FALSE(gl_pChinaMarket->IsRTDataNeedCalculate());
-			NeteaseData* pData = GetParam();
+			const NeteaseData* pData = GetParam();
 			m_iCount = pData->m_iCount;
 			if (gl_pChinaMarket->IsStock(pData->m_strSymbol)) {
 				pStock = gl_pChinaMarket->GetStock(pData->m_strSymbol);

@@ -269,8 +269,8 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualMarketTest, TestTransferToMarketDate) {
 		tm tmMarket;
-		const long lMarketDate = 20000301;
-		const long lMarketTime = 002030;
+		constexpr long lMarketDate = 20000301;
+		constexpr long lMarketTime = 002030;
 
 		tmMarket.tm_year = lMarketDate / 10000 - 1900;
 		tmMarket.tm_mon = lMarketDate / 100 - (lMarketDate / 10000) * 100 - 1;
@@ -375,7 +375,7 @@ namespace FireBirdTest {
 		char buffer[30];
 
 		sprintf_s(buffer, _T("%02d:%02d:%02d "), tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
-		CString str = buffer;
+		const CString str = buffer;
 		EXPECT_STREQ(virtualMarket.GetStringOfMarketTime(), str);
 	}
 

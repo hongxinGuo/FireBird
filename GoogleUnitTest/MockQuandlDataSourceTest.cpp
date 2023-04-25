@@ -96,7 +96,7 @@ namespace FireBirdTest {
 	/// 在这里测试CVirtualDataSource类中的Read函数。
 	/// </summary>
 	TEST_F(CMockQuandlDataSourceTest, TestRead2) {
-		auto p = make_shared<CVirtualWebProduct>();
+		const auto p = make_shared<CVirtualWebProduct>();
 		m_pMockQuandlDataSource->StoreInquiry(p);
 		EXPECT_EQ(m_pMockQuandlDataSource->GetInquiryQueueSize(), 1);
 		EXPECT_EQ(m_pMockQuandlDataSource->GetReceivedDataSize(), 0);

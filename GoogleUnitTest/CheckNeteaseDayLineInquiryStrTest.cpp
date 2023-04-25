@@ -5,7 +5,7 @@
 
 namespace FireBirdTest {
 	struct CheckNeteaseDayLineInquiryStrData {
-		CheckNeteaseDayLineInquiryStrData(int count, CString Data) {
+		CheckNeteaseDayLineInquiryStrData(int count, const CString& Data) {
 			m_iCount = count;
 			m_strData = Data;
 		}
@@ -30,7 +30,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp() override {
 			GeneralCheck();
-			CheckNeteaseDayLineInquiryStrData* pData = GetParam();
+			const CheckNeteaseDayLineInquiryStrData* pData = GetParam();
 			m_iCount = pData->m_iCount;
 			m_strCode = pData->m_strData;
 		}
@@ -52,7 +52,7 @@ namespace FireBirdTest {
 	                         ));
 
 	TEST_P(CheckNeteaseDayLineInquiryStrTest, TestCheck) {
-		bool fSucceed = gl_pChinaMarket->CheckValidOfNeteaseDayLineInquiringStr(m_strCode);
+		const bool fSucceed = gl_pChinaMarket->CheckValidOfNeteaseDayLineInquiringStr(m_strCode);
 		switch (m_iCount) {
 		case 1:
 			EXPECT_TRUE(fSucceed);

@@ -5,9 +5,6 @@
 #include"TiingoDataSource.h"
 #include"WorldMarket.h"
 
-#include "ProductTiingoStockSymbol.h"
-#include"ProductTiingoStockDayLine.h"
-
 #include"MockTiingoDataSource.h"
 
 using namespace testing;

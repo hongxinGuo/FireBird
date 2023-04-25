@@ -76,7 +76,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp() override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pData->m_strSymbol));
 			gl_pWorldMarket->GetFinnhubCryptoSymbol(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
@@ -98,7 +98,7 @@ namespace FireBirdTest {
 		long m_lIndex;
 		CDayLineVectorPtr m_pvDayLine;
 		CWebDataPtr m_pWebData;
-		CProductFinnhubCryptoDayLine m_finnhubSryptoDayLine;
+		CProductFinnhubCryptoDayLine m_finnhubCryptoDayLine;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubCryptoCandle1,
@@ -109,7 +109,7 @@ namespace FireBirdTest {
 	TEST_P(ParseFinnhubCryptoCandleTest, TestParseFinnhubCryptoCandle0) {
 		CString strMessage;
 
-		m_pvDayLine = m_finnhubSryptoDayLine.ParseFinnhubCryptoCandle(m_pWebData);
+		m_pvDayLine = m_finnhubCryptoDayLine.ParseFinnhubCryptoCandle(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_EQ(m_pvDayLine->size(), 0);
@@ -155,7 +155,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp() override {
 			GeneralCheck();
-			FinnhubWebData* pData = GetParam();
+			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pData->m_strSymbol));
 			lIPOStatus = gl_pWorldMarket->GetFinnhubCryptoSymbol(0)->GetIPOStatus();

@@ -84,7 +84,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubWebSocketTest, TestAddSymbol) {
-		vectorString vSymbol{_T("a"), _T("b"), _T("c"), _T("d"), _T("e")};
+		const vectorString vSymbol{_T("a"), _T("b"), _T("c"), _T("d"), _T("e")};
 
 		EXPECT_EQ(m_finnhubWebSocket.GetSymbolSize(), 0);
 		m_finnhubWebSocket.AppendSymbol(vSymbol);

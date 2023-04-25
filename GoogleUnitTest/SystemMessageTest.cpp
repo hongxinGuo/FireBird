@@ -29,7 +29,7 @@ namespace FireBirdTest {
 
 	TEST_F(SystemMessageTest, TestInitialize) {
 		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
-		size_t l = gl_systemMessage.InformationSize();
+		const size_t l = gl_systemMessage.InformationSize();
 		CSystemMessage systemMessage; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), l + 1); // 系统报警队列
 		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("错误：系统不允许生成多个CSystemMessage实例"));
@@ -39,7 +39,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 0);
 		gl_systemMessage.PushInformationMessage(_T("TEST"));
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		CString str = gl_systemMessage.PopInformationMessage();
+		const CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 0);
 		EXPECT_STREQ(str, _T("TEST"));
 	}
@@ -48,7 +48,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 		gl_systemMessage.PushDayLineInfoMessage(_T("TEST"));
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
-		CString str = gl_systemMessage.PopDayLineInfoMessage();
+		const CString str = gl_systemMessage.PopDayLineInfoMessage();
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 		EXPECT_STREQ(str, _T("TEST"));
 	}
@@ -58,7 +58,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.TransactionInfoSize(), 0);
 		gl_systemMessage.PushTransactionMessage(_T("TEST"));
 		EXPECT_EQ(gl_systemMessage.TransactionInfoSize(), 1);
-		CString str = gl_systemMessage.PopTransactionMessage();
+		const CString str = gl_systemMessage.PopTransactionMessage();
 		EXPECT_EQ(gl_systemMessage.TransactionInfoSize(), 0);
 		EXPECT_STREQ(str, _T("TEST"));
 	}
@@ -67,7 +67,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.CancelSellInfoSize(), 0);
 		gl_systemMessage.PushCancelSellMessage(_T("TEST"));
 		EXPECT_EQ(gl_systemMessage.CancelSellInfoSize(), 1);
-		CString str = gl_systemMessage.PopCancelSellMessage();
+		const CString str = gl_systemMessage.PopCancelSellMessage();
 		EXPECT_EQ(gl_systemMessage.CancelSellInfoSize(), 0);
 		EXPECT_STREQ(str, _T("TEST"));
 	}
@@ -76,7 +76,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.CancelBuyInfoSize(), 0);
 		gl_systemMessage.PushCancelBuyMessage(_T("TEST"));
 		EXPECT_EQ(gl_systemMessage.CancelBuyInfoSize(), 1);
-		CString str = gl_systemMessage.PopCancelBuyMessage();
+		const CString str = gl_systemMessage.PopCancelBuyMessage();
 		EXPECT_EQ(gl_systemMessage.CancelBuyInfoSize(), 0);
 		EXPECT_STREQ(str, _T("TEST"));
 	}
@@ -85,7 +85,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.WebSocketInfoSize(), 0);
 		gl_systemMessage.PushWebSocketInfoMessage(_T("TEST"));
 		EXPECT_EQ(gl_systemMessage.WebSocketInfoSize(), 1);
-		CString str = gl_systemMessage.PopWebSocketInfoMessage();
+		const CString str = gl_systemMessage.PopWebSocketInfoMessage();
 		EXPECT_EQ(gl_systemMessage.WebSocketInfoSize(), 0);
 		EXPECT_STREQ(str, _T("TEST"));
 	}
@@ -94,7 +94,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.Trace2Size(), 0);
 		gl_systemMessage.PushTrace2Message(_T("TEST"));
 		EXPECT_EQ(gl_systemMessage.Trace2Size(), 1);
-		CString str = gl_systemMessage.PopTrace2Message();
+		const CString str = gl_systemMessage.PopTrace2Message();
 		EXPECT_EQ(gl_systemMessage.Trace2Size(), 0);
 		EXPECT_STREQ(str, _T("TEST"));
 	}
