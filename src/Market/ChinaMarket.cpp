@@ -598,7 +598,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 		AddTask(CHINA_MARKET_RESET__, 92600); // 执行时间为：92600
 	}
 
-	// 装载本日之前存储的实时数据。必须于市场两次重启后（92600后）再执行，这样才能保证m_fLoadTodayRTData变量正常设置
+	// 装载本日存储的实时数据。必须于市场两次重启后（92600后）再执行，这样才能保证正常设置m_fLoadTodayRTData变量
 	AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, 92700);
 
 	// 每十秒钟存储一次日线历史数据。
@@ -890,7 +890,7 @@ bool CChinaMarket::ChangeDayLineStockCodeToStandard() {
 	return false;
 }
 
-bool CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
+void CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 	if (IsDayLineNeedProcess()) {
 		ProcessDayLine();
 	}
@@ -903,7 +903,6 @@ bool CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 	if (!IsFinishedSavingDayLineDB()) {// 当尚未更新完日线历史数据时
 		AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(lCurrentTime, 0, 0, 10));
 	}
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////

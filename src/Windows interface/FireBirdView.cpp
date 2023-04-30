@@ -138,13 +138,13 @@ bool CFireBirdView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, 
 }
 
 void CFireBirdView::ShowRealtimeData(CDC* pDC) {
-	const int cFirstPosition = 0;
-	const int cSecondPosition = cFirstPosition + 200;
-	const int cThirdPosition = cSecondPosition + 300;
-	CRect rectBuySell(cFirstPosition, 0, cFirstPosition + 150, 400);
-	CRect rectOrdinaryBuySell(cSecondPosition, 0, cSecondPosition + 300, 400);
-	CRect rectAttackBuySell(cThirdPosition, 0, cThirdPosition + 100, 400);
-	CRect rectCanceledBuySell(0, 450, 300, 850);
+	constexpr int cFirstPosition = 0;
+	constexpr int cSecondPosition = cFirstPosition + 200;
+	constexpr int cThirdPosition = cSecondPosition + 300;
+	const CRect rectBuySell(cFirstPosition, 0, cFirstPosition + 150, 400);
+	const CRect rectOrdinaryBuySell(cSecondPosition, 0, cSecondPosition + 300, 400);
+	const CRect rectAttackBuySell(cThirdPosition, 0, cThirdPosition + 100, 400);
+	const CRect rectCanceledBuySell(0, 450, 300, 850);
 	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
 		ShowBuySell(pDC, gl_pChinaMarket->GetCurrentStock(), rectBuySell);
 		ShowOrdinaryBuySell(pDC, gl_pChinaMarket->GetCurrentStock(), rectOrdinaryBuySell);
@@ -157,24 +157,48 @@ void CFireBirdView::ShowRealtimeData(CDC* pDC) {
 
 void CFireBirdView::ShowRealtimeGuadan(CDC* pDC) {
 	CString str;
-	COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));
+	COLORREF crGreen(RGB(0, 255, 0));
+	constexpr COLORREF crYellow(RGB(255, 255, 0));
+	constexpr COLORREF crRed(RGB(255, 0, 0));
 	COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
 	CPen penWhite(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed(PS_SOLID, 1, crRed);
 	CPoint ptCurrent;
 
 	const CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
 
-	int iGraphXStart = 60, iGraphXEnd = iGraphXStart + 480, iGraphYStart = 20, iGraphYEnd = iGraphYStart + 300;
+	constexpr int iGraphXStart = 60;
+	constexpr int iGraphXEnd = iGraphXStart + 480;
+	constexpr int iGraphYStart = 20;
+	constexpr int iGraphYEnd = iGraphYStart + 300;
 	int iGraphYEnd2 = iGraphYEnd + 100;
-	int iGuadanXBegin = iGraphXEnd + 80, iGuadanXVolume = iGuadanXBegin + 200, iGuadanXVolume1 = iGuadanXBegin + 100;
+	constexpr int iGuadanXBegin = iGraphXEnd + 80;
+	constexpr int iGuadanXVolume = iGuadanXBegin + 200;
+	int iGuadanXVolume1 = iGuadanXBegin + 100;
 	int iGuadanYMiddle = 600;
-	int iTextStart = iGuadanXVolume + 70, iTextStart1 = iTextStart + 50, iTextNext = iTextStart1 + 100;
-	int iTextNext1 = iTextNext + 50, iTextNext2 = iTextNext1 + 50;
-	int iTextStart3 = iTextNext2 + 50, iTextNext3 = iTextStart3 + 60;
-	int iPSell = iGraphXEnd, iVSell = iPSell + 100;
-	int y0 = 0, y1 = y0 + 30, y2 = y1 + 20, y3 = y2 + 20, y4 = y3 + 20, y5 = y4 + 20, y6 = y5 + 30;
-	int y7 = y6 + 20, y8 = y7 + 20, y9 = y8 + 30, y10 = y9 + 20, y11 = y10 + 20;
-	int y12 = y11 + 30, y13 = y12 + 20, y14 = y13 + 20;
+	constexpr int iTextStart = iGuadanXVolume + 70;
+	constexpr int iTextStart1 = iTextStart + 50;
+	constexpr int iTextNext = iTextStart1 + 100;
+	constexpr int iTextNext1 = iTextNext + 50;
+	constexpr int iTextNext2 = iTextNext1 + 50;
+	constexpr int iTextStart3 = iTextNext2 + 50;
+	int iTextNext3 = iTextStart3 + 60;
+	constexpr int iPSell = iGraphXEnd;
+	int iVSell = iPSell + 100;
+	constexpr int y0 = 0;
+	constexpr int y1 = y0 + 30;
+	constexpr int y2 = y1 + 20;
+	constexpr int y3 = y2 + 20;
+	constexpr int y4 = y3 + 20;
+	constexpr int y5 = y4 + 20;
+	constexpr int y6 = y5 + 30;
+	constexpr int y7 = y6 + 20;
+	constexpr int y8 = y7 + 20;
+	constexpr int y9 = y8 + 30;
+	constexpr int y10 = y9 + 20;
+	constexpr int y11 = y10 + 20;
+	constexpr int y12 = y11 + 30;
+	constexpr int y13 = y12 + 20;
+	int y14 = y13 + 20;
 
 	COLORREF crBefore = pDC->SetBkColor(crYellow);
 	CChinaStockPtr pStock = gl_pChinaMarket->GetCurrentStock();
@@ -272,15 +296,15 @@ void CFireBirdView::ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea)
 }
 
 void CFireBirdView::ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
-	const COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
+	constexpr COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
 	CPen* ppen = nullptr;
 	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
 	CPen penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
 	CRect rectTop, rectBottom;
 	double base;
-	double HalfHeight = rectArea.Height() / 2.0;
-	double yBase = rectArea.top + HalfHeight;
-	double dRatio = 4.0;
+	const double HalfHeight = rectArea.Height() / 2.0;
+	const double yBase = rectArea.top + HalfHeight;
+	constexpr double dRatio = 4.0;
 
 	if (pStock->GetVolume() > 0) base = pStock->GetVolume();
 	else return;
@@ -396,14 +420,14 @@ void CFireBirdView::ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStock, CRect r
 }
 
 void CFireBirdView::ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
-	const COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
+	constexpr COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
 	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
 	CPen penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
 
 	double base;
-	double HalfHeight = rectArea.Height() / 2.0;
-	double yBase = rectArea.top + HalfHeight;
-	double dRatio = 1.0;
+	const double HalfHeight = rectArea.Height() / 2.0;
+	const double yBase = rectArea.top + HalfHeight;
+	constexpr double dRatio = 1.0;
 	CRect rectTop, rectBottom;
 
 	if ((pStock->GetCanceledBuyVolume() == 0) && (pStock->GetCanceledSellVolume() == 0)) return;
@@ -475,8 +499,8 @@ void CFireBirdView::ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStock, CRect r
 }
 
 void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
-	const COLORREF crBlack(RGB(0, 0, 0)), crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));
-	const COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
+	constexpr COLORREF crBlack(RGB(0, 0, 0)), crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));
+	constexpr COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
 	CPen* ppen = nullptr;
 	CPen penWhite1(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penWhite3(PS_SOLID, 3, crWhite);
 	CPen penRed1(PS_SOLID, 1, crRed), penRed2(PS_SOLID, 2, crRed), penRed3(PS_SOLID, 3, crRed);
@@ -484,7 +508,7 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	CPen penYellow1(PS_SOLID, 1, crYellow), penYellow2(PS_SOLID, 2, crYellow), penYellow3(PS_SOLID, 3, crYellow);
 	CPen penBlue1(PS_SOLID, 1, crBlue), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
 	CPoint ptCurrent;
-	CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
+	const CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
 
 	if (m_vRSShow.size() != m_pCurrentDataHistoryCandle->Size()) m_vRSShow.resize(m_pCurrentDataHistoryCandle->Size());
 	if (pCurrentStock == nullptr) return;
@@ -645,8 +669,7 @@ void CFireBirdView::Show(CDC* pdc) {
 
 	CRect rect;
 	SysCallGetClientRect(&rect);
-	if ((gl_pChinaMarket->GetCurrentStock() != nullptr) && (gl_pChinaMarket->GetCurrentStock()->IsDayLineLoaded())) {
-	}
+	if ((gl_pChinaMarket->GetCurrentStock() != nullptr) && (gl_pChinaMarket->GetCurrentStock()->IsDayLineLoaded())) { }
 	else {
 		pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
 		m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);

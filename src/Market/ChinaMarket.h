@@ -50,8 +50,8 @@ public:
 	virtual bool TaskCreateTask(long lCurrentTime);
 	bool TaskCheckMarketReady(long lCurrentTime);
 	virtual bool TaskResetMarket(long lCurrentTime);
-	virtual void TaskDistributeAndCalculateRTData(long lCurrentTime);
-	bool TaskProcessAndSaveDayLine(long lCurrentTime);
+	void TaskDistributeAndCalculateRTData(long lCurrentTime);
+	void TaskProcessAndSaveDayLine(long lCurrentTime);
 	void TaskSaveTempData(long lCurrentTime);
 	void TaskLoadCurrentStockHistoryData();// 装载当前股票日线
 	void TaskAccessoryTask(long lCurrentTime); // 其他辅助任务

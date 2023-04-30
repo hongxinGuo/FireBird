@@ -287,7 +287,8 @@ Included items must then not match any entries in the exclude list to remain inc
 	              <Source>.*\\microsoft sdks\\.*</Source>
 	              <Source>C:\\Program Files (x86)\\*.*</Source>
                 <Source>C:\\Program Files\\*.*</Source>
-                <Source>.*\\vc\\include\\.*</Source><Source>d:\\cfiles\\projects\\winssl\\*.*</Source>
+                <Source>.*\\vc\\include\\.*</Source>
+	              <Source>d:\\cfiles\\projects\\winssl\\*.*</Source>
                 <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\gsl\\*.*</Source>
                 <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\googletest\\*.*</Source>
                 <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\Packages\\*.*</Source>

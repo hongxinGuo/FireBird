@@ -55,10 +55,9 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	UpdateFonts();
 
 	CString strTabName;
-	BOOL bNameValid;
 
 	// 将列表窗口附加到选项卡:
-	bNameValid = strTabName.LoadString(IDS_INFORMATION_TAB);
+	BOOL bNameValid = strTabName.LoadString(IDS_INFORMATION_TAB);
 	ASSERT(bNameValid);
 	m_wndTabs.AddTab(&m_wndOutputInformation, strTabName, (UINT)0);
 	bNameValid = strTabName.LoadString(IDS_DAYLINE_INFO_TAB);
@@ -311,10 +310,10 @@ void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point) {
 	CMenu menu;
 	menu.LoadMenu(IDR_OUTPUT_POPUP);
 
-	CMenu* pSumMenu = menu.GetSubMenu(0);
+	const CMenu* pSumMenu = menu.GetSubMenu(0);
 
 	if (AfxGetMainWnd()->IsKindOf(RUNTIME_CLASS(CMDIFrameWndEx))) {
-		auto pPopupMenu = new CMFCPopupMenu;
+		const auto pPopupMenu = new CMFCPopupMenu;
 
 		if (!pPopupMenu->Create(this, point.x, point.y, (HMENU)pSumMenu->m_hMenu, FALSE, TRUE)) return;
 
@@ -334,8 +333,8 @@ void COutputList::OnEditClear() {
 }
 
 void COutputList::OnViewOutput() {
-	auto pParentBar = DYNAMIC_DOWNCAST(CDockablePane, GetOwner());
-	auto pMainFrame = DYNAMIC_DOWNCAST(CMDIFrameWndEx, GetTopLevelFrame());
+	const auto pParentBar = DYNAMIC_DOWNCAST(CDockablePane, GetOwner());
+	const auto pMainFrame = DYNAMIC_DOWNCAST(CMDIFrameWndEx, GetTopLevelFrame());
 
 	if (pMainFrame != nullptr && pParentBar != nullptr) {
 		pMainFrame->SetFocus();

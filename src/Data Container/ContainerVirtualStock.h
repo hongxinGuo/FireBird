@@ -24,7 +24,9 @@ public:
 	bool IsDayLineNeedSaving();
 
 	CVirtualStockPtr Get(const size_t lIndex) {
-		try { return m_vStock.at(lIndex); }
+		try {
+			return m_vStock.at(lIndex);
+		}
 		catch (std::out_of_range&) {
 			ASSERT(0);
 			return nullptr;
@@ -32,7 +34,9 @@ public:
 	}
 
 	CVirtualStockPtr Get(const CString& strSymbol) {
-		try { return m_vStock.at(m_mapSymbol.at(strSymbol)); }
+		try {
+			return m_vStock.at(m_mapSymbol.at(strSymbol));
+		}
 		catch (std::out_of_range&) {
 			ASSERT(0);
 			return nullptr;

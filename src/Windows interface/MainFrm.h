@@ -18,17 +18,15 @@ public:
 	void Reset();
 
 	// 特性
-public:
+
 	// 操作
-public:
 	virtual void SchedulingTask();
 	void UpdateStatus();
 	void UpdateInnerSystemStatus();
-	bool CreateMarketContainer(); // 生成各市场容器（只用于调度）
+	static bool CreateMarketContainer(); // 生成各市场容器（只用于调度）
 
-	void InitializeDataSourceAndWebInquiry();
+	static void InitializeDataSourceAndWebInquiry();
 
-public:
 	// 需包裹的调用系统函数的函数（以便于使用GMock），前缀为SysCall
 	virtual void SysCallOnTimer(UINT_PTR nIDEvent) { CFrameWndEx::OnTimer(nIDEvent); }
 	virtual void SysCallSetPaneText(int iIndex, LPCTSTR lpszNewText) { m_wndStatusBar.SetPaneText(iIndex, lpszNewText); }
@@ -45,19 +43,16 @@ public:
 	virtual void CalculateTodayRS();
 	virtual void ProcessChinaMarketStock();
 
-public:
 	// 重置系统（恢复系统的初始态，准备第二天继续工作。
 	virtual bool ResetMarket();
 
 	long GetCurrentPos() const noexcept { return m_lCurrentPos; }
 
 	// 重写
-public:
 	BOOL PreCreateWindow(CREATESTRUCT& cs) override;
 	BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = nullptr, CCreateContext* pContext = nullptr) override;
 
 	// 实现
-public:
 
 protected:
 	UINT m_uIdTimer;
@@ -68,7 +63,7 @@ protected:
 
 	static bool sm_fGlobeInit;
 
-protected: // 控件条嵌入成员
+	// 控件条嵌入成员
 	CMFCMenuBar m_wndMenuBar;
 	CMFCToolBar m_wndToolBar;
 	CMFCStatusBar m_wndInnerSystemBar;
@@ -78,7 +73,6 @@ protected: // 控件条嵌入成员
 	CPropertiesWnd m_wndProperties;
 
 	// 生成的消息映射函数
-protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnWindowManager();
 	afx_msg void OnViewCustomize();

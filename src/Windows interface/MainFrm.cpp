@@ -148,7 +148,6 @@ static UINT innerSystemIndicators[] =
 // CMainFrame 构造/析构
 
 CMainFrame::CMainFrame() {
-	// TODO: 在此添加成员初始化代码
 	if (!sm_fGlobeInit) {
 		sm_fGlobeInit = true;
 		ix::initNetSystem();// 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次。
@@ -385,12 +384,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 }
 
 void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
-	auto hOutputBarIcon = static_cast<HICON>(::LoadImage(AfxGetResourceHandle(),
-	                                                     MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND),
-	                                                     IMAGE_ICON, GetSystemMetrics(SM_CXSMICON),
-	                                                     GetSystemMetrics(SM_CYSMICON), 0));
+	const auto hOutputBarIcon = static_cast<HICON>(::LoadImage(AfxGetResourceHandle(),
+	                                                           MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND),
+	                                                           IMAGE_ICON, GetSystemMetrics(SM_CXSMICON),
+	                                                           GetSystemMetrics(SM_CYSMICON), 0));
 	m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
-	HICON hPropertiesBarIcon = (HICON)::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_PROPERTIES_WND_HC : IDI_PROPERTIES_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
+	const HICON hPropertiesBarIcon = (HICON)::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_PROPERTIES_WND_HC : IDI_PROPERTIES_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
 	m_wndProperties.SetIcon(hPropertiesBarIcon, FALSE);
 }
 
