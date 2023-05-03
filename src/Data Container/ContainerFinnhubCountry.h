@@ -2,10 +2,10 @@
 
 #include"Country.h"
 
-class CDataFinnhubCountry final {
+class CContainerFinnhubCountry final {
 public:
-	CDataFinnhubCountry();
-	~CDataFinnhubCountry() = default;
+	CContainerFinnhubCountry();
+	~CContainerFinnhubCountry() = default;
 	void Reset();
 
 	size_t GetTotalCountry() const noexcept { return m_vCountry.size(); }

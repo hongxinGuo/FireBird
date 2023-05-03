@@ -1,6 +1,7 @@
 #pragma once
 
 #include"ContainerVirtualStock.h"
+#include"WorldStock.h"
 
 class CContainerChosenStock : public CContainerVirtualStock {
 public:

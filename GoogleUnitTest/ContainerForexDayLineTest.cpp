@@ -4,7 +4,7 @@
 
 #include"DayLine.h"
 
-#include"DataForexDayLine.h"
+#include"ContainerForexDayLine.h"
 #include"SetForexDayLine.h"
 
 #include<memory>
@@ -33,7 +33,7 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CDataForexDayLine m_dataForexDayLine;
+		CContainerForexDayLine m_dataForexDayLine;
 	};
 
 	TEST_F(CDataForexDayLineTest, TestSaveDB) {

@@ -3,7 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"DayLine.h"
-#include"DataWorldStockDayLine.h"
+#include"ContainerWorldStockDayLine.h"
 
 #include"SEtWorldStockDayLine.h"
 
@@ -33,7 +33,7 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CDataWorldStockDayLine m_dataWorldStockDayLine;
+		CContainerWorldStockDayLine m_dataWorldStockDayLine;
 	};
 
 	TEST_F(CDataWorldStockDayLineTest, TestSaveDB) {

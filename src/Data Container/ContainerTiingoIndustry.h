@@ -2,10 +2,10 @@
 
 #include"TiingoIndustry.h"
 
-class CDataTiingoIndustry {
+class CContainerTiingoIndustry {
 public:
-	CDataTiingoIndustry();
-	virtual ~CDataTiingoIndustry() = default;
+	CContainerTiingoIndustry();
+	virtual ~CContainerTiingoIndustry() = default;
 	void Reset();
 
 	size_t GetTotalTiingoIndustry() const noexcept { return m_vTiingoIndustry.size(); }

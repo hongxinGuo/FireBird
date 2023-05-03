@@ -2,7 +2,7 @@
 
 #include"VirtualStock.h"
 
-#include"DataCryptoDayLine.h"
+#include"ContainerCryptoDayLine.h"
 
 #include<memory>
 #include<vector>
@@ -31,7 +31,7 @@ public:
 	bool HaveNewDayLineData() const;
 
 public:
-	CDataCryptoDayLine m_dataDayLine;
+	CContainerCryptoDayLine m_dataDayLine;
 };
 
 typedef shared_ptr<CFinnhubCryptoSymbol> CFinnhubCryptoSymbolPtr;

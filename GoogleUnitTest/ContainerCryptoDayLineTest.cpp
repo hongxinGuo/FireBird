@@ -3,7 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"DayLine.h"
-#include"DataCryptoDayLine.h"
+#include"ContainerCryptoDayLine.h"
 #include"SetCryptoDayLine.h"
 
 #include<memory>
@@ -32,7 +32,7 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CDataCryptoDayLine m_dataCryptoDayLine;
+		CContainerCryptoDayLine m_dataCryptoDayLine;
 	};
 
 	TEST_F(CDataCryptoDayLineTest, TestSaveDB) {

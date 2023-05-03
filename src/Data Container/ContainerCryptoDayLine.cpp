@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "DataCryptoDayLine.h"
+#include "ContainerCryptoDayLine.h"
 
 #include "InfoReport.h"
 #include"SetCryptoDayLine.h"
 
-CDataCryptoDayLine::CDataCryptoDayLine() {}
+CContainerCryptoDayLine::CContainerCryptoDayLine() {}
 
-bool CDataCryptoDayLine::SaveDB(const CString& strCryptoSymbol) {
+bool CContainerCryptoDayLine::SaveDB(const CString& strCryptoSymbol) {
 	try {
 		CSetCryptoDayLine setCryptoDayLineBasic;
 		UpdateBasicDB(&setCryptoDayLineBasic, strCryptoSymbol);
@@ -18,7 +18,7 @@ bool CDataCryptoDayLine::SaveDB(const CString& strCryptoSymbol) {
 	return true;
 }
 
-bool CDataCryptoDayLine::LoadDB(const CString& strCryptoSymbol) {
+bool CContainerCryptoDayLine::LoadDB(const CString& strCryptoSymbol) {
 	CSetCryptoDayLine setDayLineBasic;
 
 	// 装入DayLine数据

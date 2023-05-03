@@ -1,9 +1,9 @@
 #pragma once
 
-class CDataFinnhubForexExchange final {
+class CContainerFinnhubForexExchange final {
 public:
-	CDataFinnhubForexExchange();
-	~CDataFinnhubForexExchange() = default;
+	CContainerFinnhubForexExchange();
+	~CContainerFinnhubForexExchange() = default;
 	void Reset();
 
 	bool IsForexExchange(const CString& strExchange) const noexcept {

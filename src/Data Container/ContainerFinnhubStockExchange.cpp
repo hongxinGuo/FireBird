@@ -7,21 +7,21 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
-#include "DataFinnhubStockExchange.h"
+#include "ContainerFinnhubStockExchange.h"
 
 #include<memory>
 using std::make_shared;
 
-CDataFinnhubStockExchange::CDataFinnhubStockExchange() {
+CContainerFinnhubStockExchange::CContainerFinnhubStockExchange() {
 	Reset();
 }
 
-void CDataFinnhubStockExchange::Reset() {
+void CContainerFinnhubStockExchange::Reset() {
 	m_vFinnhubStockExchange.resize(0);
 	m_mapFinnhubStockExchange.clear();
 }
 
-bool CDataFinnhubStockExchange::LoadDB() {
+bool CContainerFinnhubStockExchange::LoadDB() {
 	CFinnhubStockExchangePtr pExchange = nullptr;
 
 	if (m_vFinnhubStockExchange.size() == 0) {

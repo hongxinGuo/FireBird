@@ -1,24 +1,24 @@
 #include "pch.h"
-#include "DataTiingoStock.h"
+#include "ContainerTiingoStock.h"
 #include "InfoReport.h"
 
 #include<memory>
 using std::make_shared;
 
-CDataTiingoStock::CDataTiingoStock() { Reset(); }
+CContainerTiingoStock::CContainerTiingoStock() { Reset(); }
 
-void CDataTiingoStock::Reset() {
+void CContainerTiingoStock::Reset() {
 	m_vTiingoStock.resize(0);
 	m_mapTiingoStock.clear();
 	m_lLastTotalTiingoStock = 0;
 }
 
-void CDataTiingoStock::Add(const CTiingoStockPtr& pTiingoStock) {
+void CContainerTiingoStock::Add(const CTiingoStockPtr& pTiingoStock) {
 	m_mapTiingoStock[pTiingoStock->m_strTicker] = m_vTiingoStock.size();
 	m_vTiingoStock.push_back(pTiingoStock);
 }
 
-bool CDataTiingoStock::Delete(const CTiingoStockPtr& pTiingoStock) {
+bool CContainerTiingoStock::Delete(const CTiingoStockPtr& pTiingoStock) {
 	if (pTiingoStock == nullptr) return false;
 	if (!IsStock(pTiingoStock)) return false;
 
@@ -28,7 +28,7 @@ bool CDataTiingoStock::Delete(const CTiingoStockPtr& pTiingoStock) {
 	return true;
 }
 
-bool CDataTiingoStock::UpdateDB() {
+bool CContainerTiingoStock::UpdateDB() {
 	if (m_lLastTotalTiingoStock < m_vTiingoStock.size()) {
 		try {
 			CSetTiingoStock setTiingoStock;
@@ -50,7 +50,7 @@ bool CDataTiingoStock::UpdateDB() {
 	return true;
 }
 
-bool CDataTiingoStock::LoadDB() {
+bool CContainerTiingoStock::LoadDB() {
 	CSetTiingoStock setTiingoStock;
 	CString strSymbol = _T("");
 

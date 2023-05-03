@@ -2,12 +2,12 @@
 
 #include"VirtualMarket.h"
 
-#include"DataFinnhubStockExchange.h"
-#include"DataFinnhubForexExchange.h"
-#include"DataFinnhubCryptoExchange.h"
+#include"ContainerFinnhubStockExchange.h"
+#include"ContainerFinnhubForexExchange.h"
+#include"ContainerFinnhubCryptoExchange.h"
 #include"containerFinnhubForexSymbol.h"
 #include"containerFinnhubCryptoSymbol.h"
-#include"DataFinnhubCountry.h"
+#include"ContainerFinnhubCountry.h"
 #include"ContainerFinnhubEconomicCalendar.h"
 
 #include"ContainerChosenStock.h"
@@ -15,7 +15,7 @@
 #include"containerChosenCrypto.h"
 
 #include"ContainerWorldStock.h"
-#include"DataTiingoStock.h"
+#include"ContainerTiingoStock.h"
 
 #include"ContainerTiingoCryptoSymbol.h"
 
@@ -263,17 +263,17 @@ protected:
 	long m_lCurrentUpdateDayLinePos; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
 	long m_lCurrentUpdateEPSSurprisePos; // 此变量无需每日更新
 
-	CDataFinnhubStockExchange m_dataFinnhubStockExchange;
-	CDataFinnhubForexExchange m_dataFinnhubForexExchange;
-	CDataFinnhubCryptoExchange m_dataFinnhubCryptoExchange;
+	CContainerFinnhubStockExchange m_dataFinnhubStockExchange;
+	CContainerFinnhubForexExchange m_dataFinnhubForexExchange;
+	CContainerFinnhubCryptoExchange m_dataFinnhubCryptoExchange;
 	CContainerFinnhubForexSymbol m_dataFinnhubForexSymbol;
 	CContainerFinnhubCryptoSymbol m_dataFinnhubCryptoSymbol;
-	CDataFinnhubCountry m_dataFinnhubCountry;
+	CContainerFinnhubCountry m_dataFinnhubCountry;
 	CContainerFinnhubEconomicCalendar m_dataFinnhubEconomicCalendar;
 
 	CContainerWorldStock m_containerStock;
 
-	CDataTiingoStock m_dataTiingoStock;
+	CContainerTiingoStock m_dataTiingoStock;
 	CContainerTiingoCryptoSymbol m_dataTiingoCryptoSymbol;
 
 	CContainerChosenStock m_containerChosenStock;

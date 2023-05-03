@@ -1,23 +1,23 @@
 #include "pch.h"
 
-#include "DataFinnhubCryptoExchange.h"
+#include "ContainerFinnhubCryptoExchange.h"
 
 #include "InfoReport.h"
 #include"SetFinnhubCryptoExchange.h"
 
 using namespace std;
 
-CDataFinnhubCryptoExchange::CDataFinnhubCryptoExchange() {
+CContainerFinnhubCryptoExchange::CContainerFinnhubCryptoExchange() {
 	Reset();
 }
 
-void CDataFinnhubCryptoExchange::Reset() {
+void CContainerFinnhubCryptoExchange::Reset() {
 	m_vCryptoExchange.resize(0);
 	m_mapCryptoExchange.clear();
 	m_lLastTotalCryptoExchange = 0;
 }
 
-bool CDataFinnhubCryptoExchange::Delete(const string& sCryptoExchange) {
+bool CContainerFinnhubCryptoExchange::Delete(const string& sCryptoExchange) {
 	if (!IsCryptoExchange(sCryptoExchange)) return false;
 
 	const auto it = ranges::find(m_vCryptoExchange.begin(), m_vCryptoExchange.end(), sCryptoExchange);
@@ -27,12 +27,12 @@ bool CDataFinnhubCryptoExchange::Delete(const string& sCryptoExchange) {
 	return true;
 }
 
-void CDataFinnhubCryptoExchange::Add(const string& sCryptoExchange) {
+void CContainerFinnhubCryptoExchange::Add(const string& sCryptoExchange) {
 	m_mapCryptoExchange[sCryptoExchange] = m_vCryptoExchange.size();
 	m_vCryptoExchange.push_back(sCryptoExchange);
 }
 
-bool CDataFinnhubCryptoExchange::LoadDB() {
+bool CContainerFinnhubCryptoExchange::LoadDB() {
 	CSetFinnhubCryptoExchange setCryptoExchange;
 	int i = 0;
 
@@ -48,7 +48,7 @@ bool CDataFinnhubCryptoExchange::LoadDB() {
 	return true;
 }
 
-bool CDataFinnhubCryptoExchange::UpdateDB() {
+bool CContainerFinnhubCryptoExchange::UpdateDB() {
 	if (m_lLastTotalCryptoExchange < m_vCryptoExchange.size()) {
 		try {
 			CSetFinnhubCryptoExchange setCryptoExchange;

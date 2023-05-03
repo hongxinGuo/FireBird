@@ -2,10 +2,10 @@
 
 #include"SICIndustry.h"
 
-class CDataSICIndustry {
+class CContainerSICIndustry {
 public:
-	CDataSICIndustry();
-	virtual ~CDataSICIndustry() = default;
+	CContainerSICIndustry();
+	virtual ~CContainerSICIndustry() = default;
 	void Reset();
 
 	size_t GetTotalSICIndustry() const noexcept { return m_vSICIndustry.size(); }

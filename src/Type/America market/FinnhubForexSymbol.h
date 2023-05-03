@@ -1,7 +1,7 @@
 #pragma once
 
 #include"VirtualStock.h"
-#include"DataForexDayLine.h"
+#include"ContainerForexDayLine.h"
 
 #include<memory>
 #include<vector>
@@ -29,7 +29,7 @@ public:
 	void UpdateDayLineStartEndDate();
 	bool HaveNewDayLineData() const;
 
-	CDataForexDayLine m_dataDayLine;
+	CContainerForexDayLine m_dataDayLine;
 };
 
 using CForexSymbolPtr = shared_ptr<CFinnhubForexSymbol>;

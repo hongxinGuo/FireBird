@@ -8,7 +8,7 @@
 #include"FinnhubStockBasicFinancial.h"
 
 #include"DayLine.h"
-#include"DataWorldStockDayLine.h"
+#include"ContainerWorldStockDayLine.h"
 #include"FinnhubCompanyNews.h"
 
 #include"SetWorldStock.h"
@@ -307,7 +307,7 @@ protected:
 	CString m_strSECFilingWebSite;
 
 	// 系统生成信息
-	CDataWorldStockDayLine m_dataDayLine;
+	CContainerWorldStockDayLine m_dataDayLine;
 
 	vector<CCompanyNewsPtr> m_vCompanyNews;
 

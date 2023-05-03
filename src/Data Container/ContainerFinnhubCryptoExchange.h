@@ -1,9 +1,9 @@
 #pragma once
 
-class CDataFinnhubCryptoExchange final {
+class CContainerFinnhubCryptoExchange final {
 public:
-	CDataFinnhubCryptoExchange();
-	~CDataFinnhubCryptoExchange() = default;
+	CContainerFinnhubCryptoExchange();
+	~CContainerFinnhubCryptoExchange() = default;
 	void Reset();
 
 	bool IsCryptoExchange(const string& sExchange) const noexcept {

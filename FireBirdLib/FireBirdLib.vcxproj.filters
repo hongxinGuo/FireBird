@@ -648,10 +648,10 @@
     <ClInclude Include="..\src\Data Container\containerChosenStock.h">
       <Filter>头文件\Data container\Chosen</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataFinnhubCountry.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubCountry.h">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataFinnhubCryptoExchange.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubCryptoExchange.h">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerFinnhubCryptoSymbol.h">
@@ -660,43 +660,43 @@
     <ClInclude Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.h">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataFinnhubForexExchange.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubForexExchange.h">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerFinnhubForexSymbol.h">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataFinnhubStockExchange.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubStockExchange.h">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerTiingoCryptoSymbol.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataTiingoIndustry.h">
+    <ClInclude Include="..\src\Data Container\ContainerTiingoIndustry.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataTiingoStock.h">
+    <ClInclude Include="..\src\Data Container\ContainerTiingoStock.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerWorldStock.h">
       <Filter>头文件\Data container\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataWorldStockDayline.h">
+    <ClInclude Include="..\src\Data Container\ContainerWorldStockDayline.h">
       <Filter>头文件\Data container\WorldMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerVirtualStock.h">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataCryptoDayLine.h">
+    <ClInclude Include="..\src\Data Container\ContainerCryptoDayLine.h">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataForexDayLine.h">
+    <ClInclude Include="..\src\Data Container\ContainerForexDayLine.h">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataNaicsIndustry.h">
+    <ClInclude Include="..\src\Data Container\ContainerNaicsIndustry.h">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\DataSICIndustry.h">
+    <ClInclude Include="..\src\Data Container\ContainerSICIndustry.h">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerStockSymbol.h">
@@ -1226,13 +1226,13 @@
     <ClCompile Include="..\src\Data Container\ContainerChosenStock.cpp">
       <Filter>源文件\Data container\Chosen</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\DataFinnhubStockExchange.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubStockExchange.cpp">
       <Filter>源文件\Data container\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\DataFinnhubCountry.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubCountry.cpp">
       <Filter>源文件\Data container\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\DataFinnhubCryptoExchange.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubCryptoExchange.cpp">
       <Filter>源文件\Data container\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerFinnhubCryptoSymbol.cpp">
@@ -1241,7 +1241,7 @@
     <ClCompile Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.cpp">
       <Filter>源文件\Data container\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\DataFinnhubForexExchange.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubForexExchange.cpp">
       <Filter>源文件\Data container\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerFinnhubForexSymbol.cpp">
@@ -1250,22 +1250,22 @@
     <ClCompile Include="..\src\Data Container\ContainerTiingoCryptoSymbol.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\DataTiingoStock.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerTiingoStock.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerWorldStock.cpp">
       <Filter>源文件\Data container\WorldMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\DataWorldStockDayLine.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerWorldStockDayLine.cpp">
       <Filter>源文件\Data container\WorldMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerVirtualStock.cpp">
       <Filter>源文件\Data container</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\DataCryptoDayLine.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerCryptoDayLine.cpp">
       <Filter>源文件\Data container</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\DataForexDayLine.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerForexDayLine.cpp">
       <Filter>源文件\Data container</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerStockSymbol.cpp">

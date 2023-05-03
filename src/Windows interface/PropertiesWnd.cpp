@@ -14,6 +14,34 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CResourceViewBar
 
+////////////////////////////////////////////////////////////////////////////////////
+//
+// Configuration实时改变处理函数
+//
+////////////////////////////////////////////////////////////////////////////////////
+void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pProp) const {
+	COleVariant value;
+	LPVARIANT pVar;
+
+	value = pProp->GetValue();
+	pVar = static_cast<LPVARIANT>(value);
+
+	switch (pProp->GetData()) {
+	case SYSTEM_DEBUG_MODE_:
+		ASSERT(pVar->vt == VT_BOOL);
+		gl_systemConfiguration.SetDebugMode(pVar->boolVal);
+		gl_systemConfiguration.SetUpdate(true);
+		break;
+	default:
+		TRACE("未处理PropertyGridCtrl例外\n"); // 未处理例外
+		break;
+	}
+	CMFCPropertyGridCtrl::OnPropertyChanged(pProp);
+}
+
+//
+// CPropertyWnd
+//
 CPropertiesWnd::CPropertiesWnd() noexcept {
 	m_nComboHeight = 0;
 }
@@ -23,14 +51,6 @@ CPropertiesWnd::~CPropertiesWnd() {}
 BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
-	ON_COMMAND(ID_EXPAND_ALL, OnExpandAllProperties)
-	ON_UPDATE_COMMAND_UI(ID_EXPAND_ALL, OnUpdateExpandAllProperties)
-	ON_COMMAND(ID_SORTPROPERTIES, OnSortProperties)
-	ON_UPDATE_COMMAND_UI(ID_SORTPROPERTIES, OnUpdateSortProperties)
-	ON_COMMAND(ID_PROPERTIES1, OnProperties1)
-	ON_UPDATE_COMMAND_UI(ID_PROPERTIES1, OnUpdateProperties1)
-	ON_COMMAND(ID_PROPERTIES2, OnProperties2)
-	ON_UPDATE_COMMAND_UI(ID_PROPERTIES2, OnUpdateProperties2)
 	ON_WM_SETFOCUS()
 	ON_WM_SETTINGCHANGE()
 END_MESSAGE_MAP()
@@ -46,7 +66,7 @@ void CPropertiesWnd::AdjustLayout() {
 	CRect rectClient;
 	GetClientRect(rectClient);
 
-	int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
+	const int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
 
 	m_wndObjectCombo.SetWindowPos(nullptr, rectClient.left, rectClient.top, rectClient.Width(), m_nComboHeight, SWP_NOACTIVATE | SWP_NOZORDER);
 	m_wndToolBar.SetWindowPos(nullptr, rectClient.left, rectClient.top + m_nComboHeight, rectClient.Width(), cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
@@ -61,7 +81,7 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	rectDummy.SetRectEmpty();
 
 	// Create combo:
-	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST | WS_BORDER | CBS_SORT | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+	constexpr DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST | WS_BORDER | CBS_SORT | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 
 	if (!m_wndObjectCombo.Create(dwViewStyle, rectDummy, this, 1)) {
 		TRACE0("Failed to create Properties Combo \n");
@@ -106,36 +126,6 @@ void CPropertiesWnd::OnSize(UINT nType, int cx, int cy) {
 	AdjustLayout();
 }
 
-void CPropertiesWnd::OnExpandAllProperties() {
-	m_wndPropList.ExpandAll();
-}
-
-void CPropertiesWnd::OnUpdateExpandAllProperties(CCmdUI* /* pCmdUI */) {}
-
-void CPropertiesWnd::OnSortProperties() {
-	m_wndPropList.SetAlphabeticMode(!m_wndPropList.IsAlphabeticMode());
-}
-
-void CPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI) {
-	pCmdUI->SetCheck(m_wndPropList.IsAlphabeticMode());
-}
-
-void CPropertiesWnd::OnProperties1() {
-	// TODO: Add your command handler code here
-}
-
-void CPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {
-	// TODO: Add your command update UI handler code here
-}
-
-void CPropertiesWnd::OnProperties2() {
-	// TODO: Add your command handler code here
-}
-
-void CPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {
-	// TODO: Add your command update UI handler code here
-}
-
 void CPropertiesWnd::InitPropList() {
 	SetPropListFont();
 
@@ -144,9 +134,8 @@ void CPropertiesWnd::InitPropList() {
 	m_wndPropList.SetVSDotNetLook();
 	m_wndPropList.MarkModifiedProperties();
 
-	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("Appearance"));
-
-	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("调试模式"), (_variant_t)gl_systemConfiguration.IsDebugMode(), _T("Specifies the window's font will be non-bold and controls will have a 3D border")));
+	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("System option"));
+	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Debug Mode"), static_cast<_variant_t>(gl_systemConfiguration.IsDebugMode()), _T("Debug mode"), SYSTEM_DEBUG_MODE_));
 
 	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T("Border"), _T("Dialog Frame"), _T("One of: None, Thin, Resizable, or Dialog Frame"));
 	pProp->AddOption(_T("None"));
@@ -156,36 +145,36 @@ void CPropertiesWnd::InitPropList() {
 	pProp->AllowEdit(FALSE);
 
 	pGroup1->AddSubItem(pProp);
-	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Caption"), (_variant_t)_T("About"), _T("Specifies the text that will be displayed in the window's title bar")));
+	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Caption"), static_cast<_variant_t>("About"), _T("Specifies the text that will be displayed in the window's title bar")));
 
 	m_wndPropList.AddProperty(pGroup1);
 
 	CMFCPropertyGridProperty* pSize = new CMFCPropertyGridProperty(_T("Window Size"), 0, TRUE);
 
-	pProp = new CMFCPropertyGridProperty(_T("Height"), (_variant_t)250l, _T("Specifies the window's height"));
+	pProp = new CMFCPropertyGridProperty(_T("Height"), static_cast<_variant_t>(250l), _T("Specifies the window's height"));
 	pProp->EnableSpinControl(TRUE, 50, 300);
 	pSize->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty(_T("Width"), (_variant_t)150l, _T("Specifies the window's width"));
+	pProp = new CMFCPropertyGridProperty(_T("Width"), static_cast<_variant_t>(150l), _T("Specifies the window's width"));
 	pProp->EnableSpinControl(TRUE, 50, 200);
 	pSize->AddSubItem(pProp);
 
 	m_wndPropList.AddProperty(pSize);
 
-	CMFCPropertyGridProperty* pGroup2 = new CMFCPropertyGridProperty(_T("Font"));
+	CMFCPropertyGridProperty* pGroup2 = new CMFCPropertyGridProperty(_T("China market"));
 
 	LOGFONT lf;
-	CFont* font = CFont::FromHandle((HFONT)GetStockObject(DEFAULT_GUI_FONT));
+	CFont* font = CFont::FromHandle(static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
 	font->GetLogFont(&lf);
 
 	_tcscpy_s(lf.lfFaceName, _T("Arial"));
 
 	pGroup2->AddSubItem(new CMFCPropertyGridFontProperty(_T("Font"), lf, CF_EFFECTS | CF_SCREENFONTS, _T("Specifies the default font for the window")));
-	pGroup2->AddSubItem(new CMFCPropertyGridProperty(_T("Use System Font"), (_variant_t)true, _T("Specifies that the window uses MS Shell Dlg font")));
+	pGroup2->AddSubItem(new CMFCPropertyGridProperty(_T("Use System Font"), static_cast<_variant_t>(true), _T("Specifies that the window uses MS Shell Dlg font")));
 
 	m_wndPropList.AddProperty(pGroup2);
 
-	CMFCPropertyGridProperty* pGroup3 = new CMFCPropertyGridProperty(_T("Misc"));
+	CMFCPropertyGridProperty* pGroup3 = new CMFCPropertyGridProperty(_T("World market"));
 	pProp = new CMFCPropertyGridProperty(_T("(Name)"), _T("Application"));
 	pProp->Enable(FALSE);
 	pGroup3->AddSubItem(pProp);
@@ -210,9 +199,9 @@ void CPropertiesWnd::InitPropList() {
 	CMFCPropertyGridProperty* pGroup411 = new CMFCPropertyGridProperty(_T("Second sub-level"));
 	pGroup41->AddSubItem(pGroup411);
 
-	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("Item 1"), (_variant_t)_T("Value 1"), _T("This is a description")));
-	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("Item 2"), (_variant_t)_T("Value 2"), _T("This is a description")));
-	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("Item 3"), (_variant_t)_T("Value 3"), _T("This is a description")));
+	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("Item 1"), static_cast<_variant_t>("Value 1"), _T("This is a description")));
+	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("Item 2"), static_cast<_variant_t>("Value 2"), _T("This is a description")));
+	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("Item 3"), static_cast<_variant_t>("Value 3"), _T("This is a description")));
 
 	pGroup4->Expand(FALSE);
 	m_wndPropList.AddProperty(pGroup4);

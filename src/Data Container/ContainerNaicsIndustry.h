@@ -2,10 +2,10 @@
 
 #include"NaicsIndustry.h"
 
-class CDataNaicsIndustry final {
+class CContainerNaicsIndustry final {
 public:
-	CDataNaicsIndustry();
-	~CDataNaicsIndustry() = default;
+	CContainerNaicsIndustry();
+	~CContainerNaicsIndustry() = default;
 	void Reset();
 
 	size_t GetTotalNaicsIndustry() const noexcept { return m_vNaicsIndustry.size(); }

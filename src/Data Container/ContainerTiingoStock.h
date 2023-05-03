@@ -3,10 +3,10 @@
 #include"WorldStock.h"
 #include"TiingoStock.h"
 
-class CDataTiingoStock final {
+class CContainerTiingoStock final {
 public:
-	CDataTiingoStock();
-	~CDataTiingoStock() = default;
+	CContainerTiingoStock();
+	~CContainerTiingoStock() = default;
 	void Reset();
 
 	void Add(const CTiingoStockPtr& pTiingoStock);

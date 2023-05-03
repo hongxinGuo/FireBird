@@ -1,9 +1,18 @@
 #pragma once
 
+enum configuration_option {
+	SYSTEM_FAST_CPU = 1,
+	SYSTEM_DEBUG_MODE_,
+};
+
 class CPropertiesToolBar : public CMFCToolBar {
 public:
-	virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) override { CMFCToolBar::OnUpdateCmdUI((CFrameWnd*)GetOwner(), bDisableIfNoHndler); }
+	void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) override { CMFCToolBar::OnUpdateCmdUI((CFrameWnd*)GetOwner(), bDisableIfNoHndler); }
 	virtual BOOL AllowShowOnList() const { return FALSE; }
+};
+
+class CFireBirdPropertyGridCtrl : public CMFCPropertyGridCtrl {
+	void OnPropertyChanged(CMFCPropertyGridProperty* pProp) const override;
 };
 
 class CPropertiesWnd : public CDockablePane {
@@ -23,23 +32,15 @@ protected:
 	CFont m_fntPropList;
 	CComboBox m_wndObjectCombo;
 	CPropertiesToolBar m_wndToolBar;
-	CMFCPropertyGridCtrl m_wndPropList;
+	CFireBirdPropertyGridCtrl m_wndPropList;
 
 	// Implementation
 public:
-	virtual ~CPropertiesWnd() override;
+	~CPropertiesWnd() override;
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnExpandAllProperties();
-	afx_msg void OnUpdateExpandAllProperties(CCmdUI* pCmdUI);
-	afx_msg void OnSortProperties();
-	afx_msg void OnUpdateSortProperties(CCmdUI* pCmdUI);
-	afx_msg void OnProperties1();
-	afx_msg void OnUpdateProperties1(CCmdUI* pCmdUI);
-	afx_msg void OnProperties2();
-	afx_msg void OnUpdateProperties2(CCmdUI* pCmdUI);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
 
@@ -49,4 +50,6 @@ protected:
 	void SetPropListFont();
 
 	int m_nComboHeight;
+
+public:
 };

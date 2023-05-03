@@ -2,10 +2,10 @@
 
 #include"FinnhubStockExchange.h"
 
-class CDataFinnhubStockExchange final {
+class CContainerFinnhubStockExchange final {
 public:
-	CDataFinnhubStockExchange();
-	~CDataFinnhubStockExchange() = default;
+	CContainerFinnhubStockExchange();
+	~CContainerFinnhubStockExchange() = default;
 	void Reset();
 
 	CFinnhubStockExchangePtr GetExchange(const long lIndex) const { return m_vFinnhubStockExchange.at(lIndex); }

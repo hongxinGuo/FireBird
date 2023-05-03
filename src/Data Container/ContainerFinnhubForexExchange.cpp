@@ -1,23 +1,23 @@
 #include "pch.h"
 
-#include "DataFinnhubForexExchange.h"
+#include "ContainerFinnhubForexExchange.h"
 
 #include "InfoReport.h"
 #include"SetFinnhubForexExchange.h"
 
 using namespace std;
 
-CDataFinnhubForexExchange::CDataFinnhubForexExchange() {
+CContainerFinnhubForexExchange::CContainerFinnhubForexExchange() {
 	Reset();
 }
 
-void CDataFinnhubForexExchange::Reset() {
+void CContainerFinnhubForexExchange::Reset() {
 	m_vForexExchange.resize(0);
 	m_mapForexExchange.clear();
 	m_lLastTotalForexExchange = 0;
 }
 
-bool CDataFinnhubForexExchange::Delete(const CString& strForexExchange) {
+bool CContainerFinnhubForexExchange::Delete(const CString& strForexExchange) {
 	if (!IsForexExchange(strForexExchange)) return false;
 
 	const auto it = ranges::find(m_vForexExchange.begin(), m_vForexExchange.end(), strForexExchange);
@@ -27,12 +27,12 @@ bool CDataFinnhubForexExchange::Delete(const CString& strForexExchange) {
 	return true;
 }
 
-void CDataFinnhubForexExchange::Add(const CString& strForexExchange) {
+void CContainerFinnhubForexExchange::Add(const CString& strForexExchange) {
 	m_mapForexExchange[strForexExchange] = m_vForexExchange.size();
 	m_vForexExchange.push_back(strForexExchange);
 }
 
-bool CDataFinnhubForexExchange::LoadDB() {
+bool CContainerFinnhubForexExchange::LoadDB() {
 	CSetFinnhubForexExchange setForexExchange;
 	int i = 0;
 
@@ -48,7 +48,7 @@ bool CDataFinnhubForexExchange::LoadDB() {
 	return true;
 }
 
-bool CDataFinnhubForexExchange::UpdateDB() {
+bool CContainerFinnhubForexExchange::UpdateDB() {
 	if (m_lLastTotalForexExchange < m_vForexExchange.size()) {
 		try {
 			CSetFinnhubForexExchange setForexExchange;

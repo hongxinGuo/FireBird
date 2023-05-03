@@ -1,24 +1,24 @@
 #include "pch.h"
-#include "DataFinnhubCountry.h"
+#include "ContainerFinnhubCountry.h"
 
 #include "InfoReport.h"
 
 using namespace std;
 
-CDataFinnhubCountry::CDataFinnhubCountry() { Reset(); }
+CContainerFinnhubCountry::CContainerFinnhubCountry() { Reset(); }
 
-void CDataFinnhubCountry::Reset() {
+void CContainerFinnhubCountry::Reset() {
 	m_vCountry.resize(0);
 	m_mapCountry.clear();
 	m_lLastTotalCountry = 0;
 }
 
-void CDataFinnhubCountry::Add(const CCountryPtr& pCountry) {
+void CContainerFinnhubCountry::Add(const CCountryPtr& pCountry) {
 	m_mapCountry[pCountry->m_strCountry] = m_vCountry.size();
 	m_vCountry.push_back(pCountry);
 }
 
-bool CDataFinnhubCountry::Delete(const CCountryPtr& pCountry) {
+bool CContainerFinnhubCountry::Delete(const CCountryPtr& pCountry) {
 	if (pCountry == nullptr) return false;
 	if (!IsCountry(pCountry->m_strCountry)) return false;
 
@@ -34,7 +34,7 @@ bool CDataFinnhubCountry::Delete(const CCountryPtr& pCountry) {
 // 此种更新方法，是默认新的国家代码附加在最后。
 //
 //////////////////////////////////////////////////////////////////////////
-void CDataFinnhubCountry::UpdateDB() {
+void CContainerFinnhubCountry::UpdateDB() {
 	try {
 		if (m_lLastTotalCountry < m_vCountry.size()) {
 			CSetCountry setCountry;
@@ -54,7 +54,7 @@ void CDataFinnhubCountry::UpdateDB() {
 	}
 }
 
-bool CDataFinnhubCountry::LoadDB() {
+bool CContainerFinnhubCountry::LoadDB() {
 	CSetCountry setCountry;
 	CCountryPtr pCountry = nullptr;
 

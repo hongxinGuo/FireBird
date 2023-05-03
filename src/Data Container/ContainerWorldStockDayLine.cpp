@@ -1,13 +1,13 @@
 #include "pch.h"
 
-#include "DataWorldStockDayLine.h"
+#include "ContainerWorldStockDayLine.h"
 
 #include "InfoReport.h"
 #include"SetWorldStockDayLine.h"
 
-CDataWorldStockDayLine::CDataWorldStockDayLine() {}
+CContainerWorldStockDayLine::CContainerWorldStockDayLine() {}
 
-bool CDataWorldStockDayLine::SaveDB(const CString& strStockSymbol) {
+bool CContainerWorldStockDayLine::SaveDB(const CString& strStockSymbol) {
 	try {
 		CSetWorldStockDayLine setWorldStockDayLineBasic;
 		UpdateBasicDB(&setWorldStockDayLineBasic, strStockSymbol);
@@ -19,7 +19,7 @@ bool CDataWorldStockDayLine::SaveDB(const CString& strStockSymbol) {
 	return true;
 }
 
-bool CDataWorldStockDayLine::LoadDB(const CString& strStockSymbol) {
+bool CContainerWorldStockDayLine::LoadDB(const CString& strStockSymbol) {
 	try {
 		CSetWorldStockDayLine setDayLineBasic;
 
