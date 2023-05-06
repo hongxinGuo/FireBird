@@ -41,8 +41,6 @@ public:
 	[[nodiscard]] CString GetDefaultFileDirectoryAndName() const { return m_strDirectory + m_strFileName; }
 
 	// 获取系统配置参数
-	[[nodiscard]] bool IsUsingFastCPU() const noexcept { return m_bUsingFastCPU; }
-	void SetUsingFastCPU(const bool bUsingFastCPU) noexcept { m_bUsingFastCPU = bUsingFastCPU; }
 	[[nodiscard]] bool IsDebugMode() const noexcept { return m_bDebugMode; }
 	void SetDebugMode(const bool bFlag) noexcept { m_bDebugMode = bFlag; }
 	[[nodiscard]] CString GetDatabaseAccountName() noexcept { return m_strDatabaseAccountName; }
@@ -51,7 +49,6 @@ public:
 	void SetDatabaseAccountPassword(const CString& strPassword) noexcept { m_strDatabaseAccountPassword = strPassword; }
 
 	[[nodiscard]] int GetBackgroundThreadPermittedNumber() const noexcept { return m_iBackgroundThreadPermittedNumber; }
-	[[nodiscard]] int GetSavingThreadPermittedNumber() const noexcept { return m_iSavingThreadPermittedNumber; }
 
 	// 全局参数
 	[[nodiscard]] int GetChinaMarketRealtimeServer() const noexcept { return m_iChinaMarketRealtimeServer; }
@@ -253,12 +250,10 @@ protected:
 	CString m_strFileName; // 配置文件名称
 
 	// 系统配置
-	bool m_bUsingFastCPU; //  是否使用快速CPU
 	bool m_bDebugMode; // 系统是否是测试状态
 	CString m_strDatabaseAccountName; // 数据库账户名称
 	CString m_strDatabaseAccountPassword; // 数据库账户密码
 	int m_iBackgroundThreadPermittedNumber; // 后台线程最大允许值
-	int m_iSavingThreadPermittedNumber; // 允许的最大存储线程数， 默认为4
 
 	// 系统参数
 	int m_iChinaMarketRealtimeServer; // 中国市场实时数据服务器.0:新浪实时数据服务器； 1:网易实时数据服务器。

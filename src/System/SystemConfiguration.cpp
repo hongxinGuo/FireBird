@@ -86,12 +86,10 @@ CSystemConfiguration::CSystemConfiguration() {
 	m_strFileName = _T("SystemConfiguration.json"); // json file name
 
 	// 系统配置
-	m_bUsingFastCPU = true; // 默认使用快速CPU
 	m_bDebugMode = false;
 	m_strDatabaseAccountName = _T("hxguo");
 	m_strDatabaseAccountPassword = _T("hxguo");
 	m_iBackgroundThreadPermittedNumber = 8; // 后台线程最多8个
-	m_iSavingThreadPermittedNumber = 4; // 默认存储线程数为4
 
 	// China Market
 	m_iChinaMarketRealtimeServer = 0; // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
@@ -170,12 +168,6 @@ void CSystemConfiguration::Update() {
 	try {
 		// 系统配置
 		try {
-			m_bUsingFastCPU = m_systemConfiguration.at("SystemConfiguration").at("UsingFastCPU");
-		}
-		catch (json::out_of_range&) {
-			m_fUpdate = true;
-		}
-		try {
 			m_bDebugMode = m_systemConfiguration.at("SystemConfiguration").at("DebugMode");
 		}
 		catch (json::out_of_range&) {
@@ -197,12 +189,6 @@ void CSystemConfiguration::Update() {
 		}
 		try {
 			m_iBackgroundThreadPermittedNumber = m_systemConfiguration.at("SystemConfiguration").at("BackgroundThreadPermittedNumber");
-		}
-		catch (json::out_of_range&) {
-			m_fUpdate = true;
-		}
-		try {
-			m_iSavingThreadPermittedNumber = m_systemConfiguration.at("SystemConfiguration").at("SavingThreadPermittedNumber");
 		}
 		catch (json::out_of_range&) {
 			m_fUpdate = true;
@@ -399,12 +385,10 @@ void CSystemConfiguration::Update() {
 void CSystemConfiguration::UpdateJson() {
 	m_systemConfiguration.clear(); // 清除之前的数据。
 	// system
-	m_systemConfiguration["SystemConfiguration"]["UsingFastCPU"] = m_bUsingFastCPU;
 	m_systemConfiguration["SystemConfiguration"]["DebugMode"] = m_bDebugMode;
 	m_systemConfiguration["SystemConfiguration"]["DatabaseAccountName"] = m_strDatabaseAccountName;
 	m_systemConfiguration["SystemConfiguration"]["DatabaseAccountPassword"] = m_strDatabaseAccountPassword;
 	m_systemConfiguration["SystemConfiguration"]["BackgroundThreadPermittedNumber"] = m_iBackgroundThreadPermittedNumber;
-	m_systemConfiguration["SystemConfiguration"]["SavingThreadPermittedNumber"] = m_iSavingThreadPermittedNumber;
 
 	// China market
 	switch (m_iChinaMarketRealtimeServer) {
@@ -465,17 +449,7 @@ void CSystemConfiguration::UpdateJson() {
 	m_systemConfiguration["TestConfiguration"]["BenchmarkTestFileDirectory"] = m_strBenchmarkTestFileDirectory;
 }
 
-void CSystemConfiguration::UpdateSystem() const {
-	IncreaseMaxBackgroundThread();
-}
-
-void CSystemConfiguration::IncreaseMaxBackgroundThread() const {
-	if (m_iBackgroundThreadPermittedNumber > 8) {
-		for (int i = 8; i < m_iSavingThreadPermittedNumber; i++) {
-			gl_BackGroundTaskThread.release();
-		}
-	}
-}
+void CSystemConfiguration::UpdateSystem() const {}
 
 void CSystemConfiguration::ChangeFinnhubAccountTypeToFree() {
 	m_bFinnhubAccountFeePaid = false;

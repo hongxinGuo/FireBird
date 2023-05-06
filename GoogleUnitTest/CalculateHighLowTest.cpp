@@ -9,7 +9,7 @@ using std::make_shared;
 
 namespace FireBirdTest {
 	struct HighLowData {
-		HighLowData(CString strStockCode, long lPBuy0, long lPSell0, long lLastClose, long lHighLimit, long lLowLimit, long lHighLimit2, long lLowLimit2) {
+		HighLowData(const CString& strStockCode, long lPBuy0, long lPSell0, long lLastClose, long lHighLimit, long lLowLimit, long lHighLimit2, long lLowLimit2) {
 			m_strSymbol = strStockCode;
 			m_lPBuy0 = lPBuy0;
 			m_lPSell0 = lPSell0;
@@ -58,11 +58,11 @@ namespace FireBirdTest {
 	HighLowData HighLowData25("600978.SS", 0, 1240, 1300, 1370, 1240, 0, 0);
 	HighLowData HighLowData26("600978.SS", 0, 1240, 1300, 1370, 1240, 0, 0);
 
-	class CStockHighLowLimitTest : public::testing::TestWithParam<HighLowData*> {
+	class CChinaStockHighLowLimitTest : public::testing::TestWithParam<HighLowData*> {
 	protected:
 		void SetUp() override {
 			GeneralCheck();
-			HighLowData* pData = GetParam();
+			const HighLowData* pData = GetParam();
 			pRTData = make_shared<CWebRTData>();
 
 			pRTData->SetLastClose(pData->m_lLastClose);
@@ -75,6 +75,8 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
+			pRTData = nullptr;
+
 			GeneralCheck();
 		}
 
@@ -83,15 +85,17 @@ namespace FireBirdTest {
 		CWebRTDataPtr pRTData;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestGuadanData, CStockHighLowLimitTest, testing::Values(&HighLowData1, &HighLowData2, &HighLowData3,
+	INSTANTIATE_TEST_SUITE_P(TestGuadanDataNew, CChinaStockHighLowLimitTest, testing::Values(&HighLowData1, &HighLowData2, &HighLowData3,
 		                         &HighLowData4, &HighLowData5, &HighLowData6,
 		                         &HighLowData7, &HighLowData8, &HighLowData9,
 		                         &HighLowData10, &HighLowData11, &HighLowData12,
 		                         &HighLowData13, &HighLowData14, &HighLowData15,
 		                         &HighLowData16, &HighLowData17, &HighLowData18,
-		                         &HighLowData19, &HighLowData20, &HighLowData21));
+		                         &HighLowData19, &HighLowData20, &HighLowData21,
+		                         & HighLowData22, &HighLowData23, &HighLowData24,
+		                         &HighLowData25, &HighLowData26));
 
-	TEST_P(CStockHighLowLimitTest, HighLowTest1) {
+	TEST_P(CChinaStockHighLowLimitTest, ChinaStockHighLowTest1) {
 		m_stock.CalculateHighLowLimit(pRTData);
 		EXPECT_EQ(m_stock.GetHighLimit2(), m_stock.GetHighLimit());
 		EXPECT_EQ(m_stock.GetLowLimit2(), m_stock.GetLowLimit());

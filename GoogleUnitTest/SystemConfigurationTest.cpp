@@ -71,12 +71,10 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CSystemConfigurationTest, TestInitialize) {
-		EXPECT_TRUE(gl_systemConfiguration.IsUsingFastCPU());
 		EXPECT_FALSE(gl_systemConfiguration.IsDebugMode());
 		EXPECT_STREQ(gl_systemConfiguration.GetDatabaseAccountName(), _T("hxguo"));
 		EXPECT_STREQ(gl_systemConfiguration.GetDatabaseAccountPassword(), _T("hxguo"));
 		EXPECT_EQ(gl_systemConfiguration.GetBackgroundThreadPermittedNumber(), 8);
-		EXPECT_EQ(gl_systemConfiguration.GetSavingThreadPermittedNumber(), 4);
 
 		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0) << "默认使用新浪实时数据服务器";
 		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketDayLineServer(), 0) << "默认使用网易日线数据服务器";
