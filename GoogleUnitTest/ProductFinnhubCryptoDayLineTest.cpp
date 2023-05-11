@@ -96,6 +96,7 @@ namespace FireBirdTest {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			gl_pWorldMarket->GetFinnhubCryptoSymbol(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
 
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 

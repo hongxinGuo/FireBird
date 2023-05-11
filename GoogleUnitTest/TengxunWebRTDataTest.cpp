@@ -812,12 +812,13 @@ namespace FireBirdTest {
 	// 将字符串转换为INT64
 	TEST_P(ReadTengxunOneValueTest, TestReadTengxunOneValue1) {
 		INT64 llTemp = 0;
-		bool fSucceed;
+		bool fSucceed, bHaveException = false;
 		try {
 			fSucceed = m_RTData.ReadTengxunOneValue(m_pTengxunWebRTData, llTemp);
 		}
 		catch (exception& e) { // 当出现out of range例外时，函数继续抛出这个例外
 			fSucceed = false;
+			bHaveException = true;
 			switch (m_iCount) {
 			case 6:
 				EXPECT_STREQ(e.what(), _T("out of range"));
@@ -854,6 +855,7 @@ namespace FireBirdTest {
 			break;
 		case 6:
 			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(bHaveException);
 			break;
 		case 7:
 			EXPECT_TRUE(fSucceed);
@@ -876,12 +878,13 @@ namespace FireBirdTest {
 	// 将字符串转换为长整型
 	TEST_P(ReadTengxunOneValueTest, TestReadTengxunOneValue2) {
 		long lTemp = 0;
-		bool fSucceed;
+		bool fSucceed, bHaveException = false;
 		try {
 			fSucceed = m_RTData.ReadTengxunOneValue(m_pTengxunWebRTData, lTemp);
 		}
 		catch (exception& e) { // 当出现out of range例外时，函数继续抛出这个例外
 			fSucceed = false;
+			bHaveException = true;
 			switch (m_iCount) {
 			case 6:
 				EXPECT_STREQ(e.what(), _T("out of range"));
@@ -918,6 +921,7 @@ namespace FireBirdTest {
 			break;
 		case 6:
 			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(bHaveException);
 			break;
 		case 7:
 			EXPECT_TRUE(fSucceed);
@@ -940,12 +944,13 @@ namespace FireBirdTest {
 	// 读入buffer中
 	TEST_P(ReadTengxunOneValueTest, TestReadTengxunOneValue3) {
 		char buffer[30];
-		bool fSucceed;
+		bool fSucceed, bHaveException = false;
 		try {
 			fSucceed = m_RTData.ReadTengxunOneValue(m_pTengxunWebRTData, buffer);
 		}
 		catch (exception& e) { // 当出现out of range例外时，函数继续抛出这个例外
 			fSucceed = false;
+			bHaveException = true;
 			switch (m_iCount) {
 			case 6:
 				EXPECT_STREQ(e.what(), _T("out of range"));
@@ -983,6 +988,7 @@ namespace FireBirdTest {
 			break;
 		case 6:
 			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(bHaveException);
 			EXPECT_STREQ(str, _T("11.050"));
 			break;
 		case 7:
@@ -999,6 +1005,7 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(bHaveException);
 			EXPECT_STREQ(str, _T("11.03"));
 			break;
 		default:
