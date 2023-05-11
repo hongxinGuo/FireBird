@@ -174,7 +174,7 @@ public:
 	void LoadChosenStockDB();
 	virtual void SaveTempRTData() { m_containerChinaStock.SaveTempRTData(); }
 	bool TaskLoadTempRTData(long lTheDay, long lCurrentTime);
-	void LoadTempRTData(long lTheDay);
+	virtual void LoadTempRTData(long lTheDay);
 	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) const;
 	virtual void SaveStockSection() { m_containerStockSymbol.UpdateStockSectionDB(); }
 

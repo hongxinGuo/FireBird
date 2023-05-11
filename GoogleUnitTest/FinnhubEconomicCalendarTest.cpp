@@ -14,20 +14,20 @@ namespace FireBirdTest {
 	class CFinnhubEconomicCalendarTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	protected:
@@ -63,7 +63,7 @@ namespace FireBirdTest {
 	class ParseFinnhubEconomicCalendarTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -75,7 +75,7 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:
@@ -132,7 +132,7 @@ namespace FireBirdTest {
 	class ProcessFinnhubEconomicCalendarTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -145,7 +145,7 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:

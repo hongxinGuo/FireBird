@@ -11,15 +11,15 @@ namespace FireBirdTest {
 	class CContainerChinaStockTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			CChinaStockPtr pStock = nullptr;
 			for (int i = 0; i < 100; i++) {
 				pStock = gl_pChinaMarket->GetStock(i);
@@ -29,7 +29,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	protected:

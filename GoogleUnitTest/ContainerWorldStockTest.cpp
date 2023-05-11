@@ -17,24 +17,24 @@ namespace FireBirdTest {
 	class CContainerWorldStockTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			m_containerStock.LoadDB();
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
 		}
 
 		static void TearDownTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	protected:

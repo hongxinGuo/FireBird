@@ -133,6 +133,8 @@ namespace FireBirdTest {
 	}
 
 	void GeneralCheck() {
+		SCOPED_TRACE("");
+
 		EnvironmentCheck();
 		SystemConfigurationCheck();
 		SystemMessageCheck();

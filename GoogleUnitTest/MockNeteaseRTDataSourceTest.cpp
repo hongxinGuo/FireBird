@@ -13,15 +13,15 @@ namespace FireBirdTest {
 	class CMockNeteaseRTDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			m_pMockNeteaseRTDataSource = make_shared<CMockNeteaseRTDataSource>();
 		}
@@ -29,7 +29,7 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			m_pMockNeteaseRTDataSource = nullptr;
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 	};
 

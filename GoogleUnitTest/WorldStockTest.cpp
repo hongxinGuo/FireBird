@@ -19,17 +19,25 @@ using namespace testing;
 namespace FireBirdTest {
 	class CWorldStockTest : public Test {
 	protected:
-		static void SetUpTestSuite() { GeneralCheck(); }
+		static void SetUpTestSuite() {
+			SCOPED_TRACE("");
+			GeneralCheck();
+		}
 
-		static void TearDownTestSuite() { GeneralCheck(); }
+		static void TearDownTestSuite() {
+			SCOPED_TRACE("");
+			GeneralCheck();
+		}
 
 		void SetUp() override {
+			SCOPED_TRACE("");
 			GeneralCheck();
 			pStock = nullptr;
 		}
 
 		void TearDown() override {
 			// clearUp
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 

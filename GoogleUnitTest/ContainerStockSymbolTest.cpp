@@ -15,7 +15,7 @@ namespace FireBirdTest {
 	class CDataStockSymbolTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			s_pDataStockSymbol = make_shared<CContainerStockSymbol>();
 
 			EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());
@@ -26,11 +26,11 @@ namespace FireBirdTest {
 			EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());
 
 			s_pDataStockSymbol = nullptr;
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void TearDown() override {
@@ -40,7 +40,7 @@ namespace FireBirdTest {
 			s_pDataStockSymbol->SetStockSectionActiveFlag(1, false);
 			s_pDataStockSymbol->SetUpdateStockSection(false);
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	protected:

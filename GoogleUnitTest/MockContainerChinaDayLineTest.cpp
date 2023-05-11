@@ -15,15 +15,15 @@ namespace FireBirdTest {
 	class CMockDataChinaDayLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			s_pMockDayLine = make_shared<CMockDataChinaDayLine>();
 		}
 
@@ -31,7 +31,7 @@ namespace FireBirdTest {
 			// clearUp
 			s_pMockDayLine = nullptr;
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	protected:

@@ -61,7 +61,7 @@ namespace FireBirdTest {
 	class CChinaStockHighLowLimitTest : public::testing::TestWithParam<HighLowData*> {
 	protected:
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			const HighLowData* pData = GetParam();
 			pRTData = make_shared<CWebRTData>();
 
@@ -77,7 +77,7 @@ namespace FireBirdTest {
 			// clearUp
 			pRTData = nullptr;
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:

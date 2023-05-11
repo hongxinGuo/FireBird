@@ -25,23 +25,23 @@ namespace FireBirdTest {
 	class CWorldMarketTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
 			EXPECT_THAT(gl_systemMessage.InformationSize(), 0);
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
 			gl_pFinnhubDataSource->SetInquiring(false);
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	protected:

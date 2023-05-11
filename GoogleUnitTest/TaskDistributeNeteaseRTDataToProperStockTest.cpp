@@ -47,7 +47,7 @@ namespace FireBirdTest {
 	class TaskDistributeNeteaseRTDataToProperStockTest : public TestWithParam<NeteaseData*> {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 
 			const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
 			pStock->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
@@ -59,11 +59,11 @@ namespace FireBirdTest {
 			const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
 			pStock->SetActive(true);
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 
 			EXPECT_FALSE(gl_pChinaMarket->IsRTDataNeedCalculate());
 			const NeteaseData* pData = GetParam();
@@ -88,7 +88,7 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetRTDataNeedCalculate(false);
 			pStock->ClearRTDataDeque();
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:

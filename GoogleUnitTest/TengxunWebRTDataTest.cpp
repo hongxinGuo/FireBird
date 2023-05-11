@@ -7,25 +7,30 @@
 #include"WebRTData.h"
 #include"WebData.h"
 
+using namespace std;
 using namespace testing;
 
 namespace FireBirdTest {
 	class CWebRTDataTest1 : public Test {
 	protected:
 		static void SetUpTestSuite() {
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
 		void SetUp() override {
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
@@ -198,6 +203,7 @@ namespace FireBirdTest {
 	class CalculateTengxunWebRTDataTest : public::testing::TestWithParam<TengxunRTData*> {
 	protected:
 		void SetUp() override {
+			SCOPED_TRACE("");
 			GeneralCheck();
 
 			const TengxunRTData* pData = GetParam();
@@ -229,6 +235,7 @@ namespace FireBirdTest {
 		void TearDown() override {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			// clearUp
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
@@ -756,18 +763,21 @@ namespace FireBirdTest {
 	ReadTengxunOneValueData rData4(4, _T("1\n1.050~"));
 	// 小数点后出现0x00a
 	ReadTengxunOneValueData rData5(5, _T("11.0\n50~"));
-	// 缺少','
+	// 缺少'~'
 	ReadTengxunOneValueData rData6(6, _T("11.050"));
 	// 读取小数点所有的数值
 	ReadTengxunOneValueData rData7(7, _T("11.050001~"));
-	// 0x00a出现于‘，’前。
+	// 0x00a出现于‘~’前。
 	ReadTengxunOneValueData rData8(8, _T("11.05000\n~"));
 	// 只有~
 	ReadTengxunOneValueData rData9(9, _T("~"));
+	// 未遇到~即结束
+	ReadTengxunOneValueData rData10(10, _T("11.03"));
 
 	class ReadTengxunOneValueTest : public::testing::TestWithParam<ReadTengxunOneValueData*> {
 	protected:
 		void SetUp() override {
+			SCOPED_TRACE("");
 			GeneralCheck();
 
 			const ReadTengxunOneValueData* pData = GetParam();
@@ -785,6 +795,7 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
@@ -795,13 +806,30 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestReadTengxunOneValue, ReadTengxunOneValueTest,
-	                         testing::Values(&rData1, &rData2, &rData3, &rData4, &rData5, &rData6, &rData7, &rData8, &rData9
+	                         testing::Values(&rData1, &rData2, &rData3, &rData4, &rData5, &rData6, &rData7, &rData8, &rData9, &rData10
 	                         ));
 
 	// 将字符串转换为INT64
 	TEST_P(ReadTengxunOneValueTest, TestReadTengxunOneValue1) {
 		INT64 llTemp = 0;
-		bool fSucceed = m_RTData.ReadTengxunOneValue(m_pTengxunWebRTData, llTemp);
+		bool fSucceed;
+		try {
+			fSucceed = m_RTData.ReadTengxunOneValue(m_pTengxunWebRTData, llTemp);
+		}
+		catch (exception& e) { // 当出现out of range例外时，函数继续抛出这个例外
+			fSucceed = false;
+			switch (m_iCount) {
+			case 6:
+				EXPECT_STREQ(e.what(), _T("out of range"));
+				break;
+			case 10:
+				EXPECT_STREQ(e.what(), _T("out of range"));
+				break;
+			default:
+				ASSERT_TRUE(0);
+				break;
+			}
+		}
 		switch (m_iCount) {
 		case 1:
 			EXPECT_TRUE(fSucceed);
@@ -848,7 +876,24 @@ namespace FireBirdTest {
 	// 将字符串转换为长整型
 	TEST_P(ReadTengxunOneValueTest, TestReadTengxunOneValue2) {
 		long lTemp = 0;
-		bool fSucceed = m_RTData.ReadTengxunOneValue(m_pTengxunWebRTData, lTemp);
+		bool fSucceed;
+		try {
+			fSucceed = m_RTData.ReadTengxunOneValue(m_pTengxunWebRTData, lTemp);
+		}
+		catch (exception& e) { // 当出现out of range例外时，函数继续抛出这个例外
+			fSucceed = false;
+			switch (m_iCount) {
+			case 6:
+				EXPECT_STREQ(e.what(), _T("out of range"));
+				break;
+			case 10:
+				EXPECT_STREQ(e.what(), _T("out of range"));
+				break;
+			default:
+				ASSERT_TRUE(0);
+				break;
+			}
+		}
 		switch (m_iCount) {
 		case 1:
 			EXPECT_TRUE(fSucceed);
@@ -895,7 +940,24 @@ namespace FireBirdTest {
 	// 读入buffer中
 	TEST_P(ReadTengxunOneValueTest, TestReadTengxunOneValue3) {
 		char buffer[30];
-		const bool fSucceed = m_RTData.ReadTengxunOneValue(m_pTengxunWebRTData, buffer);
+		bool fSucceed;
+		try {
+			fSucceed = m_RTData.ReadTengxunOneValue(m_pTengxunWebRTData, buffer);
+		}
+		catch (exception& e) { // 当出现out of range例外时，函数继续抛出这个例外
+			fSucceed = false;
+			switch (m_iCount) {
+			case 6:
+				EXPECT_STREQ(e.what(), _T("out of range"));
+				break;
+			case 10:
+				EXPECT_STREQ(e.what(), _T("out of range"));
+				break;
+			default:
+				ASSERT_TRUE(0);
+				break;
+			}
+		}
 		const CString str = buffer;
 		switch (m_iCount) {
 		case 1:
@@ -921,6 +983,7 @@ namespace FireBirdTest {
 			break;
 		case 6:
 			EXPECT_FALSE(fSucceed);
+			EXPECT_STREQ(str, _T("11.050"));
 			break;
 		case 7:
 			EXPECT_TRUE(fSucceed);
@@ -933,6 +996,10 @@ namespace FireBirdTest {
 		case 9:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_STREQ(str, _T(""));
+			break;
+		case 10:
+			EXPECT_FALSE(fSucceed);
+			EXPECT_STREQ(str, _T("11.03"));
 			break;
 		default:
 			break;

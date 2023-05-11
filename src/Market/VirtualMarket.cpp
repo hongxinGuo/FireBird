@@ -18,6 +18,12 @@ CVirtualMarket::CVirtualMarket() {
 	m_lMarketTimeZone = -8 * 3600; // 本系统默认标准时间为东八区（北京标准时间）。
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 唯一的调度函数。所有的市场皆使用此函数，具体的差异由数据源（DataSource）和不同的任务序列来区分。
+// 由MainFrame中的定时任务调度，每100毫秒执行一次。
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualMarket::SchedulingTask() {
 	CalculateTime();
 
@@ -27,7 +33,7 @@ void CVirtualMarket::SchedulingTask() {
 		RectifyTaskTime(); // 当任务队列中都是明日的时间时，将时间调减24小时
 	}
 
-	// 调用各Web data source，进行网络数据的接收和处理。
+	// 调用本市场的各data source，进行网络数据的接收和处理。
 	RunDataSource(lCurrentMarketTime);
 
 	// 执行本市场各项定时任务

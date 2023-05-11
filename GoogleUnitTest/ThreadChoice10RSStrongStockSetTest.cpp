@@ -11,19 +11,19 @@ namespace FireBirdTest {
 	class CThreadChoice10RSStrong1StockSet : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void TearDown() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		CMockChinaMarket market;
@@ -46,13 +46,13 @@ namespace FireBirdTest {
 		static void SetUpTestSuite() { }
 
 		static void TearDownTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override { }
 
 		void TearDown() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		CMockChinaMarket market;
@@ -73,7 +73,7 @@ namespace FireBirdTest {
 	class CThreadChoice10RSStrongStockSet : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		static void TearDownTestSuite() { }
@@ -81,7 +81,7 @@ namespace FireBirdTest {
 		void SetUp() override { }
 
 		void TearDown() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		CMockChinaMarket market;

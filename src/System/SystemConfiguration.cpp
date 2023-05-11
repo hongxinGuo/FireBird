@@ -199,8 +199,7 @@ void CSystemConfiguration::Update() {
 			sTemp = m_systemConfiguration.at("ChinaMarket").at("RealtimeServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 			if (sTemp == _T("sina")) { m_iChinaMarketRealtimeServer = 0; }
 			else if (sTemp == _T("netease")) { m_iChinaMarketRealtimeServer = 1; }
-			else {
-				// 非法服务器名称，使用默认sina服务器
+			else { // 非法服务器名称，使用默认sina服务器
 				m_iChinaMarketRealtimeServer = 0;
 				m_fUpdate = true;
 			}
@@ -212,8 +211,7 @@ void CSystemConfiguration::Update() {
 			sTemp = m_systemConfiguration.at("ChinaMarket").at("DayLineServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 			if (sTemp == _T("netease")) { m_iChinaMarketDayLineServer = 0; }
 			else if (sTemp == _T("tengxun")) { m_iChinaMarketDayLineServer = 1; }
-			else {
-				// 非法服务器名称，使用默认sina服务器
+			else {// 非法服务器名称，使用默认sina服务器
 				m_iChinaMarketDayLineServer = 0;
 				m_fUpdate = true;
 			}

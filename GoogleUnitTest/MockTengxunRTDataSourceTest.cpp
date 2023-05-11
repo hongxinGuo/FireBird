@@ -13,16 +13,16 @@ namespace FireBirdTest {
 	class CMockTengxunRTDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
 			while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);
 			m_pMockTengxunRTDataSource = make_shared<CMockTengxunRTDataSource>();
 		}
@@ -34,7 +34,7 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetSystemReady(true);
 			gl_pChinaMarket->SetTengxunRTDataInquiringIndex(0);
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	protected:

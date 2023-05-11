@@ -13,19 +13,23 @@ namespace FireBirdTest {
 	class CFinnhubStockDayLineTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
 		void SetUp() override {
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
@@ -75,6 +79,7 @@ namespace FireBirdTest {
 	class ProcessFinnhubStockCandleTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
+			SCOPED_TRACE("");
 			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -96,6 +101,7 @@ namespace FireBirdTest {
 			m_pStock->SetDayLineNeedUpdate(true);
 			m_pStock->UnloadDayLine();
 
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 

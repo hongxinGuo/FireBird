@@ -12,17 +12,17 @@ namespace FireBirdTest {
 	class CThreadCalculateRSTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
 			gl_pChinaMarket->ResetCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 
 			gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
 			pMockStock = make_shared<CMockChinaStock>();
@@ -39,7 +39,7 @@ namespace FireBirdTest {
 			pMockStock = nullptr;
 			vStock.resize(0);
 			gl_systemStatus.SetExitingSystem(false);
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		CMockChinaStockPtr pMockStock;

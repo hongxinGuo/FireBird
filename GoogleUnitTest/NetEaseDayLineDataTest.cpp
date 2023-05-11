@@ -46,7 +46,7 @@ namespace FireBirdTest {
 	class ProcessNeteaseDayLineTest : public::testing::TestWithParam<NetEaseDayLineData*> {
 	protected:
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			const NetEaseDayLineData* pData = GetParam();
 			m_iCount = pData->m_iCount;
 			const long lLength = pData->m_strData.GetLength();
@@ -85,7 +85,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:
@@ -196,7 +196,7 @@ namespace FireBirdTest {
 	class ReadDayLineOneValueTest2 : public::testing::TestWithParam<ReadDayLineOneValueData*> {
 	protected:
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			ReadDayLineOneValueData* pData = GetParam();
 			m_iCount = pData->m_iCount;
 			long lLength = pData->m_strData.GetLength();
@@ -209,7 +209,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:

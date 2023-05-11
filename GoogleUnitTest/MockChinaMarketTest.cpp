@@ -24,7 +24,7 @@ namespace FireBirdTest {
 	class CMockChinaMarketTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
@@ -69,11 +69,11 @@ namespace FireBirdTest {
 			// 重置以下指针，以测试是否存在没有配对的Mock。
 			s_pMockChinaMarket = nullptr;
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 
 			//EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_EQ(s_pMockChinaMarket->GetDayLineNeedSaveNumber(), 0);
@@ -100,7 +100,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << s_pMockChinaMarket->GetMarketTask()->GetTime();
 			EXPECT_FALSE(s_pMockChinaMarket->IsUpdateChosenStockDB());
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 	};
 
@@ -481,6 +481,12 @@ namespace FireBirdTest {
 		.Times(1);
 		s_pMockChinaMarket->SetSystemReady(true);
 		EXPECT_EQ(ThreadSaveTempRTData(s_pMockChinaMarket.get()), static_cast<UINT>(13));
+	}
+
+	TEST_F(CMockChinaMarketTest, TestThreadLoadTempRTData) {
+		EXPECT_CALL(*s_pMockChinaMarket, LoadTempRTData(20200101)).Times(1);
+
+		EXPECT_EQ(ThreadLoadTempRTData(s_pMockChinaMarket.get(), 20200101), static_cast<UINT>(19));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadMaintainDayLineDatabase) {

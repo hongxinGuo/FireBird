@@ -31,7 +31,7 @@ namespace FireBirdTest {
 	class ConvertDoubleToStringTest : public testing::TestWithParam<StrConvertDoubleToString*> {
 	protected:
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			const StrConvertDoubleToString* pData = GetParam();
 			dValue = pData->m_dValue;
@@ -41,7 +41,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:

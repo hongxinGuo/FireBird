@@ -33,6 +33,7 @@ namespace testing {
 		MOCK_METHOD(void, UpdateStockProfileDB, (), (override));
 		MOCK_METHOD(void, AppendChosenStockDB, (), (override));
 		MOCK_METHOD(void, SaveTempRTData, (), (override));
+		MOCK_METHOD(void, LoadTempRTData, (long lTheDay), (override));
 		MOCK_METHOD(long, BuildDayLine, (long lCurrentTradeDate), (override));
 		MOCK_METHOD(bool, Choice10RSStrong2StockSet, (), (override));
 		MOCK_METHOD(bool, Choice10RSStrong1StockSet, (), (override));

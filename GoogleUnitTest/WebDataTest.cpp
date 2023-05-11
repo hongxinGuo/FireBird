@@ -7,7 +7,7 @@
 namespace FireBirdTest {
 	class CWebDataTest : public ::testing::Test {
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			EXPECT_EQ(webData.GetCurrentPos(), 0);
 			EXPECT_EQ(webData.GetTime(), 0);
 			EXPECT_EQ(webData.GetBufferLength(), 1024 * 1024);
@@ -18,7 +18,7 @@ namespace FireBirdTest {
 		void TearDown() override {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:

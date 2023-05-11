@@ -32,6 +32,8 @@ UINT ThreadLoadTempRTData(not_null<CChinaMarket*> pMarket, long lTheDay) {
 
 /// <summary>
 /// 此线程与存储实时数据的线程互斥。
+///
+/// 此为处理实时数据的进程，需要考虑运行速度，不再虚拟化其调用的ProcessRTData和ProcessTengxunRTData，故而不测试此进程
 /// </summary>
 /// <param name="pMarket"></param>
 /// <returns></returns>

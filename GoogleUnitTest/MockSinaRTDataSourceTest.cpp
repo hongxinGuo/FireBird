@@ -14,17 +14,17 @@ namespace FireBirdTest {
 	class CMockSinaRTDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			gl_pChinaMarket->SetSinaStockRTDataInquiringIndex(0);
 		}
 
 		static void TearDownTestSuite() {
 			while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			m_pMockSinaRTDataSource = make_shared<CMockSinaRTDataSource>();
 		}
 
@@ -32,7 +32,7 @@ namespace FireBirdTest {
 			// clearUp
 			m_pMockSinaRTDataSource = nullptr;
 			gl_pChinaMarket->SetSinaStockRTDataInquiringIndex(0);
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:

@@ -13,22 +13,22 @@ namespace FireBirdTest {
 	protected:
 		static void SetUpTestSuite() {
 			// 本测试类的初始化函数
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 	};
 
@@ -421,7 +421,7 @@ namespace FireBirdTest {
 	class CalculateSinaRTDataTest : public testing::TestWithParam<SinaRTData*> {
 	protected:
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			SinaRTData* pData = GetParam();
 			m_pSinaWebRTData = make_shared<CWebData>();
@@ -452,7 +452,7 @@ namespace FireBirdTest {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:

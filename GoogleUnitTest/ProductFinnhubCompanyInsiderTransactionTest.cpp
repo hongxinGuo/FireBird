@@ -12,20 +12,20 @@ namespace FireBirdTest {
 	class CFinnhubCompanyInsiderTransactionTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	protected:
@@ -60,7 +60,7 @@ namespace FireBirdTest {
 	class ProcessFinnhubInsiderTransactionTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -83,7 +83,7 @@ namespace FireBirdTest {
 			m_pStock->SetSaveInsiderTransaction(false);
 			m_pStock->SetInsiderTransactionUpdateDate(19800101);
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:
@@ -135,7 +135,7 @@ namespace FireBirdTest {
 	class ParseFinnhubInsiderTransactionTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -150,7 +150,7 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			m_pStock->SetUpdateProfileDB(false);
 		}
 

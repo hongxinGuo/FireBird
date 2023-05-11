@@ -12,15 +12,15 @@ namespace FireBirdTest {
 	class CMockFireBirdViewTest : public ::testing::Test {
 	public:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 
 			s_pFireBirdView = make_shared<CMockFireBirdView>();
 			EXPECT_EQ(s_pFireBirdView->GetClientSize().Height(), 0);
@@ -41,7 +41,7 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			s_pFireBirdView = nullptr;
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:

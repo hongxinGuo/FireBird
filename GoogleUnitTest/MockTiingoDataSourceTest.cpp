@@ -15,22 +15,22 @@ namespace FireBirdTest {
 	class CMockTiingoDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			m_pTiingoDataSource = make_shared<CMockTiingoDataSource>();
 		}
 
 		void TearDown() override {
 			// clearUp
 			m_pTiingoDataSource = nullptr;
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	protected:

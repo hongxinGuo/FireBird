@@ -6,11 +6,11 @@
 namespace FireBirdTest {
 	class CMarketTaskTest : public testing::Test {
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void TearDown() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:

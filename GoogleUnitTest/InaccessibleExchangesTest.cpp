@@ -10,7 +10,7 @@
 namespace FireBirdTest {
 	class CInaccessibleExchangesTest : public testing::Test {
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 
 			vExchanges.push_back(_T("US"));
 			vExchanges.push_back(_T("SS"));
@@ -21,7 +21,7 @@ namespace FireBirdTest {
 		void TearDown() override {
 			gl_systemStatus.SetWorkingMode(false);
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	protected:
@@ -67,12 +67,12 @@ namespace FireBirdTest {
 
 namespace FireBirdTest {
 	class CFinnhubInaccessibleExchangeTest : public testing::Test {
-		void SetUp() override { GeneralCheck(); }
+		void SetUp() override { SCOPED_TRACE(""); GeneralCheck(); }
 
 		void TearDown() override {
 			gl_systemStatus.SetWorkingMode(false);
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 	};
 

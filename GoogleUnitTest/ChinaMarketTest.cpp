@@ -22,7 +22,7 @@ namespace FireBirdTest {
 	class CChinaMarketTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 
 			gl_pChinaMarket->Load10DaysRSStrongStockDB(); // 装入各十日强度股票集
 			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(10) > 0);
@@ -60,11 +60,11 @@ namespace FireBirdTest {
 
 			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "测试数据库中的股票代码总数为5040";
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
@@ -108,7 +108,7 @@ namespace FireBirdTest {
 
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 	};
 

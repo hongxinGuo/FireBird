@@ -17,7 +17,7 @@ namespace FireBirdTest {
 	class CMockContainerChinaStockTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			s_pMockContainerChinaStock = make_shared<CMockContainerChinaStock>();
 			s_pMockContainerChinaStock->LoadStockProfileDB();
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
@@ -26,17 +26,17 @@ namespace FireBirdTest {
 		static void TearDownTestSuite() {
 			s_pMockContainerChinaStock = nullptr;
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	protected:

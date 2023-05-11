@@ -17,17 +17,17 @@ namespace FireBirdTest {
 	class CMockVirtualDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			m_pVirtualDataSource = nullptr;
 		}
 
 		static void TearDownTestSuite() {
 			m_pVirtualDataSource = nullptr;
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 
 			m_pVirtualDataSource = make_shared<CMockVirtualDataSource>();
 		}
@@ -37,7 +37,7 @@ namespace FireBirdTest {
 
 			m_pVirtualDataSource->SetInquiringString(_T(""));
 			m_pVirtualDataSource = nullptr;
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 	};
 
@@ -116,7 +116,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pVirtualDataSource->IsInquiring());
 	}
 
-	TEST_F(CMockVirtualDataSourceTest, TestGetWebDataAndProcessIt1) {
+	TEST_F(CMockVirtualDataSourceTest, TestReadWebDataAndProcessIt1) {
 		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(true);
 		EXPECT_CALL(*m_pVirtualDataSource, GetWebData).Times(1)
 		.WillOnce(Return(false));
@@ -129,7 +129,7 @@ namespace FireBirdTest {
 		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(false);
 	}
 
-	TEST_F(CMockVirtualDataSourceTest, TestGetWebDataAndProcessIt2) {
+	TEST_F(CMockVirtualDataSourceTest, TestReadWebDataAndProcessIt2) {
 		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(true);
 		EXPECT_CALL(*m_pVirtualDataSource, GetWebData).Times(1)
 		.WillOnce(Return(true));
@@ -143,7 +143,7 @@ namespace FireBirdTest {
 		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(false);
 	}
 
-	TEST_F(CMockVirtualDataSourceTest, TestGetWebDataAndProcessIt3) {
+	TEST_F(CMockVirtualDataSourceTest, TestReadWebDataAndProcessIt3) {
 		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(true);
 		EXPECT_CALL(*m_pVirtualDataSource, GetWebData).Times(1)
 		.WillOnce(Return(true));

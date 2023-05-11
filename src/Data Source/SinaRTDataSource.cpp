@@ -33,7 +33,7 @@ bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (llTickCount > (m_llLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime())) {
 		// 先判断下次的申请时间。因网络错误只在顺利接收网络数据后方才重置。
 		if (IsWebError()) {
-			m_llLastTimeTickCount = llTickCount + 10000; //网络出现错误时，延迟十秒再查询
+			m_llLastTimeTickCount = llTickCount + 5000; //网络出现错误时，延迟五秒再查询
 		}
 		else {
 			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady() && !gl_systemConfiguration.IsDebugMode()) { // 系统配置为测试系统时，不降低轮询速度
@@ -80,7 +80,7 @@ void CSinaRTDataSource::GenerateCurrentInquiryMessage() {
 void CSinaRTDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 3000); // 正常情况下sina实时数据接收时间不超过50毫秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 1000); // 设置接收超时时间为4000毫秒
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 1000); // 设置接收超时时间为1000毫秒
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 500); // 设置发送超时时间为500毫秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }

@@ -12,20 +12,20 @@ namespace FireBirdTest {
 	class CProductFinnhubCompanyBasicFinancialTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	protected:
@@ -451,7 +451,7 @@ namespace FireBirdTest {
 	class ParseFinnhubStockBasicFinancialTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -475,7 +475,7 @@ namespace FireBirdTest {
 			m_pStock->SetUpdateBasicFinancial(true);
 			m_pStock->UpdateBasicFinancial(nullptr);
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:
@@ -527,7 +527,7 @@ namespace FireBirdTest {
 	class ProcessFinnhubStockBasicFinancialTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -549,7 +549,7 @@ namespace FireBirdTest {
 			m_pStock->SetBasicFinancialUpdateDate(19800101);
 			m_pStock->UpdateBasicFinancial(nullptr);
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:

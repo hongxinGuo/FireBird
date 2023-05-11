@@ -11,12 +11,14 @@
 namespace FireBirdTest {
 	class CXferFinnhubInquiryTest : public ::testing::Test {
 		void SetUp() override {
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
 		void TearDown() override {
 			gl_systemStatus.SetWorkingMode(false);
 
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 	};

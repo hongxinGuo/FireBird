@@ -49,7 +49,7 @@ namespace FireBirdTest {
 	class NeteaseDayLineTest : public::testing::TestWithParam<NeteaseDayLineData*> {
 	protected:
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 
 			const NeteaseDayLineData* pData = GetParam();
 			const auto pWebData = make_shared<CWebData>();
@@ -65,7 +65,7 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:

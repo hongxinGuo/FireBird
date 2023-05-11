@@ -21,15 +21,15 @@ using std::make_shared;
 namespace FireBirdTest {
 	class CMockFinnhubForexSymbolTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { GeneralCheck(); }
+		static void SetUpTestSuite() { SCOPED_TRACE(""); GeneralCheck(); }
 
-		static void TearDownTestSuite() { GeneralCheck(); }
+		static void TearDownTestSuite() { SCOPED_TRACE(""); GeneralCheck(); }
 
-		void SetUp() override { GeneralCheck(); }
+		void SetUp() override { SCOPED_TRACE(""); GeneralCheck(); }
 
 		void TearDown() override {
 			// clearUp
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 	};
 

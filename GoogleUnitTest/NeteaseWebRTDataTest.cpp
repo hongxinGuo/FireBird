@@ -14,19 +14,23 @@ namespace FireBirdTest {
 	class CWebRTDataTest2 : public Test {
 	protected:
 		static void SetUpTestSuite() {
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
 		void SetUp() override {
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
@@ -107,6 +111,7 @@ namespace FireBirdTest {
 	class CalculateNeteaseWebRTDataTest : public testing::TestWithParam<NeteaseRTData*> {
 	protected:
 		void SetUp() override {
+			SCOPED_TRACE("");
 			GeneralCheck();
 
 			const NeteaseRTData* pData = GetParam();
@@ -141,6 +146,7 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 

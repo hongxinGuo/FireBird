@@ -29,7 +29,7 @@ namespace FireBirdTest {
 	class CheckNeteaseDayLineInquiryStrTest : public::testing::TestWithParam<CheckNeteaseDayLineInquiryStrData*> {
 	protected:
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			const CheckNeteaseDayLineInquiryStrData* pData = GetParam();
 			m_iCount = pData->m_iCount;
 			m_strCode = pData->m_strData;
@@ -39,7 +39,7 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:

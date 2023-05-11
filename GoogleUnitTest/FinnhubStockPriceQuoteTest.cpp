@@ -12,19 +12,23 @@ namespace FireBirdTest {
 	class CFinnhubStockPriceQuoteTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
 		void SetUp() override {
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
@@ -67,6 +71,7 @@ namespace FireBirdTest {
 	class ProcessFinnhubStockQuoteTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
+			SCOPED_TRACE("");
 			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -96,6 +101,7 @@ namespace FireBirdTest {
 			m_pStock->SetUpdateProfileDB(false);
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
+			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 

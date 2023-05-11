@@ -26,7 +26,7 @@ namespace FireBirdTest {
 
 	class CNeteaseRTDataParserTest1 : public testing::TestWithParam<CNeteaseRTDataTest*> {
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 
 			const CNeteaseRTDataTest* pData = GetParam();
 			m_iIndex = pData->m_iIndex;
@@ -37,7 +37,7 @@ namespace FireBirdTest {
 		}
 
 		void TearDown() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	public:

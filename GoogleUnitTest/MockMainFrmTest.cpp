@@ -15,7 +15,7 @@ namespace FireBirdTest {
 	class CMockMainFrameTest : public Test {
 	public:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_THAT(gl_pMockMainFrame, NotNull());
@@ -35,11 +35,11 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetUpdateOptionDB(false); // 这里使用了实际的数据库，故而不允许更新
 			EXPECT_EQ(gl_vMarketPtr.size(), 2);
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			gl_systemStatus.SetExitingSystem(false);
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
@@ -53,7 +53,7 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetCalculatingDayLineRS(false);
 			gl_systemStatus.SetExitingSystem(false);
 
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 	};
 

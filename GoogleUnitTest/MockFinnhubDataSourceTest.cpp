@@ -17,16 +17,16 @@ namespace FireBirdTest {
 	class CMockFinnhubDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			ASSERT_THAT(gl_pFinnhubDataSource, NotNull());
 		}
 
 		static void TearDownTestSuite() {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			m_pMockFinnhubDataSource = make_shared<CMockFinnhubDataSource>();
 		}
 
@@ -34,7 +34,7 @@ namespace FireBirdTest {
 			// clearUp
 			m_pMockFinnhubDataSource = nullptr;
 			gl_pWorldMarket->SetSystemReady(true);
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 	protected:

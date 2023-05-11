@@ -15,7 +15,7 @@ namespace FireBirdTest {
 	class CTemplateMutexAccessQueueTest : public ::testing::Test {
 	protected:
 		void SetUp() override {
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 			m_data1 = make_shared<T>();
 			m_data2 = make_shared<T>();
 		}
@@ -23,7 +23,7 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			m_qDataTest.Reset();
-			GeneralCheck();
+			SCOPED_TRACE(""); GeneralCheck();
 		}
 
 		shared_ptr<T> m_data1;
