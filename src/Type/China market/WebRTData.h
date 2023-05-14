@@ -180,10 +180,10 @@ public:
 	void SetBuy(const long lValue) noexcept { m_lBuy = lValue; }
 	[[nodiscard]] long GetSell() const noexcept { return m_lSell; }
 	void SetSell(const long lValue) noexcept { m_lSell = lValue; }
-	[[nodiscard]] long GetHighLimit() const noexcept { return m_lHighLimit; }
-	void SetHighLimit(const long lValue) noexcept { m_lHighLimit = lValue; }
-	[[nodiscard]] long GetLowLimit() const noexcept { return m_lLowLimit; }
-	void SetLowLimit(const long lValue) noexcept { m_lLowLimit = lValue; }
+	[[nodiscard]] long GetHighLimitFromTengxun() const noexcept { return m_lHighLimitFromTengxun; }
+	void SetHighLimitFromTengxun(const long lValue) noexcept { m_lHighLimitFromTengxun = lValue; }
+	[[nodiscard]] long GetLowLimitFromTengxun() const noexcept { return m_lLowLimitFromTengxun; }
+	void SetLowLimitFromTengxun(const long lValue) noexcept { m_lLowLimitFromTengxun = lValue; }
 	[[nodiscard]] long GetPBuy(const int iIndex) const { return m_lPBuy.at(iIndex); }
 	void SetPBuy(const int iIndex, const long lValue) { m_lPBuy.at(iIndex) = lValue; }
 	[[nodiscard]] long GetVBuy(const int iIndex) const { return m_lVBuy.at(iIndex); }
@@ -221,8 +221,8 @@ protected:
 	long m_lLow; // 今日最低。单位：0.001元
 	long m_lBuy; // 竞买价。单位：0.001元
 	long m_lSell; // 竞卖价。单位：0.001元
-	long m_lHighLimit; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
-	long m_lLowLimit; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
+	long m_lHighLimitFromTengxun; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
+	long m_lLowLimitFromTengxun; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
 	INT64 m_llVolume; // 总成交量。单位：股
 	INT64 m_llAmount; // 总成交金额。单位：元
 	INT64 m_llTotalValue; // 总市值。单位：万元

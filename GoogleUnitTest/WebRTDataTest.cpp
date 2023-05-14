@@ -157,14 +157,14 @@ namespace FireBirdTest {
 
 	TEST_F(CStockWebRTDataTest, TestGetHighLimit) {
 		CWebRTData rtData;
-		rtData.SetHighLimit(4444);
-		EXPECT_EQ(rtData.GetHighLimit(), 4444);
+		rtData.SetHighLimitFromTengxun(4444);
+		EXPECT_EQ(rtData.GetHighLimitFromTengxun(), 4444);
 	}
 
 	TEST_F(CStockWebRTDataTest, TestGetLowLimit) {
 		CWebRTData rtData;
-		rtData.SetLowLimit(5555);
-		EXPECT_EQ(rtData.GetLowLimit(), 5555);
+		rtData.SetLowLimitFromTengxun(5555);
+		EXPECT_EQ(rtData.GetLowLimitFromTengxun(), 5555);
 	}
 
 	TEST_F(CStockWebRTDataTest, TestGetPBuy) {

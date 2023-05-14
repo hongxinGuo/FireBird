@@ -24,8 +24,8 @@ void CWebRTData::Reset() {
 	m_llCurrentValue = m_llTotalValue = 0;
 	m_lBuy = 0;
 	m_lSell = 0;
-	m_lHighLimit = 0;
-	m_lLowLimit = 0;
+	m_lHighLimitFromTengxun = 0;
+	m_lLowLimitFromTengxun = 0;
 	for (int i = 0; i < 5; i++) {
 		m_lPBuy.at(i) = 0;
 		m_lVBuy.at(i) = 0;
@@ -660,13 +660,13 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
 			throw exception(_T("涨停价"));
 		}
-		if (dTemp > 0.01) m_lHighLimit = static_cast<long>((dTemp + 0.000001) * 1000);
+		if (dTemp > 0.01) m_lHighLimitFromTengxun = static_cast<long>((dTemp + 0.000001) * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 跌停价
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
 			throw exception(_T("跌停价"));
 		}
-		if (dTemp > 0.01) m_lLowLimit = static_cast<long>((dTemp + 0.000001) * 1000);
+		if (dTemp > 0.01) m_lLowLimitFromTengxun = static_cast<long>((dTemp + 0.000001) * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 
 		// 后面的数据具体内容不清楚，暂时放弃解码。

@@ -16,8 +16,8 @@ CChinaStock::CChinaStock() {
 	m_lDayLineEndDate = _CHINA_MARKET_BEGIN_DATE_; //
 	m_nHand = 100;
 
+	m_lHighLimitFromTengxun = m_lLowLimitFromTengxun = 0;
 	m_lHighLimit = m_lLowLimit = 0;
-	m_lHighLimit2 = m_lLowLimit2 = 0;
 	for (int i = 0; i < 5; i++) {
 		m_lPBuy.at(i) = m_lPSell.at(i) = 0;
 		m_lVBuy.at(i) = m_lVSell.at(i) = 0;
@@ -121,8 +121,8 @@ void CChinaStock::Reset() {
 	m_lDayLineEndDate = _CHINA_MARKET_BEGIN_DATE_; //
 	m_nHand = 100;
 
+	m_lHighLimitFromTengxun = m_lLowLimitFromTengxun = 0;
 	m_lHighLimit = m_lLowLimit = 0;
-	m_lHighLimit2 = m_lLowLimit2 = 0;
 	for (int i = 0; i < 5; i++) {
 		m_lPBuy.at(i) = m_lPSell.at(i) = 0;
 		m_lVBuy.at(i) = m_lVSell.at(i) = 0;
@@ -706,8 +706,7 @@ bool CChinaStock::ProcessRTData() {
 	// 以下为计算挂单变化、股票活跃度、大单买卖情况
 	for (INT64 i = 0; i < lTotalNumber; i++) {
 		const CWebRTDataPtr pRTData = PopRTData(); // 采用同步机制获取数据
-		if (pRTData->IsActive()) {
-			// 数据有效
+		if (pRTData->IsActive()) {// 数据有效
 			UpdateStatus(pRTData); // 更新股票现时状态。
 			if (gl_pChinaMarket->IsMarketOpened() && IsNeedProcessRTData()) {// 开市时间内计算具体情况。指数类股票无需计算交易情况和挂单变化
 				ProcessOneRTData(pRTData);
@@ -739,85 +738,77 @@ bool CChinaStock::ProcessOneRTData(const CWebRTDataPtr& pRTData) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 中国股市的涨跌停板价格计算方法目前不知，只能靠摸索。
-
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
 void CChinaStock::CalculateHighLowLimit(const CWebRTDataPtr& pRTData) {
 	double d1, d2;
 	int iAdjust = 0;
 	int iCompare;
 	int i2;
 
-	if (pRTData->GetPSell(0) == 0) {
-		// 卖一价格为零
+	if (pRTData->GetPSell(0) == 0) {// 卖一价格为零。此时为涨停板
 		if (pRTData->GetPBuy(0) > 0) {
-			m_lHighLimit2 = pRTData->GetPBuy(0);
-			if (pRTData->GetLastClose() < 1200) {
-				// 低价股？
-				m_lLowLimit2 = pRTData->GetLastClose() - (m_lHighLimit2 - pRTData->GetLastClose());
+			m_lHighLimit = pRTData->GetPBuy(0);
+			if (pRTData->GetLastClose() < 1200) {	// 低价股？
+				m_lLowLimit = pRTData->GetLastClose() - (m_lHighLimit - pRTData->GetLastClose());
 			}
 			else {
 				i2 = pRTData->GetPBuy(0) - pRTData->GetLastClose();
 				iCompare = (static_cast<double>(i2) * 100 + pRTData->GetLastClose() * 0.65) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
 				if (iCompare <= 21) {
-					if ((iCompare % 5) != 0) {
-						// 确保涨跌幅为5%的倍数
+					if ((iCompare % 5) != 0) {// 确保涨跌幅为5%的倍数
 						TRACE("%s iCompare = %i, 不是5的倍数\n", m_strSymbol.GetBuffer(), iCompare);
 					}
 					d1 = static_cast<double>(i2) * 100 / pRTData->GetLastClose();
 					if (d1 > iCompare) {
 						d2 = static_cast<double>(i2 - 10) * 100 / pRTData->GetLastClose();
-						if ((iCompare - d2) <= (d1 - iCompare)) {
-							// 当计算跌停价时，两边误差一样时（9.7777与10.22222），采用较小的（9.7777）。
+						if ((iCompare - d2) <= (d1 - iCompare)) {// 当计算跌停价时，两边误差一样时（9.7777与10.22222），采用较小的（9.7777）。
 							iAdjust = 10;
 						}
 					}
-					m_lLowLimit2 = pRTData->GetLastClose() - i2 + iAdjust;
+					m_lLowLimit = pRTData->GetLastClose() - i2 + iAdjust;
 				}
-				else { m_lLowLimit2 = m_lLowLimit; }
+				else { m_lLowLimit = m_lLowLimitFromTengxun; }
 			}
-			if (m_lHighLimit == 0) m_lHighLimit = m_lHighLimit2;
-			if (m_lLowLimit == 0) m_lLowLimit = m_lLowLimit2;
+			if (m_lHighLimitFromTengxun == 0) m_lHighLimitFromTengxun = m_lHighLimit;
+			if (m_lLowLimitFromTengxun == 0) m_lLowLimitFromTengxun = m_lLowLimit;
 		}
-		else {
-			// 买一卖一同时为零
-			m_lHighLimit2 = m_lHighLimit;
-			m_lLowLimit2 = m_lLowLimit;
+		else {// 买一卖一同时为零。此时为没有交易
+			m_lHighLimit = m_lHighLimitFromTengxun;
+			m_lLowLimit = m_lLowLimitFromTengxun;
 		}
 	}
-	else if (pRTData->GetPBuy(0) == 0) {
-		// 买一价格为零
+	else if (pRTData->GetPBuy(0) == 0) {// 买一价格为零，此时为跌停板
 		if (pRTData->GetPSell(0) > 0) {
-			m_lLowLimit2 = pRTData->GetPSell(0);
-			if (pRTData->GetLastClose() < 1200) {
-				// 低价股？
-				m_lHighLimit2 = pRTData->GetLastClose() + (pRTData->GetLastClose() - m_lLowLimit2);
+			m_lLowLimit = pRTData->GetPSell(0);
+			if (pRTData->GetLastClose() < 1200) {	// 低价股？
+				m_lHighLimit = pRTData->GetLastClose() + (pRTData->GetLastClose() - m_lLowLimit);
 			}
 			else {
 				i2 = pRTData->GetLastClose() - pRTData->GetPSell(0);
 				iCompare = (static_cast<double>(i2) * 100 + pRTData->GetLastClose() * 0.65) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
 				if (iCompare <= 21) {
-					if ((iCompare % 5) != 0) {
-						// 确保涨跌幅为5%的倍数
+					if ((iCompare % 5) != 0) {// 确保涨跌幅为5%的倍数
 						TRACE("%s iCompare = %i, 不是5的倍数\n", m_strSymbol.GetBuffer(), iCompare);
 					}
 					d1 = static_cast<double>(i2) * 100 / pRTData->GetLastClose();
 					if (d1 < iCompare) {
 						d2 = static_cast<double>(i2 + 10) * 100 / pRTData->GetLastClose();
-						if ((d2 - iCompare) <= (iCompare - d1)) {
-							// 当计算涨停价时，两边误差一样时（9.7777与10.22222），采用较大的（10.2222）。
+						if ((d2 - iCompare) <= (iCompare - d1)) {	// 当计算涨停价时，两边误差一样时（9.7777与10.22222），采用较大的（10.2222）。
 							iAdjust = 10;
 						}
 					}
-					m_lHighLimit2 = pRTData->GetLastClose() + i2 + iAdjust;
+					m_lHighLimit = pRTData->GetLastClose() + i2 + iAdjust;
 				}
-				else { m_lHighLimit2 = m_lHighLimit; }
+				else { m_lHighLimit = m_lHighLimitFromTengxun; }
 			}
-			if (m_lHighLimit == 0) m_lHighLimit = m_lHighLimit2;
-			if (m_lLowLimit == 0) m_lLowLimit = m_lLowLimit2;
+			if (m_lHighLimitFromTengxun == 0) m_lHighLimitFromTengxun = m_lHighLimit;
+			if (m_lLowLimitFromTengxun == 0) m_lLowLimitFromTengxun = m_lLowLimit;
 		}
-		else {
-			// 买一卖一同时为零
-			m_lHighLimit2 = m_lHighLimit;
-			m_lLowLimit2 = m_lLowLimit;
+		else {// 买一卖一同时为零。此时为没有交易
+			ASSERT(0); // 不可能出现此种情况
+			m_lHighLimit = m_lHighLimitFromTengxun;
+			m_lLowLimit = m_lLowLimitFromTengxun;
 		}
 	}
 }
@@ -848,15 +839,14 @@ void CChinaStock::CalculateOneRTData(const CWebRTDataPtr& pRTData) {
 
 	ResetCalculatingData();
 	m_lCurrentGuadanTransactionVolume = pRTData->GetVolume() - m_pLastRTData->GetVolume();
-	if (m_lCurrentGuadanTransactionVolume == 0) {
-		// 无成交？
+	if (m_lCurrentGuadanTransactionVolume == 0) {// 无成交？
 		// 检查挂单情况
 		lCurrentGuadanTransactionPrice = 0;
 		m_nCurrentTransactionType = NO_TRANSACTION_;
 	}
 	else {
 		lCurrentGuadanTransactionPrice = (pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume; // 生成比较用的价格（放大一千倍后采用长整型）
-		if ((lCurrentGuadanTransactionPrice == m_lHighLimit) || (lCurrentGuadanTransactionPrice == m_lLowLimit)) {// 涨跌停板时，成交量属于未知成交量。
+		if ((lCurrentGuadanTransactionPrice == m_lHighLimitFromTengxun) || (lCurrentGuadanTransactionPrice == m_lLowLimitFromTengxun)) {// 涨跌停板时，成交量属于未知成交量。
 			IncreaseTransactionNumber();
 			m_nCurrentTransactionType = UNKNOWN_BUYSELL_;
 			m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
@@ -875,27 +865,21 @@ void CChinaStock::CalculateOneDeal(const CWebRTDataPtr& pRTData, INT64 lCurrentG
 	IncreaseTransactionNumber();
 	ASSERT(lCurrentGuadanTransactionPrice == ((pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume)); // 生成比较用的价格（放大一千倍后采用长整型）
 	m_dCurrentGuadanTransactionPrice = static_cast<double>(lCurrentGuadanTransactionPrice) / 1000; // 变换成实际价格
-	if (lCurrentGuadanTransactionPrice >= m_pLastRTData->GetPBuy(0)) {
-		// 高于前买盘1
-		if (lCurrentGuadanTransactionPrice <= m_pLastRTData->GetPSell(0)) {
-			// 低于前卖盘1
+	if (lCurrentGuadanTransactionPrice >= m_pLastRTData->GetPBuy(0)) {// 高于前买盘1
+		if (lCurrentGuadanTransactionPrice <= m_pLastRTData->GetPSell(0)) {	// 低于前卖盘1
 			CalculateOrdinaryBuySell(lCurrentGuadanTransactionPrice);
 		}
-		else if (lCurrentGuadanTransactionPrice < m_pLastRTData->GetPSell(1)) {
-			// 高于卖盘一，低于卖盘二。进攻型买入。AttackBuy
+		else if (lCurrentGuadanTransactionPrice < m_pLastRTData->GetPSell(1)) {	// 高于卖盘一，低于卖盘二。进攻型买入。AttackBuy
 			CalculateAttackBuy();
 		}
-		else {
-			// 高于卖盘二。强力买入。StrongBuy。
+		else {// 高于卖盘二。强力买入。StrongBuy。
 			CalculateStrongBuy();
 		}
 	} // 高于前买一
-	else if (lCurrentGuadanTransactionPrice > m_pLastRTData->GetPBuy(1)) {
-		// 低于买盘一，高于买盘二。进攻型卖出，AttackSell
+	else if (lCurrentGuadanTransactionPrice > m_pLastRTData->GetPBuy(1)) {// 低于买盘一，高于买盘二。进攻型卖出，AttackSell
 		CalculateAttackSell();
 	}
-	else {
-		// 低于买盘二。强力卖出。StrongSell
+	else {// 低于买盘二。强力卖出。StrongSell
 		CalculateStrongSell();
 	}
 	ASSERT(GetTransactionTime() >= pRTData->GetTransactionTime());
@@ -918,20 +902,17 @@ void CChinaStock::IncreaseTransactionNumber() {
 }
 
 void CChinaStock::CalculateOrdinaryBuySell(INT64 lCurrentGuadanTransactionPrice) {
-	if ((m_pLastRTData->GetPSell(0) - lCurrentGuadanTransactionPrice) <= 2) {
-		//一般性买入
+	if ((m_pLastRTData->GetPSell(0) - lCurrentGuadanTransactionPrice) <= 2) {//一般性买入
 		m_lOrdinaryBuyVolume += m_lCurrentGuadanTransactionVolume;
 		m_nCurrentTransactionType = ORDINARY_BUY_;
 		CalculateOrdinaryBuyVolume();
 	}
-	else if ((lCurrentGuadanTransactionPrice - m_pLastRTData->GetPBuy(0)) <= 2) {
-		// 一般性卖出
+	else if ((lCurrentGuadanTransactionPrice - m_pLastRTData->GetPBuy(0)) <= 2) {// 一般性卖出
 		m_nCurrentTransactionType = ORDINARY_SELL_;
 		m_lOrdinarySellVolume += m_lCurrentGuadanTransactionVolume;
 		CalculateOrdinarySellVolume();
 	}
-	else {
-		// 买卖混杂，不分析。
+	else {// 买卖混杂，不分析。
 		m_nCurrentTransactionType = UNKNOWN_BUYSELL_;
 		m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
 	}
@@ -1078,17 +1059,14 @@ void CChinaStock::SelectGuadanThatNeedToCalculate(const CWebRTDataPtr& pCurrentR
 		fNeedCheck.at(4) = fNeedCheck.at(5) = false;
 		break;
 	case STRONG_BUY_: // 卖单一和卖单二消失，卖单三以上未定，需要计算。
-		if (lCurrentTransactionPrice < m_pLastRTData->GetPSell(2)) {
-			// 卖单4和卖单5尚存
+		if (lCurrentTransactionPrice < m_pLastRTData->GetPSell(2)) {// 卖单4和卖单5尚存
 			fNeedCheck.at(2) = false;
 		}
-		else if (lCurrentTransactionPrice < m_pLastRTData->GetPSell(3)) {
-			// 卖单5尚存
+		else if (lCurrentTransactionPrice < m_pLastRTData->GetPSell(3)) {	// 卖单5尚存
 			fNeedCheck.at(1) = false;
 			fNeedCheck.at(2) = false;
 		}
-		else {
-			// 所有的卖单都受影响
+		else {// 所有的卖单都受影响
 			fNeedCheck.at(0) = false;
 			fNeedCheck.at(2) = false;
 			fNeedCheck.at(1) = false;
@@ -1106,19 +1084,16 @@ void CChinaStock::SelectGuadanThatNeedToCalculate(const CWebRTDataPtr& pCurrentR
 		fNeedCheck.at(4) = fNeedCheck.at(5) = fNeedCheck.at(6) = false;
 		break;
 	case STRONG_SELL_: // 买单一和买单二消失，其他买单需要计算。
-		if (m_pLastRTData->GetPBuy(3) > lCurrentTransactionPrice) {
-			// 所有买单都受影响
+		if (m_pLastRTData->GetPBuy(3) > lCurrentTransactionPrice) {// 所有买单都受影响
 			fNeedCheck.at(7) = false;
 			fNeedCheck.at(8) = false;
 			fNeedCheck.at(9) = false;
 		}
-		else if (m_pLastRTData->GetPBuy(2) > lCurrentTransactionPrice) {
-			// 买单5尚存
+		else if (m_pLastRTData->GetPBuy(2) > lCurrentTransactionPrice) {// 买单5尚存
 			fNeedCheck.at(7) = false;
 			fNeedCheck.at(8) = false;
 		}
-		else {
-			// 买单4和买单5没变化
+		else {// 买单4和买单5没变化
 			fNeedCheck.at(7) = false;
 		}
 		fNeedCheck.at(6) = false;
@@ -1137,8 +1112,7 @@ void CChinaStock::SetCurrentGuadan(const CWebRTDataPtr& pCurrentRTData) {
 	for (int i = pCurrentRTData->GetPBuy(4); i <= pCurrentRTData->GetPSell(4); i += 10) {
 		m_mapGuadan[i] = 0; // 此处需要设置值，有可能之前为空，故而不能使用at操作符，而是用[]下标操作。
 	}
-	for (int i = 0; i < 5; i++) {
-		// 将目前的十个挂单状态存入映射中，挂单状态更新为最新态
+	for (int i = 0; i < 5; i++) {// 将目前的十个挂单状态存入映射中，挂单状态更新为最新态
 		SetGuadan(pCurrentRTData->GetPSell(i), pCurrentRTData->GetVSell(i));
 		SetGuadan(pCurrentRTData->GetPBuy(i), pCurrentRTData->GetVBuy(i));
 	}
@@ -1154,8 +1128,7 @@ void CChinaStock::CheckGuadan(CWebRTDataPtr pCurrentRTData, const array<bool, 10
 void CChinaStock::CheckSellGuadan(const array<bool, 10>& fNeedCheck, int i) {
 	ASSERT((i < 5) && (i >= 0));
 	if (fNeedCheck.at(4 - i)) {
-		if (GetGuadan(m_pLastRTData->GetPSell(i)) < m_pLastRTData->GetVSell(i)) {
-			// 撤单了的话
+		if (GetGuadan(m_pLastRTData->GetPSell(i)) < m_pLastRTData->GetVSell(i)) {	// 撤单了的话
 			const INT64 iTemp = m_pLastRTData->GetVSell(i) - GetGuadan(m_pLastRTData->GetPSell(i));
 			m_lCurrentCanceledSellVolume += iTemp;
 			CalculateCanceledSellVolume(iTemp);
@@ -1180,8 +1153,7 @@ void CChinaStock::CalculateCanceledSellVolume(INT64 lCurrentCanceledSellVolume) 
 void CChinaStock::CheckBuyGuadan(const array<bool, 10>& fNeedCheck, int i) {
 	ASSERT((i < 5) && (i >= 0));
 	if (fNeedCheck.at(5 + i)) {
-		if (GetGuadan(m_pLastRTData->GetPBuy(i)) < m_pLastRTData->GetVBuy(i)) {
-			// 撤单了的话
+		if (GetGuadan(m_pLastRTData->GetPBuy(i)) < m_pLastRTData->GetVBuy(i)) {	// 撤单了的话
 			const INT64 iTemp = m_pLastRTData->GetVBuy(i) - GetGuadan(m_pLastRTData->GetPBuy(i));
 			m_lCurrentCanceledBuyVolume += iTemp;
 			CalculateCanceledBuyVolume(iTemp);
@@ -1315,17 +1287,14 @@ bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {
 
 	SetNeedProcessRTData(true);
 	if (IsShanghaiExchange(GetSymbol())) {
-		if (GetSymbol().Left(6) <= _T("000999")) {
-			//沪市指数？
+		if (GetSymbol().Left(6) <= _T("000999")) {//沪市指数？
 			SetNeedProcessRTData(false);
 		}
 	}
-	else if ((GetSymbol().Left(6) >= _T("399000"))) {
-		// 深市指数
+	else if ((GetSymbol().Left(6) >= _T("399000"))) {// 深市指数
 		SetNeedProcessRTData(false);
 	}
-	if (GetDayLineEndDate() < lDayLineEndDate) {
-		// 有时一个股票会有多个记录，以最后的日期为准。
+	if (GetDayLineEndDate() < lDayLineEndDate) {// 有时一个股票会有多个记录，以最后的日期为准。
 		SetDayLineEndDate(lDayLineEndDate);
 	}
 	if (!IsDelisted()) {
@@ -1341,12 +1310,10 @@ bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {
 bool CChinaStock::CheckDayLineStatus() {
 	ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
 	// 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-	if (gl_pChinaMarket->GetLastTradeDate() <= GetDayLineEndDate()) {
-		// 最新日线数据为今日或者上一个交易日的数据。
+	if (gl_pChinaMarket->GetLastTradeDate() <= GetDayLineEndDate()) {// 最新日线数据为今日或者上一个交易日的数据。
 		SetDayLineNeedUpdate(false); // 日线数据不需要更新
 	}
-	else if (IsDelisted()) {
-		// 退市股票如果已下载过日线数据，则每星期一复查日线数据
+	else if (IsDelisted()) {// 退市股票如果已下载过日线数据，则每星期一复查日线数据
 		if ((gl_pChinaMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != _CHINA_MARKET_BEGIN_DATE_)) { SetDayLineNeedUpdate(false); }
 	}
 	return m_fDayLineNeedUpdate;
@@ -1405,13 +1372,12 @@ bool CChinaStock::IsTodayDataChanged() const {
 }
 
 bool CChinaStock::IsVolumeConsistence() noexcept {
-	if ((m_lHighLimit2 > 0) && (m_lLowLimit2 > 0)) {
-		if ((m_lHighLimit != m_lHighLimit2) || (m_lLowLimit != m_lLowLimit2)) {
-			TRACE(_T("%s涨跌停板价格不符：%d %d    %d  %d\n"), GetSymbol().GetBuffer(), m_lHighLimit, m_lHighLimit2, m_lLowLimit, m_lLowLimit2);
+	if ((m_lHighLimit > 0) && (m_lLowLimit > 0)) {
+		if ((m_lHighLimitFromTengxun != m_lHighLimit) || (m_lLowLimitFromTengxun != m_lLowLimit)) {
+			TRACE(_T("%s涨跌停板价格不符：%d %d    %d  %d\n"), GetSymbol().GetBuffer(), m_lHighLimitFromTengxun, m_lHighLimit, m_lLowLimitFromTengxun, m_lLowLimit);
 		}
-		if ((m_lPBuy[0] > 0) && (m_lPSell[0] > 0)) {
-			// 当涨跌停板打开时
-			m_lHighLimit2 = m_lLowLimit2 = 0; // 重置此两变量
+		if ((m_lPBuy[0] > 0) && (m_lPSell[0] > 0)) {// 当涨跌停板打开时
+			m_lHighLimit = m_lLowLimit = 0; // 重置此两变量
 		}
 	}
 	if (GetVolume() != GetOrdinaryBuyVolume() + GetOrdinarySellVolume() + GetAttackBuyVolume()

@@ -343,16 +343,16 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestGetHighLimit) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetHighLimit(), 0);
-		stock.SetHighLimit(101010);
-		EXPECT_EQ(stock.GetHighLimit(), 101010);
+		EXPECT_EQ(stock.GetHighLimitFromTengxun(), 0);
+		stock.SetHighLimitFromTengxun(101010);
+		EXPECT_EQ(stock.GetHighLimitFromTengxun(), 101010);
 	}
 
 	TEST_F(CChinaStockTest, TestGetLowLimit) {
 		CChinaStock stock;
-		EXPECT_EQ(stock.GetLowLimit(), 0);
-		stock.SetLowLimit(101010);
-		EXPECT_EQ(stock.GetLowLimit(), 101010);
+		EXPECT_EQ(stock.GetLowLimitFromTengxun(), 0);
+		stock.SetLowLimitFromTengxun(101010);
+		EXPECT_EQ(stock.GetLowLimitFromTengxun(), 101010);
 	}
 
 	TEST_F(CChinaStockTest, TestGetLastSavedVolume) {

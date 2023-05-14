@@ -14,10 +14,10 @@ namespace FireBirdTest {
 			m_lPBuy0 = lPBuy0;
 			m_lPSell0 = lPSell0;
 			m_lLastClose = lLastClose;
-			m_lHighLimit = lHighLimit;
-			m_lLowLimit = lLowLimit;
-			m_lHighLimit2 = lHighLimit2;
-			m_lLowLimit2 = lLowLimit2;
+			m_lHighLimitFromTengxun = lHighLimit;
+			m_lLowLimitFromTengxun = lLowLimit;
+			m_lHighLimit = lHighLimit2;
+			m_lLowLimit = lLowLimit2;
 		}
 
 	public:
@@ -25,10 +25,10 @@ namespace FireBirdTest {
 		long m_lPBuy0;
 		long m_lPSell0;
 		long m_lLastClose;
+		long m_lHighLimitFromTengxun;
+		long m_lLowLimitFromTengxun;
 		long m_lHighLimit;
 		long m_lLowLimit;
-		long m_lHighLimit2;
-		long m_lLowLimit2;
 	};
 
 	HighLowData HighLowData1("", 0, 0, 95, 110, 80, 0, 0);
@@ -57,19 +57,22 @@ namespace FireBirdTest {
 	HighLowData HighLowData24("600978.SS", 0, 1240, 1300, 1370, 1240, 0, 0);
 	HighLowData HighLowData25("600978.SS", 0, 1240, 1300, 1370, 1240, 0, 0);
 	HighLowData HighLowData26("600978.SS", 0, 1240, 1300, 1370, 1240, 0, 0);
+	HighLowData HighLowData27("002089.SZ", 1040, 0, 990, 1040, 940, 0, 0);
+	HighLowData HighLowData28("002089.SZ", 0, 940, 990, 1040, 940, 0, 0);
 
-	class CChinaStockHighLowLimitTest : public::testing::TestWithParam<HighLowData*> {
+	class CChinaStockHighLowLimitTest1 : public::testing::TestWithParam<HighLowData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const HighLowData* pData = GetParam();
 			pRTData = make_shared<CWebRTData>();
 
 			pRTData->SetLastClose(pData->m_lLastClose);
 			pRTData->SetPBuy(0, pData->m_lPBuy0);
 			pRTData->SetPSell(0, pData->m_lPSell0);
-			m_stock.SetHighLimit(pData->m_lHighLimit);
-			m_stock.SetLowLimit(pData->m_lLowLimit);
+			m_stock.SetHighLimitFromTengxun(pData->m_lHighLimitFromTengxun);
+			m_stock.SetLowLimitFromTengxun(pData->m_lLowLimitFromTengxun);
 			m_stock.SetSymbol(pData->m_strSymbol);
 		}
 
@@ -77,7 +80,8 @@ namespace FireBirdTest {
 			// clearUp
 			pRTData = nullptr;
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -85,7 +89,7 @@ namespace FireBirdTest {
 		CWebRTDataPtr pRTData;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestGuadanDataNew, CChinaStockHighLowLimitTest, testing::Values(&HighLowData1, &HighLowData2, &HighLowData3,
+	INSTANTIATE_TEST_SUITE_P(TestGuadanDataNew12, CChinaStockHighLowLimitTest1, testing::Values(&HighLowData1, &HighLowData2, &HighLowData3,
 		                         &HighLowData4, &HighLowData5, &HighLowData6,
 		                         &HighLowData7, &HighLowData8, &HighLowData9,
 		                         &HighLowData10, &HighLowData11, &HighLowData12,
@@ -93,11 +97,12 @@ namespace FireBirdTest {
 		                         &HighLowData16, &HighLowData17, &HighLowData18,
 		                         &HighLowData19, &HighLowData20, &HighLowData21,
 		                         & HighLowData22, &HighLowData23, &HighLowData24,
-		                         &HighLowData25, &HighLowData26));
+		                         &HighLowData25, &HighLowData26, &HighLowData27,
+		                         &HighLowData28));
 
-	TEST_P(CChinaStockHighLowLimitTest, ChinaStockHighLowTest1) {
+	TEST_P(CChinaStockHighLowLimitTest1, ChinaStockHighLowTest11) {
 		m_stock.CalculateHighLowLimit(pRTData);
-		EXPECT_EQ(m_stock.GetHighLimit2(), m_stock.GetHighLimit());
-		EXPECT_EQ(m_stock.GetLowLimit2(), m_stock.GetLowLimit());
+		EXPECT_EQ(m_stock.GetHighLimit(), m_stock.GetHighLimitFromTengxun());
+		EXPECT_EQ(m_stock.GetLowLimit(), m_stock.GetLowLimitFromTengxun());
 	}
 }

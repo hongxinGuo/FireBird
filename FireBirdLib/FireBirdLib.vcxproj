@@ -425,6 +425,7 @@
     <VCToolsVersion>
     </VCToolsVersion>
     <EnableASAN>false</EnableASAN>
+    <EnableUnitySupport>false</EnableUnitySupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -437,6 +438,7 @@
     </VCToolsVersion>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <EnableASAN>false</EnableASAN>
+    <EnableUnitySupport>false</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -481,6 +483,7 @@
       <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
       <AdditionalIncludeDirectories>${workspaceFolder}/**;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BrowseInformation>false</BrowseInformation>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -510,6 +513,7 @@
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <WholeProgramOptimization>true</WholeProgramOptimization>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>

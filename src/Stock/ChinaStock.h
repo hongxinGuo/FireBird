@@ -53,14 +53,14 @@ public:
 	void UpdateProfile(const CWebRTDataPtr& pRTData);
 
 	// 本股票各变量状态
+	long GetHighLimitFromTengxun() const noexcept { return m_lHighLimitFromTengxun; }
+	void SetHighLimitFromTengxun(const long lValue) noexcept { m_lHighLimitFromTengxun = lValue; }
+	long GetLowLimitFromTengxun() const noexcept { return m_lLowLimitFromTengxun; }
+	void SetLowLimitFromTengxun(const long lValue) noexcept { m_lLowLimitFromTengxun = lValue; }
 	long GetHighLimit() const noexcept { return m_lHighLimit; }
 	void SetHighLimit(const long lValue) noexcept { m_lHighLimit = lValue; }
 	long GetLowLimit() const noexcept { return m_lLowLimit; }
 	void SetLowLimit(const long lValue) noexcept { m_lLowLimit = lValue; }
-	long GetHighLimit2() const noexcept { return m_lHighLimit2; }
-	void SetHighLimit2(const long lValue) noexcept { m_lHighLimit2 = lValue; }
-	long GetLowLimit2() const noexcept { return m_lLowLimit2; }
-	void SetLowLimit2(const long lValue) noexcept { m_lLowLimit2 = lValue; }
 	long GetPBuy(const int iIndex) const { return m_lPBuy.at(iIndex); }
 	long GetVBuy(const int iIndex) const { return m_lVBuy.at(iIndex); }
 	long GetPSell(const int iIndex) const { return m_lPSell.at(iIndex); }
@@ -399,10 +399,10 @@ public:
 protected:
 	short m_nHand; // 每手股数
 
-	long m_lHighLimit; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
-	long m_lLowLimit; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
-	long m_lHighLimit2; // 涨停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
-	long m_lLowLimit2; // 跌停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
+	long m_lHighLimitFromTengxun; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
+	long m_lLowLimitFromTengxun; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
+	long m_lHighLimit; // 涨停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
+	long m_lLowLimit; // 跌停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
 	array<long, 5> m_lPBuy; // 买盘价。单位：0.001元
 	array<long, 5> m_lVBuy; // 买盘量。单位：股
 	array<long, 5> m_lPSell; // 卖盘价。单位：0.001元

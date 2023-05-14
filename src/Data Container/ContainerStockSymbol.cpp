@@ -97,8 +97,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 		setStockSection.m_strSort = _T("[ID]");
 		setStockSection.Open();
 		setStockSection.m_pDatabase->BeginTrans();
-		if (setStockSection.IsEOF()) {
-			// 空表
+		if (setStockSection.IsEOF()) {// 空表
 			for (int i = 0; i < 2000; i++) {
 				const CStockSectionPtr pStockSection = m_vStockSection.at(i);
 				setStockSection.AddNew();
@@ -110,8 +109,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 				setStockSection.Update();
 			}
 		}
-		else {
-			// 表已存在
+		else {// 表已存在
 			while (!setStockSection.IsEOF()) {
 				if (setStockSection.m_Active != m_vStockSection.at(setStockSection.m_ID)->IsActive()) {
 					setStockSection.Edit();
@@ -142,12 +140,10 @@ void CContainerStockSymbol::CreateStockSection(const CString& strFirstStockCode)
 	char buffer[10];
 	CChinaStockPtr pStock = nullptr;
 
-	if (IsShanghaiExchange(strFirstStockCode)) {
-		// 上海市场
+	if (IsShanghaiExchange(strFirstStockCode)) {// 上海市场
 		iMarket = 0;
 	}
-	else if (IsShenzhenExchange(strFirstStockCode)) {
-		// 深圳市场
+	else if (IsShenzhenExchange(strFirstStockCode)) {// 深圳市场
 		iMarket = 1000;
 	}
 	if (m_vStockSection.at((iCode / 1000) + iMarket)->IsBuildStockPtr()) return; // 已经在证券池中建立了
@@ -171,12 +167,10 @@ bool CContainerStockSymbol::UpdateStockSection(const CString& strStockCode) cons
 	const int iCode = strtol(strCode.GetBuffer(), &pChar, 10);
 	int iMarket = 0;
 
-	if (IsShanghaiExchange(strStockCode)) {
-		// 上海市场
+	if (IsShanghaiExchange(strStockCode)) {// 上海市场
 		iMarket = 0;
 	}
-	else if (IsShenzhenExchange(strStockCode)) {
-		// 深圳市场
+	else if (IsShenzhenExchange(strStockCode)) {// 深圳市场
 		iMarket = 1000;
 	}
 	return UpdateStockSection(iCode / 1000 + iMarket);

@@ -464,8 +464,8 @@ bool CChinaMarket::ProcessTengxunRTData() {
 			const auto pStock = GetStock(pRTData->GetSymbol());
 			pStock->SetTotalValue(pRTData->GetTotalValue());
 			pStock->SetCurrentValue(pRTData->GetCurrentValue());
-			pStock->SetHighLimit(pRTData->GetHighLimit());
-			pStock->SetLowLimit(pRTData->GetLowLimit());
+			pStock->SetHighLimitFromTengxun(pRTData->GetHighLimitFromTengxun());
+			pStock->SetLowLimitFromTengxun(pRTData->GetLowLimitFromTengxun());
 		}
 	}
 	return true;
