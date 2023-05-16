@@ -96,7 +96,6 @@ public:
 		m_qProduct.pop();
 		return m_pCurrentProduct;
 	}
-
 	bool HaveInquiry() const {
 		if (m_qProduct.empty()) return false;
 		return true;

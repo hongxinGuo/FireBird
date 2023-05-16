@@ -14,21 +14,25 @@ namespace FireBirdTest {
 	class CVirtualDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -168,6 +172,14 @@ namespace FireBirdTest {
 		dataSource.SetErrorCode(0);
 		EXPECT_FALSE(dataSource.IsWebError());
 		EXPECT_EQ(dataSource.GetErrorCode(), 0);
+	}
+
+	TEST_F(CVirtualDataSourceTest, TestIsGetWebDataAndProcessItThreadRunning) {
+		EXPECT_FALSE(dataSource.IsGetWebDataAndProcessItThreadRunning());
+		dataSource.SetGetWebDataAndProcessItThreadRunning(true);
+		EXPECT_TRUE(dataSource.IsGetWebDataAndProcessItThreadRunning());
+		dataSource.SetGetWebDataAndProcessItThreadRunning(false);
+		EXPECT_FALSE(dataSource.IsGetWebDataAndProcessItThreadRunning());
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestIsTimeout) {

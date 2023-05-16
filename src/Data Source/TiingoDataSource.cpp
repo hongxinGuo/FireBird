@@ -97,8 +97,10 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 		}
 
 		if (!IsInquiring()) {
+			ASSERT(!HaveInquiry());
 			InquireTiingo();
 			if (IsInquiring()) {
+				ASSERT(HaveInquiry());
 				return true;
 			}
 		}

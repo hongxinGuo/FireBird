@@ -123,8 +123,8 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 		l += 7;
 		lStartDate = (year + 7) * 10000 + 101;
 		iCounter++;
-	}
-	while (l < yearDiffer);
+	} while (l < yearDiffer);
+
 	if (iCounter > 0) product->SetInquiryNumber(iCounter);
 
 	return vProduct;

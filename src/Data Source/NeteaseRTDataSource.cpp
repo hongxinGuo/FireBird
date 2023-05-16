@@ -36,6 +36,7 @@ bool CNeteaseRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 		}
 		// 后申请网络数据
 		if (!IsInquiring()) {
+			ASSERT(!HaveInquiry());
 			InquireRTData(lCurrentTime);
 			return true;
 		}
@@ -45,6 +46,7 @@ bool CNeteaseRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 
 bool CNeteaseRTDataSource::InquireRTData(const long lCurrentTime) {
 	if (!IsInquiring()) {
+		ASSERT(!HaveInquiry());
 		const auto product = make_shared<CProductNeteaseRT>();
 		const CString strMessage = _T("http://api.money.126.net/data/feed/");
 		const CString strStocks = gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock()); // 目前还是使用全部股票池

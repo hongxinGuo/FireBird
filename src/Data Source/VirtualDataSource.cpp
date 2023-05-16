@@ -43,10 +43,17 @@ CVirtualDataSource::CVirtualDataSource() {
 	m_dwWebErrorCode = 0;
 }
 
+/// <summary>
+/// DataSource的顶层函数。
+/// 当申请信息为空时，生成当前查询字符串。
+/// 当存在申请信息且没有正在运行的查询线程时，生成查询线程。
+/// </summary>
+/// <param name="lCurrentTime"：当前市场时间></param>
 void CVirtualDataSource::Run(const long lCurrentTime) {
 	ASSERT(m_fEnable);
 
 	if (!IsInquiring()) {
+		ASSERT(!HaveInquiry());
 		GenerateInquiryMessage(lCurrentTime);
 	}
 
@@ -166,6 +173,7 @@ bool CVirtualDataSource::Read() {
 		DiscardProduct(); // 当一次查询产生多次申请时，这些申请都是各自相关的，只要出现一次错误，其他的申请就无意义了。
 		DiscardReceivedData();
 		ASSERT(IsInquiring());
+		ASSERT(HaveInquiry());
 		SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
 

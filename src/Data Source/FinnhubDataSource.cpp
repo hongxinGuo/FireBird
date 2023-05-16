@@ -180,8 +180,10 @@ bool CFinnhubDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 			m_llLastTimeTickCount = llTickCount;
 		}
 		if (!IsInquiring()) {
+			ASSERT(!HaveInquiry());
 			InquireFinnhub(lCurrentTime);
 			if (IsInquiring()) {
+				ASSERT(HaveInquiry());
 				return true;
 			}
 		}

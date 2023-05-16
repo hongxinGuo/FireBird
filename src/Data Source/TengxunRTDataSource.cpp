@@ -23,9 +23,9 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	const long long llTickCount = GetTickCount();
 
 	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请腾讯实时数据。
-	if (gl_pChinaMarket->IsSystemReady() && (llTickCount > (m_llLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime() * 5))) {
+	if (gl_pChinaMarket->IsSystemReady() && llTickCount > m_llLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime() * 5) {
 		if (IsWebError()) {
-			m_llLastTimeTickCount = llTickCount + 10000; //网络出现错误时，延迟十秒再查询
+			m_llLastTimeTickCount = llTickCount + 5000; //网络出现错误时，延迟五秒再查询
 		}
 		else {
 			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady() && !gl_systemConfiguration.IsDebugMode()) {
@@ -60,9 +60,9 @@ void CTengxunRTDataSource::GenerateCurrentInquiryMessage() {
 
 void CTengxunRTDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 3000); // 正常情况下Tengxun实时数据接收时间大致为300毫秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 1000); // 设置接收超时时间为1000毫秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 500); // 设置发送超时时间为200毫秒
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 5000); // 正常情况下Tengxun实时数据接收时间大致为300毫秒。
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 2000); // 设置接收超时时间为1000毫秒
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 1000); // 设置发送超时时间为200毫秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
 
