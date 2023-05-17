@@ -592,9 +592,8 @@ void CMainFrame::UpdateStatus() {
 			m_wndStatusBar.SetPaneText(10, str);
 		}
 	}
-	// 更新当前工作线程数
-	//sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfSavingThread());
-	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
+	// 更新当前申请网络数据的工作线程数
+	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfWebInquiringThread());
 	str = buffer;
 	SysCallSetPaneText(11, str);
 

@@ -90,7 +90,6 @@ public:
 
 	size_t GetInquiryQueueSize() const noexcept { return m_qProduct.size(); }
 	void StoreInquiry(const CVirtualProductWebDataPtr& p) { m_qProduct.push(p); }
-
 	CVirtualProductWebDataPtr GetCurrentProduct() {
 		m_pCurrentProduct = m_qProduct.front();
 		m_qProduct.pop();
@@ -100,15 +99,16 @@ public:
 		if (m_qProduct.empty()) return false;
 		return true;
 	}
+	void DiscardAllInquiry() { while (m_qProduct.size() > 0) m_qProduct.pop(); }
 
 	void StoreReceivedData(const CWebDataPtr& pData) noexcept { m_qReceivedData.PushData(pData); }
 	CWebDataPtr GetReceivedData() noexcept { return m_qReceivedData.PopData(); }
 	size_t GetReceivedDataSize() noexcept { return m_qReceivedData.Size(); }
-
 	bool HaveReceivedData() {
 		if (m_qReceivedData.Empty()) return false;
 		return true;
 	}
+	void DiscardReceivedData() { while (GetReceivedDataSize() > 0) GetReceivedData(); }
 
 	bool IsInquiring() const noexcept { return m_fInquiring; }
 	void SetInquiring(const bool fFlag) noexcept { m_fInquiring = fFlag; }
@@ -151,10 +151,6 @@ public:
 
 	void SetCurrentInquiryTime(const time_t tt) noexcept { m_tCurrentInquiryTime = tt; }
 	time_t GetCurrentInquiryTime() const noexcept { return m_tCurrentInquiryTime; }
-
-	// 辅助函数
-	void DiscardProduct() { while (m_qProduct.size() > 0) m_qProduct.pop(); }
-	void DiscardReceivedData() { while (GetReceivedDataSize() > 0) GetReceivedData(); }
 
 public:
 	// 以下为测试用函数

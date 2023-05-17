@@ -170,10 +170,9 @@ bool CVirtualDataSource::Read() {
 	else {
 		// error handling
 		bSucceed = false;
-		DiscardProduct(); // 当一次查询产生多次申请时，这些申请都是各自相关的，只要出现一次错误，其他的申请就无意义了。
+		DiscardAllInquiry(); // 当一次查询产生多次申请时，这些申请都是各自相关的，只要出现一次错误，其他的申请就无意义了。
 		DiscardReceivedData();
 		ASSERT(IsInquiring());
-		ASSERT(HaveInquiry());
 		SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
 
@@ -207,8 +206,7 @@ void CVirtualDataSource::ReadWebData() {
 			XferReadingToBuffer(m_lByteRead, lCurrentByteRead);
 			m_lByteRead += lCurrentByteRead;
 			IncreaseBufferSizeIfNeeded();
-		}
-		while (lCurrentByteRead > 0);
+		} while (lCurrentByteRead > 0);
 		sm_lTotalByteRead += m_lByteRead;
 		// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
 		m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。

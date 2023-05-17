@@ -234,7 +234,7 @@ namespace FireBirdTest {
 		dataSource.StoreInquiry(p2);
 		EXPECT_EQ(dataSource.GetInquiryQueueSize(), 2);
 
-		dataSource.DiscardProduct();
+		dataSource.DiscardAllInquiry();
 
 		EXPECT_EQ(dataSource.GetInquiryQueueSize(), 0);
 	}
