@@ -36,7 +36,7 @@ CVirtualDataSource::CVirtualDataSource() {
 
 	m_lContentLength = -1;
 	m_fInquiring = false;
-	m_bIsGetWebDataAndProcessItThreadRunning = false;
+	m_bIsWorkingThreadRunning = false;
 
 	m_llLastTimeTickCount = 0;
 	m_lByteRead = 0;
@@ -48,7 +48,7 @@ CVirtualDataSource::CVirtualDataSource() {
 /// 当申请信息为空时，生成当前查询字符串。
 /// 当存在申请信息且没有正在运行的查询线程时，生成查询线程。
 /// </summary>
-/// <param name="lCurrentTime"：当前市场时间></param>
+/// lCurrentTime：当前市场时间
 void CVirtualDataSource::Run(const long lCurrentTime) {
 	ASSERT(m_fEnable);
 
@@ -57,11 +57,11 @@ void CVirtualDataSource::Run(const long lCurrentTime) {
 		GenerateInquiryMessage(lCurrentTime);
 	}
 
-	if (HaveInquiry() && !IsGetWebDataAndProcessItThreadRunning()) {
+	if (HaveInquiry() && !IsWorkingThreadRunning()) {
 		ASSERT(IsInquiring());
 		GetCurrentProduct();
 		GenerateCurrentInquiryMessage();
-		SetGetWebDataAndProcessItThreadRunning(true); // 在调用工作线程前即设置该值
+		SetWorkingThreadRunning(true); // 在调用工作线程前即设置该值
 		CreateThreadGetWebDataAndProcessIt();
 	}
 }
@@ -82,7 +82,7 @@ bool CVirtualDataSource::GetWebDataAndProcessIt() {
 	CHighPerformanceCounter counter;
 	bool bSucceed = false;
 
-	ASSERT(IsGetWebDataAndProcessItThreadRunning());// 在调用工作线程前即设置
+	ASSERT(IsWorkingThreadRunning());// 在调用工作线程前即设置
 	counter.start();
 	if (GetWebData()) {
 		if (ProcessWebDataReceived()) {
@@ -92,7 +92,7 @@ bool CVirtualDataSource::GetWebDataAndProcessIt() {
 	}
 	counter.stop();
 	SetCurrentInquiryTime(counter.GetElapsedMillisecond());
-	SetGetWebDataAndProcessItThreadRunning(false);
+	SetWorkingThreadRunning(false);
 	return bSucceed;
 }
 
@@ -202,7 +202,7 @@ void CVirtualDataSource::ReadWebData() {
 			if (gl_systemStatus.IsExitingSystem()) {// 当系统退出时，要立即中断此进程，以防止内存泄露。
 				break;
 			}
-			lCurrentByteRead = ReadWebFileOneTime(); // 每次读取1K数据。
+			lCurrentByteRead = ReadWebFileOneTime(); // 每次读取16K数据。
 			XferReadingToBuffer(m_lByteRead, lCurrentByteRead);
 			m_lByteRead += lCurrentByteRead;
 			IncreaseBufferSizeIfNeeded();

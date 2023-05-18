@@ -112,13 +112,13 @@ public:
 
 	bool IsInquiring() const noexcept { return m_fInquiring; }
 	void SetInquiring(const bool fFlag) noexcept { m_fInquiring = fFlag; }
-	bool IsGetWebDataAndProcessItThreadRunning() const noexcept { return m_bIsGetWebDataAndProcessItThreadRunning; }
-	void SetGetWebDataAndProcessItThreadRunning(const bool fFlag) noexcept { m_bIsGetWebDataAndProcessItThreadRunning = fFlag; }
-
 	bool IsInquiringAndClearFlag() noexcept {
 		const bool fInquiring = m_fInquiring.exchange(false);
 		return fInquiring;
 	}
+
+	bool IsWorkingThreadRunning() const noexcept { return m_bIsWorkingThreadRunning; }
+	void SetWorkingThreadRunning(const bool fFlag) noexcept { m_bIsWorkingThreadRunning = fFlag; }
 
 	bool IsEnable() const noexcept { return m_fEnable; }
 	void Enable(const bool fFlag) noexcept { m_fEnable = fFlag; }
@@ -136,7 +136,6 @@ public:
 	bool IsWebError() const noexcept { return m_dwWebErrorCode != 0; }
 	DWORD GetErrorCode() const noexcept { return m_dwWebErrorCode; }
 	void SetErrorCode(const DWORD dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
-
 	bool IsTimeout() const noexcept {
 		if (m_dwWebErrorCode == 12002) return true;
 		return false;
@@ -189,7 +188,7 @@ protected:
 
 	bool m_fEnable; // 允许执行标识
 	atomic_bool m_fInquiring;
-	atomic_bool m_bIsGetWebDataAndProcessItThreadRunning;
+	atomic_bool m_bIsWorkingThreadRunning;
 
 private:
 	char m_dataBuffer[DATA_BUFFER_SIZE_]; //网络数据缓存

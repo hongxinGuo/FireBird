@@ -60,7 +60,7 @@ namespace FireBirdTest {
 		m_pVirtualDataSource->Enable(true);
 		EXPECT_FALSE(m_pVirtualDataSource->HaveInquiry());
 		m_pVirtualDataSource->SetInquiring(false);
-		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(false);
+		m_pVirtualDataSource->SetWorkingThreadRunning(false);
 		CVirtualProductWebDataPtr p = make_shared<CVirtualWebProduct>();
 
 		EXPECT_CALL(*m_pVirtualDataSource, GenerateInquiryMessage).Times(1)
@@ -72,20 +72,20 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pVirtualDataSource, CreateThreadGetWebDataAndProcessIt).Times(1)
 		.WillOnce(Invoke([]() {
 			m_pVirtualDataSource->SetInquiring(false);
-			m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(false);
+			m_pVirtualDataSource->SetWorkingThreadRunning(false);
 		}));
 
 		m_pVirtualDataSource->Run(100000);
 
 		EXPECT_FALSE(m_pVirtualDataSource->IsInquiring());
-		EXPECT_FALSE(m_pVirtualDataSource->IsGetWebDataAndProcessItThreadRunning());
+		EXPECT_FALSE(m_pVirtualDataSource->IsWorkingThreadRunning());
 	}
 
 	TEST_F(CMockVirtualDataSourceTest, TestRun3) {
 		m_pVirtualDataSource->Enable(true);
 		EXPECT_FALSE(m_pVirtualDataSource->HaveInquiry());
 		m_pVirtualDataSource->SetInquiring(true);
-		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(false);
+		m_pVirtualDataSource->SetWorkingThreadRunning(false);
 		const auto p = make_shared<CVirtualWebProduct>();
 		m_pVirtualDataSource->StoreInquiry(p);
 
@@ -103,7 +103,7 @@ namespace FireBirdTest {
 		m_pVirtualDataSource->Enable(true);
 		EXPECT_FALSE(m_pVirtualDataSource->HaveInquiry());
 		m_pVirtualDataSource->SetInquiring(true);
-		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(true);
+		m_pVirtualDataSource->SetWorkingThreadRunning(true);
 		const auto p = make_shared<CVirtualWebProduct>();
 		m_pVirtualDataSource->StoreInquiry(p);
 
@@ -117,7 +117,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockVirtualDataSourceTest, TestReadWebDataAndProcessIt1) {
-		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(true);
+		m_pVirtualDataSource->SetWorkingThreadRunning(true);
 		EXPECT_CALL(*m_pVirtualDataSource, GetWebData).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(0);
@@ -126,11 +126,11 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pVirtualDataSource->GetWebDataAndProcessIt());
 
 		// »Ö¸´Ô­×´
-		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(false);
+		m_pVirtualDataSource->SetWorkingThreadRunning(false);
 	}
 
 	TEST_F(CMockVirtualDataSourceTest, TestReadWebDataAndProcessIt2) {
-		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(true);
+		m_pVirtualDataSource->SetWorkingThreadRunning(true);
 		EXPECT_CALL(*m_pVirtualDataSource, GetWebData).Times(1)
 		.WillOnce(Return(true));
 		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(1)
@@ -140,11 +140,11 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pVirtualDataSource->GetWebDataAndProcessIt());
 
 		// »Ö¸´Ô­×´
-		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(false);
+		m_pVirtualDataSource->SetWorkingThreadRunning(false);
 	}
 
 	TEST_F(CMockVirtualDataSourceTest, TestReadWebDataAndProcessIt3) {
-		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(true);
+		m_pVirtualDataSource->SetWorkingThreadRunning(true);
 		EXPECT_CALL(*m_pVirtualDataSource, GetWebData).Times(1)
 		.WillOnce(Return(true));
 		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(1)
@@ -154,7 +154,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pVirtualDataSource->GetWebDataAndProcessIt());
 
 		// »Ö¸´Ô­×´
-		m_pVirtualDataSource->SetGetWebDataAndProcessItThreadRunning(false);
+		m_pVirtualDataSource->SetWorkingThreadRunning(false);
 	}
 
 	TEST_F(CMockVirtualDataSourceTest, TestReadWebData1) {
