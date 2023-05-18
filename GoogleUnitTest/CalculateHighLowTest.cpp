@@ -96,7 +96,7 @@ namespace FireBirdTest {
 		                         &HighLowData13, &HighLowData14, &HighLowData15,
 		                         &HighLowData16, &HighLowData17, &HighLowData18,
 		                         &HighLowData19, &HighLowData20, &HighLowData21,
-		                         & HighLowData22, &HighLowData23, &HighLowData24,
+		                         &HighLowData22, &HighLowData23, &HighLowData24,
 		                         &HighLowData25, &HighLowData26, &HighLowData27,
 		                         &HighLowData28));
 

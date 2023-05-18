@@ -17,16 +17,19 @@ namespace FireBirdTest {
 	class CMockFinnhubDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			ASSERT_THAT(gl_pFinnhubDataSource, NotNull());
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			m_pMockFinnhubDataSource = make_shared<CMockFinnhubDataSource>();
 		}
 
@@ -34,7 +37,8 @@ namespace FireBirdTest {
 			// clearUp
 			m_pMockFinnhubDataSource = nullptr;
 			gl_pWorldMarket->SetSystemReady(true);
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -59,6 +63,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockFinnhubDataSourceTest, TestGenerateInquiryMessage3) {
+		auto p = make_shared<CVirtualWebProduct>();
+
 		EXPECT_FALSE(m_pMockFinnhubDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		EXPECT_FALSE(gl_systemStatus.IsWebBusy());
@@ -69,7 +75,10 @@ namespace FireBirdTest {
 		.WillOnce(Return(300000 + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()))
 		.WillOnce(Return(300000 + 100000));
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEconomicCalendar()).Times(2)
-		.WillRepeatedly(DoAll(Invoke([]() { m_pMockFinnhubDataSource->SetInquiring(true); }), Return(true)));
+		.WillRepeatedly(DoAll(Invoke([p]() {
+			m_pMockFinnhubDataSource->SetInquiring(true);
+			m_pMockFinnhubDataSource->StoreInquiry(p);
+		}), Return(true)));
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCountryList()).Times(2);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireForexExchange()).Times(2);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCryptoExchange()).Times(2);
@@ -91,12 +100,15 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120000)) << "网络报错，延后五分钟";
 		EXPECT_TRUE(m_pMockFinnhubDataSource->IsInquiring());
+		EXPECT_TRUE(m_pMockFinnhubDataSource->HaveInquiry());
+		m_pMockFinnhubDataSource->DiscardAllInquiry();
 		m_pMockFinnhubDataSource->SetInquiring(false);
 		m_pMockFinnhubDataSource->SetErrorCode(0);
 		EXPECT_FALSE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120500)) << "未过五分钟，继续等待";
 		EXPECT_TRUE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120500)) << "已过五分钟，申请数据";
 
 		EXPECT_TRUE(m_pMockFinnhubDataSource->IsInquiring());
+		EXPECT_TRUE(m_pMockFinnhubDataSource->HaveInquiry());
 	}
 
 	TEST_F(CMockFinnhubDataSourceTest, TestInquiryFinnhub1) {

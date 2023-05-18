@@ -15,18 +15,21 @@ namespace FireBirdTest {
 	class CMockQuandlDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			m_fSystemStatus = gl_pWorldMarket->IsSystemReady();
 			gl_pWorldMarket->SetSystemReady(true); // Quandl引擎必须等待系统初始化后才可使用。
 		}
 
 		static void TearDownTestSuite() {
 			gl_pWorldMarket->SetSystemReady(m_fSystemStatus);
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			gl_pWorldMarket->CalculateTime();
 			m_pMockQuandlDataSource = make_shared<CMockQuandlDataSource>();
 		}
@@ -35,7 +38,8 @@ namespace FireBirdTest {
 			// clearUp
 			m_pMockQuandlDataSource = nullptr;
 			gl_pWorldMarket->SetResetMarket(true);
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -48,6 +52,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockQuandlDataSourceTest, TestGenerateInquiryMessage1) {
+		auto p = make_shared<CVirtualWebProduct>();
+
 		EXPECT_FALSE(m_pMockQuandlDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 
@@ -57,10 +63,15 @@ namespace FireBirdTest {
 		.WillOnce(Return(300000 + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime()))
 		.WillOnce(Return(300000 + 100000));
 		EXPECT_CALL(*m_pMockQuandlDataSource, InquireQuandl()).Times(2)
-		.WillRepeatedly(DoAll(Invoke([]() { m_pMockQuandlDataSource->SetInquiring(true); }), Return(true)));
+		.WillRepeatedly(DoAll(Invoke([p]() {
+			m_pMockQuandlDataSource->SetInquiring(true);
+			m_pMockQuandlDataSource->StoreInquiry(p);
+		}), Return(true)));
 
 		EXPECT_TRUE(m_pMockQuandlDataSource->GenerateInquiryMessage(120000)) << "网络报错，延后五分钟";
 		EXPECT_TRUE(m_pMockQuandlDataSource->IsInquiring());
+		EXPECT_TRUE(m_pMockQuandlDataSource->HaveInquiry());
+		m_pMockQuandlDataSource->DiscardAllInquiry();
 		m_pMockQuandlDataSource->SetInquiring(false);
 		m_pMockQuandlDataSource->SetErrorCode(0);
 		EXPECT_FALSE(m_pMockQuandlDataSource->GenerateInquiryMessage(120500)) << "未过五分钟，继续等待";

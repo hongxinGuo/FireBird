@@ -13,15 +13,18 @@ namespace FireBirdTest {
 	class CMockNeteaseRTDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			m_pMockNeteaseRTDataSource = make_shared<CMockNeteaseRTDataSource>();
 		}
@@ -29,7 +32,8 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			m_pMockNeteaseRTDataSource = nullptr;
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -45,6 +49,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestGenerateInquiryMessage) {
+		auto p = make_shared<CVirtualWebProduct>();
+
 		EXPECT_FALSE(m_pMockNeteaseRTDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 		gl_pChinaMarket->SetSystemReady(false); // 保证快速申请数据
@@ -58,17 +64,25 @@ namespace FireBirdTest {
 		.WillOnce(Return(20000 + 2 + 2 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
 
 		EXPECT_FALSE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120000));
+		EXPECT_FALSE(m_pMockNeteaseRTDataSource->IsInquiring());
 		EXPECT_TRUE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120000)) << "Web Error, postponed 10 seconds";
-		m_pMockNeteaseRTDataSource->SetErrorCode(0);
-		EXPECT_FALSE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120600)) << "已过10秒且网络正常，申请数据";
 		EXPECT_TRUE(m_pMockNeteaseRTDataSource->IsInquiring());
+		EXPECT_TRUE(m_pMockNeteaseRTDataSource->HaveInquiry());
+		m_pMockNeteaseRTDataSource->DiscardAllInquiry();
+		m_pMockNeteaseRTDataSource->SetInquiring(false);
+		m_pMockNeteaseRTDataSource->SetErrorCode(0);
+		EXPECT_TRUE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120600)) << "已过10秒且网络正常，申请数据";
+		EXPECT_TRUE(m_pMockNeteaseRTDataSource->IsInquiring());
+		EXPECT_TRUE(m_pMockNeteaseRTDataSource->HaveInquiry());
+		m_pMockNeteaseRTDataSource->DiscardAllInquiry();
 		m_pMockNeteaseRTDataSource->SetInquiring(false);
 
 		EXPECT_FALSE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120100)) << "继续等待";
+		EXPECT_FALSE(m_pMockNeteaseRTDataSource->IsInquiring());
 		EXPECT_TRUE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120600)) << "申请数据";
 
-		EXPECT_TRUE(m_pMockNeteaseRTDataSource->HaveInquiry());
 		EXPECT_TRUE(m_pMockNeteaseRTDataSource->IsInquiring());
+		EXPECT_TRUE(m_pMockNeteaseRTDataSource->HaveInquiry());
 
 		// 恢复原状
 		gl_pChinaMarket->SetSystemReady(true);
