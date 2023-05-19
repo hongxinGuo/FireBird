@@ -24,8 +24,14 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 
 	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请腾讯实时数据。
 	if (gl_pChinaMarket->IsSystemReady() && llTickCount > m_llLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime() * 5) {
+		static bool bPostponed = false;
 		if (IsWebError()) {
-			m_llLastTimeTickCount = llTickCount + 5000; //网络出现错误时，延迟五秒再查询
+			if (!bPostponed) {
+				m_llLastTimeTickCount = llTickCount + 5000;
+				bPostponed = true;
+				return false; //网络出现错误时，延迟五秒再查询
+			}
+			else m_llLastTimeTickCount = llTickCount;
 		}
 		else {
 			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady() && !gl_systemConfiguration.IsDebugMode()) {
@@ -37,6 +43,7 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 		}
 		if (!IsInquiring()) {
 			InquireRTData(lCurrentTime);
+			bPostponed = false;
 			return true;
 		}
 	}

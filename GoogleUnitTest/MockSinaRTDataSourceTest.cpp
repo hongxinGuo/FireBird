@@ -14,17 +14,20 @@ namespace FireBirdTest {
 	class CMockSinaRTDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			gl_pChinaMarket->SetSinaStockRTDataInquiringIndex(0);
 		}
 
 		static void TearDownTestSuite() {
 			while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			m_pMockSinaRTDataSource = make_shared<CMockSinaRTDataSource>();
 		}
 
@@ -32,7 +35,8 @@ namespace FireBirdTest {
 			// clearUp
 			m_pMockSinaRTDataSource = nullptr;
 			gl_pChinaMarket->SetSinaStockRTDataInquiringIndex(0);
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -64,20 +68,24 @@ namespace FireBirdTest {
 		.WillOnce(Return(20000 + 2 + 2 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
 
 		EXPECT_FALSE(m_pMockSinaRTDataSource->GenerateInquiryMessage(120000));
-		EXPECT_TRUE(m_pMockSinaRTDataSource->GenerateInquiryMessage(120000)) << "Web Error, postponed 10 seconds";
-		EXPECT_TRUE(m_pMockSinaRTDataSource->IsInquiring());
-		m_pMockSinaRTDataSource->SetInquiring(false);
+		EXPECT_FALSE(m_pMockSinaRTDataSource->GenerateInquiryMessage(120000)) << "Web Error, postponed 5 seconds";
+		EXPECT_FALSE(m_pMockSinaRTDataSource->IsInquiring());
+		EXPECT_FALSE(m_pMockSinaRTDataSource->HaveInquiry());
 
 		m_pMockSinaRTDataSource->SetErrorCode(0);
-		EXPECT_TRUE(m_pMockSinaRTDataSource->GenerateInquiryMessage(120600)) << "已过10秒且网络正常，申请数据";
+		EXPECT_TRUE(m_pMockSinaRTDataSource->GenerateInquiryMessage(120600)) << "已过5秒且网络正常，申请数据";
 		EXPECT_TRUE(m_pMockSinaRTDataSource->IsInquiring());
+		EXPECT_TRUE(m_pMockSinaRTDataSource->HaveInquiry());
+		m_pMockSinaRTDataSource->DiscardAllInquiry();
 		m_pMockSinaRTDataSource->SetInquiring(false);
 
 		EXPECT_FALSE(m_pMockSinaRTDataSource->GenerateInquiryMessage(120100)) << "继续等待";
+		EXPECT_FALSE(m_pMockSinaRTDataSource->IsInquiring());
+		EXPECT_FALSE(m_pMockSinaRTDataSource->HaveInquiry());
 		EXPECT_TRUE(m_pMockSinaRTDataSource->GenerateInquiryMessage(120600)) << "申请数据";
 
-		EXPECT_TRUE(m_pMockSinaRTDataSource->HaveInquiry());
 		EXPECT_TRUE(m_pMockSinaRTDataSource->IsInquiring());
+		EXPECT_TRUE(m_pMockSinaRTDataSource->HaveInquiry());
 
 		// 恢复原状
 		gl_pChinaMarket->SetSystemReady(true);
