@@ -64,26 +64,9 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 		EXPECT_FALSE(gl_systemStatus.IsWebBusy());
 
-		m_pMockTengxunRTDataSource->SetErrorCode(12002);
-		EXPECT_CALL(*m_pMockTengxunRTDataSource, GetTickCount()).Times(5)
-		.WillOnce(Return(0))
-		.WillOnce(Return(10000))
-		.WillOnce(Return(30000 + 1 + 5 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
-		.WillOnce(Return(30000 + 1 + 10 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
-		.WillOnce(Return(400000));
-
-		EXPECT_FALSE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(120000));
-		EXPECT_FALSE(m_pMockTengxunRTDataSource->IsInquiring());
-		EXPECT_FALSE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(120100)) << "Web Error, postponed 5 seconds";
-		EXPECT_FALSE(m_pMockTengxunRTDataSource->IsInquiring());
-
-		m_pMockTengxunRTDataSource->SetErrorCode(0);
-		EXPECT_TRUE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(120600)) << "已过5秒且网络正常，申请数据";
-		EXPECT_TRUE(m_pMockTengxunRTDataSource->IsInquiring());
-		EXPECT_TRUE(m_pMockTengxunRTDataSource->HaveInquiry());
-		m_pMockTengxunRTDataSource->SetInquiring(false);
-		m_pMockTengxunRTDataSource->DiscardAllInquiry();
-		m_pMockTengxunRTDataSource->SetInquiring(false);
+		EXPECT_CALL(*m_pMockTengxunRTDataSource, GetTickCount()).Times(2)
+		.WillOnce(Return(5 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
+		.WillOnce(Return(1 + 5 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
 
 		EXPECT_FALSE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(121100)) << "继续等待";
 		EXPECT_FALSE(m_pMockTengxunRTDataSource->IsInquiring());

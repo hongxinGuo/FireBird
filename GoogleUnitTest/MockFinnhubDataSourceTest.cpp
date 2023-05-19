@@ -69,10 +69,8 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		EXPECT_FALSE(gl_systemStatus.IsWebBusy());
 
-		m_pMockFinnhubDataSource->SetErrorCode(12002);
-		EXPECT_CALL(*m_pMockFinnhubDataSource, GetTickCount()).Times(3)
-		.WillOnce(Return(1 + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()))
-		.WillOnce(Return(300000 + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()))
+		EXPECT_CALL(*m_pMockFinnhubDataSource, GetTickCount()).Times(2)
+		.WillOnce(Return(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()))
 		.WillOnce(Return(300000 + 100000));
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEconomicCalendar()).Times(1)
 		.WillRepeatedly(DoAll(Invoke([p]() {
@@ -98,14 +96,10 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEPSSurprise()).Times(0);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireRTQuote()).Times(0);
 
-		EXPECT_FALSE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120000)) << "网络报错，延后五分钟";
+		EXPECT_FALSE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120500)) << "时间未到，继续等待";
 		EXPECT_FALSE(m_pMockFinnhubDataSource->IsInquiring());
 		EXPECT_FALSE(m_pMockFinnhubDataSource->HaveInquiry());
-		m_pMockFinnhubDataSource->SetErrorCode(0);
-		EXPECT_FALSE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120500)) << "未过五分钟，继续等待";
-		EXPECT_FALSE(m_pMockFinnhubDataSource->IsInquiring());
-		EXPECT_FALSE(m_pMockFinnhubDataSource->HaveInquiry());
-		EXPECT_TRUE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120500)) << "已过五分钟，申请数据";
+		EXPECT_TRUE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120500)) << "申请数据";
 
 		EXPECT_TRUE(m_pMockFinnhubDataSource->IsInquiring());
 		EXPECT_TRUE(m_pMockFinnhubDataSource->HaveInquiry());

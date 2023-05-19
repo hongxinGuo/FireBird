@@ -81,22 +81,10 @@ bool CQuandlDataSource::GenerateInquiryMessage(long lCurrentTime) {
 	const long long llTickCount = GetTickCount();
 
 	if (llTickCount > (m_llLastTimeTickCount + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime())) {
-		static bool bPostponed = false;
-		if (IsWebError()) {
-			if (!bPostponed) {
-				m_llLastTimeTickCount = llTickCount + 300000; // 如果出现错误，则延迟五分钟再重新申请
-				bPostponed = true;
-				return false; //网络出现错误时，延迟5分钟再查询
-			}
-			else m_llLastTimeTickCount = llTickCount;
-		}
-		else {
-			m_llLastTimeTickCount = llTickCount;
-		}
+		m_llLastTimeTickCount = llTickCount;
 
 		if (!IsInquiring()) {
 			InquireQuandl();
-			bPostponed = false;
 			if (IsInquiring()) {
 				return true;
 			}

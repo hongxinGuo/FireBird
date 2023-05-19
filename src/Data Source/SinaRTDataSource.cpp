@@ -31,28 +31,16 @@ bool CSinaRTDataSource::Reset() {
 bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	const long long llTickCount = GetTickCount();
 	if (llTickCount > (m_llLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime())) {
-		static bool bPostponed = false;
-		// 先判断下次的申请时间。因网络错误只在顺利接收网络数据后方才重置。
-		if (IsWebError()) {
-			if (!bPostponed) {
-				m_llLastTimeTickCount = llTickCount + 5000;
-				bPostponed = true;
-				return false; //网络出现错误时，延迟五秒再查询
-			}
-			else m_llLastTimeTickCount = llTickCount;
+		// 先判断下次申请时间。出现网络错误时无视之，继续下次申请。
+		if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady() && !gl_systemConfiguration.IsDebugMode()) { // 系统配置为测试系统时，不降低轮询速度
+			m_llLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
 		}
 		else {
-			if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady() && !gl_systemConfiguration.IsDebugMode()) { // 系统配置为测试系统时，不降低轮询速度
-				m_llLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
-			}
-			else {
-				m_llLastTimeTickCount = llTickCount;
-			}
+			m_llLastTimeTickCount = llTickCount;
 		}
 		// 后申请网络数据
 		if (!IsInquiring()) {
 			InquireRTData(lCurrentTime);
-			bPostponed = false;
 			return true;
 		}
 	}

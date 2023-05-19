@@ -173,22 +173,11 @@ bool CFinnhubDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 
 	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请finnhub各数据。
 	if (llTickCount > (m_llLastTimeTickCount + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime())) {
-		static bool bPostponed = false;
-		if (IsWebError()) {
-			if (!bPostponed) {
-				m_llLastTimeTickCount = llTickCount + 300000; // 如果出现错误，则延迟五分钟再重新申请
-				bPostponed = true;
-				return false; //网络出现错误时，延迟5分钟再查询
-			}
-			else m_llLastTimeTickCount = llTickCount;
-		}
-		else {
-			m_llLastTimeTickCount = llTickCount;
-		}
+		m_llLastTimeTickCount = llTickCount;
+
 		if (!IsInquiring()) {
 			ASSERT(!HaveInquiry());
 			InquireFinnhub(lCurrentTime);
-			bPostponed = false;
 			if (IsInquiring()) {
 				ASSERT(HaveInquiry());
 				return true;
