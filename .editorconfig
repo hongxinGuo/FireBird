@@ -135,7 +135,9 @@ tab_width = 2
 [*]
 
 # ReSharper properties
+resharper_align_multiline_calls_chain = false
 resharper_anonymous_method_declaration_braces = end_of_line
+resharper_blank_lines_around_function_definition = 0
 resharper_break_template_declaration = do_not_change
 resharper_case_block_braces = end_of_line
 resharper_continuous_line_indent = none
@@ -145,7 +147,6 @@ resharper_cpp_keep_user_linebreaks = true
 resharper_cpp_max_line_length = 3000
 resharper_cpp_tab_width = 2
 resharper_cpp_use_indent_from_vs = false
-resharper_cpp_wrap_lines = false
 resharper_disable_space_changes_before_trailing_comment = true
 resharper_empty_block_style = together
 resharper_function_declaration_return_type_style = do_not_change
@@ -156,6 +157,7 @@ resharper_keep_blank_lines_in_declarations = 1
 resharper_keep_user_linebreaks = true
 resharper_namespace_declaration_braces = end_of_line
 resharper_new_line_before_catch = true
+resharper_new_line_before_while = false
 resharper_other_braces = end_of_line
 resharper_place_namespace_definitions_on_same_line = true
 resharper_requires_expression_braces = end_of_line
@@ -164,6 +166,7 @@ resharper_simple_embedded_statement_style = do_not_change
 resharper_toplevel_function_declaration_return_type_style = do_not_change
 resharper_toplevel_function_definition_return_type_style = do_not_change
 resharper_type_declaration_braces = end_of_line
+resharper_use_indent_from_vs = false
 resharper_wrap_enumeration_style = wrap_if_long
 resharper_xml_linebreak_before_multiline_elements = false
 resharper_xml_wrap_lines = false
