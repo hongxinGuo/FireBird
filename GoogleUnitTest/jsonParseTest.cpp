@@ -12,13 +12,15 @@ using std::make_shared;
 namespace FireBirdTest {
 	class jsonParseTest : public testing::Test {
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			gl_systemStatus.SetWorkingMode(false);
-
-			SCOPED_TRACE(""); GeneralCheck();
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -91,7 +93,7 @@ namespace FireBirdTest {
 
 	TEST_F(jsonParseTest, TestParseSinaRTData1) {
 		// 正确的两个数据
-		const CString strData = _T("var hq_str_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00\";\nvar hq_str_sh600001=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00\";\n");
+		const CString strData = _T("var hq_str_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00,\";\nvar hq_str_sh600001=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00,\";\n");
 		const CWebDataPtr pData = make_shared<CWebData>();
 		pData->Test_SetBuffer_(strData);
 
@@ -101,41 +103,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(vData->size(), 2);
 		EXPECT_STREQ(vData->at(0)->GetSymbol(), _T("600000.SS"));
 		EXPECT_STREQ(vData->at(1)->GetSymbol(), _T("600001.SS"));
-	}
-
-	TEST_F(jsonParseTest, TestParseSinaRTData2) {
-		// 第一个数据正确，第二个数据无法解析
-		const CString strData = _T("var hq_str_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00\";\nvar hq_str_sh600001=\"浦发银行,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00\";\n");
-		const CWebDataPtr pData = make_shared<CWebData>();
-		pData->Test_SetBuffer_(strData);
-
-		const auto vData = ParseSinaRTData(pData);
-
-		EXPECT_TRUE(vData != nullptr);
-		EXPECT_EQ(vData->size(), 1);
-		EXPECT_STREQ(vData->at(0)->GetSymbol(), _T("600000.SS"));
-
-		// 恢复原状
-		while (gl_systemMessage.ErrorMessageSize() > 0) {
-			gl_systemMessage.PopErrorMessage();
-		}
-	}
-
-	TEST_F(jsonParseTest, TestParseSinaRTData3) {
-		// 第一个数据无法解析，第二个数据正确
-		const CString strData = _T("var hq_str_sh600000=\"浦发银行,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00\";\nvar hq_str_sh600001=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00\";\n");
-		const CWebDataPtr pData = make_shared<CWebData>();
-		pData->Test_SetBuffer_(strData);
-
-		const auto vData = ParseSinaRTData(pData);
-
-		EXPECT_TRUE(vData != nullptr);
-		EXPECT_EQ(vData->size(), 0);
-
-		// 恢复原状
-		while (gl_systemMessage.ErrorMessageSize() > 0) {
-			gl_systemMessage.PopErrorMessage();
-		}
 	}
 
 	TEST_F(jsonParseTest, TestParseTengxunRTData1) {

@@ -139,7 +139,7 @@ public:
 	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebData, long& lReturnValue) const; // 从file中读入一个长整型
 	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebData, INT64& llReturnValue) const; // 从file中读入一个长整型
 	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebData, double& dReturnValue) const; // 从file中读入一个浮点数
-	static bool ReadSinaOneValue(const CWebDataPtr& pSinaWebData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘，’。
+	static bool ReadSinaOneValue(const CWebDataPtr& pSinaWebData, string_view& svSub); // 从file中读入一个浮点数据，最后字符为‘，’。
 
 	// 读取腾讯实时数据函数
 	// 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
@@ -147,7 +147,7 @@ public:
 	bool ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, long& lReturnValue); // 从file中读入一个长整型
 	bool ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, INT64& llReturnValue); // 从file中读入一个INT64整型
 	bool ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, double& dReturnValue); // 从file中读入一个浮点数
-	static bool ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘~’。
+	static bool ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, string_view& svSub);
 
 public:
 	void SetDataSource(const long lDataSource) noexcept { m_lDataSource = lDataSource; }

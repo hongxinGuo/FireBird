@@ -7,7 +7,8 @@
 namespace FireBirdTest {
 	class CWebDataTest : public ::testing::Test {
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			EXPECT_EQ(webData.GetCurrentPos(), 0);
 			EXPECT_EQ(webData.GetTime(), 0);
 			EXPECT_EQ(webData.GetBufferLength(), 1024 * 1024);
@@ -18,12 +19,37 @@ namespace FireBirdTest {
 		void TearDown() override {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
 		CWebData webData;
 	};
+
+	TEST_F(CWebDataTest, TestOutOfRange) {
+		webData.SetBufferLength(100);
+		webData.SetCurrentPos(0);
+		EXPECT_FALSE(webData.OutOfRange());
+		webData.SetCurrentPos(99);
+		EXPECT_FALSE(webData.OutOfRange());
+		webData.SetCurrentPos(100);
+		EXPECT_TRUE(webData.OutOfRange());
+	}
+
+	TEST_F(CWebDataTest, TestIsLastParagraph) {
+		webData.SetBufferLength(100);
+		webData.SetCurrentPos(0);
+		EXPECT_FALSE(webData.IsLastParagraph());
+		webData.SetCurrentPos(97);
+		EXPECT_FALSE(webData.IsLastParagraph());
+		webData.SetCurrentPos(98);
+		EXPECT_TRUE(webData.IsLastParagraph());
+		webData.SetCurrentPos(99);
+		EXPECT_TRUE(webData.IsLastParagraph());
+		webData.SetCurrentPos(100);
+		EXPECT_TRUE(webData.IsLastParagraph());
+	}
 
 	TEST_F(CWebDataTest, TestGetTime) {
 		EXPECT_EQ(webData.GetTime(), 0);

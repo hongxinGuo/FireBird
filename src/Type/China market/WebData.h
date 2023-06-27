@@ -10,8 +10,10 @@
 
 #include<memory>
 #include<string>
+#include<string_view>
 
 using std::string;
+using std::string_view;
 
 #include"nlohmannJsonDeclaration.h"
 
@@ -43,6 +45,11 @@ public:
 		return false;
 	}
 
+	bool IsLastParagraph() const noexcept { // 已读至最后一段数据
+		if (m_lCurrentPos >= m_lBufferLength - 2) return true;
+		else return false;
+	}
+
 	void Resize(const long lSize) {
 		m_sDataBuffer.resize(lSize);
 		m_lBufferLength = lSize;
@@ -60,6 +67,8 @@ public:
 	string GetDataBuffer() noexcept { return m_sDataBuffer; }
 	INT64 GetCurrentPos() const noexcept { return m_lCurrentPos; }
 	void SetCurrentPos(const INT64 lValue) noexcept { m_lCurrentPos = lValue; }
+	string_view GetStringViewData(const int iDatLength) const { return string_view(m_sDataBuffer.c_str() + m_lCurrentPos, iDatLength); }
+	string_view GetAllOfNeedProcessStringViewData() const { return string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_lBufferLength - m_lCurrentPos); }
 	bool GetData(char* buffer, INT64 lDataLength) const; // 从m_lCurrentPos开始拷贝
 	bool SetData(const char* buffer, INT64 lDataLength); // 从m_lCurrentPos开始填充。
 
