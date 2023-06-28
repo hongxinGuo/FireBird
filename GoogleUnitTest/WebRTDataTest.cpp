@@ -1194,8 +1194,7 @@ namespace FireBirdTest {
 		case 32: // 没有实时数据
 			EXPECT_TRUE(fSucceed); // 读取正确
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
-			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos());
+			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos() + 1) << "当是最后一段数据时，不判断是否存在回车符\n，也不增加当前位置";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("000001.SZ"));
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
 			break;

@@ -253,7 +253,7 @@ namespace FireBirdTest {
 		                         &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40
 	                         ));
 
-	TEST_P(CalculateTengxunWebRTDataTest, TestReadTengxunData2) {
+	TEST_P(CalculateTengxunWebRTDataTest, TestReadTengxunData) {
 		bool fSucceed = m_RTData.ReadTengxunData(m_pTengxunWebRTData);
 		time_t tTime;
 		tm tm_;

@@ -94,7 +94,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData) {
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
 	pWebData->ResetCurrentPos();
-	while (!pWebData->IsProcessedAllTheData()) {
+	while (!pWebData->IsLastDataParagraph()) {
 		auto pRTData = make_shared<CWebRTData>();
 		if (pRTData->ReadSinaData(pWebData)) {
 			pvWebRTData->push_back(pRTData);
@@ -215,7 +215,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(const CWebDataPtr& pWebData
 
 	pWebData->ResetCurrentPos();
 	if (!IsTengxunRTDataInvalid(*pWebData)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
-		while (!pWebData->IsProcessedAllTheData()) {
+		while (!pWebData->IsLastDataParagraph()) {
 			auto pRTData = make_shared<CWebRTData>();
 			if (pRTData->ReadTengxunData(pWebData)) {
 				pvWebRTData->push_back(pRTData);

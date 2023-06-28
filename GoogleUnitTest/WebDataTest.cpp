@@ -37,18 +37,18 @@ namespace FireBirdTest {
 		EXPECT_TRUE(webData.OutOfRange());
 	}
 
-	TEST_F(CWebDataTest, TestIsLastParagraph) {
+	TEST_F(CWebDataTest, TestIsLastDataParagraph) {
 		webData.SetBufferLength(100);
 		webData.SetCurrentPos(0);
-		EXPECT_FALSE(webData.IsLastParagraph());
+		EXPECT_FALSE(webData.IsLastDataParagraph());
 		webData.SetCurrentPos(97);
-		EXPECT_FALSE(webData.IsLastParagraph());
+		EXPECT_FALSE(webData.IsLastDataParagraph());
 		webData.SetCurrentPos(98);
-		EXPECT_TRUE(webData.IsLastParagraph());
+		EXPECT_TRUE(webData.IsLastDataParagraph());
 		webData.SetCurrentPos(99);
-		EXPECT_TRUE(webData.IsLastParagraph());
+		EXPECT_TRUE(webData.IsLastDataParagraph());
 		webData.SetCurrentPos(100);
-		EXPECT_TRUE(webData.IsLastParagraph());
+		EXPECT_TRUE(webData.IsLastDataParagraph());
 	}
 
 	TEST_F(CWebDataTest, TestGetTime) {
@@ -62,20 +62,6 @@ namespace FireBirdTest {
 		webData.SetStockCode(_T("abcdefg"));
 		EXPECT_STREQ(webData.GetStockCode(), _T("abcdefg"));
 	}
-
-	TEST_F(CWebDataTest, TestIsProcessedAllTheData) {
-		webData.SetBufferLength(10000);
-		webData.SetCurrentPos(0);
-
-		EXPECT_FALSE(webData.IsProcessedAllTheData());
-
-		webData.SetCurrentPos(9999);
-		EXPECT_FALSE(webData.IsProcessedAllTheData());
-
-		webData.SetCurrentPos(10000);
-		EXPECT_TRUE(webData.IsProcessedAllTheData());
-	}
-
 	TEST_F(CWebDataTest, TestGetCurrentPos) {
 		EXPECT_EQ(webData.GetCurrentPos(), 0);
 		webData.IncreaseCurrentPos(5);

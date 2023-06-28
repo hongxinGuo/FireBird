@@ -32,11 +32,6 @@ public:
 	CWebData& operator=(const CWebData&&) noexcept = delete;
 	~CWebData();
 
-	bool IsProcessedAllTheData() const noexcept {
-		if (m_lCurrentPos < m_lBufferLength) return false;
-		return true;
-	}
-
 	void IncreaseCurrentPos(const long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
 	void ResetCurrentPos() noexcept { m_lCurrentPos = 0; }
 
@@ -45,7 +40,7 @@ public:
 		return false;
 	}
 
-	bool IsLastParagraph() const noexcept { // 已读至最后一段数据
+	bool IsLastDataParagraph() const noexcept { // 已读至最后一段数据
 		if (m_lCurrentPos >= m_lBufferLength - 2) return true;
 		else return false;
 	}

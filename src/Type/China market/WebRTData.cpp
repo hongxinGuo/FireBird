@@ -81,8 +81,6 @@ CWebRTData::CWebRTData() {
 // 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
-	const string strHeader = _T("var hq_str_s");
-
 	try {
 		string strSinaStockCode{};
 		const string sShanghai = _T("sh");
@@ -91,15 +89,17 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 		double dTemp = 0;
 		string_view sv3;
 		m_fActive = false; // 初始状态为无效数据
-		string_view sv1 = pSinaWebData->GetStringViewData(12); // 读入“var hq_str_s"
-		if (sv1.compare(strHeader) != 0) {
-			// 数据格式出错
+		const long lParagraphStartPos = pSinaWebData->GetCurrentPos(); // 本段数据起始位置
+		sv3 = pSinaWebData->GetAllOfNeedProcessStringViewData();
+		const long lParagraphLength = sv3.find_first_of(_T(";")); // 每段数据以字符';'作为结束符
+		const string_view svCurrentParagraph = sv3.substr(0, lParagraphLength + 1);
+		string_view sv1 = pSinaWebData->GetStringViewData(12); //默认状态下起始字符串为var hq_str_ 读入“var hq_str_s"
+		if (sv1.compare(_T("var hq_str_s")) != 0) {	// 数据格式出错
 			throw exception(_T("Bad head"));
 		}
 		pSinaWebData->IncreaseCurrentPos(12);
 
-		if (pSinaWebData->GetCurrentPosData() == 'h') {
-			// 上海股票
+		if (pSinaWebData->GetCurrentPosData() == 'h') {	// 上海股票
 			wMarket = _SHANGHAI_MARKET_; // 上海股票标识
 		}
 		else if (pSinaWebData->GetCurrentPosData() == 'z') {
@@ -128,18 +128,20 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 		if ((sv1.at(0) != '=') || (sv1.at(1) != '"')) { throw exception(_T("need '=\"'")); }
 		pSinaWebData->IncreaseCurrentPos(2);
 		sv1 = pSinaWebData->GetStringViewData(2);
-		if (sv1.at(0) == '"') {
-			// 没有数据?
+		if (sv1.at(0) == '"') {	// 没有数据?
 			if (sv1.at(1) != ';') { throw exception(_T("need ;")); }
 			pSinaWebData->IncreaseCurrentPos(2);
-			if (pSinaWebData->GetCurrentPosData() != 0x00a) { return false; }
-			pSinaWebData->IncreaseCurrentPos();
+			if (!pSinaWebData->IsLastDataParagraph()) {
+				if (pSinaWebData->GetCurrentPosData() != 0x00a) {
+					return false;
+				}
+				pSinaWebData->IncreaseCurrentPos();
+			}
 			m_fActive = false;
 			SetDataSource(SINA_RT_WEB_DATA_);
 			return true; // 非活跃股票没有实时数据，在此返回。
 		}
-		if ((sv1.at(0) == 0x00a) || pSinaWebData->OutOfRange()) { throw exception(_T("out of range1")); }
-		if ((sv1.at(1) == 0x00a) || pSinaWebData->OutOfRange()) { throw exception(_T("out of range2")); }
+		if ((sv1.at(0) == 0x00a) || (sv1.at(1) == 0x00a) || pSinaWebData->OutOfRange()) { throw exception(_T("out of range1")); }
 
 		ReadSinaOneValue(pSinaWebData, sv1);
 		m_strStockName.Append(sv1.data(), sv1.size()); // 设置股票名称
@@ -191,20 +193,11 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 		sTime += ' '; //添加一个空格，以利于下面的转换
 		if (!ReadSinaOneValue(pSinaWebData, sv3)) { throw exception(_T("Time2")); }
 		sTime.append(sv3.data(), sv3.size());
-		m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", sTime.c_str());	// 转成UTC时间。新浪实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
+		m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", sTime.c_str());	//转成UTC时间。新浪实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
 		// 后面的数据皆为无效数据，读至此数据的结尾处即可。
-		// 新浪实时数据的结束符是'"',然后跟着分号';'，然后跟随一个换行符\n。但将该数据存入txt文件后在读取时，换行符消失了。
-		// 故而要先判断'"'和';'，然后用换行符作为附加判断，有否都认可。
-		while (pSinaWebData->GetCurrentPosData() != '"') {// 寻找本段数据的结束符（“"”）。
-			pSinaWebData->IncreaseCurrentPos();
-			if (pSinaWebData->OutOfRange()) { throw exception(_T("out of range4")); }
-		}
-		pSinaWebData->IncreaseCurrentPos(); // 读过字符'"'
-		if (pSinaWebData->GetCurrentPosData() != ';') {	// 字符'"'后面应该跟随字符';'
-			throw exception(_T("need ';'2"));
-		}
-		pSinaWebData->IncreaseCurrentPos();
-		if (!pSinaWebData->IsLastParagraph()) {
+		if ((pSinaWebData->GetCurrentPos() - lParagraphStartPos) > svCurrentParagraph.size()) throw exception(_T("bad data")); // 如果已读过本段数据，则该段数据有误
+		pSinaWebData->SetCurrentPos(lParagraphStartPos + svCurrentParagraph.size()); // 本段数据以字符';'结束，读至其后的\n字符处
+		if (!pSinaWebData->IsLastDataParagraph()) {
 			if (pSinaWebData->GetCurrentPosData() != 0x00a) throw exception(_T("need \n"));
 			pSinaWebData->IncreaseCurrentPos(); // 读过换行符\n
 		}
@@ -221,14 +214,6 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 	}
 	catch (exception& e) {
 		ReportErrorToSystemMessage(_T("ReadSinaData异常 "), e);
-		/*
-		while (pSinaWebData->GetCurrentPosData() != '"') {// 寻找本段数据的结束符（“"”）。
-			pSinaWebData->IncreaseCurrentPos();
-			if (pSinaWebData->OutOfRange()) return false;
-		}
-		pSinaWebData->IncreaseCurrentPos(); // 读过字符'"'
-		pSinaWebData->IncreaseCurrentPos(); // 读过字符';'
-		*/
 		if (pSinaWebData->OutOfRange()) return false;
 		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
 		while (!pSinaWebData->OutOfRange()) {
@@ -381,14 +366,15 @@ bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, string_view& 
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
-	const CString strHeader = _T("v_s");
-	long lRecordStringStartPos = pTengxunWebRTData->GetCurrentPos() + 12; // 跨过"v_sh000001=\""
+	const long lRecordStringStartPos = pTengxunWebRTData->GetCurrentPos() + 12; // 跨过"v_sh000001=\""
 	const long lStartPos = lRecordStringStartPos;
 	long lTemp = 0;
 	float fTemp = 0.0;
 	CString strTengxunStockCode;
-	string_view svData = pTengxunWebRTData->GetStringViewData(700);
-	char buffer1[200];
+	const long lParagraphStartPos = pTengxunWebRTData->GetCurrentPos(); // 本段数据起始位置
+	const string_view sv3 = pTengxunWebRTData->GetAllOfNeedProcessStringViewData();
+	const long lParagraphLength = sv3.find_first_of(_T(";")); // 每段数据以字符';'作为结束符
+	const string_view svCurrentParagraph = sv3.substr(0, lParagraphLength + 1);
 
 	long lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 	try {
@@ -398,7 +384,7 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 
 		m_fActive = false; // 初始状态为无效数据
 		string_view sv1 = pTengxunWebRTData->GetStringViewData(3); // 读入“v_s"
-		if (sv1.compare(strHeader) != 0) {// 数据格式出错
+		if (sv1.compare(_T("v_s")) != 0) {// 数据格式出错
 			throw exception(_T("bad head, \"v_s\" needed "));
 		}
 		pTengxunWebRTData->IncreaseCurrentPos(3);
@@ -545,7 +531,7 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		//if (!ReadTengxunOneValue(pTengxunWebRTData, buffer1)) {
 		//throw exception(_T("成交日期和时间"));
 		//}
-		string sTime(sv1.data(), sv1.size());
+		const string sTime(sv1.data(), sv1.size());
 		m_time = ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", sTime.c_str()); // 转成UTC时间。腾讯实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 涨跌
@@ -657,32 +643,17 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		// 腾讯实时数据的结束符是分号（；），然后跟随一个换行符\n。但将该数据存入txt文件后再读取时，换行符消失了。
 		// 故而要先判断分号，然后用回车符作为附加判断，有否都认可。
 		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
-		bool bLastData = false;
-		while (pTengxunWebRTData->GetCurrentPosData() != '"') {	// 寻找本段数据的结束符（“"”）。
-			pTengxunWebRTData->IncreaseCurrentPos();
-			if (pTengxunWebRTData->OutOfRange()) {
-				if (lCurrentPos < pTengxunWebRTData->GetBufferLength() - 200) throw exception(_T("out of range when look for '\"'"));
-				bLastData = true;
-				break;
-			}
-		}
-		if (bLastData) {
-			while (!pTengxunWebRTData->OutOfRange()) pTengxunWebRTData->IncreaseCurrentPos();
-		}
-		else {
-			pTengxunWebRTData->IncreaseCurrentPos(); // 读过'"'
-			if (pTengxunWebRTData->OutOfRange()) throw exception(_T("out of range 4"));
-			if (pTengxunWebRTData->GetCurrentPosData() != ';') {// 字符'"'后面应该跟随字符';'
-				throw exception(_T("expect ';'"));
-			}
-			pTengxunWebRTData->IncreaseCurrentPos(); // 读过';'
-			// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
-			if (!pTengxunWebRTData->OutOfRange()) {
-				if (pTengxunWebRTData->GetCurrentPosData() != 0x00a) {
-					throw exception(_T("expect \n"));
-				}
+		if ((pTengxunWebRTData->GetCurrentPos() - lParagraphStartPos) > svCurrentParagraph.size()) throw exception(_T("bad data")); // 如果已读过本段数据，则该段数据有误
+		pTengxunWebRTData->SetCurrentPos(lParagraphStartPos + svCurrentParagraph.size()); // 本段数据以字符';'结束，读至其后的\n字符处
+		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
+		if (!pTengxunWebRTData->IsLastDataParagraph()) {
+			if (pTengxunWebRTData->GetCurrentPosData() != 0x00a) {
+				throw exception(_T("expect \n"));
 			}
 			pTengxunWebRTData->IncreaseCurrentPos(); // 读过换行符\a
+		}
+		else {
+			if (pTengxunWebRTData->GetCurrentPosData() == 0x00a) pTengxunWebRTData->IncreaseCurrentPos(); // 如果有\n存在则跨过去。
 		}
 		CheckTengxunRTDataActive();
 		SetDataSource(TENGXUN_RT_WEB_DATA_);
@@ -691,12 +662,12 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 	catch (exception& e) {
 		const CString strMessage = _T("ReadTengxunData异常, 股票代码为：") + strTengxunStockCode;
 		ReportErrorToSystemMessage(strMessage, e);
-		char buffer2[100];
-		sprintf_s(buffer2, _T("数据长度: %d 当前位置: %d"), static_cast<int>(svData.size()), lCurrentPos - lStartPos);
+		char buffer2[200];
+		sprintf_s(buffer2, _T("数据长度: %d 当前位置: %d"), static_cast<int>(svCurrentParagraph.size()), lCurrentPos - lStartPos);
 		const CString str2 = buffer2;
 		gl_systemMessage.PushErrorMessage(str2);
 		pTengxunWebRTData->IncreaseCurrentPos(lCurrentPos + lStartPos);
-		string_view svCurrent = pTengxunWebRTData->GetStringViewData(100);
+		const string_view svCurrent = string_view(svCurrentParagraph.data() + lCurrentPos - lStartPos, svCurrentParagraph.size() - lCurrentPos + lStartPos);
 		const CString str(svCurrent.data(), svCurrent.size());
 		gl_systemMessage.PushErrorMessage(str);
 		// 前进至下一个数据开始处
@@ -712,12 +683,10 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 }
 
 bool CWebRTData::CheckTengxunRTDataActive() {
-	if (!IsValidTime(14)) {
-		// 如果交易时间在14天前
+	if (!IsValidTime(14)) {// 如果交易时间在14天前
 		m_fActive = false;
 	}
-	else if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) {
-		// 腾讯非活跃股票的m_lNew不为零，故而不能使用其作为判断依据
+	else if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) {// 腾讯非活跃股票的m_lNew不为零，故而不能使用其作为判断依据
 		m_fActive = false; // 腾讯非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
 	}
 	else m_fActive = true;
