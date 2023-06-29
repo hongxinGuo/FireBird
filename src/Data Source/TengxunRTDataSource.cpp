@@ -24,7 +24,6 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 
 	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请腾讯实时数据。
 	if (gl_pChinaMarket->IsSystemReady() && llTickCount > m_llLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime() * 5) {
-		TRACE("当前时间： %I64d \n", llTickCount);
 		if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady() && !gl_systemConfiguration.IsDebugMode()) {
 			m_llLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
 		}

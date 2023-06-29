@@ -112,17 +112,11 @@ shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData) {
 // 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool IsTengxunRTDataInvalid(CWebData& WebDataReceived) {
-	char buffer[50]{};
-	char* pBuffer = buffer;
-	const CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
+bool IsTengxunRTDataInvalid(CWebDataPtr pWebDataReceived) {
+	const string_view sv = pWebDataReceived->GetStringViewData(21);
 
-	WebDataReceived.GetData(pBuffer, 21);
-	buffer[21] = 0x000;
-	const CString str1 = buffer;
-
-	if (str1.Compare(strInvalidStock) == 0) {
-		ASSERT(WebDataReceived.GetBufferLength() == 21);
+	if (sv.compare(_T("v_pv_none_match=\"1\";\n")) == 0) {
+		ASSERT(pWebDataReceived->GetBufferLength() == 21);
 		return true;
 	}
 	return false;
@@ -214,15 +208,14 @@ shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(const CWebDataPtr& pWebData
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
 	pWebData->ResetCurrentPos();
-	if (!IsTengxunRTDataInvalid(*pWebData)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
-		while (!pWebData->IsLastDataParagraph()) {
-			auto pRTData = make_shared<CWebRTData>();
-			if (pRTData->ReadTengxunData(pWebData)) {
-				pvWebRTData->push_back(pRTData);
-			}
-			else {
-				break; // 后面的数据出问题，抛掉不用。
-			}
+	if (IsTengxunRTDataInvalid(pWebData)) return pvWebRTData; // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
+	while (!pWebData->IsLastDataParagraph()) {
+		auto pRTData = make_shared<CWebRTData>();
+		if (pRTData->ReadTengxunData(pWebData)) {
+			pvWebRTData->push_back(pRTData);
+		}
+		else {
+			break; // 后面的数据出问题，抛掉不用。
 		}
 	}
 	return pvWebRTData;
