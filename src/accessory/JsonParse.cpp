@@ -112,7 +112,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData) {
 // 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool IsTengxunRTDataInvalid(CWebDataPtr pWebDataReceived) {
+bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived) {
 	const string_view sv = pWebDataReceived->GetStringViewData(21);
 
 	if (sv.compare(_T("v_pv_none_match=\"1\";\n")) == 0) {
@@ -239,6 +239,7 @@ CDayLineWebDataPtr ParseNeteaseDayLine(const CWebDataPtr& pWebData) {
 }
 
 //
+// 腾讯日线数据结构：
 // {
 // "code":0,
 // "msg":"",
@@ -295,6 +296,7 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockC
 }
 
 //
+// 腾讯日线数据结构：
 // {
 // "code":0,
 // "msg":"",
@@ -316,23 +318,22 @@ CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 	auto pDayLineData = make_shared<CDayLineWebData>();
 	const CString strSymbol = pWebData->GetStockCode();
 	const CString strDisplaySymbol = gl_pChinaMarket->GetStock(strSymbol)->GetDisplaySymbol();
-	bool fProcess = true;
+
 	if (!pWebData->IsParsed()) {
 		if (!pWebData->CreateJson()) {
 			const CString strMessage = pWebData->GetStockCode() + _T(": Tengxun DayLine data json parse error");
 			gl_systemMessage.PushErrorMessage(strMessage);
-			fProcess = false;
+			return pDayLineData;
 		}
 	}
-	if (fProcess && pWebData->IsParsed()) {
-		json* pjs = pWebData->GetJSon();
-		const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(pjs, XferStandardToTengxun(pWebData->GetStockCode()));
-		ranges::sort(*pvDayLine, [](const CDayLinePtr& pData1, const CDayLinePtr& pData2) { return pData1->GetMarketDate() < pData2->GetMarketDate(); });
-		for (const auto& pDayLine : *pvDayLine) {
-			pDayLine->SetStockSymbol(strSymbol);
-			pDayLine->SetDisplaySymbol(strDisplaySymbol);
-			pDayLineData->AppendDayLine(pDayLine);
-		}
+	ASSERT(pWebData->IsParsed());
+	json* pjs = pWebData->GetJSon();
+	const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(pjs, XferStandardToTengxun(pWebData->GetStockCode()));
+	ranges::sort(*pvDayLine, [](const CDayLinePtr& pData1, const CDayLinePtr& pData2) { return pData1->GetMarketDate() < pData2->GetMarketDate(); });
+	for (const auto& pDayLine : *pvDayLine) {
+		pDayLine->SetStockSymbol(strSymbol);
+		pDayLine->SetDisplaySymbol(strDisplaySymbol);
+		pDayLineData->AppendDayLine(pDayLine);
 	}
 	return pDayLineData;
 }

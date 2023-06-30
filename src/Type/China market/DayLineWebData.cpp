@@ -41,24 +41,13 @@ bool CDayLineWebData::TransferWebDataToBuffer(const CWebDataPtr& pWebData) {
 bool CDayLineWebData::ProcessNeteaseDayLineData() {
 	shared_ptr<CDayLine> pDayLine;
 
-	if (m_lBufferLength == 0) {
-		// 没有数据读入？此种状态是查询的股票为无效（不存在）号码
-		return false;
-	}
-
-	if (!SkipNeteaseDayLineInformationHeader(m_sDataBuffer, m_lCurrentPos)) {
-		return false;
-	}
-
-	if (m_lCurrentPos >= m_lBufferLength) {
-		// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
-		return false;
-	}
+	if (m_lBufferLength == 0) return false;	// 没有数据读入？此种状态是查询的股票为无效（不存在）号码
+	if (!SkipNeteaseDayLineInformationHeader(m_sDataBuffer, m_lCurrentPos)) return false;
+	if (m_lCurrentPos >= m_lBufferLength)return false;// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
 
 	CString strTemp;
 	CDayLinePtr pCurrentDayLine = nullptr;
-	while (m_lCurrentPos < m_lBufferLength) {
-		// 处理一条日线数据
+	while (m_lCurrentPos < m_lBufferLength) {	// 处理一条日线数据
 		pCurrentDayLine = ProcessOneNeteaseDayLineData();
 		if (pCurrentDayLine == nullptr) {
 			TRACE(_T("%s日线数据出错\n"), m_strStockCode.GetBuffer());
@@ -93,10 +82,8 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLineData() {
 
 	long i = 0;
 	// 日期
-	while ((m_sDataBuffer.at(m_lCurrentPos) != 0x02c)) {
-		// 读取日期，直到遇到逗号
-		if ((m_sDataBuffer.at(m_lCurrentPos) == 0x0d) || (m_sDataBuffer.at(m_lCurrentPos) == 0x00a) || (m_lCurrentPos >= m_lBufferLength) || (i > 30)) {
-			// 如果遇到回车、换行、字符串结束符或者读取了20个字符
+	while ((m_sDataBuffer.at(m_lCurrentPos) != 0x02c)) {// 读取日期，直到遇到逗号
+		if ((m_sDataBuffer.at(m_lCurrentPos) == 0x0d) || (m_sDataBuffer.at(m_lCurrentPos) == 0x00a) || (m_lCurrentPos >= m_lBufferLength) || (i > 30)) {// 如果遇到回车、换行、字符串结束符或者读取了20个字符
 			return nullptr; // 数据出错，放弃载入
 		}
 		buffer3[i++] = m_sDataBuffer.at(m_lCurrentPos++);
@@ -206,8 +193,7 @@ bool CDayLineWebData::SkipNeteaseDayLineInformationHeader(const string& sDataBuf
 			lCurrentPos++; // 跨过此\n
 			return false;
 		}
-	}
-	while (sDataBuffer.at(lCurrentPos++) != 0X0d); // 寻找\r
+	} while (sDataBuffer.at(lCurrentPos++) != 0X0d); // 寻找\r
 	if (lCurrentPos >= sDataBuffer.size()) {
 		return false;
 	}

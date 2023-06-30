@@ -195,10 +195,10 @@ CMainFrame::~CMainFrame() {
 		gl_pChinaMarket->UpdateStockProfileDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
 
-	while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1); // 等待WebSocket退出
+	while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1); // 等待网络查询线程退出
 	while (gl_ThreadStatus.IsBackGroundThreadsWorking()) Sleep(1); // 等待后台工作线程运行结束
 
-	TRACE("finally exited\n");
+	TRACE("exit finally \n");
 }
 
 bool CMainFrame::CreateMarketContainer() {

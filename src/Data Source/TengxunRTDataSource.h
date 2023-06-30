@@ -17,7 +17,7 @@ public:
 
 	bool InquireRTData(long lCurrentTime);
 
-	static bool IsInvalidTengxunRTData(CWebData& WebDataReceived);
+	static bool IsInvalidTengxunRTData(const CWebData& WebDataReceived);
 };
 
 using CTengxunRTDataSourcePtr = shared_ptr<CTengxunRTDataSource>;

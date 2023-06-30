@@ -23,7 +23,8 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	const long long llTickCount = GetTickCount();
 
 	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请腾讯实时数据。
-	if (gl_pChinaMarket->IsSystemReady() && llTickCount > m_llLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime() * 5) {
+	// 腾讯数据精度不够，故而每10次正常数据读取才读取一次。
+	if (gl_pChinaMarket->IsSystemReady() && llTickCount > m_llLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime() * 10) {
 		if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady() && !gl_systemConfiguration.IsDebugMode()) {
 			m_llLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
 		}
@@ -67,7 +68,7 @@ void CTengxunRTDataSource::ConfigureSession() {
 // 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTengxunRTDataSource::IsInvalidTengxunRTData(CWebData& WebDataReceived) {
+bool CTengxunRTDataSource::IsInvalidTengxunRTData(const CWebData& WebDataReceived) {
 	char buffer[50]{};
 	char* pBuffer = buffer;
 	const CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符

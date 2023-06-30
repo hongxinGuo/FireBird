@@ -259,8 +259,7 @@ bool CChinaMarket::ChangeToPrevStockSet() {
 		if (m_lCurrentSelectedStockSet > -1) m_lCurrentSelectedStockSet--;
 		else { m_lCurrentSelectedStockSet = c_10DaysRSStockSetStartPosition + 9; }
 		ASSERT(m_lCurrentSelectedStockSet < 20);
-	}
-	while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
+	} while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
 
 	return true;
 }
@@ -270,8 +269,7 @@ bool CChinaMarket::ChangeToNextStockSet() {
 		if (m_lCurrentSelectedStockSet == (c_10DaysRSStockSetStartPosition + 9)) m_lCurrentSelectedStockSet = -1;
 		else { m_lCurrentSelectedStockSet++; }
 		ASSERT(m_lCurrentSelectedStockSet < 20);
-	}
-	while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
+	} while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
 
 	return true;
 }
@@ -344,7 +342,7 @@ bool CChinaMarket::DistributeSinaRTDataToStock() {
 	CChinaStockPtr pStock = nullptr;
 
 	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
-	gl_pChinaMarket->IncreaseRTDataReceived(lTotalNumber);
+	//IncreaseRTDataReceived(lTotalNumber);
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		const CWebRTDataPtr pRTData = PopSinaRT();
@@ -372,6 +370,7 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 	}
 	else if (!IsStock(pRTData->GetSymbol())) { return false; }
 	if (pRTData->IsActive()) { // 此实时数据有效？
+		IncreaseRTDataReceived();
 		if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) { m_ttNewestTransactionTime = pRTData->GetTransactionTime(); }
 		const auto pStock = GetStock(pRTData->GetSymbol());
 		if (!pStock->IsActive()) {
@@ -404,7 +403,6 @@ bool CChinaMarket::DistributeNeteaseRTDataToStock() {
 	CString strVolume;
 
 	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
-	gl_pChinaMarket->IncreaseRTDataReceived(lTotalNumber);
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		const CWebRTDataPtr pRTData = PopNeteaseRT();

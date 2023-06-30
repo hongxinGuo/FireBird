@@ -8,10 +8,6 @@
 
 #include"ClassDeclaration.h"
 
-#include<memory>
-#include<string>
-#include<string_view>
-
 using std::string;
 using std::string_view;
 
@@ -39,6 +35,10 @@ public:
 		if (m_lCurrentPos >= m_lBufferLength) return true;
 		return false;
 	}
+	bool CurrentParagraphOutOfRange() const noexcept {
+		if ((m_lCurrentPos < m_lCurrentParagraphStartPos) || (m_lCurrentPos - m_lCurrentParagraphStartPos > m_svCurrentParagraph.size())) return true;
+		else return false;
+	}
 
 	bool IsLastDataParagraph() const noexcept { // 已读至最后一段数据
 		if (m_lCurrentPos >= m_lBufferLength - 2) return true;
@@ -57,18 +57,22 @@ public:
 	CString GetStockCode() const noexcept { return m_strStockCode; }
 	void SetStockCode(const CString& strStockCode) noexcept { m_strStockCode = strStockCode; }
 	INT64 GetBufferLength() const noexcept { return m_lBufferLength; }
-	void SetBufferLength(const INT64 lValue) noexcept { m_lBufferLength = lValue; }
+	void SetBufferLength(const long lValue) noexcept { m_lBufferLength = lValue; }
 
 	string GetDataBuffer() noexcept { return m_sDataBuffer; }
-	INT64 GetCurrentPos() const noexcept { return m_lCurrentPos; }
-	void SetCurrentPos(const INT64 lValue) noexcept { m_lCurrentPos = lValue; }
+	long GetCurrentPos() const noexcept { return m_lCurrentPos; }
+	void SetCurrentPos(const long lValue) noexcept { m_lCurrentPos = lValue; }
+	long GetCurrentParagraphStartPos() const noexcept { return m_lCurrentParagraphStartPos; }
+	void SetCurrentParagraphStartPos(long lPos) noexcept { m_lCurrentParagraphStartPos = lPos; }
+	string_view GetCurrentParagraph() const noexcept { return m_svCurrentParagraph; }
+	void SetCurrentParagraph(string_view sv) noexcept { m_svCurrentParagraph = sv; }
 	string_view GetStringViewData(const int iDatLength) const { return string_view(m_sDataBuffer.c_str() + m_lCurrentPos, iDatLength); }
 	string_view GetAllOfNeedProcessStringViewData() const { return string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_lBufferLength - m_lCurrentPos); }
-	bool GetData(char* buffer, INT64 lDataLength) const; // 从m_lCurrentPos开始拷贝
-	bool SetData(const char* buffer, INT64 lDataLength); // 从m_lCurrentPos开始填充。
+	bool GetData(char* buffer, long lDataLength) const; // 从m_lCurrentPos开始拷贝
+	bool SetData(const char* buffer, long lDataLength); // 从m_lCurrentPos开始填充。
 
-	char GetData(const INT64 lIndex) const { return m_sDataBuffer.at(lIndex); }
-	void SetData(const INT64 lIndex, const char cValue) { m_sDataBuffer.at(lIndex) = cValue; }
+	char GetData(const long lIndex) const { return m_sDataBuffer.at(lIndex); }
+	void SetData(const long lIndex, const char cValue) { m_sDataBuffer.at(lIndex) = cValue; }
 	char GetCurrentPosData() const { return m_sDataBuffer.at(m_lCurrentPos); }
 	void SetCurrentPosData(const char cValue) { m_sDataBuffer.at(m_lCurrentPos) = cValue; }
 
@@ -97,8 +101,10 @@ protected:
 	time_t m_tTime; // 此数据的提取时间。UTC格式
 	CString m_strStockCode; // 此数据的相关证券代码，可以空缺
 	string m_sDataBuffer;
-	INT64 m_lBufferLength;
-	INT64 m_lCurrentPos;
+	long m_lBufferLength;
+	long m_lCurrentPos;
+	long m_lCurrentParagraphStartPos; // 当前段起始位置
+	string_view m_svCurrentParagraph{}; // 当前段数据
 
 	char* m_pCurrentPos;
 	char* m_pEndPos;

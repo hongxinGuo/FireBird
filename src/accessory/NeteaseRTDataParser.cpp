@@ -34,6 +34,7 @@
 #include<string>
 #include<memory>
 #include<vector>
+#include <gmock/gmock-matchers.h>
 using std::vector;
 using std::shared_ptr;
 using std::make_shared;
@@ -82,9 +83,9 @@ bool CreateJsonWithNlohmann(json& js, CString& str, const long lBeginPos, const 
 // 现在采用wstring和CStringW两次过渡，就可以正常显示了。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTData) {
-	string strTime, strUpdateTime, strName;
-	CString strSymbol4, str1, strName3;
+void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRTData) {
+	string strTime;
+	CString strSymbol4;
 	json js = it.value();
 	const string symbolName = it.key();
 
@@ -97,8 +98,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTD
 		string strSymbol2 = jsonGetString(&js, _T("code"));
 		pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
 	}
-	catch (json::exception& e) {
-		// 结构不完整
+	catch (json::exception& e) {// 结构不完整
 		// do nothing
 		CString strError2 = strSymbol4;
 		strError2 += _T(" ");
@@ -138,8 +138,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr pWebRTD
 
 		pWebRTData->CheckNeteaseRTDataActive();
 	}
-	catch (json::exception&) {
-		// 非活跃股票（已下市等）
+	catch (json::exception&) {// 非活跃股票（已下市等）
 		pWebRTData->SetActive(false);
 	}
 }
@@ -173,19 +172,24 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
 // 使用json解析，已经没有错误数据了。(偶尔还会有，大致每分钟出现一次）。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(CWebDataPtr pData) {
-	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
-
-	bool fProcess = true;
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(const CWebDataPtr& pData) {
+	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>(); // 要确保返回的向量指针不为空（上级函数需要此指针，即使其内容可能为空）
+	const string_view svHeader = pData->GetStringViewData(21);
+	if (svHeader.compare(_T("_ntes_quote_callback(")) != 0) {
+		CString str = _T("Bad netease RT data header : ");
+		str.Append(svHeader.data(), svHeader.size());
+		gl_systemMessage.PushErrorMessage(str);
+		return pvWebRTData;
+	}
 	if (!pData->IsParsed()) {
 		if (!pData->CreateJson(21, 2)) {	// 网易数据前21位为前缀，后两位为后缀
 			gl_systemMessage.PushErrorMessage(_T("Netease RT data json parse error"));
-			fProcess = false;
+			return pvWebRTData;
 		}
 	}
-	if (fProcess && pData->IsParsed()) {
-		json* pjs = pData->GetJSon();
-		pvWebRTData = ParseNeteaseRTData(pjs);
-	}
+	ASSERT(pData->IsParsed());
+	json* pjs = pData->GetJSon();
+	pvWebRTData = ParseNeteaseRTData(pjs);
+
 	return pvWebRTData;
 }

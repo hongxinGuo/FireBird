@@ -65,8 +65,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemStatus.IsWebBusy());
 
 		EXPECT_CALL(*m_pMockTengxunRTDataSource, GetTickCount()).Times(2)
-		.WillOnce(Return(5 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
-		.WillOnce(Return(1 + 5 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
+		.WillOnce(Return(10 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
+		.WillOnce(Return(1 + 10 * gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
 
 		EXPECT_FALSE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(121100)) << "¼ÌÐøµÈ´ý";
 		EXPECT_FALSE(m_pMockTengxunRTDataSource->IsInquiring());

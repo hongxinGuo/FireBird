@@ -199,9 +199,7 @@ void CVirtualDataSource::ReadWebData() {
 		GetFileHeaderInformation();
 		UINT lCurrentByteRead;
 		do {
-			if (gl_systemStatus.IsExitingSystem()) {// 当系统退出时，要立即中断此进程，以防止内存泄露。
-				break;
-			}
+			if (gl_systemStatus.IsExitingSystem()) break;// 当系统退出时，要立即中断此进程，以防止内存泄露。
 			lCurrentByteRead = ReadWebFileOneTime(); // 每次读取16K数据。
 			XferReadingToBuffer(m_lByteRead, lCurrentByteRead);
 			m_lByteRead += lCurrentByteRead;
@@ -272,6 +270,7 @@ UINT CVirtualDataSource::ReadWebFileOneTime() {
 }
 
 //
+// Debug编译模式下，使用memcpy函数完成，耗时154纳秒
 // release编译模式下：使用逐字节拷贝，16KB耗时11微秒，使用memcpy函数完成，耗时120纳秒。
 //
 void CVirtualDataSource::XferReadingToBuffer(long lPosition, UINT uByteRead) {
@@ -323,12 +322,10 @@ void CVirtualDataSource::VerifyDataLength() const {
 	}
 }
 
-bool CVirtualDataSource::TransferDataToWebData(CWebDataPtr pWebData) {
+void CVirtualDataSource::TransferDataToWebData(CWebDataPtr pWebData) {
 	m_sBuffer.resize(m_lByteRead);
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
 	pWebData->SetBufferLength(m_lByteRead);
-
-	return true;
 }
 
 void CVirtualDataSource::CreateTotalInquiringString() {

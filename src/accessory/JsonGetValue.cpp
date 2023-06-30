@@ -3,12 +3,7 @@
 #include "JsonGetValue.h"
 
 json jsonGetChild(json* pjs, const char* szKey) {
-	auto js = pjs->at(szKey);
-	return js;
-}
-
-json jsonGetChild(json* pjs, char* szKey) {
-	auto js = pjs->at(szKey);
+	auto& js = pjs->at(szKey);
 	return js;
 }
 
@@ -19,7 +14,7 @@ double jsonGetDouble(json* pjs, const char* szKey, const double dDefault) {
 }
 
 std::string jsonGetString(json* pjs, const char* szKey, const char* szDefault) {
-	const auto s = pjs->at(szKey);
+	const auto& s = pjs->at(szKey);
 	if (s.is_string()) return s;
 	return szDefault;
 }
@@ -42,25 +37,25 @@ long jsonGetLong(json* pjs, const char* szKey, const long lDefault) {
 	else return lDefault;
 }
 
+json jsonGetChild(const json::iterator& it, const char* szKey) {
+	auto& js = it->at(szKey);
+	return js;
+}
+
 double jsonGetDouble(const json::iterator& it, const char* szKey, const double dDefault) {
-	auto d = it->at(szKey);
+	const auto d = it->at(szKey);
 	if (d.is_number()) return d;
 	else return dDefault;
 }
 
-json jsonGetChild(const json::iterator& it, const char* szKey) {
-	auto js2 = it->at(szKey);
-	return js2;
-}
-
 std::string jsonGetString(const json::iterator& it, const char* szKey, const char* szDefault) {
-	auto str = it->at(szKey);
+	auto& str = it->at(szKey);
 	if (str.is_string()) return str;
 	else return szDefault;
 }
 
 int jsonGetInt(const json::iterator& it, const char* szKey, const int iDefault) {
-	auto i = it->at(szKey);
+	const auto i = it->at(szKey);
 	if (i.is_number()) return i;
 	else return iDefault;
 }
@@ -84,7 +79,7 @@ double jsonGetDouble(const json::iterator& it) {
 }
 
 std::string jsonGetString(const json::iterator& it) {
-	const auto s = *it;
+	const auto& s = *it;
 	if (s.is_string()) return s;
 	return _T("");
 }
