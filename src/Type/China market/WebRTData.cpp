@@ -132,6 +132,10 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 		pSinaWebData->SetCurrentParagraphStartPos(pSinaWebData->GetCurrentPos()); // 本段数据起始位置
 		sv3 = pSinaWebData->GetAllOfNeedProcessStringViewData();
 		const long lParagraphLength = sv3.find_first_of(_T(";")); // 每段数据以字符';'作为结束符
+		if (lParagraphLength < 0) {
+			pSinaWebData->SetCurrentPos(pSinaWebData->GetBufferLength());
+			return false;
+		}
 		pSinaWebData->SetCurrentParagraph(sv3.substr(0, lParagraphLength + 1));
 		string_view sv1 = pSinaWebData->GetStringViewData(12); //默认状态下起始字符串为var hq_str_ 读入“var hq_str_s"
 		if (pSinaWebData->GetCurrentParagraph().size() == 23) { // 无效数据
@@ -234,9 +238,7 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 		if (pSinaWebData->OutOfRange()) return false;
 		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
 		pSinaWebData->SetCurrentPos(pSinaWebData->GetCurrentParagraphStartPos() + pSinaWebData->GetCurrentParagraph().size()); // 本段数据以字符';'结束，读至其后的\n字符处
-		if (!pSinaWebData->IsLastDataParagraph()) {
-			if (pSinaWebData->GetCurrentPosData() == 0x00a) pSinaWebData->IncreaseCurrentPos(); // 读过换行符\n
-		}
+		if (pSinaWebData->GetCurrentPosData() == 0x00a) pSinaWebData->IncreaseCurrentPos(); // 读过换行符\n
 		return false;
 	}
 }
@@ -404,6 +406,10 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 	pTengxunWebRTData->SetCurrentParagraphStartPos(pTengxunWebRTData->GetCurrentPos()); // 本段数据起始位置
 	const string_view sv3 = pTengxunWebRTData->GetAllOfNeedProcessStringViewData();
 	const long lParagraphLength = sv3.find_first_of(_T(";")); // 每段数据以字符';'作为结束符
+	if (lParagraphLength < 0) {
+		pTengxunWebRTData->SetCurrentPos(pTengxunWebRTData->GetBufferLength());
+		return false;
+	}
 	pTengxunWebRTData->SetCurrentParagraph(sv3.substr(0, lParagraphLength + 1));
 
 	long lCurrentPos = pTengxunWebRTData->GetCurrentPos();
@@ -694,9 +700,7 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		ReportErrorToSystemMessage(strMessage, e);
 		pTengxunWebRTData->SetCurrentPos(pTengxunWebRTData->GetCurrentParagraphStartPos() + pTengxunWebRTData->GetCurrentParagraph().size()); // 本段数据以字符';'结束，读至其后的\n字符处
 		// 前进至下一个数据开始处
-		if (!pTengxunWebRTData->IsLastDataParagraph()) {
-			if (pTengxunWebRTData->GetCurrentPosData() == 0x00a) pTengxunWebRTData->IncreaseCurrentPos(); // 读过换行符\a
-		}
+		if (pTengxunWebRTData->GetCurrentPosData() == 0x00a) pTengxunWebRTData->IncreaseCurrentPos(); // 读过换行符\a
 		return false;
 	}
 }
