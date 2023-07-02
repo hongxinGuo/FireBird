@@ -106,9 +106,7 @@ bool CVirtualDataSource::GetWebDataAndProcessIt() {
 //////////////////////////////////////////////
 bool CVirtualDataSource::ProcessWebDataReceived() {
 	bool bProcessed = false;
-	//ASSERT(HaveReceivedData());
-	if (HaveReceivedData()) {
-		// 处理当前网络数据
+	if (HaveReceivedData()) {// 处理当前网络数据
 		ASSERT(m_pCurrentProduct != nullptr);
 		const CWebDataPtr pWebData = GetReceivedData();
 		CheckInaccessible(pWebData);

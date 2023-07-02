@@ -68,7 +68,7 @@ bool CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		for (const auto& pData : sm_vDayLinePtr) {
 			pDayLineWebData->AppendDayLine(pData);
 		}
-		Reset();
+		ResetStaticVariable();
 		gl_pChinaMarket->PushDayLine(pDayLineWebData);
 	}
 	s_semaphoreTransferData.release();

@@ -24,7 +24,7 @@ public:
 
 	static bool ReceivedAllData();
 
-	static void Reset() {
+	static void ResetStaticVariable() {
 		sm_vDayLinePtr.resize(0);
 		sm_iInquiryNumber = 1;
 		sm_iCurrentNumber = 0;
@@ -40,6 +40,6 @@ protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置
 
 	static atomic_int sm_iInquiryNumber; // 本轮查询次数
-	static atomic_int sm_iCurrentNumber; // 本次计数
+	static atomic_int sm_iCurrentNumber; // 本次计数值
 	static vector<CDayLinePtr> sm_vDayLinePtr; //本轮查询到的日线数据。 
 };
