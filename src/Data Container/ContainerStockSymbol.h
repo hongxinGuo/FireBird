@@ -25,7 +25,9 @@ public:
 	bool Delete(const CString& strSymbol);
 	void Add(const CString& strSymbol);
 
+	CString GetNextStockInquiringMiddleStr(long& iStockIndex, const CString& strPostfix, long lTotalNumber);
 	CString GetNextSinaStockInquiringMiddleStr(long lTotalNumber);
+	CString GetNextTengxunStockInquiringMiddleStr(long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lNextTengxunStockInquiringMiddleStrIndex, _T(","), lTotalNumber); }
 	CString GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber);
 
 	void LoadStockSectionDB() const;
@@ -54,6 +56,7 @@ protected:
 
 private:
 	long m_lNextSinaStockInquiringMiddleStrIndex;
+	long m_lNextTengxunStockInquiringMiddleStrIndex;
 	long m_lNeteaseRTDataInquiryIndex;
 };
 

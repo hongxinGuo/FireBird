@@ -337,24 +337,42 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::DistributeSinaRTDataToStock() {
 	const size_t lTotalNumber = SinaRTSize();
-	CString strVolume;
-	CString strStandardStockCode;
 	CChinaStockPtr pStock = nullptr;
 
 	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
-	//IncreaseRTDataReceived(lTotalNumber);
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		const CWebRTDataPtr pRTData = PopSinaRT();
-		if (pRTData->GetDataSource() == INVALID_RT_WEB_DATA_) {
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("新浪实时数据源设置有误"));
-			continue;
-		}
+		ASSERT(pRTData->GetDataSource() == SINA_RT_WEB_DATA_);
 		DistributeRTDataToStock(pRTData);
 	}
 	SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
-	// 由于使用线程Parse新浪实时数据，故此处不再检测队列为零
-	//ASSERT(gl_WebRTDataContainer.SinaDataSize() == 0); // 必须一次处理全体数据。
+
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//
+// 处理实时数据等，由SchedulingTaskPerSecond函数调用,至少每三秒执行一次。
+// 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。
+// 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
+//
+// 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股的挂单情况。
+//
+//
+///////////////////////////////////////////////////////////////////////////////////////////
+bool CChinaMarket::DistributeTengxunRTDataToStock() {
+	const size_t lTotalNumber = TengxunRTSize();
+	CChinaStockPtr pStock = nullptr;
+
+	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
+
+	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
+		const CWebRTDataPtr pRTData = PopTengxunRT();
+		ASSERT(pRTData->GetDataSource() == TENGXUN_RT_WEB_DATA_);
+		DistributeRTDataToStock(pRTData);
+	}
+	SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 
 	return true;
 }
@@ -398,23 +416,16 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::DistributeNeteaseRTDataToStock() {
-	CChinaStockPtr pStock;
 	const size_t lTotalNumber = NeteaseRTSize();
-	CString strVolume;
 
 	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		const CWebRTDataPtr pRTData = PopNeteaseRT();
-		if (pRTData->GetDataSource() == INVALID_RT_WEB_DATA_) {
-			gl_systemMessage.PushErrorMessage(_T("网易实时数据源设置有误"));
-			continue;
-		}
+		ASSERT(pRTData->GetDataSource() == NETEASE_RT_WEB_DATA_);
 		DistributeRTDataToStock(pRTData);
 	}
 	SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
-	// 由于使用线程Parse网易实时数据，故此处不再检测队列为零
-	//ASSERT(gl_WebRTDataContainer.NeteaseDataSize() == 0); // 必须一次处理全体数据。
 
 	return true;
 }
@@ -497,18 +508,30 @@ void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 将接收到的实时数据分发至各相关股票的实时数据队列中。
-// 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
+// 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，需要至少每三秒执行一次，以保证各数据源至少都能提供一次数据。
 // 实时数据的计算过程必须位于分配过程之后，这样才能保证不会出现数据同步问题
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
-	DistributeSinaRTDataToStock();
-	DistributeNeteaseRTDataToStock();
+	switch (gl_systemConfiguration.GetRTServer()) {
+	case 0: // Sina RT Data server
+		DistributeSinaRTDataToStock();
+		break;
+	case 1: // Netease RT data server
+		DistributeNeteaseRTDataToStock();
+		break;
+	case 2: // Tengxun RT data server
+		DistributeTengxunRTDataToStock();
+		break;
+	default:
+		ASSERT(0); // ERROR
+		break;
+	}
 	if (IsSystemReady() && IsTodayTempRTDataLoaded() && IsRTDataNeedCalculate()) {
 		CreateThreadProcessRTData();
 		SetRTDataNeedCalculate(false);
 	}
-	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, GetNextSecond(lCurrentTime));
+	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, GetNextSecond(lCurrentTime)); // 每秒执行一次
 }
 
 bool CChinaMarket::ProcessTask(long lCurrentTime) {

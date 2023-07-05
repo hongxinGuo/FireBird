@@ -57,6 +57,7 @@ void CContainerStockSymbol::Reset() {
 	CreateTotalStockContainer();
 
 	m_lNextSinaStockInquiringMiddleStrIndex = 0;
+	m_lNextTengxunStockInquiringMiddleStrIndex = 0;
 	m_lNeteaseRTDataInquiryIndex = 0;
 }
 
@@ -196,6 +197,22 @@ bool CContainerStockSymbol::Delete(const CString& strSymbol) {
 void CContainerStockSymbol::Add(const CString& strSymbol) {
 	m_mapStockSymbol[strSymbol] = m_vStockSymbol.size();
 	m_vStockSymbol.push_back(strSymbol);
+}
+
+CString CContainerStockSymbol::GetNextStockInquiringMiddleStr(long& iStockIndex, const CString& strSuffix, long lTotalNumber) {
+	if (m_vStockSymbol.empty()) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
+	CString strReturn = _T("");
+	int iCount = 0;
+	while ((iStockIndex < m_vStockSymbol.size()) && (iCount++ < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
+		strReturn += XferStandardToSina(m_vStockSymbol.at(iStockIndex));
+		if (iCount < lTotalNumber) { // 如果不是最后一个，则添加后缀
+			strReturn += strSuffix;
+		}
+		iStockIndex = GetNextIndex(iStockIndex);
+	}
+	if (iStockIndex > 0) iStockIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
+
+	return strReturn;
 }
 
 CString CContainerStockSymbol::GetNextSinaStockInquiringMiddleStr(long lTotalNumber) {

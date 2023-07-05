@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"tengxunRTDataSource.h"
+#include"tengxunRTDataSourceImp.h"
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
 
@@ -14,25 +14,29 @@ namespace FireBirdTest {
 	class CTengxunRTDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
-		CTengxunRTDataSource tengxunRTDataSource;
+		CTengxunRTDataSourceImp tengxunRTDataSource;
 	};
 
 	TEST_F(CTengxunRTDataSourceTest, TestInitialize) {

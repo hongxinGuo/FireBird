@@ -27,8 +27,6 @@ namespace FireBirdTest {
 		time_t m_tt;
 	};
 
-	// 无效实时数据标识
-	SinaRTData rtData1(1, _T("600000.SS"), INVALID_RT_WEB_DATA_, false, -10);
 	// 正常实时数据，但时间比较旧（一样）
 	SinaRTData rtData2(2, _T("000001.SZ"), SINA_RT_WEB_DATA_, true, -10);
 	// 正常数据，更新的时间
@@ -47,7 +45,8 @@ namespace FireBirdTest {
 	class TaskDistributeSinaRTDataToProperStockTest : public TestWithParam<SinaRTData*> {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
 			pStock->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
 			pStock->SetIPOStatus(_STOCK_NULL_); // 故意将此股票状态设置为未上市。
@@ -58,11 +57,13 @@ namespace FireBirdTest {
 			const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600008.SS"));
 			pStock->SetActive(true);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 
 			EXPECT_FALSE(gl_pChinaMarket->IsRTDataNeedCalculate());
 			const SinaRTData* pData = GetParam();
@@ -88,7 +89,8 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetRTDataNeedCalculate(false);
 			pStock->ClearRTDataDeque();
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -98,7 +100,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, TaskDistributeSinaRTDataToProperStockTest,
-	                         testing::Values(&rtData1, &rtData2, &rtData3, &rtData4, &rtData5, &rtData6 //, &Data7, &Data8
+	                         testing::Values(&rtData2, &rtData3, &rtData4, &rtData5, &rtData6 //, &Data7, &Data8
 	                         ));
 
 	TEST_P(TaskDistributeSinaRTDataToProperStockTest, TestCheck) {
@@ -112,11 +114,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->SinaRTSize(), 0);
 		EXPECT_TRUE(gl_pChinaMarket->IsRTDataNeedCalculate());
 		switch (m_iCount) {
-		case 1:
-			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 1) << _T("无效实时数据，报错后直接返回");
-
-			gl_systemMessage.PopInnerSystemInformationMessage();
-			break;
 		case 2:
 			EXPECT_EQ(gl_pChinaMarket->GetNewestTransactionTime(), s_tCurrentMarketTime - 10);
 			EXPECT_TRUE(pStock->IsActive());

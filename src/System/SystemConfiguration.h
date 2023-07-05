@@ -95,13 +95,17 @@ public:
 		m_iWorldMarketQuandlInquiryTime = iWorldMarketQuandlInquiryTime;
 	}
 
+	[[nodiscard]] int GetRTServer() const { return m_iChinaMarketRealtimeServer; }
 	[[nodiscard]] bool IsUsingSinaRTServer() const noexcept {
 		if (m_iChinaMarketRealtimeServer == 0) return true;
 		return false;
 	}
-
 	[[nodiscard]] bool IsUsingNeteaseRTServer() const noexcept {
 		if (m_iChinaMarketRealtimeServer == 1) return true;
+		return false;
+	}
+	[[nodiscard]] bool IsUsingTengxunRTServer() const noexcept {
+		if (m_iChinaMarketRealtimeServer == 2) return true;
 		return false;
 	}
 

@@ -59,6 +59,7 @@
     <ClInclude Include="..\src\Data Source\QuandlDataSource.h" />
     <ClInclude Include="..\src\Data Source\SinaRTDataSource.h" />
     <ClInclude Include="..\src\Data Source\TengxunRTDataSource.h" />
+    <ClInclude Include="..\src\Data Source\TengxunRTDataSourceImp.h" />
     <ClInclude Include="..\src\Data Source\TiingoDataSource.h" />
     <ClInclude Include="..\src\Data Source\VirtualDataSource.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaChosenStock.h" />
@@ -250,6 +251,7 @@
     <ClCompile Include="..\src\Data Source\QuandlDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\SinaRTDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\TengxunRTDataSource.cpp" />
+    <ClCompile Include="..\src\Data Source\TengxunRTDataSourceImp.cpp" />
     <ClCompile Include="..\src\Data Source\TiingoDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\VirtualDataSource.cpp" />
     <ClCompile Include="..\src\DataBase\ChinaMarket\SetOption.cpp" />

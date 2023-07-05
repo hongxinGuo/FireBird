@@ -92,7 +92,7 @@ CSystemConfiguration::CSystemConfiguration() {
 	m_iBackgroundThreadPermittedNumber = 8; // 后台线程最多8个
 
 	// China Market
-	m_iChinaMarketRealtimeServer = 0; // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
+	m_iChinaMarketRealtimeServer = 0; // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据。
 	m_iChinaMarketDayLineServer = 0; // 日线数据服务器。0:网易日线服务器；1：腾讯日线服务器
 	m_iChinaMarketRTDataInquiryTime = 250; // 默认实时数据查询时间间隔为250毫秒
 	m_iSavingChinaMarketStockDayLineThread = 4; // 默认中国股票历史数据存储线程数为4
@@ -199,6 +199,7 @@ void CSystemConfiguration::Update() {
 			sTemp = m_systemConfiguration.at("ChinaMarket").at("RealtimeServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 			if (sTemp == _T("sina")) { m_iChinaMarketRealtimeServer = 0; }
 			else if (sTemp == _T("netease")) { m_iChinaMarketRealtimeServer = 1; }
+			else if (sTemp == _T("tengxun")) { m_iChinaMarketRealtimeServer = 2; }
 			else { // 非法服务器名称，使用默认sina服务器
 				m_iChinaMarketRealtimeServer = 0;
 				m_fUpdate = true;
@@ -397,7 +398,7 @@ void CSystemConfiguration::UpdateJson() {
 		m_systemConfiguration["ChinaMarket"]["RealtimeServer"] = _T("netease");
 		break;
 	case 2:
-		m_systemConfiguration["ChinaMarket"]["RealtimeServer"] = _T("tencent");
+		m_systemConfiguration["ChinaMarket"]["RealtimeServer"] = _T("tengxun");
 		break;
 	default:
 		m_systemConfiguration["ChinaMarket"]["RealtimeServer"] = _T("sina");

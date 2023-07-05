@@ -12,6 +12,13 @@
 #include"ThreadStatus.h"
 #include"ChinaMarket.h"
 
+/// <summary>
+/// 
+/// 此线程与计算实时数据的线程互斥
+/// 
+/// </summary>
+/// <param name="pMarket"></param>
+/// <returns></returns>
 UINT ThreadSaveTempRTData(not_null<CChinaMarket*> pMarket) {
 	ASSERT(pMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
@@ -33,14 +40,13 @@ UINT ThreadLoadTempRTData(not_null<CChinaMarket*> pMarket, long lTheDay) {
 /// <summary>
 /// 此线程与存储实时数据的线程互斥。
 ///
-/// 此为处理实时数据的进程，需要考虑运行速度，不再虚拟化其调用的ProcessRTData和ProcessTengxunRTData，故而不测试此进程
+/// 此为处理实时数据的进程，需要考虑运行速度，不再虚拟化其调用的ProcessRTData，故而不测试此进程
 /// </summary>
 /// <param name="pMarket"></param>
 /// <returns></returns>
 UINT ThreadProcessRTData(not_null<CChinaMarket*> pMarket) {
 	gl_ProcessChinaMarketRTData.acquire();
 	pMarket->ProcessRTData();
-	pMarket->ProcessTengxunRTData();
 	gl_ProcessChinaMarketRTData.release();
 	return 107;
 }

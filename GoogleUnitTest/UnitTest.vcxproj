@@ -126,9 +126,10 @@
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="SystemConfigurationTest.cpp" />
     <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp" />
+    <ClCompile Include="TaskDistributeTengxunRTDataToProperStockTest.cpp" />
     <ClCompile Include="TempplateMutexAccessQueueTest.cpp" />
     <ClCompile Include="TengxunDayLineDataSourceTest.cpp" />
-    <ClCompile Include="TengxunRTDataSourceTest.cpp" />
+    <ClCompile Include="TengxunRTDataSourceImpTest.cpp" />
     <ClCompile Include="TiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="TiingoCryptoWebSocketTest.cpp" />
     <ClCompile Include="TiingoDataSourceTest.cpp" />

@@ -298,6 +298,11 @@ CString ConvertDateToChineseTimeStampString(const long lDate) {
 	return (ConvertDateToString(lDate, _T("%4d年%2d月%2d日")));
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 将逝去的时间转换成UTC时间。默认时区为东八区。
+//
+////////////////////////////////////////////////////////////////////////////////////////////
 time_t ConvertBufferToTime(CString strFormat, const char* BufferMarketTime, const time_t tTimeZoneOffset) {
 	tm tm_{0, 0, 0, 0, 0, 0};
 	int year, month, day, hour, minute, second;

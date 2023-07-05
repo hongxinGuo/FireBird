@@ -260,6 +260,7 @@ public:
 
 	//处理实时股票变化等
 	bool DistributeSinaRTDataToStock();
+	bool DistributeTengxunRTDataToStock();
 	bool DistributeNeteaseRTDataToStock();
 	bool DistributeRTDataToStock(const CWebRTDataPtr& pRTData);
 

@@ -16,8 +16,8 @@ CString CProductSinaRT::CreateMessage() {
 	// 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
 	// 开市时使用今日活跃股票池
 	const CString strStocks = gl_pChinaMarket->GetSinaStockInquiringStr(gl_pSinaRTDataSource->GetInquiringNumber(), gl_pChinaMarket->IsCheckingActiveStock());
-	const CString strSinaStockCode = strStocks.Left(8); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
-	gl_systemMessage.SetStockCodeForInquiringRTData(XferSinaToStandard(strSinaStockCode));
+	const string_view strSinaStockCode = string_view(strStocks, 8); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
+	gl_systemMessage.SetStockCodeForInquiringRTData(XferSinaToStandard(strSinaStockCode.data()));
 	return m_strInquiryFunction + strStocks;
 }
 

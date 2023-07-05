@@ -5,26 +5,47 @@
 
 #include"ChinaMarket.h"
 
+CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr1 = nullptr;
+CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr2 = nullptr;
+CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr3 = nullptr;
+CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr4 = nullptr;
+CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr5 = nullptr;
+CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr6 = nullptr;
+CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr7 = nullptr;
+CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr8 = nullptr;
+
 CTengxunRTDataSource::CTengxunRTDataSource() {
-	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");
-	m_strInquiryToken = _T("");
-	m_lInquiringNumber = 900; // 腾讯实时数据查询默认值
-
-	CTengxunRTDataSource::ConfigureSession();
-
-	CTengxunRTDataSource::Reset();
+	s_TengxunRTDataSourcePtr1 = make_shared<CTengxunRTDataSourceImp>();
+	s_TengxunRTDataSourcePtr2 = make_shared<CTengxunRTDataSourceImp>();
+	s_TengxunRTDataSourcePtr3 = make_shared<CTengxunRTDataSourceImp>();
+	s_TengxunRTDataSourcePtr4 = make_shared<CTengxunRTDataSourceImp>();
+	s_TengxunRTDataSourcePtr5 = make_shared<CTengxunRTDataSourceImp>();
+	s_TengxunRTDataSourcePtr6 = make_shared<CTengxunRTDataSourceImp>();
+	s_TengxunRTDataSourcePtr7 = make_shared<CTengxunRTDataSourceImp>();
+	s_TengxunRTDataSourcePtr8 = make_shared<CTengxunRTDataSourceImp>();
+	m_DataSourceContainer.at(0) = s_TengxunRTDataSourcePtr1;
+	m_DataSourceContainer.at(1) = s_TengxunRTDataSourcePtr2;
+	m_DataSourceContainer.at(2) = s_TengxunRTDataSourcePtr3;
+	m_DataSourceContainer.at(3) = s_TengxunRTDataSourcePtr4;
+	m_DataSourceContainer.at(4) = s_TengxunRTDataSourcePtr5;
+	m_DataSourceContainer.at(5) = s_TengxunRTDataSourcePtr6;
+	m_DataSourceContainer.at(6) = s_TengxunRTDataSourcePtr7;
+	m_DataSourceContainer.at(7) = s_TengxunRTDataSourcePtr8;
 }
 
-bool CTengxunRTDataSource::Reset() {
-	return true;
-}
-
+/// <summary>
+/// 将腾讯实时数据列为备选数据源
+/// 腾讯数据精度不够，其交易数量的精度为手，不提供零股信息。
+///
+/// 腾讯实时数据的网络传输速度无法达到预期（<100ms），故而使用八个数据接收器并行执行。本数据源不执行具体下载解析任务，只执行具体任务的调度。
+///
+/// </summary>
+/// <param name="lCurrentTime"></param>
+/// <returns></returns>
 bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	const long long llTickCount = GetTickCount();
 
-	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请腾讯实时数据。
-	// 腾讯数据精度不够，故而每10次正常数据读取才读取一次。
-	if (gl_pChinaMarket->IsSystemReady() && llTickCount > m_llLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime() * 10) {
+	if (llTickCount > m_llLastTimeTickCount + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()) {
 		if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady() && !gl_systemConfiguration.IsDebugMode()) {
 			m_llLastTimeTickCount = llTickCount + 60000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
 		}
@@ -32,54 +53,13 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 			m_llLastTimeTickCount = llTickCount;
 		}
 
-		if (!IsInquiring()) {
-			InquireRTData(lCurrentTime);
-			return true;
+		for (const auto pDataSourceImp : m_DataSourceContainer) {
+			if (!pDataSourceImp->IsInquiring() && !pDataSourceImp->IsWorkingThreadRunning()) {
+				pDataSourceImp->Run(lCurrentTime);
+				break;
+			}
 		}
-	}
-	return false;
-}
-
-bool CTengxunRTDataSource::InquireRTData(const long lCurrentTime) {
-	if (!IsInquiring()) {
-		const auto product = make_shared<CProductTengxunRT>();
-		ASSERT(m_qProduct.empty());
-		StoreInquiry(product);
-		SetInquiring(true);
 		return true;
 	}
 	return false;
-}
-
-void CTengxunRTDataSource::GenerateCurrentInquiryMessage() {
-	m_strInquiry = m_pCurrentProduct->CreateMessage();
-}
-
-void CTengxunRTDataSource::ConfigureSession() {
-	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 3000); // 正常情况下Tengxun实时数据接收时间大致为300毫秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 3000); // 设置接收超时时间为1000毫秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 1000); // 设置发送超时时间为200毫秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTengxunRTDataSource::IsInvalidTengxunRTData(const CWebData& WebDataReceived) {
-	char buffer[50]{};
-	char* pBuffer = buffer;
-	const CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
-
-	WebDataReceived.GetData(pBuffer, 21);
-	buffer[21] = 0x000;
-	const CString str1 = buffer;
-
-	if (str1.Compare(strInvalidStock) == 0) {
-		ASSERT(WebDataReceived.GetBufferLength() == 21);
-		return true;
-	}
-	else return false;
 }

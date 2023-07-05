@@ -149,7 +149,7 @@ public:
 	static void ClearTotalByteRead() noexcept { sm_lTotalByteRead = 0; }
 
 	void SetCurrentInquiryTime(const time_t tt) noexcept { m_tCurrentInquiryTime = tt; }
-	time_t GetCurrentInquiryTime() const noexcept { return m_tCurrentInquiryTime; }
+	virtual time_t GetCurrentInquiryTime() const noexcept { return m_tCurrentInquiryTime; }
 
 public:
 	// 以下为测试用函数

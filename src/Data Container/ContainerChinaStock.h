@@ -48,8 +48,8 @@ public:
 
 	CString CreateNeteaseDayLineInquiringStr();
 	CString CreateTengxunDayLineInquiringStr();
-	CString GetNextStockInquiringMiddleStr(long& iStockIndex, const CString& strPostfix, long lTotalNumber);
 
+	CString GetNextStockInquiringMiddleStr(long& iStockIndex, const CString& strPostfix, long lTotalNumber);
 	CString GetNextSinaStockInquiringMiddleStr(const long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lSinaRTDataInquiringIndex, _T(","), lTotalNumber); }
 	CString GetNextTengxunStockInquiringMiddleStr(const long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, _T(","), lTotalNumber); }
 	CString GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber);

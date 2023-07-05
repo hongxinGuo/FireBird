@@ -105,6 +105,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_USING_NETEASE_DAYLINE_DATA_SERVER, &CMainFrame::OnUpdateUsingNeteaseDayLineDataServer)
 	ON_COMMAND(ID_USING_TENGXUN_DAYLINE_DATA_SERVER, &CMainFrame::OnUsingTengxunDayLineDataServer)
 	ON_UPDATE_COMMAND_UI(ID_USING_TENGXUN_DAYLINE_DATA_SERVER, &CMainFrame::OnUpdateUsingTengxunDayLineDataServer)
+	ON_COMMAND(ID_USING_TENGXUN_REALTIME_DATA_SERVER, &CMainFrame::OnUsingTengxunRealtimeDataServer)
+	ON_UPDATE_COMMAND_UI(ID_USING_TENGXUN_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingTengxunRealtimeDataServer)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -217,14 +219,28 @@ void CMainFrame::InitializeDataSourceAndWebInquiry() {
 	gl_pChinaMarket->StoreDataSource(gl_pNeteaseDayLineDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pTengxunDayLineDataSource);
 
-	if (gl_systemConfiguration.GetChinaMarketRealtimeServer() == 0) {
-		// 使用新浪实时数据服务器
+	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
+	case 0:	// 使用新浪实时数据服务器
 		gl_pSinaRTDataSource->Enable(true);
 		gl_pNeteaseRTDataSource->Enable(false);
-	}
-	else {
+		gl_pTengxunRTDataSource->Enable(false);
+		break;
+	case 1: // 使用网易实时服务器
 		gl_pSinaRTDataSource->Enable(false);
 		gl_pNeteaseRTDataSource->Enable(true);
+		gl_pTengxunRTDataSource->Enable(false);
+		break;
+	case 2: // 使用腾讯实时数据服务器
+		gl_pSinaRTDataSource->Enable(false);
+		gl_pNeteaseRTDataSource->Enable(false);
+		gl_pTengxunRTDataSource->Enable(true);
+		break;
+	default: // 例外情况时默认使用新浪实时数据服务器
+		gl_systemConfiguration.SetChinaMarketRealtimeServer(0);
+		gl_pSinaRTDataSource->Enable(true);
+		gl_pNeteaseRTDataSource->Enable(false);
+		gl_pTengxunRTDataSource->Enable(false);
+		break;
 	}
 
 	if (gl_systemConfiguration.GetChinaMarketDayLineServer() == 0) {
@@ -938,16 +954,27 @@ void CMainFrame::OnStopUpdateDayLine() {
 	gl_pChinaMarket->ClearDayLineNeedUpdateStatus();
 }
 
-void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
-	gl_systemConfiguration.SetChinaMarketRealtimeServer(1);
-	gl_pSinaRTDataSource->Enable(false);
-	gl_pNeteaseRTDataSource->Enable(true);
-}
-
 void CMainFrame::OnUsingSinaRealtimeDataServer() {
 	gl_systemConfiguration.SetChinaMarketRealtimeServer(0);
 	gl_pNeteaseRTDataSource->Enable(false);
 	gl_pSinaRTDataSource->Enable(true);
+	gl_pTengxunRTDataSource->Enable(false);
+}
+
+void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
+	if (gl_systemConfiguration.IsUsingSinaRTServer()) {
+		SysCallCmdUISetCheck(pCmdUI, true);
+	}
+	else {
+		SysCallCmdUISetCheck(pCmdUI, false);
+	}
+}
+
+void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
+	gl_systemConfiguration.SetChinaMarketRealtimeServer(1);
+	gl_pSinaRTDataSource->Enable(false);
+	gl_pNeteaseRTDataSource->Enable(true);
+	gl_pTengxunRTDataSource->Enable(false);
 }
 
 void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
@@ -959,8 +986,15 @@ void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
 	}
 }
 
-void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
-	if (gl_systemConfiguration.IsUsingSinaRTServer()) {
+void CMainFrame::OnUsingTengxunRealtimeDataServer() {
+	gl_systemConfiguration.SetChinaMarketRealtimeServer(2);
+	gl_pSinaRTDataSource->Enable(false);
+	gl_pNeteaseRTDataSource->Enable(false);
+	gl_pTengxunRTDataSource->Enable(true);
+}
+
+void CMainFrame::OnUpdateUsingTengxunRealtimeDataServer(CCmdUI* pCmdUI) {
+	if (gl_systemConfiguration.IsUsingTengxunRTServer()) {
 		SysCallCmdUISetCheck(pCmdUI, true);
 	}
 	else {

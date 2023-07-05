@@ -141,4 +141,6 @@ public:
 	afx_msg void OnUpdateUsingNeteaseDayLineDataServer(CCmdUI* pCmdUI);
 	afx_msg void OnUsingTengxunDayLineDataServer();
 	afx_msg void OnUpdateUsingTengxunDayLineDataServer(CCmdUI* pCmdUI);
+	afx_msg void OnUsingTengxunRealtimeDataServer();
+	afx_msg void OnUpdateUsingTengxunRealtimeDataServer(CCmdUI* pCmdUI);
 };

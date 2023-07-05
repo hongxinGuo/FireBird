@@ -6,6 +6,8 @@
 #include"JsonParse.h"
 #include "TengxunRTDataSource.h"
 
+binary_semaphore gl_UpdateChinaMarketTengxunRTDataQueue{1};
+
 CProductTengxunRT::CProductTengxunRT() {
 	m_lCurrentStockPosition = 0;
 	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");
@@ -21,10 +23,12 @@ CString CProductTengxunRT::CreateMessage() {
 
 bool CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseTengxunRTData(pWebData);
+
+	gl_UpdateChinaMarketTengxunRTDataQueue.acquire();
 	for (const auto& pRTData : *pvWebRTData) {
 		gl_pChinaMarket->PushTengxunRT(pRTData);// 将此实时数据指针存入实时数据队列
 	}
-
+	gl_UpdateChinaMarketTengxunRTDataQueue.release();
 	return true;
 }
 

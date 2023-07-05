@@ -175,7 +175,7 @@ public:
 	[[nodiscard]] long GetDataSource() const noexcept { return m_lDataSource; }
 	[[nodiscard]] time_t GetTransactionTime() const noexcept { return m_time; }
 	void SetTransactionTime(const time_t time) noexcept { m_time = time; }
-	[[nodiscard]] CString GetSymbol() const { return m_strSymbol; }
+	[[nodiscard]] CString GetSymbol() { return m_strSymbol; }
 	void SetSymbol(const CString& str) { m_strSymbol = str; }
 	[[nodiscard]] CString GetStockName() const { return m_strStockName; }
 	void SetStockName(const CString& str) { m_strStockName = str; }
