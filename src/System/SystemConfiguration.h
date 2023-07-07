@@ -28,8 +28,6 @@ public:
 
 	void UpdateSystem() const; // 使用本参数去更新系统
 
-	void IncreaseMaxBackgroundThread() const;
-
 	void ChangeFinnhubAccountTypeToFree();
 	void ChangeFinnhubAccountTypeToPaid();
 
@@ -52,6 +50,9 @@ public:
 
 	// 全局参数
 	[[nodiscard]] int GetChinaMarketRealtimeServer() const noexcept { return m_iChinaMarketRealtimeServer; }
+	void UsingSinaRealtimeServer();
+	void UsingNeteaseRealtimeServer();
+	void UsingTengxunRealtimeServer();
 
 	void SetChinaMarketRealtimeServer(const int iChinaMarketRealtimeServer) noexcept {
 		m_fUpdate = true;

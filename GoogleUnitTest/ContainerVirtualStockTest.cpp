@@ -11,15 +11,18 @@ namespace FireBirdTest {
 	class CContainerVirtualStockTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			CChinaStockPtr pStock = nullptr;
 
 			for (int i = 0; i < 100; i++) {
@@ -31,7 +34,8 @@ namespace FireBirdTest {
 		void TearDown() override {
 			EXPECT_EQ(m_containerVirtualStock.Size(), 100);
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -39,15 +43,11 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CContainerVirtualStockTest, TestIsInSymbolMap1) {
-		const CString strSymbol = gl_pChinaMarket->GetStock(1)->GetSymbol();
-
+		CString strSymbol = gl_pChinaMarket->GetStock(1)->GetSymbol();
 		EXPECT_TRUE(m_containerVirtualStock.IsSymbol(strSymbol)) << "位于1-100之间";
-	}
 
-	TEST_F(CContainerVirtualStockTest, TestIsInSymbolMap2) {
-		const CString strSymbol = gl_pChinaMarket->GetStock(101)->GetSymbol();
-
-		EXPECT_FALSE(m_containerVirtualStock.IsSymbol(strSymbol)) << "位于1-100之间";
+		strSymbol = gl_pChinaMarket->GetStock(101)->GetSymbol();
+		EXPECT_FALSE(m_containerVirtualStock.IsSymbol(strSymbol)) << "不位于1-100之间";
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestIsUpdateProfileDB1) {
@@ -78,21 +78,21 @@ namespace FireBirdTest {
 	TEST_F(CContainerVirtualStockTest, TestAdd1) {
 		const CVirtualStockPtr pStock = nullptr;
 
-		EXPECT_FALSE(m_containerVirtualStock.Add(pStock));
+		m_containerVirtualStock.Add(pStock);
 		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "不添加nullptr";
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestAdd2) {
 		const CVirtualStockPtr pStock = m_containerVirtualStock.Get(1);
 
-		EXPECT_FALSE(m_containerVirtualStock.Add(pStock));
+		m_containerVirtualStock.Add(pStock);
 		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "不添加已存在的数据";
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestAdd3) {
 		const CVirtualStockPtr pStock = gl_pChinaMarket->GetStock(101);
 
-		EXPECT_TRUE(m_containerVirtualStock.Add(pStock));
+		m_containerVirtualStock.Add(pStock);
 		EXPECT_EQ(m_containerVirtualStock.Size(), 101) << "添加不存在的数据";
 
 		m_containerVirtualStock.Delete(pStock);
@@ -101,21 +101,21 @@ namespace FireBirdTest {
 	TEST_F(CContainerVirtualStockTest, TestDelete1) {
 		const CVirtualStockPtr pStock = nullptr;
 
-		EXPECT_FALSE(m_containerVirtualStock.Delete(pStock));
+		m_containerVirtualStock.Delete(pStock);
 		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "不删除nullptr";
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestDelete2) {
 		const CVirtualStockPtr pStock = gl_pChinaMarket->GetStock(101);
 
-		EXPECT_FALSE(m_containerVirtualStock.Delete(pStock));
+		m_containerVirtualStock.Delete(pStock);
 		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "不删除不存在的数据";
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestDelete3) {
 		const CVirtualStockPtr pStock = gl_pChinaMarket->GetStock(1);
 
-		EXPECT_TRUE(m_containerVirtualStock.Delete(pStock));
+		m_containerVirtualStock.Delete(pStock);
 		EXPECT_EQ(m_containerVirtualStock.Size(), 99) << "删除已存在的数据";
 
 		m_containerVirtualStock.Add(pStock);
@@ -125,7 +125,7 @@ namespace FireBirdTest {
 		const CVirtualStockPtr pStock = m_containerVirtualStock.Get(0);
 		const CVirtualStockPtr pStock2 = m_containerVirtualStock.Get(1);
 		EXPECT_EQ(m_containerVirtualStock.GetOffset(pStock->GetSymbol()), 0);
-		EXPECT_TRUE(m_containerVirtualStock.Delete(pStock));
+		m_containerVirtualStock.Delete(pStock);
 
 		EXPECT_EQ(m_containerVirtualStock.Size(), 99) << "删除已存在的数据";
 		EXPECT_EQ(m_containerVirtualStock.GetOffset(pStock2->GetSymbol()), 0) << "Delete调用UpdateSymbolMap";

@@ -2,18 +2,24 @@
 
 #include"WorldMarket.h"
 
+#include"SinaRTDataSource.h"
+#include"NeteaseRTDataSource.h"
+#include"TengxunRTDataSource.h"
+
 #include"GeneralCheck.h"
 
 namespace FireBirdTest {
 	class CSystemConfigurationTest : public testing::Test {
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			gl_systemStatus.SetWorkingMode(false);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -100,15 +106,69 @@ namespace FireBirdTest {
 		//		EXPECT_EQ(gl_systemConfiguration.)
 	}
 
-	TEST_F(CSystemConfigurationTest, TestUsingSinaRTServer) {
+	TEST_F(CSystemConfigurationTest, TestIsUsingSinaRTServer) {
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(0);
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingNeteaseRTServer());
+		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunRTServer());
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(1);
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingSinaRTServer());
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseRTServer());
+		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunRTServer());
+		gl_systemConfiguration.SetChinaMarketRealtimeServer(2);
+		EXPECT_FALSE(gl_systemConfiguration.IsUsingSinaRTServer());
+		EXPECT_FALSE(gl_systemConfiguration.IsUsingNeteaseRTServer());
+		EXPECT_TRUE(gl_systemConfiguration.IsUsingTengxunRTServer());
 
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(0);
+	}
+
+	TEST_F(CSystemConfigurationTest, TestUsingSinaRealtimeServer) {
+		EXPECT_TRUE(gl_pSinaRTDataSource->IsEnable());
+		EXPECT_TRUE(gl_pNeteaseRTDataSource->IsEnable());
+		EXPECT_TRUE(gl_pTengxunRTDataSource->IsEnable());
+		gl_pSinaRTDataSource->Enable(false);
+
+		gl_systemConfiguration.UsingSinaRealtimeServer();
+
+		EXPECT_TRUE(gl_pSinaRTDataSource->IsEnable());
+		EXPECT_FALSE(gl_pNeteaseRTDataSource->IsEnable());
+		EXPECT_FALSE(gl_pTengxunRTDataSource->IsEnable());
+
+		gl_pNeteaseRTDataSource->Enable(true);
+		gl_pTengxunRTDataSource->Enable(true);
+	}
+
+	TEST_F(CSystemConfigurationTest, TestUsingNeteaseRealtimeServer) {
+		EXPECT_TRUE(gl_pSinaRTDataSource->IsEnable());
+		EXPECT_TRUE(gl_pNeteaseRTDataSource->IsEnable());
+		EXPECT_TRUE(gl_pTengxunRTDataSource->IsEnable());
+		gl_pNeteaseRTDataSource->Enable(false);
+
+		gl_systemConfiguration.UsingNeteaseRealtimeServer();
+
+		EXPECT_FALSE(gl_pSinaRTDataSource->IsEnable());
+		EXPECT_TRUE(gl_pNeteaseRTDataSource->IsEnable());
+		EXPECT_FALSE(gl_pTengxunRTDataSource->IsEnable());
+
+		gl_pSinaRTDataSource->Enable(true);
+		gl_pTengxunRTDataSource->Enable(true);
+	}
+
+	TEST_F(CSystemConfigurationTest, TestUsingTengxunRealtimeServer) {
+		EXPECT_TRUE(gl_pSinaRTDataSource->IsEnable());
+		EXPECT_TRUE(gl_pNeteaseRTDataSource->IsEnable());
+		EXPECT_TRUE(gl_pTengxunRTDataSource->IsEnable());
+		gl_pTengxunRTDataSource->Enable(false);
+
+		gl_systemConfiguration.UsingTengxunRealtimeServer();
+
+		EXPECT_FALSE(gl_pSinaRTDataSource->IsEnable());
+		EXPECT_FALSE(gl_pNeteaseRTDataSource->IsEnable());
+		EXPECT_TRUE(gl_pTengxunRTDataSource->IsEnable());
+
+		gl_pSinaRTDataSource->Enable(true);
+		gl_pNeteaseRTDataSource->Enable(true);
 	}
 
 	TEST_F(CSystemConfigurationTest, TestUsingNeteaseDayLineServer) {

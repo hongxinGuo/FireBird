@@ -10,20 +10,24 @@ namespace FireBirdTest {
 	class CProductFinnhubForexSymbolTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -59,7 +63,8 @@ namespace FireBirdTest {
 	class ParseFinnhubForexSymbolTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -71,7 +76,8 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -119,7 +125,8 @@ namespace FireBirdTest {
 	class ProcessFinnhubForexSymbolTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -132,7 +139,8 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -174,7 +182,7 @@ namespace FireBirdTest {
 			EXPECT_STREQ(pForexSymbol->GetExchangeCode(), _T("oanda")) << "Index为零时的交易所";
 
 		// 恢复原状
-			EXPECT_TRUE(gl_pWorldMarket->DeleteForexSymbol(pForexSymbol));
+			gl_pWorldMarket->DeleteForexSymbol(pForexSymbol);
 			break;
 		default:
 			break;

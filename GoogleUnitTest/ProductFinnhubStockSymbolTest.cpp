@@ -10,20 +10,24 @@ namespace FireBirdTest {
 	class CFinnhubCompanySymbolProductTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -61,7 +65,8 @@ namespace FireBirdTest {
 	class ParseFinnhubStockSymbolTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -79,7 +84,8 @@ namespace FireBirdTest {
 			m_pStock->SetUpdateCompanyProfile(true);
 			m_pStock->SetUpdateProfileDB(false);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -123,7 +129,8 @@ namespace FireBirdTest {
 	class ProcessFinnhubStockSymbolTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -138,7 +145,8 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -175,7 +183,7 @@ namespace FireBirdTest {
 			gl_systemMessage.PopInnerSystemInformationMessage();
 
 		// »Ö¸´Ô­×´
-			EXPECT_TRUE(gl_pWorldMarket->DeleteStock(pStock));
+			gl_pWorldMarket->DeleteStock(pStock);
 			break;
 		default:
 			break;

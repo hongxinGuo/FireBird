@@ -14,40 +14,19 @@ public:
 
 	virtual void Reset();
 
-	bool IsSymbol(const CString& strSymbol) const {
-		if (m_mapSymbol.contains(strSymbol)) return true;
-		return false;
-	}
-
-	bool IsUpdateProfileDB();
+	bool IsSymbol(const CString& strSymbol) const { return m_mapSymbol.contains(strSymbol); }
+	bool IsUpdateProfileDB() noexcept;
 	bool IsDayLineNeedUpdate() noexcept;
-	bool IsDayLineNeedSaving();
+	bool IsDayLineNeedSaving() noexcept;
 
-	CVirtualStockPtr Get(const size_t lIndex) {
-		try {
-			return m_vStock.at(lIndex);
-		}
-		catch (std::out_of_range&) {
-			ASSERT(0);
-			return nullptr;
-		}
-	}
-
-	CVirtualStockPtr Get(const CString& strSymbol) {
-		try {
-			return m_vStock.at(m_mapSymbol.at(strSymbol));
-		}
-		catch (std::out_of_range&) {
-			ASSERT(0);
-			return nullptr;
-		}
-	}
+	CVirtualStockPtr Get(const size_t lIndex) { return m_vStock.at(lIndex); }
+	CVirtualStockPtr Get(const CString& strSymbol) { return m_vStock.at(m_mapSymbol.at(strSymbol)); }
 
 	size_t GetOffset(const CString& strSymbol) const { return m_mapSymbol.at(strSymbol); }
 
-	bool Add(const CVirtualStockPtr& pStock);
-	bool Delete(const CVirtualStockPtr& pStock);
-	bool UpdateSymbolMap();
+	void Add(const CVirtualStockPtr& pStock);
+	void Delete(const CVirtualStockPtr& pStock);
+	void UpdateSymbolMap();
 	void Sort();
 	size_t Size() const { return m_vStock.size(); }
 

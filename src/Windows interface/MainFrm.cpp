@@ -221,25 +221,17 @@ void CMainFrame::InitializeDataSourceAndWebInquiry() {
 
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
 	case 0:	// 使用新浪实时数据服务器
-		gl_pSinaRTDataSource->Enable(true);
-		gl_pNeteaseRTDataSource->Enable(false);
-		gl_pTengxunRTDataSource->Enable(false);
+		gl_systemConfiguration.UsingSinaRealtimeServer();
 		break;
 	case 1: // 使用网易实时服务器
-		gl_pSinaRTDataSource->Enable(false);
-		gl_pNeteaseRTDataSource->Enable(true);
-		gl_pTengxunRTDataSource->Enable(false);
+		gl_systemConfiguration.UsingNeteaseRealtimeServer();
 		break;
 	case 2: // 使用腾讯实时数据服务器
-		gl_pSinaRTDataSource->Enable(false);
-		gl_pNeteaseRTDataSource->Enable(false);
-		gl_pTengxunRTDataSource->Enable(true);
+		gl_systemConfiguration.UsingTengxunRealtimeServer();
 		break;
 	default: // 例外情况时默认使用新浪实时数据服务器
-		gl_systemConfiguration.SetChinaMarketRealtimeServer(0);
-		gl_pSinaRTDataSource->Enable(true);
-		gl_pNeteaseRTDataSource->Enable(false);
-		gl_pTengxunRTDataSource->Enable(false);
+		gl_systemConfiguration.SetChinaMarketRealtimeServer(0); // 改正无效的标志
+		gl_systemConfiguration.UsingSinaRealtimeServer();
 		break;
 	}
 
@@ -956,9 +948,7 @@ void CMainFrame::OnStopUpdateDayLine() {
 
 void CMainFrame::OnUsingSinaRealtimeDataServer() {
 	gl_systemConfiguration.SetChinaMarketRealtimeServer(0);
-	gl_pNeteaseRTDataSource->Enable(false);
-	gl_pSinaRTDataSource->Enable(true);
-	gl_pTengxunRTDataSource->Enable(false);
+	gl_systemConfiguration.UsingSinaRealtimeServer();
 }
 
 void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
@@ -972,9 +962,7 @@ void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
 	gl_systemConfiguration.SetChinaMarketRealtimeServer(1);
-	gl_pSinaRTDataSource->Enable(false);
-	gl_pNeteaseRTDataSource->Enable(true);
-	gl_pTengxunRTDataSource->Enable(false);
+	gl_systemConfiguration.UsingNeteaseRealtimeServer();
 }
 
 void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
@@ -988,9 +976,7 @@ void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUsingTengxunRealtimeDataServer() {
 	gl_systemConfiguration.SetChinaMarketRealtimeServer(2);
-	gl_pSinaRTDataSource->Enable(false);
-	gl_pNeteaseRTDataSource->Enable(false);
-	gl_pTengxunRTDataSource->Enable(true);
+	gl_systemConfiguration.UsingTengxunRealtimeServer();
 }
 
 void CMainFrame::OnUpdateUsingTengxunRealtimeDataServer(CCmdUI* pCmdUI) {

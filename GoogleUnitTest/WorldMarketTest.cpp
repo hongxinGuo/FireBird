@@ -25,23 +25,27 @@ namespace FireBirdTest {
 	class CWorldMarketTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
 			EXPECT_THAT(gl_systemMessage.InformationSize(), 0);
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
 			gl_pFinnhubDataSource->SetInquiring(false);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -162,11 +166,11 @@ namespace FireBirdTest {
 		// do nothing. 已经在TestAddStock中测试了DeleteStock函数
 		CWorldStockPtr pStock = nullptr;
 
-		EXPECT_FALSE(gl_pWorldMarket->DeleteStock(pStock)) << "空指针";
+		gl_pWorldMarket->DeleteStock(pStock);
 
 		pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("000001.SZ"));
-		EXPECT_FALSE(gl_pWorldMarket->DeleteStock(pStock)) << "此股票代码不存在于代码集中";
+		gl_pWorldMarket->DeleteStock(pStock); // "此股票代码不存在于代码集中";
 	}
 
 	TEST_F(CWorldMarketTest, TestGetStock) {
@@ -249,7 +253,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->AddForexSymbol(pForexSymbol);
 		EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
 		EXPECT_EQ(gl_pWorldMarket->GetForexSymbolSize(), lTotalForexSymbol + 1);
-		EXPECT_TRUE(gl_pWorldMarket->DeleteForexSymbol(pForexSymbol));
+		gl_pWorldMarket->DeleteForexSymbol(pForexSymbol);
 		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
 		EXPECT_EQ(gl_pWorldMarket->GetForexSymbolSize(), lTotalForexSymbol);
 	}
@@ -258,11 +262,11 @@ namespace FireBirdTest {
 		// do nothing. 已经在TestAddForexSymbol中测试了DeleteForexSymbol函数
 		CForexSymbolPtr pForexSymbol = nullptr;
 
-		EXPECT_FALSE(gl_pWorldMarket->DeleteForexSymbol(pForexSymbol)) << "空指针";
+		gl_pWorldMarket->DeleteForexSymbol(pForexSymbol); // "空指针";
 
 		pForexSymbol = make_shared<CFinnhubForexSymbol>();
 		pForexSymbol->SetSymbol(_T("000001.SZ"));
-		EXPECT_FALSE(gl_pWorldMarket->DeleteForexSymbol(pForexSymbol)) << "此符号在符号集中不存在";
+		gl_pWorldMarket->DeleteForexSymbol(pForexSymbol); // "此符号在符号集中不存在";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCryptoExchange) {
@@ -314,7 +318,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
 		EXPECT_EQ(gl_pWorldMarket->GetFinnhubCryptoSymbolSize(), lTotalCryptoSymbol + 1);
 
-		EXPECT_TRUE(gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCryptoSymbol));
+		gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCryptoSymbol);
 		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
 		EXPECT_EQ(gl_pWorldMarket->GetFinnhubCryptoSymbolSize(), lTotalCryptoSymbol);
 	}
@@ -323,11 +327,11 @@ namespace FireBirdTest {
 		// do nothing. 已经在TestAddCryptoSymbol中测试了DeleteCryptoSymbol函数
 		CFinnhubCryptoSymbolPtr pCryptoSymbol = nullptr;
 
-		EXPECT_FALSE(gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCryptoSymbol)) << "空指针";
+		gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCryptoSymbol); // "空指针";
 
 		pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		pCryptoSymbol->SetSymbol(_T("000001.SZ"));
-		EXPECT_FALSE(gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCryptoSymbol)) << "此符号在符号集中不存在";
+		gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCryptoSymbol); // "此符号在符号集中不存在";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCountry) {
@@ -401,7 +405,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock)); // 确保是一个新股票代码
 		pStock->SetTodayNewStock(true);
 		pStock->SetUpdateProfileDB(true);
-		EXPECT_TRUE(gl_pWorldMarket->AddStock(pStock));
+		gl_pWorldMarket->AddStock(pStock);
 		pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
 		EXPECT_TRUE(pStock != nullptr);
 		EXPECT_STREQ(pStock->GetCurrency(), _T(""));
@@ -449,7 +453,7 @@ namespace FireBirdTest {
 		// 恢复原状
 		pStock = gl_pWorldMarket->GetStock(_T("SS.SS.US"));
 		EXPECT_TRUE(pStock != nullptr);
-		EXPECT_TRUE(gl_pWorldMarket->DeleteStock(pStock));
+		gl_pWorldMarket->DeleteStock(pStock);
 		pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
 		EXPECT_TRUE(pStock != nullptr);
 		pStock->SetCurrency(_T(""));

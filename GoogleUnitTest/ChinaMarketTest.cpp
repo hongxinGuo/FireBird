@@ -22,7 +22,8 @@ namespace FireBirdTest {
 	class CChinaMarketTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 
 			gl_pChinaMarket->Load10DaysRSStrongStockDB(); // 装入各十日强度股票集
 			EXPECT_TRUE(gl_pChinaMarket->GetChosenStockSize(10) > 0);
@@ -60,11 +61,13 @@ namespace FireBirdTest {
 
 			EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), 5040) << "测试数据库中的股票代码总数为5040";
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 
 			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
@@ -108,7 +111,8 @@ namespace FireBirdTest {
 
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -1540,16 +1544,16 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestAddStock) {
 		CChinaStockPtr pStock = nullptr;
-		EXPECT_FALSE(gl_pChinaMarket->AddStock(pStock));
+		gl_pChinaMarket->AddStock(pStock);
 
 		pStock = gl_pChinaMarket->GetStock(1);
-		EXPECT_FALSE(gl_pChinaMarket->AddStock(pStock));
+		gl_pChinaMarket->AddStock(pStock);
 
 		pStock = make_shared<CChinaStock>();
 		pStock->SetSymbol(_T("SS.SS.SS"));
 		const auto lTotal = gl_pChinaMarket->GetTotalStock();
 		EXPECT_FALSE(gl_pChinaMarket->IsStock(pStock->GetSymbol()));
-		EXPECT_TRUE(gl_pChinaMarket->AddStock(pStock));
+		gl_pChinaMarket->AddStock(pStock);
 		EXPECT_EQ(gl_pChinaMarket->GetTotalStock(), lTotal + 1);
 
 		gl_pChinaMarket->DeleteStock(pStock);
@@ -1557,14 +1561,14 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestDeleteStock) {
 		CChinaStockPtr pStock = nullptr;
-		EXPECT_FALSE(gl_pChinaMarket->DeleteStock(pStock));
+		gl_pChinaMarket->DeleteStock(pStock);
 
 		pStock = make_shared<CChinaStock>();
 		pStock->SetSymbol(_T("SS.SS.SS"));
-		EXPECT_FALSE(gl_pChinaMarket->DeleteStock(pStock));
+		gl_pChinaMarket->DeleteStock(pStock);
 
 		gl_pChinaMarket->AddStock(pStock);
-		EXPECT_TRUE(gl_pChinaMarket->DeleteStock(pStock));
+		gl_pChinaMarket->DeleteStock(pStock);
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskProcessTengxunRTData) {

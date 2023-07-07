@@ -101,8 +101,8 @@ public:
 
 	bool IsUpdateStockProfileDB() { return m_containerStock.IsUpdateProfileDB(); }
 
-	bool AddStock(const CWorldStockPtr& pStock) { return m_containerStock.Add(pStock); }
-	bool DeleteStock(const CWorldStockPtr& pStock) { return m_containerStock.Delete(pStock); }
+	void AddStock(const CWorldStockPtr& pStock) { m_containerStock.Add(pStock); }
+	void DeleteStock(const CWorldStockPtr& pStock) { m_containerStock.Delete(pStock); }
 	size_t GetStockSize() const noexcept { return m_containerStock.Size(); }
 	void AddTiingoStock(const CTiingoStockPtr& pTiingoStock) { m_dataTiingoStock.Add(pTiingoStock); }
 	bool DeleteTiingoStock(const CTiingoStockPtr& pStock) { return m_dataTiingoStock.Delete(pStock); }
@@ -136,7 +136,7 @@ public:
 	bool IsForexSymbol(const CString& strForexSymbol) const { return m_dataFinnhubForexSymbol.IsSymbol(strForexSymbol); }
 	bool IsForexSymbol(const CForexSymbolPtr& pForexSymbol) const { return IsForexSymbol(pForexSymbol->GetSymbol()); }
 	void AddForexSymbol(const CForexSymbolPtr& pForexSymbol) { m_dataFinnhubForexSymbol.Add(pForexSymbol); }
-	bool DeleteForexSymbol(const CForexSymbolPtr& pForexSymbol) { return m_dataFinnhubForexSymbol.Delete(pForexSymbol); }
+	void DeleteForexSymbol(const CForexSymbolPtr& pForexSymbol) { m_dataFinnhubForexSymbol.Delete(pForexSymbol); }
 	CForexSymbolPtr GetForexSymbol(const size_t lIndex) { return m_dataFinnhubForexSymbol.GetSymbol(lIndex); }
 	CForexSymbolPtr GetForexSymbol(const CString& strSymbol) { return m_dataFinnhubForexSymbol.GetSymbol(strSymbol); }
 	size_t GetForexSymbolSize() const noexcept { return m_dataFinnhubForexSymbol.Size(); }
@@ -151,7 +151,7 @@ public:
 	bool IsFinnhubCryptoSymbol(const CString& strSymbol) const { return m_dataFinnhubCryptoSymbol.IsSymbol(strSymbol); }
 	bool IsFinnhubCryptoSymbol(const CFinnhubCryptoSymbolPtr& pCryptoSymbol) const { return IsFinnhubCryptoSymbol(pCryptoSymbol->GetSymbol()); }
 	void AddFinnhubCryptoSymbol(const CFinnhubCryptoSymbolPtr& pCryptoSymbol) { m_dataFinnhubCryptoSymbol.Add(pCryptoSymbol); }
-	bool DeleteFinnhubCryptoSymbol(const CFinnhubCryptoSymbolPtr& pCryptoSymbol) { return m_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); }
+	void DeleteFinnhubCryptoSymbol(const CFinnhubCryptoSymbolPtr& pCryptoSymbol) { m_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); }
 	CFinnhubCryptoSymbolPtr GetFinnhubCryptoSymbol(const size_t lIndex) { return m_dataFinnhubCryptoSymbol.GetSymbol(lIndex); }
 	CFinnhubCryptoSymbolPtr GetFinnhubCryptoSymbol(const CString& strSymbol) { return m_dataFinnhubCryptoSymbol.GetSymbol(strSymbol); }
 	size_t GetFinnhubCryptoSymbolSize() const noexcept { return m_dataFinnhubCryptoSymbol.Size(); }
@@ -191,13 +191,13 @@ public:
 	// Êý¾Ý¿â²Ù×÷
 	bool LoadWorldExchangeDB() { return m_dataFinnhubStockExchange.LoadDB(); }
 
-	bool LoadStockDB() { return m_containerStock.LoadDB(); }
+	void LoadStockDB() { m_containerStock.LoadDB(); }
 	bool LoadWorldChosenStock() { return m_containerChosenStock.LoadDB(); }
 
 	virtual void UpdateCountryListDB() { m_dataFinnhubCountry.UpdateDB(); }
 	virtual void UpdateStockProfileDB() { m_containerStock.UpdateProfileDB(); }
 	virtual bool UpdateCompanyNewsDB();
-	virtual bool UpdateBasicFinancialDB() { return m_containerStock.UpdateBasicFinancialDB(); }
+	virtual void UpdateBasicFinancialDB() { m_containerStock.UpdateBasicFinancialDB(); }
 	virtual bool UpdateStockDayLineDB();
 	virtual bool UpdateForexSymbolDB() { return m_dataFinnhubForexSymbol.UpdateDB(); }
 	virtual bool UpdateForexExchangeDB() { return m_dataFinnhubForexExchange.UpdateDB(); }

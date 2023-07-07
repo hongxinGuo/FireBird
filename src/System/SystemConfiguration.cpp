@@ -10,6 +10,8 @@
 
 #include<string>
 #include<fstream>
+
+#include "TengxunRTDataSource.h"
 using std::fstream;
 using std::ios;
 
@@ -460,6 +462,24 @@ void CSystemConfiguration::ChangeFinnhubAccountTypeToPaid() {
 	m_bFinnhubAccountFeePaid = true;
 	m_iWorldMarketFinnhubInquiryTime = 220; // Ã¿´Î220ºÁÃë
 	m_fUpdate = true;
+}
+
+void CSystemConfiguration::UsingSinaRealtimeServer() {
+	gl_pNeteaseRTDataSource->Enable(false);
+	gl_pSinaRTDataSource->Enable(true);
+	gl_pTengxunRTDataSource->Enable(false);
+}
+
+void CSystemConfiguration::UsingNeteaseRealtimeServer() {
+	gl_pSinaRTDataSource->Enable(false);
+	gl_pNeteaseRTDataSource->Enable(true);
+	gl_pTengxunRTDataSource->Enable(false);
+}
+
+void CSystemConfiguration::UsingTengxunRealtimeServer() {
+	gl_pSinaRTDataSource->Enable(false);
+	gl_pNeteaseRTDataSource->Enable(false);
+	gl_pTengxunRTDataSource->Enable(true);
 }
 
 bool CSystemConfiguration::LoadDB() {

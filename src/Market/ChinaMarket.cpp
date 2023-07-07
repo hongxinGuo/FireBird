@@ -328,7 +328,7 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// 处理实时数据等，由SchedulingTaskPerSecond函数调用,每三秒执行一次。
+// 处理实时数据等，由SchedulingTaskPerSecond函数调用,至少每三秒执行一次。
 // 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。
 // 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
 //
@@ -336,6 +336,7 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::DistributeSinaRTDataToStock() {
+	//gl_UpdateChinaMarketSinaRTDataQueue.acquire();
 	const size_t lTotalNumber = SinaRTSize();
 	CChinaStockPtr pStock = nullptr;
 
@@ -347,6 +348,7 @@ bool CChinaMarket::DistributeSinaRTDataToStock() {
 		DistributeRTDataToStock(pRTData);
 	}
 	SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
+	//gl_UpdateChinaMarketSinaRTDataQueue.release();
 
 	return true;
 }
@@ -362,6 +364,7 @@ bool CChinaMarket::DistributeSinaRTDataToStock() {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::DistributeTengxunRTDataToStock() {
+	gl_UpdateChinaMarketTengxunRTDataQueue.acquire();
 	const size_t lTotalNumber = TengxunRTSize();
 	CChinaStockPtr pStock = nullptr;
 
@@ -373,6 +376,7 @@ bool CChinaMarket::DistributeTengxunRTDataToStock() {
 		DistributeRTDataToStock(pRTData);
 	}
 	SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
+	gl_UpdateChinaMarketTengxunRTDataQueue.release();
 
 	return true;
 }
@@ -381,9 +385,8 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 	const CString strSymbol = pRTData->GetSymbol();
 	if (IsCheckingActiveStock()) {
 		if (!IsStock(strSymbol) && pRTData->IsActive()) {
-			if (strSymbol.GetLength() == 9) {
-				CreateStock(strSymbol, pRTData->GetStockName(), true);
-			}
+			ASSERT(strSymbol.GetLength() == 9);
+			CreateStock(strSymbol, pRTData->GetStockName(), true);
 		}
 	}
 	else if (!IsStock(pRTData->GetSymbol())) { return false; }
@@ -408,7 +411,7 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// 处理实时数据等，由SchedulingTaskPerSecond函数调用,每三秒执行一次。
+// 处理实时数据等，由SchedulingTaskPerSecond函数调用,至少每三秒执行一次。
 // 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。
 // 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
 //

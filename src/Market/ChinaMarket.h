@@ -14,6 +14,8 @@ using std::binary_semaphore;
 using std::set;
 using std::atomic_int64_t;
 
+extern binary_semaphore gl_UpdateChinaMarketSinaRTDataQueue; // 更新新浪实时数据队列。由于使用多个线程同时申请数据，故而再队列中添加和删除时不允许一个以上的线程同时操作
+extern binary_semaphore gl_UpdateChinaMarketTengxunRTDataQueue; // 更新网易实时数据队列。由于使用多个线程同时申请数据，故而再队列中添加和删除时不允许一个以上的线程同时操作
 extern counting_semaphore<8> gl_BackGroundTaskThread; // 后台工作线程数。最大为8
 extern binary_semaphore gl_ProcessChinaMarketRTData; // 处理中国市场的实时数据时，不允许同时存储之。
 
@@ -358,8 +360,8 @@ public:
 	void SetUpdateStockSection(const bool fFlag) noexcept { m_containerStockSymbol.SetUpdateStockSection(fFlag); }
 	bool IsUpdateStockSection() const noexcept { return m_containerStockSymbol.IsUpdateStockSection(); }
 
-	bool AddStock(const CChinaStockPtr& pStock) { return m_containerChinaStock.Add(pStock); }
-	bool DeleteStock(const CChinaStockPtr& pStock) { return m_containerChinaStock.Delete(pStock); }
+	void AddStock(const CChinaStockPtr& pStock) { m_containerChinaStock.Add(pStock); }
+	void DeleteStock(const CChinaStockPtr& pStock) { m_containerChinaStock.Delete(pStock); }
 	bool CreateStock(const CString& strStockCode, const CString& strStockName, bool fProcessRTData);
 
 	void SetCurrentRSStrongIndex(const long lIndex) noexcept { m_lCurrentRSStrongIndex = lIndex; }

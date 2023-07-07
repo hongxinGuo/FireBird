@@ -41,6 +41,8 @@ time_t gl_tUTC = 0; // 所有的市场使用同一个协调世界时（Coordinated Universal Tim
 CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub禁止访问交易所（免费账户无法访问的交易所数据）
 
 // 为了事先初始化，信号量必须声明为全局变量
+binary_semaphore gl_UpdateChinaMarketSinaRTDataQueue{1}; // 更新新浪实时数据队列。由于使用多个线程同时申请数据，故而再队列中添加和删除时不允许一个以上的线程同时操作
+binary_semaphore gl_UpdateChinaMarketTengxunRTDataQueue{1}; // 更新网易实时数据队列。由于使用多个线程同时申请数据，故而再队列中添加和删除时不允许一个以上的线程同时操作
 binary_semaphore gl_UpdateWorldMarketDB{1}; // 此信号量用于更新WorldMarket数据库
 counting_semaphore<4> gl_SaveDayLineThreadPermitted{1}; // 当数据库中没有日线数据时，增加此信号量最大值至4
 counting_semaphore<8> gl_BackGroundTaskThread{8}; // 后台工作线程数。最大为8

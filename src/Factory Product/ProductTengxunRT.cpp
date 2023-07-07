@@ -6,8 +6,6 @@
 #include"JsonParse.h"
 #include "TengxunRTDataSource.h"
 
-binary_semaphore gl_UpdateChinaMarketTengxunRTDataQueue{1};
-
 CProductTengxunRT::CProductTengxunRT() {
 	m_lCurrentStockPosition = 0;
 	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");

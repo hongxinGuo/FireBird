@@ -10,20 +10,24 @@ namespace FireBirdTest {
 	class CFinnhubCryptoSymbolProductTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -59,7 +63,8 @@ namespace FireBirdTest {
 	class ParseFinnhubCryptoSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -71,7 +76,8 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -119,7 +125,8 @@ namespace FireBirdTest {
 	class ProcessFinnhubCryptoSymbolTest : public::testing::TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -132,7 +139,8 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -174,7 +182,7 @@ namespace FireBirdTest {
 			EXPECT_STREQ(pCrypto->GetDescription(), _T("Oanda Singapore 30"));
 
 		// »Ö¸´Ô­×´
-			EXPECT_TRUE(gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCrypto));
+			gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCrypto);
 			break;
 		default:
 			break;
