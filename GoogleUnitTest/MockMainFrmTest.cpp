@@ -15,7 +15,8 @@ namespace FireBirdTest {
 	class CMockMainFrameTest : public Test {
 	public:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_THAT(gl_pMockMainFrame, NotNull());
@@ -35,11 +36,13 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetUpdateOptionDB(false); // 这里使用了实际的数据库，故而不允许更新
 			EXPECT_EQ(gl_vMarketPtr.size(), 2);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			gl_systemStatus.SetExitingSystem(false);
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
@@ -53,7 +56,8 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetCalculatingDayLineRS(false);
 			gl_systemStatus.SetExitingSystem(false);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -115,8 +119,8 @@ namespace FireBirdTest {
 		gl_systemMessage.SetProcessedTiingoForexWebSocket(1);
 		InSequence seq;
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(1, _)).Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(2, _)).Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(3, _)).Times(1);
+		//EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(2, _)).Times(1);
+		//EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(3, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(4, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(5, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(6, _)).Times(1);
@@ -722,54 +726,32 @@ namespace FireBirdTest {
 		EXPECT_CALL(*gl_pMockMainFrame, SchedulingTask()).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallOnTimer(STOCK_ANALYSIS_TIMER_)).Times(1);
 
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(4, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(5, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(6, _))
-		.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(4, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(5, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(6, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(7, _)).Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(8, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(9, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(11, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(12, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(13, _))
-		.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(8, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(9, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(11, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(12, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(13, _)).Times(1);
 
 		InSequence seq;
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(1, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(2, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(3, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(4, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(5, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(6, _))
-		.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(1, _)).Times(1);
+		//EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(2, _)).Times(1);
+		//EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(3, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(4, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(5, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(6, _)).Times(1);
 		//EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(7, _)).Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(8, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(9, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(10, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(11, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(12, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(13, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(14, _))
-		.Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(15, _))
-		.Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(8, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(9, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(10, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(11, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(12, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(13, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(14, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(15, _)).Times(1);
 
 		gl_pMockMainFrame->OnTimer(STOCK_ANALYSIS_TIMER_);
 

@@ -622,19 +622,26 @@ void CMainFrame::UpdateStatus() {
 
 void CMainFrame::UpdateInnerSystemStatus() {
 	char buffer[30];
-
-	// 更新新浪实时数据读取时间
-	sprintf_s(buffer, _T("%5I64d"), gl_pSinaRTDataSource->GetCurrentInquiryTime());
-	CString str = buffer;
+	CString str;
+	// 更新实时数据读取时间
+	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
+	case 0: // 新浪实时数据
+		sprintf_s(buffer, _T("%5I64d"), gl_pSinaRTDataSource->GetCurrentInquiryTime());
+		str = buffer;
+		break;
+	case 1: // 更新网易实时数据读取时间
+		sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseRTDataSource->GetCurrentInquiryTime());
+		str = buffer;
+		break;
+	case 2: // 更新腾讯实时数据读取时间
+		sprintf_s(buffer, _T("%5I64d"), gl_pTengxunRTDataSource->GetCurrentInquiryTime());
+		str = buffer;
+		break;
+	default: // error
+		break;
+	}
 	SysCallSetInnerSystemPaneText(1, str);
-	// 更新网易实时数据读取时间
-	sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseRTDataSource->GetCurrentInquiryTime());
-	str = buffer;
-	SysCallSetInnerSystemPaneText(2, str);
-	// 更新腾讯实时数据读取时间
-	sprintf_s(buffer, _T("%5I64d"), gl_pTengxunRTDataSource->GetCurrentInquiryTime());
-	str = buffer;
-	SysCallSetInnerSystemPaneText(3, str);
+
 	// 更新日线数据读取时间
 	if (gl_systemConfiguration.IsUsingNeteaseDayLineServer()) { // 网易日线服务器
 		sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseDayLineDataSource->GetCurrentInquiryTime());
