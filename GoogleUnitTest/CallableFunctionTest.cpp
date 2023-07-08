@@ -50,7 +50,8 @@ namespace FireBirdTest {
 	class ProcessFinnhubWebSocketTest : public TestWithParam<WebSocketMessageData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 
 			EXPECT_THAT(gl_finnhubWebSocket.DataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
@@ -64,7 +65,8 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -127,7 +129,8 @@ namespace FireBirdTest {
 	class ProcessTiingoIEXWebSocketTest : public TestWithParam<WebSocketMessageData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 
 			EXPECT_THAT(gl_tiingoIEXWebSocket.DataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
@@ -141,7 +144,8 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -204,7 +208,8 @@ namespace FireBirdTest {
 	class ProcessTiingoCryptoWebSocketTest : public TestWithParam<WebSocketMessageData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 
 			EXPECT_THAT(gl_tiingoCryptoWebSocket.DataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
@@ -218,7 +223,8 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -282,7 +288,8 @@ namespace FireBirdTest {
 	class ProcessTiingoForexWebSocketTest : public TestWithParam<WebSocketMessageData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 
 			EXPECT_THAT(gl_tiingoForexWebSocket.DataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
@@ -296,7 +303,8 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -350,8 +358,8 @@ namespace FireBirdTest {
 	}
 
 	TEST(CallableFunctionTest, TestCompareDayLine) {
-		auto p1 = make_shared<CDayLine>();
-		auto p2 = make_shared<CDayLine>();
+		const auto p1 = make_shared<CDayLine>();
+		const auto p2 = make_shared<CDayLine>();
 		p1->SetDate(0);
 		p2->SetDate(1);
 		EXPECT_TRUE(CompareDayLineDate(p1, p2));

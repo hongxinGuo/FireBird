@@ -7,11 +7,11 @@
 #include"WorldMarket.h"
 #include"WorldStock.h"
 
+#include"CallableFunction.h"
+
 #include "ProductFinnhubStockDayLine.h"
 
 using namespace std;
-
-bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 
 CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 	m_strClassName = _T("Finnhub stock dayline");

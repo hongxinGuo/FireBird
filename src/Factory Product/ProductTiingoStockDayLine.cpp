@@ -104,7 +104,7 @@ bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // 如果没有股票600600.SS日线数据，则返回：{"detail":"Error:Ticker '600600.SS' not found"}
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataPtr& pWebData) {
+CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataPtr& pWebData) const {
 	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
 	string s;
 	long year, month, day;

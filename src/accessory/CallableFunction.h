@@ -12,4 +12,4 @@
 
 #include"ClassDeclaration.h"
 
-[[nodiscard]] bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
+[[nodiscard]] bool CompareDayLineDate(const CDayLinePtr& p1, const CDayLinePtr& p2);

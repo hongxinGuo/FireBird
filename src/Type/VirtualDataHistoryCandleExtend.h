@@ -26,7 +26,6 @@ public:
 		TRACE(_T("调用了基类SaveDB\n"));
 		return false;
 	}
-
 	virtual bool LoadDB(const CString&) {
 		TRACE(_T("调用了基类LoadDB\n"));
 		return false;

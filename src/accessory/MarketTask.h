@@ -27,7 +27,7 @@ enum {
 	CHINA_MARKET_ACCESSORY_TASK__, // 其他辅助任务（如确定工作时间与否、是否快速接收数据等等）
 
 	// World market
-	WORLD_MARKET_CHECK_SYSTEM_READY__, // 系统初始化检查
+	WORLD_MARKET_CHECK_SYSTEM_READY__ = 601, // 系统初始化检查
 	WORLD_MARKET_RESET__,
 	WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__,
 	WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__,
@@ -44,10 +44,10 @@ public:
 	~CMarketTask() = default;
 
 	long GetTime() const { return m_lTime; }
-	void SetTime(long lTime) { m_lTime = lTime; }
+	void SetTime(const long lTime) { m_lTime = lTime; }
 
 	long GetType() const { return m_lType; }
-	void SetType(long lType) { m_lType = lType; }
+	void SetType(const long lType) { m_lType = lType; }
 
 protected:
 	long m_lTime{0}; // HHMMSS制式

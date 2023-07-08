@@ -27,5 +27,5 @@ bool IsShareA(const CString& strStockCode) {
 			}
 		}
 	}
-	return (false);
+	return false;
 }
