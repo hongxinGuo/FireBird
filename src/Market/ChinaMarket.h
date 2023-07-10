@@ -14,8 +14,6 @@ using std::binary_semaphore;
 using std::set;
 using std::atomic_int64_t;
 
-extern binary_semaphore gl_UpdateChinaMarketSinaRTDataQueue; // 更新新浪实时数据队列。由于使用多个线程同时申请数据，故而再队列中添加和删除时不允许一个以上的线程同时操作
-extern binary_semaphore gl_UpdateChinaMarketTengxunRTDataQueue; // 更新网易实时数据队列。由于使用多个线程同时申请数据，故而再队列中添加和删除时不允许一个以上的线程同时操作
 extern counting_semaphore<8> gl_BackGroundTaskThread; // 后台工作线程数。最大为8
 extern binary_semaphore gl_ProcessChinaMarketRTData; // 处理中国市场的实时数据时，不允许同时存储之。
 
@@ -80,7 +78,6 @@ public:
 	bool ProcessDayLine();
 
 	// 各工作线程调用包裹函数
-	virtual void CreateThreadProcessRTData();
 	virtual void CreateThreadBuildDayLineRS(long lStartCalculatingDay);
 	virtual void CreateThreadBuildDayLineRSOfDate(long lThisDay);
 	virtual void CreateThreadBuildWeekLine(long lStartDate);
@@ -101,11 +98,13 @@ public:
 	virtual void CreateThreadLoadTempRTData(long lTheDay);
 	virtual void CreateThreadSaveStockSection();
 	virtual void CreateThreadUpdateChoseStockDB();
+	virtual void CreateThreadDistributeAndCalculateRTData();
 
 	// interface function
 
 public:
 	//处理个股票的实时数据，计算挂单变化等。
+	void DistributeAndCalculateRTData();
 	bool ProcessRTData() { return m_containerChinaStock.ProcessRTData(); }
 	bool ProcessTengxunRTData(); // 处理腾讯实时数据
 
@@ -261,8 +260,8 @@ public:
 	size_t GetStockOffset(const CString& str) const { return m_containerChinaStock.GetOffset(str); }
 
 	//处理实时股票变化等
-	bool DistributeSinaRTDataToStock();
-	bool DistributeTengxunRTDataToStock();
+	void DistributeSinaRTDataToStock();
+	void DistributeTengxunRTDataToStock();
 	bool DistributeNeteaseRTDataToStock();
 	bool DistributeRTDataToStock(const CWebRTDataPtr& pRTData);
 
@@ -365,6 +364,9 @@ public:
 	bool CreateStock(const CString& strStockCode, const CString& strStockName, bool fProcessRTData);
 
 	void SetCurrentRSStrongIndex(const long lIndex) noexcept { m_lCurrentRSStrongIndex = lIndex; }
+
+public:
+	time_t m_ttDistributeAndCalculateTime; // 实时数据分配及处理时间
 
 protected:
 	// 初始化

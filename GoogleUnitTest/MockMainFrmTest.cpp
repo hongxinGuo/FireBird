@@ -5,6 +5,7 @@
 #include"ChinaMarket.h"
 
 #include"MockMainFrm.h"
+#include "TengxunRTDataSource.h"
 
 using namespace testing;
 using namespace testing;
@@ -560,12 +561,26 @@ namespace FireBirdTest {
 
 	TEST_F(CMockMainFrameTest, TestOnUsingRealtimeDataServer) {
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());
+		EXPECT_FALSE(gl_systemConfiguration.IsUsingNeteaseRTServer());
+		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunRTServer());
+
 		gl_pMockMainFrame->OnUsingNeteaseRealtimeDataServer();
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseRTServer());
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingSinaRTServer());
+		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunRTServer());
+
+		gl_pMockMainFrame->OnUsingTengxunRealtimeDataServer();
+		EXPECT_FALSE(gl_systemConfiguration.IsUsingSinaRTServer());
+		EXPECT_FALSE(gl_systemConfiguration.IsUsingNeteaseRTServer());
+		EXPECT_TRUE(gl_systemConfiguration.IsUsingTengxunRTServer());
+
 		gl_pMockMainFrame->OnUsingSinaRealtimeDataServer();
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingNeteaseRTServer());
+		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunRTServer());
+
+		gl_pNeteaseRTDataSource->Enable(true);
+		gl_pTengxunRTDataSource->Enable(true);
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnUsingDayLineDataServer) {

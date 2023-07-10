@@ -124,8 +124,8 @@ UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStro
 UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock); // 此线程返回值为105
 // 计算股票的10日强势与否2
 UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock); // 此线程返回值为106
-// 计算chinaMarket的实时数据
-UINT ThreadProcessRTData(not_null<CChinaMarket*> pMarket); // 此线程返回值为107
+// 分配并计算chinaMarket的实时数据
+UINT ThreadDistributeAndCalculateRTData(not_null<CChinaMarket*> pMarket); // 此线程返回值为108
 
 // 后台处理线程
 // WebSource ParseAndSaveWebData线程。 此线程的返回值为203

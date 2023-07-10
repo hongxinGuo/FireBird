@@ -40,13 +40,13 @@ UINT ThreadLoadTempRTData(not_null<CChinaMarket*> pMarket, long lTheDay) {
 /// <summary>
 /// 此线程与存储实时数据的线程互斥。
 ///
-/// 此为处理实时数据的进程，需要考虑运行速度，不再虚拟化其调用的ProcessRTData，故而不测试此进程
+/// 此为处理实时数据的进程，需要考虑运行速度，不再虚拟化其调用的DistributeAndCalculateRTData，故而不测试此进程
 /// </summary>
 /// <param name="pMarket"></param>
 /// <returns></returns>
-UINT ThreadProcessRTData(not_null<CChinaMarket*> pMarket) {
+UINT ThreadDistributeAndCalculateRTData(not_null<CChinaMarket*> pMarket) {
 	gl_ProcessChinaMarketRTData.acquire();
-	pMarket->ProcessRTData();
+	pMarket->DistributeAndCalculateRTData();
 	gl_ProcessChinaMarketRTData.release();
-	return 107;
+	return 108;
 }

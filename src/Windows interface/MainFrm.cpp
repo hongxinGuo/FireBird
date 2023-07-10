@@ -642,6 +642,10 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	}
 	SysCallSetInnerSystemPaneText(1, str);
 
+	// 更新实时数据分配及处理时间
+	sprintf_s(buffer, _T("%5I64d"), gl_pChinaMarket->m_ttDistributeAndCalculateTime);
+	str = buffer;
+	SysCallSetInnerSystemPaneText(2, str);
 	// 更新日线数据读取时间
 	if (gl_systemConfiguration.IsUsingNeteaseDayLineServer()) { // 网易日线服务器
 		sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseDayLineDataSource->GetCurrentInquiryTime());
@@ -1164,9 +1168,9 @@ void CMainFrame::OnMaintainDayLine() {
 void CMainFrame::OnUpdateMaintainDayLine(CCmdUI* pCmdUI) {
 	if (gl_pChinaMarket->IsDummyTime()) {
 #ifndef _DEBUG
-   if(gl_pChinaMarket->GetMarketTime() > 151000) 
+		if (gl_pChinaMarket->GetMarketTime() > 151000)
 #endif
-		SysCallCmdUIEnable(pCmdUI, true);
+			SysCallCmdUIEnable(pCmdUI, true);
 	}
 	else {
 		SysCallCmdUIEnable(pCmdUI, false);

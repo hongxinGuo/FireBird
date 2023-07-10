@@ -335,10 +335,8 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 // 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股的挂单情况。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::DistributeSinaRTDataToStock() {
-	//gl_UpdateChinaMarketSinaRTDataQueue.acquire();
+void CChinaMarket::DistributeSinaRTDataToStock() {
 	const size_t lTotalNumber = SinaRTSize();
-	CChinaStockPtr pStock = nullptr;
 
 	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
 
@@ -347,10 +345,7 @@ bool CChinaMarket::DistributeSinaRTDataToStock() {
 		ASSERT(pRTData->GetDataSource() == SINA_RT_WEB_DATA_);
 		DistributeRTDataToStock(pRTData);
 	}
-	SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
-	//gl_UpdateChinaMarketSinaRTDataQueue.release();
-
-	return true;
+	if (lTotalNumber > 0) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -360,13 +355,12 @@ bool CChinaMarket::DistributeSinaRTDataToStock() {
 // 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
 //
 // 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股的挂单情况。
+// 由于腾讯实时数据可能由多个数据申请线程申请，执行此函数时不允许同时将实时数据加入队列中，故而采用互斥。
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::DistributeTengxunRTDataToStock() {
-	gl_UpdateChinaMarketTengxunRTDataQueue.acquire();
+void CChinaMarket::DistributeTengxunRTDataToStock() {
 	const size_t lTotalNumber = TengxunRTSize();
-	CChinaStockPtr pStock = nullptr;
 
 	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
 
@@ -375,10 +369,7 @@ bool CChinaMarket::DistributeTengxunRTDataToStock() {
 		ASSERT(pRTData->GetDataSource() == TENGXUN_RT_WEB_DATA_);
 		DistributeRTDataToStock(pRTData);
 	}
-	SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
-	gl_UpdateChinaMarketTengxunRTDataQueue.release();
-
-	return true;
+	if (lTotalNumber > 0) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 }
 
 bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
@@ -428,7 +419,7 @@ bool CChinaMarket::DistributeNeteaseRTDataToStock() {
 		ASSERT(pRTData->GetDataSource() == NETEASE_RT_WEB_DATA_);
 		DistributeRTDataToStock(pRTData);
 	}
-	SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
+	if (lTotalNumber > 0) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 
 	return true;
 }
@@ -508,6 +499,11 @@ void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
 	}
 }
 
+void CChinaMarket::CreateThreadDistributeAndCalculateRTData() {
+	thread thread1(ThreadDistributeAndCalculateRTData, this);
+	thread1.detach();
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 将接收到的实时数据分发至各相关股票的实时数据队列中。
@@ -516,6 +512,15 @@ void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
+	CreateThreadDistributeAndCalculateRTData();
+
+	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, GetNextSecond(lCurrentTime)); // 每秒执行一次
+}
+
+void CChinaMarket::DistributeAndCalculateRTData() {
+	CHighPerformanceCounter counter;
+	counter.start();
+
 	switch (gl_systemConfiguration.GetRTServer()) {
 	case 0: // Sina RT Data server
 		DistributeSinaRTDataToStock();
@@ -531,10 +536,11 @@ void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
 		break;
 	}
 	if (IsSystemReady() && IsTodayTempRTDataLoaded() && IsRTDataNeedCalculate()) {
-		CreateThreadProcessRTData();
+		ProcessRTData();
 		SetRTDataNeedCalculate(false);
 	}
-	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, GetNextSecond(lCurrentTime)); // 每秒执行一次
+	counter.stop();
+	m_ttDistributeAndCalculateTime = counter.GetElapsedMillisecond();
 }
 
 bool CChinaMarket::ProcessTask(long lCurrentTime) {
@@ -1280,11 +1286,6 @@ bool CChinaMarket::ProcessDayLine() {
 		pData = nullptr;
 	}
 	return true;
-}
-
-void CChinaMarket::CreateThreadProcessRTData() {
-	thread thread1(ThreadProcessRTData, this);
-	thread1.detach();
 }
 
 void CChinaMarket::CreateThreadProcessTodayStock() {

@@ -74,6 +74,10 @@ namespace FireBirdTest {
 	}
 
 	void WebInquirerCheck() {
+		EXPECT_TRUE(gl_pSinaRTDataSource->IsEnable());
+		EXPECT_TRUE(gl_pNeteaseRTDataSource->IsEnable());
+		EXPECT_TRUE(gl_pTengxunRTDataSource->IsEnable());
+
 		EXPECT_THAT(gl_pFinnhubDataSource->GetReceivedDataSize(), 0);
 		EXPECT_EQ(gl_pTiingoDataSource->GetReceivedDataSize(), 0);
 		EXPECT_EQ(gl_pSinaRTDataSource->GetReceivedDataSize(), 0);

@@ -22,11 +22,11 @@ CString CProductTengxunRT::CreateMessage() {
 bool CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseTengxunRTData(pWebData);
 
-	gl_UpdateChinaMarketTengxunRTDataQueue.acquire();
+	gl_ProcessChinaMarketRTData.acquire();
 	for (const auto& pRTData : *pvWebRTData) {
 		gl_pChinaMarket->PushTengxunRT(pRTData);// 将此实时数据指针存入实时数据队列
 	}
-	gl_UpdateChinaMarketTengxunRTDataQueue.release();
+	gl_ProcessChinaMarketRTData.release();
 	return true;
 }
 
