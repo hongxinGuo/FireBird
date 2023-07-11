@@ -120,7 +120,7 @@ namespace FireBirdTest {
 		gl_systemMessage.SetProcessedTiingoForexWebSocket(1);
 		InSequence seq;
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(1, _)).Times(1);
-		//EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(2, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(2, _)).Times(1);
 		//EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(3, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(4, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(5, _)).Times(1);
@@ -753,7 +753,7 @@ namespace FireBirdTest {
 
 		InSequence seq;
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(1, _)).Times(1);
-		//EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(2, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(2, _)).Times(1);
 		//EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(3, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(4, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(5, _)).Times(1);
