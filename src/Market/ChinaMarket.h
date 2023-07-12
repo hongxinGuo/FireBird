@@ -35,7 +35,6 @@ public:
 	void PreparingExitMarket() final;
 
 	bool IsTimeToResetSystem(long lCurrentTime) final;
-
 	bool IsOrdinaryTradeTime() final; // 日常交易时间
 	bool IsOrdinaryTradeTime(long) final;
 	bool IsWorkingTime() final;
@@ -44,7 +43,7 @@ public:
 	bool IsDummyTime(long lTime) final;
 
 public:
-	bool ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由SchedulingTaskPerSecond调度
+	bool ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由基类的SchedulingTask调度
 
 	// 各种任务
 	virtual bool TaskCreateTask(long lCurrentTime);
@@ -106,7 +105,6 @@ public:
 	//处理个股票的实时数据，计算挂单变化等。
 	void DistributeAndCalculateRTData();
 	bool ProcessRTData() { return m_containerChinaStock.ProcessRTData(); }
-	bool ProcessTengxunRTData(); // 处理腾讯实时数据
 
 	// 系统状态区
 	bool IsFastReceivingRTData() noexcept { return m_fFastReceivingRTData; }

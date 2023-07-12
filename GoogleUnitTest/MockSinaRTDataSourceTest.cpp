@@ -29,6 +29,11 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			m_pMockSinaRTDataSource = make_shared<CMockSinaRTDataSource>();
+
+			// 禁止调用实际网络数据提取任务（否则会导致发起实际网络申请）
+			m_pMockSinaRTDataSource->DisableDataSourceImp();
+			// 禁止调用实际网络数据提取任务（否则会导致发起实际网络申请）
+			SinaDataSource.DisableDataSourceImp();
 		}
 
 		void TearDown() override {
@@ -71,9 +76,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pMockSinaRTDataSource->IsInquiring());
 		EXPECT_FALSE(m_pMockSinaRTDataSource->HaveInquiry());
 		EXPECT_TRUE(m_pMockSinaRTDataSource->GenerateInquiryMessage(120600)) << "申请数据";
-
-		EXPECT_TRUE(m_pMockSinaRTDataSource->IsInquiring());
-		EXPECT_TRUE(m_pMockSinaRTDataSource->HaveInquiry());
 
 		// 恢复原状
 		gl_pChinaMarket->SetSystemReady(true);

@@ -122,7 +122,7 @@
     <ClCompile Include="HighPerformanceCounterTest.cpp" />
     <ClCompile Include="jsonParseTest.cpp" />
     <ClCompile Include="ChinaStockCodeConverterTest.cpp" />
-    <ClCompile Include="SinaRTDataSourceTest.cpp" />
+    <ClCompile Include="SinaRTDataSourceImpTest.cpp" />
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="SystemConfigurationTest.cpp" />
     <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp" />

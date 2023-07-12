@@ -3,6 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"tengxunRTDataSourceImp.h"
+#include"tengxunRTDataSource.h"
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
 
@@ -36,40 +37,40 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CTengxunRTDataSourceImp tengxunRTDataSource;
+		CTengxunRTDataSourceImp tengxunRTDataSourceImp;
 	};
 
-	TEST_F(CTengxunRTDataSourceTest, TestInitialize) {
-		EXPECT_STREQ(tengxunRTDataSource.GetInquiryFunction(), _T("http://qt.gtimg.cn/q="));
-		EXPECT_STREQ(tengxunRTDataSource.GetInquiryToken(), _T(""));
-		EXPECT_EQ(tengxunRTDataSource.GetInquiringNumber(), 900) << _T("腾讯默认值");
+	TEST_F(CTengxunRTDataSourceTest, TestInitialize2) {
+		EXPECT_STREQ(tengxunRTDataSourceImp.GetInquiryFunction(), _T("http://qt.gtimg.cn/q="));
+		EXPECT_STREQ(tengxunRTDataSourceImp.GetInquiryToken(), _T(""));
+		EXPECT_EQ(tengxunRTDataSourceImp.GetInquiringNumber(), 900) << _T("腾讯默认值");
 	}
 
 	TEST_F(CTengxunRTDataSourceTest, TestInquireRTData1) {
-		tengxunRTDataSource.SetInquiring(true);
+		tengxunRTDataSourceImp.SetInquiring(true);
 
-		EXPECT_FALSE(tengxunRTDataSource.InquireRTData(0));
+		EXPECT_FALSE(tengxunRTDataSourceImp.InquireRTData(0));
 
-		EXPECT_FALSE(tengxunRTDataSource.HaveInquiry());
+		EXPECT_FALSE(tengxunRTDataSourceImp.HaveInquiry());
 	}
 
 	TEST_F(CTengxunRTDataSourceTest, TestInquireRTData2) {
-		tengxunRTDataSource.SetInquiring(false);
+		tengxunRTDataSourceImp.SetInquiring(false);
 
-		EXPECT_TRUE(tengxunRTDataSource.InquireRTData(0));
+		EXPECT_TRUE(tengxunRTDataSourceImp.InquireRTData(0));
 
-		EXPECT_TRUE(tengxunRTDataSource.IsInquiring());
-		EXPECT_TRUE(tengxunRTDataSource.HaveInquiry());
-		EXPECT_EQ(tengxunRTDataSource.GetInquiryQueueSize(), 1);
-		tengxunRTDataSource.GetCurrentProduct();
-		const auto pProduct = tengxunRTDataSource.GetCurrentInquiry();
+		EXPECT_TRUE(tengxunRTDataSourceImp.IsInquiring());
+		EXPECT_TRUE(tengxunRTDataSourceImp.HaveInquiry());
+		EXPECT_EQ(tengxunRTDataSourceImp.GetInquiryQueueSize(), 1);
+		tengxunRTDataSourceImp.GetCurrentProduct();
+		const auto pProduct = tengxunRTDataSourceImp.GetCurrentInquiry();
 		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductTengxunRT"));
-		EXPECT_FALSE(tengxunRTDataSource.HaveInquiry());
+		EXPECT_FALSE(tengxunRTDataSourceImp.HaveInquiry());
 	}
 
 	TEST_F(CTengxunRTDataSourceTest, TestParseData) {
 		const auto pData = make_shared<CWebData>();
-		EXPECT_FALSE(tengxunRTDataSource.ParseData(pData)) << "腾讯实时数据无需解析";
+		EXPECT_FALSE(tengxunRTDataSourceImp.ParseData(pData)) << "腾讯实时数据无需解析";
 	}
 
 	TEST_F(CTengxunRTDataSourceTest, TestIsTengxunRTDataInValid) {
@@ -79,7 +80,7 @@ namespace FireBirdTest {
 		pWebDataReceived->SetBufferLength(str.GetLength());
 		pWebDataReceived->ResetCurrentPos();
 
-		EXPECT_TRUE(tengxunRTDataSource.IsInvalidTengxunRTData(*pWebDataReceived));
+		EXPECT_TRUE(tengxunRTDataSourceImp.IsInvalidTengxunRTData(*pWebDataReceived));
 		EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
 
 		str = _T("v_pv_none_mtch=\"1\";\n");
@@ -87,7 +88,7 @@ namespace FireBirdTest {
 		pWebDataReceived->SetBufferLength(str.GetLength());
 		pWebDataReceived->ResetCurrentPos();
 
-		EXPECT_FALSE(tengxunRTDataSource.IsInvalidTengxunRTData(*pWebDataReceived));
+		EXPECT_FALSE(tengxunRTDataSourceImp.IsInvalidTengxunRTData(*pWebDataReceived));
 		EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
 	}
 

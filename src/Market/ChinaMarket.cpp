@@ -179,6 +179,77 @@ bool CChinaMarket::IsDummyTime() {
 	return !IsWorkingTime();
 }
 
+///////////////////////////////////////////////////////////////////////////////////////
+//
+// 各任务调度处理函数
+//
+//
+//
+//
+///////////////////////////////////////////////////////////////////////////////////////
+bool CChinaMarket::ProcessTask(long lCurrentTime) {
+	if (IsMarketTaskEmpty()) return false;
+	const auto pTask = GetMarketTask();
+	if (lCurrentTime >= pTask->GetTime()) {
+		DiscardMarketTask();
+		switch (pTask->GetType()) {
+		case CREATE_TASK__: // 生成其他任务
+			TaskCreateTask(lCurrentTime);
+			break;
+		case CHINA_MARKET_CHECK_SYSTEM_READY__:
+			TaskCheckMarketReady(lCurrentTime);
+			break;
+		case CHINA_MARKET_RESET__: // 91300重启系统
+			TaskResetMarket(lCurrentTime);
+			break;
+		case CHINA_MARKET_LOAD_TEMP_RT_DATA__:
+			TaskLoadTempRTData(GetMarketDate(), lCurrentTime);
+			break;
+		case CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__:
+			TaskDistributeAndCalculateRTData(lCurrentTime);
+			break;
+		case CHINA_MARKET_SAVE_TEMP_RT_DATA__:
+			TaskSaveTempData(lCurrentTime);
+			break;
+		case CHINA_MARKET_BUILD_TODAY_DATABASE__:
+			TaskProcessTodayStock(lCurrentTime);
+			break;
+		case CHINA_MARKET_VALIDATE_TODAY_DATABASE__:
+			// todo not implemented
+			break;
+		case CHINA_MARKET_UPDATE_OPTION_DB__:
+			TaskUpdateOptionDB(lCurrentTime);
+			break;
+		case CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__:
+			TaskUpdateStockProfileDB(lCurrentTime);
+			break;
+		case CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__:
+			TaskUpdateChosenStockDB();
+			break;
+		case CHINA_MARKET_UPDATE_STOCK_SECTION__:
+			TaskUpdateStockSection();
+			break;
+		case CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__:
+			TaskProcessAndSaveDayLine(lCurrentTime);
+			break;
+		case CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__:
+			TaskLoadCurrentStockHistoryData();
+			break;
+		case CHINA_MARKET_ACCESSORY_TASK__:
+			TaskAccessoryTask(lCurrentTime);
+			break;
+		case CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__:
+			TaskChoiceRSSet(lCurrentTime);
+			break;
+		default:
+			ASSERT(0); // 非法任务
+			break;
+		}
+		return true;
+	}
+	return false;
+}
+
 bool CChinaMarket::TaskCheckMarketReady(long lCurrentTime) {
 	if (!IsSystemReady()) {
 		if (IsResetMarket()) return false;
@@ -328,11 +399,11 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// 处理实时数据等，由SchedulingTaskPerSecond函数调用,至少每三秒执行一次。
+// 处理实时数据等，至少每三秒执行一次。
 // 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。
 // 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
 //
-// 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股的挂单情况。
+// 此函数由工作线程调用，注意同步问题。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::DistributeSinaRTDataToStock() {
@@ -350,11 +421,11 @@ void CChinaMarket::DistributeSinaRTDataToStock() {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// 处理实时数据等，由SchedulingTaskPerSecond函数调用,至少每三秒执行一次。
+// 处理实时数据等，至少每三秒执行一次。
 // 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。
 // 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
 //
-// 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股的挂单情况。
+// 此函数由工作线程调用，注意同步问题。
 // 由于腾讯实时数据可能由多个数据申请线程申请，执行此函数时不允许同时将实时数据加入队列中，故而采用互斥。
 //
 //
@@ -372,6 +443,40 @@ void CChinaMarket::DistributeTengxunRTDataToStock() {
 	if (lTotalNumber > 0) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////
+//
+// 处理实时数据等，至少每三秒执行一次。
+// 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。
+// 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
+//
+// 此函数由工作线程调用，注意同步问题。
+//
+///////////////////////////////////////////////////////////////////////////////////////////
+bool CChinaMarket::DistributeNeteaseRTDataToStock() {
+	const size_t lTotalNumber = NeteaseRTSize();
+
+	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
+
+	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
+		const CWebRTDataPtr pRTData = PopNeteaseRT();
+		ASSERT(pRTData->GetDataSource() == NETEASE_RT_WEB_DATA_);
+		DistributeRTDataToStock(pRTData);
+	}
+	if (lTotalNumber > 0) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
+
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//
+// 处理实时数据等，至少每三秒执行一次。
+// 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。
+// 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
+//
+// 此函数由工作线程调用，注意同步问题。
+//
+//
+///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 	const CString strSymbol = pRTData->GetSymbol();
 	if (IsCheckingActiveStock()) {
@@ -396,30 +501,6 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 			pStock->SetTransactionTime(pRTData->GetTransactionTime()); // 设置最新接受到实时数据的时间
 		}
 	}
-
-	return true;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////
-//
-// 处理实时数据等，由SchedulingTaskPerSecond函数调用,至少每三秒执行一次。
-// 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。
-// 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
-//
-// 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股的挂单情况。
-//
-///////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::DistributeNeteaseRTDataToStock() {
-	const size_t lTotalNumber = NeteaseRTSize();
-
-	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
-
-	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-		const CWebRTDataPtr pRTData = PopNeteaseRT();
-		ASSERT(pRTData->GetDataSource() == NETEASE_RT_WEB_DATA_);
-		DistributeRTDataToStock(pRTData);
-	}
-	if (lTotalNumber > 0) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 
 	return true;
 }
@@ -456,35 +537,6 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const CString& str) co
 
 	return true;
 }
-
-bool CChinaMarket::ProcessTengxunRTData() {
-	const size_t lTotalData = TengxunRTSize();
-
-	for (int i = 0; i < lTotalData; i++) {
-		const CWebRTDataPtr pRTData = PopTengxunRT();
-		if (pRTData->IsActive()) {
-			ASSERT(IsStock(pRTData->GetSymbol()));
-			const auto pStock = GetStock(pRTData->GetSymbol());
-			pStock->SetTotalValue(pRTData->GetTotalValue());
-			pStock->SetCurrentValue(pRTData->GetCurrentValue());
-			pStock->SetHighLimitFromTengxun(pRTData->GetHighLimitFromTengxun());
-			pStock->SetLowLimitFromTengxun(pRTData->GetLowLimitFromTengxun());
-		}
-	}
-	return true;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 定时调度函数，每秒一次。
-//
-/////////////////////////////////////////////////////////////////////////////////////////////
-//void CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
-//ResetMarketFlagAtMidnight(lCurrentTime);
-//CreateTaskOfReset();
-
-//TaskShowCurrentTransaction();
-//}
 
 void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
 	if (m_fCalculateChosen10RS) {
@@ -541,69 +593,6 @@ void CChinaMarket::DistributeAndCalculateRTData() {
 	}
 	counter.stop();
 	m_ttDistributeAndCalculateTime = counter.GetElapsedMillisecond();
-}
-
-bool CChinaMarket::ProcessTask(long lCurrentTime) {
-	if (IsMarketTaskEmpty()) return false;
-	const auto pTask = GetMarketTask();
-	if (lCurrentTime >= pTask->GetTime()) {
-		DiscardMarketTask();
-		switch (pTask->GetType()) {
-		case CREATE_TASK__: // 生成其他任务
-			TaskCreateTask(lCurrentTime);
-			break;
-		case CHINA_MARKET_CHECK_SYSTEM_READY__:
-			TaskCheckMarketReady(lCurrentTime);
-			break;
-		case CHINA_MARKET_RESET__: // 91300重启系统
-			TaskResetMarket(lCurrentTime);
-			break;
-		case CHINA_MARKET_LOAD_TEMP_RT_DATA__:
-			TaskLoadTempRTData(GetMarketDate(), lCurrentTime);
-			break;
-		case CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__:
-			TaskDistributeAndCalculateRTData(lCurrentTime);
-			break;
-		case CHINA_MARKET_SAVE_TEMP_RT_DATA__:
-			TaskSaveTempData(lCurrentTime);
-			break;
-		case CHINA_MARKET_BUILD_TODAY_DATABASE__:
-			TaskProcessTodayStock(lCurrentTime);
-			break;
-		case CHINA_MARKET_VALIDATE_TODAY_DATABASE__:
-			// todo not implemented
-			break;
-		case CHINA_MARKET_UPDATE_OPTION_DB__:
-			TaskUpdateOptionDB(lCurrentTime);
-			break;
-		case CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__:
-			TaskUpdateStockProfileDB(lCurrentTime);
-			break;
-		case CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__:
-			TaskUpdateChosenStockDB();
-			break;
-		case CHINA_MARKET_UPDATE_STOCK_SECTION__:
-			TaskUpdateStockSection();
-			break;
-		case CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__:
-			TaskProcessAndSaveDayLine(lCurrentTime);
-			break;
-		case CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__:
-			TaskLoadCurrentStockHistoryData();
-			break;
-		case CHINA_MARKET_ACCESSORY_TASK__:
-			TaskAccessoryTask(lCurrentTime);
-			break;
-		case CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__:
-			TaskChoiceRSSet(lCurrentTime);
-			break;
-		default:
-			ASSERT(0); // 非法任务
-			break;
-		}
-		return true;
-	}
-	return false;
 }
 
 bool CChinaMarket::TaskCreateTask(long lCurrentTime) {

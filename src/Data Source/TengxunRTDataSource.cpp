@@ -15,6 +15,10 @@ CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr7 = nullptr;
 CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr8 = nullptr;
 
 CTengxunRTDataSource::CTengxunRTDataSource() {
+	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");
+	m_strInquiryToken = _T("");
+	m_lInquiringNumber = 900; // 腾讯实时数据查询默认值
+
 	s_TengxunRTDataSourcePtr1 = make_shared<CTengxunRTDataSourceImp>();
 	s_TengxunRTDataSourcePtr2 = make_shared<CTengxunRTDataSourceImp>();
 	s_TengxunRTDataSourcePtr3 = make_shared<CTengxunRTDataSourceImp>();
@@ -52,7 +56,7 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 		else {
 			m_llLastTimeTickCount = llTickCount;
 		}
-
+		// 从池中调用实际执行工作线程
 		for (const auto pDataSourceImp : m_DataSourceContainer) {
 			if (!pDataSourceImp->IsInquiring() && !pDataSourceImp->IsWorkingThreadRunning()) {
 				pDataSourceImp->Run(lCurrentTime);

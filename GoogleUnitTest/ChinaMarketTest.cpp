@@ -1571,60 +1571,6 @@ namespace FireBirdTest {
 		gl_pChinaMarket->DeleteStock(pStock);
 	}
 
-	TEST_F(CChinaMarketTest, TestTaskProcessTengxunRTData) {
-		auto pRTData = make_shared<CWebRTData>();
-
-		EXPECT_THAT(gl_pChinaMarket->TengxunRTSize(), Eq(0));
-
-		pRTData->SetActive(true);
-		pRTData->SetSymbol(_T("600000.SS"));
-		pRTData->SetTotalValue(101010101010);
-		pRTData->SetCurrentValue(2020202020202020);
-		pRTData->SetHighLimitFromTengxun(10101010);
-		pRTData->SetLowLimitFromTengxun(1010);
-
-		gl_pChinaMarket->PushTengxunRT(pRTData);
-
-		pRTData = make_shared<CWebRTData>();
-
-		pRTData->SetActive(false);
-		pRTData->SetSymbol(_T("600001.SS"));
-		pRTData->SetTotalValue(101010101010);
-		pRTData->SetCurrentValue(2020202020202020);
-		pRTData->SetHighLimitFromTengxun(10101010);
-		pRTData->SetLowLimitFromTengxun(1010);
-
-		gl_pChinaMarket->PushTengxunRT(pRTData);
-
-		CChinaStockPtr pStock = gl_pChinaMarket->GetStock(_T("600000.SS"));
-		EXPECT_THAT(pStock->GetTotalValue(), 0);
-		EXPECT_THAT(pStock->GetCurrentValue(), 0);
-		EXPECT_THAT(pStock->GetHighLimitFromTengxun(), 0);
-		EXPECT_THAT(pStock->GetLowLimitFromTengxun(), 0);
-
-		pStock = gl_pChinaMarket->GetStock(_T("600001.SS"));
-		EXPECT_THAT(pStock->GetTotalValue(), 0);
-		EXPECT_THAT(pStock->GetCurrentValue(), 0);
-		EXPECT_THAT(pStock->GetHighLimitFromTengxun(), 0);
-		EXPECT_THAT(pStock->GetLowLimitFromTengxun(), 0);
-
-		EXPECT_TRUE(gl_pChinaMarket->ProcessTengxunRTData());
-
-		pStock = gl_pChinaMarket->GetStock(_T("600000.SS"));
-		EXPECT_THAT(pStock->GetTotalValue(), 101010101010);
-		EXPECT_THAT(pStock->GetCurrentValue(), 2020202020202020);
-		EXPECT_THAT(pStock->GetHighLimitFromTengxun(), 10101010);
-		EXPECT_THAT(pStock->GetLowLimitFromTengxun(), 1010);
-
-		pStock = gl_pChinaMarket->GetStock(_T("600001.SS"));
-		EXPECT_THAT(pStock->GetTotalValue(), 0);
-		EXPECT_THAT(pStock->GetCurrentValue(), 0);
-		EXPECT_THAT(pStock->GetHighLimitFromTengxun(), 0);
-		EXPECT_THAT(pStock->GetLowLimitFromTengxun(), 0);
-
-		EXPECT_THAT(gl_pChinaMarket->TengxunRTSize(), Eq(0));
-	}
-
 	TEST_F(CChinaMarketTest, TestTaskCheckDayLineDB) {
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedUpdate());
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess());

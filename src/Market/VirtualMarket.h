@@ -18,7 +18,7 @@ public:
 public:
 	void SchedulingTask(); // 唯一的调度函数
 
-	// 申请并处理Data source的数据，被最终衍生类的SchedulingTask函数来调度。
+	// 申请并处理Data source的数据，由最终衍生类的SchedulingTask函数来调度。
 	// 此函数在VirtualMarket中定义，但由最终衍生类来调用，因为lCurrentTime必须为该衍生类的当前市场时间。
 	void RunDataSource(long lCurrentTime) const;
 
@@ -100,8 +100,8 @@ public:
 protected:
 	CString m_strMarketId{_T("Warning: CVirtualMarket Called.")}; // 该市场标识字符串
 
-	CMarketTaskQueue m_marketTask;
-	vector<CVirtualDataSourcePtr> m_vDataSource; // 本市场中的网络数据源。
+	CMarketTaskQueue m_marketTask; // 本市场当前任务队列
+	vector<CVirtualDataSourcePtr> m_vDataSource; // 本市场中的各网络数据源。
 
 	// Finnhub.io提供的信息
 	CString m_strCode;

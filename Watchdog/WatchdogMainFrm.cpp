@@ -407,10 +407,14 @@ bool IsFireBirdAlreadyRunning(CString strProgramToken) {
 }
 
 void CWatchdogMainFrame::OnTimer(UINT_PTR nIDEvent) {
-	if (!IsFireBirdAlreadyRunning(_T("FireBirdStockAnalysis"))) {
-		const UINT iReturnCode = WinExec(("C:\\FireBird\\FireBird.exe"), SW_SHOW);
-		m_wndOutput.ReportInfo(_T("启动FireBird"));
-		ASSERT(iReturnCode > 31);
+	static int s_Counter = 12; // 初始值为12次，即一分钟后执行启动FireBird任务（以后则每五秒钟监视一次）
+	if (--s_Counter < 1) {
+		if (!IsFireBirdAlreadyRunning(_T("FireBirdStockAnalysis"))) {
+			const UINT iReturnCode = WinExec(("C:\\FireBird\\FireBird.exe"), SW_SHOW);
+			m_wndOutput.ReportInfo(_T("启动FireBird"));
+			ASSERT(iReturnCode > 31);
+		}
+		s_Counter = 0;
 	}
 
 	CMDIFrameWndEx::OnTimer(nIDEvent);

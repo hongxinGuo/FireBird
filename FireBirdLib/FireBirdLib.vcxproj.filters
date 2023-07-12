@@ -726,6 +726,9 @@
     <ClInclude Include="..\src\Data Source\TengxunRTDataSourceImp.h">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Data Source\SinaRTDataSourceImp.h">
+      <Filter>头文件\Data Source\China market</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\CallableFunction.cpp">
@@ -1299,6 +1302,9 @@
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Source\TengxunRTDataSourceImp.cpp">
+      <Filter>源文件\Data Source\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\SinaRTDataSourceImp.cpp">
       <Filter>源文件\Data Source\China market</Filter>
     </ClCompile>
   </ItemGroup>

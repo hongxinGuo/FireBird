@@ -50,6 +50,12 @@ namespace FireBirdTest {
 		CTengxunRTDataSource TengxunRTDataSource;
 	};
 
+	TEST_F(CMockTengxunRTDataSourceTest, TestInitialize) {
+		EXPECT_STREQ(TengxunRTDataSource.GetInquiryFunction(), _T("http://qt.gtimg.cn/q="));
+		EXPECT_STREQ(TengxunRTDataSource.GetInquiryToken(), _T(""));
+		EXPECT_EQ(TengxunRTDataSource.GetInquiringNumber(), 900) << _T("ÌÚÑ¶Ä¬ÈÏÖµ");
+	}
+
 	TEST_F(CMockTengxunRTDataSourceTest, TestGenerateInquiryMessage2) {
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 		EXPECT_FALSE(gl_systemStatus.IsWebBusy());

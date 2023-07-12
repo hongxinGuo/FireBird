@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"SinaRTDataSource.h"
+#include"SinaRTDataSourceImp.h"
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
 
@@ -14,44 +14,47 @@ namespace FireBirdTest {
 	class CSinaRTDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			gl_pSinaRTDataSource->SetInquiring(false);
-
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
+		CSinaRTDataSourceImp sinaRTDataSourceImp;
 	};
 
 	TEST_F(CSinaRTDataSourceTest, TestParseData) {
 		const auto pData = make_shared<CWebData>();
-		EXPECT_FALSE(gl_pSinaRTDataSource->ParseData(pData)) << "无需解析";
+		EXPECT_FALSE(sinaRTDataSourceImp.ParseData(pData)) << "无需解析";
 	}
 
 	TEST_F(CSinaRTDataSourceTest, TestInquireRTData1) {
-		gl_pSinaRTDataSource->SetInquiring(true);
-		EXPECT_FALSE(gl_pSinaRTDataSource->InquireRTData(0)) << "其他FinnhubInquiry正在进行";
+		sinaRTDataSourceImp.SetInquiring(true);
+		EXPECT_FALSE(sinaRTDataSourceImp.InquireRTData(0)) << "其他FinnhubInquiry正在进行";
 	}
 
 	TEST_F(CSinaRTDataSourceTest, TestInquireRTData2) {
-		gl_pSinaRTDataSource->SetInquiring(false);
-		EXPECT_TRUE(gl_pSinaRTDataSource->InquireRTData(0));
+		sinaRTDataSourceImp.SetInquiring(false);
+		EXPECT_TRUE(sinaRTDataSourceImp.InquireRTData(0));
 
-		EXPECT_TRUE(gl_pSinaRTDataSource->IsInquiring());
-		EXPECT_EQ(gl_pSinaRTDataSource->GetInquiryQueueSize(), 1);
-		const auto pProduct = gl_pSinaRTDataSource->GetCurrentProduct();
+		EXPECT_TRUE(sinaRTDataSourceImp.IsInquiring());
+		EXPECT_EQ(sinaRTDataSourceImp.GetInquiryQueueSize(), 1);
+		const auto pProduct = sinaRTDataSourceImp.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductSinaRT"));
 	}
 

@@ -555,7 +555,7 @@
     <ClCompile Include="MockTengxunDayLineDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
-    <ClCompile Include="SinaRTDataSourceTest.cpp">
+    <ClCompile Include="SinaRTDataSourceImpTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
     <ClCompile Include="MockSinaRTDataSourceTest.cpp">
