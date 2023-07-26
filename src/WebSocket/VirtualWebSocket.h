@@ -1,21 +1,18 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 尝试将ixWebSocket变量封装于此类中。
-// 此类负责ixWebSocket的初始化。
+// 使用https://github.com/machinezone/IXWebSocket。
+// 尝试将ixWebSocket变量封装于此类中。此类负责ixWebSocket的初始化。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include<string>
-#include<map>
-#include<vector>
-using std::string;
-using std::map;
-using std::vector;
-
 #include <ixwebsocket/IXWebSocket.h>
 
 #include"TemplateMutexAccessQueue.h"
+
+using std::string;
+using std::map;
+using std::vector;
 
 using vectorString = vector<string>;
 
@@ -23,6 +20,7 @@ class CVirtualWebSocket {
 public:
 	CVirtualWebSocket(bool fHaveSubscriptionId = true);
 	virtual ~CVirtualWebSocket();
+
 	bool ConnectWebSocketAndSendMessage(const vectorString& vSymbol);
 	void Reset();
 
@@ -88,7 +86,7 @@ public:
 	size_t DataSize() { return m_qWebSocketData.Size(); }
 
 	void PushData(string data) {
-		const shared_ptr<string> pData = make_shared<string>(data);
+		const auto pData = make_shared<string>(data);
 		m_qWebSocketData.PushData(pData);
 	}
 

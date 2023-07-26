@@ -56,6 +56,7 @@ UINT ThreadConnectTiingoIEXWebSocketAndSendMessage(not_null<CTiingoIEXWebSocket*
 }
 
 CTiingoIEXWebSocket::CTiingoIEXWebSocket() {
+	ASSERT(gl_bGlobeVariableInitialized);
 	m_url = _T("wss://api.tiingo.com/iex");
 }
 

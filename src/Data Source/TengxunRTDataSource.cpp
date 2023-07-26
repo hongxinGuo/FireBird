@@ -5,6 +5,7 @@
 
 #include"ChinaMarket.h"
 
+/// 内部八个引擎
 CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr1 = nullptr;
 CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr2 = nullptr;
 CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr3 = nullptr;
@@ -15,6 +16,7 @@ CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr7 = nullptr;
 CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr8 = nullptr;
 
 CTengxunRTDataSource::CTengxunRTDataSource() {
+	ASSERT(gl_bGlobeVariableInitialized);
 	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 900; // 腾讯实时数据查询默认值
@@ -41,7 +43,7 @@ CTengxunRTDataSource::CTengxunRTDataSource() {
 /// 将腾讯实时数据列为备选数据源
 /// 腾讯数据精度不够，其交易数量的精度为手，不提供零股信息。
 ///
-/// 腾讯实时数据的网络传输速度无法达到预期（<100ms），故而使用八个数据接收器并行执行。本数据源不执行具体下载解析任务，只执行具体任务的调度。
+/// 腾讯实时数据的网络传输速度无法达到预期（<100ms），故而使用八个数据接收引擎并行执行。本数据源不执行具体下载解析任务，只执行任务的调度。
 ///
 /// </summary>
 /// <param name="lCurrentTime"></param>
@@ -56,7 +58,7 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 		else {
 			m_llLastTimeTickCount = llTickCount;
 		}
-		// 从池中调用实际执行工作线程
+		// 从调用池中空闲的引擎工作线程
 		for (const auto pDataSourceImp : m_DataSourceContainer) {
 			if (!pDataSourceImp->IsInquiring() && !pDataSourceImp->IsWorkingThreadRunning()) {
 				pDataSourceImp->Run(lCurrentTime);

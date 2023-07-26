@@ -18,6 +18,7 @@
 #include "TimeConvert.h"
 
 CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
+	ASSERT(gl_bGlobeVariableInitialized);
 	m_strInquiry = _T("");
 	m_strInquiryFunction = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=");
 	m_strParam = _T("");

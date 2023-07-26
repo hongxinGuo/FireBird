@@ -6,12 +6,17 @@
 class CTiingoDataSource : public CVirtualDataSource {
 public:
 	CTiingoDataSource();
+	// 只能有一个实例,不允许赋值、拷贝
+	CTiingoDataSource(const CTiingoDataSource&) = delete;
+	CTiingoDataSource& operator=(const CTiingoDataSource&) = delete;
+	CTiingoDataSource(const CTiingoDataSource&&) noexcept = delete;
+	CTiingoDataSource& operator=(const CTiingoDataSource&&) noexcept = delete;
 	~CTiingoDataSource() override = default;
 
 	bool Reset() override;
 	void UpdateStatus() override;
 
-	bool GenerateInquiryMessage(long lCurrentTime) override;
+	bool GenerateInquiryMessage(const long lCurrentTime) override;
 
 	void ConfigureSession() override; // 设置m_pSession状态。
 	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析

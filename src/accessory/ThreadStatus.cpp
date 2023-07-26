@@ -3,7 +3,7 @@
 #include"ThreadStatus.h"
 
 CThreadStatus::CThreadStatus() {
-	ASSERT(gl_bStartInitializeGlobeVariable);
+	ASSERT(gl_bGlobeVariableInitialized);
 	if (static int siInstance = 0; siInstance++ > 0) {
 		TRACE("系统状态只允许生成一个实例\n");
 		gl_systemMessage.PushInformationMessage(_T("系统状态只允许生成一个实例"));

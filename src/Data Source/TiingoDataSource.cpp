@@ -7,6 +7,7 @@
 #include"WorldMarket.h"
 
 CTiingoDataSource::CTiingoDataSource() {
+	ASSERT(gl_bGlobeVariableInitialized);
 	m_strInquiryFunction = _T(""); // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strParam = _T("");
 	m_strSuffix = _T("");

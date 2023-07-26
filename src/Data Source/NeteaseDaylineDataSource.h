@@ -6,11 +6,16 @@
 class CNeteaseDayLineDataSource : public CVirtualDataSource {
 public:
 	CNeteaseDayLineDataSource();
+	// 只能有一个实例,不允许赋值、拷贝
+	CNeteaseDayLineDataSource(const CNeteaseDayLineDataSource&) = delete;
+	CNeteaseDayLineDataSource& operator=(const CNeteaseDayLineDataSource&) = delete;
+	CNeteaseDayLineDataSource(const CNeteaseDayLineDataSource&&) noexcept = delete;
+	CNeteaseDayLineDataSource& operator=(const CNeteaseDayLineDataSource&&) noexcept = delete;
 	~CNeteaseDayLineDataSource() override = default;
 
 	bool Reset() override;
 
-	bool GenerateInquiryMessage(long lCurrentTime) override;
+	bool GenerateInquiryMessage(const long lCurrentTime) override;
 	void CreateProduct();
 
 	void ConfigureSession() override; // 在读取网络数据前的准备工作，默认为设置Netease DayLine的m_pSession状态。

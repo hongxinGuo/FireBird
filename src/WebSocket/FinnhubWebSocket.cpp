@@ -62,6 +62,7 @@ UINT ThreadConnectFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pD
 }
 
 CFinnhubWebSocket::CFinnhubWebSocket() {
+	ASSERT(gl_bGlobeVariableInitialized);
 	m_url = _T("wss://ws.finnhub.io");
 	SetSubscriptionStatus(false); // finnhub WebSocketÃ»ÓÐ×¢²áID
 }

@@ -50,6 +50,11 @@ using CInaccessibleExchangesPtr = shared_ptr<CInaccessibleExchanges>;
 class CFinnhubInaccessibleExchange {
 public:
 	CFinnhubInaccessibleExchange();
+	// 只能有一个实例,不允许赋值、拷贝
+	CFinnhubInaccessibleExchange(const CFinnhubInaccessibleExchange&) = delete;
+	CFinnhubInaccessibleExchange& operator=(const CFinnhubInaccessibleExchange&) = delete;
+	CFinnhubInaccessibleExchange(const CFinnhubInaccessibleExchange&&) noexcept = delete;
+	CFinnhubInaccessibleExchange& operator=(const CFinnhubInaccessibleExchange&&) noexcept = delete;
 	virtual ~CFinnhubInaccessibleExchange();
 
 	bool LoadDB();

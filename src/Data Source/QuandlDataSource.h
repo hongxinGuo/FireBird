@@ -11,7 +11,7 @@ public:
 	bool Reset() override;
 	void UpdateStatus() override;
 
-	bool GenerateInquiryMessage(long lCurrentTime) override;
+	bool GenerateInquiryMessage(const long lCurrentTime) override;
 
 	virtual bool InquireQuandl();
 

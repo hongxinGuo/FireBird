@@ -6,11 +6,16 @@
 class CFinnhubDataSource : public CVirtualDataSource {
 public:
 	CFinnhubDataSource();
+	// 只能有一个实例,不允许赋值、拷贝
+	CFinnhubDataSource(const CFinnhubDataSource&) = delete;
+	CFinnhubDataSource& operator=(const CFinnhubDataSource&) = delete;
+	CFinnhubDataSource(const CFinnhubDataSource&&) noexcept = delete;
+	CFinnhubDataSource& operator=(const CFinnhubDataSource&&) noexcept = delete;
 	~CFinnhubDataSource() override = default;
 
 	bool Reset() override;
 	void UpdateStatus() override;
-	bool GenerateInquiryMessage(long lCurrentTime) override;
+	bool GenerateInquiryMessage(const long lCurrentTime) override;
 
 	void ConfigureSession() override;
 	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析

@@ -56,6 +56,7 @@ UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebS
 }
 
 CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() {
+	ASSERT(gl_bGlobeVariableInitialized);
 	m_url = _T("wss://api.tiingo.com/crypto");
 }
 

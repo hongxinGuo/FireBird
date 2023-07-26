@@ -54,6 +54,7 @@ UINT ThreadConnectTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWebSoc
 }
 
 CTiingoForexWebSocket::CTiingoForexWebSocket() {
+	ASSERT(gl_bGlobeVariableInitialized);
 	m_url = _T("wss://api.tiingo.com/fx");
 }
 

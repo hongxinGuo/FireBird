@@ -19,6 +19,7 @@ CSinaRTDataSourceImpPtr s_SinaRTDataSourcePtr8 = nullptr;
 ///
 /// </summary>
 CSinaRTDataSource::CSinaRTDataSource() {
+	ASSERT(gl_bGlobeVariableInitialized);
 	// 2022年1月20日后，新浪实时数据服务器需要添加报头验证数据，格式为： Referer:https://finance.sina.com.cn
 	// User-Agent部分只用于说明格式,即报头皆以\r\n（CRLF)结束
 	//m_strHeaders = _T("User-Agent:FireBird\r\nReferer:https://finance.sina.com.cn\r\n");
@@ -48,8 +49,10 @@ CSinaRTDataSource::CSinaRTDataSource() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 新浪实时数据服务器的响应时间（20-80毫秒）足够快，但偶尔出现的网络延迟会达到（300-1500毫秒），且有时无法自动恢复正常情况。
-// 故而使用八个数据接收器并行执行，以避开偶尔出现的网络颠簸。本数据源不执行具体下载解析任务，只执行具体任务的调度。
+// 新浪实时数据服务器的响应时间（20-80毫秒）足够快，但偶尔出现的网络延迟会达到300-1500毫秒，且有时无法自动恢复正常情况。
+// 故而使用八个数据接收器并行执行，以避开偶尔出现的网络颠簸。
+//
+// 本数据源不执行具体下载解析任务，只执行任务的调度。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {

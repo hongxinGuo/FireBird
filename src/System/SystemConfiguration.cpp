@@ -73,8 +73,8 @@ std::string gl_sSystemConfiguration = R"(
 })";
 
 CSystemConfiguration::CSystemConfiguration() {
-	ASSERT(gl_bStartInitializeGlobeVariable == false); // 确保SystemConfiguration是第一个初始化的全局变量。因其他全局变量可能会使用该变量的内容。
-	gl_bStartInitializeGlobeVariable = true;
+	ASSERT(gl_bGlobeVariableInitialized == false); // 确保SystemConfiguration是第一个初始化的全局变量。因其他全局变量可能会使用该变量的内容。
+	gl_bGlobeVariableInitialized = true;
 	if (static int siInstance = 0; ++siInstance > 1) {
 		TRACE(_T("GlobeOption全局变量只允许存在一个实例\n"));
 #ifdef _DEBUG

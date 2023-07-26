@@ -29,6 +29,7 @@ using namespace std;
 using namespace gsl;
 
 CChinaMarket::CChinaMarket() : CVirtualMarket() {
+	ASSERT(gl_bGlobeVariableInitialized);
 	if (static int siInstance = 0; ++siInstance > 1) {
 		TRACE(_T("ChinaMarket市场变量只允许存在一个实例\n"));
 	}

@@ -5,6 +5,11 @@
 class CTengxunDayLineDataSource : public CVirtualDataSource {
 public:
 	CTengxunDayLineDataSource();
+	// 只能有一个实例,不允许赋值、拷贝
+	CTengxunDayLineDataSource(const CTengxunDayLineDataSource&) = delete;
+	CTengxunDayLineDataSource& operator=(const CTengxunDayLineDataSource&) = delete;
+	CTengxunDayLineDataSource(const CTengxunDayLineDataSource&&) noexcept = delete;
+	CTengxunDayLineDataSource& operator=(const CTengxunDayLineDataSource&&) noexcept = delete;
 	~CTengxunDayLineDataSource() override = default;
 	bool Reset() override;
 
