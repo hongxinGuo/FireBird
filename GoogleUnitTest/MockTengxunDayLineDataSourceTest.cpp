@@ -26,7 +26,7 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE(""); GeneralCheck();
 
-			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 			m_pMockTengxunDayLineDataSource = make_shared<CMockTengxunDayLineDataSource>();
 			gl_pChinaMarket->CalculateTime();
 			m_pMockTengxunDayLineDataSource->ResetDownLoadingStockCode();
@@ -57,7 +57,7 @@ namespace FireBirdTest {
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage1) {
 		gl_pSinaRTDataSource->SetErrorCode(12002);
 		gl_pNeteaseRTDataSource->SetErrorCode(0);
-		EXPECT_TRUE(gl_systemStatus.IsWebBusy());
+		EXPECT_TRUE(gl_systemConfiguration.IsWebBusy());
 		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, InquireDayLine).Times(0);
 
 		EXPECT_FALSE(m_pMockTengxunDayLineDataSource->GenerateInquiryMessage(120000)) << "WebBusy时，不申请数据";
@@ -68,7 +68,7 @@ namespace FireBirdTest {
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage2) {
 		gl_pSinaRTDataSource->SetErrorCode(0);
 		gl_pNeteaseRTDataSource->SetErrorCode(12002);
-		EXPECT_TRUE(gl_systemStatus.IsWebBusy());
+		EXPECT_TRUE(gl_systemConfiguration.IsWebBusy());
 		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, InquireDayLine).Times(0);
 
 		EXPECT_FALSE(m_pMockTengxunDayLineDataSource->GenerateInquiryMessage(120000)) << "WebBusy时，不申请数据";
@@ -79,7 +79,7 @@ namespace FireBirdTest {
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage3) {
 		gl_pSinaRTDataSource->SetErrorCode(0);
 		gl_pNeteaseRTDataSource->SetErrorCode(0);
-		EXPECT_FALSE(gl_systemStatus.IsWebBusy());
+		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedUpdate());
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(120000); // dummy time and > 114500
@@ -92,7 +92,7 @@ namespace FireBirdTest {
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage4) {
 		gl_pSinaRTDataSource->SetErrorCode(0);
 		gl_pNeteaseRTDataSource->SetErrorCode(0);
-		EXPECT_FALSE(gl_systemStatus.IsWebBusy());
+		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedUpdate());
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(120000); // dummy time and > 114500

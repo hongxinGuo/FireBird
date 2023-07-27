@@ -52,7 +52,7 @@ namespace FireBirdTest {
 		NaicsIndustry.m_strSubSector = _T("Beijing");
 		NaicsIndustry.m_fUpdated = true;
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setNaicsIndustry.Open();
 		setNaicsIndustry.m_pDatabase->BeginTrans();
 		NaicsIndustry.Append(setNaicsIndustry);

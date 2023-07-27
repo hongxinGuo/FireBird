@@ -3,7 +3,6 @@
 #include"afxinet.h"
 #include "FinnhubForexSymbol.h"
 
-#include"SystemStatus.h"
 #include"MockVirtualDataSource.h"
 
 #include"GeneralCheck.h"
@@ -12,22 +11,25 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	static CMockVirtualDataSourcePtr m_pVirtualDataSource; // 为了方便使用googleMock,将mock变量声明为全局的。
+	static CMockVirtualDataSourcePtr m_pVirtualDataSource; // 为了方便查找出错位置,将mock变量声明为全局的。
 
 	class CMockVirtualDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			m_pVirtualDataSource = nullptr;
 		}
 
 		static void TearDownTestSuite() {
 			m_pVirtualDataSource = nullptr;
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 
 			m_pVirtualDataSource = make_shared<CMockVirtualDataSource>();
 		}
@@ -37,7 +39,8 @@ namespace FireBirdTest {
 
 			m_pVirtualDataSource->SetInquiringString(_T(""));
 			m_pVirtualDataSource = nullptr;
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -244,7 +247,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pVirtualDataSource, GetFileHeaderInformation).Times(1);
 		EXPECT_CALL(*m_pVirtualDataSource, ReadWebFileOneTime()).Times(2)
 		.WillOnce(Return(1024))
-		.WillOnce(DoAll(Invoke([]() { gl_systemStatus.SetExitingSystem(true); }), Return(1024))); // 第二次读取时系统要求立即退出。
+		.WillOnce(DoAll(Invoke([]() { gl_systemConfiguration.SetExitingSystem(true); }), Return(1024))); // 第二次读取时系统要求立即退出。
 		m_pVirtualDataSource->SetInquiringString(strInquiry);
 
 		m_pVirtualDataSource->ReadWebData();
@@ -253,6 +256,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 
 		// restore
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 	}
 }

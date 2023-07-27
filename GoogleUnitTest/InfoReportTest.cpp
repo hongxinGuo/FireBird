@@ -9,7 +9,7 @@ namespace FireBirdTest {
 		}
 
 		void TearDown() override {
-			gl_systemStatus.SetWorkingMode(false);
+			gl_systemConfiguration.SetWorkingMode(false);
 
 			SCOPED_TRACE(""); GeneralCheck();
 		}

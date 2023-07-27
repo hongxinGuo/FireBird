@@ -17,7 +17,7 @@
 UINT ThreadSaveDayLineBasicInfo(not_null<CChinaStock*> pStock) {
 	gl_SaveDayLineThreadPermitted.acquire(); //使用多线程模式。
 	gl_ThreadStatus.IncreaseSavingThread();
-	if (!gl_systemStatus.IsExitingSystem()) {
+	if (!gl_systemConfiguration.IsExitingSystem()) {
 		const bool fDataSaved = pStock->SaveDayLineBasicInfo();
 		pStock->UpdateDayLineStartEndDate();
 		if (fDataSaved) {

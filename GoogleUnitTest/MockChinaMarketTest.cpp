@@ -411,7 +411,7 @@ namespace FireBirdTest {
 		tm _tm;
 		GetMarketTimeStruct(&_tm, tStart, s_pMockChinaMarket->GetMarketTimeZone());
 		long lStartDate = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
-		gl_systemStatus.SetExitingCalculatingRS(true); // 中间被打断
+		gl_systemConfiguration.SetExitingCalculatingRS(true); // 中间被打断
 		s_pMockChinaMarket->SetCalculatingDayLineRS(true);
 		s_pMockChinaMarket->SetRSEndDate(0);
 		s_pMockChinaMarket->SetUpdateOptionDB(false);
@@ -419,13 +419,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(ThreadBuildDayLineRS(s_pMockChinaMarket.get(), lStartDate), static_cast<UINT>(11));
 		EXPECT_FALSE(s_pMockChinaMarket->IsUpdateOptionDB()) << _T("被打断后不设置此标识");
 		EXPECT_EQ(s_pMockChinaMarket->GetRSEndDate(), 0);
-		EXPECT_FALSE(gl_systemStatus.IsExitingCalculatingRS());
+		EXPECT_FALSE(gl_systemConfiguration.IsExitingCalculatingRS());
 		EXPECT_FALSE(s_pMockChinaMarket->IsCalculatingDayLineRS());
 
 		tStart = GetUTCTime() - 3600 * 24 * 6; // 从一周前开始计算
 		GetMarketTimeStruct(&_tm, tStart, s_pMockChinaMarket->GetMarketTimeZone());
 		lStartDate = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
-		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
 		s_pMockChinaMarket->SetCalculatingDayLineRS(true);
 		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildDayLineRSOfDate(_))
 		.Times(5);
@@ -500,16 +500,16 @@ namespace FireBirdTest {
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineRSOfDate) {
 		const long lPrevMonday = GetPrevMonday(20200101);
-		gl_systemStatus.SetExitingSystem(true);
+		gl_systemConfiguration.SetExitingSystem(true);
 		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineRS(_)).Times(0);
 		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(s_pMockChinaMarket.get(), lPrevMonday), static_cast<UINT>(31));
 
-		gl_systemStatus.SetExitingSystem(false);
-		gl_systemStatus.SetExitingCalculatingRS(true);
+		gl_systemConfiguration.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(true);
 		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineRS(_)).Times(0);
 		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(s_pMockChinaMarket.get(), lPrevMonday), static_cast<UINT>(31));
 
-		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
 		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineRS(lPrevMonday)).Times(1);
 		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(s_pMockChinaMarket.get(), lPrevMonday), static_cast<UINT>(31));
 	}

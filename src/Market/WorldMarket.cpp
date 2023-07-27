@@ -117,7 +117,7 @@ void CWorldMarket::ResetMarket() {
 }
 
 void CWorldMarket::PreparingExitMarket() {
-	//ASSERT(gl_systemStatus.IsExitingSystem());
+	//ASSERT(gl_systemConfiguration.IsExitingSystem());
 	DisconnectAllWebSocket();
 }
 
@@ -244,7 +244,7 @@ bool CWorldMarket::UpdateForexDayLineDB() {
 	const size_t symbolSize = m_dataFinnhubForexSymbol.Size();
 
 	for (int i = 0; i < symbolSize; i++) {
-		if (gl_systemStatus.IsExitingSystem()) {
+		if (gl_systemConfiguration.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 		pSymbol = m_dataFinnhubForexSymbol.GetSymbol(i);
@@ -287,7 +287,7 @@ bool CWorldMarket::UpdateCryptoDayLineDB() {
 	const size_t symbolSize = m_dataFinnhubCryptoSymbol.Size();
 
 	for (int i = 0; i < symbolSize; ++i) {
-		if (gl_systemStatus.IsExitingSystem()) {
+		if (gl_systemConfiguration.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 		pSymbol = m_dataFinnhubCryptoSymbol.GetSymbol(i);
@@ -329,7 +329,7 @@ bool CWorldMarket::UpdateEPSSurpriseDB() {
 			CreateThreadUpdateEPSSurpriseDB(pStock);
 			TRACE("更新%s EPS surprise数据\n", pStock->GetSymbol().GetBuffer());
 		}
-		if (gl_systemStatus.IsExitingSystem()) {
+		if (gl_systemConfiguration.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 	}
@@ -503,7 +503,7 @@ bool CWorldMarket::UpdateStockDayLineDB() {
 	for (long i = 0; i < GetStockSize(); i++) {
 		const CWorldStockPtr pStock = GetStock(i);
 		pStock->UpdateDayLineDB();
-		if (gl_systemStatus.IsExitingSystem()) {
+		if (gl_systemConfiguration.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 	}
@@ -516,7 +516,7 @@ bool CWorldMarket::UpdateCompanyNewsDB() {
 		if (pStock->IsUpdateCompanyNewsDBAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			pStock->UpdateCompanyNewsDB();
 		}
-		if (gl_systemStatus.IsExitingSystem()) {
+		if (gl_systemConfiguration.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 	}
@@ -535,7 +535,7 @@ bool CWorldMarket::UpdateInsiderTransactionDB() {
 				//TRACE("更新%s内部交易数据\n", pStock->GetSymbol().GetBuffer());
 			}
 		}
-		if (gl_systemStatus.IsExitingSystem()) {
+		if (gl_systemConfiguration.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 	}
@@ -552,7 +552,7 @@ bool CWorldMarket::UpdateInsiderSentimentDB() {
 				gl_systemMessage.PushDayLineInfoMessage(str);
 			}
 		}
-		if (gl_systemStatus.IsExitingSystem()) {
+		if (gl_systemConfiguration.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 	}
@@ -754,7 +754,7 @@ void CWorldMarket::StartTiingoForexWebSocket() {
 /// </summary>
 void CWorldMarket::DisconnectAllWebSocket() {
 	//本函数只在系统退出时调用
-	//ASSERT(gl_systemStatus.IsExitingSystem()); 
+	//ASSERT(gl_systemConfiguration.IsExitingSystem()); 
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) gl_finnhubWebSocket.Disconnect();
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) gl_tiingoIEXWebSocket.Disconnect();
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) gl_tiingoCryptoWebSocket.Disconnect();

@@ -24,7 +24,7 @@ namespace FireBirdTest {
 
 		void SetUp() override {
 			SCOPED_TRACE(""); GeneralCheck();
-			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 			gl_pMockNeteaseDayLineDataSource = make_shared<CMockNeteaseDayLineDataSource>();
 			gl_pChinaMarket->CalculateTime();
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());

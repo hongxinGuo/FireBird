@@ -42,7 +42,7 @@ namespace FireBirdTest {
 
 		insiderTransaction.m_strSymbol = _T("AA.US");
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setInsiderTransaction.Open();
 		setInsiderTransaction.m_pDatabase->BeginTrans();
 		insiderTransaction.Append(setInsiderTransaction);

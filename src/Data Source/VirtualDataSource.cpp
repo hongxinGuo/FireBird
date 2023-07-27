@@ -197,7 +197,7 @@ void CVirtualDataSource::ReadWebData() {
 		GetFileHeaderInformation();
 		UINT lCurrentByteRead;
 		do {
-			if (gl_systemStatus.IsExitingSystem()) break;// 当系统退出时，要立即中断此进程，以防止内存泄露。
+			if (gl_systemConfiguration.IsExitingSystem()) break;// 当系统退出时，要立即中断此进程，以防止内存泄露。
 			lCurrentByteRead = ReadWebFileOneTime(); // 每次读取16K数据。
 			XferReadingToBuffer(m_lByteRead, lCurrentByteRead);
 			m_lByteRead += lCurrentByteRead;

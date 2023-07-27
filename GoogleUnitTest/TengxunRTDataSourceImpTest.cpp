@@ -93,7 +93,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTengxunRTDataSourceTest, TestGetTengxunRTDataDuqueSize) {
-		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 0);
 		const auto pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(100100100);

@@ -166,10 +166,10 @@ void CMainFrame::Reset() {
 }
 
 CMainFrame::~CMainFrame() {
-	if (!gl_systemStatus.IsWorkingMode())
+	if (!gl_systemConfiguration.IsWorkingMode())
 		TRACE("使用了Test驱动\n");
 
-	gl_systemStatus.SetExitingSystem(true);
+	gl_systemConfiguration.SetExitingSystem(true);
 
 	if (sm_fGlobeInit) {
 		sm_fGlobeInit = false;
@@ -515,7 +515,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	char buffer[100]{};
 	ASSERT(nIDEvent == STOCK_ANALYSIS_TIMER_);
 
-	if (gl_systemStatus.IsExitingSystem()) SysCallOnTimer(nIDEvent); // 如果准备退出系统，则停止调度系统任务。
+	if (gl_systemConfiguration.IsExitingSystem()) SysCallOnTimer(nIDEvent); // 如果准备退出系统，则停止调度系统任务。
 
 	// 重启系统在此处执行，容易调用各重置函数
 	ResetMarket();
@@ -541,7 +541,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	UpdateStatus();
 	UpdateInnerSystemStatus();
 
-	if (!gl_systemStatus.IsWorkingMode()) {
+	if (!gl_systemConfiguration.IsWorkingMode()) {
 		gl_systemMessage.PushInformationMessage(_T("警告：使用了Test驱动"));
 	}
 
@@ -704,7 +704,7 @@ void CMainFrame::UpdateInnerSystemStatus() {
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	if ((nID & 0Xfff0) == SC_CLOSE) {
 		// 如果是退出系统
-		gl_systemStatus.SetExitingSystem(true); // 提示各工作线程中途退出
+		gl_systemConfiguration.SetExitingSystem(true); // 提示各工作线程中途退出
 		TRACE("应用户申请，准备退出程序\n");
 		for (const auto& pMarket : gl_vMarketPtr) {
 			pMarket->PreparingExitMarket();
@@ -904,8 +904,8 @@ void CMainFrame::OnUpdateRebuildDayLineRS(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnAbortBuildingRS() {
-	ASSERT(!gl_systemStatus.IsExitingCalculatingRS());
-	gl_systemStatus.SetExitingCalculatingRS(true);
+	ASSERT(!gl_systemConfiguration.IsExitingCalculatingRS());
+	gl_systemConfiguration.SetExitingCalculatingRS(true);
 }
 
 void CMainFrame::OnUpdateAbortBuildingRS(CCmdUI* pCmdUI) {

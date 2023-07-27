@@ -196,7 +196,7 @@ namespace FireBirdTest {
 		FinnhubCryptoSymbol.SetDayLineNeedSaving(true);
 		FinnhubCryptoSymbol.SetUpdateProfileDB(true);
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setFinnhubCryptoSymbol.Open();
 		setFinnhubCryptoSymbol.m_pDatabase->BeginTrans();
 		FinnhubCryptoSymbol.AppendSymbol(setFinnhubCryptoSymbol);
@@ -241,7 +241,7 @@ namespace FireBirdTest {
 		FinnhubCryptoSymbol.SetDayLineNeedSaving(true);
 		FinnhubCryptoSymbol.SetUpdateProfileDB(true);
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setFinnhubCryptoSymbol.Open();
 		setFinnhubCryptoSymbol.m_pDatabase->BeginTrans();
 		FinnhubCryptoSymbol.AppendSymbol(setFinnhubCryptoSymbol);

@@ -52,7 +52,7 @@ namespace FireBirdTest {
 		void SetUp() override {
 			//EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			SCOPED_TRACE(""); GeneralCheck();
-			gl_systemStatus.SetExitingSystem(false);
+			gl_systemConfiguration.SetExitingSystem(false);
 			gl_pFinnhubDataSource->SetUpdateStockProfile(true);
 			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 			EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());

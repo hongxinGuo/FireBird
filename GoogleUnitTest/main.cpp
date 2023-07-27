@@ -94,7 +94,7 @@ namespace FireBirdTest {
 		~TestEnvironment() override = default;
 
 		void SetUp() override {
-			ASSERT(!gl_systemStatus.IsWorkingMode());
+			ASSERT(!gl_systemConfiguration.IsWorkingMode());
 			time(&gl_tUTC);
 
 			ASSERT_STREQ(gl_systemConfiguration.GetDefaultFileDirectoryAndName(), _T("C:\\FireBird\\SystemConfiguration.json"));
@@ -180,7 +180,7 @@ namespace FireBirdTest {
 				EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetSymbol();
 			}
 
-			gl_systemStatus.SetExitingSystem(true);
+			gl_systemConfiguration.SetExitingSystem(true);
 
 			if (CMFCVisualManager::GetInstance() != nullptr) {
 				delete CMFCVisualManager::GetInstance(); // 在生成gl_pMockMainFrame时，会生成一个视觉管理器。故而在此删除之。
@@ -193,9 +193,9 @@ namespace FireBirdTest {
 			}
 			ASSERT_THAT(gl_pChinaMarket->IsUpdateStockProfileDB(), IsFalse()) << "退出时必须保证无需更新代码库";
 
-			gl_systemStatus.SetExitingSystem(false);
+			gl_systemConfiguration.SetExitingSystem(false);
 			gl_pMockMainFrame = nullptr;
-			EXPECT_TRUE(gl_systemStatus.IsExitingSystem()) << "MainFrame析构时设置此标识";
+			EXPECT_TRUE(gl_systemConfiguration.IsExitingSystem()) << "MainFrame析构时设置此标识";
 
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
@@ -222,7 +222,7 @@ int main(int argc, char* argv[]) {
 	// gTest takes ownership of the TestEnvironment ptr - we don't delete it.
 	AddGlobalTestEnvironment(new TestEnvironment);
 
-	ASSERT(!gl_systemStatus.IsWorkingMode());
+	ASSERT(!gl_systemConfiguration.IsWorkingMode());
 
 	return RUN_ALL_TESTS();
 }

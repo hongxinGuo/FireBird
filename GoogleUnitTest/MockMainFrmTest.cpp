@@ -45,7 +45,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-			gl_systemStatus.SetExitingSystem(false);
+			gl_systemConfiguration.SetExitingSystem(false);
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 		}
 
@@ -55,7 +55,7 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			gl_pChinaMarket->ClearChoiceStockContainer();
 			gl_pChinaMarket->SetCalculatingDayLineRS(false);
-			gl_systemStatus.SetExitingSystem(false);
+			gl_systemConfiguration.SetExitingSystem(false);
 
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -144,15 +144,15 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnSysCommand) {
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallOnSysCommand).Times(1);
 		gl_pMockMainFrame->OnSysCommand(SC_CLOSE, 0);
-		EXPECT_TRUE(gl_systemStatus.IsExitingSystem()) << "关闭系统时设置此标识";
-		gl_systemStatus.SetExitingSystem(false);
+		EXPECT_TRUE(gl_systemConfiguration.IsExitingSystem()) << "关闭系统时设置此标识";
+		gl_systemConfiguration.SetExitingSystem(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallOnSysCommand).Times(1);
 		gl_pMockMainFrame->OnSysCommand(0xFFFF ^ SC_CLOSE, 0);
-		EXPECT_FALSE(gl_systemStatus.IsExitingSystem()) << "其他系统命令不影响此标识";
-		gl_systemStatus.SetExitingSystem(false);
+		EXPECT_FALSE(gl_systemConfiguration.IsExitingSystem()) << "其他系统命令不影响此标识";
+		gl_systemConfiguration.SetExitingSystem(false);
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnCalculateTodayRS) {
@@ -527,11 +527,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnAbortBuildingRS) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
 		gl_pMockMainFrame->OnAbortBuildingRS();
-		EXPECT_TRUE(gl_systemStatus.IsExitingCalculatingRS());
+		EXPECT_TRUE(gl_systemConfiguration.IsExitingCalculatingRS());
 
-		gl_systemStatus.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateAbortBuindingRS) {

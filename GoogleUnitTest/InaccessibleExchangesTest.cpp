@@ -19,7 +19,7 @@ namespace FireBirdTest {
 		}
 
 		void TearDown() override {
-			gl_systemStatus.SetWorkingMode(false);
+			gl_systemConfiguration.SetWorkingMode(false);
 
 			SCOPED_TRACE(""); GeneralCheck();
 		}
@@ -70,7 +70,7 @@ namespace FireBirdTest {
 		void SetUp() override { SCOPED_TRACE(""); GeneralCheck(); }
 
 		void TearDown() override {
-			gl_systemStatus.SetWorkingMode(false);
+			gl_systemConfiguration.SetWorkingMode(false);
 
 			SCOPED_TRACE(""); GeneralCheck();
 		}

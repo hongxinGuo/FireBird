@@ -172,7 +172,7 @@ void CFinnhubDataSource::UpdateStatus() {
 bool CFinnhubDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	const long long llTickCount = GetTickCount();
 
-	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请finnhub各数据。
+	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请finnhub各数据。
 	if (llTickCount > (m_llLastTimeTickCount + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime())) {
 		m_llLastTimeTickCount = llTickCount;
 

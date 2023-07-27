@@ -58,7 +58,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockTengxunRTDataSourceTest, TestGenerateInquiryMessage2) {
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
-		EXPECT_FALSE(gl_systemStatus.IsWebBusy());
+		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 
 		EXPECT_CALL(*m_pMockTengxunRTDataSource, GetTickCount()).Times(2)
 		.WillOnce(Return(gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
@@ -70,7 +70,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockTengxunRTDataSourceTest, TestGenerateInquiryMessage3) {
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
-		EXPECT_FALSE(gl_systemStatus.IsWebBusy());
+		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 
 		EXPECT_CALL(*m_pMockTengxunRTDataSource, GetTickCount()).Times(3)
 		.WillOnce(Return(0))

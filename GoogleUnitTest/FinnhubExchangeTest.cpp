@@ -60,7 +60,7 @@ namespace FireBirdTest {
 		FinnhubExchange.m_strSource = _T("abc");
 		FinnhubExchange.m_fUpdated = true;
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setFinnhubExchange.Open();
 		setFinnhubExchange.m_pDatabase->BeginTrans();
 		FinnhubExchange.Append(setFinnhubExchange);

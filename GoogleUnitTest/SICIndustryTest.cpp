@@ -50,7 +50,7 @@ namespace FireBirdTest {
 		SICIndustry.m_strSector = _T("abdc");
 		SICIndustry.m_fUpdated = true;
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setSICIndustry.Open();
 		setSICIndustry.m_pDatabase->BeginTrans();
 		SICIndustry.Append(setSICIndustry);

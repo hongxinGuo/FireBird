@@ -165,7 +165,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestCalculateMarketTime) {
-		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		time_t tUTC;
 		tm tm_, tmLocal;
 
@@ -404,7 +404,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetDateOfWeek) {
-		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		time_t tUTC;
 		tm tm_;
 		time(&tUTC);

@@ -46,7 +46,7 @@ namespace FireBirdTest {
 
 		companyNews.m_strCompanySymbol = _T("AA");
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setCompanyNews.Open();
 		setCompanyNews.m_pDatabase->BeginTrans();
 		companyNews.Append(setCompanyNews);

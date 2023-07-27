@@ -11,6 +11,9 @@
 
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
+#include "NeteaseRTDataSource.h"
+#include "SinaRTDataSource.h"
+
 class CSystemConfiguration final {
 public:
 	CSystemConfiguration();
@@ -248,6 +251,17 @@ public:
 	bool IsNeedUpdate() const noexcept { return m_fUpdate; }
 	void SetUpdate(bool fFlag) noexcept { m_fUpdate = fFlag; }
 
+	// 无需存储
+	void SetExitingSystem(const bool bExit) { m_fExitingSystem = bExit; }
+	bool IsExitingSystem() { return m_fExitingSystem; }
+	void SetExitingCalculatingRS(const bool bExit) { m_fExitingCalculatingRS = bExit; }
+	bool IsExitingCalculatingRS() const { return m_fExitingCalculatingRS; }
+	void SetWorkingMode(const bool bNormal) { m_fWorkingMode = bNormal; }
+	bool IsWorkingMode() const { return m_fWorkingMode; }
+
+	// 当下载新浪或者网易实时数据出现问题时，系统的其他网络活动应该让步。
+	static bool IsWebBusy() { return gl_pSinaRTDataSource->IsWebError() || gl_pNeteaseRTDataSource->IsWebError(); }
+
 public:
 
 protected:
@@ -309,9 +323,12 @@ protected:
 	RECT m_rSystemDisplay; // 显示器位素面积
 	RECT m_rCurrentWindow; // 当前窗口位素面积
 
-	// 必须将json变量放在最后。如果将nlohmann json变量放在前面，则导致赋值错误，目前原因不明（VS系统bug或者nholmann json库bug，两者必居其一）。
-	// 是VS系统17.2.4的bug，17.2.5已经修正了这个bug。
 	json m_systemConfiguration;
+
+	//无需存储的变量
+	std::atomic_bool m_fExitingSystem{false}; //  系统退出标识，用于终止其他线程。
+	bool m_fExitingCalculatingRS{false}; // 用于通知工作线程退出的信号
+	bool m_fWorkingMode{false}; // 正常模式标识，默认为假。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 };
 
 extern std::string gl_sSystemConfiguration; // 系统配置信息

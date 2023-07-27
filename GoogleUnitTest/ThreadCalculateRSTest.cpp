@@ -38,7 +38,7 @@ namespace FireBirdTest {
 
 			pMockStock = nullptr;
 			vStock.resize(0);
-			gl_systemStatus.SetExitingSystem(false);
+			gl_systemConfiguration.SetExitingSystem(false);
 			SCOPED_TRACE(""); GeneralCheck();
 		}
 
@@ -48,8 +48,8 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock1) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600602.SS"));
 		pMockStock->SetActive(true);
 
@@ -65,8 +65,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock2) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
@@ -81,8 +81,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock3) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(true);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(true);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
@@ -95,8 +95,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock4) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(false);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
@@ -109,8 +109,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock5) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("300001.SZ")); // 非A股
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
@@ -123,8 +123,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrongStock6) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600001.SS"));
 		pMockStock->SetActive(true);
 		pMockStock->SetDayLineLoaded(true); // 日线数据已加载
@@ -139,8 +139,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock1) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600666.SS"));
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
@@ -155,8 +155,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock2) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
@@ -171,8 +171,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock3) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(true);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(true);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
@@ -185,8 +185,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock4) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(false);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
@@ -199,8 +199,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock5) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("300001.SZ")); // 非A股
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
@@ -213,8 +213,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong1Stock6) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600001.SS"));
 		pMockStock->SetActive(true);
 		pMockStock->SetDayLineLoaded(true); // 日线数据已加载
@@ -229,8 +229,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock1) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600666.SS"));
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
@@ -245,8 +245,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock2) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
@@ -261,8 +261,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock3) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(true); // 退出系统标识为真
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(true); // 退出系统标识为真
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
@@ -275,8 +275,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock4) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600000.SS")); // 与默认当前所选股票相同
 		pMockStock->SetActive(false);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
@@ -289,8 +289,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock5) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("300001.SZ")); // 非A股
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
@@ -306,8 +306,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock6) {
-		gl_systemStatus.SetExitingCalculatingRS(false);
-		gl_systemStatus.SetExitingSystem(false);
+		gl_systemConfiguration.SetExitingCalculatingRS(false);
+		gl_systemConfiguration.SetExitingSystem(false);
 		pMockStock->SetSymbol(_T("600001.SS"));
 		pMockStock->SetActive(true);
 		pMockStock->SetDayLineLoaded(true); // 日线数据已加载

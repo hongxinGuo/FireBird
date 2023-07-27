@@ -32,7 +32,7 @@ namespace FireBirdTest {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE(""); GeneralCheck();
-			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 			const StrConvertDoubleToString* pData = GetParam();
 			dValue = pData->m_dValue;
 			CValueOfPeriod = pData->m_strValue;
@@ -90,7 +90,7 @@ namespace FireBirdTest {
 	class ConvertLongToStringTest : public testing::TestWithParam<StrConvertLongToString*> {
 	protected:
 		void SetUp() override {
-			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 			const StrConvertLongToString* pData = GetParam();
 			lValue = pData->m_lValue;
 			CValueOfPeriod = pData->m_strValue;
@@ -147,7 +147,7 @@ namespace FireBirdTest {
 	class ConvertIntegerToStringTest : public testing::TestWithParam<StrConvertIntegerToString*> {
 	protected:
 		void SetUp() override {
-			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 			const StrConvertIntegerToString* pData = GetParam();
 			iValue = pData->m_iValue;
 			CValueOfPeriod = pData->m_strValue;
@@ -204,7 +204,7 @@ namespace FireBirdTest {
 	class ConvertINT64ToStringTest : public testing::TestWithParam<StrConvertINT64ToString*> {
 	protected:
 		void SetUp() override {
-			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 			const StrConvertINT64ToString* pData = GetParam();
 			iValue = pData->m_iValue;
 			CValueOfPeriod = pData->m_strValue;
@@ -233,7 +233,7 @@ namespace FireBirdTest {
 		void SetUp() override { }
 
 		void TearDown() override {
-			gl_systemStatus.SetWorkingMode(false);
+			gl_systemConfiguration.SetWorkingMode(false);
 		}
 	};
 

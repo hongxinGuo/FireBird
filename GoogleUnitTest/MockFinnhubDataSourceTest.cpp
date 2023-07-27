@@ -48,7 +48,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pMockFinnhubDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		gl_pSinaRTDataSource->SetErrorCode(12002);
-		EXPECT_TRUE(gl_systemStatus.IsWebBusy());
+		EXPECT_TRUE(gl_systemConfiguration.IsWebBusy());
 
 		m_pMockFinnhubDataSource->SetErrorCode(12002);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GetTickCount()).Times(1)
@@ -67,7 +67,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(m_pMockFinnhubDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
-		EXPECT_FALSE(gl_systemStatus.IsWebBusy());
+		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GetTickCount()).Times(2)
 		.WillOnce(Return(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()))

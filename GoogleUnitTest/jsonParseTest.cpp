@@ -17,7 +17,7 @@ namespace FireBirdTest {
 		}
 
 		void TearDown() override {
-			gl_systemStatus.SetWorkingMode(false);
+			gl_systemConfiguration.SetWorkingMode(false);
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			SCOPED_TRACE("");
 			GeneralCheck();

@@ -31,7 +31,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CWeekLineTest, TestGetDate) {
-		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CWeekLine dl;
 		dl.SetDate(_CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_EQ(dl.GetMarketDate(), _CHINA_MARKET_BEGIN_DATE_);
@@ -66,7 +66,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWeekLineTest, TestGetOpen) {
-		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CWeekLine dl;
 		EXPECT_EQ(dl.GetOpen(), 0);
 		dl.SetOpen(11100);
@@ -117,7 +117,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWeekLineTest, TestGetChangeHandRate) {
-		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CWeekLine dl;
 		EXPECT_DOUBLE_EQ(dl.GetChangeHandRate(), 0);
 		dl.SetChangeHandRate(30.30);
@@ -650,7 +650,7 @@ namespace FireBirdTest {
 		id.SetCanceledSellVolumeBelow200000(76);
 		id.SetCanceledSellVolumeAbove200000(77);
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();
@@ -821,7 +821,7 @@ namespace FireBirdTest {
 		id.SetRSIndex(135.6);
 		id.SetRSBackup(120.9);
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
 		setWeekLineBasicInfo.Open();
 		setWeekLineBasicInfo.m_pDatabase->BeginTrans();

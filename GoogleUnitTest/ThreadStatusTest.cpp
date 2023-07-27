@@ -24,7 +24,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(ThreadStatusTest, TestInitialize) {
-		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundThreadsWorking());
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfBackGroundWorkingThread(), 0);
 		const int iCreateThread = gl_ThreadStatus.GetNumberOfSavingThread();

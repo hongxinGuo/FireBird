@@ -399,9 +399,6 @@
     <ClInclude Include="..\src\System\SystemMessage.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\System\SystemStatus.h">
-      <Filter>头文件\System</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Type\America market\Country.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
@@ -897,9 +894,6 @@
       <Filter>源文件\System</Filter>
     </ClCompile>
     <ClCompile Include="..\src\System\SystemMessage.cpp">
-      <Filter>源文件\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\System\SystemStatus.cpp">
       <Filter>源文件\System</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\Country.cpp">

@@ -32,7 +32,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetDate) {
-		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CVirtualHistoryCandleExtend dl;
 		dl.SetDate(_CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_EQ(dl.GetMarketDate(), _CHINA_MARKET_BEGIN_DATE_);
@@ -67,7 +67,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetOpen) {
-		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CVirtualHistoryCandleExtend dl;
 		EXPECT_EQ(dl.GetOpen(), 0);
 		dl.SetOpen(11100);
@@ -118,7 +118,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetChangeHandRate) {
-		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CVirtualHistoryCandleExtend dl;
 		EXPECT_DOUBLE_EQ(dl.GetChangeHandRate(), 0);
 		dl.SetChangeHandRate(30.30);

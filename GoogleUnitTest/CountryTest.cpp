@@ -41,7 +41,7 @@ namespace FireBirdTest {
 
 		country.m_strCode2 = _T("AA");
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setCountry.Open();
 		setCountry.m_pDatabase->BeginTrans();
 		country.Append(setCountry);

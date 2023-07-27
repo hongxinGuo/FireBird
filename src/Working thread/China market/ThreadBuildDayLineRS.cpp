@@ -41,7 +41,7 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
 
 	while (gl_ThreadStatus.IsBackGroundThreadsWorking()) Sleep(100); // 等待所有的工作线程结束
 
-	if (!gl_systemStatus.IsExitingCalculatingRS()) {
+	if (!gl_systemConfiguration.IsExitingCalculatingRS()) {
 		// 如果顺利完成了计算任务
 		pMarket->SetRSEndDate(pMarket->GetMarketDate());
 		pMarket->SetUpdateOptionDB(true); // 更新选项数据库
@@ -57,7 +57,7 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
 		gl_systemMessage.PushInformationMessage(str);
 	}
 	else {
-		gl_systemStatus.SetExitingCalculatingRS(false); // 如果是计算过程中止了，则重置中止标识。
+		gl_systemConfiguration.SetExitingCalculatingRS(false); // 如果是计算过程中止了，则重置中止标识。
 		gl_systemMessage.PushInformationMessage(_T("中止了重新计算日线相对强度的过程"));
 	}
 	pMarket->SetCalculatingDayLineRS(false); // 本线程顺利退出，处于非运行状态
@@ -74,7 +74,7 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
 UINT ThreadBuildDayLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
 	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
-	if (!gl_systemStatus.IsExitingSystem() && !gl_systemStatus.IsExitingCalculatingRS()) {
+	if (!gl_systemConfiguration.IsExitingSystem() && !gl_systemConfiguration.IsExitingCalculatingRS()) {
 		pMarket->BuildDayLineRS(lDate); // 调用实际执行函数
 	}
 	gl_ThreadStatus.DecreaseBackGroundWorkingThread(); // 正在工作的线程数减一

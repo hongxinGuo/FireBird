@@ -28,7 +28,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(SystemMessageTest, TestInitialize) {
-		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		const size_t l = gl_systemMessage.InformationSize();
 		CSystemMessage systemMessage; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), l + 1); // 系统报警队列
@@ -54,7 +54,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(SystemMessageTest, TestGetFindDequeSize) {
-		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		EXPECT_EQ(gl_systemMessage.TransactionInfoSize(), 0);
 		gl_systemMessage.PushTransactionMessage(_T("TEST"));
 		EXPECT_EQ(gl_systemMessage.TransactionInfoSize(), 1);

@@ -385,7 +385,7 @@ bool CContainerChinaStock::SaveDayLineData() {
 				gl_systemMessage.PushDayLineInfoMessage(str1);
 			}
 		}
-		if (gl_systemStatus.IsExitingSystem()) {
+		if (gl_systemConfiguration.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
 	}
@@ -420,7 +420,7 @@ bool CContainerChinaStock::Choice10RSStrong2StockSet() {
 		thread1.detach();
 	}
 	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) {
-		if (gl_systemStatus.IsExitingSystem()) return false;
+		if (gl_systemConfiguration.IsExitingSystem()) return false;
 		Sleep(100); // 等待工作线程完成所有任务
 	}
 
@@ -454,7 +454,7 @@ bool CContainerChinaStock::Choice10RSStrong1StockSet() {
 		thread1.detach();
 	}
 	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) {
-		if (gl_systemStatus.IsExitingSystem()) return false;
+		if (gl_systemConfiguration.IsExitingSystem()) return false;
 		Sleep(100); // 等待工作线程完成所有任务
 	}
 
@@ -489,7 +489,7 @@ bool CContainerChinaStock::Choice10RSStrongStockSet(CRSReference* pRef, int iInd
 	}
 
 	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) {
-		if (gl_systemStatus.IsExitingSystem()) return false;
+		if (gl_systemConfiguration.IsExitingSystem()) return false;
 		Sleep(100); // 等待工作线程完成所有任务
 	}
 

@@ -196,7 +196,7 @@ namespace FireBirdTest {
 		FinnhubForexSymbol.SetDayLineNeedSaving(true);
 		FinnhubForexSymbol.SetUpdateProfileDB(true);
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setFinnhubForexSymbol.Open();
 		setFinnhubForexSymbol.m_pDatabase->BeginTrans();
 		FinnhubForexSymbol.AppendSymbol(setFinnhubForexSymbol);
@@ -241,7 +241,7 @@ namespace FireBirdTest {
 		FinnhubForexSymbol.SetDayLineNeedSaving(true);
 		FinnhubForexSymbol.SetUpdateProfileDB(true);
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setFinnhubForexSymbol.Open();
 		setFinnhubForexSymbol.m_pDatabase->BeginTrans();
 		FinnhubForexSymbol.AppendSymbol(setFinnhubForexSymbol);

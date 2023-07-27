@@ -535,7 +535,7 @@ namespace FireBirdTest {
 		id.SetRSIndex(15.6);
 		id.SetRSBackup(20.9);
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
@@ -619,7 +619,7 @@ namespace FireBirdTest {
 		id.SetRSIndex(135.6);
 		id.SetRSBackup(120.9);
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();

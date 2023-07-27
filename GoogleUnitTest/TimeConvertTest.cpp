@@ -14,7 +14,7 @@ namespace FireBirdTest {
 		}
 
 		void TearDown() override {
-			gl_systemStatus.SetWorkingMode(false);
+			gl_systemConfiguration.SetWorkingMode(false);
 
 			SCOPED_TRACE(""); GeneralCheck();
 		}
@@ -262,7 +262,7 @@ namespace FireBirdTest {
 	class ConvertBufferToTimeTest : public::testing::TestWithParam<strConvertBufferToTime*> {
 	protected:
 		void SetUp() override {
-			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 			const strConvertBufferToTime* pData = GetParam();
 			strBuffer = pData->m_strBuffer;
 			strFormat = pData->m_strFormat;

@@ -140,7 +140,7 @@ void CChinaMarket::Reset() {
 }
 
 void CChinaMarket::PreparingExitMarket() {
-	ASSERT(gl_systemStatus.IsExitingSystem());
+	ASSERT(gl_systemConfiguration.IsExitingSystem());
 }
 
 bool CChinaMarket::IsTimeToResetSystem(long lCurrentTime) {
@@ -1140,7 +1140,7 @@ void CChinaMarket::DeleteWeekLine(long lMonday) {
 }
 
 bool CChinaMarket::DeleteWeekLine() {
-	if (!gl_systemStatus.IsWorkingMode()) {
+	if (!gl_systemConfiguration.IsWorkingMode()) {
 		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 		exit(1);
 	}
@@ -1152,7 +1152,7 @@ bool CChinaMarket::DeleteWeekLine() {
 void CChinaMarket::DeleteWeekLineBasicInfo() {
 	CDatabase database;
 
-	if (!gl_systemStatus.IsWorkingMode()) {
+	if (!gl_systemConfiguration.IsWorkingMode()) {
 		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 		exit(1);
 	}
@@ -1167,7 +1167,7 @@ void CChinaMarket::DeleteWeekLineBasicInfo() {
 void CChinaMarket::DeleteWeekLineExtendInfo() {
 	CDatabase database;
 
-	if (!gl_systemStatus.IsWorkingMode()) {
+	if (!gl_systemConfiguration.IsWorkingMode()) {
 		ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 		exit(1);
 	}

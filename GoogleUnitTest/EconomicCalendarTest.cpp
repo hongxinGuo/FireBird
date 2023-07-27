@@ -49,7 +49,7 @@ namespace FireBirdTest {
 		EconomicCalendar.m_dEstimate = 1.1;
 		EconomicCalendar.m_dPrev = 1.0;
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setEconomicCalendar.Open();
 		setEconomicCalendar.m_pDatabase->BeginTrans();
 		EconomicCalendar.Append(setEconomicCalendar);

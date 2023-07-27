@@ -51,13 +51,13 @@ namespace FireBirdTest {
 	class CGuadanTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		}
 
 		static void TearDownTestSuite() { }
 
 		void SetUp() override {
-			ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		}
 
 		void TearDown() override {

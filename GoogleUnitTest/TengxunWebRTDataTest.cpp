@@ -38,7 +38,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CWebRTDataTest1, TestTengxunInitialize) {
-		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CWebRTData RTData;
 		EXPECT_EQ(RTData.GetTransactionTime(), 0);
 		EXPECT_STREQ(RTData.GetSymbol(), _T(""));

@@ -22,8 +22,8 @@ namespace FireBirdTest {
 	}
 
 	void EnvironmentCheck() {
-		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
-		EXPECT_FALSE(gl_systemStatus.IsExitingSystem());
+		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
+		EXPECT_FALSE(gl_systemConfiguration.IsExitingSystem());
 		time_t tt;
 		time(&tt);
 		EXPECT_TRUE((gl_tUTC + 3600) > tt) << gl_tUTC;

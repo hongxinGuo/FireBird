@@ -60,7 +60,7 @@ namespace FireBirdTest {
 
 	// 测试有优先级的队列存储临时实时数据。
 	TEST_F(CSinaRTDataSourceTest, TestGetDataSize) {
-		ASSERT_FALSE(gl_systemStatus.IsWorkingMode());
+		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		EXPECT_EQ(gl_pChinaMarket->SinaRTSize(), 0);
 		const auto pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(100100100);

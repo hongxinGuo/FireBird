@@ -30,7 +30,7 @@ bool CNeteaseDayLineDataSource::Reset() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CNeteaseDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) {
-	if (gl_systemStatus.IsWebBusy()) return false; // 网络出现问题时，不申请网易日线数据。
+	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请网易日线数据。
 	if (gl_pChinaMarket->IsSystemReady() && gl_pChinaMarket->IsDayLineNeedUpdate() && gl_pChinaMarket->IsDummyTime()
 		&& (gl_pChinaMarket->GetMarketTime() > 114500)) {
 		if (!IsInquiring()) {

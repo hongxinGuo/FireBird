@@ -109,7 +109,7 @@ bool CVirtualDataHistoryCandleExtend::SaveExtendDB(CVirtualSetHistoryCandleExten
 }
 
 bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic) {
-	if (gl_systemStatus.IsWorkingMode())
+	if (gl_systemConfiguration.IsWorkingMode())
 		ASSERT(!m_fLoadDataFirst);
 	ASSERT(pSetHistoryCandleBasic->IsOpen());
 
@@ -134,7 +134,7 @@ bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic*
 bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend) {
 	int iPosition = 0;
 
-	if (gl_systemStatus.IsWorkingMode())
+	if (gl_systemConfiguration.IsWorkingMode())
 		ASSERT(m_fLoadDataFirst);
 	ASSERT(pSetHistoryCandleExtend->IsOpen());
 

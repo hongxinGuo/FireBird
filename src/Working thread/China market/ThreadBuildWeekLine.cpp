@@ -49,7 +49,7 @@ UINT ThreadBuildWeekLineOfStock(not_null<CChinaStock*> pStockInput, long lStartD
 	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseSavingThread();
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-	if (!gl_systemStatus.IsExitingSystem()) pStock->BuildWeekLine(lStartDate);
+	if (!gl_systemConfiguration.IsExitingSystem()) pStock->BuildWeekLine(lStartDate);
 
 	gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 	gl_ThreadStatus.DecreaseSavingThread();

@@ -48,7 +48,7 @@ namespace FireBirdTest {
 		TiingoIndustry.m_strSector = _T("abdc");
 		TiingoIndustry.m_fUpdated = true;
 
-		ASSERT(!gl_systemStatus.IsWorkingMode());
+		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setTiingoIndustry.Open();
 		setTiingoIndustry.m_pDatabase->BeginTrans();
 		TiingoIndustry.Append(setTiingoIndustry);

@@ -204,7 +204,7 @@ bool CContainerWorldStock::UpdateBasicFinancialDB() {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 void CContainerWorldStock::UpdateBasicFinancialQuarterDB(const vector<CWorldStockPtr>& vStock) {
 	for (const auto& pStock : vStock) {
-		if (gl_systemStatus.IsExitingSystem()) break;
+		if (gl_systemConfiguration.IsExitingSystem()) break;
 		pStock->AppendBasicFinancialQuarter();
 	}
 }
@@ -219,7 +219,7 @@ void CContainerWorldStock::UpdateBasicFinancialQuarterDB(const vector<CWorldStoc
 //////////////////////////////////////////////////////////////////////////////////////////////////
 void CContainerWorldStock::UpdateBasicFinancialAnnualDB(const vector<CWorldStockPtr>& vStock) {
 	for (const auto& pStock : vStock) {
-		if (gl_systemStatus.IsExitingSystem()) break;
+		if (gl_systemConfiguration.IsExitingSystem()) break;
 		pStock->AppendBasicFinancialAnnual();
 	}
 }

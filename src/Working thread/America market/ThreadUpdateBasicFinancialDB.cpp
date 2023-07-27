@@ -27,7 +27,7 @@ UINT ThreadUpdateBasicFinancialDB(not_null<CWorldMarket*> pMarket) {
 UINT ThreadUpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock) {
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
 	for (const auto& pStock : vStock) {
-		if (gl_systemStatus.IsExitingSystem()) break;
+		if (gl_systemConfiguration.IsExitingSystem()) break;
 		pStock->AppendBasicFinancialAnnual();
 	}
 	gl_ThreadStatus.DecreaseBackGroundWorkingThread(); // 正在工作的线程数减一
@@ -38,7 +38,7 @@ UINT ThreadUpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock) {
 UINT ThreadUpdateBasicFinancialQuarterlyDB(vector<CWorldStockPtr> vStock) {
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
 	for (const auto& pStock : vStock) {
-		if (gl_systemStatus.IsExitingSystem()) break;
+		if (gl_systemConfiguration.IsExitingSystem()) break;
 		pStock->AppendBasicFinancialQuarter();
 	}
 	gl_ThreadStatus.DecreaseBackGroundWorkingThread(); // 正在工作的线程数减一

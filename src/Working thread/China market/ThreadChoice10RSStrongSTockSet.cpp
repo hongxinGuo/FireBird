@@ -76,7 +76,7 @@ UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStro
 	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseSavingThread();
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
-	if (!gl_systemStatus.IsExitingSystem()) {
+	if (!gl_systemConfiguration.IsExitingSystem()) {
 		if (pStock->IsShareA() && pStock->IsActive()) {
 			if (!pStock->IsDayLineLoaded()) {
 				pStock->LoadDayLine(pStock->GetSymbol());
@@ -101,7 +101,7 @@ UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseSavingThread();
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
-	if (!gl_systemStatus.IsExitingSystem()) {
+	if (!gl_systemConfiguration.IsExitingSystem()) {
 		if (pStock->IsShareA() && pStock->IsActive()) {
 			if (!pStock->IsDayLineLoaded()) {
 				pStock->LoadDayLine(pStock->GetSymbol());
@@ -126,7 +126,7 @@ UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 	gl_BackGroundTaskThread.acquire();
 	gl_ThreadStatus.IncreaseSavingThread();
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
-	if (!gl_systemStatus.IsExitingSystem()) {
+	if (!gl_systemConfiguration.IsExitingSystem()) {
 		if (pStock->IsShareA() && pStock->IsActive()) {
 			if (!pStock->IsDayLineLoaded()) {
 				pStock->LoadDayLine(pStock->GetSymbol());

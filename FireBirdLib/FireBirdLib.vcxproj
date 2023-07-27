@@ -158,7 +158,6 @@
     <ClInclude Include="..\src\System\SystemConstant.h" />
     <ClInclude Include="..\src\System\SystemData.h" />
     <ClInclude Include="..\src\System\SystemMessage.h" />
-    <ClInclude Include="..\src\System\SystemStatus.h" />
     <ClInclude Include="..\src\targetver.h" />
     <ClInclude Include="..\src\Thread.h" />
     <ClInclude Include="..\src\Type\America market\Country.h" />
@@ -333,7 +332,6 @@
     <ClCompile Include="..\src\System\FinnhubInaccessibleExchange.cpp" />
     <ClCompile Include="..\src\System\SystemConfiguration.cpp" />
     <ClCompile Include="..\src\System\SystemMessage.cpp" />
-    <ClCompile Include="..\src\System\SystemStatus.cpp" />
     <ClCompile Include="..\src\Type\America market\Country.cpp" />
     <ClCompile Include="..\src\Type\America market\EconomicCalendar.cpp" />
     <ClCompile Include="..\src\Type\America market\EPSSurprise.cpp" />
