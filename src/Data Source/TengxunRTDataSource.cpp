@@ -16,7 +16,7 @@ CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr7 = nullptr;
 CTengxunRTDataSourceImpPtr s_TengxunRTDataSourcePtr8 = nullptr;
 
 CTengxunRTDataSource::CTengxunRTDataSource() {
-	ASSERT(gl_bGlobeVariableInitialized);
+	ASSERT(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 900; // 腾讯实时数据查询默认值

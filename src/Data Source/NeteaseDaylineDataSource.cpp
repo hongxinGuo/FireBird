@@ -7,7 +7,7 @@
 #include "ChinaStockCodeConverter.h"
 
 CNeteaseDayLineDataSource::CNeteaseDayLineDataSource() {
-	ASSERT(gl_bGlobeVariableInitialized);
+	ASSERT(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = _T("http://quotes.money.163.com/service/chddata.html?code=");
 	m_strSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 	m_strInquiryToken = _T("");

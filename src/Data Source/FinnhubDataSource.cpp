@@ -11,7 +11,7 @@
 #include"WorldMarket.h"
 
 CFinnhubDataSource::CFinnhubDataSource() {
-	ASSERT(gl_bGlobeVariableInitialized);
+	ASSERT(gl_systemConfiguration.IsInitialized());
 	// 无需（也无法）每日更新的变量放在这里
 	m_fUpdateEPSSurprise = true;
 	m_lCurrentUpdateEPSSurprisePos = 0;

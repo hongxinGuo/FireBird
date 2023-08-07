@@ -1,4 +1,4 @@
-// 中国市场的各任务
+// 市场的各任务
 #pragma once
 
 enum {
@@ -25,6 +25,7 @@ enum {
 
 	CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__,
 	CHINA_MARKET_ACCESSORY_TASK__, // 其他辅助任务（如确定工作时间与否、是否快速接收数据等等）
+	CHINA_MARKET_PREPARING_MARKET_OPEN__, // 在股市开盘（092959）前做必要的准备
 
 	// World market
 	WORLD_MARKET_CHECK_SYSTEM_READY__ = 601, // 系统初始化检查

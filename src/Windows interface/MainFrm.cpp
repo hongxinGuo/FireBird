@@ -512,37 +512,31 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
-	char buffer[100]{};
 	ASSERT(nIDEvent == STOCK_ANALYSIS_TIMER_);
 
-	if (gl_systemConfiguration.IsExitingSystem()) SysCallOnTimer(nIDEvent); // 如果准备退出系统，则停止调度系统任务。
+	if (!gl_systemConfiguration.IsExitingSystem()) { // 如果准备退出系统，则停止调度系统任务。
+		ResetMarket(); // 重启系统在此处执行，容易调用各重置函数
 
-	// 重启系统在此处执行，容易调用各重置函数
-	ResetMarket();
+		// 调用主调度函数,由各市场调度函数执行具体任务
+		try {
+			SchedulingTask();
+		}
+		catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
+			CString str = _T("SchedulingTask unhandled exception founded : ");
+			str += e->what();
+			gl_systemMessage.PushInformationMessage(str);
+			gl_systemMessage.PushErrorMessage(str);
+			delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
+		}
 
-	// 调用主调度函数,由各市场调度函数执行具体任务
-	try {
-		SchedulingTask();
-	}
-	catch (std::exception* e) {
-		CString str = _T("SchedulingTask unhandled exception founded : ");
-		str += e->what();
-		gl_systemMessage.PushInformationMessage(str);
-		gl_systemMessage.PushErrorMessage(str);
-		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
-	}
-
-	if (gl_counter.GetElapsedMillisecond() > 20) {
-		sprintf_s(buffer, _T("%6I64d"), gl_counter.GetElapsedMillisecond());
-		//str = buffer;
-		m_wndInnerSystemBar.SetPaneText(7, buffer);
-	}
-	//CMainFrame只执行更新状态任务
-	UpdateStatus();
-	UpdateInnerSystemStatus();
-
-	if (!gl_systemConfiguration.IsWorkingMode()) {
-		gl_systemMessage.PushInformationMessage(_T("警告：使用了Test驱动"));
+		if (gl_counter.GetElapsedMillisecond() > 20) {
+			char buffer[100]{};
+			sprintf_s(buffer, _T("%6I64d"), gl_counter.GetElapsedMillisecond());
+			m_wndInnerSystemBar.SetPaneText(7, buffer);
+		}
+		//CMainFrame只执行更新状态任务
+		UpdateStatus();
+		UpdateInnerSystemStatus();
 	}
 
 	SysCallOnTimer(nIDEvent);
@@ -569,21 +563,18 @@ void CMainFrame::UpdateStatus() {
 
 	// 显示当前选择的股票
 	sprintf_s(buffer, _T("%d"), gl_pChinaMarket->GetCurrentSelectedStockSet());
-	str = buffer;
-	SysCallSetPaneText(4, str);
+	SysCallSetPaneText(4, buffer);
 
 	// 显示当前选择的位置
 	sprintf_s(buffer, _T("%d"), gl_pChinaMarket->GetCurrentSelectedPosition());
-	str = buffer;
-	SysCallSetPaneText(5, str);
+	SysCallSetPaneText(5, buffer);
 
 	// 显示当前读取的新浪实时数据股票代码
 	SysCallSetPaneText(6, gl_systemMessage.GetStockCodeForInquiringRTData());
 
 	// 显示活跃股票总数
 	sprintf_s(buffer, _T("%d"), gl_pChinaMarket->GetTotalActiveStock());
-	str = buffer;
-	SysCallSetPaneText(7, str);
+	SysCallSetPaneText(7, buffer);
 
 	// 显示当前读取网易日线历史的股票代码
 	SysCallSetPaneText(8, gl_systemMessage.GetStockCodeForInquiringNeteaseDayLine());
@@ -602,8 +593,7 @@ void CMainFrame::UpdateStatus() {
 	}
 	// 更新当前申请网络数据的工作线程数
 	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfWebInquiringThread());
-	str = buffer;
-	SysCallSetPaneText(11, str);
+	SysCallSetPaneText(11, buffer);
 
 	// 更新当前后台工作线程数
 	//sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
@@ -613,8 +603,7 @@ void CMainFrame::UpdateStatus() {
 		dRatio = static_cast<double>(gl_pChinaMarket->GetNewRTDataReceivedInOrdinaryTradeTime()) / gl_pChinaMarket->GetRTDataReceivedInOrdinaryTradeTime();
 	}
 	sprintf_s(buffer, _T("%1.3f"), dRatio);
-	str = buffer;
-	SysCallSetPaneText(12, str);
+	SysCallSetPaneText(12, buffer);
 
 	//更新当地时间的显示
 	SysCallSetPaneText(13, gl_pChinaMarket->GetStringOfLocalTime());
@@ -627,25 +616,21 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
 	case 0: // 新浪实时数据
 		sprintf_s(buffer, _T("%5I64d"), gl_pSinaRTDataSource->GetCurrentInquiryTime());
-		str = buffer;
 		break;
 	case 1: // 更新网易实时数据读取时间
 		sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseRTDataSource->GetCurrentInquiryTime());
-		str = buffer;
 		break;
 	case 2: // 更新腾讯实时数据读取时间
 		sprintf_s(buffer, _T("%5I64d"), gl_pTengxunRTDataSource->GetCurrentInquiryTime());
-		str = buffer;
 		break;
 	default: // error
 		break;
 	}
-	SysCallSetInnerSystemPaneText(1, str);
+	SysCallSetInnerSystemPaneText(1, buffer);
 
 	// 更新实时数据分配及处理时间
 	sprintf_s(buffer, _T("%5I64d"), gl_pChinaMarket->m_ttDistributeAndCalculateTime);
-	str = buffer;
-	SysCallSetInnerSystemPaneText(2, str);
+	SysCallSetInnerSystemPaneText(2, buffer);
 	// 更新日线数据读取时间
 	if (gl_systemConfiguration.IsUsingNeteaseDayLineServer()) { // 网易日线服务器
 		sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseDayLineDataSource->GetCurrentInquiryTime());
@@ -653,21 +638,17 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	else if (gl_systemConfiguration.IsUsingTengxunDayLineServer()) { // 腾讯日线服务器
 		sprintf_s(buffer, _T("%5I64d"), gl_pTengxunDayLineDataSource->GetCurrentInquiryTime());
 	}
-	str = buffer;
-	SysCallSetInnerSystemPaneText(4, str);
+	SysCallSetInnerSystemPaneText(4, buffer);
 
 	// 更新Finnhub数据读取时间
 	sprintf_s(buffer, _T("%5I64d"), gl_pFinnhubDataSource->GetCurrentInquiryTime());
-	str = buffer;
-	SysCallSetInnerSystemPaneText(5, str);
+	SysCallSetInnerSystemPaneText(5, buffer);
 	// 更新Tiingo数据读取时间
 	sprintf_s(buffer, _T("%6I64d"), gl_pTiingoDataSource->GetCurrentInquiryTime());
-	str = buffer;
-	SysCallSetInnerSystemPaneText(6, str);
+	SysCallSetInnerSystemPaneText(6, buffer);
 	// 更新Quandl数据读取时间
 	sprintf_s(buffer, _T("%6I64d"), gl_pQuandlDataSource->GetCurrentInquiryTime());
-	str = buffer;
-	//SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
+	//SysCallSetInnerSystemPaneText(7, buffer);
 
 	if (gl_systemMessage.GetProcessedFinnhubWebSocket() > 0) {
 		SysCallSetInnerSystemPaneText(8, gl_systemMessage.GetCurrentFinnhubWebSocketStake());
@@ -689,7 +670,7 @@ void CMainFrame::UpdateInnerSystemStatus() {
 
 	if (gl_systemMessage.GetProcessedTiingoCryptoWebSocket() > 0) {
 		SysCallSetInnerSystemPaneText(14, gl_systemMessage.GetCurrentTiingoWebSocketCrypto());
-		//str = FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket());
+		str = FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket());
 		SysCallSetInnerSystemPaneText(15, str);
 	}
 }
@@ -1170,7 +1151,7 @@ void CMainFrame::OnUpdateMaintainDayLine(CCmdUI* pCmdUI) {
 #ifndef _DEBUG
 		if (gl_pChinaMarket->GetMarketTime() > 151000)
 #endif
-			SysCallCmdUIEnable(pCmdUI, true);
+		SysCallCmdUIEnable(pCmdUI, true);
 	}
 	else {
 		SysCallCmdUIEnable(pCmdUI, false);

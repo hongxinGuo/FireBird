@@ -54,6 +54,7 @@ public:
 	void TaskSaveTempData(long lCurrentTime);
 	void TaskLoadCurrentStockHistoryData();// 装载当前股票日线
 	void TaskAccessoryTask(long lCurrentTime); // 其他辅助任务
+	void TaskPreparingMarketOpen(long lCurrentTime);
 	void TaskChoiceRSSet(long lCurrentTime);
 
 	bool SetCheckActiveStockFlag(long lCurrentTime);
@@ -260,11 +261,13 @@ public:
 	//处理实时股票变化等
 	void DistributeSinaRTDataToStock();
 	void DistributeTengxunRTDataToStock();
-	bool DistributeNeteaseRTDataToStock();
+	void DistributeNeteaseRTDataToStock();
 	bool DistributeRTDataToStock(const CWebRTDataPtr& pRTData);
 
 	long GetRTDataReceivedInOrdinaryTradeTime() const noexcept { return m_lRTDataReceivedInOrdinaryTradeTime; }
+	void SetRTDataReceivedInOrdinaryTradeTime(long lValue) noexcept { m_lRTDataReceivedInOrdinaryTradeTime = lValue; }
 	long GetNewRTDataReceivedInOrdinaryTradeTime() const noexcept { return m_lNewRTDataReceivedInOrdinaryTradeTime; }
+	void SetNewRTDataReceivedInOrdinaryTradeTime(long lValue) noexcept { m_lNewRTDataReceivedInOrdinaryTradeTime = lValue; }
 
 	// 状态反馈
 	bool IsUsingSinaRTDataReceiver() const noexcept { return m_fUsingSinaRTDataReceiver; }
@@ -362,6 +365,8 @@ public:
 	bool CreateStock(const CString& strStockCode, const CString& strStockName, bool fProcessRTData);
 
 	void SetCurrentRSStrongIndex(const long lIndex) noexcept { m_lCurrentRSStrongIndex = lIndex; }
+
+	void ResetEffectiveRTDataRatio();
 
 public:
 	time_t m_ttDistributeAndCalculateTime; // 实时数据分配及处理时间

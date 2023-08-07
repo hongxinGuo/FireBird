@@ -29,7 +29,7 @@ using namespace std;
 using namespace gsl;
 
 CChinaMarket::CChinaMarket() : CVirtualMarket() {
-	ASSERT(gl_bGlobeVariableInitialized);
+	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
 		TRACE(_T("ChinaMarket市场变量只允许存在一个实例\n"));
 	}
@@ -96,8 +96,8 @@ void CChinaMarket::Reset() {
 	m_fCalculateChosen10RS = false;
 
 	m_llRTDataReceived = 0;
-	m_lRTDataReceivedInOrdinaryTradeTime = 0;
-	m_lNewRTDataReceivedInOrdinaryTradeTime = 0;
+	m_lRTDataReceivedInOrdinaryTradeTime = 1;
+	m_lNewRTDataReceivedInOrdinaryTradeTime = 1;
 
 	while (m_qSinaRT.Size() > 0) m_qSinaRT.PopData();
 	while (m_qNeteaseRT.Size() > 0) m_qNeteaseRT.PopData();
@@ -238,6 +238,9 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 			break;
 		case CHINA_MARKET_ACCESSORY_TASK__:
 			TaskAccessoryTask(lCurrentTime);
+			break;
+		case CHINA_MARKET_PREPARING_MARKET_OPEN__:
+			TaskPreparingMarketOpen(lCurrentTime);
 			break;
 		case CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__:
 			TaskChoiceRSSet(lCurrentTime);
@@ -405,6 +408,7 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 // 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
 //
 // 此函数由工作线程调用，注意同步问题。
+// 由于新浪实时数据可能由多个数据申请线程申请，执行此函数时不允许同时将实时数据加入队列中，故而采用互斥。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::DistributeSinaRTDataToStock() {
@@ -453,7 +457,7 @@ void CChinaMarket::DistributeTengxunRTDataToStock() {
 // 此函数由工作线程调用，注意同步问题。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::DistributeNeteaseRTDataToStock() {
+void CChinaMarket::DistributeNeteaseRTDataToStock() {
 	const size_t lTotalNumber = NeteaseRTSize();
 
 	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
@@ -464,8 +468,6 @@ bool CChinaMarket::DistributeNeteaseRTDataToStock() {
 		DistributeRTDataToStock(pRTData);
 	}
 	if (lTotalNumber > 0) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
-
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -502,7 +504,6 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 			pStock->SetTransactionTime(pRTData->GetTransactionTime()); // 设置最新接受到实时数据的时间
 		}
 	}
-
 	return true;
 }
 
@@ -621,6 +622,11 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	// 装载本日存储的实时数据。必须于市场两次重启后（92600后）再执行，这样才能保证正常设置m_fLoadTodayRTData变量
 	AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, 92700);
 
+	// 准备开市任务。每日执行一次，于92959执行。
+	if (lCurrentTime < 92959) {
+		AddTask(CHINA_MARKET_PREPARING_MARKET_OPEN__, 92959);
+	}
+
 	// 每十秒钟存储一次日线历史数据。
 	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, 113510); // 中午休市时开始。
 
@@ -688,6 +694,11 @@ void CChinaMarket::TaskAccessoryTask(long lCurrentTime) {
 	SetCheckActiveStockFlag(lCurrentTime);
 
 	AddTask(CHINA_MARKET_ACCESSORY_TASK__, GetNextTime(lCurrentTime, 0, 1, 0)); // 每分钟整点执行一次
+}
+
+void CChinaMarket::TaskPreparingMarketOpen(long lCurrentTime) {
+	ASSERT(lCurrentTime == 92959); // 每日执行一次
+	ResetEffectiveRTDataRatio();
 }
 
 bool CChinaMarket::AddChosenStock(const CChinaStockPtr& pStock) {
@@ -1740,4 +1751,9 @@ void CChinaMarket::LoadChosenStockDB() {
 void CChinaMarket::CreateThreadUpdateTempRTData() {
 	thread thread1(ThreadSaveTempRTData, this);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
+}
+
+void CChinaMarket::ResetEffectiveRTDataRatio() {
+	SetNewRTDataReceivedInOrdinaryTradeTime(1);
+	SetRTDataReceivedInOrdinaryTradeTime(1);
 }

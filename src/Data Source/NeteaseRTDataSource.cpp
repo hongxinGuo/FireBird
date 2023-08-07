@@ -7,7 +7,7 @@
 #include "ChinaStockCodeConverter.h"
 
 CNeteaseRTDataSource::CNeteaseRTDataSource() {
-	ASSERT(gl_bGlobeVariableInitialized);
+	ASSERT(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = _T("http://api.money.126.net/data/feed/");
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 900; // 网易实时数据查询默认值

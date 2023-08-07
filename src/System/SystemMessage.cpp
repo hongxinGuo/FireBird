@@ -46,7 +46,7 @@ size_t CSystemDeque::Size() {
 }
 
 CSystemMessage::CSystemMessage() {
-	ASSERT(gl_bGlobeVariableInitialized);
+	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siCounter = 0; siCounter++ > 0) {
 		TRACE("系统消息只允许一个实例\n");
 		gl_systemMessage.PushErrorMessage(_T("错误：系统不允许生成多个CSystemMessage实例"));

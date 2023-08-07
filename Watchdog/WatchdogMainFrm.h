@@ -40,7 +40,7 @@ protected:  // control bar embedded members
 	CWatchdogOutputWnd m_wndOutput;
 	CWatchdogPropertiesWnd m_wndProperties;
 
-	UINT m_uTimerID;
+	UINT_PTR m_uTimerID;
 
 	// Generated message map functions
 protected:

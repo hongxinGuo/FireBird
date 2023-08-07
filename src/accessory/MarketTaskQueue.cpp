@@ -47,6 +47,7 @@ void CMarketTaskQueue::CreateIndexMap() {
 	gl_mapMarketMapIndex[CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__] = _T("更新日线历史数据");
 	gl_mapMarketMapIndex[CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__] = _T("加载当前股票日线");
 	gl_mapMarketMapIndex[CHINA_MARKET_ACCESSORY_TASK__] = _T("系统状态监测");
+	gl_mapMarketMapIndex[CHINA_MARKET_PREPARING_MARKET_OPEN__] = _T("开市准备");
 
 	gl_mapMarketMapIndex[WORLD_MARKET_CHECK_SYSTEM_READY__] = "系统初始化检查";
 	gl_mapMarketMapIndex[WORLD_MARKET_RESET__] = "重置系统";

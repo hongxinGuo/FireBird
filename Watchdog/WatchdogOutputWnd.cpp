@@ -112,7 +112,7 @@ void CWatchdogOutputWnd::AdjustHorzScroll(CListBox& wndListBox) {
 
 	int cxExtentMax = 0;
 
-	for (int i = 0; i < wndListBox.GetCount(); i ++) {
+	for (int i = 0; i < wndListBox.GetCount(); i++) {
 		CString strItem;
 		wndListBox.GetText(i, strItem);
 
@@ -143,8 +143,6 @@ void CWatchdogOutputWnd::UpdateFonts() {
 
 void CWatchdogOutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	CString str, str2;
-	size_t lTotal;
-	long lCurrentPos;
 	bool fUpdate = false;
 	CString strTime = GetStringOfLocalDateTime(); // 消息的前缀，使用当地时间
 
@@ -152,7 +150,7 @@ void CWatchdogOutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	if (m_wndOutputBuild.GetCount() > 10000) m_wndOutputBuild.TruncateList(1000);
 	// 将输出信息拷贝到消息队列中。
 	//if ((lTotal = gl_systemMessage.InformationSize()) > 0) {
-	lCurrentPos = m_wndOutputBuild.GetCurSel();
+	const long lCurrentPos = m_wndOutputBuild.GetCurSel();
 	if (m_wndOutputBuild.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
 	//gl_systemMessage.DisplayInformation(&m_wndOutputBuild, strTime);
 	if (fUpdate) {

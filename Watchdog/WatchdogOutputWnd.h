@@ -39,7 +39,7 @@ protected:
 	COutputList m_wndOutputDebug;
 	COutputList m_wndOutputFind;
 
-	UINT m_uIdTimer;
+	UINT_PTR m_uIdTimer;
 
 protected:
 	void FillDebugWindow();

@@ -110,7 +110,7 @@ namespace FireBirdTest {
 
 		gl_pChinaMarket->PushNeteaseRT(pRTData);
 		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 1);
-		EXPECT_TRUE(gl_pChinaMarket->DistributeNeteaseRTDataToStock());
+		gl_pChinaMarket->DistributeNeteaseRTDataToStock();
 		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 0);
 		EXPECT_TRUE(gl_pChinaMarket->IsRTDataNeedCalculate());
 		switch (m_iCount) {

@@ -28,7 +28,7 @@ using std::thread;
 using std::make_shared;
 
 CWorldMarket::CWorldMarket() {
-	ASSERT(gl_bGlobeVariableInitialized);
+	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
 		TRACE("CWorldMarket市场变量只允许存在一个实例\n");
 	}

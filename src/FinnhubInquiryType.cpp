@@ -3,7 +3,7 @@
 #include"FinnhubInquiryType.h"
 
 CFinnhubInquiryType::CFinnhubInquiryType() {
-	ASSERT(gl_bGlobeVariableInitialized);
+	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
 		TRACE(_T("XferFinnhubInquiryType全局变量只允许存在一个实例\n"));
 #ifdef _DEBUG

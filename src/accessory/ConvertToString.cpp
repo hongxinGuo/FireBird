@@ -40,14 +40,14 @@ CString ConvertValueToString(const double dValue, const int iDividend) {
 }
 
 wstring to_wide_string(const std::string& input) {
-	const long lLength = input.size();
-	const auto pBuffer = new char[lLength + 1];
+	const int iLength = static_cast<int>(input.size());
+	const auto pBuffer = new char[iLength + 1];
 
 	for (int i = 0; i < input.size(); i++) { pBuffer[i] = input.at(i); }
-	pBuffer[lLength] = 0x000;
-	const auto pBufferW = new WCHAR[lLength * 2];
+	pBuffer[iLength] = 0x000;
+	const auto pBufferW = new WCHAR[iLength * 2];
 
-	const long lReturnSize = MultiByteToWideChar(CP_UTF8, 0, pBuffer, lLength, pBufferW, lLength * 2);
+	const long lReturnSize = MultiByteToWideChar(CP_UTF8, 0, pBuffer, iLength, pBufferW, iLength * 2);
 	pBufferW[lReturnSize] = 0x000;
 	wstring ws = pBufferW;
 

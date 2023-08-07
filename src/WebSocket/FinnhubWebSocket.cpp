@@ -62,13 +62,13 @@ UINT ThreadConnectFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pD
 }
 
 CFinnhubWebSocket::CFinnhubWebSocket() {
-	ASSERT(gl_bGlobeVariableInitialized);
+	ASSERT(gl_systemConfiguration.IsInitialized());
 	m_url = _T("wss://ws.finnhub.io");
 	SetSubscriptionStatus(false); // finnhub WebSocket没有注册ID
 }
 
 /// <summary>
-/// finnhub数据源的格式：wss://ws.finnhub.io/?token=c1i57rv48v6vit20lrc0。
+/// finnhub webSocket数据源的格式：wss://ws.finnhub.io/?token=c1i57rv48v6vit20lrc0。
 /// </summary>
 void CFinnhubWebSocket::Connect() {
 	CString strToken = gl_pFinnhubDataSource->GetInquiryToken();
@@ -152,8 +152,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 				gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 				return false;
 			}
-			else {
-				// ERROR
+			else { // new format or error
 				CString strMsg = _T("Finnhub Web Socket type error: ");
 				strMsg += sType.c_str();
 				gl_systemMessage.PushInnerSystemInformationMessage(strMsg);

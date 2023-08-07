@@ -15,6 +15,8 @@
 using std::fstream;
 using std::ios;
 
+bool CSystemConfiguration::sm_bInitialized = false;
+
 /// <summary>
 /// 系统配置文件，采用nlohmann json库格式。
 ///
@@ -72,15 +74,16 @@ std::string gl_sSystemConfiguration = R"(
 }
 })";
 
+// 确保SystemConfiguration是第一个初始化的全局变量。因其他全局变量可能会使用该变量的内容。
 CSystemConfiguration::CSystemConfiguration() {
-	ASSERT(gl_bGlobeVariableInitialized == false); // 确保SystemConfiguration是第一个初始化的全局变量。因其他全局变量可能会使用该变量的内容。
-	gl_bGlobeVariableInitialized = true;
-	if (static int siInstance = 0; ++siInstance > 1) {
+	ASSERT(!sm_bInitialized); // 只生成唯一实例
+	if (sm_bInitialized) {
 		TRACE(_T("GlobeOption全局变量只允许存在一个实例\n"));
 #ifdef _DEBUG
 		ASSERT(FALSE);
 #endif // _DEBUG
 	}
+	sm_bInitialized = true;
 
 	m_fUpdate = false; // update flag
 	m_fInitialized = true;

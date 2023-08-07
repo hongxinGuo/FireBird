@@ -770,8 +770,7 @@ namespace FireBirdTest {
 
 		gl_pMockMainFrame->OnTimer(STOCK_ANALYSIS_TIMER_);
 
-		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
-		gl_systemMessage.PopInformationMessage();
+		EXPECT_THAT(gl_systemMessage.InformationSize(), 0);
 
 		// »Ö¸´Ô­×´
 		gl_systemMessage.SetProcessedFinnhubWebSocket(0);

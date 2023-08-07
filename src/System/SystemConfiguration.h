@@ -262,9 +262,10 @@ public:
 	// 当下载新浪或者网易实时数据出现问题时，系统的其他网络活动应该让步。
 	static bool IsWebBusy() { return gl_pSinaRTDataSource->IsWebError() || gl_pNeteaseRTDataSource->IsWebError(); }
 
-public:
+	bool IsInitialized() { return sm_bInitialized; }
 
 protected:
+	static bool sm_bInitialized; // 使用静态变量来保证只生成唯一实列。
 	CString m_strDirectory; // 配置文件目录
 	CString m_strFileName; // 配置文件名称
 
