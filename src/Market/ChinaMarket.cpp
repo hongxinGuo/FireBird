@@ -96,8 +96,8 @@ void CChinaMarket::Reset() {
 	m_fCalculateChosen10RS = false;
 
 	m_llRTDataReceived = 0;
-	m_lRTDataReceivedInOrdinaryTradeTime = 1;
-	m_lNewRTDataReceivedInOrdinaryTradeTime = 1;
+	m_lRTDataReceivedInOrdinaryTradeTime = 0;
+	m_lNewRTDataReceivedInOrdinaryTradeTime = 0;
 
 	while (m_qSinaRT.Size() > 0) m_qSinaRT.PopData();
 	while (m_qNeteaseRT.Size() > 0) m_qNeteaseRT.PopData();
@@ -196,6 +196,9 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 		switch (pTask->GetType()) {
 		case CREATE_TASK__: // 生成其他任务
 			TaskCreateTask(lCurrentTime);
+			break;
+		case RELOAD_SYSTEM__: // 重启系统？
+			TaskReloadSystem(lCurrentTime);
 			break;
 		case CHINA_MARKET_CHECK_SYSTEM_READY__:
 			TaskCheckMarketReady(lCurrentTime);
@@ -414,7 +417,7 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 void CChinaMarket::DistributeSinaRTDataToStock() {
 	const size_t lTotalNumber = SinaRTSize();
 
-	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
+	m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		const CWebRTDataPtr pRTData = PopSinaRT();
@@ -438,7 +441,7 @@ void CChinaMarket::DistributeSinaRTDataToStock() {
 void CChinaMarket::DistributeTengxunRTDataToStock() {
 	const size_t lTotalNumber = TengxunRTSize();
 
-	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
+	m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		const CWebRTDataPtr pRTData = PopTengxunRT();
@@ -460,7 +463,7 @@ void CChinaMarket::DistributeTengxunRTDataToStock() {
 void CChinaMarket::DistributeNeteaseRTDataToStock() {
 	const size_t lTotalNumber = NeteaseRTSize();
 
-	if (IsOrdinaryTradeTime()) m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
+	m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		const CWebRTDataPtr pRTData = PopNeteaseRT();
@@ -488,10 +491,14 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 			CreateStock(strSymbol, pRTData->GetStockName(), true);
 		}
 	}
-	else if (!IsStock(pRTData->GetSymbol())) { return false; }
+	else if (!IsStock(strSymbol)) {
+		return false;
+	}
 	if (pRTData->IsActive()) { // 此实时数据有效？
 		IncreaseRTDataReceived();
-		if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) { m_ttNewestTransactionTime = pRTData->GetTransactionTime(); }
+		if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
+			m_ttNewestTransactionTime = pRTData->GetTransactionTime();
+		}
 		const auto pStock = GetStock(pRTData->GetSymbol());
 		if (!pStock->IsActive()) {
 			if (pRTData->IsValidTime(14)) {
@@ -499,7 +506,7 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 			}
 		}
 		if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
-			if (IsOrdinaryTradeTime()) m_lNewRTDataReceivedInOrdinaryTradeTime++;
+			m_lNewRTDataReceivedInOrdinaryTradeTime++;
 			pStock->PushRTData(pRTData); // 存储新的数据至数据池
 			pStock->SetTransactionTime(pRTData->GetTransactionTime()); // 设置最新接受到实时数据的时间
 		}
@@ -652,9 +659,26 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 		}
 	}
 
+	// 如果设定为周期性重启系统，则在星期天晚上9时重启。
+	if (gl_systemConfiguration.IsReloadSystem() && (GetDayOfWeek() == 0)) {
+		AddTask(RELOAD_SYSTEM__, 210000);
+	}
+
 	AddTask(CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 
 	return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 系统关闭时要执行一系列关闭系统前的准备工作，不允许使用exit(0)函数或PostQuitMessage()直接退出系统，
+/// 故而采用向主框架窗口发送关闭窗口系统消息（WM_SYSCOMMAND SC_CLOSE）的方法。
+/// 
+///
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CChinaMarket::TaskReloadSystem(long lCurrentTime) {
+	// 向主窗口发送关闭窗口系统消息，通知框架窗口执行关闭任务。
+	PostMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), WM_SYSCOMMAND, SC_CLOSE, 0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -692,13 +716,14 @@ void CChinaMarket::TaskAccessoryTask(long lCurrentTime) {
 	CheckFastReceivingData(lCurrentTime);
 	CheckMarketOpen(lCurrentTime);// 判断中国股票市场开市状态
 	SetCheckActiveStockFlag(lCurrentTime);
+	ResetEffectiveRTDataRatio(); // 重置有效实时数据比率
 
 	AddTask(CHINA_MARKET_ACCESSORY_TASK__, GetNextTime(lCurrentTime, 0, 1, 0)); // 每分钟整点执行一次
 }
 
 void CChinaMarket::TaskPreparingMarketOpen(long lCurrentTime) {
 	ASSERT(lCurrentTime == 92959); // 每日执行一次
-	ResetEffectiveRTDataRatio();
+	// 目前尚未有需执行的任务
 }
 
 bool CChinaMarket::AddChosenStock(const CChinaStockPtr& pStock) {
@@ -1754,6 +1779,6 @@ void CChinaMarket::CreateThreadUpdateTempRTData() {
 }
 
 void CChinaMarket::ResetEffectiveRTDataRatio() {
-	SetNewRTDataReceivedInOrdinaryTradeTime(1);
-	SetRTDataReceivedInOrdinaryTradeTime(1);
+	SetNewRTDataReceivedInOrdinaryTradeTime(0);
+	SetRTDataReceivedInOrdinaryTradeTime(0);
 }

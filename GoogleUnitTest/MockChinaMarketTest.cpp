@@ -201,6 +201,16 @@ namespace FireBirdTest {
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 	}
 
+	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask9) {
+		s_pMockChinaMarket->AddTask(RELOAD_SYSTEM__, 210000);
+
+		EXPECT_CALL(*s_pMockChinaMarket, TaskReloadSystem(210000)).Times(1);
+
+		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask(210000));
+
+		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << s_pMockChinaMarket->GetMarketTask()->GetTime();
+	}
+
 	TEST_F(CMockChinaMarketTest, TestTaskSaveTempData1) {
 		EXPECT_TRUE(s_pMockChinaMarket->IsSystemReady());
 		s_pMockChinaMarket->SetMarketOpened(true);

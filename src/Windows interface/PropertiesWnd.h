@@ -3,6 +3,7 @@
 enum configuration_option {
 	SYSTEM_FAST_CPU = 1,
 	SYSTEM_DEBUG_MODE_,
+	RELOAD_SYSTEM_,
 };
 
 class CPropertiesToolBar : public CMFCToolBar {

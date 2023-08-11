@@ -32,8 +32,14 @@ void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pPro
 		gl_systemConfiguration.SetDebugMode(pVar->boolVal);
 		gl_systemConfiguration.SetUpdate(true);
 		break;
+	case RELOAD_SYSTEM_:
+		ASSERT(pVar->vt == VT_BOOL);
+		gl_systemConfiguration.SetReloadSystem(pVar->boolVal);
+		gl_systemConfiguration.SetUpdate(true);
+		break;
 	default:
 		TRACE("未处理PropertyGridCtrl例外\n"); // 未处理例外
+	//ASSERT(0);
 		break;
 	}
 	CMFCPropertyGridCtrl::OnPropertyChanged(pProp);
@@ -136,6 +142,7 @@ void CPropertiesWnd::InitPropList() {
 
 	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("System option"));
 	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Debug Mode"), static_cast<_variant_t>(gl_systemConfiguration.IsDebugMode()), _T("Debug mode"), SYSTEM_DEBUG_MODE_));
+	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Reload System"), static_cast<_variant_t>(gl_systemConfiguration.IsReloadSystem()), _T("Reload System"), RELOAD_SYSTEM_));
 
 	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T("Border"), _T("Dialog Frame"), _T("One of: None, Thin, Resizable, or Dialog Frame"));
 	pProp->AddOption(_T("None"));

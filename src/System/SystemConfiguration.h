@@ -44,6 +44,8 @@ public:
 	// 获取系统配置参数
 	[[nodiscard]] bool IsDebugMode() const noexcept { return m_bDebugMode; }
 	void SetDebugMode(const bool bFlag) noexcept { m_bDebugMode = bFlag; }
+	[[nodiscard]] bool IsReloadSystem() const noexcept { return m_bReloadSystem; }
+	void SetReloadSystem(const bool bFlag) noexcept { m_bReloadSystem = bFlag; }
 	[[nodiscard]] CString GetDatabaseAccountName() noexcept { return m_strDatabaseAccountName; }
 	void SetDatabaseAccountName(const CString& strAccountName) noexcept { m_strDatabaseAccountName = strAccountName; }
 	[[nodiscard]] CString GetDatabaseAccountPassword() noexcept { return m_strDatabaseAccountPassword; }
@@ -271,6 +273,7 @@ protected:
 
 	// 系统配置
 	bool m_bDebugMode; // 系统是否是测试状态
+	bool m_bReloadSystem; // 系统是否允许周期性重启
 	CString m_strDatabaseAccountName; // 数据库账户名称
 	CString m_strDatabaseAccountPassword; // 数据库账户密码
 	int m_iBackgroundThreadPermittedNumber; // 后台线程最大允许值
@@ -282,8 +285,8 @@ protected:
 
 	// World Market
 	CString m_strFinnhubToken; // 令牌
-	CString m_strTiingoToken;
-	CString m_strQuandlToken;
+	CString m_strTiingoToken; // 令牌
+	CString m_strQuandlToken; // 令牌
 	bool m_bFinnhubAccountFeePaid; // 付费账户或者免费账户
 	bool m_bTiingoAccountFeePaid;
 	bool m_bQuandlAccountFeePaid;

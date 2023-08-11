@@ -47,6 +47,7 @@ public:
 
 	// 各种任务
 	virtual bool TaskCreateTask(long lCurrentTime);
+	virtual void TaskReloadSystem(long lCurrentTime);
 	bool TaskCheckMarketReady(long lCurrentTime);
 	virtual bool TaskResetMarket(long lCurrentTime);
 	void TaskDistributeAndCalculateRTData(long lCurrentTime);
@@ -55,6 +56,7 @@ public:
 	void TaskLoadCurrentStockHistoryData();// 装载当前股票日线
 	void TaskAccessoryTask(long lCurrentTime); // 其他辅助任务
 	void TaskPreparingMarketOpen(long lCurrentTime);
+	void TaskResetEffectRTDataRatio(long lCurrentTime);
 	void TaskChoiceRSSet(long lCurrentTime);
 
 	bool SetCheckActiveStockFlag(long lCurrentTime);

@@ -26,6 +26,7 @@ std::string gl_sSystemConfiguration = R"(
 "SystemConfiguration": {
 	"UsingFastCPU" : true,
 	"DebugMode" : false,
+	"ReloadSystem" : false,
   "DatabaseAccountName" : "hxguo",
 	"DatabaseAccountPassword" : "hxguo",
 	"BackgroundThreadPermittedNumber" : 8,
@@ -92,6 +93,7 @@ CSystemConfiguration::CSystemConfiguration() {
 
 	// 系统配置
 	m_bDebugMode = false;
+	m_bReloadSystem = false;
 	m_strDatabaseAccountName = _T("hxguo");
 	m_strDatabaseAccountPassword = _T("hxguo");
 	m_iBackgroundThreadPermittedNumber = 8; // 后台线程最多8个
@@ -174,6 +176,12 @@ void CSystemConfiguration::Update() {
 		// 系统配置
 		try {
 			m_bDebugMode = m_systemConfiguration.at("SystemConfiguration").at("DebugMode");
+		}
+		catch (json::out_of_range&) {
+			m_fUpdate = true;
+		}
+		try {
+			m_bReloadSystem = m_systemConfiguration.at("SystemConfiguration").at("ReloadSystem");
 		}
 		catch (json::out_of_range&) {
 			m_fUpdate = true;
@@ -390,6 +398,7 @@ void CSystemConfiguration::UpdateJson() {
 	m_systemConfiguration.clear(); // 清除之前的数据。
 	// system
 	m_systemConfiguration["SystemConfiguration"]["DebugMode"] = m_bDebugMode;
+	m_systemConfiguration["SystemConfiguration"]["ReloadSystem"] = m_bReloadSystem;
 	m_systemConfiguration["SystemConfiguration"]["DatabaseAccountName"] = m_strDatabaseAccountName;
 	m_systemConfiguration["SystemConfiguration"]["DatabaseAccountPassword"] = m_strDatabaseAccountPassword;
 	m_systemConfiguration["SystemConfiguration"]["BackgroundThreadPermittedNumber"] = m_iBackgroundThreadPermittedNumber;

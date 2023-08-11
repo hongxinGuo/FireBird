@@ -683,8 +683,7 @@ void CMainFrame::UpdateInnerSystemStatus() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
-	if ((nID & 0Xfff0) == SC_CLOSE) {
-		// 如果是退出系统
+	if ((nID & 0Xfff0) == SC_CLOSE) {	// 如果是退出系统
 		gl_systemConfiguration.SetExitingSystem(true); // 提示各工作线程中途退出
 		TRACE("应用户申请，准备退出程序\n");
 		for (const auto& pMarket : gl_vMarketPtr) {
@@ -692,7 +691,6 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 		}
 	}
 
-	//CMDIFrameWndEx::OnSysCommand(nID, lParam);
 	SysCallOnSysCommand(nID, lParam);
 }
 

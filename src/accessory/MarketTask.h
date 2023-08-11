@@ -4,6 +4,7 @@
 enum {
 	// 所有市场共用
 	CREATE_TASK__ = 1, // 生成其他的初始任务
+	RELOAD_SYSTEM__, // 重启系统（由监控程序重新装入系统，这样能够防止垃圾过多导致系统崩溃）
 
 	// China market
 	CHINA_MARKET_CHECK_SYSTEM_READY__ = 101, // 系统初始化检查
