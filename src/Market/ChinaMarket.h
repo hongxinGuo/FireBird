@@ -56,7 +56,6 @@ public:
 	void TaskLoadCurrentStockHistoryData();// 装载当前股票日线
 	void TaskAccessoryTask(long lCurrentTime); // 其他辅助任务
 	void TaskPreparingMarketOpen(long lCurrentTime);
-	void TaskResetEffectRTDataRatio(long lCurrentTime);
 	void TaskChoiceRSSet(long lCurrentTime);
 
 	bool SetCheckActiveStockFlag(long lCurrentTime);
@@ -266,10 +265,14 @@ public:
 	void DistributeNeteaseRTDataToStock();
 	bool DistributeRTDataToStock(const CWebRTDataPtr& pRTData);
 
-	long GetRTDataReceivedInOrdinaryTradeTime() const noexcept { return m_lRTDataReceivedInOrdinaryTradeTime; }
-	void SetRTDataReceivedInOrdinaryTradeTime(long lValue) noexcept { m_lRTDataReceivedInOrdinaryTradeTime = lValue; }
-	long GetNewRTDataReceivedInOrdinaryTradeTime() const noexcept { return m_lNewRTDataReceivedInOrdinaryTradeTime; }
-	void SetNewRTDataReceivedInOrdinaryTradeTime(long lValue) noexcept { m_lNewRTDataReceivedInOrdinaryTradeTime = lValue; }
+	void ResetCurrentEffectiveRTDataRatio() noexcept {
+		m_lRTDataReceivedInCurrentMinute = 0;
+		m_lNewRTDataReceivedInCurrentMinute = 0;
+	}
+	double GetCurrentEffectiveRTDataRatio() const noexcept {
+		if (m_lRTDataReceivedInCurrentMinute == 0) return 0.0;
+		return static_cast<double>(m_lNewRTDataReceivedInCurrentMinute) / m_lRTDataReceivedInCurrentMinute;
+	}
 
 	// 状态反馈
 	bool IsUsingSinaRTDataReceiver() const noexcept { return m_fUsingSinaRTDataReceiver; }
@@ -392,8 +395,6 @@ protected:
 	bool m_fCalculateChosen10RS;
 
 	atomic_int64_t m_llRTDataReceived; // 接收到的实时数据数量
-	long m_lRTDataReceivedInOrdinaryTradeTime; // 本日正常交易时间内接收到的实时数据数量
-	long m_lNewRTDataReceivedInOrdinaryTradeTime; // 本日正常交易时间内接收到的新实时数据数量
 
 	// 处理后的各种数据
 	CPriorityQueueWebRTData m_qSinaRT; // 中国市场实时数据队列。
@@ -441,6 +442,10 @@ protected:
 	// 更新股票代码数据库标识
 	atomic_bool m_fUpdateOptionDB;
 	bool m_fUpdateChosenStockDB;
+
+private:
+	long m_lRTDataReceivedInCurrentMinute; // 每分钟接收到的实时数据数量
+	long m_lNewRTDataReceivedInCurrentMinute; // 每分钟接收到的新实时数据数量
 };
 
 using CChinaMarketPtr = shared_ptr<CChinaMarket>;

@@ -535,6 +535,194 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
 	}
 
+	TEST_F(CChinaMarketTest, TestTaskCreateTask6) {
+		tm tm_{0};
+		tm_.tm_year = 2019 - 1900;
+		tm_.tm_mon = 10;
+		tm_.tm_mday = 10; // 2019年11月10日是星期日。
+		tm_.tm_wday = 0;
+		tm_.tm_hour = 16;
+		tm_.tm_min = 0;
+		tm_.tm_sec = 0;
+		gl_pChinaMarket->TEST_SetMarketTM(tm_);
+
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+		EXPECT_FALSE(gl_systemConfiguration.IsReloadSystem()); // 不自动重启系统
+
+		gl_pChinaMarket->TaskCreateTask(150601);
+
+		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		CMarketTaskPtr pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY__);
+		EXPECT_EQ(pTask->GetTime(), 1);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 1);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_LOAD_TEMP_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 92700);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__);
+		EXPECT_EQ(pTask->GetTime(), 113510);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_ACCESSORY_TASK__);
+		EXPECT_EQ(pTask->GetTime(), 150700);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_OPTION_DB__);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CREATE_TASK__);
+		EXPECT_EQ(pTask->GetTime(), 240000);
+
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
+	}
+
+	TEST_F(CChinaMarketTest, TestTaskCreateTask7) {
+		tm tm_{0};
+		tm_.tm_year = 2019 - 1900;
+		tm_.tm_mon = 10;
+		tm_.tm_mday = 9; // 2019年11月9日是星期六。
+		tm_.tm_wday = 6;
+		tm_.tm_hour = 16;
+		tm_.tm_min = 0;
+		tm_.tm_sec = 0;
+		gl_pChinaMarket->TEST_SetMarketTM(tm_);
+
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+		EXPECT_FALSE(gl_systemConfiguration.IsReloadSystem()); // 不自动重启系统
+		gl_systemConfiguration.SetReloadSystem(true); // 每周星期日自动重启系统
+
+		gl_pChinaMarket->TaskCreateTask(150601);
+
+		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		CMarketTaskPtr pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY__);
+		EXPECT_EQ(pTask->GetTime(), 1);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 1);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_LOAD_TEMP_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 92700);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__);
+		EXPECT_EQ(pTask->GetTime(), 113510);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_ACCESSORY_TASK__);
+		EXPECT_EQ(pTask->GetTime(), 150700);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_OPTION_DB__);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CREATE_TASK__);
+		EXPECT_EQ(pTask->GetTime(), 240000);
+
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
+		gl_systemConfiguration.SetReloadSystem(false);
+	}
+
+	TEST_F(CChinaMarketTest, TestTaskCreateTask8) {
+		tm tm_{0};
+		tm_.tm_year = 2019 - 1900;
+		tm_.tm_mon = 10;
+		tm_.tm_mday = 10; // 2019年11月10日是星期日。
+		tm_.tm_wday = 0;
+		tm_.tm_hour = 16;
+		tm_.tm_min = 0;
+		tm_.tm_sec = 0;
+		gl_pChinaMarket->TEST_SetMarketTM(tm_);
+
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+		EXPECT_FALSE(gl_systemConfiguration.IsReloadSystem()); // 不自动重启系统
+		gl_systemConfiguration.SetReloadSystem(true); // 每周星期日自动重启系统
+
+		gl_pChinaMarket->TaskCreateTask(150601);
+
+		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
+
+		CMarketTaskPtr pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY__);
+		EXPECT_EQ(pTask->GetTime(), 1);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 1);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_LOAD_TEMP_RT_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 92700);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__);
+		EXPECT_EQ(pTask->GetTime(), 113510);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_ACCESSORY_TASK__);
+		EXPECT_EQ(pTask->GetTime(), 150700);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_OPTION_DB__);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__);
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), RELOAD_SYSTEM__) << "星期日自动重启系统";
+		EXPECT_EQ(pTask->GetTime(), 210000) << "重启系统于晚上9点";
+
+		pTask = gl_pChinaMarket->GetMarketTask();
+		gl_pChinaMarket->DiscardMarketTask();
+		EXPECT_EQ(pTask->GetType(), CREATE_TASK__);
+		EXPECT_EQ(pTask->GetTime(), 240000);
+
+		EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty()) << gl_pChinaMarket->GetMarketTask()->GetTime();
+
+		// 恢复原状
+		gl_systemConfiguration.SetReloadSystem(false);
+	}
+
 	TEST_F(CChinaMarketTest, TestClearUpdateStockCodeDBFlag) {
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineDBUpdated());
 		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {

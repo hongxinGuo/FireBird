@@ -96,8 +96,8 @@ void CChinaMarket::Reset() {
 	m_fCalculateChosen10RS = false;
 
 	m_llRTDataReceived = 0;
-	m_lRTDataReceivedInOrdinaryTradeTime = 0;
-	m_lNewRTDataReceivedInOrdinaryTradeTime = 0;
+	m_lRTDataReceivedInCurrentMinute = 0;
+	m_lNewRTDataReceivedInCurrentMinute = 0;
 
 	while (m_qSinaRT.Size() > 0) m_qSinaRT.PopData();
 	while (m_qNeteaseRT.Size() > 0) m_qNeteaseRT.PopData();
@@ -417,7 +417,7 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 void CChinaMarket::DistributeSinaRTDataToStock() {
 	const size_t lTotalNumber = SinaRTSize();
 
-	m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
+	m_lRTDataReceivedInCurrentMinute += lTotalNumber;
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		const CWebRTDataPtr pRTData = PopSinaRT();
@@ -441,7 +441,7 @@ void CChinaMarket::DistributeSinaRTDataToStock() {
 void CChinaMarket::DistributeTengxunRTDataToStock() {
 	const size_t lTotalNumber = TengxunRTSize();
 
-	m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
+	m_lRTDataReceivedInCurrentMinute += lTotalNumber;
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		const CWebRTDataPtr pRTData = PopTengxunRT();
@@ -463,7 +463,7 @@ void CChinaMarket::DistributeTengxunRTDataToStock() {
 void CChinaMarket::DistributeNeteaseRTDataToStock() {
 	const size_t lTotalNumber = NeteaseRTSize();
 
-	m_lRTDataReceivedInOrdinaryTradeTime += lTotalNumber;
+	m_lRTDataReceivedInCurrentMinute += lTotalNumber;
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
 		const CWebRTDataPtr pRTData = PopNeteaseRT();
@@ -506,7 +506,7 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 			}
 		}
 		if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
-			m_lNewRTDataReceivedInOrdinaryTradeTime++;
+			m_lNewRTDataReceivedInCurrentMinute++;
 			pStock->PushRTData(pRTData); // 存储新的数据至数据池
 			pStock->SetTransactionTime(pRTData->GetTransactionTime()); // 设置最新接受到实时数据的时间
 		}
@@ -1779,6 +1779,5 @@ void CChinaMarket::CreateThreadUpdateTempRTData() {
 }
 
 void CChinaMarket::ResetEffectiveRTDataRatio() {
-	SetNewRTDataReceivedInOrdinaryTradeTime(0);
-	SetRTDataReceivedInOrdinaryTradeTime(0);
+	ResetCurrentEffectiveRTDataRatio();
 }

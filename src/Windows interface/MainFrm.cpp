@@ -598,11 +598,7 @@ void CMainFrame::UpdateStatus() {
 	// 更新当前后台工作线程数
 	//sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
 
-	double dRatio = 0;
-	if (gl_pChinaMarket->GetRTDataReceivedInOrdinaryTradeTime() > 0) {
-		dRatio = static_cast<double>(gl_pChinaMarket->GetNewRTDataReceivedInOrdinaryTradeTime()) / gl_pChinaMarket->GetRTDataReceivedInOrdinaryTradeTime();
-	}
-	sprintf_s(buffer, _T("%1.3f"), dRatio);
+	sprintf_s(buffer, _T("%1.3f"), gl_pChinaMarket->GetCurrentEffectiveRTDataRatio());
 	SysCallSetPaneText(12, buffer);
 
 	//更新当地时间的显示
