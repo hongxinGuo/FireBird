@@ -162,7 +162,7 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 	// 系统初始化检查
 	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, 1);
 
-	// 重置系统
+	// 市场重置
 	if (lCurrentTime < 170000) {
 		AddTask(WORLD_MARKET_RESET__, 170000); // 执行时间为：170000
 	}

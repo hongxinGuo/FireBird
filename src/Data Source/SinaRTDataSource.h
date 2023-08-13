@@ -31,7 +31,7 @@ public:
 	}
 
 protected:
-	array<CSinaRTDataSourceImpPtr, 8> m_DataSourceContainer;
+	array<CSinaRTDataSourceImpPtr, 4> m_DataSourceContainer;
 };
 
 using CSinaRTDataSourcePtr = shared_ptr<CSinaRTDataSource>;

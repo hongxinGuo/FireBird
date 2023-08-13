@@ -26,7 +26,7 @@ public:
 	void DisableDataSourceImp() const { for (auto pData : m_DataSourceContainer) DisableDataSourceImp(pData); }
 
 protected:
-	array<CTengxunRTDataSourceImpPtr, 8> m_DataSourceContainer;
+	array<CTengxunRTDataSourceImpPtr, 4> m_DataSourceContainer;
 };
 
 using CTengxunRTDataSourcePtr = shared_ptr<CTengxunRTDataSource>;

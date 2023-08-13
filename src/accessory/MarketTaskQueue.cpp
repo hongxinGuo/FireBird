@@ -28,11 +28,11 @@ vector<CMarketTaskPtr> CMarketTaskQueue::GetTaskVector() {
 }
 
 void CMarketTaskQueue::CreateIndexMap() {
-	gl_mapMarketMapIndex[CREATE_TASK__] = _T("重新生成本市场各项任务");
-	gl_mapMarketMapIndex[RELOAD_SYSTEM__] = _T("重启系统");
+	gl_mapMarketMapIndex[CREATE_TASK__] = _T("生成明日本市场各项任务");
+	gl_mapMarketMapIndex[RELOAD_SYSTEM__] = _T("退出系统后重启");
 
 	gl_mapMarketMapIndex[CHINA_MARKET_CHECK_SYSTEM_READY__] = "系统初始化检查";
-	gl_mapMarketMapIndex[CHINA_MARKET_RESET__] = "重置系统";
+	gl_mapMarketMapIndex[CHINA_MARKET_RESET__] = "市场重置";
 	gl_mapMarketMapIndex[CHINA_MARKET_LOAD_TEMP_RT_DATA__] = _T("装载本日临时存储的实时数据");
 	gl_mapMarketMapIndex[CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__] = _T("分配并处理实时数据");
 	gl_mapMarketMapIndex[CHINA_MARKET_SAVE_TEMP_RT_DATA__] = _T("保存实时数据");
@@ -51,7 +51,7 @@ void CMarketTaskQueue::CreateIndexMap() {
 	gl_mapMarketMapIndex[CHINA_MARKET_PREPARING_MARKET_OPEN__] = _T("开市准备");
 
 	gl_mapMarketMapIndex[WORLD_MARKET_CHECK_SYSTEM_READY__] = "系统初始化检查";
-	gl_mapMarketMapIndex[WORLD_MARKET_RESET__] = "重置系统";
+	gl_mapMarketMapIndex[WORLD_MARKET_RESET__] = "市场重置";
 	gl_mapMarketMapIndex[WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__] = "更新市场各数据库";
 	gl_mapMarketMapIndex[WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__] = "处理WebSocket数据";
 	gl_mapMarketMapIndex[WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__] = "监测WebSocket运行状态";

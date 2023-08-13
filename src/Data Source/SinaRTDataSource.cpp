@@ -9,10 +9,6 @@ CSinaRTDataSourceImpPtr s_SinaRTDataSourcePtr1 = nullptr;
 CSinaRTDataSourceImpPtr s_SinaRTDataSourcePtr2 = nullptr;
 CSinaRTDataSourceImpPtr s_SinaRTDataSourcePtr3 = nullptr;
 CSinaRTDataSourceImpPtr s_SinaRTDataSourcePtr4 = nullptr;
-CSinaRTDataSourceImpPtr s_SinaRTDataSourcePtr5 = nullptr;
-CSinaRTDataSourceImpPtr s_SinaRTDataSourcePtr6 = nullptr;
-CSinaRTDataSourceImpPtr s_SinaRTDataSourcePtr7 = nullptr;
-CSinaRTDataSourceImpPtr s_SinaRTDataSourcePtr8 = nullptr;
 
 /// <summary>
 /// 新浪实时数据服务器要求提供报头验证数据。
@@ -33,24 +29,16 @@ CSinaRTDataSource::CSinaRTDataSource() {
 	s_SinaRTDataSourcePtr2 = make_shared<CSinaRTDataSourceImp>();
 	s_SinaRTDataSourcePtr3 = make_shared<CSinaRTDataSourceImp>();
 	s_SinaRTDataSourcePtr4 = make_shared<CSinaRTDataSourceImp>();
-	s_SinaRTDataSourcePtr5 = make_shared<CSinaRTDataSourceImp>();
-	s_SinaRTDataSourcePtr6 = make_shared<CSinaRTDataSourceImp>();
-	s_SinaRTDataSourcePtr7 = make_shared<CSinaRTDataSourceImp>();
-	s_SinaRTDataSourcePtr8 = make_shared<CSinaRTDataSourceImp>();
 	m_DataSourceContainer.at(0) = s_SinaRTDataSourcePtr1;
 	m_DataSourceContainer.at(1) = s_SinaRTDataSourcePtr2;
 	m_DataSourceContainer.at(2) = s_SinaRTDataSourcePtr3;
 	m_DataSourceContainer.at(3) = s_SinaRTDataSourcePtr4;
-	m_DataSourceContainer.at(4) = s_SinaRTDataSourcePtr5;
-	m_DataSourceContainer.at(5) = s_SinaRTDataSourcePtr6;
-	m_DataSourceContainer.at(6) = s_SinaRTDataSourcePtr7;
-	m_DataSourceContainer.at(7) = s_SinaRTDataSourcePtr8;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 新浪实时数据服务器的响应时间（20-80毫秒）足够快，但偶尔出现的网络延迟会达到300-1500毫秒，且有时无法自动恢复正常情况。
-// 故而使用八个数据接收器并行执行，以避开偶尔出现的网络颠簸。
+// 故而使用四个数据接收器并行执行，以避开偶尔出现的网络颠簸。
 //
 // 本数据源不执行具体下载解析任务，只执行任务的调度。
 //

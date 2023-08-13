@@ -203,7 +203,7 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 		case CHINA_MARKET_CHECK_SYSTEM_READY__:
 			TaskCheckMarketReady(lCurrentTime);
 			break;
-		case CHINA_MARKET_RESET__: // 91300重启系统
+		case CHINA_MARKET_RESET__: // 市场重置
 			TaskResetMarket(lCurrentTime);
 			break;
 		case CHINA_MARKET_LOAD_TEMP_RT_DATA__:
@@ -617,11 +617,11 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	// 辅助任务。在随后的正点分钟执行。
 	AddTask(CHINA_MARKET_ACCESSORY_TASK__, GetNextTime(lTimeMinute, 0, 1, 0));
 
-	// 初始化系统
+	// 市场重置
 	if (lCurrentTime < 91300) {
 		AddTask(CHINA_MARKET_RESET__, 91300); // 执行时间为：91300
 	}
-	// 再次初始化系统
+	// 再次市场重置
 	if (lCurrentTime < 92600) {
 		AddTask(CHINA_MARKET_RESET__, 92600); // 执行时间为：92600
 	}
@@ -673,7 +673,8 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 ///
 /// 系统关闭时要执行一系列关闭系统前的准备工作，不允许使用exit(0)函数或PostQuitMessage()直接退出系统，
 /// 故而采用向主框架窗口发送关闭窗口系统消息（WM_SYSCOMMAND SC_CLOSE）的方法。
-/// 
+///
+/// 本函数只是发出关闭系统的消息，系统关闭由关闭函数执行。系统重新载入由Watchdog程序完成。
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::TaskReloadSystem(long lCurrentTime) {
