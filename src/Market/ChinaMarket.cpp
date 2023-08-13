@@ -660,7 +660,7 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	}
 
 	// 如果设定为周期性重启系统，则在星期天晚上9时重启。
-	if (gl_systemConfiguration.IsReloadSystem() && (GetDayOfWeek() == 0)) {
+	if (gl_systemConfiguration.IsReloadSystem() && (GetDayOfWeek() == 0) && (lCurrentTime < 210000)) {
 		AddTask(RELOAD_SYSTEM__, 210000);
 	}
 
