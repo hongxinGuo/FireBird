@@ -28,7 +28,7 @@ using namespace std;
 #include<gsl/gsl>
 using namespace gsl;
 
-CChinaMarket::CChinaMarket() : CVirtualMarket() {
+CChinaMarket::CChinaMarket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
 		TRACE(_T("ChinaMarket市场变量只允许存在一个实例\n"));
@@ -219,7 +219,7 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 			TaskProcessTodayStock(lCurrentTime);
 			break;
 		case CHINA_MARKET_VALIDATE_TODAY_DATABASE__:
-			// todo not implemented
+			//not implemented
 			break;
 		case CHINA_MARKET_UPDATE_OPTION_DB__:
 			TaskUpdateOptionDB(lCurrentTime);

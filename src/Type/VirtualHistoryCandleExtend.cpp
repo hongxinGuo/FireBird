@@ -3,7 +3,7 @@
 #include"ConvertToString.h"
 #include"VirtualHistoryCandleExtend.h"
 
-CVirtualHistoryCandleExtend::CVirtualHistoryCandleExtend() : CVirtualHistoryCandleBasic() {
+CVirtualHistoryCandleExtend::CVirtualHistoryCandleExtend() {
 	CVirtualHistoryCandleExtend::Reset();
 }
 

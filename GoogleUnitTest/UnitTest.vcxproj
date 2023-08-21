@@ -312,7 +312,7 @@
       </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
       <StackCommitSize>40971520</StackCommitSize>
-      <AdditionalDependencies>zlibwapi.lib;\vc\static\libcrypto64MTd.lib;\vc\static\libssl64MTd.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>zlibwapi.lib;\vc\static\libcrypto64MTd.lib;\vc\static\libssl64MTd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>

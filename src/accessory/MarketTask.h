@@ -37,7 +37,6 @@ enum {
 };
 
 extern map<long, CString> gl_mapMarketMapIndex;
-extern map<CString, long> gl_mapMarketMapString;
 
 class CMarketTask {
 public:
