@@ -105,13 +105,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pMockFinnhubDataSource->HaveInquiry());
 	}
 
-	TEST_F(CMockFinnhubDataSourceTest, TestInquiryFinnhub1) {
-		m_pMockFinnhubDataSource->SetInquiring(false);
-		EXPECT_FALSE(m_pMockFinnhubDataSource->InquireFinnhub(165700));
-		EXPECT_FALSE(m_pMockFinnhubDataSource->InquireFinnhub(170000));
-		EXPECT_FALSE(m_pMockFinnhubDataSource->InquireFinnhub(170500));
-	}
-
 	TEST_F(CMockFinnhubDataSourceTest, TestInquiryFinnhub2) {
 		m_pMockFinnhubDataSource->SetInquiring(false);
 		gl_pWorldMarket->SetSystemReady(false);
@@ -136,7 +129,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEPSSurprise()).Times(0);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireRTQuote()).Times(0);
 
-		EXPECT_TRUE(m_pMockFinnhubDataSource->InquireFinnhub(120000));
+		m_pMockFinnhubDataSource->InquireFinnhub(120000);
 	}
 
 	TEST_F(CMockFinnhubDataSourceTest, TestInquiryFinnhub3) {
@@ -163,6 +156,6 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEPSSurprise()).Times(0);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireRTQuote()).Times(0);
 
-		EXPECT_TRUE(m_pMockFinnhubDataSource->InquireFinnhub(120000));
+		m_pMockFinnhubDataSource->InquireFinnhub(120000);
 	}
 }

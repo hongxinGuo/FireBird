@@ -22,15 +22,13 @@ bool CTengxunRTDataSourceImp::GenerateInquiryMessage(const long lCurrentTime) {
 	return true;
 }
 
-bool CTengxunRTDataSourceImp::InquireRTData(const long lCurrentTime) {
+void CTengxunRTDataSourceImp::InquireRTData(const long lCurrentTime) {
 	if (!IsInquiring()) {
 		const auto product = make_shared<CProductTengxunRT>();
 		ASSERT(m_qProduct.empty());
 		StoreInquiry(product);
 		SetInquiring(true);
-		return true;
 	}
-	return false;
 }
 
 void CTengxunRTDataSourceImp::GenerateCurrentInquiryMessage() {

@@ -49,7 +49,7 @@ namespace FireBirdTest {
 	TEST_F(CTengxunRTDataSourceTest, TestInquireRTData1) {
 		tengxunRTDataSourceImp.SetInquiring(true);
 
-		EXPECT_FALSE(tengxunRTDataSourceImp.InquireRTData(0));
+		tengxunRTDataSourceImp.InquireRTData(0);
 
 		EXPECT_FALSE(tengxunRTDataSourceImp.HaveInquiry());
 	}
@@ -57,7 +57,7 @@ namespace FireBirdTest {
 	TEST_F(CTengxunRTDataSourceTest, TestInquireRTData2) {
 		tengxunRTDataSourceImp.SetInquiring(false);
 
-		EXPECT_TRUE(tengxunRTDataSourceImp.InquireRTData(0));
+		tengxunRTDataSourceImp.InquireRTData(0);
 
 		EXPECT_TRUE(tengxunRTDataSourceImp.IsInquiring());
 		EXPECT_TRUE(tengxunRTDataSourceImp.HaveInquiry());

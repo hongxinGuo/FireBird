@@ -40,7 +40,7 @@ bool CNeteaseRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	return false;
 }
 
-bool CNeteaseRTDataSource::InquireRTData(const long lCurrentTime) {
+void CNeteaseRTDataSource::InquireRTData(const long lCurrentTime) {
 	if (!IsInquiring()) {
 		ASSERT(!HaveInquiry());
 		const auto product = make_shared<CProductNeteaseRT>();
@@ -51,9 +51,7 @@ bool CNeteaseRTDataSource::InquireRTData(const long lCurrentTime) {
 		product->SetInquiryFunction(strMessage + strStocks);
 		StoreInquiry(product);
 		SetInquiring(true);
-		return true;
 	}
-	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////

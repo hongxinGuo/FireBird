@@ -20,7 +20,7 @@ public:
 	void GenerateCurrentInquiryMessage() override;
 	bool ParseData(CWebDataPtr pWebData) override;
 
-	virtual bool InquireRTData(long lCurrentTime);
+	virtual void InquireRTData(long lCurrentTime);
 };
 
 using CNeteaseRTDataSourcePtr = shared_ptr<CNeteaseRTDataSource>;

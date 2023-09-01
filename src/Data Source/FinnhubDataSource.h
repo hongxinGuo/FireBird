@@ -20,7 +20,7 @@ public:
 	void ConfigureSession() override;
 	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 
-	bool InquireFinnhub(long lCurrentTime);
+	void InquireFinnhub(long lCurrentTime);
 
 	virtual bool InquireCountryList();
 	virtual bool InquireCompanySymbol();

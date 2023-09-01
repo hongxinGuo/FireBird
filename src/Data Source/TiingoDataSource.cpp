@@ -79,9 +79,8 @@ void CTiingoDataSource::UpdateStatus() {
 	case ECONOMIC_CALENDAR_:
 		break;
 	default:
-		// error. not implement yet.
+		//not implemented yet.
 		gl_systemMessage.PushErrorMessage(_T("Tiingo product未实现"));
-	//ASSERT(0);
 		break;
 	}
 }
@@ -104,15 +103,13 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	return false;
 }
 
-bool CTiingoDataSource::InquireTiingo() {
+void CTiingoDataSource::InquireTiingo() {
 	ASSERT(!IsInquiring());
 	if (gl_pWorldMarket->IsSystemReady()) {
 		InquireCompanySymbol();
 		InquireCryptoSymbol();
 		InquireDayLine();
-		return true;
 	}
-	return false;
 }
 
 bool CTiingoDataSource::InquireCompanySymbol() {
@@ -120,7 +117,6 @@ bool CTiingoDataSource::InquireCompanySymbol() {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), STOCK_SYMBOLS_);
 		m_qProduct.push(p);
 		SetInquiring(true);
-		//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo stock symbol"));
 		gl_systemMessage.PushInformationMessage(_T("Tiingo stock symbol已更新"));
 		return true;
 	}
@@ -132,7 +128,6 @@ bool CTiingoDataSource::InquireCryptoSymbol() {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket.get(), CRYPTO_SYMBOLS_);
 		m_qProduct.push(p);
 		SetInquiring(true);
-		//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo crypto symbol"));
 		gl_systemMessage.PushInformationMessage(_T("Tiingo crypto symbol已更新"));
 
 		return true;

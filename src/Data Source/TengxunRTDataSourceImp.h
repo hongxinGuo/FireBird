@@ -15,7 +15,7 @@ public:
 	void GenerateCurrentInquiryMessage() override;
 	bool ParseData(CWebDataPtr pWebData) override { return false; } // 数据为非JSon格式，不解析
 
-	bool InquireRTData(long lCurrentTime);
+	void InquireRTData(long lCurrentTime);
 
 	static bool IsInvalidTengxunRTData(const CWebData& WebDataReceived);
 };

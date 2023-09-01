@@ -33,14 +33,12 @@ bool CSinaRTDataSourceImp::GenerateInquiryMessage(const long lCurrentTime) {
 	return true;
 }
 
-bool CSinaRTDataSourceImp::InquireRTData(const long) {
+void CSinaRTDataSourceImp::InquireRTData(const long) {
 	if (!IsInquiring()) {
 		const auto product = make_shared<CProductSinaRT>();
 		StoreInquiry(product);
 		SetInquiring(true);
-		return true;
 	}
-	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////

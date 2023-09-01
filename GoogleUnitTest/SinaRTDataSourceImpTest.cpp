@@ -43,14 +43,10 @@ namespace FireBirdTest {
 		EXPECT_FALSE(sinaRTDataSourceImp.ParseData(pData)) << "无需解析";
 	}
 
-	TEST_F(CSinaRTDataSourceTest, TestInquireRTData1) {
-		sinaRTDataSourceImp.SetInquiring(true);
-		EXPECT_FALSE(sinaRTDataSourceImp.InquireRTData(0)) << "其他FinnhubInquiry正在进行";
-	}
-
 	TEST_F(CSinaRTDataSourceTest, TestInquireRTData2) {
 		sinaRTDataSourceImp.SetInquiring(false);
-		EXPECT_TRUE(sinaRTDataSourceImp.InquireRTData(0));
+
+		sinaRTDataSourceImp.InquireRTData(0);
 
 		EXPECT_TRUE(sinaRTDataSourceImp.IsInquiring());
 		EXPECT_EQ(sinaRTDataSourceImp.GetInquiryQueueSize(), 1);
