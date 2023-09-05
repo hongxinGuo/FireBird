@@ -8,7 +8,16 @@
 #include"FinnhubStockBasicFinancial.h"
 #include "ProductFinnhubCompanyBasicFinancial.h"
 
+std::set<string> s_setMetricType;// 目前共五种类型："all", "perShare", "marketCapitalization","metric","eps"
+
 CProductFinnhubCompanyBasicFinancial::CProductFinnhubCompanyBasicFinancial() {
+	s_setMetricType.clear();
+	s_setMetricType.insert(_T("all"));
+	s_setMetricType.insert(_T("perShare"));
+	s_setMetricType.insert(_T("marketCapitalization"));
+	s_setMetricType.insert(_T("metric"));
+	s_setMetricType.insert(_T("eps"));
+
 	m_strClassName = _T("Finnhub company basic financials");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/metric?symbol=");
 	m_lIndex = -1;
@@ -541,8 +550,8 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 		try { pBasicFinancial->m_yearToDatePriceReturnDaily = jsonGetDouble(&ptMetric, _T("yearToDatePriceReturnDaily")); }
 		catch (json::exception&) { }
 
-		s = pjs->at(_T("metricType")); // 目前共四种类型："all", "perShare", "marketCapitalization","metric".
-		if (!((s == _T("all")) || (s == _T("perShare")) || (s == _T("marketCapitalization")) || (s == _T("metric")))) {
+		s = pjs->at(_T("metricType")); // 目前共五种类型："all", "perShare", "marketCapitalization","metric","eps"
+		if (!s_setMetricType.contains(s)) {
 			CString str = _T(" metric type out of range: ");
 			str += s.c_str();
 			str += _T("   Inquiry string:  ");

@@ -17,9 +17,6 @@
 #include <ixwebsocket/IXNetSystem.h>
 #include <ixwebsocket/IXUserAgent.h>
 
-#include<thread>
-#include<memory>
-
 #include "InfoReport.h"
 #include "QuandlDataSource.h"
 #include "TiingoDataSource.h"

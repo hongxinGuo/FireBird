@@ -12,20 +12,24 @@ namespace FireBirdTest {
 	class CProductFinnhubCompanyBasicFinancialTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -441,17 +445,24 @@ namespace FireBirdTest {
 	\"totalRatio\":[{\"period\":\"2021-03-31\",\"v\":0.6252676659528907},{\"period\":\"2020-12-31\",\"v\":0.7634660421545667}]\
 				}\
 		},\
-		\"metricType\":\"all\",\
+		\"metricType\":\"perShare\",\
 		\"symbol\":\"MBWS.PA\"\
 }"));
 
 	// 有些股票只有部分数据
-	FinnhubWebData finnhubWebData1004(4, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"all\",\"series\":{},\"symbol\":\"OTSCS\"}"));
+	FinnhubWebData finnhubWebData1004(4, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"marketCapitalization\",\"series\":{},\"symbol\":\"OTSCS\"}"));
+	// Metric out of range
+	FinnhubWebData finnhubWebData1005(5, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"out of range\",\"series\":{},\"symbol\":\"OTSCS\"}"));
+	// 有些股票只有部分数据， 测试metric
+	FinnhubWebData finnhubWebData1006(6, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"metric\",\"series\":{},\"symbol\":\"OTSCS\"}"));
+	// 有些股票只有部分数据, 测试eps
+	FinnhubWebData finnhubWebData1007(7, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"eps\",\"series\":{},\"symbol\":\"OTSCS\"}"));
 
 	class ParseFinnhubStockBasicFinancialTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -475,7 +486,8 @@ namespace FireBirdTest {
 			m_pStock->SetUpdateBasicFinancial(true);
 			m_pStock->UpdateBasicFinancial(nullptr);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -486,7 +498,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ParseFinnhubStockBasicFinancialTest,
-	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData1004, &finnhubWebData1002, &finnhubWebData1003));
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData1004, &finnhubWebData1002, &finnhubWebData1003,
+		                         &finnhubWebData1005,&finnhubWebData1006, &finnhubWebData1007));
 
 	TEST_P(ParseFinnhubStockBasicFinancialTest, TestParseFinnhubInsiderTransaction0) {
 		CFinnhubStockBasicFinancialPtr pBasicFinancial;
@@ -497,6 +510,7 @@ namespace FireBirdTest {
 			break;
 		case 1: // 无权利访问的数据
 			EXPECT_FALSE(fSucceed);
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 2: // 正确
 			EXPECT_TRUE(fSucceed);
@@ -507,11 +521,13 @@ namespace FireBirdTest {
 			EXPECT_EQ(pBasicFinancial->m_annual.m_cashRatio.size(), 2);
 			EXPECT_EQ(pBasicFinancial->m_annual.m_cashRatio.at(0).m_period, 20201231);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_annual.m_cashRatio.at(0).m_value, 0.7634660421545667);
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 3: //
 			EXPECT_TRUE(fSucceed);
 			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("MBWS.PA")) << "BVDRF的本土代码名称为MBWS.PA";
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 4:
 			EXPECT_TRUE(fSucceed);
@@ -519,6 +535,16 @@ namespace FireBirdTest {
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_52WeekHigh, 1.18);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_52WeekLow, 1.0);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.0) << "没有此项数据，故而其值为初始值";
+			break;
+		case 5:
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 1) << "Metric out of range";
+			gl_systemMessage.PopInnerSystemInformationMessage();
+		case 6:
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
+			break;
+		case 7:
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
+			break;
 		default:
 			break;
 		}
@@ -527,7 +553,8 @@ namespace FireBirdTest {
 	class ProcessFinnhubStockBasicFinancialTest : public TestWithParam<FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -549,7 +576,8 @@ namespace FireBirdTest {
 			m_pStock->SetBasicFinancialUpdateDate(19800101);
 			m_pStock->UpdateBasicFinancial(nullptr);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -560,7 +588,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockBasicFinancial1, ProcessFinnhubStockBasicFinancialTest,
-	                         testing::Values(&finnhubWebData1004, &finnhubWebData1002, &finnhubWebData1003));
+	                         testing::Values(&finnhubWebData1004, &finnhubWebData1002, &finnhubWebData1003,
+		                         &finnhubWebData1005, &finnhubWebData1006, &finnhubWebData1007));
 
 	TEST_P(ProcessFinnhubStockBasicFinancialTest, TestProcessFinnhubInsiderTransaction0) {
 		EXPECT_EQ(m_pStock->GetBasicFinancial(), nullptr);
@@ -571,12 +600,14 @@ namespace FireBirdTest {
 			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancialDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 1: // 无权利访问的数据
 			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
 			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancialDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 2:
 			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
@@ -584,8 +615,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
 			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
-
-			EXPECT_THAT(0, 0);
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 3: // ADR
 			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
@@ -594,6 +624,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
 			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 0) << "BVDRF ADR的本土代码名称为MBWS.PA，是合理的，不是错误代码，不用报错";
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 4: // 部分数据
 			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
@@ -602,6 +633,22 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
 			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 0) << "BVDRF ADR的本土代码名称为MBWS.PA，是合理的，不是错误代码，不用报错";
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
+			break;
+		case 5: // Metric out of range
+			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
+			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
+			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 1) << "Metric out of range";
+			gl_systemMessage.PopInnerSystemInformationMessage();
+			break;
+		case 6:
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
+			break;
+		case 7:
+			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		default:
 			break;
