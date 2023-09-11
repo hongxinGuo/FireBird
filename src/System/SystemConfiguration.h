@@ -171,6 +171,8 @@ public:
 		m_bFastInquiringRTData = fFlag;
 	}
 
+	[[nodiscard]] int GetNumberOfRTDataSource() const noexcept { return m_iNumberOfRTDataSource; }
+	void SetNumberOfRTDataSource(const int iNumber) noexcept { m_iNumberOfRTDataSource = iNumber; }
 	[[nodiscard]] int GetSinaRTDataInquiryPerTime() const noexcept { return m_iSinaRTDataInquiryPerTime; }
 	void SetSinaRTDataInquiryPerTime(const int iNumber) noexcept { m_iSinaRTDataInquiryPerTime = iNumber; }
 	[[nodiscard]] int GetNeteaseRTDataInquiryPerTime() const noexcept { return m_iNeteaseRTDataInquiryPerTime; }
@@ -304,6 +306,7 @@ protected:
 	// ChinaMarket
 	int m_iSavingChinaMarketStockDayLineThread; // 存储日线历史数据时的并发线程数。
 	bool m_bFastInquiringRTData;
+	int m_iNumberOfRTDataSource; // 实时数据申请引擎数， 默认为4
 	int m_iSinaRTDataInquiryPerTime; // 新浪实时数据每次查询股票数
 	int m_iNeteaseRTDataInquiryPerTime; // 网易实时数据每次查询股票数
 	int m_iTengxunRTDataInquiryPerTime; // 腾讯实时数据每次查询股票数

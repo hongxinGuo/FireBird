@@ -87,6 +87,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketDayLineServer(), 0) << "默认使用网易日线数据服务器";
 		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRTDataInquiryTime(), 200) << "默认查询时间为200毫秒";
 		EXPECT_EQ(gl_systemConfiguration.GetSavingChinaMarketStockDayLineThread(), 4) << "默认查询股票历史数据工作线程数为4";
+		EXPECT_EQ(gl_systemConfiguration.GetNumberOfRTDataSource(), 4) << "测试文件中的数值";
 		EXPECT_EQ(gl_systemConfiguration.GetSinaRTDataInquiryPerTime(), 850) << "测试文件中的数值";
 		EXPECT_EQ(gl_systemConfiguration.GetNeteaseRTDataInquiryPerTime(), 900) << "测试文件中的数值";
 		EXPECT_EQ(gl_systemConfiguration.GetTengxunRTDataInquiryPerTime(), 900) << "测试文件中的数值";
@@ -219,7 +220,9 @@ namespace FireBirdTest {
 			const string sTemp = jsSystemConfiguration[json::json_pointer("/ChinaMarket/RealtimeServer")];
 			EXPECT_TRUE(sTemp==_T("sina"));
 		}
-		catch (json::type_error&) { EXPECT_TRUE(FALSE); }
+		catch (json::type_error&) {
+			EXPECT_TRUE(FALSE);
+		}
 	}
 
 	TEST_F(CSystemConfigurationTest, TestSetSystemDisplayRect) {

@@ -25,20 +25,21 @@ CSinaRTDataSource::CSinaRTDataSource() {
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 850; // 新浪实时数据查询数量默认值
 
-	s_SinaRTDataSourcePtr1 = make_shared<CSinaRTDataSourceImp>();
-	s_SinaRTDataSourcePtr2 = make_shared<CSinaRTDataSourceImp>();
-	s_SinaRTDataSourcePtr3 = make_shared<CSinaRTDataSourceImp>();
+	m_DataSourceContainer.resize(4);
 	s_SinaRTDataSourcePtr4 = make_shared<CSinaRTDataSourceImp>();
-	m_DataSourceContainer.at(0) = s_SinaRTDataSourcePtr1;
-	m_DataSourceContainer.at(1) = s_SinaRTDataSourcePtr2;
-	m_DataSourceContainer.at(2) = s_SinaRTDataSourcePtr3;
 	m_DataSourceContainer.at(3) = s_SinaRTDataSourcePtr4;
+	s_SinaRTDataSourcePtr3 = make_shared<CSinaRTDataSourceImp>();
+	m_DataSourceContainer.at(2) = s_SinaRTDataSourcePtr3;
+	s_SinaRTDataSourcePtr2 = make_shared<CSinaRTDataSourceImp>();
+	m_DataSourceContainer.at(1) = s_SinaRTDataSourcePtr2;
+	s_SinaRTDataSourcePtr1 = make_shared<CSinaRTDataSourceImp>();
+	m_DataSourceContainer.at(0) = s_SinaRTDataSourcePtr1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 新浪实时数据服务器的响应时间（20-80毫秒）足够快，但偶尔出现的网络延迟会达到300-1500毫秒，且有时无法自动恢复正常情况。
-// 故而使用四个数据接收器并行执行，以避开偶尔出现的网络颠簸。
+// 故而使用最多四个数据接收器并行执行，以避开偶尔出现的网络颠簸。对于处理速度慢的系统，使用2-3个数据接收器。
 //
 // 本数据源不执行具体下载解析任务，只执行任务的调度。
 //
@@ -52,8 +53,10 @@ bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 		else {
 			m_llLastTimeTickCount = llTickCount;
 		}
+		ASSERT(gl_systemConfiguration.GetNumberOfRTDataSource() < 5 && gl_systemConfiguration.GetNumberOfRTDataSource() > 0);
 		// 从池中调用实际执行工作线程
-		for (const auto pDataSourceImp : m_DataSourceContainer) {
+		for (int i = 0; const auto pDataSourceImp : m_DataSourceContainer) {
+			if (++i > gl_systemConfiguration.GetNumberOfRTDataSource()) break; // 
 			if (!pDataSourceImp->IsInquiring() && !pDataSourceImp->IsWorkingThreadRunning()) {
 				pDataSourceImp->Run(lCurrentTime);
 				break;

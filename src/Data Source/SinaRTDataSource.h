@@ -4,6 +4,7 @@
 #include"SinaRTDataSourceImp.h"
 
 using std::array;
+using std::vector;
 
 class CSinaRTDataSource : public CVirtualDataSource {
 public:
@@ -31,7 +32,7 @@ public:
 	}
 
 protected:
-	array<CSinaRTDataSourceImpPtr, 4> m_DataSourceContainer;
+	vector<CSinaRTDataSourceImpPtr> m_DataSourceContainer;
 };
 
 using CSinaRTDataSourcePtr = shared_ptr<CSinaRTDataSource>;

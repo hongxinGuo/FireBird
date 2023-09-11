@@ -32,7 +32,8 @@ CTengxunRTDataSource::CTengxunRTDataSource() {
 /// 腾讯数据精度不够，其交易数量的精度为手，不提供零股信息。
 ///
 /// 腾讯实时数据的网络传输速度无法达到预期（<100ms），故而使用四个数据接收引擎并行执行。本数据源不执行具体下载解析任务，只执行任务的调度。
-///
+/// 对于处理速度慢的系统，使用2-3个数据接收器
+/// 
 /// </summary>
 /// <param name="lCurrentTime"></param>
 /// <returns></returns>
@@ -47,7 +48,8 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 			m_llLastTimeTickCount = llTickCount;
 		}
 		// 从调用池中空闲的引擎工作线程
-		for (const auto pDataSourceImp : m_DataSourceContainer) {
+		for (int i = 0; const auto pDataSourceImp : m_DataSourceContainer) {
+			if (++i > gl_systemConfiguration.GetNumberOfRTDataSource()) break; // 
 			if (!pDataSourceImp->IsInquiring() && !pDataSourceImp->IsWorkingThreadRunning()) {
 				pDataSourceImp->Run(lCurrentTime);
 				break;

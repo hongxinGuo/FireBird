@@ -46,6 +46,7 @@ std::string gl_sSystemConfiguration = R"(
 	"RealtimeInquiryTime" : 250,
 	"SavingStockDayLineThread" : 4,
 	"FastInquiringRealtimeData" : false,
+	"NumberOfRTDataSource" : 4,
 	"SinaRTDataInquiryPerTime" : 850,
 	"NeteaseRTDataInquiryPerTime" : 900,
 	"TengxunRTDataInquiryPerTime" : 900
@@ -108,6 +109,7 @@ CSystemConfiguration::CSystemConfiguration() {
 #else
 	m_bFastInquiringRTData = false;
 #endif
+	m_iNumberOfRTDataSource = 4;
 	m_iSinaRTDataInquiryPerTime = 850;
 	m_iNeteaseRTDataInquiryPerTime = 900;
 	m_iTengxunRTDataInquiryPerTime = 900;
@@ -241,6 +243,20 @@ void CSystemConfiguration::Update() {
 		}
 		try {
 			m_iSavingChinaMarketStockDayLineThread = m_systemConfiguration.at("ChinaMarket").at("SavingStockDayLineThread"); // 保存股票日线数据线程数量
+		}
+		catch (json::out_of_range&) {
+			m_fUpdate = true;
+		}
+		try {
+			m_iNumberOfRTDataSource = m_systemConfiguration.at("ChinaMarket").at("NumberOfRTDataSource"); // Sina实时数据申请引擎数
+			if (m_iNumberOfRTDataSource > 4) {
+				m_iNumberOfRTDataSource = 4;
+				m_fUpdate = true;
+			}
+			if (m_iNumberOfRTDataSource < 1) {
+				m_iNumberOfRTDataSource = 1;
+				m_fUpdate = true;
+			}
 		}
 		catch (json::out_of_range&) {
 			m_fUpdate = true;
@@ -429,6 +445,7 @@ void CSystemConfiguration::UpdateJson() {
 		m_systemConfiguration["ChinaMarket"]["DayLineServer"] = _T("netease");
 		break;
 	}
+	m_systemConfiguration["ChinaMarket"]["NumberOfRTDataSource"] = m_iNumberOfRTDataSource;
 	m_systemConfiguration["ChinaMarket"]["RealtimeInquiryTime"] = m_iChinaMarketRTDataInquiryTime;
 	m_systemConfiguration["ChinaMarket"]["SavingStockDayLineThread"] = m_iSavingChinaMarketStockDayLineThread;
 	m_systemConfiguration["ChinaMarket"]["SinaRTDataInquiryPerTime"] = m_iSinaRTDataInquiryPerTime;

@@ -14,7 +14,8 @@ namespace FireBirdTest {
 	class CChinaStockTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
@@ -26,11 +27,13 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
@@ -52,7 +55,8 @@ namespace FireBirdTest {
 			}
 			EXPECT_THAT(gl_pChinaMarket->GetTotalStock(), Eq(5040));
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
