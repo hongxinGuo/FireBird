@@ -30,7 +30,11 @@ public:
 	CString GetExchangeCode() const noexcept { return m_strExchangeCode; }
 	void SetExchangeCode(const CString& strExchangeCode) noexcept { m_strExchangeCode = strExchangeCode; }
 	CString GetSymbol() const noexcept { return m_strSymbol; }
-	void SetSymbol(const CString& str) noexcept { m_strSymbol = str; }
+	void SetSymbol(const CString& str) noexcept {
+		m_strSymbol = str;
+		CString s = m_strSymbol.Left(6);
+		m_lSymbol = atol(s);
+	}
 	CString GetDisplaySymbol() const noexcept { return m_strDisplaySymbol; }
 	void SetDisplaySymbol(const CString& str) noexcept { m_strDisplaySymbol = str; }
 
@@ -144,4 +148,7 @@ protected:
 	atomic_bool m_fUpdateCompanyNewsDB; // 更新公司新闻
 	atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
 	atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
+
+	// 测试用变量
+	long m_lSymbol;
 };
