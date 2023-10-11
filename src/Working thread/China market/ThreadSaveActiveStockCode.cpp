@@ -11,7 +11,9 @@
 #include"ChinaMarket.h"
 
 UINT ThreadSaveStockSection(not_null<CChinaMarket*> pMarket) {
+	gl_UpdateChinaMarketDB.acquire();
 	pMarket->SaveStockSection();
+	gl_UpdateChinaMarketDB.release();
 
 	return 35;
 }

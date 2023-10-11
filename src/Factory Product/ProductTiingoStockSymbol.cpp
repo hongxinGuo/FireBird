@@ -21,9 +21,7 @@ CString CProductTiingoStockSymbol::CreateMessage() {
 }
 
 bool CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	gl_counter.start();
 	const auto pvTiingoStock = ParseTiingoStockSymbol(pWebData);
-	gl_counter.stop();
 	if (!pvTiingoStock->empty()) {
 		char buffer[100];
 		long lTemp = 0;

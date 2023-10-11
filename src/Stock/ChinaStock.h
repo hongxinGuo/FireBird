@@ -294,7 +294,7 @@ public:
 	virtual bool Calculate10RSStrongStockSet(const CRSReference* pRef);
 
 	// 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
-	bool ProcessRTData();
+	void ProcessRTData();
 	bool ProcessOneRTData(const CWebRTDataPtr& pRTData);
 	void CalculateHighLowLimit(const CWebRTDataPtr& pRTData);
 	void CalculateOneDeal(const CWebRTDataPtr& pRTData, INT64 lCurrentGuadanTransactionPrice);

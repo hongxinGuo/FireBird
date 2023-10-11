@@ -2,10 +2,11 @@
 
 #include<semaphore>
 #include<atomic>
+
+#include "ChinaMarket.h"
+#include "WorldMarket.h"
 using std::counting_semaphore;
 using std::atomic_int;
-
-extern counting_semaphore<4> gl_SaveDayLineThreadPermitted; //默认为1.当数据库中没有日线数据时，增加此信号量最大值至4
 
 class CThreadStatus final {
 	//各线程状态
@@ -24,10 +25,7 @@ public:
 	[[nodiscard]] bool IsBackGroundThreadsWorking() const noexcept { return m_NumberOfBackGroundWorkingThreads > 0; } //计算日线的线程是否处于运行中
 	[[nodiscard]] int GetNumberOfBackGroundWorkingThread() const noexcept { return m_NumberOfBackGroundWorkingThreads; }
 
-	void IncreaseSavingThread() noexcept { ++m_NumberOfSavingThread; }
-	void DecreaseSavingThread() noexcept { if (m_NumberOfSavingThread > 0) --m_NumberOfSavingThread; }
-	[[nodiscard]] int GetNumberOfSavingThread() const noexcept { return m_NumberOfSavingThread; }
-	[[nodiscard]] bool IsSavingThreadRunning() const noexcept { return m_NumberOfSavingThread > 0; }
+	static [[nodiscard]] bool IsSavingThreadRunning() noexcept { return (!gl_UpdateChinaMarketDB.try_acquire() || !gl_UpdateWorldMarketDB.try_acquire()); }
 
 	void IncreaseWebInquiringThread() noexcept { ++m_NumberOfWebInquiringThread; }
 	void DecreaseWebInquiringThread() noexcept { if (m_NumberOfWebInquiringThread > 0) --m_NumberOfWebInquiringThread; }

@@ -8,7 +8,7 @@
 #include"ChinaMarket.h"
 
 UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
-	gl_ThreadStatus.IncreaseSavingThread();
+	gl_UpdateChinaMarketDB.acquire();
 
 	const long lStartMonday = GetCurrentMonday(lStartDate);
 	const long year = lStartMonday / 10000;
@@ -25,8 +25,7 @@ UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
 			pMarket->DeleteWeekLine(lCurrentMonday);
 			ctCurrent += ts7Day;
 			lCurrentMonday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-		}
-		while (lCurrentMonday <= pMarket->GetMarketDate());
+		} while (lCurrentMonday <= pMarket->GetMarketDate());
 	}
 	else {
 		pMarket->DeleteWeekLine();
@@ -39,49 +38,37 @@ UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
 	// 生成新的当前周周线
 	pMarket->BuildCurrentWeekWeekLineTable();
 
-	gl_ThreadStatus.DecreaseSavingThread();
+	gl_UpdateChinaMarketDB.release();
 
 	return 25;
 }
 
 UINT ThreadBuildWeekLineOfStock(not_null<CChinaStock*> pStockInput, long lStartDate) {
 	const auto pStock = pStockInput;
-	gl_BackGroundTaskThread.acquire();
-	gl_ThreadStatus.IncreaseSavingThread();
-	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+	gl_UpdateChinaMarketDB.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem()) pStock->BuildWeekLine(lStartDate);
-
-	gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-	gl_ThreadStatus.DecreaseSavingThread();
-	gl_BackGroundTaskThread.release();
+	gl_UpdateChinaMarketDB.release();
 
 	return 26;
 }
 
 UINT ThreadBuildWeekLineOfCurrentWeek(not_null<CChinaMarket*> pMarket) {
-	gl_BackGroundTaskThread.acquire();
-	gl_ThreadStatus.IncreaseSavingThread();
-	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-
+	gl_UpdateChinaMarketDB.acquire();
 	pMarket->BuildWeekLineOfCurrentWeek();
-
-	gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-	gl_ThreadStatus.DecreaseSavingThread();
-	gl_BackGroundTaskThread.release();
+	gl_UpdateChinaMarketDB.release();
 
 	return 32;
 }
 
 UINT ThreadBuildCurrentWeekWeekLineTable(not_null<CChinaMarket*> pMarket) {
-	gl_ThreadStatus.IncreaseSavingThread();
-
+	gl_UpdateChinaMarketDB.acquire();
 	// 清除当前周周线表
 	pMarket->DeleteCurrentWeekWeekLine();
 
 	// 生成新的当前周周线
 	pMarket->BuildCurrentWeekWeekLineTable();
 
-	gl_ThreadStatus.DecreaseSavingThread();
+	gl_UpdateChinaMarketDB.release();
 
 	return 33;
 }

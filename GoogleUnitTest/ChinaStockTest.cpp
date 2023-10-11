@@ -2502,12 +2502,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dayLine.GetCanceledSellVolumeAbove200000(), stock.GetCanceledSellVolumeAbove200000());
 	}
 
-	TEST_F(CChinaStockTest, TestProcessRTData1) {
-		CChinaStock stock;
-		EXPECT_FALSE(stock.ProcessRTData()) << _T("实时队列为空，故而并未执行任何计算工作，只是调用一下函数而已");
-	}
-
-	TEST_F(CChinaStockTest, TestProcessRTData2) {
+	TEST_F(CChinaStockTest, TestProcessRTData) {
 		CChinaStock stock;
 		const CWebRTDataPtr prtData = make_shared<CWebRTData>();
 		prtData->SetTransactionTime(10101010);
@@ -2516,7 +2511,9 @@ namespace FireBirdTest {
 
 		gl_pChinaMarket->SetMarketOpened(true);
 		stock.SetNeedProcessRTData(true);
-		EXPECT_TRUE(stock.ProcessRTData());
+
+		stock.ProcessRTData();
+
 		EXPECT_EQ(stock.GetTransactionTime(), 10101010);
 		EXPECT_TRUE(stock.IsRTDataCalculated());
 

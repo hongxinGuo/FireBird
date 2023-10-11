@@ -226,7 +226,6 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 	m_strLogo = setWorldStock.m_Logo;
 	m_strFinnhubIndustry = setWorldStock.m_FinnhubIndustry;
 	if (setWorldStock.m_Peer.GetLength() > 2) {
-		// ReSharper disable once CppNoDiscardExpression
 		CreateJsonWithNlohmann(m_jsonPeer, setWorldStock.m_Peer);
 	}
 	m_lDayLineStartDate = setWorldStock.m_DayLineStartDate;
@@ -235,7 +234,6 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 		ResetAllUpdateDate();
 	}
 	else {
-		// ReSharper disable once CppNoDiscardExpression
 		CreateJsonWithNlohmann(m_jsonUpdateDate, setWorldStock.m_UpdateDate);
 	}
 	m_lIPOStatus = setWorldStock.m_IPOStatus;

@@ -22,7 +22,6 @@ CString CProductTiingoCryptoSymbol::CreateMessage() {
 }
 
 bool CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	gl_counter.start();
 	const auto pvTiingoCrypto = ParseTiingoCryptoSymbol(pWebData);
 	if (!pvTiingoCrypto->empty()) {
 		char buffer[100];
@@ -36,7 +35,6 @@ bool CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		const CString str = _T("今日Tiingo Crypto Symbol活跃总数为") + strNumber;
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 	}
-	gl_counter.stop();
 	return true;
 }
 

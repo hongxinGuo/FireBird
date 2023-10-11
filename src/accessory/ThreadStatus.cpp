@@ -10,6 +10,5 @@ CThreadStatus::CThreadStatus() {
 	}
 
 	m_NumberOfBackGroundWorkingThreads = 0;
-	m_NumberOfSavingThread = 0;
 	m_NumberOfWebInquiringThread = 0;
 }

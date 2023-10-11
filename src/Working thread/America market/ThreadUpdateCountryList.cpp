@@ -4,8 +4,9 @@
 #include"WorldMarket.h"
 
 UINT ThreadUpdateCountryListDB(not_null<CWorldMarket*> pMarket) {
-	gl_ThreadStatus.IncreaseSavingThread();
+	gl_UpdateWorldMarketDB.acquire();
 	pMarket->UpdateCountryListDB();
-	gl_ThreadStatus.DecreaseSavingThread();
+	gl_UpdateWorldMarketDB.release();
+
 	return 40;
 }

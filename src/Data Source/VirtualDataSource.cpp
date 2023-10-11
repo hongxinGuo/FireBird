@@ -4,6 +4,8 @@
 #include"Thread.h"
 #include"ThreadStatus.h"
 
+#include"HighPerformanceCounter.h"
+
 #include<thread>
 
 #include "ChinaMarket.h"

@@ -33,14 +33,13 @@ CThreadStatus gl_ThreadStatus; // 系统中工作线程的各种状态，被各个工作线程所使用
 
 CFinnhubInquiryType gl_FinnhubInquiryType;
 
-CHighPerformanceCounter gl_counter;
 time_t gl_tUTC = 0; // 所有的市场使用同一个协调世界时（Coordinated Universal Time）
 
-CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub禁止访问交易所（免费账户无法访问的交易所数据）。唯一实例
+CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub禁止访问交易所名单（免费账户无法访问的交易所数据）。唯一实例
 
 // 为了事先初始化，信号量必须声明为全局变量
-binary_semaphore gl_UpdateWorldMarketDB{1}; // 用于更新WorldMarket数据库
-counting_semaphore<4> gl_SaveDayLineThreadPermitted{1}; // 当数据库中没有日线数据时，增加此信号量最大值至4，使用四个线程以加快日线数据存储速度
+binary_semaphore gl_UpdateChinaMarketDB{1}; // 用于更新ChinaMarket数据库。由于我对MySQL数据库不太了解，偶尔会出现存储问题，我估计与同步有关，故而设置互斥变量
+binary_semaphore gl_UpdateWorldMarketDB{1}; // 用于更新WorldMarket数据库。由于我对MySQL数据库不太了解，偶尔会出现存储问题，我估计与同步有关，故而设置互斥变量
 counting_semaphore<8> gl_BackGroundTaskThread{8}; // 后台工作线程数。最大为8
 binary_semaphore gl_ProcessChinaMarketRTData{1}; // 处理中国市场的实时数据时，不允许同时存储之。
 counting_semaphore<3> gl_WebSourceParseAndStoreData{3};//用于解析WebSource中的数据。将ParseAndStoreData线程限制至最多3个，这样既能保证足够的计算速度，也不会发生系统颠簸。当改为4个时，就能观察到系统颠簸。

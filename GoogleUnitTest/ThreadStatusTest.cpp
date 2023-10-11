@@ -10,16 +10,19 @@ namespace FireBirdTest {
 	class ThreadStatusTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -27,12 +30,10 @@ namespace FireBirdTest {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundThreadsWorking());
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfBackGroundWorkingThread(), 0);
-		const int iCreateThread = gl_ThreadStatus.GetNumberOfSavingThread();
-		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreateThread);
 
 		const size_t l = gl_systemMessage.InformationSize();
 		CThreadStatus threadStatus; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
-		EXPECT_EQ(gl_systemMessage.InformationSize(), l + 1); // 系统报警队列
+		EXPECT_EQ(gl_systemMessage.InformationSize(), l + 1) << "不允许生成第二个变量，系统报警"; // 系统报警队列
 		for (int i = 0; i < l + 1; i++) {
 			CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列
 		}
@@ -50,26 +51,6 @@ namespace FireBirdTest {
 		}
 		gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundThreadsWorking());
-	}
-
-	TEST_F(ThreadStatusTest, TestIsSavThreadRunning) {
-		const int iCreateThread = gl_ThreadStatus.GetNumberOfSavingThread();
-		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreateThread);
-		EXPECT_FALSE(gl_ThreadStatus.IsSavingThreadRunning());
-		gl_ThreadStatus.IncreaseSavingThread();
-		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreateThread + 1);
-		EXPECT_TRUE(gl_ThreadStatus.IsSavingThreadRunning());
-		gl_ThreadStatus.DecreaseSavingThread();
-		EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreateThread);
-		EXPECT_FALSE(gl_ThreadStatus.IsSavingThreadRunning());
-		gl_ThreadStatus.DecreaseSavingThread();
-		if (iCreateThread <= 0) {
-			EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreateThread);
-			EXPECT_FALSE(gl_ThreadStatus.IsSavingThreadRunning());
-		}
-		else {
-			EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iCreateThread - 1);
-		}
 	}
 
 	TEST_F(ThreadStatusTest, TestIsWebInquiringThreadRunning) {

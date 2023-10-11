@@ -23,6 +23,8 @@
 
 #include"SetCurrentWeekLine.h"
 
+#include"HighPerformanceCounter.h"
+
 using namespace std;
 
 #include<gsl/gsl>
@@ -1646,6 +1648,9 @@ void CChinaMarket::UpdateOptionDB() {
 		setOption.m_pDatabase->CommitTrans();
 		setOption.Close();
 	}
+	//catch (CException* e) {
+	//ReportInformationAndDeleteException(e);
+	//}
 	catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
@@ -1667,15 +1672,6 @@ void CChinaMarket::LoadOptionDB() {
 		}
 		else {
 			SetRSEndDate(setOption.m_RSEndDate);
-			if (GetRSEndDate() == _CHINA_MARKET_BEGIN_DATE_) {
-				// 当日线历史数据库中存在旧数据时，采用单线程模式存储新数据。使用多线程模式时，MySQL会出现互斥区Exception，估计是数据库重入时发生同步问题）。
-				// 故而修补数据时同时只运行一个存储线程，其他都处于休眠状态。此种问题不会出现于生成所有日线数据时，故而新建日线数据时可以使用多线程（目前为4个）。
-				// 使用8.0.27测试，发现可以采用4个线程了（20211103）
-				// 目前使用8.0.30，偶尔又出现Exception了。(20220829)
-				for (int i = 0; i < 3; i++) {
-					gl_SaveDayLineThreadPermitted.release();
-				}
-			}
 		}
 		if (setOption.m_RSStartDate == 0) {
 			SetRSStartDate(_CHINA_MARKET_BEGIN_DATE_);

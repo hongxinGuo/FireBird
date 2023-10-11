@@ -11,22 +11,25 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadUpdateChinaStockProfileDB(not_null<CChinaMarket*> pMarket) {	//
-	gl_ThreadStatus.IncreaseSavingThread();
+	gl_UpdateChinaMarketDB.acquire();
 	pMarket->UpdateStockProfileDB();
-	gl_ThreadStatus.DecreaseSavingThread();
+	gl_UpdateChinaMarketDB.release();
+
 	return 18;
 }
 
 UINT ThreadUpdateOptionDB(not_null<CChinaMarket*> pMarket) {
-	gl_ThreadStatus.IncreaseSavingThread();
+	gl_UpdateChinaMarketDB.acquire();
 	pMarket->UpdateOptionDB();
-	gl_ThreadStatus.DecreaseSavingThread();
+	gl_UpdateChinaMarketDB.release();
+
 	return 20;
 }
 
 UINT ThreadAppendChosenStockDB(not_null<CChinaMarket*> pMarket) {
-	gl_ThreadStatus.IncreaseSavingThread();
+	gl_UpdateChinaMarketDB.acquire();
 	pMarket->AppendChosenStockDB();
-	gl_ThreadStatus.DecreaseSavingThread();
+	gl_UpdateChinaMarketDB.release();
+
 	return 22;
 }

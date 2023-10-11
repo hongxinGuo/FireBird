@@ -6,9 +6,9 @@
 #include"WorldMarket.h"
 
 UINT ThreadUpdateWorldStockDayLineStartEndDate(CWorldMarket* pMarket) {
-	gl_ThreadStatus.IncreaseSavingThread();
+	gl_UpdateWorldMarketDB.acquire();
 	pMarket->UpdateStockDayLineStartEndDate();
-	gl_ThreadStatus.DecreaseSavingThread();
+	gl_UpdateWorldMarketDB.release();
 
 	return 43;
 }

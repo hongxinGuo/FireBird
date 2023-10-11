@@ -15,9 +15,7 @@ UINT ThreadUpdateWorldMarketStockProfileDB(not_null<CWorldMarket*> pMarket) {
 		sm_fProcessing = true;
 	}
 	gl_UpdateWorldMarketDB.acquire();
-	gl_ThreadStatus.IncreaseSavingThread();
 	pMarket->UpdateStockProfileDB();
-	gl_ThreadStatus.DecreaseSavingThread();
 	gl_UpdateWorldMarketDB.release();
 	sm_fProcessing = false;
 

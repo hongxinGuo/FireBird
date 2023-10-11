@@ -66,8 +66,7 @@ bool CContainerChinaDayLine::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) cons
 	do {
 		pWeekLine = CreateNewWeekLine(lCurrentDayLinePos);
 		vWeekLine.push_back(pWeekLine);
-	}
-	while (lCurrentDayLinePos < Size());
+	} while (lCurrentDayLinePos < Size());
 
 	return true;
 }

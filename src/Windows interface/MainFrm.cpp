@@ -529,11 +529,6 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 			delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 		}
 
-		if (gl_counter.GetElapsedMillisecond() > 20) {
-			char buffer[100]{};
-			sprintf_s(buffer, _T("%6I64d"), gl_counter.GetElapsedMillisecond());
-			m_wndInnerSystemBar.SetPaneText(7, buffer);
-		}
 		//CMainFrame只执行更新状态任务
 		UpdateStatus();
 		UpdateInnerSystemStatus();

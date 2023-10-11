@@ -15,9 +15,7 @@ UINT ThreadUpdateBasicFinancialDB(not_null<CWorldMarket*> pMarket) {
 		sm_fInProcess = true;
 	}
 	gl_UpdateWorldMarketDB.acquire();
-	gl_ThreadStatus.IncreaseSavingThread();
 	pMarket->UpdateBasicFinancialDB();
-	gl_ThreadStatus.DecreaseSavingThread();
 	gl_UpdateWorldMarketDB.release();
 	sm_fInProcess = false;
 

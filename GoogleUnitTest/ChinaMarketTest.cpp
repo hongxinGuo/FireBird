@@ -1182,7 +1182,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestProcessRTData) {
 		gl_pChinaMarket->SetRTDataNeedCalculate(true);
-		EXPECT_TRUE(gl_pChinaMarket->ProcessRTData());
+		gl_pChinaMarket->ProcessRTData();
 		gl_pChinaMarket->SetRTDataNeedCalculate(false);
 	}
 

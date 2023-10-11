@@ -16,6 +16,7 @@ using std::atomic_int64_t;
 
 extern counting_semaphore<8> gl_BackGroundTaskThread; // 后台工作线程数。最大为8
 extern binary_semaphore gl_ProcessChinaMarketRTData; // 处理中国市场的实时数据时，不允许同时存储之。
+extern binary_semaphore gl_UpdateChinaMarketDB; // 用于更新ChinaMarket数据库
 
 constexpr int c_SelectedStockStartPosition = 0;
 constexpr int c_10DaysRSStockSetStartPosition = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）
@@ -106,7 +107,7 @@ public:
 public:
 	//处理个股票的实时数据，计算挂单变化等。
 	void DistributeAndCalculateRTData();
-	bool ProcessRTData() { return m_containerChinaStock.ProcessRTData(); }
+	void ProcessRTData() { m_containerChinaStock.ProcessRTData(); }
 
 	// 系统状态区
 	bool IsFastReceivingRTData() noexcept { return m_fFastReceivingRTData; }

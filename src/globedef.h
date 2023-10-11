@@ -15,6 +15,4 @@
 
 #include"ClassDeclaration.h"
 
-#include"HighPerformanceCounter.h"
-extern CHighPerformanceCounter gl_counter;
 extern time_t gl_tUTC; // 所有的市场使用同一个协调世界时（Coordinated Universal Time）

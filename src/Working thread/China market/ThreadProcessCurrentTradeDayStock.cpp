@@ -12,11 +12,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadProcessTodayStock(not_null<CChinaMarket*> pMarket) {
-	gl_ThreadStatus.IncreaseSavingThread();
-
+	gl_UpdateChinaMarketDB.acquire();
 	pMarket->ProcessTodayStock();
-
-	gl_ThreadStatus.DecreaseSavingThread();
+	gl_UpdateChinaMarketDB.release();
 
 	return 14;
 }
