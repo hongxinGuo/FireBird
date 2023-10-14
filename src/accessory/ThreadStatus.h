@@ -25,7 +25,19 @@ public:
 	[[nodiscard]] bool IsBackGroundThreadsWorking() const noexcept { return m_NumberOfBackGroundWorkingThreads > 0; } //计算日线的线程是否处于运行中
 	[[nodiscard]] int GetNumberOfBackGroundWorkingThread() const noexcept { return m_NumberOfBackGroundWorkingThreads; }
 
-	static [[nodiscard]] bool IsSavingThreadRunning() noexcept { return (!gl_UpdateChinaMarketDB.try_acquire() || !gl_UpdateWorldMarketDB.try_acquire()); }
+	static [[nodiscard]] bool IsSavingThreadRunning() noexcept {
+		bool bSavingChinaMarketDB = true;
+		bool bSavingWorldMarketDB = true;
+		if (gl_UpdateChinaMarketDB.try_acquire()) {
+			bSavingChinaMarketDB = false;
+			gl_UpdateChinaMarketDB.release();
+		}
+		if (gl_UpdateWorldMarketDB.try_acquire()) {
+			bSavingWorldMarketDB = false;
+			gl_UpdateWorldMarketDB.release();
+		}
+		return bSavingChinaMarketDB || bSavingWorldMarketDB;
+	}
 
 	void IncreaseWebInquiringThread() noexcept { ++m_NumberOfWebInquiringThread; }
 	void DecreaseWebInquiringThread() noexcept { if (m_NumberOfWebInquiringThread > 0) --m_NumberOfWebInquiringThread; }
@@ -34,7 +46,6 @@ public:
 
 protected:
 	atomic_int m_NumberOfBackGroundWorkingThreads; //正在计算日线相对强度的线程数。目前最多同时允许BackGroundThreadPermittedNumber个线程
-	atomic_int m_NumberOfSavingThread; //正在运行的存储工作线程数量
 	atomic_int m_NumberOfWebInquiringThread; //正在运行的提取网络数据工作线程数量
 };
 

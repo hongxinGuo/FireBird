@@ -103,7 +103,7 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 			if (!s.empty()) pInsiderSentiment->m_strSymbol = s.c_str();
 			const long year = jsonGetLong(it,_T("year"));
 			const long month = jsonGetLong(it,_T("month"));
-			pInsiderSentiment->m_lDate = year * 10000 + month * 100 + 1; // 日期要有效，故而日子用每月的第一天
+			pInsiderSentiment->m_lDate = XferYearMonthDayToYYYYMMDD(year, month, 1); // 日期要有效，故而日子用每月的第一天
 			pInsiderSentiment->m_lChange = jsonGetLong(it,_T("change"));
 			pInsiderSentiment->m_mspr = jsonGetDouble(it, _T("mspr"));
 			pvInsiderSentiment->push_back(pInsiderSentiment);

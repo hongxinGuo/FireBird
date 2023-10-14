@@ -40,8 +40,7 @@ CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub½ûÖ¹·ÃÎÊ½
 // ÎªÁËÊÂÏÈ³õÊ¼»¯£¬ĞÅºÅÁ¿±ØĞëÉùÃ÷ÎªÈ«¾Ö±äÁ¿
 binary_semaphore gl_UpdateChinaMarketDB{1}; // ÓÃÓÚ¸üĞÂChinaMarketÊı¾İ¿â¡£ÓÉÓÚÎÒ¶ÔMySQLÊı¾İ¿â²»Ì«ÁË½â£¬Å¼¶û»á³öÏÖ´æ´¢ÎÊÌâ£¬ÎÒ¹À¼ÆÓëÍ¬²½ÓĞ¹Ø£¬¹Ê¶øÉèÖÃ»¥³â±äÁ¿
 binary_semaphore gl_UpdateWorldMarketDB{1}; // ÓÃÓÚ¸üĞÂWorldMarketÊı¾İ¿â¡£ÓÉÓÚÎÒ¶ÔMySQLÊı¾İ¿â²»Ì«ÁË½â£¬Å¼¶û»á³öÏÖ´æ´¢ÎÊÌâ£¬ÎÒ¹À¼ÆÓëÍ¬²½ÓĞ¹Ø£¬¹Ê¶øÉèÖÃ»¥³â±äÁ¿
-counting_semaphore<8> gl_BackGroundTaskThread{8}; // ºóÌ¨¹¤×÷Ïß³ÌÊı¡£×î´óÎª8
-binary_semaphore gl_ProcessChinaMarketRTData{1}; // ´¦ÀíÖĞ¹úÊĞ³¡µÄÊµÊ±Êı¾İÊ±£¬²»ÔÊĞíÍ¬Ê±´æ´¢Ö®¡£
+binary_semaphore gl_ProcessChinaMarketRTData{1}; // µ±´¦ÀíÖĞ¹úÊĞ³¡µÄÊµÊ±Êı¾İÊ±£¬²»ÔÊĞíÍ¬Ê±´æ´¢Ö®¡£
 counting_semaphore<3> gl_WebSourceParseAndStoreData{3};//ÓÃÓÚ½âÎöWebSourceÖĞµÄÊı¾İ¡£½«ParseAndStoreDataÏß³ÌÏŞÖÆÖÁ×î¶à3¸ö£¬ÕâÑù¼ÈÄÜ±£Ö¤×ã¹»µÄ¼ÆËãËÙ¶È£¬Ò²²»»á·¢ÉúÏµÍ³µßô¤¡£µ±¸ÄÎª4¸öÊ±£¬¾ÍÄÜ¹Û²ìµ½ÏµÍ³µßô¤¡£
 
 CSystemData gl_SystemData;

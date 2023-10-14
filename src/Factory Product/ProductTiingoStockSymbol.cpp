@@ -8,6 +8,8 @@
 #include"TiingoStock.h"
 #include "ProductTiingoStockSymbol.h"
 
+#include "TimeConvert.h"
+
 using namespace std;
 
 CProductTiingoStockSymbol::CProductTiingoStockSymbol() {
@@ -134,10 +136,10 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CW
 			else pStock->m_strSECFilingWebSite = strNULL;
 			if (!s.empty()) str = jsonGetString(it,_T("statementLastUpdated")).c_str();
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			pStock->m_lStatementUpdateDate = year * 10000 + month * 100 + day;
+			pStock->m_lStatementUpdateDate = XferYearMonthDayToYYYYMMDD(year, month, day);
 			str = jsonGetString(it,_T("dailyLastUpdated")).c_str();
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			pStock->m_lDailyDataUpdateDate = year * 10000 + month * 100 + day;
+			pStock->m_lDailyDataUpdateDate = XferYearMonthDayToYYYYMMDD(year, month, day);
 			pvTiingoStock->push_back(pStock);
 			iCount++;
 		}

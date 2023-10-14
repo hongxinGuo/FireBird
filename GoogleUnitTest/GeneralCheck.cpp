@@ -33,6 +33,12 @@ namespace FireBirdTest {
 		//EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate());
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
+		if (gl_UpdateChinaMarketDB.try_acquire()) { gl_UpdateChinaMarketDB.release(); }
+		else
+			EXPECT_TRUE(false);
+		if (gl_UpdateWorldMarketDB.try_acquire()) { gl_UpdateWorldMarketDB.release(); }
+		else
+			EXPECT_TRUE(false);
 	}
 
 	void ChinaMarketCheck() {

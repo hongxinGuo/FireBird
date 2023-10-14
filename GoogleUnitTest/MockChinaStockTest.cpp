@@ -15,16 +15,19 @@ namespace FireBirdTest {
 	class CMockChinaStockTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 
 			pStock = make_shared<CMockChinaStock>();
 			gl_pChinaMarket->CalculateTime();
@@ -36,7 +39,8 @@ namespace FireBirdTest {
 			gl_pChinaMarket->CalculateTime();
 			gl_pChinaMarket->SetUpdateOptionDB(false);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:

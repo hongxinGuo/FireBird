@@ -40,6 +40,27 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 0);
 	}
 
+	TEST_F(ThreadStatusTest, TestIsSavingThreadRunning) {
+		EXPECT_FALSE(gl_ThreadStatus.IsSavingThreadRunning());
+
+		EXPECT_TRUE(gl_UpdateChinaMarketDB.try_acquire());
+		EXPECT_TRUE(gl_UpdateWorldMarketDB.try_acquire());
+
+		EXPECT_TRUE(gl_ThreadStatus.IsSavingThreadRunning());
+
+		gl_UpdateChinaMarketDB.release();
+		EXPECT_TRUE(gl_ThreadStatus.IsSavingThreadRunning());
+
+		gl_UpdateWorldMarketDB.release();
+		EXPECT_FALSE(gl_ThreadStatus.IsSavingThreadRunning());
+
+		gl_UpdateChinaMarketDB.acquire();
+		EXPECT_TRUE(gl_ThreadStatus.IsSavingThreadRunning());
+
+		// clear up
+		gl_UpdateChinaMarketDB.release();
+	}
+
 	TEST_F(ThreadStatusTest, TestIsCalculatingRS) {
 		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundThreadsWorking());
 		for (int i = 0; i < gl_systemConfiguration.GetBackgroundThreadPermittedNumber(); i++) {  // 目前采用最多8个线程

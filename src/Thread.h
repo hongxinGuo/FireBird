@@ -102,10 +102,6 @@ UINT ThreadUpdateCryptoDayLineDB(not_null<CFinnhubCryptoSymbol*> pSymbol); // 此
 UINT ThreadUpdateTiingoCryptoSymbolDB(not_null<CWorldMarket*> pMarket); // 此工作线程返回值为54
 // 更新Finnhub basic financial
 UINT ThreadUpdateBasicFinancialDB(not_null<CWorldMarket*> pMarket); // 此工作线程返回值为55
-// 更新Finnhub basic financial annual data
-UINT ThreadUpdateBasicFinancialAnnualDB(vector<CWorldStockPtr> vStock); // 此工作线程返回值为56
-// 更新Finnhub basic financial quarterly data
-UINT ThreadUpdateBasicFinancialQuarterlyDB(vector<CWorldStockPtr> vStock); // 此工作线程返回值为57
 // 更新InsiderSentiment
 UINT ThreadUpdateInsiderSentimentDB(not_null<CWorldMarket*> pMarket); // 此工作线程返回值为58
 // 更新公司新闻

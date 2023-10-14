@@ -8,6 +8,8 @@
 #include"FinnhubStockBasicFinancial.h"
 #include "ProductFinnhubCompanyBasicFinancial.h"
 
+#include "TimeConvert.h"
+
 std::set<string> s_setMetricType;// 目前共五种类型："all", "perShare", "marketCapitalization","metric","eps"
 
 CProductFinnhubCompanyBasicFinancial::CProductFinnhubCompanyBasicFinancial() {
@@ -285,7 +287,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 			s = jsonGetString(&ptMetric, _T("52WeekHighDate"));
 			if (!s.empty()) {
 				static_cast<void>(sscanf_s(s.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day));
-				pBasicFinancial->m_52WeekHighDate = year * 10000 + month * 100 + day;
+				pBasicFinancial->m_52WeekHighDate = XferYearMonthDayToYYYYMMDD(year, month, day);
 			}
 		}
 		catch (json::exception&) { }
@@ -293,7 +295,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseFinnhubStockBasicFinancial(CFinn
 			s = jsonGetString(&ptMetric, _T("52WeekLowDate"));
 			if (!s.empty()) {
 				static_cast<void>(sscanf_s(s.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day));
-				pBasicFinancial->m_52WeekLowDate = year * 10000 + month * 100 + day;
+				pBasicFinancial->m_52WeekLowDate = XferYearMonthDayToYYYYMMDD(year, month, day);
 			}
 		}
 		catch (json::exception&) { }
@@ -647,7 +649,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseVector(json* pjs, vector<CValueO
 			sDate = jsonGetString(it, _T("period"));
 			if (!sDate.empty()) {
 				static_cast<void>(sscanf_s(sDate.c_str(), "%04d-%02d-%02d", &year, &month, &day));
-				sv.m_period = year * 10000 + month * 100 + day;
+				sv.m_period = XferYearMonthDayToYYYYMMDD(year, month, +day);
 				sv.m_value = jsonGetDouble(it, _T("v"));
 				vecData.push_back(sv);
 			}

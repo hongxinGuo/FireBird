@@ -9,6 +9,8 @@
 
 #include "ProductTiingoStockDayLine.h"
 
+#include "TimeConvert.h"
+
 using namespace std;
 
 CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
@@ -130,7 +132,7 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWeb
 			s = jsonGetString(it, _T("date"));
 			CString str = s.c_str();
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			long lTemp = year * 10000 + month * 100 + day;
+			long lTemp = XferYearMonthDayToYYYYMMDD(year, month, day);
 			pDayLine->SetDate(lTemp);
 			double dTemp = jsonGetDouble(it,_T("close"));
 			pDayLine->SetClose(dTemp * 1000);

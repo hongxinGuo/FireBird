@@ -10,13 +10,15 @@
 namespace FireBirdTest {
 	class TimeConvertTest : public ::testing::Test {
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			gl_systemConfiguration.SetWorkingMode(false);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -91,6 +93,11 @@ namespace FireBirdTest {
 		EXPECT_FALSE(IsEarlyThen(20200115, 20200201, 17));
 		EXPECT_TRUE(IsEarlyThen(20191101, 20200115, 74));
 		EXPECT_FALSE(IsEarlyThen(20191101, 20200115, 75));
+	}
+
+	TEST_F(TimeConvertTest, TestXferYearMonthDayToYYYYMMDD) {
+		EXPECT_EQ(XferYearMonthDayToYYYYMMDD(2020, 10, 10), 20201010);
+		EXPECT_EQ(XferYearMonthDayToYYYYMMDD(2020, 1, 2), 20200102);
 	}
 
 	TEST_F(TimeConvertTest, TestGetNextDate) {

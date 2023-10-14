@@ -36,8 +36,7 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
 		}
 		ctCurrent += oneDay;
 		lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-	}
-	while (lToday <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）
+	} while (lToday <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）
 
 	while (gl_ThreadStatus.IsBackGroundThreadsWorking()) Sleep(100); // 等待所有的工作线程结束
 
@@ -72,13 +71,13 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadBuildDayLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
-	gl_BackGroundTaskThread.acquire();
-	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
+	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+	gl_UpdateChinaMarketDB.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem() && !gl_systemConfiguration.IsExitingCalculatingRS()) {
 		pMarket->BuildDayLineRS(lDate); // 调用实际执行函数
 	}
-	gl_ThreadStatus.DecreaseBackGroundWorkingThread(); // 正在工作的线程数减一
-	gl_BackGroundTaskThread.release();
+	gl_UpdateChinaMarketDB.release();
+	gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 
 	return 12;
 }

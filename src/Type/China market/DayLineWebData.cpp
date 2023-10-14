@@ -3,6 +3,8 @@
 #include"ChinaMarket.h"
 #include"DayLineWebData.h"
 
+#include "TimeConvert.h"
+
 using namespace std;
 
 CDayLineWebData::CDayLineWebData() {
@@ -91,7 +93,7 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLineData() {
 	m_lCurrentPos++;
 	buffer3[i] = 0x00;
 	sscanf_s(buffer3, _T("%04d-%02d-%02d"), &year, &month, &day);
-	const long lMarketDate = year * 10000 + month * 100 + day;
+	const long lMarketDate = XferYearMonthDayToYYYYMMDD(year, month, day);
 	pDayLine->SetTime(gl_pChinaMarket->TransferToUTCTime(lMarketDate));
 	pDayLine->SetDate(lMarketDate);
 	//TRACE("%d %d %d\n", year, month, day);

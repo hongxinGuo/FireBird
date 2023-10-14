@@ -21,7 +21,7 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 	const long month = lToday / 100 - year * 100;
 	const long day = lToday - year * 10000 - month * 100;
 	CTime ctCurrent(year, month, day, 12, 0, 0);
-	const CTimeSpan sevenDay(7, 0, 0, 0);
+	const CTimeSpan sevenDays(7, 0, 0, 0);
 
 	time_t tStart = 0, tEnd = 0;
 	time(&tStart);
@@ -29,7 +29,7 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 		// 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
 		// 每次调用时生成新的局部变量，启动工作线程后执行分离动作（detach），其资源由系统在工作线程执行完后进行回收。
 		pMarket->CreateThreadBuildWeekLineRSOfDate(lToday);
-		ctCurrent += sevenDay;
+		ctCurrent += sevenDays;
 		lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
 	} while (lToday <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）
 
@@ -64,16 +64,15 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
-	gl_BackGroundTaskThread.acquire();
-	gl_ThreadStatus.IncreaseBackGroundWorkingThread(); // 正在工作的线程数加一
-
+	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+	gl_UpdateChinaMarketDB.acquire();
 	ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
 
 	if (!gl_systemConfiguration.IsExitingSystem() && !gl_systemConfiguration.IsExitingCalculatingRS()) {
 		pMarket->BuildWeekLineRS(lDate);
 	}
-	gl_ThreadStatus.DecreaseBackGroundWorkingThread(); // 正在工作的线程数减一
-	gl_BackGroundTaskThread.release();
+	gl_UpdateChinaMarketDB.release();
+	gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 
 	return 31;
 }
