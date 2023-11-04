@@ -155,7 +155,7 @@
     <ClCompile Include="FinnhubStockPriceQuoteTest.cpp" />
     <ClCompile Include="NeteaseDayLineWebDataTest.cpp" />
     <ClCompile Include="FinnhubCryptoSymbolTest.cpp" />
-    <ClCompile Include="CallableFunctionTest.cpp" />
+    <ClCompile Include="ProcessWebSocketDataTest.cpp" />
     <ClCompile Include="GeneralCheck.cpp" />
     <ClCompile Include="InsiderTransactionTest.cpp" />
     <ClCompile Include="MockFinnhubCryptoSymbolTest.cpp" />

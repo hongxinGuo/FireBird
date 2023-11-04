@@ -1,7 +1,5 @@
 #include"pch.h"
 
-#include"CallableFunction.h"
-
 #include"ConvertToString.h"
 #include"TimeConvert.h"
 #include"InsiderSentiment.h"

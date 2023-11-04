@@ -35,12 +35,12 @@ public:
 	void PreparingExitMarket() final;
 
 	bool IsTimeToResetSystem(long lCurrentTime) final;
-	bool IsOrdinaryTradeTime() final; // 日常交易时间
-	bool IsOrdinaryTradeTime(long) final;
-	bool IsWorkingTime() final;
+	bool IsOrdinaryTradeTime() final { return IsOrdinaryTradeTime(GetMarketTime()); } // 日常交易时间
+	bool IsOrdinaryTradeTime(long lTime) final;
+	bool IsWorkingTime() final { return IsWorkingTime(GetMarketTime()); }
 	bool IsWorkingTime(long lTime) final;
-	bool IsDummyTime() final;
-	bool IsDummyTime(long lTime) final;
+	bool IsDummyTime() final { return !IsWorkingTime(); }
+	bool IsDummyTime(long lTime) final { return !IsWorkingTime(lTime); }
 
 public:
 	bool ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由基类的SchedulingTask调度
@@ -64,7 +64,7 @@ public:
 	bool TaskChoice10RSStrongStockSet(long lCurrentTime);
 	bool TaskProcessTodayStock(long lCurrentTime);
 	void ProcessTodayStock();
-	bool IsFinishedSavingDayLineDB();
+	bool IsTaskOfSavingDayLineDBFinished();
 	bool CheckFastReceivingData(long lCurrentTime);
 	bool CheckMarketOpen(long lCurrentTime);
 
@@ -79,12 +79,12 @@ public:
 	bool ProcessDayLine();
 
 	// 各工作线程调用包裹函数
-	virtual void CreateThreadBuildDayLineRS(long lStartCalculatingDay);
-	virtual void CreateThreadBuildDayLineRSOfDate(long lThisDay);
+	virtual void CreateThreadBuildDayLineRS(long lStartCalculatingDate);
+	virtual void CreateThreadBuildDayLineRSOfDate(long lThisDate);
 	virtual void CreateThreadBuildWeekLine(long lStartDate);
 	virtual void CreateThreadBuildWeekLineOfStock(CChinaStock* pStock, long lStartDate);
 	virtual void CreateThreadBuildWeekLineRS();
-	virtual void CreateThreadBuildWeekLineRSOfDate(long lThisDay);
+	virtual void CreateThreadBuildWeekLineRSOfDate(long lThisDate);
 	virtual void CreateThreadBuildWeekLineOfCurrentWeek();
 	virtual void CreateThreadBuildCurrentWeekWeekLineTable();
 	virtual void CreateThreadChoice10RSStrong1StockSet();
@@ -96,22 +96,19 @@ public:
 	virtual void CreateThreadUpdateStockProfileDB();
 	virtual void CreateThreadUpdateOptionDB();
 	virtual void CreateThreadUpdateTempRTData();
-	virtual void CreateThreadLoadTempRTData(long lTheDay);
+	virtual void CreateThreadLoadTempRTData(long lTheDate);
 	virtual void CreateThreadSaveStockSection();
 	virtual void CreateThreadUpdateChoseStockDB();
 	virtual void CreateThreadDistributeAndCalculateRTData();
 
-	// interface function
-
-public:
 	//处理个股票的实时数据，计算挂单变化等。
 	void DistributeAndCalculateRTData();
+	void DistributeRTData();
+	void CalculateRTData();
 	void ProcessRTData() { m_containerChinaStock.ProcessRTData(); }
 
 	// 系统状态区
 	bool IsFastReceivingRTData() noexcept { return m_fFastReceivingRTData; }
-
-	// 初始化市场
 
 	// 实时数据读取
 	CString GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet);
@@ -174,12 +171,12 @@ public:
 	virtual void AppendChosenStockDB();
 	void LoadChosenStockDB();
 	virtual void SaveTempRTData() { m_containerChinaStock.SaveTempRTData(); }
-	bool TaskLoadTempRTData(long lTheDay, long lCurrentTime);
-	virtual void LoadTempRTData(long lTheDay);
+	bool TaskLoadTempRTData(long lTheDate, long lCurrentTime);
+	virtual void LoadTempRTData(long lTheDate);
 	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) const;
 	virtual void SaveStockSection() { m_containerStockSymbol.UpdateStockSectionDB(); }
 
-	static bool ChangeDayLineStockCodeToStandard();
+	static bool ChangeDayLineStockCodeTypeToStandard();
 
 	virtual bool DeleteWeekLine();
 	static void DeleteWeekLineBasicInfo();
@@ -228,8 +225,8 @@ public:
 	virtual bool BuildDayLineRS(const long lDate) { return m_containerChinaStock.BuildDayLineRS(lDate); }
 	virtual bool BuildWeekLineRS(const long lDate) { return m_containerChinaStock.BuildWeekLineRS(lDate); }
 
-	bool IsLoadSelectedStock() const noexcept { return m_fLoadedSelectedStock; }
-	void SetLoadSelectedStock(const bool fLoad) noexcept { m_fLoadedSelectedStock = fLoad; }
+	bool IsSelectedStockLoaded() const noexcept { return m_fSelectedStockLoaded; }
+	void SetSelectedStockLoaded(const bool fLoad) noexcept { m_fSelectedStockLoaded = fLoad; }
 
 	bool IsCheckingActiveStock() const noexcept { return m_fCheckActiveStock; }
 	void SetCheckActiveStock(const bool fFlag) noexcept { m_fCheckActiveStock = fFlag; }
@@ -338,10 +335,7 @@ public:
 	bool IsUpdateStockProfileDB() { return m_containerChinaStock.IsUpdateProfileDB(); }
 	void SetUpdateOptionDB(const bool fFlag) noexcept { m_fUpdateOptionDB = fFlag; }
 
-	bool IsUpdateOptionDB() const noexcept {
-		const bool fFlag = m_fUpdateOptionDB;
-		return fFlag;
-	}
+	bool IsUpdateOptionDB() const noexcept { return m_fUpdateOptionDB; }
 
 	void SetUpdateChosenStockDB(const bool fFlag) noexcept { m_fUpdateChosenStockDB = fFlag; }
 	bool IsUpdateChosenStockDB() const noexcept { return m_fUpdateChosenStockDB; }
@@ -377,8 +371,6 @@ public:
 	time_t m_ttDistributeAndCalculateTime; // 实时数据分配及处理时间
 
 protected:
-	// 初始化
-
 	CContainerChinaStock m_containerChinaStock;
 	CContainerStockSymbol m_containerStockSymbol;
 
@@ -429,7 +421,7 @@ protected:
 	long m_lUpdatedDateFor10DaysRS1;
 	long m_lUpdatedDateFor10DaysRS;
 
-	bool m_fLoadedSelectedStock;
+	bool m_fSelectedStockLoaded;
 
 	bool m_fCurrentStockChanged; // 当前选择的股票改变了
 	INT64 m_lTotalMarketBuy; // 沪深市场中的A股向上买入金额

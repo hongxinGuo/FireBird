@@ -82,7 +82,7 @@ namespace FireBirdTest {
 
 		void SetUp() override {
 			ASSERT(!gl_systemConfiguration.IsWorkingMode());
-			time(&gl_tUTC);
+			time(&gl_tUTCTime);
 
 			ASSERT_STREQ(gl_systemConfiguration.GetDefaultFileDirectoryAndName(), _T("C:\\FireBird\\SystemConfiguration.json"));
 			gl_systemConfiguration.SetDefaultFileDirectory(_T("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\"));
@@ -139,8 +139,8 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetSystemReady(true); // 测试系统默认为准备好了
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
-			while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardMarketTask();
-			while (!gl_pWorldMarket->IsMarketTaskEmpty()) gl_pWorldMarket->DiscardMarketTask();
+			while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+			while (!gl_pWorldMarket->IsMarketTaskEmpty()) gl_pWorldMarket->DiscardCurrentMarketTask();
 
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 

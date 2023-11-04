@@ -122,7 +122,7 @@ bool CWorldMarket::ProcessTask(long lCurrentTime) {
 	if (IsMarketTaskEmpty()) return false;
 	const auto pTask = GetMarketTask();
 	if (lCurrentTime >= pTask->GetTime()) {
-		DiscardMarketTask();
+		DiscardCurrentMarketTask();
 		switch (pTask->GetType()) {
 		case CREATE_TASK__: // 生成其他任务
 			TaskCreateTask(lCurrentTime);
@@ -154,7 +154,7 @@ bool CWorldMarket::ProcessTask(long lCurrentTime) {
 void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 	const long lTimeMinute = (lCurrentTime / 100) * 100; // 当前小时和分钟
 
-	while (!IsMarketTaskEmpty()) DiscardMarketTask();
+	while (!IsMarketTaskEmpty()) DiscardCurrentMarketTask();
 
 	// 系统初始化检查
 	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, 1);

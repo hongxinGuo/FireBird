@@ -5,9 +5,9 @@
 // 时间转换辅助函数。time_t使用UTC（GMT）标准，其他形式的时间为该市场的标准时间，默认采用东八区标准时间。
 [[nodiscard]] long GetDayOfWeek();
 [[nodiscard]] time_t ConvertToTTime(long lDate, time_t tTimeZone, long lTime); // 将整型(YYYYMMDD)转变为time_t形式.
-[[nodiscard]] long ConvertToDate(time_t tUTC, time_t tTimeZone = -8 * 3600) noexcept;// 将时间转变为整型(YYYYMMDD)形式, 默认东八区标准时间
-[[nodiscard]] long ConvertToTime(time_t tUTC, time_t tTimeZone = -8 * 3600) noexcept; // 将时间转变为整数（HHMMSS)形式, 默认东八区标准时间
-[[nodiscard]] INT64 ConvertToDateTime(time_t tUTC, time_t tTimeZone = -8 * 3600) noexcept; // 将时间转变为整数（YYYYMMDDHHMMSS)形式, 默认东八区标准时间
+[[nodiscard]] long ConvertToDate(time_t tUTC, time_t tTimeZone) noexcept;// 将时间转变为整型(YYYYMMDD)形式
+[[nodiscard]] long ConvertToTime(time_t tUTC, time_t tTimeZone) noexcept; // 将时间转变为整数（HHMMSS)形式
+[[nodiscard]] INT64 ConvertToDateTime(time_t tUTC, time_t tTimeZone) noexcept; // 将时间转变为整数（YYYYMMDDHHMMSS)形式
 [[nodiscard]] long ConvertToDate(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
 [[nodiscard]] long ConvertToTime(const tm* ptm) noexcept; // 将时间转变为整型(HHMMSS)形式
 [[nodiscard]] INT64 ConvertToDateTime(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDDHHMMSS)形式
@@ -39,5 +39,5 @@ void GetMarketTimeStruct(tm* tm_, time_t tUTC, time_t tTimeZone);
 
 [[nodiscard]] time_t XferToTTime(CString strTime, const CString& strFormat);
 
-inline time_t GetUTCTime() noexcept { return gl_tUTC; }
-inline void TestSetUTCTime(time_t time) noexcept { gl_tUTC = time; }
+inline time_t GetUTCTime() noexcept { return gl_tUTCTime; }
+inline void TestSetUTCTime(time_t time) noexcept { gl_tUTCTime = time; }

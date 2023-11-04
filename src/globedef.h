@@ -15,4 +15,6 @@
 
 #include"ClassDeclaration.h"
 
-extern time_t gl_tUTC; // 所有的市场使用同一个协调世界时（Coordinated Universal Time）
+extern counting_semaphore<8> gl_BackgroundWorkingThread; // 最多后台工作线程允许数量
+
+extern time_t gl_tUTCTime; // 所有的市场使用同一个协调世界时（Coordinated Universal Time）

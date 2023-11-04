@@ -31,9 +31,9 @@ UINT ThreadSaveTempRTData(not_null<CChinaMarket*> pMarket) {
 	return 13;
 }
 
-UINT ThreadLoadTempRTData(not_null<CChinaMarket*> pMarket, long lTheDay) {
+UINT ThreadLoadTempRTData(not_null<CChinaMarket*> pMarket, long lTheDate) {
 	gl_ProcessChinaMarketRTData.acquire();
-	pMarket->LoadTempRTData(lTheDay);
+	pMarket->LoadTempRTData(lTheDate);
 	gl_ProcessChinaMarketRTData.release();
 
 	return 19;

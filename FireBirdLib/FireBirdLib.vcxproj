@@ -12,7 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\accessory\accessory.h" />
-    <ClInclude Include="..\src\accessory\CallableFunction.h" />
     <ClInclude Include="..\src\accessory\MarketTaskQueue.h" />
     <ClInclude Include="..\src\accessory\MarketTask.h" />
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h" />
@@ -199,7 +198,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\accessory.cpp" />
-    <ClCompile Include="..\src\accessory\CallableFunction.cpp" />
     <ClCompile Include="..\src\accessory\MarketTask.cpp" />
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp" />
     <ClCompile Include="..\src\accessory\ConvertToString.cpp" />

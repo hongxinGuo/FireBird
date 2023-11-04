@@ -6,7 +6,6 @@
 
 #include"WorldMarket.h"
 #include"FinnhubForexSymbol.h"
-#include"CallableFunction.h"
 
 #include "ProductFinnhubForexDayLine.h"
 

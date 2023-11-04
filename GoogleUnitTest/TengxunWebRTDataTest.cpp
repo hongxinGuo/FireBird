@@ -62,7 +62,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWebRTDataTest1, TestTengxunRTDataActive) {
-		const time_t t = gl_tUTC;
+		const time_t t = gl_tUTCTime;
 		CWebRTData id;
 		EXPECT_FALSE(id.CheckTengxunRTDataActive());
 		tm tm_;
@@ -103,7 +103,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(id.CheckTengxunRTDataActive());
 
 		// 恢复原状
-		gl_tUTC = t;
+		gl_tUTCTime = t;
 	}
 
 	struct TengxunRTData {

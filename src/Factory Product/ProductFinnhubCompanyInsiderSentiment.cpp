@@ -6,7 +6,6 @@
 
 #include"WorldMarket.h"
 #include"WorldStock.h"
-#include"CallableFunction.h"
 
 #include "ProductFinnhubCompanyInsiderSentiment.h"
 

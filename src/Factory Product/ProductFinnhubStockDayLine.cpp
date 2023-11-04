@@ -7,8 +7,6 @@
 #include"WorldMarket.h"
 #include"WorldStock.h"
 
-#include"CallableFunction.h"
-
 #include "ProductFinnhubStockDayLine.h"
 
 using namespace std;

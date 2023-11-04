@@ -41,11 +41,11 @@ void CVirtualMarket::SchedulingTask() {
 }
 
 void CVirtualMarket::CalculateTime() noexcept {
-	time(&gl_tUTC);
+	time(&gl_tUTCTime);
 
-	m_tmMarket = TransferToMarketTime();
-	m_lMarketDate = (m_tmMarket.tm_year + 1900) * 10000 + (m_tmMarket.tm_mon + 1) * 100 + m_tmMarket.tm_mday;
-	m_lMarketTime = m_tmMarket.tm_hour * 10000 + m_tmMarket.tm_min * 100 + m_tmMarket.tm_sec;
+	GetMarketTimeStruct(&m_tmMarket, gl_tUTCTime, m_lMarketTimeZone);
+	m_lMarketDate = ConvertToDate(&m_tmMarket);
+	m_lMarketTime = ConvertToTime(&m_tmMarket);
 }
 
 void CVirtualMarket::RunDataSource(long lCurrentTime) const {
@@ -80,7 +80,7 @@ void CVirtualMarket::RectifyTaskTime() {
 		vector<CMarketTaskPtr> vTask;
 		while (!m_marketTask.IsEmpty()) {
 			vTask.push_back(m_marketTask.GetTask());
-			m_marketTask.DiscardTask();
+			m_marketTask.DiscardCurrentTask();
 		}
 		ASSERT(m_marketTask.IsEmpty());
 		for (const auto& pMarketTask : vTask) {
@@ -91,7 +91,7 @@ void CVirtualMarket::RectifyTaskTime() {
 	}
 }
 
-tm CVirtualMarket::TransferToMarketTime(time_t tUTC) const {
+tm CVirtualMarket::GetMarketTime(time_t tUTC) const {
 	tm tm_{};
 
 	GetMarketTimeStruct(&tm_, tUTC, m_lMarketTimeZone);
@@ -107,12 +107,12 @@ time_t CVirtualMarket::TransferToUTCTime(long lMarketDate, long lMarketTime) con
 	return ConvertToTTime(lMarketDate, m_lMarketTimeZone, lMarketTime);
 }
 
-long CVirtualMarket::TransferToMarketDate(time_t tUTC) const {
+long CVirtualMarket::GetMarketDate(time_t tUTC) const {
 	tm tm_{};
 
 	GetMarketTimeStruct(&tm_, tUTC, m_lMarketTimeZone);
 
-	return (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+	return (ConvertToDate(&tm_));
 }
 
 void CVirtualMarket::CalculateLastTradeDate() noexcept {
@@ -120,19 +120,19 @@ void CVirtualMarket::CalculateLastTradeDate() noexcept {
 
 	switch (m_tmMarket.tm_wday) {
 	case 1: // 星期一
-		tMarket = gl_tUTC - 3 * 24 * 3600; //
+		tMarket = gl_tUTCTime - 3 * 24 * 3600; //
 		break;
 	case 0: //星期日
-		tMarket = gl_tUTC - 3 * 24 * 3600; //
+		tMarket = gl_tUTCTime - 3 * 24 * 3600; //
 		break;
 	case 6: // 星期六
-		tMarket = gl_tUTC - 2 * 24 * 3600; //
+		tMarket = gl_tUTCTime - 2 * 24 * 3600; //
 		break;
 	default: // 其他
-		tMarket = gl_tUTC - 24 * 3600; //
+		tMarket = gl_tUTCTime - 24 * 3600; //
 	}
-	const tm tmMarketTime = TransferToMarketTime(tMarket);
-	m_lMarketLastTradeDate = (tmMarketTime.tm_year + 1900) * 10000 + (tmMarketTime.tm_mon + 1) * 100 + tmMarketTime.tm_mday;
+	const tm tmMarketTime = GetMarketTime(tMarket);
+	m_lMarketLastTradeDate = ConvertToDate(&tmMarketTime);
 }
 
 bool CVirtualMarket::IsWorkingDay() const noexcept {
@@ -165,7 +165,7 @@ CString CVirtualMarket::GetStringOfLocalTime() const {
 	char buffer[30];
 	tm tmLocal;
 
-	localtime_s(&tmLocal, &gl_tUTC);
+	localtime_s(&tmLocal, &gl_tUTCTime);
 	sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 	CString str = buffer;
 	return (str);
@@ -175,7 +175,7 @@ CString CVirtualMarket::GetStringOfLocalDateTime() const {
 	char buffer[100];
 	tm tmLocal;
 
-	localtime_s(&tmLocal, &gl_tUTC);
+	localtime_s(&tmLocal, &gl_tUTCTime);
 	sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 	CString str = buffer;
 	return (str);

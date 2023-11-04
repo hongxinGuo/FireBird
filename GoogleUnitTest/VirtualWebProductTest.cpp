@@ -10,23 +10,41 @@
 using namespace testing;
 
 namespace FireBirdTest {
+	TEST(CallableFunctionTest, TestCompareDayLine) {
+		const auto p1 = make_shared<CDayLine>();
+		const auto p2 = make_shared<CDayLine>();
+		p1->SetDate(0);
+		p2->SetDate(1);
+		EXPECT_TRUE(CompareDayLineDate(p1, p2));
+		p1->SetDate(1);
+		p2->SetDate(1);
+		EXPECT_FALSE(CompareDayLineDate(p1, p2));
+		p1->SetDate(2);
+		p2->SetDate(1);
+		EXPECT_FALSE(CompareDayLineDate(p1, p2));
+	}
+
 	class CVirtualWebProductTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:

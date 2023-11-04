@@ -5,7 +5,6 @@
 
 #include"WorldStock.h"
 #include"WorldMarket.h"
-#include"CallableFunction.h"
 
 #include "ProductTiingoStockDayLine.h"
 

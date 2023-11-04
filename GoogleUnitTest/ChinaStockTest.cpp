@@ -499,7 +499,7 @@ namespace FireBirdTest {
 		auto pRTData = make_shared<CWebRTData>();
 		time_t tt;
 		time(&tt);
-		long lDateSource = ConvertToDate(tt);
+		long lDateSource = ConvertToDate(tt, 0);
 
 		pRTData->SetTransactionTime(tt);
 		pRTData->SetLastClose(10101010);
@@ -518,7 +518,7 @@ namespace FireBirdTest {
 			pRTData->SetVSell(i, i * 45678);
 		}
 		stock.UpdateStatus(pRTData);
-		long lDateDest = ConvertToDate(stock.GetTransactionTime());
+		long lDateDest = ConvertToDate(stock.GetTransactionTime(), 0);
 		EXPECT_EQ(lDateSource, lDateDest);
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
@@ -1732,7 +1732,7 @@ namespace FireBirdTest {
 
 		pStock->UpdateCurrentHistoryCandle(pDayLine);
 
-		EXPECT_EQ(pDayLine->GetMarketDate(), ConvertToDate(pStock->GetTransactionTime()));
+		EXPECT_EQ(pDayLine->GetMarketDate(), ConvertToDate(pStock->GetTransactionTime(), 0));
 		EXPECT_STREQ(pDayLine->GetExchange(), pStock->GetExchangeCode());
 		EXPECT_STREQ(pDayLine->GetStockSymbol(), pStock->GetSymbol());
 		EXPECT_STREQ(pDayLine->GetDisplaySymbol(), pStock->GetDisplaySymbol());

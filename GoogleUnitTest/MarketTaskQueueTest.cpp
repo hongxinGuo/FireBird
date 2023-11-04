@@ -6,11 +6,13 @@
 namespace FireBirdTest {
 	class CMarketTaskQueueTest : public testing::Test {
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -33,19 +35,19 @@ namespace FireBirdTest {
 		EXPECT_FALSE(marketTaskQueue.IsEmpty());
 
 		auto pTask = marketTaskQueue.GetTask();
-		marketTaskQueue.DiscardTask();
+		marketTaskQueue.DiscardCurrentTask();
 		EXPECT_EQ(pTask->GetTime(), 1) << "任务按时间顺序排列,较早的排在前面";
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
 		pTask = marketTaskQueue.GetTask();
-		marketTaskQueue.DiscardTask();
+		marketTaskQueue.DiscardCurrentTask();
 		EXPECT_EQ(pTask->GetTime(), 1);
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__) << "相同时间的任务，排列顺序按入列先后";
 		pTask = marketTaskQueue.GetTask();
-		marketTaskQueue.DiscardTask();
+		marketTaskQueue.DiscardCurrentTask();
 		EXPECT_EQ(pTask->GetTime(), 10000) << "任务按时间顺序排列,较早的排在前面";
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__);
 		pTask = marketTaskQueue.GetTask();
-		marketTaskQueue.DiscardTask();
+		marketTaskQueue.DiscardCurrentTask();
 		EXPECT_EQ(pTask->GetTime(), 101010) << "任务按时间顺序排列,较早的排在前面";
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);
 		EXPECT_EQ(marketTaskQueue.Size(), 0);

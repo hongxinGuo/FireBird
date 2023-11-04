@@ -24,7 +24,7 @@ namespace testing {
 		MOCK_METHOD(void, CreateThreadBuildWeekLineRS, (), (override));
 		MOCK_METHOD(void, CreateThreadBuildWeekLineRSOfDate, (long lThisDate), (override));
 		MOCK_METHOD(void, CreateThreadBuildWeekLineOfCurrentWeek, (), (override));
-		MOCK_METHOD(void, CreateThreadLoadTempRTData, (long lTheDay), (override));
+		MOCK_METHOD(void, CreateThreadLoadTempRTData, (long lTheDate), (override));
 		MOCK_METHOD(void, CreateThreadUpdateTempRTData, (), (override));
 		MOCK_METHOD(void, CreateThreadUpdateOptionDB, (), (override));
 		MOCK_METHOD(void, CreateThreadSaveStockSection, (), (override));
@@ -34,7 +34,7 @@ namespace testing {
 		MOCK_METHOD(void, UpdateStockProfileDB, (), (override));
 		MOCK_METHOD(void, AppendChosenStockDB, (), (override));
 		MOCK_METHOD(void, SaveTempRTData, (), (override));
-		MOCK_METHOD(void, LoadTempRTData, (long lTheDay), (override));
+		MOCK_METHOD(void, LoadTempRTData, (long lTheDate), (override));
 		MOCK_METHOD(long, BuildDayLine, (long lCurrentTradeDate), (override));
 		MOCK_METHOD(bool, Choice10RSStrong2StockSet, (), (override));
 		MOCK_METHOD(bool, Choice10RSStrong1StockSet, (), (override));

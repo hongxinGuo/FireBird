@@ -12,7 +12,7 @@ public:
 	void AddTask(const CMarketTaskPtr& pTask) { m_vMarketTask.push(pTask); }
 	void AddTask(long lTaskType, long lExecuteTime);
 	CMarketTaskPtr GetTask() const { return m_vMarketTask.top(); }
-	void DiscardTask() { m_vMarketTask.pop(); }
+	void DiscardCurrentTask() { m_vMarketTask.pop(); }
 	size_t Size() const { return m_vMarketTask.size(); }
 	bool IsEmpty() const {
 		if (Size() == 0) return true;

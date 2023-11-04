@@ -12,6 +12,8 @@ enum {
 	NO_ACCESS_RIGHT_ = 2,
 };
 
+[[nodiscard]] bool CompareDayLineDate(const CDayLinePtr& p1, const CDayLinePtr& p2);
+
 class CVirtualWebProduct {
 public:
 	CVirtualWebProduct();

@@ -62,7 +62,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWebRTDataTest2, TestNeteaseRTDataActive) {
-		const time_t tTemp = gl_tUTC;
+		const time_t tTemp = gl_tUTCTime;
 		CWebRTData id;
 		EXPECT_FALSE(id.CheckNeteaseRTDataActive());
 		tm tm_;
@@ -83,7 +83,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(id.CheckNeteaseRTDataActive());
 
 		// »Ö¸´Ô­×´
-		gl_tUTC = tTemp;
+		gl_tUTCTime = tTemp;
 	}
 
 	struct NeteaseRTData {

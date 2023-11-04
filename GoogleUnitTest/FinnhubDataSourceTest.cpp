@@ -987,7 +987,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("世界市场初始化完毕"));
 
 		// 恢复原状
-		while (!gl_pWorldMarket->IsMarketTaskEmpty()) gl_pWorldMarket->DiscardMarketTask();
+		while (!gl_pWorldMarket->IsMarketTaskEmpty()) gl_pWorldMarket->DiscardCurrentMarketTask();
 		gl_pFinnhubDataSource->SetUpdateSymbol(true);
 		gl_pFinnhubDataSource->SetUpdateCryptoExchange(true);
 		gl_pFinnhubDataSource->SetUpdateForexExchange(true);

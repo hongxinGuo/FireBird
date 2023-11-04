@@ -6,7 +6,6 @@
 
 #include"WorldMarket.h"
 #include"FinnhubCryptoSymbol.h"
-#include"CallableFunction.h"
 
 #include "ProductFinnhubCryptoDayLine.h"
 

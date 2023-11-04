@@ -1,8 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////////////
 //
-// 计算从gl_lRelativeStrongEndDate至gl_lDay的相对强度线程。
+// 计算从gl_lRelativeStrongEndDate至gl_lDate的相对强度线程。
 //
-// 此线程调用ThreadBuildDayLineRSOfDate线程，目前最多允许同时生成8个线程。
+// 此线程调用ThreadBuildDayLineRSOfDate线程，目前只允许最多八个线程同时执行。
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////
@@ -16,11 +16,11 @@
 
 UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculatingDate) {
 	pMarket->SetCalculatingDayLineRS(true);
-	long lToday = startCalculatingDate;
+	long lThatDate = startCalculatingDate;
 
-	const long year = lToday / 10000;
-	const long month = lToday / 100 - year * 100;
-	const long day = lToday - year * 10000 - month * 100;
+	const long year = lThatDate / 10000;
+	const long month = lThatDate / 100 - year * 100;
+	const long day = lThatDate - year * 10000 - month * 100;
 	CTime ctCurrent(year, month, day, 12, 0, 0);
 	const CTimeSpan oneDay(1, 0, 0, 0);
 
@@ -32,11 +32,11 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
 			// 星期六和星期日无交易，略过
 			// 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
 			// 每次调用时生成新的局部变量，启动工作线程后执行分离动作（detach），其资源由系统在工作线程执行完后进行回收。
-			pMarket->CreateThreadBuildDayLineRSOfDate(lToday);
+			pMarket->CreateThreadBuildDayLineRSOfDate(lThatDate);
 		}
 		ctCurrent += oneDay;
-		lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-	} while (lToday <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）
+		lThatDate = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
+	} while (lThatDate <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）
 
 	while (gl_ThreadStatus.IsBackGroundThreadsWorking()) Sleep(100); // 等待所有的工作线程结束
 
@@ -67,16 +67,16 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarket*> pMarket, long startCalculating
 //////////////////////////////////////////////////////////////////////////////////////////
 //
 // 计算给定日期的日线相对强度。
-//
+// 使用互斥变量控制并行线程数。目前允许最多八个线程执行
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadBuildDayLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-	gl_UpdateChinaMarketDB.acquire();
+	gl_BackgroundWorkingThread.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem() && !gl_systemConfiguration.IsExitingCalculatingRS()) {
 		pMarket->BuildDayLineRS(lDate); // 调用实际执行函数
 	}
-	gl_UpdateChinaMarketDB.release();
+	gl_BackgroundWorkingThread.release();
 	gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 
 	return 12;

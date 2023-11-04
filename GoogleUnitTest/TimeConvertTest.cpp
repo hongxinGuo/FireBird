@@ -34,7 +34,7 @@ namespace FireBirdTest {
 		const long lDate = ConvertToDate(&tm_);
 		const time_t tt = _mkgmtime(&tm_2);
 		const long lDate2 = ConvertToDate(tt, 0); // UTC时间
-		const long lDate3 = ConvertToDate(tt); // 默认东八区时间
+		const long lDate3 = ConvertToDate(tt, -8 * 3600); // 东八区时间
 		EXPECT_EQ(lDate, 20000105);
 		EXPECT_EQ(lDate2, 20000105);
 		EXPECT_EQ(lDate3, 20000106) << "东八区时间比UTC时间早8小时，故而是6日了";
@@ -52,7 +52,7 @@ namespace FireBirdTest {
 		const long lTime = ConvertToTime(&tm_);
 		const time_t tt = _mkgmtime(&tm_2);
 		const long lTime2 = ConvertToTime(tt, 0); // UTC时间
-		const long lTime3 = ConvertToTime(tt); // 默认东八区时间
+		const long lTime3 = ConvertToTime(tt, -8 * 3600); // 东八区时间
 		EXPECT_EQ(lTime, lTime2);
 		EXPECT_EQ(lTime, 102030);
 		EXPECT_EQ(lTime2, 102030);
@@ -71,7 +71,7 @@ namespace FireBirdTest {
 		const INT64 lDateTime = ConvertToDateTime(&tm_);
 		const time_t tt = _mkgmtime(&tm_2);
 		const INT64 lDateTime2 = ConvertToDateTime(tt, 0); // UTC时间
-		const INT64 lDateTime3 = ConvertToDateTime(tt); // 默认东八区时间
+		const INT64 lDateTime3 = ConvertToDateTime(tt, -8 * 3600); // 东八区时间
 		EXPECT_EQ(lDateTime, lDateTime2);
 		EXPECT_EQ(lDateTime, 20000105102030);
 		EXPECT_EQ(lDateTime2, 20000105102030);

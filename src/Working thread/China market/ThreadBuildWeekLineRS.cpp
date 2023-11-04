@@ -60,18 +60,18 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 //////////////////////////////////////////////////////////////////////////////////////////
 //
 // 计算给定日期的周线相对强度。
-//
+// 最多允许八个工作线程并行。
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-	gl_UpdateChinaMarketDB.acquire();
+	gl_BackgroundWorkingThread.acquire();
 	ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
 
 	if (!gl_systemConfiguration.IsExitingSystem() && !gl_systemConfiguration.IsExitingCalculatingRS()) {
 		pMarket->BuildWeekLineRS(lDate);
 	}
-	gl_UpdateChinaMarketDB.release();
+	gl_BackgroundWorkingThread.release();
 	gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 
 	return 31;

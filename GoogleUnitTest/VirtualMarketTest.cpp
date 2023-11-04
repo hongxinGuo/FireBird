@@ -10,22 +10,26 @@ namespace FireBirdTest {
 	class CVirtualMarketTest : public testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			virtualMarket.SetReadyToRun(true);
 			virtualMarket.SetResetMarket(true);
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -43,32 +47,32 @@ namespace FireBirdTest {
 
 		auto pTask = virtualMarket.GetMarketTask();
 		EXPECT_EQ(pTask->GetTime(), 1) << "相同时间的任务，随机排列";
-		virtualMarket.DiscardMarketTask();
+		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
 		EXPECT_EQ(pTask->GetTime(), 1) << "相同时间的任务，随机排列";
-		virtualMarket.DiscardMarketTask();
+		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
 		EXPECT_EQ(pTask->GetTime(), 10000) << "相同时间的任务，随机排列";
-		virtualMarket.DiscardMarketTask();
+		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
 		EXPECT_EQ(pTask->GetTime(), 10000) << "相同时间的任务，随机排列";
-		virtualMarket.DiscardMarketTask();
+		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
 		EXPECT_EQ(pTask->GetTime(), 10000) << "相同时间的任务，随机排列";
-		virtualMarket.DiscardMarketTask();
+		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
 		EXPECT_EQ(pTask->GetTime(), 10000) << "相同时间的任务，随机排列";
-		virtualMarket.DiscardMarketTask();
+		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), 3);
 		EXPECT_EQ(pTask->GetTime(), 20000);
-		virtualMarket.DiscardMarketTask();
+		virtualMarket.DiscardCurrentMarketTask();
 	}
 
 	TEST_F(CVirtualMarketTest, TestRectifyTaskTime1) {
@@ -103,13 +107,13 @@ namespace FireBirdTest {
 
 		pTask = virtualMarket.GetMarketTask();
 		EXPECT_EQ(pTask->GetTime(), 350) << "所有的时间皆大于240000，故而皆减去240000";
-		virtualMarket.DiscardMarketTask();
+		virtualMarket.DiscardCurrentMarketTask();
 		pTask = virtualMarket.GetMarketTask();
 		EXPECT_EQ(pTask->GetTime(), 34010) << "所有的时间皆大于240000，故而皆减去240000";
-		virtualMarket.DiscardMarketTask();
+		virtualMarket.DiscardCurrentMarketTask();
 		pTask = virtualMarket.GetMarketTask();
 		EXPECT_EQ(pTask->GetTime(), 60000) << "所有的时间皆大于240000，故而皆减去240000";
-		virtualMarket.DiscardMarketTask();
+		virtualMarket.DiscardCurrentMarketTask();
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsOrdinaryTradeTime1) {
@@ -179,7 +183,7 @@ namespace FireBirdTest {
 		virtualMarket.CalculateLastTradeDate();
 		EXPECT_EQ(virtualMarket.GetDayOfWeek(), tm_.tm_wday);
 
-		const long day = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+		const long day = ConvertToDate(&tm_);
 		EXPECT_EQ(virtualMarket.GetMarketDate(), day);
 		EXPECT_EQ(virtualMarket.GetMonthOfYear(), tm_.tm_mon + 1);
 		EXPECT_EQ(virtualMarket.GetDateOfMonth(), tm_.tm_mday);
@@ -211,7 +215,7 @@ namespace FireBirdTest {
 			tUTC -= 24 * 3600; //
 		}
 		GetMarketTimeStruct(&tm_, tUTC, virtualMarket.GetMarketTimeZone());
-		const long LastTradeDate = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+		const long LastTradeDate = ConvertToDate(&tm_);
 		EXPECT_EQ(virtualMarket.GetLastTradeDate(), LastTradeDate);
 	}
 
@@ -222,7 +226,7 @@ namespace FireBirdTest {
 		virtualMarket.CalculateTime();
 		time(&tt);
 		gmtime_s(&tm2_, &tt);
-		const tm tm_ = virtualMarket.TransferToMarketTime();
+		const tm tm_ = virtualMarket.GetMarketTime(GetUTCTime());
 		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour + 8) || (tm_.tm_hour == tm2_.tm_hour - 16))) << "VirtualMarket默认为东八区";
 	}
 
@@ -240,7 +244,7 @@ namespace FireBirdTest {
 		tmMarket.tm_sec = lMarketTime - (lMarketTime / 100) * 100;
 
 		tTime = virtualMarket.TransferToUTCTime(&tmMarket); // 使用默认时间150000.
-		tm2 = virtualMarket.TransferToMarketTime(tTime);
+		tm2 = virtualMarket.GetMarketTime(tTime);
 		EXPECT_EQ(tm2.tm_year, 100);
 		EXPECT_EQ(tm2.tm_mon, 2);
 		EXPECT_EQ(tm2.tm_mday, 1);
@@ -249,7 +253,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(tm2.tm_sec, 30);
 
 		tTime = virtualMarket.TransferToUTCTime(lMarketDate); // 使用默认时间150000.
-		tm2 = virtualMarket.TransferToMarketTime(tTime);
+		tm2 = virtualMarket.GetMarketTime(tTime);
 		EXPECT_EQ(tm2.tm_year, 100);
 		EXPECT_EQ(tm2.tm_mon, 2);
 		EXPECT_EQ(tm2.tm_mday, 1);
@@ -258,7 +262,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(tm2.tm_sec, 00);
 
 		tTime = virtualMarket.TransferToUTCTime(lMarketDate, lMarketTime);
-		tm3 = virtualMarket.TransferToMarketTime(tTime);
+		tm3 = virtualMarket.GetMarketTime(tTime);
 		EXPECT_EQ(tm3.tm_year, 100);
 		EXPECT_EQ(tm3.tm_mon, 2);
 		EXPECT_EQ(tm3.tm_mday, 1);
@@ -281,7 +285,7 @@ namespace FireBirdTest {
 
 		const time_t tTime = virtualMarket.TransferToUTCTime(&tmMarket);
 
-		const long lMarketDate2 = virtualMarket.TransferToMarketDate(tTime);
+		const long lMarketDate2 = virtualMarket.GetMarketDate(tTime);
 		EXPECT_EQ(lMarketDate2, lMarketDate);
 	}
 
@@ -311,7 +315,7 @@ namespace FireBirdTest {
 				tUTC -= 24 * 3600; //
 			}
 			GetMarketTimeStruct(&tm_, tUTC, virtualMarket.GetMarketTimeZone());
-			long LastTradeDate = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+			long LastTradeDate = ConvertToDate(&tm_);
 			EXPECT_EQ(virtualMarket.GetLastTradeDate(), LastTradeDate);
 		}
 	}

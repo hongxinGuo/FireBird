@@ -171,9 +171,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\accessory\CallableFunction.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
@@ -728,9 +725,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\accessory\CallableFunction.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>

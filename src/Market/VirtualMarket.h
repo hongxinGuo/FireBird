@@ -4,6 +4,7 @@
 #include"VirtualDataSource.h"
 
 #include"MarketTaskQueue.h"
+#include"TimeConvert.h"
 
 class CVirtualMarket {
 public:
@@ -32,15 +33,15 @@ public:
 	void AddTask(const CMarketTaskPtr& pTask) { m_marketTask.AddTask(pTask); }
 	void AddTask(const long lTaskType, const long lExecuteTime) { m_marketTask.AddTask(lTaskType, lExecuteTime); }
 	CMarketTaskPtr GetMarketTask() const { return m_marketTask.GetTask(); }
-	void DiscardMarketTask() { m_marketTask.DiscardTask(); }
+	void DiscardCurrentMarketTask() { m_marketTask.DiscardCurrentTask(); }
 	vector<CMarketTaskPtr> GetMarketTaskVector() { return m_marketTask.GetTaskVector(); }
 	void RectifyTaskTime();
 
 	// 时间函数
-	tm TransferToMarketTime(time_t tUTC = gl_tUTC) const; // 得到本市场的时间（从UTC时间）
+	tm GetMarketTime(time_t tUTC) const; // 得到本市场的时间（从UTC时间）
 	time_t TransferToUTCTime(tm* tmMarketTime) const; // 将市场时间结构转化为UTC时间
 	time_t TransferToUTCTime(long lMarketDate, long lMarketTime = 150000) const; // 将市场时间结构转化为UTC时间
-	long TransferToMarketDate(time_t tUTC = gl_tUTC) const; // 得到本市场的日期
+	long GetMarketDate(time_t tUTC) const; // 得到本市场的日期
 
 	long GetMarketTimeZone() const noexcept { return m_lMarketTimeZone; }
 	CString GetMarketID() const noexcept { return m_strMarketId; }
@@ -92,7 +93,7 @@ public:
 
 public:
 	// 测试用函数
-	static void TEST_SetUTCTime(const time_t Time) noexcept { gl_tUTC = Time; }
+	static void TEST_SetUTCTime(const time_t Time) noexcept { gl_tUTCTime = Time; }
 	void TEST_SetFormattedMarketTime(const long lTime) noexcept { m_lMarketTime = lTime; } // 此函数只用于测试
 	void TEST_SetMarketTM(const tm& tm_) noexcept { m_tmMarket = tm_; }
 	void TEST_SetFormattedMarketDate(const long lDate) noexcept { m_lMarketDate = lDate; }

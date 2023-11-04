@@ -87,7 +87,7 @@ bool CInaccessibleExchanges::HaveExchange() const {
 
 CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE(_T("GlobeOption全局变量只允许存在一个实例\n"));
+		TRACE(_T("FinnhubINaccessibleExchange全局变量只允许存在一个实例\n"));
 #ifdef _DEBUG
 		ASSERT(FALSE);
 #endif // _DEBUG

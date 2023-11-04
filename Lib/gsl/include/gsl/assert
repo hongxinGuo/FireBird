@@ -46,7 +46,7 @@
 // Hopefully temporary until suppression standardization occurs
 //
 #if defined(__clang__)
-#define GSL_SUPPRESS(x) [[gsl::suppress("x")]]
+#define GSL_SUPPRESS(x) [[gsl::suppress(#x)]]
 #else
 #if defined(_MSC_VER) && !defined(__INTEL_COMPILER) && !defined(__NVCC__)
 #define GSL_SUPPRESS(x) [[gsl::suppress(x)]]
@@ -54,9 +54,6 @@
 #define GSL_SUPPRESS(x)
 #endif // _MSC_VER
 #endif // __clang__
-
-#define GSL_STRINGIFY_DETAIL(x) #x
-#define GSL_STRINGIFY(x) GSL_STRINGIFY_DETAIL(x)
 
 #if defined(__clang__) || defined(__GNUC__)
 #define GSL_LIKELY(x) __builtin_expect(!!(x), 1)

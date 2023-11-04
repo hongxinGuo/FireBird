@@ -40,7 +40,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
 
-			while (!s_pMockWorldMarket->IsMarketTaskEmpty()) s_pMockWorldMarket->DiscardMarketTask();
+			while (!s_pMockWorldMarket->IsMarketTaskEmpty()) s_pMockWorldMarket->DiscardCurrentMarketTask();
 		}
 
 		static void TearDownTestSuite() {
@@ -184,7 +184,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetTime(), 10100);
 
 		// 恢复原状
-		s_pMockWorldMarket->DiscardMarketTask();
+		s_pMockWorldMarket->DiscardCurrentMarketTask();
 		EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
 		gl_pTiingoDataSource->SetErrorCode(0);
 	}
@@ -204,7 +204,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__);
 		EXPECT_EQ(pTask->GetTime(), 165759) << "每五分钟更新一次";
 
-		s_pMockWorldMarket->DiscardMarketTask();
+		s_pMockWorldMarket->DiscardCurrentMarketTask();
 	}
 
 	TEST_F(CMockWorldMarketTest, TestTaskUpdateStockProfileDB2) {
@@ -222,6 +222,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__);
 		EXPECT_EQ(pTask->GetTime(), 170510) << "170000系统需要重启，推迟至170510重新开始更新";
 
-		s_pMockWorldMarket->DiscardMarketTask();
+		s_pMockWorldMarket->DiscardCurrentMarketTask();
 	}
 }
