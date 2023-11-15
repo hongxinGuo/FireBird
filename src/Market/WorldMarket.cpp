@@ -39,6 +39,9 @@ CWorldMarket::CWorldMarket() {
 	m_lMarketTimeZone = 4 * 3600; // 美国股市使用美东标准时间, GMT + 4
 	CalculateTime();
 
+	m_pvMarketStatus = make_shared<vector<CMarketStatusPtr>>();
+	m_pvMarketHoliday = make_shared<vector<CMarketHolidayPtr>>();
+
 	Reset();
 
 	AddTask(CREATE_TASK__, 1);
@@ -60,6 +63,8 @@ void CWorldMarket::ResetFinnhub() {
 		gl_finnhubInaccessibleExchange.Clear(); // 不使用更新时间早于一周的数据。清除之，让系统自动查验新的状态。
 		gl_finnhubInaccessibleExchange.SetUpdateDate(GetMarketDate());
 	}
+	m_pvMarketStatus->clear();
+	m_pvMarketHoliday->clear();
 }
 
 void CWorldMarket::ResetQuandl() { }
@@ -906,5 +911,17 @@ void CWorldMarket::UpdateWorldStockFromFinnhubSocket(const CFinnhubSocketPtr& pF
 		const CWorldStockPtr pStock = GetStock(pFinnhubData->m_sSymbol.c_str());
 		pStock->SetActive(true);
 		pStock->SetNew(pFinnhubData->m_dLastPrice * 1000);
+	}
+}
+
+void CWorldMarket::UpdateMarketStatus(CMarketStatusVectorPtr pv) {
+	for (auto p : *pv) {
+		m_pvMarketStatus->push_back(p);
+	}
+}
+
+void CWorldMarket::UpdateMarketHoliday(CMarketHolidayVectorPtr pv) {
+	for (auto p : *pv) {
+		m_pvMarketHoliday->push_back(p);
 	}
 }

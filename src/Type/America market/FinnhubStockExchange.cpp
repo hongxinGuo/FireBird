@@ -12,7 +12,9 @@ CFinnhubStockExchange::CFinnhubStockExchange() {
 	m_strCountry = _T("");
 	m_strSource = _T("");
 
-	m_fUpdated = false;
+	m_fStockSymbolUpdated = false;
+	m_fMarketHolidayUpdated = false;
+	m_fMarketStatusUpdated = false;
 }
 
 void CFinnhubStockExchange::Append(CSetFinnhubStockExchange& setFinnhubExchange) const {

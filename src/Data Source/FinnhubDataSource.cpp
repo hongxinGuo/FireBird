@@ -32,6 +32,7 @@ bool CFinnhubDataSource::Reset() {
 	// Finnhub各申请网络数据标识，每日需要重置。
 	m_fUpdateCountryList = true;
 	m_fUpdateSymbol = true; // 每日需要更新代码
+	m_fUpdateMarketStatus = true;
 	m_fUpdateStockProfile = true;
 	m_fUpdateCompanyNews = true;
 	m_fUpdateCompanyPriceMetrics = true;
@@ -69,6 +70,10 @@ void CFinnhubDataSource::UpdateStatus() {
 	case COMPANY_PROFILE_CONCISE_:
 		break;
 	case STOCK_SYMBOLS_:
+		break;
+	case MARKET_STATUS_:
+		break;
+	case MARKET_HOLIDAY_:
 		break;
 	case COMPANY_EXECUTIVE_: // Premium
 		break;
@@ -196,6 +201,7 @@ void CFinnhubDataSource::InquireFinnhub(const long lCurrentTime) {
 		InquireCountryList();
 		InquireForexExchange();
 		InquireCryptoExchange();
+		InquireMarketStatus();
 		InquireCompanySymbol(); // 第一个动作，首先申请当日证券代码
 		InquireForexSymbol();
 		InquireCryptoSymbol();
@@ -231,6 +237,47 @@ bool CFinnhubDataSource::InquireCountryList() {
 	return false;
 }
 
+bool CFinnhubDataSource::InquireMarketStatus() {
+	const long lExchangeSize = gl_pWorldMarket->GetStockExchangeSize();
+	bool fHaveInquiry = false;
+	constexpr int iInquiryType = MARKET_STATUS_;
+
+	if (!IsInquiring() && IsUpdateMarketStatus()) {
+		CFinnhubStockExchangePtr pExchange;
+		bool fFound = false;
+		long lCurrentStockExchangePos;
+		if (!m_fInquiringFinnhubMarketStatus) {
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub MarketStatus..."));
+			m_fInquiringFinnhubMarketStatus = true;
+		}
+		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
+			if (!gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos)->IsMarketStatusUpdated()) {
+				pExchange = gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos);
+				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pExchange->m_strCode)) {
+					fFound = true;
+					break;
+				}
+			}
+		}
+		if (fFound) {
+			fHaveInquiry = true;
+			const auto product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
+			product->SetIndex(lCurrentStockExchangePos);
+			StoreInquiry(product);
+			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub交易所代码:") + pExchange->m_strCode);
+			SetInquiring(true);
+		}
+		else {
+			m_fInquiringFinnhubMarketStatus = false;
+			fHaveInquiry = false;
+			SetUpdateMarketStatus(false);
+			const CString str = "Finnhub MarketStatus查询完毕";
+			gl_systemMessage.PushInformationMessage(str);
+		}
+	}
+	return fHaveInquiry;
+}
+
 bool CFinnhubDataSource::InquireCompanySymbol() {
 	const long lExchangeSize = gl_pWorldMarket->GetStockExchangeSize();
 	bool fHaveInquiry = false;
@@ -245,7 +292,7 @@ bool CFinnhubDataSource::InquireCompanySymbol() {
 			m_fInquiringFinnhubStockSymbol = true;
 		}
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
-			if (!gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos)->IsUpdated()) {
+			if (!gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos)->IsStockSymbolUpdated()) {
 				pExchange = gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos);
 				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pExchange->m_strCode)) {
 					fFound = true;
@@ -267,6 +314,47 @@ bool CFinnhubDataSource::InquireCompanySymbol() {
 			fHaveInquiry = false;
 			SetUpdateSymbol(false);
 			const CString str = "Finnhub交易所代码数据查询完毕";
+			gl_systemMessage.PushInformationMessage(str);
+		}
+	}
+	return fHaveInquiry;
+}
+
+bool CFinnhubDataSource::InquireMarketHoliday() {
+	const long lExchangeSize = gl_pWorldMarket->GetStockExchangeSize();
+	bool fHaveInquiry = false;
+	constexpr int iInquiryType = MARKET_HOLIDAY_;
+
+	if (!IsInquiring() && IsUpdateMarketHoliday()) {
+		CFinnhubStockExchangePtr pExchange;
+		bool fFound = false;
+		long lCurrentStockExchangePos;
+		if (!m_fInquiringFinnhubMarketHoliday) {
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub MarketHoliday..."));
+			m_fInquiringFinnhubMarketHoliday = true;
+		}
+		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
+			if (!gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos)->IsMarketHolidayUpdated()) {
+				pExchange = gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos);
+				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pExchange->m_strCode)) {
+					fFound = true;
+					break;
+				}
+			}
+		}
+		if (fFound) {
+			fHaveInquiry = true;
+			const auto product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
+			product->SetIndex(lCurrentStockExchangePos);
+			StoreInquiry(product);
+			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub交易所代码:") + pExchange->m_strCode);
+			SetInquiring(true);
+		}
+		else {
+			m_fInquiringFinnhubMarketHoliday = false;
+			fHaveInquiry = false;
+			SetUpdateMarketHoliday(false);
+			const CString str = "Finnhub MarketHoliday查询完毕";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}

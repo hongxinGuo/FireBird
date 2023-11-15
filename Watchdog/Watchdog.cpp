@@ -42,9 +42,8 @@ CWatchdogApp::CWatchdogApp() noexcept {
 	System::Windows::Forms::Application::SetUnhandledExceptionMode(System::Windows::Forms::UnhandledExceptionMode::ThrowException);
 #endif
 
-	// TODO: replace application ID string below with unique ID string; recommended
 	// format for string is CompanyName.ProductName.SubProduct.VersionInformation
-	SetAppID(_T("FireBird Watchdog.AppID.0.01"));
+	SetAppID(_T("FireBird.Watchdog.Version.0.01"));
 
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
@@ -87,9 +86,7 @@ BOOL CWatchdogApp::InitInstance() {
 	// of your final executable, you should remove from the following
 	// the specific initialization routines you do not need
 	// Change the registry key under which our settings are stored
-	// TODO: You should modify this string to be something appropriate
-	// such as the name of your company or organization
-	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
+	SetRegistryKey(_T("FireBird Watchdog"));
 	LoadStdProfileSettings(4);  // Load standard INI file options (including MRU)
 
 	InitContextMenuManager();

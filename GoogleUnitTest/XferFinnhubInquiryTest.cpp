@@ -31,7 +31,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(!s.empty()) << "确保所有的索引都有对应的字符串";
 			s.clear();
 		}
-		for (int i = SYMBOL_LOOKUP_; i <= DIVIDENDS_; i++) {
+		for (int i = SYMBOL_LOOKUP_; i <= ISIN_CHANGE_; i++) {
 			s = gl_FinnhubInquiryType.GetInquiryString(i);
 			EXPECT_TRUE(!s.empty()) << "确保所有的索引都有对应的字符串";
 			s.clear();
@@ -95,6 +95,8 @@ namespace FireBirdTest {
 		// Stock Fundamentals
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(SYMBOL_LOOKUP_), _T("StockFundamentalsSymolLookup"));
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(STOCK_SYMBOLS_), _T("StockFundamentalsSymbols"));
+		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(MARKET_STATUS_), _T("StockFundamentalsMarketStatus"));
+		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(MARKET_HOLIDAY_), _T("StockFundamentalsMarketHoliday"));
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(COMPANY_PROFILE_), _T("StockFundamentalsCompanyProfile")); //Premium
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(COMPANY_PROFILE_CONCISE_), _T("StockFundamentalsCompanyProfileConcise"));
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(COMPANY_EXECUTIVE_), _T("StockFundamentalsCompanyExecutive")); //Premium
@@ -119,7 +121,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(DIVIDENDS_), _T("StockFundamentalsDividends")); //Premium
 
 		// Stock Estimates
-		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_RECOMMENDATION_TRENDS_), _T("StockEstimatesRecommendationTrend"));
+		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_RECOMMENDATION_TRENDS_), _T("StockEstimatesRecommendationTrends"));
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_PRICE_TARGET_), _T("StockEstimatesPriceTarget"));
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_UPGRADE_DOWNGRADE_), _T("StockEstimatesUpgradeDownGrade")); // Premium
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(STOCK_ESTIMATES_REVENUE_ESTIMATES_), _T("StockEstimatesRevenueEstimates")); // Premium
@@ -202,6 +204,8 @@ namespace FireBirdTest {
 		// Stock Fundamentals
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsSymolLookup")), SYMBOL_LOOKUP_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsSymbols")), STOCK_SYMBOLS_);
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsMarketStatus")), MARKET_STATUS_);
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsMarketHoliday")), MARKET_HOLIDAY_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsCompanyProfile")), COMPANY_PROFILE_); //Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsCompanyProfileConcise")), COMPANY_PROFILE_CONCISE_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsCompanyExecutive")), COMPANY_EXECUTIVE_); //Premium
@@ -224,9 +228,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsSemilarityIndex")), SIMILARITY_INDEX_); //Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsIPOCanlendar")), IPO_CALENDAR_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsDividends")), DIVIDENDS_); //Premium
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsSectorMetrics")), SECTOR_METRICS_); //Premium
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsPriceMetrics")), PRICE_METRICS_); //Premium
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsSymbolChange")), SYMBOL_CHANGE_); //Premium
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsISINChange")), ISIN_CHANGE_); //Premium
 
 		// Stock Estimates
-		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockEstimatesRecommendationTrend")), STOCK_ESTIMATES_RECOMMENDATION_TRENDS_);
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockEstimatesRecommendationTrends")), STOCK_ESTIMATES_RECOMMENDATION_TRENDS_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockEstimatesPriceTarget")), STOCK_ESTIMATES_PRICE_TARGET_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockEstimatesUpgradeDownGrade")), STOCK_ESTIMATES_UPGRADE_DOWNGRADE_); // Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockEstimatesRevenueEstimates")), STOCK_ESTIMATES_REVENUE_ESTIMATES_); // Premium

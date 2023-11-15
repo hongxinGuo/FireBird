@@ -13,8 +13,12 @@ public:
 
 	void Load(const CSetFinnhubStockExchange& setFinnhubExchange);
 
-	void SetUpdated(const bool fFlag) noexcept { m_fUpdated = fFlag; }
-	bool IsUpdated() const noexcept { return m_fUpdated; }
+	void SetStockSymbolUpdated(const bool fFlag) noexcept { m_fStockSymbolUpdated = fFlag; }
+	bool IsStockSymbolUpdated() const noexcept { return m_fStockSymbolUpdated; }
+	void SetMarketStatusUpdated(const bool fFlag) noexcept { m_fMarketStatusUpdated = fFlag; }
+	bool IsMarketStatusUpdated() const noexcept { return m_fMarketStatusUpdated; }
+	void SetMarketHolidayUpdated(const bool fFlag) noexcept { m_fMarketHolidayUpdated = fFlag; }
+	bool IsMarketHolidayUpdated() const noexcept { return m_fMarketHolidayUpdated; }
 
 public:
 	CString m_strCode; // 两位的交易所代码。上海市场为SS， 美国市场为US，。。。
@@ -26,7 +30,9 @@ public:
 	CString m_strCountry;
 	CString m_strSource;
 
-	bool m_fUpdated;
+	bool m_fStockSymbolUpdated;
+	bool m_fMarketStatusUpdated;
+	bool m_fMarketHolidayUpdated;
 };
 
 using CFinnhubStockExchangePtr = shared_ptr<CFinnhubStockExchange>;

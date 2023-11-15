@@ -723,6 +723,18 @@
     <ClInclude Include="..\src\Data Source\SinaRTDataSourceImp.h">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketStatus.h">
+      <Filter>头文件\Factory-Product\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketHoliday.h">
+      <Filter>头文件\Factory-Product\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\America market\MarketStatus.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\America market\MarketHoliday.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1294,6 +1306,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Source\SinaRTDataSourceImp.cpp">
       <Filter>源文件\Data Source\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketStatus.cpp">
+      <Filter>源文件\Factory-Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketHoliday.cpp">
+      <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

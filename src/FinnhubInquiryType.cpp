@@ -31,6 +31,8 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	// Stock Fundamentals
 	m_mapFinnhubInquiryIndexToString[SYMBOL_LOOKUP_] = _T("StockFundamentalsSymolLookup");
 	m_mapFinnhubInquiryIndexToString[STOCK_SYMBOLS_] = _T("StockFundamentalsSymbols");
+	m_mapFinnhubInquiryIndexToString[MARKET_STATUS_] = _T("StockFundamentalsMarketStatus");
+	m_mapFinnhubInquiryIndexToString[MARKET_HOLIDAY_] = _T("StockFundamentalsMarketHoliday");
 	m_mapFinnhubInquiryIndexToString[COMPANY_PROFILE_] = _T("StockFundamentalsCompanyProfile"); //Premium
 	m_mapFinnhubInquiryIndexToString[COMPANY_PROFILE_CONCISE_] = _T("StockFundamentalsCompanyProfileConcise");
 	m_mapFinnhubInquiryIndexToString[COMPANY_EXECUTIVE_] = _T("StockFundamentalsCompanyExecutive"); //Premium
@@ -53,9 +55,13 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[SIMILARITY_INDEX_] = _T("StockFundamentalsSemilarityIndex"); //Premium
 	m_mapFinnhubInquiryIndexToString[IPO_CALENDAR_] = _T("StockFundamentalsIPOCanlendar");
 	m_mapFinnhubInquiryIndexToString[DIVIDENDS_] = _T("StockFundamentalsDividends"); //Premium
+	m_mapFinnhubInquiryIndexToString[SECTOR_METRICS_] = _T("SectorMetrics"); // Premium
+	m_mapFinnhubInquiryIndexToString[PRICE_METRICS_] = _T("PriceMetrics"); // Premium
+	m_mapFinnhubInquiryIndexToString[SYMBOL_CHANGE_] = _T("SymbolChange"); // Premium
+	m_mapFinnhubInquiryIndexToString[ISIN_CHANGE_] = _T("ISINChange"); // Premium
 
 	// Stock Estimates
-	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_RECOMMENDATION_TRENDS_] = _T("StockEstimatesRecommendationTrend");
+	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_RECOMMENDATION_TRENDS_] = _T("StockEstimatesRecommendationTrends");
 	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_PRICE_TARGET_] = _T("StockEstimatesPriceTarget");
 	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_UPGRADE_DOWNGRADE_] = _T("StockEstimatesUpgradeDownGrade"); // Premium
 	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_REVENUE_ESTIMATES_] = _T("StockEstimatesRevenueEstimates"); // Premium
@@ -120,6 +126,9 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_EARNING_QUALITY_SCORE_] = _T("AlternativeDataQualityScore"); // Premium
 	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_USPTO_PATENTS_] = _T("AlternativeDataUSPTOpatents");
 	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_VISA_APPLICATION_] = _T("AlternativeDataVISAApplication"); //
+	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_SENATE_LOBBYING_] = _T("AlternativeDataSenateLobbying"); //
+	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_USA_SPENDING_] = _T("AlternativeDataUSASpending"); //
+	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_CONGRESSIONAL_TRADING_] = _T("AlternativeDataCongressionalTrading"); //
 	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_COVID_19_] = _T("AlternativeDataCOVID_19");
 	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_FDA_CALENDAR_] = _T("AlternativeDataFDACalendar");
 
@@ -138,6 +147,8 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 	// Stock Fundamentals
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsSymolLookup")] = SYMBOL_LOOKUP_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsSymbols")] = STOCK_SYMBOLS_;
+	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsMarketStatus")] = MARKET_STATUS_;
+	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsMarketHoliday")] = MARKET_HOLIDAY_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsCompanyProfile")] = COMPANY_PROFILE_; //Premium
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsCompanyProfileConcise")] = COMPANY_PROFILE_CONCISE_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsCompanyExecutive")] = COMPANY_EXECUTIVE_; //Premium
@@ -160,9 +171,13 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsSemilarityIndex")] = SIMILARITY_INDEX_; //Premium
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsIPOCanlendar")] = IPO_CALENDAR_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsDividends")] = DIVIDENDS_; //Premium
+	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsSectorMetrics")] = SECTOR_METRICS_; // Premium
+	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsPriceMetrics")] = PRICE_METRICS_; // Premium
+	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsSymbolChange")] = SYMBOL_CHANGE_; // Premium
+	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsISINChange")] = ISIN_CHANGE_; // Premium
 
 	// Stock Estimates
-	m_mapFinnhubInquiryStringToIndex[_T("StockEstimatesRecommendationTrend")] = STOCK_ESTIMATES_RECOMMENDATION_TRENDS_;
+	m_mapFinnhubInquiryStringToIndex[_T("StockEstimatesRecommendationTrends")] = STOCK_ESTIMATES_RECOMMENDATION_TRENDS_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockEstimatesPriceTarget")] = STOCK_ESTIMATES_PRICE_TARGET_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockEstimatesUpgradeDownGrade")] = STOCK_ESTIMATES_UPGRADE_DOWNGRADE_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("StockEstimatesRevenueEstimates")] = STOCK_ESTIMATES_REVENUE_ESTIMATES_; // Premium
@@ -227,6 +242,9 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataQualityScore")] = ALTERNATIVE_DATA_EARNING_QUALITY_SCORE_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataUSPTOpatents")] = ALTERNATIVE_DATA_USPTO_PATENTS_;
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataVISAApplication")] = ALTERNATIVE_DATA_VISA_APPLICATION_; //
+	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataSenateLobbying")] = ALTERNATIVE_DATA_SENATE_LOBBYING_; //
+	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataUSASpending")] = ALTERNATIVE_DATA_USA_SPENDING_; //
+	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataCongressionalTrading")] = ALTERNATIVE_DATA_CONGRESSIONAL_TRADING_; //
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataCOVID_19")] = ALTERNATIVE_DATA_COVID_19_;
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataFDACalendar")] = ALTERNATIVE_DATA_FDA_CALENDAR_;
 

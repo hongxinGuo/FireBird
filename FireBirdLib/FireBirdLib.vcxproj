@@ -107,6 +107,8 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStockDayLine.h" />
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketHoliday.h" />
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketStatus.h" />
     <ClInclude Include="..\src\Factory Product\ProductTengxunDayLine.h" />
     <ClInclude Include="..\src\Factory Product\FinnhubFactory.h" />
     <ClInclude Include="..\src\Factory Product\ProductDummy.h" />
@@ -169,6 +171,8 @@
     <ClInclude Include="..\src\Type\America market\FinnhubStockExchange.h" />
     <ClInclude Include="..\src\Type\America market\InsiderSentiment.h" />
     <ClInclude Include="..\src\Type\America market\InsiderTransaction.h" />
+    <ClInclude Include="..\src\Type\America market\MarketHoliday.h" />
+    <ClInclude Include="..\src\Type\America market\MarketStatus.h" />
     <ClInclude Include="..\src\Type\America market\NaicsIndustry.h" />
     <ClInclude Include="..\src\Type\America market\SICIndustry.h" />
     <ClInclude Include="..\src\Type\America market\TiingoCryptoSymbol.h" />
@@ -281,6 +285,8 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetWorldStock.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketHoliday.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketStatus.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTengxunDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\FinnhubFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductDummy.cpp" />

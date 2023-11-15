@@ -27,15 +27,15 @@ bool CProductFinnhub::AddInaccessibleExchangeIfNeeded() {
 	gl_finnhubInaccessibleExchange.SetUpdate(true);
 	try {
 		const auto pExchange = gl_finnhubInaccessibleExchange.GetInaccessibleExchange(m_iProductType);
-		if (!pExchange->HaveExchange(m_strInquiringExchange)) {
-			// 如果是新的交易所代码
+		if (!pExchange->HaveExchange(m_strInquiringExchange)) {	// 如果是新的交易所代码
 			pExchange->AddExchange(m_strInquiringExchange);
 			return true;
 		}
-		else { return false; }
+		else {
+			return false;
+		}
 	}
-	catch (out_of_range&) {
-		// 新的数据
+	catch (out_of_range&) {	// 新的数据
 		const auto pNewExchange = make_shared<CInaccessibleExchanges>();
 		pNewExchange->SetFunction(m_iProductType);
 		pNewExchange->SetFunctionString(gl_FinnhubInquiryType.GetInquiryString(m_iProductType));

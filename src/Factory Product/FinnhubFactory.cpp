@@ -14,6 +14,9 @@
 #include"ProductFinnhubForexDayLine.h"
 #include"ProductFinnhubStockDayLine.h"
 
+#include"ProductFinnhubMarketStatus.h"
+#include"ProductFinnhubMarketHoliday.h"
+
 #include"ProductFinnhubStockPriceQuote.h"
 #include"ProductFinnhubStockEstimatesEPSSurprise.h"
 
@@ -43,6 +46,12 @@ CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarket* pMarket
 		break;
 	case STOCK_SYMBOLS_:
 		p = make_shared<CProductFinnhubStockSymbol>();
+		break;
+	case MARKET_STATUS_:
+		p = make_shared<CProductFinnhubMarketStatus>();
+		break;
+	case MARKET_HOLIDAY_:
+		p = make_shared<CProductFinnhubMarketHoliday>();
 		break;
 	case COMPANY_EXECUTIVE_: // Premium
 		break;

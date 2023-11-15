@@ -26,6 +26,10 @@ void CQuandlDataSource::UpdateStatus() {
 	switch (m_pCurrentProduct->GetProductType()) {
 	case STOCK_SYMBOLS_:
 		break;
+	case MARKET_STATUS_:
+		break;
+	case MARKET_HOLIDAY_:
+		break;
 	case STOCK_PRICE_CANDLES_:
 		break;
 	case COMPANY_PROFILE_:
@@ -95,7 +99,7 @@ bool CQuandlDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 }
 
 bool CQuandlDataSource::InquireQuandl() {
-	// todo NotImplemented
+	// not implemented
 	return true;
 }
 

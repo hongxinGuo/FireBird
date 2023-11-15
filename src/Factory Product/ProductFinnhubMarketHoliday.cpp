@@ -3,15 +3,15 @@
 #include"jsonParse.h"
 #include"JsonGetValue.h"
 
-#include "ProductFinnhubStockSymbol.h"
+#include "ProductFinnhubMarketHoliday.h"
 
-CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
+CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
 	m_strClassName = _T("Finnhub company symbols");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/symbol?exchange=");
 	m_lIndex = -1;
 }
 
-CString CProductFinnhubStockSymbol::CreateMessage() {
+CString CProductFinnhubMarketHoliday::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto strParam = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStockExchangeCode(m_lIndex);
@@ -21,13 +21,13 @@ CString CProductFinnhubStockSymbol::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
+bool CProductFinnhubMarketHoliday::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto strExchangeCode = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStockExchangeCode(m_lIndex);
-	const auto pvStock = ParseFinnhubStockSymbol(pWebData);
+	const auto pvStock = ParseFinnhubMarketHoliday(pWebData);
 	const auto pExchange = gl_pWorldMarket->GetStockExchange(m_lIndex);
-	pExchange->SetStockSymbolUpdated(true);
+	pExchange->SetMarketHolidayUpdated(true);
 	// 加上交易所代码。
 	for (const auto& pStock3 : *pvStock) {
 		pStock3->SetExchangeCode(strExchangeCode);
@@ -57,11 +57,11 @@ bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	return true;
 }
 
-bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(const CString& strStockSymbol, const CString& strExchangeCode) {
+bool CProductFinnhubMarketHoliday::IsNeedAddExchangeCode(const CString& strMarketHoliday, const CString& strExchangeCode) {
 	const int iLength = strExchangeCode.GetLength();
-	const int iSymbolLength = strStockSymbol.GetLength();
-	const CString strRight = strStockSymbol.Right(iLength);
-	if ((strRight.CompareNoCase(strExchangeCode) == 0) && (strStockSymbol.GetAt(iSymbolLength - iLength - 1) == '.')) {
+	const int iSymbolLength = strMarketHoliday.GetLength();
+	const CString strRight = strMarketHoliday.Right(iLength);
+	if ((strRight.CompareNoCase(strExchangeCode) == 0) && (strMarketHoliday.GetAt(iSymbolLength - iLength - 1) == '.')) {
 		return true;
 	}
 	return false;
@@ -85,7 +85,7 @@ bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(const CString& strStockSy
 // }
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWebDataPtr& pWebData) {
+CWorldStockVectorPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const CWebDataPtr& pWebData) {
 	auto pvStock = make_shared<vector<CWorldStockPtr>>();
 	CWorldStockPtr pStock = nullptr;
 	string s, sError;
@@ -128,7 +128,7 @@ CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const C
 		}
 	}
 	catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Symbol "), e.what());
+		ReportJSonErrorToSystemMessage(_T("Finnhub market holiday "), e.what());
 		return pvStock;
 	}
 	return pvStock;

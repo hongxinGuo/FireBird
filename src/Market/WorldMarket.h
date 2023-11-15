@@ -25,7 +25,12 @@
 #include"FinnhubCryptoSymbol.h"
 #include"FinnhubForexSymbol.h"
 
+#include "MarketStatus.h"
+#include"MarketHoliday.h"
+
 #include<semaphore>
+
+#include "MarketHoliday.h"
 using std::binary_semaphore;
 using std::dynamic_pointer_cast;
 
@@ -257,6 +262,9 @@ public:
 	void UpdateWorldStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr& pTiingoIEXbData);
 	void UpdateWorldStockFromFinnhubSocket(const CFinnhubSocketPtr& pFinnhub);
 
+	void UpdateMarketStatus(CMarketStatusVectorPtr pv);
+	void UpdateMarketHoliday(CMarketHolidayVectorPtr pv);
+
 	// check function
 
 protected:
@@ -279,6 +287,9 @@ protected:
 	CContainerChosenStock m_containerChosenStock;
 	CContainerChosenForex m_containerChosenForex;
 	CContainerChosenCrypto m_containerChosenCrypto;
+
+	CMarketStatusVectorPtr m_pvMarketStatus;
+	CMarketHolidayVectorPtr m_pvMarketHoliday;
 
 	CString m_strCurrentFunction; // 当前任务和处理的证券名称
 

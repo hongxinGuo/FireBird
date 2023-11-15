@@ -8,20 +8,24 @@ namespace FireBirdTest {
 	class CFinnhubExchangeTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -35,15 +39,33 @@ namespace FireBirdTest {
 		EXPECT_STREQ(FinnhubExchange.m_strCloseDate, _T(" "));
 		EXPECT_STREQ(FinnhubExchange.m_strCountry, _T(""));
 		EXPECT_STREQ(FinnhubExchange.m_strSource, _T(""));
-		EXPECT_FALSE(FinnhubExchange.m_fUpdated);
+		EXPECT_FALSE(FinnhubExchange.m_fStockSymbolUpdated);
+		EXPECT_FALSE(FinnhubExchange.m_fMarketStatusUpdated);
+		EXPECT_FALSE(FinnhubExchange.m_fMarketHolidayUpdated);
 	}
 
-	TEST_F(CFinnhubExchangeTest, TestIsUpdated) {
+	TEST_F(CFinnhubExchangeTest, TestIsStockSymbolUpdated) {
 		CFinnhubStockExchange finnhubExchange;
 
-		EXPECT_FALSE(finnhubExchange.IsUpdated());
-		finnhubExchange.SetUpdated(true);
-		EXPECT_TRUE(finnhubExchange.IsUpdated());
+		EXPECT_FALSE(finnhubExchange.IsStockSymbolUpdated());
+		finnhubExchange.SetStockSymbolUpdated(true);
+		EXPECT_TRUE(finnhubExchange.IsStockSymbolUpdated());
+	}
+
+	TEST_F(CFinnhubExchangeTest, TestIsMarketStatusUpdated) {
+		CFinnhubStockExchange finnhubExchange;
+
+		EXPECT_FALSE(finnhubExchange.IsMarketStatusUpdated());
+		finnhubExchange.SetMarketStatusUpdated(true);
+		EXPECT_TRUE(finnhubExchange.IsMarketStatusUpdated());
+	}
+
+	TEST_F(CFinnhubExchangeTest, TestIsMarketHolidayUpdated) {
+		CFinnhubStockExchange finnhubExchange;
+
+		EXPECT_FALSE(finnhubExchange.IsMarketHolidayUpdated());
+		finnhubExchange.SetMarketHolidayUpdated(true);
+		EXPECT_TRUE(finnhubExchange.IsMarketHolidayUpdated());
 	}
 
 	TEST_F(CFinnhubExchangeTest, TestAppend) {
@@ -58,7 +80,7 @@ namespace FireBirdTest {
 		FinnhubExchange.m_strCloseDate = _T("20202020");
 		FinnhubExchange.m_strCountry = _T("dfe");
 		FinnhubExchange.m_strSource = _T("abc");
-		FinnhubExchange.m_fUpdated = true;
+		FinnhubExchange.m_fStockSymbolUpdated = true;
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setFinnhubExchange.Open();
@@ -80,7 +102,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(FinnhubExchange.m_strCloseDate, _T("20202020"));
 		EXPECT_STREQ(FinnhubExchange.m_strCountry, _T("dfe"));
 		EXPECT_STREQ(FinnhubExchange.m_strSource, _T("abc"));
-		EXPECT_TRUE(FinnhubExchange.m_fUpdated);
+		EXPECT_TRUE(FinnhubExchange.m_fStockSymbolUpdated) << "这个参数不存入数据库";
 		setFinnhubExchange2.Delete();
 		setFinnhubExchange2.m_pDatabase->CommitTrans();
 		setFinnhubExchange2.Close();

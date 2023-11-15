@@ -32,6 +32,10 @@ void CTiingoDataSource::UpdateStatus() {
 	case STOCK_SYMBOLS_:
 		m_fUpdateStockSymbol = false;
 		break;
+	case MARKET_STATUS_:
+		break;
+	case MARKET_HOLIDAY_:
+		break;
 	case STOCK_PRICE_CANDLES_:
 		break;
 	case COMPANY_PROFILE_:
@@ -79,7 +83,6 @@ void CTiingoDataSource::UpdateStatus() {
 	case ECONOMIC_CALENDAR_:
 		break;
 	default:
-		//not implemented yet.
 		gl_systemMessage.PushErrorMessage(_T("Tiingo productŒ¥ µœ÷"));
 		break;
 	}

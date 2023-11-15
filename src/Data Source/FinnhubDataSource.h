@@ -24,6 +24,8 @@ public:
 
 	virtual bool InquireCountryList();
 	virtual bool InquireCompanySymbol();
+	virtual bool InquireMarketStatus();
+	virtual bool InquireMarketHoliday();
 	virtual bool InquireCompanyProfileConcise();
 	virtual bool InquireCompanyNews();
 	virtual bool InquireCompanyBasicFinancial();
@@ -45,6 +47,10 @@ public:
 	void SetUpdateCountryList(const bool fFlag) noexcept { m_fUpdateCountryList = fFlag; }
 	bool IsUpdateSymbol() const noexcept { return m_fUpdateSymbol; }
 	void SetUpdateSymbol(const bool fFlag) noexcept { m_fUpdateSymbol = fFlag; }
+	bool IsUpdateMarketStatus() const noexcept { return m_fUpdateMarketStatus; }
+	void SetUpdateMarketStatus(const bool fFlag) noexcept { m_fUpdateMarketStatus = fFlag; }
+	bool IsUpdateMarketHoliday() const noexcept { return m_fUpdateMarketHoliday; }
+	void SetUpdateMarketHoliday(const bool fFlag) noexcept { m_fUpdateMarketHoliday = fFlag; }
 	bool IsUpdateStockProfile() const noexcept { return m_fUpdateStockProfile; }
 	void SetUpdateStockProfile(const bool fFlag) noexcept { m_fUpdateStockProfile = fFlag; }
 	bool IsUpdateCompanyNews() const noexcept { return m_fUpdateCompanyNews; }
@@ -83,6 +89,8 @@ protected:
 	long m_lCurrentUpdateEPSSurprisePos; // 此变量无需每日更新
 
 	bool m_fUpdateSymbol; // 每日更新公司代码库
+	bool m_fUpdateMarketStatus; // 每日查询市场状态
+	bool m_fUpdateMarketHoliday; // 每日查询市场假日
 	bool m_fUpdateForexExchange; // 每日更新Forex交易所
 	bool m_fUpdateForexSymbol; // 每日更新Forex交易所代码
 	bool m_fUpdateCryptoExchange; // 每日更新Crypto交易所
@@ -105,6 +113,8 @@ protected:
 
 private:
 	bool m_fInquiringFinnhubStockSymbol = {false};
+	bool m_fInquiringFinnhubMarketStatus = {false};
+	bool m_fInquiringFinnhubMarketHoliday = {false};
 	bool m_fInquiringFinnhubStockProfile = {false};
 	bool m_fInquiringFinnhubCompanyNews = {false};
 	bool m_fInquiringFinnhubCompanyBasicFinancial = {false};
