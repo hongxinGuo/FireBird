@@ -78,7 +78,7 @@ CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarket* pMarket
 		break;
 	case OWNERSHIP_: // Premium
 		break;
-	case FUND_OWNERSHIP_: // jPremium
+	case FUND_OWNERSHIP_: // Premium
 		break;
 	case FINANCIAL_: // Premium
 		break;

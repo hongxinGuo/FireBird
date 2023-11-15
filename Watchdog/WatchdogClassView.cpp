@@ -227,17 +227,11 @@ void CWatchdogClassView::OnClassAddMemberFunction() {
 	AfxMessageBox(_T("Add member function..."));
 }
 
-void CWatchdogClassView::OnClassAddMemberVariable() {
-	// TODO: Add your command handler code here
-}
+void CWatchdogClassView::OnClassAddMemberVariable() {}
 
-void CWatchdogClassView::OnClassDefinition() {
-	// TODO: Add your command handler code here
-}
+void CWatchdogClassView::OnClassDefinition() {}
 
-void CWatchdogClassView::OnClassProperties() {
-	// TODO: Add your command handler code here
-}
+void CWatchdogClassView::OnClassProperties() {}
 
 void CWatchdogClassView::OnNewFolder() {
 	AfxMessageBox(_T("New Folder..."));

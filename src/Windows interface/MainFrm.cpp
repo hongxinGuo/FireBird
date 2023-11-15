@@ -970,17 +970,13 @@ void CMainFrame::OnBuildCreateWeekLine() {
 	gl_pChinaMarket->CreateThreadBuildWeekLine(19900101);
 }
 
-void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
-}
+void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {}
 
 void CMainFrame::OnRebuildWeekLineRS() {
 	gl_pChinaMarket->CreateThreadBuildWeekLineRS();
 }
 
-void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
-}
+void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {}
 
 void CMainFrame::OnBuildCurrentWeekLine() {
 	gl_pChinaMarket->CreateThreadBuildWeekLineOfCurrentWeek();
@@ -999,17 +995,13 @@ void CMainFrame::OnBuildRebuildCurrentWeekLine() {
 	gl_pChinaMarket->CreateThreadBuildWeekLine(gl_pChinaMarket->GetMarketDate());
 }
 
-void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
-}
+void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {}
 
 void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
 	gl_pChinaMarket->CreateThreadBuildCurrentWeekWeekLineTable();
 }
 
-void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
-}
+void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {}
 
 void CMainFrame::OnUpdateStockSection() {
 	gl_pChinaMarket->SetUpdateStockSection(true);

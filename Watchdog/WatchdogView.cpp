@@ -1,4 +1,3 @@
-
 // WatchdogView.cpp : implementation of the CWatchdogView class
 //
 
@@ -17,7 +16,6 @@
 #define new DEBUG_NEW
 #endif
 
-
 // CWatchdogView
 
 IMPLEMENT_DYNCREATE(CWatchdogView, CView)
@@ -33,18 +31,13 @@ END_MESSAGE_MAP()
 
 // CWatchdogView construction/destruction
 
-CWatchdogView::CWatchdogView() noexcept
-{
-	// TODO: add construction code here
-
+CWatchdogView::CWatchdogView() noexcept {
+	// 
 }
 
-CWatchdogView::~CWatchdogView()
-{
-}
+CWatchdogView::~CWatchdogView() {}
 
-BOOL CWatchdogView::PreCreateWindow(CREATESTRUCT& cs)
-{
+BOOL CWatchdogView::PreCreateWindow(CREATESTRUCT& cs) {
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
 
@@ -53,67 +46,53 @@ BOOL CWatchdogView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CWatchdogView drawing
 
-void CWatchdogView::OnDraw(CDC* /*pDC*/)
-{
+void CWatchdogView::OnDraw(CDC* /*pDC*/) {
 	CWatchdogDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-
-	// TODO: add draw code for native data here
 }
-
 
 // CWatchdogView printing
 
-
-void CWatchdogView::OnFilePrintPreview()
-{
+void CWatchdogView::OnFilePrintPreview() {
 #ifndef SHARED_HANDLERS
 	AFXPrintPreview(this);
 #endif
 }
 
-BOOL CWatchdogView::OnPreparePrinting(CPrintInfo* pInfo)
-{
+BOOL CWatchdogView::OnPreparePrinting(CPrintInfo* pInfo) {
 	// default preparation
 	return DoPreparePrinting(pInfo);
 }
 
-void CWatchdogView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-	// TODO: add extra initialization before printing
+void CWatchdogView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
+	//
 }
 
-void CWatchdogView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-	// TODO: add cleanup after printing
+void CWatchdogView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
+	//
 }
 
-void CWatchdogView::OnRButtonUp(UINT /* nFlags */, CPoint point)
-{
+void CWatchdogView::OnRButtonUp(UINT /* nFlags */, CPoint point) {
 	ClientToScreen(&point);
 	OnContextMenu(this, point);
 }
 
-void CWatchdogView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
-{
+void CWatchdogView::OnContextMenu(CWnd* /* pWnd */, CPoint point) {
 #ifndef SHARED_HANDLERS
 	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
 #endif
 }
 
-
 // CWatchdogView diagnostics
 
 #ifdef _DEBUG
-void CWatchdogView::AssertValid() const
-{
+void CWatchdogView::AssertValid() const {
 	CView::AssertValid();
 }
 
-void CWatchdogView::Dump(CDumpContext& dc) const
-{
+void CWatchdogView::Dump(CDumpContext& dc) const {
 	CView::Dump(dc);
 }
 
@@ -123,6 +102,5 @@ CWatchdogDoc* CWatchdogView::GetDocument() const // non-debug version is inline
 	return (CWatchdogDoc*)m_pDocument;
 }
 #endif //_DEBUG
-
 
 // CWatchdogView message handlers

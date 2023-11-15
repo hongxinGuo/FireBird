@@ -30,7 +30,6 @@
 
 #include<semaphore>
 
-#include "MarketHoliday.h"
 using std::binary_semaphore;
 using std::dynamic_pointer_cast;
 

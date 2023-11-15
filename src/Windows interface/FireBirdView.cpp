@@ -714,13 +714,9 @@ BOOL CFireBirdView::OnPreparePrinting(CPrintInfo* pInfo) {
 	return DoPreparePrinting(pInfo);
 }
 
-void CFireBirdView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
-	// TODO: 添加额外的打印前进行的初始化过程
-}
+void CFireBirdView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {}
 
-void CFireBirdView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
-	// TODO: 添加打印后进行的清理过程
-}
+void CFireBirdView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {}
 
 void CFireBirdView::OnRButtonUp(UINT /* nFlags */, CPoint point) {
 	ClientToScreen(&point);

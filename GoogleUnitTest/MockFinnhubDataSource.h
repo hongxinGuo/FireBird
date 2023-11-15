@@ -8,6 +8,7 @@ namespace testing {
 		MOCK_METHOD(bool, GetWebData, (), (override));
 		MOCK_METHOD(ULONGLONG, GetTickCount, (), (override));
 		MOCK_METHOD(bool, InquireCountryList, (), (override));
+		MOCK_METHOD(bool, InquireMarketStatus, (), (override));
 		MOCK_METHOD(bool, InquireCompanySymbol, (), (override));
 		MOCK_METHOD(bool, InquireCompanyProfileConcise, (), (override));
 		MOCK_METHOD(bool, InquireCompanyNews, (), (override));

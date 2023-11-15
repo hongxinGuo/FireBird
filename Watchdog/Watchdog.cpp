@@ -45,7 +45,6 @@ CWatchdogApp::CWatchdogApp() noexcept {
 	// format for string is CompanyName.ProductName.SubProduct.VersionInformation
 	SetAppID(_T("FireBird.Watchdog.Version.0.01"));
 
-	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 }
 
@@ -134,7 +133,6 @@ BOOL CWatchdogApp::InitInstance() {
 }
 
 int CWatchdogApp::ExitInstance() {
-	//TODO: handle additional resources you may have added
 	AfxOleTerm(FALSE);
 
 	return CWinAppEx::ExitInstance();

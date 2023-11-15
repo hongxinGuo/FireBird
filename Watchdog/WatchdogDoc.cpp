@@ -1,4 +1,3 @@
-
 // WatchdogDoc.cpp : implementation of the CWatchdogDoc class
 //
 
@@ -25,45 +24,26 @@ IMPLEMENT_DYNCREATE(CWatchdogDoc, CDocument)
 BEGIN_MESSAGE_MAP(CWatchdogDoc, CDocument)
 END_MESSAGE_MAP()
 
-
 // CWatchdogDoc construction/destruction
 
-CWatchdogDoc::CWatchdogDoc() noexcept
-{
-	// TODO: add one-time construction code here
+CWatchdogDoc::CWatchdogDoc() noexcept {}
 
-}
+CWatchdogDoc::~CWatchdogDoc() {}
 
-CWatchdogDoc::~CWatchdogDoc()
-{
-}
-
-BOOL CWatchdogDoc::OnNewDocument()
-{
+BOOL CWatchdogDoc::OnNewDocument() {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
 
 	return TRUE;
 }
 
-
-
-
 // CWatchdogDoc serialization
 
-void CWatchdogDoc::Serialize(CArchive& ar)
-{
-	if (ar.IsStoring())
-	{
-		// TODO: add storing code here
-	}
-	else
-	{
-		// TODO: add loading code here
-	}
+void CWatchdogDoc::Serialize(CArchive& ar) {
+	if (ar.IsStoring()) { }
+	else { }
 }
 
 #ifdef SHARED_HANDLERS
@@ -123,16 +103,13 @@ void CWatchdogDoc::SetSearchContent(const CString& value)
 // CWatchdogDoc diagnostics
 
 #ifdef _DEBUG
-void CWatchdogDoc::AssertValid() const
-{
+void CWatchdogDoc::AssertValid() const {
 	CDocument::AssertValid();
 }
 
-void CWatchdogDoc::Dump(CDumpContext& dc) const
-{
+void CWatchdogDoc::Dump(CDumpContext& dc) const {
 	CDocument::Dump(dc);
 }
 #endif //_DEBUG
-
 
 // CWatchdogDoc commands

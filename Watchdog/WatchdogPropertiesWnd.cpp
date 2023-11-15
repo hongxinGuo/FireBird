@@ -120,21 +120,13 @@ void CWatchdogPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI) {
 	pCmdUI->SetCheck(m_wndPropList.IsAlphabeticMode());
 }
 
-void CWatchdogPropertiesWnd::OnProperties1() {
-	// TODO: Add your command handler code here
-}
+void CWatchdogPropertiesWnd::OnProperties1() {}
 
-void CWatchdogPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {
-	// TODO: Add your command update UI handler code here
-}
+void CWatchdogPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {}
 
-void CWatchdogPropertiesWnd::OnProperties2() {
-	// TODO: Add your command handler code here
-}
+void CWatchdogPropertiesWnd::OnProperties2() {}
 
-void CWatchdogPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {
-	// TODO: Add your command update UI handler code here
-}
+void CWatchdogPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {}
 
 void CWatchdogPropertiesWnd::InitPropList() {
 	SetPropListFont();

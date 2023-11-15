@@ -158,29 +158,17 @@ void CWatchdogFileView::OnProperties() {
 	AfxMessageBox(_T("Properties...."));
 }
 
-void CWatchdogFileView::OnFileOpen() {
-	// TODO: Add your command handler code here
-}
+void CWatchdogFileView::OnFileOpen() {}
 
-void CWatchdogFileView::OnFileOpenWith() {
-	// TODO: Add your command handler code here
-}
+void CWatchdogFileView::OnFileOpenWith() {}
 
-void CWatchdogFileView::OnDummyCompile() {
-	// TODO: Add your command handler code here
-}
+void CWatchdogFileView::OnDummyCompile() {}
 
-void CWatchdogFileView::OnEditCut() {
-	// TODO: Add your command handler code here
-}
+void CWatchdogFileView::OnEditCut() {}
 
-void CWatchdogFileView::OnEditCopy() {
-	// TODO: Add your command handler code here
-}
+void CWatchdogFileView::OnEditCopy() {}
 
-void CWatchdogFileView::OnEditClear() {
-	// TODO: Add your command handler code here
-}
+void CWatchdogFileView::OnEditClear() {}
 
 void CWatchdogFileView::OnPaint() {
 	CPaintDC dc(this); // device context for painting

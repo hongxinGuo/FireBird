@@ -80,6 +80,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCountryList()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireForexExchange()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCryptoExchange()).Times(1);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireMarketStatus()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCompanySymbol()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireForexSymbol()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCryptoSymbol()).Times(1);
@@ -113,6 +114,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCountryList()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireForexExchange()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCryptoExchange()).Times(1);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireMarketStatus()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCompanySymbol()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireForexSymbol()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCryptoSymbol()).Times(1);
@@ -140,6 +142,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCountryList()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireForexExchange()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCryptoExchange()).Times(1);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireMarketStatus()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCompanySymbol()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireForexSymbol()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCryptoSymbol()).Times(1);

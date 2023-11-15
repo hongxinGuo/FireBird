@@ -20,9 +20,7 @@ END_MESSAGE_MAP()
 
 // CWatchdogChildFrame construction/destruction
 
-CWatchdogChildFrame::CWatchdogChildFrame() noexcept {
-	// TODO: add member initialization code here
-}
+CWatchdogChildFrame::CWatchdogChildFrame() noexcept {}
 
 CWatchdogChildFrame::~CWatchdogChildFrame() {}
 

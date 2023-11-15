@@ -15,14 +15,11 @@ BEGIN_MESSAGE_MAP(CFireBirdDoc, CDocument)
 END_MESSAGE_MAP()
 
 // CFireBirdDoc 构造/析构
-CFireBirdDoc::CFireBirdDoc() {
-	// TODO: 在此添加一次性构造代码
-}
+CFireBirdDoc::CFireBirdDoc() {}
 
 BOOL CFireBirdDoc::OnNewDocument() {
 	if (!CDocument::OnNewDocument()) return FALSE;
 
-	// TODO: 在此添加重新初始化代码
 	// (SDI 文档将重用该文档)
 
 	return TRUE;
@@ -31,12 +28,8 @@ BOOL CFireBirdDoc::OnNewDocument() {
 // CFireBirdDoc 序列化
 
 void CFireBirdDoc::Serialize(CArchive& ar) {
-	if (ar.IsStoring()) {
-		// TODO: 在此添加存储代码
-	}
-	else {
-		// TODO: 在此添加加载代码
-	}
+	if (ar.IsStoring()) { }
+	else { }
 }
 
 #ifdef SHARED_HANDayLineERS
