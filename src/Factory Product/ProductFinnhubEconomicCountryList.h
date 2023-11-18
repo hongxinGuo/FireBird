@@ -11,6 +11,8 @@ public:
 	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CCountryVectorPtr ParseFinnhubCountryList(const CWebDataPtr& pWebData);
+
+	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
 };
 
 using CFinnhubEconomicCountryListPtr = shared_ptr<CProductFinnhubEconomicCountryList>;

@@ -45,7 +45,7 @@ UINT ThreadUpdateChinaStockProfileDB(not_null<CChinaMarket*> pMarket); // ´ËÏß³Ì
 // ¸üĞÂÑ¡ÏîÊı¾İ¿â
 UINT ThreadUpdateOptionDB(not_null<CChinaMarket*> pMarket); // ´ËÏß³Ì·µ»ØÖµÎª20
 // ¸üĞÂÑ¡ÏîÊı¾İ¿â
-UINT ThreadAppendChosenStockDB(not_null<CChinaMarket*> pMarket); // ´ËÏß³Ì·µ»ØÖµÎª22
+UINT ThreadAppendChosenStockDB(CChinaMarket* pMarket); // ´ËÏß³Ì·µ»ØÖµÎª22
 // Éú³ÉÖÜÏßÀúÊ·Êı¾İ
 UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate); // ´ËÏß³ÌµÄ·µ»ØÖµÎª25
 // Éú³É¹ÉÆ±µÄÖÜÏßÀúÊ·Êı¾İ
@@ -65,7 +65,7 @@ UINT ThreadSaveStockSection(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖ
 
 // ÏÂÃæÎªÃÀ¹ú¹ÉÆ±ÊĞ³¡µÄ¹¤×÷Ïß³Ì
 // ¸üĞÂÃÀ¹ÉÈÕÏßÆğÖ¹ÈÕÆÚÏß³Ì
-UINT ThreadUpdateWorldMarketStockProfileDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª37
+UINT ThreadUpdateWorldMarketStockProfileDB(CWorldMarket* pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª37
 // ¸üĞÂForexÈÕÏßÊı¾İ
 UINT ThreadUpdateForexDayLineDB(not_null<CFinnhubForexSymbol*> pSymbol); // ´Ë¹¤×÷Ïß³ÌµÄ·µ»ØÖµÎ´38
 // ¸üĞÂForex´úÂë±í

@@ -3,7 +3,17 @@
 #include"VirtualDataSource.h"
 #include"FinnhubFactory.h"
 
+#include"ProductFinnhubEconomicCountryList.h"
+#include"ProductFinnhubEconomicCalendar.h"
+#include"ProductFinnhubForexExchange.h"
+#include"ProductFinnhubCryptoExchange.h"
+
 class CFinnhubDataSource : public CVirtualDataSource {
+	friend CProductFinnhubEconomicCountryList;
+	friend CProductFinnhubEconomicCalendar;
+	friend CProductFinnhubCryptoExchange;
+	friend CProductFinnhubForexExchange;
+
 public:
 	CFinnhubDataSource();
 	// 只能有一个实例,不允许赋值、拷贝
@@ -14,7 +24,6 @@ public:
 	~CFinnhubDataSource() override = default;
 
 	bool Reset() override;
-	void UpdateStatus() override;
 	bool GenerateInquiryMessage(const long lCurrentTime) override;
 
 	void ConfigureSession() override;

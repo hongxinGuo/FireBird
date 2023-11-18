@@ -11,6 +11,8 @@ public:
 	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CEconomicCalendarVectorPtr ParseFinnhubEconomicCalendar(const CWebDataPtr& pWebData);
+
+	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
 };
 
 using CFinnhubEconomicCalendarPtr = shared_ptr<CProductFinnhubEconomicCalendar>;

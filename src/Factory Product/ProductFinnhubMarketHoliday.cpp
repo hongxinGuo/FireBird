@@ -6,8 +6,8 @@
 #include "ProductFinnhubMarketHoliday.h"
 
 CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
-	m_strClassName = _T("Finnhub company symbols");
-	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/symbol?exchange=");
+	m_strClassName = _T("Finnhub market holiday");
+	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/market-holiday?exchange=");
 	m_lIndex = -1;
 }
 
@@ -24,112 +24,78 @@ CString CProductFinnhubMarketHoliday::CreateMessage() {
 bool CProductFinnhubMarketHoliday::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
-	const auto strExchangeCode = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStockExchangeCode(m_lIndex);
-	const auto pvStock = ParseFinnhubMarketHoliday(pWebData);
+	const auto pvHoliday = ParseFinnhubMarketHoliday(pWebData);
 	const auto pExchange = gl_pWorldMarket->GetStockExchange(m_lIndex);
 	pExchange->SetMarketHolidayUpdated(true);
-	// 加上交易所代码。
-	for (const auto& pStock3 : *pvStock) {
-		pStock3->SetExchangeCode(strExchangeCode);
-	}
-	//检查合法性：只有美国股票代码无须加上交易所后缀。
-	if (!pvStock->empty()) {
-		const auto pStock = pvStock->at(0);
-		if (IsNeedAddExchangeCode(pStock->GetSymbol(), strExchangeCode) && (strExchangeCode.CompareNoCase(_T("US")) == 0)) {
-			gl_systemMessage.PushErrorMessage(_T("股票代码格式不符：") + pStock->GetSymbol() + _T("  ") + strExchangeCode);
-		}
-	}
-	for (const auto& pStock2 : *pvStock) {
-		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsStock(pStock2)) {
-			pStock2->SetTodayNewStock(true);
-			pStock2->SetUpdateProfileDB(true);
-			dynamic_cast<CWorldMarket*>(m_pMarket)->AddStock(pStock2);
-			const auto str = _T("Finnhub发现新代码:") + pStock2->GetSymbol();
-			gl_systemMessage.PushInnerSystemInformationMessage(str);
-		}
-	}
-	char buffer[30];
-	sprintf_s(buffer, _T("%lld"), pvStock->size());
-	CString str = _T("今日美国市场股票总数为：");
-	str += buffer;
-	//gl_systemMessage.PushInnerSystemInformationMessage(str);
+
+	gl_pWorldMarket->UpdateMarketHoliday(pvHoliday);
 
 	return true;
 }
 
-bool CProductFinnhubMarketHoliday::IsNeedAddExchangeCode(const CString& strMarketHoliday, const CString& strExchangeCode) {
-	const int iLength = strExchangeCode.GetLength();
-	const int iSymbolLength = strMarketHoliday.GetLength();
-	const CString strRight = strMarketHoliday.Right(iLength);
-	if ((strRight.CompareNoCase(strExchangeCode) == 0) && (strMarketHoliday.GetAt(iSymbolLength - iLength - 1) == '.')) {
-		return true;
-	}
-	return false;
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 网址：https://finnhub.io/docs/api/stock-symbols
+// 网址：https://finnhub.io/docs/api/market-holiday
 //
 // {
-// "currency": "EUR",
-// "description": "ASN Groenprojectenfonds",
-// "displaySymbol" : "NL0012314660.AS",
-// "figi" : "",
-// "isin" : null,
-// "mic" : "XAMS",
-// "shareClassFIGI" : "",
-// "symbol" : "NL0012314660.AS",
-// "symbol2" : "",
-// "type" : ""
+//	"data": [
+//		{
+//			"eventName": "Christmas",
+//			"atDate": "2023-12-25",
+//			"tradingHour" : ""
+//		},
+//		{
+//			"eventName": "Independence Day",
+//			"atDate": "2023-07-04",
+//			"tradingHour" : "09:30-13:00"
+//		}
+//	]
+//	"exchange": "US",
+//	"timezone": "America/New_York"
 // }
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-CWorldStockVectorPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const CWebDataPtr& pWebData) {
-	auto pvStock = make_shared<vector<CWorldStockPtr>>();
-	CWorldStockPtr pStock = nullptr;
+CMarketHolidayVectorPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const CWebDataPtr& pWebData) {
+	auto pvHoliday = make_shared<vector<CMarketHolidayPtr>>();
+	CMarketHolidayPtr pHoliday = nullptr;
 	string s, sError;
+	long year, month, day;
+	CString sExchange, sTimeZone;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvStock;
+	if (!pWebData->IsParsed()) return pvHoliday;
 	if (pWebData->IsVoidJson()) {
 		m_iReceivedDataStatus = VOID_DATA_;
-		return pvStock;
+		return pvHoliday;
 	}
 	if (pWebData->CheckNoRightToAccess()) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return pvStock;
+		return pvHoliday;
 	}
-	auto pjs = pWebData->GetJSon();
+	const auto pjs = pWebData->GetJSon();
+	s = jsonGetString(pjs, _T("exchange"));
+	if (!s.empty()) sExchange = s.c_str();
+	s = jsonGetString(pjs, _T("timezone"));
+	if (!s.c_str()) sTimeZone = s.c_str();
+	auto js1 = jsonGetChild(pjs, (_T("data")));
 	try {
-		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
-			pStock = make_shared<CWorldStock>();
-			s = jsonGetString(it, _T("currency"));
-			if (!s.empty()) pStock->SetCurrency(s.c_str());
-			s = jsonGetString(it, _T("description"));
-			if (!s.empty()) pStock->SetDescription(s.c_str());
-			s = jsonGetString(it, _T("displaySymbol"));
-			pStock->SetDisplaySymbol(s.c_str());
-			s = jsonGetString(it, _T("figi"));
-			if (!s.empty()) pStock->SetFigi(s.c_str());
-			s = jsonGetString(it, _T("isin"));
-			if (!s.empty()) pStock->SetIsin(s.c_str());
-			s = jsonGetString(it, _T("mic"));
-			if (!s.empty()) pStock->SetMic(s.c_str());
-			s = jsonGetString(it, _T("shareClassFIGI"));
-			if (!s.empty()) pStock->SetShareClassFIGI(s.c_str());
-			s = jsonGetString(it, _T("symbol"));
-			pStock->SetSymbol(s.c_str());
-			s = jsonGetString(it, _T("symbol2"));
-			pStock->SetSymbol2(s.c_str());
-			s = jsonGetString(it, _T("type"));
-			if (!s.empty()) pStock->SetType(s.c_str());
-			pvStock->push_back(pStock);
+		for (auto it = js1.begin(); it != js1.end(); ++it) {
+			pHoliday = make_shared<CMarketHoliday>();
+			s = jsonGetString(it, _T("eventName"));
+			if (!s.empty()) pHoliday->m_strEventName = s.c_str();
+			s = jsonGetString(it, _T("atDate"));
+			sscanf_s(s.c_str(), _T("%4d-%02d-%02d"), &year, &month, &day);
+			pHoliday->m_lDate = XferYearMonthDayToYYYYMMDD(year, month, day);
+			s = jsonGetString(it, _T("tradingHour"));
+			pHoliday->m_strTradingHour = s.c_str();
+			pHoliday->m_strExchange = sExchange;
+			pHoliday->m_strTimeZone = sTimeZone;
+			pvHoliday->push_back(pHoliday);
 		}
 	}
 	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub market holiday "), e.what());
-		return pvStock;
+		return pvHoliday;
 	}
-	return pvStock;
+	return pvHoliday;
 }

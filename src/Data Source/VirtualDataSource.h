@@ -8,6 +8,7 @@
 
 #include<semaphore>
 #include<list>
+#include<memory>
 
 using std::counting_semaphore;
 using std::list;
@@ -20,7 +21,9 @@ constexpr auto DATA_BUFFER_SIZE_ = 1024 * 16;
 // 将ParseAndStoreData线程限制至最多3个，这样既能保证足够的计算速度，也不会发生系统颠簸。当改为4个时，就能观察到系统颠簸。
 extern counting_semaphore<3> gl_WebSourceParseAndStoreData;
 
-class CVirtualDataSource {
+class CVirtualDataSource : public std::enable_shared_from_this<CVirtualDataSource> {
+	friend CVirtualWebProduct;
+
 public:
 	CVirtualDataSource();
 	// 只能有一个实例,不允许赋值。
@@ -29,6 +32,9 @@ public:
 	CVirtualDataSource(const CVirtualDataSource&&) noexcept = delete;
 	CVirtualDataSource& operator=(const CVirtualDataSource&&) noexcept = delete;
 	virtual ~CVirtualDataSource() = default;
+
+	std::shared_ptr<CVirtualDataSource> GetShared() { return shared_from_this(); }
+
 	virtual bool Reset() { return true; }
 
 	void Run(long lCurrentTime);
@@ -39,7 +45,6 @@ public:
 	virtual bool GetWebData(); // 网络读取。为了Mock方便，声明为虚函数。
 	virtual bool ProcessWebDataReceived();
 	void CheckInaccessible(const CWebDataPtr& pWebData) const;
-	virtual void UpdateStatus() { }
 
 	void SetDefaultSessionOption() const;
 

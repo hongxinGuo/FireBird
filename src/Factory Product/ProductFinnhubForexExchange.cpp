@@ -7,6 +7,8 @@
 
 #include "ProductFinnhubForexExchange.h"
 
+#include "FinnhubDataSource.h"
+
 CProductFinnhubForexExchange::CProductFinnhubForexExchange() {
 	m_strClassName = _T("Finnhub forex exchange");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/exchange?");
@@ -61,4 +63,8 @@ shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExcha
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Exchange "), e.what());
 	}
 	return pvExchange;
+}
+void CProductFinnhubForexExchange::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
+	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
+	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->m_fUpdateForexExchange = false;
 }

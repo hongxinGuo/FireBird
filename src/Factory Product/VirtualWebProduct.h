@@ -23,6 +23,8 @@ public:
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) { return true; };
 	virtual bool AddInaccessibleExchangeIfNeeded() { return true; } // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 
+	virtual void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {} // default do nothing
+
 	bool CheckInaccessible(const CWebDataPtr& pWebData);
 	bool CheckVoidJson(const CWebDataPtr& pWebData);
 

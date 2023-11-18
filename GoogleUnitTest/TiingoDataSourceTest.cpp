@@ -15,20 +15,24 @@ namespace FireBirdTest {
 	class CTiingoDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -58,24 +62,6 @@ namespace FireBirdTest {
 		m_TiingoDataSource.SetUpdateDayLine(true);
 		EXPECT_TRUE(m_TiingoDataSource.IsUpdateDayLine());
 	}
-
-	TEST_F(CTiingoDataSourceTest, TestUpdateStatus) {
-		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateStockSymbol());
-		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
-		gl_pTiingoDataSource->SetCurrentInquiry(p);
-
-		p->SetProductType(STOCK_SYMBOLS_);
-		gl_pTiingoDataSource->UpdateStatus();
-		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateStockSymbol());
-		gl_pTiingoDataSource->SetUpdateStockSymbol(true);
-
-		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
-		p->SetProductType(CRYPTO_SYMBOLS_);
-		gl_pTiingoDataSource->UpdateStatus();
-		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
-		gl_pTiingoDataSource->SetUpdateCryptoSymbol(true);
-	}
-
 	TEST_F(CTiingoDataSourceTest, TestInquireTiingoCompanySymbol) {
 		m_TiingoDataSource.SetUpdateStockSymbol(false);
 		EXPECT_FALSE(m_TiingoDataSource.InquireCompanySymbol()) << "TiingoCompanySymbol Updated";

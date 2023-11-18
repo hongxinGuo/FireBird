@@ -603,6 +603,12 @@
     <ClCompile Include="ProcessWebSocketDataTest.cpp">
       <Filter>Test源文件\全局函数</Filter>
     </ClCompile>
+    <ClCompile Include="ProductFinnhubMarketStatusTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductFinnhubMarketHolidayTest.cpp">
+      <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockMainFrm.h">

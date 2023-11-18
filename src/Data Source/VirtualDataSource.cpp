@@ -13,6 +13,8 @@
 #include "TimeConvert.h"
 using std::thread;
 
+#include <memory>
+
 atomic_long CVirtualDataSource::sm_lTotalByteRead = 0;
 
 CVirtualDataSource::CVirtualDataSource() {
@@ -68,7 +70,7 @@ void CVirtualDataSource::Run(const long lCurrentTime) {
 	}
 }
 
-UINT ThreadGetWebDataAndProcessIt(CVirtualDataSource* pDataSource) {
+UINT ThreadGetWebDataAndProcessIt(CVirtualDataSourcePtr pDataSource) {
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	pDataSource->GetWebDataAndProcessIt();
 	gl_ThreadStatus.DecreaseWebInquiringThread();
@@ -76,7 +78,7 @@ UINT ThreadGetWebDataAndProcessIt(CVirtualDataSource* pDataSource) {
 }
 
 void CVirtualDataSource::CreateThreadGetWebDataAndProcessIt() {
-	thread thread1(ThreadGetWebDataAndProcessIt, this);
+	thread thread1(ThreadGetWebDataAndProcessIt, this->GetShared());
 	thread1.detach();
 }
 
@@ -88,7 +90,7 @@ bool CVirtualDataSource::GetWebDataAndProcessIt() {
 	counter.start();
 	if (GetWebData()) {
 		if (ProcessWebDataReceived()) {
-			UpdateStatus();
+			m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared());
 			bSucceed = true;
 		}
 	}

@@ -7,6 +7,8 @@
 
 #include "ProductFinnhubCryptoExchange.h"
 
+#include "FinnhubDataSource.h"
+
 CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {
 	m_strClassName = _T("Finnhub crypto exchange");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/exchange?");
@@ -67,4 +69,8 @@ shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExc
 		return pvExchange;
 	}
 	return pvExchange;
+}
+void CProductFinnhubCryptoExchange::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
+	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
+	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->m_fUpdateCryptoExchange = false;
 }

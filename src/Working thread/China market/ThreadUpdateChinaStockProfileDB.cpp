@@ -26,7 +26,7 @@ UINT ThreadUpdateOptionDB(not_null<CChinaMarket*> pMarket) {
 	return 20;
 }
 
-UINT ThreadAppendChosenStockDB(not_null<CChinaMarket*> pMarket) {
+UINT ThreadAppendChosenStockDB(CChinaMarket* pMarket) {
 	gl_UpdateChinaMarketDB.acquire();
 	pMarket->AppendChosenStockDB();
 	gl_UpdateChinaMarketDB.release();

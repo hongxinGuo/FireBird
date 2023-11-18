@@ -12,6 +12,8 @@ public:
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CTiingoCryptoVectorPtr ParseTiingoCryptoSymbol(const CWebDataPtr& pWebData);
 
+	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
+
 	// ≤‚ ‘”√
 	long long m_differ1, m_differ2;
 	double m_ratio;

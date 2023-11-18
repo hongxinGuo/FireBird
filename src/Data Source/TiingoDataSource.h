@@ -3,7 +3,13 @@
 #include"VirtualDataSource.h"
 #include"TiingoFactory.h"
 
+#include"ProductTiingoStockSymbol.h"
+#include"ProductTiingoCryptoSymbol.h"
+
 class CTiingoDataSource : public CVirtualDataSource {
+	friend CProductTiingoStockSymbol;
+	friend CProductTiingoCryptoSymbol;
+
 public:
 	CTiingoDataSource();
 	// 只能有一个实例,不允许赋值、拷贝
@@ -14,7 +20,6 @@ public:
 	~CTiingoDataSource() override = default;
 
 	bool Reset() override;
-	void UpdateStatus() override;
 
 	bool GenerateInquiryMessage(const long lCurrentTime) override;
 

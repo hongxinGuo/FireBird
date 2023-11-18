@@ -9,7 +9,6 @@ public:
 	~CQuandlDataSource() override = default;
 
 	bool Reset() override;
-	void UpdateStatus() override;
 
 	bool GenerateInquiryMessage(const long lCurrentTime) override;
 

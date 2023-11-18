@@ -8,6 +8,7 @@
 #include"TiingoStock.h"
 #include "ProductTiingoStockSymbol.h"
 
+#include "TiingoDataSource.h"
 #include "TimeConvert.h"
 
 using namespace std;
@@ -149,4 +150,8 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CW
 	}
 
 	return pvTiingoStock;
+}
+void CProductTiingoStockSymbol::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
+	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
+	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->m_fUpdateStockSymbol = false;
 }

@@ -8,6 +8,8 @@
 #include"TiingoCryptoSymbol.h"
 #include "ProductTiingoCryptoSymbol.h"
 
+#include "TiingoDataSource.h"
+
 CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() {
 	m_strClassName = _T("Tiingo crypto symbols");
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/crypto?");
@@ -93,4 +95,8 @@ CTiingoCryptoVectorPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const
 	}
 
 	return pvTiingoCrypto;
+}
+void CProductTiingoCryptoSymbol::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
+	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
+	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->m_fUpdateCryptoSymbol = false;
 }

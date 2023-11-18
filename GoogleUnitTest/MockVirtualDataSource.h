@@ -13,7 +13,6 @@ namespace testing {
 		MOCK_METHOD(void, CreateThreadGetWebDataAndProcessIt, (), (override));
 		MOCK_METHOD(bool, GetWebData, (), (override));
 		MOCK_METHOD(bool, ProcessWebDataReceived, (), (override));
-		MOCK_METHOD(void, UpdateStatus, (), (override));
 		MOCK_METHOD(void, OpenFile, (const CString& strInquiring), (override));
 		MOCK_METHOD(void, GetFileHeaderInformation, (), (override));
 		MOCK_METHOD(void, GenerateCurrentInquiryMessage, (), (override));

@@ -29,6 +29,7 @@ public:
 	CChinaMarket(const CChinaMarket&&) noexcept = delete;
 	CChinaMarket& operator=(const CChinaMarket&&) noexcept = delete;
 	~CChinaMarket() override;
+
 	void ResetMarket() final;
 	void Reset();
 

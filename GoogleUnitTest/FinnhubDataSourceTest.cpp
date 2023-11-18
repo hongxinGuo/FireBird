@@ -188,57 +188,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateEPSSurprise());
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestUpdateStatus1) {
-		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateCountryList());
-
-		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
-		m_FinnhubDataSource.SetCurrentInquiry(p);
-
-		p->SetProductType(ECONOMIC_COUNTRY_LIST_);
-		m_FinnhubDataSource.UpdateStatus();
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateCountryList());
-		m_FinnhubDataSource.SetUpdateCountryList(true);
-
-		p->SetProductType(COMPANY_PROFILE_);
-		m_FinnhubDataSource.UpdateStatus();
-		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateStockProfile()) << "UpdateStatus不修改StockProfile项";
-		m_FinnhubDataSource.SetUpdateStockProfile(true);
-
-		p->SetProductType(COMPANY_PROFILE_CONCISE_);
-		m_FinnhubDataSource.UpdateStatus();
-		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateStockProfile()) << "UpdateStatus不修改StockProfile项";
-		m_FinnhubDataSource.SetUpdateStockProfile(true);
-
-		p->SetProductType(PEERS_);
-		m_FinnhubDataSource.UpdateStatus();
-		EXPECT_TRUE(m_FinnhubDataSource.IsUpdatePeer()) << "UpdateStatus不修改Peer项";
-		m_FinnhubDataSource.SetUpdatePeer(true);
-
-		p->SetProductType(FOREX_EXCHANGE_);
-		m_FinnhubDataSource.UpdateStatus();
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateForexExchange());
-		m_FinnhubDataSource.SetUpdateForexExchange(true);
-
-		p->SetProductType(CRYPTO_EXCHANGE_);
-		m_FinnhubDataSource.UpdateStatus();
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateCryptoExchange());
-		m_FinnhubDataSource.SetUpdateCryptoExchange(true);
-	}
-
-	TEST_F(CFinnhubDataSourceTest, TestUpdateStatus2) {
-		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
-		m_FinnhubDataSource.SetCurrentInquiry(p);
-
-		p->SetProductType(ECONOMIC_CALENDAR_);
-		EXPECT_FALSE(p->IsNoRightToAccess());
-
-		m_FinnhubDataSource.UpdateStatus();
-
-		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateEconomicCalendar());
-
-		m_FinnhubDataSource.SetUpdateEconomicCalendar(true);
-	}
-
 	TEST_F(CFinnhubDataSourceTest, TestInquireCountryList) {
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateCountryList());
 		m_FinnhubDataSource.SetUpdateCountryList(false);

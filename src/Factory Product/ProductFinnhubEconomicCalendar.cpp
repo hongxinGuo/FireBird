@@ -15,6 +15,8 @@
 
 #include "ProductFinnhubEconomicCalendar.h"
 
+#include "FinnhubDataSource.h"
+
 CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 	m_strClassName = _T("Finnhub economic calendar");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/calendar/economic?");
@@ -77,4 +79,13 @@ CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomic
 		ReportJSonErrorToSystemMessage(_T("Finnhub Economic Calendar "), e.what());
 	}
 	return pvEconomicCalendar;
+}
+void CProductFinnhubEconomicCalendar::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
+	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
+	ASSERT_STREQ(typeid(*pDataSource).name(), _T("class CFinnhubDataSource"));
+
+	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->m_fUpdateEconomicCalendar = false;
+	if (IsNoRightToAccess()) {
+		gl_systemConfiguration.ChangeFinnhubAccountTypeToFree();
+	}
 }

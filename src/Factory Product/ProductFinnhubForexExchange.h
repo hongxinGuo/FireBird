@@ -10,6 +10,8 @@ public:
 	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	shared_ptr<vector<CString>> ParseFinnhubForexExchange(const CWebDataPtr& pWebData);
+
+	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
 };
 
 using CFinnhubForexExchangePtr = shared_ptr<CProductFinnhubForexExchange>;

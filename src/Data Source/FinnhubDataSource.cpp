@@ -63,111 +63,6 @@ bool CFinnhubDataSource::Reset() {
 	return true;
 }
 
-void CFinnhubDataSource::UpdateStatus() {
-	switch (m_pCurrentProduct->GetProductType()) {
-	case COMPANY_PROFILE_: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
-		break;
-	case COMPANY_PROFILE_CONCISE_:
-		break;
-	case STOCK_SYMBOLS_:
-		break;
-	case MARKET_STATUS_:
-		break;
-	case MARKET_HOLIDAY_:
-		break;
-	case COMPANY_EXECUTIVE_: // Premium
-		break;
-	case MARKET_NEWS_:
-		break;
-	case COMPANY_NEWS_:
-		break;
-	case PRESS_RELEASE_: // Premium
-		break;
-	case NEWS_SENTIMENT_:
-		break;
-	case PEERS_:
-		break;
-	case BASIC_FINANCIALS_:
-		break;
-	case INSIDER_TRANSACTION_:
-		break;
-	case INSIDER_SENTIMENT_:
-		break;
-	case OWNERSHIP_: // Premium
-		break;
-	case FUND_OWNERSHIP_: // jPremium
-		break;
-	case FINANCIAL_: // Premium
-		break;
-	case FINANCIAL_AS_REPORTED_:
-		break;
-	case SEC_FILINGS_:
-		break;
-	case INTERNATIONAL_FILINGS_: // Premium
-		break;
-	case SEC_SENTIMENT_ANALYSIS_: // Premium
-		break;
-	case SIMILARITY_INDEX_: // Premium
-		break;
-	case IPO_CALENDAR_:
-		break;
-	case DIVIDENDS_: // Premium
-		break;
-	case STOCK_ESTIMATES_RECOMMENDATION_TRENDS_:
-		break;
-	case STOCK_ESTIMATES_PRICE_TARGET_:
-		break;
-	case STOCK_ESTIMATES_UPGRADE_DOWNGRADE_: // Premium
-		break;
-	case STOCK_ESTIMATES_REVENUE_ESTIMATES_: // Premium
-		break;
-	case STOCK_ESTIMATES_EPS_ESTIMATES_: // Premium
-		break;
-	case STOCK_ESTIMATES_EPS_SURPRISE_:
-		break;
-	case STOCK_ESTIMATES_EARNING_CALENDAR_:
-		break;
-	case STOCK_PRICE_QUOTE_:
-		break;
-	case STOCK_PRICE_CANDLES_:
-		break;
-	case STOCK_PRICE_TICK_DATA_: // Premium
-		break;
-	case STOCK_PRICE_LAST_BID_ASK_: // Premium
-		break;
-	case STOCK_PRICE_SPLITS_:
-		break;
-	case FOREX_EXCHANGE_:
-		m_fUpdateForexExchange = false;
-		break;
-	case FOREX_SYMBOLS_:
-		break;
-	case FOREX_CANDLES_:
-		break;
-	case FOREX_ALL_RATES_:
-		break;
-	case CRYPTO_EXCHANGE_:
-		m_fUpdateCryptoExchange = false;
-		break;
-	case CRYPTO_SYMBOLS_:
-		break;
-	case CRYPTO_CANDLES_:
-		break;
-	case ECONOMIC_COUNTRY_LIST_:
-		m_fUpdateCountryList = false;
-		break;
-	case ECONOMIC_CALENDAR_:
-		m_fUpdateEconomicCalendar = false;
-		if (m_pCurrentProduct->IsNoRightToAccess()) {
-			gl_systemConfiguration.ChangeFinnhubAccountTypeToFree();
-		}
-		break;
-	default: TRACE("未处理指令%d\n", m_pCurrentProduct->GetProductType());
-		gl_systemMessage.PushErrorMessage(_T("Finnhub product未实现"));
-		break;
-	}
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 由系统调度器调度，采用GetTickCount()来确定当前时间。
@@ -199,9 +94,11 @@ void CFinnhubDataSource::InquireFinnhub(const long lCurrentTime) {
 		// 下午五时重启系统，故而此时不允许接收网络信息。
 		InquireEconomicCalendar(); // 第一步申请经济日历。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
 		InquireCountryList();
+		// 没有申请Stock Exchange，使用预先提供的股票交易所名单。
 		InquireForexExchange();
 		InquireCryptoExchange();
 		InquireMarketStatus();
+		InquireMarketHoliday();
 		InquireCompanySymbol(); // 第一个动作，首先申请当日证券代码
 		InquireForexSymbol();
 		InquireCryptoSymbol();
@@ -278,6 +175,47 @@ bool CFinnhubDataSource::InquireMarketStatus() {
 	return fHaveInquiry;
 }
 
+bool CFinnhubDataSource::InquireMarketHoliday() {
+	const long lExchangeSize = gl_pWorldMarket->GetStockExchangeSize();
+	bool fHaveInquiry = false;
+	constexpr int iInquiryType = MARKET_HOLIDAY_;
+
+	if (!IsInquiring() && IsUpdateMarketHoliday()) {
+		CFinnhubStockExchangePtr pExchange;
+		bool fFound = false;
+		long lCurrentStockExchangePos;
+		if (!m_fInquiringFinnhubMarketHoliday) {
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub MarketHoliday..."));
+			m_fInquiringFinnhubMarketHoliday = true;
+		}
+		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
+			if (!gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos)->IsMarketHolidayUpdated()) {
+				pExchange = gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos);
+				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pExchange->m_strCode)) {
+					fFound = true;
+					break;
+				}
+			}
+		}
+		if (fFound) {
+			fHaveInquiry = true;
+			const auto product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
+			product->SetIndex(lCurrentStockExchangePos);
+			StoreInquiry(product);
+			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub交易所代码:") + pExchange->m_strCode);
+			SetInquiring(true);
+		}
+		else {
+			m_fInquiringFinnhubMarketHoliday = false;
+			fHaveInquiry = false;
+			SetUpdateMarketHoliday(false);
+			const CString str = "Finnhub MarketHoliday查询完毕";
+			gl_systemMessage.PushInformationMessage(str);
+		}
+	}
+	return fHaveInquiry;
+}
+
 bool CFinnhubDataSource::InquireCompanySymbol() {
 	const long lExchangeSize = gl_pWorldMarket->GetStockExchangeSize();
 	bool fHaveInquiry = false;
@@ -314,47 +252,6 @@ bool CFinnhubDataSource::InquireCompanySymbol() {
 			fHaveInquiry = false;
 			SetUpdateSymbol(false);
 			const CString str = "Finnhub交易所代码数据查询完毕";
-			gl_systemMessage.PushInformationMessage(str);
-		}
-	}
-	return fHaveInquiry;
-}
-
-bool CFinnhubDataSource::InquireMarketHoliday() {
-	const long lExchangeSize = gl_pWorldMarket->GetStockExchangeSize();
-	bool fHaveInquiry = false;
-	constexpr int iInquiryType = MARKET_HOLIDAY_;
-
-	if (!IsInquiring() && IsUpdateMarketHoliday()) {
-		CFinnhubStockExchangePtr pExchange;
-		bool fFound = false;
-		long lCurrentStockExchangePos;
-		if (!m_fInquiringFinnhubMarketHoliday) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub MarketHoliday..."));
-			m_fInquiringFinnhubMarketHoliday = true;
-		}
-		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
-			if (!gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos)->IsMarketHolidayUpdated()) {
-				pExchange = gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos);
-				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pExchange->m_strCode)) {
-					fFound = true;
-					break;
-				}
-			}
-		}
-		if (fFound) {
-			fHaveInquiry = true;
-			const auto product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket.get(), iInquiryType);
-			product->SetIndex(lCurrentStockExchangePos);
-			StoreInquiry(product);
-			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub交易所代码:") + pExchange->m_strCode);
-			SetInquiring(true);
-		}
-		else {
-			m_fInquiringFinnhubMarketHoliday = false;
-			fHaveInquiry = false;
-			SetUpdateMarketHoliday(false);
-			const CString str = "Finnhub MarketHoliday查询完毕";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}

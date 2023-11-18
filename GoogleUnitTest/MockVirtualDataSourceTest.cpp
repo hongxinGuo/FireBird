@@ -6,12 +6,14 @@
 #include"MockVirtualDataSource.h"
 
 #include"GeneralCheck.h"
+#include "ProductDummy.h"
 #include "ProductTiingoStockSymbol.h"
 
 using namespace testing;
 
 namespace FireBirdTest {
 	static CMockVirtualDataSourcePtr m_pVirtualDataSource; // 为了方便查找出错位置,将mock变量声明为全局的。
+	static CVirtualProductWebDataPtr m_pProduct;
 
 	class CMockVirtualDataSourceTest : public Test {
 	protected:
@@ -32,6 +34,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 
 			m_pVirtualDataSource = make_shared<CMockVirtualDataSource>();
+			m_pProduct = make_shared<CProductDummy>();
+			m_pVirtualDataSource->SetCurrentInquiry(m_pProduct);
 		}
 
 		void TearDown() override {
@@ -124,7 +128,6 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pVirtualDataSource, GetWebData).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(0);
-		EXPECT_CALL(*m_pVirtualDataSource, UpdateStatus).Times(0);
 
 		EXPECT_FALSE(m_pVirtualDataSource->GetWebDataAndProcessIt());
 
@@ -138,7 +141,6 @@ namespace FireBirdTest {
 		.WillOnce(Return(true));
 		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pVirtualDataSource, UpdateStatus).Times(0);
 
 		EXPECT_FALSE(m_pVirtualDataSource->GetWebDataAndProcessIt());
 
@@ -152,7 +154,7 @@ namespace FireBirdTest {
 		.WillOnce(Return(true));
 		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(1)
 		.WillOnce(Return(true));
-		EXPECT_CALL(*m_pVirtualDataSource, UpdateStatus).Times(1);
+		//EXPECT_CALL(*m_pVirtualDataSource, UpdateStatus).Times(1);
 
 		EXPECT_TRUE(m_pVirtualDataSource->GetWebDataAndProcessIt());
 
