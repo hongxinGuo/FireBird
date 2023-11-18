@@ -70,7 +70,11 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pMockSinaRTDataSource->GenerateInquiryMessage(120100)) << "继续等待";
 		EXPECT_FALSE(m_pMockSinaRTDataSource->IsInquiring());
 		EXPECT_FALSE(m_pMockSinaRTDataSource->HaveInquiry());
+
 		EXPECT_TRUE(m_pMockSinaRTDataSource->GenerateInquiryMessage(120600)) << "申请数据";
+
+		EXPECT_TRUE(m_pMockSinaRTDataSource->IsInquiring());
+		EXPECT_TRUE(m_pMockSinaRTDataSource->HaveInquiry());
 
 		// 恢复原状
 		gl_pChinaMarket->SetSystemReady(true);
