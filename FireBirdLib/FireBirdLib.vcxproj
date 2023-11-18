@@ -51,7 +51,6 @@
     <ClInclude Include="..\src\Data Container\ContainerTiingoStock.h" />
     <ClInclude Include="..\src\Data Container\ContainerWorldStock.h" />
     <ClInclude Include="..\src\Data Container\ContainerWorldStockDayline.h" />
-    <ClInclude Include="..\src\Data Source\SinaRTDataSourceImp.h" />
     <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h" />
     <ClInclude Include="..\src\Data Source\FinnhubDataSource.h" />
     <ClInclude Include="..\src\Data Source\NeteaseDaylineDataSource.h" />
@@ -246,7 +245,6 @@
     <ClCompile Include="..\src\Data Container\ContainerTiingoStock.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerWorldStock.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerWorldStockDayLine.cpp" />
-    <ClCompile Include="..\src\Data Source\SinaRTDataSourceImp.cpp" />
     <ClCompile Include="..\src\Data Source\TengxunDayLineDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\FinnhubDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\NeteaseDaylineDataSource.cpp" />

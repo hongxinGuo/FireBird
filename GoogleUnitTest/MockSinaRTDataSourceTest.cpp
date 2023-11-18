@@ -29,11 +29,6 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			m_pMockSinaRTDataSource = make_shared<CMockSinaRTDataSource>();
-
-			// 禁止调用实际网络数据提取任务（否则会导致发起实际网络申请）
-			m_pMockSinaRTDataSource->DisableDataSourceImp();
-			// 禁止调用实际网络数据提取任务（否则会导致发起实际网络申请）
-			SinaDataSource.DisableDataSourceImp();
 		}
 
 		void TearDown() override {
