@@ -393,7 +393,7 @@ bool CContainerChinaStock::SaveDayLineData() {
 }
 
 void CContainerChinaStock::CreateThreadSaveDayLineBasicInfo(CChinaStockPtr pStock) {
-	thread thread1(ThreadSaveDayLineBasicInfo, pStock.get());
+	thread thread1(ThreadSaveDayLineBasicInfo, pStock);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
@@ -401,7 +401,7 @@ bool CContainerChinaStock::BuildWeekLine(long lStartDate) {
 	gl_systemMessage.PushInformationMessage(_T("重新生成周线历史数据"));
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
-		thread thread1(ThreadBuildWeekLineOfStock, pStock.get(), lStartDate);
+		thread thread1(ThreadBuildWeekLineOfStock, pStock, lStartDate);
 		thread1.detach();
 	}
 	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) { Sleep(100); }

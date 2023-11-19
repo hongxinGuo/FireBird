@@ -547,7 +547,7 @@ void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
 }
 
 void CChinaMarket::CreateThreadDistributeAndCalculateRTData() {
-	thread thread1(ThreadDistributeAndCalculateRTData, this);
+	thread thread1(ThreadDistributeAndCalculateRTData, gl_pChinaMarket);
 	thread1.detach();
 }
 
@@ -698,11 +698,11 @@ void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
 void CChinaMarket::TaskLoadCurrentStockHistoryData() {
 	if (m_pCurrentStock != nullptr) {
 		if (!m_pCurrentStock->IsDayLineLoaded()) {
-			CreateThreadLoadDayLine(m_pCurrentStock.get());
+			CreateThreadLoadDayLine(m_pCurrentStock);
 			m_pCurrentStock->SetDayLineLoaded(true);
 		}
 		if (!m_pCurrentStock->IsWeekLineLoaded()) {
-			CreateThreadLoadWeekLine(m_pCurrentStock.get());
+			CreateThreadLoadWeekLine(m_pCurrentStock);
 			m_pCurrentStock->SetWeekLineLoaded(true);
 		}
 	}
@@ -894,7 +894,7 @@ bool CChinaMarket::TaskUpdateChosenStockDB() {
 }
 
 void CChinaMarket::CreateThreadUpdateChoseStockDB() {
-	thread thread1(ThreadAppendChosenStockDB, this);
+	thread thread1(ThreadAppendChosenStockDB, gl_pChinaMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
@@ -923,7 +923,7 @@ bool CChinaMarket::TaskUpdateStockSection() {
 }
 
 void CChinaMarket::CreateThreadSaveStockSection() {
-	thread thread1(ThreadSaveStockSection, this);
+	thread thread1(ThreadSaveStockSection, gl_pChinaMarket);
 	thread1.detach();
 }
 
@@ -1313,59 +1313,59 @@ bool CChinaMarket::ProcessDayLine() {
 }
 
 void CChinaMarket::CreateThreadProcessTodayStock() {
-	thread thread1(ThreadProcessTodayStock, this);
+	thread thread1(ThreadProcessTodayStock, gl_pChinaMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CChinaMarket::CreateThreadBuildDayLineRS(long lStartCalculatingDate) {
-	thread thread1(ThreadBuildDayLineRS, this, lStartCalculatingDate);
+	thread thread1(ThreadBuildDayLineRS, gl_pChinaMarket, lStartCalculatingDate);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CChinaMarket::CreateThreadBuildDayLineRSOfDate(long lThisDate) {
-	thread thread1(ThreadBuildDayLineRSOfDate, this, lThisDate);
+	thread thread1(ThreadBuildDayLineRSOfDate, gl_pChinaMarket, lThisDate);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CChinaMarket::CreateThreadBuildWeekLineRSOfDate(long lThisDate) {
-	thread thread1(ThreadBuildWeekLineRSOfDate, this, lThisDate);
+	thread thread1(ThreadBuildWeekLineRSOfDate, gl_pChinaMarket, lThisDate);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CChinaMarket::CreateThreadLoadDayLine(CChinaStock* pCurrentStock) {
+void CChinaMarket::CreateThreadLoadDayLine(CChinaStockPtr pCurrentStock) {
 	thread thread1(ThreadLoadDayLine, pCurrentStock);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
-void CChinaMarket::CreateThreadLoadWeekLine(CChinaStock* pCurrentStock) {
+void CChinaMarket::CreateThreadLoadWeekLine(CChinaStockPtr pCurrentStock) {
 	thread thread1(ThreadLoadWeekLine, pCurrentStock);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CChinaMarket::CreateThreadUpdateStockProfileDB() {
-	thread thread1(ThreadUpdateChinaStockProfileDB, this);
+	thread thread1(ThreadUpdateChinaStockProfileDB, gl_pChinaMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CChinaMarket::CreateThreadUpdateOptionDB() {
-	thread thread1(ThreadUpdateOptionDB, this);
+	thread thread1(ThreadUpdateOptionDB, gl_pChinaMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CChinaMarket::CreateThreadChoice10RSStrong2StockSet() {
-	thread thread1(ThreadChoice10RSStrong2StockSet, this);
+	thread thread1(ThreadChoice10RSStrong2StockSet, gl_pChinaMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CChinaMarket::CreateThreadChoice10RSStrong1StockSet() {
-	thread thread1(ThreadChoice10RSStrong1StockSet, this);
+	thread thread1(ThreadChoice10RSStrong1StockSet, gl_pChinaMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CChinaMarket::CreateThreadChoice10RSStrongStockSet() {
 	for (int i = 0; i < 10; i++) {
 		if (m_aRSStrongOption.at(i).m_fActive) {
-			thread thread1(ThreadChoice10RSStrongStockSet, this, &(m_aRSStrongOption.at(i)), i);
+			thread thread1(ThreadChoice10RSStrongStockSet, gl_pChinaMarket, &(m_aRSStrongOption.at(i)), i);
 			thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 		}
 	}
@@ -1374,27 +1374,27 @@ void CChinaMarket::CreateThreadChoice10RSStrongStockSet() {
 }
 
 void CChinaMarket::CreateThreadBuildWeekLine(long lStartDate) {
-	thread thread1(ThreadBuildWeekLine, this, lStartDate);
+	thread thread1(ThreadBuildWeekLine, gl_pChinaMarket, lStartDate);
 	thread1.detach();
 }
 
-void CChinaMarket::CreateThreadBuildWeekLineOfStock(CChinaStock* pStock, long lStartDate) {
+void CChinaMarket::CreateThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long lStartDate) {
 	thread thread1(ThreadBuildWeekLineOfStock, pStock, lStartDate);
 	thread1.detach();
 }
 
 void CChinaMarket::CreateThreadBuildWeekLineRS() {
-	thread thread1(ThreadBuildWeekLineRS, this, _CHINA_MARKET_BEGIN_DATE_);
+	thread thread1(ThreadBuildWeekLineRS, gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
 	thread1.detach();
 }
 
 void CChinaMarket::CreateThreadBuildWeekLineOfCurrentWeek() {
-	thread thread1(ThreadBuildWeekLineOfCurrentWeek, this);
+	thread thread1(ThreadBuildWeekLineOfCurrentWeek, gl_pChinaMarket);
 	thread1.detach();
 }
 
 void CChinaMarket::CreateThreadBuildCurrentWeekWeekLineTable() {
-	thread thread1(ThreadBuildCurrentWeekWeekLineTable, this);
+	thread thread1(ThreadBuildCurrentWeekWeekLineTable, gl_pChinaMarket);
 	thread1.detach();
 }
 
@@ -1453,7 +1453,7 @@ bool CChinaMarket::TaskLoadTempRTData(long lTheDate, long lCurrentTime) {
 }
 
 void CChinaMarket::CreateThreadLoadTempRTData(long lTheDate) {
-	thread thread1(ThreadLoadTempRTData, this, lTheDate);
+	thread thread1(ThreadLoadTempRTData, gl_pChinaMarket, lTheDate);
 	thread1.detach();
 }
 
@@ -1766,7 +1766,7 @@ void CChinaMarket::LoadChosenStockDB() {
 }
 
 void CChinaMarket::CreateThreadUpdateTempRTData() {
-	thread thread1(ThreadSaveTempRTData, this);
+	thread thread1(ThreadSaveTempRTData, gl_pChinaMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 

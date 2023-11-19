@@ -53,12 +53,12 @@ CVirtualDataSource::CVirtualDataSource() {
 /// 当存在申请信息且没有正在运行的查询线程时，生成查询线程。
 /// </summary>
 /// lCurrentTime：当前市场时间
-void CVirtualDataSource::Run(const long lCurrentTime) {
+void CVirtualDataSource::Run(const long lCurrentLocalMarketTime) {
 	ASSERT(m_fEnable);
 
 	if (!IsInquiring()) {
 		ASSERT(!HaveInquiry());
-		GenerateInquiryMessage(lCurrentTime);
+		GenerateInquiryMessage(lCurrentLocalMarketTime);
 	}
 
 	if (HaveInquiry() && !IsWorkingThreadRunning()) {
@@ -151,10 +151,6 @@ void CVirtualDataSource::GenerateCurrentInquiryMessage() {
 	CreateTotalInquiringString();
 }
 
-bool CVirtualDataSource::GetWebData() {
-	return Read();
-}
-
 void CVirtualDataSource::PrepareReadingWebData() {
 	ConfigureSession();
 }
@@ -183,7 +179,7 @@ bool CVirtualDataSource::Read() {
 
 ///////////////////////////////////////////////////////////////////////////
 //
-// 从网络读取数据。每次读1KB，直到读不到为止。
+// 从网络读取数据。每次读16KB，直到读不到为止。
 // 当采用此函数读取网易日线历史数据时，OpenFile偶尔会出现超时（网络错误代码12002）错误，可以采用多读取几次解决之。
 // 现在发现其他网路读取线程也偶尔出现超时错误，多读几次即可解决之。--20211104
 //

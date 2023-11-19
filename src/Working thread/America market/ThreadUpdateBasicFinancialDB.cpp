@@ -4,7 +4,7 @@
 #include"WorldMarket.h"
 #include "Thread.h"
 
-UINT ThreadUpdateBasicFinancialDB(not_null<CWorldMarket*> pMarket) {
+UINT ThreadUpdateBasicFinancialDB(not_null<CWorldMarketPtr> pMarket) {
 	static bool sm_fInProcess = false;
 
 	if (sm_fInProcess) {

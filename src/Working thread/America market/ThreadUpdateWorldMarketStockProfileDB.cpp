@@ -4,7 +4,7 @@
 
 #include"WorldMarket.h"
 
-UINT ThreadUpdateWorldMarketStockProfileDB(CWorldMarket* pMarket) {
+UINT ThreadUpdateWorldMarketStockProfileDB(CWorldMarketPtr pMarket) {
 	static bool sm_fProcessing = false;
 
 	if (sm_fProcessing) {

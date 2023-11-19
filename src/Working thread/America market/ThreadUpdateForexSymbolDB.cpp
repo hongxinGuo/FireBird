@@ -3,7 +3,7 @@
 #include"ThreadStatus.h"
 #include"WorldMarket.h"
 
-UINT ThreadUpdateForexSymbolDB(not_null<CWorldMarket*> pMarket) {
+UINT ThreadUpdateForexSymbolDB(not_null<CWorldMarketPtr> pMarket) {
 	gl_UpdateWorldMarketDB.acquire();
 	pMarket->UpdateForexSymbolDB();
 	gl_UpdateWorldMarketDB.release();

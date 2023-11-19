@@ -18,6 +18,7 @@
 #include"FinnhubDataSource.h"
 #include"FinnhubCryptoSymbol.h"
 #include "InfoReport.h"
+#include "TimeConvert.h"
 
 using namespace testing;
 

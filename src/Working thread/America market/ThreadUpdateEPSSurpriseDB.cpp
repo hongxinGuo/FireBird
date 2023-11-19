@@ -5,7 +5,7 @@
 
 #include"WorldStock.h"
 
-UINT ThreadUpdateEPSSurpriseDB(not_null<CWorldStock*> pStockInput) {
+UINT ThreadUpdateEPSSurpriseDB(not_null<CWorldStockPtr> pStockInput) {
 	const auto pStock = pStockInput;
 	gl_UpdateWorldMarketDB.acquire();
 	pStock->UpdateEPSSurpriseDB();

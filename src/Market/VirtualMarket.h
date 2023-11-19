@@ -4,7 +4,6 @@
 #include"VirtualDataSource.h"
 
 #include"MarketTaskQueue.h"
-#include"TimeConvert.h"
 
 class CVirtualMarket {
 public:
@@ -21,7 +20,7 @@ public:
 
 	// 申请并处理Data source的数据，由最终衍生类的SchedulingTask函数来调度。
 	// 此函数在VirtualMarket中定义，但由最终衍生类来调用，因为lCurrentTime必须为该衍生类的当前市场时间。
-	void RunDataSource(long lCurrentTime) const;
+	void RunDataSource(long lCurrentLocalMarketTime) const;
 
 	virtual bool ProcessTask(long);
 

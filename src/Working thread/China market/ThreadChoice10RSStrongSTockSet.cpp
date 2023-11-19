@@ -11,7 +11,7 @@
 
 #include"ChinaMarket.h"
 
-UINT ThreadChoice10RSStrong2StockSet(not_null<CChinaMarket*> pMarket) {
+UINT ThreadChoice10RSStrong2StockSet(not_null<CChinaMarketPtr> pMarket) {
 	gl_UpdateChinaMarketDB.acquire();
 	gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));
 
@@ -26,7 +26,7 @@ UINT ThreadChoice10RSStrong2StockSet(not_null<CChinaMarket*> pMarket) {
 	return 102;
 }
 
-UINT ThreadChoice10RSStrong1StockSet(not_null<CChinaMarket*> pMarket) {
+UINT ThreadChoice10RSStrong1StockSet(not_null<CChinaMarketPtr> pMarket) {
 	gl_UpdateChinaMarketDB.acquire();
 	gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));
 
@@ -41,7 +41,7 @@ UINT ThreadChoice10RSStrong1StockSet(not_null<CChinaMarket*> pMarket) {
 	return 101;
 }
 
-UINT ThreadChoice10RSStrongStockSet(not_null<CChinaMarket*> pMarket, CRSReference* pRef, int iIndex) {
+UINT ThreadChoice10RSStrongStockSet(not_null<CChinaMarketPtr> pMarket, CRSReference* pRef, int iIndex) {
 	gl_UpdateChinaMarketDB.acquire();
 	CString str = _T("开始计算10日RS ");
 	char buffer[30];

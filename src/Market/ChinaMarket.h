@@ -83,7 +83,7 @@ public:
 	virtual void CreateThreadBuildDayLineRS(long lStartCalculatingDate);
 	virtual void CreateThreadBuildDayLineRSOfDate(long lThisDate);
 	virtual void CreateThreadBuildWeekLine(long lStartDate);
-	virtual void CreateThreadBuildWeekLineOfStock(CChinaStock* pStock, long lStartDate);
+	virtual void CreateThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long lStartDate);
 	virtual void CreateThreadBuildWeekLineRS();
 	virtual void CreateThreadBuildWeekLineRSOfDate(long lThisDate);
 	virtual void CreateThreadBuildWeekLineOfCurrentWeek();
@@ -91,8 +91,8 @@ public:
 	virtual void CreateThreadChoice10RSStrong1StockSet();
 	virtual void CreateThreadChoice10RSStrongStockSet();
 	virtual void CreateThreadChoice10RSStrong2StockSet();
-	virtual void CreateThreadLoadDayLine(CChinaStock* pCurrentStock);
-	virtual void CreateThreadLoadWeekLine(CChinaStock* pCurrentStock);
+	virtual void CreateThreadLoadDayLine(CChinaStockPtr pCurrentStock);
+	virtual void CreateThreadLoadWeekLine(CChinaStockPtr pCurrentStock);
 	virtual void CreateThreadProcessTodayStock();
 	virtual void CreateThreadUpdateStockProfileDB();
 	virtual void CreateThreadUpdateOptionDB();

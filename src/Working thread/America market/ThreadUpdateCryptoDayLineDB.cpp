@@ -15,7 +15,7 @@
 #include"WorldMarket.h"
 #include"FinnhubCryptoSymbol.h"
 
-UINT ThreadUpdateCryptoDayLineDB(not_null<CFinnhubCryptoSymbol*> pSymbol) {
+UINT ThreadUpdateCryptoDayLineDB(not_null<CFinnhubCryptoSymbolPtr> pSymbol) {
 	gl_UpdateWorldMarketDB.acquire();
 	pSymbol->UpdateDayLineDB();
 	pSymbol->UpdateDayLineStartEndDate();

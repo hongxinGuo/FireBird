@@ -5,6 +5,8 @@
 
 #include "ProductFinnhubMarketHoliday.h"
 
+#include "TimeConvert.h"
+
 CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
 	m_strClassName = _T("Finnhub market holiday");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/market-holiday?exchange=");

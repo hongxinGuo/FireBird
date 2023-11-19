@@ -82,7 +82,6 @@ CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomic
 }
 void CProductFinnhubEconomicCalendar::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
-	ASSERT_STREQ(typeid(*pDataSource).name(), _T("class CFinnhubDataSource"));
 
 	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->m_fUpdateEconomicCalendar = false;
 	if (IsNoRightToAccess()) {

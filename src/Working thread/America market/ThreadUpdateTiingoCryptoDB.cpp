@@ -5,7 +5,7 @@
 #include"WorldMarket.h"
 #include "Thread.h"
 
-UINT ThreadUpdateTiingoCryptoSymbolDB(not_null<CWorldMarket*> pMarket) {
+UINT ThreadUpdateTiingoCryptoSymbolDB(not_null<CWorldMarketPtr> pMarket) {
 	gl_UpdateWorldMarketDB.acquire();
 	pMarket->UpdateTiingoCryptoSymbolDB();
 	gl_UpdateWorldMarketDB.release();

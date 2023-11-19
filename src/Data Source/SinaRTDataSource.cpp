@@ -69,7 +69,7 @@ void CSinaRTDataSource::GenerateCurrentInquiryMessage() {
 }
 
 /// <summary>
-/// 网易实时数据接收时，不时会出现解析失败的情况。感觉原因出在网易数据服务器发送错误，但还要继续观察。
+/// 
 /// 调整Session的选项可能会改善接收情况。
 /// </summary>
 void CSinaRTDataSource::ConfigureSession() {

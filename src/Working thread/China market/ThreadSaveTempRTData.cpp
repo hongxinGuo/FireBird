@@ -19,7 +19,7 @@
 /// </summary>
 /// <param name="pMarket"></param>
 /// <returns></returns>
-UINT ThreadSaveTempRTData(not_null<CChinaMarket*> pMarket) {
+UINT ThreadSaveTempRTData(not_null<CChinaMarketPtr> pMarket) {
 	ASSERT(pMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
 	gl_UpdateChinaMarketDB.acquire();
@@ -31,7 +31,7 @@ UINT ThreadSaveTempRTData(not_null<CChinaMarket*> pMarket) {
 	return 13;
 }
 
-UINT ThreadLoadTempRTData(not_null<CChinaMarket*> pMarket, long lTheDate) {
+UINT ThreadLoadTempRTData(not_null<CChinaMarketPtr> pMarket, long lTheDate) {
 	gl_ProcessChinaMarketRTData.acquire();
 	pMarket->LoadTempRTData(lTheDate);
 	gl_ProcessChinaMarketRTData.release();
@@ -46,7 +46,7 @@ UINT ThreadLoadTempRTData(not_null<CChinaMarket*> pMarket, long lTheDate) {
 /// </summary>
 /// <param name="pMarket"></param>
 /// <returns></returns>
-UINT ThreadDistributeAndCalculateRTData(not_null<CChinaMarket*> pMarket) {
+UINT ThreadDistributeAndCalculateRTData(not_null<CChinaMarketPtr> pMarket) {
 	gl_ProcessChinaMarketRTData.acquire();
 	pMarket->DistributeAndCalculateRTData();
 	gl_ProcessChinaMarketRTData.release();

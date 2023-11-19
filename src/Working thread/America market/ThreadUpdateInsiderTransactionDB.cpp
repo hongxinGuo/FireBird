@@ -8,7 +8,7 @@
 
 #include"WorldMarket.h"
 
-UINT ThreadUpdateInsiderTransactionDB(not_null<CWorldMarket*> pMarket) {
+UINT ThreadUpdateInsiderTransactionDB(not_null<CWorldMarketPtr> pMarket) {
 	gl_UpdateWorldMarketDB.acquire();
 	pMarket->UpdateInsiderTransactionDB();
 	gl_UpdateWorldMarketDB.release();

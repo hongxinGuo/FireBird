@@ -14,7 +14,7 @@
 #include"ThreadStatus.h"
 #include"WorldMarket.h"
 
-UINT ThreadUpdateWorldStockDayLineDB(not_null<CWorldMarket*> pMarket) {
+UINT ThreadUpdateWorldStockDayLineDB(not_null<CWorldMarketPtr> pMarket) {
 	gl_UpdateWorldMarketDB.acquire();
 	pMarket->UpdateStockDayLineDB();
 	gl_UpdateWorldMarketDB.release();

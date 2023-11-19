@@ -3,7 +3,7 @@
 #include"ThreadStatus.h"
 #include"WorldMarket.h"
 
-UINT ThreadUpdateCountryListDB(not_null<CWorldMarket*> pMarket) {
+UINT ThreadUpdateCountryListDB(not_null<CWorldMarketPtr> pMarket) {
 	gl_UpdateWorldMarketDB.acquire();
 	pMarket->UpdateCountryListDB();
 	gl_UpdateWorldMarketDB.release();

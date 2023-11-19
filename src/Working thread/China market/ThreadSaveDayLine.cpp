@@ -15,7 +15,7 @@
 #include"ThreadStatus.h"
 #include"ChinaStock.h"
 
-UINT ThreadSaveDayLineBasicInfo(not_null<CChinaStock*> pStock) {
+UINT ThreadSaveDayLineBasicInfo(not_null<CChinaStockPtr> pStock) {
 	gl_UpdateChinaMarketDB.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem()) {
 		const bool fDataSaved = pStock->SaveDayLineBasicInfo();

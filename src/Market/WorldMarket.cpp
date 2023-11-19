@@ -203,7 +203,7 @@ void CWorldMarket::TaskResetMarket(long lCurrentTime) {
 
 bool CWorldMarket::CreateThreadUpdateTiingoIndustry() {
 	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) { // 更新tiingo stock profile与finnhub更新stock profile互斥
-		thread thread1(ThreadUpdateTiingoIndustry, this);
+		thread thread1(ThreadUpdateTiingoIndustry, gl_pWorldMarket);
 		thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 		return true;
 	}
@@ -212,7 +212,7 @@ bool CWorldMarket::CreateThreadUpdateTiingoIndustry() {
 
 bool CWorldMarket::CreateThreadUpdateSICIndustry() {
 	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) {// 更新tiingo stock profile与finnhub更新stock profile互斥
-		thread thread1(ThreadUpdateSICIndustry, this);
+		thread thread1(ThreadUpdateSICIndustry, gl_pWorldMarket);
 		thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 		return true;
 	}
@@ -221,7 +221,7 @@ bool CWorldMarket::CreateThreadUpdateSICIndustry() {
 
 bool CWorldMarket::CreateThreadUpdateNaicsIndustry() {
 	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) {// 更新tiingo stock profile与finnhub更新stock profile互斥
-		thread thread1(ThreadUpdateNaicsIndustry, this);
+		thread thread1(ThreadUpdateNaicsIndustry, gl_pWorldMarket);
 		thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 		return true;
 	}
@@ -340,17 +340,17 @@ bool CWorldMarket::UpdateEPSSurpriseDB() {
 }
 
 void CWorldMarket::CreateThreadUpdateForexDayLineDB(CForexSymbolPtr pSymbol) {
-	thread thread1(ThreadUpdateForexDayLineDB, pSymbol.get());
+	thread thread1(ThreadUpdateForexDayLineDB, pSymbol);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateCryptoDayLineDB(CFinnhubCryptoSymbolPtr pSymbol) {
-	thread thread1(ThreadUpdateCryptoDayLineDB, pSymbol.get());
+	thread thread1(ThreadUpdateCryptoDayLineDB, pSymbol);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateEPSSurpriseDB(CWorldStockPtr pStock) {
-	thread thread1(ThreadUpdateEPSSurpriseDB, pStock.get());
+	thread thread1(ThreadUpdateEPSSurpriseDB, pStock);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
@@ -371,12 +371,12 @@ bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
 }
 
 void CWorldMarket::CreateThreadUpdateDayLineStartEndDate() {
-	thread thread1(ThreadUpdateWorldStockDayLineStartEndDate, this);
+	thread thread1(ThreadUpdateWorldStockDayLineStartEndDate, gl_pWorldMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateDayLineDB() {
-	thread thread1(ThreadUpdateWorldStockDayLineDB, this);
+	thread thread1(ThreadUpdateWorldStockDayLineDB, gl_pWorldMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
@@ -412,67 +412,67 @@ void CWorldMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 }
 
 void CWorldMarket::CreateThreadUpdateStockProfileDB() {
-	thread thread1(ThreadUpdateWorldMarketStockProfileDB, this);
+	thread thread1(ThreadUpdateWorldMarketStockProfileDB, gl_pWorldMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateCompanyNewsDB() {
-	thread thread1(ThreadUpdateCompanyNewsDB, this);
+	thread thread1(ThreadUpdateCompanyNewsDB, gl_pWorldMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateBasicFinancialDB() {
-	thread thread1(ThreadUpdateBasicFinancialDB, this);
+	thread thread1(ThreadUpdateBasicFinancialDB, gl_pWorldMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateCountryListDB() {
-	thread thread1(ThreadUpdateCountryListDB, this);
+	thread thread1(ThreadUpdateCountryListDB, gl_pWorldMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateInsiderTransactionDB() {
-	thread thread1(ThreadUpdateInsiderTransactionDB, this);
+	thread thread1(ThreadUpdateInsiderTransactionDB, gl_pWorldMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateInsiderSentimentDB() {
-	thread thread1(ThreadUpdateInsiderSentimentDB, this);
+	thread thread1(ThreadUpdateInsiderSentimentDB, gl_pWorldMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateTiingoStockDB() {
-	thread thread1(ThreadUpdateTiingoStockDB, this);
+	thread thread1(ThreadUpdateTiingoStockDB, gl_pWorldMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateTiingoCryptoSymbolDB() {
-	thread thread1(ThreadUpdateTiingoCryptoSymbolDB, this);
+	thread thread1(ThreadUpdateTiingoCryptoSymbolDB, gl_pWorldMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateForexExchangeDB() {
-	thread thread1(ThreadUpdateForexExchangeDB, this);
+	thread thread1(ThreadUpdateForexExchangeDB, gl_pWorldMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateForexSymbolDB() {
-	thread thread1(ThreadUpdateForexSymbolDB, this);
+	thread thread1(ThreadUpdateForexSymbolDB, gl_pWorldMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateCryptoExchangeDB() {
-	thread thread1(ThreadUpdateCryptoExchangeDB, this);
+	thread thread1(ThreadUpdateCryptoExchangeDB, gl_pWorldMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateFinnhubCryptoSymbolDB() {
-	thread thread1(ThreadUpdateFinnhubCryptoSymbolDB, this);
+	thread thread1(ThreadUpdateFinnhubCryptoSymbolDB, gl_pWorldMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateEconomicCalendarDB() {
-	thread thread1(ThreadUpdateEconomicCalendarDB, this);
+	thread thread1(ThreadUpdateEconomicCalendarDB, gl_pWorldMarket);
 	thread1.detach();
 }
 

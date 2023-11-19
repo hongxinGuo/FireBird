@@ -13,14 +13,14 @@ namespace testing {
 		MOCK_METHOD(void, CreateThreadProcessTodayStock, (), (override));
 		MOCK_METHOD(void, CreateThreadBuildDayLineRS, (long lStartCalculatingDate), (override));
 		MOCK_METHOD(void, CreateThreadBuildDayLineRSOfDate, (long lThisDate), (override));
-		MOCK_METHOD(void, CreateThreadLoadDayLine, (CChinaStock* pCurrentStock), (override));
-		MOCK_METHOD(void, CreateThreadLoadWeekLine, (CChinaStock* pCurrentStock), (override));
+		MOCK_METHOD(void, CreateThreadLoadDayLine, (CChinaStockPtr pCurrentStock), (override));
+		MOCK_METHOD(void, CreateThreadLoadWeekLine, (CChinaStockPtr pCurrentStock), (override));
 		MOCK_METHOD(void, CreateThreadUpdateStockProfileDB, (), (override));
 		MOCK_METHOD(void, CreateThreadChoice10RSStrong2StockSet, (), (override));
 		MOCK_METHOD(void, CreateThreadChoice10RSStrong1StockSet, (), (override));
 		MOCK_METHOD(void, CreateThreadChoice10RSStrongStockSet, (), (override));
 		MOCK_METHOD(void, CreateThreadBuildWeekLine, (long lStartDate), (override));
-		MOCK_METHOD(void, CreateThreadBuildWeekLineOfStock, (CChinaStock* pStock, long lStartDate), (override));
+		MOCK_METHOD(void, CreateThreadBuildWeekLineOfStock, (CChinaStockPtr pStock, long lStartDate), (override));
 		MOCK_METHOD(void, CreateThreadBuildWeekLineRS, (), (override));
 		MOCK_METHOD(void, CreateThreadBuildWeekLineRSOfDate, (long lThisDate), (override));
 		MOCK_METHOD(void, CreateThreadBuildWeekLineOfCurrentWeek, (), (override));

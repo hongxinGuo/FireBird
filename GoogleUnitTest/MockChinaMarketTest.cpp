@@ -426,7 +426,7 @@ namespace FireBirdTest {
 		s_pMockChinaMarket->SetRSEndDate(0);
 		s_pMockChinaMarket->SetUpdateOptionDB(false);
 		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildDayLineRSOfDate(_)).Times(5);
-		EXPECT_EQ(ThreadBuildDayLineRS(s_pMockChinaMarket.get(), lStartDate), static_cast<UINT>(11));
+		EXPECT_EQ(ThreadBuildDayLineRS(s_pMockChinaMarket, lStartDate), static_cast<UINT>(11));
 		EXPECT_FALSE(s_pMockChinaMarket->IsUpdateOptionDB()) << _T("被打断后不设置此标识");
 		EXPECT_EQ(s_pMockChinaMarket->GetRSEndDate(), 0);
 		EXPECT_FALSE(gl_systemConfiguration.IsExitingCalculatingRS());
@@ -439,7 +439,7 @@ namespace FireBirdTest {
 		s_pMockChinaMarket->SetCalculatingDayLineRS(true);
 		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildDayLineRSOfDate(_))
 		.Times(5);
-		EXPECT_EQ(ThreadBuildDayLineRS(s_pMockChinaMarket.get(), lStartDate), static_cast<UINT>(11));
+		EXPECT_EQ(ThreadBuildDayLineRS(s_pMockChinaMarket, lStartDate), static_cast<UINT>(11));
 		EXPECT_TRUE(s_pMockChinaMarket->IsUpdateOptionDB());
 		EXPECT_EQ(s_pMockChinaMarket->GetRSEndDate(), s_pMockChinaMarket->GetMarketDate());
 		EXPECT_FALSE(s_pMockChinaMarket->IsCalculatingDayLineRS());
@@ -454,7 +454,7 @@ namespace FireBirdTest {
 	TEST_F(CMockChinaMarketTest, TestThreadUpdateOptionDB) {
 		EXPECT_CALL(*s_pMockChinaMarket, UpdateOptionDB)
 		.Times(1);
-		EXPECT_EQ(ThreadUpdateOptionDB(s_pMockChinaMarket.get()), static_cast<UINT>(20));
+		EXPECT_EQ(ThreadUpdateOptionDB(s_pMockChinaMarket), static_cast<UINT>(20));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadUpdateStockProfileDB) {
@@ -463,27 +463,27 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockChinaMarket, UpdateStockProfileDB)
 		.Times(1);
 		s_pMockChinaMarket->SetSystemReady(true);
-		EXPECT_EQ(ThreadUpdateChinaStockProfileDB(s_pMockChinaMarket.get()), static_cast<UINT>(18));
+		EXPECT_EQ(ThreadUpdateChinaStockProfileDB(s_pMockChinaMarket), static_cast<UINT>(18));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadUpdateChosenStockDB) {
 		EXPECT_CALL(*s_pMockChinaMarket, AppendChosenStockDB)
 		.Times(1);
 		s_pMockChinaMarket->SetSystemReady(true);
-		EXPECT_EQ(ThreadAppendChosenStockDB(s_pMockChinaMarket.get()), static_cast<UINT>(22));
+		EXPECT_EQ(ThreadAppendChosenStockDB(s_pMockChinaMarket), static_cast<UINT>(22));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadSaveTempRTData) {
 		EXPECT_CALL(*s_pMockChinaMarket, SaveTempRTData)
 		.Times(1);
 		s_pMockChinaMarket->SetSystemReady(true);
-		EXPECT_EQ(ThreadSaveTempRTData(s_pMockChinaMarket.get()), static_cast<UINT>(13));
+		EXPECT_EQ(ThreadSaveTempRTData(s_pMockChinaMarket), static_cast<UINT>(13));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadLoadTempRTData) {
 		EXPECT_CALL(*s_pMockChinaMarket, LoadTempRTData(20200101)).Times(1);
 
-		EXPECT_EQ(ThreadLoadTempRTData(s_pMockChinaMarket.get(), 20200101), static_cast<UINT>(19));
+		EXPECT_EQ(ThreadLoadTempRTData(s_pMockChinaMarket, 20200101), static_cast<UINT>(19));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadMaintainDayLineDatabase) {
@@ -493,35 +493,35 @@ namespace FireBirdTest {
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineOfCurrentWeek) {
 		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineOfCurrentWeek)
 		.Times(1);
-		EXPECT_EQ(ThreadBuildWeekLineOfCurrentWeek(s_pMockChinaMarket.get()), static_cast<UINT>(32));
+		EXPECT_EQ(ThreadBuildWeekLineOfCurrentWeek(s_pMockChinaMarket), static_cast<UINT>(32));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildCurrentWeekWeekLineTable) {
 		EXPECT_CALL(*s_pMockChinaMarket, DeleteCurrentWeekWeekLine).Times(1);
 		EXPECT_CALL(*s_pMockChinaMarket, BuildCurrentWeekWeekLineTable).Times(1);
-		EXPECT_EQ(ThreadBuildCurrentWeekWeekLineTable(s_pMockChinaMarket.get()), static_cast<UINT>(33));
+		EXPECT_EQ(ThreadBuildCurrentWeekWeekLineTable(s_pMockChinaMarket), static_cast<UINT>(33));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadSaveStockSection) {
 		EXPECT_CALL(*s_pMockChinaMarket, SaveStockSection)
 		.Times(1);
-		EXPECT_EQ(ThreadSaveStockSection(s_pMockChinaMarket.get()), static_cast<UINT>(35));
+		EXPECT_EQ(ThreadSaveStockSection(s_pMockChinaMarket), static_cast<UINT>(35));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineRSOfDate) {
 		const long lPrevMonday = GetPrevMonday(20200101);
 		gl_systemConfiguration.SetExitingSystem(true);
 		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineRS(_)).Times(0);
-		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(s_pMockChinaMarket.get(), lPrevMonday), static_cast<UINT>(31));
+		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(s_pMockChinaMarket, lPrevMonday), static_cast<UINT>(31));
 
 		gl_systemConfiguration.SetExitingSystem(false);
 		gl_systemConfiguration.SetExitingCalculatingRS(true);
 		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineRS(_)).Times(0);
-		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(s_pMockChinaMarket.get(), lPrevMonday), static_cast<UINT>(31));
+		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(s_pMockChinaMarket, lPrevMonday), static_cast<UINT>(31));
 
 		gl_systemConfiguration.SetExitingCalculatingRS(false);
 		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineRS(lPrevMonday)).Times(1);
-		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(s_pMockChinaMarket.get(), lPrevMonday), static_cast<UINT>(31));
+		EXPECT_EQ(ThreadBuildWeekLineRSOfDate(s_pMockChinaMarket, lPrevMonday), static_cast<UINT>(31));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineRS) {
@@ -541,7 +541,7 @@ namespace FireBirdTest {
 			// 本日是星期一
 			EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(s_pMockChinaMarket->GetMarketDate())).Times(1); // 当前日为星期一时，要计算当前日
 		}
-		EXPECT_EQ(ThreadBuildWeekLineRS(s_pMockChinaMarket.get(), lPrevMonday1), static_cast<UINT>(30));
+		EXPECT_EQ(ThreadBuildWeekLineRS(s_pMockChinaMarket, lPrevMonday1), static_cast<UINT>(30));
 
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
 		gl_systemMessage.PopInformationMessage();
@@ -553,7 +553,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockChinaMarket, DeleteCurrentWeekWeekLine()).Times(1);
 		EXPECT_CALL(*s_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1);
 
-		EXPECT_EQ(ThreadBuildWeekLine(s_pMockChinaMarket.get(), 19900101), static_cast<UINT>(25));
+		EXPECT_EQ(ThreadBuildWeekLine(s_pMockChinaMarket, 19900101), static_cast<UINT>(25));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLine2) {
@@ -563,7 +563,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLine(lCurrentMonday)).Times(1);
 		EXPECT_CALL(*s_pMockChinaMarket, DeleteCurrentWeekWeekLine()).Times(1);
 		EXPECT_CALL(*s_pMockChinaMarket, BuildCurrentWeekWeekLineTable()).Times(1);
-		EXPECT_EQ(ThreadBuildWeekLine(s_pMockChinaMarket.get(), lCurrentMonday), static_cast<UINT>(25));
+		EXPECT_EQ(ThreadBuildWeekLine(s_pMockChinaMarket, lCurrentMonday), static_cast<UINT>(25));
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskLoadTempRTData) {

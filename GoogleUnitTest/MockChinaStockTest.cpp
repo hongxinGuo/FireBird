@@ -71,7 +71,7 @@ namespace FireBirdTest {
 		pStock->SetDayLineLoaded(true);
 		pStock->SetSymbol(_T("601111.SS"));
 		gl_systemConfiguration.SetExitingSystem(true);
-		EXPECT_EQ(ThreadSaveDayLineBasicInfo(pStock.get()), static_cast<UINT>(15));
+		EXPECT_EQ(ThreadSaveDayLineBasicInfo(pStock), static_cast<UINT>(15));
 		EXPECT_TRUE(pStock->IsDayLineLoaded());
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
@@ -81,7 +81,7 @@ namespace FireBirdTest {
 		pStock->SetDayLineLoaded(true);
 		pStock->SetSymbol(_T("601111.SS"));
 		gl_systemConfiguration.SetExitingSystem(false);
-		EXPECT_EQ(ThreadSaveDayLineBasicInfo(pStock.get()), static_cast<UINT>(15));
+		EXPECT_EQ(ThreadSaveDayLineBasicInfo(pStock), static_cast<UINT>(15));
 		EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
@@ -91,7 +91,7 @@ namespace FireBirdTest {
 		pStock->SetDayLineLoaded(true);
 		pStock->SetSymbol(_T("601111.SS"));
 		gl_systemConfiguration.SetExitingSystem(false);
-		EXPECT_EQ(ThreadSaveDayLineBasicInfo(pStock.get()), static_cast<UINT>(15));
+		EXPECT_EQ(ThreadSaveDayLineBasicInfo(pStock), static_cast<UINT>(15));
 		EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
 		const CString str = gl_systemMessage.PopDayLineInfoMessage();
@@ -105,7 +105,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pStock, LoadDayLine)
 		.Times(1);
 		pStock->SetDayLineLoaded(false);
-		EXPECT_EQ(ThreadLoadDayLine(pStock.get()), static_cast<UINT>(16));
+		EXPECT_EQ(ThreadLoadDayLine(pStock), static_cast<UINT>(16));
 		EXPECT_TRUE(pStock->IsDayLineLoaded());
 		EXPECT_EQ(pStock->GetDayLineSize(), 0) << _T("存储日线数据后清空队列\n");
 	}
@@ -116,7 +116,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pStock, LoadWeekLine)
 		.Times(1);
 		pStock->SetWeekLineLoaded(false);
-		EXPECT_EQ(ThreadLoadWeekLine(pStock.get()), static_cast<UINT>(29));
+		EXPECT_EQ(ThreadLoadWeekLine(pStock), static_cast<UINT>(29));
 		EXPECT_TRUE(pStock->IsWeekLineLoaded());
 		EXPECT_EQ(pStock->GetWeekLineSize(), 0) << _T("存储周线数据后清空队列\n");
 	}
@@ -124,10 +124,10 @@ namespace FireBirdTest {
 	TEST_F(CMockChinaStockTest, TestThreadBuildWeekLineOfStock) {
 		gl_systemConfiguration.SetExitingSystem(true);
 		EXPECT_CALL(*pStock, BuildWeekLine(_)).Times(0);
-		EXPECT_EQ(ThreadBuildWeekLineOfStock(pStock.get(), 20200101), 26);
+		EXPECT_EQ(ThreadBuildWeekLineOfStock(pStock, 20200101), 26);
 
 		gl_systemConfiguration.SetExitingSystem(false);
 		EXPECT_CALL(*pStock, BuildWeekLine(20200101)).Times(1);
-		EXPECT_EQ(ThreadBuildWeekLineOfStock(pStock.get(), 20200101), 26);
+		EXPECT_EQ(ThreadBuildWeekLineOfStock(pStock, 20200101), 26);
 	}
 }
