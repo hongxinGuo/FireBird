@@ -732,6 +732,12 @@
     <ClInclude Include="..\src\Type\America market\MarketHoliday.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Type\America market\FinnhubRecommendationTrends.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubRecommendationTrends.h">
+      <Filter>头文件\database\WorldMarket</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1306,6 +1312,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketHoliday.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubRecommendationTrends.cpp">
+      <Filter>源文件\database\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\FinnhubRecommendationTrends.cpp">
+      <Filter>源文件\Type\America market</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -49,7 +49,7 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectFinnhubWebSocketAndSendMessage(not_null<CFinnhubWebSocket*> pDataFinnhubWebSocket, const vectorString& vSymbol) {
+UINT ThreadConnectFinnhubWebSocketAndSendMessage(CFinnhubWebSocket* pDataFinnhubWebSocket, const vectorString& vSymbol) {
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;

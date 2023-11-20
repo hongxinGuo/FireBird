@@ -90,6 +90,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubCryptoSymbol.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubForexExchange.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubForexSymbol.h" />
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubRecommendationTrends.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialQuarter.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockExchange.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="..\src\Type\America market\FinnhubCompanyNews.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubCryptoSymbol.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubForexSymbol.h" />
+    <ClInclude Include="..\src\Type\America market\FinnhubRecommendationTrends.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubStockBasicFinancial.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubStockExchange.h" />
     <ClInclude Include="..\src\Type\America market\InsiderSentiment.h" />
@@ -272,6 +274,7 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetEconimicCalendar.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetEPSSurprise.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubCompanyNews.cpp" />
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubRecommendationTrends.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialMetric.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialsQuarter.cpp" />
@@ -340,6 +343,7 @@
     <ClCompile Include="..\src\Type\America market\FinnhubCompanyNews.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubCryptoSymbol.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubForexSymbol.cpp" />
+    <ClCompile Include="..\src\Type\America market\FinnhubRecommendationTrends.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubStockBasicFinancial.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubStockExchange.cpp" />
     <ClCompile Include="..\src\Type\America market\InsiderSentment.cpp" />

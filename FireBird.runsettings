@@ -3,6 +3,10 @@
 <RunSettings>
   <RunConfiguration>
     <TargetPlatform>x64</TargetPlatform>
+	<!-- timeout 120 seconds -->
+    <TestSessionTimeout>120000</TestSessionTimeout>
+    <EnvironmentVariables>
+    </EnvironmentVariables>
   </RunConfiguration>
   <DataCollectionRunSettings>
     <DataCollectors>
@@ -26,7 +30,7 @@ About include/exclude lists:
 Empty "Include" clauses imply all; empty "Exclude" clauses imply none.
 Each element in the list is a regular expression (ECMAScript syntax). See /visualstudio/ide/using-regular-expressions-in-visual-studio.
 An item must first match at least one entry in the include list to be included.
-Included items must then not match any entries in the exclude list to remain included.								<ModulePath>.*\.dll$</ModulePath>
+Included items must then not match any entries in the exclude list to remain included.	<ModulePath>.*\.dll$</ModulePath>
 -->
 
             <!-- Match assembly file paths: -->

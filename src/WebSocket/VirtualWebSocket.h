@@ -16,10 +16,12 @@ using std::vector;
 
 using vectorString = vector<string>;
 
-class CVirtualWebSocket {
+class CVirtualWebSocket : public std::enable_shared_from_this<CVirtualWebSocket> {
 public:
 	CVirtualWebSocket(bool fHaveSubscriptionId = true);
 	virtual ~CVirtualWebSocket();
+
+	std::shared_ptr<CVirtualWebSocket> GetShared() { return shared_from_this(); }
 
 	bool ConnectWebSocketAndSendMessage(const vectorString& vSymbol);
 	void Reset();
