@@ -44,4 +44,4 @@ public:
 
 using CFinnhubWebSocketPtr = shared_ptr<CFinnhubWebSocket>;
 
-extern CFinnhubWebSocket gl_finnhubWebSocket;
+extern CFinnhubWebSocketPtr gl_pFinnhubWebSocket;

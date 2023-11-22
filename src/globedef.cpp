@@ -24,8 +24,6 @@
 
 #include"ThreadStatus.h"
 
-#include "ChinaMarket.h"
-
 // 以下变量皆为唯一实例
 CSystemConfiguration gl_systemConfiguration; // 系统配置参数的总汇.此全局变量要位于所有全局变量的最前面，以保证第一个初始化。
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第二位，其他全局变量初始化时用到此变量（当报错时）。
@@ -57,10 +55,10 @@ CTiingoDataSourcePtr gl_pTiingoDataSource = nullptr;
 CQuandlDataSourcePtr gl_pQuandlDataSource = nullptr;
 
 // Web socket， 皆为唯一实例。
-CFinnhubWebSocket gl_finnhubWebSocket;
-CTiingoIEXWebSocket gl_tiingoIEXWebSocket;
-CTiingoForexWebSocket gl_tiingoForexWebSocket;
-CTiingoCryptoWebSocket gl_tiingoCryptoWebSocket;
+CFinnhubWebSocketPtr gl_pFinnhubWebSocket;
+CTiingoIEXWebSocketPtr gl_pTiingoIEXWebSocket;
+CTiingoForexWebSocketPtr gl_pTiingoForexWebSocket;
+CTiingoCryptoWebSocketPtr gl_pTiingoCryptoWebSocket;
 
 // 各市场。皆为唯一实例。为最后声明的变量。
 CWorldMarketPtr gl_pWorldMarket = nullptr;

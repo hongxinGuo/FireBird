@@ -48,7 +48,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			EXPECT_THAT(gl_finnhubWebSocket.DataSize(), 0);
+			EXPECT_THAT(gl_pFinnhubWebSocket->DataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
 			ix::WebSocketErrorInfo e;
 			ix::WebSocketCloseInfo c;
@@ -78,8 +78,8 @@ namespace FireBirdTest {
 		ProcessFinnhubWebSocket(m_pMsg);
 		switch (m_pMsg->type) {
 		case ix::WebSocketMessageType::Message:
-			EXPECT_THAT(gl_finnhubWebSocket.DataSize(), 1) << "成功接收了一个数据";
-			pString = gl_finnhubWebSocket.PopData();
+			EXPECT_THAT(gl_pFinnhubWebSocket->DataSize(), 1) << "成功接收了一个数据";
+			pString = gl_pFinnhubWebSocket->PopData();
 			EXPECT_STREQ(pString->c_str(), _T("abcdefg"));
 			break;
 		case ix::WebSocketMessageType::Open:
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 			EXPECT_STREQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Finnhub WebSocket Fragment"));
 			break;
 		default:
-			EXPECT_THAT(gl_finnhubWebSocket.DataSize(), 0);
+			EXPECT_THAT(gl_pFinnhubWebSocket->DataSize(), 0);
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 0);
 			break;
 		}
@@ -127,7 +127,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			EXPECT_THAT(gl_tiingoIEXWebSocket.DataSize(), 0);
+			EXPECT_THAT(gl_pTiingoIEXWebSocket->DataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
 			ix::WebSocketErrorInfo e;
 			ix::WebSocketCloseInfo c;
@@ -157,8 +157,8 @@ namespace FireBirdTest {
 		ProcessTiingoIEXWebSocket(m_pMsg);
 		switch (m_pMsg->type) {
 		case ix::WebSocketMessageType::Message:
-			EXPECT_THAT(gl_tiingoIEXWebSocket.DataSize(), 1) << "成功接收了一个数据";
-			pString = gl_tiingoIEXWebSocket.PopData();
+			EXPECT_THAT(gl_pTiingoIEXWebSocket->DataSize(), 1) << "成功接收了一个数据";
+			pString = gl_pTiingoIEXWebSocket->PopData();
 			EXPECT_STREQ(pString->c_str(), _T("abcdefg"));
 			break;
 		case ix::WebSocketMessageType::Open:
@@ -186,7 +186,7 @@ namespace FireBirdTest {
 			EXPECT_STREQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo IEX WebSocket Fragment"));
 			break;
 		default:
-			EXPECT_THAT(gl_tiingoIEXWebSocket.DataSize(), 0);
+			EXPECT_THAT(gl_pTiingoIEXWebSocket->DataSize(), 0);
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0);
 			break;
 		}
@@ -206,7 +206,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			EXPECT_THAT(gl_tiingoCryptoWebSocket.DataSize(), 0);
+			EXPECT_THAT(gl_pTiingoCryptoWebSocket->DataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
 			ix::WebSocketErrorInfo e;
 			ix::WebSocketCloseInfo c;
@@ -237,8 +237,8 @@ namespace FireBirdTest {
 		ProcessTiingoCryptoWebSocket(m_pMsg);
 		switch (m_pMsg->type) {
 		case ix::WebSocketMessageType::Message:
-			EXPECT_THAT(gl_tiingoCryptoWebSocket.DataSize(), 1) << "成功接收了一个数据";
-			pString = gl_tiingoCryptoWebSocket.PopData();
+			EXPECT_THAT(gl_pTiingoCryptoWebSocket->DataSize(), 1) << "成功接收了一个数据";
+			pString = gl_pTiingoCryptoWebSocket->PopData();
 			EXPECT_STREQ(pString->c_str(), _T("abcdefg"));
 			break;
 		case ix::WebSocketMessageType::Open:
@@ -266,7 +266,7 @@ namespace FireBirdTest {
 			EXPECT_STREQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Crypto WebSocket Fragment"));
 			break;
 		default:
-			EXPECT_THAT(gl_tiingoCryptoWebSocket.DataSize(), 0);
+			EXPECT_THAT(gl_pTiingoCryptoWebSocket->DataSize(), 0);
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 0);
 			break;
 		}
@@ -286,7 +286,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			EXPECT_THAT(gl_tiingoForexWebSocket.DataSize(), 0);
+			EXPECT_THAT(gl_pTiingoForexWebSocket->DataSize(), 0);
 			WebSocketMessageData* pMsg = GetParam();
 			ix::WebSocketErrorInfo e;
 			ix::WebSocketCloseInfo c;
@@ -317,8 +317,8 @@ namespace FireBirdTest {
 		ProcessTiingoForexWebSocket(m_pMsg);
 		switch (m_pMsg->type) {
 		case ix::WebSocketMessageType::Message:
-			EXPECT_THAT(gl_tiingoForexWebSocket.DataSize(), 1) << "成功接收了一个数据";
-			pString = gl_tiingoForexWebSocket.PopData();
+			EXPECT_THAT(gl_pTiingoForexWebSocket->DataSize(), 1) << "成功接收了一个数据";
+			pString = gl_pTiingoForexWebSocket->PopData();
 			EXPECT_STREQ(pString->c_str(), _T("abcdefg"));
 			break;
 		case ix::WebSocketMessageType::Open:
@@ -346,7 +346,7 @@ namespace FireBirdTest {
 			EXPECT_STREQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Tiingo Forex WebSocket Fragment"));
 			break;
 		default:
-			EXPECT_THAT(gl_tiingoForexWebSocket.DataSize(), 0);
+			EXPECT_THAT(gl_pTiingoForexWebSocket->DataSize(), 0);
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 0);
 			break;
 		}

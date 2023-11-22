@@ -256,6 +256,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemConfiguration.LoadDB(); // 装入系统参数
 	gl_systemConfiguration.UpdateSystem(); // 更新系统参数
 
+	// WebSocket要在gl_pWorldMarket之前生成
+	gl_pFinnhubWebSocket = make_shared<CFinnhubWebSocket>();
+	gl_pTiingoIEXWebSocket = make_shared<CTiingoIEXWebSocket>();
+	gl_pTiingoCryptoWebSocket = make_shared<CTiingoCryptoWebSocket>();
+	gl_pTiingoForexWebSocket = make_shared<CTiingoForexWebSocket>();
+
 	// 此五个要在gl_pChinaMarket前生成
 	ASSERT(gl_pChinaMarket == nullptr);
 	gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
@@ -1031,7 +1037,7 @@ void CMainFrame::OnUpdateWorldStockDayLineStartEnd() {
 void CMainFrame::OnRecordFinnhubWebSocket() {
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) {
 		gl_systemConfiguration.SetUsingFinnhubWebSocket(false);
-		gl_finnhubWebSocket.CreateThreadDisconnectWebSocket();
+		gl_pFinnhubWebSocket->CreateThreadDisconnectWebSocket();
 	}
 	else {
 		gl_systemConfiguration.SetUsingFinnhubWebSocket(true);
@@ -1051,7 +1057,7 @@ void CMainFrame::OnUpdateRecordFinnhubWebSocket(CCmdUI* pCmdUI) {
 void CMainFrame::OnRecordTiingoCryptoWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) {
 		gl_systemConfiguration.SetUsingTiingoCryptoWebSocket(false);
-		gl_tiingoCryptoWebSocket.CreateThreadDisconnectWebSocket();
+		gl_pTiingoCryptoWebSocket->CreateThreadDisconnectWebSocket();
 	}
 	else {
 		gl_systemConfiguration.SetUsingTiingoCryptoWebSocket(true);
@@ -1071,7 +1077,7 @@ void CMainFrame::OnUpdateRecordTiingoCryptoWebSocket(CCmdUI* pCmdUI) {
 void CMainFrame::OnRecordTiingoForexWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) {
 		gl_systemConfiguration.SetUsingTiingoForexWebSocket(false);
-		gl_tiingoForexWebSocket.CreateThreadDisconnectWebSocket();
+		gl_pTiingoForexWebSocket->CreateThreadDisconnectWebSocket();
 	}
 	else {
 		gl_systemConfiguration.SetUsingTiingoForexWebSocket(true);
@@ -1091,7 +1097,7 @@ void CMainFrame::OnUpdateRecordTiingoForexWebSocket(CCmdUI* pCmdUI) {
 void CMainFrame::OnRecordTiingoIEXWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) {
 		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(false);
-		gl_tiingoIEXWebSocket.CreateThreadDisconnectWebSocket();
+		gl_pTiingoIEXWebSocket->CreateThreadDisconnectWebSocket();
 	}
 	else {
 		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(true);

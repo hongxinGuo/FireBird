@@ -171,10 +171,10 @@ namespace FireBirdTest {
 		EXPECT_TRUE(s_pMockWorldMarket->IsSystemReady());
 		EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
 		//gl_pTiingoDataSource->SetErrorCode(10020); // 确保不调用tiingo WebSocket
-		EXPECT_TRUE(gl_finnhubWebSocket.IsIdle());
-		EXPECT_TRUE(gl_tiingoIEXWebSocket.IsIdle());
-		EXPECT_TRUE(gl_tiingoCryptoWebSocket.IsIdle());
-		EXPECT_TRUE(gl_tiingoForexWebSocket.IsIdle());
+		EXPECT_TRUE(gl_pFinnhubWebSocket->IsIdle());
+		EXPECT_TRUE(gl_pTiingoIEXWebSocket->IsIdle());
+		EXPECT_TRUE(gl_pTiingoCryptoWebSocket->IsIdle());
+		EXPECT_TRUE(gl_pTiingoForexWebSocket->IsIdle());
 		EXPECT_CALL(*s_pMockWorldMarket, StartFinnhubWebSocket).Times(1);
 		EXPECT_CALL(*s_pMockWorldMarket, StartTiingoIEXWebSocket).Times(1);
 		EXPECT_CALL(*s_pMockWorldMarket, StartTiingoCryptoWebSocket).Times(1);

@@ -33,7 +33,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTiingoForexWebSocketTest, TestGetURL) {
-		EXPECT_STREQ(gl_tiingoForexWebSocket.GetURL().c_str(), _T("wss://api.tiingo.com/fx"));
+		EXPECT_STREQ(gl_pTiingoForexWebSocket->GetURL().c_str(), _T("wss://api.tiingo.com/fx"));
 	}
 
 	TEST_F(CTiingoForexWebSocketTest, TestCreateMessage) {
@@ -42,7 +42,7 @@ namespace FireBirdTest {
 		vSymbol.push_back(_T("AA"));
 		vSymbol.push_back(_T("AAL"));
 		vSymbol.push_back(_T("AAPL"));
-		string sSymbols = gl_tiingoForexWebSocket.CreateMessage(vSymbol);
+		string sSymbols = gl_pTiingoForexWebSocket->CreateMessage(vSymbol);
 		json jsonMessage;
 		try {
 			jsonMessage = json::parse(sSymbols);

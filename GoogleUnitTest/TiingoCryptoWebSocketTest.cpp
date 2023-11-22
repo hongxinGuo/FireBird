@@ -31,7 +31,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTiingoCryptoWebSocketTest, TestGetURL) {
-		EXPECT_STREQ(gl_tiingoCryptoWebSocket.GetURL().c_str(), _T("wss://api.tiingo.com/crypto"));
+		EXPECT_STREQ(gl_pTiingoCryptoWebSocket->GetURL().c_str(), _T("wss://api.tiingo.com/crypto"));
 	}
 
 	TEST_F(CTiingoCryptoWebSocketTest, TestCreateMessage) {
@@ -40,7 +40,7 @@ namespace FireBirdTest {
 		vSymbol.push_back(_T("AA"));
 		vSymbol.push_back(_T("AAL"));
 		vSymbol.push_back(_T("AAPL"));
-		string strSymbols = gl_tiingoCryptoWebSocket.CreateMessage(vSymbol);
+		string strSymbols = gl_pTiingoCryptoWebSocket->CreateMessage(vSymbol);
 		json jsonMessage;
 		try {
 			jsonMessage = json::parse(strSymbols);

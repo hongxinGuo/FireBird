@@ -113,3 +113,5 @@ protected:
 
 	CTemplateMutexAccessQueue<string> m_qWebSocketData; // 接收到的WebSocket数据
 };
+
+using CVirtualWebSocketPtr = shared_ptr<CVirtualWebSocket>;

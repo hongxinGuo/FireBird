@@ -405,6 +405,10 @@ void CWorldMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 		CreateThreadUpdateStockProfileDB();
 	}
 
+	if (gl_finnhubInaccessibleExchange.IsNeedUpdate()) { // 更新禁止访问证券交易所名单
+		gl_finnhubInaccessibleExchange.UpdateFile();
+	}
+
 	long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
 	if (IsTimeToResetSystem(lNextTime)) lNextTime = 170510;
 	ASSERT(!IsTimeToResetSystem(lNextTime));// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
@@ -714,40 +718,40 @@ vectorString CWorldMarket::GetTiingoForexWebSocketSymbolVector() {
 
 void CWorldMarket::StartAllWebSocket() {
 	if (IsSystemReady()) {
-		if (!gl_pFinnhubDataSource->IsWebError() && gl_finnhubWebSocket.IsIdle()) StartFinnhubWebSocket();
+		if (!gl_pFinnhubDataSource->IsWebError() && gl_pFinnhubWebSocket->IsIdle()) StartFinnhubWebSocket();
 		if (!gl_pTiingoDataSource->IsWebError()) {
-			if (gl_tiingoIEXWebSocket.IsIdle()) StartTiingoIEXWebSocket();
-			if (gl_tiingoCryptoWebSocket.IsIdle()) StartTiingoCryptoWebSocket();
-			if (gl_tiingoForexWebSocket.IsIdle()) StartTiingoForexWebSocket();
+			if (gl_pTiingoIEXWebSocket->IsIdle()) StartTiingoIEXWebSocket();
+			if (gl_pTiingoCryptoWebSocket->IsIdle()) StartTiingoCryptoWebSocket();
+			if (gl_pTiingoForexWebSocket->IsIdle()) StartTiingoForexWebSocket();
 		}
 	}
 }
 
 void CWorldMarket::StartFinnhubWebSocket() {
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket() && !gl_pFinnhubDataSource->IsTimeout()) {
-		gl_finnhubWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
-		gl_finnhubWebSocket.SetHeartbeatTime(GetUTCTime());
+		gl_pFinnhubWebSocket->CreateThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
+		gl_pFinnhubWebSocket->SetHeartbeatTime(GetUTCTime());
 	}
 }
 
 void CWorldMarket::StartTiingoIEXWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
-		gl_tiingoIEXWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
-		gl_tiingoIEXWebSocket.SetHeartbeatTime(GetUTCTime());
+		gl_pTiingoIEXWebSocket->CreateThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
+		gl_pTiingoIEXWebSocket->SetHeartbeatTime(GetUTCTime());
 	}
 }
 
 void CWorldMarket::StartTiingoCryptoWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
-		gl_tiingoCryptoWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
-		gl_tiingoCryptoWebSocket.SetHeartbeatTime(GetUTCTime());
+		gl_pTiingoCryptoWebSocket->CreateThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
+		gl_pTiingoCryptoWebSocket->SetHeartbeatTime(GetUTCTime());
 	}
 }
 
 void CWorldMarket::StartTiingoForexWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
-		gl_tiingoForexWebSocket.CreateThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
-		gl_tiingoForexWebSocket.SetHeartbeatTime(GetUTCTime());
+		gl_pTiingoForexWebSocket->CreateThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
+		gl_pTiingoForexWebSocket->SetHeartbeatTime(GetUTCTime());
 	}
 }
 
@@ -757,100 +761,100 @@ void CWorldMarket::StartTiingoForexWebSocket() {
 void CWorldMarket::DisconnectAllWebSocket() {
 	//本函数只在系统退出时调用
 	//ASSERT(gl_systemConfiguration.IsExitingSystem()); 
-	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) gl_finnhubWebSocket.Disconnect();
-	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) gl_tiingoIEXWebSocket.Disconnect();
-	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) gl_tiingoCryptoWebSocket.Disconnect();
-	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) gl_tiingoForexWebSocket.Disconnect();
+	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) gl_pFinnhubWebSocket->Disconnect();
+	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) gl_pTiingoIEXWebSocket->Disconnect();
+	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) gl_pTiingoCryptoWebSocket->Disconnect();
+	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) gl_pTiingoForexWebSocket->Disconnect();
 }
 
 void CWorldMarket::StopFinnhubWebSocketIfTimeOut() {
-	if ((gl_pFinnhubDataSource->IsTimeout()) || gl_finnhubWebSocket.IsIdle()) {
-		gl_finnhubWebSocket.CreateThreadDisconnectWebSocket();
+	if ((gl_pFinnhubDataSource->IsTimeout()) || gl_pFinnhubWebSocket->IsIdle()) {
+		gl_pFinnhubWebSocket->CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub web故障#12002，关闭Web socket服务"));
 	}
 }
 
 void CWorldMarket::StopTiingoIEXWebSocketIfTimeOut() {
-	if ((gl_pTiingoDataSource->IsTimeout()) && !gl_tiingoIEXWebSocket.IsClosed()) {
-		gl_tiingoIEXWebSocket.CreateThreadDisconnectWebSocket();
+	if ((gl_pTiingoDataSource->IsTimeout()) && !gl_pTiingoIEXWebSocket->IsClosed()) {
+		gl_pTiingoIEXWebSocket->CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX web故障#12002，关闭Web socket服务"));
 	}
 }
 
 void CWorldMarket::StopTiingoCryptoWebSocketIfTimeOut() {
-	if ((gl_pTiingoDataSource->IsTimeout()) && !gl_tiingoCryptoWebSocket.IsClosed()) {
-		gl_tiingoCryptoWebSocket.CreateThreadDisconnectWebSocket();
+	if ((gl_pTiingoDataSource->IsTimeout()) && !gl_pTiingoCryptoWebSocket->IsClosed()) {
+		gl_pTiingoCryptoWebSocket->CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto web故障#12002，关闭Web socket服务"));
 	}
 }
 
 void CWorldMarket::StopTiingoForexWebSocketIfTimeOut() {
-	if ((gl_pTiingoDataSource->IsTimeout()) && !gl_tiingoForexWebSocket.IsClosed()) {
-		gl_tiingoForexWebSocket.CreateThreadDisconnectWebSocket();
+	if ((gl_pTiingoDataSource->IsTimeout()) && !gl_pTiingoForexWebSocket->IsClosed()) {
+		gl_pTiingoForexWebSocket->CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex web故障#12002，关闭Web socket服务"));
 	}
 }
 
 void CWorldMarket::ProcessWebSocketData() {
-	if (gl_finnhubWebSocket.DataSize() > 0) ProcessFinnhubWebSocketData();
-	if (gl_tiingoIEXWebSocket.DataSize() > 0) ProcessTiingoIEXWebSocketData();
-	if (gl_tiingoCryptoWebSocket.DataSize() > 0) ProcessTiingoCryptoWebSocketData();
-	if (gl_tiingoForexWebSocket.DataSize() > 0) ProcessTiingoForexWebSocketData();
+	if (gl_pFinnhubWebSocket->DataSize() > 0) ProcessFinnhubWebSocketData();
+	if (gl_pTiingoIEXWebSocket->DataSize() > 0) ProcessTiingoIEXWebSocketData();
+	if (gl_pTiingoCryptoWebSocket->DataSize() > 0) ProcessTiingoCryptoWebSocketData();
+	if (gl_pTiingoForexWebSocket->DataSize() > 0) ProcessTiingoForexWebSocketData();
 }
 
 void CWorldMarket::ProcessFinnhubWebSocketData() {
-	const auto total = gl_finnhubWebSocket.DataSize();
+	const auto total = gl_pFinnhubWebSocket->DataSize();
 	size_t iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
-		auto pString = gl_finnhubWebSocket.PopData();
+		auto pString = gl_pFinnhubWebSocket->PopData();
 		CString strMessage = _T("Finnhub: ");
 		strMessage += (*pString).c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
-		gl_finnhubWebSocket.ParseFinnhubWebSocketData(pString);
+		gl_pFinnhubWebSocket->ParseFinnhubWebSocketData(pString);
 	}
 	gl_systemMessage.SetProcessedFinnhubWebSocket(iTotalDataSize);
 }
 
 void CWorldMarket::ProcessTiingoIEXWebSocketData() {
-	const auto total = gl_tiingoIEXWebSocket.DataSize();
+	const auto total = gl_pTiingoIEXWebSocket->DataSize();
 	size_t iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
-		auto pString = gl_tiingoIEXWebSocket.PopData();
+		auto pString = gl_pTiingoIEXWebSocket->PopData();
 		CString strMessage = _T("Tiingo IEX: ");
 		strMessage += (*pString).c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
-		gl_tiingoIEXWebSocket.ParseTiingoIEXWebSocketData(pString);
+		gl_pTiingoIEXWebSocket->ParseTiingoIEXWebSocketData(pString);
 	}
 	gl_systemMessage.SetProcessedTiingoIEXWebSocket(iTotalDataSize);
 }
 
 void CWorldMarket::ProcessTiingoCryptoWebSocketData() {
-	const auto total = gl_tiingoCryptoWebSocket.DataSize();
+	const auto total = gl_pTiingoCryptoWebSocket->DataSize();
 
 	size_t iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
-		auto pString = gl_tiingoCryptoWebSocket.PopData();
+		auto pString = gl_pTiingoCryptoWebSocket->PopData();
 		CString strMessage = _T("Tiingo Crypto: ");
 		strMessage += (*pString).c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
-		gl_tiingoCryptoWebSocket.ParseTiingoCryptoWebSocketData(pString);
+		gl_pTiingoCryptoWebSocket->ParseTiingoCryptoWebSocketData(pString);
 	}
 	gl_systemMessage.SetProcessedTiingoCryptoWebSocket(iTotalDataSize);
 }
 
 void CWorldMarket::ProcessTiingoForexWebSocketData() {
-	const auto total = gl_tiingoForexWebSocket.DataSize();
+	const auto total = gl_pTiingoForexWebSocket->DataSize();
 	size_t iTotalDataSize = 0;
 	for (size_t i = 0; i < total; i++) {
-		auto pString = gl_tiingoForexWebSocket.PopData();
+		auto pString = gl_pTiingoForexWebSocket->PopData();
 		CString strMessage = _T("Tiingo Forex: ");
 		strMessage += (*pString).c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
-		gl_tiingoForexWebSocket.ParseTiingoForexWebSocketData(pString);
+		gl_pTiingoForexWebSocket->ParseTiingoForexWebSocketData(pString);
 	}
 	gl_systemMessage.SetProcessedTiingoForexWebSocket(iTotalDataSize);
 }

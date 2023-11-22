@@ -103,15 +103,19 @@ CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 }
 
 CFinnhubInaccessibleExchange::~CFinnhubInaccessibleExchange() {
+	if (m_fUpdate) {
+		UpdateFile();
+	}
+}
+
+void CFinnhubInaccessibleExchange::UpdateFile() {
 	const CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("json");
 	const CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
 
-	if (m_fUpdate) {
-		DeleteFile(gl_systemConfiguration.GetDefaultFileDirectory() + strNew);
-		rename(gl_systemConfiguration.GetDefaultFileDirectory() + strOld, gl_systemConfiguration.GetDefaultFileDirectory() + strNew); // 保存备份
-		UpdateJson();
-		SaveDB();
-	}
+	DeleteFile(gl_systemConfiguration.GetDefaultFileDirectory() + strNew);
+	rename(gl_systemConfiguration.GetDefaultFileDirectory() + strOld, gl_systemConfiguration.GetDefaultFileDirectory() + strNew); // 保存备份
+	UpdateJson();
+	SaveDB();
 }
 
 bool CFinnhubInaccessibleExchange::LoadDB() {

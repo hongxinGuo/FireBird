@@ -130,9 +130,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 0);
 		EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
 
-		EXPECT_THAT(gl_tiingoCryptoWebSocket.DataSize(), 0);
-		EXPECT_THAT(gl_tiingoForexWebSocket.DataSize(), 0);
-		EXPECT_THAT(gl_tiingoIEXWebSocket.DataSize(), 0);
+		EXPECT_THAT(gl_pTiingoCryptoWebSocket->DataSize(), 0);
+		EXPECT_THAT(gl_pTiingoForexWebSocket->DataSize(), 0);
+		EXPECT_THAT(gl_pTiingoIEXWebSocket->DataSize(), 0);
 	}
 
 	void DataContainerCheck() {

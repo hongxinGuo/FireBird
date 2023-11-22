@@ -9,8 +9,8 @@ public:
 	CFinnhubRecommendationTrends();
 	~CFinnhubRecommendationTrends() = default;
 
-	void Append(CSetFinnhubRecommendationTrends& setCountry) const;
-	void Load(const CSetFinnhubRecommendationTrends& setCountry);
+	void Append(CSetFinnhubRecommendationTrends& setFinnhubRecommendationTrends) const;
+	void Load(const CSetFinnhubRecommendationTrends& setFinnhubRecommendationTrends);
 
 public:
 	CString m_strSymbol;

@@ -124,7 +124,7 @@ void CVirtualWebSocket::Disconnect() {
 	m_iSubscriptionId = 0;
 }
 
-UINT ThreadDisconnectWebSocket(not_null<CVirtualWebSocket*> pWebSocket) {
+UINT ThreadDisconnectWebSocket(not_null<CVirtualWebSocketPtr> pWebSocket) {
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
@@ -135,7 +135,7 @@ UINT ThreadDisconnectWebSocket(not_null<CVirtualWebSocket*> pWebSocket) {
 }
 
 bool CVirtualWebSocket::CreateThreadDisconnectWebSocket() {
-	thread thread1(ThreadDisconnectWebSocket, this);
+	thread thread1(ThreadDisconnectWebSocket, this->GetShared());
 	thread1.detach();
 
 	return true;

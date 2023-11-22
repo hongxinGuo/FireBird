@@ -45,4 +45,4 @@ public:
 
 using CTiingoForexWebSocketPtr = shared_ptr<CTiingoForexWebSocket>;
 
-extern CTiingoForexWebSocket gl_tiingoForexWebSocket;
+extern CTiingoForexWebSocketPtr gl_pTiingoForexWebSocket;

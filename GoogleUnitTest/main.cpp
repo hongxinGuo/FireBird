@@ -94,6 +94,12 @@ namespace FireBirdTest {
 			gl_systemConfiguration.LoadDB();
 			gl_systemConfiguration.Update();
 
+			// WebSocket要在gl_pWorldMarket之前生成
+			gl_pFinnhubWebSocket = make_shared<CFinnhubWebSocket>();
+			gl_pTiingoIEXWebSocket = make_shared<CTiingoIEXWebSocket>();
+			gl_pTiingoCryptoWebSocket = make_shared<CTiingoCryptoWebSocket>();
+			gl_pTiingoForexWebSocket = make_shared<CTiingoForexWebSocket>();
+
 			gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
 			gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
 			gl_pTengxunDayLineDataSource = make_shared<CTengxunDayLineDataSource>();
@@ -192,9 +198,15 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
 			while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1);
+
 			gl_pWorldMarket = nullptr;
 			gl_pChinaMarket = nullptr;
 			gl_vMarketPtr.clear();
+
+			gl_pFinnhubWebSocket = nullptr;
+			gl_pTiingoIEXWebSocket = nullptr;
+			gl_pTiingoCryptoWebSocket = nullptr;
+			gl_pTiingoForexWebSocket = nullptr;
 
 			// 不更新finnhubInaccessibleExchange文件
 			gl_finnhubInaccessibleExchange.SetUpdate(false);

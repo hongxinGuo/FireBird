@@ -53,4 +53,4 @@ public:
 
 using CTiingoIEXWebSocketPtr = shared_ptr<CTiingoIEXWebSocket>;
 
-extern CTiingoIEXWebSocket gl_tiingoIEXWebSocket;
+extern CTiingoIEXWebSocketPtr gl_pTiingoIEXWebSocket;

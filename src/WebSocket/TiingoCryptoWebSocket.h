@@ -47,4 +47,4 @@ public:
 
 using CTiingoCryptoWebSocketPtr = shared_ptr<CTiingoCryptoWebSocket>;
 
-extern CTiingoCryptoWebSocket gl_tiingoCryptoWebSocket;
+extern CTiingoCryptoWebSocketPtr gl_pTiingoCryptoWebSocket;

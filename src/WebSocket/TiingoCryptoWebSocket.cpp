@@ -16,7 +16,7 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
 		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
 		if (!gl_systemConfiguration.IsExitingSystem()) {
-			gl_tiingoCryptoWebSocket.PushData(msg->str);
+			gl_pTiingoCryptoWebSocket->PushData(msg->str);
 		}
 		break;
 	case ix::WebSocketMessageType::Error:
@@ -42,7 +42,7 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebSocket*> pDataTiingoCryptoWebSocket, const vectorString& vSymbol) {
+UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebSocketPtr> pDataTiingoCryptoWebSocket, const vectorString& vSymbol) {
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
@@ -120,7 +120,7 @@ string CTiingoCryptoWebSocket::CreateMessage(const vectorString& vSymbol) {
 }
 
 void CTiingoCryptoWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
-	thread thread1(ThreadConnectTiingoCryptoWebSocketAndSendMessage, this, vSymbol);
+	thread thread1(ThreadConnectTiingoCryptoWebSocketAndSendMessage, gl_pTiingoCryptoWebSocket, vSymbol);
 	thread1.detach();
 }
 

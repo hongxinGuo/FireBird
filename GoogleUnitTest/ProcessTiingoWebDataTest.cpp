@@ -66,8 +66,9 @@ namespace FireBirdTest {
 	class ProcessOneTiingoForexWebSocketDataTest : public TestWithParam<TiingoWebSocketData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
-			EXPECT_FALSE(gl_tiingoForexWebSocket.IsReceivingData());
+			SCOPED_TRACE("");
+			GeneralCheck();
+			EXPECT_FALSE(tiingoForexWebSocket.IsReceivingData());
 			TiingoWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
@@ -78,7 +79,8 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -86,7 +88,7 @@ namespace FireBirdTest {
 		CWorldStockPtr m_pStock;
 		shared_ptr<string> m_pWebData;
 
-		CTiingoForexWebSocket gl_tiingoForexWebSocket;
+		CTiingoForexWebSocket tiingoForexWebSocket;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoForexWebSocketData1, ProcessOneTiingoForexWebSocketDataTest,
@@ -97,11 +99,11 @@ namespace FireBirdTest {
 	TEST_P(ProcessOneTiingoForexWebSocketDataTest, TestProcessOneTiingoForexWebSocketData0) {
 		bool fSucceed = false;
 		CTiingoForexSocketPtr pForex;
-		fSucceed = gl_tiingoForexWebSocket.ParseTiingoForexWebSocketData(m_pWebData);
+		fSucceed = tiingoForexWebSocket.ParseTiingoForexWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_tiingoForexWebSocket.IsReceivingData());
+			EXPECT_TRUE(tiingoForexWebSocket.IsReceivingData());
 			pForex = gl_SystemData.PopTiingoForexSocket();
 			EXPECT_EQ(pForex->m_chMessageType, 'Q');
 			EXPECT_TRUE(pForex->m_sSymbol == _T("eurnok"));
@@ -113,7 +115,7 @@ namespace FireBirdTest {
 			break;
 		case 2: // 正确
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_tiingoForexWebSocket.IsReceivingData());
+			EXPECT_TRUE(tiingoForexWebSocket.IsReceivingData());
 			pForex = gl_SystemData.PopTiingoForexSocket();
 			break;
 		case 6: //
@@ -130,23 +132,23 @@ namespace FireBirdTest {
 			break;
 		case 10: // heart beat
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(gl_tiingoForexWebSocket.GetHeartbeatTime(), GetUTCTime());
+			EXPECT_EQ(tiingoForexWebSocket.GetHeartbeatTime(), GetUTCTime());
 			break;
 		case 11: // authentication
 			EXPECT_TRUE(fSucceed);
 			break;
 		case 12: // subscribe
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(gl_tiingoForexWebSocket.m_vCurrentSymbol.size(), 4);
-			EXPECT_TRUE(gl_tiingoForexWebSocket.m_vCurrentSymbol.at(0) == _T("*"));
-			EXPECT_TRUE(gl_tiingoForexWebSocket.m_vCurrentSymbol.at(1) == _T("FXCM:EUR/USD"));
-			EXPECT_TRUE(gl_tiingoForexWebSocket.m_vCurrentSymbol.at(2) == _T("IC MARKETS:2"));
-			EXPECT_TRUE(gl_tiingoForexWebSocket.m_vCurrentSymbol.at(3) == _T("OANDA:USD_JPY"));
+			EXPECT_EQ(tiingoForexWebSocket.m_vCurrentSymbol.size(), 4);
+			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentSymbol.at(0) == _T("*"));
+			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentSymbol.at(1) == _T("FXCM:EUR/USD"));
+			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentSymbol.at(2) == _T("IC MARKETS:2"));
+			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentSymbol.at(3) == _T("OANDA:USD_JPY"));
 			break;
 		case 13: // error message
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(gl_tiingoForexWebSocket.GetStatusCode(), 400);
-			EXPECT_TRUE(gl_tiingoForexWebSocket.GetStatusMessage() == _T("thresholdLevel not valid"));
+			EXPECT_EQ(tiingoForexWebSocket.GetStatusCode(), 400);
+			EXPECT_TRUE(tiingoForexWebSocket.GetStatusMessage() == _T("thresholdLevel not valid"));
 			break;
 		default:
 			break;
@@ -178,8 +180,9 @@ namespace FireBirdTest {
 	class ProcessOneTiingoCryptoWebSocketDataTest : public TestWithParam<TiingoWebSocketData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
-			EXPECT_FALSE(gl_tiingoCryptoWebSocket.IsReceivingData());
+			SCOPED_TRACE("");
+			GeneralCheck();
+			EXPECT_FALSE(tiingoCryptoWebSocket.IsReceivingData());
 			TiingoWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
@@ -189,7 +192,8 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			m_pWebData = nullptr;
 		}
 
@@ -198,7 +202,7 @@ namespace FireBirdTest {
 		CWorldStockPtr m_pStock;
 		shared_ptr<string> m_pWebData;
 
-		CTiingoCryptoWebSocket gl_tiingoCryptoWebSocket;
+		CTiingoCryptoWebSocket tiingoCryptoWebSocket;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoCryptoWebSocketData1, ProcessOneTiingoCryptoWebSocketDataTest,
@@ -209,11 +213,11 @@ namespace FireBirdTest {
 	TEST_P(ProcessOneTiingoCryptoWebSocketDataTest, TestProcessOneTiingoCryptoWebSocketData0) {
 		bool fSucceed = false;
 		CTiingoCryptoSocketPtr pCrypto;
-		fSucceed = gl_tiingoCryptoWebSocket.ParseTiingoCryptoWebSocketData(m_pWebData);
+		fSucceed = tiingoCryptoWebSocket.ParseTiingoCryptoWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_tiingoCryptoWebSocket.IsReceivingData());
+			EXPECT_TRUE(tiingoCryptoWebSocket.IsReceivingData());
 			pCrypto = gl_SystemData.PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'Q');
 			EXPECT_TRUE(pCrypto->m_strExchange == _T("bitfinex"));
@@ -228,7 +232,7 @@ namespace FireBirdTest {
 			break;
 		case 2: // 正确 T
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_tiingoCryptoWebSocket.IsReceivingData());
+			EXPECT_TRUE(tiingoCryptoWebSocket.IsReceivingData());
 			pCrypto = gl_SystemData.PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'T');
 			EXPECT_TRUE(pCrypto->m_strExchange == _T("binance"));
@@ -243,7 +247,7 @@ namespace FireBirdTest {
 			break;
 		case 3: // 正确 heart beat
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(gl_tiingoCryptoWebSocket.GetHeartbeatTime(), GetUTCTime());
+			EXPECT_EQ(tiingoCryptoWebSocket.GetHeartbeatTime(), GetUTCTime());
 			break;
 		case 4: // 正确 authentication
 			EXPECT_TRUE(fSucceed);
@@ -262,16 +266,16 @@ namespace FireBirdTest {
 			break;
 		case 10: // subscribe
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(gl_tiingoCryptoWebSocket.m_vCurrentSymbol.size(), 4);
-			EXPECT_TRUE(gl_tiingoCryptoWebSocket.m_vCurrentSymbol.at(0) == _T("*"));
-			EXPECT_TRUE(gl_tiingoCryptoWebSocket.m_vCurrentSymbol.at(1) == _T("BINANCE:IDEXBUSD"));
-			EXPECT_TRUE(gl_tiingoCryptoWebSocket.m_vCurrentSymbol.at(2) == _T("BITTREX:USDT-ADA"));
-			EXPECT_TRUE(gl_tiingoCryptoWebSocket.m_vCurrentSymbol.at(3) == _T("HITBTC:XRPEOS"));
+			EXPECT_EQ(tiingoCryptoWebSocket.m_vCurrentSymbol.size(), 4);
+			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentSymbol.at(0) == _T("*"));
+			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentSymbol.at(1) == _T("BINANCE:IDEXBUSD"));
+			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentSymbol.at(2) == _T("BITTREX:USDT-ADA"));
+			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentSymbol.at(3) == _T("HITBTC:XRPEOS"));
 			break;
 		case 11: // error message
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(gl_tiingoCryptoWebSocket.GetStatusCode(), 400);
-			EXPECT_TRUE(gl_tiingoCryptoWebSocket.GetStatusMessage() == _T("thresholdLevel not valid"));
+			EXPECT_EQ(tiingoCryptoWebSocket.GetStatusCode(), 400);
+			EXPECT_TRUE(tiingoCryptoWebSocket.GetStatusMessage() == _T("thresholdLevel not valid"));
 			break;
 		default:
 			break;
@@ -313,28 +317,30 @@ namespace FireBirdTest {
 	class ProcessOneTiingoIEXWebSocketDataTest : public TestWithParam<TiingoWebSocketData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
-			EXPECT_FALSE(gl_tiingoIEXWebSocket.IsReceivingData());
+			SCOPED_TRACE("");
+			GeneralCheck();
+			EXPECT_FALSE(tiingoIEXWebSocket.IsReceivingData());
 
 			TiingoWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
 			m_pWebData = make_shared<string>(pData->m_pData);
-			EXPECT_EQ(gl_tiingoIEXWebSocket.m_vCurrentSymbol.size(), 0);
+			EXPECT_EQ(tiingoIEXWebSocket.m_vCurrentSymbol.size(), 0);
 		}
 
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
 		long m_lIndex;
 		shared_ptr<string> m_pWebData;
 
-		CTiingoIEXWebSocket gl_tiingoIEXWebSocket;
+		CTiingoIEXWebSocket tiingoIEXWebSocket;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoIEXWebSocketData1, ProcessOneTiingoIEXWebSocketDataTest,
@@ -345,11 +351,11 @@ namespace FireBirdTest {
 	TEST_P(ProcessOneTiingoIEXWebSocketDataTest, TestProcessOneTiingoIEXWebSocketData0) {
 		CTiingoIEXSocketPtr pTiingoIEX;
 		bool fSucceed = false;
-		fSucceed = gl_tiingoIEXWebSocket.ParseTiingoIEXWebSocketData(m_pWebData);
+		fSucceed = tiingoIEXWebSocket.ParseTiingoIEXWebSocketData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_tiingoIEXWebSocket.IsReceivingData());
+			EXPECT_TRUE(tiingoIEXWebSocket.IsReceivingData());
 			pTiingoIEX = gl_SystemData.PopTiingoIEXSocket();
 			EXPECT_EQ(pTiingoIEX->m_iNanoseconds, 1548873225383129126);
 			EXPECT_TRUE(pTiingoIEX->m_sSymbol == _T("vym"));
@@ -389,7 +395,7 @@ namespace FireBirdTest {
 			break;
 		case 4: // Heart beat
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(gl_tiingoIEXWebSocket.GetHeartbeatTime(), GetUTCTime());
+			EXPECT_EQ(tiingoIEXWebSocket.GetHeartbeatTime(), GetUTCTime());
 			break;
 		case 5: //
 			EXPECT_FALSE(fSucceed);
@@ -412,16 +418,16 @@ namespace FireBirdTest {
 			break;
 		case 10: // subscribe
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(gl_tiingoIEXWebSocket.m_vCurrentSymbol.size(), 4);
-			EXPECT_TRUE(gl_tiingoIEXWebSocket.m_vCurrentSymbol.at(0) == _T("*"));
-			EXPECT_TRUE(gl_tiingoIEXWebSocket.m_vCurrentSymbol.at(1) == _T("uso"));
-			EXPECT_TRUE(gl_tiingoIEXWebSocket.m_vCurrentSymbol.at(2) == _T("msft"));
-			EXPECT_TRUE(gl_tiingoIEXWebSocket.m_vCurrentSymbol.at(3) == _T("tnk"));
+			EXPECT_EQ(tiingoIEXWebSocket.m_vCurrentSymbol.size(), 4);
+			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentSymbol.at(0) == _T("*"));
+			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentSymbol.at(1) == _T("uso"));
+			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentSymbol.at(2) == _T("msft"));
+			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentSymbol.at(3) == _T("tnk"));
 			break;
 		case 11: // error message
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(gl_tiingoIEXWebSocket.GetStatusCode(), 400);
-			EXPECT_TRUE(gl_tiingoIEXWebSocket.GetStatusMessage() == _T("thresholdLevel not valid"));
+			EXPECT_EQ(tiingoIEXWebSocket.GetStatusCode(), 400);
+			EXPECT_TRUE(tiingoIEXWebSocket.GetStatusMessage() == _T("thresholdLevel not valid"));
 			break;
 		default:
 			break;

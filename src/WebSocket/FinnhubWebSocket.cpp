@@ -20,7 +20,7 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
 		// 故而需要判断是否系统正在退出（只有在没有退出系统时方可存储接收到的数据）。
 		if (!gl_systemConfiguration.IsExitingSystem()) {
-			gl_finnhubWebSocket.PushData(msg->str);
+			gl_pFinnhubWebSocket->PushData(msg->str);
 		}
 		break;
 	case ix::WebSocketMessageType::Error:
@@ -49,7 +49,7 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectFinnhubWebSocketAndSendMessage(CFinnhubWebSocket* pDataFinnhubWebSocket, const vectorString& vSymbol) {
+UINT ThreadConnectFinnhubWebSocketAndSendMessage(CFinnhubWebSocketPtr pDataFinnhubWebSocket, const vectorString& vSymbol) {
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
@@ -101,7 +101,7 @@ string CFinnhubWebSocket::CreateFinnhubWebSocketString(string sSymbol) {
 }
 
 void CFinnhubWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
-	thread thread1(ThreadConnectFinnhubWebSocketAndSendMessage, this, vSymbol);
+	thread thread1(ThreadConnectFinnhubWebSocketAndSendMessage, gl_pFinnhubWebSocket, vSymbol);
 	thread1.detach();
 }
 

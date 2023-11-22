@@ -31,22 +31,22 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTiingoIEXWebSocketTest, TestGetURL) {
-		EXPECT_STREQ(gl_tiingoIEXWebSocket.GetURL().c_str(), _T("wss://api.tiingo.com/iex"));
+		EXPECT_STREQ(gl_pTiingoIEXWebSocket->GetURL().c_str(), _T("wss://api.tiingo.com/iex"));
 	}
 
 	TEST_F(CTiingoIEXWebSocketTest, TestSetScriptionStatus) {
-		EXPECT_TRUE(gl_tiingoIEXWebSocket.IsSubscriptable());
-		gl_tiingoIEXWebSocket.SetSubscriptionStatus(false);
-		EXPECT_FALSE(gl_tiingoIEXWebSocket.IsSubscriptable());
-		gl_tiingoIEXWebSocket.SetSubscriptionStatus(true);
-		EXPECT_TRUE(gl_tiingoIEXWebSocket.IsSubscriptable());
+		EXPECT_TRUE(gl_pTiingoIEXWebSocket->IsSubscriptable());
+		gl_pTiingoIEXWebSocket->SetSubscriptionStatus(false);
+		EXPECT_FALSE(gl_pTiingoIEXWebSocket->IsSubscriptable());
+		gl_pTiingoIEXWebSocket->SetSubscriptionStatus(true);
+		EXPECT_TRUE(gl_pTiingoIEXWebSocket->IsSubscriptable());
 	}
 
 	TEST_F(CTiingoIEXWebSocketTest, TestSetSubscriptionId) {
-		EXPECT_TRUE(gl_tiingoIEXWebSocket.IsSubscriptable());// 必须设置此标识
-		EXPECT_EQ(gl_tiingoIEXWebSocket.GetSubscriptionId(), 0);
-		gl_tiingoIEXWebSocket.SetSubscriptionId(101010);
-		EXPECT_EQ(gl_tiingoIEXWebSocket.GetSubscriptionId(), 101010);
+		EXPECT_TRUE(gl_pTiingoIEXWebSocket->IsSubscriptable());// 必须设置此标识
+		EXPECT_EQ(gl_pTiingoIEXWebSocket->GetSubscriptionId(), 0);
+		gl_pTiingoIEXWebSocket->SetSubscriptionId(101010);
+		EXPECT_EQ(gl_pTiingoIEXWebSocket->GetSubscriptionId(), 101010);
 	}
 
 	TEST_F(CTiingoIEXWebSocketTest, TestCreateMessage) {
@@ -55,7 +55,7 @@ namespace FireBirdTest {
 		vSymbol.push_back(_T("AA"));
 		vSymbol.push_back(_T("AAL"));
 		vSymbol.push_back(_T("AAPL"));
-		string str = gl_tiingoIEXWebSocket.CreateMessage(vSymbol);
+		string str = gl_pTiingoIEXWebSocket->CreateMessage(vSymbol);
 		json jsonMessage;
 		try {
 			jsonMessage = json::parse(str);
