@@ -40,19 +40,11 @@ bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 		}
 		// 后申请网络数据
 		if (!IsInquiring()) {
-			InquireRTData(lCurrentTime);
+			const auto product = make_shared<CProductSinaRT>();
+			StoreInquiry(product);
+			SetInquiring(true);
 			return true;
 		}
-	}
-	return false;
-}
-
-bool CSinaRTDataSource::InquireRTData(const long) {
-	if (!IsInquiring()) {
-		const auto product = make_shared<CProductSinaRT>();
-		StoreInquiry(product);
-		SetInquiring(true);
-		return true;
 	}
 	return false;
 }
@@ -75,7 +67,7 @@ void CSinaRTDataSource::GenerateCurrentInquiryMessage() {
 void CSinaRTDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 2000); // 正常情况下sina实时数据接收时间不超过50毫秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 2000); // 设置接收超时时间为1000毫秒
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 1000); // 设置接收超时时间为1000毫秒
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 200); // 设置发送超时时间为500毫秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }

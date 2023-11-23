@@ -46,18 +46,18 @@ namespace FireBirdTest {
 		EXPECT_EQ(tengxunRTDataSourceImp.GetInquiringNumber(), 900) << _T("ÌÚÑ¶Ä¬ÈÏÖµ");
 	}
 
-	TEST_F(CTengxunRTDataSourceTest, TestInquireRTData1) {
+	TEST_F(CTengxunRTDataSourceTest, TestGenerateInquiryMessage1) {
 		tengxunRTDataSourceImp.SetInquiring(true);
 
-		tengxunRTDataSourceImp.InquireRTData(0);
+		tengxunRTDataSourceImp.GenerateInquiryMessage(0);
 
 		EXPECT_FALSE(tengxunRTDataSourceImp.HaveInquiry());
 	}
 
-	TEST_F(CTengxunRTDataSourceTest, TestInquireRTData2) {
+	TEST_F(CTengxunRTDataSourceTest, TestGenerateInquiryMessage2) {
 		tengxunRTDataSourceImp.SetInquiring(false);
 
-		tengxunRTDataSourceImp.InquireRTData(0);
+		tengxunRTDataSourceImp.GenerateInquiryMessage(0);
 
 		EXPECT_TRUE(tengxunRTDataSourceImp.IsInquiring());
 		EXPECT_TRUE(tengxunRTDataSourceImp.HaveInquiry());
