@@ -406,7 +406,8 @@ void CWorldMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 	}
 
 	if (gl_finnhubInaccessibleExchange.IsNeedUpdate()) { // 更新禁止访问证券交易所名单
-		gl_finnhubInaccessibleExchange.UpdateFile();
+		gl_finnhubInaccessibleExchange.UpdateDiscFile();
+		gl_finnhubInaccessibleExchange.SetUpdate(false);
 	}
 
 	long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);

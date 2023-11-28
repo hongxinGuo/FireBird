@@ -95,7 +95,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCryptoDayLine()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireStockDayLine()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireForexDayLine()).Times(1);
-		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEPSSurprise()).Times(0);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEPSSurprise()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireRTQuote()).Times(0);
 
 		EXPECT_FALSE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120500)) << "时间未到，继续等待";
@@ -159,7 +159,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCryptoDayLine()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireStockDayLine()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireForexDayLine()).Times(1);
-		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEPSSurprise()).Times(0);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEPSSurprise()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireRTQuote()).Times(0);
 
 		m_pMockFinnhubDataSource->InquireFinnhub(120000);

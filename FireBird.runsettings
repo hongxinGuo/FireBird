@@ -4,8 +4,6 @@
   <RunConfiguration>
     <TargetPlatform>x64</TargetPlatform>
     <TestSessionTimeout>120000</TestSessionTimeout>  <!-- timeout 120 seconds -->
-    <EnvironmentVariables>
-    </EnvironmentVariables>
   </RunConfiguration>
 	
   <DataCollectionRunSettings>

@@ -45,20 +45,24 @@ namespace FireBirdTest {
 	class SetInitializeTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -337,7 +341,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setEPSSurprise.GetDefaultConnect(), _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setEPSSurprise.GetDefaultSQL(), _T("[eps_surprise]"));
+		EXPECT_STREQ(setEPSSurprise.GetDefaultSQL(), _T("[finnhub_stock_estimates_eps_surprise]"));
 	}
 
 	TEST_F(SetInitializeTest, TestInsiderTransactionInitialize) {

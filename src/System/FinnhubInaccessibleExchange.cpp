@@ -104,11 +104,11 @@ CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 
 CFinnhubInaccessibleExchange::~CFinnhubInaccessibleExchange() {
 	if (m_fUpdate) {
-		UpdateFile();
+		UpdateDiscFile();
 	}
 }
 
-void CFinnhubInaccessibleExchange::UpdateFile() {
+void CFinnhubInaccessibleExchange::UpdateDiscFile() {
 	const CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("json");
 	const CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
 
@@ -116,6 +116,7 @@ void CFinnhubInaccessibleExchange::UpdateFile() {
 	rename(gl_systemConfiguration.GetDefaultFileDirectory() + strOld, gl_systemConfiguration.GetDefaultFileDirectory() + strNew); // ±£´æ±¸·Ý
 	UpdateJson();
 	SaveDB();
+	SetUpdate(false);
 }
 
 bool CFinnhubInaccessibleExchange::LoadDB() {

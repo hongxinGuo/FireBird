@@ -1,3 +1,9 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// finnhub.io中为免费用户使用的数据逐渐减少，需要设置一新的数据库来存储各数据的免费与否的状态。
+///
+/// 20231126：20231127后，stock DayLine和Crypto DayLine不再免费。
+
 #include"pch.h"
 
 #include"TimeConvert.h"
@@ -94,7 +100,7 @@ void CFinnhubDataSource::InquireFinnhub(const long lCurrentTime) {
 		// 下午五时重启系统，故而此时不允许接收网络信息。
 		InquireEconomicCalendar(); // 第一步申请经济日历。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
 		InquireCountryList();
-		// 没有申请Stock Exchange，使用预先提供的股票交易所名单。
+		// Finnhub不提供Stock Exchange名单，使用预先提供的股票交易所列表。
 		InquireForexExchange();
 		InquireCryptoExchange();
 		InquireMarketStatus();
@@ -106,15 +112,15 @@ void CFinnhubDataSource::InquireFinnhub(const long lCurrentTime) {
 		// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
 		if (gl_pWorldMarket->IsSystemReady()) {
 			InquireCompanyProfileConcise();
-			InquireCompanyNews(); // 由于mysql字符集的问题，导致有些数据无法存储， 目前未找到解决的方法。故暂时不执行此查询
+			InquireCompanyNews();
 			InquireCompanyBasicFinancial();
 			InquirePeer();
 			InquireInsiderTransaction();
 			InquireInsiderSentiment();
-			InquireCryptoDayLine();
-			InquireStockDayLine();
+			InquireCryptoDayLine(); // Crypto dayLine20231127后只限于付费用户使用
+			InquireStockDayLine(); // Stock dayLine20231127后只限于付费用户使用
 			InquireForexDayLine(); // Forex dayLine目前只限于付费用户使用
-			//InquireEPSSurprise(); // 这个现在没什么用，暂时停止更新。
+			InquireEPSSurprise(); // 这个现在没什么用，暂时停止更新。
 			if (IsUpdateStockDayLine()) {
 				//InquireRTQuote();
 			}

@@ -56,7 +56,7 @@ public:
 	CFinnhubInaccessibleExchange(const CFinnhubInaccessibleExchange&&) noexcept = delete;
 	CFinnhubInaccessibleExchange& operator=(const CFinnhubInaccessibleExchange&&) noexcept = delete;
 	virtual ~CFinnhubInaccessibleExchange();
-	void UpdateFile();
+	void UpdateDiscFile();
 
 	bool LoadDB();
 	bool LoadDB(const CString& strFileDirectory);

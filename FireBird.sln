@@ -15,12 +15,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IXWebSocketLib", "IXWebSock
 		{F77641F7-1DF8-4461-9338-A8E502E570DC} = {F77641F7-1DF8-4461-9338-A8E502E570DC}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib and DLL", "Lib and DLL", "{46774014-7022-4250-A1D8-F2193FE3992E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Debug", "Debug", "{B5233B65-5C3D-42FC-A7A0-62FDC03A33C7}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Release", "Release", "{5C4CEB93-050C-4CD9-BCAC-8498EFC87370}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "杂项文件", "杂项文件", "{3DD3155A-8273-422F-B848-F5BB47F964ED}"
 	ProjectSection(SolutionItems) = preProject
 		Lib\CreateEnvionment.bat = Lib\CreateEnvionment.bat
@@ -113,10 +107,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{B5233B65-5C3D-42FC-A7A0-62FDC03A33C7} = {46774014-7022-4250-A1D8-F2193FE3992E}
-		{5C4CEB93-050C-4CD9-BCAC-8498EFC87370} = {46774014-7022-4250-A1D8-F2193FE3992E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA133977-CE72-40A9-B1FA-1160D437FF5E}

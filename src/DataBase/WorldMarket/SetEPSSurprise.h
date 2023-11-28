@@ -6,7 +6,7 @@
 
 class CSetEPSSurprise : public CVirtualRecordset {
 public:
-	CSetEPSSurprise(CString strSchema = _T("WorldMarket"), CString strTable = _T("eps_surprise"), CDatabase* pDatabase = nullptr);
+	CSetEPSSurprise(CString strSchema = _T("WorldMarket"), CString strTable = _T("finnhub_stock_estimates_eps_surprise"), CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 

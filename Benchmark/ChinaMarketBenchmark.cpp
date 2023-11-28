@@ -14,11 +14,10 @@ public:
 	void TearDown(const ::benchmark::State& state) override { }
 
 protected:
-	CChinaMarket chinaMarket;
 };
 
 BENCHMARK_F(CChinaMarketBenchmark, CalculateTime)(benchmark::State& state) {
 	for (auto _ : state) {
-		chinaMarket.CalculateTime();
+		gl_pChinaMarket->CalculateTime();
 	}
 }
