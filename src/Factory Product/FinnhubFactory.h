@@ -8,5 +8,5 @@ public:
 
 	~CFinnhubFactory() override = default;
 
-	CVirtualProductWebDataPtr CreateProduct(CVirtualMarket* pMarket, int iIndex) override;
+	CVirtualProductWebDataPtr CreateProduct(CVirtualMarket* pMarket, int iiProductType) override;
 };

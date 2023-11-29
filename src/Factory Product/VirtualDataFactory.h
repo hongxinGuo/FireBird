@@ -1,3 +1,9 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 网络数据的申请，采用Factory-Product模式，各数据对应相应的Product。
+/// Factory只负责根据生成
+///
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
 class CVirtualDataFactory {
@@ -6,5 +12,5 @@ public:
 
 	virtual ~CVirtualDataFactory() = default;
 
-	virtual CVirtualProductWebDataPtr CreateProduct(CVirtualMarket* pMarket, int iIndex) = 0;
+	virtual CVirtualProductWebDataPtr CreateProduct(CVirtualMarket* pMarket, int iiProductType) = 0;
 };
