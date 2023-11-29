@@ -38,8 +38,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWebDataTest, TestCurrentParagraphOutOfRange) {
-		string s = _T("abcedfghijklmnopqrstuvwxyz");
-		string_view sv = string_view(s.c_str() + 5, 7);
+		const string s = _T("abcedfghijklmnopqrstuvwxyz");
+		const string_view sv = string_view(s.c_str() + 5, 7);
 		webData.SetBufferLength(26);
 		webData.SetCurrentParagraph(sv);
 		webData.SetCurrentParagraphStartPos(5);

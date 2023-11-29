@@ -774,7 +774,7 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 			setDayLineBasicInfo.m_RS = ConvertValueToString(0);
 		}
 		else {
-			setDayLineBasicInfo.m_RS = ConvertValueToString((static_cast<double>(iCount) * 100) / iTotalAShare);
+			setDayLineBasicInfo.m_RS = ConvertValueToString(static_cast<double>(iCount) * 100 / iTotalAShare);
 		}
 		setDayLineBasicInfo.Update();
 		iBefore = vIndex.at(iCount++);
@@ -875,7 +875,7 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 			setWeekLineBasicInfo.m_RS = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
 		}
 		else {
-			setWeekLineBasicInfo.m_RS = ConvertValueToString((static_cast<double>(iCount) * 100) / iTotalAShare);
+			setWeekLineBasicInfo.m_RS = ConvertValueToString(static_cast<double>(iCount) * 100 / iTotalAShare);
 		}
 		setWeekLineBasicInfo.Update();
 		iBefore = vIndex.at(iCount++);

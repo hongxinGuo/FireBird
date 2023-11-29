@@ -11,9 +11,6 @@ CWebData::CWebData() {
 	m_lCurrentPos = 0;
 	m_lCurrentParagraphStartPos = 0;
 
-	m_pCurrentPos = &m_sDataBuffer.at(0);
-	m_pEndPos = &m_sDataBuffer.at(DefaultWebDataBufferSize_ - 1) + 1;
-
 	m_fJSonContentType = false;
 	m_fParsed = false;
 	m_fNoRightToAccess = false;
@@ -79,6 +76,4 @@ void CWebData::Test_SetBuffer_(CString strBuffer) {
 	for (long i = 0; i < m_lBufferLength; i++) {
 		m_sDataBuffer.at(i) = pBuffer[i];
 	}
-	m_pCurrentPos = &m_sDataBuffer.at(0);
-	m_pEndPos = &m_sDataBuffer.at(m_lBufferLength - 1) + 1;
 }

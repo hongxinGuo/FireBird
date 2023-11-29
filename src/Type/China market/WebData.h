@@ -48,8 +48,6 @@ public:
 	void Resize(const long lSize) {
 		m_sDataBuffer.resize(lSize);
 		m_lBufferLength = lSize;
-		m_pCurrentPos = &m_sDataBuffer.at(0);
-		m_pEndPos = &m_sDataBuffer.at(m_lBufferLength - 1) + 1;
 	}
 
 	time_t GetTime() const noexcept { return m_tTime; }
@@ -105,9 +103,6 @@ protected:
 	long m_lCurrentPos;
 	long m_lCurrentParagraphStartPos; // 当前段起始位置
 	string_view m_svCurrentParagraph{}; // 当前段数据
-
-	char* m_pCurrentPos;
-	char* m_pEndPos;
 
 	bool m_fJSonContentType;
 	bool m_fParsed;
