@@ -14,20 +14,24 @@ namespace FireBirdTest {
 	class CFinnhubForexExchangeTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -61,7 +65,8 @@ namespace FireBirdTest {
 	class ParseFinnhubForexExchangeTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -73,7 +78,8 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -114,13 +120,14 @@ namespace FireBirdTest {
 	class ProcessFinnhubForexExchangeTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
-			m_finnhubForexExchange.SetMarket(gl_pWorldMarket.get());
+			m_finnhubForexExchange.SetMarket(gl_pWorldMarket);
 			EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateForexExchange());
 			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载了10个";
 		}
@@ -129,7 +136,8 @@ namespace FireBirdTest {
 			// clearUp
 			gl_pFinnhubDataSource->SetUpdateForexExchange(true);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载了10个";
 		}
 

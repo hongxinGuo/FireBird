@@ -42,7 +42,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestCreatMessage) {
-		stockPriceQuote.SetMarket(gl_pWorldMarket.get());
+		stockPriceQuote.SetMarket(gl_pWorldMarket);
 		stockPriceQuote.SetIndex(1);
 		EXPECT_STREQ(stockPriceQuote.CreateMessage(), stockPriceQuote.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 	}
@@ -86,7 +86,7 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
-			m_finnhubStockPriceQuote.SetMarket(gl_pWorldMarket.get());
+			m_finnhubStockPriceQuote.SetMarket(gl_pWorldMarket);
 			m_finnhubStockPriceQuote.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));
 		}
 

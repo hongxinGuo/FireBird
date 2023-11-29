@@ -28,8 +28,8 @@ bool CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (!pvTiingoCrypto->empty()) {
 		char buffer[100];
 		for (const auto& pTiingoCrypto : *pvTiingoCrypto) {
-			if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsTiingoCryptoSymbol(pTiingoCrypto->m_strTicker)) {
-				dynamic_cast<CWorldMarket*>(m_pMarket)->AddTiingoCryptoSymbol(pTiingoCrypto);
+			if (!dynamic_pointer_cast<CWorldMarket>(m_pMarket)->IsTiingoCryptoSymbol(pTiingoCrypto->m_strTicker)) {
+				dynamic_pointer_cast<CWorldMarket>(m_pMarket)->AddTiingoCryptoSymbol(pTiingoCrypto);
 			}
 		}
 		sprintf_s(buffer, _T("%zd"), pvTiingoCrypto->size());

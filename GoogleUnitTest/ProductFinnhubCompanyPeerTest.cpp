@@ -12,20 +12,24 @@ namespace FireBirdTest {
 	class CFinnhubCompanyPeerTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -39,7 +43,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyPeerTest, TestCreatMessage) {
 		gl_pWorldMarket->GetStock(1)->SetUpdatePeer(true);
-		companyPeer.SetMarket(gl_pWorldMarket.get());
+		companyPeer.SetMarket(gl_pWorldMarket);
 		companyPeer.SetIndex(1);
 		EXPECT_STREQ(companyPeer.CreateMessage(), companyPeer.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdatePeer()) << "接收到的数据处理后方设置此标识";
@@ -61,7 +65,8 @@ namespace FireBirdTest {
 	class ParseFinnhubStockPeerTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -73,7 +78,8 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -119,20 +125,22 @@ namespace FireBirdTest {
 	class ProcessFinnhubStockPeerTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
-			m_finnhubCompanyPeer.SetMarket(gl_pWorldMarket.get());
+			m_finnhubCompanyPeer.SetMarket(gl_pWorldMarket);
 			m_finnhubCompanyPeer.SetIndex(0); // 第一个股票
 		}
 
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:

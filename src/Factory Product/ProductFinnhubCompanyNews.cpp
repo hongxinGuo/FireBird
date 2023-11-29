@@ -17,7 +17,7 @@ CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 CString CProductFinnhubCompanyNews::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const auto pStock = dynamic_pointer_cast<CWorldMarket>(m_pMarket)->GetStock(m_lIndex);
 	CString strMessage = m_strInquiryFunction + pStock->GetSymbol();
 	CString strTemp = ConvertDateToTimeStamp(pStock->GetCompanyNewsUpdateDate());
 	strMessage += _T("&from=");
@@ -35,7 +35,7 @@ bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvFinnhubCompanyNews = ParseFinnhubCompanyNews(pWebData);
-	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const auto pStock = dynamic_pointer_cast<CWorldMarket>(m_pMarket)->GetStock(m_lIndex);
 
 	if (!pvFinnhubCompanyNews->empty()) {
 		// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.

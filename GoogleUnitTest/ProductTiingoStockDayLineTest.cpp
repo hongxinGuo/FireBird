@@ -12,20 +12,24 @@ namespace FireBirdTest {
 	class CProductTiingoStockDayLineTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -39,7 +43,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage1) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
-		stockPriceCandle.SetMarket(gl_pWorldMarket.get());
+		stockPriceCandle.SetMarket(gl_pWorldMarket);
 		const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
 		pStock->SetDayLineStartDate(20171231); // 早于20180101
 		const CString strMessage = stockPriceCandle.CreateMessage();
@@ -58,7 +62,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage2) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
-		stockPriceCandle.SetMarket(gl_pWorldMarket.get());
+		stockPriceCandle.SetMarket(gl_pWorldMarket);
 		const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
 		pStock->SetDayLineStartDate(20171231); // 早于20180101
 		const CString strMessage = stockPriceCandle.CreateMessage();
@@ -102,7 +106,8 @@ namespace FireBirdTest {
 	class ParseTiingoStockDayLineTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -113,7 +118,8 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -181,7 +187,8 @@ namespace FireBirdTest {
 	class ParseTiingoStockDayLineTest2 : public TestWithParam<Test_TiingoWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
@@ -192,7 +199,8 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -260,13 +268,14 @@ namespace FireBirdTest {
 	class ProcessTiingoStockDayLineTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
-			m_tiingoStockPriceCandle.SetMarket(gl_pWorldMarket.get());
+			m_tiingoStockPriceCandle.SetMarket(gl_pWorldMarket);
 			m_tiingoStockPriceCandle.SetIndex(0);
 		}
 
@@ -276,7 +285,8 @@ namespace FireBirdTest {
 			gl_pWorldMarket->GetStock(0)->SetDayLineNeedSaving(false);
 			gl_pWorldMarket->GetStock(0)->SetUpdateProfileDB(false);
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:

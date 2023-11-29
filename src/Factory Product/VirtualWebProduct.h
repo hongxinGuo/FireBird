@@ -45,8 +45,8 @@ public:
 	long GetIndex() const noexcept { return m_lIndex; }
 	void SetIndex(const long lIndex) noexcept { m_lIndex = lIndex; }
 
-	[[nodiscard]] CVirtualMarket* GetMarket() const noexcept { return m_pMarket; }
-	void SetMarket(CVirtualMarket* pMarket) noexcept { m_pMarket = pMarket; }
+	[[nodiscard]] CVirtualMarketPtr GetMarket() const noexcept { return m_pMarket; }
+	void SetMarket(CVirtualMarketPtr pMarket) noexcept { m_pMarket = pMarket; }
 
 	void SetInquiringExchange(const CString& exchange) noexcept { m_strInquiringExchange = exchange; }
 	CString GetInquiringExchange() const noexcept { return m_strInquiringExchange; }
@@ -56,7 +56,7 @@ public:
 	int GetProductType() const noexcept { return m_iProductType; }
 
 protected:
-	CVirtualMarket* m_pMarket; // 该产品所属的市场
+	CVirtualMarketPtr m_pMarket; // 该产品所属的市场
 	CString m_strClassName;
 	CString m_strInquiryFunction;
 	CString m_strInquiry;

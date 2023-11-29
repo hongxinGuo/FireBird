@@ -29,7 +29,7 @@ CString CProductFinnhubCompanyBasicFinancial::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	CString strMessage;
-	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldMarket>(m_pMarket)->GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
 
@@ -48,7 +48,7 @@ bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWeb
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
 	CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial = nullptr;
-	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldMarket>(m_pMarket)->GetStock(m_lIndex);
 	if (ParseFinnhubStockBasicFinancial(pFinnhubStockBasicFinancial, pWebData)) {
 		// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.
 		// 例如申请BVDRF的金融数据，回复的股票代码为MBWS.PA

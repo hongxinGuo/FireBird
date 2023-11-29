@@ -12,7 +12,7 @@
 
 #include"ProductDummy.h"
 
-CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarket* pMarket, int iiProductType) {
+CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarket, int iiProductType) {
 	CVirtualProductWebDataPtr p = nullptr;
 
 	switch (iiProductType) {

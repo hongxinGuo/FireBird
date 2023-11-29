@@ -44,7 +44,7 @@ namespace FireBirdTest {
 	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestCreatMessage) {
 		const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(1);
 		pStock->SetUpdateBasicFinancial(true);
-		companyBasicFinancial.SetMarket(gl_pWorldMarket.get());
+		companyBasicFinancial.SetMarket(gl_pWorldMarket);
 		companyBasicFinancial.SetIndex(1);
 		EXPECT_STREQ(companyBasicFinancial.CreateMessage(), companyBasicFinancial.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&metric=all"));
 		EXPECT_TRUE(pStock->IsUpdateBasicFinancial()) << "处理接收到的数据后方设置此标识";
@@ -53,7 +53,7 @@ namespace FireBirdTest {
 	}
 
 	Test_FinnhubWebData finnhubWebData1002(2, _T("AAPL"),
-	                                  _T("{\
+	                                       _T("{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
 			\"13WeekPriceReturnDaily\" : 56.53409,\
@@ -252,7 +252,7 @@ namespace FireBirdTest {
 
 	// BVDRF是美股ADR，其本土代码为MBWS.PA
 	Test_FinnhubWebData finnhubWebData1003(3, _T("BVDRF"),
-	                                  _T("{\
+	                                       _T("{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
 			\"13WeekPriceReturnDaily\" : 56.53409,\
@@ -473,7 +473,7 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
-			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket.get());
+			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
 			m_finnhubCompanyBasicFinancial.SetIndex(lIndex);
 		}
@@ -564,7 +564,7 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
-			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket.get());
+			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
 			m_finnhubCompanyBasicFinancial.SetIndex(lIndex);
 		}

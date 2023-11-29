@@ -44,7 +44,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockDayLineTest, TestCreatMessage) {
 		gl_pWorldMarket->GetStock(1)->SetDayLineNeedUpdate(true);
-		stockDayLine.SetMarket(gl_pWorldMarket.get());
+		stockDayLine.SetMarket(gl_pWorldMarket);
 		stockDayLine.SetIndex(1);
 		EXPECT_STREQ(stockDayLine.CreateMessage(),
 		             stockDayLine.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
@@ -88,7 +88,7 @@ namespace FireBirdTest {
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
-			m_finnhubStockDayLine.SetMarket(gl_pWorldMarket.get());
+			m_finnhubStockDayLine.SetMarket(gl_pWorldMarket);
 			m_finnhubStockDayLine.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));
 		}
 

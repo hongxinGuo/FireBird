@@ -8,5 +8,5 @@ public:
 
 	~CQuandlFactory() override = default;
 
-	CVirtualProductWebDataPtr CreateProduct(CVirtualMarket* pMarket, int iiProductType) override;
+	CVirtualProductWebDataPtr CreateProduct(CVirtualMarketPtr pMarket, int iiProductType) override;
 };

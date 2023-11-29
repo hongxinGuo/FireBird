@@ -15,20 +15,24 @@ namespace FireBirdTest {
 	class CFinnhubFactoryTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -36,26 +40,26 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubFactoryTest, TestCreateProduct) {
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), ECONOMIC_COUNTRY_LIST_)).name(), _T("class CProductFinnhubEconomicCountryList"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), ECONOMIC_CALENDAR_)).name(), _T("class CProductFinnhubEconomicCalendar"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), CRYPTO_EXCHANGE_)).name(), _T("class CProductFinnhubCryptoExchange"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), FOREX_EXCHANGE_)).name(), _T("class CProductFinnhubForexExchange"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), STOCK_SYMBOLS_)).name(), _T("class CProductFinnhubStockSymbol"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), CRYPTO_SYMBOLS_)).name(), _T("class CProductFinnhubCryptoSymbol"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), FOREX_SYMBOLS_)).name(), _T("class CProductFinnhubForexSymbol"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), COMPANY_PROFILE_)).name(), _T("class CProductFinnhubCompanyProfile"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), COMPANY_PROFILE_CONCISE_)).name(), _T("class CProductFinnhubCompanyProfileConcise"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), COMPANY_NEWS_)).name(), _T("class CProductFinnhubCompanyNews"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), PEERS_)).name(), _T("class CProductFinnhubCompanyPeer"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), BASIC_FINANCIALS_)).name(), _T("class CProductFinnhubCompanyBasicFinancial"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), INSIDER_TRANSACTION_)).name(), _T("class CProductFinnhubCompanyInsiderTransaction"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), INSIDER_SENTIMENT_)).name(), _T("class CProductFinnhubCompanyInsiderSentiment"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), CRYPTO_CANDLES_)).name(), _T("class CProductFinnhubCryptoDayLine"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), FOREX_CANDLES_)).name(), _T("class CProductFinnhubForexDayLine"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), STOCK_PRICE_QUOTE_)).name(), _T("class CProductFinnhubStockPriceQuote"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), STOCK_ESTIMATES_EPS_SURPRISE_)).name(), _T("class CProductFinnhubStockEstimatesEPSSurprise"));
-		//EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStockSymbol"));
-		//EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStockSymbol"));
-		//EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStockSymbol"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, ECONOMIC_COUNTRY_LIST_)).name(), _T("class CProductFinnhubEconomicCountryList"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, ECONOMIC_CALENDAR_)).name(), _T("class CProductFinnhubEconomicCalendar"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, CRYPTO_EXCHANGE_)).name(), _T("class CProductFinnhubCryptoExchange"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, FOREX_EXCHANGE_)).name(), _T("class CProductFinnhubForexExchange"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_)).name(), _T("class CProductFinnhubStockSymbol"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_)).name(), _T("class CProductFinnhubCryptoSymbol"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, FOREX_SYMBOLS_)).name(), _T("class CProductFinnhubForexSymbol"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, COMPANY_PROFILE_)).name(), _T("class CProductFinnhubCompanyProfile"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, COMPANY_PROFILE_CONCISE_)).name(), _T("class CProductFinnhubCompanyProfileConcise"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, COMPANY_NEWS_)).name(), _T("class CProductFinnhubCompanyNews"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, PEERS_)).name(), _T("class CProductFinnhubCompanyPeer"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, BASIC_FINANCIALS_)).name(), _T("class CProductFinnhubCompanyBasicFinancial"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, INSIDER_TRANSACTION_)).name(), _T("class CProductFinnhubCompanyInsiderTransaction"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, INSIDER_SENTIMENT_)).name(), _T("class CProductFinnhubCompanyInsiderSentiment"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, CRYPTO_CANDLES_)).name(), _T("class CProductFinnhubCryptoDayLine"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, FOREX_CANDLES_)).name(), _T("class CProductFinnhubForexDayLine"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_PRICE_QUOTE_)).name(), _T("class CProductFinnhubStockPriceQuote"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_ESTIMATES_EPS_SURPRISE_)).name(), _T("class CProductFinnhubStockEstimatesEPSSurprise"));
+		//EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStockSymbol"));
+		//EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStockSymbol"));
+		//EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStockSymbol"));
 	}
 }

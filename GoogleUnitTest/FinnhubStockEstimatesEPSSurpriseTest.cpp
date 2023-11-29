@@ -12,20 +12,24 @@ namespace FireBirdTest {
 	class CFinnhubStockEstimatesEPSSurpriseTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -38,7 +42,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestCreatMessage) {
-		stockEstimatesEPSSurprise.SetMarket(gl_pWorldMarket.get());
+		stockEstimatesEPSSurprise.SetMarket(gl_pWorldMarket);
 		stockEstimatesEPSSurprise.SetIndex(1);
 		EXPECT_STREQ(stockEstimatesEPSSurprise.CreateMessage(), stockEstimatesEPSSurprise.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 	}
@@ -61,7 +65,8 @@ namespace FireBirdTest {
 	class ParseFinnhubEPSSurpriseTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -77,7 +82,8 @@ namespace FireBirdTest {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateCompanyProfile(true);
 			m_pStock->SetUpdateProfileDB(false);
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -140,7 +146,8 @@ namespace FireBirdTest {
 	class ProcessFinnhubEPSSurpriseTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -148,7 +155,7 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
-			m_finnhubStockEstimatesEPSSurprise.SetMarket(gl_pWorldMarket.get());
+			m_finnhubStockEstimatesEPSSurprise.SetMarket(gl_pWorldMarket);
 			m_finnhubStockEstimatesEPSSurprise.SetIndex(0);
 		}
 
@@ -157,7 +164,8 @@ namespace FireBirdTest {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateCompanyProfile(true);
 			m_pStock->SetUpdateProfileDB(false);
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:

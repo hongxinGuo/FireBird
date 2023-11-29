@@ -13,20 +13,24 @@ namespace FireBirdTest {
 	class CFinnhubCompanyNewsTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -43,9 +47,9 @@ namespace FireBirdTest {
 		int year = 0, month = 0, day = 0;
 
 		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyNews(true);
-		companyNews.SetMarket(gl_pWorldMarket.get());
+		companyNews.SetMarket(gl_pWorldMarket);
 		companyNews.SetIndex(1);
-		const CWorldStockPtr pStock = static_cast<CWorldMarket*>(companyNews.GetMarket())->GetStock(1);
+		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldMarket>(companyNews.GetMarket())->GetStock(1);
 		CString strMessage = companyNews.GetInquiryFunction() + pStock->GetSymbol();
 		const int iUpdateDate = pStock->GetCompanyNewsUpdateDate();
 		XferDateToYearMonthDay(iUpdateDate, year, month, day);
@@ -81,7 +85,8 @@ namespace FireBirdTest {
 	class ProcessFinnhubStockCompanyNewsTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -90,7 +95,7 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
-			m_FinnhubCompanyNews.SetMarket(gl_pWorldMarket.get());
+			m_FinnhubCompanyNews.SetMarket(gl_pWorldMarket);
 			m_FinnhubCompanyNews.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));
 		}
 
@@ -102,7 +107,8 @@ namespace FireBirdTest {
 			m_pStock->SetUpdateCompanyNewsDB(false);
 			m_pStock->SetUpdateProfileDB(false);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:

@@ -12,20 +12,24 @@ namespace FireBirdTest {
 	class CFinnhubCompanyInsiderSentimentTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -44,7 +48,7 @@ namespace FireBirdTest {
 		const CString strCurrentDate = buffer;
 
 		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderSentiment(true);
-		companyInsiderSentiment.SetMarket(gl_pWorldMarket.get());
+		companyInsiderSentiment.SetMarket(gl_pWorldMarket);
 		companyInsiderSentiment.SetIndex(1);
 		EXPECT_STREQ(companyInsiderSentiment.CreateMessage(),
 		             companyInsiderSentiment.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate);
@@ -57,17 +61,18 @@ namespace FireBirdTest {
 	Test_FinnhubWebData finnhubWebData142(2, _T("AAPL"), _T("{\"data\":[{\"symbol\":\"TSLA\",\"year\":2022,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2021,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
 	// 缺乏 data项
 	Test_FinnhubWebData finnhubWebData143(3, _T("AAPL"), _T(
-		                                 "{\"no data\":[{\"symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
+		                                      "{\"no data\":[{\"symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
 	// 缺乏 Symbol项
 	Test_FinnhubWebData finnhubWebData144(4, _T("AAPL"), _T(
-		                                 "{\"data\":[{\"no symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
+		                                      "{\"data\":[{\"no symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}"));
 	// 空数据
 	Test_FinnhubWebData finnhubWebData145(5, _T("AAPL"), _T("{\"data\":[], \"symbol\":\"QNICF\"}"));
 
 	class ProcessFinnhubInsiderSentimentTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -78,7 +83,7 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
-			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket.get());
+			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
 			m_finnhubCompanyInsiderSentiment.SetIndex(lIndex);
 		}
@@ -90,7 +95,8 @@ namespace FireBirdTest {
 			m_pStock->SetSaveInsiderSentiment(false);
 			m_pStock->SetInsiderSentimentUpdateDate(19800101);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -150,7 +156,8 @@ namespace FireBirdTest {
 	class ParseFinnhubInsiderSentimentTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -160,7 +167,7 @@ namespace FireBirdTest {
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_pvInsiderSentiment = nullptr;
-			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket.get());
+			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
 			m_finnhubCompanyInsiderSentiment.SetIndex(lIndex);
 		}
@@ -172,7 +179,8 @@ namespace FireBirdTest {
 			m_pStock->SetSaveInsiderSentiment(false);
 			m_pStock->SetInsiderSentimentUpdateDate(19800101);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -233,7 +241,8 @@ namespace FireBirdTest {
 	class ParseFinnhubInsiderSentimentTest2 : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -242,7 +251,7 @@ namespace FireBirdTest {
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_pvInsiderSentiment = nullptr;
-			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket.get());
+			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
 			m_finnhubCompanyInsiderSentiment.SetIndex(lIndex);
 		}
@@ -251,7 +260,8 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			m_pStock->SetUpdateProfileDB(false);
 		}
 

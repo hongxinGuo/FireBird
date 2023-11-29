@@ -13,20 +13,24 @@ namespace FireBirdTest {
 	class CTiingoFactoryTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -34,8 +38,8 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTiingoFactoryTest, TestCreateProduct) {
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStockSymbol"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), CRYPTO_SYMBOLS_)).name(), _T("class CProductTiingoCryptoSymbol"));
-		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket.get(), STOCK_PRICE_CANDLES_)).name(), _T("class CProductTiingoStockDayLine"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStockSymbol"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_)).name(), _T("class CProductTiingoCryptoSymbol"));
+		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_PRICE_CANDLES_)).name(), _T("class CProductTiingoStockDayLine"));
 	}
 }

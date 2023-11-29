@@ -12,20 +12,24 @@ namespace FireBirdTest {
 	class CFinnhubCompanyProfileConciseTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -39,7 +43,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyProfileConciseTest, TestCreatMessage) {
 		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyProfile(true);
-		companyProfileConcise.SetMarket(gl_pWorldMarket.get());
+		companyProfileConcise.SetMarket(gl_pWorldMarket);
 		companyProfileConcise.SetIndex(1);
 		EXPECT_STREQ(companyProfileConcise.CreateMessage(), companyProfileConcise.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateCompanyProfile()) << "处理接收到的数据后才设置此标识";
@@ -59,7 +63,8 @@ namespace FireBirdTest {
 	class ProcessFinnhubStockProfileConciseTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -68,7 +73,7 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
-			m_FinnhubCompanyProfileConcise.SetMarket(gl_pWorldMarket.get());
+			m_FinnhubCompanyProfileConcise.SetMarket(gl_pWorldMarket);
 			m_FinnhubCompanyProfileConcise.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));
 		}
 
@@ -79,7 +84,8 @@ namespace FireBirdTest {
 			m_pStock->SetUpdateCompanyProfile(true);
 			m_pStock->SetUpdateProfileDB(false);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:

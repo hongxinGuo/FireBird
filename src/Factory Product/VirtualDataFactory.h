@@ -12,5 +12,5 @@ public:
 
 	virtual ~CVirtualDataFactory() = default;
 
-	virtual CVirtualProductWebDataPtr CreateProduct(CVirtualMarket* pMarket, int iiProductType) = 0;
+	virtual CVirtualProductWebDataPtr CreateProduct(CVirtualMarketPtr pMarket, int iiProductType) = 0;
 };

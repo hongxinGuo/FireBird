@@ -34,7 +34,7 @@
 
 #include "FinnhubFactory.h"
 
-CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarket* pMarket, int iiProductType) {
+CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMarket, int iiProductType) {
 	CVirtualProductWebDataPtr p = nullptr;
 
 	switch (iiProductType) {

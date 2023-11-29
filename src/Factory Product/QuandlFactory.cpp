@@ -3,6 +3,6 @@
 #include"VirtualMarket.h"
 #include "QuandlFactory.h"
 
-CVirtualProductWebDataPtr CQuandlFactory::CreateProduct(CVirtualMarket* pMarket, int iiProductType) {
+CVirtualProductWebDataPtr CQuandlFactory::CreateProduct(CVirtualMarketPtr pMarket, int iiProductType) {
 	return CVirtualProductWebDataPtr();
 }

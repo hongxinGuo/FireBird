@@ -12,20 +12,24 @@ namespace FireBirdTest {
 	class CFinnhubCompanyProfileTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -39,7 +43,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyProfileTest, TestCreatMessage) {
 		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyProfile(true);
-		companyProfile.SetMarket(gl_pWorldMarket.get());
+		companyProfile.SetMarket(gl_pWorldMarket);
 		companyProfile.SetIndex(1);
 		EXPECT_STREQ(companyProfile.CreateMessage(), companyProfile.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateCompanyProfile()) << "接收到的数据处理后方设置此标识";
@@ -59,7 +63,8 @@ namespace FireBirdTest {
 	class ProcessFinnhubStockProfileTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
@@ -70,7 +75,7 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
-			m_finnhubCompanyProfile.SetMarket(gl_pWorldMarket.get());
+			m_finnhubCompanyProfile.SetMarket(gl_pWorldMarket);
 			m_finnhubCompanyProfile.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));
 		}
 
@@ -81,7 +86,8 @@ namespace FireBirdTest {
 			m_pStock->SetUpdateCompanyProfile(true);
 			m_pStock->SetUpdateProfileDB(false);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:

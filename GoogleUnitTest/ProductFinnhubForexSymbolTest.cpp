@@ -40,7 +40,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestCreatMessage) {
-		productForexSymbol.SetMarket(gl_pWorldMarket.get());
+		productForexSymbol.SetMarket(gl_pWorldMarket);
 		productForexSymbol.SetIndex(1);
 		EXPECT_STREQ(productForexSymbol.CreateMessage(), productForexSymbol.GetInquiryFunction() + gl_pWorldMarket->GetForexExchange(1));
 	}
@@ -132,7 +132,7 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
-			m_productFinnhubForexSymbol.SetMarket(gl_pWorldMarket.get());
+			m_productFinnhubForexSymbol.SetMarket(gl_pWorldMarket);
 			m_productFinnhubForexSymbol.SetIndex(0);
 		}
 

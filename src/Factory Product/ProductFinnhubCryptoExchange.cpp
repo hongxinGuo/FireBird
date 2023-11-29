@@ -27,8 +27,8 @@ bool CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	const auto pvCryptoExchange = ParseFinnhubCryptoExchange(pWebData);
 	for (int i = 0; i < pvCryptoExchange->size(); i++) {
-		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsCryptoExchange(pvCryptoExchange->at(i))) {
-			dynamic_cast<CWorldMarket*>(m_pMarket)->AddCryptoExchange(pvCryptoExchange->at(i));
+		if (!dynamic_pointer_cast<CWorldMarket>(m_pMarket)->IsCryptoExchange(pvCryptoExchange->at(i))) {
+			dynamic_pointer_cast<CWorldMarket>(m_pMarket)->AddCryptoExchange(pvCryptoExchange->at(i));
 		}
 	}
 
