@@ -21,26 +21,21 @@ bool CProductFinnhub::CheckNoRightToAccess(CWebDataPtr pWebData) {
 // 美国市场（交易所代码为US）永远申请，其他交易所根据反馈情况决定是否继续申请。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-bool CProductFinnhub::AddInaccessibleExchangeIfNeeded() {
-	if (IsUSMarket()) return false; // 美国市场永远允许查询
+void CProductFinnhub::CheckAndAddInaccessibleExchange() {
+	if (IsUSMarket()) return; // 美国市场永远允许查询
 
 	gl_finnhubInaccessibleExchange.SetUpdate(true);
-	try {
-		const auto pExchange = gl_finnhubInaccessibleExchange.GetInaccessibleExchange(m_iProductType);
-		if (!pExchange->HaveExchange(m_strInquiringExchange)) {	// 如果是新的交易所代码
+	try { // 存在此申请类型
+		const auto pExchange = gl_finnhubInaccessibleExchange.GetExchange(m_iProductType);
+		if (!pExchange->HaveExchange(m_strInquiringExchange)) {	// 新的交易所代码？
 			pExchange->AddExchange(m_strInquiringExchange);
-			return true;
-		}
-		else {
-			return false;
 		}
 	}
-	catch (out_of_range&) {	// 新的数据
+	catch (out_of_range&) {	// 不存在此申请类型？则存储此新类型和该交易所名称
 		const auto pNewExchange = make_shared<CInaccessibleExchanges>();
 		pNewExchange->SetFunction(m_iProductType);
 		pNewExchange->SetFunctionString(gl_FinnhubInquiryType.GetInquiryString(m_iProductType));
 		pNewExchange->AddExchange(m_strInquiringExchange);
-		gl_finnhubInaccessibleExchange.SetInaccessibleExchange(m_iProductType, pNewExchange);
-		return true;
+		gl_finnhubInaccessibleExchange.SetExchange(m_iProductType, pNewExchange);
 	}
 }

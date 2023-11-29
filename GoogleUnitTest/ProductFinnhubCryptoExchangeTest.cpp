@@ -47,17 +47,17 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	FinnhubWebData finnhubWebData202(2, _T(""), _T("\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+	Test_FinnhubWebData finnhubWebData202(2, _T(""), _T("\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
 	// 格式不对
-	FinnhubWebData finnhubWebData203(3, _T(""), _T("[\"oanda\",fxcm,\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+	Test_FinnhubWebData finnhubWebData203(3, _T(""), _T("[\"oanda\",fxcm,\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
 	// 正确的数据
-	FinnhubWebData finnhubWebData210(10, _T(""), _T("[\"new exchange\",\"FXPIG\",\"KRAKEN\",\"ZB\",\"HITBTC\",\"GEMINI\",\"COINBASE\",\"BITTREX\",\"HUOBI\"]"));
+	Test_FinnhubWebData finnhubWebData210(10, _T(""), _T("[\"new exchange\",\"FXPIG\",\"KRAKEN\",\"ZB\",\"HITBTC\",\"GEMINI\",\"COINBASE\",\"BITTREX\",\"HUOBI\"]"));
 
-	class ParseFinnhubCryptoExchangeTest : public TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubCryptoExchangeTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE(""); GeneralCheck();
-			const FinnhubWebData* pData = GetParam();
+			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -105,11 +105,11 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubCryptoExchangeTest : public TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubCryptoExchangeTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE(""); GeneralCheck();
-			const FinnhubWebData* pData = GetParam();
+			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();

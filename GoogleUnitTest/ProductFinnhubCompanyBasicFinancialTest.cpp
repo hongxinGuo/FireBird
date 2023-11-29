@@ -52,7 +52,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->GetStock(1)->SetUpdateBasicFinancial(true);
 	}
 
-	FinnhubWebData finnhubWebData1002(2, _T("AAPL"),
+	Test_FinnhubWebData finnhubWebData1002(2, _T("AAPL"),
 	                                  _T("{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
@@ -251,7 +251,7 @@ namespace FireBirdTest {
 }"));
 
 	// BVDRF是美股ADR，其本土代码为MBWS.PA
-	FinnhubWebData finnhubWebData1003(3, _T("BVDRF"),
+	Test_FinnhubWebData finnhubWebData1003(3, _T("BVDRF"),
 	                                  _T("{\
 		\"metric\": { \
 			\"10DayAverageTradingVolume\": 0.43212,\
@@ -450,20 +450,20 @@ namespace FireBirdTest {
 }"));
 
 	// 有些股票只有部分数据
-	FinnhubWebData finnhubWebData1004(4, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"marketCapitalization\",\"series\":{},\"symbol\":\"OTSCS\"}"));
+	Test_FinnhubWebData finnhubWebData1004(4, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"marketCapitalization\",\"series\":{},\"symbol\":\"OTSCS\"}"));
 	// Metric out of range
-	FinnhubWebData finnhubWebData1005(5, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"out of range\",\"series\":{},\"symbol\":\"OTSCS\"}"));
+	Test_FinnhubWebData finnhubWebData1005(5, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"out of range\",\"series\":{},\"symbol\":\"OTSCS\"}"));
 	// 有些股票只有部分数据， 测试metric
-	FinnhubWebData finnhubWebData1006(6, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"metric\",\"series\":{},\"symbol\":\"OTSCS\"}"));
+	Test_FinnhubWebData finnhubWebData1006(6, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"metric\",\"series\":{},\"symbol\":\"OTSCS\"}"));
 	// 有些股票只有部分数据, 测试eps
-	FinnhubWebData finnhubWebData1007(7, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"eps\",\"series\":{},\"symbol\":\"OTSCS\"}"));
+	Test_FinnhubWebData finnhubWebData1007(7, _T("AAPL"), _T("{\"metric\":{\"52WeekHigh\":1.18,\"52WeekLow\":1},\"metricType\":\"eps\",\"series\":{},\"symbol\":\"OTSCS\"}"));
 
-	class ParseFinnhubStockBasicFinancialTest : public TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubStockBasicFinancialTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			const FinnhubWebData* pData = GetParam();
+			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
@@ -550,12 +550,12 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubStockBasicFinancialTest : public TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubStockBasicFinancialTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			const FinnhubWebData* pData = GetParam();
+			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);

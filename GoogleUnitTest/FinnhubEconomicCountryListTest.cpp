@@ -44,25 +44,25 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	FinnhubWebData finnhubWebData92(2, _T(""), _T("{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"New Country1\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	Test_FinnhubWebData finnhubWebData92(2, _T(""), _T("{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"New Country1\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 	// 第一个数据缺乏CodeNo
-	FinnhubWebData finnhubWebData93(3, _T(""),_T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"Missing\":\"520\",\"country\":\"New Country\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	Test_FinnhubWebData finnhubWebData93(3, _T(""),_T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"Missing\":\"520\",\"country\":\"New Country\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 	// 第二个数据缺乏Code2
-	FinnhubWebData finnhubWebData94(4, _T(""),_T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"Missing\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	Test_FinnhubWebData finnhubWebData94(4, _T(""),_T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"Missing\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 	// 数据缺乏symbol
-	FinnhubWebData finnhubWebData95(5, _T(""),_T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"Missing\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	Test_FinnhubWebData finnhubWebData95(5, _T(""),_T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"Missing\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 	// 空数据
-	FinnhubWebData finnhubWebData96(6, _T(""), _T("{}"));
+	Test_FinnhubWebData finnhubWebData96(6, _T(""), _T("{}"));
 	// 无权访问数据
-	FinnhubWebData finnhubWebData97(7, _T(""), _T("{\"error\":\"You don't have access to this resource.\"}"));
+	Test_FinnhubWebData finnhubWebData97(7, _T(""), _T("{\"error\":\"You don't have access to this resource.\"}"));
 	// 正确的数据
-	FinnhubWebData finnhubWebData100(10, _T(""), _T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+	Test_FinnhubWebData finnhubWebData100(10, _T(""), _T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Zero\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
 
-	class ParseFinnhubCountryListTest : public TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubCountryListTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE(""); GeneralCheck();
-			const FinnhubWebData* pData = GetParam();
+			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -128,11 +128,11 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubCountryListTest : public TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubCountryListTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE(""); GeneralCheck();
-			const FinnhubWebData* pData = GetParam();
+			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();

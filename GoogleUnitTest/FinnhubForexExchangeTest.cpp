@@ -48,21 +48,21 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	FinnhubWebData finnhubWebData72(2, _T(""), _T("\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+	Test_FinnhubWebData finnhubWebData72(2, _T(""), _T("\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
 	// 格式不对
-	FinnhubWebData finnhubWebData73(3, _T(""), _T("[\"oanda\",fxcm,\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+	Test_FinnhubWebData finnhubWebData73(3, _T(""), _T("[\"oanda\",fxcm,\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
 	// 空数据
-	FinnhubWebData finnhubWebData74(4, _T(""), _T("{}"));
+	Test_FinnhubWebData finnhubWebData74(4, _T(""), _T("{}"));
 	// 无权访问数据
-	FinnhubWebData finnhubWebData75(5, _T(""), _T("{\"error\":\"You don't have access to this resource.\"}"));
+	Test_FinnhubWebData finnhubWebData75(5, _T(""), _T("{\"error\":\"You don't have access to this resource.\"}"));
 	// 正确的数据
-	FinnhubWebData finnhubWebData80(10, _T(""), _T("[\"new exchange\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+	Test_FinnhubWebData finnhubWebData80(10, _T(""), _T("[\"new exchange\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
 
-	class ParseFinnhubForexExchangeTest : public TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubForexExchangeTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE(""); GeneralCheck();
-			const FinnhubWebData* pData = GetParam();
+			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -111,11 +111,11 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubForexExchangeTest : public TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubForexExchangeTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE(""); GeneralCheck();
-			const FinnhubWebData* pData = GetParam();
+			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();

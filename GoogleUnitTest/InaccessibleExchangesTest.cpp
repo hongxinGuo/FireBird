@@ -10,7 +10,8 @@
 namespace FireBirdTest {
 	class CInaccessibleExchangesTest : public testing::Test {
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 
 			vExchanges.push_back(_T("US"));
 			vExchanges.push_back(_T("SS"));
@@ -21,7 +22,8 @@ namespace FireBirdTest {
 		void TearDown() override {
 			gl_systemConfiguration.SetWorkingMode(false);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -67,17 +69,21 @@ namespace FireBirdTest {
 
 namespace FireBirdTest {
 	class CFinnhubInaccessibleExchangeTest : public testing::Test {
-		void SetUp() override { SCOPED_TRACE(""); GeneralCheck(); }
+		void SetUp() override {
+			SCOPED_TRACE("");
+			GeneralCheck();
+		}
 
 		void TearDown() override {
 			gl_systemConfiguration.SetWorkingMode(false);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestGlobeVariable) {
-		json jsFinnhubInaccessibleExchange = json::parse(gl_sFinnhubInaccessibleExchange);
+		json jsFinnhubInaccessibleExchange = json::parse(Test_gl_sFinnhubInaccessibleExchange);
 		CInaccessibleExchanges exchange;
 		const string s2 = jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Function")];
 		exchange.SetFunctionString(s2.c_str());
@@ -101,7 +107,7 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.SetDefaultFileName(_T("FinnhubInaccessibleExchangeTest.json"));
 
 		gl_finnhubInaccessibleExchange.SetUpdateDate(20230101);
-		gl_finnhubInaccessibleExchange.SetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()), pExchange);
+		gl_finnhubInaccessibleExchange.SetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()), pExchange);
 		gl_finnhubInaccessibleExchange.UpdateJson();
 		gl_finnhubInaccessibleExchange.SaveDB();
 
@@ -109,11 +115,11 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.LoadDB();
 		gl_finnhubInaccessibleExchange.Update();
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetUpdateDate(), 20230101);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchangeSize(), 1);
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(),
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetExchangeSize(), 1);
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(),
 		             _T("WebSocketTrades"));
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->ExchangeSize(), 2);
-		const CString str = gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetExchange(0);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->ExchangeSize(), 2);
+		const CString str = gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetExchange(0);
 		EXPECT_STREQ(str, _T("SS"));
 
 		// »Ö¸´Ô­×´
@@ -131,7 +137,7 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.SetDefaultFileName(_T("FinnhubInaccessibleExchangeTest.json"));
 
 		gl_finnhubInaccessibleExchange.SetUpdateDate(20230101);
-		gl_finnhubInaccessibleExchange.SetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()), pExchange);
+		gl_finnhubInaccessibleExchange.SetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()), pExchange);
 		gl_finnhubInaccessibleExchange.UpdateJson();
 		gl_finnhubInaccessibleExchange.SaveDB();
 
@@ -140,11 +146,11 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.LoadDB(strFileDirectory);
 		gl_finnhubInaccessibleExchange.Update();
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetUpdateDate(), 20230101);
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchangeSize(), 1);
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(),
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetExchangeSize(), 1);
+		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(),
 		             _T("WebSocketTrades"));
-		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->ExchangeSize(), 2);
-		const CString str = gl_finnhubInaccessibleExchange.GetInaccessibleExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetExchange(0);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->ExchangeSize(), 2);
+		const CString str = gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetExchange(0);
 		EXPECT_STREQ(str, _T("SS"));
 
 		// »Ö¸´Ô­×´

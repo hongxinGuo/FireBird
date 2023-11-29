@@ -65,7 +65,7 @@ public:
 	void UpdateJson();
 
 	void Clear() noexcept {
-		m_mapInaccessibleExchange.clear();
+		m_mapExchange.clear();
 		m_finnhubInaccessibleExchange.clear();
 	}
 
@@ -76,9 +76,9 @@ public:
 	long GetUpdateDate() const { return m_lUpdateDate; }
 
 	static int GetFinnhubInquiryIndex(const CString& sString) { return gl_FinnhubInquiryType.GetInquiryType(sString); }
-	CInaccessibleExchangesPtr GetInaccessibleExchange(int iInquiryType);
-	void SetInaccessibleExchange(const int iInquiryType, const CInaccessibleExchangesPtr& pExchange) { m_mapInaccessibleExchange[iInquiryType] = pExchange; }
-	size_t GetInaccessibleExchangeSize() const noexcept { return m_mapInaccessibleExchange.size(); }
+	CInaccessibleExchangesPtr GetExchange(int iInquiryType) { return m_mapExchange.at(iInquiryType); }
+	void SetExchange(const int iInquiryType, const CInaccessibleExchangesPtr& pExchange) { m_mapExchange[iInquiryType] = pExchange; }
+	size_t GetExchangeSize() const noexcept { return m_mapExchange.size(); }
 
 	bool IsNeedUpdate() const noexcept { return m_fUpdate; }
 	void SetUpdate(const bool fUpdate) noexcept { m_fUpdate = fUpdate; }
@@ -89,7 +89,7 @@ protected:
 	CString m_strFileName; // 配置文件名称
 
 	long m_lUpdateDate; // 本文件更新日期
-	map<int, CInaccessibleExchangesPtr> m_mapInaccessibleExchange; //
+	map<int, CInaccessibleExchangesPtr> m_mapExchange; //
 
 	bool m_fInitialized = false;
 	bool m_fUpdate;
@@ -101,4 +101,4 @@ using CFinnhubInaccessibleExchangePtr = shared_ptr<CFinnhubInaccessibleExchange>
 
 extern CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange;
 
-extern std::string gl_sFinnhubInaccessibleExchange; // finnhub inaccessible exchange
+extern std::string Test_gl_sFinnhubInaccessibleExchange; // finnhub inaccessible exchange test data

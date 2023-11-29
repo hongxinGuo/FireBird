@@ -48,20 +48,20 @@ namespace FireBirdTest {
 	}
 
 	// 正确数据
-	FinnhubWebData finnhubWebData133(3, _T("AAPL"), _T(
+	Test_FinnhubWebData finnhubWebData133(3, _T("AAPL"), _T(
 		                                 "{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-03\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
 	// 缺乏 data项
-	FinnhubWebData finnhubWebData134(4, _T("AAPL"), _T(
+	Test_FinnhubWebData finnhubWebData134(4, _T("AAPL"), _T(
 		                                 "{\"no data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));
 	// 缺乏 Symbol项
-	FinnhubWebData finnhubWebData135(5, _T("AAPL"), _T(
+	Test_FinnhubWebData finnhubWebData135(5, _T("AAPL"), _T(
 		                                 "{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-02\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"no symbol\" : \"RIG\"}"));
 
-	class ProcessFinnhubInsiderTransactionTest : public TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubInsiderTransactionTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE(""); GeneralCheck();
-			const FinnhubWebData* pData = GetParam();
+			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
@@ -132,11 +132,11 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ParseFinnhubInsiderTransactionTest : public TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubInsiderTransactionTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE(""); GeneralCheck();
-			const FinnhubWebData* pData = GetParam();
+			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);

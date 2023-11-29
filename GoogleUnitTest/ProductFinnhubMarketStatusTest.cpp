@@ -47,14 +47,14 @@ namespace FireBirdTest {
 	}
 
 	// 正确的数据
-	FinnhubWebData finnhubMarketStatusWebData22(2, _T("AAPL"), _T("{\"exchange\": \"US\",\"holiday\": null,\"isOpen\" : false,\"session\" : \"pre-market\",\"timezone\" : \"America/New York\",\"t\" : 1697018041}"));
+	Test_FinnhubWebData finnhubMarketStatusWebData22(2, _T("AAPL"), _T("{\"exchange\": \"US\",\"holiday\": null,\"isOpen\" : false,\"session\" : \"pre-market\",\"timezone\" : \"America/New York\",\"t\" : 1697018041}"));
 
-	class ParseFinnhubMarketStatusTest : public TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubMarketStatusTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			const FinnhubWebData* pData = GetParam();
+			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -99,12 +99,12 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubMarketStatusTest : public TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubMarketStatusTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			const FinnhubWebData* pData = GetParam();
+			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();

@@ -13,7 +13,7 @@ using std::ios;
 using std::make_shared;
 using std::exception;
 
-std::string gl_sFinnhubInaccessibleExchange = R"(
+std::string Test_gl_sFinnhubInaccessibleExchange = R"(
 { "UpdateDate" : 20221205,
  "InaccessibleExchange" :
 [
@@ -99,7 +99,9 @@ CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 	m_lUpdateDate = 19800101;
 
 	ASSERT(m_strFileName.Compare(_T("FinnhubInaccessibleExchange.json")) == 0);
-	if (LoadDB()) { Update(); }
+	if (LoadDB()) {
+		Update();
+	}
 }
 
 CFinnhubInaccessibleExchange::~CFinnhubInaccessibleExchange() {
@@ -161,7 +163,7 @@ void CFinnhubInaccessibleExchange::Update() {
 					string s = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).at(j);
 					pExchange->AddExchange(s.c_str());
 				}
-				gl_finnhubInaccessibleExchange.m_mapInaccessibleExchange[gl_FinnhubInquiryType.GetInquiryType(pExchange->GetFunctionString())] = pExchange;
+				gl_finnhubInaccessibleExchange.m_mapExchange[gl_FinnhubInquiryType.GetInquiryType(pExchange->GetFunctionString())] = pExchange;
 			}
 		}
 	}
@@ -172,7 +174,7 @@ void CFinnhubInaccessibleExchange::UpdateJson() {
 	m_finnhubInaccessibleExchange.clear();
 
 	m_finnhubInaccessibleExchange["UpdateDate"] = m_lUpdateDate;
-	for (const auto& pExchange : m_mapInaccessibleExchange) {
+	for (const auto& pExchange : m_mapExchange) {
 		if (pExchange.second->HaveExchange()) {
 			// 有exchange数据的话才建立数据集
 			auto jsonExchange = json{{"Function", pExchange.second->GetFunctionString()}};
@@ -186,13 +188,9 @@ void CFinnhubInaccessibleExchange::UpdateJson() {
 	}
 }
 
-CInaccessibleExchangesPtr CFinnhubInaccessibleExchange::GetInaccessibleExchange(const int iInquiryType) {
-	return m_mapInaccessibleExchange.at(iInquiryType);
-}
-
 bool CFinnhubInaccessibleExchange::IsInaccessible(const int iInquiryType, const CString& strExchangeCode) const {
 	try {
-		if (m_mapInaccessibleExchange.at(iInquiryType)->HaveExchange(strExchangeCode)) {
+		if (m_mapExchange.at(iInquiryType)->HaveExchange(strExchangeCode)) {
 			return true;
 		}
 		return false;

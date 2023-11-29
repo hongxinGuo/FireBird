@@ -54,34 +54,34 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser
-	FinnhubWebData finnhubWebData221(1, _T("BINANCE:USDTUAH"), _T("\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubWebData221(1, _T("BINANCE:USDTUAH"), _T("\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 没有s项
-	FinnhubWebData finnhubWebData222_1(11, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"a\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubWebData222_1(11, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"a\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// s项报告非ok
-	FinnhubWebData finnhubWebData222(2, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"not ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubWebData222(2, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"not ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// s项报告no data
-	FinnhubWebData finnhubWebData223(3, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"no_data\",\"a\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubWebData223(3, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"no_data\",\"a\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 数据缺乏t项
-	FinnhubWebData finnhubWebData224(4, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"a\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubWebData224(4, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"a\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 缺乏c项。不影响结果
-	FinnhubWebData finnhubWebData225(5, _T("BINANCE:USDTUAH"), _T("{\"a\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubWebData225(5, _T("BINANCE:USDTUAH"), _T("{\"a\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 缺乏h项
-	FinnhubWebData finnhubWebData226(6, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"a\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubWebData226(6, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"a\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 缺乏l项
-	FinnhubWebData finnhubWebData227(7, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"a\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubWebData227(7, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"a\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 缺乏o项
-	FinnhubWebData finnhubWebData228(8, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"a\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubWebData228(8, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"a\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 缺乏v项
-	FinnhubWebData finnhubWebData229(9, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"a\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubWebData229(9, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"a\":[36521,47505]}"));
 	// 正确的数据
-	FinnhubWebData finnhubWebData230(10, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubWebData230(10, _T("BINANCE:USDTUAH"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 
-	class ParseFinnhubCryptoCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ParseFinnhubCryptoCandleTest : public::testing::TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			const FinnhubWebData* pData = GetParam();
+			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pData->m_strSymbol));
 			gl_pWorldMarket->GetFinnhubCryptoSymbol(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
@@ -157,12 +157,12 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessFinnhubCryptoCandleTest : public::testing::TestWithParam<FinnhubWebData*> {
+	class ProcessFinnhubCryptoCandleTest : public::testing::TestWithParam<Test_FinnhubWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			const FinnhubWebData* pData = GetParam();
+			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pData->m_strSymbol));
 			lIPOStatus = gl_pWorldMarket->GetFinnhubCryptoSymbol(0)->GetIPOStatus();

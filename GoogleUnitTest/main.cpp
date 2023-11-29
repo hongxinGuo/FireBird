@@ -217,9 +217,9 @@ namespace FireBirdTest {
 using namespace FireBirdTest;
 
 // 空数据
-FinnhubWebData finnhubWebData0(0, _T("AAPL"), _T("{}"));
+Test_FinnhubWebData finnhubWebData0(0, _T("AAPL"), _T("{}"));
 // 无权访问数据
-FinnhubWebData finnhubWebData1(1, _T("AAPL"), _T("{\"error\":\"You don't have access to this resource.\"}"));
+Test_FinnhubWebData finnhubWebData1(1, _T("AAPL"), _T("{\"error\":\"You don't have access to this resource.\"}"));
 
 int main(int argc, char* argv[]) {
 	InitGoogleTest(&argc, argv);

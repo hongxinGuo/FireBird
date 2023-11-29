@@ -32,7 +32,7 @@ bool CVirtualWebProduct::CheckInaccessible(const CWebDataPtr& pWebData) {
 		CheckNoRightToAccess(pWebData);
 		bInaccessible = IsNoRightToAccess();
 		if (bInaccessible) {
-			AddInaccessibleExchangeIfNeeded();
+			CheckAndAddInaccessibleExchange();
 		}
 	}
 	return bInaccessible;

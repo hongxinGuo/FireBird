@@ -43,17 +43,17 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对，缺乏'{'
-	TiingoWebData tiingoWebData11(11, _T(""), _T("[\"ticker\":\"curebtc\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]"));
+	Test_TiingoWebData tiingoWebData11(11, _T(""), _T("[\"ticker\":\"curebtc\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]"));
 	// 第一个数据缺项
-	TiingoWebData tiingoWebData12(12, _T(""), _T("[{\"Missing\":\"curebtc\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]"));
+	Test_TiingoWebData tiingoWebData12(12, _T(""), _T("[{\"Missing\":\"curebtc\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]"));
 	// 正确的数据
-	TiingoWebData tiingoWebData20(20, _T(""), _T("[{\"ticker\":\"New Symbol\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]"));
+	Test_TiingoWebData tiingoWebData20(20, _T(""), _T("[{\"ticker\":\"New Symbol\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]"));
 
-	class ParseTiingoCryptoTest : public TestWithParam<TiingoWebData*> {
+	class ParseTiingoCryptoTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE(""); GeneralCheck();
-			const TiingoWebData* pData = GetParam();
+			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -99,11 +99,11 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ParseTiingoCryptoTest2 : public TestWithParam<TiingoWebData*> {
+	class ParseTiingoCryptoTest2 : public TestWithParam<Test_TiingoWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE(""); GeneralCheck();
-			const TiingoWebData* pData = GetParam();
+			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
@@ -149,11 +149,11 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessTiingoCryptoTest : public TestWithParam<TiingoWebData*> {
+	class ProcessTiingoCryptoTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE(""); GeneralCheck();
-			const TiingoWebData* pData = GetParam();
+			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();

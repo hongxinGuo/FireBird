@@ -10,15 +10,15 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	struct TiingoWebData {
-		TiingoWebData(const long lIndex, const CString& strSymbol, const CString& strData) {
+	struct Test_TiingoWebData {
+		Test_TiingoWebData(const long lIndex, const CString& strSymbol, const CString& strData) {
 			m_lIndex = lIndex;
 			m_strSymbol = strSymbol;
 			m_pData = make_shared<CWebData>();
 			m_pData->Test_SetBuffer_(strData);
 		}
 
-		~TiingoWebData() = default;
+		~Test_TiingoWebData() = default;
 
 	public:
 		long m_lIndex;

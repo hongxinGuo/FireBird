@@ -21,7 +21,7 @@ public:
 
 	virtual CString CreateMessage() { return _T(""); };
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) { return true; };
-	virtual bool AddInaccessibleExchangeIfNeeded() { return true; } // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
+	virtual void CheckAndAddInaccessibleExchange() { } // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 
 	virtual void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {} // default do nothing
 
@@ -64,15 +64,15 @@ protected:
 using CVirtualWebProductPtr = shared_ptr<CVirtualWebProduct>;
 
 // 此结构只用于测试中
-struct FinnhubWebData {
-	FinnhubWebData(const long lIndex, const CString& strSymbol, const CString& strData) {
+struct Test_FinnhubWebData {
+	Test_FinnhubWebData(const long lIndex, const CString& strSymbol, const CString& strData) {
 		m_lIndex = lIndex;
 		m_strSymbol = strSymbol;
 		m_pData = make_shared<CWebData>();
 		m_pData->Test_SetBuffer_(strData);
 	}
 
-	~FinnhubWebData() = default;
+	~Test_FinnhubWebData() = default;
 
 public:
 	long m_lIndex;
@@ -80,19 +80,19 @@ public:
 	CWebDataPtr m_pData;
 };
 
-extern FinnhubWebData finnhubWebData0;
-extern FinnhubWebData finnhubWebData1;
+extern Test_FinnhubWebData finnhubWebData0;
+extern Test_FinnhubWebData finnhubWebData1;
 
 // 此结构只用于测试中
-struct TiingoWebData {
-	TiingoWebData(const long lIndex, const CString& strSymbol, const CString& strData) {
+struct Test_TiingoWebData {
+	Test_TiingoWebData(const long lIndex, const CString& strSymbol, const CString& strData) {
 		m_lIndex = lIndex;
 		m_strSymbol = strSymbol;
 		m_pData = make_shared<CWebData>();
 		m_pData->Test_SetBuffer_(strData);
 	}
 
-	~TiingoWebData() { }
+	~Test_TiingoWebData() { }
 
 public:
 	long m_lIndex;
