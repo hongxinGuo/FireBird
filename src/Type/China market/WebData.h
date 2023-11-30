@@ -32,7 +32,7 @@ public:
 	void ResetCurrentPos() noexcept { m_lCurrentPos = 0; }
 
 	bool OutOfRange() const noexcept {
-		if (m_lCurrentPos >= m_lBufferLength) return true;
+		if (m_lCurrentPos >= m_sDataBuffer.size()) return true;
 		return false;
 	}
 	bool CurrentParagraphOutOfRange() const noexcept {
@@ -41,21 +41,17 @@ public:
 	}
 
 	bool IsLastDataParagraph() const noexcept { // 已读至最后一段数据
-		if (m_lCurrentPos >= m_lBufferLength - 2) return true;
+		if (m_lCurrentPos >= m_sDataBuffer.size() - 2) return true;
 		else return false;
 	}
 
-	void Resize(const long lSize) {
-		m_sDataBuffer.resize(lSize);
-		m_lBufferLength = lSize;
-	}
+	void Resize(const long lSize) { m_sDataBuffer.resize(lSize); }
 
 	time_t GetTime() const noexcept { return m_tTime; }
 	void SetTime(const time_t tTime) noexcept { m_tTime = tTime; }
 	CString GetStockCode() const noexcept { return m_strStockCode; }
 	void SetStockCode(const CString& strStockCode) noexcept { m_strStockCode = strStockCode; }
-	INT64 GetBufferLength() const noexcept { return m_lBufferLength; }
-	void SetBufferLength(const long lValue) noexcept { m_lBufferLength = lValue; }
+	INT64 GetBufferLength() const noexcept { return m_sDataBuffer.size(); }
 
 	string GetDataBuffer() noexcept { return m_sDataBuffer; }
 	long GetCurrentPos() const noexcept { return m_lCurrentPos; }
@@ -65,7 +61,7 @@ public:
 	string_view GetCurrentParagraph() const noexcept { return m_svCurrentParagraph; }
 	void SetCurrentParagraph(string_view sv) noexcept { m_svCurrentParagraph = sv; }
 	string_view GetStringViewData(const int iDatLength) const { return string_view(m_sDataBuffer.c_str() + m_lCurrentPos, iDatLength); }
-	string_view GetAllOfNeedProcessStringViewData() const { return string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_lBufferLength - m_lCurrentPos); }
+	string_view GetAllOfNeedProcessStringViewData() const { return string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos); }
 	bool GetData(char* buffer, long lDataLength) const; // 从m_lCurrentPos开始拷贝
 	bool SetData(const char* buffer, long lDataLength); // 从m_lCurrentPos开始填充。
 
@@ -99,7 +95,6 @@ protected:
 	time_t m_tTime; // 此数据的提取时间。UTC格式
 	CString m_strStockCode; // 此数据的相关证券代码，可以空缺
 	string m_sDataBuffer;
-	long m_lBufferLength;
 	long m_lCurrentPos;
 	long m_lCurrentParagraphStartPos; // 当前段起始位置
 	string_view m_svCurrentParagraph{}; // 当前段数据

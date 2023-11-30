@@ -118,11 +118,10 @@ namespace FireBirdTest {
 			m_pNeteaseWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;
 			m_lStringLength = pData->m_strData.GetLength();
+			m_pNeteaseWebRTData->Resize(m_lStringLength);
 			for (int i = 0; i < m_lStringLength; i++) {
 				m_pNeteaseWebRTData->SetData(i, pData->m_strData[i]);
 			}
-			m_pNeteaseWebRTData->SetBufferLength(m_lStringLength);
-			m_pNeteaseWebRTData->Resize(m_lStringLength);
 			m_pNeteaseWebRTData->ResetCurrentPos();
 			m_pRTData = make_shared<CWebRTData>();
 			for (int i = 0; i < 5; i++) {

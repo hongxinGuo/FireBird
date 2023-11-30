@@ -210,10 +210,10 @@ namespace FireBirdTest {
 			m_pTengxunWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;
 			m_lStringLength = pData->m_strData.GetLength();
+			m_pTengxunWebRTData->Resize(m_lStringLength);
 			for (int i = 0; i < m_lStringLength; i++) {
 				m_pTengxunWebRTData->SetData(i, pData->m_strData[i]);
 			}
-			m_pTengxunWebRTData->Resize(m_lStringLength);
 			m_pTengxunWebRTData->ResetCurrentPos();
 			for (int i = 0; i < 5; i++) {
 				m_RTData.SetPBuy(i, -1);
@@ -778,10 +778,10 @@ namespace FireBirdTest {
 			m_pTengxunWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;
 			const long lLength = pData->m_strData.GetLength();
+			m_pTengxunWebRTData->Resize(lLength);
 			for (int i = 0; i < lLength; i++) {
 				m_pTengxunWebRTData->SetData(i, pData->m_strData[i]);
 			}
-			m_pTengxunWebRTData->Resize(lLength);
 			m_pTengxunWebRTData->ResetCurrentPos();
 		}
 

@@ -332,7 +332,6 @@ public:
 		pWebData = make_shared<CWebData>();
 		const long lStringLength = str.GetLength();
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		pWebData->SetBufferLength(lStringLength);
 		pWebData->Resize(lStringLength);
 		pWebData->SetData(str.GetBuffer(), lStringLength);
 	}
@@ -360,7 +359,6 @@ public:
 		pWebData = make_shared<CWebData>();
 		const long lStringLength = str.GetLength();
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		pWebData->SetBufferLength(lStringLength);
 		pWebData->Resize(lStringLength);
 		pWebData->SetData(str.GetBuffer(), lStringLength);
 	}

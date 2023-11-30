@@ -28,7 +28,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CWebDataTest, TestOutOfRange) {
-		webData.SetBufferLength(100);
+		webData.Resize(100);
 		webData.SetCurrentPos(0);
 		EXPECT_FALSE(webData.OutOfRange());
 		webData.SetCurrentPos(99);
@@ -40,7 +40,7 @@ namespace FireBirdTest {
 	TEST_F(CWebDataTest, TestCurrentParagraphOutOfRange) {
 		const string s = _T("abcedfghijklmnopqrstuvwxyz");
 		const string_view sv = string_view(s.c_str() + 5, 7);
-		webData.SetBufferLength(26);
+		webData.Resize(26);
 		webData.SetCurrentParagraph(sv);
 		webData.SetCurrentParagraphStartPos(5);
 		webData.SetCurrentPos(6);
@@ -54,7 +54,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWebDataTest, TestIsLastDataParagraph) {
-		webData.SetBufferLength(100);
+		webData.Resize(100);
 		webData.SetCurrentPos(0);
 		EXPECT_FALSE(webData.IsLastDataParagraph());
 		webData.SetCurrentPos(97);
@@ -124,7 +124,7 @@ namespace FireBirdTest {
 		strTest2 = buffer;
 		EXPECT_STREQ(strTest, strTest2);
 
-		webData.SetBufferLength(6);
+		webData.Resize(6);
 		webData.SetCurrentPos(0);
 		EXPECT_FALSE(webData.SetData(strTest.GetBuffer(), strTest.GetLength())) << "数据容器长度为6个字节，但需要存储七个字节的数据，导致函数报错";
 	}

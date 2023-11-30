@@ -7,7 +7,6 @@ CWebData::CWebData() {
 	m_tTime = 0;
 	m_strStockCode = _T("");
 	m_sDataBuffer.resize(DefaultWebDataBufferSize_); // 大多数情况下，1M缓存就足够了，无需再次分配内存。需要在此执行一次，否则测试无法初始化。不知为何。
-	m_lBufferLength = DefaultWebDataBufferSize_;
 	m_lCurrentPos = 0;
 	m_lCurrentParagraphStartPos = 0;
 
@@ -22,7 +21,7 @@ CWebData::~CWebData() {
 }
 
 bool CWebData::GetData(char* buffer, long lDataLength) const {
-	if (lDataLength + m_lCurrentPos > m_lBufferLength) return false;
+	if (lDataLength + m_lCurrentPos > m_sDataBuffer.size()) return false;
 	for (long i = 0; i < lDataLength; i++) {
 		buffer[i] = m_sDataBuffer.at(i + m_lCurrentPos);
 	}
@@ -30,7 +29,7 @@ bool CWebData::GetData(char* buffer, long lDataLength) const {
 }
 
 bool CWebData::SetData(const char* buffer, long lDataLength) {
-	if (lDataLength + m_lCurrentPos > m_lBufferLength) return false;
+	if (lDataLength + m_lCurrentPos > m_sDataBuffer.size()) return false;
 	for (long i = 0; i < lDataLength; i++) {
 		m_sDataBuffer.at(i + m_lCurrentPos) = buffer[i];
 	}
@@ -70,10 +69,9 @@ bool CWebData::CreateJson(long lBeginPos, long lEndPos) {
 }
 
 void CWebData::Test_SetBuffer_(CString strBuffer) {
-	m_lBufferLength = strBuffer.GetLength();
-	m_sDataBuffer.resize(m_lBufferLength);
+	m_sDataBuffer.resize(strBuffer.GetLength());
 	const char* pBuffer = strBuffer.GetBuffer();
-	for (long i = 0; i < m_lBufferLength; i++) {
+	for (long i = 0; i < m_sDataBuffer.size(); i++) {
 		m_sDataBuffer.at(i) = pBuffer[i];
 	}
 }

@@ -16,13 +16,13 @@ public:
 	void SetUp(const ::benchmark::State& state) override {
 		m_pSinaWebData = make_shared<CWebData>();
 		long lStringLength = sSinaWebData.GetLength();
-		m_pSinaWebData->SetData(sSinaWebData.GetBuffer(), lStringLength);
 		m_pSinaWebData->Resize(lStringLength);
+		m_pSinaWebData->SetData(sSinaWebData.GetBuffer(), lStringLength);
 
 		m_pTengxunWebData = make_shared<CWebData>();
 		lStringLength = sTengxunWebData.GetLength();
-		m_pTengxunWebData->SetData(sTengxunWebData.GetBuffer(), lStringLength);
 		m_pTengxunWebData->Resize(lStringLength);
+		m_pTengxunWebData->SetData(sTengxunWebData.GetBuffer(), lStringLength);
 	}
 
 	void TearDown(const ::benchmark::State& state) override { }

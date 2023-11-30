@@ -323,7 +323,6 @@ void CVirtualDataSource::VerifyDataLength() const {
 void CVirtualDataSource::TransferDataToWebData(CWebDataPtr pWebData) {
 	m_sBuffer.resize(m_lByteRead);
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
-	pWebData->SetBufferLength(m_lByteRead);
 }
 
 void CVirtualDataSource::CreateTotalInquiringString() {

@@ -357,8 +357,8 @@ namespace FireBirdTest {
 			m_pSinaWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;
 			m_lStringLength = pData->m_strData.GetLength();
-			m_pSinaWebRTData->SetData(pData->m_strData.GetBuffer(), m_lStringLength);
 			m_pSinaWebRTData->Resize(m_lStringLength);
+			m_pSinaWebRTData->SetData(pData->m_strData.GetBuffer(), m_lStringLength);
 			m_pSinaWebRTData->ResetCurrentPos();
 			for (int i = 0; i < 5; i++) {
 				m_RTData.SetPBuy(i, -1);
@@ -1245,14 +1245,14 @@ namespace FireBirdTest {
 	class ReadOneValueTest : public testing::TestWithParam<ReadSinaOneValueData*> {
 	protected:
 		void SetUp() override {
-			ReadSinaOneValueData* pData = GetParam();
+			const ReadSinaOneValueData* pData = GetParam();
 			m_pSinaWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;
-			long lLength = pData->m_strData.GetLength();
+			const long lLength = pData->m_strData.GetLength();
+			m_pSinaWebRTData->Resize(lLength);
 			for (int i = 0; i < lLength; i++) {
 				m_pSinaWebRTData->SetData(i, pData->m_strData[i]);
 			}
-			m_pSinaWebRTData->Resize(lLength);
 			m_pSinaWebRTData->ResetCurrentPos();
 		}
 

@@ -15,18 +15,14 @@ void CDayLineWebData::Reset() {
 	m_strStockCode = _T("");
 	m_sDataBuffer.resize(0);
 	m_vTempDayLine.resize(0);
-	m_lBufferLength = 0;
 	m_lCurrentPos = 0;
 }
 
 bool CDayLineWebData::TransferWebDataToBuffer(const CWebDataPtr& pWebData) {
 	// 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
 	m_sDataBuffer = std::move(pWebData->m_sDataBuffer);
-
-	m_lBufferLength = pWebData->GetBufferLength();
 	m_strStockCode = pWebData->GetStockCode();
 	m_lCurrentPos = 0;
-	ASSERT(m_sDataBuffer.size() == m_lBufferLength);
 
 	return true;
 }
@@ -43,13 +39,13 @@ bool CDayLineWebData::TransferWebDataToBuffer(const CWebDataPtr& pWebData) {
 bool CDayLineWebData::ProcessNeteaseDayLineData() {
 	shared_ptr<CDayLine> pDayLine;
 
-	if (m_lBufferLength == 0) return false;	// 没有数据读入？此种状态是查询的股票为无效（不存在）号码
+	if (m_sDataBuffer.size() == 0) return false;	// 没有数据读入？此种状态是查询的股票为无效（不存在）号码
 	if (!SkipNeteaseDayLineInformationHeader(m_sDataBuffer, m_lCurrentPos)) return false;
-	if (m_lCurrentPos >= m_lBufferLength)return false;// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
+	if (m_lCurrentPos >= m_sDataBuffer.size())return false;// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
 
 	CString strTemp;
 	CDayLinePtr pCurrentDayLine = nullptr;
-	while (m_lCurrentPos < m_lBufferLength) {	// 处理一条日线数据
+	while (m_lCurrentPos < m_sDataBuffer.size()) {	// 处理一条日线数据
 		pCurrentDayLine = ProcessOneNeteaseDayLineData();
 		if (pCurrentDayLine == nullptr) {
 			TRACE(_T("%s日线数据出错\n"), m_strStockCode.GetBuffer());
@@ -85,7 +81,7 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLineData() {
 	long i = 0;
 	// 日期
 	while ((m_sDataBuffer.at(m_lCurrentPos) != 0x02c)) {// 读取日期，直到遇到逗号
-		if ((m_sDataBuffer.at(m_lCurrentPos) == 0x0d) || (m_sDataBuffer.at(m_lCurrentPos) == 0x00a) || (m_lCurrentPos >= m_lBufferLength) || (i > 30)) {// 如果遇到回车、换行、字符串结束符或者读取了20个字符
+		if ((m_sDataBuffer.at(m_lCurrentPos) == 0x0d) || (m_sDataBuffer.at(m_lCurrentPos) == 0x00a) || (m_lCurrentPos >= m_sDataBuffer.size()) || (i > 30)) {// 如果遇到回车、换行、字符串结束符或者读取了20个字符
 			return nullptr; // 数据出错，放弃载入
 		}
 		buffer3[i++] = m_sDataBuffer.at(m_lCurrentPos++);
@@ -172,7 +168,7 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLineData() {
 	// 流通市值的数据形式有两种，故而需要程序判定。
 	i = 0;
 	while (m_sDataBuffer.at(m_lCurrentPos) != 0x00d) {
-		if ((m_sDataBuffer.at(m_lCurrentPos) == 0x00a) || (m_lCurrentPos >= m_lBufferLength) || (i > 30)) return nullptr; // 数据出错，放弃载入
+		if ((m_sDataBuffer.at(m_lCurrentPos) == 0x00a) || (m_lCurrentPos >= m_sDataBuffer.size()) || (i > 30)) return nullptr; // 数据出错，放弃载入
 		buffer2[i++] = m_sDataBuffer.at(m_lCurrentPos++);
 	}
 	m_lCurrentPos++;
