@@ -14,7 +14,7 @@ CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 CString CProductFinnhubStockSymbol::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
-	const auto strParam = dynamic_pointer_cast<CWorldMarket>(m_pMarket)->GetStockExchangeCode(m_lIndex);
+	const auto strParam = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStockExchangeCode(m_lIndex);
 
 	m_strInquiringExchange = strParam;
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -24,7 +24,7 @@ CString CProductFinnhubStockSymbol::CreateMessage() {
 bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
-	const auto strExchangeCode = dynamic_pointer_cast<CWorldMarket>(m_pMarket)->GetStockExchangeCode(m_lIndex);
+	const auto strExchangeCode = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStockExchangeCode(m_lIndex);
 	const auto pvStock = ParseFinnhubStockSymbol(pWebData);
 	const auto pExchange = gl_pWorldMarket->GetStockExchange(m_lIndex);
 	pExchange->SetStockSymbolUpdated(true);
@@ -40,10 +40,10 @@ bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		}
 	}
 	for (const auto& pStock2 : *pvStock) {
-		if (!dynamic_pointer_cast<CWorldMarket>(m_pMarket)->IsStock(pStock2)) {
+		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsStock(pStock2)) {
 			pStock2->SetTodayNewStock(true);
 			pStock2->SetUpdateProfileDB(true);
-			dynamic_pointer_cast<CWorldMarket>(m_pMarket)->AddStock(pStock2);
+			dynamic_cast<CWorldMarket*>(m_pMarket)->AddStock(pStock2);
 			const auto str = _T("Finnhub发现新代码:") + pStock2->GetSymbol();
 			gl_systemMessage.PushInnerSystemInformationMessage(str);
 		}

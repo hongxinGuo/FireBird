@@ -29,11 +29,11 @@ bool CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		char buffer[100];
 		long lTemp = 0;
 		for (const auto& pTiingoStock : *pvTiingoStock) {
-			if (!dynamic_pointer_cast<CWorldMarket>(m_pMarket)->IsTiingoStock(pTiingoStock->m_strTicker)) { dynamic_pointer_cast<CWorldMarket>(m_pMarket)->AddTiingoStock(pTiingoStock); }
-			if (dynamic_pointer_cast<CWorldMarket>(m_pMarket)->IsStock(pTiingoStock->m_strTicker)) {
+			if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsTiingoStock(pTiingoStock->m_strTicker)) { dynamic_cast<CWorldMarket*>(m_pMarket)->AddTiingoStock(pTiingoStock); }
+			if (dynamic_cast<CWorldMarket*>(m_pMarket)->IsStock(pTiingoStock->m_strTicker)) {
 				// Tiingo的Symbol信息只是用于Finnhub的一个补充。
 				lTemp++;
-				const auto pStock = dynamic_pointer_cast<CWorldMarket>(m_pMarket)->GetStock(pTiingoStock->m_strTicker);
+				const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(pTiingoStock->m_strTicker);
 				if (pStock->IsNeedUpdateProfile(pTiingoStock)) {
 					pStock->UpdateStockProfile(pTiingoStock);
 					pStock->SetUpdateProfileDB(true);

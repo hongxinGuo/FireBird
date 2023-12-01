@@ -21,7 +21,7 @@ CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransacti
 CString CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pStock = dynamic_pointer_cast<CWorldMarket>(m_pMarket)->GetStock(m_lIndex);
+	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
 	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol();
@@ -31,7 +31,7 @@ CString CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
 bool CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pStock = dynamic_pointer_cast<CWorldMarket>(m_pMarket)->GetStock(m_lIndex);
+	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
 	const CInsiderTransactionVectorPtr pvInsiderTransaction = ParseFinnhubStockInsiderTransaction(pWebData);
 	pStock->SetInsiderTransactionUpdateDate(m_pMarket->GetMarketDate());
 	pStock->SetUpdateInsiderTransaction(false);

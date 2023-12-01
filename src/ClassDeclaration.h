@@ -7,6 +7,7 @@
 
 #include<memory>
 using std::shared_ptr;
+using std::weak_ptr;
 
 class CVirtualMarket;
 typedef shared_ptr<CVirtualMarket> CVirtualMarketPtr;
