@@ -78,7 +78,7 @@ void CNeteaseRTDataSource::GenerateCurrentInquiryMessage() {
 void CNeteaseRTDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 2000); // 设置连接超时时间为2000毫秒。 正常情况下网易实时数据接收时间不超过200毫秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 1000); // 设置接收超时时间为1000毫秒
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 2000); // 设置接收超时时间为2000毫秒
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 500); // 设置发送超时时间为500毫秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 重试一次。
 }

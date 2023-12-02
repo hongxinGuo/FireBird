@@ -28,6 +28,8 @@ public:
 	CWebData& operator=(const CWebData&&) noexcept = delete;
 	~CWebData();
 
+	void Resize(const long lSize) { m_sDataBuffer.resize(lSize); }
+
 	void IncreaseCurrentPos(const long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
 	void ResetCurrentPos() noexcept { m_lCurrentPos = 0; }
 
@@ -37,15 +39,13 @@ public:
 	}
 	bool CurrentParagraphOutOfRange() const noexcept {
 		if ((m_lCurrentPos < m_lCurrentParagraphStartPos) || (m_lCurrentPos - m_lCurrentParagraphStartPos > m_svCurrentParagraph.size())) return true;
-		else return false;
+		return false;
 	}
 
 	bool IsLastDataParagraph() const noexcept { // 已读至最后一段数据
 		if (m_lCurrentPos >= m_sDataBuffer.size() - 2) return true;
-		else return false;
+		return false;
 	}
-
-	void Resize(const long lSize) { m_sDataBuffer.resize(lSize); }
 
 	time_t GetTime() const noexcept { return m_tTime; }
 	void SetTime(const time_t tTime) noexcept { m_tTime = tTime; }

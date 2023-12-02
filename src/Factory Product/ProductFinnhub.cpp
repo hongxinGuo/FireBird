@@ -18,12 +18,9 @@ bool CProductFinnhub::CheckNoRightToAccess(CWebDataPtr pWebData) {
 //
 // 目前finnhub对其免费账户只提供部分内容数据。为了加速轮询速度，受限制的数据(交易所）将不再申请。
 //
-// 美国市场（交易所代码为US）永远申请，其他交易所根据反馈情况决定是否继续申请。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-void CProductFinnhub::CheckAndAddInaccessibleExchange() {
-	if (IsUSMarket()) return; // 美国市场永远允许查询
-
+void CProductFinnhub::AddInaccessibleExchange() {
 	gl_finnhubInaccessibleExchange.SetUpdate(true);
 	try { // 存在此申请类型
 		const auto pExchange = gl_finnhubInaccessibleExchange.GetExchange(m_iProductType);

@@ -56,7 +56,6 @@ bool CInaccessibleExchanges::Assign(const CString& sFunction, const int iFunctio
 }
 
 bool CInaccessibleExchanges::AddExchange(const CString& sExchangeName) {
-	ASSERT(sExchangeName.Compare(_T("US")) != 0); // 系统中不存储美国市场代码（US)。
 	m_vExchange.push_back(sExchangeName);
 	m_setExchange.insert(sExchangeName);
 	return true;
@@ -185,6 +184,13 @@ void CFinnhubInaccessibleExchange::UpdateJson() {
 
 			m_finnhubInaccessibleExchange[_T("InaccessibleExchange")].push_back(jsonExchange);
 		}
+	}
+}
+
+void CFinnhubInaccessibleExchange::DeleteExchange(const int iInquiryType, CString strExchange) {
+	if (IsInaccessible(iInquiryType, strExchange)) {
+		const CInaccessibleExchangesPtr pExchange = GetExchange(iInquiryType);
+		pExchange->DeleteExchange(strExchange);
 	}
 }
 

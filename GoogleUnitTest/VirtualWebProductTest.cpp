@@ -1,7 +1,10 @@
 #include"pch.h"
 
 #include "ChinaMarket.h"
+#include "FinnhubInaccessibleExchange.h"
+#include "FinnhubInquiryType.h"
 #include"GeneralCheck.h"
+#include "ProductFinnhub.h"
 
 #include"WorldMarket.h"
 
@@ -49,6 +52,7 @@ namespace FireBirdTest {
 
 	protected:
 		CVirtualWebProduct webProduct;
+		CProductFinnhub finnhubWebProduct;
 	};
 
 	TEST_F(CVirtualWebProductTest, TestInitialize) {
@@ -105,5 +109,80 @@ namespace FireBirdTest {
 		EXPECT_FALSE(webProduct.CheckVoidJson(pWebData));
 
 		EXPECT_FALSE(webProduct.IsVoidData());
+	}
+
+	TEST_F(CVirtualWebProductTest, TestCheckInaccessible1) {
+		const CWebDataPtr pWebData = make_shared<CWebData>();
+		pWebData->SetParsed(false);
+
+		EXPECT_FALSE(finnhubWebProduct.CheckInaccessible(pWebData));
+	}
+
+	TEST_F(CVirtualWebProductTest, TestCheckInaccessible2) {
+		const CWebDataPtr pWebData = make_shared<CWebData>();
+		const CString strData = _T("{\"error1\": \"You don't have access to this resourc.\"}");
+		pWebData->Test_SetBuffer_(strData);
+		pWebData->CreateJson();
+		pWebData->SetJSonContentType(true);
+		pWebData->SetParsed(true);
+
+		EXPECT_FALSE(finnhubWebProduct.CheckInaccessible(pWebData)) << "非拒绝提供信息";
+	}
+
+	TEST_F(CVirtualWebProductTest, TestCheckInaccessible3) {
+		const CWebDataPtr pWebData = make_shared<CWebData>();
+		const CString strData = _T("{\"error\": \"You don't have access to this resource.\"}");
+		pWebData->Test_SetBuffer_(strData);
+		pWebData->CreateJson();
+		pWebData->SetJSonContentType(true);
+		pWebData->SetParsed(true);
+		finnhubWebProduct.SetInquiringExchange(_T("US"));
+
+		EXPECT_FALSE(finnhubWebProduct.CheckInaccessible(pWebData)) << "US交易所";
+		EXPECT_TRUE(finnhubWebProduct.IsNoRightToAccess());
+	}
+
+	TEST_F(CVirtualWebProductTest, TestCheckInaccessible4) {
+		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsInaccessible(STOCK_PRICE_CANDLES_, _T("SZ"))) << "未加入SZ交易所";
+
+		const CWebDataPtr pWebData = make_shared<CWebData>();
+		const CString strData = _T("{\"error\": \"You don't have access to this resource.\"}");
+		pWebData->Test_SetBuffer_(strData);
+		pWebData->CreateJson();
+		pWebData->SetJSonContentType(true);
+		pWebData->SetParsed(true);
+		finnhubWebProduct.SetInquiringExchange(_T("SZ"));
+		finnhubWebProduct.SetProductType(STOCK_PRICE_CANDLES_);
+
+		EXPECT_TRUE(finnhubWebProduct.CheckInaccessible(pWebData)) << "将SZ交易所列入禁入名单";
+		EXPECT_TRUE(finnhubWebProduct.IsNoRightToAccess());
+		EXPECT_TRUE(gl_finnhubInaccessibleExchange.IsInaccessible(STOCK_PRICE_CANDLES_, _T("SZ"))) << "已加入SZ交易所";
+
+		// 恢复原状
+		gl_finnhubInaccessibleExchange.GetExchange(STOCK_PRICE_CANDLES_)->DeleteExchange(_T("SZ"));
+	}
+
+	TEST_F(CVirtualWebProductTest, TestCheckInaccessible5) {
+		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsInaccessible(STOCK_PRICE_CANDLES_, _T("US"))) << "未加入US交易所";
+
+		const CWebDataPtr pWebData = make_shared<CWebData>();
+		const CString strData = _T("{\"error\": \"You don't have access to this resource.\"}");
+		pWebData->Test_SetBuffer_(strData);
+		pWebData->CreateJson();
+		pWebData->SetJSonContentType(true);
+		pWebData->SetParsed(true);
+		finnhubWebProduct.SetInquiringExchange(_T("US"));
+		finnhubWebProduct.SetProductType(STOCK_PRICE_CANDLES_);
+
+		for (int i = 0; i < 10; i++) {
+			finnhubWebProduct.CheckInaccessible(pWebData);
+		}
+
+		EXPECT_TRUE(finnhubWebProduct.CheckInaccessible(pWebData)) << "连续10次后，将US交易所列入禁入名单";
+		EXPECT_TRUE(finnhubWebProduct.IsNoRightToAccess());
+		EXPECT_TRUE(gl_finnhubInaccessibleExchange.IsInaccessible(STOCK_PRICE_CANDLES_, _T("US"))) << "已加入US交易所";
+
+		// 恢复原状
+		gl_finnhubInaccessibleExchange.GetExchange(STOCK_PRICE_CANDLES_)->DeleteExchange(_T("US"));
 	}
 }

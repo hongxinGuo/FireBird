@@ -26,19 +26,34 @@ bool CVirtualWebProduct::CheckVoidJson(const CWebDataPtr& pWebData) {
 	else return false;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 检查网站是否允许申请该类数据。
+// 如果是美国交易所不允许的话，需要连续10次不允许后才将美国交易所添加进禁入名单。
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualWebProduct::CheckInaccessible(const CWebDataPtr& pWebData) {
-	bool bInaccessible = false;
-	if (pWebData->IsParsed()) {
-		CheckNoRightToAccess(pWebData);
-		bInaccessible = IsNoRightToAccess();
-		if (bInaccessible) {
-			CheckAndAddInaccessibleExchange();
+	static int s_iCounter = 0; // 当交易所为美国时，使用此计数器来判断是否将美国交易所添加进限制名单
+
+	if (!pWebData->IsParsed()) return false;
+
+	CheckNoRightToAccess(pWebData);
+	if (!IsNoRightToAccess()) {
+		s_iCounter = 0;
+		return false;
+	}
+	if (IsUSMarket()) {
+		if (s_iCounter++ < 10) { // 当美国市场连续出现10次无权访问数据时，则不再查询
+			return false;
 		}
 	}
-	return bInaccessible;
+	AddInaccessibleExchange();
+	s_iCounter = 0;
+
+	return true;
 }
 
 bool CVirtualWebProduct::IsUSMarket() const {
 	if (m_strInquiringExchange.Compare(_T("US")) == 0) return true;
-	else return false;
+	return false;
 }
