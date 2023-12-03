@@ -18,9 +18,9 @@ CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 }
 
 CString CProductFinnhubStockDayLine::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const auto pStock = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetStock(m_lIndex);
 	const auto strParam = pStock->GetFinnhubDayLineInquiryParam(GetUTCTime());
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
@@ -29,16 +29,16 @@ CString CProductFinnhubStockDayLine::CreateMessage() {
 }
 
 bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const auto pStock = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetStock(m_lIndex);
 	const auto pvDayLine = ParseFinnhubStockCandle(pWebData);
 	pStock->SetDayLineNeedUpdate(false);
 	for (const auto& pDayLine : *pvDayLine) {
 		pDayLine->SetExchange(pStock->GetExchangeCode());
 		pDayLine->SetStockSymbol(pStock->GetSymbol());
 		pDayLine->SetDisplaySymbol(pStock->GetTicker());
-		const auto lTemp = ConvertToDate(pDayLine->m_time, m_pMarket->GetMarketTimeZone());
+		const auto lTemp = ConvertToDate(pDayLine->m_time, GetMarket()->GetMarketTimeZone());
 		pDayLine->SetDate(lTemp);
 	}
 	if (!pvDayLine->empty()) {
@@ -49,7 +49,7 @@ bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pStock->SetUpdateProfileDB(true);
 			const long lSize = pStock->GetDayLineSize() - 1;
 			const auto pDayLine = pStock->GetDayLine(lSize);
-			if (!IsEarlyThen(pDayLine->GetMarketDate(), m_pMarket->GetMarketDate(), 100)) { pStock->SetIPOStatus(_STOCK_IPOED_); }
+			if (!IsEarlyThen(pDayLine->GetMarketDate(), GetMarket()->GetMarketDate(), 100)) { pStock->SetIPOStatus(_STOCK_IPOED_); }
 			return true;
 		}
 	}

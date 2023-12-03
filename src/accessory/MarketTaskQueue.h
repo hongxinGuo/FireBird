@@ -1,8 +1,9 @@
 #pragma once
 
-using std::priority_queue;
-
 #include"MarketTask.h"
+
+using std::priority_queue;
+using std::vector;
 
 class CMarketTaskQueue {
 public:

@@ -9,7 +9,8 @@
 #include"ClassDeclaration.h"
 #include"WebData.h"
 
-#include<memory>
+//#include "VirtualMarket.h"
+
 using std::make_shared;
 
 enum {
@@ -45,8 +46,17 @@ public:
 	long GetIndex() const noexcept { return m_lIndex; }
 	void SetIndex(const long lIndex) noexcept { m_lIndex = lIndex; }
 
-	[[nodiscard]] CVirtualMarket* GetMarket() const noexcept { return m_pMarket; }
-	void SetMarket(const CVirtualMarketPtr& pMarket) noexcept { m_pMarket = pMarket.get(); }
+	void SetMarket(const CVirtualMarketPtr& pMarket) noexcept {
+		m_pMarket = pMarket;
+	}
+
+	[[nodiscard]] shared_ptr<CVirtualMarket> GetMarket() const noexcept {
+		if (CVirtualMarketPtr p = m_pMarket.lock()) {
+			return p;
+		}
+		//exit(1);  // todo 当返回为nullptr时，此时系统主线程已经退出了，工作线程也要立即退出
+		return nullptr;
+	}
 
 	void SetInquiringExchange(const CString& exchange) noexcept { m_strInquiringExchange = exchange; }
 	CString GetInquiringExchange() const noexcept { return m_strInquiringExchange; }
@@ -56,7 +66,7 @@ public:
 	int GetProductType() const noexcept { return m_iProductType; }
 
 protected:
-	CVirtualMarket* m_pMarket; // Product被用于工作线程中。当系统退出时，由于无法保证工作线程先结束，故而此处使用智能指针的话，会导致内存泄露。
+	CVirtualMarketWeakPtr m_pMarket;// Product被用于工作线程中。当系统退出时，由于无法保证工作线程先结束，故而此处使用Weak智能指针以防止内存泄露。
 	CString m_strClassName;
 	CString m_strInquiryFunction;
 	CString m_strInquiry;

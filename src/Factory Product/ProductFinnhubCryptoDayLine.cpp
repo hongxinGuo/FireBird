@@ -18,8 +18,8 @@ CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 }
 
 CString CProductFinnhubCryptoDayLine::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
-	const auto pCryptoSymbol = dynamic_cast<CWorldMarket*>(m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
+	const auto pCryptoSymbol = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetFinnhubCryptoSymbol(m_lIndex);
 
 	m_strInquiringExchange = pCryptoSymbol->GetExchangeCode();
 	m_strInquiry = m_strInquiryFunction + pCryptoSymbol->GetFinnhubDayLineInquiryParam(GetUTCTime());
@@ -27,17 +27,17 @@ CString CProductFinnhubCryptoDayLine::CreateMessage() {
 }
 
 bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 	bool fStatus = true;
 
-	const auto pCryptoSymbol = dynamic_cast<CWorldMarket*>(m_pMarket)->GetFinnhubCryptoSymbol(m_lIndex);
+	const auto pCryptoSymbol = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetFinnhubCryptoSymbol(m_lIndex);
 	const auto pvDayLine = ParseFinnhubCryptoCandle(pWebData);
 	pCryptoSymbol->SetDayLineNeedUpdate(false);
 	if (!pvDayLine->empty()) {
 		for (const auto& pDayLine : *pvDayLine) {
 			pDayLine->SetExchange(pCryptoSymbol->GetExchangeCode());
 			pDayLine->SetStockSymbol(pCryptoSymbol->GetSymbol());
-			const long lTemp = ConvertToDate(pDayLine->m_time, dynamic_cast<CWorldMarket*>(m_pMarket)->GetMarketTimeZone());
+			const long lTemp = ConvertToDate(pDayLine->m_time, dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetMarketTimeZone());
 			pDayLine->SetDate(lTemp);
 		}
 		pCryptoSymbol->UpdateDayLine(*pvDayLine);

@@ -14,10 +14,10 @@ CProductFinnhubCompanyProfile::CProductFinnhubCompanyProfile() {
 }
 
 CString CProductFinnhubCompanyProfile::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	CString strMessage;
-	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const auto pStock = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
 	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol();
@@ -25,12 +25,12 @@ CString CProductFinnhubCompanyProfile::CreateMessage() {
 }
 
 bool CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
-	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
+	const auto pStock = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetStock(m_lIndex);
 	pStock->SetUpdateCompanyProfile(false);
 	const bool fSucceed = ParseFinnhubStockProfile(pWebData, pStock);
 	if (fSucceed || pWebData->IsVoidJson() || pWebData->IsNoRightToAccess()) {
-		pStock->SetProfileUpdateDate(m_pMarket->GetMarketDate());
+		pStock->SetProfileUpdateDate(GetMarket()->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
 		return true;
 	}

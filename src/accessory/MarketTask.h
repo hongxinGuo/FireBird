@@ -1,6 +1,8 @@
 // 市场的各任务
 #pragma once
 
+using std::map;
+
 enum {
 	// 所有市场共用
 	CREATE_TASK__ = 1, // 生成其他的初始任务

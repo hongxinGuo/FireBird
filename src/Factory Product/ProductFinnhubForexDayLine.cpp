@@ -18,9 +18,9 @@ CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 }
 
 CString CProductFinnhubForexDayLine::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pForexSymbol = dynamic_cast<CWorldMarket*>(m_pMarket)->GetForexSymbol(m_lIndex);
+	const auto pForexSymbol = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetForexSymbol(m_lIndex);
 
 	m_strInquiringExchange = pForexSymbol->GetExchangeCode();
 	m_strInquiry = m_strInquiryFunction + pForexSymbol->GetFinnhubDayLineInquiryParam(GetUTCTime());
@@ -28,16 +28,16 @@ CString CProductFinnhubForexDayLine::CreateMessage() {
 }
 
 bool CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pForexSymbol = dynamic_cast<CWorldMarket*>(m_pMarket)->GetForexSymbol(m_lIndex);
+	const auto pForexSymbol = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetForexSymbol(m_lIndex);
 	const CDayLineVectorPtr pvDayLine = ParseFinnhubForexCandle(pWebData);
 	pForexSymbol->SetDayLineNeedUpdate(false);
 	if (!pvDayLine->empty()) {
 		for (const auto& pDayLine : *pvDayLine) {
 			pDayLine->SetExchange(pForexSymbol->GetExchangeCode());
 			pDayLine->SetStockSymbol(pForexSymbol->GetSymbol());
-			const long lTemp = ConvertToDate(pDayLine->m_time, m_pMarket->GetMarketTimeZone());
+			const long lTemp = ConvertToDate(pDayLine->m_time, GetMarket()->GetMarketTimeZone());
 			pDayLine->SetDate(lTemp);
 		}
 		pForexSymbol->SetIPOStatus(_STOCK_IPOED_);

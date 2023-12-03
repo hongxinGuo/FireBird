@@ -5,6 +5,9 @@
 
 #include"MarketTaskQueue.h"
 
+using std::vector;
+using std::weak_ptr;
+
 class CVirtualMarket {
 public:
 	CVirtualMarket();
@@ -129,5 +132,6 @@ private:
 	bool m_fResetMarket{true}; // 重启系统标识
 };
 
+using CVirtualMarketWeakPtr = weak_ptr<CVirtualMarket>;
 using CVirtualMarketPtr = shared_ptr<CVirtualMarket>;
 extern vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的SchedulingTask

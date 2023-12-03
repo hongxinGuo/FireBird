@@ -49,7 +49,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyNews(true);
 		companyNews.SetMarket(gl_pWorldMarket);
 		companyNews.SetIndex(1);
-		const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(companyNews.GetMarket())->GetStock(1);
+		const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldMarket>(companyNews.GetMarket())->GetStock(1);
 		CString strMessage = companyNews.GetInquiryFunction() + pStock->GetSymbol();
 		const int iUpdateDate = pStock->GetCompanyNewsUpdateDate();
 		XferDateToYearMonthDay(iUpdateDate, year, month, day);

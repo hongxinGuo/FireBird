@@ -12,7 +12,7 @@ CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 }
 
 CString CProductFinnhubCryptoSymbol::CreateMessage() {
-	const CString strParam = dynamic_cast<CWorldMarket*>(m_pMarket)->GetCryptoExchange(m_lIndex);
+	const CString strParam = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetCryptoExchange(m_lIndex);
 
 	m_strInquiringExchange = strParam;
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -20,13 +20,13 @@ CString CProductFinnhubCryptoSymbol::CreateMessage() {
 }
 
 bool CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvCryptoSymbol = ParseFinnhubCryptoSymbol(pWebData);
 	for (const auto& pSymbol : *pvCryptoSymbol) {
-		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsFinnhubCryptoSymbol(pSymbol->GetSymbol())) {
-			pSymbol->SetExchangeCode(dynamic_cast<CWorldMarket*>(m_pMarket)->GetCryptoExchange(m_lIndex));
-			dynamic_cast<CWorldMarket*>(m_pMarket)->AddFinnhubCryptoSymbol(pSymbol);
+		if (!dynamic_pointer_cast<CWorldMarket>(GetMarket())->IsFinnhubCryptoSymbol(pSymbol->GetSymbol())) {
+			pSymbol->SetExchangeCode(dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetCryptoExchange(m_lIndex));
+			dynamic_pointer_cast<CWorldMarket>(GetMarket())->AddFinnhubCryptoSymbol(pSymbol);
 		}
 	}
 

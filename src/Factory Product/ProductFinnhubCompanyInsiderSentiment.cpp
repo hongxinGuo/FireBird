@@ -18,10 +18,10 @@ CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment()
 }
 
 CString CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
-	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
+	const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetStock(m_lIndex);
 
-	const CString strCurrentDate = ConvertDateToTimeStamp(m_pMarket->GetMarketDate());
+	const CString strCurrentDate = ConvertDateToTimeStamp(GetMarket()->GetMarketDate());
 	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate;
 	m_strInquiringExchange = pStock->GetExchangeCode();
 
@@ -29,11 +29,11 @@ CString CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 }
 
 bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const CWorldStockPtr pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetStock(m_lIndex);
 	const CInsiderSentimentVectorPtr pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
-	pStock->SetInsiderSentimentUpdateDate(m_pMarket->GetMarketDate());
+	pStock->SetInsiderSentimentUpdateDate(GetMarket()->GetMarketDate());
 	pStock->SetUpdateInsiderSentiment(false);
 	pStock->SetUpdateProfileDB(true);
 	if (!pvInsiderSentiment->empty()) {

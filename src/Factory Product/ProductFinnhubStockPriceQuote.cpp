@@ -17,9 +17,9 @@ CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 }
 
 CString CProductFinnhubStockPriceQuote::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const auto pStock = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetStock(m_lIndex);
 	const auto strParam = pStock->GetSymbol();
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
@@ -28,9 +28,9 @@ CString CProductFinnhubStockPriceQuote::CreateMessage() {
 }
 
 bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pStock = dynamic_cast<CWorldMarket*>(m_pMarket)->GetStock(m_lIndex);
+	const auto pStock = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetStock(m_lIndex);
 	if (ParseFinnhubStockQuote(pWebData, pStock)) {
 		if ((pStock->GetTransactionTime() + 3600 * 12 - GetUTCTime()) > 0) {
 			// 交易时间不早于12小时，则设置此股票为活跃股票

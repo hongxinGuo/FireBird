@@ -23,12 +23,12 @@ CString CProductFinnhubForexExchange::CreateMessage() {
 }
 
 bool CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvForexExchange = ParseFinnhubForexExchange(pWebData);
 	for (int i = 0; i < pvForexExchange->size(); i++) {
-		if (!dynamic_cast<CWorldMarket*>(m_pMarket)->IsForexExchange(pvForexExchange->at(i))) {
-			dynamic_cast<CWorldMarket*>(m_pMarket)->AddForexExchange(pvForexExchange->at(i));
+		if (!dynamic_pointer_cast<CWorldMarket>(GetMarket())->IsForexExchange(pvForexExchange->at(i))) {
+			dynamic_pointer_cast<CWorldMarket>(GetMarket())->AddForexExchange(pvForexExchange->at(i));
 		}
 	}
 

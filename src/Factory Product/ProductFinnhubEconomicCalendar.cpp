@@ -31,10 +31,10 @@ CString CProductFinnhubEconomicCalendar::CreateMessage() {
 }
 
 bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*m_pMarket).name(), _T("class CWorldMarket")) == 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
-	dynamic_cast<CWorldMarket*>(m_pMarket)->UpdateEconomicCalendar(*pvEconomicCalendar);
+	dynamic_pointer_cast<CWorldMarket>(GetMarket())->UpdateEconomicCalendar(*pvEconomicCalendar);
 
 	return true;
 }

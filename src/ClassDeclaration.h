@@ -11,6 +11,7 @@ using std::weak_ptr;
 
 class CVirtualMarket;
 typedef shared_ptr<CVirtualMarket> CVirtualMarketPtr;
+typedef weak_ptr<CVirtualMarket> CVirtualMarketWeakPtr;
 
 // chinaMarket
 class CChinaStock;
