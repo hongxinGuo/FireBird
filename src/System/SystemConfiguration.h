@@ -324,7 +324,7 @@ protected:
 	int m_iInsideSentimentUpdateRate; // 默认45天更新一次
 	int m_iStockBasicFinancialUpdateRate; // 默认45天更新一次
 	int m_iStockPeerUpdateRate; // 默认90天更新一次
-	int m_iEPSSurpriseUpdateRate; // 默认30天更新一次
+	int m_iEPSSurpriseUpdateRate; // 默认90天更新一次
 
 	// 测试系统
 	CString m_strBenchmarkTestFileDirectory; // 性能测试文件所在的目录

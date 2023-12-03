@@ -94,29 +94,29 @@ public:
 	void SetUpdateEPSSurprise(const bool fFlag) noexcept { m_fUpdateEPSSurprise = fFlag; }
 
 protected:
-	long m_lCurrentUpdateDayLinePos; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
-	long m_lCurrentUpdateEPSSurprisePos; // 此变量无需每日更新
+	long m_lCurrentUpdateDayLinePos{0}; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
+	long m_lCurrentUpdateEPSSurprisePos{0}; // 此变量无需每日更新
 
-	bool m_fUpdateSymbol; // 每日更新公司代码库
-	bool m_fUpdateMarketStatus; // 每日查询市场状态
-	bool m_fUpdateMarketHoliday; // 每日查询市场假日
-	bool m_fUpdateForexExchange; // 每日更新Forex交易所
-	bool m_fUpdateForexSymbol; // 每日更新Forex交易所代码
-	bool m_fUpdateCryptoExchange; // 每日更新Crypto交易所
-	bool m_fUpdateCryptoSymbol; // 每日更新Crypto交易所代码
-	bool m_fUpdateCountryList;
-	bool m_fUpdateStockProfile; // 每日更新公司简介
-	bool m_fUpdateCompanyNews; // 每日更新公司新闻
-	bool m_fUpdateCompanyPriceMetrics;
-	bool m_fUpdateStockBasicFinancial; // 每日更新公司日线
-	bool m_fUpdateStockDayLine; // 每日更新公司日线数据
-	bool m_fUpdateForexDayLine; // 每日更新Forex日线数据
-	bool m_fUpdateCryptoDayLine; // 每日更新Crypto日线数据
-	bool m_fUpdatePeer; // 每90天更新Peers数据
-	bool m_fUpdateInsiderTransaction; // 每30天更新InsiderTransaction数据
-	bool m_fUpdateInsiderSentiment; // 每30天更新InsiderSentiment数据
-	bool m_fUpdateEconomicCalendar; // 每日更新经济日历数据
-	bool m_fUpdateEPSSurprise;
+	bool m_fUpdateSymbol{true}; // 每日更新公司代码库
+	bool m_fUpdateMarketStatus{true}; // 每日查询市场状态
+	bool m_fUpdateMarketHoliday{true}; // 每日查询市场假日
+	bool m_fUpdateForexExchange{true}; // 每日更新Forex交易所
+	bool m_fUpdateForexSymbol{true}; // 每日更新Forex交易所代码
+	bool m_fUpdateCryptoExchange{true}; // 每日更新Crypto交易所
+	bool m_fUpdateCryptoSymbol{true}; // 每日更新Crypto交易所代码
+	bool m_fUpdateCountryList{true};
+	bool m_fUpdateStockProfile{true}; // 每日更新公司简介
+	bool m_fUpdateCompanyNews{true}; // 每日更新公司新闻
+	bool m_fUpdateCompanyPriceMetrics{true};
+	bool m_fUpdateStockBasicFinancial{true}; // 每日更新公司日线
+	bool m_fUpdateStockDayLine{true}; // 每日更新公司日线数据
+	bool m_fUpdateForexDayLine{true}; // 每日更新Forex日线数据
+	bool m_fUpdateCryptoDayLine{true}; // 每日更新Crypto日线数据
+	bool m_fUpdatePeer{true}; // 每90天更新Peers数据
+	bool m_fUpdateInsiderTransaction{true}; // 每30天更新InsiderTransaction数据
+	bool m_fUpdateInsiderSentiment{true}; // 每30天更新InsiderSentiment数据
+	bool m_fUpdateEconomicCalendar{true}; // 每日更新经济日历数据
+	bool m_fUpdateEPSSurprise{true};
 
 	CFinnhubFactory m_FinnhubFactory;
 

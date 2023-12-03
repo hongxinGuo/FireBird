@@ -39,6 +39,7 @@ bool CFinnhubDataSource::Reset() {
 	m_fUpdateCountryList = true;
 	m_fUpdateSymbol = true; // 每日需要更新代码
 	m_fUpdateMarketStatus = true;
+	m_fUpdateMarketHoliday = true;
 	m_fUpdateStockProfile = true;
 	m_fUpdateCompanyNews = true;
 	m_fUpdateCompanyPriceMetrics = true;
@@ -55,12 +56,7 @@ bool CFinnhubDataSource::Reset() {
 	m_fUpdatePeer = true;
 	m_fUpdateInsiderTransaction = true;
 	m_fUpdateInsiderSentiment = true;
-
-	if (GetDayOfWeek() == 6) {
-		// 每周的星期六更新一次EPSSurprise
-		m_lCurrentUpdateEPSSurprisePos = 0;
-		SetUpdateEPSSurprise(true);
-	}
+	m_fUpdateEPSSurprise = true;
 
 	m_lCurrentRTDataQuotePos = 0;
 	m_lCurrentForexExchangePos = 0;
@@ -410,12 +406,13 @@ bool CFinnhubDataSource::InquireStockDayLine() {
 	if (!IsInquiring() && IsUpdateStockDayLine()) {
 		CWorldStockPtr pStock;
 		bool fFound = false;
+		long lCurrentUpdateDayLinePos;
 		if (!m_fInquiringFinnhubStockDayLine) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock day line..."));
 			m_fInquiringFinnhubStockDayLine = true;
 		}
-		for (m_lCurrentUpdateDayLinePos = 0; m_lCurrentUpdateDayLinePos < lStockSetSize; m_lCurrentUpdateDayLinePos++) {
-			pStock = gl_pWorldMarket->GetStock(m_lCurrentUpdateDayLinePos);
+		for (lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
+			pStock = gl_pWorldMarket->GetStock(lCurrentUpdateDayLinePos);
 			if (pStock->IsDayLineNeedUpdate()) {
 				// 目前免费账户只能下载美国市场的股票日线。
 				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
@@ -427,7 +424,7 @@ bool CFinnhubDataSource::InquireStockDayLine() {
 		if (fFound) {
 			fHaveInquiry = true;
 			const auto product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket, iInquiryType);
-			product->SetIndex(m_lCurrentUpdateDayLinePos);
+			product->SetIndex(lCurrentUpdateDayLinePos);
 			StoreInquiry(product);
 			SetInquiring(true);
 			gl_pWorldMarket->SetCurrentFunction(_T("日线:") + pStock->GetSymbol());
@@ -437,7 +434,7 @@ bool CFinnhubDataSource::InquireStockDayLine() {
 			m_fInquiringFinnhubStockDayLine = false;
 			fHaveInquiry = false;
 			SetUpdateStockDayLine(false);
-			m_lCurrentUpdateDayLinePos = 0; // 重置此索引。所有的日线数据更新一次所需时间要超过24小时，故保持更新即可。
+			//lCurrentUpdateDayLinePos = 0; // 重置此索引。所有的日线数据更新一次所需时间要超过24小时，故保持更新即可。
 			TRACE("Finnhub日线更新完毕，从新开始更新\n");
 			const CString str = "US Market日线历史数据更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
@@ -614,6 +611,7 @@ bool CFinnhubDataSource::InquireEPSSurprise() {
 	if (!IsInquiring() && IsUpdateEPSSurprise()) {
 		CWorldStockPtr pStock;
 		bool fFound = false;
+		long;
 		if (!m_fInquiringFinnhubStockEPSSurprise) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock EPS surprise..."));
 			m_fInquiringFinnhubStockEPSSurprise = true;
@@ -639,6 +637,7 @@ bool CFinnhubDataSource::InquireEPSSurprise() {
 		}
 		else {
 			m_fInquiringFinnhubStockEPSSurprise = false;
+			m_lCurrentUpdateEPSSurprisePos = 0;
 			fHaveInquiry = false;
 			SetUpdateEPSSurprise(false);
 			TRACE("Finnhub EPS Surprise更新完毕\n");

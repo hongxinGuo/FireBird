@@ -138,7 +138,7 @@ CSystemConfiguration::CSystemConfiguration() {
 	m_iInsideTransactionUpdateRate = 30; // 内部交易更新频率，单位为天。默认为30天。
 	m_iInsideSentimentUpdateRate = 30; // 内部交易情绪更新频率，单位为天。默认为30天。
 	m_iStockPeerUpdateRate = 90; // 股票对手更新频率，单位为天。默认为90天。
-	m_iEPSSurpriseUpdateRate = 30;
+	m_iEPSSurpriseUpdateRate = 90;
 
 	// 测试系统选项
 	m_strBenchmarkTestFileDirectory = _T("C:\\FireBird\\Test Data\\Benchmark\\"); // Benchmark默认目录

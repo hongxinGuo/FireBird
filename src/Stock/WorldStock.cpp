@@ -721,13 +721,10 @@ bool CWorldStock::CheckEPSSurpriseStatus(long lCurrentDate) {
 	if (IsNullStock() || IsDelisted()) {
 		m_fEPSSurpriseUpdated = true;
 	}
-	else if (lLastEPSSurpriseUpdateDate == 19700101) { // 没有数据？
+	else if ((lLastEPSSurpriseUpdateDate == 19700101) || (lLastEPSSurpriseUpdateDate == 19800101)) { // 没有数据？
 		m_fEPSSurpriseUpdated = true;
 	}
-	else if (IsEarlyThen(lLastEPSSurpriseUpdateDate, lCurrentDate, 225) && (lLastEPSSurpriseUpdateDate != 19800101)) {// 有早于225天的数据？即已经不更新了
-		m_fEPSSurpriseUpdated = true;
-	}
-	else if (!IsEarlyThen(lLastEPSSurpriseUpdateDate, lCurrentDate, gl_systemConfiguration.GetEPSSurpriseUpdateRate())) {	// 有不早于30天的数据？
+	else if (!IsEarlyThen(lLastEPSSurpriseUpdateDate, lCurrentDate, gl_systemConfiguration.GetEPSSurpriseUpdateRate())) {	// 有不早于90天的数据？
 		m_fEPSSurpriseUpdated = true;
 	}
 	else {
