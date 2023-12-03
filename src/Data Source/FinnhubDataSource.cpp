@@ -66,6 +66,8 @@ bool CFinnhubDataSource::Reset() {
 	m_lCurrentForexExchangePos = 0;
 	m_lCurrentCryptoExchangePos = 0;
 
+	m_fFinnhubDataInquiryFinished = false;
+
 	return true;
 }
 
@@ -120,10 +122,16 @@ void CFinnhubDataSource::InquireFinnhub(const long lCurrentTime) {
 			InquireCryptoDayLine(); // Crypto dayLine20231127后只限于付费用户使用
 			InquireStockDayLine(); // Stock dayLine20231127后只限于付费用户使用
 			InquireForexDayLine(); // Forex dayLine目前只限于付费用户使用
-			InquireEPSSurprise(); // 这个现在没什么用，暂时停止更新。
+			InquireEPSSurprise(); // 这个现在没什么用，暂时停止更新。todo
 			if (IsUpdateStockDayLine()) {
 				//InquireRTQuote();
 			}
+		}
+	}
+	if (!IsInquiring()) {
+		if (!m_fFinnhubDataInquiryFinished) {
+			gl_systemMessage.PushInformationMessage(_T("finnhub data inquiry finished"));
+			m_fFinnhubDataInquiryFinished = true;
 		}
 	}
 }
@@ -604,9 +612,14 @@ bool CFinnhubDataSource::InquireEPSSurprise() {
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && IsUpdateEPSSurprise()) {
+		CWorldStockPtr pStock;
 		bool fFound = false;
+		if (!m_fInquiringFinnhubStockEPSSurprise) {
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock EPS surprise..."));
+			m_fInquiringFinnhubStockEPSSurprise = true;
+		}
 		for (m_lCurrentUpdateEPSSurprisePos = 0; m_lCurrentUpdateEPSSurprisePos < lStockSetSize; m_lCurrentUpdateEPSSurprisePos++) {
-			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(m_lCurrentUpdateEPSSurprisePos);
+			pStock = gl_pWorldMarket->GetStock(m_lCurrentUpdateEPSSurprisePos);
 			if (!pStock->IsEPSSurpriseUpdated()) {
 				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
@@ -621,9 +634,12 @@ bool CFinnhubDataSource::InquireEPSSurprise() {
 			StoreInquiry(product);
 			SetInquiring(true);
 			gl_pWorldMarket->GetStock(m_lCurrentUpdateEPSSurprisePos)->SetEPSSurpriseUpdated(true);
+			gl_pWorldMarket->SetCurrentFunction(_T("EPS surprise:") + pStock->GetSymbol());
 			TRACE("申请%s EPS Surprise数据\n", gl_pWorldMarket->GetStock(m_lCurrentUpdateEPSSurprisePos)->GetSymbol().GetBuffer());
 		}
 		else {
+			m_fInquiringFinnhubStockEPSSurprise = false;
+			fHaveInquiry = false;
 			SetUpdateEPSSurprise(false);
 			TRACE("Finnhub EPS Surprise更新完毕\n");
 			const CString str = "Finnhub EPS Surprise Updated";

@@ -121,6 +121,7 @@ protected:
 	CFinnhubFactory m_FinnhubFactory;
 
 private:
+	bool m_fFinnhubDataInquiryFinished{false};
 	bool m_fInquiringFinnhubStockSymbol = {false};
 	bool m_fInquiringFinnhubMarketStatus = {false};
 	bool m_fInquiringFinnhubMarketHoliday = {false};

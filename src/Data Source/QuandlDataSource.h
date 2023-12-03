@@ -19,6 +19,8 @@ public:
 
 protected:
 	CQuandlFactory m_QuandlFactory;
+
+	bool m_fQuandlDataInquiryFinished{false};
 };
 
 using CQuandlDataSourcePtr = shared_ptr<CQuandlDataSource>;

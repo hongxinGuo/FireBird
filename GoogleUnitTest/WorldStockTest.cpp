@@ -707,13 +707,13 @@ namespace FireBirdTest {
 
 		stock.SetEPSSurpriseUpdated(false);
 		stock.SetIPOStatus(_STOCK_IPOED_);
-		stock.SetLastEPSSurpriseUpdateDate(20190819); // 不早于135天
+		stock.SetLastEPSSurpriseUpdateDate(20191202); // 不早于135天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
 
 		stock.SetEPSSurpriseUpdated(false);
 		stock.SetIPOStatus(_STOCK_IPOED_);
-		stock.SetLastEPSSurpriseUpdateDate(20190818); // 早于135天， 不早于225天
+		stock.SetLastEPSSurpriseUpdateDate(20191201); // 早于135天， 不早于225天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_FALSE(stock.IsEPSSurpriseUpdated());
 

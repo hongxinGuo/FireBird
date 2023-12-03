@@ -19,6 +19,7 @@ CQuandlDataSource::CQuandlDataSource() {
 }
 
 bool CQuandlDataSource::Reset() {
+	m_fQuandlDataInquiryFinished = false;
 	return true;
 }
 

@@ -138,6 +138,7 @@ CSystemConfiguration::CSystemConfiguration() {
 	m_iInsideTransactionUpdateRate = 30; // 内部交易更新频率，单位为天。默认为30天。
 	m_iInsideSentimentUpdateRate = 30; // 内部交易情绪更新频率，单位为天。默认为30天。
 	m_iStockPeerUpdateRate = 90; // 股票对手更新频率，单位为天。默认为90天。
+	m_iEPSSurpriseUpdateRate = 30;
 
 	// 测试系统选项
 	m_strBenchmarkTestFileDirectory = _T("C:\\FireBird\\Test Data\\Benchmark\\"); // Benchmark默认目录
@@ -396,6 +397,12 @@ void CSystemConfiguration::Update() {
 		catch (json::out_of_range&) {
 			m_fUpdate = true;
 		}
+		try {
+			m_iEPSSurpriseUpdateRate = m_systemConfiguration.at("FinancialDataUpdateRate").at("EPSSurprise");
+		}
+		catch (json::out_of_range&) {
+			m_fUpdate = true;
+		}
 
 		// 测试系统选项
 		try {
@@ -474,6 +481,7 @@ void CSystemConfiguration::UpdateJson() {
 	m_systemConfiguration["FinancialDataUpdateRate"]["InsideTransaction"] = m_iInsideTransactionUpdateRate;
 	m_systemConfiguration["FinancialDataUpdateRate"]["InsideSentiment"] = m_iInsideSentimentUpdateRate;
 	m_systemConfiguration["FinancialDataUpdateRate"]["StockPeer"] = m_iStockPeerUpdateRate;
+	m_systemConfiguration["FinancialDataUpdateRate"]["EPSSurprise"] = m_iEPSSurpriseUpdateRate;
 
 	// 测试系统选项
 	m_systemConfiguration["TestConfiguration"]["BenchmarkTestFileDirectory"] = m_strBenchmarkTestFileDirectory;

@@ -2,14 +2,12 @@
 
 #include"GeneralCheck.h"
 
-#include"FinnhubInquiryType.h"
 #include"MockFinnhubDataSource.h"
 
 #include"ProductFinnhubStockSymbol.h"
 #include"ProductFinnhubStockEstimatesEPSSurprise.h"
-
 #include"ProductTiingoStockSymbol.h"
-#include"ProductDummy.h"
+
 #include "TimeConvert.h"
 
 using namespace testing;
@@ -683,6 +681,8 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsEPSSurpriseUpdated());
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsEPSSurpriseUpdated());
 		gl_pWorldMarket->GetStock(1)->SetEPSSurpriseUpdated(true);
+		const CString str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str, _T("Inquiring finnhub stock EPS surprise..."));
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireEPSSurprise());
@@ -696,8 +696,8 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_FALSE(m_FinnhubDataSource.InquireEPSSurprise()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateEPSSurprise()) << "股票都查询完了";
-		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub EPS Surprise Updated"));
+		const CString str2 = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str2, _T("Finnhub EPS Surprise Updated"));
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryForexExchange) {
