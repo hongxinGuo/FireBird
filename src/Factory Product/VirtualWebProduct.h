@@ -46,9 +46,7 @@ public:
 	long GetIndex() const noexcept { return m_lIndex; }
 	void SetIndex(const long lIndex) noexcept { m_lIndex = lIndex; }
 
-	void SetMarket(const CVirtualMarketPtr& pMarket) noexcept {
-		m_pMarket = pMarket;
-	}
+	void SetMarket(const CVirtualMarketPtr& pMarket) noexcept { m_pMarket = pMarket; }
 
 	[[nodiscard]] shared_ptr<CVirtualMarket> GetMarket() const noexcept {
 		if (CVirtualMarketPtr p = m_pMarket.lock()) {

@@ -19,7 +19,7 @@ CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment()
 
 CString CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-	const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetStock(m_lIndex);
+	const CWorldStockPtr pStock = GetMarket()->GetStock(m_lIndex);
 
 	const CString strCurrentDate = ConvertDateToTimeStamp(GetMarket()->GetMarketDate());
 	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate;
@@ -31,7 +31,7 @@ CString CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const CWorldStockPtr pStock = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetStock(m_lIndex);
+	const CWorldStockPtr pStock = GetMarket()->GetStock(m_lIndex);
 	const CInsiderSentimentVectorPtr pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
 	pStock->SetInsiderSentimentUpdateDate(GetMarket()->GetMarketDate());
 	pStock->SetUpdateInsiderSentiment(false);

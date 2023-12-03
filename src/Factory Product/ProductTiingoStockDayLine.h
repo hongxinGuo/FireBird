@@ -1,9 +1,9 @@
 #pragma once
 
-#include"VirtualWebProduct.h"
+#include"ProductTiingo.h"
 #include"DayLine.h"
 
-class CProductTiingoStockDayLine final : public CVirtualWebProduct {
+class CProductTiingoStockDayLine final : public CProductTiingo {
 public:
 	CProductTiingoStockDayLine();
 	~CProductTiingoStockDayLine() override = default;

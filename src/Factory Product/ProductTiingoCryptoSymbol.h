@@ -1,9 +1,9 @@
 #pragma once
 
-#include"VirtualWebProduct.h"
+#include"ProductTiingo.h"
 #include"TiingoCryptoSymbol.h"
 
-class CProductTiingoCryptoSymbol final : public CVirtualWebProduct {
+class CProductTiingoCryptoSymbol final : public CProductTiingo {
 public:
 	CProductTiingoCryptoSymbol();
 	~CProductTiingoCryptoSymbol() override = default;

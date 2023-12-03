@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"VirtualWebProduct.h"
+#include"ProductTiingo.h"
 
-class CProductTiingoCompanyProfile final : public CVirtualWebProduct {
+class CProductTiingoCompanyProfile final : public CProductTiingo {
 public:
 	CProductTiingoCompanyProfile();
 	~CProductTiingoCompanyProfile() override = default;

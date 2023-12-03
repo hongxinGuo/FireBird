@@ -27,8 +27,8 @@ bool CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	const auto pvForexExchange = ParseFinnhubForexExchange(pWebData);
 	for (int i = 0; i < pvForexExchange->size(); i++) {
-		if (!dynamic_pointer_cast<CWorldMarket>(GetMarket())->IsForexExchange(pvForexExchange->at(i))) {
-			dynamic_pointer_cast<CWorldMarket>(GetMarket())->AddForexExchange(pvForexExchange->at(i));
+		if (!GetMarket()->IsForexExchange(pvForexExchange->at(i))) {
+			GetMarket()->AddForexExchange(pvForexExchange->at(i));
 		}
 	}
 

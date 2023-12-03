@@ -136,6 +136,7 @@
     <ClInclude Include="..\src\Factory Product\ProductNeteaseRT.h" />
     <ClInclude Include="..\src\Factory Product\ProductSinaRT.h" />
     <ClInclude Include="..\src\Factory Product\ProductTengxunRT.h" />
+    <ClInclude Include="..\src\Factory Product\ProductTiingo.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyProfile.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoSymbol.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockDayLine.h" />
@@ -315,6 +316,7 @@
     <ClCompile Include="..\src\Factory Product\ProductNeteaseRT.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductSinaRT.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTengxunRT.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductTiingo.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoCompanyProfile.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoSymbol.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockDayLine.cpp" />

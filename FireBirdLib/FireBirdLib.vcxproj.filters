@@ -738,6 +738,9 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubRecommendationTrends.h">
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductTiingo.h">
+      <Filter>头文件\Factory-Product\Tiingo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1318,6 +1321,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\FinnhubRecommendationTrends.cpp">
       <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingo.cpp">
+      <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

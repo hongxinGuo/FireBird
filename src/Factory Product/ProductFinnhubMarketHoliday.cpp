@@ -16,7 +16,7 @@ CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
 CString CProductFinnhubMarketHoliday::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const auto strParam = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetStockExchangeCode(m_lIndex);
+	const auto strParam = GetMarket()->GetStockExchangeCode(m_lIndex);
 
 	m_strInquiringExchange = strParam;
 	m_strInquiry = m_strInquiryFunction + strParam;

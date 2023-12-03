@@ -28,8 +28,8 @@ bool CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebDa
 
 	const auto pvCountry = ParseFinnhubCountryList(pWebData);
 	for (const auto& pCountry : *pvCountry) {
-		if (!dynamic_pointer_cast<CWorldMarket>(GetMarket())->IsCountry(pCountry)) {
-			dynamic_pointer_cast<CWorldMarket>(GetMarket())->AddCountry(pCountry);
+		if (!GetMarket()->IsCountry(pCountry)) {
+			GetMarket()->AddCountry(pCountry);
 		}
 	}
 

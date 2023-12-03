@@ -12,7 +12,7 @@ CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 }
 
 CString CProductFinnhubCryptoSymbol::CreateMessage() {
-	const CString strParam = dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetCryptoExchange(m_lIndex);
+	const CString strParam = GetMarket()->GetCryptoExchange(m_lIndex);
 
 	m_strInquiringExchange = strParam;
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -24,9 +24,9 @@ bool CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	const auto pvCryptoSymbol = ParseFinnhubCryptoSymbol(pWebData);
 	for (const auto& pSymbol : *pvCryptoSymbol) {
-		if (!dynamic_pointer_cast<CWorldMarket>(GetMarket())->IsFinnhubCryptoSymbol(pSymbol->GetSymbol())) {
-			pSymbol->SetExchangeCode(dynamic_pointer_cast<CWorldMarket>(GetMarket())->GetCryptoExchange(m_lIndex));
-			dynamic_pointer_cast<CWorldMarket>(GetMarket())->AddFinnhubCryptoSymbol(pSymbol);
+		if (!GetMarket()->IsFinnhubCryptoSymbol(pSymbol->GetSymbol())) {
+			pSymbol->SetExchangeCode(GetMarket()->GetCryptoExchange(m_lIndex));
+			GetMarket()->AddFinnhubCryptoSymbol(pSymbol);
 		}
 	}
 
