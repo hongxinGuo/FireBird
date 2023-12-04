@@ -44,6 +44,8 @@ protected:
 	bool m_fUpdateStockSymbol; // 每日更新公司代码库
 	bool m_fUpdateCryptoSymbol; // 每日更新crypto代码库
 	bool m_fUpdateDayLine; // 每日更新公司日线数据
+
+	bool m_fTiingoDataInquiryFinished{false};
 };
 
 using CTiingoDataSourcePtr = shared_ptr<CTiingoDataSource>;

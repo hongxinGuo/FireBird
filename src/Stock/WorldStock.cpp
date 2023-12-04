@@ -716,12 +716,20 @@ bool CWorldStock::UpdateBasicFinancial(const CFinnhubStockBasicFinancialPtr& pFi
 	return true;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 默认每90天更新一次，已经900天没更新的即不再更新。
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldStock::CheckEPSSurpriseStatus(long lCurrentDate) {
 	const long lLastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
 	if (IsNullStock() || IsDelisted()) {
 		m_fEPSSurpriseUpdated = true;
 	}
 	else if ((lLastEPSSurpriseUpdateDate == 19700101) || (lLastEPSSurpriseUpdateDate == 19800101)) { // 没有数据？
+		m_fEPSSurpriseUpdated = true;
+	}
+	else if (IsEarlyThen(lLastEPSSurpriseUpdateDate, lCurrentDate, gl_systemConfiguration.GetEPSSurpriseUpdateRate() * 10) && (lLastEPSSurpriseUpdateDate != 19800101)) {// 有早于900天的数据？即已经不更新了
 		m_fEPSSurpriseUpdated = true;
 	}
 	else if (!IsEarlyThen(lLastEPSSurpriseUpdateDate, lCurrentDate, gl_systemConfiguration.GetEPSSurpriseUpdateRate())) {	// 有不早于90天的数据？

@@ -134,9 +134,6 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireRTQuote()).Times(0);
 
 		m_pMockFinnhubDataSource->InquireFinnhub(120000);
-
-		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("finnhub data inquiry finished"));
 	}
 
 	TEST_F(CMockFinnhubDataSourceTest, TestInquiryFinnhub3) {

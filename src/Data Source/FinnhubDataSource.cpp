@@ -122,12 +122,12 @@ void CFinnhubDataSource::InquireFinnhub(const long lCurrentTime) {
 			if (IsUpdateStockDayLine()) {
 				//InquireRTQuote();
 			}
-		}
-	}
-	if (!IsInquiring()) {
-		if (!m_fFinnhubDataInquiryFinished) {
-			gl_systemMessage.PushInformationMessage(_T("finnhub data inquiry finished"));
-			m_fFinnhubDataInquiryFinished = true;
+			if (!IsInquiring()) {
+				if (!m_fFinnhubDataInquiryFinished) {
+					gl_systemMessage.PushInformationMessage(_T("finnhub data inquiry finished"));
+					m_fFinnhubDataInquiryFinished = true;
+				}
+			}
 		}
 	}
 }

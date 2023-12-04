@@ -24,6 +24,7 @@ bool CTiingoDataSource::Reset() {
 	m_fUpdateCryptoSymbol = true;
 	m_fUpdateDayLine = true;
 
+	m_fTiingoDataInquiryFinished = false;
 	return true;
 }
 
@@ -51,6 +52,12 @@ void CTiingoDataSource::InquireTiingo() {
 		InquireCompanySymbol();
 		InquireCryptoSymbol();
 		InquireDayLine();
+		if (!IsInquiring()) {
+			if (!m_fTiingoDataInquiryFinished) {
+				gl_systemMessage.PushInformationMessage(_T("Tiingo data inquiry finished"));
+				m_fTiingoDataInquiryFinished = true;
+			}
+		}
 	}
 }
 

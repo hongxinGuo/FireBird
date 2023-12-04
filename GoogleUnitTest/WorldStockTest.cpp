@@ -713,15 +713,15 @@ namespace FireBirdTest {
 
 		stock.SetEPSSurpriseUpdated(false);
 		stock.SetIPOStatus(_STOCK_IPOED_);
-		stock.SetLastEPSSurpriseUpdateDate(20191002); // 早于90天， 不早于225天
+		stock.SetLastEPSSurpriseUpdateDate(20191002); // 早于90天， 不早于900天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_FALSE(stock.IsEPSSurpriseUpdated());
 
 		stock.SetEPSSurpriseUpdated(false);
 		stock.SetIPOStatus(_STOCK_IPOED_);
-		stock.SetLastEPSSurpriseUpdateDate(20190521); // 早于90天， 不早于225天
+		stock.SetLastEPSSurpriseUpdateDate(20160521); // 早于900天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
-		EXPECT_FALSE(stock.IsEPSSurpriseUpdated());
+		EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
 	}
 
 	TEST_F(CWorldStockTest, TestSaveDayLine) {
