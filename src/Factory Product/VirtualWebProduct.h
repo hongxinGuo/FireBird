@@ -48,14 +48,6 @@ public:
 
 	void SetMarket(const CVirtualMarketPtr& pMarket) noexcept { m_pMarket = pMarket; }
 
-	[[nodiscard]] shared_ptr<CVirtualMarket> GetMarket() const noexcept {
-		if (CVirtualMarketPtr p = m_pMarket.lock()) {
-			return p;
-		}
-		//exit(1);  // todo 当返回为nullptr时，此时系统主线程已经退出了，工作线程也要立即退出
-		return nullptr;
-	}
-
 	void SetInquiringExchange(const CString& exchange) noexcept { m_strInquiringExchange = exchange; }
 	CString GetInquiringExchange() const noexcept { return m_strInquiringExchange; }
 	bool IsUSMarket() const; // 如果是美国市场

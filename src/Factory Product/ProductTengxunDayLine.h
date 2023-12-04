@@ -8,12 +8,12 @@
 #pragma once
 #include"ClassDeclaration.h"
 
-#include"VirtualWebProduct.h"
+#include"VirtualChinaMarketWebProduct.h"
 
 #include"atomic"
 using std::atomic_int;
 
-class CProductTengxunDayLine final : public CVirtualWebProduct {
+class CProductTengxunDayLine final : public CVirtualChinaMarketWebProduct {
 public:
 	CProductTengxunDayLine();
 

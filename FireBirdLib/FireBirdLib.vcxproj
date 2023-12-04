@@ -107,6 +107,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStockDayLine.h" />
+    <ClInclude Include="..\src\Factory Product\VirtualChinaMarketWebProduct.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketHoliday.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketStatus.h" />
     <ClInclude Include="..\src\Factory Product\ProductTengxunDayLine.h" />
@@ -145,6 +146,7 @@
     <ClInclude Include="..\src\Factory Product\TiingoFactory.h" />
     <ClInclude Include="..\src\Factory Product\VirtualDataFactory.h" />
     <ClInclude Include="..\src\Factory Product\VirtualWebProduct.h" />
+    <ClInclude Include="..\src\Factory Product\VirtualWorldMarketWebProduct.h" />
     <ClInclude Include="..\src\FinnhubInquiryType.h" />
     <ClInclude Include="..\src\globedef.h" />
     <ClInclude Include="..\src\Market\ChinaMarket.h" />
@@ -324,6 +326,7 @@
     <ClCompile Include="..\src\Factory Product\QuandlFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\TiingoFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\VirtualWebProduct.cpp" />
+    <ClCompile Include="..\src\Factory Product\VirtualWorldMarketWebProduct.cpp" />
     <ClCompile Include="..\src\FinnhubInquiryType.cpp" />
     <ClCompile Include="..\src\globedef.cpp" />
     <ClCompile Include="..\src\Market\ChinaMarket.cpp" />
@@ -410,6 +413,7 @@
     <ClCompile Include="..\src\Working thread\China market\ThreadSaveDayLine.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadUpdateChinaStockProfileDB.cpp" />
+    <ClCompile Include="VirtualChinaMarketWebProduct.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">

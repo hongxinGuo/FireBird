@@ -169,6 +169,12 @@
     <Filter Include="源文件\Working thread\World market">
       <UniqueIdentifier>{071c480a-42a0-46e0-b3ca-c318858ef8a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Factory-Product\ChinaMarket">
+      <UniqueIdentifier>{37524ace-2a5f-48d4-8119-f50869cf2f1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Factory-Product\ChinaMarket">
+      <UniqueIdentifier>{73b57d64-57b0-46ab-9a1c-f0df258bad20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h">
@@ -346,18 +352,6 @@
       <Filter>头文件\database</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductDummy.h">
-      <Filter>头文件\Factory-Product</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductNeteaseDayline.h">
-      <Filter>头文件\Factory-Product</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductNeteaseRT.h">
-      <Filter>头文件\Factory-Product</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductSinaRT.h">
-      <Filter>头文件\Factory-Product</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTengxunRT.h">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\VirtualDataFactory.h">
@@ -702,9 +696,6 @@
     <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTengxunDayLine.h">
-      <Filter>头文件\Factory-Product</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\accessory\accessory.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
@@ -740,6 +731,27 @@
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingo.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\VirtualWorldMarketWebProduct.h">
+      <Filter>头文件\Factory-Product</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\VirtualChinaMarketWebProduct.h">
+      <Filter>头文件\Factory-Product</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductNeteaseDayline.h">
+      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductNeteaseRT.h">
+      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductSinaRT.h">
+      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductTengxunDayLine.h">
+      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductTengxunRT.h">
+      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -864,18 +876,6 @@
       <Filter>源文件\database</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductDummy.cpp">
-      <Filter>源文件\Factory-Product</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductNeteaseDayline.cpp">
-      <Filter>源文件\Factory-Product</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductNeteaseRT.cpp">
-      <Filter>源文件\Factory-Product</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductSinaRT.cpp">
-      <Filter>源文件\Factory-Product</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductTengxunRT.cpp">
       <Filter>源文件\Factory-Product</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\VirtualWebProduct.cpp">
@@ -1289,9 +1289,6 @@
     <ClCompile Include="..\src\Windows interface\FireBirdView.cpp">
       <Filter>源文件\windows interface</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductTengxunDayLine.cpp">
-      <Filter>源文件\Factory-Product</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Data Source\TengxunDayLineDataSource.cpp">
       <Filter>源文件\Data Source\China market</Filter>
     </ClCompile>
@@ -1324,6 +1321,27 @@
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTiingo.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\VirtualWorldMarketWebProduct.cpp">
+      <Filter>源文件\Factory-Product</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualChinaMarketWebProduct.cpp">
+      <Filter>源文件\Factory-Product</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductNeteaseDayline.cpp">
+      <Filter>源文件\Factory-Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductNeteaseRT.cpp">
+      <Filter>源文件\Factory-Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductSinaRT.cpp">
+      <Filter>源文件\Factory-Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTengxunDayLine.cpp">
+      <Filter>源文件\Factory-Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTengxunRT.cpp">
+      <Filter>源文件\Factory-Product\ChinaMarket</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

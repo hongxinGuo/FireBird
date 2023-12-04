@@ -107,7 +107,6 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 	const CString strStockCode = XferStandardToTengxun(pStock->GetSymbol());
 	shared_ptr<CProductTengxunDayLine> product = nullptr;
 	do {
-		product = make_shared<CProductTengxunDayLine>();
 		CString strStartDate = ConvertDateToTimeStamp(lStartDate);
 		CString strEndDate;
 		const long year = lStartDate / 10000;
@@ -118,6 +117,8 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 			strEndDate = ConvertDateToTimeStamp((year + 6) * 10000 + 1231); // 第七年的最后一天
 		}
 		const CString strTotalMessage = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=") + strStockCode + _T(",day,") + strStartDate + _T(",") + strEndDate + m_strSuffix;
+		product = make_shared<CProductTengxunDayLine>();
+		product->SetMarket(gl_pChinaMarket);
 		product->SetIndex(lStockIndex);
 		product->SetInquiryFunction(strTotalMessage);
 		vProduct.push_back(product);

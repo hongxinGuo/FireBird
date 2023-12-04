@@ -17,7 +17,7 @@ CString CProductNeteaseDayLine::CreateMessage() {
 bool CProductNeteaseDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pDayLineWebData = ParseNeteaseDayLine(pWebData);
 
-	gl_pChinaMarket->PushDayLine(pDayLineWebData);
+	GetMarket()->PushDayLine(pDayLineWebData);
 
 	return true;
 }

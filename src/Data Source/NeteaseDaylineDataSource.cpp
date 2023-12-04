@@ -57,6 +57,7 @@ void CNeteaseDayLineDataSource::CreateProduct() {
 		m_strParam = strParam;
 		gl_pChinaMarket->CheckValidOfNeteaseDayLineInquiringStr(strParam);
 		const CProductNeteaseDayLinePtr product = make_shared<CProductNeteaseDayLine>();
+		product->SetMarket(gl_pChinaMarket);
 		product->SetInquiryFunction(strMessage + strParam + strSuffix);
 		StoreInquiry(product);
 		SetInquiring(true);

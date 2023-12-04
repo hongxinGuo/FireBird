@@ -3,6 +3,8 @@
 #include"TengxunRTDataSourceImp.h"
 #include"ProductTengxunRT.h"
 
+#include "ChinaMarket.h"
+
 CTengxunRTDataSourceImp::CTengxunRTDataSourceImp() {
 	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");
 	m_strInquiryToken = _T("");
@@ -20,6 +22,7 @@ bool CTengxunRTDataSourceImp::Reset() {
 bool CTengxunRTDataSourceImp::GenerateInquiryMessage(const long lCurrentTime) {
 	if (!IsInquiring()) {
 		const auto product = make_shared<CProductTengxunRT>();
+		product->SetMarket(gl_pChinaMarket);
 		ASSERT(m_qProduct.empty());
 		StoreInquiry(product);
 		SetInquiring(true);

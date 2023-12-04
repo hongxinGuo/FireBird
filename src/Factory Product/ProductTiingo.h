@@ -2,15 +2,10 @@
 
 #include"ClassDeclaration.h"
 
-#include"VirtualWebProduct.h"
-#include "WorldMarket.h"
+#include"VirtualWorldMarketWebProduct.h"
 
-using std::dynamic_pointer_cast;
-
-class CProductTiingo : public CVirtualWebProduct {
+class CProductTiingo : public CVirtualWorldMarketWebProduct {
 public:
 	CProductTiingo() = default;
 	~CProductTiingo() override = default;
-
-	[[nodiscard]] shared_ptr<CWorldMarket> GetMarket() const noexcept;
 };

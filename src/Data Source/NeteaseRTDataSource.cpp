@@ -43,11 +43,12 @@ bool CNeteaseRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 void CNeteaseRTDataSource::InquireRTData(const long lCurrentTime) {
 	if (!IsInquiring()) {
 		ASSERT(!HaveInquiry());
-		const auto product = make_shared<CProductNeteaseRT>();
 		const CString strMessage = _T("http://api.money.126.net/data/feed/");
 		const CString strStocks = gl_pChinaMarket->GetNeteaseStockInquiringMiddleStr(m_lInquiringNumber, gl_pChinaMarket->IsCheckingActiveStock()); // 目前还是使用全部股票池
 		const CString strNeteaseStockCode = strStocks.Left(7); //只提取第一个股票代码.网易代码格式为：0600000，100001，共七个字符
 		gl_systemMessage.SetStockCodeForInquiringRTData(XferNeteaseToStandard(strNeteaseStockCode));
+		const auto product = make_shared<CProductNeteaseRT>();
+		product->SetMarket(gl_pChinaMarket);
 		product->SetInquiryFunction(strMessage + strStocks);
 		StoreInquiry(product);
 		SetInquiring(true);

@@ -1,6 +1,5 @@
 ﻿#include "pch.h"
 
-#include"TimeConvert.h"
 #include "ProductTengxunDayLine.h"
 #include"ChinaMarket.h"
 
@@ -53,7 +52,7 @@ bool CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	// 以下操作静态变量，需要使用criticalSection，同时仅允许一个线程进入
 	s_semaphoreTransferData.acquire();
 	for (auto& pData : pDayLineWebData->GetProcessedDayLine()) {
-		if (gl_pChinaMarket->IsWorkingDay(pData->GetMarketDate())) { // 1991年左右的腾讯日线有周六的，清除掉。
+		if (GetMarket()->IsWorkingDay(pData->GetMarketDate())) { // 1991年左右的腾讯日线有周六的，清除掉。
 			sm_vDayLinePtr.push_back(pData);
 		}
 	}
@@ -62,14 +61,14 @@ bool CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pDayLineWebData->SetStockCode(pWebData->GetStockCode());
 		pDayLineWebData->ClearDayLine();
 		for (const auto& pDayLine : sm_vDayLinePtr) {
-			ASSERT(gl_pChinaMarket->IsWorkingDay(pDayLine->GetMarketDate()));
+			ASSERT(GetMarket()->IsWorkingDay(pDayLine->GetMarketDate()));
 		}
 		CheckAndPrepareDayLine();
 		for (const auto& pData : sm_vDayLinePtr) {
 			pDayLineWebData->AppendDayLine(pData);
 		}
 		ResetStaticVariable();
-		gl_pChinaMarket->PushDayLine(pDayLineWebData);
+		GetMarket()->PushDayLine(pDayLineWebData);
 	}
 	s_semaphoreTransferData.release();
 

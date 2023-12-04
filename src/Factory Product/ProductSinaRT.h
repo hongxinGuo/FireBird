@@ -2,9 +2,9 @@
 
 #include"ClassDeclaration.h"
 
-#include"VirtualWebProduct.h"
+#include"VirtualChinaMarketWebProduct.h"
 
-class CProductSinaRT final : public CVirtualWebProduct {
+class CProductSinaRT final : public CVirtualChinaMarketWebProduct {
 public:
 	CProductSinaRT();
 	~CProductSinaRT() override = default;

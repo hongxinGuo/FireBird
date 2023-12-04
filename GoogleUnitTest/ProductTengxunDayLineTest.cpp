@@ -24,6 +24,7 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
+			tengxunDayLine.SetMarket(gl_pChinaMarket);
 		}
 
 		void TearDown() override {

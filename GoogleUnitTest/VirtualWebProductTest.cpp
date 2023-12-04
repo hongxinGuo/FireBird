@@ -56,7 +56,6 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CVirtualWebProductTest, TestInitialize) {
-		EXPECT_EQ(webProduct.GetMarket(), nullptr);
 		EXPECT_EQ(webProduct.GetIndex(), -1);
 		EXPECT_STREQ(typeid(webProduct).name(), _T("class CVirtualWebProduct"));
 		EXPECT_STREQ(webProduct.GetInquiry(), _T(""));

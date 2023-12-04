@@ -2,9 +2,9 @@
 
 #include"ClassDeclaration.h"
 
-#include"VirtualWebProduct.h"
+#include"VirtualChinaMarketWebProduct.h"
 
-class CProductNeteaseDayLine final : public CVirtualWebProduct {
+class CProductNeteaseDayLine final : public CVirtualChinaMarketWebProduct {
 public:
 	CProductNeteaseDayLine();
 
