@@ -17,6 +17,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			gl_systemConfiguration.SetWorkingMode(false);
+			gl_systemConfiguration.SetUpdate(false);
 
 			SCOPED_TRACE("");
 			GeneralCheck();

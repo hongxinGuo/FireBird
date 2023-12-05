@@ -110,6 +110,7 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
 
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
+			gl_systemConfiguration.SetUpdate(false);
 
 			SCOPED_TRACE("");
 			GeneralCheck();

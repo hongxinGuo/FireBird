@@ -11,6 +11,8 @@
 
 #include "GeneralCheck.h"
 
+#include "FinnhubInaccessibleExchange.h"
+
 using namespace testing;
 
 namespace FireBirdTest {
@@ -30,7 +32,8 @@ namespace FireBirdTest {
 	}
 
 	void SystemConfigurationCheck() {
-		//EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate());
+		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsNeedUpdate());
+		EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate());
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
 		if (gl_UpdateChinaMarketDB.try_acquire()) { gl_UpdateChinaMarketDB.release(); }

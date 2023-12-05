@@ -8,21 +8,6 @@
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
 namespace FireBirdTest {
-	TEST(abvdeTEst, TestGlobeVariable) {
-		json jsFinnhubInaccessibleExchange = json::parse(Test_gl_sFinnhubInaccessibleExchange);
-		CInaccessibleExchanges exchange;
-		const string s2 = jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Function")];
-		exchange.SetFunctionString(s2.c_str());
-		for (int i = 0; i < jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Exchange")].size(); i++) {
-			string s = jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Exchange")][i];
-			exchange.AddExchange(s.c_str());
-		}
-		EXPECT_EQ(jsFinnhubInaccessibleExchange["UpdateDate"], 20221205);
-		EXPECT_STREQ(exchange.GetFunctionString(), _T("StockFundamentalsCompanyProfileConcise"));
-		EXPECT_STREQ(exchange.GetExchange(0), _T("SS"));
-		EXPECT_STREQ(exchange.GetExchange(1), _T("SZ"));
-	}
-
 	class CInaccessibleExchangesTest : public testing::Test {
 		void SetUp() override {
 			SCOPED_TRACE("");
@@ -87,21 +72,30 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-
-			DeleteFile(gl_systemConfiguration.GetDefaultFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
-			gl_finnhubInaccessibleExchange.SetDefaultFileName(_T("FinnhubInaccessibleExchangeTest.json"));
 		}
 
 		void TearDown() override {
 			gl_systemConfiguration.SetWorkingMode(false);
 
-			DeleteFile(gl_systemConfiguration.GetDefaultFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
-			gl_finnhubInaccessibleExchange.SetDefaultFileName(_T("FinnhubInaccessibleExchange.json"));
-
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 	};
+
+	TEST_F(CFinnhubInaccessibleExchangeTest, TestGlobeVariable) {
+		json jsFinnhubInaccessibleExchange = json::parse(Test_gl_sFinnhubInaccessibleExchange);
+		CInaccessibleExchanges exchange;
+		const string s2 = jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Function")];
+		exchange.SetFunctionString(s2.c_str());
+		for (int i = 0; i < jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Exchange")].size(); i++) {
+			string s = jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Exchange")][i];
+			exchange.AddExchange(s.c_str());
+		}
+		EXPECT_EQ(jsFinnhubInaccessibleExchange["UpdateDate"], 20221205);
+		EXPECT_STREQ(exchange.GetFunctionString(), _T("StockFundamentalsCompanyProfileConcise"));
+		EXPECT_STREQ(exchange.GetExchange(0), _T("SS"));
+		EXPECT_STREQ(exchange.GetExchange(1), _T("SZ"));
+	}
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestDeleteExchange) {
 		const auto pExchange = make_shared<CInaccessibleExchanges>();
@@ -121,6 +115,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestSaveDB1) {
+		DeleteFile(gl_systemConfiguration.GetDefaultFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
+		gl_finnhubInaccessibleExchange.SetDefaultFileName(_T("FinnhubInaccessibleExchangeTest.json"));
+
 		const auto pExchange = make_shared<CInaccessibleExchanges>();
 		pExchange->SetFunctionString(_T("WebSocketTrades"));
 		pExchange->AddExchange(_T("SS"));
@@ -143,9 +140,14 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("SS"));
 
 		// 恢复原状
+		DeleteFile(gl_systemConfiguration.GetDefaultFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
+		gl_finnhubInaccessibleExchange.SetDefaultFileName(_T("FinnhubInaccessibleExchange.json"));
 	}
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestSaveDB2) {
+		DeleteFile(gl_systemConfiguration.GetDefaultFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
+		gl_finnhubInaccessibleExchange.SetDefaultFileName(_T("FinnhubInaccessibleExchangeTest.json"));
+
 		const auto pExchange = make_shared<CInaccessibleExchanges>();
 		pExchange->SetFunctionString(_T("WebSocketTrades"));
 		pExchange->AddExchange(_T("SS"));
@@ -169,5 +171,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("SS"));
 
 		// 恢复原状
+		DeleteFile(gl_systemConfiguration.GetDefaultFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
+		gl_finnhubInaccessibleExchange.SetDefaultFileName(_T("FinnhubInaccessibleExchange.json"));
 	}
 }
