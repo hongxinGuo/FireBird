@@ -138,9 +138,9 @@ int CWatchdogMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// enable quick (Alt+drag) toolbar customization
 	CMFCToolBar::EnableQuickCustomization();
 
-	if (CMFCToolBar::GetUserImages() == nullptr) {
-		// load user-defined toolbar images
-		if (m_UserImages.Load(_T(".\\UserImages.bmp"))) {
+	if (CMFCToolBar::GetUserImages() == nullptr) { // load user-defined toolbar images
+		//if (m_UserImages.Load(_T("UserImages.bmp"))) { // 这里使用了文件系统而不是预先编译的资源，使用下面这行替换之。
+		if (m_UserImages.Load(IDB_USER_IMAGE)) {
 			CMFCToolBar::SetUserImages(&m_UserImages);
 		}
 	}

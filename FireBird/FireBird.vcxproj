@@ -205,6 +205,7 @@
     <Image Include="res\output_wnd_hc.ico" />
     <Image Include="res\FireBird.ico" />
     <Image Include="res\FireBirdDoc.ico" />
+    <Image Include="res\properties_hc.bmp" />
     <Image Include="res\properties_wnd.ico" />
     <Image Include="res\properties_wnd_hc.ico" />
     <Image Include="res\Toolbar.bmp" />

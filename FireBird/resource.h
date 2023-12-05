@@ -19,8 +19,6 @@
 #define ID_VIEW_OUTPUTWND               149
 #define ID_VIEW_PROPERTIESWND           150
 #define ID_SORTPROPERTIES               151
-#define ID_PROPERTIES1                  152
-#define ID_PROPERTIES2                  153
 #define ID_EXPAND_ALL                   154
 #define IDS_OUTPUT_WND                  157
 #define IDS_OUTPUT_WND2                 158
@@ -34,7 +32,6 @@
 #define IDB_PROPERTIES_HC               184
 #define IDS_EDIT_MENU                   306
 #define IDD_DIALOG_PROGRAM_OPTION       310
-#define IDD_DIALOG1                     314
 #define IDD_DIALOG_CHINA_STOCKMARKET    316
 #define IDS_INFORMATION_TAB             400
 #define IDS_TRANSACTION_TAB             401
@@ -45,12 +42,10 @@
 #define IDS_INNER_SYSTEM_INFORMATION_TAB2 407
 #define IDS_ERROR_MESSAGE               408
 #define IDS_WEB_SOCKET_INFO_TAB         409
-#define IDS_STRING410                   410
 #define IDS_CHINA_MARKET_TASK_QUEUE     410
 #define IDS_WORLD_MARKET_TASK_QUEUE     411
 #define IDC_COMBO_DISPLAY_RS            1003
 #define IDC_COMBO_OPTION_DISPLAY_RS     1003
-#define IDC_MFCCOLORBUTTON1             1004
 #define IDC_MFCCOLORBUTTON_BACKGROUND   1004
 #define IDC_CHECK_CALCULATE_RS1         1005
 #define IDC_CHECK_CALCULATE_RS2         1006
@@ -97,7 +92,6 @@
 #define ID_SHOW_RS_IN_LINEAR            32820
 #define ID_SHOW_REALTIME                32833
 #define ID_SHOW_DAYLINE                 32834
-#define ID_BUTTON32841                  32841
 #define ID_CALCULATE_10DAY_RS1          32846
 #define ID_CALCULATE_10DAY_RS2          32847
 #define ID_CALCULATE_10DAY_RS           32850
@@ -114,45 +108,24 @@
 #define ID_MAINTAIN_DAYLINE             32871
 #define ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE 32874
 #define ID_UPDATE_SECTION_INDEX         32876
-#define ID_BUILD_32877                  32877
 #define ID_UPDATE_STOCK_CODE            32878
-#define ID_32879                        32879
-#define ID_Menu32880                    32880
 #define ID_AMERICA_MARKET_DOWNLOAD_DAY_LINE 32881
-#define ID_AMERICA_MARKET_REBULID_DAY_LINE 32882
-#define ID_32883                        32883
 #define ID_AMERICA_MARKET_SORT_STOCK_TABLE 32884
-#define ID_32885                        32885
 #define ID_REBUILD_EPS_SURPRISE         32886
-#define ID_32887                        32887
-#define ID_32888                        32888
-#define ID_REBULID_PEER_TABLE           32889
-#define ID_REBULID_PEER                 32890
 #define ID_REBUILD_PEER                 32891
 #define ID_REBUILD_DAYLINE              32892
-#define ID_32893                        32893
 #define ID_UPDATE_DAYLINE_START_END     32894
 #define ID_UPDATE_AMERICA_STOCK_DAYLINE_START_END 32895
-#define ID_BUILD_32896                  32896
 #define ID_REBUILD_CHINAMARKET_DAYLINE  32897
 #define ID_BUILD_32898                  32898
 #define ID_Change_DayLineExtendInfo     32899
-#define ID_32900                        32900
-#define ID_32901                        32901
-#define ID_32902                        32902
-#define ID_32903                        32903
 #define ID_RECORD_FINNHUB_WEB_SOCKET    32904
 #define ID_RECORD_TIINGO_IEX_WEB_SOCKET 32905
 #define ID_RECORD_TIINGO_CRYPTO_WEB_SOCKET 32906
 #define ID_RECORD_TIINGO_FOREX_WEB_SOCKET 32907
-#define ID_32908                        32908
 #define ID_REBUILD_BASIC_FINANCIAL      32909
-#define ID_32910                        32910
-#define ID_32911                        32911
-#define ID_32912                        32912
 #define ID_USING_NETEASE_DAYLINE_DATA_SERVER 32914
 #define ID_USING_TENGXUN_DAYLINE_DATA_SERVER 32915
-#define ID_32916                        32916
 #define ID_USING_TENGXUN_RT_DATA_SERVER 32917
 #define ID_USING_TENGXUN_REALTIME_DATA_SERVER 32918
 #define ID_CURRENT_SELECT_STOCK         59142
@@ -192,7 +165,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        319
+#define _APS_NEXT_RESOURCE_VALUE        320
 #define _APS_NEXT_COMMAND_VALUE         32919
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310

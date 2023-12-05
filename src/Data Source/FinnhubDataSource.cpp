@@ -118,7 +118,7 @@ void CFinnhubDataSource::InquireFinnhub(const long lCurrentTime) {
 			InquireCryptoDayLine(); // Crypto dayLine20231127后只限于付费用户使用
 			InquireStockDayLine(); // Stock dayLine20231127后只限于付费用户使用
 			InquireForexDayLine(); // Forex dayLine目前只限于付费用户使用
-			InquireEPSSurprise(); // 这个现在没什么用，暂时停止更新。todo
+			InquireEPSSurprise();
 			if (IsUpdateStockDayLine()) {
 				//InquireRTQuote();
 			}
@@ -160,7 +160,7 @@ bool CFinnhubDataSource::InquireMarketStatus() {
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
 			if (!gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos)->IsMarketStatusUpdated()) {
 				pExchange = gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos);
-				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pExchange->m_strCode)) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pExchange->m_strCode)) {
 					fFound = true;
 					break;
 				}
@@ -201,7 +201,7 @@ bool CFinnhubDataSource::InquireMarketHoliday() {
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
 			if (!gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos)->IsMarketHolidayUpdated()) {
 				pExchange = gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos);
-				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pExchange->m_strCode)) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pExchange->m_strCode)) {
 					fFound = true;
 					break;
 				}
@@ -242,7 +242,7 @@ bool CFinnhubDataSource::InquireCompanySymbol() {
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
 			if (!gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos)->IsStockSymbolUpdated()) {
 				pExchange = gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos);
-				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pExchange->m_strCode)) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pExchange->m_strCode)) {
 					fFound = true;
 					break;
 				}
@@ -283,7 +283,7 @@ bool CFinnhubDataSource::InquireCompanyProfileConcise() {
 		}
 		for (lCurrentProfilePos = 0; lCurrentProfilePos < lStockSetSize; lCurrentProfilePos++) {
 			if (const auto pStock = gl_pWorldMarket->GetStock(lCurrentProfilePos); pStock->IsUpdateCompanyProfile()) {
-				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;
 				}
@@ -328,7 +328,7 @@ bool CFinnhubDataSource::InquireCompanyNews() {
 		for (lCurrentCompanyNewsPos = 0; lCurrentCompanyNewsPos < lStockSetSize; lCurrentCompanyNewsPos++) {
 			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(lCurrentCompanyNewsPos);
 			if (pStock->IsUpdateCompanyNews()) {
-				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
 					// 目前只处理美国市场
 					fFound = true;
 					break;
@@ -371,7 +371,7 @@ bool CFinnhubDataSource::InquireCompanyBasicFinancial() {
 		for (lCurrentBasicFinancialsPos = 0; lCurrentBasicFinancialsPos < lStockSetSize; lCurrentBasicFinancialsPos++) {
 			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(lCurrentBasicFinancialsPos);
 			if (pStock->IsUpdateBasicFinancial()) {
-				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;
 				}
@@ -415,7 +415,7 @@ bool CFinnhubDataSource::InquireStockDayLine() {
 			pStock = gl_pWorldMarket->GetStock(lCurrentUpdateDayLinePos);
 			if (pStock->IsDayLineNeedUpdate()) {
 				// 目前免费账户只能下载美国市场的股票日线。
-				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;
 				}
@@ -461,7 +461,7 @@ bool CFinnhubDataSource::InquireInsiderTransaction() {
 			pStock = gl_pWorldMarket->GetStock(lCurrentUpdateInsiderTransactionPos);
 			if (pStock->IsUpdateInsiderTransaction()) {
 				// 目前免费账户只能下载美国市场的股票日线。
-				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;
 				}
@@ -504,7 +504,7 @@ bool CFinnhubDataSource::InquireInsiderSentiment() {
 		for (lCurrentUpdateInsiderSentimentPos = 0; lCurrentUpdateInsiderSentimentPos < lStockSetSize; lCurrentUpdateInsiderSentimentPos++) {
 			pStock = gl_pWorldMarket->GetStock(lCurrentUpdateInsiderSentimentPos);
 			if (pStock->IsUpdateInsiderSentiment()) {
-				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;
 				}
@@ -562,7 +562,7 @@ bool CFinnhubDataSource::InquirePeer() {
 		for (lCurrentUpdatePeerPos = 0; lCurrentUpdatePeerPos < lStockSetSize; lCurrentUpdatePeerPos++) {
 			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(lCurrentUpdatePeerPos);
 			if (pStock->IsUpdatePeer()) {
-				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;
 				}
@@ -619,7 +619,7 @@ bool CFinnhubDataSource::InquireEPSSurprise() {
 		for (m_lCurrentUpdateEPSSurprisePos = 0; m_lCurrentUpdateEPSSurprisePos < lStockSetSize; m_lCurrentUpdateEPSSurprisePos++) {
 			pStock = gl_pWorldMarket->GetStock(m_lCurrentUpdateEPSSurprisePos);
 			if (!pStock->IsEPSSurpriseUpdated()) {
-				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pStock->GetExchangeCode())) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;
 				}
@@ -693,7 +693,7 @@ bool CFinnhubDataSource::InquireForexDayLine() {
 		for (lCurrentUpdateForexDayLinePos = 0; lCurrentUpdateForexDayLinePos < lStockSetSize; lCurrentUpdateForexDayLinePos++) {
 			pForexSymbol = gl_pWorldMarket->GetForexSymbol(lCurrentUpdateForexDayLinePos);
 			if (pForexSymbol->IsDayLineNeedUpdate()) {
-				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pForexSymbol->GetExchangeCode())) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pForexSymbol->GetExchangeCode())) {
 					fFound = true;
 					break;
 				}
@@ -765,7 +765,7 @@ bool CFinnhubDataSource::InquireCryptoDayLine() {
 		for (lCurrentUpdateCryptoDayLinePos = 0; lCurrentUpdateCryptoDayLinePos < lStockSetSize; lCurrentUpdateCryptoDayLinePos++) {
 			pCryptoSymbol = gl_pWorldMarket->GetFinnhubCryptoSymbol(lCurrentUpdateCryptoDayLinePos);
 			if (pCryptoSymbol->IsDayLineNeedUpdate()) {
-				if (!gl_finnhubInaccessibleExchange.IsInaccessible(iInquiryType, pCryptoSymbol->GetExchangeCode())) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pCryptoSymbol->GetExchangeCode())) {
 					fFound = true;
 					break;
 				}

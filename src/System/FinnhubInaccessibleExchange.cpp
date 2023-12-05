@@ -187,14 +187,14 @@ void CFinnhubInaccessibleExchange::UpdateJson() {
 	}
 }
 
-void CFinnhubInaccessibleExchange::DeleteExchange(const int iInquiryType, CString strExchange) {
-	if (IsInaccessible(iInquiryType, strExchange)) {
+void CFinnhubInaccessibleExchange::DeleteExchange(int iInquiryType, const CString& strExchange) {
+	if (HaveExchange(iInquiryType, strExchange)) {
 		const CInaccessibleExchangesPtr pExchange = GetExchange(iInquiryType);
 		pExchange->DeleteExchange(strExchange);
 	}
 }
 
-bool CFinnhubInaccessibleExchange::IsInaccessible(const int iInquiryType, const CString& strExchangeCode) const {
+bool CFinnhubInaccessibleExchange::HaveExchange(int iInquiryType, const CString& strExchangeCode) const {
 	try {
 		if (m_mapExchange.at(iInquiryType)->HaveExchange(strExchangeCode)) {
 			return true;

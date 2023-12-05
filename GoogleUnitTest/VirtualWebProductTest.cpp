@@ -142,7 +142,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible4) {
-		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsInaccessible(STOCK_PRICE_CANDLES_, _T("SZ"))) << "未加入SZ交易所";
+		EXPECT_FALSE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, _T("SZ"))) << "未加入SZ交易所";
 
 		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const CString strData = _T("{\"error\": \"You don't have access to this resource.\"}");
@@ -155,14 +155,14 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(finnhubWebProduct.CheckInaccessible(pWebData)) << "将SZ交易所列入禁入名单";
 		EXPECT_TRUE(finnhubWebProduct.IsNoRightToAccess());
-		EXPECT_TRUE(gl_finnhubInaccessibleExchange.IsInaccessible(STOCK_PRICE_CANDLES_, _T("SZ"))) << "已加入SZ交易所";
+		EXPECT_TRUE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, _T("SZ"))) << "已加入SZ交易所";
 
 		// 恢复原状
 		gl_finnhubInaccessibleExchange.GetExchange(STOCK_PRICE_CANDLES_)->DeleteExchange(_T("SZ"));
 	}
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible5) {
-		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsInaccessible(STOCK_PRICE_CANDLES_, _T("US"))) << "未加入US交易所";
+		EXPECT_FALSE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, _T("US"))) << "未加入US交易所";
 
 		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const CString strData = _T("{\"error\": \"You don't have access to this resource.\"}");
@@ -179,7 +179,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(finnhubWebProduct.CheckInaccessible(pWebData)) << "连续10次后，将US交易所列入禁入名单";
 		EXPECT_TRUE(finnhubWebProduct.IsNoRightToAccess());
-		EXPECT_TRUE(gl_finnhubInaccessibleExchange.IsInaccessible(STOCK_PRICE_CANDLES_, _T("US"))) << "已加入US交易所";
+		EXPECT_TRUE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, _T("US"))) << "已加入US交易所";
 
 		// 恢复原状
 		gl_finnhubInaccessibleExchange.GetExchange(STOCK_PRICE_CANDLES_)->DeleteExchange(_T("US"));
