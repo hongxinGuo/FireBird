@@ -78,7 +78,7 @@ public:
 	static int GetFinnhubInquiryIndex(const CString& sString) { return gl_FinnhubInquiryType.GetInquiryType(sString); }
 	CInaccessibleExchangesPtr GetExchange(int iInquiryType) { return m_mapExchange.at(iInquiryType); }
 	void SetExchange(const int iInquiryType, const CInaccessibleExchangesPtr& pExchange) { m_mapExchange[iInquiryType] = pExchange; }
-	void DeleteExchange(int iInquiryType, const CString& strExchange); // todo
+	void DeleteExchange(int iInquiryType, const CString& strExchange);
 	bool HaveExchange(const int iInquiryType, const CString& strExchangeCode) const;
 	size_t GetItemSize() const noexcept { return m_mapExchange.size(); }
 

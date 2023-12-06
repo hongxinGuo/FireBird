@@ -116,14 +116,6 @@ BOOL CWatchdogApp::InitInstance() {
 	}
 	m_pMainWnd = pMainFrame;
 
-	// Parse command line for standard shell commands, DDE, file open
-	CCommandLineInfo cmdInfo;
-	ParseCommandLine(cmdInfo);
-
-	// Dispatch commands specified on the command line.  Will return FALSE if
-	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.
-	if (!ProcessShellCommand(cmdInfo)) // todo 这个函数会报告 Setting of tab order failed
-		return FALSE;
 	// The main window has been initialized, so show and update it
 	//pMainFrame->ShowWindow(m_nCmdShow);
 	pMainFrame->ShowWindow(SW_MINIMIZE);

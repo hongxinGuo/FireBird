@@ -36,8 +36,8 @@ time_t gl_tUTCTime = 0; // 所有的市场使用同一个协调世界时（Coordinated Universal
 CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub禁止访问交易所名单（免费账户无法访问的交易所数据）。唯一实例
 
 // 为了事先初始化，信号量必须声明为全局变量
-binary_semaphore gl_UpdateChinaMarketDB{1}; // 用于更新ChinaMarket数据库。由于我对MySQL数据库不太了解，偶尔会出现存储问题，我估计与同步有关，故而设置互斥变量
-binary_semaphore gl_UpdateWorldMarketDB{1}; // 用于更新WorldMarket数据库。由于我对MySQL数据库不太了解，偶尔会出现存储问题，我估计与同步有关，故而设置互斥变量
+binary_semaphore gl_UpdateChinaMarketDB{1}; // 用于更新ChinaMarket数据库。todo 由于我对MySQL数据库不太了解，偶尔会出现存储问题，我估计与同步有关，故而设置互斥变量
+binary_semaphore gl_UpdateWorldMarketDB{1}; // 用于更新WorldMarket数据库。todo 由于我对MySQL数据库不太了解，偶尔会出现存储问题，我估计与同步有关，故而设置互斥变量
 binary_semaphore gl_ProcessChinaMarketRTData{1}; // 当处理中国市场的实时数据时，不允许同时存储之。
 counting_semaphore<3> gl_WebSourceParseAndStoreData{3};//用于解析WebSource中的数据。将ParseAndStoreData线程限制至最多3个，这样既能保证足够的计算速度，也不会发生系统颠簸。当改为4个时，就能观察到系统颠簸。
 counting_semaphore<8> gl_BackgroundWorkingThread{8}; // 最多后台工作线程允许数量

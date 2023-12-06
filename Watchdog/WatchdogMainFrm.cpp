@@ -95,13 +95,6 @@ int CWatchdogMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	}
 	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
 
-	// TODO: Delete these five lines if you don't want the toolbar and menubar to be dockable
-	m_wndMenuBar.EnableDocking(CBRS_ALIGN_ANY);
-	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
-	EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_wndMenuBar);
-	DockPane(&m_wndToolBar);
-
 	// enable Visual Studio 2005 style docking window behavior
 	CDockingManager::SetDockingMode(DT_SMART);
 	// enable Visual Studio 2005 style docking window auto-hide behavior
@@ -139,7 +132,7 @@ int CWatchdogMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	CMFCToolBar::EnableQuickCustomization();
 
 	if (CMFCToolBar::GetUserImages() == nullptr) { // load user-defined toolbar images
-		//if (m_UserImages.Load(_T("UserImages.bmp"))) { // 这里使用了文件系统而不是预先编译的资源，使用下面这行替换之。
+		//if (m_UserImages.Load(_T("UserImages.bmp"))) { //todo 这里使用了文件系统而不是预先编译的资源，使用下面这行替换之。
 		if (m_UserImages.Load(IDB_USER_IMAGE)) {
 			CMFCToolBar::SetUserImages(&m_UserImages);
 		}
