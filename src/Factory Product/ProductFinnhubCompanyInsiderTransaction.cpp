@@ -77,16 +77,8 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 	long year, month, day;
 	CInsiderTransactionPtr pInsiderTransaction = nullptr;
 
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvInsiderTransaction;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = VOID_DATA_;
-		return pvInsiderTransaction;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return pvInsiderTransaction;
-	}
+	if (!IsValidData(pWebData)) return pvInsiderTransaction;
+
 	const auto pjs = pWebData->GetJSon();
 	try {
 		pt1 = jsonGetChild(pjs, _T("data"));

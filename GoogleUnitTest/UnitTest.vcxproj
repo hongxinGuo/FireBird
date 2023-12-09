@@ -177,10 +177,12 @@
     <ClCompile Include="ProductTiingoStockSymbolsTest.cpp" />
     <ClCompile Include="TiingoStockTest.cpp" />
     <ClCompile Include="TimeConvertTest.cpp" />
+    <ClCompile Include="VirtualChinaMarketWebProductTest.cpp" />
     <ClCompile Include="VirtualDataSourceTest.cpp" />
     <ClCompile Include="VirtualRecordsetTest.cpp" />
     <ClCompile Include="VirtualWebProductTest.cpp" />
     <ClCompile Include="VirtualWebSocketTest.cpp" />
+    <ClCompile Include="VirtualWorldMarketWebProductTest.cpp" />
     <ClCompile Include="WorldMarketTest.cpp" />
     <ClCompile Include="WorldStockTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />

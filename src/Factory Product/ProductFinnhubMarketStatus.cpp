@@ -56,17 +56,9 @@ CMarketStatusVectorPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(con
 	CMarketStatusPtr pMarketStatus = nullptr;
 	string s, sError;
 
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvMarketStatus;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = VOID_DATA_;
-		return pvMarketStatus;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return pvMarketStatus;
-	}
-	auto pjs = pWebData->GetJSon();
+	if (!IsValidData(pWebData)) return pvMarketStatus;
+
+	const auto pjs = pWebData->GetJSon();
 	try {
 		pMarketStatus = make_shared<CMarketStatus>();
 		s = jsonGetString(pjs, _T("exchange"));

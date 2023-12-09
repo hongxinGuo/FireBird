@@ -73,16 +73,8 @@ CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const 
 
 	auto pvFinnhubCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
 
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvFinnhubCompanyNews;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = VOID_DATA_;
-		return pvFinnhubCompanyNews;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return pvFinnhubCompanyNews;
-	}
+	if (!IsValidData(pWebData)) return pvFinnhubCompanyNews;
+
 	const auto pjs = pWebData->GetJSon();
 	try {
 		for (auto it = pjs->begin(); it != pjs->end(); ++it) {

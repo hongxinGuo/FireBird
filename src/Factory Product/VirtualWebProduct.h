@@ -27,15 +27,15 @@ public:
 
 	virtual CString CreateMessage() { return _T(""); };
 	virtual bool ParseAndStoreWebData(CWebDataPtr pWebData) { return true; };
-	virtual void AddInaccessibleExchange() { } // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
+	virtual void AddInaccessibleExchange() {} // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 
 	virtual void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {} // default do nothing
 
 	bool CheckInaccessible(const CWebDataPtr& pWebData);
-	bool CheckVoidJson(const CWebDataPtr& pWebData);
+	bool IsVoidJson(const CWebDataPtr& pWebData);
 
 	bool IsVoidData() const noexcept { return m_iReceivedDataStatus == VOID_DATA_; }
-	virtual bool CheckNoRightToAccess(CWebDataPtr pWebData) { return false; }
+	virtual bool CheckAccessRight(CWebDataPtr pWebData) { return true; }
 	bool IsNoRightToAccess() const noexcept { return m_iReceivedDataStatus == NO_ACCESS_RIGHT_; }
 
 	CString GetClassName() const noexcept { return m_strClassName; }
@@ -97,7 +97,7 @@ struct Test_TiingoWebData {
 		m_pData->Test_SetBuffer_(strData);
 	}
 
-	~Test_TiingoWebData() { }
+	~Test_TiingoWebData() {}
 
 public:
 	long m_lIndex;

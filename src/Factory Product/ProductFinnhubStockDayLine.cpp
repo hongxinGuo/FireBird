@@ -64,16 +64,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 	CDayLinePtr pDayLine = nullptr;
 	string sError;
 
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvDayLine;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = VOID_DATA_;
-		return pvDayLine;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return pvDayLine;
-	}
+	if (!IsValidData(pWebData)) return pvDayLine;
 
 	const auto pjs = pWebData->GetJSon();
 	try {

@@ -9,8 +9,8 @@ public:
 
 	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	shared_ptr<vector<CString>> ParseFinnhubCryptoExchange(const CWebDataPtr& pWebData);
 
+	shared_ptr<vector<CString>> ParseFinnhubCryptoExchange(const CWebDataPtr& pWebData);
 	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
 };
 

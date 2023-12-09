@@ -52,16 +52,8 @@ CFinnhubCryptoSymbolVectorPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSym
 	string s;
 	string sError;
 
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvCryptoSymbol;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = VOID_DATA_;
-		return pvCryptoSymbol;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return pvCryptoSymbol;
-	}
+	if (!IsValidData(pWebData)) return pvCryptoSymbol;
+
 	const auto pjs = pWebData->GetJSon();
 	try {
 		for (auto it = pjs->begin(); it != pjs->end(); ++it) {

@@ -41,16 +41,8 @@ shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExcha
 	CString str = _T("");
 	string sError;
 
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvExchange;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = VOID_DATA_;
-		return pvExchange;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return pvExchange;
-	}
+	if (!IsValidData(pWebData)) return pvExchange;
+
 	const auto pjs = pWebData->GetJSon();
 	try {
 		for (auto it = pjs->begin(); it != pjs->end(); ++it) {

@@ -20,6 +20,11 @@ CString CProductTengxunRT::CreateMessage() {
 	return m_strInquiryFunction + strStocks;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// todo 解析实时数据是本系统中最耗时的任务，考虑采用工作线程的模式改写之，这样可以利用多个CPU。可以四个解析任务并行执行。
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseTengxunRTData(pWebData);
 

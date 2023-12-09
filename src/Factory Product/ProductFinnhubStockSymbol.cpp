@@ -26,7 +26,7 @@ bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	const auto strExchangeCode = GetMarket()->GetStockExchangeCode(m_lIndex);
 	const auto pvStock = ParseFinnhubStockSymbol(pWebData);
-	const auto pExchange = gl_pWorldMarket->GetStockExchange(m_lIndex);
+	const auto pExchange = GetMarket()->GetStockExchange(m_lIndex);
 	pExchange->SetStockSymbolUpdated(true);
 	// 加上交易所代码。
 	for (const auto& pStock3 : *pvStock) {
@@ -90,16 +90,8 @@ CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const C
 	CWorldStockPtr pStock = nullptr;
 	string s, sError;
 
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvStock;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = VOID_DATA_;
-		return pvStock;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return pvStock;
-	}
+	if (!IsValidData(pWebData)) return pvStock;
+
 	auto pjs = pWebData->GetJSon();
 	try {
 		for (auto it = pjs->begin(); it != pjs->end(); ++it) {

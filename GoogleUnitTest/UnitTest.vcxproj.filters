@@ -145,6 +145,9 @@
     <Filter Include="Mock class\Data Container">
       <UniqueIdentifier>{0f8041e7-12c6-4ece-9038-3a8821de651d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Factory Product\ChinaMarket">
+      <UniqueIdentifier>{0957aa20-c814-4c6e-a498-30e7397787d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -504,26 +507,11 @@
     <ClCompile Include="ProductDummyTest.cpp">
       <Filter>Test源文件\Factory Product</Filter>
     </ClCompile>
-    <ClCompile Include="ProductSinaRTTest.cpp">
-      <Filter>Test源文件\Factory Product</Filter>
-    </ClCompile>
-    <ClCompile Include="ProductTengxunRTTest.cpp">
-      <Filter>Test源文件\Factory Product</Filter>
-    </ClCompile>
-    <ClCompile Include="ProductNeteaseRTTest.cpp">
-      <Filter>Test源文件\Factory Product</Filter>
-    </ClCompile>
     <ClCompile Include="ContainerVirtualStockTest.cpp">
       <Filter>Test源文件\Data Container</Filter>
     </ClCompile>
     <ClCompile Include="NeteaseRTDataParserTest.cpp">
       <Filter>Test源文件\accessory</Filter>
-    </ClCompile>
-    <ClCompile Include="ProductNeteaseDayLineTest.cpp">
-      <Filter>Test源文件\Factory Product</Filter>
-    </ClCompile>
-    <ClCompile Include="ProductTengxunDayLineTest.cpp">
-      <Filter>Test源文件\Factory Product</Filter>
     </ClCompile>
     <ClCompile Include="VirtualDataSourceTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
@@ -605,6 +593,27 @@
     </ClCompile>
     <ClCompile Include="ProductFinnhubMarketHolidayTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductNeteaseDayLineTest.cpp">
+      <Filter>Test源文件\Factory Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductNeteaseRTTest.cpp">
+      <Filter>Test源文件\Factory Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductSinaRTTest.cpp">
+      <Filter>Test源文件\Factory Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductTengxunDayLineTest.cpp">
+      <Filter>Test源文件\Factory Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductTengxunRTTest.cpp">
+      <Filter>Test源文件\Factory Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualWorldMarketWebProductTest.cpp">
+      <Filter>Test源文件\Factory Product</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualChinaMarketWebProductTest.cpp">
+      <Filter>Test源文件\Factory Product</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -6,12 +6,12 @@
 
 using std::out_of_range;
 
-bool CProductFinnhub::CheckNoRightToAccess(CWebDataPtr pWebData) {
+bool CProductFinnhub::CheckAccessRight(CWebDataPtr pWebData) {
 	if (pWebData->CheckNoRightToAccess()) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return true;
+		return false;
 	}
-	else return false;
+	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,4 +35,18 @@ void CProductFinnhub::AddInaccessibleExchange() {
 		pNewExchange->AddExchange(m_strInquiringExchange);
 		gl_finnhubInaccessibleExchange.SetExchange(m_iProductType, pNewExchange);
 	}
+}
+
+bool CProductFinnhub::IsValidData(const CWebDataPtr& pWebData) {
+	ASSERT(pWebData->IsJSonContentType());
+	if (!pWebData->IsParsed()) return false;
+	if (pWebData->IsVoidJson()) {
+		m_iReceivedDataStatus = VOID_DATA_;
+		return false;
+	}
+	if (pWebData->CheckNoRightToAccess()) {
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		return false;
+	}
+	return true;
 }

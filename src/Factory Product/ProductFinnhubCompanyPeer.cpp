@@ -37,15 +37,7 @@ bool CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
 json CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(const CWebDataPtr& pWebData) {
 	json jsonPeer; // 默认的空状态（没有竞争对手)
 
-	string sError;
-
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return jsonPeer;
-
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return jsonPeer;
-	}
+	if (!IsValidData(pWebData)) return jsonPeer;
 
 	return *pWebData->GetJSon();
 }

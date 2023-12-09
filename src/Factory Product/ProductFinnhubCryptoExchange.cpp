@@ -46,16 +46,8 @@ shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExc
 	string sError;
 	auto pvExchange = make_shared<vector<CString>>();
 
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvExchange;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = VOID_DATA_;
-		return pvExchange;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return pvExchange;
-	}
+	if (!IsValidData(pWebData)) return pvExchange;
+
 	const auto pjs = pWebData->GetJSon();
 	try {
 		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
@@ -70,6 +62,7 @@ shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExc
 	}
 	return pvExchange;
 }
+
 void CProductFinnhubCryptoExchange::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
 	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->m_fUpdateCryptoExchange = false;

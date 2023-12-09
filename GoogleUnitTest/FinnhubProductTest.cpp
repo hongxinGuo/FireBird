@@ -46,7 +46,7 @@ namespace FireBirdTest {
 		pWebData->CreateJson();
 		EXPECT_TRUE(pWebData->IsParsed());
 
-		EXPECT_FALSE(finnhubProduct.CheckNoRightToAccess(pWebData));
+		EXPECT_TRUE(finnhubProduct.CheckAccessRight(pWebData));
 	}
 
 	TEST_F(CFinnhubProductTest, TestCheckNoRightToAccess2) {
@@ -56,7 +56,7 @@ namespace FireBirdTest {
 		pWebData->CreateJson();
 		EXPECT_TRUE(pWebData->IsParsed());
 
-		EXPECT_TRUE(finnhubProduct.CheckNoRightToAccess(pWebData));
+		EXPECT_FALSE(finnhubProduct.CheckAccessRight(pWebData));
 	}
 
 	TEST_F(CFinnhubProductTest, TestAddInaccessibleExchange) {

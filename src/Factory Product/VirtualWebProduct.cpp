@@ -17,7 +17,7 @@ CVirtualWebProduct::CVirtualWebProduct() {
 	m_strInquiringExchange = _T("ALL"); // 默认是申请所有的交易所数据。
 }
 
-bool CVirtualWebProduct::CheckVoidJson(const CWebDataPtr& pWebData) {
+bool CVirtualWebProduct::IsVoidJson(const CWebDataPtr& pWebData) {
 	if (pWebData->IsVoidJson()) {
 		m_iReceivedDataStatus = VOID_DATA_;
 		return true;
@@ -27,7 +27,7 @@ bool CVirtualWebProduct::CheckVoidJson(const CWebDataPtr& pWebData) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 检查网站是否允许申请该类数据。
+// 检查网站是否允许申请该类数据，不允许的话将交易所加入禁入名单。
 // 如果是美国交易所不允许的话，需要连续10次不允许后才将美国交易所添加进禁入名单。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,7 +36,7 @@ bool CVirtualWebProduct::CheckInaccessible(const CWebDataPtr& pWebData) {
 
 	if (!pWebData->IsParsed()) return false;
 
-	CheckNoRightToAccess(pWebData);
+	CheckAccessRight(pWebData);
 	if (!IsNoRightToAccess()) {
 		s_iCounter = 0;
 		return false;

@@ -12,7 +12,8 @@ public:
 
 	CString CreateMessage() override;
 	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	bool ParseFinnhubStockBasicFinancial(CFinnhubStockBasicFinancialPtr& pBasicFinancial, CWebDataPtr pWebData);
+
+	CFinnhubStockBasicFinancialPtr ParseFinnhubStockBasicFinancial(CWebDataPtr pWebData);
 	bool GetSeasonData(json* pjs, vector<CValueOfPeriod>& vData, const char* szMsg);
 	bool ParseVector(json* pjs, vector<CValueOfPeriod>& vecData);
 };

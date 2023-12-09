@@ -46,6 +46,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
+			//EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsNeedUpdate()); //todo
 			gl_finnhubInaccessibleExchange.SetUpdate(false);
 
 			SCOPED_TRACE("");
@@ -95,7 +96,7 @@ namespace FireBirdTest {
 		pWebData->SetJSonContentType(true);
 		EXPECT_TRUE(pWebData->IsVoidJson());
 
-		EXPECT_TRUE(webProduct.CheckVoidJson(pWebData));
+		EXPECT_TRUE(webProduct.IsVoidJson(pWebData));
 
 		EXPECT_TRUE(webProduct.IsVoidData());
 	}
@@ -107,7 +108,7 @@ namespace FireBirdTest {
 		pWebData->SetJSonContentType(true);
 		EXPECT_FALSE(pWebData->IsVoidJson());
 
-		EXPECT_FALSE(webProduct.CheckVoidJson(pWebData));
+		EXPECT_FALSE(webProduct.IsVoidJson(pWebData));
 
 		EXPECT_FALSE(webProduct.IsVoidData());
 	}

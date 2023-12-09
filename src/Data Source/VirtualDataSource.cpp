@@ -70,7 +70,7 @@ void CVirtualDataSource::Run(const long lCurrentLocalMarketTime) {
 	}
 }
 
-UINT ThreadGetWebDataAndProcessIt(CVirtualDataSourcePtr pDataSource) {
+UINT ThreadGetWebDataAndProcessIt(const CVirtualDataSourcePtr& pDataSource) {
 	gl_ThreadStatus.IncreaseWebInquiringThread();
 	pDataSource->GetWebDataAndProcessIt();
 	gl_ThreadStatus.DecreaseWebInquiringThread();

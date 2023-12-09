@@ -502,18 +502,17 @@ namespace FireBirdTest {
 		                         &finnhubWebData1005,&finnhubWebData1006, &finnhubWebData1007));
 
 	TEST_P(ParseFinnhubStockBasicFinancialTest, TestParseFinnhubInsiderTransaction0) {
-		CFinnhubStockBasicFinancialPtr pBasicFinancial;
-		const bool fSucceed = m_finnhubCompanyBasicFinancial.ParseFinnhubStockBasicFinancial(pBasicFinancial, m_pWebData);
+		CFinnhubStockBasicFinancialPtr pBasicFinancial = m_finnhubCompanyBasicFinancial.ParseFinnhubStockBasicFinancial(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(pBasicFinancial == nullptr);
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(pBasicFinancial == nullptr);
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 2: // 正确
-			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(pBasicFinancial == nullptr);
 			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("AAPL"));
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_yearToDatePriceReturnDaily, 63.01775);
@@ -524,13 +523,13 @@ namespace FireBirdTest {
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 3: //
-			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(pBasicFinancial == nullptr);
 			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("MBWS.PA")) << "BVDRF的本土代码名称为MBWS.PA";
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 4:
-			EXPECT_TRUE(fSucceed);
+			EXPECT_FALSE(pBasicFinancial == nullptr);
 			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("OTSCS"));
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_52WeekHigh, 1.18);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_52WeekLow, 1.0);

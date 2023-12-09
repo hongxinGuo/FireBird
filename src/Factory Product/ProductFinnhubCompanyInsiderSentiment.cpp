@@ -74,16 +74,8 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 	string stockSymbol;
 	CInsiderSentimentPtr pInsiderSentiment = nullptr;
 
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return pvInsiderSentiment;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = VOID_DATA_;
-		return pvInsiderSentiment;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return pvInsiderSentiment;
-	}
+	if (!IsValidData(pWebData)) return pvInsiderSentiment;
+
 	const auto pjs = pWebData->GetJSon();
 	try {
 		pt1 = jsonGetChild(pjs, _T("data"));

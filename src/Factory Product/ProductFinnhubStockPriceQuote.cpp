@@ -46,16 +46,8 @@ bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) 
 }
 
 bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(const CWebDataPtr& pWebData, const CWorldStockPtr& pStock) {
-	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return false;
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = VOID_DATA_;
-		return false;
-	}
-	if (pWebData->CheckNoRightToAccess()) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return false;
-	}
+	if (!IsValidData(pWebData)) return false;
+
 	const auto pjs = pWebData->GetJSon();
 	try {
 		double dTemp = jsonGetDouble(pjs, _T("c"));
