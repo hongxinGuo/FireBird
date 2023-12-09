@@ -25,10 +25,14 @@ public:
 	CString m_strName;
 	CString m_strMic;
 	CString m_strTimeZone;
+	CString m_strPreMarket;
 	CString m_strHour;
+	CString m_strPostMarket;
 	CString m_strCloseDate;
 	CString m_strCountry;
+	CString m_strCountryName;
 	CString m_strSource;
+	CString m_strMyUnknownColumn;
 
 	bool m_fStockSymbolUpdated;
 	bool m_fMarketStatusUpdated;

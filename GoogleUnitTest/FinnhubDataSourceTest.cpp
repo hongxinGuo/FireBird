@@ -211,7 +211,7 @@ namespace FireBirdTest {
 		CFinnhubStockExchangePtr pExchange;
 		CVirtualProductWebDataPtr p = nullptr;
 
-		EXPECT_EQ(gl_pWorldMarket->GetStockExchangeSize(), 70);
+		EXPECT_EQ(gl_pWorldMarket->GetStockExchangeSize(), 81);
 		for (int i = 0; i < gl_pWorldMarket->GetStockExchangeSize(); i++) {
 			pExchange = gl_pWorldMarket->GetStockExchange(i);
 			pExchange->m_fStockSymbolUpdated = true;

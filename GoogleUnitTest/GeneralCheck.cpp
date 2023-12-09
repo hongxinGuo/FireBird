@@ -71,8 +71,8 @@ namespace FireBirdTest {
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
 
-			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 14) << "最初装载了14个";
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载了10个";
+			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 15) << "最初装载了15个";
+			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "最初装载了11个";
 
 			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 

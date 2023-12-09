@@ -52,15 +52,15 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData72(2, _T(""), _T("\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+	Test_FinnhubWebData finnhubWebData72(2, _T(""), _T("\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"fxpig\"]"));
 	// 格式不对
-	Test_FinnhubWebData finnhubWebData73(3, _T(""), _T("[\"oanda\",fxcm,\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+	Test_FinnhubWebData finnhubWebData73(3, _T(""), _T("[\"oanda\",fxcm,\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"fxpig\"]"));
 	// 空数据
 	Test_FinnhubWebData finnhubWebData74(4, _T(""), _T("{}"));
 	// 无权访问数据
 	Test_FinnhubWebData finnhubWebData75(5, _T(""), _T("{\"error\":\"You don't have access to this resource.\"}"));
 	// 正确的数据
-	Test_FinnhubWebData finnhubWebData80(10, _T(""), _T("[\"new exchange\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+	Test_FinnhubWebData finnhubWebData80(10, _T(""), _T("[\"new exchange\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"fxpig\"]"));
 
 	class ParseFinnhubForexExchangeTest : public TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -110,7 +110,7 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_STREQ(m_pvExchange->at(0), _T("new exchange"));
 			EXPECT_STREQ(m_pvExchange->at(1), _T("fxcm"));
-			EXPECT_EQ(m_pvExchange->size(), 9);
+			EXPECT_EQ(m_pvExchange->size(), 8);
 			break;
 		default:
 			break;
@@ -129,7 +129,7 @@ namespace FireBirdTest {
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubForexExchange.SetMarket(gl_pWorldMarket);
 			EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateForexExchange());
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载了10个";
+			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "最初装载了11个";
 		}
 
 		void TearDown() override {
@@ -138,7 +138,7 @@ namespace FireBirdTest {
 
 			SCOPED_TRACE("");
 			GeneralCheck();
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载了10个";
+			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "最初装载了11个";
 		}
 
 	public:
@@ -154,19 +154,19 @@ namespace FireBirdTest {
 		m_finnhubForexExchange.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载的10个";
+			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "最初装载的11个";
 			break;
 		case 3: // 缺乏字符串
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载的10个";
+			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "最初装载的11个";
 			break;
 		case 4:
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载的10个";
+			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "最初装载的11个";
 			break;
 		case 5:
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 10) << "最初装载的10个";
+			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "最初装载的11个";
 			break;
 		case 10:
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "加入了new exchange这个新的交易所";
+			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 12) << "加入了new exchange这个新的交易所";
 
 			EXPECT_TRUE(gl_pWorldMarket->DeleteForexExchange(_T("new exchange"))); // 清除new exchange这个新加入的
 			break;

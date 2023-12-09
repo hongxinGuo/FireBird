@@ -25,10 +25,14 @@ public:
 	CString m_Name;
 	CString m_Mic;
 	CString m_TimeZone;
+	CString m_PreMarket;
 	CString m_Hour;
+	CString m_PostMarket;
 	CString m_CloseDate;
 	CString m_Country;
+	CString m_CountryName;
 	CString m_Source;
+	CString m_MyUnknownColumn;
 
 public:
 	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX Ö§³Ö

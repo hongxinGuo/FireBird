@@ -173,8 +173,11 @@ namespace FireBirdTest {
 		pWebData->CreateJson();
 		pWebData->SetJSonContentType(true);
 		pWebData->SetParsed(true);
-		finnhubWebProduct.SetInquiringExchange(_T("US"));
+		finnhubWebProduct.SetInquiringExchange(_T("AD"));
 		finnhubWebProduct.SetProductType(STOCK_PRICE_CANDLES_);
+		finnhubWebProduct.CheckInaccessible(pWebData); // 重置内部静态数据
+
+		finnhubWebProduct.SetInquiringExchange(_T("US"));
 
 		for (int i = 0; i < 10; i++) {
 			finnhubWebProduct.CheckInaccessible(pWebData);
@@ -186,5 +189,6 @@ namespace FireBirdTest {
 
 		// 恢复原状
 		gl_finnhubInaccessibleExchange.GetExchange(STOCK_PRICE_CANDLES_)->DeleteExchange(_T("US"));
+		gl_finnhubInaccessibleExchange.GetExchange(STOCK_PRICE_CANDLES_)->DeleteExchange(_T("AD"));
 	}
 }

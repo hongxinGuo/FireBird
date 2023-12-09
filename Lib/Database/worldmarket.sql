@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: localhost    Database: worldmarket
 -- ------------------------------------------------------
--- Server version	8.0.32
+-- Server version	8.0.35
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -79,7 +79,7 @@ CREATE TABLE `country_list` (
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   KEY `Code` (`Code2`) /*!80000 INVISIBLE */,
   KEY `CurrencyCode` (`CurrencyCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=499 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=535 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,26 +140,6 @@ CREATE TABLE `economic_calendar` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `eps_surprise`
---
-
-DROP TABLE IF EXISTS `eps_surprise`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `eps_surprise` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `Symbol` varchar(45) DEFAULT ' ',
-  `Date` int DEFAULT '0',
-  `Actual` double DEFAULT '0',
-  `Estimate` double DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ID_UNIQUE` (`ID`),
-  KEY `Symbol` (`Symbol`),
-  KEY `Date` (`Date`)
-) ENGINE=InnoDB AUTO_INCREMENT=103544 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `finnhub_company_exective`
 --
 
@@ -203,7 +183,7 @@ CREATE TABLE `finnhub_company_news` (
   PRIMARY KEY (`ID`),
   KEY `DateTime` (`DateTime`),
   KEY `Symbol` (`Symbol`,`DateTime`)
-) ENGINE=InnoDB AUTO_INCREMENT=7267547 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9724926 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -215,16 +195,20 @@ DROP TABLE IF EXISTS `finnhub_crypto_exchange`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `finnhub_crypto_exchange` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Code` varchar(45) DEFAULT '',
-  `Name` varchar(100) DEFAULT '',
-  `Mic` varchar(45) DEFAULT '',
-  `TimeZone` varchar(45) DEFAULT '',
-  `Hour` varchar(45) DEFAULT '',
-  `CloseDate` varchar(45) DEFAULT '',
-  `Country` varchar(45) DEFAULT '',
-  `Source` varchar(100) DEFAULT '',
+  `code` varchar(45) DEFAULT '',
+  `name` varchar(100) DEFAULT '',
+  `mic` varchar(45) DEFAULT '',
+  `timezone` varchar(45) DEFAULT '',
+  `pre_market` text,
+  `post_market` text,
+  `hour` varchar(45) DEFAULT '',
+  `close_date` varchar(45) DEFAULT '',
+  `country` varchar(45) DEFAULT '',
+  `country_name` text,
+  `source` varchar(100) DEFAULT '',
+  `MyUnknownColumn` text,
   PRIMARY KEY (`ID`),
-  KEY `Exchange` (`Code`)
+  KEY `Exchange` (`code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -247,7 +231,7 @@ CREATE TABLE `finnhub_crypto_symbol` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`) /*!80000 INVISIBLE */,
   KEY `Symbol` (`Symbol`)
-) ENGINE=InnoDB AUTO_INCREMENT=24292 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=377483 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -259,18 +243,22 @@ DROP TABLE IF EXISTS `finnhub_forex_exchange`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `finnhub_forex_exchange` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Code` varchar(45) DEFAULT ' ',
-  `Name` varchar(100) DEFAULT '',
-  `Mic` varchar(45) DEFAULT '',
-  `TimeZone` varchar(45) DEFAULT '',
-  `Hour` varchar(45) DEFAULT '',
-  `CloseDate` varchar(45) DEFAULT '',
-  `Country` varchar(45) DEFAULT '',
-  `Source` varchar(100) DEFAULT '',
+  `code` varchar(45) DEFAULT ' ',
+  `name` varchar(100) DEFAULT '',
+  `mic` varchar(45) DEFAULT '',
+  `timezone` varchar(45) DEFAULT '',
+  `pre_market` varchar(45) DEFAULT NULL,
+  `hour` varchar(45) DEFAULT '',
+  `post_market` text,
+  `close_date` varchar(45) DEFAULT '',
+  `country` varchar(45) DEFAULT '',
+  `country_name` text,
+  `source` varchar(100) DEFAULT '',
+  `MyUnknownColumn` text,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`),
-  KEY `Exchange` (`Code`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `Exchange` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -293,21 +281,6 @@ CREATE TABLE `finnhub_forex_symbol` (
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   KEY `Symbol` (`Symbol`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1436 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `finnhub_inaccessible_exchange`
---
-
-DROP TABLE IF EXISTS `finnhub_inaccessible_exchange`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `finnhub_inaccessible_exchange` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) DEFAULT NULL COMMENT 'finnhub功能名称。',
-  `exchange_list` varchar(1000) DEFAULT NULL COMMENT 'json形式的交易所名单。格式为{ "ExchangeList":["US","SS","SZ"]}',
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='finnhub无法接收的证券所名单。当使用免费账户时，许多信息不被允许接收。';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -366,7 +339,7 @@ CREATE TABLE `finnhub_stock_basic_financials_annual` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   KEY `Symbol` (`Symbol`,`Date`,`Type`)
-) ENGINE=InnoDB AUTO_INCREMENT=5685562 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7071550 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -511,7 +484,7 @@ CREATE TABLE `finnhub_stock_basic_financials_metric` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   KEY `Symbol` (`Symbol`)
-) ENGINE=InnoDB AUTO_INCREMENT=38466 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40990 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -530,7 +503,27 @@ CREATE TABLE `finnhub_stock_basic_financials_quarterly` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   KEY `Symbol` (`Symbol`,`Date`)
-) ENGINE=InnoDB AUTO_INCREMENT=17321332 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20517553 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `finnhub_stock_estimates_eps_surprise`
+--
+
+DROP TABLE IF EXISTS `finnhub_stock_estimates_eps_surprise`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `finnhub_stock_estimates_eps_surprise` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `Symbol` varchar(45) DEFAULT ' ',
+  `Date` int DEFAULT '0',
+  `Actual` double DEFAULT '0',
+  `Estimate` double DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`),
+  KEY `Symbol` (`Symbol`),
+  KEY `Date` (`Date`)
+) ENGINE=InnoDB AUTO_INCREMENT=151136 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -542,16 +535,21 @@ DROP TABLE IF EXISTS `finnhub_stock_exchange`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `finnhub_stock_exchange` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Code` varchar(45) DEFAULT NULL,
-  `Name` varchar(100) DEFAULT '',
-  `Mic` varchar(45) DEFAULT '',
-  `TimeZone` varchar(45) DEFAULT '',
-  `Hour` varchar(45) DEFAULT '',
-  `CloseDate` varchar(45) DEFAULT '',
-  `Country` varchar(45) DEFAULT '',
-  `Source` varchar(100) DEFAULT '',
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `code` text,
+  `name` text,
+  `mic` text,
+  `timezone` text,
+  `pre_market` text,
+  `hour` text,
+  `post_market` text,
+  `close_date` text,
+  `country` text,
+  `country_name` text,
+  `source` text,
+  `MyUnknownColumn` text,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -562,17 +560,21 @@ DROP TABLE IF EXISTS `finnhub_stock_exchange_old`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `finnhub_stock_exchange_old` (
+  `code` text,
+  `name` text,
+  `mic` text,
+  `timezone` text,
+  `pre_market` text,
+  `hour` text,
+  `post_market` text,
+  `close_date` text,
+  `country` text,
+  `country_name` text,
+  `source` text,
+  `MyUnknownColumn` text,
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Code` varchar(45) DEFAULT NULL,
-  `Name` varchar(100) DEFAULT '',
-  `Mic` varchar(45) DEFAULT '',
-  `TimeZone` varchar(45) DEFAULT '',
-  `Hour` varchar(45) DEFAULT '',
-  `CloseDate` varchar(45) DEFAULT '',
-  `Country` varchar(45) DEFAULT '',
-  `Source` varchar(100) DEFAULT '',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -646,7 +648,7 @@ CREATE TABLE `insider_sentiment` (
   `mspr` double DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `Symbol` (`Symbol`)
-) ENGINE=InnoDB AUTO_INCREMENT=200850 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=241884 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -667,11 +669,11 @@ CREATE TABLE `insider_transaction` (
   `TransactionCode` varchar(5) DEFAULT NULL,
   `TransactionPrice` double DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `Symbol` (`Symbol`) /*!80000 INVISIBLE */,
   KEY `TransactionDate` (`TransactionDate`) /*!80000 INVISIBLE */,
   KEY `PersonName` (`PersonName`),
-  KEY `TransactionCode` (`TransactionCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=724672 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `TransactionCode` (`TransactionCode`),
+  KEY `Symbol` (`Symbol`,`TransactionDate`) /*!80000 INVISIBLE */
+) ENGINE=InnoDB AUTO_INCREMENT=1291517 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -743,7 +745,7 @@ CREATE TABLE `stock_dayline` (
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   KEY `Date` (`Date`,`Symbol`),
   KEY `Symbol` (`Symbol`)
-) ENGINE=InnoDB AUTO_INCREMENT=18830535 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21934006 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -794,8 +796,8 @@ CREATE TABLE `stock_profile` (
   `DayLineEndDate` int DEFAULT '19800101',
   `IPOStatus` int DEFAULT '128',
   `TiingoPermaTicker` varchar(45) DEFAULT ' ',
-  `IsActive` tinyint DEFAULT NULL,
-  `IsADR` tinyint DEFAULT NULL,
+  `IsActive` tinyint DEFAULT '1',
+  `IsADR` tinyint DEFAULT '0',
   `TiingoIndustry` varchar(100) DEFAULT ' ',
   `TiingoSector` varchar(100) DEFAULT ' ',
   `SICCode` int DEFAULT '0',
@@ -808,8 +810,8 @@ CREATE TABLE `stock_profile` (
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   KEY `DayLineStartDate` (`DayLineStartDate`),
   KEY `DayLineEndDate` (`DayLineEndDate`),
-  KEY `Symbol` (`Symbol`,`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=38595 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='所有股票的基本情况。';
+  KEY `Symbol` (`Symbol`)
+) ENGINE=InnoDB AUTO_INCREMENT=41156 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='所有股票的基本情况。';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -831,7 +833,7 @@ CREATE TABLE `tiingo_crypto_symbol` (
   KEY `BaseCurrency` (`BaseCurrency`) /*!80000 INVISIBLE */,
   KEY `QuoteCurrency` (`QuoteCurrency`) /*!80000 INVISIBLE */,
   KEY `Ticker` (`Ticker`)
-) ENGINE=InnoDB AUTO_INCREMENT=202095 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='tiingo crypto代码';
+) ENGINE=InnoDB AUTO_INCREMENT=237698 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='tiingo crypto代码';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -876,7 +878,7 @@ CREATE TABLE `tiingo_stock_fundanmental` (
   `StatementUpdateDate` int DEFAULT '19800101',
   `DailyDataUpdateDate` int DEFAULT '19800101',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=58646 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59123 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -908,4 +910,4 @@ CREATE TABLE `world_market_option` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-19 19:27:11
+-- Dump completed on 2023-12-09 13:17:33

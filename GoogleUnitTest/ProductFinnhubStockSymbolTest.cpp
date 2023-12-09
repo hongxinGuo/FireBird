@@ -178,7 +178,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(gl_pWorldMarket->IsStock(_T("New Symbol"))) << "新增加的代码";
 			pStock = gl_pWorldMarket->GetStock(_T("New Symbol"));
-			EXPECT_STREQ(pStock->GetExchangeCode(), _T("AS")) << "第一个交易所";
+			EXPECT_STREQ(pStock->GetExchangeCode(), _T("AD")) << "第一个交易所";
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
 

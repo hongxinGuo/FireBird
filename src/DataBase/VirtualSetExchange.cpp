@@ -11,11 +11,15 @@ CVirtualSetExchange::CVirtualSetExchange(const CString& strSchema, const CString
 	m_Name = _T("");
 	m_Mic = _T("");
 	m_TimeZone = _T("");
+	m_PreMarket = _T("");
 	m_Hour = _T("");
+	m_PostMarket = _T("");
 	m_CloseDate = _T("");
 	m_Country = _T("");
+	m_CountryName = _T("");
 	m_Source = _T("");
-	m_nFields = 9;
+	m_MyUnknownColumn = _T("");
+	m_nFields = 13;
 }
 
 void CVirtualSetExchange::DoFieldExchange(CFieldExchange* pFX) {
@@ -24,12 +28,16 @@ void CVirtualSetExchange::DoFieldExchange(CFieldExchange* pFX) {
 	// 成员变量的类型，而不是数据库字段的类型。
 	// ODBC 尝试自动将列值转换为所请求的类型
 	RFX_Long(pFX, _T("[ID]"), m_ID);
-	RFX_Text(pFX, _T("[Code]"), m_Code);
-	RFX_Text(pFX, _T("[Name]"), m_Name);
-	RFX_Text(pFX, _T("[Mic]"), m_Mic);
-	RFX_Text(pFX, _T("[TimeZone]"), m_TimeZone);
-	RFX_Text(pFX, _T("[Hour]"), m_Hour);
-	RFX_Text(pFX, _T("[CloseDate]"), m_CloseDate);
-	RFX_Text(pFX, _T("[Country]"), m_Country);
-	RFX_Text(pFX, _T("[Source]"), m_Source);
+	RFX_Text(pFX, _T("[code]"), m_Code);
+	RFX_Text(pFX, _T("[name]"), m_Name);
+	RFX_Text(pFX, _T("[mic]"), m_Mic);
+	RFX_Text(pFX, _T("[timezone]"), m_TimeZone);
+	RFX_Text(pFX, _T("[pre_market]"), m_PreMarket);
+	RFX_Text(pFX, _T("[hour]"), m_Hour);
+	RFX_Text(pFX, _T("[post_market]"), m_PostMarket);
+	RFX_Text(pFX, _T("[close_date]"), m_CloseDate);
+	RFX_Text(pFX, _T("[country]"), m_Country);
+	RFX_Text(pFX, _T("[country_name]"), m_CountryName);
+	RFX_Text(pFX, _T("[source]"), m_Source);
+	RFX_Text(pFX, _T("[MyUnknownColumn]"), m_MyUnknownColumn);
 }
