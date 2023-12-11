@@ -178,7 +178,7 @@ bool CFinnhubDataSource::InquireMarketStatus() {
 			m_fInquiringFinnhubMarketStatus = false;
 			fHaveInquiry = false;
 			SetUpdateMarketStatus(false);
-			const CString str = "Finnhub MarketStatus查询完毕";
+			const CString str = "Inquire finnhub MarketStatus finished";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -195,7 +195,7 @@ bool CFinnhubDataSource::InquireMarketHoliday() {
 		bool fFound = false;
 		long lCurrentStockExchangePos;
 		if (!m_fInquiringFinnhubMarketHoliday) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub MarketHoliday..."));
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub market holiday..."));
 			m_fInquiringFinnhubMarketHoliday = true;
 		}
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
@@ -219,7 +219,7 @@ bool CFinnhubDataSource::InquireMarketHoliday() {
 			m_fInquiringFinnhubMarketHoliday = false;
 			fHaveInquiry = false;
 			SetUpdateMarketHoliday(false);
-			const CString str = "Finnhub MarketHoliday查询完毕";
+			const CString str = "Inquire finnhub market holiday finished";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -611,7 +611,6 @@ bool CFinnhubDataSource::InquireEPSSurprise() {
 	if (!IsInquiring() && IsUpdateEPSSurprise()) {
 		CWorldStockPtr pStock;
 		bool fFound = false;
-		long;
 		if (!m_fInquiringFinnhubStockEPSSurprise) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock EPS surprise..."));
 			m_fInquiringFinnhubStockEPSSurprise = true;

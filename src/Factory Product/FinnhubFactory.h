@@ -4,9 +4,9 @@
 
 class CFinnhubFactory final : public CVirtualDataFactory {
 public:
-	CFinnhubFactory() { }
+	CFinnhubFactory() {}
 
 	~CFinnhubFactory() override = default;
 
-	CVirtualProductWebDataPtr CreateProduct(CVirtualMarketPtr pMarket, int iiProductType) override;
+	CVirtualProductWebDataPtr CreateProduct(CVirtualMarketPtr pMarket, int iProductType) override;
 };

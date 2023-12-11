@@ -4,9 +4,9 @@
 
 class CQuandlFactory final : public CVirtualDataFactory {
 public:
-	CQuandlFactory() { }
+	CQuandlFactory() {}
 
 	~CQuandlFactory() override = default;
 
-	CVirtualProductWebDataPtr CreateProduct(CVirtualMarketPtr pMarket, int iiProductType) override;
+	CVirtualProductWebDataPtr CreateProduct(CVirtualMarketPtr pMarket, int iProductType) override;
 };

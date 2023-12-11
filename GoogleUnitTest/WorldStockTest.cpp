@@ -884,7 +884,9 @@ namespace FireBirdTest {
 		pInsiderTransaction->m_strPersonName = _T("a b c");
 		pInsiderTransaction->m_lTransactionDate = 20210124; // 这个日期不符，需要添加进数据库
 		vInsiderTransaction.push_back(pInsiderTransaction);
+		pInsiderTransaction = make_shared<CInsiderTransaction>();
 		pInsiderTransaction->m_strSymbol = _T("A");
+		pInsiderTransaction->m_lTransactionDate = 20210107;
 		pInsiderTransaction->m_strPersonName = _T("a b c");
 		pInsiderTransaction->m_strTransactionCode = _T("S"); // 这个交易类型不符，需要添加进数据库
 		vInsiderTransaction.push_back(pInsiderTransaction);

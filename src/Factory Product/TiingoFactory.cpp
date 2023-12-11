@@ -12,10 +12,10 @@
 
 #include"ProductDummy.h"
 
-CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarket, int iiProductType) {
+CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarket, int iProductType) {
 	CVirtualProductWebDataPtr p = nullptr;
 
-	switch (iiProductType) {
+	switch (iProductType) {
 	case STOCK_SYMBOLS_:
 		p = make_shared<CProductTiingoStockSymbol>();
 		break;
@@ -70,7 +70,7 @@ CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarke
 		break;
 	}
 	p->SetMarket(pMarket);
-	p->SetProductType(iiProductType);
+	p->SetProductType(iProductType);
 
 	return p;
 }

@@ -186,6 +186,22 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateEPSSurprise());
 	}
 
+	TEST_F(CFinnhubDataSourceTest, TestIsUpdateMarketStatus) {
+		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateMarketStatus());
+		m_FinnhubDataSource.SetUpdateMarketStatus(false);
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateMarketStatus());
+		m_FinnhubDataSource.SetUpdateMarketStatus(true);
+		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateMarketStatus());
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestIsUpdateMarketHoliday) {
+		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateMarketHoliday());
+		m_FinnhubDataSource.SetUpdateMarketHoliday(false);
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateMarketHoliday());
+		m_FinnhubDataSource.SetUpdateMarketHoliday(true);
+		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateMarketHoliday());
+	}
+
 	TEST_F(CFinnhubDataSourceTest, TestInquireCountryList) {
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateCountryList());
 		m_FinnhubDataSource.SetUpdateCountryList(false);
@@ -205,6 +221,106 @@ namespace FireBirdTest {
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(p->GetClassName(), _T("Finnhub economic country list"));
 		EXPECT_EQ(m_FinnhubDataSource.GetInquiryQueueSize(), 0);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestInquireFinnhubMarketStatus) {
+		CFinnhubStockExchangePtr pExchange;
+		CVirtualProductWebDataPtr p = nullptr;
+
+		EXPECT_EQ(gl_pWorldMarket->GetStockExchangeSize(), 81);
+		for (int i = 0; i < gl_pWorldMarket->GetStockExchangeSize(); i++) {
+			pExchange = gl_pWorldMarket->GetStockExchange(i);
+			pExchange->m_fMarketStatusUpdated = true;
+		}
+		gl_pWorldMarket->GetStockExchange(1)->m_fMarketStatusUpdated = false;
+		gl_pWorldMarket->GetStockExchange(10)->m_fMarketStatusUpdated = false;
+		m_FinnhubDataSource.SetUpdateMarketStatus(false);
+		EXPECT_FALSE(m_FinnhubDataSource.InquireMarketStatus()) << "Market status Updated";
+
+		m_FinnhubDataSource.SetUpdateMarketStatus(true);
+		m_FinnhubDataSource.SetInquiring(true);
+		EXPECT_FALSE(m_FinnhubDataSource.InquireMarketStatus()) << "其他FinnhubInquiry正在进行";
+
+		m_FinnhubDataSource.SetInquiring(false);
+		EXPECT_TRUE(m_FinnhubDataSource.InquireMarketStatus());
+		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		p = m_FinnhubDataSource.GetCurrentProduct();
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubMarketStatus"));
+		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询交易所索引";
+		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(1)->m_fMarketStatusUpdated) << "查询时不更新，该标识在接收到网络数据后才更新";
+		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(10)->m_fMarketStatusUpdated);
+
+		m_FinnhubDataSource.SetInquiring(false);
+		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(1)->m_fMarketStatusUpdated);
+		gl_pWorldMarket->GetStockExchange(1)->m_fMarketStatusUpdated = true;
+		EXPECT_TRUE(m_FinnhubDataSource.InquireMarketStatus());
+		p = m_FinnhubDataSource.GetCurrentProduct();
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubMarketStatus"));
+		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询交易所索引";
+		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(10)->m_fMarketStatusUpdated) << "查询时不更新，该标识在接收到网络数据后才更新";
+
+		m_FinnhubDataSource.SetInquiring(false);
+		gl_pWorldMarket->GetStockExchange(10)->m_fMarketStatusUpdated = true;
+		EXPECT_FALSE(m_FinnhubDataSource.InquireMarketStatus()) << "第三次查询时没有找到待查询的交易所";
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateMarketStatus()) << "交易所都查询完了";
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
+		CString str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str, _T("Inquiring finnhub MarketStatus..."));
+		str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str, _T("Inquire finnhub MarketStatus finished"));
+
+		// 恢复原状
+		m_FinnhubDataSource.SetUpdateMarketStatus(true);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestInquireFinnhubMarketHoliday) {
+		CFinnhubStockExchangePtr pExchange;
+		CVirtualProductWebDataPtr p = nullptr;
+
+		EXPECT_EQ(gl_pWorldMarket->GetStockExchangeSize(), 81);
+		for (int i = 0; i < gl_pWorldMarket->GetStockExchangeSize(); i++) {
+			pExchange = gl_pWorldMarket->GetStockExchange(i);
+			pExchange->m_fMarketHolidayUpdated = true;
+		}
+		gl_pWorldMarket->GetStockExchange(1)->m_fMarketHolidayUpdated = false;
+		gl_pWorldMarket->GetStockExchange(10)->m_fMarketHolidayUpdated = false;
+		m_FinnhubDataSource.SetUpdateMarketHoliday(false);
+		EXPECT_FALSE(m_FinnhubDataSource.InquireMarketHoliday()) << "Market Holiday Updated";
+
+		m_FinnhubDataSource.SetUpdateMarketHoliday(true);
+		m_FinnhubDataSource.SetInquiring(true);
+		EXPECT_FALSE(m_FinnhubDataSource.InquireMarketHoliday()) << "其他FinnhubInquiry正在进行";
+
+		m_FinnhubDataSource.SetInquiring(false);
+		EXPECT_TRUE(m_FinnhubDataSource.InquireMarketHoliday());
+		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		p = m_FinnhubDataSource.GetCurrentProduct();
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubMarketHoliday"));
+		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询交易所索引";
+		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(1)->m_fMarketHolidayUpdated) << "查询时不更新，该标识在接收到网络数据后才更新";
+		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(10)->m_fMarketHolidayUpdated);
+
+		m_FinnhubDataSource.SetInquiring(false);
+		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(1)->m_fMarketHolidayUpdated);
+		gl_pWorldMarket->GetStockExchange(1)->m_fMarketHolidayUpdated = true;
+		EXPECT_TRUE(m_FinnhubDataSource.InquireMarketHoliday());
+		p = m_FinnhubDataSource.GetCurrentProduct();
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubMarketHoliday"));
+		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询交易所索引";
+		EXPECT_FALSE(gl_pWorldMarket->GetStockExchange(10)->m_fMarketHolidayUpdated) << "查询时不更新，该标识在接收到网络数据后才更新";
+
+		m_FinnhubDataSource.SetInquiring(false);
+		gl_pWorldMarket->GetStockExchange(10)->m_fMarketHolidayUpdated = true;
+		EXPECT_FALSE(m_FinnhubDataSource.InquireMarketHoliday()) << "第三次查询时没有找到待查询的交易所";
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateMarketHoliday()) << "交易所都查询完了";
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
+		CString str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str, _T("Inquiring finnhub market holiday..."));
+		str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str, _T("Inquire finnhub market holiday finished"));
+
+		// 恢复原状
+		m_FinnhubDataSource.SetUpdateMarketHoliday(true);
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireFinnhubCompanySymbol) {

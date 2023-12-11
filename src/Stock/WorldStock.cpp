@@ -84,7 +84,7 @@ CWorldStock::CWorldStock() {
 	m_fUpdateFinnhubBasicFinancialDB = false;
 
 	m_lInsiderSentimentStartDate = 19800101;
-	m_lInsiderTransactionStartDate = 19800101;
+	m_lInsiderTransactionEndDate = 19800101;
 
 	m_pBasicFinancial = nullptr;
 
@@ -162,7 +162,7 @@ void CWorldStock::Reset() {
 	m_fUpdateFinnhubBasicFinancialDB = false;
 
 	m_lInsiderSentimentStartDate = 19800101;
-	m_lInsiderTransactionStartDate = 19800101;
+	m_lInsiderTransactionEndDate = 19800101;
 
 	m_pBasicFinancial = nullptr;
 }
@@ -441,14 +441,10 @@ void CWorldStock::SaveInsiderTransaction() {
 		while (!setInsiderTransaction.IsEOF()) {
 			pInsiderTransaction = make_shared<CInsiderTransaction>();
 			pInsiderTransaction->Load(setInsiderTransaction);
+			if (pInsiderTransaction->m_lTransactionDate > m_lInsiderTransactionEndDate) m_lInsiderTransactionEndDate = pInsiderTransaction->m_lTransactionDate;
 			vInsiderTransaction.push_back(pInsiderTransaction);
 			lSizeOfOldInsiderTransaction++;
 			setInsiderTransaction.MoveNext();
-		}
-		if (lSizeOfOldInsiderTransaction > 0) {
-			if (vInsiderTransaction.at(0)->m_lTransactionDate < m_lInsiderTransactionStartDate) {
-				m_lInsiderTransactionStartDate = vInsiderTransaction.at(0)->m_lTransactionDate;
-			}
 		}
 		setInsiderTransaction.Close();
 
@@ -457,14 +453,19 @@ void CWorldStock::SaveInsiderTransaction() {
 		setSaveInsiderTransaction.m_pDatabase->BeginTrans();
 		for (int i = 0; i < m_vInsiderTransaction.size(); i++) {
 			pInsiderTransaction = m_vInsiderTransaction.at(i);
-			if (ranges::find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
-			                    [pInsiderTransaction](const CInsiderTransactionPtr& p) {
-				                    return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
-					                    && (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
-					                    && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
-					                    && (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
-			                    }) == vInsiderTransaction.end()) { // 如果股票代码、人名、交易日期或者交易细节为新的数据，则存储该数据
-				pInsiderTransaction->Append(setSaveInsiderTransaction);
+			if (pInsiderTransaction->m_lTransactionDate > m_lInsiderTransactionEndDate) {
+				pInsiderTransaction->Append(setSaveInsiderTransaction); // 较新的数据直接存储之
+			}
+			else { // 较旧的数据？
+				if (ranges::find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
+				                    [pInsiderTransaction](const CInsiderTransactionPtr& p) {
+					                    return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
+						                    && (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
+						                    && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
+						                    && (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
+				                    }) == vInsiderTransaction.end()) { // 如果股票代码、人名、交易日期或者交易细节为新的数据，则存储该数据
+					pInsiderTransaction->Append(setSaveInsiderTransaction);
+				}
 			}
 		}
 		setSaveInsiderTransaction.m_pDatabase->CommitTrans();
@@ -497,7 +498,11 @@ void CWorldStock::SaveInsiderSentiment() {
 			lSizeOfOldInsiderSentiment++;
 			setInsiderSentiment.MoveNext();
 		}
-		if (lSizeOfOldInsiderSentiment > 0) { if (vInsiderSentiment.at(0)->m_lDate < m_lInsiderSentimentStartDate) { m_lInsiderSentimentStartDate = vInsiderSentiment.at(0)->m_lDate; } }
+		if (lSizeOfOldInsiderSentiment > 0) {
+			if (vInsiderSentiment.at(0)->m_lDate < m_lInsiderSentimentStartDate) {
+				m_lInsiderSentimentStartDate = vInsiderSentiment.at(0)->m_lDate;
+			}
+		}
 		setInsiderSentiment.Close();
 
 		setSaveInsiderSentiment.m_strFilter = _T("[ID] = 1");

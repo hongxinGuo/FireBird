@@ -250,7 +250,7 @@ public:
 	atomic_bool m_fEPSSurpriseNeedSave;
 
 	vector<CInsiderTransactionPtr> m_vInsiderTransaction;
-	long m_lInsiderTransactionStartDate;
+	long m_lInsiderTransactionEndDate;
 
 	vector<CInsiderSentimentPtr> m_vInsiderSentiment;
 	long m_lInsiderSentimentStartDate;

@@ -34,10 +34,10 @@
 
 #include "FinnhubFactory.h"
 
-CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMarket, int iiProductType) {
+CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMarket, int iProductType) {
 	CVirtualProductWebDataPtr p = nullptr;
 
-	switch (iiProductType) {
+	switch (iProductType) {
 	case COMPANY_PROFILE_: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
 		p = make_shared<CProductFinnhubCompanyProfile>();
 		break;
@@ -151,12 +151,12 @@ CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMark
 		break;
 	default:
 		p = make_shared<CProductDummy>();
-		TRACE("未处理指令%d\n", iiProductType);
+		TRACE("未处理指令%d\n", iProductType);
 		gl_systemMessage.PushErrorMessage(_T("Finnhub product未实现"));
 		break;
 	}
 	p->SetMarket(pMarket);
-	p->SetProductType(iiProductType);
+	p->SetProductType(iProductType);
 
 	return p;
 }
