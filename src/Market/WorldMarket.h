@@ -90,6 +90,7 @@ public:
 	virtual void CreateThreadUpdateForexDayLineDB(CForexSymbolPtr pSymbol);
 	virtual void CreateThreadUpdateCryptoDayLineDB(CFinnhubCryptoSymbolPtr pSymbol);
 	virtual void CreateThreadUpdateEPSSurpriseDB(CWorldStockPtr pStock);
+	virtual void CreateThreadUpdateEPSSurpriseDB2();
 
 	bool UpdateForexDayLineDB();
 	bool UpdateCryptoDayLineDB();
@@ -186,6 +187,7 @@ public:
 	bool IsUpdateInsiderSentimentDB() noexcept { return m_containerStock.IsSaveInsiderSentiment(); }
 	bool IsSaveStockDayLineDB() noexcept { return m_containerStock.IsDayLineNeedSaving(); }
 	bool IsUpdateEconomicCalendarDB() const noexcept { return m_dataFinnhubEconomicCalendar.IsNeedUpdate(); }
+	bool IsUpdateEPSSurpriseDB() noexcept { return m_containerStock.IsSaveEPSSurpriseDB(); }
 
 	bool IsNeedUpdateTiingoStock() const noexcept { return m_dataTiingoStock.IsNeedUpdate(); }
 	bool IsNeedUpdateTiingoCryptoSymbol() const noexcept { return m_dataTiingoCryptoSymbol.IsNeedUpdate(); }

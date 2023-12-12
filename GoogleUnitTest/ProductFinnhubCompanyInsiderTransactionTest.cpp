@@ -41,14 +41,26 @@ namespace FireBirdTest {
 		EXPECT_STREQ(companyInsiderTransaction.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol="));
 	}
 
-	TEST_F(CFinnhubCompanyInsiderTransactionTest, TestCreatMessage) {
+	TEST_F(CFinnhubCompanyInsiderTransactionTest, TestCreatMessage1) {
 		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderTransaction(true);
 		companyInsiderTransaction.SetMarket(gl_pWorldMarket);
 		companyInsiderTransaction.SetIndex(1);
-		EXPECT_STREQ(companyInsiderTransaction.CreateMessage(), companyInsiderTransaction.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol());
+		EXPECT_STREQ(companyInsiderTransaction.CreateMessage(), companyInsiderTransaction.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&from=19800101")) << "默认情况下日期为19800101";
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateInsiderTransaction()) << "接收到的数据处理后方设置此标识";
 
 		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderTransaction(true);
+	}
+
+	TEST_F(CFinnhubCompanyInsiderTransactionTest, TestCreatMessage2) {
+		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderTransaction(true);
+		gl_pWorldMarket->GetStock(1)->SetInsiderTransactionUpdateDate(20200101);
+		companyInsiderTransaction.SetMarket(gl_pWorldMarket);
+		companyInsiderTransaction.SetIndex(1);
+		EXPECT_STREQ(companyInsiderTransaction.CreateMessage(), companyInsiderTransaction.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&from=20200101"));
+		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateInsiderTransaction()) << "接收到的数据处理后方设置此标识";
+
+		gl_pWorldMarket->GetStock(1)->SetUpdateInsiderTransaction(true);
+		gl_pWorldMarket->GetStock(1)->SetInsiderTransactionUpdateDate(19800101);
 	}
 
 	// 正确数据

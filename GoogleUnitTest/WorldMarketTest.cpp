@@ -680,11 +680,13 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_pWorldMarket->UpdateInsiderTransactionDB());
 
-		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
+		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 2);
 		const CString str = gl_systemMessage.PopDayLineInfoMessage();
 		EXPECT_STREQ(str, _T("A内部交易资料更新完成"));
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->IsSaveInsiderTransaction());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderTransaction()) << "存储后并没有删除数据";
+		gl_pWorldMarket->GetStock(_T("A"))->UnloadInsiderTransaction();
+		gl_systemMessage.PopDayLineInfoMessage();
 
 		// 验证并恢复原状
 		setInsiderTransaction.m_strFilter = _T("[Symbol] = 'B'");
@@ -728,7 +730,7 @@ namespace FireBirdTest {
 		CSetInsiderSentiment setInsiderSentiment;
 
 		CInsiderSentimentPtr pInsiderSentiment = make_shared<CInsiderSentiment>();
-		pInsiderSentiment->m_strSymbol = _T("B");// 这个股票代码不符，bu需要添加进数据库
+		pInsiderSentiment->m_strSymbol = _T("B");// 这个股票代码不符，需要添加进数据库
 		pInsiderSentiment->m_lDate = 20200101;
 		vInsiderSentiment.push_back(pInsiderSentiment);
 		pInsiderSentiment = make_shared<CInsiderSentiment>();

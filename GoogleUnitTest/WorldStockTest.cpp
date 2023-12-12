@@ -858,7 +858,7 @@ namespace FireBirdTest {
 		setDayLine.Close();
 	}
 
-	TEST_F(CWorldStockTest, TestSaveInsiderTransaction) {
+	TEST_F(CWorldStockTest, TestUpdateInsiderTransactionDB) {
 		//  测试数据库中只有4个数据，股票代码：A， 内部交易人员：a b c，
 		vector<CInsiderTransactionPtr> vInsiderTransaction;
 		CSetInsiderTransaction setInsiderTransaction;
@@ -882,7 +882,7 @@ namespace FireBirdTest {
 		pInsiderTransaction = make_shared<CInsiderTransaction>();
 		pInsiderTransaction->m_strSymbol = _T("A");
 		pInsiderTransaction->m_strPersonName = _T("a b c");
-		pInsiderTransaction->m_lTransactionDate = 20210124; // 这个日期不符，需要添加进数据库
+		pInsiderTransaction->m_lTransactionDate = 20210124; // 这个日期较新，需要添加进数据库
 		vInsiderTransaction.push_back(pInsiderTransaction);
 		pInsiderTransaction = make_shared<CInsiderTransaction>();
 		pInsiderTransaction->m_strSymbol = _T("A");
@@ -895,7 +895,7 @@ namespace FireBirdTest {
 		stock.SetInsiderTransactionUpdateDate(20210123);
 		stock.UpdateInsiderTransaction(vInsiderTransaction);
 
-		stock.SaveInsiderTransaction();
+		stock.UpdateInsiderTransactionDB();
 
 		setInsiderTransaction.m_strFilter = _T("[Symbol] = 'B'");
 		setInsiderTransaction.Open();

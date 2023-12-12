@@ -34,10 +34,10 @@ public:
 	bool CheckBasicFinancialUpdateStatus(long lTodayDate);
 	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
 	void Save(CSetWorldStock& setWorldStock) const;
-	void Update(CSetWorldStock& setWorldStock);
-	void Append(CSetWorldStock& setWorldStock);
+	void Update(CSetWorldStock& setWorldStock) const;
+	void Append(CSetWorldStock& setWorldStock) const;
 	void SaveDayLine() { m_dataDayLine.SaveDB(m_strSymbol); }
-	void SaveInsiderTransaction();
+	void UpdateInsiderTransactionDB();
 	void SaveInsiderSentiment();
 	virtual bool UpdateCompanyNewsDB();
 	virtual bool UpdateEPSSurpriseDB();
@@ -241,6 +241,7 @@ public:
 	void SetTiingoDailyDataUpdateDate(long lDailyDataUpdateDate) noexcept;
 	CString GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const;
 	CString GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) const;
+	CString GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTime);
 
 	bool IsUSMarket() const;
 

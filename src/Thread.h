@@ -87,7 +87,7 @@ UINT ThreadUpdateSICIndustry(not_null<CWorldMarketPtr> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ
 // ¸üĞÂNaics¹¤Òµ·ÖÀà¡£
 UINT ThreadUpdateNaicsIndustry(not_null<CWorldMarketPtr> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª47
 // ¸üĞÂInsiderTransaction
-UINT ThreadUpdateInsiderTransactionDB(not_null<CWorldMarketPtr> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª48
+UINT ThreadUpdateInsiderTransactionDB(const CWorldMarketPtr& pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª48
 // ¸üĞÂForex Exchange
 UINT ThreadUpdateForexExchangeDB(not_null<CWorldMarketPtr> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª49
 // ¸üĞÂEconomic Calender
@@ -106,6 +106,8 @@ UINT ThreadUpdateBasicFinancialDB(not_null<CWorldMarketPtr> pMarket); // ´Ë¹¤×÷Ï
 UINT ThreadUpdateInsiderSentimentDB(not_null<CWorldMarketPtr> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª58
 // ¸üĞÂ¹«Ë¾ĞÂÎÅ
 UINT ThreadUpdateCompanyNewsDB(not_null<CWorldMarketPtr> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª59
+// ¸üĞÂEPSSurprise±í
+UINT ThreadUpdateEPSSurpriseDB2(const CWorldMarketPtr& pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª60
 
 //¸÷ÖÖ¼ÆËãÓÃ¹¤×÷Ïß³Ì
 // ¼ÆËã10ÈÕÇ¿¹ÉÆ±¼¯£¨Á½¸öÔÂÄÚÖ»³öÏÖÒ»´ÎÇ¿ÊÆ·å£©

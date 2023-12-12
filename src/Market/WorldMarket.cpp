@@ -18,7 +18,9 @@
 #include <ixwebsocket/IXUserAgent.h>
 
 #include "InfoReport.h"
+#include "InsiderTransaction.h"
 #include "QuandlDataSource.h"
+#include "SetInsiderTransaction.h"
 #include "TiingoDataSource.h"
 #include "TimeConvert.h"
 using std::thread;
@@ -67,9 +69,9 @@ void CWorldMarket::ResetFinnhub() {
 	m_pvMarketHoliday->clear();
 }
 
-void CWorldMarket::ResetQuandl() { }
+void CWorldMarket::ResetQuandl() {}
 
-void CWorldMarket::ResetTiingo() { }
+void CWorldMarket::ResetTiingo() {}
 
 void CWorldMarket::ResetDataClass() {
 	m_dataFinnhubStockExchange.Reset();
@@ -328,7 +330,8 @@ bool CWorldMarket::UpdateEPSSurpriseDB() {
 	for (long l = 0; l < stockSize; ++l) {
 		pStock = m_containerStock.GetStock(l);
 		if (pStock->IsEPSSurpriseNeedSaveAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
-			CreateThreadUpdateEPSSurpriseDB(pStock);
+			//CreateThreadUpdateEPSSurpriseDB(pStock);
+			pStock->UpdateEPSSurpriseDB();
 			TRACE("更新%s EPS surprise数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) {
@@ -351,6 +354,11 @@ void CWorldMarket::CreateThreadUpdateCryptoDayLineDB(CFinnhubCryptoSymbolPtr pSy
 
 void CWorldMarket::CreateThreadUpdateEPSSurpriseDB(CWorldStockPtr pStock) {
 	thread thread1(ThreadUpdateEPSSurpriseDB, pStock);
+	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
+}
+
+void CWorldMarket::CreateThreadUpdateEPSSurpriseDB2() {
+	thread thread1(ThreadUpdateEPSSurpriseDB2, gl_pWorldMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
@@ -396,10 +404,10 @@ void CWorldMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 	if (IsUpdateBasicFinancialDB()) CreateThreadUpdateBasicFinancialDB();
 	if (IsNeedUpdateTiingoStock()) CreateThreadUpdateTiingoStockDB();
 	if (IsNeedUpdateTiingoCryptoSymbol()) CreateThreadUpdateTiingoCryptoSymbolDB();
+	if (IsUpdateEPSSurpriseDB()) CreateThreadUpdateEPSSurpriseDB2();
 
 	UpdateForexDayLineDB();
 	UpdateCryptoDayLineDB();
-	UpdateEPSSurpriseDB();
 
 	if (!gl_pFinnhubDataSource->IsUpdateSymbol() && IsUpdateStockProfileDB()) {
 		CreateThreadUpdateStockProfileDB();
@@ -532,19 +540,26 @@ bool CWorldMarket::UpdateCompanyNewsDB() {
 }
 
 bool CWorldMarket::UpdateInsiderTransactionDB() {
+	int iCounter = 0;
 	for (long i = 0; i < GetStockSize(); i++) {
 		const CWorldStockPtr pStock = GetStock(i);
 		if (pStock->IsSaveInsiderTransactionAndClearFlag()) {
 			if (pStock->HaveInsiderTransaction()) {
-				pStock->SaveInsiderTransaction();
+				iCounter++;
+				pStock->UpdateInsiderTransactionDB();
 				const CString str = pStock->GetSymbol() + _T("内部交易资料更新完成");
 				gl_systemMessage.PushDayLineInfoMessage(str);
-				//TRACE("更新%s内部交易数据\n", pStock->GetSymbol().GetBuffer());
 			}
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
+	}
+	if (iCounter > 0) {
+		char buffer[30];
+		sprintf_s(buffer, _T("%i"), iCounter);
+		const CString str2 = buffer;
+		gl_systemMessage.PushDayLineInfoMessage(_T("本次更新了") + str2 + _T("个股票的内部交易数据"));
 	}
 	return true;
 }

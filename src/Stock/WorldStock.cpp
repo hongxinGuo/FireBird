@@ -411,21 +411,21 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) const {
 	setWorldStock.m_SECFilingWebSite = m_strSECFilingWebSite.Left(150);
 }
 
-void CWorldStock::Update(CSetWorldStock& setWorldStock) {
+void CWorldStock::Update(CSetWorldStock& setWorldStock) const {
 	setWorldStock.Edit();
 	Save(setWorldStock);
 	setWorldStock.Update();
 }
 
-void CWorldStock::Append(CSetWorldStock& setWorldStock) {
+void CWorldStock::Append(CSetWorldStock& setWorldStock) const {
 	setWorldStock.AddNew();
 	Save(setWorldStock);
 	setWorldStock.Update();
 }
 
-void CWorldStock::SaveInsiderTransaction() {
+void CWorldStock::UpdateInsiderTransactionDB() {
 	try {
-		CSetInsiderTransaction setInsiderTransaction, setSaveInsiderTransaction;
+		CSetInsiderTransaction setInsiderTransaction;
 
 		vector<CInsiderTransactionPtr> vInsiderTransaction;
 		CInsiderTransactionPtr pInsiderTransaction = nullptr;
@@ -446,15 +446,12 @@ void CWorldStock::SaveInsiderTransaction() {
 			lSizeOfOldInsiderTransaction++;
 			setInsiderTransaction.MoveNext();
 		}
-		setInsiderTransaction.Close();
 
-		setSaveInsiderTransaction.m_strFilter = _T("[ID] = 1");
-		setSaveInsiderTransaction.Open();
-		setSaveInsiderTransaction.m_pDatabase->BeginTrans();
+		setInsiderTransaction.m_pDatabase->BeginTrans();
 		for (int i = 0; i < m_vInsiderTransaction.size(); i++) {
 			pInsiderTransaction = m_vInsiderTransaction.at(i);
 			if (pInsiderTransaction->m_lTransactionDate > m_lInsiderTransactionEndDate) {
-				pInsiderTransaction->Append(setSaveInsiderTransaction); // 较新的数据直接存储之
+				pInsiderTransaction->Append(setInsiderTransaction); // 较新的数据直接存储之
 			}
 			else { // 较旧的数据？
 				if (ranges::find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
@@ -464,12 +461,12 @@ void CWorldStock::SaveInsiderTransaction() {
 						                    && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
 						                    && (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
 				                    }) == vInsiderTransaction.end()) { // 如果股票代码、人名、交易日期或者交易细节为新的数据，则存储该数据
-					pInsiderTransaction->Append(setSaveInsiderTransaction);
+					pInsiderTransaction->Append(setInsiderTransaction);
 				}
 			}
 		}
-		setSaveInsiderTransaction.m_pDatabase->CommitTrans();
-		setSaveInsiderTransaction.Close();
+		setInsiderTransaction.m_pDatabase->CommitTrans();
+		setInsiderTransaction.Close();
 	}
 	catch (CException* e) {
 		ReportInformationAndDeleteException(e);
@@ -549,8 +546,7 @@ bool CWorldStock::UpdateCompanyNewsDB() {
 			pCompanyNews = m_vCompanyNews.at(lCurrentPos);
 			while ((atoll(setCompanyNews.m_DateTime) < pCompanyNews->m_llDateTime) && !setCompanyNews.IsEOF()) setCompanyNews.MoveNext();
 			if (setCompanyNews.IsEOF()) break;
-			if ((atoll(setCompanyNews.m_DateTime) > pCompanyNews->m_llDateTime)) {
-				// 没有这个时间点的新闻？
+			if ((atoll(setCompanyNews.m_DateTime) > pCompanyNews->m_llDateTime)) {	// 没有这个时间点的新闻？
 				pCompanyNews->Append(setCompanyNews);
 			}
 			if (++lCurrentPos == lSize) break;
@@ -990,6 +986,19 @@ CString CWorldStock::GetTiingoDayLineInquiryParam(long lStartDate, long lCurrent
 	strParam += _T("&endDate=");
 	sprintf_s(buffer, _T("%4d-%d-%d"), year, month, date);
 	strTemp = buffer;
+	strParam += strTemp;
+
+	return strParam;
+}
+
+CString CWorldStock::GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTime) {
+	CString strParam = _T("");
+	char buffer[50];
+
+	strParam += m_strSymbol;
+	strParam += _T("&from=");
+	sprintf_s(buffer, _T("%I64i"), GetInsiderTransactionUpdateDate());
+	const CString strTemp = buffer;
 	strParam += strTemp;
 
 	return strParam;

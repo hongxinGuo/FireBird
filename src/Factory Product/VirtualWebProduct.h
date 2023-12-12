@@ -56,7 +56,7 @@ public:
 	int GetProductType() const noexcept { return m_iProductType; }
 
 protected:
-	CVirtualMarketWeakPtr m_pMarket;// Product被用于工作线程中。当系统退出时，由于无法保证工作线程先结束，故而此处使用Weak智能指针以防止内存泄露。
+	CVirtualMarketWeakPtr m_pMarket;// Product被用于工作线程中。当系统退出时，由于无法保证工作线程先结束，故而此处使用weak_ptr智能指针以防止内存泄露。
 	CString m_strClassName;
 	CString m_strInquiryFunction;
 	CString m_strInquiry;

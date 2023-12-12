@@ -24,7 +24,7 @@ CString CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
 	const auto pStock = GetMarket()->GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
-	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol();
+	m_strInquiry = m_strInquiryFunction + pStock->GetFinnhubInsiderTransactionInquiryParam(GetUTCTime());
 	return m_strInquiry;
 }
 
