@@ -547,8 +547,6 @@ bool CWorldMarket::UpdateInsiderTransactionDB() {
 			if (pStock->HaveInsiderTransaction()) {
 				iCounter++;
 				pStock->UpdateInsiderTransactionDB();
-				const CString str = pStock->GetSymbol() + _T("内部交易资料更新完成");
-				gl_systemMessage.PushDayLineInfoMessage(str);
 			}
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) {
@@ -569,7 +567,7 @@ bool CWorldMarket::UpdateInsiderSentimentDB() {
 		const CWorldStockPtr pStock = GetStock(i);
 		if (pStock->IsSaveInsiderSentimentAndClearFlag()) {
 			if (pStock->HaveInsiderSentiment()) {
-				pStock->SaveInsiderSentiment();
+				pStock->UpdateInsiderSentimentDB();
 				const CString str = pStock->GetSymbol() + _T("内部交易情绪资料更新完成");
 				gl_systemMessage.PushDayLineInfoMessage(str);
 			}
@@ -734,11 +732,13 @@ vectorString CWorldMarket::GetTiingoForexWebSocketSymbolVector() {
 
 void CWorldMarket::StartAllWebSocket() {
 	if (IsSystemReady()) {
-		if (!gl_pFinnhubDataSource->IsWebError() && gl_pFinnhubWebSocket->IsIdle()) StartFinnhubWebSocket();
+		if (!gl_pFinnhubDataSource->IsWebError()) {
+			if (gl_pFinnhubWebSocket->IsError() || gl_pFinnhubWebSocket->IsIdle()) StartFinnhubWebSocket();
+		}
 		if (!gl_pTiingoDataSource->IsWebError()) {
-			if (gl_pTiingoIEXWebSocket->IsIdle()) StartTiingoIEXWebSocket();
-			if (gl_pTiingoCryptoWebSocket->IsIdle()) StartTiingoCryptoWebSocket();
-			if (gl_pTiingoForexWebSocket->IsIdle()) StartTiingoForexWebSocket();
+			if (gl_pTiingoIEXWebSocket->IsError() || gl_pTiingoIEXWebSocket->IsIdle()) StartTiingoIEXWebSocket();
+			if (gl_pTiingoCryptoWebSocket->IsError() || gl_pTiingoCryptoWebSocket->IsIdle()) StartTiingoCryptoWebSocket();
+			if (gl_pTiingoForexWebSocket->IsError() || gl_pTiingoForexWebSocket->IsIdle()) StartTiingoForexWebSocket();
 		}
 	}
 }
@@ -822,9 +822,9 @@ void CWorldMarket::ProcessFinnhubWebSocketData() {
 	const auto total = gl_pFinnhubWebSocket->DataSize();
 	size_t iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
-		auto pString = gl_pFinnhubWebSocket->PopData();
+		const auto pString = gl_pFinnhubWebSocket->PopData();
 		CString strMessage = _T("Finnhub: ");
-		strMessage += (*pString).c_str();
+		strMessage += pString->c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
 		gl_pFinnhubWebSocket->ParseFinnhubWebSocketData(pString);
@@ -836,9 +836,9 @@ void CWorldMarket::ProcessTiingoIEXWebSocketData() {
 	const auto total = gl_pTiingoIEXWebSocket->DataSize();
 	size_t iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
-		auto pString = gl_pTiingoIEXWebSocket->PopData();
+		const auto pString = gl_pTiingoIEXWebSocket->PopData();
 		CString strMessage = _T("Tiingo IEX: ");
-		strMessage += (*pString).c_str();
+		strMessage += pString->c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
 		gl_pTiingoIEXWebSocket->ParseTiingoIEXWebSocketData(pString);
@@ -851,9 +851,9 @@ void CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 
 	size_t iTotalDataSize = 0;
 	for (auto i = 0; i < total; i++) {
-		auto pString = gl_pTiingoCryptoWebSocket->PopData();
+		const auto pString = gl_pTiingoCryptoWebSocket->PopData();
 		CString strMessage = _T("Tiingo Crypto: ");
-		strMessage += (*pString).c_str();
+		strMessage += pString->c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
 		gl_pTiingoCryptoWebSocket->ParseTiingoCryptoWebSocketData(pString);
@@ -865,9 +865,9 @@ void CWorldMarket::ProcessTiingoForexWebSocketData() {
 	const auto total = gl_pTiingoForexWebSocket->DataSize();
 	size_t iTotalDataSize = 0;
 	for (size_t i = 0; i < total; i++) {
-		auto pString = gl_pTiingoForexWebSocket->PopData();
+		const auto pString = gl_pTiingoForexWebSocket->PopData();
 		CString strMessage = _T("Tiingo Forex: ");
-		strMessage += (*pString).c_str();
+		strMessage += pString->c_str();
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
 		gl_pTiingoForexWebSocket->ParseTiingoForexWebSocketData(pString);

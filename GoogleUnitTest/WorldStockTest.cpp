@@ -952,7 +952,7 @@ namespace FireBirdTest {
 		stock.SetInsiderSentimentUpdateDate(20210101);
 		stock.UpdateInsiderSentiment(vInsiderSentiment);
 
-		stock.SaveInsiderSentiment();
+		stock.UpdateInsiderSentimentDB();
 
 		setInsiderSentiment.m_strFilter = _T("[Symbol] = 'B'");
 		setInsiderSentiment.Open();

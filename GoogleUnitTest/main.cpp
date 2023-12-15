@@ -228,5 +228,7 @@ int main(int argc, char* argv[]) {
 
 	ASSERT(!gl_systemConfiguration.IsWorkingMode());
 
+	GTEST_FLAG_SET(death_test_style, "fast");
+
 	return RUN_ALL_TESTS();
 }

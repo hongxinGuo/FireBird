@@ -168,7 +168,6 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				}
 				break;
 			case 'H': // HeartBeat {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
-				m_HeartbeatTime = GetUTCTime();
 				js3 = jsonGetChild(&js, _T("response"));
 				m_iStatusCode = js3.at(_T("code"));
 				m_statusMessage = js3.at(_T("message"));
@@ -196,6 +195,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				pForexData->m_dAskPrice = jsonGetDouble(++it); // Âô¼Û
 				gl_SystemData.PushTiingoForexSocket(pForexData);
 				m_fReceivingData = true;
+				m_HeartbeatTime = GetUTCTime();
 				break;
 			default:
 				// error

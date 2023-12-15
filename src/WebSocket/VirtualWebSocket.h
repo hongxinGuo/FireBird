@@ -52,6 +52,8 @@ public:
 
 	int GetStatusCode() const noexcept { return m_iStatusCode; }
 	void SetStatusCode(int iCode) noexcept { m_iStatusCode = iCode; }
+	void SetError(bool fFlag) { m_fError = fFlag; }
+	bool IsError() const { return m_fError; }
 	string GetStatusMessage() const noexcept { return m_statusMessage; }
 	void SetStatusMessage(const string& sMessage) noexcept { m_statusMessage = sMessage; }
 
@@ -100,6 +102,7 @@ protected:
 	string m_url;
 
 	int m_iStatusCode; // WebSocket返回的状态码。正确：200， 错误：400等。
+	bool m_fError{false};
 	string m_statusMessage; // 正确时为状态信息，错误时为错误信息。
 	bool m_fHaveSubscriptionId;
 	int m_iSubscriptionId;

@@ -460,7 +460,7 @@ void CWorldStock::UpdateInsiderTransactionDB() {
 						                    && (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
 						                    && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
 						                    && (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
-				                    }) == vInsiderTransaction.end()) { // 如果股票代码、人名、交易日期或者交易细节为新的数据，则存储该数据
+				                    }) == vInsiderTransaction.end()) { // 如果没找到，则股票代码、人名、交易日期或者交易细节为新的数据，存储该数据
 					pInsiderTransaction->Append(setInsiderTransaction);
 				}
 			}
@@ -473,9 +473,9 @@ void CWorldStock::UpdateInsiderTransactionDB() {
 	}
 }
 
-void CWorldStock::SaveInsiderSentiment() {
+void CWorldStock::UpdateInsiderSentimentDB() {
 	try {
-		CSetInsiderSentiment setInsiderSentiment, setSaveInsiderSentiment;
+		CSetInsiderSentiment setInsiderSentiment;
 
 		vector<CInsiderSentimentPtr> vInsiderSentiment;
 		CInsiderSentimentPtr pInsiderSentiment = nullptr;
@@ -500,23 +500,18 @@ void CWorldStock::SaveInsiderSentiment() {
 				m_lInsiderSentimentStartDate = vInsiderSentiment.at(0)->m_lDate;
 			}
 		}
-		setInsiderSentiment.Close();
-
-		setSaveInsiderSentiment.m_strFilter = _T("[ID] = 1");
-		setSaveInsiderSentiment.Open();
-		setSaveInsiderSentiment.m_pDatabase->BeginTrans();
+		setInsiderSentiment.m_pDatabase->BeginTrans();
 		for (int i = 0; i < m_vInsiderSentiment.size(); i++) {
 			pInsiderSentiment = m_vInsiderSentiment.at(i);
 			if (ranges::find_if(vInsiderSentiment.begin(), vInsiderSentiment.end(),
 			                    [pInsiderSentiment](const CInsiderSentimentPtr& p) {
 				                    return (p->m_lDate == pInsiderSentiment->m_lDate); // 报告时间
-			                    }) == vInsiderSentiment.end()) {
-				// 如果报告日期为新的数据，则存储该数据
-				pInsiderSentiment->Append(setSaveInsiderSentiment);
+			                    }) == vInsiderSentiment.end()) { // 如果没找到，则报告日期为新的数据，存储该数据
+				pInsiderSentiment->Append(setInsiderSentiment);
 			}
 		}
-		setSaveInsiderSentiment.m_pDatabase->CommitTrans();
-		setSaveInsiderSentiment.Close();
+		setInsiderSentiment.m_pDatabase->CommitTrans();
+		setInsiderSentiment.Close();
 	}
 	catch (CException* e) {
 		ReportInformationAndDeleteException(e);

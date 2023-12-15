@@ -86,7 +86,7 @@ void CVirtualWebSocket::ClearSymbol() {
 
 bool CVirtualWebSocket::IsIdle(time_t tPeriod) const {
 	if (GetUTCTime() > (m_HeartbeatTime + tPeriod)) return true;
-	else return false;
+	return false;
 }
 
 void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {
@@ -124,7 +124,7 @@ void CVirtualWebSocket::Disconnect() {
 	m_iSubscriptionId = 0;
 }
 
-UINT ThreadDisconnectWebSocket(not_null<CVirtualWebSocketPtr> pWebSocket) {
+UINT ThreadDisconnectWebSocket(const CVirtualWebSocketPtr& pWebSocket) {
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;

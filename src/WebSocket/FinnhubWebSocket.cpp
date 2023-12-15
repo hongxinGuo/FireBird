@@ -15,6 +15,12 @@ using std::make_shared;
 
 void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	CString str;
+	if (msg->type == ix::WebSocketMessageType::Error) {
+		gl_pFinnhubWebSocket->SetError(true);
+	}
+	else {
+		gl_pFinnhubWebSocket->SetError(false);
+	}
 	switch (msg->type) {
 	case ix::WebSocketMessageType::Message:
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
@@ -49,7 +55,7 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectFinnhubWebSocketAndSendMessage(CFinnhubWebSocketPtr pDataFinnhubWebSocket, const vectorString& vSymbol) {
+UINT ThreadConnectFinnhubWebSocketAndSendMessage(const CFinnhubWebSocketPtr& pDataFinnhubWebSocket, const vectorString& vSymbol) {
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
@@ -139,10 +145,10 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 					gl_SystemData.PushFinnhubSocket(pFinnhubDataPtr);
 					m_fReceivingData = true;
 				}
+				m_HeartbeatTime = GetUTCTime();
 			}
 			else if (sType == _T("ping")) {
 				// ping  {\"type\":\"ping\"}
-				m_HeartbeatTime = GetUTCTime();
 			}
 			else if (sType == _T("error")) {
 				// ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}

@@ -18,7 +18,7 @@ namespace FireBirdTest {
 			m_pData->Test_SetBuffer_(strData);
 		}
 
-		~Test_FinnhubWebData() { }
+		~Test_FinnhubWebData() {}
 
 	public:
 		long m_lIndex;
@@ -32,7 +32,7 @@ namespace FireBirdTest {
 			m_pData = strData;
 		}
 
-		~FinnhubWebSocketData() { }
+		~FinnhubWebSocketData() {}
 
 	public:
 		long m_lIndex;
@@ -64,7 +64,8 @@ namespace FireBirdTest {
 	class ProcessOneFinnhubWebSocketDataTest : public::testing::TestWithParam<FinnhubWebSocketData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			EXPECT_FALSE(m_finnhubWebSocket.IsReceivingData());
 
 			FinnhubWebSocketData* pData = GetParam();
@@ -76,7 +77,8 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -110,10 +112,11 @@ namespace FireBirdTest {
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastPrice, 146.75);
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastVolume, 1);
 			EXPECT_EQ(pFinnhubWebSocket->m_iSeconds, 1628238530220);
+			EXPECT_EQ(m_finnhubWebSocket.GetHeartbeatTime(), GetUTCTime()) << "只有有效数据才设置心跳时间";
 			break;
 		case 2: // ping
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(m_finnhubWebSocket.GetHeartbeatTime(), GetUTCTime());
+			EXPECT_EQ(m_finnhubWebSocket.GetHeartbeatTime(), 0);
 			break;
 		case 3: // json格式错误
 			EXPECT_FALSE(fSucceed);

@@ -198,6 +198,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				}
 				gl_SystemData.PushTiingoIEXSocket(pIEXData);
 				m_fReceivingData = true;
+				m_HeartbeatTime = GetUTCTime();
 				break;
 			case 'I': // authentication  {\"messageType\":\"I\",\"data\":{\"subscriptionId\":2563367},\"response\":{\"code\":200,\"message\":\"Success\"}}
 				js2 = jsonGetChild(&js, _T("data"));
@@ -214,7 +215,6 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				}
 				break;
 			case 'H': //Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
-				m_HeartbeatTime = GetUTCTime();
 				js3 = jsonGetChild(&js, _T("response"));
 				m_iStatusCode = js3.at(_T("code"));
 				m_statusMessage = js3.at(_T("message"));

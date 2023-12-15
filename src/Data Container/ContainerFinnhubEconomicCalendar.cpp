@@ -7,7 +7,9 @@
 #include "InfoReport.h"
 using std::make_shared;
 
-CContainerFinnhubEconomicCalendar::CContainerFinnhubEconomicCalendar() { Reset(); }
+CContainerFinnhubEconomicCalendar::CContainerFinnhubEconomicCalendar() {
+	Reset();
+}
 
 void CContainerFinnhubEconomicCalendar::Reset() {
 	m_lLastTotalEconomicCalendar = 0;
@@ -62,8 +64,7 @@ bool CContainerFinnhubEconomicCalendar::Update(const vector<CEconomicCalendarPtr
 
 	for (auto& pEconomicCalendar : vEconomicCalendar) {
 		strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
-		if (!m_mapEconomicCalendar.contains(strSymbol)) {
-			// 新事件？
+		if (!m_mapEconomicCalendar.contains(strSymbol)) {	// 新事件？
 			m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
 			m_vEconomicCalendar.push_back(pEconomicCalendar);
 		}

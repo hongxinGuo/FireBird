@@ -38,7 +38,7 @@ public:
 	void Append(CSetWorldStock& setWorldStock) const;
 	void SaveDayLine() { m_dataDayLine.SaveDB(m_strSymbol); }
 	void UpdateInsiderTransactionDB();
-	void SaveInsiderSentiment();
+	void UpdateInsiderSentimentDB();
 	virtual bool UpdateCompanyNewsDB();
 	virtual bool UpdateEPSSurpriseDB();
 	virtual bool UpdateDayLineDB();
@@ -94,11 +94,7 @@ public:
 	void SetUpdatePeer(bool fFlag) noexcept { m_fUpdateFinnhubPeer = fFlag; }
 	bool CheckPeerStatus(long lCurrentDate);
 
-	bool HaveInsiderTransaction() const noexcept {
-		if (!m_vInsiderTransaction.empty()) return true;
-		return false;
-	}
-
+	bool HaveInsiderTransaction() const noexcept { return !m_vInsiderTransaction.empty(); }
 	void UnloadInsiderTransaction() { m_vInsiderTransaction.resize(0); }
 	void UpdateInsiderTransaction(const vector<CInsiderTransactionPtr>& vInsiderTransaction);
 	bool IsUpdateInsiderTransaction() const noexcept { return m_fUpdateFinnhubInsiderTransaction; }
@@ -112,11 +108,7 @@ public:
 		return fNeedSave;
 	}
 
-	bool HaveInsiderSentiment() const noexcept {
-		if (m_vInsiderSentiment.size() > 0) return true;
-		return false;
-	}
-
+	bool HaveInsiderSentiment() const noexcept { return !m_vInsiderSentiment.empty(); }
 	void UnloadInsiderSentiment() { m_vInsiderSentiment.resize(0); }
 	void UpdateInsiderSentiment(const vector<CInsiderSentimentPtr>& vInsiderSentiment);
 	bool IsUpdateInsiderSentiment() const noexcept { return m_fUpdateFinnhubInsiderSentiment; }

@@ -112,6 +112,7 @@ namespace FireBirdTest {
 			EXPECT_DOUBLE_EQ(pForex->m_dMidPrice, 9.678135);
 			EXPECT_DOUBLE_EQ(pForex->m_dAskSize, 5000000.0);
 			EXPECT_DOUBLE_EQ(pForex->m_dAskPrice, 9.67987);
+			EXPECT_EQ(tiingoForexWebSocket.GetHeartbeatTime(), GetUTCTime()) << "只有有效数据才设置心跳时间";
 			break;
 		case 2: // 正确
 			EXPECT_TRUE(fSucceed);
@@ -132,7 +133,7 @@ namespace FireBirdTest {
 			break;
 		case 10: // heart beat
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(tiingoForexWebSocket.GetHeartbeatTime(), GetUTCTime());
+			EXPECT_EQ(tiingoForexWebSocket.GetHeartbeatTime(), 0);
 			break;
 		case 11: // authentication
 			EXPECT_TRUE(fSucceed);
@@ -229,6 +230,7 @@ namespace FireBirdTest {
 			EXPECT_DOUBLE_EQ(pCrypto->m_dAskSize, 42.4153887);
 			EXPECT_DOUBLE_EQ(pCrypto->m_dLastPrice, 0);
 			EXPECT_DOUBLE_EQ(pCrypto->m_dLastSize, 0);
+			EXPECT_EQ(tiingoCryptoWebSocket.GetHeartbeatTime(), GetUTCTime()) << "只有有效数据才设置心跳时间";
 			break;
 		case 2: // 正确 T
 			EXPECT_TRUE(fSucceed);
@@ -247,7 +249,7 @@ namespace FireBirdTest {
 			break;
 		case 3: // 正确 heart beat
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(tiingoCryptoWebSocket.GetHeartbeatTime(), GetUTCTime());
+			EXPECT_EQ(tiingoCryptoWebSocket.GetHeartbeatTime(), 0);
 			break;
 		case 4: // 正确 authentication
 			EXPECT_TRUE(fSucceed);
@@ -371,6 +373,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(pTiingoIEX->m_iISO, 0);
 			EXPECT_EQ(pTiingoIEX->m_iOddlot, 0);
 			EXPECT_EQ(pTiingoIEX->m_iNMSRule611, 0);
+			EXPECT_EQ(tiingoIEXWebSocket.GetHeartbeatTime(), GetUTCTime()) << "只有有效数据才设置心跳时间";
 			break;
 		case 2: // 正确 T
 			EXPECT_TRUE(fSucceed);
@@ -395,7 +398,7 @@ namespace FireBirdTest {
 			break;
 		case 4: // Heart beat
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(tiingoIEXWebSocket.GetHeartbeatTime(), GetUTCTime());
+			EXPECT_EQ(tiingoIEXWebSocket.GetHeartbeatTime(), 0);
 			break;
 		case 5: //
 			EXPECT_FALSE(fSucceed);

@@ -57,11 +57,10 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 	pSetHistoryCandleBasic->m_strFilter = _T("[ID] = 1");
 	pSetHistoryCandleBasic->Open();
 	pSetHistoryCandleBasic->m_pDatabase->BeginTrans();
-	if (lSizeOfOldDayLine > 0) {
+	if (lSizeOfOldDayLine > 0) {// 有旧数据
+
 		long lCurrentPos = 0;
-		// 有旧数据
-		for (int i = 0; i < lSize; i++) {
-			// 数据是正序存储的，需要从头部开始存储
+		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
 			pHistoryCandle = GetData(i);
 			if (pHistoryCandle->GetMarketDate() < vOldHistoryCandle.at(0)->GetMarketDate()) {	// 有更早的新数据？
 				pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
@@ -81,10 +80,8 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 			}
 		}
 	}
-	else {
-		// 没有旧数据
-		for (int i = 0; i < lSize; i++) {
-			// 数据是正序存储的，需要从头部开始存储
+	else {// 没有旧数据
+		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
 			pHistoryCandle = GetData(i);
 			pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
 		}

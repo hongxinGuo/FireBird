@@ -172,7 +172,6 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				}
 				break;
 			case 'H': // heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
-				m_HeartbeatTime = GetUTCTime();
 				js3 = jsonGetChild(&js, _T("response"));
 				m_iStatusCode = js3.at(_T("code"));
 				m_statusMessage = js3.at(_T("message"));
@@ -211,6 +210,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				}
 				gl_SystemData.PushTiingoCryptoSocket(pCryptoData);
 				m_fReceivingData = true;
+				m_HeartbeatTime = GetUTCTime();
 				break;
 			case 'E':  //error message {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
 				js4 = jsonGetChild(&js, _T("response"));
