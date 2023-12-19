@@ -6,7 +6,9 @@
 #include<memory>
 using std::make_shared;
 
-CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() { Reset(); }
+CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() {
+	Reset();
+}
 
 void CContainerTiingoCryptoSymbol::Reset() {
 	m_vTiingoCrypto.resize(0);

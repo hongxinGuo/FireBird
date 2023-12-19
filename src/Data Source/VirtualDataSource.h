@@ -93,7 +93,7 @@ public:
 	CVirtualProductWebDataPtr GetCurrentInquiry() const noexcept { return m_pCurrentProduct; }
 	void SetCurrentInquiry(const CVirtualProductWebDataPtr& p) { m_pCurrentProduct = p; }
 
-	size_t GetInquiryQueueSize() const noexcept { return m_qProduct.size(); }
+	size_t InquiryQueueSize() const noexcept { return m_qProduct.size(); }
 	void StoreInquiry(const CVirtualProductWebDataPtr& p) { m_qProduct.push(p); }
 	CVirtualProductWebDataPtr GetCurrentProduct() {
 		m_pCurrentProduct = m_qProduct.front();

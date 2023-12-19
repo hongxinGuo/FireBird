@@ -6,11 +6,12 @@
 #include "ContainerChosenStock.h"
 
 CContainerChosenStock::CContainerChosenStock() {
-	m_lChosenStockPos = 0;
 	CContainerChosenStock::Reset();
 }
 
 void CContainerChosenStock::Reset() {
+	CContainerVirtualStock::Reset();
+
 	m_lChosenStockPos = 0;
 }
 

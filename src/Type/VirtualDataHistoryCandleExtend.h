@@ -47,7 +47,7 @@ protected:
 public:
 	vector<CVirtualHistoryCandleExtendPtr>* GetContainer() noexcept { return &m_vHistoryData; }
 
-	long Size() const noexcept { return m_vHistoryData.size(); }
+	long Size() const noexcept { return static_cast<long>(m_vHistoryData.size()); }
 	bool GetStartEndDate(long& lStartDate, long& lEndDate) const;
 
 	void Unload() noexcept {

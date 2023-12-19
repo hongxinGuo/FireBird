@@ -14,20 +14,25 @@ namespace FireBirdTest {
 	class CTengxunDayLineDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -84,6 +89,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTengxunDayLineDataSourceTest, TestInquireDayLine3) {
+		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
 		TengxunDayLineDataSource.SetInquiring(false);
 		TengxunDayLineDataSource.SetUpdateDayLine(true);
 		for (long l = 0; l < gl_pChinaMarket->GetTotalStock(); l++) {
@@ -94,11 +100,12 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(TengxunDayLineDataSource.IsInquiring());
 		EXPECT_TRUE(TengxunDayLineDataSource.InquireDayLine()) << gl_tUTCTime;
+		EXPECT_GT(TengxunDayLineDataSource.InquiryQueueSize(), 0);
 		EXPECT_TRUE(TengxunDayLineDataSource.IsInquiring());
 		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());
 		EXPECT_STREQ(TengxunDayLineDataSource.GetDownLoadingStockCode(), _T("000001.SS"));
 		TengxunDayLineDataSource.SetInquiring(false);
-		TengxunDayLineDataSource.GetCurrentProduct();
+		while (TengxunDayLineDataSource.InquiryQueueSize() > 0) TengxunDayLineDataSource.GetCurrentProduct();
 		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
 
 		EXPECT_TRUE(TengxunDayLineDataSource.InquireDayLine());
@@ -106,12 +113,13 @@ namespace FireBirdTest {
 		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());
 		EXPECT_STREQ(TengxunDayLineDataSource.GetDownLoadingStockCode(), _T("000006.SS"));
 		TengxunDayLineDataSource.SetInquiring(false);
-		TengxunDayLineDataSource.GetCurrentProduct();
+		while (TengxunDayLineDataSource.InquiryQueueSize() > 0) TengxunDayLineDataSource.GetCurrentProduct();
 		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
 
 		EXPECT_FALSE(TengxunDayLineDataSource.InquireDayLine()) << "查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("中国市场股票日线历史数据更新完毕"));
+		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
 
 		// 恢复原状
 		for (long l = 0; l < gl_pChinaMarket->GetTotalStock(); l++) {

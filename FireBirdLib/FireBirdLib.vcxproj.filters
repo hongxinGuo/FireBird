@@ -753,6 +753,9 @@
     <ClInclude Include="..\src\Factory Product\ProductTengxunRT.h">
       <Filter>头文件\Factory-Product\ChinaMarket</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Data Container\VirtualContainer.h">
+      <Filter>头文件\Data container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1342,6 +1345,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTengxunRT.cpp">
       <Filter>源文件\Factory-Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\VirtualContainer.cpp">
+      <Filter>源文件\Data container</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

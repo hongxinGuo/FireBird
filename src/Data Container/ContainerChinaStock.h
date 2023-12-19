@@ -49,11 +49,6 @@ public:
 	CString CreateNeteaseDayLineInquiringStr();
 	CString CreateTengxunDayLineInquiringStr();
 
-	CString GetNextStockInquiringMiddleStr(long& iStockIndex, const CString& strPostfix, long lTotalNumber);
-	CString GetNextSinaStockInquiringMiddleStr(const long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lSinaRTDataInquiringIndex, _T(","), lTotalNumber); }
-	CString GetNextTengxunStockInquiringMiddleStr(const long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, _T(","), lTotalNumber); }
-	CString GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber);
-
 	void ProcessRTData();
 	bool SaveDayLineData();
 	virtual void CreateThreadSaveDayLineBasicInfo(CChinaStockPtr pStock);
@@ -67,22 +62,10 @@ public:
 
 	[[nodiscard]] static double GetUpDownRate(const CString& strClose, const CString& strLastClose) noexcept;
 
-	void SetNeteaseRTDataInquiringIndex(const long lIndex) noexcept { m_lNeteaseRTDataInquiringIndex = lIndex; }
-	[[nodiscard]] long GetNeteaseRTDataInquiringIndex() const noexcept { return m_lNeteaseRTDataInquiringIndex; }
-	void SetSinaRTDataInquiringIndex(const long lIndex) noexcept { m_lSinaRTDataInquiringIndex = lIndex; }
-	[[nodiscard]] long GetSinaRTDataInquiringIndex() const noexcept { return m_lSinaRTDataInquiringIndex; }
-	void SetTengxunRTDataInquiringIndex(const long lIndex) noexcept { m_lTengxunRTDataInquiringIndex = lIndex; }
-	[[nodiscard]] long GetTengxunRTDataInquiringIndex() const noexcept { return m_lTengxunRTDataInquiringIndex; }
-	[[nodiscard]] long GetNextIndex(long lIndex) const;
-
 private:
 	void DeleteDayLineBasicInfo(long lDate) const;
 	void DeleteDayLineExtendInfo(long lDate) const;
 
 protected:
 	long m_lLoadedStock; // 本次装载的股票总数
-
-	long m_lNeteaseRTDataInquiringIndex;
-	long m_lSinaRTDataInquiringIndex;
-	long m_lTengxunRTDataInquiringIndex;
 };

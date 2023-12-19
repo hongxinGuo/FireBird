@@ -12,10 +12,12 @@
 using std::make_shared;
 
 CContainerStockSymbol::CContainerStockSymbol() {
-	Reset();
+	CContainerStockSymbol::Reset();
 }
 
 void CContainerStockSymbol::Reset() {
+	CVirtualContainer::Reset();
+
 	m_vStockSymbol.resize(0);
 	m_mapStockSymbol.clear();
 	m_vCurrentSectionStockCode.resize(0);
@@ -55,10 +57,6 @@ void CContainerStockSymbol::Reset() {
 
 	// 生成股票代码池
 	CreateTotalStockContainer();
-
-	m_lNextSinaStockInquiringMiddleStrIndex = 0;
-	m_lNextTengxunStockInquiringMiddleStrIndex = 0;
-	m_lNeteaseRTDataInquiryIndex = 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,6 +71,15 @@ bool CContainerStockSymbol::CreateTotalStockContainer() {
 		CreateStockSection(m_vCurrentSectionStockCode.at(i));
 	}
 	return true;
+}
+CString CContainerStockSymbol::GetItemSymbol(long lIndex) {
+	return m_vStockSymbol.at(lIndex);
+}
+
+size_t CContainerStockSymbol::Size() {
+	{
+		return m_vStockSymbol.size();
+	}
 }
 
 void CContainerStockSymbol::LoadStockSectionDB() const {
@@ -199,59 +206,19 @@ void CContainerStockSymbol::Add(const CString& strSymbol) {
 	m_vStockSymbol.push_back(strSymbol);
 }
 
-CString CContainerStockSymbol::GetNextStockInquiringMiddleStr(long& iStockIndex, const CString& strSuffix, long lTotalNumber) {
-	if (m_vStockSymbol.empty()) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
+/*
+CString CContainerStockSymbol::GetNextStockInquiringMiddleStr(long& iStockIndex, const CString& strSuffix, long lTotalNumber, CString (*StockCodeTransfer)(const CString& str)) {
+	if (m_vStockSymbol.empty()) return StockCodeTransfer(_T("600000.SH")); // 当没有证券可查询时，返回一个有效字符串
 	CString strReturn = _T("");
 	int iCount = 0;
 	while ((iStockIndex < m_vStockSymbol.size()) && (iCount++ < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
-		strReturn += XferStandardToSina(m_vStockSymbol.at(iStockIndex));
+		strReturn += StockCodeTransfer(m_vStockSymbol.at(iStockIndex));
 		if (iCount < lTotalNumber) { // 如果不是最后一个，则添加后缀
 			strReturn += strSuffix;
 		}
 		iStockIndex = GetNextIndex(iStockIndex);
 	}
-	if (iStockIndex > 0) iStockIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
 
 	return strReturn;
 }
-
-CString CContainerStockSymbol::GetNextSinaStockInquiringMiddleStr(long lTotalNumber) {
-	const CString strSuffix = _T(",");
-
-	if (m_vStockSymbol.empty()) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
-	CString strReturn = _T("");
-	int iCount = 0;
-	while ((m_lNextSinaStockInquiringMiddleStrIndex < m_vStockSymbol.size()) && (iCount++ < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
-		strReturn += XferStandardToSina(m_vStockSymbol.at(m_lNextSinaStockInquiringMiddleStrIndex));
-		if (iCount < lTotalNumber) { // 如果不是最后一个，则添加后缀
-			strReturn += strSuffix;
-		}
-		m_lNextSinaStockInquiringMiddleStrIndex = GetNextIndex(m_lNextSinaStockInquiringMiddleStrIndex);
-	}
-	if (m_lNextSinaStockInquiringMiddleStrIndex > 0) m_lNextSinaStockInquiringMiddleStrIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
-
-	return strReturn;
-}
-
-CString CContainerStockSymbol::GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber) {
-	const CString strSuffix = _T(",");
-
-	if (m_vStockSymbol.empty()) return _T("0600000"); // 当没有证券可查询时，返回一个有效字符串
-	CString strReturn = _T("");
-	int iCount = 0;
-	while ((m_lNeteaseRTDataInquiryIndex < m_vStockSymbol.size()) && (iCount++ < lTotalNumber)) {// 每次最大查询量为lTotalNumber个股票
-		strReturn += XferStandardToNetease(m_vStockSymbol.at(m_lNeteaseRTDataInquiryIndex)); // 得到第一个股票代码
-		if (iCount < lTotalNumber) { // 如果不是最后一个，则添加后缀
-			strReturn += strSuffix;
-		}
-		m_lNeteaseRTDataInquiryIndex = GetNextIndex(m_lNeteaseRTDataInquiryIndex);
-	}
-	if (m_lNeteaseRTDataInquiryIndex > 0) m_lNeteaseRTDataInquiryIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
-
-	return strReturn;
-}
-
-long CContainerStockSymbol::GetNextIndex(long lIndex) const {
-	if (++lIndex >= m_vStockSymbol.size()) { lIndex = 0; }
-	return lIndex;
-}
+*/

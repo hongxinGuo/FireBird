@@ -517,7 +517,6 @@ bool CFinnhubDataSource::InquireInsiderSentiment() {
 			StoreInquiry(product);
 			SetInquiring(true);
 			gl_pWorldMarket->SetCurrentFunction(_T("内部交易情绪:") + pStock->GetSymbol());
-			//TRACE("申请%s 内部交易情绪数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		else {
 			m_fInquiringFinnhubStockInsiderSentiment = false;

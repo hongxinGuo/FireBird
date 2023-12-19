@@ -6,11 +6,12 @@
 #include "ContainerChosenForex.h"
 
 CContainerChosenForex::CContainerChosenForex() {
-	m_lChosenForexPos = 0;
 	CContainerChosenForex::Reset();
 }
 
 void CContainerChosenForex::Reset() {
+	CContainerVirtualStock::Reset();
+
 	m_lChosenForexPos = 0;
 }
 

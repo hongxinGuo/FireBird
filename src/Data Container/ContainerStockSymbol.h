@@ -1,8 +1,9 @@
 #pragma once
 
 #include"StockSection.h"
+#include "VirtualContainer.h"
 
-class CContainerStockSymbol final {
+class CContainerStockSymbol : public CVirtualContainer {
 public:
 	CContainerStockSymbol();
 	// 只能有一个实例,不允许赋值。
@@ -10,12 +11,14 @@ public:
 	CContainerStockSymbol& operator=(const CContainerStockSymbol&) = delete;
 	CContainerStockSymbol(const CContainerStockSymbol&&) noexcept = delete;
 	CContainerStockSymbol& operator=(const CContainerStockSymbol&&) noexcept = delete;
-	~CContainerStockSymbol() = default;
-	void Reset();
+	~CContainerStockSymbol() override = default;
+	void Reset() override;
 	bool CreateTotalStockContainer();
+	CString GetItemSymbol(long lIndex) override;
+	bool IsEmpty() override { return m_vStockSymbol.empty(); }
+	size_t Size() override;
 
 	[[nodiscard]] size_t GetIndex(const CString& strSymbol) const { return m_mapStockSymbol.at(strSymbol); }
-	[[nodiscard]] size_t GetStockSize() const noexcept { return m_vStockSymbol.size(); }
 
 	[[nodiscard]] bool IsStockSymbol(const CString& strSymbol) const {
 		if (m_mapStockSymbol.contains(strSymbol)) return true;
@@ -25,11 +28,6 @@ public:
 	bool Delete(const CString& strSymbol);
 	void Add(const CString& strSymbol);
 
-	CString GetNextStockInquiringMiddleStr(long& iStockIndex, const CString& strPostfix, long lTotalNumber);
-	CString GetNextSinaStockInquiringMiddleStr(long lTotalNumber);
-	CString GetNextTengxunStockInquiringMiddleStr(long lTotalNumber) { return GetNextStockInquiringMiddleStr(m_lNextTengxunStockInquiringMiddleStrIndex, _T(","), lTotalNumber); }
-	CString GetNextNeteaseStockInquiringMiddleStr(long lTotalNumber);
-
 	void LoadStockSectionDB() const;
 	void UpdateStockSectionDB();
 
@@ -37,7 +35,6 @@ public:
 	[[nodiscard]] bool IsUpdateStockSection() const noexcept { return m_fUpdateStockSection; }
 
 	void SetStockSectionActiveFlag(const long lIndex, const bool fFlag) const noexcept { m_vStockSection.at(lIndex)->SetActive(fFlag); }
-
 	[[nodiscard]] bool IsStockSectionActive(const long lIndex) const noexcept { return m_vStockSection.at(lIndex)->IsActive(); }
 
 	void CreateStockSection(const CString& strFirstStockCode);
@@ -45,19 +42,12 @@ public:
 	[[nodiscard]] bool UpdateStockSection(const CString& strStockCode) const;
 	[[nodiscard]] bool UpdateStockSection(long lIndex) const;
 
-	long GetNextIndex(long lIndex) const;
-
 protected:
 	vector<CString> m_vStockSymbol;
 	map<CString, size_t> m_mapStockSymbol;
 	vector<CString> m_vCurrentSectionStockCode; // 当前股票集的第一个代码。字符串的格式为600000.SS、sz000001
 	vector<CStockSectionPtr> m_vStockSection; // 共2000个，上海深圳各1000，证券代码上三位是否已经被使用。
 	bool m_fUpdateStockSection; // 更新StockSection标识
-
-private:
-	long m_lNextSinaStockInquiringMiddleStrIndex;
-	long m_lNextTengxunStockInquiringMiddleStrIndex;
-	long m_lNeteaseRTDataInquiryIndex;
 };
 
 using CContainerStockSymbolPtr = shared_ptr<CContainerStockSymbol>;

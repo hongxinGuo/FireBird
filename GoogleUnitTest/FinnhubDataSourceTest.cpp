@@ -210,17 +210,17 @@ namespace FireBirdTest {
 
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_FALSE(m_FinnhubDataSource.InquireCountryList());
-		EXPECT_EQ(m_FinnhubDataSource.GetInquiryQueueSize(), 0);
+		EXPECT_EQ(m_FinnhubDataSource.InquiryQueueSize(), 0);
 		m_FinnhubDataSource.SetUpdateCountryList(true);
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireCountryList());
-		EXPECT_EQ(m_FinnhubDataSource.GetInquiryQueueSize(), 1);
+		EXPECT_EQ(m_FinnhubDataSource.InquiryQueueSize(), 1);
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Inquiring Finnhub economic country List"));
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(p->GetClassName(), _T("Finnhub economic country list"));
-		EXPECT_EQ(m_FinnhubDataSource.GetInquiryQueueSize(), 0);
+		EXPECT_EQ(m_FinnhubDataSource.InquiryQueueSize(), 0);
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireFinnhubMarketStatus) {

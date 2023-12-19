@@ -7,10 +7,12 @@
 
 CContainerChosenCrypto::CContainerChosenCrypto() {
 	m_lChosenCryptoPos = 0;
-	CContainerChosenCrypto::Reset();
+	Reset();
 }
 
 void CContainerChosenCrypto::Reset() {
+	CContainerVirtualStock::Reset();
+
 	m_lChosenCryptoPos = 0;
 }
 

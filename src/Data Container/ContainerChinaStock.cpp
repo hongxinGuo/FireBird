@@ -25,10 +25,6 @@ void CContainerChinaStock::Reset() {
 	CContainerVirtualStock::Reset();
 
 	m_lLoadedStock = 0;
-
-	m_lNeteaseRTDataInquiringIndex = 0;
-	m_lSinaRTDataInquiringIndex = 0;
-	m_lTengxunRTDataInquiringIndex = 0;
 }
 
 long CContainerChinaStock::GetActiveStockSize() const {
@@ -203,22 +199,22 @@ CString CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 	return strReturn;
 }
 
-CString CContainerChinaStock::GetNextStockInquiringMiddleStr(long& iStockIndex, const CString& strPostfix, const long lTotalNumber) {
-	if (m_vStock.empty()) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
-	CString strReturn = XferStandardToSina(GetStock(iStockIndex)->GetSymbol()); // 得到第一个股票代码
-	iStockIndex = GetNextIndex(iStockIndex);
-	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-	while (iCount < lTotalNumber) {	// 每次最大查询量为lTotalNumber个股票
-		if (GetStock(iStockIndex)->IsActive() || GetStock(iStockIndex)->IsIPOed()) {
-			iCount++;
+/*
+CString CContainerChinaStock::GetNextStockInquiringMiddleStr(long& iStockIndex, const CString& strPostfix, const long lTotalNumber, CString (*StockCodeTransfer)(const CString& str)) {
+	if (m_vStock.empty()) StockCodeTransfer(_T("600000.SH")); // 当没有证券可查询时，返回一个有效字符串
+	CString strReturn = _T("");
+	int iCount = 0;
+	while ((iStockIndex < m_vStock.size()) && (iCount++ < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
+		strReturn += StockCodeTransfer(m_vStock.at(iStockIndex)->GetSymbol());
+		if (iCount < lTotalNumber) { // 如果不是最后一个，则添加后缀
 			strReturn += strPostfix;
-			strReturn += XferStandardToSina(GetStock(iStockIndex)->GetSymbol()); // 得到第一个股票代码
 		}
 		iStockIndex = GetNextIndex(iStockIndex);
 	}
 
 	return strReturn;
 }
+*/
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -266,6 +262,7 @@ CString CContainerChinaStock::CreateTengxunDayLineInquiringStr() {
 	return strReturn;
 }
 
+/*
 CString CContainerChinaStock::GetNextNeteaseStockInquiringMiddleStr(const long lTotalNumber) {
 	CString strNeteaseRTDataInquiringStr = XferStandardToNetease(GetStock(m_lNeteaseRTDataInquiringIndex)->GetSymbol());
 	m_lNeteaseRTDataInquiringIndex = GetNextIndex(m_lNeteaseRTDataInquiringIndex);
@@ -281,11 +278,7 @@ CString CContainerChinaStock::GetNextNeteaseStockInquiringMiddleStr(const long l
 
 	return strNeteaseRTDataInquiringStr;
 }
-
-long CContainerChinaStock::GetNextIndex(long lIndex) const {
-	if (++lIndex >= m_vStock.size()) { lIndex = 0; }
-	return lIndex;
-}
+*/
 
 void CContainerChinaStock::ProcessRTData() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {

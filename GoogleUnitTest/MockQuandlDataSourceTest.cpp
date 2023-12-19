@@ -106,7 +106,7 @@ namespace FireBirdTest {
 	TEST_F(CMockQuandlDataSourceTest, TestRead2) {
 		const auto p = make_shared<CVirtualWebProduct>();
 		m_pMockQuandlDataSource->StoreInquiry(p);
-		EXPECT_EQ(m_pMockQuandlDataSource->GetInquiryQueueSize(), 1);
+		EXPECT_EQ(m_pMockQuandlDataSource->InquiryQueueSize(), 1);
 		EXPECT_EQ(m_pMockQuandlDataSource->GetReceivedDataSize(), 0);
 		m_pMockQuandlDataSource->SetInquiring(true);
 		EXPECT_CALL(*m_pMockQuandlDataSource, ReadWebData).Times(1)
@@ -117,6 +117,6 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(m_pMockQuandlDataSource->IsInquiring()) << "当出现错误时，立即重置此标识";
 		EXPECT_EQ(m_pMockQuandlDataSource->GetReceivedDataSize(), 0) << "没有WebData";
-		EXPECT_EQ(m_pMockQuandlDataSource->GetInquiryQueueSize(), 0);
+		EXPECT_EQ(m_pMockQuandlDataSource->InquiryQueueSize(), 0);
 	}
 }

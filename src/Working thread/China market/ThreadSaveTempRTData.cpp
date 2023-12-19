@@ -11,6 +11,7 @@
 
 #include"ThreadStatus.h"
 #include"ChinaMarket.h"
+#include "HighPerformanceCounter.h"
 
 /// <summary>
 /// 
@@ -19,7 +20,7 @@
 /// </summary>
 /// <param name="pMarket"></param>
 /// <returns></returns>
-UINT ThreadSaveTempRTData(not_null<CChinaMarketPtr> pMarket) {
+UINT ThreadSaveTempRTData(const CChinaMarketPtr& pMarket) {
 	ASSERT(pMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
 	gl_UpdateChinaMarketDB.acquire();
@@ -31,7 +32,7 @@ UINT ThreadSaveTempRTData(not_null<CChinaMarketPtr> pMarket) {
 	return 13;
 }
 
-UINT ThreadLoadTempRTData(not_null<CChinaMarketPtr> pMarket, long lTheDate) {
+UINT ThreadLoadTempRTData(const CChinaMarketPtr& pMarket, long lTheDate) {
 	gl_ProcessChinaMarketRTData.acquire();
 	pMarket->LoadTempRTData(lTheDate);
 	gl_ProcessChinaMarketRTData.release();
@@ -46,9 +47,16 @@ UINT ThreadLoadTempRTData(not_null<CChinaMarketPtr> pMarket, long lTheDate) {
 /// </summary>
 /// <param name="pMarket"></param>
 /// <returns></returns>
-UINT ThreadDistributeAndCalculateRTData(not_null<CChinaMarketPtr> pMarket) {
+UINT ThreadDistributeAndCalculateRTData(const CChinaMarketPtr& pMarket) {
 	gl_ProcessChinaMarketRTData.acquire();
-	pMarket->DistributeAndCalculateRTData();
+	CHighPerformanceCounter counter;
+	counter.start();
+
+	pMarket->DistributeRTData();
+	pMarket->CalculateRTData();
+
+	counter.stop();
+	pMarket->SetDistributeAndCalculateTime(counter.GetElapsedMillisecond());
 	gl_ProcessChinaMarketRTData.release();
 	return 108;
 }

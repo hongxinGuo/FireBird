@@ -103,7 +103,6 @@ public:
 	virtual void CreateThreadDistributeAndCalculateRTData();
 
 	//处理个股票的实时数据，计算挂单变化等。
-	void DistributeAndCalculateRTData();
 	void DistributeRTData();
 	void CalculateRTData();
 	void ProcessRTData() { m_containerChinaStock.ProcessRTData(); }
@@ -281,7 +280,7 @@ public:
 	int GetCountDownTengxunNumber() const noexcept { return m_iCountDownTengxunNumber; }
 	void SetCountDownTengxunNumber(const int iValue) noexcept { m_iCountDownTengxunNumber = iValue; }
 
-	size_t GetTotalStock() const noexcept { return m_containerChinaStock.Size(); }
+	size_t GetTotalStock() noexcept { return m_containerChinaStock.Size(); }
 	long GetTotalActiveStock() const noexcept { return m_containerChinaStock.GetActiveStockSize(); }
 	long GetTotalLoadedStock() const noexcept { return m_containerChinaStock.GetLoadedStockSize(); }
 	void SetNewestTransactionTime(const time_t tt) noexcept { m_ttNewestTransactionTime = tt; }
@@ -355,7 +354,7 @@ public:
 		return false;
 	}
 
-	size_t GetCurrentStockSetSize() const;
+	size_t GetCurrentStockSetSize();
 
 	void SetUpdateStockSection(const bool fFlag) noexcept { m_containerStockSymbol.SetUpdateStockSection(fFlag); }
 	bool IsUpdateStockSection() const noexcept { return m_containerStockSymbol.IsUpdateStockSection(); }
@@ -367,6 +366,8 @@ public:
 	void SetCurrentRSStrongIndex(const long lIndex) noexcept { m_lCurrentRSStrongIndex = lIndex; }
 
 	void ResetEffectiveRTDataRatio();
+
+	void SetDistributeAndCalculateTime(time_t tt) { m_ttDistributeAndCalculateTime = tt; }
 
 public:
 	time_t m_ttDistributeAndCalculateTime; // 实时数据分配及处理时间

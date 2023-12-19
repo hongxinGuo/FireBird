@@ -4,15 +4,20 @@
 
 #include<vector>
 #include<map>
+
+#include "VirtualContainer.h"
 using std::vector;
 using std::map;
 
-class CContainerVirtualStock {
+class CContainerVirtualStock : public CVirtualContainer {
 public:
 	CContainerVirtualStock();
-	virtual ~CContainerVirtualStock() = default;
+	~CContainerVirtualStock() override = default ;
 
-	virtual void Reset();
+	void Reset() override;
+	CString GetItemSymbol(long lIndex) override;
+	bool IsEmpty() override { return m_vStock.empty(); }
+	size_t Size() override { return m_vStock.size(); }
 
 	bool IsSymbol(const CString& strSymbol) const { return m_mapSymbol.contains(strSymbol); }
 	bool IsUpdateProfileDB() noexcept;
@@ -28,7 +33,6 @@ public:
 	void Delete(const CVirtualStockPtr& pStock);
 	void UpdateSymbolMap();
 	void Sort();
-	size_t Size() const { return m_vStock.size(); }
 
 protected:
 	vector<CVirtualStockPtr> m_vStock; //此容器中真实存储的，为CVirtualStock类的各继承类，使用时需要使用dynamic_pointer_cast<>转换成对应的继承类。

@@ -61,7 +61,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(tengxunRTDataSourceImp.IsInquiring());
 		EXPECT_TRUE(tengxunRTDataSourceImp.HaveInquiry());
-		EXPECT_EQ(tengxunRTDataSourceImp.GetInquiryQueueSize(), 1);
+		EXPECT_EQ(tengxunRTDataSourceImp.InquiryQueueSize(), 1);
 		tengxunRTDataSourceImp.GetCurrentProduct();
 		const auto pProduct = tengxunRTDataSourceImp.GetCurrentInquiry();
 		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductTengxunRT"));

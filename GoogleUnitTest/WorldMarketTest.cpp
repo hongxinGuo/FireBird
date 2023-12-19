@@ -750,9 +750,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_pWorldMarket->UpdateInsiderSentimentDB());
 
-		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
-		const CString str = gl_systemMessage.PopDayLineInfoMessage();
-		EXPECT_STREQ(str, _T("A内部交易情绪资料更新完成"));
+		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->IsSaveInsiderSentiment());
 		EXPECT_TRUE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderSentiment()) << "存储后并没有删除数据";
 

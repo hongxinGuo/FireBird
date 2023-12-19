@@ -568,8 +568,6 @@ bool CWorldMarket::UpdateInsiderSentimentDB() {
 		if (pStock->IsSaveInsiderSentimentAndClearFlag()) {
 			if (pStock->HaveInsiderSentiment()) {
 				pStock->UpdateInsiderSentimentDB();
-				const CString str = pStock->GetSymbol() + _T("内部交易情绪资料更新完成");
-				gl_systemMessage.PushDayLineInfoMessage(str);
 			}
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) {

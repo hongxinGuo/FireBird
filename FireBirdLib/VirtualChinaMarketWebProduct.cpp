@@ -7,5 +7,5 @@ shared_ptr<CChinaMarket> CVirtualChinaMarketWebProduct::GetMarket() const noexce
 		return dynamic_pointer_cast<CChinaMarket>(p);
 	}
 	exit(1);  // 当返回为nullptr时，此时系统主线程已经退出了，工作线程也要立即退出
-	return nullptr;
+	// return nullptr;
 }

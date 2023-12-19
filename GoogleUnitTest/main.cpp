@@ -129,6 +129,7 @@ namespace FireBirdTest {
 			gl_pMockMainFrame = make_shared<CMockMainFrame>();
 			EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL) << "在生成MainFrame时，会生成一个视觉管理器。在退出时需要删除之";
 
+			EXPECT_TRUE(gl_pChinaMarket->IsUpdateStockProfileDB());
 			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
 				const auto pStock = gl_pChinaMarket->GetStock(i);
 				pStock->SetDayLineNeedUpdate(true);
@@ -141,6 +142,7 @@ namespace FireBirdTest {
 					}
 				}
 			}
+			EXPECT_FALSE(gl_pChinaMarket->IsUpdateStockProfileDB());
 
 			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
 			EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 4800);

@@ -18,8 +18,7 @@ UINT ThreadBuildWeekLine(not_null<CChinaMarketPtr> pMarket, long lStartDate) {
 	const CTimeSpan ts7Day(7, 0, 0, 0);
 	long lCurrentMonday = lStartMonday;
 
-	if (lStartDate > 19900101) {
-		// 目前此种情况只用于重新生成本周周线
+	if (lStartDate > 19900101) {// 目前此种情况只用于重新生成本周周线
 		ASSERT(lStartMonday == GetCurrentMonday(pMarket->GetMarketDate()));
 		do {
 			pMarket->DeleteWeekLine(lCurrentMonday);

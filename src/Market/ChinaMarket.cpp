@@ -338,7 +338,7 @@ bool CChinaMarket::ChangeToNextStockSet() {
 	return true;
 }
 
-size_t CChinaMarket::GetCurrentStockSetSize() const {
+size_t CChinaMarket::GetCurrentStockSetSize() {
 	if (IsTotalStockSetSelected()) return GetTotalStock();
 	return m_avChosenStock.at(m_lCurrentSelectedStockSet).size();
 }
@@ -562,17 +562,6 @@ void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
 	CreateThreadDistributeAndCalculateRTData();
 
 	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, GetNextSecond(lCurrentTime)); // 每秒执行一次
-}
-
-void CChinaMarket::DistributeAndCalculateRTData() {
-	CHighPerformanceCounter counter;
-	counter.start();
-
-	DistributeRTData();
-	CalculateRTData();
-
-	counter.stop();
-	m_ttDistributeAndCalculateTime = counter.GetElapsedMillisecond();
 }
 
 void CChinaMarket::DistributeRTData() {

@@ -57,13 +57,13 @@ namespace FireBirdTest {
 			GeneralCheck();
 			gl_systemConfiguration.SetExitingSystem(false);
 			gl_pFinnhubDataSource->SetUpdateStockProfile(true);
-			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
+			EXPECT_EQ(gl_pFinnhubDataSource->InquiryQueueSize(), 0);
 			EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
 		}
 
 		void TearDown() override {
 			// clearUp
-			EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
+			EXPECT_EQ(gl_pFinnhubDataSource->InquiryQueueSize(), 0);
 
 			EXPECT_TRUE(s_pMockWorldMarket->IsSystemReady());
 			EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());

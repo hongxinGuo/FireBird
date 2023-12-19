@@ -108,7 +108,7 @@ public:
 
 	void AddStock(const CWorldStockPtr& pStock) { m_containerStock.Add(pStock); }
 	void DeleteStock(const CWorldStockPtr& pStock) { m_containerStock.Delete(pStock); }
-	size_t GetStockSize() const noexcept { return m_containerStock.Size(); }
+	size_t GetStockSize() noexcept { return m_containerStock.Size(); }
 	void AddTiingoStock(const CTiingoStockPtr& pTiingoStock) { m_dataTiingoStock.Add(pTiingoStock); }
 	bool DeleteTiingoStock(const CTiingoStockPtr& pStock) { return m_dataTiingoStock.Delete(pStock); }
 	size_t GetTotalTiingoStock() const noexcept { return m_dataTiingoStock.GetTotalStock(); }
@@ -123,7 +123,7 @@ public:
 	bool IsUpdateBasicFinancialDB() { return m_containerStock.IsUpdateBasicFinancialDB(); }
 
 	CWorldStockPtr GetChosenStock(const long lIndex) { return m_containerChosenStock.GetStock(lIndex); }
-	size_t GetChosenStockSize() const noexcept { return m_containerChosenStock.Size(); }
+	size_t GetChosenStockSize() noexcept { return m_containerChosenStock.Size(); }
 
 	bool IsTiingoStock(const CString& strSymbol) const { return m_dataTiingoStock.IsStock(strSymbol); }
 	bool IsTiingoStock(const CWorldStockPtr& pStock) const { return m_dataTiingoStock.IsStock(pStock); }
@@ -144,7 +144,7 @@ public:
 	void DeleteForexSymbol(const CForexSymbolPtr& pForexSymbol) { m_dataFinnhubForexSymbol.Delete(pForexSymbol); }
 	CForexSymbolPtr GetForexSymbol(const size_t lIndex) { return m_dataFinnhubForexSymbol.GetSymbol(lIndex); }
 	CForexSymbolPtr GetForexSymbol(const CString& strSymbol) { return m_dataFinnhubForexSymbol.GetSymbol(strSymbol); }
-	size_t GetForexSymbolSize() const noexcept { return m_dataFinnhubForexSymbol.Size(); }
+	size_t GetForexSymbolSize() noexcept { return m_dataFinnhubForexSymbol.Size(); }
 
 	bool IsCryptoExchange(CString strCryptoExchange) const { return m_dataFinnhubCryptoExchange.IsCryptoExchange(strCryptoExchange.GetBuffer()); }
 
@@ -159,7 +159,7 @@ public:
 	void DeleteFinnhubCryptoSymbol(const CFinnhubCryptoSymbolPtr& pCryptoSymbol) { m_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); }
 	CFinnhubCryptoSymbolPtr GetFinnhubCryptoSymbol(const size_t lIndex) { return m_dataFinnhubCryptoSymbol.GetSymbol(lIndex); }
 	CFinnhubCryptoSymbolPtr GetFinnhubCryptoSymbol(const CString& strSymbol) { return m_dataFinnhubCryptoSymbol.GetSymbol(strSymbol); }
-	size_t GetFinnhubCryptoSymbolSize() const noexcept { return m_dataFinnhubCryptoSymbol.Size(); }
+	size_t GetFinnhubCryptoSymbolSize() noexcept { return m_dataFinnhubCryptoSymbol.Size(); }
 
 	bool IsTiingoCryptoSymbol(const CString& strSymbol) const { return m_dataTiingoCryptoSymbol.IsTiingoCryptoSymbol(strSymbol); }
 	bool IsTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr& pCryptoSymbol) const { return IsTiingoCryptoSymbol(pCryptoSymbol->m_strTicker); }

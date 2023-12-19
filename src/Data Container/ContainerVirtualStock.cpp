@@ -4,11 +4,19 @@
 
 using namespace std;
 
-CContainerVirtualStock::CContainerVirtualStock() {}
+CContainerVirtualStock::CContainerVirtualStock() {
+	CContainerVirtualStock::Reset();
+}
 
 void CContainerVirtualStock::Reset() {
+	CVirtualContainer::Reset();
+
 	m_vStock.resize(0);
 	m_mapSymbol.clear();
+}
+
+CString CContainerVirtualStock::GetItemSymbol(long lIndex) {
+	return m_vStock.at(lIndex)->GetSymbol();
 }
 
 bool CContainerVirtualStock::IsUpdateProfileDB() noexcept {

@@ -79,7 +79,7 @@ namespace FireBirdTest {
 
 		m_pMockNeteaseRTDataSource->InquireRTData(1010);
 
-		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiryQueueSize(), 1);
+		EXPECT_EQ(m_pMockNeteaseRTDataSource->InquiryQueueSize(), 1);
 		const auto pProduct = m_pMockNeteaseRTDataSource->GetCurrentProduct();
 		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductNeteaseRT"));
 	}

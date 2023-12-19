@@ -29,9 +29,9 @@ UINT ThreadBuildDayLineRS(not_null<CChinaMarketPtr> pMarket, long startCalculati
 // 计算给定日期股票日线相对强度线程。此线程由ThreadCalculateRS线程调用，用于并发计算不同日期的日线相对强度，以提高效率
 UINT ThreadBuildDayLineRSOfDate(not_null<CChinaMarketPtr> pMarket, long lDate); // 此工作线程返回值也为12
 // 存储临时系统状态线程
-UINT ThreadSaveTempRTData(not_null<CChinaMarketPtr> pMarket); // 此工作线程返回值为13
+UINT ThreadSaveTempRTData(const CChinaMarketPtr& pMarket); // 此工作线程返回值为13
 // 装载临时存储的实时数据线程
-UINT ThreadLoadTempRTData(not_null<CChinaMarketPtr> pMarket, long lTheDate); // 此线程返回值为19
+UINT ThreadLoadTempRTData(const CChinaMarketPtr& pMarket, long lTheDate); // 此线程返回值为19
 // 计算和存储当前交易日数据线程
 UINT ThreadProcessTodayStock(not_null<CChinaMarketPtr> pMarket); // 此工作线程返回值为14
 // 存储一个股票的日线历史数据。
@@ -123,4 +123,4 @@ UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 // 计算股票的10日强势与否2
 UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock); // 此线程返回值为106
 // 分配并计算chinaMarket的实时数据
-UINT ThreadDistributeAndCalculateRTData(not_null<CChinaMarketPtr> pMarket); // 此线程返回值为108
+UINT ThreadDistributeAndCalculateRTData(const CChinaMarketPtr& pMarket); // 此线程返回值为108

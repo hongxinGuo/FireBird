@@ -36,10 +36,14 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate());
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
-		if (gl_UpdateChinaMarketDB.try_acquire()) { gl_UpdateChinaMarketDB.release(); }
+		if (gl_UpdateChinaMarketDB.try_acquire()) {
+			gl_UpdateChinaMarketDB.release();
+		}
 		else
 			EXPECT_TRUE(false);
-		if (gl_UpdateWorldMarketDB.try_acquire()) { gl_UpdateWorldMarketDB.release(); }
+		if (gl_UpdateWorldMarketDB.try_acquire()) {
+			gl_UpdateWorldMarketDB.release();
+		}
 		else
 			EXPECT_TRUE(false);
 	}
@@ -60,6 +64,9 @@ namespace FireBirdTest {
 
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
+
+			EXPECT_EQ(gl_pChinaMarket->GetStock(0)->GetDayLineEndDate(), 20210430) << "第一个股票（上海指数）的结束日期为20210430";
+			EXPECT_TRUE(gl_pChinaMarket->GetStock(0)->IsIPOed()) << "第一个股票（上海指数）为IPOed（255）";
 		}
 	}
 
@@ -95,13 +102,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pTengxunRTDataSource->GetReceivedDataSize(), 0);
 		EXPECT_EQ(gl_pTengxunDayLineDataSource->GetReceivedDataSize(), 0);
 
-		EXPECT_THAT(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
-		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 0);
-		EXPECT_EQ(gl_pSinaRTDataSource->GetInquiryQueueSize(), 0);
-		EXPECT_EQ(gl_pNeteaseDayLineDataSource->GetInquiryQueueSize(), 0);
-		EXPECT_EQ(gl_pNeteaseRTDataSource->GetInquiryQueueSize(), 0);
-		EXPECT_EQ(gl_pTengxunRTDataSource->GetInquiryQueueSize(), 0);
-		EXPECT_EQ(gl_pTengxunDayLineDataSource->GetInquiryQueueSize(), 0);
+		EXPECT_THAT(gl_pFinnhubDataSource->InquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pTiingoDataSource->InquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pSinaRTDataSource->InquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pNeteaseDayLineDataSource->InquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pNeteaseRTDataSource->InquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pTengxunRTDataSource->InquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pTengxunDayLineDataSource->InquiryQueueSize(), 0);
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebError());
 		EXPECT_FALSE(gl_pTiingoDataSource->IsWebError());
@@ -130,8 +137,8 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateStockSymbol());
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
 
-		EXPECT_EQ(gl_pTiingoDataSource->GetInquiryQueueSize(), 0);
-		EXPECT_EQ(gl_pFinnhubDataSource->GetInquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pTiingoDataSource->InquiryQueueSize(), 0);
+		EXPECT_EQ(gl_pFinnhubDataSource->InquiryQueueSize(), 0);
 
 		EXPECT_THAT(gl_pTiingoCryptoWebSocket->DataSize(), 0);
 		EXPECT_THAT(gl_pTiingoForexWebSocket->DataSize(), 0);
