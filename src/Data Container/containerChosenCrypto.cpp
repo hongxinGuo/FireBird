@@ -6,8 +6,7 @@
 #include"FinnhubCryptoSymbol.h"
 
 CContainerChosenCrypto::CContainerChosenCrypto() {
-	m_lChosenCryptoPos = 0;
-	Reset();
+	CContainerChosenCrypto::Reset();
 }
 
 void CContainerChosenCrypto::Reset() {

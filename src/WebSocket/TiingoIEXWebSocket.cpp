@@ -42,7 +42,7 @@ void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectTiingoIEXWebSocketAndSendMessage(not_null<CTiingoIEXWebSocketPtr> pDataTiingoIEXWebSocket, const vectorString& vSymbol) {
+UINT ThreadConnectTiingoIEXWebSocketAndSendMessage(const not_null<CTiingoIEXWebSocketPtr>& pDataTiingoIEXWebSocket, const vectorString& vSymbol) {
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
@@ -173,7 +173,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 					pIEXData->m_iOddlot = jsonGetInt(++it);
 					pIEXData->m_iNMSRule611 = jsonGetInt(++it);
 					break;
-				case 'T': // 'T' last trade message
+				case 'T': // T last trade message
 					pIEXData->m_sDateTime = jsonGetString(++it);
 					pIEXData->m_iNanoseconds = jsonGetLongLong(++it);
 					pIEXData->m_sSymbol = jsonGetString(++it);

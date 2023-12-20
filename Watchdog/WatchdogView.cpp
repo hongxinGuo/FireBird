@@ -47,7 +47,7 @@ BOOL CWatchdogView::PreCreateWindow(CREATESTRUCT& cs) {
 // CWatchdogView drawing
 
 void CWatchdogView::OnDraw(CDC* /*pDC*/) {
-	CWatchdogDoc* pDoc = GetDocument();
+	const CWatchdogDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;

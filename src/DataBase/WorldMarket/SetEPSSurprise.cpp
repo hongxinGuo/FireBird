@@ -8,7 +8,7 @@
 
 #include "SetEPSSurprise.h"
 
-CSetEPSSurprise::CSetEPSSurprise(CString strSchema, CString strTable, CDatabase* pdb)
+CSetEPSSurprise::CSetEPSSurprise(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_Symbol = _T(" ");

@@ -61,7 +61,7 @@ public:
 
 	void VerifyDataLength() const;
 	static void SetDataTime(const CWebDataPtr& pData, const time_t time) noexcept { pData->SetTime(time); }
-	void TransferDataToWebData(CWebDataPtr pWebData); // 将接收到的数移至pWebData中
+	void TransferDataToWebData(const CWebDataPtr& pWebData); // 将接收到的数移至pWebData中
 	virtual bool ParseData(CWebDataPtr pWebData) {
 		TRACE("调用了基类函数ParseData()\n");
 		return false;

@@ -10,7 +10,7 @@ public:
 
 	// Implementation
 public:
-	virtual ~COutputList();
+	~COutputList() override;
 
 	void TruncateList(long lNumberOfTruncation);
 	void SetCurAtLastLine();
@@ -49,7 +49,7 @@ protected:
 
 	// Implementation
 public:
-	virtual ~CWatchdogOutputWnd();
+	~CWatchdogOutputWnd() override;
 
 	void ReportInfo(CString strInfo);
 

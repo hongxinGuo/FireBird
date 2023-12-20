@@ -230,7 +230,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockWebRTDataTest, TestCheckSinaRTDataMarket) {
-		time_t ttime = gl_tUTCTime;
+		const time_t tTime = gl_tUTCTime;
 		tm tm_;
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
@@ -238,7 +238,7 @@ namespace FireBirdTest {
 		tm_.tm_hour = 12;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
+		const time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		gl_pChinaMarket->TEST_SetUTCTime(tt);
 		CWebRTData data;
 		data.SetTransactionTime(tt);
@@ -249,7 +249,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(data.CheckSinaRTDataActive());
 
 		// 恢复原状
-		gl_tUTCTime = ttime;
+		gl_tUTCTime = tTime;
 	}
 
 	struct SinaRTData {
@@ -402,7 +402,7 @@ namespace FireBirdTest {
 	                         ));
 
 	TEST_P(CalculateSinaRTDataTest, TestSinaRTData) {
-		time_t ttime, tUTCTime;
+		time_t tTime, tUTCTime;
 		tm tm_; // 该日期为：2019-07-16 15:00:00，就是数据中的时间。
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 7 - 1;
@@ -410,9 +410,9 @@ namespace FireBirdTest {
 		tm_.tm_hour = 15;
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
-		ttime = gl_pChinaMarket->TransferToUTCTime(&tm_);
+		tTime = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		tUTCTime = GetUTCTime();
-		gl_pChinaMarket->TEST_SetUTCTime(ttime);
+		gl_pChinaMarket->TEST_SetUTCTime(tTime);
 		bool fSucceed = m_RTData.ReadSinaData(m_pSinaWebRTData);
 		switch (m_iCount) {
 		case 0:
@@ -450,7 +450,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
+			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
 			break;
 		case 1: // 所有价格皆为零
 			EXPECT_TRUE(fSucceed); // 没有错误
@@ -487,7 +487,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 0);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 0);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
+			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
 			break;
 		case 2:
 			EXPECT_TRUE(fSucceed); // 没有错误
@@ -524,7 +524,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 0);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
+			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
 			break;
 		case 3:
 			EXPECT_TRUE(fSucceed); // 无错误
@@ -1208,7 +1208,7 @@ namespace FireBirdTest {
 	}
 
 	struct ReadSinaOneValueExceptPeriodData {
-		ReadSinaOneValueExceptPeriodData(int count, CString Data) {
+		ReadSinaOneValueExceptPeriodData(int count, const CString& Data) {
 			m_iCount = count;
 			m_strData = Data;
 		}

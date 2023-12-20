@@ -1,29 +1,24 @@
-
 #pragma once
 
-class CPropertiesToolBar : public CMFCToolBar
-{
+class CPropertiesToolBar : public CMFCToolBar {
 public:
-	virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler)
-	{
-		CMFCToolBar::OnUpdateCmdUI((CFrameWnd*) GetOwner(), bDisableIfNoHndler);
+	void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) override {
+		CMFCToolBar::OnUpdateCmdUI(static_cast<CFrameWnd*>(GetOwner()), bDisableIfNoHndler);
 	}
 
-	virtual BOOL AllowShowOnList() const { return FALSE; }
+	BOOL AllowShowOnList() const override { return FALSE; }
 };
 
-class CWatchdogPropertiesWnd : public CDockablePane
-{
-// Construction
+class CWatchdogPropertiesWnd : public CDockablePane {
+	// Construction
 public:
 	CWatchdogPropertiesWnd() noexcept;
 
 	void AdjustLayout();
 
-// Attributes
+	// Attributes
 public:
-	void SetVSDotNetLook(BOOL bSet)
-	{
+	void SetVSDotNetLook(BOOL bSet) {
 		m_wndPropList.SetVSDotNetLook(bSet);
 		m_wndPropList.SetGroupNameFullWidth(bSet);
 	}
@@ -34,9 +29,9 @@ protected:
 	CPropertiesToolBar m_wndToolBar;
 	CMFCPropertyGridCtrl m_wndPropList;
 
-// Implementation
+	// Implementation
 public:
-	virtual ~CWatchdogPropertiesWnd();
+	~CWatchdogPropertiesWnd() override;
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -59,4 +54,3 @@ protected:
 
 	int m_nComboHeight;
 };
-

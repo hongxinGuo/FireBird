@@ -4,8 +4,9 @@
 
 #include "SetWorldStock.h"
 
-CSetWorldStock::CSetWorldStock(CString strSchema, CString strTable, CDatabase* pdb)
+CSetWorldStock::CSetWorldStock(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
+	m_ID = 0;
 	m_Description = _T(" ");
 	m_DisplaySymbol = _T(" ");
 	m_IPODate = _T(" ");
@@ -20,6 +21,7 @@ CSetWorldStock::CSetWorldStock(CString strSchema, CString strTable, CDatabase* p
 	m_Name = _T(" ");
 	m_Phone = _T(" ");
 	m_Symbol = _T(" ");
+	m_EmployeeTotal = 0;
 	m_ExchangeCode = _T(" ");
 	m_Ticker = _T(" ");
 	m_WebURL = _T(" ");

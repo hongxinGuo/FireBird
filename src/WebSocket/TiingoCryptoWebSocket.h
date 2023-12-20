@@ -16,7 +16,7 @@ public:
 	}
 
 public:
-	char m_chMessageType; // 'Q' or 'T'
+	char m_chMessageType; // "Q" or "T"
 	string m_sDateTime; // json ISO format
 	string m_sSymbol;
 	string m_strExchange;

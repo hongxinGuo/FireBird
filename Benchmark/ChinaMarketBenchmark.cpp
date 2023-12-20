@@ -9,11 +9,9 @@ using std::make_shared;
 
 class CChinaMarketBenchmark : public benchmark::Fixture {
 public:
-	void SetUp(const ::benchmark::State& state) override { }
+	void SetUp(const ::benchmark::State& state) override {}
 
-	void TearDown(const ::benchmark::State& state) override { }
-
-protected:
+	void TearDown(const ::benchmark::State& state) override {}
 };
 
 BENCHMARK_F(CChinaMarketBenchmark, CalculateTime)(benchmark::State& state) {

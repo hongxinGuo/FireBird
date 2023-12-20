@@ -73,7 +73,7 @@ bool CFinnhubDataSource::Reset() {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CFinnhubDataSource::GenerateInquiryMessage(const long lCurrentTime) {
+bool CFinnhubDataSource::GenerateInquiryMessage(long lCurrentTime) {
 	const long long llTickCount = GetTickCount();
 
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请finnhub各数据。

@@ -87,7 +87,7 @@ CFireBirdView::CFireBirdView() {
 	m_fCreateMemoryDC = false;
 }
 
-bool CFireBirdView::ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart, int iYEnd) {
+bool CFireBirdView::ShowGuadan(CDC* pDC, const CChinaStockPtr& pStock, int iXStart, int iYStart, int iYEnd) {
 	CString str = _T("abcd");
 	const CSize sizeText = SysCallGetTextExtent(pDC, str);
 	const int iNumberOfLine = (iYEnd - iYStart) / sizeText.cy;
@@ -669,7 +669,7 @@ void CFireBirdView::Show(CDC* pdc) {
 
 	CRect rect;
 	SysCallGetClientRect(&rect);
-	if ((gl_pChinaMarket->GetCurrentStock() != nullptr) && (gl_pChinaMarket->GetCurrentStock()->IsDayLineLoaded())) { }
+	if ((gl_pChinaMarket->GetCurrentStock() != nullptr) && (gl_pChinaMarket->GetCurrentStock()->IsDayLineLoaded())) {}
 	else {
 		pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
 		m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);

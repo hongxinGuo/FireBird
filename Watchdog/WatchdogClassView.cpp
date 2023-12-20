@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "framework.h"
-#include "WatchdogMainFrm.h"
 #include "WatchdogClassView.h"
-#include "Resource.h"
 #include "Watchdog.h"
 
 class CClassViewMenuButton : public CMFCToolBarMenuButton {
@@ -11,10 +9,10 @@ class CClassViewMenuButton : public CMFCToolBarMenuButton {
 	DECLARE_SERIAL(CClassViewMenuButton)
 
 public:
-	CClassViewMenuButton(HMENU hMenu = nullptr) noexcept : CMFCToolBarMenuButton((UINT)-1, hMenu, -1) { }
+	CClassViewMenuButton(HMENU hMenu = nullptr) noexcept : CMFCToolBarMenuButton(static_cast<UINT>(-1), hMenu, -1) {}
 
-	virtual void OnDraw(CDC* pDC, const CRect& rect, CMFCToolBarImages* pImages, BOOL bHorz = TRUE,
-	                    BOOL bCustomizeMode = FALSE, BOOL bHighlight = FALSE, BOOL bDrawBorder = TRUE, BOOL bGrayDisabledButtons = TRUE) {
+	void OnDraw(CDC* pDC, const CRect& rect, CMFCToolBarImages* pImages, const BOOL bHorz = TRUE,
+	            BOOL bCustomizeMode = FALSE, BOOL bHighlight = FALSE, BOOL bDrawBorder = TRUE, BOOL bGrayDisabledButtons = TRUE) override {
 		pImages = CMFCToolBar::GetImages();
 
 		CAfxDrawState ds;
@@ -64,7 +62,7 @@ int CWatchdogClassView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	rectDummy.SetRectEmpty();
 
 	// Create views:
-	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+	constexpr DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 
 	if (!m_wndClassView.Create(dwViewStyle, rectDummy, this, 2)) {
 		TRACE0("Failed to create Class View\n");
@@ -111,7 +109,7 @@ void CWatchdogClassView::OnSize(UINT nType, int cx, int cy) {
 }
 
 void CWatchdogClassView::FillClassView() {
-	HTREEITEM hRoot = m_wndClassView.InsertItem(_T("FakeApp classes"), 0, 0);
+	const HTREEITEM hRoot = m_wndClassView.InsertItem(_T("FakeApp classes"), 0, 0);
 	m_wndClassView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
 
 	HTREEITEM hClass = m_wndClassView.InsertItem(_T("CFakeAboutDlg"), 1, 1, hRoot);
@@ -162,7 +160,7 @@ void CWatchdogClassView::OnContextMenu(CWnd* pWnd, CPoint point) {
 		pWndTree->ScreenToClient(&ptTree);
 
 		UINT flags = 0;
-		HTREEITEM hTreeItem = pWndTree->HitTest(ptTree, &flags);
+		const HTREEITEM hTreeItem = pWndTree->HitTest(ptTree, &flags);
 		if (hTreeItem != nullptr) {
 			pWndTree->SelectItem(hTreeItem);
 		}
@@ -172,7 +170,7 @@ void CWatchdogClassView::OnContextMenu(CWnd* pWnd, CPoint point) {
 	CMenu menu;
 	menu.LoadMenu(IDR_POPUP_SORT);
 
-	CMenu* pSumMenu = menu.GetSubMenu(0);
+	const CMenu* pSumMenu = menu.GetSubMenu(0);
 
 	if (AfxGetMainWnd()->IsKindOf(RUNTIME_CLASS(CMDIFrameWndEx))) {
 		CMFCPopupMenu* pPopupMenu = new CMFCPopupMenu;
@@ -180,7 +178,7 @@ void CWatchdogClassView::OnContextMenu(CWnd* pWnd, CPoint point) {
 		if (!pPopupMenu->Create(this, point.x, point.y, (HMENU)pSumMenu->m_hMenu, FALSE, TRUE))
 			return;
 
-		((CMDIFrameWndEx*)AfxGetMainWnd())->OnShowPopupMenu(pPopupMenu);
+		static_cast<CMDIFrameWndEx*>(AfxGetMainWnd())->OnShowPopupMenu(pPopupMenu);
 		UpdateDialogControls(this, FALSE);
 	}
 }
@@ -193,7 +191,7 @@ void CWatchdogClassView::AdjustLayout() {
 	CRect rectClient;
 	GetClientRect(rectClient);
 
-	int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
+	const int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
 
 	m_wndToolBar.SetWindowPos(nullptr, rectClient.left, rectClient.top, rectClient.Width(), cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
 	m_wndClassView.SetWindowPos(nullptr, rectClient.left + 1, rectClient.top + cyTlb + 1, rectClient.Width() - 2, rectClient.Height() - cyTlb - 2, SWP_NOACTIVATE | SWP_NOZORDER);
@@ -257,7 +255,7 @@ void CWatchdogClassView::OnSetFocus(CWnd* pOldWnd) {
 void CWatchdogClassView::OnChangeVisualStyle() {
 	m_ClassViewImages.DeleteImageList();
 
-	UINT uiBmpId = theApp.m_bHiColorIcons ? IDB_CLASS_VIEW_24 : IDB_CLASS_VIEW;
+	const UINT uiBmpId = theApp.m_bHiColorIcons ? IDB_CLASS_VIEW_24 : IDB_CLASS_VIEW;
 
 	CBitmap bmp;
 	if (!bmp.LoadBitmap(uiBmpId)) {

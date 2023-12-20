@@ -932,13 +932,13 @@ void CWorldMarket::UpdateWorldStockFromFinnhubSocket(const CFinnhubSocketPtr& pF
 	}
 }
 
-void CWorldMarket::UpdateMarketStatus(CMarketStatusVectorPtr pv) {
+void CWorldMarket::UpdateMarketStatus(const CMarketStatusVectorPtr& pv) const {
 	for (auto p : *pv) {
 		m_pvMarketStatus->push_back(p);
 	}
 }
 
-void CWorldMarket::UpdateMarketHoliday(CMarketHolidayVectorPtr pv) {
+void CWorldMarket::UpdateMarketHoliday(const CMarketHolidayVectorPtr& pv) const {
 	for (auto p : *pv) {
 		m_pvMarketHoliday->push_back(p);
 	}

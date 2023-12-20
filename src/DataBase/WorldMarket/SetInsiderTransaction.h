@@ -6,7 +6,7 @@
 
 class CSetInsiderTransaction : public CVirtualRecordset {
 public:
-	CSetInsiderTransaction(CString strSchema = _T("WorldMarket"), CString strTable = _T("insider_transaction"), CDatabase* pDatabase = nullptr);
+	CSetInsiderTransaction(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("insider_transaction"), CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 

@@ -15,7 +15,6 @@
 #include"SaveAndLoad.h"
 #include"JsonParse.h"
 #include"WebData.h"
-#include"WebRTData.h"
 #include"ChinaMarket.h"
 
 // 这个是目前能够找到的最大的json数据，用于测试ParseWithPTree和ParseWithNlohmannJson的速度
@@ -221,7 +220,7 @@ std::string sData101 = _T("{\
 static void ParseWithNlohmannJSon(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
-		auto f = CreateJsonWithNlohmann(j, sData101);
+		CreateJsonWithNlohmann(j, sData101);
 	}
 }
 
@@ -246,7 +245,7 @@ public:
 		sWorldStockUpdateParameter = _T("{\"Finnhub\":{\"StockFundamentalsCompanyProfileConcise\":20230110,\"StockFundamentalsCompanyNews\":20230205,\"StockFundamentalsBasicFinancials\":20230112,\"StockPriceQuote\":19800104,\"StockFundamentalsPeer\":20230115,\"StockFundamentalsInsiderTransaction\":20230116,\"StockFundamentalsInsiderSentiment\":20230117,\"StockEstimatesEPSSurprise\":19800108},\"Tiingo\":{\"StockFundamentalsCompanyProfile\":20221222,\"StockPriceCandles\":20230210}}");
 	}
 
-	void TearDown(const benchmark::State& state) override { }
+	void TearDown(const benchmark::State& state) override {}
 
 	string sUSExchangeStockCode;
 	string sNeteaseRTData;
@@ -259,25 +258,23 @@ public:
 BENCHMARK_F(CJsonParse, StockSymbolParseWithNlohmannJSon)(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
-		auto f = CreateJsonWithNlohmann(j, sUSExchangeStockCode);
+		CreateJsonWithNlohmann(j, sUSExchangeStockCode);
 	}
 }
 
 // 解析Netease实时数据时，nlohmann json用时16毫秒，PTree用时32毫秒。
 BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonWithNlohmannJson)(benchmark::State& state) {
 	json j;
-	bool f = false;
 	for (auto _ : state) {
-		f = CreateJsonWithNlohmann(j, sNeteaseRTData, 21, 2);
+		CreateJsonWithNlohmann(j, sNeteaseRTData, 21, 2);
 	}
 }
 
 // 解析WorldStock update parameter，nlohmann json用时50微秒（debug), 7微秒（release)。
 BENCHMARK_F(CJsonParse, WorldStockUpdateParameterCreateJsonWithNlohmannJson)(benchmark::State& state) {
 	json j;
-	bool f = false;
 	for (auto _ : state) {
-		f = CreateJsonWithNlohmann(j, sWorldStockUpdateParameter);
+		CreateJsonWithNlohmann(j, sWorldStockUpdateParameter);
 	}
 }
 
@@ -285,7 +282,7 @@ BENCHMARK_F(CJsonParse, WorldStockUpdateParameterCreateJsonWithNlohmannJson)(ben
 json j; // 此变量不能声明为局部变量，否则可能导致栈溢出。原因待查
 BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJson)(benchmark::State& state) {
 	for (auto _ : state) {
-		auto f = CreateJsonWithNlohmann(j, sNeteaseRTData, 21, 2);
+		CreateJsonWithNlohmann(j, sNeteaseRTData, 21, 2);
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTData(&j);
 	}
 }
@@ -294,7 +291,7 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJson)(benchmark::State& st
 json jTengxunDayLine;
 BENCHMARK_F(CJsonParse, ParseTengxunDayLine)(benchmark::State& state) {
 	for (auto _ : state) {
-		auto f = CreateJsonWithNlohmann(jTengxunDayLine, sTengxunDayLine, 0, 0);
+		CreateJsonWithNlohmann(jTengxunDayLine, sTengxunDayLine, 0, 0);
 		auto vData = ParseTengxunDayLine(&jTengxunDayLine, _T("sh000001")); // 默认测试文件中的股票代码为sh000001.
 	}
 }
@@ -308,7 +305,7 @@ public:
 		catch (json::parse_error&) { fDone = false; }
 	}
 
-	void TearDown(const benchmark::State& state) override { }
+	void TearDown(const benchmark::State& state) override {}
 
 	string s;
 	json js; // 此处不能使用智能指针，否则出现重入问题，原因不明。
@@ -336,7 +333,7 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength);
 	}
 
-	void TearDown(const benchmark::State& state) override { }
+	void TearDown(const benchmark::State& state) override {}
 
 	string s;
 	CWebDataPtr pWebData;
@@ -363,7 +360,7 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength);
 	}
 
-	void TearDown(const benchmark::State& state) override { }
+	void TearDown(const benchmark::State& state) override {}
 
 	string s;
 	CWebDataPtr pWebData;

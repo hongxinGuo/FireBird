@@ -368,7 +368,7 @@ void CFinnhubStockBasicFinancial::SaveAllQuarterData(CSetFinnhubStockBasicFinanc
 	SaveQuarterData(SetQuarterData, m_quarter.m_totalRatio, _T("totalRatio"), vDBData);
 }
 
-void CFinnhubStockBasicFinancial::SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, const vector<CValueOfPeriod>& vData, const CString& typeName, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
+void CFinnhubStockBasicFinancial::SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, const vector<CValueOfPeriod>& vData, const CString& typeName, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	ASSERT(SetQuarterData.IsOpen());
 	for (int i = 0; i < vData.size(); i++) {
 		if (IsNewData(typeName, vData.at(i), vDBData)) {
@@ -408,7 +408,7 @@ void CFinnhubStockBasicFinancial::SaveAllAnnualData(CSetFinnhubStockBasicFinanci
 	SaveAnnualData(setAnnualData, m_annual.m_totalRatio, _T("totalRatio"), vDBData);
 }
 
-void CFinnhubStockBasicFinancial::SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, const vector<CValueOfPeriod>& vData, const CString& typeName, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
+void CFinnhubStockBasicFinancial::SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, const vector<CValueOfPeriod>& vData, const CString& typeName, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	ASSERT(setAnnualData.IsOpen());
 	for (int i = 0; i < vData.size(); i++) {
 		if (IsNewData(typeName, vData.at(i), vDBData)) {
@@ -435,14 +435,14 @@ bool CFinnhubStockBasicFinancial::IsNewData(const CString& type, CValueOfPeriod 
 	return true;
 }
 
-void CFinnhubStockBasicFinancial::AppendMetric(CSetFinnhubStockBasicFinancialMetric& setMetric) {
+void CFinnhubStockBasicFinancial::AppendMetric(CSetFinnhubStockBasicFinancialMetric& setMetric) const {
 	ASSERT(setMetric.IsOpen());
 	setMetric.AddNew();
 	SaveMetric(setMetric);
 	setMetric.Update();
 }
 
-void CFinnhubStockBasicFinancial::UpdateMetric(CSetFinnhubStockBasicFinancialMetric& setMetric) {
+void CFinnhubStockBasicFinancial::UpdateMetric(CSetFinnhubStockBasicFinancialMetric& setMetric) const {
 	ASSERT(setMetric.IsOpen());
 	setMetric.Edit();
 	SaveMetric(setMetric);

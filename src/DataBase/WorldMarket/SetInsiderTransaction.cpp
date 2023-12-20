@@ -6,7 +6,7 @@
 
 #include "SetInsiderTransaction.h"
 
-CSetInsiderTransaction::CSetInsiderTransaction(CString strSchema, CString strTable, CDatabase* pdb)
+CSetInsiderTransaction::CSetInsiderTransaction(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_Symbol = _T(" ");

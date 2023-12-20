@@ -32,7 +32,7 @@ public:
 	CString GetSymbol() const noexcept { return m_strSymbol; }
 	void SetSymbol(const CString& str) noexcept {
 		m_strSymbol = str;
-		CString s = m_strSymbol.Left(6);
+		const CString s = m_strSymbol.Left(6);
 		m_lSymbol = atol(s);
 	}
 	CString GetDisplaySymbol() const noexcept { return m_strDisplaySymbol; }

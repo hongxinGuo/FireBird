@@ -6,7 +6,7 @@
 
 class CSetCountry : public CVirtualRecordset {
 public:
-	CSetCountry(CString strSchema = _T("WorldMarket"), CString strTable = _T("country_list"), CDatabase* pDatabase = nullptr);
+	explicit CSetCountry(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("country_list"), CDatabase* pDatabase = nullptr);
 
 	long m_ID;
 	CString m_Code2;

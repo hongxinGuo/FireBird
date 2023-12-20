@@ -4,8 +4,9 @@
 
 #include "SetTiingoStock.h"
 
-CSetTiingoStock::CSetTiingoStock(CString strSchema, CString strTable, CDatabase* pdb)
+CSetTiingoStock::CSetTiingoStock(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
+	m_ID = 0;
 	m_TiingoPermaTicker = _T("");
 	m_Ticker = _T("");
 	m_Name = _T("");

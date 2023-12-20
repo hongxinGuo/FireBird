@@ -128,7 +128,7 @@ public:
 	CFinnhubInquiryType();
 	~CFinnhubInquiryType() = default;
 
-	CString GetInquiryString(const long lInquiryType);
+	CString GetInquiryString(long lInquiryType);
 	long GetInquiryType(const CString& strInquiryString) const;
 
 	void CreateFinnhubInquiryIndexToStringMap();

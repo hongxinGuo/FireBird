@@ -1,7 +1,5 @@
 #include"pch.h"
 
-#include"FinnhubInquiryType.h"
-
 #include "QuandlDataSource.h"
 
 #include"WorldMarket.h"

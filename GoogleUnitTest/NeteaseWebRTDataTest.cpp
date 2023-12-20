@@ -164,7 +164,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pNeteaseWebRTData->CreateJson());
 		auto it = m_pNeteaseWebRTData->GetJSon()->begin();
 		ParseOneNeteaseRTData(it, m_pRTData);
-		time_t ttime, ttime2, ttime3, tUTCTime;
+		time_t tTime, tTime2, tTime3, tUTCTime;
 		tm tm_;
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 11 - 1;
@@ -172,13 +172,13 @@ namespace FireBirdTest {
 		tm_.tm_hour = 15;
 		tm_.tm_min = 59;
 		tm_.tm_sec = 55;
-		ttime = gl_pChinaMarket->TransferToUTCTime(&tm_);
+		tTime = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		tm_.tm_sec = 53;
-		ttime2 = gl_pChinaMarket->TransferToUTCTime(&tm_);
+		tTime2 = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		tm_.tm_sec = 55;
-		ttime3 = gl_pChinaMarket->TransferToUTCTime(&tm_);
+		tTime3 = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		tUTCTime = GetUTCTime();
-		gl_pChinaMarket->TEST_SetUTCTime(ttime);
+		gl_pChinaMarket->TEST_SetUTCTime(tTime);
 
 		switch (m_iCount) {
 		case 0:
@@ -209,12 +209,12 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pRTData->GetPSell(3), 12330);
 			EXPECT_EQ(m_pRTData->GetVSell(4), 609700);
 			EXPECT_EQ(m_pRTData->GetPSell(4), 12340);
-			EXPECT_EQ(m_pRTData->GetTransactionTime(), ttime);
+			EXPECT_EQ(m_pRTData->GetTransactionTime(), tTime);
 			break;
 		case 1:
 			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600601.SS"));
 			EXPECT_FALSE(m_pRTData->IsActive());
-			EXPECT_EQ(m_pRTData->GetTransactionTime(), ttime3);
+			EXPECT_EQ(m_pRTData->GetTransactionTime(), tTime3);
 			++it;
 			ParseOneNeteaseRTData(it, m_pRTData);
 			EXPECT_TRUE(m_pRTData->IsActive());
@@ -244,7 +244,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pRTData->GetPSell(3), 12330);
 			EXPECT_EQ(m_pRTData->GetVSell(4), 609700);
 			EXPECT_EQ(m_pRTData->GetPSell(4), 12340);
-			EXPECT_EQ(m_pRTData->GetTransactionTime(), ttime2) << "每个数据中有两个时间，以较早的时间为准";
+			EXPECT_EQ(m_pRTData->GetTransactionTime(), tTime2) << "每个数据中有两个时间，以较早的时间为准";
 			break;
 		case 2:
 			EXPECT_FALSE(m_pRTData->IsActive());
@@ -285,13 +285,13 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pRTData->GetPSell(3), 12330);
 			EXPECT_EQ(m_pRTData->GetVSell(4), 609700);
 			EXPECT_EQ(m_pRTData->GetPSell(4), 12340);
-			EXPECT_EQ(m_pRTData->GetTransactionTime(), ttime2) << "由于第一个数据有错误，故而没有更新时间。所以使用的是第二个数据的时间";
+			EXPECT_EQ(m_pRTData->GetTransactionTime(), tTime2) << "由于第一个数据有错误，故而没有更新时间。所以使用的是第二个数据的时间";
 			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 			break;
 		case 4: // 只有报头
 			EXPECT_FALSE(m_pRTData->IsActive());
 			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600001.SS")); // 没有设置，仍是初始值
-			EXPECT_EQ(m_pRTData->GetTransactionTime(), ttime2) << "每个数据中有两个时间，以较早的时间为准";
+			EXPECT_EQ(m_pRTData->GetTransactionTime(), tTime2) << "每个数据中有两个时间，以较早的时间为准";
 		default:
 			break;
 		}

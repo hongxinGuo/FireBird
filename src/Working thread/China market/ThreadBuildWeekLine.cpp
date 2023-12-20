@@ -7,7 +7,7 @@
 
 #include"ChinaMarket.h"
 
-UINT ThreadBuildWeekLine(not_null<CChinaMarketPtr> pMarket, long lStartDate) {
+UINT ThreadBuildWeekLine(const not_null<CChinaMarketPtr>& pMarket, long lStartDate) {
 	gl_UpdateChinaMarketDB.acquire();
 
 	const long lStartMonday = GetCurrentMonday(lStartDate);
@@ -42,7 +42,7 @@ UINT ThreadBuildWeekLine(not_null<CChinaMarketPtr> pMarket, long lStartDate) {
 	return 25;
 }
 
-UINT ThreadBuildWeekLineOfStock(not_null<CChinaStockPtr> pStockInput, long lStartDate) {
+UINT ThreadBuildWeekLineOfStock(const not_null<CChinaStockPtr>& pStockInput, long lStartDate) {
 	const auto pStock = pStockInput;
 	gl_UpdateChinaMarketDB.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem()) pStock->BuildWeekLine(lStartDate);
@@ -51,7 +51,7 @@ UINT ThreadBuildWeekLineOfStock(not_null<CChinaStockPtr> pStockInput, long lStar
 	return 26;
 }
 
-UINT ThreadBuildWeekLineOfCurrentWeek(not_null<CChinaMarketPtr> pMarket) {
+UINT ThreadBuildWeekLineOfCurrentWeek(const not_null<CChinaMarketPtr>& pMarket) {
 	gl_UpdateChinaMarketDB.acquire();
 	pMarket->BuildWeekLineOfCurrentWeek();
 	gl_UpdateChinaMarketDB.release();
@@ -59,7 +59,7 @@ UINT ThreadBuildWeekLineOfCurrentWeek(not_null<CChinaMarketPtr> pMarket) {
 	return 32;
 }
 
-UINT ThreadBuildCurrentWeekWeekLineTable(not_null<CChinaMarketPtr> pMarket) {
+UINT ThreadBuildCurrentWeekWeekLineTable(const not_null<CChinaMarketPtr>& pMarket) {
 	gl_UpdateChinaMarketDB.acquire();
 	// 清除当前周周线表
 	pMarket->DeleteCurrentWeekWeekLine();

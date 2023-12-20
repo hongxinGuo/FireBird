@@ -7,7 +7,7 @@ class CContainerFinnhubForexSymbol : public CContainerVirtualStock {
 public:
 	CContainerFinnhubForexSymbol();
 	~CContainerFinnhubForexSymbol() override = default;
-	void Reset();
+	void Reset() override;
 
 	bool LoadDB();
 	bool UpdateDB();

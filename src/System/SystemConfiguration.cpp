@@ -530,7 +530,7 @@ bool CSystemConfiguration::LoadDB() {
 	return false;
 }
 
-bool CSystemConfiguration::SaveDB() {
+bool CSystemConfiguration::SaveDB() const {
 	fstream f(GetDefaultFileDirectoryAndName(), ios::out);
 	f << m_systemConfiguration;
 	f.close();

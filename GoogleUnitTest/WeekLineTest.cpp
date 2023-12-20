@@ -13,20 +13,24 @@ namespace FireBirdTest {
 	protected:
 		static void SetUpTestSuite() {
 			// 本测试类的初始化函数
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -143,7 +147,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dl.GetTotalValue(), 0);
 		CString str = _T("3.13e+11");
 		dl.SetTotalValue(str.GetBuffer());
-		EXPECT_DOUBLE_EQ((double)(dl.GetTotalValue()), 3.13e+11);
+		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetTotalValue()), 3.13e+11);
 	}
 
 	TEST_F(CWeekLineTest, TestGetCurrentValue) {
@@ -151,7 +155,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dl.GetCurrentValue(), 0);
 		CString str = _T("3.15e+11");
 		dl.SetCurrentValue(str.GetBuffer());
-		EXPECT_DOUBLE_EQ((double)(dl.GetCurrentValue()), 3.15e+11);
+		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetCurrentValue()), 3.15e+11);
 	}
 
 	TEST_F(CWeekLineTest, TestGetRS) {
@@ -812,7 +816,7 @@ namespace FireBirdTest {
 		id.SetClose(452435);
 		id.SetVolume(34523454);
 		id.SetAmount(3245235345);
-		id.SetUpDown(((double)id.GetClose() - id.GetLastClose()) / id.GetRatio());
+		id.SetUpDown((static_cast<double>(id.GetClose()) - id.GetLastClose()) / id.GetRatio());
 		id.SetUpDownRate(123.45);
 		id.SetTotalValue(234523452345);
 		id.SetCurrentValue(234145345245);
@@ -907,7 +911,7 @@ namespace FireBirdTest {
 		pDayLine->SetHigh(3030);
 		pDayLine->SetLow(4040);
 		pDayLine->SetLastClose(5050);
-		pDayLine->SetUpDown((double)(pDayLine->GetClose() - pDayLine->GetLastClose()) / pDayLine->GetRatio());
+		pDayLine->SetUpDown(static_cast<double>(pDayLine->GetClose() - pDayLine->GetLastClose()) / pDayLine->GetRatio());
 		pDayLine->SetVolume(1010101010101010);
 		pDayLine->SetAmount(2020202020202020);
 		pDayLine->SetCurrentValue(303030303030303);
@@ -1067,7 +1071,7 @@ namespace FireBirdTest {
 		pDayLine1->SetHigh(3030);
 		pDayLine1->SetLow(4040);
 		pDayLine1->SetLastClose(5050);
-		pDayLine1->SetUpDown((double)(pDayLine1->GetClose() - pDayLine1->GetLastClose()) / pDayLine1->GetRatio());
+		pDayLine1->SetUpDown(static_cast<double>(pDayLine1->GetClose() - pDayLine1->GetLastClose()) / pDayLine1->GetRatio());
 
 		pDayLine1->SetVolume(1010101010101010);
 		pDayLine1->SetAmount(2020202020202020);
@@ -1159,7 +1163,7 @@ namespace FireBirdTest {
 		pDayLine2->SetHigh(30300);
 		pDayLine2->SetLow(40400);
 		pDayLine2->SetLastClose(50600);
-		pDayLine2->SetUpDown((double)(pDayLine2->GetClose() - pDayLine2->GetLastClose()) / pDayLine2->GetRatio());
+		pDayLine2->SetUpDown(static_cast<double>(pDayLine2->GetClose() - pDayLine2->GetLastClose()) / pDayLine2->GetRatio());
 
 		pDayLine2->SetVolume(1010101010101010);
 		pDayLine2->SetAmount(2020202020202020);
@@ -1260,7 +1264,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(weekLine.GetLow(), pDayLine1->GetLow() < pDayLine2->GetLow() ? pDayLine1->GetLow() : pDayLine2->GetLow());
 		EXPECT_EQ(weekLine.GetLastClose(), pDayLine1->GetLastClose());
 		EXPECT_NE(weekLine.GetLastClose(), pDayLine2->GetLastClose());
-		EXPECT_DOUBLE_EQ(weekLine.GetUpDown(), (double)(pDayLine2->GetClose() - pDayLine1->GetLastClose()) / pDayLine2->GetRatio());
+		EXPECT_DOUBLE_EQ(weekLine.GetUpDown(), static_cast<double>(pDayLine2->GetClose() - pDayLine1->GetLastClose()) / pDayLine2->GetRatio());
 
 		EXPECT_EQ(weekLine.GetVolume(), pDayLine1->GetVolume() + pDayLine2->GetVolume());
 		EXPECT_EQ(weekLine.GetAmount(), pDayLine1->GetAmount() + pDayLine2->GetAmount());

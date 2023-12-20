@@ -23,8 +23,6 @@
 
 #include"SetCurrentWeekLine.h"
 
-#include"HighPerformanceCounter.h"
-
 using namespace std;
 
 #include<gsl/gsl>

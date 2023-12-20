@@ -2,8 +2,6 @@
 #include "framework.h"
 
 #include "WatchdogPropertiesWnd.h"
-#include "Resource.h"
-#include "WatchdogMainFrm.h"
 #include "Watchdog.h"
 
 #ifdef _DEBUG
@@ -47,7 +45,7 @@ void CWatchdogPropertiesWnd::AdjustLayout() {
 	CRect rectClient;
 	GetClientRect(rectClient);
 
-	int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
+	const int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
 
 	m_wndObjectCombo.SetWindowPos(nullptr, rectClient.left, rectClient.top, rectClient.Width(), m_nComboHeight, SWP_NOACTIVATE | SWP_NOZORDER);
 	m_wndToolBar.SetWindowPos(nullptr, rectClient.left, rectClient.top + m_nComboHeight, rectClient.Width(), cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
@@ -62,7 +60,7 @@ int CWatchdogPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	rectDummy.SetRectEmpty();
 
 	// Create combo:
-	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST | WS_BORDER | CBS_SORT | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+	constexpr DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST | WS_BORDER | CBS_SORT | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 
 	if (!m_wndObjectCombo.Create(dwViewStyle, rectDummy, this, 1)) {
 		TRACE0("Failed to create Properties Combo \n");

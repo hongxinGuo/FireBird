@@ -8,7 +8,7 @@
 
 #include "SetEconomicCalendar.h"
 
-CSetEconomicCalendar::CSetEconomicCalendar(CString strSchema, CString strTable, CDatabase* pdb)
+CSetEconomicCalendar::CSetEconomicCalendar(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_Country = _T(" ");

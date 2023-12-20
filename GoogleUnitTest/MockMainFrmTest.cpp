@@ -547,7 +547,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateMaintainDayLine) {
 		CCmdUI cmdUI;
-		const tm tm_{0, 0, 0, 0, 0, 0, 4}; // 星期四
+		constexpr tm tm_{0, 0, 0, 0, 0, 0, 4}; // 星期四
 		gl_pChinaMarket->TEST_SetMarketTM(tm_);
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(180000); // DummyTime
 		EXPECT_TRUE(gl_pChinaMarket->IsDummyTime());

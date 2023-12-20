@@ -1,4 +1,3 @@
-
 // Watchdog.h : main header file for the Watchdog application
 //
 #pragma once
@@ -9,29 +8,26 @@
 
 #include "resource.h"       // main symbols
 
-
 // CWatchdogApp:
 // See Watchdog.cpp for the implementation of this class
 //
 
-class CWatchdogApp : public CWinAppEx
-{
+class CWatchdogApp : public CWinAppEx {
 public:
 	CWatchdogApp() noexcept;
 
-
-// Overrides
+	// Overrides
 public:
-	virtual BOOL InitInstance();
-	virtual int ExitInstance();
+	BOOL InitInstance() override;
+	int ExitInstance() override;
 
-// Implementation
-	UINT  m_nAppLook;
-	BOOL  m_bHiColorIcons;
+	// Implementation
+	UINT m_nAppLook;
+	BOOL m_bHiColorIcons;
 
-	virtual void PreLoadState();
-	virtual void LoadCustomState();
-	virtual void SaveCustomState();
+	void PreLoadState() override;
+	void LoadCustomState() override;
+	void SaveCustomState() override;
 
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()

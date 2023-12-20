@@ -4,7 +4,7 @@
 
 #include"WorldMarket.h"
 
-UINT ThreadUpdateNaicsIndustry(not_null<CWorldMarketPtr> pMarket) {
+UINT ThreadUpdateNaicsIndustry(const not_null<CWorldMarketPtr>& pMarket) {
 	gl_UpdateWorldMarketDB.acquire();
 	pMarket->UpdateNaicsIndustry();
 	gl_UpdateWorldMarketDB.release();

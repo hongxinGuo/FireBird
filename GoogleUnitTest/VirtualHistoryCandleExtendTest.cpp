@@ -8,25 +8,29 @@ namespace FireBirdTest {
 	class CVirtualHistoryCandleExtendTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetRatio) {
-		CVirtualHistoryCandleExtend dl;
+		const CVirtualHistoryCandleExtend dl;
 
 		EXPECT_EQ(dl.GetRatio(), 1000) << "默认比率为1000";
 	}
@@ -144,7 +148,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dl.GetTotalValue(), 0);
 		CString str = _T("3.13e+11");
 		dl.SetTotalValue(str.GetBuffer());
-		EXPECT_DOUBLE_EQ((double)(dl.GetTotalValue()), 3.13e+11);
+		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetTotalValue()), 3.13e+11);
 	}
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetCurrentValue) {
@@ -152,7 +156,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dl.GetCurrentValue(), 0);
 		CString str = _T("3.15e+11");
 		dl.SetCurrentValue(str.GetBuffer());
-		EXPECT_DOUBLE_EQ((double)(dl.GetCurrentValue()), 3.15e+11);
+		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetCurrentValue()), 3.15e+11);
 	}
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetRS) {

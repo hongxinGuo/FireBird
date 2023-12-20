@@ -52,7 +52,7 @@ bool CreateJsonWithNlohmann(json& js, const std::string& s, const long lBeginPos
 }
 
 bool CreateJsonWithNlohmann(json& js, CString& str, const long lBeginPos, const long lEndPos) {
-	string s = str.GetBuffer();
+	const string s = str.GetBuffer();
 	try {
 		js = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
 	}

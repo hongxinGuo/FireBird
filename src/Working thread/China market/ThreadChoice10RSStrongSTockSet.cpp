@@ -11,7 +11,7 @@
 
 #include"ChinaMarket.h"
 
-UINT ThreadChoice10RSStrong2StockSet(not_null<CChinaMarketPtr> pMarket) {
+UINT ThreadChoice10RSStrong2StockSet(const not_null<CChinaMarketPtr>& pMarket) {
 	gl_UpdateChinaMarketDB.acquire();
 	gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));
 
@@ -26,7 +26,7 @@ UINT ThreadChoice10RSStrong2StockSet(not_null<CChinaMarketPtr> pMarket) {
 	return 102;
 }
 
-UINT ThreadChoice10RSStrong1StockSet(not_null<CChinaMarketPtr> pMarket) {
+UINT ThreadChoice10RSStrong1StockSet(const not_null<CChinaMarketPtr>& pMarket) {
 	gl_UpdateChinaMarketDB.acquire();
 	gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));
 
@@ -41,7 +41,7 @@ UINT ThreadChoice10RSStrong1StockSet(not_null<CChinaMarketPtr> pMarket) {
 	return 101;
 }
 
-UINT ThreadChoice10RSStrongStockSet(not_null<CChinaMarketPtr> pMarket, CRSReference* pRef, int iIndex) {
+UINT ThreadChoice10RSStrongStockSet(const not_null<CChinaMarketPtr>& pMarket, CRSReference* pRef, int iIndex) {
 	gl_UpdateChinaMarketDB.acquire();
 	CString str = _T("开始计算10日RS ");
 	char buffer[30];
@@ -64,7 +64,7 @@ UINT ThreadChoice10RSStrongStockSet(not_null<CChinaMarketPtr> pMarket, CRSRefere
 	return 103;
 }
 
-UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, CRSReference* pRef, not_null<CChinaStockPtr> pStock) {
+UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, const CRSReference* pRef, const not_null<CChinaStockPtr>& pStock) {
 	gl_UpdateChinaMarketDB.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem()) {
 		if (pStock->IsShareA() && pStock->IsActive()) {
@@ -85,7 +85,7 @@ UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStro
 	return 104;
 }
 
-UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock) {
+UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, const not_null<CChinaStockPtr>& pStock) {
 	gl_UpdateChinaMarketDB.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem()) {
 		if (pStock->IsShareA() && pStock->IsActive()) {
@@ -106,7 +106,7 @@ UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 	return 105;
 }
 
-UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock) {
+UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, const not_null<CChinaStockPtr>& pStock) {
 	gl_UpdateChinaMarketDB.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem()) {
 		if (pStock->IsShareA() && pStock->IsActive()) {

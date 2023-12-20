@@ -5,7 +5,7 @@
 #include"thread.h"
 #include"WorldMarket.h"
 
-UINT ThreadUpdateWorldStockDayLineStartEndDate(CWorldMarketPtr pMarket) {
+UINT ThreadUpdateWorldStockDayLineStartEndDate(const CWorldMarketPtr& pMarket) {
 	gl_UpdateWorldMarketDB.acquire();
 	pMarket->UpdateStockDayLineStartEndDate();
 	gl_UpdateWorldMarketDB.release();

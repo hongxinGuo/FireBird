@@ -10,20 +10,24 @@ namespace FireBirdTest {
 	class CStockDayLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -137,7 +141,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dl.GetTotalValue(), 0);
 		CString str = _T("3.13e+11");
 		dl.SetTotalValue(str.GetBuffer());
-		EXPECT_DOUBLE_EQ((double)(dl.GetTotalValue()), 3.13e+11);
+		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetTotalValue()), 3.13e+11);
 	}
 
 	TEST_F(CStockDayLineTest, TestGetCurrentValue) {
@@ -145,7 +149,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(dl.GetCurrentValue(), 0);
 		CString str = _T("3.15e+11");
 		dl.SetCurrentValue(str.GetBuffer());
-		EXPECT_DOUBLE_EQ((double)(dl.GetCurrentValue()), 3.15e+11);
+		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetCurrentValue()), 3.15e+11);
 	}
 
 	TEST_F(CStockDayLineTest, TestGetRS) {
@@ -610,7 +614,7 @@ namespace FireBirdTest {
 		id.SetClose(452435);
 		id.SetVolume(34523454);
 		id.SetAmount(3245235345);
-		id.SetUpDown(((double)id.GetClose() - id.GetLastClose()) / id.GetRatio());
+		id.SetUpDown((static_cast<double>(id.GetClose()) - id.GetLastClose()) / id.GetRatio());
 		id.SetUpDownRate(123.45);
 		id.SetTotalValue(234523452345);
 		id.SetCurrentValue(234145345245);
@@ -707,7 +711,7 @@ namespace FireBirdTest {
 
 		setForexDayLine.m_strFilter = _T("[ID] = 1");
 		setForexDayLine.Open();
-		EXPECT_TRUE(dayLine.LoadBasicData(&setForexDayLine));
+		dayLine.LoadBasicData(&setForexDayLine);
 		setForexDayLine.Close();
 
 		EXPECT_EQ(dayLine.GetMarketDate(), 20200406);

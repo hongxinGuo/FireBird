@@ -15,7 +15,7 @@ public:
 	CTengxunRTDataSource& operator=(const CTengxunRTDataSource&&) noexcept = delete;
 	~CTengxunRTDataSource() override = default;
 
-	bool GenerateInquiryMessage(const long lCurrentTime) override;
+	bool GenerateInquiryMessage(long lCurrentTime) override;
 	time_t GetCurrentInquiryTime() const noexcept override { return m_DataSourceContainer.at(0)->GetCurrentInquiryTime(); } // 使用第一个DataSource的处理时间
 
 	static void DisableDataSourceImp(const CTengxunRTDataSourceImpPtr& pData) {

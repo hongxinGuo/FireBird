@@ -13,7 +13,7 @@
 #include"ThreadStatus.h"
 #include"ChinaMarket.h"
 
-UINT ThreadBuildWeekLineRS(not_null<CChinaMarketPtr> pMarket, long startCalculatingDate) {
+UINT ThreadBuildWeekLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCalculatingDate) {
 	pMarket->SetCalculatingWeekLineRS(true);
 	long lToday = GetPrevMonday(startCalculatingDate);
 
@@ -63,7 +63,7 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarketPtr> pMarket, long startCalculat
 // 最多允许八个工作线程并行。
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarketPtr> pMarket, long lDate) {
+UINT ThreadBuildWeekLineRSOfDate(const not_null<CChinaMarketPtr>& pMarket, long lDate) {
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 	gl_BackgroundWorkingThread.acquire();
 	ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一

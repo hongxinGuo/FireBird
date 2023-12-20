@@ -1,43 +1,38 @@
-
 // WatchdogView.h : interface of the CWatchdogView class
 //
 
 #pragma once
 
-
-class CWatchdogView : public CView
-{
+class CWatchdogView : public CView {
 protected: // create from serialization only
 	CWatchdogView() noexcept;
 	DECLARE_DYNCREATE(CWatchdogView)
 
-// Attributes
+	// Attributes
 public:
 	CWatchdogDoc* GetDocument() const;
 
-// Operations
+	// Operations
 public:
+	// Overrides
+public:
+	void OnDraw(CDC* pDC) override;  // overridden to draw this view
+	BOOL PreCreateWindow(CREATESTRUCT& cs) override;
 
-// Overrides
-public:
-	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 protected:
-	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
-	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
-	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+	BOOL OnPreparePrinting(CPrintInfo* pInfo) override;
+	void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo) override;
+	void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo) override;
 
-// Implementation
+	// Implementation
 public:
-	virtual ~CWatchdogView();
+	~CWatchdogView() override;
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+	void AssertValid() const override;
+	void Dump(CDumpContext& dc) const override;
 #endif
 
-protected:
-
-// Generated message map functions
+	// Generated message map functions
 protected:
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
@@ -49,4 +44,3 @@ protected:
 inline CWatchdogDoc* CWatchdogView::GetDocument() const
    { return reinterpret_cast<CWatchdogDoc*>(m_pDocument); }
 #endif
-

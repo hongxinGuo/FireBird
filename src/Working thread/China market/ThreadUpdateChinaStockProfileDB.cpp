@@ -10,7 +10,7 @@
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadUpdateChinaStockProfileDB(not_null<CChinaMarketPtr> pMarket) {	//
+UINT ThreadUpdateChinaStockProfileDB(const not_null<CChinaMarketPtr>& pMarket) {	//
 	gl_UpdateChinaMarketDB.acquire();
 	pMarket->UpdateStockProfileDB();
 	gl_UpdateChinaMarketDB.release();
@@ -18,7 +18,7 @@ UINT ThreadUpdateChinaStockProfileDB(not_null<CChinaMarketPtr> pMarket) {	//
 	return 18;
 }
 
-UINT ThreadUpdateOptionDB(not_null<CChinaMarketPtr> pMarket) {
+UINT ThreadUpdateOptionDB(const not_null<CChinaMarketPtr>& pMarket) {
 	gl_UpdateChinaMarketDB.acquire();
 	pMarket->UpdateOptionDB();
 	gl_UpdateChinaMarketDB.release();
@@ -26,7 +26,7 @@ UINT ThreadUpdateOptionDB(not_null<CChinaMarketPtr> pMarket) {
 	return 20;
 }
 
-UINT ThreadAppendChosenStockDB(CChinaMarketPtr pMarket) {
+UINT ThreadAppendChosenStockDB(const CChinaMarketPtr& pMarket) {
 	gl_UpdateChinaMarketDB.acquire();
 	pMarket->AppendChosenStockDB();
 	gl_UpdateChinaMarketDB.release();

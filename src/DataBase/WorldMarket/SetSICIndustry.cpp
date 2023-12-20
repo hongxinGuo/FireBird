@@ -8,7 +8,7 @@
 
 #include "SetSICIndustry.h"
 
-CSetSICIndustry::CSetSICIndustry(CString strSchema, CString strTable, CDatabase* pdb)
+CSetSICIndustry::CSetSICIndustry(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_Code = 0;

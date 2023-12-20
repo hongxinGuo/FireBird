@@ -42,7 +42,7 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(not_null<CTiingoCryptoWebSocketPtr> pDataTiingoCryptoWebSocket, const vectorString& vSymbol) {
+UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(const not_null<CTiingoCryptoWebSocketPtr>& pDataTiingoCryptoWebSocket, const vectorString& vSymbol) {
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;

@@ -5,7 +5,6 @@
 
 #include"JsonParse.h"
 #include "TengxunRTDataSource.h"
-#include "TimeConvert.h"
 
 CProductTengxunRT::CProductTengxunRT() {
 	m_lCurrentStockPosition = 0;

@@ -40,7 +40,7 @@ void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectTiingoForexWebSocketAndSendMessage(not_null<CTiingoForexWebSocketPtr> pDataTiingoForexWebSocket, const vectorString& vSymbol) {
+UINT ThreadConnectTiingoForexWebSocketAndSendMessage(const not_null<CTiingoForexWebSocketPtr>& pDataTiingoForexWebSocket, const vectorString& vSymbol) {
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;

@@ -195,15 +195,15 @@ public:
 //		},
 //		"metricType": "all",
 //
-/// </summary>
+///</summary>
 
 class CFinnhubStockBasicFinancial final {
 public:
 	CFinnhubStockBasicFinancial();
 	~CFinnhubStockBasicFinancial() = default;
 
-	void AppendMetric(CSetFinnhubStockBasicFinancialMetric& setMetric);
-	void UpdateMetric(CSetFinnhubStockBasicFinancialMetric& setMetric);
+	void AppendMetric(CSetFinnhubStockBasicFinancialMetric& setMetric) const;
+	void UpdateMetric(CSetFinnhubStockBasicFinancialMetric& setMetric) const;
 	void SaveMetric(CSetFinnhubStockBasicFinancialMetric& setMetric) const;
 	void LoadMetric(const CSetFinnhubStockBasicFinancialMetric& setMetric);
 
@@ -213,10 +213,10 @@ public:
 	void SaveAllQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, vector<CItemOfBasicFinancialSeasonData>& vDBData);
 	void SaveAllAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<CItemOfBasicFinancialSeasonData>& vDBData);
 
-	void SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, const vector<CValueOfPeriod>& vData, const CString& typeName, vector<CItemOfBasicFinancialSeasonData>& vDBData);
+	void SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, const vector<CValueOfPeriod>& vData, const CString& typeName, const vector<CItemOfBasicFinancialSeasonData>& vDBData);
 	void LoadQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData);
 
-	void SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, const vector<CValueOfPeriod>& vData, const CString& typeName, vector<CItemOfBasicFinancialSeasonData>& vDBData);
+	void SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, const vector<CValueOfPeriod>& vData, const CString& typeName, const vector<CItemOfBasicFinancialSeasonData>& vDBData);
 	void LoadAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData);
 
 	bool IsNewData(const CString& type, CValueOfPeriod vData, const vector<CItemOfBasicFinancialSeasonData>& vDBData);

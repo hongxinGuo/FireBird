@@ -6,7 +6,7 @@
 
 #include "SetFinnhubRecommendationTrends.h"
 
-CSetFinnhubRecommendationTrends::CSetFinnhubRecommendationTrends(CString strSchema, CString strTable, CDatabase* pdb)
+CSetFinnhubRecommendationTrends::CSetFinnhubRecommendationTrends(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_Symbol = _T("");

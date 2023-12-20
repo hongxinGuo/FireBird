@@ -10,7 +10,7 @@ public:
 
 	bool Reset() override;
 
-	bool GenerateInquiryMessage(const long lCurrentTime) override;
+	bool GenerateInquiryMessage(long lCurrentTime) override;
 
 	virtual bool InquireQuandl();
 

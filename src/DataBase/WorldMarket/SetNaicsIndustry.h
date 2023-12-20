@@ -6,7 +6,7 @@
 
 class CSetNaicsIndustry : public CVirtualRecordset {
 public:
-	CSetNaicsIndustry(CString strSchema = _T("WorldMarket"), CString strTable = _T("naics_industry"), CDatabase* pDatabase = nullptr);
+	CSetNaicsIndustry(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("naics_industry"), CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 

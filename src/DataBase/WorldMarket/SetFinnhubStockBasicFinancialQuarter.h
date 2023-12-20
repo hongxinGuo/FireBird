@@ -6,7 +6,7 @@
 
 class CSetFinnhubStockBasicFinancialQuarter : public CVirtualRecordset {
 public:
-	CSetFinnhubStockBasicFinancialQuarter(CString strSchema = _T("WorldMarket"), CString strTable = _T("finnhub_stock_basic_financials_quarterly"), CDatabase* pDatabase = nullptr);
+	CSetFinnhubStockBasicFinancialQuarter(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("finnhub_stock_basic_financials_quarterly"), CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 

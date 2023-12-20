@@ -16,7 +16,7 @@
 
 #include"FinnhubForexSymbol.h"
 
-UINT ThreadUpdateForexDayLineDB(not_null<CForexSymbolPtr> pSymbol) {
+UINT ThreadUpdateForexDayLineDB(const not_null<CForexSymbolPtr>& pSymbol) {
 	gl_UpdateWorldMarketDB.acquire();
 	pSymbol->UpdateDayLineDB();
 	pSymbol->UpdateDayLineStartEndDate();

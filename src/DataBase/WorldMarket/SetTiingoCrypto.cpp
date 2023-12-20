@@ -4,8 +4,9 @@
 
 #include "SetTiingoCrypto.h"
 
-CSetTiingoCrypto::CSetTiingoCrypto(CString strSchema, CString strTable, CDatabase* pdb)
+CSetTiingoCrypto::CSetTiingoCrypto(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
+	m_ID = 0;
 	m_Ticker = _T("");
 	m_Name = _T("");
 	m_BaseCurrency = _T("");

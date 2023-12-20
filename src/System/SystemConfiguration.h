@@ -25,7 +25,7 @@ public:
 	~CSystemConfiguration();
 
 	bool LoadDB();
-	bool SaveDB();
+	bool SaveDB() const;
 	void Update();
 	void UpdateJson();
 

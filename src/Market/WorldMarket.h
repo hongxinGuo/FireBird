@@ -263,8 +263,8 @@ public:
 	void UpdateWorldStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr& pTiingoIEXbData);
 	void UpdateWorldStockFromFinnhubSocket(const CFinnhubSocketPtr& pFinnhub);
 
-	void UpdateMarketStatus(CMarketStatusVectorPtr pv);
-	void UpdateMarketHoliday(CMarketHolidayVectorPtr pv);
+	void UpdateMarketStatus(const CMarketStatusVectorPtr& pv) const;
+	void UpdateMarketHoliday(const CMarketHolidayVectorPtr& pv) const;
 
 	// check function
 

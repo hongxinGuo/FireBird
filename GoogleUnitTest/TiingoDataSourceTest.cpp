@@ -1,12 +1,10 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-#include"FinnhubInquiryType.h"
 
 #include"TiingoDataSource.h"
 #include"WorldMarket.h"
 
-#include "ProductTiingoStockSymbol.h"
 #include"ProductDummy.h"
 
 using namespace testing;

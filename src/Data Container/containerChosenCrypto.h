@@ -6,7 +6,7 @@ class CContainerChosenCrypto : public CContainerVirtualStock {
 public:
 	CContainerChosenCrypto();
 	~CContainerChosenCrypto() override = default;
-	void Reset();
+	void Reset() override;
 
 	bool LoadDB();
 	//bool UpdateDB();

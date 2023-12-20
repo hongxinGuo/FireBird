@@ -11,7 +11,7 @@
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadProcessTodayStock(not_null<CChinaMarketPtr> pMarket) {
+UINT ThreadProcessTodayStock(const not_null<CChinaMarketPtr>& pMarket) {
 	gl_UpdateChinaMarketDB.acquire();
 	pMarket->ProcessTodayStock();
 	gl_UpdateChinaMarketDB.release();

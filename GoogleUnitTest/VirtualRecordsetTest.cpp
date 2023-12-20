@@ -12,25 +12,29 @@ namespace FireBirdTest {
 	class CVirtualRecordsetTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
 	TEST_F(CVirtualRecordsetTest, TestGetSchemaConnect) {
-		CVirtualRecordset recordset(_T("WorldMarket"), _T("defaultTable"));
+		const CVirtualRecordset recordset(_T("WorldMarket"), _T("defaultTable"));
 		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode()) << "默认状态下此标识为假。";
 		EXPECT_STREQ(recordset.GetSchemaConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(true);

@@ -22,10 +22,8 @@ public:
 #endif // SHARED_HANDayLineERS
 
 	// 实现
-public:
 	~CFireBirdDoc() override = default;
 
-protected:
 	// 生成的消息映射函数
 protected:
 	DECLARE_MESSAGE_MAP()

@@ -38,7 +38,7 @@ public:
 	virtual void ShowStockHistoryDataLine(CDC* pDC);
 	virtual void ShowRealtimeData(CDC* pDC);
 
-	bool ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart, int iYEnd);
+	bool ShowGuadan(CDC* pDC, const CChinaStockPtr& pStock, int iXStart, int iYStart, int iYEnd);
 	bool ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart);
 	void ShowRealtimeGuadan(CDC* pdc);
 	void ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
@@ -78,15 +78,13 @@ public:
 	void OnDraw(CDC* pDC) override; // 重写以绘制该视图
 	BOOL PreCreateWindow(CREATESTRUCT& cs) override;
 
+	// 实现
+
 protected:
 	BOOL OnPreparePrinting(CPrintInfo* pInfo) override;
 	void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo) override;
 	void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo) override;
 
-	// 实现
-public:
-
-protected:
 	bool m_fCreateMemoryDC;
 	CDC m_MemoryDC;
 	CBitmap m_Bitmap;

@@ -1328,9 +1328,6 @@
     <ClCompile Include="..\src\Factory Product\VirtualWorldMarketWebProduct.cpp">
       <Filter>源文件\Factory-Product</Filter>
     </ClCompile>
-    <ClCompile Include="VirtualChinaMarketWebProduct.cpp">
-      <Filter>源文件\Factory-Product</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductNeteaseDayline.cpp">
       <Filter>源文件\Factory-Product\ChinaMarket</Filter>
     </ClCompile>
@@ -1348,6 +1345,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Container\VirtualContainer.cpp">
       <Filter>源文件\Data container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\VirtualChinaMarketWebProduct.cpp">
+      <Filter>源文件\Factory-Product</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

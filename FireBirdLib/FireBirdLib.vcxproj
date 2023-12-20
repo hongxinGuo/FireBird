@@ -327,6 +327,7 @@
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockSymbol.cpp" />
     <ClCompile Include="..\src\Factory Product\QuandlFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\TiingoFactory.cpp" />
+    <ClCompile Include="..\src\Factory Product\VirtualChinaMarketWebProduct.cpp" />
     <ClCompile Include="..\src\Factory Product\VirtualWebProduct.cpp" />
     <ClCompile Include="..\src\Factory Product\VirtualWorldMarketWebProduct.cpp" />
     <ClCompile Include="..\src\FinnhubInquiryType.cpp" />
@@ -415,7 +416,6 @@
     <ClCompile Include="..\src\Working thread\China market\ThreadSaveDayLine.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadUpdateChinaStockProfileDB.cpp" />
-    <ClCompile Include="VirtualChinaMarketWebProduct.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">

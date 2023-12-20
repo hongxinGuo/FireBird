@@ -3,19 +3,19 @@
 #include "ViewTree.h"
 
 class CClassToolBar : public CMFCToolBar {
-	virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) {
-		CMFCToolBar::OnUpdateCmdUI((CFrameWnd*)GetOwner(), bDisableIfNoHndler);
+	void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) override {
+		CMFCToolBar::OnUpdateCmdUI(static_cast<CFrameWnd*>(GetOwner()), bDisableIfNoHndler);
 	}
 
-	virtual BOOL AllowShowOnList() const { return FALSE; }
+	BOOL AllowShowOnList() const override { return FALSE; }
 };
 
 class CWatchdogClassView : public CDockablePane {
 public:
 	CWatchdogClassView() noexcept;
-	virtual ~CWatchdogClassView();
+	~CWatchdogClassView() override;
 
-	void AdjustLayout();
+	void AdjustLayout() override;
 	void OnChangeVisualStyle();
 
 protected:
@@ -28,7 +28,7 @@ protected:
 
 	// Overrides
 public:
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	BOOL PreTranslateMessage(MSG* pMsg) override;
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

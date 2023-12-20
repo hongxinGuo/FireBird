@@ -79,12 +79,11 @@ public:
 	CInaccessibleExchangesPtr GetExchange(int iInquiryType) { return m_mapExchange.at(iInquiryType); }
 	void SetExchange(const int iInquiryType, const CInaccessibleExchangesPtr& pExchange) { m_mapExchange[iInquiryType] = pExchange; }
 	void DeleteExchange(int iInquiryType, const CString& strExchange);
-	bool HaveExchange(const int iInquiryType, const CString& strExchangeCode) const;
+	bool HaveExchange(int iInquiryType, const CString& strExchangeCode) const;
 	size_t GetItemSize() const noexcept { return m_mapExchange.size(); }
 
 	bool IsNeedUpdate() const noexcept { return m_fUpdate; }
 	void SetUpdate(const bool fUpdate) noexcept { m_fUpdate = fUpdate; }
-
 
 protected:
 	CString m_strFileName; // ≈‰÷√Œƒº˛√˚≥∆

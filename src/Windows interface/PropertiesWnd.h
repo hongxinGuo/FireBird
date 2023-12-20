@@ -8,8 +8,8 @@ enum configuration_option {
 
 class CPropertiesToolBar : public CMFCToolBar {
 public:
-	void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) override { CMFCToolBar::OnUpdateCmdUI((CFrameWnd*)GetOwner(), bDisableIfNoHndler); }
-	virtual BOOL AllowShowOnList() const { return FALSE; }
+	void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) override { CMFCToolBar::OnUpdateCmdUI(static_cast<CFrameWnd*>(GetOwner()), bDisableIfNoHndler); }
+	BOOL AllowShowOnList() const override { return FALSE; }
 };
 
 class CFireBirdPropertyGridCtrl : public CMFCPropertyGridCtrl {
@@ -51,6 +51,4 @@ protected:
 	void SetPropListFont();
 
 	int m_nComboHeight;
-
-public:
 };

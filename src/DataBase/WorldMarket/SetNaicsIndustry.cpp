@@ -8,7 +8,7 @@
 
 #include "SetNaicsIndustry.h"
 
-CSetNaicsIndustry::CSetNaicsIndustry(CString strSchema, CString strTable, CDatabase* pdb)
+CSetNaicsIndustry::CSetNaicsIndustry(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_Naics = _T("");

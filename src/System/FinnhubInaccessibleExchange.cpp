@@ -148,7 +148,7 @@ void CFinnhubInaccessibleExchange::Update() {
 	try {
 		m_lUpdateDate = m_finnhubInaccessibleExchange.at("UpdateDate");
 	}
-	catch (json::exception&) { }
+	catch (json::exception&) {}
 	try {
 		for (int i = 0; i < m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).size(); i++) {
 			const int size = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).size();
@@ -166,19 +166,19 @@ void CFinnhubInaccessibleExchange::Update() {
 			}
 		}
 	}
-	catch (json::exception&) { }
+	catch (json::exception&) {}
 }
 
 void CFinnhubInaccessibleExchange::UpdateJson() {
 	m_finnhubInaccessibleExchange.clear();
 
 	m_finnhubInaccessibleExchange["UpdateDate"] = m_lUpdateDate;
-	for (const auto& pExchange : m_mapExchange) {
-		if (pExchange.second->HaveExchange()) {
+	for (const auto& val : m_mapExchange | views::values) {
+		if (val->HaveExchange()) {
 			// 有exchange数据的话才建立数据集
-			auto jsonExchange = json{{"Function", pExchange.second->GetFunctionString()}};
-			for (int i = 0; i < pExchange.second->ExchangeSize(); i++) {
-				auto s = pExchange.second->GetExchange(i);
+			auto jsonExchange = json{{"Function", val->GetFunctionString()}};
+			for (int i = 0; i < val->ExchangeSize(); i++) {
+				auto s = val->GetExchange(i);
 				jsonExchange[_T("Exchange")].push_back(s);
 			}
 

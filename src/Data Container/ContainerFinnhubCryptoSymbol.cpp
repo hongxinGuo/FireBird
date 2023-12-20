@@ -14,6 +14,8 @@ CContainerFinnhubCryptoSymbol::CContainerFinnhubCryptoSymbol() {
 }
 
 void CContainerFinnhubCryptoSymbol::Reset() {
+	CContainerVirtualStock::Reset();
+
 	m_lLastTotalSymbol = 0;
 }
 
