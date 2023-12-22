@@ -96,7 +96,7 @@ CSystemConfiguration::CSystemConfiguration() {
 	m_strDirectory = m_strDirectory + _T("\\"); //
 	m_strFileName = _T("SystemConfiguration.json"); // json file name
 
-	// 系统配置
+	// 系统配置 
 	m_bDebugMode = false;
 	m_bReloadSystem = false;
 	m_strDatabaseAccountName = _T("hxguo");

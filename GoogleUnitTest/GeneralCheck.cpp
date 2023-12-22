@@ -32,8 +32,8 @@ namespace FireBirdTest {
 	}
 
 	void SystemConfigurationCheck() {
-		ASSERT_FALSE(gl_systemConfiguration.IsNeedUpdate()) << "不允许更新系统配置";
-		ASSERT_FALSE(gl_finnhubInaccessibleExchange.IsNeedUpdate()) << "不允许更新禁入交易所名单";
+		EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate()) << "不允许更新系统配置";
+		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsNeedUpdate()) << "不允许更新禁入交易所名单";
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
 		if (gl_UpdateChinaMarketDB.try_acquire()) {
