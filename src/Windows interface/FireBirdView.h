@@ -42,9 +42,9 @@ public:
 	bool ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart);
 	void ShowRealtimeGuadan(CDC* pdc);
 	void ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
-	void ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
-	void ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
-	void ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
+	void ShowOrdinaryBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea);
+	void ShowAttackBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea);
+	void ShowCanceledBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea);
 	void ShowCurrentRS(CDC* pDC, vector<double>& vRS);
 	bool RSLineTo(CDC* pDC, int i, double dValue, int iSize);
 
@@ -53,7 +53,7 @@ public:
 	int GetCurrentShowType() const noexcept { return m_iCurrentShowType; }
 	void SetCurrentShowType(const int iValue) noexcept { m_iCurrentShowType = iValue; }
 
-	bool UpdateHistoryDataContainer(CChinaStockPtr pStock);
+	bool UpdateHistoryDataContainer(const CChinaStockPtr& pStock);
 
 	void ZoomIn(vector<double>& vData, double dLevel, double dRate);
 

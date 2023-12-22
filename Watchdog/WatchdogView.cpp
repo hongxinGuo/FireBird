@@ -99,7 +99,7 @@ void CWatchdogView::Dump(CDumpContext& dc) const {
 CWatchdogDoc* CWatchdogView::GetDocument() const // non-debug version is inline
 {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CWatchdogDoc)));
-	return (CWatchdogDoc*)m_pDocument;
+	return static_cast<CWatchdogDoc*>(m_pDocument);
 }
 #endif //_DEBUG
 

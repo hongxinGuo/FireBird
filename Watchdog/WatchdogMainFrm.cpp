@@ -15,9 +15,9 @@
 
 IMPLEMENT_DYNAMIC(CWatchdogMainFrame, CMDIFrameWndEx)
 
-const int iMaxUserToolbars = 10;
-const UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
-const UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
+constexpr int iMaxUserToolbars = 10;
+constexpr UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
+constexpr UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 
 BEGIN_MESSAGE_MAP(CWatchdogMainFrame, CMDIFrameWndEx)
 	ON_WM_CREATE()
@@ -231,16 +231,16 @@ BOOL CWatchdogMainFrame::CreateDockingWindows() {
 }
 
 void CWatchdogMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
-	HICON hFileViewIcon = (HICON)::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_FILE_VIEW_HC : IDI_FILE_VIEW), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
+	const HICON hFileViewIcon = static_cast<HICON>(::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_FILE_VIEW_HC : IDI_FILE_VIEW), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0));
 	m_wndFileView.SetIcon(hFileViewIcon, FALSE);
 
-	HICON hClassViewIcon = (HICON)::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_CLASS_VIEW_HC : IDI_CLASS_VIEW), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
+	const HICON hClassViewIcon = static_cast<HICON>(::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_CLASS_VIEW_HC : IDI_CLASS_VIEW), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0));
 	m_wndClassView.SetIcon(hClassViewIcon, FALSE);
 
-	HICON hOutputBarIcon = (HICON)::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
+	const HICON hOutputBarIcon = static_cast<HICON>(::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0));
 	m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
 
-	HICON hPropertiesBarIcon = (HICON)::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_PROPERTIES_WND_HC : IDI_PROPERTIES_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
+	const HICON hPropertiesBarIcon = static_cast<HICON>(::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_PROPERTIES_WND_HC : IDI_PROPERTIES_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0));
 	m_wndProperties.SetIcon(hPropertiesBarIcon, FALSE);
 
 	UpdateMDITabbedBarsIcons();
@@ -276,7 +276,7 @@ LRESULT CWatchdogMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
 		return 0;
 	}
 
-	CMFCToolBar* pUserToolbar = (CMFCToolBar*)lres;
+	CMFCToolBar* pUserToolbar = reinterpret_cast<CMFCToolBar*>(lres);
 	ASSERT_VALID(pUserToolbar);
 
 	CString strCustomize;
@@ -386,7 +386,7 @@ void CWatchdogMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 	m_wndOutput.UpdateFonts();
 }
 
-bool IsFireBirdAlreadyRunning(CString strProgramToken) {
+bool IsFireBirdAlreadyRunning(const CString& strProgramToken) {
 	const HANDLE hMutex = ::CreateMutex(nullptr, false, strProgramToken); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
 	bool bAlreadyRunning = false;
 	if (hMutex) {

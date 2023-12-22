@@ -10,7 +10,7 @@ public:
 
 	// Overrides
 protected:
-	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) override;
 
 	// Implementation
 public:

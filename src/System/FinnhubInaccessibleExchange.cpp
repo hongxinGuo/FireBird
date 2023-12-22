@@ -104,7 +104,7 @@ CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 }
 
 CFinnhubInaccessibleExchange::~CFinnhubInaccessibleExchange() {
-	if (m_fUpdate) {
+	if (IsNeedUpdate()) {
 		UpdateDiscFile();
 	}
 }
@@ -113,15 +113,16 @@ void CFinnhubInaccessibleExchange::UpdateDiscFile() {
 	const CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("json");
 	const CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
 
-	DeleteFile(gl_systemConfiguration.GetDefaultFileDirectory() + strNew);
-	rename(gl_systemConfiguration.GetDefaultFileDirectory() + strOld, gl_systemConfiguration.GetDefaultFileDirectory() + strNew); // 保存备份
+	DeleteFile(gl_systemConfiguration.GetConfigurationFileDirectory() + strNew);
+	rename(gl_systemConfiguration.GetConfigurationFileDirectory() + strOld, gl_systemConfiguration.GetConfigurationFileDirectory() + strNew); // 保存备份
 	UpdateJson();
 	SaveDB();
 	SetUpdate(false);
 }
 
 bool CFinnhubInaccessibleExchange::LoadDB() {
-	fstream f(gl_systemConfiguration.GetDefaultFileDirectory() + m_strFileName, ios::in);
+	CString str = gl_systemConfiguration.GetConfigurationFileDirectory() + m_strFileName;
+	fstream f(gl_systemConfiguration.GetConfigurationFileDirectory() + m_strFileName, ios::in);
 	if (f.is_open()) {
 		f >> m_finnhubInaccessibleExchange;
 		return true;
@@ -139,7 +140,7 @@ bool CFinnhubInaccessibleExchange::LoadDB(const CString& strFileDirectory) {
 }
 
 void CFinnhubInaccessibleExchange::SaveDB() const {
-	fstream f(gl_systemConfiguration.GetDefaultFileDirectory() + m_strFileName, ios::out);
+	fstream f(gl_systemConfiguration.GetConfigurationFileDirectory() + m_strFileName, ios::out);
 	f << m_finnhubInaccessibleExchange;
 	f.close();
 }

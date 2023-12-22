@@ -3,6 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"Country.h"
+#include "FinnhubDataSource.h"
 
 #include"WorldMarket.h"
 
@@ -45,6 +46,16 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubEconomicCountryListTest, TestCreatMessage) {
 		EXPECT_STREQ(countryList.CreateMessage(), _T("https://finnhub.io/api/v1/country?"));
+	}
+
+	TEST_F(CFinnhubEconomicCountryListTest, TestUpdateDataSourceStatus) {
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCountryList());
+
+		countryList.UpdateDataSourceStatus(gl_pFinnhubDataSource);
+
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateCountryList());
+
+		gl_pFinnhubDataSource->SetUpdateCountryList(true);
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser

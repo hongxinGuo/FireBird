@@ -246,7 +246,7 @@ void CFireBirdView::ShowRealtimeGuadan(CDC* pDC) {
 }
 
 void CFireBirdView::ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
-	const COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
+	constexpr COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
 	CPen* ppen = nullptr;
 	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
 	CPen penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
@@ -295,7 +295,7 @@ void CFireBirdView::ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea)
 	SysCallFillSolidRect(pDC, rectBottom, crGreen);
 }
 
-void CFireBirdView::ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
+void CFireBirdView::ShowAttackBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea) {
 	constexpr COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
 	CPen* ppen = nullptr;
 	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
@@ -341,8 +341,8 @@ void CFireBirdView::ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rec
 	SysCallFillSolidRect(pDC, rectBottom, crGreen);
 }
 
-void CFireBirdView::ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
-	const COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
+void CFireBirdView::ShowOrdinaryBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea) {
+	constexpr COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
 	CPen* ppen = nullptr;
 	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
 	CPen penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
@@ -419,7 +419,7 @@ void CFireBirdView::ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStock, CRect r
 	SysCallFillSolidRect(pDC, rectBottom, crGreen);
 }
 
-void CFireBirdView::ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
+void CFireBirdView::ShowCanceledBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea) {
 	constexpr COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
 	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
 	CPen penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
@@ -607,7 +607,7 @@ bool CFireBirdView::RSLineTo(CDC* pDC, int i, double dValue, int iSize) {
 	return true;
 }
 
-bool CFireBirdView::UpdateHistoryDataContainer(CChinaStockPtr pStock) {
+bool CFireBirdView::UpdateHistoryDataContainer(const CChinaStockPtr& pStock) {
 	if (pStock != nullptr) {
 		switch (m_iCurrentShowType) {
 		case _SHOW_DAY_LINE_DATA_:

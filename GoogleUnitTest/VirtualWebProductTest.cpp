@@ -113,6 +113,16 @@ namespace FireBirdTest {
 		EXPECT_FALSE(webProduct.IsVoidData());
 	}
 
+	TEST_F(CVirtualWebProductTest, TestGetReceivedDataStatus) {
+		EXPECT_EQ(webProduct.GetReceivedDataStatus(), 0);
+
+		webProduct.SetReceivedDataStatus(NO_ACCESS_RIGHT_);
+		EXPECT_EQ(webProduct.GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
+
+		webProduct.SetReceivedDataStatus(VOID_DATA_);
+		EXPECT_EQ(webProduct.GetReceivedDataStatus(), VOID_DATA_);
+	}
+
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible1) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
 		pWebData->SetParsed(false);

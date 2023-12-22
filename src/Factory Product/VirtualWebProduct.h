@@ -37,6 +37,8 @@ public:
 	bool IsVoidData() const noexcept { return m_iReceivedDataStatus == VOID_DATA_; }
 	virtual bool CheckAccessRight(CWebDataPtr pWebData) { return true; }
 	bool IsNoRightToAccess() const noexcept { return m_iReceivedDataStatus == NO_ACCESS_RIGHT_; }
+	int GetReceivedDataStatus() const noexcept { return m_iReceivedDataStatus; }
+	void SetReceivedDataStatus(int iType) noexcept { m_iReceivedDataStatus = iType; }
 
 	CString GetClassName() const noexcept { return m_strClassName; }
 	CString GetInquiry() const noexcept { return m_strInquiry; }

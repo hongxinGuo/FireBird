@@ -4,7 +4,7 @@
 
 #include "TiingoFactory.h"
 
-#include"ProductTiingoCompanyProfile.h"
+//#include"ProductTiingoCompanyProfile.h"
 #include"ProductTiingoStockSymbol.h"
 #include"ProductTiingoStockDayLine.h"
 

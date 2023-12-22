@@ -3,11 +3,11 @@
 #include "ViewTree.h"
 
 class CFileViewToolBar : public CMFCToolBar {
-	virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) {
-		CMFCToolBar::OnUpdateCmdUI((CFrameWnd*)GetOwner(), bDisableIfNoHndler);
+	void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) override {
+		CMFCToolBar::OnUpdateCmdUI(static_cast<CFrameWnd*>(GetOwner()), bDisableIfNoHndler);
 	}
 
-	virtual BOOL AllowShowOnList() const { return FALSE; }
+	BOOL AllowShowOnList() const override { return FALSE; }
 };
 
 class CWatchdogFileView : public CDockablePane {
@@ -15,7 +15,7 @@ class CWatchdogFileView : public CDockablePane {
 public:
 	CWatchdogFileView() noexcept;
 
-	void AdjustLayout();
+	void AdjustLayout() override;
 	void OnChangeVisualStyle();
 
 	// Attributes
@@ -29,7 +29,7 @@ protected:
 
 	// Implementation
 public:
-	virtual ~CWatchdogFileView();
+	~CWatchdogFileView() override;
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

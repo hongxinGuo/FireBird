@@ -56,6 +56,7 @@ shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExcha
 	}
 	return pvExchange;
 }
+
 void CProductFinnhubForexExchange::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
 	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->m_fUpdateForexExchange = false;

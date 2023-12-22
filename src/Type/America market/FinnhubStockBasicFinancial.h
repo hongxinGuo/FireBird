@@ -45,6 +45,7 @@ public:
 
 /// <summary>
 ///
+/// </summary>
 // "metric": {
 // "10DayAverageTradingVolume": 0.43212,
 // "13WeekPriceReturnDaily" : 56.53409,
@@ -195,7 +196,6 @@ public:
 //		},
 //		"metricType": "all",
 //
-///</summary>
 
 class CFinnhubStockBasicFinancial final {
 public:
@@ -210,8 +210,8 @@ public:
 	void AppendQuarterData(CSetFinnhubStockBasicFinancialQuarter& setMetric);
 	void AppendAnnualData(CSetFinnhubStockBasicFinancialAnnual& setMetric);
 
-	void SaveAllQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, vector<CItemOfBasicFinancialSeasonData>& vDBData);
-	void SaveAllAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<CItemOfBasicFinancialSeasonData>& vDBData);
+	void SaveAllQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, const vector<CItemOfBasicFinancialSeasonData>& vDBData);
+	void SaveAllAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, const vector<CItemOfBasicFinancialSeasonData>& vDBData);
 
 	void SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, const vector<CValueOfPeriod>& vData, const CString& typeName, const vector<CItemOfBasicFinancialSeasonData>& vDBData);
 	void LoadQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData);

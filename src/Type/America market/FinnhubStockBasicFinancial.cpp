@@ -346,7 +346,7 @@ void CFinnhubStockBasicFinancial::AppendAnnualData(CSetFinnhubStockBasicFinancia
 	SaveAllAnnualData(setBeSaved, vData);
 }
 
-void CFinnhubStockBasicFinancial::SaveAllQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
+void CFinnhubStockBasicFinancial::SaveAllQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	SaveQuarterData(SetQuarterData, m_quarter.m_cashRatio, _T("cashRatio"), vDBData);
 	SaveQuarterData(SetQuarterData, m_quarter.m_currentRatio, _T("currentRatio"), vDBData);
 	SaveQuarterData(SetQuarterData, m_quarter.m_ebitPerShare, _T("ebitPerShare"), vDBData);
@@ -386,7 +386,7 @@ void CFinnhubStockBasicFinancial::LoadQuarterData(CSetFinnhubStockBasicFinancial
 	// not implemented
 }
 
-void CFinnhubStockBasicFinancial::SaveAllAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, vector<CItemOfBasicFinancialSeasonData>& vDBData) {
+void CFinnhubStockBasicFinancial::SaveAllAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	SaveAnnualData(setAnnualData, m_annual.m_cashRatio, _T("cashRatio"), vDBData);
 	SaveAnnualData(setAnnualData, m_annual.m_currentRatio, _T("currentRatio"), vDBData);
 	SaveAnnualData(setAnnualData, m_annual.m_ebitPerShare, _T("ebitPerShare"), vDBData);

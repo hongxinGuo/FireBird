@@ -44,7 +44,7 @@ int CWatchdogFileView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	rectDummy.SetRectEmpty();
 
 	// Create view:
-	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS;
+	constexpr DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS;
 
 	if (!m_wndFileView.Create(dwViewStyle, rectDummy, this, 4)) {
 		TRACE0("Failed to create file view\n");
@@ -82,10 +82,10 @@ void CWatchdogFileView::OnSize(UINT nType, int cx, int cy) {
 }
 
 void CWatchdogFileView::FillFileView() {
-	HTREEITEM hRoot = m_wndFileView.InsertItem(_T("FakeApp files"), 0, 0);
+	const HTREEITEM hRoot = m_wndFileView.InsertItem(_T("FakeApp files"), 0, 0);
 	m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
 
-	HTREEITEM hSrc = m_wndFileView.InsertItem(_T("FakeApp Source Files"), 0, 0, hRoot);
+	const HTREEITEM hSrc = m_wndFileView.InsertItem(_T("FakeApp Source Files"), 0, 0, hRoot);
 
 	m_wndFileView.InsertItem(_T("FakeApp.cpp"), 1, 1, hSrc);
 	m_wndFileView.InsertItem(_T("FakeApp.rc"), 1, 1, hSrc);
@@ -94,7 +94,7 @@ void CWatchdogFileView::FillFileView() {
 	m_wndFileView.InsertItem(_T("MainFrm.cpp"), 1, 1, hSrc);
 	m_wndFileView.InsertItem(_T("pch.cpp"), 1, 1, hSrc);
 
-	HTREEITEM hInc = m_wndFileView.InsertItem(_T("FakeApp Header Files"), 0, 0, hRoot);
+	const HTREEITEM hInc = m_wndFileView.InsertItem(_T("FakeApp Header Files"), 0, 0, hRoot);
 
 	m_wndFileView.InsertItem(_T("FakeApp.h"), 2, 2, hInc);
 	m_wndFileView.InsertItem(_T("FakeAppDoc.h"), 2, 2, hInc);
@@ -103,7 +103,7 @@ void CWatchdogFileView::FillFileView() {
 	m_wndFileView.InsertItem(_T("MainFrm.h"), 2, 2, hInc);
 	m_wndFileView.InsertItem(_T("pch.h"), 2, 2, hInc);
 
-	HTREEITEM hRes = m_wndFileView.InsertItem(_T("FakeApp Resource Files"), 0, 0, hRoot);
+	const HTREEITEM hRes = m_wndFileView.InsertItem(_T("FakeApp Resource Files"), 0, 0, hRoot);
 
 	m_wndFileView.InsertItem(_T("FakeApp.ico"), 2, 2, hRes);
 	m_wndFileView.InsertItem(_T("FakeApp.rc2"), 2, 2, hRes);
@@ -130,7 +130,7 @@ void CWatchdogFileView::OnContextMenu(CWnd* pWnd, CPoint point) {
 		pWndTree->ScreenToClient(&ptTree);
 
 		UINT flags = 0;
-		HTREEITEM hTreeItem = pWndTree->HitTest(ptTree, &flags);
+		const HTREEITEM hTreeItem = pWndTree->HitTest(ptTree, &flags);
 		if (hTreeItem != nullptr) {
 			pWndTree->SelectItem(hTreeItem);
 		}
@@ -148,7 +148,7 @@ void CWatchdogFileView::AdjustLayout() {
 	CRect rectClient;
 	GetClientRect(rectClient);
 
-	int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
+	const int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
 
 	m_wndToolBar.SetWindowPos(nullptr, rectClient.left, rectClient.top, rectClient.Width(), cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
 	m_wndFileView.SetWindowPos(nullptr, rectClient.left + 1, rectClient.top + cyTlb + 1, rectClient.Width() - 2, rectClient.Height() - cyTlb - 2, SWP_NOACTIVATE | SWP_NOZORDER);
@@ -193,7 +193,7 @@ void CWatchdogFileView::OnChangeVisualStyle() {
 
 	m_FileViewImages.DeleteImageList();
 
-	UINT uiBmpId = theApp.m_bHiColorIcons ? IDB_FILE_VIEW_24 : IDB_FILE_VIEW;
+	const UINT uiBmpId = theApp.m_bHiColorIcons ? IDB_FILE_VIEW_24 : IDB_FILE_VIEW;
 
 	CBitmap bmp;
 	if (!bmp.LoadBitmap(uiBmpId)) {

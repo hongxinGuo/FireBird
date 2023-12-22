@@ -70,6 +70,7 @@ CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(co
 	             [](const CCountryPtr& p1, const CCountryPtr& p2) { return p1->m_strCountry < p2->m_strCountry; });
 	return pvCountry;
 }
+
 void CProductFinnhubEconomicCountryList::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
 	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->m_fUpdateCountryList = false;

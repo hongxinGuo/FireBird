@@ -6,12 +6,12 @@
 // SHARED_HANDLERS can be defined in an ATL project implementing preview, thumbnail
 // and search filter handlers and allows sharing of document code with that project.
 #ifndef SHARED_HANDLERS
-#include "Watchdog.h"
+//#include "Watchdog.h"
 #endif
 
 #include "WatchdogDoc.h"
 
-#include <propkey.h>
+//#include <propkey.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -42,8 +42,8 @@ BOOL CWatchdogDoc::OnNewDocument() {
 // CWatchdogDoc serialization
 
 void CWatchdogDoc::Serialize(CArchive& ar) {
-	if (ar.IsStoring()) { }
-	else { }
+	if (ar.IsStoring()) {}
+	else {}
 }
 
 #ifdef SHARED_HANDLERS

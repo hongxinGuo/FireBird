@@ -115,7 +115,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestSaveDB1) {
-		DeleteFile(gl_systemConfiguration.GetDefaultFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
+		DeleteFile(gl_systemConfiguration.GetConfigurationFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
 		gl_finnhubInaccessibleExchange.SetDefaultFileName(_T("FinnhubInaccessibleExchangeTest.json"));
 
 		const auto pExchange = make_shared<CInaccessibleExchanges>();
@@ -140,12 +140,12 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("SS"));
 
 		// »Ö¸´Ô­×´
-		DeleteFile(gl_systemConfiguration.GetDefaultFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
+		DeleteFile(gl_systemConfiguration.GetConfigurationFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
 		gl_finnhubInaccessibleExchange.SetDefaultFileName(_T("FinnhubInaccessibleExchange.json"));
 	}
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestSaveDB2) {
-		DeleteFile(gl_systemConfiguration.GetDefaultFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
+		DeleteFile(gl_systemConfiguration.GetConfigurationFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
 		gl_finnhubInaccessibleExchange.SetDefaultFileName(_T("FinnhubInaccessibleExchangeTest.json"));
 
 		const auto pExchange = make_shared<CInaccessibleExchanges>();
@@ -158,7 +158,7 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.UpdateJson();
 		gl_finnhubInaccessibleExchange.SaveDB();
 
-		const CString strFileDirectory = gl_systemConfiguration.GetDefaultFileDirectory();
+		const CString strFileDirectory = gl_systemConfiguration.GetConfigurationFileDirectory();
 		gl_finnhubInaccessibleExchange.Clear();
 		gl_finnhubInaccessibleExchange.LoadDB(strFileDirectory);
 		gl_finnhubInaccessibleExchange.Update();
@@ -171,7 +171,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("SS"));
 
 		// »Ö¸´Ô­×´
-		DeleteFile(gl_systemConfiguration.GetDefaultFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
+		DeleteFile(gl_systemConfiguration.GetConfigurationFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
 		gl_finnhubInaccessibleExchange.SetDefaultFileName(_T("FinnhubInaccessibleExchange.json"));
 	}
 }

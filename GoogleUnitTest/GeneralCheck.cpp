@@ -32,26 +32,51 @@ namespace FireBirdTest {
 	}
 
 	void SystemConfigurationCheck() {
-		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsNeedUpdate());
-		EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate());
+		ASSERT_FALSE(gl_systemConfiguration.IsNeedUpdate()) << "不允许更新系统配置";
+		ASSERT_FALSE(gl_finnhubInaccessibleExchange.IsNeedUpdate()) << "不允许更新禁入交易所名单";
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
 		if (gl_UpdateChinaMarketDB.try_acquire()) {
 			gl_UpdateChinaMarketDB.release();
 		}
-		else
-			EXPECT_TRUE(false);
+		else {
+			EXPECT_TRUE(false) << "gl_UpdateChinaMarketDB被锁住了";
+		}
 		if (gl_UpdateWorldMarketDB.try_acquire()) {
 			gl_UpdateWorldMarketDB.release();
 		}
-		else
-			EXPECT_TRUE(false);
+		else {
+			EXPECT_TRUE(false) << "gl_UpdateWorldMarketDB被锁住了";
+		}
+
+		EXPECT_FALSE(gl_systemConfiguration.IsDebugMode());
+		EXPECT_STREQ(gl_systemConfiguration.GetDatabaseAccountName(), _T("hxguo"));
+		EXPECT_STREQ(gl_systemConfiguration.GetDatabaseAccountPassword(), _T("hxguo"));
+		EXPECT_EQ(gl_systemConfiguration.GetBackgroundThreadPermittedNumber(), 8);
+
+		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0) << "默认使用新浪实时数据服务器";
+		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketDayLineServer(), 0) << "默认使用网易日线数据服务器";
+		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRTDataInquiryTime(), 200) << "默认查询时间为200毫秒";
+		EXPECT_EQ(gl_systemConfiguration.GetSavingChinaMarketStockDayLineThread(), 4) << "默认查询股票历史数据工作线程数为4";
+		EXPECT_EQ(gl_systemConfiguration.GetNumberOfRTDataSource(), 4) << "测试文件中的数值";
+		EXPECT_EQ(gl_systemConfiguration.GetSinaRTDataInquiryPerTime(), 850) << "测试文件中的数值";
+		EXPECT_EQ(gl_systemConfiguration.GetNeteaseRTDataInquiryPerTime(), 900) << "测试文件中的数值";
+		EXPECT_EQ(gl_systemConfiguration.GetTengxunRTDataInquiryPerTime(), 900) << "测试文件中的数值";
+
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100) << "默认每次查询时间为1100毫秒";
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 3600000 / 400) << "默认每小时查询最大数量为400";
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime(), 3600000 / 100) << "默认每小时查询最大数量为100";
+
+		EXPECT_EQ(gl_systemConfiguration.GetInsideTransactionUpdateRate(), 30);
+		EXPECT_EQ(gl_systemConfiguration.GetStockProfileUpdateRate(), 365);
+		EXPECT_EQ(gl_systemConfiguration.GetStockPeerUpdateRate(), 90);
+		EXPECT_EQ(gl_systemConfiguration.GetStockBasicFinancialUpdateRate(), 45);
 	}
 
 	void ChinaMarketCheck() {
 		if (gl_pChinaMarket != nullptr) {
+			ASSERT_FALSE(gl_pChinaMarket->IsUpdateStockProfileDB()) << "不允许更新股票代码库";
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
-			EXPECT_THAT(gl_pChinaMarket->IsUpdateStockProfileDB(), IsFalse());
 			//EXPECT_THAT(gl_pChinaMarket->)
 			EXPECT_THAT(gl_pChinaMarket->IsCalculatingDayLineRS(), IsFalse());
 			EXPECT_THAT(gl_pChinaMarket->IsCalculatingWeekLineRS(), IsFalse());
@@ -72,9 +97,10 @@ namespace FireBirdTest {
 
 	void WorldMarketCheck() {
 		if (gl_pWorldMarket != nullptr) {
+			ASSERT_FALSE(gl_pWorldMarket->IsUpdateStockProfileDB()) << "不允许更新股票代码库";
 			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(_T("AAPL"));
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
-			EXPECT_FALSE(pStock->IsUpdateProfileDB());
+			ASSERT_FALSE(pStock->IsUpdateProfileDB()) << "不允许更新股票代码库";
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
 

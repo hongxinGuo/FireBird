@@ -50,7 +50,41 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestProcessWebData) {
-		// 由MockWorldMarketTest负责测试
+		// todo 由MockWorldMarketTest负责测试
+	}
+
+	TEST_F(CFinnhubEconomicCalendarTest, TestUpdateDataSourceStatus1) {
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
+		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()); // 默认为付费账户
+		EXPECT_FALSE(economicCalendar.IsNoRightToAccess());
+
+		economicCalendar.UpdateDataSourceStatus(gl_pFinnhubDataSource);
+
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
+		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()) << "有权处理时不更改";
+		EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate());
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100);
+
+		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(true);
+	}
+
+	TEST_F(CFinnhubEconomicCalendarTest, TestUpdateDataSourceStatus2) {
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
+		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()); // 默认为付费账户
+		EXPECT_FALSE(economicCalendar.IsNoRightToAccess());
+		economicCalendar.SetReceivedDataStatus(NO_ACCESS_RIGHT_);
+
+		economicCalendar.UpdateDataSourceStatus(gl_pFinnhubDataSource);
+
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
+		EXPECT_FALSE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()) << "无权处理时更改为免费账户";
+		EXPECT_TRUE(gl_systemConfiguration.IsNeedUpdate());
+
+		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(true);
+		gl_systemConfiguration.ChangeFinnhubAccountTypeToPaid();
+		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(1100);
+		gl_systemConfiguration.SetUpdate(false);
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100);
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser

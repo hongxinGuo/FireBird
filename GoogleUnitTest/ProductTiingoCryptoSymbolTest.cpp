@@ -46,6 +46,16 @@ namespace FireBirdTest {
 		EXPECT_STREQ(stockSymbols.CreateMessage(), stockSymbols.GetInquiryFunction());
 	}
 
+	TEST_F(CProductTiingoCryptoSymbolsTest, TestUpdateDataSourceStatus) {
+		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
+
+		stockSymbols.UpdateDataSourceStatus(gl_pTiingoDataSource);
+
+		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
+
+		gl_pTiingoDataSource->SetUpdateCryptoSymbol(true);
+	}
+
 	// 格式不对，缺乏'{'
 	Test_TiingoWebData tiingoWebData11(11, _T(""), _T("[\"ticker\":\"curebtc\",\"baseCurrency\":\"cure\",\"name\":\"CureCoin(CURE/BTC)\",\"quoteCurrency\":\"btc\"}]"));
 	// 第一个数据缺项

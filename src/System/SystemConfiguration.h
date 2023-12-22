@@ -24,8 +24,9 @@ public:
 	CSystemConfiguration& operator=(const CSystemConfiguration&&) noexcept = delete;
 	~CSystemConfiguration();
 
+	void UpdateDB();
 	bool LoadDB();
-	bool SaveDB() const;
+	void SaveDB() const;
 	void Update();
 	void UpdateJson();
 
@@ -33,13 +34,13 @@ public:
 
 	void ChangeFinnhubAccountTypeToFree();
 	void ChangeFinnhubAccountTypeToPaid();
+	bool IsPaidTypeFinnhubAccount() const noexcept { return m_bFinnhubAccountFeePaid; }
 
-	void SetDefaultFileDirectory(const CString& fileDirectory) { m_strDirectory = fileDirectory; }
-	[[nodiscard]] CString GetDefaultFileDirectory() { return m_strDirectory; }
-
+	void SetConfigurationFileDirectory(const CString& fileDirectory) { m_strDirectory = fileDirectory; }
+	[[nodiscard]] CString GetConfigurationFileDirectory() { return m_strDirectory; }
 	void SetDefaultFileName(const CString& fileName) { m_strFileName = fileName; }
 	[[nodiscard]] CString GetDefaultFileName() { return m_strFileName; }
-	[[nodiscard]] CString GetDefaultFileDirectoryAndName() const { return m_strDirectory + m_strFileName; }
+	[[nodiscard]] CString GetConfigurationFileDirectoryAndName() const { return m_strDirectory + m_strFileName; }
 
 	// 获取系统配置参数
 	[[nodiscard]] bool IsDebugMode() const noexcept { return m_bDebugMode; }

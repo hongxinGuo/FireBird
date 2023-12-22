@@ -6,7 +6,7 @@
 
 #include "WatchdogOutputWnd.h"
 #include "Resource.h"
-#include "WatchdogMainFrm.h"
+//#include "WatchdogMainFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -34,7 +34,7 @@ CWatchdogOutputWnd::CWatchdogOutputWnd() noexcept {
 
 CWatchdogOutputWnd::~CWatchdogOutputWnd() {}
 
-void CWatchdogOutputWnd::ReportInfo(CString strInfo) {
+void CWatchdogOutputWnd::ReportInfo(const CString& strInfo) {
 	CString str = GetStringOfLocalDateTime();
 	str += _T("  ");
 	str += strInfo;
@@ -61,7 +61,7 @@ int CWatchdogOutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	}
 
 	// Create output panes:
-	const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
+	constexpr DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
 
 	if (!m_wndOutputBuild.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
 		!m_wndOutputDebug.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
@@ -73,10 +73,9 @@ int CWatchdogOutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	UpdateFonts();
 
 	CString strTabName;
-	BOOL bNameValid;
 
 	// Attach list windows to tab:
-	bNameValid = strTabName.LoadString(IDS_BUILD_TAB);
+	BOOL bNameValid = strTabName.LoadString(IDS_BUILD_TAB);
 	ASSERT(bNameValid);
 	m_wndTabs.AddTab(&m_wndOutputBuild, strTabName, (UINT)0);
 	bNameValid = strTabName.LoadString(IDS_DEBUG_TAB);
@@ -181,7 +180,7 @@ void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point) {
 	CMenu menu;
 	menu.LoadMenu(IDR_OUTPUT_POPUP);
 
-	CMenu* pSumMenu = menu.GetSubMenu(0);
+	const CMenu* pSumMenu = menu.GetSubMenu(0);
 
 	if (AfxGetMainWnd()->IsKindOf(RUNTIME_CLASS(CMDIFrameWndEx))) {
 		CMFCPopupMenu* pPopupMenu = new CMFCPopupMenu;
@@ -189,7 +188,7 @@ void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point) {
 		if (!pPopupMenu->Create(this, point.x, point.y, (HMENU)pSumMenu->m_hMenu, FALSE, TRUE))
 			return;
 
-		((CMDIFrameWndEx*)AfxGetMainWnd())->OnShowPopupMenu(pPopupMenu);
+		static_cast<CMDIFrameWndEx*>(AfxGetMainWnd())->OnShowPopupMenu(pPopupMenu);
 		UpdateDialogControls(this, FALSE);
 	}
 

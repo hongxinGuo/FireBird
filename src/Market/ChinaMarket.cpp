@@ -701,6 +701,11 @@ void CChinaMarket::TaskAccessoryTask(long lCurrentTime) {
 	SetCheckActiveStockFlag(lCurrentTime);
 	ResetEffectiveRTDataRatio(); // 重置有效实时数据比率
 
+	if (gl_systemConfiguration.IsNeedUpdate()) { // 每分钟检查一次系统配置是否需要存储。
+		gl_systemConfiguration.UpdateDB();
+		gl_systemConfiguration.SetUpdate(false);
+	}
+
 	AddTask(CHINA_MARKET_ACCESSORY_TASK__, GetNextTime(lCurrentTime, 0, 1, 0)); // 每分钟整点执行一次
 }
 

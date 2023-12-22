@@ -32,6 +32,9 @@ namespace FireBirdTest {
 		EXPECT_FALSE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/DebugMode")));
 		EXPECT_FALSE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/ReloadSystem")));
 
+		sTemp = jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/ConfigurationDirectory"));
+		EXPECT_TRUE(sTemp == _T("C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\"));
+
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/DatabaseAccountName"));
 		EXPECT_TRUE(sTemp == _T("hxguo"));
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/DatabaseAccountPassword"));

@@ -14,7 +14,7 @@ class CWatchdogPropertiesWnd : public CDockablePane {
 public:
 	CWatchdogPropertiesWnd() noexcept;
 
-	void AdjustLayout();
+	void AdjustLayout() override;
 
 	// Attributes
 public:

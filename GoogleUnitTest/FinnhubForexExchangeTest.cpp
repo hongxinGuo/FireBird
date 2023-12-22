@@ -35,20 +35,30 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CProductFinnhubForexExchange countryList;
+		CProductFinnhubForexExchange forexExchange;
 	};
 
 	TEST_F(CFinnhubForexExchangeTest, TestInitialize) {
-		EXPECT_EQ(countryList.GetIndex(), -1);
-		EXPECT_STREQ(countryList.GetInquiryFunction(), _T("https://finnhub.io/api/v1/forex/exchange?"));
+		EXPECT_EQ(forexExchange.GetIndex(), -1);
+		EXPECT_STREQ(forexExchange.GetInquiryFunction(), _T("https://finnhub.io/api/v1/forex/exchange?"));
 	}
 
 	TEST_F(CFinnhubForexExchangeTest, TestCreatMessage) {
-		EXPECT_STREQ(countryList.CreateMessage(), _T("https://finnhub.io/api/v1/forex/exchange?"));
+		EXPECT_STREQ(forexExchange.CreateMessage(), _T("https://finnhub.io/api/v1/forex/exchange?"));
 	}
 
 	TEST_F(CFinnhubForexExchangeTest, TestProcessWebData) {
 		// not implemented yet
+	}
+
+	TEST_F(CFinnhubForexExchangeTest, TestUpdateDataSourceStatus) {
+		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateForexExchange());
+
+		forexExchange.UpdateDataSourceStatus(gl_pFinnhubDataSource);
+
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateForexExchange());
+
+		gl_pFinnhubDataSource->SetUpdateForexExchange(true);
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser

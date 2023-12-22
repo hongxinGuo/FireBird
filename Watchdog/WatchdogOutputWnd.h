@@ -51,7 +51,7 @@ protected:
 public:
 	~CWatchdogOutputWnd() override;
 
-	void ReportInfo(CString strInfo);
+	void ReportInfo(const CString& strInfo);
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

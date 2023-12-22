@@ -27,6 +27,7 @@ std::string gl_sSystemConfiguration = R"(
 	"UsingFastCPU" : true,
 	"DebugMode" : false,
 	"ReloadSystem" : false,
+	"ConfigurationDirectory" : "C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\",
   "DatabaseAccountName" : "hxguo",
 	"DatabaseAccountPassword" : "hxguo",
 	"BackgroundThreadPermittedNumber" : 8,
@@ -89,7 +90,10 @@ CSystemConfiguration::CSystemConfiguration() {
 
 	m_fUpdate = false; // update flag
 	m_fInitialized = true;
-	m_strDirectory = _T("C:\\FireBird\\");
+	char buffer[200];
+	_getcwd(buffer, 200);
+	m_strDirectory = buffer;
+	m_strDirectory = m_strDirectory + _T("\\"); //
 	m_strFileName = _T("SystemConfiguration.json"); // json file name
 
 	// 系统配置
@@ -143,11 +147,12 @@ CSystemConfiguration::CSystemConfiguration() {
 	// 测试系统选项
 	m_strBenchmarkTestFileDirectory = _T("C:\\FireBird\\Test Data\\Benchmark\\"); // Benchmark默认目录
 
-	ASSERT(GetDefaultFileDirectoryAndName().Compare(_T("C:\\FireBird\\SystemConfiguration.json")) == 0);
 	if (LoadDB()) {
 		Update();
 	}
-	else { m_fUpdate = true; }
+	else {
+		m_fUpdate = true;
+	}
 
 	// 具体工作计算机的初始参数
 	m_rSystemDisplay.left = 0;
@@ -161,15 +166,19 @@ CSystemConfiguration::CSystemConfiguration() {
 }
 
 CSystemConfiguration::~CSystemConfiguration() {
+	if (IsNeedUpdate()) {
+		UpdateDB();
+	}
+}
+
+void CSystemConfiguration::UpdateDB() {
 	const CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("json");
 	const CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
-
-	if (m_fUpdate) {
-		DeleteFile(GetDefaultFileDirectory() + strNew);
-		rename(GetDefaultFileDirectory() + strOld, GetDefaultFileDirectory() + strNew); // 保存备份
-	}
+	DeleteFile(GetConfigurationFileDirectory() + strNew);
+	rename(GetConfigurationFileDirectory() + strOld, GetConfigurationFileDirectory() + strNew); // 保存备份
 	UpdateJson();
 	SaveDB();
+	SetUpdate(false);
 }
 
 void CSystemConfiguration::Update() {
@@ -189,6 +198,14 @@ void CSystemConfiguration::Update() {
 		catch (json::out_of_range&) {
 			m_fUpdate = true;
 		}
+		try {
+			sTemp = m_systemConfiguration.at("SystemConfiguration").at("ConfigurationDirectory");
+			m_strDirectory = sTemp.c_str();
+		}
+		catch (json::out_of_range&) {
+			m_fUpdate = true;
+		}
+
 		try {
 			sTemp = m_systemConfiguration.at("SystemConfiguration").at("DatabaseAccountName");
 			m_strDatabaseAccountName = sTemp.c_str();
@@ -422,6 +439,7 @@ void CSystemConfiguration::UpdateJson() {
 	// system
 	m_systemConfiguration["SystemConfiguration"]["DebugMode"] = m_bDebugMode;
 	m_systemConfiguration["SystemConfiguration"]["ReloadSystem"] = m_bReloadSystem;
+	m_systemConfiguration["SystemConfiguration"]["ConfigurationDirectory"] = m_strDirectory;
 	m_systemConfiguration["SystemConfiguration"]["DatabaseAccountName"] = m_strDatabaseAccountName;
 	m_systemConfiguration["SystemConfiguration"]["DatabaseAccountPassword"] = m_strDatabaseAccountPassword;
 	m_systemConfiguration["SystemConfiguration"]["BackgroundThreadPermittedNumber"] = m_iBackgroundThreadPermittedNumber;
@@ -520,7 +538,7 @@ void CSystemConfiguration::UsingTengxunRealtimeServer() {
 }
 
 bool CSystemConfiguration::LoadDB() {
-	fstream f(GetDefaultFileDirectoryAndName(), ios::in);
+	fstream f(GetConfigurationFileDirectoryAndName(), ios::in);
 	if (f.is_open()) {
 		f >> m_systemConfiguration;
 		//m_systemConfiguration = json::parse(f); // 这种方式等价于 f >> m_systemConfiguration;
@@ -530,10 +548,8 @@ bool CSystemConfiguration::LoadDB() {
 	return false;
 }
 
-bool CSystemConfiguration::SaveDB() const {
-	fstream f(GetDefaultFileDirectoryAndName(), ios::out);
+void CSystemConfiguration::SaveDB() const {
+	fstream f(GetConfigurationFileDirectoryAndName(), ios::out);
 	f << m_systemConfiguration;
 	f.close();
-
-	return true;
 }
