@@ -35,7 +35,7 @@ bool CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	gl_ProcessChinaMarketRTData.acquire();
 	for (const auto& pRTData : *pvWebRTData) {
-		GetMarket()->PushSinaRT(pRTData);// 将此实时数据指针存入实时数据队列
+		gl_qSinaRT.PushData(pRTData);// 将此实时数据指针存入实时数据队列
 	}
 	gl_ProcessChinaMarketRTData.release();
 

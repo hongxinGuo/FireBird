@@ -18,7 +18,7 @@ bool CProductNeteaseRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRT(pWebData);
 
 	for (const auto& pRTData : *pvWebRTData) {
-		GetMarket()->PushNeteaseRT(pRTData); // 将此实时数据指针存入实时数据队列
+		gl_qNeteaseRT.PushData(pRTData); // 将此实时数据指针存入实时数据队列
 	}
 	return true;
 }

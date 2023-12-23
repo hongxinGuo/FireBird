@@ -778,7 +778,7 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		m_lCurrentPos = 0;
 		gl_pChinaMarket->SetCurrentEditStockChanged(true);
 		break;
-	case 0x008: // back space
+	case 0x008: // backspace
 		if (m_lCurrentPos > 0) {
 			m_lCurrentPos--;
 			m_aStockCodeTemp[m_lCurrentPos] = 0x000;

@@ -53,14 +53,14 @@ namespace FireBirdTest {
 		const CString strData = _T("v_sh600000=\"1~浦发银行~600000~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81\";\nv_sh600001=\"1~浦发银行~600001~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81\";\n");
 		const CWebDataPtr pData = make_shared<CWebData>();
 		pData->Test_SetBuffer_(strData);
-		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 0);
+		EXPECT_EQ(gl_qTengxunRT.Size(), 0);
 
 		tengxunRT.ParseAndStoreWebData(pData);
 
-		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 2);
+		EXPECT_EQ(gl_qTengxunRT.Size(), 2);
 
 		//恢复原状
-		while (gl_pChinaMarket->TengxunRTSize() > 0) gl_pChinaMarket->PopTengxunRT();
+		while (gl_qTengxunRT.Size() > 0) gl_qTengxunRT.PopData();
 	}
 
 	TEST_F(CProductTengxunRTTest, TestParseTengxunRT) {

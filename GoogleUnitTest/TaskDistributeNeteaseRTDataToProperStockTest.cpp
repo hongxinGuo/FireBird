@@ -108,10 +108,10 @@ namespace FireBirdTest {
 		auto lTotalStock = gl_pChinaMarket->GetTotalStock();
 		CString strSymbol;
 
-		gl_pChinaMarket->PushNeteaseRT(pRTData);
-		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 1);
+		gl_qNeteaseRT.PushData(pRTData);
+		EXPECT_EQ(gl_qNeteaseRT.Size(), 1);
 		gl_pChinaMarket->DistributeNeteaseRTDataToStock();
-		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 0);
+		EXPECT_EQ(gl_qNeteaseRT.Size(), 0);
 		EXPECT_TRUE(gl_pChinaMarket->IsRTDataNeedCalculate());
 		switch (m_iCount) {
 		case 1:

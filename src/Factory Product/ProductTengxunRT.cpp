@@ -29,7 +29,7 @@ bool CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	gl_ProcessChinaMarketRTData.acquire();
 	for (const auto& pRTData : *pvWebRTData) {
-		GetMarket()->PushTengxunRT(pRTData);// 将此实时数据指针存入实时数据队列
+		gl_qTengxunRT.PushData(pRTData);// 将此实时数据指针存入实时数据队列
 	}
 	gl_ProcessChinaMarketRTData.release();
 	return true;

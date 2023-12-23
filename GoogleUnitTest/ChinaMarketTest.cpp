@@ -976,11 +976,11 @@ namespace FireBirdTest {
 	TEST_F(CChinaMarketTest, TestIsDayLineNeedProcess) {
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess()) << "默认状态下无需处理";
 		const auto pData = make_shared<CDayLineWebData>();
-		gl_pChinaMarket->PushDayLine(pData);
+		gl_qDayLine.PushData(pData);
 
 		EXPECT_TRUE(gl_pChinaMarket->IsDayLineNeedProcess());
 
-		gl_pChinaMarket->PopDayLine();
+		gl_qDayLine.PopData();
 		EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess());
 	}
 
@@ -990,7 +990,7 @@ namespace FireBirdTest {
 		CString strTest = _T("");
 
 		pData->SetStockCode(_T("600666.SS"));
-		gl_pChinaMarket->PushDayLine(pData);
+		gl_qDayLine.PushData(pData);
 
 		EXPECT_TRUE(gl_pChinaMarket->ProcessDayLine());
 	}

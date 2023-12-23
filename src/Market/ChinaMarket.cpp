@@ -99,10 +99,7 @@ void CChinaMarket::Reset() {
 	m_lRTDataReceivedInCurrentMinute = 0;
 	m_lNewRTDataReceivedInCurrentMinute = 0;
 
-	while (m_qSinaRT.Size() > 0) m_qSinaRT.PopData();
-	while (m_qNeteaseRT.Size() > 0) m_qNeteaseRT.PopData();
-	while (m_qTengxunRT.Size() > 0) m_qTengxunRT.PopData();
-	while (m_qDayLine.Size() > 0) m_qDayLine.PopData();
+	gl_SystemData.ClearRTDataQueue();
 
 	m_RTDataNeedCalculate = false;
 	m_CalculatingDayLineRS = false;
@@ -392,12 +389,12 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::DistributeSinaRTDataToStock() {
-	const size_t lTotalNumber = SinaRTSize();
+	const size_t lTotalNumber = gl_qSinaRT.Size();
 
 	m_lRTDataReceivedInCurrentMinute += lTotalNumber;
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-		const CWebRTDataPtr pRTData = PopSinaRT();
+		const CWebRTDataPtr pRTData = gl_qSinaRT.PopData();
 		ASSERT(pRTData->GetDataSource() == SINA_RT_WEB_DATA_);
 		DistributeRTDataToStock(pRTData);
 	}
@@ -416,12 +413,12 @@ void CChinaMarket::DistributeSinaRTDataToStock() {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::DistributeTengxunRTDataToStock() {
-	const size_t lTotalNumber = TengxunRTSize();
+	const size_t lTotalNumber = gl_qTengxunRT.Size();
 
 	m_lRTDataReceivedInCurrentMinute += lTotalNumber;
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-		const CWebRTDataPtr pRTData = PopTengxunRT();
+		const CWebRTDataPtr pRTData = gl_qTengxunRT.PopData();
 		ASSERT(pRTData->GetDataSource() == TENGXUN_RT_WEB_DATA_);
 		DistributeRTDataToStock(pRTData);
 	}
@@ -438,12 +435,12 @@ void CChinaMarket::DistributeTengxunRTDataToStock() {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::DistributeNeteaseRTDataToStock() {
-	const size_t lTotalNumber = NeteaseRTSize();
+	const size_t lTotalNumber = gl_qNeteaseRT.Size();
 
 	m_lRTDataReceivedInCurrentMinute += lTotalNumber;
 
 	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-		const CWebRTDataPtr pRTData = PopNeteaseRT();
+		const CWebRTDataPtr pRTData = gl_qNeteaseRT.PopData();
 		ASSERT(pRTData->GetDataSource() == NETEASE_RT_WEB_DATA_);
 		DistributeRTDataToStock(pRTData);
 	}
@@ -1275,13 +1272,13 @@ CChinaStockPtr CChinaMarket::GetCurrentSelectedStock() {
 }
 
 bool CChinaMarket::IsDayLineNeedProcess() {
-	if (DayLineQueueSize() > 0) return true;
+	if (gl_qDayLine.Size() > 0) return true;
 	return false;
 }
 
 bool CChinaMarket::ProcessDayLine() {
-	while (DayLineQueueSize() > 0) {
-		CDayLineWebDataPtr pData = PopDayLine();
+	while (gl_qDayLine.Size() > 0) {
+		CDayLineWebDataPtr pData = gl_qDayLine.PopData();
 		ASSERT(gl_pChinaMarket->IsStock(pData->GetStockCode()));
 		const CChinaStockPtr pStock = gl_pChinaMarket->GetStock(pData->GetStockCode());
 		pStock->UpdateDayLine(pData->GetProcessedDayLine()); // pData的日线数据是正序的，最新日期的在最后面。

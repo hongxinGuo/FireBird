@@ -68,7 +68,7 @@ bool CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pDayLineWebData->AppendDayLine(pData);
 		}
 		ResetStaticVariable();
-		GetMarket()->PushDayLine(pDayLineWebData);
+		gl_qDayLine.PushData(pDayLineWebData);
 	}
 	s_semaphoreTransferData.release();
 

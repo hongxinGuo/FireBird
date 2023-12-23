@@ -172,10 +172,10 @@ namespace FireBirdTest {
 	}
 
 	void DataContainerCheck() {
-		EXPECT_EQ(gl_pChinaMarket->SinaRTSize(), 0);
-		EXPECT_EQ(gl_pChinaMarket->NeteaseRTSize(), 0);
-		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 0);
-		EXPECT_EQ(gl_pChinaMarket->DayLineQueueSize(), 0);
+		EXPECT_EQ(gl_qSinaRT.Size(), 0);
+		EXPECT_EQ(gl_qNeteaseRT.Size(), 0);
+		EXPECT_EQ(gl_qTengxunRT.Size(), 0);
+		EXPECT_EQ(gl_qDayLine.Size(), 0);
 	}
 
 	void GeneralCheck() {

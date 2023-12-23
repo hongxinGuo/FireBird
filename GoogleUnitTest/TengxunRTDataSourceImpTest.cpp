@@ -93,40 +93,40 @@ namespace FireBirdTest {
 
 	TEST_F(CTengxunRTDataSourceTest, TestGetTengxunRTDataDuqueSize) {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 0);
+		EXPECT_EQ(gl_qTengxunRT.Size(), 0);
 		const auto pRTData = make_shared<CWebRTData>();
 		pRTData->SetTransactionTime(100100100);
-		gl_pChinaMarket->PushTengxunRT(pRTData);
+		gl_qTengxunRT.PushData(pRTData);
 		const auto pRTData2 = make_shared<CWebRTData>();
 		pRTData2->SetTransactionTime(200200200);
 		pRTData2->SetBuy(1);
-		gl_pChinaMarket->PushTengxunRT(pRTData2);
+		gl_qTengxunRT.PushData(pRTData2);
 		const auto pRTData3 = make_shared<CWebRTData>();
 		pRTData3->SetTransactionTime(200200);
-		gl_pChinaMarket->PushTengxunRT(pRTData3);
+		gl_qTengxunRT.PushData(pRTData3);
 		const auto pRTData4 = make_shared<CWebRTData>();
 		pRTData4->SetTransactionTime(200);
-		gl_pChinaMarket->PushTengxunRT(pRTData4);
+		gl_qTengxunRT.PushData(pRTData4);
 		const auto pRTData5 = make_shared<CWebRTData>();
 		pRTData5->SetTransactionTime(200200200);
 		pRTData5->SetBuy(2);
-		gl_pChinaMarket->PushTengxunRT(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后
-		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 5);
-		CWebRTDataPtr p2 = gl_pChinaMarket->PopTengxunRT();
-		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 4);
+		gl_qTengxunRT.PushData(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后
+		EXPECT_EQ(gl_qTengxunRT.Size(), 5);
+		CWebRTDataPtr p2 = gl_qTengxunRT.PopData();
+		EXPECT_EQ(gl_qTengxunRT.Size(), 4);
 		EXPECT_EQ(p2->GetTransactionTime(), 200);
-		p2 = gl_pChinaMarket->PopTengxunRT();
-		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 3);
+		p2 = gl_qTengxunRT.PopData();
+		EXPECT_EQ(gl_qTengxunRT.Size(), 3);
 		EXPECT_EQ(p2->GetTransactionTime(), 200200);
-		p2 = gl_pChinaMarket->PopTengxunRT();
-		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 2);
+		p2 = gl_qTengxunRT.PopData();
+		EXPECT_EQ(gl_qTengxunRT.Size(), 2);
 		EXPECT_EQ(p2->GetTransactionTime(), 100100100);
-		p2 = gl_pChinaMarket->PopTengxunRT();
-		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 1);
+		p2 = gl_qTengxunRT.PopData();
+		EXPECT_EQ(gl_qTengxunRT.Size(), 1);
 		EXPECT_EQ(p2->GetTransactionTime(), 200200200);
 		EXPECT_EQ(p2->GetBuy(), 1);
-		p2 = gl_pChinaMarket->PopTengxunRT();
-		EXPECT_EQ(gl_pChinaMarket->TengxunRTSize(), 0);
+		p2 = gl_qTengxunRT.PopData();
+		EXPECT_EQ(gl_qTengxunRT.Size(), 0);
 		EXPECT_EQ(p2->GetBuy(), 2); // 后放入的相同时间的数据应该位于后面
 		EXPECT_EQ(p2->GetTransactionTime(), 200200200);
 	}

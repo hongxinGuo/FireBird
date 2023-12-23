@@ -60,6 +60,12 @@ CTiingoIEXWebSocketPtr gl_pTiingoIEXWebSocket;
 CTiingoForexWebSocketPtr gl_pTiingoForexWebSocket;
 CTiingoCryptoWebSocketPtr gl_pTiingoCryptoWebSocket;
 
+// 处理后的数据
+CPriorityQueueWebRTData gl_qSinaRT; // 中国市场新浪实时数据队列。
+CPriorityQueueWebRTData gl_qNeteaseRT; // 中国市场网易实时数据队列。
+CPriorityQueueWebRTData gl_qTengxunRT; // 中国市场腾讯实时数据队列。
+CTemplateMutexAccessQueue<CDayLineWebData> gl_qDayLine; // 日线数据
+
 // 各市场。皆为唯一实例。为最后声明的变量。
 CWorldMarketPtr gl_pWorldMarket = nullptr;
 CChinaMarketPtr gl_pChinaMarket = nullptr; //此实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。//

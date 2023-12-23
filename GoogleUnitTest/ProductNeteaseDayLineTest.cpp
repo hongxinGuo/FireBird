@@ -52,8 +52,8 @@ namespace FireBirdTest {
 		pData->SetStockCode(_T("600000.SS"));
 		neteaseDayLine.ParseAndStoreWebData(pData);
 
-		EXPECT_EQ(gl_pChinaMarket->DayLineQueueSize(), 1);
-		const auto pNeteaseDayLine = gl_pChinaMarket->PopDayLine();
+		EXPECT_EQ(gl_qDayLine.Size(), 1);
+		const auto pNeteaseDayLine = gl_qDayLine.PopData();
 		EXPECT_EQ(pNeteaseDayLine->GetStockCode(), _T("600000.SS"));
 
 		const auto vDayLine = pNeteaseDayLine->GetProcessedDayLine();

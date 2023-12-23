@@ -8,10 +8,22 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <gsl/pointers>
+using gsl::not_null;
+
 #include"FinnhubWebSocket.h"
 #include"TiingoIEXWebSocket.h"
 #include"TiingoCryptoWebSocket.h"
 #include"TiingoForexWebSocket.h"
+
+#include "PriorityQueueWebRTData.h"
+#include "DayLineWebData.h"
+
+// 处理后的各种数据
+extern CPriorityQueueWebRTData gl_qSinaRT; // 中国市场新浪实时数据队列。
+extern CPriorityQueueWebRTData gl_qNeteaseRT; // 中国市场网易实时数据队列。
+extern CPriorityQueueWebRTData gl_qTengxunRT; // 中国市场腾讯实时数据队列。
+extern CTemplateMutexAccessQueue<CDayLineWebData> gl_qDayLine; // 日线数据
 
 class CSystemData final {
 public:
@@ -61,6 +73,13 @@ public:
 		CTiingoForexSocketPtr p = m_qTiingoForexSocket.front();
 		m_qTiingoForexSocket.pop();
 		return p;
+	}
+
+	static void ClearRTDataQueue() {
+		while (gl_qSinaRT.Size() > 0) gl_qSinaRT.PopData();
+		while (gl_qNeteaseRT.Size() > 0) gl_qNeteaseRT.PopData();
+		while (gl_qTengxunRT.Size() > 0) gl_qTengxunRT.PopData();
+		while (gl_qDayLine.Size() > 0) gl_qDayLine.PopData();
 	}
 
 private:
