@@ -263,6 +263,76 @@ namespace FireBirdTest {
 		CString m_strData;
 	};
 
+	// 没有实时数据
+	SinaRTData VoidData1(1, _T("var hq_str_sh000001=\"\";\n"));
+	// 没有实时数据
+	SinaRTData VoidData2(2, _T("var hq_str_sz000001=\"\";\nvar hq_str_sz000001=\"\";\n"));
+	// 错误的无效数据
+	SinaRTData VoidData3(3, _T("var hq_str_sq000001=\"\";\n"));
+
+	class CVoidRTDataTest : public testing::TestWithParam<SinaRTData*> {
+	protected:
+		void SetUp() override {
+			SCOPED_TRACE("");
+			GeneralCheck();
+			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
+			SinaRTData* pData = GetParam();
+			m_pSinaWebRTData = make_shared<CWebData>();
+			m_iCount = pData->m_iCount;
+			m_lStringLength = pData->m_strData.GetLength();
+			m_pSinaWebRTData->Resize(m_lStringLength);
+			m_pSinaWebRTData->SetData(pData->m_strData.GetBuffer(), m_lStringLength);
+			m_pSinaWebRTData->ResetCurrentPos();
+			m_pSinaWebRTData->SetCurrentParagraphStartPos(m_pSinaWebRTData->GetCurrentPos()); // 本段数据起始位置
+			const string_view sv3 = m_pSinaWebRTData->GetAllOfNeedProcessStringViewData();
+			const string_view sv = sv3.substr(0, 23);
+			m_pSinaWebRTData->SetCurrentParagraph(sv);
+		}
+
+		void TearDown() override {
+			// clearUp
+			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
+			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+
+			SCOPED_TRACE("");
+			GeneralCheck();
+		}
+
+	public:
+		int m_iCount;
+		char* m_pData;
+		long m_lStringLength;
+		CWebDataPtr m_pSinaWebRTData;
+		CWebRTData m_RTData;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestVoidSinaRTData, CVoidRTDataTest, testing::Values(&VoidData1, &VoidData2, &VoidData3
+	                         ));
+
+	TEST_P(CVoidRTDataTest, TestReadVoidSinaData) {
+		const bool fSucceed = m_RTData.ReadVoidSinaData(m_pSinaWebRTData);
+		switch (m_iCount) {
+		case 1: // 上海数据
+			EXPECT_TRUE(fSucceed);
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("000001.SS"));
+			EXPECT_FALSE(m_RTData.IsActive());
+			break;
+		case 2: // 深圳数据
+			EXPECT_TRUE(fSucceed);
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("000001.SZ"));
+			EXPECT_FALSE(m_RTData.IsActive());
+			EXPECT_EQ(m_pSinaWebRTData->GetCurrentPos(), 24);
+			break;
+		case 3: // 错误的数据
+			EXPECT_FALSE(fSucceed);
+			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
+			gl_systemMessage.PopErrorMessage();
+			break;
+		default:
+			break;
+		}
+	}
+
 	// 无错误数据
 	SinaRTData Data1(
 		0, _T("var hq_str_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00,\";\n"));

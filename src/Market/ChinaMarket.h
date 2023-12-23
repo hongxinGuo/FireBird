@@ -43,12 +43,11 @@ public:
 	bool IsDummyTime() final { return !IsWorkingTime(); }
 	bool IsDummyTime(long lTime) final { return !IsWorkingTime(lTime); }
 
-public:
 	bool ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由基类的SchedulingTask调度
 
 	// 各种任务
-	virtual bool TaskCreateTask(long lCurrentTime);
-	virtual void TaskReloadSystem(long lCurrentTime);
+	virtual void TaskCreateTask(long lCurrentTime);
+	virtual void TaskExitSystem(long lCurrentTime);
 	bool TaskCheckMarketReady(long lCurrentTime);
 	virtual bool TaskResetMarket(long lCurrentTime);
 	void TaskDistributeAndCalculateRTData(long lCurrentTime);
@@ -344,10 +343,10 @@ public:
 	void SetRTDataReceived(const INT64 llValue) noexcept { m_llRTDataReceived = llValue; }
 	void IncreaseRTDataReceived(const INT64 llValue = 1) noexcept { m_llRTDataReceived += llValue; }
 
-	bool ChangeToNextStock();
-	bool ChangeToPrevStock();
-	bool ChangeToPrevStockSet();
-	bool ChangeToNextStockSet();
+	void ChangeToNextStock();
+	void ChangeToPrevStock();
+	void ChangeToPrevStockSet();
+	void ChangeToNextStockSet();
 
 	bool IsTotalStockSetSelected() const noexcept {
 		if (m_lCurrentSelectedStockSet == -1) return true;
@@ -361,7 +360,7 @@ public:
 
 	void AddStock(const CChinaStockPtr& pStock) { m_containerChinaStock.Add(pStock); }
 	void DeleteStock(const CChinaStockPtr& pStock) { m_containerChinaStock.Delete(pStock); }
-	bool CreateStock(const CString& strStockCode, const CString& strStockName, bool fProcessRTData);
+	void CreateStock(const CString& strStockCode, const CString& strStockName, bool fProcessRTData);
 
 	void SetCurrentRSStrongIndex(const long lIndex) noexcept { m_lCurrentRSStrongIndex = lIndex; }
 

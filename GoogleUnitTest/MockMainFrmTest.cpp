@@ -7,7 +7,8 @@
 #include"MockMainFrm.h"
 #include "TengxunRTDataSource.h"
 
-using namespace testing;
+using std::exception;
+
 using namespace testing;
 
 namespace FireBirdTest {
@@ -595,6 +596,16 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemConfiguration.IsUsingTengxunDayLineServer());
 	}
 
+	TEST_F(CMockMainFrameTest, TestOnUpdateUsingTengxunRealtimeDataServer) {
+		CCmdUI cmdUI;
+		gl_systemConfiguration.SetChinaMarketRealtimeServer(2);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, true)).Times(1);
+		gl_pMockMainFrame->OnUpdateUsingTengxunRealtimeDataServer(&cmdUI);
+		gl_systemConfiguration.SetChinaMarketRealtimeServer(0);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUISetCheck(_, false)).Times(1);
+		gl_pMockMainFrame->OnUpdateUsingTengxunRealtimeDataServer(&cmdUI);
+	}
+
 	TEST_F(CMockMainFrameTest, TestOnUpdateUsingNeteaseRealtimeDataServer) {
 		CCmdUI cmdUI;
 		gl_systemConfiguration.SetChinaMarketRealtimeServer(1);
@@ -730,7 +741,7 @@ namespace FireBirdTest {
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
 	}
 
-	TEST_F(CMockMainFrameTest, TestOnTimer) {
+	TEST_F(CMockMainFrameTest, TestOnTimer1) {
 		gl_pChinaMarket->SetCurrentStockChanged(false);
 		gl_pChinaMarket->SetCurrentEditStockChanged(false);
 		gl_systemMessage.SetProcessedFinnhubWebSocket(1);
@@ -778,5 +789,60 @@ namespace FireBirdTest {
 		gl_systemMessage.SetProcessedTiingoIEXWebSocket(0);
 		gl_systemMessage.SetProcessedTiingoCryptoWebSocket(0);
 		gl_systemMessage.SetProcessedTiingoForexWebSocket(0);
+	}
+
+	TEST_F(CMockMainFrameTest, TestOnTimer2) {
+		exception* e = new exception(_T("Test Message"));
+		gl_pChinaMarket->SetCurrentStockChanged(false);
+		gl_pChinaMarket->SetCurrentEditStockChanged(false);
+		gl_systemMessage.SetProcessedFinnhubWebSocket(1);
+		gl_systemMessage.SetProcessedTiingoIEXWebSocket(1);
+		gl_systemMessage.SetProcessedTiingoCryptoWebSocket(1);
+		gl_systemMessage.SetProcessedTiingoForexWebSocket(1);
+
+		EXPECT_CALL(*gl_pMockMainFrame, ResetMarket()).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SchedulingTask()).Times(1).WillOnce(Throw(e)); // 生成异常
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallOnTimer(STOCK_ANALYSIS_TIMER_)).Times(1);
+
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(4, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(5, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(6, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(7, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(8, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(9, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(11, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(12, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(13, _)).Times(1);
+
+		InSequence seq;
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(1, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(2, _)).Times(1);
+		//EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(3, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(4, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(5, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(6, _)).Times(1);
+		//EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(7, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(8, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(9, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(10, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(11, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(12, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(13, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(14, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(15, _)).Times(1);
+
+		gl_pMockMainFrame->OnTimer(STOCK_ANALYSIS_TIMER_);
+
+		EXPECT_THAT(gl_systemMessage.InformationSize(), 1) << "出现异常后报告情况";
+		EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1) << "出现异常后报告情况";
+
+		// 恢复原状
+		gl_systemMessage.SetProcessedFinnhubWebSocket(0);
+		gl_systemMessage.SetProcessedTiingoIEXWebSocket(0);
+		gl_systemMessage.SetProcessedTiingoCryptoWebSocket(0);
+		gl_systemMessage.SetProcessedTiingoForexWebSocket(0);
+
+		gl_systemMessage.PopInformationMessage();
+		gl_systemMessage.PopErrorMessage();
 	}
 }

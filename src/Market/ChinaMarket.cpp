@@ -182,7 +182,7 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 			TaskCreateTask(lCurrentTime);
 			break;
 		case RELOAD_SYSTEM__: // 重启系统？
-			TaskReloadSystem(lCurrentTime);
+			TaskExitSystem(lCurrentTime);
 			break;
 		case CHINA_MARKET_CHECK_SYSTEM_READY__:
 			TaskCheckMarketReady(lCurrentTime);
@@ -255,7 +255,7 @@ bool CChinaMarket::TaskCheckMarketReady(long lCurrentTime) {
 	return IsSystemReady();
 }
 
-bool CChinaMarket::ChangeToNextStock() {
+void CChinaMarket::ChangeToNextStock() {
 	ASSERT(m_pCurrentStock != nullptr);
 	long lIndex = GetStockIndex(m_pCurrentStock);
 	CChinaStockPtr pStock = m_pCurrentStock;
@@ -283,10 +283,9 @@ bool CChinaMarket::ChangeToNextStock() {
 	}
 
 	SetCurrentStock(pStock);
-	return true;
 }
 
-bool CChinaMarket::ChangeToPrevStock() {
+void CChinaMarket::ChangeToPrevStock() {
 	ASSERT(m_pCurrentStock != nullptr);
 	long lIndex = GetStockIndex(m_pCurrentStock);
 	CChinaStockPtr pStock = m_pCurrentStock;
@@ -313,27 +312,22 @@ bool CChinaMarket::ChangeToPrevStock() {
 		}
 	}
 	SetCurrentStock(pStock);
-	return true;
 }
 
-bool CChinaMarket::ChangeToPrevStockSet() {
+void CChinaMarket::ChangeToPrevStockSet() {
 	do {
 		if (m_lCurrentSelectedStockSet > -1) m_lCurrentSelectedStockSet--;
 		else { m_lCurrentSelectedStockSet = c_10DaysRSStockSetStartPosition + 9; }
 		ASSERT(m_lCurrentSelectedStockSet < 20);
 	} while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
-
-	return true;
 }
 
-bool CChinaMarket::ChangeToNextStockSet() {
+void CChinaMarket::ChangeToNextStockSet() {
 	do {
 		if (m_lCurrentSelectedStockSet == (c_10DaysRSStockSetStartPosition + 9)) m_lCurrentSelectedStockSet = -1;
 		else { m_lCurrentSelectedStockSet++; }
 		ASSERT(m_lCurrentSelectedStockSet < 20);
 	} while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
-
-	return true;
 }
 
 size_t CChinaMarket::GetCurrentStockSetSize() {
@@ -341,7 +335,7 @@ size_t CChinaMarket::GetCurrentStockSetSize() {
 	return m_avChosenStock.at(m_lCurrentSelectedStockSet).size();
 }
 
-bool CChinaMarket::CreateStock(const CString& strStockCode, const CString& strStockName, const bool fProcessRTData) {
+void CChinaMarket::CreateStock(const CString& strStockCode, const CString& strStockName, const bool fProcessRTData) {
 	const auto pStock = make_shared<CChinaStock>();
 	pStock->SetTodayNewStock(true);
 	pStock->SetSymbol(strStockCode);
@@ -355,7 +349,6 @@ bool CChinaMarket::CreateStock(const CString& strStockCode, const CString& strSt
 	ASSERT(pStock->IsDayLineNeedUpdate());
 	const CString str = _T("china Market生成新代码") + pStock->GetSymbol();
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
-	return true;
 }
 
 long CChinaMarket::IncreaseStockInquiringIndex(long& lIndex, long lEndPosition) {
@@ -586,7 +579,7 @@ void CChinaMarket::CalculateRTData() {
 	}
 }
 
-bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
+void CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	const long lTimeMinute = (lCurrentTime / 100) * 100; // 当前小时和分钟
 
 	while (!IsMarketTaskEmpty()) DiscardCurrentMarketTask();
@@ -647,8 +640,6 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	}
 
 	AddTask(CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
-
-	return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -656,10 +647,10 @@ bool CChinaMarket::TaskCreateTask(long lCurrentTime) {
 /// 系统关闭时要执行一系列关闭系统前的准备工作，不允许使用exit(0)函数或PostQuitMessage()直接退出系统，
 /// 故而采用向主框架窗口发送关闭窗口系统消息（WM_SYSCOMMAND SC_CLOSE）的方法。
 ///
-/// 本函数只是发出关闭系统的消息，系统关闭由关闭函数执行。系统重新载入由Watchdog程序完成。
+/// 本函数只是发出关闭系统的消息，系统关闭由关闭函数执行。系统重新载入由Watchdog监控程序完成。
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CChinaMarket::TaskReloadSystem(long lCurrentTime) {
+void CChinaMarket::TaskExitSystem(long lCurrentTime) {
 	// 向主窗口发送关闭窗口系统消息，通知框架窗口执行关闭任务。
 	PostMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), WM_SYSCOMMAND, SC_CLOSE, 0);
 }

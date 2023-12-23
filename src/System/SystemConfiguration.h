@@ -28,6 +28,8 @@ public:
 	bool LoadDB();
 	void SaveDB() const;
 	void Update();
+
+	void ClearJson();
 	void UpdateJson();
 
 	void UpdateSystem() const; // 使用本参数去更新系统

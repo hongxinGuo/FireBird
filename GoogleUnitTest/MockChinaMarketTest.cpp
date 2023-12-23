@@ -204,7 +204,7 @@ namespace FireBirdTest {
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask9) {
 		s_pMockChinaMarket->AddTask(RELOAD_SYSTEM__, 210000);
 
-		EXPECT_CALL(*s_pMockChinaMarket, TaskReloadSystem(210000)).Times(1);
+		EXPECT_CALL(*s_pMockChinaMarket, TaskExitSystem(210000)).Times(1);
 
 		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask(210000));
 

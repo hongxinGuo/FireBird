@@ -87,9 +87,7 @@ bool CInaccessibleExchanges::HaveExchange() const {
 CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 	if (static int siInstance = 0; ++siInstance > 1) {
 		TRACE(_T("FinnhubINaccessibleExchange全局变量只允许存在一个实例\n"));
-#ifdef _DEBUG
 		ASSERT(FALSE);
-#endif // _DEBUG
 	}
 
 	m_fUpdate = false; // update flag
@@ -105,11 +103,11 @@ CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 
 CFinnhubInaccessibleExchange::~CFinnhubInaccessibleExchange() {
 	if (IsNeedUpdate()) {
-		UpdateDiscFile();
+		UpdateDB();
 	}
 }
 
-void CFinnhubInaccessibleExchange::UpdateDiscFile() {
+void CFinnhubInaccessibleExchange::UpdateDB() {
 	const CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("json");
 	const CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
 
