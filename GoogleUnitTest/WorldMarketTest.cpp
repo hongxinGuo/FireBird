@@ -73,27 +73,27 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestGetTotalStock) {
-		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4847) << "默认状态下数据库总数为4847(全部上海股票和小部分美国股票)";
+		EXPECT_EQ(gl_containerStock.Size(), 4847) << "默认状态下数据库总数为4847(全部上海股票和小部分美国股票)";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsStock) {
-		EXPECT_FALSE(gl_pWorldMarket->IsStock(_T("000000.SS")));
-		EXPECT_TRUE(gl_pWorldMarket->IsStock(_T("000001.SS")));
-		EXPECT_TRUE(gl_pWorldMarket->IsStock(_T("600601.SS")));
-		EXPECT_TRUE(gl_pWorldMarket->IsStock(_T("A")));
-		EXPECT_FALSE(gl_pWorldMarket->IsStock(_T("000001.SZ"))) << "目前测试数据库中只有上海和美国股票集";
+		EXPECT_FALSE(gl_containerStock.IsSymbol(_T("000000.SS")));
+		EXPECT_TRUE(gl_containerStock.IsSymbol(_T("000001.SS")));
+		EXPECT_TRUE(gl_containerStock.IsSymbol(_T("600601.SS")));
+		EXPECT_TRUE(gl_containerStock.IsSymbol(_T("A")));
+		EXPECT_FALSE(gl_containerStock.IsSymbol(_T("000001.SZ"))) << "目前测试数据库中只有上海和美国股票集";
 
 		const auto pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("000000.SS"));
-		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
+		EXPECT_FALSE(gl_containerStock.IsSymbol(pStock));
 		pStock->SetSymbol(_T("000001.SS"));
-		EXPECT_TRUE(gl_pWorldMarket->IsStock(pStock));
+		EXPECT_TRUE(gl_containerStock.IsSymbol(pStock));
 		pStock->SetSymbol(_T("600601.SS"));
-		EXPECT_TRUE(gl_pWorldMarket->IsStock(pStock));
+		EXPECT_TRUE(gl_containerStock.IsSymbol(pStock));
 		pStock->SetSymbol(_T("A"));
-		EXPECT_TRUE(gl_pWorldMarket->IsStock(pStock));
+		EXPECT_TRUE(gl_containerStock.IsSymbol(pStock));
 		pStock->SetSymbol(_T("000001.SZ"));
-		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
+		EXPECT_FALSE(gl_containerStock.IsSymbol(pStock));
 	}
 
 	TEST_F(CWorldMarketTest, TestIsTiingoStock) {
@@ -137,47 +137,47 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestIsUpdateProfileDB) {
-		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(i);
+		for (int i = 0; i < gl_containerStock.Size(); i++) {
+			const CWorldStockPtr pStock = gl_containerStock.GetStock(i);
 			pStock->SetUpdateProfileDB(false);
 		}
-		EXPECT_FALSE(gl_pWorldMarket->IsUpdateStockProfileDB());
+		EXPECT_FALSE(gl_containerStock.IsUpdateProfileDB());
 
-		gl_pWorldMarket->GetStock(0)->SetUpdateProfileDB(true);
-		EXPECT_TRUE(gl_pWorldMarket->IsUpdateStockProfileDB());
+		gl_containerStock.GetStock(0)->SetUpdateProfileDB(true);
+		EXPECT_TRUE(gl_containerStock.IsUpdateProfileDB());
 
-		gl_pWorldMarket->GetStock(0)->SetUpdateProfileDB(false);
-		EXPECT_FALSE(gl_pWorldMarket->IsUpdateStockProfileDB());
+		gl_containerStock.GetStock(0)->SetUpdateProfileDB(false);
+		EXPECT_FALSE(gl_containerStock.IsUpdateProfileDB());
 	}
 
 	TEST_F(CWorldMarketTest, TestAddStock) {
 		const auto pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("000001.SZ"));
 
-		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
-		gl_pWorldMarket->AddStock(pStock);
-		EXPECT_TRUE(gl_pWorldMarket->IsStock(pStock));
-		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4848);
-		gl_pWorldMarket->DeleteStock(pStock);
-		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
-		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4847);
+		EXPECT_FALSE(gl_containerStock.IsSymbol(pStock));
+		gl_containerStock.Add(pStock);
+		EXPECT_TRUE(gl_containerStock.IsSymbol(pStock));
+		EXPECT_EQ(gl_containerStock.Size(), 4848);
+		gl_containerStock.Delete(pStock);
+		EXPECT_FALSE(gl_containerStock.IsSymbol(pStock));
+		EXPECT_EQ(gl_containerStock.Size(), 4847);
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteStock) {
 		// do nothing. 已经在TestAddStock中测试了DeleteStock函数
 		CWorldStockPtr pStock = nullptr;
 
-		gl_pWorldMarket->DeleteStock(pStock);
+		gl_containerStock.Delete(pStock);
 
 		pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("000001.SZ"));
-		gl_pWorldMarket->DeleteStock(pStock); // "此股票代码不存在于代码集中";
+		gl_containerStock.Delete(pStock); // "此股票代码不存在于代码集中";
 	}
 
 	TEST_F(CWorldMarketTest, TestGetStock) {
-		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0); // 000001.SS
+		CWorldStockPtr pStock = gl_containerStock.GetStock(0); // 000001.SS
 		EXPECT_STREQ(pStock->GetSymbol(), _T("000001.SS")) << "第一个股票代码为000001.SS";
-		pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
+		pStock = gl_containerStock.GetStock(_T("000001.SS"));
 		EXPECT_FALSE(pStock == nullptr);
 		EXPECT_STREQ(pStock->GetDescription(), _T("SSE Composite Index"));
 	}
@@ -208,27 +208,27 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestIsForexExchange) {
-		EXPECT_FALSE(gl_pWorldMarket->IsForexExchange(_T("ABC")));
-		EXPECT_TRUE(gl_pWorldMarket->IsForexExchange(_T("forex.com")));
-		EXPECT_TRUE(gl_pWorldMarket->IsForexExchange(_T("ic markets")));
+		EXPECT_FALSE(gl_dataFinnhubForexExchange.IsExchange(_T("ABC")));
+		EXPECT_TRUE(gl_dataFinnhubForexExchange.IsExchange(_T("forex.com")));
+		EXPECT_TRUE(gl_dataFinnhubForexExchange.IsExchange(_T("ic markets")));
 	}
 
 	TEST_F(CWorldMarketTest, TestAddForexExchange) {
-		const auto lTotalForexExchange = gl_pWorldMarket->GetForexExchangeSize();
+		const auto lTotalForexExchange = gl_dataFinnhubForexExchange.Size();
 		const CString strForexExchange = _T("000001.SZ");
 
-		EXPECT_FALSE(gl_pWorldMarket->IsForexExchange(strForexExchange));
-		gl_pWorldMarket->AddForexExchange(strForexExchange);
-		EXPECT_TRUE(gl_pWorldMarket->IsForexExchange(strForexExchange));
-		EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), lTotalForexExchange + 1);
-		gl_pWorldMarket->DeleteForexExchange(strForexExchange);
-		EXPECT_FALSE(gl_pWorldMarket->IsForexExchange(strForexExchange));
-		EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), lTotalForexExchange);
+		EXPECT_FALSE(gl_dataFinnhubForexExchange.IsExchange(strForexExchange));
+		gl_dataFinnhubForexExchange.Add(strForexExchange);
+		EXPECT_TRUE(gl_dataFinnhubForexExchange.IsExchange(strForexExchange));
+		EXPECT_EQ(gl_dataFinnhubForexExchange.Size(), lTotalForexExchange + 1);
+		gl_dataFinnhubForexExchange.Delete(strForexExchange);
+		EXPECT_FALSE(gl_dataFinnhubForexExchange.IsExchange(strForexExchange));
+		EXPECT_EQ(gl_dataFinnhubForexExchange.Size(), lTotalForexExchange);
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteForexExchange) {
 		// do nothing. 已经在TestAddForexExchange中测试了DeleteForexExchange函数
-		EXPECT_FALSE(gl_pWorldMarket->DeleteForexExchange(_T("US.US.US"))) << "此符号在符号集中不存在";
+		EXPECT_FALSE(gl_dataFinnhubForexExchange.Delete(_T("US.US.US"))) << "此符号在符号集中不存在";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsForexSymbol) {
@@ -271,27 +271,27 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCryptoExchange) {
-		EXPECT_FALSE(gl_pWorldMarket->IsCryptoExchange(_T("ABC")));
-		EXPECT_TRUE(gl_pWorldMarket->IsCryptoExchange(_T("BITFINEX")));
-		EXPECT_TRUE(gl_pWorldMarket->IsCryptoExchange(_T("HUOBI")));
+		EXPECT_FALSE(gl_dataFinnhubCryptoExchange.IsExchange(_T("ABC")));
+		EXPECT_TRUE(gl_dataFinnhubCryptoExchange.IsExchange(_T("BITFINEX")));
+		EXPECT_TRUE(gl_dataFinnhubCryptoExchange.IsExchange(_T("HUOBI")));
 	}
 
 	TEST_F(CWorldMarketTest, TestAddCryptoExchange) {
-		const auto lTotalCryptoExchange = gl_pWorldMarket->GetCryptoExchangeSize();
-		const CString strCryptoExchange = _T("000001.SZ");
+		const auto lTotalCryptoExchange = gl_dataFinnhubCryptoExchange.Size();
+		const string strCryptoExchange = _T("000001.SZ");
 
-		EXPECT_FALSE(gl_pWorldMarket->IsCryptoExchange(strCryptoExchange));
-		gl_pWorldMarket->AddCryptoExchange(strCryptoExchange);
-		EXPECT_TRUE(gl_pWorldMarket->IsCryptoExchange(strCryptoExchange));
-		EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), lTotalCryptoExchange + 1);
-		gl_pWorldMarket->DeleteCryptoExchange(strCryptoExchange);
-		EXPECT_FALSE(gl_pWorldMarket->IsCryptoExchange(strCryptoExchange));
-		EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), lTotalCryptoExchange);
+		EXPECT_FALSE(gl_dataFinnhubCryptoExchange.IsExchange(strCryptoExchange));
+		gl_dataFinnhubCryptoExchange.Add(strCryptoExchange);
+		EXPECT_TRUE(gl_dataFinnhubCryptoExchange.IsExchange(strCryptoExchange));
+		EXPECT_EQ(gl_dataFinnhubCryptoExchange.Size(), lTotalCryptoExchange + 1);
+		gl_dataFinnhubCryptoExchange.Delete(strCryptoExchange);
+		EXPECT_FALSE(gl_dataFinnhubCryptoExchange.IsExchange(strCryptoExchange));
+		EXPECT_EQ(gl_dataFinnhubCryptoExchange.Size(), lTotalCryptoExchange);
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteCryptoExchange) {
 		// do nothing. 已经在TestAddCryptoExchange中测试了DeleteCryptoExchange函数
-		EXPECT_FALSE(gl_pWorldMarket->DeleteCryptoExchange(_T("US.US.US"))) << "此符号在符号集中不存在";
+		EXPECT_FALSE(gl_dataFinnhubCryptoExchange.Delete(_T("US.US.US"))) << "此符号在符号集中不存在";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCryptoSymbol) {
@@ -392,18 +392,18 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestUpdateStockProfileDB) {
 		auto pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("SS.SS.US"));
-		EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock)); // 确保是一个新股票代码
+		EXPECT_FALSE(gl_containerStock.IsSymbol(pStock)); // 确保是一个新股票代码
 		pStock->SetTodayNewStock(true);
 		pStock->SetUpdateProfileDB(true);
-		gl_pWorldMarket->AddStock(pStock);
-		pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
+		gl_containerStock.Add(pStock);
+		pStock = gl_containerStock.GetStock(_T("000001.SS"));
 		EXPECT_TRUE(pStock != nullptr);
 		EXPECT_STREQ(pStock->GetCurrency(), _T(""));
 		pStock->SetUpdateProfileDB(true);
 		pStock->SetCurrency(_T("No Currency")); // 更新这个条目
 
 		try {
-			gl_pWorldMarket->UpdateStockProfileDB();
+			gl_containerStock.UpdateProfileDB();
 		}
 		catch (std::exception& e) {
 			EXPECT_TRUE(false) << e.what();
@@ -441,25 +441,25 @@ namespace FireBirdTest {
 		setWorldStock2.Close();
 
 		// 恢复原状
-		pStock = gl_pWorldMarket->GetStock(_T("SS.SS.US"));
+		pStock = gl_containerStock.GetStock(_T("SS.SS.US"));
 		EXPECT_TRUE(pStock != nullptr);
-		gl_pWorldMarket->DeleteStock(pStock);
-		pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
+		gl_containerStock.Delete(pStock);
+		pStock = gl_containerStock.GetStock(_T("000001.SS"));
 		EXPECT_TRUE(pStock != nullptr);
 		pStock->SetCurrency(_T(""));
 		while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
-		EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4847);
+		EXPECT_EQ(gl_containerStock.Size(), 4847);
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateDayLineDB) {
 		EXPECT_TRUE(gl_pWorldMarket->UpdateStockDayLineDB());
 
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(0)->IsDayLineNeedSaving()) << "此标识被重置";
-		gl_pWorldMarket->GetStock(0)->SetDayLineNeedSaving(true);
+		EXPECT_FALSE(gl_containerStock.GetStock(0)->IsDayLineNeedSaving()) << "此标识被重置";
+		gl_containerStock.GetStock(0)->SetDayLineNeedSaving(true);
 
 		EXPECT_TRUE(gl_pWorldMarket->UpdateStockDayLineDB());
-		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			EXPECT_FALSE(gl_pWorldMarket->GetStock(i)->IsDayLineNeedSaving()) << "此标识被重置";
+		for (int i = 0; i < gl_containerStock.Size(); i++) {
+			EXPECT_FALSE(gl_containerStock.GetStock(i)->IsDayLineNeedSaving()) << "此标识被重置";
 		}
 	}
 
@@ -582,11 +582,11 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestUpdateForexExchangeDB) {
 		const CString strSymbol = _T("US.US.US");
 
-		EXPECT_FALSE(gl_pWorldMarket->UpdateForexExchangeDB()) << "没有新Forex Exchange";
+		EXPECT_FALSE(gl_dataFinnhubForexExchange.UpdateDB()) << "没有新Forex Exchange";
 
-		EXPECT_FALSE(gl_pWorldMarket->IsForexExchange(strSymbol)); // 确保是一个新股票代码
-		gl_pWorldMarket->AddForexExchange(strSymbol);
-		EXPECT_TRUE(gl_pWorldMarket->UpdateForexExchangeDB());
+		EXPECT_FALSE(gl_dataFinnhubForexExchange.IsExchange(strSymbol)); // 确保是一个新股票代码
+		gl_dataFinnhubForexExchange.Add(strSymbol);
+		EXPECT_TRUE(gl_dataFinnhubForexExchange.UpdateDB());
 
 		CSetFinnhubForexExchange setForexExchange;
 		setForexExchange.m_strFilter = _T("[Code] = 'US.US.US'");
@@ -600,17 +600,17 @@ namespace FireBirdTest {
 		setForexExchange.m_pDatabase->CommitTrans();
 		setForexExchange.Close();
 
-		gl_pWorldMarket->DeleteForexExchange(strSymbol); // 恢复原状
+		gl_dataFinnhubForexExchange.Delete(strSymbol); // 恢复原状
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateCryptoExchangeDB) {
-		const CString strSymbol = _T("US.US.US");
+		const string sSymbol = _T("US.US.US");
 
-		EXPECT_FALSE(gl_pWorldMarket->UpdateCryptoExchangeDB()) << "没有新Crypto Exchange";
+		EXPECT_FALSE(gl_dataFinnhubCryptoExchange.UpdateDB()) << "没有新Crypto Exchange";
 
-		EXPECT_FALSE(gl_pWorldMarket->IsCryptoExchange(strSymbol)); // 确保是一个新Crypto代码
-		gl_pWorldMarket->AddCryptoExchange(strSymbol);
-		EXPECT_TRUE(gl_pWorldMarket->UpdateCryptoExchangeDB());
+		EXPECT_FALSE(gl_dataFinnhubCryptoExchange.IsExchange(sSymbol)); // 确保是一个新Crypto代码
+		gl_dataFinnhubCryptoExchange.Add(sSymbol);
+		EXPECT_TRUE(gl_dataFinnhubCryptoExchange.UpdateDB());
 
 		CSetFinnhubCryptoExchange setCryptoExchange;
 		setCryptoExchange.m_strFilter = _T("[Code] = 'US.US.US'");
@@ -624,11 +624,11 @@ namespace FireBirdTest {
 		setCryptoExchange.m_pDatabase->CommitTrans();
 		setCryptoExchange.Close();
 
-		gl_pWorldMarket->DeleteCryptoExchange(strSymbol); // 恢复原状
+		gl_dataFinnhubCryptoExchange.Delete(sSymbol); // 恢复原状
 	}
 
 	TEST_F(CWorldMarketTest, TaskUpdateInsiderTransactionDB) {
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderTransaction());
+		EXPECT_FALSE(gl_containerStock.GetStock(_T("A"))->HaveInsiderTransaction());
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
 		vector<CInsiderTransactionPtr> vInsiderTransaction;
@@ -660,7 +660,7 @@ namespace FireBirdTest {
 		pInsiderTransaction->m_strTransactionCode = _T("S"); // 这个交易类型不符，需要添加进数据库
 		vInsiderTransaction.push_back(pInsiderTransaction);
 
-		const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(_T("A"));
+		const CWorldStockPtr pStock = gl_containerStock.GetStock(_T("A"));
 		EXPECT_FALSE(pStock->HaveInsiderTransaction()) << "此时尚未存入数据";
 
 		pStock->SetSaveInsiderTransaction(true);
@@ -671,9 +671,9 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
 		gl_systemMessage.PopDayLineInfoMessage();
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->IsSaveInsiderTransaction());
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderTransaction()) << "存储后并没有删除数据";
-		gl_pWorldMarket->GetStock(_T("A"))->UnloadInsiderTransaction();
+		EXPECT_FALSE(gl_containerStock.GetStock(_T("A"))->IsSaveInsiderTransaction());
+		EXPECT_TRUE(gl_containerStock.GetStock(_T("A"))->HaveInsiderTransaction()) << "存储后并没有删除数据";
+		gl_containerStock.GetStock(_T("A"))->UnloadInsiderTransaction();
 
 		// 验证并恢复原状
 		setInsiderTransaction.m_strFilter = _T("[Symbol] = 'B'");
@@ -710,7 +710,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TaskUpdateInsiderSentimentDB) {
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderSentiment());
+		EXPECT_FALSE(gl_containerStock.GetStock(_T("A"))->HaveInsiderSentiment());
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
 		vector<CInsiderSentimentPtr> vInsiderSentiment;
@@ -730,7 +730,7 @@ namespace FireBirdTest {
 		pInsiderSentiment->m_lDate = 20210101; // 这个日期不符，需要添加进数据库
 		vInsiderSentiment.push_back(pInsiderSentiment);
 
-		const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(_T("A"));
+		const CWorldStockPtr pStock = gl_containerStock.GetStock(_T("A"));
 		EXPECT_FALSE(pStock->HaveInsiderSentiment()) << "此时尚未存入数据";
 
 		pStock->SetSaveInsiderSentiment(true);
@@ -740,8 +740,8 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->UpdateInsiderSentimentDB());
 
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
-		EXPECT_FALSE(gl_pWorldMarket->GetStock(_T("A"))->IsSaveInsiderSentiment());
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(_T("A"))->HaveInsiderSentiment()) << "存储后并没有删除数据";
+		EXPECT_FALSE(gl_containerStock.GetStock(_T("A"))->IsSaveInsiderSentiment());
+		EXPECT_TRUE(gl_containerStock.GetStock(_T("A"))->HaveInsiderSentiment()) << "存储后并没有删除数据";
 
 		// 验证并恢复原状
 		setInsiderSentiment.m_strFilter = _T("[Symbol] = 'B'");
@@ -799,8 +799,8 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestRebuildEPSSurprise) {
 		CWorldStockPtr pStock;
-		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			pStock = gl_pWorldMarket->GetStock(i);
+		for (int i = 0; i < gl_containerStock.Size(); i++) {
+			pStock = gl_containerStock.GetStock(i);
 			pStock->SetLastEPSSurpriseUpdateDate(20200101);
 			pStock->m_fEPSSurpriseUpdated = true;
 		}
@@ -808,8 +808,8 @@ namespace FireBirdTest {
 
 		gl_pWorldMarket->RebuildEPSSurprise();
 
-		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			pStock = gl_pWorldMarket->GetStock(i);
+		for (int i = 0; i < gl_containerStock.Size(); i++) {
+			pStock = gl_containerStock.GetStock(i);
 			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19800101);
 			EXPECT_FALSE(pStock->m_fEPSSurpriseUpdated);
 		}
@@ -818,8 +818,8 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestRebuildPeer) {
 		CWorldStockPtr pStock;
-		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			pStock = gl_pWorldMarket->GetStock(i);
+		for (int i = 0; i < gl_containerStock.Size(); i++) {
+			pStock = gl_containerStock.GetStock(i);
 			pStock->SetPeerUpdateDate(20200101);
 			pStock->SetUpdatePeer(false);
 			pStock->SetUpdateProfileDB(false);
@@ -828,16 +828,16 @@ namespace FireBirdTest {
 
 		gl_pWorldMarket->RebuildPeer();
 
-		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			pStock = gl_pWorldMarket->GetStock(i);
+		for (int i = 0; i < gl_containerStock.Size(); i++) {
+			pStock = gl_containerStock.GetStock(i);
 			EXPECT_EQ(pStock->GetPeerUpdateDate(), 19800101);
 			EXPECT_TRUE(pStock->IsUpdatePeer());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		}
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdatePeer());
 
-		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			pStock = gl_pWorldMarket->GetStock(i);
+		for (int i = 0; i < gl_containerStock.Size(); i++) {
+			pStock = gl_containerStock.GetStock(i);
 			pStock->SetUpdatePeer(true);
 			pStock->SetUpdateProfileDB(false);
 		}
@@ -845,8 +845,8 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestRebuildStockDayLine) {
 		CWorldStockPtr pStock;
-		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			pStock = gl_pWorldMarket->GetStock(i);
+		for (int i = 0; i < gl_containerStock.Size(); i++) {
+			pStock = gl_containerStock.GetStock(i);
 			pStock->SetIPOStatus(_STOCK_IPOED_);
 			pStock->SetDayLineStartDate(20200101);
 			pStock->SetDayLineEndDate(20200101);
@@ -857,8 +857,8 @@ namespace FireBirdTest {
 
 		gl_pWorldMarket->RebuildStockDayLineDB();
 
-		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			pStock = gl_pWorldMarket->GetStock(i);
+		for (int i = 0; i < gl_containerStock.Size(); i++) {
+			pStock = gl_containerStock.GetStock(i);
 			EXPECT_EQ(pStock->GetDayLineStartDate(), 29900101);
 			EXPECT_EQ(pStock->GetDayLineEndDate(), 19800101);
 			EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
@@ -866,8 +866,8 @@ namespace FireBirdTest {
 		}
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateStockProfile());
 
-		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			pStock = gl_pWorldMarket->GetStock(i);
+		for (int i = 0; i < gl_containerStock.Size(); i++) {
+			pStock = gl_containerStock.GetStock(i);
 			pStock->SetUpdateProfileDB(false);
 		}
 	}

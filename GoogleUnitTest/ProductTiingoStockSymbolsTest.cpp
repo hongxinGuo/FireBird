@@ -172,7 +172,7 @@ namespace FireBirdTest {
 			m_tiingoStockSymbolProduct.SetMarket(gl_pWorldMarket);
 			m_tiingoStockSymbolProduct.SetIndex(0);
 			gl_pTiingoDataSource->SetUpdateStockSymbol(true);
-			EXPECT_FALSE(gl_pWorldMarket->IsUpdateStockProfileDB());
+			EXPECT_FALSE(gl_containerStock.IsUpdateProfileDB());
 		}
 
 		void TearDown() override {
@@ -196,42 +196,42 @@ namespace FireBirdTest {
 	TEST_P(ProcessTiingoStockTest, TestProcessStockProfile) {
 		CTiingoStockPtr pTiingoStock = nullptr;
 		CWorldStockPtr pStock = nullptr;
-		EXPECT_FALSE(gl_pWorldMarket->IsUpdateStockProfileDB());
+		EXPECT_FALSE(gl_containerStock.IsUpdateProfileDB());
 		bool fSucceed = m_tiingoStockSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_FALSE(gl_pWorldMarket->IsUpdateStockProfileDB());
+			EXPECT_FALSE(gl_containerStock.IsUpdateProfileDB());
 			break;
 		case 2: // 格式不对
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_FALSE(gl_pWorldMarket->IsUpdateStockProfileDB());
+			EXPECT_FALSE(gl_containerStock.IsUpdateProfileDB());
 			break;
 		case 3: // 第二个数据缺乏address项,返回一个成功
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1) << "第一个数据是正确的";
 			gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_TRUE(gl_pWorldMarket->IsUpdateStockProfileDB()) << "第一个数据是正确的";
+			EXPECT_TRUE(gl_containerStock.IsUpdateProfileDB()) << "第一个数据是正确的";
 
 		//恢复原状
-			pStock = gl_pWorldMarket->GetStock(_T("A"));
+			pStock = gl_containerStock.GetStock(_T("A"));
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			pStock->SetUpdateProfileDB(false);
-			EXPECT_FALSE(gl_pWorldMarket->IsUpdateStockProfileDB());
+			EXPECT_FALSE(gl_containerStock.IsUpdateProfileDB());
 			break;
 		case 4:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_TRUE(gl_pWorldMarket->IsUpdateStockProfileDB());
+			EXPECT_TRUE(gl_containerStock.IsUpdateProfileDB());
 
 		//恢复原状
-			pStock = gl_pWorldMarket->GetStock(_T("AA"));
+			pStock = gl_containerStock.GetStock(_T("AA"));
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			pStock->SetUpdateProfileDB(false);
-			EXPECT_FALSE(gl_pWorldMarket->IsUpdateStockProfileDB());
+			EXPECT_FALSE(gl_containerStock.IsUpdateProfileDB());
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);
@@ -239,7 +239,7 @@ namespace FireBirdTest {
 			gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_TRUE(gl_dataTiingoStock.IsStock(_T("NEW SYMBOL")));
 			EXPECT_TRUE((pTiingoStock = gl_dataTiingoStock.GetStock(_T("NEW SYMBOL"))) != nullptr);
-			pStock = gl_pWorldMarket->GetStock(_T("AA"));
+			pStock = gl_containerStock.GetStock(_T("AA"));
 			EXPECT_STREQ(pStock->GetName(), _T("New Name")) << "更改为此新名字";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 
@@ -247,7 +247,7 @@ namespace FireBirdTest {
 			gl_dataTiingoStock.Delete(pTiingoStock);
 			pStock->SetUpdateProfileDB(false);
 			pStock->SetName(_T("Alcoa Corp"));
-			EXPECT_FALSE(gl_pWorldMarket->IsUpdateStockProfileDB());
+			EXPECT_FALSE(gl_containerStock.IsUpdateProfileDB());
 			break;
 		default:
 			break;

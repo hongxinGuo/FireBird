@@ -18,7 +18,7 @@ void CContainerFinnhubForexExchange::Reset() {
 }
 
 bool CContainerFinnhubForexExchange::Delete(const CString& strForexExchange) {
-	if (!IsForexExchange(strForexExchange)) return false;
+	if (!IsExchange(strForexExchange)) return false;
 
 	const auto it = ranges::find(m_vForexExchange.begin(), m_vForexExchange.end(), strForexExchange);
 	m_vForexExchange.erase(it);

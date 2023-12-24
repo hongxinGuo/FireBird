@@ -4,9 +4,9 @@
 
 #include"WorldMarket.h"
 
-UINT ThreadUpdateForexExchangeDB(const not_null<CWorldMarketPtr>& pMarket) {
+UINT ThreadUpdateForexExchangeDB() {
 	gl_UpdateWorldMarketDB.acquire();
-	pMarket->UpdateForexExchangeDB();
+	gl_dataFinnhubForexExchange.UpdateDB();
 	gl_UpdateWorldMarketDB.release();
 
 	return 49;

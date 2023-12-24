@@ -139,7 +139,7 @@ namespace FireBirdTest {
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubForexExchange.SetMarket(gl_pWorldMarket);
 			EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateForexExchange());
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "最初装载了11个";
+			EXPECT_EQ(gl_dataFinnhubForexExchange.Size(), 11) << "最初装载了11个";
 		}
 
 		void TearDown() override {
@@ -148,7 +148,7 @@ namespace FireBirdTest {
 
 			SCOPED_TRACE("");
 			GeneralCheck();
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "最初装载了11个";
+			EXPECT_EQ(gl_dataFinnhubForexExchange.Size(), 11) << "最初装载了11个";
 		}
 
 	public:
@@ -164,21 +164,21 @@ namespace FireBirdTest {
 		m_finnhubForexExchange.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "最初装载的11个";
+			EXPECT_EQ(gl_dataFinnhubForexExchange.Size(), 11) << "最初装载的11个";
 			break;
 		case 3: // 缺乏字符串
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "最初装载的11个";
+			EXPECT_EQ(gl_dataFinnhubForexExchange.Size(), 11) << "最初装载的11个";
 			break;
 		case 4:
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "最初装载的11个";
+			EXPECT_EQ(gl_dataFinnhubForexExchange.Size(), 11) << "最初装载的11个";
 			break;
 		case 5:
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "最初装载的11个";
+			EXPECT_EQ(gl_dataFinnhubForexExchange.Size(), 11) << "最初装载的11个";
 			break;
 		case 10:
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 12) << "加入了new exchange这个新的交易所";
+			EXPECT_EQ(gl_dataFinnhubForexExchange.Size(), 12) << "加入了new exchange这个新的交易所";
 
-			EXPECT_TRUE(gl_pWorldMarket->DeleteForexExchange(_T("new exchange"))); // 清除new exchange这个新加入的
+			EXPECT_TRUE(gl_dataFinnhubForexExchange.Delete(_T("new exchange"))); // 清除new exchange这个新加入的
 			break;
 		default:
 			break;

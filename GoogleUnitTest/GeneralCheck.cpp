@@ -97,21 +97,21 @@ namespace FireBirdTest {
 
 	void WorldMarketCheck() {
 		if (gl_pWorldMarket != nullptr) {
-			ASSERT_FALSE(gl_pWorldMarket->IsUpdateStockProfileDB()) << "不允许更新股票代码库";
-			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(_T("AAPL"));
+			ASSERT_FALSE(gl_containerStock.IsUpdateProfileDB()) << "不允许更新股票代码库";
+			const CWorldStockPtr pStock = gl_containerStock.GetStock(_T("AAPL"));
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			ASSERT_FALSE(pStock->IsUpdateProfileDB()) << "不允许更新股票代码库";
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
 
-			EXPECT_EQ(gl_pWorldMarket->GetCryptoExchangeSize(), 15) << "最初装载了15个";
-			EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), 11) << "最初装载了11个";
+			EXPECT_EQ(gl_dataFinnhubCryptoExchange.Size(), 15) << "最初装载了15个";
+			EXPECT_EQ(gl_dataFinnhubForexExchange.Size(), 11) << "最初装载了11个";
 
 			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 
 			EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty()) << gl_pWorldMarket->GetMarketTask()->GetType();
 
-			EXPECT_EQ(gl_pWorldMarket->GetStockSize(), 4847) << "默认状态下数据库总数为4847(全部上海股票和小部分美国股票)";
+			EXPECT_EQ(gl_containerStock.Size(), 4847) << "默认状态下数据库总数为4847(全部上海股票和小部分美国股票)";
 		}
 	}
 

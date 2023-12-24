@@ -21,7 +21,7 @@ CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurpri
 CString CProductFinnhubStockEstimatesEPSSurprise::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pStock = GetMarket()->GetStock(m_lIndex);
+	const auto pStock = gl_containerStock.GetStock(m_lIndex);
 	const auto strParam = pStock->GetSymbol();
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
@@ -30,9 +30,7 @@ CString CProductFinnhubStockEstimatesEPSSurprise::CreateMessage() {
 }
 
 bool CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-
-	const auto pStock = GetMarket()->GetStock(m_lIndex);
+	const auto pStock = gl_containerStock.GetStock(m_lIndex);
 	const auto pvEPSSurprise = ParseFinnhubEPSSurprise(pWebData);
 	if (!pvEPSSurprise->empty()) { pStock->UpdateEPSSurprise(*pvEPSSurprise); }
 	else {

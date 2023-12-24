@@ -44,7 +44,7 @@ namespace FireBirdTest {
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage1) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
 		stockPriceCandle.SetMarket(gl_pWorldMarket);
-		const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
+		const CWorldStockPtr pStock = gl_containerStock.GetStock(0);
 		pStock->SetDayLineStartDate(20171231); // 早于20180101
 		const CString strMessage = stockPriceCandle.CreateMessage();
 		const long lMarketDate = gl_pWorldMarket->GetMarketDate();
@@ -63,7 +63,7 @@ namespace FireBirdTest {
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage2) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
 		stockPriceCandle.SetMarket(gl_pWorldMarket);
-		const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
+		const CWorldStockPtr pStock = gl_containerStock.GetStock(0);
 		pStock->SetDayLineStartDate(20171231); // 早于20180101
 		const CString strMessage = stockPriceCandle.CreateMessage();
 		const long lMarketDate = gl_pWorldMarket->GetMarketDate();
@@ -281,9 +281,9 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			gl_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(false);
-			gl_pWorldMarket->GetStock(0)->SetDayLineNeedSaving(false);
-			gl_pWorldMarket->GetStock(0)->SetUpdateProfileDB(false);
+			gl_containerStock.GetStock(0)->SetDayLineNeedUpdate(false);
+			gl_containerStock.GetStock(0)->SetDayLineNeedSaving(false);
+			gl_containerStock.GetStock(0)->SetUpdateProfileDB(false);
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -303,7 +303,7 @@ namespace FireBirdTest {
 		CDayLineVectorPtr pvDayLine;
 		CString strMessage;
 		CDayLinePtr pDayLine;
-		CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0);
+		CWorldStockPtr pStock = gl_containerStock.GetStock(0);
 
 		bool fSucceed = m_tiingoStockPriceCandle.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {

@@ -14,9 +14,7 @@ CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
 }
 
 CString CProductFinnhubMarketHoliday::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-
-	const auto strParam = GetMarket()->GetStockExchangeCode(m_lIndex);
+	const auto strParam = gl_dataFinnhubStockExchange.GetExchangeCode(m_lIndex);
 
 	m_strInquiringExchange = strParam;
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -24,10 +22,8 @@ CString CProductFinnhubMarketHoliday::CreateMessage() {
 }
 
 bool CProductFinnhubMarketHoliday::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-
 	const auto pvHoliday = ParseFinnhubMarketHoliday(pWebData);
-	const auto pExchange = gl_pWorldMarket->GetStockExchange(m_lIndex);
+	const auto pExchange = gl_dataFinnhubStockExchange.GetExchange(m_lIndex);
 	pExchange->SetMarketHolidayUpdated(true);
 
 	gl_pWorldMarket->UpdateMarketHoliday(pvHoliday);

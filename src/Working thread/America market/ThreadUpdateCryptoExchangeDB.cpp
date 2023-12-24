@@ -3,9 +3,9 @@
 #include"ThreadStatus.h"
 #include"WorldMarket.h"
 
-UINT ThreadUpdateCryptoExchangeDB(const not_null<CWorldMarketPtr>& pMarket) {
+UINT ThreadUpdateCryptoExchangeDB() {
 	gl_UpdateWorldMarketDB.acquire();
-	pMarket->UpdateCryptoExchangeDB();
+	gl_dataFinnhubCryptoExchange.UpdateDB();
 	gl_UpdateWorldMarketDB.release();
 
 	return 51;

@@ -162,7 +162,7 @@ namespace FireBirdTest {
 
 			EXPECT_FALSE(gl_pWorldMarket->IsSystemReady()) << "市场默认为尚未准备好";
 			gl_pWorldMarket->SetSystemReady(true);// 测试系统默认为准备好了
-			const auto pStock1 = gl_pWorldMarket->GetStock(_T("AAPL"));
+			const auto pStock1 = gl_containerStock.GetStock(_T("AAPL"));
 			pStock1->SetUpdateCompanyProfile(true);
 
 			// 清空预装入的finnhubInaccessibleExchange

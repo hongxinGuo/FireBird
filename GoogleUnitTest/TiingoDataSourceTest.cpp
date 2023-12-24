@@ -100,8 +100,8 @@ namespace FireBirdTest {
 		CWorldStockPtr pStock;
 
 		gl_pWorldMarket->SetSystemReady(true);
-		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			pStock = gl_pWorldMarket->GetStock(i);
+		for (int i = 0; i < gl_containerStock.Size(); i++) {
+			pStock = gl_containerStock.GetStock(i);
 			pStock->SetDayLineNeedUpdate(false);
 		}
 		gl_containerChosenStock.GetStock(1)->SetDayLineNeedUpdate(true);
@@ -116,7 +116,7 @@ namespace FireBirdTest {
 		m_TiingoDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_TiingoDataSource.InquireDayLine());
 		EXPECT_TRUE(m_TiingoDataSource.IsInquiring());
-		auto lStockIndex = gl_pWorldMarket->GetStockIndex(gl_containerChosenStock.GetStock(1)->GetSymbol());
+		auto lStockIndex = gl_containerStock.GetOffset(gl_containerChosenStock.GetStock(1)->GetSymbol());
 		CVirtualProductWebDataPtr p = m_TiingoDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockDayLine"));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置是第一个股票";
@@ -126,7 +126,7 @@ namespace FireBirdTest {
 		gl_containerChosenStock.GetStock(1)->SetDayLineNeedUpdate(false);
 		m_TiingoDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_TiingoDataSource.InquireDayLine());
-		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_containerChosenStock.GetStock(3)->GetSymbol());
+		lStockIndex = gl_containerStock.GetOffset(gl_containerChosenStock.GetStock(3)->GetSymbol());
 		p = m_TiingoDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockDayLine"));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置是第三个股票";
@@ -140,8 +140,8 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("美国市场自选股票日线历史数据更新完毕"));
 
 		// 恢复原状
-		for (int i = 0; i < gl_pWorldMarket->GetStockSize(); i++) {
-			pStock = gl_pWorldMarket->GetStock(i);
+		for (int i = 0; i < gl_containerStock.Size(); i++) {
+			pStock = gl_containerStock.GetStock(i);
 			pStock->SetDayLineNeedUpdate(true);
 		}
 	}

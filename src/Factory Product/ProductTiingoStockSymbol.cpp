@@ -30,10 +30,10 @@ bool CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		long lTemp = 0;
 		for (const auto& pTiingoStock : *pvTiingoStock) {
 			if (!gl_dataTiingoStock.IsStock(pTiingoStock->m_strTicker)) { gl_dataTiingoStock.Add(pTiingoStock); }
-			if (GetMarket()->IsStock(pTiingoStock->m_strTicker)) {
+			if (gl_containerStock.IsSymbol(pTiingoStock->m_strTicker)) {
 				// Tiingo的Symbol信息只是用于Finnhub的一个补充。
 				lTemp++;
-				const auto pStock = GetMarket()->GetStock(pTiingoStock->m_strTicker);
+				const auto pStock = gl_containerStock.GetStock(pTiingoStock->m_strTicker);
 				if (pStock->IsNeedUpdateProfile(pTiingoStock)) {
 					pStock->UpdateStockProfile(pTiingoStock);
 					pStock->SetUpdateProfileDB(true);

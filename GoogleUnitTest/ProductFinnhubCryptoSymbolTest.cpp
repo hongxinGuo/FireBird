@@ -42,7 +42,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCryptoSymbolProductTest, TestCreatMessage) {
 		cryptoSymbolProduct.SetMarket(gl_pWorldMarket);
 		cryptoSymbolProduct.SetIndex(1);
-		EXPECT_STREQ(cryptoSymbolProduct.CreateMessage(), cryptoSymbolProduct.GetInquiryFunction() + gl_pWorldMarket->GetCryptoExchange(1));
+		EXPECT_STREQ(cryptoSymbolProduct.CreateMessage(), cryptoSymbolProduct.GetInquiryFunction() + gl_dataFinnhubCryptoExchange.GetExchange(1).c_str());
 	}
 
 	TEST_F(CFinnhubCryptoSymbolProductTest, TestProcessWebData) {

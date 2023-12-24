@@ -42,14 +42,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestCreatMessage) {
-		const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(1);
+		const CWorldStockPtr pStock = gl_containerStock.GetStock(1);
 		pStock->SetUpdateBasicFinancial(true);
 		companyBasicFinancial.SetMarket(gl_pWorldMarket);
 		companyBasicFinancial.SetIndex(1);
-		EXPECT_STREQ(companyBasicFinancial.CreateMessage(), companyBasicFinancial.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol() + _T("&metric=all"));
+		EXPECT_STREQ(companyBasicFinancial.CreateMessage(), companyBasicFinancial.GetInquiryFunction() + gl_containerStock.GetStock(1)->GetSymbol() + _T("&metric=all"));
 		EXPECT_TRUE(pStock->IsUpdateBasicFinancial()) << "处理接收到的数据后方设置此标识";
 
-		gl_pWorldMarket->GetStock(1)->SetUpdateBasicFinancial(true);
+		gl_containerStock.GetStock(1)->SetUpdateBasicFinancial(true);
 	}
 
 	Test_FinnhubWebData finnhubWebData1002(2, _T("AAPL"),
@@ -465,7 +465,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
+			m_pStock = gl_containerStock.GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), 19800101);
 			m_pStock->SetUpdateBasicFinancial(true);
@@ -474,7 +474,7 @@ namespace FireBirdTest {
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket);
-			const auto lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
+			const auto lIndex = gl_containerStock.GetOffset(pData->m_strSymbol);
 			m_finnhubCompanyBasicFinancial.SetIndex(lIndex);
 		}
 
@@ -556,7 +556,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
+			m_pStock = gl_containerStock.GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), 19800101);
 			m_pStock->SetUpdateBasicFinancialDB(false);
@@ -564,7 +564,7 @@ namespace FireBirdTest {
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket);
-			const auto lIndex = gl_pWorldMarket->GetStockIndex(pData->m_strSymbol);
+			const auto lIndex = gl_containerStock.GetOffset(pData->m_strSymbol);
 			m_finnhubCompanyBasicFinancial.SetIndex(lIndex);
 		}
 

@@ -18,7 +18,7 @@ void CContainerFinnhubCryptoExchange::Reset() {
 }
 
 bool CContainerFinnhubCryptoExchange::Delete(const string& sCryptoExchange) {
-	if (!IsCryptoExchange(sCryptoExchange)) return false;
+	if (!IsExchange(sCryptoExchange)) return false;
 
 	const auto it = ranges::find(m_vCryptoExchange.begin(), m_vCryptoExchange.end(), sCryptoExchange);
 	m_vCryptoExchange.erase(it);

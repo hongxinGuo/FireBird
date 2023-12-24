@@ -77,28 +77,10 @@ namespace FireBirdTest {
 		s_pMockWorldMarket->UpdateToken();
 	}
 
-	TEST_F(CMockWorldMarketTest, TestThreadUpdateStockProfileDB) {
-		EXPECT_CALL(*s_pMockWorldMarket, UpdateStockProfileDB)
-		.Times(1);
-		EXPECT_EQ(ThreadUpdateWorldMarketStockProfileDB(s_pMockWorldMarket), static_cast<UINT>(37));
-	}
-
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateStockDayLineDB) {
 		EXPECT_CALL(*s_pMockWorldMarket, UpdateStockDayLineDB)
 		.Times(1);
 		EXPECT_EQ(ThreadUpdateWorldStockDayLineDB(s_pMockWorldMarket), static_cast<UINT>(42));
-	}
-
-	TEST_F(CMockWorldMarketTest, TestThreadUpdateForexExchangedDB) {
-		EXPECT_CALL(*s_pMockWorldMarket, UpdateForexExchangeDB)
-		.Times(1);
-		EXPECT_EQ(ThreadUpdateForexExchangeDB(s_pMockWorldMarket), static_cast<UINT>(49));
-	}
-
-	TEST_F(CMockWorldMarketTest, TestThreadUpdateCryptoExchangedDB) {
-		EXPECT_CALL(*s_pMockWorldMarket, UpdateCryptoExchangeDB)
-		.Times(1);
-		EXPECT_EQ(ThreadUpdateCryptoExchangeDB(s_pMockWorldMarket), static_cast<UINT>(51));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateInsiderTransactionDB) {

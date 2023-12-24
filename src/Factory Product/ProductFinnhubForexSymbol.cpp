@@ -14,9 +14,7 @@ CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 }
 
 CString CProductFinnhubForexSymbol::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-
-	const auto strParam = GetMarket()->GetForexExchange(m_lIndex);
+	const auto strParam = gl_dataFinnhubForexExchange.GetExchange(m_lIndex);
 
 	m_strInquiringExchange = strParam;
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -24,13 +22,11 @@ CString CProductFinnhubForexSymbol::CreateMessage() {
 }
 
 bool CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-
 	const auto pvForexSymbol = ParseFinnhubForexSymbol(pWebData);
 	if (pvForexSymbol->empty()) return false;
 	for (const auto& pSymbol : *pvForexSymbol) {
 		if (!gl_dataFinnhubForexSymbol.IsSymbol(pSymbol->GetSymbol())) {
-			pSymbol->SetExchangeCode(GetMarket()->GetForexExchange(m_lIndex));
+			pSymbol->SetExchangeCode(gl_dataFinnhubForexExchange.GetExchange(m_lIndex));
 			gl_dataFinnhubForexSymbol.Add(pSymbol);
 		}
 	}

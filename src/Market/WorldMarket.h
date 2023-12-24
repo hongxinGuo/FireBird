@@ -2,12 +2,6 @@
 
 #include"VirtualMarket.h"
 
-#include"ContainerFinnhubStockExchange.h"
-#include"ContainerFinnhubForexExchange.h"
-#include"ContainerFinnhubCryptoExchange.h"
-
-#include"ContainerWorldStock.h"
-
 #include "FinnhubWebSocket.h"
 #include "TiingoIEXWebSocket.h"
 
@@ -86,70 +80,21 @@ public:
 	bool UpdateEPSSurpriseDB();
 
 	// 各种状态
-	CFinnhubStockExchangePtr GetStockExchange(const long lIndex) const { return m_dataFinnhubStockExchange.GetExchange(lIndex); }
-	CString GetStockExchangeCode(const long lIndex) const { return m_dataFinnhubStockExchange.GetExchange(lIndex)->m_strCode; }
-	long GetStockExchangeSize() const noexcept { return m_dataFinnhubStockExchange.GetExchangeSize(); }
-
-	bool IsUpdateStockProfileDB() { return m_containerStock.IsUpdateProfileDB(); }
-
-	void AddStock(const CWorldStockPtr& pStock) { m_containerStock.Add(pStock); }
-	void DeleteStock(const CWorldStockPtr& pStock) { m_containerStock.Delete(pStock); }
-	size_t GetStockSize() noexcept { return m_containerStock.Size(); }
-	bool IsStock(const CString& strSymbol) const { return m_containerStock.IsSymbol(strSymbol); }
-	bool IsStock(const CWorldStockPtr& pStock) const { return IsStock(pStock->GetSymbol()); }
-	CWorldStockPtr GetStock(const size_t lIndex) { return m_containerStock.GetStock(lIndex); }
-	CWorldStockPtr GetStock(const CString& strSymbol) { return m_containerStock.GetStock(strSymbol); }
-	size_t GetStockIndex(const CString& strSymbol) const { return m_containerStock.GetOffset(strSymbol); }
-	void SortStock() { m_containerStock.Sort(); }
-
-	bool IsUpdateCompanyNewsDB() { return m_containerStock.IsUpdateCompanyNewsDB(); }
-	bool IsUpdateBasicFinancialDB() { return m_containerStock.IsUpdateBasicFinancialDB(); }
-
-	bool IsForexExchange(const CString& strForexExchange) const { return m_dataFinnhubForexExchange.IsForexExchange(strForexExchange); }
-
-	void AddForexExchange(const CString& strForexExchange) { m_dataFinnhubForexExchange.Add(strForexExchange); }
-	bool DeleteForexExchange(const CString& strForexExchange) { return m_dataFinnhubForexExchange.Delete(strForexExchange); }
-	size_t GetForexExchangeSize() const noexcept { return m_dataFinnhubForexExchange.GetForexExchangeSize(); }
-	CString GetForexExchange(const size_t lIndex) const { return m_dataFinnhubForexExchange.GetForexExchange(lIndex); }
-
-	bool IsCryptoExchange(CString strCryptoExchange) const { return m_dataFinnhubCryptoExchange.IsCryptoExchange(strCryptoExchange.GetBuffer()); }
-
-	void AddCryptoExchange(CString strCryptoExchange) { m_dataFinnhubCryptoExchange.Add(strCryptoExchange.GetBuffer()); }
-	bool DeleteCryptoExchange(CString strCryptoExchange) { return m_dataFinnhubCryptoExchange.Delete(strCryptoExchange.GetBuffer()); }
-	size_t GetCryptoExchangeSize() const noexcept { return m_dataFinnhubCryptoExchange.GetCryptoExchangeSize(); }
-	CString GetCryptoExchange(const size_t lIndex) const { return m_dataFinnhubCryptoExchange.GetCryptoExchange(lIndex).c_str(); }
 
 	CString GetCurrentFunction() { return m_strCurrentFunction; }
 	void SetCurrentFunction(const CString& str) { m_strCurrentFunction = str; }
 
-	bool IsUpdateForexExchangeDB() const noexcept { return m_dataFinnhubForexExchange.IsNeedUpdate(); }
-	bool IsUpdateCryptoExchangeDB() const noexcept { return m_dataFinnhubCryptoExchange.IsNeedUpdate(); }
-	bool IsUpdateInsiderTransactionDB() noexcept { return m_containerStock.IsSaveInsiderTransaction(); }
-	bool IsUpdateInsiderSentimentDB() noexcept { return m_containerStock.IsSaveInsiderSentiment(); }
-	bool IsSaveStockDayLineDB() noexcept { return m_containerStock.IsDayLineNeedSaving(); }
-	bool IsUpdateEPSSurpriseDB() noexcept { return m_containerStock.IsSaveEPSSurpriseDB(); }
-
 	static bool UpdateToken();
 
 	// 数据库操作
-	bool LoadWorldExchangeDB() { return m_dataFinnhubStockExchange.LoadDB(); }
 
-	void LoadStockDB() { m_containerStock.LoadDB(); }
-
-	virtual void UpdateStockProfileDB() { m_containerStock.UpdateProfileDB(); }
 	virtual bool UpdateCompanyNewsDB();
-	virtual void UpdateBasicFinancialDB() { m_containerStock.UpdateBasicFinancialDB(); }
 	virtual bool UpdateStockDayLineDB();
-	virtual bool UpdateForexExchangeDB() { return m_dataFinnhubForexExchange.UpdateDB(); }
-	virtual bool UpdateCryptoExchangeDB() { return m_dataFinnhubCryptoExchange.UpdateDB(); }
 	virtual bool UpdateInsiderTransactionDB();
 	virtual bool UpdateInsiderSentimentDB();
 	virtual bool UpdateTiingoIndustry();
 	virtual bool UpdateSICIndustry();
 	virtual bool UpdateNaicsIndustry();
-
-	void LoadForexExchange() { m_dataFinnhubForexExchange.LoadDB(); }
-	void LoadCryptoExchange() { m_dataFinnhubCryptoExchange.LoadDB(); }
 
 	void RebuildStockDayLineDB();
 	virtual void UpdateStockDayLineStartEndDate();
@@ -191,12 +136,6 @@ public:
 protected:
 	long m_lCurrentUpdateDayLinePos; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
 	long m_lCurrentUpdateEPSSurprisePos; // 此变量无需每日更新
-
-	CContainerFinnhubStockExchange m_dataFinnhubStockExchange;
-	CContainerFinnhubForexExchange m_dataFinnhubForexExchange;
-	CContainerFinnhubCryptoExchange m_dataFinnhubCryptoExchange;
-
-	CContainerWorldStock m_containerStock;
 
 	CMarketStatusVectorPtr m_pvMarketStatus;
 	CMarketHolidayVectorPtr m_pvMarketHoliday;

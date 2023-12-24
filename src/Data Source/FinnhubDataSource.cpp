@@ -145,7 +145,7 @@ bool CFinnhubDataSource::InquireCountryList() {
 }
 
 bool CFinnhubDataSource::InquireMarketStatus() {
-	const long lExchangeSize = gl_pWorldMarket->GetStockExchangeSize();
+	const long lExchangeSize = gl_dataFinnhubStockExchange.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = MARKET_STATUS_;
 
@@ -158,8 +158,8 @@ bool CFinnhubDataSource::InquireMarketStatus() {
 			m_fInquiringFinnhubMarketStatus = true;
 		}
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
-			if (!gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos)->IsMarketStatusUpdated()) {
-				pExchange = gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos);
+			if (!gl_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsMarketStatusUpdated()) {
+				pExchange = gl_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pExchange->m_strCode)) {
 					fFound = true;
 					break;
@@ -186,7 +186,7 @@ bool CFinnhubDataSource::InquireMarketStatus() {
 }
 
 bool CFinnhubDataSource::InquireMarketHoliday() {
-	const long lExchangeSize = gl_pWorldMarket->GetStockExchangeSize();
+	const long lExchangeSize = gl_dataFinnhubStockExchange.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = MARKET_HOLIDAY_;
 
@@ -199,8 +199,8 @@ bool CFinnhubDataSource::InquireMarketHoliday() {
 			m_fInquiringFinnhubMarketHoliday = true;
 		}
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
-			if (!gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos)->IsMarketHolidayUpdated()) {
-				pExchange = gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos);
+			if (!gl_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsMarketHolidayUpdated()) {
+				pExchange = gl_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pExchange->m_strCode)) {
 					fFound = true;
 					break;
@@ -227,7 +227,7 @@ bool CFinnhubDataSource::InquireMarketHoliday() {
 }
 
 bool CFinnhubDataSource::InquireCompanySymbol() {
-	const long lExchangeSize = gl_pWorldMarket->GetStockExchangeSize();
+	const long lExchangeSize = gl_dataFinnhubStockExchange.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = STOCK_SYMBOLS_;
 
@@ -240,8 +240,8 @@ bool CFinnhubDataSource::InquireCompanySymbol() {
 			m_fInquiringFinnhubStockSymbol = true;
 		}
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
-			if (!gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos)->IsStockSymbolUpdated()) {
-				pExchange = gl_pWorldMarket->GetStockExchange(lCurrentStockExchangePos);
+			if (!gl_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsStockSymbolUpdated()) {
+				pExchange = gl_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pExchange->m_strCode)) {
 					fFound = true;
 					break;
@@ -269,7 +269,7 @@ bool CFinnhubDataSource::InquireCompanySymbol() {
 }
 
 bool CFinnhubDataSource::InquireCompanyProfileConcise() {
-	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_containerStock.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = COMPANY_PROFILE_CONCISE_;
 
@@ -282,7 +282,7 @@ bool CFinnhubDataSource::InquireCompanyProfileConcise() {
 			m_fInquiringFinnhubStockProfile = true;
 		}
 		for (lCurrentProfilePos = 0; lCurrentProfilePos < lStockSetSize; lCurrentProfilePos++) {
-			if (const auto pStock = gl_pWorldMarket->GetStock(lCurrentProfilePos); pStock->IsUpdateCompanyProfile()) {
+			if (const auto pStock = gl_containerStock.GetStock(lCurrentProfilePos); pStock->IsUpdateCompanyProfile()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;
@@ -293,7 +293,7 @@ bool CFinnhubDataSource::InquireCompanyProfileConcise() {
 			const auto product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket, iInquiryType);
 			product->SetIndex(lCurrentProfilePos);
 			StoreInquiry(product);
-			gl_pWorldMarket->SetCurrentFunction(_T("简介:") + gl_pWorldMarket->GetStock(lCurrentProfilePos)->GetSymbol());
+			gl_pWorldMarket->SetCurrentFunction(_T("简介:") + gl_containerStock.GetStock(lCurrentProfilePos)->GetSymbol());
 			//TRACE("更新%s简介\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
 			SetInquiring(true);
 			fHaveInquiry = true;
@@ -313,7 +313,7 @@ bool CFinnhubDataSource::InquireCompanyProfileConcise() {
 /// 公司新闻。目前finnhub.io只提供北美公司的新闻
 /// </summary>
 bool CFinnhubDataSource::InquireCompanyNews() {
-	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_containerStock.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = COMPANY_NEWS_;
 
@@ -326,7 +326,7 @@ bool CFinnhubDataSource::InquireCompanyNews() {
 			m_fInquiringFinnhubCompanyNews = true;
 		}
 		for (lCurrentCompanyNewsPos = 0; lCurrentCompanyNewsPos < lStockSetSize; lCurrentCompanyNewsPos++) {
-			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(lCurrentCompanyNewsPos);
+			const CWorldStockPtr pStock = gl_containerStock.GetStock(lCurrentCompanyNewsPos);
 			if (pStock->IsUpdateCompanyNews()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
 					// 目前只处理美国市场
@@ -339,7 +339,7 @@ bool CFinnhubDataSource::InquireCompanyNews() {
 			const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket, iInquiryType);
 			product->SetIndex(lCurrentCompanyNewsPos);
 			StoreInquiry(product);
-			gl_pWorldMarket->SetCurrentFunction(_T("公司新闻:") + gl_pWorldMarket->GetStock(lCurrentCompanyNewsPos)->GetSymbol());
+			gl_pWorldMarket->SetCurrentFunction(_T("公司新闻:") + gl_containerStock.GetStock(lCurrentCompanyNewsPos)->GetSymbol());
 			//TRACE("更新%s公司新闻\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
 			SetInquiring(true);
 			fHaveInquiry = true;
@@ -356,7 +356,7 @@ bool CFinnhubDataSource::InquireCompanyNews() {
 }
 
 bool CFinnhubDataSource::InquireCompanyBasicFinancial() {
-	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_containerStock.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = BASIC_FINANCIALS_;
 
@@ -369,7 +369,7 @@ bool CFinnhubDataSource::InquireCompanyBasicFinancial() {
 			m_fInquiringFinnhubCompanyBasicFinancial = true;
 		}
 		for (lCurrentBasicFinancialsPos = 0; lCurrentBasicFinancialsPos < lStockSetSize; lCurrentBasicFinancialsPos++) {
-			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(lCurrentBasicFinancialsPos);
+			const CWorldStockPtr pStock = gl_containerStock.GetStock(lCurrentBasicFinancialsPos);
 			if (pStock->IsUpdateBasicFinancial()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
@@ -381,7 +381,7 @@ bool CFinnhubDataSource::InquireCompanyBasicFinancial() {
 			const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket, iInquiryType);
 			product->SetIndex(lCurrentBasicFinancialsPos);
 			StoreInquiry(product);
-			gl_pWorldMarket->SetCurrentFunction(_T("基本财务:") + gl_pWorldMarket->GetStock(lCurrentBasicFinancialsPos)->GetSymbol());
+			gl_pWorldMarket->SetCurrentFunction(_T("基本财务:") + gl_containerStock.GetStock(lCurrentBasicFinancialsPos)->GetSymbol());
 			//TRACE("更新%s简介\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
 			SetInquiring(true);
 			fHaveInquiry = true;
@@ -398,7 +398,7 @@ bool CFinnhubDataSource::InquireCompanyBasicFinancial() {
 }
 
 bool CFinnhubDataSource::InquireStockDayLine() {
-	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_containerStock.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = STOCK_PRICE_CANDLES_;
 
@@ -412,7 +412,7 @@ bool CFinnhubDataSource::InquireStockDayLine() {
 			m_fInquiringFinnhubStockDayLine = true;
 		}
 		for (lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
-			pStock = gl_pWorldMarket->GetStock(lCurrentUpdateDayLinePos);
+			pStock = gl_containerStock.GetStock(lCurrentUpdateDayLinePos);
 			if (pStock->IsDayLineNeedUpdate()) {
 				// 目前免费账户只能下载美国市场的股票日线。
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
@@ -444,7 +444,7 @@ bool CFinnhubDataSource::InquireStockDayLine() {
 }
 
 bool CFinnhubDataSource::InquireInsiderTransaction() {
-	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_containerStock.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = INSIDER_TRANSACTION_;
 
@@ -458,7 +458,7 @@ bool CFinnhubDataSource::InquireInsiderTransaction() {
 			m_fInquiringFinnhubStockInsiderTransaction = true;
 		}
 		for (lCurrentUpdateInsiderTransactionPos = 0; lCurrentUpdateInsiderTransactionPos < lStockSetSize; lCurrentUpdateInsiderTransactionPos++) {
-			pStock = gl_pWorldMarket->GetStock(lCurrentUpdateInsiderTransactionPos);
+			pStock = gl_containerStock.GetStock(lCurrentUpdateInsiderTransactionPos);
 			if (pStock->IsUpdateInsiderTransaction()) {
 				// 目前免费账户只能下载美国市场的内部交易数据。
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
@@ -488,7 +488,7 @@ bool CFinnhubDataSource::InquireInsiderTransaction() {
 }
 
 bool CFinnhubDataSource::InquireInsiderSentiment() {
-	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_containerStock.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = INSIDER_SENTIMENT_;
 
@@ -502,7 +502,7 @@ bool CFinnhubDataSource::InquireInsiderSentiment() {
 			m_fInquiringFinnhubStockInsiderSentiment = true;
 		}
 		for (lCurrentUpdateInsiderSentimentPos = 0; lCurrentUpdateInsiderSentimentPos < lStockSetSize; lCurrentUpdateInsiderSentimentPos++) {
-			pStock = gl_pWorldMarket->GetStock(lCurrentUpdateInsiderSentimentPos);
+			pStock = gl_containerStock.GetStock(lCurrentUpdateInsiderSentimentPos);
 			if (pStock->IsUpdateInsiderSentiment()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
@@ -538,15 +538,15 @@ bool CFinnhubDataSource::InquireRTQuote() {
 		StoreInquiry(product);
 		SetInquiring(true);
 		m_lCurrentRTDataQuotePos++;
-		if (m_lCurrentRTDataQuotePos == gl_pWorldMarket->GetStockSize()) m_lCurrentRTDataQuotePos = 0;
-		gl_pWorldMarket->SetCurrentFunction(_T("Finnhub stock RT: ") + gl_pWorldMarket->GetStock(m_lCurrentRTDataQuotePos)->GetSymbol());
-		TRACE("申请%s实时数据\n", gl_pWorldMarket->GetStock(m_lCurrentRTDataQuotePos)->GetSymbol().GetBuffer());
+		if (m_lCurrentRTDataQuotePos == gl_containerStock.Size()) m_lCurrentRTDataQuotePos = 0;
+		gl_pWorldMarket->SetCurrentFunction(_T("Finnhub stock RT: ") + gl_containerStock.GetStock(m_lCurrentRTDataQuotePos)->GetSymbol());
+		TRACE("申请%s实时数据\n", gl_containerStock.GetStock(m_lCurrentRTDataQuotePos)->GetSymbol().GetBuffer());
 	}
 	return true;
 }
 
 bool CFinnhubDataSource::InquirePeer() {
-	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_containerStock.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = PEERS_;
 
@@ -559,7 +559,7 @@ bool CFinnhubDataSource::InquirePeer() {
 			m_fInquiringFinnhubStockPeer = true;
 		}
 		for (lCurrentUpdatePeerPos = 0; lCurrentUpdatePeerPos < lStockSetSize; lCurrentUpdatePeerPos++) {
-			const CWorldStockPtr pStock = gl_pWorldMarket->GetStock(lCurrentUpdatePeerPos);
+			const CWorldStockPtr pStock = gl_containerStock.GetStock(lCurrentUpdatePeerPos);
 			if (pStock->IsUpdatePeer()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
@@ -573,7 +573,7 @@ bool CFinnhubDataSource::InquirePeer() {
 			product->SetIndex(lCurrentUpdatePeerPos);
 			StoreInquiry(product);
 			SetInquiring(true);
-			gl_pWorldMarket->SetCurrentFunction(_T("Peer:") + gl_pWorldMarket->GetStock(lCurrentUpdatePeerPos)->GetSymbol());
+			gl_pWorldMarket->SetCurrentFunction(_T("Peer:") + gl_containerStock.GetStock(lCurrentUpdatePeerPos)->GetSymbol());
 			//TRACE("申请%s Peer数据\n", GetStock(lCurrentUpdatePeerPos)->GetSymbol().GetBuffer());
 		}
 		else {
@@ -602,7 +602,7 @@ bool CFinnhubDataSource::InquireEconomicCalendar() {
 }
 
 bool CFinnhubDataSource::InquireEPSSurprise() {
-	const auto lStockSetSize = gl_pWorldMarket->GetStockSize();
+	const auto lStockSetSize = gl_containerStock.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = STOCK_ESTIMATES_EPS_SURPRISE_;
 
@@ -615,7 +615,7 @@ bool CFinnhubDataSource::InquireEPSSurprise() {
 			m_fInquiringFinnhubStockEPSSurprise = true;
 		}
 		for (m_lCurrentUpdateEPSSurprisePos = 0; m_lCurrentUpdateEPSSurprisePos < lStockSetSize; m_lCurrentUpdateEPSSurprisePos++) {
-			pStock = gl_pWorldMarket->GetStock(m_lCurrentUpdateEPSSurprisePos);
+			pStock = gl_containerStock.GetStock(m_lCurrentUpdateEPSSurprisePos);
 			if (!pStock->IsEPSSurpriseUpdated()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pStock->GetExchangeCode())) {
 					fFound = true;
@@ -629,9 +629,9 @@ bool CFinnhubDataSource::InquireEPSSurprise() {
 			product->SetIndex(m_lCurrentUpdateEPSSurprisePos);
 			StoreInquiry(product);
 			SetInquiring(true);
-			gl_pWorldMarket->GetStock(m_lCurrentUpdateEPSSurprisePos)->SetEPSSurpriseUpdated(true);
+			gl_containerStock.GetStock(m_lCurrentUpdateEPSSurprisePos)->SetEPSSurpriseUpdated(true);
 			gl_pWorldMarket->SetCurrentFunction(_T("EPS surprise:") + pStock->GetSymbol());
-			TRACE("申请%s EPS Surprise数据\n", gl_pWorldMarket->GetStock(m_lCurrentUpdateEPSSurprisePos)->GetSymbol().GetBuffer());
+			TRACE("申请%s EPS Surprise数据\n", gl_containerStock.GetStock(m_lCurrentUpdateEPSSurprisePos)->GetSymbol().GetBuffer());
 		}
 		else {
 			m_fInquiringFinnhubStockEPSSurprise = false;
@@ -663,7 +663,7 @@ bool CFinnhubDataSource::InquireForexSymbol() {
 		product->SetIndex(m_lCurrentForexExchangePos++);
 		StoreInquiry(product);
 		SetInquiring(true);
-		if (m_lCurrentForexExchangePos >= gl_pWorldMarket->GetForexExchangeSize()) {
+		if (m_lCurrentForexExchangePos >= gl_dataFinnhubForexExchange.Size()) {
 			SetUpdateForexSymbol(false);
 			m_lCurrentForexExchangePos = 0;
 			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub forex symbol"));
@@ -735,7 +735,7 @@ bool CFinnhubDataSource::InquireCryptoSymbol() {
 		product->SetIndex(m_lCurrentCryptoExchangePos++);
 		StoreInquiry(product);
 		SetInquiring(true);
-		if (m_lCurrentCryptoExchangePos >= gl_pWorldMarket->GetCryptoExchangeSize()) {
+		if (m_lCurrentCryptoExchangePos >= gl_dataFinnhubCryptoExchange.Size()) {
 			SetUpdateCryptoSymbol(false);
 			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub crypto synmbol"));
 			gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub Crypto symbols"));

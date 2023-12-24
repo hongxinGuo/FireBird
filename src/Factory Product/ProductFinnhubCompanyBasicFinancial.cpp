@@ -26,10 +26,8 @@ CProductFinnhubCompanyBasicFinancial::CProductFinnhubCompanyBasicFinancial() {
 }
 
 CString CProductFinnhubCompanyBasicFinancial::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-
 	CString strMessage;
-	const CWorldStockPtr pStock = GetMarket()->GetStock(m_lIndex);
+	const CWorldStockPtr pStock = gl_containerStock.GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
 
@@ -45,10 +43,8 @@ CString CProductFinnhubCompanyBasicFinancial::CreateMessage() {
 //
 //
 bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-
 	CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial = nullptr;
-	const CWorldStockPtr pStock = GetMarket()->GetStock(m_lIndex);
+	const CWorldStockPtr pStock = gl_containerStock.GetStock(m_lIndex);
 	pFinnhubStockBasicFinancial = ParseFinnhubStockBasicFinancial(pWebData);
 	if (pFinnhubStockBasicFinancial != nullptr) {
 		// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.

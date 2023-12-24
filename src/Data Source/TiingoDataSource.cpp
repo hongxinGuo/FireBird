@@ -109,7 +109,7 @@ bool CTiingoDataSource::InquireDayLine() {
 		if (fFound) {
 			fHaveInquiry = true;
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, STOCK_PRICE_CANDLES_);
-			p->SetIndex(gl_pWorldMarket->GetStockIndex(pStock->GetSymbol()));
+			p->SetIndex(gl_containerStock.GetOffset(pStock->GetSymbol()));
 			m_qProduct.push(p);
 			//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo StockÈÕÏß£º") + pStock->GetSymbol());
 			SetInquiring(true);

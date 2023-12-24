@@ -14,11 +14,15 @@
 #include "ContainerChosenForex.h"
 #include "ContainerChosenStock.h"
 #include "ContainerFinnhubCountry.h"
+#include "ContainerFinnhubCryptoExchange.h"
 #include "containerFinnhubCryptoSymbol.h"
 #include "ContainerFinnhubEconomicCalendar.h"
+#include "ContainerFinnhubForexExchange.h"
 #include "containerFinnhubForexSymbol.h"
+#include "ContainerFinnhubStockExchange.h"
 #include "ContainerTiingoCryptoSymbol.h"
 #include "ContainerTiingoStock.h"
+#include "ContainerWorldStock.h"
 using gsl::not_null;
 
 #include"FinnhubWebSocket.h"
@@ -40,6 +44,12 @@ extern CContainerFinnhubForexSymbol gl_dataFinnhubForexSymbol;
 extern CContainerFinnhubCryptoSymbol gl_dataFinnhubCryptoSymbol;
 extern CContainerFinnhubCountry gl_dataFinnhubCountry;
 extern CContainerFinnhubEconomicCalendar gl_dataFinnhubEconomicCalendar;
+
+extern CContainerFinnhubStockExchange gl_dataFinnhubStockExchange;
+extern CContainerFinnhubForexExchange gl_dataFinnhubForexExchange;
+extern CContainerFinnhubCryptoExchange gl_dataFinnhubCryptoExchange;
+
+extern CContainerWorldStock gl_containerStock;
 
 extern CContainerTiingoStock gl_dataTiingoStock;
 extern CContainerTiingoCryptoSymbol gl_dataTiingoCryptoSymbol;

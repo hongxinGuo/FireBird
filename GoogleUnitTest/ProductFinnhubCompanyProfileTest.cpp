@@ -42,13 +42,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyProfileTest, TestCreatMessage) {
-		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyProfile(true);
+		gl_containerStock.GetStock(1)->SetUpdateCompanyProfile(true);
 		companyProfile.SetMarket(gl_pWorldMarket);
 		companyProfile.SetIndex(1);
-		EXPECT_STREQ(companyProfile.CreateMessage(), companyProfile.GetInquiryFunction() + gl_pWorldMarket->GetStock(1)->GetSymbol());
-		EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsUpdateCompanyProfile()) << "接收到的数据处理后方设置此标识";
+		EXPECT_STREQ(companyProfile.CreateMessage(), companyProfile.GetInquiryFunction() + gl_containerStock.GetStock(1)->GetSymbol());
+		EXPECT_TRUE(gl_containerStock.GetStock(1)->IsUpdateCompanyProfile()) << "接收到的数据处理后方设置此标识";
 
-		gl_pWorldMarket->GetStock(1)->SetUpdateCompanyProfile(true);
+		gl_containerStock.GetStock(1)->SetUpdateCompanyProfile(true);
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser
@@ -67,7 +67,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
+			m_pStock = gl_containerStock.GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetUpdateCompanyProfile(true);
 			m_pStock->SetProfileUpdateDate(19700101);
@@ -76,7 +76,7 @@ namespace FireBirdTest {
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyProfile.SetMarket(gl_pWorldMarket);
-			m_finnhubCompanyProfile.SetIndex(gl_pWorldMarket->GetStockIndex(pData->m_strSymbol));
+			m_finnhubCompanyProfile.SetIndex(gl_containerStock.GetOffset(pData->m_strSymbol));
 		}
 
 		void TearDown() override {

@@ -4,7 +4,7 @@
 
 #include"WorldMarket.h"
 
-UINT ThreadUpdateWorldMarketStockProfileDB(const CWorldMarketPtr& pMarket) {
+UINT ThreadUpdateWorldMarketStockProfileDB() {
 	static bool sm_fProcessing = false;
 
 	if (sm_fProcessing) {
@@ -15,7 +15,7 @@ UINT ThreadUpdateWorldMarketStockProfileDB(const CWorldMarketPtr& pMarket) {
 		sm_fProcessing = true;
 	}
 	gl_UpdateWorldMarketDB.acquire();
-	pMarket->UpdateStockProfileDB();
+	gl_containerStock.UpdateProfileDB();
 	gl_UpdateWorldMarketDB.release();
 	sm_fProcessing = false;
 

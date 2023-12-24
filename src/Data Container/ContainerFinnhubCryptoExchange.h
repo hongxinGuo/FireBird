@@ -6,13 +6,10 @@ public:
 	~CContainerFinnhubCryptoExchange() = default;
 	void Reset();
 
-	bool IsCryptoExchange(const string& sExchange) const noexcept {
-		if (m_mapCryptoExchange.contains(sExchange)) return true;
-		return false;
-	}
+	bool IsExchange(const string& sExchange) const noexcept { return m_mapCryptoExchange.contains(sExchange); }
 
-	size_t GetCryptoExchangeSize() const noexcept { return m_vCryptoExchange.size(); }
-	string GetCryptoExchange(const size_t lIndex) const noexcept { return m_vCryptoExchange.at(lIndex); }
+	size_t Size() const noexcept { return m_vCryptoExchange.size(); }
+	string GetExchange(const size_t lIndex) const noexcept { return m_vCryptoExchange.at(lIndex); }
 	bool Delete(const string& sCryptoExchange);
 	void Add(const string& sCryptoExchange);
 
@@ -25,7 +22,7 @@ public:
 	}
 
 protected:
-	vectorString m_vCryptoExchange;
+	vector<string> m_vCryptoExchange;
 	map<string, size_t> m_mapCryptoExchange;
 	long m_lLastTotalCryptoExchange;
 };

@@ -4,7 +4,7 @@
 #include"WorldMarket.h"
 #include "Thread.h"
 
-UINT ThreadUpdateBasicFinancialDB(const not_null<CWorldMarketPtr>& pMarket) {
+UINT ThreadUpdateBasicFinancialDB() {
 	static bool sm_fInProcess = false;
 
 	if (sm_fInProcess) {
@@ -15,7 +15,7 @@ UINT ThreadUpdateBasicFinancialDB(const not_null<CWorldMarketPtr>& pMarket) {
 		sm_fInProcess = true;
 	}
 	gl_UpdateWorldMarketDB.acquire();
-	pMarket->UpdateBasicFinancialDB();
+	gl_containerStock.UpdateBasicFinancialDB();
 	gl_UpdateWorldMarketDB.release();
 	sm_fInProcess = false;
 

@@ -12,9 +12,7 @@ CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 }
 
 CString CProductFinnhubStockSymbol::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-
-	const auto strParam = GetMarket()->GetStockExchangeCode(m_lIndex);
+	const auto strParam = gl_dataFinnhubStockExchange.GetExchangeCode(m_lIndex);
 
 	m_strInquiringExchange = strParam;
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -24,9 +22,9 @@ CString CProductFinnhubStockSymbol::CreateMessage() {
 bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const auto strExchangeCode = GetMarket()->GetStockExchangeCode(m_lIndex);
+	const auto strExchangeCode = gl_dataFinnhubStockExchange.GetExchangeCode(m_lIndex);
 	const auto pvStock = ParseFinnhubStockSymbol(pWebData);
-	const auto pExchange = GetMarket()->GetStockExchange(m_lIndex);
+	const auto pExchange = gl_dataFinnhubStockExchange.GetExchange(m_lIndex);
 	pExchange->SetStockSymbolUpdated(true);
 	// 加上交易所代码。
 	for (const auto& pStock3 : *pvStock) {
@@ -40,10 +38,10 @@ bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		}
 	}
 	for (const auto& pStock2 : *pvStock) {
-		if (!GetMarket()->IsStock(pStock2)) {
+		if (!gl_containerStock.IsSymbol(pStock2)) {
 			pStock2->SetTodayNewStock(true);
 			pStock2->SetUpdateProfileDB(true);
-			GetMarket()->AddStock(pStock2);
+			gl_containerStock.Add(pStock2);
 			const auto str = _T("Finnhub发现新代码:") + pStock2->GetSymbol();
 			gl_systemMessage.PushInnerSystemInformationMessage(str);
 		}

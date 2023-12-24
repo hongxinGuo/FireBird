@@ -27,8 +27,8 @@ bool CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	const auto pvForexExchange = ParseFinnhubForexExchange(pWebData);
 	for (int i = 0; i < pvForexExchange->size(); i++) {
-		if (!GetMarket()->IsForexExchange(pvForexExchange->at(i))) {
-			GetMarket()->AddForexExchange(pvForexExchange->at(i));
+		if (!gl_dataFinnhubForexExchange.IsExchange(pvForexExchange->at(i))) {
+			gl_dataFinnhubForexExchange.Add(pvForexExchange->at(i));
 		}
 	}
 

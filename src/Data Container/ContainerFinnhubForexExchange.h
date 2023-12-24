@@ -6,13 +6,9 @@ public:
 	~CContainerFinnhubForexExchange() = default;
 	void Reset();
 
-	bool IsForexExchange(const CString& strExchange) const noexcept {
-		if (m_mapForexExchange.contains(strExchange)) return true;
-		return false;
-	}
-
-	size_t GetForexExchangeSize() const noexcept { return m_vForexExchange.size(); }
-	CString GetForexExchange(const size_t lIndex) const { return m_vForexExchange.at(lIndex); }
+	bool IsExchange(const CString& strExchange) const noexcept { return m_mapForexExchange.contains(strExchange); }
+	size_t Size() const noexcept { return m_vForexExchange.size(); }
+	CString GetExchange(const size_t lIndex) const { return m_vForexExchange.at(lIndex); }
 	bool Delete(const CString& strForexExchange);
 	void Add(const CString& strForexExchange);
 
