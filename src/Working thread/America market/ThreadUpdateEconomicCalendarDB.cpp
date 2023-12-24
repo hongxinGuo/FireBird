@@ -6,7 +6,7 @@
 
 UINT ThreadUpdateEconomicCalendarDB(const not_null<CWorldMarketPtr>& pMarket) {
 	gl_UpdateWorldMarketDB.acquire();
-	pMarket->UpdateEconomicCalendarDB();
+	gl_dataFinnhubEconomicCalendar.UpdateDB();
 	gl_UpdateWorldMarketDB.release();
 
 	return 50;

@@ -67,6 +67,7 @@
     <LibraryWPath>C:\Users\hxguo\source\repos\StockAnalysis\OpenSSL\lib;$(LibraryWPath)</LibraryWPath>
     <LibraryPath>$(LibInclude);C:\Program Files\OpenSSL-Win64\lib;$(IncludePath);$(zlibInclude);$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="..\src\pch.cpp">
@@ -259,9 +260,6 @@
     </ProjectReference>
     <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">
       <Project>{f77641f7-1df8-4461-9338-a8e502e570dc}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">
-      <Project>{b467f394-de2a-47f9-a2c2-4be78225b908}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemDefinitionGroup />

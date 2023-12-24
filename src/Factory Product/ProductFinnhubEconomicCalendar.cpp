@@ -34,7 +34,7 @@ bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData)
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
-	GetMarket()->UpdateEconomicCalendar(*pvEconomicCalendar);
+	gl_dataFinnhubEconomicCalendar.Update(*pvEconomicCalendar);
 
 	return true;
 }

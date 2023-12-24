@@ -161,12 +161,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(ThreadUpdateWorldStockDayLineStartEndDate(s_pMockWorldMarket), static_cast<UINT>(43));
 	}
 
-	TEST_F(CMockWorldMarketTest, TestThreadUpdateEconmicCalendarDB) {
-		EXPECT_CALL(*s_pMockWorldMarket, UpdateEconomicCalendarDB)
-		.Times(1);
-		EXPECT_EQ(ThreadUpdateEconomicCalendarDB(s_pMockWorldMarket), static_cast<UINT>(50));
-	}
-
 	TEST_F(CMockWorldMarketTest, TestTaskMonitoringWebSocketStatus) {
 		EXPECT_TRUE(s_pMockWorldMarket->IsSystemReady());
 		EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());

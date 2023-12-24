@@ -785,8 +785,8 @@ namespace FireBirdTest {
 
 		vEconomicCalendar.push_back(pEconomicCalendar);
 
-		EXPECT_TRUE(gl_pWorldMarket->UpdateEconomicCalendar(vEconomicCalendar));
-		EXPECT_TRUE(gl_pWorldMarket->UpdateEconomicCalendarDB());
+		EXPECT_TRUE(gl_dataFinnhubEconomicCalendar.Update(vEconomicCalendar));
+		EXPECT_TRUE(gl_dataFinnhubEconomicCalendar.UpdateDB());
 
 		// ²âÊÔ²¢»Ö¸´Ô­×´
 		setEconomicCalendar.Open();

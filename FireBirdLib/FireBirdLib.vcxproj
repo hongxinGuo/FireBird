@@ -418,9 +418,6 @@
     <ClCompile Include="..\src\Working thread\China market\ThreadUpdateChinaStockProfileDB.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">
-      <Project>{f77641f7-1df8-4461-9338-a8e502e570dc}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">
       <Project>{b467f394-de2a-47f9-a2c2-4be78225b908}</Project>
     </ProjectReference>

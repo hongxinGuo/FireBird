@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"systemData.h"
+
 #include "WorldMarket.h"
 #include"thread.h"
 
@@ -80,7 +82,7 @@ void CWorldMarket::ResetDataClass() {
 	m_dataFinnhubForexSymbol.Reset();
 	m_dataFinnhubCryptoSymbol.Reset();
 	m_dataFinnhubCountry.Reset();
-	m_dataFinnhubEconomicCalendar.Reset();
+	gl_dataFinnhubEconomicCalendar.Reset();
 
 	m_containerStock.Reset();
 
@@ -107,7 +109,9 @@ void CWorldMarket::ResetMarket() {
 	LoadCryptoExchange();
 	LoadFinnhubCryptoSymbol();
 	LoadWorldChosenCrypto();
-	LoadEconomicCalendarDB();
+	//LoadEconomicCalendarDB();
+	gl_dataFinnhubEconomicCalendar.LoadDB();
+
 	LoadTiingoStock();
 	LoadTiingoCryptoSymbol();
 
@@ -399,7 +403,7 @@ void CWorldMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 	if (IsUpdateInsiderTransactionDB()) CreateThreadUpdateInsiderTransactionDB();
 	if (IsUpdateInsiderSentimentDB()) CreateThreadUpdateInsiderSentimentDB();
 	if (IsSaveStockDayLineDB()) CreateThreadUpdateDayLineDB();
-	if (IsUpdateEconomicCalendarDB()) CreateThreadUpdateEconomicCalendarDB();
+	if (gl_dataFinnhubEconomicCalendar.IsNeedUpdate()) CreateThreadUpdateEconomicCalendarDB();
 	if (IsUpdateCompanyNewsDB()) CreateThreadUpdateCompanyNewsDB();
 	if (IsUpdateBasicFinancialDB()) CreateThreadUpdateBasicFinancialDB();
 	if (IsNeedUpdateTiingoStock()) CreateThreadUpdateTiingoStockDB();

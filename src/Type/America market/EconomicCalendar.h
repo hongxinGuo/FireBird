@@ -2,7 +2,8 @@
 
 #include"SetEconomicCalendar.h"
 
-#include<memory>
+using std::shared_ptr;
+using std::vector;
 
 class CEconomicCalendar final {
 public:

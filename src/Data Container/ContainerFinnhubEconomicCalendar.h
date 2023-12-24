@@ -2,6 +2,8 @@
 
 #include"EconomicCalendar.h"
 
+using std::map;
+
 class CContainerFinnhubEconomicCalendar final {
 public:
 	CContainerFinnhubEconomicCalendar();

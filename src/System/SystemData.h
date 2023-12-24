@@ -9,6 +9,8 @@
 #pragma once
 
 #include <gsl/pointers>
+
+#include "ContainerFinnhubEconomicCalendar.h"
 using gsl::not_null;
 
 #include"FinnhubWebSocket.h"
@@ -24,6 +26,9 @@ extern CPriorityQueueWebRTData gl_qSinaRT; // 中国市场新浪实时数据队列。
 extern CPriorityQueueWebRTData gl_qNeteaseRT; // 中国市场网易实时数据队列。
 extern CPriorityQueueWebRTData gl_qTengxunRT; // 中国市场腾讯实时数据队列。
 extern CTemplateMutexAccessQueue<CDayLineWebData> gl_qDayLine; // 日线数据
+
+// WorldMarket处理的数据
+extern CContainerFinnhubEconomicCalendar gl_dataFinnhubEconomicCalendar;
 
 class CSystemData final {
 public:

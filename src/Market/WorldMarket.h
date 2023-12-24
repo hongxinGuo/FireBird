@@ -96,9 +96,6 @@ public:
 	bool UpdateCryptoDayLineDB();
 	bool UpdateEPSSurpriseDB();
 
-	void ClearEconomicCalendar() { m_dataFinnhubEconomicCalendar.Reset(); }
-	bool UpdateEconomicCalendar(const vector<CEconomicCalendarPtr>& vEconomicCalendar) { return m_dataFinnhubEconomicCalendar.Update(vEconomicCalendar); }
-
 	// ¸÷ÖÖ×´Ì¬
 	CFinnhubStockExchangePtr GetStockExchange(const long lIndex) const { return m_dataFinnhubStockExchange.GetExchange(lIndex); }
 	CString GetStockExchangeCode(const long lIndex) const { return m_dataFinnhubStockExchange.GetExchange(lIndex)->m_strCode; }
@@ -186,7 +183,6 @@ public:
 	bool IsUpdateInsiderTransactionDB() noexcept { return m_containerStock.IsSaveInsiderTransaction(); }
 	bool IsUpdateInsiderSentimentDB() noexcept { return m_containerStock.IsSaveInsiderSentiment(); }
 	bool IsSaveStockDayLineDB() noexcept { return m_containerStock.IsDayLineNeedSaving(); }
-	bool IsUpdateEconomicCalendarDB() const noexcept { return m_dataFinnhubEconomicCalendar.IsNeedUpdate(); }
 	bool IsUpdateEPSSurpriseDB() noexcept { return m_containerStock.IsSaveEPSSurpriseDB(); }
 
 	bool IsNeedUpdateTiingoStock() const noexcept { return m_dataTiingoStock.IsNeedUpdate(); }
@@ -211,7 +207,6 @@ public:
 	virtual bool UpdateCryptoExchangeDB() { return m_dataFinnhubCryptoExchange.UpdateDB(); }
 	virtual bool UpdateInsiderTransactionDB();
 	virtual bool UpdateInsiderSentimentDB();
-	virtual bool UpdateEconomicCalendarDB() { return m_dataFinnhubEconomicCalendar.UpdateDB(); }
 	virtual bool UpdateTiingoStockDB() { return m_dataTiingoStock.UpdateDB(); }
 	virtual bool UpdateTiingoCryptoSymbolDB() { return m_dataTiingoCryptoSymbol.UpdateDB(); }
 	virtual bool UpdateTiingoIndustry();
@@ -226,7 +221,6 @@ public:
 	void LoadWorldChosenCrypto() { m_containerChosenCrypto.LoadDB(); }
 
 	void LoadCountryDB() { m_dataFinnhubCountry.LoadDB(); }
-	void LoadEconomicCalendarDB() { m_dataFinnhubEconomicCalendar.LoadDB(); }
 
 	void LoadTiingoStock() { m_dataTiingoStock.LoadDB(); }
 	void LoadTiingoCryptoSymbol() { m_dataTiingoCryptoSymbol.LoadDB(); }
@@ -278,7 +272,6 @@ protected:
 	CContainerFinnhubForexSymbol m_dataFinnhubForexSymbol;
 	CContainerFinnhubCryptoSymbol m_dataFinnhubCryptoSymbol;
 	CContainerFinnhubCountry m_dataFinnhubCountry;
-	CContainerFinnhubEconomicCalendar m_dataFinnhubEconomicCalendar;
 
 	CContainerWorldStock m_containerStock;
 
