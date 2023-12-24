@@ -20,6 +20,7 @@ public:
 	size_t Size() override { return m_vStock.size(); }
 
 	bool IsSymbol(const CString& strSymbol) const { return m_mapSymbol.contains(strSymbol); }
+	bool IsSymbol(const CVirtualStockPtr& p) const { return IsSymbol(p->GetSymbol()); }
 	bool IsUpdateProfileDB() noexcept;
 	bool IsDayLineNeedUpdate() noexcept;
 	bool IsDayLineNeedSaving() noexcept;

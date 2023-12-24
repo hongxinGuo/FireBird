@@ -2,7 +2,8 @@
 
 #include"SetCountry.h"
 
-#include<memory>
+using std::vector;
+using std::shared_ptr;
 
 class CCountry final {
 public:

@@ -79,9 +79,9 @@ void CWorldMarket::ResetDataClass() {
 	m_dataFinnhubStockExchange.Reset();
 	m_dataFinnhubForexExchange.Reset();
 	m_dataFinnhubCryptoExchange.Reset();
-	m_dataFinnhubForexSymbol.Reset();
-	m_dataFinnhubCryptoSymbol.Reset();
-	m_dataFinnhubCountry.Reset();
+	gl_dataFinnhubForexSymbol.Reset();
+	gl_dataFinnhubCryptoSymbol.Reset();
+	gl_dataFinnhubCountry.Reset();
 	gl_dataFinnhubEconomicCalendar.Reset();
 
 	m_containerStock.Reset();
@@ -100,16 +100,15 @@ void CWorldMarket::ResetMarket() {
 	UpdateToken();
 
 	LoadWorldExchangeDB(); // 装入世界交易所信息
-	LoadCountryDB();
+	gl_dataFinnhubCountry.LoadDB();
 	LoadStockDB();
 	LoadWorldChosenStock();
 	LoadForexExchange();
-	LoadFinnhubForexSymbol();
+	gl_dataFinnhubForexSymbol.LoadDB();
 	LoadWorldChosenForex();
 	LoadCryptoExchange();
-	LoadFinnhubCryptoSymbol();
+	gl_dataFinnhubCryptoSymbol.LoadDB();
 	LoadWorldChosenCrypto();
-	//LoadEconomicCalendarDB();
 	gl_dataFinnhubEconomicCalendar.LoadDB();
 
 	LoadTiingoStock();
@@ -249,13 +248,13 @@ bool CWorldMarket::UpdateForexDayLineDB() {
 	CString str;
 	bool fUpdated = false;
 	CForexSymbolPtr pSymbol = nullptr;
-	const size_t symbolSize = m_dataFinnhubForexSymbol.Size();
+	const size_t symbolSize = gl_dataFinnhubForexSymbol.Size();
 
 	for (int i = 0; i < symbolSize; i++) {
 		if (gl_systemConfiguration.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
-		pSymbol = m_dataFinnhubForexSymbol.GetSymbol(i);
+		pSymbol = gl_dataFinnhubForexSymbol.GetSymbol(i);
 		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
@@ -292,13 +291,13 @@ bool CWorldMarket::UpdateCryptoDayLineDB() {
 	CString str;
 	bool fUpdated = false;
 	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
-	const size_t symbolSize = m_dataFinnhubCryptoSymbol.Size();
+	const size_t symbolSize = gl_dataFinnhubCryptoSymbol.Size();
 
 	for (int i = 0; i < symbolSize; ++i) {
 		if (gl_systemConfiguration.IsExitingSystem()) {
 			break; // 如果程序正在退出，则停止存储。
 		}
-		pSymbol = m_dataFinnhubCryptoSymbol.GetSymbol(i);
+		pSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(i);
 		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
@@ -393,13 +392,13 @@ void CWorldMarket::CreateThreadUpdateDayLineDB() {
 }
 
 void CWorldMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
-	if (m_dataFinnhubCountry.GetLastTotalCountry() < m_dataFinnhubCountry.GetTotalCountry()) {
+	if (gl_dataFinnhubCountry.GetLastTotalCountry() < gl_dataFinnhubCountry.GetTotalCountry()) {
 		CreateThreadUpdateCountryListDB();
 	}
 	if (IsUpdateForexExchangeDB()) CreateThreadUpdateForexExchangeDB();
-	if (IsUpdateForexSymbolDB()) CreateThreadUpdateForexSymbolDB();
+	if (gl_dataFinnhubForexSymbol.IsUpdateProfileDB()) CreateThreadUpdateForexSymbolDB();
 	if (IsUpdateCryptoExchangeDB()) CreateThreadUpdateCryptoExchangeDB();
-	if (IsUpdateCryptoSymbolDB()) CreateThreadUpdateFinnhubCryptoSymbolDB();
+	if (gl_dataFinnhubCryptoSymbol.IsUpdateProfileDB()) CreateThreadUpdateFinnhubCryptoSymbolDB();
 	if (IsUpdateInsiderTransactionDB()) CreateThreadUpdateInsiderTransactionDB();
 	if (IsUpdateInsiderSentimentDB()) CreateThreadUpdateInsiderSentimentDB();
 	if (IsSaveStockDayLineDB()) CreateThreadUpdateDayLineDB();
@@ -444,7 +443,7 @@ void CWorldMarket::CreateThreadUpdateBasicFinancialDB() {
 }
 
 void CWorldMarket::CreateThreadUpdateCountryListDB() {
-	thread thread1(ThreadUpdateCountryListDB, gl_pWorldMarket);
+	thread thread1(ThreadUpdateCountryListDB);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
@@ -474,7 +473,7 @@ void CWorldMarket::CreateThreadUpdateForexExchangeDB() {
 }
 
 void CWorldMarket::CreateThreadUpdateForexSymbolDB() {
-	thread thread1(ThreadUpdateForexSymbolDB, gl_pWorldMarket);
+	thread thread1(ThreadUpdateForexSymbolDB);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
@@ -484,12 +483,12 @@ void CWorldMarket::CreateThreadUpdateCryptoExchangeDB() {
 }
 
 void CWorldMarket::CreateThreadUpdateFinnhubCryptoSymbolDB() {
-	thread thread1(ThreadUpdateFinnhubCryptoSymbolDB, gl_pWorldMarket);
+	thread thread1(ThreadUpdateFinnhubCryptoSymbolDB);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateEconomicCalendarDB() {
-	thread thread1(ThreadUpdateEconomicCalendarDB, gl_pWorldMarket);
+	thread thread1(ThreadUpdateEconomicCalendarDB);
 	thread1.detach();
 }
 

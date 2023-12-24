@@ -66,6 +66,9 @@ CPriorityQueueWebRTData gl_qNeteaseRT; // 中国市场网易实时数据队列。
 CPriorityQueueWebRTData gl_qTengxunRT; // 中国市场腾讯实时数据队列。
 CTemplateMutexAccessQueue<CDayLineWebData> gl_qDayLine; // 日线数据
 
+CContainerFinnhubForexSymbol gl_dataFinnhubForexSymbol;
+CContainerFinnhubCryptoSymbol gl_dataFinnhubCryptoSymbol;
+CContainerFinnhubCountry gl_dataFinnhubCountry;
 CContainerFinnhubEconomicCalendar gl_dataFinnhubEconomicCalendar;
 
 // 各市场。皆为唯一实例。为最后声明的变量。

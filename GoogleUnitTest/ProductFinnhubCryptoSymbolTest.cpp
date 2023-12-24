@@ -177,12 +177,12 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("New Symbol")));
-			pCrypto = gl_pWorldMarket->GetFinnhubCryptoSymbol(_T("New Symbol"));
+			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(_T("New Symbol")));
+			pCrypto = gl_dataFinnhubCryptoSymbol.GetSymbol(_T("New Symbol"));
 			EXPECT_STREQ(pCrypto->GetDescription(), _T("Oanda Singapore 30"));
 
 		// »Ö¸´Ô­×´
-			gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCrypto);
+			gl_dataFinnhubCryptoSymbol.Delete(pCrypto);
 			break;
 		default:
 			break;

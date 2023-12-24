@@ -160,9 +160,9 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			if (gl_pWorldMarket->IsCountry(_T("Zero"))) {
-				const auto pCountry = gl_pWorldMarket->GetCountry(_T("Zero"));
-				gl_pWorldMarket->DeleteCountry(pCountry);
+			if (gl_dataFinnhubCountry.IsCountry(_T("Zero"))) {
+				const auto pCountry = gl_dataFinnhubCountry.GetCountry(_T("Zero"));
+				gl_dataFinnhubCountry.Delete(pCountry);
 			}
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			SCOPED_TRACE("");
@@ -180,7 +180,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData95, &finnhubWebData96, &finnhubWebData97, &finnhubWebData100));
 
 	TEST_P(ProcessFinnhubCountryListTest, TestProcessFinnhubCountryList0) {
-		const auto l = gl_pWorldMarket->GetTotalCountry();
+		const auto l = gl_dataFinnhubCountry.GetTotalCountry();
 		CCountryPtr pCountry = nullptr;
 		const bool fSucceed = m_finnhubEconomicCountryList.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
@@ -192,11 +192,11 @@ namespace FireBirdTest {
 			break;
 		case 4: // 第二个数据缺Code2
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(gl_pWorldMarket->GetTotalCountry(), l + 1);
+			EXPECT_EQ(gl_dataFinnhubCountry.GetTotalCountry(), l + 1);
 			break;
 		case 5: // 第二个数据缺CodeNo
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(gl_pWorldMarket->GetTotalCountry(), l + 1);
+			EXPECT_EQ(gl_dataFinnhubCountry.GetTotalCountry(), l + 1);
 			break;
 		case 6: // 空数据
 			EXPECT_TRUE(fSucceed);
@@ -208,7 +208,7 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(gl_pWorldMarket->GetTotalCountry(), l + 1);
+			EXPECT_EQ(gl_dataFinnhubCountry.GetTotalCountry(), l + 1);
 			break;
 		default:
 			break;

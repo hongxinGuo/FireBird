@@ -43,14 +43,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubForexDayLineTest, TestCreatMessage) {
-		gl_pWorldMarket->GetForexSymbol(1)->SetDayLineNeedUpdate(true);
+		gl_dataFinnhubForexSymbol.GetSymbol(1)->SetDayLineNeedUpdate(true);
 		forexDayLine.SetMarket(gl_pWorldMarket);
 		forexDayLine.SetIndex(1);
 		EXPECT_STREQ(forexDayLine.CreateMessage(),
-		             forexDayLine.GetInquiryFunction() + gl_pWorldMarket->GetForexSymbol(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
-		EXPECT_TRUE(gl_pWorldMarket->GetForexSymbol(1)->IsDayLineNeedUpdate()) << "接收到的数据处理后方设置此标识";
+		             forexDayLine.GetInquiryFunction() + gl_dataFinnhubForexSymbol.GetSymbol(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
+		EXPECT_TRUE(gl_dataFinnhubForexSymbol.GetSymbol(1)->IsDayLineNeedUpdate()) << "接收到的数据处理后方设置此标识";
 
-		gl_pWorldMarket->GetForexSymbol(1)->SetDayLineNeedUpdate(true);
+		gl_dataFinnhubForexSymbol.GetSymbol(1)->SetDayLineNeedUpdate(true);
 	}
 
 	TEST_F(CFinnhubForexDayLineTest, TestProcessWebData) {
@@ -106,7 +106,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pvDayLine = nullptr;
-			EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
+			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
@@ -188,7 +188,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
+			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
@@ -215,7 +215,7 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubForexCandleTest, TestParseFinnhubForexCandle) {
 		CString strMessage;
-		CForexSymbolPtr pForex = gl_pWorldMarket->GetForexSymbol(0);
+		CForexSymbolPtr pForex = gl_dataFinnhubForexSymbol.GetSymbol(0);
 
 		bool fSucceed = m_finnhubForexDayLine.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {

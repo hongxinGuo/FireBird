@@ -675,7 +675,7 @@ bool CFinnhubDataSource::InquireForexSymbol() {
 }
 
 bool CFinnhubDataSource::InquireForexDayLine() {
-	const auto lStockSetSize = gl_pWorldMarket->GetForexSymbolSize();
+	const auto lStockSetSize = gl_dataFinnhubForexSymbol.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = FOREX_CANDLES_;
 
@@ -689,7 +689,7 @@ bool CFinnhubDataSource::InquireForexDayLine() {
 			m_fInquiringFinnhubForexDayLine = true;
 		}
 		for (lCurrentUpdateForexDayLinePos = 0; lCurrentUpdateForexDayLinePos < lStockSetSize; lCurrentUpdateForexDayLinePos++) {
-			pForexSymbol = gl_pWorldMarket->GetForexSymbol(lCurrentUpdateForexDayLinePos);
+			pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(lCurrentUpdateForexDayLinePos);
 			if (pForexSymbol->IsDayLineNeedUpdate()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pForexSymbol->GetExchangeCode())) {
 					fFound = true;
@@ -747,7 +747,7 @@ bool CFinnhubDataSource::InquireCryptoSymbol() {
 }
 
 bool CFinnhubDataSource::InquireCryptoDayLine() {
-	const auto lStockSetSize = gl_pWorldMarket->GetFinnhubCryptoSymbolSize();
+	const auto lStockSetSize = gl_dataFinnhubCryptoSymbol.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = CRYPTO_CANDLES_;
 
@@ -761,7 +761,7 @@ bool CFinnhubDataSource::InquireCryptoDayLine() {
 			m_fInquiringFinnhubCryptoDayLine = true;
 		}
 		for (lCurrentUpdateCryptoDayLinePos = 0; lCurrentUpdateCryptoDayLinePos < lStockSetSize; lCurrentUpdateCryptoDayLinePos++) {
-			pCryptoSymbol = gl_pWorldMarket->GetFinnhubCryptoSymbol(lCurrentUpdateCryptoDayLinePos);
+			pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(lCurrentUpdateCryptoDayLinePos);
 			if (pCryptoSymbol->IsDayLineNeedUpdate()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pCryptoSymbol->GetExchangeCode())) {
 					fFound = true;

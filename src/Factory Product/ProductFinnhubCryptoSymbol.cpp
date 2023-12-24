@@ -24,9 +24,9 @@ bool CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	const auto pvCryptoSymbol = ParseFinnhubCryptoSymbol(pWebData);
 	for (const auto& pSymbol : *pvCryptoSymbol) {
-		if (!GetMarket()->IsFinnhubCryptoSymbol(pSymbol->GetSymbol())) {
+		if (!gl_dataFinnhubCryptoSymbol.IsSymbol(pSymbol->GetSymbol())) {
 			pSymbol->SetExchangeCode(GetMarket()->GetCryptoExchange(m_lIndex));
-			GetMarket()->AddFinnhubCryptoSymbol(pSymbol);
+			gl_dataFinnhubCryptoSymbol.Add(pSymbol);
 		}
 	}
 

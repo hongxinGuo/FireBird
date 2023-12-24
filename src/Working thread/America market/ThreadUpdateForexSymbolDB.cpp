@@ -3,9 +3,9 @@
 #include"ThreadStatus.h"
 #include"WorldMarket.h"
 
-UINT ThreadUpdateForexSymbolDB(const not_null<CWorldMarketPtr>& pMarket) {
+UINT ThreadUpdateForexSymbolDB() {
 	gl_UpdateWorldMarketDB.acquire();
-	pMarket->UpdateForexSymbolDB();
+	gl_dataFinnhubForexSymbol.UpdateDB();
 	gl_UpdateWorldMarketDB.release();
 
 	return 39;

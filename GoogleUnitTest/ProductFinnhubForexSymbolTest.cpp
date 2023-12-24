@@ -177,12 +177,12 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(_T("New Symbol"))) << "新添加的Forex代码";
-			pForexSymbol = gl_pWorldMarket->GetForexSymbol(_T("New Symbol"));
+			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(_T("New Symbol"))) << "新添加的Forex代码";
+			pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(_T("New Symbol"));
 			EXPECT_STREQ(pForexSymbol->GetExchangeCode(), _T("oanda")) << "Index为零时的交易所";
 
 		// 恢复原状
-			gl_pWorldMarket->DeleteForexSymbol(pForexSymbol);
+			gl_dataFinnhubForexSymbol.Delete(pForexSymbol);
 			break;
 		default:
 			break;

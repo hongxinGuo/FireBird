@@ -24,12 +24,10 @@ CString CProductFinnhubEconomicCountryList::CreateMessage() {
 }
 
 bool CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-
 	const auto pvCountry = ParseFinnhubCountryList(pWebData);
 	for (const auto& pCountry : *pvCountry) {
-		if (!GetMarket()->IsCountry(pCountry)) {
-			GetMarket()->AddCountry(pCountry);
+		if (!gl_dataFinnhubCountry.IsCountry(pCountry)) {
+			gl_dataFinnhubCountry.Add(pCountry);
 		}
 	}
 

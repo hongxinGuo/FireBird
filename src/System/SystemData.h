@@ -10,7 +10,10 @@
 
 #include <gsl/pointers>
 
+#include "ContainerFinnhubCountry.h"
+#include "containerFinnhubCryptoSymbol.h"
 #include "ContainerFinnhubEconomicCalendar.h"
+#include "containerFinnhubForexSymbol.h"
 using gsl::not_null;
 
 #include"FinnhubWebSocket.h"
@@ -28,6 +31,9 @@ extern CPriorityQueueWebRTData gl_qTengxunRT; // 中国市场腾讯实时数据队列。
 extern CTemplateMutexAccessQueue<CDayLineWebData> gl_qDayLine; // 日线数据
 
 // WorldMarket处理的数据
+extern CContainerFinnhubForexSymbol gl_dataFinnhubForexSymbol;
+extern CContainerFinnhubCryptoSymbol gl_dataFinnhubCryptoSymbol;
+extern CContainerFinnhubCountry gl_dataFinnhubCountry;
 extern CContainerFinnhubEconomicCalendar gl_dataFinnhubEconomicCalendar;
 
 class CSystemData final {

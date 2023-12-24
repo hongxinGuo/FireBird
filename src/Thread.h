@@ -69,9 +69,9 @@ UINT ThreadUpdateWorldMarketStockProfileDB(const CWorldMarketPtr& pMarket); // ´
 // ¸üĞÂForexÈÕÏßÊı¾İ
 UINT ThreadUpdateForexDayLineDB(const not_null<CForexSymbolPtr>& pSymbol); // ´Ë¹¤×÷Ïß³ÌµÄ·µ»ØÖµÎ´38
 // ¸üĞÂForex´úÂë±í
-UINT ThreadUpdateForexSymbolDB(const not_null<CWorldMarketPtr>& pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª39
+UINT ThreadUpdateForexSymbolDB(); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª39
 // ¸üĞÂCountryList´úÂë±í
-UINT ThreadUpdateCountryListDB(const not_null<CWorldMarketPtr>& pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª40
+UINT ThreadUpdateCountryListDB(); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª40
 // ¸üĞÂEPSSurprise±í
 UINT ThreadUpdateEPSSurpriseDB(const not_null<CWorldStockPtr>& pStockInput); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª41
 // ¸üĞÂÃÀ¹ú¹ÉÆ±µÄÈÕÏßÀúÊ·Êı¾İ¡£
@@ -91,11 +91,11 @@ UINT ThreadUpdateInsiderTransactionDB(const CWorldMarketPtr& pMarket); // ´Ë¹¤×÷
 // ¸üĞÂForex Exchange
 UINT ThreadUpdateForexExchangeDB(const not_null<CWorldMarketPtr>& pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª49
 // ¸üĞÂEconomic Calender
-UINT ThreadUpdateEconomicCalendarDB(const not_null<CWorldMarketPtr>& pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª50
+UINT ThreadUpdateEconomicCalendarDB(); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª50
 // ¸üĞÂCrypto Exchange
 UINT ThreadUpdateCryptoExchangeDB(const not_null<CWorldMarketPtr>& pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª51
 // ¸üĞÂCrypto´úÂë±í
-UINT ThreadUpdateFinnhubCryptoSymbolDB(const not_null<CWorldMarketPtr>& pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª52
+UINT ThreadUpdateFinnhubCryptoSymbolDB(); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª52
 // ¸üĞÂCryptoÈÕÏßÊı¾İ
 UINT ThreadUpdateCryptoDayLineDB(const not_null<CFinnhubCryptoSymbolPtr>& pSymbol); // ´Ë¹¤×÷Ïß³ÌµÄ·µ»ØÖµÎ´53
 // ¸üĞÂTiingo crypto´úÂë¼¯¡£

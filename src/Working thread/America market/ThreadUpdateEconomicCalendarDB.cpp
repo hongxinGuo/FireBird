@@ -4,7 +4,7 @@
 
 #include"WorldMarket.h"
 
-UINT ThreadUpdateEconomicCalendarDB(const not_null<CWorldMarketPtr>& pMarket) {
+UINT ThreadUpdateEconomicCalendarDB() {
 	gl_UpdateWorldMarketDB.acquire();
 	gl_dataFinnhubEconomicCalendar.UpdateDB();
 	gl_UpdateWorldMarketDB.release();

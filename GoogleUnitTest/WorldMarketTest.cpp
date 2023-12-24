@@ -232,42 +232,42 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestIsForexSymbol) {
-		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(_T("ABC")));
-		EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(_T("OANDA:XAU_SGD")));
-		EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(_T("FXCM:EUR/CHF")));
+		EXPECT_FALSE(gl_dataFinnhubForexSymbol.IsSymbol(_T("ABC")));
+		EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(_T("OANDA:XAU_SGD")));
+		EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(_T("FXCM:EUR/CHF")));
 
 		const auto pForexSymbol = make_shared<CFinnhubForexSymbol>();
 		pForexSymbol->SetSymbol(_T("ABC"));
-		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
+		EXPECT_FALSE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
 		pForexSymbol->SetSymbol(_T("OANDA:XAU_SGD"));
-		EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
+		EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
 		pForexSymbol->SetSymbol(_T("FXCM:EUR/CHF"));
-		EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
+		EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
 	}
 
 	TEST_F(CWorldMarketTest, TestAddForexSymbol) {
 		const auto pForexSymbol = make_shared<CFinnhubForexSymbol>();
-		const auto lTotalForexSymbol = gl_pWorldMarket->GetForexSymbolSize();
+		const auto lTotalForexSymbol = gl_dataFinnhubForexSymbol.Size();
 		pForexSymbol->SetSymbol(_T("000001.SZ"));
 
-		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
-		gl_pWorldMarket->AddForexSymbol(pForexSymbol);
-		EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
-		EXPECT_EQ(gl_pWorldMarket->GetForexSymbolSize(), lTotalForexSymbol + 1);
-		gl_pWorldMarket->DeleteForexSymbol(pForexSymbol);
-		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
-		EXPECT_EQ(gl_pWorldMarket->GetForexSymbolSize(), lTotalForexSymbol);
+		EXPECT_FALSE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
+		gl_dataFinnhubForexSymbol.Add(pForexSymbol);
+		EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
+		EXPECT_EQ(gl_dataFinnhubForexSymbol.Size(), lTotalForexSymbol + 1);
+		gl_dataFinnhubForexSymbol.Delete(pForexSymbol);
+		EXPECT_FALSE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
+		EXPECT_EQ(gl_dataFinnhubForexSymbol.Size(), lTotalForexSymbol);
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteForexSymbol) {
 		// do nothing. 已经在TestAddForexSymbol中测试了DeleteForexSymbol函数
 		CForexSymbolPtr pForexSymbol = nullptr;
 
-		gl_pWorldMarket->DeleteForexSymbol(pForexSymbol); // "空指针";
+		gl_dataFinnhubForexSymbol.Delete(pForexSymbol); // "空指针";
 
 		pForexSymbol = make_shared<CFinnhubForexSymbol>();
 		pForexSymbol->SetSymbol(_T("000001.SZ"));
-		gl_pWorldMarket->DeleteForexSymbol(pForexSymbol); // "此符号在符号集中不存在";
+		gl_dataFinnhubForexSymbol.Delete(pForexSymbol); // "此符号在符号集中不存在";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCryptoExchange) {
@@ -295,81 +295,70 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCryptoSymbol) {
-		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("ABC")));
-		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("POLONIEX:BTC_DOT")));
-		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("BINANCE:USDTUAH")));
-		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(_T("COINBASE:TRIBE-USD")));
+		EXPECT_FALSE(gl_dataFinnhubCryptoSymbol.IsSymbol(_T("ABC")));
+		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(_T("POLONIEX:BTC_DOT")));
+		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(_T("BINANCE:USDTUAH")));
+		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(_T("COINBASE:TRIBE-USD")));
 
 		const auto pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		pCryptoSymbol->SetSymbol(_T("ABC"));
-		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
+		EXPECT_FALSE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
 		pCryptoSymbol->SetSymbol(_T("BINANCE:USDTUAH"));
-		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
+		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
 		pCryptoSymbol->SetSymbol(_T("COINBASE:TRIBE-USD"));
-		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
+		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
 	}
 
 	TEST_F(CWorldMarketTest, TestAddCryptoSymbol) {
 		const auto pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
-		const auto lTotalCryptoSymbol = gl_pWorldMarket->GetFinnhubCryptoSymbolSize();
+		const auto lTotalCryptoSymbol = gl_dataFinnhubCryptoSymbol.Size();
 		pCryptoSymbol->SetSymbol(_T("000001.SZ"));
 
-		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
-		gl_pWorldMarket->AddFinnhubCryptoSymbol(pCryptoSymbol);
-		EXPECT_TRUE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
-		EXPECT_EQ(gl_pWorldMarket->GetFinnhubCryptoSymbolSize(), lTotalCryptoSymbol + 1);
+		EXPECT_FALSE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
+		gl_dataFinnhubCryptoSymbol.Add(pCryptoSymbol);
+		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
+		EXPECT_EQ(gl_dataFinnhubCryptoSymbol.Size(), lTotalCryptoSymbol + 1);
 
-		gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCryptoSymbol);
-		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
-		EXPECT_EQ(gl_pWorldMarket->GetFinnhubCryptoSymbolSize(), lTotalCryptoSymbol);
+		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol);
+		EXPECT_FALSE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
+		EXPECT_EQ(gl_dataFinnhubCryptoSymbol.Size(), lTotalCryptoSymbol);
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteCryptoSymbol) {
 		// do nothing. 已经在TestAddCryptoSymbol中测试了DeleteCryptoSymbol函数
 		CFinnhubCryptoSymbolPtr pCryptoSymbol = nullptr;
 
-		gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCryptoSymbol); // "空指针";
+		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); // "空指针";
 
 		pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		pCryptoSymbol->SetSymbol(_T("000001.SZ"));
-		gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCryptoSymbol); // "此符号在符号集中不存在";
+		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); // "此符号在符号集中不存在";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCountry) {
 		const auto pCountry = make_shared<CCountry>();
 
-		EXPECT_FALSE(gl_pWorldMarket->IsCountry(_T("ABC")));
-		EXPECT_TRUE(gl_pWorldMarket->IsCountry(_T("American Samoa")));
+		EXPECT_FALSE(gl_dataFinnhubCountry.IsCountry(_T("ABC")));
+		EXPECT_TRUE(gl_dataFinnhubCountry.IsCountry(_T("American Samoa")));
 
 		pCountry->m_strCountry = _T("ABC");
-		EXPECT_FALSE(gl_pWorldMarket->IsCountry(pCountry));
+		EXPECT_FALSE(gl_dataFinnhubCountry.IsCountry(pCountry));
 		pCountry->m_strCountry = _T("American Samoa");
-		EXPECT_TRUE(gl_pWorldMarket->IsCountry(pCountry));
+		EXPECT_TRUE(gl_dataFinnhubCountry.IsCountry(pCountry));
 	}
 
 	TEST_F(CWorldMarketTest, TestAddCountry) {
 		const auto pCountry = make_shared<CCountry>();
-		const auto lTotalCountry = gl_pWorldMarket->GetTotalCountry();
+		const auto lTotalCountry = gl_dataFinnhubCountry.GetTotalCountry();
 		pCountry->m_strCountry = _T("SZ");
 
-		EXPECT_FALSE(gl_pWorldMarket->IsCountry(pCountry));
-		gl_pWorldMarket->AddCountry(pCountry);
-		EXPECT_TRUE(gl_pWorldMarket->IsCountry(pCountry));
-		EXPECT_EQ(gl_pWorldMarket->GetTotalCountry(), lTotalCountry + 1);
-		gl_pWorldMarket->DeleteCountry(pCountry);
-		EXPECT_FALSE(gl_pWorldMarket->IsCountry(pCountry));
-		EXPECT_EQ(gl_pWorldMarket->GetTotalCountry(), lTotalCountry);
-	}
-
-	TEST_F(CWorldMarketTest, TestDeleteCountry) {
-		// do nothing. 已经在TestAddCountry中测试了DeleteCountry函数
-		CCountryPtr pCountry = nullptr;
-
-		EXPECT_FALSE(gl_pWorldMarket->DeleteCountry(pCountry)) << "空指针";
-
-		pCountry = make_shared<CCountry>();
-		pCountry->m_strCountry = _T("SZ");
-		EXPECT_FALSE(gl_pWorldMarket->DeleteCountry(pCountry)) << "此股票代码不存在于代码集中";
+		EXPECT_FALSE(gl_dataFinnhubCountry.IsCountry(pCountry));
+		gl_dataFinnhubCountry.Add(pCountry);
+		EXPECT_TRUE(gl_dataFinnhubCountry.IsCountry(pCountry));
+		EXPECT_EQ(gl_dataFinnhubCountry.GetTotalCountry(), lTotalCountry + 1);
+		gl_dataFinnhubCountry.Delete(pCountry);
+		EXPECT_FALSE(gl_dataFinnhubCountry.IsCountry(pCountry));
+		EXPECT_EQ(gl_dataFinnhubCountry.GetTotalCountry(), lTotalCountry);
 	}
 
 	TEST_F(CWorldMarketTest, TestLoadExchangeCode) {
@@ -377,15 +366,15 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateCountryDB) {
-		const size_t lTotal = gl_pWorldMarket->GetTotalCountry();
+		const size_t lTotal = gl_dataFinnhubCountry.GetTotalCountry();
 
 		const auto pCountry = make_shared<CCountry>();
 		pCountry->m_strCode2 = _T("AB");
 		pCountry->m_strCountry = _T("NoName");
-		EXPECT_FALSE(gl_pWorldMarket->IsCountry(pCountry));
-		gl_pWorldMarket->AddCountry(pCountry);
-		EXPECT_EQ(gl_pWorldMarket->GetTotalCountry(), lTotal + 1);
-		gl_pWorldMarket->UpdateCountryListDB(); // 此测试函数执行完后，新增了一个Country没有删除（数据库中的删除了）。
+		EXPECT_FALSE(gl_dataFinnhubCountry.IsCountry(pCountry));
+		gl_dataFinnhubCountry.Add(pCountry);
+		EXPECT_EQ(gl_dataFinnhubCountry.GetTotalCountry(), lTotal + 1);
+		gl_dataFinnhubCountry.UpdateDB(); // 此测试函数执行完后，新增了一个Country没有删除（数据库中的删除了）。
 
 		CSetCountry setCountry;
 		setCountry.m_strFilter = _T("[Country] = 'NoName'");
@@ -477,13 +466,13 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestUpdateForexSymbolDB) {
 		auto pForexSymbol = make_shared<CFinnhubForexSymbol>();
 		pForexSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
-		EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
-		gl_pWorldMarket->AddForexSymbol(pForexSymbol);
-		pForexSymbol = gl_pWorldMarket->GetForexSymbol(_T("OANDA:GBP_ZAR")); // 第二个现存的符号
+		EXPECT_FALSE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
+		gl_dataFinnhubForexSymbol.Add(pForexSymbol);
+		pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(_T("OANDA:GBP_ZAR")); // 第二个现存的符号
 		EXPECT_EQ(pForexSymbol->GetIPOStatus(), _STOCK_IPOED_);
 		pForexSymbol->SetUpdateProfileDB(true);
 		pForexSymbol->SetIPOStatus(_STOCK_DELISTED_);
-		gl_pWorldMarket->UpdateForexSymbolDB();
+		gl_dataFinnhubForexSymbol.UpdateDB();
 
 		CSetFinnhubForexSymbol setCryptoSymbol;
 		setCryptoSymbol.m_strFilter = _T("[Symbol] = 'OANDA:GBP_ZAR'");
@@ -507,21 +496,21 @@ namespace FireBirdTest {
 		setCryptoSymbol.m_pDatabase->CommitTrans();
 		setCryptoSymbol.Close();
 
-		pForexSymbol = gl_pWorldMarket->GetForexSymbol(_T("SS.SS.US"));
+		pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(_T("SS.SS.US"));
 		EXPECT_TRUE(pForexSymbol != nullptr);
-		gl_pWorldMarket->DeleteForexSymbol(pForexSymbol); // 恢复原状
+		gl_dataFinnhubForexSymbol.Delete(pForexSymbol); // 恢复原状
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateFinnhubCryptoSymbolDB) {
 		auto pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
 		pCryptoSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
-		EXPECT_FALSE(gl_pWorldMarket->IsFinnhubCryptoSymbol(pCryptoSymbol));
-		gl_pWorldMarket->AddFinnhubCryptoSymbol(pCryptoSymbol);
-		pCryptoSymbol = gl_pWorldMarket->GetFinnhubCryptoSymbol(_T("BINANCE:USDTUAH")); // 第二个现存的符号
+		EXPECT_FALSE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
+		gl_dataFinnhubCryptoSymbol.Add(pCryptoSymbol);
+		pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(_T("BINANCE:USDTUAH")); // 第二个现存的符号
 		EXPECT_EQ(pCryptoSymbol->GetIPOStatus(), _STOCK_IPOED_);
 		pCryptoSymbol->SetUpdateProfileDB(true);
 		pCryptoSymbol->SetIPOStatus(_STOCK_DELISTED_);
-		gl_pWorldMarket->UpdateFinnhubCryptoSymbolDB();
+		gl_dataFinnhubCryptoSymbol.UpdateDB();
 
 		CSetFinnhubCryptoSymbol setCryptoSymbol;
 		setCryptoSymbol.m_strFilter = _T("[Symbol] = 'BINANCE:USDTUAH'");
@@ -545,9 +534,9 @@ namespace FireBirdTest {
 		setCryptoSymbol.m_pDatabase->CommitTrans();
 		setCryptoSymbol.Close();
 
-		pCryptoSymbol = gl_pWorldMarket->GetFinnhubCryptoSymbol(_T("SS.SS.US"));
+		pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(_T("SS.SS.US"));
 		EXPECT_TRUE(pCryptoSymbol != nullptr);
-		gl_pWorldMarket->DeleteFinnhubCryptoSymbol(pCryptoSymbol); // 恢复原状
+		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); // 恢复原状
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateTiingoStockDB) {

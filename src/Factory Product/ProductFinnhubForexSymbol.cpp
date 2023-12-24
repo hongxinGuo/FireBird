@@ -29,9 +29,9 @@ bool CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvForexSymbol = ParseFinnhubForexSymbol(pWebData);
 	if (pvForexSymbol->empty()) return false;
 	for (const auto& pSymbol : *pvForexSymbol) {
-		if (!GetMarket()->IsForexSymbol(pSymbol->GetSymbol())) {
+		if (!gl_dataFinnhubForexSymbol.IsSymbol(pSymbol->GetSymbol())) {
 			pSymbol->SetExchangeCode(GetMarket()->GetForexExchange(m_lIndex));
-			GetMarket()->AddForexSymbol(pSymbol);
+			gl_dataFinnhubForexSymbol.Add(pSymbol);
 		}
 	}
 
