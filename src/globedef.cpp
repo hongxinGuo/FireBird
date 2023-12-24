@@ -71,6 +71,13 @@ CContainerFinnhubCryptoSymbol gl_dataFinnhubCryptoSymbol;
 CContainerFinnhubCountry gl_dataFinnhubCountry;
 CContainerFinnhubEconomicCalendar gl_dataFinnhubEconomicCalendar;
 
+CContainerTiingoStock gl_dataTiingoStock;
+CContainerTiingoCryptoSymbol gl_dataTiingoCryptoSymbol;
+
+CContainerChosenStock gl_containerChosenStock;
+CContainerChosenForex gl_containerChosenForex;
+CContainerChosenCrypto gl_containerChosenCrypto;
+
 // 各市场。皆为唯一实例。为最后声明的变量。
 CWorldMarketPtr gl_pWorldMarket = nullptr;
 CChinaMarketPtr gl_pChinaMarket = nullptr; //此实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。//

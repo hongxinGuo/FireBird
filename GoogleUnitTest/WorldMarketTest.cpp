@@ -97,41 +97,41 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestIsTiingoStock) {
-		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(_T("000000.SS")));
-		EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(_T("AA")));
-		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(_T("600601.SS")));
-		EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(_T("A")));
-		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(_T("000001.SZ"))) << "目前测试数据库中只有上海和美国股票集";
+		EXPECT_FALSE(gl_dataTiingoStock.IsStock(_T("000000.SS")));
+		EXPECT_TRUE(gl_dataTiingoStock.IsStock(_T("AA")));
+		EXPECT_FALSE(gl_dataTiingoStock.IsStock(_T("600601.SS")));
+		EXPECT_TRUE(gl_dataTiingoStock.IsStock(_T("A")));
+		EXPECT_FALSE(gl_dataTiingoStock.IsStock(_T("000001.SZ"))) << "目前测试数据库中只有上海和美国股票集";
 
 		const auto pStock = make_shared<CWorldStock>();
 		pStock->SetSymbol(_T("000000.SS"));
-		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
+		EXPECT_FALSE(gl_dataTiingoStock.IsStock(pStock));
 		pStock->SetSymbol(_T("AA"));
-		EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(pStock));
+		EXPECT_TRUE(gl_dataTiingoStock.IsStock(pStock));
 		pStock->SetSymbol(_T("600601.SS"));
-		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
+		EXPECT_FALSE(gl_dataTiingoStock.IsStock(pStock));
 		pStock->SetSymbol(_T("A"));
-		EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(pStock));
+		EXPECT_TRUE(gl_dataTiingoStock.IsStock(pStock));
 		pStock->SetSymbol(_T("000001.SZ"));
-		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
+		EXPECT_FALSE(gl_dataTiingoStock.IsStock(pStock));
 
 		const auto pTiingoStock = make_shared<CTiingoStock>();
 		pTiingoStock->m_strTicker = _T("000000.SS");
-		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pTiingoStock));
+		EXPECT_FALSE(gl_dataTiingoStock.IsStock(pTiingoStock));
 		pTiingoStock->m_strTicker = _T("AA");
-		EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(pTiingoStock));
+		EXPECT_TRUE(gl_dataTiingoStock.IsStock(pTiingoStock));
 		pTiingoStock->m_strTicker = _T("600601.SS");
-		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pTiingoStock));
+		EXPECT_FALSE(gl_dataTiingoStock.IsStock(pTiingoStock));
 		pTiingoStock->m_strTicker = _T("A");
-		EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(pTiingoStock));
+		EXPECT_TRUE(gl_dataTiingoStock.IsStock(pTiingoStock));
 		pTiingoStock->m_strTicker = _T("000001.SZ");
-		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pTiingoStock));
+		EXPECT_FALSE(gl_dataTiingoStock.IsStock(pTiingoStock));
 	}
 
 	TEST_F(CWorldMarketTest, TestGetTiingoStock) {
-		CTiingoStockPtr pStock = gl_pWorldMarket->GetTiingoStock(0); // A
+		CTiingoStockPtr pStock = gl_dataTiingoStock.GetStock(0); // A
 		EXPECT_STREQ(pStock->m_strTicker, _T("A")) << "第一个股票代码为A";
-		pStock = gl_pWorldMarket->GetTiingoStock(_T("A"));
+		pStock = gl_dataTiingoStock.GetStock(_T("A"));
 		EXPECT_FALSE(pStock == nullptr);
 		EXPECT_STREQ(pStock->m_strName, _T("Agilent Technologies Inc"));
 	}
@@ -184,27 +184,27 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestAddTiingoStock) {
 		const auto pStock = make_shared<CTiingoStock>();
-		const auto lTotalStock = gl_pWorldMarket->GetTotalTiingoStock();
+		const auto lTotalStock = gl_dataTiingoStock.GetTotalStock();
 		pStock->m_strTicker = _T("ABCDEF");
 
-		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
-		gl_pWorldMarket->AddTiingoStock(pStock);
-		EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(pStock));
-		EXPECT_EQ(gl_pWorldMarket->GetTotalTiingoStock(), lTotalStock + 1);
-		gl_pWorldMarket->DeleteTiingoStock(pStock);
-		EXPECT_FALSE(gl_pWorldMarket->IsTiingoStock(pStock));
-		EXPECT_EQ(gl_pWorldMarket->GetTotalTiingoStock(), lTotalStock);
+		EXPECT_FALSE(gl_dataTiingoStock.IsStock(pStock));
+		gl_dataTiingoStock.Add(pStock);
+		EXPECT_TRUE(gl_dataTiingoStock.IsStock(pStock));
+		EXPECT_EQ(gl_dataTiingoStock.GetTotalStock(), lTotalStock + 1);
+		gl_dataTiingoStock.Delete(pStock);
+		EXPECT_FALSE(gl_dataTiingoStock.IsStock(pStock));
+		EXPECT_EQ(gl_dataTiingoStock.GetTotalStock(), lTotalStock);
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteTiingoStock) {
 		// do nothing. 已经在TestAddStock中测试了DeleteStock函数
 		CTiingoStockPtr pStock = nullptr;
 
-		EXPECT_FALSE(gl_pWorldMarket->DeleteTiingoStock(pStock)) << "空指针";
+		EXPECT_FALSE(gl_dataTiingoStock.Delete(pStock)) << "空指针";
 
 		pStock = make_shared<CTiingoStock>();
 		pStock->m_strTicker = _T("ABCDEF");
-		EXPECT_FALSE(gl_pWorldMarket->DeleteTiingoStock(pStock)) << "此股票代码不存在于代码集中";
+		EXPECT_FALSE(gl_dataTiingoStock.Delete(pStock)) << "此股票代码不存在于代码集中";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsForexExchange) {
@@ -560,9 +560,9 @@ namespace FireBirdTest {
 		pTiingoStock->m_strTiingoPermaTicker = _T("abcdefg");
 		pTiingoStock->m_strTiingoSector = _T("gfedcba");
 
-		gl_pWorldMarket->AddTiingoStock(pTiingoStock);
+		gl_dataTiingoStock.Add(pTiingoStock);
 
-		gl_pWorldMarket->UpdateTiingoStockDB(); // 更新代码集
+		gl_dataTiingoStock.UpdateDB(); // 更新代码集
 
 		// 恢复原状
 		setTiingoStock.m_strFilter = _T("[Ticker] = 'ABCDEF'");
@@ -576,7 +576,7 @@ namespace FireBirdTest {
 		setTiingoStock.m_pDatabase->CommitTrans();
 		setTiingoStock.Close();
 
-		gl_pWorldMarket->DeleteTiingoStock(pTiingoStock);
+		gl_dataTiingoStock.Delete(pTiingoStock);
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateForexExchangeDB) {

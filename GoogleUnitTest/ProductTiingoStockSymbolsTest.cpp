@@ -237,14 +237,14 @@ namespace FireBirdTest {
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_TRUE(gl_pWorldMarket->IsTiingoStock(_T("NEW SYMBOL")));
-			EXPECT_TRUE((pTiingoStock = gl_pWorldMarket->GetTiingoStock(_T("NEW SYMBOL"))) != nullptr);
+			EXPECT_TRUE(gl_dataTiingoStock.IsStock(_T("NEW SYMBOL")));
+			EXPECT_TRUE((pTiingoStock = gl_dataTiingoStock.GetStock(_T("NEW SYMBOL"))) != nullptr);
 			pStock = gl_pWorldMarket->GetStock(_T("AA"));
 			EXPECT_STREQ(pStock->GetName(), _T("New Name")) << "更改为此新名字";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 
 		// 恢复原状
-			gl_pWorldMarket->DeleteTiingoStock(pTiingoStock);
+			gl_dataTiingoStock.Delete(pTiingoStock);
 			pStock->SetUpdateProfileDB(false);
 			pStock->SetName(_T("Alcoa Corp"));
 			EXPECT_FALSE(gl_pWorldMarket->IsUpdateStockProfileDB());

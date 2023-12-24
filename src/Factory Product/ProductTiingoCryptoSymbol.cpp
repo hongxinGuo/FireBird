@@ -28,8 +28,8 @@ bool CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (!pvTiingoCrypto->empty()) {
 		char buffer[100];
 		for (const auto& pTiingoCrypto : *pvTiingoCrypto) {
-			if (!GetMarket()->IsTiingoCryptoSymbol(pTiingoCrypto->m_strTicker)) {
-				GetMarket()->AddTiingoCryptoSymbol(pTiingoCrypto);
+			if (!gl_dataTiingoCryptoSymbol.IsSymbol(pTiingoCrypto->m_strTicker)) {
+				gl_dataTiingoCryptoSymbol.Add(pTiingoCrypto);
 			}
 		}
 		sprintf_s(buffer, _T("%zd"), pvTiingoCrypto->size());

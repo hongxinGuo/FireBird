@@ -86,12 +86,12 @@ void CWorldMarket::ResetDataClass() {
 
 	m_containerStock.Reset();
 
-	m_dataTiingoStock.Reset();
-	m_dataTiingoCryptoSymbol.Reset();
+	gl_dataTiingoStock.Reset();
+	gl_dataTiingoCryptoSymbol.Reset();
 
-	m_containerChosenStock.Reset();
-	m_containerChosenForex.Reset();
-	m_containerChosenCrypto.Reset();
+	gl_containerChosenStock.Reset();
+	gl_containerChosenForex.Reset();
+	gl_containerChosenCrypto.Reset();
 }
 
 void CWorldMarket::ResetMarket() {
@@ -102,17 +102,17 @@ void CWorldMarket::ResetMarket() {
 	LoadWorldExchangeDB(); // 装入世界交易所信息
 	gl_dataFinnhubCountry.LoadDB();
 	LoadStockDB();
-	LoadWorldChosenStock();
+	gl_containerChosenStock.LoadDB();
 	LoadForexExchange();
 	gl_dataFinnhubForexSymbol.LoadDB();
-	LoadWorldChosenForex();
+	gl_containerChosenForex.LoadDB();
 	LoadCryptoExchange();
 	gl_dataFinnhubCryptoSymbol.LoadDB();
-	LoadWorldChosenCrypto();
+	gl_containerChosenCrypto.LoadDB();
 	gl_dataFinnhubEconomicCalendar.LoadDB();
 
-	LoadTiingoStock();
-	LoadTiingoCryptoSymbol();
+	gl_dataTiingoStock.LoadDB();
+	gl_dataTiingoCryptoSymbol.LoadDB();
 
 	for (const auto& pDataSource : m_vDataSource) {
 		pDataSource->Reset();
@@ -405,8 +405,8 @@ void CWorldMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 	if (gl_dataFinnhubEconomicCalendar.IsNeedUpdate()) CreateThreadUpdateEconomicCalendarDB();
 	if (IsUpdateCompanyNewsDB()) CreateThreadUpdateCompanyNewsDB();
 	if (IsUpdateBasicFinancialDB()) CreateThreadUpdateBasicFinancialDB();
-	if (IsNeedUpdateTiingoStock()) CreateThreadUpdateTiingoStockDB();
-	if (IsNeedUpdateTiingoCryptoSymbol()) CreateThreadUpdateTiingoCryptoSymbolDB();
+	if (gl_dataTiingoStock.IsNeedUpdate()) CreateThreadUpdateTiingoStockDB();
+	if (gl_dataTiingoCryptoSymbol.IsNeedUpdate()) CreateThreadUpdateTiingoCryptoSymbolDB();
 	if (IsUpdateEPSSurpriseDB()) CreateThreadUpdateEPSSurpriseDB2();
 
 	UpdateForexDayLineDB();
@@ -458,12 +458,12 @@ void CWorldMarket::CreateThreadUpdateInsiderSentimentDB() {
 }
 
 void CWorldMarket::CreateThreadUpdateTiingoStockDB() {
-	thread thread1(ThreadUpdateTiingoStockDB, gl_pWorldMarket);
+	thread thread1(ThreadUpdateTiingoStockDB);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CWorldMarket::CreateThreadUpdateTiingoCryptoSymbolDB() {
-	thread thread1(ThreadUpdateTiingoCryptoSymbolDB, gl_pWorldMarket);
+	thread thread1(ThreadUpdateTiingoCryptoSymbolDB);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
@@ -650,18 +650,18 @@ void CWorldMarket::UpdateStockDayLineStartEndDate() {
 vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector() {
 	vectorString vSymbol;
 
-	for (long l = 0; l < m_containerChosenStock.Size(); l++) {
-		const CWorldStockPtr pStock = m_containerChosenStock.GetStock(l);
+	for (long l = 0; l < gl_containerChosenStock.Size(); l++) {
+		const CWorldStockPtr pStock = gl_containerChosenStock.GetStock(l);
 		vSymbol.push_back(pStock->GetSymbol().GetBuffer());
 	}
 
-	for (long l = 0; l < m_containerChosenForex.Size(); l++) {
-		const CForexSymbolPtr pForex = m_containerChosenForex.GetForexSymbol(l);
+	for (long l = 0; l < gl_containerChosenForex.Size(); l++) {
+		const CForexSymbolPtr pForex = gl_containerChosenForex.GetForexSymbol(l);
 		vSymbol.push_back(pForex->GetSymbol().GetBuffer());
 	}
 
-	for (long l = 0; l < m_containerChosenCrypto.Size(); l++) {
-		const CFinnhubCryptoSymbolPtr pCrypto = m_containerChosenCrypto.GetCryptoSymbol(l);
+	for (long l = 0; l < gl_containerChosenCrypto.Size(); l++) {
+		const CFinnhubCryptoSymbolPtr pCrypto = gl_containerChosenCrypto.GetCryptoSymbol(l);
 		vSymbol.push_back(pCrypto->GetSymbol().GetBuffer());
 	}
 
@@ -687,8 +687,8 @@ vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 vectorString CWorldMarket::GetTiingoIEXWebSocketSymbolVector() {
 	vectorString vSymbol;
-	for (long l = 0; l < m_containerChosenStock.Size(); l++) {
-		const CWorldStockPtr pStock = m_containerChosenStock.GetStock(l);
+	for (long l = 0; l < gl_containerChosenStock.Size(); l++) {
+		const CWorldStockPtr pStock = gl_containerChosenStock.GetStock(l);
 		vSymbol.push_back(pStock->GetSymbol().GetBuffer());
 	}
 
@@ -705,8 +705,8 @@ vectorString CWorldMarket::GetTiingoIEXWebSocketSymbolVector() {
 //////////////////////////////////////////////////////////////////////////////////////////////
 vectorString CWorldMarket::GetTiingoCryptoWebSocketSymbolVector() {
 	vectorString vSymbol;
-	for (long l = 0; l < m_containerChosenCrypto.Size(); l++) {
-		const CFinnhubCryptoSymbolPtr pCrypto = m_containerChosenCrypto.GetCryptoSymbol(l);
+	for (long l = 0; l < gl_containerChosenCrypto.Size(); l++) {
+		const CFinnhubCryptoSymbolPtr pCrypto = gl_containerChosenCrypto.GetCryptoSymbol(l);
 		vSymbol.push_back(pCrypto->GetSymbol().GetBuffer());
 	}
 
@@ -723,8 +723,8 @@ vectorString CWorldMarket::GetTiingoCryptoWebSocketSymbolVector() {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 vectorString CWorldMarket::GetTiingoForexWebSocketSymbolVector() {
 	vectorString vSymbol;
-	for (long l = 0; l < m_containerChosenForex.Size(); l++) {
-		const CForexSymbolPtr pForex = m_containerChosenForex.GetForexSymbol(l);
+	for (long l = 0; l < gl_containerChosenForex.Size(); l++) {
+		const CForexSymbolPtr pForex = gl_containerChosenForex.GetForexSymbol(l);
 		vSymbol.push_back(pForex->GetSymbol().GetBuffer());
 	}
 

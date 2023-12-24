@@ -1,6 +1,7 @@
 #pragma once
 
 #include"ContainerVirtualStock.h"
+#include "FinnhubForexSymbol.h"
 
 class CContainerChosenForex : public CContainerVirtualStock {
 public:

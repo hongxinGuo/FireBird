@@ -113,12 +113,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(ThreadUpdateInsiderSentimentDB(s_pMockWorldMarket), static_cast<UINT>(58));
 	}
 
-	TEST_F(CMockWorldMarketTest, TestThreadUpdateTiingoStockDB) {
-		EXPECT_CALL(*s_pMockWorldMarket, UpdateTiingoStockDB)
-		.Times(1);
-		EXPECT_EQ(ThreadUpdateTiingoStockDB(s_pMockWorldMarket), static_cast<UINT>(44));
-	}
-
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateTiingoIndustry) {
 		EXPECT_CALL(*s_pMockWorldMarket, UpdateTiingoIndustry)
 		.Times(1);

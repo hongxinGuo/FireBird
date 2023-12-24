@@ -6,14 +6,7 @@
 #include"ContainerFinnhubForexExchange.h"
 #include"ContainerFinnhubCryptoExchange.h"
 
-#include"ContainerChosenStock.h"
-#include"ContainerChosenForex.h"
-#include"containerChosenCrypto.h"
-
 #include"ContainerWorldStock.h"
-#include"ContainerTiingoStock.h"
-
-#include"ContainerTiingoCryptoSymbol.h"
 
 #include "FinnhubWebSocket.h"
 #include "TiingoIEXWebSocket.h"
@@ -102,9 +95,6 @@ public:
 	void AddStock(const CWorldStockPtr& pStock) { m_containerStock.Add(pStock); }
 	void DeleteStock(const CWorldStockPtr& pStock) { m_containerStock.Delete(pStock); }
 	size_t GetStockSize() noexcept { return m_containerStock.Size(); }
-	void AddTiingoStock(const CTiingoStockPtr& pTiingoStock) { m_dataTiingoStock.Add(pTiingoStock); }
-	bool DeleteTiingoStock(const CTiingoStockPtr& pStock) { return m_dataTiingoStock.Delete(pStock); }
-	size_t GetTotalTiingoStock() const noexcept { return m_dataTiingoStock.GetTotalStock(); }
 	bool IsStock(const CString& strSymbol) const { return m_containerStock.IsSymbol(strSymbol); }
 	bool IsStock(const CWorldStockPtr& pStock) const { return IsStock(pStock->GetSymbol()); }
 	CWorldStockPtr GetStock(const size_t lIndex) { return m_containerStock.GetStock(lIndex); }
@@ -114,15 +104,6 @@ public:
 
 	bool IsUpdateCompanyNewsDB() { return m_containerStock.IsUpdateCompanyNewsDB(); }
 	bool IsUpdateBasicFinancialDB() { return m_containerStock.IsUpdateBasicFinancialDB(); }
-
-	CWorldStockPtr GetChosenStock(const long lIndex) { return m_containerChosenStock.GetStock(lIndex); }
-	size_t GetChosenStockSize() noexcept { return m_containerChosenStock.Size(); }
-
-	bool IsTiingoStock(const CString& strSymbol) const { return m_dataTiingoStock.IsStock(strSymbol); }
-	bool IsTiingoStock(const CWorldStockPtr& pStock) const { return m_dataTiingoStock.IsStock(pStock); }
-	bool IsTiingoStock(const CTiingoStockPtr& pTiingoStock) const { return m_dataTiingoStock.IsStock(pTiingoStock); }
-	CTiingoStockPtr GetTiingoStock(const size_t lIndex) const { return m_dataTiingoStock.GetStock(lIndex); }
-	CTiingoStockPtr GetTiingoStock(const CString& strTicker) const { return m_dataTiingoStock.GetStock(strTicker); }
 
 	bool IsForexExchange(const CString& strForexExchange) const { return m_dataFinnhubForexExchange.IsForexExchange(strForexExchange); }
 
@@ -138,14 +119,6 @@ public:
 	size_t GetCryptoExchangeSize() const noexcept { return m_dataFinnhubCryptoExchange.GetCryptoExchangeSize(); }
 	CString GetCryptoExchange(const size_t lIndex) const { return m_dataFinnhubCryptoExchange.GetCryptoExchange(lIndex).c_str(); }
 
-	bool IsTiingoCryptoSymbol(const CString& strSymbol) const { return m_dataTiingoCryptoSymbol.IsTiingoCryptoSymbol(strSymbol); }
-	bool IsTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr& pCryptoSymbol) const { return IsTiingoCryptoSymbol(pCryptoSymbol->m_strTicker); }
-	void AddTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr& pCryptoSymbol) { m_dataTiingoCryptoSymbol.Add(pCryptoSymbol); }
-	bool DeleteTiingoCryptoSymbol(const CTiingoCryptoSymbolPtr& pCryptoSymbol) { return m_dataTiingoCryptoSymbol.Delete(pCryptoSymbol); }
-	CTiingoCryptoSymbolPtr GetTiingoCryptoSymbol(const long lIndex) const { return m_dataTiingoCryptoSymbol.GetCryptoSymbol(lIndex); }
-	CTiingoCryptoSymbolPtr GetTiingoCryptoSymbol(const CString& strSymbol) const { return m_dataTiingoCryptoSymbol.GetCryptoSymbol(strSymbol); }
-	size_t GetTiingoCryptoSymbolSize() const noexcept { return m_dataTiingoCryptoSymbol.GetCryptoSymbolSize(); }
-
 	CString GetCurrentFunction() { return m_strCurrentFunction; }
 	void SetCurrentFunction(const CString& str) { m_strCurrentFunction = str; }
 
@@ -156,16 +129,12 @@ public:
 	bool IsSaveStockDayLineDB() noexcept { return m_containerStock.IsDayLineNeedSaving(); }
 	bool IsUpdateEPSSurpriseDB() noexcept { return m_containerStock.IsSaveEPSSurpriseDB(); }
 
-	bool IsNeedUpdateTiingoStock() const noexcept { return m_dataTiingoStock.IsNeedUpdate(); }
-	bool IsNeedUpdateTiingoCryptoSymbol() const noexcept { return m_dataTiingoCryptoSymbol.IsNeedUpdate(); }
-
 	static bool UpdateToken();
 
 	// Êý¾Ý¿â²Ù×÷
 	bool LoadWorldExchangeDB() { return m_dataFinnhubStockExchange.LoadDB(); }
 
 	void LoadStockDB() { m_containerStock.LoadDB(); }
-	bool LoadWorldChosenStock() { return m_containerChosenStock.LoadDB(); }
 
 	virtual void UpdateStockProfileDB() { m_containerStock.UpdateProfileDB(); }
 	virtual bool UpdateCompanyNewsDB();
@@ -175,19 +144,12 @@ public:
 	virtual bool UpdateCryptoExchangeDB() { return m_dataFinnhubCryptoExchange.UpdateDB(); }
 	virtual bool UpdateInsiderTransactionDB();
 	virtual bool UpdateInsiderSentimentDB();
-	virtual bool UpdateTiingoStockDB() { return m_dataTiingoStock.UpdateDB(); }
-	virtual bool UpdateTiingoCryptoSymbolDB() { return m_dataTiingoCryptoSymbol.UpdateDB(); }
 	virtual bool UpdateTiingoIndustry();
 	virtual bool UpdateSICIndustry();
 	virtual bool UpdateNaicsIndustry();
 
 	void LoadForexExchange() { m_dataFinnhubForexExchange.LoadDB(); }
 	void LoadCryptoExchange() { m_dataFinnhubCryptoExchange.LoadDB(); }
-	void LoadWorldChosenForex() { m_containerChosenForex.LoadDB(); }
-	void LoadWorldChosenCrypto() { m_containerChosenCrypto.LoadDB(); }
-
-	void LoadTiingoStock() { m_dataTiingoStock.LoadDB(); }
-	void LoadTiingoCryptoSymbol() { m_dataTiingoCryptoSymbol.LoadDB(); }
 
 	void RebuildStockDayLineDB();
 	virtual void UpdateStockDayLineStartEndDate();
@@ -235,13 +197,6 @@ protected:
 	CContainerFinnhubCryptoExchange m_dataFinnhubCryptoExchange;
 
 	CContainerWorldStock m_containerStock;
-
-	CContainerTiingoStock m_dataTiingoStock;
-	CContainerTiingoCryptoSymbol m_dataTiingoCryptoSymbol;
-
-	CContainerChosenStock m_containerChosenStock;
-	CContainerChosenForex m_containerChosenForex;
-	CContainerChosenCrypto m_containerChosenCrypto;
 
 	CMarketStatusVectorPtr m_pvMarketStatus;
 	CMarketHolidayVectorPtr m_pvMarketHoliday;

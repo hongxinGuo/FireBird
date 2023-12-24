@@ -5,10 +5,10 @@
 #include"WorldMarket.h"
 #include "Thread.h"
 
-UINT ThreadUpdateTiingoCryptoSymbolDB(const not_null<CWorldMarketPtr>& pMarket) {
+UINT ThreadUpdateTiingoCryptoSymbolDB() {
 	gl_UpdateWorldMarketDB.acquire();
-	pMarket->UpdateTiingoCryptoSymbolDB();
+	gl_dataTiingoCryptoSymbol.UpdateDB();
 	gl_UpdateWorldMarketDB.release();
 
-	return 44;
+	return 54;
 }

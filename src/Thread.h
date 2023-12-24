@@ -79,7 +79,7 @@ UINT ThreadUpdateWorldStockDayLineDB(const not_null<CWorldMarketPtr>& pMarket); 
 // 从日线数据中重建起止日期
 UINT ThreadUpdateWorldStockDayLineStartEndDate(const CWorldMarketPtr& pMarket); // 此工作线程返回值为43
 // 更新Tiingo股票集。
-UINT ThreadUpdateTiingoStockDB(const not_null<CWorldMarketPtr>& pMarket); // 此工作线程返回值为44
+UINT ThreadUpdateTiingoStockDB(); // 此工作线程返回值为44
 // 更新Tiingo工业分类。
 UINT ThreadUpdateTiingoIndustry(const not_null<CWorldMarketPtr>& pMarket); // 此工作线程返回值为45
 // 更新SIC工业分类。
@@ -99,7 +99,7 @@ UINT ThreadUpdateFinnhubCryptoSymbolDB(); // 此工作线程返回值为52
 // 更新Crypto日线数据
 UINT ThreadUpdateCryptoDayLineDB(const not_null<CFinnhubCryptoSymbolPtr>& pSymbol); // 此工作线程的返回值未53
 // 更新Tiingo crypto代码集。
-UINT ThreadUpdateTiingoCryptoSymbolDB(const not_null<CWorldMarketPtr>& pMarket); // 此工作线程返回值为54
+UINT ThreadUpdateTiingoCryptoSymbolDB(); // 此工作线程返回值为54
 // 更新Finnhub basic financial
 UINT ThreadUpdateBasicFinancialDB(const not_null<CWorldMarketPtr>& pMarket); // 此工作线程返回值为55
 // 更新InsiderSentiment

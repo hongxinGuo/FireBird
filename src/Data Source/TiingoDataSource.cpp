@@ -92,7 +92,7 @@ bool CTiingoDataSource::InquireCryptoSymbol() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoDataSource::InquireDayLine() {
-	const auto lStockSetSize = gl_pWorldMarket->GetChosenStockSize();
+	const auto lStockSetSize = gl_containerChosenStock.Size();
 	bool fHaveInquiry = false;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
@@ -100,8 +100,8 @@ bool CTiingoDataSource::InquireDayLine() {
 		CWorldStockPtr pStock;
 		bool fFound = false;
 		for (long lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
-			if (gl_pWorldMarket->GetChosenStock(lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
-				pStock = gl_pWorldMarket->GetChosenStock(lCurrentUpdateDayLinePos);
+			if (gl_containerChosenStock.GetStock(lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
+				pStock = gl_containerChosenStock.GetStock(lCurrentUpdateDayLinePos);
 				fFound = true;
 				break;
 			}

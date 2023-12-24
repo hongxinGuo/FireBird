@@ -10,10 +10,15 @@
 
 #include <gsl/pointers>
 
+#include "containerChosenCrypto.h"
+#include "ContainerChosenForex.h"
+#include "ContainerChosenStock.h"
 #include "ContainerFinnhubCountry.h"
 #include "containerFinnhubCryptoSymbol.h"
 #include "ContainerFinnhubEconomicCalendar.h"
 #include "containerFinnhubForexSymbol.h"
+#include "ContainerTiingoCryptoSymbol.h"
+#include "ContainerTiingoStock.h"
 using gsl::not_null;
 
 #include"FinnhubWebSocket.h"
@@ -35,6 +40,13 @@ extern CContainerFinnhubForexSymbol gl_dataFinnhubForexSymbol;
 extern CContainerFinnhubCryptoSymbol gl_dataFinnhubCryptoSymbol;
 extern CContainerFinnhubCountry gl_dataFinnhubCountry;
 extern CContainerFinnhubEconomicCalendar gl_dataFinnhubEconomicCalendar;
+
+extern CContainerTiingoStock gl_dataTiingoStock;
+extern CContainerTiingoCryptoSymbol gl_dataTiingoCryptoSymbol;
+
+extern CContainerChosenStock gl_containerChosenStock;
+extern CContainerChosenForex gl_containerChosenForex;
+extern CContainerChosenCrypto gl_containerChosenCrypto;
 
 class CSystemData final {
 public:

@@ -3,9 +3,9 @@
 #include"ThreadStatus.h"
 #include"WorldMarket.h"
 
-UINT ThreadUpdateTiingoStockDB(const not_null<CWorldMarketPtr>& pMarket) {
+UINT ThreadUpdateTiingoStockDB() {
 	gl_UpdateWorldMarketDB.acquire();
-	pMarket->UpdateTiingoStockDB();
+	gl_dataTiingoStock.UpdateDB();
 	gl_UpdateWorldMarketDB.release();
 
 	return 44;

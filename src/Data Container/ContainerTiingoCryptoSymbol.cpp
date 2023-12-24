@@ -18,7 +18,7 @@ void CContainerTiingoCryptoSymbol::Reset() {
 
 bool CContainerTiingoCryptoSymbol::Delete(const CTiingoCryptoSymbolPtr& pCryptoSymbol) {
 	if (pCryptoSymbol == nullptr) return false;
-	if (!IsTiingoCryptoSymbol(pCryptoSymbol->m_strTicker)) return false;
+	if (!IsSymbol(pCryptoSymbol->m_strTicker)) return false;
 
 	m_vTiingoCrypto.erase(m_vTiingoCrypto.begin() + m_mapTiingoCrypto.at(pCryptoSymbol->m_strTicker));
 	m_mapTiingoCrypto.erase(pCryptoSymbol->m_strTicker);
@@ -39,7 +39,7 @@ bool CContainerTiingoCryptoSymbol::LoadDB() {
 	setCryptoSymbol.Open();
 	setCryptoSymbol.m_pDatabase->BeginTrans();
 	while (!setCryptoSymbol.IsEOF()) {
-		if (!IsTiingoCryptoSymbol(setCryptoSymbol.m_Ticker)) {
+		if (!IsSymbol(setCryptoSymbol.m_Ticker)) {
 			const auto pSymbol = make_shared<CTiingoCryptoSymbol>();
 			pSymbol->Load(setCryptoSymbol);
 			Add(pSymbol);

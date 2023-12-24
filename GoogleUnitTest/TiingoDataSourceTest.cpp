@@ -104,8 +104,8 @@ namespace FireBirdTest {
 			pStock = gl_pWorldMarket->GetStock(i);
 			pStock->SetDayLineNeedUpdate(false);
 		}
-		gl_pWorldMarket->GetChosenStock(1)->SetDayLineNeedUpdate(true);
-		gl_pWorldMarket->GetChosenStock(3)->SetDayLineNeedUpdate(true);
+		gl_containerChosenStock.GetStock(1)->SetDayLineNeedUpdate(true);
+		gl_containerChosenStock.GetStock(3)->SetDayLineNeedUpdate(true);
 		m_TiingoDataSource.SetUpdateDayLine(false);
 		EXPECT_FALSE(m_TiingoDataSource.InquireDayLine()) << "DayLine Updated";
 
@@ -116,23 +116,23 @@ namespace FireBirdTest {
 		m_TiingoDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_TiingoDataSource.InquireDayLine());
 		EXPECT_TRUE(m_TiingoDataSource.IsInquiring());
-		auto lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChosenStock(1)->GetSymbol());
+		auto lStockIndex = gl_pWorldMarket->GetStockIndex(gl_containerChosenStock.GetStock(1)->GetSymbol());
 		CVirtualProductWebDataPtr p = m_TiingoDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockDayLine"));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置是第一个股票";
-		EXPECT_TRUE(gl_pWorldMarket->GetChosenStock(1)->IsDayLineNeedUpdate()) << "待数据处理后方重置此标识";
-		EXPECT_TRUE(gl_pWorldMarket->GetChosenStock(3)->IsDayLineNeedUpdate());
+		EXPECT_TRUE(gl_containerChosenStock.GetStock(1)->IsDayLineNeedUpdate()) << "待数据处理后方重置此标识";
+		EXPECT_TRUE(gl_containerChosenStock.GetStock(3)->IsDayLineNeedUpdate());
 
-		gl_pWorldMarket->GetChosenStock(1)->SetDayLineNeedUpdate(false);
+		gl_containerChosenStock.GetStock(1)->SetDayLineNeedUpdate(false);
 		m_TiingoDataSource.SetInquiring(false);
 		EXPECT_TRUE(m_TiingoDataSource.InquireDayLine());
-		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChosenStock(3)->GetSymbol());
+		lStockIndex = gl_pWorldMarket->GetStockIndex(gl_containerChosenStock.GetStock(3)->GetSymbol());
 		p = m_TiingoDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockDayLine"));
 		EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置是第三个股票";
-		EXPECT_TRUE(gl_pWorldMarket->GetChosenStock(3)->IsDayLineNeedUpdate()) << "待数据处理后方重置此标识";
+		EXPECT_TRUE(gl_containerChosenStock.GetStock(3)->IsDayLineNeedUpdate()) << "待数据处理后方重置此标识";
 
-		gl_pWorldMarket->GetChosenStock(3)->SetDayLineNeedUpdate(false);
+		gl_containerChosenStock.GetStock(3)->SetDayLineNeedUpdate(false);
 		m_TiingoDataSource.SetInquiring(false);
 		EXPECT_FALSE(m_TiingoDataSource.InquireDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_TiingoDataSource.IsUpdateDayLine()) << "股票都查询完了";
