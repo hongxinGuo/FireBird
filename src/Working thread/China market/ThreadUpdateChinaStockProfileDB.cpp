@@ -10,9 +10,9 @@
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadUpdateChinaStockProfileDB(const not_null<CChinaMarketPtr>& pMarket) {	//
+UINT ThreadUpdateChinaStockProfileDB() {	//
 	gl_UpdateChinaMarketDB.acquire();
-	pMarket->UpdateStockProfileDB();
+	gl_containerChinaStock.UpdateStockProfileDB();
 	gl_UpdateChinaMarketDB.release();
 
 	return 18;

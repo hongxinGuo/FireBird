@@ -63,13 +63,13 @@ UINT ThreadBuildWeekLineRS(const not_null<CChinaMarketPtr>& pMarket, long startC
 // 最多允许八个工作线程并行。
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadBuildWeekLineRSOfDate(const not_null<CChinaMarketPtr>& pMarket, long lDate) {
+UINT ThreadBuildWeekLineRSOfDate(long lDate) {
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 	gl_BackgroundWorkingThread.acquire();
 	ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
 
 	if (!gl_systemConfiguration.IsExitingSystem() && !gl_systemConfiguration.IsExitingCalculatingRS()) {
-		pMarket->BuildWeekLineRS(lDate);
+		gl_containerChinaStock.BuildWeekLineRS(lDate);
 	}
 	gl_BackgroundWorkingThread.release();
 	gl_ThreadStatus.DecreaseBackGroundWorkingThread();

@@ -120,8 +120,8 @@ bool CFireBirdView::ShowGuadan(CDC* pDC, const CChinaStockPtr& pStock, int iXSta
 }
 
 bool CFireBirdView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart) {
-	if (gl_pChinaMarket->GetTotalStock() > 0) {
-		pStock = gl_pChinaMarket->GetStock(0); // 000001.SS
+	if (gl_containerChinaStock.Size() > 0) {
+		pStock = gl_containerChinaStock.GetStock(0); // 000001.SS
 	}
 	else return false;
 

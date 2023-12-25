@@ -16,7 +16,7 @@ UINT ThreadChoice10RSStrong2StockSet(const not_null<CChinaMarketPtr>& pMarket) {
 	gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));
 
 	// 添加一个注释
-	if (pMarket->Choice10RSStrong2StockSet()) {
+	if (gl_containerChinaStock.Choice10RSStrong2StockSet()) {
 		gl_systemMessage.PushInformationMessage(_T("10日RS2计算完毕\n"));
 		pMarket->SetUpdatedDateFor10DaysRS2(pMarket->GetMarketDate());
 		pMarket->SetUpdateOptionDB(true); // 更新选项数据库
@@ -31,7 +31,7 @@ UINT ThreadChoice10RSStrong1StockSet(const not_null<CChinaMarketPtr>& pMarket) {
 	gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));
 
 	// 添加一个注释
-	if (pMarket->Choice10RSStrong1StockSet()) {
+	if (gl_containerChinaStock.Choice10RSStrong1StockSet()) {
 		gl_systemMessage.PushInformationMessage(_T("10日RS1计算完毕\n"));
 		pMarket->SetUpdatedDateFor10DaysRS1(pMarket->GetMarketDate());
 		pMarket->SetUpdateOptionDB(true); // 更新选项数据库
@@ -51,7 +51,7 @@ UINT ThreadChoice10RSStrongStockSet(const not_null<CChinaMarketPtr>& pMarket, CR
 	gl_systemMessage.PushInformationMessage(str);
 
 	// 添加一个注释
-	if (pMarket->Choice10RSStrongStockSet(pRef, iIndex)) {
+	if (gl_containerChinaStock.Choice10RSStrongStockSet(pRef, iIndex)) {
 		str = _T("10日RS ");
 		str += buffer;
 		str += _T("计算完毕\n");

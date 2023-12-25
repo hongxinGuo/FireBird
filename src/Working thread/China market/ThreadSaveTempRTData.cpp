@@ -20,12 +20,10 @@
 /// </summary>
 /// <param name="pMarket"></param>
 /// <returns></returns>
-UINT ThreadSaveTempRTData(const CChinaMarketPtr& pMarket) {
-	ASSERT(pMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
-
+UINT ThreadSaveTempRTData() {
 	gl_UpdateChinaMarketDB.acquire();
 	gl_ProcessChinaMarketRTData.acquire();
-	pMarket->SaveTempRTData();
+	gl_containerChinaStock.SaveTempRTData();
 	gl_ProcessChinaMarketRTData.release();
 	gl_UpdateChinaMarketDB.release();
 

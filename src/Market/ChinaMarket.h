@@ -2,7 +2,6 @@
 
 #include"VirtualMarket.h"
 
-#include"ContainerStockSymbol.h"
 #include"ContainerChinaStock.h"
 
 #include<semaphore>
@@ -102,7 +101,6 @@ public:
 	//处理个股票的实时数据，计算挂单变化等。
 	void DistributeRTData();
 	void CalculateRTData();
-	void ProcessRTData() { m_containerChinaStock.ProcessRTData(); }
 
 	// 系统状态区
 	bool IsFastReceivingRTData() noexcept { return m_fFastReceivingRTData; }
@@ -110,27 +108,9 @@ public:
 	// 实时数据读取
 	CString GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet);
 	CString GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet);
-	CString GetNextNeteaseStockInquiringMiddleStr(const long lTotalNumber) { return m_containerChinaStock.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber); }
 	bool CheckValidOfNeteaseDayLineInquiringStr(const CString& str) const;
-	CString GetNextSinaStockInquiringMiddleStrFromTotalStockSet(const long lTotalNumber) { return m_containerStockSymbol.GetNextSinaStockInquiringMiddleStr(lTotalNumber); }
-	CString GetNextNeteaseStockInquiringMiddleStrFromTotalStockSet(const long lTotalNumber) { return m_containerStockSymbol.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber); }
-	CString GetNextSinaStockInquiringMiddleStr(const long lTotalNumber) { return m_containerChinaStock.GetNextSinaStockInquiringMiddleStr(lTotalNumber); }
-	CString GetNextTengxunStockInquiringMiddleStr(const long lTotalNumber) { return m_containerChinaStock.GetNextTengxunStockInquiringMiddleStr(lTotalNumber); }
-
-	//日线历史数据读取
-	CString CreateNeteaseDayLineInquiringStr() { return m_containerChinaStock.CreateNeteaseDayLineInquiringStr(); }
-	CString CreateTengxunDayLineInquiringStr() { return m_containerChinaStock.CreateTengxunDayLineInquiringStr(); }
 
 	static long IncreaseStockInquiringIndex(long& lIndex, long lEndPosition);
-
-	bool IsStock(const CString& strStockCode) const { return m_containerChinaStock.IsSymbol(strStockCode); } // 是否为正确的股票代码
-
-	CString GetStockName(const CString& strStockCode) { return m_containerChinaStock.GetStockName(strStockCode); }
-
-	// 得到股票指针
-	CChinaStockPtr GetStock(const CString& strStockCode) { return m_containerChinaStock.GetStock(strStockCode); }
-	CChinaStockPtr GetStock(const size_t lIndex) { return m_containerChinaStock.GetStock(lIndex); }
-	size_t GetStockIndex(const not_null<CChinaStockPtr>& pStock) const { return m_containerChinaStock.GetOffset(pStock->GetSymbol()); }
 
 	// 得到当前显示股票
 	CChinaStockPtr GetCurrentStock() const noexcept { return m_pCurrentStock; }
@@ -158,20 +138,15 @@ public:
 	void SetCalculateChosen10RS(const bool fFlag) noexcept { m_fCalculateChosen10RS = fFlag; }
 
 	// 数据库读取存储操作
-	bool SaveDayLineData() { return m_containerChinaStock.SaveDayLineData(); } // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
-	virtual void UpdateStockProfileDB() { m_containerChinaStock.UpdateStockProfileDB(); }
-	void LoadStockProfileDB() { m_containerChinaStock.LoadStockProfileDB(); }
 
 	virtual void UpdateOptionDB();
 	void LoadOptionDB();
 	void UpdateChosenStockDB() const;
 	virtual void AppendChosenStockDB();
 	void LoadChosenStockDB();
-	virtual void SaveTempRTData() { m_containerChinaStock.SaveTempRTData(); }
 	bool TaskLoadTempRTData(long lTheDate, long lCurrentTime);
 	virtual void LoadTempRTData(long lTheDate);
 	bool LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) const;
-	virtual void SaveStockSection() { m_containerStockSymbol.UpdateStockSectionDB(); }
 
 	static bool ChangeDayLineStockCodeTypeToStandard();
 
@@ -181,8 +156,6 @@ public:
 	virtual void DeleteWeekLine(long lMonday);
 	void DeleteWeekLineBasicInfo(long lMonday) const;
 	void DeleteWeekLineExtendInfo(long lMonday) const;
-
-	void MaintainDayLine() const { m_containerChinaStock.SetDayLineNeedMaintain(); }
 
 	void DeleteDayLine(long lDate) const;
 	void DeleteDayLineBasicInfo(long lDate) const;
@@ -200,27 +173,13 @@ public:
 	bool Load10DaysRSStrongStockDB();
 	bool LoadOne10DaysRSStrongStockDB(long lIndex);
 
-	virtual bool BuildWeekLine(const long lStartDate) { return m_containerChinaStock.BuildWeekLine(lStartDate); }
 	virtual bool BuildWeekLineOfCurrentWeek();
 	static bool CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CVirtualHistoryCandleExtendPtr>*> pvData);
 	virtual bool BuildCurrentWeekWeekLineTable(); // 使用周线表构建当前周周线表
 
 	// 股票历史数据处理
-	virtual bool Choice10RSStrong2StockSet() { return m_containerChinaStock.Choice10RSStrong2StockSet(); }
-	// 选择10日强势股票集（两次峰值）
-	virtual bool Choice10RSStrong1StockSet() { return m_containerChinaStock.Choice10RSStrong1StockSet(); }
-	// 选择10日强势股票集（一次峰值）
-	virtual bool Choice10RSStrongStockSet(CRSReference* pRef, const int iIndex) { return m_containerChinaStock.Choice10RSStrongStockSet(pRef, iIndex); }
 
-	bool IsDayLineNeedUpdate() noexcept { return m_containerChinaStock.IsDayLineNeedUpdate(); }
 	bool IsDayLineNeedProcess();
-	bool IsDayLineNeedSaving() { return m_containerChinaStock.IsDayLineNeedSaving(); }
-	long GetDayLineNeedUpdateNumber() const { return m_containerChinaStock.GetDayLineNeedUpdateNumber(); }
-	long GetDayLineNeedSaveNumber() const { return m_containerChinaStock.GetDayLineNeedSaveNumber(); }
-
-	virtual long BuildDayLine(const long lCurrentTradeDay) { return m_containerChinaStock.BuildDayLine(lCurrentTradeDay); }
-	virtual bool BuildDayLineRS(const long lDate) { return m_containerChinaStock.BuildDayLineRS(lDate); }
-	virtual bool BuildWeekLineRS(const long lDate) { return m_containerChinaStock.BuildWeekLineRS(lDate); }
 
 	bool IsSelectedStockLoaded() const noexcept { return m_fSelectedStockLoaded; }
 	void SetSelectedStockLoaded(const bool fLoad) noexcept { m_fSelectedStockLoaded = fLoad; }
@@ -230,9 +189,6 @@ public:
 
 	bool IsTodayTempRTDataLoaded() const noexcept { return m_fTodayTempDataLoaded; }
 	void SetTodayTempRTDataLoaded(const bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
-
-	bool IsDayLineDBUpdated() { return m_containerChinaStock.IsDayLineDBUpdated(); }
-	void ClearDayLineDBUpdatedFlag() noexcept { m_containerChinaStock.ClearDayLineDBUpdatedFlag(); }
 
 	long GetRSStartDate() const noexcept { return m_lRSStartDate; }
 	void SetRSStartDate(const long lDate) noexcept { m_lRSStartDate = lDate; }
@@ -247,11 +203,6 @@ public:
 	void SetUpdatedDateFor10DaysRS2(const long lDate) noexcept { m_lUpdatedDateFor10DaysRS2 = lDate; }
 	long GetUpdatedDateFor10DaysRS() const noexcept { return m_lUpdatedDateFor10DaysRS; }
 	void SetUpdatedDateFor10DaysRS(const long lDate) noexcept { m_lUpdatedDateFor10DaysRS = lDate; }
-
-	INT64 GetTotalAttackBuyAmount() { return m_containerChinaStock.GetTotalAttackBuyAmount(); }
-	INT64 GetTotalAttackSellAmount() { return m_containerChinaStock.GetTotalAttackSellAmount(); }
-
-	size_t GetStockOffset(const CString& str) const { return m_containerChinaStock.GetOffset(str); }
 
 	//处理实时股票变化等
 	void DistributeSinaRTDataToStock();
@@ -277,9 +228,6 @@ public:
 	int GetCountDownTengxunNumber() const noexcept { return m_iCountDownTengxunNumber; }
 	void SetCountDownTengxunNumber(const int iValue) noexcept { m_iCountDownTengxunNumber = iValue; }
 
-	size_t GetTotalStock() noexcept { return m_containerChinaStock.Size(); }
-	long GetTotalActiveStock() const noexcept { return m_containerChinaStock.GetActiveStockSize(); }
-	long GetTotalLoadedStock() const noexcept { return m_containerChinaStock.GetLoadedStockSize(); }
 	void SetNewestTransactionTime(const time_t tt) noexcept { m_ttNewestTransactionTime = tt; }
 	time_t GetNewestTransactionTime() const noexcept { return m_ttNewestTransactionTime; }
 	bool IsMarketOpened() const noexcept { return m_fMarketOpened; }
@@ -309,14 +257,6 @@ public:
 	size_t GetChosenStockSize(const long lIndex) const { return m_avChosenStock.at(lIndex).size(); }
 	void ClearChoiceStockContainer() { m_avChosenStock.at(0).clear(); }
 
-	void SetSinaStockRTDataInquiringIndex(const long lIndex) noexcept { m_containerChinaStock.SetSinaRTDataInquiringIndex(lIndex); }
-	long GetSinaStockRTDataInquiringIndex() const noexcept { return m_containerChinaStock.GetSinaRTDataInquiringIndex(); }
-	void SetTengxunRTDataInquiringIndex(const long lIndex) noexcept { m_containerChinaStock.SetTengxunRTDataInquiringIndex(lIndex); }
-	long GetTengxunRTDataInquiringIndex() const noexcept { return m_containerChinaStock.GetTengxunRTDataInquiringIndex(); }
-
-	void ClearDayLineNeedUpdateStatus() const { m_containerChinaStock.ClearDayLineNeedUpdateStatus(); }
-
-	bool IsUpdateStockProfileDB() { return m_containerChinaStock.IsUpdateProfileDB(); }
 	void SetUpdateOptionDB(const bool fFlag) noexcept { m_fUpdateOptionDB = fFlag; }
 
 	bool IsUpdateOptionDB() const noexcept { return m_fUpdateOptionDB; }
@@ -340,11 +280,6 @@ public:
 
 	size_t GetCurrentStockSetSize();
 
-	void SetUpdateStockSection(const bool fFlag) noexcept { m_containerStockSymbol.SetUpdateStockSection(fFlag); }
-	bool IsUpdateStockSection() const noexcept { return m_containerStockSymbol.IsUpdateStockSection(); }
-
-	void AddStock(const CChinaStockPtr& pStock) { m_containerChinaStock.Add(pStock); }
-	void DeleteStock(const CChinaStockPtr& pStock) { m_containerChinaStock.Delete(pStock); }
 	void CreateStock(const CString& strStockCode, const CString& strStockName, bool fProcessRTData);
 
 	void SetCurrentRSStrongIndex(const long lIndex) noexcept { m_lCurrentRSStrongIndex = lIndex; }
@@ -357,9 +292,6 @@ public:
 	time_t m_ttDistributeAndCalculateTime; // 实时数据分配及处理时间
 
 protected:
-	CContainerChinaStock m_containerChinaStock;
-	CContainerStockSymbol m_containerStockSymbol;
-
 	vector<CChinaStockPtr> m_v10RSStrong1Stock; // 10日强势股票集
 	vector<CChinaStockPtr> m_v10RSStrong2Stock; // 10日强势股票集
 	vector<CRSReference> m_aRSStrongOption; // 用于计算RS的参数，最多十个。

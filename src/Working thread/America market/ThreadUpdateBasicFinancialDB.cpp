@@ -15,7 +15,7 @@ UINT ThreadUpdateBasicFinancialDB() {
 		sm_fInProcess = true;
 	}
 	gl_UpdateWorldMarketDB.acquire();
-	gl_containerStock.UpdateBasicFinancialDB();
+	gl_dataContainerFinnhubStock.UpdateBasicFinancialDB();
 	gl_UpdateWorldMarketDB.release();
 	sm_fInProcess = false;
 

@@ -5,6 +5,7 @@
 
 #include<queue>
 using std::priority_queue;
+using std::vector;
 
 class CPriorityQueueWebRTData final {
 public:

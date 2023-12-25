@@ -26,7 +26,7 @@ namespace FireBirdTest {
 			CChinaStockPtr pStock = nullptr;
 
 			for (int i = 0; i < 100; i++) {
-				pStock = gl_pChinaMarket->GetStock(i);
+				pStock = gl_containerChinaStock.GetStock(i);
 				m_containerVirtualStock.Add(pStock);
 			}
 		}
@@ -43,10 +43,10 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CContainerVirtualStockTest, TestIsInSymbolMap1) {
-		CString strSymbol = gl_pChinaMarket->GetStock(1)->GetSymbol();
+		CString strSymbol = gl_containerChinaStock.GetStock(1)->GetSymbol();
 		EXPECT_TRUE(m_containerVirtualStock.IsSymbol(strSymbol)) << "位于1-100之间";
 
-		strSymbol = gl_pChinaMarket->GetStock(101)->GetSymbol();
+		strSymbol = gl_containerChinaStock.GetStock(101)->GetSymbol();
 		EXPECT_FALSE(m_containerVirtualStock.IsSymbol(strSymbol)) << "不位于1-100之间";
 	}
 
@@ -60,19 +60,19 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestGet1) {
-		EXPECT_STREQ(gl_pChinaMarket->GetStock(50)->GetSymbol(), m_containerVirtualStock.Get(50)->GetSymbol());
+		EXPECT_STREQ(gl_containerChinaStock.GetStock(50)->GetSymbol(), m_containerVirtualStock.Get(50)->GetSymbol());
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestGet2) {
-		const CString strSymbol = gl_pChinaMarket->GetStock(1)->GetSymbol();
+		const CString strSymbol = gl_containerChinaStock.GetStock(1)->GetSymbol();
 
-		EXPECT_STREQ(gl_pChinaMarket->GetStock(strSymbol)->GetSymbol(), m_containerVirtualStock.Get(strSymbol)->GetSymbol());
+		EXPECT_STREQ(gl_containerChinaStock.GetStock(strSymbol)->GetSymbol(), m_containerVirtualStock.Get(strSymbol)->GetSymbol());
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestGetOffset) {
-		EXPECT_EQ(m_containerVirtualStock.GetOffset(gl_pChinaMarket->GetStock(0)->GetSymbol()), 0);
-		EXPECT_EQ(m_containerVirtualStock.GetOffset(gl_pChinaMarket->GetStock(50)->GetSymbol()), 50);
-		EXPECT_EQ(m_containerVirtualStock.GetOffset(gl_pChinaMarket->GetStock(99)->GetSymbol()), 99);
+		EXPECT_EQ(m_containerVirtualStock.GetOffset(gl_containerChinaStock.GetStock(0)->GetSymbol()), 0);
+		EXPECT_EQ(m_containerVirtualStock.GetOffset(gl_containerChinaStock.GetStock(50)->GetSymbol()), 50);
+		EXPECT_EQ(m_containerVirtualStock.GetOffset(gl_containerChinaStock.GetStock(99)->GetSymbol()), 99);
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestAdd1) {
@@ -90,7 +90,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestAdd3) {
-		const CVirtualStockPtr pStock = gl_pChinaMarket->GetStock(101);
+		const CVirtualStockPtr pStock = gl_containerChinaStock.GetStock(101);
 
 		m_containerVirtualStock.Add(pStock);
 		EXPECT_EQ(m_containerVirtualStock.Size(), 101) << "添加不存在的数据";
@@ -106,14 +106,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestDelete2) {
-		const CVirtualStockPtr pStock = gl_pChinaMarket->GetStock(101);
+		const CVirtualStockPtr pStock = gl_containerChinaStock.GetStock(101);
 
 		m_containerVirtualStock.Delete(pStock);
 		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "不删除不存在的数据";
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestDelete3) {
-		const CVirtualStockPtr pStock = gl_pChinaMarket->GetStock(1);
+		const CVirtualStockPtr pStock = gl_containerChinaStock.GetStock(1);
 
 		m_containerVirtualStock.Delete(pStock);
 		EXPECT_EQ(m_containerVirtualStock.Size(), 99) << "删除已存在的数据";

@@ -46,7 +46,7 @@ bool CTengxunDayLineDataSource::Reset() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTengxunDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请腾讯日线数据。
-	if (gl_pChinaMarket->IsSystemReady() && gl_pChinaMarket->IsDayLineNeedUpdate() && gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) {
+	if (gl_pChinaMarket->IsSystemReady() && gl_containerChinaStock.IsDayLineNeedUpdate() && gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) {
 		if (!IsInquiring()) {
 			InquireDayLine();
 			return true;
@@ -56,14 +56,14 @@ bool CTengxunDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) 
 }
 
 bool CTengxunDayLineDataSource::InquireDayLine() {
-	const auto lStockSetSize = gl_pChinaMarket->GetTotalStock();
+	const auto lStockSetSize = gl_containerChinaStock.Size();
 
 	if (!IsInquiring() && IsUpdateDayLine()) {
 		ASSERT(!HaveInquiry());
 		CChinaStockPtr pStock;
 		bool fFound = false;
 		for (long lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
-			pStock = gl_pChinaMarket->GetStock(lCurrentUpdateDayLinePos);
+			pStock = gl_containerChinaStock.GetStock(lCurrentUpdateDayLinePos);
 			if (!pStock->IsDayLineNeedUpdate()) { // 无需更新？
 			}
 			else if (pStock->GetDayLineEndDate() >= gl_pChinaMarket->GetLastTradeDate()) {//上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
@@ -100,7 +100,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 	long lStartDate = GetPrevDay(pStock->GetDayLineEndDate()); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
 	const long lCurrentDate = gl_pChinaMarket->GetMarketDate();
 	const long yearDiffer = (lCurrentDate - lStartDate) / 10000;
-	const long lStockIndex = gl_pChinaMarket->GetStockIndex(pStock);
+	const long lStockIndex = gl_containerChinaStock.GetOffset(pStock);
 	vector<CVirtualWebProductPtr> vProduct;
 	long l = 0;
 	int iCounter = 0;

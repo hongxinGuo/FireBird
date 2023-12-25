@@ -80,7 +80,7 @@ namespace FireBirdTest {
 		const CString strMessage = pProduct->GetInquiryFunction();
 		CString strSymbol = strMessage.Left(61);
 		strSymbol = strSymbol.Right(7);
-		const auto pStock = gl_pChinaMarket->GetStock(XferNeteaseToStandard(strSymbol));
+		const auto pStock = gl_containerChinaStock.GetStock(XferNeteaseToStandard(strSymbol));
 		EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
 
 		// 恢复原状
@@ -88,7 +88,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CNeteaseDayLineDataSourceTest, TestCreateProduct) {
-		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+		EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
 		gl_pChinaMarket->SetSystemReady(true);
 
 		NeteaseDayLineDataSource.CreateProduct();
@@ -101,11 +101,11 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str.Left(54), _T("http://quotes.money.163.com/service/chddata.html?code="));
 		EXPECT_STREQ(str.Right(81), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
 		gl_pChinaMarket->SetSystemReady(false);
-		EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber() + 1, gl_pChinaMarket->GetTotalStock()) << "已经有一个无需更新日线了";
+		EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber() + 1, gl_containerChinaStock.Size()) << "已经有一个无需更新日线了";
 
 		// 恢复原态
-		for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
-			gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
+		for (int i = 0; i < gl_containerChinaStock.Size(); i++) {
+			gl_containerChinaStock.GetStock(i)->SetDayLineNeedUpdate(true);
 		}
 	}
 

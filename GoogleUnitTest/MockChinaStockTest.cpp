@@ -120,14 +120,4 @@ namespace FireBirdTest {
 		EXPECT_TRUE(pStock->IsWeekLineLoaded());
 		EXPECT_EQ(pStock->GetWeekLineSize(), 0) << _T("存储周线数据后清空队列\n");
 	}
-
-	TEST_F(CMockChinaStockTest, TestThreadBuildWeekLineOfStock) {
-		gl_systemConfiguration.SetExitingSystem(true);
-		EXPECT_CALL(*pStock, BuildWeekLine(_)).Times(0);
-		EXPECT_EQ(ThreadBuildWeekLineOfStock(pStock, 20200101), 26);
-
-		gl_systemConfiguration.SetExitingSystem(false);
-		EXPECT_CALL(*pStock, BuildWeekLine(20200101)).Times(1);
-		EXPECT_EQ(ThreadBuildWeekLineOfStock(pStock, 20200101), 26);
-	}
 }

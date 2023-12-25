@@ -42,13 +42,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyProfileConciseTest, TestCreatMessage) {
-		gl_containerStock.GetStock(1)->SetUpdateCompanyProfile(true);
+		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateCompanyProfile(true);
 		companyProfileConcise.SetMarket(gl_pWorldMarket);
 		companyProfileConcise.SetIndex(1);
-		EXPECT_STREQ(companyProfileConcise.CreateMessage(), companyProfileConcise.GetInquiryFunction() + gl_containerStock.GetStock(1)->GetSymbol());
-		EXPECT_TRUE(gl_containerStock.GetStock(1)->IsUpdateCompanyProfile()) << "处理接收到的数据后才设置此标识";
+		EXPECT_STREQ(companyProfileConcise.CreateMessage(), companyProfileConcise.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol());
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsUpdateCompanyProfile()) << "处理接收到的数据后才设置此标识";
 
-		gl_containerStock.GetStock(1)->SetUpdateCompanyProfile(true);
+		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateCompanyProfile(true);
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser
@@ -67,14 +67,14 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_containerStock.GetStock(pData->m_strSymbol);
+			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCountry(_T(""));
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_FinnhubCompanyProfileConcise.SetMarket(gl_pWorldMarket);
-			m_FinnhubCompanyProfileConcise.SetIndex(gl_containerStock.GetOffset(pData->m_strSymbol));
+			m_FinnhubCompanyProfileConcise.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
 		}
 
 		void TearDown() override {

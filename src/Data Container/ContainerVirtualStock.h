@@ -29,6 +29,7 @@ public:
 	CVirtualStockPtr Get(const CString& strSymbol) { return m_vStock.at(m_mapSymbol.at(strSymbol)); }
 
 	size_t GetOffset(const CString& strSymbol) const { return m_mapSymbol.at(strSymbol); }
+	size_t GetOffset(const CChinaStockPtr& pStock) const { return GetOffset(pStock->GetSymbol()); }
 
 	void Add(const CVirtualStockPtr& pStock);
 	void Delete(const CVirtualStockPtr& pStock);

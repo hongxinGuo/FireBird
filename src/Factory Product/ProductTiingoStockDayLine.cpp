@@ -28,7 +28,7 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 CString CProductTiingoStockDayLine::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pStock = gl_containerStock.GetStock(GetIndex());
+	const auto pStock = gl_dataContainerFinnhubStock.GetStock(GetIndex());
 	CString strParam;
 	if (pStock->GetDayLineStartDate() > 20180101) {
 		strParam = pStock->GetTiingoDayLineInquiryParam(19800101, GetMarket()->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
@@ -45,7 +45,7 @@ CString CProductTiingoStockDayLine::CreateMessage() {
 bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
 
-	const auto pStock = gl_containerStock.GetStock(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	const CDayLineVectorPtr pvDayLine = ParseTiingoStockDayLine(pWebData);
 	pStock->SetDayLineNeedUpdate(false);
 	if (!pvDayLine->empty()) {

@@ -15,7 +15,7 @@ UINT ThreadUpdateWorldMarketStockProfileDB() {
 		sm_fProcessing = true;
 	}
 	gl_UpdateWorldMarketDB.acquire();
-	gl_containerStock.UpdateProfileDB();
+	gl_dataContainerFinnhubStock.UpdateProfileDB();
 	gl_UpdateWorldMarketDB.release();
 	sm_fProcessing = false;
 

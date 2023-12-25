@@ -42,25 +42,25 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyInsiderTransactionTest, TestCreatMessage1) {
-		gl_containerStock.GetStock(1)->SetUpdateInsiderTransaction(true);
+		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateInsiderTransaction(true);
 		companyInsiderTransaction.SetMarket(gl_pWorldMarket);
 		companyInsiderTransaction.SetIndex(1);
-		EXPECT_STREQ(companyInsiderTransaction.CreateMessage(), companyInsiderTransaction.GetInquiryFunction() + gl_containerStock.GetStock(1)->GetSymbol() + _T("&from=19800101")) << "默认情况下日期为19800101";
-		EXPECT_TRUE(gl_containerStock.GetStock(1)->IsUpdateInsiderTransaction()) << "接收到的数据处理后方设置此标识";
+		EXPECT_STREQ(companyInsiderTransaction.CreateMessage(), companyInsiderTransaction.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol() + _T("&from=19800101")) << "默认情况下日期为19800101";
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsUpdateInsiderTransaction()) << "接收到的数据处理后方设置此标识";
 
-		gl_containerStock.GetStock(1)->SetUpdateInsiderTransaction(true);
+		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateInsiderTransaction(true);
 	}
 
 	TEST_F(CFinnhubCompanyInsiderTransactionTest, TestCreatMessage2) {
-		gl_containerStock.GetStock(1)->SetUpdateInsiderTransaction(true);
-		gl_containerStock.GetStock(1)->SetInsiderTransactionUpdateDate(20200101);
+		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateInsiderTransaction(true);
+		gl_dataContainerFinnhubStock.GetStock(1)->SetInsiderTransactionUpdateDate(20200101);
 		companyInsiderTransaction.SetMarket(gl_pWorldMarket);
 		companyInsiderTransaction.SetIndex(1);
-		EXPECT_STREQ(companyInsiderTransaction.CreateMessage(), companyInsiderTransaction.GetInquiryFunction() + gl_containerStock.GetStock(1)->GetSymbol() + _T("&from=20200101"));
-		EXPECT_TRUE(gl_containerStock.GetStock(1)->IsUpdateInsiderTransaction()) << "接收到的数据处理后方设置此标识";
+		EXPECT_STREQ(companyInsiderTransaction.CreateMessage(), companyInsiderTransaction.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol() + _T("&from=20200101"));
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsUpdateInsiderTransaction()) << "接收到的数据处理后方设置此标识";
 
-		gl_containerStock.GetStock(1)->SetUpdateInsiderTransaction(true);
-		gl_containerStock.GetStock(1)->SetInsiderTransactionUpdateDate(19800101);
+		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateInsiderTransaction(true);
+		gl_dataContainerFinnhubStock.GetStock(1)->SetInsiderTransactionUpdateDate(19800101);
 	}
 
 	// 正确数据
@@ -80,7 +80,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_containerStock.GetStock(pData->m_strSymbol);
+			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), 19800101);
 			m_pStock->SetSaveInsiderTransaction(false);
@@ -89,7 +89,7 @@ namespace FireBirdTest {
 			m_pWebData->CreateJson();
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCompanyInsiderTransaction.SetMarket(gl_pWorldMarket);
-			const auto lIndex = gl_containerStock.GetOffset(pData->m_strSymbol);
+			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
 			m_finnhubCompanyInsiderTransaction.SetIndex(lIndex);
 		}
 
@@ -157,7 +157,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_containerStock.GetStock(pData->m_strSymbol);
+			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();

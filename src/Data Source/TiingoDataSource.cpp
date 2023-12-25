@@ -92,7 +92,7 @@ bool CTiingoDataSource::InquireCryptoSymbol() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoDataSource::InquireDayLine() {
-	const auto lStockSetSize = gl_containerChosenStock.Size();
+	const auto lStockSetSize = gl_dataContainerChosenWorldStock.Size();
 	bool fHaveInquiry = false;
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
@@ -100,8 +100,8 @@ bool CTiingoDataSource::InquireDayLine() {
 		CWorldStockPtr pStock;
 		bool fFound = false;
 		for (long lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
-			if (gl_containerChosenStock.GetStock(lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
-				pStock = gl_containerChosenStock.GetStock(lCurrentUpdateDayLinePos);
+			if (gl_dataContainerChosenWorldStock.GetStock(lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
+				pStock = gl_dataContainerChosenWorldStock.GetStock(lCurrentUpdateDayLinePos);
 				fFound = true;
 				break;
 			}
@@ -109,7 +109,7 @@ bool CTiingoDataSource::InquireDayLine() {
 		if (fFound) {
 			fHaveInquiry = true;
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, STOCK_PRICE_CANDLES_);
-			p->SetIndex(gl_containerStock.GetOffset(pStock->GetSymbol()));
+			p->SetIndex(gl_dataContainerFinnhubStock.GetOffset(pStock->GetSymbol()));
 			m_qProduct.push(p);
 			//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo StockÈÕÏß£º") + pStock->GetSymbol());
 			SetInquiring(true);

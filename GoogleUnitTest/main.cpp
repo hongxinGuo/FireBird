@@ -126,7 +126,7 @@ namespace FireBirdTest {
 			gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
 			gl_vMarketPtr.push_back(gl_pChinaMarket); // 中国股票市场
 
-			EXPECT_LE(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+			EXPECT_LE(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
 
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 
@@ -134,9 +134,9 @@ namespace FireBirdTest {
 			gl_pMockMainFrame = make_shared<CMockMainFrame>();
 			EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL) << "在生成MainFrame时，会生成一个视觉管理器。在退出时需要删除之";
 
-			EXPECT_TRUE(gl_pChinaMarket->IsUpdateStockProfileDB());
-			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
-				const auto pStock = gl_pChinaMarket->GetStock(i);
+			EXPECT_TRUE(gl_containerChinaStock.IsUpdateProfileDB());
+			for (int i = 0; i < gl_containerChinaStock.Size(); i++) {
+				const auto pStock = gl_containerChinaStock.GetStock(i);
 				pStock->SetDayLineNeedUpdate(true);
 				if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
 
@@ -147,10 +147,10 @@ namespace FireBirdTest {
 					}
 				}
 			}
-			EXPECT_FALSE(gl_pChinaMarket->IsUpdateStockProfileDB());
+			EXPECT_FALSE(gl_containerChinaStock.IsUpdateProfileDB());
 
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-			EXPECT_GT(gl_pChinaMarket->GetTotalStock(), 4800);
+			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
+			EXPECT_GT(gl_containerChinaStock.Size(), 4800);
 			EXPECT_FALSE(gl_pChinaMarket->IsSystemReady()) << "市场默认为尚未准备好";
 			gl_pChinaMarket->SetSystemReady(true); // 测试系统默认为准备好了
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
@@ -162,7 +162,7 @@ namespace FireBirdTest {
 
 			EXPECT_FALSE(gl_pWorldMarket->IsSystemReady()) << "市场默认为尚未准备好";
 			gl_pWorldMarket->SetSystemReady(true);// 测试系统默认为准备好了
-			const auto pStock1 = gl_containerStock.GetStock(_T("AAPL"));
+			const auto pStock1 = gl_dataContainerFinnhubStock.GetStock(_T("AAPL"));
 			pStock1->SetUpdateCompanyProfile(true);
 
 			// 清空预装入的finnhubInaccessibleExchange
@@ -178,10 +178,10 @@ namespace FireBirdTest {
 			GeneralCheck();
 
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
 
-			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
-				const auto pStock = gl_pChinaMarket->GetStock(i);
+			for (int i = 0; i < gl_containerChinaStock.Size(); i++) {
+				const auto pStock = gl_containerChinaStock.GetStock(i);
 				EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetSymbol();
 			}
 
@@ -191,12 +191,12 @@ namespace FireBirdTest {
 				delete CMFCVisualManager::GetInstance(); // 在生成gl_pMockMainFrame时，会生成一个视觉管理器。故而在此删除之。
 			}
 
-			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
-				const auto pStock = gl_pChinaMarket->GetStock(i);
+			for (int i = 0; i < gl_containerChinaStock.Size(); i++) {
+				const auto pStock = gl_containerChinaStock.GetStock(i);
 				EXPECT_FALSE(pStock->IsUpdateProfileDB()) << pStock->GetSymbol();
 				pStock->SetUpdateProfileDB(false);	// gl_pMockMainFrame使用了真正的gl_pChinaMarket,此处重置此标识，防止解构gl_pMockMainFrame时更新数据库。
 			}
-			ASSERT_THAT(gl_pChinaMarket->IsUpdateStockProfileDB(), IsFalse()) << "退出时必须保证无需更新代码库";
+			ASSERT_THAT(gl_containerChinaStock.IsUpdateProfileDB(), IsFalse()) << "退出时必须保证无需更新代码库";
 
 			gl_systemConfiguration.SetExitingSystem(false);
 			gl_pMockMainFrame = nullptr;

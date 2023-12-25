@@ -29,7 +29,7 @@ UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCa
 // ¼ÆËã¸ø¶¨ÈÕÆÚ¹ÉÆ±ÈÕÏßÏà¶ÔÇ¿¶ÈÏß³Ì¡£´ËÏß³ÌÓÉThreadCalculateRSÏß³Ìµ÷ÓÃ£¬ÓÃÓÚ²¢·¢¼ÆËã²»Í¬ÈÕÆÚµÄÈÕÏßÏà¶ÔÇ¿¶È£¬ÒÔÌá¸ßĞ§ÂÊ
 UINT ThreadBuildDayLineRSOfDate(const not_null<CChinaMarketPtr>& pMarket, long lDate); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÒ²Îª12
 // ´æ´¢ÁÙÊ±ÏµÍ³×´Ì¬Ïß³Ì
-UINT ThreadSaveTempRTData(const CChinaMarketPtr& pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª13
+UINT ThreadSaveTempRTData(); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª13
 // ×°ÔØÁÙÊ±´æ´¢µÄÊµÊ±Êı¾İÏß³Ì
 UINT ThreadLoadTempRTData(const CChinaMarketPtr& pMarket, long lTheDate); // ´ËÏß³Ì·µ»ØÖµÎª19
 // ¼ÆËãºÍ´æ´¢µ±Ç°½»Ò×ÈÕÊı¾İÏß³Ì
@@ -41,7 +41,7 @@ UINT ThreadLoadDayLine(const not_null<CChinaStockPtr>& pStockInput); // ´Ë¹¤×÷Ïß
 // Î¬»¤ÈÕÏßÊı¾İ¿âÏß³Ì£¨ÉĞÎ´ÊµÏÖ£©
 UINT ThreadMaintainDayLineDataBase(); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª17
 //¸üĞÂ¹ÉÆ±´úÂëÊı¾İ¿âÏß³Ì
-UINT ThreadUpdateChinaStockProfileDB(const not_null<CChinaMarketPtr>& pMarket); // ´ËÏß³Ì·µ»ØÖµÎª18
+UINT ThreadUpdateChinaStockProfileDB(); // ´ËÏß³Ì·µ»ØÖµÎª18
 // ¸üĞÂÑ¡ÏîÊı¾İ¿â
 UINT ThreadUpdateOptionDB(const not_null<CChinaMarketPtr>& pMarket); // ´ËÏß³Ì·µ»ØÖµÎª20
 // ¸üĞÂÑ¡ÏîÊı¾İ¿â
@@ -55,13 +55,13 @@ UINT ThreadLoadWeekLine(const not_null<CChinaStockPtr>& pStockInput); // ´ËÏß³Ì·
 // ¼ÆËã¹ÉÆ±Ïà¶ÔÇ¿¶ÈÏß³Ì¡£´ËÏß³Ìµ÷ÓÃÏß³ÌThreadCalculateRSAtThisDateÖ´ĞĞ¾ßÌåÈÎÎñ£¬×î¶àÉú³É8¸ö¹¤×÷Ïß³Ì¡£
 UINT ThreadBuildWeekLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCalculatingDate); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª30, ²ÎÊıÎªµ±Ç°×îºó¼ÆËãÈÕÆÚ
 // ¼ÆËã¸ø¶¨ÈÕÆÚ¹ÉÆ±ÈÕÏßÏà¶ÔÇ¿¶ÈÏß³Ì¡£´ËÏß³ÌÓÉThreadCalculateRSÏß³Ìµ÷ÓÃ£¬ÓÃÓÚ²¢·¢¼ÆËã²»Í¬ÈÕÆÚµÄÈÕÏßÏà¶ÔÇ¿¶È£¬ÒÔÌá¸ßĞ§ÂÊ
-UINT ThreadBuildWeekLineRSOfDate(const not_null<CChinaMarketPtr>& pMarket, long lDate); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÒ²Îª31
+UINT ThreadBuildWeekLineRSOfDate(long lDate); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÒ²Îª31
 // ¼ÆËã±¾ÖÜµÄÖÜÏß
 UINT ThreadBuildWeekLineOfCurrentWeek(const not_null<CChinaMarketPtr>& pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª32
 // ÖØ½¨µ±Ç°ÖÜµÄÖÜÏßÊı¾İ±í
 UINT ThreadBuildCurrentWeekWeekLineTable(const not_null<CChinaMarketPtr>& pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª33
 // ´æ´¢Ö¤È¯´úÂë¶ÎË÷Òı
-UINT ThreadSaveStockSection(const not_null<CChinaMarketPtr>& pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª35
+UINT ThreadSaveStockSection(); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª35
 
 // ÏÂÃæÎªÃÀ¹ú¹ÉÆ±ÊĞ³¡µÄ¹¤×÷Ïß³Ì
 // ¸üĞÂÃÀ¹ÉÈÕÏßÆğÖ¹ÈÕÆÚÏß³Ì

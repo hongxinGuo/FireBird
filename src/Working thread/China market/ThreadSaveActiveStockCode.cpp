@@ -10,9 +10,9 @@
 #include"Thread.h"
 #include"ChinaMarket.h"
 
-UINT ThreadSaveStockSection(const not_null<CChinaMarketPtr>& pMarket) {
+UINT ThreadSaveStockSection() {
 	gl_UpdateChinaMarketDB.acquire();
-	pMarket->SaveStockSection();
+	gl_dataContainerChinaStockSymbol.UpdateStockSectionDB();
 	gl_UpdateChinaMarketDB.release();
 
 	return 35;

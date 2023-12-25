@@ -35,6 +35,8 @@ enum {
 class CChinaStock;
 using CChinaStockPtr = shared_ptr<CChinaStock>;
 
+using std::map;
+
 // 证券名称数据包
 class CChinaStock : public CVirtualStock {
 public:

@@ -38,10 +38,10 @@ bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		}
 	}
 	for (const auto& pStock2 : *pvStock) {
-		if (!gl_containerStock.IsSymbol(pStock2)) {
+		if (!gl_dataContainerFinnhubStock.IsSymbol(pStock2)) {
 			pStock2->SetTodayNewStock(true);
 			pStock2->SetUpdateProfileDB(true);
-			gl_containerStock.Add(pStock2);
+			gl_dataContainerFinnhubStock.Add(pStock2);
 			const auto str = _T("Finnhub发现新代码:") + pStock2->GetSymbol();
 			gl_systemMessage.PushInnerSystemInformationMessage(str);
 		}

@@ -6,6 +6,11 @@
 class CContainerWorldStock final : public CContainerVirtualStock {
 public:
 	CContainerWorldStock();
+	// 只能有一个实例,不允许赋值。
+	CContainerWorldStock(const CContainerWorldStock&) = delete;
+	CContainerWorldStock& operator=(const CContainerWorldStock&) = delete;
+	CContainerWorldStock(const CContainerWorldStock&&) noexcept = delete;
+	CContainerWorldStock& operator=(const CContainerWorldStock&&) noexcept = delete;
 	~CContainerWorldStock() override = default;
 	void Reset() override;
 

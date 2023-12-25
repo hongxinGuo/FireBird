@@ -10,6 +10,7 @@
 
 #include <gsl/pointers>
 
+#include "ContainerChinaStock.h"
 #include "containerChosenCrypto.h"
 #include "ContainerChosenForex.h"
 #include "ContainerChosenStock.h"
@@ -20,6 +21,7 @@
 #include "ContainerFinnhubForexExchange.h"
 #include "containerFinnhubForexSymbol.h"
 #include "ContainerFinnhubStockExchange.h"
+#include "ContainerStockSymbol.h"
 #include "ContainerTiingoCryptoSymbol.h"
 #include "ContainerTiingoStock.h"
 #include "ContainerWorldStock.h"
@@ -39,6 +41,10 @@ extern CPriorityQueueWebRTData gl_qNeteaseRT; // 中国市场网易实时数据队列。
 extern CPriorityQueueWebRTData gl_qTengxunRT; // 中国市场腾讯实时数据队列。
 extern CTemplateMutexAccessQueue<CDayLineWebData> gl_qDayLine; // 日线数据
 
+// ChinaMarket处理的数据
+extern CContainerChinaStock gl_containerChinaStock;
+extern CContainerStockSymbol gl_dataContainerChinaStockSymbol;
+
 // WorldMarket处理的数据
 extern CContainerFinnhubForexSymbol gl_dataFinnhubForexSymbol;
 extern CContainerFinnhubCryptoSymbol gl_dataFinnhubCryptoSymbol;
@@ -49,14 +55,13 @@ extern CContainerFinnhubStockExchange gl_dataFinnhubStockExchange;
 extern CContainerFinnhubForexExchange gl_dataFinnhubForexExchange;
 extern CContainerFinnhubCryptoExchange gl_dataFinnhubCryptoExchange;
 
-extern CContainerWorldStock gl_containerStock;
-
+extern CContainerWorldStock gl_dataContainerFinnhubStock;
 extern CContainerTiingoStock gl_dataTiingoStock;
 extern CContainerTiingoCryptoSymbol gl_dataTiingoCryptoSymbol;
 
-extern CContainerChosenStock gl_containerChosenStock;
-extern CContainerChosenForex gl_containerChosenForex;
-extern CContainerChosenCrypto gl_containerChosenCrypto;
+extern CContainerChosenStock gl_dataContainerChosenWorldStock;
+extern CContainerChosenForex gl_dataContainerChosenWorldForex;
+extern CContainerChosenCrypto gl_dataContainerChosenWorldCrypto;
 
 class CSystemData final {
 public:

@@ -15,7 +15,7 @@ CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 }
 
 CString CProductFinnhubCompanyNews::CreateMessage() {
-	const auto pStock = gl_containerStock.GetStock(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	CString strMessage = m_strInquiryFunction + pStock->GetSymbol();
 	CString strTemp = ConvertDateToTimeStamp(pStock->GetCompanyNewsUpdateDate());
 	strMessage += _T("&from=");
@@ -31,7 +31,7 @@ CString CProductFinnhubCompanyNews::CreateMessage() {
 
 bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvFinnhubCompanyNews = ParseFinnhubCompanyNews(pWebData);
-	const auto pStock = gl_containerStock.GetStock(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 
 	if (!pvFinnhubCompanyNews->empty()) {
 		// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.

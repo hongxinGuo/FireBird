@@ -38,31 +38,4 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 	};
-
-	TEST_F(CThreadBuildDayLineRSOfDateTest, TestThreadBuildDayLineRSOfDate) {
-		EXPECT_CALL(*s_pMarket, BuildDayLineRS(20200101))
-		.Times(1)
-		.WillOnce(Return(true));
-		gl_systemConfiguration.SetExitingCalculatingRS(false);
-		gl_systemConfiguration.SetExitingSystem(false);
-		EXPECT_EQ(ThreadBuildDayLineRSOfDate(s_pMarket, 20200101), 12);
-
-		EXPECT_CALL(*s_pMarket, BuildDayLineRS(20200101))
-		.Times(0);
-		gl_systemConfiguration.SetExitingCalculatingRS(true);
-		gl_systemConfiguration.SetExitingSystem(false);
-		EXPECT_EQ(ThreadBuildDayLineRSOfDate(s_pMarket, 20200101), 12);
-
-		EXPECT_CALL(*s_pMarket, BuildDayLineRS(20200101))
-		.Times(0);
-		gl_systemConfiguration.SetExitingCalculatingRS(false);
-		gl_systemConfiguration.SetExitingSystem(true);
-		EXPECT_EQ(ThreadBuildDayLineRSOfDate(s_pMarket, 20200101), 12);
-
-		EXPECT_CALL(*s_pMarket, BuildDayLineRS(20200101))
-		.Times(0);
-		gl_systemConfiguration.SetExitingCalculatingRS(true);
-		gl_systemConfiguration.SetExitingSystem(true);
-		EXPECT_EQ(ThreadBuildDayLineRSOfDate(s_pMarket, 20200101), 12);
-	}
 }

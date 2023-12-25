@@ -66,6 +66,10 @@ CPriorityQueueWebRTData gl_qNeteaseRT; // 中国市场网易实时数据队列。
 CPriorityQueueWebRTData gl_qTengxunRT; // 中国市场腾讯实时数据队列。
 CTemplateMutexAccessQueue<CDayLineWebData> gl_qDayLine; // 日线数据
 
+// ChinaMarket处理的数据
+CContainerChinaStock gl_containerChinaStock;
+CContainerStockSymbol gl_dataContainerChinaStockSymbol;
+
 // World market处理的数据
 CContainerFinnhubForexSymbol gl_dataFinnhubForexSymbol;
 CContainerFinnhubCryptoSymbol gl_dataFinnhubCryptoSymbol;
@@ -76,14 +80,13 @@ CContainerFinnhubStockExchange gl_dataFinnhubStockExchange;
 CContainerFinnhubForexExchange gl_dataFinnhubForexExchange;
 CContainerFinnhubCryptoExchange gl_dataFinnhubCryptoExchange;
 
-CContainerWorldStock gl_containerStock;
-
+CContainerWorldStock gl_dataContainerFinnhubStock;
 CContainerTiingoStock gl_dataTiingoStock;
 CContainerTiingoCryptoSymbol gl_dataTiingoCryptoSymbol;
 
-CContainerChosenStock gl_containerChosenStock;
-CContainerChosenForex gl_containerChosenForex;
-CContainerChosenCrypto gl_containerChosenCrypto;
+CContainerChosenStock gl_dataContainerChosenWorldStock;
+CContainerChosenForex gl_dataContainerChosenWorldForex;
+CContainerChosenCrypto gl_dataContainerChosenWorldCrypto;
 
 // 各市场。皆为唯一实例。为最后声明的变量。
 CWorldMarketPtr gl_pWorldMarket = nullptr;

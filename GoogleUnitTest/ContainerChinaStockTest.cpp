@@ -25,7 +25,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			CChinaStockPtr pStock = nullptr;
 			for (int i = 0; i < 100; i++) {
-				pStock = gl_pChinaMarket->GetStock(i);
+				pStock = gl_containerChinaStock.GetStock(i);
 				m_containerChinaStock.Add(pStock);
 			}
 		}

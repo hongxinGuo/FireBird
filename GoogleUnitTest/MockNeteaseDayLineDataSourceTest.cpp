@@ -13,38 +13,42 @@ namespace FireBirdTest {
 	class CMockNeteaseDayLineDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+			SCOPED_TRACE("");
+			GeneralCheck();
+			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
 		}
 
 		static void TearDownTestSuite() {
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
-			SCOPED_TRACE(""); GeneralCheck();
+			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 			gl_pMockNeteaseDayLineDataSource = make_shared<CMockNeteaseDayLineDataSource>();
 			gl_pChinaMarket->CalculateTime();
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
 		}
 
 		void TearDown() override {
 			// clearUp
 
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			gl_pChinaMarket->SetResetMarket(true);
 			gl_pChinaMarket->SetSystemReady(true);
 			gl_pChinaMarket->SetCurrentStockChanged(false);
-			for (int i = 0; i < gl_pChinaMarket->GetTotalStock(); i++) {
-				gl_pChinaMarket->GetStock(i)->SetDayLineNeedUpdate(true);
+			for (int i = 0; i < gl_containerChinaStock.Size(); i++) {
+				gl_containerChinaStock.GetStock(i)->SetDayLineNeedUpdate(true);
 			}
-			EXPECT_EQ(gl_pChinaMarket->GetDayLineNeedUpdateNumber(), gl_pChinaMarket->GetTotalStock());
+			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
 			gl_pMockNeteaseDayLineDataSource = nullptr;
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 }

@@ -15,7 +15,7 @@ CProductFinnhubCompanyProfileConcise::CProductFinnhubCompanyProfileConcise() {
 
 CString CProductFinnhubCompanyProfileConcise::CreateMessage() {
 	CString strMessage;
-	const auto pStock = gl_containerStock.GetStock(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
 	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol();
@@ -24,7 +24,7 @@ CString CProductFinnhubCompanyProfileConcise::CreateMessage() {
 
 bool CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-	const auto pStock = gl_containerStock.GetStock(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	pStock->SetUpdateCompanyProfile(false);
 	const bool fSucceed = ParseFinnhubStockProfileConcise(pWebData, pStock);
 	if (fSucceed || pWebData->IsVoidJson() || pWebData->IsNoRightToAccess()) {
