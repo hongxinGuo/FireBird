@@ -7,7 +7,6 @@
 #include "pch.h"
 
 #include "InfoReport.h"
-#include"thread.h"
 #include"WorldMarket.h"
 
 #include"SetWorldStock.h"

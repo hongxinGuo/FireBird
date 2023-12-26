@@ -18,8 +18,6 @@ CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 }
 
 CString CProductFinnhubStockDayLine::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	const auto strParam = pStock->GetFinnhubDayLineInquiryParam(GetUTCTime());
 

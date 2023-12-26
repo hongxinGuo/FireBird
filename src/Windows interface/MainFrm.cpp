@@ -23,8 +23,6 @@
 #include"TiingoDataSource.h"
 #include"QuandlDataSource.h"
 
-#include"Thread.h"
-
 #include <ixwebsocket/IXNetSystem.h>
 
 #include<exception>

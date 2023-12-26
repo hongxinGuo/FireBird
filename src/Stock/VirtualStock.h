@@ -2,6 +2,8 @@
 
 #include"VirtualSetStockSymbol.h"
 
+using std::shared_ptr;
+
 class CVirtualStock;
 using CVirtualStockPtr = shared_ptr<CVirtualStock>;
 

@@ -11,8 +11,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include"ThreadStatus.h"
-#include"WorldMarket.h"
 #include"FinnhubCryptoSymbol.h"
 
 UINT ThreadUpdateCryptoDayLineDB(const not_null<CFinnhubCryptoSymbolPtr>& pSymbol) {

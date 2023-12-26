@@ -11,8 +11,6 @@
 #include"jsonParse.h"
 #include"JsonGetValue.h"
 
-#include"WorldMarket.h"
-
 #include "ProductFinnhubEconomicCalendar.h"
 
 #include "FinnhubDataSource.h"
@@ -31,8 +29,6 @@ CString CProductFinnhubEconomicCalendar::CreateMessage() {
 }
 
 bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-
 	const auto pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
 	gl_dataFinnhubEconomicCalendar.Update(*pvEconomicCalendar);
 

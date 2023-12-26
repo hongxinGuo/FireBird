@@ -1,8 +1,5 @@
 #include"pch.h"
 
-#include"ThreadStatus.h"
-#include"WorldMarket.h"
-
 UINT ThreadUpdateForexSymbolDB() {
 	gl_UpdateWorldMarketDB.acquire();
 	gl_dataFinnhubForexSymbol.UpdateDB();

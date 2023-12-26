@@ -9,7 +9,6 @@
 #include "FireBirdDoc.h"
 #include "FireBirdView.h" 
 
-
 #ifdef _DEBUG
 #ifdef _OPENSSL_USE_DLL
 //#pragma comment(lib, "/vc/libcrypto64MTd.lib")

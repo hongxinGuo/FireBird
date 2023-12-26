@@ -4,6 +4,7 @@
 #include"DayLine.h"
 
 #include<memory>
+
 using std::make_shared;
 
 CVirtualDataHistoryCandleExtend::CVirtualDataHistoryCandleExtend() {

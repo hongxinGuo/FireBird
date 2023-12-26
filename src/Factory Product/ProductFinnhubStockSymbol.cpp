@@ -20,8 +20,6 @@ CString CProductFinnhubStockSymbol::CreateMessage() {
 }
 
 bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-
 	const auto strExchangeCode = gl_dataFinnhubStockExchange.GetExchangeCode(m_lIndex);
 	const auto pvStock = ParseFinnhubStockSymbol(pWebData);
 	const auto pExchange = gl_dataFinnhubStockExchange.GetExchange(m_lIndex);

@@ -2,12 +2,11 @@
 
 #include"GeneralCheck.h"
 
+#include"WorldMarket.h"
+
 #include"FinnhubInquiryType.h"
 
 #include"FinnhubFactory.h"
-
-#include"ProductFinnhubStockSymbol.h"
-#include"ProductFinnhubCompanyBasicFinancial.h"
 
 using namespace testing;
 

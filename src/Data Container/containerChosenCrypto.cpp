@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include"WorldMarket.h"
 #include"SetWorldChosenCrypto.h"
 #include "containerChosenCrypto.h"
 #include"FinnhubCryptoSymbol.h"

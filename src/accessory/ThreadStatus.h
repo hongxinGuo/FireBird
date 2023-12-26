@@ -3,8 +3,6 @@
 #include<semaphore>
 #include<atomic>
 
-#include "ChinaMarket.h"
-#include "WorldMarket.h"
 using std::counting_semaphore;
 using std::atomic_int;
 
@@ -25,19 +23,7 @@ public:
 	[[nodiscard]] bool IsBackGroundThreadsWorking() const noexcept { return m_NumberOfBackGroundWorkingThreads > 0; } //计算日线的线程是否处于运行中
 	[[nodiscard]] int GetNumberOfBackGroundWorkingThread() const noexcept { return m_NumberOfBackGroundWorkingThreads; }
 
-	static [[nodiscard]] bool IsSavingThreadRunning() noexcept {
-		bool bSavingChinaMarketDB = true;
-		bool bSavingWorldMarketDB = true;
-		if (gl_UpdateChinaMarketDB.try_acquire()) {
-			bSavingChinaMarketDB = false;
-			gl_UpdateChinaMarketDB.release();
-		}
-		if (gl_UpdateWorldMarketDB.try_acquire()) {
-			bSavingWorldMarketDB = false;
-			gl_UpdateWorldMarketDB.release();
-		}
-		return bSavingChinaMarketDB || bSavingWorldMarketDB;
-	}
+	[[nodiscard]] static bool IsSavingThreadRunning() noexcept;
 
 	void IncreaseWebInquiringThread() noexcept { ++m_NumberOfWebInquiringThread; }
 	void DecreaseWebInquiringThread() noexcept { if (m_NumberOfWebInquiringThread > 0) --m_NumberOfWebInquiringThread; }

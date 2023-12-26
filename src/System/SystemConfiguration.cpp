@@ -8,6 +8,9 @@
 
 #include"SystemConfiguration.h"
 
+#include "NeteaseRTDataSource.h"
+#include "SinaRTDataSource.h"
+
 #include<string>
 #include<fstream>
 
@@ -545,6 +548,10 @@ void CSystemConfiguration::UsingTengxunRealtimeServer() {
 	gl_pSinaRTDataSource->Enable(false);
 	gl_pNeteaseRTDataSource->Enable(false);
 	gl_pTengxunRTDataSource->Enable(true);
+}
+
+bool CSystemConfiguration::IsWebBusy() {
+	return gl_pSinaRTDataSource->IsWebError() || gl_pNeteaseRTDataSource->IsWebError();
 }
 
 bool CSystemConfiguration::LoadDB() {

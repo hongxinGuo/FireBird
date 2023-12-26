@@ -1,9 +1,5 @@
 #include"pch.h"
 
-#include"ThreadStatus.h"
-#include"WorldMarket.h"
-#include "Thread.h"
-
 UINT ThreadUpdateBasicFinancialDB() {
 	static bool sm_fInProcess = false;
 

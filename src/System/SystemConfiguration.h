@@ -10,9 +10,7 @@
 #pragma once
 
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
-
-#include "NeteaseRTDataSource.h"
-#include "SinaRTDataSource.h"
+#include"nlohmann/json.hpp"
 
 class CSystemConfiguration final {
 public:
@@ -274,7 +272,7 @@ public:
 	bool IsWorkingMode() const { return m_fWorkingMode; }
 
 	// 当下载新浪或者网易实时数据出现问题时，系统的其他网络活动应该让步。
-	static bool IsWebBusy() { return gl_pSinaRTDataSource->IsWebError() || gl_pNeteaseRTDataSource->IsWebError(); }
+	bool IsWebBusy();
 
 	bool IsInitialized() { return sm_bInitialized; }
 

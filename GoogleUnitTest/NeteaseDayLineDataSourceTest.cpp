@@ -6,6 +6,7 @@
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
 #include "ChinaStockCodeConverter.h"
+#include "SinaRTDataSource.h"
 #include "TimeConvert.h"
 
 using namespace testing;
@@ -14,21 +15,25 @@ namespace FireBirdTest {
 	class CNeteaseDayLineDataSourceTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
 			gl_pChinaMarket->SetSystemReady(true);
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:

@@ -19,8 +19,6 @@ CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransacti
 }
 
 CString CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();

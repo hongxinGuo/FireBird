@@ -3,8 +3,6 @@
 #include"jsonParse.h"
 #include"JsonGetValue.h"
 
-#include"WorldMarket.h"
-
 #include"TiingoStock.h"
 #include "ProductTiingoStockSymbol.h"
 

@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include"ThreadStatus.h"
 #include"WorldMarket.h"
 
 UINT ThreadUpdateCompanyNewsDB(const not_null<CWorldMarketPtr>& pMarket) {

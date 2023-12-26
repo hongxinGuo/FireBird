@@ -5,8 +5,6 @@
 // Netease实时数据是目前最需要关注的，每300毫秒接收900个数据时，系统基本上独占一个核心处理器了。如果再有耗时的任务，就需要
 // 将其分配到其他核心处理器上，这样就会导致系统的响应时间增加，而且系统的负载也会增加。
 //
-// 为了保证本文件能够单独优化，本文件不使用预先编译的pch.h，而是把实际头文件放在本文件中。这样能够保证单独优化的完成。
-//
 // 在DEBUG模式下，boost PTree速度比Nlohmann json快，但Release模式下nlohmann json的速度比boost ptree快50%以上（许多时候是快一倍以上）。
 // debug模式下，解析900个NeteaseRTData，nlohmann json耗时160毫秒，PTree耗时120毫秒。
 // release模式下，解析900个NeteaseRTData，nlohmann json耗时16毫秒，PTree耗时35毫秒。
@@ -18,9 +16,8 @@
 // Debug模式下，本文件采用全局优化(/GL)等优化选项，其他文件使用默认值。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// #include"pch.h"
-// 不使用pch.h预编译头，而是将具体头文件放在这里，以便于分别编译
-#include"stdafx.h"
+#include"pch.h"
+
 #include"ChinaStockCodeConverter.h"
 #include"TimeConvert.h"
 #include"ConvertToString.h"
@@ -31,10 +28,6 @@
 #include"JsonGetValue.h"
 #include"NlohmannJsonDeclaration.h"
 
-#include<string>
-#include<memory>
-#include<vector>
-#include <gmock/gmock-matchers.h>
 using std::vector;
 using std::shared_ptr;
 using std::make_shared;

@@ -3,6 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"ProductFinnhubForexSymbol.h"
+#include "WorldMarket.h"
 
 using namespace testing;
 

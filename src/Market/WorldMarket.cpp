@@ -20,9 +20,7 @@
 #include <ixwebsocket/IXUserAgent.h>
 
 #include "InfoReport.h"
-#include "InsiderTransaction.h"
 #include "QuandlDataSource.h"
-#include "SetInsiderTransaction.h"
 #include "TiingoDataSource.h"
 #include "TimeConvert.h"
 using std::thread;

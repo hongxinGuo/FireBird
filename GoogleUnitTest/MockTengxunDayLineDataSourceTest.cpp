@@ -4,7 +4,8 @@
 #include"GeneralCheck.h"
 
 #include"MockTengxunDayLineDataSource.h"
-#include "ProductTengxunDayLine.h"
+#include "NeteaseRTDataSource.h"
+#include "SinaRTDataSource.h"
 
 using namespace testing;
 

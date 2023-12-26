@@ -2,10 +2,10 @@
 
 #include"GeneralCheck.h"
 
+#include"WorldMarket.h"
+
 #include"MockFinnhubDataSource.h"
 
-#include"ProductFinnhubStockSymbol.h"
-#include"ProductFinnhubStockEstimatesEPSSurprise.h"
 #include"ProductTiingoStockSymbol.h"
 
 #include "TimeConvert.h"

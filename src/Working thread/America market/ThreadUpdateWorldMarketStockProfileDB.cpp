@@ -1,9 +1,5 @@
 #include"pch.h"
 
-#include"ThreadStatus.h"
-
-#include"WorldMarket.h"
-
 UINT ThreadUpdateWorldMarketStockProfileDB() {
 	static bool sm_fProcessing = false;
 

@@ -131,8 +131,10 @@ enum {
 	NETEASE_RT_WEB_DATA_ = 3,
 };
 
+#include<array>
 using std::array;
 using std::shared_ptr;
+using std::string_view;
 
 class CWebData;
 using CWebDataPtr = std::shared_ptr<CWebData>;

@@ -3,8 +3,6 @@
 #include"jsonParse.h"
 #include"JsonGetValue.h"
 
-#include"WorldMarket.h"
-
 #include "ProductFinnhubForexExchange.h"
 
 #include "FinnhubDataSource.h"
@@ -23,8 +21,6 @@ CString CProductFinnhubForexExchange::CreateMessage() {
 }
 
 bool CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-
 	const auto pvForexExchange = ParseFinnhubForexExchange(pWebData);
 	for (int i = 0; i < pvForexExchange->size(); i++) {
 		if (!gl_dataFinnhubForexExchange.IsExchange(pvForexExchange->at(i))) {

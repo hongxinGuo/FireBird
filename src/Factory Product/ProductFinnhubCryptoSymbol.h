@@ -1,6 +1,5 @@
 #pragma once
 
-#include"WorldMarket.h"
 #include"ProductFinnhub.h"
 
 class CProductFinnhubCryptoSymbol final : public CProductFinnhub {

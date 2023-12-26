@@ -1,6 +1,7 @@
 #pragma once
 
 #include"nlohmannJsonDeclaration.h"
+#include"nlohmann/json.hpp"
 
 #include"VirtualStock.h"
 #include"TiingoStock.h"
@@ -9,7 +10,10 @@
 
 #include"DayLine.h"
 #include"ContainerWorldStockDayLine.h"
+#include "EPSSurprise.h"
 #include"FinnhubCompanyNews.h"
+#include "InsiderSentiment.h"
+#include "InsiderTransaction.h"
 
 #include"SetWorldStock.h"
 

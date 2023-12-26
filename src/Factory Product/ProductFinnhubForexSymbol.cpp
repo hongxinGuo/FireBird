@@ -3,8 +3,6 @@
 #include"jsonParse.h"
 #include"JsonGetValue.h"
 
-#include"WorldMarket.h"
-
 #include "ProductFinnhubForexSymbol.h"
 
 CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {

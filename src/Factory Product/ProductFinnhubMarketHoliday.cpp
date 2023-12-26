@@ -6,6 +6,7 @@
 #include "ProductFinnhubMarketHoliday.h"
 
 #include "TimeConvert.h"
+#include "WorldMarket.h"
 
 CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
 	m_strClassName = _T("Finnhub market holiday");

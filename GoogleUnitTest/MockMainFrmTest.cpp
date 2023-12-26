@@ -5,6 +5,7 @@
 #include"ChinaMarket.h"
 
 #include"MockMainFrm.h"
+#include "NeteaseRTDataSource.h"
 #include "TengxunRTDataSource.h"
 
 using std::exception;

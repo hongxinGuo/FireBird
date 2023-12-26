@@ -12,6 +12,8 @@
 #include "GeneralCheck.h"
 
 #include "FinnhubInaccessibleExchange.h"
+#include "NeteaseRTDataSource.h"
+#include "SinaRTDataSource.h"
 
 using namespace testing;
 

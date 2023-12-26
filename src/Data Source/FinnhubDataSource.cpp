@@ -3,7 +3,6 @@
 /// finnhub.io中为免费用户使用的数据逐渐减少，需要设置一新的数据库来存储各数据的免费与否的状态。
 ///
 /// 20231126：20231127后，stock DayLine和Crypto DayLine不再免费。
-
 #include"pch.h"
 
 #include"TimeConvert.h"

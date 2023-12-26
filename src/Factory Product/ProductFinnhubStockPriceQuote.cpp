@@ -3,7 +3,6 @@
 #include"jsonParse.h"
 #include"JsonGetValue.h"
 
-#include"WorldMarket.h"
 #include"WorldStock.h"
 
 #include "ProductFinnhubStockPriceQuote.h"

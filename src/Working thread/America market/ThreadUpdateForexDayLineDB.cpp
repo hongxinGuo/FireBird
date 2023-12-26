@@ -11,9 +11,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include"ThreadStatus.h"
-#include"WorldMarket.h"
-
 #include"FinnhubForexSymbol.h"
 
 UINT ThreadUpdateForexDayLineDB(const not_null<CForexSymbolPtr>& pSymbol) {

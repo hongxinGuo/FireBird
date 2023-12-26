@@ -2,8 +2,6 @@
 
 #include "QuandlDataSource.h"
 
-#include"WorldMarket.h"
-
 CQuandlDataSource::CQuandlDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	m_strInquiryFunction = _T(""); // Quandl有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。

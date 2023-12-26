@@ -11,13 +11,6 @@
 #include "MarketStatus.h"
 #include"MarketHoliday.h"
 
-#include<semaphore>
-
-using std::binary_semaphore;
-using std::dynamic_pointer_cast;
-
-extern binary_semaphore gl_UpdateWorldMarketDB; // 此信号量用于更新WorldMarket数据库
-
 class CWorldMarket : public CVirtualMarket {
 public:
 	CWorldMarket();

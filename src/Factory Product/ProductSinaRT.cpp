@@ -5,6 +5,7 @@
 #include "ChinaStockCodeConverter.h"
 
 #include"JsonParse.h"
+#include "SinaRTDataSource.h"
 
 CProductSinaRT::CProductSinaRT() {
 	m_lCurrentStockPosition = 0;

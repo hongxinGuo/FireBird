@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include"WorldMarket.h"
 #include"FinnhubForexSymbol.h"
 #include"SetWorldChosenForex.h"
 #include "ContainerChosenForex.h"
