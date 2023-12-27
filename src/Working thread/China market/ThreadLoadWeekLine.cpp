@@ -1,8 +1,3 @@
-#include"pch.h"
-
-#include"ChinaMarket.h"
-#include"Thread.h"
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 日线装载工作线程
@@ -10,6 +5,8 @@
 // 从数据库中装入相应股票的周线数据，然后计算各相对强度
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+#include"pch.h"
+
 UINT ThreadLoadWeekLine(const not_null<CChinaStockPtr>& pStockInput) {
 	const CChinaStockPtr pStock = pStockInput;
 	pStock->UnloadWeekLine();

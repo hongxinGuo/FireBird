@@ -653,6 +653,7 @@ namespace FireBirdTest {
 			break;
 		}
 		// »Ö¸´Ô­×´
+		m_pStock->SetUpdateBasicFinancial(true);
 		m_pStock->SetUpdateProfileDB(false);
 	}
 }

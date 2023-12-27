@@ -16,7 +16,7 @@ namespace FireBirdTest {
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			gl_containerChinaStock.SetSinaRTDataInquiringIndex(0);
+			gl_dataContainerChinaStock.SetSinaRTDataInquiringIndex(0);
 		}
 
 		static void TearDownTestSuite() {
@@ -34,7 +34,7 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			m_pMockSinaRTDataSource = nullptr;
-			gl_containerChinaStock.SetSinaRTDataInquiringIndex(0);
+			gl_dataContainerChinaStock.SetSinaRTDataInquiringIndex(0);
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}

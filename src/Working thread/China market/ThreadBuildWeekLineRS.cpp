@@ -69,7 +69,7 @@ UINT ThreadBuildWeekLineRSOfDate(long lDate) {
 	ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
 
 	if (!gl_systemConfiguration.IsExitingSystem() && !gl_systemConfiguration.IsExitingCalculatingRS()) {
-		gl_containerChinaStock.BuildWeekLineRS(lDate);
+		gl_dataContainerChinaStock.BuildWeekLineRS(lDate);
 	}
 	gl_BackgroundWorkingThread.release();
 	gl_ThreadStatus.DecreaseBackGroundWorkingThread();

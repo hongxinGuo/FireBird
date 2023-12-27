@@ -5,7 +5,7 @@
 
 UINT ThreadUpdateCountryListDB() {
 	gl_UpdateWorldMarketDB.acquire();
-	gl_dataFinnhubCountry.UpdateDB();
+	gl_dataContainerFinnhubCountry.UpdateDB();
 	gl_UpdateWorldMarketDB.release();
 
 	return 40;

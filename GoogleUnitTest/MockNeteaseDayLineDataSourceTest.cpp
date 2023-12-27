@@ -15,11 +15,11 @@ namespace FireBirdTest {
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
+			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 		}
 
 		static void TearDownTestSuite() {
-			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
+			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -31,21 +31,21 @@ namespace FireBirdTest {
 			gl_pMockNeteaseDayLineDataSource = make_shared<CMockNeteaseDayLineDataSource>();
 			gl_pChinaMarket->CalculateTime();
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
-			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
+			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 		}
 
 		void TearDown() override {
 			// clearUp
 
-			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
+			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			gl_pChinaMarket->SetResetMarket(true);
 			gl_pChinaMarket->SetSystemReady(true);
 			gl_pChinaMarket->SetCurrentStockChanged(false);
-			for (int i = 0; i < gl_containerChinaStock.Size(); i++) {
-				gl_containerChinaStock.GetStock(i)->SetDayLineNeedUpdate(true);
+			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
+				gl_dataContainerChinaStock.GetStock(i)->SetDayLineNeedUpdate(true);
 			}
-			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
+			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			gl_pMockNeteaseDayLineDataSource = nullptr;
 			SCOPED_TRACE("");
 			GeneralCheck();

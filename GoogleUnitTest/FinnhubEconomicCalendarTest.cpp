@@ -228,7 +228,7 @@ namespace FireBirdTest {
 		default:
 			break;
 		}
-		gl_dataFinnhubEconomicCalendar.Reset();
+		gl_dataContainerFinnhubEconomicCalendar.Reset();
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 	}
 }

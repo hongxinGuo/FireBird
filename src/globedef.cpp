@@ -63,6 +63,10 @@ CTiingoIEXWebSocketPtr gl_pTiingoIEXWebSocket;
 CTiingoForexWebSocketPtr gl_pTiingoForexWebSocket;
 CTiingoCryptoWebSocketPtr gl_pTiingoCryptoWebSocket;
 
+// 系统状态
+bool gl_bChinaMarketResetting = false; // 中国市场重启中
+bool gl_bWorldMarketResetting = false; // 世界市场重启中
+
 // 处理后的数据
 CPriorityQueueWebRTData gl_qSinaRT; // 中国市场新浪实时数据队列。
 CPriorityQueueWebRTData gl_qNeteaseRT; // 中国市场网易实时数据队列。
@@ -70,22 +74,22 @@ CPriorityQueueWebRTData gl_qTengxunRT; // 中国市场腾讯实时数据队列。
 CTemplateMutexAccessQueue<CDayLineWebData> gl_qDayLine; // 日线数据
 
 // ChinaMarket处理的数据
-CContainerChinaStock gl_containerChinaStock;
+CContainerChinaStock gl_dataContainerChinaStock;
 CContainerStockSymbol gl_dataContainerChinaStockSymbol;
 
 // World market处理的数据
 CContainerFinnhubForexSymbol gl_dataFinnhubForexSymbol;
 CContainerFinnhubCryptoSymbol gl_dataFinnhubCryptoSymbol;
-CContainerFinnhubCountry gl_dataFinnhubCountry;
-CContainerFinnhubEconomicCalendar gl_dataFinnhubEconomicCalendar;
+CContainerFinnhubCountry gl_dataContainerFinnhubCountry;
+CContainerFinnhubEconomicCalendar gl_dataContainerFinnhubEconomicCalendar;
 
-CContainerFinnhubStockExchange gl_dataFinnhubStockExchange;
-CContainerFinnhubForexExchange gl_dataFinnhubForexExchange;
-CContainerFinnhubCryptoExchange gl_dataFinnhubCryptoExchange;
+CContainerFinnhubStockExchange gl_dataContainerFinnhubStockExchange;
+CContainerFinnhubForexExchange gl_dataContainerFinnhubForexExchange;
+CContainerFinnhubCryptoExchange gl_dataContainerFinnhubCryptoExchange;
 
 CContainerWorldStock gl_dataContainerFinnhubStock;
-CContainerTiingoStock gl_dataTiingoStock;
-CContainerTiingoCryptoSymbol gl_dataTiingoCryptoSymbol;
+CContainerTiingoStock gl_dataContainerTiingoStock;
+CContainerTiingoCryptoSymbol gl_dataContainerTiingoCryptoSymbol;
 
 CContainerChosenStock gl_dataContainerChosenWorldStock;
 CContainerChosenForex gl_dataContainerChosenWorldForex;

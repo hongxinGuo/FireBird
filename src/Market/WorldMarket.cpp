@@ -74,18 +74,18 @@ void CWorldMarket::ResetQuandl() {}
 void CWorldMarket::ResetTiingo() {}
 
 void CWorldMarket::ResetDataClass() {
-	gl_dataFinnhubStockExchange.Reset();
-	gl_dataFinnhubForexExchange.Reset();
-	gl_dataFinnhubCryptoExchange.Reset();
+	gl_dataContainerFinnhubStockExchange.Reset();
+	gl_dataContainerFinnhubForexExchange.Reset();
+	gl_dataContainerFinnhubCryptoExchange.Reset();
 	gl_dataFinnhubForexSymbol.Reset();
 	gl_dataFinnhubCryptoSymbol.Reset();
-	gl_dataFinnhubCountry.Reset();
-	gl_dataFinnhubEconomicCalendar.Reset();
+	gl_dataContainerFinnhubCountry.Reset();
+	gl_dataContainerFinnhubEconomicCalendar.Reset();
 
 	gl_dataContainerFinnhubStock.Reset();
 
-	gl_dataTiingoStock.Reset();
-	gl_dataTiingoCryptoSymbol.Reset();
+	gl_dataContainerTiingoStock.Reset();
+	gl_dataContainerTiingoCryptoSymbol.Reset();
 
 	gl_dataContainerChosenWorldStock.Reset();
 	gl_dataContainerChosenWorldForex.Reset();
@@ -93,24 +93,25 @@ void CWorldMarket::ResetDataClass() {
 }
 
 void CWorldMarket::ResetMarket() {
+	gl_bWorldMarketResetting = true;
 	Reset();
 
 	UpdateToken();
 
-	gl_dataFinnhubStockExchange.LoadDB(); // 装入世界交易所信息
-	gl_dataFinnhubCountry.LoadDB();
+	gl_dataContainerFinnhubStockExchange.LoadDB(); // 装入世界交易所信息
+	gl_dataContainerFinnhubCountry.LoadDB();
 	gl_dataContainerFinnhubStock.LoadDB();
 	gl_dataContainerChosenWorldStock.LoadDB();
-	gl_dataFinnhubForexExchange.LoadDB();
+	gl_dataContainerFinnhubForexExchange.LoadDB();
 	gl_dataFinnhubForexSymbol.LoadDB();
 	gl_dataContainerChosenWorldForex.LoadDB();
-	gl_dataFinnhubCryptoExchange.LoadDB();
+	gl_dataContainerFinnhubCryptoExchange.LoadDB();
 	gl_dataFinnhubCryptoSymbol.LoadDB();
 	gl_dataContainerChosenWorldCrypto.LoadDB();
-	gl_dataFinnhubEconomicCalendar.LoadDB();
+	gl_dataContainerFinnhubEconomicCalendar.LoadDB();
 
-	gl_dataTiingoStock.LoadDB();
-	gl_dataTiingoCryptoSymbol.LoadDB();
+	gl_dataContainerTiingoStock.LoadDB();
+	gl_dataContainerTiingoCryptoSymbol.LoadDB();
 
 	for (const auto& pDataSource : m_vDataSource) {
 		pDataSource->Reset();
@@ -119,6 +120,8 @@ void CWorldMarket::ResetMarket() {
 	CString str = _T("重置World Market于美东标准时间：");
 	str += GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(str);
+
+	gl_bWorldMarketResetting = false;
 }
 
 void CWorldMarket::PreparingExitMarket() {
@@ -390,21 +393,21 @@ void CWorldMarket::CreateThreadUpdateDayLineDB() {
 }
 
 void CWorldMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
-	if (gl_dataFinnhubCountry.GetLastTotalCountry() < gl_dataFinnhubCountry.GetTotalCountry()) {
+	if (gl_dataContainerFinnhubCountry.GetLastTotalCountry() < gl_dataContainerFinnhubCountry.GetTotalCountry()) {
 		CreateThreadUpdateCountryListDB();
 	}
-	if (gl_dataFinnhubForexExchange.IsNeedUpdate()) CreateThreadUpdateForexExchangeDB();
+	if (gl_dataContainerFinnhubForexExchange.IsNeedUpdate()) CreateThreadUpdateForexExchangeDB();
 	if (gl_dataFinnhubForexSymbol.IsUpdateProfileDB()) CreateThreadUpdateForexSymbolDB();
-	if (gl_dataFinnhubCryptoExchange.IsNeedUpdate()) CreateThreadUpdateCryptoExchangeDB();
+	if (gl_dataContainerFinnhubCryptoExchange.IsNeedUpdate()) CreateThreadUpdateCryptoExchangeDB();
 	if (gl_dataFinnhubCryptoSymbol.IsUpdateProfileDB()) CreateThreadUpdateFinnhubCryptoSymbolDB();
 	if (gl_dataContainerFinnhubStock.IsSaveInsiderTransaction()) CreateThreadUpdateInsiderTransactionDB();
 	if (gl_dataContainerFinnhubStock.IsSaveInsiderSentiment()) CreateThreadUpdateInsiderSentimentDB();
 	if (gl_dataContainerFinnhubStock.IsDayLineNeedSaving()) CreateThreadUpdateDayLineDB();
-	if (gl_dataFinnhubEconomicCalendar.IsNeedUpdate()) CreateThreadUpdateEconomicCalendarDB();
+	if (gl_dataContainerFinnhubEconomicCalendar.IsNeedUpdate()) CreateThreadUpdateEconomicCalendarDB();
 	if (gl_dataContainerFinnhubStock.IsUpdateCompanyNewsDB()) CreateThreadUpdateCompanyNewsDB();
 	if (gl_dataContainerFinnhubStock.IsUpdateBasicFinancialDB()) CreateThreadUpdateBasicFinancialDB();
-	if (gl_dataTiingoStock.IsNeedUpdate()) CreateThreadUpdateTiingoStockDB();
-	if (gl_dataTiingoCryptoSymbol.IsNeedUpdate()) CreateThreadUpdateTiingoCryptoSymbolDB();
+	if (gl_dataContainerTiingoStock.IsNeedUpdate()) CreateThreadUpdateTiingoStockDB();
+	if (gl_dataContainerTiingoCryptoSymbol.IsNeedUpdate()) CreateThreadUpdateTiingoCryptoSymbolDB();
 	if (gl_dataContainerFinnhubStock.IsSaveEPSSurpriseDB()) CreateThreadUpdateEPSSurpriseDB2();
 
 	UpdateForexDayLineDB();

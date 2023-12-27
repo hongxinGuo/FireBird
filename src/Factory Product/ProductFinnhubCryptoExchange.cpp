@@ -23,8 +23,8 @@ CString CProductFinnhubCryptoExchange::CreateMessage() {
 bool CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvCryptoExchange = ParseFinnhubCryptoExchange(pWebData);
 	for (int i = 0; i < pvCryptoExchange->size(); i++) {
-		if (!gl_dataFinnhubCryptoExchange.IsExchange(static_cast<LPCTSTR>(pvCryptoExchange->at(i)))) {
-			gl_dataFinnhubCryptoExchange.Add(static_cast<LPCTSTR>(pvCryptoExchange->at(i)));
+		if (!gl_dataContainerFinnhubCryptoExchange.IsExchange(static_cast<LPCTSTR>(pvCryptoExchange->at(i)))) {
+			gl_dataContainerFinnhubCryptoExchange.Add(static_cast<LPCTSTR>(pvCryptoExchange->at(i)));
 		}
 	}
 

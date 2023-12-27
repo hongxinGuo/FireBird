@@ -31,7 +31,7 @@ bool CNeteaseDayLineDataSource::Reset() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CNeteaseDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请网易日线数据。
-	if (gl_pChinaMarket->IsSystemReady() && gl_containerChinaStock.IsDayLineNeedUpdate() && gl_pChinaMarket->IsDummyTime()
+	if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsDayLineNeedUpdate() && gl_pChinaMarket->IsDummyTime()
 		&& (gl_pChinaMarket->GetMarketTime() > 114500)) {
 		if (!IsInquiring()) {
 			CreateProduct();
@@ -45,7 +45,7 @@ void CNeteaseDayLineDataSource::CreateProduct() {
 	// 准备网易日线数据申请格式
 	const CString strMessage = _T("http://quotes.money.163.com/service/chddata.html?code=");;
 	const CString strSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
-	CString strParam = gl_containerChinaStock.CreateNeteaseDayLineInquiringStr();
+	CString strParam = gl_dataContainerChinaStock.CreateNeteaseDayLineInquiringStr();
 	if (strParam.GetLength() > 0) {
 		char buffer2[200];
 		const CString strStockCode = XferNeteaseToStandard(strParam);

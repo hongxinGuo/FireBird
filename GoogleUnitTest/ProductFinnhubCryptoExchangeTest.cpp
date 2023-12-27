@@ -133,7 +133,7 @@ namespace FireBirdTest {
 			m_pWebData->SetJSonContentType(true);
 			m_finnhubCryptoExchange.SetMarket(gl_pWorldMarket);
 			EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCryptoExchange());
-			EXPECT_EQ(gl_dataFinnhubCryptoExchange.Size(), 15) << "最初装载了15个";
+			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 15) << "最初装载了15个";
 		}
 
 		void TearDown() override {
@@ -142,7 +142,7 @@ namespace FireBirdTest {
 
 			SCOPED_TRACE("");
 			GeneralCheck();
-			EXPECT_EQ(gl_dataFinnhubCryptoExchange.Size(), 15) << "最初装载了15个";
+			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 15) << "最初装载了15个";
 		}
 
 	public:
@@ -158,20 +158,20 @@ namespace FireBirdTest {
 		m_finnhubCryptoExchange.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
-			EXPECT_EQ(gl_dataFinnhubCryptoExchange.Size(), 15);
+			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 15);
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_EQ(gl_dataFinnhubCryptoExchange.Size(), 15);
+			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 15);
 			break;
 		case 2: // 格式不对
-			EXPECT_EQ(gl_dataFinnhubCryptoExchange.Size(), 15);
+			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 15);
 			break;
 		case 3: // 缺乏字符串
-			EXPECT_EQ(gl_dataFinnhubCryptoExchange.Size(), 15);
+			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 15);
 			break;
 		case 10:
-			EXPECT_EQ(gl_dataFinnhubCryptoExchange.Size(), 16) << "加入了new exchange这个新的交易所";
-			EXPECT_TRUE(gl_dataFinnhubCryptoExchange.Delete(_T("new exchange"))); // 清除new exchange这个新加入的
+			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 16) << "加入了new exchange这个新的交易所";
+			EXPECT_TRUE(gl_dataContainerFinnhubCryptoExchange.Delete(_T("new exchange"))); // 清除new exchange这个新加入的
 			break;
 		default:
 			break;

@@ -57,7 +57,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockFireBirdViewTest, TestShowOrdinaryBuySell) {
 		CDC DC;
-		const CChinaStockPtr pStock = gl_containerChinaStock.GetStock(1);
+		const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(1);
 		const CRect rectArea(0, 0, 300, 300);
 
 		pStock->SetVolume(10000);
@@ -69,7 +69,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockFireBirdViewTest, TestShowCanceledBuySell) {
 		CDC DC;
-		const CChinaStockPtr pStock = gl_containerChinaStock.GetStock(1);
+		const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(1);
 		const CRect rectArea(0, 0, 300, 300);
 
 		pStock->SetCanceledBuyVolume(10000);

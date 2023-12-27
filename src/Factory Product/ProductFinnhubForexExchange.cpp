@@ -23,8 +23,8 @@ CString CProductFinnhubForexExchange::CreateMessage() {
 bool CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvForexExchange = ParseFinnhubForexExchange(pWebData);
 	for (int i = 0; i < pvForexExchange->size(); i++) {
-		if (!gl_dataFinnhubForexExchange.IsExchange(pvForexExchange->at(i))) {
-			gl_dataFinnhubForexExchange.Add(pvForexExchange->at(i));
+		if (!gl_dataContainerFinnhubForexExchange.IsExchange(pvForexExchange->at(i))) {
+			gl_dataContainerFinnhubForexExchange.Add(pvForexExchange->at(i));
 		}
 	}
 

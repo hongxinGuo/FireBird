@@ -7,7 +7,6 @@
 
 #include"jsonParse.h"
 #include"WebRTData.h"
-#include"ChinaMarket.h"
 
 void CWebRTData::Reset() {
 	m_lDataSource = INVALID_RT_WEB_DATA_;

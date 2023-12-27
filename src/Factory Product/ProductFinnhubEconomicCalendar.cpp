@@ -30,7 +30,7 @@ CString CProductFinnhubEconomicCalendar::CreateMessage() {
 
 bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
-	gl_dataFinnhubEconomicCalendar.Update(*pvEconomicCalendar);
+	gl_dataContainerFinnhubEconomicCalendar.Update(*pvEconomicCalendar);
 
 	return true;
 }

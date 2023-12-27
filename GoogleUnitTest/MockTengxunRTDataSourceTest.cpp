@@ -26,7 +26,7 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			gl_containerChinaStock.SetTengxunRTDataInquiringIndex(0);
+			gl_dataContainerChinaStock.SetTengxunRTDataInquiringIndex(0);
 			m_pMockTengxunRTDataSource = make_shared<CMockTengxunRTDataSource>();
 
 			// 禁止调用实际网络数据提取任务（否则会导致发起实际网络申请）
@@ -40,7 +40,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(m_pMockTengxunRTDataSource->HaveInquiry());
 			m_pMockTengxunRTDataSource = nullptr;
 			gl_pChinaMarket->SetSystemReady(true);
-			gl_containerChinaStock.SetTengxunRTDataInquiringIndex(0);
+			gl_dataContainerChinaStock.SetTengxunRTDataInquiringIndex(0);
 
 			SCOPED_TRACE("");
 			GeneralCheck();

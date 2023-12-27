@@ -15,7 +15,6 @@
 #include"SaveAndLoad.h"
 #include"JsonParse.h"
 #include"WebData.h"
-#include"ChinaMarket.h"
 
 // 这个是目前能够找到的最大的json数据，用于测试ParseWithPTree和ParseWithNlohmannJson的速度
 // 测试结果是Nlohmann json的速度比boost的Ptree快50%左右。

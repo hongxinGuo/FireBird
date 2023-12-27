@@ -27,7 +27,7 @@ bool CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		char buffer[100];
 		long lTemp = 0;
 		for (const auto& pTiingoStock : *pvTiingoStock) {
-			if (!gl_dataTiingoStock.IsStock(pTiingoStock->m_strTicker)) { gl_dataTiingoStock.Add(pTiingoStock); }
+			if (!gl_dataContainerTiingoStock.IsStock(pTiingoStock->m_strTicker)) { gl_dataContainerTiingoStock.Add(pTiingoStock); }
 			if (gl_dataContainerFinnhubStock.IsSymbol(pTiingoStock->m_strTicker)) {
 				// Tiingo的Symbol信息只是用于Finnhub的一个补充。
 				lTemp++;

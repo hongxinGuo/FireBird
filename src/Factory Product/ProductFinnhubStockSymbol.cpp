@@ -12,7 +12,7 @@ CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 }
 
 CString CProductFinnhubStockSymbol::CreateMessage() {
-	const auto strParam = gl_dataFinnhubStockExchange.GetExchangeCode(m_lIndex);
+	const auto strParam = gl_dataContainerFinnhubStockExchange.GetExchangeCode(m_lIndex);
 
 	m_strInquiringExchange = strParam;
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -20,9 +20,9 @@ CString CProductFinnhubStockSymbol::CreateMessage() {
 }
 
 bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto strExchangeCode = gl_dataFinnhubStockExchange.GetExchangeCode(m_lIndex);
+	const auto strExchangeCode = gl_dataContainerFinnhubStockExchange.GetExchangeCode(m_lIndex);
 	const auto pvStock = ParseFinnhubStockSymbol(pWebData);
-	const auto pExchange = gl_dataFinnhubStockExchange.GetExchange(m_lIndex);
+	const auto pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(m_lIndex);
 	pExchange->SetStockSymbolUpdated(true);
 	// 加上交易所代码。
 	for (const auto& pStock3 : *pvStock) {

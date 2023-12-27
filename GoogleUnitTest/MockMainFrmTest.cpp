@@ -21,7 +21,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
+			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			EXPECT_THAT(gl_pMockMainFrame, NotNull());
 			EXPECT_EQ(gl_vMarketPtr.size(), 2) << "ChinaMarket and WorldMarket";
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
@@ -29,7 +29,7 @@ namespace FireBirdTest {
 		}
 
 		static void TearDownTestSuite() {
-			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
+			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			gl_pChinaMarket->ResetCurrentStock();
@@ -46,13 +46,13 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
+			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			gl_systemConfiguration.SetExitingSystem(false);
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 		}
 
 		void TearDown() override {
-			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
+			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			gl_pChinaMarket->ResetCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			gl_pChinaMarket->ClearChoiceStockContainer();
@@ -647,12 +647,12 @@ namespace FireBirdTest {
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS) {
 		CCmdUI cmdUI;
-		EXPECT_THAT(gl_containerChinaStock.IsDayLineDBUpdated(), IsFalse());
-		EXPECT_THAT(gl_containerChinaStock.IsDayLineNeedSaving(), IsFalse());
+		EXPECT_THAT(gl_dataContainerChinaStock.IsDayLineDBUpdated(), IsFalse());
+		EXPECT_THAT(gl_dataContainerChinaStock.IsDayLineNeedSaving(), IsFalse());
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
 
-		const auto pStock = gl_containerChinaStock.GetStock(1);
+		const auto pStock = gl_dataContainerChinaStock.GetStock(1);
 		pStock->SetDayLineDBUpdated(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
@@ -668,12 +668,12 @@ namespace FireBirdTest {
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS1) {
 		CCmdUI cmdUI;
-		EXPECT_THAT(gl_containerChinaStock.IsDayLineDBUpdated(), IsFalse());
-		EXPECT_THAT(gl_containerChinaStock.IsDayLineNeedSaving(), IsFalse());
+		EXPECT_THAT(gl_dataContainerChinaStock.IsDayLineDBUpdated(), IsFalse());
+		EXPECT_THAT(gl_dataContainerChinaStock.IsDayLineNeedSaving(), IsFalse());
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
 
-		const auto pStock = gl_containerChinaStock.GetStock(1);
+		const auto pStock = gl_dataContainerChinaStock.GetStock(1);
 		pStock->SetDayLineDBUpdated(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
@@ -723,12 +723,12 @@ namespace FireBirdTest {
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS2) {
 		CCmdUI cmdUI;
-		EXPECT_THAT(gl_containerChinaStock.IsDayLineDBUpdated(), IsFalse());
-		EXPECT_THAT(gl_containerChinaStock.IsDayLineNeedSaving(), IsFalse());
+		EXPECT_THAT(gl_dataContainerChinaStock.IsDayLineDBUpdated(), IsFalse());
+		EXPECT_THAT(gl_dataContainerChinaStock.IsDayLineNeedSaving(), IsFalse());
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
 
-		const auto pStock = gl_containerChinaStock.GetStock(1);
+		const auto pStock = gl_dataContainerChinaStock.GetStock(1);
 		pStock->SetDayLineDBUpdated(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);

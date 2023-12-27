@@ -7,6 +7,8 @@
 
 #include "WatchdogMainFrm.h"
 
+#include"afxmsg_.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -342,6 +344,8 @@ void CWatchdogMainFrame::OnApplicationLook(UINT id) {
 
 		case ID_VIEW_APPLOOK_OFF_2007_AQUA:
 			CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_Aqua);
+			break;
+		default:
 			break;
 		}
 

@@ -2,7 +2,7 @@
 
 UINT ThreadUpdateTiingoCryptoSymbolDB() {
 	gl_UpdateWorldMarketDB.acquire();
-	gl_dataTiingoCryptoSymbol.UpdateDB();
+	gl_dataContainerTiingoCryptoSymbol.UpdateDB();
 	gl_UpdateWorldMarketDB.release();
 
 	return 54;

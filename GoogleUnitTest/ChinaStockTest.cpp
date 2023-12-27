@@ -35,7 +35,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
+			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 			pStock = nullptr;
@@ -44,7 +44,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
+			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			gl_pChinaMarket->CalculateTime();
 			gl_pChinaMarket->SetUpdateOptionDB(false);
@@ -53,7 +53,7 @@ namespace FireBirdTest {
 				if (pStock->IsDayLineNeedSaving()) pStock->SetDayLineNeedSaving(false);
 				pStock = nullptr;
 			}
-			EXPECT_THAT(gl_containerChinaStock.Size(), Eq(5040));
+			EXPECT_THAT(gl_dataContainerChinaStock.Size(), Eq(5040));
 
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -1131,12 +1131,12 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaStockTest, TestIsSaveStock) {
-		pStock = gl_containerChinaStock.GetStock(1);
+		pStock = gl_dataContainerChinaStock.GetStock(1);
 		CChinaStockPtr pStock2 = nullptr;
 		EXPECT_FALSE(pStock->IsSameStock(pStock2));
-		pStock2 = gl_containerChinaStock.GetStock(2);
+		pStock2 = gl_dataContainerChinaStock.GetStock(2);
 		EXPECT_FALSE(pStock->IsSameStock(pStock2));
-		pStock2 = gl_containerChinaStock.GetStock(1);
+		pStock2 = gl_dataContainerChinaStock.GetStock(1);
 		EXPECT_TRUE(pStock->IsSameStock(pStock2));
 	}
 
@@ -1820,8 +1820,8 @@ namespace FireBirdTest {
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CDayLinePtr pid;
 		CDayLine stock;
-		pStock = gl_containerChinaStock.GetStock(_T("600011.SS"));
-		EXPECT_FALSE(gl_containerChinaStock.IsDayLineDBUpdated());
+		pStock = gl_dataContainerChinaStock.GetStock(_T("600011.SS"));
+		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		gl_pChinaMarket->TEST_SetFormattedMarketDate(21900101);
 
 		pid = make_shared<CDayLine>();
@@ -1847,7 +1847,7 @@ namespace FireBirdTest {
 		pStock->SetSymbol(_T("600011.SS"));
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->SaveDayLineBasicInfo();
-		EXPECT_FALSE(gl_containerChinaStock.IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
+		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
 
 		pStock->SetTransactionTime(gl_pChinaMarket->TransferToUTCTime(21900101));
 		pStock->SetTransactionNumber(1);
@@ -2039,8 +2039,8 @@ namespace FireBirdTest {
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CDayLinePtr pid;
 		CDayLine dayLine;
-		pStock = gl_containerChinaStock.GetStock(_T("600016.SS"));
-		EXPECT_FALSE(gl_containerChinaStock.IsDayLineDBUpdated());
+		pStock = gl_dataContainerChinaStock.GetStock(_T("600016.SS"));
+		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		gl_pChinaMarket->TEST_SetFormattedMarketDate(20190101);
 
 		pid = make_shared<CDayLine>();
@@ -2071,7 +2071,7 @@ namespace FireBirdTest {
 		pStock->SetSymbol(_T("600016.SS"));
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->SaveDayLineBasicInfo();
-		EXPECT_FALSE(gl_containerChinaStock.IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
+		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
 
 		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21111201");
 		setDayLineBasicInfo.Open();
@@ -2122,7 +2122,7 @@ namespace FireBirdTest {
 		CDayLinePtr pid;
 		CChinaStock stock;
 
-		pStock = gl_containerChinaStock.GetStock(_T("600010.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock(_T("600010.SS"));
 
 		for (int i = 0; i < 10; i++) {
 			pid = make_shared<CDayLine>();
@@ -2187,7 +2187,7 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate) {
 		CChinaStock stock;
 
-		pStock = gl_containerChinaStock.GetStock(_T("600004.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock(_T("600004.SS"));
 
 		for (int i = 0; i < 10; i++) {
 			CDayLinePtr pid = make_shared<CDayLine>();
@@ -2216,7 +2216,7 @@ namespace FireBirdTest {
 		pStock->UpdateDayLineStartEndDate();
 		EXPECT_EQ(pStock->GetDayLineEndDate(), _CHINA_MARKET_BEGIN_DATE_ + 9 * 100000 + 2) << "日线最新日期已更新";
 		EXPECT_EQ(pStock->GetDayLineStartDate(), _CHINA_MARKET_BEGIN_DATE_ + 2) << "日线最初日期已更新";
-		EXPECT_TRUE(gl_containerChinaStock.IsDayLineDBUpdated());
+		EXPECT_TRUE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		EXPECT_TRUE(pStock->IsUpdateProfileDB()) << "更新日线起止日期后，此标识也被设置";
 
 		pStock->SetUpdateProfileDB(false);
@@ -2225,7 +2225,7 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate3) {
 		CChinaStock stock;
 
-		pStock = gl_containerChinaStock.GetStock(_T("600008.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock(_T("600008.SS"));
 
 		for (int i = 1; i < 10; i++) {
 			CDayLinePtr pid = make_shared<CDayLine>();
@@ -2254,7 +2254,7 @@ namespace FireBirdTest {
 		pStock->UpdateDayLineStartEndDate();
 		EXPECT_EQ(pStock->GetDayLineEndDate(), 20800102);
 		EXPECT_EQ(pStock->GetDayLineStartDate(), 19900101 + 100000) << _T("当起始日期为19900101时，需要更新之");
-		EXPECT_TRUE(gl_containerChinaStock.IsDayLineDBUpdated());
+		EXPECT_TRUE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		EXPECT_TRUE(pStock->IsUpdateProfileDB()) << "此标识也被设置";
 
 		pStock->SetUpdateProfileDB(false);
@@ -2263,7 +2263,7 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate2) {
 		CChinaStock stock;
 
-		pStock = gl_containerChinaStock.GetStock(_T("600008.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock(_T("600008.SS"));
 
 		for (int i = 1; i < 10; i++) {
 			CDayLinePtr pid = make_shared<CDayLine>();
@@ -2292,7 +2292,7 @@ namespace FireBirdTest {
 		pStock->UpdateDayLineStartEndDate();
 		EXPECT_EQ(pStock->GetDayLineEndDate(), 20800102);
 		EXPECT_EQ(pStock->GetDayLineStartDate(), 19900102);
-		EXPECT_FALSE(gl_containerChinaStock.IsDayLineDBUpdated());
+		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		EXPECT_FALSE(pStock->IsUpdateProfileDB()) << "未更新日线起止日期的话，此标识也未被设置";
 	}
 
@@ -2524,7 +2524,7 @@ namespace FireBirdTest {
 		CSetWeekLineBasicInfo setWeekLineBasicInfo;
 		CWeekLinePtr pid;
 		CWeekLine stock;
-		pStock = gl_containerChinaStock.GetStock(_T("600016.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock(_T("600016.SS"));
 		gl_pChinaMarket->TEST_SetFormattedMarketDate(20190101);
 
 		for (int i = 0; i < 10; i++) {
@@ -2593,7 +2593,7 @@ namespace FireBirdTest {
 		CWeekLinePtr pid;
 		CChinaStock stock;
 
-		pStock = gl_containerChinaStock.GetStock(_T("600010.SS"));
+		pStock = gl_dataContainerChinaStock.GetStock(_T("600010.SS"));
 
 		for (int i = 0; i < 10; i++) {
 			pid = make_shared<CWeekLine>();

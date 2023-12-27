@@ -23,7 +23,7 @@
 UINT ThreadSaveTempRTData() {
 	gl_UpdateChinaMarketDB.acquire();
 	gl_ProcessChinaMarketRTData.acquire();
-	gl_containerChinaStock.SaveTempRTData();
+	gl_dataContainerChinaStock.SaveTempRTData();
 	gl_ProcessChinaMarketRTData.release();
 	gl_UpdateChinaMarketDB.release();
 

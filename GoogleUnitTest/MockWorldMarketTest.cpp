@@ -29,7 +29,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			//EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
+			//EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 
 			s_pMockWorldMarket = make_shared<CMockWorldMarket>(); // 在此生成，
 			s_pMockWorldMarket->ResetMarket();
@@ -52,7 +52,7 @@ namespace FireBirdTest {
 		}
 
 		void SetUp() override {
-			//EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
+			//EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			SCOPED_TRACE("");
 			GeneralCheck();
 			gl_systemConfiguration.SetExitingSystem(false);

@@ -30,7 +30,7 @@ UINT ThreadBuildWeekLine(const not_null<CChinaMarketPtr>& pMarket, long lStartDa
 		pMarket->DeleteWeekLine();
 	}
 
-	gl_containerChinaStock.BuildWeekLine(lStartMonday);
+	gl_dataContainerChinaStock.BuildWeekLine(lStartMonday);
 
 	// 清除当前周周线表
 	pMarket->DeleteCurrentWeekWeekLine();

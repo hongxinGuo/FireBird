@@ -12,7 +12,7 @@ CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 }
 
 CString CProductFinnhubForexSymbol::CreateMessage() {
-	const auto strParam = gl_dataFinnhubForexExchange.GetExchange(m_lIndex);
+	const auto strParam = gl_dataContainerFinnhubForexExchange.GetExchange(m_lIndex);
 
 	m_strInquiringExchange = strParam;
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -24,7 +24,7 @@ bool CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (pvForexSymbol->empty()) return false;
 	for (const auto& pSymbol : *pvForexSymbol) {
 		if (!gl_dataFinnhubForexSymbol.IsSymbol(pSymbol->GetSymbol())) {
-			pSymbol->SetExchangeCode(gl_dataFinnhubForexExchange.GetExchange(m_lIndex));
+			pSymbol->SetExchangeCode(gl_dataContainerFinnhubForexExchange.GetExchange(m_lIndex));
 			gl_dataFinnhubForexSymbol.Add(pSymbol);
 		}
 	}

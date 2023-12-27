@@ -19,7 +19,6 @@
 #include<string>
 #include<memory>
 
-#include "ChinaMarket.h"
 #include "ChinaStockCodeConverter.h"
 #include "JsonGetValue.h"
 
@@ -317,7 +316,7 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockC
 CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 	auto pDayLineData = make_shared<CDayLineWebData>();
 	const CString strSymbol = pWebData->GetStockCode();
-	const CString strDisplaySymbol = gl_containerChinaStock.GetStock(strSymbol)->GetDisplaySymbol();
+	const CString strDisplaySymbol = gl_dataContainerChinaStock.GetStock(strSymbol)->GetDisplaySymbol();
 
 	if (!pWebData->IsParsed()) {
 		if (!pWebData->CreateJson()) {

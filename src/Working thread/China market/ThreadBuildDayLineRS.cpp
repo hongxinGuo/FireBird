@@ -74,7 +74,7 @@ UINT ThreadBuildDayLineRSOfDate(const not_null<CChinaMarketPtr>& pMarket, long l
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 	gl_BackgroundWorkingThread.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem() && !gl_systemConfiguration.IsExitingCalculatingRS()) {
-		gl_containerChinaStock.BuildDayLineRS(lDate); // 调用实际执行函数
+		gl_dataContainerChinaStock.BuildDayLineRS(lDate); // 调用实际执行函数
 	}
 	gl_BackgroundWorkingThread.release();
 	gl_ThreadStatus.DecreaseBackGroundWorkingThread();

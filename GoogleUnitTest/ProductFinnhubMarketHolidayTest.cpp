@@ -43,7 +43,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubMarketHolidayProductTest, TestCreatMessage) {
 		MarketHolidayProduct.SetMarket(gl_pWorldMarket);
 		MarketHolidayProduct.SetIndex(1);
-		EXPECT_STREQ(MarketHolidayProduct.CreateMessage(), MarketHolidayProduct.GetInquiryFunction() + gl_dataFinnhubStockExchange.GetExchangeCode(1));
+		EXPECT_STREQ(MarketHolidayProduct.CreateMessage(), MarketHolidayProduct.GetInquiryFunction() + gl_dataContainerFinnhubStockExchange.GetExchangeCode(1));
 	}
 
 	// 正确的数据

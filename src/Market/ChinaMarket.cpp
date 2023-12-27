@@ -23,6 +23,8 @@
 
 #include"SetCurrentWeekLine.h"
 
+#define WM_FIREBIRD_EXIT                0X500
+
 using namespace std;
 
 #include<gsl/gsl>
@@ -63,11 +65,12 @@ void CChinaMarket::ResetMarket() {
 	str += GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(str);
 	gl_ProcessChinaMarketRTData.acquire();
+	gl_bChinaMarketResetting = true;
 	while (gl_ThreadStatus.IsSavingThreadRunning()) { Sleep(1); }
 
 	Reset();
 
-	gl_containerChinaStock.LoadStockProfileDB();
+	gl_dataContainerChinaStock.LoadStockProfileDB();
 	LoadOptionDB();
 	LoadChosenStockDB();
 	Load10DaysRSStrong1StockSet();
@@ -75,6 +78,7 @@ void CChinaMarket::ResetMarket() {
 	LoadCalculatingRSOption();
 	Load10DaysRSStrongStockDB();
 
+	gl_bChinaMarketResetting = false;
 	gl_ProcessChinaMarketRTData.release();
 }
 
@@ -82,7 +86,7 @@ void CChinaMarket::Reset() {
 	CalculateTime(); // 初始化市场时间
 	SetSystemReady(false); // 市场初始状态为未设置好。
 
-	gl_containerChinaStock.Reset();
+	gl_dataContainerChinaStock.Reset();
 	gl_dataContainerChinaStockSymbol.Reset();
 
 	m_v10RSStrong1Stock.resize(0);
@@ -241,7 +245,7 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 bool CChinaMarket::TaskCheckMarketReady(long lCurrentTime) {
 	if (!IsSystemReady()) {
 		if (IsResetMarket()) return false;
-		const auto lMax = gl_containerChinaStock.Size() > 12000 ? gl_containerChinaStock.Size() * 2 : 24000;
+		const auto lMax = gl_dataContainerChinaStock.Size() > 12000 ? gl_dataContainerChinaStock.Size() * 2 : 24000;
 		if (m_llRTDataReceived > lMax) {
 			SetSystemReady(true);
 			gl_systemMessage.PushInformationMessage(_T("中国股票市场初始化完毕"));
@@ -254,16 +258,16 @@ bool CChinaMarket::TaskCheckMarketReady(long lCurrentTime) {
 
 void CChinaMarket::ChangeToNextStock() {
 	ASSERT(m_pCurrentStock != nullptr);
-	long lIndex = gl_containerChinaStock.GetOffset(m_pCurrentStock);
+	long lIndex = gl_dataContainerChinaStock.GetOffset(m_pCurrentStock);
 	CChinaStockPtr pStock = m_pCurrentStock;
 
 	if (IsTotalStockSetSelected()) {
 		bool fFound = false;
 		while (!fFound) {
-			if (++lIndex == gl_containerChinaStock.Size()) {
+			if (++lIndex == gl_dataContainerChinaStock.Size()) {
 				lIndex = 0;
 			}
-			pStock = gl_containerChinaStock.GetStock(lIndex);
+			pStock = gl_dataContainerChinaStock.GetStock(lIndex);
 			if (!pStock->IsNullStock()) fFound = true;
 		}
 	}
@@ -284,16 +288,16 @@ void CChinaMarket::ChangeToNextStock() {
 
 void CChinaMarket::ChangeToPrevStock() {
 	ASSERT(m_pCurrentStock != nullptr);
-	long lIndex = gl_containerChinaStock.GetOffset(m_pCurrentStock);
+	long lIndex = gl_dataContainerChinaStock.GetOffset(m_pCurrentStock);
 	CChinaStockPtr pStock = m_pCurrentStock;
 
 	if (IsTotalStockSetSelected()) {
 		bool fFound = false;
 		while (!fFound) {
 			if (--lIndex < 0) {
-				lIndex = gl_containerChinaStock.Size() - 1;
+				lIndex = gl_dataContainerChinaStock.Size() - 1;
 			}
-			pStock = gl_containerChinaStock.GetStock(lIndex);
+			pStock = gl_dataContainerChinaStock.GetStock(lIndex);
 			if (!pStock->IsNullStock()) fFound = true;
 		}
 	}
@@ -328,7 +332,7 @@ void CChinaMarket::ChangeToNextStockSet() {
 }
 
 size_t CChinaMarket::GetCurrentStockSetSize() {
-	if (IsTotalStockSetSelected()) return gl_containerChinaStock.Size();
+	if (IsTotalStockSetSelected()) return gl_dataContainerChinaStock.Size();
 	return m_avChosenStock.at(m_lCurrentSelectedStockSet).size();
 }
 
@@ -342,7 +346,7 @@ void CChinaMarket::CreateStock(const CString& strStockCode, const CString& strSt
 	pStock->SetDayLineStartDate(19900101);
 	pStock->SetUpdateProfileDB(true);
 	pStock->SetNeedProcessRTData(fProcessRTData);
-	gl_containerChinaStock.Add(pStock);
+	gl_dataContainerChinaStock.Add(pStock);
 	ASSERT(pStock->IsDayLineNeedUpdate());
 	const CString str = _T("china Market生成新代码") + pStock->GetSymbol();
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
@@ -460,12 +464,12 @@ void CChinaMarket::DistributeNeteaseRTDataToStock() {
 bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 	const CString strSymbol = pRTData->GetSymbol();
 	if (IsCheckingActiveStock()) {
-		if (!gl_containerChinaStock.IsSymbol(strSymbol) && pRTData->IsActive()) {
+		if (!gl_dataContainerChinaStock.IsSymbol(strSymbol) && pRTData->IsActive()) {
 			ASSERT(strSymbol.GetLength() == 9);
 			CreateStock(strSymbol, pRTData->GetStockName(), true);
 		}
 	}
-	else if (!gl_containerChinaStock.IsSymbol(strSymbol)) {
+	else if (!gl_dataContainerChinaStock.IsSymbol(strSymbol)) {
 		return false;
 	}
 	if (pRTData->IsActive()) { // 此实时数据有效？
@@ -473,7 +477,7 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 		if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
 			m_ttNewestTransactionTime = pRTData->GetTransactionTime();
 		}
-		const auto pStock = gl_containerChinaStock.GetStock(pRTData->GetSymbol());
+		const auto pStock = gl_dataContainerChinaStock.GetStock(pRTData->GetSymbol());
 		if (!pStock->IsActive()) {
 			if (pRTData->IsValidTime(14)) {
 				pStock->UpdateProfile(pRTData);
@@ -497,20 +501,20 @@ CString CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTot
 	if (fUsingTotalStockSet) {
 		return gl_dataContainerChinaStockSymbol.GetNextSinaStockInquiringMiddleStr(lTotalNumber);
 	}
-	return gl_containerChinaStock.GetNextSinaStockInquiringMiddleStr(lTotalNumber);
+	return gl_dataContainerChinaStock.GetNextSinaStockInquiringMiddleStr(lTotalNumber);
 }
 
 CString CChinaMarket::GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet) {
 	if (fUsingTotalStockSet) {
 		return gl_dataContainerChinaStockSymbol.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber);
 	}
-	return gl_containerChinaStock.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber);
+	return gl_dataContainerChinaStock.GetNextNeteaseStockInquiringMiddleStr(lTotalNumber);
 }
 
 bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const CString& str) const {
 	const CString strNetease = str.Left(7);
 	CString strStockCode = XferNeteaseToStandard(strNetease);
-	if (!gl_containerChinaStock.IsSymbol(strStockCode)) {
+	if (!gl_dataContainerChinaStock.IsSymbol(strStockCode)) {
 		CString strReport = _T("网易日线查询股票代码错误：");
 		TRACE(_T("网易日线查询股票代码错误：%s\n"), strStockCode.GetBuffer());
 		strReport += strStockCode;
@@ -523,7 +527,7 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const CString& str) co
 
 void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
 	if (m_fCalculateChosen10RS) {
-		if (gl_containerChinaStock.GetDayLineNeedUpdateNumber() <= 0 && gl_containerChinaStock.GetDayLineNeedSaveNumber() <= 0) {
+		if (gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() <= 0 && gl_dataContainerChinaStock.GetDayLineNeedSaveNumber() <= 0) {
 			TaskChoice10RSStrongStockSet(lCurrentTime);
 			TaskChoice10RSStrong1StockSet(lCurrentTime);
 			TaskChoice10RSStrong2StockSet(lCurrentTime);
@@ -571,7 +575,7 @@ void CChinaMarket::DistributeRTData() {
 
 void CChinaMarket::CalculateRTData() {
 	if (IsSystemReady() && IsTodayTempRTDataLoaded() && IsRTDataNeedCalculate()) {
-		gl_containerChinaStock.ProcessRTData();
+		gl_dataContainerChinaStock.ProcessRTData();
 		SetRTDataNeedCalculate(false);
 	}
 }
@@ -775,13 +779,13 @@ void CChinaMarket::ProcessTodayStock() {
 
 	const long lDate = GetMarketDate(GetNewestTransactionTime());
 	if (lDate == GetMarketDate()) {
-		gl_containerChinaStock.BuildDayLine(lDate);
+		gl_dataContainerChinaStock.BuildDayLine(lDate);
 		// 计算本日日线相对强度
-		gl_containerChinaStock.BuildDayLineRS(lDate);
+		gl_dataContainerChinaStock.BuildDayLineRS(lDate);
 		// 生成周线数据
 		BuildWeekLineOfCurrentWeek();
-		gl_containerChinaStock.BuildWeekLineRS(GetCurrentMonday(lDate));
-		gl_containerChinaStock.UpdateStockProfileDB();
+		gl_dataContainerChinaStock.BuildWeekLineRS(GetCurrentMonday(lDate));
+		gl_dataContainerChinaStock.UpdateStockProfileDB();
 		if (GetMarketTime() > 150400) {	// 如果中国股市闭市了
 			SetRSEndDate(GetMarketDate());
 			SetUpdateOptionDB(true); // 更新状态
@@ -795,19 +799,19 @@ void CChinaMarket::ProcessTodayStock() {
 bool CChinaMarket::IsTaskOfSavingDayLineDBFinished() {
 	static bool s_bTaskOfSavingDayLineFinished = false;
 	if (s_bTaskOfSavingDayLineFinished) {
-		if ((!gl_containerChinaStock.IsDayLineNeedSaving()) && (!gl_containerChinaStock.IsDayLineNeedUpdate()) && (!IsDayLineNeedProcess())) {
+		if ((!gl_dataContainerChinaStock.IsDayLineNeedSaving()) && (!gl_dataContainerChinaStock.IsDayLineNeedUpdate()) && (!IsDayLineNeedProcess())) {
 			s_bTaskOfSavingDayLineFinished = false;
 			TRACE("日线历史数据更新完毕\n");
 			const CString str = "中国市场日线历史数据更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
-			if (gl_containerChinaStock.IsDayLineDBUpdated()) { // 更新股票池数据库
-				gl_containerChinaStock.ClearDayLineDBUpdatedFlag();
+			if (gl_dataContainerChinaStock.IsDayLineDBUpdated()) { // 更新股票池数据库
+				gl_dataContainerChinaStock.ClearDayLineDBUpdatedFlag();
 			}
 			return true;
 		}
 	}
 	else {
-		if (gl_containerChinaStock.IsDayLineNeedUpdate() || IsDayLineNeedProcess() || gl_containerChinaStock.IsDayLineNeedSaving()) {
+		if (gl_dataContainerChinaStock.IsDayLineNeedUpdate() || IsDayLineNeedProcess() || gl_dataContainerChinaStock.IsDayLineNeedSaving()) {
 			s_bTaskOfSavingDayLineFinished = true;
 		}
 	}
@@ -850,7 +854,7 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, GetNextTime(lCurrentTime, 0, 5, 0));
 
-	if (gl_containerChinaStock.IsUpdateProfileDB()) {
+	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
 		CreateThreadUpdateStockProfileDB();
 		return true;
 	}
@@ -930,8 +934,8 @@ void CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 	}
 
 	// 判断是否存储日线库和股票代码库
-	if (gl_containerChinaStock.IsDayLineNeedSaving()) {
-		gl_containerChinaStock.SaveDayLineData();
+	if (gl_dataContainerChinaStock.IsDayLineNeedSaving()) {
+		gl_dataContainerChinaStock.SaveDayLineData();
 	}
 
 	if (!IsTaskOfSavingDayLineDBFinished()) {// 当尚未更新完日线历史数据时
@@ -945,8 +949,8 @@ void CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 //
 //////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::SetCurrentStock(const CString& strStockCode) {
-	ASSERT(gl_containerChinaStock.IsSymbol(strStockCode));
-	const CChinaStockPtr pStock = gl_containerChinaStock.GetStock(strStockCode);
+	ASSERT(gl_dataContainerChinaStock.IsSymbol(strStockCode));
+	const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(strStockCode);
 	SetCurrentStock(pStock);
 	ASSERT(m_pCurrentStock != nullptr);
 	AddTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
@@ -1268,7 +1272,7 @@ CChinaStockPtr CChinaMarket::GetCurrentSelectedStock() {
 	if (m_lCurrentSelectedStockSet >= 0) {
 		return m_avChosenStock.at(m_lCurrentSelectedStockSet).at(0);
 	}
-	return gl_containerChinaStock.GetStock(0);
+	return gl_dataContainerChinaStock.GetStock(0);
 }
 
 bool CChinaMarket::IsDayLineNeedProcess() {
@@ -1279,8 +1283,8 @@ bool CChinaMarket::IsDayLineNeedProcess() {
 bool CChinaMarket::ProcessDayLine() {
 	while (gl_qDayLine.Size() > 0) {
 		CDayLineWebDataPtr pData = gl_qDayLine.PopData();
-		ASSERT(gl_containerChinaStock.IsSymbol(pData->GetStockCode()));
-		const CChinaStockPtr pStock = gl_containerChinaStock.GetStock(pData->GetStockCode());
+		ASSERT(gl_dataContainerChinaStock.IsSymbol(pData->GetStockCode()));
+		const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(pData->GetStockCode());
 		pStock->UpdateDayLine(pData->GetProcessedDayLine()); // pData的日线数据是正序的，最新日期的在最后面。
 		pStock->UpdateStatusByDownloadedDayLine();
 
@@ -1453,8 +1457,8 @@ void CChinaMarket::LoadTempRTData(long lTheDate) {
 	setDayLineTemp.Open();
 	if (!setDayLineTemp.IsEOF()) {
 		while (!setDayLineTemp.IsEOF()) {
-			if (setDayLineTemp.m_Date == lTheDate && gl_containerChinaStock.IsSymbol(setDayLineTemp.m_Symbol)) {// 如果是当天的行情，则载入，否则放弃
-				const CChinaStockPtr pStock = gl_containerChinaStock.GetStock(setDayLineTemp.m_Symbol);
+			if (setDayLineTemp.m_Date == lTheDate && gl_dataContainerChinaStock.IsSymbol(setDayLineTemp.m_Symbol)) {// 如果是当天的行情，则载入，否则放弃
+				const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(setDayLineTemp.m_Symbol);
 				ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
 				pStock->LoadTodaySavedInfo(&setDayLineTemp);
 			}
@@ -1473,8 +1477,8 @@ bool CChinaMarket::Load10DaysRSStrong1StockSet() {
 	m_v10RSStrong1Stock.clear();
 	setRSStrong1.Open();
 	while (!setRSStrong1.IsEOF()) {
-		if (gl_containerChinaStock.IsSymbol(setRSStrong1.m_Symbol)) {
-			CChinaStockPtr pStock = gl_containerChinaStock.GetStock(setRSStrong1.m_Symbol);
+		if (gl_dataContainerChinaStock.IsSymbol(setRSStrong1.m_Symbol)) {
+			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(setRSStrong1.m_Symbol);
 			m_v10RSStrong1Stock.push_back(pStock);
 		}
 		setRSStrong1.MoveNext();
@@ -1490,8 +1494,8 @@ bool CChinaMarket::Load10DaysRSStrong2StockSet() {
 	m_v10RSStrong2Stock.clear();
 	setRSStrong2.Open();
 	while (!setRSStrong2.IsEOF()) {
-		if (gl_containerChinaStock.IsSymbol(setRSStrong2.m_Symbol)) {
-			CChinaStockPtr pStock = gl_containerChinaStock.GetStock(setRSStrong2.m_Symbol);
+		if (gl_dataContainerChinaStock.IsSymbol(setRSStrong2.m_Symbol)) {
+			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(setRSStrong2.m_Symbol);
 			m_v10RSStrong2Stock.push_back(pStock);
 		}
 		setRSStrong2.MoveNext();
@@ -1573,8 +1577,8 @@ bool CChinaMarket::LoadOne10DaysRSStrongStockDB(long lIndex) {
 
 	setRSStrongStock.Open();
 	while (!setRSStrongStock.IsEOF()) {
-		if (gl_containerChinaStock.IsSymbol(setRSStrongStock.m_Symbol)) {
-			CChinaStockPtr pStock = gl_containerChinaStock.GetStock(setRSStrongStock.m_Symbol);
+		if (gl_dataContainerChinaStock.IsSymbol(setRSStrongStock.m_Symbol)) {
+			CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(setRSStrongStock.m_Symbol);
 			m_avChosenStock.at(m_lCurrentRSStrongIndex + c_10DaysRSStockSetStartPosition).push_back(pStock);
 			// 10日RS股票集起始位置为第10个。
 		}
@@ -1732,8 +1736,8 @@ void CChinaMarket::LoadChosenStockDB() {
 	// 装入股票代码数据库
 	while (!setChinaChosenStock.IsEOF()) {
 		CChinaStockPtr pStock = nullptr;
-		if (gl_containerChinaStock.IsSymbol(setChinaChosenStock.m_Symbol)) {
-			pStock = gl_containerChinaStock.GetStock(setChinaChosenStock.m_Symbol);
+		if (gl_dataContainerChinaStock.IsSymbol(setChinaChosenStock.m_Symbol)) {
+			pStock = gl_dataContainerChinaStock.GetStock(setChinaChosenStock.m_Symbol);
 			if (ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
 				m_avChosenStock.at(0).push_back(pStock);
 			}

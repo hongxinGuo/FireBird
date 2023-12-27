@@ -77,23 +77,23 @@ namespace FireBirdTest {
 
 	void ChinaMarketCheck() {
 		if (gl_pChinaMarket != nullptr) {
-			ASSERT_FALSE(gl_containerChinaStock.IsUpdateProfileDB()) << "不允许更新股票代码库";
+			ASSERT_FALSE(gl_dataContainerChinaStock.IsUpdateProfileDB()) << "不允许更新股票代码库";
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			//EXPECT_THAT(gl_pChinaMarket->)
 			EXPECT_THAT(gl_pChinaMarket->IsCalculatingDayLineRS(), IsFalse());
 			EXPECT_THAT(gl_pChinaMarket->IsCalculatingWeekLineRS(), IsFalse());
 			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
-			EXPECT_EQ(gl_containerChinaStock.Size(), 5040);
-			EXPECT_EQ(gl_containerChinaStock.GetDayLineNeedUpdateNumber(), gl_containerChinaStock.Size());
-			EXPECT_EQ(gl_containerChinaStock.Size(), 5040) << "测试数据库装载的股票数";
+			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040);
+			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
+			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试数据库装载的股票数";
 
 			EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
 			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
 
-			EXPECT_EQ(gl_containerChinaStock.GetStock(0)->GetDayLineEndDate(), 20210430) << "第一个股票（上海指数）的结束日期为20210430";
-			EXPECT_TRUE(gl_containerChinaStock.GetStock(0)->IsIPOed()) << "第一个股票（上海指数）为IPOed（255）";
+			EXPECT_EQ(gl_dataContainerChinaStock.GetStock(0)->GetDayLineEndDate(), 20210430) << "第一个股票（上海指数）的结束日期为20210430";
+			EXPECT_TRUE(gl_dataContainerChinaStock.GetStock(0)->IsIPOed()) << "第一个股票（上海指数）为IPOed（255）";
 		}
 	}
 
@@ -106,14 +106,21 @@ namespace FireBirdTest {
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
 
-			EXPECT_EQ(gl_dataFinnhubCryptoExchange.Size(), 15) << "最初装载了15个";
-			EXPECT_EQ(gl_dataFinnhubForexExchange.Size(), 11) << "最初装载了11个";
+			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 15) << "最初装载了15个";
+			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 11) << "最初装载了11个";
 
 			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 
 			EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty()) << gl_pWorldMarket->GetMarketTask()->GetType();
 
 			EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 4847) << "默认状态下数据库总数为4847(全部上海股票和小部分美国股票)";
+
+			//	for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
+			//		const auto p_stock = gl_dataContainerFinnhubStock.GetStock(l);
+			//		EXPECT_TRUE(p_stock->IsUpdateBasicFinancial());
+			//		EXPECT_EQ(p_stock->GetBasicFinancialUpdateDate(), 19800101);
+			//		EXPECT_FALSE(p_stock->IsUpdateProfileDB());
+			//	}
 		}
 	}
 

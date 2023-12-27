@@ -12,7 +12,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadUpdateChinaStockProfileDB() {	//
 	gl_UpdateChinaMarketDB.acquire();
-	gl_containerChinaStock.UpdateStockProfileDB();
+	gl_dataContainerChinaStock.UpdateStockProfileDB();
 	gl_UpdateChinaMarketDB.release();
 
 	return 18;

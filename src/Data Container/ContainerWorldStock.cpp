@@ -166,7 +166,7 @@ void CContainerWorldStock::UpdateProfileDB() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 bool CContainerWorldStock::UpdateBasicFinancialDB() {
 	static bool s_fInProcess = false;
-	vector<CWorldStockPtr> s_vStock{};
+	vector<CWorldStockPtr> vStock{};
 
 	if (s_fInProcess) {
 		gl_systemMessage.PushErrorMessage(_T("UpdateBasicFinancialDB任务用时超过五分钟"));
@@ -174,19 +174,19 @@ bool CContainerWorldStock::UpdateBasicFinancialDB() {
 	}
 	s_fInProcess = true;
 
-	s_vStock.clear();
+	vStock.clear();
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CWorldStockPtr pStock = GetStock(l);
 		if (pStock->IsUpdateBasicFinancialDB()) {
-			s_vStock.push_back(pStock);
+			vStock.push_back(pStock);
 		}
 	}
 
-	UpdateBasicFinancialAnnualDB(s_vStock);
-	UpdateBasicFinancialQuarterDB(s_vStock);
-	UpdateBasicFinancialMetricDB(s_vStock);
+	UpdateBasicFinancialAnnualDB(vStock);
+	UpdateBasicFinancialQuarterDB(vStock);
+	UpdateBasicFinancialMetricDB(vStock);
 
-	ClearUpdateBasicFinancialFlag(s_vStock);
+	ClearUpdateBasicFinancialFlag(vStock);
 
 	s_fInProcess = false;
 	return true;
@@ -269,11 +269,8 @@ void CContainerWorldStock::UpdateBasicFinancialMetricDB(const vector<CWorldStock
 void CContainerWorldStock::ClearUpdateBasicFinancialFlag(const vector<CWorldStockPtr>& vStock) {
 	for (const auto& pStock : vStock) {
 		if (pStock->IsUpdateBasicFinancialDB()) {
-			CString strMessage = _T("found stock:") + pStock->GetSymbol() + _T(" need update basic financial data");
-			TRACE(strMessage);
-			gl_systemMessage.PushErrorMessage(strMessage);
+			pStock->SetUpdateBasicFinancialDB(false);
 		}
-		pStock->SetUpdateBasicFinancialDB(false);
 	}
 }
 

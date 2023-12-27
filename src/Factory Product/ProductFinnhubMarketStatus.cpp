@@ -14,7 +14,7 @@ CProductFinnhubMarketStatus::CProductFinnhubMarketStatus() {
 }
 
 CString CProductFinnhubMarketStatus::CreateMessage() {
-	const auto strParam = gl_dataFinnhubStockExchange.GetExchangeCode(m_lIndex);
+	const auto strParam = gl_dataContainerFinnhubStockExchange.GetExchangeCode(m_lIndex);
 
 	m_strInquiringExchange = strParam;
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -23,7 +23,7 @@ CString CProductFinnhubMarketStatus::CreateMessage() {
 
 bool CProductFinnhubMarketStatus::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvMarketStatus = ParseFinnhubMarketStatus(pWebData);
-	const auto pExchange = gl_dataFinnhubStockExchange.GetExchange(m_lIndex);
+	const auto pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(m_lIndex);
 	pExchange->SetMarketStatusUpdated(true);
 
 	if (!pvMarketStatus->empty()) {

@@ -144,7 +144,7 @@ bool CFinnhubDataSource::InquireCountryList() {
 }
 
 bool CFinnhubDataSource::InquireMarketStatus() {
-	const long lExchangeSize = gl_dataFinnhubStockExchange.Size();
+	const long lExchangeSize = gl_dataContainerFinnhubStockExchange.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = MARKET_STATUS_;
 
@@ -157,8 +157,8 @@ bool CFinnhubDataSource::InquireMarketStatus() {
 			m_fInquiringFinnhubMarketStatus = true;
 		}
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
-			if (!gl_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsMarketStatusUpdated()) {
-				pExchange = gl_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
+			if (!gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsMarketStatusUpdated()) {
+				pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pExchange->m_strCode)) {
 					fFound = true;
 					break;
@@ -185,7 +185,7 @@ bool CFinnhubDataSource::InquireMarketStatus() {
 }
 
 bool CFinnhubDataSource::InquireMarketHoliday() {
-	const long lExchangeSize = gl_dataFinnhubStockExchange.Size();
+	const long lExchangeSize = gl_dataContainerFinnhubStockExchange.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = MARKET_HOLIDAY_;
 
@@ -198,8 +198,8 @@ bool CFinnhubDataSource::InquireMarketHoliday() {
 			m_fInquiringFinnhubMarketHoliday = true;
 		}
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
-			if (!gl_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsMarketHolidayUpdated()) {
-				pExchange = gl_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
+			if (!gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsMarketHolidayUpdated()) {
+				pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pExchange->m_strCode)) {
 					fFound = true;
 					break;
@@ -226,7 +226,7 @@ bool CFinnhubDataSource::InquireMarketHoliday() {
 }
 
 bool CFinnhubDataSource::InquireCompanySymbol() {
-	const long lExchangeSize = gl_dataFinnhubStockExchange.Size();
+	const long lExchangeSize = gl_dataContainerFinnhubStockExchange.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquiryType = STOCK_SYMBOLS_;
 
@@ -239,8 +239,8 @@ bool CFinnhubDataSource::InquireCompanySymbol() {
 			m_fInquiringFinnhubStockSymbol = true;
 		}
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
-			if (!gl_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsStockSymbolUpdated()) {
-				pExchange = gl_dataFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
+			if (!gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsStockSymbolUpdated()) {
+				pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquiryType, pExchange->m_strCode)) {
 					fFound = true;
 					break;
@@ -662,7 +662,7 @@ bool CFinnhubDataSource::InquireForexSymbol() {
 		product->SetIndex(m_lCurrentForexExchangePos++);
 		StoreInquiry(product);
 		SetInquiring(true);
-		if (m_lCurrentForexExchangePos >= gl_dataFinnhubForexExchange.Size()) {
+		if (m_lCurrentForexExchangePos >= gl_dataContainerFinnhubForexExchange.Size()) {
 			SetUpdateForexSymbol(false);
 			m_lCurrentForexExchangePos = 0;
 			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub forex symbol"));
@@ -734,7 +734,7 @@ bool CFinnhubDataSource::InquireCryptoSymbol() {
 		product->SetIndex(m_lCurrentCryptoExchangePos++);
 		StoreInquiry(product);
 		SetInquiring(true);
-		if (m_lCurrentCryptoExchangePos >= gl_dataFinnhubCryptoExchange.Size()) {
+		if (m_lCurrentCryptoExchangePos >= gl_dataContainerFinnhubCryptoExchange.Size()) {
 			SetUpdateCryptoSymbol(false);
 			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub crypto synmbol"));
 			gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub Crypto symbols"));

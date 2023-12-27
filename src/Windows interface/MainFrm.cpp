@@ -187,9 +187,9 @@ CMainFrame::~CMainFrame() {
 
 	// 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
 	// 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
-	if (gl_containerChinaStock.IsUpdateProfileDB()) {
+	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
 		ASSERT(!gl_ThreadStatus.IsSavingThreadRunning());
-		gl_containerChinaStock.UpdateStockProfileDB(); // 这里直接调用存储函数，不采用工作线程的模式。
+		gl_dataContainerChinaStock.UpdateStockProfileDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
 
 	while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1); // 等待网络查询线程退出
@@ -285,6 +285,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	TRACE(_T("开始重置系统\n"));
 	gl_systemMessage.PushInformationMessage(_T("重置系统"));
 	ASSERT(gl_pChinaMarket != nullptr);
+	ASSERT(gl_pWorldMarket != nullptr);
 	ResetMarket();
 	TRACE(_T("重置系统结束\n"));
 
@@ -568,7 +569,7 @@ void CMainFrame::UpdateStatus() {
 	SysCallSetPaneText(6, gl_systemMessage.GetStockCodeForInquiringRTData());
 
 	// 显示活跃股票总数
-	sprintf_s(buffer, _T("%d"), gl_containerChinaStock.GetActiveStockSize());
+	sprintf_s(buffer, _T("%d"), gl_dataContainerChinaStock.GetActiveStockSize());
 	SysCallSetPaneText(7, buffer);
 
 	// 显示当前读取网易日线历史的股票代码
@@ -767,8 +768,8 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		break;
 	case 0x00d: // 回车
 		strTemp = m_aStockCodeTemp;
-		if (gl_containerChinaStock.IsSymbol(strTemp)) {
-			const CChinaStockPtr pStock = gl_containerChinaStock.GetStock(strTemp);
+		if (gl_dataContainerChinaStock.IsSymbol(strTemp)) {
+			const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(strTemp);
 			gl_pChinaMarket->SetCurrentStock(pStock);
 			SysCallInvalidate();
 		}
@@ -903,28 +904,28 @@ void CMainFrame::OnCalculate10dayRS() {
 }
 
 void CMainFrame::OnUpdateCalculate10dayRS1(CCmdUI* pCmdUI) {
-	if ((gl_containerChinaStock.GetDayLineNeedUpdateNumber() > 0) && (gl_containerChinaStock.GetDayLineNeedSaveNumber() > 0)) {
+	if ((gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() > 0) && (gl_dataContainerChinaStock.GetDayLineNeedSaveNumber() > 0)) {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
 	else SysCallCmdUIEnable(pCmdUI, true);
 }
 
 void CMainFrame::OnUpdateCalculate10dayRS2(CCmdUI* pCmdUI) {
-	if ((gl_containerChinaStock.GetDayLineNeedUpdateNumber() > 0) && (gl_containerChinaStock.GetDayLineNeedSaveNumber() > 0)) {
+	if ((gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() > 0) && (gl_dataContainerChinaStock.GetDayLineNeedSaveNumber() > 0)) {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
 	else SysCallCmdUIEnable(pCmdUI, true);
 }
 
 void CMainFrame::OnUpdateCalculate10dayRS(CCmdUI* pCmdUI) {
-	if ((gl_containerChinaStock.GetDayLineNeedUpdateNumber() > 0) && (gl_containerChinaStock.GetDayLineNeedSaveNumber() > 0)) {
+	if ((gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() > 0) && (gl_dataContainerChinaStock.GetDayLineNeedSaveNumber() > 0)) {
 		SysCallCmdUIEnable(pCmdUI, false);
 	}
 	else SysCallCmdUIEnable(pCmdUI, true);
 }
 
 void CMainFrame::OnStopUpdateDayLine() {
-	gl_containerChinaStock.ClearDayLineNeedUpdateStatus();
+	gl_dataContainerChinaStock.ClearDayLineNeedUpdateStatus();
 }
 
 void CMainFrame::OnUsingSinaRealtimeDataServer() {
@@ -1116,7 +1117,7 @@ void CMainFrame::OnRebuildBasicFinancial() {
 }
 
 void CMainFrame::OnMaintainDayLine() {
-	gl_containerChinaStock.SetDayLineNeedMaintain();
+	gl_dataContainerChinaStock.SetDayLineNeedMaintain();
 }
 
 //////////////////////////////////////////////////////////////////////////////////

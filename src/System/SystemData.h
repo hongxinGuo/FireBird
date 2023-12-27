@@ -9,6 +9,7 @@
 #pragma once
 
 #include <gsl/pointers>
+using gsl::not_null;
 
 #include "ContainerChinaStock.h"
 #include "containerChosenCrypto.h"
@@ -25,7 +26,6 @@
 #include "ContainerTiingoCryptoSymbol.h"
 #include "ContainerTiingoStock.h"
 #include "ContainerWorldStock.h"
-using gsl::not_null;
 
 #include"FinnhubWebSocket.h"
 #include"TiingoIEXWebSocket.h"
@@ -35,6 +35,10 @@ using gsl::not_null;
 #include "PriorityQueueWebRTData.h"
 #include "DayLineWebData.h"
 
+// 系统状态
+extern bool gl_bChinaMarketResetting; // 中国市场重启中
+extern bool gl_bWorldMarketResetting; // 世界市场重启中
+
 // 处理后的各种数据
 extern CPriorityQueueWebRTData gl_qSinaRT; // 中国市场新浪实时数据队列。
 extern CPriorityQueueWebRTData gl_qNeteaseRT; // 中国市场网易实时数据队列。
@@ -42,22 +46,22 @@ extern CPriorityQueueWebRTData gl_qTengxunRT; // 中国市场腾讯实时数据队列。
 extern CTemplateMutexAccessQueue<CDayLineWebData> gl_qDayLine; // 日线数据
 
 // ChinaMarket处理的数据
-extern CContainerChinaStock gl_containerChinaStock;
+extern CContainerChinaStock gl_dataContainerChinaStock;
 extern CContainerStockSymbol gl_dataContainerChinaStockSymbol;
 
 // WorldMarket处理的数据
 extern CContainerFinnhubForexSymbol gl_dataFinnhubForexSymbol;
 extern CContainerFinnhubCryptoSymbol gl_dataFinnhubCryptoSymbol;
-extern CContainerFinnhubCountry gl_dataFinnhubCountry;
-extern CContainerFinnhubEconomicCalendar gl_dataFinnhubEconomicCalendar;
+extern CContainerFinnhubCountry gl_dataContainerFinnhubCountry;
+extern CContainerFinnhubEconomicCalendar gl_dataContainerFinnhubEconomicCalendar;
 
-extern CContainerFinnhubStockExchange gl_dataFinnhubStockExchange;
-extern CContainerFinnhubForexExchange gl_dataFinnhubForexExchange;
-extern CContainerFinnhubCryptoExchange gl_dataFinnhubCryptoExchange;
+extern CContainerFinnhubStockExchange gl_dataContainerFinnhubStockExchange;
+extern CContainerFinnhubForexExchange gl_dataContainerFinnhubForexExchange;
+extern CContainerFinnhubCryptoExchange gl_dataContainerFinnhubCryptoExchange;
 
 extern CContainerWorldStock gl_dataContainerFinnhubStock;
-extern CContainerTiingoStock gl_dataTiingoStock;
-extern CContainerTiingoCryptoSymbol gl_dataTiingoCryptoSymbol;
+extern CContainerTiingoStock gl_dataContainerTiingoStock;
+extern CContainerTiingoCryptoSymbol gl_dataContainerTiingoCryptoSymbol;
 
 extern CContainerChosenStock gl_dataContainerChosenWorldStock;
 extern CContainerChosenForex gl_dataContainerChosenWorldForex;

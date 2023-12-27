@@ -25,8 +25,8 @@ CString CProductFinnhubEconomicCountryList::CreateMessage() {
 bool CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvCountry = ParseFinnhubCountryList(pWebData);
 	for (const auto& pCountry : *pvCountry) {
-		if (!gl_dataFinnhubCountry.IsCountry(pCountry)) {
-			gl_dataFinnhubCountry.Add(pCountry);
+		if (!gl_dataContainerFinnhubCountry.IsCountry(pCountry)) {
+			gl_dataContainerFinnhubCountry.Add(pCountry);
 		}
 	}
 
