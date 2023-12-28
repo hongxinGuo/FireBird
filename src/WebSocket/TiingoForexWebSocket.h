@@ -32,6 +32,10 @@ using CTiingoForexSocketPtr = shared_ptr<CTiingoForexSocket>;
 class CTiingoForexWebSocket : public CVirtualWebSocket {
 public:
 	CTiingoForexWebSocket();
+	CTiingoForexWebSocket(const CTiingoForexWebSocket& other) = delete;
+	CTiingoForexWebSocket(CTiingoForexWebSocket&& other) noexcept = delete;
+	CTiingoForexWebSocket& operator=(const CTiingoForexWebSocket& other) = delete;
+	CTiingoForexWebSocket& operator=(CTiingoForexWebSocket&& other) noexcept = delete;
 	~CTiingoForexWebSocket() override;
 
 	void Connect() override;

@@ -6,6 +6,10 @@
 class CContainerChosenForex : public CContainerVirtualStock {
 public:
 	CContainerChosenForex();
+	CContainerChosenForex(const CContainerChosenForex& other) = delete;
+	CContainerChosenForex(CContainerChosenForex&& other) noexcept = delete;
+	CContainerChosenForex& operator=(const CContainerChosenForex& other) = delete;
+	CContainerChosenForex& operator=(CContainerChosenForex&& other) noexcept = delete;
 	~CContainerChosenForex() override = default;
 	void Reset() override;
 

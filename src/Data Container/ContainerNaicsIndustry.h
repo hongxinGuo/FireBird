@@ -5,6 +5,10 @@
 class CContainerNaicsIndustry final {
 public:
 	CContainerNaicsIndustry();
+	CContainerNaicsIndustry(const CContainerNaicsIndustry& other) = delete;
+	CContainerNaicsIndustry(CContainerNaicsIndustry&& other) noexcept = delete;
+	CContainerNaicsIndustry& operator=(const CContainerNaicsIndustry& other) = delete;
+	CContainerNaicsIndustry& operator=(CContainerNaicsIndustry&& other) noexcept = delete;
 	~CContainerNaicsIndustry() = default;
 	void Reset();
 

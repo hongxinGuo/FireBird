@@ -5,6 +5,10 @@
 class CContainerTiingoIndustry {
 public:
 	CContainerTiingoIndustry();
+	CContainerTiingoIndustry(const CContainerTiingoIndustry& other) = delete;
+	CContainerTiingoIndustry(CContainerTiingoIndustry&& other) noexcept = delete;
+	CContainerTiingoIndustry& operator=(const CContainerTiingoIndustry& other) = delete;
+	CContainerTiingoIndustry& operator=(CContainerTiingoIndustry&& other) noexcept = delete;
 	virtual ~CContainerTiingoIndustry() = default;
 	void Reset();
 

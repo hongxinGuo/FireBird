@@ -7,6 +7,10 @@ using std::map;
 class CContainerFinnhubEconomicCalendar final {
 public:
 	CContainerFinnhubEconomicCalendar();
+	CContainerFinnhubEconomicCalendar(const CContainerFinnhubEconomicCalendar& other) = delete;
+	CContainerFinnhubEconomicCalendar(CContainerFinnhubEconomicCalendar&& other) noexcept = delete;
+	CContainerFinnhubEconomicCalendar& operator=(const CContainerFinnhubEconomicCalendar& other) = delete;
+	CContainerFinnhubEconomicCalendar& operator=(CContainerFinnhubEconomicCalendar&& other) noexcept = delete;
 	~CContainerFinnhubEconomicCalendar() = default;
 	void Reset();
 

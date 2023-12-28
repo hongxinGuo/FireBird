@@ -6,6 +6,10 @@
 class CContainerChosenCrypto : public CContainerVirtualStock {
 public:
 	CContainerChosenCrypto();
+	CContainerChosenCrypto(const CContainerChosenCrypto& other) = delete;
+	CContainerChosenCrypto(CContainerChosenCrypto&& other) noexcept = delete;
+	CContainerChosenCrypto& operator=(const CContainerChosenCrypto& other) = delete;
+	CContainerChosenCrypto& operator=(CContainerChosenCrypto&& other) noexcept = delete;
 	~CContainerChosenCrypto() override = default;
 	void Reset() override;
 

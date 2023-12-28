@@ -5,6 +5,10 @@
 class CSinaRTDataSource : public CVirtualDataSource {
 public:
 	CSinaRTDataSource();
+	CSinaRTDataSource(const CSinaRTDataSource& other) = delete;
+	CSinaRTDataSource(CSinaRTDataSource&& other) noexcept = delete;
+	CSinaRTDataSource& operator=(const CSinaRTDataSource& other) = delete;
+	CSinaRTDataSource& operator=(CSinaRTDataSource&& other) noexcept = delete;
 	~CSinaRTDataSource() override = default;
 
 	bool Reset() override;

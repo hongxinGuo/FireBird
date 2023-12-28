@@ -6,6 +6,10 @@
 class CContainerTiingoStock final {
 public:
 	CContainerTiingoStock();
+	CContainerTiingoStock(const CContainerTiingoStock& other) = delete;
+	CContainerTiingoStock(CContainerTiingoStock&& other) noexcept = delete;
+	CContainerTiingoStock& operator=(const CContainerTiingoStock& other) = delete;
+	CContainerTiingoStock& operator=(CContainerTiingoStock&& other) noexcept = delete;
 	~CContainerTiingoStock() = default;
 	void Reset();
 

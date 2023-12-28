@@ -6,6 +6,10 @@
 class CQuandlDataSource : public CVirtualDataSource {
 public:
 	CQuandlDataSource();
+	CQuandlDataSource(const CQuandlDataSource& other) = delete;
+	CQuandlDataSource(CQuandlDataSource&& other) noexcept = delete;
+	CQuandlDataSource& operator=(const CQuandlDataSource& other) = delete;
+	CQuandlDataSource& operator=(CQuandlDataSource&& other) noexcept = delete;
 	~CQuandlDataSource() override = default;
 
 	bool Reset() override;

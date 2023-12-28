@@ -1,7 +1,5 @@
 #include"pch.h"
 
-#include "globedef.h"
-
 #include"TimeConvert.h"
 #include"ChinaStockCodeConverter.h"
 

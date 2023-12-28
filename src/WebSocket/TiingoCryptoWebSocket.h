@@ -34,6 +34,10 @@ using CTiingoCryptoSocketPtr = shared_ptr<CTiingoCryptoSocket>;
 class CTiingoCryptoWebSocket : public CVirtualWebSocket {
 public:
 	CTiingoCryptoWebSocket();
+	CTiingoCryptoWebSocket(const CTiingoCryptoWebSocket& other) = delete;
+	CTiingoCryptoWebSocket(CTiingoCryptoWebSocket&& other) noexcept = delete;
+	CTiingoCryptoWebSocket& operator=(const CTiingoCryptoWebSocket& other) = delete;
+	CTiingoCryptoWebSocket& operator=(CTiingoCryptoWebSocket&& other) noexcept = delete;
 	~CTiingoCryptoWebSocket() override = default;
 
 	void Connect() override;

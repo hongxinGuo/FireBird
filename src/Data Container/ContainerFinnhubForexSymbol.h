@@ -6,6 +6,10 @@
 class CContainerFinnhubForexSymbol : public CContainerVirtualStock {
 public:
 	CContainerFinnhubForexSymbol();
+	CContainerFinnhubForexSymbol(const CContainerFinnhubForexSymbol& other) = delete;
+	CContainerFinnhubForexSymbol(CContainerFinnhubForexSymbol&& other) noexcept = delete;
+	CContainerFinnhubForexSymbol& operator=(const CContainerFinnhubForexSymbol& other) = delete;
+	CContainerFinnhubForexSymbol& operator=(CContainerFinnhubForexSymbol&& other) noexcept = delete;
 	~CContainerFinnhubForexSymbol() override = default;
 	void Reset() override;
 

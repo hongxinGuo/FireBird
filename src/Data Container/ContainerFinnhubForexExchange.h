@@ -3,6 +3,10 @@
 class CContainerFinnhubForexExchange final {
 public:
 	CContainerFinnhubForexExchange();
+	CContainerFinnhubForexExchange(const CContainerFinnhubForexExchange& other) = delete;
+	CContainerFinnhubForexExchange(CContainerFinnhubForexExchange&& other) noexcept = delete;
+	CContainerFinnhubForexExchange& operator=(const CContainerFinnhubForexExchange& other) = delete;
+	CContainerFinnhubForexExchange& operator=(CContainerFinnhubForexExchange&& other) noexcept = delete;
 	~CContainerFinnhubForexExchange() = default;
 	void Reset();
 

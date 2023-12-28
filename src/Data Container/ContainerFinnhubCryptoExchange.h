@@ -5,6 +5,10 @@ using std::string;
 class CContainerFinnhubCryptoExchange final {
 public:
 	CContainerFinnhubCryptoExchange();
+	CContainerFinnhubCryptoExchange(const CContainerFinnhubCryptoExchange& other) = delete;
+	CContainerFinnhubCryptoExchange(CContainerFinnhubCryptoExchange&& other) noexcept = delete;
+	CContainerFinnhubCryptoExchange& operator=(const CContainerFinnhubCryptoExchange& other) = delete;
+	CContainerFinnhubCryptoExchange& operator=(CContainerFinnhubCryptoExchange&& other) noexcept = delete;
 	~CContainerFinnhubCryptoExchange() = default;
 	void Reset();
 

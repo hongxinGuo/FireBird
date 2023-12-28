@@ -2,7 +2,6 @@
 
 #include"ThreadStatus.h"
 #include"WorldMarket.h"
-
 #include"WorldStock.h"
 
 UINT ThreadUpdateEPSSurpriseDB(const not_null<CWorldStockPtr>& pStockInput) {

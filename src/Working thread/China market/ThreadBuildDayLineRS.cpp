@@ -70,7 +70,7 @@ UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCa
 // 使用互斥变量控制并行线程数。目前允许最多八个线程执行
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadBuildDayLineRSOfDate(const not_null<CChinaMarketPtr>& pMarket, long lDate) {
+UINT ThreadBuildDayLineRSOfDate(long lDate) {
 	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 	gl_BackgroundWorkingThread.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem() && !gl_systemConfiguration.IsExitingCalculatingRS()) {

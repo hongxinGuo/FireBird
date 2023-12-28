@@ -1307,7 +1307,7 @@ void CChinaMarket::CreateThreadBuildDayLineRS(long lStartCalculatingDate) {
 }
 
 void CChinaMarket::CreateThreadBuildDayLineRSOfDate(long lThisDate) {
-	thread thread1(ThreadBuildDayLineRSOfDate, gl_pChinaMarket, lThisDate);
+	thread thread1(ThreadBuildDayLineRSOfDate, lThisDate);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
@@ -1349,7 +1349,7 @@ void CChinaMarket::CreateThreadChoice10RSStrong1StockSet() {
 void CChinaMarket::CreateThreadChoice10RSStrongStockSet() {
 	for (int i = 0; i < 10; i++) {
 		if (m_aRSStrongOption.at(i).m_fActive) {
-			thread thread1(ThreadChoice10RSStrongStockSet, gl_pChinaMarket, &(m_aRSStrongOption.at(i)), i);
+			thread thread1(ThreadChoice10RSStrongStockSet, &(m_aRSStrongOption.at(i)), i);
 			thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 		}
 	}

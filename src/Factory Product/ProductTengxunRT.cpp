@@ -1,8 +1,6 @@
 #include"pch.h"
 
 #include"ProductTengxunRT.h"
-#include"ChinaMarket.h"
-
 #include"JsonParse.h"
 #include "TengxunRTDataSource.h"
 

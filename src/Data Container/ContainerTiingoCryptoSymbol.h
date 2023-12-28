@@ -5,6 +5,10 @@
 class CContainerTiingoCryptoSymbol final {
 public:
 	CContainerTiingoCryptoSymbol();
+	CContainerTiingoCryptoSymbol(const CContainerTiingoCryptoSymbol& other) = delete;
+	CContainerTiingoCryptoSymbol(CContainerTiingoCryptoSymbol&& other) noexcept = delete;
+	CContainerTiingoCryptoSymbol& operator=(const CContainerTiingoCryptoSymbol& other) = delete;
+	CContainerTiingoCryptoSymbol& operator=(CContainerTiingoCryptoSymbol&& other) noexcept = delete;
 	~CContainerTiingoCryptoSymbol() = default;
 	void Reset();
 

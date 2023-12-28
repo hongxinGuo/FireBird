@@ -6,6 +6,10 @@
 class CContainerFinnhubCryptoSymbol : public CContainerVirtualStock {
 public:
 	CContainerFinnhubCryptoSymbol();
+	CContainerFinnhubCryptoSymbol(const CContainerFinnhubCryptoSymbol& other) = delete;
+	CContainerFinnhubCryptoSymbol(CContainerFinnhubCryptoSymbol&& other) noexcept = delete;
+	CContainerFinnhubCryptoSymbol& operator=(const CContainerFinnhubCryptoSymbol& other) = delete;
+	CContainerFinnhubCryptoSymbol& operator=(CContainerFinnhubCryptoSymbol&& other) noexcept = delete;
 	~CContainerFinnhubCryptoSymbol() override = default;
 	void Reset() override;
 

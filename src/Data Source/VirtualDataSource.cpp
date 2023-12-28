@@ -5,15 +5,10 @@
 #include"ThreadStatus.h"
 
 #include"HighPerformanceCounter.h"
-
-#include<thread>
-
-#include "ChinaMarket.h"
 #include "InfoReport.h"
 #include "TimeConvert.h"
-using std::thread;
 
-#include <memory>
+using std::thread;
 
 atomic_long CVirtualDataSource::sm_lTotalByteRead = 0;
 

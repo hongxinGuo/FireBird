@@ -41,7 +41,7 @@ UINT ThreadChoice10RSStrong1StockSet(const not_null<CChinaMarketPtr>& pMarket) {
 	return 101;
 }
 
-UINT ThreadChoice10RSStrongStockSet(const not_null<CChinaMarketPtr>& pMarket, CRSReference* pRef, int iIndex) {
+UINT ThreadChoice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
 	gl_UpdateChinaMarketDB.acquire();
 	CString str = _T("开始计算10日RS ");
 	char buffer[30];

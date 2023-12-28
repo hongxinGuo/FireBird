@@ -5,6 +5,10 @@
 class CContainerFinnhubStockExchange final {
 public:
 	CContainerFinnhubStockExchange();
+	CContainerFinnhubStockExchange(const CContainerFinnhubStockExchange& other) = delete;
+	CContainerFinnhubStockExchange(CContainerFinnhubStockExchange&& other) noexcept = delete;
+	CContainerFinnhubStockExchange& operator=(const CContainerFinnhubStockExchange& other) = delete;
+	CContainerFinnhubStockExchange& operator=(CContainerFinnhubStockExchange&& other) noexcept = delete;
 	~CContainerFinnhubStockExchange() = default;
 	void Reset();
 

@@ -7,6 +7,10 @@ using std::map;
 class CContainerFinnhubCountry final {
 public:
 	CContainerFinnhubCountry();
+	CContainerFinnhubCountry(const CContainerFinnhubCountry& other) = delete;
+	CContainerFinnhubCountry(CContainerFinnhubCountry&& other) noexcept = delete;
+	CContainerFinnhubCountry& operator=(const CContainerFinnhubCountry& other) = delete;
+	CContainerFinnhubCountry& operator=(CContainerFinnhubCountry&& other) noexcept = delete;
 	~CContainerFinnhubCountry() = default;
 	void Reset();
 

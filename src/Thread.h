@@ -27,7 +27,7 @@ using gsl::not_null;
 // 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDay执行具体任务，最多生成8个工作线程。
 UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCalculatingDate); // 此工作线程返回值为11, 参数为当前最后计算日期
 // 计算给定日期股票日线相对强度线程。此线程由ThreadCalculateRS线程调用，用于并发计算不同日期的日线相对强度，以提高效率
-UINT ThreadBuildDayLineRSOfDate(const not_null<CChinaMarketPtr>& pMarket, long lDate); // 此工作线程返回值也为12
+UINT ThreadBuildDayLineRSOfDate(long lDate); // 此工作线程返回值也为12
 // 存储临时系统状态线程
 UINT ThreadSaveTempRTData(); // 此工作线程返回值为13
 // 装载临时存储的实时数据线程
@@ -115,7 +115,7 @@ UINT ThreadChoice10RSStrong1StockSet(const not_null<CChinaMarketPtr>& pMarket); 
 // 计算10日强股票集（两次出现强势峰）
 UINT ThreadChoice10RSStrong2StockSet(const not_null<CChinaMarketPtr>& pMarket); // 此线程返回值为102
 // 计算10日强股票集（使用外部pRef提供的参数）
-UINT ThreadChoice10RSStrongStockSet(const not_null<CChinaMarketPtr>& pMarket, CRSReference* pRef, int iIndex); // 此线程返回值为103
+UINT ThreadChoice10RSStrongStockSet(CRSReference* pRef, int iIndex); // 此线程返回值为103
 // 计算股票的10日强势与否
 UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, const CRSReference* pRef, const not_null<CChinaStockPtr>& pStock); // 此线程返回值为104
 // 计算股票的10日强势与否1

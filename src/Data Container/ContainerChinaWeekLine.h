@@ -9,6 +9,10 @@ public:
 	~CContainerChinaWeekLine() override = default;
 
 	bool LoadDB(const CString& strStockSymbol) final;
+	CContainerChinaWeekLine(const CContainerChinaWeekLine& other) = delete;
+	CContainerChinaWeekLine(CContainerChinaWeekLine&& other) noexcept = delete;
+	CContainerChinaWeekLine& operator=(const CContainerChinaWeekLine& other) = delete;
+	CContainerChinaWeekLine& operator=(CContainerChinaWeekLine&& other) noexcept = delete;
 	bool SaveDB(const CString& strStockSymbol) final;
 
 	void SaveCurrentWeekLine() const;

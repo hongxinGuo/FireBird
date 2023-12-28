@@ -1,8 +1,6 @@
 #include"pch.h"
 
 #include"ProductNeteaseDayLine.h"
-#include"ChinaMarket.h"
-
 #include"JsonParse.h"
 
 CProductNeteaseDayLine::CProductNeteaseDayLine() {

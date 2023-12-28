@@ -1,11 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include"ThreadStatus.h"
-#include"Thread.h"
-#include"TimeConvert.h"
-
 #include"ChinaMarket.h"
+#include"TimeConvert.h"
 
 UINT ThreadBuildWeekLine(const not_null<CChinaMarketPtr>& pMarket, long lStartDate) {
 	gl_UpdateChinaMarketDB.acquire();

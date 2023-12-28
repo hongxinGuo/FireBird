@@ -40,6 +40,10 @@ using CTiingoIEXSocketPtr = shared_ptr<CTiingoIEXSocket>;
 class CTiingoIEXWebSocket final : public CVirtualWebSocket {
 public:
 	CTiingoIEXWebSocket();
+	CTiingoIEXWebSocket(const CTiingoIEXWebSocket& other) = delete;
+	CTiingoIEXWebSocket(CTiingoIEXWebSocket&& other) noexcept = delete;
+	CTiingoIEXWebSocket& operator=(const CTiingoIEXWebSocket& other) = delete;
+	CTiingoIEXWebSocket& operator=(CTiingoIEXWebSocket&& other) noexcept = delete;
 	~CTiingoIEXWebSocket() override = default;
 
 	void Connect() override;

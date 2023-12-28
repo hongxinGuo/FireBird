@@ -11,7 +11,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include "ChinaMarket.h"
 #include"ChinaStock.h"
 
 UINT ThreadSaveDayLineBasicInfo(const not_null<CChinaStockPtr>& pStock) {

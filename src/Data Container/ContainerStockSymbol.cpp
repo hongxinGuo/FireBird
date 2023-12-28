@@ -4,11 +4,8 @@
 #include "ContainerStockSymbol.h"
 
 #include"SetStockSection.h"
-
-#include<memory>
-
-#include "ChinaMarket.h"
 #include "InfoReport.h"
+
 using std::make_shared;
 
 CContainerStockSymbol::CContainerStockSymbol() {
