@@ -1,13 +1,13 @@
 ﻿#pragma once
 
 #include"VirtualStock.h"
-
-#include<vector>
-#include<map>
-
 #include "VirtualContainer.h"
+
 using std::vector;
 using std::map;
+using std::string;
+
+using vectorString = vector<string>;
 
 class CContainerVirtualStock : public CVirtualContainer {
 public:
@@ -16,6 +16,8 @@ public:
 
 	void Reset() override;
 	CString GetItemSymbol(long lIndex) override;
+	vectorString GetSymbolVector();
+
 	bool IsEmpty() override { return m_vStock.empty(); }
 	size_t Size() override { return m_vStock.size(); }
 

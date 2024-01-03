@@ -85,7 +85,7 @@ bool CVirtualDataSource::GetWebDataAndProcessIt() {
 	counter.start();
 	if (GetWebData()) {
 		if (ProcessWebDataReceived()) {
-			m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared());
+			m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource智能指针
 			bSucceed = true;
 		}
 	}

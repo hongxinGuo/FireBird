@@ -75,24 +75,7 @@ namespace FireBirdTest {
 		virtualMarket.DiscardCurrentMarketTask();
 	}
 
-	TEST_F(CVirtualMarketTest, TestRectifyTaskTime1) {
-		auto pTask = make_shared<CMarketTask>();
-		pTask->SetTime(20);
-		virtualMarket.AddTask(pTask);
-		pTask = make_shared<CMarketTask>();
-		pTask->SetTime(30);
-		virtualMarket.AddTask(pTask);
-		pTask = make_shared<CMarketTask>();
-		pTask->SetTime(240510);
-		virtualMarket.AddTask(pTask);
-
-		virtualMarket.RectifyTaskTime();
-
-		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 20);
-	}
-
-	TEST_F(CVirtualMarketTest, TestRectifyTaskTime2) {
+	TEST_F(CVirtualMarketTest, TestRectifyTaskTime) {
 		auto pTask = make_shared<CMarketTask>();
 		pTask->SetTime(240350);
 		virtualMarket.AddTask(pTask);
@@ -103,7 +86,7 @@ namespace FireBirdTest {
 		pTask->SetTime(274010);
 		virtualMarket.AddTask(pTask);
 
-		virtualMarket.RectifyTaskTime();
+		virtualMarket.AdjustTaskTime();
 
 		pTask = virtualMarket.GetMarketTask();
 		EXPECT_EQ(pTask->GetTime(), 350) << "所有的时间皆大于240000，故而皆减去240000";

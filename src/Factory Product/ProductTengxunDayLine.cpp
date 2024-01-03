@@ -60,9 +60,6 @@ bool CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (ReceivedAllData()) {
 		pDayLineWebData->SetStockCode(pWebData->GetStockCode());
 		pDayLineWebData->ClearDayLine();
-		for (const auto& pDayLine : sm_vDayLinePtr) {
-			ASSERT(GetMarket()->IsWorkingDay(pDayLine->GetMarketDate()));
-		}
 		CheckAndPrepareDayLine();
 		for (const auto& pData : sm_vDayLinePtr) {
 			pDayLineWebData->AppendDayLine(pData);

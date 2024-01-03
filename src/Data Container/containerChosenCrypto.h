@@ -3,7 +3,7 @@
 #include"ContainerVirtualStock.h"
 #include "FinnhubCryptoSymbol.h"
 
-class CContainerChosenCrypto : public CContainerVirtualStock {
+class CContainerChosenCrypto final : public CContainerVirtualStock {
 public:
 	CContainerChosenCrypto();
 	CContainerChosenCrypto(const CContainerChosenCrypto& other) = delete;

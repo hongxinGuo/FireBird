@@ -31,13 +31,13 @@ public:
 	virtual bool UpdateMarketInfo(); // 更新本市场信息。
 
 	// MarketTask
-	bool IsMarketTaskEmpty() const { return m_marketTask.IsEmpty(); }
+	bool IsMarketTaskEmpty() const { return m_marketTask.Empty(); }
 	void AddTask(const CMarketTaskPtr& pTask) { m_marketTask.AddTask(pTask); }
 	void AddTask(const long lTaskType, const long lExecuteTime) { m_marketTask.AddTask(lTaskType, lExecuteTime); }
 	CMarketTaskPtr GetMarketTask() const { return m_marketTask.GetTask(); }
 	void DiscardCurrentMarketTask() { m_marketTask.DiscardCurrentTask(); }
 	vector<CMarketTaskPtr> GetMarketTaskVector() { return m_marketTask.GetTaskVector(); }
-	void RectifyTaskTime();
+	void AdjustTaskTime();
 
 	// 时间函数
 	tm GetMarketTime(time_t tUTC) const; // 得到本市场的时间（从UTC时间）

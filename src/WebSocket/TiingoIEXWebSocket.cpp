@@ -93,7 +93,7 @@ void CTiingoIEXWebSocket::Send(const vectorString& vSymbol) {
 ///
 ///////////////////////////////////////////////////////////////////////
 string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
-	vector<string> vSymbols;
+	vectorString vSymbols;
 	json jsonMessage;
 	jsonMessage["eventName"] = _T("subscribe");
 	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();

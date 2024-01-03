@@ -96,9 +96,6 @@ public:
 	void RebuildBasicFinancial();
 
 	vectorString GetFinnhubWebSocketSymbolVector();
-	vectorString GetTiingoIEXWebSocketSymbolVector();
-	vectorString GetTiingoCryptoWebSocketSymbolVector();
-	vectorString GetTiingoForexWebSocketSymbolVector();
 
 	void StartAllWebSocket();
 	virtual void StartFinnhubWebSocket();

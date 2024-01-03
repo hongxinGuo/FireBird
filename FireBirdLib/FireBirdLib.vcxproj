@@ -76,6 +76,8 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetStockSection.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineBasicInfo.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineExtendInfo.h" />
+    <ClInclude Include="..\src\DataBase\SetFinnhubCompanyNews.h" />
+    <ClInclude Include="..\src\DataBase\SetFinnhubStockBasicFinancialMetric.h" />
     <ClInclude Include="..\src\DataBase\VirtualRecordset.h" />
     <ClInclude Include="..\src\DataBase\VirtualSetChosenStake.h" />
     <ClInclude Include="..\src\DataBase\VirtualSetExchange.h" />
@@ -213,7 +215,9 @@
     <ClCompile Include="..\src\accessory\HighPerformanceCounter.cpp" />
     <ClCompile Include="..\src\accessory\InfoReport.cpp" />
     <ClCompile Include="..\src\accessory\JsonGetValue.cpp" />
-    <ClCompile Include="..\src\accessory\JsonParse.cpp" />
+    <ClCompile Include="..\src\accessory\JsonParse.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+    </ClCompile>
     <ClCompile Include="..\src\accessory\MarketTaskQueue.cpp" />
     <ClCompile Include="..\src\accessory\NeteaseRTDataParser.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

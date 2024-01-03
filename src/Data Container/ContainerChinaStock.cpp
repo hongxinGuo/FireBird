@@ -199,26 +199,9 @@ CString CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 	return strReturn;
 }
 
-/*
-CString CContainerChinaStock::GetNextStockInquiringMiddleStr(long& iStockIndex, const CString& strPostfix, const long lTotalNumber, CString (*StockCodeTransfer)(const CString& str)) {
-	if (m_vStock.empty()) StockCodeTransfer(_T("600000.SH")); // 当没有证券可查询时，返回一个有效字符串
-	CString strReturn = _T("");
-	int iCount = 0;
-	while ((iStockIndex < m_vStock.size()) && (iCount++ < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
-		strReturn += StockCodeTransfer(m_vStock.at(iStockIndex)->GetSymbol());
-		if (iCount < lTotalNumber) { // 如果不是最后一个，则添加后缀
-			strReturn += strPostfix;
-		}
-		iStockIndex = GetNextIndex(iStockIndex);
-	}
-
-	return strReturn;
-}
-*/
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 生成网易日线股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
+// 生成腾讯日线股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
 //
 //  此函数是检查m_vStock股票池
 //
@@ -261,24 +244,6 @@ CString CContainerChinaStock::CreateTengxunDayLineInquiringStr() {
 	strReturn += XferStandardToTengxun(pStock->GetSymbol());
 	return strReturn;
 }
-
-/*
-CString CContainerChinaStock::GetNextNeteaseStockInquiringMiddleStr(const long lTotalNumber) {
-	CString strNeteaseRTDataInquiringStr = XferStandardToNetease(GetStock(m_lNeteaseRTDataInquiringIndex)->GetSymbol());
-	m_lNeteaseRTDataInquiringIndex = GetNextIndex(m_lNeteaseRTDataInquiringIndex);
-	int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-	while (iCount < lTotalNumber) {	// 每次最大查询量为lTotalNumber个股票
-		if (GetStock(m_lNeteaseRTDataInquiringIndex)->IsActive() || GetStock(m_lNeteaseRTDataInquiringIndex)->IsIPOed()) {
-			iCount++;
-			strNeteaseRTDataInquiringStr += _T(",");
-			strNeteaseRTDataInquiringStr += XferStandardToNetease(GetStock(m_lNeteaseRTDataInquiringIndex)->GetSymbol());
-		}
-		m_lNeteaseRTDataInquiringIndex = GetNextIndex(m_lNeteaseRTDataInquiringIndex);
-	}
-
-	return strNeteaseRTDataInquiringStr;
-}
-*/
 
 void CContainerChinaStock::ProcessRTData() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {

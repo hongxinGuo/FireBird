@@ -28,7 +28,7 @@ public:
 
 	virtual void Connect() { ASSERT(false); }
 	void Disconnect();
-	virtual void Send(const vector<string>&) { ASSERT(FALSE); }
+	virtual void Send(const vectorString&) { ASSERT(FALSE); }
 	auto SendString(const string& strMessage) { return m_webSocket.send(strMessage); }
 
 	virtual void CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) { ASSERT(false); } // 继承类必须实现各自的功能

@@ -651,82 +651,19 @@ void CWorldMarket::UpdateStockDayLineStartEndDate() {
 vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector() {
 	vectorString vSymbol;
 
-	for (long l = 0; l < gl_dataContainerChosenWorldStock.Size(); l++) {
-		const CWorldStockPtr pStock = gl_dataContainerChosenWorldStock.GetStock(l);
-		vSymbol.push_back(pStock->GetSymbol().GetBuffer());
+	vectorString vSymbolTemp = gl_dataContainerChosenWorldStock.GetSymbolVector();
+	for (auto symbol : vSymbolTemp) {
+		vSymbol.push_back(symbol);
 	}
 
-	for (long l = 0; l < gl_dataContainerChosenWorldForex.Size(); l++) {
-		const CForexSymbolPtr pForex = gl_dataContainerChosenWorldForex.GetForexSymbol(l);
-		vSymbol.push_back(pForex->GetSymbol().GetBuffer());
+	vSymbolTemp = gl_dataContainerChosenWorldForex.GetSymbolVector();
+	for (auto symbol : vSymbolTemp) {
+		vSymbol.push_back(symbol);
 	}
 
-	for (long l = 0; l < gl_dataContainerChosenWorldCrypto.Size(); l++) {
-		const CFinnhubCryptoSymbolPtr pCrypto = gl_dataContainerChosenWorldCrypto.GetCryptoSymbol(l);
-		vSymbol.push_back(pCrypto->GetSymbol().GetBuffer());
-	}
-
-	// Send a message to the server (default to TEXT mode)
-	//m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"); //{"type":"subscribe","symbol":"BINANCE:BTCUSDT"}
-	//m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:LTCBTC\"}"); //{"type":"subscribe","symbol":"BINANCE:LTCBTC"}
-	//m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS:1\"}"); //
-	//m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"OANDA:AUD_SGD\"}"); // OANDA:AUD_SGD
-	//m_FinnhubWebSocket.Send("{\"type\":\"subscribe\",\"symbol\":\"FXCM:USD/JPY\"}"); // FXCM:USD/JPY
-
-	return vSymbol;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// Tiingo对免费账户的流量限制，为500次/小时， 20000次/天， 5GB/月。
-//
-// thresholdLevel 0接收所有的IEX数据时，每秒数据量为1M-9M;thresholdLevel5接收所有IEX数据时，每秒数据量为10-50K。
-//
-// thresholdLevel 5：all Last Trade updates and only Quote updates that are deemed major updates by our system.
-// thresholdLevel 0: ALL Top-of-Book AND Last Trade updates.
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-vectorString CWorldMarket::GetTiingoIEXWebSocketSymbolVector() {
-	vectorString vSymbol;
-	for (long l = 0; l < gl_dataContainerChosenWorldStock.Size(); l++) {
-		const CWorldStockPtr pStock = gl_dataContainerChosenWorldStock.GetStock(l);
-		vSymbol.push_back(pStock->GetSymbol().GetBuffer());
-	}
-
-	return vSymbol;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 接收所有的Crypto数据时，每秒数据量大致在50-100K附近。
-//
-// thresholdLevel 2: Top-of-Book AND Last Trade updates.
-// thresholdLevel 5: only Last Trade updates.
-//
-//////////////////////////////////////////////////////////////////////////////////////////////
-vectorString CWorldMarket::GetTiingoCryptoWebSocketSymbolVector() {
-	vectorString vSymbol;
-	for (long l = 0; l < gl_dataContainerChosenWorldCrypto.Size(); l++) {
-		const CFinnhubCryptoSymbolPtr pCrypto = gl_dataContainerChosenWorldCrypto.GetCryptoSymbol(l);
-		vSymbol.push_back(pCrypto->GetSymbol().GetBuffer());
-	}
-
-	return vSymbol;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 5状态下每秒接收100K左右。
-//
-// thresholdLevel 5: ALL Top-of-Book updates
-// thresholdLevel 7: A top-of-book update that is due to a change in either the bid/ask price or size.
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////
-vectorString CWorldMarket::GetTiingoForexWebSocketSymbolVector() {
-	vectorString vSymbol;
-	for (long l = 0; l < gl_dataContainerChosenWorldForex.Size(); l++) {
-		const CForexSymbolPtr pForex = gl_dataContainerChosenWorldForex.GetForexSymbol(l);
-		vSymbol.push_back(pForex->GetSymbol().GetBuffer());
+	vSymbolTemp = gl_dataContainerChosenWorldCrypto.GetSymbolVector();
+	for (auto symbol : vSymbolTemp) {
+		vSymbol.push_back(symbol);
 	}
 
 	return vSymbol;
@@ -754,21 +691,21 @@ void CWorldMarket::StartFinnhubWebSocket() {
 
 void CWorldMarket::StartTiingoIEXWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
-		gl_pTiingoIEXWebSocket->CreateThreadConnectWebSocketAndSendMessage(GetTiingoIEXWebSocketSymbolVector());
+		gl_pTiingoIEXWebSocket->CreateThreadConnectWebSocketAndSendMessage(gl_dataContainerChosenWorldStock.GetSymbolVector());
 		gl_pTiingoIEXWebSocket->SetHeartbeatTime(GetUTCTime());
 	}
 }
 
 void CWorldMarket::StartTiingoCryptoWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
-		gl_pTiingoCryptoWebSocket->CreateThreadConnectWebSocketAndSendMessage(GetTiingoCryptoWebSocketSymbolVector());
+		gl_pTiingoCryptoWebSocket->CreateThreadConnectWebSocketAndSendMessage(gl_dataContainerChosenWorldCrypto.GetSymbolVector());
 		gl_pTiingoCryptoWebSocket->SetHeartbeatTime(GetUTCTime());
 	}
 }
 
 void CWorldMarket::StartTiingoForexWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
-		gl_pTiingoForexWebSocket->CreateThreadConnectWebSocketAndSendMessage(GetTiingoForexWebSocketSymbolVector());
+		gl_pTiingoForexWebSocket->CreateThreadConnectWebSocketAndSendMessage(gl_dataContainerChosenWorldForex.GetSymbolVector());
 		gl_pTiingoForexWebSocket->SetHeartbeatTime(GetUTCTime());
 	}
 }

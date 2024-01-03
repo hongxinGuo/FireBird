@@ -4,7 +4,6 @@
 
 #include"TimeConvert.h"
 
-#include<memory>
 using std::make_shared;
 
 class CTimeConvertBenchmark : public benchmark::Fixture {

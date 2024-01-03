@@ -28,7 +28,7 @@ public:
 	}
 
 protected:
-	vector<string> m_vCryptoExchange;
+	vectorString m_vCryptoExchange;
 	map<string, size_t> m_mapCryptoExchange;
 	long m_lLastTotalCryptoExchange;
 };

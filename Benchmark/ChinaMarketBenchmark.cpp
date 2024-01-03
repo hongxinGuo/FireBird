@@ -4,7 +4,6 @@
 
 #include"ChinaMarket.h"
 
-#include<memory>
 using std::make_shared;
 
 class CChinaMarketBenchmark : public benchmark::Fixture {

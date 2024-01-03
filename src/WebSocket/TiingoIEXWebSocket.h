@@ -1,3 +1,13 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Tiingo对免费账户的流量限制，为500次/小时， 20000次/天， 5GB/月。
+//
+// thresholdLevel 0接收所有的IEX数据时，每秒数据量为1M-9M;thresholdLevel5接收所有IEX数据时，每秒数据量为10-50K。
+//
+// thresholdLevel 5：all Last Trade updates and only Quote updates that are deemed major updates by our system.
+// thresholdLevel 0: ALL Top-of-Book AND Last Trade updates.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
 #include"VirtualWebSocket.h"

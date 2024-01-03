@@ -19,6 +19,15 @@ CString CContainerVirtualStock::GetItemSymbol(long lIndex) {
 	return m_vStock.at(lIndex)->GetSymbol();
 }
 
+vectorString CContainerVirtualStock::GetSymbolVector() {
+	vectorString vSymbol;
+	for (long l = 0; l < Size(); l++) {
+		vSymbol.push_back(static_cast<LPCTSTR>(GetItemSymbol(l)));
+	}
+
+	return vSymbol;
+}
+
 bool CContainerVirtualStock::IsUpdateProfileDB() noexcept {
 	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsUpdateProfileDB(); });
 }

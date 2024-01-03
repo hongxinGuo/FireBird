@@ -1,12 +1,12 @@
-// CSetCountry.h : CSetCountry 的声明
+// SetFinnhubStockBasicFinancialMetric.h : SetFinnhubStockBasicFinancialMetric 的声明
 
 #pragma once
 
 #include"VirtualRecordset.h"
 
 /// <summary>
-///
-/// "metric": {
+/// </summary>
+// "metric": {
 // "10DayAverageTradingVolume": 0.43212,
 // "13WeekPriceReturnDaily" : 56.53409,
 // "26WeekPriceReturnDaily" : 39.84772,
@@ -156,10 +156,9 @@
 //		}
 //
 ///
-class CSetFinnhubStockBasicFinancialMetric : public CVirtualRecordset
-{
+class CSetFinnhubStockBasicFinancialMetric : public CVirtualRecordset {
 public:
-	CSetFinnhubStockBasicFinancialMetric(CString strSchema = _T("WorldMarket"), CString strTable = _T("finnhub_stock_basic_financials_metric"), CDatabase* pDatabase = nullptr);
+	CSetFinnhubStockBasicFinancialMetric(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("finnhub_stock_basic_financials_metric"), CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
@@ -171,158 +170,158 @@ public:
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
 
-	long m_ID;  // 索引用，自动生成。
-	CString m_symbol;
+	long m_ID{0};  // 索引用，自动生成。
+	CString m_symbol{_T("")};
 
-	double m_10DayAverageTradingVolume;
-	double m_13WeekPriceReturnDaily;
-	double m_26WeekPriceReturnDaily;
-	double m_3MonthAverageTradingVolume;
-	double m_52WeekHigh;
-	int m_52WeekHighDate;
-	double m_52WeekLow;
-	int m_52WeekLowDate;
-	double m_52WeekPriceReturnDaily;
-	double m_5DayPriceReturnDaily;
+	double m_10DayAverageTradingVolume{0.0};
+	double m_13WeekPriceReturnDaily{0.0};
+	double m_26WeekPriceReturnDaily{0.0};
+	double m_3MonthAverageTradingVolume{0.0};
+	double m_52WeekHigh{0.0};
+	int m_52WeekHighDate{0};
+	double m_52WeekLow{0.0};
+	int m_52WeekLowDate{0};
+	double m_52WeekPriceReturnDaily{0.0};
+	double m_5DayPriceReturnDaily{0.0};
 
-	double m_assetTurnoverAnnual;
-	double m_assetTurnoverTTM;
+	double m_assetTurnoverAnnual{0.0};
+	double m_assetTurnoverTTM{0.0};
 
-	double m_beta;
-	double m_bookValuePerShareAnnual;
-	double m_bookValuePerShareQuarterly;
-	double m_bookValueShareGrowth5Y;
+	double m_beta{0.0};
+	double m_bookValuePerShareAnnual{0.0};
+	double m_bookValuePerShareQuarterly{0.0};
+	double m_bookValueShareGrowth5Y{0.0};
 
-	double m_capitalSpendingGrowth5Y;
-	double m_cashFlowPerShareAnnual;
-	double m_cashFlowPerShareTTM;
-	double m_cashPerSharePerShareAnnual;
-	double m_cashPerSharePerShareQuarterly;
-	double m_currentDividendYieldTTM;
-	double m_currentEV_freeCashFlowAnnual;
-	double m_currentEV_freeCashFlowTTM;
-	double m_currentRatioAnnual;
-	double m_currentRatioQuarterly;
+	double m_capitalSpendingGrowth5Y{0.0};
+	double m_cashFlowPerShareAnnual{0.0};
+	double m_cashFlowPerShareTTM{0.0};
+	double m_cashPerSharePerShareAnnual{0.0};
+	double m_cashPerSharePerShareQuarterly{0.0};
+	double m_currentDividendYieldTTM{0.0};
+	double m_currentEV_freeCashFlowAnnual{0.0};
+	double m_currentEV_freeCashFlowTTM{0.0};
+	double m_currentRatioAnnual{0.0};
+	double m_currentRatioQuarterly{0.0};
 
-	double m_dividendGrowthRate5Y;
-	double m_dividendPerShare5Y;
-	double m_dividendPerShareAnnual;
-	double m_dividendYield5Y;
-	double m_dividendYieldIndicatedAnnual;
-	double m_dividendsPerShareTTM;
+	double m_dividendGrowthRate5Y{0.0};
+	double m_dividendPerShare5Y{0.0};
+	double m_dividendPerShareAnnual{0.0};
+	double m_dividendYield5Y{0.0};
+	double m_dividendYieldIndicatedAnnual{0.0};
+	double m_dividendsPerShareTTM{0.0};
 
-	double m_ebitdPerShareTTM;
-	double m_ebitdaCagr5Y;
-	double m_ebitdaInterimCagr5Y;
-	double m_epsBasicExclExtraItemsAnnual;
-	double m_epsBasicExclExtraItemsTTM;
-	double m_epsExclExtraItemsAnnual;
-	double m_epsExclExtraItemsTTM;
-	double m_epsGrowth3Y;
-	double m_epsGrowth5Y;
-	double m_epsGrowthQuarterlyYoy;
-	double m_epsGrowthTTMYoy;
-	double m_epsInclExtraItemsAnnual;
-	double m_epsInclExtraItemsTTM;
-	double m_epsNormalizedAnnual;
+	double m_ebitdPerShareTTM{0.0};
+	double m_ebitdaCagr5Y{0.0};
+	double m_ebitdaInterimCagr5Y{0.0};
+	double m_epsBasicExclExtraItemsAnnual{0.0};
+	double m_epsBasicExclExtraItemsTTM{0.0};
+	double m_epsExclExtraItemsAnnual{0.0};
+	double m_epsExclExtraItemsTTM{0.0};
+	double m_epsGrowth3Y{0.0};
+	double m_epsGrowth5Y{0.0};
+	double m_epsGrowthQuarterlyYoy{0.0};
+	double m_epsGrowthTTMYoy{0.0};
+	double m_epsInclExtraItemsAnnual{0.0};
+	double m_epsInclExtraItemsTTM{0.0};
+	double m_epsNormalizedAnnual{0.0};
 
-	double m_focfCagr5Y;
-	double m_freeCashFlowAnnual;
-	double m_freeCashFlowPerShareTTM;
-	double m_freeCashFlowTTM;
-	double m_freeOperatingCashFlow_revenue5Y;
-	double m_freeOperatingCashFlow_revenueTTM;
+	double m_focfCagr5Y{0.0};
+	double m_freeCashFlowAnnual{0.0};
+	double m_freeCashFlowPerShareTTM{0.0};
+	double m_freeCashFlowTTM{0.0};
+	double m_freeOperatingCashFlow_revenue5Y{0.0};
+	double m_freeOperatingCashFlow_revenueTTM{0.0};
 
-	double m_grossMargin5Y;
-	double m_grossMarginAnnual;
-	double m_grossMarginTTM;
+	double m_grossMargin5Y{0.0};
+	double m_grossMarginAnnual{0.0};
+	double m_grossMarginTTM{0.0};
 
-	double m_inventoryTurnoverAnnual;
-	double m_inventoryTurnoverTTM;
+	double m_inventoryTurnoverAnnual{0.0};
+	double m_inventoryTurnoverTTM{0.0};
 
-	double m_longTermDebt_equityAnnual;
-	double m_longTermDebt_equityQuarterly;
+	double m_longTermDebt_equityAnnual{0.0};
+	double m_longTermDebt_equityQuarterly{0.0};
 
-	double m_marketCapitalization;
-	double m_monthToDatePriceReturnDaily;
+	double m_marketCapitalization{0.0};
+	double m_monthToDatePriceReturnDaily{0.0};
 
-	double m_netDebtAnnual;
-	double m_netDebtInterim;
-	double m_netIncomeEmployeeAnnual;
-	double m_netIncomeEmployeeTTM;
-	double m_netInterestCoverageAnnual;
-	double m_netInterestCoverageTTM;
-	double m_netMarginGrowth5Y;
-	double m_netProfitMargin5Y;
-	double m_netProfitMarginAnnual;
-	double m_netProfitMarginTTM;
+	double m_netDebtAnnual{0.0};
+	double m_netDebtInterim{0.0};
+	double m_netIncomeEmployeeAnnual{0.0};
+	double m_netIncomeEmployeeTTM{0.0};
+	double m_netInterestCoverageAnnual{0.0};
+	double m_netInterestCoverageTTM{0.0};
+	double m_netMarginGrowth5Y{0.0};
+	double m_netProfitMargin5Y{0.0};
+	double m_netProfitMarginAnnual{0.0};
+	double m_netProfitMarginTTM{0.0};
 
-	double m_operatingMargin5Y;
-	double m_operatingMarginAnnual;
-	double m_operatingMarginTTM;
+	double m_operatingMargin5Y{0.0};
+	double m_operatingMarginAnnual{0.0};
+	double m_operatingMarginTTM{0.0};
 
-	double m_payoutRatioAnnual;
-	double m_payoutRatioTTM;
-	double m_pbAnnual;
-	double m_pbQuarterly;
-	double m_pcfShareTTM;
-	double m_peBasicExclExtraTTM;
-	double m_peExclExtraAnnual;
-	double m_peExclExtraHighTTM;
-	double m_peExclExtraTTM;
-	double m_peExclLowTTM;
-	double m_peInclExtraTTM;
-	double m_peNormalizedAnnual;
-	double m_pfcfShareTTM;
-	double m_pfcfShareAnnual;
-	double m_pretaxMargin5Y;
-	double m_pretaxMarginAnnual;
-	double m_pretaxMarginTTM;
-	double m_priceRelativeToSP50013Week;
-	double m_priceRelativeToSP50026Week;
-	double m_priceRelativeToSP5004Week;
-	double m_priceRelativeToSP50052Week;
-	double m_priceRelativeToSP500Ytd;
-	double m_psAnnual;
-	double m_psTTM;
-	double m_ptbvAnnual;
-	double m_ptbvQuarterly;
+	double m_payoutRatioAnnual{0.0};
+	double m_payoutRatioTTM{0.0};
+	double m_pbAnnual{0.0};
+	double m_pbQuarterly{0.0};
+	double m_pcfShareTTM{0.0};
+	double m_peBasicExclExtraTTM{0.0};
+	double m_peExclExtraAnnual{0.0};
+	double m_peExclExtraHighTTM{0.0};
+	double m_peExclExtraTTM{0.0};
+	double m_peExclLowTTM{0.0};
+	double m_peInclExtraTTM{0.0};
+	double m_peNormalizedAnnual{0.0};
+	double m_pfcfShareTTM{0.0};
+	double m_pfcfShareAnnual{0.0};
+	double m_pretaxMargin5Y{0.0};
+	double m_pretaxMarginAnnual{0.0};
+	double m_pretaxMarginTTM{0.0};
+	double m_priceRelativeToSP50013Week{0.0};
+	double m_priceRelativeToSP50026Week{0.0};
+	double m_priceRelativeToSP5004Week{0.0};
+	double m_priceRelativeToSP50052Week{0.0};
+	double m_priceRelativeToSP500Ytd{0.0};
+	double m_psAnnual{0.0};
+	double m_psTTM{0.0};
+	double m_ptbvAnnual{0.0};
+	double m_ptbvQuarterly{0.0};
 
-	double m_quickRatioAnnual;
-	double m_quickRatioQuarterly;
+	double m_quickRatioAnnual{0.0};
+	double m_quickRatioQuarterly{0.0};
 
-	double m_receivablesTurnoverAnnual;
-	double m_receivablesTurnoverTTM;
-	double m_revenueEmployeeAnnual;
-	double m_revenueEmployeeTTM;
-	double m_revenueGrowth3Y;
-	double m_revenueGrowth5Y;
-	double m_revenueGrowthQuarterlyYoy;
-	double m_revenueGrowthTTMYoy;
-	double m_revenuePerShareAnnual;
-	double m_revenuePerShareTTM;
-	double m_revenueShareGrowth5Y;
-	double m_roaRfy;
-	double m_roaa5Y;
-	double m_roae5Y;
-	double m_roaeTTM;
-	double m_roeRfy;
-	double m_roeTTM;
-	double m_roi5Y;
-	double m_roiAnnual;
-	double m_roiTTM;
+	double m_receivablesTurnoverAnnual{0.0};
+	double m_receivablesTurnoverTTM{0.0};
+	double m_revenueEmployeeAnnual{0.0};
+	double m_revenueEmployeeTTM{0.0};
+	double m_revenueGrowth3Y{0.0};
+	double m_revenueGrowth5Y{0.0};
+	double m_revenueGrowthQuarterlyYoy{0.0};
+	double m_revenueGrowthTTMYoy{0.0};
+	double m_revenuePerShareAnnual{0.0};
+	double m_revenuePerShareTTM{0.0};
+	double m_revenueShareGrowth5Y{0.0};
+	double m_roaRfy{0.0};
+	double m_roaa5Y{0.0};
+	double m_roae5Y{0.0};
+	double m_roaeTTM{0.0};
+	double m_roeRfy{0.0};
+	double m_roeTTM{0.0};
+	double m_roi5Y{0.0};
+	double m_roiAnnual{0.0};
+	double m_roiTTM{0.0};
 
-	double m_tangibleBookValuePerShareAnnual;
-	double m_tangibleBookValuePerShareQuarterly;
-	double m_tbvCagr5Y;
-	double m_totalDebt_totalEquityAnnual;
-	double m_totalDebt_totalEquityQuarterly;
-	double m_totalDebtCagr5Y;
+	double m_tangibleBookValuePerShareAnnual{0.0};
+	double m_tangibleBookValuePerShareQuarterly{0.0};
+	double m_tbvCagr5Y{0.0};
+	double m_totalDebt_totalEquityAnnual{0.0};
+	double m_totalDebt_totalEquityQuarterly{0.0};
+	double m_totalDebtCagr5Y{0.0};
 
-	double m_yearToDatePriceReturnDaily;
+	double m_yearToDatePriceReturnDaily{0.0};
 
 	// 重写
-		// 向导生成的虚函数重写
+	// 向导生成的虚函数重写
 public:
-	virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
+	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持
 };

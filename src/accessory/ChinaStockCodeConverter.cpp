@@ -1,7 +1,6 @@
 #include"pch.h"
 
 #include "ChinaStockCodeConverter.h"
-#include"JsonParse.h"
 
 bool IsShanghaiExchange(const CString& strStockCode) {
 	const CString str = GetStockExchange(strStockCode);

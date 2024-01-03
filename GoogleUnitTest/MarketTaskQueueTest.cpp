@@ -21,7 +21,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMarketTaskQueueTest, TestInitialize) {
 		EXPECT_EQ(marketTaskQueue.Size(), 0);
-		EXPECT_TRUE(marketTaskQueue.IsEmpty());
+		EXPECT_TRUE(marketTaskQueue.Empty());
 	}
 
 	TEST_F(CMarketTaskQueueTest, TestGetSet) {
@@ -32,7 +32,7 @@ namespace FireBirdTest {
 		marketTaskQueue.AddTask(CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__, 1);
 
 		EXPECT_EQ(marketTaskQueue.Size(), 4);
-		EXPECT_FALSE(marketTaskQueue.IsEmpty());
+		EXPECT_FALSE(marketTaskQueue.Empty());
 
 		auto pTask = marketTaskQueue.GetTask();
 		marketTaskQueue.DiscardCurrentTask();

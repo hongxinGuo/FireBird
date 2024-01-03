@@ -9,6 +9,8 @@
 
 #include "ProductFinnhubForexDayLine.h"
 
+#include <execution>
+
 using namespace std;
 
 CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {

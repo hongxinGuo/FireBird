@@ -5,7 +5,6 @@
 #include"FinnhubInaccessibleExchange.h"
 #include"FinnhubInquiryType.h"
 
-#include<memory>
 using std::make_shared;
 
 class CFinnhubInaccessibleExchangeBenchmark : public benchmark::Fixture {

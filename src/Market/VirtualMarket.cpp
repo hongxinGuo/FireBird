@@ -30,7 +30,11 @@ void CVirtualMarket::SchedulingTask() {
 	const long lCurrentMarketTime = GetMarketTime();
 
 	if (lCurrentMarketTime < 100) { // 每日最初的一分钟内。保证每日执行一次
-		RectifyTaskTime(); // 当任务队列中都是明日的时间时，将时间调减24小时
+		if (!m_marketTask.Empty()) {
+			if (m_marketTask.GetTask()->GetTime() >= 240000) { // 当任务队列中都是明日的时间时，将时间调减24小时
+				AdjustTaskTime();
+			}
+		}
 	}
 
 	// 调用本市场的各data source，进行网络数据的接收和处理。
@@ -73,21 +77,17 @@ bool CVirtualMarket::UpdateMarketInfo() {
 // 如果任务队列中的时间皆超过240000，则将所有的时间减去240000.
 //
 ///////////////////////////////////////////////////////////////
-void CVirtualMarket::RectifyTaskTime() {
-	if (m_marketTask.IsEmpty()) return;
-	const auto pTask = m_marketTask.GetTask();
-	if (pTask->GetTime() >= 240000) {
-		vector<CMarketTaskPtr> vTask;
-		while (!m_marketTask.IsEmpty()) {
-			vTask.push_back(m_marketTask.GetTask());
-			m_marketTask.DiscardCurrentTask();
-		}
-		ASSERT(m_marketTask.IsEmpty());
-		for (const auto& pMarketTask : vTask) {
-			ASSERT(pMarketTask->GetTime() >= 240000);
-			pMarketTask->SetTime(pMarketTask->GetTime() - 240000);
-			m_marketTask.AddTask(pMarketTask);
-		}
+void CVirtualMarket::AdjustTaskTime() {
+	vector<CMarketTaskPtr> vTask;
+	while (!m_marketTask.Empty()) {
+		vTask.push_back(m_marketTask.GetTask());
+		m_marketTask.DiscardCurrentTask();
+	}
+	ASSERT(m_marketTask.Empty());
+	for (const auto& pMarketTask : vTask) {
+		ASSERT(pMarketTask->GetTime() >= 240000);
+		pMarketTask->SetTime(pMarketTask->GetTime() - 240000);
+		m_marketTask.AddTask(pMarketTask);
 	}
 }
 
@@ -136,7 +136,7 @@ void CVirtualMarket::CalculateLastTradeDate() noexcept {
 }
 
 bool CVirtualMarket::IsWorkingDay() const noexcept {
-	if ((m_tmMarket.tm_wday == 0) || (m_tmMarket.tm_wday == 6)) {
+	if (m_tmMarket.tm_wday == 0 || m_tmMarket.tm_wday == 6) {
 		return false;
 	}
 	return true;

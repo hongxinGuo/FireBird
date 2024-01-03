@@ -1,12 +1,8 @@
-// SetFinnhubStockBasicFinancialMetric.cpp : CSetFinnhubStockBasicFinancialMetric 类的实现
-
-// 代码生成在 2019年6月2日, 5:10
-
 #include"pch.h"
 
 #include "SetFinnhubStockBasicFinancialMetric.h"
 
-CSetFinnhubStockBasicFinancialMetric::CSetFinnhubStockBasicFinancialMetric(CString strSchema, CString strTable, CDatabase* pdb)
+CSetFinnhubStockBasicFinancialMetric::CSetFinnhubStockBasicFinancialMetric(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_symbol = _T("");

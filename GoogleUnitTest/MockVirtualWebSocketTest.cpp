@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"MockvirtualWebSocket.h"
+#include"MockVirtualWebSocket.h"
 
 #include<exception>
 using std::exception;
@@ -14,21 +14,25 @@ namespace FireBirdTest {
 	class CMockVirtualWebSocketTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			gl_pMockVirtualWebSocket = make_shared<CMockVirtualWebSocket>();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 
 			gl_pMockVirtualWebSocket = nullptr;
 		}

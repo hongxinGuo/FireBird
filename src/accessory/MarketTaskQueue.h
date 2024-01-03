@@ -15,10 +15,7 @@ public:
 	CMarketTaskPtr GetTask() const { return m_vMarketTask.top(); }
 	void DiscardCurrentTask() { m_vMarketTask.pop(); }
 	size_t Size() const { return m_vMarketTask.size(); }
-	bool IsEmpty() const {
-		if (Size() == 0) return true;
-		else return false;
-	}
+	bool Empty() const { return m_vMarketTask.empty(); }
 
 	vector<CMarketTaskPtr> GetTaskVector();
 
