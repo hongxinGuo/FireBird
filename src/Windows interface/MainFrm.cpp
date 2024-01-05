@@ -23,6 +23,8 @@
 #include"TiingoDataSource.h"
 #include"QuandlDataSource.h"
 
+#include"simdjsonEmptyArray.h"
+
 #include <ixwebsocket/IXNetSystem.h>
 
 #include<exception>
@@ -246,6 +248,8 @@ void CMainFrame::InitializeDataSourceAndWebInquiry() {
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
+
+	CreateSimdjsonEmptyArray();
 
 	// 更新系统显示高度和宽度
 	gl_systemConfiguration.SetSystemDisplayRect(GetSystemMetrics(SM_CXFULLSCREEN), GetSystemMetrics(SM_CYFULLSCREEN));

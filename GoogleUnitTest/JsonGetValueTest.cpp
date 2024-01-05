@@ -11,13 +11,15 @@ using std::make_shared;
 namespace FireBirdTest {
 	class jsonGetValueTest : public ::testing::Test {
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			gl_systemConfiguration.SetWorkingMode(false);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -206,7 +208,7 @@ namespace FireBirdTest {
 
 	TEST_F(jsonGetValueTest, TestjsonGetDouble3) {
 		const auto pjs = make_shared<json>();
-		const string s{_T("[1.1, \"2.1\"]")};
+		const string s{_T("[1.1, \"2.1\", null]")};
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
 		const double i1 = jsonGetDouble(it);
@@ -214,5 +216,8 @@ namespace FireBirdTest {
 		++it;
 		const double i2 = jsonGetDouble(it);
 		EXPECT_DOUBLE_EQ(i2, 0.0) << "无法解析的使用默认值";
+		++it;
+		const double i3 = jsonGetDouble(it);
+		EXPECT_DOUBLE_EQ(i3, 0.0) << "无法解析的使用默认值";
 	}
 }

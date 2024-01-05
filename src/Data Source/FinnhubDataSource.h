@@ -28,6 +28,7 @@ public:
 
 	void ConfigureSession() override;
 	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
+	void CheckInaccessible(const CWebDataPtr& pWebData) const override;
 
 	void InquireFinnhub(long lCurrentTime);
 

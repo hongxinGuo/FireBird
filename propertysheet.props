@@ -4,7 +4,7 @@
   <PropertyGroup Label="UserMacros">
 		<AnalysisInclude>$(SolutionDir);$(SolutionDir)\FireBird;$(SolutionDir)\src;$(SolutionDir)\src\Windows interface;$(SolutionDir)\src\Accessory;$(SolutionDir)\src\WebSocket;$(SolutionDir)\src\Type;$(SolutionDir)\src\Type\China Market;$(SolutionDir)\src\Type\America Market;$(SolutionDir)\src\Working thread;$(SolutionDir)\src\Working thread\China market;$(SolutionDir)\src\Working thread\America market;$(SolutionDir)\src\System;$(SolutionDir)\src\Stock;$(SolutionDir)\src\Data Source;$(SolutionDir)\src\Market;$(SolutionDir)\src\DataBase;$(SolutionDir)\src\DataBase\WorldMarket;$(SolutionDir)\src\DataBase\ChinaMarket;$(SolutionDir)\src\Factory Product;$(SolutionDir)\src\Data Container</AnalysisInclude>
 		<GoogletestInclude>$(SolutionDir)\Lib\googletest\googletest\;$(SolutionDir)\Lib\googletest\googletest\include;$(SolutionDir)\Lib\googletest\googlemock;$(SolutionDir)\Lib\googletest\googlemock\include</GoogletestInclude>
-		<LibInclude>$(SolutionDir)\Lib;$(SolutionDir)\Lib\nlohmann json\single_include;$(SolutionDir)\Lib\gsl\include;$(SolutionDir)\Lib\Visual Leak Detector;$(SolutionDir)\Lib\Visual Leak Detector</LibInclude>
+		<LibInclude>$(SolutionDir)\Lib;$(SolutionDir)\Lib\simdjson;$(SolutionDir)\Lib\nlohmann json\single_include;$(SolutionDir)\Lib\gsl\include;$(SolutionDir)\Lib\Visual Leak Detector;$(SolutionDir)\Lib\Visual Leak Detector</LibInclude>
 	    <IXWebSocket>$(SolutionDir)\Lib;$(SolutionDir)\Lib\IXWebSocket</IXWebSocket>
 		<GoogleBenchmark>$(SolutionDir)\Lib\Google Benchmark\include;$(SolutionDir)\Lib\Google Benchmark\lib</GoogleBenchmark>
 		<zlibInclude>$(SolutionDir)\Lib\zlib\include;$(SolutionDir)\Lib\zlib\lib;</zlibInclude>

@@ -119,14 +119,6 @@ bool CVirtualDataSource::ProcessWebDataReceived() {
 	return bProcessed;
 }
 
-void CVirtualDataSource::CheckInaccessible(const CWebDataPtr& pWebData) const {
-	ASSERT(m_pCurrentProduct != nullptr);
-	if (m_pCurrentProduct->CheckInaccessible(pWebData)) {
-		// 如果系统报告无权查询此类数据, 目前先在软件系统消息中报告
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
-	}
-}
-
 void CVirtualDataSource::SetDefaultSessionOption() const {
 	DWORD dwValue = 0;
 

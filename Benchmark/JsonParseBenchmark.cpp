@@ -1,8 +1,9 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // FireBird中比较费时的函数是各个数据的解析工作。
-// 目前最繁重的解析工作，时US market的美国市场股票代码，其大小为5MB，使用nlohmann json解析时，release模式用时131毫秒；使用boost PTree
-// 解析时，release模式用时320毫秒。
+// 目前最繁重的解析工作，是US market的美国市场股票代码，其大小为5MB，使用nlohmann json解析时，release模式用时131毫秒；使用boost PTree
+// 解析时，release模式用时320毫秒；
+// 使用simdjson解析，release模式下parser.iterate()用时1.2毫秒。
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -15,6 +16,9 @@
 #include"SaveAndLoad.h"
 #include"JsonParse.h"
 #include"WebData.h"
+
+#include"simdjson.h"
+using namespace simdjson;
 
 // 这个是目前能够找到的最大的json数据，用于测试ParseWithPTree和ParseWithNlohmannJson的速度
 // 测试结果是Nlohmann json的速度比boost的Ptree快50%左右。
@@ -222,14 +226,25 @@ static void ParseWithNlohmannJSon(benchmark::State& state) {
 		CreateJsonWithNlohmann(j, sData101);
 	}
 }
-
 BENCHMARK(ParseWithNlohmannJSon);
+
+static void ParseWithSimdjson(benchmark::State& state) {
+	const padded_string my_data(sData101);
+	ondemand::parser parser;
+	for (auto _ : state) {
+		ondemand::document doc = parser.iterate(my_data);
+	}
+}
+
+BENCHMARK(ParseWithSimdjson);
 
 class CJsonParse : public benchmark::Fixture {
 public:
 	void SetUp(const benchmark::State& state) override {
 		CString strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("StockSymbol.json");
+		const string sFileName = (LPCTSTR)strFileName;
 		LoadFromFile(strFileName, sUSExchangeStockCode);
+		auto bError2 = USExchangedStockCode.load(sFileName);
 
 		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
 		LoadFromFile(strFileName, sNeteaseRTData);
@@ -251,6 +266,10 @@ public:
 	string sNeteaseRTDataForPTree;
 	string sTengxunDayLine;
 	string sWorldStockUpdateParameter;
+
+	bool bError{false};
+
+	simdjson::padded_string USExchangedStockCode;
 };
 
 // 解析US交易所的股票代码数据（5MB）时，Release模式，nlohmann json用时130毫秒，PTree用时310毫秒；
@@ -261,11 +280,31 @@ BENCHMARK_F(CJsonParse, StockSymbolParseWithNlohmannJSon)(benchmark::State& stat
 	}
 }
 
+BENCHMARK_F(CJsonParse, StockSymbolParseWithsimdjson)(benchmark::State& state) {
+	const CString strFileName1 = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("StockSymbol.json");
+	const string sFileName = (LPCTSTR)strFileName1;
+	auto j = padded_string::load(sFileName);
+	ondemand::parser parser;
+	for (auto _ : state) {
+		ondemand::document doc = parser.iterate(j);
+	}
+}
+
 // 解析Netease实时数据时，nlohmann json用时16毫秒，PTree用时32毫秒。
 BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonWithNlohmannJson)(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
 		CreateJsonWithNlohmann(j, sNeteaseRTData, 21, 2);
+	}
+}
+
+BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonWithsimdjson)(benchmark::State& state) {
+	const CString strFileName2 = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
+	const string sFileName = (LPCTSTR)strFileName2;
+	auto j = padded_string::load(sFileName);
+	ondemand::parser parser;
+	for (auto _ : state) {
+		ondemand::document doc = parser.iterate(j);
 	}
 }
 

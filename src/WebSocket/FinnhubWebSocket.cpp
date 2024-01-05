@@ -10,6 +10,10 @@
 #include "FinnhubDataSource.h"
 #include "TimeConvert.h"
 
+#include"simdjson.h"
+using namespace simdjson;
+#include"simdjsonGetValue.h"
+
 using std::thread;
 using std::make_shared;
 
@@ -138,7 +142,9 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 					const auto pFinnhubDataPtr = make_shared<CFinnhubSocket>();
 					pFinnhubDataPtr->m_sSymbol = jsonGetString(it, _T("s"));
 					pt3 = jsonGetChild(it, _T("c"));
-					for (auto it2 = pt3.begin(); it2 != pt3.end(); ++it2) { pFinnhubDataPtr->m_vCode.push_back(jsonGetString(it2)); }
+					for (auto it2 = pt3.begin(); it2 != pt3.end(); ++it2) {
+						pFinnhubDataPtr->m_vCode.push_back(jsonGetString(it2));
+					}
 					pFinnhubDataPtr->m_dLastPrice = jsonGetDouble(it, _T("p"));
 					pFinnhubDataPtr->m_dLastVolume = jsonGetDouble(it, _T("v"));
 					pFinnhubDataPtr->m_iSeconds = jsonGetLongLong(it, _T("t"));
@@ -172,6 +178,69 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 	}
 	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), e.what());
+		return false;
+	}
+
+	return true;
+}
+
+/// <summary>
+///
+/// https://finnhub.io/docs/api/websocket-trades
+///
+/// 目前三种。
+/// 格式为：{"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
+//				 {"data": [{"c":["1", "12", "24"], "p" : 7296.89, "s" : "BINANCE:BTCUSDT", "t" : 1575526691134, "v" : 0.011467}] , "type" : "trade"}
+///        {"type":"ping"}
+///        {"msg":"Subscribing to too many symbols","type":"error"}
+/// </summary>
+/// <param name="pData"></param>
+/// <returns></returns>
+bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(shared_ptr<string> pData) {
+	try {
+		ondemand::parser parser;
+		const simdjson::padded_string jsonPadded(*pData);
+		ondemand::document doc = parser.iterate(jsonPadded);
+		const string_view sType = jsonGetStringView(doc, "type");
+		if (sType == _T("trade")) { // {"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
+			auto data_array = jsonGetArray(doc, "data");
+			for (auto item : data_array) {
+				const auto pFinnhubDataPtr = make_shared<CFinnhubSocket>();
+				auto condition_array = jsonGetArray(item, "c");
+				for (auto condition_item : condition_array) {
+					const string_view s5 = jsonGetStringView(condition_item);
+					string_view s6 = s5.substr(0, s5.length());
+					string s2(s6);
+					pFinnhubDataPtr->m_vCode.push_back(s2);
+				}
+				pFinnhubDataPtr->m_dLastPrice = item["p"].get_double();
+				const string_view symbol = item["s"].get_string();
+				const string_view symbol2 = symbol.substr(0, symbol.length());
+				pFinnhubDataPtr->m_sSymbol = symbol2;
+				pFinnhubDataPtr->m_iSeconds = item["t"].get_int64();
+				pFinnhubDataPtr->m_dLastVolume = item["v"].get_double();
+				gl_SystemData.PushFinnhubSocket(pFinnhubDataPtr);
+				m_fReceivingData = true;
+			}
+			m_HeartbeatTime = GetUTCTime();
+		}
+		else if (sType == _T("ping")) {	// ping  {\"type\":\"ping\"}
+		}
+		else if (sType == _T("error")) {// ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
+			string_view message = doc["msg"].get_string();
+			string_view m2 = message.substr(0, message.length());
+			string sMessage(m2);
+			CString strMessage = "Finnhub WebSocket error message: ";
+			strMessage += sMessage.c_str();
+			gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
+			return false;
+		}
+		else { // new format or error
+			return false;
+		}
+	}
+	catch (simdjson::simdjson_error& error) {
+		ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), error.what());
 		return false;
 	}
 

@@ -44,7 +44,7 @@ public:
 	virtual void GenerateCurrentInquiryMessage();
 	virtual bool GetWebData() { return Read(); } // 网络读取。为了Mock方便，声明为虚函数。所有的Mock类，皆应Mock此函数以防止出现实际网络申请
 	virtual bool ProcessWebDataReceived();
-	void CheckInaccessible(const CWebDataPtr& pWebData) const;
+	virtual void CheckInaccessible(const CWebDataPtr& pWebData) const {};
 
 	void SetDefaultSessionOption() const;
 
@@ -100,19 +100,13 @@ public:
 		m_qProduct.pop();
 		return m_pCurrentProduct;
 	}
-	bool HaveInquiry() const {
-		if (m_qProduct.empty()) return false;
-		return true;
-	}
+	bool HaveInquiry() const { return !m_qProduct.empty(); }
 	void DiscardAllInquiry() { while (m_qProduct.size() > 0) m_qProduct.pop(); }
 
 	void StoreReceivedData(const CWebDataPtr& pData) noexcept { m_qReceivedData.PushData(pData); }
 	CWebDataPtr GetReceivedData() noexcept { return m_qReceivedData.PopData(); }
 	size_t GetReceivedDataSize() noexcept { return m_qReceivedData.Size(); }
-	bool HaveReceivedData() {
-		if (m_qReceivedData.Empty()) return false;
-		return true;
-	}
+	bool HaveReceivedData() { return !m_qReceivedData.Empty(); }
 	void DiscardReceivedData() { while (GetReceivedDataSize() > 0) GetReceivedData(); }
 
 	bool IsInquiring() const noexcept { return m_fInquiring; }
@@ -141,10 +135,7 @@ public:
 	bool IsWebError() const noexcept { return m_dwWebErrorCode != 0; }
 	DWORD GetErrorCode() const noexcept { return m_dwWebErrorCode; }
 	void SetErrorCode(const DWORD dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
-	bool IsTimeout() const noexcept {
-		if (m_dwWebErrorCode == 12002) return true;
-		return false;
-	}
+	bool IsTimeout() const noexcept { return m_dwWebErrorCode == 12002; }
 
 	long GetInquiringNumber() const noexcept { return m_lInquiringNumber; }
 	void SetInquiringNumber(const long lValue) noexcept { m_lInquiringNumber = lValue; }

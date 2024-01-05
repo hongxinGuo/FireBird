@@ -615,6 +615,9 @@
     <ClCompile Include="VirtualChinaMarketWebProductTest.cpp">
       <Filter>Test源文件\Factory Product</Filter>
     </ClCompile>
+    <ClCompile Include="simdjsonGetValueTest.cpp">
+      <Filter>Test源文件\accessory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockMainFrm.h">

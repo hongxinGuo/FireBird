@@ -23,6 +23,8 @@
     <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\src\accessory\RSReference.h" />
     <ClInclude Include="..\src\accessory\SaveAndLoad.h" />
+    <ClInclude Include="..\src\accessory\simdjsonGetValue.h" />
+    <ClInclude Include="..\src\accessory\simdjsonEmptyArray.h" />
     <ClInclude Include="..\src\accessory\TemplateMutexAccessQueue.h" />
     <ClInclude Include="..\src\accessory\ThreadStatus.h" />
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
@@ -76,8 +78,6 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetStockSection.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineBasicInfo.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineExtendInfo.h" />
-    <ClInclude Include="..\src\DataBase\SetFinnhubCompanyNews.h" />
-    <ClInclude Include="..\src\DataBase\SetFinnhubStockBasicFinancialMetric.h" />
     <ClInclude Include="..\src\DataBase\VirtualRecordset.h" />
     <ClInclude Include="..\src\DataBase\VirtualSetChosenStake.h" />
     <ClInclude Include="..\src\DataBase\VirtualSetExchange.h" />
@@ -208,6 +208,9 @@
     <ClInclude Include="..\src\Windows interface\PropertiesWnd.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\src\accessory\accessory.cpp" />
     <ClCompile Include="..\src\accessory\MarketTask.cpp" />
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp" />
@@ -215,9 +218,7 @@
     <ClCompile Include="..\src\accessory\HighPerformanceCounter.cpp" />
     <ClCompile Include="..\src\accessory\InfoReport.cpp" />
     <ClCompile Include="..\src\accessory\JsonGetValue.cpp" />
-    <ClCompile Include="..\src\accessory\JsonParse.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
-    </ClCompile>
+    <ClCompile Include="..\src\accessory\JsonParse.cpp" />
     <ClCompile Include="..\src\accessory\MarketTaskQueue.cpp" />
     <ClCompile Include="..\src\accessory\NeteaseRTDataParser.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -232,6 +233,8 @@
     </ClCompile>
     <ClCompile Include="..\src\accessory\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\src\accessory\SaveAndLoad.cpp" />
+    <ClCompile Include="..\src\accessory\simdjsonGetValue.cpp" />
+    <ClCompile Include="..\src\accessory\simdjsonEmptyArray.cpp" />
     <ClCompile Include="..\src\accessory\ThreadStatus.cpp" />
     <ClCompile Include="..\src\accessory\TimeConvert.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerVirtualStock.cpp" />
@@ -422,6 +425,9 @@
     <ClCompile Include="..\src\Working thread\China market\ThreadUpdateChinaStockProfileDB.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">
+      <Project>{f77641f7-1df8-4461-9338-a8e502e570dc}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">
       <Project>{b467f394-de2a-47f9-a2c2-4be78225b908}</Project>
     </ProjectReference>

@@ -756,11 +756,11 @@
     <ClInclude Include="..\src\Data Container\VirtualContainer.h">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\SetFinnhubStockBasicFinancialMetric.h">
-      <Filter>头文件\database\WorldMarket</Filter>
+    <ClInclude Include="..\src\accessory\simdjsonGetValue.h">
+      <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\SetFinnhubCompanyNews.h">
-      <Filter>头文件\database</Filter>
+    <ClInclude Include="..\src\accessory\simdjsonEmptyArray.h">
+      <Filter>头文件\Accessory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1349,11 +1349,20 @@
     <ClCompile Include="..\src\Factory Product\ProductTengxunRT.cpp">
       <Filter>源文件\Factory-Product\ChinaMarket</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Factory Product\VirtualChinaMarketWebProduct.cpp">
+      <Filter>源文件\Factory-Product</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\Data Container\VirtualContainer.cpp">
       <Filter>源文件\Data container</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Factory Product\VirtualChinaMarketWebProduct.cpp">
-      <Filter>源文件\Factory-Product</Filter>
+    <ClCompile Include="..\src\accessory\simdjsonGetValue.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\simdjsonEmptyArray.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
+      <Filter>源文件\Accessory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

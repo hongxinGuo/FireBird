@@ -40,6 +40,7 @@ public:
 	void CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) override;
 
 	bool ParseFinnhubWebSocketData(shared_ptr<string> pData);
+	bool ParseFinnhubWebSocketDataWithSidmjson(shared_ptr<string> pData);
 };
 
 using CFinnhubWebSocketPtr = shared_ptr<CFinnhubWebSocket>;
