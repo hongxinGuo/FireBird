@@ -6,6 +6,8 @@
 //
 // 使用Nlohmann的JSON库来解析之，实现序列化和反序列化。
 //
+// todo 准备使用simdjson来装载json数据，Nlohmannjson只用于存储json数据。
+//
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
@@ -22,15 +24,11 @@ public:
 	CSystemConfiguration& operator=(const CSystemConfiguration&&) noexcept = delete;
 	~CSystemConfiguration();
 
-	void UpdateDB();
-	bool LoadDB();
-	void SaveDB() const;
-	void Update();
-
-	void ClearJson();
-	void UpdateJson();
-
-	void UpdateSystem() const; // 使用本参数去更新系统
+	void UpdateDBWithNlohmannjson();
+	bool LoadDBWithNlohmannjson();
+	void SaveDBWithNlohmannjson();
+	void UpdateUsingNlohmannjson(json& jsonData);
+	void UpdateNlohmannJson(json& jsonData);
 
 	void ChangeFinnhubAccountTypeToFree();
 	void ChangeFinnhubAccountTypeToPaid();
@@ -338,8 +336,6 @@ protected:
 	// 具体工作计算机的参数
 	RECT m_rSystemDisplay; // 显示器位素面积
 	RECT m_rCurrentWindow; // 当前窗口位素面积
-
-	json m_systemConfiguration;
 
 	//无需存储的变量
 	std::atomic_bool m_fExitingSystem{false}; //  系统退出标识，用于终止其他线程。

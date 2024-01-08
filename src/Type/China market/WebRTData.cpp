@@ -34,9 +34,7 @@ void CWebRTData::Reset() {
 	m_fActive = false;
 }
 
-CWebRTData::CWebRTData() {
-	Reset();
-}
+CWebRTData::CWebRTData() { Reset(); }
 
 bool CWebRTData::ReadVoidSinaData(const CWebDataPtr& pSinaWebData) {
 	const string_view svCurrentParagraph = pSinaWebData->GetCurrentParagraph();
@@ -58,25 +56,18 @@ bool CWebRTData::ReadVoidSinaData(const CWebDataPtr& pSinaWebData) {
 
 		pSinaWebData->IncreaseCurrentPos(23);
 		if (!pSinaWebData->IsLastDataParagraph()) {
-			if (pSinaWebData->GetCurrentPosData() != 0x00a) {
-				return false;
-			}
+			if (pSinaWebData->GetCurrentPosData() != 0x00a) { return false; }
 			pSinaWebData->IncreaseCurrentPos();
 		}
 		m_fActive = false;
 		SetDataSource(SINA_RT_WEB_DATA_);
 		return true;
-	}
-	catch (exception& e) {
+	} catch (exception& e) {
 		ReportErrorToSystemMessage(_T("ReadSinaData异常 "), e);
 		if (pSinaWebData->OutOfRange()) return false;
 		pSinaWebData->IncreaseCurrentPos(23);
 		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
-		if (!pSinaWebData->IsLastDataParagraph()) {
-			if (pSinaWebData->GetCurrentPosData() == 0x00a) {
-				pSinaWebData->IncreaseCurrentPos();
-			}
-		}
+		if (!pSinaWebData->IsLastDataParagraph()) { if (pSinaWebData->GetCurrentPosData() == 0x00a) { pSinaWebData->IncreaseCurrentPos(); } }
 		return false;
 	}
 }
@@ -129,14 +120,14 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 		string_view sv3;
 		m_fActive = false; // 初始状态为无效数据
 		pSinaWebData->SetCurrentParagraphStartPos(pSinaWebData->GetCurrentPos()); // 本段数据起始位置
-		sv3 = pSinaWebData->GetAllOfNeedProcessStringViewData();
+		sv3 = pSinaWebData->GetStringView(pSinaWebData->GetCurrentPos(), pSinaWebData->GetBufferLength() - pSinaWebData->GetCurrentPos());
 		const long lParagraphLength = sv3.find_first_of(_T(";")); // 每段数据以字符';'作为结束符
 		if (lParagraphLength < 0) {
 			pSinaWebData->SetCurrentPos(pSinaWebData->GetBufferLength());
 			return false;
 		}
 		pSinaWebData->SetCurrentParagraph(sv3.substr(0, lParagraphLength + 1));
-		string_view sv1 = pSinaWebData->GetStringViewData(12); //默认状态下起始字符串为var hq_str_ 读入“var hq_str_s"
+		string_view sv1 = pSinaWebData->GetStringView(0, 12); //默认状态下起始字符串为var hq_str_ 读入“var hq_str_s"
 		if (pSinaWebData->GetCurrentParagraph().size() == 23) { // 无效数据
 			return ReadVoidSinaData(pSinaWebData);
 		}
@@ -154,12 +145,12 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 			throw exception(_T("Bad header: need sh or sz"));
 		}
 		pSinaWebData->IncreaseCurrentPos();
-		const string_view svStockSymbol = pSinaWebData->GetStringViewData(6);
+		const string_view svStockSymbol = pSinaWebData->GetStringView(pSinaWebData->GetCurrentPos(), 6);
 		strSinaStockCode.append(svStockSymbol.data(), svStockSymbol.size());
 		m_strSymbol = XferSinaToStandard(strSinaStockCode.c_str());
 		pSinaWebData->IncreaseCurrentPos(6);
 
-		sv1 = pSinaWebData->GetStringViewData(2); // 读入'="'
+		sv1 = pSinaWebData->GetStringView(pSinaWebData->GetCurrentPos(), 2); // 读入'="'
 		if ((sv1.at(0) != '=') || (sv1.at(1) != '"')) { throw exception(_T("need '=\"'")); }
 		pSinaWebData->IncreaseCurrentPos(2);
 
@@ -231,8 +222,7 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 		CheckSinaRTDataActive();
 		SetDataSource(SINA_RT_WEB_DATA_);
 		return true;
-	}
-	catch (exception& e) {
+	} catch (exception& e) {
 		ReportErrorToSystemMessage(_T("ReadSinaData异常 "), e);
 		if (pSinaWebData->OutOfRange()) return false;
 		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
@@ -258,9 +248,7 @@ bool CWebRTData::CheckSinaRTDataActive() {
 bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, INT64& llReturnValue) const {
 	string_view sv;
 
-	if (!ReadSinaOneValue(pSinaWebData, sv)) {
-		return false;
-	}
+	if (!ReadSinaOneValue(pSinaWebData, sv)) { return false; }
 	llReturnValue = atoll(sv.data());
 	if (llReturnValue < 0) return false;
 	return true;
@@ -275,9 +263,7 @@ bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, INT64& llRetu
 bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, long& lReturnValue) const {
 	string_view sv;
 
-	if (!ReadSinaOneValue(pSinaWebData, sv)) {
-		return false;
-	}
+	if (!ReadSinaOneValue(pSinaWebData, sv)) { return false; }
 	lReturnValue = atol(sv.data());
 	if (lReturnValue < 0) return false;
 	return true;
@@ -292,9 +278,7 @@ bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, long& lReturn
 bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, double& dReturnValue) const {
 	string_view sv;
 
-	if (!ReadSinaOneValue(pSinaWebData, sv)) {
-		return false;
-	}
+	if (!ReadSinaOneValue(pSinaWebData, sv)) { return false; }
 	dReturnValue = atof(sv.data());
 	return true;
 }
@@ -307,14 +291,13 @@ bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, double& dRetu
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, string_view& svSub) {
 	try {
-		const string_view sv = pSinaWebData->GetAllOfNeedProcessStringViewData();
+		const string_view sv = pSinaWebData->GetStringView(pSinaWebData->GetCurrentPos(), pSinaWebData->GetBufferLength() - pSinaWebData->GetCurrentPos());
 		const auto iPosition = sv.find_first_of(',');
 		if (iPosition > sv.size()) throw exception(_T("out of range"));
 		svSub = sv.substr(0, iPosition);
 		pSinaWebData->IncreaseCurrentPos(iPosition + 1);// 跨过本数据和随后的','号
 		return true;
-	}
-	catch (exception& e) {
+	} catch (exception& e) {
 		ReportErrorToSystemMessage(_T("ReadSinaDataOneValue异常 "), e);
 		return false;
 	}
@@ -403,7 +386,7 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 	float fTemp = 0.0;
 	CString strTengxunStockCode;
 	pTengxunWebRTData->SetCurrentParagraphStartPos(pTengxunWebRTData->GetCurrentPos()); // 本段数据起始位置
-	const string_view sv3 = pTengxunWebRTData->GetAllOfNeedProcessStringViewData();
+	const string_view sv3 = pTengxunWebRTData->GetStringView(pTengxunWebRTData->GetCurrentPos(), pTengxunWebRTData->GetBufferLength() - pTengxunWebRTData->GetCurrentPos());
 	const long lParagraphLength = sv3.find_first_of(_T(";")); // 每段数据以字符';'作为结束符
 	if (lParagraphLength < 0) {
 		pTengxunWebRTData->SetCurrentPos(pTengxunWebRTData->GetBufferLength());
@@ -418,7 +401,7 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		INT64 llTemp = 0;
 
 		m_fActive = false; // 初始状态为无效数据
-		string_view sv1 = pTengxunWebRTData->GetStringViewData(3); // 读入“v_s"
+		string_view sv1 = pTengxunWebRTData->GetStringView(pTengxunWebRTData->GetCurrentPos(), 3); // 读入“v_s"
 		if (sv1.compare(_T("v_s")) != 0) {// 数据格式出错
 			throw exception(_T("bad head, \"v_s\" needed "));
 		}
@@ -431,14 +414,12 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		else if (pTengxunWebRTData->GetCurrentPosData() == 'z') {
 			wMarket = _SHENZHEN_MARKET_; // 深圳股票标识
 		}
-		else {
-			throw exception(_T("bad market head"));
-		}
+		else { throw exception(_T("bad market head")); }
 		pTengxunWebRTData->IncreaseCurrentPos();
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 
 		// 六位股票代码
-		sv1 = pTengxunWebRTData->GetStringViewData(6);
+		sv1 = pTengxunWebRTData->GetStringView(pTengxunWebRTData->GetCurrentPos(), 6);
 		const CString strStockSymbol(sv1.data(), sv1.size());
 		switch (wMarket) {
 		case _SHANGHAI_MARKET_:
@@ -455,17 +436,13 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		pTengxunWebRTData->IncreaseCurrentPos(6);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 
-		sv1 = pTengxunWebRTData->GetStringViewData(2); // 读入'="'
-		if (sv1.compare(_T("=\"")) != 0) {
-			throw exception(_T("需要'=\"'"));
-		}
+		sv1 = pTengxunWebRTData->GetStringView(pTengxunWebRTData->GetCurrentPos(), 2); // 读入'="'
+		if (sv1.compare(_T("=\"")) != 0) { throw exception(_T("需要'=\"'")); }
 		pTengxunWebRTData->IncreaseCurrentPos(2);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 
 		// 市场标识代码（51为深市，1为沪市）
-		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-			throw exception(_T("市场标识代码错误"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) { throw exception(_T("市场标识代码错误")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		if (lTemp == 1)
 			ASSERT(wMarket == _SHANGHAI_MARKET_);
@@ -475,94 +452,64 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 			ASSERT(0); // 报错
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 
-		if (!ReadTengxunOneValue(pTengxunWebRTData, sv1)) {
-			throw exception(_T("股票名称错误"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, sv1)) { throw exception(_T("股票名称错误")); }
 		m_strStockName.Append(sv1.data(), sv1.size()); // 设置股票名称
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 
 		// 六位股票代码
-		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-			throw exception(_T("股票代码错误"));
-		}
-		if (lTemp != lStockCode) {
-			throw exception(_T("股票代码不符"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) { throw exception(_T("股票代码错误")); }
+		if (lTemp != lStockCode) { throw exception(_T("股票代码不符")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 
 		// 现在成交价。放大一千倍后存储为长整型。其他价格亦如此。
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("成交价"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("成交价")); }
 		m_lNew = static_cast<long>((dTemp + 0.000001) * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 前收盘价
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("前收盘"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("前收盘")); }
 		m_lLastClose = static_cast<long>((dTemp + 0.000001) * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 开盘价
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("开盘价"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("开盘价")); }
 		m_lOpen = static_cast<long>((dTemp + 0.000001) * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 成交手数。成交股数存储实际值
 		// 不使用此处的成交量，而是使用第三十五项处的成交量。
-		if (!ReadTengxunOneValue(pTengxunWebRTData, llTemp)) {
-			throw exception(_T("成交手数"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, llTemp)) { throw exception(_T("成交手数")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 外盘
-		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-			throw exception(_T("外盘"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) { throw exception(_T("外盘")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 内盘
-		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-			throw exception(_T("内盘"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) { throw exception(_T("内盘")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 读入买一至买五的价格和手数
 		for (int j = 0; j < 5; j++) {
 			// 买盘价格
-			if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-				throw exception(_T("买盘价格"));
-			}
+			if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("买盘价格")); }
 			m_lPBuy.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
 			lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 			// 买盘数量（手）
-			if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-				throw exception(_T("买盘数量"));
-			}
+			if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) { throw exception(_T("买盘数量")); }
 			m_lVBuy.at(j) = lTemp * 100;
 			lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		}
 		// 读入卖一至卖五的价格和手数
 		for (int j = 0; j < 5; j++) {
 			//读入卖盘价格
-			if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-				throw exception(_T("买盘价格"));
-			}
+			if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("买盘价格")); }
 			m_lPSell.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
 			lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 			// 卖盘数量（手）
-			if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-				throw exception(_T("买盘数量"));
-			}
+			if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) { throw exception(_T("买盘数量")); }
 			m_lVSell.at(j) = lTemp * 100;
 			lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		}
 		// 最近逐笔成交
-		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-			throw exception(_T("最近逐笔成交"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) { throw exception(_T("最近逐笔成交")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 成交日期和时间.格式为：yyyymmddhhmmss. 此时间采用的时区为东八区（北京标准时间）
-		if (!ReadTengxunOneValue(pTengxunWebRTData, sv1)) {
-			throw exception(_T("成交日期和时间"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, sv1)) { throw exception(_T("成交日期和时间")); }
 		//if (!ReadTengxunOneValue(pTengxunWebRTData, buffer1)) {
 		//throw exception(_T("成交日期和时间"));
 		//}
@@ -570,25 +517,17 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		m_time = ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", sTime.c_str()); // 转成UTC时间。腾讯实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 涨跌
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("涨跌"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("涨跌")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 涨跌率
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("涨跌率"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("涨跌率")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 最高价
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("最高价"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("最高价")); }
 		m_lHigh = static_cast<long>((dTemp + 0.000001) * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 最低价
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("最低价"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("最低价")); }
 		m_lLow = static_cast<long>((dTemp + 0.000001) * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 第三十五项，成交价/成交量（手）/成交金额（元）
@@ -596,81 +535,53 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		//if (!ReadTengxunOneValue(pTengxunWebRTData, buffer1)) {
 		//throw exception(_T("成交价、成交手数、成交额"));
 		//}
-		if (!ReadTengxunOneValue(pTengxunWebRTData, sv1)) {
-			throw exception(_T("成交价、成交手数、成交额"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, sv1)) { throw exception(_T("成交价、成交手数、成交额")); }
 		CString str(sv1.data(), sv1.size());
 		sscanf_s(str.GetBuffer(), _T("%f/%d/%I64d"), &fTemp, &lTemp, &m_llAmount);
 		m_llVolume = lTemp * 100; // 腾讯成交量数据单位为手（100股）。
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 成交手数
 		// 不使用此处的成交量。这里的成交量会大于第三十五处的成交量。
-		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
-			throw exception(_T("成交量"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) { throw exception(_T("成交量")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 成交金额（万元）
-		if (!ReadTengxunOneValue(pTengxunWebRTData, llTemp)) {
-			throw exception(_T("成交金额"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, llTemp)) { throw exception(_T("成交金额")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 换手率
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("换手率"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("换手率")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 市盈率
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("市盈率"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("市盈率")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 无名
-		if (!ReadTengxunOneValue(pTengxunWebRTData, sv1)) {
-			throw exception(_T("无名"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, sv1)) { throw exception(_T("无名")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 最高价
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("最高价"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("最高价")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 最低价
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("最低价"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("最低价")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 振幅
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("振幅"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("振幅")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 流通市值（单位为：亿元）
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("流通市值"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("流通市值")); }
 		m_llCurrentValue = static_cast<INT64>(dTemp * 100000000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 总市值（单位为：亿元）
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("总市值"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("总市值")); }
 		m_llTotalValue = static_cast<INT64>(dTemp * 100000000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 市净率
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("市净率"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("市净率")); }
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 涨停价
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("涨停价"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("涨停价")); }
 		if (dTemp > 0.01) m_lHighLimitFromTengxun = static_cast<long>((dTemp + 0.000001) * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 跌停价
-		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
-			throw exception(_T("跌停价"));
-		}
+		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("跌停价")); }
 		if (dTemp > 0.01) m_lLowLimitFromTengxun = static_cast<long>((dTemp + 0.000001) * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 
@@ -682,9 +593,7 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		pTengxunWebRTData->SetCurrentPos(pTengxunWebRTData->GetCurrentParagraphStartPos() + pTengxunWebRTData->GetCurrentParagraph().size()); // 本段数据以字符';'结束，读至其后的\n字符处
 		// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
 		if (!pTengxunWebRTData->IsLastDataParagraph()) {
-			if (pTengxunWebRTData->GetCurrentPosData() != 0x00a) {
-				throw exception(_T("expect \n"));
-			}
+			if (pTengxunWebRTData->GetCurrentPosData() != 0x00a) { throw exception(_T("expect \n")); }
 			pTengxunWebRTData->IncreaseCurrentPos(); // 读过换行符\a
 		}
 		else {
@@ -693,8 +602,7 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		CheckTengxunRTDataActive();
 		SetDataSource(TENGXUN_RT_WEB_DATA_);
 		return true;
-	}
-	catch (exception& e) {
+	} catch (exception& e) {
 		const CString strMessage = _T("ReadTengxunData异常, 股票代码为：") + strTengxunStockCode;
 		ReportErrorToSystemMessage(strMessage, e);
 		pTengxunWebRTData->SetCurrentPos(pTengxunWebRTData->GetCurrentParagraphStartPos() + pTengxunWebRTData->GetCurrentParagraph().size()); // 本段数据以字符';'结束，读至其后的\n字符处
@@ -769,14 +677,13 @@ bool CWebRTData::ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, long&
 bool CWebRTData::ReadTengxunOneValue(const CWebDataPtr& pTengxunWebRTData, string_view& svSub) {
 	string_view sv;
 	try {
-		sv = pTengxunWebRTData->GetAllOfNeedProcessStringViewData();
+		sv = pTengxunWebRTData->GetStringView(pTengxunWebRTData->GetCurrentPos(), pTengxunWebRTData->GetBufferLength() - pTengxunWebRTData->GetCurrentPos());
 		const auto iPosition = sv.find_first_of('~');
 		if (iPosition > sv.size()) throw exception(_T("out of range"));
 		svSub = sv.substr(0, iPosition);
 		pTengxunWebRTData->IncreaseCurrentPos(iPosition + 1);	 // 跨过本数据和其后的'~'号。
 		return true;
-	}
-	catch (exception& e) {
+	} catch (exception& e) {
 		if (strcmp(e.what(), _T("out of range")) == 0) {
 			svSub = sv;
 			throw exception(_T("out of range")); // 越界的话则继续抛出exception。

@@ -10,8 +10,6 @@
 #include "FinnhubDataSource.h"
 #include "TimeConvert.h"
 
-#include"simdjson.h"
-using namespace simdjson;
 #include"simdjsonGetValue.h"
 
 using std::thread;
@@ -184,16 +182,14 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 	return true;
 }
 
-/// <summary>
 ///
 /// https://finnhub.io/docs/api/websocket-trades
 ///
-/// 目前三种。
-/// 格式为：{"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
+///目前三种。
+// 格式为：{"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
 //				 {"data": [{"c":["1", "12", "24"], "p" : 7296.89, "s" : "BINANCE:BTCUSDT", "t" : 1575526691134, "v" : 0.011467}] , "type" : "trade"}
 ///        {"type":"ping"}
 ///        {"msg":"Subscribing to too many symbols","type":"error"}
-/// </summary>
 /// <param name="pData"></param>
 /// <returns></returns>
 bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(shared_ptr<string> pData) {
@@ -213,12 +209,12 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(shared_ptr<string>
 					string s2(s6);
 					pFinnhubDataPtr->m_vCode.push_back(s2);
 				}
-				pFinnhubDataPtr->m_dLastPrice = item["p"].get_double();
-				const string_view symbol = item["s"].get_string();
+				pFinnhubDataPtr->m_dLastPrice = jsonGetDouble(item, "p");
+				const string_view symbol = jsonGetStringView(item, "s");
 				const string_view symbol2 = symbol.substr(0, symbol.length());
 				pFinnhubDataPtr->m_sSymbol = symbol2;
-				pFinnhubDataPtr->m_iSeconds = item["t"].get_int64();
-				pFinnhubDataPtr->m_dLastVolume = item["v"].get_double();
+				pFinnhubDataPtr->m_iSeconds = jsonGetInt64(item, "t");
+				pFinnhubDataPtr->m_dLastVolume = jsonGetDouble(item, "v");
 				gl_SystemData.PushFinnhubSocket(pFinnhubDataPtr);
 				m_fReceivingData = true;
 			}

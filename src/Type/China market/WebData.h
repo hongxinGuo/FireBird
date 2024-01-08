@@ -33,19 +33,10 @@ public:
 	void IncreaseCurrentPos(const long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
 	void ResetCurrentPos() noexcept { m_lCurrentPos = 0; }
 
-	bool OutOfRange() const noexcept {
-		if (m_lCurrentPos >= m_sDataBuffer.size()) return true;
-		return false;
-	}
-	bool CurrentParagraphOutOfRange() const noexcept {
-		if ((m_lCurrentPos < m_lCurrentParagraphStartPos) || (m_lCurrentPos - m_lCurrentParagraphStartPos > m_svCurrentParagraph.size())) return true;
-		return false;
-	}
+	bool OutOfRange() const noexcept { return m_lCurrentPos >= m_sDataBuffer.size(); }
+	bool CurrentParagraphOutOfRange() const noexcept { return (m_lCurrentPos < m_lCurrentParagraphStartPos) || (m_lCurrentPos - m_lCurrentParagraphStartPos > m_svCurrentParagraph.size()); }
 
-	bool IsLastDataParagraph() const noexcept { // 已读至最后一段数据
-		if (m_lCurrentPos >= m_sDataBuffer.size() - 2) return true;
-		return false;
-	}
+	bool IsLastDataParagraph() const noexcept { return m_lCurrentPos >= m_sDataBuffer.size() - 2; }// 已读至最后一段数据
 
 	time_t GetTime() const noexcept { return m_tTime; }
 	void SetTime(const time_t tTime) noexcept { m_tTime = tTime; }
@@ -60,11 +51,9 @@ public:
 	void SetCurrentParagraphStartPos(long lPos) noexcept { m_lCurrentParagraphStartPos = lPos; }
 	string_view GetCurrentParagraph() const noexcept { return m_svCurrentParagraph; }
 	void SetCurrentParagraph(string_view sv) noexcept { m_svCurrentParagraph = sv; }
-	string_view GetStringViewData(const int iDatLength) const { return string_view(m_sDataBuffer.c_str() + m_lCurrentPos, iDatLength); }
-	string_view GetAllOfNeedProcessStringViewData() const { return string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos); }
+	string_view GetStringView(const int iDataPos, const int iDataLength) const { return string_view(m_sDataBuffer.c_str() + iDataPos, iDataLength); }
 	bool GetData(char* buffer, long lDataLength) const; // 从m_lCurrentPos开始拷贝
 	bool SetData(const char* buffer, long lDataLength); // 从m_lCurrentPos开始填充。
-
 	char GetData(const long lIndex) const { return m_sDataBuffer.at(lIndex); }
 	void SetData(const long lIndex, const char cValue) { m_sDataBuffer.at(lIndex) = cValue; }
 	char GetCurrentPosData() const { return m_sDataBuffer.at(m_lCurrentPos); }
@@ -75,10 +64,7 @@ public:
 	void SetParsed(const bool fFlag) noexcept { m_fParsed = fFlag; }
 	bool IsParsed() const noexcept { return m_fParsed; }
 
-	bool IsVoidJson() const noexcept {
-		if (IsJSonContentType() && (m_sDataBuffer == _T("{}"))) return true;
-		return false;
-	}
+	bool IsVoidJson() const noexcept { return IsJSonContentType() && (m_sDataBuffer == _T("{}")); }
 
 	bool CheckNoRightToAccess(const string& sCode = _T("error"), const string& sMessage = _T("You don't have access to this resource.")); // 默认的为finnhub禁止访问标识（目前只有此选项）
 	bool IsNoRightToAccess() const noexcept { return m_fNoRightToAccess; }

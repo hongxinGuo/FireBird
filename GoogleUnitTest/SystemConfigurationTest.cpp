@@ -209,13 +209,11 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetUpdate(bSaved);
 	}
 
-	TEST_F(CSystemConfigurationTest, TestLoadSave) {
+	TEST_F(CSystemConfigurationTest, TestLoadSaveWithNlohmannjson) {
 		json jsSystemConfiguration = json::parse(gl_sSystemConfiguration);
 
-		gl_systemConfiguration.UpdateJson();
-		gl_systemConfiguration.SaveDB();
-		gl_systemConfiguration.LoadDB();
-		gl_systemConfiguration.Update();
+		gl_systemConfiguration.SaveDBWithNlohmannjson();
+		gl_systemConfiguration.LoadDBWithNlohmannjson();
 
 		try {
 			EXPECT_TRUE(jsSystemConfiguration[json::json_pointer("/WebSocket/UsingFinnhubWebSocket")] == gl_systemConfiguration.IsUsingFinnhubWebSocket()) << "FinnhubWebSocket预设为真";
@@ -265,62 +263,5 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetCurrentWindowWidth(), 1000);
 
 		gl_systemConfiguration.SetCurrentWindowRect(2600, 1600);
-	}
-
-	TEST_F(CSystemConfigurationTest, TestUpdate) {
-		EXPECT_STREQ(gl_systemConfiguration.GetConfigurationFileDirectory(), _T("C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\"));
-		gl_systemConfiguration.SetConfigurationFileDirectory(_T("C:\\users\\"));
-		//EXPECT_STREQ(gl_systemConfiguration.GetDefaultFileName(), _T("systemConfigurationTest.json"));
-		//gl_systemConfiguration.SetDefaultFileName(_T("default.json"));
-		EXPECT_FALSE(gl_systemConfiguration.IsDebugMode());
-		gl_systemConfiguration.SetDebugMode(true);
-		EXPECT_FALSE(gl_systemConfiguration.IsReloadSystem());
-		gl_systemConfiguration.SetReloadSystem(true);
-		EXPECT_STREQ(gl_systemConfiguration.GetDatabaseAccountName(), _T("hxguo"));
-		gl_systemConfiguration.SetDatabaseAccountName(_T("newName"));
-		EXPECT_STREQ(gl_systemConfiguration.GetDatabaseAccountPassword(), _T("hxguo"));
-		gl_systemConfiguration.SetDatabaseAccountPassword(_T("newPassWord"));
-		EXPECT_EQ(gl_systemConfiguration.GetBackgroundThreadPermittedNumber(), 8);
-		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0);
-		gl_systemConfiguration.SetChinaMarketRealtimeServer(1);
-		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketDayLineServer(), 0);
-		gl_systemConfiguration.SetChinaMarketDayLineServer(1);
-		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRTDataInquiryTime(), 200);
-		gl_systemConfiguration.SetChinaMarketRTDataInquiryTime(100);
-		EXPECT_STREQ(gl_systemConfiguration.GetFinnhubToken(), _T("bv985d748v6ujthqfke0"));
-
-		gl_systemConfiguration.Update();
-
-		EXPECT_STREQ(gl_systemConfiguration.GetConfigurationFileDirectory(), _T("C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\"));
-		//EXPECT_STREQ(gl_systemConfiguration.GetDefaultFileName(), _T("default.json")) << "这个没有存储";
-		EXPECT_FALSE(gl_systemConfiguration.IsDebugMode());
-		EXPECT_FALSE(gl_systemConfiguration.IsReloadSystem());
-		EXPECT_EQ(gl_systemConfiguration.GetBackgroundThreadPermittedNumber(), 8);
-		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0);
-		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketDayLineServer(), 0);
-		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRTDataInquiryTime(), 200);
-		EXPECT_STREQ(gl_systemConfiguration.GetFinnhubToken(), _T("bv985d748v6ujthqfke0"));
-	}
-
-	TEST_F(CSystemConfigurationTest, TestUpdate3) {
-		EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate());
-		gl_systemConfiguration.ClearJson();
-
-		gl_systemConfiguration.Update();
-
-		EXPECT_TRUE(gl_systemConfiguration.IsNeedUpdate());
-
-		// 恢复原状
-		gl_systemConfiguration.UpdateJson();
-		gl_systemConfiguration.SetUpdate(false);
-		EXPECT_STREQ(gl_systemConfiguration.GetConfigurationFileDirectory(), _T("C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\"));
-		EXPECT_STREQ(gl_systemConfiguration.GetDefaultFileName(), _T("systemConfigurationTest.json")) << "这个没有存储";
-		EXPECT_FALSE(gl_systemConfiguration.IsDebugMode());
-		EXPECT_FALSE(gl_systemConfiguration.IsReloadSystem());
-		EXPECT_EQ(gl_systemConfiguration.GetBackgroundThreadPermittedNumber(), 8);
-		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0);
-		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketDayLineServer(), 0);
-		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRTDataInquiryTime(), 200);
-		EXPECT_STREQ(gl_systemConfiguration.GetFinnhubToken(), _T("bv985d748v6ujthqfke0"));
 	}
 }

@@ -284,7 +284,7 @@ namespace FireBirdTest {
 			m_pSinaWebRTData->SetData(pData->m_strData.GetBuffer(), m_lStringLength);
 			m_pSinaWebRTData->ResetCurrentPos();
 			m_pSinaWebRTData->SetCurrentParagraphStartPos(m_pSinaWebRTData->GetCurrentPos()); // 本段数据起始位置
-			const string_view sv3 = m_pSinaWebRTData->GetAllOfNeedProcessStringViewData();
+			const string_view sv3 = m_pSinaWebRTData->GetStringView(m_pSinaWebRTData->GetCurrentPos(), m_pSinaWebRTData->GetBufferLength() - m_pSinaWebRTData->GetCurrentPos());
 			const string_view sv = sv3.substr(0, 23);
 			m_pSinaWebRTData->SetCurrentParagraph(sv);
 		}
@@ -1320,9 +1320,7 @@ namespace FireBirdTest {
 			m_iCount = pData->m_iCount;
 			const long lLength = pData->m_strData.GetLength();
 			m_pSinaWebRTData->Resize(lLength);
-			for (int i = 0; i < lLength; i++) {
-				m_pSinaWebRTData->SetData(i, pData->m_strData[i]);
-			}
+			for (int i = 0; i < lLength; i++) { m_pSinaWebRTData->SetData(i, pData->m_strData[i]); }
 			m_pSinaWebRTData->ResetCurrentPos();
 		}
 

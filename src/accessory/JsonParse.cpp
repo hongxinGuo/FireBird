@@ -44,9 +44,7 @@ void ReportJsonError(const json::parse_error& e, const std::string& s) {
 	gl_systemMessage.PushErrorMessage(str);
 }
 
-void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat) {
-	gl_systemMessage.PushErrorMessage(strPrefix + strWhat);
-}
+void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat) { gl_systemMessage.PushErrorMessage(strPrefix + strWhat); }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -95,9 +93,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData) {
 	pWebData->ResetCurrentPos();
 	while (!pWebData->IsLastDataParagraph()) {
 		auto pRTData = make_shared<CWebRTData>();
-		if (pRTData->ReadSinaData(pWebData)) {
-			pvWebRTData->push_back(pRTData);
-		}
+		if (pRTData->ReadSinaData(pWebData)) { pvWebRTData->push_back(pRTData); }
 		else {
 			gl_systemMessage.PushErrorMessage(_T("新浪实时数据解析返回失败信息"));
 			break; // 后面的数据出问题，抛掉不用。
@@ -112,7 +108,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived) {
-	const string_view sv = pWebDataReceived->GetStringViewData(21);
+	const string_view sv = pWebDataReceived->GetStringView(0, 21);
 
 	if (sv.compare(_T("v_pv_none_match=\"1\";\n")) == 0) {
 		ASSERT(pWebDataReceived->GetBufferLength() == 21);
@@ -210,9 +206,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(const CWebDataPtr& pWebData
 	if (IsTengxunRTDataInvalid(pWebData)) return pvWebRTData; // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
 	while (!pWebData->IsLastDataParagraph()) {
 		auto pRTData = make_shared<CWebRTData>();
-		if (pRTData->ReadTengxunData(pWebData)) {
-			pvWebRTData->push_back(pRTData);
-		}
+		if (pRTData->ReadTengxunData(pWebData)) { pvWebRTData->push_back(pRTData); }
 		else {
 			break; // 后面的数据出问题，抛掉不用。
 		}
@@ -287,10 +281,7 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockC
 			pDayLine->SetVolume(atof(sTemp.c_str()) * 100);
 			pvDayLine->push_back(pDayLine);
 		}
-	}
-	catch (json::exception&) {
-		return pvDayLine;
-	}
+	} catch (json::exception&) { return pvDayLine; }
 	return pvDayLine;
 }
 

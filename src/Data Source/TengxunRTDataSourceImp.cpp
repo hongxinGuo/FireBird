@@ -15,9 +15,7 @@ CTengxunRTDataSourceImp::CTengxunRTDataSourceImp() {
 	CTengxunRTDataSourceImp::Reset();
 }
 
-bool CTengxunRTDataSourceImp::Reset() {
-	return true;
-}
+bool CTengxunRTDataSourceImp::Reset() { return true; }
 
 bool CTengxunRTDataSourceImp::GenerateInquiryMessage(const long lCurrentTime) {
 	if (!IsInquiring()) {
@@ -30,9 +28,7 @@ bool CTengxunRTDataSourceImp::GenerateInquiryMessage(const long lCurrentTime) {
 	return true;
 }
 
-void CTengxunRTDataSourceImp::GenerateCurrentInquiryMessage() {
-	m_strInquiry = m_pCurrentProduct->CreateMessage();
-}
+void CTengxunRTDataSourceImp::GenerateCurrentInquiryMessage() { m_strInquiry = m_pCurrentProduct->CreateMessage(); }
 
 void CTengxunRTDataSourceImp::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
@@ -48,7 +44,7 @@ void CTengxunRTDataSourceImp::ConfigureSession() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTengxunRTDataSourceImp::IsInvalidTengxunRTData(const CWebData& WebDataReceived) {
-	const string_view sv = WebDataReceived.GetStringViewData(21);
+	const string_view sv = WebDataReceived.GetStringView(0, 21);
 
 	if (sv.compare(_T("v_pv_none_match=\"1\";\n")) == 0) {
 		ASSERT(WebDataReceived.GetBufferLength() == 21);

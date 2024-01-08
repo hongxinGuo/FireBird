@@ -22,3 +22,6 @@ bool CreateJsonWithNlohmann(json& js, CString& str, long lBeginPos = 0, long lEn
 void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRTData); // 定义在NeteaseRTDataParser.cpp中（为了在调试模式下也能优化）
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs);
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(const CWebDataPtr& pData); // 解析一个WebData
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJsonData);
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson2(string_view svJsonData);
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(CWebDataPtr pData); // 解析一个WebData

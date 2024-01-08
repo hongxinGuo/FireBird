@@ -219,9 +219,11 @@ namespace FireBirdTest {
 			EXPECT_EQ(pFinnhubWebSocket->m_vCode.size(), 3);
 			EXPECT_EQ(m_finnhubWebSocket.GetHeartbeatTime(), GetUTCTime()) << "只有有效数据才设置心跳时间";
 			break;
-		case 9: // data名不为"data"
-			EXPECT_TRUE(fSucceed);
+		case 9: // data名不为"data",函数出现exception而退出
+			EXPECT_FALSE(fSucceed);
 			EXPECT_EQ(gl_SystemData.GetFinnhubSocketSize(), 0) << "没有data项，数据个数为零";
+			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
+			gl_systemMessage.PopErrorMessage();
 			break;
 		default:
 			break;

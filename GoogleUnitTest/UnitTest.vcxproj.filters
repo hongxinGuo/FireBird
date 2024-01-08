@@ -159,9 +159,6 @@
     <ClCompile Include="ConvertToStringTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>
-    <ClCompile Include="WebDataTest.cpp">
-      <Filter>Test源文件\accessory</Filter>
-    </ClCompile>
     <ClCompile Include="MockMainFrmTest.cpp">
       <Filter>Test源文件\Windows interface</Filter>
     </ClCompile>
@@ -617,6 +614,9 @@
     </ClCompile>
     <ClCompile Include="simdjsonGetValueTest.cpp">
       <Filter>Test源文件\accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="WebDataTest.cpp">
+      <Filter>Test源文件\Type\China Market</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

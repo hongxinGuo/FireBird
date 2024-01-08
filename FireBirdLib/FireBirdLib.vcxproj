@@ -210,6 +210,7 @@
   <ItemGroup>
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\src\accessory\accessory.cpp" />
     <ClCompile Include="..\src\accessory\MarketTask.cpp" />

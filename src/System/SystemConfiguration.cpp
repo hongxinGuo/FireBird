@@ -150,10 +150,7 @@ CSystemConfiguration::CSystemConfiguration() {
 	// 测试系统选项
 	m_strBenchmarkTestFileDirectory = _T("C:\\FireBird\\Test Data\\Benchmark\\"); // Benchmark默认目录
 
-	if (LoadDB()) {
-		Update();
-	}
-	else {
+	if (!LoadDBWithNlohmannjson()) {
 		m_fUpdate = true;
 	}
 
@@ -170,38 +167,37 @@ CSystemConfiguration::CSystemConfiguration() {
 
 CSystemConfiguration::~CSystemConfiguration() {
 	if (IsNeedUpdate()) {
-		UpdateDB();
+		UpdateDBWithNlohmannjson();
 	}
 }
 
-void CSystemConfiguration::UpdateDB() {
+void CSystemConfiguration::UpdateDBWithNlohmannjson() {
 	const CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("json");
 	const CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
 	DeleteFile(GetConfigurationFileDirectory() + strNew);
 	rename(GetConfigurationFileDirectory() + strOld, GetConfigurationFileDirectory() + strNew); // 保存备份
-	UpdateJson();
-	SaveDB();
+	SaveDBWithNlohmannjson();
 	SetUpdate(false);
 }
 
-void CSystemConfiguration::Update() {
+void CSystemConfiguration::UpdateUsingNlohmannjson(json& jsonData) {
 	string sTemp;
 
 	// 系统配置
 	try {
-		m_bDebugMode = m_systemConfiguration.at("SystemConfiguration").at("DebugMode");
+		m_bDebugMode = jsonData.at("SystemConfiguration").at("DebugMode");
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_bReloadSystem = m_systemConfiguration.at("SystemConfiguration").at("ReloadSystem");
+		m_bReloadSystem = jsonData.at("SystemConfiguration").at("ReloadSystem");
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		sTemp = m_systemConfiguration.at("SystemConfiguration").at("ConfigurationDirectory");
+		sTemp = jsonData.at("SystemConfiguration").at("ConfigurationDirectory");
 		m_strDirectory = sTemp.c_str();
 	}
 	catch (json::out_of_range&) {
@@ -209,21 +205,21 @@ void CSystemConfiguration::Update() {
 	}
 
 	try {
-		sTemp = m_systemConfiguration.at("SystemConfiguration").at("DatabaseAccountName");
+		sTemp = jsonData.at("SystemConfiguration").at("DatabaseAccountName");
 		m_strDatabaseAccountName = sTemp.c_str();
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		sTemp = m_systemConfiguration.at("SystemConfiguration").at("DatabaseAccountPassword");
+		sTemp = jsonData.at("SystemConfiguration").at("DatabaseAccountPassword");
 		m_strDatabaseAccountPassword = sTemp.c_str();
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_iBackgroundThreadPermittedNumber = m_systemConfiguration.at("SystemConfiguration").at("BackgroundThreadPermittedNumber");
+		m_iBackgroundThreadPermittedNumber = jsonData.at("SystemConfiguration").at("BackgroundThreadPermittedNumber");
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
@@ -231,7 +227,7 @@ void CSystemConfiguration::Update() {
 
 	// ChinaMarket
 	try {
-		sTemp = m_systemConfiguration.at("ChinaMarket").at("RealtimeServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
+		sTemp = jsonData.at("ChinaMarket").at("RealtimeServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 		if (sTemp == _T("sina")) {
 			m_iChinaMarketRealtimeServer = 0;
 		}
@@ -250,7 +246,7 @@ void CSystemConfiguration::Update() {
 		m_fUpdate = true;
 	}
 	try {
-		sTemp = m_systemConfiguration.at("ChinaMarket").at("DayLineServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
+		sTemp = jsonData.at("ChinaMarket").at("DayLineServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 		if (sTemp == _T("netease")) {
 			m_iChinaMarketDayLineServer = 0;
 		}
@@ -266,19 +262,19 @@ void CSystemConfiguration::Update() {
 		m_fUpdate = true;
 	}
 	try {
-		m_iChinaMarketRTDataInquiryTime = m_systemConfiguration.at("ChinaMarket").at("RealtimeInquiryTime"); // 实时数据查询时间间隔（单位：毫秒）
+		m_iChinaMarketRTDataInquiryTime = jsonData.at("ChinaMarket").at("RealtimeInquiryTime"); // 实时数据查询时间间隔（单位：毫秒）
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_iSavingChinaMarketStockDayLineThread = m_systemConfiguration.at("ChinaMarket").at("SavingStockDayLineThread"); // 保存股票日线数据线程数量
+		m_iSavingChinaMarketStockDayLineThread = jsonData.at("ChinaMarket").at("SavingStockDayLineThread"); // 保存股票日线数据线程数量
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_iNumberOfRTDataSource = m_systemConfiguration.at("ChinaMarket").at("NumberOfRTDataSource"); // Sina实时数据申请引擎数
+		m_iNumberOfRTDataSource = jsonData.at("ChinaMarket").at("NumberOfRTDataSource"); // Sina实时数据申请引擎数
 		if (m_iNumberOfRTDataSource > 4) {
 			m_iNumberOfRTDataSource = 4;
 			m_fUpdate = true;
@@ -292,19 +288,19 @@ void CSystemConfiguration::Update() {
 		m_fUpdate = true;
 	}
 	try {
-		m_iSinaRTDataInquiryPerTime = m_systemConfiguration.at("ChinaMarket").at("SinaRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
+		m_iSinaRTDataInquiryPerTime = jsonData.at("ChinaMarket").at("SinaRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_iNeteaseRTDataInquiryPerTime = m_systemConfiguration.at("ChinaMarket").at("NeteaseRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
+		m_iNeteaseRTDataInquiryPerTime = jsonData.at("ChinaMarket").at("NeteaseRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_iTengxunRTDataInquiryPerTime = m_systemConfiguration.at("ChinaMarket").at("TengxunRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
+		m_iTengxunRTDataInquiryPerTime = jsonData.at("ChinaMarket").at("TengxunRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
@@ -312,58 +308,58 @@ void CSystemConfiguration::Update() {
 
 	// WorldMarket
 	try {
-		sTemp = m_systemConfiguration.at("WorldMarket").at("FinnhubToken"); // Finnhub token
+		sTemp = jsonData.at("WorldMarket").at("FinnhubToken"); // Finnhub token
 		m_strFinnhubToken = sTemp.c_str();
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_bFinnhubAccountFeePaid = m_systemConfiguration.at("WorldMarket").at("FinnhubAccountFeePaid");
+		m_bFinnhubAccountFeePaid = jsonData.at("WorldMarket").at("FinnhubAccountFeePaid");
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		sTemp = m_systemConfiguration.at("WorldMarket").at("TiingoToken"); // Tiingo token
+		sTemp = jsonData.at("WorldMarket").at("TiingoToken"); // Tiingo token
 		m_strTiingoToken = sTemp.c_str();
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_bTiingoAccountFeePaid = m_systemConfiguration.at("WorldMarket").at("TiingoAccountFeePaid");
+		m_bTiingoAccountFeePaid = jsonData.at("WorldMarket").at("TiingoAccountFeePaid");
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		sTemp = m_systemConfiguration.at("WorldMarket").at("QuandlToken"); // Quandl token
+		sTemp = jsonData.at("WorldMarket").at("QuandlToken"); // Quandl token
 		m_strQuandlToken = sTemp.c_str();
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_bQuandlAccountFeePaid = m_systemConfiguration.at("WorldMarket").at("QuandlAccountFeePaid");
+		m_bQuandlAccountFeePaid = jsonData.at("WorldMarket").at("QuandlAccountFeePaid");
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_iWorldMarketFinnhubInquiryTime = m_systemConfiguration.at("WorldMarket").at("FinnhubInquiryTime"); // 默认每小时最多查询3000次
+		m_iWorldMarketFinnhubInquiryTime = jsonData.at("WorldMarket").at("FinnhubInquiryTime"); // 默认每小时最多查询3000次
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_iWorldMarketTiingoInquiryTime = m_systemConfiguration.at("WorldMarket").at("TiingoInquiryTime"); // 默认每小时最多查询400次
+		m_iWorldMarketTiingoInquiryTime = jsonData.at("WorldMarket").at("TiingoInquiryTime"); // 默认每小时最多查询400次
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_iWorldMarketQuandlInquiryTime = m_systemConfiguration.at("WorldMarket").at("QuandlInquiryTime"); // 默认每小时最多查询100次
+		m_iWorldMarketQuandlInquiryTime = jsonData.at("WorldMarket").at("QuandlInquiryTime"); // 默认每小时最多查询100次
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
@@ -371,25 +367,25 @@ void CSystemConfiguration::Update() {
 
 	// WebSocket
 	try {
-		m_bUsingFinnhubWebSocket = m_systemConfiguration.at("WebSocket").at("UsingFinnhubWebSocket"); // 是否使用Finnhub的WebSocket
+		m_bUsingFinnhubWebSocket = jsonData.at("WebSocket").at("UsingFinnhubWebSocket"); // 是否使用Finnhub的WebSocket
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_bUsingTiingoIEXWebSocket = m_systemConfiguration.at("WebSocket").at("UsingTiingoIEXWebSocket"); // 是否使用Tiingo的WebSocket
+		m_bUsingTiingoIEXWebSocket = jsonData.at("WebSocket").at("UsingTiingoIEXWebSocket"); // 是否使用Tiingo的WebSocket
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_bUsingTiingoCryptoWebSocket = m_systemConfiguration.at("WebSocket").at("UsingTiingoCryptoWebSocket"); // 是否使用Tiingo的WebSocket
+		m_bUsingTiingoCryptoWebSocket = jsonData.at("WebSocket").at("UsingTiingoCryptoWebSocket"); // 是否使用Tiingo的WebSocket
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_bUsingTiingoForexWebSocket = m_systemConfiguration.at("WebSocket").at("UsingTiingoForexWebSocket"); // 是否使用Tiingo的WebSocket
+		m_bUsingTiingoForexWebSocket = jsonData.at("WebSocket").at("UsingTiingoForexWebSocket"); // 是否使用Tiingo的WebSocket
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
@@ -397,37 +393,37 @@ void CSystemConfiguration::Update() {
 
 	// Financial Data Update Rate
 	try {
-		m_iStockBasicFinancialUpdateRate = m_systemConfiguration.at("FinancialDataUpdateRate").at("StockBasicFinancial");
+		m_iStockBasicFinancialUpdateRate = jsonData.at("FinancialDataUpdateRate").at("StockBasicFinancial");
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_iStockProfileUpdateRate = m_systemConfiguration.at("FinancialDataUpdateRate").at("StockProfile");
+		m_iStockProfileUpdateRate = jsonData.at("FinancialDataUpdateRate").at("StockProfile");
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_iInsideTransactionUpdateRate = m_systemConfiguration.at("FinancialDataUpdateRate").at("InsideTransaction");
+		m_iInsideTransactionUpdateRate = jsonData.at("FinancialDataUpdateRate").at("InsideTransaction");
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_iInsideSentimentUpdateRate = m_systemConfiguration.at("FinancialDataUpdateRate").at("InsideSentiment");
+		m_iInsideSentimentUpdateRate = jsonData.at("FinancialDataUpdateRate").at("InsideSentiment");
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_iStockPeerUpdateRate = m_systemConfiguration.at("FinancialDataUpdateRate").at("StockPeer");
+		m_iStockPeerUpdateRate = jsonData.at("FinancialDataUpdateRate").at("StockPeer");
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
 	try {
-		m_iEPSSurpriseUpdateRate = m_systemConfiguration.at("FinancialDataUpdateRate").at("EPSSurprise");
+		m_iEPSSurpriseUpdateRate = jsonData.at("FinancialDataUpdateRate").at("EPSSurprise");
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
@@ -435,7 +431,7 @@ void CSystemConfiguration::Update() {
 
 	// 测试系统选项
 	try {
-		sTemp = m_systemConfiguration.at("TestConfiguration").at("BenchmarkTestFileDirectory");
+		sTemp = jsonData.at("TestConfiguration").at("BenchmarkTestFileDirectory");
 		m_strBenchmarkTestFileDirectory = sTemp.c_str();
 	}
 	catch (json::out_of_range&) {
@@ -443,82 +439,76 @@ void CSystemConfiguration::Update() {
 	}
 }
 
-void CSystemConfiguration::ClearJson() {
-	m_systemConfiguration.clear();
-}
-
-void CSystemConfiguration::UpdateJson() {
-	m_systemConfiguration.clear(); // 清除之前的数据。
+void CSystemConfiguration::UpdateNlohmannJson(json& jsonData) {
+	jsonData.clear(); // 清除之前的数据。
 	// system
-	m_systemConfiguration["SystemConfiguration"]["DebugMode"] = m_bDebugMode;
-	m_systemConfiguration["SystemConfiguration"]["ReloadSystem"] = m_bReloadSystem;
-	m_systemConfiguration["SystemConfiguration"]["ConfigurationDirectory"] = m_strDirectory;
-	m_systemConfiguration["SystemConfiguration"]["DatabaseAccountName"] = m_strDatabaseAccountName;
-	m_systemConfiguration["SystemConfiguration"]["DatabaseAccountPassword"] = m_strDatabaseAccountPassword;
-	m_systemConfiguration["SystemConfiguration"]["BackgroundThreadPermittedNumber"] = m_iBackgroundThreadPermittedNumber;
+	jsonData["SystemConfiguration"]["DebugMode"] = m_bDebugMode;
+	jsonData["SystemConfiguration"]["ReloadSystem"] = m_bReloadSystem;
+	jsonData["SystemConfiguration"]["ConfigurationDirectory"] = m_strDirectory;
+	jsonData["SystemConfiguration"]["DatabaseAccountName"] = m_strDatabaseAccountName;
+	jsonData["SystemConfiguration"]["DatabaseAccountPassword"] = m_strDatabaseAccountPassword;
+	jsonData["SystemConfiguration"]["BackgroundThreadPermittedNumber"] = m_iBackgroundThreadPermittedNumber;
 
 	// China market
 	switch (m_iChinaMarketRealtimeServer) {
 	case 0:
-		m_systemConfiguration["ChinaMarket"]["RealtimeServer"] = _T("sina");
+		jsonData["ChinaMarket"]["RealtimeServer"] = _T("sina");
 		break;
 	case 1:
-		m_systemConfiguration["ChinaMarket"]["RealtimeServer"] = _T("netease");
+		jsonData["ChinaMarket"]["RealtimeServer"] = _T("netease");
 		break;
 	case 2:
-		m_systemConfiguration["ChinaMarket"]["RealtimeServer"] = _T("tengxun");
+		jsonData["ChinaMarket"]["RealtimeServer"] = _T("tengxun");
 		break;
 	default:
-		m_systemConfiguration["ChinaMarket"]["RealtimeServer"] = _T("sina");
+		jsonData["ChinaMarket"]["RealtimeServer"] = _T("sina");
 		break;
 	}
 	switch (m_iChinaMarketDayLineServer) {
 	case 0:
-		m_systemConfiguration["ChinaMarket"]["DayLineServer"] = _T("netease");
+		jsonData["ChinaMarket"]["DayLineServer"] = _T("netease");
 		break;
 	case 1:
-		m_systemConfiguration["ChinaMarket"]["DayLineServer"] = _T("tengxun");
+		jsonData["ChinaMarket"]["DayLineServer"] = _T("tengxun");
 		break;
 	default:
-		m_systemConfiguration["ChinaMarket"]["DayLineServer"] = _T("netease");
+		jsonData["ChinaMarket"]["DayLineServer"] = _T("netease");
 		break;
 	}
-	m_systemConfiguration["ChinaMarket"]["NumberOfRTDataSource"] = m_iNumberOfRTDataSource;
-	m_systemConfiguration["ChinaMarket"]["RealtimeInquiryTime"] = m_iChinaMarketRTDataInquiryTime;
-	m_systemConfiguration["ChinaMarket"]["SavingStockDayLineThread"] = m_iSavingChinaMarketStockDayLineThread;
-	m_systemConfiguration["ChinaMarket"]["SinaRTDataInquiryPerTime"] = m_iSinaRTDataInquiryPerTime;
-	m_systemConfiguration["ChinaMarket"]["NeteaseRTDataInquiryPerTime"] = m_iNeteaseRTDataInquiryPerTime;
-	m_systemConfiguration["ChinaMarket"]["TengxunRTDataInquiryPerTime"] = m_iTengxunRTDataInquiryPerTime;
+	jsonData["ChinaMarket"]["NumberOfRTDataSource"] = m_iNumberOfRTDataSource;
+	jsonData["ChinaMarket"]["RealtimeInquiryTime"] = m_iChinaMarketRTDataInquiryTime;
+	jsonData["ChinaMarket"]["SavingStockDayLineThread"] = m_iSavingChinaMarketStockDayLineThread;
+	jsonData["ChinaMarket"]["SinaRTDataInquiryPerTime"] = m_iSinaRTDataInquiryPerTime;
+	jsonData["ChinaMarket"]["NeteaseRTDataInquiryPerTime"] = m_iNeteaseRTDataInquiryPerTime;
+	jsonData["ChinaMarket"]["TengxunRTDataInquiryPerTime"] = m_iTengxunRTDataInquiryPerTime;
 
 	// World market
-	m_systemConfiguration["WorldMarket"]["FinnhubToken"] = m_strFinnhubToken;
-	m_systemConfiguration["WorldMarket"]["FinnhubAccountFeePaid"] = m_bFinnhubAccountFeePaid;
-	m_systemConfiguration["WorldMarket"]["TiingoToken"] = m_strTiingoToken;
-	m_systemConfiguration["WorldMarket"]["TiingoAccountFeePaid"] = m_bTiingoAccountFeePaid;
-	m_systemConfiguration["WorldMarket"]["QuandlToken"] = m_strQuandlToken;
-	m_systemConfiguration["WorldMarket"]["QuandlAccountFeePaid"] = m_bQuandlAccountFeePaid;
-	m_systemConfiguration["WorldMarket"]["FinnhubInquiryTime"] = m_iWorldMarketFinnhubInquiryTime;
-	m_systemConfiguration["WorldMarket"]["TiingoInquiryTime"] = m_iWorldMarketTiingoInquiryTime;
-	m_systemConfiguration["WorldMarket"]["QuandlInquiryTime"] = m_iWorldMarketQuandlInquiryTime;
+	jsonData["WorldMarket"]["FinnhubToken"] = m_strFinnhubToken;
+	jsonData["WorldMarket"]["FinnhubAccountFeePaid"] = m_bFinnhubAccountFeePaid;
+	jsonData["WorldMarket"]["TiingoToken"] = m_strTiingoToken;
+	jsonData["WorldMarket"]["TiingoAccountFeePaid"] = m_bTiingoAccountFeePaid;
+	jsonData["WorldMarket"]["QuandlToken"] = m_strQuandlToken;
+	jsonData["WorldMarket"]["QuandlAccountFeePaid"] = m_bQuandlAccountFeePaid;
+	jsonData["WorldMarket"]["FinnhubInquiryTime"] = m_iWorldMarketFinnhubInquiryTime;
+	jsonData["WorldMarket"]["TiingoInquiryTime"] = m_iWorldMarketTiingoInquiryTime;
+	jsonData["WorldMarket"]["QuandlInquiryTime"] = m_iWorldMarketQuandlInquiryTime;
 
 	// Web socket
-	m_systemConfiguration["WebSocket"]["UsingFinnhubWebSocket"] = m_bUsingFinnhubWebSocket;
-	m_systemConfiguration["WebSocket"]["UsingTiingoIEXWebSocket"] = m_bUsingTiingoIEXWebSocket;
-	m_systemConfiguration["WebSocket"]["UsingTiingoCryptoWebSocket"] = m_bUsingTiingoCryptoWebSocket;
-	m_systemConfiguration["WebSocket"]["UsingTiingoForexWebSocket"] = m_bUsingTiingoForexWebSocket;
+	jsonData["WebSocket"]["UsingFinnhubWebSocket"] = m_bUsingFinnhubWebSocket;
+	jsonData["WebSocket"]["UsingTiingoIEXWebSocket"] = m_bUsingTiingoIEXWebSocket;
+	jsonData["WebSocket"]["UsingTiingoCryptoWebSocket"] = m_bUsingTiingoCryptoWebSocket;
+	jsonData["WebSocket"]["UsingTiingoForexWebSocket"] = m_bUsingTiingoForexWebSocket;
 
-	m_systemConfiguration["FinancialDataUpdateRate"]["StockProfile"] = m_iStockProfileUpdateRate;
-	m_systemConfiguration["FinancialDataUpdateRate"]["StockBasicFinancial"] = m_iStockBasicFinancialUpdateRate;
-	m_systemConfiguration["FinancialDataUpdateRate"]["InsideTransaction"] = m_iInsideTransactionUpdateRate;
-	m_systemConfiguration["FinancialDataUpdateRate"]["InsideSentiment"] = m_iInsideSentimentUpdateRate;
-	m_systemConfiguration["FinancialDataUpdateRate"]["StockPeer"] = m_iStockPeerUpdateRate;
-	m_systemConfiguration["FinancialDataUpdateRate"]["EPSSurprise"] = m_iEPSSurpriseUpdateRate;
+	jsonData["FinancialDataUpdateRate"]["StockProfile"] = m_iStockProfileUpdateRate;
+	jsonData["FinancialDataUpdateRate"]["StockBasicFinancial"] = m_iStockBasicFinancialUpdateRate;
+	jsonData["FinancialDataUpdateRate"]["InsideTransaction"] = m_iInsideTransactionUpdateRate;
+	jsonData["FinancialDataUpdateRate"]["InsideSentiment"] = m_iInsideSentimentUpdateRate;
+	jsonData["FinancialDataUpdateRate"]["StockPeer"] = m_iStockPeerUpdateRate;
+	jsonData["FinancialDataUpdateRate"]["EPSSurprise"] = m_iEPSSurpriseUpdateRate;
 
 	// 测试系统选项
-	m_systemConfiguration["TestConfiguration"]["BenchmarkTestFileDirectory"] = m_strBenchmarkTestFileDirectory;
+	jsonData["TestConfiguration"]["BenchmarkTestFileDirectory"] = m_strBenchmarkTestFileDirectory;
 }
-
-void CSystemConfiguration::UpdateSystem() const {}
 
 void CSystemConfiguration::ChangeFinnhubAccountTypeToFree() {
 	m_bFinnhubAccountFeePaid = false;
@@ -554,19 +544,24 @@ bool CSystemConfiguration::IsWebBusy() {
 	return gl_pSinaRTDataSource->IsWebError() || gl_pNeteaseRTDataSource->IsWebError();
 }
 
-bool CSystemConfiguration::LoadDB() {
+bool CSystemConfiguration::LoadDBWithNlohmannjson() {
 	fstream f(GetConfigurationFileDirectoryAndName(), ios::in);
 	if (f.is_open()) {
-		f >> m_systemConfiguration;
-		//m_systemConfiguration = json::parse(f); // 这种方式等价于 f >> m_systemConfiguration;
+		json systemConfiguration;
+		f >> systemConfiguration;
+		//systemConfiguration = json::parse(f); // 这种方式等价于 f >> m_systemConfiguration;
 		f.close();
+		UpdateUsingNlohmannjson(systemConfiguration);
 		return true;
 	}
 	return false;
 }
 
-void CSystemConfiguration::SaveDB() const {
+void CSystemConfiguration::SaveDBWithNlohmannjson() {
+	json systemConfiguration;
+
+	UpdateNlohmannJson(systemConfiguration);
 	fstream f(GetConfigurationFileDirectoryAndName(), ios::out);
-	f << m_systemConfiguration;
+	f << systemConfiguration;
 	f.close();
 }

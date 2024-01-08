@@ -3,82 +3,246 @@
 #include"simdjsonEmptyArray.h"
 
 double jsonGetDouble(simdjson_result<ondemand::value>& item, const string_view& key, double defaultValue) {
-	auto d = item[key].get_double();
-	if (d.error() == SUCCESS) return d.value();
-	return defaultValue;
+	try {
+		return item[key].get_double().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return defaultValue; // 数据为null时返回默认值
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
 }
 
 INT64 jsonGetInt64(simdjson_result<ondemand::value>& item, const string_view& key, const INT64 defaultValue) {
-	auto i = item[key].get_int64();
-	if (i.error() == SUCCESS) return i.value();
-	return defaultValue;
+	try {
+		return item[key].get_int64().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return defaultValue; // 数据为null时返回默认值
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
+}
+
+bool jsonGetBool(simdjson_result<ondemand::value>& item, const string_view& key) {
+	try {
+		return item[key].get_bool().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return false; // 数据为null时返回假
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
 }
 
 string_view jsonGetStringView(simdjson_result<ondemand::value>& item, const string_view& key, const string& defaultValue) {
-	auto s = item[key].get_string();
-	if (s.error() == SUCCESS) {
-		const string_view sView = s.value().substr(0, s.value().length());
-		return sView;
+	try {
+		return item[key].get_string().value();
 	}
-	return defaultValue;
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return defaultValue; // 数据为null时返回空串
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
 }
 
 ondemand::array jsonGetArray(simdjson_result<ondemand::value>& item, const string_view& key) {
-	auto array = item[key].get_array();
-	if (array.error() == SUCCESS) return array.value();
-	return gl_simdjsonEmptyArray.value(); // 默认返回空数组
+	try {
+		return item[key].get_array().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return gl_simdjsonEmptyArray.value(); // 数据为null时返回空数组
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
 }
 
 double jsonGetDouble(simdjson_result<ondemand::value>& item, double defaultValue) {
-	auto d = item.get_double();
-	if (d.error() == SUCCESS) return d.value();
-	return defaultValue;
+	try {
+		return item.get_double().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return defaultValue; // 数据为null时返回默认值
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
 }
 
 INT64 jsonGetInt64(simdjson_result<ondemand::value>& item, const INT64 defaultValue) {
-	auto i = item.get_int64();
-	if (i.error() == SUCCESS) return i.value();
-	return defaultValue;
+	try {
+		return item.get_int64().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return defaultValue; // 数据为null时返回默认值
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
+}
+
+bool jsonGetBool(simdjson_result<ondemand::value>& item) {
+	try {
+		return item.get_bool().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return false; // 数据为null时返回假
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
 }
 
 string_view jsonGetStringView(simdjson_result<ondemand::value>& item) {
-	auto s = item.get_string();
-	if (s.error() == SUCCESS) {
-		const string_view sView = s.value().substr(0, s.value().length());
-		return sView;
+	static string s_s{""}; // 需要静态数据，保证离开函数后数据仍然有效
+	try {
+		return item.get_string().value();
 	}
-	return string_view();
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return s_s; // 数据为null时返回空串
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
 }
 
 ondemand::array jsonGetArray(simdjson_result<ondemand::value>& item) {
-	auto array = item.get_array();
-	if (array.error() == SUCCESS) return array.value();
-	return gl_simdjsonEmptyArray.value(); // 默认返回空数组
+	try {
+		return item.get_array().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return gl_simdjsonEmptyArray.value(); // 数据为null时返回空数组
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
+}
+
+double jsonGetDouble(simdjson_result<ondemand::object>& item, const string_view& key, double defaultValue) {
+	try {
+		return item[key].get_double().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return defaultValue; // 数据为null时返回默认值
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
+}
+
+INT64 jsonGetInt64(simdjson_result<ondemand::object>& item, const string_view& key, const INT64 defaultValue) {
+	try {
+		return item[key].get_int64().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return defaultValue; // 数据为null时返回默认值
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
+}
+
+bool jsonGetBool(simdjson_result<ondemand::object>& item, const string_view& key) {
+	try {
+		return item[key].get_bool().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return false; // 数据为null时返回假
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
+}
+
+string_view jsonGetStringView(simdjson_result<ondemand::object>& item, const string_view& key, const string& defaultValue) {
+	try {
+		return item[key].get_string().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return defaultValue; // 数据为null时返回空串
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
+}
+
+ondemand::array jsonGetArray(simdjson_result<ondemand::object>& item, const string_view& key) {
+	try {
+		return item[key].get_array().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return gl_simdjsonEmptyArray.value(); // 数据为null时返回空数组
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
+}
+
+double jsonGetDouble(ondemand::object& item, const string_view& key, double defaultValue) {
+	try {
+		return item[key].get_double().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return defaultValue; // 数据为null时返回默认值
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
+}
+
+INT64 jsonGetInt64(ondemand::object& item, const string_view& key, const INT64 defaultValue) {
+	try {
+		return item[key].get_int64().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return defaultValue; // 数据为null时返回默认值
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
+}
+
+bool jsonGetBool(ondemand::object& item, const string_view& key) {
+	try {
+		return item[key].get_bool().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return false; // 数据为null时返回假
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
+}
+
+string_view jsonGetStringView(ondemand::object& item, const string_view& key, const string& defaultValue) {
+	try {
+		return item[key].get_string().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return defaultValue; // 数据为null时返回空串
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
+}
+
+ondemand::array jsonGetArray(ondemand::object& item, const string_view& key) {
+	try {
+		return item[key].get_array().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return gl_simdjsonEmptyArray.value(); // 数据为null时返回空数组
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
 }
 
 double jsonGetDouble(ondemand::document& doc, const string_view& key, const double defaultValue) {
-	auto d = doc[key].get_double();
-	if (d.error() == SUCCESS) return d.value();
-	return defaultValue;
+	try {
+		return doc[key].get_double().value();
+	}
+	catch (simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return defaultValue; // 数据为null时返回默认值
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
 }
 
 INT64 jsonGetInt64(ondemand::document& doc, const string_view& key, const INT64 defaultValue) {
-	auto i = doc[key].get_int64();
-	if (i.error() == SUCCESS) return i.value();
-	return defaultValue;
+	try {
+		return doc[key].get_int64().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return defaultValue; // 数据为null时返回默认值
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
 }
 
 string_view jsonGetStringView(ondemand::document& doc, const string_view& key, const string& defaultValue) {
-	auto s = doc[key].get_string();
-	if (s.error() == SUCCESS) {
-		const string_view sView = s.value().substr(0, s.value().length());
-		return sView;
+	try {
+		return doc[key].get_string().value();
 	}
-	return defaultValue;
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return defaultValue; // 数据为null时返回空数组
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
 }
 
 ondemand::array jsonGetArray(ondemand::document& doc, const string_view& key) {
-	auto array = doc[key].get_array();
-	if (array.error() == SUCCESS) return array.value();
-	return gl_simdjsonEmptyArray.value(); // 默认返回空数组
+	try {
+		return doc[key].get_array().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (error.error() == INCORRECT_TYPE) return gl_simdjsonEmptyArray.value(); // 数据为null时返回空数组
+		throw simdjson_error(error.error()); // 其他错误继续抛出simdjson_error
+	}
+}
+
+ondemand::object jsonGetObject(ondemand::document& doc, const string_view& key) {
+	return doc[key].get_object(); // 如果出现exception,则由调用函数来处理
 }

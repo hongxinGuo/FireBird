@@ -27,8 +27,6 @@
 
 #include <ixwebsocket/IXNetSystem.h>
 
-#include<exception>
-
 #include "ConvertToString.h"
 #include "TimeConvert.h"
 
@@ -255,8 +253,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemConfiguration.SetSystemDisplayRect(GetSystemMetrics(SM_CXFULLSCREEN), GetSystemMetrics(SM_CYFULLSCREEN));
 	gl_systemConfiguration.SetCurrentWindowRect(GetSystemMetrics(SM_CXMAXIMIZED), GetSystemMetrics(SM_CYMAXIMIZED));
 
-	gl_systemConfiguration.LoadDB(); // 装入系统参数
-	gl_systemConfiguration.UpdateSystem(); // 更新系统参数
+	gl_systemConfiguration.LoadDBWithNlohmannjson(); // 装入系统参数
 
 	// WebSocket要在gl_pWorldMarket之前生成
 	gl_pFinnhubWebSocket = make_shared<CFinnhubWebSocket>();
