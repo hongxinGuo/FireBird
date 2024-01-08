@@ -66,7 +66,7 @@ public:
 		TRACE("调用了基类函数ParseData()\n");
 		return false;
 	} //解析接收到的数据。继承类必须实现此函数。
-	void ResetBuffer() { m_sBuffer.resize(DefaultWebDataBufferSize_); }
+	void ResetBuffer(int size = DefaultWebDataBufferSize_) { m_sBuffer.resize(size); }
 
 	virtual void PrepareReadingWebData(); // 在读取网络数据前的准备工作，默认为设置m_pSession状态。
 	virtual void ConfigureSession() {

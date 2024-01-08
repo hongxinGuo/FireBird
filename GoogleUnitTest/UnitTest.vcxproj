@@ -52,20 +52,20 @@
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(LibInclude);C:\Program Files\OpenSSL-Win64\lib;$(IncludePath);$(zlibInclude);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibInclude);$(IncludePath);$(zlibInclude);$(LibraryPath)</LibraryPath>
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
     <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <SourcePath>C:\Users\hxguo\source\repos\googletest\googletest;C:\Users\hxguo\source\repos\googletest\googlemock;$(SourcePath)</SourcePath>
-    <LibraryWPath>C:\Users\hxguo\source\repos\StockAnalysis\OpenSSL\lib;$(LibraryWPath)</LibraryWPath>
+    <LibraryWPath>$(LibraryWPath)</LibraryWPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(AnalysisInclude);$(GoogletestInclude);$(LibInclude);$(IXWebSocket)</IncludePath>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <LibraryWPath>C:\Users\hxguo\source\repos\StockAnalysis\OpenSSL\lib;$(LibraryWPath)</LibraryWPath>
-    <LibraryPath>$(LibInclude);C:\Program Files\OpenSSL-Win64\lib;$(IncludePath);$(zlibInclude);$(LibraryPath)</LibraryPath>
+    <LibraryWPath>$(LibraryWPath)</LibraryWPath>
+    <LibraryPath>$(LibInclude);$(IncludePath);$(zlibInclude);$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

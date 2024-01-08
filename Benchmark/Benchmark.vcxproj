@@ -49,12 +49,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(GoogleBenchmark);$(GoogletestInclude);$(AnalysisInclude);$(LibInclude);$(IXWebSocket)</IncludePath>
-    <LibraryPath>$(GoogleBenchmark);C:\Program Files\OpenSSL-Win64\lib;$(zlibInclude);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibInclude);$(GoogleBenchmark);$(zlibInclude);$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(GoogleBenchmark);$(GoogletestInclude);$(AnalysisInclude);$(LibInclude);$(IXWebSocket)</IncludePath>
-    <LibraryPath>$(GoogleBenchmark);C:\Program Files\OpenSSL-Win64\lib;$(zlibInclude);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibInclude);$(GoogleBenchmark);$(zlibInclude);$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

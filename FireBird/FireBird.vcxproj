@@ -63,7 +63,7 @@
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
     <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
-    <LibraryPath>C:\Program Files\OpenSSL-Win64\lib;$(LibInclude);$(zlibInclude);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibInclude);$(zlibInclude);$(LibraryPath)</LibraryPath>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
     <CopyLocalProjectReference>false</CopyLocalProjectReference>
     <CopyLocalDebugSymbols>false</CopyLocalDebugSymbols>
@@ -74,7 +74,7 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(AnalysisInclude);$(GoogletestInclude);$(LibInclude);$(IXWebSocket);$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
-    <LibraryPath>C:\Program Files\OpenSSL-Win64\lib;$(LibInclude);$(zlibInclude);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibInclude);$(zlibInclude);$(LibraryPath)</LibraryPath>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
     <CopyLocalProjectReference>false</CopyLocalProjectReference>
     <CopyLocalDebugSymbols>false</CopyLocalDebugSymbols>

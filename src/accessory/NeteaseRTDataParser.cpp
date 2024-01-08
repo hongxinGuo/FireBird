@@ -202,7 +202,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(const CWebD
 //                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
 //                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
 //
-//
+// 目前采用下标方法解析数据，其速度能达到Nlohmann json的两倍以上。使用find_field方式顺序解析的话，速度能达到15倍以上。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJsonData) {
@@ -266,6 +266,9 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 	}
 	return pvWebRTData;
 }
+
+// bug 下面这个函数会导致编译时间延长4分钟左右，估计是编译器的问题。已向微软报告了该问题，等待回应。
+// 这种解析数据的速度，能够达到Nlohmann json的15倍左右
 
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson2(string_view svJsonData) {
 	string symbolCode, strTime;
