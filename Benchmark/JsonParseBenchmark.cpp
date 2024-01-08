@@ -340,6 +340,13 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithSimdjson2)(benchmark::State& state
 	}
 }
 
+BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithSimdjson3)(benchmark::State& state) {
+	sv = sNeteaseRTData.substr(21, sNeteaseRTData.length() - 21 - 2);
+	for (auto _ : state) {
+		//shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson3(sv);
+	}
+}
+
 // 解析并处理tengxun日线数据。
 json jTengxunDayLine;
 BENCHMARK_F(CJsonParse, ParseTengxunDayLine)(benchmark::State& state) {

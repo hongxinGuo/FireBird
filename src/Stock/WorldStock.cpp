@@ -992,7 +992,7 @@ CString CWorldStock::GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTim
 
 	strParam += m_strSymbol;
 	strParam += _T("&from=");
-	sprintf_s(buffer, _T("%I64i"), GetInsiderTransactionUpdateDate());
+	sprintf_s(buffer, _T("%i"), GetInsiderTransactionUpdateDate());
 	const CString strTemp = buffer;
 	strParam += strTemp;
 
