@@ -56,11 +56,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), _T("2600001"));
 	};
 
-	TEST_F(CNeteaseDayLineDataSourceTest, TestParseData) {
-		const CWebDataPtr pData = make_shared<CWebData>();
-		EXPECT_FALSE(NeteaseDayLineDataSource.ParseData(pData)) << "ÎÞÐè½âÎö";
-	}
-
 	TEST_F(CNeteaseDayLineDataSourceTest, TestGenerateInquiryMessage1) {
 		gl_pSinaRTDataSource->SetErrorCode(12002);
 		EXPECT_TRUE(gl_systemConfiguration.IsWebBusy());

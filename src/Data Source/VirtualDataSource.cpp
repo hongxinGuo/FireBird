@@ -277,7 +277,6 @@ CWebDataPtr CVirtualDataSource::CreateWebDataAfterSucceedReading() {
 	pWebData->ResetCurrentPos();
 	pWebData->SetTime(GetUTCTime());
 	TransferDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
-	ParseData(pWebData);
 	UpdateStatusAfterReading(pWebData);
 
 	return pWebData;

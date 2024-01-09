@@ -38,6 +38,9 @@ CForexSymbolVectorPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(const 
 	string s;
 	string sError;
 
+	if (!pWebData->IsParsed()) {
+		if (!pWebData->CreateJson()) return pvForexSymbol;
+	}
 	if (!IsValidData(pWebData)) return pvForexSymbol;
 
 	const auto pjs = pWebData->GetJSon();

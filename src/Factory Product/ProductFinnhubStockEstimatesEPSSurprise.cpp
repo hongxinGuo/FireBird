@@ -50,6 +50,9 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 	long year = 0, month = 0, day = 0;
 	string sError;
 
+	if (!pWebData->IsParsed()) {
+		if (!pWebData->CreateJson()) return pvEPSSurprise;
+	}
 	if (!IsValidData(pWebData)) return pvEPSSurprise;
 
 	const auto pjs = pWebData->GetJSon();

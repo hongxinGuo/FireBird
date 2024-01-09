@@ -39,7 +39,6 @@ void CProductFinnhub::AddInaccessibleExchange() {
 
 bool CProductFinnhub::IsValidData(const CWebDataPtr& pWebData) {
 	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return false;
 	if (pWebData->IsVoidJson()) {
 		m_iReceivedDataStatus = VOID_DATA_;
 		return false;

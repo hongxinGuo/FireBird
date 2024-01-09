@@ -19,7 +19,6 @@ public:
 	virtual bool InquireQuandl();
 
 	void ConfigureSession() override;
-	bool ParseData(CWebDataPtr pWebData) override; // 数据为JSon格式, 需要解析
 
 protected:
 	CQuandlFactory m_QuandlFactory;

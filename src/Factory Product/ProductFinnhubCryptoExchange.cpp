@@ -42,6 +42,9 @@ shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExc
 	string sError;
 	auto pvExchange = make_shared<vector<CString>>();
 
+	if (!pWebData->IsParsed()) {
+		if (!pWebData->CreateJson()) return pvExchange;
+	}
 	if (!IsValidData(pWebData)) return pvExchange;
 
 	const auto pjs = pWebData->GetJSon();

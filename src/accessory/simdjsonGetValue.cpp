@@ -266,6 +266,18 @@ INT64 jsonGetInt64(ondemand::document& doc, const string_view& key, const INT64 
 	}
 }
 
+bool jsonGetBool(ondemand::document& doc, const string_view& key) {
+	simdjson_result<ondemand::value> value;
+	try {
+		value = doc[key];
+		return value.get_bool().value();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		if (value.is_null()) return false;
+		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
+	}
+}
+
 string_view jsonGetStringView(ondemand::document& doc, const string_view& key, const string& defaultValue) {
 	simdjson_result<ondemand::value> value;
 	try {

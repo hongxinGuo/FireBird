@@ -72,7 +72,9 @@ bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebDat
 	string s;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return false;
+	if (!pWebData->IsParsed()) {
+		if (!pWebData->CreateJson()) return false;
+	}
 	if (pWebData->IsVoidJson()) return true; // 无数据
 	if (pWebData->CheckNoRightToAccess()) { // 无权访问
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;

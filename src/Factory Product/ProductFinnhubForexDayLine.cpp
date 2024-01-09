@@ -59,6 +59,9 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 	CDayLinePtr pDayLine = nullptr;
 	string sError;
 
+	if (!pWebData->IsParsed()) {
+		if (!pWebData->CreateJson()) return pvDayLine;
+	}
 	if (!IsValidData(pWebData)) return pvDayLine;
 
 	const auto pjs = pWebData->GetJSon();

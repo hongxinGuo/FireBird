@@ -50,6 +50,9 @@ CFinnhubCryptoSymbolVectorPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSym
 	string s;
 	string sError;
 
+	if (!pWebData->IsParsed()) {
+		if (!pWebData->CreateJson()) return pvCryptoSymbol;
+	}
 	if (!IsValidData(pWebData)) return pvCryptoSymbol;
 
 	const auto pjs = pWebData->GetJSon();

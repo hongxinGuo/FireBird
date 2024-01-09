@@ -59,7 +59,9 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const
 	string sError;
 
 	ASSERT(pWebData->IsJSonContentType());
-	if (!pWebData->IsParsed()) return false;
+	if (!pWebData->IsParsed()) {
+		if (!pWebData->CreateJson()) return false;
+	}
 	if (pWebData->IsVoidJson()) return true; // 即使为空，也完成了查询。
 	if (pWebData->CheckNoRightToAccess()) return true;
 

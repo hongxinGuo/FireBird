@@ -43,11 +43,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiringNumber(), 900) << _T("DEBUG模式下网易默认值");
 	}
 
-	TEST_F(CMockNeteaseRTDataSourceTest, TestParseData) {
-		const auto pData = make_shared<CWebData>();
-		EXPECT_FALSE(m_pMockNeteaseRTDataSource->ParseData(pData)) << "网易实时数据无需解析";
-	}
-
 	TEST_F(CMockNeteaseRTDataSourceTest, TestGenerateInquiryMessage) {
 		auto p = make_shared<CVirtualWebProduct>();
 

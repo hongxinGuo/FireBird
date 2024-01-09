@@ -131,13 +131,3 @@ void CTiingoDataSource::ConfigureSession() {
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 1000); // 设置发送超时时间为1秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-// 使用nlohmann json解析。
-//
-////////////////////////////////////////////////////////////////////////////////////
-bool CTiingoDataSource::ParseData(CWebDataPtr pWebData) {
-	return pWebData->CreateJson(0, 0);
-}

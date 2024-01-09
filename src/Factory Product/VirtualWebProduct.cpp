@@ -3,7 +3,9 @@
 #include"VirtualWebProduct.h"
 #include"DayLine.h"
 
-[[nodiscard]] bool CompareDayLineDate(const CDayLinePtr& p1, const CDayLinePtr& p2) { return p1->GetMarketDate() < p2->GetMarketDate(); }
+[[nodiscard]] bool CompareDayLineDate(const CDayLinePtr& p1, const CDayLinePtr& p2) {
+	return p1->GetMarketDate() < p2->GetMarketDate();
+}
 
 CVirtualWebProduct::CVirtualWebProduct() {
 	m_lIndex = -1; // 预先设置为越界

@@ -132,15 +132,6 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 	return vProduct;
 }
 
-//
-//
-// 腾讯日线数据为json制式，目前在productTengxunDayLine中解析。
-//
-//
-bool CTengxunDayLineDataSource::ParseData(CWebDataPtr pWebData) {
-	return false;
-}
-
 /////////////////////////////////////////////////////////////////////////////////
 //
 // 查询字符串的格式为：

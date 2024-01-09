@@ -86,7 +86,9 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CW
 	CString strNumber;
 	long year, month, day;
 
-	pWebData->CreateJson(0, 0);
+	if (!pWebData->IsParsed()) {
+		if (!pWebData->CreateJson()) return pvTiingoStock;
+	}
 	if (!IsValidData(pWebData)) return pvTiingoStock;
 
 	const auto pjs = pWebData->GetJSon();

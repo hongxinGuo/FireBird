@@ -38,6 +38,9 @@ CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(co
 	CCountryPtr pCountry = nullptr;
 	string s;
 
+	if (!pWebData->IsParsed()) {
+		if (!pWebData->CreateJson()) return pvCountry;
+	}
 	if (!IsValidData(pWebData)) return pvCountry;
 
 	const auto pjs = pWebData->GetJSon();

@@ -86,6 +86,9 @@ CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const C
 	CWorldStockPtr pStock = nullptr;
 	string s, sError;
 
+	if (!pWebData->IsParsed()) {
+		if (!pWebData->CreateJson()) return pvStock;
+	}
 	if (!IsValidData(pWebData)) return pvStock;
 
 	auto pjs = pWebData->GetJSon();

@@ -47,13 +47,3 @@ void CQuandlDataSource::ConfigureSession() {
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 2次重试
 }
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-// 使用nlohmann json解析。
-//
-////////////////////////////////////////////////////////////////////////////////////
-bool CQuandlDataSource::ParseData(CWebDataPtr pWebData) {
-	return pWebData->CreateJson(0, 0);
-}

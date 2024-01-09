@@ -69,6 +69,9 @@ CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const 
 
 	auto pvFinnhubCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
 
+	if (!pWebData->IsParsed()) {
+		if (!pWebData->CreateJson()) return pvFinnhubCompanyNews;
+	}
 	if (!IsValidData(pWebData)) return pvFinnhubCompanyNews;
 
 	const auto pjs = pWebData->GetJSon();

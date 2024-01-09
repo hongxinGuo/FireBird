@@ -797,16 +797,6 @@ void CFinnhubDataSource::ConfigureSession() {
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-// 使用nlohmann json解析。
-//
-////////////////////////////////////////////////////////////////////////////////////
-bool CFinnhubDataSource::ParseData(CWebDataPtr pWebData) {
-	return pWebData->CreateJson(0, 0);
-}
-
 void CFinnhubDataSource::CheckInaccessible(const CWebDataPtr& pWebData) const {
 	ASSERT(m_pCurrentProduct != nullptr);
 	if (m_pCurrentProduct->CheckInaccessible(pWebData)) {

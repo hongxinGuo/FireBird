@@ -27,19 +27,21 @@ namespace FireBirdTest {
 		try {
 			ondemand::parser parser;
 			ondemand::document doc = parser.iterate(s_simdjson1);
+			int i = 1;
 			// 测试 doc
 			EXPECT_EQ(jsonGetInt64(doc, _T("integer1")), 1);
 			EXPECT_DOUBLE_EQ(jsonGetDouble(doc, "double1"), 2.0);
+			EXPECT_FALSE(jsonGetBool(doc, "doing"));
 			string s(jsonGetStringView(doc, "string1"));
 			EXPECT_STREQ(s.c_str(), "string1");
 			ondemand::array array1 = jsonGetArray(doc, "array1");
-			int i = 1;
 			for (INT64 item : array1) {
 				EXPECT_EQ(item, i++) << "array1的数据为：1， 2， 3";
 			}
 			EXPECT_EQ(i, 4);
 			EXPECT_EQ(jsonGetInt64(doc, _T("integer2")), 0);
 			EXPECT_DOUBLE_EQ(jsonGetDouble(doc, "double2"), 0.0);
+			EXPECT_FALSE(jsonGetBool(doc, "doing2"));
 			string s2(jsonGetStringView(doc, "string2"));
 			EXPECT_STREQ(s2.c_str(), "");
 			auto array2 = jsonGetArray(doc, "array2");
@@ -112,8 +114,7 @@ namespace FireBirdTest {
 			}
 		}
 		catch (simdjson_error& error) {
-			string s = error.what();
-			EXPECT_TRUE(false);
+			EXPECT_TRUE(false) << error.what();
 		}
 	}
 
@@ -123,10 +124,10 @@ namespace FireBirdTest {
 	})"_padded;
 
 	TEST(simdjsonGetValueTest, TestsimdjsonGetValue2) {
-		vector<int> vi;
-		vector<double> vd;
-		vector<string> vs;
 		try {
+			vector<INT64> vi;
+			vector<double> vd;
+			vector<string> vs;
 			ondemand::parser parser;
 			ondemand::document doc = parser.iterate(s_simdjson2);
 			for (ondemand::field field : doc.get_object()) {
@@ -143,8 +144,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(vi.at(1), 2);
 		}
 		catch (simdjson_error& error) {
-			string s = error.what();
-			EXPECT_TRUE(false);
+			EXPECT_TRUE(false) << error.what();
 		}
 	}
 }

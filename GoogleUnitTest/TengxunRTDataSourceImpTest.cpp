@@ -67,11 +67,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(tengxunRTDataSourceImp.HaveInquiry());
 	}
 
-	TEST_F(CTengxunRTDataSourceTest, TestParseData) {
-		const auto pData = make_shared<CWebData>();
-		EXPECT_FALSE(tengxunRTDataSourceImp.ParseData(pData)) << "腾讯实时数据无需解析";
-	}
-
 	TEST_F(CTengxunRTDataSourceTest, TestIsTengxunRTDataInValid) {
 		const CWebDataPtr pWebDataReceived = make_shared<CWebData>();
 		CString str = _T("v_pv_none_match=\"1\";\n");
