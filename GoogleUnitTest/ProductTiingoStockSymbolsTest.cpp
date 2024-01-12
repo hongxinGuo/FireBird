@@ -159,6 +159,61 @@ namespace FireBirdTest {
 		}
 	}
 
+	TEST_P(ParseTiingoStockTest, TestParseStockProfile2) {
+		m_pvStock = m_tiingoStockSymbolProduct.ParseTiingoStockSymbol2(m_pWebData);
+		switch (m_lIndex) {
+		case 1: // 格式不对
+			EXPECT_EQ(m_pvStock->size(), 0);
+			break;
+		case 2: // 格式不对
+			EXPECT_EQ(m_pvStock->size(), 0);
+			break;
+		case 3: // 缺乏address项
+			EXPECT_EQ(m_pvStock->size(), 1);
+			break;
+		case 4:
+			EXPECT_EQ(m_pvStock->size(), 1);
+			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoPermaTicker, _T("US000000000091"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strTicker, _T("AA"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strName, _T("Alcoa Corp"));
+			EXPECT_TRUE(m_pvStock->at(0)->m_fIsActive);
+			EXPECT_FALSE(m_pvStock->at(0)->m_fIsADR);
+			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoIndustry, _T("industry have new data"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoSector, _T("sector have data"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strSICIndustry, _T("sicIndustry have data"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strSICSector, _T("sicSector have data"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strReportingCurrency, _T("usd"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strLocation, _T("location have data"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strCompanyWebSite, _T("companyWebsite have data"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strSECFilingWebSite, _T("secFileingWebsite have data"));
+			EXPECT_EQ(m_pvStock->at(0)->m_lStatementUpdateDate, 20210302);
+			EXPECT_EQ(m_pvStock->at(0)->m_lDailyDataUpdateDate, 20210312);
+			EXPECT_EQ(m_pvStock->at(0)->m_iSICCode, 1234);
+			break;
+		case 10:
+			EXPECT_EQ(m_pvStock->size(), 2);
+			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoPermaTicker, _T("US000000000091"));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strTicker, _T("AA"));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strName, _T("New Name"));
+			EXPECT_TRUE(m_pvStock->at(1)->m_fIsActive);
+			EXPECT_FALSE(m_pvStock->at(1)->m_fIsADR);
+			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoIndustry, _T(" ")) << "当字符串为Field not available for free/evaluation时，返回空串(一个空格)";
+			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoSector, _T(" "));
+			EXPECT_EQ(m_pvStock->at(1)->m_iSICCode, 0);
+			EXPECT_STREQ(m_pvStock->at(1)->m_strSICIndustry, _T(" "));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strSICSector, _T(" "));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strReportingCurrency, _T("usd"));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strLocation, _T(" "));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strCompanyWebSite, _T(" "));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strSECFilingWebSite, _T(" "));
+			EXPECT_EQ(m_pvStock->at(1)->m_lStatementUpdateDate, 20210302);
+			EXPECT_EQ(m_pvStock->at(1)->m_lDailyDataUpdateDate, 20210312);
+			break;
+		default:
+			break;
+		}
+	}
+
 	class ProcessTiingoStockTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:
 		void SetUp() override {

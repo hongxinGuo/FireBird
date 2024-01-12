@@ -248,6 +248,7 @@ public:
 
 		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
 		LoadFromFile(strFileName, sNeteaseRTData);
+		sv = sNeteaseRTData.substr(21, sNeteaseRTData.length() - 21 - 2);
 
 		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("TengxunDayLine.json");
 		LoadFromFile(strFileName, sTengxunDayLine);
@@ -263,6 +264,7 @@ public:
 
 	string sUSExchangeStockCode;
 	string sNeteaseRTData;
+	string sv;
 	string sNeteaseRTDataForPTree;
 	string sTengxunDayLine;
 	string sWorldStockUpdateParameter;
@@ -283,7 +285,7 @@ BENCHMARK_F(CJsonParse, StockSymbolParseWithNlohmannJSon)(benchmark::State& stat
 BENCHMARK_F(CJsonParse, StockSymbolParseWithsimdjson)(benchmark::State& state) {
 	const CString strFileName1 = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("StockSymbol.json");
 	const string sFileName = (LPCTSTR)strFileName1;
-	auto j = padded_string::load(sFileName);
+	const auto j = padded_string::load(sFileName);
 	ondemand::parser parser;
 	for (auto _ : state) {
 		ondemand::document doc = parser.iterate(j);
@@ -317,39 +319,23 @@ BENCHMARK_F(CJsonParse, WorldStockUpdateParameterCreateJsonWithNlohmannJson)(ben
 }
 
 // 解析并处理netease实时数据。
-json j; // 此变量不能声明为局部变量，否则可能导致栈溢出。原因待查
 BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJson)(benchmark::State& state) {
+	static json j; // 此变量不能声明为局部变量，否则可能导致栈溢出。原因待查
 	for (auto _ : state) {
 		CreateJsonWithNlohmann(j, sNeteaseRTData, 21, 2);
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTData(&j);
 	}
 }
 
-string sv;
-BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithSimdjson)(benchmark::State& state) {
-	sv = sNeteaseRTData.substr(21, sNeteaseRTData.length() - 21 - 2);
+BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithSimdjson1)(benchmark::State& state) {
 	for (auto _ : state) {
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson(sv);
 	}
 }
 
-BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithSimdjson2)(benchmark::State& state) {
-	sv = sNeteaseRTData.substr(21, sNeteaseRTData.length() - 21 - 2);
-	for (auto _ : state) {
-		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson2(sv);
-	}
-}
-
-BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithSimdjson3)(benchmark::State& state) {
-	sv = sNeteaseRTData.substr(21, sNeteaseRTData.length() - 21 - 2);
-	for (auto _ : state) {
-		//shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson3(sv);
-	}
-}
-
 // 解析并处理tengxun日线数据。
-json jTengxunDayLine;
 BENCHMARK_F(CJsonParse, ParseTengxunDayLine)(benchmark::State& state) {
+	static json jTengxunDayLine;
 	for (auto _ : state) {
 		CreateJsonWithNlohmann(jTengxunDayLine, sTengxunDayLine, 0, 0);
 		auto vData = ParseTengxunDayLine(&jTengxunDayLine, _T("sh000001")); // 默认测试文件中的股票代码为sh000001.
@@ -361,22 +347,36 @@ public:
 	void SetUp(const benchmark::State& state) override {
 		const CString strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
 		LoadFromFile(strFileName, s);
-		try { js = json::parse(s.begin() + 21, s.end() - 2); }
-		catch (json::parse_error&) { fDone = false; }
+		sv = s;
+		sv = sv.substr(21, sv.length() - 21 - 2);
+		try {
+			js = json::parse(s.begin() + 21, s.end() - 2);
+		}
+		catch (json::parse_error&) {
+			fDone = false;
+		}
 	}
 
 	void TearDown(const benchmark::State& state) override {}
 
 	string s;
+	string_view sv;
 	json js; // 此处不能使用智能指针，否则出现重入问题，原因不明。
 	vector<CWebRTDataPtr> vWebRTDataReceived;
 	bool fDone;
 };
 
-// 测试nlohmann json解析NeteaseRTData的速度
+// 测试nlohmann json读取NeteaseRTData的速度（数据已预先解析了）
 BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTData1)(benchmark::State& state) {
 	for (auto _ : state) {
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTData(&js);
+	}
+}
+
+//simdjson解析并读取NeteaseRTData的速度
+BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTData2)(benchmark::State& state) {
+	for (auto _ : state) {
+		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson(sv);
 	}
 }
 

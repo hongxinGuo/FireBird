@@ -9,6 +9,8 @@
 #include "TiingoDataSource.h"
 #include "TimeConvert.h"
 
+#include"simdjsonGetValue.h"
+
 using namespace std;
 
 CProductTiingoStockSymbol::CProductTiingoStockSymbol() {
@@ -97,46 +99,46 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CW
 		int iCount = 0;
 		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
 			pStock = make_shared<CTiingoStock>();
-			pStock->m_strTiingoPermaTicker = jsonGetString(it,_T("permaTicker")).c_str();
-			s = jsonGetString(it,_T("ticker"));
+			pStock->m_strTiingoPermaTicker = jsonGetString(it, _T("permaTicker")).c_str();
+			s = jsonGetString(it, _T("ticker"));
 			ranges::transform(s, s.begin(), ::toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。(需要使用::toupper）
 			pStock->m_strTicker = s.c_str();
-			pStock->m_strName = jsonGetString(it,_T("name")).c_str();
+			pStock->m_strName = jsonGetString(it, _T("name")).c_str();
 			pStock->m_fIsActive = it->at(_T("isActive"));
 			pStock->m_fIsADR = it->at(_T("isADR"));
-			s = jsonGetString(it,_T("industry"));
+			s = jsonGetString(it, _T("industry"));
 			if (s != strNotAvailable) { pStock->m_strTiingoIndustry = s.c_str(); }
 			else pStock->m_strTiingoIndustry = strNULL;
-			s = jsonGetString(it,_T("sector"));
+			s = jsonGetString(it, _T("sector"));
 			if (s != strNotAvailable) { pStock->m_strTiingoSector = s.c_str(); }
 			else pStock->m_strTiingoSector = strNULL;
 			auto s2 = it->at(_T("sicCode"));
 			if (s2.is_number()) pStock->m_iSICCode = s2;
 			else pStock->m_iSICCode = 0;
-			s = jsonGetString(it,_T("sicIndustry"));
+			s = jsonGetString(it, _T("sicIndustry"));
 			if (s != strNotAvailable) { pStock->m_strSICIndustry = s.c_str(); }
 			else pStock->m_strSICIndustry = strNULL;
-			s = jsonGetString(it,_T("sicSector"));
+			s = jsonGetString(it, _T("sicSector"));
 			if (s != strNotAvailable) { pStock->m_strSICSector = s.c_str(); }
 			else pStock->m_strSICSector = strNULL;
-			s = jsonGetString(it,_T("reportingCurrency"));
+			s = jsonGetString(it, _T("reportingCurrency"));
 			if (s != strNotAvailable) {	// 此项应该永远存在
 				pStock->m_strReportingCurrency = s.c_str();
 			}
 			else pStock->m_strReportingCurrency = strNULL;
-			s = jsonGetString(it,_T("location"));
+			s = jsonGetString(it, _T("location"));
 			if (s != strNotAvailable) { pStock->m_strLocation = s.c_str(); }
 			else pStock->m_strLocation = _T(" ");
-			s = jsonGetString(it,_T("companyWebsite"));
+			s = jsonGetString(it, _T("companyWebsite"));
 			if (s != strNotAvailable) { pStock->m_strCompanyWebSite = s.c_str(); }
 			else pStock->m_strCompanyWebSite = strNULL;
-			s = jsonGetString(it,_T("secFilingWebsite"));
+			s = jsonGetString(it, _T("secFilingWebsite"));
 			if (s != strNotAvailable) { pStock->m_strSECFilingWebSite = s.c_str(); }
 			else pStock->m_strSECFilingWebSite = strNULL;
-			if (!s.empty()) str = jsonGetString(it,_T("statementLastUpdated")).c_str();
+			if (!s.empty()) str = jsonGetString(it, _T("statementLastUpdated")).c_str();
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
 			pStock->m_lStatementUpdateDate = XferYearMonthDayToYYYYMMDD(year, month, day);
-			str = jsonGetString(it,_T("dailyLastUpdated")).c_str();
+			str = jsonGetString(it, _T("dailyLastUpdated")).c_str();
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
 			pStock->m_lDailyDataUpdateDate = XferYearMonthDayToYYYYMMDD(year, month, day);
 			pvTiingoStock->push_back(pStock);
@@ -149,6 +151,133 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CW
 
 	return pvTiingoStock;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// [
+// {
+//	"permaTicker":"US000000000133",
+//		"ticker" : "IBM",
+//		"name" : "International Business Machines Corp",
+//    "isADR" : false,
+//    "industry":"Information Technology Services",
+//    "sector":"Technology",
+//    "sicCode":3570,
+//    "sicIndustry":"Computer & Office Equipment",
+//    "sicSector":"Manufacturing",
+//		"reportingCurrency":"usd",
+//		"location":"New York, USA",
+//		"companyWebsite":"http://www.ibm.com",
+//		"secFillingWebsite":"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000051143",
+//		"isActive" : true,
+//		"statementLastUpdated" : "2019-12-22T22:08:11.534Z",
+//		"dailyLastUpdated" : "2019-12-22T22:08:17.530Z"
+// },
+// {
+// ...
+// }
+// ]
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol2(const CWebDataPtr& pWebData) {
+	auto pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
+	string strNotAvailable{_T("Field not available for free/evaluation")}; // Tiingo免费账户有多项内容空缺，会返回此信息。
+	CString strNULL = _T(" ");
+	CTiingoStockPtr pStock = nullptr;
+	string s, sTemp;
+	string_view sv;
+	CString strNumber;
+	long year, month, day;
+
+	if (!IsValidData(pWebData)) return pvTiingoStock;
+
+	try {
+		string_view svJson = pWebData->GetStringView(0, pWebData->GetBufferLength());
+		ondemand::parser parser;
+		const simdjson::padded_string jsonPadded(svJson);
+		ondemand::document doc = parser.iterate(jsonPadded);
+
+		CString str;
+		int iCount = 0;
+		for (auto item : doc) {
+			pStock = make_shared<CTiingoStock>();
+			s = jsonGetStringView(item, _T("permaTicker"));
+			pStock->m_strTiingoPermaTicker = s.c_str();
+			s = jsonGetStringView(item, _T("ticker"));
+			ranges::transform(s, s.begin(), ::toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。(需要使用::toupper）
+			pStock->m_strTicker = s.c_str();
+			s = jsonGetStringView(item, _T("name"));
+			pStock->m_strName = s.c_str();
+			pStock->m_fIsActive = jsonGetBool(item, _T("isActive"));
+			pStock->m_fIsADR = jsonGetBool(item,_T("isADR"));
+			s = jsonGetStringView(item, _T("industry"));
+			if (s != strNotAvailable) {
+				pStock->m_strTiingoIndustry = s.c_str();
+			}
+			else pStock->m_strTiingoIndustry = strNULL;
+			s = jsonGetStringView(item, _T("sector"));
+			if (s != strNotAvailable) {
+				pStock->m_strTiingoSector = s.c_str();
+			}
+			else pStock->m_strTiingoSector = strNULL;
+
+			sv = item["sicCode"].raw_json();
+			if (sv == ("\"Field not available for free/evaluation\"") || sv.empty()) {
+				pStock->m_iSICCode = 0;
+			}
+			else {
+				string sTemp2(sv);
+				pStock->m_iSICCode = atoi(sTemp2.c_str());
+			}
+			s = jsonGetStringView(item, _T("sicIndustry"));
+			if (s != strNotAvailable) {
+				pStock->m_strSICIndustry = s.c_str();
+			}
+			else pStock->m_strSICIndustry = strNULL;
+			s = jsonGetStringView(item, _T("sicSector"));
+			if (s != strNotAvailable) {
+				pStock->m_strSICSector = s.c_str();
+			}
+			else pStock->m_strSICSector = strNULL;
+			s = jsonGetStringView(item, _T("reportingCurrency"));
+			if (s != strNotAvailable) {	// 此项应该永远存在
+				pStock->m_strReportingCurrency = s.c_str();
+			}
+			else pStock->m_strReportingCurrency = strNULL;
+			s = jsonGetStringView(item, _T("location"));
+			if (s != strNotAvailable) {
+				pStock->m_strLocation = s.c_str();
+			}
+			else pStock->m_strLocation = _T(" ");
+			s = jsonGetStringView(item, _T("companyWebsite"));
+			if (s != strNotAvailable) {
+				pStock->m_strCompanyWebSite = s.c_str();
+			}
+			else pStock->m_strCompanyWebSite = strNULL;
+			s = jsonGetStringView(item, _T("secFilingWebsite"));
+			if (s != strNotAvailable) {
+				pStock->m_strSECFilingWebSite = s.c_str();
+			}
+			else pStock->m_strSECFilingWebSite = strNULL;
+			s = jsonGetStringView(item, _T("statementLastUpdated"));
+			if (!s.empty()) str = s.c_str();
+			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
+			pStock->m_lStatementUpdateDate = XferYearMonthDayToYYYYMMDD(year, month, day);
+			s = jsonGetStringView(item, _T("dailyLastUpdated"));
+			str = s.c_str();
+			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
+			pStock->m_lDailyDataUpdateDate = XferYearMonthDayToYYYYMMDD(year, month, day);
+			pvTiingoStock->push_back(pStock);
+			iCount++;
+		}
+	}
+	catch (simdjson_error& error) {
+		ReportJSonErrorToSystemMessage(_T("Tiingo Stock Symbol "), error.what());
+	}
+
+	return pvTiingoStock;
+}
+
 void CProductTiingoStockSymbol::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->m_fUpdateStockSymbol = false;

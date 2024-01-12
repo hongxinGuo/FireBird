@@ -211,9 +211,9 @@ void CVirtualDataSource::ReadWebData() {
 // 调用函数需要处理exception。
 //
 void CVirtualDataSource::OpenFile(const CString& strInquiring) {
-	m_pFile = dynamic_cast<CHttpFile*>(m_pSession->OpenURL(strInquiring, 1,
-	                                                       INTERNET_FLAG_TRANSFER_ASCII,
-	                                                       m_strHeaders, m_strHeaders.GetLength()));
+	m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL(strInquiring, 1,
+	                                                      INTERNET_FLAG_TRANSFER_ASCII,
+	                                                      m_strHeaders, m_strHeaders.GetLength()));
 }
 
 void CVirtualDataSource::GetFileHeaderInformation() {

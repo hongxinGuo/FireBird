@@ -23,6 +23,5 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs);
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(const CWebDataPtr& pData); // 解析一个WebData
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJsonData);
-shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson2(string_view svJsonData);
 //shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson3(string_view svJsonData);
-shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(CWebDataPtr pData); // 解析一个WebData
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(const CWebDataPtr& pData); // 解析一个WebData
