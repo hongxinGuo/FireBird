@@ -71,7 +71,6 @@ bool CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr pStock) {
 	string s;
 
-	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) {
 		if (!pWebData->CreateJson()) return false;
 	}

@@ -41,7 +41,8 @@ public:
 	void TaskResetMarket(long lCurrentTime);
 	bool TaskCheckMarketReady(long lCurrentTime);
 	void TaskProcessWebSocketData(long lCurrentTime);
-	void TaskMonitoringWebSocketStatus(long lCurrentTime);
+	void TaskStartAllWebSocket(long lCurrentTime);
+	void TaskStopAllWebSocket(long lCurrentTime);
 	void TaskUpdateStockProfileDB(long lCurrentTime);
 
 	virtual bool CreateThreadUpdateTiingoIndustry();
@@ -103,6 +104,7 @@ public:
 	virtual void StartTiingoCryptoWebSocket();
 	virtual void StartTiingoForexWebSocket();
 	static void DisconnectAllWebSocket(); // 停止WebSocket。此函数等待其停止后方返回。是系统退出前的准备工作。
+	void StopAllWebSocketIfTimeOut();
 	static void StopFinnhubWebSocketIfTimeOut();
 	static void StopTiingoIEXWebSocketIfTimeOut();
 	static void StopTiingoCryptoWebSocketIfTimeOut();

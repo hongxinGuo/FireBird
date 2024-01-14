@@ -199,7 +199,7 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol2(const C
 
 		CString str;
 		int iCount = 0;
-		for (auto item : doc) {
+		for (ondemand::value item : doc) {
 			pStock = make_shared<CTiingoStock>();
 			s = jsonGetStringView(item, _T("permaTicker"));
 			pStock->m_strTiingoPermaTicker = s.c_str();

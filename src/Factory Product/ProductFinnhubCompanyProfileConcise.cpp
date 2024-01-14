@@ -58,7 +58,6 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const
 	string s;
 	string sError;
 
-	ASSERT(pWebData->IsJSonContentType());
 	if (!pWebData->IsParsed()) {
 		if (!pWebData->CreateJson()) return false;
 	}

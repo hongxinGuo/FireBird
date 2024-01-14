@@ -10,7 +10,6 @@ CWebData::CWebData() {
 	m_lCurrentPos = 0;
 	m_lCurrentParagraphStartPos = 0;
 
-	m_fJSonContentType = false;
 	m_fParsed = false;
 	m_fNoRightToAccess = false;
 	m_strErrorMessage = "";
@@ -63,7 +62,6 @@ bool CWebData::CheckNoRightToAccess(const string& sCode, const string& sMessage)
 
 bool CWebData::CreateJson(long lBeginPos, long lEndPos) {
 	m_fParsed = ::CreateJsonWithNlohmann(m_js, m_sDataBuffer, lBeginPos, lEndPos);
-	SetJSonContentType(true);
 
 	return m_fParsed;
 }

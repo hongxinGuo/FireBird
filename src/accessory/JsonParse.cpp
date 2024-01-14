@@ -44,7 +44,19 @@ void ReportJsonError(const json::parse_error& e, const std::string& s) {
 	gl_systemMessage.PushErrorMessage(str);
 }
 
-void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat) { gl_systemMessage.PushErrorMessage(strPrefix + strWhat); }
+void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat) {
+	gl_systemMessage.PushErrorMessage(strPrefix + strWhat);
+}
+
+void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat, const char* jsonData) {
+	string s(jsonData);
+	s = s.substr(0, 40);
+	CString str = strWhat;
+	str += " ";
+	str += s.c_str();
+
+	ReportJSonErrorToSystemMessage(strPrefix, str);
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -281,7 +293,8 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockC
 			pDayLine->SetVolume(atof(sTemp.c_str()) * 100);
 			pvDayLine->push_back(pDayLine);
 		}
-	} catch (json::exception&) { return pvDayLine; }
+	}
+	catch (json::exception&) { return pvDayLine; }
 	return pvDayLine;
 }
 

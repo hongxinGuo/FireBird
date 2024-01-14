@@ -75,7 +75,7 @@ namespace FireBirdTest {
 			m_pStock->SetCurrency(_T(""));
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
+			
 			m_pvStock = nullptr;
 		}
 
@@ -136,7 +136,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
+			
 
 			m_finnhubStockSymbolProduct.SetMarket(gl_pWorldMarket);
 			m_finnhubStockSymbolProduct.SetIndex(0); // 第一个交易所（AS)

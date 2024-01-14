@@ -58,7 +58,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
+			
 			m_pvMarketHoliday = nullptr;
 		}
 
@@ -110,7 +110,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
+			
 
 			m_finnhubMarketHolidayProduct.SetMarket(gl_pWorldMarket);
 			m_finnhubMarketHolidayProduct.SetIndex(0); // 第一个交易所（AS)

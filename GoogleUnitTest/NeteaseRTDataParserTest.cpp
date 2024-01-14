@@ -34,7 +34,7 @@ namespace FireBirdTest {
 			m_iIndex = pData->m_iIndex;
 			m_strData = pData->m_strData;
 			m_pWebData = make_shared<CWebData>();
-			m_pWebData->SetJSonContentType(true);
+			
 			m_pWebData->Test_SetBuffer_(m_strData);
 		}
 

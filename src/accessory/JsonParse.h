@@ -9,6 +9,7 @@ using std::wstring;
 using std::string;
 
 void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat);
+void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat, const char* jsonData);
 
 shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData);
 shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(const CWebDataPtr& pWebData);

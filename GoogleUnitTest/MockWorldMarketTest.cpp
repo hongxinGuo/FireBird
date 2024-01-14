@@ -119,7 +119,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(ThreadUpdateWorldStockDayLineStartEndDate(s_pMockWorldMarket), static_cast<UINT>(43));
 	}
 
-	TEST_F(CMockWorldMarketTest, TestTaskMonitoringWebSocketStatus) {
+	TEST_F(CMockWorldMarketTest, TestTaskStartAllWebSocket) {
 		EXPECT_TRUE(s_pMockWorldMarket->IsSystemReady());
 		EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
 		//gl_pTiingoDataSource->SetErrorCode(10020); // 确保不调用tiingo WebSocket
@@ -132,11 +132,11 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockWorldMarket, StartTiingoCryptoWebSocket).Times(1);
 		EXPECT_CALL(*s_pMockWorldMarket, StartTiingoForexWebSocket).Times(1);
 
-		s_pMockWorldMarket->TaskMonitoringWebSocketStatus(10000);
+		s_pMockWorldMarket->TaskStartAllWebSocket(10000);
 
 		EXPECT_FALSE(s_pMockWorldMarket->IsMarketTaskEmpty());
 		const auto pTask = s_pMockWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__);
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_START_ALL_WEB_SOCKET__);
 		EXPECT_EQ(pTask->GetTime(), 10100);
 
 		// 恢复原状

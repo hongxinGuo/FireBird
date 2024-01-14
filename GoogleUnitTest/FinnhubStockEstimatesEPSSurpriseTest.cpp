@@ -73,7 +73,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
+			
 			m_pvEPSSurprise = nullptr;
 		}
 
@@ -154,7 +154,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
+			
 			m_finnhubStockEstimatesEPSSurprise.SetMarket(gl_pWorldMarket);
 			m_finnhubStockEstimatesEPSSurprise.SetIndex(0);
 		}

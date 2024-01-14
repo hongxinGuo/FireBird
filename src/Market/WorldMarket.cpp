@@ -147,8 +147,11 @@ bool CWorldMarket::ProcessTask(long lCurrentTime) {
 		case WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__:
 			TaskUpdateStockProfileDB(lCurrentTime);
 			break;
-		case WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__:
-			TaskMonitoringWebSocketStatus(lCurrentTime);
+		case WORLD_MARKET_START_ALL_WEB_SOCKET__:
+			TaskStartAllWebSocket(lCurrentTime);
+			break;
+		case WORLD_MARKET_STOP_ALL_WEB_SOCKET__:
+			TaskStopAllWebSocket(lCurrentTime);
 			break;
 		case WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__:
 			TaskProcessWebSocketData(lCurrentTime);
@@ -178,7 +181,9 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 	AddTask(WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__, lTimeMinute + 40);// 更新股票简介数据库的任务
 
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lCurrentTime);
-	AddTask(WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__, GetNextTime(lTimeMinute, 0, 1, 0));
+
+	AddTask(WORLD_MARKET_START_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute, 0, 1, 0));
+	AddTask(WORLD_MARKET_STOP_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 30, 0, 1, 0));
 
 	AddTask(CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
@@ -194,9 +199,14 @@ void CWorldMarket::TaskProcessWebSocketData(long lCurrentTime) {
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lNextTime);
 }
 
-void CWorldMarket::TaskMonitoringWebSocketStatus(long lCurrentTime) {
+void CWorldMarket::TaskStartAllWebSocket(long lCurrentTime) {
 	StartAllWebSocket();
-	AddTask(WORLD_MARKET_MONITORING_WEB_SOCKET_STATUS__, GetNextTime(lCurrentTime, 0, 1, 0));
+	AddTask(WORLD_MARKET_START_ALL_WEB_SOCKET__, GetNextTime(lCurrentTime, 0, 1, 0));
+}
+
+void CWorldMarket::TaskStopAllWebSocket(long lCurrentTime) {
+	StopAllWebSocketIfTimeOut();
+	AddTask(WORLD_MARKET_STOP_ALL_WEB_SOCKET__, GetNextTime(lCurrentTime, 0, 1, 0));
 }
 
 void CWorldMarket::TaskResetMarket(long lCurrentTime) {
@@ -720,6 +730,22 @@ void CWorldMarket::DisconnectAllWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) gl_pTiingoIEXWebSocket->Disconnect();
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) gl_pTiingoCryptoWebSocket->Disconnect();
 	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) gl_pTiingoForexWebSocket->Disconnect();
+}
+
+void CWorldMarket::StopAllWebSocketIfTimeOut() {
+	if (IsSystemReady()) {
+		if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) {
+			StopFinnhubWebSocketIfTimeOut();
+		}
+		if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) {}
+		StopTiingoCryptoWebSocketIfTimeOut();
+		if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) {
+			StopTiingoIEXWebSocketIfTimeOut();
+		}
+		if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) {
+			StopTiingoForexWebSocketIfTimeOut();
+		}
+	}
 }
 
 void CWorldMarket::StopFinnhubWebSocketIfTimeOut() {

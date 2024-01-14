@@ -58,7 +58,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
+			
 			m_pvMarketStatus = nullptr;
 		}
 
@@ -108,7 +108,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
+			
 
 			m_finnhubMarketStatusProduct.SetMarket(gl_pWorldMarket);
 			m_finnhubMarketStatusProduct.SetIndex(0); // 第一个交易所（AS)

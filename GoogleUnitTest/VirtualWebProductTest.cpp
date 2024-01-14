@@ -71,11 +71,6 @@ namespace FireBirdTest {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const CString strData = _T("{}");
 		pWebData->Test_SetBuffer_(strData);
-		pWebData->SetJSonContentType(false);
-
-		EXPECT_FALSE(pWebData->IsVoidJson());
-
-		pWebData->SetJSonContentType(true);
 
 		EXPECT_TRUE(pWebData->IsVoidJson());
 	}
@@ -84,7 +79,6 @@ namespace FireBirdTest {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const CString strData = _T("{abcdefg}");
 		pWebData->Test_SetBuffer_(strData);
-		pWebData->SetJSonContentType(true);
 
 		EXPECT_FALSE(pWebData->IsVoidJson());
 	}
@@ -93,7 +87,6 @@ namespace FireBirdTest {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const CString strData = _T("{}");
 		pWebData->Test_SetBuffer_(strData);
-		pWebData->SetJSonContentType(true);
 		EXPECT_TRUE(pWebData->IsVoidJson());
 
 		EXPECT_TRUE(webProduct.IsVoidJson(pWebData));
@@ -105,7 +98,6 @@ namespace FireBirdTest {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const CString strData = _T("{abc}");
 		pWebData->Test_SetBuffer_(strData);
-		pWebData->SetJSonContentType(true);
 		EXPECT_FALSE(pWebData->IsVoidJson());
 
 		EXPECT_FALSE(webProduct.IsVoidJson(pWebData));
@@ -135,7 +127,6 @@ namespace FireBirdTest {
 		const CString strData = _T("{\"error1\": \"You don't have access to this resourc.\"}");
 		pWebData->Test_SetBuffer_(strData);
 		pWebData->CreateJson();
-		pWebData->SetJSonContentType(true);
 		pWebData->SetParsed(true);
 
 		EXPECT_FALSE(finnhubWebProduct.CheckInaccessible(pWebData)) << "非拒绝提供信息";
@@ -146,7 +137,6 @@ namespace FireBirdTest {
 		const CString strData = _T("{\"error\": \"You don't have access to this resource.\"}");
 		pWebData->Test_SetBuffer_(strData);
 		pWebData->CreateJson();
-		pWebData->SetJSonContentType(true);
 		pWebData->SetParsed(true);
 		finnhubWebProduct.SetInquiringExchange(_T("US"));
 
@@ -161,7 +151,6 @@ namespace FireBirdTest {
 		const CString strData = _T("{\"error\": \"You don't have access to this resource.\"}");
 		pWebData->Test_SetBuffer_(strData);
 		pWebData->CreateJson();
-		pWebData->SetJSonContentType(true);
 		pWebData->SetParsed(true);
 		finnhubWebProduct.SetInquiringExchange(_T("SZ"));
 		finnhubWebProduct.SetProductType(STOCK_PRICE_CANDLES_);
@@ -181,7 +170,6 @@ namespace FireBirdTest {
 		const CString strData = _T("{\"error\": \"You don't have access to this resource.\"}");
 		pWebData->Test_SetBuffer_(strData);
 		pWebData->CreateJson();
-		pWebData->SetJSonContentType(true);
 		pWebData->SetParsed(true);
 		finnhubWebProduct.SetInquiringExchange(_T("AD"));
 		finnhubWebProduct.SetProductType(STOCK_PRICE_CANDLES_);

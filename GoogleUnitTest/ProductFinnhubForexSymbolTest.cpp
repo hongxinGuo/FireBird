@@ -70,7 +70,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
+			
 			m_pvForexSymbol = nullptr;
 		}
 
@@ -132,7 +132,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
+			
 			m_productFinnhubForexSymbol.SetMarket(gl_pWorldMarket);
 			m_productFinnhubForexSymbol.SetIndex(0);
 		}

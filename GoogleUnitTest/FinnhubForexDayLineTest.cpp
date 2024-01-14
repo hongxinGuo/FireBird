@@ -109,7 +109,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
+			
 		}
 
 		void TearDown() override {
@@ -191,7 +191,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
+			
 			m_finnhubForexDayLine.SetMarket(gl_pWorldMarket);
 			m_finnhubForexDayLine.SetIndex(0);
 		}

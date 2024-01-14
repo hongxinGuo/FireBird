@@ -192,18 +192,19 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 ///        {"msg":"Subscribing to too many symbols","type":"error"}
 /// <param name="pData"></param>
 /// <returns></returns>
+//static ondemand::document docFinnhubWebSocket; // 使用静态变量，确保发生exception时能够读取
 bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(shared_ptr<string> pData) {
 	try {
 		ondemand::parser parser;
-		const simdjson::padded_string jsonPadded(*pData);
-		ondemand::document doc = parser.iterate(jsonPadded);
-		const string_view sType = jsonGetStringView(doc, "type");
+		const padded_string jsonPadded(*pData);
+		ondemand::document docFinnhubWebSocket = parser.iterate(jsonPadded);
+		const string_view sType = jsonGetStringView(docFinnhubWebSocket, "type");
 		if (sType == _T("trade")) { // {"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
-			auto data_array = jsonGetArray(doc, "data");
-			for (auto item : data_array) {
+			auto data_array = jsonGetArray(docFinnhubWebSocket, "data");
+			for (ondemand::value item : data_array) {
 				const auto pFinnhubDataPtr = make_shared<CFinnhubSocket>();
 				auto condition_array = jsonGetArray(item, "c");
-				for (auto condition_item : condition_array) {
+				for (ondemand::value condition_item : condition_array) {
 					const string_view s5 = jsonGetStringView(condition_item);
 					string_view s6 = s5.substr(0, s5.length());
 					string s2(s6);
@@ -223,9 +224,9 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(shared_ptr<string>
 		else if (sType == _T("ping")) {	// ping  {\"type\":\"ping\"}
 		}
 		else if (sType == _T("error")) {// ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
-			string_view message = doc["msg"].get_string();
-			string_view m2 = message.substr(0, message.length());
-			string sMessage(m2);
+			const string_view message = docFinnhubWebSocket["msg"].get_string();
+			const string_view m2 = message.substr(0, message.length());
+			const string sMessage(m2);
 			CString strMessage = "Finnhub WebSocket error message: ";
 			strMessage += sMessage.c_str();
 			gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
@@ -235,7 +236,8 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(shared_ptr<string>
 			return false;
 		}
 	}
-	catch (simdjson::simdjson_error& error) {
+	catch (simdjson_error& error) {
+		//ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), error.what(), docFinnhubWebSocket.current_location().value());
 		ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), error.what());
 		return false;
 	}

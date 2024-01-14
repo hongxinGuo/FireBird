@@ -59,12 +59,10 @@ public:
 	char GetCurrentPosData() const { return m_sDataBuffer.at(m_lCurrentPos); }
 	void SetCurrentPosData(const char cValue) { m_sDataBuffer.at(m_lCurrentPos) = cValue; }
 
-	void SetJSonContentType(const bool fFlag) noexcept { m_fJSonContentType = fFlag; }
-	bool IsJSonContentType() const noexcept { return m_fJSonContentType; }
 	void SetParsed(const bool fFlag) noexcept { m_fParsed = fFlag; }
 	bool IsParsed() const noexcept { return m_fParsed; }
 
-	bool IsVoidJson() const noexcept { return IsJSonContentType() && (m_sDataBuffer == _T("{}")); }
+	bool IsVoidJson() const noexcept { return m_sDataBuffer == _T("{}"); }
 
 	bool CheckNoRightToAccess(const string& sCode = _T("error"), const string& sMessage = _T("You don't have access to this resource.")); // 默认的为finnhub禁止访问标识（目前只有此选项）
 	bool IsNoRightToAccess() const noexcept { return m_fNoRightToAccess; }
@@ -85,7 +83,6 @@ protected:
 	long m_lCurrentParagraphStartPos; // 当前段起始位置
 	string_view m_svCurrentParagraph{}; // 当前段数据
 
-	bool m_fJSonContentType;
 	bool m_fParsed;
 	bool m_fNoRightToAccess; // 该网络数据报告错误
 	CString m_strErrorMessage; // 错误信息

@@ -107,7 +107,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
+
 			m_pvEconomicCalendar = nullptr;
 		}
 
@@ -178,7 +178,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
+
 			m_finnhubEconomicCalendar.SetMarket(gl_pWorldMarket);
 			m_finnhubEconomicCalendar.SetIndex(0);
 		}

@@ -94,7 +94,7 @@ namespace FireBirdTest {
 			m_pStock->SetCountry(_T(""));
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			m_pWebData->SetJSonContentType(true);
+
 			m_FinnhubCompanyNews.SetMarket(gl_pWorldMarket);
 			m_FinnhubCompanyNews.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
 		}
