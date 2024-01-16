@@ -70,7 +70,6 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			EXPECT_FALSE(m_finnhubWebSocket.IsReceivingData());
 
 			FinnhubWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -102,7 +101,6 @@ namespace FireBirdTest {
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_finnhubWebSocket.IsReceivingData());
 			pFinnhubWebSocket = gl_SystemData.PopFinnhubSocket();
 			EXPECT_TRUE(pFinnhubWebSocket->m_sSymbol == _T("AAPL"));
 		//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, _T("")); // Code目前不考虑
@@ -119,7 +117,7 @@ namespace FireBirdTest {
 			break;
 		case 2: // ping
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(m_finnhubWebSocket.GetHeartbeatTime(), 0);
+			EXPECT_EQ(m_finnhubWebSocket.GetHeartbeatTime(), GetUTCTime()) << "收到ping时设置";
 			break;
 		case 3: // json格式错误
 			EXPECT_FALSE(fSucceed);
@@ -139,7 +137,6 @@ namespace FireBirdTest {
 			break;
 		case 6: // 正确,但condition项为空
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_finnhubWebSocket.IsReceivingData());
 			pFinnhubWebSocket = gl_SystemData.PopFinnhubSocket();
 			EXPECT_TRUE(pFinnhubWebSocket->m_sSymbol == _T("AAPL"));
 		//EXPECT_STREQ(pFinnhubWebSocket->m_strCode, _T("")); // Code目前不考虑
@@ -171,7 +168,6 @@ namespace FireBirdTest {
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_finnhubWebSocket.IsReceivingData());
 			pFinnhubWebSocket = gl_SystemData.PopFinnhubSocket();
 			EXPECT_TRUE(pFinnhubWebSocket->m_sSymbol == _T("AAPL"));
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastPrice, 146.76);
@@ -204,7 +200,6 @@ namespace FireBirdTest {
 			break;
 		case 6: // 正确,但condition项为空
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(m_finnhubWebSocket.IsReceivingData());
 			pFinnhubWebSocket = gl_SystemData.PopFinnhubSocket();
 			EXPECT_TRUE(pFinnhubWebSocket->m_sSymbol == _T("AAPL"));
 			EXPECT_DOUBLE_EQ(pFinnhubWebSocket->m_dLastPrice, 146.76);

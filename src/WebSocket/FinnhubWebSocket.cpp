@@ -17,12 +17,7 @@ using std::make_shared;
 
 void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	CString str;
-	if (msg->type == ix::WebSocketMessageType::Error) {
-		gl_pFinnhubWebSocket->SetError(true);
-	}
-	else {
-		gl_pFinnhubWebSocket->SetError(false);
-	}
+	gl_pFinnhubWebSocket->SetError(false);
 	switch (msg->type) {
 	case ix::WebSocketMessageType::Message:
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
@@ -32,6 +27,7 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 		}
 		break;
 	case ix::WebSocketMessageType::Error:
+		gl_pFinnhubWebSocket->SetError(true);
 		str = _T("Finnhub WebSocket Error: ");
 		str += msg->errorInfo.reason.c_str();
 		gl_systemMessage.PushErrorMessage(str);
@@ -72,7 +68,6 @@ UINT ThreadConnectFinnhubWebSocketAndSendMessage(const CFinnhubWebSocketPtr& pDa
 CFinnhubWebSocket::CFinnhubWebSocket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	m_url = _T("wss://ws.finnhub.io");
-	SetSubscriptionStatus(false); // finnhub WebSocket没有注册ID
 }
 
 /// <summary>
@@ -92,7 +87,7 @@ void CFinnhubWebSocket::Send(const vectorString& vSymbol) {
 	ASSERT(IsOpen());
 	for (long l = 0; l < vSymbol.size(); l++) {
 		strMessage = CreateFinnhubWebSocketString(vSymbol.at(l));
-		SendString(strMessage);
+		ix::WebSocketSendInfo info = m_webSocket.send(strMessage);
 		gl_systemMessage.PushInnerSystemInformationMessage(strMessage.c_str());
 	}
 }
@@ -147,15 +142,13 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 					pFinnhubDataPtr->m_dLastVolume = jsonGetDouble(it, _T("v"));
 					pFinnhubDataPtr->m_iSeconds = jsonGetLongLong(it, _T("t"));
 					gl_SystemData.PushFinnhubSocket(pFinnhubDataPtr);
-					m_fReceivingData = true;
 				}
 				m_HeartbeatTime = GetUTCTime();
 			}
-			else if (sType == _T("ping")) {
-				// ping  {\"type\":\"ping\"}
+			else if (sType == _T("ping")) {	// ping  {\"type\":\"ping\"}
+				m_HeartbeatTime = GetUTCTime();
 			}
-			else if (sType == _T("error")) {
-				// ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
+			else if (sType == _T("error")) { // ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
 				sMessage = jsonGetString(&pt, _T("msg"));
 				CString strMessage = "Finnhub WebSocket error message: ";
 				strMessage += sMessage.c_str();
@@ -192,15 +185,15 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 ///        {"msg":"Subscribing to too many symbols","type":"error"}
 /// <param name="pData"></param>
 /// <returns></returns>
-//static ondemand::document docFinnhubWebSocket; // 使用静态变量，确保发生exception时能够读取
-bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(shared_ptr<string> pData) {
+static ondemand::document s_docFinnhubWebSocket; // 使用静态变量以加速解析
+static ondemand::parser s_parserFinnhubWebSocket;// 使用静态变量以加速解析
+bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(const shared_ptr<string>& pData) {
 	try {
-		ondemand::parser parser;
 		const padded_string jsonPadded(*pData);
-		ondemand::document docFinnhubWebSocket = parser.iterate(jsonPadded);
-		const string_view sType = jsonGetStringView(docFinnhubWebSocket, "type");
+		s_docFinnhubWebSocket = s_parserFinnhubWebSocket.iterate(jsonPadded);
+		const string_view sType = jsonGetStringView(s_docFinnhubWebSocket, "type");
 		if (sType == _T("trade")) { // {"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
-			auto data_array = jsonGetArray(docFinnhubWebSocket, "data");
+			auto data_array = jsonGetArray(s_docFinnhubWebSocket, "data");
 			for (ondemand::value item : data_array) {
 				const auto pFinnhubDataPtr = make_shared<CFinnhubSocket>();
 				auto condition_array = jsonGetArray(item, "c");
@@ -217,14 +210,13 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(shared_ptr<string>
 				pFinnhubDataPtr->m_iSeconds = jsonGetInt64(item, "t");
 				pFinnhubDataPtr->m_dLastVolume = jsonGetDouble(item, "v");
 				gl_SystemData.PushFinnhubSocket(pFinnhubDataPtr);
-				m_fReceivingData = true;
 			}
 			m_HeartbeatTime = GetUTCTime();
 		}
 		else if (sType == _T("ping")) {	// ping  {\"type\":\"ping\"}
 		}
 		else if (sType == _T("error")) {// ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
-			const string_view message = docFinnhubWebSocket["msg"].get_string();
+			const string_view message = s_docFinnhubWebSocket["msg"].get_string();
 			const string_view m2 = message.substr(0, message.length());
 			const string sMessage(m2);
 			CString strMessage = "Finnhub WebSocket error message: ";
@@ -237,8 +229,8 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(shared_ptr<string>
 		}
 	}
 	catch (simdjson_error& error) {
-		//ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), error.what(), docFinnhubWebSocket.current_location().value());
-		ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), error.what());
+		ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), error.what(), s_docFinnhubWebSocket.current_location().value());
+		//ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), error.what());
 		return false;
 	}
 

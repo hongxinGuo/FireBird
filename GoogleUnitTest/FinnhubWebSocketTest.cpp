@@ -15,20 +15,24 @@ namespace FireBirdTest {
 	class CFinnhubWebSocketTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -39,30 +43,10 @@ namespace FireBirdTest {
 		EXPECT_STREQ(m_finnhubWebSocket.GetURL().c_str(), _T("wss://ws.finnhub.io"));
 	}
 
-	TEST_F(CFinnhubWebSocketTest, TestSetScriptionStatus) {
-		EXPECT_FALSE(m_finnhubWebSocket.IsSubscriptable());
-		m_finnhubWebSocket.SetSubscriptionStatus(true);
-		EXPECT_TRUE(m_finnhubWebSocket.IsSubscriptable());
-		m_finnhubWebSocket.SetSubscriptionStatus(false);
-		EXPECT_FALSE(m_finnhubWebSocket.IsSubscriptable());
-	}
-
 	TEST_F(CFinnhubWebSocketTest, TestSetSubscriptionId) {
-		EXPECT_FALSE(m_finnhubWebSocket.IsSubscriptable());// 必须设置此标识
-		m_finnhubWebSocket.SetSubscriptionStatus(true);
 		EXPECT_EQ(m_finnhubWebSocket.GetSubscriptionId(), 0);
 		m_finnhubWebSocket.SetSubscriptionId(101010);
 		EXPECT_EQ(m_finnhubWebSocket.GetSubscriptionId(), 101010);
-
-		m_finnhubWebSocket.SetSubscriptionStatus(false);
-	}
-
-	TEST_F(CFinnhubWebSocketTest, TestSetReceivingData) {
-		EXPECT_FALSE(m_finnhubWebSocket.IsReceivingData());
-		m_finnhubWebSocket.SetReceivingData(true);
-		EXPECT_TRUE(m_finnhubWebSocket.IsReceivingData());
-		m_finnhubWebSocket.SetReceivingData(false);
-		EXPECT_FALSE(m_finnhubWebSocket.IsReceivingData());
 	}
 
 	TEST_F(CFinnhubWebSocketTest, TestGetState) {
@@ -108,9 +92,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_finnhubWebSocket.GetSymbolSize(), 0);
 	}
 
-	TEST_F(CFinnhubWebSocketTest, Test3) { }
+	TEST_F(CFinnhubWebSocketTest, Test3) {}
 
-	TEST_F(CFinnhubWebSocketTest, Test4) { }
+	TEST_F(CFinnhubWebSocketTest, Test4) {}
 
-	TEST_F(CFinnhubWebSocketTest, Test5) { }
+	TEST_F(CFinnhubWebSocketTest, Test5) {}
 }

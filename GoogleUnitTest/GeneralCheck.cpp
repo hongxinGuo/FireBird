@@ -187,6 +187,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_qDayLine.Size(), 0);
 	}
 
+	void WebSocketCheck() {
+		EXPECT_FALSE(gl_pFinnhubWebSocket->IsError());
+		EXPECT_FALSE(gl_pTiingoCryptoWebSocket->IsError());
+		EXPECT_FALSE(gl_pTiingoForexWebSocket->IsError());
+		EXPECT_FALSE(gl_pTiingoIEXWebSocket->IsError());
+	}
+
 	void GeneralCheck() {
 		SCOPED_TRACE("");
 
@@ -197,5 +204,6 @@ namespace FireBirdTest {
 		WorldMarketCheck();
 		WebInquirerCheck();
 		DataContainerCheck();
+		WebSocketCheck();
 	}
 }

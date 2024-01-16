@@ -1,5 +1,7 @@
 #pragma once
 
+//extern time_t gl_tUTCTime;
+
 #include"globedef.h"
 
 // 时间转换辅助函数。time_t使用UTC（GMT）标准，其他形式的时间为该市场的标准时间，默认采用东八区标准时间。

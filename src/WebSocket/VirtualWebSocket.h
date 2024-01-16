@@ -3,12 +3,15 @@
 // 使用https://github.com/machinezone/IXWebSocket。
 // 尝试将ixWebSocket变量封装于此类中。此类负责ixWebSocket的初始化。
 //
+// ix::initNetSystem();// 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次，此操作由MainFrame的构造函数完成
+// ix::uninitNetSystem();// 退出系统时，析构IXWebSocket库，且只能析构一次。此操作由MainFrame的析构函数完成
+//
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
 #include <ixwebsocket/IXWebSocket.h>
-
 #include"TemplateMutexAccessQueue.h"
+#include "TimeConvert.h"
 
 using std::string;
 using std::map;
@@ -18,7 +21,7 @@ using vectorString = vector<string>;
 
 class CVirtualWebSocket : public std::enable_shared_from_this<CVirtualWebSocket> {
 public:
-	CVirtualWebSocket(bool fHaveSubscriptionId = true);
+	CVirtualWebSocket();
 	virtual ~CVirtualWebSocket();
 
 	std::shared_ptr<CVirtualWebSocket> GetShared() { return shared_from_this(); }
@@ -29,7 +32,6 @@ public:
 	virtual void Connect() { ASSERT(false); }
 	void Disconnect();
 	virtual void Send(const vectorString&) { ASSERT(FALSE); }
-	auto SendString(const string& strMessage) { return m_webSocket.send(strMessage); }
 
 	virtual void CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) { ASSERT(false); } // 继承类必须实现各自的功能
 
@@ -60,21 +62,8 @@ public:
 	string GetURL() noexcept { return m_url; }
 	void SetURL(const string& url) noexcept { m_url = url; }
 
-	void SetSubscriptionStatus(const bool fFlag) noexcept { m_fHaveSubscriptionId = fFlag; }
-	bool IsSubscriptable() const noexcept { return m_fHaveSubscriptionId; }
-
-	int GetSubscriptionId() const noexcept {
-		ASSERT(m_fHaveSubscriptionId);
-		return m_iSubscriptionId;
-	}
-
-	void SetSubscriptionId(const int iSubscriptionId) noexcept {
-		ASSERT(m_fHaveSubscriptionId);
-		m_iSubscriptionId = iSubscriptionId;
-	}
-
-	bool IsReceivingData() const noexcept { return m_fReceivingData; }
-	void SetReceivingData(const bool fFlag) noexcept { m_fReceivingData = fFlag; }
+	int GetSubscriptionId() const noexcept { return m_iSubscriptionId; }
+	void SetSubscriptionId(const int iSubscriptionId) noexcept { m_iSubscriptionId = iSubscriptionId; }
 
 	time_t GetHeartbeatTime() const noexcept { return m_HeartbeatTime; }
 	void SetHeartbeatTime(const time_t tt) noexcept { m_HeartbeatTime = tt; }
@@ -104,14 +93,11 @@ protected:
 	int m_iStatusCode; // WebSocket返回的状态码。正确：200， 错误：400等。
 	bool m_fError{false};
 	string m_statusMessage; // 正确时为状态信息，错误时为错误信息。
-	bool m_fHaveSubscriptionId;
 	int m_iSubscriptionId;
+
 	vectorString m_vSymbol;
 	map<string, size_t> m_mapSymbol;
 
-	string m_inputMessage;
-
-	bool m_fReceivingData; // 正在接收数据
 	time_t m_HeartbeatTime; // 最新心跳时间， UTC制式
 
 	CTemplateMutexAccessQueue<string> m_qWebSocketData; // 接收到的WebSocket数据

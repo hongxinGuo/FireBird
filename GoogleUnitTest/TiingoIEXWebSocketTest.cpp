@@ -10,20 +10,24 @@ namespace FireBirdTest {
 	class CTiingoIEXWebSocketTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -34,16 +38,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(gl_pTiingoIEXWebSocket->GetURL().c_str(), _T("wss://api.tiingo.com/iex"));
 	}
 
-	TEST_F(CTiingoIEXWebSocketTest, TestSetScriptionStatus) {
-		EXPECT_TRUE(gl_pTiingoIEXWebSocket->IsSubscriptable());
-		gl_pTiingoIEXWebSocket->SetSubscriptionStatus(false);
-		EXPECT_FALSE(gl_pTiingoIEXWebSocket->IsSubscriptable());
-		gl_pTiingoIEXWebSocket->SetSubscriptionStatus(true);
-		EXPECT_TRUE(gl_pTiingoIEXWebSocket->IsSubscriptable());
-	}
-
 	TEST_F(CTiingoIEXWebSocketTest, TestSetSubscriptionId) {
-		EXPECT_TRUE(gl_pTiingoIEXWebSocket->IsSubscriptable());// 必须设置此标识
 		EXPECT_EQ(gl_pTiingoIEXWebSocket->GetSubscriptionId(), 0);
 		gl_pTiingoIEXWebSocket->SetSubscriptionId(101010);
 		EXPECT_EQ(gl_pTiingoIEXWebSocket->GetSubscriptionId(), 101010);

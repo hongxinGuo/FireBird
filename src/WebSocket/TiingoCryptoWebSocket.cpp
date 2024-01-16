@@ -11,6 +11,7 @@
 using namespace std;
 
 void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
+	gl_pTiingoCryptoWebSocket->SetError(false);
 	switch (msg->type) {
 	case ix::WebSocketMessageType::Message:
 		// 当系统退出时，停止接收WebSocket的过程需要时间，在此期间此回调函数继续执行，而存储器已经析构了，导致出现内存泄漏。
@@ -20,6 +21,7 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 		}
 		break;
 	case ix::WebSocketMessageType::Error:
+		gl_pTiingoCryptoWebSocket->SetError(true);
 		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason.c_str());
 		break;
 	case ix::WebSocketMessageType::Open:
@@ -83,7 +85,7 @@ void CTiingoCryptoWebSocket::Send(const vectorString& vSymbol) {
 
 	ASSERT(IsOpen());
 
-	ix::WebSocketSendInfo info = SendString(messageAuth);
+	ix::WebSocketSendInfo info = m_webSocket.send(messageAuth);
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
 }
 
@@ -175,6 +177,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				js3 = jsonGetChild(&js, _T("response"));
 				m_iStatusCode = js3.at(_T("code"));
 				m_statusMessage = js3.at(_T("message"));
+				m_HeartbeatTime = GetUTCTime();
 				break;
 			case 'A': // new data
 				pCryptoData = make_shared<CTiingoCryptoSocket>();
@@ -209,7 +212,6 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					return false;
 				}
 				gl_SystemData.PushTiingoCryptoSocket(pCryptoData);
-				m_fReceivingData = true;
 				m_HeartbeatTime = GetUTCTime();
 				break;
 			case 'E':  //error message {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}

@@ -68,7 +68,6 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			EXPECT_FALSE(tiingoForexWebSocket.IsReceivingData());
 			TiingoWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
@@ -103,7 +102,6 @@ namespace FireBirdTest {
 		switch (m_lIndex) {
 		case 1: // 正确
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(tiingoForexWebSocket.IsReceivingData());
 			pForex = gl_SystemData.PopTiingoForexSocket();
 			EXPECT_EQ(pForex->m_chMessageType, 'Q');
 			EXPECT_TRUE(pForex->m_sSymbol == _T("eurnok"));
@@ -116,7 +114,6 @@ namespace FireBirdTest {
 			break;
 		case 2: // 正确
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(tiingoForexWebSocket.IsReceivingData());
 			pForex = gl_SystemData.PopTiingoForexSocket();
 			break;
 		case 6: //
@@ -133,7 +130,7 @@ namespace FireBirdTest {
 			break;
 		case 10: // heart beat
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(tiingoForexWebSocket.GetHeartbeatTime(), 0);
+			EXPECT_EQ(tiingoForexWebSocket.GetHeartbeatTime(), GetUTCTime()) << "收到ping时设置";
 			break;
 		case 11: // authentication
 			EXPECT_TRUE(fSucceed);
@@ -183,7 +180,6 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			EXPECT_FALSE(tiingoCryptoWebSocket.IsReceivingData());
 			TiingoWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
@@ -207,8 +203,7 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoCryptoWebSocketData1, ProcessOneTiingoCryptoWebSocketDataTest,
-	                         testing::Values(&tiingoCryptoData1, &tiingoCryptoData2, &tiingoCryptoData3, &
-		                         tiingoCryptoData4, &tiingoCryptoData5,
+	                         testing::Values(&tiingoCryptoData1, &tiingoCryptoData2, &tiingoCryptoData3, &tiingoCryptoData4, &tiingoCryptoData5,
 		                         &tiingoCryptoData6, &tiingoCryptoData7, &tiingoCryptoData9, &tiingoCryptoData10, &tiingoCryptoData11));
 
 	TEST_P(ProcessOneTiingoCryptoWebSocketDataTest, TestProcessOneTiingoCryptoWebSocketData0) {
@@ -218,7 +213,6 @@ namespace FireBirdTest {
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(tiingoCryptoWebSocket.IsReceivingData());
 			pCrypto = gl_SystemData.PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'Q');
 			EXPECT_TRUE(pCrypto->m_strExchange == _T("bitfinex"));
@@ -234,7 +228,6 @@ namespace FireBirdTest {
 			break;
 		case 2: // 正确 T
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(tiingoCryptoWebSocket.IsReceivingData());
 			pCrypto = gl_SystemData.PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'T');
 			EXPECT_TRUE(pCrypto->m_strExchange == _T("binance"));
@@ -249,7 +242,7 @@ namespace FireBirdTest {
 			break;
 		case 3: // 正确 heart beat
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(tiingoCryptoWebSocket.GetHeartbeatTime(), 0);
+			EXPECT_EQ(tiingoCryptoWebSocket.GetHeartbeatTime(), GetUTCTime()) << "收到ping时设置";
 			break;
 		case 4: // 正确 authentication
 			EXPECT_TRUE(fSucceed);
@@ -321,7 +314,6 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			EXPECT_FALSE(tiingoIEXWebSocket.IsReceivingData());
 
 			TiingoWebSocketData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
@@ -357,7 +349,6 @@ namespace FireBirdTest {
 		switch (m_lIndex) {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
-			EXPECT_TRUE(tiingoIEXWebSocket.IsReceivingData());
 			pTiingoIEX = gl_SystemData.PopTiingoIEXSocket();
 			EXPECT_EQ(pTiingoIEX->m_iNanoseconds, 1548873225383129126);
 			EXPECT_TRUE(pTiingoIEX->m_sSymbol == _T("vym"));
@@ -398,7 +389,7 @@ namespace FireBirdTest {
 			break;
 		case 4: // Heart beat
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(tiingoIEXWebSocket.GetHeartbeatTime(), 0);
+			EXPECT_EQ(tiingoIEXWebSocket.GetHeartbeatTime(), GetUTCTime()) << "收到ping时设置";
 			break;
 		case 5: //
 			EXPECT_FALSE(fSucceed);

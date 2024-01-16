@@ -11,8 +11,7 @@ using namespace std;
 #include<gsl/gsl>
 using namespace gsl;
 
-CVirtualWebSocket::CVirtualWebSocket(bool fHaveSubscription) {
-	m_fHaveSubscriptionId = fHaveSubscription;
+CVirtualWebSocket::CVirtualWebSocket() {
 	m_iSubscriptionId = 0;
 	m_url = _T("");
 	m_vSymbol.resize(0);
@@ -27,7 +26,6 @@ CVirtualWebSocket::~CVirtualWebSocket() {
 
 void CVirtualWebSocket::Reset() {
 	m_iSubscriptionId = 0;
-	m_fReceivingData = false;
 	m_HeartbeatTime = 0;
 }
 
@@ -92,7 +90,7 @@ bool CVirtualWebSocket::IsIdle(time_t tPeriod) const {
 void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {
 	ix::SocketTLSOptions TLSOption;
 
-	ASSERT(GetState() == ix::ReadyState::Closed);
+	ASSERT(IsClosed());
 	TLSOption.tls = true;
 	m_webSocket.setTLSOptions(TLSOption);
 
@@ -117,10 +115,10 @@ void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallbac
 }
 
 void CVirtualWebSocket::Disconnect() {
-	if (GetState() != ix::ReadyState::Closed) {
+	if (!IsClosed()) {
 		StopWebSocket();
 	}
-	while (GetState() != ix::ReadyState::Closed) Sleep(1);
+	while (!IsClosed()) Sleep(1);
 	m_iSubscriptionId = 0;
 }
 
@@ -142,7 +140,7 @@ bool CVirtualWebSocket::CreateThreadDisconnectWebSocket() {
 }
 
 bool CVirtualWebSocket::DisconnectWithoutWaitingSucceed() {
-	if (GetState() != ix::ReadyState::Closed) {
+	if (!IsClosed()) {
 		StopWebSocket();
 	}
 	m_iSubscriptionId = 0;
