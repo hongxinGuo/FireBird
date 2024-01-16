@@ -40,9 +40,8 @@ CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomic
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
 	string s;
 
-	if (!pWebData->IsParsed()) {
-		if (!pWebData->CreateJson()) return pvEconomicCalendar;
-	}
+	ASSERT(!pWebData->IsParsed());
+	if (!pWebData->CreateJson()) return pvEconomicCalendar;
 	if (!IsValidData(pWebData)) return pvEconomicCalendar;
 
 	const auto pjs = pWebData->GetJSon();

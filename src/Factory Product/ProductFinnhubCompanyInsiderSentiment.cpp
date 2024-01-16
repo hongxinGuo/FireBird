@@ -71,9 +71,8 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 	string stockSymbol;
 	CInsiderSentimentPtr pInsiderSentiment = nullptr;
 
-	if (!pWebData->IsParsed()) {
-		if (!pWebData->CreateJson()) return pvInsiderSentiment;
-	}
+	ASSERT(!pWebData->IsParsed());
+	if (!pWebData->CreateJson()) return pvInsiderSentiment;
 	if (!IsValidData(pWebData)) return pvInsiderSentiment;
 
 	const auto pjs = pWebData->GetJSon();

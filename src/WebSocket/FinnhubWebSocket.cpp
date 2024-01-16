@@ -52,18 +52,6 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectFinnhubWebSocketAndSendMessage(const CFinnhubWebSocketPtr& pDataFinnhubWebSocket, const vectorString& vSymbol) {
-	static bool s_fConnecting = false;
-	if (!s_fConnecting) {
-		s_fConnecting = true;
-		if (pDataFinnhubWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("¿ªÆôFinnhub web socket·þÎñ"));
-		}
-		s_fConnecting = false;
-	}
-	return 70;
-}
-
 CFinnhubWebSocket::CFinnhubWebSocket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	m_url = _T("wss://ws.finnhub.io");
@@ -100,11 +88,6 @@ string CFinnhubWebSocket::CreateFinnhubWebSocketString(string sSymbol) {
 	symbol["type"] = _T("subscribe");
 	symbol["symbol"] = sSymbol;
 	return symbol.dump();
-}
-
-void CFinnhubWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
-	thread thread1(ThreadConnectFinnhubWebSocketAndSendMessage, gl_pFinnhubWebSocket, vSymbol);
-	thread1.detach();
 }
 
 /// <summary>
@@ -145,7 +128,6 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 				m_HeartbeatTime = GetUTCTime();
 			}
 			else if (sType == _T("ping")) {	// ping  {\"type\":\"ping\"}
-				m_HeartbeatTime = GetUTCTime();
 			}
 			else if (sType == _T("error")) { // ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
 				sMessage = jsonGetString(&pt, _T("msg"));

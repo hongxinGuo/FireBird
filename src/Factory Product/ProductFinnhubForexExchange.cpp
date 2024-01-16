@@ -37,9 +37,8 @@ shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExcha
 	CString str = _T("");
 	string sError;
 
-	if (!pWebData->IsParsed()) {
-		if (!pWebData->CreateJson()) return pvExchange;
-	}
+	ASSERT(!pWebData->IsParsed());
+	if (!pWebData->CreateJson()) return pvExchange;
 	if (!IsValidData(pWebData)) return pvExchange;
 
 	const auto pjs = pWebData->GetJSon();

@@ -80,8 +80,8 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
+			m_finnhubForexExchange.CheckAccessRight(m_pWebData);
+
 			m_pvExchange = nullptr;
 		}
 
@@ -135,8 +135,8 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
+			m_finnhubForexExchange.CheckAccessRight(m_pWebData);
+
 			m_finnhubForexExchange.SetMarket(gl_pWorldMarket);
 			EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateForexExchange());
 			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 11) << "最初装载了11个";

@@ -71,8 +71,6 @@ namespace FireBirdTest {
 			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
 		}
 
 		void TearDown() override {
@@ -123,8 +121,6 @@ namespace FireBirdTest {
 			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
 		}
 
 		void TearDown() override {
@@ -175,8 +171,7 @@ namespace FireBirdTest {
 			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
+
 			m_tiingoCryptoSymbolProduct.SetMarket(gl_pWorldMarket);
 		}
 

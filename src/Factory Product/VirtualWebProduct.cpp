@@ -36,8 +36,6 @@ bool CVirtualWebProduct::IsVoidJson(const CWebDataPtr& pWebData) {
 bool CVirtualWebProduct::CheckInaccessible(const CWebDataPtr& pWebData) {
 	static int s_iCounter = 0; // 当交易所为美国时，使用此计数器来判断是否将美国交易所添加进限制名单
 
-	if (!pWebData->IsParsed()) return false;
-
 	CheckAccessRight(pWebData);
 	if (!IsNoRightToAccess()) {
 		s_iCounter = 0;

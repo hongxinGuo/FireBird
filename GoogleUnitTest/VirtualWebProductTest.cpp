@@ -124,7 +124,7 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible2) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const CString strData = _T("{\"error1\": \"You don't have access to this resourc.\"}");
+		const CString strData = _T("{\"error1\":\"You don't have access to this resourc.\"}");
 		pWebData->Test_SetBuffer_(strData);
 		pWebData->CreateJson();
 		pWebData->SetParsed(true);
@@ -134,10 +134,8 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible3) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const CString strData = _T("{\"error\": \"You don't have access to this resource.\"}");
+		const CString strData = _T("{\"error\":\"You don't have access to this resource.\"}");
 		pWebData->Test_SetBuffer_(strData);
-		pWebData->CreateJson();
-		pWebData->SetParsed(true);
 		finnhubWebProduct.SetInquiringExchange(_T("US"));
 
 		EXPECT_FALSE(finnhubWebProduct.CheckInaccessible(pWebData)) << "US交易所";
@@ -148,10 +146,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, _T("SZ"))) << "未加入SZ交易所";
 
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const CString strData = _T("{\"error\": \"You don't have access to this resource.\"}");
+		const CString strData = _T("{\"error\":\"You don't have access to this resource.\"}");
 		pWebData->Test_SetBuffer_(strData);
-		pWebData->CreateJson();
-		pWebData->SetParsed(true);
 		finnhubWebProduct.SetInquiringExchange(_T("SZ"));
 		finnhubWebProduct.SetProductType(STOCK_PRICE_CANDLES_);
 
@@ -167,7 +163,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, _T("US"))) << "未加入US交易所";
 
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const CString strData = _T("{\"error\": \"You don't have access to this resource.\"}");
+		const CString strData = _T("{\"error\":\"You don't have access to this resource.\"}");
 		pWebData->Test_SetBuffer_(strData);
 		pWebData->CreateJson();
 		pWebData->SetParsed(true);

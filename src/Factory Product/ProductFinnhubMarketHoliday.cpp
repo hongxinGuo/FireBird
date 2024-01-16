@@ -61,9 +61,8 @@ CMarketHolidayVectorPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(
 	long year, month, day;
 	CString sExchange, sTimeZone;
 
-	if (!pWebData->IsParsed()) {
-		if (!pWebData->CreateJson()) return pvHoliday;
-	}
+	ASSERT(!pWebData->IsParsed());
+	if (!pWebData->CreateJson()) return pvHoliday;
 	if (!IsValidData(pWebData)) return pvHoliday;
 
 	const auto pjs = pWebData->GetJSon();

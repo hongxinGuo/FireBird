@@ -252,22 +252,22 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CFinnhubWebSocket::Connect</Function>
 								<Function>CFinnhubWebSocket::Send</Function>
 								<Function>CFinnhubWebSocket::CreateThreadConnectWebSocket</Function>
-	              <Function>CFinnhubWebSocket::CreateThreadConnectWebSocketAndSendMessage</Function>
+	              <Function>CFinnhubWebSocket::CreateThreadConnectAndSendMessage</Function>
 
 								<Function>CTiingoForexWebSocket::Connect</Function>
 								<Function>CTiingoForexWebSocket::Send</Function>
 								<Function>CTiingoForexWebSocket::CreateThreadConnectWebSocket</Function>
-	              <Function>CTiingoForexWebSocket::CreateThreadConnectWebSocketAndSendMessage</Function>
+	              <Function>CTiingoForexWebSocket::CreateThreadConnectAndSendMessage</Function>
 
 								<Function>CTiingoCryptoWebSocket::Connect</Function>
 	              <Function>CTiingoCryptoWebSocket::Send</Function>
 								<Function>CTiingoCryptoWebSocket::CreateThreadConnectWebSocket</Function>
-	              <Function>CTiingoCryptoWebSocket::CreateThreadConnectWebSocketAndSendMessage</Function>
+	              <Function>CTiingoCryptoWebSocket::CreateThreadConnectAndSendMessage</Function>
 
 								<Function>CTiingoIEXWebSocket::Connect</Function>
 	              <Function>CTiingoIEXWebSocket::Send</Function>
 								<Function>CTiingoIEXWebSocket::CreateThreadConnectWebSocket</Function>
-	              <Function>CTiingoIEXWebSocket::CreateThreadConnectWebSocketAndSendMessage</Function>
+	              <Function>CTiingoIEXWebSocket::CreateThreadConnectAndSendMessage</Function>
 
 							</Exclude>
             </Functions>

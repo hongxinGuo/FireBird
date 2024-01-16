@@ -40,7 +40,7 @@ namespace FireBirdTest {
 	protected:
 	};
 
-	TEST_F(CMockVirtualWebSocketTest, TestConnectWebSocketAndSendMessage1) {
+	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage1) {
 		vectorString vSymbol;
 		vSymbol.push_back(_T("A"));
 		vSymbol.push_back(_T("AAPL"));
@@ -53,11 +53,11 @@ namespace FireBirdTest {
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Connect).Times(1);
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Send(vSymbol)).Times(1);
 
-		EXPECT_TRUE(gl_pMockVirtualWebSocket->ConnectWebSocketAndSendMessage(vSymbol));
+		EXPECT_TRUE(gl_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0);
 	}
 
-	TEST_F(CMockVirtualWebSocketTest, TestConnectWebSocketAndSendMessage2) {
+	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage2) {
 		vectorString vSymbol;
 		vSymbol.push_back(_T("A"));
 		vSymbol.push_back(_T("AAPL"));
@@ -70,11 +70,11 @@ namespace FireBirdTest {
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Connect).Times(1);
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Send(vSymbol)).Times(1);
 
-		EXPECT_TRUE(gl_pMockVirtualWebSocket->ConnectWebSocketAndSendMessage(vSymbol));
+		EXPECT_TRUE(gl_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0);
 	}
 
-	TEST_F(CMockVirtualWebSocketTest, TestConnectWebSocketAndSendMessage3) {
+	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage3) {
 		exception e(_T("Test Message"));
 		vectorString vSymbol;
 		vSymbol.push_back(_T("A"));
@@ -88,12 +88,12 @@ namespace FireBirdTest {
 		.WillOnce(Throw(e));
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Send(_)).Times(0);
 
-		EXPECT_FALSE(gl_pMockVirtualWebSocket->ConnectWebSocketAndSendMessage(vSymbol));
+		EXPECT_FALSE(gl_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("Test Message"));
 	}
 
-	TEST_F(CMockVirtualWebSocketTest, TestConnectWebSocketAndSendMessage4) {
+	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage4) {
 		exception e(_T("Test Message"));
 		vectorString vSymbol;
 		vSymbol.push_back(_T("A"));
@@ -106,12 +106,12 @@ namespace FireBirdTest {
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Connect).Times(0);
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Send(_)).Times(0);
 
-		EXPECT_FALSE(gl_pMockVirtualWebSocket->ConnectWebSocketAndSendMessage(vSymbol));
+		EXPECT_FALSE(gl_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("Test Message"));
 	}
 
-	TEST_F(CMockVirtualWebSocketTest, TestConnectWebSocketAndSendMessage5) {
+	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage5) {
 		exception e(_T("Test Message"));
 		vectorString vSymbol, vSymbol2;
 		vSymbol.push_back(_T("A"));
@@ -126,7 +126,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Send(vSymbol)).Times(1)
 		.WillOnce(Throw(e));
 
-		EXPECT_FALSE(gl_pMockVirtualWebSocket->ConnectWebSocketAndSendMessage(vSymbol));
+		EXPECT_FALSE(gl_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("Test Message"));
 	}
@@ -154,21 +154,5 @@ namespace FireBirdTest {
 		gl_pMockVirtualWebSocket->Disconnect();
 
 		EXPECT_EQ(gl_pMockVirtualWebSocket->GetSubscriptionId(), 0);
-	}
-
-	TEST_F(CMockVirtualWebSocketTest, TestDisconnectWithoutWaitingSucceed1) {
-		EXPECT_CALL(*gl_pMockVirtualWebSocket, GetState).Times(1)
-		.WillOnce(Return(ix::ReadyState::Open));
-		EXPECT_CALL(*gl_pMockVirtualWebSocket, StopWebSocket).Times(1);
-
-		EXPECT_TRUE(gl_pMockVirtualWebSocket->DisconnectWithoutWaitingSucceed());
-	}
-
-	TEST_F(CMockVirtualWebSocketTest, TestDisconnectWithoutWaitingSucceed2) {
-		EXPECT_CALL(*gl_pMockVirtualWebSocket, GetState).Times(1)
-		.WillOnce(Return(ix::ReadyState::Closed));
-		EXPECT_CALL(*gl_pMockVirtualWebSocket, StopWebSocket).Times(0);
-
-		EXPECT_TRUE(gl_pMockVirtualWebSocket->DisconnectWithoutWaitingSucceed());
 	}
 }

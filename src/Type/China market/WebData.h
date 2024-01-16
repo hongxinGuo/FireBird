@@ -64,9 +64,6 @@ public:
 
 	bool IsVoidJson() const noexcept { return m_sDataBuffer == _T("{}"); }
 
-	bool CheckNoRightToAccess(const string& sCode = _T("error"), const string& sMessage = _T("You don't have access to this resource.")); // 默认的为finnhub禁止访问标识（目前只有此选项）
-	bool IsNoRightToAccess() const noexcept { return m_fNoRightToAccess; }
-
 	// 使用Nlohmann json将数据转换为json格式。
 	bool CreateJson(long lBeginPos = 0, long lEndPos = 0);
 	json* GetJSon() { return &m_js; }
@@ -84,7 +81,6 @@ protected:
 	string_view m_svCurrentParagraph{}; // 当前段数据
 
 	bool m_fParsed;
-	bool m_fNoRightToAccess; // 该网络数据报告错误
 	CString m_strErrorMessage; // 错误信息
 };
 

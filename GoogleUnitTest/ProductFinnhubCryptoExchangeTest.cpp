@@ -75,8 +75,8 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
+			m_finnhubCryptoExchange.CheckAccessRight(m_pWebData);
+
 			m_pvExchange = nullptr;
 		}
 
@@ -129,8 +129,8 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
+			m_finnhubCryptoExchange.CheckAccessRight(m_pWebData);
+
 			m_finnhubCryptoExchange.SetMarket(gl_pWorldMarket);
 			EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCryptoExchange());
 			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 15) << "最初装载了15个";

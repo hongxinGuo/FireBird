@@ -129,18 +129,18 @@ namespace FireBirdTest {
 			break;
 		case 10: // heart beat
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(tiingoForexWebSocket.GetHeartbeatTime(), GetUTCTime()) << "收到ping时设置";
+			EXPECT_EQ(tiingoForexWebSocket.GetHeartbeatTime(), 0);
 			break;
 		case 11: // authentication
 			EXPECT_TRUE(fSucceed);
 			break;
 		case 12: // subscribe
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(tiingoForexWebSocket.m_vCurrentSymbol.size(), 4);
-			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentSymbol.at(0) == _T("*"));
-			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentSymbol.at(1) == _T("FXCM:EUR/USD"));
-			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentSymbol.at(2) == _T("IC MARKETS:2"));
-			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentSymbol.at(3) == _T("OANDA:USD_JPY"));
+			EXPECT_EQ(tiingoForexWebSocket.m_vCurrentInquireSymbol.size(), 4);
+			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentInquireSymbol.at(0) == _T("*"));
+			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentInquireSymbol.at(1) == _T("FXCM:EUR/USD"));
+			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentInquireSymbol.at(2) == _T("IC MARKETS:2"));
+			EXPECT_TRUE(tiingoForexWebSocket.m_vCurrentInquireSymbol.at(3) == _T("OANDA:USD_JPY"));
 			break;
 		case 13: // error message
 			EXPECT_TRUE(fSucceed);
@@ -241,7 +241,7 @@ namespace FireBirdTest {
 			break;
 		case 3: // 正确 heart beat
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(tiingoCryptoWebSocket.GetHeartbeatTime(), GetUTCTime()) << "收到ping时设置";
+			EXPECT_EQ(tiingoCryptoWebSocket.GetHeartbeatTime(), 0);
 			break;
 		case 4: // 正确 authentication
 			EXPECT_TRUE(fSucceed);
@@ -260,11 +260,11 @@ namespace FireBirdTest {
 			break;
 		case 10: // subscribe
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(tiingoCryptoWebSocket.m_vCurrentSymbol.size(), 4);
-			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentSymbol.at(0) == _T("*"));
-			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentSymbol.at(1) == _T("BINANCE:IDEXBUSD"));
-			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentSymbol.at(2) == _T("BITTREX:USDT-ADA"));
-			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentSymbol.at(3) == _T("HITBTC:XRPEOS"));
+			EXPECT_EQ(tiingoCryptoWebSocket.m_vCurrentInquireSymbol.size(), 4);
+			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentInquireSymbol.at(0) == _T("*"));
+			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentInquireSymbol.at(1) == _T("BINANCE:IDEXBUSD"));
+			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentInquireSymbol.at(2) == _T("BITTREX:USDT-ADA"));
+			EXPECT_TRUE(tiingoCryptoWebSocket.m_vCurrentInquireSymbol.at(3) == _T("HITBTC:XRPEOS"));
 			break;
 		case 11: // error message
 			EXPECT_TRUE(fSucceed);
@@ -318,7 +318,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = nullptr;
 			m_pWebData = make_shared<string>(pData->m_pData);
-			EXPECT_EQ(tiingoIEXWebSocket.m_vCurrentSymbol.size(), 0);
+			EXPECT_EQ(tiingoIEXWebSocket.m_vCurrentInquireSymbol.size(), 0);
 		}
 
 		void TearDown() override {
@@ -388,7 +388,7 @@ namespace FireBirdTest {
 			break;
 		case 4: // Heart beat
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(tiingoIEXWebSocket.GetHeartbeatTime(), GetUTCTime()) << "收到ping时设置";
+			EXPECT_EQ(tiingoIEXWebSocket.GetHeartbeatTime(), 0) << "收到ping时不设置";
 			break;
 		case 5: //
 			EXPECT_FALSE(fSucceed);
@@ -411,11 +411,11 @@ namespace FireBirdTest {
 			break;
 		case 10: // subscribe
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(tiingoIEXWebSocket.m_vCurrentSymbol.size(), 4);
-			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentSymbol.at(0) == _T("*"));
-			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentSymbol.at(1) == _T("uso"));
-			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentSymbol.at(2) == _T("msft"));
-			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentSymbol.at(3) == _T("tnk"));
+			EXPECT_EQ(tiingoIEXWebSocket.m_vCurrentInquireSymbol.size(), 4);
+			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentInquireSymbol.at(0) == _T("*"));
+			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentInquireSymbol.at(1) == _T("uso"));
+			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentInquireSymbol.at(2) == _T("msft"));
+			EXPECT_TRUE(tiingoIEXWebSocket.m_vCurrentInquireSymbol.at(3) == _T("tnk"));
 			break;
 		case 11: // error message
 			EXPECT_TRUE(fSucceed);

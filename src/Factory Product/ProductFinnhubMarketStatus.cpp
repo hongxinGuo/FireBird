@@ -52,9 +52,8 @@ CMarketStatusVectorPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(con
 	CMarketStatusPtr pMarketStatus = nullptr;
 	string s, sError;
 
-	if (!pWebData->IsParsed()) {
-		if (!pWebData->CreateJson()) return pvMarketStatus;
-	}
+	ASSERT(!pWebData->IsParsed());
+	if (!pWebData->CreateJson()) return pvMarketStatus;
 	if (!IsValidData(pWebData)) return pvMarketStatus;
 
 	const auto pjs = pWebData->GetJSon();

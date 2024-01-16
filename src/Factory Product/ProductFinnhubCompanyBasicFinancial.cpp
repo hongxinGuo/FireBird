@@ -252,9 +252,8 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 	ptMetric.clear();
 	ptSeries.clear();
 
-	if (!pWebData->IsParsed()) {
-		if (!pWebData->CreateJson()) return pBasicFinancial;
-	}
+	ASSERT(!pWebData->IsParsed());
+	if (!pWebData->CreateJson()) return pBasicFinancial;
 	if (!IsValidData(pWebData)) return pBasicFinancial;
 
 	pBasicFinancial = std::make_shared<CFinnhubStockBasicFinancial>();

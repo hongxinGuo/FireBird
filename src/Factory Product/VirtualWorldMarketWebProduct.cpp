@@ -5,7 +5,7 @@
 
 using std::dynamic_pointer_cast;
 
-shared_ptr<CWorldMarket> CVirtualWorldMarketWebProduct::GetMarket() const noexcept {
+CWorldMarketPtr CVirtualWorldMarketWebProduct::GetMarket() const noexcept {
 	if (const CVirtualMarketPtr p = m_pMarket.lock()) {
 		return dynamic_pointer_cast<CWorldMarket>(p);
 	}

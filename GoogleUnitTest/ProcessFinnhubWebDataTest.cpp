@@ -116,7 +116,7 @@ namespace FireBirdTest {
 			break;
 		case 2: // ping
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(m_finnhubWebSocket.GetHeartbeatTime(), GetUTCTime()) << "收到ping时设置";
+			EXPECT_EQ(m_finnhubWebSocket.GetHeartbeatTime(), 0) << "收到ping时不设置";
 			break;
 		case 3: // json格式错误
 			EXPECT_FALSE(fSucceed);

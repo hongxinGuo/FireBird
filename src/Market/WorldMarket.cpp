@@ -694,28 +694,28 @@ void CWorldMarket::StartAllWebSocket() {
 
 void CWorldMarket::StartFinnhubWebSocket() {
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket() && !gl_pFinnhubDataSource->IsTimeout()) {
-		gl_pFinnhubWebSocket->CreateThreadConnectWebSocketAndSendMessage(GetFinnhubWebSocketSymbolVector());
+		gl_pFinnhubWebSocket->CreateThreadConnectAndSendMessage(GetFinnhubWebSocketSymbolVector());
 		gl_pFinnhubWebSocket->SetHeartbeatTime(GetUTCTime());
 	}
 }
 
 void CWorldMarket::StartTiingoIEXWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
-		gl_pTiingoIEXWebSocket->CreateThreadConnectWebSocketAndSendMessage(gl_dataContainerChosenWorldStock.GetSymbolVector());
+		gl_pTiingoIEXWebSocket->CreateThreadConnectAndSendMessage(gl_dataContainerChosenWorldStock.GetSymbolVector());
 		gl_pTiingoIEXWebSocket->SetHeartbeatTime(GetUTCTime());
 	}
 }
 
 void CWorldMarket::StartTiingoCryptoWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
-		gl_pTiingoCryptoWebSocket->CreateThreadConnectWebSocketAndSendMessage(gl_dataContainerChosenWorldCrypto.GetSymbolVector());
+		gl_pTiingoCryptoWebSocket->CreateThreadConnectAndSendMessage(gl_dataContainerChosenWorldCrypto.GetSymbolVector());
 		gl_pTiingoCryptoWebSocket->SetHeartbeatTime(GetUTCTime());
 	}
 }
 
 void CWorldMarket::StartTiingoForexWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
-		gl_pTiingoForexWebSocket->CreateThreadConnectWebSocketAndSendMessage(gl_dataContainerChosenWorldForex.GetSymbolVector());
+		gl_pTiingoForexWebSocket->CreateThreadConnectAndSendMessage(gl_dataContainerChosenWorldForex.GetSymbolVector());
 		gl_pTiingoForexWebSocket->SetHeartbeatTime(GetUTCTime());
 	}
 }

@@ -7,10 +7,12 @@
 using std::out_of_range;
 
 bool CProductFinnhub::CheckAccessRight(CWebDataPtr pWebData) {
-	if (pWebData->CheckNoRightToAccess()) {
+	const string s(pWebData->GetStringView(0, pWebData->GetBufferLength()));
+	if (s == _T("{\"error\":\"You don't have access to this resource.\"}")) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return false;
 	}
+	if (IsNoRightToAccess()) m_iReceivedDataStatus = 0;
 	return true;
 }
 
@@ -42,7 +44,7 @@ bool CProductFinnhub::IsValidData(const CWebDataPtr& pWebData) {
 		m_iReceivedDataStatus = VOID_DATA_;
 		return false;
 	}
-	if (pWebData->CheckNoRightToAccess()) {
+	if (!CheckAccessRight(pWebData)) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return false;
 	}

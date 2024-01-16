@@ -43,19 +43,6 @@ void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectTiingoIEXWebSocketAndSendMessage(const not_null<CTiingoIEXWebSocketPtr>& pDataTiingoIEXWebSocket, const vectorString& vSymbol) {
-	static bool s_fConnecting = false;
-	if (!s_fConnecting) {
-		s_fConnecting = true;
-		if (pDataTiingoIEXWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo IEX web socket服务"));
-		}
-		s_fConnecting = false;
-	}
-
-	return 71;
-}
-
 CTiingoIEXWebSocket::CTiingoIEXWebSocket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	m_url = _T("wss://api.tiingo.com/iex");
@@ -110,11 +97,6 @@ string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
 	jsonMessage["eventData"]["tickers"].emplace_back(_T("uso"));// tiingo使用的stock符号与finnhub不同
 
 	return jsonMessage.dump();
-}
-
-void CTiingoIEXWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
-	thread thread1(ThreadConnectTiingoIEXWebSocketAndSendMessage, gl_pTiingoIEXWebSocket, vSymbol);
-	thread1.detach();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -200,16 +182,16 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				gl_SystemData.PushTiingoIEXSocket(pIEXData);
 				m_HeartbeatTime = GetUTCTime();
 				break;
-			case 'I': // authentication  {\"messageType\":\"I\",\"data\":{\"subscriptionId\":2563367},\"response\":{\"code\":200,\"message\":\"Success\"}}
+			case 'I':  // 共两种。一种是报告当前查询证券代码，另一种是报告注册信息
 				js2 = jsonGetChild(&js, _T("data"));
-				try {
+				try { // {"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
 					js3 = js2.at(_T("tickers"));
 					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) {
 						strSymbol = jsonGetString(it2);
-						m_vCurrentSymbol.emplace_back(strSymbol.c_str());
+						m_vCurrentInquireSymbol.emplace_back(strSymbol.c_str());
 					}
 				}
-				catch (json::exception&) { // 注册ID "data":{"subscriptionId":2563367}
+				catch (json::exception&) { // 注册ID {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
@@ -218,7 +200,6 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				js3 = jsonGetChild(&js, _T("response"));
 				m_iStatusCode = js3.at(_T("code"));
 				m_statusMessage = js3.at(_T("message"));
-				m_HeartbeatTime = GetUTCTime();
 				break;
 			case 'E':  //error message {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid"}}
 				js4 = jsonGetChild(&js, _T("response"));

@@ -46,7 +46,7 @@ UINT ThreadConnectTiingoForexWebSocketAndSendMessage(const not_null<CTiingoForex
 	static bool s_fConnecting = false;
 	if (!s_fConnecting) {
 		s_fConnecting = true;
-		if (pDataTiingoForexWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
+		if (pDataTiingoForexWebSocket->ConnectAndSendMessage(vSymbol)) {
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Forex web socket服务"));
 		}
 		s_fConnecting = false;
@@ -119,11 +119,6 @@ string CTiingoForexWebSocket::CreateMessage(const vectorString& vSymbol) {
 	return jsonMessage.dump();
 }
 
-void CTiingoForexWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
-	thread thread1(ThreadConnectTiingoForexWebSocketAndSendMessage, gl_pTiingoForexWebSocket, vSymbol);
-	thread1.detach();
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // https://api.tiingo.com/documentation/websockets/forex
@@ -155,16 +150,16 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 			sType = jsonGetString(&js, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {
-			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
+			case 'I': // 共两种。一种是报告当前查询证券代码，另一种是报告注册信息
 				js2 = jsonGetChild(&js, _T("data"));
-				try {
+				try { // {"data":{"tickers": ["*", "uso", "msft", "tnk"] , "thresholdLevel" : "0"}, "messageType" : "I", "response" : {"code":200, "message" : "Success"}}
 					js3 = js2.at(_T("tickers"));
 					for (auto it3 = js3.begin(); it3 != js3.end(); ++it3) {
 						strSymbol = jsonGetString(it3);
-						m_vCurrentSymbol.push_back(strSymbol.c_str());
+						m_vCurrentInquireSymbol.push_back(strSymbol.c_str());
 					}
 				}
-				catch (json::exception&) {
+				catch (json::exception&) { // {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
@@ -173,7 +168,6 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				js3 = jsonGetChild(&js, _T("response"));
 				m_iStatusCode = js3.at(_T("code"));
 				m_statusMessage = js3.at(_T("message"));
-				m_HeartbeatTime = GetUTCTime();
 				break;
 			case 'E':  //error message {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
 				js4 = jsonGetChild(&js, _T("response"));

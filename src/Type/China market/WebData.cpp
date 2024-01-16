@@ -11,7 +11,6 @@ CWebData::CWebData() {
 	m_lCurrentParagraphStartPos = 0;
 
 	m_fParsed = false;
-	m_fNoRightToAccess = false;
 	m_strErrorMessage = "";
 }
 
@@ -33,31 +32,6 @@ bool CWebData::SetData(const char* buffer, long lDataLength) {
 		m_sDataBuffer.at(i + m_lCurrentPos) = buffer[i];
 	}
 	return true;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///
-/// 检查读取的网络数据是否被网站所禁止提取。
-/// 目前只有Finnhub网站有此选项，其字符串为：You don't have access to this resource.
-///
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebData::CheckNoRightToAccess(const string& sCode, const string& sMessage) {
-	string s;
-	ASSERT(m_fParsed);
-	try {
-		s = m_js.at(sCode);
-		m_strErrorMessage = s.c_str();
-		if (s == sMessage) {
-			m_fNoRightToAccess = true;
-			return true;
-		}
-		else return false;
-	}
-	catch (json::exception&) {
-		m_fNoRightToAccess = false;
-		m_strErrorMessage = "";
-		return false;
-	}
 }
 
 bool CWebData::CreateJson(long lBeginPos, long lEndPos) {

@@ -11,5 +11,5 @@ public:
 	CVirtualChinaMarketWebProduct() = default;
 	~CVirtualChinaMarketWebProduct() override = default;
 
-	[[nodiscard]] shared_ptr<CChinaMarket> GetMarket() const noexcept;
+	[[nodiscard]] CChinaMarketPtr GetMarket() const noexcept;
 };

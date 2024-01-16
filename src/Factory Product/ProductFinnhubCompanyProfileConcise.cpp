@@ -27,7 +27,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWeb
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	pStock->SetUpdateCompanyProfile(false);
 	const bool fSucceed = ParseFinnhubStockProfileConcise(pWebData, pStock);
-	if (fSucceed || pWebData->IsVoidJson() || pWebData->IsNoRightToAccess()) {
+	if (fSucceed || pWebData->IsVoidJson() || IsNoRightToAccess()) {
 		pStock->SetProfileUpdateDate(GetMarket()->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
 		return true;
@@ -58,11 +58,10 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const
 	string s;
 	string sError;
 
-	if (!pWebData->IsParsed()) {
-		if (!pWebData->CreateJson()) return false;
-	}
+	ASSERT(!pWebData->IsParsed());
+	if (!pWebData->CreateJson()) return false;
 	if (pWebData->IsVoidJson()) return true; // 即使为空，也完成了查询。
-	if (pWebData->CheckNoRightToAccess()) return true;
+	if (IsNoRightToAccess()) return true;
 
 	const auto pjs = pWebData->GetJSon();
 	try {

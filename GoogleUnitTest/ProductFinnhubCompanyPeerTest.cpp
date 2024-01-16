@@ -70,8 +70,8 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
+			m_finnhubCompanyPeer.CheckAccessRight(m_pWebData);
+
 			m_jsonPeer.clear();
 		}
 
@@ -130,8 +130,8 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
+			m_finnhubCompanyPeer.CheckAccessRight(m_pWebData);
+
 			m_finnhubCompanyPeer.SetMarket(gl_pWorldMarket);
 			m_finnhubCompanyPeer.SetIndex(0); // 第一个股票
 		}

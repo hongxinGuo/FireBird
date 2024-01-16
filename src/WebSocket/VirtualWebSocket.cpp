@@ -3,10 +3,8 @@
 #include <ixwebsocket/IXNetSystem.h>
 #include"VirtualWebSocket.h"
 
-using namespace std;
-
-#include<gsl/gsl>
-using namespace gsl;
+using std::exception;
+using std::thread;
 
 CVirtualWebSocket::CVirtualWebSocket() {
 	m_iSubscriptionId = 0;
@@ -26,7 +24,17 @@ void CVirtualWebSocket::Reset() {
 	m_HeartbeatTime = 0;
 }
 
-bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(const vectorString& vSymbol) {
+UINT ThreadConnectWebSocketAndSendMessage(const CVirtualWebSocketPtr& pWebSocket, const vectorString& vSymbol) {
+	pWebSocket->ConnectAndSendMessage(vSymbol);
+	return 70;
+}
+
+void CVirtualWebSocket::CreateThreadConnectAndSendMessage(vectorString vSymbol) {
+	thread thread1(ThreadConnectWebSocketAndSendMessage, this->GetShared(), vSymbol);
+	thread1.detach();
+}
+
+bool CVirtualWebSocket::ConnectAndSendMessage(const vectorString& vSymbol) {
 	try {
 		AppendSymbol(vSymbol);
 		Disconnect();
@@ -42,13 +50,6 @@ bool CVirtualWebSocket::ConnectWebSocketAndSendMessage(const vectorString& vSymb
 	}
 
 	return true;
-}
-
-bool CVirtualWebSocket::IsSymbol(const string& sSymbol) const {
-	if (!m_mapSymbol.contains(sSymbol)) {	// ÐÂ·ûºÅ£¿
-		return false;
-	}
-	else return true;
 }
 
 void CVirtualWebSocket::AppendSymbol(const vectorString& vSymbol) {
@@ -120,11 +121,11 @@ void CVirtualWebSocket::Disconnect() {
 }
 
 UINT ThreadDisconnectWebSocket(const CVirtualWebSocketPtr& pWebSocket) {
-	static bool s_fConnecting = false;
-	if (!s_fConnecting) {
-		s_fConnecting = true;
+	static bool s_fDisconnecting = false;
+	if (!s_fDisconnecting) {
+		s_fDisconnecting = true;
 		pWebSocket->Disconnect();
-		s_fConnecting = false;
+		s_fDisconnecting = false;
 	}
 	return 70;
 }
@@ -132,15 +133,6 @@ UINT ThreadDisconnectWebSocket(const CVirtualWebSocketPtr& pWebSocket) {
 bool CVirtualWebSocket::CreateThreadDisconnectWebSocket() {
 	thread thread1(ThreadDisconnectWebSocket, this->GetShared());
 	thread1.detach();
-
-	return true;
-}
-
-bool CVirtualWebSocket::DisconnectWithoutWaitingSucceed() {
-	if (!IsClosed()) {
-		StopWebSocket();
-	}
-	m_iSubscriptionId = 0;
 
 	return true;
 }

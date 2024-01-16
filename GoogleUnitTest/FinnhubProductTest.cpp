@@ -41,22 +41,24 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubProductTest, TestCheckNoRightToAccess1) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const CString str = _T("{\"error2\":\"You don't have access to this resource.\"}");
+		const CString str = _T("{\"no error\":\"You don't have access to this resource.\"}");
 		pWebData->Test_SetBuffer_(str);
-		pWebData->CreateJson();
-		EXPECT_TRUE(pWebData->IsParsed());
+		EXPECT_FALSE(finnhubProduct.IsNoRightToAccess());
+		finnhubProduct.SetReceivedDataStatus(NO_ACCESS_RIGHT_);
+		EXPECT_TRUE(finnhubProduct.IsNoRightToAccess());
 
-		EXPECT_TRUE(finnhubProduct.CheckAccessRight(pWebData));
+		EXPECT_TRUE(finnhubProduct.CheckAccessRight(pWebData)) << "有权读取";
+		EXPECT_FALSE(finnhubProduct.IsNoRightToAccess());
 	}
 
 	TEST_F(CFinnhubProductTest, TestCheckNoRightToAccess2) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const CString str = _T("{\"error\":\"You don't have access to this resource.\"}");
 		pWebData->Test_SetBuffer_(str);
-		pWebData->CreateJson();
-		EXPECT_TRUE(pWebData->IsParsed());
+		EXPECT_FALSE(finnhubProduct.IsNoRightToAccess());
 
-		EXPECT_FALSE(finnhubProduct.CheckAccessRight(pWebData));
+		EXPECT_FALSE(finnhubProduct.CheckAccessRight(pWebData)) << "无权读取";
+		EXPECT_TRUE(finnhubProduct.IsNoRightToAccess()) << "重置此状态";
 	}
 
 	TEST_F(CFinnhubProductTest, TestAddInaccessibleExchange) {

@@ -137,36 +137,4 @@ namespace FireBirdTest {
 		webData.SetCurrentPosData('b');
 		EXPECT_EQ(webData.GetCurrentPosData(), 'b');
 	}
-
-	TEST_F(CWebDataTest, TestIsErrorMessage1) {
-		webData.Test_SetBuffer_("{\"error\":\"You don't have access to this resource.\"}");
-		EXPECT_TRUE(webData.CreateJson());
-		EXPECT_TRUE(webData.IsParsed());
-
-		EXPECT_TRUE(webData.CheckNoRightToAccess());
-	}
-
-	TEST_F(CWebDataTest, TestIsErrorMessage2) {
-		webData.Test_SetBuffer_("{\"error2\":\"You don't have access to this resource.\"}");
-		EXPECT_TRUE(webData.CreateJson());
-		EXPECT_TRUE(webData.IsParsed());
-
-		EXPECT_FALSE(webData.CheckNoRightToAccess());
-
-		webData.Test_SetBuffer_("{\"error\":\"You don't have access to this resour\"}");
-		EXPECT_TRUE(webData.CreateJson());
-		EXPECT_TRUE(webData.IsParsed());
-
-		EXPECT_FALSE(webData.CheckNoRightToAccess());
-	}
-
-	TEST_F(CWebDataTest, TestIsErrorMessage3) {
-		webData.Test_SetBuffer_("{\"no error\":\"You don't have access to this resource.\"}");
-		EXPECT_TRUE(webData.CreateJson());
-		EXPECT_TRUE(webData.IsParsed());
-
-		EXPECT_FALSE(webData.CheckNoRightToAccess());
-		EXPECT_TRUE(webData.CheckNoRightToAccess(_T("no error"), _T("You don't have access to this resource."))) << "使用参数的模式，内容与参数相符即可";
-		EXPECT_FALSE(webData.CheckNoRightToAccess(_T("no error"), _T("You don't have access to that resource."))) << "使用参数的模式，内容与参数不相符：报错";
-	}
 }

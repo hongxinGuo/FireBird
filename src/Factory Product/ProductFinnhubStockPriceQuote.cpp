@@ -39,9 +39,8 @@ bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) 
 }
 
 bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(const CWebDataPtr& pWebData, const CWorldStockPtr& pStock) {
-	if (!pWebData->IsParsed()) {
-		if (!pWebData->CreateJson()) return false;
-	}
+	ASSERT(!pWebData->IsParsed());
+	if (!pWebData->CreateJson()) return false;
 	if (!IsValidData(pWebData)) return false;
 
 	const auto pjs = pWebData->GetJSon();

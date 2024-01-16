@@ -109,9 +109,8 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWeb
 	string s;
 	long year, month, day;
 
-	if (!pWebData->IsParsed()) {
-		if (!pWebData->CreateJson()) return pvDayLine;
-	}
+	ASSERT(!pWebData->IsParsed());
+	if (!pWebData->CreateJson()) return pvDayLine;
 	if (!IsValidData(pWebData)) return pvDayLine;
 
 	const auto pjs = pWebData->GetJSon();

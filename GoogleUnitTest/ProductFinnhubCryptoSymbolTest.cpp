@@ -69,8 +69,8 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
+			m_finnhubCryptoSymbolProduct.CheckAccessRight(m_pWebData);
+
 			m_pvCryptoSymbol = nullptr;
 		}
 
@@ -131,8 +131,8 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
+			m_finnhubCryptoSymbolProduct.CheckAccessRight(m_pWebData);
+
 			m_finnhubCryptoSymbolProduct.SetMarket(gl_pWorldMarket);
 			m_finnhubCryptoSymbolProduct.SetIndex(0);
 		}

@@ -81,8 +81,8 @@ namespace FireBirdTest {
 			m_pStock->SetSaveInsiderSentiment(false);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
+			m_finnhubCompanyInsiderSentiment.CheckAccessRight(m_pWebData);
+
 			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
 			m_finnhubCompanyInsiderSentiment.SetIndex(lIndex);
@@ -164,8 +164,8 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
+			m_finnhubCompanyInsiderSentiment.CheckAccessRight(m_pWebData);
+
 			m_pvInsiderSentiment = nullptr;
 			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
@@ -248,8 +248,8 @@ namespace FireBirdTest {
 			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
+			m_finnhubCompanyInsiderSentiment.CheckAccessRight(m_pWebData);
+
 			m_pvInsiderSentiment = nullptr;
 			m_finnhubCompanyInsiderSentiment.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);

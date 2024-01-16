@@ -43,19 +43,6 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectTiingoCryptoWebSocketAndSendMessage(const not_null<CTiingoCryptoWebSocketPtr>& pDataTiingoCryptoWebSocket, const vectorString& vSymbol) {
-	static bool s_fConnecting = false;
-	if (!s_fConnecting) {
-		s_fConnecting = true;
-		if (pDataTiingoCryptoWebSocket->ConnectWebSocketAndSendMessage(vSymbol)) {
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Crypto web socket服务"));
-		}
-		s_fConnecting = false;
-	}
-
-	return 73;
-}
-
 CTiingoCryptoWebSocket::CTiingoCryptoWebSocket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	m_url = _T("wss://api.tiingo.com/crypto");
@@ -120,11 +107,6 @@ string CTiingoCryptoWebSocket::CreateMessage(const vectorString& vSymbol) {
 	return message.dump();
 }
 
-void CTiingoCryptoWebSocket::CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) {
-	thread thread1(ThreadConnectTiingoCryptoWebSocketAndSendMessage, gl_pTiingoCryptoWebSocket, vSymbol);
-	thread1.detach();
-}
-
 // <summary>
 //
 // https://api.tiingo.com/documentation/websockets/crypto
@@ -157,17 +139,16 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			sType = jsonGetString(&js, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {
-			case 'I': // 注册 {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
-				// 或者  {"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
+			case 'I':  // 共两种。一种是报告当前查询证券代码，另一种是报告注册信息
 				js2 = jsonGetChild(&js, _T("data"));
-				try {
+				try { //{"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
 					js3 = js2.at(_T("tickers"));
 					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) { // 是代码："data":{"tickers":["*","uso","msft","tnk"]
 						strSymbol = jsonGetString(it2);
-						m_vCurrentSymbol.emplace_back(strSymbol.c_str());
+						m_vCurrentInquireSymbol.emplace_back(strSymbol.c_str());
 					}
 				}
-				catch (json::exception&) { // 是注册信息："data":{"subscriptionId":2563396}
+				catch (json::exception&) { //注册信息：{"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
@@ -176,7 +157,6 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				js3 = jsonGetChild(&js, _T("response"));
 				m_iStatusCode = js3.at(_T("code"));
 				m_statusMessage = js3.at(_T("message"));
-				m_HeartbeatTime = GetUTCTime();
 				break;
 			case 'A': // new data
 				pCryptoData = make_shared<CTiingoCryptoSocket>();

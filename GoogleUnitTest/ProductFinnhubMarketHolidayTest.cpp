@@ -57,8 +57,8 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
+			m_finnhubMarketHolidayProduct.CheckAccessRight(m_pWebData);
+
 			m_pvMarketHoliday = nullptr;
 		}
 
@@ -109,8 +109,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
-			
+			m_finnhubMarketHolidayProduct.CheckAccessRight(m_pWebData);
 
 			m_finnhubMarketHolidayProduct.SetMarket(gl_pWorldMarket);
 			m_finnhubMarketHolidayProduct.SetIndex(0); // 第一个交易所（AS)

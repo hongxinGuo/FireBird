@@ -11,5 +11,5 @@ public:
 	CVirtualWorldMarketWebProduct() = default;
 	~CVirtualWorldMarketWebProduct() override = default;
 
-	[[nodiscard]] shared_ptr<CWorldMarket> GetMarket() const noexcept;
+	[[nodiscard]] CWorldMarketPtr GetMarket() const noexcept;
 };

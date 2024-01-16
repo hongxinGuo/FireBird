@@ -81,7 +81,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
+			m_finnhubEconomicCountryList.CheckAccessRight(m_pWebData);
 
 			m_pvCountry = nullptr;
 		}
@@ -153,7 +153,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_pWebData->CreateJson();
+			m_finnhubEconomicCountryList.CheckAccessRight(m_pWebData);
 
 			m_finnhubEconomicCountryList.SetMarket(gl_pWorldMarket);
 		}

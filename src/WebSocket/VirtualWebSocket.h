@@ -17,6 +17,8 @@ using std::map;
 using std::vector;
 
 using vectorString = vector<string>;
+class CVirtualWebSocket;
+using CVirtualWebSocketPtr = shared_ptr<CVirtualWebSocket>;
 
 class CVirtualWebSocket : public std::enable_shared_from_this<CVirtualWebSocket> {
 public:
@@ -25,16 +27,19 @@ public:
 
 	std::shared_ptr<CVirtualWebSocket> GetShared() { return shared_from_this(); }
 
-	bool ConnectWebSocketAndSendMessage(const vectorString& vSymbol);
+	void CreateThreadConnectAndSendMessage(vectorString vSymbol);
+	bool ConnectAndSendMessage(const vectorString& vSymbol);
 	void Reset();
-
 	virtual void Connect() { ASSERT(false); }
 	void Disconnect();
 	virtual void Send(const vectorString&) { ASSERT(FALSE); }
+	void Connecting(const string& url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
+	bool CreateThreadDisconnectWebSocket();
 
-	virtual void CreateThreadConnectWebSocketAndSendMessage(vectorString vSymbol) { ASSERT(false); } // 继承类必须实现各自的功能
+	virtual void StartWebSocket() { m_webSocket.start(); } // 为了测试，将此函数声明为虚函数
+	virtual void StopWebSocket() { m_webSocket.stop(); } // 为了测试，将此函数声明为虚函数
 
-	bool IsSymbol(const string& sSymbol) const;
+	bool IsSymbol(const string& sSymbol) const { return m_mapSymbol.contains(sSymbol); }
 	void AppendSymbol(const vectorString& vSymbol);
 	bool AddSymbol(const string& sSymbol);
 	bool DeleteSymbol(const string& sSymbol);
@@ -42,14 +47,11 @@ public:
 	size_t GetSymbolSize() const noexcept { return m_vSymbol.size(); }
 
 	// 状态
-	virtual ix::ReadyState GetState() const { return m_webSocket.getReadyState(); }
+	virtual ix::ReadyState GetState() const { return m_webSocket.getReadyState(); } // 为了测试，将此函数声明为虚函数
 	bool IsClosed() const { return GetState() == ix::ReadyState::Closed; }
 	bool IsOpen() const { return GetState() == ix::ReadyState::Open; }
 	bool IsClosing() const { return GetState() == ix::ReadyState::Closing; }
 	bool IsConnecting() const { return GetState() == ix::ReadyState::Connecting; }
-
-	virtual void StartWebSocket() { m_webSocket.start(); }
-	virtual void StopWebSocket() { m_webSocket.stop(); }
 
 	int GetStatusCode() const noexcept { return m_iStatusCode; }
 	void SetStatusCode(int iCode) noexcept { m_iStatusCode = iCode; }
@@ -68,15 +70,6 @@ public:
 	void SetHeartbeatTime(const time_t tt) noexcept { m_HeartbeatTime = tt; }
 	bool IsIdle(time_t tPeriod = 300) const; // 默认五分钟
 
-	// 实现
-	void Connecting(const string& url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
-	bool CreateThreadDisconnectWebSocket();	// 用于系统退出时。
-	bool DisconnectWithoutWaitingSucceed(); // 用于程序运行中途时切断网络链接，此时无需等待。
-
-	vectorString m_vCurrentSymbol;
-
-	size_t DataSize() { return m_qWebSocketData.Size(); }
-
 	void PushData(string data) {
 		const auto pData = make_shared<string>(data);
 		m_qWebSocketData.PushData(pData);
@@ -84,20 +77,24 @@ public:
 
 	void PushData(const shared_ptr<string>& pData) { m_qWebSocketData.PushData(pData); }
 	shared_ptr<string> PopData() { return m_qWebSocketData.PopData(); }
+	size_t DataSize() { return m_qWebSocketData.Size(); }
+
+public:
+	vectorString m_vCurrentInquireSymbol;
 
 protected:
 	ix::WebSocket m_webSocket;
-	string m_url;
+	string m_url{""};
 
-	int m_iStatusCode; // WebSocket返回的状态码。正确：200， 错误：400等。
+	int m_iStatusCode{0}; // WebSocket返回的状态码。正确：200， 错误：400等。
 	bool m_fError{false};
-	string m_statusMessage; // 正确时为状态信息，错误时为错误信息。
-	int m_iSubscriptionId;
+	string m_statusMessage{""}; // 正确时为状态信息，错误时为错误信息。
+	int m_iSubscriptionId{0};
 
 	vectorString m_vSymbol;
 	map<string, size_t> m_mapSymbol;
 
-	time_t m_HeartbeatTime; // 最新心跳时间， UTC制式
+	time_t m_HeartbeatTime{0}; // 最新心跳时间， UTC制式
 
 	CTemplateMutexAccessQueue<string> m_qWebSocketData; // 接收到的WebSocket数据
 };
