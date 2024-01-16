@@ -8,8 +8,6 @@
 
 #include"ProductTiingoStockSymbol.h"
 
-#include "TimeConvert.h"
-
 using namespace testing;
 
 namespace FireBirdTest {

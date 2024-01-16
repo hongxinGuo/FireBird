@@ -6,7 +6,6 @@
 
 #include"HighPerformanceCounter.h"
 #include "InfoReport.h"
-#include "TimeConvert.h"
 
 using std::thread;
 

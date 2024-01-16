@@ -28,7 +28,6 @@
 #include <ixwebsocket/IXNetSystem.h>
 
 #include "ConvertToString.h"
-#include "TimeConvert.h"
 
 bool CMainFrame::sm_fGlobeInit = false;
 

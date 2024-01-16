@@ -8,7 +8,6 @@
 #include <ixwebsocket/IXWebSocket.h>
 
 #include "FinnhubDataSource.h"
-#include "TimeConvert.h"
 
 #include"simdjsonGetValue.h"
 

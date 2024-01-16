@@ -5,7 +5,6 @@
 #include"WorldMarket.h"
 
 #include"ProductFinnhubStockDayLine.h"
-#include "TimeConvert.h"
 
 using namespace testing;
 
@@ -86,7 +85,7 @@ namespace FireBirdTest {
 			pvDayLine = nullptr;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			
+
 			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol);
 			m_finnhubStockDayLine.SetMarket(gl_pWorldMarket);
 			m_finnhubStockDayLine.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));

@@ -9,8 +9,6 @@
 #include"ProductFinnhubStockSymbol.h"
 #include "SinaRTDataSource.h"
 
-#include "TimeConvert.h"
-
 using namespace testing;
 
 namespace FireBirdTest {

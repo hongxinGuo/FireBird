@@ -6,7 +6,6 @@
 #include "TiingoCryptoWebSocket.h"
 
 #include "TiingoDataSource.h"
-#include "TimeConvert.h"
 
 using namespace std;
 

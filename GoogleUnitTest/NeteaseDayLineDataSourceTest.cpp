@@ -7,7 +7,6 @@
 #include"ChinaMarket.h"
 #include "ChinaStockCodeConverter.h"
 #include "SinaRTDataSource.h"
-#include "TimeConvert.h"
 
 using namespace testing;
 

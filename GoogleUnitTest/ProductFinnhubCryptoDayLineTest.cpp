@@ -5,7 +5,6 @@
 #include"WorldMarket.h"
 
 #include"ProductFinnhubCryptoDayLine.h"
-#include "TimeConvert.h"
 
 using namespace testing;
 
@@ -87,7 +86,7 @@ namespace FireBirdTest {
 			gl_dataFinnhubCryptoSymbol.GetSymbol(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			
+
 			m_pvDayLine = nullptr;
 		}
 
@@ -169,7 +168,7 @@ namespace FireBirdTest {
 			gl_dataFinnhubCryptoSymbol.GetSymbol(0)->SetIPOStatus(_STOCK_IPOED_);
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			
+
 			m_finnhubCryptoDayLine.SetMarket(gl_pWorldMarket);
 			m_finnhubCryptoDayLine.SetIndex(0);
 		}

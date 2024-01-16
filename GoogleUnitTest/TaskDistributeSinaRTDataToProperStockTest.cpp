@@ -5,7 +5,6 @@
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
-#include "TimeConvert.h"
 
 using namespace testing;
 

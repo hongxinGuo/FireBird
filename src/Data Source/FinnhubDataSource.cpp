@@ -5,7 +5,6 @@
 /// 20231126：20231127后，stock DayLine和Crypto DayLine不再免费。
 #include"pch.h"
 
-#include"TimeConvert.h"
 #include"SystemConfiguration.h"
 
 #include"FinnhubInquiryType.h"

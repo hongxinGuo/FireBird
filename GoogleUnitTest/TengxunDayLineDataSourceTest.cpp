@@ -6,7 +6,6 @@
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
 #include "ProductTengxunDayLine.h"
-#include "TimeConvert.h"
 
 using namespace testing;
 

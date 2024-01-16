@@ -10,8 +10,6 @@
 #include"SetCurrentWeekLine.h"
 #include"SetChinaChosenStock.h"
 
-#include"NeteaseDayLineDataSource.h"
-
 #include"GeneralCheck.h"
 
 using namespace testing;

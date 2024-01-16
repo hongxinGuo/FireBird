@@ -5,7 +5,6 @@
 #include"WorldMarket.h"
 
 #include"ProductFinnhubForexDayLine.h"
-#include "TimeConvert.h"
 
 using namespace testing;
 
@@ -109,7 +108,6 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			
 		}
 
 		void TearDown() override {
@@ -191,7 +189,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
 			m_pWebData->CreateJson();
-			
+
 			m_finnhubForexDayLine.SetMarket(gl_pWorldMarket);
 			m_finnhubForexDayLine.SetIndex(0);
 		}

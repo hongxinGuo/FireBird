@@ -5,7 +5,6 @@
 #include"WebData.h"
 
 #include"FinnhubWebSocket.h"
-#include "TimeConvert.h"
 
 using namespace testing;
 

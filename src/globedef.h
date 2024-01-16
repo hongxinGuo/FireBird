@@ -24,3 +24,5 @@ extern binary_semaphore gl_ProcessChinaMarketRTData; // 处理中国市场的实时数据时
 extern binary_semaphore gl_UpdateChinaMarketDB; // 用于更新ChinaMarket数据库
 
 extern time_t gl_tUTCTime; // 所有的市场使用同一个协调世界时（Coordinated Universal Time）
+inline time_t GetUTCTime() noexcept { return gl_tUTCTime; }
+inline void TestSetUTCTime(time_t time) noexcept { gl_tUTCTime = time; }
