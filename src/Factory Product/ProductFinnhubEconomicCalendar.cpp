@@ -45,7 +45,7 @@ CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomic
 	if (!IsValidData(pWebData)) return pvEconomicCalendar;
 
 	try {
-		json js2 = jsonGetChild(&js, _T("economicCalendar"));
+		json js2 = jsonGetChild(js, _T("economicCalendar"));
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			pEconomicCalendar = make_shared<CEconomicCalendar>();
 			s = jsonGetString(it, _T("country"));

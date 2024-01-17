@@ -45,17 +45,17 @@ bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(const CWebDataPtr& p
 	if (!IsValidData(pWebData)) return false;
 
 	try {
-		double dTemp = jsonGetDouble(&js, _T("c"));
+		double dTemp = jsonGetDouble(js, _T("c"));
 		pStock->SetNew(dTemp * 1000);
-		dTemp = jsonGetDouble(&js, _T("h"));
+		dTemp = jsonGetDouble(js, _T("h"));
 		pStock->SetHigh(dTemp * 1000);
-		dTemp = jsonGetDouble(&js, _T("l"));
+		dTemp = jsonGetDouble(js, _T("l"));
 		pStock->SetLow(dTemp * 1000);
-		dTemp = jsonGetDouble(&js, _T("o"));
+		dTemp = jsonGetDouble(js, _T("o"));
 		pStock->SetOpen(dTemp * 1000);
-		dTemp = jsonGetDouble(&js, _T("pc"));
+		dTemp = jsonGetDouble(js, _T("pc"));
 		pStock->SetLastClose(dTemp * 1000);
-		const auto tt = jsonGetLongLong(&js,_T("t"));
+		const auto tt = jsonGetLongLong(js,_T("t"));
 		pStock->SetTransactionTime(tt);
 	}
 	catch (json::exception& e) {

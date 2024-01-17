@@ -147,11 +147,11 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 			string sType;
 			json::iterator it;
 			json js2, js3, js4;
-			sType = jsonGetString(&js, _T("messageType"));
+			sType = jsonGetString(js, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {
 			case 'I': // 共两种。一种是报告当前查询证券代码，另一种是报告注册信息
-				js2 = jsonGetChild(&js, _T("data"));
+				js2 = jsonGetChild(js, _T("data"));
 				try { // {"data":{"tickers": ["*", "uso", "msft", "tnk"] , "thresholdLevel" : "0"}, "messageType" : "I", "response" : {"code":200, "message" : "Success"}}
 					js3 = js2.at(_T("tickers"));
 					for (auto it3 = js3.begin(); it3 != js3.end(); ++it3) {
@@ -165,20 +165,20 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				}
 				break;
 			case 'H': // HeartBeat {"messageType":"H","response":{"code":200,"message":"HeartBeat"}}
-				js3 = jsonGetChild(&js, _T("response"));
+				js3 = jsonGetChild(js, _T("response"));
 				m_iStatusCode = js3.at(_T("code"));
 				m_statusMessage = js3.at(_T("message"));
 				break;
 			case 'E':  //error message {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
-				js4 = jsonGetChild(&js, _T("response"));
+				js4 = jsonGetChild(js, _T("response"));
 				m_iStatusCode = js4.at(_T("code"));
 				m_statusMessage = js4.at(_T("message"));
 				break;
 			case 'A': // new data
-				sService = jsonGetString(&js, _T("service"));
+				sService = jsonGetString(js, _T("service"));
 				if (sService != _T("fx")) return false; // 只有此项
 				pForexData = make_shared<CTiingoForexSocket>();
-				js2 = jsonGetChild(&js, _T("data"));
+				js2 = jsonGetChild(js, _T("data"));
 				it = js2.begin();
 				sMessageType = it->get<string>(); // 必须是‘Q’
 				pForexData->m_chMessageType = sMessageType.at(0);

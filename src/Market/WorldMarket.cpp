@@ -737,8 +737,9 @@ void CWorldMarket::StopAllWebSocketIfTimeOut() {
 		if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) {
 			StopFinnhubWebSocketIfTimeOut();
 		}
-		if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) {}
-		StopTiingoCryptoWebSocketIfTimeOut();
+		if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) {
+			StopTiingoCryptoWebSocketIfTimeOut();
+		}
 		if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) {
 			StopTiingoIEXWebSocketIfTimeOut();
 		}
@@ -749,28 +750,28 @@ void CWorldMarket::StopAllWebSocketIfTimeOut() {
 }
 
 void CWorldMarket::StopFinnhubWebSocketIfTimeOut() {
-	if ((gl_pFinnhubDataSource->IsTimeout()) || gl_pFinnhubWebSocket->IsIdle()) {
+	if (gl_pFinnhubDataSource->IsTimeout() || gl_pFinnhubWebSocket->IsIdle()) {
 		gl_pFinnhubWebSocket->CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub web故障#12002，关闭Web socket服务"));
 	}
 }
 
 void CWorldMarket::StopTiingoIEXWebSocketIfTimeOut() {
-	if ((gl_pTiingoDataSource->IsTimeout()) && !gl_pTiingoIEXWebSocket->IsClosed()) {
+	if (gl_pTiingoDataSource->IsTimeout() && !gl_pTiingoIEXWebSocket->IsIdle()) {
 		gl_pTiingoIEXWebSocket->CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX web故障#12002，关闭Web socket服务"));
 	}
 }
 
 void CWorldMarket::StopTiingoCryptoWebSocketIfTimeOut() {
-	if ((gl_pTiingoDataSource->IsTimeout()) && !gl_pTiingoCryptoWebSocket->IsClosed()) {
+	if (gl_pTiingoDataSource->IsTimeout() || gl_pTiingoCryptoWebSocket->IsIdle()) {
 		gl_pTiingoCryptoWebSocket->CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto web故障#12002，关闭Web socket服务"));
 	}
 }
 
 void CWorldMarket::StopTiingoForexWebSocketIfTimeOut() {
-	if ((gl_pTiingoDataSource->IsTimeout()) && !gl_pTiingoForexWebSocket->IsClosed()) {
+	if (gl_pTiingoDataSource->IsTimeout() && !gl_pTiingoForexWebSocket->IsIdle()) {
 		gl_pTiingoForexWebSocket->CreateThreadDisconnectWebSocket();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex web故障#12002，关闭Web socket服务"));
 	}

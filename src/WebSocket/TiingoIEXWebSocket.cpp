@@ -127,14 +127,14 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 			string sType;
 			json js2, js3, js4;
 			json::iterator it;
-			sType = jsonGetString(&js, _T("messageType"));
+			sType = jsonGetString(js, _T("messageType"));
 			if (sType.empty()) return false;
 			switch (sType.at(0)) {
 			case 'A': // 交易数据
 				pIEXData = make_shared<CTiingoIEXSocket>();
-				sService = jsonGetString(&js, _T("service"));
+				sService = jsonGetString(js, _T("service"));
 				if (sService != _T("iex")) return false; // 此项必须为"iex"
-				js2 = jsonGetChild(&js, _T("data"));
+				js2 = jsonGetChild(js, _T("data"));
 				it = js2.begin();
 				sMessageType = jsonGetString(it); // message type, 'Q'、'T'或者'B'
 				chType = sMessageType.at(0);
@@ -183,7 +183,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				m_HeartbeatTime = GetUTCTime();
 				break;
 			case 'I':  // 共两种。一种是报告当前查询证券代码，另一种是报告注册信息
-				js2 = jsonGetChild(&js, _T("data"));
+				js2 = jsonGetChild(js, _T("data"));
 				try { // {"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
 					js3 = js2.at(_T("tickers"));
 					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) {
@@ -197,12 +197,12 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				}
 				break;
 			case 'H': //Heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
-				js3 = jsonGetChild(&js, _T("response"));
+				js3 = jsonGetChild(js, _T("response"));
 				m_iStatusCode = js3.at(_T("code"));
 				m_statusMessage = js3.at(_T("message"));
 				break;
 			case 'E':  //error message {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid"}}
-				js4 = jsonGetChild(&js, _T("response"));
+				js4 = jsonGetChild(js, _T("response"));
 				m_iStatusCode = js4.at(_T("code"));
 				m_statusMessage = js4.at(_T("message"));
 				break;

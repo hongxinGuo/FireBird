@@ -76,8 +76,8 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 	if (!IsValidData(pWebData)) return pvInsiderSentiment;
 
 	try {
-		pt1 = jsonGetChild(&js, _T("data"));
-		stockSymbol = jsonGetString(&js, _T("symbol"));
+		pt1 = jsonGetChild(js, _T("data"));
+		stockSymbol = jsonGetString(js, _T("symbol"));
 	}
 	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Sentiment ") + GetInquiryFunction(), e.what());

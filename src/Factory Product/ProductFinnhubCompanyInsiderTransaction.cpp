@@ -80,8 +80,8 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 	if (!IsValidData(pWebData)) return pvInsiderTransaction;
 
 	try {
-		pt1 = jsonGetChild(&js, _T("data"));
-		stockSymbol = jsonGetString(&js, _T("symbol"));
+		pt1 = jsonGetChild(js, _T("data"));
+		stockSymbol = jsonGetString(js, _T("symbol"));
 	}
 	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction ") + GetInquiryFunction(), e.what());

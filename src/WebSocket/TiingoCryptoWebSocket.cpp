@@ -136,11 +136,11 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			string sType;
 			json js2, js3, js4;
 			json::iterator it;
-			sType = jsonGetString(&js, _T("messageType"));
+			sType = jsonGetString(js, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {
 			case 'I':  // 共两种。一种是报告当前查询证券代码，另一种是报告注册信息
-				js2 = jsonGetChild(&js, _T("data"));
+				js2 = jsonGetChild(js, _T("data"));
 				try { //{"data":{"tickers":["*","uso","msft","tnk"],"thresholdLevel":"0"},"messageType":"I","response":{"code":200,"message":"Success"}}
 					js3 = js2.at(_T("tickers"));
 					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) { // 是代码："data":{"tickers":["*","uso","msft","tnk"]
@@ -154,19 +154,18 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 				}
 				break;
 			case 'H': // heart beat {\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}
-				js3 = jsonGetChild(&js, _T("response"));
+				js3 = jsonGetChild(js, _T("response"));
 				m_iStatusCode = js3.at(_T("code"));
 				m_statusMessage = js3.at(_T("message"));
 				break;
 			case 'A': // new data
 				pCryptoData = make_shared<CTiingoCryptoSocket>();
-				sService = jsonGetString(&js, _T("service"));
+				sService = jsonGetString(js, _T("service"));
 				if (sService != _T("crypto_data")) return false; // 格式不符则退出
-				js2 = jsonGetChild(&js, _T("data"));
+				js2 = jsonGetChild(js, _T("data"));
 				it = js2.begin();
 				sMessageType = jsonGetString(it); // ‘Q’或者‘T’
-				if (sMessageType.at(0) == 'T') {
-					//last trade message {\"service\":\"crypto_data\",\"data\":[\"T\",\"jstusdt\",\"2021-08-10T23:56:55.237000+00:00\",\"huobi\",3952.5,0.062108],\"messageType\":\"A\"}
+				if (sMessageType.at(0) == 'T') {	//last trade message {\"service\":\"crypto_data\",\"data\":[\"T\",\"jstusdt\",\"2021-08-10T23:56:55.237000+00:00\",\"huobi\",3952.5,0.062108],\"messageType\":\"A\"}
 					pCryptoData->m_chMessageType = 'T';
 					pCryptoData->m_sSymbol = jsonGetString(++it); // 证券名称
 					pCryptoData->m_sDateTime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
@@ -174,8 +173,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					pCryptoData->m_dLastSize = jsonGetDouble(++it); // 最新数量
 					pCryptoData->m_dLastPrice = jsonGetDouble(++it); // 最新价格
 				}
-				else if (sMessageType.at(0) == 'Q') {
-					// 'Q' top-of-book update message.
+				else if (sMessageType.at(0) == 'Q') {		// 'Q' top-of-book update message.
 					pCryptoData->m_chMessageType = 'Q';
 					pCryptoData->m_sSymbol = jsonGetString(++it); // 证券名称
 					pCryptoData->m_sDateTime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
@@ -186,15 +184,14 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					pCryptoData->m_dAskSize = jsonGetDouble(++it); // 卖价数量
 					pCryptoData->m_dAskPrice = jsonGetDouble(++it); // 卖价
 				}
-				else {
-					// 格式不对
+				else {// 格式不对
 					return false;
 				}
 				gl_SystemData.PushTiingoCryptoSocket(pCryptoData);
 				m_HeartbeatTime = GetUTCTime();
 				break;
 			case 'E':  //error message {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
-				js4 = jsonGetChild(&js, _T("response"));
+				js4 = jsonGetChild(js, _T("response"));
 				m_iStatusCode = js4.at(_T("code"));
 				m_statusMessage = js4.at(_T("message"));
 				break;

@@ -81,8 +81,7 @@ void CVirtualWebSocket::ClearSymbol() {
 }
 
 bool CVirtualWebSocket::IsIdle(time_t tPeriod) const {
-	if (GetUTCTime() > (m_HeartbeatTime + tPeriod)) return true;
-	return false;
+	return GetUTCTime() > m_HeartbeatTime + tPeriod;
 }
 
 void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallback& callback, int iPingPeriod, bool fDeflate) {

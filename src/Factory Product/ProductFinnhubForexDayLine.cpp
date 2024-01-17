@@ -64,7 +64,7 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 	if (!IsValidData(pWebData)) return pvDayLine;
 
 	try {
-		auto s = jsonGetString(&js, _T("s"));
+		auto s = jsonGetString(js, _T("s"));
 		if (s == _T("no_data")) {
 			// 没有日线数据，无需检查此股票的日线和实时数据
 			return pvDayLine;
@@ -82,7 +82,7 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 	try {
 		time_t tTemp;
 		long lTemp;
-		js2 = jsonGetChild(&js, _T("t"));
+		js2 = jsonGetChild(js, _T("t"));
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			tTemp = jsonGetLongLong(it);
 			pDayLine = make_shared<CDayLine>();
@@ -100,35 +100,35 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 		int i;
 		INT64 llTemp;
 		double dTemp;
-		js2 = jsonGetChild(&js, _T("c"));
+		js2 = jsonGetChild(js, _T("c"));
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetClose(dTemp * 1000);
 		}
-		js2 = jsonGetChild(&js, _T("h"));
+		js2 = jsonGetChild(js, _T("h"));
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetHigh(dTemp * 1000);
 		}
-		js2 = jsonGetChild(&js, _T("l"));
+		js2 = jsonGetChild(js, _T("l"));
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetLow(dTemp * 1000);
 		}
-		js2 = jsonGetChild(&js, _T("o"));
+		js2 = jsonGetChild(js, _T("o"));
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetOpen(dTemp * 1000);
 		}
-		js2 = jsonGetChild(&js, _T("v"));
+		js2 = jsonGetChild(js, _T("v"));
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			llTemp = jsonGetLongLong(it);
