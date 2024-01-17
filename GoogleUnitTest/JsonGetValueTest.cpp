@@ -29,8 +29,15 @@ namespace FireBirdTest {
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		json js = jsonGetChild(pjs.get(), _T("child"));
 		EXPECT_TRUE(js.is_structured());
-		const auto it = js.begin();
-		const string s2 = it->at("period");
+		auto it = js.begin();
+		string s2 = it->at("period");
+		EXPECT_STREQ(s2.c_str(), _T("2021-03-31"));
+		EXPECT_DOUBLE_EQ(it->at("v"), -2.7551);
+
+		js = jsonGetChild(*pjs.get(), _T("child"));
+		EXPECT_TRUE(js.is_structured());
+		it = js.begin();
+		s2 = it->at("period");
 		EXPECT_STREQ(s2.c_str(), _T("2021-03-31"));
 		EXPECT_DOUBLE_EQ(it->at("v"), -2.7551);
 	}
@@ -42,8 +49,15 @@ namespace FireBirdTest {
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		json js = jsonGetChild(pjs.get(), str);
 		EXPECT_TRUE(js.is_structured());
-		const auto it = js.begin();
-		const string s2 = it->at("period");
+		auto it = js.begin();
+		string s2 = it->at("period");
+		EXPECT_STREQ(s2.c_str(), _T("2021-03-31"));
+		EXPECT_DOUBLE_EQ(it->at("v"), -2.7551);
+
+		js = jsonGetChild(*pjs.get(), str);
+		EXPECT_TRUE(js.is_structured());
+		it = js.begin();
+		s2 = it->at("period");
 		EXPECT_STREQ(s2.c_str(), _T("2021-03-31"));
 		EXPECT_DOUBLE_EQ(it->at("v"), -2.7551);
 	}
@@ -52,9 +66,15 @@ namespace FireBirdTest {
 		const auto pjs = make_shared<json>();
 		const string s{_T("{\"period\":\"2021-03-31\", \"v\" : -2.7551}")};
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
-		const string str = jsonGetString(pjs.get(), _T("period"));
+		string str = jsonGetString(pjs.get(), _T("period"));
 		EXPECT_STREQ(str.c_str(), _T("2021-03-31"));
-		const string str2 = jsonGetString(pjs.get(), _T("v"));
+		string str2 = jsonGetString(pjs.get(), _T("v"));
+		EXPECT_STREQ(str2.c_str(), _T("")) << "v为浮点数，返回默认值";
+
+		str = str2 = "-1";
+		str = jsonGetString(*pjs.get(), _T("period"));
+		EXPECT_STREQ(str.c_str(), _T("2021-03-31"));
+		str2 = jsonGetString(*pjs.get(), _T("v"));
 		EXPECT_STREQ(str2.c_str(), _T("")) << "v为浮点数，返回默认值";
 	}
 
@@ -62,9 +82,15 @@ namespace FireBirdTest {
 		const auto pjs = make_shared<json>();
 		const string s{_T("{\"period\":\"2021-03-31\", \"v\" : -2.7551}")};
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
-		const double d1 = jsonGetDouble(pjs.get(), _T("period"));
+		double d1 = jsonGetDouble(pjs.get(), _T("period"));
 		EXPECT_DOUBLE_EQ(d1, 0.0) << "period为字符串，返回默认值";
-		const double d2 = jsonGetDouble(pjs.get(), _T("v"));
+		double d2 = jsonGetDouble(pjs.get(), _T("v"));
+		EXPECT_DOUBLE_EQ(d2, -2.7551);
+
+		d1 = d2 = -1;
+		d1 = jsonGetDouble(*pjs.get(), _T("period"));
+		EXPECT_DOUBLE_EQ(d1, 0.0) << "period为字符串，返回默认值";
+		d2 = jsonGetDouble(*pjs.get(), _T("v"));
 		EXPECT_DOUBLE_EQ(d2, -2.7551);
 	}
 
@@ -72,9 +98,15 @@ namespace FireBirdTest {
 		const auto pjs = make_shared<json>();
 		const string s{_T("{\"period\":\"2021-03-31\", \"v\" : -2.7551}")};
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
-		const int d1 = jsonGetInt(pjs.get(), _T("period"));
+		int d1 = jsonGetInt(pjs.get(), _T("period"));
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
-		const int d2 = jsonGetInt(pjs.get(), _T("v"));
+		int d2 = jsonGetInt(pjs.get(), _T("v"));
+		EXPECT_EQ(d2, -2) << "浮点数只取整数值";
+
+		d1 = d2 = -1;
+		d1 = jsonGetInt(*pjs.get(), _T("period"));
+		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
+		d2 = jsonGetInt(*pjs.get(), _T("v"));
 		EXPECT_EQ(d2, -2) << "浮点数只取整数值";
 	}
 
@@ -82,9 +114,15 @@ namespace FireBirdTest {
 		const auto pjs = make_shared<json>();
 		const string s{_T("{\"period\":\"2021-03-31\", \"v\" : -2.7551}")};
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
-		const long d1 = jsonGetLong(pjs.get(), _T("period"));
+		long d1 = jsonGetLong(pjs.get(), _T("period"));
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
-		const long d2 = jsonGetLong(pjs.get(), _T("v"));
+		long d2 = jsonGetLong(pjs.get(), _T("v"));
+		EXPECT_EQ(d2, -2) << "浮点数只取整数值";
+
+		d1 = d2 = -1;
+		d1 = jsonGetLong(*pjs.get(), _T("period"));
+		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
+		d2 = jsonGetLong(*pjs.get(), _T("v"));
 		EXPECT_EQ(d2, -2) << "浮点数只取整数值";
 	}
 
@@ -92,9 +130,15 @@ namespace FireBirdTest {
 		const auto pjs = make_shared<json>();
 		const string s{_T("{\"period\":\"2021-03-31\", \"v\" : -2.7551}")};
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
-		const long long d1 = jsonGetLongLong(pjs.get(), _T("period"));
+		long long d1 = jsonGetLongLong(pjs.get(), _T("period"));
 		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
-		const long long d2 = jsonGetLongLong(pjs.get(), _T("v"));
+		long long d2 = jsonGetLongLong(pjs.get(), _T("v"));
+		EXPECT_EQ(d2, -2) << "浮点数只取整数值";
+
+		d1 = d2 = -1;
+		d1 = jsonGetLongLong(*pjs.get(), _T("period"));
+		EXPECT_EQ(d1, 0) << "period为字符串，返回默认值";
+		d2 = jsonGetLongLong(*pjs.get(), _T("v"));
 		EXPECT_EQ(d2, -2) << "浮点数只取整数值";
 	}
 

@@ -10,6 +10,12 @@ using std::string;
 [[nodiscard]] int jsonGetInt(json* pjs, const char* szKey, int iDefault = 0);
 [[nodiscard]] long jsonGetLong(json* pjs, const char* szKey, long lDefault = 0);
 [[nodiscard]] long long jsonGetLongLong(json* pjs, const char* szKey, long long llDefault = 0);
+[[nodiscard]] json jsonGetChild(json& js, const char* szKey);
+[[nodiscard]] std::string jsonGetString(json& js, const char* szKey, const char* szDefault = _T(""));
+[[nodiscard]] double jsonGetDouble(json& js, const char* szKey, double dDefault = 0.0);
+[[nodiscard]] int jsonGetInt(json& js, const char* szKey, int iDefault = 0);
+[[nodiscard]] long jsonGetLong(json& js, const char* szKey, long lDefault = 0);
+[[nodiscard]] long long jsonGetLongLong(json& js, const char* szKey, long long llDefault = 0);
 
 [[nodiscard]] json jsonGetChild(const json::iterator& it, const char* szKey);
 [[nodiscard]] std::string jsonGetString(const json::iterator& it, const char* szKey, const char* szDefault = _T(""));

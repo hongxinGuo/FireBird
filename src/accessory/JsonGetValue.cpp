@@ -37,6 +37,41 @@ long jsonGetLong(json* pjs, const char* szKey, const long lDefault) {
 	else return lDefault;
 }
 
+json jsonGetChild(json& js, const char* szKey) {
+	auto& js1 = js.at(szKey);
+	return js1;
+}
+
+double jsonGetDouble(json& js, const char* szKey, const double dDefault) {
+	const auto d = js.at(szKey);
+	if (d.is_number()) return d;
+	else return dDefault;
+}
+
+std::string jsonGetString(json& js, const char* szKey, const char* szDefault) {
+	const auto& s = js.at(szKey);
+	if (s.is_string()) return s;
+	return szDefault;
+}
+
+int jsonGetInt(json& js, const char* szKey, const int iDefault) {
+	const auto s = js.at(szKey);
+	if (s.is_number()) return s;
+	else return iDefault;
+}
+
+long long jsonGetLongLong(json& js, const char* szKey, const long long llDefault) {
+	const auto s = js.at(szKey);
+	if (s.is_number()) return s;
+	else return llDefault;
+}
+
+long jsonGetLong(json& js, const char* szKey, const long lDefault) {
+	const auto s = js.at(szKey);
+	if (s.is_number()) return s;
+	else return lDefault;
+}
+
 json jsonGetChild(const json::iterator& it, const char* szKey) {
 	auto& js = it->at(szKey);
 	return js;
