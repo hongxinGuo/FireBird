@@ -8,6 +8,7 @@ using std::thread;
 
 CVirtualWebSocket::CVirtualWebSocket() {
 	m_iSubscriptionId = 0;
+	m_HeartbeatTime = 0;
 	m_url = _T("");
 	m_vSymbol.resize(0);
 	m_mapSymbol.clear();
@@ -21,7 +22,6 @@ CVirtualWebSocket::~CVirtualWebSocket() {
 
 void CVirtualWebSocket::Reset() {
 	m_iSubscriptionId = 0;
-	m_HeartbeatTime = 0;
 }
 
 UINT ThreadConnectWebSocketAndSendMessage(const CVirtualWebSocketPtr& pWebSocket, const vectorString& vSymbol) {
@@ -38,7 +38,6 @@ bool CVirtualWebSocket::ConnectAndSendMessage(const vectorString& vSymbol) {
 	try {
 		AppendSymbol(vSymbol);
 		Disconnect();
-		Reset();
 		Connect();
 		while (!IsOpen()) Sleep(1);
 		Send(m_vSymbol);
