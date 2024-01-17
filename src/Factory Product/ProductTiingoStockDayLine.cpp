@@ -108,14 +108,13 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWeb
 	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
 	string s;
 	long year, month, day;
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return pvDayLine;
+	if (!pWebData->CreateJson(js)) return pvDayLine;
 	if (!IsValidData(pWebData)) return pvDayLine;
 
-	const auto pjs = pWebData->GetJSon();
 	try {
-		s = pjs->at(_T("detail")); // 是否有报错信息
+		s = js.at(_T("detail")); // 是否有报错信息
 		CString strMessage = _T("Tiingo stock dayLine ");
 		strMessage += s.c_str();
 		gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
@@ -125,7 +124,7 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWeb
 		// 正确， do nothing，继续执行
 	}
 	try {
-		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+		for (auto it = js.begin(); it != js.end(); ++it) {
 			auto pDayLine = make_shared<CDayLine>();
 			s = jsonGetString(it, _T("date"));
 			CString str = s.c_str();

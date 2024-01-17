@@ -57,35 +57,34 @@ bool CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWeb
 bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const CWebDataPtr& pWebData, const CWorldStockPtr& pStock) {
 	string s;
 	string sError;
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return false;
+	if (!pWebData->CreateJson(js)) return false;
 	if (pWebData->IsVoidJson()) return true; // 即使为空，也完成了查询。
 	if (IsNoRightToAccess()) return true;
 
-	const auto pjs = pWebData->GetJSon();
 	try {
-		s = jsonGetString(pjs, _T("ticker"));
+		s = jsonGetString(&js, _T("ticker"));
 		if (!s.empty()) pStock->SetTicker(s.c_str());
-		s = jsonGetString(pjs, _T("country"));
+		s = jsonGetString(&js, _T("country"));
 		if (!s.empty()) pStock->SetCountry(s.c_str());
-		s = jsonGetString(pjs, _T("currency"));
+		s = jsonGetString(&js, _T("currency"));
 		if (!s.empty()) pStock->SetCurrency(s.c_str());
-		s = jsonGetString(pjs, _T("exchange"));
+		s = jsonGetString(&js, _T("exchange"));
 		if (!s.empty()) pStock->SetListedExchange(s.c_str());
-		s = jsonGetString(pjs, _T("name"));
+		s = jsonGetString(&js, _T("name"));
 		if (!s.empty()) pStock->SetName(s.c_str());
-		s = jsonGetString(pjs, _T("finnhubIndustry"));
+		s = jsonGetString(&js, _T("finnhubIndustry"));
 		if (!s.empty()) pStock->SetFinnhubIndustry(s.c_str());
-		s = jsonGetString(pjs, _T("logo"));
+		s = jsonGetString(&js, _T("logo"));
 		if (!s.empty()) pStock->SetLogo(s.c_str());
-		pStock->SetMarketCapitalization(jsonGetDouble(pjs, _T("marketCapitalization")));
-		s = jsonGetString(pjs, _T("phone"));
+		pStock->SetMarketCapitalization(jsonGetDouble(&js, _T("marketCapitalization")));
+		s = jsonGetString(&js, _T("phone"));
 		if (!s.empty()) pStock->SetPhone(s.c_str());
-		pStock->SetShareOutstanding(jsonGetDouble(pjs, _T("shareOutstanding")));
-		s = jsonGetString(pjs, _T("weburl"));
+		pStock->SetShareOutstanding(jsonGetDouble(&js, _T("shareOutstanding")));
+		s = jsonGetString(&js, _T("weburl"));
 		if (!s.empty()) pStock->SetWebURL(s.c_str());
-		s = jsonGetString(pjs, _T("ipo"));
+		s = jsonGetString(&js, _T("ipo"));
 		if (!s.empty()) pStock->SetIPODate(s.c_str());
 	}
 	catch (json::exception& e) {

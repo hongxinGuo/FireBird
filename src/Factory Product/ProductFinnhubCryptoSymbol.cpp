@@ -49,14 +49,13 @@ CFinnhubCryptoSymbolVectorPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSym
 	auto pvCryptoSymbol = make_shared<vector<CFinnhubCryptoSymbolPtr>>();
 	string s;
 	string sError;
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return pvCryptoSymbol;
+	if (!pWebData->CreateJson(js)) return pvCryptoSymbol;
 	if (!IsValidData(pWebData)) return pvCryptoSymbol;
 
-	const auto pjs = pWebData->GetJSon();
 	try {
-		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+		for (auto it = js.begin(); it != js.end(); ++it) {
 			auto pSymbol = make_shared<CFinnhubCryptoSymbol>();
 			s = jsonGetString(it, _T("description"));
 			if (!s.empty()) pSymbol->SetDescription(s.c_str());

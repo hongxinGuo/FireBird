@@ -199,7 +199,6 @@ namespace FireBirdTest {
 		const auto pWebData = TengxunDayLineDataSource.CreateWebDataAfterSucceedReading();
 
 		EXPECT_TRUE(pWebData != nullptr);
-		EXPECT_FALSE(pWebData->IsParsed()) << "腾讯日线虽然为json制式，但解析工作由product完成，DataSource无动作";
 		EXPECT_STREQ(pWebData->GetStockCode(), _T("TEST")) << "会设置StockCode";
 		EXPECT_EQ(pWebData->GetTime(), 0) << "设置为当前的UTCTime";
 		EXPECT_TRUE(pWebData->GetDataBuffer() == _T("{ \"data\": 2}"));

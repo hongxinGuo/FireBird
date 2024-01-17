@@ -117,7 +117,6 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible1) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->SetParsed(false);
 
 		EXPECT_FALSE(finnhubWebProduct.CheckInaccessible(pWebData));
 	}
@@ -126,8 +125,6 @@ namespace FireBirdTest {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const CString strData = _T("{\"error1\":\"You don't have access to this resourc.\"}");
 		pWebData->Test_SetBuffer_(strData);
-		pWebData->CreateJson();
-		pWebData->SetParsed(true);
 
 		EXPECT_FALSE(finnhubWebProduct.CheckInaccessible(pWebData)) << "非拒绝提供信息";
 	}
@@ -165,8 +162,6 @@ namespace FireBirdTest {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const CString strData = _T("{\"error\":\"You don't have access to this resource.\"}");
 		pWebData->Test_SetBuffer_(strData);
-		pWebData->CreateJson();
-		pWebData->SetParsed(true);
 		finnhubWebProduct.SetInquiringExchange(_T("AD"));
 		finnhubWebProduct.SetProductType(STOCK_PRICE_CANDLES_);
 		finnhubWebProduct.CheckInaccessible(pWebData); // 重置内部静态数据

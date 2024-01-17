@@ -66,16 +66,14 @@ bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ///		}
 CCompanyNewsVectorPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebDataPtr& pWebData) {
 	string s;
-
+	json js;
 	auto pvFinnhubCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return pvFinnhubCompanyNews;
+	if (!pWebData->CreateJson(js)) return pvFinnhubCompanyNews;
 	if (!IsValidData(pWebData)) return pvFinnhubCompanyNews;
 
-	const auto pjs = pWebData->GetJSon();
 	try {
-		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+		for (auto it = js.begin(); it != js.end(); ++it) {
 			auto pCompanyNews = make_shared<CFinnhubCompanyNews>();
 			s = jsonGetString(it, _T("category"));
 			if (!s.empty()) pCompanyNews->m_strCategory = s.c_str();

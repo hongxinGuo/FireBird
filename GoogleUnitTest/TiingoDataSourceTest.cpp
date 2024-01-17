@@ -187,8 +187,6 @@ namespace FireBirdTest {
 		const CVirtualProductWebDataPtr p = make_shared<CProductDummy>();
 		const auto pData = make_shared<CWebData>();
 		pData->SetStockCode(_T("{}"));
-		pData->CreateJson();
-		pData->SetParsed(true);
 
 		m_TiingoDataSource.StoreReceivedData(pData);
 		m_TiingoDataSource.SetCurrentInquiry(p);

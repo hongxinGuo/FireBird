@@ -117,7 +117,6 @@ namespace FireBirdTest {
 		const auto pWebData = NeteaseDayLineDataSource.CreateWebDataAfterSucceedReading();
 
 		EXPECT_TRUE(pWebData != nullptr);
-		EXPECT_FALSE(pWebData->IsParsed()) << "网易日线不是json制式，无需解析";
 		EXPECT_STREQ(pWebData->GetStockCode(), _T("TEST")) << "会设置StockCode";
 		EXPECT_EQ(pWebData->GetTime(), 0) << "设置为当前的UTCTime";
 		EXPECT_TRUE(pWebData->GetDataBuffer() == _T("{ \"data\": 2}"));

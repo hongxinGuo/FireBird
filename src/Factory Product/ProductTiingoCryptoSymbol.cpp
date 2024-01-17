@@ -64,15 +64,14 @@ CTiingoCryptoVectorPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const
 	string s;
 	CString str, strNumber;
 	CTiingoCryptoSymbolPtr pTiingoCrypto = nullptr;
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return pvTiingoCrypto;
+	if (!pWebData->CreateJson(js)) return pvTiingoCrypto;
 	if (!IsValidData(pWebData)) return pvTiingoCrypto;
 
-	const auto pjs = pWebData->GetJSon();
 	try {
 		int iCount = 0;
-		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+		for (auto it = js.begin(); it != js.end(); ++it) {
 			pTiingoCrypto = make_shared<CTiingoCryptoSymbol>();
 			s = jsonGetString(it, _T("ticker"));
 			pTiingoCrypto->m_strTicker = s.c_str();

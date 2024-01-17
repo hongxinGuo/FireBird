@@ -70,72 +70,71 @@ bool CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 /// <returns></returns>
 bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr pStock) {
 	string s;
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return false;
+	if (!pWebData->CreateJson(js)) return false;
 	if (pWebData->IsVoidJson()) return true; // 无数据
 	if (IsNoRightToAccess()) { // 无权访问
 		return true;
 	}
-	const auto pjs = pWebData->GetJSon();
 	try {
 		double d = 0.0;
-		s = jsonGetString(pjs, _T("address"));
+		s = jsonGetString(&js, _T("address"));
 		pStock->SetAddress(s.c_str());
-		s = jsonGetString(pjs, _T("city"));
+		s = jsonGetString(&js, _T("city"));
 		pStock->SetCity(s.c_str());
-		s = jsonGetString(pjs, _T("country"));
+		s = jsonGetString(&js, _T("country"));
 		if (!s.empty()) pStock->SetCountry(s.c_str());
-		s = jsonGetString(pjs, _T("currency"));
+		s = jsonGetString(&js, _T("currency"));
 		if (!s.empty()) pStock->SetCurrency(s.c_str());
-		s = jsonGetString(pjs, _T("cusip"));
+		s = jsonGetString(&js, _T("cusip"));
 		if (!s.empty()) pStock->SetCusip(s.c_str());
-		s = jsonGetString(pjs, _T("sedol"));
+		s = jsonGetString(&js, _T("sedol"));
 		if (!s.empty()) pStock->SetSedol(s.c_str());
-		s = jsonGetString(pjs, _T("description"));
+		s = jsonGetString(&js, _T("description"));
 		if (!s.empty()) pStock->SetDescription(s.c_str());
-		s = jsonGetString(pjs, _T("exchange"));
+		s = jsonGetString(&js, _T("exchange"));
 		if (!s.empty()) pStock->SetListedExchange(s.c_str());
-		s = jsonGetString(pjs, _T("ggroup"));
+		s = jsonGetString(&js, _T("ggroup"));
 		if (!s.empty()) pStock->SetGgroup(s.c_str());
-		s = jsonGetString(pjs, _T("gind"));
+		s = jsonGetString(&js, _T("gind"));
 		if (!s.empty()) pStock->SetGind(s.c_str());
-		s = jsonGetString(pjs, _T("gsector"));
+		s = jsonGetString(&js, _T("gsector"));
 		if (!s.empty()) pStock->SetGsector(s.c_str());
-		s = jsonGetString(pjs, _T("gsubind"));
+		s = jsonGetString(&js, _T("gsubind"));
 		if (!s.empty()) pStock->SetGsubind(s.c_str());
-		s = jsonGetString(pjs, _T("ipo"));
+		s = jsonGetString(&js, _T("ipo"));
 		if (!s.empty()) pStock->SetIPODate(s.c_str());
-		s = jsonGetString(pjs, _T("isin"));
+		s = jsonGetString(&js, _T("isin"));
 		if (!s.empty()) pStock->SetIsin(s.c_str());
-		d = jsonGetDouble(pjs, _T("marketCapitalization"));
+		d = jsonGetDouble(&js, _T("marketCapitalization"));
 		pStock->SetMarketCapitalization(d);
 
-		s = jsonGetString(pjs, _T("naics"));
+		s = jsonGetString(&js, _T("naics"));
 		if (!s.empty()) pStock->SetNaics(s.c_str());
-		s = jsonGetString(pjs, _T("naicsNationalIndustry"));
+		s = jsonGetString(&js, _T("naicsNationalIndustry"));
 		if (!s.empty()) pStock->SetNaicsNationalIndustry(s.c_str());
-		s = jsonGetString(pjs, _T("naicsSector"));
+		s = jsonGetString(&js, _T("naicsSector"));
 		if (!s.empty()) pStock->SetNaicsSector(s.c_str());
-		s = jsonGetString(pjs, _T("naicsSubsector"));
+		s = jsonGetString(&js, _T("naicsSubsector"));
 		if (!s.empty()) pStock->SetNaicsSubsector(s.c_str());
-		s = jsonGetString(pjs, _T("name"));
+		s = jsonGetString(&js, _T("name"));
 		if (!s.empty()) pStock->SetName(s.c_str());
-		s = jsonGetString(pjs, _T("phone"));
+		s = jsonGetString(&js, _T("phone"));
 		if (!s.empty()) pStock->SetPhone(s.c_str());
 
-		d = jsonGetDouble(pjs, _T("shareOutstanding"));
+		d = jsonGetDouble(&js, _T("shareOutstanding"));
 		pStock->SetShareOutstanding(d);
-		s = jsonGetString(pjs, _T("state"));
+		s = jsonGetString(&js, _T("state"));
 		if (!s.empty()) pStock->SetState(s.c_str());
-		s = jsonGetString(pjs, _T("ticker"));
+		s = jsonGetString(&js, _T("ticker"));
 		if (!s.empty()) pStock->SetTicker(s.c_str());
-		s = jsonGetString(pjs, _T("weburl"));
+		s = jsonGetString(&js, _T("weburl"));
 		if (!s.empty()) pStock->SetWebURL(s.c_str());
 
-		s = jsonGetString(pjs, _T("logo"));
+		s = jsonGetString(&js, _T("logo"));
 		if (!s.empty()) pStock->SetLogo(s.c_str());
-		s = jsonGetString(pjs, _T("finnhubIndustry"));
+		s = jsonGetString(&js, _T("finnhubIndustry"));
 		if (!s.empty()) pStock->SetFinnhubIndustry(s.c_str());
 	}
 	catch (json::exception& e) {

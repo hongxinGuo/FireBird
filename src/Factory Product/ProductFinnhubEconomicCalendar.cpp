@@ -39,14 +39,13 @@ CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomic
 	auto pvEconomicCalendar = make_shared<vector<CEconomicCalendarPtr>>();
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
 	string s;
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return pvEconomicCalendar;
+	if (!pWebData->CreateJson(js)) return pvEconomicCalendar;
 	if (!IsValidData(pWebData)) return pvEconomicCalendar;
 
-	const auto pjs = pWebData->GetJSon();
 	try {
-		json js2 = jsonGetChild(pjs, _T("economicCalendar"));
+		json js2 = jsonGetChild(&js, _T("economicCalendar"));
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			pEconomicCalendar = make_shared<CEconomicCalendar>();
 			s = jsonGetString(it, _T("country"));

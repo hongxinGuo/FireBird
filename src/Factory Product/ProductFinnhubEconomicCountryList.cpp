@@ -37,14 +37,13 @@ CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(co
 	auto pvCountry = make_shared<vector<CCountryPtr>>();
 	CCountryPtr pCountry = nullptr;
 	string s;
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return pvCountry;
+	if (!pWebData->CreateJson(js)) return pvCountry;
 	if (!IsValidData(pWebData)) return pvCountry;
 
-	const auto pjs = pWebData->GetJSon();
 	try {
-		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+		for (auto it = js.begin(); it != js.end(); ++it) {
 			pCountry = make_shared<CCountry>();
 			s = jsonGetString(it, _T("code2"));
 			if (!s.empty()) pCountry->m_strCode2 = s.c_str();

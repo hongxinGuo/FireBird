@@ -34,10 +34,10 @@ bool CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 json CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(const CWebDataPtr& pWebData) {
 	json jsonPeer; // 默认的空状态（没有竞争对手)
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return jsonPeer;
+	if (!pWebData->CreateJson(js)) return jsonPeer;
 	if (!IsValidData(pWebData)) return jsonPeer;
 
-	return *pWebData->GetJSon();
+	return js;
 }

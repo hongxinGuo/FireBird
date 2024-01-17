@@ -41,14 +41,13 @@ shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExc
 	CString str = _T("");
 	string sError;
 	auto pvExchange = make_shared<vector<CString>>();
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return pvExchange;
+	if (!pWebData->CreateJson(js)) return pvExchange;
 	if (!IsValidData(pWebData)) return pvExchange;
 
-	const auto pjs = pWebData->GetJSon();
 	try {
-		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+		for (auto it = js.begin(); it != js.end(); ++it) {
 			s = jsonGetString(it);
 			str = s.c_str();
 			pvExchange->push_back(str);

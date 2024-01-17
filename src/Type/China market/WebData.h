@@ -59,20 +59,15 @@ public:
 	char GetCurrentPosData() const { return m_sDataBuffer.at(m_lCurrentPos); }
 	void SetCurrentPosData(const char cValue) { m_sDataBuffer.at(m_lCurrentPos) = cValue; }
 
-	void SetParsed(const bool fFlag) noexcept { m_fParsed = fFlag; }
-	bool IsParsed() const noexcept { return m_fParsed; }
-
 	bool IsVoidJson() const noexcept { return m_sDataBuffer == _T("{}"); }
 
 	// 使用Nlohmann json将数据转换为json格式。
-	bool CreateJson(long lBeginPos = 0, long lEndPos = 0);
-	json* GetJSon() { return &m_js; }
+	bool CreateJson(json& js, long lBeginPos = 0, long lEndPos = 0) const;
 
 	// 测试用函数
 	void Test_SetBuffer_(CString strBuffer);
 
 protected:
-	json m_js; // 存储解析后的json
 	time_t m_tTime; // 此数据的提取时间。UTC格式
 	CString m_strStockCode; // 此数据的相关证券代码，可以空缺
 	string m_sDataBuffer;
@@ -80,7 +75,6 @@ protected:
 	long m_lCurrentParagraphStartPos; // 当前段起始位置
 	string_view m_svCurrentParagraph{}; // 当前段数据
 
-	bool m_fParsed;
 	CString m_strErrorMessage; // 错误信息
 };
 

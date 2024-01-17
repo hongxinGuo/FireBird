@@ -10,7 +10,6 @@ CWebData::CWebData() {
 	m_lCurrentPos = 0;
 	m_lCurrentParagraphStartPos = 0;
 
-	m_fParsed = false;
 	m_strErrorMessage = "";
 }
 
@@ -34,10 +33,8 @@ bool CWebData::SetData(const char* buffer, long lDataLength) {
 	return true;
 }
 
-bool CWebData::CreateJson(long lBeginPos, long lEndPos) {
-	m_fParsed = ::CreateJsonWithNlohmann(m_js, m_sDataBuffer, lBeginPos, lEndPos);
-
-	return m_fParsed;
+bool CWebData::CreateJson(json& js, long lBeginPos, long lEndPos) const {
+	return ::CreateJsonWithNlohmann(js, m_sDataBuffer, lBeginPos, lEndPos);
 }
 
 void CWebData::Test_SetBuffer_(CString strBuffer) {

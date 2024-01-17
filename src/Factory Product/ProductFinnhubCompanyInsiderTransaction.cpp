@@ -74,15 +74,14 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 	string stockSymbol;
 	long year, month, day;
 	CInsiderTransactionPtr pInsiderTransaction = nullptr;
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return pvInsiderTransaction;
+	if (!pWebData->CreateJson(js)) return pvInsiderTransaction;
 	if (!IsValidData(pWebData)) return pvInsiderTransaction;
 
-	const auto pjs = pWebData->GetJSon();
 	try {
-		pt1 = jsonGetChild(pjs, _T("data"));
-		stockSymbol = jsonGetString(pjs, _T("symbol"));
+		pt1 = jsonGetChild(&js, _T("data"));
+		stockSymbol = jsonGetString(&js, _T("symbol"));
 	}
 	catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction ") + GetInquiryFunction(), e.what());

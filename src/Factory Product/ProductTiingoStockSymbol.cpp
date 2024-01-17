@@ -87,16 +87,15 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CW
 	string s;
 	CString strNumber;
 	long year, month, day;
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return pvTiingoStock;
+	if (!pWebData->CreateJson(js)) return pvTiingoStock;
 	if (!IsValidData(pWebData)) return pvTiingoStock;
 
-	const auto pjs = pWebData->GetJSon();
 	try {
 		CString str;
 		int iCount = 0;
-		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+		for (auto it = js.begin(); it != js.end(); ++it) {
 			pStock = make_shared<CTiingoStock>();
 			pStock->m_strTiingoPermaTicker = jsonGetString(it, _T("permaTicker")).c_str();
 			s = jsonGetString(it, _T("ticker"));

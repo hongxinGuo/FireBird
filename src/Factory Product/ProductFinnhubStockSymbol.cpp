@@ -85,14 +85,13 @@ CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const C
 	auto pvStock = make_shared<vector<CWorldStockPtr>>();
 	CWorldStockPtr pStock = nullptr;
 	string s, sError;
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return pvStock;
+	if (!pWebData->CreateJson(js)) return pvStock;
 	if (!IsValidData(pWebData)) return pvStock;
 
-	auto pjs = pWebData->GetJSon();
 	try {
-		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+		for (auto it = js.begin(); it != js.end(); ++it) {
 			pStock = make_shared<CWorldStock>();
 			s = jsonGetString(it, _T("currency"));
 			if (!s.empty()) pStock->SetCurrency(s.c_str());

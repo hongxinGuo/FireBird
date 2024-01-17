@@ -49,14 +49,13 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 	CEPSSurprisePtr pEPSSurprise = nullptr;
 	long year = 0, month = 0, day = 0;
 	string sError;
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return pvEPSSurprise;
+	if (!pWebData->CreateJson(js)) return pvEPSSurprise;
 	if (!IsValidData(pWebData)) return pvEPSSurprise;
 
-	const auto pjs = pWebData->GetJSon();
 	try {
-		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
+		for (auto it = js.begin(); it != js.end(); ++it) {
 			pEPSSurprise = make_shared<CEPSSurprise>();
 			s = jsonGetString(it, _T("symbol"));
 			pEPSSurprise->m_strSymbol = s.c_str();

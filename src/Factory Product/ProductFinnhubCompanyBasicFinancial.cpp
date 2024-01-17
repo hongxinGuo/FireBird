@@ -246,23 +246,22 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 	vector<CValueOfPeriod> vData;
 	int year, month, day;
 	CFinnhubStockBasicFinancialPtr pBasicFinancial = nullptr;
+	json js;
 
 	ptQuarterly.clear();
 	ptAnnual.clear();
 	ptMetric.clear();
 	ptSeries.clear();
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return pBasicFinancial;
+	if (!pWebData->CreateJson(js)) return pBasicFinancial;
 	if (!IsValidData(pWebData)) return pBasicFinancial;
 
 	pBasicFinancial = std::make_shared<CFinnhubStockBasicFinancial>();
-	const auto pjs = pWebData->GetJSon();
 	try {
-		s = pjs->at(_T("symbol"));
+		s = js.at(_T("symbol"));
 		pBasicFinancial->m_symbol = s.c_str();
 
-		ptMetric = jsonGetChild(pjs, _T("metric"));
+		ptMetric = jsonGetChild(&js, _T("metric"));
 		try { pBasicFinancial->m_10DayAverageTradingVolume = jsonGetDouble(&ptMetric, _T("10DayAverageTradingVolume")); }
 		catch (json::exception&) {}
 		try { pBasicFinancial->m_13WeekPriceReturnDaily = jsonGetDouble(&ptMetric, _T("13WeekPriceReturnDaily")); }
@@ -544,7 +543,7 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 		try { pBasicFinancial->m_yearToDatePriceReturnDaily = jsonGetDouble(&ptMetric, _T("yearToDatePriceReturnDaily")); }
 		catch (json::exception&) {}
 
-		s = pjs->at(_T("metricType")); // 目前共五种类型："all", "perShare", "marketCapitalization","metric","eps"
+		s = js.at(_T("metricType")); // 目前共五种类型："all", "perShare", "marketCapitalization","metric","eps"
 		if (!s_setMetricType.contains(s)) {
 			CString str = _T(" metric type out of range: ");
 			str += s.c_str();
@@ -553,7 +552,7 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 			gl_systemMessage.PushInnerSystemInformationMessage(str);
 		}
 
-		ptSeries = jsonGetChild(pjs, _T("series"));
+		ptSeries = jsonGetChild(&js, _T("series"));
 		if (!ptSeries.empty()) {
 			bool fAnnualEmpty = false;
 			bool fQuarterlyEmpty = false;

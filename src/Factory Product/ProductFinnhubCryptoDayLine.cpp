@@ -64,15 +64,14 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 	json js2;
 	CDayLinePtr pDayLine = nullptr;
 	string sError;
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return pvDayLine;
+	if (!pWebData->CreateJson(js)) return pvDayLine;
 	if (!IsValidData(pWebData)) return pvDayLine;
 
-	const auto pjs = pWebData->GetJSon();
 	try {
 		string s;
-		s = jsonGetString(pjs, _T("s"));
+		s = jsonGetString(&js, _T("s"));
 		if (s == _T("no_data")) {
 			// 没有日线数据，无需检查此股票的日线和实时数据
 			return pvDayLine;
@@ -89,7 +88,7 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 	}
 	try {
 		time_t tTemp = 0;
-		js2 = jsonGetChild(pjs, _T("t"));
+		js2 = jsonGetChild(&js, _T("t"));
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			tTemp = it->get<INT64>();
 			pDayLine = make_shared<CDayLine>();
@@ -105,35 +104,35 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 		int i = 0;
 		INT64 llTemp;
 		double dTemp;
-		js2 = jsonGetChild(pjs, _T("c"));
+		js2 = jsonGetChild(&js, _T("c"));
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetClose(static_cast<long>(dTemp * 1000));
 		}
-		js2 = jsonGetChild(pjs, _T("h"));
+		js2 = jsonGetChild(&js, _T("h"));
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetHigh(static_cast<long>(1000 * dTemp));
 		}
-		js2 = jsonGetChild(pjs, _T("l"));
+		js2 = jsonGetChild(&js, _T("l"));
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetLow(static_cast<long>(1000 * dTemp));
 		}
-		js2 = jsonGetChild(pjs, _T("o"));
+		js2 = jsonGetChild(&js, _T("o"));
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			dTemp = jsonGetDouble(it);
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetOpen(static_cast<long>(1000 * dTemp));
 		}
-		js2 = jsonGetChild(pjs, _T("v"));
+		js2 = jsonGetChild(&js, _T("v"));
 		i = 0;
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			llTemp = jsonGetLongLong(it);

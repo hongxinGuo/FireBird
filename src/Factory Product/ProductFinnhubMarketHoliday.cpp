@@ -60,17 +60,16 @@ CMarketHolidayVectorPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(
 	string s, sError;
 	long year, month, day;
 	CString sExchange, sTimeZone;
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) return pvHoliday;
+	if (!pWebData->CreateJson(js)) return pvHoliday;
 	if (!IsValidData(pWebData)) return pvHoliday;
 
-	const auto pjs = pWebData->GetJSon();
-	s = jsonGetString(pjs, _T("exchange"));
+	s = jsonGetString(&js, _T("exchange"));
 	if (!s.empty()) sExchange = s.c_str();
-	s = jsonGetString(pjs, _T("timezone"));
+	s = jsonGetString(&js, _T("timezone"));
 	if (!s.c_str()) sTimeZone = s.c_str();
-	auto js1 = jsonGetChild(pjs, (_T("data")));
+	auto js1 = jsonGetChild(&js, (_T("data")));
 	try {
 		for (auto it = js1.begin(); it != js1.end(); ++it) {
 			pHoliday = make_shared<CMarketHoliday>();

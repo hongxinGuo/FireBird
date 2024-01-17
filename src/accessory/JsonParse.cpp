@@ -321,15 +321,14 @@ CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 	auto pDayLineData = make_shared<CDayLineWebData>();
 	const CString strSymbol = pWebData->GetStockCode();
 	const CString strDisplaySymbol = gl_dataContainerChinaStock.GetStock(strSymbol)->GetDisplaySymbol();
+	json js;
 
-	ASSERT(!pWebData->IsParsed());
-	if (!pWebData->CreateJson()) {
+	if (!pWebData->CreateJson(js)) {
 		const CString strMessage = pWebData->GetStockCode() + _T(": Tengxun DayLine data json parse error");
 		gl_systemMessage.PushErrorMessage(strMessage);
 		return pDayLineData;
 	}
-	json* pjs = pWebData->GetJSon();
-	const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(pjs, XferStandardToTengxun(pWebData->GetStockCode()));
+	const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(&js, XferStandardToTengxun(pWebData->GetStockCode()));
 	ranges::sort(*pvDayLine, [](const CDayLinePtr& pData1, const CDayLinePtr& pData2) { return pData1->GetMarketDate() < pData2->GetMarketDate(); });
 	for (const auto& pDayLine : *pvDayLine) {
 		pDayLine->SetStockSymbol(strSymbol);
