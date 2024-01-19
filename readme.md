@@ -1,7 +1,9 @@
 # FireBird
 
 ### 当前状态
-发行Version0.29版本。
+发行Version0.30版本。
+
+Version0.30：修改各Exchange的数据结构。添加simdjson支持。
 
 Version0.29:新增一独立程序WatchDog，用于监测主程序FireBird是否在执行。如果主程序意外中止的话，自动重新启动之。
 
@@ -38,6 +40,8 @@ FireBird从网络股票行情服务器中提取实时行情和历史数据，将处理后的信息存储于数据库
 5.Nlohmann json(https://github.com/nlohmann/json)。
 
 6.Google benchmark(https://github.com/google/benchmark)。
+
+7.simdjson(https://github.com/simdjson/simdjson)。
 
 8.zlib(https://github.com/madler/zlib)。
 

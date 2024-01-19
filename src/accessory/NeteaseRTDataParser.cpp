@@ -213,7 +213,6 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 		ondemand::parser parser;
 		const simdjson::padded_string jsonPadded(svJsonData);
 		ondemand::document doc = parser.iterate(jsonPadded);
-
 		for (ondemand::field item_key : doc.get_object()) {
 			auto pWebRTData = make_shared<CWebRTData>();
 			pWebRTData->SetDataSource(NETEASE_RT_WEB_DATA_);
@@ -262,7 +261,10 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 		}
 	}
 	catch (simdjson_error& error) {
-		string sError = error.what();
+		const string sError = error.what();
+		CString str = "Netease RT Data Error: ";
+		str += sError.c_str();
+		gl_systemMessage.PushErrorMessage(str);
 	}
 	return pvWebRTData;
 }

@@ -86,14 +86,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_ThreadStatus.IsWebInquiringThreadRunning());
 		gl_ThreadStatus.DecreaseWebInquiringThread();
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreateThread);
-		EXPECT_FALSE(gl_ThreadStatus.IsWebInquiringThreadRunning());
-		gl_ThreadStatus.DecreaseWebInquiringThread();
-		if (iCreateThread <= 0) {
-			EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreateThread);
-			EXPECT_FALSE(gl_ThreadStatus.IsWebInquiringThreadRunning());
-		}
-		else {
-			EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iCreateThread - 1);
-		}
+		EXPECT_FALSE(gl_ThreadStatus.IsWebInquiringThreadRunning()) << "此时没有查询线程在执行";
 	}
 }

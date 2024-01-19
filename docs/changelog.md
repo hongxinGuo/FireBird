@@ -1,3 +1,6 @@
+2023.12.09 Version0.30
+
+修改各exchange的数据结构；添加simdjson支持。
 
 2023.05.23 Version0.29
 

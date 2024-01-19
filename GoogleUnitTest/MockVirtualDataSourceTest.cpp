@@ -1,13 +1,11 @@
 #include"pch.h"
 
 #include"afxinet.h"
-#include "FinnhubForexSymbol.h"
 
 #include"MockVirtualDataSource.h"
 
 #include"GeneralCheck.h"
 #include "ProductDummy.h"
-#include "ProductTiingoStockSymbol.h"
 
 using namespace testing;
 
@@ -129,7 +127,7 @@ namespace FireBirdTest {
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(0);
 
-		EXPECT_FALSE(m_pVirtualDataSource->GetWebDataAndProcessIt());
+		m_pVirtualDataSource->GetWebDataAndProcessIt();
 
 		// »Ö¸´Ô­×´
 		m_pVirtualDataSource->SetWorkingThreadRunning(false);
@@ -142,7 +140,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pVirtualDataSource, ProcessWebDataReceived).Times(1)
 		.WillOnce(Return(false));
 
-		EXPECT_FALSE(m_pVirtualDataSource->GetWebDataAndProcessIt());
+		m_pVirtualDataSource->GetWebDataAndProcessIt();
 
 		// »Ö¸´Ô­×´
 		m_pVirtualDataSource->SetWorkingThreadRunning(false);
@@ -156,7 +154,7 @@ namespace FireBirdTest {
 		.WillOnce(Return(true));
 		//EXPECT_CALL(*m_pVirtualDataSource, UpdateStatus).Times(1);
 
-		EXPECT_TRUE(m_pVirtualDataSource->GetWebDataAndProcessIt());
+		m_pVirtualDataSource->GetWebDataAndProcessIt();
 
 		// »Ö¸´Ô­×´
 		m_pVirtualDataSource->SetWorkingThreadRunning(false);

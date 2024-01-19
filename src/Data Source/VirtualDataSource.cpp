@@ -48,8 +48,6 @@ CVirtualDataSource::CVirtualDataSource() {
 /// </summary>
 /// lCurrentTime：当前市场时间
 void CVirtualDataSource::Run(const long lCurrentLocalMarketTime) {
-	ASSERT(m_fEnable);
-
 	if (!IsInquiring()) {
 		ASSERT(!HaveInquiry());
 		GenerateInquiryMessage(lCurrentLocalMarketTime);
@@ -76,22 +74,19 @@ void CVirtualDataSource::CreateThreadGetWebDataAndProcessIt() {
 	thread1.detach();
 }
 
-bool CVirtualDataSource::GetWebDataAndProcessIt() {
+void CVirtualDataSource::GetWebDataAndProcessIt() {
 	CHighPerformanceCounter counter;
-	bool bSucceed = false;
 
 	ASSERT(IsWorkingThreadRunning());// 在调用工作线程前即设置
 	counter.start();
 	if (GetWebData()) {
 		if (ProcessWebDataReceived()) {
 			m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource智能指针
-			bSucceed = true;
 		}
 	}
 	counter.stop();
 	SetCurrentInquiryTime(counter.GetElapsedMillisecond());
 	SetWorkingThreadRunning(false);
-	return bSucceed;
 }
 
 //////////////////////////////////////////////
@@ -121,6 +116,7 @@ bool CVirtualDataSource::ProcessWebDataReceived() {
 void CVirtualDataSource::SetDefaultSessionOption() const {
 	DWORD dwValue = 0;
 
+	m_pSession->QueryOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, dwValue); // 查询接收超时时间
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
 	m_pSession->QueryOption(INTERNET_OPTION_RECEIVE_TIMEOUT, dwValue);
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
@@ -128,7 +124,6 @@ void CVirtualDataSource::SetDefaultSessionOption() const {
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
 	m_pSession->QueryOption(INTERNET_OPTION_CONNECT_RETRIES, dwValue); // 查询重连次数
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 5); // 5次重试
-	m_pSession->QueryOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, dwValue); // 查询接收超时时间
 }
 
 void CVirtualDataSource::GenerateCurrentInquiryMessage() {
@@ -151,8 +146,7 @@ bool CVirtualDataSource::Read() {
 		StoreReceivedData(pWebData);
 		ResetBuffer();
 	}
-	else {
-		// error handling
+	else { // error handling
 		bSucceed = false;
 		DiscardAllInquiry(); // 当一次查询产生多次申请时，这些申请都是各自相关的，只要出现一次错误，其他的申请就无意义了。
 		DiscardReceivedData();

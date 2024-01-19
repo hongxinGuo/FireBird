@@ -355,10 +355,13 @@ public:
 		catch (json::parse_error&) {
 			fDone = false;
 		}
+		pWebData = make_shared<CWebData>();
+		pWebData->Test_SetBuffer_(s.c_str());
 	}
 
 	void TearDown(const benchmark::State& state) override {}
 
+	CWebDataPtr pWebData;
 	string s;
 	string_view sv;
 	json js; // 此处不能使用智能指针，否则出现重入问题，原因不明。
@@ -367,14 +370,21 @@ public:
 };
 
 // 测试nlohmann json读取NeteaseRTData的速度（数据已预先解析了）
-BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTData1)(benchmark::State& state) {
+BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataWithNlohmannJson1)(benchmark::State& state) {
 	for (auto _ : state) {
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTData(&js);
 	}
 }
 
+// 测试nlohmann json读取NeteaseRTData的速度（数据未解析）
+BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataWithNlohmannJson2)(benchmark::State& state) {
+	for (auto _ : state) {
+		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithNlohmannJSon(pWebData);
+	}
+}
+
 //simdjson解析并读取NeteaseRTData的速度
-BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTData2)(benchmark::State& state) {
+BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataWithSimdjson1)(benchmark::State& state) {
 	for (auto _ : state) {
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson(sv);
 	}

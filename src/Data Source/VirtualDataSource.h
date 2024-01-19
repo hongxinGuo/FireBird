@@ -40,7 +40,7 @@ public:
 	void Run(long lCurrentLocalMarketTime);
 	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual void CreateThreadGetWebDataAndProcessIt();
-	bool GetWebDataAndProcessIt();
+	void GetWebDataAndProcessIt();
 	virtual void GenerateCurrentInquiryMessage();
 	virtual bool GetWebData() { return Read(); } // 网络读取。为了Mock方便，声明为虚函数。所有的Mock类，皆应Mock此函数以防止出现实际网络申请
 	virtual bool ProcessWebDataReceived();

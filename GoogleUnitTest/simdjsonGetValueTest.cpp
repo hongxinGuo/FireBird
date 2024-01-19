@@ -265,6 +265,11 @@ namespace FireBirdTest {
 		try {
 			ondemand::parser parser;
 			ondemand::document doc = parser.iterate(s_BadSimdjson3);
+			EXPECT_THROW(INT64 i = jsonGetInt64(doc, ("No integer")), simdjson_error) << "没有这个键";
+			EXPECT_THROW(double d = jsonGetDouble(doc, ("No double")), simdjson_error) << "没有这个键";
+			EXPECT_THROW(string_view sv = jsonGetStringView(doc, "No string"), simdjson_error) << "没有这个键";
+			EXPECT_THROW(bool f = jsonGetBool(doc, "No bool"), simdjson_error) << "没有这个键";
+			EXPECT_THROW(auto array = jsonGetArray(doc, "No array"), simdjson_error) << "没有这个键";
 			EXPECT_THROW(INT64 i = jsonGetInt64(doc, ("integer")), simdjson_error);
 			EXPECT_THROW(double d = jsonGetDouble(doc, ("double")), simdjson_error);
 			EXPECT_THROW(string_view sv = jsonGetStringView(doc, "string"), simdjson_error);
@@ -296,11 +301,28 @@ namespace FireBirdTest {
 				}
 			}
 			ondemand::object object1 = doc["DataArray2"].get_object();
+			EXPECT_THROW(int i2 = jsonGetInt64(object1, "No integer"), simdjson_error);
+			EXPECT_THROW(double d4 = jsonGetDouble(object1, "no double"), simdjson_error);
+			EXPECT_THROW(string_view str2 = jsonGetStringView(object1, "no string"), simdjson_error);
+			EXPECT_THROW(bool b2 = jsonGetBool(object1, "no bool"), simdjson_error);
+			EXPECT_THROW(auto aa2 = jsonGetArray(object1, "no array"), simdjson_error);
 			EXPECT_THROW(int i2 = jsonGetInt64(object1, "integer"), simdjson_error);
 			EXPECT_THROW(double d4 = jsonGetDouble(object1, "double"), simdjson_error);
 			EXPECT_THROW(string_view str2 = jsonGetStringView(object1, "string"), simdjson_error);
 			EXPECT_THROW(bool b2 = jsonGetBool(object1, "bool"), simdjson_error);
 			EXPECT_THROW(auto aa2 = jsonGetArray(object1, "array"), simdjson_error);
+			ondemand::value value2 = doc["DataArray2"];
+
+			EXPECT_THROW(int i2 = jsonGetInt64(value2, "No integer"), simdjson_error);
+			EXPECT_THROW(double d4 = jsonGetDouble(value2, "no double"), simdjson_error);
+			EXPECT_THROW(string_view str2 = jsonGetStringView(value2, "no string"), simdjson_error);
+			EXPECT_THROW(bool b2 = jsonGetBool(value2, "no bool"), simdjson_error);
+			EXPECT_THROW(auto aa2 = jsonGetArray(value2, "no array"), simdjson_error);
+			EXPECT_THROW(int i2 = jsonGetInt64(value2, "integer"), simdjson_error);
+			EXPECT_THROW(double d4 = jsonGetDouble(value2, "double"), simdjson_error);
+			EXPECT_THROW(string_view str2 = jsonGetStringView(value2, "string"), simdjson_error);
+			EXPECT_THROW(bool b2 = jsonGetBool(value2, "bool"), simdjson_error);
+			EXPECT_THROW(auto aa2 = jsonGetArray(value2, "array"), simdjson_error);
 		}
 		catch (simdjson_error& error) {
 			EXPECT_TRUE(false) << error.what();

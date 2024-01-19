@@ -34,7 +34,7 @@ namespace FireBirdTest {
 			m_iIndex = pData->m_iIndex;
 			m_strData = pData->m_strData;
 			m_pWebData = make_shared<CWebData>();
-			
+
 			m_pWebData->Test_SetBuffer_(m_strData);
 		}
 
@@ -81,6 +81,7 @@ namespace FireBirdTest {
 			EXPECT_STREQ(pvWebRTData->at(1)->GetStockName(), _T("don't use chinese character2"));
 			EXPECT_EQ(pvWebRTData->at(1)->GetHigh(), 5730);
 			EXPECT_EQ(pvWebRTData->at(1)->GetAmount(), 443978975);
+			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0) << gl_systemMessage.PopErrorMessage();
 			break;
 		default:
 			break;
