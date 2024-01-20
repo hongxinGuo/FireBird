@@ -81,7 +81,7 @@ namespace FireBirdTest {
 	/// 测试Mock函数时，互相调用的函数不能同时声明为Mock函数，否则就无法测试了。
 	/// 在这里测试CVirtualDataSource类中的Read函数。
 	/// </summary>
-	TEST_F(CMockQuandlDataSourceTest, TestRead1) {
+	TEST_F(CMockQuandlDataSourceTest, TestGetWebDataImp1) {
 		const CWebDataPtr pData = make_shared<CWebData>();
 		pData->SetStockCode(_T("Test"));
 		EXPECT_EQ(m_pMockQuandlDataSource->GetReceivedDataSize(), 0);
@@ -91,7 +91,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockQuandlDataSource, CreateWebDataAfterSucceedReading).Times(1)
 		.WillOnce(Return(pData));
 
-		m_pMockQuandlDataSource->Read();
+		m_pMockQuandlDataSource->GetWebDataImp();
 
 		EXPECT_TRUE(m_pMockQuandlDataSource->IsInquiring()) << "此标识没有重置";
 		EXPECT_EQ(m_pMockQuandlDataSource->GetReceivedDataSize(), 1) << "存储了一个WebData";
@@ -103,7 +103,7 @@ namespace FireBirdTest {
 	/// 测试Mock函数时，互相调用的函数不能同时声明为Mock函数，否则就无法测试了。
 	/// 在这里测试CVirtualDataSource类中的Read函数。
 	/// </summary>
-	TEST_F(CMockQuandlDataSourceTest, TestRead2) {
+	TEST_F(CMockQuandlDataSourceTest, TestGetWebDataImp2) {
 		const auto p = make_shared<CVirtualWebProduct>();
 		m_pMockQuandlDataSource->StoreInquiry(p);
 		EXPECT_EQ(m_pMockQuandlDataSource->InquiryQueueSize(), 1);
@@ -113,7 +113,7 @@ namespace FireBirdTest {
 		.WillOnce(Invoke([]() { m_pMockQuandlDataSource->SetErrorCode(12002); }));
 		EXPECT_CALL(*m_pMockQuandlDataSource, CreateWebDataAfterSucceedReading).Times(0); // 没有调用此函数
 
-		m_pMockQuandlDataSource->Read();
+		m_pMockQuandlDataSource->GetWebDataImp();
 
 		EXPECT_FALSE(m_pMockQuandlDataSource->IsInquiring()) << "当出现错误时，立即重置此标识";
 		EXPECT_EQ(m_pMockQuandlDataSource->GetReceivedDataSize(), 0) << "没有WebData";

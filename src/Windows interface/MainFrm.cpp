@@ -578,14 +578,11 @@ void CMainFrame::UpdateStatus() {
 	SysCallSetPaneText(9, gl_pWorldMarket->GetCurrentFunction());
 
 	// 更新当前抓取的实时数据大小
-	if ((GetUTCTime() - m_timeLast) > 0) {
-		if (gl_pSinaRTDataSource->GetTotalByteRead() > 0) {
-			// 每秒更新一次
-			str = FormatToMK(gl_pSinaRTDataSource->GetTotalByteRead());
-			gl_pSinaRTDataSource->ClearTotalByteRead();
-			m_timeLast = GetUTCTime();
-			m_wndStatusBar.SetPaneText(10, str);
-		}
+	if ((GetUTCTime() - m_timeLast) > 0) {// 每秒更新一次
+		str = FormatToMK(gl_pSinaRTDataSource->GetTotalByteRead());
+		gl_pSinaRTDataSource->ClearTotalByteRead();
+		m_timeLast = GetUTCTime();
+		m_wndStatusBar.SetPaneText(10, str);
 	}
 	// 更新当前申请网络数据的工作线程数
 	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfWebInquiringThread());

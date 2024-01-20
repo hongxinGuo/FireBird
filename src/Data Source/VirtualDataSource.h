@@ -42,13 +42,13 @@ public:
 	virtual void CreateThreadGetWebDataAndProcessIt();
 	void GetWebDataAndProcessIt();
 	virtual void GenerateCurrentInquiryMessage();
-	virtual bool GetWebData() { return Read(); } // 网络读取。为了Mock方便，声明为虚函数。所有的Mock类，皆应Mock此函数以防止出现实际网络申请
-	virtual bool ProcessWebDataReceived();
+	virtual void GetWebData() { GetWebDataImp(); } // 网络读取。为了Mock方便，声明为虚函数。所有的Mock类，皆应Mock此函数以防止出现实际网络申请
+	virtual void ProcessWebDataReceived();
 	virtual void CheckInaccessible(const CWebDataPtr& pWebData) const {};
 
 	void SetDefaultSessionOption() const;
 
-	bool Read(); // 实际读取处理函数，完成工作线程的实际功能
+	void GetWebDataImp(); // 实际读取处理函数，GeeWebData()的实现，完成工作线程的实际功能
 	virtual void ReadWebData(); // 网络实际读取函数
 	virtual void OpenFile(const CString& strInquiring);
 	virtual void GetFileHeaderInformation();
@@ -137,7 +137,7 @@ public:
 	void SetInquiringNumber(const long lValue) noexcept { m_lInquiringNumber = lValue; }
 
 	static long GetTotalByteRead() noexcept { return sm_lTotalByteRead; }
-	static void SetTotalByteRead(const long lValue = 0) noexcept { sm_lTotalByteRead = lValue; }
+	static void SetTotalByteRead(const long lValue) noexcept { sm_lTotalByteRead = lValue; }
 	static void ClearTotalByteRead() noexcept { sm_lTotalByteRead = 0; }
 
 	void SetCurrentInquiryTime(const time_t tt) noexcept { m_tCurrentInquiryTime = tt; }

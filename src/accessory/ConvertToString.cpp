@@ -69,15 +69,15 @@ CString XferToCString(const std::string& s) {
 	return strName3;
 }
 
-CString FormatToMK(long long iNumber) {
+CString FormatToMK(long iNumber) {
 	char buffer[100];
-	if (iNumber > 1024 * 1024) { // 1M以上的流量？
-		sprintf_s(buffer, _T("%4lldM"), iNumber / (1024 * 1024));
+	if (iNumber > 1000000) { // 1M以上的流量？
+		sprintf_s(buffer, _T("%4iM"), iNumber / 1000000);
 	}
 	else if (iNumber > 1024) { // 1K以上的流量？
-		sprintf_s(buffer, _T("%4lldK"), iNumber / 1024);
+		sprintf_s(buffer, _T("%4iK"), iNumber / 1024);
 	}
-	else { sprintf_s(buffer, _T("%4lld"), iNumber); }
+	else { sprintf_s(buffer, _T("%4i"), iNumber); }
 	CString str = buffer;
 
 	return str;

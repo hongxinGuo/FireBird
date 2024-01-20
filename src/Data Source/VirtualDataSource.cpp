@@ -79,10 +79,9 @@ void CVirtualDataSource::GetWebDataAndProcessIt() {
 
 	ASSERT(IsWorkingThreadRunning());// 在调用工作线程前即设置
 	counter.start();
-	if (GetWebData()) {
-		if (ProcessWebDataReceived()) {
-			m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource智能指针
-		}
+	GetWebData();
+	if (!IsWebError()) {
+		ProcessWebDataReceived();
 	}
 	counter.stop();
 	SetCurrentInquiryTime(counter.GetElapsedMillisecond());
@@ -97,20 +96,18 @@ void CVirtualDataSource::GetWebDataAndProcessIt() {
 //
 //
 //////////////////////////////////////////////
-bool CVirtualDataSource::ProcessWebDataReceived() {
-	bool bProcessed = false;
+void CVirtualDataSource::ProcessWebDataReceived() {
 	if (HaveReceivedData()) {// 处理当前网络数据
 		ASSERT(m_pCurrentProduct != nullptr);
 		const CWebDataPtr pWebData = GetReceivedData();
 		CheckInaccessible(pWebData);
 		m_pCurrentProduct->ParseAndStoreWebData(pWebData);
-		bProcessed = true;
+		m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource智能指针
 	}
 	ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
 	if (!HaveInquiry()) { // 没有现存的申请时
 		SetInquiring(false); // 此标识的重置需要位于位于最后一步
 	}
-	return bProcessed;
 }
 
 void CVirtualDataSource::SetDefaultSessionOption() const {
@@ -136,8 +133,7 @@ void CVirtualDataSource::PrepareReadingWebData() {
 	ConfigureSession();
 }
 
-bool CVirtualDataSource::Read() {
-	bool bSucceed = true;
+void CVirtualDataSource::GetWebDataImp() {
 	PrepareReadingWebData();
 	ReadWebData();
 	if (!IsWebError()) {
@@ -147,14 +143,11 @@ bool CVirtualDataSource::Read() {
 		ResetBuffer();
 	}
 	else { // error handling
-		bSucceed = false;
 		DiscardAllInquiry(); // 当一次查询产生多次申请时，这些申请都是各自相关的，只要出现一次错误，其他的申请就无意义了。
 		DiscardReceivedData();
 		ASSERT(IsInquiring());
 		SetInquiring(false); // 当工作线程出现故障时，直接重置数据申请标志。
 	}
-
-	return bSucceed;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -183,7 +176,6 @@ void CVirtualDataSource::ReadWebData() {
 			m_lByteRead += lCurrentByteRead;
 			IncreaseBufferSizeIfNeeded();
 		} while (lCurrentByteRead > 0);
-		sm_lTotalByteRead += m_lByteRead;
 		// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
 		m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
 	}
@@ -244,6 +236,7 @@ long CVirtualDataSource::QueryDataLength() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 UINT CVirtualDataSource::ReadWebFileOneTime() {
 	const UINT uByteRead = m_pFile->Read(m_dataBuffer, DATA_BUFFER_SIZE_);
+	sm_lTotalByteRead += uByteRead;
 	return uByteRead;
 }
 

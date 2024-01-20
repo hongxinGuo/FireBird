@@ -13,4 +13,4 @@ using std::string;
 [[nodiscard]] CString ConvertValueToString(INT64 iValue, int iDividend = 1);
 [[nodiscard]] CString ConvertValueToString(int iValue, int iDividend = 1);
 [[nodiscard]] CString ConvertValueToString(double dValue, int iDividend = 1);
-[[nodiscard]] CString FormatToMK(long long iNumber);
+[[nodiscard]] CString FormatToMK(long iNumber);
