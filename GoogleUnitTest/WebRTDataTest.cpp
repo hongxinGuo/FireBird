@@ -409,8 +409,6 @@ namespace FireBirdTest {
 	SinaRTData Data38(37, _T("var hq_str_sa600000a'浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,-11.590,2019-07-16,15:00:00,00,\";\n"));
 	// 格式出错（股票代码后面不是'='号
 	SinaRTData Data39(38, _T("var hq_str_sa600000a\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,-11.590,2019-07-16,15:00:00,00,\";\n"));
-	// 格式出错（最后没有符号:‘;')
-	SinaRTData Data40(39, _T("var hq_str_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00,\"\n"));
 	// 没有实时数据的两段数据
 	SinaRTData Data41(40, _T("var hq_str_sz000001=\"\";\nvar hq_str_sz000001=\"\";\n"));
 
@@ -442,6 +440,8 @@ namespace FireBirdTest {
 			m_RTData.SetLow(-1);
 			m_RTData.SetSell(-1);
 			m_RTData.SetBuy(-1);
+
+			svData = m_pSinaWebRTData->GetCurrentSinaData();
 		}
 
 		void TearDown() override {
@@ -459,13 +459,14 @@ namespace FireBirdTest {
 		long m_lStringLength;
 		CWebDataPtr m_pSinaWebRTData;
 		CWebRTData m_RTData;
+		string_view svData;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestSinaRTData, CalculateSinaRTDataTest, testing::Values(&Data1, &Data2, &Data3,
 		                         &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
 		                         &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
 		                         &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
-		                         &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40, &Data41
+		                         &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data41
 	                         ));
 
 	TEST_P(CalculateSinaRTDataTest, TestSinaRTData) {
@@ -1214,14 +1215,12 @@ namespace FireBirdTest {
 			break;
 		case 32: // 没有实时数据
 			EXPECT_TRUE(fSucceed); // 读取正确
-			EXPECT_FALSE(m_RTData.IsActive());
 			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos() + 1) << "当是最后一段数据时，不判断是否存在回车符\n，也不增加当前位置";
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("000001.SZ"));
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
 			break;
 		case 33: // 有错误，前缀出错
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_FALSE(m_RTData.IsActive());
 			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读至段结尾处";
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
 			break;
@@ -1232,38 +1231,782 @@ namespace FireBirdTest {
 			break;
 		case 35: // 有错误，前缀出错
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_FALSE(m_RTData.IsActive());
 			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读至段结尾处";
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
 			break;
 		case 36: // 有错误，前缀出错
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_FALSE(m_RTData.IsActive());
 			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读至段结尾处";
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
 			break;
 		case 37: // 有错误，前缀出错
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_FALSE(m_RTData.IsActive());
 			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
 			break;
 		case 38: // 有错误，前缀出错
 			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_FALSE(m_RTData.IsActive());
 			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读至段结尾处";
-			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
-			break;
-		case 39: // 有错误，最后没有符号：';'
-			EXPECT_FALSE(fSucceed); // 有错误
-			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_EQ(m_lStringLength, m_pSinaWebRTData->GetCurrentPos()) << "错误处理时读到了结尾处";
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
 			break;
 		case 40: // 没有实时数据的两段数据
 			EXPECT_TRUE(fSucceed); // 读取正确
-			EXPECT_FALSE(m_RTData.IsActive());
+			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
 			EXPECT_EQ(m_pSinaWebRTData->GetCurrentPos(), 24) << "当不是最后一段数据时，判断是否存在回车符\n，增加当前位置";
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("000001.SZ"));
+			break;
+		default:
+			break;
+		}
+		// 恢复原态
+		gl_pChinaMarket->TEST_SetUTCTime(tUTCTime);
+	}
+
+	TEST_P(CalculateSinaRTDataTest, TestSinaRTData2) {
+		time_t tTime, tUTCTime;
+		tm tm_; // 该日期为：2019-07-16 15:00:00，就是数据中的时间。
+		tm_.tm_year = 2019 - 1900;
+		tm_.tm_mon = 7 - 1;
+		tm_.tm_mday = 16;
+		tm_.tm_hour = 15;
+		tm_.tm_min = 0;
+		tm_.tm_sec = 0;
+		tTime = gl_pChinaMarket->TransferToUTCTime(&tm_);
+		tUTCTime = GetUTCTime();
+		gl_pChinaMarket->TEST_SetUTCTime(tTime);
+		bool fSucceed = m_RTData.ReadSinaData(svData);
+		EXPECT_EQ(m_pSinaWebRTData->GetCurrentPos(), 0) << "不移动当前位置指针";
+		switch (m_iCount) {
+		case 0:
+			EXPECT_TRUE(fSucceed); // 没有错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
+			EXPECT_EQ(m_RTData.GetPBuy(4), 11500);
+			EXPECT_EQ(m_RTData.GetVSell(0), 259981);
+			EXPECT_EQ(m_RTData.GetPSell(0), 11550);
+			EXPECT_EQ(m_RTData.GetVSell(1), 206108);
+			EXPECT_EQ(m_RTData.GetPSell(1), 11560);
+			EXPECT_EQ(m_RTData.GetVSell(2), 325641);
+			EXPECT_EQ(m_RTData.GetPSell(2), 11570);
+			EXPECT_EQ(m_RTData.GetVSell(3), 215109);
+			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
+			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
+			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
+			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
+			break;
+		case 1: // 所有价格皆为零
+			EXPECT_TRUE(fSucceed); // 没有错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("002385.SZ"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("平安银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 0);
+			EXPECT_EQ(m_RTData.GetLastClose(), 0);
+			EXPECT_EQ(m_RTData.GetNew(), 0);
+			EXPECT_EQ(m_RTData.GetHigh(), 0);
+			EXPECT_EQ(m_RTData.GetLow(), 0);
+			EXPECT_EQ(m_RTData.GetBuy(), 0);
+			EXPECT_EQ(m_RTData.GetSell(), 0);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 0);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 0);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 0);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 0);
+			EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
+			EXPECT_EQ(m_RTData.GetPBuy(4), 0);
+			EXPECT_EQ(m_RTData.GetVSell(0), 259981);
+			EXPECT_EQ(m_RTData.GetPSell(0), 0);
+			EXPECT_EQ(m_RTData.GetVSell(1), 206108);
+			EXPECT_EQ(m_RTData.GetPSell(1), 0);
+			EXPECT_EQ(m_RTData.GetVSell(2), 325641);
+			EXPECT_EQ(m_RTData.GetPSell(2), 0);
+			EXPECT_EQ(m_RTData.GetVSell(3), 215109);
+			EXPECT_EQ(m_RTData.GetPSell(3), 0);
+			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
+			EXPECT_EQ(m_RTData.GetPSell(4), 0);
+			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
+			break;
+		case 2:
+			EXPECT_TRUE(fSucceed); // 没有错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 0);
+			EXPECT_EQ(m_RTData.GetAmount(), 0);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 0);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 0);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 0);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 0);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			EXPECT_EQ(m_RTData.GetVBuy(4), 0);
+			EXPECT_EQ(m_RTData.GetPBuy(4), 11500);
+			EXPECT_EQ(m_RTData.GetVSell(0), 0);
+			EXPECT_EQ(m_RTData.GetPSell(0), 11550);
+			EXPECT_EQ(m_RTData.GetVSell(1), 0);
+			EXPECT_EQ(m_RTData.GetPSell(1), 11560);
+			EXPECT_EQ(m_RTData.GetVSell(2), 0);
+			EXPECT_EQ(m_RTData.GetPSell(2), 11570);
+			EXPECT_EQ(m_RTData.GetVSell(3), 0);
+			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
+			EXPECT_EQ(m_RTData.GetVSell(4), 0);
+			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
+			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
+			break;
+		case 3:
+			EXPECT_TRUE(fSucceed); // 无错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			break;
+		case 4:
+			EXPECT_TRUE(fSucceed); // 无错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			break;
+		case 5:
+			EXPECT_TRUE(fSucceed); // 无错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			break;
+		case 6:
+			EXPECT_TRUE(fSucceed); // 无错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			break;
+		case 7:
+			EXPECT_TRUE(fSucceed); // 无错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			break;
+		case 8:
+			EXPECT_TRUE(fSucceed); // 无错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			break;
+		case 9:
+			EXPECT_TRUE(fSucceed); // 无错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			break;
+		case 10: // 有错误
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			break;
+		case 11:
+			EXPECT_TRUE(fSucceed); // 有错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			break;
+		case 12: // 出现负值
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			break;
+		case 13: // 有错误
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			break;
+		case 14: // 有错误
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			break;
+		case 15: // 出现负值
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			break;
+		case 16: // 有错误
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			break;
+		case 17: // 出现负值
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			break;
+		case 18: // 出现负值
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			break;
+		case 19: // 出现负值
+			EXPECT_TRUE(fSucceed);
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			break;
+		case 20: // 出现负值
+			EXPECT_TRUE(fSucceed); // 有错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			break;
+		case 21: // 出现负值
+			EXPECT_TRUE(fSucceed); // 无错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
+			break;
+		case 22: // 出现负值
+			EXPECT_TRUE(fSucceed); // 有错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
+			EXPECT_EQ(m_RTData.GetPBuy(4), 11500);
+			break;
+		case 23: // 出现负值
+			EXPECT_TRUE(fSucceed); // 无错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
+			EXPECT_EQ(m_RTData.GetPBuy(4), 11500);
+			EXPECT_EQ(m_RTData.GetVSell(0), 259981);
+			break;
+		case 24: // 出现负值
+			EXPECT_TRUE(fSucceed); // 有错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
+			EXPECT_EQ(m_RTData.GetPBuy(4), 11500);
+			EXPECT_EQ(m_RTData.GetVSell(0), 259981);
+			EXPECT_EQ(m_RTData.GetPSell(0), 11550);
+			break;
+		case 25: // 出现负值
+			EXPECT_TRUE(fSucceed); // 无错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
+			EXPECT_EQ(m_RTData.GetPBuy(4), 11500);
+			EXPECT_EQ(m_RTData.GetVSell(0), 259981);
+			EXPECT_EQ(m_RTData.GetPSell(0), 11550);
+			EXPECT_EQ(m_RTData.GetVSell(1), 206108);
+			break;
+		case 26: // 出现负值
+			EXPECT_TRUE(fSucceed); // 有错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
+			EXPECT_EQ(m_RTData.GetPBuy(4), 11500);
+			EXPECT_EQ(m_RTData.GetVSell(0), 259981);
+			EXPECT_EQ(m_RTData.GetPSell(0), 11550);
+			EXPECT_EQ(m_RTData.GetVSell(1), 206108);
+			EXPECT_EQ(m_RTData.GetPSell(1), 11560);
+			break;
+		case 27: // 出现负值
+			EXPECT_TRUE(fSucceed); // 无错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
+			EXPECT_EQ(m_RTData.GetPBuy(4), 11500);
+			EXPECT_EQ(m_RTData.GetVSell(0), 259981);
+			EXPECT_EQ(m_RTData.GetPSell(0), 11550);
+			EXPECT_EQ(m_RTData.GetVSell(1), 206108);
+			EXPECT_EQ(m_RTData.GetPSell(1), 11560);
+			EXPECT_EQ(m_RTData.GetVSell(2), 325641);
+			EXPECT_EQ(m_RTData.GetVSell(2), 325641);
+			break;
+		case 28: // 出现负值
+			EXPECT_TRUE(fSucceed); // 有错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
+			EXPECT_EQ(m_RTData.GetPBuy(4), 11500);
+			EXPECT_EQ(m_RTData.GetVSell(0), 259981);
+			EXPECT_EQ(m_RTData.GetPSell(0), 11550);
+			EXPECT_EQ(m_RTData.GetVSell(1), 206108);
+			EXPECT_EQ(m_RTData.GetPSell(1), 11560);
+			EXPECT_EQ(m_RTData.GetVSell(2), 325641);
+			EXPECT_EQ(m_RTData.GetPSell(2), 11570);
+			EXPECT_EQ(m_RTData.GetVSell(2), 325641);
+			EXPECT_EQ(m_RTData.GetPSell(2), 11570);
+			break;
+		case 29: // 出现负值
+			EXPECT_TRUE(fSucceed); // 无错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
+			EXPECT_EQ(m_RTData.GetPBuy(4), 11500);
+			EXPECT_EQ(m_RTData.GetVSell(0), 259981);
+			EXPECT_EQ(m_RTData.GetPSell(0), 11550);
+			EXPECT_EQ(m_RTData.GetVSell(1), 206108);
+			EXPECT_EQ(m_RTData.GetPSell(1), 11560);
+			EXPECT_EQ(m_RTData.GetVSell(2), 325641);
+			EXPECT_EQ(m_RTData.GetPSell(2), 11570);
+			EXPECT_EQ(m_RTData.GetVSell(3), 215109);
+			break;
+		case 30: // 出现负值
+			EXPECT_TRUE(fSucceed); // 有错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
+			EXPECT_EQ(m_RTData.GetPBuy(4), 11500);
+			EXPECT_EQ(m_RTData.GetVSell(0), 259981);
+			EXPECT_EQ(m_RTData.GetPSell(0), 11550);
+			EXPECT_EQ(m_RTData.GetVSell(1), 206108);
+			EXPECT_EQ(m_RTData.GetPSell(1), 11560);
+			EXPECT_EQ(m_RTData.GetVSell(2), 325641);
+			EXPECT_EQ(m_RTData.GetPSell(2), 11570);
+			EXPECT_EQ(m_RTData.GetVSell(3), 215109);
+			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
+			break;
+		case 31: // 出现负值
+			EXPECT_TRUE(fSucceed); // 无错误
+			EXPECT_TRUE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_EQ(m_RTData.GetOpen(), 11510);
+			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
+			EXPECT_EQ(m_RTData.GetNew(), 11560);
+			EXPECT_EQ(m_RTData.GetHigh(), 11570);
+			EXPECT_EQ(m_RTData.GetLow(), 11440);
+			EXPECT_EQ(m_RTData.GetBuy(), 11540);
+			EXPECT_EQ(m_RTData.GetSell(), 11550);
+			EXPECT_EQ(m_RTData.GetVolume(), 21606007);
+			EXPECT_EQ(m_RTData.GetAmount(), 248901949);
+			EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
+			EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
+			EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
+			EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
+			EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
+			EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
+			EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
+			EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
+			EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
+			EXPECT_EQ(m_RTData.GetPBuy(4), 11500);
+			EXPECT_EQ(m_RTData.GetVSell(0), 259981);
+			EXPECT_EQ(m_RTData.GetPSell(0), 11550);
+			EXPECT_EQ(m_RTData.GetVSell(1), 206108);
+			EXPECT_EQ(m_RTData.GetPSell(1), 11560);
+			EXPECT_EQ(m_RTData.GetVSell(2), 325641);
+			EXPECT_EQ(m_RTData.GetPSell(2), 11570);
+			EXPECT_EQ(m_RTData.GetVSell(3), 215109);
+			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
+			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
+			break;
+		case 32: // 没有实时数据
+			EXPECT_TRUE(fSucceed); // 读取正确
+			EXPECT_FALSE(m_RTData.IsActive());
+			EXPECT_STREQ(m_RTData.GetSymbol(), _T("000001.SZ"));
+			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
+			break;
+		case 33: // 有错误，前缀出错
+			EXPECT_FALSE(fSucceed); // 有错误
+			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
+			break;
+		case 34: // 有错误，前缀出错
+			EXPECT_FALSE(fSucceed); // 有错误
+			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
+			break;
+		case 35: // 有错误，前缀出错
+			EXPECT_FALSE(fSucceed); // 有错误
+			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
+			break;
+		case 36: // 有错误，前缀出错
+			EXPECT_FALSE(fSucceed); // 有错误
+			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
+			break;
+		case 37: // 有错误，前缀出错
+			EXPECT_FALSE(fSucceed); // 有错误
+			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
+			break;
+		case 38: // 有错误，前缀出错
+			EXPECT_FALSE(fSucceed); // 有错误
+			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
+			break;
+		case 40: // 没有实时数据的两段数据
+			EXPECT_TRUE(fSucceed); // 读取正确
 			EXPECT_STREQ(m_RTData.GetSymbol(), _T("000001.SZ"));
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
 			break;

@@ -9,13 +9,15 @@
 namespace FireBirdTest {
 	class StockCodeConverterTest : public testing::Test {
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			gl_systemConfiguration.SetWorkingMode(false);
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -60,10 +62,18 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(StockCodeConverterTest, TestXferSinaToStandard) {
-		EXPECT_STREQ(XferSinaToStandard(_T("sh600001")), _T("600001.SS"));
-		EXPECT_STREQ(XferSinaToStandard(_T("sz000001")), _T("000001.SZ"));
-		EXPECT_STREQ(XferSinaToStandard(_T("sh60001")), _T("h60001.SS"));
-		EXPECT_STREQ(XferSinaToStandard(_T("sz00001")), _T("z00001.SZ"));
+		CString str = "sh600001";
+		string_view sv = str.GetBuffer();
+		EXPECT_STREQ(XferSinaToStandard(str), _T("600001.SS"));
+		EXPECT_STREQ(XferSinaToStandard(sv), _T("600001.SS"));
+		str = _T("sz000001");
+		sv = str.GetBuffer();
+		EXPECT_STREQ(XferSinaToStandard(str), _T("000001.SZ"));
+		EXPECT_STREQ(XferSinaToStandard(sv), _T("000001.SZ"));
+		str = _T("sh60001");
+		EXPECT_STREQ(XferSinaToStandard(str), _T("h60001.SS"));
+		str = _T("sz00001");
+		EXPECT_STREQ(XferSinaToStandard(str), _T("z00001.SZ"));
 	}
 
 	TEST_F(StockCodeConverterTest, TestXferSinaToNetease) {

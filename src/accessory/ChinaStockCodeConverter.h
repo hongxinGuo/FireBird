@@ -8,6 +8,7 @@
 [[nodiscard]] CString CreateStockCode(const CString& strStockExchange, const CString& strStockSymbol);
 // ¹ÉÆ±´úÂë×ª»»
 [[nodiscard]] CString XferSinaToStandard(const CString& strSina);
+[[nodiscard]] CString XferSinaToStandard(string_view strSina);
 [[nodiscard]] CString XferSinaToNetease(const CString& strSina);
 [[nodiscard]] CString XferNeteaseToStandard(const CString& strNetease);
 [[nodiscard]] CString XferNeteaseToSina(const CString& strNetease);

@@ -12,7 +12,9 @@ void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& str
 void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat, const char* jsonData);
 
 shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData);
+shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData2(const CWebDataPtr& pWebData);
 shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(const CWebDataPtr& pWebData);
+shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData2(const CWebDataPtr& pWebData);
 CDayLineWebDataPtr ParseNeteaseDayLine(const CWebDataPtr& pWebData);
 CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData);
 shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockCode);

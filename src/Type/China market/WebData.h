@@ -61,6 +61,10 @@ public:
 
 	bool IsVoidJson() const noexcept { return m_sDataBuffer == _T("{}"); }
 
+	//
+	string_view GetCurrentSinaData();
+	string_view GetCurrentTengxunData();
+
 	// 使用Nlohmann json将数据转换为json格式。
 	bool CreateJson(json& js, long lBeginPos = 0, long lEndPos = 0) const;
 

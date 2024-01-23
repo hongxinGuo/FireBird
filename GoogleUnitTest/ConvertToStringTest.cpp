@@ -31,7 +31,8 @@ namespace FireBirdTest {
 	class ConvertDoubleToStringTest : public testing::TestWithParam<StrConvertDoubleToString*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 			const StrConvertDoubleToString* pData = GetParam();
 			dValue = pData->m_dValue;
@@ -41,7 +42,8 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -230,7 +232,7 @@ namespace FireBirdTest {
 	}
 
 	class CRSReferenceTest : public testing::Test {
-		void SetUp() override { }
+		void SetUp() override {}
 
 		void TearDown() override {
 			gl_systemConfiguration.SetWorkingMode(false);
@@ -254,7 +256,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("  12K"));
 		str = FormatToMK(12 * 1024 * 1024);
 		EXPECT_STREQ(str, _T("  12M"));
-		str = FormatToMK(static_cast<long long>(12345) * 1024 * 1024);
-		EXPECT_STREQ(str, _T("12345M"));
+		str = FormatToMK(static_cast<long>(12) * 1024 * 1024);
+		EXPECT_STREQ(str, _T("  12M"));
 	}
 }

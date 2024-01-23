@@ -255,10 +255,13 @@ namespace FireBirdTest {
 		buffer[1024 * 16 - 1] = 'e';
 		dataSource.TESTSetWebBuffer(buffer, 1024 * 16);
 		dataSource.XferReadingToBuffer(0, 1024 * 16);
-		EXPECT_EQ(dataSource.GetData(0), 'a');
-		EXPECT_EQ(dataSource.GetData(1), 'b');
-		EXPECT_EQ(dataSource.GetData(2), 'c');
-		EXPECT_EQ(dataSource.GetData(3), 'd');
-		EXPECT_EQ(dataSource.GetData(1024 * 16 -1), 'e');
+
+		const auto sv = dataSource.GetBuffer();
+
+		EXPECT_EQ(sv.at(0), 'a');
+		EXPECT_EQ(sv.at(1), 'b');
+		EXPECT_EQ(sv.at(2), 'c');
+		EXPECT_EQ(sv.at(3), 'd');
+		EXPECT_EQ(sv.at(1024 * 16 -1), 'e');
 	}
 }

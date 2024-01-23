@@ -788,11 +788,17 @@ bool CFinnhubDataSource::InquireCryptoDayLine() {
 	return fHaveInquiry;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 经测试，这里所有的timeout时间，都是数据中断后等待的时间。如果有数据，无论接收发送的速度多慢，都不会触发计时器，亦即不会出现timeout。
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CFinnhubDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 60000); // 设置连接超时时间为60秒。Finnhub.io已经开始限速，估计为1M/s，故而增加时间
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 45000); // 设置接收超时时间为45秒。Finnhub.io已经开始限速，估计为1M/s，故而增加时间
-	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, 45000); // 设置接收超时时间为45秒。Finnhub.io已经开始限速，估计为1M/s，故而增加时间
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 6000); // 设置连接超时时间为6秒。
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 5000); // 设置接收超时时间为5秒。
+	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, 5000); // 设置接收超时时间为5秒。
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 1000); // 设置发送超时时间为1秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }

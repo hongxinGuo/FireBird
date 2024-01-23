@@ -66,7 +66,7 @@ public:
 
 	virtual void PrepareReadingWebData(); // 在读取网络数据前的准备工作，默认为设置m_pSession状态。
 	virtual void ConfigureSession() {
-		TRACE("调用了基类函数ConfigureSession()\n");
+		ASSERT(false); // 调用了基类函数ConfigureSession
 	} // 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
 	virtual void UpdateStatusAfterReading(CWebDataPtr pData) {} //成功接收后更新系统状态。默认无动作
 
@@ -75,13 +75,11 @@ public:
 	void SetInquiringString(const CString& str) noexcept { m_strInquiry = str; }
 	void AppendInquiringString(const CString& str) noexcept { m_strInquiry += str; }
 
-	char GetData(const long lIndex) const { return m_sBuffer.at(lIndex); }
-	void SetData(const long lIndex, const char value) { m_sBuffer.at(lIndex) = value; }
-
 	long GetByteRead() const noexcept { return m_lByteRead; }
 	void SetByteRead(const long lValue) noexcept { m_lByteRead = lValue; }
 	void AddByteRead(const long lValue) noexcept { m_lByteRead += lValue; }
 	size_t GetBufferSize() const noexcept { return m_sBuffer.size(); }
+	string_view GetBuffer() noexcept { return m_sBuffer; }
 
 	virtual ULONGLONG GetTickCount() { return ::GetTickCount64(); } // 为了测试方便，将GetTickCount64包裹上一层。
 

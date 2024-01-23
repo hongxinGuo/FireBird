@@ -59,6 +59,16 @@ CString XferSinaToStandard(const CString& strSina) {
 	}
 }
 
+CString XferSinaToStandard(string_view strSina) {
+	const CString strSymbol = CString(strSina.data() + 2, 6);
+	if (strSina.at(1) == 'h') {
+		return strSymbol + _T(".") + _T("SS");
+	}
+	else {
+		return strSymbol + _T(".") + _T("SZ");
+	}
+}
+
 CString XferSinaToNetease(const CString& strSina) {
 	const CString strSymbol = strSina.Right(6);
 	if (strSina.Left(2).Compare(_T("sh")) == 0) {

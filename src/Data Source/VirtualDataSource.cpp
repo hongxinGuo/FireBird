@@ -83,9 +83,9 @@ void CVirtualDataSource::GetWebDataAndProcessIt() {
 	if (!IsWebError()) {
 		ProcessWebDataReceived();
 	}
+	SetWorkingThreadRunning(false);
 	counter.stop();
 	SetCurrentInquiryTime(counter.GetElapsedMillisecond());
-	SetWorkingThreadRunning(false);
 }
 
 //////////////////////////////////////////////
@@ -131,6 +131,7 @@ void CVirtualDataSource::GenerateCurrentInquiryMessage() {
 
 void CVirtualDataSource::PrepareReadingWebData() {
 	ConfigureSession();
+	SetByteRead(0);
 }
 
 void CVirtualDataSource::GetWebDataImp() {
@@ -162,8 +163,6 @@ void CVirtualDataSource::GetWebDataImp() {
 //
 ///////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::ReadWebData() {
-	SetByteRead(0);
-
 	ASSERT(m_pFile == nullptr);
 	try {
 		OpenFile(GetInquiringString());

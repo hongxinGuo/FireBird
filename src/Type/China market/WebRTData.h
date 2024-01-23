@@ -164,6 +164,9 @@ public:
 	bool ReadSinaOneValue(const CWebDataPtr& pSinaWebData, double& dReturnValue) const; // 从file中读入一个浮点数
 	static bool ReadSinaOneValue(const CWebDataPtr& pSinaWebData, string_view& svSub); // 从file中读入一个浮点数据，最后字符为‘，’。
 
+	bool ReadSinaData(const string_view svData);
+	bool ReadTengxunData(string_view svData);
+	string_view GetNextField(string_view svData, long lCurrentPos, char chDelimiter);
 	// 读取腾讯实时数据函数
 	// 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
 	bool ReadTengxunData(const CWebDataPtr& pTengxunWebRTData);
