@@ -183,7 +183,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(sv.at(18), '0') << "第一个数据的股票代码是sh600000";
 		EXPECT_EQ(sv.at(sv.length() - 1), ';') << "新浪实时数据以字符';'结束";
 
-		sinaWebData.IncreaseCurrentPos(sv.length());
 		sv = sinaWebData.GetCurrentSinaData();
 
 		EXPECT_EQ(sv.at(0), 'v');
@@ -207,7 +206,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(sv.at(9), '0') << "第一个数据的股票代码是sh600000";
 		EXPECT_EQ(sv.at(sv.length() - 1), ';') << "腾讯实时数据以字符';'结束";
 
-		tengxunWebData.IncreaseCurrentPos(sv.length());
 		sv = tengxunWebData.GetCurrentTengxunData();
 
 		EXPECT_EQ(sv.at(0), 'v');

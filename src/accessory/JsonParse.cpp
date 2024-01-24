@@ -121,17 +121,13 @@ shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData) {
 
 shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData2(const CWebDataPtr& pWebData) {
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
-	int i = 0;
-	string_view svData;
 	try {
 		pWebData->ResetCurrentPos();
 		while (!pWebData->IsLastDataParagraph()) {
-			i++;
 			auto pRTData = make_shared<CWebRTData>();
-			svData = pWebData->GetCurrentSinaData();
+			const string_view svData = pWebData->GetCurrentSinaData();
 			if (pRTData->ReadSinaData(svData)) {
 				pvWebRTData->push_back(pRTData);
-				pWebData->IncreaseCurrentPos(svData.length()); // 跨过该数据
 			}
 			else {
 				gl_systemMessage.PushErrorMessage(_T("新浪实时数据解析返回失败信息"));
@@ -140,7 +136,6 @@ shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData2(const CWebDataPtr& pWebData) 
 		}
 	}
 	catch (exception& e) {
-		int k = i;
 		ReportErrorToSystemMessage(_T("ReadSinaData异常 "), e);
 		return pvWebRTData;
 	}
@@ -344,7 +339,6 @@ shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(const CWebDataPtr& pWebData
 //////////////////////////////////////////////////////////////////////////////////////////////////
 shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData2(const CWebDataPtr& pWebData) {
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
-
 	try {
 		pWebData->ResetCurrentPos();
 		if (IsTengxunRTDataInvalid(pWebData)) return pvWebRTData; // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
@@ -353,7 +347,6 @@ shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData2(const CWebDataPtr& pWebDat
 			const string_view svData = pWebData->GetCurrentTengxunData();
 			if (pRTData->ReadTengxunData(svData)) {
 				pvWebRTData->push_back(pRTData);
-				pWebData->IncreaseCurrentPos(svData.length()); // 跨过该数据
 			}
 			else {
 				break; // 后面的数据出问题，抛掉不用。

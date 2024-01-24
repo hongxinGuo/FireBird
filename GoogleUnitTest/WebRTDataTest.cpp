@@ -424,7 +424,6 @@ namespace FireBirdTest {
 			m_lStringLength = pData->m_strData.GetLength();
 			m_pSinaWebRTData->Resize(m_lStringLength);
 			m_pSinaWebRTData->SetData(pData->m_strData.GetBuffer(), m_lStringLength);
-			m_pSinaWebRTData->ResetCurrentPos();
 			for (int i = 0; i < 5; i++) {
 				m_RTData.SetPBuy(i, -1);
 				m_RTData.SetPSell(i, -1);
@@ -442,6 +441,7 @@ namespace FireBirdTest {
 			m_RTData.SetBuy(-1);
 
 			svData = m_pSinaWebRTData->GetCurrentSinaData();
+			m_pSinaWebRTData->ResetCurrentPos();
 		}
 
 		void TearDown() override {

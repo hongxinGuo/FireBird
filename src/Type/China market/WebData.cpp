@@ -35,14 +35,15 @@ bool CWebData::SetData(const char* buffer, long lDataLength) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
+// 返回的stringView包括最后的';'分号
+// 提取数据后将当前位置移至该数据之后
+//
+//
 // var hq_str_sh601006="大秦铁路,27.55,27.25,26.91,27.55,26.20,26.91,26.92,
 //                     22114263,589824680,4695,26.91,57590,26.90,14700,26.89,14300,
 //                     26.88,15100,26.87,3100,26.92,8900,26.93,14230,26.94,25150,26.95,15220,26.96,2008-01-11,15:05:32,00";
 //
 // 无效数据格式为：var hq_str_sh688801="";
-//
-// 返回的stringView包括最后的';'分号
-//
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 string_view CWebData::GetCurrentSinaData() {
@@ -52,15 +53,15 @@ string_view CWebData::GetCurrentSinaData() {
 	if (lStart > svCurrentTotal.length() || lEnd > svCurrentTotal.length() || lStart > lEnd) {
 		throw std::exception(_T("GetCurrentSinaData() out of range"));
 	}
-	const string_view svCurrent = svCurrentTotal.substr(lStart, lEnd - lStart + 1);
-	IncreaseCurrentPos(lStart); // 将当前位置移至当前数据开始处
-	return svCurrent;
+	IncreaseCurrentPos(lEnd + 1); // 将当前位置移至当前数据结束处之后
+	return svCurrentTotal.substr(lStart, lEnd - lStart + 1); // 包括最后的字符';'
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
 // 腾讯实时数据以字符'v'开始，以字符';'结束。
 // 返回的stringView包括最后的';'分号
+// 提取数据后将当前位置移至该数据之后
 //
 // 当所有的查询股票皆为非上市时，返回一个21个字符串：v_pv_none_match=\"1\";\n
 //
@@ -80,9 +81,8 @@ string_view CWebData::GetCurrentTengxunData() {
 	if (lStart > svCurrentTotal.length() || lEnd > svCurrentTotal.length() || lStart > lEnd) {
 		throw std::exception(_T("GetCurrentTengxunData() out of range"));
 	}
-	const string_view svCurrent = svCurrentTotal.substr(lStart, lEnd - lStart + 1);
-	IncreaseCurrentPos(lStart); // 将当前位置移至当前数据开始处
-	return svCurrent;
+	IncreaseCurrentPos(lEnd + 1); // 将当前位置移至当前数据结束处之后
+	return svCurrentTotal.substr(lStart, lEnd - lStart + 1);
 }
 
 bool CWebData::CreateJson(json& js, long lBeginPos, long lEndPos) const {

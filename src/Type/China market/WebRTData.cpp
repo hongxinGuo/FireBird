@@ -163,25 +163,25 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 
 		// 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
 		if (!ReadSinaOneValue(pSinaWebData, dTemp)) { throw exception(_T("open")); }
-		m_lOpen = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lOpen = dTemp * 1000;
 		// 读入前收盘价
 		if (!ReadSinaOneValue(pSinaWebData, dTemp)) { throw exception(_T("LastClose")); }
-		m_lLastClose = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lLastClose = dTemp * 1000;
 		// 读入当前价
 		if (!ReadSinaOneValue(pSinaWebData, dTemp)) { throw exception(_T("New")); }
-		m_lNew = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lNew = dTemp * 1000;
 		// 读入最高价
 		if (!ReadSinaOneValue(pSinaWebData, dTemp)) { throw exception(_T("High")); }
-		m_lHigh = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lHigh = dTemp * 1000;
 		// 读入最低价
 		if (!ReadSinaOneValue(pSinaWebData, dTemp)) { throw exception(_T("Low")); }
-		m_lLow = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lLow = dTemp * 1000;
 		// 读入竞买价
 		if (!ReadSinaOneValue(pSinaWebData, dTemp)) { throw exception(_T("Buy")); }
-		m_lBuy = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lBuy = dTemp * 1000;
 		// 读入竞卖价
 		if (!ReadSinaOneValue(pSinaWebData, dTemp)) { throw exception(_T("Sell")); }
-		m_lSell = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lSell = dTemp * 1000;
 		// 读入成交股数。成交股数存储实际值
 		if (!ReadSinaOneValue(pSinaWebData, m_llVolume)) { throw exception(_T("Volume")); }
 		// 读入成交金额
@@ -192,7 +192,7 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 			if (!ReadSinaOneValue(pSinaWebData, m_lVBuy.at(j))) { throw exception(_T("VBuy")); }
 			// 读入价格
 			if (!ReadSinaOneValue(pSinaWebData, dTemp)) { throw exception(_T("PBuy")); }
-			m_lPBuy.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
+			m_lPBuy.at(j) = dTemp * 1000;
 		}
 		// 读入卖一--卖五的股数和价格
 		for (int j = 0; j < 5; j++) {
@@ -200,7 +200,7 @@ bool CWebRTData::ReadSinaData(const CWebDataPtr& pSinaWebData) {
 			if (!ReadSinaOneValue(pSinaWebData, m_lVSell.at(j))) { throw exception(_T("VSell")); }
 			// 读入价格
 			if (!ReadSinaOneValue(pSinaWebData, dTemp)) { throw exception(_T("PSell")); }
-			m_lPSell.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
+			m_lPSell.at(j) = dTemp * 1000;
 		}
 		// 读入成交日期和时间。此时间为东八区（北京标准时间）。
 		if (!ReadSinaOneValue(pSinaWebData, sv1)) { throw exception(_T("Time1")); }
@@ -328,7 +328,7 @@ bool CWebRTData::ReadSinaOneValue(const CWebDataPtr& pSinaWebData, string_view& 
 bool CWebRTData::ReadSinaData(const string_view svData) {
 	try {
 		string_view sv2;
-		long lCurrentPos = 11;
+		long lCurrentPos = 11; // 跨过字符串：var hq_str_
 		const string_view svStockSymbol(svData.data() + lCurrentPos, 8);
 		if (svStockSymbol.at(0) != 's') throw exception(_T("Bad header: need sh or sz"));
 		if (!(svStockSymbol.at(1) == 'h' || svStockSymbol.at(1) == 'z')) throw exception(_T("Bad header: need sh or sz"));
@@ -338,82 +338,59 @@ bool CWebRTData::ReadSinaData(const string_view svData) {
 			SetDataSource(SINA_RT_WEB_DATA_);
 			return true;
 		}
-		lCurrentPos += 10;
+		lCurrentPos += 10; // 跨过字符串： sh601006="
+		// 读入证券名称
 		string_view sv = GetNextField(svData, lCurrentPos, ',');
 		m_strStockName.Append(sv.data(), sv.length());
 		// 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, ',');
-		double dTemp = atof(sv.data());
-		m_lOpen = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lOpen = atof(sv.data()) * 1000;
 		// 读入前收盘价
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, ',');
-		dTemp = atof(sv.data());
-		m_lLastClose = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lLastClose = atof(sv.data()) * 1000;
 		// 读入当前价
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, ',');
-		dTemp = atof(sv.data());
-		m_lNew = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lNew = atof(sv.data()) * 1000;
 		// 读入最高价
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, ',');
-		dTemp = atof(sv.data());
-		m_lHigh = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lHigh = atof(sv.data()) * 1000;
 		// 读入最低价
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, ',');
-		dTemp = atof(sv.data());
-		m_lLow = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lLow = atof(sv.data()) * 1000;
 		// 读入竞买价
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, ',');
-		dTemp = atof(sv.data());
-		m_lBuy = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lBuy = atof(sv.data()) * 1000;
 		// 读入竞卖价
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, ',');
-		dTemp = atof(sv.data());
-		m_lSell = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lSell = atof(sv.data()) * 1000;
 		// 读入成交股数。成交股数存储实际值
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, ',');
 		m_llVolume = atoll(sv.data());
 		// 读入成交金额
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, ',');
 		m_llAmount = atoll(sv.data());
 		// 读入买一--买五的股数和价格
 		for (int j = 0; j < 5; j++) {
 			// 读入数量
-			lCurrentPos += sv.length() + 1;
 			sv = GetNextField(svData, lCurrentPos, ',');
 			m_lVBuy.at(j) = atol(sv.data());
 			// 读入价格
-			lCurrentPos += sv.length() + 1;
 			sv = GetNextField(svData, lCurrentPos, ',');
-			dTemp = atof(sv.data());
-			m_lPBuy.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
+			m_lPBuy.at(j) = atof(sv.data()) * 1000;
 		}
 		// 读入卖一--卖五的股数和价格
 		for (int j = 0; j < 5; j++) {
 			// 读入数量
-			lCurrentPos += sv.length() + 1;
 			sv = GetNextField(svData, lCurrentPos, ',');
 			m_lVSell.at(j) = atol(sv.data());
 			// 读入价格
-			lCurrentPos += sv.length() + 1;
 			sv = GetNextField(svData, lCurrentPos, ',');
-			dTemp = atof(sv.data());
-			m_lPSell.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
+			m_lPSell.at(j) = atof(sv.data()) * 1000;
 		}
 		// 读入成交日期和时间。此时间为东八区（北京标准时间）。
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, ',');
 		string sTime(sv.data(), sv.size());
 		sTime += ' '; //添加一个空格，以利于下面的转换
-		lCurrentPos += sv.length() + 1;
 		sv2 = GetNextField(svData, lCurrentPos, ',');
 		sTime.append(sv2.data(), sv2.size());
 		m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", sTime.c_str());	//转成UTC时间。新浪实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
@@ -431,10 +408,11 @@ bool CWebRTData::ReadSinaData(const string_view svData) {
 	}
 }
 
-string_view CWebRTData::GetNextField(string_view svData, long lCurrentPos, char chDelimiter) {
+string_view CWebRTData::GetNextField(string_view svData, long& lCurrentPos, char chDelimiter) {
 	const string_view sv(svData.data() + lCurrentPos, svData.length() - lCurrentPos);
 	const long lEnd = sv.find_first_of(chDelimiter);
 	if (lEnd > sv.length()) throw exception("GetNextField() out of range"); // 没找到的话抛出异常
+	lCurrentPos += lEnd + 1; // 将当前位置移至本数据之后
 	return string_view(sv.data(), lEnd);
 }
 
@@ -522,19 +500,16 @@ bool CWebRTData::ReadTengxunData(string_view svData) {
 	try {
 		long lCurrentPos = 12;
 		double dTemp = 0.0;
-		INT64 llTemp = 0;
 
 		m_fActive = false; // 初始状态为无效数据
 		// 市场标识代码（51为深市，1为沪市）
 		string_view sv = GetNextField(svData, lCurrentPos, '~'); //
 		const long lMarket = atol(sv.data());
 
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		m_strStockName.Append(sv.data(), sv.size()); // 设置股票名称
 
 		// 六位股票代码
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		m_strSymbol.Append(sv.data(), sv.size());
 		switch (lMarket) {
@@ -549,39 +524,28 @@ bool CWebRTData::ReadTengxunData(string_view svData) {
 			break;
 		}
 		// 现在成交价。放大一千倍后存储为长整型。其他价格亦如此。
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
-		dTemp = atof(sv.data());
-		m_lNew = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lNew = atof(sv.data()) * 1000;
 		// 前收盘价
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
-		dTemp = atof(sv.data());
-		m_lLastClose = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lLastClose = atof(sv.data()) * 1000;
 		// 开盘价
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
-		dTemp = atof(sv.data());
-		m_lOpen = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lOpen = atof(sv.data()) * 1000;
 		// 成交手数。成交股数存储实际值
 		// 不使用此处的成交量，而是使用第三十五项处的成交量。
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		// 外盘
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		// 内盘
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		// 读入买一至买五的价格和手数
 		for (int j = 0; j < 5; j++) {
 			// 买盘价格
-			lCurrentPos += sv.length() + 1;
 			sv = GetNextField(svData, lCurrentPos, '~'); //
 			dTemp = atof(sv.data());
-			m_lPBuy.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
+			m_lPBuy.at(j) = static_cast<long>(dTemp * 1000);
 			// 买盘数量（手）
-			lCurrentPos += sv.length() + 1;
 			sv = GetNextField(svData, lCurrentPos, '~'); //
 			lTemp = atol(sv.data());
 			m_lVBuy.at(j) = lTemp * 100;
@@ -589,22 +553,17 @@ bool CWebRTData::ReadTengxunData(string_view svData) {
 		// 读入卖一至卖五的价格和手数
 		for (int j = 0; j < 5; j++) {
 			//读入卖盘价格
-			lCurrentPos += sv.length() + 1;
 			sv = GetNextField(svData, lCurrentPos, '~'); //
-			dTemp = atof(sv.data());
-			m_lPSell.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
+			m_lPSell.at(j) = atof(sv.data()) * 1000;
 			// 卖盘数量（手）
-			lCurrentPos += sv.length() + 1;
 			sv = GetNextField(svData, lCurrentPos, '~'); //
 			lTemp = atol(sv.data());
 			m_lVSell.at(j) = lTemp * 100;
 		}
 		// 最近逐笔成交
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		lTemp = atol(sv.data());
 		// 成交日期和时间.格式为：yyyymmddhhmmss. 此时间采用的时区为东八区（北京标准时间）
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		//if (!ReadTengxunOneValue(pTengxunWebRTData, buffer1)) {
 		//throw exception(_T("成交日期和时间"));
@@ -612,79 +571,55 @@ bool CWebRTData::ReadTengxunData(string_view svData) {
 		const string sTime(sv.data(), sv.size());
 		m_time = ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", sTime.c_str()); // 转成UTC时间。腾讯实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
 		// 涨跌
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		// 涨跌率
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		// 最高价
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
-		dTemp = atof(sv.data());
-		m_lHigh = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lHigh = atof(sv.data()) * 1000;
 		// 最低价
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
-		dTemp = atof(sv.data());
-		m_lLow = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lLow = atof(sv.data()) * 1000;
 		// 第三十五项，成交价/成交量（手）/成交金额（元）
 		// 成交量和成交金额使用此处的数据，这样就可以使用腾讯实时数据了
 		//if (!ReadTengxunOneValue(pTengxunWebRTData, buffer1)) {
 		//throw exception(_T("成交价、成交手数、成交额"));
 		//}
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		CString str(sv.data(), sv.size());
 		sscanf_s(str.GetBuffer(), _T("%f/%d/%I64d"), &fTemp, &lTemp, &m_llAmount);
 		m_llVolume = lTemp * 100; // 腾讯成交量数据单位为手（100股）。
 		// 成交手数
 		// 不使用此处的成交量。这里的成交量会大于第三十五处的成交量。
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		// 成交金额（万元）
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		// 换手率
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		// 市盈率
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		// 无名
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		// 最高价
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		// 最低价
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		// 振幅
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		// 流通市值（单位为：亿元）
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
-		dTemp = atof(sv.data());
-		m_llCurrentValue = static_cast<INT64>(dTemp * 100000000);
+		m_llCurrentValue = atof(sv.data()) * 100000000;
 		// 总市值（单位为：亿元）
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
-		dTemp = atof(sv.data());
-		m_llTotalValue = static_cast<INT64>(dTemp * 100000000);
+		m_llTotalValue = atof(sv.data()) * 100000000;
 		// 市净率
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		// 涨停价
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
-		dTemp = atof(sv.data());
-		if (dTemp > 0.01) m_lHighLimitFromTengxun = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lHighLimitFromTengxun = atof(sv.data()) * 1000;
 		// 跌停价
-		lCurrentPos += sv.length() + 1;
 		sv = GetNextField(svData, lCurrentPos, '~'); //
-		dTemp = atof(sv.data());
-		if (dTemp > 0.01) m_lLowLimitFromTengxun = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lLowLimitFromTengxun = atof(sv.data()) * 1000;
 
 		// 后面的数据具体内容不清楚，暂时放弃解码。
 		// 腾讯实时数据的结束符是分号（；），然后跟随一个换行符\n。但将该数据存入txt文件后再读取时，换行符消失了。
@@ -861,15 +796,15 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 
 		// 现在成交价。放大一千倍后存储为长整型。其他价格亦如此。
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("成交价")); }
-		m_lNew = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lNew = static_cast<long>(dTemp * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 前收盘价
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("前收盘")); }
-		m_lLastClose = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lLastClose = static_cast<long>(dTemp * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 开盘价
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("开盘价")); }
-		m_lOpen = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lOpen = static_cast<long>(dTemp * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 成交手数。成交股数存储实际值
 		// 不使用此处的成交量，而是使用第三十五项处的成交量。
@@ -885,7 +820,7 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		for (int j = 0; j < 5; j++) {
 			// 买盘价格
 			if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("买盘价格")); }
-			m_lPBuy.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
+			m_lPBuy.at(j) = static_cast<long>(dTemp * 1000);
 			lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 			// 买盘数量（手）
 			if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) { throw exception(_T("买盘数量")); }
@@ -896,7 +831,7 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		for (int j = 0; j < 5; j++) {
 			//读入卖盘价格
 			if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("买盘价格")); }
-			m_lPSell.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
+			m_lPSell.at(j) = static_cast<long>(dTemp * 1000);
 			lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 			// 卖盘数量（手）
 			if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) { throw exception(_T("买盘数量")); }
@@ -922,11 +857,11 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 最高价
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("最高价")); }
-		m_lHigh = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lHigh = static_cast<long>(dTemp * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 最低价
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("最低价")); }
-		m_lLow = static_cast<long>((dTemp + 0.000001) * 1000);
+		m_lLow = static_cast<long>(dTemp * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 第三十五项，成交价/成交量（手）/成交金额（元）
 		// 成交量和成交金额使用此处的数据，这样就可以使用腾讯实时数据了
@@ -976,11 +911,11 @@ bool CWebRTData::ReadTengxunData(const CWebDataPtr& pTengxunWebRTData) {
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 涨停价
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("涨停价")); }
-		if (dTemp > 0.01) m_lHighLimitFromTengxun = static_cast<long>((dTemp + 0.000001) * 1000);
+		if (dTemp > 0.01) m_lHighLimitFromTengxun = static_cast<long>(dTemp * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 		// 跌停价
 		if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) { throw exception(_T("跌停价")); }
-		if (dTemp > 0.01) m_lLowLimitFromTengxun = static_cast<long>((dTemp + 0.000001) * 1000);
+		if (dTemp > 0.01) m_lLowLimitFromTengxun = static_cast<long>(dTemp * 1000);
 		lCurrentPos = pTengxunWebRTData->GetCurrentPos();
 
 		// 后面的数据具体内容不清楚，暂时放弃解码。
