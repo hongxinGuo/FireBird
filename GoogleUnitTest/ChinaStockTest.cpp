@@ -1166,7 +1166,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestSaveStockCodeDB) {
 		CSetChinaStockSymbol setChinaStockSymbol;
-		CChinaStock stock, stock2;
+		CChinaStock stock;
 		stock.SetDescription(_T("abcdefg"));
 		stock.SetExchangeCode(_T("SS"));
 		stock.SetSymbol(_T("400000.SS")); // 这个必须用未曾使用过的股票代码，已利于随后删除
@@ -1200,7 +1200,9 @@ namespace FireBirdTest {
 			EXPECT_THAT(stock.GetIPOStatus(), Eq(_STOCK_DELISTED_));
 			EXPECT_TRUE(stock.IsUpdateProfileDB());
 		}
-		else { EXPECT_THAT(stock.GetIPOStatus(), Eq(_STOCK_IPOED_)); }
+		else {
+			EXPECT_THAT(stock.GetIPOStatus(), Eq(_STOCK_IPOED_));
+		}
 		stock.SetIPOStatus(_STOCK_NULL_);
 		stock.UpdateSymbol(setChinaStockSymbol);
 		setChinaStockSymbol.Close();
@@ -1208,7 +1210,7 @@ namespace FireBirdTest {
 		setChinaStockSymbol.Open();
 		EXPECT_THAT(setChinaStockSymbol.m_IPOStatus, Eq(_STOCK_NULL_)) << "此时状态已变为NULL";
 		setChinaStockSymbol.Edit();
-		setChinaStockSymbol.m_IPOStatus = _STOCK_DELISTED_;
+		setChinaStockSymbol.m_IPOStatus = _STOCK_IPOED_; // 000001.SS的原有状态为IPOED，必须设置成此状态
 		setChinaStockSymbol.Update();
 		setChinaStockSymbol.Close();
 	}
@@ -1216,11 +1218,14 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestLoadStockCodeDB1) {
 		CSetChinaStockSymbol setChinaStockSymbol;
 		CChinaStock stock;
+		EXPECT_FALSE(stock.GetIPOStatus() == _STOCK_DELISTED_);
+		//stock.SetIPOStatus(_STOCK_IPOED_);
+		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
 		setChinaStockSymbol.m_strSort = _T("[ID]");
 		setChinaStockSymbol.Open();
 		stock.LoadStockCodeDB(setChinaStockSymbol);
-		EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS"));
+		EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS")) << "第一个股票";
 		if (IsEarlyThen(stock.GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
 			EXPECT_THAT(stock.GetIPOStatus(), Eq(_STOCK_DELISTED_));
 			EXPECT_TRUE(stock.IsUpdateProfileDB());

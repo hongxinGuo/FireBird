@@ -94,6 +94,8 @@ namespace FireBirdTest {
 
 			EXPECT_EQ(gl_dataContainerChinaStock.GetStock(0)->GetDayLineEndDate(), 20210430) << "第一个股票（上海指数）的结束日期为20210430";
 			EXPECT_TRUE(gl_dataContainerChinaStock.GetStock(0)->IsIPOed()) << "第一个股票（上海指数）为IPOed（255）";
+			const auto pStock = gl_dataContainerChinaStock.GetStock("000001.SS");
+			ASSERT_TRUE(pStock->IsIPOed());
 		}
 	}
 
