@@ -31,20 +31,6 @@ public:
 	CWebRTData m_RTData;
 };
 
-BENCHMARK_F(CWebRTDataBenchmark1, ReadSinaData1)(benchmark::State& state) {
-	for (auto _ : state) {
-		m_pSinaWebData->ResetCurrentPos();
-		m_RTData.ReadSinaData(m_pSinaWebData);
-	}
-}
-
-BENCHMARK_F(CWebRTDataBenchmark1, ReadTengxunData1)(benchmark::State& state) {
-	for (auto _ : state) {
-		m_pTengxunWebData->ResetCurrentPos();
-		m_RTData.ReadTengxunData(m_pTengxunWebData);
-	}
-}
-
 /*
 BENCHMARK_DEFINE_F(CWebRTDataBenchmark, ReadSinaDataBenchmark)(benchmark::State& state) {
 	for (auto _ : state) {

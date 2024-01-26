@@ -216,6 +216,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 		for (ondemand::field item_key : doc.get_object()) {
 			auto pWebRTData = make_shared<CWebRTData>();
 			pWebRTData->SetDataSource(NETEASE_RT_WEB_DATA_);
+			auto key = item_key.key();
 			ondemand::object item = item_key.value();
 			const string_view strSymbolView2 = jsonGetStringView(item, _T("code"));
 			symbolCode = strSymbolView2;

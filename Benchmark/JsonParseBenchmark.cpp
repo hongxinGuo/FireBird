@@ -335,10 +335,9 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithSimdjson1)(benchmark::State& state
 
 // 解析并处理tengxun日线数据。
 BENCHMARK_F(CJsonParse, ParseTengxunDayLine)(benchmark::State& state) {
-	static json jTengxunDayLine;
+	string_view svData = sTengxunDayLine;
 	for (auto _ : state) {
-		CreateJsonWithNlohmann(jTengxunDayLine, sTengxunDayLine, 0, 0);
-		auto vData = ParseTengxunDayLine(&jTengxunDayLine, _T("sh000001")); // 默认测试文件中的股票代码为sh000001.
+		auto vData = ParseTengxunDayLine(svData, _T("sh000001")); // 默认测试文件中的股票代码为sh000001.
 	}
 }
 
@@ -409,18 +408,10 @@ public:
 	CWebDataPtr pWebData;
 };
 
-// 测试nlohmann json解析NeteaseRTData的速度
-BENCHMARK_F(CTengxunRTData, ParseTengxunRTData1)(benchmark::State& state) {
+BENCHMARK_F(CTengxunRTData, ParseTengxunRTData)(benchmark::State& state) {
 	for (auto _ : state) {
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseTengxunRTData(pWebData);
-	}
-}
-
-BENCHMARK_F(CTengxunRTData, ParseTengxunRTData2)(benchmark::State& state) {
-	for (auto _ : state) {
-		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseTengxunRTData2(pWebData);
 	}
 }
 
@@ -443,17 +434,9 @@ public:
 	CWebDataPtr pWebData;
 };
 
-// 测试nlohmann json解析NeteaseRTData的速度
-BENCHMARK_F(CSinaRTData, ParseSinaRTData1)(benchmark::State& state) {
+BENCHMARK_F(CSinaRTData, ParseSinaRTData)(benchmark::State& state) {
 	for (auto _ : state) {
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		shared_ptr<vector<CWebRTDataPtr>> pvWebData = ParseSinaRTData(pWebData);
-	}
-}
-
-BENCHMARK_F(CSinaRTData, ParseSinaRTData2)(benchmark::State& state) {
-	for (auto _ : state) {
-		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		shared_ptr<vector<CWebRTDataPtr>> pvWebData = ParseSinaRTData2(pWebData);
 	}
 }

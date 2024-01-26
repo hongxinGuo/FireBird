@@ -12,12 +12,10 @@ void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& str
 void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat, const char* jsonData);
 
 shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData);
-shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData2(const CWebDataPtr& pWebData);
 shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(const CWebDataPtr& pWebData);
-shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData2(const CWebDataPtr& pWebData);
 CDayLineWebDataPtr ParseNeteaseDayLine(const CWebDataPtr& pWebData);
 CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData);
-shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(json* pjs, CString strStockCode);
+shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, const CString& strStockCode);
 
 // 以下四个函数的定义在NeteaseRTDataParser.cpp中（为了在调试模式下也能优化）
 bool CreateJsonWithNlohmann(json& js, const std::string& s, long lBeginPos = 0, long lEndPos = 0);// 定义在NeteaseRTDataParser.cpp中（为了在调试模式下也能优化）

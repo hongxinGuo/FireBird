@@ -235,6 +235,7 @@ void CMainFrame::InitializeDataSourceAndWebInquiry() {
 		gl_pTengxunDayLineDataSource->Enable(false);
 	}
 	else {
+		// 使用腾讯日线数据服务器
 		gl_pNeteaseDayLineDataSource->Enable(false);
 		gl_pTengxunDayLineDataSource->Enable(true);
 	}
