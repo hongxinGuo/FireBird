@@ -8,7 +8,7 @@ public:
 	~CProductFinnhubForexDayLine() override = default;
 
 	CString CreateMessage() override;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CDayLineVectorPtr ParseFinnhubForexCandle(CWebDataPtr pWebData);
 };
 

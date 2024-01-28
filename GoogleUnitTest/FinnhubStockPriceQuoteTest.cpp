@@ -118,37 +118,27 @@ namespace FireBirdTest {
 		                         &finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
 
 	TEST_P(ProcessFinnhubStockQuoteTest, TestParseFinnhubStockQuote0) {
-		const bool fSucceed = m_finnhubStockPriceQuote.ParseAndStoreWebData(m_pWebData);
+		m_finnhubStockPriceQuote.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
-			EXPECT_FALSE(fSucceed);
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_FALSE(fSucceed);
 			break;
 		case 3: // 格式不对
-			EXPECT_FALSE(fSucceed);
 			break;
 		case 4: // 缺乏c
-			EXPECT_FALSE(fSucceed);
 			break;
 		case 5: // 缺乏h项
-			EXPECT_FALSE(fSucceed);
 			break;
 		case 6: // 缺乏l项
-			EXPECT_FALSE(fSucceed);
 			break;
 		case 7: // 缺乏o项
-			EXPECT_FALSE(fSucceed);
 			break;
 		case 8: // 缺乏pc
-			EXPECT_FALSE(fSucceed);
 			break;
 		case 9: // 缺乏t项
-			EXPECT_FALSE(fSucceed);
 			break;
 		case 10: // 正确的数据
-			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(m_pStock->GetNew(), 121030);
 			EXPECT_EQ(m_pStock->GetHigh(), 121170);
 			EXPECT_EQ(m_pStock->GetLow(), 119160);

@@ -8,7 +8,7 @@ public:
 	~CProductDummy() override = default;
 
 	CString CreateMessage() override;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 };
 
 using CProductDummyPtr = shared_ptr<CProductDummy>;

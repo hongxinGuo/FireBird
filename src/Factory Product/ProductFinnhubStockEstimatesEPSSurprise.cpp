@@ -29,7 +29,7 @@ CString CProductFinnhubStockEstimatesEPSSurprise::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	const auto pvEPSSurprise = ParseFinnhubEPSSurprise(pWebData);
 	if (!pvEPSSurprise->empty()) { pStock->UpdateEPSSurprise(*pvEPSSurprise); }
@@ -39,8 +39,6 @@ bool CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr 
 	}
 	pStock->m_fEPSSurpriseUpdated = true;
 	pStock->m_fEPSSurpriseNeedSave = true;
-
-	return true;
 }
 
 CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurprise(const CWebDataPtr& pWebData) {

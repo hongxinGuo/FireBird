@@ -156,28 +156,21 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubForexSymbolTest, TestParseFinnhubForexSymbol0) {
 		CForexSymbolPtr pForexSymbol;
-		const bool fSucceed = m_productFinnhubForexSymbol.ParseAndStoreWebData(m_pWebData);
+		m_productFinnhubForexSymbol.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
-			EXPECT_FALSE(fSucceed);
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_FALSE(fSucceed);
 			break;
 		case 2: // 格式不对
-			EXPECT_FALSE(fSucceed);
 			break;
 		case 3: // 缺乏字符串
-			EXPECT_FALSE(fSucceed);
 			break;
 		case 4: // 缺乏字符串
-			EXPECT_FALSE(fSucceed);
 			break;
 		case 5: // 缺乏字符串
-			EXPECT_FALSE(fSucceed);
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(_T("New Symbol"))) << "新添加的Forex代码";
 			pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(_T("New Symbol"));
 			EXPECT_STREQ(pForexSymbol->GetExchangeCode(), _T("oanda")) << "Index为零时的交易所";

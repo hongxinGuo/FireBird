@@ -22,7 +22,7 @@ CString CProductFinnhubStockPriceQuote::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	if (ParseFinnhubStockQuote(pWebData, pStock)) {
 		if ((pStock->GetTransactionTime() + 3600 * 12 - GetUTCTime()) > 0) {
@@ -33,9 +33,8 @@ bool CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) 
 				pStock->SetUpdateProfileDB(true);
 			}
 		}
-		return true;
+		return;
 	}
-	return false;
 }
 
 bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(const CWebDataPtr& pWebData, const CWorldStockPtr& pStock) {

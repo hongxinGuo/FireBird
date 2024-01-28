@@ -26,7 +26,7 @@ CString CProductFinnhubStockDayLine::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
@@ -47,13 +47,12 @@ bool CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pStock->SetUpdateProfileDB(true);
 			const long lSize = pStock->GetDayLineSize() - 1;
 			const auto pDayLine = pStock->GetDayLine(lSize);
-			if (!IsEarlyThen(pDayLine->GetMarketDate(), GetMarket()->GetMarketDate(), 100)) { pStock->SetIPOStatus(_STOCK_IPOED_); }
-			return true;
+			if (!IsEarlyThen(pDayLine->GetMarketDate(), GetMarket()->GetMarketDate(), 100)) {
+				pStock->SetIPOStatus(_STOCK_IPOED_);
+			}
+			return;
 		}
 	}
-	//TRACE("处理%s日线数据\n", pStock->GetSymbol().GetBuffer());
-
-	return false;
 }
 
 CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pWebData) {

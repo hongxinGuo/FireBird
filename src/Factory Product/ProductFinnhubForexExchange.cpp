@@ -20,15 +20,13 @@ CString CProductFinnhubForexExchange::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvForexExchange = ParseFinnhubForexExchange(pWebData);
 	for (int i = 0; i < pvForexExchange->size(); i++) {
 		if (!gl_dataContainerFinnhubForexExchange.IsExchange(pvForexExchange->at(i))) {
 			gl_dataContainerFinnhubForexExchange.Add(pvForexExchange->at(i));
 		}
 	}
-
-	return true;
 }
 
 shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExchange(const CWebDataPtr& pWebData) {

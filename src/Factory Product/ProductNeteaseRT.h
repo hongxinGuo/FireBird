@@ -8,7 +8,7 @@ public:
 	~CProductNeteaseRT() override = default;
 
 	CString CreateMessage() override;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
 public:
 	shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRT(const CWebDataPtr& pWebData);

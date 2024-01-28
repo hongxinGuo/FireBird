@@ -22,16 +22,14 @@ CString CProductFinnhubCompanyProfile::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	pStock->SetUpdateCompanyProfile(false);
 	const bool fSucceed = ParseFinnhubStockProfile(pWebData, pStock);
 	if (fSucceed || pWebData->IsVoidJson() || IsNoRightToAccess()) {
 		pStock->SetProfileUpdateDate(GetMarket()->GetMarketDate());
 		pStock->SetUpdateProfileDB(true);
-		return true;
 	}
-	return false;
 }
 
 /// <summary>

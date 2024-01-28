@@ -19,7 +19,7 @@ CString CProductFinnhubStockSymbol::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto strExchangeCode = gl_dataContainerFinnhubStockExchange.GetExchangeCode(m_lIndex);
 	const auto pvStock = ParseFinnhubStockSymbol(pWebData);
 	const auto pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(m_lIndex);
@@ -49,8 +49,6 @@ bool CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	CString str = _T("今日美国市场股票总数为：");
 	str += buffer;
 	//gl_systemMessage.PushInnerSystemInformationMessage(str);
-
-	return true;
 }
 
 bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(const CString& strStockSymbol, const CString& strExchangeCode) {

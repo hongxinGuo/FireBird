@@ -195,16 +195,13 @@ namespace FireBirdTest {
 	TEST_P(ProcessTiingoCryptoTest, TestProcessCryptoSymbol) {
 		CTiingoCryptoSymbolPtr pCrypto;
 		const auto l = gl_dataContainerTiingoCryptoSymbol.Size();
-		const bool fSucceed = m_tiingoCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
+		m_tiingoCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 11: // 格式不对
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 12: // 格式不对
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 20:
-			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(gl_dataContainerTiingoCryptoSymbol.Size(), l + 1);
 			EXPECT_TRUE(gl_dataContainerTiingoCryptoSymbol.IsSymbol(_T("New Symbol")));
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1) << gl_systemMessage.PopInnerSystemInformationMessage();

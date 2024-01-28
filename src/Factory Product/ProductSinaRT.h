@@ -10,7 +10,7 @@ public:
 	~CProductSinaRT() override = default;
 
 	CString CreateMessage() override;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
 public:
 	bool ParseSinaRT(vector<CWebRTDataPtr>&, CWebDataPtr pWebData);

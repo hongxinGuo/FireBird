@@ -181,31 +181,27 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubEPSSurpriseTest, TestProcessFinnhubEPSSurprise) {
 		CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(0);
-		bool fSucceed = m_finnhubStockEstimatesEPSSurprise.ParseAndStoreWebData(m_pWebData);
+		m_finnhubStockEstimatesEPSSurprise.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101);
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101);
 			break;
 		case 2: // 格式不对
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101);
 			break;
 		case 3: //第一个数据缺actual
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
@@ -213,19 +209,16 @@ namespace FireBirdTest {
 			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19700101) << "数据为空时，将日期设置为原点";
 			break;
 		case 4: // 第二个数据缺缺actual
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
 			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 1);
 			break;
 		case 5: // 第三个数据缺CodeNo
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
 			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 2);
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseUpdated);
 			EXPECT_TRUE(pStock->m_fEPSSurpriseNeedSave);
 			EXPECT_EQ(pStock->m_vEPSSurprise.size(), 4);

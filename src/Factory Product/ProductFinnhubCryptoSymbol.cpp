@@ -19,7 +19,7 @@ CString CProductFinnhubCryptoSymbol::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvCryptoSymbol = ParseFinnhubCryptoSymbol(pWebData);
 	for (const auto& pSymbol : *pvCryptoSymbol) {
 		if (!gl_dataFinnhubCryptoSymbol.IsSymbol(pSymbol->GetSymbol())) {
@@ -27,8 +27,6 @@ bool CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			gl_dataFinnhubCryptoSymbol.Add(pSymbol);
 		}
 	}
-
-	return true;
 }
 
 //

@@ -202,28 +202,21 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubEconomicCalendarTest, TestProcessFinnhubEconomicCalendar) {
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
-		const bool fSucceed = m_finnhubEconomicCalendar.ParseAndStoreWebData(m_pWebData);
+		m_finnhubEconomicCalendar.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 2: // 格式不对
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 3: // 缺乏economicCalendar
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 4: // 第一个数据缺actual
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 5: // 第二个数据缺actual
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
 			break;
 		default:
 			break;

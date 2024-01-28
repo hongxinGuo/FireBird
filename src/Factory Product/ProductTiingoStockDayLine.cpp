@@ -42,7 +42,7 @@ CString CProductTiingoStockDayLine::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
 
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
@@ -58,12 +58,13 @@ bool CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pStock->SetDayLineNeedSaving(true);
 		pStock->SetUpdateProfileDB(true);
 		TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
-		return true;
+		return;
 	}
-	pStock->SetDayLineNeedSaving(false);
-	pStock->SetUpdateProfileDB(false);
-	TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
-	return false;
+	else {
+		pStock->SetDayLineNeedSaving(false);
+		pStock->SetUpdateProfileDB(false);
+		TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

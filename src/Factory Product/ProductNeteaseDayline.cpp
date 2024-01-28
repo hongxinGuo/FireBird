@@ -12,10 +12,8 @@ CString CProductNeteaseDayLine::CreateMessage() {
 	return m_strInquiryFunction; // 新浪实时数据的申请字符串由CNeteaseDayLineWebInquiry类完成，本Product无需动作。
 }
 
-bool CProductNeteaseDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductNeteaseDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pDayLineWebData = ParseNeteaseDayLine(pWebData);
 
 	gl_qDayLine.PushData(pDayLineWebData);
-
-	return true;
 }

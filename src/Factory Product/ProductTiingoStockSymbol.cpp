@@ -23,7 +23,7 @@ CString CProductTiingoStockSymbol::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoStock = ParseTiingoStockSymbol(pWebData);
 	if (!pvTiingoStock->empty()) {
 		char buffer[100];
@@ -49,7 +49,6 @@ bool CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		const CString str = _T("今日Tiingo Stock Symbol活跃股票总数为") + strNumber;
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 	}
-	return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

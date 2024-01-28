@@ -1,4 +1,3 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // FireBird中比较费时的函数是各个数据的解析工作。
 // 目前最繁重的解析工作，是US market的美国市场股票代码，其大小为5MB，使用nlohmann json解析时，release模式用时131毫秒；使用boost PTree
@@ -303,7 +302,7 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonWithNlohmannJson)(benchmark::Stat
 BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonWithsimdjson)(benchmark::State& state) {
 	const CString strFileName2 = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
 	const string sFileName = (LPCTSTR)strFileName2;
-	auto j = padded_string::load(sFileName);
+	const auto j = padded_string::load(sFileName);
 	ondemand::parser parser;
 	for (auto _ : state) {
 		ondemand::document doc = parser.iterate(j);
@@ -335,7 +334,7 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithSimdjson1)(benchmark::State& state
 
 // 解析并处理tengxun日线数据。
 BENCHMARK_F(CJsonParse, ParseTengxunDayLine)(benchmark::State& state) {
-	string_view svData = sTengxunDayLine;
+	const string_view svData = sTengxunDayLine;
 	for (auto _ : state) {
 		auto vData = ParseTengxunDayLine(svData, _T("sh000001")); // 默认测试文件中的股票代码为sh000001.
 	}

@@ -3,12 +3,10 @@
 #include"VirtualSetStockSymbol.h"
 
 using std::shared_ptr;
+using std::atomic_bool;
 
 class CVirtualStock;
 using CVirtualStockPtr = shared_ptr<CVirtualStock>;
-
-#include<atomic>
-using std::atomic_bool;
 
 class CVirtualStock {
 public:

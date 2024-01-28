@@ -8,7 +8,7 @@ public:
 	~CProductFinnhubForexSymbol() override = default;
 
 	CString CreateMessage() override;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CForexSymbolVectorPtr ParseFinnhubForexSymbol(const CWebDataPtr& pWebData);
 };
 

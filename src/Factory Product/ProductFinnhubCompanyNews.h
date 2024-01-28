@@ -15,7 +15,7 @@ public:
 	~CProductFinnhubCompanyNews() override = default;
 
 	CString CreateMessage() override;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CCompanyNewsVectorPtr ParseFinnhubCompanyNews(const CWebDataPtr& pWebData);
 };
 

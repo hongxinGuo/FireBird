@@ -122,18 +122,15 @@ namespace FireBirdTest {
 		                         &finnhubWebDataCompanyNews3, &finnhubWebDataCompanyNews4, &finnhubWebDataCompanyNews5, &finnhubWebDataCompanyNews10));
 
 	TEST_P(ProcessFinnhubStockCompanyNewsTest, TestProcessStockCompanyNews0) {
-		bool fSucceed = false;
-		fSucceed = m_FinnhubCompanyNews.ParseAndStoreWebData(m_pWebData);
+		m_FinnhubCompanyNews.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
-			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNews());
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 3: // 缺乏address项
-			EXPECT_TRUE(fSucceed);
 			EXPECT_STRNE(m_pStock->GetCountry(), _T("US")) << "没有赋值此项";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNews());
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
@@ -141,7 +138,6 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 4: // 空数据
-			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNews());
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
@@ -149,7 +145,6 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 5: // 无权利访问
-			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNews());
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
@@ -157,7 +152,6 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
 			EXPECT_STREQ(m_pStock->GetTicker(), _T("AAPL"));
 			EXPECT_EQ(m_pStock->GetCompanyNewsSize(), 2);
 			EXPECT_EQ(m_pStock->GetCompanyNewsDateTime(0), 19700101000001);

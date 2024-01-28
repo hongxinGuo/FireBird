@@ -26,7 +26,7 @@ CString CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
@@ -38,8 +38,6 @@ bool CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr 
 		pStock->UpdateInsiderTransaction(*pvInsiderTransaction);
 		pStock->SetSaveInsiderTransaction(true);
 	}
-
-	return true;
 }
 
 //

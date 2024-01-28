@@ -25,9 +25,8 @@ CString CProductFinnhubCryptoDayLine::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-	bool fStatus = true;
 
 	const auto pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(m_lIndex);
 	const auto pvDayLine = ParseFinnhubCryptoCandle(pWebData);
@@ -51,11 +50,8 @@ bool CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		if (!pCryptoSymbol->IsDelisted()) {
 			pCryptoSymbol->SetIPOStatus(_STOCK_DELISTED_);
 			pCryptoSymbol->SetUpdateProfileDB(true);
-			fStatus = true;
 		}
-		else { fStatus = false; }
 	}
-	return fStatus;
 }
 
 CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr pWebData) {

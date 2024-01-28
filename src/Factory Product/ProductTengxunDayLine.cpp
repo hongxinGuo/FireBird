@@ -47,7 +47,7 @@ CString CProductTengxunDayLine::CreateMessage() {
 // 1991年左右的腾讯日线有周六的，需要清除掉。
 // 
 ////////////////////////////////////
-bool CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pDayLineWebData = ParseTengxunDayLine(pWebData);
 	// 以下操作静态变量，需要使用criticalSection，同时仅允许一个线程进入
 	s_semaphoreTransferData.acquire();
@@ -68,8 +68,6 @@ bool CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		gl_qDayLine.PushData(pDayLineWebData);
 	}
 	s_semaphoreTransferData.release();
-
-	return true;
 }
 
 void CProductTengxunDayLine::AppendDayLine(const vector<CDayLinePtr>& vDayLine) {

@@ -182,32 +182,25 @@ namespace FireBirdTest {
 	TEST_P(ProcessFinnhubCountryListTest, TestProcessFinnhubCountryList0) {
 		const auto l = gl_dataContainerFinnhubCountry.GetTotalCountry();
 		CCountryPtr pCountry = nullptr;
-		const bool fSucceed = m_finnhubEconomicCountryList.ParseAndStoreWebData(m_pWebData);
+		m_finnhubEconomicCountryList.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 2: // 格式不对
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 3: // 缺乏CodeNo
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 4: // 第二个数据缺Code2
-			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(gl_dataContainerFinnhubCountry.GetTotalCountry(), l + 1);
 			break;
 		case 5: // 第二个数据缺CodeNo
-			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(gl_dataContainerFinnhubCountry.GetTotalCountry(), l + 1);
 			break;
 		case 6: // 空数据
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(m_finnhubEconomicCountryList.IsVoidData());
 			break;
 		case 7: // 无权访问数据
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(m_finnhubEconomicCountryList.IsNoRightToAccess());
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(gl_dataContainerFinnhubCountry.GetTotalCountry(), l + 1);
 			break;
 		default:

@@ -160,22 +160,17 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
 		CWorldStockPtr pStock;
-		const bool fSucceed = m_finnhubStockSymbolProduct.ParseAndStoreWebData(m_pWebData);
+		m_finnhubStockSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 2: // 格式不对
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 3: // 缺乏currency项
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol(_T("New Symbol"))) << "新增加的代码";
 			pStock = gl_dataContainerFinnhubStock.GetStock(_T("New Symbol"));
 			EXPECT_STREQ(pStock->GetExchangeCode(), _T("AD")) << "第一个交易所";

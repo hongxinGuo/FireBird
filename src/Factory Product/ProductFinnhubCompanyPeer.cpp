@@ -19,7 +19,7 @@ CString CProductFinnhubCompanyPeer::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
@@ -28,8 +28,6 @@ bool CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	pStock->SetPeerUpdateDate(GetMarket()->GetMarketDate());
 	pStock->SetUpdatePeer(false);
 	pStock->SetUpdateProfileDB(true);
-
-	return true;
 }
 
 json CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(const CWebDataPtr& pWebData) {

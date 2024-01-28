@@ -49,6 +49,9 @@ long CContainerChinaStock::LoadStockProfileDB() {
 		const auto pStock = make_shared<CChinaStock>();
 		if (!IsSymbol(setChinaStockSymbol.m_Symbol)) {
 			pStock->LoadStockCodeDB(setChinaStockSymbol);
+			pStock->CheckNeedProcessRTData();
+			pStock->CheckIPOStatus();
+			pStock->CheckDayLineStatus();
 			Add(pStock);
 		}
 		else {

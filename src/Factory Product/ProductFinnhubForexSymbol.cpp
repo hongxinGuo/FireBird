@@ -19,17 +19,15 @@ CString CProductFinnhubForexSymbol::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvForexSymbol = ParseFinnhubForexSymbol(pWebData);
-	if (pvForexSymbol->empty()) return false;
+	if (pvForexSymbol->empty()) return;
 	for (const auto& pSymbol : *pvForexSymbol) {
 		if (!gl_dataFinnhubForexSymbol.IsSymbol(pSymbol->GetSymbol())) {
 			pSymbol->SetExchangeCode(gl_dataContainerFinnhubForexExchange.GetExchange(m_lIndex));
 			gl_dataFinnhubForexSymbol.Add(pSymbol);
 		}
 	}
-
-	return true;
 }
 
 CForexSymbolVectorPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(const CWebDataPtr& pWebData) {

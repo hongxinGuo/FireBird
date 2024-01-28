@@ -27,7 +27,7 @@ CString CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	const CInsiderSentimentVectorPtr pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
 	pStock->SetInsiderSentimentUpdateDate(GetMarket()->GetMarketDate());
@@ -37,8 +37,6 @@ bool CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pW
 		pStock->UpdateInsiderSentiment(*pvInsiderSentiment);
 		pStock->SetSaveInsiderSentiment(true);
 	}
-
-	return true;
 }
 
 ////////

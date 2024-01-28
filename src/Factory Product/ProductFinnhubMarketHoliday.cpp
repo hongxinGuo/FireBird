@@ -22,14 +22,12 @@ CString CProductFinnhubMarketHoliday::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubMarketHoliday::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubMarketHoliday::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvHoliday = ParseFinnhubMarketHoliday(pWebData);
 	const auto pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(m_lIndex);
 	pExchange->SetMarketHolidayUpdated(true);
 
 	gl_pWorldMarket->UpdateMarketHoliday(pvHoliday);
-
-	return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

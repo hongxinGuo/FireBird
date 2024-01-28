@@ -9,7 +9,7 @@ public:
 	~CProductTiingoStockSymbol() override = default;
 
 	CString CreateMessage() override;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CTiingoStockVectorPtr ParseTiingoStockSymbol(const CWebDataPtr& pWebData);
 	CTiingoStockVectorPtr ParseTiingoStockSymbol2(const CWebDataPtr& pWebData);
 

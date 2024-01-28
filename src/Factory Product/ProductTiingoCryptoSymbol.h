@@ -9,7 +9,7 @@ public:
 	~CProductTiingoCryptoSymbol() override = default;
 
 	CString CreateMessage() override;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CTiingoCryptoVectorPtr ParseTiingoCryptoSymbol(const CWebDataPtr& pWebData);
 
 	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;

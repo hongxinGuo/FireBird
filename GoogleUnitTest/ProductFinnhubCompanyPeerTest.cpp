@@ -157,51 +157,44 @@ namespace FireBirdTest {
 		string s;
 		CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(0);
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
-		bool fSucceed = m_finnhubCompanyPeer.ParseAndStoreWebData(m_pWebData);
+		m_finnhubCompanyPeer.ParseAndStoreWebData(m_pWebData);
 		EXPECT_FALSE(pStock->IsUpdatePeer());
 		switch (m_lIndex) {
 		case 0: // 空数据
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->GetPeer().empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
 			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->GetPeer().empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
 			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 2: // 不足三个字符
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->GetPeer().empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
 			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 3: // 格式不对
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->GetPeer().empty()) << "没有改变";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
 			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 4: // 第二个数据缺Code2
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(pStock->GetPeer().empty()) << "没有改变";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
 			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
 			break;
 		case 5: // 正确的数据，但超过200个字符
-			EXPECT_TRUE(fSucceed);
 			EXPECT_FALSE(pStock->GetPeer().empty()) << "多余2000个字符时截断";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
 			s = pStock->GetPeer().dump();
 			EXPECT_STREQ(s.c_str(), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());

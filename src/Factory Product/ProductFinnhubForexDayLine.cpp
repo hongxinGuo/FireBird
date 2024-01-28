@@ -27,7 +27,7 @@ CString CProductFinnhubForexDayLine::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(m_lIndex);
@@ -45,12 +45,13 @@ bool CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pForexSymbol->SetDayLineNeedSaving(true);
 		pForexSymbol->SetUpdateProfileDB(true);
 		TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
-		return true;
+		return;
 	}
-	pForexSymbol->SetDayLineNeedSaving(false);
-	pForexSymbol->SetUpdateProfileDB(false);
-	TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
-	return false;
+	else {
+		pForexSymbol->SetDayLineNeedSaving(false);
+		pForexSymbol->SetUpdateProfileDB(false);
+		TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
+	}
 }
 
 CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataPtr pWebData) {

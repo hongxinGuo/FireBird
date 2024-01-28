@@ -42,7 +42,7 @@ CString CProductFinnhubCompanyBasicFinancial::CreateMessage() {
 // 查询时如果是外国的ADR，则返回的股票代码为其本土代码，与ADR不同，需要注意。如申请BVDRF,回复的股票代码为MBWS.PA。
 //
 //
-bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial = nullptr;
 	const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	pFinnhubStockBasicFinancial = ParseFinnhubStockBasicFinancial(pWebData);
@@ -56,8 +56,6 @@ bool CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWeb
 	pStock->SetBasicFinancialUpdateDate(GetMarket()->GetMarketDate());
 	pStock->SetUpdateBasicFinancial(false);
 	pStock->SetUpdateProfileDB(true);
-
-	return true;
 }
 
 // <summary>

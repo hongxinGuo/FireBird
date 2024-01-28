@@ -13,7 +13,7 @@ public:
 	~CProductTiingoCompanyProfile() override = default;
 
 	CString CreateMessage() override;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 };
 
 using CTiingoCompanyProfilePtr = shared_ptr<CProductTiingoCompanyProfile>;

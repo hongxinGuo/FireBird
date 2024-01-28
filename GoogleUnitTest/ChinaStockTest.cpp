@@ -1193,16 +1193,15 @@ namespace FireBirdTest {
 		CSetChinaStockSymbol setChinaStockSymbol;
 		CChinaStock stock;
 
+		EXPECT_FALSE(stock.IsUpdateProfileDB());
+		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsNotChecked());
 		setChinaStockSymbol.Open();
 		stock.LoadStockCodeDB(setChinaStockSymbol);
+		EXPECT_FALSE(stock.IsUpdateProfileDB());
+		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsIPOed());
 		EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS"));
-		if (IsEarlyThen(stock.GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
-			EXPECT_THAT(stock.GetIPOStatus(), Eq(_STOCK_DELISTED_));
-			EXPECT_TRUE(stock.IsUpdateProfileDB());
-		}
-		else {
-			EXPECT_THAT(stock.GetIPOStatus(), Eq(_STOCK_IPOED_));
-		}
 		stock.SetIPOStatus(_STOCK_NULL_);
 		stock.UpdateSymbol(setChinaStockSymbol);
 		setChinaStockSymbol.Close();
@@ -1218,19 +1217,16 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestLoadStockCodeDB1) {
 		CSetChinaStockSymbol setChinaStockSymbol;
 		CChinaStock stock;
-		EXPECT_FALSE(stock.GetIPOStatus() == _STOCK_DELISTED_);
-		//stock.SetIPOStatus(_STOCK_IPOED_);
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsNotChecked());
 		setChinaStockSymbol.m_strSort = _T("[ID]");
 		setChinaStockSymbol.Open();
 		stock.LoadStockCodeDB(setChinaStockSymbol);
+		EXPECT_FALSE(stock.IsUpdateProfileDB());
+		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsIPOed());
 		EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS")) << "第一个股票";
-		if (IsEarlyThen(stock.GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
-			EXPECT_THAT(stock.GetIPOStatus(), Eq(_STOCK_DELISTED_));
-			EXPECT_TRUE(stock.IsUpdateProfileDB());
-		}
-		else { EXPECT_EQ(stock.GetIPOStatus(), setChinaStockSymbol.m_IPOStatus); }
 		EXPECT_EQ(stock.GetDayLineStartDate(), setChinaStockSymbol.m_DayLineStartDate);
 		EXPECT_EQ(stock.GetDayLineEndDate(), setChinaStockSymbol.m_DayLineEndDate);
 		setChinaStockSymbol.Close();
@@ -1243,7 +1239,9 @@ namespace FireBirdTest {
 		gl_pChinaMarket->CalculateTime();
 		stock.SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
 		const long lCurrentDate = gl_pChinaMarket->GetMarketDate();
+		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsNotChecked());
 		setChinaStockSymbol.Open();
 		stock.LoadStockCodeDB(setChinaStockSymbol);
 		EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS"));
@@ -1259,8 +1257,9 @@ namespace FireBirdTest {
 
 		gl_pChinaMarket->CalculateTime();
 		stock.SetDayLineEndDate(GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
-		stock.SetIPOStatus(_STOCK_IPOED_);
+		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsNotChecked());
 		setChinaStockSymbol.m_strFilter = _T("[Symbol] = '000003.SZ'");
 		setChinaStockSymbol.Open();
 		stock.LoadStockCodeDB(setChinaStockSymbol);
@@ -1269,6 +1268,50 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetDayLineStartDate(), setChinaStockSymbol.m_DayLineStartDate);
 		EXPECT_EQ(stock.GetDayLineEndDate(), GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
 		setChinaStockSymbol.Close();
+	}
+
+	TEST_F(CChinaStockTest, TestCheckNeedProcessRTData) {
+		CChinaStock stock;
+		stock.SetSymbol(_T("000001.SS"));
+		stock.CheckNeedProcessRTData();
+		EXPECT_FALSE(stock.IsNeedProcessRTData());
+		stock.SetSymbol(_T("001000.SS"));
+		stock.CheckNeedProcessRTData();
+		EXPECT_TRUE(stock.IsNeedProcessRTData());
+		stock.SetSymbol(_T("000001.SZ"));
+		stock.CheckNeedProcessRTData();
+		EXPECT_TRUE(stock.IsNeedProcessRTData());
+		stock.SetSymbol(_T("999000.SZ"));
+		stock.CheckNeedProcessRTData();
+		EXPECT_FALSE(stock.IsNeedProcessRTData());
+	}
+
+	TEST_F(CChinaStockTest, TestCheckIPOStatus) {
+		CChinaStock stock;
+		stock.SetIPOStatus(_STOCK_DELISTED_);
+		EXPECT_FALSE(stock.IsUpdateProfileDB());
+
+		stock.CheckIPOStatus();
+
+		EXPECT_FALSE(stock.IsUpdateProfileDB());
+
+		stock.SetIPOStatus(_STOCK_IPOED_);
+		EXPECT_FALSE(stock.IsUpdateProfileDB());
+		stock.SetDayLineEndDate(19900101);
+
+		stock.CheckIPOStatus();
+
+		EXPECT_TRUE(stock.IsUpdateProfileDB());
+		EXPECT_TRUE(stock.IsDelisted());
+
+		stock.SetIPOStatus(_STOCK_IPOED_);
+		stock.SetUpdateProfileDB(false);
+		stock.SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
+
+		stock.CheckIPOStatus();
+
+		EXPECT_FALSE(stock.IsUpdateProfileDB());
+		EXPECT_TRUE(stock.IsIPOed());
 	}
 
 	TEST_F(CChinaStockTest, TestSetCheckingDayLineStatus) {

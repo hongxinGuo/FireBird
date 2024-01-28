@@ -11,6 +11,4 @@ CString CProductTiingoCompanyProfile::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductTiingoCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	return true;
-}
+void CProductTiingoCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {}

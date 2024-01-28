@@ -10,7 +10,7 @@ public:
 	~CProductTengxunRT() override = default;
 
 	CString CreateMessage() override;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
 public:
 	bool ParseTengxunRT(vector<CWebRTDataPtr>&, CWebDataPtr pWebData);

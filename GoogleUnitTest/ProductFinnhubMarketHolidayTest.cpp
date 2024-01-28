@@ -133,16 +133,13 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubMarketHolidayTest, TestParseFinnhubMarketHoliday0) {
 		CMarketHolidayPtr pMarketHoliday;
-		const bool fSucceed = m_finnhubMarketHolidayProduct.ParseAndStoreWebData(m_pWebData);
+		m_finnhubMarketHolidayProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 2: // 正确的数据
-			EXPECT_TRUE(fSucceed);
 
 			break;
 		default:

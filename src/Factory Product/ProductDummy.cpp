@@ -12,7 +12,6 @@ CString CProductDummy::CreateMessage() {
 	return _T("");
 }
 
-bool CProductDummy::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductDummy::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	TRACE("dummy product\n");
-	return true;
 }

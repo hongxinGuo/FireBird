@@ -9,7 +9,7 @@ public:
 	~CProductFinnhubMarketStatus() override = default;
 
 	CString CreateMessage() override;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CMarketStatusVectorPtr ParseFinnhubMarketStatus(const CWebDataPtr& pWebData);
 };
 

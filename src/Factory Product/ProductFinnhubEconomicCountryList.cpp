@@ -22,15 +22,13 @@ CString CProductFinnhubEconomicCountryList::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvCountry = ParseFinnhubCountryList(pWebData);
 	for (const auto& pCountry : *pvCountry) {
 		if (!gl_dataContainerFinnhubCountry.IsCountry(pCountry)) {
 			gl_dataContainerFinnhubCountry.Add(pCountry);
 		}
 	}
-
-	return true;
 }
 
 CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const CWebDataPtr& pWebData) {

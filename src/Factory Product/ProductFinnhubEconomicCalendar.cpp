@@ -28,11 +28,9 @@ CString CProductFinnhubEconomicCalendar::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
 	gl_dataContainerFinnhubEconomicCalendar.Update(*pvEconomicCalendar);
-
-	return true;
 }
 
 CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalendar(const CWebDataPtr& pWebData) {

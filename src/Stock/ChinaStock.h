@@ -274,6 +274,8 @@ public:
 	void UpdateDayLineStartEndDate();
 	void LoadTodaySavedInfo(const CSetDayLineTodaySaved* pSetDayLineTemp);
 	bool LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol);
+	void CheckNeedProcessRTData();
+	void CheckIPOStatus();
 	bool CheckDayLineStatus();
 	//周线历史数据存取
 	virtual bool LoadWeekLine() { return m_dataWeekLine.LoadDB(GetSymbol()); }

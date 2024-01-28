@@ -29,7 +29,7 @@ CString CProductFinnhubCompanyNews::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvFinnhubCompanyNews = ParseFinnhubCompanyNews(pWebData);
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 
@@ -45,8 +45,6 @@ bool CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	pStock->SetCompanyNewsUpdateDate(GetMarket()->GetMarketDate());
 	pStock->SetUpdateCompanyNews(false);
 	pStock->SetUpdateProfileDB(true);
-
-	return true;
 }
 
 /// <summary>

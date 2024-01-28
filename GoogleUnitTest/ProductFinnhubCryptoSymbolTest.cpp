@@ -156,28 +156,21 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubCryptoSymbolTest, TestProcessFinnhubCryptoSymbol) {
 		CFinnhubCryptoSymbolPtr pCrypto;
-		const bool fSucceed = m_finnhubCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
+		m_finnhubCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 2: // 格式不对
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 3: // 缺乏字符串
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 4: // 缺乏字符串
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 5: // 缺乏字符串
-			EXPECT_TRUE(fSucceed);
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
 			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(_T("New Symbol")));
 			pCrypto = gl_dataFinnhubCryptoSymbol.GetSymbol(_T("New Symbol"));
 			EXPECT_STREQ(pCrypto->GetDescription(), _T("Oanda Singapore 30"));

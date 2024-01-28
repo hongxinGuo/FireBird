@@ -20,15 +20,13 @@ CString CProductFinnhubCryptoExchange::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvCryptoExchange = ParseFinnhubCryptoExchange(pWebData);
 	for (int i = 0; i < pvCryptoExchange->size(); i++) {
 		if (!gl_dataContainerFinnhubCryptoExchange.IsExchange(static_cast<LPCTSTR>(pvCryptoExchange->at(i)))) {
 			gl_dataContainerFinnhubCryptoExchange.Add(static_cast<LPCTSTR>(pvCryptoExchange->at(i)));
 		}
 	}
-
-	return true;
 }
 
 //

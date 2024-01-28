@@ -21,7 +21,7 @@ CString CProductFinnhubMarketStatus::CreateMessage() {
 	return m_strInquiry;
 }
 
-bool CProductFinnhubMarketStatus::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductFinnhubMarketStatus::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvMarketStatus = ParseFinnhubMarketStatus(pWebData);
 	const auto pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(m_lIndex);
 	pExchange->SetMarketStatusUpdated(true);
@@ -29,8 +29,6 @@ bool CProductFinnhubMarketStatus::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (!pvMarketStatus->empty()) {
 		gl_pWorldMarket->UpdateMarketStatus(pvMarketStatus);
 	}
-
-	return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

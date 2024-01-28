@@ -11,7 +11,7 @@ public:
 	~CProductNeteaseDayLine() override = default;
 
 	CString CreateMessage() override;
-	bool ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置

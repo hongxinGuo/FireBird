@@ -300,59 +300,50 @@ namespace FireBirdTest {
 		CDayLinePtr pDayLine;
 		CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(0);
 
-		bool fSucceed = m_tiingoStockPriceCandle.ParseAndStoreWebData(m_pWebData);
+		m_tiingoStockPriceCandle.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
-			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			break;
 		case 2: //
-			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			break;
 		case 3: //
-			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			break;
 		case 5:
-			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			break;
 		case 6:
-			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			break;
 		case 7:
-			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			break;
 		case 8:
-			EXPECT_FALSE(fSucceed);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
 			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
 			break;
 		case 9:
-			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(pStock->GetDayLineSize(), 1);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pStock->IsDayLineNeedSaving());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 10:
-			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(pStock->GetDayLineSize(), 2);
 			EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
 			EXPECT_TRUE(pStock->IsDayLineNeedSaving());

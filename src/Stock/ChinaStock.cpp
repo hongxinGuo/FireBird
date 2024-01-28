@@ -1281,6 +1281,13 @@ bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {
 
 	LoadSymbol(setChinaStockSymbol);
 
+	if (GetDayLineEndDate() < lDayLineEndDate) {// 有时一个股票会有多个记录，以最后的日期为准。
+		SetDayLineEndDate(lDayLineEndDate);
+	}
+	return true;
+}
+
+void CChinaStock::CheckNeedProcessRTData() {
 	SetNeedProcessRTData(true);
 	if (IsShanghaiExchange(GetSymbol())) {
 		if (GetSymbol().Left(6) <= _T("000999")) {//沪市指数？
@@ -1290,27 +1297,26 @@ bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {
 	else if ((GetSymbol().Left(6) >= _T("399000"))) {// 深市指数
 		SetNeedProcessRTData(false);
 	}
-	if (GetDayLineEndDate() < lDayLineEndDate) {// 有时一个股票会有多个记录，以最后的日期为准。
-		SetDayLineEndDate(lDayLineEndDate);
-	}
+}
+
+void CChinaStock::CheckIPOStatus() {
 	if (!IsDelisted()) {
 		if (IsEarlyThen(GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
 			SetIPOStatus(_STOCK_DELISTED_);
 			SetUpdateProfileDB(true);
 		}
 	}
-	CheckDayLineStatus();
-	return true;
 }
 
 bool CChinaStock::CheckDayLineStatus() {
-	ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
 	// 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
 	if (gl_pChinaMarket->GetLastTradeDate() <= GetDayLineEndDate()) {// 最新日线数据为今日或者上一个交易日的数据。
 		SetDayLineNeedUpdate(false); // 日线数据不需要更新
 	}
 	else if (IsDelisted()) {// 退市股票如果已下载过日线数据，则每星期一复查日线数据
-		if ((gl_pChinaMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != _CHINA_MARKET_BEGIN_DATE_)) { SetDayLineNeedUpdate(false); }
+		if ((gl_pChinaMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != _CHINA_MARKET_BEGIN_DATE_)) {
+			SetDayLineNeedUpdate(false);
+		}
 	}
 	return m_fDayLineNeedUpdate;
 }
