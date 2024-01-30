@@ -219,23 +219,23 @@ std::string sData101 = _T("{\
 		\"symbol\":\"AAPL\"\
 }");
 
-static void ParseWithNlohmannJSon(benchmark::State& state) {
+static void ParseUsingNlohmannJSon(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
 		CreateJsonWithNlohmann(j, sData101);
 	}
 }
-BENCHMARK(ParseWithNlohmannJSon);
+BENCHMARK(ParseUsingNlohmannJSon);
 
-static void ParseWithSimdjson(benchmark::State& state) {
+static void ParseUsingSimdjson(benchmark::State& state) {
 	const padded_string my_data(sData101);
 	ondemand::parser parser;
 	for (auto _ : state) {
-		ondemand::document doc = parser.iterate(my_data);
+		parser.iterate(my_data);
 	}
 }
 
-BENCHMARK(ParseWithSimdjson);
+BENCHMARK(ParseUsingSimdjson);
 
 class CJsonParse : public benchmark::Fixture {
 public:
@@ -274,43 +274,43 @@ public:
 };
 
 // 解析US交易所的股票代码数据（5MB）时，Release模式，nlohmann json用时130毫秒，PTree用时310毫秒；
-BENCHMARK_F(CJsonParse, StockSymbolParseWithNlohmannJSon)(benchmark::State& state) {
+BENCHMARK_F(CJsonParse, StockSymbolParseUsingNlohmannJSon)(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
 		CreateJsonWithNlohmann(j, sUSExchangeStockCode);
 	}
 }
 
-BENCHMARK_F(CJsonParse, StockSymbolParseWithsimdjson)(benchmark::State& state) {
+BENCHMARK_F(CJsonParse, StockSymbolParseUsingSimdjson)(benchmark::State& state) {
 	const CString strFileName1 = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("StockSymbol.json");
 	const string sFileName = (LPCTSTR)strFileName1;
 	const auto j = padded_string::load(sFileName);
 	ondemand::parser parser;
 	for (auto _ : state) {
-		ondemand::document doc = parser.iterate(j);
+		parser.iterate(j);
 	}
 }
 
 // 解析Netease实时数据时，nlohmann json用时16毫秒，PTree用时32毫秒。
-BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonWithNlohmannJson)(benchmark::State& state) {
+BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonUsingNlohmannJson)(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
 		CreateJsonWithNlohmann(j, sNeteaseRTData, 21, 2);
 	}
 }
 
-BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonWithsimdjson)(benchmark::State& state) {
+BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonUsingSimdjson)(benchmark::State& state) {
 	const CString strFileName2 = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
 	const string sFileName = (LPCTSTR)strFileName2;
 	const auto j = padded_string::load(sFileName);
 	ondemand::parser parser;
 	for (auto _ : state) {
-		ondemand::document doc = parser.iterate(j);
+		parser.iterate(j);
 	}
 }
 
 // 解析WorldStock update parameter，nlohmann json用时50微秒（debug), 7微秒（release)。
-BENCHMARK_F(CJsonParse, WorldStockUpdateParameterCreateJsonWithNlohmannJson)(benchmark::State& state) {
+BENCHMARK_F(CJsonParse, WorldStockUpdateParameterCreateJsonUsingNlohmannJson)(benchmark::State& state) {
 	json j;
 	for (auto _ : state) {
 		CreateJsonWithNlohmann(j, sWorldStockUpdateParameter);
@@ -318,7 +318,7 @@ BENCHMARK_F(CJsonParse, WorldStockUpdateParameterCreateJsonWithNlohmannJson)(ben
 }
 
 // 解析并处理netease实时数据。
-BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJson)(benchmark::State& state) {
+BENCHMARK_F(CJsonParse, NeteaseRTDataParseUsingNlohmannJson)(benchmark::State& state) {
 	static json j; // 此变量不能声明为局部变量，否则可能导致栈溢出。原因待查
 	for (auto _ : state) {
 		CreateJsonWithNlohmann(j, sNeteaseRTData, 21, 2);
@@ -326,14 +326,14 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithNlohmannJson)(benchmark::State& st
 	}
 }
 
-BENCHMARK_F(CJsonParse, NeteaseRTDataParseWithSimdjson1)(benchmark::State& state) {
+BENCHMARK_F(CJsonParse, NeteaseRTDataParseUsingSimdjson1)(benchmark::State& state) {
 	for (auto _ : state) {
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson(sv);
 	}
 }
 
 // 解析并处理tengxun日线数据。
-BENCHMARK_F(CJsonParse, ParseTengxunDayLine)(benchmark::State& state) {
+BENCHMARK_F(CJsonParse, ParseTengxunDayLineUsingSimdjson)(benchmark::State& state) {
 	const string_view svData = sTengxunDayLine;
 	for (auto _ : state) {
 		auto vData = ParseTengxunDayLine(svData, _T("sh000001")); // 默认测试文件中的股票代码为sh000001.
@@ -368,21 +368,21 @@ public:
 };
 
 // 测试nlohmann json读取NeteaseRTData的速度（数据已预先解析了）
-BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataWithNlohmannJson1)(benchmark::State& state) {
+BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingNlohmannJson1)(benchmark::State& state) {
 	for (auto _ : state) {
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTData(&js);
 	}
 }
 
 // 测试nlohmann json读取NeteaseRTData的速度（数据未解析）
-BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataWithNlohmannJson2)(benchmark::State& state) {
+BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingNlohmannJson2)(benchmark::State& state) {
 	for (auto _ : state) {
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithNlohmannJSon(pWebData);
 	}
 }
 
 //simdjson解析并读取NeteaseRTData的速度
-BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataWithSimdjson1)(benchmark::State& state) {
+BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingSimdjson1)(benchmark::State& state) {
 	for (auto _ : state) {
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson(sv);
 	}

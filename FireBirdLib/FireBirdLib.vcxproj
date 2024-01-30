@@ -24,7 +24,6 @@
     <ClInclude Include="..\src\accessory\RSReference.h" />
     <ClInclude Include="..\src\accessory\SaveAndLoad.h" />
     <ClInclude Include="..\src\accessory\simdjsonGetValue.h" />
-    <ClInclude Include="..\src\accessory\simdjsonEmptyArray.h" />
     <ClInclude Include="..\src\accessory\TemplateMutexAccessQueue.h" />
     <ClInclude Include="..\src\accessory\ThreadStatus.h" />
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
@@ -235,7 +234,6 @@
     <ClCompile Include="..\src\accessory\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\src\accessory\SaveAndLoad.cpp" />
     <ClCompile Include="..\src\accessory\simdjsonGetValue.cpp" />
-    <ClCompile Include="..\src\accessory\simdjsonEmptyArray.cpp" />
     <ClCompile Include="..\src\accessory\ThreadStatus.cpp" />
     <ClCompile Include="..\src\accessory\TimeConvert.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerVirtualStock.cpp" />

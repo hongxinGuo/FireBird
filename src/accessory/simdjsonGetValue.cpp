@@ -10,7 +10,15 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 #include "simdjsonGetValue.h"
-#include"simdjsonEmptyArray.h"
+
+ondemand::array gl_simdjsonEmptyArray;
+
+void CreateSimdjsonEmptyArray() {
+	static ondemand::parser s_parserEmptyArray;
+	static auto s_jsonEmptyArray = "[]"_padded; // The _padded suffix creates a simdjson::padded_string instance
+	static ondemand::document s_docEmptyArray = s_parserEmptyArray.iterate(s_jsonEmptyArray);
+	gl_simdjsonEmptyArray = s_docEmptyArray.get_array().value();
+}
 
 double jsonGetDouble(ondemand::value& value, const string_view& key, double defaultValue) {
 	ondemand::value valueInner;
@@ -92,7 +100,7 @@ ondemand::array jsonGetArray(ondemand::value& value, const string_view& key) {
 		return valueInner.get_array();
 	}
 	catch ([[maybe_unused]] simdjson_error& error) {
-		if (valueInner.is_null()) return gl_simdjsonEmptyArray.value();
+		if (valueInner.is_null()) return gl_simdjsonEmptyArray;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
 }
@@ -143,7 +151,7 @@ ondemand::array jsonGetArray(ondemand::value& value) {
 		return value.get_array();
 	}
 	catch ([[maybe_unused]] simdjson_error& error) {
-		if (value.is_null()) return gl_simdjsonEmptyArray.value(); // 数据为null时返回空数组
+		if (value.is_null()) return gl_simdjsonEmptyArray; // 数据为null时返回空数组
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
 }
@@ -228,7 +236,7 @@ ondemand::array jsonGetArray(ondemand::object& object, const string_view& key) {
 		return valueInner.get_array();
 	}
 	catch ([[maybe_unused]] simdjson_error& error) {
-		if (valueInner.is_null()) return gl_simdjsonEmptyArray.value();
+		if (valueInner.is_null()) return gl_simdjsonEmptyArray;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
 }
@@ -313,7 +321,7 @@ ondemand::array jsonGetArray(ondemand::document& doc, const string_view& key) {
 		return valueInner.get_array();
 	}
 	catch ([[maybe_unused]] simdjson_error& error) {
-		if (valueInner.is_null()) return gl_simdjsonEmptyArray.value();
+		if (valueInner.is_null()) return gl_simdjsonEmptyArray;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
 }

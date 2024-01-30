@@ -340,7 +340,7 @@ protected:
 	//无需存储的变量
 	std::atomic_bool m_fExitingSystem{false}; //  系统退出标识，用于终止其他线程。
 	bool m_fExitingCalculatingRS{false}; // 用于通知工作线程退出的信号
-	bool m_fWorkingMode{false}; // 正常模式标识，默认为假。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
+	bool m_fWorkingMode{true}; // 正常模式标识，默认为假。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 };
 
 extern std::string gl_sSystemConfiguration; // 系统配置信息

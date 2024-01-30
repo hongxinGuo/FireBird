@@ -6,8 +6,12 @@
 //
 // 测试环境中使用了真实的gl_pChinaMarket、gl_pWorldMarket等变量，析构时需要将其状态恢复原状，以防止其更新相应的数据库。切记。
 //
+// 目前使用.runsettings文件来排除外部代码，不再使用ExcludeSourceFromCodeCoverage的模式。且ExcludeSourceFromCodeCoverage模式目前在C20标准下无法编译。
+//
 /////////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
 // GoogleMock使用方法：
 //
 //   ON_CALL(mock_object, method_name(matchers...))
@@ -28,33 +32,22 @@
 //
 // where all clauses are optional and WillOnce() can be repeated.
 //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include"FinnhubInaccessibleExchange.h"
-#include"ThreadStatus.h"
-
 #include"GeneralCheck.h"
-#include"TimeConvert.h"
-
-#include"SinaRTDataSource.h"
-#include"TengxunRTDataSource.h"
-#include "TengxunDayLineDataSource.h"
-#include"NeteaseRTDataSource.h"
-#include"NeteaseDayLineDataSource.h"
 
 #include"ChinaMarket.h"
-#include"ChinaStock.h"
-
 #include"WorldMarket.h"
 
 #include"MockMainFrm.h"
 
-#include"FinnhubDataSource.h"
-#include"TiingoDataSource.h"
-#include"QuandlDataSource.h"
+#include"simdjsonGetValue.h"
 
-#include"simdjsonEmptyArray.h"
 #include"GlobeMarketInitialize.h"
+#include"FinnhubInaccessibleExchange.h"
+#include"ThreadStatus.h"
+#include"TimeConvert.h"
 
 using namespace testing;
 
@@ -103,7 +96,6 @@ namespace FireBirdTest {
 			gl_finnhubInaccessibleExchange.LoadDB(); // 重新加载，使用测试目录中的json文件
 			gl_finnhubInaccessibleExchange.Update();
 
-			ASSERT(!gl_systemConfiguration.IsWorkingMode());
 			::InitializeMarkets();
 			gl_pChinaMarket->ResetMarket();
 			gl_pWorldMarket->ResetMarket();
@@ -189,6 +181,7 @@ namespace FireBirdTest {
 			while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
 			while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1);
 
+			// 以下真实的数据指针需要主动赋值为nullptr
 			gl_pWorldMarket = nullptr;
 			gl_pChinaMarket = nullptr;
 			gl_vMarketPtr.clear();
@@ -218,7 +211,8 @@ int main(int argc, char* argv[]) {
 	// gTest takes ownership of the TestEnvironment ptr - we don't delete it.
 	AddGlobalTestEnvironment(new TestEnvironment);
 
-	ASSERT(!gl_systemConfiguration.IsWorkingMode());
+	ASSERT(gl_systemConfiguration.IsWorkingMode());
+	gl_systemConfiguration.SetWorkingMode(false); // 实际系统，测试状态为假。
 
 	GTEST_FLAG_SET(death_test_style, "fast");
 

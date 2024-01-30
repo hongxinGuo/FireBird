@@ -3,6 +3,8 @@
 #include"simdjson.h"
 using namespace simdjson;
 
+void CreateSimdjsonEmptyArray();
+
 [[nodiscard]] double jsonGetDouble(ondemand::value& value, const string_view& key, double defaultValue = 0.0);
 [[nodiscard]] INT64 jsonGetInt64(ondemand::value& value, const string_view& key, const INT64 defaultValue = 0);
 [[nodiscard]] bool jsonGetBool(ondemand::value& value, const string_view& key);

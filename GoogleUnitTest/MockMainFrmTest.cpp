@@ -65,18 +65,6 @@ namespace FireBirdTest {
 		}
 	};
 
-	TEST_F(CMockMainFrameTest, TestCreateMarketContainer) {
-		EXPECT_TRUE(gl_pMockMainFrame->CreateMarketContainer());
-		EXPECT_EQ(gl_vMarketPtr.size(), 4);
-		CVirtualMarketPtr pMarket = gl_vMarketPtr.at(3);
-		gl_vMarketPtr.pop_back();
-		EXPECT_STREQ(pMarket->GetMarketID(), gl_pChinaMarket->GetMarketID());
-		pMarket = gl_vMarketPtr.at(2);
-		gl_vMarketPtr.pop_back();
-		EXPECT_STREQ(pMarket->GetMarketID(), gl_pWorldMarket->GetMarketID());
-		EXPECT_EQ(gl_vMarketPtr.size(), 2);
-	}
-
 	TEST_F(CMockMainFrameTest, TestUpdateStatus1) {
 		InSequence seq;
 		gl_pChinaMarket->SetCurrentEditStockChanged(false);

@@ -759,9 +759,6 @@
     <ClInclude Include="..\src\accessory\simdjsonGetValue.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\simdjsonEmptyArray.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\GlobeMarketInitialize.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -1359,9 +1356,6 @@
       <Filter>源文件\Data container</Filter>
     </ClCompile>
     <ClCompile Include="..\src\accessory\simdjsonGetValue.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\accessory\simdjsonEmptyArray.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">

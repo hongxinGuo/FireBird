@@ -23,12 +23,11 @@
 #include"TiingoDataSource.h"
 #include"QuandlDataSource.h"
 
-#include"simdjsonEmptyArray.h"
-
 #include <ixwebsocket/IXNetSystem.h>
 
 #include "ConvertToString.h"
 #include"GlobeMarketInitialize.h"
+#include"simdjsonGetValue.h"
 
 bool CMainFrame::sm_fGlobeInit = false;
 
@@ -198,53 +197,6 @@ CMainFrame::~CMainFrame() {
 	TRACE("exit finally \n");
 }
 
-bool CMainFrame::CreateMarketContainer() {
-	gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
-	gl_vMarketPtr.push_back(gl_pChinaMarket); // 中国股票市场
-	return true;
-}
-
-void CMainFrame::InitializeDataSourceAndWebInquiry() {
-	ASSERT(gl_pChinaMarket != nullptr);
-	ASSERT(gl_pWorldMarket != nullptr);
-
-	gl_pChinaMarket->StoreDataSource(gl_pSinaRTDataSource);
-	gl_pChinaMarket->StoreDataSource(gl_pTengxunRTDataSource);
-	gl_pChinaMarket->StoreDataSource(gl_pNeteaseRTDataSource);
-	gl_pChinaMarket->StoreDataSource(gl_pNeteaseDayLineDataSource);
-	gl_pChinaMarket->StoreDataSource(gl_pTengxunDayLineDataSource);
-
-	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
-	case 0:	// 使用新浪实时数据服务器
-		gl_systemConfiguration.UsingSinaRealtimeServer();
-		break;
-	case 1: // 使用网易实时服务器
-		gl_systemConfiguration.UsingNeteaseRealtimeServer();
-		break;
-	case 2: // 使用腾讯实时数据服务器
-		gl_systemConfiguration.UsingTengxunRealtimeServer();
-		break;
-	default: // 例外情况时默认使用新浪实时数据服务器
-		gl_systemConfiguration.SetChinaMarketRealtimeServer(0); // 改正无效的标志
-		gl_systemConfiguration.UsingSinaRealtimeServer();
-		break;
-	}
-
-	if (gl_systemConfiguration.GetChinaMarketDayLineServer() == 0) {
-		// 使用网易日线数据服务器
-		gl_pNeteaseDayLineDataSource->Enable(true);
-		gl_pTengxunDayLineDataSource->Enable(false);
-	}
-	else {
-		// 使用腾讯日线数据服务器
-		gl_pNeteaseDayLineDataSource->Enable(false);
-		gl_pTengxunDayLineDataSource->Enable(true);
-	}
-
-	gl_pWorldMarket->StoreDataSource(gl_pFinnhubDataSource);
-	gl_pWorldMarket->StoreDataSource(gl_pTiingoDataSource);
-}
-
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 
@@ -256,6 +208,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	gl_systemConfiguration.LoadDB(); // 装入系统参数
 
+	// 初始化各market dataSource WebSocket
 	::InitializeMarkets();
 	::AssignDataSourceAndWebInquiryToMarket();
 	::ResetMarkets();

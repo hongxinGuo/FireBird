@@ -24,9 +24,6 @@ public:
 	virtual void SchedulingTask();
 	void UpdateStatus();
 	void UpdateInnerSystemStatus();
-	static bool CreateMarketContainer(); // 生成各市场容器（只用于调度）
-
-	static void InitializeDataSourceAndWebInquiry();
 
 	// 需包裹的调用系统函数的函数（以便于使用GMock），前缀为SysCall
 	virtual void SysCallOnTimer(UINT_PTR nIDEvent) { CFrameWndEx::OnTimer(nIDEvent); }
