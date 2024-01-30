@@ -762,6 +762,9 @@
     <ClInclude Include="..\src\accessory\simdjsonEmptyArray.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\GlobeMarketInitialize.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1363,6 +1366,9 @@
     </ClCompile>
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
       <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GlobeMarketInitialize.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

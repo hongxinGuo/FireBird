@@ -2,6 +2,7 @@
 //
 #pragma once
 
+#include "GlobeMarketInitialize.h"
 #include"stdafx.h"
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
@@ -43,8 +44,8 @@ public:
 	virtual void CalculateTodayRS();
 	virtual void ProcessChinaMarketStock();
 
-	// 重置系统（恢复系统的初始态，准备第二天继续工作。
-	virtual bool ResetMarket();
+	// 重置系统（恢复系统的初始态，准备第二天继续工作）。
+	virtual void ResetMarkets() { ::ResetMarkets(); } // 直接调用全局ResetMarkets函数
 
 	long GetCurrentPos() const noexcept { return m_lCurrentPos; }
 

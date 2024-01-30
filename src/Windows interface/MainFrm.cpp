@@ -28,6 +28,7 @@
 #include <ixwebsocket/IXNetSystem.h>
 
 #include "ConvertToString.h"
+#include"GlobeMarketInitialize.h"
 
 bool CMainFrame::sm_fGlobeInit = false;
 
@@ -253,42 +254,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemConfiguration.SetSystemDisplayRect(GetSystemMetrics(SM_CXFULLSCREEN), GetSystemMetrics(SM_CYFULLSCREEN));
 	gl_systemConfiguration.SetCurrentWindowRect(GetSystemMetrics(SM_CXMAXIMIZED), GetSystemMetrics(SM_CYMAXIMIZED));
 
-	gl_systemConfiguration.LoadDBWithNlohmannjson(); // 装入系统参数
+	gl_systemConfiguration.LoadDB(); // 装入系统参数
 
-	// WebSocket要在gl_pWorldMarket之前生成
-	gl_pFinnhubWebSocket = make_shared<CFinnhubWebSocket>();
-	gl_pTiingoIEXWebSocket = make_shared<CTiingoIEXWebSocket>();
-	gl_pTiingoCryptoWebSocket = make_shared<CTiingoCryptoWebSocket>();
-	gl_pTiingoForexWebSocket = make_shared<CTiingoForexWebSocket>();
-
-	// 此五个要在gl_pChinaMarket前生成
-	ASSERT(gl_pChinaMarket == nullptr);
-	gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
-	gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
-	gl_pNeteaseRTDataSource = make_shared<CNeteaseRTDataSource>();
-	gl_pNeteaseDayLineDataSource = make_shared<CNeteaseDayLineDataSource>();
-	gl_pTengxunDayLineDataSource = make_shared<CTengxunDayLineDataSource>();
-
-	// 此三个要在gl_pWorldMarket前生成
-	ASSERT(gl_pWorldMarket == nullptr);
-	gl_pFinnhubDataSource = make_shared<CFinnhubDataSource>();
-	gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
-	gl_pQuandlDataSource = make_shared<CQuandlDataSource>();
-
-	if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
-	if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
-
-	InitializeDataSourceAndWebInquiry();
-
-	//生成市场容器Vector
-	CreateMarketContainer();
-
-	TRACE(_T("开始重置系统\n"));
+	::InitializeMarkets();
+	::AssignDataSourceAndWebInquiryToMarket();
+	::ResetMarkets();
 	gl_systemMessage.PushInformationMessage(_T("重置系统"));
-	ASSERT(gl_pChinaMarket != nullptr);
-	ASSERT(gl_pWorldMarket != nullptr);
-	ResetMarket();
-	TRACE(_T("重置系统结束\n"));
 
 	// 生成系统外观显示部件
 	if (CFrameWndEx::OnCreate(lpCreateStruct) == -1) return -1;
@@ -415,16 +386,6 @@ void CMainFrame::SchedulingTask() {
 	}
 }
 
-bool CMainFrame::ResetMarket() {
-	for (const auto& pMarket : gl_vMarketPtr) {
-		if (pMarket->IsResetMarket()) {
-			pMarket->SetResetMarket(false);
-			pMarket->ResetMarket();
-		}
-	}
-	return true;
-}
-
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 	if (!CFrameWndEx::PreCreateWindow(cs)) return FALSE;
 	// TODO: 在此处通过修改
@@ -517,7 +478,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	ASSERT(nIDEvent == STOCK_ANALYSIS_TIMER_);
 
 	if (!gl_systemConfiguration.IsExitingSystem()) { // 如果准备退出系统，则停止调度系统任务。
-		ResetMarket(); // 重启系统在此处执行，容易调用各重置函数
+		ResetMarkets(); // 重启系统在此处执行，容易调用各重置函数
 
 		// 调用主调度函数,由各市场调度函数执行具体任务
 		try {

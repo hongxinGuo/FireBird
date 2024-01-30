@@ -22,6 +22,6 @@ void CProductNeteaseRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 }
 
 shared_ptr<vector<CWebRTDataPtr>> CProductNeteaseRT::ParseNeteaseRT(const CWebDataPtr& pWebData) {
-	return ParseNeteaseRTDataWithNlohmannJSon(pWebData);
-	//return ParseNeteaseRTDataWithSimdjson(pWebData); // 使用simdjson解析
+	//return ParseNeteaseRTDataWithNlohmannJSon(pWebData);
+	return ParseNeteaseRTDataWithSimdjson(pWebData); // 使用simdjson解析
 }

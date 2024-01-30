@@ -54,6 +54,7 @@
 #include"QuandlDataSource.h"
 
 #include"simdjsonEmptyArray.h"
+#include"GlobeMarketInitialize.h"
 
 using namespace testing;
 
@@ -98,36 +99,15 @@ namespace FireBirdTest {
 			gl_systemConfiguration.SetConfigurationFileDirectory(_T("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\"));
 			gl_systemConfiguration.SetDefaultFileName(_T("systemConfigurationTest.json"));
 			ASSERT_STREQ(gl_systemConfiguration.GetConfigurationFileDirectoryAndName(), _T("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\systemConfigurationTest.json"));
-			ASSERT_TRUE(gl_systemConfiguration.LoadDBWithNlohmannjson()) << "使用GoogleUnitTest目录中的配置文件";
+			ASSERT_TRUE(gl_systemConfiguration.LoadDB()) << "使用GoogleUnitTest目录中的配置文件";
 			gl_finnhubInaccessibleExchange.LoadDB(); // 重新加载，使用测试目录中的json文件
 			gl_finnhubInaccessibleExchange.Update();
 
-			// WebSocket要在gl_pWorldMarket之前生成
-			gl_pFinnhubWebSocket = make_shared<CFinnhubWebSocket>();
-			gl_pTiingoIEXWebSocket = make_shared<CTiingoIEXWebSocket>();
-			gl_pTiingoCryptoWebSocket = make_shared<CTiingoCryptoWebSocket>();
-			gl_pTiingoForexWebSocket = make_shared<CTiingoForexWebSocket>();
-
-			gl_pSinaRTDataSource = make_shared<CSinaRTDataSource>();
-			gl_pTengxunRTDataSource = make_shared<CTengxunRTDataSource>();
-			gl_pTengxunDayLineDataSource = make_shared<CTengxunDayLineDataSource>();
-			gl_pNeteaseRTDataSource = make_shared<CNeteaseRTDataSource>();
-			gl_pNeteaseDayLineDataSource = make_shared<CNeteaseDayLineDataSource>();
-
-			gl_pFinnhubDataSource = make_shared<CFinnhubDataSource>();
-			gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
-			gl_pQuandlDataSource = make_shared<CQuandlDataSource>();
-
-			// 下列全局智能指针为实际类
-			gl_pChinaMarket = make_shared<CChinaMarket>();
-			gl_pWorldMarket = make_shared<CWorldMarket>();
+			ASSERT(!gl_systemConfiguration.IsWorkingMode());
+			::InitializeMarkets();
 			gl_pChinaMarket->ResetMarket();
-			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 			gl_pWorldMarket->ResetMarket();
-
-			EXPECT_EQ(gl_vMarketPtr.size(), 0);
-			gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
-			gl_vMarketPtr.push_back(gl_pChinaMarket); // 中国股票市场
+			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
 
 			EXPECT_LE(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 

@@ -73,7 +73,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <AdditionalDependencies>zlibwapi.lib;\vc\static\libcrypto64MTd.lib;\vc\static\libssl64MTd.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

@@ -24,11 +24,11 @@ public:
 	CSystemConfiguration& operator=(const CSystemConfiguration&&) noexcept = delete;
 	~CSystemConfiguration();
 
-	void UpdateDBWithNlohmannjson();
-	bool LoadDBWithNlohmannjson();
-	void SaveDBWithNlohmannjson();
-	void UpdateUsingNlohmannjson(json& jsonData);
-	void UpdateNlohmannJson(json& jsonData);
+	void UpdateDB();
+	bool LoadDB();
+	void SaveDB();
+	void Update(json& jsonData);
+	void UpdateJsonData(json& jsonData);
 
 	void ChangeFinnhubAccountTypeToFree();
 	void ChangeFinnhubAccountTypeToPaid();

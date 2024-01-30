@@ -150,7 +150,7 @@ CSystemConfiguration::CSystemConfiguration() {
 	// 测试系统选项
 	m_strBenchmarkTestFileDirectory = _T("C:\\FireBird\\Test Data\\Benchmark\\"); // Benchmark默认目录
 
-	if (!LoadDBWithNlohmannjson()) {
+	if (!LoadDB()) {
 		m_fUpdate = true;
 	}
 
@@ -167,20 +167,20 @@ CSystemConfiguration::CSystemConfiguration() {
 
 CSystemConfiguration::~CSystemConfiguration() {
 	if (IsNeedUpdate()) {
-		UpdateDBWithNlohmannjson();
+		UpdateDB();
 	}
 }
 
-void CSystemConfiguration::UpdateDBWithNlohmannjson() {
+void CSystemConfiguration::UpdateDB() {
 	const CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("json");
 	const CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
 	DeleteFile(GetConfigurationFileDirectory() + strNew);
 	rename(GetConfigurationFileDirectory() + strOld, GetConfigurationFileDirectory() + strNew); // 保存备份
-	SaveDBWithNlohmannjson();
+	SaveDB();
 	SetUpdate(false);
 }
 
-void CSystemConfiguration::UpdateUsingNlohmannjson(json& jsonData) {
+void CSystemConfiguration::Update(json& jsonData) {
 	string sTemp;
 
 	// 系统配置
@@ -439,7 +439,7 @@ void CSystemConfiguration::UpdateUsingNlohmannjson(json& jsonData) {
 	}
 }
 
-void CSystemConfiguration::UpdateNlohmannJson(json& jsonData) {
+void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	jsonData.clear(); // 清除之前的数据。
 	// system
 	jsonData["SystemConfiguration"]["DebugMode"] = m_bDebugMode;
@@ -544,23 +544,23 @@ bool CSystemConfiguration::IsWebBusy() {
 	return gl_pSinaRTDataSource->IsWebError() || gl_pNeteaseRTDataSource->IsWebError();
 }
 
-bool CSystemConfiguration::LoadDBWithNlohmannjson() {
+bool CSystemConfiguration::LoadDB() {
 	fstream f(GetConfigurationFileDirectoryAndName(), ios::in);
 	if (f.is_open()) {
 		json systemConfiguration;
 		f >> systemConfiguration;
 		//systemConfiguration = json::parse(f); // 这种方式等价于 f >> m_systemConfiguration;
 		f.close();
-		UpdateUsingNlohmannjson(systemConfiguration);
+		Update(systemConfiguration);
 		return true;
 	}
 	return false;
 }
 
-void CSystemConfiguration::SaveDBWithNlohmannjson() {
+void CSystemConfiguration::SaveDB() {
 	json systemConfiguration;
 
-	UpdateNlohmannJson(systemConfiguration);
+	UpdateJsonData(systemConfiguration);
 	fstream f(GetConfigurationFileDirectoryAndName(), ios::out);
 	f << systemConfiguration;
 	f.close();

@@ -152,6 +152,7 @@
     <ClInclude Include="..\src\Factory Product\VirtualWorldMarketWebProduct.h" />
     <ClInclude Include="..\src\FinnhubInquiryType.h" />
     <ClInclude Include="..\src\globedef.h" />
+    <ClInclude Include="..\src\GlobeMarketInitialize.h" />
     <ClInclude Include="..\src\Market\ChinaMarket.h" />
     <ClInclude Include="..\src\Market\VirtualMarket.h" />
     <ClInclude Include="..\src\Market\WorldMarket.h" />
@@ -224,13 +225,12 @@
     <ClCompile Include="..\src\accessory\NeteaseRTDataParser.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</WholeProgramOptimization>
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IntrinsicFunctions>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
+      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IntrinsicFunctions>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
-      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AnySuitable</InlineFunctionExpansion>
-      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Speed</FavorSizeOrSpeed>
-      <OmitFramePointers Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</OmitFramePointers>
+      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</InlineFunctionExpansion>
+      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Neither</FavorSizeOrSpeed>
     </ClCompile>
     <ClCompile Include="..\src\accessory\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\src\accessory\SaveAndLoad.cpp" />
@@ -340,6 +340,7 @@
     <ClCompile Include="..\src\Factory Product\VirtualWorldMarketWebProduct.cpp" />
     <ClCompile Include="..\src\FinnhubInquiryType.cpp" />
     <ClCompile Include="..\src\globedef.cpp" />
+    <ClCompile Include="..\src\GlobeMarketInitialize.cpp" />
     <ClCompile Include="..\src\Market\ChinaMarket.cpp" />
     <ClCompile Include="..\src\Market\VirtualMarket.cpp" />
     <ClCompile Include="..\src\Market\WorldMarket.cpp" />

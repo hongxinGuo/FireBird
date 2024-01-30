@@ -88,7 +88,7 @@ BOOL CFireBirdApp::InitInstance() {
 	}
 
 	ASSERT(!gl_systemConfiguration.IsWorkingMode()); // 确保此标识初始态为测试状态
-	gl_systemConfiguration.SetWorkingMode(true); // 实际系统，测试状态为假。
+	gl_systemConfiguration.SetWorkingMode(false); // 实际系统，测试状态为假。
 
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，

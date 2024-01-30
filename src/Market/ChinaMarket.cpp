@@ -694,7 +694,7 @@ void CChinaMarket::TaskAccessoryTask(long lCurrentTime) {
 	ResetEffectiveRTDataRatio(); // 重置有效实时数据比率
 
 	if (gl_systemConfiguration.IsNeedUpdate()) { // 每分钟检查一次系统配置是否需要存储。
-		gl_systemConfiguration.UpdateDBWithNlohmannjson();
+		gl_systemConfiguration.UpdateDB();
 		gl_systemConfiguration.SetUpdate(false);
 	}
 

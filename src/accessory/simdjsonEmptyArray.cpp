@@ -10,6 +10,4 @@ ondemand::document s_docEmptyArray;
 void CreateSimdjsonEmptyArray() {
 	s_docEmptyArray = s_parserEmptyArray.iterate(s_jsonEmptyArray);
 	gl_simdjsonEmptyArray = s_docEmptyArray.get_array();
-	int i = 0;
-	i++;
 }

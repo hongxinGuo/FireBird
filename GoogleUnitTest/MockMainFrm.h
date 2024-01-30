@@ -19,7 +19,7 @@ namespace testing {
 		MOCK_METHOD(void, SysCallOnChar, (UINT nChar, UINT nRepCnt, UINT nFlags), (override));
 		MOCK_METHOD(void, SysCallOnKeyUp, (UINT nChar, UINT nRepCnt, UINT nFlags), (override));
 		MOCK_METHOD(void, SchedulingTask, (), (override));
-		MOCK_METHOD(bool, ResetMarket, (), (override));
+		MOCK_METHOD(void, ResetMarkets, (), (override));
 	};
 
 	using CMockMainFramePtr = shared_ptr<CMockMainFrame>;

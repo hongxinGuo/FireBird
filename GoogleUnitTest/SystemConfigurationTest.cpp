@@ -212,8 +212,8 @@ namespace FireBirdTest {
 	TEST_F(CSystemConfigurationTest, TestLoadSaveWithNlohmannjson) {
 		json jsSystemConfiguration = json::parse(gl_sSystemConfiguration);
 
-		gl_systemConfiguration.SaveDBWithNlohmannjson();
-		gl_systemConfiguration.LoadDBWithNlohmannjson();
+		gl_systemConfiguration.SaveDB();
+		gl_systemConfiguration.LoadDB();
 
 		try {
 			EXPECT_TRUE(jsSystemConfiguration[json::json_pointer("/WebSocket/UsingFinnhubWebSocket")] == gl_systemConfiguration.IsUsingFinnhubWebSocket()) << "FinnhubWebSocketÔ¤ÉèÎªÕæ";
