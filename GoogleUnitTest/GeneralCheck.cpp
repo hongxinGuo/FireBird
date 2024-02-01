@@ -12,6 +12,7 @@
 #include "GeneralCheck.h"
 
 #include "FinnhubInaccessibleExchange.h"
+#include "NeteaseDayLineDataSource.h"
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
 

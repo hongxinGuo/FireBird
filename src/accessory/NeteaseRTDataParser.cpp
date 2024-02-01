@@ -17,6 +17,7 @@
 #include"WebRTData.h"
 
 #include"JsonGetValue.h"
+#include "JsonParse.h"
 #include"NlohmannJsonDeclaration.h"
 
 #include"simdjsonGetValue.h"
@@ -261,6 +262,70 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 	return pvWebRTData;
 }
 
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson2(string_view svJsonData) {
+	string symbolCode, strTime;
+	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
+	try {
+		ondemand::parser parser;
+		const simdjson::padded_string jsonPadded(svJsonData);
+		ondemand::document doc = parser.iterate(jsonPadded);
+		for (ondemand::field item_key : doc.get_object()) {
+			auto pWebRTData = make_shared<CWebRTData>();
+			pWebRTData->SetDataSource(NETEASE_RT_WEB_DATA_);
+			auto key = item_key.key();
+			ondemand::object item = item_key.value();
+			const string_view strSymbolView2 = jsonGetStringView(item, _T("code"));
+			symbolCode = strSymbolView2;
+			CString strSymbol4 = XferNeteaseToStandard(symbolCode.c_str());
+			pWebRTData->SetSymbol(strSymbol4);
+			pWebRTData->SetVSell(0, jsonGetInt64(item, _T("askvol1")));
+			pWebRTData->SetVSell(2, jsonGetInt64(item, _T("askvol3")));
+			pWebRTData->SetVSell(1, jsonGetInt64(item, _T("askvol2")));
+			pWebRTData->SetVSell(4, jsonGetInt64(item, _T("askvol5")));
+			pWebRTData->SetVSell(3, jsonGetInt64(item, _T("askvol4")));
+			pWebRTData->SetNew(StrToDecimal(jsonGetRawJsonToken(item, _T("price"))));
+			pWebRTData->SetOpen(StrToDecimal(jsonGetRawJsonToken(item, _T("open"))));
+			pWebRTData->SetPBuy(4, StrToDecimal(jsonGetRawJsonToken(item, _T("bid5"))));
+			pWebRTData->SetPBuy(3, StrToDecimal(jsonGetRawJsonToken(item, _T("bid4"))));
+			pWebRTData->SetPBuy(2, StrToDecimal(jsonGetRawJsonToken(item, _T("bid3"))));
+			pWebRTData->SetPBuy(1, StrToDecimal(jsonGetRawJsonToken(item, _T("bid2"))));
+			pWebRTData->SetPBuy(0, StrToDecimal(jsonGetRawJsonToken(item, _T("bid1"))));
+			pWebRTData->SetHigh(StrToDecimal(jsonGetRawJsonToken(item, _T("high"))));
+			pWebRTData->SetLow(StrToDecimal(jsonGetRawJsonToken(item, _T("low"))));
+			pWebRTData->SetVBuy(2, jsonGetInt64(item, _T("bidvol3")));
+			pWebRTData->SetVBuy(0, jsonGetInt64(item, _T("bidvol1")));
+			pWebRTData->SetVBuy(1, jsonGetInt64(item, _T("bidvol2")));
+			pWebRTData->SetVBuy(4, jsonGetInt64(item, _T("bidvol5")));
+			pWebRTData->SetVBuy(3, jsonGetInt64(item, _T("bidvol4")));
+			pWebRTData->SetVolume(jsonGetInt64(item, _T("volume")));
+			pWebRTData->SetPSell(4, StrToDecimal(jsonGetRawJsonToken(item, _T("ask5"))));
+			pWebRTData->SetPSell(3, StrToDecimal(jsonGetRawJsonToken(item, _T("ask4"))));
+			pWebRTData->SetPSell(0, StrToDecimal(jsonGetRawJsonToken(item, _T("ask1"))));
+
+			string_view sNameView = jsonGetStringView(item, "name");
+			string sName(sNameView);
+			pWebRTData->SetStockName(XferToCString(sName)); // 将utf-8字符集转换为多字节字符集
+			pWebRTData->SetPSell(2, StrToDecimal(jsonGetRawJsonToken(item, _T("ask3"))));
+			pWebRTData->SetPSell(1, StrToDecimal(jsonGetRawJsonToken(item, _T("ask2"))));
+			strTime = jsonGetStringView(item, _T("time"));
+			pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
+
+			pWebRTData->SetLastClose(StrToDecimal(jsonGetRawJsonToken(item, _T("yestclose"))));
+			pWebRTData->SetAmount(StrToDecimal(jsonGetRawJsonToken(item, _T("turnover")), 0));
+
+			pWebRTData->CheckNeteaseRTDataActive();
+			pvWebRTData->push_back(pWebRTData);
+		}
+	}
+	catch (simdjson_error& error) {
+		const string sError = error.what();
+		CString str = "Netease RT Data Error: ";
+		str += sError.c_str();
+		gl_systemMessage.PushErrorMessage(str);
+	}
+	return pvWebRTData;
+}
+
 // bug 下面这个函数会导致编译时间延长4分钟左右，估计是编译器的问题。已向微软报告了该问题，等待回应。
 // netease实时数据的顺序市场变化，不再使用此种顺序解析方法。
 /*
@@ -326,4 +391,8 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson3(string_view sv
 
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(const CWebDataPtr& pData) {
 	return ParseNeteaseRTDataWithSimdjson(pData->GetStringView(21, pData->GetBufferLength() - 21 - 2)); // 网易json数据
+}
+
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson2(const CWebDataPtr& pData) {
+	return ParseNeteaseRTDataWithSimdjson2(pData->GetStringView(21, pData->GetBufferLength() - 21 - 2)); // 网易json数据
 }

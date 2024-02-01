@@ -160,7 +160,6 @@ public:
 	// 读取腾讯实时数据函数
 	// 从字符指针处读入腾讯制式数据。此指针开始处为v_s,结束于字符';'
 	void ReadTengxunData(string_view svData);
-	string_view GetNextField(string_view svData, long& lCurrentPos, char delimiter);
 
 	void SetDataSource(const long lDataSource) noexcept { m_lDataSource = lDataSource; }
 	[[nodiscard]] long GetDataSource() const noexcept { return m_lDataSource; }

@@ -1177,7 +1177,7 @@ bool CChinaStock::HaveGuadan(INT64 lPrice) const {
 	return true;
 }
 
-bool CChinaStock::CheckCurrentRTData() const {
+void CChinaStock::CheckCurrentRTData() const {
 	if ((GetOrdinaryBuyVolume() < 0) || (GetOrdinarySellVolume() < 0)
 		|| (GetAttackBuyVolume() < 0) || (GetAttackSellVolume() < 0)
 		|| (GetStrongBuyVolume() < 0) || (GetStrongSellVolume() < 0)) {
@@ -1189,9 +1189,7 @@ bool CChinaStock::CheckCurrentRTData() const {
 		if (GetStrongBuyVolume() < 0) j += 16;
 		if (GetStrongSellVolume() < 0) j += 32;
 		TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_pChinaMarket->GetMarketTime(), GetSymbol().GetBuffer(), j);
-		return false;
 	}
-	return true;
 }
 
 void CChinaStock::ShowCurrentTransaction() {

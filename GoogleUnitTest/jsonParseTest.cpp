@@ -3,10 +3,9 @@
 #include"GeneralCheck.h"
 
 #include"JsonParse.h"
-
-#include<memory>
-
+#include "WebData.h"
 #include "WebRTData.h"
+
 using std::make_shared;
 
 namespace FireBirdTest {
@@ -23,6 +22,21 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 	};
+
+	TEST_F(jsonParseTest, TestStrToDecimal) {
+		EXPECT_EQ(StrToDecimal("5.7"), 5700);
+		EXPECT_EQ(StrToDecimal("140"), 140000);
+		EXPECT_EQ(StrToDecimal("140", 0), 140);
+		EXPECT_EQ(StrToDecimal("0.354"), 354);
+		EXPECT_EQ(StrToDecimal("12345.1"), 12345100);
+		EXPECT_EQ(StrToDecimal("123.1234"), 123123);
+		EXPECT_EQ(StrToDecimal("12345.12345", 4), 123451234);
+		EXPECT_EQ(StrToDecimal("123456.12456", 1), 1234561);
+		EXPECT_EQ(StrToDecimal("9876.9876", 2), 987698);
+		//EXPECT_EQ(StrToDecimal(""), );
+		//EXPECT_EQ(StrToDecimal(""), );
+		//EXPECT_EQ(StrToDecimal(""), );
+	}
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann1) {
 		json js;

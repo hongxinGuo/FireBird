@@ -19,6 +19,8 @@
 #include"simdjson.h"
 using namespace simdjson;
 
+using std::make_shared;
+
 // 这个是目前能够找到的最大的json数据，用于测试ParseWithPTree和ParseWithNlohmannJson的速度
 // 测试结果是Nlohmann json的速度比boost的Ptree快50%左右。
 // 使用下面的数据，nlohmann json的release版本用时大致为250微秒；PTree用时大致为330微秒。
@@ -273,6 +275,14 @@ public:
 	simdjson::padded_string USExchangedStockCode;
 };
 
+// 这种方法比使用atof() * 1000快一倍
+BENCHMARK_F(CJsonParse, StrToDecimal)(benchmark::State& state) {
+	constexpr string_view svData{"12345.7654"};
+	for (auto _ : state) {
+		StrToDecimal(svData);
+	}
+}
+
 // 解析US交易所的股票代码数据（5MB）时，Release模式，nlohmann json用时130毫秒，PTree用时310毫秒；
 BENCHMARK_F(CJsonParse, StockSymbolParseUsingNlohmannJSon)(benchmark::State& state) {
 	json j;
@@ -332,6 +342,12 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataParseUsingSimdjson1)(benchmark::State& stat
 	}
 }
 
+BENCHMARK_F(CJsonParse, NeteaseRTDataParseUsingSimdjson2)(benchmark::State& state) {
+	for (auto _ : state) {
+		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson2(sv);
+	}
+}
+
 // 解析并处理tengxun日线数据。
 BENCHMARK_F(CJsonParse, ParseTengxunDayLineUsingSimdjson)(benchmark::State& state) {
 	const string_view svData = sTengxunDayLine;
@@ -385,6 +401,12 @@ BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingNlohmannJson2)(benchmark::
 BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingSimdjson1)(benchmark::State& state) {
 	for (auto _ : state) {
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson(sv);
+	}
+}
+
+BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingSimdjson2)(benchmark::State& state) {
+	for (auto _ : state) {
+		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson2(sv);
 	}
 }
 

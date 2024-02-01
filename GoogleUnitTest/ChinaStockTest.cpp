@@ -1361,28 +1361,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetGuadan(10000), 10000);
 	}
 
-	TEST_F(CChinaStockTest, TestCheckCurrentRTData) {
-		CChinaStock stock;
-		EXPECT_TRUE(stock.CheckCurrentRTData());
-		stock.SetOrdinaryBuyVolume(-1);
-		EXPECT_FALSE(stock.CheckCurrentRTData());
-		stock.SetOrdinaryBuyVolume(0);
-		stock.SetOrdinarySellVolume(-1);
-		EXPECT_FALSE(stock.CheckCurrentRTData());
-		stock.SetAttackBuyVolume(-1);
-		stock.SetOrdinarySellVolume(0);
-		EXPECT_FALSE(stock.CheckCurrentRTData());
-		stock.SetAttackBuyVolume(0);
-		stock.SetAttackSellVolume(-1);
-		EXPECT_FALSE(stock.CheckCurrentRTData());
-		stock.SetStrongBuyVolume(-1);
-		stock.SetAttackSellVolume(0);
-		EXPECT_FALSE(stock.CheckCurrentRTData());
-		stock.SetStrongBuyVolume(0);
-		stock.SetStrongSellVolume(-1);
-		EXPECT_FALSE(stock.CheckCurrentRTData());
-	}
-
 	TEST_F(CChinaStockTest, TestClearRTDataDeque) {
 		CChinaStock stock;
 		for (int i = 0; i < 10; i++) {

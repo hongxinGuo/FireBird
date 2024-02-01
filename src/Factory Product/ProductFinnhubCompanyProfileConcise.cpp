@@ -52,7 +52,7 @@ void CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWeb
 /// <param name="pWebData"></param>
 /// <param name="pStock"></param>
 /// <returns></returns>
-bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const CWebDataPtr& pWebData, const CWorldStockPtr& pStock) {
+bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const CWebDataPtr& pWebData, const CWorldStockPtr& pStock) const {
 	string s;
 	string sError;
 	json js;

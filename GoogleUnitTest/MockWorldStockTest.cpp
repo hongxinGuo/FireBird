@@ -13,6 +13,7 @@
 #include"MockWorldStock.h"
 
 using namespace testing;
+using std::make_shared;
 
 namespace FireBirdTest {
 	class CMockWorldStockTest : public Test {

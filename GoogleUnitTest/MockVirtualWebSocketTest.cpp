@@ -4,8 +4,8 @@
 
 #include"MockVirtualWebSocket.h"
 
-#include<exception>
 using std::exception;
+using std::make_shared;
 
 using namespace testing;
 CMockVirtualWebSocketPtr gl_pMockVirtualWebSocket;

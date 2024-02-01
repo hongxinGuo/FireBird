@@ -9,6 +9,8 @@
 
 #include<vector>
 
+using std::exception;
+
 namespace FireBirdTest {
 	struct NetEaseDayLineData {
 		NetEaseDayLineData(int count, const CString& Data) {
@@ -56,6 +58,7 @@ namespace FireBirdTest {
 				m_pData.at(i) = pData->m_strData.GetAt(i);
 			}
 			m_lCountPos = 0;
+			svData = pData->m_strData.GetString();
 
 			m_DayLine.SetAmount(-1);
 			m_DayLine.SetVolume(-1);
@@ -99,6 +102,7 @@ namespace FireBirdTest {
 
 		CWebDataPtr pWebData;
 		CDayLineWebDataPtr pDownLoadedDayLine;
+		string_view svData;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, ProcessNeteaseDayLineTest,
@@ -156,6 +160,63 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_DayLinePtr == nullptr);
 			break;
 		case 12:
+			EXPECT_TRUE(m_DayLinePtr == nullptr);
+			break;
+		default:
+			break;
+		}
+	}
+
+	TEST_P(ProcessNeteaseDayLineTest, ProcessOneNeteaseDayLineData2) {
+		m_DayLinePtr = pDownLoadedDayLine->ProcessOneNeteaseDayLine(svData);
+		switch (m_iCount) {
+		case 1:
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
+			EXPECT_STREQ(m_DayLinePtr->GetStockSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_DayLinePtr->GetDisplaySymbol(), _T("浦发银行"));
+			EXPECT_EQ(m_DayLinePtr->GetClose(), 11490);
+			EXPECT_EQ(m_DayLinePtr->GetHigh(), 11560);
+			EXPECT_EQ(m_DayLinePtr->GetLow(), 11430);
+			EXPECT_EQ(m_DayLinePtr->GetOpen(), 11430);
+			EXPECT_EQ(m_DayLinePtr->GetLastClose(), 11480);
+			break;
+		case 2:
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
+			break;
+		case 3:
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
+			break;
+		case 4:
+		case 5:
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
+			break;
+		case 6:
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
+			break;
+		case 7:
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
+			break;
+		case 8:
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
+			break;
+		case 9:
+			EXPECT_TRUE(m_DayLinePtr != nullptr);
+			EXPECT_STREQ(m_DayLinePtr->GetDisplaySymbol(), _T("价值7030"));
+			EXPECT_EQ(m_DayLinePtr->GetClose(), 3658980);
+			EXPECT_EQ(m_DayLinePtr->GetLastClose(), 3654160);
+			EXPECT_EQ(m_DayLinePtr->GetHigh(), 0);
+			EXPECT_EQ(m_DayLinePtr->GetLow(), 0);
+			EXPECT_EQ(m_DayLinePtr->GetOpen(), 0);
+			EXPECT_EQ(m_DayLinePtr->GetVolume(), 0);
+			EXPECT_EQ(m_DayLinePtr->GetAmount(), 0);
+			break;
+		case 10: // 时间字符串超过30个
+			EXPECT_FALSE(m_DayLinePtr == nullptr);
+			break;
+		case 11: // 流通市值字符串超过30个
+			EXPECT_FALSE(m_DayLinePtr == nullptr);
+			break;
+		case 12: // throw exception
 			EXPECT_TRUE(m_DayLinePtr == nullptr);
 			break;
 		default:

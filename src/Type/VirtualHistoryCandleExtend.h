@@ -23,11 +23,11 @@ public:
 	int GetRatio() const final { return 1000; };
 
 	bool SaveExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) const; // 存储扩展数据
-	bool AppendExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
+	bool AppendExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) const;
 	bool LoadExtendData(const CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend);
 
 	bool Save(CVirtualSetHistoryCandle* pSet) const; // 存储所有的数据
-	bool Append(CVirtualSetHistoryCandle* pSet);
+	bool Append(CVirtualSetHistoryCandle* pSet) const;
 	bool Load(const CVirtualSetHistoryCandle* pSet);
 
 public:

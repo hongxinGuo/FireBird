@@ -16,7 +16,6 @@
 #include "FinnhubForexSymbol.h"
 #include "FinnhubCryptoSymbol.h"
 
-#include<gsl/gsl>
 using gsl::not_null;
 
 // ÍøÂç¶ÁÈ¡ÈÎÎñ

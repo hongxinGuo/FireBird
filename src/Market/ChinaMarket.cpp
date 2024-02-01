@@ -331,7 +331,7 @@ void CChinaMarket::ChangeToNextStockSet() {
 	} while ((m_lCurrentSelectedStockSet != -1) && (m_avChosenStock.at(m_lCurrentSelectedStockSet).empty()));
 }
 
-size_t CChinaMarket::GetCurrentStockSetSize() {
+size_t CChinaMarket::GetCurrentStockSetSize() const {
 	if (IsTotalStockSetSelected()) return gl_dataContainerChinaStock.Size();
 	return m_avChosenStock.at(m_lCurrentSelectedStockSet).size();
 }

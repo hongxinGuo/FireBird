@@ -1,7 +1,5 @@
 #pragma once
 
-#include"ClassDeclaration.h"
-
 #include"VirtualChinaMarketWebProduct.h"
 
 class CProductSinaRT final : public CVirtualChinaMarketWebProduct {

@@ -183,12 +183,16 @@ namespace FireBirdTest {
 			vector<INT64> vi;
 			vector<double> vd;
 			vector<string> vs;
+			vector<string> vsRaw;
 			vector<bool> vb;
 			vector<INT64> vArray;
 			ondemand::parser parser;
 			ondemand::document doc = parser.iterate(s_simdjson2);
 			for (ondemand::field field : doc.get_object()) {
 				ondemand::object object = field.value();
+				string_view svRaw = jsonGetRawJsonToken(object, "a");
+				string sRaw(svRaw);
+				vsRaw.push_back(sRaw);
 				INT64 i = jsonGetInt64(object, ("a"));
 				vi.push_back(i);
 				double d = jsonGetDouble(object, ("b"));

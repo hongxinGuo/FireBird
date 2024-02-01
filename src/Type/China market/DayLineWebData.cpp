@@ -3,6 +3,7 @@
 #include"ChinaMarket.h"
 #include"DayLineWebData.h"
 
+#include "JsonParse.h"
 #include "TimeConvert.h"
 
 using namespace std;
@@ -62,12 +63,50 @@ bool CDayLineWebData::ProcessNeteaseDayLineData() {
 	return true;
 }
 
+bool CDayLineWebData::ProcessNeteaseDayLineData2() {
+	shared_ptr<CDayLine> pDayLine;
+
+	if (m_sDataBuffer.size() == 0) return false;	// 没有数据读入？此种状态是查询的股票为无效（不存在）号码
+	string_view svData = GetCurrentNeteaseData(); // 读过前缀
+	if (m_lCurrentPos >= m_sDataBuffer.size())return false;// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
+
+	CString strTemp;
+	CDayLinePtr pCurrentDayLine = nullptr;
+	while (m_lCurrentPos < m_sDataBuffer.size()) {	// 处理一条日线数据
+		svData = GetCurrentNeteaseData();
+		pCurrentDayLine = ProcessOneNeteaseDayLine(svData);
+		if (pCurrentDayLine == nullptr) {
+			TRACE(_T("%s日线数据出错\n"), m_strStockCode.GetBuffer());
+			// 清除已暂存的日线数据
+			m_vTempDayLine.clear();
+			return false; // 数据出错，放弃载入
+		}
+		m_vTempDayLine.push_back(pCurrentDayLine); // 暂存于临时vector中，网易日线数据的时间顺序是颠倒的，最新的在最前面
+	}
+	// 正序排列
+	ranges::sort(m_vTempDayLine, [](const CDayLinePtr& p1, const CDayLinePtr& p2) { return p1->GetMarketDate() < p2->GetMarketDate(); });
+	ReportDayLineDownLoaded();
+
+	return true;
+}
+
+string_view CDayLineWebData::GetCurrentNeteaseData() {
+	const string_view svCurrentTotal = string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos);
+	const long lEnd = svCurrentTotal.find_first_of(0x0d);
+	if (lEnd > svCurrentTotal.length()) {
+		throw std::exception(_T("GetCurrentNeteaseDayLine() out of range"));
+	}
+	m_lCurrentPos += lEnd + 1; // 将当前位置移至当前数据结束处之后
+	return svCurrentTotal.substr(0, lEnd + 1); // 包括最后的字符';'
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理一条日线数据。采用网易日线历史数据格式。
 //
 // 与实时数据相类似，各种价格皆放大一千倍后以长整型存储。存入数据库时以DECIMAL(10,3)类型存储。
-// 字符串的制式为：2019-07-10,600000,浦东银行,收盘价,最高价,最低价,开盘价,前收盘价,涨跌值,换手率,成交股数,成交金额,总市值,流通市值\r\n
+// 数据制式为： 日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n
+//"日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n2019-07-24,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,43 +135,30 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLineData() {
 
 	if (m_sDataBuffer.at(m_lCurrentPos) != 0x027) return nullptr; // 不是单引号(')，数据出错，放弃载入
 	m_lCurrentPos++;
-
 	// 股票代码
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return nullptr;
 	pDayLine->SetStockSymbol(m_strStockCode); // 读入的股票代码为600601、000001这样的制式，不再处理之，使用本股票的Symbol:600601.SS、000001.SZ直接赋值。
-
 	// 股票名称
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return nullptr;
 	const CString str = buffer2;
 	pDayLine->SetDisplaySymbol(str);
-
 	// 收盘价
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return nullptr;
 	if (buffer2[0] != 0x000) {
-		dTemp = atof(buffer2);
-		pDayLine->SetClose(dTemp * 1000);
+		pDayLine->SetClose(StrToDecimal(buffer2));
 	}
-
 	// 最高价
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return nullptr;
-	dTemp = atof(buffer2);
-	pDayLine->SetHigh(dTemp * 1000);
-
+	pDayLine->SetHigh(StrToDecimal(buffer2));
 	// 最低价
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return nullptr;
-	dTemp = atof(buffer2);
-	pDayLine->SetLow(dTemp * 1000);
-
+	pDayLine->SetLow(StrToDecimal(buffer2));
 	// 开盘价
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return nullptr;
-	dTemp = atof(buffer2);
-	pDayLine->SetOpen(dTemp * 1000);
-
+	pDayLine->SetOpen(StrToDecimal(buffer2));
 	// 前收盘价
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return nullptr;
-	dTemp = atof(buffer2);
-	pDayLine->SetLastClose(dTemp * 1000);
-
+	pDayLine->SetLastClose(StrToDecimal(buffer2));
 	// 涨跌值
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return nullptr;
 	if (pDayLine->GetOpen() == 0) {
@@ -147,23 +173,18 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLineData() {
 		// 需要放大1000 * 100倍。收盘价比实际值大1000倍，记录的是百分比，也要增大100倍。
 		pDayLine->SetUpDownRate(pDayLine->GetUpDown() * 100000.0 / pDayLine->GetLastClose());
 	}
-
 	// 换手率
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return nullptr;
 	pDayLine->SetChangeHandRate(buffer2);
-
 	// 成交量
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return nullptr;
 	pDayLine->SetVolume(buffer2); // 读入的是股数
-
 	// 成交金额
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return nullptr;
 	pDayLine->SetAmount(buffer2);
-
 	// 总市值的数据有两种形式，需要程序判定
 	if (!ReadOneValueOfNeteaseDayLine(m_sDataBuffer, buffer2, m_lCurrentPos)) return nullptr;
 	pDayLine->SetTotalValue(buffer2); // 总市值的单位为：元
-
 	// 流通市值不是用逗号结束，故而不能使用ReadOneValueFromNeteaseDayLine函数
 	// 流通市值的数据形式有两种，故而需要程序判定。
 	i = 0;
@@ -177,6 +198,89 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLineData() {
 	// \r后面紧跟着应该是\n
 	if (m_sDataBuffer.at(m_lCurrentPos++) != 0x0a) return nullptr; // 数据出错，放弃载入
 
+	return pDayLine;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 处理一条日线数据。采用网易日线历史数据格式。
+//
+// 与实时数据相类似，各种价格皆放大一千倍后以长整型存储。存入数据库时以DECIMAL(10,3)类型存储。
+// 数据制式为： 日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n
+//"日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n2019-07-24,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLine(const string_view& svData) const {
+	int year = 0, month = 0, day = 0;
+	string_view sv;
+
+	auto pDayLine = make_shared<CDayLine>();
+
+	try {
+		long lCurrentPos = 0;
+		// 日期
+		sv = GetNextField(svData, lCurrentPos, ',');
+		sscanf_s(sv.data(), _T("%04d-%02d-%02d"), &year, &month, &day);
+		const long lMarketDate = XferYearMonthDayToYYYYMMDD(year, month, day);
+		pDayLine->SetTime(gl_pChinaMarket->TransferToUTCTime(lMarketDate));
+		pDayLine->SetDate(lMarketDate);
+		sv = GetNextField(svData, lCurrentPos, 0x027);
+		// 股票代码
+		sv = GetNextField(svData, lCurrentPos, ',');
+		pDayLine->SetStockSymbol(m_strStockCode); // 读入的股票代码为600601、000001这样的制式，不再处理之，使用本股票的Symbol:600601.SS、000001.SZ直接赋值。
+		// 股票名称
+		sv = GetNextField(svData, lCurrentPos, ',');
+		const CString str(sv.data(), sv.length());
+		pDayLine->SetDisplaySymbol(str);
+		// 收盘价
+		sv = GetNextField(svData, lCurrentPos, ',');
+		pDayLine->SetClose(StrToDecimal(sv));
+		// 最高价
+		sv = GetNextField(svData, lCurrentPos, ',');
+		pDayLine->SetHigh(StrToDecimal(sv));
+		// 最低价
+		sv = GetNextField(svData, lCurrentPos, ',');
+		pDayLine->SetLow(StrToDecimal(sv));
+		// 开盘价
+		sv = GetNextField(svData, lCurrentPos, ',');
+		pDayLine->SetOpen(StrToDecimal(sv));
+		// 前收盘价
+		sv = GetNextField(svData, lCurrentPos, ',');
+		pDayLine->SetLastClose(StrToDecimal(sv));
+		// 涨跌值
+		sv = GetNextField(svData, lCurrentPos, ',');
+		if (pDayLine->GetOpen() == 0) {
+			pDayLine->SetUpDown(0.0);
+		}
+		else pDayLine->SetUpDown(sv.data());
+		if (pDayLine->GetLastClose() == 0) {
+			// 设置涨跌幅。
+			pDayLine->SetUpDownRate(0.0); // 如果昨日收盘价为零（没交易），则涨跌幅也设为零。
+		}
+		else {
+			// 需要放大1000 * 100倍。收盘价比实际值大1000倍，记录的是百分比，要再增大100倍。
+			pDayLine->SetUpDownRate(pDayLine->GetUpDown() * 100000.0 / pDayLine->GetLastClose());
+		}
+		// 换手率
+		sv = GetNextField(svData, lCurrentPos, ',');
+		pDayLine->SetChangeHandRate(sv.data());
+		// 成交量
+		sv = GetNextField(svData, lCurrentPos, ',');
+		pDayLine->SetVolume(atoll(sv.data())); // 读入的是股数
+		// 成交金额
+		sv = GetNextField(svData, lCurrentPos, ',');
+		pDayLine->SetAmount(StrToDecimal(sv.data(), 0));
+		// 总市值的数据有两种形式，需要程序判定。
+		sv = GetNextField(svData, lCurrentPos, ',');
+		pDayLine->SetTotalValue(atof(sv.data())); // 总市值的单位为：元
+		// 流通市值的数据形式有两种，故而需要程序判定。
+		sv = GetNextField(svData, lCurrentPos, 0x0d); // 最后的数据没有字符','隔断，直接使用最后的\r\n
+		pDayLine->SetCurrentValue(sv.data()); // 流通市值的单位为：元。
+	}
+	catch (exception& e) {
+		return nullptr;
+	}
 	return pDayLine;
 }
 

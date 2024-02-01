@@ -87,6 +87,7 @@ bool CWebRTData::CheckSinaRTDataActive() {
 //
 // todo 将浮点数变成整数时，两位的浮点小数需要使用三位的整数零（即乘以1000），这样能够保证精度。不知为何。如要放大更多，则需要两步：先乘以1000，然后再乘。
 //
+//
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWebRTData::ReadSinaData(const string_view svData) {
 	long lCurrentPos = 11; // 跨过字符串：var hq_str_
@@ -105,25 +106,25 @@ void CWebRTData::ReadSinaData(const string_view svData) {
 	m_strStockName.Append(sv.data(), sv.length());
 	// 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
 	sv = GetNextField(svData, lCurrentPos, ',');
-	m_lOpen = atof(sv.data()) * 1000;
+	m_lOpen = StrToDecimal(sv);
 	// 读入前收盘价
 	sv = GetNextField(svData, lCurrentPos, ',');
-	m_lLastClose = atof(sv.data()) * 1000;
+	m_lLastClose = StrToDecimal(sv);
 	// 读入当前价
 	sv = GetNextField(svData, lCurrentPos, ',');
-	m_lNew = atof(sv.data()) * 1000;
+	m_lNew = StrToDecimal(sv);
 	// 读入最高价
 	sv = GetNextField(svData, lCurrentPos, ',');
-	m_lHigh = atof(sv.data()) * 1000;
+	m_lHigh = StrToDecimal(sv);
 	// 读入最低价
 	sv = GetNextField(svData, lCurrentPos, ',');
-	m_lLow = atof(sv.data()) * 1000;
+	m_lLow = StrToDecimal(sv);
 	// 读入竞买价
 	sv = GetNextField(svData, lCurrentPos, ',');
-	m_lBuy = atof(sv.data()) * 1000;
+	m_lBuy = StrToDecimal(sv);
 	// 读入竞卖价
 	sv = GetNextField(svData, lCurrentPos, ',');
-	m_lSell = atof(sv.data()) * 1000;
+	m_lSell = StrToDecimal(sv);
 	// 读入成交股数。成交股数存储实际值
 	sv = GetNextField(svData, lCurrentPos, ',');
 	m_llVolume = atoll(sv.data());
@@ -137,7 +138,7 @@ void CWebRTData::ReadSinaData(const string_view svData) {
 		m_lVBuy.at(j) = atol(sv.data());
 		// 读入价格
 		sv = GetNextField(svData, lCurrentPos, ',');
-		m_lPBuy.at(j) = atof(sv.data()) * 1000;
+		m_lPBuy.at(j) = StrToDecimal(sv);
 	}
 	// 读入卖一--卖五的股数和价格
 	for (int j = 0; j < 5; j++) {
@@ -146,7 +147,7 @@ void CWebRTData::ReadSinaData(const string_view svData) {
 		m_lVSell.at(j) = atol(sv.data());
 		// 读入价格
 		sv = GetNextField(svData, lCurrentPos, ',');
-		m_lPSell.at(j) = atof(sv.data()) * 1000;
+		m_lPSell.at(j) = StrToDecimal(sv);
 	}
 	// 读入成交日期和时间。此时间为东八区（北京标准时间）。
 	sv = GetNextField(svData, lCurrentPos, ',');
@@ -161,21 +162,6 @@ void CWebRTData::ReadSinaData(const string_view svData) {
 	// 0.07版后，采用十四天内的实时数据为活跃股票数据（最长的春节放假七天，加上前后的休息日，共十天，宽限四天）
 	CheckSinaRTDataActive();
 	SetDataSource(SINA_RT_WEB_DATA_);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 出现exception时，上级调用函数负责处理
-//
-//
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-string_view CWebRTData::GetNextField(string_view svData, long& lCurrentPos, char delimiter) {
-	const string_view sv(svData.data() + lCurrentPos, svData.length() - lCurrentPos);
-	const long lEnd = sv.find_first_of(delimiter);
-	if (lEnd > sv.length()) throw exception("GetNextField() out of range"); // 没找到的话抛出异常
-	lCurrentPos += lEnd + 1; // 将当前位置移至本数据之后
-	return string_view(sv.data(), lEnd);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -253,12 +239,12 @@ string_view CWebRTData::GetNextField(string_view svData, long& lCurrentPos, char
 //
 // 腾讯实时数据中，成交量的单位为手，无法达到计算所需的精度（股），故而只能作为数据补充之用。
 //
+//
 //////////////////////////////////////////////////////////////////////////////////////////////////
 void CWebRTData::ReadTengxunData(string_view svData) {
 	long lTemp;
 	float fTemp = 0.0;
 	CString strTengxunStockCode;
-
 	long lCurrentPos = 12;
 
 	m_fActive = false; // 初始状态为无效数据
@@ -286,13 +272,13 @@ void CWebRTData::ReadTengxunData(string_view svData) {
 	}
 	// 现在成交价。放大一千倍后存储为长整型。其他价格亦如此。
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	m_lNew = atof(sv.data()) * 1000;
+	m_lNew = StrToDecimal(sv);
 	// 前收盘价
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	m_lLastClose = atof(sv.data()) * 1000;
+	m_lLastClose = StrToDecimal(sv);
 	// 开盘价
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	m_lOpen = atof(sv.data()) * 1000;
+	m_lOpen = StrToDecimal(sv);
 	// 成交手数。成交股数存储实际值
 	// 不使用此处的成交量，而是使用第三十五项处的成交量。
 	sv = GetNextField(svData, lCurrentPos, '~'); //
@@ -304,8 +290,7 @@ void CWebRTData::ReadTengxunData(string_view svData) {
 	for (int j = 0; j < 5; j++) {
 		// 买盘价格
 		sv = GetNextField(svData, lCurrentPos, '~'); //
-		const double dTemp = atof(sv.data());
-		m_lPBuy.at(j) = static_cast<long>(dTemp * 1000);
+		m_lPBuy.at(j) = StrToDecimal(sv);
 		// 买盘数量（手）
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		lTemp = atol(sv.data());
@@ -315,7 +300,7 @@ void CWebRTData::ReadTengxunData(string_view svData) {
 	for (int j = 0; j < 5; j++) {
 		//读入卖盘价格
 		sv = GetNextField(svData, lCurrentPos, '~'); //
-		m_lPSell.at(j) = atof(sv.data()) * 1000;
+		m_lPSell.at(j) = StrToDecimal(sv);
 		// 卖盘数量（手）
 		sv = GetNextField(svData, lCurrentPos, '~'); //
 		lTemp = atol(sv.data());
@@ -337,10 +322,10 @@ void CWebRTData::ReadTengxunData(string_view svData) {
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	// 最高价
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	m_lHigh = atof(sv.data()) * 1000;
+	m_lHigh = StrToDecimal(sv);
 	// 最低价
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	m_lLow = atof(sv.data()) * 1000;
+	m_lLow = StrToDecimal(sv);
 	// 35 成交价/成交量（手）/成交金额（元）
 	// 成交量和成交金额使用此处的数据，这样就可以使用腾讯实时数据了
 	sv = GetNextField(svData, lCurrentPos, '~'); //
@@ -366,25 +351,22 @@ void CWebRTData::ReadTengxunData(string_view svData) {
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	// 流通市值（单位为：亿元）
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	long lTemp2 = atof(sv.data()) * 1000;
-	m_llCurrentValue = static_cast<INT64>(lTemp2) * 100000; // 这里需要两次乘以10000，否则
+	long lTemp2 = StrToDecimal(sv);
+	m_llCurrentValue = static_cast<INT64>(lTemp2) * 100000; // 这里需要两次乘以100000
 	// 总市值（单位为：亿元）
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	lTemp2 = atof(sv.data()) * 1000;
-	m_llTotalValue = static_cast<INT64>(lTemp2) * 100000;
+	lTemp2 = StrToDecimal(sv);
+	m_llTotalValue = static_cast<INT64>(lTemp2) * 100000; // 这里需要两次乘以100000
 	// 市净率
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	// 涨停价
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	m_lHighLimitFromTengxun = atof(sv.data()) * 1000;
+	m_lHighLimitFromTengxun = StrToDecimal(sv);
 	// 48 跌停价
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	m_lLowLimitFromTengxun = atof(sv.data()) * 1000;
+	m_lLowLimitFromTengxun = StrToDecimal(sv);
 
 	// 后面的数据具体内容不清楚，暂时放弃解码。
-	// 腾讯实时数据的结束符是分号（；），然后跟随一个换行符\n。但将该数据存入txt文件后再读取时，换行符消失了。
-	// 故而要先判断分号，然后用回车符作为附加判断，有否都认可。
-	// 最后一个数据时，如果没有换行符，则已到达数据的末尾，就不用测试是否存在换行符了。
 	CheckTengxunRTDataActive();
 	SetDataSource(TENGXUN_RT_WEB_DATA_);
 }

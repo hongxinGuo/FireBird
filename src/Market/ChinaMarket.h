@@ -273,7 +273,7 @@ public:
 		return false;
 	}
 
-	size_t GetCurrentStockSetSize();
+	size_t GetCurrentStockSetSize() const;
 
 	void CreateStock(const CString& strStockCode, const CString& strStockName, bool fProcessRTData);
 

@@ -56,7 +56,7 @@ CWorldMarket::~CWorldMarket() {
 void CWorldMarket::Reset() {
 	ResetFinnhub();
 	ResetTiingo();
-	ResetDataClass();
+	ResetDataContainer();
 }
 
 void CWorldMarket::ResetFinnhub() {
@@ -73,7 +73,7 @@ void CWorldMarket::ResetQuandl() {}
 
 void CWorldMarket::ResetTiingo() {}
 
-void CWorldMarket::ResetDataClass() {
+void CWorldMarket::ResetDataContainer() {
 	gl_dataContainerFinnhubStockExchange.Reset();
 	gl_dataContainerFinnhubForexExchange.Reset();
 	gl_dataContainerFinnhubCryptoExchange.Reset();
@@ -732,7 +732,7 @@ void CWorldMarket::DisconnectAllWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) gl_pTiingoForexWebSocket->Disconnect();
 }
 
-void CWorldMarket::StopAllWebSocketIfTimeOut() {
+void CWorldMarket::StopAllWebSocketIfTimeOut() const {
 	if (IsSystemReady()) {
 		if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) {
 			StopFinnhubWebSocketIfTimeOut();

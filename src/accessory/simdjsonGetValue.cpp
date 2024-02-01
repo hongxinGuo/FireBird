@@ -224,6 +224,22 @@ string_view jsonGetStringView(ondemand::object& object, const string_view& key, 
 	}
 }
 
+string_view jsonGetRawJsonToken(ondemand::object& object, const string_view& key) {
+	ondemand::value valueInner;
+	try {
+		valueInner = object[key];
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
+	}
+	try {
+		return valueInner.raw_json_token();
+	}
+	catch ([[maybe_unused]] simdjson_error& error) {
+		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
+	}
+}
+
 ondemand::array jsonGetArray(ondemand::object& object, const string_view& key) {
 	ondemand::value valueInner;
 	try {

@@ -7,6 +7,8 @@
 #include"DayLineWebData.h"
 #include"WebData.h"
 
+using std::make_shared;
+
 namespace FireBirdTest {
 	template <typename T>
 	class CTemplateMutexAccessQueueTest : public ::testing::Test {

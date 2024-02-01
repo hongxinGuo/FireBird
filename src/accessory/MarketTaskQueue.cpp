@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "MarketTaskQueue.h"
 
+using std::make_shared;
+
 CMarketTaskQueue::CMarketTaskQueue() {
 	CreateIndexMap();
 }

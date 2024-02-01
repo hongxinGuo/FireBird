@@ -13,6 +13,7 @@
 #include"MockChinaMarket.h"
 
 #include"GeneralCheck.h"
+#include "NeteaseDayLineDataSource.h"
 
 using namespace testing;
 #include<memory>

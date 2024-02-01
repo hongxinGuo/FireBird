@@ -67,7 +67,7 @@ void CVirtualHistoryCandleBasic::SaveBasicData(not_null<CVirtualSetHistoryCandle
 	pVirtualSetHistoryCandleBasic->m_RSBackup = ConvertValueToString(GetRSBackup());
 }
 
-void CVirtualHistoryCandleBasic::AppendBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) {
+void CVirtualHistoryCandleBasic::AppendBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) const {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());
 	pVirtualSetHistoryCandleBasic->AddNew();
 	SaveBasicData(pVirtualSetHistoryCandleBasic);

@@ -28,7 +28,7 @@ public:
 	void ResetFinnhub();
 	static void ResetQuandl();
 	static void ResetTiingo();
-	void ResetDataClass();
+	void ResetDataContainer();
 
 	bool IsTimeToResetSystem(long lCurrentTime) final {
 		if ((lCurrentTime > 165759) && (lCurrentTime < 170501)) return true;
@@ -104,7 +104,7 @@ public:
 	virtual void StartTiingoCryptoWebSocket();
 	virtual void StartTiingoForexWebSocket();
 	static void DisconnectAllWebSocket(); // 停止WebSocket。此函数等待其停止后方返回。是系统退出前的准备工作。
-	void StopAllWebSocketIfTimeOut();
+	void StopAllWebSocketIfTimeOut() const;
 	static void StopFinnhubWebSocketIfTimeOut();
 	static void StopTiingoIEXWebSocketIfTimeOut();
 	static void StopTiingoCryptoWebSocketIfTimeOut();

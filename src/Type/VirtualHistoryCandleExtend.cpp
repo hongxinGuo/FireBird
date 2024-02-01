@@ -150,7 +150,7 @@ bool CVirtualHistoryCandleExtend::SaveExtendData(CVirtualSetHistoryCandleExtend*
 	return true;
 }
 
-bool CVirtualHistoryCandleExtend::AppendExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) {
+bool CVirtualHistoryCandleExtend::AppendExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) const {
 	ASSERT(pVirtualSetHistoryCandleExtend->IsOpen());
 	pVirtualSetHistoryCandleExtend->AddNew();
 	SaveExtendData(pVirtualSetHistoryCandleExtend);
@@ -320,7 +320,7 @@ bool CVirtualHistoryCandleExtend::Save(CVirtualSetHistoryCandle* pSet) const {
 	return true;
 }
 
-bool CVirtualHistoryCandleExtend::Append(CVirtualSetHistoryCandle* pSet) {
+bool CVirtualHistoryCandleExtend::Append(CVirtualSetHistoryCandle* pSet) const {
 	ASSERT(pSet->IsOpen());
 	pSet->AddNew();
 	Save(pSet);

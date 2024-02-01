@@ -327,7 +327,7 @@ public:
 	void CalculateCanceledSellVolume(INT64 lCurrentCanceledSellVolume);
 	void CheckBuyGuadan(const array<bool, 10>& fNeedCheck, int i);
 	void CalculateCanceledBuyVolume(INT64 lCurrentCanceledBuyVolume);
-	bool CheckCurrentRTData() const;
+	void CheckCurrentRTData() const;
 	void ShowCurrentTransaction();
 	void ShowCurrentInformationOfCancelingGuadan();
 	virtual void ReportGuadanTransaction();

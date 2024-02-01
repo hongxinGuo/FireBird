@@ -27,6 +27,54 @@ using namespace simdjson;
 
 using namespace std;
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 将输入的字符串转变成放大了10^power倍的长整型。要确保精确地转换，不使用浮点数过渡。
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////
+long StrToDecimal(const string_view& svData, int power) {
+	const int iPointPosition = svData.find_first_of('.');
+	if (iPointPosition > svData.length()) {
+		long l = 10;
+		// 没有小数点？
+		if (power > 0) {
+			for (int i = 1; i < power; i++) l *= 10;
+		}
+		else l = 1;
+		return atol(svData.data()) * l;
+	}
+	char buffer[30];
+	int i;
+	for (i = 0; i < iPointPosition; i++) {
+		buffer[i] = svData.at(i);
+	}
+	while (++i < svData.length()) {
+		buffer[i - 1] = svData.at(i);
+		if (--power < 0) break;
+	}
+	while (power-- > 0) {
+		buffer[i - 1] = '0';
+		i++;
+	}
+	buffer[i - 1] = 0x000;
+	return atol(buffer);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 出现exception时，上级调用函数负责处理
+//
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+string_view GetNextField(const string_view& svData, long& lCurrentPos, char delimiter) {
+	const string_view sv(svData.data() + lCurrentPos, svData.length() - lCurrentPos);
+	const long lEnd = sv.find_first_of(delimiter);
+	if (lEnd > sv.length()) throw exception("GetNextField() out of range"); // 没找到的话抛出异常
+	lCurrentPos += lEnd + 1; // 将当前位置移至本数据之后
+	return string_view(sv.data(), lEnd);
+}
+
 void ReportJsonError(const json::parse_error& e, const std::string& s) {
 	char buffer[180]{}, buffer2[100];
 	int i;
@@ -248,7 +296,7 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 	try {
 		long year, month, day;
 		string_view sv;
-		double dLastClose = 0;
+		long lLastClose = 0;
 		const simdjson::padded_string jsonPadded(svData);
 		ondemand::parser parser;
 		ondemand::document doc = parser.iterate(jsonPadded);
@@ -261,7 +309,7 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 		for (ondemand::value dayLine : dayArray) {
 			auto pDayLine = make_shared<CDayLine>();
 			pDayLine->SetStockSymbol(strStockSymbol);
-			pDayLine->SetLastClose(dLastClose * 1000);
+			pDayLine->SetLastClose(lLastClose);
 			ondemand::array_iterator it = dayLine.get_array().begin();
 			ondemand::value item = *it;
 			sv = jsonGetStringView(item);
@@ -269,18 +317,18 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 			pDayLine->SetDate(year * 10000 + month * 100 + day);
 			item = *++it;
 			sv = jsonGetStringView(item);
-			pDayLine->SetOpen(atof(sv.data()) * 1000);
+			pDayLine->SetOpen(StrToDecimal(sv));
 			item = *++it;
 			sv = jsonGetStringView(item);
-			const double dClose = atof(sv.data());
-			pDayLine->SetClose(dClose * 1000);
-			dLastClose = dClose;
+			const long lClose = StrToDecimal(sv);
+			pDayLine->SetClose(lClose);
+			lLastClose = lClose;
 			item = *++it;
 			sv = jsonGetStringView(item);
-			pDayLine->SetHigh(atof(sv.data()) * 1000);
+			pDayLine->SetHigh(StrToDecimal(sv));
 			item = *++it;
 			sv = jsonGetStringView(item);
-			pDayLine->SetLow(atof(sv.data()) * 1000);
+			pDayLine->SetLow(StrToDecimal(sv));
 			item = *++it;
 			sv = jsonGetStringView(item);
 			pDayLine->SetVolume(atof(sv.data()) * 100);

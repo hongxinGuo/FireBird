@@ -7,6 +7,7 @@
 #include"FinnhubWebSocket.h"
 
 using namespace testing;
+using std::make_shared;
 
 namespace FireBirdTest {
 	struct Test_FinnhubWebData {

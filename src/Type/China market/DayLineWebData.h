@@ -1,10 +1,6 @@
 #pragma once
 
 #include"DayLine.h"
-#include"NeteaseDaylineDataSource.h"
-
-#include<vector>
-#include<memory>
 
 class CDayLineWebData final {
 public:
@@ -25,7 +21,10 @@ public:
 	string GetBuffer() { return m_sDataBuffer; }
 
 	bool ProcessNeteaseDayLineData();
+	bool ProcessNeteaseDayLineData2();
+	string_view GetCurrentNeteaseData();
 	CDayLinePtr ProcessOneNeteaseDayLineData();
+	CDayLinePtr ProcessOneNeteaseDayLine(const string_view& svData) const;
 	INT64 GetCurrentPos() const noexcept { return m_lCurrentPos; }
 	void SetCurrentPos(const INT64 lValue) noexcept { m_lCurrentPos = lValue; }
 	static bool SkipNeteaseDayLineInformationHeader(const string& sDataBuffer, INT64& lCurrentPos);

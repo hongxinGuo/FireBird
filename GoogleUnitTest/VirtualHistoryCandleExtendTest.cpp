@@ -2,8 +2,6 @@
 
 #include"GeneralCheck.h"
 
-#include"WeekLine.h"
-
 namespace FireBirdTest {
 	class CVirtualHistoryCandleExtendTest : public ::testing::Test {
 	protected:

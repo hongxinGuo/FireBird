@@ -11,14 +11,10 @@
 
 #include"MockWorldMarket.h"
 
-#include"ProductFinnhubCompanyInsiderTransaction.h"
-
-#include"PRoductFinnhubForexSymbol.h"
 #include"FinnhubDataSource.h"
 #include "TiingoDataSource.h"
 
 using namespace testing;
-#include<memory>
 
 namespace FireBirdTest {
 	CMockWorldMarketPtr s_pMockWorldMarket;
