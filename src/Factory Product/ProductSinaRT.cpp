@@ -39,6 +39,8 @@ void CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		gl_qSinaRT.PushData(pRTData);// 将此实时数据指针存入实时数据队列
 	}
 	gl_ProcessChinaMarketRTData.release();
+
+	//ParseSinaRTData2(pWebData); // 使用工作线程并行解析
 }
 
 bool CProductSinaRT::ParseSinaRT(vector<CWebRTDataPtr>&, CWebDataPtr pWebData) {

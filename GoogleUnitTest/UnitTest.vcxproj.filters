@@ -183,7 +183,7 @@
     <ClCompile Include="NeteaseDayLineWebDataTest.cpp">
       <Filter>Test源文件\Type\China Market\NeteaseDayLineWebData</Filter>
     </ClCompile>
-    <ClCompile Include="NetEaseDayLineDataTest.cpp">
+    <ClCompile Include="NeteaseDayLineDataTest.cpp">
       <Filter>Test源文件\Type\China Market\NeteaseDayLineWebData</Filter>
     </ClCompile>
     <ClCompile Include="ProcessDayLineDataTest.cpp">
@@ -688,6 +688,9 @@
     </ClInclude>
     <ClInclude Include="MockContainerChinaStock.h">
       <Filter>Mock class\Data Container</Filter>
+    </ClInclude>
+    <ClInclude Include="TemplateMutexAccessQueueTest.h">
+      <Filter>Test源文件\Template</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

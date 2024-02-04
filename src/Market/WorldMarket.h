@@ -30,10 +30,7 @@ public:
 	static void ResetTiingo();
 	void ResetDataContainer();
 
-	bool IsTimeToResetSystem(long lCurrentTime) final {
-		if ((lCurrentTime > 165759) && (lCurrentTime < 170501)) return true;
-		return false;
-	}
+	bool IsTimeToResetSystem(long lCurrentTime) final { return (lCurrentTime > 165759) && (lCurrentTime < 170501); }
 
 	bool ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由SchedulingTaskPerSecond调度
 

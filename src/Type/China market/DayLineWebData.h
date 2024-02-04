@@ -20,10 +20,8 @@ public:
 	bool TransferWebDataToBuffer(const CWebDataPtr& pWebData);
 	string GetBuffer() { return m_sDataBuffer; }
 
-	bool ProcessNeteaseDayLineData();
 	bool ProcessNeteaseDayLineData2();
 	string_view GetCurrentNeteaseData();
-	CDayLinePtr ProcessOneNeteaseDayLineData();
 	CDayLinePtr ProcessOneNeteaseDayLine(const string_view& svData) const;
 	INT64 GetCurrentPos() const noexcept { return m_lCurrentPos; }
 	void SetCurrentPos(const INT64 lValue) noexcept { m_lCurrentPos = lValue; }

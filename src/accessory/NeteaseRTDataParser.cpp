@@ -283,34 +283,34 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson2(string_view sv
 			pWebRTData->SetVSell(1, jsonGetInt64(item, _T("askvol2")));
 			pWebRTData->SetVSell(4, jsonGetInt64(item, _T("askvol5")));
 			pWebRTData->SetVSell(3, jsonGetInt64(item, _T("askvol4")));
-			pWebRTData->SetNew(StrToDecimal(jsonGetRawJsonToken(item, _T("price"))));
-			pWebRTData->SetOpen(StrToDecimal(jsonGetRawJsonToken(item, _T("open"))));
-			pWebRTData->SetPBuy(4, StrToDecimal(jsonGetRawJsonToken(item, _T("bid5"))));
-			pWebRTData->SetPBuy(3, StrToDecimal(jsonGetRawJsonToken(item, _T("bid4"))));
-			pWebRTData->SetPBuy(2, StrToDecimal(jsonGetRawJsonToken(item, _T("bid3"))));
-			pWebRTData->SetPBuy(1, StrToDecimal(jsonGetRawJsonToken(item, _T("bid2"))));
-			pWebRTData->SetPBuy(0, StrToDecimal(jsonGetRawJsonToken(item, _T("bid1"))));
-			pWebRTData->SetHigh(StrToDecimal(jsonGetRawJsonToken(item, _T("high"))));
-			pWebRTData->SetLow(StrToDecimal(jsonGetRawJsonToken(item, _T("low"))));
+			pWebRTData->SetNew(StrToDecimal(jsonGetRawJsonToken(item, _T("price")), 3));
+			pWebRTData->SetOpen(StrToDecimal(jsonGetRawJsonToken(item, _T("open")), 3));
+			pWebRTData->SetPBuy(4, StrToDecimal(jsonGetRawJsonToken(item, _T("bid5")), 3));
+			pWebRTData->SetPBuy(3, StrToDecimal(jsonGetRawJsonToken(item, _T("bid4")), 3));
+			pWebRTData->SetPBuy(2, StrToDecimal(jsonGetRawJsonToken(item, _T("bid3")), 3));
+			pWebRTData->SetPBuy(1, StrToDecimal(jsonGetRawJsonToken(item, _T("bid2")), 3));
+			pWebRTData->SetPBuy(0, StrToDecimal(jsonGetRawJsonToken(item, _T("bid1")), 3));
+			pWebRTData->SetHigh(StrToDecimal(jsonGetRawJsonToken(item, _T("high")), 3));
+			pWebRTData->SetLow(StrToDecimal(jsonGetRawJsonToken(item, _T("low")), 3));
 			pWebRTData->SetVBuy(2, jsonGetInt64(item, _T("bidvol3")));
 			pWebRTData->SetVBuy(0, jsonGetInt64(item, _T("bidvol1")));
 			pWebRTData->SetVBuy(1, jsonGetInt64(item, _T("bidvol2")));
 			pWebRTData->SetVBuy(4, jsonGetInt64(item, _T("bidvol5")));
 			pWebRTData->SetVBuy(3, jsonGetInt64(item, _T("bidvol4")));
 			pWebRTData->SetVolume(jsonGetInt64(item, _T("volume")));
-			pWebRTData->SetPSell(4, StrToDecimal(jsonGetRawJsonToken(item, _T("ask5"))));
-			pWebRTData->SetPSell(3, StrToDecimal(jsonGetRawJsonToken(item, _T("ask4"))));
-			pWebRTData->SetPSell(0, StrToDecimal(jsonGetRawJsonToken(item, _T("ask1"))));
+			pWebRTData->SetPSell(4, StrToDecimal(jsonGetRawJsonToken(item, _T("ask5")), 3));
+			pWebRTData->SetPSell(3, StrToDecimal(jsonGetRawJsonToken(item, _T("ask4")), 3));
+			pWebRTData->SetPSell(0, StrToDecimal(jsonGetRawJsonToken(item, _T("ask1")), 3));
 
 			string_view sNameView = jsonGetStringView(item, "name");
 			string sName(sNameView);
 			pWebRTData->SetStockName(XferToCString(sName)); // 将utf-8字符集转换为多字节字符集
-			pWebRTData->SetPSell(2, StrToDecimal(jsonGetRawJsonToken(item, _T("ask3"))));
-			pWebRTData->SetPSell(1, StrToDecimal(jsonGetRawJsonToken(item, _T("ask2"))));
+			pWebRTData->SetPSell(2, StrToDecimal(jsonGetRawJsonToken(item, _T("ask3")), 3));
+			pWebRTData->SetPSell(1, StrToDecimal(jsonGetRawJsonToken(item, _T("ask2")), 3));
 			strTime = jsonGetStringView(item, _T("time"));
 			pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
 
-			pWebRTData->SetLastClose(StrToDecimal(jsonGetRawJsonToken(item, _T("yestclose"))));
+			pWebRTData->SetLastClose(StrToDecimal(jsonGetRawJsonToken(item, _T("yestclose")), 3));
 			pWebRTData->SetAmount(StrToDecimal(jsonGetRawJsonToken(item, _T("turnover")), 0));
 
 			pWebRTData->CheckNeteaseRTDataActive();

@@ -796,9 +796,9 @@ bool CFinnhubDataSource::InquireCryptoDayLine() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CFinnhubDataSource::ConfigureSession() {
 	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 6000); // 设置连接超时时间为6秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 5000); // 设置接收超时时间为5秒。
-	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, 5000); // 设置接收超时时间为5秒。
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 10000); // 设置连接超时时间为6秒。
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 8000); // 设置接收超时时间为5秒。
+	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, 8000); // 设置接收超时时间为5秒。
 	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 1000); // 设置发送超时时间为1秒
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }

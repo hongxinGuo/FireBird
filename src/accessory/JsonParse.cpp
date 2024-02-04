@@ -43,7 +43,7 @@ long StrToDecimal(const string_view& svData, int power) {
 		else l = 1;
 		return atol(svData.data()) * l;
 	}
-	char buffer[30];
+	char buffer[100];
 	int i;
 	for (i = 0; i < iPointPosition; i++) {
 		buffer[i] = svData.at(i);
@@ -57,6 +57,7 @@ long StrToDecimal(const string_view& svData, int power) {
 		i++;
 	}
 	buffer[i - 1] = 0x000;
+	ASSERT(i < 99);
 	return atol(buffer);
 }
 
@@ -111,8 +112,7 @@ void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& str
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 从网络文件file中读取新浪制式实时数据，返回值是所读数据是否出现格式错误。
-// 新浪实时数据的格式为javascript
+// 解析新浪实时数据
 // 
 // todo 考虑将pRTData->ReadSinaData函数改为线程模式并行执行解析任务。由于数据中不会包含相同股票的实时数据，故而不会出现同时操作同一个股票的问题，
 // 所以可以并行解析
@@ -123,8 +123,8 @@ shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData) {
 	try {
 		pWebData->ResetCurrentPos();
 		while (!pWebData->IsLastDataParagraph()) {
-			const string_view svData = pWebData->GetCurrentSinaData();
 			auto pRTData = make_shared<CWebRTData>();
+			const string_view svData = pWebData->GetCurrentSinaData();
 			pRTData->ReadSinaData(svData);
 			pvWebRTData->push_back(pRTData);
 		}
@@ -134,6 +134,45 @@ shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData) {
 		return pvWebRTData;
 	}
 	return pvWebRTData;
+}
+
+counting_semaphore<16> semaphoreParseSinaRTData{16};
+
+UINT ThreadReadOneSinaRTData(const CWebRTDataPtr& pRTData, CString strData) {
+	semaphoreParseSinaRTData.acquire();
+	try {
+		const string_view svData = strData.GetBuffer();
+		pRTData->ReadSinaData(svData);
+		gl_qSinaRT.PushData(pRTData);
+	}
+	catch (exception&) {
+		ASSERT(0);
+	}
+	semaphoreParseSinaRTData.release();
+
+	return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 解析新浪实时数据
+//
+// 使用工作线程并行解析，每次解析一条数据，将解析后的数据存入缓存队列。
+// todo 主线程在工作线程结束之前就返回了，数据消失，导致工作线程中使用的数据过时了，出现错误。待修改。
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
+void ParseSinaRTData2(const CWebDataPtr& pWebData) {
+	try {
+		pWebData->ResetCurrentPos();
+		while (!pWebData->IsLastDataParagraph()) {
+			auto pRTData = make_shared<CWebRTData>();
+			CString strData = pWebData->GetCurrentSinaData().data();
+			thread thread1(ThreadReadOneSinaRTData, pRTData, strData);
+			thread1.detach();
+		}
+	}
+	catch (exception& e) {
+		ReportErrorToSystemMessage(_T("ReadSinaData异常 "), e);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -264,7 +303,7 @@ CDayLineWebDataPtr ParseNeteaseDayLine(const CWebDataPtr& pWebData) {
 	auto pData = make_shared<CDayLineWebData>();
 
 	pData->TransferWebDataToBuffer(pWebData);
-	pData->ProcessNeteaseDayLineData(); //pData的日线数据是逆序的，最新日期的在前面。
+	pData->ProcessNeteaseDayLineData2(); //pData的日线数据是逆序的，最新日期的在前面。
 
 	return pData;
 }
@@ -317,18 +356,18 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 			pDayLine->SetDate(year * 10000 + month * 100 + day);
 			item = *++it;
 			sv = jsonGetStringView(item);
-			pDayLine->SetOpen(StrToDecimal(sv));
+			pDayLine->SetOpen(StrToDecimal(sv, 3));
 			item = *++it;
 			sv = jsonGetStringView(item);
-			const long lClose = StrToDecimal(sv);
+			const long lClose = StrToDecimal(sv, 3);
 			pDayLine->SetClose(lClose);
 			lLastClose = lClose;
 			item = *++it;
 			sv = jsonGetStringView(item);
-			pDayLine->SetHigh(StrToDecimal(sv));
+			pDayLine->SetHigh(StrToDecimal(sv, 3));
 			item = *++it;
 			sv = jsonGetStringView(item);
-			pDayLine->SetLow(StrToDecimal(sv));
+			pDayLine->SetLow(StrToDecimal(sv, 3));
 			item = *++it;
 			sv = jsonGetStringView(item);
 			pDayLine->SetVolume(atof(sv.data()) * 100);

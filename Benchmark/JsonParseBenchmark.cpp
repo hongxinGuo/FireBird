@@ -279,7 +279,7 @@ public:
 BENCHMARK_F(CJsonParse, StrToDecimal)(benchmark::State& state) {
 	constexpr string_view svData{"12345.7654"};
 	for (auto _ : state) {
-		StrToDecimal(svData);
+		StrToDecimal(svData, 3);
 	}
 }
 

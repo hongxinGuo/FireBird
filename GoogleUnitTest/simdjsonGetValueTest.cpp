@@ -6,6 +6,7 @@ using namespace simdjson;
 
 using namespace testing;
 
+using std::exception;
 using std::vector;
 
 auto s_simdjson1 = R"({
@@ -37,6 +38,9 @@ namespace FireBirdTest {
 			EXPECT_FALSE(jsonGetBool(doc, "doing"));
 			string s(jsonGetStringView(doc, "string1"));
 			EXPECT_STREQ(s.c_str(), "string1");
+			s = jsonGetRawJsonToken(doc, "string1");
+			EXPECT_STREQ(s.c_str(), "\"string1\"");
+			EXPECT_THROW(s = jsonGetRawJsonToken(doc, "no koken"), simdjson_error);
 			ondemand::array array1 = jsonGetArray(doc, "array1");
 			for (INT64 item : array1) {
 				EXPECT_EQ(item, i++) << "array1的数据为：1， 2， 3";
@@ -57,6 +61,7 @@ namespace FireBirdTest {
 			vector<int> ai;
 			vector<double> ad;
 			vector<string> as;
+			vector<string> ar;
 			vector<bool> ab;
 			ondemand::array arrayInteger, arrayInteger2;
 			i = 0;
@@ -66,6 +71,10 @@ namespace FireBirdTest {
 				ad.push_back(jsonGetDouble(value, _T("double")));
 				string s3(jsonGetStringView(value, _T("string")));
 				as.push_back(s3);
+				string_view s4 = jsonGetRawJsonToken(value, _T("string"));
+				s3 = s4;
+				ar.push_back(s3);
+				EXPECT_THROW(s4 = jsonGetRawJsonToken(value, "no key"), simdjson_error);
 				ab.push_back(jsonGetBool(value, "bool"));
 				switch (i++) {
 				case 0:
@@ -86,6 +95,8 @@ namespace FireBirdTest {
 			EXPECT_DOUBLE_EQ(ad.at(1), 0.0);
 			EXPECT_STREQ(as.at(0).c_str(), _T("string1"));
 			EXPECT_STREQ(as.at(1).c_str(), _T(""));
+			EXPECT_STREQ(ar.at(0).c_str(), _T("\"string1\""));
+			EXPECT_STREQ(ar.at(1).c_str(), _T("null"));
 			EXPECT_TRUE(ab.at(0));
 			EXPECT_FALSE(ab.at(1));
 			i = 0;
@@ -136,6 +147,8 @@ namespace FireBirdTest {
 				case 4:
 					s5 = jsonGetStringView(item);
 					EXPECT_STREQ(s5.c_str(), "string2");
+					s5 = jsonGetRawJsonToken(item);
+					EXPECT_STREQ(s5.c_str(), "\"string2\"");
 					break;
 				case 5:
 					array4 = jsonGetArray(item);
@@ -193,6 +206,7 @@ namespace FireBirdTest {
 				string_view svRaw = jsonGetRawJsonToken(object, "a");
 				string sRaw(svRaw);
 				vsRaw.push_back(sRaw);
+				EXPECT_THROW(svRaw = jsonGetRawJsonToken(object, "no key"), simdjson_error);
 				INT64 i = jsonGetInt64(object, ("a"));
 				vi.push_back(i);
 				double d = jsonGetDouble(object, ("b"));

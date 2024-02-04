@@ -2,132 +2,98 @@
 
 #include "ChinaStockCodeConverter.h"
 
-bool IsShanghaiExchange(const CString& strStockCode) {
-	const CString str = GetStockExchange(strStockCode);
-	if (str.Compare(_T("SS")) == 0) return true;
-	else return false;
-}
-
-bool IsShenzhenExchange(const CString& strStockCode) {
-	const CString str = GetStockExchange(strStockCode);
-	if (str.Compare(_T("SZ")) == 0) return true;
-	else return false;
-}
-
-/// <summary>
-/// 从一个完整的股票代码中分离出符号部分（去除表示交易所的部分）
-/// 目前使用的上海深圳格式为600000.SS, 000001.SZ
-/// </summary>
-/// <param name="strStockCode"></param>
-/// <returns></returns>
-CString GetStockSymbol(const CString& strStockCode) {
-	const long lLength = strStockCode.GetLength();
-	ASSERT(lLength > 3);
-	CString str = strStockCode.Left(lLength - 3);
-	return str;
-}
-
-/// <summary>
-/// 从一个完整的股票代码中分离出交易所部分（去除表示符号的部分）
-/// 目前使用的上海深圳格式为600000.SS、000001.SZ
-/// </summary>
-/// <param name="strStockCode"></param>
-/// <returns></returns>
-CString GetStockExchange(const CString& strStockCode) {
-	return (strStockCode.Right(2));
-}
-
-/// <summary>
-/// 使用交易所和符号生成完整股票代码。
-/// 方式为 符号.交易所。 SS + 600000 = 600000.SS
-/// </summary>
-/// <param name="strStockExchange"></param>
-/// <param name="strStockSymbol"></param>
-/// <returns></returns>
-CString CreateStockCode(const CString& strStockExchange, const CString& strStockSymbol) {
-	return strStockSymbol + _T(".") + strStockExchange;
-}
+using std::exception;
 
 CString XferSinaToStandard(const CString& strSina) {
 	const CString strSymbol = strSina.Right(6);
-	if (strSina.Left(2).Compare(_T("sh")) == 0) {
-		return strSymbol + _T(".") + _T("SS");
+	if (strSina.GetAt(0) == 's') {
+		switch (strSina.GetAt(1)) {
+		case 'h':
+			return strSymbol + _T(".") + _T("SS");
+		case 'z':
+			return strSymbol + _T(".") + _T("SZ");
+		default: ;
+		}
 	}
-	else {
-		ASSERT(strSina.GetAt(1) == 'z');
-		return strSymbol + _T(".") + _T("SZ");
-	}
+	throw std::exception("XferSinaToStandard bad header");
 }
 
 CString XferSinaToStandard(string_view strSina) {
 	const CString strSymbol = CString(strSina.data() + 2, 6);
-	if (strSina.at(1) == 'h') {
-		return strSymbol + _T(".") + _T("SS");
+	if (strSina.at(0) == 's') {
+		switch (strSina.at(1)) {
+		case 'h':
+			return strSymbol + _T(".") + _T("SS");
+		case 'z':
+			return strSymbol + _T(".") + _T("SZ");
+		default: ;
+		}
 	}
-	else {
-		return strSymbol + _T(".") + _T("SZ");
-	}
+	throw exception("XferSinaToStandard bad header");
 }
 
 CString XferSinaToNetease(const CString& strSina) {
 	const CString strSymbol = strSina.Right(6);
-	if (strSina.Left(2).Compare(_T("sh")) == 0) {
-		return _T("0") + strSymbol;
+	if (strSina.GetAt(0) == 's') {
+		switch (strSina.GetAt(1)) {
+		case 'h':
+			return _T("0") + strSymbol;
+		case 'z':
+			return _T("1") + strSymbol;
+		default: ;
+		}
 	}
-	else {
-		ASSERT(strSina.GetAt(1) == 'z');
-		return _T("1") + strSymbol;
-	}
+	throw exception("XferSinaToNetease bad header");
 }
 
 CString XferNeteaseToStandard(const CString& strNetease) {
 	const CString strSymbol = strNetease.Right(6);
-	if (strNetease.GetAt(0) == '0') {
+	switch (strNetease.GetAt(0)) {
+	case '0':
 		return strSymbol + _T(".") + _T("SS");
-	}
-	else {
-		ASSERT(strNetease.GetAt(0) == '1');
+	case '1':
 		return strSymbol + _T(".") + _T("SZ");
+	default: ;
 	}
+	throw exception("XferNeteaseToStandard bad header");
 }
 
 CString XferNeteaseToSina(const CString& strNetease) {
 	const CString strSymbol = strNetease.Right(6);
-	if (strNetease.GetAt(0) == '0') {
+	switch (strNetease.GetAt(0)) {
+	case '0':
 		return _T("sh") + strSymbol;
-	}
-	else {
-		ASSERT(strNetease.GetAt(0) == '1');
+	case '1':
 		return _T("sz") + strSymbol;
+	default: ;
 	}
-}
-
-CString XferTengxunToStandard(const CString& strTengxun) {
-	return XferSinaToStandard(strTengxun);
+	throw exception("XferNeteaseToSina bad header");
 }
 
 CString XferStandardToSina(const CString& strStandard) {
 	const CString strSymbol = strStandard.Left(6);
-	if (IsShanghaiExchange(strStandard)) {
-		return _T("sh") + strSymbol;
+	if (strStandard.GetAt(strStandard.GetLength() - 2) == 'S') {
+		switch (strStandard.GetAt(strStandard.GetLength() - 1)) {
+		case 'S':
+			return _T("sh") + strSymbol;
+		case 'Z':
+			return _T("sz") + strSymbol;
+		default: ;
+		}
 	}
-	else {
-		ASSERT(strStandard.GetAt(strStandard.GetLength() - 1) == 'Z');
-		return _T("sz") + strSymbol;
-	}
+	throw exception("XferSinaToStandard bad header");
 }
 
 CString XferStandardToNetease(const CString& strStandard) {
 	const CString strSymbol = strStandard.Left(6);
-	if (IsShanghaiExchange(strStandard)) {
-		return _T("0") + strSymbol;
+	if (strStandard.GetAt(strStandard.GetLength() - 2) == 'S') {
+		switch (strStandard.GetAt(strStandard.GetLength() - 1)) {
+		case 'S':
+			return _T("0") + strSymbol;
+		case 'Z':
+			return _T("1") + strSymbol;
+		default: ;
+		}
 	}
-	else {
-		ASSERT(strStandard.GetAt(strStandard.GetLength() - 1) == 'Z');
-		return _T("1") + strSymbol;
-	}
-}
-
-CString XferStandardToTengxun(const CString& strStandard) {
-	return XferStandardToSina(strStandard);
+	throw exception("XferSinaToStandard bad header");
 }

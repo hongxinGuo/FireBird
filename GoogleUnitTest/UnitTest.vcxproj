@@ -215,7 +215,7 @@
     <ClInclude Include="MockFinnhubForexSymbol.h" />
     <ClInclude Include="MockDataChinaWeekLine.h" />
     <ClCompile Include="MockDataChinaWeekLineTest.cpp" />
-    <ClCompile Include="NetEaseDayLineDataTest.cpp" />
+    <ClCompile Include="NeteaseDayLineDataTest.cpp" />
     <ClCompile Include="NeteaseWebRTDataTest.cpp" />
     <ClCompile Include="OneDealTest.cpp" />
     <ClCompile Include="PriorityQueueWebRTDataTest.cpp" />
@@ -235,6 +235,7 @@
     <ClCompile Include="VirtualMarketTest.cpp" />
     <ClCompile Include="ContainerChinaWeekLineTest.cpp" />
     <ClCompile Include="WeekLineTest.cpp" />
+    <ClInclude Include="TemplateMutexAccessQueueTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockChinaMarket.h" />

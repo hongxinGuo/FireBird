@@ -49,7 +49,8 @@ namespace FireBirdTest {
 	class NeteaseDayLineTest : public::testing::TestWithParam<NeteaseDayLineData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 
 			const NeteaseDayLineData* pData = GetParam();
 			const auto pWebData = make_shared<CWebData>();
@@ -65,7 +66,8 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -80,7 +82,7 @@ namespace FireBirdTest {
 	                         ));
 
 	TEST_P(NeteaseDayLineTest, TestProcessNeteaseDayLineData) {
-		const bool fSucceed = pDownLoadedDayLine->ProcessNeteaseDayLineData();
+		const bool fSucceed = pDownLoadedDayLine->ProcessNeteaseDayLineData2();
 		switch (m_iCount) {
 		case 1:
 			EXPECT_TRUE(fSucceed);
@@ -108,10 +110,10 @@ namespace FireBirdTest {
 			EXPECT_TRUE(fSucceed);
 			break;
 		case 10: // 时间字符串超过30个
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(fSucceed);
 			break;
 		case 11: // 流通市值字符串超过30个
-			EXPECT_FALSE(fSucceed);
+			EXPECT_TRUE(fSucceed);
 			break;
 		case 12:
 			EXPECT_FALSE(fSucceed);

@@ -24,12 +24,12 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(jsonParseTest, TestStrToDecimal) {
-		EXPECT_EQ(StrToDecimal("5.7"), 5700);
-		EXPECT_EQ(StrToDecimal("140"), 140000);
+		EXPECT_EQ(StrToDecimal("5.7", 3), 5700);
+		EXPECT_EQ(StrToDecimal("140", 3), 140000);
 		EXPECT_EQ(StrToDecimal("140", 0), 140);
-		EXPECT_EQ(StrToDecimal("0.354"), 354);
-		EXPECT_EQ(StrToDecimal("12345.1"), 12345100);
-		EXPECT_EQ(StrToDecimal("123.1234"), 123123);
+		EXPECT_EQ(StrToDecimal("0.354", 3), 354);
+		EXPECT_EQ(StrToDecimal("12345.1", 3), 12345100);
+		EXPECT_EQ(StrToDecimal("123.1234", 3), 123123);
 		EXPECT_EQ(StrToDecimal("12345.12345", 4), 123451234);
 		EXPECT_EQ(StrToDecimal("123456.12456", 1), 1234561);
 		EXPECT_EQ(StrToDecimal("9876.9876", 2), 987698);

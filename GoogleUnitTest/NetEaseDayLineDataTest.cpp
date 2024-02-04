@@ -110,63 +110,6 @@ namespace FireBirdTest {
 		                         &Data9, &Data10, &Data11, &Data12, &Data13, &Data14
 	                         ));
 
-	TEST_P(ProcessNeteaseDayLineTest, ProcessOneNeteaseDayLineData) {
-		m_DayLinePtr = pDownLoadedDayLine->ProcessOneNeteaseDayLineData();
-		switch (m_iCount) {
-		case 1:
-			EXPECT_TRUE(m_DayLinePtr != nullptr);
-			EXPECT_STREQ(m_DayLinePtr->GetStockSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_DayLinePtr->GetDisplaySymbol(), _T("浦发银行"));
-			EXPECT_EQ(m_DayLinePtr->GetClose(), 11490);
-			EXPECT_EQ(m_DayLinePtr->GetHigh(), 11560);
-			EXPECT_EQ(m_DayLinePtr->GetLow(), 11430);
-			EXPECT_EQ(m_DayLinePtr->GetOpen(), 11430);
-			EXPECT_EQ(m_DayLinePtr->GetLastClose(), 11480);
-			break;
-		case 2:
-			EXPECT_TRUE(m_DayLinePtr != nullptr);
-			break;
-		case 3:
-			EXPECT_TRUE(m_DayLinePtr != nullptr);
-			break;
-		case 4:
-		case 5:
-			EXPECT_TRUE(m_DayLinePtr != nullptr);
-			break;
-		case 6:
-			EXPECT_TRUE(m_DayLinePtr != nullptr);
-			break;
-		case 7:
-			EXPECT_TRUE(m_DayLinePtr != nullptr);
-			break;
-		case 8:
-			EXPECT_TRUE(m_DayLinePtr != nullptr);
-			break;
-		case 9:
-			EXPECT_TRUE(m_DayLinePtr != nullptr);
-			EXPECT_STREQ(m_DayLinePtr->GetDisplaySymbol(), _T("价值7030"));
-			EXPECT_EQ(m_DayLinePtr->GetClose(), 3658980);
-			EXPECT_EQ(m_DayLinePtr->GetLastClose(), 3654160);
-			EXPECT_EQ(m_DayLinePtr->GetHigh(), 0);
-			EXPECT_EQ(m_DayLinePtr->GetLow(), 0);
-			EXPECT_EQ(m_DayLinePtr->GetOpen(), 0);
-			EXPECT_EQ(m_DayLinePtr->GetVolume(), 0);
-			EXPECT_EQ(m_DayLinePtr->GetAmount(), 0);
-			break;
-		case 10: // 时间字符串超过30个
-			EXPECT_TRUE(m_DayLinePtr == nullptr);
-			break;
-		case 11: // 流通市值字符串超过30个
-			EXPECT_TRUE(m_DayLinePtr == nullptr);
-			break;
-		case 12:
-			EXPECT_TRUE(m_DayLinePtr == nullptr);
-			break;
-		default:
-			break;
-		}
-	}
-
 	TEST_P(ProcessNeteaseDayLineTest, ProcessOneNeteaseDayLineData2) {
 		m_DayLinePtr = pDownLoadedDayLine->ProcessOneNeteaseDayLine(svData);
 		switch (m_iCount) {

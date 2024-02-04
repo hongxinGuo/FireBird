@@ -21,13 +21,7 @@ void CreateSimdjsonEmptyArray() {
 }
 
 double jsonGetDouble(ondemand::value& value, const string_view& key, double defaultValue) {
-	ondemand::value valueInner;
-	try {
-		valueInner = value[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
+	ondemand::value valueInner = value[key];
 	try {
 		return valueInner.get_double();
 	}
@@ -38,13 +32,7 @@ double jsonGetDouble(ondemand::value& value, const string_view& key, double defa
 }
 
 INT64 jsonGetInt64(ondemand::value& value, const string_view& key, const INT64 defaultValue) {
-	ondemand::value valueInner;
-	try {
-		valueInner = value[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
+	ondemand::value valueInner = value[key];
 	try {
 		return valueInner.get_int64();
 	}
@@ -55,13 +43,7 @@ INT64 jsonGetInt64(ondemand::value& value, const string_view& key, const INT64 d
 }
 
 bool jsonGetBool(ondemand::value& value, const string_view& key) {
-	ondemand::value valueInner;
-	try {
-		valueInner = value[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
+	ondemand::value valueInner = value[key];
 	try {
 		return valueInner.get_bool();
 	}
@@ -72,13 +54,7 @@ bool jsonGetBool(ondemand::value& value, const string_view& key) {
 }
 
 string_view jsonGetStringView(ondemand::value& value, const string_view& key, const string& defaultValue) {
-	ondemand::value valueInner;
-	try {
-		valueInner = value[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
+	ondemand::value valueInner = value[key];
 	try {
 		return valueInner.get_string();
 	}
@@ -88,14 +64,12 @@ string_view jsonGetStringView(ondemand::value& value, const string_view& key, co
 	}
 }
 
+string_view jsonGetRawJsonToken(ondemand::value& value, const string_view& key) {
+	return value[key].raw_json_token().value();
+}
+
 ondemand::array jsonGetArray(ondemand::value& value, const string_view& key) {
-	ondemand::value valueInner;
-	try {
-		valueInner = value[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
+	ondemand::value valueInner = value[key];
 	try {
 		return valueInner.get_array();
 	}
@@ -146,6 +120,10 @@ string_view jsonGetStringView(ondemand::value& value) {
 	}
 }
 
+string_view jsonGetRawJsonToken(ondemand::value& value) {
+	return value.raw_json_token();
+}
+
 ondemand::array jsonGetArray(ondemand::value& value) {
 	try {
 		return value.get_array();
@@ -157,13 +135,7 @@ ondemand::array jsonGetArray(ondemand::value& value) {
 }
 
 double jsonGetDouble(ondemand::object& object, const string_view& key, double defaultValue) {
-	ondemand::value valueInner;
-	try {
-		valueInner = object[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
+	ondemand::value valueInner = object[key];
 	try {
 		return valueInner.get_double();
 	}
@@ -174,13 +146,7 @@ double jsonGetDouble(ondemand::object& object, const string_view& key, double de
 }
 
 INT64 jsonGetInt64(ondemand::object& object, const string_view& key, const INT64 defaultValue) {
-	ondemand::value valueInner;
-	try {
-		valueInner = object[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
+	ondemand::value valueInner = object[key];
 	try {
 		return valueInner.get_int64();
 	}
@@ -191,13 +157,7 @@ INT64 jsonGetInt64(ondemand::object& object, const string_view& key, const INT64
 }
 
 bool jsonGetBool(ondemand::object& object, const string_view& key) {
-	ondemand::value valueInner;
-	try {
-		valueInner = object[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
+	ondemand::value valueInner = object[key];
 	try {
 		return valueInner.get_bool();
 	}
@@ -208,13 +168,7 @@ bool jsonGetBool(ondemand::object& object, const string_view& key) {
 }
 
 string_view jsonGetStringView(ondemand::object& object, const string_view& key, const string& defaultValue) {
-	ondemand::value valueInner;
-	try {
-		valueInner = object[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
+	ondemand::value valueInner = object[key];
 	try {
 		return valueInner.get_string();
 	}
@@ -225,29 +179,11 @@ string_view jsonGetStringView(ondemand::object& object, const string_view& key, 
 }
 
 string_view jsonGetRawJsonToken(ondemand::object& object, const string_view& key) {
-	ondemand::value valueInner;
-	try {
-		valueInner = object[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
-	try {
-		return valueInner.raw_json_token();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
-	}
+	return object[key].raw_json_token().value();
 }
 
 ondemand::array jsonGetArray(ondemand::object& object, const string_view& key) {
-	ondemand::value valueInner;
-	try {
-		valueInner = object[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
+	ondemand::value valueInner = object[key];
 	try {
 		return valueInner.get_array();
 	}
@@ -258,13 +194,7 @@ ondemand::array jsonGetArray(ondemand::object& object, const string_view& key) {
 }
 
 double jsonGetDouble(ondemand::document& doc, const string_view& key, const double defaultValue) {
-	ondemand::value valueInner;
-	try {
-		valueInner = doc[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
+	ondemand::value valueInner = doc[key];
 	try {
 		return valueInner.get_double();
 	}
@@ -275,13 +205,7 @@ double jsonGetDouble(ondemand::document& doc, const string_view& key, const doub
 }
 
 INT64 jsonGetInt64(ondemand::document& doc, const string_view& key, const INT64 defaultValue) {
-	ondemand::value valueInner;
-	try {
-		valueInner = doc[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
+	ondemand::value valueInner = doc[key];
 	try {
 		return valueInner.get_int64();
 	}
@@ -292,13 +216,7 @@ INT64 jsonGetInt64(ondemand::document& doc, const string_view& key, const INT64 
 }
 
 bool jsonGetBool(ondemand::document& doc, const string_view& key) {
-	ondemand::value valueInner;
-	try {
-		valueInner = doc[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
+	ondemand::value valueInner = doc[key];
 	try {
 		return valueInner.get_bool();
 	}
@@ -309,13 +227,7 @@ bool jsonGetBool(ondemand::document& doc, const string_view& key) {
 }
 
 string_view jsonGetStringView(ondemand::document& doc, const string_view& key, const string& defaultValue) {
-	ondemand::value valueInner;
-	try {
-		valueInner = doc[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
+	ondemand::value valueInner = doc[key];
 	try {
 		return valueInner.get_string();
 	}
@@ -325,14 +237,12 @@ string_view jsonGetStringView(ondemand::document& doc, const string_view& key, c
 	}
 }
 
+string_view jsonGetRawJsonToken(ondemand::document& doc, const string_view& key) {
+	return doc[key].raw_json_token().value();
+}
+
 ondemand::array jsonGetArray(ondemand::document& doc, const string_view& key) {
-	ondemand::value valueInner;
-	try {
-		valueInner = doc[key];
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
-		throw simdjson_error(error); // 无法解析的话抛出simdjson_error
-	}
+	ondemand::value valueInner = doc[key];
 	try {
 		return valueInner.get_array();
 	}
