@@ -34,11 +34,9 @@ CString CProductSinaRT::CreateMessage() {
 void CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseSinaRTData(pWebData);
 
-	gl_ProcessChinaMarketRTData.acquire();
 	for (const auto& pRTData : *pvWebRTData) {
-		gl_qSinaRT.PushData(pRTData);// 将此实时数据指针存入实时数据队列
+		gl_qSinaRT.try_enqueue(pRTData);// 将此实时数据指针存入实时数据队列
 	}
-	gl_ProcessChinaMarketRTData.release();
 
 	//ParseSinaRTData2(pWebData); // 使用工作线程并行解析
 }

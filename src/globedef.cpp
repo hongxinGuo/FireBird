@@ -71,9 +71,9 @@ bool gl_bChinaMarketResetting = false; // 中国市场重启中
 bool gl_bWorldMarketResetting = false; // 世界市场重启中
 
 // 处理后的数据
-CPriorityQueueWebRTData gl_qSinaRT; // 中国市场新浪实时数据队列。
-CPriorityQueueWebRTData gl_qNeteaseRT; // 中国市场网易实时数据队列。
-CPriorityQueueWebRTData gl_qTengxunRT; // 中国市场腾讯实时数据队列。
+ReaderWriterQueue<CWebRTDataPtr> gl_qSinaRT; // 中国市场新浪实时数据队列。
+ReaderWriterQueue<CWebRTDataPtr> gl_qNeteaseRT; // 中国市场网易实时数据队列。
+ReaderWriterQueue<CWebRTDataPtr> gl_qTengxunRT; // 中国市场腾讯实时数据队列。
 CTemplateMutexAccessQueue<CDayLineWebData> gl_qDayLine; // 日线数据
 
 // ChinaMarket处理的数据

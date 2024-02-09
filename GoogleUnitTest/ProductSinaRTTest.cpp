@@ -48,17 +48,18 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductSinaRTTest, TestParseAndStoreWebData) {
+		CWebRTDataPtr pRTData;
 		const CString strData = _T("var hq_str_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00,\";\nvar hq_str_sh600001=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00,\";\n");
 		const CWebDataPtr pData = make_shared<CWebData>();
 		pData->Test_SetBuffer_(strData);
-		EXPECT_EQ(gl_qSinaRT.Size(), 0);
+		EXPECT_FALSE(gl_qSinaRT.try_dequeue(pRTData));
 
 		sinaRT.ParseAndStoreWebData(pData);
 
-		EXPECT_EQ(gl_qSinaRT.Size(), 2);
+		EXPECT_TRUE(gl_qSinaRT.try_dequeue(pRTData));
 
 		// 恢复原状
-		while (gl_qSinaRT.Size() > 0) gl_qSinaRT.PopData();
+		while (gl_qSinaRT.try_dequeue(pRTData));
 	}
 
 	TEST_F(CProductSinaRTTest, TestParseSinaRT) {

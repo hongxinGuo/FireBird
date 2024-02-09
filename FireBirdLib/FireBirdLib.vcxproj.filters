@@ -531,9 +531,6 @@
     <ClInclude Include="..\src\Data Source\SinaRTDataSource.h">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\TengxunRTDataSource.h">
-      <Filter>头文件\Data Source\China market</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Source\TiingoDataSource.h">
       <Filter>头文件\Data Source\WorldMarket</Filter>
     </ClInclude>
@@ -708,7 +705,7 @@
     <ClInclude Include="..\src\accessory\MarketTaskQueue.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\TengxunRTDataSourceImp.h">
+    <ClInclude Include="..\src\Data Source\TengxunRTDataSource.h">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketStatus.h">
@@ -1139,9 +1136,6 @@
     <ClCompile Include="..\src\Data Source\SinaRTDataSource.cpp">
       <Filter>源文件\Data Source\China market</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Source\TengxunRTDataSource.cpp">
-      <Filter>源文件\Data Source\China market</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Data Source\TiingoDataSource.cpp">
       <Filter>源文件\Data Source\WorldMarket</Filter>
     </ClCompile>
@@ -1298,9 +1292,6 @@
     <ClCompile Include="..\src\Windows interface\FireBirdView.cpp">
       <Filter>源文件\windows interface</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Source\TengxunDayLineDataSource.cpp">
-      <Filter>源文件\Data Source\China market</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\accessory\accessory.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
@@ -1313,7 +1304,7 @@
     <ClCompile Include="..\src\accessory\MarketTaskQueue.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Source\TengxunRTDataSourceImp.cpp">
+    <ClCompile Include="..\src\Data Source\TengxunRTDataSource.cpp">
       <Filter>源文件\Data Source\China market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketStatus.cpp">
@@ -1363,6 +1354,9 @@
     </ClCompile>
     <ClCompile Include="..\src\GlobeMarketInitialize.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\TengxunDayLineDataSource.cpp">
+      <Filter>源文件\Data Source\China market</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

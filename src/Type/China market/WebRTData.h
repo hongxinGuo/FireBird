@@ -155,10 +155,10 @@ public:
 	void Reset();
 
 	// 读取新浪实时数据函数
-	// 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,结束于字符';'
+	// 读入新浪制式数据。开始处为var hq_str_s,结束于字符';'
 	void ReadSinaData(const string_view& svData);
 	// 读取腾讯实时数据函数
-	// 从字符指针处读入腾讯制式数据。此指针开始处为v_s,结束于字符';'
+	// 读入腾讯制式数据。开始处为v_s,结束于字符';'
 	void ReadTengxunData(string_view svData);
 
 	void SetDataSource(const long lDataSource) noexcept { m_lDataSource = lDataSource; }
@@ -210,11 +210,7 @@ public:
 	bool CheckSinaRTDataActive();
 	bool CheckTengxunRTDataActive();
 	bool IsValidTime(long lDays) const;
-
-	[[nodiscard]] bool IsValidDataSource() const noexcept {
-		if (m_lDataSource != INVALID_RT_WEB_DATA_) return true;
-		return false;
-	}
+	[[nodiscard]] bool IsValidDataSource() const noexcept { return m_lDataSource != INVALID_RT_WEB_DATA_; }
 
 	// 数据
 public:

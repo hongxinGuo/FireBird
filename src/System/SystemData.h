@@ -8,6 +8,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include"readerwriterqueue.h"
+
+using namespace moodycamel;
+
 #include <gsl/pointers>
 using gsl::not_null;
 
@@ -40,9 +44,9 @@ extern bool gl_bChinaMarketResetting; // 中国市场重启中
 extern bool gl_bWorldMarketResetting; // 世界市场重启中
 
 // 处理后的各种数据
-extern CPriorityQueueWebRTData gl_qSinaRT; // 中国市场新浪实时数据队列。
-extern CPriorityQueueWebRTData gl_qNeteaseRT; // 中国市场网易实时数据队列。
-extern CPriorityQueueWebRTData gl_qTengxunRT; // 中国市场腾讯实时数据队列。
+extern ReaderWriterQueue<CWebRTDataPtr> gl_qSinaRT; // 中国市场新浪实时数据队列。
+extern ReaderWriterQueue<CWebRTDataPtr> gl_qNeteaseRT; // 中国市场网易实时数据队列。
+extern ReaderWriterQueue<CWebRTDataPtr> gl_qTengxunRT; // 中国市场腾讯实时数据队列。
 extern CTemplateMutexAccessQueue<CDayLineWebData> gl_qDayLine; // 日线数据
 
 // ChinaMarket处理的数据
@@ -118,9 +122,11 @@ public:
 	}
 
 	static void ClearRTDataQueue() {
-		while (gl_qSinaRT.Size() > 0) gl_qSinaRT.PopData();
-		while (gl_qNeteaseRT.Size() > 0) gl_qNeteaseRT.PopData();
-		while (gl_qTengxunRT.Size() > 0) gl_qTengxunRT.PopData();
+		bool succeed = true;
+		CWebRTDataPtr pRTData;
+		while (succeed) succeed = gl_qSinaRT.try_dequeue(pRTData);
+		while (succeed) succeed = gl_qNeteaseRT.try_dequeue(pRTData);
+		while (succeed) succeed = gl_qTengxunRT.try_dequeue(pRTData);
 		while (gl_qDayLine.Size() > 0) gl_qDayLine.PopData();
 	}
 

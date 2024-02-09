@@ -51,10 +51,10 @@ namespace FireBirdTest {
 		pData->Test_SetBuffer_(strNeteaseRT);
 		neteaseRT.ParseAndStoreWebData(pData);
 
-		EXPECT_EQ(gl_qNeteaseRT.Size(), 2);
-		auto pNeteaseRT = gl_qNeteaseRT.PopData();
+		CWebRTDataPtr pNeteaseRT;
+		EXPECT_TRUE(gl_qNeteaseRT.try_dequeue(pNeteaseRT));
 		EXPECT_EQ(pNeteaseRT->GetSymbol(), _T("601872.SS"));
-		pNeteaseRT = gl_qNeteaseRT.PopData();
+		EXPECT_TRUE(gl_qNeteaseRT.try_dequeue(pNeteaseRT));
 		EXPECT_EQ(pNeteaseRT->GetSymbol(), _T("602872.SS"));
 	}
 

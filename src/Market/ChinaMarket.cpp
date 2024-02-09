@@ -393,14 +393,14 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::DistributeSinaRTDataToStock() {
-	const size_t lTotalNumber = gl_qSinaRT.Size();
-
-	m_lRTDataReceivedInCurrentMinute += lTotalNumber;
-
-	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-		const CWebRTDataPtr pRTData = gl_qSinaRT.PopData();
-		ASSERT(pRTData->GetDataSource() == SINA_RT_WEB_DATA_);
+	CWebRTDataPtr pRTData;
+	long lTotalNumber = 0;
+	bool succeed = gl_qSinaRT.try_dequeue(pRTData);
+	while (succeed) {
 		DistributeRTDataToStock(pRTData);
+		m_lRTDataReceivedInCurrentMinute++;
+		lTotalNumber++;
+		succeed = gl_qSinaRT.try_dequeue(pRTData);
 	}
 	if (lTotalNumber > 0) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 }
@@ -417,14 +417,14 @@ void CChinaMarket::DistributeSinaRTDataToStock() {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::DistributeTengxunRTDataToStock() {
-	const size_t lTotalNumber = gl_qTengxunRT.Size();
-
-	m_lRTDataReceivedInCurrentMinute += lTotalNumber;
-
-	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-		const CWebRTDataPtr pRTData = gl_qTengxunRT.PopData();
-		ASSERT(pRTData->GetDataSource() == TENGXUN_RT_WEB_DATA_);
+	CWebRTDataPtr pRTData;
+	long lTotalNumber = 0;
+	bool succeed = gl_qTengxunRT.try_dequeue(pRTData);
+	while (succeed) {
 		DistributeRTDataToStock(pRTData);
+		m_lRTDataReceivedInCurrentMinute++;
+		lTotalNumber++;
+		succeed = gl_qTengxunRT.try_dequeue(pRTData);
 	}
 	if (lTotalNumber > 0) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 }
@@ -439,14 +439,14 @@ void CChinaMarket::DistributeTengxunRTDataToStock() {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::DistributeNeteaseRTDataToStock() {
-	const size_t lTotalNumber = gl_qNeteaseRT.Size();
-
-	m_lRTDataReceivedInCurrentMinute += lTotalNumber;
-
-	for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-		const CWebRTDataPtr pRTData = gl_qNeteaseRT.PopData();
-		ASSERT(pRTData->GetDataSource() == NETEASE_RT_WEB_DATA_);
+	CWebRTDataPtr pRTData;
+	long lTotalNumber = 0;
+	bool succeed = gl_qNeteaseRT.try_dequeue(pRTData);
+	while (succeed) {
 		DistributeRTDataToStock(pRTData);
+		m_lRTDataReceivedInCurrentMinute++;
+		lTotalNumber++;
+		succeed = gl_qNeteaseRT.try_dequeue(pRTData);
 	}
 	if (lTotalNumber > 0) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 }
