@@ -36,7 +36,6 @@ using gsl::not_null;
 #include"TiingoCryptoWebSocket.h"
 #include"TiingoForexWebSocket.h"
 
-#include "PriorityQueueWebRTData.h"
 #include "DayLineWebData.h"
 
 // 系统状态
@@ -45,7 +44,7 @@ extern bool gl_bWorldMarketResetting; // 世界市场重启中
 
 // 处理后的各种数据
 extern ReaderWriterQueue<CWebRTDataPtr> gl_qChinaMarketRTData; // 中国市场新浪实时数据队列。
-extern CTemplateMutexAccessQueue<CDayLineWebData> gl_qDayLine; // 日线数据
+extern ReaderWriterQueue<CDayLineWebDataPtr> gl_qDayLine; // 日线数据
 
 // ChinaMarket处理的数据
 extern CContainerChinaStock gl_dataContainerChinaStock;
@@ -127,7 +126,9 @@ public:
 
 	static void ClearRTDataQueue() {
 		ClearChinaMarketRTDataQueue();
-		while (gl_qDayLine.Size() > 0) gl_qDayLine.PopData();
+		bool succeed = true;
+		CDayLineWebDataPtr pData;
+		while (succeed) succeed = gl_qDayLine.try_dequeue(pData);
 	}
 
 private:

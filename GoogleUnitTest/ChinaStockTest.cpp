@@ -1339,18 +1339,21 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaStockTest, TestRTDataDeque) {
-		// 此三个函数是具备同步机制的，这里没有进行测试
 		auto pData = make_shared<CWebRTData>();
 		pData->SetSymbol(_T("600008.SS"));
+		auto pData1 = make_shared<CWebRTData>();
+		pData1->SetSymbol(_T("600009.SS"));
 		CChinaStock stock;
 		EXPECT_EQ(stock.GetRTDataQueueSize(), 0);
 		stock.PushRTData(pData);
 		EXPECT_EQ(stock.GetRTDataQueueSize(), 1);
+		stock.PushRTData(pData1);
+		EXPECT_EQ(stock.GetRTDataQueueSize(), 2);
 		pData = stock.GetRTDataAtHead();
-		EXPECT_EQ(stock.GetRTDataQueueSize(), 1);
+		EXPECT_EQ(stock.GetRTDataQueueSize(), 2);
 		EXPECT_STREQ(pData->GetSymbol(), _T("600008.SS"));
 		CWebRTDataPtr pData2 = stock.PopRTData();
-		EXPECT_EQ(stock.GetRTDataQueueSize(), 0);
+		EXPECT_EQ(stock.GetRTDataQueueSize(), 1);
 	}
 
 	TEST_F(CChinaStockTest, TestGetGuadan) {

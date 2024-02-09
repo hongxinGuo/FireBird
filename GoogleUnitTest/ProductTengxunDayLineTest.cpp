@@ -53,8 +53,9 @@ namespace FireBirdTest {
 		pData->SetStockCode(_T("600601.SS"));
 		tengxunDayLine.ParseAndStoreWebData(pData);
 
-		EXPECT_EQ(gl_qDayLine.Size(), 1);
-		const auto pTengxunDayLine = gl_qDayLine.PopData();
+		EXPECT_EQ(gl_qDayLine.size_approx(), 1);
+		CDayLineWebDataPtr pTengxunDayLine;
+		gl_qDayLine.try_dequeue(pTengxunDayLine);
 		EXPECT_EQ(pTengxunDayLine->GetStockCode(), _T("600601.SS"));
 
 		const auto vDayLine = pTengxunDayLine->GetProcessedDayLine();

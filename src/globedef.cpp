@@ -72,7 +72,7 @@ bool gl_bWorldMarketResetting = false; // 世界市场重启中
 
 // 处理后的数据
 ReaderWriterQueue<CWebRTDataPtr> gl_qChinaMarketRTData(10000); // 中国市场新浪实时数据队列。
-CTemplateMutexAccessQueue<CDayLineWebData> gl_qDayLine; // 日线数据
+ReaderWriterQueue<CDayLineWebDataPtr> gl_qDayLine(1000); // 日线数据
 
 // ChinaMarket处理的数据
 CContainerChinaStock gl_dataContainerChinaStock;

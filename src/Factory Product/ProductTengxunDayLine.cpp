@@ -21,6 +21,7 @@ CString CProductTengxunDayLine::CreateMessage() {
 	return m_strInquiryFunction; // 腾讯日线数据的申请字符串目前由CTengxunDayLineDataSource类完成，本Product无需动作。
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // {
 // "code":0,
@@ -46,7 +47,7 @@ CString CProductTengxunDayLine::CreateMessage() {
 // 尚未完毕时将日线数据暂存于本Product的静态数据内，当完毕时方将所有数据提交给gl_pChinaMarket.
 // 1991年左右的腾讯日线有周六的，需要清除掉。
 // 
-////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pDayLineWebData = ParseTengxunDayLine(pWebData);
 	// 以下操作静态变量，需要使用criticalSection，同时仅允许一个线程进入
@@ -65,7 +66,7 @@ void CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pDayLineWebData->AppendDayLine(pData);
 		}
 		ResetStaticVariable();
-		gl_qDayLine.PushData(pDayLineWebData);
+		gl_qDayLine.enqueue(pDayLineWebData);
 	}
 	s_semaphoreTransferData.release();
 }

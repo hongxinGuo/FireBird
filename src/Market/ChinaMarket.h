@@ -174,8 +174,7 @@ public:
 
 	// 股票历史数据处理
 
-	bool IsDayLineNeedProcess();
-
+	static bool IsDayLineNeedProcess() { return gl_qDayLine.size_approx() > 0; }
 	bool IsSelectedStockLoaded() const noexcept { return m_fSelectedStockLoaded; }
 	void SetSelectedStockLoaded(const bool fLoad) noexcept { m_fSelectedStockLoaded = fLoad; }
 

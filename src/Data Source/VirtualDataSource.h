@@ -2,7 +2,8 @@
 
 #include"afxinet.h"
 
-#include"TemplateMutexAccessQueue.h"
+#include"readerwriterqueue.h"
+using namespace moodycamel;
 
 #include"VirtualWebProduct.h"
 
@@ -98,10 +99,14 @@ public:
 	bool HaveInquiry() const { return !m_qProduct.empty(); }
 	void DiscardAllInquiry() { while (m_qProduct.size() > 0) m_qProduct.pop(); }
 
-	void StoreReceivedData(const CWebDataPtr& pData) noexcept { m_qReceivedData.PushData(pData); }
-	CWebDataPtr GetReceivedData() noexcept { return m_qReceivedData.PopData(); }
-	size_t GetReceivedDataSize() noexcept { return m_qReceivedData.Size(); }
-	bool HaveReceivedData() { return !m_qReceivedData.Empty(); }
+	void StoreReceivedData(const CWebDataPtr& pData) noexcept { m_qReceivedData.enqueue(pData); }
+	CWebDataPtr GetReceivedData() noexcept {
+		CWebDataPtr pData = nullptr;
+		m_qReceivedData.try_dequeue(pData);
+		return pData;
+	}
+	size_t GetReceivedDataSize() const noexcept { return m_qReceivedData.size_approx(); }
+	bool HaveReceivedData() const { return m_qReceivedData.size_approx() > 0; }
 	void DiscardReceivedData() { while (GetReceivedDataSize() > 0) GetReceivedData(); }
 
 	bool IsInquiring() const noexcept { return m_fInquiring; }
@@ -151,7 +156,7 @@ public:
 protected:
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct;
-	CTemplateMutexAccessQueue<CWebData> m_qReceivedData; // 网络数据暂存队列
+	ReaderWriterQueue<CWebDataPtr> m_qReceivedData; // 网络数据暂存队列
 
 	shared_ptr<CInternetSession> m_pSession;
 	CHttpFile* m_pFile; // 网络文件指针

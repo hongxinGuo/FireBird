@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "WebRTData.h"
+
 //成交的具体情况，分为三种：买，进攻性买，强买，。买是价位为卖一位置；进攻性买价位是至少卖二，且成交价位高于卖一低于卖二；
 //强买价位至少卖三，且成交价位至少高于卖二。判断卖与之相类似。
 enum {
@@ -18,8 +20,6 @@ enum {
 
 #include"VirtualStock.h"
 
-#include"PriorityQueueWebRTData.h"
-
 #include"SetDayLineBasicInfo.h"
 #include"SetDayLineExtendInfo.h"
 #include"SetWeekLineBasicInfo.h"
@@ -32,10 +32,14 @@ enum {
 #include"ContainerChinaWeekLine.h"
 #include"ContainerChinaDayLine.h"
 
+#include"readerwriterqueue.h"
+using namespace moodycamel;
+
 class CChinaStock;
 using CChinaStockPtr = shared_ptr<CChinaStock>;
 
 using std::map;
+#include <queue>
 using std::queue;
 
 // 证券名称数据包
@@ -333,10 +337,14 @@ public:
 	virtual void ReportGuadanTransaction();
 	virtual void ReportGuadan();
 
-	void PushRTData(const CWebRTDataPtr& pData) { m_qRTData.PushData(pData); }
-	CWebRTDataPtr PopRTData() { return m_qRTData.PopData(); }
-	CWebRTDataPtr GetRTDataAtHead() const { return m_qRTData.GetHead(); }
-	auto GetRTDataQueueSize() { return m_qRTData.Size(); }
+	void PushRTData(const CWebRTDataPtr& pData) { m_qRTData.enqueue(pData); }
+	CWebRTDataPtr PopRTData() {
+		CWebRTDataPtr pData = nullptr;
+		m_qRTData.try_dequeue(pData);
+		return pData;
+	}
+	CWebRTDataPtr GetRTDataAtHead() const { return *m_qRTData.peek(); }
+	auto GetRTDataQueueSize() const { return m_qRTData.size_approx(); }
 	// 清空存储实时数据的队列
 	void ClearRTDataDeque();
 
@@ -529,7 +537,7 @@ protected:
 
 	queue<COneDealPtr> m_qDeal; // 具体成交信息队列（目前尚未使用）。
 
-	CPriorityQueueWebRTData m_qRTData; // 采用优先队列存储实时数据，这样可以保证多源。
+	ReaderWriterQueue<CWebRTDataPtr> m_qRTData; // 采用优先队列存储实时数据，这样可以保证多源。
 	CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
 
 	// 日线容器

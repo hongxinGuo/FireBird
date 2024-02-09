@@ -1211,14 +1211,10 @@ CChinaStockPtr CChinaMarket::GetCurrentSelectedStock() {
 	return gl_dataContainerChinaStock.GetStock(0);
 }
 
-bool CChinaMarket::IsDayLineNeedProcess() {
-	if (gl_qDayLine.Size() > 0) return true;
-	return false;
-}
-
 bool CChinaMarket::ProcessDayLine() {
-	while (gl_qDayLine.Size() > 0) {
-		CDayLineWebDataPtr pData = gl_qDayLine.PopData();
+	CDayLineWebDataPtr pData;
+	bool succeed = gl_qDayLine.try_dequeue(pData);
+	while (succeed) {
 		ASSERT(gl_dataContainerChinaStock.IsSymbol(pData->GetStockCode()));
 		const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(pData->GetStockCode());
 		pStock->UpdateDayLine(pData->GetProcessedDayLine()); // pData的日线数据是正序的，最新日期的在最后面。
@@ -1227,7 +1223,7 @@ bool CChinaMarket::ProcessDayLine() {
 		pStock->SetDayLineLoaded(true);
 		pStock->SetDayLineNeedSaving(true); // 设置存储日线标识
 
-		pData = nullptr;
+		succeed = gl_qDayLine.try_dequeue(pData);
 	}
 	return true;
 }

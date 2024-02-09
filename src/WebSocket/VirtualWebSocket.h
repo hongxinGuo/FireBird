@@ -10,7 +10,9 @@
 #pragma once
 
 #include <ixwebsocket/IXWebSocket.h>
-#include"TemplateMutexAccessQueue.h"
+
+#include"readerwriterqueue.h"
+using namespace moodycamel;
 
 using std::string;
 using std::map;
@@ -72,12 +74,16 @@ public:
 
 	void PushData(string data) {
 		const auto pData = make_shared<string>(data);
-		m_qWebSocketData.PushData(pData);
+		m_qWebSocketData.enqueue(pData);
 	}
 
-	void PushData(const shared_ptr<string>& pData) { m_qWebSocketData.PushData(pData); }
-	shared_ptr<string> PopData() { return m_qWebSocketData.PopData(); }
-	size_t DataSize() { return m_qWebSocketData.Size(); }
+	void PushData(const shared_ptr<string>& pData) { m_qWebSocketData.enqueue(pData); }
+	shared_ptr<string> PopData() {
+		shared_ptr<string> pString;
+		m_qWebSocketData.try_dequeue(pString);
+		return pString;
+	}
+	size_t DataSize() const { return m_qWebSocketData.size_approx(); }
 
 public:
 	vectorString m_vCurrentInquireSymbol;
@@ -96,7 +102,7 @@ protected:
 
 	time_t m_HeartbeatTime{0}; // 最新心跳时间， UTC制式
 
-	CTemplateMutexAccessQueue<string> m_qWebSocketData; // 接收到的WebSocket数据
+	ReaderWriterQueue<shared_ptr<string>> m_qWebSocketData; // 接收到的WebSocket数据
 };
 
 using CVirtualWebSocketPtr = shared_ptr<CVirtualWebSocket>;

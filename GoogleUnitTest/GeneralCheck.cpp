@@ -185,8 +185,9 @@ namespace FireBirdTest {
 
 	void DataContainerCheck() {
 		CWebRTDataPtr pRTData;
+		CDayLineWebDataPtr pData;
 		EXPECT_FALSE(gl_qChinaMarketRTData.try_dequeue(pRTData));
-		EXPECT_EQ(gl_qDayLine.Size(), 0);
+		EXPECT_FALSE(gl_qDayLine.try_dequeue(pData));
 	}
 
 	void WebSocketCheck() {
