@@ -200,9 +200,6 @@ public:
 	void SetUpdatedDateFor10DaysRS(const long lDate) noexcept { m_lUpdatedDateFor10DaysRS = lDate; }
 
 	//处理实时股票变化等
-	void DistributeSinaRTDataToStock();
-	void DistributeTengxunRTDataToStock();
-	void DistributeNeteaseRTDataToStock();
 	bool DistributeRTDataToStock(const CWebRTDataPtr& pRTData);
 
 	void ResetCurrentEffectiveRTDataRatio() noexcept {

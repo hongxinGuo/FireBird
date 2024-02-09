@@ -18,7 +18,7 @@
 /// 此线程与计算实时数据的线程互斥
 /// 
 /// </summary>
-/// <param name=></param>
+/// <param></param>
 /// <returns></returns>
 UINT ThreadSaveTempRTData() {
 	gl_UpdateChinaMarketDB.acquire();

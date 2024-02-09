@@ -52,9 +52,9 @@ namespace FireBirdTest {
 		neteaseRT.ParseAndStoreWebData(pData);
 
 		CWebRTDataPtr pNeteaseRT;
-		EXPECT_TRUE(gl_qNeteaseRT.try_dequeue(pNeteaseRT));
+		EXPECT_TRUE(gl_qChinaMarketRTData.try_dequeue(pNeteaseRT));
 		EXPECT_EQ(pNeteaseRT->GetSymbol(), _T("601872.SS"));
-		EXPECT_TRUE(gl_qNeteaseRT.try_dequeue(pNeteaseRT));
+		EXPECT_TRUE(gl_qChinaMarketRTData.try_dequeue(pNeteaseRT));
 		EXPECT_EQ(pNeteaseRT->GetSymbol(), _T("602872.SS"));
 	}
 

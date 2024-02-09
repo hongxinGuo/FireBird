@@ -389,75 +389,6 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 // 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
 //
 // 此函数由工作线程调用，注意同步问题。
-// 由于新浪实时数据可能由多个数据申请线程申请，执行此函数时不允许同时将实时数据加入队列中，故而采用互斥。
-//
-///////////////////////////////////////////////////////////////////////////////////////////
-void CChinaMarket::DistributeSinaRTDataToStock() {
-	CWebRTDataPtr pRTData;
-	long lTotalNumber = 0;
-	bool succeed = gl_qSinaRT.try_dequeue(pRTData);
-	while (succeed) {
-		DistributeRTDataToStock(pRTData);
-		m_lRTDataReceivedInCurrentMinute++;
-		lTotalNumber++;
-		succeed = gl_qSinaRT.try_dequeue(pRTData);
-	}
-	if (lTotalNumber > 0) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////
-//
-// 处理实时数据等，至少每三秒执行一次。
-// 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。
-// 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
-//
-// 此函数由工作线程调用，注意同步问题。
-// 由于腾讯实时数据可能由多个数据申请线程申请，执行此函数时不允许同时将实时数据加入队列中，故而采用互斥。
-//
-//
-///////////////////////////////////////////////////////////////////////////////////////////
-void CChinaMarket::DistributeTengxunRTDataToStock() {
-	CWebRTDataPtr pRTData;
-	long lTotalNumber = 0;
-	bool succeed = gl_qTengxunRT.try_dequeue(pRTData);
-	while (succeed) {
-		DistributeRTDataToStock(pRTData);
-		m_lRTDataReceivedInCurrentMinute++;
-		lTotalNumber++;
-		succeed = gl_qTengxunRT.try_dequeue(pRTData);
-	}
-	if (lTotalNumber > 0) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////
-//
-// 处理实时数据等，至少每三秒执行一次。
-// 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。
-// 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
-//
-// 此函数由工作线程调用，注意同步问题。
-//
-///////////////////////////////////////////////////////////////////////////////////////////
-void CChinaMarket::DistributeNeteaseRTDataToStock() {
-	CWebRTDataPtr pRTData;
-	long lTotalNumber = 0;
-	bool succeed = gl_qNeteaseRT.try_dequeue(pRTData);
-	while (succeed) {
-		DistributeRTDataToStock(pRTData);
-		m_lRTDataReceivedInCurrentMinute++;
-		lTotalNumber++;
-		succeed = gl_qNeteaseRT.try_dequeue(pRTData);
-	}
-	if (lTotalNumber > 0) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////
-//
-// 处理实时数据等，至少每三秒执行一次。
-// 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。
-// 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
-//
-// 此函数由工作线程调用，注意同步问题。
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -556,21 +487,26 @@ void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
 	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, GetNextSecond(lCurrentTime)); // 每秒执行一次
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////
+//
+// 处理实时数据等，至少每三秒执行一次。
+// 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。
+// 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
+//
+// 此函数由工作线程调用，注意同步问题。
+// 由于新浪实时数据可能由多个数据申请线程申请，执行此函数时不允许同时将实时数据加入队列中，故而采用互斥。
+//
+///////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::DistributeRTData() {
-	switch (gl_systemConfiguration.GetRTServer()) {
-	case 0: // Sina RT Data server
-		DistributeSinaRTDataToStock();
-		break;
-	case 1: // Netease RT data server
-		DistributeNeteaseRTDataToStock();
-		break;
-	case 2: // Tengxun RT data server
-		DistributeTengxunRTDataToStock();
-		break;
-	default:
-		ASSERT(0); // ERROR
-		break;
+	CWebRTDataPtr pRTData;
+	bool succeed = gl_qChinaMarketRTData.try_dequeue(pRTData);
+	const bool queueNotEmpty = succeed;
+	while (succeed) {
+		DistributeRTDataToStock(pRTData);
+		m_lRTDataReceivedInCurrentMinute++;
+		succeed = gl_qChinaMarketRTData.try_dequeue(pRTData);
 	}
+	if (queueNotEmpty) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 }
 
 void CChinaMarket::CalculateRTData() {

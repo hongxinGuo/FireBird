@@ -843,6 +843,7 @@ void CMainFrame::OnStopUpdateDayLine() {
 void CMainFrame::OnUsingSinaRealtimeDataServer() {
 	gl_systemConfiguration.SetChinaMarketRealtimeServer(0);
 	gl_systemConfiguration.UsingSinaRealtimeServer();
+	gl_SystemData.ClearChinaMarketRTDataQueue();
 }
 
 void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
@@ -857,6 +858,7 @@ void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
 void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
 	gl_systemConfiguration.SetChinaMarketRealtimeServer(1);
 	gl_systemConfiguration.UsingNeteaseRealtimeServer();
+	gl_SystemData.ClearChinaMarketRTDataQueue();
 }
 
 void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
@@ -871,6 +873,7 @@ void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
 void CMainFrame::OnUsingTengxunRealtimeDataServer() {
 	gl_systemConfiguration.SetChinaMarketRealtimeServer(2);
 	gl_systemConfiguration.UsingTengxunRealtimeServer();
+	gl_SystemData.ClearChinaMarketRTDataQueue();
 }
 
 void CMainFrame::OnUpdateUsingTengxunRealtimeDataServer(CCmdUI* pCmdUI) {

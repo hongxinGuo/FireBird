@@ -35,7 +35,7 @@ void CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseSinaRTData(pWebData);
 
 	for (const auto& pRTData : *pvWebRTData) {
-		gl_qSinaRT.try_enqueue(pRTData);// 将此实时数据指针存入实时数据队列
+		gl_qChinaMarketRTData.enqueue(pRTData);// 将此实时数据指针存入实时数据队列
 	}
 
 	//ParseSinaRTData2(pWebData); // 使用工作线程并行解析

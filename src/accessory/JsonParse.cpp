@@ -143,7 +143,7 @@ UINT ThreadReadOneSinaRTData(const CWebRTDataPtr& pRTData, CString strData) {
 	try {
 		const string_view svData = strData.GetBuffer();
 		pRTData->ReadSinaData(svData);
-		gl_qSinaRT.try_enqueue(pRTData);
+		gl_qChinaMarketRTData.enqueue(pRTData);
 	}
 	catch (exception&) {
 		ASSERT(0);

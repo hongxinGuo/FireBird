@@ -44,9 +44,7 @@ extern bool gl_bChinaMarketResetting; // 中国市场重启中
 extern bool gl_bWorldMarketResetting; // 世界市场重启中
 
 // 处理后的各种数据
-extern ReaderWriterQueue<CWebRTDataPtr> gl_qSinaRT; // 中国市场新浪实时数据队列。
-extern ReaderWriterQueue<CWebRTDataPtr> gl_qNeteaseRT; // 中国市场网易实时数据队列。
-extern ReaderWriterQueue<CWebRTDataPtr> gl_qTengxunRT; // 中国市场腾讯实时数据队列。
+extern ReaderWriterQueue<CWebRTDataPtr> gl_qChinaMarketRTData; // 中国市场新浪实时数据队列。
 extern CTemplateMutexAccessQueue<CDayLineWebData> gl_qDayLine; // 日线数据
 
 // ChinaMarket处理的数据
@@ -121,12 +119,14 @@ public:
 		return p;
 	}
 
-	static void ClearRTDataQueue() {
+	static void ClearChinaMarketRTDataQueue() {
 		bool succeed = true;
 		CWebRTDataPtr pRTData;
-		while (succeed) succeed = gl_qSinaRT.try_dequeue(pRTData);
-		while (succeed) succeed = gl_qNeteaseRT.try_dequeue(pRTData);
-		while (succeed) succeed = gl_qTengxunRT.try_dequeue(pRTData);
+		while (succeed) succeed = gl_qChinaMarketRTData.try_dequeue(pRTData);
+	}
+
+	static void ClearRTDataQueue() {
+		ClearChinaMarketRTDataQueue();
 		while (gl_qDayLine.Size() > 0) gl_qDayLine.PopData();
 	}
 

@@ -26,7 +26,7 @@ void CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseTengxunRTData(pWebData);
 
 	for (const auto& pRTData : *pvWebRTData) {
-		gl_qTengxunRT.try_enqueue(pRTData);// 将此实时数据指针存入实时数据队列
+		gl_qChinaMarketRTData.enqueue(pRTData);// 将此实时数据指针存入实时数据队列
 	}
 }
 
