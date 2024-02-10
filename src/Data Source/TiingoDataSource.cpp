@@ -64,7 +64,7 @@ void CTiingoDataSource::InquireTiingo() {
 bool CTiingoDataSource::InquireCompanySymbol() {
 	if (!IsInquiring() && IsUpdateStockSymbol()) {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_);
-		m_qProduct.push(p);
+		StoreInquiry(p);
 		SetInquiring(true);
 		gl_systemMessage.PushInformationMessage(_T("Tiingo stock symbol已更新"));
 		return true;
@@ -75,7 +75,7 @@ bool CTiingoDataSource::InquireCompanySymbol() {
 bool CTiingoDataSource::InquireCryptoSymbol() {
 	if (!IsInquiring() && IsUpdateCryptoSymbol()) {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_);
-		m_qProduct.push(p);
+		StoreInquiry(p);
 		SetInquiring(true);
 		gl_systemMessage.PushInformationMessage(_T("Tiingo crypto symbol已更新"));
 
@@ -110,7 +110,7 @@ bool CTiingoDataSource::InquireDayLine() {
 			fHaveInquiry = true;
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, STOCK_PRICE_CANDLES_);
 			p->SetIndex(gl_dataContainerFinnhubStock.GetOffset(pStock->GetSymbol()));
-			m_qProduct.push(p);
+			StoreInquiry(p);
 			//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo Stock日线：") + pStock->GetSymbol());
 			SetInquiring(true);
 			TRACE("申请Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());

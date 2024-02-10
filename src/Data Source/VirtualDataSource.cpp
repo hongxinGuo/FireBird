@@ -81,7 +81,8 @@ void CVirtualDataSource::GetWebDataAndProcessIt() {
 	counter.start();
 	GetWebData();
 	if (!IsWebError()) {
-		ProcessWebDataReceived();
+		if (IsEnable()) ProcessWebDataReceived(); // 只有当本服务器正在使用时，才处理接收到的网络数据
+		else DiscardReceivedData(); // 否则抛弃掉
 	}
 	SetWorkingThreadRunning(false);
 	counter.stop();
@@ -140,7 +141,8 @@ void CVirtualDataSource::GetWebDataImp() {
 	if (!IsWebError()) {
 		VerifyDataLength();
 		const auto pWebData = CreateWebDataAfterSucceedReading();
-		StoreReceivedData(pWebData);
+		// 网络数据服务器正在使用时就可能被中止，故而存储当前数据时需要判断
+		if (IsEnable()) StoreReceivedData(pWebData); // 当变更服务器（如中国市场的实时数据）时，要保证抛弃掉被变更服务器当前接收到的数据
 		ResetBuffer();
 	}
 	else { // error handling

@@ -107,7 +107,10 @@ public:
 	}
 	size_t GetReceivedDataSize() const noexcept { return m_qReceivedData.size_approx(); }
 	bool HaveReceivedData() const { return m_qReceivedData.size_approx() > 0; }
-	void DiscardReceivedData() { while (GetReceivedDataSize() > 0) GetReceivedData(); }
+	void DiscardReceivedData() {
+		CWebDataPtr pData;
+		while (m_qReceivedData.try_dequeue(pData));
+	}
 
 	bool IsInquiring() const noexcept { return m_fInquiring; }
 	void SetInquiring(const bool fFlag) noexcept { m_fInquiring = fFlag; }
@@ -182,7 +185,7 @@ protected:
 
 	long long m_llLastTimeTickCount;
 
-	bool m_fEnable; // 允许执行标识
+	atomic_bool m_fEnable; // 允许执行标识
 	atomic_bool m_fInquiring;
 	atomic_bool m_bIsWorkingThreadRunning;
 
