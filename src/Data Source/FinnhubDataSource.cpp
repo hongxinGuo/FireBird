@@ -538,7 +538,7 @@ bool CFinnhubDataSource::InquireRTQuote() {
 		m_lCurrentRTDataQuotePos++;
 		if (m_lCurrentRTDataQuotePos == gl_dataContainerFinnhubStock.Size()) m_lCurrentRTDataQuotePos = 0;
 		gl_pWorldMarket->SetCurrentFunction(_T("Finnhub stock RT: ") + gl_dataContainerFinnhubStock.GetStock(m_lCurrentRTDataQuotePos)->GetSymbol());
-		TRACE("申请%s实时数据\n", gl_dataContainerFinnhubStock.GetStock(m_lCurrentRTDataQuotePos)->GetSymbol().GetBuffer());
+		//TRACE("申请%s实时数据\n", gl_dataContainerFinnhubStock.GetStock(m_lCurrentRTDataQuotePos)->GetSymbol().GetBuffer());
 	}
 	return true;
 }
@@ -629,7 +629,7 @@ bool CFinnhubDataSource::InquireEPSSurprise() {
 			SetInquiring(true);
 			gl_dataContainerFinnhubStock.GetStock(m_lCurrentUpdateEPSSurprisePos)->SetEPSSurpriseUpdated(true);
 			gl_pWorldMarket->SetCurrentFunction(_T("EPS surprise:") + pStock->GetSymbol());
-			TRACE("申请%s EPS Surprise数据\n", gl_dataContainerFinnhubStock.GetStock(m_lCurrentUpdateEPSSurprisePos)->GetSymbol().GetBuffer());
+			//TRACE("申请%s EPS Surprise数据\n", gl_dataContainerFinnhubStock.GetStock(m_lCurrentUpdateEPSSurprisePos)->GetSymbol().GetBuffer());
 		}
 		else {
 			m_fInquiringFinnhubStockEPSSurprise = false;
@@ -703,7 +703,7 @@ bool CFinnhubDataSource::InquireForexDayLine() {
 			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub Forex日线：") + pForexSymbol->GetSymbol());
 			SetInquiring(true);
 			gl_pWorldMarket->SetCurrentFunction(_T("日线:") + pForexSymbol->GetSymbol());
-			TRACE("申请%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
+			//TRACE("申请%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
 		}
 		else {
 			m_fInquiringFinnhubForexDayLine = false;

@@ -250,40 +250,6 @@ void CVirtualDataSource::XferReadingToBuffer(long lPosition, UINT uByteRead) {
 	memcpy(p, m_dataBuffer, uByteRead);
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 使用duff's device逐字符拷贝
-//
-// 这种方法比memcpy慢15倍。
-//
-/////////////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataSource::XferReadingToBuffer2(long lPosition, UINT uByteRead) {
-	auto round = uByteRead / 8;
-	char* pDest = &m_sBuffer.at(lPosition);
-	const char* pSrc = m_dataBuffer;
-	switch (uByteRead % 8) {
-	case 0:
-		while (round-- > 0) {
-			*pDest++ = *pSrc++;
-		case 7:
-			*pDest++ = *pSrc++;
-		case 6:
-			*pDest++ = *pSrc++;
-		case 5:
-			*pDest++ = *pSrc++;
-		case 4:
-			*pDest++ = *pSrc++;
-		case 3:
-			*pDest++ = *pSrc++;
-		case 2:
-			*pDest++ = *pSrc++;
-		case 1:
-			*pDest++ = *pSrc++;
-		}
-	default: ;
-	}
-}
-
 bool CVirtualDataSource::IncreaseBufferSizeIfNeeded(long lIncreaseSize) {
 	if (m_sBuffer.size() < (m_lByteRead + 128 * 1024)) {
 		// 数据可存储空间不到128K时

@@ -44,13 +44,13 @@ void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pForexSymbol->UpdateDayLine(*pvDayLine);
 		pForexSymbol->SetDayLineNeedSaving(true);
 		pForexSymbol->SetUpdateProfileDB(true);
-		TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
+		//TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
 		return;
 	}
 	else {
 		pForexSymbol->SetDayLineNeedSaving(false);
 		pForexSymbol->SetUpdateProfileDB(false);
-		TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
+		//TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
 	}
 }
 

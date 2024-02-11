@@ -113,7 +113,7 @@ bool CTiingoDataSource::InquireDayLine() {
 			StoreInquiry(p);
 			//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo Stock日线：") + pStock->GetSymbol());
 			SetInquiring(true);
-			TRACE("申请Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
+			//TRACE("申请Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		else {
 			SetUpdateDayLine(false);

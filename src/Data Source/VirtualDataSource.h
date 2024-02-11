@@ -57,7 +57,6 @@ public:
 	long QueryDataLength();
 	virtual UINT ReadWebFileOneTime(); // 无法测试，故而虚拟化后使用Mock类。
 	void XferReadingToBuffer(long lPosition, UINT uByteRead);
-	void XferReadingToBuffer2(long lPosition, UINT uByteRead);
 	bool IncreaseBufferSizeIfNeeded(long lIncreaseSize = 1024 * 1024);
 	virtual CWebDataPtr CreateWebDataAfterSucceedReading();
 

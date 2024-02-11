@@ -57,13 +57,13 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pStock->UpdateDayLine(*pvDayLine);
 		pStock->SetDayLineNeedSaving(true);
 		pStock->SetUpdateProfileDB(true);
-		TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
+		//TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
 		return;
 	}
 	else {
 		pStock->SetDayLineNeedSaving(false);
 		pStock->SetUpdateProfileDB(false);
-		TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
+		//TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
 	}
 }
 
