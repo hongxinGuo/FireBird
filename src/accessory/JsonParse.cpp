@@ -123,7 +123,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData) {
 	try {
 		pWebData->ResetCurrentPos();
 		while (!pWebData->IsLastDataParagraph()) {
-			auto pRTData = make_shared<CWebRTData>();
+			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 			const string_view svData = pWebData->GetCurrentSinaData();
 			pRTData->ReadSinaData(svData);
 			pvWebRTData->push_back(pRTData);
@@ -278,7 +278,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(const CWebDataPtr& pWebData
 		pWebData->ResetCurrentPos();
 		if (IsTengxunRTDataInvalid(pWebData)) return pvWebRTData; // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
 		while (!pWebData->IsLastDataParagraph()) {
-			auto pRTData = make_shared<CWebRTData>();
+			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 			const string_view svData = pWebData->GetCurrentTengxunData();
 			pRTData->ReadTengxunData(svData);
 			pvWebRTData->push_back(pRTData);
@@ -339,12 +339,12 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 		const simdjson::padded_string jsonPadded(svData);
 		ondemand::parser parser;
 		ondemand::document doc = parser.iterate(jsonPadded);
-		// 不使用索引strStockCode找到日线数组的方法
+		ondemand::array dayArray = doc["data"][strStockCode]["day"].get_array(); // 使用索引strStockCode找到日线数组
+		// 以下为不使用索引strStockCode找到日线数组的方法
 		//ondemand::value data = doc["data"];
 		//ondemand::field field = *data.get_object().begin();
 		//ondemand::value stock = field.value();
 		//ondemand::array dayArray = stock["day"].get_array();
-		ondemand::array dayArray = doc["data"][strStockCode]["day"].get_array(); // 使用strStockCode找到日线数组
 		for (ondemand::value dayLine : dayArray) {
 			auto pDayLine = make_shared<CDayLine>();
 			pDayLine->SetStockSymbol(strStockSymbol);
@@ -352,7 +352,8 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 			ondemand::array_iterator it = dayLine.get_array().begin();
 			ondemand::value item = *it;
 			sv = jsonGetStringView(item);
-			sscanf_s(sv.data(), _T("%4d-%02d-%02d"), &year, &month, &day);
+			string str1(sv.data(), sv.length()); // 这里需要转换一下，直接使用string_view会导致内存溢出
+			sscanf_s(str1.data(), _T("%4d-%02d-%02d"), &year, &month, &day);
 			pDayLine->SetDate(year * 10000 + month * 100 + day);
 			item = *++it;
 			sv = jsonGetStringView(item);

@@ -210,8 +210,8 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(const shared_ptr<s
 		}
 	}
 	catch (simdjson_error& error) {
-		ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), error.what(), s_docFinnhubWebSocket.current_location().value());
-		//ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), error.what());
+		//ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), error.what(), s_docFinnhubWebSocket.current_location().value());
+		ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), error.what());
 		return false;
 	}
 

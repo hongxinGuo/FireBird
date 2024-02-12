@@ -5,17 +5,14 @@
 
 CSystemDeque::CSystemDeque() {}
 
-CSystemDeque::~CSystemDeque() {
-	m_dequeMessage.clear();
-}
+CSystemDeque::~CSystemDeque() {}
 
 CSystemMessage::~CSystemMessage() = default;
 
 void CSystemDeque::Display(COutputList* pOutputList, const CString& strTime) {
 	const size_t lTotal = Size();
 	for (int i = 0; i < lTotal; i++) {
-		CString str = PopMessage();
-		CString str2 = strTime + _T(": ") + str;
+		CString str2 = strTime + _T(": ") + PopMessage();
 		SysCallOutputListAddString(pOutputList, str2);
 	}
 }
@@ -25,24 +22,19 @@ void CSystemDeque::SysCallOutputListAddString(COutputList* pOutputList, const CS
 }
 
 void CSystemDeque::PushMessage(const CString& str) {
-	m_mutex.lock();
-	m_dequeMessage.push_back(str);
-	m_mutex.unlock();
+	m_queueMessage.enqueue(str.GetString());
 }
 
 CString CSystemDeque::PopMessage() {
-	m_mutex.lock();
-	CString str = m_dequeMessage.front();
-	m_dequeMessage.pop_front();
-	m_mutex.unlock();
-	return str; // 只能从这里返回
+	string str;
+	if (m_queueMessage.try_dequeue(str)) {
+		return str.c_str();
+	}
+	else return _T("");
 }
 
-size_t CSystemDeque::Size() {
-	m_mutex.lock();
-	const size_t lCount = m_dequeMessage.size();
-	m_mutex.unlock();
-	return lCount;
+size_t CSystemDeque::Size() const {
+	return m_queueMessage.size_approx();
 }
 
 CSystemMessage::CSystemMessage() {

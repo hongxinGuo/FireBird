@@ -503,9 +503,12 @@ void CChinaMarket::DistributeRTData() {
 	const bool queueNotEmpty = succeed;
 	while (succeed) {
 		DistributeRTDataToStock(pRTData);
+		pRTData = nullptr;
 		m_lRTDataReceivedInCurrentMinute++;
 		succeed = gl_qChinaMarketRTData.try_dequeue(pRTData);
 	}
+	ASSERT(!gl_qChinaMarketRTData.try_dequeue(pRTData));
+	pRTData = nullptr;
 	if (queueNotEmpty) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 }
 
