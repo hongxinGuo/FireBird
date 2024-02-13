@@ -89,7 +89,7 @@ bool CWebRTData::CheckSinaRTDataActive() {
 // 出现exception时，由上级调用函数处理
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CWebRTData::ReadSinaData(const string_view& svData) {
+void CWebRTData::ParseSinaData(const string_view& svData) {
 	long lCurrentPos = 11; // 跨过字符串："var hq_str_"
 	const string_view svStockSymbol(svData.data() + lCurrentPos, 8);
 	m_strSymbol = XferSinaToStandard(svStockSymbol);
@@ -239,7 +239,7 @@ void CWebRTData::ReadSinaData(const string_view& svData) {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-void CWebRTData::ReadTengxunData(string_view svData) {
+void CWebRTData::ParseTengxunData(string_view svData) {
 	long lTemp;
 	float fTemp = 0.0;
 	CString strTengxunStockCode;

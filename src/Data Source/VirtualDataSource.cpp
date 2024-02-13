@@ -84,8 +84,8 @@ void CVirtualDataSource::GetWebDataAndProcessIt() {
 		if (IsEnable()) ProcessWebDataReceived(); // 只有当本服务器正在使用时，才处理接收到的网络数据
 		else DiscardReceivedData(); // 否则抛弃掉
 	}
-	SetWorkingThreadRunning(false);
 	counter.stop();
+	SetWorkingThreadRunning(false);
 	SetCurrentInquiryTime(counter.GetElapsedMillisecond());
 }
 

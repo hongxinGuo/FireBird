@@ -507,7 +507,6 @@ void CChinaMarket::DistributeRTData() {
 		m_lRTDataReceivedInCurrentMinute++;
 		succeed = gl_qChinaMarketRTData.try_dequeue(pRTData);
 	}
-	ASSERT(!gl_qChinaMarketRTData.try_dequeue(pRTData));
 	pRTData = nullptr;
 	if (queueNotEmpty) SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 }

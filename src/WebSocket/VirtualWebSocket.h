@@ -11,7 +11,7 @@
 
 #include <ixwebsocket/IXWebSocket.h>
 
-#include"readerwriterqueue.h"
+#include"concurrentqueue.h"
 using namespace moodycamel;
 
 using std::string;
@@ -102,7 +102,7 @@ protected:
 
 	time_t m_HeartbeatTime{0}; // 最新心跳时间， UTC制式
 
-	ReaderWriterQueue<shared_ptr<string>> m_qWebSocketData; // 接收到的WebSocket数据
+	ConcurrentQueue<shared_ptr<string>> m_qWebSocketData; // 接收到的WebSocket数据
 };
 
 using CVirtualWebSocketPtr = shared_ptr<CVirtualWebSocket>;

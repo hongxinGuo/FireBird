@@ -1349,8 +1349,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetRTDataQueueSize(), 1);
 		stock.PushRTData(pData1);
 		EXPECT_EQ(stock.GetRTDataQueueSize(), 2);
-		pData = stock.GetRTDataAtHead();
-		EXPECT_EQ(stock.GetRTDataQueueSize(), 2);
 		EXPECT_STREQ(pData->GetSymbol(), _T("600008.SS"));
 		CWebRTDataPtr pData2 = stock.PopRTData();
 		EXPECT_EQ(stock.GetRTDataQueueSize(), 1);

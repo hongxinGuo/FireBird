@@ -418,10 +418,10 @@ namespace FireBirdTest {
 		case 36: // 有错误，前缀出错
 		case 37: // 有错误，前缀出错
 		case 38: // 有错误，前缀出错
-			EXPECT_THROW(m_RTData.ReadSinaData(svData), std::exception);
+			EXPECT_THROW(m_RTData.ParseSinaData(svData), std::exception);
 			break;
 		default:
-			m_RTData.ReadSinaData(svData);
+			m_RTData.ParseSinaData(svData);
 			break;
 		}
 		EXPECT_EQ(m_pSinaWebRTData->GetCurrentPos(), 0) << "不移动当前位置指针";

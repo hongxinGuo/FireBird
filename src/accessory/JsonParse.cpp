@@ -114,64 +114,56 @@ void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& str
 //
 // 解析新浪实时数据
 // 
-// todo 考虑将pRTData->ReadSinaData函数改为线程模式并行执行解析任务。由于数据中不会包含相同股票的实时数据，故而不会出现同时操作同一个股票的问题，
-// 所以可以并行解析
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData) {
-	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
+void ParseSinaRTData(const CWebDataPtr& pWebData) {
 	try {
 		pWebData->ResetCurrentPos();
 		while (!pWebData->IsLastDataParagraph()) {
 			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 			const string_view svData = pWebData->GetCurrentSinaData();
-			pRTData->ReadSinaData(svData);
-			pvWebRTData->push_back(pRTData);
+			pRTData->ParseSinaData(svData);
+			gl_qChinaMarketRTData.enqueue(pRTData); // 解析后的数据直接存入数据暂存队列
 		}
 	}
 	catch (exception& e) {
-		ReportErrorToSystemMessage(_T("ReadSinaData异常 "), e);
-		return pvWebRTData;
+		ReportErrorToSystemMessage(_T("ParseSinaData异常 "), e);
 	}
-	return pvWebRTData;
 }
 
-counting_semaphore<16> semaphoreParseSinaRTData{16};
-
-UINT ThreadReadOneSinaRTData(const CWebRTDataPtr& pRTData, CString strData) {
+counting_semaphore<16> semaphoreParseSinaRTData{4}; // 最多使用16个并行线程
+UINT ThreadParseOneSinaRTData(const CWebRTDataPtr& pRTData, CString strData) {
 	semaphoreParseSinaRTData.acquire();
 	try {
 		const string_view svData = strData.GetBuffer();
-		pRTData->ReadSinaData(svData);
-		gl_qChinaMarketRTData.enqueue(pRTData);
+		pRTData->ParseSinaData(svData);
+		gl_qChinaMarketRTData.enqueue(pRTData); // 解析后的数据直接存入数据暂存队列
 	}
-	catch (exception&) {
+	catch (exception& e) {
 		ASSERT(0);
 	}
 	semaphoreParseSinaRTData.release();
 
 	return 0;
 }
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 解析新浪实时数据
 //
 // 使用工作线程并行解析，每次解析一条数据，将解析后的数据存入缓存队列。
-// todo 主线程在工作线程结束之前就返回了，数据消失，导致工作线程中使用的数据过时了，出现错误。待修改。
+// 由于数据中不会包含相同股票的实时数据，故而不会出现同时操作同一个股票的问题，所以可以并行解析
+// 只有工作线程都执行完后，本函数方可退出，故而使用jthread生成工作线程。
+// todo 使用这种工作线程模式非但没有节约时间，反而非常费时。原因不明，估计是线程资源冲突或者线程的生成和销毁费时。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-void ParseSinaRTData2(const CWebDataPtr& pWebData) {
-	try {
-		pWebData->ResetCurrentPos();
-		while (!pWebData->IsLastDataParagraph()) {
-			auto pRTData = make_shared<CWebRTData>();
-			CString strData = pWebData->GetCurrentSinaData().data();
-			thread thread1(ThreadReadOneSinaRTData, pRTData, strData);
-			thread1.detach();
-		}
-	}
-	catch (exception& e) {
-		ReportErrorToSystemMessage(_T("ReadSinaData异常 "), e);
+void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
+	pWebData->ResetCurrentPos();
+	while (!pWebData->IsLastDataParagraph()) {
+		auto pRTData = make_shared<CWebRTData>();
+		string_view sv = pWebData->GetCurrentSinaData();
+		CString strData(sv.data(), sv.length());
+		jthread thread1(ThreadParseOneSinaRTData, pRTData, strData); // 使用jthread保证所有工作线程执行完后本函数才退出
 	}
 }
 
@@ -272,23 +264,56 @@ bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived) {
 // 腾讯实时数据中，成交量的单位为手，无法达到计算所需的精度（股），故而只能作为数据补充之用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(const CWebDataPtr& pWebData) {
-	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
+void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 	try {
 		pWebData->ResetCurrentPos();
-		if (IsTengxunRTDataInvalid(pWebData)) return pvWebRTData; // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
+		if (IsTengxunRTDataInvalid(pWebData)) return; // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
 		while (!pWebData->IsLastDataParagraph()) {
 			CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 			const string_view svData = pWebData->GetCurrentTengxunData();
-			pRTData->ReadTengxunData(svData);
-			pvWebRTData->push_back(pRTData);
+			pRTData->ParseTengxunData(svData);
+			gl_qChinaMarketRTData.enqueue(pRTData);
 		}
 	}
 	catch (exception& e) {
-		ReportErrorToSystemMessage(_T("ReadTengxunData异常 "), e);
-		return pvWebRTData;
+		ReportErrorToSystemMessage(_T("ParseTengxunData异常 "), e);
 	}
-	return pvWebRTData;
+}
+
+UINT ThreadParseOneTengxunRTData(const CWebRTDataPtr& pRTData, CString strData) {
+	semaphoreParseSinaRTData.acquire();
+	try {
+		const string_view svData = strData.GetBuffer();
+		pRTData->ParseTengxunData(svData);
+		gl_qChinaMarketRTData.enqueue(pRTData); // 解析后的数据直接存入数据暂存队列
+	}
+	catch (exception&) {
+		ASSERT(0);
+	}
+	semaphoreParseSinaRTData.release();
+
+	return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 解析腾讯实时数据
+//
+// 使用工作线程并行解析，每次解析一条数据，将解析后的数据存入缓存队列。
+// 由于数据中不会包含相同股票的实时数据，故而不会出现同时操作同一个股票的问题，所以可以并行解析
+// 只有工作线程都执行完后，本函数方可退出，故而使用jthread生成工作线程。
+// todo 使用这种工作线程模式非但没有节约时间，反而非常费时。原因不明，估计是线程资源冲突或者线程的生成和销毁费时。
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
+void ParseTengxunRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
+	pWebData->ResetCurrentPos();
+	if (IsTengxunRTDataInvalid(pWebData)) return; // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
+	while (!pWebData->IsLastDataParagraph()) {
+		auto pRTData = make_shared<CWebRTData>();
+		string_view sv = pWebData->GetCurrentSinaData();
+		CString strData(sv.data(), sv.length());
+		jthread thread1(ThreadParseOneTengxunRTData, pRTData, strData); // 使用jthread保证所有工作线程执行完后本函数才退出
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -303,7 +328,7 @@ CDayLineWebDataPtr ParseNeteaseDayLine(const CWebDataPtr& pWebData) {
 	auto pData = make_shared<CDayLineWebData>();
 
 	pData->TransferWebDataToBuffer(pWebData);
-	pData->ProcessNeteaseDayLineData2(); //pData的日线数据是逆序的，最新日期的在前面。
+	pData->ProcessNeteaseDayLineData(); //pData的日线数据是逆序的，最新日期的在前面。
 
 	return pData;
 }

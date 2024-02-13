@@ -82,7 +82,7 @@ namespace FireBirdTest {
 	                         ));
 
 	TEST_P(NeteaseDayLineTest, TestProcessNeteaseDayLineData) {
-		const bool fSucceed = pDownLoadedDayLine->ProcessNeteaseDayLineData2();
+		const bool fSucceed = pDownLoadedDayLine->ProcessNeteaseDayLineData();
 		switch (m_iCount) {
 		case 1:
 			EXPECT_TRUE(fSucceed);

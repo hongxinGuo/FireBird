@@ -32,7 +32,7 @@ enum {
 #include"ContainerChinaWeekLine.h"
 #include"ContainerChinaDayLine.h"
 
-#include"readerwriterqueue.h"
+#include"concurrentqueue.h"
 using namespace moodycamel;
 
 class CChinaStock;
@@ -343,7 +343,6 @@ public:
 		m_qRTData.try_dequeue(pData);
 		return pData;
 	}
-	CWebRTDataPtr GetRTDataAtHead() const { return *m_qRTData.peek(); }
 	auto GetRTDataQueueSize() const { return m_qRTData.size_approx(); }
 	// 清空存储实时数据的队列
 	void ClearRTDataDeque();
@@ -537,7 +536,7 @@ protected:
 
 	queue<COneDealPtr> m_qDeal; // 具体成交信息队列（目前尚未使用）。
 
-	ReaderWriterQueue<CWebRTDataPtr> m_qRTData; // 采用优先队列存储实时数据，这样可以保证多源。
+	ConcurrentQueue<CWebRTDataPtr> m_qRTData; // 采用优先队列存储实时数据，这样可以保证多源。
 	CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
 
 	// 日线容器

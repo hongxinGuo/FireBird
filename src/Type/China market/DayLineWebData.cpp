@@ -28,7 +28,7 @@ bool CDayLineWebData::TransferWebDataToBuffer(const CWebDataPtr& pWebData) {
 	return true;
 }
 
-bool CDayLineWebData::ProcessNeteaseDayLineData2() {
+bool CDayLineWebData::ProcessNeteaseDayLineData() {
 	shared_ptr<CDayLine> pDayLine;
 
 	if (m_sDataBuffer.size() == 0) return false;	// 没有数据读入？此种状态是查询的股票为无效（不存在）号码

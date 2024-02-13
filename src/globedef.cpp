@@ -71,8 +71,8 @@ bool gl_bChinaMarketResetting = false; // 中国市场重启中
 bool gl_bWorldMarketResetting = false; // 世界市场重启中
 
 // 处理后的数据
-ReaderWriterQueue<CWebRTDataPtr> gl_qChinaMarketRTData(10000); // 中国市场新浪实时数据队列。
-ReaderWriterQueue<CDayLineWebDataPtr> gl_qDayLine(1000); // 日线数据
+ConcurrentQueue<CWebRTDataPtr> gl_qChinaMarketRTData(10000); // 中国市场新浪实时数据队列。
+ConcurrentQueue<CDayLineWebDataPtr> gl_qDayLine(1000); // 日线数据
 
 // ChinaMarket处理的数据
 CContainerChinaStock gl_dataContainerChinaStock;

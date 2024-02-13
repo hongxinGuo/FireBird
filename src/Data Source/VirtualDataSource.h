@@ -2,7 +2,7 @@
 
 #include"afxinet.h"
 
-#include"readerwriterqueue.h"
+#include"concurrentqueue.h"
 using namespace moodycamel;
 
 #include"VirtualWebProduct.h"
@@ -158,7 +158,7 @@ public:
 protected:
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
 	CVirtualProductWebDataPtr m_pCurrentProduct;
-	ReaderWriterQueue<CWebDataPtr> m_qReceivedData; // 网络数据暂存队列
+	ConcurrentQueue<CWebDataPtr> m_qReceivedData; // 网络数据暂存队列
 
 	shared_ptr<CInternetSession> m_pSession;
 	CHttpFile* m_pFile; // 网络文件指针

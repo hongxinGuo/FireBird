@@ -154,12 +154,8 @@ public:
 
 	void Reset();
 
-	// 读取新浪实时数据函数
-	// 读入新浪制式数据。开始处为var hq_str_s,结束于字符';'
-	void ReadSinaData(const string_view& svData);
-	// 读取腾讯实时数据函数
-	// 读入腾讯制式数据。开始处为v_s,结束于字符';'
-	void ReadTengxunData(string_view svData);
+	void ParseSinaData(const string_view& svData); // 解析新浪制式数据。开始处为var hq_str_s,结束于字符';'
+	void ParseTengxunData(string_view svData); // 解析腾讯制式数据。开始处为v_s,结束于字符';'
 
 	void SetDataSource(const long lDataSource) noexcept { m_lDataSource = lDataSource; }
 	[[nodiscard]] long GetDataSource() const noexcept { return m_lDataSource; }

@@ -254,8 +254,8 @@ namespace FireBirdTest {
 		                         &Data31, &Data32, &Data33, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40
 	                         ));
 
-	TEST_P(CalculateTengxunWebRTDataTest, TestReadTengxunData2) {
-		m_RTData.ReadTengxunData(svData);
+	TEST_P(CalculateTengxunWebRTDataTest, TestParseTengxunData2) {
+		m_RTData.ParseTengxunData(svData);
 		time_t tTime;
 		tm tm_;
 		tm_.tm_year = 2019 - 1900;
@@ -771,7 +771,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_RTData.IsActive()); // 此股票是活跃股票
 			m_pTengxunWebRTData->IncreaseCurrentPos(svData.length());
 			svData = m_pTengxunWebRTData->GetCurrentTengxunData();
-			m_RTData.ReadTengxunData(svData);
+			m_RTData.ParseTengxunData(svData);
 			EXPECT_TRUE(m_RTData.IsActive()); // 此股票是活跃股票
 			break;
 		default:

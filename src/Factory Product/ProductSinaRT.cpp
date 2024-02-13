@@ -28,17 +28,13 @@ CString CProductSinaRT::CreateMessage() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// todo 解析实时数据是本系统中最耗时的任务，考虑采用工作线程的模式改写之，这样可以利用多个CPU。可以四个解析任务并行执行。
+//
+// 使用工作线程模式改写后，实际执行时间却变长了。估计时线程切换时间太长的缘故。不采用工作线程模式。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseSinaRTData(pWebData);
-
-	for (const auto& pRTData : *pvWebRTData) {
-		gl_qChinaMarketRTData.enqueue(pRTData);// 将此实时数据指针存入实时数据队列
-	}
-
-	//ParseSinaRTData2(pWebData); // 使用工作线程并行解析
+	ParseSinaRTData(pWebData);
+	//ParseSinaRTDataUsingWorkingThread(pWebData); // 使用工作线程并行解析
 }
 
 bool CProductSinaRT::ParseSinaRT(vector<CWebRTDataPtr>&, CWebDataPtr pWebData) {

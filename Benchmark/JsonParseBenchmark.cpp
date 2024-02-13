@@ -432,7 +432,14 @@ public:
 BENCHMARK_F(CTengxunRTData, ParseTengxunRTData)(benchmark::State& state) {
 	for (auto _ : state) {
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseTengxunRTData(pWebData);
+		ParseTengxunRTData(pWebData);
+	}
+}
+
+BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingWorkingThread)(benchmark::State& state) {
+	for (auto _ : state) {
+		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
+		ParseTengxunRTDataUsingWorkingThread(pWebData);
 	}
 }
 
@@ -458,6 +465,13 @@ public:
 BENCHMARK_F(CSinaRTData, ParseSinaRTData)(benchmark::State& state) {
 	for (auto _ : state) {
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		shared_ptr<vector<CWebRTDataPtr>> pvWebData = ParseSinaRTData(pWebData);
+		ParseSinaRTData(pWebData);
+	}
+}
+
+BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsing4WorkingThread)(benchmark::State& state) {
+	for (auto _ : state) {
+		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
+		ParseSinaRTDataUsingWorkingThread(pWebData);
 	}
 }

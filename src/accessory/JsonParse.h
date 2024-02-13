@@ -14,9 +14,10 @@ string_view GetNextField(const string_view& svData, long& lCurrentPos, char deli
 void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat);
 void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat, const char* jsonData);
 
-shared_ptr<vector<CWebRTDataPtr>> ParseSinaRTData(const CWebDataPtr& pWebData);
-void ParseSinaRTData2(const CWebDataPtr& pWebData);
-shared_ptr<vector<CWebRTDataPtr>> ParseTengxunRTData(const CWebDataPtr& pWebData);
+void ParseSinaRTData(const CWebDataPtr& pWebData);
+void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData);
+void ParseTengxunRTData(const CWebDataPtr& pWebData);
+void ParseTengxunRTDataUsingWorkingThread(const CWebDataPtr& pWebData);
 CDayLineWebDataPtr ParseNeteaseDayLine(const CWebDataPtr& pWebData);
 CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData);
 shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, const CString& strStockCode);
