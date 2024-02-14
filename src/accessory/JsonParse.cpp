@@ -132,14 +132,14 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 }
 
 counting_semaphore<16> semaphoreParseSinaRTData{4}; // 最多使用16个并行线程
-UINT ThreadParseOneSinaRTData(const CWebRTDataPtr& pRTData, CString strData) {
+UINT ThreadParseOneSinaRTData(const CWebRTDataPtr& pRTData, string_view svData) {
 	semaphoreParseSinaRTData.acquire();
 	try {
-		const string_view svData = strData.GetBuffer();
 		pRTData->ParseSinaData(svData);
 		gl_qChinaMarketRTData.enqueue(pRTData); // 解析后的数据直接存入数据暂存队列
 	}
 	catch (exception& e) {
+		string s = e.what();
 		ASSERT(0);
 	}
 	semaphoreParseSinaRTData.release();
@@ -154,7 +154,9 @@ UINT ThreadParseOneSinaRTData(const CWebRTDataPtr& pRTData, CString strData) {
 // 使用工作线程并行解析，每次解析一条数据，将解析后的数据存入缓存队列。
 // 由于数据中不会包含相同股票的实时数据，故而不会出现同时操作同一个股票的问题，所以可以并行解析
 // 只有工作线程都执行完后，本函数方可退出，故而使用jthread生成工作线程。
-// todo 使用这种工作线程模式非但没有节约时间，反而非常费时。原因不明，估计是线程资源冲突或者线程的生成和销毁费时。
+//
+// 使用这种工作线程模式非但没有节约时间，反而非常费时。原因不明，估计是线程资源冲突或者线程的生成和销毁费时。
+// 测试结果表明，线程的生成最耗时间，是实际执行时间的3倍至十倍。如果需要并行解析的话，只能使用协程实现。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
@@ -162,8 +164,7 @@ void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
 	while (!pWebData->IsLastDataParagraph()) {
 		auto pRTData = make_shared<CWebRTData>();
 		string_view sv = pWebData->GetCurrentSinaData();
-		CString strData(sv.data(), sv.length());
-		jthread thread1(ThreadParseOneSinaRTData, pRTData, strData); // 使用jthread保证所有工作线程执行完后本函数才退出
+		jthread thread1(ThreadParseOneSinaRTData, pRTData, sv); // 使用jthread保证所有工作线程执行完后本函数才退出
 	}
 }
 
@@ -280,10 +281,9 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 	}
 }
 
-UINT ThreadParseOneTengxunRTData(const CWebRTDataPtr& pRTData, CString strData) {
+UINT ThreadParseOneTengxunRTData(const CWebRTDataPtr& pRTData, string_view svData) {
 	semaphoreParseSinaRTData.acquire();
 	try {
-		const string_view svData = strData.GetBuffer();
 		pRTData->ParseTengxunData(svData);
 		gl_qChinaMarketRTData.enqueue(pRTData); // 解析后的数据直接存入数据暂存队列
 	}
@@ -302,7 +302,9 @@ UINT ThreadParseOneTengxunRTData(const CWebRTDataPtr& pRTData, CString strData) 
 // 使用工作线程并行解析，每次解析一条数据，将解析后的数据存入缓存队列。
 // 由于数据中不会包含相同股票的实时数据，故而不会出现同时操作同一个股票的问题，所以可以并行解析
 // 只有工作线程都执行完后，本函数方可退出，故而使用jthread生成工作线程。
-// todo 使用这种工作线程模式非但没有节约时间，反而非常费时。原因不明，估计是线程资源冲突或者线程的生成和销毁费时。
+//
+// 使用这种工作线程模式非但没有节约时间，反而非常费时。原因不明，估计是线程资源冲突或者线程的生成和销毁费时。
+// 测试结果表明，线程的生成最耗时间，是实际执行时间的3倍至十倍。如果需要并行解析的话，只能使用协程实现。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 void ParseTengxunRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
@@ -311,8 +313,7 @@ void ParseTengxunRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
 	while (!pWebData->IsLastDataParagraph()) {
 		auto pRTData = make_shared<CWebRTData>();
 		string_view sv = pWebData->GetCurrentSinaData();
-		CString strData(sv.data(), sv.length());
-		jthread thread1(ThreadParseOneTengxunRTData, pRTData, strData); // 使用jthread保证所有工作线程执行完后本函数才退出
+		jthread thread1(ThreadParseOneTengxunRTData, pRTData, sv); // 使用jthread保证所有工作线程执行完后本函数才退出
 	}
 }
 

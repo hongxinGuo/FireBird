@@ -470,6 +470,7 @@ BENCHMARK_F(CSinaRTData, ParseSinaRTData)(benchmark::State& state) {
 }
 
 BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsing4WorkingThread)(benchmark::State& state) {
+	CWebRTDataPtr pRTData;
 	for (auto _ : state) {
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		ParseSinaRTDataUsingWorkingThread(pWebData);
