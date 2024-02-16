@@ -12,7 +12,8 @@
 #include "InfoReport.h"
 using std::make_shared;
 
-CContainerChinaDayLine::CContainerChinaDayLine() {}
+CContainerChinaDayLine::CContainerChinaDayLine() {
+}
 
 bool CContainerChinaDayLine::SaveDB(const CString& strStockSymbol) {
 	try {

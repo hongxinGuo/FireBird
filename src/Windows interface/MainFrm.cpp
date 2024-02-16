@@ -180,9 +180,7 @@ CMainFrame::~CMainFrame() {
 
 	gl_pChinaMarket->SaveCalculatingRSOption();
 
-	while (gl_ThreadStatus.IsSavingThreadRunning()) {
-		Sleep(1); // 等待处理日线历史数据的线程结束。
-	}
+	while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1); // 等待处理日线历史数据的线程结束。
 
 	// 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
 	// 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
@@ -430,25 +428,28 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	ASSERT(nIDEvent == STOCK_ANALYSIS_TIMER_);
 
-	if (!gl_systemConfiguration.IsExitingSystem()) { // 如果准备退出系统，则停止调度系统任务。
-		ResetMarkets(); // 重启系统在此处执行，容易调用各重置函数
-
-		// 调用主调度函数,由各市场调度函数执行具体任务
-		try {
-			SchedulingTask();
-		}
-		catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
-			CString str = _T("SchedulingTask unhandled exception founded : ");
-			str += e->what();
-			gl_systemMessage.PushInformationMessage(str);
-			gl_systemMessage.PushErrorMessage(str);
-			delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
-		}
-
-		//CMainFrame只执行更新状态任务
-		UpdateStatus();
-		UpdateInnerSystemStatus();
+	if (gl_systemConfiguration.IsExitingSystem()) { // 如果准备退出系统，则停止调度系统任务。
+		SysCallOnTimer(nIDEvent);
+		return;
 	}
+
+	ResetMarkets(); // 重启系统在此处执行，容易调用各重置函数
+
+	// 调用主调度函数,由各市场调度函数执行具体任务
+	try {
+		SchedulingTask();
+	}
+	catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
+		CString str = _T("SchedulingTask unhandled exception founded : ");
+		str += e->what();
+		gl_systemMessage.PushInformationMessage(str);
+		gl_systemMessage.PushErrorMessage(str);
+		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
+	}
+
+	//CMainFrame只执行更新状态任务
+	UpdateStatus();
+	UpdateInnerSystemStatus();
 
 	SysCallOnTimer(nIDEvent);
 }

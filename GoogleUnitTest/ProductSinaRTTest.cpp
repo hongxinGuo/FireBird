@@ -61,10 +61,4 @@ namespace FireBirdTest {
 		// 恢复原状
 		while (gl_qChinaMarketRTData.try_dequeue(pRTData));
 	}
-
-	TEST_F(CProductSinaRTTest, TestParseSinaRT) {
-		vector<CWebRTDataPtr> vWebRTData;
-		const auto pWebData = make_shared<CWebData>();
-		EXPECT_FALSE(sinaRT.ParseSinaRT(vWebRTData, pWebData)) << "新浪实时数据非json制式，无需解析";
-	}
 }

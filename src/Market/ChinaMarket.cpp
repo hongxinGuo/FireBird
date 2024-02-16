@@ -58,7 +58,8 @@ CChinaMarket::CChinaMarket() {
 // 目前不允许此析构函数完成任何功能。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CChinaMarket::~CChinaMarket() {}
+CChinaMarket::~CChinaMarket() {
+}
 
 void CChinaMarket::ResetMarket() {
 	CString str = _T("重置中国股市于北京标准时间：");
@@ -867,6 +868,8 @@ bool CChinaMarket::ChangeDayLineStockCodeTypeToStandard() {
 }
 
 void CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
+	if (gl_systemConfiguration.IsExitingSystem()) return; // 如果退出系统的话则不再处理日线
+
 	if (IsDayLineNeedProcess()) {
 		ProcessDayLine();
 	}

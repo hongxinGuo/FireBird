@@ -10,9 +10,6 @@ public:
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
-public:
-	bool ParseSinaRT(vector<CWebRTDataPtr>&, CWebDataPtr pWebData);
-
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置
 };

@@ -36,7 +36,3 @@ void CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ParseSinaRTData(pWebData);
 	//ParseSinaRTDataUsingWorkingThread(pWebData); // 使用工作线程并行解析
 }
-
-bool CProductSinaRT::ParseSinaRT(vector<CWebRTDataPtr>&, CWebDataPtr pWebData) {
-	return false;
-}

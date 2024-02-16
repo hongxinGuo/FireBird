@@ -47,6 +47,8 @@ FireBird从网络股票行情服务器中提取实时行情和历史数据，将处理后的信息存储于数据库
 
 9.concurrentqueue(https://github.com/cameron314/concurrentqueue).
 
+10.concurrencpp(https://github.com/David-Haim/concurrencpp)
+
 
 
 

@@ -322,6 +322,20 @@ namespace FireBirdTest {
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 	}
 
+	TEST_F(CMockChinaMarketTest, TestTaskProcessAndSaveDayLine2) {
+		EXPECT_FALSE(gl_systemConfiguration.IsExitingSystem());
+		gl_systemConfiguration.SetExitingSystem(true);
+		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
+
+		s_pMockChinaMarket->TaskProcessAndSaveDayLine(100000);
+
+		EXPECT_FALSE(s_pMockChinaMarket->IsRTDataNeedCalculate());
+		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << "当退出系统标识设置时，不再生成处理日线任务";
+
+		// 恢复原状
+		gl_systemConfiguration.SetExitingSystem(false);
+	}
+
 	TEST_F(CMockChinaMarketTest, TestTaskUpdateStockProfileDB) {
 		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadUpdateStockProfileDB())
 		.Times(0);

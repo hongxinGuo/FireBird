@@ -9,8 +9,6 @@
 #include"ClassDeclaration.h"
 #include"WebData.h"
 
-//#include "VirtualMarket.h"
-
 using std::make_shared;
 
 enum {

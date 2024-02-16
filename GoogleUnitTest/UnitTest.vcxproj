@@ -13,6 +13,10 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="R_ASAN|x64">
+      <Configuration>R_ASAN</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{b59e4fff-9041-490e-96bf-e492c1dd7c23}</ProjectGuid>
@@ -49,6 +53,12 @@
     <VCToolsVersion>
     </VCToolsVersion>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='R_ASAN|x64'" Label="Configuration">
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <EnableASAN>false</EnableASAN>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <VCToolsVersion />
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Label="Shared" />
@@ -59,6 +69,9 @@
     <Import Project="..\propertysheet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="..\propertysheet.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='R_ASAN|x64'" Label="PropertySheets">
     <Import Project="..\propertysheet.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -99,11 +112,21 @@
     <LinkIncremental>false</LinkIncremental>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='R_ASAN|x64'">
+    <IncludePath>$(AnalysisInclude);$(GoogletestInclude);$(LibInclude);$(IXWebSocket)</IncludePath>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <LibraryWPath>$(LibraryWPath)</LibraryWPath>
+    <LibraryPath>$(LibInclude);$(IncludePath);$(zlibInclude);$(LibraryPath)</LibraryPath>
+    <LinkIncremental>false</LinkIncremental>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="..\src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASAN|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='R_ASAN|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="CompanyNewsTest.cpp" />
     <ClCompile Include="ContainerFinnhubEconomicCalendarTest.cpp" />
@@ -407,6 +430,32 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>__GOOGLEMOCK__;X64;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);BOOST_BIND_GLOBAL_PLACEHOLDERS</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>4003</DisableSpecificWarnings>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <BrowseInformation>false</BrowseInformation>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
+      <StackCommitSize>40971520</StackCommitSize>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <AdditionalDependencies>zlibwapi.lib;\vc\static\libcrypto64MT.lib;\vc\static\libssl64MT.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='R_ASAN|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
