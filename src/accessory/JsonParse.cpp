@@ -22,10 +22,14 @@
 #include "ChinaStockCodeConverter.h"
 #include "InfoReport.h"
 
+using namespace std;
+
 #include"simdjsonGetValue.h"
 using namespace simdjson;
 
-using namespace std;
+#undef max
+#include"concurrencpp/concurrencpp.h"
+using namespace concurrencpp;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -131,41 +135,37 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 	}
 }
 
-counting_semaphore<16> semaphoreParseSinaRTData{4}; // 最多使用16个并行线程
-UINT ThreadParseOneSinaRTData(const CWebRTDataPtr& pRTData, string_view svData) {
-	semaphoreParseSinaRTData.acquire();
-	try {
-		pRTData->ParseSinaData(svData);
-		gl_qChinaMarketRTData.enqueue(pRTData); // 解析后的数据直接存入数据暂存队列
-	}
-	catch (exception& e) {
-		string s = e.what();
-		ASSERT(0);
-	}
-	semaphoreParseSinaRTData.release();
-
-	return 0;
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 解析新浪实时数据
 //
-// 使用工作线程并行解析，每次解析一条数据，将解析后的数据存入缓存队列。
+// 使用thread pool + coroutine并行解析，每次解析一条数据，将解析后的数据存入缓存队列。
 // 由于数据中不会包含相同股票的实时数据，故而不会出现同时操作同一个股票的问题，所以可以并行解析
-// 只有工作线程都执行完后，本函数方可退出，故而使用jthread生成工作线程。
+// 只有工作线程都执行完后，本函数方可退出。
 //
-// 使用这种工作线程模式非但没有节约时间，反而非常费时。原因不明，估计是线程资源冲突或者线程的生成和销毁费时。
-// 测试结果表明，线程的生成最耗时间，是实际执行时间的3倍至十倍。如果需要并行解析的话，只能使用协程实现。
+// 使用这种多线程模式与单线程模式相比，速度基本一样（偏慢），可见线程切换还是需要时间。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
+result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe, const CWebDataPtr& pWebData) {
+	bool succeed = true;
 	pWebData->ResetCurrentPos();
 	while (!pWebData->IsLastDataParagraph()) {
-		auto pRTData = make_shared<CWebRTData>();
 		string_view sv = pWebData->GetCurrentSinaData();
-		jthread thread1(ThreadParseOneSinaRTData, pRTData, sv); // 使用jthread保证所有工作线程执行完后本函数才退出
+		auto result = tpe->submit([sv] {
+			const auto pRTData = make_shared<CWebRTData>();
+			pRTData->ParseSinaData(sv);
+			gl_qChinaMarketRTData.enqueue(pRTData);
+			return true;
+		});
+		succeed = succeed && co_await result;
 	}
+	co_return succeed;
+}
+
+concurrencpp::runtime runtime1;
+void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
+	auto result = ParseSinaRTDataUsingCoroutine(runtime1.thread_pool_executor(), pWebData);
+	result.get();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -281,40 +281,36 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 	}
 }
 
-UINT ThreadParseOneTengxunRTData(const CWebRTDataPtr& pRTData, string_view svData) {
-	semaphoreParseSinaRTData.acquire();
-	try {
-		pRTData->ParseTengxunData(svData);
-		gl_qChinaMarketRTData.enqueue(pRTData); // 解析后的数据直接存入数据暂存队列
-	}
-	catch (exception&) {
-		ASSERT(0);
-	}
-	semaphoreParseSinaRTData.release();
-
-	return 0;
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 解析腾讯实时数据
+// 解析新浪实时数据
 //
-// 使用工作线程并行解析，每次解析一条数据，将解析后的数据存入缓存队列。
+// 使用thread pool + coroutine并行解析，每次解析一条数据，将解析后的数据存入缓存队列。
 // 由于数据中不会包含相同股票的实时数据，故而不会出现同时操作同一个股票的问题，所以可以并行解析
 // 只有工作线程都执行完后，本函数方可退出，故而使用jthread生成工作线程。
 //
-// 使用这种工作线程模式非但没有节约时间，反而非常费时。原因不明，估计是线程资源冲突或者线程的生成和销毁费时。
-// 测试结果表明，线程的生成最耗时间，是实际执行时间的3倍至十倍。如果需要并行解析的话，只能使用协程实现。
+// 使用这种多线程模式与单线程模式相比，速度基本一样（偏慢），可见线程切换还是需要时间。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-void ParseTengxunRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
+result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe, const CWebDataPtr& pWebData) {
 	pWebData->ResetCurrentPos();
-	if (IsTengxunRTDataInvalid(pWebData)) return; // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
+	bool succeed = true;
 	while (!pWebData->IsLastDataParagraph()) {
 		auto pRTData = make_shared<CWebRTData>();
 		string_view sv = pWebData->GetCurrentSinaData();
-		jthread thread1(ThreadParseOneTengxunRTData, pRTData, sv); // 使用jthread保证所有工作线程执行完后本函数才退出
+		auto result = tpe->submit([pRTData, sv] {
+			pRTData->ParseTengxunData(sv);
+			gl_qChinaMarketRTData.enqueue(pRTData);
+			return true;
+		});
+		succeed = succeed && co_await result;
 	}
+	co_return succeed;
+}
+
+void ParseTengxunRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
+	auto result = ParseTengxunRTDataUsingCoroutine(runtime1.thread_pool_executor(), pWebData);
+	result.get();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

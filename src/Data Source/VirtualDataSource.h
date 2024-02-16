@@ -45,7 +45,8 @@ public:
 	virtual void GenerateCurrentInquiryMessage();
 	virtual void GetWebData() { GetWebDataImp(); } // 网络读取。为了Mock方便，声明为虚函数。所有的Mock类，皆应Mock此函数以防止出现实际网络申请
 	virtual void ProcessWebDataReceived();
-	virtual void CheckInaccessible(const CWebDataPtr& pWebData) const {};
+	virtual void CheckInaccessible(const CWebDataPtr&) const {
+	};
 
 	void SetDefaultSessionOption() const;
 
@@ -69,7 +70,8 @@ public:
 	virtual void ConfigureSession() {
 		ASSERT(false); // 调用了基类函数ConfigureSession
 	} // 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
-	virtual void UpdateStatusAfterReading(CWebDataPtr pData) {} //成功接收后更新系统状态。默认无动作
+	virtual void UpdateStatusAfterReading(CWebDataPtr pData) {
+	} //成功接收后更新系统状态。默认无动作
 
 	void CreateTotalInquiringString();
 	CString GetInquiringString() const noexcept { return m_strInquiry; }

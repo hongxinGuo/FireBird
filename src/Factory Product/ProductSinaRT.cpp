@@ -29,10 +29,11 @@ CString CProductSinaRT::CreateMessage() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
-// 使用工作线程模式改写后，实际执行时间却变长了。线程切换时间太长的缘故。不采用工作线程模式。
+// 使用工作线程模式改写后，实际执行时间却变长了（慢十倍以上）。线程切换时间太长的缘故。不采用工作线程模式。
+// 使用thread pool + coroutine协程并行解析，速度比单线程模式稍慢，可见线程切换还是太费时间。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ParseSinaRTData(pWebData);
-	//ParseSinaRTDataUsingWorkingThread(pWebData); // 使用工作线程并行解析
+	//ParseSinaRTDataUsingWorkingThread(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式稍慢，可见线程切换还是太费时间
 }

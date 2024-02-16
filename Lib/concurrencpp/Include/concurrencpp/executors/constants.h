@@ -3,6 +3,7 @@
 
 #include <limits>
 #include <numeric>
+#include <limits.h>
 
 namespace concurrencpp::details::consts {
     inline const char* k_inline_executor_name = "concurrencpp::inline_executor";

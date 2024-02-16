@@ -23,4 +23,11 @@
 #endif
 #endif
 
+#ifdef _DEBUG
+#pragma comment(lib, "/D/concurrencpp.lib")
+#pragma comment(lib, "/concurrencpp/lib/D/concurrencpp.lib")
+#else
+#pragma comment(lib, "/R/concurrencpp.lib")
+#endif
+
 BENCHMARK_MAIN();

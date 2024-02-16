@@ -11,20 +11,28 @@
 
 #ifdef _DEBUG
 #ifdef _OPENSSL_USE_DLL
-//#pragma comment(lib, "/vc/libcrypto64MTd.lib")
-//#pragma comment(lib, "/vc/libssl64MTd.lib")
+#pragma comment(lib, "/vc/libcrypto64MTd.lib")
+#pragma comment(lib, "/vc/libssl64MTd.lib")
+
 #else
-//#pragma comment(lib, "/vc/static/libcrypto64MTd.lib")
-//#pragma comment(lib, "/vc/static/libssl64MTd.lib")
+#pragma comment(lib, "/vc/static/libcrypto64MTd.lib")
+#pragma comment(lib, "/vc/static/libssl64MTd.lib")
 #endif
 #else
 #ifdef _OPENSSL_USE_DLL
-//#pragma comment(lib, "/vc/libcrypto64MT.lib")
-//#pragma comment(lib, "/vc/libssl64MT.lib")
+#pragma comment(lib, "/vc/libcrypto64MT.lib")
+#pragma comment(lib, "/vc/libssl64MT.lib")
 #else
-//#pragma comment(lib, "/vc/static/libcrypto64MT.lib")
-//#pragma comment(lib, "/vc/static/libssl64MT.lib")
+#pragma comment(lib, "/vc/static/libcrypto64MT.lib")
+#pragma comment(lib, "/vc/static/libssl64MT.lib")
 #endif
+#endif
+
+#ifdef _DEBUG
+#pragma comment(lib, "/D/concurrencpp.lib")
+#pragma comment(lib, "/concurrencpp/lib/D/concurrencpp.lib")
+#else
+#pragma comment(lib, "/R/concurrencpp.lib")
 #endif
 
 #ifndef _MBCS

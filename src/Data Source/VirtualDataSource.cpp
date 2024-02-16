@@ -171,7 +171,10 @@ void CVirtualDataSource::ReadWebData() {
 		GetFileHeaderInformation();
 		UINT lCurrentByteRead;
 		do {
-			if (gl_systemConfiguration.IsExitingSystem()) break;// 当系统退出时，要立即中断此进程，以防止内存泄露。
+			if (gl_systemConfiguration.IsExitingSystem()) {
+				CInternetException* e = new CInternetException(1); // 不为零即可。使用五位数以下的数据，避开系统预先声明的范围
+				throw(e); // 当系统退出时，要立即中断此进程，以防止内存泄露。
+			}
 			lCurrentByteRead = ReadWebFileOneTime(); // 每次读取16K数据。
 			XferReadingToBuffer(m_lByteRead, lCurrentByteRead);
 			m_lByteRead += lCurrentByteRead;

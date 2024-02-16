@@ -24,7 +24,7 @@ CString CProductTengxunRT::CreateMessage() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ParseTengxunRTData(pWebData);
-	//ParseTengxunRTDataUsingWorkingThread(pWebData);
+	//ParseTengxunRTDataUsingWorkingThread(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式稍慢，可见线程切换还是太费时间
 }
 
 bool CProductTengxunRT::ParseTengxunRT(vector<CWebRTDataPtr>&, CWebDataPtr pWebData) {

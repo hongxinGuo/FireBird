@@ -261,7 +261,8 @@ public:
 		sWorldStockUpdateParameter = _T("{\"Finnhub\":{\"StockFundamentalsCompanyProfileConcise\":20230110,\"StockFundamentalsCompanyNews\":20230205,\"StockFundamentalsBasicFinancials\":20230112,\"StockPriceQuote\":19800104,\"StockFundamentalsPeer\":20230115,\"StockFundamentalsInsiderTransaction\":20230116,\"StockFundamentalsInsiderSentiment\":20230117,\"StockEstimatesEPSSurprise\":19800108},\"Tiingo\":{\"StockFundamentalsCompanyProfile\":20221222,\"StockPriceCandles\":20230210}}");
 	}
 
-	void TearDown(const benchmark::State& state) override {}
+	void TearDown(const benchmark::State& state) override {
+	}
 
 	string sUSExchangeStockCode;
 	string sNeteaseRTData;
@@ -373,7 +374,8 @@ public:
 		pWebData->Test_SetBuffer_(s.c_str());
 	}
 
-	void TearDown(const benchmark::State& state) override {}
+	void TearDown(const benchmark::State& state) override {
+	}
 
 	CWebDataPtr pWebData;
 	string s;
@@ -423,7 +425,8 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength);
 	}
 
-	void TearDown(const benchmark::State& state) override {}
+	void TearDown(const benchmark::State& state) override {
+	}
 
 	string s;
 	CWebDataPtr pWebData;
@@ -436,7 +439,7 @@ BENCHMARK_F(CTengxunRTData, ParseTengxunRTData)(benchmark::State& state) {
 	}
 }
 
-BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingWorkingThread)(benchmark::State& state) {
+BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool)(benchmark::State& state) {
 	for (auto _ : state) {
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		ParseTengxunRTDataUsingWorkingThread(pWebData);
@@ -456,7 +459,8 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength);
 	}
 
-	void TearDown(const benchmark::State& state) override {}
+	void TearDown(const benchmark::State& state) override {
+	}
 
 	string s;
 	CWebDataPtr pWebData;
@@ -469,8 +473,7 @@ BENCHMARK_F(CSinaRTData, ParseSinaRTData)(benchmark::State& state) {
 	}
 }
 
-BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsing4WorkingThread)(benchmark::State& state) {
-	CWebRTDataPtr pRTData;
+BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool)(benchmark::State& state) {
 	for (auto _ : state) {
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		ParseSinaRTDataUsingWorkingThread(pWebData);

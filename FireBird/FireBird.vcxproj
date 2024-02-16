@@ -182,8 +182,8 @@
       <StackReserveSize>40971520</StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
       <StackCommitSize>40971520</StackCommitSize>
-      <AdditionalLibraryDirectories>C:\Program Files\OpenSSL-Win64\lib;C:\Program Files\OpenSSL-Win64\lib\VC;C:\Program Files\OpenSSL-Win64\lib\VC\static;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;zlibwapi.lib%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;zlibwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>true</Profile>
       <HeapCommitSize>40971520</HeapCommitSize>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
@@ -247,8 +247,8 @@
       <StackReserveSize>40971520</StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
       <StackCommitSize>40971520</StackCommitSize>
-      <AdditionalLibraryDirectories>C:\Program Files\OpenSSL-Win64\lib;C:\Program Files\OpenSSL-Win64\lib\VC;C:\Program Files\OpenSSL-Win64\lib\VC\static;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;zlibwapi.lib%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;zlibwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>true</Profile>
       <HeapCommitSize>40971520</HeapCommitSize>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
@@ -354,7 +354,7 @@
       <StackCommitSize>40971520</StackCommitSize>
       <LargeAddressAware>true</LargeAddressAware>
       <Profile>true</Profile>
-      <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;zlibwapi.lib%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>\vc\libcrypto64MT.lib;\vc\libssl64MT.lib;zlibwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <HeapReserveSize>40971520</HeapReserveSize>
       <HeapCommitSize>40971520</HeapCommitSize>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
