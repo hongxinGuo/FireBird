@@ -159,6 +159,7 @@
     <ClInclude Include="..\src\FinnhubInquiryType.h" />
     <ClInclude Include="..\src\globedef.h" />
     <ClInclude Include="..\src\GlobeMarketInitialize.h" />
+    <ClInclude Include="..\src\IncludeLib.h" />
     <ClInclude Include="..\src\Market\ChinaMarket.h" />
     <ClInclude Include="..\src\Market\VirtualMarket.h" />
     <ClInclude Include="..\src\Market\WorldMarket.h" />
@@ -604,7 +605,7 @@
       <BrowseInformation>false</BrowseInformation>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <Optimization>Disabled</Optimization>
-      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>

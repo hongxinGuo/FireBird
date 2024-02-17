@@ -49,6 +49,8 @@
 #include"ThreadStatus.h"
 #include"TimeConvert.h"
 
+#include"IncludeLib.h"
+
 using namespace testing;
 
 #ifndef _MBCS

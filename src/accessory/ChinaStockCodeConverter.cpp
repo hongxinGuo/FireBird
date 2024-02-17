@@ -4,8 +4,8 @@
 
 using std::exception;
 
-CString XferSinaToStandard(const CString& strSina) {
-	const CString strSymbol = strSina.Right(6);
+string XferSinaToStandard(const CString& strSina) {
+	const string strSymbol = strSina.Right(6).GetBuffer();
 	if (strSina.GetAt(0) == 's') {
 		switch (strSina.GetAt(1)) {
 		case 'h':
@@ -18,8 +18,8 @@ CString XferSinaToStandard(const CString& strSina) {
 	throw std::exception("XferSinaToStandard bad header");
 }
 
-CString XferSinaToStandard(string_view strSina) {
-	const CString strSymbol = CString(strSina.data() + 2, 6);
+string XferSinaToStandard(string_view strSina) {
+	const string strSymbol(strSina.data() + 2, 6);
 	if (strSina.at(0) == 's') {
 		switch (strSina.at(1)) {
 		case 'h':

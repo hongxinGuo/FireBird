@@ -857,7 +857,7 @@ bool CChinaMarket::ChangeDayLineStockCodeTypeToStandard() {
 	setDayLineExtendInfo.m_pDatabase->BeginTrans();
 	while (!setDayLineExtendInfo.IsEOF()) {
 		setDayLineExtendInfo.Edit();
-		setDayLineExtendInfo.m_Symbol = XferSinaToStandard(setDayLineExtendInfo.m_Symbol);
+		setDayLineExtendInfo.m_Symbol = XferSinaToStandard(setDayLineExtendInfo.m_Symbol).c_str();
 		setDayLineExtendInfo.Update();
 		setDayLineExtendInfo.MoveNext();
 	}

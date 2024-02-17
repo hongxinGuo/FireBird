@@ -249,10 +249,12 @@ namespace FireBirdTest {
 
 		m_pVirtualDataSource->ReadWebData();
 
-		EXPECT_FALSE(m_pVirtualDataSource->IsWebError()) << "系统要求立即退出时，会重置网络错误代码";
-		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
+		EXPECT_TRUE(m_pVirtualDataSource->IsWebError()) << "系统要求立即退出时，会重置网络错误代码";
+		EXPECT_EQ(m_pVirtualDataSource->GetErrorCode(), 1) << "系统要求退出时，会设置该错误代码为1";
+		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 
 		// restore
+		gl_systemMessage.PopErrorMessage();
 		gl_systemConfiguration.SetExitingSystem(false);
 	}
 }

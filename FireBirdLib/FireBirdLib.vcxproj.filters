@@ -759,6 +759,9 @@
     <ClInclude Include="..\src\GlobeMarketInitialize.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\IncludeLib.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">

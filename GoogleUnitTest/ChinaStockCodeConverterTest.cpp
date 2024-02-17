@@ -67,20 +67,20 @@ namespace FireBirdTest {
 		CString str2;
 		CString str = "sh600001";
 		string_view sv = str.GetBuffer();
-		EXPECT_STREQ(XferSinaToStandard(str), _T("600001.SS"));
-		EXPECT_STREQ(XferSinaToStandard(sv), _T("600001.SS"));
+		EXPECT_STREQ(XferSinaToStandard(str).c_str(), _T("600001.SS"));
+		EXPECT_STREQ(XferSinaToStandard(sv).c_str(), _T("600001.SS"));
 		str = _T("sz000001");
 		sv = str.GetBuffer();
-		EXPECT_STREQ(XferSinaToStandard(str), _T("000001.SZ"));
-		EXPECT_STREQ(XferSinaToStandard(sv), _T("000001.SZ"));
+		EXPECT_STREQ(XferSinaToStandard(str).c_str(), _T("000001.SZ"));
+		EXPECT_STREQ(XferSinaToStandard(sv).c_str(), _T("000001.SZ"));
 		str = _T("sh60001");
-		EXPECT_STREQ(XferSinaToStandard(str), _T("h60001.SS"));
+		EXPECT_STREQ(XferSinaToStandard(str).c_str(), _T("h60001.SS"));
 		str = _T("sz00001");
-		EXPECT_STREQ(XferSinaToStandard(str), _T("z00001.SZ"));
+		EXPECT_STREQ(XferSinaToStandard(str).c_str(), _T("z00001.SZ"));
 		str = "ss600001";
 		sv = str.GetBuffer();
-		EXPECT_THROW(str2 = XferSinaToStandard(str), std::exception);
-		EXPECT_THROW(str2 = XferSinaToStandard(sv), std::exception);
+		EXPECT_THROW(str2 = XferSinaToStandard(str).c_str(), std::exception);
+		EXPECT_THROW(str2 = XferSinaToStandard(sv).c_str(), std::exception);
 	}
 
 	TEST_F(StockCodeConverterTest, TestXferSinaToNetease) {

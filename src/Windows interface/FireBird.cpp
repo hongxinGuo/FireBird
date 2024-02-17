@@ -1,6 +1,5 @@
 ﻿// FireBird.cpp: 定义应用程序的类行为。
 //
-
 #include"pch.h"
 
 #include "FireBird.h"  
@@ -9,11 +8,13 @@
 #include "FireBirdDoc.h"
 #include "FireBirdView.h" 
 
+#include"IncludeLib.h"
+
+/*
 #ifdef _DEBUG
 #ifdef _OPENSSL_USE_DLL
 #pragma comment(lib, "/vc/libcrypto64MTd.lib")
 #pragma comment(lib, "/vc/libssl64MTd.lib")
-
 #else
 #pragma comment(lib, "/vc/static/libcrypto64MTd.lib")
 #pragma comment(lib, "/vc/static/libssl64MTd.lib")
@@ -27,13 +28,8 @@
 #pragma comment(lib, "/vc/static/libssl64MT.lib")
 #endif
 #endif
+*/
 
-#ifdef _DEBUG
-#pragma comment(lib, "/D/concurrencpp.lib")
-#pragma comment(lib, "/concurrencpp/lib/D/concurrencpp.lib")
-#else
-#pragma comment(lib, "/R/concurrencpp.lib")
-#endif
 
 #ifndef _MBCS
 #error _T("本系统使用多字节字符集")

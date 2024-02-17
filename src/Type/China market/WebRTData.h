@@ -154,7 +154,7 @@ public:
 
 	void Reset();
 
-	void ParseSinaData(const string_view& svData); // 解析新浪制式数据。开始处为var hq_str_s,结束于字符';'
+	void ParseSinaData(string_view svData); // 解析新浪制式数据。开始处为var hq_str_s,结束于字符';'
 	void ParseTengxunData(string_view svData); // 解析腾讯制式数据。开始处为v_s,结束于字符';'
 
 	void SetDataSource(const long lDataSource) noexcept { m_lDataSource = lDataSource; }

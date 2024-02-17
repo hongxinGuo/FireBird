@@ -87,10 +87,10 @@ bool CWebRTData::CheckSinaRTDataActive() {
 // 
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CWebRTData::ParseSinaData(const string_view& svData) {
+void CWebRTData::ParseSinaData(string_view svData) {
 	long lCurrentPos = 11; // 跨过字符串："var hq_str_"
 	const string_view svStockSymbol(svData.data() + lCurrentPos, 8);
-	m_strSymbol = XferSinaToStandard(svStockSymbol);
+	m_strSymbol = XferSinaToStandard(svStockSymbol).c_str();
 	if (svData.length() == 23) { // 空数据: var hq_str_sh688801="";,包括最后的';'分号
 		m_fActive = false;
 		SetDataSource(SINA_RT_WEB_DATA_);
