@@ -32,7 +32,7 @@ enum {
 #include"ContainerChinaWeekLine.h"
 #include"ContainerChinaDayLine.h"
 
-#include"concurrentqueue.h"
+#include"concurrentqueue/concurrentqueue.h"
 using namespace moodycamel;
 
 class CChinaStock;

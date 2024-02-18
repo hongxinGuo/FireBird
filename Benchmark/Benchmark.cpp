@@ -2,11 +2,6 @@
 
 #include<benchmark/benchmark.h>
 
-//#include <Shlwapi.h>
-//#pragma comment(lib, "shlwapi.lib")
-
-#include"IncludeLib.h"
-
 #ifdef _DEBUG
 #ifdef _ASAN
 #pragma comment(lib, "asan_d/benchmark.lib")
@@ -16,13 +11,8 @@
 #pragma comment(lib, "d/benchmark_main.lib")
 #endif
 #else
-#ifdef _ASAN
-#pragma comment(lib, "asan_r/benchmark.lib")
-#pragma comment(lib, "asan_r/benchmark_main.lib") 
-#else
 #pragma comment(lib, "r/benchmark.lib")
 #pragma comment(lib, "r/benchmark_main.lib")
-#endif
 #endif
 
 BENCHMARK_MAIN();

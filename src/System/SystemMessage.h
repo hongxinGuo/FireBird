@@ -2,7 +2,7 @@
 
 class COutputList;
 
-#include"concurrentqueue.h"
+#include"concurrentqueue/concurrentqueue.h"
 using namespace moodycamel;
 
 class CSystemDeque {

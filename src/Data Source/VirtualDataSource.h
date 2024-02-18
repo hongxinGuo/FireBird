@@ -2,7 +2,7 @@
 
 #include"afxinet.h"
 
-#include"concurrentqueue.h"
+#include"concurrentqueue/concurrentqueue.h"
 using namespace moodycamel;
 
 #include"VirtualWebProduct.h"
@@ -17,10 +17,6 @@ using std::atomic_bool;
 using std::atomic_long;
 
 constexpr auto DATA_BUFFER_SIZE_ = 1024 * 16;
-
-// 此信号量用于解析WebSource中的数据。
-// 将ParseAndStoreData线程限制至最多3个，这样既能保证足够的计算速度，也不会发生系统颠簸。当改为4个时，就能观察到系统颠簸。
-extern counting_semaphore<3> gl_WebSourceParseAndStoreData;
 
 class CVirtualDataSource : public std::enable_shared_from_this<CVirtualDataSource> {
 	friend CVirtualWebProduct;

@@ -13,10 +13,6 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="R_ASAN|x64">
-      <Configuration>R_ASAN</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -60,17 +56,6 @@
     </VCToolsVersion>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='R_ASAN|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
-    <EnableASAN>false</EnableASAN>
-    <VCToolsVersion />
-    <PlatformToolset>v143</PlatformToolset>
-  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -85,10 +70,6 @@
     <Import Project="..\propertysheet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\propertysheet.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='R_ASAN|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\propertysheet.props" />
   </ImportGroup>
@@ -133,15 +114,8 @@
     <CopyLocalDebugSymbols>false</CopyLocalDebugSymbols>
     <CopyCppRuntimeToOutputDir>false</CopyCppRuntimeToOutputDir>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='R_ASAN|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(AnalysisInclude);$(GoogletestInclude);$(LibInclude);$(IXWebSocket);$(IncludePath)</IncludePath>
-    <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
-    <LibraryPath>$(LibInclude);$(zlibInclude);$(LibraryPath)</LibraryPath>
-    <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
-    <CopyLocalProjectReference>false</CopyLocalProjectReference>
-    <CopyLocalDebugSymbols>false</CopyLocalDebugSymbols>
-    <CopyCppRuntimeToOutputDir>false</CopyCppRuntimeToOutputDir>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>false</VcpkgEnableManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -183,7 +157,7 @@
       <LargeAddressAware>true</LargeAddressAware>
       <StackCommitSize>40971520</StackCommitSize>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>zlibwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>true</Profile>
       <HeapCommitSize>40971520</HeapCommitSize>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
@@ -248,7 +222,7 @@
       <LargeAddressAware>true</LargeAddressAware>
       <StackCommitSize>40971520</StackCommitSize>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>zlibwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>true</Profile>
       <HeapCommitSize>40971520</HeapCommitSize>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
@@ -304,57 +278,7 @@
       <StackCommitSize>40971520</StackCommitSize>
       <LargeAddressAware>true</LargeAddressAware>
       <Profile>true</Profile>
-      <AdditionalDependencies>zlibwapi.lib%(AdditionalDependencies)</AdditionalDependencies>
-      <HeapReserveSize>40971520</HeapReserveSize>
-      <HeapCommitSize>40971520</HeapCommitSize>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-    </Link>
-    <Midl>
-      <MkTypLibCompatible>false</MkTypLibCompatible>
-      <ValidateAllParameters>true</ValidateAllParameters>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </Midl>
-    <ResourceCompile>
-      <Culture>0x0804</Culture>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <PostBuildEvent>
-      <Command>copy  $(SolutionDir)\Lib\bin_release\*.* $(OutDir)</Command>
-    </PostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='R_ASAN|x64'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_WINDOWS;NDEBUG;_ASAN;_OPENSSL_USE_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <SupportJustMyCode>true</SupportJustMyCode>
-      <DiagnosticsFormat>Classic</DiagnosticsFormat>
-      <DisableSpecificWarnings>4003</DisableSpecificWarnings>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <BrowseInformation>false</BrowseInformation>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
-      <StackReserveSize>40971520</StackReserveSize>
-      <StackCommitSize>40971520</StackCommitSize>
-      <LargeAddressAware>true</LargeAddressAware>
-      <Profile>true</Profile>
-      <AdditionalDependencies>zlibwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <HeapReserveSize>40971520</HeapReserveSize>
       <HeapCommitSize>40971520</HeapCommitSize>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
