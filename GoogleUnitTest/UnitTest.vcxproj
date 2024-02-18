@@ -68,12 +68,12 @@
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(LibInclude);$(IncludePath);$(zlibInclude);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibInclude);$(IncludePath);$(LibraryPath)</LibraryPath>
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
     <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <SourcePath>C:\Users\hxguo\source\repos\googletest\googletest;C:\Users\hxguo\source\repos\googletest\googlemock;$(SourcePath)</SourcePath>
+    <SourcePath>$(SourcePath)</SourcePath>
     <LibraryWPath>$(LibraryWPath)</LibraryWPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASAN|x64'">
@@ -82,12 +82,12 @@
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(LibInclude);$(IncludePath);$(zlibInclude);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibInclude);$(IncludePath);$(LibraryPath)</LibraryPath>
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
     <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <SourcePath>C:\Users\hxguo\source\repos\googletest\googletest;C:\Users\hxguo\source\repos\googletest\googlemock;$(SourcePath)</SourcePath>
+    <SourcePath>$(SourcePath)</SourcePath>
     <LibraryWPath>$(LibraryWPath)</LibraryWPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -95,7 +95,7 @@
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LibraryWPath>$(LibraryWPath)</LibraryWPath>
-    <LibraryPath>$(LibInclude);$(IncludePath);$(zlibInclude);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibInclude);$(IncludePath);$(LibraryPath)</LibraryPath>
     <LinkIncremental>false</LinkIncremental>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

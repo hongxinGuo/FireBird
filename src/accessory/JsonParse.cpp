@@ -21,6 +21,7 @@
 
 #include "ChinaStockCodeConverter.h"
 #include "InfoReport.h"
+#include "Thread.h"
 
 using namespace std;
 
@@ -167,9 +168,8 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe,
 	co_return succeed;
 }
 
-concurrencpp::runtime runtime1;
 void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
-	auto result = ParseSinaRTDataUsingCoroutine(runtime1.thread_pool_executor(), pWebData);
+	auto result = ParseSinaRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pWebData);
 	result.get(); // 等待线程执行完后方继续。
 }
 
@@ -319,7 +319,7 @@ result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<thread_pool_executor> t
 }
 
 void ParseTengxunRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
-	auto result = ParseTengxunRTDataUsingCoroutine(runtime1.thread_pool_executor(), pWebData);
+	auto result = ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pWebData);
 	result.get();
 }
 

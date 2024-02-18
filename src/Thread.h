@@ -7,8 +7,12 @@
 //
 // 智能指针是否可以以参数的形式传递至线程中，现在尚不清楚。测试一下。目前使用vector来间接传递智能指针。
 //
+// todo 使用concurrencpp改写工作线程
+//
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
+
+#include <concurrencpp/runtime/runtime.h>
 
 #include"RSReference.h"
 
@@ -17,6 +21,8 @@
 #include "FinnhubCryptoSymbol.h"
 
 using gsl::not_null;
+
+extern concurrencpp::runtime gl_runtime;
 
 // 网络读取任务
 //

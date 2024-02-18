@@ -2,7 +2,6 @@
 
 #include<semaphore>
 #include<atomic>
-
 using std::counting_semaphore;
 using std::atomic_int;
 
