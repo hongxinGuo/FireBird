@@ -40,31 +40,11 @@ public:
 	void TaskProcessWebSocketData(long lCurrentTime);
 	void TaskStartAllWebSocket(long lCurrentTime);
 	void TaskStopAllWebSocket(long lCurrentTime);
-	void TaskUpdateStockProfileDB(long lCurrentTime);
+	void TaskUpdateWorldMarketDB(long lCurrentTime);
 
 	virtual bool CreateThreadUpdateTiingoIndustry();
 	virtual bool CreateThreadUpdateSICIndustry();
 	virtual bool CreateThreadUpdateNaicsIndustry();
-
-	virtual void CreateThreadUpdateCompanyNewsDB();
-	virtual void CreateThreadUpdateBasicFinancialDB();
-	virtual void CreateThreadUpdateDayLineDB();
-	virtual void CreateThreadUpdateForexExchangeDB();
-	virtual void CreateThreadUpdateForexSymbolDB();
-	virtual void CreateThreadUpdateCryptoExchangeDB();
-	virtual void CreateThreadUpdateFinnhubCryptoSymbolDB();
-	virtual void CreateThreadUpdateCountryListDB();
-	virtual void CreateThreadUpdateEconomicCalendarDB();
-	virtual void CreateThreadUpdateInsiderTransactionDB();
-	virtual void CreateThreadUpdateInsiderSentimentDB();
-	virtual void CreateThreadUpdateTiingoStockDB();
-	virtual void CreateThreadUpdateTiingoCryptoSymbolDB();
-	virtual void CreateThreadUpdateDayLineStartEndDate();
-	virtual void CreateThreadUpdateStockProfileDB();
-	virtual void CreateThreadUpdateForexDayLineDB(CForexSymbolPtr pSymbol);
-	virtual void CreateThreadUpdateCryptoDayLineDB(CFinnhubCryptoSymbolPtr pSymbol);
-	virtual void CreateThreadUpdateEPSSurpriseDB(CWorldStockPtr pStock);
-	virtual void CreateThreadUpdateEPSSurpriseDB2();
 
 	bool UpdateForexDayLineDB();
 	bool UpdateCryptoDayLineDB();

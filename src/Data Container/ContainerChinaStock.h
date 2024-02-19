@@ -51,7 +51,6 @@ public:
 
 	void ProcessRTData();
 	bool SaveDayLineData();
-	virtual void CreateThreadSaveDayLineBasicInfo(CChinaStockPtr pStock);
 
 	[[nodiscard]] long GetDayLineNeedUpdateNumber() const;
 	[[nodiscard]] long GetDayLineNeedSaveNumber() const;

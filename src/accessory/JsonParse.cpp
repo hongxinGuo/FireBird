@@ -144,19 +144,20 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 // 由于数据中不会包含相同股票的实时数据，故而不会出现同时操作同一个股票的问题，所以可以并行解析
 // 只有工作线程都执行完后，本函数方可退出。
 //
-// 使用这种多线程模式与单线程模式相比，速度快40%。
+// 使用这种多线程模式与单线程模式相比，速度只快15%，暂不使用。
+// 每个线程所处理的数据极其短小，而线程的调度和数据的准备（以防重入问题）需要太多的时间。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe, const CWebDataPtr& pWebData) {
+	auto total = tpe->max_concurrency_level();
 	bool succeed = true;
 	vector<result<bool>> results;
 	pWebData->ResetCurrentPos();
 	while (!pWebData->IsLastDataParagraph()) {
-		auto psv = make_shared<string_view>();
-		auto sv = pWebData->GetCurrentSinaData();
-		auto result = tpe->submit([sv] {
+		auto p = pWebData->GetCurrentSinaDataPtr(); // 使用shared_ptr以防止出现重入问题。
+		auto result = tpe->submit([p] {
 			const auto pRTData = make_shared<CWebRTData>();
-			pRTData->ParseSinaData(sv); // todo 此函数不时出现重入错误
+			pRTData->ParseSinaData(*p);
 			gl_qChinaMarketRTData.enqueue(pRTData);
 			return true;
 		});

@@ -686,11 +686,11 @@
     <ClInclude Include="MockVirtualWebSocket.h">
       <Filter>Mock class\WebSocket</Filter>
     </ClInclude>
-    <ClInclude Include="MockContainerChinaStock.h">
-      <Filter>Mock class\Data Container</Filter>
-    </ClInclude>
     <ClInclude Include="TemplateMutexAccessQueueTest.h">
       <Filter>Test源文件\Template</Filter>
+    </ClInclude>
+    <ClInclude Include="MockContainerChinaStock.h">
+      <Filter>Mock class\Data Container</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

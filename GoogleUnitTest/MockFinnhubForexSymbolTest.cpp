@@ -42,25 +42,4 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 	};
-
-	TEST_F(CMockFinnhubForexSymbolTest, TestThreadUpdateFinnhubForexSymbolDayLine) {
-		CMockFinnhubForexSymbolPtr pSymbol = make_shared<CMockFinnhubForexSymbol>();
-		vector<CDayLinePtr> vDayLine;
-		const auto pDayLine = make_shared<CDayLine>();
-
-		pDayLine->SetClose(100);
-		vDayLine.push_back(pDayLine);
-		pSymbol->UpdateDayLine(vDayLine);
-		pSymbol->SetSymbol(_T("abcdef"));
-
-		EXPECT_THAT(pSymbol->GetDayLineSize(), Gt(0));
-
-		EXPECT_CALL(*pSymbol, UpdateDayLineDB()).Times(1);
-
-		EXPECT_EQ(ThreadUpdateForexDayLineDB(pSymbol), 38);
-
-		EXPECT_THAT(pSymbol->GetDayLineSize(), Eq(0));
-		EXPECT_THAT(gl_systemMessage.DayLineInfoSize(), Eq(1));
-		EXPECT_STREQ(gl_systemMessage.PopDayLineInfoMessage(), _T("abcdef日线资料存储完成"));
-	}
 }

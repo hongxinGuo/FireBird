@@ -17,7 +17,8 @@ namespace FireBirdTest {
 	class CMockContainerChinaStockTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			s_pMockContainerChinaStock = make_shared<CMockContainerChinaStock>();
 			s_pMockContainerChinaStock->LoadStockProfileDB();
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
@@ -26,41 +27,24 @@ namespace FireBirdTest {
 		static void TearDownTestSuite() {
 			s_pMockContainerChinaStock = nullptr;
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
 	};
-
-	TEST_F(CMockContainerChinaStockTest, TestSaveDayLineData) {
-		EXPECT_FALSE(s_pMockContainerChinaStock->IsDayLineNeedSaving());
-
-		s_pMockContainerChinaStock->GetStock(0)->SetDayLineNeedSaving(true);
-		s_pMockContainerChinaStock->GetStock(10)->SetDayLineNeedSaving(true);
-		EXPECT_EQ(s_pMockContainerChinaStock->GetStock(0)->GetDayLineSize(), 0);
-		const CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->m_lDate = GetNextDay(s_pMockContainerChinaStock->GetStock(10)->GetDayLineEndDate()); // 确保是新数据
-		s_pMockContainerChinaStock->GetStock(10)->StoreDayLine(pDayLine);
-
-		EXPECT_CALL(*s_pMockContainerChinaStock, CreateThreadSaveDayLineBasicInfo).Times(1);
-
-		EXPECT_TRUE(s_pMockContainerChinaStock->SaveDayLineData()) << "存储了一个";
-
-		EXPECT_FALSE(s_pMockContainerChinaStock->GetStock(0)->IsDayLineNeedSaving());
-		EXPECT_FALSE(s_pMockContainerChinaStock->GetStock(10)->IsDayLineNeedSaving());
-		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
-		gl_systemMessage.PopDayLineInfoMessage();
-	}
 
 	TEST_F(CMockContainerChinaStockTest, TestGetActiveStockSize) {
 		for (size_t l = 0; l < s_pMockContainerChinaStock->GetLoadedStockSize(); l++) {

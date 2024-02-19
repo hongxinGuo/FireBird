@@ -942,7 +942,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__);
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_UPDATE_DB__);
 		EXPECT_EQ(pTask->GetTime(), 10040);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
@@ -986,7 +986,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__);
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_UPDATE_DB__);
 		EXPECT_EQ(pTask->GetTime(), 180140);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 

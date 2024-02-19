@@ -7,6 +7,9 @@
 #include "FireBird.h"
 
 #include "MainFrm.h"
+
+#include <concurrencpp/executors/thread_pool_executor.h>
+
 #include"FireBirdView.h"
 
 #include"ChinaStock.h"
@@ -28,6 +31,7 @@
 #include "ConvertToString.h"
 #include"GlobeMarketInitialize.h"
 #include"simdjsonGetValue.h"
+#include "Thread.h"
 
 bool CMainFrame::sm_fGlobeInit = false;
 
@@ -614,7 +618,11 @@ void CMainFrame::OnProcessTodayStock() {
 }
 
 void CMainFrame::ProcessChinaMarketStock() {
-	gl_pChinaMarket->CreateThreadProcessTodayStock();
+	gl_runtime.background_executor()->post([] {
+		gl_UpdateChinaMarketDB.acquire();
+		gl_pChinaMarket->ProcessTodayStock();
+		gl_UpdateChinaMarketDB.release();
+	});
 }
 
 void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
@@ -802,12 +810,34 @@ void CMainFrame::OnUpdateAbortBuildingRS(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnCalculate10dayRS1() {
-	gl_pChinaMarket->CreateThreadChoice10RSStrong1StockSet();
+	gl_runtime.background_executor()->post([] {
+		gl_UpdateChinaMarketDB.acquire();
+		gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));
+
+		// 添加一个注释
+		if (gl_dataContainerChinaStock.Choice10RSStrong1StockSet()) {
+			gl_systemMessage.PushInformationMessage(_T("10日RS1计算完毕\n"));
+			gl_pChinaMarket->SetUpdatedDateFor10DaysRS1(gl_pChinaMarket->GetMarketDate());
+			gl_pChinaMarket->SetUpdateOptionDB(true); // 更新选项数据库
+		}
+		gl_UpdateChinaMarketDB.release();
+	});
 	gl_pChinaMarket->SetChosen10RSStrong1StockSet(true);
 }
 
 void CMainFrame::OnCalculate10dayRS2() {
-	gl_pChinaMarket->CreateThreadChoice10RSStrong2StockSet();
+	gl_runtime.background_executor()->post([] {
+		gl_UpdateChinaMarketDB.acquire();
+		gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));
+
+		// 添加一个注释
+		if (gl_dataContainerChinaStock.Choice10RSStrong2StockSet()) {
+			gl_systemMessage.PushInformationMessage(_T("10日RS2计算完毕\n"));
+			gl_pChinaMarket->SetUpdatedDateFor10DaysRS2(gl_pChinaMarket->GetMarketDate());
+			gl_pChinaMarket->SetUpdateOptionDB(true); // 更新选项数据库
+		}
+		gl_UpdateChinaMarketDB.release();
+	});
 	gl_pChinaMarket->SetChosen10RSStrong2StockSet(true);
 }
 
@@ -890,13 +920,15 @@ void CMainFrame::OnBuildCreateWeekLine() {
 	gl_pChinaMarket->CreateThreadBuildWeekLine(19900101);
 }
 
-void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {}
+void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
+}
 
 void CMainFrame::OnRebuildWeekLineRS() {
 	gl_pChinaMarket->CreateThreadBuildWeekLineRS();
 }
 
-void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {}
+void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {
+}
 
 void CMainFrame::OnBuildCurrentWeekLine() {
 	gl_pChinaMarket->CreateThreadBuildWeekLineOfCurrentWeek();
@@ -915,13 +947,15 @@ void CMainFrame::OnBuildRebuildCurrentWeekLine() {
 	gl_pChinaMarket->CreateThreadBuildWeekLine(gl_pChinaMarket->GetMarketDate());
 }
 
-void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {}
+void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
+}
 
 void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
 	gl_pChinaMarket->CreateThreadBuildCurrentWeekWeekLineTable();
 }
 
-void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {}
+void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {
+}
 
 void CMainFrame::OnUpdateStockSection() {
 	gl_dataContainerChinaStockSymbol.SetUpdateStockSection(true);
@@ -929,7 +963,11 @@ void CMainFrame::OnUpdateStockSection() {
 }
 
 void CMainFrame::OnUpdateStockCode() {
-	gl_pChinaMarket->CreateThreadUpdateStockProfileDB();
+	gl_runtime.background_executor()->post([] {
+		gl_UpdateChinaMarketDB.acquire();
+		gl_dataContainerChinaStock.UpdateStockProfileDB();
+		gl_UpdateChinaMarketDB.release();
+	});
 }
 
 void CMainFrame::OnRebuildEpsSurprise() {
@@ -945,7 +983,11 @@ void CMainFrame::OnRebuildDayLine() {
 }
 
 void CMainFrame::OnUpdateWorldStockDayLineStartEnd() {
-	gl_pWorldMarket->CreateThreadUpdateDayLineStartEndDate();
+	gl_runtime.background_executor()->post([] {
+		gl_UpdateWorldMarketDB.acquire();
+		gl_pWorldMarket->UpdateStockDayLineStartEndDate();
+		gl_UpdateWorldMarketDB.release();
+	});
 }
 
 void CMainFrame::OnRecordFinnhubWebSocket() {

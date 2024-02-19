@@ -3,6 +3,9 @@
 #include"systemData.h"
 
 #include "WorldMarket.h"
+
+#include <concurrencpp/executors/thread_pool_executor.h>
+
 #include"thread.h"
 
 #include"FinnhubInaccessibleExchange.h"
@@ -69,9 +72,11 @@ void CWorldMarket::ResetFinnhub() {
 	m_pvMarketHoliday->clear();
 }
 
-void CWorldMarket::ResetQuandl() {}
+void CWorldMarket::ResetQuandl() {
+}
 
-void CWorldMarket::ResetTiingo() {}
+void CWorldMarket::ResetTiingo() {
+}
 
 void CWorldMarket::ResetDataContainer() {
 	gl_dataContainerFinnhubStockExchange.Reset();
@@ -144,8 +149,9 @@ bool CWorldMarket::ProcessTask(long lCurrentTime) {
 		case WORLD_MARKET_RESET__: // 170000重启系统
 			TaskResetMarket(lCurrentTime);
 			break;
-		case WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__:
-			TaskUpdateStockProfileDB(lCurrentTime);
+		case WORLD_MARKET_UPDATE_DB__:
+			ASSERT(!IsTimeToResetSystem(lCurrentTime));// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
+			TaskUpdateWorldMarketDB(lCurrentTime);
 			break;
 		case WORLD_MARKET_START_ALL_WEB_SOCKET__:
 			TaskStartAllWebSocket(lCurrentTime);
@@ -178,7 +184,7 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 		AddTask(WORLD_MARKET_RESET__, 170000); // 执行时间为：170000
 	}
 
-	AddTask(WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__, lTimeMinute + 40);// 更新股票简介数据库的任务
+	AddTask(WORLD_MARKET_UPDATE_DB__, lTimeMinute + 40);// 更新股票简介数据库的任务
 
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lCurrentTime);
 
@@ -269,7 +275,16 @@ bool CWorldMarket::UpdateForexDayLineDB() {
 		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
-					CreateThreadUpdateForexDayLineDB(pSymbol);
+					gl_runtime.background_executor()->post([pSymbol] {
+						gl_UpdateWorldMarketDB.acquire();
+						pSymbol->UpdateDayLineDB();
+						pSymbol->UpdateDayLineStartEndDate();
+						pSymbol->SetUpdateProfileDB(true);
+						pSymbol->UnloadDayLine();
+						const CString str = pSymbol->GetSymbol() + _T("日线资料存储完成");
+						gl_systemMessage.PushDayLineInfoMessage(str);
+						gl_UpdateWorldMarketDB.release();
+					});
 					fUpdated = true;
 					//TRACE("更新%s日线数据\n", pSymbol->GetSymbol().GetBuffer());
 				}
@@ -312,7 +327,16 @@ bool CWorldMarket::UpdateCryptoDayLineDB() {
 		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
-					CreateThreadUpdateCryptoDayLineDB(pSymbol);
+					gl_runtime.background_executor()->post([pSymbol] {
+						gl_UpdateWorldMarketDB.acquire();
+						pSymbol->UpdateDayLineDB();
+						pSymbol->UpdateDayLineStartEndDate();
+						pSymbol->SetUpdateProfileDB(true);
+						pSymbol->UnloadDayLine();
+						const CString str = pSymbol->GetSymbol() + _T("日线资料存储完成");
+						gl_systemMessage.PushDayLineInfoMessage(str);
+						gl_UpdateWorldMarketDB.release();
+					});
 					fUpdated = true;
 					//TRACE("更新%s日线数据\n", pSymbol->GetSymbol().GetBuffer());
 				}
@@ -356,26 +380,6 @@ bool CWorldMarket::UpdateEPSSurpriseDB() {
 	return (true);
 }
 
-void CWorldMarket::CreateThreadUpdateForexDayLineDB(CForexSymbolPtr pSymbol) {
-	thread thread1(ThreadUpdateForexDayLineDB, pSymbol);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateCryptoDayLineDB(CFinnhubCryptoSymbolPtr pSymbol) {
-	thread thread1(ThreadUpdateCryptoDayLineDB, pSymbol);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateEPSSurpriseDB(CWorldStockPtr pStock) {
-	thread thread1(ThreadUpdateEPSSurpriseDB, pStock);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateEPSSurpriseDB2() {
-	thread thread1(ThreadUpdateEPSSurpriseDB2, gl_pWorldMarket);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
 bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
 	if (!IsSystemReady()) {
 		if (!gl_pFinnhubDataSource->IsUpdateSymbol() && !gl_pFinnhubDataSource->IsUpdateForexExchange() && !gl_pFinnhubDataSource->IsUpdateForexSymbol()
@@ -392,115 +396,137 @@ bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
 	return IsSystemReady();
 }
 
-void CWorldMarket::CreateThreadUpdateDayLineStartEndDate() {
-	thread thread1(ThreadUpdateWorldStockDayLineStartEndDate, gl_pWorldMarket);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateDayLineDB() {
-	thread thread1(ThreadUpdateWorldStockDayLineDB, gl_pWorldMarket);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
+void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerFinnhubCountry.GetLastTotalCountry() < gl_dataContainerFinnhubCountry.GetTotalCountry()) {
-		CreateThreadUpdateCountryListDB();
+		gl_runtime.background_executor()->post([] {
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataContainerFinnhubCountry.UpdateDB();
+			gl_UpdateWorldMarketDB.release();
+		});
 	}
-	if (gl_dataContainerFinnhubForexExchange.IsNeedUpdate()) CreateThreadUpdateForexExchangeDB();
-	if (gl_dataFinnhubForexSymbol.IsUpdateProfileDB()) CreateThreadUpdateForexSymbolDB();
-	if (gl_dataContainerFinnhubCryptoExchange.IsNeedUpdate()) CreateThreadUpdateCryptoExchangeDB();
-	if (gl_dataFinnhubCryptoSymbol.IsUpdateProfileDB()) CreateThreadUpdateFinnhubCryptoSymbolDB();
-	if (gl_dataContainerFinnhubStock.IsSaveInsiderTransaction()) CreateThreadUpdateInsiderTransactionDB();
-	if (gl_dataContainerFinnhubStock.IsSaveInsiderSentiment()) CreateThreadUpdateInsiderSentimentDB();
-	if (gl_dataContainerFinnhubStock.IsDayLineNeedSaving()) CreateThreadUpdateDayLineDB();
-	if (gl_dataContainerFinnhubEconomicCalendar.IsNeedUpdate()) CreateThreadUpdateEconomicCalendarDB();
-	if (gl_dataContainerFinnhubStock.IsUpdateCompanyNewsDB()) CreateThreadUpdateCompanyNewsDB();
-	if (gl_dataContainerFinnhubStock.IsUpdateBasicFinancialDB()) CreateThreadUpdateBasicFinancialDB();
-	if (gl_dataContainerTiingoStock.IsNeedUpdate()) CreateThreadUpdateTiingoStockDB();
-	if (gl_dataContainerTiingoCryptoSymbol.IsNeedUpdate()) CreateThreadUpdateTiingoCryptoSymbolDB();
-	if (gl_dataContainerFinnhubStock.IsSaveEPSSurpriseDB()) CreateThreadUpdateEPSSurpriseDB2();
+	if (gl_dataContainerFinnhubForexExchange.IsNeedUpdate()) {
+		gl_runtime.background_executor()->post([] {
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataContainerFinnhubForexExchange.UpdateDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+	if (gl_dataFinnhubForexSymbol.IsUpdateProfileDB()) {
+		gl_runtime.background_executor()->post([] {
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataFinnhubForexSymbol.UpdateDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+	if (gl_dataContainerFinnhubCryptoExchange.IsNeedUpdate()) {
+		gl_runtime.background_executor()->post([] {
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataContainerFinnhubCryptoExchange.UpdateDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+	if (gl_dataFinnhubCryptoSymbol.IsUpdateProfileDB()) {
+		gl_runtime.background_executor()->post([] {
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataFinnhubCryptoSymbol.UpdateDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+	if (gl_dataContainerFinnhubStock.IsSaveInsiderTransaction()) {
+		gl_runtime.background_executor()->post([this] {
+			gl_UpdateWorldMarketDB.acquire();
+			this->UpdateInsiderTransactionDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+	if (gl_dataContainerFinnhubStock.IsSaveInsiderSentiment()) {
+		gl_runtime.background_executor()->post([this] {
+			gl_UpdateWorldMarketDB.acquire();
+			this->UpdateInsiderSentimentDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+	if (gl_dataContainerFinnhubStock.IsDayLineNeedSaving()) {
+		gl_runtime.background_executor()->post([this] {
+			gl_UpdateWorldMarketDB.acquire();
+			this->UpdateStockDayLineDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+	if (gl_dataContainerFinnhubEconomicCalendar.IsNeedUpdate()) {
+		gl_runtime.background_executor()->post([] {
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataContainerFinnhubEconomicCalendar.UpdateDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+	if (gl_dataContainerFinnhubStock.IsUpdateCompanyNewsDB()) {
+		gl_runtime.background_executor()->post([this] {
+			gl_UpdateWorldMarketDB.acquire();
+			this->UpdateCompanyNewsDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+	if (gl_dataContainerFinnhubStock.IsUpdateBasicFinancialDB()) {
+		gl_runtime.background_executor()->post([] {
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataContainerFinnhubStock.UpdateBasicFinancialDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+	if (gl_dataContainerTiingoStock.IsNeedUpdate()) {
+		gl_runtime.background_executor()->post([] {
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataContainerTiingoStock.UpdateDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+	if (gl_dataContainerTiingoCryptoSymbol.IsNeedUpdate()) {
+		gl_runtime.background_executor()->post([] {
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataContainerTiingoCryptoSymbol.UpdateDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+	if (gl_dataContainerFinnhubStock.IsSaveEPSSurpriseDB()) {
+		gl_runtime.background_executor()->post([this] {
+			gl_UpdateWorldMarketDB.acquire();
+			this->UpdateEPSSurpriseDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
 
-	UpdateForexDayLineDB();
-	UpdateCryptoDayLineDB();
+	gl_runtime.background_executor()->post([this] {
+		gl_UpdateWorldMarketDB.acquire();
+		this->UpdateForexDayLineDB();
+		gl_UpdateWorldMarketDB.release();
+	});
+
+	gl_runtime.background_executor()->post([this] {
+		gl_UpdateWorldMarketDB.acquire();
+		this->UpdateCryptoDayLineDB();
+		gl_UpdateWorldMarketDB.release();
+	});
 
 	if (!gl_pFinnhubDataSource->IsUpdateSymbol() && gl_dataContainerFinnhubStock.IsUpdateProfileDB()) {
-		CreateThreadUpdateStockProfileDB();
+		gl_runtime.background_executor()->post([] {
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataContainerFinnhubStock.UpdateProfileDB();
+			gl_UpdateWorldMarketDB.release();
+		});
 	}
 
 	if (gl_finnhubInaccessibleExchange.IsNeedUpdate()) { // 更新禁止访问证券交易所名单
-		gl_finnhubInaccessibleExchange.UpdateDB();
-		gl_finnhubInaccessibleExchange.SetUpdate(false);
+		gl_runtime.background_executor()->post([] {
+			gl_finnhubInaccessibleExchange.UpdateDB();
+			gl_finnhubInaccessibleExchange.SetUpdate(false);
+		});
 	}
 
 	long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
 	if (IsTimeToResetSystem(lNextTime)) lNextTime = 170510;
 	ASSERT(!IsTimeToResetSystem(lNextTime));// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
-	AddTask(WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__, lNextTime); // 每五分钟更新一次
-}
-
-void CWorldMarket::CreateThreadUpdateStockProfileDB() {
-	thread thread1(ThreadUpdateWorldMarketStockProfileDB);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateCompanyNewsDB() {
-	thread thread1(ThreadUpdateCompanyNewsDB, gl_pWorldMarket);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateBasicFinancialDB() {
-	thread thread1(ThreadUpdateBasicFinancialDB);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateCountryListDB() {
-	thread thread1(ThreadUpdateCountryListDB);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateInsiderTransactionDB() {
-	thread thread1(ThreadUpdateInsiderTransactionDB, gl_pWorldMarket);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateInsiderSentimentDB() {
-	thread thread1(ThreadUpdateInsiderSentimentDB, gl_pWorldMarket);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateTiingoStockDB() {
-	thread thread1(ThreadUpdateTiingoStockDB);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateTiingoCryptoSymbolDB() {
-	thread thread1(ThreadUpdateTiingoCryptoSymbolDB);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateForexExchangeDB() {
-	thread thread1(ThreadUpdateForexExchangeDB);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateForexSymbolDB() {
-	thread thread1(ThreadUpdateForexSymbolDB);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateCryptoExchangeDB() {
-	thread thread1(ThreadUpdateCryptoExchangeDB);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateFinnhubCryptoSymbolDB() {
-	thread thread1(ThreadUpdateFinnhubCryptoSymbolDB);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CWorldMarket::CreateThreadUpdateEconomicCalendarDB() {
-	thread thread1(ThreadUpdateEconomicCalendarDB);
-	thread1.detach();
+	AddTask(WORLD_MARKET_UPDATE_DB__, lNextTime); // 每五分钟更新一次
 }
 
 bool CWorldMarket::UpdateToken() {

@@ -10,6 +10,9 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
+#include <concurrencpp/executors/thread_pool_executor.h>
+
+#include "HighPerformanceCounter.h"
 #include "InfoReport.h"
 #include"SetDayLineExtendInfo.h"
 #include"SetDayLineTodaySaved.h"
@@ -211,7 +214,7 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 			TaskUpdateOptionDB(lCurrentTime);
 			break;
 		case CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__:
-			TaskUpdateStockProfileDB(lCurrentTime);
+			TaskUpdateWorldMarketDB(lCurrentTime);
 			break;
 		case CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__:
 			TaskUpdateChosenStockDB();
@@ -470,20 +473,28 @@ void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
 	}
 }
 
-void CChinaMarket::CreateThreadDistributeAndCalculateRTData() {
-	thread thread1(ThreadDistributeAndCalculateRTData, gl_pChinaMarket);
-	thread1.detach();
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 将接收到的实时数据分发至各相关股票的实时数据队列中。
 // 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，需要至少每三秒执行一次，以保证各数据源至少都能提供一次数据。
-// 实时数据的计算过程必须位于分配过程之后，这样才能保证不会出现数据同步问题
+// 实时数据的计算过程必须位于分配过程之后，这样才能保证不会出现数据同步问题。
 //
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 使用线程池改写。
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
-	CreateThreadDistributeAndCalculateRTData();
+	gl_runtime.thread_pool_executor()->post([this] { // 无需等待结果，直接返回
+			gl_ProcessChinaMarketRTData.acquire();
+			CHighPerformanceCounter counter;
+			counter.start();
+
+			this->DistributeRTData();
+			this->CalculateRTData();
+
+			counter.stop();
+			this->SetDistributeAndCalculateTime(counter.GetElapsedMillisecond());
+			gl_ProcessChinaMarketRTData.release();
+		});
 
 	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, GetNextSecond(lCurrentTime)); // 每秒执行一次
 }
@@ -495,7 +506,7 @@ void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
 // 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
 //
 // 此函数由工作线程调用，注意同步问题。
-// 由于新浪实时数据可能由多个数据申请线程申请，执行此函数时不允许同时将实时数据加入队列中，故而采用互斥。
+// 由于新浪实时数据可能由多个数据申请线程申请，执行此函数时不允许同时将实时数据加入队列中，故而采用并行队列来存储。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::DistributeRTData() {
@@ -609,18 +620,41 @@ void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
 	if (IsSystemReady()) {
 		const CString str = "存储临时数据";
 		gl_systemMessage.PushDayLineInfoMessage(str);
-		CreateThreadUpdateTempRTData();
+		gl_runtime.background_executor()->post([] {
+			gl_UpdateChinaMarketDB.acquire();
+			gl_ProcessChinaMarketRTData.acquire();
+			gl_dataContainerChinaStock.SaveTempRTData();
+			gl_ProcessChinaMarketRTData.release();
+			gl_UpdateChinaMarketDB.release();
+		});
+		//CreateThreadUpdateTempRTData();
 	}
 }
 
 void CChinaMarket::TaskLoadCurrentStockHistoryData() {
 	if (m_pCurrentStock != nullptr) {
 		if (!m_pCurrentStock->IsDayLineLoaded()) {
-			CreateThreadLoadDayLine(m_pCurrentStock);
+			auto pStock = m_pCurrentStock;
+			gl_runtime.background_executor()->post([pStock] {
+				pStock->UnloadDayLine();
+				// 装入日线数据
+				pStock->LoadDayLine(pStock->GetSymbol());
+				// 计算各相对强度（以指数相对强度为默认值）
+				pStock->CalculateDayLineRSIndex();
+				pStock->SetDayLineLoaded(true);
+			});
 			m_pCurrentStock->SetDayLineLoaded(true);
 		}
 		if (!m_pCurrentStock->IsWeekLineLoaded()) {
-			CreateThreadLoadWeekLine(m_pCurrentStock);
+			auto pStock = m_pCurrentStock;
+			gl_runtime.background_executor()->post([pStock] {
+				pStock->UnloadWeekLine();
+				// 装入周线数据
+				pStock->LoadWeekLine();
+				// 计算各相对强度（以指数相对强度为默认值）
+				pStock->CalculateWeekLineRSIndex();
+				pStock->SetWeekLineLoaded(true);
+			});
 			m_pCurrentStock->SetWeekLineLoaded(true);
 		}
 	}
@@ -680,7 +714,18 @@ bool CChinaMarket::SetCheckActiveStockFlag(long lCurrentTime) {
 
 bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
 	if (IsSystemReady() && !m_fChosen10RSStrong1StockSet && (lCurrentTime > 151100) && IsWorkingDay()) {
-		CreateThreadChoice10RSStrong1StockSet();
+		gl_runtime.background_executor()->post([this] {
+			gl_UpdateChinaMarketDB.acquire();
+			gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));
+
+			// 添加一个注释
+			if (gl_dataContainerChinaStock.Choice10RSStrong1StockSet()) {
+				gl_systemMessage.PushInformationMessage(_T("10日RS1计算完毕\n"));
+				this->SetUpdatedDateFor10DaysRS1(this->GetMarketDate());
+				this->SetUpdateOptionDB(true); // 更新选项数据库
+			}
+			gl_UpdateChinaMarketDB.release();
+		});
 		m_fChosen10RSStrong1StockSet = true;
 		return true;
 	}
@@ -689,7 +734,18 @@ bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
 
 bool CChinaMarket::TaskChoice10RSStrong2StockSet(long lCurrentTime) {
 	if (IsSystemReady() && !m_fChosen10RSStrong2StockSet && (lCurrentTime > 151200) && IsWorkingDay()) {
-		CreateThreadChoice10RSStrong2StockSet();
+		gl_runtime.background_executor()->post([this] {
+			gl_UpdateChinaMarketDB.acquire();
+			gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));
+
+			// 添加一个注释
+			if (gl_dataContainerChinaStock.Choice10RSStrong2StockSet()) {
+				gl_systemMessage.PushInformationMessage(_T("10日RS2计算完毕\n"));
+				this->SetUpdatedDateFor10DaysRS2(this->GetMarketDate());
+				this->SetUpdateOptionDB(true); // 更新选项数据库
+			}
+			gl_UpdateChinaMarketDB.release();
+		});
 		m_fChosen10RSStrong2StockSet = true;
 		return true;
 	}
@@ -707,7 +763,11 @@ bool CChinaMarket::TaskChoice10RSStrongStockSet(long lCurrentTime) {
 
 bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
 	if (IsSystemReady()) {
-		CreateThreadProcessTodayStock();
+		gl_runtime.background_executor()->post([this] {
+			gl_UpdateChinaMarketDB.acquire();
+			this->ProcessTodayStock();
+			gl_UpdateChinaMarketDB.release();
+		});
 		return true;
 	}
 	return false;
@@ -790,11 +850,15 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 	return true;
 }
 
-bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
+bool CChinaMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, GetNextTime(lCurrentTime, 0, 5, 0));
 
 	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
-		CreateThreadUpdateStockProfileDB();
+		gl_runtime.background_executor()->post([] {
+			gl_UpdateChinaMarketDB.acquire();
+			gl_dataContainerChinaStock.UpdateStockProfileDB();
+			gl_UpdateChinaMarketDB.release();
+		});
 		return true;
 	}
 	return false;
@@ -803,22 +867,25 @@ bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 bool CChinaMarket::TaskUpdateOptionDB(long lCurrentTime) {
 	AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, GetNextTime(lCurrentTime, 0, 5, 0));
 
-	CreateThreadUpdateOptionDB();
+	gl_runtime.background_executor()->post([this] {
+		gl_UpdateChinaMarketDB.acquire();
+		this->UpdateOptionDB();
+		gl_UpdateChinaMarketDB.release();
+	});
 
 	return true;
 }
 
 bool CChinaMarket::TaskUpdateChosenStockDB() {
 	if (IsUpdateChosenStockDB()) {
-		CreateThreadUpdateChoseStockDB();
+		gl_runtime.background_executor()->post([this] {
+			gl_UpdateChinaMarketDB.acquire();
+			this->AppendChosenStockDB();
+			gl_UpdateChinaMarketDB.release();
+		});
 		return true;
 	}
 	return false;
-}
-
-void CChinaMarket::CreateThreadUpdateChoseStockDB() {
-	thread thread1(ThreadAppendChosenStockDB, gl_pChinaMarket);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 bool CChinaMarket::TaskShowCurrentTransaction() const {
@@ -838,16 +905,15 @@ bool CChinaMarket::TaskShowCurrentTransaction() const {
 
 bool CChinaMarket::TaskUpdateStockSection() {
 	if (gl_dataContainerChinaStockSymbol.IsUpdateStockSection()) {
-		CreateThreadSaveStockSection();
+		gl_runtime.background_executor()->post([] {
+			gl_UpdateChinaMarketDB.acquire();
+			gl_dataContainerChinaStockSymbol.UpdateStockSectionDB();
+			gl_UpdateChinaMarketDB.release();
+		});
 		gl_dataContainerChinaStockSymbol.SetUpdateStockSection(false);
 		return true;
 	}
 	return false;
-}
-
-void CChinaMarket::CreateThreadSaveStockSection() {
-	thread thread1(ThreadSaveStockSection);
-	thread1.detach();
 }
 
 bool CChinaMarket::ChangeDayLineStockCodeTypeToStandard() {
@@ -1233,11 +1299,6 @@ bool CChinaMarket::ProcessDayLine() {
 	return true;
 }
 
-void CChinaMarket::CreateThreadProcessTodayStock() {
-	thread thread1(ThreadProcessTodayStock, gl_pChinaMarket);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
 void CChinaMarket::CreateThreadBuildDayLineRS(long lStartCalculatingDate) {
 	thread thread1(ThreadBuildDayLineRS, gl_pChinaMarket, lStartCalculatingDate);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
@@ -1250,36 +1311,6 @@ void CChinaMarket::CreateThreadBuildDayLineRSOfDate(long lThisDate) {
 
 void CChinaMarket::CreateThreadBuildWeekLineRSOfDate(long lThisDate) {
 	thread thread1(ThreadBuildWeekLineRSOfDate, lThisDate);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CChinaMarket::CreateThreadLoadDayLine(CChinaStockPtr pCurrentStock) {
-	thread thread1(ThreadLoadDayLine, pCurrentStock);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CChinaMarket::CreateThreadLoadWeekLine(CChinaStockPtr pCurrentStock) {
-	thread thread1(ThreadLoadWeekLine, pCurrentStock);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CChinaMarket::CreateThreadUpdateStockProfileDB() {
-	thread thread1(ThreadUpdateChinaStockProfileDB);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CChinaMarket::CreateThreadUpdateOptionDB() {
-	thread thread1(ThreadUpdateOptionDB, gl_pChinaMarket);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CChinaMarket::CreateThreadChoice10RSStrong2StockSet() {
-	thread thread1(ThreadChoice10RSStrong2StockSet, gl_pChinaMarket);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CChinaMarket::CreateThreadChoice10RSStrong1StockSet() {
-	thread thread1(ThreadChoice10RSStrong1StockSet, gl_pChinaMarket);
 	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
@@ -1364,18 +1395,17 @@ bool CChinaMarket::TaskLoadTempRTData(long lTheDate, long lCurrentTime) {
 	ASSERT(!m_fTodayTempDataLoaded);
 
 	if (IsSystemReady()) {
-		CreateThreadLoadTempRTData(lTheDate);
+		gl_runtime.background_executor()->post([this, lTheDate] {
+			gl_ProcessChinaMarketRTData.acquire();
+			this->LoadTempRTData(lTheDate);
+			gl_ProcessChinaMarketRTData.release();
+		});
 		return true;
 	}
 	else {
 		AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, GetNextSecond(lCurrentTime));
 	}
 	return false;
-}
-
-void CChinaMarket::CreateThreadLoadTempRTData(long lTheDate) {
-	thread thread1(ThreadLoadTempRTData, gl_pChinaMarket, lTheDate);
-	thread1.detach();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1684,11 +1714,6 @@ void CChinaMarket::LoadChosenStockDB() {
 		setChinaChosenStock.MoveNext();
 	}
 	setChinaChosenStock.Close();
-}
-
-void CChinaMarket::CreateThreadUpdateTempRTData() {
-	thread thread1(ThreadSaveTempRTData);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 void CChinaMarket::ResetEffectiveRTDataRatio() {

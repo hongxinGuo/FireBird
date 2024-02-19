@@ -40,11 +40,4 @@ namespace FireBirdTest {
 			GeneralCheck();
 		}
 	};
-
-	TEST_F(CMockWorldStockTest, TestUpdateEPSSurpriseDB) {
-		CMockWorldStockPtr pStock = make_shared<CMockWorldStock>();
-		EXPECT_CALL(*pStock, UpdateEPSSurpriseDB)
-		.Times(1);
-		EXPECT_EQ(ThreadUpdateEPSSurpriseDB(pStock), static_cast<UINT>(41));
-	}
 }

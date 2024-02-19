@@ -3,6 +3,8 @@
 #include"JsonParse.h"
 #include"WebData.h"
 
+#include <memory>
+
 CWebData::CWebData() {
 	m_tTime = 0;
 	m_strStockCode = _T("");
@@ -55,6 +57,31 @@ string_view CWebData::GetCurrentSinaData() {
 	}
 	IncreaseCurrentPos(lEnd + 1); // 将当前位置移至当前数据结束处之后
 	return svCurrentTotal.substr(lStart, lEnd - lStart + 1); // 包括最后的字符';'
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 返回的shared_ptr<string>包括最后的';'分号
+// 提取数据后将当前位置移至该数据之后
+//
+//
+// var hq_str_sh601006="大秦铁路,27.55,27.25,26.91,27.55,26.20,26.91,26.92,
+//                     22114263,589824680,4695,26.91,57590,26.90,14700,26.89,14300,
+//                     26.88,15100,26.87,3100,26.92,8900,26.93,14230,26.94,25150,26.95,15220,26.96,2008-01-11,15:05:32,00";
+//
+// 无效数据格式为：var hq_str_sh688801="";
+//
+//////////////////////////////////////////////////////////////////////////////////////////////
+shared_ptr<string_view> CWebData::GetCurrentSinaDataPtr() {
+	const string_view svCurrentTotal = string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos);
+	const long lStart = svCurrentTotal.find_first_of('v');
+	const long lEnd = svCurrentTotal.find_first_of(';');
+	if (lStart > svCurrentTotal.length() || lEnd > svCurrentTotal.length() || lStart > lEnd) {
+		throw std::exception(_T("GetCurrentSinaData() out of range"));
+	}
+	IncreaseCurrentPos(lEnd + 1); // 将当前位置移至当前数据结束处之后
+	shared_ptr<string_view> ptr = std::make_shared<string_view>(svCurrentTotal.substr(lStart, lEnd - lStart + 1)); // 包括最后的字符';'
+	return ptr;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

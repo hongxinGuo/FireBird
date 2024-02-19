@@ -73,24 +73,6 @@ namespace FireBirdTest {
 		s_pMockWorldMarket->UpdateToken();
 	}
 
-	TEST_F(CMockWorldMarketTest, TestThreadUpdateStockDayLineDB) {
-		EXPECT_CALL(*s_pMockWorldMarket, UpdateStockDayLineDB)
-		.Times(1);
-		EXPECT_EQ(ThreadUpdateWorldStockDayLineDB(s_pMockWorldMarket), static_cast<UINT>(42));
-	}
-
-	TEST_F(CMockWorldMarketTest, TestThreadUpdateInsiderTransactionDB) {
-		EXPECT_CALL(*s_pMockWorldMarket, UpdateInsiderTransactionDB)
-		.Times(1);
-		EXPECT_EQ(ThreadUpdateInsiderTransactionDB(s_pMockWorldMarket), static_cast<UINT>(48));
-	}
-
-	TEST_F(CMockWorldMarketTest, TestThreadUpdateInsiderSentimentDB) {
-		EXPECT_CALL(*s_pMockWorldMarket, UpdateInsiderSentimentDB)
-		.Times(1);
-		EXPECT_EQ(ThreadUpdateInsiderSentimentDB(s_pMockWorldMarket), static_cast<UINT>(58));
-	}
-
 	TEST_F(CMockWorldMarketTest, TestThreadUpdateTiingoIndustry) {
 		EXPECT_CALL(*s_pMockWorldMarket, UpdateTiingoIndustry)
 		.Times(1);
@@ -107,12 +89,6 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockWorldMarket, UpdateNaicsIndustry)
 		.Times(1);
 		EXPECT_EQ(ThreadUpdateNaicsIndustry(s_pMockWorldMarket), static_cast<UINT>(47));
-	}
-
-	TEST_F(CMockWorldMarketTest, TestThreadUpdateDayLineStartEndDate) {
-		EXPECT_CALL(*s_pMockWorldMarket, UpdateStockDayLineStartEndDate)
-		.Times(1);
-		EXPECT_EQ(ThreadUpdateWorldStockDayLineStartEndDate(s_pMockWorldMarket), static_cast<UINT>(43));
 	}
 
 	TEST_F(CMockWorldMarketTest, TestTaskStartAllWebSocket) {
@@ -139,41 +115,5 @@ namespace FireBirdTest {
 		s_pMockWorldMarket->DiscardCurrentMarketTask();
 		EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
 		gl_pTiingoDataSource->SetErrorCode(0);
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateStockProfileDB1) {
-		EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
-
-		EXPECT_CALL(*s_pMockWorldMarket, CreateThreadUpdateCountryListDB).Times(0);
-		EXPECT_CALL(*s_pMockWorldMarket, CreateThreadUpdateForexExchangeDB).Times(0);
-		EXPECT_CALL(*s_pMockWorldMarket, CreateThreadUpdateForexSymbolDB).Times(0);
-		EXPECT_CALL(*s_pMockWorldMarket, CreateThreadUpdateStockProfileDB).Times(0);
-
-		s_pMockWorldMarket->TaskUpdateStockProfileDB(165259);
-
-		EXPECT_FALSE(s_pMockWorldMarket->IsMarketTaskEmpty());
-		const auto pTask = s_pMockWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__);
-		EXPECT_EQ(pTask->GetTime(), 165759) << "每五分钟更新一次";
-
-		s_pMockWorldMarket->DiscardCurrentMarketTask();
-	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskUpdateStockProfileDB2) {
-		EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
-
-		EXPECT_CALL(*s_pMockWorldMarket, CreateThreadUpdateCountryListDB).Times(0);
-		EXPECT_CALL(*s_pMockWorldMarket, CreateThreadUpdateForexExchangeDB).Times(0);
-		EXPECT_CALL(*s_pMockWorldMarket, CreateThreadUpdateForexSymbolDB).Times(0);
-		EXPECT_CALL(*s_pMockWorldMarket, CreateThreadUpdateStockProfileDB).Times(0);
-
-		s_pMockWorldMarket->TaskUpdateStockProfileDB(165400);
-
-		EXPECT_FALSE(s_pMockWorldMarket->IsMarketTaskEmpty());
-		const auto pTask = s_pMockWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_UPDATE_STOCK_PROFILE_DB__);
-		EXPECT_EQ(pTask->GetTime(), 170510) << "170000系统需要重启，推迟至170510重新开始更新";
-
-		s_pMockWorldMarket->DiscardCurrentMarketTask();
 	}
 }

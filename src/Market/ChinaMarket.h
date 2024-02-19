@@ -60,7 +60,7 @@ public:
 	bool CheckFastReceivingData(long lCurrentTime);
 	bool CheckMarketOpen(long lCurrentTime);
 
-	bool TaskUpdateStockProfileDB(long lCurrentTime);
+	bool TaskUpdateWorldMarketDB(long lCurrentTime);
 	bool TaskUpdateOptionDB(long lCurrentTime);
 	bool TaskUpdateChosenStockDB();
 
@@ -79,19 +79,7 @@ public:
 	virtual void CreateThreadBuildWeekLineRSOfDate(long lThisDate);
 	virtual void CreateThreadBuildWeekLineOfCurrentWeek();
 	virtual void CreateThreadBuildCurrentWeekWeekLineTable();
-	virtual void CreateThreadChoice10RSStrong1StockSet();
 	virtual void CreateThreadChoice10RSStrongStockSet();
-	virtual void CreateThreadChoice10RSStrong2StockSet();
-	virtual void CreateThreadLoadDayLine(CChinaStockPtr pCurrentStock);
-	virtual void CreateThreadLoadWeekLine(CChinaStockPtr pCurrentStock);
-	virtual void CreateThreadProcessTodayStock();
-	virtual void CreateThreadUpdateStockProfileDB();
-	virtual void CreateThreadUpdateOptionDB();
-	virtual void CreateThreadUpdateTempRTData();
-	virtual void CreateThreadLoadTempRTData(long lTheDate);
-	virtual void CreateThreadSaveStockSection();
-	virtual void CreateThreadUpdateChoseStockDB();
-	virtual void CreateThreadDistributeAndCalculateRTData();
 
 	//处理个股票的实时数据，计算挂单变化等。
 	void DistributeRTData();

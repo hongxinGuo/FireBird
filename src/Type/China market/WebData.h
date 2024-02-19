@@ -63,6 +63,7 @@ public:
 
 	//
 	string_view GetCurrentSinaData();
+	shared_ptr<string_view> GetCurrentSinaDataPtr();
 	string_view GetCurrentTengxunData();
 
 	// 使用Nlohmann json将数据转换为json格式。

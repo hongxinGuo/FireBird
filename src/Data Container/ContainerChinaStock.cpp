@@ -8,6 +8,9 @@
 
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
+
+#include <concurrencpp/executors/thread_pool_executor.h>
+
 #include"RSReference.h"
 #include"Thread.h"
 
@@ -332,7 +335,19 @@ bool CContainerChinaStock::SaveDayLineData() {
 			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pStock->GetDayLineSize() > 0) {
 				if (pStock->HaveNewDayLineData()) {
-					CreateThreadSaveDayLineBasicInfo(pStock);
+					gl_runtime.background_executor()->post([pStock] {
+						gl_UpdateChinaMarketDB.acquire();
+						if (!gl_systemConfiguration.IsExitingSystem()) {
+							const bool fDataSaved = pStock->SaveDayLineBasicInfo();
+							pStock->UpdateDayLineStartEndDate();
+							if (fDataSaved) {
+								const CString str = pStock->GetSymbol() + _T("日线资料存储完成");
+								gl_systemMessage.PushDayLineInfoMessage(str);
+							}
+							pStock->UnloadDayLine();// 为防止出现同步问题，卸载日线历史数据的任务也由本线程执行。
+						}
+						gl_UpdateChinaMarketDB.release();
+					});
 					fSave = true;
 				}
 				else pStock->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
@@ -351,11 +366,6 @@ bool CContainerChinaStock::SaveDayLineData() {
 	}
 
 	return fSave;
-}
-
-void CContainerChinaStock::CreateThreadSaveDayLineBasicInfo(CChinaStockPtr pStock) {
-	thread thread1(ThreadSaveDayLineBasicInfo, pStock);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
 }
 
 bool CContainerChinaStock::BuildWeekLine(long lStartDate) {
