@@ -1019,19 +1019,7 @@
     <ClCompile Include="..\src\Windows interface\FireBird.cpp">
       <Filter>源文件\windows interface</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Working thread\America market\ThreadUpdateNaicsIndustry.cpp">
-      <Filter>源文件\Working thread\World market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Working thread\America market\ThreadUpdateSICIndustry.cpp">
-      <Filter>源文件\Working thread\World market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Working thread\America market\ThreadUpdateTiingoIndustry.cpp">
-      <Filter>源文件\Working thread\World market</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildDayLineRS.cpp">
-      <Filter>源文件\Working thread\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Working thread\China market\ThreadBuildWeekLine.cpp">
       <Filter>源文件\Working thread\China market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildWeekLineRS.cpp">

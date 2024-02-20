@@ -8,6 +8,8 @@
 ///////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#include <concurrencpp/executors/thread_pool_executor.h>
+
 #include"ThreadStatus.h"
 #include"Thread.h"
 
@@ -32,7 +34,15 @@ UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCa
 			// 星期六和星期日无交易，略过
 			// 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
 			// 每次调用时生成新的局部变量，启动工作线程后执行分离动作（detach），其资源由系统在工作线程执行完后进行回收。
-			pMarket->CreateThreadBuildDayLineRSOfDate(lThatDate);
+			gl_runtime.background_executor()->post([lThatDate] {
+				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+				gl_BackgroundWorkingThread.acquire();
+				if (!gl_systemConfiguration.IsExitingSystem() && !gl_systemConfiguration.IsExitingCalculatingRS()) {
+					gl_dataContainerChinaStock.BuildDayLineRS(lThatDate); // 调用实际执行函数
+				}
+				gl_BackgroundWorkingThread.release();
+				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+			});
 		}
 		ctCurrent += oneDay;
 		lThatDate = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
@@ -62,22 +72,4 @@ UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCa
 	pMarket->SetCalculatingDayLineRS(false); // 本线程顺利退出，处于非运行状态
 
 	return 11;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////
-//
-// 计算给定日期的日线相对强度。
-// 使用互斥变量控制并行线程数。目前允许最多八个线程执行
-//
-/////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadBuildDayLineRSOfDate(long lDate) {
-	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-	gl_BackgroundWorkingThread.acquire();
-	if (!gl_systemConfiguration.IsExitingSystem() && !gl_systemConfiguration.IsExitingCalculatingRS()) {
-		gl_dataContainerChinaStock.BuildDayLineRS(lDate); // 调用实际执行函数
-	}
-	gl_BackgroundWorkingThread.release();
-	gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-
-	return 12;
 }

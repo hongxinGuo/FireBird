@@ -71,15 +71,7 @@ public:
 	bool ProcessDayLine();
 
 	// 各工作线程调用包裹函数
-	virtual void CreateThreadBuildDayLineRS(long lStartCalculatingDate);
-	virtual void CreateThreadBuildDayLineRSOfDate(long lThisDate);
-	virtual void CreateThreadBuildWeekLine(long lStartDate);
-	virtual void CreateThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long lStartDate);
-	virtual void CreateThreadBuildWeekLineRS();
-	virtual void CreateThreadBuildWeekLineRSOfDate(long lThisDate);
-	virtual void CreateThreadBuildWeekLineOfCurrentWeek();
-	virtual void CreateThreadBuildCurrentWeekWeekLineTable();
-	virtual void CreateThreadChoice10RSStrongStockSet();
+	virtual void Choice10RSStrongStockSet();
 
 	//处理个股票的实时数据，计算挂单变化等。
 	void DistributeRTData();

@@ -28,19 +28,21 @@ public:
 	virtual ~CVirtualWebSocket();
 
 	std::shared_ptr<CVirtualWebSocket> GetShared() { return shared_from_this(); }
-
-	void CreateThreadConnectAndSendMessage(vectorString vSymbol);
-	bool ConnectAndSendMessage(const vectorString& vSymbol);
 	void Reset();
-	virtual void Connect() { ASSERT(false); }
+
+	void TaskConnectAndSendMessage(vectorString vSymbol);
+	void TaskDisconnect();
+	bool ConnectAndSendMessage(const vectorString& vSymbol);
 	void Disconnect();
+
+protected:
+	virtual void Connect() { ASSERT(false); }
 	virtual void Send(const vectorString&) { ASSERT(FALSE); }
 	void Connecting(const string& url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
-	bool CreateThreadDisconnectWebSocket();
+	virtual void StartWebSocket() { m_webSocket.start(); } // start()为异步的。为了测试，将此函数声明为虚函数
+	virtual void StopWebSocket() { m_webSocket.stop(); } // stop()是同步的。为了测试，将此函数声明为虚函数
 
-	virtual void StartWebSocket() { m_webSocket.start(); } // 为了测试，将此函数声明为虚函数
-	virtual void StopWebSocket() { m_webSocket.stop(); } // 为了测试，将此函数声明为虚函数
-
+public:
 	bool IsSymbol(const string& sSymbol) const { return m_mapSymbol.contains(sSymbol); }
 	void AppendSymbol(const vectorString& vSymbol);
 	bool AddSymbol(const string& sSymbol);
@@ -72,7 +74,7 @@ public:
 	void SetHeartbeatTime(const time_t tt) noexcept { m_HeartbeatTime = tt; }
 	bool IsIdle(time_t tPeriod = 300) const; // 默认五分钟
 
-	void PushData(string data) {
+	void PushData(const string& data) {
 		const auto pData = make_shared<string>(data);
 		m_qWebSocketData.enqueue(pData);
 	}

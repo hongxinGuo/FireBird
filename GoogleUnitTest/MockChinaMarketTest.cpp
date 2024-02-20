@@ -232,7 +232,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
 		s_pMockChinaMarket->SetSystemReady(true);
 		s_pMockChinaMarket->SetChosen10RSStrongStockSet(false);
-		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadChoice10RSStrongStockSet)
+		EXPECT_CALL(*s_pMockChinaMarket, Choice10RSStrongStockSet)
 		.Times(1);
 		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151000));
 		EXPECT_TRUE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
@@ -243,76 +243,5 @@ namespace FireBirdTest {
 		s_pMockChinaMarket->SetChosen10RSStrongStockSet(false);
 		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
 		EXPECT_FALSE(s_pMockChinaMarket->IsChosen10RSStrongStockSet()) << _T("休息日不处理");
-	}
-
-	TEST_F(CMockChinaMarketTest, TestThreadCalculateDayLineRS) {
-		s_pMockChinaMarket->CalculateTime();
-		time_t tStart = GetUTCTime() - 3600 * 24 * 6; // 从一周前开始计算
-		tm _tm;
-		GetMarketTimeStruct(&_tm, tStart, s_pMockChinaMarket->GetMarketTimeZone());
-		long lStartDate = ConvertToDate(&_tm);
-		gl_systemConfiguration.SetExitingCalculatingRS(true); // 中间被打断
-		s_pMockChinaMarket->SetCalculatingDayLineRS(true);
-		s_pMockChinaMarket->SetRSEndDate(0);
-		s_pMockChinaMarket->SetUpdateOptionDB(false);
-		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildDayLineRSOfDate(_)).Times(5);
-		EXPECT_EQ(ThreadBuildDayLineRS(s_pMockChinaMarket, lStartDate), static_cast<UINT>(11));
-		EXPECT_FALSE(s_pMockChinaMarket->IsUpdateOptionDB()) << _T("被打断后不设置此标识");
-		EXPECT_EQ(s_pMockChinaMarket->GetRSEndDate(), 0);
-		EXPECT_FALSE(gl_systemConfiguration.IsExitingCalculatingRS());
-		EXPECT_FALSE(s_pMockChinaMarket->IsCalculatingDayLineRS());
-
-		tStart = GetUTCTime() - 3600 * 24 * 6; // 从一周前开始计算
-		GetMarketTimeStruct(&_tm, tStart, s_pMockChinaMarket->GetMarketTimeZone());
-		lStartDate = ConvertToDate(&_tm);
-		gl_systemConfiguration.SetExitingCalculatingRS(false);
-		s_pMockChinaMarket->SetCalculatingDayLineRS(true);
-		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildDayLineRSOfDate(_))
-		.Times(5);
-		EXPECT_EQ(ThreadBuildDayLineRS(s_pMockChinaMarket, lStartDate), static_cast<UINT>(11));
-		EXPECT_TRUE(s_pMockChinaMarket->IsUpdateOptionDB());
-		EXPECT_EQ(s_pMockChinaMarket->GetRSEndDate(), s_pMockChinaMarket->GetMarketDate());
-		EXPECT_FALSE(s_pMockChinaMarket->IsCalculatingDayLineRS());
-
-		EXPECT_THAT(gl_systemMessage.InformationSize(), 4); // 共两次调用，有四个信息
-		gl_systemMessage.PopInformationMessage();
-		gl_systemMessage.PopInformationMessage();
-		gl_systemMessage.PopInformationMessage();
-		gl_systemMessage.PopInformationMessage();
-	}
-
-	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineOfCurrentWeek) {
-		EXPECT_CALL(*s_pMockChinaMarket, BuildWeekLineOfCurrentWeek)
-		.Times(1);
-		EXPECT_EQ(ThreadBuildWeekLineOfCurrentWeek(s_pMockChinaMarket), static_cast<UINT>(32));
-	}
-
-	TEST_F(CMockChinaMarketTest, TestThreadBuildCurrentWeekWeekLineTable) {
-		EXPECT_CALL(*s_pMockChinaMarket, DeleteCurrentWeekWeekLine).Times(1);
-		EXPECT_CALL(*s_pMockChinaMarket, BuildCurrentWeekWeekLineTable).Times(1);
-		EXPECT_EQ(ThreadBuildCurrentWeekWeekLineTable(s_pMockChinaMarket), static_cast<UINT>(33));
-	}
-
-	TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineRS) {
-		s_pMockChinaMarket->CalculateTime();
-		const long lPrevMonday4 = GetPrevMonday(s_pMockChinaMarket->GetMarketDate());
-		const long lPrevMonday3 = GetPrevMonday(lPrevMonday4);
-		const long lPrevMonday2 = GetPrevMonday(lPrevMonday3);
-		const long lPrevMonday1 = GetPrevMonday(lPrevMonday2);
-		const long lPrevMonday = GetPrevMonday(lPrevMonday1);
-		InSequence seq;
-		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(lPrevMonday)).Times(1);
-		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(lPrevMonday1)).Times(1);
-		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(lPrevMonday2)).Times(1);
-		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(lPrevMonday3)).Times(1);
-		EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(lPrevMonday4)).Times(1);
-		if (s_pMockChinaMarket->GetDayOfWeek() == 1) {
-			// 本日是星期一
-			EXPECT_CALL(*s_pMockChinaMarket, CreateThreadBuildWeekLineRSOfDate(s_pMockChinaMarket->GetMarketDate())).Times(1); // 当前日为星期一时，要计算当前日
-		}
-		EXPECT_EQ(ThreadBuildWeekLineRS(s_pMockChinaMarket, lPrevMonday1), static_cast<UINT>(30));
-
-		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
-		gl_systemMessage.PopInformationMessage();
 	}
 }

@@ -12,47 +12,18 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include <concurrencpp/runtime/runtime.h>
-
 #include"RSReference.h"
-
 #include"ClassDeclaration.h"
+
+#include <concurrencpp/runtime/runtime.h>
+extern concurrencpp::runtime gl_runtime;
 
 using gsl::not_null;
 
-extern concurrencpp::runtime gl_runtime;
-
-// 网络读取任务
-//
-
-// 数据库处理任务
-
 // 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDay执行具体任务，最多生成8个工作线程。
 UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCalculatingDate); // 此工作线程返回值为11, 参数为当前最后计算日期
-// 计算给定日期股票日线相对强度线程。此线程由ThreadCalculateRS线程调用，用于并发计算不同日期的日线相对强度，以提高效率
-UINT ThreadBuildDayLineRSOfDate(long lDate); // 此工作线程返回值也为12
-// 生成周线历史数据
-UINT ThreadBuildWeekLine(const not_null<CChinaMarketPtr>& pMarket, long lStartDate); // 此线程的返回值为25
-// 生成股票的周线历史数据
-UINT ThreadBuildWeekLineOfStock(const not_null<CChinaStockPtr>& pStockInput, long lStartDate); /// 此线程的返回值为26
 // 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDate执行具体任务，最多生成8个工作线程。
 UINT ThreadBuildWeekLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCalculatingDate); // 此工作线程返回值为30, 参数为当前最后计算日期
-// 计算给定日期股票日线相对强度线程。此线程由ThreadCalculateRS线程调用，用于并发计算不同日期的日线相对强度，以提高效率
-UINT ThreadBuildWeekLineRSOfDate(long lDate); // 此工作线程返回值也为31
-// 计算本周的周线
-UINT ThreadBuildWeekLineOfCurrentWeek(const not_null<CChinaMarketPtr>& pMarket); // 此工作线程返回值为32
-// 重建当前周的周线数据表
-UINT ThreadBuildCurrentWeekWeekLineTable(const not_null<CChinaMarketPtr>& pMarket); // 此工作线程返回值为33
-
-// 下面为美国股票市场的工作线程
-// 更新Tiingo工业分类。
-UINT ThreadUpdateTiingoIndustry(const not_null<CWorldMarketPtr>& pMarket); // 此工作线程返回值为45
-// 更新SIC工业分类。
-UINT ThreadUpdateSICIndustry(const not_null<CWorldMarketPtr>& pMarket); // 此工作线程返回值为46
-// 更新Naics工业分类。
-UINT ThreadUpdateNaicsIndustry(const not_null<CWorldMarketPtr>& pMarket); // 此工作线程返回值为47
-// 更新Forex Exchange
-UINT ThreadUpdateForexExchangeDB(); // 此工作线程返回值为49
 
 //各种计算用工作线程
 // 计算10日强股票集（使用外部pRef提供的参数）

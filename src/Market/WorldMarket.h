@@ -42,12 +42,12 @@ public:
 	void TaskStopAllWebSocket(long lCurrentTime);
 	void TaskUpdateWorldMarketDB(long lCurrentTime);
 
-	virtual bool CreateThreadUpdateTiingoIndustry();
-	virtual bool CreateThreadUpdateSICIndustry();
-	virtual bool CreateThreadUpdateNaicsIndustry();
+	bool TaskUpdateTiingoIndustry();
+	bool TaskUpdateSICIndustry();
+	bool TaskUpdateNaicsIndustry();
 
-	bool UpdateForexDayLineDB();
-	bool UpdateCryptoDayLineDB();
+	bool TaskUpdateForexDayLineDB();
+	bool TaskUpdateCryptoDayLineDB();
 	bool UpdateEPSSurpriseDB();
 
 	// 各种状态
@@ -76,10 +76,10 @@ public:
 	vectorString GetFinnhubWebSocketSymbolVector();
 
 	void StartAllWebSocket();
-	virtual void StartFinnhubWebSocket();
-	virtual void StartTiingoIEXWebSocket();
-	virtual void StartTiingoCryptoWebSocket();
-	virtual void StartTiingoForexWebSocket();
+	virtual void TaskStartFinnhubWebSocket();
+	virtual void TaskStartTiingoIEXWebSocket();
+	virtual void TaskStartTiingoCryptoWebSocket();
+	virtual void TaskStartTiingoForexWebSocket();
 	static void DisconnectAllWebSocket(); // 停止WebSocket。此函数等待其停止后方返回。是系统退出前的准备工作。
 	void StopAllWebSocketIfTimeOut() const;
 	static void StopFinnhubWebSocketIfTimeOut();

@@ -42,25 +42,13 @@ void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 	}
 }
 
-UINT ThreadConnectTiingoForexWebSocketAndSendMessage(const not_null<CTiingoForexWebSocketPtr>& pDataTiingoForexWebSocket, const vectorString& vSymbol) {
-	static bool s_fConnecting = false;
-	if (!s_fConnecting) {
-		s_fConnecting = true;
-		if (pDataTiingoForexWebSocket->ConnectAndSendMessage(vSymbol)) {
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("开启Tiingo Forex web socket服务"));
-		}
-		s_fConnecting = false;
-	}
-
-	return 73;
-}
-
 CTiingoForexWebSocket::CTiingoForexWebSocket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	m_url = _T("wss://api.tiingo.com/fx");
 }
 
-CTiingoForexWebSocket::~CTiingoForexWebSocket() {}
+CTiingoForexWebSocket::~CTiingoForexWebSocket() {
+}
 
 /// <summary>
 /// Tiingo Forex的数据源格式：wss://api.tiingo.com/fx，其密钥是随后发送的。

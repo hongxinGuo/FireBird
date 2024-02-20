@@ -56,8 +56,6 @@ UINT ThreadChoice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
 		str += buffer;
 		str += _T("计算完毕\n");
 		gl_systemMessage.PushInformationMessage(str);
-		//pMarket->SetUpdatedDateFor10DAyRS1(pMarket->GetMarketDate());
-		//pMarket->SetUpdateOptionDB(true); // 更新选项数据库
 	}
 	gl_UpdateChinaMarketDB.release();
 

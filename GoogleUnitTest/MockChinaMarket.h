@@ -9,14 +9,7 @@ namespace testing {
 		MOCK_METHOD(void, TaskExitSystem, (long), (override));
 		MOCK_METHOD(bool, TaskResetMarket, (long lCurrentTime), (override));
 
-		MOCK_METHOD(void, CreateThreadBuildDayLineRS, (long lStartCalculatingDate), (override));
-		MOCK_METHOD(void, CreateThreadBuildDayLineRSOfDate, (long lThisDate), (override));
-		MOCK_METHOD(void, CreateThreadChoice10RSStrongStockSet, (), (override));
-		MOCK_METHOD(void, CreateThreadBuildWeekLine, (long lStartDate), (override));
-		MOCK_METHOD(void, CreateThreadBuildWeekLineOfStock, (CChinaStockPtr pStock, long lStartDate), (override));
-		MOCK_METHOD(void, CreateThreadBuildWeekLineRS, (), (override));
-		MOCK_METHOD(void, CreateThreadBuildWeekLineRSOfDate, (long lThisDate), (override));
-		MOCK_METHOD(void, CreateThreadBuildWeekLineOfCurrentWeek, (), (override));
+		MOCK_METHOD(void, Choice10RSStrongStockSet, (), (override));
 
 		MOCK_METHOD(void, UpdateOptionDB, (), (override));
 		MOCK_METHOD(void, AppendChosenStockDB, (), (override));

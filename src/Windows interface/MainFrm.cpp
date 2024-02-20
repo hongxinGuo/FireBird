@@ -3,9 +3,9 @@
 #include"pch.h"
 
 #include"ThreadStatus.h"
+#include"Thread.h"
 
 #include "FireBird.h"
-
 #include "MainFrm.h"
 
 #include <concurrencpp/executors/thread_pool_executor.h>
@@ -32,6 +32,7 @@
 #include"GlobeMarketInitialize.h"
 #include"simdjsonGetValue.h"
 #include "Thread.h"
+#include "TimeConvert.h"
 
 bool CMainFrame::sm_fGlobeInit = false;
 
@@ -608,7 +609,9 @@ void CMainFrame::OnCalculateTodayRS() {
 }
 
 void CMainFrame::CalculateTodayRS() {
-	gl_pChinaMarket->CreateThreadBuildDayLineRS(gl_pChinaMarket->GetMarketDate());
+	gl_runtime.background_executor()->post([] {
+		ThreadBuildDayLineRS(gl_pChinaMarket, gl_pChinaMarket->GetMarketDate());
+	});
 }
 
 void CMainFrame::OnProcessTodayStock() {
@@ -773,7 +776,9 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 }
 
 void CMainFrame::OnRebuildDayLineRS() {
-	gl_pChinaMarket->CreateThreadBuildDayLineRS(_CHINA_MARKET_BEGIN_DATE_);
+	gl_runtime.background_executor()->post([] {
+		ThreadBuildDayLineRS(gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
+	});
 }
 
 void CMainFrame::OnBuildResetMarket() {
@@ -842,7 +847,7 @@ void CMainFrame::OnCalculate10dayRS2() {
 }
 
 void CMainFrame::OnCalculate10dayRS() {
-	gl_pChinaMarket->CreateThreadChoice10RSStrongStockSet();
+	gl_pChinaMarket->Choice10RSStrongStockSet();
 	gl_pChinaMarket->SetChosen10RSStrongStockSet(true);
 }
 
@@ -916,22 +921,64 @@ void CMainFrame::OnUpdateUsingTengxunRealtimeDataServer(CCmdUI* pCmdUI) {
 	}
 }
 
+void BuildWeekLine(long lStartDate) {
+	gl_UpdateChinaMarketDB.acquire();
+
+	const long lStartMonday = GetCurrentMonday(lStartDate);
+	const long year = lStartMonday / 10000;
+	const long month = lStartMonday / 100 - (lStartMonday / 10000) * 100;
+	const long mDay = lStartMonday - (lStartMonday / 100) * 100;
+	CTime ctCurrent(year, month, mDay, 12, 0, 0);
+	const CTimeSpan ts7Day(7, 0, 0, 0);
+	long lCurrentMonday = lStartMonday;
+
+	if (lStartDate > 19900101) {// 目前此种情况只用于重新生成本周周线
+		ASSERT(lStartMonday == GetCurrentMonday(gl_pChinaMarket->GetMarketDate()));
+		do {
+			gl_pChinaMarket->DeleteWeekLine(lCurrentMonday);
+			ctCurrent += ts7Day;
+			lCurrentMonday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
+		} while (lCurrentMonday <= gl_pChinaMarket->GetMarketDate());
+	}
+	else {
+		gl_pChinaMarket->DeleteWeekLine();
+	}
+
+	gl_dataContainerChinaStock.BuildWeekLine(lStartMonday);
+
+	// 清除当前周周线表
+	gl_pChinaMarket->DeleteCurrentWeekWeekLine();
+	// 生成新的当前周周线
+	gl_pChinaMarket->BuildCurrentWeekWeekLineTable();
+
+	gl_UpdateChinaMarketDB.release();
+}
+
 void CMainFrame::OnBuildCreateWeekLine() {
-	gl_pChinaMarket->CreateThreadBuildWeekLine(19900101);
+	auto lStartDate = 19900101;
+	gl_runtime.background_executor()->post([lStartDate] {
+		BuildWeekLine(lStartDate);
+	});
 }
 
 void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnRebuildWeekLineRS() {
-	gl_pChinaMarket->CreateThreadBuildWeekLineRS();
+	gl_runtime.background_executor()->post([] {
+		ThreadBuildWeekLineRS(gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
+	});
 }
 
 void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnBuildCurrentWeekLine() {
-	gl_pChinaMarket->CreateThreadBuildWeekLineOfCurrentWeek();
+	gl_runtime.background_executor()->post([] {
+		gl_UpdateChinaMarketDB.acquire();
+		gl_pChinaMarket->BuildWeekLineOfCurrentWeek();
+		gl_UpdateChinaMarketDB.release();
+	});
 }
 
 void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
@@ -944,14 +991,22 @@ void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnBuildRebuildCurrentWeekLine() {
-	gl_pChinaMarket->CreateThreadBuildWeekLine(gl_pChinaMarket->GetMarketDate());
+	auto lStartDate = gl_pChinaMarket->GetMarketDate();
+	gl_runtime.background_executor()->post([lStartDate] {
+		BuildWeekLine(lStartDate);
+	});
 }
 
 void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
-	gl_pChinaMarket->CreateThreadBuildCurrentWeekWeekLineTable();
+	gl_runtime.background_executor()->post([] {
+		gl_UpdateChinaMarketDB.acquire();
+		gl_pChinaMarket->DeleteCurrentWeekWeekLine();// 清除当前周周线表
+		gl_pChinaMarket->BuildCurrentWeekWeekLineTable();// 生成新的当前周周线
+		gl_UpdateChinaMarketDB.release();
+	});
 }
 
 void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {
@@ -993,11 +1048,11 @@ void CMainFrame::OnUpdateWorldStockDayLineStartEnd() {
 void CMainFrame::OnRecordFinnhubWebSocket() {
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) {
 		gl_systemConfiguration.SetUsingFinnhubWebSocket(false);
-		gl_pFinnhubWebSocket->CreateThreadDisconnectWebSocket();
+		gl_pFinnhubWebSocket->TaskDisconnect();
 	}
 	else {
 		gl_systemConfiguration.SetUsingFinnhubWebSocket(true);
-		gl_pWorldMarket->StartFinnhubWebSocket();
+		gl_pWorldMarket->TaskStartFinnhubWebSocket();
 	}
 }
 
@@ -1013,11 +1068,11 @@ void CMainFrame::OnUpdateRecordFinnhubWebSocket(CCmdUI* pCmdUI) {
 void CMainFrame::OnRecordTiingoCryptoWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) {
 		gl_systemConfiguration.SetUsingTiingoCryptoWebSocket(false);
-		gl_pTiingoCryptoWebSocket->CreateThreadDisconnectWebSocket();
+		gl_pTiingoCryptoWebSocket->TaskDisconnect();
 	}
 	else {
 		gl_systemConfiguration.SetUsingTiingoCryptoWebSocket(true);
-		gl_pWorldMarket->StartTiingoCryptoWebSocket();
+		gl_pWorldMarket->TaskStartTiingoCryptoWebSocket();
 	}
 }
 
@@ -1033,11 +1088,11 @@ void CMainFrame::OnUpdateRecordTiingoCryptoWebSocket(CCmdUI* pCmdUI) {
 void CMainFrame::OnRecordTiingoForexWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) {
 		gl_systemConfiguration.SetUsingTiingoForexWebSocket(false);
-		gl_pTiingoForexWebSocket->CreateThreadDisconnectWebSocket();
+		gl_pTiingoForexWebSocket->TaskDisconnect();
 	}
 	else {
 		gl_systemConfiguration.SetUsingTiingoForexWebSocket(true);
-		gl_pWorldMarket->StartTiingoForexWebSocket();
+		gl_pWorldMarket->TaskStartTiingoForexWebSocket();
 	}
 }
 
@@ -1053,11 +1108,11 @@ void CMainFrame::OnUpdateRecordTiingoForexWebSocket(CCmdUI* pCmdUI) {
 void CMainFrame::OnRecordTiingoIEXWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) {
 		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(false);
-		gl_pTiingoIEXWebSocket->CreateThreadDisconnectWebSocket();
+		gl_pTiingoIEXWebSocket->TaskDisconnect();
 	}
 	else {
 		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(true);
-		gl_pWorldMarket->StartTiingoIEXWebSocket();
+		gl_pWorldMarket->TaskStartTiingoIEXWebSocket();
 	}
 }
 

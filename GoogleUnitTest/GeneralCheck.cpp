@@ -195,6 +195,10 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pTiingoCryptoWebSocket->IsError());
 		EXPECT_FALSE(gl_pTiingoForexWebSocket->IsError());
 		EXPECT_FALSE(gl_pTiingoIEXWebSocket->IsError());
+		//EXPECT_FALSE(gl_systemConfiguration.IsUsingFinnhubWebSocket());
+		//EXPECT_FALSE(gl_systemConfiguration.IsUsingTiingoCryptoWebSocket());
+		//EXPECT_FALSE(gl_systemConfiguration.IsUsingTiingoIEXWebSocket());
+		//EXPECT_FALSE(gl_systemConfiguration.IsUsingTiingoForexWebSocket());
 	}
 
 	void GeneralCheck() {

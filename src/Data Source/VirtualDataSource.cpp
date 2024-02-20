@@ -1,6 +1,9 @@
 #include "pch.h"
 
 #include "VirtualDataSource.h"
+
+#include <concurrencpp/executors/thread_pool_executor.h>
+
 #include"Thread.h"
 #include"ThreadStatus.h"
 
@@ -54,24 +57,17 @@ void CVirtualDataSource::Run(const long lCurrentLocalMarketTime) {
 	}
 
 	if (HaveInquiry() && !IsWorkingThreadRunning()) {
+		ASSERT(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
 		ASSERT(IsInquiring());
 		GetCurrentProduct();
 		GenerateCurrentInquiryMessage();
 		SetWorkingThreadRunning(true); // 在调用工作线程前即设置该值
-		CreateThreadGetWebDataAndProcessIt();
+		gl_runtime.background_executor()->post([this] { // 网络数据读取使用后台任务序列。
+				gl_ThreadStatus.IncreaseWebInquiringThread();
+				this->GetShared()->GetWebDataAndProcessIt();
+				gl_ThreadStatus.DecreaseWebInquiringThread();
+			});
 	}
-}
-
-UINT ThreadGetWebDataAndProcessIt(const CVirtualDataSourcePtr& pDataSource) {
-	gl_ThreadStatus.IncreaseWebInquiringThread();
-	pDataSource->GetWebDataAndProcessIt();
-	gl_ThreadStatus.DecreaseWebInquiringThread();
-	return 205;
-}
-
-void CVirtualDataSource::CreateThreadGetWebDataAndProcessIt() {
-	thread thread1(ThreadGetWebDataAndProcessIt, this->GetShared());
-	thread1.detach();
 }
 
 void CVirtualDataSource::GetWebDataAndProcessIt() {

@@ -38,33 +38,3 @@ UINT ThreadBuildWeekLine(const not_null<CChinaMarketPtr>& pMarket, long lStartDa
 
 	return 25;
 }
-
-UINT ThreadBuildWeekLineOfStock(const not_null<CChinaStockPtr>& pStockInput, long lStartDate) {
-	const auto pStock = pStockInput;
-	gl_UpdateChinaMarketDB.acquire();
-	if (!gl_systemConfiguration.IsExitingSystem()) pStock->BuildWeekLine(lStartDate);
-	gl_UpdateChinaMarketDB.release();
-
-	return 26;
-}
-
-UINT ThreadBuildWeekLineOfCurrentWeek(const not_null<CChinaMarketPtr>& pMarket) {
-	gl_UpdateChinaMarketDB.acquire();
-	pMarket->BuildWeekLineOfCurrentWeek();
-	gl_UpdateChinaMarketDB.release();
-
-	return 32;
-}
-
-UINT ThreadBuildCurrentWeekWeekLineTable(const not_null<CChinaMarketPtr>& pMarket) {
-	gl_UpdateChinaMarketDB.acquire();
-	// 清除当前周周线表
-	pMarket->DeleteCurrentWeekWeekLine();
-
-	// 生成新的当前周周线
-	pMarket->BuildCurrentWeekWeekLineTable();
-
-	gl_UpdateChinaMarketDB.release();
-
-	return 33;
-}

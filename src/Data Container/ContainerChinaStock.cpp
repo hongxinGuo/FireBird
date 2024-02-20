@@ -372,8 +372,11 @@ bool CContainerChinaStock::BuildWeekLine(long lStartDate) {
 	gl_systemMessage.PushInformationMessage(_T("重新生成周线历史数据"));
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
-		thread thread1(ThreadBuildWeekLineOfStock, pStock, lStartDate);
-		thread1.detach();
+		gl_runtime.background_executor()->post([pStock, lStartDate] {
+			gl_UpdateChinaMarketDB.acquire();
+			if (!gl_systemConfiguration.IsExitingSystem()) pStock->BuildWeekLine(lStartDate);
+			gl_UpdateChinaMarketDB.release();
+		});
 	}
 	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) { Sleep(100); }
 	gl_systemMessage.PushInformationMessage(_T("周线历史数据生成完毕"));

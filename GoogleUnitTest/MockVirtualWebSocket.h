@@ -3,7 +3,7 @@
 #include"VirtualWebSocket.h"
 
 namespace testing {
-	class CMockVirtualWebSocket : public CVirtualWebSocket {
+	class CMockVirtualWebSocket final : public CVirtualWebSocket {
 	public:
 		MOCK_METHOD(ix::ReadyState, GetState, (), (override, const));
 		MOCK_METHOD(void, Connect, (), (override));

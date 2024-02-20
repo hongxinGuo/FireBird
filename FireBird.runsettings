@@ -51,98 +51,42 @@ Included items must then not match any entries in the exclude list to remain inc
               <Exclude>
                 <Function>^Fabrikam\.UnitTest\..*</Function>
                 <Function>^std::.*</Function>
-	              <Function>^ATL::.*</Function>
-								<Function>^FireBirdTest::.*</Function>
+	            <Function>^ATL::.*</Function>
+				<Function>^FireBirdTest::.*</Function>
                 <Function>.*::__GetTestMethodInfo.*</Function>
                 <Function>^Microsoft::VisualStudio::CppCodeCoverageFramework::.*</Function>
-								<Function>^Microsoft::VisualStudio::CppUnitTestFramework::.*</Function>
+				<Function>^Microsoft::VisualStudio::CppUnitTestFramework::.*</Function>
 
-								<Function>ThreadUpdateBasicFinancialAnnualDB</Function>
-								<Function>ThreadUpdateBasicFinancialQuarterlyDB</Function>
-								<Function>ThreadConnectFinnhubWebSocketAndSendMessage</Function>
-								<Function>ThreadConnectTiingoCryptoWebSocketAndSendMessage</Function>
-								<Function>ThreadConnectTiingoForexWebSocketAndSendMessage</Function>
-								<Function>ThreadConnectTiingoIEXWebSocketAndSendMessage</Function>
-								<Function>ThreadUpdateTiingoCryptoSymbolDB</Function>
-								<Function>ThreadUpdateCompanyNewsDB</Function>
-								<Function>ThreadDisconnectWebSocket</Function>
-								<Function>ThreadGetWebDataAndProcessIt</Function>
-								<Function>ThreadProcessRTData</Function>
-								<Function>ThreadUpdateBasicFinancialDB</Function>
-								<Function>ReportJsonError</Function>
-								<Function>ReportWebError</Function>
-	              <Function>to_byte_string</Function>
+				<Function>ReportJsonError</Function>
+				<Function>ReportWebError</Function>
+	            <Function>to_byte_string</Function>
 
-								<Function>CChinaStock::Calculate10RSStrongStockSet</Function>
-								<Function>CChinaStock::Calculate10RSStrong1StockSet</Function>
-								<Function>CChinaStock::Calculate10RSStrong2StockSet</Function>
-	              <Function>CChinaStock::CalculateWeekLine</Function>
-	              <Function>CChinaStock::ReportGuadan</Function>
-								<Function>CChinaStock::BuildWeekLine</Function>
-								<Function>CChinaStock::CalculatingWeekLine</Function>
+				<Function>CChinaStock::Calculate10RSStrongStockSet</Function>
+				<Function>CChinaStock::Calculate10RSStrong1StockSet</Function>
+				<Function>CChinaStock::Calculate10RSStrong2StockSet</Function>
+	            <Function>CChinaStock::CalculateWeekLine</Function>
+	            <Function>CChinaStock::ReportGuadan</Function>
+				<Function>CChinaStock::BuildWeekLine</Function>
+				<Function>CChinaStock::CalculatingWeekLine</Function>
 
-	              <Function>CContainerChinaStock::CreateThreadSaveDayLineBasicInfoOfStock</Function>
-								<Function>CContainerChinaStock::CreateThreadSaveDayLineBasicInfo</Function>
-								<Function>CContainerChinaStock::DeleteTempRTData</Function>
-								<Function>CContainerChinaStock::SaveTempRTData</Function>
-	              <Function>CContainerChinaStock::UnloadDayLine</Function>
+				<Function>CContainerChinaStock::DeleteTempRTData</Function>
+				<Function>CContainerChinaStock::SaveTempRTData</Function>
+	            <Function>CContainerChinaStock::UnloadDayLine</Function>
 
-								<Function>CChinaMarket::BuildCurrentWeekWeekLineTable</Function>
-								<Function>CChinaMarket::BuildWeekLineOfCurrentWeek</Function>
-								<Function>CChinaMarket::DeleteWeekLineBasicInfo</Function>
-								<Function>CChinaMarket::DeleteWeekLineExtendInfo</Function>
-	              <Function>CChinaMarket::DeleteWeekLineBasicInfo</Function>
-	              <Function>CChinaMarket::DeleteWeekLineExtendInfo</Function>
-	              <Function>CChinaMarket::CreatingThreadChoice10RSStrongStockSet</Function>
-	              <Function>CChinaMarket::DeleteWeekLine</Function>
-								<Function>CChinaMarket::SaveRTData</Function>
-								<Function>CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDate</Function>
-								<Function>CChinaMarket::CreateThreadBuildDayLineRS</Function>
-								<Function>CChinaMarket::CreateThreadBuildDayLineRSOfDate</Function>
-								<Function>CChinaMarket::CreateThreadBuildWeekLine</Function>
-								<Function>CChinaMarket::CreateThreadBuildWeekLineOfStock</Function>
-								<Function>CChinaMarket::CreateThreadBuildWeekLineRS</Function>
-								<Function>CChinaMarket::CreateThreadBuildWeekLineRSOfDate</Function>
-								<Function>CChinaMarket::CreateThreadBuildWeekLineOfCurrentWeek</Function>
-								<Function>CChinaMarket::CreateThreadBuildCurrentWeekWeekLineTable</Function>
-								<Function>CChinaMarket::CreateThreadChoice10RSStrong1StockSet</Function>
-								<Function>CChinaMarket::CreateThreadChoice10RSStrong2StockSet</Function>
-								<Function>CChinaMarket::CreateThreadLoadDayLine</Function>
-								<Function>CChinaMarket::CreateThreadLoadWeekLine</Function>
-								<Function>CChinaMarket::CreateThreadProcessTodayStock</Function>
-	              <Function>CChinaMarket::CreateThreadUpdateStockProfileDB</Function>
-	              <Function>CChinaMarket::CreateThreadProcessRTData</Function>
-								<Function>CChinaMarket::CreateThreadChoice10RSStrongStockSet</Function>
-								<Function>CChinaMarket::CreateThreadUpdateTempRTData</Function>
-								<Function>CChinaMarket::CreateThreadLoadTempRTData</Function>
-								<Function>CChinaMarket::CreateThreadUpdateChoseStockDB</Function>
-								<Function>CChinaMarket::CreateThreadUpdateStockProfileDB</Function>
-								<Function>CChinaMarket::CreateThreadSaveStockSection</Function>
-	              <Function>CChinaMarket::CreateThreadUpdateOptionDB</Function>
+				<Function>CChinaMarket::BuildCurrentWeekWeekLineTable</Function>
+				<Function>CChinaMarket::BuildWeekLineOfCurrentWeek</Function>
+				<Function>CChinaMarket::DeleteWeekLineBasicInfo</Function>
+				<Function>CChinaMarket::DeleteWeekLineExtendInfo</Function>
+	            <Function>CChinaMarket::DeleteWeekLineBasicInfo</Function>
+	            <Function>CChinaMarket::DeleteWeekLineExtendInfo</Function>
+	            <Function>CChinaMarket::DeleteWeekLine</Function>
+				<Function>CChinaMarket::SaveRTData</Function>
+				<Function>CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDate</Function>
 
-	              <Function>CWorldMarket::CreateThreadUpdateTiingoIndustry</Function>
-								<Function>CWorldMarket::CreateThreadUpdateSICIndustry</Function>
-								<Function>CWorldMarket::CreateThreadUpdateNaicsIndustry</Function>
-								<Function>CWorldMarket::CreateThreadUpdateStockProfileDB</Function>
-								<Function>CWorldMarket::CreateThreadUpdateCompanyNewsDB</Function>
-								<Function>CWorldMarket::CreateThreadUpdateBasicFinancialDB</Function>
-								<Function>CWorldMarket::CreateThreadUpdateCountryListDB</Function>
-								<Function>CWorldMarket::CreateThreadUpdateInsiderTransactionDB</Function>
-								<Function>CWorldMarket::CreateThreadUpdateInsiderSentimentDB</Function>
-								<Function>CWorldMarket::CreateThreadUpdateTiingoStockDB</Function>
-								<Function>CWorldMarket::CreateThreadUpdateTiingoCryptoSymbolDB</Function>
-								<Function>CWorldMarket::CreateThreadUpdateForexExchangeDB</Function>
-								<Function>CWorldMarket::CreateThreadUpdateForexSymbolDB</Function>
-								<Function>CWorldMarket::CreateThreadUpdateCryptoExchangeDB</Function>
-								<Function>CWorldMarket::CreateThreadUpdateFinnhubCryptoSymbolDB</Function>
-								<Function>CWorldMarket::CreateThreadUpdateEconomicCalendarDB</Function>
-								<Function>CWorldMarket::CreateThreadUpdateDayLineDB</Function>
-								<Function>CWorldMarket::CreateThreadUpdateDayLineStartEndDate</Function>
-
-	              <Function>CWorldMarket::StartFinnhubWebSocket</Function>
-								<Function>CWorldMarket::StartTiingoIEXWebSocket</Function>
-								<Function>CWorldMarket::StartTiingoCryptoWebSocket</Function>
-								<Function>CWorldMarket::StartTiingoForexWebSocket</Function>
+	            <Function>CWorldMarket::StartFinnhubWebSocket</Function>
+				<Function>CWorldMarket::StartTiingoIEXWebSocket</Function>
+				<Function>CWorldMarket::StartTiingoCryptoWebSocket</Function>
+				<Function>CWorldMarket::StartTiingoForexWebSocket</Function>
 								<Function>CWorldMarket::StopFinnhubWebSocketIfTimeOut</Function>
 								<Function>CWorldMarket::StopTiingoIEXWebSocketIfTimeOut</Function>
 								<Function>CWorldMarket::StopTiingoCryptoWebSocketIfTimeOut</Function>
@@ -235,14 +179,12 @@ Included items must then not match any entries in the exclude list to remain inc
 	              <Function>CVirtualDataSource::DeleteWebFile</Function>
 								<Function>CVirtualDataSource::GetFileHeaderInformation</Function>
 								<Function>CVirtualDataSource::OpenFile</Function>
-								<Function>CVirtualDataSource::CreateThreadGetWebDataAndProcessIt</Function>
 								<Function>CVirtualDataSource::Reset</Function>
 	              <Function>CVirtualDataSource::GetTickCount</Function>
 								<Function>CVirtualDataSource::ConfigureSession</Function>
 								<Function>CVirtualDataSource::UpdateStatus</Function>
 
 								<Function>CVirtualWebSocket::Connecting</Function>
-								<Function>CVirtualWebSocket::CreateThreadDisconnectWebSocket</Function>
 								<Function>CVirtualWebSocket::Connect</Function>
 								<Function>CVirtualWebSocket::Send</Function>
 								<Function>CVirtualWebSocket::StartWebSocket</Function>
@@ -251,23 +193,15 @@ Included items must then not match any entries in the exclude list to remain inc
 
 								<Function>CFinnhubWebSocket::Connect</Function>
 								<Function>CFinnhubWebSocket::Send</Function>
-								<Function>CFinnhubWebSocket::CreateThreadConnectWebSocket</Function>
-	              <Function>CFinnhubWebSocket::CreateThreadConnectAndSendMessage</Function>
 
 								<Function>CTiingoForexWebSocket::Connect</Function>
 								<Function>CTiingoForexWebSocket::Send</Function>
-								<Function>CTiingoForexWebSocket::CreateThreadConnectWebSocket</Function>
-	              <Function>CTiingoForexWebSocket::CreateThreadConnectAndSendMessage</Function>
 
 								<Function>CTiingoCryptoWebSocket::Connect</Function>
 	              <Function>CTiingoCryptoWebSocket::Send</Function>
-								<Function>CTiingoCryptoWebSocket::CreateThreadConnectWebSocket</Function>
-	              <Function>CTiingoCryptoWebSocket::CreateThreadConnectAndSendMessage</Function>
 
 								<Function>CTiingoIEXWebSocket::Connect</Function>
 	              <Function>CTiingoIEXWebSocket::Send</Function>
-								<Function>CTiingoIEXWebSocket::CreateThreadConnectWebSocket</Function>
-	              <Function>CTiingoIEXWebSocket::CreateThreadConnectAndSendMessage</Function>
 
 							</Exclude>
             </Functions>

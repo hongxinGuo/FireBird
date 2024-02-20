@@ -627,7 +627,6 @@ void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
 			gl_ProcessChinaMarketRTData.release();
 			gl_UpdateChinaMarketDB.release();
 		});
-		//CreateThreadUpdateTempRTData();
 	}
 }
 
@@ -754,7 +753,7 @@ bool CChinaMarket::TaskChoice10RSStrong2StockSet(long lCurrentTime) {
 
 bool CChinaMarket::TaskChoice10RSStrongStockSet(long lCurrentTime) {
 	if (IsSystemReady() && !m_fChosen10RSStrongStockSet && (lCurrentTime > 151000) && IsWorkingDay()) {
-		CreateThreadChoice10RSStrongStockSet();
+		Choice10RSStrongStockSet();
 		m_fChosen10RSStrongStockSet = true;
 		return true;
 	}
@@ -1299,55 +1298,17 @@ bool CChinaMarket::ProcessDayLine() {
 	return true;
 }
 
-void CChinaMarket::CreateThreadBuildDayLineRS(long lStartCalculatingDate) {
-	thread thread1(ThreadBuildDayLineRS, gl_pChinaMarket, lStartCalculatingDate);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CChinaMarket::CreateThreadBuildDayLineRSOfDate(long lThisDate) {
-	thread thread1(ThreadBuildDayLineRSOfDate, lThisDate);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CChinaMarket::CreateThreadBuildWeekLineRSOfDate(long lThisDate) {
-	thread thread1(ThreadBuildWeekLineRSOfDate, lThisDate);
-	thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
-}
-
-void CChinaMarket::CreateThreadChoice10RSStrongStockSet() {
+void CChinaMarket::Choice10RSStrongStockSet() {
 	for (int i = 0; i < 10; i++) {
 		if (m_aRSStrongOption.at(i).m_fActive) {
-			thread thread1(ThreadChoice10RSStrongStockSet, &(m_aRSStrongOption.at(i)), i);
-			thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
+			auto pref = &m_aRSStrongOption.at(i);
+			gl_runtime.background_executor()->post([pref, i] {
+				ThreadChoice10RSStrongStockSet(pref, i);
+			});
 		}
 	}
 	SetUpdatedDateFor10DaysRS(GetMarketDate());
 	SetUpdateOptionDB(true); // 更新选项数据库.此时计算工作线程只是刚刚启动，需要时间去完成。
-}
-
-void CChinaMarket::CreateThreadBuildWeekLine(long lStartDate) {
-	thread thread1(ThreadBuildWeekLine, gl_pChinaMarket, lStartDate);
-	thread1.detach();
-}
-
-void CChinaMarket::CreateThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long lStartDate) {
-	thread thread1(ThreadBuildWeekLineOfStock, pStock, lStartDate);
-	thread1.detach();
-}
-
-void CChinaMarket::CreateThreadBuildWeekLineRS() {
-	thread thread1(ThreadBuildWeekLineRS, gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
-	thread1.detach();
-}
-
-void CChinaMarket::CreateThreadBuildWeekLineOfCurrentWeek() {
-	thread thread1(ThreadBuildWeekLineOfCurrentWeek, gl_pChinaMarket);
-	thread1.detach();
-}
-
-void CChinaMarket::CreateThreadBuildCurrentWeekWeekLineTable() {
-	thread thread1(ThreadBuildCurrentWeekWeekLineTable, gl_pChinaMarket);
-	thread1.detach();
 }
 
 void CChinaMarket::DeleteDayLine(long lDate) const {

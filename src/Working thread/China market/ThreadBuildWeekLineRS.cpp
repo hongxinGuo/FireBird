@@ -8,6 +8,8 @@
 ///////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#include <concurrencpp/executors/thread_pool_executor.h>
+
 #include"Thread.h"
 #include"TimeConvert.h"
 #include"ThreadStatus.h"
@@ -28,7 +30,17 @@ UINT ThreadBuildWeekLineRS(const not_null<CChinaMarketPtr>& pMarket, long startC
 	do {
 		// 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
 		// 每次调用时生成新的局部变量，启动工作线程后执行分离动作（detach），其资源由系统在工作线程执行完后进行回收。
-		pMarket->CreateThreadBuildWeekLineRSOfDate(lToday);
+		gl_runtime.background_executor()->post([lToday] {
+			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+			gl_BackgroundWorkingThread.acquire();
+			ASSERT(GetCurrentMonday(lToday) == lToday); // 确保此日期为星期一
+
+			if (!gl_systemConfiguration.IsExitingSystem() && !gl_systemConfiguration.IsExitingCalculatingRS()) {
+				gl_dataContainerChinaStock.BuildWeekLineRS(lToday);
+			}
+			gl_BackgroundWorkingThread.release();
+			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+		});
 		ctCurrent += sevenDays;
 		lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
 	} while (lToday <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）

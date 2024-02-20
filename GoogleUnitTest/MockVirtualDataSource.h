@@ -10,7 +10,6 @@ namespace testing {
 	class CMockVirtualDataSource final : public CVirtualDataSource {
 	public:
 		MOCK_METHOD(bool, GenerateInquiryMessage, (const long), (override));
-		MOCK_METHOD(void, CreateThreadGetWebDataAndProcessIt, (), (override));
 		MOCK_METHOD(void, GetWebData, (), (override));
 		MOCK_METHOD(void, ProcessWebDataReceived, (), (override));
 		MOCK_METHOD(void, OpenFile, (const CString& strInquiring), (override));

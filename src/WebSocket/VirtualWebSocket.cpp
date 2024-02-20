@@ -3,6 +3,10 @@
 #include <ixwebsocket/IXNetSystem.h>
 #include"VirtualWebSocket.h"
 
+#include <concurrencpp/executors/thread_pool_executor.h>
+
+#include "Thread.h"
+
 using std::exception;
 using std::thread;
 
@@ -24,21 +28,18 @@ void CVirtualWebSocket::Reset() {
 	m_iSubscriptionId = 0;
 }
 
-UINT ThreadConnectWebSocketAndSendMessage(const CVirtualWebSocketPtr& pWebSocket, const vectorString& vSymbol) {
-	pWebSocket->ConnectAndSendMessage(vSymbol);
-	return 70;
-}
-
-void CVirtualWebSocket::CreateThreadConnectAndSendMessage(vectorString vSymbol) {
-	thread thread1(ThreadConnectWebSocketAndSendMessage, this->GetShared(), vSymbol);
-	thread1.detach();
+void CVirtualWebSocket::TaskConnectAndSendMessage(vectorString vSymbol) {
+	ASSERT(IsClosed());
+	gl_runtime.background_executor()->post([this, vSymbol] {
+		this->GetShared()->ConnectAndSendMessage(vSymbol);
+	});
 }
 
 bool CVirtualWebSocket::ConnectAndSendMessage(const vectorString& vSymbol) {
 	try {
 		AppendSymbol(vSymbol);
-		Disconnect();
 		Connect();
+		//ASSERT(!IsOpen()); // Connect调用Connecting,是异步的。
 		while (!IsOpen()) Sleep(1);
 		Send(m_vSymbol);
 	}
@@ -108,29 +109,19 @@ void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallbac
 
 	// Now that our callback is setup, we can start our background thread and receive messages
 	StartWebSocket();
+	ASSERT(!IsOpen());
 }
 
 void CVirtualWebSocket::Disconnect() {
 	if (!IsClosed()) {
 		StopWebSocket();
 	}
-	while (!IsClosed()) Sleep(1);
+	//ASSERT(IsClosed()); // stop()是同步的，执行完后socket已关闭。
 	m_iSubscriptionId = 0;
 }
 
-UINT ThreadDisconnectWebSocket(const CVirtualWebSocketPtr& pWebSocket) {
-	static bool s_fDisconnecting = false;
-	if (!s_fDisconnecting) {
-		s_fDisconnecting = true;
-		pWebSocket->Disconnect();
-		s_fDisconnecting = false;
-	}
-	return 70;
-}
-
-bool CVirtualWebSocket::CreateThreadDisconnectWebSocket() {
-	thread thread1(ThreadDisconnectWebSocket, this->GetShared());
-	thread1.detach();
-
-	return true;
+void CVirtualWebSocket::TaskDisconnect() {
+	gl_runtime.background_executor()->post([this] {
+		this->GetShared()->Disconnect();
+	});
 }

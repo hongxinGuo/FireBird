@@ -143,6 +143,7 @@ namespace FireBirdTest {
 			// 清空预装入的finnhubInaccessibleExchange
 			gl_finnhubInaccessibleExchange.Clear();
 
+			gl_systemConfiguration.SetUpdate(false);
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}

@@ -402,11 +402,7 @@
     <ClCompile Include="..\src\Windows interface\FireBirdDoc.cpp" />
     <ClCompile Include="..\src\Windows interface\FireBirdView.cpp" />
     <ClCompile Include="..\src\Windows interface\PropertiesWnd.cpp" />
-    <ClCompile Include="..\src\Working thread\America market\ThreadUpdateNaicsIndustry.cpp" />
-    <ClCompile Include="..\src\Working thread\America market\ThreadUpdateSICIndustry.cpp" />
-    <ClCompile Include="..\src\Working thread\America market\ThreadUpdateTiingoIndustry.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildDayLineRS.cpp" />
-    <ClCompile Include="..\src\Working thread\China market\ThreadBuildWeekLine.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildWeekLineRS.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadChoice10RSStrongSTockSet.cpp" />
   </ItemGroup>

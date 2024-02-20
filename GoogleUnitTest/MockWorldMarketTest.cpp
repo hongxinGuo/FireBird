@@ -73,24 +73,6 @@ namespace FireBirdTest {
 		s_pMockWorldMarket->UpdateToken();
 	}
 
-	TEST_F(CMockWorldMarketTest, TestThreadUpdateTiingoIndustry) {
-		EXPECT_CALL(*s_pMockWorldMarket, UpdateTiingoIndustry)
-		.Times(1);
-		EXPECT_EQ(ThreadUpdateTiingoIndustry(s_pMockWorldMarket), static_cast<UINT>(45));
-	}
-
-	TEST_F(CMockWorldMarketTest, TestThreadUpdateSICIndustry) {
-		EXPECT_CALL(*s_pMockWorldMarket, UpdateSICIndustry)
-		.Times(1);
-		EXPECT_EQ(ThreadUpdateSICIndustry(s_pMockWorldMarket), static_cast<UINT>(46));
-	}
-
-	TEST_F(CMockWorldMarketTest, TestThreadUpdateNaicsIndustry) {
-		EXPECT_CALL(*s_pMockWorldMarket, UpdateNaicsIndustry)
-		.Times(1);
-		EXPECT_EQ(ThreadUpdateNaicsIndustry(s_pMockWorldMarket), static_cast<UINT>(47));
-	}
-
 	TEST_F(CMockWorldMarketTest, TestTaskStartAllWebSocket) {
 		EXPECT_TRUE(s_pMockWorldMarket->IsSystemReady());
 		EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
@@ -99,10 +81,10 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pTiingoIEXWebSocket->IsIdle());
 		EXPECT_TRUE(gl_pTiingoCryptoWebSocket->IsIdle());
 		EXPECT_TRUE(gl_pTiingoForexWebSocket->IsIdle());
-		EXPECT_CALL(*s_pMockWorldMarket, StartFinnhubWebSocket).Times(1);
-		EXPECT_CALL(*s_pMockWorldMarket, StartTiingoIEXWebSocket).Times(1);
-		EXPECT_CALL(*s_pMockWorldMarket, StartTiingoCryptoWebSocket).Times(1);
-		EXPECT_CALL(*s_pMockWorldMarket, StartTiingoForexWebSocket).Times(1);
+		EXPECT_CALL(*s_pMockWorldMarket, TaskStartFinnhubWebSocket).Times(1);
+		EXPECT_CALL(*s_pMockWorldMarket, TaskStartTiingoIEXWebSocket).Times(1);
+		EXPECT_CALL(*s_pMockWorldMarket, TaskStartTiingoCryptoWebSocket).Times(1);
+		EXPECT_CALL(*s_pMockWorldMarket, TaskStartTiingoForexWebSocket).Times(1);
 
 		s_pMockWorldMarket->TaskStartAllWebSocket(10000);
 
