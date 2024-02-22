@@ -25,6 +25,8 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
+
+			dataSource.ResetBuffer(WEB_SOURCE_DATA_BUFFER_SIZE_);
 		}
 
 		void TearDown() override {
@@ -103,8 +105,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestCreateInquiryMessageFromCurrentProduct) {
-		const auto pProduct = std::make_shared<CProductNeteaseRT>(); // 这个product不生成自己的Inquiry，直接赋值而已。
-		pProduct->SetInquiryFunction(_T("TestGetInquiry"));
+		const auto pProduct = std::make_shared<CProductNeteaseRT>();
+		pProduct->SetInquiryFunction(_T("TestGetInquiry")); // 这个product不生成自己的Inquiry，直接赋值而已。
 		dataSource.StoreInquiry(pProduct);
 		dataSource.GetCurrentProduct();
 
@@ -112,12 +114,12 @@ namespace FireBirdTest {
 		EXPECT_STREQ(dataSource.GetInquiringString(), _T("TestGetInquiry"));
 	}
 
-	TEST_F(CVirtualDataSourceTest, TestCreateWebDataAfterSucceedReading) {
+	TEST_F(CVirtualDataSourceTest, TestCreateWebData) {
 		dataSource.TESTSetBuffer(_T("{ \"data\": 2}"));
 		const time_t tUTCTime = GetUTCTime();
 		TestSetUTCTime(0);
 
-		const auto pWebData = dataSource.CreateWebDataAfterSucceedReading();
+		const auto pWebData = dataSource.CreateWebData();
 
 		EXPECT_TRUE(pWebData != nullptr);
 		EXPECT_EQ(pWebData->GetTime(), 0) << "设置为当前的UTCTime";
@@ -193,8 +195,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(dataSource.GetByteRead(), 0);
 		dataSource.SetByteRead(10000);
 		EXPECT_EQ(dataSource.GetByteRead(), 10000);
-		dataSource.AddByteRead(10000);
-		EXPECT_EQ(dataSource.GetByteRead(), 20000);
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringString) {
@@ -251,10 +251,10 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestXferReadingToBuffer) {
-		char buffer[1024 * 16]{'a', 'b', 'c', 'd'};
-		buffer[1024 * 16 - 1] = 'e';
-		dataSource.TESTSetWebBuffer(buffer, 1024 * 16);
-		dataSource.XferReadingToBuffer(0, 1024 * 16);
+		char buffer[WEB_SOURCE_DATA_BUFFER_SIZE_]{'a', 'b', 'c', 'd'};
+		buffer[WEB_SOURCE_DATA_BUFFER_SIZE_ - 1] = 'e';
+		dataSource.TESTSetWebBuffer(buffer, WEB_SOURCE_DATA_BUFFER_SIZE_);
+		dataSource.XferReadingToBuffer(WEB_SOURCE_DATA_BUFFER_SIZE_);
 
 		const auto sv = dataSource.GetBuffer();
 
@@ -262,6 +262,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(sv.at(1), 'b');
 		EXPECT_EQ(sv.at(2), 'c');
 		EXPECT_EQ(sv.at(3), 'd');
-		EXPECT_EQ(sv.at(1024 * 16 -1), 'e');
+		EXPECT_EQ(sv.at(WEB_SOURCE_DATA_BUFFER_SIZE_ -1), 'e');
 	}
 }

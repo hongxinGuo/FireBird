@@ -53,6 +53,7 @@ void AssignDataSourceAndWebInquiryToMarket() {
 	ASSERT(gl_pChinaMarket != nullptr);
 	ASSERT(gl_pWorldMarket != nullptr);
 
+	// china market's data source 
 	gl_pChinaMarket->StoreDataSource(gl_pSinaRTDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pTengxunRTDataSource);
 	gl_pChinaMarket->StoreDataSource(gl_pNeteaseRTDataSource);
@@ -86,6 +87,7 @@ void AssignDataSourceAndWebInquiryToMarket() {
 		gl_pTengxunDayLineDataSource->Enable(true);
 	}
 
+	// world market's data source
 	gl_pWorldMarket->StoreDataSource(gl_pFinnhubDataSource);
 	gl_pWorldMarket->StoreDataSource(gl_pTiingoDataSource);
 }

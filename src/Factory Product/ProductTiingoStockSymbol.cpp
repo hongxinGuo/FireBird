@@ -175,20 +175,22 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CW
 // }
 // ]
 //
+// 使用simdjson解析，速度为Nlohmann-json的三倍。
+//
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol2(const CWebDataPtr& pWebData) {
 	auto pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
 	string strNotAvailable{_T("Field not available for free/evaluation")}; // Tiingo免费账户有多项内容空缺，会返回此信息。
 	CString strNULL = _T(" ");
 	CTiingoStockPtr pStock = nullptr;
-	string s, sTemp;
-	string_view sv;
+	string s1;
 	CString strNumber;
 	long year, month, day;
 
 	if (!IsValidData(pWebData)) return pvTiingoStock;
 
 	try {
+		string_view sv;
 		string_view svJson = pWebData->GetStringView(0, pWebData->GetBufferLength());
 		ondemand::parser parser;
 		const simdjson::padded_string jsonPadded(svJson);
@@ -198,23 +200,23 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol2(const C
 		int iCount = 0;
 		for (ondemand::value item : doc) {
 			pStock = make_shared<CTiingoStock>();
-			s = jsonGetStringView(item, _T("permaTicker"));
-			pStock->m_strTiingoPermaTicker = s.c_str();
-			s = jsonGetStringView(item, _T("ticker"));
-			ranges::transform(s, s.begin(), ::toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。(需要使用::toupper）
-			pStock->m_strTicker = s.c_str();
-			s = jsonGetStringView(item, _T("name"));
-			pStock->m_strName = s.c_str();
+			s1 = jsonGetStringView(item, _T("permaTicker"));
+			pStock->m_strTiingoPermaTicker = s1.c_str();;
+			s1 = jsonGetStringView(item, _T("ticker"));
+			ranges::transform(s1, s1.begin(), ::toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。(需要使用::toupper）
+			pStock->m_strTicker = s1.c_str();
+			s1 = jsonGetStringView(item, _T("name"));
+			pStock->m_strName = s1.c_str();;
 			pStock->m_fIsActive = jsonGetBool(item, _T("isActive"));
 			pStock->m_fIsADR = jsonGetBool(item,_T("isADR"));
-			s = jsonGetStringView(item, _T("industry"));
-			if (s != strNotAvailable) {
-				pStock->m_strTiingoIndustry = s.c_str();
+			s1 = jsonGetStringView(item, _T("industry"));
+			if (s1.compare(strNotAvailable) != 0) {
+				pStock->m_strTiingoIndustry = s1.c_str();;
 			}
 			else pStock->m_strTiingoIndustry = strNULL;
-			s = jsonGetStringView(item, _T("sector"));
-			if (s != strNotAvailable) {
-				pStock->m_strTiingoSector = s.c_str();
+			s1 = jsonGetStringView(item, _T("sector"));
+			if (s1.compare(strNotAvailable) != 0) {
+				pStock->m_strTiingoSector = s1.c_str();;
 			}
 			else pStock->m_strTiingoSector = strNULL;
 
@@ -226,42 +228,42 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol2(const C
 				string sTemp2(sv);
 				pStock->m_iSICCode = atoi(sTemp2.c_str());
 			}
-			s = jsonGetStringView(item, _T("sicIndustry"));
-			if (s != strNotAvailable) {
-				pStock->m_strSICIndustry = s.c_str();
+			s1 = jsonGetStringView(item, _T("sicIndustry"));
+			if (s1.compare(strNotAvailable) != 0) {
+				pStock->m_strSICIndustry = s1.c_str();;
 			}
 			else pStock->m_strSICIndustry = strNULL;
-			s = jsonGetStringView(item, _T("sicSector"));
-			if (s != strNotAvailable) {
-				pStock->m_strSICSector = s.c_str();
+			s1 = jsonGetStringView(item, _T("sicSector"));
+			if (s1.compare(strNotAvailable) != 0) {
+				pStock->m_strSICSector = s1.c_str();;
 			}
 			else pStock->m_strSICSector = strNULL;
-			s = jsonGetStringView(item, _T("reportingCurrency"));
-			if (s != strNotAvailable) {	// 此项应该永远存在
-				pStock->m_strReportingCurrency = s.c_str();
+			s1 = jsonGetStringView(item, _T("reportingCurrency"));
+			if (s1.compare(strNotAvailable) != 0) { // 此项应该永远存在
+				pStock->m_strReportingCurrency = s1.c_str();;
 			}
 			else pStock->m_strReportingCurrency = strNULL;
-			s = jsonGetStringView(item, _T("location"));
-			if (s != strNotAvailable) {
-				pStock->m_strLocation = s.c_str();
+			s1 = jsonGetStringView(item, _T("location"));
+			if (s1 != strNotAvailable) {
+				pStock->m_strLocation = s1.c_str();;
 			}
 			else pStock->m_strLocation = _T(" ");
-			s = jsonGetStringView(item, _T("companyWebsite"));
-			if (s != strNotAvailable) {
-				pStock->m_strCompanyWebSite = s.c_str();
+			s1 = jsonGetStringView(item, _T("companyWebsite"));
+			if (s1 != strNotAvailable) {
+				pStock->m_strCompanyWebSite = s1.c_str();;
 			}
 			else pStock->m_strCompanyWebSite = strNULL;
-			s = jsonGetStringView(item, _T("secFilingWebsite"));
-			if (s != strNotAvailable) {
-				pStock->m_strSECFilingWebSite = s.c_str();
+			s1 = jsonGetStringView(item, _T("secFilingWebsite"));
+			if (s1 != strNotAvailable) {
+				pStock->m_strSECFilingWebSite = s1.c_str();;
 			}
 			else pStock->m_strSECFilingWebSite = strNULL;
-			s = jsonGetStringView(item, _T("statementLastUpdated"));
-			if (!s.empty()) str = s.c_str();
+			s1 = jsonGetStringView(item, _T("statementLastUpdated"));
+			if (!s1.empty()) str = s1.c_str();;
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
 			pStock->m_lStatementUpdateDate = XferYearMonthDayToYYYYMMDD(year, month, day);
-			s = jsonGetStringView(item, _T("dailyLastUpdated"));
-			str = s.c_str();
+			s1 = jsonGetStringView(item, _T("dailyLastUpdated"));
+			str = s1.c_str();;
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
 			pStock->m_lDailyDataUpdateDate = XferYearMonthDayToYYYYMMDD(year, month, day);
 			pvTiingoStock->push_back(pStock);

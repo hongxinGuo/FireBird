@@ -16,7 +16,7 @@ using std::list;
 using std::atomic_bool;
 using std::atomic_long;
 
-constexpr auto DATA_BUFFER_SIZE_ = 1024 * 16;
+constexpr auto WEB_SOURCE_DATA_BUFFER_SIZE_ = 1024 * 16;
 
 class CVirtualDataSource : public std::enable_shared_from_this<CVirtualDataSource> {
 	friend CVirtualWebProduct;
@@ -41,7 +41,7 @@ public:
 	virtual void GetWebData() { GetWebDataImp(); } // 网络读取。为了Mock方便，声明为虚函数。所有的Mock类，皆应Mock此函数以防止出现实际网络申请
 	virtual void ProcessWebDataReceived();
 	virtual void CheckInaccessible(const CWebDataPtr&) const {
-	};
+	}
 
 	void SetDefaultSessionOption() const;
 
@@ -50,11 +50,11 @@ public:
 	virtual void OpenFile(const CString& strInquiring);
 	virtual void GetFileHeaderInformation();
 	void DeleteWebFile();
-	long QueryDataLength();
+	void QueryDataLength();
 	virtual UINT ReadWebFileOneTime(); // 无法测试，故而虚拟化后使用Mock类。
-	void XferReadingToBuffer(long lPosition, UINT uByteRead);
-	bool IncreaseBufferSizeIfNeeded(long lIncreaseSize = 1024 * 1024);
-	virtual CWebDataPtr CreateWebDataAfterSucceedReading();
+	void XferReadingToBuffer(UINT uByteRead);
+	bool IncreaseBufferSizeIfNeeded(long lIncreaseSize);
+	virtual CWebDataPtr CreateWebData();
 
 	void VerifyDataLength() const;
 	static void SetDataTime(const CWebDataPtr& pData, const time_t time) noexcept { pData->SetTime(time); }
@@ -65,7 +65,7 @@ public:
 	virtual void ConfigureSession() {
 		ASSERT(false); // 调用了基类函数ConfigureSession
 	} // 配置m_pSession。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
-	virtual void UpdateStatusAfterReading(CWebDataPtr pData) {
+	virtual void UpdateStatus(CWebDataPtr pData) {
 	} //成功接收后更新系统状态。默认无动作
 
 	void CreateTotalInquiringString();
@@ -75,7 +75,6 @@ public:
 
 	long GetByteRead() const noexcept { return m_lByteRead; }
 	void SetByteRead(const long lValue) noexcept { m_lByteRead = lValue; }
-	void AddByteRead(const long lValue) noexcept { m_lByteRead += lValue; }
 	size_t GetBufferSize() const noexcept { return m_sBuffer.size(); }
 	string_view GetBuffer() noexcept { return m_sBuffer; }
 
@@ -146,6 +145,8 @@ public:
 	void SetCurrentInquiryTime(const time_t tt) noexcept { m_tCurrentInquiryTime = tt; }
 	virtual time_t GetCurrentInquiryTime() const noexcept { return m_tCurrentInquiryTime; }
 
+	void SetContentLength(long length) noexcept { m_lContentLength = length; }
+
 public:
 	// 以下为测试用函数
 	void TESTSetBuffer(const char* buffer, INT64 lTotalNumber);
@@ -186,7 +187,7 @@ protected:
 	atomic_bool m_bIsWorkingThreadRunning;
 
 private:
-	char m_dataBuffer[DATA_BUFFER_SIZE_]; //网络数据缓存
+	char m_dataBuffer[WEB_SOURCE_DATA_BUFFER_SIZE_]; //网络数据缓存
 };
 
 using CVirtualDataSourcePtr = shared_ptr<CVirtualDataSource>;

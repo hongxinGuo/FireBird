@@ -88,7 +88,7 @@ namespace FireBirdTest {
 		m_pMockQuandlDataSource->SetInquiring(true);
 		EXPECT_CALL(*m_pMockQuandlDataSource, ReadWebData).Times(1)
 		.WillOnce(Invoke([]() { m_pMockQuandlDataSource->SetErrorCode(0); }));
-		EXPECT_CALL(*m_pMockQuandlDataSource, CreateWebDataAfterSucceedReading).Times(1)
+		EXPECT_CALL(*m_pMockQuandlDataSource, CreateWebData).Times(1)
 		.WillOnce(Return(pData));
 
 		m_pMockQuandlDataSource->GetWebDataImp();
@@ -111,7 +111,7 @@ namespace FireBirdTest {
 		m_pMockQuandlDataSource->SetInquiring(true);
 		EXPECT_CALL(*m_pMockQuandlDataSource, ReadWebData).Times(1)
 		.WillOnce(Invoke([]() { m_pMockQuandlDataSource->SetErrorCode(12002); }));
-		EXPECT_CALL(*m_pMockQuandlDataSource, CreateWebDataAfterSucceedReading).Times(0); // 没有调用此函数
+		EXPECT_CALL(*m_pMockQuandlDataSource, CreateWebData).Times(0); // 没有调用此函数
 
 		m_pMockQuandlDataSource->GetWebDataImp();
 

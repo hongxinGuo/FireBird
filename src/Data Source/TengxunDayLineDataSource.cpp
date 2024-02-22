@@ -151,7 +151,7 @@ void CTengxunDayLineDataSource::ConfigureSession() {
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
 }
 
-void CTengxunDayLineDataSource::UpdateStatusAfterReading(CWebDataPtr pData) {
+void CTengxunDayLineDataSource::UpdateStatus(CWebDataPtr pData) {
 	pData->SetStockCode(GetDownLoadingStockCode());
 }
 

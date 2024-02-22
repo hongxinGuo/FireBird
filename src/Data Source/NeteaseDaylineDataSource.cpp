@@ -83,7 +83,7 @@ void CNeteaseDayLineDataSource::ConfigureSession() {
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1´ÎÖØÊÔ
 }
 
-void CNeteaseDayLineDataSource::UpdateStatusAfterReading(CWebDataPtr pData) {
+void CNeteaseDayLineDataSource::UpdateStatus(CWebDataPtr pData) {
 	pData->SetStockCode(GetDownLoadingStockCode());
 }
 

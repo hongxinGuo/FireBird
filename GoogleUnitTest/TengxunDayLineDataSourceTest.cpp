@@ -55,7 +55,7 @@ namespace FireBirdTest {
 	TEST_F(CTengxunDayLineDataSourceTest, TestUpdateStatusAfterSucceed) {
 		const auto pData = make_shared<CWebData>();
 		TengxunDayLineDataSource.SetDownLoadingStockCode(_T("Test"));
-		TengxunDayLineDataSource.UpdateStatusAfterReading(pData);
+		TengxunDayLineDataSource.UpdateStatus(pData);
 
 		EXPECT_STREQ(pData->GetStockCode(), _T("Test"));
 	}
@@ -190,13 +190,13 @@ namespace FireBirdTest {
 		pStock->SetDayLineEndDate(lEndDate);
 	}
 
-	TEST_F(CTengxunDayLineDataSourceTest, TestCreateWebDataAfterSucceedReading) {
+	TEST_F(CTengxunDayLineDataSourceTest, TestCreateWebData) {
 		TengxunDayLineDataSource.TESTSetBuffer(_T("{ \"data\": 2}"));
 		const time_t tUTCTime = GetUTCTime();
 		TengxunDayLineDataSource.SetDownLoadingStockCode(_T("TEST"));
 		TestSetUTCTime(0);
 
-		const auto pWebData = TengxunDayLineDataSource.CreateWebDataAfterSucceedReading();
+		const auto pWebData = TengxunDayLineDataSource.CreateWebData();
 
 		EXPECT_TRUE(pWebData != nullptr);
 		EXPECT_STREQ(pWebData->GetStockCode(), _T("TEST")) << "»áÉèÖÃStockCode";

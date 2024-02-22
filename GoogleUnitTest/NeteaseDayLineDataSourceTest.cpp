@@ -108,13 +108,13 @@ namespace FireBirdTest {
 		}
 	}
 
-	TEST_F(CNeteaseDayLineDataSourceTest, TestCreateWebDataAfterSucceedReading) {
+	TEST_F(CNeteaseDayLineDataSourceTest, TestCreateWebData) {
 		NeteaseDayLineDataSource.TESTSetBuffer(_T("{ \"data\": 2}"));
 		const time_t tUTCTime = GetUTCTime();
 		NeteaseDayLineDataSource.SetDownLoadingStockCode(_T("TEST"));
 		TestSetUTCTime(0);
 
-		const auto pWebData = NeteaseDayLineDataSource.CreateWebDataAfterSucceedReading();
+		const auto pWebData = NeteaseDayLineDataSource.CreateWebData();
 
 		EXPECT_TRUE(pWebData != nullptr);
 		EXPECT_STREQ(pWebData->GetStockCode(), _T("TEST")) << "»áÉèÖÃStockCode";

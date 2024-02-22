@@ -29,18 +29,17 @@ CVirtualDataSource::CVirtualDataSource() {
 	m_strInquiryFunction = _T("");
 	m_strSuffix = _T("");
 	m_strInquiryToken = _T("");
-	m_sBuffer.resize(DefaultWebDataBufferSize_); // 大多数情况下，2M缓存就足够了，无需再次分配内存。
+	//m_sBuffer.resize(DefaultWebDataBufferSize_); // 大多数情况下，1M缓存就足够了，无需再次分配内存。
 
 	m_lInquiringNumber = 500; // 每次查询数量默认值为500
 	m_tCurrentInquiryTime = 0;
 	m_pCurrentProduct = nullptr;
 
-	m_lContentLength = -1;
+	m_lContentLength = 0;
 	m_fInquiring = false;
 	m_bIsWorkingThreadRunning = false;
 
 	m_llLastTimeTickCount = 0;
-	m_lByteRead = 0;
 	m_dwWebErrorCode = 0;
 }
 
@@ -136,10 +135,10 @@ void CVirtualDataSource::GetWebDataImp() {
 	ReadWebData();
 	if (!IsWebError()) {
 		VerifyDataLength();
-		const auto pWebData = CreateWebDataAfterSucceedReading();
+		const auto pWebData = CreateWebData();
 		// 网络数据服务器正在使用时就可能被中止，故而存储当前数据时需要判断
 		if (IsEnable()) StoreReceivedData(pWebData); // 当变更服务器（如中国市场的实时数据）时，要保证抛弃掉被变更服务器当前接收到的数据
-		ResetBuffer();
+		//ResetBuffer(WEB_SOURCE_DATA_BUFFER_SIZE_); // todo 这里需要重新为m_sBuffer分配内存，否则当切换数据接收器时会出现内存禁止访问错误（执行memcpy时）。待查
 	}
 	else { // error handling
 		DiscardAllInquiry(); // 当一次查询产生多次申请时，这些申请都是各自相关的，只要出现一次错误，其他的申请就无意义了。
@@ -151,9 +150,7 @@ void CVirtualDataSource::GetWebDataImp() {
 
 ///////////////////////////////////////////////////////////////////////////
 //
-// 从网络读取数据。每次读16KB，直到读不到为止。
-// 当采用此函数读取网易日线历史数据时，OpenFile偶尔会出现超时（网络错误代码12002）错误，可以采用多读取几次解决之。
-// 现在发现其他网路读取线程也偶尔出现超时错误，多读几次即可解决之。--20211104
+// 从网络读取数据。每次读1KB，直到读不到为止。
 //
 // 新浪实时数据服务器打开时间为100毫秒左右，网易实时数据服务器打开时间为350毫秒左右。
 //
@@ -165,6 +162,12 @@ void CVirtualDataSource::ReadWebData() {
 	try {
 		OpenFile(GetInquiringString());
 		GetFileHeaderInformation();
+		if (m_lContentLength > 0) {
+			m_sBuffer.resize(m_lContentLength + 1); // 调整缓存区大小，比实际数据大一个字节（以防止越界访问）。估计是memcpy函数实现机制所致。
+		}
+		else {
+			m_sBuffer.resize(1024 * 1024);// 服务器不回报数据长度时，设置初始缓冲区为1M。
+		}
 		UINT lCurrentByteRead;
 		do {
 			if (gl_systemConfiguration.IsExitingSystem()) {
@@ -172,9 +175,9 @@ void CVirtualDataSource::ReadWebData() {
 				throw(e); // 当系统退出时，要立即中断此进程，以防止内存泄露。
 			}
 			lCurrentByteRead = ReadWebFileOneTime(); // 每次读取16K数据。
-			XferReadingToBuffer(m_lByteRead, lCurrentByteRead);
+			XferReadingToBuffer(lCurrentByteRead);
 			m_lByteRead += lCurrentByteRead;
-			IncreaseBufferSizeIfNeeded();
+			if (m_lContentLength == 0) IncreaseBufferSizeIfNeeded(1024 * 1024);
 		} while (lCurrentByteRead > 0);
 		// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
 		m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
@@ -188,8 +191,6 @@ void CVirtualDataSource::ReadWebData() {
 }
 
 // <summary>
-// 当采用此函数读取网易日线历史数据时，偶尔会出现超时（网络错误代码12002）错误
-// 目前最大的问题是读取finnhub.io时，由于网站被墙而导致连接错误--20220401
 //
 // 由于新浪实时数据服务器需要提供头部验证数据，故而OpenURL不再使用默认值，调用者需要各自设置m_strHeaders（默认为空）。
 // 其他的数据尚未需要提供头部验证数据。
@@ -215,17 +216,17 @@ void CVirtualDataSource::DeleteWebFile() {
 	}
 }
 
-long CVirtualDataSource::QueryDataLength() {
+void CVirtualDataSource::QueryDataLength() {
 	CString str;
 	m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
-	if (str.GetLength() > 0) {
+	if (str.GetLength() > 0) { // 正常时此字符串不为零
 		char* p;
 		m_lContentLength = strtol(str.GetBuffer(), &p, 10);
+		ASSERT(m_lContentLength > 0);
 	}
-	else {
+	else { // 服务器无响应
 		m_lContentLength = 0;
 	}
-	return m_lContentLength;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -235,7 +236,7 @@ long CVirtualDataSource::QueryDataLength() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 UINT CVirtualDataSource::ReadWebFileOneTime() {
-	const UINT uByteRead = m_pFile->Read(m_dataBuffer, DATA_BUFFER_SIZE_);
+	const UINT uByteRead = m_pFile->Read(m_dataBuffer, WEB_SOURCE_DATA_BUFFER_SIZE_);
 	sm_lTotalByteRead += uByteRead;
 	return uByteRead;
 }
@@ -244,9 +245,9 @@ UINT CVirtualDataSource::ReadWebFileOneTime() {
 // Debug编译模式下，使用memcpy函数完成，耗时154纳秒
 // release编译模式下：使用逐字节拷贝，16KB耗时11微秒，使用memcpy函数完成，耗时120纳秒。
 //
-void CVirtualDataSource::XferReadingToBuffer(long lPosition, UINT uByteRead) {
-	char* p = &m_sBuffer.at(lPosition);
-	memcpy(p, m_dataBuffer, uByteRead);
+void CVirtualDataSource::XferReadingToBuffer(UINT uByteRead) {
+	ASSERT(m_sBuffer.size() >= m_lByteRead + uByteRead);
+	memcpy(&m_sBuffer.at(m_lByteRead), m_dataBuffer, uByteRead);
 }
 
 bool CVirtualDataSource::IncreaseBufferSizeIfNeeded(long lIncreaseSize) {
@@ -257,27 +258,25 @@ bool CVirtualDataSource::IncreaseBufferSizeIfNeeded(long lIncreaseSize) {
 	return true;
 }
 
-CWebDataPtr CVirtualDataSource::CreateWebDataAfterSucceedReading() {
+CWebDataPtr CVirtualDataSource::CreateWebData() {
 	const auto pWebData = make_shared<CWebData>();
 	pWebData->ResetCurrentPos();
 	pWebData->SetTime(GetUTCTime());
 	TransferDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
-	UpdateStatusAfterReading(pWebData);
+	UpdateStatus(pWebData);
 
 	return pWebData;
 }
 
 void CVirtualDataSource::VerifyDataLength() const {
-	const auto byteRead = GetByteRead();
-
 	if (m_lContentLength > 0) {
-		if (m_lContentLength != byteRead) {
+		if (m_lContentLength != m_lByteRead) {
 			CString str = _T("网络数据长度不符。预期长度：");
 			char buffer[100];
 			sprintf_s(buffer, _T("%d"), m_lContentLength);
 			str += buffer;
 			str += _T("，实际长度：");
-			sprintf_s(buffer, _T("%d"), byteRead);
+			sprintf_s(buffer, _T("%d"), m_lByteRead);
 			str += buffer;
 			str += m_strInquiry.Left(200);
 			gl_systemMessage.PushErrorMessage(str);
@@ -292,6 +291,7 @@ void CVirtualDataSource::VerifyDataLength() const {
 }
 
 void CVirtualDataSource::TransferDataToWebData(const CWebDataPtr& pWebData) {
+	ASSERT(m_sBuffer.size() >= m_lByteRead);
 	m_sBuffer.resize(m_lByteRead);
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
 }

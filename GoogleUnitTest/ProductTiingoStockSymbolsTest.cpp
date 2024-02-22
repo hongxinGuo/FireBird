@@ -71,7 +71,7 @@ namespace FireBirdTest {
 	// 正确的数据
 	Test_TiingoWebData tiingoWebData4(4, _T(""), _T("[{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"sector have data\",\"industry\":\"industry have new data\",\"sicCode\":1234,\"sicSector\":\"sicSector have data\",\"sicIndustry\":\"sicIndustry have data\",\"reportingCurrency\":\"usd\",\"location\":\"location have data\",\"companyWebsite\":\"companyWebsite have data\",\"secFilingWebsite\":\"secFileingWebsite have data\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
 	// 正确的数据
-	Test_TiingoWebData tiingoWebData10(10, _T(""),_T("[{\"permaTicker\":\"US000000000247\",\"ticker\":\"new symbol\",\"name\":\"Agilent Technologies Inc\",\"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-05T23:02:07.999Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.052Z\"},{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"New Name\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
+	Test_TiingoWebData tiingoWebData10(10, _T(""),_T("[{\"permaTicker\":\"US000000000247\",\"ticker\":\"new symbol\",\"name\":\"Agilent Technologies Inc\",\"isActive\":true,\"isADR\":false,\"sector\":\"\",\"industry\":\"free\",\"sicCode\":\"Field\",\"sicSector\":\"not\",\"sicIndustry\":\"for\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"free\",\"secFilingWebsite\":\"Field\",\"statementLastUpdated\":\"2021-03-05T23:02:07.999Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.052Z\"},{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"New Name\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
 
 	class ParseTiingoStockTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:
@@ -190,6 +190,22 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_EQ(m_pvStock->size(), 2);
+			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoPermaTicker, _T("US000000000247"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strTicker, _T("NEW SYMBOL"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strName, _T("Agilent Technologies Inc"));
+			EXPECT_TRUE(m_pvStock->at(0)->m_fIsActive);
+			EXPECT_FALSE(m_pvStock->at(0)->m_fIsADR);
+			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoIndustry, _T("free"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoSector, _T(""));
+			EXPECT_EQ(m_pvStock->at(0)->m_iSICCode, 0);
+			EXPECT_STREQ(m_pvStock->at(0)->m_strSICIndustry, _T("for"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strSICSector, _T("not"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strReportingCurrency, _T("usd"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strLocation, _T(" "));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strCompanyWebSite, _T("free"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strSECFilingWebSite, _T("Field"));
+			EXPECT_EQ(m_pvStock->at(0)->m_lStatementUpdateDate, 20210305);
+			EXPECT_EQ(m_pvStock->at(0)->m_lDailyDataUpdateDate, 20210312);
 			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoPermaTicker, _T("US000000000091"));
 			EXPECT_STREQ(m_pvStock->at(1)->m_strTicker, _T("AA"));
 			EXPECT_STREQ(m_pvStock->at(1)->m_strName, _T("New Name"));

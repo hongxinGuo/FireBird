@@ -1062,12 +1062,12 @@ namespace FireBirdTest {
 		gl_pFinnhubDataSource->SetUpdateForexSymbol(true);
 	}
 
-	TEST_F(CFinnhubDataSourceTest, TestCreateWebDataAfterSucceedReading) {
+	TEST_F(CFinnhubDataSourceTest, TestCreateWebData) {
 		m_FinnhubDataSource.TESTSetBuffer(_T("{ \"data\": 2}"));
 		const time_t tUTCTime = GetUTCTime();
 		TestSetUTCTime(0);
 
-		const auto pWebData = m_FinnhubDataSource.CreateWebDataAfterSucceedReading();
+		const auto pWebData = m_FinnhubDataSource.CreateWebData();
 
 		EXPECT_TRUE(pWebData != nullptr);
 		EXPECT_EQ(pWebData->GetTime(), 0) << "设置为当前的UTCTime";

@@ -11,7 +11,8 @@ namespace FireBirdTest {
 			GeneralCheck();
 			EXPECT_EQ(webData.GetCurrentPos(), 0);
 			EXPECT_EQ(webData.GetTime(), 0);
-			EXPECT_EQ(webData.GetBufferLength(), 1024 * 1024);
+			EXPECT_EQ(webData.GetBufferLength(), 0) << "初始化时未操作此变量";
+			webData.Resize(1024 * 1024); // 设置1M存储空间
 			webData.ResetCurrentPos();
 			EXPECT_EQ(webData.GetCurrentPos(), 0);
 

@@ -14,6 +14,8 @@
 
 #include"SaveAndLoad.h"
 #include"JsonParse.h"
+#include "ProductTiingoCompanyProfile.h"
+#include "ProductTiingoStockSymbol.h"
 #include"WebData.h"
 
 #include"simdjson.h"
@@ -259,6 +261,11 @@ public:
 		sNeteaseRTDataForPTree.erase(sNeteaseRTDataForPTree.begin(), sNeteaseRTDataForPTree.begin() + 21);
 
 		sWorldStockUpdateParameter = _T("{\"Finnhub\":{\"StockFundamentalsCompanyProfileConcise\":20230110,\"StockFundamentalsCompanyNews\":20230205,\"StockFundamentalsBasicFinancials\":20230112,\"StockPriceQuote\":19800104,\"StockFundamentalsPeer\":20230115,\"StockFundamentalsInsiderTransaction\":20230116,\"StockFundamentalsInsiderSentiment\":20230117,\"StockEstimatesEPSSurprise\":19800108},\"Tiingo\":{\"StockFundamentalsCompanyProfile\":20221222,\"StockPriceCandles\":20230210}}");
+
+		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("tiingo_fundamentals.json");
+		LoadFromFile(strFileName, sTiingoSymbol);
+		pWebData = make_shared<CWebData>();
+		pWebData->Test_SetBuffer_(sTiingoSymbol.c_str());
 	}
 
 	void TearDown(const benchmark::State& state) override {
@@ -270,7 +277,8 @@ public:
 	string sNeteaseRTDataForPTree;
 	string sTengxunDayLine;
 	string sWorldStockUpdateParameter;
-
+	string sTiingoSymbol;
+	CWebDataPtr pWebData;
 	bool bError{false};
 
 	simdjson::padded_string USExchangedStockCode;
@@ -354,6 +362,21 @@ BENCHMARK_F(CJsonParse, ParseTengxunDayLineUsingSimdjson)(benchmark::State& stat
 	const string_view svData = sTengxunDayLine;
 	for (auto _ : state) {
 		auto vData = ParseTengxunDayLine(svData, _T("sh000001")); // 默认测试文件中的股票代码为sh000001.
+	}
+}
+
+// 解析并处理tengxun日线数据。
+BENCHMARK_F(CJsonParse, ParseTiingoFundamentalsUsingSimdjson)(benchmark::State& state) {
+	CProductTiingoStockSymbol p;
+	for (auto _ : state) {
+		auto vData = p.ParseTiingoStockSymbol2(pWebData); // 默认测试文件中的股票代码为sh000001.
+	}
+}
+
+BENCHMARK_F(CJsonParse, ParseTiingoFundamentalsUsingNlohmannjson)(benchmark::State& state) {
+	CProductTiingoStockSymbol p;
+	for (auto _ : state) {
+		auto vData = p.ParseTiingoStockSymbol(pWebData); // 默认测试文件中的股票代码为sh000001.
 	}
 }
 

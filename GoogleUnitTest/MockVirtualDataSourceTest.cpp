@@ -34,6 +34,7 @@ namespace FireBirdTest {
 			m_pVirtualDataSource = make_shared<CMockVirtualDataSource>();
 			m_pProduct = make_shared<CProductDummy>();
 			m_pVirtualDataSource->SetCurrentInquiry(m_pProduct);
+			m_pVirtualDataSource->SetContentLength(128 * 1024);
 		}
 
 		void TearDown() override {
