@@ -24,6 +24,7 @@
 #include "Thread.h"
 
 using namespace std;
+#include <algorithm>
 
 #include"simdjsonGetValue.h"
 using namespace simdjson;
@@ -144,33 +145,51 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 // 由于数据中不会包含相同股票的实时数据，故而不会出现同时操作同一个股票的问题，所以可以并行解析
 // 只有工作线程都执行完后，本函数方可退出。
 //
-// 使用这种多线程模式与单线程模式相比，速度只快15%，暂不使用。
-// 每个线程所处理的数据极其短小，而线程的调度和数据的准备（以防重入问题）需要太多的时间。
+// 使用这种多线程模式与单线程模式相比，速度为10倍。
+//
+// todo 还有同步问题。待查
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe, const CWebDataPtr& pWebData) {
-	auto total = tpe->max_concurrency_level();
+result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvsv, CWebDataPtr pData) {
+	const auto concurrency_level = tpe->max_concurrency_level();
 	bool succeed = true;
 	vector<result<bool>> results;
-	pWebData->ResetCurrentPos();
-	while (!pWebData->IsLastDataParagraph()) {
-		auto p = pWebData->GetCurrentSinaDataPtr(); // 使用shared_ptr以防止出现重入问题。
-		auto result = tpe->submit([p] {
-			const auto pRTData = make_shared<CWebRTData>();
-			pRTData->ParseSinaData(*p);
-			gl_qChinaMarketRTData.enqueue(pRTData);
+	const auto chunk_size = 1 + pvsv->size() / concurrency_level;
+	for (auto i = 0; i < concurrency_level; i++) { // 使用当前CPU的所有核心
+		long chunk_begin = i * chunk_size;
+		long chunk_end = (i + 1) * chunk_size;
+		if (chunk_end > pvsv->size()) chunk_end = pvsv->size();
+		auto result = tpe->submit([pvsv, chunk_begin, chunk_end, pData] {
+			CWebDataPtr p = pData; // 保存pWebData,防止string_view过期。
+			try {
+				for (int j = chunk_begin; j < chunk_end; j++) {
+					const auto pRTData = make_shared<CWebRTData>();
+					const string_view sv = pvsv->at(j);
+					pRTData->ParseSinaData(sv);
+					gl_qChinaMarketRTData.enqueue(pRTData); // 多个协程同时往里存时，无法通过size_approx函数得到队列数量。
+				}
+			}
+			catch (exception& e) {
+				ReportErrorToSystemMessage(_T("ParseSinaData异常 "), e);
+			}
 			return true;
 		});
 		results.emplace_back(std::move(result));
 	}
 	for (auto& r : results) {
-		succeed = succeed || co_await r;
+		succeed = succeed || co_await r; // todo 这里还是有问题。将或操作||改为与操作&&，系统崩溃了。不知为何。
 	}
 	co_return succeed;
 }
 
 void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
-	auto result = ParseSinaRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pWebData);
+	pWebData->ResetCurrentPos();
+	shared_ptr<vector<string_view>> pvsv = make_shared<vector<string_view>>();
+	while (!pWebData->IsLastDataParagraph()) {
+		auto sv = pWebData->GetCurrentSinaData();
+		pvsv->emplace_back(sv);
+	}
+	auto result = ParseSinaRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvsv, pWebData); // 需要将pWebData传进去，以保持数据有效性
 	result.get(); // 等待线程执行完后方继续。
 }
 
@@ -298,17 +317,28 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 // 使用这种多线程模式与单线程模式相比，速度基本一样（偏慢），可见线程切换还是需要时间。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe, const CWebDataPtr& pWebData) {
+result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvsv, CWebDataPtr pData) {
+	const auto concurrency_level = tpe->max_concurrency_level();
 	bool succeed = true;
 	vector<result<bool>> results;
-	pWebData->ResetCurrentPos();
-	while (!pWebData->IsLastDataParagraph()) {
-		auto psv = make_shared<string_view>();
-		*psv = pWebData->GetCurrentSinaData();
-		auto result = tpe->submit([psv] {
-			const auto pRTData = make_shared<CWebRTData>();
-			pRTData->ParseTengxunData(*psv);
-			gl_qChinaMarketRTData.enqueue(pRTData);
+	const auto chunk_size = 1 + pvsv->size() / concurrency_level;
+	for (auto i = 0; i < concurrency_level; i++) {
+		long chunk_begin = i * chunk_size;
+		long chunk_end = (i + 1) * chunk_size;
+		if (chunk_end > pvsv->size()) chunk_end = pvsv->size();
+		auto result = tpe->submit([pvsv, chunk_begin, chunk_end, pData] {
+			CWebDataPtr p = pData;
+			try {
+				for (int j = chunk_begin; j < chunk_end; j++) {
+					const auto pRTData = make_shared<CWebRTData>();
+					const string_view sv = pvsv->at(j);
+					pRTData->ParseTengxunData(sv);
+					gl_qChinaMarketRTData.enqueue(pRTData);
+				}
+			}
+			catch (exception& e) {
+				ReportErrorToSystemMessage(_T("ParseSinaData异常 "), e);
+			}
 			return true;
 		});
 		results.emplace_back(std::move(result));
@@ -320,8 +350,14 @@ result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<thread_pool_executor> t
 }
 
 void ParseTengxunRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
-	auto result = ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pWebData);
-	result.get();
+	pWebData->ResetCurrentPos();
+	const shared_ptr<vector<string_view>> pvsv = make_shared<vector<string_view>>();
+	while (!pWebData->IsLastDataParagraph()) {
+		auto sv = pWebData->GetCurrentSinaData();
+		pvsv->emplace_back(sv);
+	}
+	auto result = ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvsv, pWebData);
+	result.get(); // 等待线程执行完后方继续。
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

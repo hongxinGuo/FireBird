@@ -17,6 +17,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IXWebSocketLib", "IXWebSock
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "杂项文件", "杂项文件", "{3DD3155A-8273-422F-B848-F5BB47F964ED}"
 	ProjectSection(SolutionItems) = preProject
+		.runsettings = .runsettings
 		Lib\CreateEnvionment.bat = Lib\CreateEnvionment.bat
 		..\..\..\..\..\FireBird\FinnhubInaccessibleExchange.json = ..\..\..\..\..\FireBird\FinnhubInaccessibleExchange.json
 		FireBird.runsettings = FireBird.runsettings

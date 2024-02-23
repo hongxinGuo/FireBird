@@ -228,21 +228,18 @@ long GetCurrentMonday(long lDate) {
 }
 
 long GetNextSecond(const long lTime) {
-	const long ss = lTime - (lTime / 100) * 100;
+	const long hhmm = lTime / 100;
+	const long hh = lTime / 10000;
+	const long ss = lTime - hhmm * 100;
 	if (ss == 59) {
-		const long mm = lTime / 100 - (lTime / 10000) * 100;
+		const long mm = hhmm - hh * 100;
 		if (mm == 59) {
-			const long hh = lTime / 10000;
 			ASSERT(hh < 24);
 			return (hh + 1) * 10000;
 		}
-		else {
-			return (lTime / 100 + 1) * 100;
-		}
+		return (hhmm + 1) * 100;
 	}
-	else {
-		return lTime + 1;
-	}
+	return lTime + 1;
 }
 
 long GetNextTime(const long lTime, long hh, long mm, long ss) {

@@ -107,3 +107,9 @@ void ResetMarkets() {
 		}
 	}
 }
+
+void SchedulingTask() {
+	for (const auto& pVirtualMarket : gl_vMarketPtr) {
+		if (pVirtualMarket->IsReadyToRun()) pVirtualMarket->SchedulingTask();
+	}
+}

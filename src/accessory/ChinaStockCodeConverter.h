@@ -11,7 +11,7 @@ using std::string;
 
 // ¹ÉÆ±´úÂë×ª
 [[nodiscard]] string XferSinaToStandard(const CString& strSina);
-[[nodiscard]] string XferSinaToStandard(string_view strSina);
+[[nodiscard]] string XferSinaToStandard(const string_view& strSina);
 [[nodiscard]] CString XferSinaToNetease(const CString& strSina);
 [[nodiscard]] CString XferNeteaseToStandard(const CString& strNetease);
 [[nodiscard]] CString XferNeteaseToSina(const CString& strNetease);

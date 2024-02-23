@@ -331,17 +331,6 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
 	m_wndProperties.SetIcon(hPropertiesBarIcon, FALSE);
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-//
-//系统更新任务由各CVirtualMarket类中的调度函数完成，
-//
-/////////////////////////////////////////////////////////////////////////////////////////////
-void CMainFrame::SchedulingTask() {
-	for (const auto& pVirtualMarket : gl_vMarketPtr) {
-		if (pVirtualMarket->IsReadyToRun()) pVirtualMarket->SchedulingTask();
-	}
-}
-
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 	if (!CFrameWndEx::PreCreateWindow(cs)) return FALSE;
 	// TODO: 在此处通过修改
@@ -438,15 +427,19 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 		return;
 	}
 
-	ResetMarkets(); // 重启系统在此处执行，容易调用各重置函数
-
-	// 调用主调度函数,由各市场调度函数执行具体任务
 	try {
-		SchedulingTask();
+		ResetMarkets(); // 重启系统在此处执行，容易调用各重置函数
+		SchedulingTask();	// 调用主调度函数,由各市场调度函数执行具体任务
 	}
 	catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
 		CString str = _T("SchedulingTask unhandled exception founded : ");
 		str += e->what();
+		gl_systemMessage.PushInformationMessage(str);
+		gl_systemMessage.PushErrorMessage(str);
+		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
+	}
+	catch (CException* e) {
+		const CString str = _T("SchedulingTask unhandled exception founded : ");
 		gl_systemMessage.PushInformationMessage(str);
 		gl_systemMessage.PushErrorMessage(str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。

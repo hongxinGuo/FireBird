@@ -7,3 +7,5 @@
 void InitializeMarkets();
 void AssignDataSourceAndWebInquiryToMarket();
 void ResetMarkets();
+
+void SchedulingTask();

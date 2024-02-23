@@ -37,7 +37,8 @@ Included items must then not match any entries in the exclude list to remain inc
                 <ModulePath>.*\.exe$</ModulePath>
               </Include>
               <Exclude>
-                <ModulePath>.*CPPUnitTestFramework.*</ModulePath>
+				<ModulePath>.*CPPUnitTestFramework.*</ModulePath>
+				<ModulePath>.*vcpkg.*</ModulePath>
               </Exclude>
               <!-- Specifies additional list of directories where binaries static native instrumentation should be searched. -->
               <IncludeDirectories>
@@ -49,161 +50,165 @@ Included items must then not match any entries in the exclude list to remain inc
             <!-- (Use "\." to delimit namespaces in C# or Visual Basic, "::" in C++.)  -->
             <Functions>
               <Exclude>
-                <Function>^Fabrikam\.UnitTest\..*</Function>
-                <Function>^std::.*</Function>
-	            <Function>^ATL::.*</Function>
+				<Function>^Fabrikam\.UnitTest\..*</Function>
+				<Function>^std::.*</Function>
+				<Function>^ATL::.*</Function>
+				<Function>^moodycamel::.*</Function>
+				<Function>^nlohmann::.*</Function>
+				<Function>^gsl::.*</Function>
+				<Function>^concurrencpp::.*</Function>
 				<Function>^FireBirdTest::.*</Function>
-                <Function>.*::__GetTestMethodInfo.*</Function>
-                <Function>^Microsoft::VisualStudio::CppCodeCoverageFramework::.*</Function>
+				<Function>.*::__GetTestMethodInfo.*</Function>
+				<Function>^Microsoft::VisualStudio::CppCodeCoverageFramework::.*</Function>
 				<Function>^Microsoft::VisualStudio::CppUnitTestFramework::.*</Function>
 
 				<Function>ReportJsonError</Function>
 				<Function>ReportWebError</Function>
-	            <Function>to_byte_string</Function>
+				<Function>to_byte_string</Function>
 
 				<Function>CChinaStock::Calculate10RSStrongStockSet</Function>
 				<Function>CChinaStock::Calculate10RSStrong1StockSet</Function>
 				<Function>CChinaStock::Calculate10RSStrong2StockSet</Function>
-	            <Function>CChinaStock::CalculateWeekLine</Function>
-	            <Function>CChinaStock::ReportGuadan</Function>
+				<Function>CChinaStock::CalculateWeekLine</Function>
+				<Function>CChinaStock::ReportGuadan</Function>
 				<Function>CChinaStock::BuildWeekLine</Function>
 				<Function>CChinaStock::CalculatingWeekLine</Function>
 
 				<Function>CContainerChinaStock::DeleteTempRTData</Function>
 				<Function>CContainerChinaStock::SaveTempRTData</Function>
-	            <Function>CContainerChinaStock::UnloadDayLine</Function>
+				<Function>CContainerChinaStock::UnloadDayLine</Function>
 
 				<Function>CChinaMarket::BuildCurrentWeekWeekLineTable</Function>
 				<Function>CChinaMarket::BuildWeekLineOfCurrentWeek</Function>
 				<Function>CChinaMarket::DeleteWeekLineBasicInfo</Function>
 				<Function>CChinaMarket::DeleteWeekLineExtendInfo</Function>
-	            <Function>CChinaMarket::DeleteWeekLineBasicInfo</Function>
-	            <Function>CChinaMarket::DeleteWeekLineExtendInfo</Function>
-	            <Function>CChinaMarket::DeleteWeekLine</Function>
+				<Function>CChinaMarket::DeleteWeekLineBasicInfo</Function>
+				<Function>CChinaMarket::DeleteWeekLineExtendInfo</Function>
+				<Function>CChinaMarket::DeleteWeekLine</Function>
 				<Function>CChinaMarket::SaveRTData</Function>
 				<Function>CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDate</Function>
 
-	            <Function>CWorldMarket::StartFinnhubWebSocket</Function>
+				<Function>CWorldMarket::StartFinnhubWebSocket</Function>
 				<Function>CWorldMarket::StartTiingoIEXWebSocket</Function>
 				<Function>CWorldMarket::StartTiingoCryptoWebSocket</Function>
 				<Function>CWorldMarket::StartTiingoForexWebSocket</Function>
-								<Function>CWorldMarket::StopFinnhubWebSocketIfTimeOut</Function>
-								<Function>CWorldMarket::StopTiingoIEXWebSocketIfTimeOut</Function>
-								<Function>CWorldMarket::StopTiingoCryptoWebSocketIfTimeOut</Function>
-	              <Function>CWorldMarket::StopTiingoForexWebSocketIfTimeOut</Function>
-								<Function>CWorldMarket::ProcessWebSocketData</Function>
-	              <Function>CWorldMarket::ProcessFinnhubWebSocketData</Function>
-								<Function>CWorldMarket::ProcessTiingoIEXWebSocketData</Function>
-								<Function>CWorldMarket::ProcessTiingoCryptoWebSocketData</Function>
-	              <Function>CWorldMarket::ProcessTiingoForexWebSocketData</Function>
+				<Function>CWorldMarket::StopFinnhubWebSocketIfTimeOut</Function>
+				<Function>CWorldMarket::StopTiingoIEXWebSocketIfTimeOut</Function>
+				<Function>CWorldMarket::StopTiingoCryptoWebSocketIfTimeOut</Function>
+				<Function>CWorldMarket::StopTiingoForexWebSocketIfTimeOut</Function>
+				<Function>CWorldMarket::ProcessWebSocketData</Function>
+				<Function>CWorldMarket::ProcessFinnhubWebSocketData</Function>
+				<Function>CWorldMarket::ProcessTiingoIEXWebSocketData</Function>
+				<Function>CWorldMarket::ProcessTiingoCryptoWebSocketData</Function>
+				<Function>CWorldMarket::ProcessTiingoForexWebSocketData</Function>
 
-								<Function>CContainerChinaStock::BuildDayLine</Function>
-	              <Function>CContainerChinaStock::BuildDayLineRS</Function>
-	              <Function>CContainerChinaStock::BuildWeekLine</Function>
-	              <Function>CContainerChinaStock::BuildWeekLineRS</Function>
-								<Function>CContainerChinaStock::Choice10RSStrong1StockSet</Function>
-								<Function>CContainerChinaStock::Choice10RSStrong2StockSet</Function>
-	              <Function>CContainerChinaStock::Choice10RSStrongStockSet</Function>
-								<Function>CContainerChinaStock::DeleteDayLineBasicInfo</Function>
-								<Function>CContainerChinaStock::DeleteDayLineExtendInfo</Function>
-								<Function>CContainerChinaStock::DeleteTodayTempDB</Function>
-								<Function>CContainerChinaStock::UpdateTodayTempDB</Function>
-								<Function>CContainerChinaStock::TaskSaveDayLineData</Function>
+				<Function>CContainerChinaStock::BuildDayLine</Function>
+				<Function>CContainerChinaStock::BuildDayLineRS</Function>
+				<Function>CContainerChinaStock::BuildWeekLine</Function>
+				<Function>CContainerChinaStock::BuildWeekLineRS</Function>
+				<Function>CContainerChinaStock::Choice10RSStrong1StockSet</Function>
+				<Function>CContainerChinaStock::Choice10RSStrong2StockSet</Function>
+				<Function>CContainerChinaStock::Choice10RSStrongStockSet</Function>
+				<Function>CContainerChinaStock::DeleteDayLineBasicInfo</Function>
+				<Function>CContainerChinaStock::DeleteDayLineExtendInfo</Function>
+				<Function>CContainerChinaStock::DeleteTodayTempDB</Function>
+				<Function>CContainerChinaStock::UpdateTodayTempDB</Function>
+				<Function>CContainerChinaStock::TaskSaveDayLineData</Function>
 
 
-								<Function>CMainFrame::ResetMarket</Function>
-	              <Function>CMainFrame::OnCreate</Function>
-								<Function>CMainFrame::InitializeDataSourceAndWebInquiry</Function>
-	              <Function>CMainFrame::LoadFrame</Function>
-	              <Function>CMainFrame::OnToolbarCreateNew</Function>
-								<Function>CMainFrame::GetThisMessageMap</Function>
-	              <Function>CMainFrame::CreateDockingWindows</Function>
-	              <Function>CMainFrame::SetDockingWindowIcons</Function>
-	              <Function>CMainFrame::PreCreateWindow</Function>
-	              <Function>CMainFrame::OnWindowManager</Function>
-								<Function>CMainFrame::OnViewCustomize</Function>
-	              <Function>CMainFrame::OnSize</Function>
-	              <Function>CMainFrame::OnSettingChange</Function>
-								<Function>CMainFrame::OnUpdateWorldStockDayLineStartEnd</Function>
-								<Function>CMainFrame::OnRecordTiingoCryptoWebSocket</Function>
-								<Function>CMainFrame::OnRecordTiingoForexWebSocket</Function>
-								<Function>CMainFrame::OnRecordTiingoIEXWebSocket</Function>
-	              <Function>CMainFrame::OnRecordFinnhubWebSocket</Function>
-								<Function>CMainFrame::OnCalculate10dayRS1</Function>
-								<Function>CMainFrame::OnCalculate10dayRS2</Function>
-								<Function>CMainFrame::OnCalculate10dayRS</Function>
-								<Function>CMainFrame::OnUpdateStockSection</Function>
-								<Function>CMainFrame::ProcessChinaMarketStock</Function>
-								<Function>CMainFrame::~CMainFrame</Function>
-								<Function>CMainFrame::OnRebuildDayLineRS</Function>
-								<Function>CMainFrame::OnRebuildWeekLineRS</Function>
-								<Function>CMainFrame::OnBuildCurrentWeekLine</Function>
-								<Function>CMainFrame::OnBuildRebuildCurrentWeekLine</Function>
-								<Function>CMainFrame::SchedulingTask</Function>
-								<Function>CMainFrame::CalculateTodayRS</Function>
-								<Function>CMainFrame::OnStopUpdateDayLine</Function>
-								<Function>CMainFrame::OnBuildCreateWeekLine</Function>
-								<Function>CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable</Function>
-								<Function>CMainFrame::OnUpdateStockCode</Function>
-								<Function>CMainFrame::OnRebuildEpsSurprise</Function>
-								<Function>CMainFrame::OnRebuildPeer</Function>
-								<Function>CMainFrame::OnRebuildDayLine</Function>
-								<Function>CMainFrame::OnRebuildBasicFinancial</Function>
-								<Function>CMainFrame::OnMaintainDayLine</Function>
-	              <Function>CMainFrame::SysCallOnTimer</Function>
-	              <Function>CMainFrame::SysCallSetPaneText</Function>
-	              <Function>CMainFrame::SysCallSetInnerSystemPaneText</Function>
-	              <Function>CMainFrame::SysCallOnSysCommand</Function>
-	              <Function>CMainFrame::SysCallCmdUIEnable</Function>
-	              <Function>CMainFrame::SysCallCmdUISetCheck</Function>
-	              <Function>CMainFrame::SysCallSendMessage</Function>
-	              <Function>CMainFrame::SysCallPreTranslateMessage</Function>
-								<Function>CMainFrame::SysCallInvalidate</Function>
-								<Function>CMainFrame::SysCallOnChar</Function>
-								<Function>CMainFrame::SysCallOnKeyUp</Function>
+				<Function>CMainFrame::ResetMarket</Function>
+				<Function>CMainFrame::OnCreate</Function>
+				<Function>CMainFrame::InitializeDataSourceAndWebInquiry</Function>
+				<Function>CMainFrame::LoadFrame</Function>
+				<Function>CMainFrame::OnToolbarCreateNew</Function>
+				<Function>CMainFrame::GetThisMessageMap</Function>
+				<Function>CMainFrame::CreateDockingWindows</Function>
+				<Function>CMainFrame::SetDockingWindowIcons</Function>
+				<Function>CMainFrame::PreCreateWindow</Function>
+				<Function>CMainFrame::OnWindowManager</Function>
+				<Function>CMainFrame::OnViewCustomize</Function>
+				<Function>CMainFrame::OnSize</Function>
+				<Function>CMainFrame::OnSettingChange</Function>
+				<Function>CMainFrame::OnUpdateWorldStockDayLineStartEnd</Function>
+				<Function>CMainFrame::OnRecordTiingoCryptoWebSocket</Function>
+				<Function>CMainFrame::OnRecordTiingoForexWebSocket</Function>
+				<Function>CMainFrame::OnRecordTiingoIEXWebSocket</Function>
+				<Function>CMainFrame::OnRecordFinnhubWebSocket</Function>
+				<Function>CMainFrame::OnCalculate10dayRS1</Function>
+				<Function>CMainFrame::OnCalculate10dayRS2</Function>
+				<Function>CMainFrame::OnCalculate10dayRS</Function>
+				<Function>CMainFrame::OnUpdateStockSection</Function>
+				<Function>CMainFrame::ProcessChinaMarketStock</Function>
+				<Function>CMainFrame::~CMainFrame</Function>
+				<Function>CMainFrame::OnRebuildDayLineRS</Function>
+				<Function>CMainFrame::OnRebuildWeekLineRS</Function>
+				<Function>CMainFrame::OnBuildCurrentWeekLine</Function>
+				<Function>CMainFrame::OnBuildRebuildCurrentWeekLine</Function>
+				<Function>CMainFrame::SchedulingTask</Function>
+				<Function>CMainFrame::CalculateTodayRS</Function>
+				<Function>CMainFrame::OnStopUpdateDayLine</Function>
+				<Function>CMainFrame::OnBuildCreateWeekLine</Function>
+				<Function>CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable</Function>
+				<Function>CMainFrame::OnUpdateStockCode</Function>
+				<Function>CMainFrame::OnRebuildEpsSurprise</Function>
+				<Function>CMainFrame::OnRebuildPeer</Function>
+				<Function>CMainFrame::OnRebuildDayLine</Function>
+				<Function>CMainFrame::OnRebuildBasicFinancial</Function>
+				<Function>CMainFrame::OnMaintainDayLine</Function>
+				<Function>CMainFrame::SysCallOnTimer</Function>
+				<Function>CMainFrame::SysCallSetPaneText</Function>
+				<Function>CMainFrame::SysCallSetInnerSystemPaneText</Function>
+				<Function>CMainFrame::SysCallOnSysCommand</Function>
+				<Function>CMainFrame::SysCallCmdUIEnable</Function>
+				<Function>CMainFrame::SysCallCmdUISetCheck</Function>
+				<Function>CMainFrame::SysCallSendMessage</Function>
+				<Function>CMainFrame::SysCallPreTranslateMessage</Function>
+				<Function>CMainFrame::SysCallInvalidate</Function>
+				<Function>CMainFrame::SysCallOnChar</Function>
+				<Function>CMainFrame::SysCallOnKeyUp</Function>
 
-								<Function>CVirtualMarket::SchedulingTask</Function>
-								<Function>CVirtualMarket::SchedulingTaskPerSecond</Function>
-								<Function>CVirtualMarket::RunDataSource</Function>
-	              <Function>CVirtualMarket::ProcessTask</Function>
-	              <Function>CVirtualMarket::ResetMarket</Function>
+				<Function>CVirtualMarket::SchedulingTask</Function>
+				<Function>CVirtualMarket::SchedulingTaskPerSecond</Function>
+				<Function>CVirtualMarket::RunDataSource</Function>
+				<Function>CVirtualMarket::ProcessTask</Function>
+				<Function>CVirtualMarket::ResetMarket</Function>
 
-								<Function>CVirtualDataHistoryCandleExtend::ShowData</Function>
+				<Function>CVirtualDataHistoryCandleExtend::ShowData</Function>
 
-								<Function>CTodayTempDB::DeleteCurrentContent</Function>
+				<Function>CTodayTempDB::DeleteCurrentContent</Function>
 
-								<Function>CVirtualDataSource::VerifyDataLength</Function>
-								<Function>CVirtualDataSource::QueryDataLength</Function>
-								<Function>CVirtualDataSource::TESTSetBuffer</Function>
-								<Function>CVirtualDataSource::ReadWebFileOneTime</Function>
-	              <Function>CVirtualDataSource::DeleteWebFile</Function>
-								<Function>CVirtualDataSource::GetFileHeaderInformation</Function>
-								<Function>CVirtualDataSource::OpenFile</Function>
-								<Function>CVirtualDataSource::Reset</Function>
-	              <Function>CVirtualDataSource::GetTickCount</Function>
-								<Function>CVirtualDataSource::ConfigureSession</Function>
-								<Function>CVirtualDataSource::UpdateStatus</Function>
+				<Function>CVirtualDataSource::VerifyDataLength</Function>
+				<Function>CVirtualDataSource::QueryDataLength</Function>
+				<Function>CVirtualDataSource::TESTSetBuffer</Function>
+				<Function>CVirtualDataSource::ReadWebFileOneTime</Function>
+				<Function>CVirtualDataSource::DeleteWebFile</Function>
+				<Function>CVirtualDataSource::GetFileHeaderInformation</Function>
+				<Function>CVirtualDataSource::OpenFile</Function>
+				<Function>CVirtualDataSource::Reset</Function>
+				<Function>CVirtualDataSource::GetTickCount</Function>
+				<Function>CVirtualDataSource::ConfigureSession</Function>
+				<Function>CVirtualDataSource::UpdateStatus</Function>
 
-								<Function>CVirtualWebSocket::Connecting</Function>
-								<Function>CVirtualWebSocket::Connect</Function>
-								<Function>CVirtualWebSocket::Send</Function>
-								<Function>CVirtualWebSocket::StartWebSocket</Function>
-								<Function>CVirtualWebSocket::StopWebSocket</Function>
-								<Function>CVirtualWebSocket::SendString</Function>
+				<Function>CVirtualWebSocket::Connecting</Function>
+				<Function>CVirtualWebSocket::Connect</Function>
+				<Function>CVirtualWebSocket::Send</Function>
+				<Function>CVirtualWebSocket::StartWebSocket</Function>
+				<Function>CVirtualWebSocket::StopWebSocket</Function>
+				<Function>CVirtualWebSocket::SendString</Function>
 
-								<Function>CFinnhubWebSocket::Connect</Function>
-								<Function>CFinnhubWebSocket::Send</Function>
+				<Function>CFinnhubWebSocket::Connect</Function>
+				<Function>CFinnhubWebSocket::Send</Function>
 
-								<Function>CTiingoForexWebSocket::Connect</Function>
-								<Function>CTiingoForexWebSocket::Send</Function>
+				<Function>CTiingoForexWebSocket::Connect</Function>
+				<Function>CTiingoForexWebSocket::Send</Function>
 
-								<Function>CTiingoCryptoWebSocket::Connect</Function>
-	              <Function>CTiingoCryptoWebSocket::Send</Function>
+				<Function>CTiingoCryptoWebSocket::Connect</Function>
+				<Function>CTiingoCryptoWebSocket::Send</Function>
 
-								<Function>CTiingoIEXWebSocket::Connect</Function>
-	              <Function>CTiingoIEXWebSocket::Send</Function>
+				<Function>CTiingoIEXWebSocket::Connect</Function>
+				<Function>CTiingoIEXWebSocket::Send</Function>
 
-							</Exclude>
+			  </Exclude>
             </Functions>
 
             <!-- Match attributes on any code element: -->
@@ -220,38 +225,39 @@ Included items must then not match any entries in the exclude list to remain inc
             <!-- Match the path of the source files in which each method is defined: -->
             <Sources>
               <Exclude>
-								<Source>.*\\atlmfc\\.*</Source>
-	              <Source>.*\\vctools\\.*</Source>
-	              <Source>.*\\public\\sdk\\.*</Source>
-	              <Source>.*\\microsoft sdks\\.*</Source>
-	              <Source>C:\\Program Files (x86)\\*.*</Source>
+				<Source>.*\\atlmfc\\.*</Source>
+	            <Source>.*\\vctools\\.*</Source>
+	            <Source>.*\\public\\sdk\\.*</Source>
+	            <Source>.*\\microsoft sdks\\.*</Source>
+	            <Source>C:\\Program Files (x86)\\*.*</Source>
                 <Source>C:\\Program Files\\*.*</Source>
                 <Source>.*\\vc\\include\\.*</Source>
-	              <Source>d:\\cfiles\\projects\\winssl\\*.*</Source>
+				<Source>C:\\dev\\vcpkg\\*.*</Source>
+	            <Source>d:\\cfiles\\projects\\winssl\\*.*</Source>
                 <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\gsl\\*.*</Source>
                 <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\googletest\\*.*</Source>
                 <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\Packages\\*.*</Source>
                 <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\*.*</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\ixwebsocket\\*.*</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\vld\\*.*</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\OPenSSL\\*.*</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\DataBase\\*.*</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\*.*</Source>
-	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\libcurl\\*.*</Source>
-	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\libcurl\\lib\\*.*</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\zlib\\*.*</Source>
-	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\zlib\\lib\\*.*</Source>
-	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\nlohmann json\\*.*</Source>
-	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdDoc.cpp</Source>
-	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdDoc.h</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBird.cpp</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBird.h</Source>
-	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdView.cpp</Source>
-	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdView.h</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\OutputWnd.cpp</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\OutputWnd.h</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertiesWnd.cpp</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertiesWnd.h</Source>
+				<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\ixwebsocket\\*.*</Source>
+				<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\vld\\*.*</Source>
+				<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\OPenSSL\\*.*</Source>
+				<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\DataBase\\*.*</Source>
+				<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\*.*</Source>
+	            <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\libcurl\\*.*</Source>
+	            <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\libcurl\\lib\\*.*</Source>
+				<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\zlib\\*.*</Source>
+	            <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\zlib\\lib\\*.*</Source>
+	            <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\nlohmann json\\*.*</Source>
+	            <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdDoc.cpp</Source>
+	            <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdDoc.h</Source>
+				<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBird.cpp</Source>
+				<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBird.h</Source>
+	            <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdView.cpp</Source>
+	            <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdView.h</Source>
+				<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\OutputWnd.cpp</Source>
+				<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\OutputWnd.h</Source>
+				<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertiesWnd.cpp</Source>
+				<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertiesWnd.h</Source>
               </Exclude>
             </Sources>
 

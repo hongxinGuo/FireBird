@@ -21,7 +21,9 @@ public:
 	// 特性
 
 	// 操作
-	virtual void SchedulingTask();
+	// 重置系统（恢复系统的初始态，准备第二天继续工作）。
+	virtual void ResetMarkets() { ::ResetMarkets(); } // 直接调用全局ResetMarkets函数
+	virtual void SchedulingTask() { ::SchedulingTask(); }
 	void UpdateStatus();
 	void UpdateInnerSystemStatus();
 
@@ -40,9 +42,6 @@ public:
 
 	virtual void CalculateTodayRS();
 	virtual void ProcessChinaMarketStock();
-
-	// 重置系统（恢复系统的初始态，准备第二天继续工作）。
-	virtual void ResetMarkets() { ::ResetMarkets(); } // 直接调用全局ResetMarkets函数
 
 	long GetCurrentPos() const noexcept { return m_lCurrentPos; }
 

@@ -465,9 +465,7 @@ BENCHMARK_F(CTengxunRTData, ParseTengxunRTData)(benchmark::State& state) {
 BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool)(benchmark::State& state) {
 	for (auto _ : state) {
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-#ifdef _DEBUG
 		ParseTengxunRTDataUsingWorkingThread(pWebData);
-#endif
 	}
 }
 
@@ -501,8 +499,6 @@ BENCHMARK_F(CSinaRTData, ParseSinaRTData)(benchmark::State& state) {
 BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool)(benchmark::State& state) {
 	for (auto _ : state) {
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-#ifdef _DEBUG
 		ParseSinaRTDataUsingWorkingThread(pWebData);
-#endif
 	}
 }

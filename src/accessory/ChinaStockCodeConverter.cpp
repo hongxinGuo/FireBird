@@ -18,7 +18,7 @@ string XferSinaToStandard(const CString& strSina) {
 	throw std::exception("XferSinaToStandard bad header");
 }
 
-string XferSinaToStandard(string_view strSina) {
+string XferSinaToStandard(const string_view& strSina) {
 	const string strSymbol(strSina.data() + 2, 6);
 	if (strSina.at(0) == 's') {
 		switch (strSina.at(1)) {
