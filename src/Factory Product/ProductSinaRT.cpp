@@ -33,8 +33,8 @@ CString CProductSinaRT::CreateMessage() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ParseSinaRTData(pWebData);
-	//ParseSinaRTDataUsingWorkingThread(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快40%。
+	//ParseSinaRTData(pWebData);
+	ParseSinaRTDataUsingWorkingThread(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快40%。
 
 	/*
 	CWebRTDataPtr p;

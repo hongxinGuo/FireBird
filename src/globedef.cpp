@@ -31,6 +31,10 @@
 #include"thread.h"
 #include"threadStatus.h"
 
+#undef max
+#include"concurrencpp/concurrencpp.h"
+using namespace concurrencpp;
+
 // 以下变量皆为唯一实例
 CSystemConfiguration gl_systemConfiguration; // 系统配置参数的总汇.此全局变量要位于所有全局变量的最前面，以保证第一个初始化。
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第二位，其他全局变量初始化时用到此变量（当报错时）。
@@ -51,6 +55,7 @@ binary_semaphore gl_ProcessChinaMarketRTData{1}; // 当处理中国市场的实时数据时，
 counting_semaphore<8> gl_BackgroundWorkingThread{8}; // 最多后台工作线程允许数量
 
 CSystemData gl_SystemData;
+concurrencpp::timer gl_timer;
 
 // Data source, 皆为唯一实例
 CSinaRTDataSourcePtr gl_pSinaRTDataSource = nullptr;
@@ -102,4 +107,4 @@ CContainerChosenCrypto gl_dataContainerChosenWorldCrypto;
 CWorldMarketPtr gl_pWorldMarket = nullptr;
 CChinaMarketPtr gl_pChinaMarket = nullptr; //此实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。//
 
-vector<CVirtualMarketPtr> gl_vMarketPtr{}; // 各市场指针的容器，只用于执行各市场的SchedulingTask
+vector<CVirtualMarketPtr> gl_vMarketPtr{}; // 各市场指针的容器，只用于执行各市场的ScheduleTask

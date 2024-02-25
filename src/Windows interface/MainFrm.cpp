@@ -7,9 +7,6 @@
 
 #include "FireBird.h"
 #include "MainFrm.h"
-
-#include <concurrencpp/executors/thread_pool_executor.h>
-
 #include"FireBirdView.h"
 
 #include"ChinaStock.h"
@@ -29,10 +26,15 @@
 #include <ixwebsocket/IXNetSystem.h>
 
 #include "ConvertToString.h"
-#include"GlobeMarketInitialize.h"
 #include"simdjsonGetValue.h"
-#include "Thread.h"
 #include "TimeConvert.h"
+
+#include"ScheduleTask.h"
+
+#undef max
+#include"concurrencpp/concurrencpp.h"
+using namespace concurrencpp;
+using namespace std::chrono_literals;
 
 bool CMainFrame::sm_fGlobeInit = false;
 
@@ -214,7 +216,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 初始化各market dataSource WebSocket
 	::InitializeMarkets();
 	::AssignDataSourceAndWebInquiryToMarket();
-	::ResetMarkets();
+	::ResetMarkets(); // 要预先重置一次
 	gl_systemMessage.PushInformationMessage(_T("重置系统"));
 
 	// 生成系统外观显示部件
@@ -315,7 +317,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 将改进任务栏的可用性，因为显示的文档名带有缩略图。
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
-	// 设置100毫秒每次的软调度，用于接受处理实时网络数据。
+	// 设置100毫秒每次的背景工作线程调度，用于完成系统各项定时任务。
+	gl_timer = gl_runtime.timer_queue()->make_timer(
+		1000ms,
+		100ms,
+		gl_runtime.background_executor(),
+		ScheduleTask);
+
+	// 设置100毫秒每次的软调度，只用于更新状态任务。
 	m_uIdTimer = SetTimer(STOCK_ANALYSIS_TIMER_, 100, nullptr);
 	if (m_uIdTimer == 0) { TRACE(_T("生成100ms时钟时失败\n")); }
 	return 0;
@@ -414,38 +423,12 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 //
-// 大部分系统定时操作的发起者，但具体工作由CVirtualMarket类的SchedulingTask()完成，本函数只完成显示实时信息的工作。
 //
-//
+//CMainFrame timer只执行更新状态任务
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
-	ASSERT(nIDEvent == STOCK_ANALYSIS_TIMER_);
-
-	if (gl_systemConfiguration.IsExitingSystem()) { // 如果准备退出系统，则停止调度系统任务。
-		SysCallOnTimer(nIDEvent);
-		return;
-	}
-
-	try {
-		ResetMarkets(); // 重启系统在此处执行，容易调用各重置函数
-		SchedulingTask();	// 调用主调度函数,由各市场调度函数执行具体任务
-	}
-	catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
-		CString str = _T("SchedulingTask unhandled exception founded : ");
-		str += e->what();
-		gl_systemMessage.PushInformationMessage(str);
-		gl_systemMessage.PushErrorMessage(str);
-		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
-	}
-	catch (CException* e) {
-		const CString str = _T("SchedulingTask unhandled exception founded : ");
-		gl_systemMessage.PushInformationMessage(str);
-		gl_systemMessage.PushErrorMessage(str);
-		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
-	}
-
-	//CMainFrame只执行更新状态任务
+	//CMainFrame timer只执行更新状态任务
 	UpdateStatus();
 	UpdateInnerSystemStatus();
 
@@ -503,9 +486,9 @@ void CMainFrame::UpdateStatus() {
 	SysCallSetPaneText(11, buffer);
 
 	// 更新当前后台工作线程数
-	//sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
+	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
 
-	sprintf_s(buffer, _T("%1.3f"), gl_pChinaMarket->GetCurrentEffectiveRTDataRatio());
+	//sprintf_s(buffer, _T("%1.3f"), gl_pChinaMarket->GetCurrentEffectiveRTDataRatio());
 	SysCallSetPaneText(12, buffer);
 
 	//更新当地时间的显示

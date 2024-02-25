@@ -144,7 +144,7 @@ Included items must then not match any entries in the exclude list to remain inc
 				<Function>CMainFrame::OnRebuildWeekLineRS</Function>
 				<Function>CMainFrame::OnBuildCurrentWeekLine</Function>
 				<Function>CMainFrame::OnBuildRebuildCurrentWeekLine</Function>
-				<Function>CMainFrame::SchedulingTask</Function>
+				<Function>CMainFrame::ScheduleMarketTask</Function>
 				<Function>CMainFrame::CalculateTodayRS</Function>
 				<Function>CMainFrame::OnStopUpdateDayLine</Function>
 				<Function>CMainFrame::OnBuildCreateWeekLine</Function>
@@ -167,8 +167,7 @@ Included items must then not match any entries in the exclude list to remain inc
 				<Function>CMainFrame::SysCallOnChar</Function>
 				<Function>CMainFrame::SysCallOnKeyUp</Function>
 
-				<Function>CVirtualMarket::SchedulingTask</Function>
-				<Function>CVirtualMarket::SchedulingTaskPerSecond</Function>
+				<Function>CVirtualMarket::ScheduleTask</Function>
 				<Function>CVirtualMarket::RunDataSource</Function>
 				<Function>CVirtualMarket::ProcessTask</Function>
 				<Function>CVirtualMarket::ResetMarket</Function>

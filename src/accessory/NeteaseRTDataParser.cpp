@@ -203,7 +203,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 	try {
 		ondemand::parser parser;
-		const simdjson::padded_string jsonPadded(svJsonData);
+		const padded_string jsonPadded(svJsonData);
 		ondemand::document doc = parser.iterate(jsonPadded);
 		for (ondemand::field item_key : doc.get_object()) {
 			auto pWebRTData = make_shared<CWebRTData>();
@@ -267,7 +267,8 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson2(string_view sv
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 	try {
 		ondemand::parser parser;
-		const simdjson::padded_string jsonPadded(svJsonData);
+		const padded_string jsonPadded(svJsonData);
+		//const padded_string_view jsonPadded(svJsonData.data(), svJsonData.length() + SIMDJSON_PADDING + 200); // todo 这种方式速度快，但目前使用不当
 		ondemand::document doc = parser.iterate(jsonPadded);
 		for (ondemand::field item_key : doc.get_object()) {
 			auto pWebRTData = make_shared<CWebRTData>();

@@ -19,9 +19,9 @@ public:
 	virtual ~CVirtualMarket() = default;
 
 public:
-	void SchedulingTask(); // 唯一的调度函数
+	void ScheduleTask(); // 唯一的调度函数
 
-	// 申请并处理Data source的数据，由最终衍生类的SchedulingTask函数来调度。
+	// 申请并处理Data source的数据，由最终衍生类的ScheduleMarketTask函数来调度。
 	// 此函数在VirtualMarket中定义，但由最终衍生类来调用，因为lCurrentTime必须为该衍生类的当前市场时间。
 	void RunDataSource(long lCurrentLocalMarketTime) const;
 
@@ -88,7 +88,8 @@ public:
 	bool IsSystemReady() const noexcept { return m_fSystemReady; }
 	void SetSystemReady(const bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
-	virtual void PreparingExitMarket() {} // 准备退出本市场（完成系统退出前的准备工作）。
+	virtual void PreparingExitMarket() {
+	} // 准备退出本市场（完成系统退出前的准备工作）。
 
 	// 存储数据源
 	void StoreDataSource(const CVirtualDataSourcePtr& pDataSource) { m_vDataSource.push_back(pDataSource); }
@@ -134,4 +135,4 @@ private:
 
 using CVirtualMarketWeakPtr = weak_ptr<CVirtualMarket>;
 using CVirtualMarketPtr = shared_ptr<CVirtualMarket>;
-extern vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的SchedulingTask
+extern vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的ScheduleTask

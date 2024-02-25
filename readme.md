@@ -35,7 +35,7 @@ FireBird从网络股票行情服务器中提取实时行情和历史数据，将处理后的信息存储于数据库
 
 3.ixWebSocket(https://github.com/machinezone/IXWebSocket)。
 
-4.readerwriterqueue(https://github.com/cameron314/readerwriterqueue).
+4.concurrentqueue(https://github.com/cameron314/concurrentqueue).
 
 5.Nlohmann json(https://github.com/nlohmann/json)。
 
@@ -45,9 +45,7 @@ FireBird从网络股票行情服务器中提取实时行情和历史数据，将处理后的信息存储于数据库
 
 8.zlib(https://github.com/madler/zlib)。
 
-9.concurrentqueue(https://github.com/cameron314/concurrentqueue).
-
-10.concurrencpp(https://github.com/David-Haim/concurrencpp)
+9.concurrencpp(https://github.com/David-Haim/concurrencpp)
 
 
 

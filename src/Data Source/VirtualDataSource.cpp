@@ -61,7 +61,7 @@ void CVirtualDataSource::Run(const long lCurrentLocalMarketTime) {
 		GetCurrentProduct();
 		GenerateCurrentInquiryMessage();
 		SetWorkingThreadRunning(true); // 在调用工作线程前即设置该值
-		gl_runtime.background_executor()->post([this] { // 网络数据读取使用后台任务序列。
+		gl_runtime.thread_pool_executor()->post([this] { // 网络数据读取使用后台任务序列。
 				gl_ThreadStatus.IncreaseWebInquiringThread();
 				this->GetShared()->GetWebDataAndProcessIt();
 				gl_ThreadStatus.DecreaseWebInquiringThread();
@@ -163,7 +163,7 @@ void CVirtualDataSource::ReadWebData() {
 		OpenFile(GetInquiringString());
 		GetFileHeaderInformation();
 		if (m_lContentLength > 0) {
-			m_sBuffer.resize(m_lContentLength + 1); // 调整缓存区大小，比实际数据大一个字节（以防止越界访问）。估计是memcpy函数实现机制所致。
+			m_sBuffer.resize(m_lContentLength + 1); // 调整缓存区大小，比实际数据大1字节（以防止越界访问）。估计是memcpy函数实现机制所致。
 		}
 		else {
 			m_sBuffer.resize(1024 * 1024);// 服务器不回报数据长度时，设置初始缓冲区为1M。

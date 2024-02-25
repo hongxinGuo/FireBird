@@ -24,7 +24,7 @@ CVirtualMarket::CVirtualMarket() {
 // 由MainFrame中的定时任务调度，每100毫秒执行一次。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-void CVirtualMarket::SchedulingTask() {
+void CVirtualMarket::ScheduleTask() {
 	CalculateTime();
 
 	const long lCurrentMarketTime = GetMarketTime();
@@ -59,7 +59,7 @@ void CVirtualMarket::RunDataSource(long lCurrentLocalMarketTime) const {
 }
 
 bool CVirtualMarket::ProcessTask(long) {
-	ASSERT(0);// 每日定时任务调度,由SchedulingTaskPerSecond调度，由各市场定义其各自的任务,不允许调用本基类函数
+	ASSERT(0);// 每日定时任务调度,由ScheduleTask调度，由各市场定义其各自的任务,不允许调用本基类函数
 	return true;
 }
 

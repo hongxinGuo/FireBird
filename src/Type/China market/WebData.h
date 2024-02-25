@@ -42,7 +42,7 @@ public:
 	void SetTime(const time_t tTime) noexcept { m_tTime = tTime; }
 	CString GetStockCode() const noexcept { return m_strStockCode; }
 	void SetStockCode(const CString& strStockCode) noexcept { m_strStockCode = strStockCode; }
-	INT64 GetBufferLength() const noexcept { return m_sDataBuffer.size(); }
+	size_t GetBufferLength() const noexcept { return m_sDataBuffer.size(); }
 
 	string GetDataBuffer() noexcept { return m_sDataBuffer; }
 	long GetCurrentPos() const noexcept { return m_lCurrentPos; }

@@ -756,11 +756,11 @@
     <ClInclude Include="..\src\accessory\simdjsonGetValue.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\GlobeMarketInitialize.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\IncludeLib.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\System\ScheduleTask.h">
+      <Filter>头文件\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1265,11 +1265,11 @@
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\GlobeMarketInitialize.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Data Source\TengxunDayLineDataSource.cpp">
       <Filter>源文件\Data Source\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\System\ScheduleTask.cpp">
+      <Filter>源文件\System</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -31,8 +31,7 @@ public:
 	void ResetDataContainer();
 
 	bool IsTimeToResetSystem(long lCurrentTime) final { return (lCurrentTime > 165759) && (lCurrentTime < 170501); }
-
-	bool ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由SchedulingTaskPerSecond调度
+	bool ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由ScheduleTask调度
 
 	void TaskCreateTask(long lCurrentTime);
 	void TaskResetMarket(long lCurrentTime);
@@ -58,7 +57,6 @@ public:
 	static bool UpdateToken();
 
 	// 数据库操作
-
 	virtual bool UpdateCompanyNewsDB();
 	virtual bool UpdateStockDayLineDB();
 	virtual bool UpdateInsiderTransactionDB();

@@ -2,7 +2,6 @@
 //
 #pragma once
 
-#include "GlobeMarketInitialize.h"
 #include"stdafx.h"
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
@@ -21,9 +20,6 @@ public:
 	// 特性
 
 	// 操作
-	// 重置系统（恢复系统的初始态，准备第二天继续工作）。
-	virtual void ResetMarkets() { ::ResetMarkets(); } // 直接调用全局ResetMarkets函数
-	virtual void SchedulingTask() { ::SchedulingTask(); }
 	void UpdateStatus();
 	void UpdateInnerSystemStatus();
 

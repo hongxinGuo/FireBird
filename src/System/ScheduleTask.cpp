@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "GlobeMarketInitialize.h"
+#include "ScheduleTask.h"
 
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"
@@ -99,6 +99,11 @@ void InitializeMarkets() {
 	CreateMarketContainer();	//生成市场容器Vector
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 重置系统（恢复系统的初始态，准备第二天继续工作）。
+//
+////////////////////////////////////////////////////////////////////////////////////////////
 void ResetMarkets() {
 	for (const auto& pMarket : gl_vMarketPtr) {
 		if (pMarket->IsResetMarket()) {
@@ -108,8 +113,29 @@ void ResetMarkets() {
 	}
 }
 
-void SchedulingTask() {
+void ScheduleMarketTask() {
 	for (const auto& pVirtualMarket : gl_vMarketPtr) {
-		if (pVirtualMarket->IsReadyToRun()) pVirtualMarket->SchedulingTask();
+		if (pVirtualMarket->IsReadyToRun()) pVirtualMarket->ScheduleTask();
+	}
+}
+
+void ScheduleTask() {
+	try {
+		ResetMarkets(); // 重启系统在此处执行，容易调用各重置函数
+		ScheduleMarketTask();	// 调用主调度函数,由各市场调度函数执行具体任务
+		// 其他个DataSource的调度，也考虑移至此处。
+	}
+	catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
+		CString str = _T("ScheduleMarketTask unhandled exception founded : ");
+		str += e->what();
+		gl_systemMessage.PushInformationMessage(str);
+		gl_systemMessage.PushErrorMessage(str);
+		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
+	}
+	catch (CException* e) {
+		const CString str = _T("ScheduleMarketTask unhandled exception founded : ");
+		gl_systemMessage.PushInformationMessage(str);
+		gl_systemMessage.PushErrorMessage(str);
+		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 }

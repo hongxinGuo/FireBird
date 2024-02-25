@@ -15,8 +15,13 @@
 #include"RSReference.h"
 #include"ClassDeclaration.h"
 
+#undef max
+#include"concurrencpp/concurrencpp.h"
+using namespace concurrencpp;
+
 #include <concurrencpp/runtime/runtime.h>
 extern concurrencpp::runtime gl_runtime;
+extern concurrencpp::timer gl_timer;
 
 using gsl::not_null;
 

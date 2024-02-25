@@ -738,8 +738,6 @@ namespace FireBirdTest {
 		gl_systemMessage.SetProcessedTiingoCryptoWebSocket(1);
 		gl_systemMessage.SetProcessedTiingoForexWebSocket(1);
 
-		EXPECT_CALL(*gl_pMockMainFrame, ResetMarkets()).Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SchedulingTask()).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallOnTimer(STOCK_ANALYSIS_TIMER_)).Times(1);
 
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(4, _)).Times(1);
@@ -789,8 +787,6 @@ namespace FireBirdTest {
 		gl_systemMessage.SetProcessedTiingoCryptoWebSocket(1);
 		gl_systemMessage.SetProcessedTiingoForexWebSocket(1);
 
-		EXPECT_CALL(*gl_pMockMainFrame, ResetMarkets()).Times(1);
-		EXPECT_CALL(*gl_pMockMainFrame, SchedulingTask()).Times(1).WillOnce(Throw(e)); // 生成异常
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallOnTimer(STOCK_ANALYSIS_TIMER_)).Times(1);
 
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(4, _)).Times(1);
@@ -822,16 +818,10 @@ namespace FireBirdTest {
 
 		gl_pMockMainFrame->OnTimer(STOCK_ANALYSIS_TIMER_);
 
-		EXPECT_THAT(gl_systemMessage.InformationSize(), 1) << "出现异常后报告情况";
-		EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1) << "出现异常后报告情况";
-
 		// 恢复原状
 		gl_systemMessage.SetProcessedFinnhubWebSocket(0);
 		gl_systemMessage.SetProcessedTiingoIEXWebSocket(0);
 		gl_systemMessage.SetProcessedTiingoCryptoWebSocket(0);
 		gl_systemMessage.SetProcessedTiingoForexWebSocket(0);
-
-		gl_systemMessage.PopInformationMessage();
-		gl_systemMessage.PopErrorMessage();
 	}
 }

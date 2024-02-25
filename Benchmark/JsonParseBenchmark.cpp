@@ -435,40 +435,6 @@ BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingSimdjson2)(benchmark::Stat
 	}
 }
 
-class CTengxunRTData : public benchmark::Fixture {
-public:
-	void SetUp(const benchmark::State& state) override {
-		const CString strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("TengxunRTData.dat");
-		LoadFromFile(strFileName, s);
-		CString str = s.c_str();
-		pWebData = make_shared<CWebData>();
-		const long lStringLength = str.GetLength();
-		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		pWebData->Resize(lStringLength);
-		pWebData->SetData(str.GetBuffer(), lStringLength);
-	}
-
-	void TearDown(const benchmark::State& state) override {
-	}
-
-	string s;
-	CWebDataPtr pWebData;
-};
-
-BENCHMARK_F(CTengxunRTData, ParseTengxunRTData)(benchmark::State& state) {
-	for (auto _ : state) {
-		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		ParseTengxunRTData(pWebData);
-	}
-}
-
-BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool)(benchmark::State& state) {
-	for (auto _ : state) {
-		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		ParseTengxunRTDataUsingWorkingThread(pWebData);
-	}
-}
-
 class CSinaRTData : public benchmark::Fixture {
 public:
 	void SetUp(const benchmark::State& state) override {
@@ -499,6 +465,39 @@ BENCHMARK_F(CSinaRTData, ParseSinaRTData)(benchmark::State& state) {
 BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool)(benchmark::State& state) {
 	for (auto _ : state) {
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
-		ParseSinaRTDataUsingWorkingThread(pWebData);
+		//ParseSinaRTDataUsingWorkingThread(pWebData); // todo 测试此并行coroutine时，系统cpu占比高居不下，直至整个测试完成
+	}
+}
+
+class CTengxunRTData : public benchmark::Fixture {
+public:
+	void SetUp(const benchmark::State& state) override {
+		const CString strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("TengxunRTData.dat");
+		LoadFromFile(strFileName, s);
+		CString str = s.c_str();
+		pWebData = make_shared<CWebData>();
+		const long lStringLength = str.GetLength();
+		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
+		pWebData->Resize(lStringLength);
+		pWebData->SetData(str.GetBuffer(), lStringLength);
+	}
+
+	void TearDown(const benchmark::State& state) override {
+	}
+
+	string s;
+	CWebDataPtr pWebData;
+};
+
+BENCHMARK_F(CTengxunRTData, ParseTengxunRTData)(benchmark::State& state) {
+	for (auto _ : state) {
+		ParseTengxunRTData(pWebData);
+	}
+}
+
+BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool)(benchmark::State& state) {
+	for (auto _ : state) {
+		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
+		//ParseTengxunRTDataUsingWorkingThread(pWebData); // todo 测试此并行coroutine时，系统cpu占比高居不下，直至整个测试完成
 	}
 }
