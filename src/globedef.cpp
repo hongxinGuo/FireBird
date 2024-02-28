@@ -104,7 +104,8 @@ CContainerChosenForex gl_dataContainerChosenWorldForex;
 CContainerChosenCrypto gl_dataContainerChosenWorldCrypto;
 
 // 各市场。皆为唯一实例。为最后声明的变量。
-CWorldMarketPtr gl_pWorldMarket = nullptr;
+CWorldMarketPtr gl_pWorldMarket = nullptr; //此实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。//
 CChinaMarketPtr gl_pChinaMarket = nullptr; //此实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。//
 
+vector<CVirtualDataSourcePtr> gl_vDataSource{}; // 各网络数据源容器。用于执行各数据元的数据申请和处理
 vector<CVirtualMarketPtr> gl_vMarketPtr{}; // 各市场指针的容器，只用于执行各市场的ScheduleTask

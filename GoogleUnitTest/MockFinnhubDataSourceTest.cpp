@@ -133,7 +133,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEPSSurprise()).Times(0);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireRTQuote()).Times(0);
 
-		m_pMockFinnhubDataSource->InquireFinnhub(120000);
+		m_pMockFinnhubDataSource->Inquire(120000);
 	}
 
 	TEST_F(CMockFinnhubDataSourceTest, TestInquiryFinnhub3) {
@@ -162,7 +162,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEPSSurprise()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireRTQuote()).Times(0);
 
-		m_pMockFinnhubDataSource->InquireFinnhub(120000);
+		m_pMockFinnhubDataSource->Inquire(120000);
 
 		const CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("finnhub data inquiry finished"));

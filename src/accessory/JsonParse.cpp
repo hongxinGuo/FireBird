@@ -179,32 +179,10 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe,
 	ASSERT(results.size() == concurrency_level); // 此时coroutines都已执行完毕
 	bool succeed = true;
 	for (auto& r : results) {
-		// 使用短路或||，其实没有读取co_wait r,故而能够执行下去。如果使用逻辑与|，则一样出现系统崩溃。可见这里就没有同步。
+		//使用短路或||，其实没有读取co_wait r,故而能够执行下去。如果使用逻辑与|，则一样出现系统崩溃。可见这里就没有同步。
 		succeed = succeed || co_await r; // todo 这里还是有问题。将或操作||改为与操作&&(或者逻辑或|）去读取r的内容，系统崩溃了。不知为何。
 	}
 	co_return succeed; // todo 加了 co_await后，就执行不到此步了。
-}
-
-result<int> ParseSinaRTDataUsingCoroutine2(shared_ptr<thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvsv, CWebDataPtr pData) {
-	const auto concurrency_level = tpe->max_concurrency_level();
-	vector<result<int>> results;
-	int total = 0;
-	const auto chunk_size = 1 + pvsv->size() / concurrency_level;
-	for (auto i = 0; i < concurrency_level; i++) { // 使用当前CPU的所有核心
-		auto result = tpe->submit([] {
-			return 1;
-		});
-		gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-		results.emplace_back(std::move(result));
-	}
-	ASSERT(results.size() == concurrency_level); // 此时coroutines都已执行完毕
-	bool succeed = true;
-	for (auto& r : results) {
-		total += co_await r; // todo 这里还是有问题。
-		gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-	}
-	int i = total + 1;
-	co_return total; // todo 加了 co_await后，就执行不到此步了。
 }
 
 void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
@@ -215,8 +193,7 @@ void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
 		pvsv->emplace_back(sv);
 	}
 	auto result = ParseSinaRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvsv, pWebData); // 需要将pWebData传进去，以保持数据有效性
-	auto i = result.get(); // 等待线程执行完后方继续。
-	bool f = i;
+	result.get();
 }
 
 std::vector<int> make_random_vector() {

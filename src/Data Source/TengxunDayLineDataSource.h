@@ -19,7 +19,7 @@ public:
 	void GenerateCurrentInquiryMessage() override;
 	void UpdateStatus(CWebDataPtr pData) override; // 成功接收后更新系统状态, 此处更新其股票代码
 
-	virtual bool InquireDayLine();
+	virtual bool Inquire();
 	vector<CVirtualWebProductPtr> CreateProduct(const CChinaStockPtr& pStock) const;
 
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }

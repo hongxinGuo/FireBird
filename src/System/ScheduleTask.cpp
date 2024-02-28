@@ -14,6 +14,8 @@
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
 
+#include "simdjsonGetValue.h"
+
 void CreateMarketContainer() {
 	gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
 	gl_vMarketPtr.push_back(gl_pChinaMarket); // 中国股票市场
@@ -113,6 +115,12 @@ void ResetMarkets() {
 	}
 }
 
+void ScheduleDataSourceTask(long lCurrentLocalMarketTime) {
+	for (const auto& pDataSource : gl_vDataSource) {
+		if (pDataSource->IsEnable()) pDataSource->Run(lCurrentLocalMarketTime);
+	}
+}
+
 void ScheduleMarketTask() {
 	for (const auto& pVirtualMarket : gl_vMarketPtr) {
 		if (pVirtualMarket->IsReadyToRun()) pVirtualMarket->ScheduleTask();
@@ -133,9 +141,28 @@ void ScheduleTask() {
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 	catch (CException* e) {
-		const CString str = _T("ScheduleMarketTask unhandled exception founded : ");
+		char buffer[1000];
+		CString str = _T("ScheduleMarketTask unhandled CException founded : ");
+		e->GetErrorMessage(buffer, 1);
+		str += buffer;
 		gl_systemMessage.PushInformationMessage(str);
 		gl_systemMessage.PushErrorMessage(str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
+}
+
+void InitializeSystem() {
+	// 系统初始化开始
+	CreateSimdjsonEmptyArray();
+
+	// 更新系统显示高度和宽度
+	gl_systemConfiguration.SetSystemDisplayRect(GetSystemMetrics(SM_CXFULLSCREEN), GetSystemMetrics(SM_CYFULLSCREEN));
+	gl_systemConfiguration.SetCurrentWindowRect(GetSystemMetrics(SM_CXMAXIMIZED), GetSystemMetrics(SM_CYMAXIMIZED));
+
+	gl_systemConfiguration.LoadDB(); // 装入系统参数
+
+	// 初始化各market dataSource WebSocket
+	InitializeMarkets();
+	AssignDataSourceAndWebInquiryToMarket();
+	ResetMarkets(); // 要预先重置一次
 }

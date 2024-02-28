@@ -11,3 +11,4 @@ void ResetMarkets();
 void ScheduleMarketTask();
 
 void ScheduleTask(); // 任务调度函数，由定时timer发起，其他任务借由此生成
+void InitializeSystem();

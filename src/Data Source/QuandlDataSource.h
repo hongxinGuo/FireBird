@@ -16,7 +16,7 @@ public:
 
 	bool GenerateInquiryMessage(long lCurrentTime) override;
 
-	virtual bool InquireQuandl();
+	virtual bool Inquire();
 
 	void ConfigureSession() override;
 

@@ -36,7 +36,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 
 		if (!IsInquiring()) {
 			ASSERT(!HaveInquiry());
-			InquireTiingo();
+			Inquire();
 			if (IsInquiring()) {
 				ASSERT(HaveInquiry());
 				return true;
@@ -46,7 +46,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	return false;
 }
 
-void CTiingoDataSource::InquireTiingo() {
+void CTiingoDataSource::Inquire() {
 	ASSERT(!IsInquiring());
 	if (gl_pWorldMarket->IsSystemReady()) {
 		InquireCompanySymbol();

@@ -202,21 +202,16 @@ CMainFrame::~CMainFrame() {
 	TRACE("exit finally \n");
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 此函数最后时执行系统初始化的各项任务，并设置系统调度任务
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+	// 系统初始化开始
 	gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
-
-	CreateSimdjsonEmptyArray();
-
-	// 更新系统显示高度和宽度
-	gl_systemConfiguration.SetSystemDisplayRect(GetSystemMetrics(SM_CXFULLSCREEN), GetSystemMetrics(SM_CYFULLSCREEN));
-	gl_systemConfiguration.SetCurrentWindowRect(GetSystemMetrics(SM_CXMAXIMIZED), GetSystemMetrics(SM_CYMAXIMIZED));
-
-	gl_systemConfiguration.LoadDB(); // 装入系统参数
-
-	// 初始化各market dataSource WebSocket
-	::InitializeMarkets();
-	::AssignDataSourceAndWebInquiryToMarket();
-	::ResetMarkets(); // 要预先重置一次
+	::InitializeSystem();
 	gl_systemMessage.PushInformationMessage(_T("重置系统"));
 
 	// 生成系统外观显示部件
@@ -317,12 +312,15 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 将改进任务栏的可用性，因为显示的文档名带有缩略图。
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
+	/*
+	// todo 使用这种工作线程调度模式时，目前会出现数据同步问题。
 	// 设置100毫秒每次的背景工作线程调度，用于完成系统各项定时任务。
 	gl_timer = gl_runtime.timer_queue()->make_timer(
 		1000ms,
 		100ms,
-		gl_runtime.background_executor(),
-		ScheduleTask);
+		gl_runtime.thread_executor(), // 调度任务使用后台工作线程
+		::ScheduleTask);
+		*/
 
 	// 设置100毫秒每次的软调度，只用于更新状态任务。
 	m_uIdTimer = SetTimer(STOCK_ANALYSIS_TIMER_, 100, nullptr);
@@ -342,8 +340,7 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 	if (!CFrameWndEx::PreCreateWindow(cs)) return FALSE;
-	// TODO: 在此处通过修改
-	// CREATESTRUCT cs 来修改窗口类或样式
+	// TODO: 在此处通过修改CREATESTRUCT cs 来修改窗口类或样式
 
 	return TRUE;
 }
@@ -424,11 +421,13 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 //
 //
-//CMainFrame timer只执行更新状态任务
+// CMainFrame timer只执行更新状态任务， 其他的定时数据采集处理任务由ScheduleTask()负责执行
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
-	//CMainFrame timer只执行更新状态任务
+	::ScheduleTask(); // 系统更新任务皆位于此函数中
+
+	// 在窗口显示系统状态的更新任务放在这里比较合适。可以减少窗口句柄问题
 	UpdateStatus();
 	UpdateInnerSystemStatus();
 

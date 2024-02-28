@@ -62,7 +62,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockQuandlDataSource, GetTickCount()).Times(2)
 		.WillOnce(Return(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime()))
 		.WillOnce(Return(1 + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime()));
-		EXPECT_CALL(*m_pMockQuandlDataSource, InquireQuandl()).Times(1)
+		EXPECT_CALL(*m_pMockQuandlDataSource, Inquire()).Times(1)
 		.WillRepeatedly(DoAll(Invoke([p]() {
 			m_pMockQuandlDataSource->SetInquiring(true);
 			m_pMockQuandlDataSource->StoreInquiry(p);

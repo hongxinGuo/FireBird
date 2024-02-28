@@ -33,14 +33,14 @@ bool CNeteaseRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 		// ºóÉêÇëÍøÂçÊı¾İ
 		if (!IsInquiring()) {
 			ASSERT(!HaveInquiry());
-			InquireRTData(lCurrentTime);
+			Inquire(lCurrentTime);
 			return true;
 		}
 	}
 	return false;
 }
 
-void CNeteaseRTDataSource::InquireRTData(const long lCurrentTime) {
+void CNeteaseRTDataSource::Inquire(const long lCurrentTime) {
 	if (!IsInquiring()) {
 		ASSERT(!HaveInquiry());
 		const CString strMessage = _T("http://api.money.126.net/data/feed/");

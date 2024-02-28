@@ -134,6 +134,13 @@ void CWorldMarket::PreparingExitMarket() {
 	DisconnectAllWebSocket();
 }
 
+//////////////////////////////////////////////////////////////////////////////////////
+//
+// 各任务调度函数
+//
+// todo 采用concurrencpp::timer后，可以将此函数的各项任务分配为定时器所驱动的工作线程任务。
+//
+//////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::ProcessTask(long lCurrentTime) {
 	if (IsMarketTaskEmpty()) return false;
 	const auto pTask = GetMarketTask();

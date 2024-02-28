@@ -25,7 +25,7 @@ public:
 
 	void ConfigureSession() override; // …Ë÷√m_pSession◊¥Ã¨°£
 
-	void InquireTiingo();
+	void Inquire();
 	virtual bool InquireCompanySymbol();
 	virtual bool InquireCryptoSymbol();
 	virtual bool InquireDayLine();

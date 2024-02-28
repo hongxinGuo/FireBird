@@ -80,7 +80,7 @@ bool CFinnhubDataSource::GenerateInquiryMessage(long lCurrentTime) {
 
 		if (!IsInquiring()) {
 			ASSERT(!HaveInquiry());
-			InquireFinnhub(lCurrentTime);
+			Inquire(lCurrentTime);
 			if (IsInquiring()) {
 				ASSERT(HaveInquiry());
 				return true;
@@ -90,7 +90,7 @@ bool CFinnhubDataSource::GenerateInquiryMessage(long lCurrentTime) {
 	return false;
 }
 
-void CFinnhubDataSource::InquireFinnhub(const long lCurrentTime) {
+void CFinnhubDataSource::Inquire(const long lCurrentTime) {
 	ASSERT(!IsInquiring());
 	if (((lCurrentTime < 165700) || (lCurrentTime > 170500))) {
 		// 下午五时重启系统，故而此时不允许接收网络信息。

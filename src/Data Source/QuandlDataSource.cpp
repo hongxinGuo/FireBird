@@ -26,7 +26,7 @@ bool CQuandlDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 		m_llLastTimeTickCount = llTickCount;
 
 		if (!IsInquiring()) {
-			InquireQuandl();
+			Inquire();
 			if (IsInquiring()) {
 				return true;
 			}
@@ -35,7 +35,7 @@ bool CQuandlDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	return false;
 }
 
-bool CQuandlDataSource::InquireQuandl() {
+bool CQuandlDataSource::Inquire() {
 	// not implemented
 	return true;
 }

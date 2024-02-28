@@ -15,6 +15,7 @@ using std::counting_semaphore;
 using std::list;
 using std::atomic_bool;
 using std::atomic_long;
+using std::atomic_int64_t;
 
 constexpr auto WEB_SOURCE_DATA_BUFFER_SIZE_ = 1024 * 16;
 
@@ -176,7 +177,7 @@ protected:
 	long m_lContentLength; // 预期的网络数据长度（使用QueryInfo(HTTP_QUERY_CONTENT_LENGTH)得到的数据）
 
 	long m_lInquiringNumber; // 每次查询数量
-	time_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）
+	atomic_int64_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）
 
 	static atomic_long sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
 
@@ -191,3 +192,4 @@ private:
 };
 
 using CVirtualDataSourcePtr = shared_ptr<CVirtualDataSource>;
+extern vector<CVirtualDataSourcePtr> gl_vDataSource; // 各网络数据源。

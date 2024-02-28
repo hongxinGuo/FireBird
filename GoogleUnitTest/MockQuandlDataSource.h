@@ -9,7 +9,7 @@ namespace testing {
 		MOCK_METHOD(void, ReadWebData, (), (override));
 		MOCK_METHOD(CWebDataPtr, CreateWebData, (), (override));
 		MOCK_METHOD(ULONGLONG, GetTickCount, (), (override));
-		MOCK_METHOD(bool, InquireQuandl, (), (override));
+		MOCK_METHOD(bool, Inquire, (), (override));
 	};
 
 	using CMockQuandlDataSourcePtr = shared_ptr<CMockQuandlDataSource>;

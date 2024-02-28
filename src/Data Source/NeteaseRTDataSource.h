@@ -19,7 +19,7 @@ public:
 	void ConfigureSession() override; // 在读取网络数据前的准备工作，默认为设置NeteaseRT的m_pSession状态。
 	void GenerateCurrentInquiryMessage() override;
 
-	virtual void InquireRTData(long lCurrentTime);
+	virtual void Inquire(long lCurrentTime);
 };
 
 using CNeteaseRTDataSourcePtr = shared_ptr<CNeteaseRTDataSource>;

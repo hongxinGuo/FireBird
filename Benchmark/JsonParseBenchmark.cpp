@@ -14,7 +14,6 @@
 
 #include"SaveAndLoad.h"
 #include"JsonParse.h"
-#include "ProductTiingoCompanyProfile.h"
 #include "ProductTiingoStockSymbol.h"
 #include"WebData.h"
 
@@ -457,15 +456,14 @@ public:
 
 BENCHMARK_F(CSinaRTData, ParseSinaRTData)(benchmark::State& state) {
 	for (auto _ : state) {
-		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		ParseSinaRTData(pWebData);
 	}
 }
 
 BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool)(benchmark::State& state) {
 	for (auto _ : state) {
-		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		//ParseSinaRTDataUsingWorkingThread(pWebData); // todo 测试此并行coroutine时，系统cpu占比高居不下，直至整个测试完成
+		//由于无法同步result,故而函数没有等待工作线程结束就返回了，导致出现众多的工作线程竞争，使得cpu占比高居100%很长时间。
 	}
 }
 
@@ -497,7 +495,7 @@ BENCHMARK_F(CTengxunRTData, ParseTengxunRTData)(benchmark::State& state) {
 
 BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool)(benchmark::State& state) {
 	for (auto _ : state) {
-		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		//ParseTengxunRTDataUsingWorkingThread(pWebData); // todo 测试此并行coroutine时，系统cpu占比高居不下，直至整个测试完成
+		//由于无法同步result,故而函数没有等待工作线程结束就返回了，导致出现众多的工作线程竞争，使得cpu占比高居100%很长时间。
 	}
 }

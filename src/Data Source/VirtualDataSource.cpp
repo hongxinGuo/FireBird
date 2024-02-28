@@ -43,12 +43,16 @@ CVirtualDataSource::CVirtualDataSource() {
 	m_dwWebErrorCode = 0;
 }
 
+///////////////////////////////////////////////////////////////////////////////////
 /// <summary>
 /// DataSource的顶层函数。
 /// 当申请信息为空时，生成当前查询字符串。
 /// 当存在申请信息且没有正在运行的查询线程时，生成查询线程。
 /// </summary>
+///
 /// lCurrentTime：当前市场时间
+///
+////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::Run(const long lCurrentLocalMarketTime) {
 	if (!IsInquiring()) {
 		ASSERT(!HaveInquiry());
@@ -61,9 +65,11 @@ void CVirtualDataSource::Run(const long lCurrentLocalMarketTime) {
 		GetCurrentProduct();
 		GenerateCurrentInquiryMessage();
 		SetWorkingThreadRunning(true); // 在调用工作线程前即设置该值
-		gl_runtime.thread_pool_executor()->post([this] { // 网络数据读取使用后台任务序列。
+		auto p = this->GetShared();
+		gl_runtime.background_executor()->post([p] { // 网络数据读取使用后台任务序列。
+				auto pReserved = p; // 保存智能指针，防止出现作用域问题（实际上所有的DataSource都是全局变量，不会销毁）
 				gl_ThreadStatus.IncreaseWebInquiringThread();
-				this->GetShared()->GetWebDataAndProcessIt();
+				p->GetWebDataAndProcessIt();
 				gl_ThreadStatus.DecreaseWebInquiringThread();
 			});
 	}

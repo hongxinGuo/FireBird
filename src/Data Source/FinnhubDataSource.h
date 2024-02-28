@@ -29,7 +29,7 @@ public:
 	void ConfigureSession() override;
 	void CheckInaccessible(const CWebDataPtr& pWebData) const override;
 
-	void InquireFinnhub(long lCurrentTime);
+	void Inquire(long lCurrentTime);
 
 	virtual bool InquireCountryList();
 	virtual bool InquireCompanySymbol();

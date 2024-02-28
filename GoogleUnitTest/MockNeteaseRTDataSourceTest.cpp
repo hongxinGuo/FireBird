@@ -72,7 +72,7 @@ namespace FireBirdTest {
 	TEST_F(CMockNeteaseRTDataSourceTest, TestInquireRTData) {
 		m_pMockNeteaseRTDataSource->SetInquiring(false);
 
-		m_pMockNeteaseRTDataSource->InquireRTData(1010);
+		m_pMockNeteaseRTDataSource->Inquire(1010);
 
 		EXPECT_EQ(m_pMockNeteaseRTDataSource->InquiryQueueSize(), 1);
 		const auto pProduct = m_pMockNeteaseRTDataSource->GetCurrentProduct();
