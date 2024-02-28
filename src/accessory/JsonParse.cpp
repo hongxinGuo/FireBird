@@ -145,12 +145,12 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 // 由于数据中不会包含相同股票的实时数据，故而不会出现同时操作同一个股票的问题，所以可以并行解析
 // 只有工作线程都执行完后，本函数方可退出。
 //
-// 使用这种多线程模式与单线程模式相比，速度为10倍。
+// 使用这种多线程模式与单线程模式相比，速度快1倍以上。
 //
-// todo 还有同步问题。待查
+// Note 调用函数不能使用thread_poor_executor或者background_executor，只能使用thread_executor，原因待查。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvsv, CWebDataPtr pData) {
+result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvsv) {
 	const auto concurrency_level = tpe->max_concurrency_level();
 	vector<result<bool>> results;
 	const auto chunk_size = 1 + pvsv->size() / concurrency_level;
@@ -158,9 +158,7 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe,
 		long chunk_begin = i * chunk_size;
 		long chunk_end = chunk_begin + chunk_size;
 		if (chunk_end > pvsv->size()) chunk_end = pvsv->size();
-		auto result = tpe->submit([pvsv, chunk_begin, chunk_end, pData] {
-			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-			CWebDataPtr p = pData; // 保存pWebData,防止string_view过期。
+		auto result = tpe->submit([pvsv, chunk_begin, chunk_end] {
 			try {
 				for (int j = chunk_begin; j < chunk_end; j++) {
 					const auto pRTData = make_shared<CWebRTData>();
@@ -171,18 +169,15 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe,
 			catch (exception& e) {
 				ReportErrorToSystemMessage(_T("ParseSinaData异常 "), e);
 			}
-			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 			return true;
 		});
 		results.emplace_back(std::move(result));
 	}
-	ASSERT(results.size() == concurrency_level); // 此时coroutines都已执行完毕
 	bool succeed = true;
 	for (auto& r : results) {
-		//使用短路或||，其实没有读取co_wait r,故而能够执行下去。如果使用逻辑与|，则一样出现系统崩溃。可见这里就没有同步。
-		succeed = succeed || co_await r; // todo 这里还是有问题。将或操作||改为与操作&&(或者逻辑或|）去读取r的内容，系统崩溃了。不知为何。
+		succeed = succeed & co_await r;
 	}
-	co_return succeed; // todo 加了 co_await后，就执行不到此步了。
+	co_return succeed;
 }
 
 void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
@@ -192,50 +187,8 @@ void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
 		auto sv = pWebData->GetCurrentSinaData();
 		pvsv->emplace_back(sv);
 	}
-	auto result = ParseSinaRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvsv, pWebData); // 需要将pWebData传进去，以保持数据有效性
+	auto result = ParseSinaRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvsv); // 需要将pWebData传进去，以保持数据有效性
 	result.get();
-}
-
-std::vector<int> make_random_vector() {
-	std::vector<int> vec(64 * 1'024);
-
-	std::srand(std::time(nullptr));
-	for (auto& i : vec) {
-		i = ::rand();
-	}
-
-	return vec;
-}
-
-result<size_t> count_even(std::shared_ptr<thread_pool_executor> tpe, const std::vector<int>& vector) {
-	const auto vecor_size = vector.size();
-	const auto concurrency_level = tpe->max_concurrency_level();
-	const auto chunk_size = vecor_size / concurrency_level;
-	std::vector<result<size_t>> chunk_count;
-
-	for (auto i = 0; i < concurrency_level; i++) {
-		const auto chunk_begin = i * chunk_size;
-		const auto chunk_end = chunk_begin + chunk_size;
-		auto result = tpe->submit([&vector, chunk_begin, chunk_end]() -> size_t {
-			return std::count_if(vector.begin() + chunk_begin, vector.begin() + chunk_end, [](auto i) {
-				return i % 2 == 0;
-			});
-		});
-		chunk_count.emplace_back(std::move(result));
-	}
-
-	size_t total_count = 0;
-	for (auto& result : chunk_count) {
-		total_count += co_await result;
-	}
-	co_return total_count;
-}
-
-void ParseSinaRTDataUsingWorkingThread2(const CWebDataPtr& pWebData) {
-	const auto vector = make_random_vector();
-	auto result = count_even(gl_runtime.thread_pool_executor(), vector);
-	const auto total_count = result.get();
-	std::cout << "there are " << total_count << " even numbers in the vector" << std::endl;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -358,10 +311,10 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 // 使用thread pool + coroutine并行解析，每个工作线程解析1/cpu数的数据，将解析后的数据存入缓存队列。
 // 由于数据中不会包含相同股票的实时数据，故而不会出现同时操作同一个股票的问题，所以可以并行解析
 //
-// 使用这种多线程模式与单线程模式相比，速度快10倍。
+// 使用这种多线程模式与单线程模式相比，速度快1倍以上。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurrencpp::thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvsv, CWebDataPtr pData) {
+concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurrencpp::thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvsv) {
 	const auto concurrency_level = tpe->max_concurrency_level();
 	bool succeed = true;
 	vector<concurrencpp::result<bool>> results;
@@ -370,8 +323,7 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 		long chunk_begin = i * chunk_size;
 		long chunk_end = chunk_begin + chunk_size;
 		if (chunk_end > pvsv->size()) chunk_end = pvsv->size();
-		auto result = tpe->submit([pvsv, chunk_begin, chunk_end, pData] {
-			CWebDataPtr p = pData;
+		auto result = tpe->submit([pvsv, chunk_begin, chunk_end] {
 			try {
 				for (int j = chunk_begin; j < chunk_end; j++) {
 					const auto pRTData = make_shared<CWebRTData>();
@@ -387,9 +339,8 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 		});
 		results.emplace_back(std::move(result));
 	}
-	ASSERT(results.size() == concurrency_level); // 此时coroutine已全部执行完毕
 	for (auto& r : results) {
-		succeed = succeed || co_await r;
+		succeed = succeed & co_await r;
 	}
 	co_return succeed;
 }
@@ -401,7 +352,7 @@ void ParseTengxunRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
 		auto sv = pWebData->GetCurrentSinaData();
 		pvsv->emplace_back(sv);
 	}
-	auto result = ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvsv, pWebData);
+	auto result = ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvsv);
 	result.get(); // 等待线程执行完后方继续。
 }
 

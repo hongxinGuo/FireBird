@@ -14,9 +14,3 @@ public:
 	void TearDown(const ::benchmark::State& state) override {
 	}
 };
-
-BENCHMARK_F(CTimeConvertBenchmark, GetNextSecond)(benchmark::State& state) {
-	for (auto _ : state) {
-		long lTime = GetNextSecond(125959);
-	}
-}

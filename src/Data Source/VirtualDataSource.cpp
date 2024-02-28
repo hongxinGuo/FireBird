@@ -43,12 +43,23 @@ CVirtualDataSource::CVirtualDataSource() {
 	m_dwWebErrorCode = 0;
 }
 
+UINT ThreadGetWebDataAndProcessIt(CVirtualDataSource* p) {
+	p->GetWebDataAndProcessIt();
+	return 0;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////
 /// <summary>
 /// DataSource的顶层函数。
 /// 当申请信息为空时，生成当前查询字符串。
 /// 当存在申请信息且没有正在运行的查询线程时，生成查询线程。
+///
+/// Note 调用函数不能使用thread_poor_executor或者background_executor，只能使用thread_executor，原因待查。
+///
 /// </summary>
+///
+/// 必须使用独立的thread_executor任务序列，不能使用thread_poor_executor或者background_executor，
+//  否则解析工作使用的thread_poor_executor会与之产生冲突，导致产生同步问题。
 ///
 /// lCurrentTime：当前市场时间
 ///
@@ -65,11 +76,9 @@ void CVirtualDataSource::Run(const long lCurrentLocalMarketTime) {
 		GetCurrentProduct();
 		GenerateCurrentInquiryMessage();
 		SetWorkingThreadRunning(true); // 在调用工作线程前即设置该值
-		auto p = this->GetShared();
-		gl_runtime.background_executor()->post([p] { // 网络数据读取使用后台任务序列。
-				auto pReserved = p; // 保存智能指针，防止出现作用域问题（实际上所有的DataSource都是全局变量，不会销毁）
+		gl_runtime.thread_executor()->post([this] { //Note 必须使用独立的thread_executor任务序列，不能使用thread_poor_executor或者background_executor
 				gl_ThreadStatus.IncreaseWebInquiringThread();
-				p->GetWebDataAndProcessIt();
+				this->GetWebDataAndProcessIt();
 				gl_ThreadStatus.DecreaseWebInquiringThread();
 			});
 	}

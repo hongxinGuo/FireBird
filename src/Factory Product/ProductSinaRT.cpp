@@ -34,7 +34,7 @@ CString CProductSinaRT::CreateMessage() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	//ParseSinaRTData(pWebData);
-	ParseSinaRTDataUsingWorkingThread2(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快40%。
+	ParseSinaRTDataUsingWorkingThread(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
 
 	/*
 	CWebRTDataPtr p;
@@ -46,6 +46,6 @@ void CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ParseSinaRTData(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快40%。
 	int total = 0;
 	while (gl_qChinaMarketRTData.try_dequeue(p)) total++;
-	i = total;
+	ASSERT(total2 == total);
 	*/
 }

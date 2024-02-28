@@ -15,9 +15,3 @@ public:
 	void TearDown(const ::benchmark::State& state) override {
 	}
 };
-
-BENCHMARK_F(CChinaMarketBenchmark, CalculateTime)(benchmark::State& state) {
-	for (auto _ : state) {
-		gl_pChinaMarket->CalculateTime();
-	}
-}

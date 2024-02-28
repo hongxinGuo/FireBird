@@ -16,7 +16,6 @@ void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& str
 
 void ParseSinaRTData(const CWebDataPtr& pWebData);
 void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData);
-void ParseSinaRTDataUsingWorkingThread2(const CWebDataPtr& pWebData);
 void ParseTengxunRTData(const CWebDataPtr& pWebData);
 void ParseTengxunRTDataUsingWorkingThread(const CWebDataPtr& pWebData);
 CDayLineWebDataPtr ParseNeteaseDayLine(const CWebDataPtr& pWebData);
