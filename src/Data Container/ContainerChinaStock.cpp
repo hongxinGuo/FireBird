@@ -9,8 +9,6 @@
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
 
-#include <concurrencpp/executors/thread_pool_executor.h>
-
 #include"RSReference.h"
 #include"Thread.h"
 

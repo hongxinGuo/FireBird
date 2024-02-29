@@ -54,14 +54,14 @@ UINT ThreadGetWebDataAndProcessIt(CVirtualDataSource* p) {
 /// 当申请信息为空时，生成当前查询字符串。
 /// 当存在申请信息且没有正在运行的查询线程时，生成查询线程。
 ///
-/// Note 调用函数不能使用thread_poor_executor或者background_executor，只能使用thread_executor，原因待查。
+/// Note 调用函数不能使用thread_pool_executor或者background_executor，只能使用thread_executor，原因待查。
 ///
 /// </summary>
 ///
-/// 必须使用独立的thread_executor任务序列，不能使用thread_poor_executor或者background_executor，
-//  否则解析工作使用的thread_poor_executor会与之产生冲突，导致产生同步问题。
+/// 必须使用独立的thread_executor任务序列，不能使用thread_pool_executor或者background_executor，
+//  否则解析工作使用的thread_pool_executor会与之产生冲突，导致产生同步问题。
 ///
-/// lCurrentTime：当前市场时间
+/// lCurrentLocalMarketTime：当前市场时间
 ///
 ////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::Run(const long lCurrentLocalMarketTime) {
@@ -76,7 +76,7 @@ void CVirtualDataSource::Run(const long lCurrentLocalMarketTime) {
 		GetCurrentProduct();
 		GenerateCurrentInquiryMessage();
 		SetWorkingThreadRunning(true); // 在调用工作线程前即设置该值
-		gl_runtime.thread_executor()->post([this] { //Note 必须使用独立的thread_executor任务序列，不能使用thread_poor_executor或者background_executor
+		gl_runtime.thread_executor()->post([this] { //Note 必须使用独立的thread_executor任务序列，不能使用thread_pool_executor或者background_executor
 				gl_ThreadStatus.IncreaseWebInquiringThread();
 				this->GetWebDataAndProcessIt();
 				gl_ThreadStatus.DecreaseWebInquiringThread();

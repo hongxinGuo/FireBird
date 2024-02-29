@@ -10,8 +10,6 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
-#include <concurrencpp/executors/thread_pool_executor.h>
-
 #include "HighPerformanceCounter.h"
 #include "InfoReport.h"
 #include"SetDayLineExtendInfo.h"

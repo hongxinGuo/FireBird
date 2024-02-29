@@ -782,9 +782,6 @@
     <ClCompile Include="..\src\accessory\JsonParse.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\accessory\NeteaseRTDataParser.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\accessory\PriorityQueueWebRTData.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
@@ -1014,9 +1011,6 @@
       <Filter>源文件\windows interface</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Windows interface\OutputWnd.cpp">
-      <Filter>源文件\windows interface</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Windows interface\FireBird.cpp">
       <Filter>源文件\windows interface</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildDayLineRS.cpp">
@@ -1270,6 +1264,9 @@
     </ClCompile>
     <ClCompile Include="..\src\System\ScheduleTask.cpp">
       <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\FireBird.cpp">
+      <Filter>源文件\windows interface</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

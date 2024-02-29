@@ -303,7 +303,7 @@ class BenchmarkReporter;
 const char kDefaultMinTimeStr[] = "0.5s";
 
 // Returns the version of the library.
-BENCHMARK_EXPORT std::string GetBenchmarkVersiom();
+BENCHMARK_EXPORT std::string GetBenchmarkVersion();
 
 BENCHMARK_EXPORT void PrintDefaultHelp();
 
@@ -1523,7 +1523,7 @@ class Fixture : public internal::Benchmark {
 // /* Registers a benchmark named "BM_takes_args/int_string_test` */
 // BENCHMARK_CAPTURE(BM_takes_args, int_string_test, 42, std::string("abc"));
 #define BENCHMARK_CAPTURE(func, test_case_name, ...)     \
-  BENCHMARK_PRIVATE_DECLARE(func) =                      \
+  BENCHMARK_PRIVATE_DECLARE(_benchmark_) =               \
       (::benchmark::internal::RegisterBenchmarkInternal( \
           new ::benchmark::internal::FunctionBenchmark(  \
               #func "/" #test_case_name,                 \
@@ -1559,6 +1559,31 @@ class Fixture : public internal::Benchmark {
 #else
 #define BENCHMARK_TEMPLATE(n, a) BENCHMARK_TEMPLATE1(n, a)
 #endif
+
+#ifdef BENCHMARK_HAS_CXX11
+// This will register a benchmark for a templatized function,
+// with the additional arguments specified by `...`.
+//
+// For example:
+//
+// template <typename T, class ...ExtraArgs>`
+// void BM_takes_args(benchmark::State& state, ExtraArgs&&... extra_args) {
+//  [...]
+//}
+// /* Registers a benchmark named "BM_takes_args<void>/int_string_test` */
+// BENCHMARK_TEMPLATE1_CAPTURE(BM_takes_args, void, int_string_test, 42,
+//                             std::string("abc"));
+#define BENCHMARK_TEMPLATE1_CAPTURE(func, a, test_case_name, ...) \
+  BENCHMARK_CAPTURE(func<a>, test_case_name, __VA_ARGS__)
+
+#define BENCHMARK_TEMPLATE2_CAPTURE(func, a, b, test_case_name, ...) \
+  BENCHMARK_PRIVATE_DECLARE(func) =                                  \
+      (::benchmark::internal::RegisterBenchmarkInternal(             \
+          new ::benchmark::internal::FunctionBenchmark(              \
+              #func "<" #a "," #b ">"                                \
+                    "/" #test_case_name,                             \
+              [](::benchmark::State& st) { func<a, b>(st, __VA_ARGS__); })))
+#endif  // BENCHMARK_HAS_CXX11
 
 #define BENCHMARK_PRIVATE_DECLARE_F(BaseClass, Method)          \
   class BaseClass##_##Method##_Benchmark : public BaseClass {   \
@@ -1767,6 +1792,7 @@ class BENCHMARK_EXPORT BenchmarkReporter {
           real_accumulated_time(0),
           cpu_accumulated_time(0),
           max_heapbytes_used(0),
+          use_real_time_for_initial_big_o(false),
           complexity(oNone),
           complexity_lambda(),
           complexity_n(0),
@@ -1808,6 +1834,10 @@ class BENCHMARK_EXPORT BenchmarkReporter {
 
     // This is set to 0.0 if memory tracing is not enabled.
     double max_heapbytes_used;
+
+    // By default Big-O is computed for CPU time, but that is not what you want
+    // to happen when manual time was requested, which is stored as real time.
+    bool use_real_time_for_initial_big_o;
 
     // Keep track of arguments to compute asymptotic complexity
     BigO complexity;

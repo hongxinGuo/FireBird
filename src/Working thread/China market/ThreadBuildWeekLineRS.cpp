@@ -8,8 +8,6 @@
 ///////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include <concurrencpp/executors/thread_pool_executor.h>
-
 #include"Thread.h"
 #include"TimeConvert.h"
 #include"ThreadStatus.h"

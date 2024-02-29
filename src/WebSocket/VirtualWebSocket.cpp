@@ -3,8 +3,6 @@
 #include <ixwebsocket/IXNetSystem.h>
 #include"VirtualWebSocket.h"
 
-#include <concurrencpp/executors/thread_pool_executor.h>
-
 #include "Thread.h"
 
 using std::exception;
@@ -30,7 +28,7 @@ void CVirtualWebSocket::Reset() {
 
 void CVirtualWebSocket::TaskConnectAndSendMessage(vectorString vSymbol) {
 	ASSERT(IsClosed());
-	gl_runtime.background_executor()->post([this, vSymbol] {
+	gl_runtime.thread_executor()->post([this, vSymbol] {
 		this->GetShared()->ConnectAndSendMessage(vSymbol);
 	});
 }
@@ -121,7 +119,7 @@ void CVirtualWebSocket::Disconnect() {
 }
 
 void CVirtualWebSocket::TaskDisconnect() {
-	gl_runtime.background_executor()->post([this] {
+	gl_runtime.thread_executor()->post([this] {
 		this->GetShared()->Disconnect();
 	});
 }

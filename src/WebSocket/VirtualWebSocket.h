@@ -3,8 +3,8 @@
 // 使用https://github.com/machinezone/IXWebSocket。
 // 尝试将ixWebSocket变量封装于此类中。此类负责ixWebSocket的初始化。
 //
-// ix::initNetSystem();// 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次，此操作由MainFrame的构造函数完成
-// ix::uninitNetSystem();// 退出系统时，析构IXWebSocket库，且只能析构一次。此操作由MainFrame的析构函数完成
+// ix::initNetSystem();// Note 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次，此操作由MainFrame的构造函数完成
+// ix::uninitNetSystem();// Note 退出系统时，析构IXWebSocket库，且只能析构一次。此操作由MainFrame的析构函数完成
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
