@@ -72,30 +72,4 @@ namespace FireBirdTest {
 	TEST_F(CMockWorldMarketTest, TestUpdateToken) {
 		s_pMockWorldMarket->UpdateToken();
 	}
-
-	TEST_F(CMockWorldMarketTest, TestTaskStartAllWebSocket) {
-		EXPECT_TRUE(s_pMockWorldMarket->IsSystemReady());
-		EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
-		//gl_pTiingoDataSource->SetErrorCode(10020); // 确保不调用tiingo WebSocket
-		EXPECT_TRUE(gl_pFinnhubWebSocket->IsIdle());
-		EXPECT_TRUE(gl_pTiingoIEXWebSocket->IsIdle());
-		EXPECT_TRUE(gl_pTiingoCryptoWebSocket->IsIdle());
-		EXPECT_TRUE(gl_pTiingoForexWebSocket->IsIdle());
-		EXPECT_CALL(*s_pMockWorldMarket, TaskStartFinnhubWebSocket).Times(1);
-		EXPECT_CALL(*s_pMockWorldMarket, TaskStartTiingoIEXWebSocket).Times(1);
-		EXPECT_CALL(*s_pMockWorldMarket, TaskStartTiingoCryptoWebSocket).Times(1);
-		EXPECT_CALL(*s_pMockWorldMarket, TaskStartTiingoForexWebSocket).Times(1);
-
-		s_pMockWorldMarket->TaskStartAllWebSocket(10000);
-
-		EXPECT_FALSE(s_pMockWorldMarket->IsMarketTaskEmpty());
-		const auto pTask = s_pMockWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_START_ALL_WEB_SOCKET__);
-		EXPECT_EQ(pTask->GetTime(), 10100);
-
-		// 恢复原状
-		s_pMockWorldMarket->DiscardCurrentMarketTask();
-		EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
-		gl_pTiingoDataSource->SetErrorCode(0);
-	}
 }

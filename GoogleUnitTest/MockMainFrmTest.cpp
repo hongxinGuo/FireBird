@@ -1,7 +1,6 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-#include"WorldMarket.h"
 #include"ChinaMarket.h"
 
 #include"MockMainFrm.h"
@@ -112,7 +111,7 @@ namespace FireBirdTest {
 		InSequence seq;
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(1, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(2, _)).Times(1);
-		//EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(3, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(3, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(4, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(5, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetInnerSystemPaneText(6, _)).Times(1);

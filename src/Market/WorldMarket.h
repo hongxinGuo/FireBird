@@ -37,8 +37,11 @@ public:
 	void TaskResetMarket(long lCurrentTime);
 	bool TaskCheckMarketReady(long lCurrentTime);
 	void TaskProcessWebSocketData(long lCurrentTime);
-	void TaskStartAllWebSocket(long lCurrentTime);
-	void TaskStopAllWebSocket(long lCurrentTime);
+	void TaskMonitorWebSocket(long lCurrentTime);
+	void MonitorFinnhubWebSocket();
+	void MonitorTiingoCryptoWebSocket() const;
+	void MonitorTiingoIEXWebSocket() const;
+	void MonitorTiingoForexWebSocket() const;
 	void TaskUpdateWorldMarketDB(long lCurrentTime);
 
 	bool TaskUpdateTiingoIndustry();
@@ -73,17 +76,7 @@ public:
 
 	vectorString GetFinnhubWebSocketSymbolVector();
 
-	void StartAllWebSocket();
-	virtual void TaskStartFinnhubWebSocket();
-	virtual void TaskStartTiingoIEXWebSocket();
-	virtual void TaskStartTiingoCryptoWebSocket();
-	virtual void TaskStartTiingoForexWebSocket();
 	static void DisconnectAllWebSocket(); // 停止WebSocket。此函数等待其停止后方返回。是系统退出前的准备工作。
-	void StopAllWebSocketIfTimeOut() const;
-	static void StopFinnhubWebSocketIfTimeOut();
-	static void StopTiingoIEXWebSocketIfTimeOut();
-	static void StopTiingoCryptoWebSocketIfTimeOut();
-	static void StopTiingoForexWebSocketIfTimeOut();
 
 	static void ProcessWebSocketData();
 	static void ProcessFinnhubWebSocketData();

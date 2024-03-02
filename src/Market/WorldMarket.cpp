@@ -98,7 +98,8 @@ void CWorldMarket::ResetDataContainer() {
 }
 
 void CWorldMarket::ResetMarket() {
-	gl_bWorldMarketResetting = true;
+	m_fResettingMarket = true;
+
 	Reset();
 
 	UpdateToken();
@@ -126,7 +127,7 @@ void CWorldMarket::ResetMarket() {
 	str += GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(str);
 
-	gl_bWorldMarketResetting = false;
+	m_fResettingMarket = false;
 }
 
 void CWorldMarket::PreparingExitMarket() {
@@ -160,17 +161,13 @@ bool CWorldMarket::ProcessTask(long lCurrentTime) {
 			ASSERT(!IsTimeToResetSystem(lCurrentTime));// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
 			TaskUpdateWorldMarketDB(lCurrentTime);
 			break;
-		case WORLD_MARKET_START_ALL_WEB_SOCKET__:
-			TaskStartAllWebSocket(lCurrentTime);
-			break;
-		case WORLD_MARKET_STOP_ALL_WEB_SOCKET__:
-			TaskStopAllWebSocket(lCurrentTime);
+		case WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__:
+			TaskMonitorWebSocket(lCurrentTime);
 			break;
 		case WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__:
 			TaskProcessWebSocketData(lCurrentTime);
 			break;
 		default:
-			ASSERT(0); // 非法任务
 			break;
 		}
 		return true;
@@ -195,8 +192,7 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lCurrentTime);
 
-	AddTask(WORLD_MARKET_STOP_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 30, 0, 1, 0)); // 停止WebSocket任务要先于启动WebSocket任务
-	AddTask(WORLD_MARKET_START_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0));
+	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0));
 
 	AddTask(CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
@@ -212,14 +208,98 @@ void CWorldMarket::TaskProcessWebSocketData(long lCurrentTime) {
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lNextTime);
 }
 
-void CWorldMarket::TaskStartAllWebSocket(long lCurrentTime) {
-	StartAllWebSocket();
-	AddTask(WORLD_MARKET_START_ALL_WEB_SOCKET__, GetNextTime(lCurrentTime, 0, 1, 0));
+void CWorldMarket::TaskMonitorWebSocket(long lCurrentTime) {
+	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lCurrentTime, 0, 1, 0));
+	if (!IsSystemReady()) return;
+
+	MonitorFinnhubWebSocket();
+	MonitorTiingoCryptoWebSocket();
+	MonitorTiingoForexWebSocket();
+	MonitorTiingoIEXWebSocket();
 }
 
-void CWorldMarket::TaskStopAllWebSocket(long lCurrentTime) {
-	StopAllWebSocketIfTimeOut();
-	AddTask(WORLD_MARKET_STOP_ALL_WEB_SOCKET__, GetNextTime(lCurrentTime, 0, 1, 0));
+void CWorldMarket::MonitorFinnhubWebSocket() {
+	ASSERT(IsSystemReady());
+	if (gl_pFinnhubDataSource->IsWebError()) { // finnhubDataSource出问题时，关闭对应的WebSocket
+		if (gl_pFinnhubWebSocket->IsOpen()) gl_pFinnhubWebSocket->TaskDisconnect();
+		return;
+	}
+
+	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) { // 接收Finnhub web socket数据？
+		if (gl_pFinnhubWebSocket->IsError() || gl_pFinnhubWebSocket->IsIdle()) { // 出现问题？
+			if (gl_pFinnhubWebSocket->IsOpen()) gl_pFinnhubWebSocket->TaskDisconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+		}
+		if (gl_pFinnhubWebSocket->IsClosed()) {
+			gl_pFinnhubWebSocket->TaskConnectAndSendMessage(GetFinnhubWebSocketSymbolVector());
+			gl_pFinnhubWebSocket->SetHeartbeatTime(GetUTCTime());
+		}
+	}
+	else { // 关闭finnhubWebSocket?
+		if (gl_pFinnhubWebSocket->IsOpen()) gl_pFinnhubWebSocket->TaskDisconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+	}
+}
+
+void CWorldMarket::MonitorTiingoCryptoWebSocket() const {
+	ASSERT(IsSystemReady());
+	if (gl_pTiingoDataSource->IsWebError()) { // finnhubDataSource出问题时，关闭对应的WebSocket
+		if (gl_pTiingoCryptoWebSocket->IsOpen()) gl_pTiingoCryptoWebSocket->TaskDisconnect();
+		return;
+	}
+
+	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) { // 接收TiingoCrypto web socket数据？
+		if (gl_pTiingoCryptoWebSocket->IsError() || gl_pTiingoCryptoWebSocket->IsIdle()) { // 出现问题？
+			if (gl_pTiingoCryptoWebSocket->IsOpen()) gl_pTiingoCryptoWebSocket->TaskDisconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+		}
+		if (gl_pTiingoCryptoWebSocket->IsClosed()) {
+			gl_pTiingoCryptoWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldCrypto.GetSymbolVector());
+			gl_pTiingoCryptoWebSocket->SetHeartbeatTime(GetUTCTime());
+		}
+	}
+	else { // 关闭finnhubWebSocket?
+		if (gl_pTiingoCryptoWebSocket->IsOpen()) gl_pTiingoCryptoWebSocket->TaskDisconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+	}
+}
+
+void CWorldMarket::MonitorTiingoIEXWebSocket() const {
+	ASSERT(IsSystemReady());
+	if (gl_pTiingoDataSource->IsWebError()) { // finnhubDataSource出问题时，关闭对应的WebSocket
+		if (gl_pTiingoIEXWebSocket->IsOpen()) gl_pTiingoIEXWebSocket->TaskDisconnect();
+		return;
+	}
+
+	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) { // 接收TiingoIEX web socket数据？
+		if (gl_pTiingoIEXWebSocket->IsError() || gl_pTiingoIEXWebSocket->IsIdle()) { // 出现问题？
+			if (gl_pTiingoIEXWebSocket->IsOpen()) gl_pTiingoIEXWebSocket->TaskDisconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+		}
+		if (gl_pTiingoIEXWebSocket->IsClosed()) {
+			gl_pTiingoIEXWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldStock.GetSymbolVector());
+			gl_pTiingoIEXWebSocket->SetHeartbeatTime(GetUTCTime());
+		}
+	}
+	else { // 关闭finnhubWebSocket?
+		if (gl_pTiingoIEXWebSocket->IsOpen()) gl_pTiingoIEXWebSocket->TaskDisconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+	}
+}
+
+void CWorldMarket::MonitorTiingoForexWebSocket() const {
+	ASSERT(IsSystemReady());
+	if (gl_pTiingoDataSource->IsWebError()) { // finnhubDataSource出问题时，关闭对应的WebSocket
+		if (gl_pTiingoForexWebSocket->IsOpen()) gl_pTiingoForexWebSocket->TaskDisconnect();
+		return;
+	}
+
+	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) { // 接收TiingoForex web socket数据？
+		if (gl_pTiingoForexWebSocket->IsError() || gl_pTiingoForexWebSocket->IsIdle()) { // 出现问题？
+			if (gl_pTiingoForexWebSocket->IsOpen()) gl_pTiingoForexWebSocket->TaskDisconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+		}
+		if (gl_pTiingoForexWebSocket->IsClosed()) {
+			gl_pTiingoForexWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldForex.GetSymbolVector());
+			gl_pTiingoForexWebSocket->SetHeartbeatTime(GetUTCTime());
+		}
+	}
+	else { // 关闭finnhubWebSocket?
+		if (gl_pTiingoForexWebSocket->IsOpen()) gl_pTiingoForexWebSocket->TaskDisconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+	}
 }
 
 void CWorldMarket::TaskResetMarket(long lCurrentTime) {
@@ -702,47 +782,6 @@ vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector() {
 	return vSymbol;
 }
 
-void CWorldMarket::StartAllWebSocket() {
-	if (IsSystemReady()) {
-		if (!gl_pFinnhubDataSource->IsWebError()) {
-			if (gl_pFinnhubWebSocket->IsError() || gl_pFinnhubWebSocket->IsIdle()) TaskStartFinnhubWebSocket();
-		}
-		if (!gl_pTiingoDataSource->IsWebError()) {
-			if (gl_pTiingoIEXWebSocket->IsError() || gl_pTiingoIEXWebSocket->IsIdle()) TaskStartTiingoIEXWebSocket();
-			if (gl_pTiingoCryptoWebSocket->IsError() || gl_pTiingoCryptoWebSocket->IsIdle()) TaskStartTiingoCryptoWebSocket();
-			if (gl_pTiingoForexWebSocket->IsError() || gl_pTiingoForexWebSocket->IsIdle()) TaskStartTiingoForexWebSocket();
-		}
-	}
-}
-
-void CWorldMarket::TaskStartFinnhubWebSocket() {
-	if (gl_systemConfiguration.IsUsingFinnhubWebSocket() && !gl_pFinnhubDataSource->IsTimeout()) {
-		gl_pFinnhubWebSocket->TaskConnectAndSendMessage(GetFinnhubWebSocketSymbolVector());
-		gl_pFinnhubWebSocket->SetHeartbeatTime(GetUTCTime());
-	}
-}
-
-void CWorldMarket::TaskStartTiingoIEXWebSocket() {
-	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
-		gl_pTiingoIEXWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldStock.GetSymbolVector());
-		gl_pTiingoIEXWebSocket->SetHeartbeatTime(GetUTCTime());
-	}
-}
-
-void CWorldMarket::TaskStartTiingoCryptoWebSocket() {
-	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
-		gl_pTiingoCryptoWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldCrypto.GetSymbolVector());
-		gl_pTiingoCryptoWebSocket->SetHeartbeatTime(GetUTCTime());
-	}
-}
-
-void CWorldMarket::TaskStartTiingoForexWebSocket() {
-	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket() && !gl_pTiingoDataSource->IsTimeout()) {
-		gl_pTiingoForexWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldForex.GetSymbolVector());
-		gl_pTiingoForexWebSocket->SetHeartbeatTime(GetUTCTime());
-	}
-}
-
 /// <summary>
 /// // 停止WebSocket。此函数等待其停止后方返回。是系统退出前的准备工作。
 /// 这里直接调用Disconnect(),
@@ -754,51 +793,6 @@ void CWorldMarket::DisconnectAllWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) gl_pTiingoIEXWebSocket->Disconnect();
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) gl_pTiingoCryptoWebSocket->Disconnect();
 	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) gl_pTiingoForexWebSocket->Disconnect();
-}
-
-void CWorldMarket::StopAllWebSocketIfTimeOut() const {
-	if (IsSystemReady()) {
-		if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) {
-			StopFinnhubWebSocketIfTimeOut();
-		}
-		if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) {
-			StopTiingoCryptoWebSocketIfTimeOut();
-		}
-		if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) {
-			StopTiingoIEXWebSocketIfTimeOut();
-		}
-		if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) {
-			StopTiingoForexWebSocketIfTimeOut();
-		}
-	}
-}
-
-void CWorldMarket::StopFinnhubWebSocketIfTimeOut() {
-	if (gl_pFinnhubDataSource->IsTimeout() || gl_pFinnhubWebSocket->IsIdle()) {
-		gl_pFinnhubWebSocket->TaskDisconnect();
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub web timeout，关闭Web socket服务"));
-	}
-}
-
-void CWorldMarket::StopTiingoIEXWebSocketIfTimeOut() {
-	if (gl_pTiingoDataSource->IsTimeout() && !gl_pTiingoIEXWebSocket->IsIdle()) {
-		gl_pTiingoIEXWebSocket->TaskDisconnect();
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX web timeout，关闭Web socket服务"));
-	}
-}
-
-void CWorldMarket::StopTiingoCryptoWebSocketIfTimeOut() {
-	if (gl_pTiingoDataSource->IsTimeout() || gl_pTiingoCryptoWebSocket->IsIdle()) {
-		gl_pTiingoCryptoWebSocket->TaskDisconnect();
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Crypto web timeout，关闭Web socket服务"));
-	}
-}
-
-void CWorldMarket::StopTiingoForexWebSocketIfTimeOut() {
-	if (gl_pTiingoDataSource->IsTimeout() && !gl_pTiingoForexWebSocket->IsIdle()) {
-		gl_pTiingoForexWebSocket->TaskDisconnect();
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Forex web timeout，关闭Web socket服务"));
-	}
 }
 
 void CWorldMarket::ProcessWebSocketData() {

@@ -3,11 +3,100 @@
 #include "SystemMessage.h"
 #include"OutputWnd.h"
 
-CSystemDeque::CSystemDeque() {}
+using std::binary_semaphore;
 
-CSystemDeque::~CSystemDeque() {}
+binary_semaphore s_RTDataStockCode{1};
+binary_semaphore s_DayLineDataStockCode{1};
+binary_semaphore s_CurrentFinnhubWebSocketStake{1};
+binary_semaphore s_CurrentTiingoWebSocketIEX{1};
+binary_semaphore s_CurrentTiingoWebSocketCrypto{1};
+binary_semaphore s_CurrentTiingoWebSocketForex{1};
+
+CSystemDeque::CSystemDeque() {
+}
+
+CSystemDeque::~CSystemDeque() {
+}
 
 CSystemMessage::~CSystemMessage() = default;
+
+void CSystemMessage::SetStockCodeForInquiringRTData(const CString& strStockCode) {
+	s_RTDataStockCode.acquire();
+	m_strStockCodeForInquiringRTData = strStockCode;
+	s_RTDataStockCode.release();
+}
+
+CString CSystemMessage::GetStockCodeForInquiringRTData() const {
+	s_RTDataStockCode.acquire();
+	CString s = m_strStockCodeForInquiringRTData;
+	s_RTDataStockCode.release();
+	return s;
+}
+
+void CSystemMessage::SetStockCodeForInquiryDayLine(const CString& strStockCode) {
+	s_DayLineDataStockCode.acquire();
+	m_strStockCodeForInquiryDayLine = strStockCode;
+	s_DayLineDataStockCode.release();
+}
+
+CString CSystemMessage::GetStockCodeForInquiryDayLine() const {
+	s_DayLineDataStockCode.acquire();
+	CString s = m_strStockCodeForInquiryDayLine;
+	s_DayLineDataStockCode.release();
+	return s;
+}
+
+void CSystemMessage::SetCurrentFinnhubWebSocketStake(const CString& s) {
+	s_CurrentFinnhubWebSocketStake.acquire();
+	m_strCurrentFinnhubWebSocketStake = s;
+	s_CurrentFinnhubWebSocketStake.release();
+}
+
+CString CSystemMessage::GetCurrentFinnhubWebSocketStake() const {
+	s_CurrentFinnhubWebSocketStake.acquire();
+	CString s = m_strCurrentFinnhubWebSocketStake;
+	s_CurrentFinnhubWebSocketStake.release();
+	return s;
+}
+
+void CSystemMessage::SetCurrentTiingoWebSocketIEX(const CString& s) {
+	s_CurrentTiingoWebSocketIEX.acquire();
+	m_strCurrentTiingoWebSocketIEX = s;
+	s_CurrentTiingoWebSocketIEX.release();
+}
+
+CString CSystemMessage::GetCurrentTiingoWebSocketIEX() const {
+	s_CurrentTiingoWebSocketIEX.acquire();
+	CString s = m_strCurrentTiingoWebSocketIEX;
+	s_CurrentTiingoWebSocketIEX.release();
+	return s;
+}
+
+void CSystemMessage::SetCurrentTiingoWebSocketForex(const CString& s) {
+	s_CurrentTiingoWebSocketForex.acquire();
+	m_strCurrentTiingoWebSocketForex = s;
+	s_CurrentTiingoWebSocketForex.release();
+}
+
+CString CSystemMessage::GetCurrentTiingoWebSocketForex() const {
+	s_CurrentTiingoWebSocketForex.acquire();
+	CString s = m_strCurrentTiingoWebSocketForex;
+	s_CurrentTiingoWebSocketForex.release();
+	return s;
+}
+
+void CSystemMessage::SetCurrentTiingoWebSocketCrypto(const CString& s) {
+	s_CurrentTiingoWebSocketCrypto.acquire();
+	m_strCurrentTiingoWebSocketCrypto = s;
+	s_CurrentTiingoWebSocketCrypto.release();
+}
+
+CString CSystemMessage::GetCurrentTiingoWebSocketCrypto() const {
+	s_CurrentTiingoWebSocketCrypto.acquire();
+	CString s = m_strCurrentTiingoWebSocketCrypto;
+	s_CurrentTiingoWebSocketCrypto.release();
+	return s;
+}
 
 void CSystemDeque::Display(COutputList* pOutputList, const CString& strTime) {
 	const size_t lTotal = Size();

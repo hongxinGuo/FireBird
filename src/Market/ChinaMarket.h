@@ -60,7 +60,7 @@ public:
 	bool CheckFastReceivingData(long lCurrentTime);
 	bool CheckMarketOpen(long lCurrentTime);
 
-	bool TaskUpdateWorldMarketDB(long lCurrentTime);
+	bool TaskUpdateStockProfileDB(long lCurrentTime);
 	bool TaskUpdateOptionDB(long lCurrentTime);
 	bool TaskUpdateChosenStockDB();
 
@@ -260,7 +260,7 @@ public:
 	void SetDistributeAndCalculateTime(time_t tt) { m_ttDistributeAndCalculateTime = tt; }
 
 public:
-	time_t m_ttDistributeAndCalculateTime; // 实时数据分配及处理时间
+	atomic_int64_t m_ttDistributeAndCalculateTime; // 实时数据分配及处理时间
 
 protected:
 	vector<CChinaStockPtr> m_v10RSStrong1Stock; // 10日强势股票集

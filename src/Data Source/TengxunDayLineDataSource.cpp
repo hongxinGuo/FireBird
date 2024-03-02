@@ -81,7 +81,7 @@ bool CTengxunDayLineDataSource::Inquire() {
 				StoreInquiry(product);
 			}
 			SetDownLoadingStockCode(pStock->GetSymbol());
-			gl_systemMessage.SetStockCodeForInquiringNeteaseDayLine(pStock->GetSymbol());
+			gl_systemMessage.SetStockCodeForInquiryDayLine(pStock->GetSymbol());
 			pStock->SetDayLineNeedUpdate(false);
 			SetInquiring(true);
 			return true;

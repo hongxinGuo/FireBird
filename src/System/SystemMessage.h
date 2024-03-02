@@ -5,6 +5,8 @@ class COutputList;
 #include"concurrentqueue/concurrentqueue.h"
 using namespace moodycamel;
 
+using std::atomic_long;
+
 class CSystemDeque {
 public:
 	CSystemDeque();
@@ -19,7 +21,7 @@ public:
 	virtual void SysCallOutputListAddString(COutputList* pOutputList, const CString& str);
 
 protected:
-	ConcurrentQueue<string> m_queueMessage; // 此处使用multi-producer, multi-consumer lock-free queue
+	ConcurrentQueue<string> m_queueMessage;
 };
 
 class CSystemMessage final {
@@ -94,21 +96,23 @@ public:
 	void SetProcessedTiingoForexWebSocket(const int iValue) noexcept { m_iProcessedTiingoForexWebSocket = iValue; }
 	void ClearProcessedTiingoForexWebSocket() noexcept { m_iProcessedTiingoForexWebSocket = 0; }
 
-	void SetStockCodeForInquiringRTData(const CString& strStockCode) { m_strStockCodeForInquiringRTData = strStockCode; }
-	CString GetStockCodeForInquiringRTData() const { return m_strStockCodeForInquiringRTData; }
+	void SetStockCodeForInquiringRTData(const CString& strStockCode);
+	CString GetStockCodeForInquiringRTData() const;
 
-	void SetStockCodeForInquiringNeteaseDayLine(const CString& strStockCode) { m_strStockCodeForInquiringNeteaseDayLine = strStockCode; }
+	void SetStockCodeForInquiryDayLine(const CString& strStockCode);
+	CString GetStockCodeForInquiryDayLine() const;
 
-	CString GetStockCodeForInquiringNeteaseDayLine() const { return m_strStockCodeForInquiringNeteaseDayLine; }
+	void SetCurrentFinnhubWebSocketStake(const CString& s);
+	CString GetCurrentFinnhubWebSocketStake() const;
+	void SetCurrentTiingoWebSocketIEX(const CString& s);
+	CString GetCurrentTiingoWebSocketIEX() const;
+	void SetCurrentTiingoWebSocketForex(const CString& s);
+	CString GetCurrentTiingoWebSocketForex() const;
+	void SetCurrentTiingoWebSocketCrypto(const CString& s);
+	CString GetCurrentTiingoWebSocketCrypto() const;
 
-	void SetCurrentFinnhubWebSocketStake(const CString& s) { m_strCurrentFinnhubWebSocketStake = s; }
-	CString GetCurrentFinnhubWebSocketStake() { return m_strCurrentFinnhubWebSocketStake; }
-	void SetCurrentTiingoWebSocketIEX(const CString& s) { m_strCurrentTiingoWebSocketIEX = s; }
-	CString GetCurrentTiingoWebSocketIEX() { return m_strCurrentTiingoWebSocketIEX; }
-	void SetCurrentTiingoWebSocketForex(const CString& s) { m_strCurrentTiingoWebSocketForex = s; }
-	CString GetCurrentTiingoWebSocketForex() { return m_strCurrentTiingoWebSocketForex; }
-	void SetCurrentTiingoWebSocketCrypto(const CString& s) { m_strCurrentTiingoWebSocketCrypto = s; }
-	CString GetCurrentTiingoWebSocketCrypto() { return m_strCurrentTiingoWebSocketCrypto; }
+public:
+	atomic_long m_lScheduleTaskTime;
 
 protected:
 	// 信息输出队列群
@@ -128,7 +132,7 @@ protected:
 	int m_iProcessedTiingoIEXWebSocket;
 
 	CString m_strStockCodeForInquiringRTData;
-	CString m_strStockCodeForInquiringNeteaseDayLine;
+	CString m_strStockCodeForInquiryDayLine;
 
 	CString m_strCurrentFinnhubWebSocketStake;
 	CString m_strCurrentTiingoWebSocketIEX;

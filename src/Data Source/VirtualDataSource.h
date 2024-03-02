@@ -192,4 +192,3 @@ private:
 };
 
 using CVirtualDataSourcePtr = shared_ptr<CVirtualDataSource>;
-extern vector<CVirtualDataSourcePtr> gl_vDataSource; // 各网络数据源。

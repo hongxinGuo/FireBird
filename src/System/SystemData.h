@@ -37,10 +37,6 @@ using gsl::not_null;
 
 #include "DayLineWebData.h"
 
-// 系统状态
-extern bool gl_bChinaMarketResetting; // 中国市场重启中
-extern bool gl_bWorldMarketResetting; // 世界市场重启中
-
 // 处理后的各种数据
 extern ConcurrentQueue<CWebRTDataPtr> gl_qChinaMarketRTData; // 中国市场新浪实时数据队列。
 extern ConcurrentQueue<CDayLineWebDataPtr> gl_qDayLine; // 日线数据

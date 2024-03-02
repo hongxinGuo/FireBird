@@ -27,7 +27,6 @@ void CVirtualWebSocket::Reset() {
 }
 
 void CVirtualWebSocket::TaskConnectAndSendMessage(vectorString vSymbol) {
-	ASSERT(IsClosed());
 	gl_runtime.thread_executor()->post([this, vSymbol] {
 		this->GetShared()->ConnectAndSendMessage(vSymbol);
 	});
@@ -107,14 +106,16 @@ void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallbac
 
 	// Now that our callback is setup, we can start our background thread and receive messages
 	StartWebSocket();
-	ASSERT(!IsOpen());
+	ASSERT(!IsOpen()); // start()是异步的
 }
 
+//////////////////////////////////////////////////////////////////////////////
+//
+// Disconnect()是同步的
+//
+/////////////////////////////////////////////////////////////////////////////
 void CVirtualWebSocket::Disconnect() {
-	if (!IsClosed()) {
-		StopWebSocket();
-	}
-	//ASSERT(IsClosed()); // stop()是同步的，执行完后socket已关闭。
+	StopWebSocket();	// stop()是同步的，执行完后socket已关闭。
 	m_iSubscriptionId = 0;
 }
 

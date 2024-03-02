@@ -13,7 +13,8 @@ namespace FireBirdTest {
 	class SystemMessageTest : public ::testing::Test {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
@@ -23,7 +24,8 @@ namespace FireBirdTest {
 			while (gl_systemMessage.DayLineInfoSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -132,9 +134,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.GetStockCodeForInquiringRTData(), _T("601919.SS"));
 	}
 
-	TEST_F(SystemMessageTest, TestGetStockCodeForInquiringNeteaseDayLine) {
-		gl_systemMessage.SetStockCodeForInquiringNeteaseDayLine(_T("600000.SS"));
-		EXPECT_EQ(gl_systemMessage.GetStockCodeForInquiringNeteaseDayLine(), _T("600000.SS"));
+	TEST_F(SystemMessageTest, TestGetStockCodeForInquiryDayLine) {
+		gl_systemMessage.SetStockCodeForInquiryDayLine(_T("600000.SS"));
+		EXPECT_EQ(gl_systemMessage.GetStockCodeForInquiryDayLine(), _T("600000.SS"));
 	}
 
 	TEST_F(SystemMessageTest, TestGetCurrentFinnhubWebSocketStake) {

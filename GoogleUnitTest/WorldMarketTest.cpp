@@ -947,12 +947,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_STOP_ALL_WEB_SOCKET__);
-		EXPECT_EQ(pTask->GetTime(), 10130);
-		gl_pWorldMarket->DiscardCurrentMarketTask();
-
-		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_START_ALL_WEB_SOCKET__);
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__);
 		EXPECT_EQ(pTask->GetTime(), 10200);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
@@ -991,12 +986,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_STOP_ALL_WEB_SOCKET__);
-		EXPECT_EQ(pTask->GetTime(), 180230);
-		gl_pWorldMarket->DiscardCurrentMarketTask();
-
-		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_START_ALL_WEB_SOCKET__);
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__);
 		EXPECT_EQ(pTask->GetTime(), 180300);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 

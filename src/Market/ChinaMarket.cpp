@@ -64,10 +64,10 @@ CChinaMarket::~CChinaMarket() {
 
 void CChinaMarket::ResetMarket() {
 	CString str = _T("重置中国股市于北京标准时间：");
+	m_fResettingMarket = true;
 	str += GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(str);
 	gl_ProcessChinaMarketRTData.acquire();
-	gl_bChinaMarketResetting = true;
 	while (gl_ThreadStatus.IsSavingThreadRunning()) { Sleep(1); }
 
 	Reset();
@@ -80,8 +80,8 @@ void CChinaMarket::ResetMarket() {
 	LoadCalculatingRSOption();
 	Load10DaysRSStrongStockDB();
 
-	gl_bChinaMarketResetting = false;
 	gl_ProcessChinaMarketRTData.release();
+	m_fResettingMarket = false;
 }
 
 void CChinaMarket::Reset() {
@@ -212,7 +212,7 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 			TaskUpdateOptionDB(lCurrentTime);
 			break;
 		case CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__:
-			TaskUpdateWorldMarketDB(lCurrentTime);
+			TaskUpdateStockProfileDB(lCurrentTime);
 			break;
 		case CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__:
 			TaskUpdateChosenStockDB();
@@ -236,7 +236,6 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 			TaskChoiceRSSet(lCurrentTime);
 			break;
 		default:
-			ASSERT(0); // 非法任务或没有实现的任务
 			break;
 		}
 		return true;
@@ -461,9 +460,13 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const CString& str) co
 void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
 	if (m_fCalculateChosen10RS) {
 		if (gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() <= 0 && gl_dataContainerChinaStock.GetDayLineNeedSaveNumber() <= 0) {
-			TaskChoice10RSStrongStockSet(lCurrentTime);
-			TaskChoice10RSStrong1StockSet(lCurrentTime);
-			TaskChoice10RSStrong2StockSet(lCurrentTime);
+			gl_runtime.background_executor()->post([this, lCurrentTime] {
+				gl_ProcessChinaMarketRTData.acquire();
+				this->TaskChoice10RSStrongStockSet(lCurrentTime);
+				this->TaskChoice10RSStrong1StockSet(lCurrentTime);
+				this->TaskChoice10RSStrong2StockSet(lCurrentTime);
+				gl_ProcessChinaMarketRTData.release();
+			});
 		}
 		else {
 			AddTask(CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__, GetNextTime(lCurrentTime, 0, 1, 0));
@@ -664,7 +667,9 @@ void CChinaMarket::TaskAccessoryTask(long lCurrentTime) {
 	ResetEffectiveRTDataRatio(); // 重置有效实时数据比率
 
 	if (gl_systemConfiguration.IsNeedUpdate()) { // 每分钟检查一次系统配置是否需要存储。
-		gl_systemConfiguration.UpdateDB();
+		gl_runtime.background_executor()->post([] {
+			gl_systemConfiguration.UpdateDB();
+		});
 		gl_systemConfiguration.SetUpdate(false);
 	}
 
@@ -847,7 +852,7 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 	return true;
 }
 
-bool CChinaMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
+bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, GetNextTime(lCurrentTime, 0, 5, 0));
 
 	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
@@ -933,14 +938,18 @@ bool CChinaMarket::ChangeDayLineStockCodeTypeToStandard() {
 void CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 	if (gl_systemConfiguration.IsExitingSystem()) return; // 如果退出系统的话则不再处理日线
 
-	if (IsDayLineNeedProcess()) {
-		ProcessDayLine();
-	}
+	gl_runtime.background_executor()->post([this] {
+		gl_UpdateChinaMarketDB.acquire();
+		if (IsDayLineNeedProcess()) {
+			this->ProcessDayLine();
+		}
 
-	// 判断是否存储日线库和股票代码库
-	if (gl_dataContainerChinaStock.IsDayLineNeedSaving()) {
-		gl_dataContainerChinaStock.SaveDayLineData();
-	}
+		// 判断是否存储日线库和股票代码库
+		if (gl_dataContainerChinaStock.IsDayLineNeedSaving()) {
+			gl_dataContainerChinaStock.SaveDayLineData();
+		}
+		gl_UpdateChinaMarketDB.release();
+	});
 
 	if (!IsTaskOfSavingDayLineDBFinished()) {// 当尚未更新完日线历史数据时
 		AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, GetNextTime(lCurrentTime, 0, 0, 10));
@@ -1361,9 +1370,7 @@ bool CChinaMarket::TaskLoadTempRTData(long lTheDate, long lCurrentTime) {
 		});
 		return true;
 	}
-	else {
-		AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, GetNextSecond(lCurrentTime));
-	}
+	AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, GetNextSecond(lCurrentTime));
 	return false;
 }
 

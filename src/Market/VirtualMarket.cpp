@@ -1,5 +1,7 @@
 #include"pch.h"
 
+using namespace std;
+
 #include"TimeConvert.h"
 
 #include "VirtualMarket.h"
@@ -72,6 +74,18 @@ bool CVirtualMarket::UpdateMarketInfo() {
 	return true;
 }
 
+void CVirtualMarket::AddTask(const CMarketTaskPtr& pTask) {
+	m_marketTask.AddTask(pTask);
+	m_qMarketDisplayTask.enqueue(pTask);
+}
+
+void CVirtualMarket::AddTask(const long lTaskType, const long lExecuteTime) {
+	const auto pTask = make_shared<CMarketTask>();
+	pTask->SetType(lTaskType);
+	pTask->SetTime(lExecuteTime);
+	AddTask(pTask);
+}
+
 ///////////////////////////////////////////////////////////////
 //
 // 如果任务队列中的时间皆超过240000，则将所有的时间减去240000.
@@ -89,6 +103,32 @@ void CVirtualMarket::AdjustTaskTime() {
 		pMarketTask->SetTime(pMarketTask->GetTime() - 240000);
 		m_marketTask.AddTask(pMarketTask);
 	}
+}
+
+bool CVirtualMarket::HaveNewTask() const {
+	return m_qMarketDisplayTask.size_approx() > m_lLastQueueLength;
+}
+
+shared_ptr<vector<CMarketTaskPtr>> CVirtualMarket::DiscardOutDatedTask(long m_lCurrentMarketTime) {
+	shared_ptr<vector<CMarketTaskPtr>> pvTask = make_shared<vector<CMarketTaskPtr>>();
+	CMarketTaskPtr pTask = nullptr;
+
+	while (m_qMarketDisplayTask.try_dequeue(pTask)) {
+		if (pTask->GetTime() > m_lCurrentMarketTime) {
+			pvTask->push_back(pTask);
+		}
+	}
+	m_lLastQueueLength = pvTask->size();
+	for (auto pTaskRemained : *pvTask) {
+		m_qMarketDisplayTask.enqueue(pTaskRemained);
+	}
+
+	ranges::sort(*pvTask, [](const CMarketTaskPtr& p1, const CMarketTaskPtr& p2) { return p1->GetTime() < p2->GetTime(); });
+	return pvTask;
+}
+
+vector<CMarketTaskPtr> CVirtualMarket::GetDisplayMarketTask() {
+	return vector<CMarketTaskPtr>();
 }
 
 tm CVirtualMarket::GetMarketTime(time_t tUTC) const {

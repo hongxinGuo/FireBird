@@ -312,15 +312,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 将改进任务栏的可用性，因为显示的文档名带有缩略图。
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
-	/*
 	// todo 使用这种工作线程调度模式时，目前会出现数据同步问题。
 	// 设置100毫秒每次的背景工作线程调度，用于完成系统各项定时任务。
 	gl_timer = gl_runtime.timer_queue()->make_timer(
 		1000ms,
 		100ms,
-		gl_runtime.thread_executor(), // 调度任务使用后台工作线程
+		gl_runtime.thread_executor(), // 使用独立的工作线程来调度任务
 		::ScheduleTask);
-		*/
 
 	// 设置100毫秒每次的软调度，只用于更新状态任务。
 	m_uIdTimer = SetTimer(STOCK_ANALYSIS_TIMER_, 100, nullptr);
@@ -425,9 +423,10 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
-	::ScheduleTask(); // 系统更新任务皆位于此函数中
+	//::ScheduleTask(); // 系统更新任务皆位于此函数中
 
 	// 在窗口显示系统状态的更新任务放在这里比较合适。可以减少窗口句柄问题
+	// todo 修改下面两个函数中使用的全局变量，加上同步
 	UpdateStatus();
 	UpdateInnerSystemStatus();
 
@@ -469,7 +468,7 @@ void CMainFrame::UpdateStatus() {
 	SysCallSetPaneText(7, buffer);
 
 	// 显示当前读取网易日线历史的股票代码
-	SysCallSetPaneText(8, gl_systemMessage.GetStockCodeForInquiringNeteaseDayLine());
+	SysCallSetPaneText(8, gl_systemMessage.GetStockCodeForInquiryDayLine());
 
 	SysCallSetPaneText(9, gl_pWorldMarket->GetCurrentFunction());
 
@@ -514,8 +513,18 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	SysCallSetInnerSystemPaneText(1, buffer);
 
 	// 更新实时数据分配及处理时间
-	sprintf_s(buffer, _T("%5I64d"), gl_pChinaMarket->m_ttDistributeAndCalculateTime);
+	sprintf_s(buffer, _T("%5I64d"), (size_t)gl_pChinaMarket->m_ttDistributeAndCalculateTime);
 	SysCallSetInnerSystemPaneText(2, buffer);
+
+	// 更新ScheduleTask()处理时间
+	if ((GetUTCTime() - m_timeLast2) > 0) {// 每秒更新一次
+		const long time = gl_systemMessage.m_lScheduleTaskTime / 1000;
+		sprintf_s(buffer, _T("%5I32d"), time);
+		SysCallSetInnerSystemPaneText(3, buffer);
+		gl_systemMessage.m_lScheduleTaskTime = 0;
+		m_timeLast2 = GetUTCTime();
+	}
+
 	// 更新日线数据读取时间
 	if (gl_systemConfiguration.IsUsingNeteaseDayLineServer()) { // 网易日线服务器
 		sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseDayLineDataSource->GetCurrentInquiryTime());
@@ -1023,11 +1032,11 @@ void CMainFrame::OnUpdateWorldStockDayLineStartEnd() {
 void CMainFrame::OnRecordFinnhubWebSocket() {
 	if (gl_systemConfiguration.IsUsingFinnhubWebSocket()) {
 		gl_systemConfiguration.SetUsingFinnhubWebSocket(false);
-		gl_pFinnhubWebSocket->TaskDisconnect();
+		if (gl_pWorldMarket->IsSystemReady()) gl_pFinnhubWebSocket->TaskDisconnect();
 	}
 	else {
 		gl_systemConfiguration.SetUsingFinnhubWebSocket(true);
-		gl_pWorldMarket->TaskStartFinnhubWebSocket();
+		if (gl_pWorldMarket->IsSystemReady())gl_pFinnhubWebSocket->TaskConnectAndSendMessage(gl_pWorldMarket->GetFinnhubWebSocketSymbolVector());
 	}
 }
 
@@ -1043,11 +1052,13 @@ void CMainFrame::OnUpdateRecordFinnhubWebSocket(CCmdUI* pCmdUI) {
 void CMainFrame::OnRecordTiingoCryptoWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoCryptoWebSocket()) {
 		gl_systemConfiguration.SetUsingTiingoCryptoWebSocket(false);
-		gl_pTiingoCryptoWebSocket->TaskDisconnect();
+		if (gl_pWorldMarket->IsSystemReady()) gl_pTiingoCryptoWebSocket->TaskDisconnect();
 	}
 	else {
 		gl_systemConfiguration.SetUsingTiingoCryptoWebSocket(true);
-		gl_pWorldMarket->TaskStartTiingoCryptoWebSocket();
+		if (gl_pWorldMarket->IsSystemReady()) {
+			gl_pTiingoCryptoWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldCrypto.GetSymbolVector());
+		}
 	}
 }
 
@@ -1063,11 +1074,13 @@ void CMainFrame::OnUpdateRecordTiingoCryptoWebSocket(CCmdUI* pCmdUI) {
 void CMainFrame::OnRecordTiingoForexWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoForexWebSocket()) {
 		gl_systemConfiguration.SetUsingTiingoForexWebSocket(false);
-		gl_pTiingoForexWebSocket->TaskDisconnect();
+		if (gl_pWorldMarket->IsSystemReady()) gl_pTiingoForexWebSocket->TaskDisconnect();
 	}
 	else {
 		gl_systemConfiguration.SetUsingTiingoForexWebSocket(true);
-		gl_pWorldMarket->TaskStartTiingoForexWebSocket();
+		if (gl_pWorldMarket->IsSystemReady()) {
+			gl_pTiingoForexWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldForex.GetSymbolVector());
+		}
 	}
 }
 
@@ -1083,11 +1096,13 @@ void CMainFrame::OnUpdateRecordTiingoForexWebSocket(CCmdUI* pCmdUI) {
 void CMainFrame::OnRecordTiingoIEXWebSocket() {
 	if (gl_systemConfiguration.IsUsingTiingoIEXWebSocket()) {
 		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(false);
-		gl_pTiingoIEXWebSocket->TaskDisconnect();
+		if (gl_pWorldMarket->IsSystemReady()) gl_pTiingoIEXWebSocket->TaskDisconnect();
 	}
 	else {
 		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(true);
-		gl_pWorldMarket->TaskStartTiingoIEXWebSocket();
+		if (gl_pWorldMarket->IsSystemReady()) {
+			gl_pTiingoIEXWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldStock.GetSymbolVector());
+		}
 	}
 }
 

@@ -1,4 +1,5 @@
 #include "pch.h"
+
 #include "ScheduleTask.h"
 
 #include"SinaRTDataSource.h"
@@ -12,6 +13,7 @@
 #include"QuandlDataSource.h"
 
 #include"ChinaMarket.h"
+#include "HighPerformanceCounter.h"
 #include"WorldMarket.h"
 
 #include "simdjsonGetValue.h"
@@ -115,10 +117,8 @@ void ResetMarkets() {
 	}
 }
 
-void ScheduleDataSourceTask(long lCurrentLocalMarketTime) {
-	for (const auto& pDataSource : gl_vDataSource) {
-		if (pDataSource->IsEnable()) pDataSource->Run(lCurrentLocalMarketTime);
-	}
+bool IsResettingMarket() {
+	return gl_pWorldMarket->IsResettingMarket() || gl_pChinaMarket->IsResettingMarket();
 }
 
 void ScheduleMarketTask() {
@@ -128,6 +128,16 @@ void ScheduleMarketTask() {
 }
 
 void ScheduleTask() {
+	static bool s_Processing = false;
+	CHighPerformanceCounter counter;
+	if (s_Processing) {
+		//if (!IsResettingMarket()) { // 市场重启时无法并行工作，且需要很长时间
+		gl_systemMessage.PushInnerSystemInformationMessage("ScheduleTask()发生重入");
+		//}
+		return;
+	}
+	s_Processing = true;
+	counter.start();
 	try {
 		ResetMarkets(); // 重启系统在此处执行，容易调用各重置函数
 		ScheduleMarketTask();	// 调用主调度函数,由各市场调度函数执行具体任务
@@ -149,6 +159,9 @@ void ScheduleTask() {
 		gl_systemMessage.PushErrorMessage(str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
+	counter.stop();
+	gl_systemMessage.m_lScheduleTaskTime += counter.GetElapsedMicroSecond();
+	s_Processing = false;
 }
 
 void InitializeSystem() {

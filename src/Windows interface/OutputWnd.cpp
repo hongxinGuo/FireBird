@@ -14,7 +14,8 @@ COutputWnd::COutputWnd() {
 	m_uIdTimer = 0;
 }
 
-COutputWnd::~COutputWnd() {}
+COutputWnd::~COutputWnd() {
+}
 
 BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
 	ON_WM_CREATE()
@@ -252,9 +253,9 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	}
 
 	char buffer[50];
-	const vector<CMarketTaskPtr> vChinaTask = gl_pChinaMarket->GetMarketTaskVector();
+	const auto pvChinaTask = gl_pChinaMarket->DiscardOutDatedTask(gl_pChinaMarket->GetMarketTime()); //todo 这里需要同步机制
 	if (m_wndChinaMarketTaskQueue.GetCount() > 0) m_wndChinaMarketTaskQueue.TruncateList(m_wndChinaMarketTaskQueue.GetCount());
-	for (auto& pTask : vChinaTask) {
+	for (const auto& pTask : *pvChinaTask) {
 		CString str = strTime + _T(": ");
 		sprintf_s(buffer, _T("%06d"), pTask->GetTime());
 		str += buffer;
@@ -263,9 +264,9 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		m_wndChinaMarketTaskQueue.AddString(str);
 	}
 
-	const vector<CMarketTaskPtr> vWorldTask = gl_pWorldMarket->GetMarketTaskVector();
+	const auto pvWorldTask = gl_pWorldMarket->DiscardOutDatedTask(gl_pWorldMarket->GetMarketTime()); // todo 这里需要同步机制
 	if (m_wndWorldMarketTaskQueue.GetCount() > 0) m_wndWorldMarketTaskQueue.TruncateList(m_wndWorldMarketTaskQueue.GetCount());
-	for (auto& pTask : vWorldTask) {
+	for (const auto& pTask : *pvWorldTask) {
 		CString str = strTime + _T(": ");
 		sprintf_s(buffer, _T("%06d"), pTask->GetTime());
 		str += buffer;
@@ -281,7 +282,8 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 /////////////////////////////////////////////////////////////////////////////
 // COutputList1
 
-COutputList::COutputList() {}
+COutputList::COutputList() {
+}
 
 void COutputList::TruncateList(long lNumberOfTruncation) {
 	for (int i = 0; i < lNumberOfTruncation; i++) {
@@ -294,7 +296,8 @@ void COutputList::SetCurAtLastLine() {
 	SetTopIndex(GetCount() - 1);
 }
 
-COutputList::~COutputList() {}
+COutputList::~COutputList() {
+}
 
 BEGIN_MESSAGE_MAP(COutputList, CListBox)
 	ON_WM_CONTEXTMENU()

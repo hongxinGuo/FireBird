@@ -32,12 +32,17 @@ public:
 
 	// MarketTask
 	bool IsMarketTaskEmpty() const { return m_marketTask.Empty(); }
-	void AddTask(const CMarketTaskPtr& pTask) { m_marketTask.AddTask(pTask); }
-	void AddTask(const long lTaskType, const long lExecuteTime) { m_marketTask.AddTask(lTaskType, lExecuteTime); }
+	void AddTask(const CMarketTaskPtr& pTask);
+	void AddTask(const long lTaskType, const long lExecuteTime);
 	CMarketTaskPtr GetMarketTask() const { return m_marketTask.GetTask(); }
 	void DiscardCurrentMarketTask() { m_marketTask.DiscardCurrentTask(); }
 	vector<CMarketTaskPtr> GetMarketTaskVector() { return m_marketTask.GetTaskVector(); }
 	void AdjustTaskTime();
+
+	// MarketDisplayTask
+	bool HaveNewTask() const;
+	shared_ptr<vector<CMarketTaskPtr>> DiscardOutDatedTask(long m_lCurrentMarketTime);
+	vector<CMarketTaskPtr> GetDisplayMarketTask();
 
 	// 时间函数
 	tm GetMarketTime(time_t tUTC) const; // 得到本市场的时间（从UTC时间）
@@ -81,8 +86,10 @@ public:
 
 	bool IsReadyToRun() const noexcept { return m_fReadyToRun; }
 	void SetReadyToRun(const bool fFlag) noexcept { m_fReadyToRun = fFlag; }
+
 	bool IsResetMarket() const noexcept { return m_fResetMarket; }
 	void SetResetMarket(const bool fFlag) noexcept { m_fResetMarket = fFlag; }
+	bool IsResettingMarket() const noexcept { return m_fResettingMarket; }
 
 	virtual bool IsTimeToResetSystem(long) { return false; } // 默认永远处于非重启市场状态，继承类需要各自设置之
 	bool IsSystemReady() const noexcept { return m_fSystemReady; }
@@ -105,6 +112,9 @@ protected:
 	CString m_strMarketId{_T("Warning: CVirtualMarket Called.")}; // 该市场标识字符串
 
 	CMarketTaskQueue m_marketTask; // 本市场当前任务队列
+	ConcurrentQueue<CMarketTaskPtr> m_qMarketDisplayTask; // 当前任务显示队列
+	long m_lLastQueueLength{0};
+
 	vector<CVirtualDataSourcePtr> m_vDataSource; // 本市场中的各网络数据源。
 
 	// Finnhub.io提供的信息
@@ -127,6 +137,7 @@ protected:
 
 	//系统状态区
 	bool m_fSystemReady{false}; // 市场初始态已经设置好.默认为假
+	bool m_fResettingMarket{false}; // 市场正在重启标识
 
 private:
 	bool m_fReadyToRun{true}; // 市场准备好运行标识。目前永远为真。
