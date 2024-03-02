@@ -110,10 +110,7 @@ void InitializeMarkets() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 void ResetMarkets() {
 	for (const auto& pMarket : gl_vMarketPtr) {
-		if (pMarket->IsResetMarket()) {
-			pMarket->SetResetMarket(false);
-			pMarket->ResetMarket();
-		}
+		pMarket->ResetMarket();
 	}
 }
 

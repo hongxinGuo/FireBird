@@ -304,7 +304,7 @@ void CWorldMarket::MonitorTiingoForexWebSocket() const {
 
 void CWorldMarket::TaskResetMarket(long lCurrentTime) {
 	// 市场时间十七时重启系统
-	SetResetMarket(true); // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+	ResetMarket();
 	SetSystemReady(false);
 
 	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, lCurrentTime); // 每次重置系统时，必须设置系统状态检查任务

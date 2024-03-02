@@ -59,7 +59,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_CHAR()
 	ON_WM_KEYUP()
 	ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDayLineRS)
-	ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetMarket)
+	//	ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetMarket)
 	ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDayLineRS)
 	ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnAbortBuildingRS)
 	ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuildingRS)
@@ -763,12 +763,6 @@ void CMainFrame::OnRebuildDayLineRS() {
 	gl_runtime.background_executor()->post([] {
 		ThreadBuildDayLineRS(gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
 	});
-}
-
-void CMainFrame::OnBuildResetMarket() {
-	for (const auto& pMarket : gl_vMarketPtr) {
-		pMarket->SetResetMarket(true);
-	}
 }
 
 void CMainFrame::OnUpdateRebuildDayLineRS(CCmdUI* pCmdUI) {

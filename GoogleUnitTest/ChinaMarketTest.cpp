@@ -74,7 +74,6 @@ namespace FireBirdTest {
 			gl_dataContainerChinaStock.SetSinaRTDataInquiringIndex(0);
 			gl_dataContainerChinaStock.SetTengxunRTDataInquiringIndex(0);
 			gl_pChinaMarket->SetSystemReady(true); // 测试市场时，默认系统已经准备好
-			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试数据库中的股票代码总数为5040";
 		}
@@ -84,7 +83,6 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			gl_pChinaMarket->SetRTDataSetCleared(false);
 			gl_pChinaMarket->SetUpdateOptionDB(false);
-			gl_pChinaMarket->SetResetMarket(true);
 			gl_dataContainerChinaStock.SetSinaRTDataInquiringIndex(0);
 			gl_dataContainerChinaStock.SetTengxunRTDataInquiringIndex(0);
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
@@ -158,8 +156,8 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pChinaMarket->ProcessTask(101010)) << "没有任务可执行";
 
-		gl_pChinaMarket->AddTask(CHINA_MARKET_RESET__, 100101);
-		gl_pChinaMarket->AddTask(CHINA_MARKET_RESET__, 110101);
+		gl_pChinaMarket->AddTask(CHINA_MARKET_VALIDATE_TODAY_DATABASE__, 100101); // Note 这个任务尚未实现，可以使用
+		gl_pChinaMarket->AddTask(CHINA_MARKET_VALIDATE_TODAY_DATABASE__, 110101);
 
 		EXPECT_FALSE(gl_pChinaMarket->ProcessTask(100001)) << "有任务需要执行，但时间未到";
 
@@ -1041,28 +1039,6 @@ namespace FireBirdTest {
 		gl_dataContainerChinaStock.GetStock(1)->SetUpdateProfileDB(false);
 	}
 
-	TEST_F(CChinaMarketTest, TestTaskResetMarket) {
-		gl_pChinaMarket->SetResetMarket(false);
-		gl_pChinaMarket->SetSystemReady(true);
-
-		EXPECT_TRUE(gl_pChinaMarket->TaskResetMarket(92500));
-
-		EXPECT_FALSE(gl_pChinaMarket->IsSystemReady());
-		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
-		EXPECT_FALSE(gl_pChinaMarket->IsMarketTaskEmpty());
-		auto pTask = gl_pChinaMarket->GetMarketTask();
-		gl_pChinaMarket->DiscardCurrentMarketTask();
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_CHECK_SYSTEM_READY__); // 重置系统时，也同时生成检查系统初始化完成与否的任务
-		EXPECT_EQ(pTask->GetTime(), 92500);
-		pTask = gl_pChinaMarket->GetMarketTask();
-		gl_pChinaMarket->DiscardCurrentMarketTask();
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_STOCK_SECTION__);
-		EXPECT_EQ(pTask->GetTime(), 93000);
-
-		// 恢复原状
-		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
-	}
-
 	TEST_F(CChinaMarketTest, TestIsCurrentEditStockChanged) {
 		EXPECT_FALSE(gl_pChinaMarket->IsCurrentEditStockChanged());
 		gl_pChinaMarket->SetCurrentEditStockChanged(true);
@@ -1373,7 +1349,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestCheckMarketReady) {
-		gl_pChinaMarket->SetResetMarket(false);
 		gl_pChinaMarket->SetSystemReady(true);
 		gl_pChinaMarket->SetRTDataReceived(0);
 		EXPECT_TRUE(gl_pChinaMarket->TaskCheckMarketReady(0));

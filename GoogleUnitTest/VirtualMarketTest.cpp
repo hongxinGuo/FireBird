@@ -23,7 +23,6 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			virtualMarket.SetReadyToRun(true);
-			virtualMarket.SetResetMarket(true);
 		}
 
 		void TearDown() override {

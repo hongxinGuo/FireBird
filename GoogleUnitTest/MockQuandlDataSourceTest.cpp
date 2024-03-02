@@ -37,7 +37,6 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			m_pMockQuandlDataSource = nullptr;
-			gl_pWorldMarket->SetResetMarket(true);
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}

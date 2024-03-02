@@ -245,7 +245,6 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 
 bool CChinaMarket::TaskCheckMarketReady(long lCurrentTime) {
 	if (!IsSystemReady()) {
-		if (IsResetMarket()) return false;
 		const auto lMax = gl_dataContainerChinaStock.Size() > 12000 ? gl_dataContainerChinaStock.Size() * 2 : 24000;
 		if (m_llRTDataReceived > lMax) {
 			SetSystemReady(true);
@@ -844,10 +843,10 @@ bool CChinaMarket::CheckMarketOpen(long lCurrentTime) {
 
 bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 	// 九点十三分重启系统。 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
-	SetResetMarket(true); // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
 	SetSystemReady(false);
 	AddTask(CHINA_MARKET_CHECK_SYSTEM_READY__, lCurrentTime); // 每次重置系统时，必须进行系统初始化状态检查
 	AddTask(CHINA_MARKET_UPDATE_STOCK_SECTION__, GetNextTime(lCurrentTime, 0, 5, 0)); // 五分钟后再更新此数据库
+	ResetMarket();
 
 	return true;
 }

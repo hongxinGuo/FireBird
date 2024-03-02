@@ -32,7 +32,6 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			gl_pChinaMarket->ResetCurrentStock();
-			gl_pChinaMarket->SetResetMarket(true);
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			gl_pChinaMarket->SetCurrentEditStockChanged(false);
 			gl_pChinaMarket->SetUpdateOptionDB(false); // 这里使用了实际的数据库，故而不允许更新
@@ -489,12 +488,6 @@ namespace FireBirdTest {
 		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
 		gl_pChinaMarket->ClearChoiceStockContainer();
 		gl_pChinaMarket->SetUpdateChosenStockDB(false);
-	}
-
-	TEST_F(CMockMainFrameTest, TestOnBuildResetMarket) {
-		gl_pChinaMarket->SetResetMarket(false);
-		gl_pMockMainFrame->OnBuildResetMarket();
-		EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateRebuildDayLineRS) {

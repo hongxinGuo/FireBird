@@ -90,7 +90,6 @@ namespace FireBirdTest {
 
 			EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
 
-			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			EXPECT_FALSE(gl_pChinaMarket->IsTodayTempRTDataLoaded());
 
 			EXPECT_EQ(gl_dataContainerChinaStock.GetStock(0)->GetDayLineEndDate(), 20210430) << "第一个股票（上海指数）的结束日期为20210430";

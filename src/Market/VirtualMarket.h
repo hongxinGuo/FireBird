@@ -87,8 +87,6 @@ public:
 	bool IsReadyToRun() const noexcept { return m_fReadyToRun; }
 	void SetReadyToRun(const bool fFlag) noexcept { m_fReadyToRun = fFlag; }
 
-	bool IsResetMarket() const noexcept { return m_fResetMarket; }
-	void SetResetMarket(const bool fFlag) noexcept { m_fResetMarket = fFlag; }
 	bool IsResettingMarket() const noexcept { return m_fResettingMarket; }
 
 	virtual bool IsTimeToResetSystem(long) { return false; } // 默认永远处于非重启市场状态，继承类需要各自设置之

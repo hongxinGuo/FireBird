@@ -66,6 +66,8 @@ protected:
 	COutputWnd m_wndOutput;
 	CPropertiesWnd m_wndProperties;
 
+	BOOL CreateDockingWindows();
+	void SetDockingWindowIcons(BOOL bHiColorIcons);
 	// 生成的消息映射函数
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnWindowManager();
@@ -74,21 +76,17 @@ protected:
 	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
 	DECLARE_MESSAGE_MAP()
 
-	BOOL CreateDockingWindows();
-	void SetDockingWindowIcons(BOOL bHiColorIcons);
-
 public:
+	BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnProcessTodayStock();
 	afx_msg void OnUpdateProcessTodayStock(CCmdUI* pCmdUI);
 	afx_msg void OnCalculateTodayRS();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnUpdateCalculateTodayRS(CCmdUI* pCmdUI);
-	BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnRebuildDayLineRS();
-	afx_msg void OnBuildResetMarket();
 	afx_msg void OnUpdateRebuildDayLineRS(CCmdUI* pCmdUI);
 	afx_msg void OnAbortBuildingRS();
 	afx_msg void OnUpdateAbortBuildingRS(CCmdUI* pCmdUI);

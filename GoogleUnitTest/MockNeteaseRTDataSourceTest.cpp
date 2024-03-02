@@ -25,7 +25,6 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			EXPECT_TRUE(gl_pChinaMarket->IsResetMarket());
 			m_pMockNeteaseRTDataSource = make_shared<CMockNeteaseRTDataSource>();
 		}
 
