@@ -77,6 +77,8 @@ public:
 		m_iChinaMarketRTDataInquiryTime = iChinaMarketRTDataInquiryTime;
 	}
 
+	// World market
+	long GetWorldMarketResettingTime() const noexcept { return m_lMarketResettingTime; }
 	[[nodiscard]] CString GetFinnhubToken() noexcept { return m_strFinnhubToken; }
 	[[nodiscard]] CString GetTiingoToken() noexcept { return m_strTiingoToken; }
 	[[nodiscard]] CString GetQuandlToken() noexcept { return m_strQuandlToken; }
@@ -292,6 +294,7 @@ protected:
 	int m_iChinaMarketRTDataInquiryTime; // 中国市场实时数据查询间隔时间
 
 	// World Market
+	long m_lMarketResettingTime;
 	CString m_strFinnhubToken; // 令牌
 	CString m_strTiingoToken; // 令牌
 	CString m_strQuandlToken; // 令牌

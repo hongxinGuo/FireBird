@@ -314,10 +314,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	// todo 使用这种工作线程调度模式时，目前会出现数据同步问题。
 	// 设置100毫秒每次的背景工作线程调度，用于完成系统各项定时任务。
-	gl_timer = gl_runtime.timer_queue()->make_timer(
+	gl_timerMainSchedule = gl_runtime.timer_queue()->make_timer(
 		1000ms,
 		100ms,
-		gl_runtime.thread_executor(), // 使用独立的工作线程来调度任务
+		gl_runtime.thread_executor(), // 此为主调度任务，任务繁杂，故而使用独立的工作线程来调度任务
 		::ScheduleTask);
 
 	// 设置100毫秒每次的软调度，只用于更新状态任务。
@@ -573,15 +573,16 @@ void CMainFrame::UpdateInnerSystemStatus() {
 //
 // 当系统退出时，需要先退出工作线程。
 //
-//
+// 外部发出的关闭窗口命令，也是执行到此处。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	if ((nID & 0Xfff0) == SC_CLOSE) {	// 如果是退出系统
 		gl_systemConfiguration.SetExitingSystem(true); // 提示各工作线程中途退出
 		TRACE("应用户申请，准备退出程序\n");
+		gl_timerMainSchedule.cancel(); // Note 关闭主调度任务
 		for (const auto& pMarket : gl_vMarketPtr) {
-			pMarket->PreparingExitMarket();
+			pMarket->PrepareToCloseMarket();
 		}
 	}
 

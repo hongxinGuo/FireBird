@@ -30,8 +30,8 @@ public:
 	std::shared_ptr<CVirtualWebSocket> GetShared() { return shared_from_this(); }
 	void Reset();
 
-	void TaskConnectAndSendMessage(vectorString vSymbol);
-	void TaskDisconnect();
+	virtual void TaskConnectAndSendMessage(vectorString vSymbol);
+	virtual void TaskDisconnect();
 	bool ConnectAndSendMessage(const vectorString& vSymbol);
 	void Disconnect();
 
@@ -41,6 +41,9 @@ protected:
 	void Connecting(const string& url, const ix::OnMessageCallback& callback, int iPingPeriod = 60, bool fDeflate = true);
 	virtual void StartWebSocket() { m_webSocket.start(); } // start()为异步的。为了测试，将此函数声明为虚函数
 	virtual void StopWebSocket() { m_webSocket.stop(); } // stop()是同步的。为了测试，将此函数声明为虚函数
+
+public:
+	void MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, vectorString vSymbol);
 
 public:
 	bool IsSymbol(const string& sSymbol) const { return m_mapSymbol.contains(sSymbol); }

@@ -28,6 +28,13 @@ public:
 	virtual bool ProcessTask(long);
 
 	virtual void ResetMarket();
+	bool InResetTime(long lCurrentTime);
+	virtual long GetResetTime() {
+		ASSERT(0);
+		return 0;
+	}
+	bool IsResettingMarket() const noexcept { return m_fResettingMarket; }
+
 	virtual bool UpdateMarketInfo(); // 更新本市场信息。
 
 	// MarketTask
@@ -87,13 +94,11 @@ public:
 	bool IsReadyToRun() const noexcept { return m_fReadyToRun; }
 	void SetReadyToRun(const bool fFlag) noexcept { m_fReadyToRun = fFlag; }
 
-	bool IsResettingMarket() const noexcept { return m_fResettingMarket; }
-
 	virtual bool IsTimeToResetSystem(long) { return false; } // 默认永远处于非重启市场状态，继承类需要各自设置之
 	bool IsSystemReady() const noexcept { return m_fSystemReady; }
 	void SetSystemReady(const bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
-	virtual void PreparingExitMarket() {
+	virtual void PrepareToCloseMarket() {
 	} // 准备退出本市场（完成系统退出前的准备工作）。
 
 	// 存储数据源

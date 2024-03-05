@@ -92,39 +92,39 @@ bool CFinnhubDataSource::GenerateInquiryMessage(long lCurrentTime) {
 
 void CFinnhubDataSource::Inquire(const long lCurrentTime) {
 	ASSERT(!IsInquiring());
-	if (((lCurrentTime < 165700) || (lCurrentTime > 170500))) {
-		// 下午五时重启系统，故而此时不允许接收网络信息。
-		InquireEconomicCalendar(); // 第一步申请经济日历。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
-		InquireCountryList();
-		// Finnhub不提供Stock Exchange名单，使用预先提供的股票交易所列表。
-		InquireForexExchange();
-		InquireCryptoExchange();
-		InquireMarketStatus();
-		InquireMarketHoliday();
-		InquireCompanySymbol(); // 第一个动作，首先申请当日证券代码
-		InquireForexSymbol();
-		InquireCryptoSymbol();
+	const long resettingTime = gl_systemConfiguration.GetWorldMarketResettingTime();
+	ASSERT(lCurrentTime <= gl_systemConfiguration.GetWorldMarketResettingTime() - 300
+		|| lCurrentTime >= gl_systemConfiguration.GetWorldMarketResettingTime() + 500); // 重启市场时不允许接收网络信息。
+	InquireEconomicCalendar(); // 第一步申请经济日历。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
+	InquireCountryList();
+	// Finnhub不提供Stock Exchange名单，使用预先提供的股票交易所列表。
+	InquireForexExchange();
+	InquireCryptoExchange();
+	InquireMarketStatus();
+	InquireMarketHoliday();
+	InquireCompanySymbol(); // 第一个动作，首先申请当日证券代码
+	InquireForexSymbol();
+	InquireCryptoSymbol();
 
-		// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
-		if (gl_pWorldMarket->IsSystemReady()) {
-			InquireCompanyProfileConcise();
-			InquireCompanyNews();
-			InquireCompanyBasicFinancial();
-			InquirePeer();
-			InquireInsiderTransaction();
-			InquireInsiderSentiment();
-			InquireCryptoDayLine(); // Crypto dayLine20231127后只限于付费用户使用
-			InquireStockDayLine(); // Stock dayLine20231127后只限于付费用户使用
-			InquireForexDayLine(); // Forex dayLine目前只限于付费用户使用
-			InquireEPSSurprise();
-			if (IsUpdateStockDayLine()) {
-				//InquireRTQuote();
-			}
-			if (!IsInquiring()) {
-				if (!m_fFinnhubDataInquiryFinished) {
-					gl_systemMessage.PushInformationMessage(_T("finnhub data inquiry finished"));
-					m_fFinnhubDataInquiryFinished = true;
-				}
+	// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
+	if (gl_pWorldMarket->IsSystemReady()) {
+		InquireCompanyProfileConcise();
+		InquireCompanyNews();
+		InquireCompanyBasicFinancial();
+		InquirePeer();
+		InquireInsiderTransaction();
+		InquireInsiderSentiment();
+		InquireCryptoDayLine(); // Crypto dayLine20231127后只限于付费用户使用
+		InquireStockDayLine(); // Stock dayLine20231127后只限于付费用户使用
+		InquireForexDayLine(); // Forex dayLine目前只限于付费用户使用
+		InquireEPSSurprise();
+		if (IsUpdateStockDayLine()) {
+			//InquireRTQuote();
+		}
+		if (!IsInquiring()) {
+			if (!m_fFinnhubDataInquiryFinished) {
+				gl_systemMessage.PushInformationMessage(_T("finnhub data inquiry finished"));
+				m_fFinnhubDataInquiryFinished = true;
 			}
 		}
 	}

@@ -99,7 +99,8 @@ CString CSystemMessage::GetCurrentTiingoWebSocketCrypto() const {
 }
 
 void CSystemDeque::Display(COutputList* pOutputList, const CString& strTime) {
-	const size_t lTotal = Size();
+	size_t lTotal = Size();
+	if (lTotal > pOutputList->GetLineNumber()) lTotal = pOutputList->GetLineNumber();
 	for (int i = 0; i < lTotal; i++) {
 		CString str2 = strTime + _T(": ") + PopMessage();
 		SysCallOutputListAddString(pOutputList, str2);

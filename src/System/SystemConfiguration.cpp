@@ -57,6 +57,7 @@ std::string gl_sSystemConfiguration = R"(
 },
 
 "WorldMarket" : {
+	"MarketResetingTime" : 170000,
 	"FinnhubToken" : "bv985d748v6ujthqfke0",
 	"FinnhubAccountFeePaid" : true,
 	"TiingoToken" : "c897a00b7cfc2adffc630d23befd5316a4683156",
@@ -122,6 +123,7 @@ CSystemConfiguration::CSystemConfiguration() {
 	m_iTengxunRTDataInquiryPerTime = 900;
 
 	// World Market
+	m_lMarketResettingTime = 170000; // 默认市场重置时间为170000
 	m_strFinnhubToken = "bv985d748v6ujthqfke0"; // Finnhub token
 	m_strTiingoToken = "c897a00b7cfc2adffc630d23befd5316a4683156"; // Tiingo token
 	m_strQuandlToken = _T(""); // Quandl token
@@ -308,6 +310,12 @@ void CSystemConfiguration::Update(json& jsonData) {
 
 	// WorldMarket
 	try {
+		m_lMarketResettingTime = jsonData.at("WorldMarket").at("MarketResettingTime"); // 市场重置时间
+	}
+	catch (json::out_of_range&) {
+		m_fUpdate = true;
+	}
+	try {
 		sTemp = jsonData.at("WorldMarket").at("FinnhubToken"); // Finnhub token
 		m_strFinnhubToken = sTemp.c_str();
 	}
@@ -483,6 +491,7 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	jsonData["ChinaMarket"]["TengxunRTDataInquiryPerTime"] = m_iTengxunRTDataInquiryPerTime;
 
 	// World market
+	jsonData["WorldMarket"]["MarketResettingTime"] = m_lMarketResettingTime;
 	jsonData["WorldMarket"]["FinnhubToken"] = m_strFinnhubToken;
 	jsonData["WorldMarket"]["FinnhubAccountFeePaid"] = m_bFinnhubAccountFeePaid;
 	jsonData["WorldMarket"]["TiingoToken"] = m_strTiingoToken;

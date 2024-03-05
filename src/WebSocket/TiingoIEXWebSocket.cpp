@@ -66,6 +66,10 @@ void CTiingoIEXWebSocket::Send(const vectorString& vSymbol) {
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
 }
 
+void CTiingoIEXWebSocket::MonitorWebSocket(vectorString vSymbol) {
+	CVirtualWebSocket::MonitorWebSocket(gl_pTiingoDataSource->IsWebError(), gl_systemConfiguration.IsUsingTiingoIEXWebSocket(), vSymbol);
+}
+
 ///////////////////////////////////////////////////////////////////////
 ///
 /// ∏Ò Ω£∫

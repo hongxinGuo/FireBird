@@ -2,8 +2,7 @@
 //
 // ÎªÁË±£Ö¤ÓĞĞòµÄ³õÊ¼»¯£¬ËùÓĞµÄÈ«¾Ö±äÁ¿½ÔÓ¦·ÅÔÚ´ËÎÄ¼şÖĞ¡£
 //
-// Ä¬ÈÏ×´Ì¬ÏÂÈ«¾Ö±äÁ¿ÊÇ×°ÔØ²âÊÔÊı¾İ¿â¡£µ±ÏµÍ³³õÊ¼»¯½áÊøºó£¬ÓÉMainFrameµ÷ÓÃResetMarketº¯Êı£¬ÖØĞÂ×°ÔØ£¬´ËÊ±×°ÔØµÄÊÇ¹¤×÷Êı¾İ¿â¡£
-// todo ½«Ä¬ÈÏ×´Ì¬¸ÄÎªÕı³£¹¤×÷×´Ì¬£¬×°Èë¹¤×÷Êı¾İ¿â£»²âÊÔ×´Ì¬ÓÉ²âÊÔÖ÷º¯ÊıÉè¶¨£¬ÖØĞÂ×°Èë²âÊÔÊı¾İ¿â¡£
+// Ä¬ÈÏ×´Ì¬ÎªÕı³£¹¤×÷×´Ì¬£¬×°Èë¹¤×÷Êı¾İ¿â£»²âÊÔ×´Ì¬ÓÉ²âÊÔÖ÷º¯ÊıÉè¶¨£¬ÖØĞÂ×°Èë²âÊÔÊı¾İ¿â¡£
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
@@ -38,15 +37,13 @@ using namespace concurrencpp;
 // ÒÔÏÂ±äÁ¿½ÔÎªÎ¨Ò»ÊµÀı
 CSystemConfiguration gl_systemConfiguration; // ÏµÍ³ÅäÖÃ²ÎÊıµÄ×Ü»ã.´ËÈ«¾Ö±äÁ¿ÒªÎ»ÓÚËùÓĞÈ«¾Ö±äÁ¿µÄ×îÇ°Ãæ£¬ÒÔ±£Ö¤µÚÒ»¸ö³õÊ¼»¯¡£
 CSystemMessage gl_systemMessage; // ÏµÍ³ÏûÏ¢»ã×ÜÀà¡£´Ë±äÁ¿±ØĞë·ÅÔÚµÚ¶şÎ»£¬ÆäËûÈ«¾Ö±äÁ¿³õÊ¼»¯Ê±ÓÃµ½´Ë±äÁ¿£¨µ±±¨´íÊ±£©¡£
-
 CThreadStatus gl_ThreadStatus; // ÏµÍ³ÖĞ¹¤×÷Ïß³ÌµÄ¸÷ÖÖ×´Ì¬£¬±»¸÷¸ö¹¤×÷Ïß³ÌËùÊ¹ÓÃ
-concurrencpp::runtime gl_runtime; // ¹¤×÷Ïß³ÌÔËĞĞµ÷¶ÈÆ÷
+CSystemData gl_SystemData;
 
 CFinnhubInquiryType gl_FinnhubInquiryType;
+CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub½ûÖ¹·ÃÎÊ½»Ò×ËùÃûµ¥£¨Ãâ·ÑÕË»§ÎŞ·¨·ÃÎÊµÄ½»Ò×ËùÊı¾İ£©¡£Î¨Ò»ÊµÀı
 
 time_t gl_tUTCTime = 0; // ËùÓĞµÄÊĞ³¡Ê¹ÓÃÍ¬Ò»¸öĞ­µ÷ÊÀ½çÊ±£¨Coordinated Universal Time£©
-
-CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub½ûÖ¹·ÃÎÊ½»Ò×ËùÃûµ¥£¨Ãâ·ÑÕË»§ÎŞ·¨·ÃÎÊµÄ½»Ò×ËùÊı¾İ£©¡£Î¨Ò»ÊµÀı
 
 // ÎªÁËÊÂÏÈ³õÊ¼»¯£¬ĞÅºÅÁ¿±ØĞëÉùÃ÷ÎªÈ«¾Ö±äÁ¿
 binary_semaphore gl_UpdateChinaMarketDB{1}; // ÓÃÓÚ¸üĞÂChinaMarketÊı¾İ¿â¡£todo ÓÉÓÚÎÒ¶ÔMySQLÊı¾İ¿â²»Ì«ÁË½â£¬Å¼¶û»á³öÏÖ´æ´¢ÎÊÌâ£¬ÎÒ¹À¼ÆÓëÍ¬²½ÓĞ¹Ø£¬¹Ê¶øÉèÖÃ»¥³â±äÁ¿
@@ -54,8 +51,8 @@ binary_semaphore gl_UpdateWorldMarketDB{1}; // ÓÃÓÚ¸üĞÂWorldMarketÊı¾İ¿â¡£todo Ó
 binary_semaphore gl_ProcessChinaMarketRTData{1}; // µ±´¦ÀíÖĞ¹úÊĞ³¡µÄÊµÊ±Êı¾İÊ±£¬²»ÔÊĞíÍ¬Ê±´æ´¢Ö®¡£
 counting_semaphore<8> gl_BackgroundWorkingThread{8}; // ×î¶àºóÌ¨¹¤×÷Ïß³ÌÔÊĞíÊıÁ¿
 
-CSystemData gl_SystemData;
-concurrencpp::timer gl_timer;
+concurrencpp::runtime gl_runtime; // ¹¤×÷Ïß³ÌÔËĞĞµ÷¶ÈÆ÷
+concurrencpp::timer gl_timerMainSchedule; // Ö÷µ÷¶ÈÈÎÎñ
 
 // Data source, ½ÔÎªÎ¨Ò»ÊµÀı
 CSinaRTDataSourcePtr gl_pSinaRTDataSource = nullptr;

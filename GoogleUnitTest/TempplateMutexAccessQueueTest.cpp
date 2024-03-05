@@ -52,7 +52,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(this->m_qDataTest.Size(), 0);
 	}
 
-	// bug 将TestPushPop改名为TestPushPopData时，Soltenborn框架再命名空间FireBirdTest中无法找到该测试函数。
+	// bug 将TestPushPop改名为TestPushPopData时，Soltenborn框架在命名空间FireBirdTest中无法找到该测试函数。
 	TYPED_TEST(CMutexAccessQueueTest, TestPushPop) {
 		EXPECT_TRUE(this->m_qDataTest.Empty()) << "初始时队列是空的";
 		this->m_qDataTest.PushData(this->m_data1);

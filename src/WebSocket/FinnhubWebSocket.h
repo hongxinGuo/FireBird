@@ -24,7 +24,7 @@ public:
 
 using CFinnhubSocketPtr = shared_ptr<CFinnhubSocket>;
 
-class CFinnhubWebSocket final : public CVirtualWebSocket {
+class CFinnhubWebSocket : public CVirtualWebSocket {
 public:
 	CFinnhubWebSocket();
 	CFinnhubWebSocket(const CFinnhubWebSocket&) = delete;
@@ -36,6 +36,8 @@ public:
 	void Connect() override;
 	void Send(const vectorString& vSymbol) override;
 	static string CreateFinnhubWebSocketString(string sSymbol);
+
+	void MonitorWebSocket(const vectorString& vSymbol);
 
 	bool ParseFinnhubWebSocketData(shared_ptr<string> pData);
 	bool ParseFinnhubWebSocketDataWithSidmjson(const shared_ptr<string>& pData);

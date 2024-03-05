@@ -46,7 +46,6 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			//EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsNeedUpdate()); //todo
 			gl_finnhubInaccessibleExchange.SetUpdate(false);
 
 			SCOPED_TRACE("");

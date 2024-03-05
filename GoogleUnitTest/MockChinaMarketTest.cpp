@@ -187,38 +187,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 	}
 
-	TEST_F(CMockChinaMarketTest, TestTaskProcessAndSaveDayLine) {
-		EXPECT_FALSE(s_pMockChinaMarket->IsDayLineNeedProcess());
-		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineNeedSaving());
-		EXPECT_FALSE(s_pMockChinaMarket->IsTaskOfSavingDayLineDBFinished());
-		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
-
-		s_pMockChinaMarket->TaskProcessAndSaveDayLine(100000);
-
-		EXPECT_FALSE(s_pMockChinaMarket->IsRTDataNeedCalculate());
-		EXPECT_FALSE(s_pMockChinaMarket->IsMarketTaskEmpty());
-		const auto pTask = s_pMockChinaMarket->GetMarketTask();
-		s_pMockChinaMarket->DiscardCurrentMarketTask();
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__);
-		EXPECT_EQ(pTask->GetTime(), 100010) << "每十秒一次";
-
-		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
-	}
-
-	TEST_F(CMockChinaMarketTest, TestTaskProcessAndSaveDayLine2) {
-		EXPECT_FALSE(gl_systemConfiguration.IsExitingSystem());
-		gl_systemConfiguration.SetExitingSystem(true);
-		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
-
-		s_pMockChinaMarket->TaskProcessAndSaveDayLine(100000);
-
-		EXPECT_FALSE(s_pMockChinaMarket->IsRTDataNeedCalculate());
-		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << "当退出系统标识设置时，不再生成处理日线任务";
-
-		// 恢复原状
-		gl_systemConfiguration.SetExitingSystem(false);
-	}
-
 	TEST_F(CMockChinaMarketTest, TestTaskChoice10RSStrongStockSet) {
 		tm tm_{};
 		tm_.tm_wday = 1; // 星期一

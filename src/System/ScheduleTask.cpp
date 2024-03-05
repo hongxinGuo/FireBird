@@ -127,16 +127,14 @@ void ScheduleMarketTask() {
 void ScheduleTask() {
 	static bool s_Processing = false;
 	CHighPerformanceCounter counter;
+	if (IsResettingMarket()) return;// 市场重启时无法并行工作，且需要很长时间
 	if (s_Processing) {
-		//if (!IsResettingMarket()) { // 市场重启时无法并行工作，且需要很长时间
 		gl_systemMessage.PushInnerSystemInformationMessage("ScheduleTask()发生重入");
-		//}
 		return;
 	}
 	s_Processing = true;
 	counter.start();
 	try {
-		ResetMarkets(); // 重启系统在此处执行，容易调用各重置函数
 		ScheduleMarketTask();	// 调用主调度函数,由各市场调度函数执行具体任务
 		// 其他个DataSource的调度，也考虑移至此处。
 	}

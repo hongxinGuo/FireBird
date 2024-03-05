@@ -54,7 +54,7 @@ UINT ThreadGetWebDataAndProcessIt(CVirtualDataSource* p) {
 /// 当申请信息为空时，生成当前查询字符串。
 /// 当存在申请信息且没有正在运行的查询线程时，生成查询线程。
 ///
-/// Note 调用函数不能使用thread_pool_executor或者background_executor，只能使用thread_executor，原因待查。
+/// Note 调用函数不能使用thread_pool_executor或者background_executor，只能使用thread_executor，否则thread_pool_executor所生成线程的返回值无法读取，原因待查。
 ///
 /// </summary>
 ///

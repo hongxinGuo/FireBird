@@ -90,6 +90,10 @@ string CFinnhubWebSocket::CreateFinnhubWebSocketString(string sSymbol) {
 	return symbol.dump();
 }
 
+void CFinnhubWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
+	CVirtualWebSocket::MonitorWebSocket(gl_pFinnhubDataSource->IsWebError(), gl_systemConfiguration.IsUsingFinnhubWebSocket(), vSymbol);
+}
+
 /// <summary>
 ///
 /// https://finnhub.io/docs/api/websocket-trades

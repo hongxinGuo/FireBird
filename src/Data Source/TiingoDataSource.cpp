@@ -36,7 +36,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 
 		if (!IsInquiring()) {
 			ASSERT(!HaveInquiry());
-			Inquire();
+			Inquire(lCurrentTime);
 			if (IsInquiring()) {
 				ASSERT(HaveInquiry());
 				return true;
@@ -46,9 +46,11 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	return false;
 }
 
-void CTiingoDataSource::Inquire() {
+void CTiingoDataSource::Inquire(long lCurrentTime) {
 	ASSERT(!IsInquiring());
 	if (gl_pWorldMarket->IsSystemReady()) {
+		ASSERT(lCurrentTime <= gl_systemConfiguration.GetWorldMarketResettingTime() - 300
+			|| lCurrentTime >= gl_systemConfiguration.GetWorldMarketResettingTime() + 500); // 重启市场时不允许接收网络信息。
 		InquireCompanySymbol();
 		InquireCryptoSymbol();
 		InquireDayLine();

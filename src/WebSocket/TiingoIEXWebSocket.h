@@ -47,7 +47,7 @@ public:
 
 using CTiingoIEXSocketPtr = shared_ptr<CTiingoIEXSocket>;
 
-class CTiingoIEXWebSocket final : public CVirtualWebSocket {
+class CTiingoIEXWebSocket : public CVirtualWebSocket {
 public:
 	CTiingoIEXWebSocket();
 	CTiingoIEXWebSocket(const CTiingoIEXWebSocket& other) = delete;
@@ -58,6 +58,8 @@ public:
 
 	void Connect() override;
 	void Send(const vectorString& vSymbol) override;
+
+	void MonitorWebSocket(vectorString vSymbol);
 
 	static string CreateMessage(const vectorString& vSymbol);
 	bool ParseTiingoIEXWebSocketData(shared_ptr<string> pData);

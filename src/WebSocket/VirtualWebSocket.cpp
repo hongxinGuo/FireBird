@@ -109,14 +109,34 @@ void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallbac
 	ASSERT(!IsOpen()); // start()是异步的
 }
 
+void CVirtualWebSocket::MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, vectorString vSymbol) {
+	if (fDataSourceError) {
+		if (IsOpen()) TaskDisconnect();
+		return;
+	}
+
+	if (fWebSocketOpened) { // 接收TiingoCrypto web socket数据？
+		if (IsError() || IsIdle()) { // 出现问题？
+			if (IsOpen()) TaskDisconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+		}
+		if (IsClosed()) {
+			TaskConnectAndSendMessage(vSymbol);
+			SetHeartbeatTime(GetUTCTime());
+		}
+	}
+	else { // 关闭WebSocket?
+		if (IsOpen()) TaskDisconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////////
 //
 // Disconnect()是同步的
 //
 /////////////////////////////////////////////////////////////////////////////
 void CVirtualWebSocket::Disconnect() {
-	StopWebSocket();	// stop()是同步的，执行完后socket已关闭。
 	m_iSubscriptionId = 0;
+	StopWebSocket();	// stop()是同步的，执行完后socket已关闭。
 }
 
 void CVirtualWebSocket::TaskDisconnect() {

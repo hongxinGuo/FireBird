@@ -20,9 +20,11 @@ public:
 	CWorldMarket(const CWorldMarket&&) noexcept = delete;
 	CWorldMarket& operator=(const CWorldMarket&&) noexcept = delete;
 	~CWorldMarket() override;
-	void ResetMarket() final;
 
-	void PreparingExitMarket() final;
+	void ResetMarket() final;
+	long GetResetTime() final { return gl_systemConfiguration.GetWorldMarketResettingTime(); }
+
+	void PrepareToCloseMarket() final;
 
 	void Reset();
 	void ResetFinnhub();

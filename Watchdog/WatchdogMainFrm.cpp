@@ -48,7 +48,8 @@ CWatchdogMainFrame::CWatchdogMainFrame() noexcept {
 	m_uTimerID = 0;
 }
 
-CWatchdogMainFrame::~CWatchdogMainFrame() {}
+CWatchdogMainFrame::~CWatchdogMainFrame() {
+}
 
 int CWatchdogMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1)
@@ -134,7 +135,7 @@ int CWatchdogMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	CMFCToolBar::EnableQuickCustomization();
 
 	if (CMFCToolBar::GetUserImages() == nullptr) { // load user-defined toolbar images
-		//if (m_UserImages.Load(_T("UserImages.bmp"))) { //todo 这里使用了文件系统而不是预先编译的资源，使用下面这行替换之。
+		//if (m_UserImages.Load(_T("UserImages.bmp"))) { //todo 这里使用了文件系统而不是预先编译的资源，使用下面这行替换即可。
 		if (m_UserImages.Load(IDB_USER_IMAGE)) {
 			CMFCToolBar::SetUserImages(&m_UserImages);
 		}

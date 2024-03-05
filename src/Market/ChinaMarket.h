@@ -23,9 +23,10 @@ public:
 	~CChinaMarket() override;
 
 	void ResetMarket() final;
+	long GetResetTime() final { return 30000; } // chinaMarket重置时间为每日91300和92600，无需暂停任务。设为凌晨3点即可。
 	void Reset();
 
-	void PreparingExitMarket() final;
+	void PrepareToCloseMarket() final;
 
 	bool IsTimeToResetSystem(long lCurrentTime) final;
 	bool IsOrdinaryTradeTime() final { return IsOrdinaryTradeTime(GetMarketTime()); } // 日常交易时间

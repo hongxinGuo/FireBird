@@ -12,6 +12,8 @@ public:
 	void TruncateList(long lNumberOfTruncation = 1000);
 	void SetCurAtLastLine();
 
+	int GetLineNumber() const noexcept { return m_iLineNumber; }
+
 public:
 	~COutputList() override;
 
@@ -22,6 +24,12 @@ protected:
 	afx_msg void OnViewOutput();
 
 	DECLARE_MESSAGE_MAP()
+
+protected:
+	int m_iLineNumber{10}; // 可显示行数,初始为10行
+
+public:
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 
 class COutputWnd : public CDockablePane {

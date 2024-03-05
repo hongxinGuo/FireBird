@@ -123,6 +123,7 @@
     <ClCompile Include="MockFinnhubDataSourceTest.cpp" />
     <ClCompile Include="FinnhubProductTest.cpp" />
     <ClCompile Include="JsonGetValueTest.cpp" />
+    <ClCompile Include="MockFinnhubWebSocketTest.cpp" />
     <ClCompile Include="MockNeteaseDayLineDataSourceTest.cpp" />
     <ClCompile Include="MockNeteaseRTDataSourceTest.cpp" />
     <ClCompile Include="MockQuandlDataSourceTest.cpp" />
@@ -130,6 +131,7 @@
     <ClCompile Include="MockTengxunDayLineDataSourceTest.cpp" />
     <ClCompile Include="MockTengxunRTDataSourceTest.cpp" />
     <ClCompile Include="MockTiingoDataSourceTest.cpp" />
+    <ClCompile Include="MockTiingoIEXWebSocketTest.cpp" />
     <ClCompile Include="MockVirtualDataSourceTest.cpp" />
     <ClCompile Include="MockVirtualWebSocketTest.cpp" />
     <ClCompile Include="NeteaseDayLineDataSourceTest.cpp" />
@@ -266,6 +268,8 @@
     <ClCompile Include="VirtualMarketTest.cpp" />
     <ClCompile Include="ContainerChinaWeekLineTest.cpp" />
     <ClCompile Include="WeekLineTest.cpp" />
+    <ClInclude Include="MockFinnhubWebSocket.h" />
+    <ClInclude Include="MockTiingoIEXWebSocket.h" />
     <ClInclude Include="TemplateMutexAccessQueueTest.h" />
   </ItemGroup>
   <ItemGroup>

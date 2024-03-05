@@ -253,8 +253,9 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	}
 
 	char buffer[50];
-	const auto pvChinaTask = gl_pChinaMarket->DiscardOutDatedTask(gl_pChinaMarket->GetMarketTime()); //todo 这里需要同步机制
+	const auto pvChinaTask = gl_pChinaMarket->DiscardOutDatedTask(gl_pChinaMarket->GetMarketTime());
 	if (m_wndChinaMarketTaskQueue.GetCount() > 0) m_wndChinaMarketTaskQueue.TruncateList(m_wndChinaMarketTaskQueue.GetCount());
+	int i = 0;
 	for (const auto& pTask : *pvChinaTask) {
 		CString str = strTime + _T(": ");
 		sprintf_s(buffer, _T("%06d"), pTask->GetTime());
@@ -262,10 +263,12 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		str += _T(": ");
 		str += gl_mapMarketMapIndex.at(pTask->GetType());
 		m_wndChinaMarketTaskQueue.AddString(str);
+		if (++i >= m_wndChinaMarketTaskQueue.GetLineNumber()) break;
 	}
 
-	const auto pvWorldTask = gl_pWorldMarket->DiscardOutDatedTask(gl_pWorldMarket->GetMarketTime()); // todo 这里需要同步机制
+	const auto pvWorldTask = gl_pWorldMarket->DiscardOutDatedTask(gl_pWorldMarket->GetMarketTime());
 	if (m_wndWorldMarketTaskQueue.GetCount() > 0) m_wndWorldMarketTaskQueue.TruncateList(m_wndWorldMarketTaskQueue.GetCount());
+	i = 0;
 	for (const auto& pTask : *pvWorldTask) {
 		CString str = strTime + _T(": ");
 		sprintf_s(buffer, _T("%06d"), pTask->GetTime());
@@ -273,6 +276,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		str += _T(": ");
 		str += gl_mapMarketMapIndex.at(pTask->GetType());
 		m_wndWorldMarketTaskQueue.AddString(str);
+		if (++i >= m_wndWorldMarketTaskQueue.GetLineNumber()) break;
 	}
 
 	// 调用基类的OnTimer函数
@@ -305,6 +309,7 @@ BEGIN_MESSAGE_MAP(COutputList, CListBox)
 	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
 	ON_COMMAND(ID_VIEW_OUTPUTWND, OnViewOutput)
 	ON_WM_WINDOWPOSCHANGING()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COutputList 消息处理程序
@@ -344,4 +349,12 @@ void COutputList::OnViewOutput() {
 		pMainFrame->ShowPane(pParentBar, FALSE, FALSE, FALSE);
 		pMainFrame->RecalcLayout();
 	}
+}
+
+void COutputList::OnSize(UINT nType, int cx, int cy) {
+	CListBox::OnSize(nType, cx, cy);
+
+	// TODO: Add your message handler code here
+	int h = GetItemHeight(0);
+	m_iLineNumber = cy / h;
 }

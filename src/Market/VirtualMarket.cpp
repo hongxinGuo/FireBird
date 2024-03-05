@@ -39,11 +39,11 @@ void CVirtualMarket::ScheduleTask() {
 		}
 	}
 
-	// 调用本市场的各data source，进行网络数据的接收和处理。
-	RunDataSource(lCurrentMarketTime);
+	// 调用本市场的各data source，进行网络数据的接收和处理。在市场重置时间内暂停
+	if (!InResetTime(lCurrentMarketTime)) RunDataSource(lCurrentMarketTime);
 
-	// 执行本市场各项定时任务
-	ProcessTask(lCurrentMarketTime);
+	// 执行本市场各项定时任务。当市场正在重置时暂停
+	if (!IsResettingMarket()) ProcessTask(lCurrentMarketTime);
 }
 
 void CVirtualMarket::CalculateTime() noexcept {
@@ -67,6 +67,10 @@ bool CVirtualMarket::ProcessTask(long) {
 
 void CVirtualMarket::ResetMarket() {
 	ASSERT(0); // 不允许调用基类重置市场函数。这里只是为了测试方便的原因才定义一个实现。
+}
+
+bool CVirtualMarket::InResetTime(long lCurrentTime) {
+	return lCurrentTime > GetResetTime() - 300 && lCurrentTime < GetResetTime() + 500;
 }
 
 bool CVirtualMarket::UpdateMarketInfo() {
