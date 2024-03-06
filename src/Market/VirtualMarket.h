@@ -33,14 +33,14 @@ public:
 		ASSERT(0);
 		return 0;
 	}
-	bool IsResettingMarket() const noexcept { return m_fResettingMarket; }
+	bool IsResetting() const noexcept { return m_fResettingMarket; }
 
 	virtual bool UpdateMarketInfo(); // 更新本市场信息。
 
 	// MarketTask
 	bool IsMarketTaskEmpty() const { return m_marketTask.Empty(); }
 	void AddTask(const CMarketTaskPtr& pTask);
-	void AddTask(const long lTaskType, const long lExecuteTime);
+	void AddTask(long lTaskType, long lExecuteTime);
 	CMarketTaskPtr GetMarketTask() const { return m_marketTask.GetTask(); }
 	void DiscardCurrentMarketTask() { m_marketTask.DiscardCurrentTask(); }
 	vector<CMarketTaskPtr> GetMarketTaskVector() { return m_marketTask.GetTaskVector(); }
@@ -149,4 +149,4 @@ private:
 
 using CVirtualMarketWeakPtr = weak_ptr<CVirtualMarket>;
 using CVirtualMarketPtr = shared_ptr<CVirtualMarket>;
-extern vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的ScheduleTask
+extern vector<CVirtualMarketPtr> gl_vMarket; // 各市场指针的容器，只用于执行各市场的ScheduleTask

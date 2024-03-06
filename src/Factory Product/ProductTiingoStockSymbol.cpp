@@ -194,33 +194,34 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol2(const C
 		string_view svJson = pWebData->GetStringView(0, pWebData->GetBufferLength());
 		ondemand::parser parser;
 		const simdjson::padded_string jsonPadded(svJson);
-		ondemand::document doc = parser.iterate(jsonPadded);
+		ondemand::document doc = parser.iterate(jsonPadded).value();
 
 		CString str;
 		int iCount = 0;
-		for (ondemand::value item : doc) {
+		for (auto item : doc) {
+			auto itemValue = item.value();
 			pStock = make_shared<CTiingoStock>();
-			s1 = jsonGetStringView(item, _T("permaTicker"));
+			s1 = jsonGetStringView(itemValue, _T("permaTicker"));
 			pStock->m_strTiingoPermaTicker = s1.c_str();;
-			s1 = jsonGetStringView(item, _T("ticker"));
+			s1 = jsonGetStringView(itemValue, _T("ticker"));
 			ranges::transform(s1, s1.begin(), ::toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。(需要使用::toupper）
 			pStock->m_strTicker = s1.c_str();
-			s1 = jsonGetStringView(item, _T("name"));
+			s1 = jsonGetStringView(itemValue, _T("name"));
 			pStock->m_strName = s1.c_str();;
-			pStock->m_fIsActive = jsonGetBool(item, _T("isActive"));
-			pStock->m_fIsADR = jsonGetBool(item,_T("isADR"));
-			s1 = jsonGetStringView(item, _T("industry"));
+			pStock->m_fIsActive = jsonGetBool(itemValue, _T("isActive"));
+			pStock->m_fIsADR = jsonGetBool(itemValue,_T("isADR"));
+			s1 = jsonGetStringView(itemValue, _T("industry"));
 			if (s1.compare(strNotAvailable) != 0) {
 				pStock->m_strTiingoIndustry = s1.c_str();;
 			}
 			else pStock->m_strTiingoIndustry = strNULL;
-			s1 = jsonGetStringView(item, _T("sector"));
+			s1 = jsonGetStringView(itemValue, _T("sector"));
 			if (s1.compare(strNotAvailable) != 0) {
 				pStock->m_strTiingoSector = s1.c_str();;
 			}
 			else pStock->m_strTiingoSector = strNULL;
 
-			sv = item["sicCode"].raw_json();
+			sv = itemValue["sicCode"].raw_json();
 			if (sv == ("\"Field not available for free/evaluation\"") || sv.empty()) {
 				pStock->m_iSICCode = 0;
 			}
@@ -228,41 +229,41 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol2(const C
 				string sTemp2(sv);
 				pStock->m_iSICCode = atoi(sTemp2.c_str());
 			}
-			s1 = jsonGetStringView(item, _T("sicIndustry"));
+			s1 = jsonGetStringView(itemValue, _T("sicIndustry"));
 			if (s1.compare(strNotAvailable) != 0) {
 				pStock->m_strSICIndustry = s1.c_str();;
 			}
 			else pStock->m_strSICIndustry = strNULL;
-			s1 = jsonGetStringView(item, _T("sicSector"));
+			s1 = jsonGetStringView(itemValue, _T("sicSector"));
 			if (s1.compare(strNotAvailable) != 0) {
 				pStock->m_strSICSector = s1.c_str();;
 			}
 			else pStock->m_strSICSector = strNULL;
-			s1 = jsonGetStringView(item, _T("reportingCurrency"));
+			s1 = jsonGetStringView(itemValue, _T("reportingCurrency"));
 			if (s1.compare(strNotAvailable) != 0) { // 此项应该永远存在
 				pStock->m_strReportingCurrency = s1.c_str();;
 			}
 			else pStock->m_strReportingCurrency = strNULL;
-			s1 = jsonGetStringView(item, _T("location"));
+			s1 = jsonGetStringView(itemValue, _T("location"));
 			if (s1 != strNotAvailable) {
 				pStock->m_strLocation = s1.c_str();;
 			}
 			else pStock->m_strLocation = _T(" ");
-			s1 = jsonGetStringView(item, _T("companyWebsite"));
+			s1 = jsonGetStringView(itemValue, _T("companyWebsite"));
 			if (s1 != strNotAvailable) {
 				pStock->m_strCompanyWebSite = s1.c_str();;
 			}
 			else pStock->m_strCompanyWebSite = strNULL;
-			s1 = jsonGetStringView(item, _T("secFilingWebsite"));
+			s1 = jsonGetStringView(itemValue, _T("secFilingWebsite"));
 			if (s1 != strNotAvailable) {
 				pStock->m_strSECFilingWebSite = s1.c_str();;
 			}
 			else pStock->m_strSECFilingWebSite = strNULL;
-			s1 = jsonGetStringView(item, _T("statementLastUpdated"));
+			s1 = jsonGetStringView(itemValue, _T("statementLastUpdated"));
 			if (!s1.empty()) str = s1.c_str();;
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
 			pStock->m_lStatementUpdateDate = XferYearMonthDayToYYYYMMDD(year, month, day);
-			s1 = jsonGetStringView(item, _T("dailyLastUpdated"));
+			s1 = jsonGetStringView(itemValue, _T("dailyLastUpdated"));
 			str = s1.c_str();;
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
 			pStock->m_lDailyDataUpdateDate = XferYearMonthDayToYYYYMMDD(year, month, day);

@@ -175,25 +175,26 @@ static ondemand::parser s_parserFinnhubWebSocket;// 使用静态变量以加速解析
 bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(const shared_ptr<string>& pData) {
 	try {
 		const padded_string jsonPadded(*pData);
-		s_docFinnhubWebSocket = s_parserFinnhubWebSocket.iterate(jsonPadded);
+		s_docFinnhubWebSocket = s_parserFinnhubWebSocket.iterate(jsonPadded).value();
 		const string_view sType = jsonGetStringView(s_docFinnhubWebSocket, "type");
 		if (sType == _T("trade")) { // {"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
 			auto data_array = jsonGetArray(s_docFinnhubWebSocket, "data");
-			for (ondemand::value item : data_array) {
+			for (auto item : data_array) {
+				auto itemValue = item.value();
 				const auto pFinnhubDataPtr = make_shared<CFinnhubSocket>();
-				auto condition_array = jsonGetArray(item, "c");
-				for (ondemand::value condition_item : condition_array) {
-					const string_view s5 = jsonGetStringView(condition_item);
+				auto condition_array = jsonGetArray(itemValue, "c");
+				for (auto condition_item : condition_array) {
+					const string_view s5 = jsonGetStringView(condition_item.value());
 					string_view s6 = s5.substr(0, s5.length());
 					string s2(s6);
 					pFinnhubDataPtr->m_vCode.push_back(s2);
 				}
-				pFinnhubDataPtr->m_dLastPrice = jsonGetDouble(item, "p");
-				const string_view symbol = jsonGetStringView(item, "s");
+				pFinnhubDataPtr->m_dLastPrice = jsonGetDouble(itemValue, "p");
+				const string_view symbol = jsonGetStringView(itemValue, "s");
 				const string_view symbol2 = symbol.substr(0, symbol.length());
 				pFinnhubDataPtr->m_sSymbol = symbol2;
-				pFinnhubDataPtr->m_iSeconds = jsonGetInt64(item, "t");
-				pFinnhubDataPtr->m_dLastVolume = jsonGetDouble(item, "v");
+				pFinnhubDataPtr->m_iSeconds = jsonGetInt64(itemValue, "t");
+				pFinnhubDataPtr->m_dLastVolume = jsonGetDouble(itemValue, "v");
 				gl_SystemData.PushFinnhubSocket(pFinnhubDataPtr);
 			}
 			m_HeartbeatTime = GetUTCTime();

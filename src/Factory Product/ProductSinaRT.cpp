@@ -3,7 +3,7 @@
 #include"ProductSinaRT.h"
 #include"ChinaMarket.h"
 #include "ChinaStockCodeConverter.h"
-#include "HighPerformanceCounter.h"
+//#include "HighPerformanceCounter.h"
 
 #include"JsonParse.h"
 #include "SinaRTDataSource.h"

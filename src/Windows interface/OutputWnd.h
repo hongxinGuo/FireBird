@@ -70,6 +70,8 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
+	time_t timeLast{0};
+
 public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };

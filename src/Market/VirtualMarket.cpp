@@ -43,7 +43,7 @@ void CVirtualMarket::ScheduleTask() {
 	if (!InResetTime(lCurrentMarketTime)) RunDataSource(lCurrentMarketTime);
 
 	// 执行本市场各项定时任务。当市场正在重置时暂停
-	if (!IsResettingMarket()) ProcessTask(lCurrentMarketTime);
+	if (!IsResetting()) ProcessTask(lCurrentMarketTime);
 }
 
 void CVirtualMarket::CalculateTime() noexcept {

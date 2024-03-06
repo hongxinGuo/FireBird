@@ -161,19 +161,19 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 // Note 调用函数不能使用thread_pool_executor或者background_executor，只能使用thread_executor，原因待查。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvsv) {
+result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvStringView) {
 	const auto concurrency_level = tpe->max_concurrency_level();
 	vector<result<bool>> results;
-	const auto chunk_size = 1 + pvsv->size() / concurrency_level;
+	const auto chunk_size = 1 + pvStringView->size() / concurrency_level;
 	for (auto i = 0; i < concurrency_level; i++) { // 使用当前CPU的所有核心
 		long chunk_begin = i * chunk_size;
 		long chunk_end = chunk_begin + chunk_size;
-		if (chunk_end > pvsv->size()) chunk_end = pvsv->size();
-		auto result = tpe->submit([pvsv, chunk_begin, chunk_end] {
+		if (chunk_end > pvStringView->size()) chunk_end = pvStringView->size();
+		auto result = tpe->submit([pvStringView, chunk_begin, chunk_end] {
 			try {
 				for (int j = chunk_begin; j < chunk_end; j++) {
 					const auto pRTData = make_shared<CWebRTData>();
-					pRTData->ParseSinaData(pvsv->at(j));
+					pRTData->ParseSinaData(pvStringView->at(j));
 					gl_qChinaMarketRTData.enqueue(pRTData); // 多个协程同时往里存时，无法通过size_approx函数得到队列数量。
 				}
 			}
@@ -193,12 +193,12 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe,
 
 void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
 	pWebData->ResetCurrentPos();
-	shared_ptr<vector<string_view>> pvsv = make_shared<vector<string_view>>();
+	const shared_ptr<vector<string_view>> pvStringView = make_shared<vector<string_view>>();
 	while (!pWebData->IsLastDataParagraph()) {
 		auto sv = pWebData->GetCurrentSinaData();
-		pvsv->emplace_back(sv);
+		pvStringView->emplace_back(sv);
 	}
-	auto result = ParseSinaRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvsv);
+	auto result = ParseSinaRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView);
 	result.get();
 }
 
@@ -325,20 +325,20 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 // 使用这种多线程模式与单线程模式相比，速度快1倍以上。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurrencpp::thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvsv) {
+concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurrencpp::thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvStringView) {
 	const auto concurrency_level = tpe->max_concurrency_level();
 	bool succeed = true;
 	vector<concurrencpp::result<bool>> results;
-	const auto chunk_size = 1 + pvsv->size() / concurrency_level;
+	const auto chunk_size = 1 + pvStringView->size() / concurrency_level;
 	for (auto i = 0; i < concurrency_level; i++) {
 		long chunk_begin = i * chunk_size;
 		long chunk_end = chunk_begin + chunk_size;
-		if (chunk_end > pvsv->size()) chunk_end = pvsv->size();
-		auto result = tpe->submit([pvsv, chunk_begin, chunk_end] {
+		if (chunk_end > pvStringView->size()) chunk_end = pvStringView->size();
+		auto result = tpe->submit([pvStringView, chunk_begin, chunk_end] {
 			try {
 				for (int j = chunk_begin; j < chunk_end; j++) {
 					const auto pRTData = make_shared<CWebRTData>();
-					const string_view sv = pvsv->at(j);
+					const string_view sv = pvStringView->at(j);
 					pRTData->ParseTengxunData(sv);
 					gl_qChinaMarketRTData.enqueue(pRTData);
 				}
@@ -358,12 +358,12 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 
 void ParseTengxunRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
 	pWebData->ResetCurrentPos();
-	const shared_ptr<vector<string_view>> pvsv = make_shared<vector<string_view>>();
+	const shared_ptr<vector<string_view>> pvStringView = make_shared<vector<string_view>>();
 	while (!pWebData->IsLastDataParagraph()) {
 		auto sv = pWebData->GetCurrentSinaData();
-		pvsv->emplace_back(sv);
+		pvStringView->emplace_back(sv);
 	}
-	auto result = ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvsv);
+	auto result = ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView);
 	result.get(); // 等待线程执行完后方继续。
 }
 

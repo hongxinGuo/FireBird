@@ -1027,7 +1027,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetAttackSellAbove200000(), 101010102);
 	}
 
-	TEST_F(CChinaStockTest, TestReadOnlyFunctions) {}
+	TEST_F(CChinaStockTest, TestReadOnlyFunctions) {
+	}
 
 	TEST_F(CChinaStockTest, TestIsSaveToChosenStockDB) {
 		CChinaStock stock;
@@ -1339,9 +1340,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaStockTest, TestRTDataDeque) {
-		auto pData = make_shared<CWebRTData>();
+		const auto pData = make_shared<CWebRTData>();
 		pData->SetSymbol(_T("600008.SS"));
-		auto pData1 = make_shared<CWebRTData>();
+		const auto pData1 = make_shared<CWebRTData>();
 		pData1->SetSymbol(_T("600009.SS"));
 		CChinaStock stock;
 		EXPECT_EQ(stock.GetRTDataQueueSize(), 0);

@@ -30,7 +30,7 @@ namespace FireBirdTest {
 	TEST(simdjsonGetValueTest, TestsimdjsonGetValue1) {
 		try {
 			ondemand::parser parser;
-			ondemand::document doc = parser.iterate(s_simdjson1);
+			ondemand::document doc = parser.iterate(s_simdjson1).value();
 			int i = 1;
 			// 测试 doc
 			EXPECT_EQ(jsonGetInt64(doc, _T("integer1")), 1);
@@ -66,23 +66,24 @@ namespace FireBirdTest {
 			ondemand::array arrayInteger, arrayInteger2;
 			i = 0;
 			ondemand::array DataArray3 = jsonGetArray(doc, _T("DataArray3"));
-			for (ondemand::value value : DataArray3) {
-				ai.push_back(jsonGetInt64(value, _T("integer")));
-				ad.push_back(jsonGetDouble(value, _T("double")));
-				string s3(jsonGetStringView(value, _T("string")));
+			for (auto value : DataArray3) {
+				auto valueValue = value.value();
+				ai.push_back(jsonGetInt64(valueValue, _T("integer")));
+				ad.push_back(jsonGetDouble(valueValue, _T("double")));
+				string s3(jsonGetStringView(valueValue, _T("string")));
 				as.push_back(s3);
-				string_view s4 = jsonGetRawJsonToken(value, _T("string"));
+				string_view s4 = jsonGetRawJsonToken(valueValue, _T("string"));
 				s3 = s4;
 				ar.push_back(s3);
-				EXPECT_THROW(s4 = jsonGetRawJsonToken(value, "no key"), simdjson_error);
-				ab.push_back(jsonGetBool(value, "bool"));
+				EXPECT_THROW(s4 = jsonGetRawJsonToken(valueValue, "no key"), simdjson_error);
+				ab.push_back(jsonGetBool(valueValue, "bool"));
 				switch (i++) {
 				case 0:
-					arrayInteger = jsonGetArray(value, "array");
+					arrayInteger = jsonGetArray(valueValue, "array");
 					EXPECT_FALSE(arrayInteger.is_empty().value());
 					break;
 				case 1:
-					arrayInteger2 = jsonGetArray(value, "array");
+					arrayInteger2 = jsonGetArray(valueValue, "array");
 					EXPECT_TRUE(arrayInteger2.is_empty().value());
 					break;
 				default:
@@ -101,7 +102,8 @@ namespace FireBirdTest {
 			EXPECT_FALSE(ab.at(1));
 			i = 0;
 			DataArray3 = jsonGetArray(doc, _T("DataArray3"));
-			for (ondemand::value value : DataArray3) {
+			for (auto value : DataArray3) {
+				auto valueValue = value.value();
 				ondemand::object object = value.get_object();
 				ai.push_back(jsonGetInt64(object, _T("integer")));
 				ad.push_back(jsonGetDouble(object, _T("double")));
@@ -133,45 +135,46 @@ namespace FireBirdTest {
 			ondemand::array DataArray4 = jsonGetArray(doc, "DataArray4");
 			i = 1;
 			string s5;
-			for (ondemand::value item : DataArray4) {
+			for (auto item : DataArray4) {
+				auto itemValue = item.value();
 				switch (i++) {
 				case 1:
-					EXPECT_EQ(jsonGetInt64(item), 1);
+					EXPECT_EQ(jsonGetInt64(itemValue), 1);
 					break;
 				case 2:
-					EXPECT_DOUBLE_EQ(jsonGetDouble(item), 2.0);
+					EXPECT_DOUBLE_EQ(jsonGetDouble(itemValue), 2.0);
 					break;
 				case 3:
-					EXPECT_TRUE(jsonGetBool(item));
+					EXPECT_TRUE(jsonGetBool(itemValue));
 					break;
 				case 4:
-					s5 = jsonGetStringView(item);
+					s5 = jsonGetStringView(itemValue);
 					EXPECT_STREQ(s5.c_str(), "string2");
-					s5 = jsonGetRawJsonToken(item);
+					s5 = jsonGetRawJsonToken(itemValue);
 					EXPECT_STREQ(s5.c_str(), "\"string2\"");
 					break;
 				case 5:
-					array4 = jsonGetArray(item);
-					for (ondemand::value value4 : array4) {
-						viArray4.push_back(jsonGetInt64(value4));
+					array4 = jsonGetArray(itemValue);
+					for (auto value4 : array4) {
+						viArray4.push_back(jsonGetInt64(value4.value()));
 					}
 					EXPECT_EQ(viArray4.at(1), 2);
 					break;
 				case 6:
-					EXPECT_EQ(jsonGetInt64(item), 0);
+					EXPECT_EQ(jsonGetInt64(itemValue), 0);
 					break;
 				case 7:
-					EXPECT_DOUBLE_EQ(jsonGetDouble(item), 0.0);
+					EXPECT_DOUBLE_EQ(jsonGetDouble(itemValue), 0.0);
 					break;
 				case 8:
-					EXPECT_FALSE(jsonGetBool(item));
+					EXPECT_FALSE(jsonGetBool(itemValue));
 					break;
 				case 9:
-					s5 = jsonGetStringView(item);
+					s5 = jsonGetStringView(itemValue);
 					EXPECT_STREQ(s5.c_str(), "");
 					break;
 				case 10:
-					array5 = jsonGetArray(item);
+					array5 = jsonGetArray(itemValue);
 					EXPECT_TRUE(array5.is_empty().value()) << "null返回空数据";
 					break;
 				default:
@@ -200,7 +203,7 @@ namespace FireBirdTest {
 			vector<bool> vb;
 			vector<INT64> vArray;
 			ondemand::parser parser;
-			ondemand::document doc = parser.iterate(s_simdjson2);
+			ondemand::document doc = parser.iterate(s_simdjson2).value();
 			for (ondemand::field field : doc.get_object()) {
 				ondemand::object object = field.value();
 				string_view svRaw = jsonGetRawJsonToken(object, "a");
@@ -248,17 +251,18 @@ namespace FireBirdTest {
 			vector<string> vs;
 			vector<bool> vb;
 			ondemand::parser parser;
-			ondemand::document doc = parser.iterate(s_simdjson2);
+			ondemand::document doc = parser.iterate(s_simdjson2).value();
 			for (auto field : doc.get_object()) {
-				ondemand::value item = field.value();
-				INT64 i = jsonGetInt64(item, ("a"));
+				auto item = field.value();
+				auto itemValue = item.value();
+				INT64 i = jsonGetInt64(itemValue, ("a"));
 				vi.push_back(i);
-				double d = jsonGetDouble(item, ("b"));
+				double d = jsonGetDouble(itemValue, ("b"));
 				vd.push_back(d);
-				string_view sv = jsonGetStringView(item, "c");
+				string_view sv = jsonGetStringView(itemValue, "c");
 				string s(sv);
 				vs.push_back(s);
-				vb.push_back(jsonGetBool(item, "d"));
+				vb.push_back(jsonGetBool(itemValue, "d"));
 			}
 			EXPECT_EQ(vi.at(0), 1);
 			EXPECT_EQ(vi.at(1), 2);
@@ -282,7 +286,7 @@ namespace FireBirdTest {
 	TEST(simdjsonGetValueTest, TestSimdjsonGetValueOccurException) {
 		try {
 			ondemand::parser parser;
-			ondemand::document doc = parser.iterate(s_BadSimdjson3);
+			ondemand::document doc = parser.iterate(s_BadSimdjson3).value();
 			EXPECT_THROW(INT64 i = jsonGetInt64(doc, ("No integer")), simdjson_error) << "没有这个键";
 			EXPECT_THROW(double d = jsonGetDouble(doc, ("No double")), simdjson_error) << "没有这个键";
 			EXPECT_THROW(string_view sv = jsonGetStringView(doc, "No string"), simdjson_error) << "没有这个键";
@@ -296,22 +300,23 @@ namespace FireBirdTest {
 
 			ondemand::array array1 = doc["DataArray"].get_array();
 			int i = 0;
-			for (ondemand::value item : array1) {
+			for (auto item : array1) {
+				auto itemValue = item.value();
 				switch (i++) {
 				case 0:
-					EXPECT_THROW(int int1 = jsonGetInt64(item), simdjson_error);
+					EXPECT_THROW(int int1 = jsonGetInt64(itemValue), simdjson_error);
 					break;
 				case 1:
-					EXPECT_THROW(double e = jsonGetDouble(item), simdjson_error);
+					EXPECT_THROW(double e = jsonGetDouble(itemValue), simdjson_error);
 					break;
 				case 2:
-					EXPECT_THROW(string_view str = jsonGetStringView(item), simdjson_error);
+					EXPECT_THROW(string_view str = jsonGetStringView(itemValue), simdjson_error);
 					break;
 				case 3:
-					EXPECT_THROW(bool b = jsonGetBool(item), simdjson_error);
+					EXPECT_THROW(bool b = jsonGetBool(itemValue), simdjson_error);
 					break;
 				case 4:
-					EXPECT_THROW(auto a = jsonGetArray(item), simdjson_error);
+					EXPECT_THROW(auto a = jsonGetArray(itemValue), simdjson_error);
 					break;
 				default:
 					EXPECT_TRUE(false);
@@ -329,7 +334,7 @@ namespace FireBirdTest {
 			EXPECT_THROW(string_view str2 = jsonGetStringView(object1, "string"), simdjson_error);
 			EXPECT_THROW(bool b2 = jsonGetBool(object1, "bool"), simdjson_error);
 			EXPECT_THROW(auto aa2 = jsonGetArray(object1, "array"), simdjson_error);
-			ondemand::value value2 = doc["DataArray2"];
+			ondemand::value value2 = doc["DataArray2"].value();
 
 			EXPECT_THROW(int i2 = jsonGetInt64(value2, "No integer"), simdjson_error);
 			EXPECT_THROW(double d4 = jsonGetDouble(value2, "no double"), simdjson_error);
@@ -387,8 +392,7 @@ namespace FireBirdTest {
 	TEST_P(simdjsonGetValueTest, simdjsonGetValueTest2) {
 		const padded_string jsonPadded(sData);
 		ondemand::parser parser;
-		ondemand::document doc;
-		doc = parser.iterate(jsonPadded);
+		ondemand::document doc = parser.iterate(jsonPadded).value();
 		string s1, s2;
 		ondemand::array array1, array2;
 		switch (m_lIndex) {

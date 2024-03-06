@@ -57,7 +57,7 @@ std::string gl_sSystemConfiguration = R"(
 },
 
 "WorldMarket" : {
-	"MarketResetingTime" : 170000,
+	"MarketResettingTime" : 170000,
 	"FinnhubToken" : "bv985d748v6ujthqfke0",
 	"FinnhubAccountFeePaid" : true,
 	"TiingoToken" : "c897a00b7cfc2adffc630d23befd5316a4683156",

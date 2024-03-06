@@ -185,7 +185,7 @@ namespace FireBirdTest {
 			// 以下真实的数据指针需要主动赋值为nullptr
 			gl_pWorldMarket = nullptr;
 			gl_pChinaMarket = nullptr;
-			gl_vMarketPtr.clear();
+			gl_vMarket.clear();
 
 			gl_pFinnhubWebSocket = nullptr;
 			gl_pTiingoIEXWebSocket = nullptr;

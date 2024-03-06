@@ -19,7 +19,8 @@
 using namespace concurrencpp;
 
 extern concurrencpp::runtime gl_runtime;
-extern concurrencpp::timer gl_timerMainSchedule;
+extern concurrencpp::timer gl_timerMainSchedule; // 每100毫秒调度一次的主任务序列
+extern concurrencpp::timer gl_timerPerSecond; // 每秒调度一次的各辅助任务
 
 using gsl::not_null;
 

@@ -22,7 +22,7 @@ namespace FireBirdTest {
 
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			EXPECT_THAT(gl_pMockMainFrame, NotNull());
-			EXPECT_EQ(gl_vMarketPtr.size(), 2) << "ChinaMarket and WorldMarket";
+			EXPECT_EQ(gl_vMarket.size(), 2) << "ChinaMarket and WorldMarket";
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 		}
@@ -35,7 +35,7 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			gl_pChinaMarket->SetCurrentEditStockChanged(false);
 			gl_pChinaMarket->SetUpdateOptionDB(false); // 这里使用了实际的数据库，故而不允许更新
-			EXPECT_EQ(gl_vMarketPtr.size(), 2);
+			EXPECT_EQ(gl_vMarket.size(), 2);
 
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -64,6 +64,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockMainFrameTest, TestUpdateStatus1) {
+		EXPECT_FALSE(gl_pChinaMarket->IsResetting()) << "默认状态";
 		InSequence seq;
 		gl_pChinaMarket->SetCurrentEditStockChanged(false);
 		gl_pChinaMarket->SetCurrentStockChanged(false);
@@ -80,6 +81,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockMainFrameTest, TestUpdateStatus2) {
+		EXPECT_FALSE(gl_pChinaMarket->IsResetting()) << "默认状态";
 		gl_pChinaMarket->SetCurrentEditStockChanged(true);
 		gl_pChinaMarket->SetCurrentStockChanged(true);
 		gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
@@ -103,6 +105,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockMainFrameTest, TestUpdateInnerSystemStatus) {
+		EXPECT_FALSE(gl_pChinaMarket->IsResetting()) << "默认状态";
 		gl_systemMessage.SetProcessedFinnhubWebSocket(1);
 		gl_systemMessage.SetProcessedTiingoIEXWebSocket(1);
 		gl_systemMessage.SetProcessedTiingoCryptoWebSocket(1);

@@ -43,7 +43,7 @@ protected:
 	virtual void StopWebSocket() { m_webSocket.stop(); } // stop()是同步的。为了测试，将此函数声明为虚函数
 
 public:
-	void MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, vectorString vSymbol);
+	void MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, const vectorString& vSymbol);
 
 public:
 	bool IsSymbol(const string& sSymbol) const { return m_mapSymbol.contains(sSymbol); }

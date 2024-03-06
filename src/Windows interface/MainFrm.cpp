@@ -163,7 +163,6 @@ CMainFrame::CMainFrame() {
 void CMainFrame::Reset() {
 	// 在此之前已经准备好了全局股票池（在CChinaMarket的构造函数中）。
 	m_lCurrentPos = 0;
-	m_timeLast = 0;
 }
 
 CMainFrame::~CMainFrame() {
@@ -313,15 +312,21 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
 	// todo 使用这种工作线程调度模式时，目前会出现数据同步问题。
-	// 设置100毫秒每次的背景工作线程调度，用于完成系统各项定时任务。
+	// 设置100毫秒每次的工作线程调度，用于完成系统各项定时任务。
 	gl_timerMainSchedule = gl_runtime.timer_queue()->make_timer(
 		1000ms,
 		100ms,
 		gl_runtime.thread_executor(), // 此为主调度任务，任务繁杂，故而使用独立的工作线程来调度任务
 		::ScheduleTask);
+	// 设置每秒执行一次的辅助工作线程调度，用于执行各项辅助工作。
+	gl_timerPerSecond = gl_runtime.timer_queue()->make_timer(
+		100ms,
+		1000ms,
+		gl_runtime.thread_executor(), // 此为主调度任务，任务繁杂，故而使用独立的工作线程来调度任务
+		::SchedulePerSecondTask);
 
-	// 设置100毫秒每次的软调度，只用于更新状态任务。
-	m_uIdTimer = SetTimer(STOCK_ANALYSIS_TIMER_, 100, nullptr);
+	// 设置500毫秒每次的软调度，只用于更新状态任务。
+	m_uIdTimer = SetTimer(STOCK_ANALYSIS_TIMER_, 500, nullptr);
 	if (m_uIdTimer == 0) { TRACE(_T("生成100ms时钟时失败\n")); }
 	return 0;
 }
@@ -419,21 +424,24 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 //
 //
-// CMainFrame timer只执行更新状态任务， 其他的定时数据采集处理任务由ScheduleTask()负责执行
+// CMainFrame timer只执行更新状态任务， 其他的定时数据采集处理任务由ScheduleTask()负责执行。
+// Note 注意同步问题。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	//::ScheduleTask(); // 系统更新任务皆位于此函数中
 
 	// 在窗口显示系统状态的更新任务放在这里比较合适。可以减少窗口句柄问题
-	// todo 修改下面两个函数中使用的全局变量，加上同步
-	UpdateStatus();
-	UpdateInnerSystemStatus();
+	if (!::IsMarketResetting()) {
+		UpdateStatus();
+		UpdateInnerSystemStatus();
+	}
 
 	SysCallOnTimer(nIDEvent);
 }
 
 void CMainFrame::UpdateStatus() {
+	ASSERT(!IsMarketResetting());
 	CString str;
 	char buffer[30]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -473,12 +481,9 @@ void CMainFrame::UpdateStatus() {
 	SysCallSetPaneText(9, gl_pWorldMarket->GetCurrentFunction());
 
 	// 更新当前抓取的实时数据大小
-	if ((GetUTCTime() - m_timeLast) > 0) {// 每秒更新一次
-		str = FormatToMK(gl_pSinaRTDataSource->GetTotalByteRead());
-		gl_pSinaRTDataSource->ClearTotalByteRead();
-		m_timeLast = GetUTCTime();
-		m_wndStatusBar.SetPaneText(10, str);
-	}
+	str = FormatToMK(gl_pSinaRTDataSource->GetTotalByteReadPerSecond());
+	m_wndStatusBar.SetPaneText(10, str);
+
 	// 更新当前申请网络数据的工作线程数
 	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfWebInquiringThread());
 	SysCallSetPaneText(11, buffer);
@@ -517,13 +522,9 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	SysCallSetInnerSystemPaneText(2, buffer);
 
 	// 更新ScheduleTask()处理时间
-	if ((GetUTCTime() - m_timeLast2) > 0) {// 每秒更新一次
-		const long time = gl_systemMessage.m_lScheduleTaskTime / 1000;
-		sprintf_s(buffer, _T("%5I32d"), time);
-		SysCallSetInnerSystemPaneText(3, buffer);
-		gl_systemMessage.m_lScheduleTaskTime = 0;
-		m_timeLast2 = GetUTCTime();
-	}
+	const long time = gl_systemMessage.m_lScheduleTaskTimePerSecond / 1000;
+	sprintf_s(buffer, _T("%5I32d"), time);
+	SysCallSetInnerSystemPaneText(3, buffer);
 
 	// 更新日线数据读取时间
 	if (gl_systemConfiguration.IsUsingNeteaseDayLineServer()) { // 网易日线服务器
@@ -580,8 +581,9 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	if ((nID & 0Xfff0) == SC_CLOSE) {	// 如果是退出系统
 		gl_systemConfiguration.SetExitingSystem(true); // 提示各工作线程中途退出
 		TRACE("应用户申请，准备退出程序\n");
+		gl_timerPerSecond.cancel(); // Note 关闭辅助调度任务
 		gl_timerMainSchedule.cancel(); // Note 关闭主调度任务
-		for (const auto& pMarket : gl_vMarketPtr) {
+		for (const auto& pMarket : gl_vMarket) {
 			pMarket->PrepareToCloseMarket();
 		}
 	}

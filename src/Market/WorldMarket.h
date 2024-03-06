@@ -5,8 +5,8 @@
 #include "FinnhubWebSocket.h"
 #include "TiingoIEXWebSocket.h"
 
-#include"FinnhubCryptoSymbol.h"
-#include"FinnhubForexSymbol.h"
+//#include"FinnhubCryptoSymbol.h"
+//#include"FinnhubForexSymbol.h"
 
 #include "MarketStatus.h"
 #include"MarketHoliday.h"

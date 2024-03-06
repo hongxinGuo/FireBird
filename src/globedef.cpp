@@ -46,13 +46,14 @@ CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub½ûÖ¹·ÃÎÊ½
 time_t gl_tUTCTime = 0; // ËùÓĞµÄÊĞ³¡Ê¹ÓÃÍ¬Ò»¸öĞ­µ÷ÊÀ½çÊ±£¨Coordinated Universal Time£©
 
 // ÎªÁËÊÂÏÈ³õÊ¼»¯£¬ĞÅºÅÁ¿±ØĞëÉùÃ÷ÎªÈ«¾Ö±äÁ¿
-binary_semaphore gl_UpdateChinaMarketDB{1}; // ÓÃÓÚ¸üĞÂChinaMarketÊı¾İ¿â¡£todo ÓÉÓÚÎÒ¶ÔMySQLÊı¾İ¿â²»Ì«ÁË½â£¬Å¼¶û»á³öÏÖ´æ´¢ÎÊÌâ£¬ÎÒ¹À¼ÆÓëÍ¬²½ÓĞ¹Ø£¬¹Ê¶øÉèÖÃ»¥³â±äÁ¿
-binary_semaphore gl_UpdateWorldMarketDB{1}; // ÓÃÓÚ¸üĞÂWorldMarketÊı¾İ¿â¡£todo ÓÉÓÚÎÒ¶ÔMySQLÊı¾İ¿â²»Ì«ÁË½â£¬Å¼¶û»á³öÏÖ´æ´¢ÎÊÌâ£¬ÎÒ¹À¼ÆÓëÍ¬²½ÓĞ¹Ø£¬¹Ê¶øÉèÖÃ»¥³â±äÁ¿
+binary_semaphore gl_UpdateChinaMarketDB{1}; // ÓÃÓÚ¸üĞÂChinaMarketÊı¾İ¿â¡£todo ÓÉÓÚ¶ÔMySQLÊı¾İ¿â²»Ì«ÁË½â£¬Å¼¶û»á³öÏÖ´æ´¢ÎÊÌâ£¬ÎÒ¹À¼ÆÓëÍ¬²½ÓĞ¹Ø£¬¹Ê¶øÉèÖÃ»¥³â±äÁ¿
+binary_semaphore gl_UpdateWorldMarketDB{1}; // ÓÃÓÚ¸üĞÂWorldMarketÊı¾İ¿â¡£todo ÓÉÓÚ¶ÔMySQLÊı¾İ¿â²»Ì«ÁË½â£¬Å¼¶û»á³öÏÖ´æ´¢ÎÊÌâ£¬ÎÒ¹À¼ÆÓëÍ¬²½ÓĞ¹Ø£¬¹Ê¶øÉèÖÃ»¥³â±äÁ¿
 binary_semaphore gl_ProcessChinaMarketRTData{1}; // µ±´¦ÀíÖĞ¹úÊĞ³¡µÄÊµÊ±Êı¾İÊ±£¬²»ÔÊĞíÍ¬Ê±´æ´¢Ö®¡£
 counting_semaphore<8> gl_BackgroundWorkingThread{8}; // ×î¶àºóÌ¨¹¤×÷Ïß³ÌÔÊĞíÊıÁ¿
 
 concurrencpp::runtime gl_runtime; // ¹¤×÷Ïß³ÌÔËĞĞµ÷¶ÈÆ÷
 concurrencpp::timer gl_timerMainSchedule; // Ö÷µ÷¶ÈÈÎÎñ
+concurrencpp::timer gl_timerPerSecond; // Ã¿Ãëµ÷¶ÈÒ»´ÎµÄ¸÷¸¨ÖúÈÎÎñ
 
 // Data source, ½ÔÎªÎ¨Ò»ÊµÀı
 CSinaRTDataSourcePtr gl_pSinaRTDataSource = nullptr;
@@ -100,4 +101,4 @@ CContainerChosenCrypto gl_dataContainerChosenWorldCrypto;
 CWorldMarketPtr gl_pWorldMarket = nullptr; //´ËÊµÀı±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£//
 CChinaMarketPtr gl_pChinaMarket = nullptr; //´ËÊµÀı±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£//
 
-vector<CVirtualMarketPtr> gl_vMarketPtr{}; // ¸÷ÊĞ³¡Ö¸ÕëµÄÈİÆ÷£¬Ö»ÓÃÓÚÖ´ĞĞ¸÷ÊĞ³¡µÄScheduleTask
+vector<CVirtualMarketPtr> gl_vMarket{}; // ¸÷ÊĞ³¡Ö¸ÕëµÄÈİÆ÷£¬Ö»ÓÃÓÚÖ´ĞĞ¸÷ÊĞ³¡µÄScheduleTask

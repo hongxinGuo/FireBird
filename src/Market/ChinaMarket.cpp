@@ -631,7 +631,7 @@ void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
 	}
 }
 
-void CChinaMarket::TaskLoadCurrentStockHistoryData() {
+void CChinaMarket::TaskLoadCurrentStockHistoryData() const {
 	if (m_pCurrentStock != nullptr) {
 		if (!m_pCurrentStock->IsDayLineLoaded()) {
 			auto pStock = m_pCurrentStock;

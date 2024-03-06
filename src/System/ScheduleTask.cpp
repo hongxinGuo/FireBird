@@ -19,8 +19,8 @@
 #include "simdjsonGetValue.h"
 
 void CreateMarketContainer() {
-	gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
-	gl_vMarketPtr.push_back(gl_pChinaMarket); // 中国股票市场
+	gl_vMarket.push_back(gl_pWorldMarket); // 美国股票市场
+	gl_vMarket.push_back(gl_pChinaMarket); // 中国股票市场
 }
 
 void CreateDataSource() {
@@ -109,17 +109,24 @@ void InitializeMarkets() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 void ResetMarkets() {
-	for (const auto& pMarket : gl_vMarketPtr) {
+	for (const auto& pMarket : gl_vMarket) {
 		pMarket->ResetMarket();
 	}
 }
 
-bool IsResettingMarket() {
-	return gl_pWorldMarket->IsResettingMarket() || gl_pChinaMarket->IsResettingMarket();
+bool IsMarketResetting() {
+	for (const auto& pMarket : gl_vMarket) {
+		if (pMarket->IsResetting()) return true;
+	}
+	return false;
+}
+
+bool IsResetting() {
+	return gl_pWorldMarket->IsResetting() || gl_pChinaMarket->IsResetting();
 }
 
 void ScheduleMarketTask() {
-	for (const auto& pVirtualMarket : gl_vMarketPtr) {
+	for (const auto& pVirtualMarket : gl_vMarket) {
 		if (pVirtualMarket->IsReadyToRun()) pVirtualMarket->ScheduleTask();
 	}
 }
@@ -127,7 +134,7 @@ void ScheduleMarketTask() {
 void ScheduleTask() {
 	static bool s_Processing = false;
 	CHighPerformanceCounter counter;
-	if (IsResettingMarket()) return;// 市场重启时无法并行工作，且需要很长时间
+	if (IsResetting()) return;// 市场重启时无法并行工作，且需要很长时间
 	if (s_Processing) {
 		gl_systemMessage.PushInnerSystemInformationMessage("ScheduleTask()发生重入");
 		return;
@@ -136,7 +143,7 @@ void ScheduleTask() {
 	counter.start();
 	try {
 		ScheduleMarketTask();	// 调用主调度函数,由各市场调度函数执行具体任务
-		// 其他个DataSource的调度，也考虑移至此处。
+		// 其他各DataSource的调度，也考虑移至此处。
 	}
 	catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
 		CString str = _T("ScheduleMarketTask unhandled exception founded : ");
@@ -157,6 +164,11 @@ void ScheduleTask() {
 	counter.stop();
 	gl_systemMessage.m_lScheduleTaskTime += counter.GetElapsedMicroSecond();
 	s_Processing = false;
+}
+
+void SchedulePerSecondTask() {
+	gl_pSinaRTDataSource->CalcTotalBytePerSecond(); // 计算每秒读取的数据量
+	gl_systemMessage.CalcScheduleTaskTimePerSecond(); // 计算每秒调度所需的时间
 }
 
 void InitializeSystem() {

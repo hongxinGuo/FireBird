@@ -2,8 +2,6 @@
 
 #include<benchmark/benchmark.h>
 
-#include"TimeConvert.h"
-
 using std::make_shared;
 
 class CTimeConvertBenchmark : public benchmark::Fixture {

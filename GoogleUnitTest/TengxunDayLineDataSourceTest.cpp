@@ -3,7 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"TengxunDayLineDataSource.h"
-#include"WorldMarket.h"
+//#include"WorldMarket.h"
 #include"ChinaMarket.h"
 #include "ProductTengxunDayLine.h"
 

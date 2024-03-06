@@ -12,7 +12,7 @@
 #include"MockWorldMarket.h"
 
 #include"FinnhubDataSource.h"
-#include "TiingoDataSource.h"
+//#include "TiingoDataSource.h"
 
 using namespace testing;
 

@@ -135,7 +135,7 @@ int CWatchdogMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	CMFCToolBar::EnableQuickCustomization();
 
 	if (CMFCToolBar::GetUserImages() == nullptr) { // load user-defined toolbar images
-		//if (m_UserImages.Load(_T("UserImages.bmp"))) { //todo 这里使用了文件系统而不是预先编译的资源，使用下面这行替换即可。
+		//if (m_UserImages.Load(_T("UserImages.bmp"))) { //Note 这里使用了文件系统而不是预先编译的资源，导致无法找到UserImages.bmp文件。使用下面这行替换即可。
 		if (m_UserImages.Load(IDB_USER_IMAGE)) {
 			CMFCToolBar::SetUserImages(&m_UserImages);
 		}
@@ -186,8 +186,7 @@ int CWatchdogMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 BOOL CWatchdogMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 	if (!CMDIFrameWndEx::PreCreateWindow(cs))
 		return FALSE;
-	// TODO: Modify the Window class or styles here by modifying
-	//  the CREATESTRUCT cs
+	// TODO: Modify the Window class or styles here by modifying the CREATESTRUCT cs
 
 	return TRUE;
 }

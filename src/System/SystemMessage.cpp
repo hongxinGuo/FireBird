@@ -98,6 +98,12 @@ CString CSystemMessage::GetCurrentTiingoWebSocketCrypto() const {
 	return s;
 }
 
+void CSystemMessage::CalcScheduleTaskTimePerSecond() {
+	const long l = m_lScheduleTaskTime;
+	m_lScheduleTaskTime = 0;
+	m_lScheduleTaskTimePerSecond = l;
+}
+
 void CSystemDeque::Display(COutputList* pOutputList, const CString& strTime) {
 	size_t lTotal = Size();
 	if (lTotal > pOutputList->GetLineNumber()) lTotal = pOutputList->GetLineNumber();

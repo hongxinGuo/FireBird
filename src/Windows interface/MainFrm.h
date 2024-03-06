@@ -50,8 +50,6 @@ public:
 protected:
 	UINT m_uIdTimer;
 	long m_lCurrentPos;
-	time_t m_timeLast;
-	time_t m_timeLast2;
 
 	char m_aStockCodeTemp[30];
 

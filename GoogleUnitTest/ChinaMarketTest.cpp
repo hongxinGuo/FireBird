@@ -981,7 +981,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestProcessDayLine) {
-		CDayLineWebDataPtr pData = make_shared<CDayLineWebData>();
+		const CDayLineWebDataPtr pData = make_shared<CDayLineWebData>();
 		CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(_T("600666.SS"));
 		CString strTest = _T("");
 

@@ -92,8 +92,8 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	ASSERT(bNameValid);
 	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)10);  // 错误消息
 
-	// 设置1000毫秒每次的软调度
-	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(3), 1000, nullptr);
+	// 设置500毫秒每次的软调度
+	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(3), 500, nullptr);
 	if (m_uIdTimer == 0) {
 		CString str;
 	}
@@ -143,10 +143,14 @@ void COutputWnd::UpdateFonts() {
 //
 // 显示各项系统消息和警告等。
 //
-//
+// 每秒更新一次
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
+	const auto time = GetUTCTime();
+	if (timeLast >= time) return; // 每秒更新一次
+	timeLast = time;
+
 	CString str2;
 	long lCurrentPos;
 	bool fUpdate = false;
@@ -355,6 +359,6 @@ void COutputList::OnSize(UINT nType, int cx, int cy) {
 	CListBox::OnSize(nType, cx, cy);
 
 	// TODO: Add your message handler code here
-	int h = GetItemHeight(0);
+	const int h = GetItemHeight(0);
 	m_iLineNumber = cy / h;
 }

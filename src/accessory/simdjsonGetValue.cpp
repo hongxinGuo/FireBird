@@ -16,12 +16,12 @@ ondemand::array gl_simdjsonEmptyArray;
 void CreateSimdjsonEmptyArray() {
 	static ondemand::parser s_parserEmptyArray;
 	static auto s_jsonEmptyArray = "[]"_padded; // The _padded suffix creates a simdjson::padded_string instance
-	static ondemand::document s_docEmptyArray = s_parserEmptyArray.iterate(s_jsonEmptyArray);
+	static ondemand::document s_docEmptyArray = s_parserEmptyArray.iterate(s_jsonEmptyArray).value();
 	gl_simdjsonEmptyArray = s_docEmptyArray.get_array().value();
 }
 
 double jsonGetDouble(ondemand::value& value, const string_view& key, double defaultValue) {
-	ondemand::value valueInner = value[key];
+	ondemand::value valueInner = value[key].value();
 	try {
 		return valueInner.get_double();
 	}
@@ -32,7 +32,7 @@ double jsonGetDouble(ondemand::value& value, const string_view& key, double defa
 }
 
 INT64 jsonGetInt64(ondemand::value& value, const string_view& key, const INT64 defaultValue) {
-	ondemand::value valueInner = value[key];
+	ondemand::value valueInner = value[key].value();
 	try {
 		return valueInner.get_int64();
 	}
@@ -43,7 +43,7 @@ INT64 jsonGetInt64(ondemand::value& value, const string_view& key, const INT64 d
 }
 
 bool jsonGetBool(ondemand::value& value, const string_view& key) {
-	ondemand::value valueInner = value[key];
+	ondemand::value valueInner = value[key].value();
 	try {
 		return valueInner.get_bool();
 	}
@@ -54,7 +54,7 @@ bool jsonGetBool(ondemand::value& value, const string_view& key) {
 }
 
 string_view jsonGetStringView(ondemand::value& value, const string_view& key, const string& defaultValue) {
-	ondemand::value valueInner = value[key];
+	ondemand::value valueInner = value[key].value();
 	try {
 		return valueInner.get_string();
 	}
@@ -69,7 +69,7 @@ string_view jsonGetRawJsonToken(ondemand::value& value, const string_view& key) 
 }
 
 ondemand::array jsonGetArray(ondemand::value& value, const string_view& key) {
-	ondemand::value valueInner = value[key];
+	ondemand::value valueInner = value[key].value();
 	try {
 		return valueInner.get_array();
 	}
@@ -135,7 +135,7 @@ ondemand::array jsonGetArray(ondemand::value& value) {
 }
 
 double jsonGetDouble(ondemand::object& object, const string_view& key, double defaultValue) {
-	ondemand::value valueInner = object[key];
+	ondemand::value valueInner = object[key].value();
 	try {
 		return valueInner.get_double();
 	}
@@ -146,7 +146,7 @@ double jsonGetDouble(ondemand::object& object, const string_view& key, double de
 }
 
 INT64 jsonGetInt64(ondemand::object& object, const string_view& key, const INT64 defaultValue) {
-	ondemand::value valueInner = object[key];
+	ondemand::value valueInner = object[key].value();
 	try {
 		return valueInner.get_int64();
 	}
@@ -157,7 +157,7 @@ INT64 jsonGetInt64(ondemand::object& object, const string_view& key, const INT64
 }
 
 bool jsonGetBool(ondemand::object& object, const string_view& key) {
-	ondemand::value valueInner = object[key];
+	ondemand::value valueInner = object[key].value();
 	try {
 		return valueInner.get_bool();
 	}
@@ -168,7 +168,7 @@ bool jsonGetBool(ondemand::object& object, const string_view& key) {
 }
 
 string_view jsonGetStringView(ondemand::object& object, const string_view& key, const string& defaultValue) {
-	ondemand::value valueInner = object[key];
+	ondemand::value valueInner = object[key].value();
 	try {
 		return valueInner.get_string();
 	}
@@ -183,7 +183,7 @@ string_view jsonGetRawJsonToken(ondemand::object& object, const string_view& key
 }
 
 ondemand::array jsonGetArray(ondemand::object& object, const string_view& key) {
-	ondemand::value valueInner = object[key];
+	ondemand::value valueInner = object[key].value();
 	try {
 		return valueInner.get_array();
 	}
@@ -194,7 +194,7 @@ ondemand::array jsonGetArray(ondemand::object& object, const string_view& key) {
 }
 
 double jsonGetDouble(ondemand::document& doc, const string_view& key, const double defaultValue) {
-	ondemand::value valueInner = doc[key];
+	ondemand::value valueInner = doc[key].value();
 	try {
 		return valueInner.get_double();
 	}
@@ -205,7 +205,7 @@ double jsonGetDouble(ondemand::document& doc, const string_view& key, const doub
 }
 
 INT64 jsonGetInt64(ondemand::document& doc, const string_view& key, const INT64 defaultValue) {
-	ondemand::value valueInner = doc[key];
+	ondemand::value valueInner = doc[key].value();
 	try {
 		return valueInner.get_int64();
 	}
@@ -216,7 +216,7 @@ INT64 jsonGetInt64(ondemand::document& doc, const string_view& key, const INT64 
 }
 
 bool jsonGetBool(ondemand::document& doc, const string_view& key) {
-	ondemand::value valueInner = doc[key];
+	ondemand::value valueInner = doc[key].value();
 	try {
 		return valueInner.get_bool();
 	}
@@ -227,7 +227,7 @@ bool jsonGetBool(ondemand::document& doc, const string_view& key) {
 }
 
 string_view jsonGetStringView(ondemand::document& doc, const string_view& key, const string& defaultValue) {
-	ondemand::value valueInner = doc[key];
+	ondemand::value valueInner = doc[key].value();
 	try {
 		return valueInner.get_string();
 	}
@@ -242,7 +242,7 @@ string_view jsonGetRawJsonToken(ondemand::document& doc, const string_view& key)
 }
 
 ondemand::array jsonGetArray(ondemand::document& doc, const string_view& key) {
-	ondemand::value valueInner = doc[key];
+	ondemand::value valueInner = doc[key].value();
 	try {
 		return valueInner.get_array();
 	}

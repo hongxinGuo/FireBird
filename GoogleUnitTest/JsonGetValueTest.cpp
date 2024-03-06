@@ -87,7 +87,6 @@ namespace FireBirdTest {
 		double d2 = jsonGetDouble(pjs.get(), _T("v"));
 		EXPECT_DOUBLE_EQ(d2, -2.7551);
 
-		d1 = d2 = -1;
 		d1 = jsonGetDouble(*pjs.get(), _T("period"));
 		EXPECT_DOUBLE_EQ(d1, 0.0) << "period为字符串，返回默认值";
 		d2 = jsonGetDouble(*pjs.get(), _T("v"));

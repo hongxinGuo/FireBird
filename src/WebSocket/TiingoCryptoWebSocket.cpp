@@ -75,7 +75,7 @@ void CTiingoCryptoWebSocket::Send(const vectorString& vSymbol) {
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
 }
 
-void CTiingoCryptoWebSocket::MonitorWebSocket(vectorString vSymbol) {
+void CTiingoCryptoWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 	CVirtualWebSocket::MonitorWebSocket(gl_pTiingoDataSource->IsWebError(), gl_systemConfiguration.IsUsingTiingoCryptoWebSocket(), vSymbol);
 }
 

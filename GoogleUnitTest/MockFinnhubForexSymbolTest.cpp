@@ -8,10 +8,10 @@
 #include"GeneralCheck.h"
 
 #include"Thread.h"
-#include"DayLine.h"
+//#include"DayLine.h"
 
-#include"FinnhubForexSymbol.h"
-#include"MockFinnhubForexSymbol.h"
+//#include"FinnhubForexSymbol.h"
+//#include"MockFinnhubForexSymbol.h"
 
 using namespace testing;
 

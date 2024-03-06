@@ -10,7 +10,7 @@
 #include"Thread.h"
 
 #include"WorldStock.h"
-#include"MockWorldStock.h"
+//#include"MockWorldStock.h"
 
 using namespace testing;
 using std::make_shared;

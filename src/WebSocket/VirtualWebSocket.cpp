@@ -109,7 +109,7 @@ void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallbac
 	ASSERT(!IsOpen()); // start()ÊÇÒì²½µÄ
 }
 
-void CVirtualWebSocket::MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, vectorString vSymbol) {
+void CVirtualWebSocket::MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, const vectorString& vSymbol) {
 	if (fDataSourceError) {
 		if (IsOpen()) TaskDisconnect();
 		return;

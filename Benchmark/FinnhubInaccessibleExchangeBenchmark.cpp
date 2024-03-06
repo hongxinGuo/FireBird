@@ -3,7 +3,6 @@
 #include<benchmark/benchmark.h>
 
 #include"FinnhubInaccessibleExchange.h"
-#include"FinnhubInquiryType.h"
 
 using std::make_shared;
 

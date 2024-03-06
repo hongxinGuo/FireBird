@@ -4,7 +4,7 @@
 
 #include"MockChinaMarket.h"
 
-#include"thread.h"
+//#include"thread.h"
 
 using namespace testing;
 

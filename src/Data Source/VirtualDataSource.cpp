@@ -13,6 +13,7 @@
 using std::thread;
 
 atomic_long CVirtualDataSource::sm_lTotalByteRead = 0;
+atomic_long CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;
 
 CVirtualDataSource::CVirtualDataSource() {
 	m_pCurrentProduct = nullptr;
@@ -313,6 +314,12 @@ void CVirtualDataSource::TransferDataToWebData(const CWebDataPtr& pWebData) {
 
 void CVirtualDataSource::CreateTotalInquiringString() {
 	m_strInquiry = m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken;
+}
+
+void CVirtualDataSource::CalcTotalBytePerSecond() {
+	const long l = sm_lTotalByteRead;
+	sm_lTotalByteRead = 0;
+	sm_lTotalByteReadPerSecond = l;
 }
 
 void CVirtualDataSource::TESTSetBuffer(const char* buffer, const INT64 lTotalNumber) {

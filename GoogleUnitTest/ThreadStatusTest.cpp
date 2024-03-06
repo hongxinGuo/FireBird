@@ -35,7 +35,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_ThreadStatus.GetNumberOfBackGroundWorkingThread(), 0);
 
 		const size_t l = gl_systemMessage.InformationSize();
-		CThreadStatus threadStatus; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
+		CThreadStatus threadStatus; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）Note 不要删除
 		EXPECT_EQ(gl_systemMessage.InformationSize(), l + 1) << "不允许生成第二个变量，系统报警"; // 系统报警队列
 		for (int i = 0; i < l + 1; i++) {
 			CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列

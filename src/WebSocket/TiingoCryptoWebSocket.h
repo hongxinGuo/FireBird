@@ -51,7 +51,7 @@ public:
 	void Connect() override;
 	void Send(const vectorString& vSymbol) override;
 
-	void MonitorWebSocket(vectorString vSymbol);
+	void MonitorWebSocket(const vectorString& vSymbol);
 
 	static string CreateMessage(const vectorString& vSymbol);
 	bool ParseTiingoCryptoWebSocketData(shared_ptr<string> pData);

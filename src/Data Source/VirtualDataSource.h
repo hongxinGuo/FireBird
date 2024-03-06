@@ -142,6 +142,8 @@ public:
 	static long GetTotalByteRead() noexcept { return sm_lTotalByteRead; }
 	static void SetTotalByteRead(const long lValue) noexcept { sm_lTotalByteRead = lValue; }
 	static void ClearTotalByteRead() noexcept { sm_lTotalByteRead = 0; }
+	static long GetTotalByteReadPerSecond() noexcept { return sm_lTotalByteReadPerSecond; }
+	static void CalcTotalBytePerSecond();
 
 	void SetCurrentInquiryTime(const time_t tt) noexcept { m_tCurrentInquiryTime = tt; }
 	virtual time_t GetCurrentInquiryTime() const noexcept { return m_tCurrentInquiryTime; }
@@ -180,6 +182,7 @@ protected:
 	atomic_int64_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）
 
 	static atomic_long sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
+	static atomic_long sm_lTotalByteReadPerSecond; // 
 
 	long long m_llLastTimeTickCount;
 

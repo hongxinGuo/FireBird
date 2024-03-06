@@ -111,8 +111,11 @@ public:
 	void SetCurrentTiingoWebSocketCrypto(const CString& s);
 	CString GetCurrentTiingoWebSocketCrypto() const;
 
+	void CalcScheduleTaskTimePerSecond();
+
 public:
-	atomic_long m_lScheduleTaskTime;
+	atomic_long m_lScheduleTaskTime{0};
+	atomic_long m_lScheduleTaskTimePerSecond{0};
 
 protected:
 	// 信息输出队列群

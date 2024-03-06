@@ -3,7 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"NeteaseDayLineDataSource.h"
-#include"WorldMarket.h"
+//#include"WorldMarket.h"
 #include"ChinaMarket.h"
 #include "ChinaStockCodeConverter.h"
 #include "SinaRTDataSource.h"
