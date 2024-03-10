@@ -13,3 +13,4 @@ CMarketTask::CMarketTask(long lTime, long lType) {
 	m_lTime = lTime;
 	m_lType = lType;
 }
+

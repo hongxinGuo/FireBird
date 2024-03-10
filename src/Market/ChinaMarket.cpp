@@ -50,7 +50,7 @@ CChinaMarket::CChinaMarket() {
 
 	Reset();
 
-	AddTask(CREATE_TASK__, 1);
+	AddTask(CHINA_MARKET_CREATE_TASK__, 1);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -182,7 +182,7 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 	if (lCurrentTime >= pTask->GetTime()) { // time to executive?
 		DiscardCurrentMarketTask();
 		switch (pTask->GetType()) {
-		case CREATE_TASK__: // 生成其他任务
+		case CHINA_MARKET_CREATE_TASK__: // 生成其他任务
 			TaskCreateTask(lCurrentTime);
 			break;
 		case RELOAD_SYSTEM__: // 重启系统？
@@ -591,12 +591,12 @@ void CChinaMarket::TaskCreateTask(long lCurrentTime) {
 		AddTask(RELOAD_SYSTEM__, 210000);
 	}
 
-	AddTask(CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
+	AddTask(CHINA_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
-/// 系统关闭时要执行一系列关闭系统前的准备工作，不允许使用exit(0)函数或PostQuitMessage()直接退出系统，
+/// Note 系统关闭时要执行一系列关闭系统前的准备工作，不允许使用exit(0)函数或PostQuitMessage()直接退出系统，
 /// 故而采用向主框架窗口发送关闭窗口系统消息（WM_SYSCOMMAND SC_CLOSE）的方法。
 ///
 /// 本函数只是发出关闭系统的消息，系统关闭由关闭函数执行。系统重新载入由Watchdog监控程序完成。

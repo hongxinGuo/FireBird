@@ -52,8 +52,7 @@ binary_semaphore gl_ProcessChinaMarketRTData{1}; // 当处理中国市场的实时数据时，
 counting_semaphore<8> gl_BackgroundWorkingThread{8}; // 最多后台工作线程允许数量
 
 concurrencpp::runtime gl_runtime; // 工作线程运行调度器
-concurrencpp::timer gl_timerMainSchedule; // 主调度任务
-concurrencpp::timer gl_timerPerSecond; // 每秒调度一次的各辅助任务
+array<timer, TASK_END> gl_aTimer; // timer序列。所有的任务如果使用单独timer的话，将对应的timer存储于此序列中。
 
 // Data source, 皆为唯一实例
 CSinaRTDataSourcePtr gl_pSinaRTDataSource = nullptr;

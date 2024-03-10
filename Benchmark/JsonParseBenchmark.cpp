@@ -462,8 +462,7 @@ BENCHMARK_F(CSinaRTData, ParseSinaRTData)(benchmark::State& state) {
 
 BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool)(benchmark::State& state) {
 	for (auto _ : state) {
-		ParseSinaRTDataUsingWorkingThread(pWebData); // todo 测试此并行coroutine时，系统cpu占比高居不下，直至整个测试完成
-		//由于无法同步result,故而函数没有等待工作线程结束就返回了，导致出现众多的工作线程竞争，使得cpu占比高居100%很长时间。
+		ParseSinaRTDataUsingWorkingThread(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
 }
 
@@ -495,7 +494,6 @@ BENCHMARK_F(CTengxunRTData, ParseTengxunRTData)(benchmark::State& state) {
 
 BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool)(benchmark::State& state) {
 	for (auto _ : state) {
-		ParseTengxunRTDataUsingWorkingThread(pWebData); // todo 测试此并行coroutine时，系统cpu占比高居不下，直至整个测试完成
-		//由于无法同步result,故而函数没有等待工作线程结束就返回了，导致出现众多的工作线程竞争，使得cpu占比高居100%很长时间。
+		ParseTengxunRTDataUsingWorkingThread(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
 }

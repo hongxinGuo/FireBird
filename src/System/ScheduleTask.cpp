@@ -18,6 +18,28 @@
 
 #include "simdjsonGetValue.h"
 
+void TaskSchedulePerSecond() {
+	gl_pSinaRTDataSource->CalcTotalBytePerSecond(); // 计算每秒读取的数据量
+	gl_systemMessage.CalcScheduleTaskTimePerSecond(); // 计算每秒调度所需的时间
+}
+
+void TaskExitSystem() {
+	// 向主窗口发送关闭窗口系统消息，通知框架窗口执行关闭任务。
+	PostMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), WM_SYSCOMMAND, SC_CLOSE, 0);
+}
+
+void TaskCheckWorldMarketReady() {
+	if (!gl_pWorldMarket->IsSystemReady()) {
+		if (!gl_pFinnhubDataSource->IsUpdateSymbol() && !gl_pFinnhubDataSource->IsUpdateForexExchange() && !gl_pFinnhubDataSource->IsUpdateForexSymbol()
+			&& !gl_pFinnhubDataSource->IsUpdateCryptoExchange() && !gl_pFinnhubDataSource->IsUpdateCryptoSymbol()) {
+			const CString str = "世界市场初始化完毕";
+			gl_systemMessage.PushInformationMessage(str);
+			gl_pWorldMarket->SetSystemReady(true);
+			gl_aTimer.at(WORLD_MARKET_CHECK_SYSTEM_READY__).cancel(); // 市场准备好后即删除此任务。
+		}
+	}
+}
+
 void CreateMarketContainer() {
 	gl_vMarket.push_back(gl_pWorldMarket); // 美国股票市场
 	gl_vMarket.push_back(gl_pChinaMarket); // 中国股票市场
@@ -131,12 +153,12 @@ void ScheduleMarketTask() {
 	}
 }
 
-void ScheduleTask() {
+void TaskSchedulePer100ms() {
 	static bool s_Processing = false;
 	CHighPerformanceCounter counter;
 	if (IsResetting()) return;// 市场重启时无法并行工作，且需要很长时间
 	if (s_Processing) {
-		gl_systemMessage.PushInnerSystemInformationMessage("ScheduleTask()发生重入");
+		gl_systemMessage.PushInnerSystemInformationMessage("TaskSchedulePer100ms()发生重入");
 		return;
 	}
 	s_Processing = true;
@@ -164,11 +186,6 @@ void ScheduleTask() {
 	counter.stop();
 	gl_systemMessage.m_lScheduleTaskTime += counter.GetElapsedMicroSecond();
 	s_Processing = false;
-}
-
-void SchedulePerSecondTask() {
-	gl_pSinaRTDataSource->CalcTotalBytePerSecond(); // 计算每秒读取的数据量
-	gl_systemMessage.CalcScheduleTaskTimePerSecond(); // 计算每秒调度所需的时间
 }
 
 void InitializeSystem() {

@@ -9,7 +9,8 @@
 
 #include"VirtualChinaMarketWebProduct.h"
 
-#include"atomic"
+#include"concurrentqueue/concurrentqueue.h"
+
 using std::atomic_int;
 
 class CProductTengxunDayLine final : public CVirtualChinaMarketWebProduct {
@@ -40,5 +41,6 @@ protected:
 
 	static atomic_int sm_iInquiryNumber; // 本轮查询次数
 	static atomic_int sm_iCurrentNumber; // 本次计数值
-	static vector<CDayLinePtr> sm_vDayLinePtr; //本轮查询到的日线数据。 
+	static vector<CDayLinePtr> sm_vDayLinePtr; //本轮查询到的日线数据。
+	static ConcurrentQueue<CDayLinePtr> sm_pvDayLine; // 所有查询到的日线数据
 };

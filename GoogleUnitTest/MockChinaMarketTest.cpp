@@ -109,7 +109,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask1) {
-		s_pMockChinaMarket->AddTask(CREATE_TASK__, 10000);
+		s_pMockChinaMarket->AddTask(CHINA_MARKET_CREATE_TASK__, 10000);
 
 		EXPECT_CALL(*s_pMockChinaMarket, TaskCreateTask(10000)).Times(1);
 

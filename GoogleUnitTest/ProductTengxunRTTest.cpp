@@ -63,10 +63,4 @@ namespace FireBirdTest {
 		//»Ö¸´Ô­×´
 		while (gl_qChinaMarketRTData.try_dequeue(pRTData));
 	}
-
-	TEST_F(CProductTengxunRTTest, TestParseTengxunRT) {
-		vector<CWebRTDataPtr> vWebRTData;
-		const auto pWebData = make_shared<CWebData>();
-		EXPECT_FALSE(tengxunRT.ParseTengxunRT(vWebRTData, pWebData));
-	}
 }

@@ -151,7 +151,7 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 	sTime += ' '; //添加一个空格，以利于下面的转换
 	const string_view svTime = GetNextField(svData, lCurrentPos, ',');
 	sTime.append(svTime.data(), svTime.size());
-	m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", sTime.c_str());	//转成UTC时间。新浪实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
+	m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", sTime.c_str(), -8);	//转成UTC时间。新浪实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
 	// 后面的数据为字符串"00",无效数据，不再处理
 	// 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
 	// 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
@@ -307,11 +307,8 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	lTemp = atol(sv.data());
 	// 30 成交日期和时间.格式为：yyyymmddhhmmss. 此时间采用的时区为东八区（北京标准时间）
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	//if (!ReadTengxunOneValue(pTengxunWebRTData, buffer1)) {
-	//throw exception(_T("成交日期和时间"));
-	//}
 	const string sTime(sv.data(), sv.size());
-	m_time = ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", sTime.c_str()); // 转成UTC时间。腾讯实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
+	m_time = ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", sTime.c_str(), -8); // 转成UTC时间。腾讯实时数据的时区与默认的东八区相同，故而无需添加时区偏离量
 	// 涨跌
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	// 涨跌率
@@ -347,12 +344,12 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	// 流通市值（单位为：亿元）
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	long lTemp2 = StrToDecimal(sv, 3);
-	m_llCurrentValue = static_cast<INT64>(lTemp2) * 100000; // 这里需要两次乘以100000
+	INT64 lTemp2 = StrToDecimal(sv, 3);
+	m_llCurrentValue = lTemp2 * 100000; // 这里需要两次乘以100000
 	// 总市值（单位为：亿元）
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	lTemp2 = StrToDecimal(sv, 3);
-	m_llTotalValue = static_cast<INT64>(lTemp2) * 100000; // 这里需要两次乘以100000
+	m_llTotalValue = lTemp2 * 100000; // 这里需要两次乘以100000
 	// 市净率
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	// 涨停价

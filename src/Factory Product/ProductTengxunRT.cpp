@@ -1,6 +1,10 @@
 #include"pch.h"
 
 #include"ProductTengxunRT.h"
+
+#include <simdjson.h>
+
+#include "HighPerformanceCounter.h"
 #include"JsonParse.h"
 #include "TengxunRTDataSource.h"
 
@@ -19,14 +23,27 @@ CString CProductTengxunRT::CreateMessage() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 使用工作线程模式改写后，实际执行时间却变长了。线程切换时间太长的缘故。不采用工作线程模式。
+// 使用并行工作线程模式改写后，速度为串行模式得2倍以上。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ParseTengxunRTData(pWebData);
-	//ParseTengxunRTDataUsingWorkingThread(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式稍慢，可见线程切换还是太费时间
-}
+	//ParseTengxunRTData(pWebData);
+	ParseTengxunRTDataUsingWorkingThread(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
 
-bool CProductTengxunRT::ParseTengxunRT(vector<CWebRTDataPtr>&, CWebDataPtr pWebData) {
-	return false;
+	/*
+	CWebRTDataPtr p;
+	CHighPerformanceCounter counter1, counter2;
+	counter1.start();
+	ParseTengxunRTDataUsingWorkingThread(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快40%。
+	counter1.stop();
+	int total2 = 0;
+	while (gl_qChinaMarketRTData.try_dequeue(p)) total2++;
+	counter2.start();
+	ParseTengxunRTData(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快40%。
+	counter2.stop();
+	int total = 0;
+	while (gl_qChinaMarketRTData.try_dequeue(p)) total++;
+	ASSERT(total2 == total);
+	double f = (double)counter1.GetElapseTick() / counter2.GetElapseTick();
+	*/
 }

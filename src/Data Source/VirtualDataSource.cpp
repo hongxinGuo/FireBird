@@ -2,7 +2,7 @@
 
 #include "VirtualDataSource.h"
 
-#include <concurrencpp/executors/thread_pool_executor.h>
+#include <simdjson.h>
 
 #include"Thread.h"
 #include"ThreadStatus.h"
@@ -44,9 +44,12 @@ CVirtualDataSource::CVirtualDataSource() {
 	m_dwWebErrorCode = 0;
 }
 
-UINT ThreadGetWebDataAndProcessIt(CVirtualDataSource* p) {
-	p->GetWebDataAndProcessIt();
-	return 0;
+void CVirtualDataSource::RunWorkingThread(const long lCurrentLocalMarketTime) {
+	gl_runtime.thread_executor()->post([this, lCurrentLocalMarketTime] { //Note 必须使用独立的thread_executor任务序列，不能使用thread_pool_executor或者background_executor
+			gl_ThreadStatus.IncreaseWebInquiringThread();
+			this->Run(lCurrentLocalMarketTime);
+			gl_ThreadStatus.DecreaseWebInquiringThread();
+		});
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -154,7 +157,6 @@ void CVirtualDataSource::GetWebDataImp() {
 		const auto pWebData = CreateWebData();
 		// 网络数据服务器正在使用时就可能被中止，故而存储当前数据时需要判断
 		if (IsEnable()) StoreReceivedData(pWebData); // 当变更服务器（如中国市场的实时数据）时，要保证抛弃掉被变更服务器当前接收到的数据
-		//ResetBuffer(WEB_SOURCE_DATA_BUFFER_SIZE_); // todo 这里需要重新为m_sBuffer分配内存，否则当切换数据接收器时会出现内存禁止访问错误（执行memcpy时）。待查
 	}
 	else { // error handling
 		DiscardAllInquiry(); // 当一次查询产生多次申请时，这些申请都是各自相关的，只要出现一次错误，其他的申请就无意义了。
@@ -179,7 +181,7 @@ void CVirtualDataSource::ReadWebData() {
 		OpenFile(GetInquiringString());
 		GetFileHeaderInformation();
 		if (m_lContentLength > 0) {
-			m_sBuffer.resize(m_lContentLength + 1); // 调整缓存区大小，比实际数据大1字节（以防止越界访问）。估计是memcpy函数实现机制所致。
+			m_sBuffer.resize(m_lContentLength + 1); // 调整缓存区大小，比实际数据大1字节,以防止越界访问。
 		}
 		else {
 			m_sBuffer.resize(1024 * 1024);// 服务器不回报数据长度时，设置初始缓冲区为1M。
@@ -307,8 +309,8 @@ void CVirtualDataSource::VerifyDataLength() const {
 }
 
 void CVirtualDataSource::TransferDataToWebData(const CWebDataPtr& pWebData) {
-	ASSERT(m_sBuffer.size() >= m_lByteRead);
-	m_sBuffer.resize(m_lByteRead);
+	ASSERT(m_sBuffer.size() > m_lByteRead); // Note 即使知道数据总长度，也要多加上一个字节以防止越界。
+	m_sBuffer.resize(m_lByteRead); // Note 缓冲区大小为实际数据量
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
 }
 

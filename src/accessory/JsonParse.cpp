@@ -158,7 +158,7 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 //
 // 使用这种多线程模式与单线程模式相比，速度快1倍以上。
 //
-// Note 调用函数不能使用thread_pool_executor或者background_executor，只能使用thread_executor，原因待查。
+// Note 调用此函数的线程不能使用thread_pool_executor或者background_executor生成，只能使用thread_executor生成，原因待查。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvStringView) {
@@ -174,7 +174,7 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe,
 				for (int j = chunk_begin; j < chunk_end; j++) {
 					const auto pRTData = make_shared<CWebRTData>();
 					pRTData->ParseSinaData(pvStringView->at(j));
-					gl_qChinaMarketRTData.enqueue(pRTData); // 多个协程同时往里存时，无法通过size_approx函数得到队列数量。
+					gl_qChinaMarketRTData.enqueue(pRTData); // Note 多个协程同时往里存时，无法通过size_approx()函数得到队列数量。
 				}
 			}
 			catch (exception& e) {
@@ -194,9 +194,14 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe,
 void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
 	pWebData->ResetCurrentPos();
 	const shared_ptr<vector<string_view>> pvStringView = make_shared<vector<string_view>>();
-	while (!pWebData->IsLastDataParagraph()) {
-		auto sv = pWebData->GetCurrentSinaData();
-		pvStringView->emplace_back(sv);
+	try {
+		while (!pWebData->IsLastDataParagraph()) {
+			auto sv = pWebData->GetCurrentSinaData();
+			pvStringView->emplace_back(sv);
+		}
+	}
+	catch (exception& e) {
+		ReportErrorToSystemMessage(_T("ParseSinaData异常 "), e);
 	}
 	auto result = ParseSinaRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView);
 	result.get();
@@ -324,6 +329,8 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 //
 // 使用这种多线程模式与单线程模式相比，速度快1倍以上。
 //
+// Note 调用此函数得线程不能使用thread_pool_executor或者background_executor生成，只能使用thread_executor生成，原因待查。
+//
 //////////////////////////////////////////////////////////////////////////////////////////////////
 concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurrencpp::thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvStringView) {
 	const auto concurrency_level = tpe->max_concurrency_level();
@@ -336,11 +343,11 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 		if (chunk_end > pvStringView->size()) chunk_end = pvStringView->size();
 		auto result = tpe->submit([pvStringView, chunk_begin, chunk_end] {
 			try {
-				for (int j = chunk_begin; j < chunk_end; j++) {
+				for (long j = chunk_begin; j < chunk_end; j++) {
 					const auto pRTData = make_shared<CWebRTData>();
 					const string_view sv = pvStringView->at(j);
 					pRTData->ParseTengxunData(sv);
-					gl_qChinaMarketRTData.enqueue(pRTData);
+					gl_qChinaMarketRTData.enqueue(pRTData); // Note 多个协程同时往里存时，无法通过size_approx()函数得到队列数量。
 				}
 			}
 			catch (exception& e) {
@@ -359,10 +366,16 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 void ParseTengxunRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
 	pWebData->ResetCurrentPos();
 	const shared_ptr<vector<string_view>> pvStringView = make_shared<vector<string_view>>();
-	while (!pWebData->IsLastDataParagraph()) {
-		auto sv = pWebData->GetCurrentSinaData();
-		pvStringView->emplace_back(sv);
+	try {
+		while (!pWebData->IsLastDataParagraph()) {
+			auto sv = pWebData->GetCurrentSinaData();
+			pvStringView->emplace_back(sv);
+		}
 	}
+	catch (exception& e) {
+		ReportErrorToSystemMessage(_T("ParseSinaData异常 "), e);
+	}
+
 	auto result = ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView);
 	result.get(); // 等待线程执行完后方继续。
 }
@@ -412,10 +425,13 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 		long year, month, day;
 		string_view sv;
 		long lLastClose = 0;
-		const padded_string jsonPadded(svData);
 		ondemand::parser parser;
-		ondemand::document doc = parser.iterate(jsonPadded).value();
-		parser.iterate(jsonPadded);
+		ondemand::document doc;
+
+		//const padded_string_view jsonPaddedView(svData, svData.length()); // Note 此时的svData带有长度为SIMDJSON_PADDING长度的后缀
+		//doc = parser.iterate(jsonPaddedView).value();
+		const padded_string jsonPadded(svData);
+		doc = parser.iterate(jsonPadded).value();
 		ondemand::array dayArray = doc["data"][strStockCode]["day"].get_array().value(); // 使用索引strStockCode找到日线数组
 		// 以下为不使用索引strStockCode找到日线数组的方法
 		//ondemand::value data = doc["data"];
@@ -550,7 +566,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		pWebRTData->SetStockName(XferToCString(sName)); // 将utf-8字符集转换为多字节字符集
 		strTime = jsonGetString(js, _T("time"));
 		string strSymbol2 = jsonGetString(js, _T("code"));
-		pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
+		pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str(), -8));
 	}
 	catch (json::exception& e) {// 结构不完整
 		// do nothing
@@ -669,8 +685,11 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 	try {
 		ondemand::parser parser;
+		ondemand::document doc;
+		//const padded_string_view jsonPaddedView(svJsonData, svJsonData.length());
+		//doc = parser.iterate(jsonPaddedView).value();
 		const padded_string jsonPadded(svJsonData);
-		ondemand::document doc = parser.iterate(jsonPadded).value();
+		doc = parser.iterate(jsonPadded).value();
 		for (ondemand::field item_key : doc.get_object()) {
 			auto pWebRTData = make_shared<CWebRTData>();
 			pWebRTData->SetDataSource(NETEASE_RT_WEB_DATA_);
@@ -710,7 +729,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 			pWebRTData->SetPSell(2, jsonGetDouble(item, _T("ask3")) * 1000);
 			pWebRTData->SetPSell(1, jsonGetDouble(item, _T("ask2")) * 1000);
 			strTime = jsonGetStringView(item, _T("time"));
-			pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
+			pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str(), -8));
 
 			pWebRTData->SetLastClose(jsonGetDouble(item, _T("yestclose")) * 1000);
 			pWebRTData->SetAmount(jsonGetDouble(item, _T("turnover")));
@@ -775,7 +794,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson2(string_view sv
 			pWebRTData->SetPSell(2, StrToDecimal(jsonGetRawJsonToken(item, _T("ask3")), 3));
 			pWebRTData->SetPSell(1, StrToDecimal(jsonGetRawJsonToken(item, _T("ask2")), 3));
 			strTime = jsonGetStringView(item, _T("time"));
-			pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
+			pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str(), -8));
 
 			pWebRTData->SetLastClose(StrToDecimal(jsonGetRawJsonToken(item, _T("yestclose")), 3));
 			pWebRTData->SetAmount(StrToDecimal(jsonGetRawJsonToken(item, _T("turnover")), 0));
@@ -842,7 +861,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson3(string_view sv
 			pWebRTData->SetPSell(1, item.find_field("ask2").get_double() * 1000);
 			const string_view svTime = item.find_field("time").get_string();
 			strTime = svTime;
-			pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
+			pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str(), -8));
 			pWebRTData->SetLastClose(item.find_field("yestclose").get_double() * 1000);
 			pWebRTData->SetAmount(item.find_field("turnover").get_double());
 			pWebRTData->CheckNeteaseRTDataActive();

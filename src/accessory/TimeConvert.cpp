@@ -314,7 +314,7 @@ time_t ConvertBufferToTime(CString strFormat, const char* BufferMarketTime, cons
 	tm_.tm_isdst = 0;
 	time_t tt = _mkgmtime(&tm_); // 先变成GMT时间
 	if (tt > -1) {
-		tt += tTimeZoneOffset; // 然后改成本市场UTC时间
+		tt += tTimeZoneOffset * 3600; // 然后改成本市场UTC时间
 	}
 	return tt;
 }
@@ -333,7 +333,7 @@ time_t ConvertStringToTime(CString strFormat, CString strMarketTime, const time_
 	tm_.tm_isdst = 0;
 	time_t tt = _mkgmtime(&tm_);
 	if (tt > -1) {
-		tt += tTimeZoneOffset; //
+		tt += tTimeZoneOffset * 3600; //
 	}
 	return tt;
 }

@@ -311,23 +311,23 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 将改进任务栏的可用性，因为显示的文档名带有缩略图。
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
-	// todo 使用这种工作线程调度模式时，目前会出现数据同步问题。
 	// 设置100毫秒每次的工作线程调度，用于完成系统各项定时任务。
-	gl_timerMainSchedule = gl_runtime.timer_queue()->make_timer(
+	gl_aTimer.at(GENERAL_TASK_PER_100MS__) = gl_runtime.timer_queue()->make_timer(
 		1000ms,
 		100ms,
 		gl_runtime.thread_executor(), // 此为主调度任务，任务繁杂，故而使用独立的工作线程来调度任务
-		::ScheduleTask);
+		::TaskSchedulePer100ms);
+
 	// 设置每秒执行一次的辅助工作线程调度，用于执行各项辅助工作。
-	gl_timerPerSecond = gl_runtime.timer_queue()->make_timer(
+	gl_aTimer.at(GENERAL_TASK_PER_SECOND__) = gl_runtime.timer_queue()->make_timer(
 		100ms,
 		1000ms,
 		gl_runtime.thread_executor(), // 此为主调度任务，任务繁杂，故而使用独立的工作线程来调度任务
-		::SchedulePerSecondTask);
+		::TaskSchedulePerSecond);
 
 	// 设置500毫秒每次的软调度，只用于更新状态任务。
 	m_uIdTimer = SetTimer(STOCK_ANALYSIS_TIMER_, 500, nullptr);
-	if (m_uIdTimer == 0) { TRACE(_T("生成100ms时钟时失败\n")); }
+	if (m_uIdTimer == 0) { TRACE(_T("生成500ms时钟时失败\n")); }
 	return 0;
 }
 
@@ -424,12 +424,12 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 //
 //
-// CMainFrame timer只执行更新状态任务， 其他的定时数据采集处理任务由ScheduleTask()负责执行。
+// CMainFrame timer只执行更新状态任务， 其他的定时数据采集处理任务由TaskSchedulePer100ms()负责执行。
 // Note 注意同步问题。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
-	//::ScheduleTask(); // 系统更新任务皆位于此函数中
+	//::TaskSchedulePer100ms(); // 系统更新任务皆位于此函数中
 
 	// 在窗口显示系统状态的更新任务放在这里比较合适。可以减少窗口句柄问题
 	if (!::IsMarketResetting()) {
@@ -521,7 +521,7 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	sprintf_s(buffer, _T("%5I64d"), (size_t)gl_pChinaMarket->m_ttDistributeAndCalculateTime);
 	SysCallSetInnerSystemPaneText(2, buffer);
 
-	// 更新ScheduleTask()处理时间
+	// 更新TaskSchedulePer100ms()处理时间
 	const long time = gl_systemMessage.m_lScheduleTaskTimePerSecond / 1000;
 	sprintf_s(buffer, _T("%5I32d"), time);
 	SysCallSetInnerSystemPaneText(3, buffer);
@@ -574,15 +574,16 @@ void CMainFrame::UpdateInnerSystemStatus() {
 //
 // 当系统退出时，需要先退出工作线程。
 //
-// 外部发出的关闭窗口命令，也是执行到此处。
+// 系统自动重启时，是发出系统message执行到次处，外部发出的关闭窗口命令，也是执行到此处。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	if ((nID & 0Xfff0) == SC_CLOSE) {	// 如果是退出系统
 		gl_systemConfiguration.SetExitingSystem(true); // 提示各工作线程中途退出
 		TRACE("应用户申请，准备退出程序\n");
-		gl_timerPerSecond.cancel(); // Note 关闭辅助调度任务
-		gl_timerMainSchedule.cancel(); // Note 关闭主调度任务
+		for (auto& timer : gl_aTimer) {// 退出所有的计时器，关闭所有的工作线程。
+			timer.cancel();
+		}
 		for (const auto& pMarket : gl_vMarket) {
 			pMarket->PrepareToCloseMarket();
 		}

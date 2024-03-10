@@ -49,7 +49,7 @@ CWorldMarket::CWorldMarket() {
 
 	Reset();
 
-	AddTask(CREATE_TASK__, 1);
+	AddTask(WORLD_MARKET_CREATE_TASK__, 1);
 }
 
 CWorldMarket::~CWorldMarket() {
@@ -148,7 +148,7 @@ bool CWorldMarket::ProcessTask(long lCurrentTime) {
 	if (lCurrentTime >= pTask->GetTime()) {
 		DiscardCurrentMarketTask();
 		switch (pTask->GetType()) {
-		case CREATE_TASK__: // 生成其他任务
+		case WORLD_MARKET_CREATE_TASK__: // 生成其他任务
 			TaskCreateTask(lCurrentTime);
 			break;
 		case WORLD_MARKET_CHECK_SYSTEM_READY__: // 170000重启系统
@@ -194,7 +194,7 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0));
 
-	AddTask(CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
+	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
 
 void CWorldMarket::TaskProcessWebSocketData(long lCurrentTime) {

@@ -35,6 +35,7 @@ public:
 
 	virtual bool Reset() { return true; }
 
+	void RunWorkingThread(long lCurrentLocalMarketTime);
 	void Run(long lCurrentLocalMarketTime);
 	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	void GetWebDataAndProcessIt();
