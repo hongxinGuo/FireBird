@@ -243,20 +243,12 @@ Included items must then not match any entries in the exclude list to remain inc
                 <Source>C:\\Program Files\\*.*</Source>
                 <Source>.*\\vc\\include\\.*</Source>
 	              <Source>d:\\cfiles\\projects\\winssl\\*.*</Source>
-                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\gsl\\*.*</Source>
                 <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\googletest\\*.*</Source>
                 <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\Packages\\*.*</Source>
                 <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\ixwebsocket\\*.*</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\vld\\*.*</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\OPenSSL\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\DataBase\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\*.*</Source>
-	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\libcurl\\*.*</Source>
-	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\libcurl\\lib\\*.*</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\zlib\\*.*</Source>
-	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\zlib\\lib\\*.*</Source>
-	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\nlohmann json\\*.*</Source>
 	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdDoc.cpp</Source>
 	              <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdDoc.h</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBird.cpp</Source>

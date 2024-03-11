@@ -34,7 +34,6 @@ public:
 	void ResetCurrentPos() noexcept { m_lCurrentPos = 0; }
 
 	bool OutOfRange() const noexcept { return m_lCurrentPos >= m_sDataBuffer.size(); }
-	bool CurrentParagraphOutOfRange() const noexcept { return (m_lCurrentPos < m_lCurrentParagraphStartPos) || (m_lCurrentPos - m_lCurrentParagraphStartPos > m_svCurrentParagraph.size()); }
 
 	bool IsLastDataParagraph() const noexcept { return m_lCurrentPos >= m_sDataBuffer.size() - 2; }// 已读至最后一段数据
 
@@ -47,10 +46,6 @@ public:
 	string GetDataBuffer() noexcept { return m_sDataBuffer; }
 	long GetCurrentPos() const noexcept { return m_lCurrentPos; }
 	void SetCurrentPos(const long lValue) noexcept { m_lCurrentPos = lValue; }
-	long GetCurrentParagraphStartPos() const noexcept { return m_lCurrentParagraphStartPos; }
-	void SetCurrentParagraphStartPos(long lPos) noexcept { m_lCurrentParagraphStartPos = lPos; }
-	string_view GetCurrentParagraph() const noexcept { return m_svCurrentParagraph; }
-	void SetCurrentParagraph(string_view sv) noexcept { m_svCurrentParagraph = sv; }
 	string_view GetStringView(const int iDataPos, const int iDataLength) const { return string_view(m_sDataBuffer.c_str() + iDataPos, iDataLength); }
 	bool GetData(char* buffer, long lDataLength) const; // 从m_lCurrentPos开始拷贝
 	bool SetData(const char* buffer, long lDataLength); // 从m_lCurrentPos开始填充。

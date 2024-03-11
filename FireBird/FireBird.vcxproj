@@ -75,7 +75,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(AnalysisInclude);$(GoogletestInclude);$(LibInclude);$(IXWebSocket);$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -159,7 +159,7 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>
       </AdditionalDependencies>
-      <Profile>true</Profile>
+      <Profile>false</Profile>
       <HeapCommitSize>40971520</HeapCommitSize>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>

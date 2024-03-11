@@ -16,7 +16,6 @@ atomic_long CVirtualDataSource::sm_lTotalByteRead = 0;
 atomic_long CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;
 
 CVirtualDataSource::CVirtualDataSource() {
-	m_pCurrentProduct = nullptr;
 	m_fEnable = true; // 默认为允许执行
 
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
@@ -30,7 +29,6 @@ CVirtualDataSource::CVirtualDataSource() {
 	m_strInquiryFunction = _T("");
 	m_strSuffix = _T("");
 	m_strInquiryToken = _T("");
-	//m_sBuffer.resize(DefaultWebDataBufferSize_); // 大多数情况下，1M缓存就足够了，无需再次分配内存。
 
 	m_lInquiringNumber = 500; // 每次查询数量默认值为500
 	m_tCurrentInquiryTime = 0;
@@ -42,14 +40,6 @@ CVirtualDataSource::CVirtualDataSource() {
 
 	m_llLastTimeTickCount = 0;
 	m_dwWebErrorCode = 0;
-}
-
-void CVirtualDataSource::RunWorkingThread(const long lCurrentLocalMarketTime) {
-	gl_runtime.thread_executor()->post([this, lCurrentLocalMarketTime] { //Note 必须使用独立的thread_executor任务序列，不能使用thread_pool_executor或者background_executor
-			gl_ThreadStatus.IncreaseWebInquiringThread();
-			this->Run(lCurrentLocalMarketTime);
-			gl_ThreadStatus.DecreaseWebInquiringThread();
-		});
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

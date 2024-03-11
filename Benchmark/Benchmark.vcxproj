@@ -67,7 +67,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(GoogleBenchmark);$(GoogletestInclude);$(AnalysisInclude);$(LibInclude);$(IXWebSocket)</IncludePath>
     <LibraryPath>$(LibInclude);$(GoogleBenchmark);$(zlibInclude);$(LibraryPath)</LibraryPath>
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASAN|x64'">
     <IncludePath>$(GoogleBenchmark);$(GoogletestInclude);$(AnalysisInclude);$(LibInclude);$(IXWebSocket)</IncludePath>
