@@ -52,14 +52,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(TengxunDayLineDataSource.IsUpdateDayLine());
 	}
 
-	TEST_F(CTengxunDayLineDataSourceTest, TestUpdateStatusAfterSucceed) {
-		const auto pData = make_shared<CWebData>();
-		TengxunDayLineDataSource.SetDownLoadingStockCode(_T("Test"));
-		TengxunDayLineDataSource.UpdateStatus(pData);
-
-		EXPECT_STREQ(pData->GetStockCode(), _T("Test"));
-	}
-
 	TEST_F(CTengxunDayLineDataSourceTest, TestSetDownLoadingStockCode) {
 		EXPECT_STREQ(TengxunDayLineDataSource.GetDownLoadingStockCode(), _T(""));
 		TengxunDayLineDataSource.SetDownLoadingStockCode(_T("000001.SS"));

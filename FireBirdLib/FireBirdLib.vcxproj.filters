@@ -762,6 +762,9 @@
     <ClInclude Include="..\src\System\ScheduleTask.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Data Source\InquireEngine.h">
+      <Filter>头文件\Data Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1267,6 +1270,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Windows interface\FireBird.cpp">
       <Filter>源文件\windows interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\InquireEngine.cpp">
+      <Filter>源文件\Data Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

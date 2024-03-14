@@ -4,8 +4,6 @@
 
 #include"ContainerChinaStock.h"
 
-#include<set>
-#include<atomic>
 using std::set;
 using std::atomic_int64_t;
 

@@ -54,9 +54,9 @@ void CVirtualMarket::CalculateTime() noexcept {
 	m_lMarketTime = ConvertToTime(&m_tmMarket);
 }
 
-void CVirtualMarket::RunDataSource(long lCurrentLocalMarketTime) const {
+void CVirtualMarket::RunDataSource(long lMarketTime) const {
 	for (const auto& pDataSource : m_vDataSource) {
-		if (pDataSource->IsEnable()) pDataSource->Run(lCurrentLocalMarketTime);
+		if (pDataSource->IsEnable()) pDataSource->Run(lMarketTime);
 	}
 }
 

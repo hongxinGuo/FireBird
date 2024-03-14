@@ -24,10 +24,14 @@ public:
 	virtual ~CVirtualWebProduct() = default;
 
 	virtual CString CreateMessage() { return _T(""); };
-	virtual void ParseAndStoreWebData(CWebDataPtr pWebData) {};
-	virtual void AddInaccessibleExchange() {} // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
+	virtual void ParseAndStoreWebData(CWebDataPtr pWebData) {
+	};
+	virtual void ParseAndStoreWebData(vector<CWebDataPtr> vWebData) { ASSERT(0); }; // 一次处理多个接收到的数据。默认报错，目前只有腾讯日线数据需要这种模式
+	virtual void AddInaccessibleExchange() {
+	} // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 
-	virtual void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {} // default do nothing
+	virtual void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
+	} // default do nothing
 
 	bool CheckInaccessible(const CWebDataPtr& pWebData);
 	bool IsVoidJson(const CWebDataPtr& pWebData);
@@ -97,7 +101,8 @@ struct Test_TiingoWebData {
 		m_pData->Test_SetBuffer_(strData);
 	}
 
-	~Test_TiingoWebData() {}
+	~Test_TiingoWebData() {
+	}
 
 public:
 	long m_lIndex;

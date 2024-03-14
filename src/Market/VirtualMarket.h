@@ -23,7 +23,7 @@ public:
 
 	// 申请并处理Data source的数据，由最终衍生类的ScheduleMarketTask函数来调度。
 	// 此函数在VirtualMarket中定义，但由最终衍生类来调用，因为lCurrentTime必须为该衍生类的当前市场时间。
-	void RunDataSource(long lCurrentLocalMarketTime) const;
+	void RunDataSource(long lMarketTime) const;
 
 	virtual bool ProcessTask(long);
 

@@ -95,9 +95,16 @@ bool CTengxunDayLineDataSource::Inquire() {
 	return false;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+/// 腾讯日线服务器一次只能发送最多2000个数据，超过2000个数据的申请，需要拆分成多次方可。故而申请信息的处理只能放在DataSource中处理，
+/// product中存储的是处理后的完整申请字符串。
+/// 腾讯日线的申请格式为：https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sz000003,day,2002-12-01,2009-01-23,2000,,
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CChinaStockPtr& pStock) const {
-	//long lStartDate = 20100101; // 强迫生成多次申请（测试用）
-	long lStartDate = GetPrevDay(pStock->GetDayLineEndDate()); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
+	long lStartDate = 20100101; // 强迫生成多次申请（测试用）
+	//long lStartDate = GetPrevDay(pStock->GetDayLineEndDate()); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
 	const long lCurrentDate = gl_pChinaMarket->GetMarketDate();
 	const long yearDiffer = (lCurrentDate - lStartDate) / 10000;
 	const long lStockIndex = gl_dataContainerChinaStock.GetOffset(pStock);

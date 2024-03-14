@@ -26,7 +26,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			dataSource.ResetBuffer(WEB_SOURCE_DATA_BUFFER_SIZE_);
+			dataSource.SetBufferSize(WEB_SOURCE_DATA_BUFFER_SIZE_);
 		}
 
 		void TearDown() override {
@@ -65,15 +65,6 @@ namespace FireBirdTest {
 		dataSource.SetInquiring(true);
 		ASSERT_TRUE(dataSource.IsInquiring());
 		dataSource.SetInquiring(false);
-		ASSERT_FALSE(dataSource.IsInquiring());
-	}
-
-	TEST_F(CVirtualDataSourceTest, Test_IsInquiringAndClearFlag) {
-		ASSERT_FALSE(dataSource.IsInquiring());
-		dataSource.SetInquiring(true);
-		dataSource.IsInquiringAndClearFlag();
-		ASSERT_FALSE(dataSource.IsInquiring());
-		dataSource.IsInquiringAndClearFlag();
 		ASSERT_FALSE(dataSource.IsInquiring());
 	}
 

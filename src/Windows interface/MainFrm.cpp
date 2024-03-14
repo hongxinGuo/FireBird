@@ -171,6 +171,8 @@ CMainFrame::~CMainFrame() {
 
 	gl_systemConfiguration.SetExitingSystem(true);
 
+	while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1); // 等待网络查询线程退出
+
 	if (sm_fGlobeInit) {
 		sm_fGlobeInit = false;
 		ix::uninitNetSystem();// 退出系统时，析构IXWebSocket库，且只能析构一次。
@@ -195,7 +197,6 @@ CMainFrame::~CMainFrame() {
 		gl_dataContainerChinaStock.UpdateStockProfileDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 	}
 
-	while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1); // 等待网络查询线程退出
 	while (gl_ThreadStatus.IsBackGroundThreadsWorking()) Sleep(1); // 等待后台工作线程运行结束
 
 	TRACE("exit finally \n");

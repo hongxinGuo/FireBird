@@ -1,7 +1,7 @@
 ﻿/////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
-/// 腾讯日线目前一次能够提供2000个数据。当日线总量超过2000个时，需要分次查询不同日期的数据方可。
-///
+/// Note 腾讯日线目前一次能够提供2000个数据。当日线总量超过2000个时，需要分次查询不同日期的数据方可。
+/// 目前采用的方法是生成一次多个查询，DataSource查询后将数据暂存于本Product中，待所有查询都完成后由本Product负责将数据组合起来。
 ///
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,26 +21,26 @@ public:
 
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void ParseAndStoreWebData(vector<CWebDataPtr> vWebData) override;
 
-	static bool ReceivedAllData();
+	bool ReceivedAllData() const;
 
 	static void ResetStaticVariable() {
 		sm_vDayLinePtr.resize(0);
-		sm_iInquiryNumber = 1;
 		sm_iCurrentNumber = 0;
 	}
 
-	static void SetInquiryNumber(const int iNumber) { sm_iInquiryNumber = iNumber; }
-	static int GetInquiryNumber() { return sm_iInquiryNumber; }
+	void SetInquiryNumber(const int iNumber) { m_iInquiryNumber = iNumber; }
+	int GetInquiryNumber() { return m_iInquiryNumber; }
 	static void AppendDayLine(const vector<CDayLinePtr>& vDayLine);
 
-	static void CheckAndPrepareDayLine();
+	void CheckAndPrepareDayLine(vector<CDayLinePtr>& vDayLine);
 
 protected:
 	long m_lCurrentStockPosition; // 股票当前查询位置
 
-	static atomic_int sm_iInquiryNumber; // 本轮查询次数
+	atomic_int m_iInquiryNumber; // 本轮查询次数
+
 	static atomic_int sm_iCurrentNumber; // 本次计数值
 	static vector<CDayLinePtr> sm_vDayLinePtr; //本轮查询到的日线数据。
-	static ConcurrentQueue<CDayLinePtr> sm_pvDayLine; // 所有查询到的日线数据
 };

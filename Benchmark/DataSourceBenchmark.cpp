@@ -9,7 +9,7 @@ using std::make_shared;
 class CDataSourceBenchmark : public benchmark::Fixture {
 public:
 	void SetUp(const ::benchmark::State& state) override {
-		dataSource.ResetBuffer(WEB_SOURCE_DATA_BUFFER_SIZE_);
+		dataSource.SetBufferSize(WEB_SOURCE_DATA_BUFFER_SIZE_);
 	}
 
 	void TearDown(const ::benchmark::State& state) override {

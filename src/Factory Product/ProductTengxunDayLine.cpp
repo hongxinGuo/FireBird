@@ -10,11 +10,11 @@ using namespace std;
 static binary_semaphore s_semaphoreTransferData{1};
 
 atomic_int CProductTengxunDayLine::sm_iCurrentNumber = 0;
-atomic_int CProductTengxunDayLine::sm_iInquiryNumber = 0;
 vector<CDayLinePtr> CProductTengxunDayLine::sm_vDayLinePtr{};
 
 CProductTengxunDayLine::CProductTengxunDayLine() {
 	m_lCurrentStockPosition = 0;
+	m_iInquiryNumber = 0;
 }
 
 CString CProductTengxunDayLine::CreateMessage() {
@@ -61,7 +61,7 @@ void CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (ReceivedAllData()) {
 		pDayLineWebData->SetStockCode(pWebData->GetStockCode());
 		pDayLineWebData->ClearDayLine();
-		CheckAndPrepareDayLine();
+		CheckAndPrepareDayLine(sm_vDayLinePtr);
 		for (const auto& pData : sm_vDayLinePtr) {
 			pDayLineWebData->AppendDayLine(pData);
 		}
@@ -71,26 +71,49 @@ void CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	s_semaphoreTransferData.release();
 }
 
+void CProductTengxunDayLine::ParseAndStoreWebData(vector<CWebDataPtr> vWebData) {
+	ASSERT(vWebData.size() == m_iInquiryNumber);
+
+	vector<CDayLinePtr> vDayLine;
+	for (auto pWebData : vWebData) {
+		const auto pDayLineWebData = ParseTengxunDayLine(pWebData);
+		for (auto& pData : pDayLineWebData->GetProcessedDayLine()) {
+			if (GetMarket()->IsWorkingDay(pData->GetMarketDate())) { // 1991年左右的腾讯日线有周六的，清除掉。
+				vDayLine.push_back(pData);
+			}
+		}
+	}
+	const CDayLineWebDataPtr p = make_shared<CDayLineWebData>();
+	p->SetStockCode(vWebData.at(0)->GetStockCode());
+	p->ClearDayLine();
+	CheckAndPrepareDayLine(vDayLine);
+	for (const auto& pData : vDayLine) {
+		p->AppendDayLine(pData);
+	}
+	ResetStaticVariable();
+	gl_qDayLine.enqueue(p);
+}
+
 void CProductTengxunDayLine::AppendDayLine(const vector<CDayLinePtr>& vDayLine) {
 	for (auto& pDayLine : vDayLine) {
 		sm_vDayLinePtr.push_back(pDayLine);
 	}
 }
 
-void CProductTengxunDayLine::CheckAndPrepareDayLine() {
-	if (sm_vDayLinePtr.size() > 1) {
-		ranges::sort(sm_vDayLinePtr, [](const CDayLinePtr& p1, const CDayLinePtr& p2) { return p1->GetMarketDate() < p2->GetMarketDate(); });
+void CProductTengxunDayLine::CheckAndPrepareDayLine(vector<CDayLinePtr>& vDayLine) {
+	if (vDayLine.size() > 1) {
+		ranges::sort(vDayLine, [](const CDayLinePtr& p1, const CDayLinePtr& p2) { return p1->GetMarketDate() < p2->GetMarketDate(); });
 
-		for (int i = 0; i < sm_vDayLinePtr.size() - 1; i++) {
-			const auto p1 = sm_vDayLinePtr.at(i);
-			const auto p2 = sm_vDayLinePtr.at(i + 1);
+		for (int i = 0; i < vDayLine.size() - 1; i++) {
+			const auto p1 = vDayLine.at(i);
+			const auto p2 = vDayLine.at(i + 1);
 			ASSERT(p1->GetMarketDate() < p2->GetMarketDate()); // 没有重复数据
 			p2->SetLastClose(p1->GetClose());
 		}
 	}
 }
 
-bool CProductTengxunDayLine::ReceivedAllData() {
-	if (sm_iCurrentNumber >= sm_iInquiryNumber) return true;
+bool CProductTengxunDayLine::ReceivedAllData() const {
+	if (sm_iCurrentNumber >= m_iInquiryNumber) return true;
 	return false;
 }

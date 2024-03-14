@@ -18,6 +18,7 @@ constexpr int DefaultWebDataBufferSize_ = 1024 * 1024;
 class CWebData final {
 public:
 	friend CVirtualDataSource;
+	friend CInquireEngine;
 	friend CDayLineWebData;
 
 	CWebData();

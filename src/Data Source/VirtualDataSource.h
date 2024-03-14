@@ -35,7 +35,9 @@ public:
 
 	virtual bool Reset() { return true; }
 
-	void Run(long lCurrentLocalMarketTime);
+	void Run2(long lMarketTime);
+	void RunWorkingThread(long lMarketTime);
+	void Run(long lMarketTime);
 	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	void GetWebDataAndProcessIt();
 	virtual void GenerateCurrentInquiryMessage();
@@ -60,7 +62,6 @@ public:
 	void VerifyDataLength() const;
 	static void SetDataTime(const CWebDataPtr& pData, const time_t time) noexcept { pData->SetTime(time); }
 	void TransferDataToWebData(const CWebDataPtr& pWebData); // 将接收到的数移至pWebData中
-	void ResetBuffer(int size = DefaultWebDataBufferSize_) { m_sBuffer.resize(size); }
 
 	virtual void PrepareReadingWebData(); // 在读取网络数据前的准备工作，默认为设置m_pSession状态。
 	virtual void ConfigureSession() {
@@ -76,6 +77,7 @@ public:
 
 	long GetByteRead() const noexcept { return m_lByteRead; }
 	void SetByteRead(const long lValue) noexcept { m_lByteRead = lValue; }
+	void SetBufferSize(int size) { m_sBuffer.resize(size); }
 	size_t GetBufferSize() const noexcept { return m_sBuffer.size(); }
 	string_view GetBuffer() noexcept { return m_sBuffer; }
 
@@ -110,10 +112,6 @@ public:
 
 	bool IsInquiring() const noexcept { return m_fInquiring; }
 	void SetInquiring(const bool fFlag) noexcept { m_fInquiring = fFlag; }
-	bool IsInquiringAndClearFlag() noexcept {
-		const bool fInquiring = m_fInquiring.exchange(false);
-		return fInquiring;
-	}
 
 	bool IsWorkingThreadRunning() const noexcept { return m_bIsWorkingThreadRunning; }
 	void SetWorkingThreadRunning(const bool fFlag) noexcept { m_bIsWorkingThreadRunning = fFlag; }

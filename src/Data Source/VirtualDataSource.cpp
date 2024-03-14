@@ -1,3 +1,10 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// todo 准备将DataSource改为可以一次处理多个申请的并行模式。有些数据申请需要拆分成多个（如腾讯日线单次申请最多提供2000个数据，多于2000个的申请必须拆分成多次）。
+// 
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
 #include "VirtualDataSource.h"
@@ -9,6 +16,7 @@
 
 #include"HighPerformanceCounter.h"
 #include "InfoReport.h"
+#include "InquireEngine.h"
 
 using std::thread;
 
@@ -42,6 +50,67 @@ CVirtualDataSource::CVirtualDataSource() {
 	m_dwWebErrorCode = 0;
 }
 
+void CVirtualDataSource::Run(long lMarketTime) {
+	CVirtualDataSourcePtr p = this->GetShared();
+	if (!IsInquiring() && !IsWorkingThreadRunning()) {
+		gl_runtime.thread_executor()->post([p, lMarketTime] {
+			gl_ThreadStatus.IncreaseWebInquiringThread();
+			p->SetWorkingThreadRunning(true);
+			p->RunWorkingThread(lMarketTime);
+			p->SetWorkingThreadRunning(false);
+			gl_ThreadStatus.DecreaseWebInquiringThread();
+		});
+	}
+}
+
+void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
+	if (!IsInquiring()) {
+		ASSERT(!HaveInquiry());
+		GenerateInquiryMessage(lMarketTime);
+	}
+
+	if (IsInquiring()) {
+		vector<result<CWebDataPtr>> vResults;
+		while (HaveInquiry()) {
+			ASSERT(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
+			ASSERT(IsInquiring());
+			GetCurrentProduct();
+			GenerateCurrentInquiryMessage();
+			CDataInquireEnginePtr pEngine = make_shared<CInquireEngine>();
+			pEngine->SetCurrentInquiry(m_pCurrentProduct);
+			pEngine->SetInquiryString(GetInquiringString());
+			pEngine->SetInquiryHeader(GetHeaders());
+			auto result = gl_runtime.background_executor()->submit([this, pEngine] {
+				CHighPerformanceCounter counter;
+				counter.start();
+				auto pWebData = pEngine->GetWebData();
+				this->UpdateStatus(pWebData);
+				counter.stop();
+				SetCurrentInquiryTime(counter.GetElapsedMillisecond());
+				return pWebData;
+			});
+			vResults.emplace_back(std::move(result));
+		}
+		vector<CWebDataPtr> vWebData;
+		for (auto& pWebData : vResults) {
+			auto p = pWebData.get();
+			if (p != nullptr) vWebData.push_back(p);
+		}
+		CheckInaccessible(vWebData.at(0));
+		if (vResults.size() > 1) {
+			m_pCurrentProduct->ParseAndStoreWebData(vWebData);
+		}
+		else {
+			ASSERT(vWebData.size() == 1);
+			m_pCurrentProduct->ParseAndStoreWebData(vWebData.at(0));
+		}
+		m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource智能指针
+		ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
+		ASSERT(!HaveInquiry()); // 没有现存的申请
+		SetInquiring(false); // 此标识的重置需要位于位于最后一步
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////////
 /// <summary>
 /// DataSource的顶层函数。
@@ -55,13 +124,13 @@ CVirtualDataSource::CVirtualDataSource() {
 /// 必须使用独立的thread_executor任务序列，不能使用thread_pool_executor或者background_executor，
 //  否则解析工作使用的thread_pool_executor会与之产生冲突，导致产生同步问题。
 ///
-/// lCurrentLocalMarketTime：当前市场时间
+/// lMarketTime：当前市场时间
 ///
 ////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataSource::Run(const long lCurrentLocalMarketTime) {
+void CVirtualDataSource::Run2(const long lMarketTime) {
 	if (!IsInquiring()) {
 		ASSERT(!HaveInquiry());
-		GenerateInquiryMessage(lCurrentLocalMarketTime);
+		GenerateInquiryMessage(lMarketTime);
 	}
 
 	if (HaveInquiry() && !IsWorkingThreadRunning()) {
@@ -84,6 +153,8 @@ void CVirtualDataSource::GetWebDataAndProcessIt() {
 	ASSERT(IsWorkingThreadRunning());// 在调用工作线程前即设置
 	counter.start();
 	GetWebData();
+	//UpdateStatus(pWebData);
+
 	if (!IsWebError()) {
 		if (IsEnable()) ProcessWebDataReceived(); // 只有当本服务器正在使用时，才处理接收到的网络数据
 		else DiscardReceivedData(); // 否则抛弃掉
@@ -146,6 +217,7 @@ void CVirtualDataSource::GetWebDataImp() {
 		VerifyDataLength();
 		const auto pWebData = CreateWebData();
 		// 网络数据服务器正在使用时就可能被中止，故而存储当前数据时需要判断
+		UpdateStatus(pWebData);
 		if (IsEnable()) StoreReceivedData(pWebData); // 当变更服务器（如中国市场的实时数据）时，要保证抛弃掉被变更服务器当前接收到的数据
 	}
 	else { // error handling
@@ -271,7 +343,6 @@ CWebDataPtr CVirtualDataSource::CreateWebData() {
 	pWebData->ResetCurrentPos();
 	pWebData->SetTime(GetUTCTime());
 	TransferDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
-	UpdateStatus(pWebData);
 
 	return pWebData;
 }
