@@ -26,7 +26,7 @@ public:
 
 	void IncreaseWebInquiringThread() noexcept { ++m_NumberOfWebInquiringThread; }
 	void DecreaseWebInquiringThread() noexcept {
-		ASSERT(m_NumberOfWebInquiringThread >= 0);
+		ASSERT(m_NumberOfWebInquiringThread > 0);
 		--m_NumberOfWebInquiringThread;
 	}
 	int GetNumberOfWebInquiringThread() const noexcept { return m_NumberOfWebInquiringThread; }

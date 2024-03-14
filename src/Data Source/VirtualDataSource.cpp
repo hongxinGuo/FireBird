@@ -57,7 +57,6 @@ void CVirtualDataSource::Run(long lMarketTime) {
 			gl_ThreadStatus.IncreaseWebInquiringThread();
 			p->SetWorkingThreadRunning(true);
 			p->RunWorkingThread(lMarketTime);
-			p->SetWorkingThreadRunning(false);
 			gl_ThreadStatus.DecreaseWebInquiringThread();
 		});
 	}
@@ -84,7 +83,9 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 				CHighPerformanceCounter counter;
 				counter.start();
 				auto pWebData = pEngine->GetWebData();
-				this->UpdateStatus(pWebData);
+				if (!IsWebError()) this->UpdateStatus(pWebData);
+				else
+					ASSERT(pWebData == nullptr);
 				counter.stop();
 				SetCurrentInquiryTime(counter.GetElapsedMillisecond());
 				return pWebData;
@@ -96,19 +97,24 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 			auto p = pWebData.get();
 			if (p != nullptr) vWebData.push_back(p);
 		}
-		CheckInaccessible(vWebData.at(0));
-		if (vResults.size() > 1) {
-			m_pCurrentProduct->ParseAndStoreWebData(vWebData);
+		if (!gl_systemConfiguration.IsExitingSystem()) {
+			CheckInaccessible(vWebData.at(0));
+			if (vResults.size() > 1) {
+				m_pCurrentProduct->ParseAndStoreWebData(vWebData);
+			}
+			else if (vWebData.size() == 1) {
+				m_pCurrentProduct->ParseAndStoreWebData(vWebData.at(0));
+			}
+			else { // 正常状态下是不会出现这种情况的
+				ASSERT(gl_systemConfiguration.IsExitingSystem());
+			}
+			m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource智能指针
 		}
-		else {
-			ASSERT(vWebData.size() == 1);
-			m_pCurrentProduct->ParseAndStoreWebData(vWebData.at(0));
-		}
-		m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource智能指针
 		ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
 		ASSERT(!HaveInquiry()); // 没有现存的申请
 		SetInquiring(false); // 此标识的重置需要位于位于最后一步
 	}
+	SetWorkingThreadRunning(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
