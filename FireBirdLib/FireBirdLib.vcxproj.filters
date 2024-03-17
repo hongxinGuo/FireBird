@@ -204,9 +204,6 @@
     <ClInclude Include="..\src\accessory\SaveAndLoad.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\TemplateMutexAccessQueue.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\accessory\ThreadStatus.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>

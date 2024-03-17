@@ -57,7 +57,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pMockQuandlDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 
-		m_pMockQuandlDataSource->SetErrorCode(12002);
+		m_pMockQuandlDataSource->SetWebError(true);
 		EXPECT_CALL(*m_pMockQuandlDataSource, GetTickCount()).Times(2)
 		.WillOnce(Return(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime()))
 		.WillOnce(Return(1 + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime()));
@@ -86,7 +86,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_pMockQuandlDataSource->GetReceivedDataSize(), 0);
 		m_pMockQuandlDataSource->SetInquiring(true);
 		EXPECT_CALL(*m_pMockQuandlDataSource, ReadWebData).Times(1)
-		.WillOnce(Invoke([]() { m_pMockQuandlDataSource->SetErrorCode(0); }));
+		.WillOnce(Invoke([]() { m_pMockQuandlDataSource->SetWebError(false); }));
 		EXPECT_CALL(*m_pMockQuandlDataSource, CreateWebData).Times(1)
 		.WillOnce(Return(pData));
 
@@ -109,7 +109,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_pMockQuandlDataSource->GetReceivedDataSize(), 0);
 		m_pMockQuandlDataSource->SetInquiring(true);
 		EXPECT_CALL(*m_pMockQuandlDataSource, ReadWebData).Times(1)
-		.WillOnce(Invoke([]() { m_pMockQuandlDataSource->SetErrorCode(12002); }));
+		.WillOnce(Invoke([]() { m_pMockQuandlDataSource->SetWebError(true); }));
 		EXPECT_CALL(*m_pMockQuandlDataSource, CreateWebData).Times(0); // 没有调用此函数
 
 		m_pMockQuandlDataSource->GetWebDataImp();

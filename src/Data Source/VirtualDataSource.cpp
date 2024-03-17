@@ -32,7 +32,7 @@ CVirtualDataSource::CVirtualDataSource() {
 	m_strHeaders = _T("");
 
 	m_lByteRead = 0;
-	m_dwWebErrorCode = 0;
+	m_fWebError = false;
 	m_strInquiry = _T("");
 	m_strInquiryFunction = _T("");
 	m_strSuffix = _T("");
@@ -47,15 +47,29 @@ CVirtualDataSource::CVirtualDataSource() {
 	m_bIsWorkingThreadRunning = false;
 
 	m_llLastTimeTickCount = 0;
-	m_dwWebErrorCode = 0;
 }
 
-void CVirtualDataSource::Run(long lMarketTime) {
+///////////////////////////////////////////////////////////////////////////////////
+/// <summary>
+/// DataSource的顶层函数。
+/// 当申请信息为空时，生成当前查询字符串。
+/// 当存在申请信息且没有正在运行的查询线程时，生成查询线程。
+///
+/// Note 调用函数不能使用thread_pool_executor或者background_executor，只能使用thread_executor，否则thread_pool_executor所生成线程的返回值无法读取，原因待查。
+///
+/// </summary>
+///
+/// 必须使用独立的thread_executor任务序列，不能使用thread_pool_executor或者background_executor，
+//  否则解析工作使用的thread_pool_executor会与之产生冲突，导致产生同步问题。
+///
+/// lMarketTime：当前市场时间
+///
+////////////////////////////////////////////////////////////////////////////////////
+void CVirtualDataSource::Run2(long lMarketTime) {
 	CVirtualDataSourcePtr p = this->GetShared();
 	if (!IsInquiring() && !IsWorkingThreadRunning()) {
 		gl_runtime.thread_executor()->post([p, lMarketTime] {
 			gl_ThreadStatus.IncreaseWebInquiringThread();
-			p->SetWorkingThreadRunning(true);
 			p->RunWorkingThread(lMarketTime);
 			gl_ThreadStatus.DecreaseWebInquiringThread();
 		});
@@ -63,6 +77,7 @@ void CVirtualDataSource::Run(long lMarketTime) {
 }
 
 void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
+	SetWorkingThreadRunning(true);
 	if (!IsInquiring()) {
 		ASSERT(!HaveInquiry());
 		GenerateInquiryMessage(lMarketTime);
@@ -76,14 +91,13 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 			GetCurrentProduct();
 			GenerateCurrentInquiryMessage();
 			CDataInquireEnginePtr pEngine = make_shared<CInquireEngine>();
-			pEngine->SetCurrentInquiry(m_pCurrentProduct);
 			pEngine->SetInquiryString(GetInquiringString());
 			pEngine->SetInquiryHeader(GetHeaders());
 			auto result = gl_runtime.background_executor()->submit([this, pEngine] {
 				CHighPerformanceCounter counter;
 				counter.start();
 				auto pWebData = pEngine->GetWebData();
-				if (!IsWebError()) this->UpdateStatus(pWebData);
+				if (!pEngine->IsWebError()) this->UpdateStatus(pWebData);
 				else
 					ASSERT(pWebData == nullptr);
 				counter.stop();
@@ -94,8 +108,14 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 		}
 		vector<CWebDataPtr> vWebData;
 		for (auto& pWebData : vResults) {
-			auto p = pWebData.get();
+			auto p = pWebData.get(); // Note 这里等待所有的线程执行完毕
 			if (p != nullptr) vWebData.push_back(p);
+		}
+		if (vResults.size() == vWebData.size()) { // no web error?
+			m_fWebError = false;
+		}
+		else { // web error
+			m_fWebError = true;
 		}
 		if (!gl_systemConfiguration.IsExitingSystem()) {
 			CheckInaccessible(vWebData.at(0));
@@ -133,7 +153,7 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 /// lMarketTime：当前市场时间
 ///
 ////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataSource::Run2(const long lMarketTime) {
+void CVirtualDataSource::Run(const long lMarketTime) {
 	if (!IsInquiring()) {
 		ASSERT(!HaveInquiry());
 		GenerateInquiryMessage(lMarketTime);
@@ -159,7 +179,6 @@ void CVirtualDataSource::GetWebDataAndProcessIt() {
 	ASSERT(IsWorkingThreadRunning());// 在调用工作线程前即设置
 	counter.start();
 	GetWebData();
-	//UpdateStatus(pWebData);
 
 	if (!IsWebError()) {
 		if (IsEnable()) ProcessWebDataReceived(); // 只有当本服务器正在使用时，才处理接收到的网络数据
@@ -266,11 +285,11 @@ void CVirtualDataSource::ReadWebData() {
 			if (m_lContentLength == 0) IncreaseBufferSizeIfNeeded(1024 * 1024);
 		} while (lCurrentByteRead > 0);
 		// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
-		m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
+		m_fWebError = false; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
 	}
 	catch (CInternetException* exception) {//这里一般是使用引用。但我准备在处理完后就删除这个例外，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。
-		m_dwWebErrorCode = exception->m_dwError;
-		ReportWebError(m_dwWebErrorCode, m_strInquiry);
+		m_fWebError = true;
+		ReportWebError(exception->m_dwError, m_strInquiry);
 		exception->Delete();
 	}
 	DeleteWebFile();

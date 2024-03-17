@@ -103,8 +103,8 @@ bool CTengxunDayLineDataSource::Inquire() {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CChinaStockPtr& pStock) const {
-	long lStartDate = 20100101; // 强迫生成多次申请（测试用）
-	//long lStartDate = GetPrevDay(pStock->GetDayLineEndDate()); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
+	//long lStartDate = 20100101; // 强迫生成多次申请（测试用）
+	long lStartDate = GetPrevDay(pStock->GetDayLineEndDate()); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
 	const long lCurrentDate = gl_pChinaMarket->GetMarketDate();
 	const long yearDiffer = (lCurrentDate - lStartDate) / 10000;
 	const long lStockIndex = gl_dataContainerChinaStock.GetOffset(pStock);
@@ -134,7 +134,11 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 		iCounter++;
 	} while (l < yearDiffer);
 
-	if (iCounter > 0) product->SetInquiryNumber(iCounter);
+	if (iCounter > 0) {
+		for (auto& p : vProduct) {
+			dynamic_pointer_cast<CProductTengxunDayLine>(p)->SetInquiryNumber(iCounter);
+		}
+	}
 
 	return vProduct;
 }

@@ -7,10 +7,6 @@ using namespace moodycamel;
 
 #include"VirtualWebProduct.h"
 
-#include<semaphore>
-#include<list>
-#include<memory>
-
 using std::counting_semaphore;
 using std::list;
 using std::atomic_bool;
@@ -129,10 +125,8 @@ public:
 	CString GetInquiryToken() const noexcept { return m_strInquiryToken; }
 	void SetInquiryToken(const CString& strToken) noexcept { m_strInquiryToken = strToken; }
 
-	bool IsWebError() const noexcept { return m_dwWebErrorCode != 0; }
-	DWORD GetErrorCode() const noexcept { return m_dwWebErrorCode; }
-	void SetErrorCode(const DWORD dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
-	bool IsTimeout() const noexcept { return m_dwWebErrorCode == 12002; }
+	bool IsWebError() const noexcept { return m_fWebError; }
+	void SetWebError(bool fFlag) noexcept { m_fWebError = fFlag; }
 
 	long GetInquiringNumber() const noexcept { return m_lInquiringNumber; }
 	void SetInquiringNumber(const long lValue) noexcept { m_lInquiringNumber = lValue; }
@@ -164,7 +158,7 @@ protected:
 	DWORD m_dwHTTPStatusCode; //网络状态码
 
 	CString m_strHeaders; // OpenURL时的headers字符串值， 默认为_T("")
-	DWORD m_dwWebErrorCode; //网络读取错误代码。也用于网络错误判断的依据：当为零时无错误。
+	bool m_fWebError; //网络读取错误
 	string m_sBuffer; // 接收到数据的缓冲区
 	long m_lByteRead; // 接收到的字符数.
 

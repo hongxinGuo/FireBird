@@ -191,7 +191,7 @@ namespace FireBirdTest {
 		const auto pWebData = TengxunDayLineDataSource.CreateWebData();
 
 		EXPECT_TRUE(pWebData != nullptr);
-		EXPECT_STREQ(pWebData->GetStockCode(), _T("TEST")) << "会设置StockCode";
+		EXPECT_STREQ(pWebData->GetStockCode(), _T("")) << "不设置StockCode";
 		EXPECT_EQ(pWebData->GetTime(), 0) << "设置为当前的UTCTime";
 		EXPECT_TRUE(pWebData->GetDataBuffer() == _T("{ \"data\": 2}"));
 

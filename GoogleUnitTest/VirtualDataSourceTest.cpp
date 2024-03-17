@@ -158,12 +158,10 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualDataSourceTest, TestIsWebError) {
 		EXPECT_FALSE(dataSource.IsWebError());
-		dataSource.SetErrorCode(102);
+		dataSource.SetWebError(true);
 		EXPECT_TRUE(dataSource.IsWebError());
-		EXPECT_EQ(dataSource.GetErrorCode(), static_cast<DWORD>(102));
-		dataSource.SetErrorCode(0);
+		dataSource.SetWebError(false);
 		EXPECT_FALSE(dataSource.IsWebError());
-		EXPECT_EQ(dataSource.GetErrorCode(), 0);
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestIsGetWebDataAndProcessItThreadRunning) {
@@ -172,14 +170,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(dataSource.IsWorkingThreadRunning());
 		dataSource.SetWorkingThreadRunning(false);
 		EXPECT_FALSE(dataSource.IsWorkingThreadRunning());
-	}
-
-	TEST_F(CVirtualDataSourceTest, TestIsTimeout) {
-		EXPECT_FALSE(dataSource.IsTimeout());
-		dataSource.SetErrorCode(12002);
-		EXPECT_TRUE(dataSource.IsTimeout());
-		dataSource.SetErrorCode(12000);
-		EXPECT_FALSE(dataSource.IsTimeout());
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetByteRead) {

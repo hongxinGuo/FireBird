@@ -57,30 +57,30 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage1) {
-		gl_pSinaRTDataSource->SetErrorCode(12002);
-		gl_pNeteaseRTDataSource->SetErrorCode(0);
+		gl_pSinaRTDataSource->SetWebError(true);
+		gl_pNeteaseRTDataSource->SetWebError(false);
 		EXPECT_TRUE(gl_systemConfiguration.IsWebBusy());
 		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, Inquire).Times(0);
 
 		EXPECT_FALSE(m_pMockTengxunDayLineDataSource->GenerateInquiryMessage(120000)) << "WebBusy时，不申请数据";
 
-		gl_pSinaRTDataSource->SetErrorCode(0);
+		gl_pSinaRTDataSource->SetWebError(false);
 	}
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage2) {
-		gl_pSinaRTDataSource->SetErrorCode(0);
-		gl_pNeteaseRTDataSource->SetErrorCode(12002);
+		gl_pSinaRTDataSource->SetWebError(false);
+		gl_pNeteaseRTDataSource->SetWebError(true);
 		EXPECT_TRUE(gl_systemConfiguration.IsWebBusy());
 		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, Inquire).Times(0);
 
 		EXPECT_FALSE(m_pMockTengxunDayLineDataSource->GenerateInquiryMessage(120000)) << "WebBusy时，不申请数据";
 
-		gl_pNeteaseRTDataSource->SetErrorCode(0);
+		gl_pNeteaseRTDataSource->SetWebError(false);
 	}
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage3) {
-		gl_pSinaRTDataSource->SetErrorCode(0);
-		gl_pNeteaseRTDataSource->SetErrorCode(0);
+		gl_pSinaRTDataSource->SetWebError(false);
+		gl_pNeteaseRTDataSource->SetWebError(false);
 		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsDayLineNeedUpdate());
@@ -92,8 +92,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage4) {
-		gl_pSinaRTDataSource->SetErrorCode(0);
-		gl_pNeteaseRTDataSource->SetErrorCode(0);
+		gl_pSinaRTDataSource->SetWebError(false);
+		gl_pNeteaseRTDataSource->SetWebError(false);
 		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 		gl_pChinaMarket->SetSystemReady(true);
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsDayLineNeedUpdate());

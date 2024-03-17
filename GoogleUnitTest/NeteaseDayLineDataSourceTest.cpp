@@ -56,16 +56,16 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CNeteaseDayLineDataSourceTest, TestGenerateInquiryMessage1) {
-		gl_pSinaRTDataSource->SetErrorCode(12002);
+		gl_pSinaRTDataSource->SetWebError(true);
 		EXPECT_TRUE(gl_systemConfiguration.IsWebBusy());
 
 		EXPECT_FALSE(NeteaseDayLineDataSource.GenerateInquiryMessage(120000)) << "Web Busy";
 
-		gl_pSinaRTDataSource->SetErrorCode(0);
+		gl_pSinaRTDataSource->SetWebError(false);
 	}
 
 	TEST_F(CNeteaseDayLineDataSourceTest, TestGenerateInquiryMessage2) {
-		//gl_pSinaRTDataSource->SetErrorCode(0);
+		//gl_pSinaRTDataSource->SetWebError(false);
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(120000); // 空闲时间
 		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
@@ -117,7 +117,7 @@ namespace FireBirdTest {
 		const auto pWebData = NeteaseDayLineDataSource.CreateWebData();
 
 		EXPECT_TRUE(pWebData != nullptr);
-		EXPECT_STREQ(pWebData->GetStockCode(), _T("TEST")) << "会设置StockCode";
+		EXPECT_STREQ(pWebData->GetStockCode(), _T("")) << "不会设置StockCode";
 		EXPECT_EQ(pWebData->GetTime(), 0) << "设置为当前的UTCTime";
 		EXPECT_TRUE(pWebData->GetDataBuffer() == _T("{ \"data\": 2}"));
 

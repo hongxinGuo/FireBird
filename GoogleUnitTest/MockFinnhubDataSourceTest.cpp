@@ -47,10 +47,10 @@ namespace FireBirdTest {
 	TEST_F(CMockFinnhubDataSourceTest, TestGenerateInquiryMessage1) {
 		EXPECT_FALSE(m_pMockFinnhubDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
-		gl_pSinaRTDataSource->SetErrorCode(12002);
+		gl_pSinaRTDataSource->SetWebError(true);
 		EXPECT_TRUE(gl_systemConfiguration.IsWebBusy());
 
-		m_pMockFinnhubDataSource->SetErrorCode(12002);
+		m_pMockFinnhubDataSource->SetWebError(true);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GetTickCount()).Times(1)
 		.WillOnce(Return(1));
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEconomicCalendar()).Times(0);
@@ -59,7 +59,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pMockFinnhubDataSource->IsInquiring());
 
 		// »Ö¸´Ô­×´
-		gl_pSinaRTDataSource->SetErrorCode(0);
+		gl_pSinaRTDataSource->SetWebError(false);
 	}
 
 	TEST_F(CMockFinnhubDataSourceTest, TestGenerateInquiryMessage3) {

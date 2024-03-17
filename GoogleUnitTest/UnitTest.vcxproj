@@ -163,7 +163,6 @@
     <ClCompile Include="SystemConfigurationTest.cpp" />
     <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="TaskDistributeTengxunRTDataToProperStockTest.cpp" />
-    <ClCompile Include="TempplateMutexAccessQueueTest.cpp" />
     <ClCompile Include="TengxunDayLineDataSourceTest.cpp" />
     <ClCompile Include="TengxunRTDataSourceImpTest.cpp" />
     <ClCompile Include="TiingoCryptoSymbolTest.cpp" />
@@ -270,7 +269,6 @@
     <ClCompile Include="WeekLineTest.cpp" />
     <ClInclude Include="MockFinnhubWebSocket.h" />
     <ClInclude Include="MockTiingoIEXWebSocket.h" />
-    <ClInclude Include="TemplateMutexAccessQueueTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockChinaMarket.h" />

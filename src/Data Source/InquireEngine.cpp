@@ -12,10 +12,12 @@
 #include <simdjson.h>
 
 #include"Thread.h"
+#include"WebData.h"
 
 #include "InfoReport.h"
 
 using std::thread;
+using std::make_shared;
 
 CInquireEngine::CInquireEngine(): m_dataBuffer{} {
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
@@ -24,15 +26,11 @@ CInquireEngine::CInquireEngine(): m_dataBuffer{} {
 	m_dwHTTPStatusCode = 0;
 	m_sBuffer = _T("");
 	m_lByteRead = 0;
-	m_dwWebErrorCode = 0;
+	m_fWebError = false;
 	m_strInquiry = _T("");
 	m_strHeaders = _T("");
 
-	m_tCurrentInquiryTime = 0;
-
 	m_lContentLength = 0;
-
-	m_llLastTimeTickCount = 0;
 }
 
 CInquireEngine::CInquireEngine(const CString& strInquire, const CString& strHeaders): m_dataBuffer{} {
@@ -42,34 +40,24 @@ CInquireEngine::CInquireEngine(const CString& strInquire, const CString& strHead
 	m_dwHTTPStatusCode = 0;
 	m_sBuffer = _T("");
 	m_lByteRead = 0;
-	m_dwWebErrorCode = 0;
+	m_fWebError = false;
 	m_strInquiry = strInquire;
 	m_strHeaders = strHeaders;
 
-	m_tCurrentInquiryTime = 0;
-
 	m_lContentLength = 0;
-
-	m_llLastTimeTickCount = 0;
 }
 
-CWebDataPtr CInquireEngine::GetWebData() {
-	ReadWebData();
-	if (!IsWebError()) {
-		VerifyDataLength();
-		return CreateWebData();
-	}
-	return nullptr;
-}
-
-///////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 正常时返回一个包含网络数据的指针，如果出现网络错误或者发生例外，则返回一个空指针。
+//
 //
 // 从网络读取数据。每次读16KB，直到读不到为止。
-//
+// 如果出现网络错误或者发生例外，则报告网络错误后即正常返回
 //
 //
 ///////////////////////////////////////////////////////////////////////////
-void CInquireEngine::ReadWebData() {
+CWebDataPtr CInquireEngine::GetWebData() {
 	ASSERT(m_pFile == nullptr);
 	try {
 		OpenFile();
@@ -91,15 +79,17 @@ void CInquireEngine::ReadWebData() {
 			m_lByteRead += lCurrentByteRead;
 			if (m_lContentLength == 0) IncreaseBufferSizeIfNeeded(1024 * 1024);
 		} while (lCurrentByteRead > 0);
-		// 清除网络错误代码的动作，只在此处进行。以保证只有当顺利读取到网络数据后，方才清除之前的错误标识。
-		m_dwWebErrorCode = 0; // 清除错误代码（如果有的话）。只在此处重置该错误代码。
 	}
-	catch (CInternetException* exception) {//这里一般是使用引用。但我准备在处理完后就删除这个例外，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。
-		m_dwWebErrorCode = exception->m_dwError;
-		ReportWebError(m_dwWebErrorCode, m_strInquiry);
+	catch (CInternetException* exception) {//Note 这里一般是使用引用。但我准备在处理完后就删除这个例外，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。
+		SetWebError(true);
+		ReportWebError(exception->m_dwError, m_strInquiry);
 		exception->Delete();
+		DeleteWebFile();
+		return nullptr;
 	}
 	DeleteWebFile();
+	VerifyDataLength();
+	return CreateWebData();
 }
 
 // <summary>
@@ -169,7 +159,6 @@ bool CInquireEngine::IncreaseBufferSizeIfNeeded(long lIncreaseSize) {
 
 CWebDataPtr CInquireEngine::CreateWebData() {
 	const auto pWebData = make_shared<CWebData>();
-	pWebData->ResetCurrentPos();
 	pWebData->SetTime(GetUTCTime());
 	TransferDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
 
@@ -204,6 +193,7 @@ void CInquireEngine::TransferDataToWebData(const CWebDataPtr& pWebData) {
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
 }
 
+/*
 void CInquireEngine::TESTSetBuffer(const char* buffer, const INT64 lTotalNumber) {
 	m_sBuffer.resize(lTotalNumber);
 	for (INT64 i = 0; i < lTotalNumber; i++) { m_sBuffer.at(i) = buffer[i]; }
@@ -222,3 +212,4 @@ void CInquireEngine::TESTSetBuffer(CString str) {
 void CInquireEngine::TESTSetWebBuffer(const char* buffer, const INT64 lTotalNumber) {
 	for (INT64 i = 0; i < lTotalNumber; i++) { m_dataBuffer[i] = buffer[i]; }
 }
+*/

@@ -33,7 +33,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			gl_pTiingoDataSource->SetErrorCode(0);
+			gl_pTiingoDataSource->SetWebError(false);
 		}
 
 	protected:
@@ -44,7 +44,7 @@ namespace FireBirdTest {
 	TEST_F(CMockTiingoIEXWebSocketTest, TestMonitorWebSocket1) {
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		EXPECT_FALSE(gl_pTiingoDataSource->IsWebError());
-		gl_pTiingoDataSource->SetErrorCode(12002);
+		gl_pTiingoDataSource->SetWebError(true);
 
 		EXPECT_CALL(m_tiingoIEXWebSocket, GetState()).Times(1)
 		.WillOnce(Return(ix::ReadyState::Open));
@@ -53,13 +53,13 @@ namespace FireBirdTest {
 		m_tiingoIEXWebSocket.MonitorWebSocket(vSymbol);
 
 		// »Ö¸´Ô­×´
-		gl_pTiingoDataSource->SetErrorCode(0);
+		gl_pTiingoDataSource->SetWebError(false);
 	}
 
 	TEST_F(CMockTiingoIEXWebSocketTest, TestMonitorWebSocket2) {
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		EXPECT_FALSE(gl_pTiingoDataSource->IsWebError());
-		gl_pTiingoDataSource->SetErrorCode(12002);
+		gl_pTiingoDataSource->SetWebError(true);
 
 		EXPECT_CALL(m_tiingoIEXWebSocket, GetState()).Times(1)
 		.WillOnce(Return(ix::ReadyState::Closed));
@@ -69,7 +69,7 @@ namespace FireBirdTest {
 		m_tiingoIEXWebSocket.MonitorWebSocket(vSymbol);
 
 		// »Ö¸´Ô­×´
-		gl_pTiingoDataSource->SetErrorCode(0);
+		gl_pTiingoDataSource->SetWebError(false);
 	}
 
 	TEST_F(CMockTiingoIEXWebSocketTest, TestMonitorWebSocket3) {

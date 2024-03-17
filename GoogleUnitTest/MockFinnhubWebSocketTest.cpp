@@ -33,7 +33,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			gl_pFinnhubDataSource->SetErrorCode(0);
+			gl_pFinnhubDataSource->SetWebError(false);
 		}
 
 	protected:
@@ -44,7 +44,7 @@ namespace FireBirdTest {
 	TEST_F(CMockFinnhubWebSocketTest, TestMonitorWebSocket1) {
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebError());
-		gl_pFinnhubDataSource->SetErrorCode(12002);
+		gl_pFinnhubDataSource->SetWebError(true);
 
 		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(1)
 		.WillOnce(Return(ix::ReadyState::Open));
@@ -53,13 +53,13 @@ namespace FireBirdTest {
 		m_finnhubWebSocket.MonitorWebSocket(vSymbol);
 
 		// »Ö¸´Ô­×´
-		gl_pFinnhubDataSource->SetErrorCode(0);
+		gl_pFinnhubDataSource->SetWebError(false);
 	}
 
 	TEST_F(CMockFinnhubWebSocketTest, TestMonitorWebSocket2) {
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebError());
-		gl_pFinnhubDataSource->SetErrorCode(12002);
+		gl_pFinnhubDataSource->SetWebError(true);
 
 		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(1)
 		.WillOnce(Return(ix::ReadyState::Closed));
@@ -69,7 +69,7 @@ namespace FireBirdTest {
 		m_finnhubWebSocket.MonitorWebSocket(vSymbol);
 
 		// »Ö¸´Ô­×´
-		gl_pFinnhubDataSource->SetErrorCode(0);
+		gl_pFinnhubDataSource->SetWebError(false);
 	}
 
 	TEST_F(CMockFinnhubWebSocketTest, TestMonitorWebSocket3) {
