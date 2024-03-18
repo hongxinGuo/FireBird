@@ -50,10 +50,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(SinaDataSource.GetInquiringNumber(), 850) << _T("ÐÂÀËÄ¬ÈÏÖµ");
 	}
 
-	TEST_F(CMockSinaRTDataSourceTest, TestStartReadingThread) {
-		EXPECT_EQ(SinaDataSource.GetByteRead(), 0);
-	}
-
 	TEST_F(CMockSinaRTDataSourceTest, TestGenerateInquiryMessage) {
 		EXPECT_FALSE(m_pMockSinaRTDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());

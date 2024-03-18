@@ -27,7 +27,7 @@ using namespace std;
 #include <algorithm>
 
 #include"simdjsonGetValue.h"
-using namespace simdjson;
+//using namespace simdjson;
 
 #include"TimeConvert.h"
 #include"ConvertToString.h"

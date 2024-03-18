@@ -187,7 +187,7 @@ Included items must then not match any entries in the exclude list to remain inc
 				<Function>CVirtualDataSource::CreateThreadGetWebDataAndProcessIt</Function>
 				<Function>CVirtualDataSource::Reset</Function>
 				<Function>CVirtualDataSource::GetTickCount</Function>
-				<Function>CVirtualDataSource::ConfigureSession</Function>
+				<Function>CVirtualDataSource::ConfigureInternetOption</Function>
 				<Function>CVirtualDataSource::UpdateStatus</Function>
 
 				<Function>CVirtualWebSocket::Connecting</Function>

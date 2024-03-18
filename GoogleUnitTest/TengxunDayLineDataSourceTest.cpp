@@ -181,21 +181,4 @@ namespace FireBirdTest {
 		// 恢复原状
 		pStock->SetDayLineEndDate(lEndDate);
 	}
-
-	TEST_F(CTengxunDayLineDataSourceTest, TestCreateWebData) {
-		TengxunDayLineDataSource.TESTSetBuffer(_T("{ \"data\": 2}"));
-		const time_t tUTCTime = GetUTCTime();
-		TengxunDayLineDataSource.SetDownLoadingStockCode(_T("TEST"));
-		TestSetUTCTime(0);
-
-		const auto pWebData = TengxunDayLineDataSource.CreateWebData();
-
-		EXPECT_TRUE(pWebData != nullptr);
-		EXPECT_STREQ(pWebData->GetStockCode(), _T("")) << "不设置StockCode";
-		EXPECT_EQ(pWebData->GetTime(), 0) << "设置为当前的UTCTime";
-		EXPECT_TRUE(pWebData->GetDataBuffer() == _T("{ \"data\": 2}"));
-
-		// restore
-		TestSetUTCTime(tUTCTime);
-	}
 }

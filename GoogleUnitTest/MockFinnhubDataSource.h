@@ -5,7 +5,6 @@
 namespace testing {
 	class CMockFinnhubDataSource final : public CFinnhubDataSource {
 	public:
-		MOCK_METHOD(void, GetWebData, (), (override));
 		MOCK_METHOD(ULONGLONG, GetTickCount, (), (override));
 		MOCK_METHOD(bool, InquireCountryList, (), (override));
 		MOCK_METHOD(bool, InquireMarketStatus, (), (override));

@@ -12,7 +12,7 @@ CNeteaseDayLineDataSource::CNeteaseDayLineDataSource() {
 	m_strSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 	m_strInquiryToken = _T("");
 
-	CNeteaseDayLineDataSource::ConfigureSession();
+	CNeteaseDayLineDataSource::ConfigureInternetOption();
 
 	CNeteaseDayLineDataSource::Reset();
 }
@@ -74,13 +74,12 @@ void CNeteaseDayLineDataSource::GenerateCurrentInquiryMessage() {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
 
-void CNeteaseDayLineDataSource::ConfigureSession() {
-	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 5000); // 正常情况下Netease日线数据接收时间不超过1秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 5000); // 设置接收超时时间为2秒
-	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, 5000); // 设置接收超时时间为5秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 500); // 设置发送超时时间为500毫秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
+void CNeteaseDayLineDataSource::ConfigureInternetOption() {
+	m_internetOption.option_connect_timeout = 5000;
+	m_internetOption.option_receive_timeout = 5000;
+	m_internetOption.option_data_receive_timeout = 5000;
+	m_internetOption.option_send_timeout = 500;
+	m_internetOption.option_connect_retries = 1;
 }
 
 void CNeteaseDayLineDataSource::UpdateStatus(CWebDataPtr pData) {

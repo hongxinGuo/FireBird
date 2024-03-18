@@ -1256,9 +1256,6 @@
     <ClCompile Include="..\src\accessory\simdjsonGetValue.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
-    <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Data Source\TengxunDayLineDataSource.cpp">
       <Filter>源文件\Data Source\China market</Filter>
     </ClCompile>

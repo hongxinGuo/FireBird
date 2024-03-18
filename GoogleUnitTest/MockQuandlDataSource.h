@@ -5,9 +5,6 @@
 namespace testing {
 	class CMockQuandlDataSource final : public CQuandlDataSource {
 	public:
-		MOCK_METHOD(void, GetWebData, (), (override));
-		MOCK_METHOD(void, ReadWebData, (), (override));
-		MOCK_METHOD(CWebDataPtr, CreateWebData, (), (override));
 		MOCK_METHOD(ULONGLONG, GetTickCount, (), (override));
 		MOCK_METHOD(bool, Inquire, (), (override));
 	};

@@ -27,7 +27,7 @@ CFinnhubDataSource::CFinnhubDataSource() {
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
 
-	CFinnhubDataSource::ConfigureSession();
+	CFinnhubDataSource::ConfigureInternetOption();
 
 	CFinnhubDataSource::Reset();
 }
@@ -794,13 +794,12 @@ bool CFinnhubDataSource::InquireCryptoDayLine() {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CFinnhubDataSource::ConfigureSession() {
-	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 10000); // 设置连接超时时间为6秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 8000); // 设置接收超时时间为5秒。
-	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, 8000); // 设置接收超时时间为5秒。
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 1000); // 设置发送超时时间为1秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
+void CFinnhubDataSource::ConfigureInternetOption() {
+	m_internetOption.option_connect_timeout = 10000;
+	m_internetOption.option_receive_timeout = 8000;
+	m_internetOption.option_data_receive_timeout = 8000;
+	m_internetOption.option_send_timeout = 1000;
+	m_internetOption.option_connect_retries = 1;
 }
 
 void CFinnhubDataSource::CheckInaccessible(const CWebDataPtr& pWebData) const {

@@ -107,21 +107,4 @@ namespace FireBirdTest {
 			gl_dataContainerChinaStock.GetStock(i)->SetDayLineNeedUpdate(true);
 		}
 	}
-
-	TEST_F(CNeteaseDayLineDataSourceTest, TestCreateWebData) {
-		NeteaseDayLineDataSource.TESTSetBuffer(_T("{ \"data\": 2}"));
-		const time_t tUTCTime = GetUTCTime();
-		NeteaseDayLineDataSource.SetDownLoadingStockCode(_T("TEST"));
-		TestSetUTCTime(0);
-
-		const auto pWebData = NeteaseDayLineDataSource.CreateWebData();
-
-		EXPECT_TRUE(pWebData != nullptr);
-		EXPECT_STREQ(pWebData->GetStockCode(), _T("")) << "不会设置StockCode";
-		EXPECT_EQ(pWebData->GetTime(), 0) << "设置为当前的UTCTime";
-		EXPECT_TRUE(pWebData->GetDataBuffer() == _T("{ \"data\": 2}"));
-
-		// restore
-		TestSetUTCTime(tUTCTime);
-	}
 }

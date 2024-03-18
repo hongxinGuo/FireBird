@@ -2,9 +2,7 @@
 
 #include"ProductTengxunRT.h"
 
-#include <simdjson.h>
-
-#include "HighPerformanceCounter.h"
+//#include "HighPerformanceCounter.h"
 #include"JsonParse.h"
 #include "TengxunRTDataSource.h"
 

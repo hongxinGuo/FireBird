@@ -15,7 +15,7 @@ CTiingoDataSource::CTiingoDataSource() {
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 1; // Tiingo实时数据查询数量默认值
 
-	CTiingoDataSource::ConfigureSession();
+	CTiingoDataSource::ConfigureInternetOption();
 	CTiingoDataSource::Reset();
 }
 
@@ -126,11 +126,10 @@ bool CTiingoDataSource::InquireDayLine() {
 	return fHaveInquiry;
 }
 
-void CTiingoDataSource::ConfigureSession() {
-	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 12000); // 设置连接超时时间为12秒
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 12000); // 设置接收超时时间为12秒
-	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, 12000); // 设置接收超时时间为12秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 1000); // 设置发送超时时间为1秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
+void CTiingoDataSource::ConfigureInternetOption() {
+	m_internetOption.option_connect_timeout = 12000;
+	m_internetOption.option_receive_timeout = 12000;
+	m_internetOption.option_data_receive_timeout = 12000;
+	m_internetOption.option_send_timeout = 1000;
+	m_internetOption.option_connect_retries = 1;
 }

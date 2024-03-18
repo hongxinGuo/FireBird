@@ -2,10 +2,21 @@
 
 #include"afxinet.h"
 
+struct InternetOption {
+public:
+	int option_connect_retries{1};
+	int option_connect_timeout{5};
+	int option_receive_timeout{5000};
+	int option_data_receive_timeout{12000};
+	int option_send_timeout{2000};
+};
+
 #include"concurrentqueue/concurrentqueue.h"
 using namespace moodycamel;
 
 using std::atomic_int64_t;
+
+constexpr auto WEB_SOURCE_DATA_BUFFER_SIZE_ = 1024 * 16;
 
 class CInquireEngine {
 	friend CVirtualWebProduct;
@@ -14,6 +25,7 @@ public:
 	CInquireEngine();
 	CInquireEngine(const CString& strInquire, const CString& strHeaders);
 
+	void ConfigureSession(const InternetOption& option);
 	CWebDataPtr GetWebData(); // 实际读取处理函数
 	void OpenFile();
 	void GetFileHeaderInformation();
@@ -38,11 +50,13 @@ public:
 
 	void SetContentLength(long length) noexcept { m_lContentLength = length; }
 
+	void SetBufferSize(long size) { m_sBuffer.resize(size); }
+
 public:
 	// 以下为测试用函数
-	//void TESTSetBuffer(const char* buffer, INT64 lTotalNumber);
-	//void TESTSetBuffer(CString str);
-	//void TESTSetWebBuffer(const char* buffer, INT64 lTotalNumber);
+	void TESTSetBuffer(const char* buffer, INT64 lTotalNumber);
+	void TESTSetBuffer(CString str);
+	void TESTSetWebBuffer(const char* buffer, INT64 lTotalNumber);
 
 protected:
 	shared_ptr<CInternetSession> m_pSession;
@@ -59,7 +73,7 @@ protected:
 	long m_lContentLength; // 预期的网络数据长度（使用QueryInfo(HTTP_QUERY_CONTENT_LENGTH)得到的数据）
 
 private:
-	char m_dataBuffer[1024 * 16]; //网络数据缓存
+	char m_dataBuffer[WEB_SOURCE_DATA_BUFFER_SIZE_]; //网络数据缓存
 };
 
 using CDataInquireEnginePtr = shared_ptr<CInquireEngine>;

@@ -18,7 +18,7 @@ public:
 
 	virtual bool Inquire();
 
-	void ConfigureSession() override;
+	void ConfigureInternetOption() override;
 
 protected:
 	CQuandlFactory m_QuandlFactory;

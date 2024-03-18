@@ -23,7 +23,7 @@ public:
 
 	bool GenerateInquiryMessage(long lCurrentTime) override;
 
-	void ConfigureSession() override; // ÉèÖÃm_pSession×´Ì¬¡£
+	void ConfigureInternetOption() override; // ÅäÖÃinternet²ÎÊı¡£
 
 	void Inquire(long lCurrentTime);
 	virtual bool InquireCompanySymbol();

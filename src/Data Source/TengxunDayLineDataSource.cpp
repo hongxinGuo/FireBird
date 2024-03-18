@@ -25,7 +25,7 @@ CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 	m_strSuffix = _T(",2000,,");
 	m_strInquiryToken = _T("");
 
-	CTengxunDayLineDataSource::ConfigureSession();
+	CTengxunDayLineDataSource::ConfigureInternetOption();
 	CTengxunDayLineDataSource::Reset();
 }
 
@@ -153,13 +153,12 @@ void CTengxunDayLineDataSource::GenerateCurrentInquiryMessage() {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();// 腾讯日线的查询字符串，在生成product时即完成了
 }
 
-void CTengxunDayLineDataSource::ConfigureSession() {
-	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 5000); // 正常情况下Tengxun日线数据接收时间不超过1秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 5000); // 设置接收超时时间为5秒
-	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, 5000); // 设置接收超时时间为5秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 500); // 设置发送超时时间为500毫秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
+void CTengxunDayLineDataSource::ConfigureInternetOption() {
+	m_internetOption.option_connect_timeout = 5000;
+	m_internetOption.option_receive_timeout = 5000;
+	m_internetOption.option_data_receive_timeout = 5000;
+	m_internetOption.option_send_timeout = 500;
+	m_internetOption.option_connect_retries = 1;
 }
 
 void CTengxunDayLineDataSource::UpdateStatus(CWebDataPtr pData) {

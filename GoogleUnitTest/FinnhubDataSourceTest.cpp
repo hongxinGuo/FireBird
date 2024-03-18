@@ -1061,19 +1061,4 @@ namespace FireBirdTest {
 		gl_pFinnhubDataSource->SetUpdateCryptoSymbol(true);
 		gl_pFinnhubDataSource->SetUpdateForexSymbol(true);
 	}
-
-	TEST_F(CFinnhubDataSourceTest, TestCreateWebData) {
-		m_FinnhubDataSource.TESTSetBuffer(_T("{ \"data\": 2}"));
-		const time_t tUTCTime = GetUTCTime();
-		TestSetUTCTime(0);
-
-		const auto pWebData = m_FinnhubDataSource.CreateWebData();
-
-		EXPECT_TRUE(pWebData != nullptr);
-		EXPECT_EQ(pWebData->GetTime(), 0) << "设置为当前的UTCTime";
-		EXPECT_TRUE(pWebData->GetDataBuffer() == _T("{ \"data\": 2}"));
-
-		// restore
-		TestSetUTCTime(tUTCTime);
-	}
 }

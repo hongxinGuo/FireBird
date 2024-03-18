@@ -10,7 +10,7 @@ CQuandlDataSource::CQuandlDataSource() {
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 1; // Quandl实时数据查询数量默认值
 
-	CQuandlDataSource::ConfigureSession();
+	CQuandlDataSource::ConfigureInternetOption();
 	CQuandlDataSource::Reset();
 }
 
@@ -40,10 +40,10 @@ bool CQuandlDataSource::Inquire() {
 	return true;
 }
 
-void CQuandlDataSource::ConfigureSession() {
-	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 120000); // 设置连接超时时间为120秒
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 120000); // 设置接收超时时间为120秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 2000); // 设置发送超时时间为2秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 2次重试
+void CQuandlDataSource::ConfigureInternetOption() {
+	m_internetOption.option_connect_timeout = 120000;
+	m_internetOption.option_receive_timeout = 120000;
+	m_internetOption.option_data_receive_timeout = 100000;
+	m_internetOption.option_send_timeout = 2000;
+	m_internetOption.option_connect_retries = 1;
 }

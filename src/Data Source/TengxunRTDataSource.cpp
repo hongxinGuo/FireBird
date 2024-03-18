@@ -10,7 +10,7 @@ CTengxunRTDataSource::CTengxunRTDataSource() {
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 900; // 腾讯实时数据查询默认值
 
-	CTengxunRTDataSource::ConfigureSession();
+	CTengxunRTDataSource::ConfigureInternetOption();
 
 	CTengxunRTDataSource::Reset();
 }
@@ -46,13 +46,12 @@ void CTengxunRTDataSource::GenerateCurrentInquiryMessage() {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
 
-void CTengxunRTDataSource::ConfigureSession() {
-	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 1000); // 正常情况下Tengxun实时数据接收时间大致为300毫秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 1000); // 设置接收超时时间为1000毫秒
-	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, 1000); // 设置接收超时时间为1秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 200); // 设置发送超时时间为200毫秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
+void CTengxunRTDataSource::ConfigureInternetOption() {
+	m_internetOption.option_connect_timeout = 1000;
+	m_internetOption.option_receive_timeout = 1000;
+	m_internetOption.option_data_receive_timeout = 1000;
+	m_internetOption.option_send_timeout = 200;
+	m_internetOption.option_connect_retries = 1;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

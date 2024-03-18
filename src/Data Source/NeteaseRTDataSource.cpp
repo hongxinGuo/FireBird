@@ -12,7 +12,7 @@ CNeteaseRTDataSource::CNeteaseRTDataSource() {
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 900; // 网易实时数据查询默认值
 
-	CNeteaseRTDataSource::ConfigureSession();
+	CNeteaseRTDataSource::ConfigureInternetOption();
 	CNeteaseRTDataSource::Reset();
 }
 
@@ -63,11 +63,10 @@ void CNeteaseRTDataSource::GenerateCurrentInquiryMessage() {
 /// 网易实时数据的接收，不时出现错误数据。目前无法确定是服务器本身的错误还是接收中出现的错误。如果服务器本身就发送错了，就无法修正了。
 /// 修改session各参数，试试能否解决问题。
 /// </summary>
-void CNeteaseRTDataSource::ConfigureSession() {
-	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 2000); // 设置连接超时时间为2000毫秒。 正常情况下网易实时数据接收时间不超过200毫秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 2000); // 设置接收超时时间为2000毫秒
-	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, 2000); // 设置接收超时时间为2000毫秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 500); // 设置发送超时时间为500毫秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 重试一次。
+void CNeteaseRTDataSource::ConfigureInternetOption() {
+	m_internetOption.option_connect_timeout = 2000;
+	m_internetOption.option_receive_timeout = 2000;
+	m_internetOption.option_data_receive_timeout = 2000;
+	m_internetOption.option_send_timeout = 500;
+	m_internetOption.option_connect_retries = 1;
 }

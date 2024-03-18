@@ -19,7 +19,7 @@ CSinaRTDataSource::CSinaRTDataSource() {
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 850; // 新浪实时数据查询数量默认值
 
-	CSinaRTDataSource::ConfigureSession();
+	CSinaRTDataSource::ConfigureInternetOption();
 
 	CSinaRTDataSource::Reset();
 }
@@ -66,11 +66,10 @@ void CSinaRTDataSource::GenerateCurrentInquiryMessage() {
 /// 调整Session的选项可能会改善接收情况。
 ///
 /// </summary>
-void CSinaRTDataSource::ConfigureSession() {
-	ASSERT(m_pSession != nullptr);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 1000); // 正常情况下sina实时数据接收时间不超过50毫秒。
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 750); // 设置接收超时时间为500毫秒
-	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, 750); // 设置接收超时时间为500毫秒
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, 500); // 设置发送超时时间为500毫秒
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1); // 1次重试
+void CSinaRTDataSource::ConfigureInternetOption() {
+	m_internetOption.option_connect_timeout = 1000;
+	m_internetOption.option_receive_timeout = 7500;
+	m_internetOption.option_data_receive_timeout = 7500;
+	m_internetOption.option_send_timeout = 500;
+	m_internetOption.option_connect_retries = 1;
 }

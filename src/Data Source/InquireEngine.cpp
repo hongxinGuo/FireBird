@@ -47,6 +47,15 @@ CInquireEngine::CInquireEngine(const CString& strInquire, const CString& strHead
 	m_lContentLength = 0;
 }
 
+void CInquireEngine::ConfigureSession(const InternetOption& option) {
+	ASSERT(m_pSession != nullptr);
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, option.option_connect_timeout);
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, option.option_receive_timeout);
+	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, option.option_data_receive_timeout);
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, option.option_send_timeout);
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, option.option_connect_retries);
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 正常时返回一个包含网络数据的指针，如果出现网络错误或者发生例外，则返回一个空指针。
@@ -138,7 +147,7 @@ void CInquireEngine::QueryDataLength() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 UINT CInquireEngine::ReadWebFileOneTime() {
-	return m_pFile->Read(m_dataBuffer, 1024 * 16);
+	return m_pFile->Read(m_dataBuffer, WEB_SOURCE_DATA_BUFFER_SIZE_);
 }
 
 //
@@ -193,9 +202,8 @@ void CInquireEngine::TransferDataToWebData(const CWebDataPtr& pWebData) {
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
 }
 
-/*
 void CInquireEngine::TESTSetBuffer(const char* buffer, const INT64 lTotalNumber) {
-	m_sBuffer.resize(lTotalNumber);
+	m_sBuffer.resize(lTotalNumber + 1);
 	for (INT64 i = 0; i < lTotalNumber; i++) { m_sBuffer.at(i) = buffer[i]; }
 	m_lByteRead = lTotalNumber;
 }
@@ -204,12 +212,13 @@ void CInquireEngine::TESTSetBuffer(CString str) {
 	const INT64 lTotalNumber = str.GetLength();
 	const char* buffer = str.GetBuffer();
 
-	m_sBuffer.resize(lTotalNumber);
+	m_sBuffer.resize(lTotalNumber + 1);
 	for (INT64 i = 0; i < lTotalNumber; i++) { m_sBuffer.at(i) = buffer[i]; }
 	m_lByteRead = lTotalNumber;
 }
 
 void CInquireEngine::TESTSetWebBuffer(const char* buffer, const INT64 lTotalNumber) {
-	for (INT64 i = 0; i < lTotalNumber; i++) { m_dataBuffer[i] = buffer[i]; }
+	for (INT64 i = 0; i < lTotalNumber; i++) {
+		m_dataBuffer[i] = buffer[i];
+	}
 }
-*/

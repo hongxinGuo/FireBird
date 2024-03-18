@@ -25,8 +25,6 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-
-			dataSource.SetBufferSize(WEB_SOURCE_DATA_BUFFER_SIZE_);
 		}
 
 		void TearDown() override {
@@ -45,7 +43,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(dataSource.GetInquiringString(), _T(""));
 		EXPECT_STREQ(dataSource.GetInquiryFunction(), _T(""));
 		EXPECT_STREQ(dataSource.GetInquiryToken(), _T(""));
-		EXPECT_EQ(dataSource.GetByteRead(), 0);
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestInquire) {
@@ -105,33 +102,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(dataSource.GetInquiringString(), _T("TestGetInquiry"));
 	}
 
-	TEST_F(CVirtualDataSourceTest, TestCreateWebData) {
-		dataSource.TESTSetBuffer(_T("{ \"data\": 2}"));
-		const time_t tUTCTime = GetUTCTime();
-		TestSetUTCTime(0);
-
-		const auto pWebData = dataSource.CreateWebData();
-
-		EXPECT_TRUE(pWebData != nullptr);
-		EXPECT_EQ(pWebData->GetTime(), 0) << "设置为当前的UTCTime";
-		EXPECT_TRUE(pWebData->GetDataBuffer() == _T("{ \"data\": 2}"));
-
-		// restore
-		TestSetUTCTime(tUTCTime);
-	}
-
-	TEST_F(CVirtualDataSourceTest, TestStoreReceivedData) {
-		const CWebDataPtr pData = make_shared<CWebData>();
-		pData->SetTime(10102020);
-
-		EXPECT_FALSE(dataSource.HaveReceivedData());
-		dataSource.StoreReceivedData(pData);
-		EXPECT_TRUE(dataSource.HaveReceivedData());
-		const auto pData2 = dataSource.GetReceivedData();
-		EXPECT_FALSE(dataSource.HaveReceivedData());
-		EXPECT_EQ(pData2->GetTime(), 10102020);
-	}
-
 	TEST_F(CVirtualDataSourceTest, TestGetHeaders) {
 		EXPECT_STREQ(dataSource.GetHeaders(), _T(""));
 		dataSource.SetHeaders(_T("abcdefg"));
@@ -170,12 +140,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(dataSource.IsWorkingThreadRunning());
 		dataSource.SetWorkingThreadRunning(false);
 		EXPECT_FALSE(dataSource.IsWorkingThreadRunning());
-	}
-
-	TEST_F(CVirtualDataSourceTest, TestGetByteRead) {
-		EXPECT_EQ(dataSource.GetByteRead(), 0);
-		dataSource.SetByteRead(10000);
-		EXPECT_EQ(dataSource.GetByteRead(), 10000);
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringString) {
@@ -217,32 +181,5 @@ namespace FireBirdTest {
 		dataSource.DiscardAllInquiry();
 
 		EXPECT_EQ(dataSource.InquiryQueueSize(), 0);
-	}
-
-	TEST_F(CVirtualDataSourceTest, TestDiscardReceivedData) {
-		const auto p = make_shared<CWebData>();
-		const auto p2 = make_shared<CWebData>();
-		dataSource.StoreReceivedData(p);
-		dataSource.StoreReceivedData(p2);
-		EXPECT_EQ(dataSource.GetReceivedDataSize(), 2);
-
-		dataSource.DiscardReceivedData();
-
-		EXPECT_EQ(dataSource.GetReceivedDataSize(), 0);
-	}
-
-	TEST_F(CVirtualDataSourceTest, TestXferReadingToBuffer) {
-		char buffer[WEB_SOURCE_DATA_BUFFER_SIZE_]{'a', 'b', 'c', 'd'};
-		buffer[WEB_SOURCE_DATA_BUFFER_SIZE_ - 1] = 'e';
-		dataSource.TESTSetWebBuffer(buffer, WEB_SOURCE_DATA_BUFFER_SIZE_);
-		dataSource.XferReadingToBuffer(WEB_SOURCE_DATA_BUFFER_SIZE_);
-
-		const auto sv = dataSource.GetBuffer();
-
-		EXPECT_EQ(sv.at(0), 'a');
-		EXPECT_EQ(sv.at(1), 'b');
-		EXPECT_EQ(sv.at(2), 'c');
-		EXPECT_EQ(sv.at(3), 'd');
-		EXPECT_EQ(sv.at(WEB_SOURCE_DATA_BUFFER_SIZE_ -1), 'e');
 	}
 }

@@ -26,7 +26,7 @@ public:
 	bool Reset() override;
 	bool GenerateInquiryMessage(long lCurrentTime) override;
 
-	void ConfigureSession() override;
+	void ConfigureInternetOption() override;
 	void CheckInaccessible(const CWebDataPtr& pWebData) const override;
 
 	void Inquire(long lCurrentTime);

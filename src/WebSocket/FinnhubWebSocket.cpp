@@ -170,12 +170,12 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 ///        {"msg":"Subscribing to too many symbols","type":"error"}
 /// <param name="pData"></param>
 /// <returns></returns>
-static ondemand::document s_docFinnhubWebSocket; // 使用静态变量以加速解析
-static ondemand::parser s_parserFinnhubWebSocket;// 使用静态变量以加速解析
 bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(const shared_ptr<string>& pData) {
+	static ondemand::document s_docFinnhubWebSocket; // 使用静态变量以加速解析
+	static ondemand::parser s_parserFinnhubWebSocket;// 使用静态变量以加速解析
 	try {
-		const padded_string jsonPadded(*pData);
-		s_docFinnhubWebSocket = s_parserFinnhubWebSocket.iterate(jsonPadded).value();
+		const padded_string_view jsonPaddedView(*pData);
+		s_docFinnhubWebSocket = s_parserFinnhubWebSocket.iterate(jsonPaddedView).value();
 		const string_view sType = jsonGetStringView(s_docFinnhubWebSocket, "type");
 		if (sType == _T("trade")) { // {"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
 			auto data_array = jsonGetArray(s_docFinnhubWebSocket, "data");
@@ -215,7 +215,6 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(const shared_ptr<s
 		}
 	}
 	catch (simdjson_error& error) {
-		//ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), error.what(), s_docFinnhubWebSocket.current_location().value());
 		ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), error.what());
 		return false;
 	}

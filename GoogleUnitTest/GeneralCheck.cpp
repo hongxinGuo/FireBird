@@ -131,14 +131,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pNeteaseRTDataSource->IsEnable());
 		EXPECT_TRUE(gl_pTengxunRTDataSource->IsEnable());
 
-		EXPECT_THAT(gl_pFinnhubDataSource->GetReceivedDataSize(), 0);
-		EXPECT_EQ(gl_pTiingoDataSource->GetReceivedDataSize(), 0);
-		EXPECT_EQ(gl_pSinaRTDataSource->GetReceivedDataSize(), 0);
-		EXPECT_EQ(gl_pNeteaseDayLineDataSource->GetReceivedDataSize(), 0);
-		EXPECT_EQ(gl_pNeteaseRTDataSource->GetReceivedDataSize(), 0);
-		EXPECT_EQ(gl_pTengxunRTDataSource->GetReceivedDataSize(), 0);
-		EXPECT_EQ(gl_pTengxunDayLineDataSource->GetReceivedDataSize(), 0);
-
 		EXPECT_THAT(gl_pFinnhubDataSource->InquiryQueueSize(), 0);
 		EXPECT_EQ(gl_pTiingoDataSource->InquiryQueueSize(), 0);
 		EXPECT_EQ(gl_pSinaRTDataSource->InquiryQueueSize(), 0);

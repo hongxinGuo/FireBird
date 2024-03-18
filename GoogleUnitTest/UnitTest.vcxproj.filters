@@ -621,6 +621,9 @@
     <ClCompile Include="MockTiingoIEXWebSocketTest.cpp">
       <Filter>Test源文件\Web Socket</Filter>
     </ClCompile>
+    <ClCompile Include="InquireEngineTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockMainFrm.h">

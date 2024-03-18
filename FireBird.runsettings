@@ -185,7 +185,7 @@ Included items must then not match any entries in the exclude list to remain inc
 				<Function>CVirtualDataSource::OpenFile</Function>
 				<Function>CVirtualDataSource::Reset</Function>
 				<Function>CVirtualDataSource::GetTickCount</Function>
-				<Function>CVirtualDataSource::ConfigureSession</Function>
+				<Function>CVirtualDataSource::ConfigureInternetOption</Function>
 				<Function>CVirtualDataSource::UpdateStatus</Function>
 
 				<Function>CVirtualWebSocket::Connecting</Function>
@@ -233,11 +233,9 @@ Included items must then not match any entries in the exclude list to remain inc
                 <Source>.*\\vc\\include\\.*</Source>
 				<Source>C:\\dev\\vcpkg\\*.*</Source>
 	            <Source>d:\\cfiles\\projects\\winssl\\*.*</Source>
-                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\gsl\\*.*</Source>
                 <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\googletest\\*.*</Source>
                 <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\Packages\\*.*</Source>
                 <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\*.*</Source>
-				<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\ixwebsocket\\*.*</Source>
 				<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\DataBase\\*.*</Source>
 				<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\*.*</Source>
 	            <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdDoc.cpp</Source>
