@@ -1268,5 +1268,8 @@
     <ClCompile Include="..\src\Data Source\InquireEngine.cpp">
       <Filter>源文件\Data Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

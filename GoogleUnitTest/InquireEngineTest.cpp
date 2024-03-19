@@ -40,15 +40,25 @@ namespace FireBirdTest {
 	TEST_F(CInquireEngineTest, TestInitialize) {
 	}
 
+	TEST_F(CInquireEngineTest, TestIncreaseBufferSizeIfNeeded) {
+		engine.SetBufferSize(1024 * 1024);
+
+		engine.SetByteRead(1024 * (1024 - 128));
+		EXPECT_FALSE(engine.IncreaseBufferSizeIfNeeded(1));
+
+		engine.SetByteRead(1024 * (1024 - 128) + 1);
+		EXPECT_TRUE(engine.IncreaseBufferSizeIfNeeded(1));
+	}
+
 	TEST_F(CInquireEngineTest, TestCreateWebData) {
 		engine.TESTSetBuffer(_T("{ \"data\": 2}"));
 		const time_t tUTCTime = GetUTCTime();
-		TestSetUTCTime(0);
+		TestSetUTCTime(10);
 
 		const auto pWebData = engine.CreateWebData();
 
 		EXPECT_TRUE(pWebData != nullptr);
-		EXPECT_EQ(pWebData->GetTime(), 0) << "设置为当前的UTCTime";
+		EXPECT_EQ(pWebData->GetTime(), 10) << "设置为当前的UTCTime";
 		EXPECT_TRUE(pWebData->GetDataBuffer() == _T("{ \"data\": 2}"));
 
 		// restore

@@ -24,14 +24,16 @@ class CInquireEngine {
 public:
 	CInquireEngine();
 	CInquireEngine(const CString& strInquire, const CString& strHeaders);
+	virtual ~CInquireEngine() {
+	}
 
-	void ConfigureSession(const InternetOption& option);
+	void ConfigureSession(const InternetOption& option) const;
 	CWebDataPtr GetWebData(); // 实际读取处理函数
-	void OpenFile();
-	void GetFileHeaderInformation();
+	virtual void OpenFile();
+	virtual void GetFileHeaderInformation();
 	void DeleteWebFile();
 	void QueryDataLength();
-	UINT ReadWebFileOneTime(); // 无法测试，故而虚拟化后使用Mock类。
+	virtual UINT ReadWebFileOneTime(); // 无法测试，故而虚拟化后使用Mock类来测试。
 	void XferReadingToBuffer(UINT uByteRead);
 	bool IncreaseBufferSizeIfNeeded(long lIncreaseSize);
 	CWebDataPtr CreateWebData();
@@ -40,6 +42,7 @@ public:
 	void TransferDataToWebData(const CWebDataPtr& pWebData); // 将接收到的数移至pWebData中
 
 	long GetByteRead() const noexcept { return m_lByteRead; }
+	void SetByteRead(long number) { m_lByteRead = number; } // 仅用于测试中
 
 	// 各状态
 	void SetInquiryString(const CString& strInquiry) { m_strInquiry = strInquiry; }
@@ -49,8 +52,9 @@ public:
 	void SetWebError(bool fFlag) noexcept { m_fWebError = fFlag; }
 
 	void SetContentLength(long length) noexcept { m_lContentLength = length; }
-
+	long GetContentLength() const noexcept { return m_lContentLength; } // 仅用于测试中
 	void SetBufferSize(long size) { m_sBuffer.resize(size); }
+	size_t GetBufferSize() const noexcept { return m_sBuffer.size(); } // 仅用于测试中
 
 public:
 	// 以下为测试用函数

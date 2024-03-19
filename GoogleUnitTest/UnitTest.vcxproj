@@ -125,6 +125,7 @@
     <ClCompile Include="FinnhubProductTest.cpp" />
     <ClCompile Include="JsonGetValueTest.cpp" />
     <ClCompile Include="MockFinnhubWebSocketTest.cpp" />
+    <ClCompile Include="MockInquireEngineTest.cpp" />
     <ClCompile Include="MockNeteaseDayLineDataSourceTest.cpp" />
     <ClCompile Include="MockNeteaseRTDataSourceTest.cpp" />
     <ClCompile Include="MockQuandlDataSourceTest.cpp" />
@@ -269,6 +270,7 @@
     <ClCompile Include="ContainerChinaWeekLineTest.cpp" />
     <ClCompile Include="WeekLineTest.cpp" />
     <ClInclude Include="MockFinnhubWebSocket.h" />
+    <ClInclude Include="MockInquireEngine.h" />
     <ClInclude Include="MockTiingoIEXWebSocket.h" />
   </ItemGroup>
   <ItemGroup>

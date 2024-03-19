@@ -47,7 +47,7 @@ CInquireEngine::CInquireEngine(const CString& strInquire, const CString& strHead
 	m_lContentLength = 0;
 }
 
-void CInquireEngine::ConfigureSession(const InternetOption& option) {
+void CInquireEngine::ConfigureSession(const InternetOption& option) const {
 	ASSERT(m_pSession != nullptr);
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, option.option_connect_timeout);
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, option.option_receive_timeout);
@@ -67,7 +67,6 @@ void CInquireEngine::ConfigureSession(const InternetOption& option) {
 //
 ///////////////////////////////////////////////////////////////////////////
 CWebDataPtr CInquireEngine::GetWebData() {
-	ASSERT(m_pFile == nullptr);
 	try {
 		OpenFile();
 		GetFileHeaderInformation();
@@ -162,8 +161,9 @@ void CInquireEngine::XferReadingToBuffer(UINT uByteRead) {
 bool CInquireEngine::IncreaseBufferSizeIfNeeded(long lIncreaseSize) {
 	if (m_sBuffer.size() < (m_lByteRead + 128 * 1024)) { // 数据可存储空间不到128K时
 		m_sBuffer.resize(m_sBuffer.size() + lIncreaseSize); // 扩大lSize（默认为1M）数据范围
+		return true;
 	}
-	return true;
+	return false;
 }
 
 CWebDataPtr CInquireEngine::CreateWebData() {

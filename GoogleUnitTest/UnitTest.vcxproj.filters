@@ -624,6 +624,9 @@
     <ClCompile Include="InquireEngineTest.cpp">
       <Filter>Test源文件\Data Source</Filter>
     </ClCompile>
+    <ClCompile Include="MockInquireEngineTest.cpp">
+      <Filter>Test源文件\Data Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockMainFrm.h">
@@ -700,6 +703,9 @@
     </ClInclude>
     <ClInclude Include="MockTiingoIEXWebSocket.h">
       <Filter>Mock class\WebSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="MockInquireEngine.h">
+      <Filter>Mock class\Data Source</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
