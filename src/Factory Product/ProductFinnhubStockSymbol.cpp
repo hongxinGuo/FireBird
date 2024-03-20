@@ -6,7 +6,6 @@
 #include "ProductFinnhubStockSymbol.h"
 
 CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
-	m_strClassName = _T("Finnhub company symbols");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/symbol?exchange=");
 	m_lIndex = -1;
 }

@@ -9,20 +9,24 @@ namespace FireBirdTest {
 	class CProductDummyTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -30,7 +34,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductDummyTest, TestInitialize) {
-		EXPECT_STREQ(dummy.GetClassName(), _T("Dummy Product"));
+		EXPECT_STREQ(typeid(dummy).name(), _T("class CProductDummy"));
 		EXPECT_STREQ(dummy.GetInquiryFunction(), _T(""));
 		EXPECT_EQ(dummy.GetIndex(), -1);
 	}

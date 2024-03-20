@@ -186,16 +186,16 @@ void CFinnhubInaccessibleExchange::UpdateJson() {
 	}
 }
 
-void CFinnhubInaccessibleExchange::DeleteExchange(int iInquiryType, const CString& strExchange) {
-	if (HaveExchange(iInquiryType, strExchange)) {
-		const CInaccessibleExchangesPtr pExchange = GetExchange(iInquiryType);
+void CFinnhubInaccessibleExchange::DeleteExchange(int iInquireType, const CString& strExchange) {
+	if (HaveExchange(iInquireType, strExchange)) {
+		const CInaccessibleExchangesPtr pExchange = GetExchange(iInquireType);
 		pExchange->DeleteExchange(strExchange);
 	}
 }
 
-bool CFinnhubInaccessibleExchange::HaveExchange(int iInquiryType, const CString& strExchangeCode) const {
+bool CFinnhubInaccessibleExchange::HaveExchange(int iInquireType, const CString& strExchangeCode) const {
 	try {
-		if (m_mapExchange.at(iInquiryType)->HaveExchange(strExchangeCode)) {
+		if (m_mapExchange.at(iInquireType)->HaveExchange(strExchangeCode)) {
 			return true;
 		}
 		return false;

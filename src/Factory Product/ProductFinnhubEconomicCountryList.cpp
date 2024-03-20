@@ -12,7 +12,6 @@
 using namespace std;
 
 CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
-	m_strClassName = _T("Finnhub economic country list");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/country?");
 	m_lIndex = -1;
 }

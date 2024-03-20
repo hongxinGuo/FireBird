@@ -9,7 +9,6 @@
 #include "TiingoDataSource.h"
 
 CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() {
-	m_strClassName = _T("Tiingo crypto symbols");
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/crypto?");
 	m_differ1 = 0;
 	m_differ2 = 0;

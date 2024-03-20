@@ -76,10 +76,10 @@ public:
 	long GetUpdateDate() const { return m_lUpdateDate; }
 
 	static int GetFinnhubInquiryIndex(const CString& sString) { return gl_FinnhubInquiryType.GetInquiryType(sString); }
-	CInaccessibleExchangesPtr GetExchange(int iInquiryType) { return m_mapExchange.at(iInquiryType); }
-	void SetExchange(const int iInquiryType, const CInaccessibleExchangesPtr& pExchange) { m_mapExchange[iInquiryType] = pExchange; }
-	void DeleteExchange(int iInquiryType, const CString& strExchange);
-	bool HaveExchange(int iInquiryType, const CString& strExchangeCode) const;
+	CInaccessibleExchangesPtr GetExchange(int iInquireType) { return m_mapExchange.at(iInquireType); }
+	void SetExchange(const int iInquireType, const CInaccessibleExchangesPtr& pExchange) { m_mapExchange[iInquireType] = pExchange; }
+	void DeleteExchange(int iInquireType, const CString& strExchange);
+	bool HaveExchange(int iInquireType, const CString& strExchangeCode) const;
 	size_t GetItemSize() const noexcept { return m_mapExchange.size(); }
 
 	bool IsNeedUpdate() const noexcept { return m_fUpdate; }

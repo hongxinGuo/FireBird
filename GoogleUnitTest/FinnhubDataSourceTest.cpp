@@ -217,7 +217,7 @@ namespace FireBirdTest {
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
 		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Inquiring Finnhub economic country List"));
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
-		EXPECT_STREQ(p->GetClassName(), _T("Finnhub economic country list"));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubEconomicCountryList"));
 		EXPECT_EQ(m_FinnhubDataSource.InquiryQueueSize(), 0);
 	}
 
@@ -765,7 +765,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.InquireEconomicCalendar());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
-		EXPECT_STREQ(p->GetClassName(), _T("Finnhub economic calendar"));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubEconomicCalendar"));
 
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
 		gl_systemMessage.PopInformationMessage();
@@ -826,7 +826,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.InquireForexExchange());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
-		EXPECT_STREQ(p->GetClassName(), _T("Finnhub forex exchange"));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexExchange"));
 		const CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring Finnhub forex exchange"));
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateForexExchange()) << "此标识需要等处理完数据后方设置";
@@ -928,7 +928,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.InquireCryptoExchange());
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
-		EXPECT_STREQ(p->GetClassName(), _T("Finnhub crypto exchange"));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCryptoExchange"));
 		const CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring Finnhub crypto exchange"));
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateCryptoExchange()) << "此标识需要等处理完数据后方设置";

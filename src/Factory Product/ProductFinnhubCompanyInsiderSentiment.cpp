@@ -12,7 +12,6 @@
 using namespace std;
 
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {
-	m_strClassName = _T("Finnhub company insider sentiment");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol=");
 	m_lIndex = -1;
 }

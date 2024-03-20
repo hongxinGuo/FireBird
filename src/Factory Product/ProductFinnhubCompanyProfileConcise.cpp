@@ -8,7 +8,6 @@
 #include "ProductFinnhubCompanyProfileConcise.h"
 
 CProductFinnhubCompanyProfileConcise::CProductFinnhubCompanyProfileConcise() {
-	m_strClassName = _T("Finnhub company profile concise");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/profile2?symbol=");
 	m_lIndex = -1;
 }

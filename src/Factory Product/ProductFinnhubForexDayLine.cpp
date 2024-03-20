@@ -14,7 +14,6 @@
 using namespace std;
 
 CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
-	m_strClassName = _T("Finnhub forex dayline");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/candle?symbol=");
 	m_lIndex = -1;
 }

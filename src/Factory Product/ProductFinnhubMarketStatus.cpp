@@ -8,7 +8,6 @@
 #include "ProductFinnhubMarketStatus.h"
 
 CProductFinnhubMarketStatus::CProductFinnhubMarketStatus() {
-	m_strClassName = _T("Finnhub market status");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/market-status?exchange=");
 	m_lIndex = -1;
 }

@@ -10,9 +10,8 @@
 CVirtualWebProduct::CVirtualWebProduct() {
 	m_lIndex = -1; // 预先设置为越界
 
-	m_strClassName = _T("VirtualProductData");
 	m_iReceivedDataStatus = 0;
-	m_iProductType = 0;
+	m_iInquireType = 0;
 
 	m_strInquiryFunction = _T("");
 	m_strInquiry = _T("");

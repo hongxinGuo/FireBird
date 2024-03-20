@@ -8,7 +8,6 @@
 #include "FinnhubDataSource.h"
 
 CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {
-	m_strClassName = _T("Finnhub crypto exchange");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/exchange?");
 	m_lIndex = -1;
 }

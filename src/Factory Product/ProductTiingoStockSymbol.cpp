@@ -14,7 +14,6 @@
 using namespace std;
 
 CProductTiingoStockSymbol::CProductTiingoStockSymbol() {
-	m_strClassName = _T("Tiingo stock symbols");
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");
 }
 

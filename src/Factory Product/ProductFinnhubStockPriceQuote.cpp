@@ -8,7 +8,6 @@
 #include "ProductFinnhubStockPriceQuote.h"
 
 CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
-	m_strClassName = _T("Finnhub stock price quote");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/quote?symbol=");
 	m_lIndex = -1;
 }

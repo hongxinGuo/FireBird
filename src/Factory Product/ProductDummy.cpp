@@ -3,7 +3,6 @@
 #include "ProductDummy.h"
 
 CProductDummy::CProductDummy() {
-	m_strClassName = _T("Dummy Product");
 	m_strInquiryFunction = _T("");
 	m_lIndex = -1;
 }

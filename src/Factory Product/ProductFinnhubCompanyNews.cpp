@@ -9,7 +9,6 @@
 #include "ProductFinnhubCompanyNews.h"
 
 CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
-	m_strClassName = _T("Finnhub company news");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/company-news?symbol=");
 	m_lIndex = -1;
 }

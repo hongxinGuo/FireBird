@@ -13,7 +13,6 @@
 using namespace std;
 
 CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurprise() {
-	m_strClassName = _T("Finnhub estimates EPS surprise");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");
 	m_lIndex = -1;
 }

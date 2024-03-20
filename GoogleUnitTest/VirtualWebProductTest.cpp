@@ -63,7 +63,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(webProduct.GetInquiry(), _T(""));
 		EXPECT_STREQ(webProduct.GetInquiryFunction(), _T(""));
 		EXPECT_STREQ(webProduct.GetInquiringExchange(), _T("ALL"));
-		EXPECT_EQ(webProduct.GetProductType(), 0);
+		EXPECT_EQ(webProduct.GetInquireType(), 0);
 	}
 
 	TEST_F(CVirtualWebProductTest, TestIsVoidJson1) {
@@ -145,7 +145,7 @@ namespace FireBirdTest {
 		const CString strData = _T("{\"error\":\"You don't have access to this resource.\"}");
 		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.SetInquiringExchange(_T("SZ"));
-		finnhubWebProduct.SetProductType(STOCK_PRICE_CANDLES_);
+		finnhubWebProduct.SetInquireType(STOCK_PRICE_CANDLES_);
 
 		EXPECT_TRUE(finnhubWebProduct.CheckInaccessible(pWebData)) << "将SZ交易所列入禁入名单";
 		EXPECT_TRUE(finnhubWebProduct.IsNoRightToAccess());
@@ -162,7 +162,7 @@ namespace FireBirdTest {
 		const CString strData = _T("{\"error\":\"You don't have access to this resource.\"}");
 		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.SetInquiringExchange(_T("AD"));
-		finnhubWebProduct.SetProductType(STOCK_PRICE_CANDLES_);
+		finnhubWebProduct.SetInquireType(STOCK_PRICE_CANDLES_);
 		finnhubWebProduct.CheckInaccessible(pWebData); // 重置内部静态数据
 
 		finnhubWebProduct.SetInquiringExchange(_T("US"));

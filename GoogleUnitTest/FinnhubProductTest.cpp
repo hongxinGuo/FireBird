@@ -62,7 +62,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubProductTest, TestAddInaccessibleExchange) {
-		finnhubProduct.SetProductType(STOCK_SYMBOLS_);
+		finnhubProduct.SetInquireType(STOCK_SYMBOLS_);
 		finnhubProduct.SetInquiringExchange(_T("AA")); // 新的交易所代码
 
 		finnhubProduct.AddInaccessibleExchange();
@@ -71,7 +71,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(pExchange->HaveExchange(_T("AA")));
 		EXPECT_EQ(pExchange->ExchangeSize(), 1) << "增加了一个交易所";
 
-		finnhubProduct.SetProductType(STOCK_SYMBOLS_);
+		finnhubProduct.SetInquireType(STOCK_SYMBOLS_);
 		finnhubProduct.SetInquiringExchange(_T("AB")); // 新的交易所代码
 
 		finnhubProduct.AddInaccessibleExchange();
@@ -80,7 +80,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(pExchange->HaveExchange(_T("AB")));
 		EXPECT_EQ(pExchange->ExchangeSize(), 2) << "增加第二个交易所";
 
-		finnhubProduct.SetProductType(STOCK_SYMBOLS_);
+		finnhubProduct.SetInquireType(STOCK_SYMBOLS_);
 		finnhubProduct.SetInquiringExchange(_T("AB")); // 已存在于数据集中的交易所代码
 
 		finnhubProduct.AddInaccessibleExchange();

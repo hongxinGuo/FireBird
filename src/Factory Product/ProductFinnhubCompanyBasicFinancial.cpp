@@ -20,7 +20,6 @@ CProductFinnhubCompanyBasicFinancial::CProductFinnhubCompanyBasicFinancial() {
 	s_setMetricType.insert(_T("metric"));
 	s_setMetricType.insert(_T("eps"));
 
-	m_strClassName = _T("Finnhub company basic financials");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/metric?symbol=");
 	m_lIndex = -1;
 }

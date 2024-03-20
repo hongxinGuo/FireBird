@@ -6,7 +6,6 @@
 #include "ProductFinnhubForexSymbol.h"
 
 CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
-	m_strClassName = _T("Finnhub forex symbols");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");
 	m_lIndex = -1;
 }

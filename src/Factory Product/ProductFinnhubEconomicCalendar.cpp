@@ -16,7 +16,6 @@
 #include "FinnhubDataSource.h"
 
 CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
-	m_strClassName = _T("Finnhub economic calendar");
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/calendar/economic?");
 	m_lIndex = -1;
 }
