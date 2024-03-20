@@ -21,30 +21,33 @@ using std::make_shared;
 
 CInquireEngine::CInquireEngine(): m_dataBuffer{} {
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
-	m_pFile = nullptr;
-
-	m_dwHTTPStatusCode = 0;
-	m_sBuffer = _T("");
-	m_lByteRead = 0;
-	m_fWebError = false;
 	m_strInquiry = _T("");
 	m_strHeaders = _T("");
-
-	m_lContentLength = 0;
-}
-
-CInquireEngine::CInquireEngine(const CString& strInquire, const CString& strHeaders): m_dataBuffer{} {
-	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
 	m_pFile = nullptr;
-
+	m_lContentLength = 0;
 	m_dwHTTPStatusCode = 0;
-	m_sBuffer = _T("");
+
+	m_sBuffer.resize(0);
 	m_lByteRead = 0;
 	m_fWebError = false;
+}
+
+CInquireEngine::CInquireEngine(const InternetOption& internetOption, const CString& strInquire, const CString& strHeaders): m_dataBuffer{} {
+	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, internetOption.option_connect_timeout);
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, internetOption.option_receive_timeout);
+	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, internetOption.option_data_receive_timeout);
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, internetOption.option_send_timeout);
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, internetOption.option_connect_retries);
 	m_strInquiry = strInquire;
 	m_strHeaders = strHeaders;
-
+	m_pFile = nullptr;
 	m_lContentLength = 0;
+	m_dwHTTPStatusCode = 0;
+
+	m_sBuffer.resize(0);
+	m_lByteRead = 0;
+	m_fWebError = false;
 }
 
 void CInquireEngine::ConfigureSession(const InternetOption& option) const {

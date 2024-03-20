@@ -229,7 +229,7 @@ bool CChinaStock::HaveNewDayLineData() const {
 }
 
 void CChinaStock::UpdateStatusByDownloadedDayLine() {
-	if (m_dataDayLine.Size() == 0) return;
+	if (m_dataDayLine.Empty()) return;
 	if (IsEarlyThen(m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
 		// 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
 		SetIPOStatus(_STOCK_DELISTED_); // 已退市或暂停交易。

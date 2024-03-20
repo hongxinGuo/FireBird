@@ -24,7 +24,7 @@ void CContainerFinnhubStockExchange::Reset() {
 bool CContainerFinnhubStockExchange::LoadDB() {
 	CFinnhubStockExchangePtr pExchange = nullptr;
 
-	if (m_vFinnhubStockExchange.size() == 0) {
+	if (m_vFinnhubStockExchange.empty()) {
 		CSetFinnhubStockExchange setExchange;
 		setExchange.m_strSort = _T("[Code]");
 		setExchange.Open();

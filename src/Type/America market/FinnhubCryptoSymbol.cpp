@@ -72,7 +72,7 @@ void CFinnhubCryptoSymbol::UpdateDayLineStartEndDate() {
 }
 
 bool CFinnhubCryptoSymbol::HaveNewDayLineData() const {
-	if (m_dataDayLine.Size() == 0) return false;
+	if (m_dataDayLine.Empty()) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate) return true;
 	return false;
 }

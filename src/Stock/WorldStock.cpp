@@ -91,7 +91,8 @@ CWorldStock::CWorldStock() {
 	CWorldStock::Reset();
 }
 
-CWorldStock::~CWorldStock() {}
+CWorldStock::~CWorldStock() {
+}
 
 void CWorldStock::Reset() {
 	CVirtualStock::Reset();
@@ -699,7 +700,7 @@ void CWorldStock::UpdateDayLineStartEndDate() {
 }
 
 bool CWorldStock::HaveNewDayLineData() const {
-	if (m_dataDayLine.Size() == 0) return false;
+	if (m_dataDayLine.Empty()) return false;
 	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate)
 		|| (m_dataDayLine.GetData(0)->GetMarketDate() < m_lDayLineStartDate))
 		return true;

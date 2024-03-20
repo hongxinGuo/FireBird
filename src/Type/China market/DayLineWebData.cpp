@@ -31,7 +31,7 @@ bool CDayLineWebData::TransferWebDataToBuffer(const CWebDataPtr& pWebData) {
 bool CDayLineWebData::ProcessNeteaseDayLineData() {
 	shared_ptr<CDayLine> pDayLine;
 
-	if (m_sDataBuffer.size() == 0) return false;	// 没有数据读入？此种状态是查询的股票为无效（不存在）号码
+	if (m_sDataBuffer.empty()) return false;	// 没有数据读入？此种状态是查询的股票为无效（不存在）号码
 	string_view svData = GetCurrentNeteaseData(); // 读过前缀
 	if (m_lCurrentPos >= m_sDataBuffer.size())return false;// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
 

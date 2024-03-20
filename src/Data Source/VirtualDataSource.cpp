@@ -81,10 +81,10 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 			ASSERT(IsInquiring());
 			GetCurrentProduct();
 			GenerateCurrentInquiryMessage();
-			CDataInquireEnginePtr pEngine = make_shared<CInquireEngine>();
-			pEngine->ConfigureSession(m_internetOption);
-			pEngine->SetInquiryString(GetInquiringString());
-			pEngine->SetInquiryHeader(GetHeaders());
+			CDataInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
+			//pEngine->ConfigureSession(m_internetOption);
+			//pEngine->SetInquiryString(GetInquiringString());
+			//pEngine->SetInquiryHeader(GetHeaders());
 			auto result = gl_runtime.background_executor()->submit([this, pEngine] {
 				CHighPerformanceCounter counter;
 				counter.start();

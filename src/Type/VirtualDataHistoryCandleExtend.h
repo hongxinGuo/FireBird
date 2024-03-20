@@ -48,6 +48,7 @@ public:
 	vector<CVirtualHistoryCandleExtendPtr>* GetContainer() noexcept { return &m_vHistoryData; }
 
 	long Size() const noexcept { return static_cast<long>(m_vHistoryData.size()); }
+	bool Empty() const noexcept { return m_vHistoryData.empty(); }
 	bool GetStartEndDate(long& lStartDate, long& lEndDate) const;
 
 	void Unload() noexcept {

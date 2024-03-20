@@ -23,14 +23,13 @@ class CInquireEngine {
 
 public:
 	CInquireEngine();
-	CInquireEngine(const CString& strInquire, const CString& strHeaders);
-	virtual ~CInquireEngine() {
-	}
+	CInquireEngine(const InternetOption& internetOption, const CString& strInquire, const CString& strHeaders);
+	virtual ~CInquireEngine() {}
 
 	void ConfigureSession(const InternetOption& option) const;
 	CWebDataPtr GetWebData(); // 实际读取处理函数
-	virtual void OpenFile();
-	virtual void GetFileHeaderInformation();
+	virtual void OpenFile(); // 无法测试，故而虚拟化后使用Mock类来测试。
+	virtual void GetFileHeaderInformation(); // 无法测试，故而虚拟化后使用Mock类来测试。
 	void DeleteWebFile();
 	void QueryDataLength();
 	virtual UINT ReadWebFileOneTime(); // 无法测试，故而虚拟化后使用Mock类来测试。
