@@ -14,7 +14,6 @@ using namespace std;
 
 CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/daily/");
-	m_lIndex = -1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////

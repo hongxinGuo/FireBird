@@ -9,7 +9,6 @@
 
 CProductFinnhubForexExchange::CProductFinnhubForexExchange() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/exchange?");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubForexExchange::CreateMessage() {

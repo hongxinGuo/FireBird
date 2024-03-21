@@ -9,7 +9,6 @@
 
 CProductFinnhubCompanyProfile::CProductFinnhubCompanyProfile() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/profile?symbol=");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubCompanyProfile::CreateMessage() {

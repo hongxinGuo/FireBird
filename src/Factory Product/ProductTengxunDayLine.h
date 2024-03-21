@@ -9,8 +9,6 @@
 
 #include"VirtualChinaMarketWebProduct.h"
 
-#include"concurrentqueue/concurrentqueue.h"
-
 using std::atomic_int;
 
 class CProductTengxunDayLine final : public CVirtualChinaMarketWebProduct {

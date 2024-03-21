@@ -9,7 +9,6 @@
 
 CProductFinnhubMarketStatus::CProductFinnhubMarketStatus() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/market-status?exchange=");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubMarketStatus::CreateMessage() {

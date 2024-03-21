@@ -84,8 +84,8 @@ public:
 	afx_msg void OnUpdateCalculateTodayRS(CCmdUI* pCmdUI);
 	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnRebuildDayLineRS();
-	afx_msg void OnUpdateRebuildDayLineRS(CCmdUI* pCmdUI);
+	afx_msg void OnRebuildChinaMarketStockDayLineRS();
+	afx_msg void OnUpdateRebuildChinaMarketStockDayLineRS(CCmdUI* pCmdUI);
 	afx_msg void OnAbortBuildingRS();
 	afx_msg void OnUpdateAbortBuildingRS(CCmdUI* pCmdUI);
 	afx_msg void OnCalculate10dayRS1();
@@ -101,8 +101,8 @@ public:
 	afx_msg void OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI);
 	afx_msg void OnBuildCreateWeekLine();
 	afx_msg void OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI);
-	afx_msg void OnRebuildWeekLineRS();
-	afx_msg void OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI);
+	afx_msg void OnRebuildChinaMarketStockWeekLineRS();
+	afx_msg void OnUpdateRebuildChinaMarketStockWeekLineRS(CCmdUI* pCmdUI);
 	afx_msg void OnBuildCurrentWeekLine();
 	afx_msg void OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI);
 	afx_msg void OnBuildRebuildCurrentWeekLine();
@@ -124,8 +124,8 @@ public:
 	afx_msg void OnRecordTiingoIEXWebSocket();
 	afx_msg void OnUpdateRecordTiingoIEXWebSocket(CCmdUI* pCmdUI);
 	afx_msg void OnRebuildBasicFinancial();
-	afx_msg void OnMaintainDayLine();
-	afx_msg void OnUpdateMaintainDayLine(CCmdUI* pCmdUI);
+	afx_msg void OnMaintainChinaMarketStockDayLine();
+	afx_msg void OnUpdateMaintainChinaMarketStockDayLine(CCmdUI* pCmdUI);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnUsingNeteaseDayLineDataServer();
 	afx_msg void OnUpdateUsingNeteaseDayLineDataServer(CCmdUI* pCmdUI);

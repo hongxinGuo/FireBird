@@ -17,7 +17,6 @@
 
 CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/calendar/economic?");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubEconomicCalendar::CreateMessage() {

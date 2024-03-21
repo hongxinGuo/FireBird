@@ -9,7 +9,6 @@
 
 CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/exchange?");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubCryptoExchange::CreateMessage() {

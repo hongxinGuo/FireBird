@@ -63,7 +63,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(webProduct.GetInquiry(), _T(""));
 		EXPECT_STREQ(webProduct.GetInquiryFunction(), _T(""));
 		EXPECT_STREQ(webProduct.GetInquiringExchange(), _T("ALL"));
-		EXPECT_EQ(webProduct.GetInquireType(), 0);
+		EXPECT_EQ(webProduct.GetInquireType(), -1);
 	}
 
 	TEST_F(CVirtualWebProductTest, TestIsVoidJson1) {

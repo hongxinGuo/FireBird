@@ -13,7 +13,6 @@ using namespace std;
 
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol=");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubCompanyInsiderSentiment::CreateMessage() {

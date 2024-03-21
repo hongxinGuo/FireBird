@@ -13,7 +13,6 @@ using namespace std;
 
 CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/country?");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubEconomicCountryList::CreateMessage() {

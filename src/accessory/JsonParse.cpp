@@ -686,7 +686,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 	try {
 		ondemand::parser parser;
 		ondemand::document doc;
-		//const padded_string_view jsonPaddedView(svJsonData, svJsonData.length());
+		//const padded_string_view jsonPaddedView(svJsonData, svJsonData.length()); //Note 使用这种模式，需要预留出64byte空间 
 		//doc = parser.iterate(jsonPaddedView).value();
 		const padded_string jsonPadded(svJsonData);
 		doc = parser.iterate(jsonPadded).value();

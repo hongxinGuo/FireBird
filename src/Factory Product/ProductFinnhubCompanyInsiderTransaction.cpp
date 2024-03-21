@@ -14,7 +14,6 @@ using namespace std;
 
 CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransaction() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol=");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubCompanyInsiderTransaction::CreateMessage() {

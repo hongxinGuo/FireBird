@@ -10,7 +10,6 @@
 
 CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/company-news?symbol=");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubCompanyNews::CreateMessage() {

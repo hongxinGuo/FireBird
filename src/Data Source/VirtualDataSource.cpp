@@ -82,9 +82,6 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 			GetCurrentProduct();
 			GenerateCurrentInquiryMessage();
 			CDataInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
-			//pEngine->ConfigureSession(m_internetOption);
-			//pEngine->SetInquiryString(GetInquiringString());
-			//pEngine->SetInquiryHeader(GetHeaders());
 			auto result = gl_runtime.background_executor()->submit([this, pEngine] {
 				CHighPerformanceCounter counter;
 				counter.start();
@@ -100,7 +97,7 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 		}
 		vector<CWebDataPtr> vWebData;
 		for (auto& pWebData : vResults) {
-			auto p = pWebData.get(); // Note 这里等待所有的线程执行完毕
+			auto p = pWebData.get(); // Note 在这里等待所有的线程执行完毕
 			if (p != nullptr) {
 				sm_lTotalByteRead += p->GetBufferLength();
 				vWebData.push_back(p);
@@ -119,9 +116,6 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 			}
 			else if (vWebData.size() == 1) {
 				m_pCurrentProduct->ParseAndStoreWebData(vWebData.at(0));
-			}
-			else { // 正常状态下是不会出现这种情况的
-				ASSERT(gl_systemConfiguration.IsExitingSystem());
 			}
 			m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource智能指针
 		}

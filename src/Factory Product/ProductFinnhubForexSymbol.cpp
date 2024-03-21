@@ -7,7 +7,6 @@
 
 CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubForexSymbol::CreateMessage() {

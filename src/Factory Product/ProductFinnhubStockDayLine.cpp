@@ -13,7 +13,6 @@ using namespace std;
 
 CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/candle?symbol=");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubStockDayLine::CreateMessage() {

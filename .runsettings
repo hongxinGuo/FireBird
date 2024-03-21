@@ -141,8 +141,8 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CMainFrame::OnUpdateStockSection</Function>
 								<Function>CMainFrame::ProcessChinaMarketStock</Function>
 								<Function>CMainFrame::~CMainFrame</Function>
-								<Function>CMainFrame::OnRebuildDayLineRS</Function>
-								<Function>CMainFrame::OnRebuildWeekLineRS</Function>
+								<Function>CMainFrame::OnRebuildChinaMarketStockDayLineRS</Function>
+								<Function>CMainFrame::OnRebuildChinaMarketStockWeekLineRS</Function>
 								<Function>CMainFrame::OnBuildCurrentWeekLine</Function>
 								<Function>CMainFrame::OnBuildRebuildCurrentWeekLine</Function>
 								<Function>CMainFrame::ScheduleMarketTask</Function>
@@ -155,7 +155,7 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CMainFrame::OnRebuildPeer</Function>
 								<Function>CMainFrame::OnRebuildDayLine</Function>
 								<Function>CMainFrame::OnRebuildBasicFinancial</Function>
-								<Function>CMainFrame::OnMaintainDayLine</Function>
+								<Function>CMainFrame::OnMaintainChinaMarketStockDayLine</Function>
 								<Function>CMainFrame::SysCallOnTimer</Function>
 								<Function>CMainFrame::SysCallSetPaneText</Function>
 								<Function>CMainFrame::SysCallSetInnerSystemPaneText</Function>

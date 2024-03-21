@@ -12,8 +12,7 @@ public:
 		dataSource.SetBufferSize(WEB_SOURCE_DATA_BUFFER_SIZE_);
 	}
 
-	void TearDown(const ::benchmark::State& state) override {
-	}
+	void TearDown(const ::benchmark::State& state) override {}
 
 protected:
 	CInquireEngine dataSource;

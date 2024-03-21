@@ -7,7 +7,6 @@
 
 CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/peers?symbol=");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubCompanyPeer::CreateMessage() {

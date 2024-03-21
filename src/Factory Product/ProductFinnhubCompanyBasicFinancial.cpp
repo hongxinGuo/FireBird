@@ -21,7 +21,6 @@ CProductFinnhubCompanyBasicFinancial::CProductFinnhubCompanyBasicFinancial() {
 	s_setMetricType.insert(_T("eps"));
 
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/metric?symbol=");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubCompanyBasicFinancial::CreateMessage() {

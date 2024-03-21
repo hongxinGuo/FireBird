@@ -9,7 +9,6 @@
 
 CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/quote?symbol=");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubStockPriceQuote::CreateMessage() {

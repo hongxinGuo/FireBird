@@ -58,9 +58,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnUpdateCalculateTodayRS)
 	ON_WM_CHAR()
 	ON_WM_KEYUP()
-	ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDayLineRS)
+	ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildChinaMarketStockDayLineRS)
 	//	ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetMarket)
-	ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDayLineRS)
+	ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildChinaMarketStockDayLineRS)
 	ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnAbortBuildingRS)
 	ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuildingRS)
 	ON_COMMAND(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnCalculate10dayRS1)
@@ -76,8 +76,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingSinaRealtimeDataServer)
 	ON_COMMAND(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnBuildCreateWeekLine)
 	ON_UPDATE_COMMAND_UI(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnUpdateBuildCreateWeekLine)
-	ON_COMMAND(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnRebuildWeekLineRS)
-	ON_UPDATE_COMMAND_UI(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnUpdateRebuildWeekLineRS)
+	ON_COMMAND(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnRebuildChinaMarketStockWeekLineRS)
+	ON_UPDATE_COMMAND_UI(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnUpdateRebuildChinaMarketStockWeekLineRS)
 	ON_COMMAND(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildCurrentWeekLine)
 	ON_UPDATE_COMMAND_UI(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildCurrentWeekLine)
 	ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildRebuildCurrentWeekLine)
@@ -99,8 +99,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnRecordTiingoIEXWebSocket)
 	ON_UPDATE_COMMAND_UI(ID_RECORD_TIINGO_IEX_WEB_SOCKET, &CMainFrame::OnUpdateRecordTiingoIEXWebSocket)
 	ON_COMMAND(ID_REBUILD_BASIC_FINANCIAL, &CMainFrame::OnRebuildBasicFinancial)
-	ON_COMMAND(ID_MAINTAIN_DAYLINE, &CMainFrame::OnMaintainDayLine)
-	ON_UPDATE_COMMAND_UI(ID_MAINTAIN_DAYLINE, &CMainFrame::OnUpdateMaintainDayLine)
+	ON_COMMAND(ID_MAINTAIN_DAYLINE, &CMainFrame::OnMaintainChinaMarketStockDayLine)
+	ON_UPDATE_COMMAND_UI(ID_MAINTAIN_DAYLINE, &CMainFrame::OnUpdateMaintainChinaMarketStockDayLine)
 	ON_WM_SIZE()
 	ON_COMMAND(ID_USING_NETEASE_DAYLINE_DATA_SERVER, &CMainFrame::OnUsingNeteaseDayLineDataServer)
 	ON_UPDATE_COMMAND_UI(ID_USING_NETEASE_DAYLINE_DATA_SERVER, &CMainFrame::OnUpdateUsingNeteaseDayLineDataServer)
@@ -171,7 +171,11 @@ CMainFrame::~CMainFrame() {
 
 	gl_systemConfiguration.SetExitingSystem(true);
 
-	while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1); // 等待网络查询线程退出
+	int iCounter = 0;
+	while (gl_ThreadStatus.IsWebInquiringThreadRunning() && (iCounter < 5000)) {
+		iCounter++;
+		Sleep(1); // 等待网络查询线程退出，最长等待时间为5秒
+	}
 
 	if (sm_fGlobeInit) {
 		sm_fGlobeInit = false;
@@ -764,13 +768,13 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	SysCallOnKeyUp(nChar, nRepCnt, nFlags);
 }
 
-void CMainFrame::OnRebuildDayLineRS() {
+void CMainFrame::OnRebuildChinaMarketStockDayLineRS() {
 	gl_runtime.background_executor()->post([] {
 		ThreadBuildDayLineRS(gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
 	});
 }
 
-void CMainFrame::OnUpdateRebuildDayLineRS(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateRebuildChinaMarketStockDayLineRS(CCmdUI* pCmdUI) {
 	// 要避免在八点至半九点半之间执行重算相对强度的工作，因为此时间段时要重置系统，结果导致程序崩溃。
 	if ((gl_pChinaMarket->GetMarketTime() > 83000) && (gl_pChinaMarket->GetMarketTime() < 93000)) {
 		SysCallCmdUIEnable(pCmdUI, false);
@@ -944,17 +948,15 @@ void CMainFrame::OnBuildCreateWeekLine() {
 	});
 }
 
-void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
-}
+void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {}
 
-void CMainFrame::OnRebuildWeekLineRS() {
+void CMainFrame::OnRebuildChinaMarketStockWeekLineRS() {
 	gl_runtime.background_executor()->post([] {
 		ThreadBuildWeekLineRS(gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
 	});
 }
 
-void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {
-}
+void CMainFrame::OnUpdateRebuildChinaMarketStockWeekLineRS(CCmdUI* pCmdUI) {}
 
 void CMainFrame::OnBuildCurrentWeekLine() {
 	gl_runtime.background_executor()->post([] {
@@ -980,8 +982,7 @@ void CMainFrame::OnBuildRebuildCurrentWeekLine() {
 	});
 }
 
-void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
-}
+void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {}
 
 void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
 	gl_runtime.background_executor()->post([] {
@@ -992,8 +993,7 @@ void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
 	});
 }
 
-void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {
-}
+void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {}
 
 void CMainFrame::OnUpdateStockSection() {
 	gl_dataContainerChinaStockSymbol.SetUpdateStockSection(true);
@@ -1118,7 +1118,7 @@ void CMainFrame::OnRebuildBasicFinancial() {
 	gl_pWorldMarket->RebuildBasicFinancial();
 }
 
-void CMainFrame::OnMaintainDayLine() {
+void CMainFrame::OnMaintainChinaMarketStockDayLine() {
 	gl_dataContainerChinaStock.SetDayLineNeedMaintain();
 }
 
@@ -1130,7 +1130,7 @@ void CMainFrame::OnMaintainDayLine() {
 //
 ///////////////////////////////////////////////////////////////////////////////////
 
-void CMainFrame::OnUpdateMaintainDayLine(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateMaintainChinaMarketStockDayLine(CCmdUI* pCmdUI) {
 	if (gl_pChinaMarket->IsDummyTime()) {
 #ifndef _DEBUG
 		if (gl_pChinaMarket->GetMarketTime() > 151000)

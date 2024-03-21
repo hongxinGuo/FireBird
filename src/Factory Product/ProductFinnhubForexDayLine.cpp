@@ -15,7 +15,6 @@ using namespace std;
 
 CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/candle?symbol=");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubForexDayLine::CreateMessage() {

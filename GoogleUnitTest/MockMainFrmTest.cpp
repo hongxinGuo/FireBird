@@ -497,19 +497,19 @@ namespace FireBirdTest {
 		CCmdUI cmdUI;
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(83001);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
-		gl_pMockMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
+		gl_pMockMainFrame->OnUpdateRebuildChinaMarketStockDayLineRS(&cmdUI);
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(92959);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
-		gl_pMockMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
+		gl_pMockMainFrame->OnUpdateRebuildChinaMarketStockDayLineRS(&cmdUI);
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(83000);
 		gl_pChinaMarket->SetCalculatingDayLineRS(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
-		gl_pMockMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
+		gl_pMockMainFrame->OnUpdateRebuildChinaMarketStockDayLineRS(&cmdUI);
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(83000);
 		gl_pChinaMarket->SetCalculatingDayLineRS(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 
-		gl_pMockMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
+		gl_pMockMainFrame->OnUpdateRebuildChinaMarketStockDayLineRS(&cmdUI);
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnAbortBuildingRS) {
@@ -537,12 +537,12 @@ namespace FireBirdTest {
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(180000); // DummyTime
 		EXPECT_TRUE(gl_pChinaMarket->IsDummyTime());
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
-		gl_pMockMainFrame->OnUpdateMaintainDayLine(&cmdUI);
+		gl_pMockMainFrame->OnUpdateMaintainChinaMarketStockDayLine(&cmdUI);
 
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(110000); // WorkingTime
 		EXPECT_FALSE(gl_pChinaMarket->IsDummyTime());
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
-		gl_pMockMainFrame->OnUpdateMaintainDayLine(&cmdUI);
+		gl_pMockMainFrame->OnUpdateMaintainChinaMarketStockDayLine(&cmdUI);
 	}
 
 	TEST_F(CMockMainFrameTest, TestOnUsingRealtimeDataServer) {

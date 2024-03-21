@@ -7,7 +7,6 @@
 
 CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/symbol?exchange=");
-	m_lIndex = -1;
 }
 
 CString CProductFinnhubCryptoSymbol::CreateMessage() {
