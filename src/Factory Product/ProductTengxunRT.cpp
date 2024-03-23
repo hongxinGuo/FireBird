@@ -27,21 +27,4 @@ CString CProductTengxunRT::CreateMessage() {
 void CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	//ParseTengxunRTData(pWebData);
 	ParseTengxunRTDataUsingWorkingThread(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
-
-	/*
-	CWebRTDataPtr p;
-	CHighPerformanceCounter counter1, counter2;
-	counter1.start();
-	ParseTengxunRTDataUsingWorkingThread(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快40%。
-	counter1.stop();
-	int total2 = 0;
-	while (gl_qChinaMarketRTData.try_dequeue(p)) total2++;
-	counter2.start();
-	ParseTengxunRTData(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快40%。
-	counter2.stop();
-	int total = 0;
-	while (gl_qChinaMarketRTData.try_dequeue(p)) total++;
-	ASSERT(total2 == total);
-	double f = (double)counter1.GetElapseTick() / counter2.GetElapseTick();
-	*/
 }

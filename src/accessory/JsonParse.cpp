@@ -159,10 +159,13 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 // 使用这种多线程模式与单线程模式相比，速度快1倍以上。
 //
 // Note 调用此函数的线程不能使用thread_pool_executor或者background_executor生成，只能使用thread_executor生成，原因待查。
+// Note 使用max_concurrency_level时，实际效果大致为4个。估计与调度有关，即CPU的占比增至100%，但解析时间并没有减少。故而将concurrency_level设为4.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvStringView) {
-	const auto concurrency_level = tpe->max_concurrency_level();
+	auto concurrency_level = tpe->max_concurrency_level();
+	if (concurrency_level > 8) concurrency_level = 4;
+	else concurrency_level = 3;
 	vector<result<bool>> results;
 	const auto chunk_size = 1 + pvStringView->size() / concurrency_level;
 	for (auto i = 0; i < concurrency_level; i++) { // 使用当前CPU的所有核心
@@ -196,8 +199,7 @@ void ParseSinaRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
 	const shared_ptr<vector<string_view>> pvStringView = make_shared<vector<string_view>>();
 	try {
 		while (!pWebData->IsLastDataParagraph()) {
-			auto sv = pWebData->GetCurrentSinaData();
-			pvStringView->emplace_back(sv);
+			pvStringView->emplace_back(pWebData->GetCurrentSinaData());
 		}
 	}
 	catch (exception& e) {
@@ -330,10 +332,13 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 // 使用这种多线程模式与单线程模式相比，速度快1倍以上。
 //
 // Note 调用此函数得线程不能使用thread_pool_executor或者background_executor生成，只能使用thread_executor生成，原因待查。
+// Note 使用max_concurrency_level时，实际效果大致为4个。估计与调度有关，即CPU的占比增至100%，但解析时间并没有减少。故而将concurrency_level设为4.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurrencpp::thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvStringView) {
-	const auto concurrency_level = tpe->max_concurrency_level();
+	auto concurrency_level = tpe->max_concurrency_level();
+	if (concurrency_level > 8) concurrency_level = 4;
+	else concurrency_level = 3;
 	bool succeed = true;
 	vector<concurrencpp::result<bool>> results;
 	const auto chunk_size = 1 + pvStringView->size() / concurrency_level;
@@ -358,7 +363,7 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 		results.emplace_back(std::move(result));
 	}
 	for (auto& r : results) {
-		succeed = succeed & co_await r;
+		succeed = succeed & r.get();
 	}
 	co_return succeed;
 }
@@ -368,8 +373,7 @@ void ParseTengxunRTDataUsingWorkingThread(const CWebDataPtr& pWebData) {
 	const shared_ptr<vector<string_view>> pvStringView = make_shared<vector<string_view>>();
 	try {
 		while (!pWebData->IsLastDataParagraph()) {
-			auto sv = pWebData->GetCurrentSinaData();
-			pvStringView->emplace_back(sv);
+			pvStringView->emplace_back(pWebData->GetCurrentSinaData());
 		}
 	}
 	catch (exception& e) {
@@ -747,6 +751,24 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 	return pvWebRTData;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 从网络文件file中读取网易制式实时数据，返回值是所读数据是否出现格式错误。
+// 开始处为第一个{，结束处为倒数第二个}。如果尚有数据需处理，则被处理的字符为','；如果没有数据了，则被处理的字符为' '。
+//
+// 要获取最新行情，访问数据接口：http://api.money.126.net/data/feed/0601872
+//
+// _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
+//                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
+//                       "bid2": 5.68, "bid1": 5.69, "low": 5.51, "updown": 0.21, "type": "SH", "symbol": "601872", "status": 0,
+//                       "ask4": 5.73, "bidvol3": 234700, "bidvol2": 166300, "bidvol1": 641291, "update": "2019/11/04 15:59:54",
+//                       "bidvol5": 134500, "bidvol4": 96600, "yestclose": 5.49, "askvol1": 396789, "ask5": 5.74, "volume": 78750304,
+//                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
+//                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
+//
+// 目前采用下标方法解析数据，其速度能达到Nlohmann json的三倍以上。
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson2(string_view svJsonData) {
 	string symbolCode, strTime;
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
@@ -812,8 +834,24 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson2(string_view sv
 	return pvWebRTData;
 }
 
-// bug 下面这个函数会导致编译时间延长4分钟左右，估计是编译器的问题。已向微软报告了该问题，等待回应。
-// netease实时数据的顺序市场变化，不再使用此种顺序解析方法。
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 从网络文件file中读取网易制式实时数据，返回值是所读数据是否出现格式错误。
+// 开始处为第一个{，结束处为倒数第二个}。如果尚有数据需处理，则被处理的字符为','；如果没有数据了，则被处理的字符为' '。
+//
+// 要获取最新行情，访问数据接口：http://api.money.126.net/data/feed/0601872
+//
+// _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
+//                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
+//                       "bid2": 5.68, "bid1": 5.69, "low": 5.51, "updown": 0.21, "type": "SH", "symbol": "601872", "status": 0,
+//                       "ask4": 5.73, "bidvol3": 234700, "bidvol2": 166300, "bidvol1": 641291, "update": "2019/11/04 15:59:54",
+//                       "bidvol5": 134500, "bidvol4": 96600, "yestclose": 5.49, "askvol1": 396789, "ask5": 5.74, "volume": 78750304,
+//                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
+//                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
+//
+// Note 由于网易实时数据传输时的顺序不保持一致，故而无法使用此种顺序读取field的方法。
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson3(string_view svJsonData) {
 	string symbolCode, strTime;
@@ -826,44 +864,44 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson3(string_view sv
 			auto pWebRTData = make_shared<CWebRTData>();
 			pWebRTData->SetDataSource(NETEASE_RT_WEB_DATA_);
 			ondemand::object item = item_key.value();
-			const string_view strSymbolView2 = item.find_field("code").get_string();
+			const string_view strSymbolView2 = item.find_field("code").get_string().value();
 			symbolCode = strSymbolView2;
 			CString strSymbol4 = XferNeteaseToStandard(symbolCode.c_str());
 			pWebRTData->SetSymbol(strSymbol4);
-			pWebRTData->SetVSell(0, item.find_field("askvol1").get_int64());
-			pWebRTData->SetVSell(2, item.find_field("askvol3").get_int64());
-			pWebRTData->SetVSell(1, item.find_field("askvol2").get_int64());
-			pWebRTData->SetVSell(4, item.find_field("askvol5").get_int64());
-			pWebRTData->SetVSell(3, item.find_field("askvol4").get_int64());
-			pWebRTData->SetNew(item.find_field("price").get_double() * 1000);
-			pWebRTData->SetOpen(item.find_field("open").get_double() * 1000);
-			pWebRTData->SetPBuy(4, item.find_field("bid5").get_double() * 1000);
-			pWebRTData->SetPBuy(3, item.find_field("bid4").get_double() * 1000);
-			pWebRTData->SetPBuy(2, item.find_field("bid3").get_double() * 1000);
-			pWebRTData->SetPBuy(1, item.find_field("bid2").get_double() * 1000);
-			pWebRTData->SetPBuy(0, item.find_field("bid1").get_double() * 1000);
-			pWebRTData->SetHigh(item.find_field("high").get_double() * 1000);
-			pWebRTData->SetLow(item.find_field("low").get_double() * 1000);
-			pWebRTData->SetVBuy(0, item.find_field("bidvol1").get_int64());
-			pWebRTData->SetVBuy(2, item.find_field("bidvol3").get_int64());
-			pWebRTData->SetVBuy(1, item.find_field("bidvol2").get_int64());
-			pWebRTData->SetVBuy(4, item.find_field("bidvol5").get_int64());
-			pWebRTData->SetVBuy(3, item.find_field("bidvol4").get_int64());
-			pWebRTData->SetVolume(item.find_field("volume").get_int64());
-			pWebRTData->SetPSell(4, item.find_field("ask5").get_double() * 1000);
-			pWebRTData->SetPSell(3, item.find_field("ask4").get_double() * 1000);
-			pWebRTData->SetPSell(0, item.find_field("ask1").get_double() * 1000);
+			pWebRTData->SetVSell(0, item.find_field("askvol1").get_int64().value());
+			pWebRTData->SetVSell(2, item.find_field("askvol3").get_int64().value());
+			pWebRTData->SetVSell(1, item.find_field("askvol2").get_int64().value());
+			pWebRTData->SetVSell(4, item.find_field("askvol5").get_int64().value());
+			pWebRTData->SetVSell(3, item.find_field("askvol4").get_int64().value());
+			pWebRTData->SetNew(item.find_field("price").get_double().value() * 1000);
+			pWebRTData->SetOpen(item.find_field("open").get_double().value() * 1000);
+			pWebRTData->SetPBuy(4, item.find_field("bid5").get_double().value() * 1000);
+			pWebRTData->SetPBuy(3, item.find_field("bid4").get_double().value() * 1000);
+			pWebRTData->SetPBuy(2, item.find_field("bid3").get_double().value() * 1000);
+			pWebRTData->SetPBuy(1, item.find_field("bid2").get_double().value() * 1000);
+			pWebRTData->SetPBuy(0, item.find_field("bid1").get_double().value() * 1000);
+			pWebRTData->SetHigh(item.find_field("high").get_double().value() * 1000);
+			pWebRTData->SetLow(item.find_field("low").get_double().value() * 1000);
+			pWebRTData->SetVBuy(2, item.find_field("bidvol3").get_int64().value());
+			pWebRTData->SetVBuy(0, item.find_field("bidvol1").get_int64().value());
+			pWebRTData->SetVBuy(1, item.find_field("bidvol2").get_int64().value());
+			pWebRTData->SetVBuy(4, item.find_field("bidvol5").get_int64().value());
+			pWebRTData->SetVBuy(3, item.find_field("bidvol4").get_int64().value());
+			pWebRTData->SetVolume(item.find_field("volume").get_int64().value());
+			pWebRTData->SetPSell(4, item.find_field("ask5").get_double().value() * 1000);
+			pWebRTData->SetPSell(3, item.find_field("ask4").get_double().value() * 1000);
+			pWebRTData->SetPSell(0, item.find_field("ask1").get_double().value() * 1000);
 
-			string_view sNameView = item.find_field("name").get_string();
+			string_view sNameView = item.find_field("name").get_string().value();
 			string sName(sNameView);
 			pWebRTData->SetStockName(XferToCString(sName)); // 将utf-8字符集转换为多字节字符集
-			pWebRTData->SetPSell(2, item.find_field("ask3").get_double() * 1000);
-			pWebRTData->SetPSell(1, item.find_field("ask2").get_double() * 1000);
-			const string_view svTime = item.find_field("time").get_string();
+			pWebRTData->SetPSell(2, item.find_field("ask3").get_double().value() * 1000);
+			pWebRTData->SetPSell(1, item.find_field("ask2").get_double().value() * 1000);
+			const string_view svTime = item.find_field("time").get_string().value();
 			strTime = svTime;
 			pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str(), -8));
-			pWebRTData->SetLastClose(item.find_field("yestclose").get_double() * 1000);
-			pWebRTData->SetAmount(item.find_field("turnover").get_double());
+			pWebRTData->SetLastClose(item.find_field("yestclose").get_double().value() * 1000);
+			pWebRTData->SetAmount(item.find_field("turnover").get_double().value());
 			pWebRTData->CheckNeteaseRTDataActive();
 			pvWebRTData->push_back(pWebRTData);
 		}
@@ -874,7 +912,6 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson3(string_view sv
 	return pvWebRTData;
 }
 */
-
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(const CWebDataPtr& pData) {
 	return ParseNeteaseRTDataWithSimdjson(pData->GetStringView(21, pData->GetBufferLength() - 21 - 2)); // 网易json数据
 }

@@ -267,8 +267,7 @@ public:
 		pWebData->Test_SetBuffer_(sTiingoSymbol.c_str());
 	}
 
-	void TearDown(const benchmark::State& state) override {
-	}
+	void TearDown(const benchmark::State& state) override {}
 
 	string sUSExchangeStockCode;
 	string sNeteaseRTData;
@@ -396,8 +395,7 @@ public:
 		pWebData->Test_SetBuffer_(s.c_str());
 	}
 
-	void TearDown(const benchmark::State& state) override {
-	}
+	void TearDown(const benchmark::State& state) override {}
 
 	CWebDataPtr pWebData;
 	string s;
@@ -424,13 +422,14 @@ BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingNlohmannJson2)(benchmark::
 //simdjson解析并读取NeteaseRTData的速度
 BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingSimdjson1)(benchmark::State& state) {
 	for (auto _ : state) {
-		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson(sv);
+		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson(pWebData);
 	}
 }
 
+//simdjson解析并读取NeteaseRTData的速度
 BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingSimdjson2)(benchmark::State& state) {
 	for (auto _ : state) {
-		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson2(sv);
+		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson2(pWebData);
 	}
 }
 
@@ -447,8 +446,7 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength);
 	}
 
-	void TearDown(const benchmark::State& state) override {
-	}
+	void TearDown(const benchmark::State& state) override {}
 
 	string s;
 	CWebDataPtr pWebData;
@@ -479,8 +477,7 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength);
 	}
 
-	void TearDown(const benchmark::State& state) override {
-	}
+	void TearDown(const benchmark::State& state) override {}
 
 	string s;
 	CWebDataPtr pWebData;

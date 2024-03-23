@@ -297,8 +297,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>copy $(OutDir)*.dll c:\fireBird</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
