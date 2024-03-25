@@ -52,6 +52,7 @@ binary_semaphore gl_ProcessChinaMarketRTData{1}; // 当处理中国市场的实时数据时，
 counting_semaphore<8> gl_BackgroundWorkingThread{8}; // 最多后台工作线程允许数量
 
 concurrencpp::runtime gl_runtime; // 工作线程运行调度器
+int gl_concurrency_level = 4; // 并行计算允许最大数量。默认为四个协程
 array<timer, TASK_END> gl_aTimer; // timer序列。所有的任务如果使用单独timer的话，将对应的timer存储于此序列中。
 
 // Data source, 皆为唯一实例

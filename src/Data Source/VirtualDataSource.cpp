@@ -95,28 +95,23 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 			});
 			vResults.emplace_back(std::move(result));
 		}
-		vector<CWebDataPtr> vWebData;
+		const shared_ptr<vector<CWebDataPtr>> pvWebData = make_shared<vector<CWebDataPtr>>();
 		for (auto& pWebData : vResults) {
 			auto p = pWebData.get(); // Note 在这里等待所有的线程执行完毕
 			if (p != nullptr) {
 				sm_lTotalByteRead += p->GetBufferLength();
-				vWebData.push_back(p);
+				pvWebData->push_back(p);
 			}
 		}
-		if (vResults.size() == vWebData.size()) { // no web error?
+		if (vResults.size() == pvWebData->size()) { // no web error?
 			m_fWebError = false;
 		}
 		else { // web error
 			m_fWebError = true;
 		}
-		if (!gl_systemConfiguration.IsExitingSystem()) {
-			CheckInaccessible(vWebData.at(0));
-			if (vResults.size() > 1) {
-				m_pCurrentProduct->ParseAndStoreWebData(vWebData);
-			}
-			else if (vWebData.size() == 1) {
-				m_pCurrentProduct->ParseAndStoreWebData(vWebData.at(0));
-			}
+		if (!gl_systemConfiguration.IsExitingSystem() && !pvWebData->empty()) {
+			CheckInaccessible(pvWebData->at(0));
+			m_pCurrentProduct->ParseAndStoreWebData(pvWebData);
 			m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource智能指针
 		}
 		ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。

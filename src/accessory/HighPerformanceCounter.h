@@ -16,27 +16,22 @@ public:
 	static bool IsInitialized() noexcept { return s_isInitialized; }
 
 	[[nodiscard]] long long GetElapseTick() const {
-		ASSERT(s_isInitialized);
 		return (long long)(m_end.QuadPart - m_start.QuadPart);
 	}
 
 	[[nodiscard]] long long GetElapsedSecond() const {
-		ASSERT(s_isInitialized);
 		return (long long)((m_end.QuadPart - m_start.QuadPart)) / s_performanceFrequency;
 	}
 
 	[[nodiscard]] long long GetElapsedMillisecond() const {
-		ASSERT(s_isInitialized);
 		return (long long)((m_end.QuadPart - m_start.QuadPart)) * 1000 / s_performanceFrequency;
 	}
 
 	[[nodiscard]] long long GetElapsedMicroSecond() const {
-		ASSERT(s_isInitialized);
 		return (long long)((m_end.QuadPart - m_start.QuadPart)) * 1000000 / s_performanceFrequency;
 	}
 
 	[[nodiscard]] long long GetElapsedNanoSecond() const {
-		ASSERT(s_isInitialized);
 		return (long long)((m_end.QuadPart - m_start.QuadPart)) * 1000000000 / s_performanceFrequency;
 	}
 

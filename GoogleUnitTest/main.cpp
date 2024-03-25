@@ -46,6 +46,7 @@
 
 #include"ScheduleTask.h"
 #include"FinnhubInaccessibleExchange.h"
+#include "Thread.h"
 #include"ThreadStatus.h"
 #include"TimeConvert.h"
 
@@ -76,7 +77,6 @@ namespace FireBirdTest {
 		// 全局初始化，由main()函数调用。
 	public:
 		TestEnvironment() = default;
-
 		~TestEnvironment() override = default;
 
 		void SetUp() override {
@@ -84,6 +84,8 @@ namespace FireBirdTest {
 			time(&gl_tUTCTime);
 
 			CreateSimdjsonEmptyArray();
+
+			InitializeMaxCurrencyLevel();
 
 			// bug Resharper的UnitTest要运行程序才能找到所有的测试函数，结果这里产生副作用。如果GoogleUnitTest目录中没有systemConfiguration.json文件时，
 			// 程序就会生成一个新文件，导致下面的断言失败。目前先屏蔽掉这个断言
@@ -96,7 +98,7 @@ namespace FireBirdTest {
 			gl_finnhubInaccessibleExchange.LoadDB(); // 重新加载，使用测试目录中的json文件
 			gl_finnhubInaccessibleExchange.Update();
 
-			::InitializeMarkets();
+			InitializeMarkets();
 			gl_pChinaMarket->ResetMarket();
 			gl_pWorldMarket->ResetMarket();
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();

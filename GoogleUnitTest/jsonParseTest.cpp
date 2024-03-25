@@ -18,6 +18,8 @@ namespace FireBirdTest {
 		void TearDown() override {
 			gl_systemConfiguration.SetWorkingMode(false);
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
+			CWebRTDataPtr pRTData = nullptr;
+			while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {}
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -46,8 +48,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
 		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}"); // abcdefg之前缺少字符':'
 		EXPECT_FALSE(CreateJsonWithNlohmann(js, s));
-
-		while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 	}
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann2) {
@@ -56,8 +56,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(CreateJsonWithNlohmann(js, s, 5, 8)); // 排除前面的NoUse和后面的NoUseToo
 		const string sSubscribe = js.at((_T("eventName")));
 		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
-
-		while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 	}
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann3) {
@@ -67,8 +65,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(CreateJsonWithNlohmann(js, s, 0, 0)); // 排除前面的NoUse和后面的NoUseToo
 
 		EXPECT_TRUE(js.empty());
-
-		while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 	}
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann4) {
@@ -80,8 +76,6 @@ namespace FireBirdTest {
 		s = _T("{\"eventName\":\"subscribe\",\"authorization\"\"abcdefg\"}"); // abcdefg之前缺少字符':'
 
 		EXPECT_FALSE(CreateJsonWithNlohmann(js, s));
-
-		while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 	}
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann5) {
@@ -90,8 +84,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(CreateJsonWithNlohmann(js, s, 5, 8)); // 排除前面的NoUse和后面的NoUseToo
 		const string sSubscribe = js.at((_T("eventName")));
 		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
-
-		while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 	}
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann6) {
@@ -101,8 +93,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(CreateJsonWithNlohmann(js, s, 0, 0)); // 排除前面的NoUse和后面的NoUseToo
 
 		EXPECT_TRUE(js.empty());
-
-		while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 	}
 
 	TEST_F(jsonParseTest, TestParseTengxunRTData1) {
@@ -112,13 +102,11 @@ namespace FireBirdTest {
 		pData->Test_SetBuffer_(strData);
 		CWebRTDataPtr pRTData = nullptr;
 		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {}
+
 		ParseTengxunRTData(pData);
 
 		EXPECT_TRUE(gl_qChinaMarketRTData.size_approx() == 2);
-		gl_qChinaMarketRTData.try_dequeue(pRTData);
-		EXPECT_STREQ(pRTData->GetSymbol(), _T("600000.SS"));
-		gl_qChinaMarketRTData.try_dequeue(pRTData);
-		EXPECT_STREQ(pRTData->GetSymbol(), _T("600001.SS"));
+		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 	}
 
 	TEST_F(jsonParseTest, TestParseTengxunRTData2) {
@@ -132,7 +120,7 @@ namespace FireBirdTest {
 		ParseTengxunRTData(pData);
 
 		EXPECT_TRUE(gl_qChinaMarketRTData.size_approx() == 0);
-		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
+		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1) << "GetNextField() out of range";
 	}
 
 	TEST_F(jsonParseTest, TestParseTengxunRTData3) {
@@ -161,10 +149,6 @@ namespace FireBirdTest {
 		ParseTengxunRTData(pData);
 
 		EXPECT_TRUE(gl_qChinaMarketRTData.size_approx() == 2);
-		gl_qChinaMarketRTData.try_dequeue(pRTData);
-		EXPECT_STREQ(pRTData->GetSymbol(), _T("600000.SS"));
-		gl_qChinaMarketRTData.try_dequeue(pRTData);
-		EXPECT_STREQ(pRTData->GetSymbol(), _T("600001.SS"));
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 	}
 

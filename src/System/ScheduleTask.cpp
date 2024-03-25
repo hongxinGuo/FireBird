@@ -17,6 +17,7 @@
 #include"WorldMarket.h"
 
 #include "simdjsonGetValue.h"
+#include "Thread.h"
 
 void TaskSchedulePerSecond() {
 	gl_pSinaRTDataSource->CalcTotalBytePerSecond(); // 计算每秒读取的数据量
@@ -153,6 +154,11 @@ void ScheduleMarketTask() {
 	}
 }
 
+void InitializeMaxCurrencyLevel() {
+	if (gl_runtime.thread_pool_executor()->max_concurrency_level() >= 8) gl_concurrency_level = 4;
+	else gl_concurrency_level = 3;
+}
+
 void TaskSchedulePer100ms() {
 	static bool s_Processing = false;
 	CHighPerformanceCounter counter;
@@ -191,6 +197,8 @@ void TaskSchedulePer100ms() {
 void InitializeSystem() {
 	// 系统初始化开始
 	CreateSimdjsonEmptyArray();
+
+	InitializeMaxCurrencyLevel();
 
 	// 更新系统显示高度和宽度
 	gl_systemConfiguration.SetSystemDisplayRect(GetSystemMetrics(SM_CXFULLSCREEN), GetSystemMetrics(SM_CYFULLSCREEN));

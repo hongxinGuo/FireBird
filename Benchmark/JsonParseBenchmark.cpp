@@ -452,15 +452,9 @@ public:
 	CWebDataPtr pWebData;
 };
 
-BENCHMARK_F(CSinaRTData, ParseSinaRTData)(benchmark::State& state) {
-	for (auto _ : state) {
-		ParseSinaRTData(pWebData);
-	}
-}
-
 BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool)(benchmark::State& state) {
 	for (auto _ : state) {
-		ParseSinaRTDataUsingWorkingThread(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
+		ParseSinaRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
 }
 
@@ -483,14 +477,8 @@ public:
 	CWebDataPtr pWebData;
 };
 
-BENCHMARK_F(CTengxunRTData, ParseTengxunRTData)(benchmark::State& state) {
-	for (auto _ : state) {
-		ParseTengxunRTData(pWebData);
-	}
-}
-
 BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool)(benchmark::State& state) {
 	for (auto _ : state) {
-		ParseTengxunRTDataUsingWorkingThread(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
+		ParseTengxunRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
 }

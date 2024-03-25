@@ -25,6 +25,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			tengxunDayLine.SetMarket(gl_pChinaMarket);
+			tengxunDayLine.SetInquiryNumber(1);
 		}
 
 		void TearDown() override {
@@ -49,8 +50,8 @@ namespace FireBirdTest {
 		const auto pData = make_shared<CWebData>();
 		const CString strTengxunDayLine = _T("{\"code\":0,\"msg\":\"\",\"data\":{\"sh600601\":{\"day\":[[\"2023-01-19\",\"2.550\",\"2.600\",\"2.610\",\"2.550\",\"86162.000\"],[\"2023-01-20\",\"2.600\",\"2.620\",\"2.620\",\"2.590\",\"100735.000\"]],\"qt\":{},\"mx_price\":{\"mx\":[],\"price\":[]},\"prec\":\"2.560\",\"version\":\"16\"}}}");
 		pData->Test_SetBuffer_(strTengxunDayLine);
-		tengxunDayLine.ResetStaticVariable();
 		pData->SetStockCode(_T("600601.SS"));
+
 		tengxunDayLine.ParseAndStoreWebData(pData);
 
 		EXPECT_EQ(gl_qDayLine.size_approx(), 1);
