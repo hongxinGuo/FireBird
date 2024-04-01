@@ -242,21 +242,21 @@ long GetNextSecond(const long lTime) {
 	return lTime + 1;
 }
 
-long GetNextTime(const long lTime, long hh, long mm, long ss) {
+long GetNextTime(const long lTime, const long hh, const long mm, const long ss) {
 	const long h = lTime / 10000;
 	const long m = (lTime - h * 10000) / 100;
 	const long s = lTime - h * 10000 - m * 100;
 	long mTemp = 0;
 	long hTemp = 0;
 	long mEnd, sEnd;
-	if ((s + ss) > 59) {
+	if (s + ss > 59) {
 		mTemp = 1;
 		sEnd = s + ss - 60;
 	}
 	else {
 		sEnd = s + ss;
 	}
-	if ((m + mm + mTemp) > 59) {
+	if (m + mm + mTemp > 59) {
 		hTemp = 1;
 		mEnd = m + mm + mTemp - 60;
 	}
@@ -284,20 +284,20 @@ CString ConvertDateToString(const long lDate, const CString& strFormat) {
 
 	sprintf_s(buffer, strFormat, year, month, day);
 	CString str = buffer;
-	return (str);
+	return str;
 }
 
 CString ConvertDateToTimeStamp(const long lDate) {
-	return (ConvertDateToString(lDate, _T("%04d-%02d-%02d")));
+	return ConvertDateToString(lDate, _T("%04d-%02d-%02d"));
 }
 
 CString ConvertDateToChineseTimeStampString(const long lDate) {
-	return (ConvertDateToString(lDate, _T("%4d年%2d月%2d日")));
+	return ConvertDateToString(lDate, _T("%4d年%2d月%2d日"));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 将逝去的时间转换成UTC时间。默认时区为东八区。
+// 将逝去的时间转换成UTC时间。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 time_t ConvertBufferToTime(CString strFormat, const char* BufferMarketTime, const time_t tTimeZoneOffset) {
@@ -314,7 +314,7 @@ time_t ConvertBufferToTime(CString strFormat, const char* BufferMarketTime, cons
 	tm_.tm_isdst = 0;
 	time_t tt = _mkgmtime(&tm_); // 先变成GMT时间
 	if (tt > -1) {
-		tt += tTimeZoneOffset * 3600; // 然后改成本市场UTC时间
+		tt += tTimeZoneOffset; // 然后改成本市场UTC时间
 	}
 	return tt;
 }
@@ -333,7 +333,7 @@ time_t ConvertStringToTime(CString strFormat, CString strMarketTime, const time_
 	tm_.tm_isdst = 0;
 	time_t tt = _mkgmtime(&tm_);
 	if (tt > -1) {
-		tt += tTimeZoneOffset * 3600; //
+		tt += tTimeZoneOffset; //
 	}
 	return tt;
 }

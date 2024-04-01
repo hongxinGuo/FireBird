@@ -92,11 +92,29 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(StockCodeConverterTest, TestXferNeteaseToStandard) {
-		EXPECT_STREQ(XferNeteaseToStandard(_T("0600001")), _T("600001.SS"));
-		EXPECT_STREQ(XferNeteaseToStandard(_T("1000001")), _T("000001.SZ"));
-		EXPECT_STREQ(XferNeteaseToStandard(_T("060001")), _T("060001.SS"));
-		EXPECT_STREQ(XferNeteaseToStandard(_T("100001")), _T("100001.SZ"));
-		EXPECT_THROW(CString str = XferNeteaseToStandard(_T("200001")), exception);
+		CString str = _T("0600001");
+		EXPECT_STREQ(XferNeteaseToStandard(str), _T("600001.SS"));
+		str = _T("1000001");
+		EXPECT_STREQ(XferNeteaseToStandard(str), _T("000001.SZ"));
+		str = _T("060001");
+		EXPECT_THROW(CString str1 = XferNeteaseToStandard(str), exception);
+		str = _T("100001");
+		EXPECT_THROW(CString str1 = XferNeteaseToStandard(str), exception);
+		str = _T("200001");
+		EXPECT_THROW(CString str1 = XferNeteaseToStandard(str), exception);
+	}
+
+	TEST_F(StockCodeConverterTest, TestXferNeteaseToStandard2) {
+		CString str = _T("0600001");
+		EXPECT_STREQ(XferNeteaseToStandard(string_view(str)), _T("600001.SS"));
+		str = _T("1000001");
+		EXPECT_STREQ(XferNeteaseToStandard(string_view(str)), _T("000001.SZ"));
+		str = _T("060001");
+		EXPECT_THROW(CString str1 = XferNeteaseToStandard(string_view(str)), exception);
+		str = _T("100001");
+		EXPECT_THROW(CString str1 = XferNeteaseToStandard(string_view(str)), exception);
+		str = _T("200001");
+		EXPECT_THROW(CString str1 = XferNeteaseToStandard(string_view(str)), exception);
 	}
 
 	TEST_F(StockCodeConverterTest, TestXferNeteaseToSina) {

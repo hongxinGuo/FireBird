@@ -290,7 +290,7 @@ namespace FireBirdTest {
 		                         &Data104, &Data105, &Data106));
 
 	TEST_P(ConvertBufferToTimeTest, TestConvertBufferToTime) {
-		const time_t tt = ConvertBufferToTime(strFormat, strBuffer.GetBuffer(), -8);
+		const time_t tt = ConvertBufferToTime(strFormat, strBuffer.GetBuffer(), -8 * 3600);
 		tm tm_;
 		const INT64 year = iTime / 10000000000;
 		const INT64 month = iTime / 100000000 - year * 100;
@@ -314,7 +314,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_P(ConvertBufferToTimeTest, TestConvertStringToTime) {
-		const time_t tt = ConvertStringToTime(strFormat, strBuffer, -8);
+		const time_t tt = ConvertStringToTime(strFormat, strBuffer, -8 * 3600);
 		tm tm_;
 		const INT64 year = iTime / 10000000000;
 		const INT64 month = iTime / 100000000 - year * 100;

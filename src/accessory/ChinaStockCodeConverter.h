@@ -11,9 +11,10 @@ using std::string;
 
 // ¹ÉÆ±´úÂë×ª
 [[nodiscard]] string XferSinaToStandard(const CString& strSina);
-[[nodiscard]] string XferSinaToStandard(const string_view& strSina);
+[[nodiscard]] string XferSinaToStandard(const string_view& svSina);
 [[nodiscard]] CString XferSinaToNetease(const CString& strSina);
-[[nodiscard]] CString XferNeteaseToStandard(const CString& strNetease);
+[[nodiscard]] CString XferNeteaseToStandard(CString strNetease);
+[[nodiscard]] CString XferNeteaseToStandard(const string_view& svNetease);
 [[nodiscard]] CString XferNeteaseToSina(const CString& strNetease);
 [[nodiscard]] inline CString XferTengxunToStandard(const CString& strTengxun) { return XferSinaToStandard(strTengxun).c_str(); }
 [[nodiscard]] CString XferStandardToSina(const CString& strStandard);

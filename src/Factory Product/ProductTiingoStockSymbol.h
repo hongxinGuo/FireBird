@@ -11,7 +11,6 @@ public:
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CTiingoStockVectorPtr ParseTiingoStockSymbol(const CWebDataPtr& pWebData);
-	CTiingoStockVectorPtr ParseTiingoStockSymbol2(const CWebDataPtr& pWebData);
 
 	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
 };

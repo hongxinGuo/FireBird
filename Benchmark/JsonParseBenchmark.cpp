@@ -363,15 +363,7 @@ BENCHMARK_F(CJsonParse, ParseTengxunDayLineUsingSimdjson)(benchmark::State& stat
 	}
 }
 
-// 解析并处理tengxun日线数据。
 BENCHMARK_F(CJsonParse, ParseTiingoFundamentalsUsingSimdjson)(benchmark::State& state) {
-	CProductTiingoStockSymbol p;
-	for (auto _ : state) {
-		auto vData = p.ParseTiingoStockSymbol2(pWebData); // 默认测试文件中的股票代码为sh000001.
-	}
-}
-
-BENCHMARK_F(CJsonParse, ParseTiingoFundamentalsUsingNlohmannjson)(benchmark::State& state) {
 	CProductTiingoStockSymbol p;
 	for (auto _ : state) {
 		auto vData = p.ParseTiingoStockSymbol(pWebData); // 默认测试文件中的股票代码为sh000001.
@@ -404,20 +396,6 @@ public:
 	vector<CWebRTDataPtr> vWebRTDataReceived;
 	bool fDone;
 };
-
-// 测试nlohmann json读取NeteaseRTData的速度（数据已预先解析了）
-BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingNlohmannJson1)(benchmark::State& state) {
-	for (auto _ : state) {
-		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTData(&js);
-	}
-}
-
-// 测试nlohmann json读取NeteaseRTData的速度（数据未解析）
-BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingNlohmannJson2)(benchmark::State& state) {
-	for (auto _ : state) {
-		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithNlohmannJSon(pWebData);
-	}
-}
 
 //simdjson解析并读取NeteaseRTData的速度
 BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingSimdjson1)(benchmark::State& state) {

@@ -51,24 +51,6 @@ namespace FireBirdTest {
 
 	INSTANTIATE_TEST_SUITE_P(TestParse123, CNeteaseRTDataParserTest1, testing::Values(&TestNeteaseRTDataTest1));
 
-	TEST_P(CNeteaseRTDataParserTest1, ParseNeteaseRTDataWithNlohmannJSon123) {
-		const auto pvWebRTData = ParseNeteaseRTDataWithNlohmannJSon(m_pWebData);
-
-		switch (m_iIndex) {
-		case 1:
-			EXPECT_EQ(pvWebRTData->size(), 2);
-			EXPECT_STREQ(pvWebRTData->at(0)->GetStockName(), _T("don't use chinese character1"));
-			EXPECT_EQ(pvWebRTData->at(0)->GetHigh(), 5720);
-			EXPECT_EQ(pvWebRTData->at(0)->GetAmount(), 443978974);
-			EXPECT_STREQ(pvWebRTData->at(1)->GetStockName(), _T("don't use chinese character2"));
-			EXPECT_EQ(pvWebRTData->at(1)->GetHigh(), 5730);
-			EXPECT_EQ(pvWebRTData->at(1)->GetAmount(), 443978975);
-			break;
-		default:
-			break;
-		}
-	}
-
 	TEST_P(CNeteaseRTDataParserTest1, ParseNeteaseRTDataWithSimdjson) {
 		const auto pvWebRTData = ParseNeteaseRTDataWithSimdjson(m_pWebData);
 

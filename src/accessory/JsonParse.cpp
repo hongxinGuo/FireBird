@@ -51,16 +51,16 @@ using namespace concurrencpp;
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 long StrToDecimal(const string_view& svData, int power) {
-	const int iPointPosition = svData.find_first_of('.');
-	if (iPointPosition > svData.length()) {
+	const auto iPointPosition = svData.find_first_of('.');
+	if (iPointPosition == std::string_view::npos) {		// 没有小数点？
 		long l = 10;
-		// 没有小数点？
 		if (power > 0) {
 			for (int i = 1; i < power; i++) l *= 10;
 		}
 		else l = 1;
 		return atol(svData.data()) * l;
 	}
+	// 有小数点
 	char buffer[100];
 	int i;
 	for (i = 0; i < iPointPosition; i++) {
@@ -442,13 +442,13 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 	const string symbolName = it.key();
 
 	try {
-		strSymbol4 = XferNeteaseToStandard(symbolName.c_str());
+		strSymbol4 = XferNeteaseToStandard(symbolName);
 		pWebRTData->SetSymbol(strSymbol4);
 		const string sName = jsonGetString(js, "name");
 		pWebRTData->SetStockName(XferToCString(sName)); // 将utf-8字符集转换为多字节字符集
 		strTime = jsonGetString(js, _T("time"));
 		string strSymbol2 = jsonGetString(js, _T("code"));
-		pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str(), -8));
+		pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str(), -8 * 3600));
 	}
 	catch (json::exception& e) {// 结构不完整
 		// do nothing
@@ -510,42 +510,6 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//
-// 要获取最新行情，访问数据接口：http://api.money.126.net/data/feed/0601872
-//
-// _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
-//                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
-//                       "bid2": 5.68, "bid1": 5.69, "low": 5.51, "updown": 0.21, "type": "SH", "symbol": "601872", "status": 0,
-//                       "ask4": 5.73, "bidvol3": 234700, "bidvol2": 166300, "bidvol1": 641291, "update": "2019/11/04 15:59:54",
-//                       "bidvol5": 134500, "bidvol4": 96600, "yestclose": 5.49, "askvol1": 396789, "ask5": 5.74, "volume": 78750304,
-//                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
-//                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
-//
-// 使用json解析，已经没有错误数据了。(偶尔还会有，大致每分钟出现一次）。
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////
-shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(const CWebDataPtr& pData) {
-	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>(); // 要确保返回的向量指针不为空（上级函数需要此指针，即使其内容可能为空）
-	const string_view svHeader = pData->GetStringView(0, 21);
-	if (svHeader.compare(_T("_ntes_quote_callback(")) != 0) {
-		CString str = _T("Bad netease RT data header : ");
-		str.Append(svHeader.data(), svHeader.size());
-		gl_systemMessage.PushErrorMessage(str);
-		return pvWebRTData;
-	}
-	json js;
-
-	if (!pData->CreateJson(js, 21, 2)) {	// 网易数据前21位为前缀，后两位为后缀
-		gl_systemMessage.PushErrorMessage(_T("Netease RT data json parse error"));
-		return pvWebRTData;
-	}
-	pvWebRTData = ParseNeteaseRTData(&js);
-
-	return pvWebRTData;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
 // 从网络文件file中读取网易制式实时数据，返回值是所读数据是否出现格式错误。
 // 开始处为第一个{，结束处为倒数第二个}。如果尚有数据需处理，则被处理的字符为','；如果没有数据了，则被处理的字符为' '。
 //
@@ -562,24 +526,19 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithNlohmannJSon(const CWebD
 // 目前采用下标方法解析数据，其速度能达到Nlohmann json的三倍以上。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJsonData) {
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson2(string_view svJsonData) {
 	string symbolCode, strTime;
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 	try {
 		ondemand::parser parser;
-		ondemand::document doc;
-		//const padded_string_view jsonPaddedView(svJsonData, svJsonData.length()); //Note 使用这种模式，需要预留出64byte空间 
-		//doc = parser.iterate(jsonPaddedView).value();
 		const padded_string jsonPadded(svJsonData);
-		doc = parser.iterate(jsonPadded).value();
+		ondemand::document doc = parser.iterate(jsonPadded).value();
 		for (ondemand::field item_key : doc.get_object()) {
 			auto pWebRTData = make_shared<CWebRTData>();
 			pWebRTData->SetDataSource(NETEASE_RT_WEB_DATA_);
 			//auto key = item_key.key();
 			ondemand::object item = item_key.value();
-			const string_view strSymbolView2 = jsonGetStringView(item, _T("code"));
-			symbolCode = strSymbolView2;
-			CString strSymbol4 = XferNeteaseToStandard(symbolCode.c_str());
+			CString strSymbol4 = XferNeteaseToStandard(jsonGetStringView(item, _T("code")));
 			pWebRTData->SetSymbol(strSymbol4);
 			pWebRTData->SetVSell(0, jsonGetInt64(item, _T("askvol1")));
 			pWebRTData->SetVSell(2, jsonGetInt64(item, _T("askvol3")));
@@ -611,7 +570,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 			pWebRTData->SetPSell(2, jsonGetDouble(item, _T("ask3")) * 1000);
 			pWebRTData->SetPSell(1, jsonGetDouble(item, _T("ask2")) * 1000);
 			strTime = jsonGetStringView(item, _T("time"));
-			pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str(), -8));
+			pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str(), -8 * 3600));
 
 			pWebRTData->SetLastClose(jsonGetDouble(item, _T("yestclose")) * 1000);
 			pWebRTData->SetAmount(jsonGetDouble(item, _T("turnover")));
@@ -647,22 +606,19 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 // 目前采用下标方法解析数据，其速度能达到Nlohmann json的三倍以上。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson2(string_view svJsonData) {
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJsonData) {
 	string symbolCode, strTime;
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 	try {
 		ondemand::parser parser;
 		const padded_string jsonPadded(svJsonData);
-		//const padded_string_view jsonPadded(svJsonData.data(), svJsonData.length() + SIMDJSON_PADDING + 200); // todo 这种方式速度快，但目前使用不当
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 		for (ondemand::field item_key : doc.get_object()) {
 			auto pWebRTData = make_shared<CWebRTData>();
 			pWebRTData->SetDataSource(NETEASE_RT_WEB_DATA_);
 			//auto key = item_key.key();
 			ondemand::object item = item_key.value();
-			const string_view strSymbolView2 = jsonGetStringView(item, _T("code"));
-			symbolCode = strSymbolView2;
-			CString strSymbol4 = XferNeteaseToStandard(symbolCode.c_str());
+			CString strSymbol4 = XferNeteaseToStandard(jsonGetStringView(item, _T("code")));
 			pWebRTData->SetSymbol(strSymbol4);
 			pWebRTData->SetVSell(0, jsonGetInt64(item, _T("askvol1")));
 			pWebRTData->SetVSell(2, jsonGetInt64(item, _T("askvol3")));
@@ -694,7 +650,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson2(string_view sv
 			pWebRTData->SetPSell(2, StrToDecimal(jsonGetRawJsonToken(item, _T("ask3")), 3));
 			pWebRTData->SetPSell(1, StrToDecimal(jsonGetRawJsonToken(item, _T("ask2")), 3));
 			strTime = jsonGetStringView(item, _T("time"));
-			pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str(), -8));
+			pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str(), -8 * 3600));
 
 			pWebRTData->SetLastClose(StrToDecimal(jsonGetRawJsonToken(item, _T("yestclose")), 3));
 			pWebRTData->SetAmount(StrToDecimal(jsonGetRawJsonToken(item, _T("turnover")), 0));

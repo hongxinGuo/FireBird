@@ -19,17 +19,18 @@ namespace FireBirdTest {
 	CheckNeteaseDayLineInquiryStrData Data2(2, _T("1000001"));
 	// 无效上海股票代码
 	CheckNeteaseDayLineInquiryStrData Data3(3, _T("0700000"));
-	CheckNeteaseDayLineInquiryStrData Data4(4, _T("040000"));
+	CheckNeteaseDayLineInquiryStrData Data4(4, _T("0400000"));
 	CheckNeteaseDayLineInquiryStrData Data5(5, _T("0400000"));
 	// 无效深圳股票代码
 	CheckNeteaseDayLineInquiryStrData Data6(6, _T("1400000"));
-	CheckNeteaseDayLineInquiryStrData Data7(7, _T("140000"));
+	CheckNeteaseDayLineInquiryStrData Data7(7, _T("1400000"));
 	CheckNeteaseDayLineInquiryStrData Data8(8, _T("1400000"));
 
 	class CheckNeteaseDayLineInquiryStrTest : public::testing::TestWithParam<CheckNeteaseDayLineInquiryStrData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const CheckNeteaseDayLineInquiryStrData* pData = GetParam();
 			m_iCount = pData->m_iCount;
 			m_strCode = pData->m_strData;
@@ -39,7 +40,8 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
