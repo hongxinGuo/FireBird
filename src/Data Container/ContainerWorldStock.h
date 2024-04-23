@@ -38,4 +38,5 @@ public:
 	bool IsSaveInsiderTransaction();
 	bool IsSaveInsiderSentiment();
 	bool IsSaveEPSSurpriseDB();
+	bool IsSaveSECFilingsDB();
 };

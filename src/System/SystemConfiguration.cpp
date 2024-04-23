@@ -31,8 +31,8 @@ std::string gl_sSystemConfiguration = R"(
 	"DebugMode" : false,
 	"ReloadSystem" : false,
 	"ConfigurationDirectory" : "C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\",
-  "DatabaseAccountName" : "hxguo",
-	"DatabaseAccountPassword" : "hxguo",
+  "DatabaseAccountName" : "FireBird",
+	"DatabaseAccountPassword" : "firebird",
 	"BackgroundThreadPermittedNumber" : 8,
 	"SavingThreadPermittedNumber" : 4
 },
@@ -103,8 +103,8 @@ CSystemConfiguration::CSystemConfiguration() {
 	// 系统配置 
 	m_bDebugMode = false;
 	m_bReloadSystem = false;
-	m_strDatabaseAccountName = _T("hxguo");
-	m_strDatabaseAccountPassword = _T("hxguo");
+	m_strDatabaseAccountName = _T("FireBird");
+	m_strDatabaseAccountPassword = _T("firebird");
 	m_iBackgroundThreadPermittedNumber = 8; // 后台线程最多8个
 
 	// China Market
@@ -148,6 +148,7 @@ CSystemConfiguration::CSystemConfiguration() {
 	m_iInsideSentimentUpdateRate = 30; // 内部交易情绪更新频率，单位为天。默认为30天。
 	m_iStockPeerUpdateRate = 90; // 股票对手更新频率，单位为天。默认为90天。
 	m_iEPSSurpriseUpdateRate = 90;
+	m_iSECFilingsUpdateRate = 30;
 
 	// 测试系统选项
 	m_strBenchmarkTestFileDirectory = _T("C:\\FireBird\\Test Data\\Benchmark\\"); // Benchmark默认目录
@@ -436,6 +437,12 @@ void CSystemConfiguration::Update(json& jsonData) {
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
+	try {
+		m_iSECFilingsUpdateRate = jsonData.at("FinancialDataUpdateRate").at("SECFilings");
+	}
+	catch (json::out_of_range&) {
+		m_fUpdate = true;
+	}
 
 	// 测试系统选项
 	try {
@@ -514,6 +521,7 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	jsonData["FinancialDataUpdateRate"]["InsideSentiment"] = m_iInsideSentimentUpdateRate;
 	jsonData["FinancialDataUpdateRate"]["StockPeer"] = m_iStockPeerUpdateRate;
 	jsonData["FinancialDataUpdateRate"]["EPSSurprise"] = m_iEPSSurpriseUpdateRate;
+	jsonData["FinancialDataUpdateRate"]["SECFilings"] = m_iSECFilingsUpdateRate;
 
 	// 测试系统选项
 	jsonData["TestConfiguration"]["BenchmarkTestFileDirectory"] = m_strBenchmarkTestFileDirectory;

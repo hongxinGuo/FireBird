@@ -20,6 +20,7 @@ namespace testing {
 		MOCK_METHOD(bool, InquireInsiderSentiment, (), (override));
 		MOCK_METHOD(bool, InquireEconomicCalendar, (), (override));
 		MOCK_METHOD(bool, InquireEPSSurprise, (), (override));
+		MOCK_METHOD(bool, InquireSECFilings, (), (override));
 		MOCK_METHOD(bool, InquireForexExchange, (), (override));
 		MOCK_METHOD(bool, InquireForexSymbol, (), (override));
 		MOCK_METHOD(bool, InquireForexDayLine, (), (override));

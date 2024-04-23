@@ -222,14 +222,6 @@ std::string sData101 = _T("{\
 		\"symbol\":\"AAPL\"\
 }");
 
-static void ParseUsingNlohmannJSon(benchmark::State& state) {
-	json j;
-	for (auto _ : state) {
-		CreateJsonWithNlohmann(j, sData101);
-	}
-}
-BENCHMARK(ParseUsingNlohmannJSon);
-
 static void ParseUsingSimdjson(benchmark::State& state) {
 	const padded_string my_data(sData101);
 	ondemand::parser parser;
@@ -290,14 +282,6 @@ BENCHMARK_F(CJsonParse, StrToDecimal)(benchmark::State& state) {
 	}
 }
 
-// 解析US交易所的股票代码数据（5MB）时，Release模式，nlohmann json用时130毫秒，PTree用时310毫秒；
-BENCHMARK_F(CJsonParse, StockSymbolParseUsingNlohmannJSon)(benchmark::State& state) {
-	json j;
-	for (auto _ : state) {
-		CreateJsonWithNlohmann(j, sUSExchangeStockCode);
-	}
-}
-
 BENCHMARK_F(CJsonParse, StockSymbolParseUsingSimdjson)(benchmark::State& state) {
 	const CString strFileName1 = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("StockSymbol.json");
 	const string sFileName = (LPCTSTR)strFileName1;
@@ -308,14 +292,6 @@ BENCHMARK_F(CJsonParse, StockSymbolParseUsingSimdjson)(benchmark::State& state) 
 	}
 }
 
-// 解析Netease实时数据时，nlohmann json用时16毫秒，PTree用时32毫秒。
-BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonUsingNlohmannJson)(benchmark::State& state) {
-	json j;
-	for (auto _ : state) {
-		CreateJsonWithNlohmann(j, sNeteaseRTData, 21, 2);
-	}
-}
-
 BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonUsingSimdjson)(benchmark::State& state) {
 	const CString strFileName2 = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
 	const string sFileName = (LPCTSTR)strFileName2;
@@ -323,23 +299,6 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonUsingSimdjson)(benchmark::State& 
 	ondemand::parser parser;
 	for (auto _ : state) {
 		parser.iterate(j);
-	}
-}
-
-// 解析WorldStock update parameter，nlohmann json用时50微秒（debug), 7微秒（release)。
-BENCHMARK_F(CJsonParse, WorldStockUpdateParameterCreateJsonUsingNlohmannJson)(benchmark::State& state) {
-	json j;
-	for (auto _ : state) {
-		CreateJsonWithNlohmann(j, sWorldStockUpdateParameter);
-	}
-}
-
-// 解析并处理netease实时数据。
-BENCHMARK_F(CJsonParse, NeteaseRTDataParseUsingNlohmannJson)(benchmark::State& state) {
-	static json j; // 此变量不能声明为局部变量，否则可能导致栈溢出。原因待查
-	for (auto _ : state) {
-		CreateJsonWithNlohmann(j, sNeteaseRTData, 21, 2);
-		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTData(&j);
 	}
 }
 

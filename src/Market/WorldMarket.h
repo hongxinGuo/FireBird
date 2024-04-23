@@ -53,6 +53,7 @@ public:
 	bool TaskUpdateForexDayLineDB();
 	bool TaskUpdateCryptoDayLineDB();
 	bool UpdateEPSSurpriseDB();
+	void UpdateSECFilingsDB();
 
 	// ¸÷ÖÖ×´Ì¬
 

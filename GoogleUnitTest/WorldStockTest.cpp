@@ -352,6 +352,14 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsEPSSurpriseNeedSave());
 	}
 
+	TEST_F(CWorldStockTest, TestIsSECFilingsNeedSave) {
+		EXPECT_FALSE(stock.IsSECFilingsNeedSave());
+		stock.SetSECFilingsNeedSave(true);
+		EXPECT_TRUE(stock.IsSECFilingsNeedSave());
+		EXPECT_TRUE(stock.IsSECFilingsNeedSaveAndClearFlag());
+		EXPECT_FALSE(stock.IsSECFilingsNeedSave());
+	}
+
 	TEST_F(CWorldStockTest, TestIsInsiderTransactionNeedUpdate) {
 		EXPECT_TRUE(stock.IsUpdateInsiderTransaction());
 		stock.SetUpdateInsiderTransaction(false);
@@ -722,6 +730,32 @@ namespace FireBirdTest {
 		stock.SetLastEPSSurpriseUpdateDate(20160521); // 早于900天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
 		EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
+	}
+
+	TEST_F(CWorldStockTest, TestCheckSECFilingsStatus) {
+		constexpr long lCurrentDate = 20200101;
+
+		stock.SetSECFilingsUpdated(false);
+		stock.SetIPOStatus(_STOCK_NULL_);
+		stock.CheckSECFilingsStatus(lCurrentDate);
+		EXPECT_TRUE(stock.IsSECFilingsUpdated());
+
+		stock.SetSECFilingsUpdated(false);
+		stock.SetIPOStatus(_STOCK_DELISTED_);
+		stock.CheckSECFilingsStatus(lCurrentDate);
+		EXPECT_TRUE(stock.IsSECFilingsUpdated());
+
+		stock.SetSECFilingsUpdated(false);
+		stock.SetIPOStatus(_STOCK_IPOED_);
+		stock.SetSECFilingsUpdateDate(20191202); // 不早于30天
+		stock.CheckSECFilingsStatus(lCurrentDate);
+		EXPECT_TRUE(stock.IsSECFilingsUpdated());
+
+		stock.SetSECFilingsUpdated(false);
+		stock.SetIPOStatus(_STOCK_IPOED_);
+		stock.SetSECFilingsUpdateDate(20191201); // 早于30天
+		stock.CheckSECFilingsStatus(lCurrentDate);
+		EXPECT_FALSE(stock.IsSECFilingsUpdated());
 	}
 
 	TEST_F(CWorldStockTest, TestSaveDayLine) {
@@ -1181,6 +1215,48 @@ namespace FireBirdTest {
 		setEPSSurprise.m_pDatabase->CommitTrans();
 		setEPSSurprise.Close();
 		EXPECT_EQ(i, 1);
+	}
+
+	TEST_F(CWorldStockTest, TestUpdateSECFilingsDB1) {
+		CSECFilingVectorPtr pvSECFilings = make_shared<vector<CSECFilingPtr>>();
+		auto pSECFiling = make_shared<CSECFiling>();
+		pSECFiling->m_strSymbol = _T("MFI"); // 已存在代码
+		pSECFiling->m_strAccessNumber = _T("0"); // 新存取号，比原有的都小
+		pvSECFilings->push_back(pSECFiling);
+		pSECFiling = make_shared<CSECFiling>();
+		pSECFiling->m_strSymbol = _T("MFI"); // 已存在代码
+		pSECFiling->m_strAccessNumber = _T("0000814133-03-000033"); // 已存在存取号
+		pvSECFilings->push_back(pSECFiling);
+		pSECFiling = make_shared<CSECFiling>();
+		pSECFiling->m_strSymbol = _T("MFI"); // 已存在代码
+		pSECFiling->m_strAccessNumber = _T("1000950135-08-002549"); // 新存取号，比原有的都大
+		pvSECFilings->push_back(pSECFiling);
+
+		stock.SetSymbol(_T("MFI"));
+		stock.SetSECFilings(pvSECFilings);
+		stock.SetSECFilingsNeedSave(true);
+		stock.SetSECFilingsUpdated(true);
+
+		EXPECT_TRUE(stock.UpdateSECFilingsDB());
+
+		CSetSECFilings setSECFilings;
+		int iCounter = 0;
+		setSECFilings.m_strFilter = _T("[symbol] = 'MFI'");
+		setSECFilings.m_strSort = _T("[accessNumber]");
+		setSECFilings.Open();
+		setSECFilings.m_pDatabase->BeginTrans();
+		EXPECT_TRUE(setSECFilings.m_AccessNumber.Compare(_T("0")) == 0);
+		setSECFilings.Delete();
+		for (int i = 0; i < 11; i++) {
+			setSECFilings.MoveNext(); // 测试库中原有10个，加上新存入的存取号为"0"这个。
+		}
+		EXPECT_FALSE(setSECFilings.IsEOF());
+		EXPECT_STREQ(setSECFilings.m_AccessNumber, _T("1000950135-08-002549"));
+		setSECFilings.Delete();
+		setSECFilings.MoveNext();
+		EXPECT_TRUE(setSECFilings.IsEOF());
+		setSECFilings.m_pDatabase->CommitTrans();
+		setSECFilings.Close();
 	}
 
 	TEST_F(CWorldStockTest, TestIsNeedUpdateProfile) {

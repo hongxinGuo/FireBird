@@ -72,11 +72,9 @@ void CWorldMarket::ResetFinnhub() {
 	m_pvMarketHoliday->clear();
 }
 
-void CWorldMarket::ResetQuandl() {
-}
+void CWorldMarket::ResetQuandl() {}
 
-void CWorldMarket::ResetTiingo() {
-}
+void CWorldMarket::ResetTiingo() {}
 
 void CWorldMarket::ResetDataContainer() {
 	gl_dataContainerFinnhubStockExchange.Reset();
@@ -404,6 +402,22 @@ bool CWorldMarket::UpdateEPSSurpriseDB() {
 	return (true);
 }
 
+void CWorldMarket::UpdateSECFilingsDB() {
+	CString str;
+	const size_t stockSize = gl_dataContainerFinnhubStock.Size();
+
+	CWorldStockPtr pStock = nullptr;
+	for (long l = 0; l < stockSize; ++l) {
+		pStock = gl_dataContainerFinnhubStock.GetStock(l);
+		if (pStock->IsSECFilingsNeedSaveAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+			ASSERT(pStock->UpdateSECFilingsDB());
+		}
+		if (gl_systemConfiguration.IsExitingSystem()) {
+			break; // 如果程序正在退出，则停止存储。
+		}
+	}
+}
+
 bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
 	if (!IsSystemReady()) {
 		if (!gl_pFinnhubDataSource->IsUpdateSymbol() && !gl_pFinnhubDataSource->IsUpdateForexExchange() && !gl_pFinnhubDataSource->IsUpdateForexSymbol()
@@ -515,6 +529,13 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		gl_runtime.background_executor()->post([this] {
 			gl_UpdateWorldMarketDB.acquire();
 			this->UpdateEPSSurpriseDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+	if (gl_dataContainerFinnhubStock.IsSaveSECFilingsDB()) { // stock EPS surprise
+		gl_runtime.background_executor()->post([this] {
+			gl_UpdateWorldMarketDB.acquire();
+			this->UpdateSECFilingsDB();
 			gl_UpdateWorldMarketDB.release();
 		});
 	}

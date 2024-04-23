@@ -645,7 +645,7 @@ void CContainerChinaStock::SaveTempRTData() {
 void CContainerChinaStock::DeleteTempRTData() {
 	CDatabase database;
 
-	database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+	database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 	database.BeginTrans();
 	database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`today`;"));
 	database.CommitTrans();

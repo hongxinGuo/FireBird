@@ -59,8 +59,7 @@ CChinaMarket::CChinaMarket() {
 // 目前不允许此析构函数完成任何功能。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CChinaMarket::~CChinaMarket() {
-}
+CChinaMarket::~CChinaMarket() {}
 
 void CChinaMarket::ResetMarket() {
 	CString str = _T("重置中国股市于北京标准时间：");
@@ -1188,7 +1187,7 @@ void CChinaMarket::DeleteWeekLineBasicInfo() {
 		exit(1);
 	}
 
-	database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+	database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 	database.BeginTrans();
 	database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`weekline`;"));
 	database.CommitTrans();
@@ -1203,7 +1202,7 @@ void CChinaMarket::DeleteWeekLineExtendInfo() {
 		exit(1);
 	}
 
-	database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+	database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 	database.BeginTrans();
 	database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`weeklineinfo`;"));
 	database.CommitTrans();

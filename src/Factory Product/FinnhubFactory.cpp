@@ -34,6 +34,8 @@
 
 #include "FinnhubFactory.h"
 
+#include "ProductFinnhubSECFilings.h"
+
 CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;
 
@@ -85,6 +87,7 @@ CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMark
 	case FINANCIAL_AS_REPORTED_:
 		break;
 	case SEC_FILINGS_:
+		p = make_shared<CProductFinnhubSECFilings>();
 		break;
 	case INTERNATIONAL_FILINGS_: // Premium
 		break;

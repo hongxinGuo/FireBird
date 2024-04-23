@@ -305,3 +305,7 @@ bool CContainerWorldStock::IsSaveInsiderSentiment() {
 bool CContainerWorldStock::IsSaveEPSSurpriseDB() {
 	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsEPSSurpriseNeedSave(); });
 }
+
+bool CContainerWorldStock::IsSaveSECFilingsDB() {
+	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsSECFilingsNeedSave(); });
+}

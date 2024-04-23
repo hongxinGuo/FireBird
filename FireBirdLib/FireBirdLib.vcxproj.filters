@@ -762,6 +762,15 @@
     <ClInclude Include="..\src\Data Source\InquireEngine.h">
       <Filter>头文件\Data Source</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h">
+      <Filter>头文件\Factory-Product\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\SECFiling.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetSECFilings.h">
+      <Filter>头文件\database\WorldMarket</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1267,6 +1276,15 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Source\InquireEngine.cpp">
       <Filter>源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubSECFilings.cpp">
+      <Filter>源文件\Factory-Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\SECFiling.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetSECFiling.cpp">
+      <Filter>源文件\database\WorldMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
       <Filter>源文件\Accessory</Filter>

@@ -18,6 +18,7 @@ CFinnhubDataSource::CFinnhubDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	// 无需（也无法）每日更新的变量放在这里
 	m_fUpdateEPSSurprise = true;
+	m_fUpdateSECFilings = true;
 	m_lCurrentUpdateEPSSurprisePos = 0;
 	m_lCurrentUpdateDayLinePos = 0; // 由于证券代码总数有二十万之多，无法在一天之内更新完，故不再重置此索引。
 
@@ -55,6 +56,7 @@ bool CFinnhubDataSource::Reset() {
 	m_fUpdateInsiderTransaction = true;
 	m_fUpdateInsiderSentiment = true;
 	m_fUpdateEPSSurprise = true;
+	m_fUpdateSECFilings = true;
 
 	m_lCurrentRTDataQuotePos = 0;
 	m_lCurrentForexExchangePos = 0;
@@ -108,6 +110,7 @@ void CFinnhubDataSource::Inquire(const long lCurrentTime) {
 
 	// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
 	if (gl_pWorldMarket->IsSystemReady()) {
+		InquireSECFilings();
 		InquireCompanyProfileConcise();
 		InquireCompanyNews();
 		InquireCompanyBasicFinancial();
@@ -638,6 +641,50 @@ bool CFinnhubDataSource::InquireEPSSurprise() {
 			SetUpdateEPSSurprise(false);
 			TRACE("Finnhub EPS Surprise更新完毕\n");
 			const CString str = "Finnhub EPS Surprise Updated";
+			gl_systemMessage.PushInformationMessage(str);
+		}
+	}
+	return fHaveInquiry;
+}
+
+bool CFinnhubDataSource::InquireSECFilings() {
+	const auto lStockSetSize = gl_dataContainerFinnhubStock.Size();
+	bool fHaveInquiry = false;
+	constexpr int iInquireType = SEC_FILINGS_;
+
+	ASSERT(gl_pWorldMarket->IsSystemReady());
+	if (!IsInquiring() && IsUpdateSECFilings()) {
+		CWorldStockPtr pStock;
+		bool fFound = false;
+		if (!m_fInquiringFinnhubStockSECFilings) {
+			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock SEC Filings..."));
+			m_fInquiringFinnhubStockSECFilings = true;
+		}
+		for (m_lCurrentUpdateSECFilingsPos = 0; m_lCurrentUpdateSECFilingsPos < lStockSetSize; m_lCurrentUpdateSECFilingsPos++) {
+			pStock = gl_dataContainerFinnhubStock.GetStock(m_lCurrentUpdateSECFilingsPos);
+			if (!pStock->IsSECFilingsUpdated()) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pStock->GetExchangeCode())) {
+					fFound = true;
+					break;
+				}
+			}
+		}
+		if (fFound) {
+			fHaveInquiry = true;
+			const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket, iInquireType);
+			product->SetIndex(m_lCurrentUpdateSECFilingsPos);
+			StoreInquiry(product);
+			SetInquiring(true);
+			gl_dataContainerFinnhubStock.GetStock(m_lCurrentUpdateSECFilingsPos)->SetEPSSurpriseUpdated(true);
+			gl_pWorldMarket->SetCurrentFunction(_T("SEC Filings:") + pStock->GetSymbol());
+		}
+		else {
+			m_fInquiringFinnhubStockSECFilings = false;
+			m_lCurrentUpdateSECFilingsPos = 0;
+			fHaveInquiry = false;
+			SetUpdateSECFilings(false);
+			TRACE("Finnhub SEC Filings 更新完毕\n");
+			const CString str = "Finnhub SEC Filings Updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}

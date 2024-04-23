@@ -16,6 +16,7 @@ public:
 
 protected:
 	CInquireEngine dataSource;
+	size_t size{1024 * 1024 * 16};
 };
 
 BENCHMARK_F(CDataSourceBenchmark, XferReadingToBufferSize16KB)(benchmark::State& state) {
@@ -24,10 +25,16 @@ BENCHMARK_F(CDataSourceBenchmark, XferReadingToBufferSize16KB)(benchmark::State&
 	}
 }
 
+BENCHMARK_F(CDataSourceBenchmark, XferReadingToBufferSize16MB)(benchmark::State& state) {
+	for (auto _ : state) {
+		for (int i = 0; i < 1024; i++) dataSource.XferReadingToBuffer(WEB_SOURCE_DATA_BUFFER_SIZE_);
+	}
+}
+
 char destBuffer[1024 * 1024 * 16];
 char srcBuffer[1024 * 1024 * 16];
 BENCHMARK_F(CDataSourceBenchmark, XferReadingToBufferSize16MBUsingMemcpy)(benchmark::State& state) {
 	for (auto _ : state) {
-		memcpy(destBuffer, srcBuffer, 1024 * 1024 * 16);
+		memcpy(destBuffer, srcBuffer, size);
 	}
 }

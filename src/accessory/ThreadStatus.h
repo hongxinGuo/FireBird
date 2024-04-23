@@ -1,5 +1,6 @@
 #pragma once
 
+#include <afx.h>
 #include<semaphore>
 #include<atomic>
 using std::counting_semaphore;
@@ -22,6 +23,8 @@ public:
 	[[nodiscard]] bool IsBackGroundThreadsWorking() const noexcept { return m_NumberOfBackGroundWorkingThreads > 0; } //计算日线的线程是否处于运行中
 	[[nodiscard]] int GetNumberOfBackGroundWorkingThread() const noexcept { return m_NumberOfBackGroundWorkingThreads; }
 
+	static bool IsSavingChinaMarketThreadRunning() noexcept;
+	static bool IsSavingWorldMarketThreadRunning() noexcept;
 	[[nodiscard]] static bool IsSavingThreadRunning() noexcept;
 
 	void IncreaseWebInquiringThread() noexcept { ++m_NumberOfWebInquiringThread; }

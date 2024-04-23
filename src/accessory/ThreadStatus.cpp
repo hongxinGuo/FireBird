@@ -1,3 +1,4 @@
+#include "ThreadStatus.h"
 #include"pch.h"
 
 #include"ThreadStatus.h"
@@ -13,16 +14,24 @@ CThreadStatus::CThreadStatus() {
 	m_NumberOfWebInquiringThread = 0;
 }
 
-[[nodiscard]] bool CThreadStatus::IsSavingThreadRunning() noexcept {
-	bool bSavingChinaMarketDB = true;
+bool CThreadStatus::IsSavingWorldMarketThreadRunning() noexcept {
 	bool bSavingWorldMarketDB = true;
-	if (gl_UpdateChinaMarketDB.try_acquire()) {
-		bSavingChinaMarketDB = false;
-		gl_UpdateChinaMarketDB.release();
-	}
 	if (gl_UpdateWorldMarketDB.try_acquire()) {
 		bSavingWorldMarketDB = false;
 		gl_UpdateWorldMarketDB.release();
 	}
-	return bSavingChinaMarketDB || bSavingWorldMarketDB;
+	return bSavingWorldMarketDB;
+}
+
+bool CThreadStatus::IsSavingChinaMarketThreadRunning() noexcept {
+	bool bSavingChinaMarketDB = true;
+	if (gl_UpdateChinaMarketDB.try_acquire()) {
+		bSavingChinaMarketDB = false;
+		gl_UpdateChinaMarketDB.release();
+	}
+
+	return bSavingChinaMarketDB;
+}
+[[nodiscard]] bool CThreadStatus::IsSavingThreadRunning() noexcept {
+	return IsSavingChinaMarketThreadRunning() || IsSavingWorldMarketThreadRunning();
 }

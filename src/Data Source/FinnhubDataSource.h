@@ -45,6 +45,7 @@ public:
 	virtual bool InquireInsiderSentiment();
 	virtual bool InquireEconomicCalendar();
 	virtual bool InquireEPSSurprise();
+	virtual bool InquireSECFilings();
 	virtual bool InquireForexExchange();
 	virtual bool InquireForexSymbol();
 	virtual bool InquireForexDayLine();
@@ -92,10 +93,13 @@ public:
 	void SetUpdateEconomicCalendar(const bool fFlag) noexcept { m_fUpdateEconomicCalendar = fFlag; }
 	bool IsUpdateEPSSurprise() const noexcept { return m_fUpdateEPSSurprise; }
 	void SetUpdateEPSSurprise(const bool fFlag) noexcept { m_fUpdateEPSSurprise = fFlag; }
+	bool IsUpdateSECFilings() const noexcept { return m_fUpdateSECFilings; }
+	void SetUpdateSECFilings(const bool fFlag) noexcept { m_fUpdateSECFilings = fFlag; }
 
 protected:
 	long m_lCurrentUpdateDayLinePos{0}; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
 	long m_lCurrentUpdateEPSSurprisePos{0}; // 此变量无需每日更新
+	long m_lCurrentUpdateSECFilingsPos{0};
 
 	bool m_fUpdateSymbol{true}; // 每日更新公司代码库
 	bool m_fUpdateMarketStatus{true}; // 每日查询市场状态
@@ -117,6 +121,7 @@ protected:
 	bool m_fUpdateInsiderSentiment{true}; // 每30天更新InsiderSentiment数据
 	bool m_fUpdateEconomicCalendar{true}; // 每日更新经济日历数据
 	bool m_fUpdateEPSSurprise{true};
+	bool m_fUpdateSECFilings{true};
 
 	CFinnhubFactory m_FinnhubFactory;
 
@@ -133,6 +138,7 @@ private:
 	bool m_fInquiringFinnhubStockInsiderSentiment = {false};
 	bool m_fInquiringFinnhubStockPeer = {false};
 	bool m_fInquiringFinnhubStockEPSSurprise = {false};
+	bool m_fInquiringFinnhubStockSECFilings = {false};
 	bool m_fInquiringFinnhubForexDayLine = {false};
 	bool m_fInquiringFinnhubCryptoDayLine = {false};
 

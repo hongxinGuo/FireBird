@@ -72,22 +72,12 @@ public:
 	void SetTodayNewStock(const bool fFlag) noexcept { m_fTodayNewStock = fFlag; }
 
 	bool IsUpdateProfileDB() const noexcept { return m_fUpdateProfileDB; }
-
-	bool IsUpdateProfileDBAndClearFlag() noexcept {
-		const bool fNeedSaving = m_fUpdateProfileDB.exchange(false);
-		return fNeedSaving;
-	}
-
 	void SetUpdateProfileDB(const bool fFlag) noexcept { m_fUpdateProfileDB = fFlag; }
+	bool IsUpdateProfileDBAndClearFlag() noexcept { return m_fUpdateProfileDB.exchange(false); }
 
 	bool IsUpdateCompanyNewsDB() const noexcept { return m_fUpdateCompanyNewsDB; }
-
-	bool IsUpdateCompanyNewsDBAndClearFlag() noexcept {
-		const bool fNeedSaving = m_fUpdateCompanyNewsDB.exchange(false);
-		return fNeedSaving;
-	}
-
 	void SetUpdateCompanyNewsDB(const bool fFlag) noexcept { m_fUpdateCompanyNewsDB = fFlag; }
+	bool IsUpdateCompanyNewsDBAndClearFlag() noexcept { return m_fUpdateCompanyNewsDB.exchange(false); }
 
 	bool IsActive() const noexcept { return m_fActive; }
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
@@ -110,11 +100,7 @@ public:
 	void SetDayLineNeedUpdate(const bool fFlag) noexcept { m_fDayLineNeedUpdate = fFlag; }
 	bool IsDayLineNeedSaving() const noexcept { return m_fDayLineNeedSaving; }
 	void SetDayLineNeedSaving(const bool fFlag) noexcept { m_fDayLineNeedSaving = fFlag; }
-
-	bool IsDayLineNeedSavingAndClearFlag() noexcept {
-		const bool fNeedSaving = m_fDayLineNeedSaving.exchange(false);
-		return fNeedSaving;
-	}
+	bool IsDayLineNeedSavingAndClearFlag() noexcept { return m_fDayLineNeedSaving.exchange(false); }
 
 protected:
 	CString m_strDescription; // ∏√÷§»Øµƒ√Ë ˆ

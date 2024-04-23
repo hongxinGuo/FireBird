@@ -103,6 +103,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetInsiderSentiment.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetInsiderTransaction.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetNaicsIndustry.h" />
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetSECFilings.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSICIndustry.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.h" />
@@ -112,6 +113,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStockDayLine.h" />
+    <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h" />
     <ClInclude Include="..\src\Factory Product\VirtualChinaMarketWebProduct.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketHoliday.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketStatus.h" />
@@ -197,6 +199,7 @@
     <ClInclude Include="..\src\Type\China market\WebData.h" />
     <ClInclude Include="..\src\Type\China market\WebRTData.h" />
     <ClInclude Include="..\src\Type\China market\WeekLine.h" />
+    <ClInclude Include="..\src\Type\SECFiling.h" />
     <ClInclude Include="..\src\Type\VirtualDataHistoryCandleExtend.h" />
     <ClInclude Include="..\src\Type\VirtualHistoryCandleBasic.h" />
     <ClInclude Include="..\src\Type\VirtualHistoryCandleExtend.h" />
@@ -213,9 +216,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASAN|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASAN|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\src\accessory\accessory.cpp" />
     <ClCompile Include="..\src\accessory\MarketTask.cpp" />
@@ -287,6 +290,7 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetInsiderSemtiment.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetInsiderTransaction.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetNaicsIndustry.cpp" />
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetSECFiling.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetSICIndustry.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.cpp" />
@@ -294,6 +298,7 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetWorldStock.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketHoliday.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketStatus.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubSECFilings.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTengxunDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\FinnhubFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductDummy.cpp" />
@@ -372,6 +377,7 @@
     <ClCompile Include="..\src\Type\China market\WebData.cpp" />
     <ClCompile Include="..\src\Type\China market\WebRTData.cpp" />
     <ClCompile Include="..\src\Type\China market\WeekLine.cpp" />
+    <ClCompile Include="..\src\Type\SECFiling.cpp" />
     <ClCompile Include="..\src\Type\VirtualDataHistoryCandleExtend.cpp" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandleBasic.cpp" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandleExtend.cpp" />

@@ -14,6 +14,7 @@
 #include"FinnhubCompanyNews.h"
 #include "InsiderSentiment.h"
 #include "InsiderTransaction.h"
+#include "SECFiling.h"
 
 #include"SetWorldStock.h"
 
@@ -45,6 +46,7 @@ public:
 	void UpdateInsiderSentimentDB();
 	virtual bool UpdateCompanyNewsDB();
 	virtual bool UpdateEPSSurpriseDB();
+	bool UpdateSECFilingsDB() const;
 	virtual bool UpdateDayLineDB();
 
 	void UpdateBasicFinancialMetric(CSetFinnhubStockBasicFinancialMetric& set) const { m_pBasicFinancial->UpdateMetric(set); }
@@ -78,11 +80,7 @@ public:
 	void SetUpdateBasicFinancial(const bool fFlag) noexcept { m_fUpdateBasicFinancial = fFlag; }
 	bool IsUpdateBasicFinancialDB() const noexcept { return m_fUpdateFinnhubBasicFinancialDB; }
 	void SetUpdateBasicFinancialDB(const bool fFlag) noexcept { m_fUpdateFinnhubBasicFinancialDB = fFlag; }
-
-	bool IsUpdateBasicFinancialDBAndClearFlag() {
-		const bool fNeedSave = m_fUpdateFinnhubBasicFinancialDB.exchange(false);
-		return fNeedSave;
-	}
+	bool IsUpdateBasicFinancialDBAndClearFlag() { return m_fUpdateFinnhubBasicFinancialDB.exchange(false); }
 
 	bool UpdateBasicFinancial(const CFinnhubStockBasicFinancialPtr& pFinnhubStockBasicFinancial);
 	CFinnhubStockBasicFinancialPtr GetBasicFinancial() noexcept { return m_pBasicFinancial; }
@@ -92,11 +90,18 @@ public:
 	bool CheckEPSSurpriseStatus(long lCurrentDate);
 	bool IsEPSSurpriseNeedSave() const noexcept { return m_fEPSSurpriseNeedSave; }
 	void SetEPSSurpriseNeedSave(const bool fFlag) noexcept { m_fEPSSurpriseNeedSave = fFlag; }
-	bool IsEPSSurpriseNeedSaveAndClearFlag();
+	bool IsEPSSurpriseNeedSaveAndClearFlag() { return m_fEPSSurpriseNeedSave.exchange(false); }
 
 	bool IsUpdatePeer() const noexcept { return m_fUpdateFinnhubPeer; }
 	void SetUpdatePeer(bool fFlag) noexcept { m_fUpdateFinnhubPeer = fFlag; }
 	bool CheckPeerStatus(long lCurrentDate);
+
+	bool IsSECFilingsUpdated() const noexcept { return m_fSECFilingsUpdated; }
+	void SetSECFilingsUpdated(bool fFlag) noexcept { m_fSECFilingsUpdated = fFlag; }
+	bool CheckSECFilingsStatus(long lCurrentDate);
+	bool IsSECFilingsNeedSave() const noexcept { return m_fSECFilingsNeedSave; }
+	void SetSECFilingsNeedSave(const bool fFlag) noexcept { m_fSECFilingsNeedSave = fFlag; }
+	bool IsSECFilingsNeedSaveAndClearFlag() { return m_fSECFilingsNeedSave.exchange(false); }
 
 	bool HaveInsiderTransaction() const noexcept { return !m_vInsiderTransaction.empty(); }
 	void UnloadInsiderTransaction() { m_vInsiderTransaction.resize(0); }
@@ -106,11 +111,7 @@ public:
 	bool CheckInsiderTransactionStatus(long lCurrentDate);
 	bool IsSaveInsiderTransaction() const noexcept { return m_fSaveFinnhubInsiderTransaction; }
 	void SetSaveInsiderTransaction(const bool fFlag) noexcept { m_fSaveFinnhubInsiderTransaction = fFlag; }
-
-	bool IsSaveInsiderTransactionAndClearFlag() {
-		const bool fNeedSave = m_fSaveFinnhubInsiderTransaction.exchange(false);
-		return fNeedSave;
-	}
+	bool IsSaveInsiderTransactionAndClearFlag() { return m_fSaveFinnhubInsiderTransaction.exchange(false); }
 
 	bool HaveInsiderSentiment() const noexcept { return !m_vInsiderSentiment.empty(); }
 	void UnloadInsiderSentiment() { m_vInsiderSentiment.resize(0); }
@@ -120,11 +121,7 @@ public:
 	bool CheckInsiderSentimentStatus(long lCurrentDate);
 	bool IsSaveInsiderSentiment() const noexcept { return m_fSaveFinnhubInsiderSentiment; }
 	void SetSaveInsiderSentiment(const bool fFlag) noexcept { m_fSaveFinnhubInsiderSentiment = fFlag; }
-
-	bool IsSaveInsiderSentimentAndClearFlag() {
-		const bool fNeedSave = m_fSaveFinnhubInsiderSentiment.exchange(false);
-		return fNeedSave;
-	}
+	bool IsSaveInsiderSentimentAndClearFlag() { return m_fSaveFinnhubInsiderSentiment.exchange(false); }
 
 	CString GetType() const { return m_strType; }
 	void SetType(const CString& strType) { m_strType = strType; }
@@ -193,6 +190,7 @@ public:
 	void SetFinnhubIndustry(const CString& strFinnhubIndustry) { m_strFinnhubIndustry = strFinnhubIndustry; }
 	json GetPeer() { return m_jsonPeer; }
 	void SetPeer(const json& jsonPeer) { m_jsonPeer = jsonPeer; }
+	void SetSECFilings(const CSECFilingVectorPtr& pv) noexcept { m_pvSECFilings = pv; }
 	long GetProfileUpdateDate();
 	void SetProfileUpdateDate(long lProfileUpdateDate) noexcept;
 	long GetCompanyNewsUpdateDate();
@@ -209,6 +207,8 @@ public:
 	void SetInsiderSentimentUpdateDate(long lDate) noexcept;
 	long GetLastEPSSurpriseUpdateDate();
 	void SetLastEPSSurpriseUpdateDate(long lDate) noexcept;
+	void SetSECFilingsUpdateDate(long lDate) noexcept;
+	long GetSECFilingsUpdateDate();
 
 	CString GetTiingoPermaTicker() noexcept { return m_strTiingoPermaTicker; }
 	void SetTiingoPermaTicker(const CString& strTiingoPermaTicker) noexcept { m_strTiingoPermaTicker = strTiingoPermaTicker; }
@@ -243,7 +243,7 @@ public:
 
 public:
 	vector<CEPSSurprisePtr> m_vEPSSurprise;
-	bool m_fEPSSurpriseUpdated;
+	bool m_fEPSSurpriseUpdated{false};
 	atomic_bool m_fEPSSurpriseNeedSave;
 
 	vector<CInsiderTransactionPtr> m_vInsiderTransaction;
@@ -251,6 +251,10 @@ public:
 
 	vector<CInsiderSentimentPtr> m_vInsiderSentiment;
 	long m_lInsiderSentimentStartDate;
+
+	CSECFilingVectorPtr m_pvSECFilings{nullptr};
+	bool m_fSECFilingsUpdated{false};
+	atomic_bool m_fSECFilingsNeedSave{false};
 
 protected:
 	// Finnhub symbol–≈œ¢

@@ -224,6 +224,13 @@ public:
 		m_iEPSSurpriseUpdateRate = iRate;
 	}
 
+	[[nodiscard]] int GetSECFilingsUpdateRate() const noexcept { return m_iSECFilingsUpdateRate; }
+
+	void SetSECFilingsUpdateRate(const int iRate) noexcept {
+		m_fUpdate = true;
+		m_iSECFilingsUpdateRate = iRate;
+	}
+
 	[[nodiscard]] CString GetBenchmarkTestFileDirectory() const noexcept { return m_strBenchmarkTestFileDirectory; }
 
 	void SetBenchmarkTestFileDirectory(const CString& strFileDirectory) {
@@ -327,7 +334,7 @@ protected:
 	int m_iStockBasicFinancialUpdateRate; // 默认45天更新一次
 	int m_iStockPeerUpdateRate; // 默认90天更新一次
 	int m_iEPSSurpriseUpdateRate; // 默认90天更新一次
-
+	int m_iSECFilingsUpdateRate; // 默认30天更新一次
 	// 测试系统
 	CString m_strBenchmarkTestFileDirectory; // 性能测试文件所在的目录
 

@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
 
 #include"TiingoStock.h"
 #include "ProductTiingoStockSymbol.h"
@@ -54,7 +53,7 @@ void CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 // [
 // {
-//	"permaTicker":"US000000000133",
+//	  "permaTicker":"US000000000133",
 //		"ticker" : "IBM",
 //		"name" : "International Business Machines Corp",
 //    "isADR" : false,

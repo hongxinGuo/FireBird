@@ -202,20 +202,3 @@ void CContainerStockSymbol::Add(const CString& strSymbol) {
 	m_mapStockSymbol[strSymbol] = m_vStockSymbol.size();
 	m_vStockSymbol.push_back(strSymbol);
 }
-
-/*
-CString CContainerStockSymbol::GetNextStockInquiringMiddleStr(long& iStockIndex, const CString& strSuffix, long lTotalNumber, CString (*StockCodeTransfer)(const CString& str)) {
-	if (m_vStockSymbol.empty()) return StockCodeTransfer(_T("600000.SH")); // 当没有证券可查询时，返回一个有效字符串
-	CString strReturn = _T("");
-	int iCount = 0;
-	while ((iStockIndex < m_vStockSymbol.size()) && (iCount++ < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
-		strReturn += StockCodeTransfer(m_vStockSymbol.at(iStockIndex));
-		if (iCount < lTotalNumber) { // 如果不是最后一个，则添加后缀
-			strReturn += strSuffix;
-		}
-		iStockIndex = GetNextIndex(iStockIndex);
-	}
-
-	return strReturn;
-}
-*/

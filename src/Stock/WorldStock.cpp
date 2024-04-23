@@ -15,6 +15,7 @@
 
 #include"SetInsiderSentiment.h"
 #include"SetEPSSurprise.h"
+#include "SetSECFilings.h"
 
 using namespace std;
 
@@ -91,8 +92,7 @@ CWorldStock::CWorldStock() {
 	CWorldStock::Reset();
 }
 
-CWorldStock::~CWorldStock() {
-}
+CWorldStock::~CWorldStock() {}
 
 void CWorldStock::Reset() {
 	CVirtualStock::Reset();
@@ -183,6 +183,7 @@ void CWorldStock::ResetAllUpdateDate() {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsPeer"] = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderTransaction"] = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderSentiment"] = 19800101;
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsSECFilings"] = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = 19800101;
 	//Tiingo自成一体
 	m_jsonUpdateDate["Tiingo"]["StockFundamentalsCompanyProfile"] = 19800101;
@@ -256,6 +257,7 @@ void CWorldStock::CheckUpdateStatus(long lTodayDate) {
 	CheckCompanyNewsUpdateStatus(lTodayDate);
 	CheckDayLineUpdateStatus(lTodayDate, gl_pWorldMarket->GetLastTradeDate(), gl_pWorldMarket->GetMarketTime(), gl_pWorldMarket->GetDayOfWeek());
 	CheckEPSSurpriseStatus(lTodayDate);
+	CheckSECFilingsStatus(lTodayDate);
 	CheckPeerStatus(lTodayDate);
 	CheckInsiderTransactionStatus(lTodayDate);
 	CheckInsiderSentimentStatus(lTodayDate);
@@ -579,6 +581,44 @@ bool CWorldStock::UpdateEPSSurpriseDB() {
 	return true;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 将接收到的SEC Filings存储入数库中。
+// 接收到的事先已经按accessNumber顺序存于vector中，只存储数据库中没有accessNumber的新闻。
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CWorldStock::UpdateSECFilingsDB() const {
+	ASSERT(m_pvSECFilings->size() > 0);
+	const long lSize = static_cast<long>(m_pvSECFilings->size());
+	if (m_strSymbol.GetLength() > 0) {
+		CSECFilingPtr pSECFilings;
+		CSetSECFilings setSECFilings;
+		long lCurrentPos = 0;
+		setSECFilings.m_strFilter = _T("[Symbol] = '");
+		setSECFilings.m_strFilter += m_strSymbol + _T("'");
+		setSECFilings.m_strSort = _T("[accessNumber]");
+
+		setSECFilings.Open();
+		setSECFilings.m_pDatabase->BeginTrans();
+		while (!setSECFilings.IsEOF()) {
+			pSECFilings = m_pvSECFilings->at(lCurrentPos);
+			while (!setSECFilings.IsEOF() && setSECFilings.m_AccessNumber.Compare(pSECFilings->m_strAccessNumber) < 0) setSECFilings.MoveNext();
+			if (setSECFilings.IsEOF()) break;
+			if (setSECFilings.m_AccessNumber.Compare(pSECFilings->m_strAccessNumber) > 0) {	// 没有这个AccessNumber的SEC Filings？
+				pSECFilings->Append(setSECFilings);
+			}
+			if (++lCurrentPos == lSize) break;
+		}
+		for (long i = lCurrentPos; i < lSize; i++) {
+			pSECFilings = m_pvSECFilings->at(i);
+			pSECFilings->Append(setSECFilings);
+		}
+		setSECFilings.m_pDatabase->CommitTrans();
+		setSECFilings.Close();
+	}
+	return true;
+}
+
 bool CWorldStock::UpdateDayLineDB() {
 	if (IsDayLineNeedSavingAndClearFlag()) {
 		// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
@@ -738,9 +778,23 @@ bool CWorldStock::CheckEPSSurpriseStatus(long lCurrentDate) {
 	return m_fEPSSurpriseUpdated;
 }
 
-bool CWorldStock::IsEPSSurpriseNeedSaveAndClearFlag() {
-	const bool fNeedSave = m_fEPSSurpriseNeedSave.exchange(false);
-	return fNeedSave;
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 默认每30天更新一次.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CWorldStock::CheckSECFilingsStatus(long lCurrentDate) {
+	const long lSECFilingsUpdateDate = GetSECFilingsUpdateDate();
+	if (IsNullStock() || IsDelisted()) {
+		m_fSECFilingsUpdated = true;
+	}
+	else if (!IsEarlyThen(lSECFilingsUpdateDate, lCurrentDate, gl_systemConfiguration.GetSECFilingsUpdateRate())) {	// 有不早于30天的数据？
+		m_fSECFilingsUpdated = true;
+	}
+	else {
+		m_fSECFilingsUpdated = false;
+	}
+	return m_fSECFilingsUpdated;
 }
 
 bool CWorldStock::CheckPeerStatus(long lCurrentDate) {
@@ -914,6 +968,20 @@ long CWorldStock::GetLastEPSSurpriseUpdateDate() {
 
 void CWorldStock::SetLastEPSSurpriseUpdateDate(const long lDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = lDate;
+}
+
+long CWorldStock::GetSECFilingsUpdateDate() {
+	try {
+		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsSECFilings");
+		return lDate;
+	}
+	catch (json::exception&) {
+		return 19800101;
+	}
+}
+
+void CWorldStock::SetSECFilingsUpdateDate(const long lDate) noexcept {
+	m_jsonUpdateDate["Finnhub"]["StockFundamentalsSECFilings"] = lDate;
 }
 
 long CWorldStock::GetTiingoStatementUpdateDate() {
