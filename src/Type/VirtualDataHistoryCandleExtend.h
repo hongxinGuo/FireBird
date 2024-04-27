@@ -65,7 +65,7 @@ public:
 
 	bool IsDatabaseTodayUpdated() const noexcept { return (m_fDatabaseTodayUpdated); }
 	void SetDatabaseTodayUpdated(const bool fUpdate) noexcept { m_fDatabaseTodayUpdated = fUpdate; }
-	bool IsDataLoaded() const noexcept { return m_fDataLoaded; }
+	bool IsDataLoaded() const noexcept { return m_fDataLoaded.load(); }
 	void SetDataLoaded(const bool fFlag) noexcept { m_fDataLoaded = fFlag; }
 
 	bool CalculateRS0();
@@ -93,7 +93,7 @@ protected:
 	bool m_fDatabaseTodayUpdated; // 数据库今日是否已更新标识
 
 protected:
-	bool m_fLoadDataFirst;
+	bool m_fBasicDataLoaded;
 };
 
 using CVirtualDataHistoryCandleExtendPtr = shared_ptr<CVirtualDataHistoryCandleExtend>;

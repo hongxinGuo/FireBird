@@ -234,7 +234,7 @@ public:
 	void SetUpdateChosenStockDB(const bool fFlag) noexcept { m_fUpdateChosenStockDB = fFlag; }
 	bool IsUpdateChosenStockDB() const noexcept { return m_fUpdateChosenStockDB; }
 
-	INT64 GetRTDataReceived() const noexcept { return m_llRTDataReceived; }
+	INT64 GetRTDataReceived() const noexcept { return m_llRTDataReceived.load(); }
 	void SetRTDataReceived(const INT64 llValue) noexcept { m_llRTDataReceived = llValue; }
 	void IncreaseRTDataReceived(const INT64 llValue = 1) noexcept { m_llRTDataReceived += llValue; }
 

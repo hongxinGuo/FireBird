@@ -29,16 +29,14 @@ public:
 	void RunWorkingThread(long lMarketTime);
 	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual void GenerateCurrentInquiryMessage();
-	virtual void CheckInaccessible(const CWebDataPtr&) const {
-	}
+	virtual void CheckInaccessible(const CWebDataPtr&) const {}
 
 	void SetDefaultSessionOption();
 
 	virtual void ConfigureInternetOption() {
 		ASSERT(false); // 调用了基类函数ConfigureInternetOption
 	} // 配置internet参数。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
-	virtual void UpdateStatus(CWebDataPtr pData) {
-	} //成功接收后更新系统状态。
+	virtual void UpdateStatus(CWebDataPtr pData) {} //成功接收后更新系统状态。
 
 	void CreateTotalInquiringString();
 	CString GetInquiringString() const noexcept { return m_strInquiry; }
@@ -86,14 +84,14 @@ public:
 	long GetInquiringNumber() const noexcept { return m_lInquiringNumber; }
 	void SetInquiringNumber(const long lValue) noexcept { m_lInquiringNumber = lValue; }
 
-	static long GetTotalByteRead() noexcept { return sm_lTotalByteRead; }
+	static long GetTotalByteRead() noexcept { return sm_lTotalByteRead.load(); }
 	static void SetTotalByteRead(const long lValue) noexcept { sm_lTotalByteRead = lValue; }
 	static void ClearTotalByteRead() noexcept { sm_lTotalByteRead = 0; }
-	static long GetTotalByteReadPerSecond() noexcept { return sm_lTotalByteReadPerSecond; }
-	static void CalcTotalBytePerSecond();
+	static long GetTotalByteReadPerSecond() noexcept { return sm_lTotalByteReadPerSecond.load(); }
+	static void CalcTotalBytePerSecond() { sm_lTotalByteReadPerSecond = sm_lTotalByteRead.exchange(0); }
 
 	void SetCurrentInquiryTime(const time_t tt) noexcept { m_tCurrentInquiryTime = tt; }
-	virtual time_t GetCurrentInquiryTime() const noexcept { return m_tCurrentInquiryTime; }
+	virtual time_t GetCurrentInquiryTime() const noexcept { return m_tCurrentInquiryTime.load(); }
 
 protected:
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列

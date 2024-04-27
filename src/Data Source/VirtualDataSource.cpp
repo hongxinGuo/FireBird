@@ -138,9 +138,3 @@ void CVirtualDataSource::GenerateCurrentInquiryMessage() {
 void CVirtualDataSource::CreateTotalInquiringString() {
 	m_strInquiry = m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken;
 }
-
-void CVirtualDataSource::CalcTotalBytePerSecond() {
-	const long l = sm_lTotalByteRead;
-	sm_lTotalByteRead = 0;
-	sm_lTotalByteReadPerSecond = l;
-}

@@ -175,4 +175,15 @@ namespace FireBirdTest {
 		EXPECT_EQ(pvDayLine->at(1)->GetLastClose(), 2600) << "第二个数据使用前一天的收盘数据";
 		EXPECT_EQ(pvDayLine->at(1)->GetVolume(), 10073500);
 	}
+
+	TEST_F(jsonParseTest, TestIsTengxunRTDataInvalid) {
+		CWebDataPtr pWebData = make_shared<CWebData>();
+		pWebData->Test_SetBuffer_(_T("v_pv_none_match=\"1\";\n"));
+
+		EXPECT_TRUE(IsTengxunRTDataInvalid(pWebData));
+
+		pWebData->Test_SetBuffer_(_T("v_v_none_match=\"1\";\n"));
+
+		EXPECT_FALSE(IsTengxunRTDataInvalid(pWebData));
+	}
 }

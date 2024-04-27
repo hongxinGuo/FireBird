@@ -628,12 +628,6 @@ bool CWorldMarket::UpdateInsiderTransactionDB() {
 			break; // 如果程序正在退出，则停止存储。
 		}
 	}
-	if (iCounter > 0) {
-		char buffer[30];
-		sprintf_s(buffer, _T("%i"), iCounter);
-		const CString str2 = buffer;
-		gl_systemMessage.PushDayLineInfoMessage(_T("本次更新了") + str2 + _T("个股票的内部交易数据"));
-	}
 	return true;
 }
 

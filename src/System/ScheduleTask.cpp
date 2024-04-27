@@ -19,26 +19,18 @@
 #include "simdjsonGetValue.h"
 #include "Thread.h"
 
-void TaskSchedulePerSecond() {
-	gl_pSinaRTDataSource->CalcTotalBytePerSecond(); // 计算每秒读取的数据量
-	gl_systemMessage.CalcScheduleTaskTimePerSecond(); // 计算每秒调度所需的时间
-}
-
-void TaskExitSystem() {
-	// 向主窗口发送关闭窗口系统消息，通知框架窗口执行关闭任务。
-	PostMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), WM_SYSCOMMAND, SC_CLOSE, 0);
-}
-
 void TaskCheckWorldMarketReady() {
-	if (!gl_pWorldMarket->IsSystemReady()) {
-		if (!gl_pFinnhubDataSource->IsUpdateSymbol() && !gl_pFinnhubDataSource->IsUpdateForexExchange() && !gl_pFinnhubDataSource->IsUpdateForexSymbol()
-			&& !gl_pFinnhubDataSource->IsUpdateCryptoExchange() && !gl_pFinnhubDataSource->IsUpdateCryptoSymbol()) {
-			const CString str = "世界市场初始化完毕";
-			gl_systemMessage.PushInformationMessage(str);
-			gl_pWorldMarket->SetSystemReady(true);
-			gl_aTimer.at(WORLD_MARKET_CHECK_SYSTEM_READY__).cancel(); // 市场准备好后即删除此任务。
-		}
-	}
+	if (gl_pWorldMarket->IsSystemReady()) return;
+	if (gl_pFinnhubDataSource->IsUpdateSymbol()) return;
+	if (gl_pFinnhubDataSource->IsUpdateForexExchange()) return;
+	if (gl_pFinnhubDataSource->IsUpdateForexSymbol()) return;
+	if (gl_pFinnhubDataSource->IsUpdateCryptoExchange()) return;
+	if (gl_pFinnhubDataSource->IsUpdateCryptoSymbol()) return;
+
+	const CString str = "世界市场初始化完毕";
+	gl_systemMessage.PushInformationMessage(str);
+	gl_pWorldMarket->SetSystemReady(true);
+	gl_aTimer.at(WORLD_MARKET_CHECK_SYSTEM_READY__).cancel(); // 市场准备好后即删除此任务。
 }
 
 void CreateMarketContainer() {
@@ -190,8 +182,18 @@ void TaskSchedulePer100ms() {
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 	counter.stop();
-	gl_systemMessage.m_lScheduleTaskTime += counter.GetElapsedMicroSecond();
+	gl_systemMessage.IncreaseScheduleTaskTime(counter.GetElapsedMicroSecond());
 	s_Processing = false;
+}
+
+void TaskSchedulePerSecond() {
+	gl_pSinaRTDataSource->CalcTotalBytePerSecond(); // 计算每秒读取的数据量
+	gl_systemMessage.CalcScheduleTaskTimePerSecond(); // 计算每秒调度所需的时间
+}
+
+void TaskExitSystem() {
+	// 向主窗口发送关闭窗口系统消息，通知框架窗口执行关闭任务。
+	PostMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), WM_SYSCOMMAND, SC_CLOSE, 0);
 }
 
 void InitializeSystem() {

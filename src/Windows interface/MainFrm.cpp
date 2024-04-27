@@ -523,11 +523,11 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	SysCallSetInnerSystemPaneText(1, buffer);
 
 	// 更新实时数据分配及处理时间
-	sprintf_s(buffer, _T("%5I64d"), (size_t)gl_pChinaMarket->m_ttDistributeAndCalculateTime);
+	sprintf_s(buffer, _T("%5I64d"), gl_pChinaMarket->m_ttDistributeAndCalculateTime.load());
 	SysCallSetInnerSystemPaneText(2, buffer);
 
 	// 更新TaskSchedulePer100ms()处理时间
-	const long time = gl_systemMessage.m_lScheduleTaskTimePerSecond / 1000;
+	const long time = gl_systemMessage.GetScheduleTaskTimePerSecond() / 1000;
 	sprintf_s(buffer, _T("%5I32d"), time);
 	SysCallSetInnerSystemPaneText(3, buffer);
 

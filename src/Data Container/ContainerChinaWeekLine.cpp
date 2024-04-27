@@ -51,7 +51,7 @@ bool CContainerChinaWeekLine::LoadDB(const CString& strStockCode) {
 	CSetWeekLineBasicInfo setWeekLineBasicInfo;
 	CSetWeekLineExtendInfo setWeekLineExtendInfo;
 
-	ASSERT(!m_fLoadDataFirst);
+	ASSERT(!m_fBasicDataLoaded);
 
 	// 装入WeekLine数据
 	setWeekLineBasicInfo.m_strFilter = _T("[Symbol] = '");
@@ -73,7 +73,7 @@ bool CContainerChinaWeekLine::LoadDB(const CString& strStockCode) {
 
 	m_fDataLoaded = true;
 
-	ASSERT(!m_fLoadDataFirst);
+	ASSERT(!m_fBasicDataLoaded);
 
 	return true;
 }

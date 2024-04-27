@@ -162,6 +162,7 @@
     <ClCompile Include="jsonParseTest.cpp" />
     <ClCompile Include="ChinaStockCodeConverterTest.cpp" />
     <ClCompile Include="AccessoryTest.cpp" />
+    <ClCompile Include="ScheduleTaskTest.cpp" />
     <ClCompile Include="simdjsonGetValueTest.cpp" />
     <ClCompile Include="SystemConfigurationTest.cpp" />
     <ClCompile Include="ProductTiingoCryptoSymbolTest.cpp" />

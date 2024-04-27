@@ -630,6 +630,9 @@
     <ClCompile Include="ProductFinnbhubSECFilingsTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
+    <ClCompile Include="ScheduleTaskTest.cpp">
+      <Filter>Test源文件\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockMainFrm.h">

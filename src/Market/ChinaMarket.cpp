@@ -631,32 +631,26 @@ void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
 }
 
 void CChinaMarket::TaskLoadCurrentStockHistoryData() const {
-	if (m_pCurrentStock != nullptr) {
-		if (!m_pCurrentStock->IsDayLineLoaded()) {
-			auto pStock = m_pCurrentStock;
-			gl_runtime.background_executor()->post([pStock] {
-				pStock->UnloadDayLine();
-				// 装入日线数据
-				pStock->LoadDayLine(pStock->GetSymbol());
-				// 计算各相对强度（以指数相对强度为默认值）
-				pStock->CalculateDayLineRSIndex();
-				pStock->SetDayLineLoaded(true);
-			});
-			m_pCurrentStock->SetDayLineLoaded(true);
-		}
-		if (!m_pCurrentStock->IsWeekLineLoaded()) {
-			auto pStock = m_pCurrentStock;
-			gl_runtime.background_executor()->post([pStock] {
-				pStock->UnloadWeekLine();
-				// 装入周线数据
-				pStock->LoadWeekLine();
-				// 计算各相对强度（以指数相对强度为默认值）
-				pStock->CalculateWeekLineRSIndex();
-				pStock->SetWeekLineLoaded(true);
-			});
-			m_pCurrentStock->SetWeekLineLoaded(true);
-		}
-	}
+	ASSERT(m_pCurrentStock != nullptr);
+	ASSERT(!m_pCurrentStock->IsDayLineLoaded());
+	ASSERT(!m_pCurrentStock->IsWeekLineLoaded());
+	auto pStock = m_pCurrentStock;
+	gl_runtime.background_executor()->post([pStock] {
+		pStock->UnloadDayLine();
+		// 装入日线数据
+		pStock->LoadDayLine(pStock->GetSymbol());
+		// 计算各相对强度（以指数相对强度为默认值）
+		pStock->CalculateDayLineRSIndex();
+		pStock->SetDayLineLoaded(true);
+	});
+	gl_runtime.background_executor()->post([pStock] {
+		pStock->UnloadWeekLine();
+		// 装入周线数据
+		pStock->LoadWeekLine();
+		// 计算各相对强度（以指数相对强度为默认值）
+		pStock->CalculateWeekLineRSIndex();
+		pStock->SetWeekLineLoaded(true);
+	});
 }
 
 void CChinaMarket::TaskAccessoryTask(long lCurrentTime) {
@@ -965,7 +959,10 @@ void CChinaMarket::SetCurrentStock(const CString& strStockCode) {
 	const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(strStockCode);
 	SetCurrentStock(pStock);
 	ASSERT(m_pCurrentStock != nullptr);
-	AddTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
+	if (!m_pCurrentStock->IsDayLineLoaded()) {
+		ASSERT(!m_pCurrentStock->IsWeekLineLoaded());
+		AddTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -976,26 +973,18 @@ void CChinaMarket::SetCurrentStock(const CString& strStockCode) {
 //
 /////////////////////////////////////////////////////////////////////////
 void CChinaMarket::SetCurrentStock(const CChinaStockPtr& pStock) {
-	bool fSet = false;
-
-	if (pStock != nullptr) {
-		if (m_pCurrentStock != nullptr) {
-			if (!m_pCurrentStock->IsSameStock(pStock)) {
-				fSet = true;
-			}
-		}
-		else {
-			fSet = true;
-		}
-	}
-	else {
+	if (pStock == nullptr) {
 		m_pCurrentStock = nullptr;
+		return;
 	}
-	if (fSet) {
-		m_pCurrentStock = pStock;
-		SetCurrentStockChanged(true);
-		m_pCurrentStock->SetDayLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
+	if (m_pCurrentStock != nullptr) {
+		if (m_pCurrentStock->IsSameStock(pStock)) return;
 	}
+
+	m_pCurrentStock = pStock;
+	SetCurrentStockChanged(true);
+	m_pCurrentStock->SetDayLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
+	m_pCurrentStock->SetWeekLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
 	AddTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
 }
 

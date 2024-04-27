@@ -111,11 +111,9 @@ public:
 	void SetCurrentTiingoWebSocketCrypto(const CString& s);
 	CString GetCurrentTiingoWebSocketCrypto() const;
 
-	void CalcScheduleTaskTimePerSecond();
-
-public:
-	atomic_long m_lScheduleTaskTime{0};
-	atomic_long m_lScheduleTaskTimePerSecond{0};
+	void CalcScheduleTaskTimePerSecond() noexcept { m_lScheduleTaskTimePerSecond = m_lScheduleTaskTime.exchange(0); }
+	long GetScheduleTaskTimePerSecond() const noexcept { return m_lScheduleTaskTimePerSecond.load(); }
+	void IncreaseScheduleTaskTime(long lTime) noexcept { m_lScheduleTaskTime += lTime; }
 
 protected:
 	// 信息输出队列群
@@ -141,6 +139,9 @@ protected:
 	CString m_strCurrentTiingoWebSocketIEX;
 	CString m_strCurrentTiingoWebSocketForex;
 	CString m_strCurrentTiingoWebSocketCrypto;
+
+	atomic_long m_lScheduleTaskTime{0};
+	atomic_long m_lScheduleTaskTimePerSecond{0};
 };
 
 extern CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在全局变量初始化时的前面，其他全局变量初始化时用到此变量。

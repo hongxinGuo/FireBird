@@ -12,8 +12,7 @@
 #include "InfoReport.h"
 using std::make_shared;
 
-CContainerChinaDayLine::CContainerChinaDayLine() {
-}
+CContainerChinaDayLine::CContainerChinaDayLine() {}
 
 bool CContainerChinaDayLine::SaveDB(const CString& strStockSymbol) {
 	try {
@@ -31,7 +30,7 @@ bool CContainerChinaDayLine::LoadDB(const CString& strStockSymbol) {
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
-	ASSERT(!m_fLoadDataFirst);
+	ASSERT(!m_fBasicDataLoaded);
 
 	// 装入DayLine数据
 	setDayLineBasicInfo.m_strFilter = _T("[Symbol] = '");
@@ -52,7 +51,7 @@ bool CContainerChinaDayLine::LoadDB(const CString& strStockSymbol) {
 	setDayLineExtendInfo.Close();
 
 	m_fDataLoaded = true;
-	ASSERT(!m_fLoadDataFirst);
+	ASSERT(!m_fBasicDataLoaded);
 
 	return true;
 }

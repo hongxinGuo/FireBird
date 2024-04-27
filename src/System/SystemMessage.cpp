@@ -12,11 +12,9 @@ binary_semaphore s_CurrentTiingoWebSocketIEX{1};
 binary_semaphore s_CurrentTiingoWebSocketCrypto{1};
 binary_semaphore s_CurrentTiingoWebSocketForex{1};
 
-CSystemDeque::CSystemDeque() {
-}
+CSystemDeque::CSystemDeque() {}
 
-CSystemDeque::~CSystemDeque() {
-}
+CSystemDeque::~CSystemDeque() {}
 
 CSystemMessage::~CSystemMessage() = default;
 
@@ -96,12 +94,6 @@ CString CSystemMessage::GetCurrentTiingoWebSocketCrypto() const {
 	CString s = m_strCurrentTiingoWebSocketCrypto;
 	s_CurrentTiingoWebSocketCrypto.release();
 	return s;
-}
-
-void CSystemMessage::CalcScheduleTaskTimePerSecond() {
-	const long l = m_lScheduleTaskTime;
-	m_lScheduleTaskTime = 0;
-	m_lScheduleTaskTimePerSecond = l;
 }
 
 void CSystemDeque::Display(COutputList* pOutputList, const CString& strTime) {

@@ -108,7 +108,7 @@ bool CVirtualDataHistoryCandleExtend::SaveExtendDB(CVirtualSetHistoryCandleExten
 
 bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic) {
 	if (gl_systemConfiguration.IsWorkingMode())
-		ASSERT(!m_fLoadDataFirst);
+		ASSERT(!m_fBasicDataLoaded);
 	ASSERT(pSetHistoryCandleBasic->IsOpen());
 
 	// 装入DayLine数据
@@ -119,7 +119,7 @@ bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic*
 		StoreData(pHistoryCandle);
 		pSetHistoryCandleBasic->MoveNext();
 	}
-	m_fLoadDataFirst = true;
+	m_fBasicDataLoaded = true;
 	return true;
 }
 
@@ -133,7 +133,7 @@ bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExten
 	int iPosition = 0;
 
 	if (gl_systemConfiguration.IsWorkingMode())
-		ASSERT(m_fLoadDataFirst);
+		ASSERT(m_fBasicDataLoaded);
 	ASSERT(pSetHistoryCandleExtend->IsOpen());
 
 	while (!pSetHistoryCandleExtend->IsEOF()) {
@@ -147,7 +147,7 @@ bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExten
 		if (Size() <= (iPosition + 1)) break;
 		pSetHistoryCandleExtend->MoveNext();
 	}
-	m_fLoadDataFirst = false;
+	m_fBasicDataLoaded = false;
 	return true;
 }
 
@@ -230,7 +230,7 @@ void CVirtualDataHistoryCandleExtend::Reset() {
 	m_fDataLoaded = false;
 	m_fDatabaseTodayUpdated = false;
 
-	m_fLoadDataFirst = false;
+	m_fBasicDataLoaded = false;
 }
 
 bool CVirtualDataHistoryCandleExtend::CalculateRS0() {

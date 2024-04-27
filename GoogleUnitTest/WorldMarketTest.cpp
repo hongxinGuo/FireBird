@@ -668,8 +668,8 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_pWorldMarket->UpdateInsiderTransactionDB());
 
-		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
-		gl_systemMessage.PopDayLineInfoMessage();
+		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
+		//gl_systemMessage.PopDayLineInfoMessage();
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(_T("A"))->IsSaveInsiderTransaction());
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(_T("A"))->HaveInsiderTransaction()) << "存储后并没有删除数据";
 		gl_dataContainerFinnhubStock.GetStock(_T("A"))->UnloadInsiderTransaction();
