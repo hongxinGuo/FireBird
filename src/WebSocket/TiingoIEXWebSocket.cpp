@@ -7,8 +7,6 @@
 
 #include "TiingoDataSource.h"
 
-using namespace std;
-
 void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 	gl_pTiingoIEXWebSocket->SetError(false);
 	switch (msg->type) {
@@ -91,7 +89,7 @@ string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
 	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
 	jsonMessage["eventData"]["thresholdLevel"] = 5; // threshold的有效数字为0或者5
 	for (auto str : vSymbol) {
-		ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocket使用小写字符
+		std::ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocket使用小写字符
 		vSymbols.push_back(str);
 	}
 	jsonMessage["eventData"]["tickers"] = vSymbols;

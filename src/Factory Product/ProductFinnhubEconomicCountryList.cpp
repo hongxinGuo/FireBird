@@ -9,8 +9,6 @@
 
 #include "FinnhubDataSource.h"
 
-using namespace std;
-
 CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/country?");
 }
@@ -60,8 +58,8 @@ CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(co
 		ReportJSonErrorToSystemMessage(_T("Finnhub Country List "), e.what());
 		return pvCountry;
 	}
-	ranges::sort(pvCountry->begin(), pvCountry->end(),
-	             [](const CCountryPtr& p1, const CCountryPtr& p2) { return p1->m_strCountry < p2->m_strCountry; });
+	std::ranges::sort(pvCountry->begin(), pvCountry->end(),
+	                  [](const CCountryPtr& p1, const CCountryPtr& p2) { return p1->m_strCountry < p2->m_strCountry; });
 	return pvCountry;
 }
 

@@ -22,7 +22,7 @@ public:
 	~CWorldMarket() override;
 
 	void ResetMarket() final;
-	long GetResetTime() final { return gl_systemConfiguration.GetWorldMarketResettingTime(); }
+	long GetResetTime() override { return gl_systemConfiguration.GetWorldMarketResettingTime(); }
 
 	void PrepareToCloseMarket() final;
 

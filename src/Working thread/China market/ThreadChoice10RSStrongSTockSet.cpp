@@ -50,7 +50,7 @@ UINT ThreadChoice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
 	str += _T("\n");
 	gl_systemMessage.PushInformationMessage(str);
 
-	// 添加一个注释
+	// 报告一下
 	if (gl_dataContainerChinaStock.Choice10RSStrongStockSet(pRef, iIndex)) {
 		str = _T("10日RS ");
 		str += buffer;

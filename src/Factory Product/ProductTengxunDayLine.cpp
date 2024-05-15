@@ -5,8 +5,6 @@
 
 #include"JsonParse.h"
 
-using namespace std;
-
 CProductTengxunDayLine::CProductTengxunDayLine() {
 	m_lCurrentStockPosition = 0;
 	m_iInquiryNumber = 0;
@@ -104,7 +102,7 @@ void CProductTengxunDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>
 
 void CProductTengxunDayLine::CheckAndPrepareDayLine(vector<CDayLinePtr>& vDayLine) {
 	if (vDayLine.size() > 1) {
-		ranges::sort(vDayLine, [](const CDayLinePtr& p1, const CDayLinePtr& p2) { return p1->GetMarketDate() < p2->GetMarketDate(); });
+		std::ranges::sort(vDayLine, [](const CDayLinePtr& p1, const CDayLinePtr& p2) { return p1->GetMarketDate() < p2->GetMarketDate(); });
 
 		for (int i = 0; i < vDayLine.size() - 1; i++) {
 			const auto p1 = vDayLine.at(i);

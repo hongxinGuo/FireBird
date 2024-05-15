@@ -8,8 +8,6 @@
 
 #include "TiingoDataSource.h"
 
-using namespace std;
-
 void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 	gl_pTiingoForexWebSocket->SetError(false);
 	switch (msg->type) {
@@ -47,8 +45,7 @@ CTiingoForexWebSocket::CTiingoForexWebSocket() {
 	m_url = _T("wss://api.tiingo.com/fx");
 }
 
-CTiingoForexWebSocket::~CTiingoForexWebSocket() {
-}
+CTiingoForexWebSocket::~CTiingoForexWebSocket() {}
 
 /// <summary>
 /// Tiingo Forex的数据源格式：wss://api.tiingo.com/fx，其密钥是随后发送的。
@@ -101,7 +98,7 @@ string CTiingoForexWebSocket::CreateMessage(const vectorString& vSymbol) {
 	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
 	jsonMessage["eventData"]["thresholdLevel"] = 5; // //7：A top - of - book update that is due to a change in either the bid / ask price or size.
 	for (auto str : vSymbol) {
-		ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocket使用小写字符
+		std::ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocket使用小写字符
 		vSymbols.push_back(str);
 	}
 	jsonMessage["eventData"]["tickers"] = vSymbols;

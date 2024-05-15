@@ -17,8 +17,6 @@
 #include"SetEPSSurprise.h"
 #include "SetSECFilings.h"
 
-using namespace std;
-
 CWorldStock::CWorldStock() {
 	// Finnhub Symbol数据
 	m_strIPODate = _T(" ");
@@ -457,13 +455,13 @@ void CWorldStock::UpdateInsiderTransactionDB() {
 				pInsiderTransaction->Append(setInsiderTransaction); // 较新的数据直接存储之
 			}
 			else { // 较旧的数据？
-				if (ranges::find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
-				                    [pInsiderTransaction](const CInsiderTransactionPtr& p) {
-					                    return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
-						                    && (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
-						                    && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
-						                    && (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
-				                    }) == vInsiderTransaction.end()) { // 如果没找到，则股票代码、人名、交易日期或者交易细节为新的数据，存储该数据
+				if (std::ranges::find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
+				                         [pInsiderTransaction](const CInsiderTransactionPtr& p) {
+					                         return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
+						                         && (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
+						                         && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
+						                         && (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
+				                         }) == vInsiderTransaction.end()) { // 如果没找到，则股票代码、人名、交易日期或者交易细节为新的数据，存储该数据
 					pInsiderTransaction->Append(setInsiderTransaction);
 				}
 			}
@@ -506,10 +504,10 @@ void CWorldStock::UpdateInsiderSentimentDB() {
 		setInsiderSentiment.m_pDatabase->BeginTrans();
 		for (int i = 0; i < m_vInsiderSentiment.size(); i++) {
 			pInsiderSentiment = m_vInsiderSentiment.at(i);
-			if (ranges::find_if(vInsiderSentiment.begin(), vInsiderSentiment.end(),
-			                    [pInsiderSentiment](const CInsiderSentimentPtr& p) {
-				                    return (p->m_lDate == pInsiderSentiment->m_lDate); // 报告时间
-			                    }) == vInsiderSentiment.end()) { // 如果没找到，则报告日期为新的数据，存储该数据
+			if (std::ranges::find_if(vInsiderSentiment.begin(), vInsiderSentiment.end(),
+			                         [pInsiderSentiment](const CInsiderSentimentPtr& p) {
+				                         return (p->m_lDate == pInsiderSentiment->m_lDate); // 报告时间
+			                         }) == vInsiderSentiment.end()) { // 如果没找到，则报告日期为新的数据，存储该数据
 				pInsiderSentiment->Append(setInsiderSentiment);
 			}
 		}
@@ -675,7 +673,7 @@ void CWorldStock::UpdateCompanyNews(const CCompanyNewsVectorPtr& pvCompanyNews) 
 	for (auto& p : *pvCompanyNews) {
 		m_vCompanyNews.push_back(p);
 	}
-	ranges::sort(m_vCompanyNews, [](const CCompanyNewsPtr& p1, const CCompanyNewsPtr& p2) { return (p1->m_llDateTime < p2->m_llDateTime); }); // 此序列需要按时间顺序存放，以利于与存储于数据库中的数据作比较。
+	std::ranges::sort(m_vCompanyNews, [](const CCompanyNewsPtr& p1, const CCompanyNewsPtr& p2) { return (p1->m_llDateTime < p2->m_llDateTime); }); // 此序列需要按时间顺序存放，以利于与存储于数据库中的数据作比较。
 }
 
 void CWorldStock::UpdateEPSSurprise(const vector<CEPSSurprisePtr>& vEPSSurprise) {

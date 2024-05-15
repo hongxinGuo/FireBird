@@ -9,7 +9,3 @@ CProductDummy::CProductDummy() {
 CString CProductDummy::CreateMessage() {
 	return _T("");
 }
-
-void CProductDummy::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	TRACE("dummy product\n");
-}

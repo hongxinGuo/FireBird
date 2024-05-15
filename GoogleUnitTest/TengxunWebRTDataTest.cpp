@@ -7,7 +7,6 @@
 #include"WebRTData.h"
 #include"WebData.h"
 
-using namespace std;
 using namespace testing;
 
 namespace FireBirdTest {

@@ -3,7 +3,7 @@
 
 #include "InfoReport.h"
 
-using namespace std;
+using std::make_shared;
 
 CContainerFinnhubCountry::CContainerFinnhubCountry() { Reset(); }
 
@@ -23,7 +23,7 @@ bool CContainerFinnhubCountry::Delete(const CCountryPtr& pCountry) {
 	if (!IsCountry(pCountry->m_strCountry)) return false;
 
 	m_mapCountry.erase(pCountry->m_strCountry);
-	const auto it = ranges::find(m_vCountry.begin(), m_vCountry.end(), pCountry);
+	const auto it = std::ranges::find(m_vCountry.begin(), m_vCountry.end(), pCountry);
 	m_vCountry.erase(it);
 
 	return true;

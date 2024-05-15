@@ -5,8 +5,6 @@
 #include "InfoReport.h"
 #include"SetFinnhubForexExchange.h"
 
-using namespace std;
-
 CContainerFinnhubForexExchange::CContainerFinnhubForexExchange() {
 	Reset();
 }
@@ -20,7 +18,7 @@ void CContainerFinnhubForexExchange::Reset() {
 bool CContainerFinnhubForexExchange::Delete(const CString& strForexExchange) {
 	if (!IsExchange(strForexExchange)) return false;
 
-	const auto it = ranges::find(m_vForexExchange.begin(), m_vForexExchange.end(), strForexExchange);
+	const auto it = std::ranges::find(m_vForexExchange.begin(), m_vForexExchange.end(), strForexExchange);
 	m_vForexExchange.erase(it);
 	m_mapForexExchange.erase(strForexExchange);
 

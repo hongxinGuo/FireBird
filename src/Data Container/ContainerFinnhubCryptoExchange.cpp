@@ -5,8 +5,6 @@
 #include "InfoReport.h"
 #include"SetFinnhubCryptoExchange.h"
 
-using namespace std;
-
 CContainerFinnhubCryptoExchange::CContainerFinnhubCryptoExchange() {
 	Reset();
 }
@@ -20,7 +18,7 @@ void CContainerFinnhubCryptoExchange::Reset() {
 bool CContainerFinnhubCryptoExchange::Delete(const string& sCryptoExchange) {
 	if (!IsExchange(sCryptoExchange)) return false;
 
-	const auto it = ranges::find(m_vCryptoExchange.begin(), m_vCryptoExchange.end(), sCryptoExchange);
+	const auto it = std::ranges::find(m_vCryptoExchange.begin(), m_vCryptoExchange.end(), sCryptoExchange);
 	m_vCryptoExchange.erase(it);
 	m_mapCryptoExchange.erase(sCryptoExchange);
 

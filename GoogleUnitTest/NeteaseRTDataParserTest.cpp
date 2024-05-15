@@ -6,7 +6,7 @@
 #include "WebData.h"
 #include "WebRTData.h"
 
-using namespace std;
+using std::make_shared;
 
 namespace FireBirdTest {
 	class CNeteaseRTDataTest {

@@ -12,6 +12,7 @@ namespace testing {
 		MOCK_METHOD(bool, UpdateTiingoIndustry, (), (override));
 		MOCK_METHOD(bool, UpdateSICIndustry, (), (override));
 		MOCK_METHOD(bool, UpdateNaicsIndustry, (), (override));
+		MOCK_METHOD(long, GetResetTime, (), (override));
 	};
 
 	using CMockWorldMarketPtr = shared_ptr<CMockWorldMarket>;

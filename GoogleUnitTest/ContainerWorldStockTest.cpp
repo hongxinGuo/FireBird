@@ -7,8 +7,6 @@
 #include<memory>
 using std::make_shared;
 
-using namespace std;
-
 using namespace testing;
 
 namespace FireBirdTest {

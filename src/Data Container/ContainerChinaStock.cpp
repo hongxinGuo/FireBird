@@ -16,7 +16,7 @@
 #include"SetRSStrong1Stock.h"
 #include"SetRSStrong2Stock.h"
 
-using namespace std;
+using std::thread;
 
 CContainerChinaStock::CContainerChinaStock() {
 	CContainerChinaStock::Reset();
@@ -125,7 +125,7 @@ void CContainerChinaStock::UpdateStockProfileDB() {
 }
 
 bool CContainerChinaStock::IsDayLineDBUpdated() noexcept {
-	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CChinaStock>(pStock)->IsDayLineDBUpdated(); });
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CChinaStock>(pStock)->IsDayLineDBUpdated(); });
 }
 
 void CContainerChinaStock::ClearDayLineDBUpdatedFlag() noexcept {

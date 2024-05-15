@@ -1,7 +1,5 @@
 #include"pch.h"
 
-using namespace std;
-
 #include"TimeConvert.h"
 
 #include "VirtualMarket.h"
@@ -127,7 +125,7 @@ shared_ptr<vector<CMarketTaskPtr>> CVirtualMarket::DiscardOutDatedTask(long m_lC
 		m_qMarketDisplayTask.enqueue(pTaskRemained);
 	}
 
-	ranges::sort(*pvTask, [](const CMarketTaskPtr& p1, const CMarketTaskPtr& p2) { return p1->GetTime() < p2->GetTime(); });
+	std::ranges::sort(*pvTask, [](const CMarketTaskPtr& p1, const CMarketTaskPtr& p2) { return p1->GetTime() < p2->GetTime(); });
 	return pvTask;
 }
 

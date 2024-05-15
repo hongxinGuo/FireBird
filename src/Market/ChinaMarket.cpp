@@ -26,8 +26,6 @@
 
 #define WM_FIREBIRD_EXIT                0X500
 
-using namespace std;
-
 #include<gsl/gsl>
 using namespace gsl;
 
@@ -675,7 +673,7 @@ void CChinaMarket::TaskPreparingMarketOpen(long lCurrentTime) {
 }
 
 bool CChinaMarket::AddChosenStock(const CChinaStockPtr& pStock) {
-	if (ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
+	if (std::ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
 		m_avChosenStock.at(0).push_back(pStock);
 		ASSERT(!pStock->IsSaveToChosenStockDB());
 		return true;
@@ -684,7 +682,7 @@ bool CChinaMarket::AddChosenStock(const CChinaStockPtr& pStock) {
 }
 
 bool CChinaMarket::DeleteChosenStock(const CChinaStockPtr& pStock) {
-	const auto it = ranges::find(m_avChosenStock.at(0).cbegin(), m_avChosenStock.at(0).cend(), pStock);
+	const auto it = std::ranges::find(m_avChosenStock.at(0).cbegin(), m_avChosenStock.at(0).cend(), pStock);
 	if (it == m_avChosenStock.at(0).end()) { return false; }
 	(*it)->SetChosen(false);
 	(*it)->SetSaveToChosenStockDB(false);
@@ -1659,7 +1657,7 @@ void CChinaMarket::LoadChosenStockDB() {
 		CChinaStockPtr pStock = nullptr;
 		if (gl_dataContainerChinaStock.IsSymbol(setChinaChosenStock.m_Symbol)) {
 			pStock = gl_dataContainerChinaStock.GetStock(setChinaChosenStock.m_Symbol);
-			if (ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
+			if (std::ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
 				m_avChosenStock.at(0).push_back(pStock);
 			}
 			pStock->SetChosen(true);

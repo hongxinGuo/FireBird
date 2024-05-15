@@ -152,7 +152,6 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireForexSymbol()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCryptoSymbol()).Times(1);
 
-		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireSECFilings()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCompanyProfileConcise()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCompanyNews()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireCompanyBasicFinancial()).Times(1);
@@ -163,6 +162,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireStockDayLine()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireForexDayLine()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireEPSSurprise()).Times(1);
+		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireSECFilings()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, InquireRTQuote()).Times(0);
 
 		m_pMockFinnhubDataSource->Inquire(120000);

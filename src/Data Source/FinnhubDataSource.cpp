@@ -109,7 +109,6 @@ void CFinnhubDataSource::Inquire(const long lCurrentTime) {
 
 	// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
 	if (gl_pWorldMarket->IsSystemReady()) {
-		InquireSECFilings();
 		InquireCompanyProfileConcise();
 		InquireCompanyNews();
 		InquireCompanyBasicFinancial();
@@ -120,6 +119,7 @@ void CFinnhubDataSource::Inquire(const long lCurrentTime) {
 		InquireStockDayLine(); // Stock dayLine20231127后只限于付费用户使用
 		InquireForexDayLine(); // Forex dayLine目前只限于付费用户使用
 		InquireEPSSurprise();
+		InquireSECFilings();
 		if (IsUpdateStockDayLine()) {
 			//InquireRTQuote();
 		}

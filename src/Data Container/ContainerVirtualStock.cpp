@@ -2,8 +2,6 @@
 
 #include "ContainerVirtualStock.h"
 
-using namespace std;
-
 CContainerVirtualStock::CContainerVirtualStock() {
 	CContainerVirtualStock::Reset();
 }
@@ -29,15 +27,15 @@ vectorString CContainerVirtualStock::GetSymbolVector() {
 }
 
 bool CContainerVirtualStock::IsUpdateProfileDB() noexcept {
-	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsUpdateProfileDB(); });
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsUpdateProfileDB(); });
 }
 
 bool CContainerVirtualStock::IsDayLineNeedUpdate() noexcept {
-	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsDayLineNeedUpdate(); });
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsDayLineNeedUpdate(); });
 }
 
 bool CContainerVirtualStock::IsDayLineNeedSaving() noexcept {
-	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsDayLineNeedSaving(); });
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsDayLineNeedSaving(); });
 }
 
 void CContainerVirtualStock::Add(const CVirtualStockPtr& pStock) {
@@ -67,6 +65,6 @@ void CContainerVirtualStock::UpdateSymbolMap() {
 }
 
 void CContainerVirtualStock::Sort() {
-	ranges::sort(m_vStock, [](const CVirtualStockPtr& p1, const CVirtualStockPtr& p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); });
+	std::ranges::sort(m_vStock, [](const CVirtualStockPtr& p1, const CVirtualStockPtr& p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); });
 	UpdateSymbolMap();
 }

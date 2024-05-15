@@ -9,8 +9,6 @@
 
 #include "ProductFinnhubCryptoDayLine.h"
 
-using namespace std;
-
 CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/candle?symbol=");
 }
@@ -138,7 +136,7 @@ CDayLineVectorPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDat
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle "), e.what());
 		// 有些外汇交易不提供成交量，忽略就可以了
 	}
-	ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);
+	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);
 	// 清除掉交易日期为零的无效数据
 	for (auto& pDayLine2 : *pvDayLine) { if (pDayLine2->m_time > 0) { pvDayLineReturn->push_back(pDayLine2); } }
 	return pvDayLineReturn;

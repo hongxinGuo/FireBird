@@ -13,8 +13,6 @@
 
 #include "ContainerWorldStock.h"
 
-using namespace std;
-
 CContainerWorldStock::CContainerWorldStock() {
 	CContainerWorldStock::Reset();
 }
@@ -237,7 +235,7 @@ void CContainerWorldStock::UpdateBasicFinancialMetricDB(const vector<CWorldStock
 		while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
 			if (setBasicFinancialMetric.IsEOF()) break;
 			CWorldStockPtr pStockNeedUpdate = GetStock(setBasicFinancialMetric.m_symbol);
-			if (vStock.end() != ranges::find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
+			if (vStock.end() != std::ranges::find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
 				iCurrentUpdated++;
 				pStockNeedUpdate->UpdateBasicFinancialMetric(setBasicFinancialMetric);
 				pStockNeedUpdate->SetUpdateBasicFinancialDB(false);
@@ -287,25 +285,25 @@ bool CContainerWorldStock::ValidateStockSymbol(const CWorldStockPtr& pStock) {
 }
 
 bool CContainerWorldStock::IsUpdateCompanyNewsDB() {
-	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CWorldStock>(pStock)->IsUpdateCompanyNewsDB(); });
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CWorldStock>(pStock)->IsUpdateCompanyNewsDB(); });
 }
 
 bool CContainerWorldStock::IsUpdateBasicFinancialDB() {
-	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CWorldStock>(pStock)->IsUpdateBasicFinancialDB(); });
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CWorldStock>(pStock)->IsUpdateBasicFinancialDB(); });
 }
 
 bool CContainerWorldStock::IsSaveInsiderTransaction() {
-	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& P) { return dynamic_pointer_cast<CWorldStock>(P)->IsSaveInsiderTransaction(); });
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& P) { return dynamic_pointer_cast<CWorldStock>(P)->IsSaveInsiderTransaction(); });
 }
 
 bool CContainerWorldStock::IsSaveInsiderSentiment() {
-	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsSaveInsiderSentiment(); });
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsSaveInsiderSentiment(); });
 }
 
 bool CContainerWorldStock::IsSaveEPSSurpriseDB() {
-	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsEPSSurpriseNeedSave(); });
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsEPSSurpriseNeedSave(); });
 }
 
 bool CContainerWorldStock::IsSaveSECFilingsDB() {
-	return ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsSECFilingsNeedSave(); });
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsSECFilingsNeedSave(); });
 }

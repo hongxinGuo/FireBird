@@ -2,8 +2,6 @@
 
 #include "VirtualContainer.h"
 
-using namespace std;
-
 CVirtualContainer::CVirtualContainer() {
 	CVirtualContainer::Reset();
 }

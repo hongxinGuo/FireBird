@@ -11,8 +11,6 @@
 
 #include <execution>
 
-using namespace std;
-
 CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/candle?symbol=");
 }
@@ -139,7 +137,7 @@ CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataP
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle missing 'v' "), e.what());
 		// 有些外汇交易不提供成交量，忽略就可以了
 	}
-	ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);
+	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);
 
 	return pvDayLine;
 }

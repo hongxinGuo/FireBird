@@ -23,7 +23,6 @@
 #include "InfoReport.h"
 #include "Thread.h"
 
-using namespace std;
 #include <algorithm>
 
 #include"simdjsonGetValue.h"
@@ -383,7 +382,7 @@ CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 	const string_view svData = pWebData->GetStringView(0, pWebData->GetBufferLength());
 
 	const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(svData, XferStandardToTengxun(pWebData->GetStockCode()));
-	ranges::sort(*pvDayLine, [](const CDayLinePtr& pData1, const CDayLinePtr& pData2) { return pData1->GetMarketDate() < pData2->GetMarketDate(); });
+	std::ranges::sort(*pvDayLine, [](const CDayLinePtr& pData1, const CDayLinePtr& pData2) { return pData1->GetMarketDate() < pData2->GetMarketDate(); });
 	for (const auto& pDayLine : *pvDayLine) {
 		pDayLine->SetStockSymbol(strSymbol);
 		pDayLine->SetDisplaySymbol(strDisplaySymbol);

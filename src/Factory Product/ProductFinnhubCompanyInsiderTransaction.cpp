@@ -10,8 +10,6 @@
 
 #include "TimeConvert.h"
 
-using namespace std;
-
 CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransaction() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol=");
 }
@@ -108,7 +106,7 @@ CInsiderTransactionVectorPtr CProductFinnhubCompanyInsiderTransaction::ParseFinn
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderTransaction->m_strSymbol + _T(" Insider Transaction "), e.what());
 		return pvInsiderTransaction;
 	}
-	ranges::sort(pvInsiderTransaction->begin(), pvInsiderTransaction->end(),
-	             [](const CInsiderTransactionPtr& p1, const CInsiderTransactionPtr& p2) { return p1->m_lTransactionDate < p2->m_lTransactionDate; });
+	std::ranges::sort(pvInsiderTransaction->begin(), pvInsiderTransaction->end(),
+	                  [](const CInsiderTransactionPtr& p1, const CInsiderTransactionPtr& p2) { return p1->m_lTransactionDate < p2->m_lTransactionDate; });
 	return pvInsiderTransaction;
 }

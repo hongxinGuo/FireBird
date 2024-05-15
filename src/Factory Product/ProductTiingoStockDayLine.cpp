@@ -10,8 +10,6 @@
 
 #include "TimeConvert.h"
 
-using namespace std;
-
 CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/daily/");
 }
@@ -149,7 +147,7 @@ CDayLineVectorPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWeb
 		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}
-	ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
+	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
 
 	return pvDayLine;
 }

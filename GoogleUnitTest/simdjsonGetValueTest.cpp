@@ -323,26 +323,28 @@ namespace FireBirdTest {
 					break;
 				}
 			}
+			int i2;
+			double d4;
 			ondemand::object object1 = doc["DataArray2"].get_object();
-			EXPECT_THROW(int i2 = jsonGetInt64(object1, "No integer"), simdjson_error);
-			EXPECT_THROW(double d4 = jsonGetDouble(object1, "no double"), simdjson_error);
+			EXPECT_THROW(i2 = jsonGetInt64(object1, "No integer"), simdjson_error);
+			EXPECT_THROW(d4 = jsonGetDouble(object1, "no double"), simdjson_error);
 			EXPECT_THROW(string_view str2 = jsonGetStringView(object1, "no string"), simdjson_error);
 			EXPECT_THROW(bool b2 = jsonGetBool(object1, "no bool"), simdjson_error);
 			EXPECT_THROW(auto aa2 = jsonGetArray(object1, "no array"), simdjson_error);
-			EXPECT_THROW(int i2 = jsonGetInt64(object1, "integer"), simdjson_error);
-			EXPECT_THROW(double d4 = jsonGetDouble(object1, "double"), simdjson_error);
+			EXPECT_THROW(i2 = jsonGetInt64(object1, "integer"), simdjson_error);
+			EXPECT_THROW(d4 = jsonGetDouble(object1, "double"), simdjson_error);
 			EXPECT_THROW(string_view str2 = jsonGetStringView(object1, "string"), simdjson_error);
 			EXPECT_THROW(bool b2 = jsonGetBool(object1, "bool"), simdjson_error);
 			EXPECT_THROW(auto aa2 = jsonGetArray(object1, "array"), simdjson_error);
 			ondemand::value value2 = doc["DataArray2"].value();
 
-			EXPECT_THROW(int i2 = jsonGetInt64(value2, "No integer"), simdjson_error);
-			EXPECT_THROW(double d4 = jsonGetDouble(value2, "no double"), simdjson_error);
+			EXPECT_THROW(i2 = jsonGetInt64(value2, "No integer"), simdjson_error);
+			EXPECT_THROW(d4 = jsonGetDouble(value2, "no double"), simdjson_error);
 			EXPECT_THROW(string_view str2 = jsonGetStringView(value2, "no string"), simdjson_error);
 			EXPECT_THROW(bool b2 = jsonGetBool(value2, "no bool"), simdjson_error);
 			EXPECT_THROW(auto aa2 = jsonGetArray(value2, "no array"), simdjson_error);
-			EXPECT_THROW(int i2 = jsonGetInt64(value2, "integer"), simdjson_error);
-			EXPECT_THROW(double d4 = jsonGetDouble(value2, "double"), simdjson_error);
+			EXPECT_THROW(i2 = jsonGetInt64(value2, "integer"), simdjson_error);
+			EXPECT_THROW(d4 = jsonGetDouble(value2, "double"), simdjson_error);
 			EXPECT_THROW(string_view str2 = jsonGetStringView(value2, "string"), simdjson_error);
 			EXPECT_THROW(bool b2 = jsonGetBool(value2, "bool"), simdjson_error);
 			EXPECT_THROW(auto aa2 = jsonGetArray(value2, "array"), simdjson_error);
@@ -394,41 +396,44 @@ namespace FireBirdTest {
 		ondemand::parser parser;
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 		string s1, s2;
+		double d1, d2;
+		INT64 i1, i2;
+		bool b1, b2;
 		ondemand::array array1, array2;
 		switch (m_lIndex) {
 		case 1:
 			EXPECT_DOUBLE_EQ(jsonGetDouble(doc, "double"), 0.1);
 			EXPECT_DOUBLE_EQ(jsonGetDouble(doc, "double1"), 0.0);
-			EXPECT_THROW(double d1 = jsonGetDouble(doc, "double2"), simdjson_error);
-			EXPECT_THROW(double d2 = jsonGetDouble(doc, "double3"), simdjson_error);
+			EXPECT_THROW(d1 = jsonGetDouble(doc, "double2"), simdjson_error);
+			EXPECT_THROW(d2 = jsonGetDouble(doc, "double3"), simdjson_error);
 			break;
 		case 2:
 			EXPECT_EQ(jsonGetInt64(doc, "integer"), 1);
 			EXPECT_EQ(jsonGetInt64(doc, "integer1"), 0);
-			EXPECT_THROW(INT64 d1 = jsonGetInt64(doc, "integer2"), simdjson_error);
-			EXPECT_THROW(INT64 d2 = jsonGetInt64(doc, "integer3"), simdjson_error);
+			EXPECT_THROW(i1 = jsonGetInt64(doc, "integer2"), simdjson_error);
+			EXPECT_THROW(i2 = jsonGetInt64(doc, "integer3"), simdjson_error);
 			break;
 		case 3:
 			EXPECT_TRUE(jsonGetBool(doc, "bool"));
 			EXPECT_FALSE(jsonGetBool(doc, "bool1"));
-			EXPECT_THROW(bool d1 = jsonGetBool(doc, "bool2"), simdjson_error);
-			EXPECT_THROW(bool d2 = jsonGetBool(doc, "bool3"), simdjson_error);
+			EXPECT_THROW(b1 = jsonGetBool(doc, "bool2"), simdjson_error);
+			EXPECT_THROW(b2 = jsonGetBool(doc, "bool3"), simdjson_error);
 			break;
 		case 4:
 			s1 = jsonGetStringView(doc, "string");
 			EXPECT_STREQ(s1.c_str(), "abc");
 			s2 = jsonGetStringView(doc, "string1");
 			EXPECT_STREQ(s2.c_str(), "");
-			EXPECT_THROW(string d1(jsonGetStringView(doc, "string2")), simdjson_error);
-			EXPECT_THROW(string d2(jsonGetStringView(doc, "string3")), simdjson_error);
+			EXPECT_THROW(string s3(jsonGetStringView(doc, "string2")), simdjson_error);
+			EXPECT_THROW(string d4(jsonGetStringView(doc, "string3")), simdjson_error);
 			break;
 		case 5:
 			array1 = jsonGetArray(doc, "array");
 			EXPECT_EQ(array1.count_elements().value(), 3);
 			array2 = jsonGetArray(doc, "array1");
 			EXPECT_EQ(array2.count_elements().value(), 0);
-			EXPECT_THROW(ondemand::array d1 = jsonGetArray(doc, "array2"), simdjson_error);
-			EXPECT_THROW(ondemand::array d2 = jsonGetArray(doc, "array3"), simdjson_error);
+			EXPECT_THROW(ondemand::array a1 = jsonGetArray(doc, "array2"), simdjson_error);
+			EXPECT_THROW(ondemand::array a2 = jsonGetArray(doc, "array3"), simdjson_error);
 			break;
 		default:
 			break;

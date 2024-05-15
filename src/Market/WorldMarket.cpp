@@ -294,7 +294,6 @@ bool CWorldMarket::TaskUpdateNaicsIndustry() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::TaskUpdateForexDayLineDB() {
-	CString str;
 	bool fUpdated = false;
 	CForexSymbolPtr pSymbol = nullptr;
 	const size_t symbolSize = gl_dataFinnhubForexSymbol.Size();
@@ -306,13 +305,14 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 				if (pSymbol->HaveNewDayLineData()) {
 					gl_runtime.background_executor()->post([pSymbol] {
 						gl_UpdateWorldMarketDB.acquire();
-						if (gl_systemConfiguration.IsExitingSystem()) return;// 如果程序正在退出，则停止存储。
-						pSymbol->UpdateDayLineDB();
-						pSymbol->UpdateDayLineStartEndDate();
-						pSymbol->SetUpdateProfileDB(true);
-						pSymbol->UnloadDayLine();
-						const CString str = pSymbol->GetSymbol() + _T("日线资料存储完成");
-						gl_systemMessage.PushDayLineInfoMessage(str);
+						if (!gl_systemConfiguration.IsExitingSystem()) {// 如果程序正在退出，则停止存储。
+							pSymbol->UpdateDayLineDB();
+							pSymbol->UpdateDayLineStartEndDate();
+							pSymbol->SetUpdateProfileDB(true);
+							pSymbol->UnloadDayLine();
+							const CString str = pSymbol->GetSymbol() + _T("日线资料存储完成");
+							gl_systemMessage.PushDayLineInfoMessage(str);
+						}
 						gl_UpdateWorldMarketDB.release();
 					});
 					fUpdated = true;
@@ -353,13 +353,14 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 				if (pSymbol->HaveNewDayLineData()) {
 					gl_runtime.background_executor()->post([pSymbol] {
 						gl_UpdateWorldMarketDB.acquire();
-						if (gl_systemConfiguration.IsExitingSystem()) return; // 如果程序正在退出，则停止存储。
-						pSymbol->UpdateDayLineDB();
-						pSymbol->UpdateDayLineStartEndDate();
-						pSymbol->SetUpdateProfileDB(true);
-						pSymbol->UnloadDayLine();
-						const CString str = pSymbol->GetSymbol() + _T("日线资料存储完成");
-						gl_systemMessage.PushDayLineInfoMessage(str);
+						if (!gl_systemConfiguration.IsExitingSystem()) { // 如果程序正在退出，则停止存储。
+							pSymbol->UpdateDayLineDB();
+							pSymbol->UpdateDayLineStartEndDate();
+							pSymbol->SetUpdateProfileDB(true);
+							pSymbol->UnloadDayLine();
+							const CString str = pSymbol->GetSymbol() + _T("日线资料存储完成");
+							gl_systemMessage.PushDayLineInfoMessage(str);
+						}
 						gl_UpdateWorldMarketDB.release();
 					});
 					fUpdated = true;
@@ -394,9 +395,7 @@ bool CWorldMarket::UpdateEPSSurpriseDB() {
 		if (pStock->IsEPSSurpriseNeedSaveAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			pStock->UpdateEPSSurpriseDB();
 		}
-		if (gl_systemConfiguration.IsExitingSystem()) {
-			break; // 如果程序正在退出，则停止存储。
-		}
+		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 	}
 
 	return (true);
@@ -412,9 +411,7 @@ void CWorldMarket::UpdateSECFilingsDB() {
 		if (pStock->IsSECFilingsNeedSaveAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			ASSERT(pStock->UpdateSECFilingsDB());
 		}
-		if (gl_systemConfiguration.IsExitingSystem()) {
-			break; // 如果程序正在退出，则停止存储。
-		}
+		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 	}
 }
 
@@ -593,9 +590,7 @@ bool CWorldMarket::UpdateStockDayLineDB() {
 	for (long i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
 		pStock->UpdateDayLineDB();
-		if (gl_systemConfiguration.IsExitingSystem()) {
-			break; // 如果程序正在退出，则停止存储。
-		}
+		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 	}
 	return true;
 }
@@ -606,9 +601,7 @@ bool CWorldMarket::UpdateCompanyNewsDB() {
 		if (pStock->IsUpdateCompanyNewsDBAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			pStock->UpdateCompanyNewsDB();
 		}
-		if (gl_systemConfiguration.IsExitingSystem()) {
-			break; // 如果程序正在退出，则停止存储。
-		}
+		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 	}
 
 	return (true);
@@ -639,9 +632,7 @@ bool CWorldMarket::UpdateInsiderSentimentDB() {
 				pStock->UpdateInsiderSentimentDB();
 			}
 		}
-		if (gl_systemConfiguration.IsExitingSystem()) {
-			break; // 如果程序正在退出，则停止存储。
-		}
+		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 	}
 	return true;
 }

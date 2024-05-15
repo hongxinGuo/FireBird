@@ -50,7 +50,7 @@ CVirtualDataSource::CVirtualDataSource() {
 ///
 /// </summary>
 ///
-/// 必须使用独立的thread_executor任务序列，不能使用thread_pool_executor或者background_executor，
+/// Note 必须使用独立的thread_executor任务序列，不能使用thread_pool_executor或者background_executor，
 //  否则解析工作使用的thread_pool_executor会与之产生冲突，导致产生同步问题。
 ///
 /// lMarketTime：当前市场时间

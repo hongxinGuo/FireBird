@@ -5,7 +5,7 @@
 #include"FinnhubForexSymbol.h"
 #include "InfoReport.h"
 
-using namespace std;
+using std::make_shared;
 
 CContainerFinnhubForexSymbol::CContainerFinnhubForexSymbol() {
 	CContainerFinnhubForexSymbol::Reset();

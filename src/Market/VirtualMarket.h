@@ -30,7 +30,8 @@ public:
 	virtual void ResetMarket();
 	bool InResetTime(long lCurrentTime);
 	virtual long GetResetTime() {
-		ASSERT(0);
+		if (gl_systemConfiguration.IsWorkingMode()) // 不允许在运行状态时调用此函数
+			ASSERT(0);
 		return 0;
 	}
 	bool IsResetting() const noexcept { return m_fResettingMarket; }
@@ -98,8 +99,7 @@ public:
 	bool IsSystemReady() const noexcept { return m_fSystemReady; }
 	void SetSystemReady(const bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
-	virtual void PrepareToCloseMarket() {
-	} // 准备退出本市场（完成系统退出前的准备工作）。
+	virtual void PrepareToCloseMarket() {} // 准备退出本市场（完成系统退出前的准备工作）。
 
 	// 存储数据源
 	void StoreDataSource(const CVirtualDataSourcePtr& pDataSource) { m_vDataSource.push_back(pDataSource); }

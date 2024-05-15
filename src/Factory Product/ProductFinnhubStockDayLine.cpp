@@ -9,8 +9,6 @@
 
 #include "ProductFinnhubStockDayLine.h"
 
-using namespace std;
-
 CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/candle?symbol=");
 }
@@ -135,7 +133,7 @@ CDayLineVectorPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataP
 		}
 	}
 	catch (json::exception& e) { ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiryFunction(), e.what()); }
-	ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
+	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
 
 	return pvDayLine;
 }

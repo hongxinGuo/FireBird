@@ -9,8 +9,6 @@
 #include"simdjsonGetValue.h"
 #include "TimeConvert.h"
 
-using namespace std;
-
 CProductFinnhubSECFilings::CProductFinnhubSECFilings() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/filings?symbol=");
 }
@@ -104,7 +102,7 @@ CSECFilingVectorPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const
 		ReportJSonErrorToSystemMessage(_T("finnhub SEC Filings "), error.what());
 	}
 	// °´accessNumberÅÅÐò
-	ranges::sort(*pvSECFilings, [](const CSECFilingPtr& p1, const CSECFilingPtr& p2) { return p1->m_strAccessNumber.Compare(p2->m_strAccessNumber); });
+	std::ranges::sort(*pvSECFilings, [](const CSECFilingPtr& p1, const CSECFilingPtr& p2) { return p1->m_strAccessNumber.Compare(p2->m_strAccessNumber); });
 
 	return pvSECFilings;
 }

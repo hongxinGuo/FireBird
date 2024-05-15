@@ -4,7 +4,6 @@
 
 #include "FinnhubInaccessibleExchange.h"
 
-using namespace std;
 #include<string>
 #include<fstream>
 #include<memory>
@@ -172,7 +171,7 @@ void CFinnhubInaccessibleExchange::UpdateJson() {
 	m_finnhubInaccessibleExchange.clear();
 
 	m_finnhubInaccessibleExchange["UpdateDate"] = m_lUpdateDate;
-	for (const auto& val : m_mapExchange | views::values) {
+	for (const auto& val : m_mapExchange | std::views::values) {
 		if (val->HaveExchange()) {
 			// 有exchange数据的话才建立数据集
 			auto jsonExchange = json{{"Function", val->GetFunctionString()}};

@@ -117,14 +117,14 @@ namespace FireBirdTest {
 			vEndDate[i] = m_containerChinaStock.GetStock(i)->GetDayLineEndDate();
 		}
 		EXPECT_TRUE(m_containerChinaStock.IsDayLineNeedUpdate());
-		EXPECT_TRUE(m_containerChinaStock.GetStock(1)->GetDayLineEndDate(), 19900101);
+		EXPECT_EQ(m_containerChinaStock.GetStock(1)->GetDayLineEndDate(), 20210430);
 		m_containerChinaStock.GetStock(1)->SetDayLineEndDate(20200101);
 		m_containerChinaStock.ClearDayLineNeedUpdateStatus();
 
 		m_containerChinaStock.SetDayLineNeedMaintain();
 
 		EXPECT_TRUE(m_containerChinaStock.IsDayLineNeedUpdate());
-		EXPECT_TRUE(m_containerChinaStock.GetStock(1)->GetDayLineEndDate(), 19900101);
+		EXPECT_EQ(m_containerChinaStock.GetStock(1)->GetDayLineEndDate(), 19900101);
 
 		// »Ö¸´Ô­×´
 		for (int i = 0; i < m_containerChinaStock.Size(); i++) {

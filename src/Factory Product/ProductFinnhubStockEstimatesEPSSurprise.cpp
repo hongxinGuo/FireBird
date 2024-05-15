@@ -10,8 +10,6 @@
 
 #include "TimeConvert.h"
 
-using namespace std;
-
 CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurprise() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");
 }
@@ -68,7 +66,7 @@ CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSS
 		ReportJSonErrorToSystemMessage(_T("Finnhub EPS Surprise "), e.what());
 		return pvEPSSurprise;
 	}
-	ranges::sort(pvEPSSurprise->begin(), pvEPSSurprise->end(),
-	             [](const CEPSSurprisePtr& p1, const CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }); // 以日期早晚顺序排列。
+	std::ranges::sort(pvEPSSurprise->begin(), pvEPSSurprise->end(),
+	                  [](const CEPSSurprisePtr& p1, const CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }); // 以日期早晚顺序排列。
 	return pvEPSSurprise;
 }

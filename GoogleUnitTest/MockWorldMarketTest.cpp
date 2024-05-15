@@ -69,6 +69,16 @@ namespace FireBirdTest {
 		}
 	};
 
+	TEST_F(CMockWorldMarketTest, TestInResetTime) {
+		EXPECT_CALL(*s_pMockWorldMarket, GetResetTime())
+		.WillRepeatedly(Return(13000));
+
+		EXPECT_FALSE(s_pMockWorldMarket->InResetTime(12700));
+		EXPECT_TRUE(s_pMockWorldMarket->InResetTime(12701));
+		EXPECT_TRUE(s_pMockWorldMarket->InResetTime(13459));
+		EXPECT_FALSE(s_pMockWorldMarket->InResetTime(13500));
+	}
+
 	TEST_F(CMockWorldMarketTest, TestUpdateToken) {
 		s_pMockWorldMarket->UpdateToken();
 	}

@@ -6,8 +6,6 @@
 #include "JsonParse.h"
 #include "TimeConvert.h"
 
-using namespace std;
-
 CDayLineWebData::CDayLineWebData() {
 	Reset();
 }
@@ -49,7 +47,7 @@ bool CDayLineWebData::ProcessNeteaseDayLineData() {
 		m_vTempDayLine.push_back(pCurrentDayLine); // 暂存于临时vector中，网易日线数据的时间顺序是颠倒的，最新的在最前面
 	}
 	// 正序排列
-	ranges::sort(m_vTempDayLine, [](const CDayLinePtr& p1, const CDayLinePtr& p2) { return p1->GetMarketDate() < p2->GetMarketDate(); });
+	std::ranges::sort(m_vTempDayLine, [](const CDayLinePtr& p1, const CDayLinePtr& p2) { return p1->GetMarketDate() < p2->GetMarketDate(); });
 	ReportDayLineDownLoaded();
 
 	return true;
@@ -141,7 +139,7 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLine(const string_view& svData)
 		sv = GetNextField(svData, lCurrentPos, 0x0d); // 最后的数据没有字符','隔断，直接使用最后的\r\n
 		pDayLine->SetCurrentValue(sv.data()); // 流通市值的单位为：元。
 	}
-	catch ([[maybe_unused]] exception& e) {
+	catch ([[maybe_unused]] std::exception& e) {
 		return nullptr;
 	}
 	return pDayLine;

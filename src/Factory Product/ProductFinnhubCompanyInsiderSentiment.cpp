@@ -9,8 +9,6 @@
 
 #include "ProductFinnhubCompanyInsiderSentiment.h"
 
-using namespace std;
-
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol=");
 }
@@ -98,7 +96,7 @@ CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubS
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderSentiment->m_strSymbol + _T(" Insider Sentiment "), e.what());
 		return pvInsiderSentiment;
 	}
-	ranges::sort(pvInsiderSentiment->begin(), pvInsiderSentiment->end(),
-	             [](const CInsiderSentimentPtr& p1, const CInsiderSentimentPtr& p2) { return p1->m_lDate < p2->m_lDate; });
+	std::ranges::sort(pvInsiderSentiment->begin(), pvInsiderSentiment->end(),
+	                  [](const CInsiderSentimentPtr& p1, const CInsiderSentimentPtr& p2) { return p1->m_lDate < p2->m_lDate; });
 	return pvInsiderSentiment;
 }

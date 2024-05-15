@@ -10,8 +10,6 @@
 
 #include"simdjsonGetValue.h"
 
-using namespace std;
-
 CProductTiingoStockSymbol::CProductTiingoStockSymbol() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");
 }
@@ -104,7 +102,7 @@ CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CW
 			s1 = jsonGetStringView(itemValue, _T("permaTicker"));
 			pStock->m_strTiingoPermaTicker = s1.c_str();;
 			s1 = jsonGetStringView(itemValue, _T("ticker"));
-			ranges::transform(s1, s1.begin(), ::toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。(需要使用::toupper）
+			std::ranges::transform(s1, s1.begin(), ::toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。(需要使用::toupper）
 			pStock->m_strTicker = s1.c_str();
 			s1 = jsonGetStringView(itemValue, _T("name"));
 			pStock->m_strName = s1.c_str();;
