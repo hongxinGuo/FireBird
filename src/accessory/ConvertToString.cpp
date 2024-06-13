@@ -3,7 +3,7 @@
 #include"ConvertToString.h"
 
 CString ConvertValueToString(const long lValue, const int iDividend) {
-	char buffer[50]{0};
+	char buffer[50]{};
 	const double d = (static_cast<double>(lValue)) / iDividend;
 
 	sprintf_s(buffer, _T("%.3f"), d);
@@ -12,7 +12,7 @@ CString ConvertValueToString(const long lValue, const int iDividend) {
 }
 
 CString ConvertValueToString(const int iValue, const int iDividend) {
-	char buffer[50]{0};
+	char buffer[50]{};
 	const double d = (static_cast<double>(iValue)) / iDividend;
 
 	sprintf_s(buffer, _T("%.3f"), d);
@@ -22,7 +22,7 @@ CString ConvertValueToString(const int iValue, const int iDividend) {
 }
 
 CString ConvertValueToString(const INT64 iValue, const int iDividend) {
-	char buffer[50]{0};
+	char buffer[50]{};
 	const double d = (static_cast<double>(iValue)) / iDividend;
 
 	sprintf_s(buffer, _T("%.3f"), d);
@@ -31,7 +31,7 @@ CString ConvertValueToString(const INT64 iValue, const int iDividend) {
 }
 
 CString ConvertValueToString(const double dValue, const int iDividend) {
-	char buffer[50]{0};
+	char buffer[50]{};
 	const double d = dValue / iDividend;
 
 	sprintf_s(buffer, _T("%.3f"), d);
@@ -59,9 +59,11 @@ wstring to_wide_string(const std::string& input) {
 
 // 将utf-8字符串转化为CString
 CString XferToCString(const std::string& s) {
-	CString strName3;
+	// ReSharper disable once CppJoinDeclarationAndAssignment
+	CString strName3; // 将声明和赋值合并时出现运行结果错误，原因不明
 	wstring wsName;
-	CStringW strWName;
+	// ReSharper disable once CppJoinDeclarationAndAssignment
+	CStringW strWName; // 将声明和赋值合并时出现运行结果错误，原因不明
 
 	wsName = to_wide_string(s); // 将中文utf8转成宽字节字符串
 	strWName = wsName.c_str(); // 将标准库的宽字节字符串转换成CStringW制式，

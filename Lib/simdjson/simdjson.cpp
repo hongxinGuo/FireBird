@@ -1,4 +1,4 @@
-/* auto-generated on 2024-05-07 18:04:59 -0400. Do not edit! */
+/* auto-generated on 2024-06-11 14:08:20 -0400. Do not edit! */
 /* including simdjson.cpp:  */
 /* begin file simdjson.cpp */
 #define SIMDJSON_SRC_SIMDJSON_CPP
@@ -83,6 +83,9 @@
 // strcasecmp, strncasecmp
 #include <strings.h>
 #endif
+
+// We are using size_t without namespace std:: throughout the project
+using std::size_t;
 
 #ifdef _MSC_VER
 #define SIMDJSON_VISUAL_STUDIO 1
@@ -527,13 +530,13 @@ SIMDJSON_PUSH_DISABLE_ALL_WARNINGS
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-// #pragma once // We remove #pragma once here as it generates a warning in some cases. We rely on the include guard.
+#pragma once
 
 #ifndef NONSTD_SV_LITE_H_INCLUDED
 #define NONSTD_SV_LITE_H_INCLUDED
 
 #define string_view_lite_MAJOR  1
-#define string_view_lite_MINOR  7
+#define string_view_lite_MINOR  8
 #define string_view_lite_PATCH  0
 
 #define string_view_lite_VERSION  nssv_STRINGIFY(string_view_lite_MAJOR) "." nssv_STRINGIFY(string_view_lite_MINOR) "." nssv_STRINGIFY(string_view_lite_PATCH)
@@ -654,6 +657,8 @@ SIMDJSON_PUSH_DISABLE_ALL_WARNINGS
 // Extensions for std::string:
 
 #if nssv_CONFIG_CONVERSION_STD_STRING_FREE_FUNCTIONS
+
+#include <string>
 
 namespace nonstd {
 
@@ -2359,7 +2364,7 @@ enum error_code {
   INDEX_OUT_OF_BOUNDS,        ///< JSON array index too large
   NO_SUCH_FIELD,              ///< JSON field not found in object
   IO_ERROR,                   ///< Error reading a file
-  INVALID_JSON_POINTER,       ///< Invalid JSON pointer reference
+  INVALID_JSON_POINTER,       ///< Invalid JSON pointer syntax
   INVALID_URI_FRAGMENT,       ///< Invalid URI fragment
   UNEXPECTED_ERROR,           ///< indicative of a bug in simdjson
   PARSER_IN_USE,              ///< parser is already in use.
@@ -6896,6 +6901,7 @@ static inline uint32_t detect_supported_architectures() {
 /* end file internal/isadetection.h */
 
 #include <initializer_list>
+#include <type_traits>
 
 namespace simdjson {
 

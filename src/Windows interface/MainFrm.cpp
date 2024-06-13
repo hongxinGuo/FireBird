@@ -215,7 +215,7 @@ CMainFrame::~CMainFrame() {
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 系统初始化开始
 	gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
-	::InitializeSystem();
+	::SystemInitialization();
 	gl_systemMessage.PushInformationMessage(_T("重置系统"));
 
 	// 生成系统外观显示部件

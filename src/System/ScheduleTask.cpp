@@ -146,7 +146,7 @@ void ScheduleMarketTask() {
 	}
 }
 
-void InitializeMaxCurrencyLevel() {
+void SetMaxCurrencyLevel() {
 	if (gl_runtime.thread_pool_executor()->max_concurrency_level() >= 8) gl_concurrency_level = 4;
 	else gl_concurrency_level = 3;
 }
@@ -196,11 +196,11 @@ void TaskExitSystem() {
 	PostMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), WM_SYSCOMMAND, SC_CLOSE, 0);
 }
 
-void InitializeSystem() {
+void SystemInitialization() {
 	// 系统初始化开始
 	CreateSimdjsonEmptyArray();
 
-	InitializeMaxCurrencyLevel();
+	SetMaxCurrencyLevel();
 
 	// 更新系统显示高度和宽度
 	gl_systemConfiguration.SetSystemDisplayRect(GetSystemMetrics(SM_CXFULLSCREEN), GetSystemMetrics(SM_CYFULLSCREEN));

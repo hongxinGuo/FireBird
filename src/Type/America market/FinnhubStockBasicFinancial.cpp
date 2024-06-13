@@ -423,7 +423,7 @@ void CFinnhubStockBasicFinancial::SaveAnnualData(CSetFinnhubStockBasicFinancialA
 }
 
 void CFinnhubStockBasicFinancial::LoadAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData) {
-	// TODO: not yet implementation
+	// not implemented
 }
 
 bool CFinnhubStockBasicFinancial::IsNewData(const CString& type, CValueOfPeriod vData, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {

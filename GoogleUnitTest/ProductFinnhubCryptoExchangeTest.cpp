@@ -47,7 +47,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestProcessWebData) {
-		// not implemented yet
+		// not implemented
 	}
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestUpdateDataSourceStatus) {

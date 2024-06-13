@@ -35,6 +35,8 @@
 #include"JsonGetValue.h"
 #include"NlohmannJsonDeclaration.h"
 
+#include"spdlog/spdlog.h"
+
 using std::vector;
 using std::shared_ptr;
 using std::make_shared;
@@ -50,6 +52,7 @@ using namespace concurrencpp;
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 long StrToDecimal(const string_view& svData, int power) {
+	char buffer[100]{};
 	const auto iPointPosition = svData.find_first_of('.');
 	if (iPointPosition == std::string_view::npos) {		// 没有小数点？
 		long l = 10;
@@ -60,7 +63,6 @@ long StrToDecimal(const string_view& svData, int power) {
 		return atol(svData.data()) * l;
 	}
 	// 有小数点
-	char buffer[100];
 	int i;
 	for (i = 0; i < iPointPosition; i++) {
 		buffer[i] = svData.at(i);
@@ -94,7 +96,7 @@ string_view GetNextField(const string_view& svData, long& lCurrentPos, char deli
 }
 
 void ReportJsonError(const json::parse_error& e, const std::string& s) {
-	char buffer[180]{}, buffer2[100];
+	char buffer[180]{}, buffer2[100]{};
 	int i;
 	CString str = e.what();
 	gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str);

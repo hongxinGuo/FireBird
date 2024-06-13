@@ -361,7 +361,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestLoadExchangeCode) {
-		// todo ÔÝ»º
+		// not implemented
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateCountryDB) {

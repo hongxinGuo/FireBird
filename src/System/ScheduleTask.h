@@ -19,6 +19,6 @@ void ResetMarkets();
 bool IsMarketResetting(); // 
 void ScheduleMarketTask();
 
-void InitializeMaxCurrencyLevel();
+void SetMaxCurrencyLevel();
 
-void InitializeSystem();
+void SystemInitialization();
