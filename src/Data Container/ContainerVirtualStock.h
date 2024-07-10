@@ -16,7 +16,7 @@ public:
 
 	void Reset() override;
 	CString GetItemSymbol(long lIndex) override;
-	vectorString GetSymbolVector();
+	vectorString GetSymbols();
 
 	bool IsEmpty() override { return m_vStock.empty(); }
 	size_t Size() override { return m_vStock.size(); }

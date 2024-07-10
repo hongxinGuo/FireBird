@@ -31,7 +31,7 @@ void CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData)
 	gl_dataContainerFinnhubEconomicCalendar.Update(*pvEconomicCalendar);
 }
 
-CEconomicCalendarVectorPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalendar(const CWebDataPtr& pWebData) {
+CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalendar(const CWebDataPtr& pWebData) {
 	auto pvEconomicCalendar = make_shared<vector<CEconomicCalendarPtr>>();
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
 	string s;

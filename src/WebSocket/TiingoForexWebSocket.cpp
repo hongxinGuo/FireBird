@@ -45,7 +45,8 @@ CTiingoForexWebSocket::CTiingoForexWebSocket() {
 	m_url = _T("wss://api.tiingo.com/fx");
 }
 
-CTiingoForexWebSocket::~CTiingoForexWebSocket() {}
+CTiingoForexWebSocket::~CTiingoForexWebSocket() {
+}
 
 /// <summary>
 /// Tiingo Forex的数据源格式：wss://api.tiingo.com/fx，其密钥是随后发送的。
@@ -92,16 +93,16 @@ void CTiingoForexWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 ///
 ///////////////////////////////////////////////////////////////////////
 string CTiingoForexWebSocket::CreateMessage(const vectorString& vSymbol) {
-	vectorString vSymbols;
+	vectorString vSymbol2;
 	json jsonMessage;
 	jsonMessage["eventName"] = _T("subscribe");
 	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
 	jsonMessage["eventData"]["thresholdLevel"] = 5; // //7：A top - of - book update that is due to a change in either the bid / ask price or size.
 	for (auto str : vSymbol) {
 		std::ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocket使用小写字符
-		vSymbols.push_back(str);
+		vSymbol2.push_back(str);
 	}
-	jsonMessage["eventData"]["tickers"] = vSymbols;
+	jsonMessage["eventData"]["tickers"] = vSymbol2;
 	jsonMessage["eventData"]["tickers"].emplace_back(_T("gbpaud"));// 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
 	jsonMessage["eventData"]["tickers"].emplace_back(_T("eurusd"));// 多加一个Tiingo制式的代码。由于目前自选crypto使用的是finnhub制式的代码格式，皆为无效代码。
 

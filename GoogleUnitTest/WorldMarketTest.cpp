@@ -984,8 +984,8 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
 	}
 
-	TEST_F(CWorldMarketTest, TestGetFinnhubWebSocketSymbolVector) {
-		const vectorString vString = gl_pWorldMarket->GetFinnhubWebSocketSymbolVector();
+	TEST_F(CWorldMarketTest, TestGetFinnhubWebSocketSymbols) {
+		const vectorString vString = gl_pWorldMarket->GetFinnhubWebSocketSymbols();
 
 		EXPECT_STREQ(vString.at(0).c_str(), _T("A"));
 		EXPECT_STREQ(vString.at(1).c_str(), _T("AA"));

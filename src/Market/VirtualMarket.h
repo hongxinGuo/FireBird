@@ -44,7 +44,7 @@ public:
 	void AddTask(long lTaskType, long lExecuteTime);
 	CMarketTaskPtr GetMarketTask() const { return m_marketTask.GetTask(); }
 	void DiscardCurrentMarketTask() { m_marketTask.DiscardCurrentTask(); }
-	vector<CMarketTaskPtr> GetMarketTaskVector() { return m_marketTask.GetTaskVector(); }
+	vector<CMarketTaskPtr> GetMarketTasks() { return m_marketTask.GetTasks(); }
 	void AdjustTaskTime();
 
 	// MarketDisplayTask
@@ -99,7 +99,8 @@ public:
 	bool IsSystemReady() const noexcept { return m_fSystemReady; }
 	void SetSystemReady(const bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
-	virtual void PrepareToCloseMarket() {} // 准备退出本市场（完成系统退出前的准备工作）。
+	virtual void PrepareToCloseMarket() {
+	} // 准备退出本市场（完成系统退出前的准备工作）。
 
 	// 存储数据源
 	void StoreDataSource(const CVirtualDataSourcePtr& pDataSource) { m_vDataSource.push_back(pDataSource); }

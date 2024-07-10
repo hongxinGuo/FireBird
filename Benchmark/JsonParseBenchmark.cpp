@@ -302,15 +302,9 @@ BENCHMARK_F(CJsonParse, NeteaseRTDataCreateJsonUsingSimdjson)(benchmark::State& 
 	}
 }
 
-BENCHMARK_F(CJsonParse, NeteaseRTDataParseUsingSimdjson1)(benchmark::State& state) {
+BENCHMARK_F(CJsonParse, NeteaseRTDataParseUsingSimdjson)(benchmark::State& state) {
 	for (auto _ : state) {
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson(sv);
-	}
-}
-
-BENCHMARK_F(CJsonParse, NeteaseRTDataParseUsingSimdjson2)(benchmark::State& state) {
-	for (auto _ : state) {
-		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson2(sv);
 	}
 }
 
@@ -357,16 +351,9 @@ public:
 };
 
 //simdjson解析并读取NeteaseRTData的速度
-BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingSimdjson1)(benchmark::State& state) {
+BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingSimdjson)(benchmark::State& state) {
 	for (auto _ : state) {
 		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson(pWebData);
-	}
-}
-
-//simdjson解析并读取NeteaseRTData的速度
-BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingSimdjson2)(benchmark::State& state) {
-	for (auto _ : state) {
-		shared_ptr<vector<CWebRTDataPtr>> pvWebRTData = ParseNeteaseRTDataWithSimdjson2(pWebData);
 	}
 }
 

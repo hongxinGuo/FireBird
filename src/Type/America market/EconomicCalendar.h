@@ -27,4 +27,4 @@ public:
 };
 
 using CEconomicCalendarPtr = shared_ptr<CEconomicCalendar>;
-using CEconomicCalendarVectorPtr = shared_ptr<vector<CEconomicCalendarPtr>>;
+using CEconomicCalendarsPtr = shared_ptr<vector<CEconomicCalendarPtr>>;

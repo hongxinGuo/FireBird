@@ -9,7 +9,7 @@ public:
 
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CForexSymbolVectorPtr ParseFinnhubForexSymbol(const CWebDataPtr& pWebData);
+	CForexSymbolsPtr ParseFinnhubForexSymbol(const CWebDataPtr& pWebData);
 };
 
 using CProductFinnhubForexSymbolPtr = shared_ptr<CProductFinnhubForexSymbol>;

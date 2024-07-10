@@ -59,8 +59,8 @@ namespace FireBirdTest {
 		m_containerVirtualStock.Get(0)->SetUpdateProfileDB(false);
 	}
 
-	TEST_F(CContainerVirtualStockTest, TestGetSymbolVector) {
-		const vectorString vString = m_containerVirtualStock.GetSymbolVector();
+	TEST_F(CContainerVirtualStockTest, TestGetSymbols) {
+		const vectorString vString = m_containerVirtualStock.GetSymbols();
 
 		EXPECT_STREQ(vString.at(0).c_str(), _T("000001.SS"));
 		EXPECT_STREQ(vString.at(1).c_str(), _T("000001.SZ"));

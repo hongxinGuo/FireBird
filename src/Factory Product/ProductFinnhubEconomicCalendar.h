@@ -10,7 +10,7 @@ public:
 
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CEconomicCalendarVectorPtr ParseFinnhubEconomicCalendar(const CWebDataPtr& pWebData);
+	CEconomicCalendarsPtr ParseFinnhubEconomicCalendar(const CWebDataPtr& pWebData);
 
 	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
 };

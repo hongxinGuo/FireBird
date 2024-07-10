@@ -41,7 +41,7 @@ void CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //  }]
 //
 //
-CFinnhubCryptoSymbolVectorPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSymbol(const CWebDataPtr& pWebData) {
+CFinnhubCryptoSymbolsPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSymbol(const CWebDataPtr& pWebData) {
 	auto pvCryptoSymbol = make_shared<vector<CFinnhubCryptoSymbolPtr>>();
 	string s;
 	string sError;

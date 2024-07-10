@@ -23,4 +23,4 @@ public:
 };
 
 using CCountryPtr = shared_ptr<CCountry>;
-using CCountryVectorPtr = shared_ptr<vector<CCountryPtr>>;
+using CCountrysPtr = shared_ptr<vector<CCountryPtr>>;

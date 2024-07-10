@@ -17,7 +17,7 @@ CString CContainerVirtualStock::GetItemSymbol(long lIndex) {
 	return m_vStock.at(lIndex)->GetSymbol();
 }
 
-vectorString CContainerVirtualStock::GetSymbolVector() {
+vectorString CContainerVirtualStock::GetSymbols() {
 	vectorString vSymbol;
 	for (long l = 0; l < Size(); l++) {
 		vSymbol.push_back(static_cast<LPCTSTR>(GetItemSymbol(l)));

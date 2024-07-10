@@ -84,7 +84,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CForexSymbolVectorPtr m_pvForexSymbol;
+		CForexSymbolsPtr m_pvForexSymbol;
 		CProductFinnhubForexSymbol m_productFinnhubForexSymbol;
 	};
 

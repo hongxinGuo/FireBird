@@ -19,4 +19,4 @@ public:
 	double m_ratio;
 };
 
-using CProductTiingoCryptoSymbolsPtr = shared_ptr<CProductTiingoCryptoSymbol>;
+using CProductTiingoCryptoSymbolPtr = shared_ptr<CProductTiingoCryptoSymbol>;

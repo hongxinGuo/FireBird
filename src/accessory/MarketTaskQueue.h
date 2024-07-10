@@ -17,7 +17,7 @@ public:
 	size_t Size() const { return m_vMarketTask.size(); }
 	bool Empty() const { return m_vMarketTask.empty(); }
 
-	vector<CMarketTaskPtr> GetTaskVector();
+	vector<CMarketTaskPtr> GetTasks();
 
 private:
 	static void CreateIndexMap();

@@ -92,16 +92,16 @@ void CTiingoCryptoWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 ///
 ///////////////////////////////////////////////////////////////////////
 string CTiingoCryptoWebSocket::CreateMessage(const vectorString& vSymbol) {
-	vectorString vSymbols;
+	vectorString vSymbol2;
 	json message;
 	message["eventName"] = _T("subscribe");
 	message["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
 	message["eventData"]["thresholdLevel"] = 2; // thresholdLevel的有效数字为2或者5
 	for (auto str : vSymbol) {
 		std::ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocket使用小写字符
-		vSymbols.push_back(str);
+		vSymbol2.push_back(str);
 	}
-	message["eventData"]["tickers"] = vSymbols;
+	message["eventData"]["tickers"] = vSymbol2;
 	message["eventData"]["tickers"].emplace_back("dkaeth"); // tiingo使用的crypto符号与finnhub完全不同，
 	message["eventData"]["tickers"].emplace_back("eurusd");// tiingo使用的crypto符号与finnhub完全不同，
 	message["eventData"]["tickers"].emplace_back("ksmust");// tiingo使用的crypto符号与finnhub完全不同，

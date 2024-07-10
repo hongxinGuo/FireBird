@@ -28,7 +28,7 @@ void CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	}
 }
 
-CForexSymbolVectorPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(const CWebDataPtr& pWebData) {
+CForexSymbolsPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(const CWebDataPtr& pWebData) {
 	auto pvForexSymbol = make_shared<vector<CForexSymbolPtr>>();
 	CForexSymbolPtr pSymbol = nullptr;
 	string s;

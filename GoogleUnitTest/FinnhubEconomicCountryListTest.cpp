@@ -96,7 +96,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CCountryVectorPtr m_pvCountry;
+		CCountrysPtr m_pvCountry;
 		CProductFinnhubEconomicCountryList m_finnhubEconomicCountryList;
 	};
 

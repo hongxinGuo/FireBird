@@ -15,4 +15,4 @@ public:
 	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
 };
 
-using CTiingoStockSymbolsPtr = shared_ptr<CProductTiingoStockSymbol>;
+using CTiingoStockSymbolPtr = shared_ptr<CProductTiingoStockSymbol>;

@@ -77,7 +77,7 @@ public:
 	void RebuildPeer();
 	void RebuildBasicFinancial();
 
-	vectorString GetFinnhubWebSocketSymbolVector();
+	vectorString GetFinnhubWebSocketSymbols();
 
 	static void DisconnectAllWebSocket(); // 停止WebSocket。此函数等待其停止后方返回。是系统退出前的准备工作。
 

@@ -31,13 +31,13 @@ CInquireEngine::CInquireEngine(): m_dataBuffer{} {
 	m_fWebError = false;
 }
 
-CInquireEngine::CInquireEngine(const InternetOption& internetOption, const CString& strInquire, const CString& strHeaders): m_dataBuffer{} {
+CInquireEngine::CInquireEngine(const InternetOption& option, const CString& strInquire, const CString& strHeaders): m_dataBuffer{} {
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, internetOption.option_connect_timeout);
-	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, internetOption.option_receive_timeout);
-	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, internetOption.option_data_receive_timeout);
-	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, internetOption.option_send_timeout);
-	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, internetOption.option_connect_retries);
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, option.option_connect_timeout);
+	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, option.option_receive_timeout);
+	m_pSession->SetOption(INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, option.option_data_receive_timeout);
+	m_pSession->SetOption(INTERNET_OPTION_SEND_TIMEOUT, option.option_send_timeout);
+	m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES, option.option_connect_retries);
 	m_strInquiry = strInquire;
 	m_strHeaders = strHeaders;
 	m_pFile = nullptr;
@@ -199,7 +199,7 @@ void CInquireEngine::VerifyDataLength() const {
 }
 
 void CInquireEngine::TransferDataToWebData(const CWebDataPtr& pWebData) {
-	ASSERT(m_sBuffer.size() > m_lByteRead); // Note 即使知道数据总长度，也要多加上一个字节以防止越界。
+	ASSERT(m_sBuffer.size() > m_lByteRead); // Note 即使知道数据总长度，也要多加上一个字节以防止越界。不知为何
 	m_sBuffer.resize(m_lByteRead); // Note 缓冲区大小为实际数据量
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
 }

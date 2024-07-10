@@ -53,13 +53,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(marketTaskQueue.Size(), 0);
 	}
 
-	TEST_F(CMarketTaskQueueTest, TestGetTaskVector) {
+	TEST_F(CMarketTaskQueueTest, TestGetTasks) {
 		marketTaskQueue.AddTask(CHINA_MARKET_BUILD_TODAY_DATABASE__, 1);
 		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 3);
 		marketTaskQueue.AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 4);
 		marketTaskQueue.AddTask(CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__, 2);
 
-		const auto vTask = marketTaskQueue.GetTaskVector();
+		const auto vTask = marketTaskQueue.GetTasks();
 
 		EXPECT_EQ(vTask.at(0)->GetTime(), 1);
 		EXPECT_EQ(vTask.at(0)->GetType(), CHINA_MARKET_BUILD_TODAY_DATABASE__);

@@ -10,20 +10,24 @@ namespace FireBirdTest {
 	class CTiingoCryptoWebSocketTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -40,10 +44,10 @@ namespace FireBirdTest {
 		vSymbol.push_back(_T("AA"));
 		vSymbol.push_back(_T("AAL"));
 		vSymbol.push_back(_T("AAPL"));
-		string strSymbols = gl_pTiingoCryptoWebSocket->CreateMessage(vSymbol);
+		string strSymbol = gl_pTiingoCryptoWebSocket->CreateMessage(vSymbol);
 		json jsonMessage;
 		try {
-			jsonMessage = json::parse(strSymbols);
+			jsonMessage = json::parse(strSymbol);
 		}
 		catch (json::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
 		EXPECT_TRUE(jsonMessage["eventName"] == _T("subscribe"));

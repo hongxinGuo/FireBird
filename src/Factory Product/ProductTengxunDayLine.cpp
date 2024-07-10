@@ -33,48 +33,7 @@ CString CProductTengxunDayLine::CreateMessage() {
 //	 }
 // }
 //
-// 腾讯日线目前一次能够提供2000个数据。当日线总量少于2000个时，使用此解析函数
-// 1991年左右的腾讯日线有周六的，需要清除掉。
-// 
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-void CProductTengxunDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_iInquiryNumber == 1);
-	vector<CDayLinePtr> vDayLine;
-	const auto pDayLineWebData = ParseTengxunDayLine(pWebData);
-	for (auto& pData : pDayLineWebData->GetProcessedDayLine()) {
-		if (GetMarket()->IsWorkingDay(pData->GetMarketDate())) { // 1991年左右的腾讯日线有周六的，清除掉。
-			vDayLine.push_back(pData);
-		}
-	}
-	pDayLineWebData->SetStockCode(pWebData->GetStockCode());
-	pDayLineWebData->ClearDayLine();
-	CheckAndPrepareDayLine(vDayLine);
-	for (const auto& pData : vDayLine) {
-		pDayLineWebData->AppendDayLine(pData);
-	}
-	gl_qDayLine.enqueue(pDayLineWebData);
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// {
-// "code":0,
-// "msg":"",
-// "data":
-//   {
-//   "sh600601":
-//      { "day":
-//				[ ["2023-01-19","2.550","2.600","2.610","2.550","86162.000"],
-//					["2023-01-20","2.600","2.620","2.620","2.590","100735.000"]],
-//				"qt":{},
-//				"mx_price":{"mx":[],"price":[]},
-//				"prec":"2.560",
-//				"version":"16"
-//		  }
-//	 }
-// }
-//
-// 腾讯日线目前一次能够提供2000个数据。当日线总量超过2000个时，需要多次查询不同日期的数据方可。多次查询到的数据，存储于vector中。
+// 腾讯日线目前一次能够提供2000个数据。当日线总量超过2000个时，需要多次查询不同日期的数据方可。查询到的网络数据存储于pvWebData中。
 // 1991年左右的腾讯日线有周六的，需要清除掉。
 // 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,7 +41,7 @@ void CProductTengxunDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>
 	ASSERT(pvWebData->size() <= m_iInquiryNumber);
 
 	vector<CDayLinePtr> vDayLine;
-	for (auto pWebData : *pvWebData) {
+	for (auto pWebData : *pvWebData) { // 小于2000个数据时，只需一次查询即可，这时此vector中只有一个网络数据。
 		const auto pDayLineWebData = ParseTengxunDayLine(pWebData);
 		for (auto& pData : pDayLineWebData->GetProcessedDayLine()) {
 			if (GetMarket()->IsWorkingDay(pData->GetMarketDate())) { // 1991年左右的腾讯日线有周六的，清除掉。

@@ -18,7 +18,7 @@ void CMarketTaskQueue::AddTask(long lTaskType, long lExecuteTime) {
 	m_vMarketTask.push(pTask);
 }
 
-vector<CMarketTaskPtr> CMarketTaskQueue::GetTaskVector() {
+vector<CMarketTaskPtr> CMarketTaskQueue::GetTasks() {
 	vector<CMarketTaskPtr> vTask;
 
 	while (!m_vMarketTask.empty()) {

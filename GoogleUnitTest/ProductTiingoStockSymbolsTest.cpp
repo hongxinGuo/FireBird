@@ -12,7 +12,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CProductTiingoStockSymbolsTest : public Test {
+	class CProductTiingoStockSymbolTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
@@ -36,26 +36,26 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CProductTiingoStockSymbol stockSymbols;
+		CProductTiingoStockSymbol stockSymbol;
 	};
 
-	TEST_F(CProductTiingoStockSymbolsTest, TestInitialize) {
-		EXPECT_EQ(stockSymbols.GetIndex(), -1);
-		EXPECT_STREQ(stockSymbols.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/fundamentals/meta?"));
+	TEST_F(CProductTiingoStockSymbolTest, TestInitialize) {
+		EXPECT_EQ(stockSymbol.GetIndex(), -1);
+		EXPECT_STREQ(stockSymbol.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/fundamentals/meta?"));
 	}
 
-	TEST_F(CProductTiingoStockSymbolsTest, TestCreatMessage) {
-		EXPECT_STREQ(stockSymbols.CreateMessage(), stockSymbols.GetInquiryFunction());
+	TEST_F(CProductTiingoStockSymbolTest, TestCreatMessage) {
+		EXPECT_STREQ(stockSymbol.CreateMessage(), stockSymbol.GetInquiryFunction());
 	}
 
-	TEST_F(CProductTiingoStockSymbolsTest, TestProcessWebData) {
+	TEST_F(CProductTiingoStockSymbolTest, TestProcessWebData) {
 		// ÓÉMockWorldMarketTest¸ºÔð²âÊÔ
 	}
 
-	TEST_F(CProductTiingoStockSymbolsTest, TestUpdateDataSourceStatus) {
+	TEST_F(CProductTiingoStockSymbolTest, TestUpdateDataSourceStatus) {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateStockSymbol());
 
-		stockSymbols.UpdateDataSourceStatus(gl_pTiingoDataSource);
+		stockSymbol.UpdateDataSourceStatus(gl_pTiingoDataSource);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateStockSymbol());
 

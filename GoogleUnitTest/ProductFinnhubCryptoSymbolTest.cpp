@@ -84,7 +84,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CFinnhubCryptoSymbolVectorPtr m_pvCryptoSymbol;
+		CFinnhubCryptoSymbolsPtr m_pvCryptoSymbol;
 		CProductFinnhubCryptoSymbol m_finnhubCryptoSymbolProduct;
 	};
 

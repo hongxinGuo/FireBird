@@ -10,7 +10,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CProductTiingoCryptoSymbolsTest : public Test {
+	class CProductTiingoCryptoSymbolTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
@@ -34,22 +34,22 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CProductTiingoCryptoSymbol stockSymbols;
+		CProductTiingoCryptoSymbol stockSymbol;
 	};
 
-	TEST_F(CProductTiingoCryptoSymbolsTest, TestInitialize) {
-		EXPECT_EQ(stockSymbols.GetIndex(), -1);
-		EXPECT_STREQ(stockSymbols.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/crypto?"));
+	TEST_F(CProductTiingoCryptoSymbolTest, TestInitialize) {
+		EXPECT_EQ(stockSymbol.GetIndex(), -1);
+		EXPECT_STREQ(stockSymbol.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/crypto?"));
 	}
 
-	TEST_F(CProductTiingoCryptoSymbolsTest, TestCreatMessage) {
-		EXPECT_STREQ(stockSymbols.CreateMessage(), stockSymbols.GetInquiryFunction());
+	TEST_F(CProductTiingoCryptoSymbolTest, TestCreatMessage) {
+		EXPECT_STREQ(stockSymbol.CreateMessage(), stockSymbol.GetInquiryFunction());
 	}
 
-	TEST_F(CProductTiingoCryptoSymbolsTest, TestUpdateDataSourceStatus) {
+	TEST_F(CProductTiingoCryptoSymbolTest, TestUpdateDataSourceStatus) {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
 
-		stockSymbols.UpdateDataSourceStatus(gl_pTiingoDataSource);
+		stockSymbol.UpdateDataSourceStatus(gl_pTiingoDataSource);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
 

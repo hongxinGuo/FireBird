@@ -72,9 +72,11 @@ void CWorldMarket::ResetFinnhub() {
 	m_pvMarketHoliday->clear();
 }
 
-void CWorldMarket::ResetQuandl() {}
+void CWorldMarket::ResetQuandl() {
+}
 
-void CWorldMarket::ResetTiingo() {}
+void CWorldMarket::ResetTiingo() {
+}
 
 void CWorldMarket::ResetDataContainer() {
 	gl_dataContainerFinnhubStockExchange.Reset();
@@ -218,22 +220,22 @@ void CWorldMarket::TaskMonitorWebSocket(long lCurrentTime) {
 
 void CWorldMarket::MonitorFinnhubWebSocket() {
 	ASSERT(IsSystemReady());
-	gl_pFinnhubWebSocket->MonitorWebSocket(GetFinnhubWebSocketSymbolVector());
+	gl_pFinnhubWebSocket->MonitorWebSocket(GetFinnhubWebSocketSymbols());
 }
 
 void CWorldMarket::MonitorTiingoCryptoWebSocket() const {
 	ASSERT(IsSystemReady());
-	gl_pTiingoCryptoWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldCrypto.GetSymbolVector());
+	gl_pTiingoCryptoWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldCrypto.GetSymbols());
 }
 
 void CWorldMarket::MonitorTiingoIEXWebSocket() const {
 	ASSERT(IsSystemReady());
-	gl_pTiingoIEXWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldStock.GetSymbolVector());
+	gl_pTiingoIEXWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldStock.GetSymbols());
 }
 
 void CWorldMarket::MonitorTiingoForexWebSocket() const {
 	ASSERT(IsSystemReady());
-	gl_pTiingoForexWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldForex.GetSymbolVector());
+	gl_pTiingoForexWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldForex.GetSymbols());
 }
 
 void CWorldMarket::TaskResetMarket(long lCurrentTime) {
@@ -557,7 +559,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 
 	long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
 	if (IsTimeToResetSystem(lNextTime)) lNextTime = 170510;
-	ASSERT(!IsTimeToResetSystem(lNextTime));// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新数据库。
+	ASSERT(!IsTimeToResetSystem(lNextTime));// 重启系统时各数据库需要重新装入，故而此时不允许更新数据库。
 	AddTask(WORLD_MARKET_UPDATE_DB__, lNextTime); // 每五分钟更新一次
 }
 
@@ -704,20 +706,20 @@ void CWorldMarket::UpdateStockDayLineStartEndDate() {
 /// <summary>
 /// Finnhub WebSocket的免费账户最多只能发送50个证券的数据
 /// </summary>
-vectorString CWorldMarket::GetFinnhubWebSocketSymbolVector() {
+vectorString CWorldMarket::GetFinnhubWebSocketSymbols() {
 	vectorString vSymbol;
 
-	vectorString vSymbolTemp = gl_dataContainerChosenWorldStock.GetSymbolVector();
+	vectorString vSymbolTemp = gl_dataContainerChosenWorldStock.GetSymbols();
 	for (auto symbol : vSymbolTemp) {
 		vSymbol.push_back(symbol);
 	}
 
-	vSymbolTemp = gl_dataContainerChosenWorldForex.GetSymbolVector();
+	vSymbolTemp = gl_dataContainerChosenWorldForex.GetSymbols();
 	for (auto symbol : vSymbolTemp) {
 		vSymbol.push_back(symbol);
 	}
 
-	vSymbolTemp = gl_dataContainerChosenWorldCrypto.GetSymbolVector();
+	vSymbolTemp = gl_dataContainerChosenWorldCrypto.GetSymbols();
 	for (auto symbol : vSymbolTemp) {
 		vSymbol.push_back(symbol);
 	}

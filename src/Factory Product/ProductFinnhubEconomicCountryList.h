@@ -10,7 +10,7 @@ public:
 
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CCountryVectorPtr ParseFinnhubCountryList(const CWebDataPtr& pWebData);
+	CCountrysPtr ParseFinnhubCountryList(const CWebDataPtr& pWebData);
 
 	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
 };

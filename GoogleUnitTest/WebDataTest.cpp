@@ -184,30 +184,6 @@ namespace FireBirdTest {
 		EXPECT_THROW(sv = sinaWebData4.GetCurrentSinaData(), std::exception);
 	}
 
-	TEST_F(CWebDataTest, TestGetCurrentSinaDataPtr) {
-		auto ptr = sinaWebData.GetCurrentSinaDataPtr();
-
-		EXPECT_EQ(ptr->at(0), 'v');
-		EXPECT_EQ(ptr->at(11), 's') << "第一个数据的股票代码是sh600000";
-		EXPECT_EQ(ptr->at(18), '0') << "第一个数据的股票代码是sh600000";
-		EXPECT_EQ(ptr->at(ptr->length() - 1), ';') << "新浪实时数据以字符';'结束";
-
-		ptr = sinaWebData.GetCurrentSinaDataPtr();
-
-		EXPECT_EQ(ptr->at(0), 'v');
-		EXPECT_EQ(ptr->at(11), 's') << "第二个数据的股票代码是sh600601";
-		EXPECT_EQ(ptr->at(18), '1') << "第二个数据的股票代码是sh600601";
-		EXPECT_EQ(ptr->at(ptr->length() - 1), ';') << "新浪实时数据以字符';'结束";
-	}
-
-	TEST_F(CWebDataTest, TestGetCurrentSinaDataPtr2) {
-		shared_ptr<string_view> p;
-
-		EXPECT_THROW(p = sinaWebData2.GetCurrentSinaDataPtr(), std::exception);
-		EXPECT_THROW(p = sinaWebData3.GetCurrentSinaDataPtr(), std::exception);
-		EXPECT_THROW(p = sinaWebData4.GetCurrentSinaDataPtr(), std::exception);
-	}
-
 	TEST_F(CWebDataTest, TestGetCurrentTengxunData) {
 		string_view sv = tengxunWebData.GetCurrentTengxunData();
 

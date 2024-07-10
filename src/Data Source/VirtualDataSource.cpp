@@ -67,6 +67,14 @@ void CVirtualDataSource::Run(long lMarketTime) {
 	}
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 数据的申请和处理皆位于此处。
+// 由于待申请的数据可能有多个，故而生成多个线程来申请，并且等待所有的线程完成。
+//
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 	SetWorkingThreadRunning(true);
 	if (!IsInquiring()) {
@@ -76,7 +84,7 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 
 	if (IsInquiring()) {
 		vector<result<CWebDataPtr>> vResults;
-		while (HaveInquiry()) {
+		while (HaveInquiry()) { // 一次申请可以有多个数据
 			ASSERT(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
 			ASSERT(IsInquiring());
 			GetCurrentProduct();
@@ -97,7 +105,7 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 		}
 		const shared_ptr<vector<CWebDataPtr>> pvWebData = make_shared<vector<CWebDataPtr>>();
 		for (auto& pWebData : vResults) {
-			auto p = pWebData.get(); // Note 在这里等待所有的线程执行完毕
+			auto p = pWebData.get(); // 在这里等待所有的线程执行完毕
 			if (p != nullptr) {
 				sm_lTotalByteRead += p->GetBufferLength();
 				pvWebData->push_back(p);

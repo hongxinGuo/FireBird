@@ -690,9 +690,6 @@
     <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\accessory.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Windows interface\PropertiesWnd.h">
       <Filter>头文件\Windows interface</Filter>
     </ClInclude>
@@ -770,6 +767,9 @@
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSECFilings.h">
       <Filter>头文件\database\WorldMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\accessory\accessory.h">
+      <Filter>头文件\Accessory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1208,9 +1208,6 @@
     <ClCompile Include="..\src\Windows interface\FireBirdView.cpp">
       <Filter>源文件\windows interface</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\accessory\accessory.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Windows interface\PropertiesWnd.cpp">
       <Filter>源文件\windows interface</Filter>
     </ClCompile>
@@ -1287,6 +1284,9 @@
       <Filter>源文件\database\WorldMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\accessory.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
   </ItemGroup>

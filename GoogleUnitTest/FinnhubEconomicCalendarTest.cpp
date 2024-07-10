@@ -121,7 +121,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CEconomicCalendarVectorPtr m_pvEconomicCalendar;
+		CEconomicCalendarsPtr m_pvEconomicCalendar;
 		CProductFinnhubEconomicCalendar m_finnhubEconomicCalendar;
 	};
 

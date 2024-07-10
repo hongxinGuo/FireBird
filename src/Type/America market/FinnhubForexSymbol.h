@@ -33,4 +33,4 @@ public:
 };
 
 using CForexSymbolPtr = shared_ptr<CFinnhubForexSymbol>;
-using CForexSymbolVectorPtr = shared_ptr<vector<CForexSymbolPtr>>;
+using CForexSymbolsPtr = shared_ptr<vector<CForexSymbolPtr>>;

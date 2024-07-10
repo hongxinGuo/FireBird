@@ -69,34 +69,4 @@ namespace FireBirdTest {
 			break;
 		}
 	}
-
-	TEST_P(CNeteaseRTDataParserTest1, ParseNeteaseRTDataWithSimdjson2) {
-		const auto pvWebRTData = ParseNeteaseRTDataWithSimdjson2(m_pWebData);
-
-		switch (m_iIndex) {
-		case 1:
-			EXPECT_EQ(pvWebRTData->size(), 2);
-			EXPECT_STREQ(pvWebRTData->at(0)->GetStockName(), _T("don't use chinese character1"));
-			EXPECT_EQ(pvWebRTData->at(0)->GetHigh(), 5720);
-			EXPECT_EQ(pvWebRTData->at(0)->GetLow(), 5510);
-			EXPECT_EQ(pvWebRTData->at(0)->GetOpen(), 5530);
-			EXPECT_EQ(pvWebRTData->at(0)->GetNew(), 5700);
-			EXPECT_EQ(pvWebRTData->at(0)->GetLastClose(), 5490);
-			EXPECT_EQ(pvWebRTData->at(0)->GetVolume(), 78750304);
-			EXPECT_EQ(pvWebRTData->at(0)->GetAmount(), 443978974);
-			EXPECT_STREQ(pvWebRTData->at(1)->GetStockName(), _T("don't use chinese character2"));
-			EXPECT_EQ(pvWebRTData->at(1)->GetHigh(), 5730);
-			EXPECT_EQ(pvWebRTData->at(1)->GetAmount(), 443978975);
-			EXPECT_EQ(pvWebRTData->at(1)->GetLow(), 5510);
-			EXPECT_EQ(pvWebRTData->at(1)->GetOpen(), 5530);
-			EXPECT_EQ(pvWebRTData->at(1)->GetNew(), 5700);
-			EXPECT_EQ(pvWebRTData->at(1)->GetLastClose(), 5490);
-			EXPECT_EQ(pvWebRTData->at(1)->GetVolume(), 78750304);
-			EXPECT_EQ(pvWebRTData->at(1)->GetAmount(), 443978975);
-			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0) << gl_systemMessage.PopErrorMessage();
-			break;
-		default:
-			break;
-		}
-	}
 }

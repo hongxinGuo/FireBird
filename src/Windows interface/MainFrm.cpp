@@ -437,7 +437,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	//::TaskSchedulePer100ms(); // 系统更新任务皆位于此函数中
 
 	// 在窗口显示系统状态的更新任务放在这里比较合适。可以减少窗口句柄问题
-	if (!::IsMarketResetting()) {
+	if (!IsMarketResetting()) {
 		UpdateStatus();
 		UpdateInnerSystemStatus();
 	}
@@ -948,7 +948,8 @@ void CMainFrame::OnBuildCreateWeekLine() {
 	});
 }
 
-void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {}
+void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
+}
 
 void CMainFrame::OnRebuildChinaMarketStockWeekLineRS() {
 	gl_runtime.background_executor()->post([] {
@@ -956,7 +957,8 @@ void CMainFrame::OnRebuildChinaMarketStockWeekLineRS() {
 	});
 }
 
-void CMainFrame::OnUpdateRebuildChinaMarketStockWeekLineRS(CCmdUI* pCmdUI) {}
+void CMainFrame::OnUpdateRebuildChinaMarketStockWeekLineRS(CCmdUI* pCmdUI) {
+}
 
 void CMainFrame::OnBuildCurrentWeekLine() {
 	gl_runtime.background_executor()->post([] {
@@ -982,7 +984,8 @@ void CMainFrame::OnBuildRebuildCurrentWeekLine() {
 	});
 }
 
-void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {}
+void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
+}
 
 void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
 	gl_runtime.background_executor()->post([] {
@@ -993,7 +996,8 @@ void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
 	});
 }
 
-void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {}
+void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {
+}
 
 void CMainFrame::OnUpdateStockSection() {
 	gl_dataContainerChinaStockSymbol.SetUpdateStockSection(true);
@@ -1035,7 +1039,7 @@ void CMainFrame::OnRecordFinnhubWebSocket() {
 	}
 	else {
 		gl_systemConfiguration.SetUsingFinnhubWebSocket(true);
-		if (gl_pWorldMarket->IsSystemReady())gl_pFinnhubWebSocket->TaskConnectAndSendMessage(gl_pWorldMarket->GetFinnhubWebSocketSymbolVector());
+		if (gl_pWorldMarket->IsSystemReady())gl_pFinnhubWebSocket->TaskConnectAndSendMessage(gl_pWorldMarket->GetFinnhubWebSocketSymbols());
 	}
 }
 
@@ -1056,7 +1060,7 @@ void CMainFrame::OnRecordTiingoCryptoWebSocket() {
 	else {
 		gl_systemConfiguration.SetUsingTiingoCryptoWebSocket(true);
 		if (gl_pWorldMarket->IsSystemReady()) {
-			gl_pTiingoCryptoWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldCrypto.GetSymbolVector());
+			gl_pTiingoCryptoWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldCrypto.GetSymbols());
 		}
 	}
 }
@@ -1078,7 +1082,7 @@ void CMainFrame::OnRecordTiingoForexWebSocket() {
 	else {
 		gl_systemConfiguration.SetUsingTiingoForexWebSocket(true);
 		if (gl_pWorldMarket->IsSystemReady()) {
-			gl_pTiingoForexWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldForex.GetSymbolVector());
+			gl_pTiingoForexWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldForex.GetSymbols());
 		}
 	}
 }
@@ -1100,7 +1104,7 @@ void CMainFrame::OnRecordTiingoIEXWebSocket() {
 	else {
 		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(true);
 		if (gl_pWorldMarket->IsSystemReady()) {
-			gl_pTiingoIEXWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldStock.GetSymbolVector());
+			gl_pTiingoIEXWebSocket->TaskConnectAndSendMessage(gl_dataContainerChosenWorldStock.GetSymbols());
 		}
 	}
 }

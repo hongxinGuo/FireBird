@@ -27,7 +27,7 @@ void CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebDa
 	}
 }
 
-CCountryVectorPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const CWebDataPtr& pWebData) {
+CCountrysPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const CWebDataPtr& pWebData) {
 	auto pvCountry = make_shared<vector<CCountryPtr>>();
 	CCountryPtr pCountry = nullptr;
 	string s;

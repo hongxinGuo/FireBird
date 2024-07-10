@@ -24,19 +24,7 @@
     <ClCompile Include="WebRTDataBenchmark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubInaccessibleExchangeBenchmark.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DataSourceBenchmark.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LoadJsonParameterBenchmark.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TimeConvertBenchmark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChinaMarketBenchmark.cpp">
