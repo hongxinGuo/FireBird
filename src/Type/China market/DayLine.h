@@ -12,4 +12,4 @@ public:
 };
 
 using CDayLinePtr = shared_ptr<CDayLine>;
-using CDayLineVectorPtr = shared_ptr<vector<CDayLinePtr>>;
+using CDayLinesPtr = shared_ptr<vector<CDayLinePtr>>;

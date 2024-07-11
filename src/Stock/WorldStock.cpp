@@ -668,7 +668,7 @@ void CWorldStock::AppendBasicFinancialQuarter() const {
 	}
 }
 
-void CWorldStock::UpdateCompanyNews(const CCompanyNewsVectorPtr& pvCompanyNews) {
+void CWorldStock::UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews) {
 	m_vCompanyNews.resize(0);
 	for (auto& p : *pvCompanyNews) {
 		m_vCompanyNews.push_back(p);

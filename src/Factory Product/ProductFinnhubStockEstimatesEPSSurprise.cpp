@@ -37,7 +37,7 @@ void CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr 
 	pStock->m_fEPSSurpriseNeedSave = true;
 }
 
-CEPSSurpriseVectorPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurprise(const CWebDataPtr& pWebData) {
+CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurprise(const CWebDataPtr& pWebData) {
 	auto pvEPSSurprise = make_shared<vector<CEPSSurprisePtr>>();
 	string s;
 	CEPSSurprisePtr pEPSSurprise = nullptr;

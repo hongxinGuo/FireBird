@@ -116,7 +116,7 @@ bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic*
 	while (!pSetHistoryCandleBasic->IsEOF()) {
 		const auto pHistoryCandle = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryCandle->LoadBasicData(pSetHistoryCandleBasic);
-		StoreData(pHistoryCandle);
+		Add(pHistoryCandle);
 		pSetHistoryCandleBasic->MoveNext();
 	}
 	m_fBasicDataLoaded = true;
@@ -159,7 +159,7 @@ bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExten
 void CVirtualDataHistoryCandleExtend::UpdateData(const vector<CVirtualHistoryCandleExtendPtr>& vTempData) {
 	Unload(); // 清除已载入的数据（如果有的话）
 	for (const auto& p : vTempData) {
-		if (p->IsActive()) StoreData(p);
+		if (p->IsActive()) Add(p);
 	}
 	SetDataLoaded(true);
 }
@@ -175,7 +175,7 @@ void CVirtualDataHistoryCandleExtend::UpdateData(const vector<CDayLinePtr>& vTem
 	for (const auto& pDayLine : vTempDayLine) {
 		if (pDayLine->IsActive()) {
 			// 清除掉不再交易（停牌或退市后出现的）的股票日线
-			StoreData(pDayLine);
+			Add(pDayLine);
 		}
 	}
 	SetDataLoaded(true);

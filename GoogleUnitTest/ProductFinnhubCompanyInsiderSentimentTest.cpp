@@ -187,7 +187,7 @@ namespace FireBirdTest {
 		long m_lIndex;
 		CWorldStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
-		CInsiderSentimentVectorPtr m_pvInsiderSentiment;
+		CInsiderSentimentsPtr m_pvInsiderSentiment;
 		CProductFinnhubCompanyInsiderSentiment m_finnhubCompanyInsiderSentiment;
 	};
 
@@ -269,7 +269,7 @@ namespace FireBirdTest {
 		long m_lIndex;
 		CWorldStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
-		CInsiderSentimentVectorPtr m_pvInsiderSentiment;
+		CInsiderSentimentsPtr m_pvInsiderSentiment;
 		CProductFinnhubCompanyInsiderSentiment m_finnhubCompanyInsiderSentiment;
 	};
 

@@ -20,4 +20,4 @@ public:
 };
 
 using CEPSSurprisePtr = shared_ptr<CEPSSurprise>;
-using CEPSSurpriseVectorPtr = shared_ptr<vector<CEPSSurprisePtr>>;
+using CEPSSurprisesPtr = shared_ptr<vector<CEPSSurprisePtr>>;

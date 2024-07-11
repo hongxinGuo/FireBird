@@ -52,4 +52,4 @@ public:
 };
 
 using CCompanyNewsPtr = shared_ptr<CFinnhubCompanyNews>;
-using CCompanyNewsVectorPtr = shared_ptr<vector<CCompanyNewsPtr>>;
+using CCompanyNewssPtr = shared_ptr<vector<CCompanyNewsPtr>>;

@@ -22,4 +22,4 @@ public:
 };
 
 using CMarketHolidayPtr = shared_ptr<CMarketHoliday>;
-using CMarketHolidayVectorPtr = shared_ptr<vector<CMarketHolidayPtr>>;
+using CMarketHolidaysPtr = shared_ptr<vector<CMarketHolidayPtr>>;

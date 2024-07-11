@@ -13,20 +13,24 @@ namespace FireBirdTest {
 	class CStockDataChinaWeekLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -47,7 +51,7 @@ namespace FireBirdTest {
 
 		vWeekLine.push_back(pWeekLine);
 		EXPECT_EQ(dataChinaWeekLine.Size(), 0);
-		dataChinaWeekLine.StoreData(pWeekLine2);
+		dataChinaWeekLine.Add(pWeekLine2);
 		EXPECT_EQ(dataChinaWeekLine.Size(), 1);
 		EXPECT_FALSE(dataChinaWeekLine.IsDataLoaded());
 
@@ -76,7 +80,7 @@ namespace FireBirdTest {
 
 		CContainerChinaWeekLine dataChinaWeekLine;
 
-		dataChinaWeekLine.StoreData(pWeekLine);
+		dataChinaWeekLine.Add(pWeekLine);
 		dataChinaWeekLine.UpdateData(pDayLine);
 		const CWeekLinePtr pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(0));
 		EXPECT_EQ(pWeekLine2->GetMarketDate(), GetCurrentMonday(20200101));
@@ -103,7 +107,7 @@ namespace FireBirdTest {
 		vWeekLine.push_back(pWeekLine);
 		EXPECT_FALSE(dataChinaWeekLine.IsDataLoaded());
 		EXPECT_EQ(dataChinaWeekLine.Size(), 0);
-		dataChinaWeekLine.StoreData(pWeekLine2);
+		dataChinaWeekLine.Add(pWeekLine2);
 		EXPECT_EQ(dataChinaWeekLine.Size(), 1);
 
 		dataChinaWeekLine.StoreVectorData(vWeekLine);
@@ -129,7 +133,7 @@ namespace FireBirdTest {
 
 		pWeekLine->SetStockSymbol(_T("600000.SS"));
 		pWeekLine->SetDate(GetCurrentMonday(20200101)); // 此日期为星期三，20191230为星期一。
-		dataChinaWeekLine.StoreData(pWeekLine);
+		dataChinaWeekLine.Add(pWeekLine);
 
 		gl_pChinaMarket->DeleteCurrentWeekWeekLine();
 		dataChinaWeekLine.SaveCurrentWeekLine();

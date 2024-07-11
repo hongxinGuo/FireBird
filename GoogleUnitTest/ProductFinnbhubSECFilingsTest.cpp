@@ -78,7 +78,7 @@ namespace FireBirdTest {
 
 	public:
 		long m_lIndex{0};
-		CSECFilingVectorPtr pvSECFilings;
+		CSECFilingsPtr pvSECFilings;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubSECFilings m_finnhubSECFilings;
 	};

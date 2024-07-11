@@ -1403,7 +1403,7 @@ bool CChinaStock::CalculatingWeekLine(long lStartDate) {
 	if (i < m_dataDayLine.Size()) {
 		do {
 			pWeekLine = m_dataDayLine.CreateNewWeekLine(i);
-			m_dataWeekLine.StoreData(pWeekLine);
+			m_dataWeekLine.Add(pWeekLine);
 		} while (i < m_dataDayLine.Size());
 		m_dataWeekLine.SetDataLoaded(true);
 		return true;

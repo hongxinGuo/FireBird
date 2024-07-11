@@ -58,7 +58,7 @@ public:
 
 	CVirtualHistoryCandleExtendPtr GetData(const long lIndex) const { return m_vHistoryData.at(lIndex); }
 
-	bool StoreData(const CVirtualHistoryCandleExtendPtr& pData) {
+	bool Add(const CVirtualHistoryCandleExtendPtr& pData) {
 		m_vHistoryData.push_back(pData);
 		return true;
 	}

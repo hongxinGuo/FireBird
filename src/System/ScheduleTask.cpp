@@ -115,7 +115,7 @@ void InitializeMarkets() {
 	CreateWebSocket();
 	CreateDataSource();
 	CreateMarket();
-	CreateMarketContainer();	//生成市场容器Vector
+	CreateMarketContainer();	//生成市场容器
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

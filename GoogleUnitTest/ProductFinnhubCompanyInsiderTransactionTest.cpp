@@ -178,7 +178,7 @@ namespace FireBirdTest {
 		long m_lIndex;
 		CWorldStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
-		CInsiderTransactionVectorPtr m_pvInsiderTransaction;
+		CInsiderTransactionsPtr m_pvInsiderTransaction;
 		CProductFinnhubCompanyInsiderTransaction m_finnhubCompanyInsiderTransaction;
 	};
 

@@ -10,7 +10,7 @@ public:
 
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CEPSSurpriseVectorPtr ParseFinnhubEPSSurprise(const CWebDataPtr& pWebData);
+	CEPSSurprisesPtr ParseFinnhubEPSSurprise(const CWebDataPtr& pWebData);
 };
 
 using CFinnhubStockEstimatesEPSSurprisePtr = shared_ptr<CProductFinnhubStockEstimatesEPSSurprise>;

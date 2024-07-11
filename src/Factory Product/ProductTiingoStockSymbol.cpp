@@ -76,7 +76,7 @@ void CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // 使用simdjson解析，速度为Nlohmann-json的三倍。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoStockVectorPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CWebDataPtr& pWebData) {
+CTiingoStocksPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CWebDataPtr& pWebData) {
 	auto pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
 	string strNotAvailable{_T("Field not available for free/evaluation")}; // Tiingo免费账户有多项内容空缺，会返回此信息。
 	CString strNULL = _T(" ");

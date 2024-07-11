@@ -23,4 +23,4 @@ public:
 };
 
 using CTiingoIndustryPtr = shared_ptr<CTiingoIndustry>;
-using CTiingoIndustryVectorPtr = shared_ptr<vector<CTiingoIndustryPtr>>;
+using CTiingoIndustrysPtr = shared_ptr<vector<CTiingoIndustryPtr>>;

@@ -26,4 +26,4 @@ public:
 };
 
 using CTiingoCryptoSymbolPtr = shared_ptr<CTiingoCryptoSymbol>;
-using CTiingoCryptoVectorPtr = shared_ptr<vector<CTiingoCryptoSymbolPtr>>;
+using CTiingoCryptosPtr = shared_ptr<vector<CTiingoCryptoSymbolPtr>>;

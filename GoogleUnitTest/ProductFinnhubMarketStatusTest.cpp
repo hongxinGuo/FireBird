@@ -74,7 +74,7 @@ namespace FireBirdTest {
 		long m_lIndex;
 		CMarketStatusPtr m_pMarketStatus;
 		CWebDataPtr m_pWebData;
-		CMarketStatusVectorPtr m_pvMarketStatus;
+		CMarketStatussPtr m_pvMarketStatus;
 		CProductFinnhubMarketStatus m_finnhubMarketStatusProduct;
 	};
 

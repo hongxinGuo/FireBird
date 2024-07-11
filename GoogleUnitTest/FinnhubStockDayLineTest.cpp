@@ -107,7 +107,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWorldStockPtr m_pStock;
-		CDayLineVectorPtr pvDayLine;
+		CDayLinesPtr pvDayLine;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubStockDayLine m_finnhubStockDayLine;
 	};

@@ -25,7 +25,7 @@ CString CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 
 void CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
-	const CInsiderSentimentVectorPtr pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
+	const CInsiderSentimentsPtr pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
 	pStock->SetInsiderSentimentUpdateDate(GetMarket()->GetMarketDate());
 	pStock->SetUpdateInsiderSentiment(false);
 	pStock->SetUpdateProfileDB(true);
@@ -57,7 +57,7 @@ void CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pW
 //  ],
 //  "symbol": "TSLA"}
 //
-CInsiderSentimentVectorPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockInsiderSentiment(const CWebDataPtr& pWebData) {
+CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockInsiderSentiment(const CWebDataPtr& pWebData) {
 	auto pvInsiderSentiment = make_shared<vector<CInsiderSentimentPtr>>();
 	json pt1;
 	string sError;

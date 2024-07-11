@@ -91,8 +91,8 @@ public:
 	void UpdateWorldStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr& pTiingoIEXbData);
 	void UpdateWorldStockFromFinnhubSocket(const CFinnhubSocketPtr& pFinnhub);
 
-	void UpdateMarketStatus(const CMarketStatusVectorPtr& pv) const;
-	void UpdateMarketHoliday(const CMarketHolidayVectorPtr& pv) const;
+	void UpdateMarketStatus(const CMarketStatussPtr& pv) const;
+	void UpdateMarketHoliday(const CMarketHolidaysPtr& pv) const;
 
 	// check function
 
@@ -100,8 +100,8 @@ protected:
 	long m_lCurrentUpdateDayLinePos; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
 	long m_lCurrentUpdateEPSSurprisePos; // 此变量无需每日更新
 
-	CMarketStatusVectorPtr m_pvMarketStatus;
-	CMarketHolidayVectorPtr m_pvMarketHoliday;
+	CMarketStatussPtr m_pvMarketStatus;
+	CMarketHolidaysPtr m_pvMarketHoliday;
 
 	CString m_strCurrentFunction; // 当前任务和处理的证券名称
 

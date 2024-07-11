@@ -9,7 +9,7 @@ public:
 
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CSECFilingVectorPtr ParseFinnhubStockSECFilings(const CWebDataPtr& pWebData);
+	CSECFilingsPtr ParseFinnhubStockSECFilings(const CWebDataPtr& pWebData);
 };
 
 using CFinnhubSECFilings = shared_ptr<CProductFinnhubSECFilings>;

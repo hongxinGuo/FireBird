@@ -378,4 +378,4 @@ public:
 };
 
 using CFinnhubStockBasicFinancialPtr = shared_ptr<CFinnhubStockBasicFinancial>;
-using CFinnhubStockBasicFinancialVectorPtr = shared_ptr<vector<CFinnhubStockBasicFinancialPtr>>;
+using CFinnhubStockBasicFinancialsPtr = shared_ptr<vector<CFinnhubStockBasicFinancialPtr>>;

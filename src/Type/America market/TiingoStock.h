@@ -43,4 +43,4 @@ public:
 };
 
 using CTiingoStockPtr = shared_ptr<CTiingoStock>;
-using CTiingoStockVectorPtr = shared_ptr<vector<CTiingoStockPtr>>;
+using CTiingoStocksPtr = shared_ptr<vector<CTiingoStockPtr>>;

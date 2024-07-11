@@ -15,7 +15,7 @@ public:
 
 	CFinnhubStockBasicFinancialPtr ParseFinnhubStockBasicFinancial(CWebDataPtr pWebData);
 	bool GetSeasonData(json* pjs, vector<CValueOfPeriod>& vData, const char* szMsg);
-	bool ParseVector(json* pjs, vector<CValueOfPeriod>& vecData);
+	bool Parse(json* pjs, vector<CValueOfPeriod>& vecData);
 };
 
 using CProductFinnhubCompanyBasicFinancialPtr = shared_ptr<CProductFinnhubCompanyBasicFinancial>;

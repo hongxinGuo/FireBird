@@ -27,4 +27,4 @@ public:
 };
 
 using CInsiderTransactionPtr = shared_ptr<CInsiderTransaction>;
-using CInsiderTransactionVectorPtr = shared_ptr<vector<CInsiderTransactionPtr>>;
+using CInsiderTransactionsPtr = shared_ptr<vector<CInsiderTransactionPtr>>;

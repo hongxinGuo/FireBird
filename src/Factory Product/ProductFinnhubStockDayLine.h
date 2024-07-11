@@ -9,7 +9,7 @@ public:
 
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CDayLineVectorPtr ParseFinnhubStockCandle(CWebDataPtr pWebData);
+	CDayLinesPtr ParseFinnhubStockCandle(CWebDataPtr pWebData);
 };
 
 using CFinnhubStockDayLinePtr = shared_ptr<CProductFinnhubStockDayLine>;

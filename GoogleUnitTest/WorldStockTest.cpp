@@ -1218,7 +1218,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldStockTest, TestUpdateSECFilingsDB1) {
-		CSECFilingVectorPtr pvSECFilings = make_shared<vector<CSECFilingPtr>>();
+		CSECFilingsPtr pvSECFilings = make_shared<vector<CSECFilingPtr>>();
 		auto pSECFiling = make_shared<CSECFiling>();
 		pSECFiling->m_strSymbol = _T("MFI"); // 已存在代码
 		pSECFiling->m_strAccessNumber = _T("0"); // 新存取号，比原有的都小

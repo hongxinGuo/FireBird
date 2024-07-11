@@ -27,7 +27,7 @@ void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(m_lIndex);
-	const CDayLineVectorPtr pvDayLine = ParseFinnhubForexCandle(pWebData);
+	const CDayLinesPtr pvDayLine = ParseFinnhubForexCandle(pWebData);
 	pForexSymbol->SetDayLineNeedUpdate(false);
 	if (!pvDayLine->empty()) {
 		for (const auto& pDayLine : *pvDayLine) {
@@ -50,7 +50,7 @@ void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	}
 }
 
-CDayLineVectorPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataPtr pWebData) {
+CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataPtr pWebData) {
 	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
 	json js2;
 	CDayLinePtr pDayLine = nullptr;

@@ -10,7 +10,7 @@ public:
 
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CInsiderSentimentVectorPtr ParseFinnhubStockInsiderSentiment(const CWebDataPtr& pWebData);
+	CInsiderSentimentsPtr ParseFinnhubStockInsiderSentiment(const CWebDataPtr& pWebData);
 };
 
 using CProductFinnhubCompanyInsiderSentimentPtr = shared_ptr<CProductFinnhubCompanyInsiderSentiment>;

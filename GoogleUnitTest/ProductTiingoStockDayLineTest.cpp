@@ -132,7 +132,7 @@ namespace FireBirdTest {
 		                         &tiingoWebData41));
 
 	TEST_P(ParseTiingoStockDayLineTest, TestParseTiingoStockDayLine0) {
-		CDayLineVectorPtr pvDayLine;
+		CDayLinesPtr pvDayLine;
 		CString strMessage;
 		CDayLinePtr pDayLine;
 
@@ -211,7 +211,7 @@ namespace FireBirdTest {
 		                         &tiingoWebData41));
 
 	TEST_P(ParseTiingoStockDayLineTest2, TestParseTiingoStockDayLine0) {
-		CDayLineVectorPtr pvDayLine;
+		CDayLinesPtr pvDayLine;
 		CString strMessage;
 		CDayLinePtr pDayLine;
 
@@ -295,7 +295,7 @@ namespace FireBirdTest {
 		                         &tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40));
 
 	TEST_P(ProcessTiingoStockDayLineTest, TestProcessTiingoStockDayLine) {
-		CDayLineVectorPtr pvDayLine;
+		CDayLinesPtr pvDayLine;
 		CString strMessage;
 		CDayLinePtr pDayLine;
 		CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(0);

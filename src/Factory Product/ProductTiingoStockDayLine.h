@@ -10,7 +10,7 @@ public:
 
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CDayLineVectorPtr ParseTiingoStockDayLine(const CWebDataPtr& pWebData);
+	CDayLinesPtr ParseTiingoStockDayLine(const CWebDataPtr& pWebData);
 };
 
 using CTiingoStockDayLinePtr = shared_ptr<CProductTiingoStockDayLine>;

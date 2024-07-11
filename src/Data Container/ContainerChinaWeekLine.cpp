@@ -11,7 +11,8 @@
 #include "InfoReport.h"
 using std::make_shared;
 
-CContainerChinaWeekLine::CContainerChinaWeekLine() {}
+CContainerChinaWeekLine::CContainerChinaWeekLine() {
+}
 
 bool CContainerChinaWeekLine::SaveDB(const CString& strStockSymbol) {
 	try {
@@ -86,7 +87,7 @@ bool CContainerChinaWeekLine::LoadCurrentWeekLine() {
 	while (!setCurrentWeekLineInfo.IsEOF()) {
 		auto pWeekLine = make_shared<CWeekLine>();
 		pWeekLine->Load(&setCurrentWeekLineInfo);
-		StoreData(pWeekLine);
+		Add(pWeekLine);
 		setCurrentWeekLineInfo.MoveNext();
 	}
 	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
@@ -96,7 +97,7 @@ bool CContainerChinaWeekLine::LoadCurrentWeekLine() {
 }
 
 void CContainerChinaWeekLine::StoreVectorData(const vector<CWeekLinePtr>& vWeekLine) {
-	for (const auto& pWeekLine : vWeekLine) { StoreData(pWeekLine); }
+	for (const auto& pWeekLine : vWeekLine) { Add(pWeekLine); }
 	SetDataLoaded(true);
 }
 
@@ -108,7 +109,7 @@ void CContainerChinaWeekLine::StoreVectorData(const vector<CWeekLinePtr>& vWeekL
 void CContainerChinaWeekLine::UpdateData(const vector<CWeekLinePtr>& vTempWeekLine) {
 	Unload(); // 清除已载入的周线数据（如果有的话）
 	// 将日线数据以时间为正序存入
-	for (const auto& pWeekLine : vTempWeekLine) { StoreData(pWeekLine); }
+	for (const auto& pWeekLine : vTempWeekLine) { Add(pWeekLine); }
 	SetDataLoaded(true);
 }
 

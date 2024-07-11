@@ -43,7 +43,7 @@ void CProductFinnhubMarketStatus::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // }
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-CMarketStatusVectorPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const CWebDataPtr& pWebData) {
+CMarketStatussPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const CWebDataPtr& pWebData) {
 	auto pvMarketStatus = make_shared<vector<CMarketStatusPtr>>();
 	CMarketStatusPtr pMarketStatus = nullptr;
 	string s, sError;

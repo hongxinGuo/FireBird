@@ -63,8 +63,8 @@ void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // ]
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CSECFilingVectorPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWebDataPtr& pWebData) {
-	CSECFilingVectorPtr pvSECFilings = make_shared<vector<CSECFilingPtr>>();
+CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWebDataPtr& pWebData) {
+	CSECFilingsPtr pvSECFilings = make_shared<vector<CSECFilingPtr>>();
 	string s1;
 
 	if (!IsValidData(pWebData)) return pvSECFilings;

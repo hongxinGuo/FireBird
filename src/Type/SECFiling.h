@@ -25,4 +25,4 @@ public:
 };
 
 using CSECFilingPtr = shared_ptr<CSECFiling>;
-using CSECFilingVectorPtr = shared_ptr<vector<CSECFilingPtr>>;
+using CSECFilingsPtr = shared_ptr<vector<CSECFilingPtr>>;

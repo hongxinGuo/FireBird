@@ -93,7 +93,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CTiingoStockVectorPtr m_pvStock;
+		CTiingoStocksPtr m_pvStock;
 		CProductTiingoStockSymbol m_tiingoStockSymbolProduct;
 	};
 

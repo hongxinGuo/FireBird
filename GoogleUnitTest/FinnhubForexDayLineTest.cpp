@@ -120,7 +120,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CDayLineVectorPtr m_pvDayLine;
+		CDayLinesPtr m_pvDayLine;
 		CProductFinnhubForexDayLine m_finnhubForexDayLine;
 	};
 

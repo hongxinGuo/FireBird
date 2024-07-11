@@ -265,7 +265,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		sprintf_s(buffer, _T("%06d"), pTask->GetTime());
 		str += buffer;
 		str += _T(": ");
-		str += gl_mapMarketMapIndex.at(pTask->GetType());
+		str += gl_mapMarketMapIndex.at(pTask->GetType()).c_str();
 		m_wndChinaMarketTaskQueue.AddString(str);
 		if (++i >= m_wndChinaMarketTaskQueue.GetLineNumber()) break;
 	}
@@ -278,7 +278,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		sprintf_s(buffer, _T("%06d"), pTask->GetTime());
 		str += buffer;
 		str += _T(": ");
-		str += gl_mapMarketMapIndex.at(pTask->GetType());
+		str += gl_mapMarketMapIndex.at(pTask->GetType()).c_str();
 		m_wndWorldMarketTaskQueue.AddString(str);
 		if (++i >= m_wndWorldMarketTaskQueue.GetLineNumber()) break;
 	}

@@ -77,7 +77,7 @@ bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(const CString& strStockSy
 // }
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-CWorldStockVectorPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWebDataPtr& pWebData) {
+CWorldStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWebDataPtr& pWebData) {
 	auto pvStock = make_shared<vector<CWorldStockPtr>>();
 	CWorldStockPtr pStock = nullptr;
 	string s, sError;

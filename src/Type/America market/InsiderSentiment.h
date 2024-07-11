@@ -23,4 +23,4 @@ public:
 };
 
 using CInsiderSentimentPtr = shared_ptr<CInsiderSentiment>;
-using CInsiderSentimentVectorPtr = shared_ptr<vector<CInsiderSentimentPtr>>;
+using CInsiderSentimentsPtr = shared_ptr<vector<CInsiderSentimentPtr>>;

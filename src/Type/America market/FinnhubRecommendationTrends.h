@@ -23,4 +23,4 @@ public:
 };
 
 using CFinnhubRecommendationTrendsPtr = shared_ptr<CFinnhubRecommendationTrends>;
-using CFinnhubRecommendationTrendsVectorPtr = shared_ptr<vector<CFinnhubRecommendationTrendsPtr>>;
+using CFinnhubRecommendationTrendssPtr = shared_ptr<vector<CFinnhubRecommendationTrendsPtr>>;

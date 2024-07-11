@@ -24,4 +24,4 @@ public:
 };
 
 using CMarketStatusPtr = shared_ptr<CMarketStatus>;
-using CMarketStatusVectorPtr = shared_ptr<vector<CMarketStatusPtr>>;
+using CMarketStatussPtr = shared_ptr<vector<CMarketStatusPtr>>;

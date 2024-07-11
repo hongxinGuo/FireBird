@@ -83,7 +83,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CTiingoCryptoVectorPtr m_pvCrypto;
+		CTiingoCryptosPtr m_pvCrypto;
 		CProductTiingoCryptoSymbol m_tiingoCryptoSymbolProduct;
 	};
 
@@ -133,7 +133,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CTiingoCryptoVectorPtr m_pvCrypto;
+		CTiingoCryptosPtr m_pvCrypto;
 		CProductTiingoCryptoSymbol m_tiingoCryptoSymbolProduct;
 	};
 

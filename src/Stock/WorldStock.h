@@ -55,7 +55,7 @@ public:
 	void AppendBasicFinancialQuarter() const;
 
 	void UpdateDayLine(const vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
-	void UpdateCompanyNews(const CCompanyNewsVectorPtr& pvCompanyNews);
+	void UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews);
 	void UpdateEPSSurprise(const vector<CEPSSurprisePtr>& vEPSSurprise);
 
 	bool IsNeedUpdateProfile(const CTiingoStockPtr& pTiingoStock);
@@ -190,7 +190,7 @@ public:
 	void SetFinnhubIndustry(const CString& strFinnhubIndustry) { m_strFinnhubIndustry = strFinnhubIndustry; }
 	json GetPeer() { return m_jsonPeer; }
 	void SetPeer(const json& jsonPeer) { m_jsonPeer = jsonPeer; }
-	void SetSECFilings(const CSECFilingVectorPtr& pv) noexcept { m_pvSECFilings = pv; }
+	void SetSECFilings(const CSECFilingsPtr& pv) noexcept { m_pvSECFilings = pv; }
 	long GetProfileUpdateDate();
 	void SetProfileUpdateDate(long lProfileUpdateDate) noexcept;
 	long GetCompanyNewsUpdateDate();
@@ -252,7 +252,7 @@ public:
 	vector<CInsiderSentimentPtr> m_vInsiderSentiment;
 	long m_lInsiderSentimentStartDate;
 
-	CSECFilingVectorPtr m_pvSECFilings{nullptr};
+	CSECFilingsPtr m_pvSECFilings{nullptr};
 	bool m_fSECFilingsUpdated{false};
 	atomic_bool m_fSECFilingsNeedSave{false};
 
@@ -327,4 +327,4 @@ protected:
 };
 
 using CWorldStockPtr = shared_ptr<CWorldStock>;
-using CWorldStockVectorPtr = shared_ptr<vector<CWorldStockPtr>>;
+using CWorldStocksPtr = shared_ptr<vector<CWorldStockPtr>>;

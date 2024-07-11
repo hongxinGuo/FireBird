@@ -90,7 +90,7 @@ namespace FireBirdTest {
 		long m_lIndex;
 		CWorldStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
-		CEPSSurpriseVectorPtr m_pvEPSSurprise;
+		CEPSSurprisesPtr m_pvEPSSurprise;
 		CProductFinnhubStockEstimatesEPSSurprise m_finnhubStockEstimatesEPSSurprise;
 	};
 

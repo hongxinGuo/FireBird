@@ -10,7 +10,7 @@ public:
 
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CMarketHolidayVectorPtr ParseFinnhubMarketHoliday(const CWebDataPtr& pWebData);
+	CMarketHolidaysPtr ParseFinnhubMarketHoliday(const CWebDataPtr& pWebData);
 };
 
 using CProductFinnhubMarketHolidayPtr = shared_ptr<CProductFinnhubMarketHoliday>;

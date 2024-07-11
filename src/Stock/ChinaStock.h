@@ -354,7 +354,7 @@ public:
 	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	bool HaveNewDayLineData() const;
 	void UnloadDayLine() noexcept { m_dataDayLine.Unload(); }
-	bool StoreDayLine(const CDayLinePtr& pDayLine) { return m_dataDayLine.StoreData(pDayLine); }
+	bool StoreDayLine(const CDayLinePtr& pDayLine) { return m_dataDayLine.Add(pDayLine); }
 	CDayLinePtr GetDayLine(const long lIndex) const { return static_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
 	void ShowDayLine(CDC* pDC, const CRect rectClient) { m_dataDayLine.ShowData(pDC, rectClient); }
 	void ShowWeekLine(CDC* pDC, const CRect rectClient) { m_dataWeekLine.ShowData(pDC, rectClient); }
@@ -390,7 +390,7 @@ public:
 	CWeekLinePtr GetWeekLine(const long lIndex) const { return static_pointer_cast<CWeekLine>(m_dataWeekLine.GetData(lIndex)); }
 	void UnloadWeekLine() noexcept { m_dataWeekLine.Unload(); }
 	bool CalculatingWeekLine(long lStartDate);
-	bool StoreWeekLine(const CWeekLinePtr& pWeekLine) { return m_dataWeekLine.StoreData(pWeekLine); }
+	bool StoreWeekLine(const CWeekLinePtr& pWeekLine) { return m_dataWeekLine.Add(pWeekLine); }
 	bool IsWeekLineLoaded() const noexcept { return m_dataWeekLine.IsDataLoaded(); }
 	void SetWeekLineLoaded(const bool fFlag) noexcept { m_dataWeekLine.SetDataLoaded(fFlag); }
 	// 周线相对强度计算

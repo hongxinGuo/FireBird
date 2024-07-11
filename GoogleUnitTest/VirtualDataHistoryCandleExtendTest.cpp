@@ -47,7 +47,7 @@ namespace FireBirdTest {
 		const auto pData = make_shared<CVirtualHistoryCandleExtend>();
 		pData->SetStockSymbol(_T("600008.SS"));
 		pData->SetDate(20202020);
-		id.StoreData(pData);
+		id.Add(pData);
 
 		const auto pContainer = id.GetContainer();
 		EXPECT_EQ((*pContainer)[0]->GetMarketDate(), 20202020);
@@ -64,8 +64,8 @@ namespace FireBirdTest {
 		pHistoryData2->SetRSIndex(2.2);
 
 		CVirtualDataHistoryCandleExtend HistoryDataContainer;
-		HistoryDataContainer.StoreData(pHistoryData);
-		HistoryDataContainer.StoreData(pHistoryData2);
+		HistoryDataContainer.Add(pHistoryData);
+		HistoryDataContainer.Add(pHistoryData2);
 
 		vector<double> vRS;
 		vRS.resize(HistoryDataContainer.Size());
@@ -86,8 +86,8 @@ namespace FireBirdTest {
 		pHistoryData2->SetRSIndex(2.2);
 
 		CVirtualDataHistoryCandleExtend HistoryDataContainer;
-		HistoryDataContainer.StoreData(pHistoryData);
-		HistoryDataContainer.StoreData(pHistoryData2);
+		HistoryDataContainer.Add(pHistoryData);
+		HistoryDataContainer.Add(pHistoryData2);
 
 		vector<double> vRS;
 		vRS.resize(HistoryDataContainer.Size());
@@ -108,8 +108,8 @@ namespace FireBirdTest {
 		pHistoryData2->SetRSLogarithm(2.2);
 
 		CVirtualDataHistoryCandleExtend HistoryDataContainer;
-		HistoryDataContainer.StoreData(pHistoryData);
-		HistoryDataContainer.StoreData(pHistoryData2);
+		HistoryDataContainer.Add(pHistoryData);
+		HistoryDataContainer.Add(pHistoryData2);
 
 		vector<double> vRS;
 		vRS.resize(HistoryDataContainer.Size());
@@ -130,8 +130,8 @@ namespace FireBirdTest {
 		pHistoryData2->Set3RS(2.2);
 
 		CVirtualDataHistoryCandleExtend HistoryDataContainer;
-		HistoryDataContainer.StoreData(pHistoryData);
-		HistoryDataContainer.StoreData(pHistoryData2);
+		HistoryDataContainer.Add(pHistoryData);
+		HistoryDataContainer.Add(pHistoryData2);
 
 		vector<double> vRS;
 		vRS.resize(HistoryDataContainer.Size());
@@ -152,8 +152,8 @@ namespace FireBirdTest {
 		pHistoryData2->Set5RS(2.2);
 
 		CVirtualDataHistoryCandleExtend HistoryDataContainer;
-		HistoryDataContainer.StoreData(pHistoryData);
-		HistoryDataContainer.StoreData(pHistoryData2);
+		HistoryDataContainer.Add(pHistoryData);
+		HistoryDataContainer.Add(pHistoryData2);
 
 		vector<double> vRS;
 		vRS.resize(HistoryDataContainer.Size());
@@ -174,8 +174,8 @@ namespace FireBirdTest {
 		pHistoryData2->Set10RS(2.2);
 
 		CVirtualDataHistoryCandleExtend HistoryDataContainer;
-		HistoryDataContainer.StoreData(pHistoryData);
-		HistoryDataContainer.StoreData(pHistoryData2);
+		HistoryDataContainer.Add(pHistoryData);
+		HistoryDataContainer.Add(pHistoryData2);
 
 		vector<double> vRS;
 		vRS.resize(HistoryDataContainer.Size());
@@ -196,8 +196,8 @@ namespace FireBirdTest {
 		pHistoryData2->Set30RS(2.2);
 
 		CVirtualDataHistoryCandleExtend HistoryDataContainer;
-		HistoryDataContainer.StoreData(pHistoryData);
-		HistoryDataContainer.StoreData(pHistoryData2);
+		HistoryDataContainer.Add(pHistoryData);
+		HistoryDataContainer.Add(pHistoryData2);
 
 		vector<double> vRS;
 		vRS.resize(HistoryDataContainer.Size());
@@ -218,8 +218,8 @@ namespace FireBirdTest {
 		pHistoryData2->Set60RS(2.2);
 
 		CVirtualDataHistoryCandleExtend HistoryDataContainer;
-		HistoryDataContainer.StoreData(pHistoryData);
-		HistoryDataContainer.StoreData(pHistoryData2);
+		HistoryDataContainer.Add(pHistoryData);
+		HistoryDataContainer.Add(pHistoryData2);
 
 		vector<double> vRS;
 		vRS.resize(HistoryDataContainer.Size());
@@ -240,8 +240,8 @@ namespace FireBirdTest {
 		pHistoryData2->Set120RS(2.2);
 
 		CVirtualDataHistoryCandleExtend HistoryDataContainer;
-		HistoryDataContainer.StoreData(pHistoryData);
-		HistoryDataContainer.StoreData(pHistoryData2);
+		HistoryDataContainer.Add(pHistoryData);
+		HistoryDataContainer.Add(pHistoryData2);
 
 		vector<double> vRS;
 		vRS.resize(HistoryDataContainer.Size());
@@ -270,7 +270,7 @@ namespace FireBirdTest {
 
 		vHistoryData.push_back(pHistoryData);
 		EXPECT_EQ(HistoryDataContainer.Size(), 0);
-		HistoryDataContainer.StoreData(pHistoryData2);
+		HistoryDataContainer.Add(pHistoryData2);
 		EXPECT_EQ(HistoryDataContainer.Size(), 1);
 		HistoryDataContainer.UpdateData(vHistoryData);
 		EXPECT_EQ(HistoryDataContainer.Size(), 1);

@@ -2,7 +2,7 @@
 
 #include "MarketTask.h"
 
-map<long, CString> gl_mapMarketMapIndex;
+map<long, string> gl_mapMarketMapIndex;
 
 CMarketTask::CMarketTask() {
 	m_lTime = 0;

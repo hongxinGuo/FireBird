@@ -50,7 +50,7 @@ void CProductFinnhubMarketHoliday::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // }
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-CMarketHolidayVectorPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const CWebDataPtr& pWebData) {
+CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const CWebDataPtr& pWebData) {
 	auto pvHoliday = make_shared<vector<CMarketHolidayPtr>>();
 	CMarketHolidayPtr pHoliday = nullptr;
 	string s, sError;

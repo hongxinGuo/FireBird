@@ -57,7 +57,8 @@ CChinaMarket::CChinaMarket() {
 // 目前不允许此析构函数完成任何功能。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CChinaMarket::~CChinaMarket() {}
+CChinaMarket::~CChinaMarket() {
+}
 
 void CChinaMarket::ResetMarket() {
 	CString str = _T("重置中国股市于北京标准时间：");
@@ -1023,7 +1024,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek() {
 			// 存储此日线数据至周线数据容器
 			const auto pWeekLine = make_shared<CWeekLine>();
 			pWeekLine->UpdateWeekLine(pData);
-			dataChinaWeekLine.StoreData(pWeekLine);
+			dataChinaWeekLine.Add(pWeekLine);
 		}
 		else {
 			// 更新周线数据容器
@@ -1088,7 +1089,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
 			else if (setWeekLineBasicInfo.m_Symbol == setWeekLineExtendInfo.m_Symbol) {
 				// 由于存在事后补数据的缘故，此两个表的股票可能不是一一对应
 				pWeekLine->LoadExtendData(&setWeekLineExtendInfo);
-				dataChinaWeekLine.StoreData(pWeekLine);
+				dataChinaWeekLine.Add(pWeekLine);
 				setWeekLineExtendInfo.MoveNext();
 			}
 			else { setWeekLineExtendInfo.MoveFirst(); }
@@ -1140,7 +1141,7 @@ bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lD
 		if (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) == 0)) {
 			pDayLine->LoadExtendData(&setDayLineExtendInfo);
 		}
-		dataChinaDayLine.StoreData(pDayLine);
+		dataChinaDayLine.Add(pDayLine);
 		setDayLineBasicInfo.MoveNext();
 	}
 	setDayLineBasicInfo.m_pDatabase->CommitTrans();
