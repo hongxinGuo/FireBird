@@ -1039,7 +1039,9 @@ void CMainFrame::OnRecordFinnhubWebSocket() {
 	}
 	else {
 		gl_systemConfiguration.SetUsingFinnhubWebSocket(true);
-		if (gl_pWorldMarket->IsSystemReady())gl_pFinnhubWebSocket->TaskConnectAndSendMessage(gl_pWorldMarket->GetFinnhubWebSocketSymbols());
+		if (gl_pWorldMarket->IsSystemReady()) {
+			gl_pFinnhubWebSocket->TaskConnectAndSendMessage(gl_pWorldMarket->GetFinnhubWebSocketSymbols());
+		}
 	}
 }
 

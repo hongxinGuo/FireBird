@@ -24,7 +24,8 @@ namespace FireBirdTest {
 			m_strError = strError;
 		}
 
-		~WebSocketMessageData() {}
+		~WebSocketMessageData() {
+		}
 
 	public:
 		long m_lType;
@@ -88,7 +89,7 @@ namespace FireBirdTest {
 			break;
 		case ix::WebSocketMessageType::Close:
 			EXPECT_THAT(gl_systemMessage.WebSocketInfoSize(), 1);
-			EXPECT_STREQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Finnhub WebSocket Close"));
+			EXPECT_STREQ(gl_systemMessage.PopWebSocketInfoMessage(), _T("Finnhub WebSocket Close: "));
 			break;
 		case ix::WebSocketMessageType::Error:
 			EXPECT_TRUE(gl_pFinnhubWebSocket->IsError());

@@ -27,18 +27,29 @@ void CVirtualWebSocket::Reset() {
 }
 
 void CVirtualWebSocket::TaskConnectAndSendMessage(vectorString vSymbol) {
+	TRACE("TaskConnectAndSendMessage\n");
 	gl_runtime.thread_executor()->post([this, vSymbol] {
 		this->GetShared()->ConnectAndSendMessage(vSymbol);
 	});
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 联接并发送命令
+//
+// 
+// 
+/////////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualWebSocket::ConnectAndSendMessage(const vectorString& vSymbol) {
 	try {
 		AppendSymbol(vSymbol);
 		Connect();
+		TRACE("Connecting\n");
 		//ASSERT(!IsOpen()); // Connect调用Connecting,是异步的。
 		while (!IsOpen()) Sleep(1);
+		TRACE("Connected\n");
 		Send(m_vSymbol);
+		TRACE("SendMessage\n");
 	}
 	catch (exception& e) {
 		const CString sError = e.what();
@@ -106,26 +117,32 @@ void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallbac
 
 	// Now that our callback is setup, we can start our background thread and receive messages
 	StartWebSocket();
-	ASSERT(!IsOpen()); // start()是异步的
+	ASSERT(!IsOpen()); // StartWebSocket()是异步的
 }
 
 void CVirtualWebSocket::MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, const vectorString& vSymbol) {
 	if (fDataSourceError) {
-		if (IsOpen()) TaskDisconnect();
+		if (IsOpen()) {
+			Disconnect();
+		}
 		return;
 	}
 
-	if (fWebSocketOpened) { // 接收TiingoCrypto web socket数据？
+	if (fWebSocketOpened) { // 接收web socket数据？
 		if (IsError() || IsIdle()) { // 出现问题？
-			if (IsOpen()) TaskDisconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+			if (IsOpen()) {
+				Disconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+			}
 		}
-		if (IsClosed()) {
+		if (IsClosed() && IsIdle()) {
 			TaskConnectAndSendMessage(vSymbol);
 			SetHeartbeatTime(GetUTCTime());
 		}
 	}
 	else { // 关闭WebSocket?
-		if (IsOpen()) TaskDisconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+		if (IsOpen()) {
+			Disconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+		}
 	}
 }
 

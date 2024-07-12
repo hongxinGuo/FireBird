@@ -50,15 +50,25 @@ void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pPro
 //
 CPropertiesWnd::CPropertiesWnd() noexcept {
 	m_nComboHeight = 0;
+	m_uIdTimer = 0;
+	m_pPropFinnhubWebSocket = nullptr;
+	m_pPropTiingoIEXWebSocket = nullptr;
+	m_pPropTiingoForexWebSocket = nullptr;
+	m_pPropTiingoCryptoWebSocket = nullptr;
 }
 
-CPropertiesWnd::~CPropertiesWnd() {}
+CPropertiesWnd::~CPropertiesWnd() {
+	//if (m_pPropFinnhubWebSocket != nullptr) delete m_pPropFinnhubWebSocket;
+	//if (m_pPropTiingoCryptoWebSocket != nullptr) delete m_pPropTiingoCryptoWebSocket;
+	//if (m_pPropTiingoForexWebSocket != nullptr) delete m_pPropTiingoForexWebSocket;
+}
 
 BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_SETFOCUS()
 	ON_WM_SETTINGCHANGE()
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -124,6 +134,13 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	m_wndToolBar.SetRouteCommandsViaFrame(FALSE);
 
 	AdjustLayout();
+
+	// 设置1秒每次的软调度
+	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(4), 1000, nullptr);
+	if (m_uIdTimer == 0) {
+		CString str;
+	}
+
 	return 0;
 }
 
@@ -212,6 +229,22 @@ void CPropertiesWnd::InitPropList() {
 
 	pGroup4->Expand(FALSE);
 	m_wndPropList.AddProperty(pGroup4);
+
+	CMFCPropertyGridProperty* pGroup5 = new CMFCPropertyGridProperty(_T("Web Socket"));
+	m_pPropFinnhubWebSocket = new CMFCPropertyGridProperty(_T("(Finnhub)"), _T("Application"));
+	m_pPropFinnhubWebSocket->Enable(false);
+	pGroup5->AddSubItem(m_pPropFinnhubWebSocket);
+	m_pPropTiingoIEXWebSocket = new CMFCPropertyGridProperty(_T("(TiingoIEX)"), _T("Application"));
+	m_pPropTiingoIEXWebSocket->Enable(false);
+	pGroup5->AddSubItem(m_pPropTiingoIEXWebSocket);
+	m_pPropTiingoForexWebSocket = new CMFCPropertyGridProperty(_T("(TiingoForex)"), _T("Application"));
+	m_pPropTiingoForexWebSocket->Enable(false);
+	pGroup5->AddSubItem(m_pPropTiingoForexWebSocket);
+	m_pPropTiingoCryptoWebSocket = new CMFCPropertyGridProperty(_T("(TiingoCrypto)"), _T("Application"));
+	m_pPropTiingoCryptoWebSocket->Enable(false);
+	pGroup5->AddSubItem(m_pPropTiingoCryptoWebSocket);
+
+	m_wndPropList.AddProperty(pGroup5);
 }
 
 void CPropertiesWnd::OnSetFocus(CWnd* pOldWnd) {
@@ -243,4 +276,74 @@ void CPropertiesWnd::SetPropListFont() {
 
 	m_wndPropList.SetFont(&m_fntPropList);
 	m_wndObjectCombo.SetFont(&m_fntPropList);
+}
+
+void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
+	// TODO: Add your message handler code here and/or call default
+	CString str = _T("");
+	switch (gl_pFinnhubWebSocket->GetState()) {
+	case ix::ReadyState::Closed:
+		str = _T("Closed");
+		break;
+	case ix::ReadyState::Closing:
+		str = _T("Closing");
+		break;
+	case ix::ReadyState::Connecting:
+		str = _T("Connecting");
+		break;
+	case ix::ReadyState::Open:
+		str = _T("Open");
+		break;
+	}
+	m_pPropFinnhubWebSocket->SetValue(str);
+
+	switch (gl_pTiingoIEXWebSocket->GetState()) {
+	case ix::ReadyState::Closed:
+		str = _T("Closed");
+		break;
+	case ix::ReadyState::Closing:
+		str = _T("Closing");
+		break;
+	case ix::ReadyState::Connecting:
+		str = _T("Connecting");
+		break;
+	case ix::ReadyState::Open:
+		str = _T("Open");
+		break;
+	}
+	m_pPropTiingoIEXWebSocket->SetValue(str);
+
+	switch (gl_pTiingoForexWebSocket->GetState()) {
+	case ix::ReadyState::Closed:
+		str = _T("Closed");
+		break;
+	case ix::ReadyState::Closing:
+		str = _T("Closing");
+		break;
+	case ix::ReadyState::Connecting:
+		str = _T("Connecting");
+		break;
+	case ix::ReadyState::Open:
+		str = _T("Open");
+		break;
+	}
+	m_pPropTiingoForexWebSocket->SetValue(str);
+
+	switch (gl_pTiingoCryptoWebSocket->GetState()) {
+	case ix::ReadyState::Closed:
+		str = _T("Closed");
+		break;
+	case ix::ReadyState::Closing:
+		str = _T("Closing");
+		break;
+	case ix::ReadyState::Connecting:
+		str = _T("Connecting");
+		break;
+	case ix::ReadyState::Open:
+		str = _T("Open");
+		break;
+	}
+	m_pPropTiingoCryptoWebSocket->SetValue(str);
+
+	CDockablePane::OnTimer(nIDEvent);
 }

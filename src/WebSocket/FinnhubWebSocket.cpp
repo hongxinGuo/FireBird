@@ -35,12 +35,18 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Open"));
 		break;
 	case ix::WebSocketMessageType::Close:
-		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Close"));
+		str = _T("Finnhub WebSocket Close");
+		if (msg->closeInfo.code != 1000) { // 非正常关闭
+			str += _T(": ");
+			str += msg->closeInfo.reason.c_str();
+		}
+		gl_systemMessage.PushWebSocketInfoMessage(str);
 		break;
 	case ix::WebSocketMessageType::Fragment:
 		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Fragment"));
 		break;
 	case ix::WebSocketMessageType::Ping:
+		gl_pFinnhubWebSocket->SetHeartbeatTime(GetUTCTime());
 		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Ping"));
 		break;
 	case ix::WebSocketMessageType::Pong:
@@ -73,8 +79,10 @@ void CFinnhubWebSocket::Send(const vectorString& vSymbol) {
 
 	ASSERT(IsOpen());
 	for (long l = 0; l < vSymbol.size(); l++) {
+		if (l >= 49) break; // note 免费账户只支持最多50个证券名称
 		strMessage = CreateFinnhubWebSocketString(vSymbol.at(l));
 		ix::WebSocketSendInfo info = m_webSocket.send(strMessage);
+		ASSERT(info.success);
 		gl_systemMessage.PushInnerSystemInformationMessage(strMessage.c_str());
 	}
 }

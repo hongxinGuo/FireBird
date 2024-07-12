@@ -35,6 +35,13 @@ protected:
 	CPropertiesToolBar m_wndToolBar;
 	CFireBirdPropertyGridCtrl m_wndPropList;
 
+	CMFCPropertyGridProperty* m_pPropFinnhubWebSocket;
+	CMFCPropertyGridProperty* m_pPropTiingoIEXWebSocket;
+	CMFCPropertyGridProperty* m_pPropTiingoForexWebSocket;
+	CMFCPropertyGridProperty* m_pPropTiingoCryptoWebSocket;
+
+	UINT m_uIdTimer;
+
 	// Implementation
 public:
 	~CPropertiesWnd() override;
@@ -51,4 +58,7 @@ protected:
 	void SetPropListFont();
 
 	int m_nComboHeight;
+
+public:
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
