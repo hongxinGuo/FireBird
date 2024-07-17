@@ -3,6 +3,9 @@
 #include"pch.h"
 
 #include "FireBird.h"  
+
+#include <spdlog/spdlog.h>
+
 #include "MainFrm.h"
 
 #include "FireBirdDoc.h"
@@ -66,6 +69,13 @@ BOOL CFireBirdApp::InitInstance() {
 		return false;
 	}
 
+	// Create a daily logger - a new file is created every day at 2:30 am
+	gl_dailyLogger = spdlog::daily_logger_mt("daily_logger", "logs/daily.txt", 2, 30);
+	gl_dailyWebSocketLogger = spdlog::daily_logger_mt("dailyWebSocketLogger", "logs/dailyWebSocket.txt", 2, 30);
+	gl_dailyWebSocketLogger->set_level(static_cast<spdlog::level::level_enum>(gl_systemConfiguration.GetLogLevel()));
+
+	gl_dailyLogger->info("FireBird App begin running");
+
 	ASSERT(gl_systemConfiguration.IsWorkingMode()); // 确保此标识初始态为实际状态
 
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
@@ -125,6 +135,11 @@ BOOL CFireBirdApp::InitInstance() {
 }
 
 int CFireBirdApp::ExitInstance() {
+	gl_dailyLogger->info("FireBird App exit"); 
+
+	// Under VisualStudio, this must be called before main finishes to work around a known VS issue
+	spdlog::drop_all();
+
 	AfxOleTerm(FALSE);
 
 	return CWinAppEx::ExitInstance();

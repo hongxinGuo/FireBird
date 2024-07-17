@@ -1,6 +1,7 @@
 #pragma once
 
 enum configuration_option {
+	SYSTEM_LOG_LEVEL_,
 	SYSTEM_FAST_CPU = 1,
 	SYSTEM_DEBUG_MODE_,
 	RELOAD_SYSTEM_,

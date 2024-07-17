@@ -27,10 +27,10 @@ bool CSystemConfiguration::sm_bInitialized = false;
 std::string gl_sSystemConfiguration = R"(
 {
 "SystemConfiguration": {
+	"LogLevel" : 2,
 	"UsingFastCPU" : true,
 	"DebugMode" : false,
 	"ReloadSystem" : false,
-	"ConfigurationDirectory" : "C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\",
   "DatabaseAccountName" : "FireBird",
 	"DatabaseAccountPassword" : "firebird",
 	"BackgroundThreadPermittedNumber" : 8,
@@ -150,6 +150,9 @@ CSystemConfiguration::CSystemConfiguration() {
 	m_iEPSSurpriseUpdateRate = 90;
 	m_iSECFilingsUpdateRate = 30;
 
+	// spdlog日志等级
+	m_iLogLevel = SPDLOG_LEVEL_TRACE; // 默认记录等级为跟踪级（所有日志皆记录）
+
 	// 测试系统选项
 	m_strBenchmarkTestFileDirectory = _T("C:\\FireBird\\Test Data\\Benchmark\\"); // Benchmark默认目录
 
@@ -188,6 +191,13 @@ void CSystemConfiguration::Update(json& jsonData) {
 
 	// 系统配置
 	try {
+		m_iLogLevel = jsonData.at("SystemConfiguration").at("LogLevel");
+	}
+	catch (json::out_of_range&) {
+		m_fUpdate = true;
+	}
+
+	try {
 		m_bDebugMode = jsonData.at("SystemConfiguration").at("DebugMode");
 	}
 	catch (json::out_of_range&) {
@@ -195,13 +205,6 @@ void CSystemConfiguration::Update(json& jsonData) {
 	}
 	try {
 		m_bReloadSystem = jsonData.at("SystemConfiguration").at("ReloadSystem");
-	}
-	catch (json::out_of_range&) {
-		m_fUpdate = true;
-	}
-	try {
-		sTemp = jsonData.at("SystemConfiguration").at("ConfigurationDirectory");
-		m_strDirectory = sTemp.c_str();
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
@@ -431,6 +434,7 @@ void CSystemConfiguration::Update(json& jsonData) {
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
+
 	try {
 		m_iEPSSurpriseUpdateRate = jsonData.at("FinancialDataUpdateRate").at("EPSSurprise");
 	}
@@ -457,9 +461,9 @@ void CSystemConfiguration::Update(json& jsonData) {
 void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	jsonData.clear(); // 清除之前的数据。
 	// system
+	jsonData["SystemConfiguration"]["LogLevel"] = m_iLogLevel;
 	jsonData["SystemConfiguration"]["DebugMode"] = m_bDebugMode;
 	jsonData["SystemConfiguration"]["ReloadSystem"] = m_bReloadSystem;
-	jsonData["SystemConfiguration"]["ConfigurationDirectory"] = m_strDirectory;
 	jsonData["SystemConfiguration"]["DatabaseAccountName"] = m_strDatabaseAccountName;
 	jsonData["SystemConfiguration"]["DatabaseAccountPassword"] = m_strDatabaseAccountPassword;
 	jsonData["SystemConfiguration"]["BackgroundThreadPermittedNumber"] = m_iBackgroundThreadPermittedNumber;

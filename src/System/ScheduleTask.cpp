@@ -202,8 +202,6 @@ void SystemInitialization() {
 	gl_systemConfiguration.SetSystemDisplayRect(GetSystemMetrics(SM_CXFULLSCREEN), GetSystemMetrics(SM_CYFULLSCREEN));
 	gl_systemConfiguration.SetCurrentWindowRect(GetSystemMetrics(SM_CXMAXIMIZED), GetSystemMetrics(SM_CYMAXIMIZED));
 
-	gl_systemConfiguration.LoadDB(); // 装入系统参数
-
 	// 初始化各market dataSource WebSocket
 	InitializeMarkets();
 	AssignDataSourceAndWebInquiryToMarket();

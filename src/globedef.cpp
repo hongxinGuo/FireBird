@@ -34,6 +34,9 @@
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
+shared_ptr<spdlog::logger> gl_dailyLogger = nullptr;
+shared_ptr<spdlog::logger> gl_dailyWebSocketLogger = nullptr;
+
 // 以下变量皆为唯一实例
 CSystemConfiguration gl_systemConfiguration; // 系统配置参数的总汇.此全局变量要位于所有全局变量的最前面，以保证第一个初始化。
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第二位，其他全局变量初始化时用到此变量（当报错时）。

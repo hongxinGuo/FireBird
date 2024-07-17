@@ -28,12 +28,11 @@ namespace FireBirdTest {
 		json jsSystemConfiguration = json::parse(gl_sSystemConfiguration);
 		string sTemp;
 
+		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/LogLevel")), SPDLOG_LEVEL_INFO);
+		EXPECT_NE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/LogLevel")), SPDLOG_LEVEL_ERROR) << "预先设置的为info级";
 		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/UsingFastCPU")));
 		EXPECT_FALSE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/DebugMode")));
 		EXPECT_FALSE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/ReloadSystem")));
-
-		sTemp = jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/ConfigurationDirectory"));
-		EXPECT_TRUE(sTemp == _T("C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\"));
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/DatabaseAccountName"));
 		EXPECT_TRUE(sTemp == _T("FireBird"));

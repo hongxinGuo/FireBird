@@ -22,11 +22,42 @@ static char THIS_FILE[] = __FILE__;
 void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pProp) const {
 	COleVariant value;
 	LPVARIANT pVar;
-
+	CStringW wStr;
+	CString str;
 	value = pProp->GetValue();
 	pVar = static_cast<LPVARIANT>(value);
-
 	switch (pProp->GetData()) {
+	case SYSTEM_LOG_LEVEL_:
+		ASSERT(pVar->vt == VT_BSTR);
+		wStr = pVar->bstrVal;
+		str = wStr;
+		switch (str.GetAt(0)) {
+		case 'T': // trace
+			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_TRACE);
+			break;
+		case 'D': // debug
+			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_DEBUG);
+			break;
+		case 'I': // info
+			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_INFO);
+			break;
+		case 'W': // warn
+			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_WARN);
+			break;
+		case 'E': // error
+			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_ERROR);
+			break;
+		case 'C': // critical
+			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_CRITICAL);
+			break;
+		case 'O': // OFF
+			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_OFF);
+			break;
+		default:
+			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_INFO);
+		}
+		gl_systemConfiguration.SetUpdate(true);
+		break;
 	case SYSTEM_DEBUG_MODE_:
 		ASSERT(pVar->vt == VT_BOOL);
 		gl_systemConfiguration.SetDebugMode(pVar->boolVal);
@@ -158,18 +189,45 @@ void CPropertiesWnd::InitPropList() {
 	m_wndPropList.MarkModifiedProperties();
 
 	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("System option"));
+	CString s;
+	switch (gl_systemConfiguration.GetLogLevel()) {
+	case SPDLOG_LEVEL_TRACE:
+		s = _T("Trace");
+		break;
+	case SPDLOG_LEVEL_DEBUG:
+		s = _T("Debug");
+		break;
+	case SPDLOG_LEVEL_INFO:
+		s = _T("Info");
+		break;
+	case SPDLOG_LEVEL_WARN:
+		s = _T("Warn");
+		break;
+	case SPDLOG_LEVEL_ERROR:
+		s = _T("Error");
+		break;
+	case SPDLOG_LEVEL_CRITICAL:
+		s = _T("Critical");
+		break;
+	case SPDLOG_LEVEL_OFF:
+		s = _T("Off");
+		break;
+	default:
+		s = _T("Info");
+	}
+	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T("Log level"), s, _T("One of: Trace, Debug, Info, Warn, Error, Critical, or OFF"), SYSTEM_LOG_LEVEL_);
+	pProp->AddOption(_T("Trace"));
+	pProp->AddOption(_T("Debug"));
+	pProp->AddOption(_T("Info"));
+	pProp->AddOption(_T("Warn"));
+	pProp->AddOption(_T("Error"));
+	pProp->AddOption(_T("Critical"));
+	pProp->AddOption(_T("OFF"));
+	pProp->AllowEdit(FALSE);
+	pGroup1->AddSubItem(pProp);
+
 	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Debug Mode"), static_cast<_variant_t>(gl_systemConfiguration.IsDebugMode()), _T("Debug mode"), SYSTEM_DEBUG_MODE_));
 	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Reload System"), static_cast<_variant_t>(gl_systemConfiguration.IsReloadSystem()), _T("Reload System"), RELOAD_SYSTEM_));
-
-	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T("Border"), _T("Dialog Frame"), _T("One of: None, Thin, Resizable, or Dialog Frame"));
-	pProp->AddOption(_T("None"));
-	pProp->AddOption(_T("Thin"));
-	pProp->AddOption(_T("Resizable"));
-	pProp->AddOption(_T("Dialog Frame"));
-	pProp->AllowEdit(FALSE);
-
-	pGroup1->AddSubItem(pProp);
-	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Caption"), static_cast<_variant_t>("About"), _T("Specifies the text that will be displayed in the window's title bar")));
 
 	m_wndPropList.AddProperty(pGroup1);
 

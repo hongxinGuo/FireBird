@@ -3,7 +3,10 @@
 #include <ixwebsocket/IXNetSystem.h>
 #include"VirtualWebSocket.h"
 
+#include <spdlog/spdlog.h>
+
 #include "Thread.h"
+#include "WorldMarket.h"
 
 using std::exception;
 using std::thread;
@@ -28,6 +31,7 @@ void CVirtualWebSocket::Reset() {
 
 void CVirtualWebSocket::TaskConnectAndSendMessage(vectorString vSymbol) {
 	TRACE("TaskConnectAndSendMessage\n");
+	gl_dailyWebSocketLogger->info("{} TaskConnectAndSendMessage", m_url);
 	gl_runtime.thread_executor()->post([this, vSymbol] {
 		this->GetShared()->ConnectAndSendMessage(vSymbol);
 	});
@@ -44,12 +48,9 @@ bool CVirtualWebSocket::ConnectAndSendMessage(const vectorString& vSymbol) {
 	try {
 		AppendSymbol(vSymbol);
 		Connect();
-		TRACE("Connecting\n");
 		//ASSERT(!IsOpen()); // Connect调用Connecting,是异步的。
 		while (!IsOpen()) Sleep(1);
-		TRACE("Connected\n");
 		Send(m_vSymbol);
-		TRACE("SendMessage\n");
 	}
 	catch (exception& e) {
 		const CString sError = e.what();
@@ -123,7 +124,7 @@ void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallbac
 void CVirtualWebSocket::MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, const vectorString& vSymbol) {
 	if (fDataSourceError) {
 		if (IsOpen()) {
-			Disconnect();
+			TaskDisconnect();
 		}
 		return;
 	}
@@ -131,17 +132,17 @@ void CVirtualWebSocket::MonitorWebSocket(bool fDataSourceError, bool fWebSocketO
 	if (fWebSocketOpened) { // 接收web socket数据？
 		if (IsError() || IsIdle()) { // 出现问题？
 			if (IsOpen()) {
-				Disconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+				TaskDisconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
 			}
 		}
-		if (IsClosed() && IsIdle()) {
+		if (IsClosed()) {
 			TaskConnectAndSendMessage(vSymbol);
 			SetHeartbeatTime(GetUTCTime());
 		}
 	}
 	else { // 关闭WebSocket?
 		if (IsOpen()) {
-			Disconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
+			TaskDisconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
 		}
 	}
 }

@@ -11,6 +11,8 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <spdlog/common.h>
+
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 #include"nlohmann/json.hpp"
 
@@ -41,6 +43,8 @@ public:
 	[[nodiscard]] CString GetConfigurationFileDirectoryAndName() const { return m_strDirectory + m_strFileName; }
 
 	// 获取系统配置参数
+	int GetLogLevel() const noexcept { return m_iLogLevel; }
+	void SetLogLevel(int level) noexcept { m_iLogLevel = level; }
 	[[nodiscard]] bool IsDebugMode() const noexcept { return m_bDebugMode; }
 	void SetDebugMode(const bool bFlag) noexcept { m_bDebugMode = bFlag; }
 	[[nodiscard]] bool IsReloadSystem() const noexcept { return m_bReloadSystem; }
@@ -289,6 +293,7 @@ protected:
 	CString m_strFileName; // 配置文件名称
 
 	// 系统配置
+	int m_iLogLevel; // spdlog日志文件记录等级: trace, debug, info, warn, error, critical, off
 	bool m_bDebugMode; // 系统是否是测试状态
 	bool m_bReloadSystem; // 系统是否允许周期性重启
 	CString m_strDatabaseAccountName; // 数据库账户名称
@@ -335,6 +340,7 @@ protected:
 	int m_iStockPeerUpdateRate; // 默认90天更新一次
 	int m_iEPSSurpriseUpdateRate; // 默认90天更新一次
 	int m_iSECFilingsUpdateRate; // 默认30天更新一次
+
 	// 测试系统
 	CString m_strBenchmarkTestFileDirectory; // 性能测试文件所在的目录
 

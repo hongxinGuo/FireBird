@@ -10,6 +10,7 @@
 #include "FinnhubDataSource.h"
 
 #include"simdjsonGetValue.h"
+#include "WorldMarket.h"
 
 using std::thread;
 using std::make_shared;
@@ -30,6 +31,15 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 		str = _T("Finnhub WebSocket Error: ");
 		str += msg->errorInfo.reason.c_str();
 		gl_systemMessage.PushErrorMessage(str);
+		gl_pFinnhubWebSocket->SetStatusCode(msg->errorInfo.http_status);
+		if (msg->errorInfo.http_status == 429) { // 太多查询（其他终端正在查询）
+			gl_pFinnhubWebSocket->TaskDisconnect();
+			gl_systemConfiguration.SetUsingFinnhubWebSocket(false); // 停止接收
+			str = _T("too many connections，关闭Finnhub Web Socket服务");
+			gl_systemMessage.PushInnerSystemInformationMessage(str);
+			gl_systemMessage.PushErrorMessage(str);
+			gl_systemMessage.PushInformationMessage(str);
+		}
 		break;
 	case ix::WebSocketMessageType::Open:
 		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Open"));
