@@ -26,6 +26,12 @@ bool CSystemConfiguration::sm_bInitialized = false;
 /// </summary>
 std::string gl_sSystemConfiguration = R"(
 {
+"Environment": {
+	"Display": {
+		"PropertyPage" : "Application"
+	}
+},
+
 "SystemConfiguration": {
 	"LogLevel" : 2,
 	"UsingFastCPU" : true,
@@ -188,6 +194,23 @@ void CSystemConfiguration::UpdateDB() {
 
 void CSystemConfiguration::Update(json& jsonData) {
 	string sTemp;
+
+	// 环境配置
+	try {
+		sTemp = jsonData.at("Environment").at("Display").at("PropertyPage");
+		if (sTemp == _T("Application")) {
+			m_iDisplayPropertyPage = 0;
+		}
+		else if (sTemp == _T("Property")) {
+			m_iDisplayPropertyPage = 1;
+		}
+		else if (sTemp == _T("Other")) {
+			m_iDisplayPropertyPage = 2;
+		}
+	}
+	catch (json::out_of_range&) {
+		m_fUpdate = true;
+	}
 
 	// 系统配置
 	try {
@@ -460,6 +483,23 @@ void CSystemConfiguration::Update(json& jsonData) {
 
 void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	jsonData.clear(); // 清除之前的数据。
+
+	// Environment
+	switch (m_iDisplayPropertyPage) {
+	case 0:
+		jsonData["Environment"]["Display"]["PropertyPage"] = _T("Application");
+		break;
+	case 1:
+		jsonData["Environment"]["Display"]["PropertyPage"] = _T("Property");
+		break;
+	case 2:
+		jsonData["Environment"]["Display"]["PropertyPage"] = _T("Other");
+		break;
+	default:
+		jsonData["Environment"]["Display"]["PropertyPage"] = _T("Application");
+		break;
+	}
+
 	// system
 	jsonData["SystemConfiguration"]["LogLevel"] = m_iLogLevel;
 	jsonData["SystemConfiguration"]["DebugMode"] = m_bDebugMode;

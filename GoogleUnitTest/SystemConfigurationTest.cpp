@@ -28,6 +28,8 @@ namespace FireBirdTest {
 		json jsSystemConfiguration = json::parse(gl_sSystemConfiguration);
 		string sTemp;
 
+		sTemp = jsSystemConfiguration.at(json::json_pointer("/Environment/Display/PropertyPage"));
+		EXPECT_TRUE(sTemp== _T("Application"));
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/LogLevel")), SPDLOG_LEVEL_INFO);
 		EXPECT_NE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/LogLevel")), SPDLOG_LEVEL_ERROR) << "预先设置的为info级";
 		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/UsingFastCPU")));

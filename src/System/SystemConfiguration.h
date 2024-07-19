@@ -42,6 +42,10 @@ public:
 	[[nodiscard]] CString GetDefaultFileName() { return m_strFileName; }
 	[[nodiscard]] CString GetConfigurationFileDirectoryAndName() const { return m_strDirectory + m_strFileName; }
 
+	// 环境配置
+	int GetDisplayPropertyPage() const noexcept { return m_iDisplayPropertyPage; }
+	void SetDisplayPropertyPage(int page) noexcept { m_iDisplayPropertyPage = page; }
+
 	// 获取系统配置参数
 	int GetLogLevel() const noexcept { return m_iLogLevel; }
 	void SetLogLevel(int level) noexcept { m_iLogLevel = level; }
@@ -291,6 +295,9 @@ protected:
 	static bool sm_bInitialized; // 使用静态变量来保证只生成唯一实列。
 	CString m_strDirectory; // 配置文件目录
 	CString m_strFileName; // 配置文件名称
+
+	// 环境配置
+	int m_iDisplayPropertyPage{0}; // application : 0, 
 
 	// 系统配置
 	int m_iLogLevel; // spdlog日志文件记录等级: trace, debug, info, warn, error, critical, off

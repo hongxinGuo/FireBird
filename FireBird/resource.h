@@ -17,8 +17,15 @@
 #define IDR_FIREBIRDTYPE                130
 #define ID_WINDOW_MANAGER               131
 #define ID_VIEW_OUTPUTWND               149
+#define ID_SORTING_GROUPBYTYPE          145
+#define ID_SORTING_SORTALPHABETIC       146
+#define ID_SORTING_SORTBYTYPE           147
+#define ID_SORTING_SORTBYACCESS         148
+#define ID_VIEW_OUTPUTWND               149
 #define ID_VIEW_PROPERTIESWND           150
 #define ID_SORTPROPERTIES               151
+#define ID_PROPERTIES1                  152
+#define ID_PROPERTIES2                  153
 #define ID_EXPAND_ALL                   154
 #define IDS_OUTPUT_WND                  157
 #define IDS_OUTPUT_WND2                 158

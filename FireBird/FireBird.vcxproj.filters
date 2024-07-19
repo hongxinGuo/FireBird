@@ -54,6 +54,12 @@
     <Image Include="res\properties_hc.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="res\properties.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\properti.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\FireBird.rc2">

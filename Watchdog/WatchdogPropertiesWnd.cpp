@@ -17,7 +17,8 @@ CWatchdogPropertiesWnd::CWatchdogPropertiesWnd() noexcept {
 	m_nComboHeight = 0;
 }
 
-CWatchdogPropertiesWnd::~CWatchdogPropertiesWnd() {}
+CWatchdogPropertiesWnd::~CWatchdogPropertiesWnd() {
+}
 
 BEGIN_MESSAGE_MAP(CWatchdogPropertiesWnd, CDockablePane)
 	ON_WM_CREATE()
@@ -47,7 +48,7 @@ void CWatchdogPropertiesWnd::AdjustLayout() {
 
 	const int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
 
-	m_wndObjectCombo.SetWindowPos(nullptr, rectClient.left, rectClient.top, rectClient.Width(), m_nComboHeight, SWP_NOACTIVATE | SWP_NOZORDER);
+	m_wndObjectCombo.SetWindowPos(nullptr, rectClient.left, rectClient.top, rectClient.Width(), m_nComboHeight + 60, SWP_NOACTIVATE | SWP_NOZORDER); // Note 设置高度时需要留出显示菜单的空间，每个选项高度为30.默认两个选项，故+60
 	m_wndToolBar.SetWindowPos(nullptr, rectClient.left, rectClient.top + m_nComboHeight, rectClient.Width(), cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
 	m_wndPropList.SetWindowPos(nullptr, rectClient.left, rectClient.top + m_nComboHeight + cyTlb, rectClient.Width(), rectClient.Height() - (m_nComboHeight + cyTlb), SWP_NOACTIVATE | SWP_NOZORDER);
 }
@@ -76,6 +77,7 @@ int CWatchdogPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	m_nComboHeight = rectCombo.Height();
 
+	// Create Properties
 	if (!m_wndPropList.Create(WS_VISIBLE | WS_CHILD, rectDummy, this, 2)) {
 		TRACE0("Failed to create Properties Grid \n");
 		return -1;      // fail to create
@@ -83,10 +85,11 @@ int CWatchdogPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	InitPropList();
 
+	// Create ToolBar
 	m_wndToolBar.Create(this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_PROPERTIES);
-	m_wndToolBar.LoadToolBar(IDR_PROPERTIES, 0, 0, TRUE /* Is locked */);
+	m_wndToolBar.LoadToolBar(IDR_PROPERTIES, 0, 0, TRUE);
 	m_wndToolBar.CleanUpLockedImages();
-	m_wndToolBar.LoadBitmap(theApp.m_bHiColorIcons ? IDB_PROPERTIES_HC : IDR_PROPERTIES, 0, 0, TRUE /* Locked */);
+	m_wndToolBar.LoadBitmap(theApp.m_bHiColorIcons ? IDB_PROPERTIES_HC : IDR_PROPERTIES, 0, 0, TRUE);
 
 	m_wndToolBar.SetPaneStyle(m_wndToolBar.GetPaneStyle() | CBRS_TOOLTIPS | CBRS_FLYBY);
 	m_wndToolBar.SetPaneStyle(m_wndToolBar.GetPaneStyle() & ~(CBRS_GRIPPER | CBRS_SIZE_DYNAMIC | CBRS_BORDER_TOP | CBRS_BORDER_BOTTOM | CBRS_BORDER_LEFT | CBRS_BORDER_RIGHT));
@@ -108,7 +111,8 @@ void CWatchdogPropertiesWnd::OnExpandAllProperties() {
 	m_wndPropList.ExpandAll();
 }
 
-void CWatchdogPropertiesWnd::OnUpdateExpandAllProperties(CCmdUI* /* pCmdUI */) {}
+void CWatchdogPropertiesWnd::OnUpdateExpandAllProperties(CCmdUI* /* pCmdUI */) {
+}
 
 void CWatchdogPropertiesWnd::OnSortProperties() {
 	m_wndPropList.SetAlphabeticMode(!m_wndPropList.IsAlphabeticMode());
@@ -118,13 +122,17 @@ void CWatchdogPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI) {
 	pCmdUI->SetCheck(m_wndPropList.IsAlphabeticMode());
 }
 
-void CWatchdogPropertiesWnd::OnProperties1() {}
+void CWatchdogPropertiesWnd::OnProperties1() {
+}
 
-void CWatchdogPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {}
+void CWatchdogPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {
+}
 
-void CWatchdogPropertiesWnd::OnProperties2() {}
+void CWatchdogPropertiesWnd::OnProperties2() {
+}
 
-void CWatchdogPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {}
+void CWatchdogPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {
+}
 
 void CWatchdogPropertiesWnd::InitPropList() {
 	SetPropListFont();

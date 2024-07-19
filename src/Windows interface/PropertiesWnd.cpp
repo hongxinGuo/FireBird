@@ -63,7 +63,7 @@ void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pPro
 		gl_systemConfiguration.SetDebugMode(pVar->boolVal);
 		gl_systemConfiguration.SetUpdate(true);
 		break;
-	case RELOAD_SYSTEM_:
+	case SYSTEM_RELOAD_SYSTEM_:
 		ASSERT(pVar->vt == VT_BOOL);
 		gl_systemConfiguration.SetReloadSystem(pVar->boolVal);
 		gl_systemConfiguration.SetUpdate(true);
@@ -74,6 +74,18 @@ void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pPro
 		break;
 	}
 	CMFCPropertyGridCtrl::OnPropertyChanged(pProp);
+}
+
+BEGIN_MESSAGE_MAP(CFireBirdComboBox, CComboBox)
+	ON_CONTROL_REFLECT(CBN_SELCHANGE, &CFireBirdComboBox::OnCbnSelChange)
+END_MESSAGE_MAP()
+
+void CFireBirdComboBox::OnCbnSelChange() {
+	// TODO: Add your control notification handler code here
+	if (gl_systemConfiguration.GetDisplayPropertyPage() != GetCurSel()) {
+		gl_systemConfiguration.SetDisplayPropertyPage(GetCurSel());
+		gl_systemConfiguration.SetUpdate(true);
+	}
 }
 
 //
@@ -89,14 +101,19 @@ CPropertiesWnd::CPropertiesWnd() noexcept {
 }
 
 CPropertiesWnd::~CPropertiesWnd() {
-	//if (m_pPropFinnhubWebSocket != nullptr) delete m_pPropFinnhubWebSocket;
-	//if (m_pPropTiingoCryptoWebSocket != nullptr) delete m_pPropTiingoCryptoWebSocket;
-	//if (m_pPropTiingoForexWebSocket != nullptr) delete m_pPropTiingoForexWebSocket;
 }
 
 BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
+	ON_COMMAND(ID_EXPAND_ALL, OnExpandAllProperties)
+	ON_UPDATE_COMMAND_UI(ID_EXPAND_ALL, OnUpdateExpandAllProperties)
+	ON_COMMAND(ID_SORTPROPERTIES, OnSortProperties)
+	ON_UPDATE_COMMAND_UI(ID_SORTPROPERTIES, OnUpdateSortProperties)
+	ON_COMMAND(ID_PROPERTIES1, OnProperties1)
+	ON_UPDATE_COMMAND_UI(ID_PROPERTIES1, OnUpdateProperties1)
+	ON_COMMAND(ID_PROPERTIES2, OnProperties2)
+	ON_UPDATE_COMMAND_UI(ID_PROPERTIES2, OnUpdateProperties2)
 	ON_WM_SETFOCUS()
 	ON_WM_SETTINGCHANGE()
 	ON_WM_TIMER()
@@ -115,7 +132,7 @@ void CPropertiesWnd::AdjustLayout() {
 
 	const int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
 
-	m_wndObjectCombo.SetWindowPos(nullptr, rectClient.left, rectClient.top, rectClient.Width(), m_nComboHeight, SWP_NOACTIVATE | SWP_NOZORDER);
+	m_wndObjectCombo.SetWindowPos(nullptr, rectClient.left, rectClient.top, rectClient.Width(), m_nComboHeight + 190, SWP_NOACTIVATE | SWP_NOZORDER); // Note 设置高度时需要留出显示菜单的空间，每个选项高度为30.默认三个选项，故+90
 	m_wndToolBar.SetWindowPos(nullptr, rectClient.left, rectClient.top + m_nComboHeight, rectClient.Width(), cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
 	m_wndPropList.SetWindowPos(nullptr, rectClient.left, rectClient.top + m_nComboHeight + cyTlb, rectClient.Width(), rectClient.Height() - (m_nComboHeight + cyTlb), SWP_NOACTIVATE | SWP_NOZORDER);
 }
@@ -138,13 +155,14 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	m_wndObjectCombo.AddString(_T("Application"));
 	m_wndObjectCombo.AddString(_T("Properties Window"));
 	m_wndObjectCombo.AddString(_T("Properties2"));
-	m_wndObjectCombo.SetCurSel(0);
+	m_wndObjectCombo.SetCurSel(gl_systemConfiguration.GetDisplayPropertyPage());
 
 	CRect rectCombo;
 	m_wndObjectCombo.GetClientRect(&rectCombo);
 
 	m_nComboHeight = rectCombo.Height();
 
+	// Create Properties
 	if (!m_wndPropList.Create(WS_VISIBLE | WS_CHILD, rectDummy, this, 2)) {
 		TRACE0("Failed to create Properties Grid \n");
 		return -1;      // fail to create
@@ -152,10 +170,11 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	InitPropList();
 
+	// Create ToolBar
 	m_wndToolBar.Create(this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_PROPERTIES);
-	m_wndToolBar.LoadToolBar(IDR_PROPERTIES, 0, 0, TRUE /* Is locked */);
+	m_wndToolBar.LoadToolBar(IDR_PROPERTIES, 0, 0, TRUE);
 	m_wndToolBar.CleanUpLockedImages();
-	m_wndToolBar.LoadBitmap(theApp.m_bHiColorIcons ? IDB_PROPERTIES_HC : IDR_PROPERTIES, 0, 0, TRUE /* Locked */);
+	m_wndToolBar.LoadBitmap(theApp.m_bHiColorIcons ? IDB_PROPERTIES_HC : IDR_PROPERTIES, 0, 0, TRUE);
 
 	m_wndToolBar.SetPaneStyle(m_wndToolBar.GetPaneStyle() | CBRS_TOOLTIPS | CBRS_FLYBY);
 	m_wndToolBar.SetPaneStyle(m_wndToolBar.GetPaneStyle() & ~(CBRS_GRIPPER | CBRS_SIZE_DYNAMIC | CBRS_BORDER_TOP | CBRS_BORDER_BOTTOM | CBRS_BORDER_LEFT | CBRS_BORDER_RIGHT));
@@ -178,6 +197,33 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 void CPropertiesWnd::OnSize(UINT nType, int cx, int cy) {
 	CDockablePane::OnSize(nType, cx, cy);
 	AdjustLayout();
+}
+
+void CPropertiesWnd::OnExpandAllProperties() {
+	m_wndPropList.ExpandAll();
+}
+
+void CPropertiesWnd::OnUpdateExpandAllProperties(CCmdUI* /* pCmdUI */) {
+}
+
+void CPropertiesWnd::OnSortProperties() {
+	m_wndPropList.SetAlphabeticMode(!m_wndPropList.IsAlphabeticMode());
+}
+
+void CPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI) {
+	pCmdUI->SetCheck(m_wndPropList.IsAlphabeticMode());
+}
+
+void CPropertiesWnd::OnProperties1() {
+}
+
+void CPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {
+}
+
+void CPropertiesWnd::OnProperties2() {
+}
+
+void CPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {
 }
 
 void CPropertiesWnd::InitPropList() {
@@ -215,33 +261,33 @@ void CPropertiesWnd::InitPropList() {
 	default:
 		s = _T("Info");
 	}
-	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T("Log level"), s, _T("One of: Trace, Debug, Info, Warn, Error, Critical, or OFF"), SYSTEM_LOG_LEVEL_);
+	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T("Log level"), s, _T("One of: Trace, Debug, Info, Warn, Error, Critical, or Off"), SYSTEM_LOG_LEVEL_);
 	pProp->AddOption(_T("Trace"));
 	pProp->AddOption(_T("Debug"));
 	pProp->AddOption(_T("Info"));
 	pProp->AddOption(_T("Warn"));
 	pProp->AddOption(_T("Error"));
 	pProp->AddOption(_T("Critical"));
-	pProp->AddOption(_T("OFF"));
+	pProp->AddOption(_T("Off"));
 	pProp->AllowEdit(FALSE);
 	pGroup1->AddSubItem(pProp);
 
 	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Debug Mode"), static_cast<_variant_t>(gl_systemConfiguration.IsDebugMode()), _T("Debug mode"), SYSTEM_DEBUG_MODE_));
-	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Reload System"), static_cast<_variant_t>(gl_systemConfiguration.IsReloadSystem()), _T("Reload System"), RELOAD_SYSTEM_));
+	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Reload System"), static_cast<_variant_t>(gl_systemConfiguration.IsReloadSystem()), _T("Reload System"), SYSTEM_RELOAD_SYSTEM_));
 
 	m_wndPropList.AddProperty(pGroup1);
 
-	CMFCPropertyGridProperty* pSize = new CMFCPropertyGridProperty(_T("Window Size"), 0, TRUE);
+	//CMFCPropertyGridProperty* pSize = new CMFCPropertyGridProperty(_T("Window Size"), 0, TRUE);
 
-	pProp = new CMFCPropertyGridProperty(_T("Height"), static_cast<_variant_t>(250l), _T("Specifies the window's height"));
-	pProp->EnableSpinControl(TRUE, 50, 300);
-	pSize->AddSubItem(pProp);
+	//pProp = new CMFCPropertyGridProperty(_T("Height"), static_cast<_variant_t>(250l), _T("Specifies the window's height"));
+	//pProp->EnableSpinControl(TRUE, 50, 300);
+	//pSize->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty(_T("Width"), static_cast<_variant_t>(150l), _T("Specifies the window's width"));
-	pProp->EnableSpinControl(TRUE, 50, 200);
-	pSize->AddSubItem(pProp);
+	//pProp = new CMFCPropertyGridProperty(_T("Width"), static_cast<_variant_t>(150l), _T("Specifies the window's width"));
+	//pProp->EnableSpinControl(TRUE, 50, 200);
+	//pSize->AddSubItem(pProp);
 
-	m_wndPropList.AddProperty(pSize);
+	//m_wndPropList.AddProperty(pSize);
 
 	CMFCPropertyGridProperty* pGroup2 = new CMFCPropertyGridProperty(_T("China market"));
 

@@ -172,7 +172,7 @@ CMainFrame::~CMainFrame() {
 	gl_systemConfiguration.SetExitingSystem(true);
 
 	int iCounter = 0;
-	while (gl_ThreadStatus.IsWebInquiringThreadRunning() && (iCounter < 5000)) {
+	while (gl_ThreadStatus.IsWebInquiringThreadRunning() && (iCounter < 2000)) {
 		iCounter++;
 		Sleep(1); // 等待网络查询线程退出，最长等待时间为5秒
 	}
@@ -332,7 +332,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	// 设置500毫秒每次的软调度，只用于更新状态任务。
 	m_uIdTimer = SetTimer(STOCK_ANALYSIS_TIMER_, 500, nullptr);
-	if (m_uIdTimer == 0) { TRACE(_T("生成500ms时钟时失败\n")); }
+	if (m_uIdTimer == 0) {
+		TRACE(_T("生成500ms时钟时失败\n"));
+	}
 	return 0;
 }
 
@@ -342,7 +344,7 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
 	                                                           IMAGE_ICON, GetSystemMetrics(SM_CXSMICON),
 	                                                           GetSystemMetrics(SM_CYSMICON), 0));
 	m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
-	const HICON hPropertiesBarIcon = static_cast<HICON>(::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_PROPERTIES_WND_HC : IDI_PROPERTIES_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0));
+	HICON hPropertiesBarIcon = (HICON)::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_PROPERTIES_WND_HC : IDI_PROPERTIES_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
 	m_wndProperties.SetIcon(hPropertiesBarIcon, FALSE);
 }
 
