@@ -81,7 +81,6 @@ BEGIN_MESSAGE_MAP(CFireBirdComboBox, CComboBox)
 END_MESSAGE_MAP()
 
 void CFireBirdComboBox::OnCbnSelChange() {
-	// TODO: Add your control notification handler code here
 	if (gl_systemConfiguration.GetDisplayPropertyPage() != GetCurSel()) {
 		gl_systemConfiguration.SetDisplayPropertyPage(GetCurSel());
 		gl_systemConfiguration.SetUpdate(true);

@@ -177,7 +177,7 @@ int CWatchdogMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 设置五秒每次的软调度，用于检查重启FireBird主程序。
 	m_uTimerID = SetTimer(1, 5000, nullptr);
 	if (m_uTimerID == 0) {
-		TRACE(_T("生成1s时钟时失败\n"));
+		TRACE(_T("生成5秒时钟时失败\n"));
 	}
 
 	return 0;
@@ -403,7 +403,7 @@ bool IsFireBirdAlreadyRunning(const CString& strProgramToken) {
 }
 
 void CWatchdogMainFrame::OnTimer(UINT_PTR nIDEvent) {
-	static int s_Counter = 12; // 初始值为12次，即一分钟后执行启动FireBird任务（以后则每五秒钟监视一次）
+	static int s_Counter = 12; // 初始值为60次，即一分钟后执行启动FireBird任务（每五秒钟监视一次）
 	if (--s_Counter < 1) {
 		if (!IsFireBirdAlreadyRunning(_T("FireBirdStockAnalysis"))) {
 			const UINT iReturnCode = WinExec(("C:\\FireBird\\FireBird.exe"), SW_SHOW);

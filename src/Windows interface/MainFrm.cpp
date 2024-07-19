@@ -171,10 +171,12 @@ CMainFrame::~CMainFrame() {
 
 	gl_systemConfiguration.SetExitingSystem(true);
 
-	int iCounter = 0;
-	while (gl_ThreadStatus.IsWebInquiringThreadRunning() && (iCounter < 2000)) {
-		iCounter++;
-		Sleep(1); // 等待网络查询线程退出，最长等待时间为5秒
+	time_t tt, tt2;
+	time(&tt); // Note 系统退出时避免调用GetUTCTime(),因为调度函数可能已经不再执行了
+	while (gl_ThreadStatus.IsWebInquiringThreadRunning()) {
+		Sleep(100);
+		time(&tt2);
+		if (tt2 - tt > 2) break;// 等待网络查询线程退出，最长等待时间为2秒
 	}
 
 	if (sm_fGlobeInit) {
