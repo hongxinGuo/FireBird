@@ -45,6 +45,7 @@ public:
 	void TaskProcessAndSaveDayLine(long lCurrentTime);
 	void TaskSaveTempData(long lCurrentTime);
 	void TaskLoadCurrentStockHistoryData() const;// 装载当前股票日线
+	void TaskPerSecond(long lCurrentTime); // 每秒一次的辅助任务
 	void TaskAccessoryTask(long lCurrentTime); // 其他辅助任务
 	void TaskPreparingMarketOpen(long lCurrentTime);
 	void TaskChoiceRSSet(long lCurrentTime);
@@ -57,6 +58,7 @@ public:
 	void ProcessTodayStock();
 	bool IsTaskOfSavingDayLineDBFinished();
 	bool CheckFastReceivingData(long lCurrentTime);
+	static bool IsWebBusy();
 	bool CheckMarketOpen(long lCurrentTime);
 
 	bool TaskUpdateStockProfileDB(long lCurrentTime);

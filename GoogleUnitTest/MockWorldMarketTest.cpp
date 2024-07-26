@@ -5,6 +5,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#include "ChinaMarket.h"
 #include"GeneralCheck.h"
 
 #include"Thread.h"
@@ -12,6 +13,7 @@
 #include"MockWorldMarket.h"
 
 #include"FinnhubDataSource.h"
+#include "SinaRTDataSource.h"
 //#include "TiingoDataSource.h"
 
 using namespace testing;
@@ -77,6 +79,36 @@ namespace FireBirdTest {
 		EXPECT_TRUE(s_pMockWorldMarket->InResetTime(12701));
 		EXPECT_TRUE(s_pMockWorldMarket->InResetTime(13459));
 		EXPECT_FALSE(s_pMockWorldMarket->InResetTime(13500));
+	}
+
+	TEST_F(CMockWorldMarketTest, TestIsReadyToInquireWebData1) {
+		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0) << "默认新浪实时数据服务器";
+		EXPECT_FALSE(gl_pSinaRTDataSource->IsWebBusy()) << "默认值";
+		EXPECT_FALSE(gl_pChinaMarket->IsWebBusy());
+		EXPECT_CALL(*s_pMockWorldMarket, GetResetTime())
+		.WillRepeatedly(Return(13000));
+
+		EXPECT_TRUE(s_pMockWorldMarket->IsReadyToInquireWebData(12700));
+		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData(12701));
+		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData(13459));
+		EXPECT_TRUE(s_pMockWorldMarket->IsReadyToInquireWebData(13500));
+	}
+
+	TEST_F(CMockWorldMarketTest, TestIsReadyToInquireWebData2) {
+		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0) << "默认新浪实时数据服务器";
+		EXPECT_FALSE(gl_pSinaRTDataSource->IsWebBusy()) << "默认值";
+		gl_pSinaRTDataSource->SetWebBusy(true);
+		EXPECT_TRUE(gl_pChinaMarket->IsWebBusy());
+		EXPECT_CALL(*s_pMockWorldMarket, GetResetTime())
+		.WillRepeatedly(Return(13000));
+
+		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData(12700));
+		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData(12701));
+		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData(13459));
+		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData(13500));
+
+		// 恢复原状
+		gl_pSinaRTDataSource->SetWebBusy(false);
 	}
 
 	TEST_F(CMockWorldMarketTest, TestUpdateToken) {

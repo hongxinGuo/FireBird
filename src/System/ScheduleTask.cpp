@@ -138,7 +138,7 @@ bool IsMarketResetting() {
 
 void ScheduleMarketTask() {
 	for (const auto& pVirtualMarket : gl_vMarket) {
-		if (pVirtualMarket->IsReadyToRun()) pVirtualMarket->ScheduleTask();
+		pVirtualMarket->ScheduleTask();
 	}
 }
 
@@ -152,9 +152,15 @@ void TaskSchedulePer100ms() {
 	CHighPerformanceCounter counter;
 	if (IsMarketResetting()) return;// 市场重启需要较长时间，无法并行工作，故而暂停调度。
 	if (s_Processing) {
+		gl_dailyLogger->warn("TaskSchedulePer100ms()发生重入");
+		int total = gl_systemMessage.GetLogMarketTaskSize();
+		for (int i = 0; i < total; i++) {
+			gl_dailyLogger->warn("{}", gl_mapMarketMapIndex.at(gl_systemMessage.GetLogTask(i)->GetType()));
+		}
 		gl_systemMessage.PushInnerSystemInformationMessage("TaskSchedulePer100ms()发生重入");
 		return;
 	}
+	gl_systemMessage.ClearLogMarketTask();
 	s_Processing = true;
 	counter.start();
 	try {
@@ -189,6 +195,7 @@ void TaskSchedulePerSecond() {
 
 void TaskExitSystem() {
 	// 向主窗口发送关闭窗口系统消息，通知框架窗口执行关闭任务。
+	// 由于系统需要顺序关闭各项任务，故而不允许直接退出系统。
 	PostMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), WM_SYSCOMMAND, SC_CLOSE, 0);
 }
 

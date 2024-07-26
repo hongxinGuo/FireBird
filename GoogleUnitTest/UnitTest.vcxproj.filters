@@ -192,9 +192,6 @@
     <ClCompile Include="SystemDataTest.cpp">
       <Filter>Test源文件\System</Filter>
     </ClCompile>
-    <ClCompile Include="ProductTiingoStockSymbolTest.cpp">
-      <Filter>Test源文件\Factory Product\Tiingo</Filter>
-    </ClCompile>
     <ClCompile Include="ProductTiingoStockDayLineTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
@@ -632,6 +629,9 @@
     </ClCompile>
     <ClCompile Include="AccessoryTest.cpp">
       <Filter>Test源文件\accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductTiingoStockSymbolsTest.cpp">
+      <Filter>Test源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -29,7 +29,7 @@ namespace FireBirdTest {
 		string sTemp;
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/Environment/Display/PropertyPage"));
-		EXPECT_TRUE(sTemp== _T("Application"));
+		EXPECT_TRUE(sTemp== _T("System Status"));
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/LogLevel")), SPDLOG_LEVEL_INFO);
 		EXPECT_NE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/LogLevel")), SPDLOG_LEVEL_ERROR) << "预先设置的为info级";
 		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/UsingFastCPU")));
@@ -83,6 +83,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CSystemConfigurationTest, TestInitialize) {
+		EXPECT_EQ(gl_systemConfiguration.GetDisplayPropertyPage(), 0);
 		EXPECT_FALSE(gl_systemConfiguration.IsDebugMode());
 		EXPECT_STREQ(gl_systemConfiguration.GetDatabaseAccountName(), _T("FireBird"));
 		EXPECT_STREQ(gl_systemConfiguration.GetDatabaseAccountPassword(), _T("firebird"));

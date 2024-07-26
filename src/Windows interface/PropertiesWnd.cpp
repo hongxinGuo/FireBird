@@ -2,6 +2,8 @@
 #include "framework.h"
 
 #include "PropertiesWnd.h"
+
+#include "ChinaMarket.h"
 #include "MainFrm.h"
 #include "FireBird.h"
 
@@ -93,6 +95,9 @@ void CFireBirdComboBox::OnCbnSelChange() {
 CPropertiesWnd::CPropertiesWnd() noexcept {
 	m_nComboHeight = 0;
 	m_uIdTimer = 0;
+
+	m_pPropChinaMarketWebStatus = nullptr;
+
 	m_pPropFinnhubWebSocket = nullptr;
 	m_pPropTiingoIEXWebSocket = nullptr;
 	m_pPropTiingoForexWebSocket = nullptr;
@@ -144,16 +149,20 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	rectDummy.SetRectEmpty();
 
 	// Create combo:
-	constexpr DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST | WS_BORDER | CBS_SORT | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+	constexpr DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST | WS_BORDER | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 
 	if (!m_wndObjectCombo.Create(dwViewStyle, rectDummy, this, 1)) {
 		TRACE0("Failed to create Properties Combo \n");
 		return -1;      // fail to create
 	}
 
-	m_wndObjectCombo.AddString(_T("Application"));
-	m_wndObjectCombo.AddString(_T("Properties Window"));
-	m_wndObjectCombo.AddString(_T("Properties2"));
+	CString str;
+	str.LoadString(nullptr, IDS_PROPERTYVIEW_SYSTEM_STATUS);
+	m_wndObjectCombo.AddString(str);
+	str.LoadString(nullptr, IDS_PROPERTYVIEW_PROPERTIES_WINDOW);
+	m_wndObjectCombo.AddString(str);
+	str.LoadString(nullptr, IDS_PROPERTYVIEW_PROPERTIES2);
+	m_wndObjectCombo.AddString(str);
 	m_wndObjectCombo.SetCurSel(gl_systemConfiguration.GetDisplayPropertyPage());
 
 	CRect rectCombo;
@@ -187,7 +196,7 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 设置1秒每次的软调度
 	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(4), 1000, nullptr);
 	if (m_uIdTimer == 0) {
-		CString str;
+		CString str1;
 	}
 
 	return 0;
@@ -233,7 +242,7 @@ void CPropertiesWnd::InitPropList() {
 	m_wndPropList.SetVSDotNetLook();
 	m_wndPropList.MarkModifiedProperties();
 
-	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("System option"));
+	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("System Option"));
 	CString s;
 	switch (gl_systemConfiguration.GetLogLevel()) {
 	case SPDLOG_LEVEL_TRACE:
@@ -290,6 +299,12 @@ void CPropertiesWnd::InitPropList() {
 
 	CMFCPropertyGridProperty* pGroup2 = new CMFCPropertyGridProperty(_T("China market"));
 
+	m_pPropChinaMarketWebStatus = new CMFCPropertyGridColorProperty(_T("Web Status"), RGB(0, 192, 0), nullptr);
+	m_pPropChinaMarketWebStatus->SetColumnsNumber(1);
+	m_pPropChinaMarketWebStatus->EnableAutomaticButton(_T("Default"), ::GetSysColor(COLOR_3DFACE), false);
+	m_pPropChinaMarketWebStatus->Enable(false);
+	pGroup2->AddSubItem(m_pPropChinaMarketWebStatus);
+
 	LOGFONT lf;
 	CFont* font = CFont::FromHandle(static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
 	font->GetLogFont(&lf);
@@ -302,9 +317,9 @@ void CPropertiesWnd::InitPropList() {
 	m_wndPropList.AddProperty(pGroup2);
 
 	CMFCPropertyGridProperty* pGroup3 = new CMFCPropertyGridProperty(_T("World market"));
-	pProp = new CMFCPropertyGridProperty(_T("(Name)"), _T("Application"));
-	pProp->Enable(FALSE);
-	pGroup3->AddSubItem(pProp);
+	m_pPropWorldMarketWebStatus = new CMFCPropertyGridProperty(_T("(Web Status)"), _T("running"));
+	m_pPropWorldMarketWebStatus->Enable(FALSE);
+	pGroup3->AddSubItem(m_pPropWorldMarketWebStatus);
 
 	CMFCPropertyGridColorProperty* pColorProp = new CMFCPropertyGridColorProperty(_T("Window Color"), RGB(210, 192, 254), nullptr, _T("Specifies the default window color"));
 	pColorProp->EnableOtherButton(_T("Other..."));
@@ -317,6 +332,22 @@ void CPropertiesWnd::InitPropList() {
 	pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("Folder"), _T("c:\\")));
 
 	m_wndPropList.AddProperty(pGroup3);
+
+	CMFCPropertyGridProperty* pGroup5 = new CMFCPropertyGridProperty(_T("Web Socket"));
+	m_pPropFinnhubWebSocket = new CMFCPropertyGridProperty(_T("(Finnhub)"), _T("Closed"));
+	m_pPropFinnhubWebSocket->Enable(false);
+	pGroup5->AddSubItem(m_pPropFinnhubWebSocket);
+	m_pPropTiingoIEXWebSocket = new CMFCPropertyGridProperty(_T("(TiingoIEX)"), _T("Closed"));
+	m_pPropTiingoIEXWebSocket->Enable(false);
+	pGroup5->AddSubItem(m_pPropTiingoIEXWebSocket);
+	m_pPropTiingoForexWebSocket = new CMFCPropertyGridProperty(_T("(TiingoForex)"), _T("Closed"));
+	m_pPropTiingoForexWebSocket->Enable(false);
+	pGroup5->AddSubItem(m_pPropTiingoForexWebSocket);
+	m_pPropTiingoCryptoWebSocket = new CMFCPropertyGridProperty(_T("(TiingoCrypto)"), _T("Closed"));
+	m_pPropTiingoCryptoWebSocket->Enable(false);
+	pGroup5->AddSubItem(m_pPropTiingoCryptoWebSocket);
+
+	m_wndPropList.AddProperty(pGroup5);
 
 	CMFCPropertyGridProperty* pGroup4 = new CMFCPropertyGridProperty(_T("Hierarchy"));
 
@@ -332,22 +363,6 @@ void CPropertiesWnd::InitPropList() {
 
 	pGroup4->Expand(FALSE);
 	m_wndPropList.AddProperty(pGroup4);
-
-	CMFCPropertyGridProperty* pGroup5 = new CMFCPropertyGridProperty(_T("Web Socket"));
-	m_pPropFinnhubWebSocket = new CMFCPropertyGridProperty(_T("(Finnhub)"), _T("Application"));
-	m_pPropFinnhubWebSocket->Enable(false);
-	pGroup5->AddSubItem(m_pPropFinnhubWebSocket);
-	m_pPropTiingoIEXWebSocket = new CMFCPropertyGridProperty(_T("(TiingoIEX)"), _T("Application"));
-	m_pPropTiingoIEXWebSocket->Enable(false);
-	pGroup5->AddSubItem(m_pPropTiingoIEXWebSocket);
-	m_pPropTiingoForexWebSocket = new CMFCPropertyGridProperty(_T("(TiingoForex)"), _T("Application"));
-	m_pPropTiingoForexWebSocket->Enable(false);
-	pGroup5->AddSubItem(m_pPropTiingoForexWebSocket);
-	m_pPropTiingoCryptoWebSocket = new CMFCPropertyGridProperty(_T("(TiingoCrypto)"), _T("Application"));
-	m_pPropTiingoCryptoWebSocket->Enable(false);
-	pGroup5->AddSubItem(m_pPropTiingoCryptoWebSocket);
-
-	m_wndPropList.AddProperty(pGroup5);
 }
 
 void CPropertiesWnd::OnSetFocus(CWnd* pOldWnd) {
@@ -382,7 +397,9 @@ void CPropertiesWnd::SetPropListFont() {
 }
 
 void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
-	// TODO: Add your message handler code here and/or call default
+	if (gl_pChinaMarket->IsWebBusy()) m_pPropChinaMarketWebStatus->SetColor(RGB(192, 0, 0));
+	else m_pPropChinaMarketWebStatus->SetColor(RGB(0, 192, 0));
+
 	CString str = _T("");
 	switch (gl_pFinnhubWebSocket->GetState()) {
 	case ix::ReadyState::Closed:

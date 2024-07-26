@@ -41,17 +41,15 @@ CVirtualDataSource::CVirtualDataSource() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
-/// <summary>
+///<summary>
 /// DataSource的顶层函数。
-/// 当申请信息为空时，生成当前查询字符串。
-/// 当存在申请信息且没有正在运行的查询线程时，生成查询线程。
 ///
 /// Note 调用函数不能使用thread_pool_executor或者background_executor，只能使用thread_executor，否则thread_pool_executor所生成线程的返回值无法读取，原因待查。
 ///
-/// </summary>
-///
 /// Note 必须使用独立的thread_executor任务序列，不能使用thread_pool_executor或者background_executor，
 //  否则解析工作使用的thread_pool_executor会与之产生冲突，导致产生同步问题。
+///
+///</summary>
 ///
 /// lMarketTime：当前市场时间
 ///
@@ -76,6 +74,8 @@ void CVirtualDataSource::Run(long lMarketTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
+	static time_t s_LastInquiryTime = 0;
+
 	SetWorkingThreadRunning(true);
 	if (!IsInquiring()) {
 		ASSERT(!HaveInquiry());
@@ -98,7 +98,11 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 				else
 					ASSERT(pWebData == nullptr);
 				counter.stop();
-				SetCurrentInquiryTime(counter.GetElapsedMillisecond());
+				time_t ttCurrentInquiryTime = counter.GetElapsedMillisecond();
+				if (s_LastInquiryTime > 200 && ttCurrentInquiryTime > 200) SetWebBusy(true); // 
+				else SetWebBusy(false);
+				s_LastInquiryTime = ttCurrentInquiryTime;
+				SetCurrentInquiryTime(ttCurrentInquiryTime);
 				return pWebData;
 			});
 			vResults.emplace_back(std::move(result));

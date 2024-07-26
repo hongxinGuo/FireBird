@@ -14,6 +14,7 @@
 #include<string>
 #include<fstream>
 
+#include "resource.h"
 #include "TengxunRTDataSource.h"
 using std::fstream;
 using std::ios;
@@ -28,7 +29,7 @@ std::string gl_sSystemConfiguration = R"(
 {
 "Environment": {
 	"Display": {
-		"PropertyPage" : "Application"
+		"PropertyPage" : "System Status"
 	}
 },
 
@@ -194,17 +195,20 @@ void CSystemConfiguration::UpdateDB() {
 
 void CSystemConfiguration::Update(json& jsonData) {
 	string sTemp;
-
+	CString str1, str2, str3;
+	str1.LoadString(nullptr, IDS_PROPERTYVIEW_SYSTEM_STATUS); // Note 使用LoadString时，必须明确声明hInstance为nullptr，否则报错
+	str2.LoadString(nullptr, IDS_PROPERTYVIEW_PROPERTIES_WINDOW);
+	str3.LoadString(nullptr, IDS_PROPERTYVIEW_PROPERTIES2);
 	// 环境配置
 	try {
 		sTemp = jsonData.at("Environment").at("Display").at("PropertyPage");
-		if (sTemp == _T("Application")) {
+		if (sTemp.c_str() == str1) {
 			m_iDisplayPropertyPage = 0;
 		}
-		else if (sTemp == _T("Property")) {
+		else if (sTemp.c_str() == str2) {
 			m_iDisplayPropertyPage = 1;
 		}
-		else if (sTemp == _T("Other")) {
+		else if (sTemp.c_str() == str3) {
 			m_iDisplayPropertyPage = 2;
 		}
 	}
@@ -483,22 +487,25 @@ void CSystemConfiguration::Update(json& jsonData) {
 
 void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	jsonData.clear(); // 清除之前的数据。
+	CString str;
 
 	// Environment
 	switch (m_iDisplayPropertyPage) {
 	case 0:
-		jsonData["Environment"]["Display"]["PropertyPage"] = _T("Application");
+		str.LoadString(nullptr, IDS_PROPERTYVIEW_SYSTEM_STATUS);
+		jsonData["Environment"]["Display"]["PropertyPage"] = str;
 		break;
 	case 1:
-		jsonData["Environment"]["Display"]["PropertyPage"] = _T("Property");
+		str.LoadString(nullptr, IDS_PROPERTYVIEW_PROPERTIES_WINDOW);
 		break;
 	case 2:
-		jsonData["Environment"]["Display"]["PropertyPage"] = _T("Other");
+		str.LoadString(nullptr, IDS_PROPERTYVIEW_PROPERTIES2);
 		break;
 	default:
-		jsonData["Environment"]["Display"]["PropertyPage"] = _T("Application");
+		str.LoadString(nullptr, IDS_PROPERTYVIEW_SYSTEM_STATUS);
 		break;
 	}
+	jsonData["Environment"]["Display"]["PropertyPage"] = str;
 
 	// system
 	jsonData["SystemConfiguration"]["LogLevel"] = m_iLogLevel;

@@ -22,6 +22,7 @@
 #include <ixwebsocket/IXNetSystem.h>
 #include <ixwebsocket/IXUserAgent.h>
 
+#include "ChinaMarket.h"
 #include "InfoReport.h"
 #include "QuandlDataSource.h"
 #include "TiingoDataSource.h"
@@ -146,6 +147,7 @@ bool CWorldMarket::ProcessTask(long lCurrentTime) {
 	if (IsMarketTaskEmpty()) return false;
 	const auto pTask = GetMarketTask();
 	if (lCurrentTime >= pTask->GetTime()) {
+		gl_systemMessage.AddLogMarketTask(pTask);
 		DiscardCurrentMarketTask();
 		switch (pTask->GetType()) {
 		case WORLD_MARKET_CREATE_TASK__: // 生成其他任务
@@ -166,6 +168,7 @@ bool CWorldMarket::ProcessTask(long lCurrentTime) {
 			break;
 		case WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__:
 			TaskProcessWebSocketData(lCurrentTime);
+			TaskPerSecond(lCurrentTime);
 			break;
 		default:
 			break;
@@ -385,6 +388,9 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 	}
 
 	return (fUpdated);
+}
+
+void CWorldMarket::TaskPerSecond(long lCurrentTime) {
 }
 
 bool CWorldMarket::UpdateEPSSurpriseDB() {
@@ -873,4 +879,10 @@ void CWorldMarket::UpdateMarketHoliday(const CMarketHolidaysPtr& pv) const {
 	for (auto p : *pv) {
 		m_pvMarketHoliday->push_back(p);
 	}
+}
+
+bool CWorldMarket::IsReadyToInquireWebData(long lCurrentMarketTime) {
+	if (gl_pChinaMarket->IsWebBusy()) return false;
+	if (InResetTime(lCurrentMarketTime)) return false;
+	return true;
 }

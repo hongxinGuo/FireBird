@@ -329,7 +329,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_aTimer.at(GENERAL_TASK_PER_SECOND__) = gl_runtime.timer_queue()->make_timer(
 		100ms,
 		1000ms,
-		gl_runtime.thread_executor(), // 此为主调度任务，任务繁杂，故而使用独立的工作线程来调度任务
+		gl_runtime.thread_executor(), // 此为辅助调度任务
 		::TaskSchedulePerSecond);
 
 	// 设置500毫秒每次的软调度，只用于更新状态任务。

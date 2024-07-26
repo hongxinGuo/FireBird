@@ -52,6 +52,9 @@ public:
 
 	bool TaskUpdateForexDayLineDB();
 	bool TaskUpdateCryptoDayLineDB();
+
+	void TaskPerSecond(long lCurrentTime);
+
 	bool UpdateEPSSurpriseDB();
 	void UpdateSECFilingsDB();
 
@@ -95,6 +98,7 @@ public:
 	void UpdateMarketHoliday(const CMarketHolidaysPtr& pv) const;
 
 	// check function
+	bool IsReadyToInquireWebData(long lCurrentMarketTime) override;
 
 protected:
 	long m_lCurrentUpdateDayLinePos; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。

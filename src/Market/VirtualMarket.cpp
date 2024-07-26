@@ -6,7 +6,6 @@
 
 CVirtualMarket::CVirtualMarket() {
 	m_fResetMarket = true;
-	m_fReadyToRun = true;
 
 	m_lMarketLastTradeDate = 0;
 	m_lMarketTime = 0;
@@ -38,7 +37,7 @@ void CVirtualMarket::ScheduleTask() {
 	}
 
 	// 调用本市场的各data source，进行网络数据的接收和处理。在市场重置时间内暂停
-	if (!InResetTime(lCurrentMarketTime)) RunDataSource(lCurrentMarketTime);
+	if (IsReadyToInquireWebData(lCurrentMarketTime)) RunDataSource(lCurrentMarketTime);
 
 	// 执行本市场各项定时任务。当市场正在重置时暂停
 	if (!IsResetting()) ProcessTask(lCurrentMarketTime);

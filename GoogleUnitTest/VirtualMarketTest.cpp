@@ -22,7 +22,6 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
-			virtualMarket.SetReadyToRun(true);
 		}
 
 		void TearDown() override {
@@ -132,14 +131,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(0));
 		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(1000));
 		EXPECT_FALSE(virtualMarket.IsTimeToResetSystem(virtualMarket.GetMarketTime()));
-	}
-
-	TEST_F(CVirtualMarketTest, TestIsReadyToRun) {
-		EXPECT_TRUE(virtualMarket.IsReadyToRun());
-		virtualMarket.SetReadyToRun(false);
-		EXPECT_FALSE(virtualMarket.IsReadyToRun());
-		virtualMarket.SetReadyToRun(true);
-		EXPECT_TRUE(virtualMarket.IsReadyToRun());
 	}
 
 	TEST_F(CVirtualMarketTest, TestMarketReady) {

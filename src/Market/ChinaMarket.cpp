@@ -24,9 +24,14 @@
 
 #include"SetCurrentWeekLine.h"
 
+#include "NeteaseRTDataSource.h"
+#include "SinaRTDataSource.h"
+#include "TengxunRTDataSource.h"
+
 #define WM_FIREBIRD_EXIT                0X500
 
 #include<gsl/gsl>
+
 using namespace gsl;
 
 CChinaMarket::CChinaMarket() {
@@ -178,6 +183,7 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 	if (IsMarketTaskEmpty()) return false;
 	const auto pTask = GetMarketTask();
 	if (lCurrentTime >= pTask->GetTime()) { // time to executive?
+		gl_systemMessage.AddLogMarketTask(pTask);
 		DiscardCurrentMarketTask();
 		switch (pTask->GetType()) {
 		case CHINA_MARKET_CREATE_TASK__: // 生成其他任务
@@ -196,6 +202,7 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 			TaskLoadTempRTData(GetMarketDate(), lCurrentTime);
 			break;
 		case CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__:
+			TaskPerSecond(lCurrentTime);
 			TaskDistributeAndCalculateRTData(lCurrentTime);
 			break;
 		case CHINA_MARKET_SAVE_TEMP_RT_DATA__:
@@ -235,6 +242,7 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 			TaskChoiceRSSet(lCurrentTime);
 			break;
 		default:
+			ASSERT(0); // 错误的任务号
 			break;
 		}
 		return true;
@@ -602,6 +610,7 @@ void CChinaMarket::TaskCreateTask(long lCurrentTime) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::TaskExitSystem(long lCurrentTime) {
 	// 向主窗口发送关闭窗口系统消息，通知框架窗口执行关闭任务。
+	// 由于系统需要顺序关闭各项任务，故而不允许直接退出系统。
 	PostMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), WM_SYSCOMMAND, SC_CLOSE, 0);
 }
 
@@ -650,6 +659,10 @@ void CChinaMarket::TaskLoadCurrentStockHistoryData() const {
 		pStock->CalculateWeekLineRSIndex();
 		pStock->SetWeekLineLoaded(true);
 	});
+}
+
+void CChinaMarket::TaskPerSecond(long lCurrentTime) {
+	IsWebBusy();
 }
 
 void CChinaMarket::TaskAccessoryTask(long lCurrentTime) {
@@ -820,6 +833,37 @@ bool CChinaMarket::CheckFastReceivingData(long lCurrentTime) {
 	}
 
 	return m_fFastReceivingRTData;
+}
+
+bool CChinaMarket::IsWebBusy() {
+	static bool s_bWebBusy = false;
+	bool bWebBusy = false;
+	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
+	case 0: // 新浪实时数据
+		bWebBusy = gl_pSinaRTDataSource->IsWebBusy();
+		break;
+	case 1: // 更新网易实时数据读取时间
+		bWebBusy = gl_pNeteaseRTDataSource->IsWebBusy();
+		break;
+	case 2: // 更新腾讯实时数据读取时间
+		bWebBusy = gl_pTengxunRTDataSource->IsWebBusy();
+		break;
+	default: // error
+		ASSERT(0);
+		break;
+	}
+	if (bWebBusy) {
+		if (!s_bWebBusy) {
+			gl_dailyLogger->info("Web busy");
+		}
+	}
+	else {
+		if (s_bWebBusy) {
+			gl_dailyLogger->info("Web not busy");
+		}
+	}
+	s_bWebBusy = bWebBusy;
+	return bWebBusy;
 }
 
 bool CChinaMarket::CheckMarketOpen(long lCurrentTime) {

@@ -92,8 +92,7 @@ public:
 	void CalculateTime() noexcept; // 计算本市场的各时间
 	void CalculateLastTradeDate() noexcept;
 
-	bool IsReadyToRun() const noexcept { return m_fReadyToRun; }
-	void SetReadyToRun(const bool fFlag) noexcept { m_fReadyToRun = fFlag; }
+	virtual bool IsReadyToInquireWebData(long lCurrentMarketTime) { return true; }
 
 	virtual bool IsTimeToResetSystem(long) { return false; } // 默认永远处于非重启市场状态，继承类需要各自设置之
 	bool IsSystemReady() const noexcept { return m_fSystemReady; }
@@ -144,7 +143,6 @@ protected:
 	bool m_fResettingMarket{false}; // 市场正在重启标识
 
 private:
-	bool m_fReadyToRun{true}; // 市场准备好运行标识。目前永远为真。
 	bool m_fResetMarket{true}; // 重启系统标识
 };
 

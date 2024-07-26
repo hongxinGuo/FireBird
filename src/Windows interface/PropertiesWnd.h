@@ -1,7 +1,7 @@
 #pragma once
 
 enum configuration_option {
-	SYSTEM_LOG_LEVEL_,
+	SYSTEM_LOG_LEVEL_ = 1,
 	SYSTEM_FAST_CPU,
 	SYSTEM_DEBUG_MODE_,
 	SYSTEM_RELOAD_SYSTEM_,
@@ -49,6 +49,8 @@ protected:
 	CPropertiesToolBar m_wndToolBar;
 	CFireBirdPropertyGridCtrl m_wndPropList;
 
+	CMFCPropertyGridColorProperty* m_pPropChinaMarketWebStatus;
+	CMFCPropertyGridProperty* m_pPropWorldMarketWebStatus;
 	CMFCPropertyGridProperty* m_pPropFinnhubWebSocket;
 	CMFCPropertyGridProperty* m_pPropTiingoIEXWebSocket;
 	CMFCPropertyGridProperty* m_pPropTiingoForexWebSocket;
