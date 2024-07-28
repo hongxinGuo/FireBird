@@ -9,13 +9,6 @@
 
 #include"Thread.h"
 
-//#include"FinnhubCryptoSymbol.h"
-//#include"MockFinnhubCryptoSymbol.h"
-//#include"DayLine.h"
-
-#include<memory>
-using std::make_shared;
-
 using namespace testing;
 
 namespace FireBirdTest {

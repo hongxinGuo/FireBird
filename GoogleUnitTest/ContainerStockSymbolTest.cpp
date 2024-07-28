@@ -5,9 +5,6 @@
 #include"ContainerStockSymbol.h"
 #include"ChinaStockCodeConverter.h"
 
-#include<memory>
-using std::make_shared;
-
 using namespace testing;
 
 namespace FireBirdTest {

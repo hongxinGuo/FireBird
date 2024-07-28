@@ -34,7 +34,6 @@
 #undef max
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
-using namespace std::chrono_literals;
 
 bool CMainFrame::sm_fGlobeInit = false;
 

@@ -4,9 +4,6 @@
 
 #include"ChinaStock.h"
 
-#include<memory>
-using std::make_shared;
-
 namespace FireBirdTest {
 	struct HighLowData {
 		HighLowData(const CString& strStockCode, long lPBuy0, long lPSell0, long lLastClose, long lHighLimit, long lLowLimit, long lHighLimit2, long lLowLimit2) {

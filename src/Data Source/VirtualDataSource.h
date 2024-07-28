@@ -3,12 +3,6 @@
 #include"VirtualWebProduct.h"
 #include "InquireEngine.h"
 
-using std::counting_semaphore;
-using std::list;
-using std::atomic_bool;
-using std::atomic_long;
-using std::atomic_int64_t;
-
 class CVirtualDataSource : public std::enable_shared_from_this<CVirtualDataSource> {
 	friend CVirtualWebProduct;
 

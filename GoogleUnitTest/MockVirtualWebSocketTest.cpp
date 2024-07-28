@@ -5,10 +5,8 @@
 #include"MockVirtualWebSocket.h"
 #include "WorldMarket.h"
 
-using std::exception;
-using std::make_shared;
-
 using namespace testing;
+
 CMockVirtualWebSocketPtr gl_pMockVirtualWebSocket;
 
 namespace FireBirdTest {

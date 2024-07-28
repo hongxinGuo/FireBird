@@ -5,9 +5,6 @@
 #include"JsonParse.h"
 #include"JsonGetValue.h"
 
-#include<memory>
-using std::make_shared;
-
 namespace FireBirdTest {
 	class jsonGetValueTest : public ::testing::Test {
 		void SetUp() override {

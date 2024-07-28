@@ -9,9 +9,6 @@
 #include "pch.h"
 #include "ContainerFinnhubStockExchange.h"
 
-#include<memory>
-using std::make_shared;
-
 CContainerFinnhubStockExchange::CContainerFinnhubStockExchange() {
 	Reset();
 }

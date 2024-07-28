@@ -12,9 +12,6 @@
 #include"simdjsonGetValue.h"
 #include "WorldMarket.h"
 
-using std::thread;
-using std::make_shared;
-
 void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	CString str;
 	gl_pFinnhubWebSocket->SetError(false);

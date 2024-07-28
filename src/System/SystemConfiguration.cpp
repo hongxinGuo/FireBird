@@ -16,8 +16,6 @@
 
 #include "resource.h"
 #include "TengxunRTDataSource.h"
-using std::fstream;
-using std::ios;
 
 bool CSystemConfiguration::sm_bInitialized = false;
 

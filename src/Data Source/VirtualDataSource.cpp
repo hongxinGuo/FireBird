@@ -13,8 +13,6 @@
 
 #include"HighPerformanceCounter.h"
 
-using std::thread;
-
 atomic_long CVirtualDataSource::sm_lTotalByteRead = 0;
 atomic_long CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;
 

@@ -6,10 +6,7 @@
 #include"SetWeekLineExtendInfo.h"
 #include"SetCurrentWeekLine.h"
 
-#include<memory>
-
 #include "InfoReport.h"
-using std::make_shared;
 
 CContainerChinaWeekLine::CContainerChinaWeekLine() {
 }

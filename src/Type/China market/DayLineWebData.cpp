@@ -8,8 +8,6 @@
 #include "JsonParse.h"
 #include "TimeConvert.h"
 
-using std::make_shared;
-
 CDayLineWebData::CDayLineWebData() {
 	Reset();
 }

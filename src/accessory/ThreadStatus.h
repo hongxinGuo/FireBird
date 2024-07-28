@@ -1,10 +1,6 @@
 #pragma once
 
 #include <afx.h>
-#include<semaphore>
-#include<atomic>
-using std::counting_semaphore;
-using std::atomic_int;
 
 class CThreadStatus final {
 	//¸÷Ïß³Ì×´Ì¬

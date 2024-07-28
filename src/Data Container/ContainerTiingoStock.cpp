@@ -2,9 +2,6 @@
 #include "ContainerTiingoStock.h"
 #include "InfoReport.h"
 
-#include<memory>
-using std::make_shared;
-
 CContainerTiingoStock::CContainerTiingoStock() { Reset(); }
 
 void CContainerTiingoStock::Reset() {

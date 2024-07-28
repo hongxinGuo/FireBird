@@ -7,8 +7,6 @@
 #include "NeteaseRTDataSource.h"
 #include "TengxunRTDataSource.h"
 
-using std::exception;
-
 using namespace testing;
 
 namespace FireBirdTest {

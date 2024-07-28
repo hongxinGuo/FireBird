@@ -3,8 +3,6 @@
 #include "SystemMessage.h"
 #include"OutputWnd.h"
 
-using std::binary_semaphore;
-
 binary_semaphore s_RTDataStockCode{1};
 binary_semaphore s_DayLineDataStockCode{1};
 binary_semaphore s_CurrentFinnhubWebSocketStake{1};
@@ -12,9 +10,11 @@ binary_semaphore s_CurrentTiingoWebSocketIEX{1};
 binary_semaphore s_CurrentTiingoWebSocketCrypto{1};
 binary_semaphore s_CurrentTiingoWebSocketForex{1};
 
-CSystemDeque::CSystemDeque() {}
+CSystemDeque::CSystemDeque() {
+}
 
-CSystemDeque::~CSystemDeque() {}
+CSystemDeque::~CSystemDeque() {
+}
 
 CSystemMessage::~CSystemMessage() = default;
 

@@ -32,11 +32,6 @@
 
 #include"spdlog/spdlog.h"
 
-using std::vector;
-using std::shared_ptr;
-using std::make_shared;
-using std::string;
-
 // 包含concurrencpp.h之前，需要注销max的定义
 #undef max
 #include"concurrencpp/concurrencpp.h"

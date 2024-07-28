@@ -6,8 +6,6 @@
 #include"WebRTData.h"
 #include"WebData.h"
 
-using std::make_shared;
-
 namespace FireBirdTest {
 	class CStockWebRTDataTest : public testing::Test {
 	protected:

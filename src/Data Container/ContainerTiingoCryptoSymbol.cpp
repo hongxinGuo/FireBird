@@ -3,9 +3,6 @@
 
 #include "InfoReport.h"
 
-#include<memory>
-using std::make_shared;
-
 CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() {
 	Reset();
 }

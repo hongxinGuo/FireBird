@@ -7,7 +7,6 @@
 #include"FinnhubWebSocket.h"
 
 using namespace testing;
-using std::make_shared;
 
 namespace FireBirdTest {
 	struct Test_FinnhubWebData {
@@ -18,7 +17,8 @@ namespace FireBirdTest {
 			m_pData->Test_SetBuffer_(strData);
 		}
 
-		~Test_FinnhubWebData() {}
+		~Test_FinnhubWebData() {
+		}
 
 	public:
 		long m_lIndex;
@@ -32,7 +32,8 @@ namespace FireBirdTest {
 			m_pData = strData;
 		}
 
-		~FinnhubWebSocketData() {}
+		~FinnhubWebSocketData() {
+		}
 
 	public:
 		long m_lIndex;

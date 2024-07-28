@@ -7,10 +7,6 @@
 #include"DayLine.h"
 #include"DayLineWebData.h"
 
-#include<vector>
-
-using std::exception;
-
 namespace FireBirdTest {
 	struct NetEaseDayLineData {
 		NetEaseDayLineData(int count, const CString& Data) {

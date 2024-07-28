@@ -12,4 +12,6 @@
 
 #include"globedef.h"
 
+using namespace std;
+
 #endif

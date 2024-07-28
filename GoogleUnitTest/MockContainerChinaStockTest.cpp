@@ -6,9 +6,6 @@
 
 #include<memory>
 
-//#include "TimeConvert.h"
-using std::make_shared;
-
 using namespace testing;
 
 namespace FireBirdTest {

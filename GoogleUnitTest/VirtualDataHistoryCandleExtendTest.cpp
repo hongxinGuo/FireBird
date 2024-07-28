@@ -4,9 +4,6 @@
 
 #include"VirtualDataHistoryCandleExtend.h"
 
-#include<memory>
-using std::make_shared;
-
 namespace FireBirdTest {
 	class CVirtualDataHistoryCandleExtendTest : public ::testing::Test {
 	protected:

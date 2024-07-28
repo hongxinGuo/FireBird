@@ -4,8 +4,6 @@
 
 #include"virtualWebSocket.h"
 
-using std::exception;
-
 using namespace testing;
 
 namespace FireBirdTest {

@@ -1,7 +1,5 @@
 #pragma once
 
-using std::string;
-
 class CContainerFinnhubCryptoExchange final {
 public:
 	CContainerFinnhubCryptoExchange();

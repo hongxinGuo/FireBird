@@ -3,10 +3,6 @@
 #include"VirtualStock.h"
 #include "VirtualContainer.h"
 
-using std::vector;
-using std::map;
-using std::string;
-
 using vectorString = vector<string>;
 
 class CContainerVirtualStock : public CVirtualContainer {

@@ -17,8 +17,6 @@
 #include"SetEPSSurprise.h"
 #include "SetSECFilings.h"
 
-using std::make_shared;
-
 CWorldStock::CWorldStock() {
 	// Finnhub SymbolÊý¾Ý
 	m_strIPODate = _T(" ");

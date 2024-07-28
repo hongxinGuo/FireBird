@@ -2,8 +2,6 @@
 
 #include "ChinaStockCodeConverter.h"
 
-using std::exception;
-
 string XferSinaToStandard(const CString& strSina) {
 	const string strSymbol = strSina.Right(6).GetBuffer();
 	if (strSina.GetAt(0) == 's') {

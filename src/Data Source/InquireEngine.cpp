@@ -15,9 +15,6 @@
 
 #include "InfoReport.h"
 
-using std::thread;
-using std::make_shared;
-
 CInquireEngine::CInquireEngine(): m_dataBuffer{} {
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
 	m_strInquiry = _T("");

@@ -4,22 +4,21 @@
 
 #include"PriorityQueueWebRTData.h"
 
-#include<memory>
-using std::make_shared;
-
 namespace FireBirdTest {
 	static CPriorityQueueWebRTData gl_PriorityQueueRTData;
 
 	class CPriorityQueueRTDataTest : public ::testing::Test {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
 			gl_PriorityQueueRTData.Reset();
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 

@@ -6,8 +6,6 @@
 
 #include"ChinaStockCodeConverter.h"
 
-using std::exception;
-
 namespace FireBirdTest {
 	class StockCodeConverterTest : public testing::Test {
 		void SetUp() override {

@@ -4,10 +4,7 @@
 #include"SetFinnhubCryptoSymbol.h"
 #include"FinnhubCryptoSymbol.h"
 
-#include<memory>
-
 #include "InfoReport.h"
-using std::make_shared;
 
 CContainerFinnhubCryptoSymbol::CContainerFinnhubCryptoSymbol() {
 	CContainerFinnhubCryptoSymbol::Reset();

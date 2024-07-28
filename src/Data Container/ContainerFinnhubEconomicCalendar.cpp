@@ -2,10 +2,7 @@
 #include "ContainerFinnhubEconomicCalendar.h"
 #include"SetEconomicCalendar.h"
 
-#include<memory>
-
 #include "InfoReport.h"
-using std::make_shared;
 
 CContainerFinnhubEconomicCalendar::CContainerFinnhubEconomicCalendar() {
 	Reset();

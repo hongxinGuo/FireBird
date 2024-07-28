@@ -6,8 +6,6 @@
 #include "WebData.h"
 #include "WebRTData.h"
 
-using std::make_shared;
-
 namespace FireBirdTest {
 	class jsonParseTest : public testing::Test {
 		void SetUp() override {
@@ -19,7 +17,8 @@ namespace FireBirdTest {
 			gl_systemConfiguration.SetWorkingMode(false);
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			CWebRTDataPtr pRTData = nullptr;
-			while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {}
+			while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {
+			}
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -101,7 +100,8 @@ namespace FireBirdTest {
 		const CWebDataPtr pData = make_shared<CWebData>();
 		pData->Test_SetBuffer_(strData);
 		CWebRTDataPtr pRTData = nullptr;
-		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {}
+		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {
+		}
 
 		ParseTengxunRTData(pData);
 
@@ -115,7 +115,8 @@ namespace FireBirdTest {
 		const CWebDataPtr pData = make_shared<CWebData>();
 		pData->Test_SetBuffer_(strData);
 		CWebRTDataPtr pRTData = nullptr;
-		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {}
+		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {
+		}
 
 		ParseTengxunRTData(pData);
 
@@ -129,12 +130,14 @@ namespace FireBirdTest {
 		const CWebDataPtr pData = make_shared<CWebData>();
 		pData->Test_SetBuffer_(strData);
 		CWebRTDataPtr pRTData = nullptr;
-		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {}
+		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {
+		}
 
 		ParseTengxunRTData(pData);
 
 		EXPECT_TRUE(gl_qChinaMarketRTData.size_approx() == 2);
-		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {}
+		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {
+		}
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 	}
 
@@ -144,7 +147,8 @@ namespace FireBirdTest {
 		const CWebDataPtr pData = make_shared<CWebData>();
 		pData->Test_SetBuffer_(strData);
 		CWebRTDataPtr pRTData = nullptr;
-		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {}
+		while (gl_qChinaMarketRTData.try_dequeue(pRTData)) {
+		}
 
 		ParseTengxunRTData(pData);
 

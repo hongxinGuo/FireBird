@@ -6,8 +6,6 @@
 #include"SetStockSection.h"
 #include "InfoReport.h"
 
-using std::make_shared;
-
 CContainerStockSymbol::CContainerStockSymbol() {
 	CContainerStockSymbol::Reset();
 }

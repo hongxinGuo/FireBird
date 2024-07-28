@@ -20,8 +20,6 @@
 #include"simdjson.h"
 using namespace simdjson;
 
-using std::make_shared;
-
 // 这个是目前能够找到的最大的json数据，用于测试ParseWithPTree和ParseWithNlohmannJson的速度
 // 测试结果是Nlohmann json的速度比boost的Ptree快50%左右。
 // 使用下面的数据，nlohmann json的release版本用时大致为250微秒；PTree用时大致为330微秒。
@@ -259,7 +257,8 @@ public:
 		pWebData->Test_SetBuffer_(sTiingoSymbol.c_str());
 	}
 
-	void TearDown(const benchmark::State& state) override {}
+	void TearDown(const benchmark::State& state) override {
+	}
 
 	string sUSExchangeStockCode;
 	string sNeteaseRTData;
@@ -340,7 +339,8 @@ public:
 		pWebData->Test_SetBuffer_(s.c_str());
 	}
 
-	void TearDown(const benchmark::State& state) override {}
+	void TearDown(const benchmark::State& state) override {
+	}
 
 	CWebDataPtr pWebData;
 	string s;
@@ -370,7 +370,8 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength);
 	}
 
-	void TearDown(const benchmark::State& state) override {}
+	void TearDown(const benchmark::State& state) override {
+	}
 
 	string s;
 	CWebDataPtr pWebData;
@@ -395,7 +396,8 @@ public:
 		pWebData->SetData(str.GetBuffer(), lStringLength);
 	}
 
-	void TearDown(const benchmark::State& state) override {}
+	void TearDown(const benchmark::State& state) override {
+	}
 
 	string s;
 	CWebDataPtr pWebData;

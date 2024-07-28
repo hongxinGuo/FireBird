@@ -6,9 +6,6 @@ using namespace simdjson;
 
 using namespace testing;
 
-using std::exception;
-using std::vector;
-
 auto s_simdjson1 = R"({
 	"integer1": 1,
 	"double1" : 2.0,

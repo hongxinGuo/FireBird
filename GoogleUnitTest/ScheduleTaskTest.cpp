@@ -6,8 +6,6 @@
 #include "WebData.h"
 #include "WebRTData.h"
 
-using std::make_shared;
-
 namespace FireBirdTest {
 	class ScheduleTaskTest : public testing::Test {
 		void SetUp() override {
@@ -21,5 +19,6 @@ namespace FireBirdTest {
 		}
 	};
 
-	TEST_F(ScheduleTaskTest, TestTaskCheckWorldMarketReady) {}
+	TEST_F(ScheduleTaskTest, TestTaskCheckWorldMarketReady) {
+	}
 }

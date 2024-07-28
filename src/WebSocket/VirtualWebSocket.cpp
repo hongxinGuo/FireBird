@@ -8,9 +8,6 @@
 #include "Thread.h"
 #include "WorldMarket.h"
 
-using std::exception;
-using std::thread;
-
 CVirtualWebSocket::CVirtualWebSocket() {
 	m_iSubscriptionId = 0;
 	m_HeartbeatTime = 0;

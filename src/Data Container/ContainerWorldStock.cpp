@@ -13,8 +13,6 @@
 
 #include "ContainerWorldStock.h"
 
-using std::make_shared;
-
 CContainerWorldStock::CContainerWorldStock() {
 	CContainerWorldStock::Reset();
 }

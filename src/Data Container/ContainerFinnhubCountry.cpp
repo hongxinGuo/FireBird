@@ -3,8 +3,6 @@
 
 #include "InfoReport.h"
 
-using std::make_shared;
-
 CContainerFinnhubCountry::CContainerFinnhubCountry() { Reset(); }
 
 void CContainerFinnhubCountry::Reset() {

@@ -2,8 +2,6 @@
 
 #include"Country.h"
 
-using std::map;
-
 class CContainerFinnhubCountry final {
 public:
 	CContainerFinnhubCountry();

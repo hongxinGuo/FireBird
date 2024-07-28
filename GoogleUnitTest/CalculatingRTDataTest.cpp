@@ -5,8 +5,6 @@
 
 #include"ChinaStock.h"
 
-using std::make_shared;
-
 using namespace testing;
 
 namespace FireBirdTest {

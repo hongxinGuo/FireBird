@@ -4,8 +4,6 @@
 
 #include"FinnhubInaccessibleExchange.h"
 
-using std::out_of_range;
-
 bool CProductFinnhub::CheckAccessRight(CWebDataPtr pWebData) {
 	const string s(pWebData->GetStringView(0, pWebData->GetBufferLength()));
 	if (s == _T("{\"error\":\"You don't have access to this resource.\"}")) {

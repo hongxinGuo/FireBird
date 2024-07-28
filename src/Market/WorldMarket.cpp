@@ -27,8 +27,6 @@
 #include "QuandlDataSource.h"
 #include "TiingoDataSource.h"
 #include "TimeConvert.h"
-using std::thread;
-using std::make_shared;
 
 CWorldMarket::CWorldMarket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

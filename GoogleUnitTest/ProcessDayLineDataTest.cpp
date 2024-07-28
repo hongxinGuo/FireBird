@@ -7,9 +7,6 @@
 #include"WebData.h"
 #include"DayLineWebData.h"
 
-#include<memory>
-using std::make_shared;
-
 namespace FireBirdTest {
 	struct NeteaseDayLineData {
 		NeteaseDayLineData(int count, const CString& Symbol, const CString& Data) {

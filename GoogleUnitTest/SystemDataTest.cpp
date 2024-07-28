@@ -7,19 +7,18 @@
 
 #include"GeneralCheck.h"
 
-#include<memory>
-using std::make_shared;
-
 namespace FireBirdTest {
 	class CSystemDataTest : public testing::Test {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 

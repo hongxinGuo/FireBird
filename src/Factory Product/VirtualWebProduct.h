@@ -9,8 +9,6 @@
 #include"ClassDeclaration.h"
 #include"WebData.h"
 
-using std::make_shared;
-
 // 此结构只用于测试中
 struct Test_FinnhubWebData {
 	Test_FinnhubWebData(const long lIndex, const CString& strSymbol, const CString& strData) {
@@ -40,7 +38,8 @@ struct Test_TiingoWebData {
 		m_pData->Test_SetBuffer_(strData);
 	}
 
-	~Test_TiingoWebData() {}
+	~Test_TiingoWebData() {
+	}
 
 public:
 	long m_lIndex;
@@ -61,14 +60,17 @@ public:
 	virtual ~CVirtualWebProduct() = default;
 
 	virtual CString CreateMessage() { return _T(""); };
-	virtual void ParseAndStoreWebData(CWebDataPtr pWebData) {};
+	virtual void ParseAndStoreWebData(CWebDataPtr pWebData) {
+	};
 	virtual void ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) {// 一次处理多个接收到的数据。目前只有腾讯日线数据需要这种模式
 		ASSERT(pvWebData->size() == 1);
 		ParseAndStoreWebData(pvWebData->at(0)); // 默认只有一个数据，
 	}
-	virtual void AddInaccessibleExchange() {} // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
+	virtual void AddInaccessibleExchange() {
+	} // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
 
-	virtual void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {} // default do nothing
+	virtual void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
+	} // default do nothing
 
 	bool CheckInaccessible(const CWebDataPtr& pWebData);
 	bool IsVoidJson(const CWebDataPtr& pWebData);

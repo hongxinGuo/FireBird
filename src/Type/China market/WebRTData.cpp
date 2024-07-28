@@ -7,8 +7,6 @@
 #include"jsonParse.h"
 #include"WebRTData.h"
 
-using std::exception;
-
 void CWebRTData::Reset() {
 	m_lDataSource = INVALID_RT_WEB_DATA_;
 	m_time = 0;

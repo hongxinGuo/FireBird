@@ -8,9 +8,6 @@
 
 #include"ClassDeclaration.h"
 
-using std::string;
-using std::string_view;
-
 #include"nlohmannJsonDeclaration.h"
 
 constexpr int DefaultWebDataBufferSize_ = 1024 * 1024;

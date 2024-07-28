@@ -8,15 +8,8 @@
 #include"GeneralCheck.h"
 
 #include"Thread.h"
-//#include"DayLine.h"
-
-//#include"FinnhubForexSymbol.h"
-//#include"MockFinnhubForexSymbol.h"
 
 using namespace testing;
-
-#include<memory>
-using std::make_shared;
 
 namespace FireBirdTest {
 	class CMockFinnhubForexSymbolTest : public ::testing::Test {

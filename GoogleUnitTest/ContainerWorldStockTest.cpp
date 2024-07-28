@@ -4,9 +4,6 @@
 
 #include"ContainerWorldStock.h"
 
-#include<memory>
-using std::make_shared;
-
 using namespace testing;
 
 namespace FireBirdTest {

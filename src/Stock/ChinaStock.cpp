@@ -9,8 +9,6 @@
 #include<gsl/gsl>
 using namespace gsl;
 
-using std::make_shared;
-
 CChinaStock::CChinaStock() {
 	m_lDayLineStartDate = _CHINA_MARKET_BEGIN_DATE_; //
 	m_lDayLineEndDate = _CHINA_MARKET_BEGIN_DATE_; //

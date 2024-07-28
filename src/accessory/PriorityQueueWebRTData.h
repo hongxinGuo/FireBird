@@ -3,12 +3,6 @@
 #include"WebRTData.h"
 #include"PriorityQueueWebRTData.h"
 
-#include<queue>
-#include<mutex>
-using std::priority_queue;
-using std::vector;
-using std::mutex;
-
 class CPriorityQueueWebRTData final {
 public:
 	CPriorityQueueWebRTData();
