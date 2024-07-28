@@ -5,7 +5,7 @@
 
 #include"ChinaStock.h"
 
-#include<memory>
+using std::make_shared;
 
 namespace FireBirdTest {
 	struct GuadanData {
@@ -153,7 +153,8 @@ namespace FireBirdTest {
 	class RTDataGuadanTest : public testing::TestWithParam<GuadanData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const GuadanData* pData = GetParam();
 			// 预设20个挂单
 			for (int i = 0; i < 200; i += 10) {
@@ -184,7 +185,8 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -395,7 +397,8 @@ namespace FireBirdTest {
 	class NeedCheckTest : public testing::TestWithParam<GuadanData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const GuadanData* pData = GetParam();
 			// 预设20个挂单
 			for (int i = 0; i < 200; i += 10) {
@@ -428,7 +431,8 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:

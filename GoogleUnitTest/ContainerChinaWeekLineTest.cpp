@@ -9,6 +9,8 @@
 
 #include"SetCurrentWeekLine.h"
 
+using std::make_shared;
+
 namespace FireBirdTest {
 	class CStockDataChinaWeekLineTest : public ::testing::Test {
 	protected:

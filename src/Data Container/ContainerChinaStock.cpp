@@ -17,6 +17,7 @@
 #include"SetRSStrong2Stock.h"
 
 using std::thread;
+using std::make_shared;
 
 CContainerChinaStock::CContainerChinaStock() {
 	CContainerChinaStock::Reset();

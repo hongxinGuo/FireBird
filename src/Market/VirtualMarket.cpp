@@ -3,6 +3,9 @@
 #include"TimeConvert.h"
 
 #include "VirtualMarket.h"
+#include"VirtualDataSource.h"
+
+using std::make_shared;
 
 CVirtualMarket::CVirtualMarket() {
 	m_fResetMarket = true;

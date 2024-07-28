@@ -5,7 +5,7 @@
 
 #include"ChinaStock.h"
 
-#include<memory>
+using std::make_shared;
 
 using namespace testing;
 
@@ -147,7 +147,8 @@ namespace FireBirdTest {
 	class CStockTest2 : public::testing::TestWithParam<RTData*> {
 	protected:
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 			const RTData* pData = GetParam();
 			pCurrentData = make_shared<CWebRTData>();
 			pCurrentData->SetAmount(pData->CurrentData.GetAmount());
@@ -172,7 +173,8 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	public:
@@ -341,20 +343,24 @@ namespace FireBirdTest {
 	class CStockTest3 : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
