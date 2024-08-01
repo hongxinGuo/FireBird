@@ -11,8 +11,6 @@
 
 #include "WatchdogDoc.h"
 
-//#include <propkey.h>
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -26,9 +24,11 @@ END_MESSAGE_MAP()
 
 // CWatchdogDoc construction/destruction
 
-CWatchdogDoc::CWatchdogDoc() noexcept {}
+CWatchdogDoc::CWatchdogDoc() noexcept {
+}
 
-CWatchdogDoc::~CWatchdogDoc() {}
+CWatchdogDoc::~CWatchdogDoc() {
+}
 
 BOOL CWatchdogDoc::OnNewDocument() {
 	if (!CDocument::OnNewDocument())
@@ -42,8 +42,10 @@ BOOL CWatchdogDoc::OnNewDocument() {
 // CWatchdogDoc serialization
 
 void CWatchdogDoc::Serialize(CArchive& ar) {
-	if (ar.IsStoring()) {}
-	else {}
+	if (ar.IsStoring()) {
+	}
+	else {
+	}
 }
 
 #ifdef SHARED_HANDLERS

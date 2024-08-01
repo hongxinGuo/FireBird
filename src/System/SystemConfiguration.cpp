@@ -195,7 +195,7 @@ void CSystemConfiguration::Update(json& jsonData) {
 	string sTemp;
 	CString str1, str2, str3;
 	str1.LoadString(nullptr, IDS_PROPERTYVIEW_SYSTEM_STATUS); // Note 使用LoadString时，必须明确声明hInstance为nullptr，否则报错
-	str2.LoadString(nullptr, IDS_PROPERTYVIEW_PROPERTIES_WINDOW);
+	str2.LoadString(nullptr, IDS_PROPERTYVIEW_CHINA_MARKET_REALTIME);
 	str3.LoadString(nullptr, IDS_PROPERTYVIEW_PROPERTIES2);
 	// 环境配置
 	try {
@@ -209,6 +209,7 @@ void CSystemConfiguration::Update(json& jsonData) {
 		else if (sTemp.c_str() == str3) {
 			m_iDisplayPropertyPage = 2;
 		}
+		else m_iDisplayPropertyPage = 0; // 默认使用
 	}
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
@@ -494,7 +495,7 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 		jsonData["Environment"]["Display"]["PropertyPage"] = str;
 		break;
 	case 1:
-		str.LoadString(nullptr, IDS_PROPERTYVIEW_PROPERTIES_WINDOW);
+		str.LoadString(nullptr, IDS_PROPERTYVIEW_CHINA_MARKET_REALTIME);
 		break;
 	case 2:
 		str.LoadString(nullptr, IDS_PROPERTYVIEW_PROPERTIES2);

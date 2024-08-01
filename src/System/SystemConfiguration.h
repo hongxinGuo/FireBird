@@ -11,8 +11,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include <spdlog/common.h>
-
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 #include"nlohmann/json.hpp"
 

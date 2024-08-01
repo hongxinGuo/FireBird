@@ -9,8 +9,6 @@
 #include"TiingoCryptoWebSocket.h"
 #include"TiingoForexWebSocket.h"
 
-#include <ixwebsocket/IXWebSocket.h>
-
 using namespace testing;
 
 namespace FireBirdTest {

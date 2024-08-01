@@ -1,9 +1,9 @@
 #include"pch.h"
 
-#include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
 #include"ChinaStock.h"
+#include"ChinaMarket.h"
 
 namespace FireBirdTest {
 	struct GuadanData {

@@ -9,8 +9,6 @@
 
 #include "ProductFinnhubForexDayLine.h"
 
-#include <execution>
-
 CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/candle?symbol=");
 }

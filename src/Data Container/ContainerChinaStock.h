@@ -4,9 +4,6 @@
 #include"ChinaStock.h"
 #include"ContainerVirtualStock.h"
 
-#include <memory>
-using std::dynamic_pointer_cast;
-
 class CContainerChinaStock : public CContainerVirtualStock {
 public:
 	CContainerChinaStock();

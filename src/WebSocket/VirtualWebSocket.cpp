@@ -1,9 +1,6 @@
 #include"pch.h"
 
-#include <ixwebsocket/IXNetSystem.h>
 #include"VirtualWebSocket.h"
-
-#include <spdlog/spdlog.h>
 
 #include "Thread.h"
 #include "WorldMarket.h"

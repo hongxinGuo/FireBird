@@ -378,7 +378,7 @@
     <ClInclude Include="..\src\System\SystemConfiguration.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\System\SystemConstant.h">
+    <ClInclude Include="..\src\System\SystemConstantChinaMarket.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
     <ClInclude Include="..\src\System\SystemData.h">
@@ -770,6 +770,9 @@
     </ClInclude>
     <ClInclude Include="..\src\accessory\accessory.h">
       <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h">
+      <Filter>头文件\Windows interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1288,6 +1291,9 @@
     </ClCompile>
     <ClCompile Include="..\src\accessory\accessory.cpp">
       <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\PropertyRealTimeDataWnd.cpp">
+      <Filter>源文件\windows interface</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

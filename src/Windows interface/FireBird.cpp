@@ -73,6 +73,9 @@ BOOL CFireBirdApp::InitInstance() {
 	gl_dailyLogger = spdlog::daily_logger_mt("daily_logger", "logs/daily.txt", 2, 30);
 	gl_dailyWebSocketLogger = spdlog::daily_logger_mt("dailyWebSocketLogger", "logs/dailyWebSocket.txt", 2, 30);
 	gl_dailyWebSocketLogger->set_level(static_cast<spdlog::level::level_enum>(gl_systemConfiguration.GetLogLevel()));
+	spdlog::flush_every(chrono::seconds(600)); // 每10分钟刷新一次（只能用于_mt模式生成的日志）
+	gl_dailyLogger->flush_on(spdlog::level::warn); // 警告等级及以上立刻刷新
+	gl_dailyWebSocketLogger->flush_on(spdlog::level::warn);
 
 	gl_dailyLogger->info("FireBird App begin running");
 

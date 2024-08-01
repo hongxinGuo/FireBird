@@ -5,6 +5,7 @@
 #include"stdafx.h"
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
+#include "PropertyRealTimeDataWnd.h"
 
 constexpr UINT STOCK_ANALYSIS_TIMER_ = 1;
 
@@ -63,6 +64,7 @@ protected:
 	CMFCToolBarImages m_UserImages;
 	COutputWnd m_wndOutput;
 	CPropertiesWnd m_wndProperties;
+	CPropertyRealtimeWnd m_wndPropertyRealTime;
 
 	BOOL CreateDockingWindows();
 	void SetDockingWindowIcons(BOOL bHiColorIcons);

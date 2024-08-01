@@ -96,6 +96,13 @@ CString CSystemMessage::GetCurrentTiingoWebSocketCrypto() const {
 	return s;
 }
 
+void CSystemMessage::DumpLogTask() {
+	int total = gl_systemMessage.GetLogMarketTaskSize();
+	for (int i = 0; i < total; i++) {
+		gl_dailyLogger->warn("{}", gl_mapMarketMapIndex.at(gl_systemMessage.GetLogTask(i)->GetType()));
+	}
+}
+
 void CSystemDeque::Display(COutputList* pOutputList, const CString& strTime) {
 	size_t lTotal = Size();
 	if (lTotal > pOutputList->GetLineNumber()) lTotal = pOutputList->GetLineNumber();

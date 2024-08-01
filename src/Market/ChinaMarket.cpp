@@ -854,12 +854,12 @@ bool CChinaMarket::IsWebBusy() {
 	}
 	if (bWebBusy) {
 		if (!s_bWebBusy) {
-			gl_dailyLogger->info("Web busy");
+			gl_dailyLogger->warn("Web busy");
 		}
 	}
 	else {
 		if (s_bWebBusy) {
-			gl_dailyLogger->info("Web not busy");
+			gl_dailyLogger->info("Web busy resolved");
 		}
 	}
 	s_bWebBusy = bWebBusy;

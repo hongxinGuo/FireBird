@@ -4,8 +4,6 @@
 
 #include "WorldMarket.h"
 
-#include <concurrencpp/executors/thread_pool_executor.h>
-
 #include"thread.h"
 
 #include"FinnhubInaccessibleExchange.h"
@@ -18,9 +16,6 @@
 #include"TiingoCryptoWebSocket.h"
 
 #include"SetWorldStockDayLine.h"
-
-#include <ixwebsocket/IXNetSystem.h>
-#include <ixwebsocket/IXUserAgent.h>
 
 #include "ChinaMarket.h"
 #include "InfoReport.h"

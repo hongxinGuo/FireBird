@@ -5,8 +5,6 @@
 
 #include "FinnhubWebSocket.h"
 
-#include <ixwebsocket/IXWebSocket.h>
-
 #include "FinnhubDataSource.h"
 
 #include"simdjsonGetValue.h"

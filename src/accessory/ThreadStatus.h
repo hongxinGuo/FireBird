@@ -1,7 +1,5 @@
 #pragma once
 
-#include <afx.h>
-
 class CThreadStatus final {
 	//¸÷Ïß³Ì×´Ì¬
 public:

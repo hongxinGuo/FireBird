@@ -3,8 +3,6 @@
 #include"JsonParse.h"
 #include"WebData.h"
 
-#include <memory>
-
 CWebData::CWebData() {
 	m_tTime = 0;
 	m_strStockCode = _T("");
@@ -13,7 +11,8 @@ CWebData::CWebData() {
 	m_strErrorMessage = "";
 }
 
-CWebData::~CWebData() {}
+CWebData::~CWebData() {
+}
 
 bool CWebData::GetData(char* buffer, long lDataLength) const {
 	if (lDataLength + m_lCurrentPos > m_sDataBuffer.size()) return false;

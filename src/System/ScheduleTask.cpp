@@ -164,10 +164,7 @@ void TaskSchedulePer100ms() {
 	if (IsMarketResetting()) return;// 市场重启需要较长时间，无法并行工作，故而暂停调度。
 	if (s_Processing) {
 		gl_dailyLogger->warn("TaskSchedulePer100ms()发生重入");
-		int total = gl_systemMessage.GetLogMarketTaskSize();
-		for (int i = 0; i < total; i++) {
-			gl_dailyLogger->warn("{}", gl_mapMarketMapIndex.at(gl_systemMessage.GetLogTask(i)->GetType()));
-		}
+		gl_systemMessage.DumpLogTask();
 		gl_systemMessage.PushInnerSystemInformationMessage("TaskSchedulePer100ms()发生重入");
 		return;
 	}

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <TiingoCryptoSymbol.h>
+#include "TiingoCryptoSymbol.h"
 
 class CContainerTiingoCryptoSymbol final {
 public:

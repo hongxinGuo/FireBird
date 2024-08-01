@@ -11,7 +11,6 @@
 #pragma once
 
 #include"VirtualWebSocket.h"
-#include <ixwebsocket/IXWebSocket.h>
 
 void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg);
 

@@ -11,7 +11,7 @@
 #include <semaphore>
 using std::binary_semaphore;
 
-#include"SystemConstant.h"
+#include"SystemConstantChinaMarket.h"
 #include"SystemConfiguration.h"
 #include"SystemData.h"
 #include"SystemMessage.h"

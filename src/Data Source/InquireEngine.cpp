@@ -8,8 +8,6 @@
 
 #include "InquireEngine.h"
 
-#include <simdjson.h>
-
 #include"Thread.h"
 #include"WebData.h"
 

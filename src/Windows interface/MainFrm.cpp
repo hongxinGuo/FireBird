@@ -280,6 +280,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	DockPane(&m_wndOutput);
 	m_wndProperties.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndProperties);
+	m_wndPropertyRealTime.EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&m_wndPropertyRealTime);
 
 	// 设置用于绘制所有用户界面元素的视觉管理器
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerVS2008));
@@ -347,6 +349,7 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
 	m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
 	HICON hPropertiesBarIcon = (HICON)::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_PROPERTIES_WND_HC : IDI_PROPERTIES_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
 	m_wndProperties.SetIcon(hPropertiesBarIcon, FALSE);
+	m_wndPropertyRealTime.SetIcon(hPropertiesBarIcon, FALSE);
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
@@ -373,6 +376,15 @@ BOOL CMainFrame::CreateDockingWindows() {
 	ASSERT(bNameValid);
 	if (!m_wndProperties.Create(strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_PROPERTIESWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI)) {
 		TRACE0("Failed to create Properties window\n");
+		return FALSE; // failed to create
+	}
+
+	// Create Realtime property window
+	CString strPropertyRealtimeWnd;
+	bNameValid = strPropertyRealtimeWnd.LoadString(IDS_PROPERTY_REALTIME_WND);
+	ASSERT(bNameValid);
+	if (!m_wndPropertyRealTime.Create(strPropertyRealtimeWnd, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_PROPERTY_REALTIME_WND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI)) {
+		TRACE0("Failed to create Property realtime window\n");
 		return FALSE; // failed to create
 	}
 

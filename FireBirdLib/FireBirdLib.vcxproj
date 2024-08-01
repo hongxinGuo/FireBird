@@ -168,7 +168,7 @@
     <ClInclude Include="..\src\System\FinnhubInaccessibleExchange.h" />
     <ClInclude Include="..\src\System\ScheduleTask.h" />
     <ClInclude Include="..\src\System\SystemConfiguration.h" />
-    <ClInclude Include="..\src\System\SystemConstant.h" />
+    <ClInclude Include="..\src\System\SystemConstantChinaMarket.h" />
     <ClInclude Include="..\src\System\SystemData.h" />
     <ClInclude Include="..\src\System\SystemMessage.h" />
     <ClInclude Include="..\src\targetver.h" />
@@ -213,6 +213,7 @@
     <ClInclude Include="..\src\Windows interface\FireBirdDoc.h" />
     <ClInclude Include="..\src\Windows interface\FireBirdView.h" />
     <ClInclude Include="..\src\Windows interface\PropertiesWnd.h" />
+    <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
@@ -394,6 +395,7 @@
     <ClCompile Include="..\src\Windows interface\FireBirdDoc.cpp" />
     <ClCompile Include="..\src\Windows interface\FireBirdView.cpp" />
     <ClCompile Include="..\src\Windows interface\PropertiesWnd.cpp" />
+    <ClCompile Include="..\src\Windows interface\PropertyRealTimeDataWnd.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildDayLineRS.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildWeekLineRS.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadChoice10RSStrongSTockSet.cpp" />

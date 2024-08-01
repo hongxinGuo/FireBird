@@ -116,6 +116,7 @@ public:
 	void AddLogMarketTask(const CMarketTaskPtr& p) noexcept { m_marketTaskLog.push_back(p); }
 	CMarketTaskPtr GetLogTask(const long index) { return m_marketTaskLog.at(index); }
 	long GetLogMarketTaskSize() const noexcept { return m_marketTaskLog.size(); }
+	void DumpLogTask();
 
 	void CalcScheduleTaskTimePerSecond() noexcept { m_lScheduleTaskTimePerSecond = m_lScheduleTaskTime.exchange(0); }
 	long GetScheduleTaskTimePerSecond() const noexcept { return m_lScheduleTaskTimePerSecond.load(); }

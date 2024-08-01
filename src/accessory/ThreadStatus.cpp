@@ -1,7 +1,6 @@
-#include "ThreadStatus.h"
 #include"pch.h"
 
-#include"ThreadStatus.h"
+#include "ThreadStatus.h"
 
 CThreadStatus::CThreadStatus() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

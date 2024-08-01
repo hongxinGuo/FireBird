@@ -1,39 +1,19 @@
 #pragma once
 
-enum configuration_option {
-	SYSTEM_LOG_LEVEL_ = 1,
-	SYSTEM_FAST_CPU,
-	SYSTEM_DEBUG_MODE_,
-	SYSTEM_RELOAD_SYSTEM_,
-};
-
-class CPropertiesToolBar : public CMFCToolBar {
+class CPropertiesToolBar2 : public CMFCToolBar {
 public:
 	void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) override { CMFCToolBar::OnUpdateCmdUI(static_cast<CFrameWnd*>(GetOwner()), bDisableIfNoHndler); }
 	BOOL AllowShowOnList() const override { return FALSE; }
 };
 
-class CFireBirdPropertyGridCtrl : public CMFCPropertyGridCtrl {
+class CFireBirdPropertyRealtimeGridCtrl : public CMFCPropertyGridCtrl {
 	void OnPropertyChanged(CMFCPropertyGridProperty* pProp) const override;
 };
 
-class CFireBirdComboBox : public CComboBox {
-public:
-	CFireBirdComboBox() {
-	}
-	~CFireBirdComboBox() override {
-	}
-
-	DECLARE_MESSAGE_MAP()
-
-public:
-	afx_msg void OnCbnSelChange();
-};
-
-class CPropertiesWnd : public CDockablePane {
+class CPropertyRealtimeWnd : public CDockablePane {
 	// Construction
 public:
-	CPropertiesWnd() noexcept;
+	CPropertyRealtimeWnd() noexcept;
 	void AdjustLayout() override;
 
 	// Attributes
@@ -45,18 +25,11 @@ public:
 
 protected:
 	CFont m_fntPropList;
-	CFireBirdComboBox m_wndObjectCombo;
-	CPropertiesToolBar m_wndToolBar;
-	CFireBirdPropertyGridCtrl m_wndPropList;
+	CPropertiesToolBar2 m_wndToolBar;
+	CFireBirdPropertyRealtimeGridCtrl m_wndPropList;
 
 	// system status group
 	CMFCPropertyGridProperty* m_pPropSystemOption;
-	CMFCPropertyGridColorProperty* m_pPropChinaMarketWebStatus;
-	CMFCPropertyGridProperty* m_pPropWorldMarketWebStatus;
-	CMFCPropertyGridProperty* m_pPropFinnhubWebSocket;
-	CMFCPropertyGridProperty* m_pPropTiingoIEXWebSocket;
-	CMFCPropertyGridProperty* m_pPropTiingoForexWebSocket;
-	CMFCPropertyGridProperty* m_pPropTiingoCryptoWebSocket;
 
 	// chinaMarket realtime group
 
@@ -64,7 +37,7 @@ protected:
 
 	// Implementation
 public:
-	~CPropertiesWnd() override;
+	~CPropertyRealtimeWnd() override;
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
