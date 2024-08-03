@@ -4,12 +4,12 @@
 
 #include "FireBird.h"  
 
-#include <spdlog/spdlog.h>
-
 #include "MainFrm.h"
 
 #include "FireBirdDoc.h"
 #include "FireBirdView.h" 
+
+#include <spdlog/spdlog.h>
 
 #ifndef _MBCS
 #error _T("本系统使用多字节字符集")

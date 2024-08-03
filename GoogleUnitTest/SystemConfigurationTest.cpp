@@ -51,6 +51,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/SinaRTDataInquiryPerTime")), 850);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/NeteaseRTDataInquiryPerTime")), 900);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/TengxunRTDataInquiryPerTime")), 900);
+		sTemp = jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/CurrentStock"));
+		EXPECT_TRUE(sTemp == _T("600026.SS"));
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubToken"));
 		EXPECT_TRUE(sTemp == _T("bv985d748v6ujthqfke0"));
@@ -220,6 +222,7 @@ namespace FireBirdTest {
 		try {
 			EXPECT_TRUE(jsSystemConfiguration[json::json_pointer("/WebSocket/UsingFinnhubWebSocket")] == gl_systemConfiguration.IsUsingFinnhubWebSocket()) << "FinnhubWebSocketÔ¤ÉèÎªÕæ";
 			EXPECT_TRUE(jsSystemConfiguration[json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")] == gl_systemConfiguration.IsUsingTiingoIEXWebSocket());
+			EXPECT_TRUE(jsSystemConfiguration["ChinaMarket"]["CurrentStock"] == _T("600026.SS"));
 
 			const string sTemp = jsSystemConfiguration[json::json_pointer("/ChinaMarket/RealtimeServer")];
 			EXPECT_TRUE(sTemp==_T("sina"));

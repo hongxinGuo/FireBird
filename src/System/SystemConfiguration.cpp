@@ -58,7 +58,8 @@ std::string gl_sSystemConfiguration = R"(
 	"NumberOfRTDataSource" : 4,
 	"SinaRTDataInquiryPerTime" : 850,
 	"NeteaseRTDataInquiryPerTime" : 900,
-	"TengxunRTDataInquiryPerTime" : 900
+	"TengxunRTDataInquiryPerTime" : 900,
+	"CurrentStock" : "600026.SS"
 },
 
 "WorldMarket" : {
@@ -337,6 +338,14 @@ void CSystemConfiguration::Update(json& jsonData) {
 	catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
+	try {
+		sTemp = jsonData.at("ChinaMarket").at("CurrentStock"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
+		m_strCurrentStock = sTemp.c_str();
+	}
+	catch (json::out_of_range&) {
+		m_strCurrentStock = _T("");
+		m_fUpdate = true;
+	}
 
 	// WorldMarket
 	try {
@@ -546,6 +555,7 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	jsonData["ChinaMarket"]["SinaRTDataInquiryPerTime"] = m_iSinaRTDataInquiryPerTime;
 	jsonData["ChinaMarket"]["NeteaseRTDataInquiryPerTime"] = m_iNeteaseRTDataInquiryPerTime;
 	jsonData["ChinaMarket"]["TengxunRTDataInquiryPerTime"] = m_iTengxunRTDataInquiryPerTime;
+	jsonData["ChinaMarket"]["CurrentStock"] = m_strCurrentStock;
 
 	// World market
 	jsonData["WorldMarket"]["MarketResettingTime"] = m_lMarketResettingTime;

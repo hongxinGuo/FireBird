@@ -102,7 +102,6 @@ public:
 	}
 
 	[[nodiscard]] int GetWorldMarketQuandlInquiryTime() const noexcept { return m_iWorldMarketQuandlInquiryTime; }
-
 	void SetWorldMarketQuandlInquiryTime(const int iWorldMarketQuandlInquiryTime) noexcept {
 		m_fUpdate = true;
 		m_iWorldMarketQuandlInquiryTime = iWorldMarketQuandlInquiryTime;
@@ -131,6 +130,8 @@ public:
 		if (m_iChinaMarketDayLineServer == 1) return true;
 		return false;
 	}
+	void SetCurrentStock(const CString& stock) noexcept { m_strCurrentStock = stock; }
+	CString GetCurrentStock() const noexcept { return m_strCurrentStock; }
 
 	// WebSocket
 	[[nodiscard]] bool IsUsingFinnhubWebSocket() const noexcept { return m_bUsingFinnhubWebSocket; }
@@ -315,12 +316,13 @@ protected:
 	CString m_strFinnhubToken; // 令牌
 	CString m_strTiingoToken; // 令牌
 	CString m_strQuandlToken; // 令牌
-	bool m_bFinnhubAccountFeePaid; // 付费账户或者免费账户
-	bool m_bTiingoAccountFeePaid;
-	bool m_bQuandlAccountFeePaid;
-	int m_iWorldMarketFinnhubInquiryTime; // 每次查询间隔时间，单位为毫秒。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
-	int m_iWorldMarketTiingoInquiryTime; // 每次查询间隔时间，单位为毫秒。付费账户每小时5000次，免费账户每小时50次。
-	int m_iWorldMarketQuandlInquiryTime; // 每次查询间隔时间，单位为毫秒
+	bool m_bFinnhubAccountFeePaid{true}; // 付费账户或者免费账户
+	bool m_bTiingoAccountFeePaid{true};
+	bool m_bQuandlAccountFeePaid{true};
+	int m_iWorldMarketFinnhubInquiryTime{1100}; // 每次查询间隔时间，单位为毫秒。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
+	int m_iWorldMarketTiingoInquiryTime{3600000 / 500}; // 每次查询间隔时间，单位为毫秒。付费账户每小时5000次，免费账户每小时50次。
+	int m_iWorldMarketQuandlInquiryTime{3600000 / 100}; // 每次查询间隔时间，单位为毫秒
+	CString m_strCurrentStock{_T("")}; // 当前所选股票
 
 	// WebSocket
 	bool m_bUsingFinnhubWebSocket;

@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="ASAN|x64">
-      <Configuration>ASAN</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
@@ -33,15 +29,6 @@
     <VCToolsVersion>
     </VCToolsVersion>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASAN|x64'" Label="Configuration">
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <CLRSupport>false</CLRSupport>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
-    <EnableASAN>true</EnableASAN>
-    <VCToolsVersion />
-    <EnableFuzzer>false</EnableFuzzer>
-  </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <UseOfMfc>Dynamic</UseOfMfc>
     <EnableASAN>false</EnableASAN>
@@ -53,9 +40,6 @@
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Import Project="..\propertysheet.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ASAN|x64'" Label="PropertySheets">
     <Import Project="..\propertysheet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -76,20 +60,6 @@
     <SourcePath>$(SourcePath)</SourcePath>
     <LibraryWPath>$(LibraryWPath)</LibraryWPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASAN|x64'">
-    <IncludePath>$(AnalysisInclude);$(GoogletestInclude);$(LibInclude);$(IXWebSocket)</IncludePath>
-    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(LibInclude);$(IncludePath);$(LibraryPath)</LibraryPath>
-    <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
-    <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
-    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <SourcePath>$(SourcePath)</SourcePath>
-    <LibraryWPath>$(LibraryWPath)</LibraryWPath>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(AnalysisInclude);$(GoogletestInclude);$(LibInclude);$(IXWebSocket)</IncludePath>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
@@ -102,7 +72,6 @@
   <ItemGroup>
     <ClCompile Include="..\src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ASAN|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="AccessoryTest.cpp" />
@@ -336,60 +305,6 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <TranslateIncludes>false</TranslateIncludes>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <Profile>false</Profile>
-      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
-      <GenerateMapFile>false</GenerateMapFile>
-      <MapExports>true</MapExports>
-      <ShowProgress>NotSet</ShowProgress>
-      <OptimizeReferences>false</OptimizeReferences>
-      <IgnoreSpecificDefaultLibraries>
-      </IgnoreSpecificDefaultLibraries>
-      <AssemblyDebug>false</AssemblyDebug>
-      <HeapReserveSize>
-      </HeapReserveSize>
-      <StackReserveSize>
-      </StackReserveSize>
-      <LargeAddressAware>true</LargeAddressAware>
-      <StackCommitSize>40971520</StackCommitSize>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-    <Bscmake>
-      <PreserveSbr>true</PreserveSbr>
-    </Bscmake>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ASAN|x64'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>__GOOGLEMOCK__;X64;_DEBUG;_ASAN;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>false</MinimalRebuild>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level4</WarningLevel>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <BrowseInformation>false</BrowseInformation>
-      <EnablePREfast>false</EnablePREfast>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
-      <SDLCheck>true</SDLCheck>
-      <SupportJustMyCode>false</SupportJustMyCode>
-      <DiagnosticsFormat>Classic</DiagnosticsFormat>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <CompileAsManaged>false</CompileAsManaged>
-      <ControlFlowGuard>Guard</ControlFlowGuard>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <DisableSpecificWarnings>4003</DisableSpecificWarnings>
-      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>

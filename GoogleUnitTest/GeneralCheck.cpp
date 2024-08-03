@@ -80,10 +80,29 @@ namespace FireBirdTest {
 		if (gl_pChinaMarket != nullptr) {
 			ASSERT_FALSE(gl_dataContainerChinaStock.IsUpdateProfileDB()) << "不允许更新股票代码库";
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
-			//EXPECT_THAT(gl_pChinaMarket->)
+
+			EXPECT_FALSE(gl_pChinaMarket->IsUpdateChosenStockDB());
+
+			EXPECT_TRUE(gl_pChinaMarket->IsUsingSinaRTDataReceiver());
+			EXPECT_TRUE(gl_pChinaMarket->IsUsingTengxunRTDataReceiver());
+			EXPECT_FALSE(gl_pChinaMarket->IsUsingNeteaseRTDataReceiver());
+
+			EXPECT_FALSE(gl_pChinaMarket->IsCalculateChosen10RS());
+			EXPECT_FALSE(gl_pChinaMarket->IsCurrentEditStockChanged());
+			EXPECT_TRUE(gl_pChinaMarket->IsCheckingActiveStock());
+			EXPECT_FALSE(gl_systemConfiguration.IsFastInquiringRTData()) << "DEBUG模式时默认为假";
+			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
+			EXPECT_FALSE(gl_pChinaMarket->IsRTDataSetCleared());
+			EXPECT_TRUE(gl_pChinaMarket->IsSavingTempData());
+			EXPECT_FALSE(gl_pChinaMarket->IsUpdateOptionDB());
+			EXPECT_FALSE(gl_pChinaMarket->IsWebBusy());
+			EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess());
+			EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
+			EXPECT_FALSE(gl_pChinaMarket->IsResetting());
 			EXPECT_THAT(gl_pChinaMarket->IsCalculatingDayLineRS(), IsFalse());
 			EXPECT_THAT(gl_pChinaMarket->IsCalculatingWeekLineRS(), IsFalse());
 			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
+
 			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040);
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试数据库装载的股票数";
@@ -98,6 +117,11 @@ namespace FireBirdTest {
 			ASSERT_TRUE(pStock->IsIPOed());
 
 			EXPECT_TRUE(gl_qChinaMarketRTData.size_approx() == 0);
+
+			//EXPECT_FALSE(gl_pChinaMarket->Is);
+			//EXPECT_FALSE(gl_pChinaMarket->);
+			//EXPECT_FALSE(gl_pChinaMarket->);
+			//EXPECT_FALSE(gl_pChinaMarket->);
 		}
 	}
 
