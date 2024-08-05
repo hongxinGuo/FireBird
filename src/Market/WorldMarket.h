@@ -33,7 +33,8 @@ public:
 	void ResetDataContainer();
 
 	bool IsTimeToResetSystem(long lCurrentTime) final { return (lCurrentTime > 165759) && (lCurrentTime < 170501); }
-	bool ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由ScheduleTask调度
+	int ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由ScheduleTask调度
+	int ProcessImmediateTask(long lMarketTime) override; // 即时任务调度，由ScheduleTask调度
 
 	void TaskCreateTask(long lCurrentTime);
 	void TaskResetMarket(long lCurrentTime);

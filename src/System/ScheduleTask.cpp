@@ -164,18 +164,18 @@ void TaskSchedulePer100ms() {
 	if (IsMarketResetting()) return;// 市场重启需要较长时间，无法并行工作，故而暂停调度。
 	if (s_Processing) {
 		gl_dailyLogger->warn("TaskSchedulePer100ms()发生重入");
-		gl_systemMessage.DumpLogTask();
-		gl_systemMessage.PushInnerSystemInformationMessage("TaskSchedulePer100ms()发生重入");
+#ifdef _TRACE_SCHEDULE_TASK___
+		gl_traceLogger->warn("TaskSchedulePer100ms()发生重入");
+		gl_traceLogger->dump_backtrace(); // 
+#endif
 		return;
 	}
-	gl_systemMessage.ClearLogMarketTask();
 	s_Processing = true;
 	counter.start();
 	try {
 		ScheduleMarketTask();	// 调用主调度函数,由各市场调度函数执行具体任务
-		// not implemented 其他各DataSource的调度，也考虑移至此处。
-	}
-	catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
+		// not implemented 其他各DataSource的调度，也考虑移至此处。目前各DataSource的调度，在CVirtualMarket的ScheduleTask()中。
+	} catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
 		CString str = _T("ScheduleMarketTask unhandled exception founded : ");
 		str += e->what();
 		gl_systemMessage.PushInformationMessage(str);

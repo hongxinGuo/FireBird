@@ -10,6 +10,7 @@
 #include "FireBirdView.h" 
 
 #include <spdlog/spdlog.h>
+#include "spdlog/sinks/basic_file_sink.h"
 
 #ifndef _MBCS
 #error _T("本系统使用多字节字符集")
@@ -73,9 +74,12 @@ BOOL CFireBirdApp::InitInstance() {
 	gl_dailyLogger = spdlog::daily_logger_mt("daily_logger", "logs/daily.txt", 2, 30);
 	gl_dailyWebSocketLogger = spdlog::daily_logger_mt("dailyWebSocketLogger", "logs/dailyWebSocket.txt", 2, 30);
 	gl_dailyWebSocketLogger->set_level(static_cast<spdlog::level::level_enum>(gl_systemConfiguration.GetLogLevel()));
-	spdlog::flush_every(chrono::seconds(600)); // 每10分钟刷新一次（只能用于_mt模式生成的日志）
+	//spdlog::flush_every(chrono::seconds(600)); // 每10分钟刷新一次（只能用于_mt模式生成的日志）
 	gl_dailyLogger->flush_on(spdlog::level::warn); // 警告等级及以上立刻刷新
 	gl_dailyWebSocketLogger->flush_on(spdlog::level::warn);
+
+	gl_traceLogger = spdlog::basic_logger_mt("basic_trace_logger", "logs/trace.txt");
+	gl_traceLogger->enable_backtrace(20); // 20个回溯消息
 
 	gl_dailyLogger->info("FireBird App begin running");
 
@@ -141,6 +145,9 @@ int CFireBirdApp::ExitInstance() {
 
 	// Under VisualStudio, this must be called before main finishes to work around a known VS issue
 	spdlog::drop_all();
+#ifdef _TRACE_SCHEDULE_TASK___
+	gl_traceLogger->dump_backtrace();
+#endif
 
 	AfxOleTerm(FALSE);
 

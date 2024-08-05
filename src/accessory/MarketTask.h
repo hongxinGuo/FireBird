@@ -11,7 +11,7 @@ using concurrencpp::timer;
 ///////////////////////////////////////////////////////////////////////////////////////////
 enum {
 	// 所有市场共用
-	GENERAL_TASK_PER_100MS__, // 每100毫秒执行一次的通用线程任务。
+	GENERAL_TASK_PER_100MS__ = 1, // 每100毫秒执行一次的通用线程任务。
 	GENERAL_TASK_PER_SECOND__, // 每秒钟执行一次的通用线程任务
 	RELOAD_SYSTEM__, // 重启系统（由监控程序重新装入系统，这样能够防止垃圾过多导致系统崩溃）
 
@@ -34,9 +34,10 @@ enum {
 
 	CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, // 每十秒钟检查一次，有待处理的日线数据就处理
 
-	CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__,
-	CHINA_MARKET_ACCESSORY_TASK__, // 其他辅助任务（如确定工作时间与否、是否快速接收数据等等）
+	CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, //Note 即时执行任务。装载当前股票的日线数据
+	CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__, // 每分钟重复执行的辅助任务（如确定工作时间与否、是否快速接收数据等等）
 	CHINA_MARKET_PREPARING_MARKET_OPEN__, // 在股市开盘（092959）前做必要的准备
+	CHINA_MARKET_UPDATE_CURRENT_STOCK__, //Note 即时执行任务。更新当前股票。
 
 	// World market
 	WORLD_MARKET_CREATE_TASK__, // 生成其他任务的初始任务。每日240000
@@ -45,6 +46,7 @@ enum {
 	WORLD_MARKET_UPDATE_DB__, // 更新市场各数据库。每一分钟一次。
 	WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, // 监测各WebSocket状态。每分钟一次
 	WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__,	// 处理各WebSocket接收到的数据。每秒钟一次
+
 	//
 	TASK_END
 };

@@ -3,6 +3,8 @@
 #include"TimeConvert.h"
 
 #include "VirtualMarket.h"
+
+#include "HighPerformanceCounter.h"
 #include"VirtualDataSource.h"
 
 CVirtualMarket::CVirtualMarket() {
@@ -41,7 +43,17 @@ void CVirtualMarket::ScheduleTask() {
 	if (IsReadyToInquireWebData(lCurrentMarketTime)) RunDataSource(lCurrentMarketTime);
 
 	// 执行本市场各项定时任务。当市场正在重置时暂停
-	if (!IsResetting()) ProcessTask(lCurrentMarketTime);
+	if (!IsResetting()) {
+		CHighPerformanceCounter counter;
+#ifdef _TRACE_SCHEDULE_TASK___
+		counter.start();
+#endif
+		int taskType = ProcessTask(lCurrentMarketTime);
+#ifdef _TRACE_SCHEDULE_TASK___
+		counter.stop();
+		if (taskType != 0) gl_traceLogger->trace("{} ms {}", counter.GetElapsedMillisecond(), gl_mapMarketMapIndex.at(taskType));
+#endif
+	}
 }
 
 void CVirtualMarket::CalculateTime() noexcept {
@@ -56,11 +68,6 @@ void CVirtualMarket::RunDataSource(long lMarketTime) const {
 	for (const auto& pDataSource : m_vDataSource) {
 		if (pDataSource->IsEnable()) pDataSource->Run(lMarketTime);
 	}
-}
-
-bool CVirtualMarket::ProcessTask(long) {
-	ASSERT(0);// 每日定时任务调度,由ScheduleTask调度，由各市场定义其各自的任务,不允许调用本基类函数
-	return true;
 }
 
 void CVirtualMarket::ResetMarket() {
@@ -105,6 +112,17 @@ void CVirtualMarket::AdjustTaskTime() {
 		pMarketTask->SetTime(pMarketTask->GetTime() - 240000);
 		m_marketTask.AddTask(pMarketTask);
 	}
+}
+
+void CVirtualMarket::AddImmediateTask(const CMarketTaskPtr& pTask) {
+	m_marketImmediateTask.AddTask(pTask);
+}
+
+void CVirtualMarket::AddImmediateTask(const long lTaskType, const long lExecuteTime) {
+	const auto pTask = make_shared<CMarketTask>();
+	pTask->SetType(lTaskType);
+	pTask->SetTime(lExecuteTime);
+	AddImmediateTask(pTask);
 }
 
 bool CVirtualMarket::HaveNewTask() const {

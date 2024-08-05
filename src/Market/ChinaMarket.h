@@ -34,7 +34,8 @@ public:
 	bool IsDummyTime() final { return !IsWorkingTime(); }
 	bool IsDummyTime(long lTime) final { return !IsWorkingTime(lTime); }
 
-	bool ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由基类的ScheduleTask调度
+	int ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由基类的ScheduleTask调度
+	int ProcessImmediateTask(long lMarketTime) override; // 即时任务调度，由ScheduleTask调度
 
 	// 各种任务
 	virtual void TaskCreateTask(long lCurrentTime);
@@ -46,15 +47,17 @@ public:
 	void TaskSaveTempData(long lCurrentTime);
 	void TaskLoadCurrentStockHistoryData() const;// 装载当前股票日线
 	void TaskPerSecond(long lCurrentTime); // 每秒一次的辅助任务
-	void TaskAccessoryTask(long lCurrentTime); // 其他辅助任务
+	void TaskAccessoryPerMinuteTask(long lCurrentTime); // 每分钟重复执行的辅助任务
 	void TaskPreparingMarketOpen(long lCurrentTime);
 	void TaskChoiceRSSet(long lCurrentTime);
+	void TaskSetCurrentStock();
 
 	bool SetCheckActiveStockFlag(long lCurrentTime);
 	bool TaskChoice10RSStrong1StockSet(long lCurrentTime);
 	bool TaskChoice10RSStrong2StockSet(long lCurrentTime);
 	bool TaskChoice10RSStrongStockSet(long lCurrentTime);
 	bool TaskProcessTodayStock(long lCurrentTime);
+
 	void ProcessTodayStock();
 	bool IsTaskOfSavingDayLineDBFinished();
 	bool CheckFastReceivingData(long lCurrentTime);

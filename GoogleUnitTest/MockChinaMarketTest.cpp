@@ -162,15 +162,15 @@ namespace FireBirdTest {
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << s_pMockChinaMarket->GetMarketTask()->GetTime();
 	}
 
-	TEST_F(CMockChinaMarketTest, TestTaskAccessoryTask) {
+	TEST_F(CMockChinaMarketTest, TestTaskAccessoryPerMinuteTask) {
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
 
-		s_pMockChinaMarket->TaskAccessoryTask(10000);
+		s_pMockChinaMarket->TaskAccessoryPerMinuteTask(10000);
 
 		EXPECT_FALSE(s_pMockChinaMarket->IsMarketTaskEmpty());
 		const auto pTask = s_pMockChinaMarket->GetMarketTask();
 		s_pMockChinaMarket->DiscardCurrentMarketTask();
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_ACCESSORY_TASK__);
+		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__);
 		EXPECT_EQ(pTask->GetTime(), 10100) << "每一分钟一次";
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());

@@ -25,7 +25,14 @@ public:
 	// 此函数在VirtualMarket中定义，但由最终衍生类来调用，因为lCurrentTime必须为该衍生类的当前市场时间。
 	void RunDataSource(long lMarketTime) const;
 
-	virtual bool ProcessTask(long);
+	virtual int ProcessTask(long) {
+		ASSERT(0);// 每日定时任务调度,由ScheduleTask调度，由各市场定义其各自的任务,不允许调用本基类函数
+		return 0;
+	}
+	virtual int ProcessImmediateTask(long) {
+		ASSERT(0);// 即时任务调度,由ScheduleTask调度，由各市场定义其各自的任务,不允许调用本基类函数
+		return 0;
+	}
 
 	virtual void ResetMarket();
 	bool InResetTime(long lCurrentTime);
@@ -46,6 +53,14 @@ public:
 	void DiscardCurrentMarketTask() { m_marketTask.DiscardCurrentTask(); }
 	vector<CMarketTaskPtr> GetMarketTasks() { return m_marketTask.GetTasks(); }
 	void AdjustTaskTime();
+
+	// MarketImmediateTask
+	bool IsMarketImmediateTaskEmpty() const { return m_marketImmediateTask.Empty(); }
+	void AddImmediateTask(const CMarketTaskPtr& pTask);
+	void AddImmediateTask(long lTaskType, long lExecuteTime);
+	CMarketTaskPtr GetMarketImmediateTask() const { return m_marketImmediateTask.GetTask(); }
+	void DiscardCurrentMarketImmediateTask() { m_marketImmediateTask.DiscardCurrentTask(); }
+	vector<CMarketTaskPtr> GetMarketImmediateTasks() { return m_marketImmediateTask.GetTasks(); }
 
 	// MarketDisplayTask
 	bool HaveNewTask() const;
@@ -98,8 +113,7 @@ public:
 	bool IsSystemReady() const noexcept { return m_fSystemReady; }
 	void SetSystemReady(const bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
-	virtual void PrepareToCloseMarket() {
-	} // 准备退出本市场（完成系统退出前的准备工作）。
+	virtual void PrepareToCloseMarket() {} // 准备退出本市场（完成系统退出前的准备工作）。
 
 	// 存储数据源
 	void StoreDataSource(const CVirtualDataSourcePtr& pDataSource) { m_vDataSource.push_back(pDataSource); }
@@ -115,6 +129,7 @@ protected:
 	CString m_strMarketId{_T("Warning: CVirtualMarket Called.")}; // 该市场标识字符串
 
 	CMarketTaskQueue m_marketTask; // 本市场当前任务队列
+	CMarketTaskQueue m_marketImmediateTask; // 本市场当前即时执行任务队列（此任务序列一次执行完毕，无需等待）
 	ConcurrentQueue<CMarketTaskPtr> m_qMarketDisplayTask; // 当前任务显示队列
 	long m_lLastQueueLength{0};
 

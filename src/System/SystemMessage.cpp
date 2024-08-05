@@ -10,11 +10,9 @@ binary_semaphore s_CurrentTiingoWebSocketIEX{1};
 binary_semaphore s_CurrentTiingoWebSocketCrypto{1};
 binary_semaphore s_CurrentTiingoWebSocketForex{1};
 
-CSystemDeque::CSystemDeque() {
-}
+CSystemDeque::CSystemDeque() {}
 
-CSystemDeque::~CSystemDeque() {
-}
+CSystemDeque::~CSystemDeque() {}
 
 CSystemMessage::~CSystemMessage() = default;
 
@@ -94,13 +92,6 @@ CString CSystemMessage::GetCurrentTiingoWebSocketCrypto() const {
 	CString s = m_strCurrentTiingoWebSocketCrypto;
 	s_CurrentTiingoWebSocketCrypto.release();
 	return s;
-}
-
-void CSystemMessage::DumpLogTask() {
-	int total = gl_systemMessage.GetLogMarketTaskSize();
-	for (int i = 0; i < total; i++) {
-		gl_dailyLogger->warn("{}", gl_mapMarketMapIndex.at(gl_systemMessage.GetLogTask(i)->GetType()));
-	}
 }
 
 void CSystemDeque::Display(COutputList* pOutputList, const CString& strTime) {

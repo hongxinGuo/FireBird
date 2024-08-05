@@ -66,11 +66,9 @@ void CWorldMarket::ResetFinnhub() {
 	m_pvMarketHoliday->clear();
 }
 
-void CWorldMarket::ResetQuandl() {
-}
+void CWorldMarket::ResetQuandl() {}
 
-void CWorldMarket::ResetTiingo() {
-}
+void CWorldMarket::ResetTiingo() {}
 
 void CWorldMarket::ResetDataContainer() {
 	gl_dataContainerFinnhubStockExchange.Reset();
@@ -136,11 +134,10 @@ void CWorldMarket::PrepareToCloseMarket() {
 // todo 采用concurrencpp::timer后，可以将此函数的各项任务分配为定时器所驱动的工作线程任务。
 //
 //////////////////////////////////////////////////////////////////////////////////////
-bool CWorldMarket::ProcessTask(long lCurrentTime) {
+int CWorldMarket::ProcessTask(long lCurrentTime) {
 	if (IsMarketTaskEmpty()) return false;
 	const auto pTask = GetMarketTask();
 	if (lCurrentTime >= pTask->GetTime()) {
-		gl_systemMessage.AddLogMarketTask(pTask);
 		DiscardCurrentMarketTask();
 		switch (pTask->GetType()) {
 		case WORLD_MARKET_CREATE_TASK__: // 生成其他任务
@@ -166,9 +163,13 @@ bool CWorldMarket::ProcessTask(long lCurrentTime) {
 		default:
 			break;
 		}
-		return true;
+		return pTask->GetType();
 	}
-	return false;
+	return 0;
+}
+
+int CWorldMarket::ProcessImmediateTask(long lMarketTime) {
+	return 0;
 }
 
 void CWorldMarket::TaskCreateTask(long lCurrentTime) {
@@ -383,8 +384,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 	return (fUpdated);
 }
 
-void CWorldMarket::TaskPerSecond(long lCurrentTime) {
-}
+void CWorldMarket::TaskPerSecond(long lCurrentTime) {}
 
 bool CWorldMarket::UpdateEPSSurpriseDB() {
 	CString str;
@@ -696,8 +696,7 @@ void CWorldMarket::UpdateStockDayLineStartEndDate() {
 			}
 			setWorldStockDayLine.Close();
 		}
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 }

@@ -62,8 +62,7 @@ CChinaMarket::CChinaMarket() {
 // 目前不允许此析构函数完成任何功能。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CChinaMarket::~CChinaMarket() {
-}
+CChinaMarket::~CChinaMarket() {}
 
 void CChinaMarket::ResetMarket() {
 	CString str = _T("重置中国股市于北京标准时间：");
@@ -82,6 +81,10 @@ void CChinaMarket::ResetMarket() {
 	Load10DaysRSStrong2StockSet();
 	LoadCalculatingRSOption();
 	Load10DaysRSStrongStockDB();
+
+	if (gl_systemConfiguration.GetCurrentStock() != _T("")) {
+		AddImmediateTask(CHINA_MARKET_UPDATE_CURRENT_STOCK__, 0);
+	}
 
 	gl_ProcessChinaMarketRTData.release();
 	m_fResettingMarket = false;
@@ -179,11 +182,10 @@ bool CChinaMarket::IsWorkingTime(long lTime) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::ProcessTask(long lCurrentTime) {
+int CChinaMarket::ProcessTask(long lCurrentTime) {
 	if (IsMarketTaskEmpty()) return false;
 	const auto pTask = GetMarketTask();
 	if (lCurrentTime >= pTask->GetTime()) { // time to executive?
-		gl_systemMessage.AddLogMarketTask(pTask);
 		DiscardCurrentMarketTask();
 		switch (pTask->GetType()) {
 		case CHINA_MARKET_CREATE_TASK__: // 生成其他任务
@@ -232,8 +234,8 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 		case CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__:
 			TaskLoadCurrentStockHistoryData();
 			break;
-		case CHINA_MARKET_ACCESSORY_TASK__:
-			TaskAccessoryTask(lCurrentTime);
+		case CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__:
+			TaskAccessoryPerMinuteTask(lCurrentTime);
 			break;
 		case CHINA_MARKET_PREPARING_MARKET_OPEN__:
 			TaskPreparingMarketOpen(lCurrentTime);
@@ -245,9 +247,13 @@ bool CChinaMarket::ProcessTask(long lCurrentTime) {
 			ASSERT(0); // 错误的任务号
 			break;
 		}
-		return true;
+		return pTask->GetType();
 	}
-	return false;
+	return 0;
+}
+
+int CChinaMarket::ProcessImmediateTask(long lMarketTime) {
+	return 0;
 }
 
 bool CChinaMarket::TaskCheckMarketReady(long lCurrentTime) {
@@ -479,6 +485,14 @@ void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
 		}
 	}
 }
+void CChinaMarket::TaskSetCurrentStock() {
+	if (gl_systemConfiguration.GetCurrentStock() != _T("")) { // 当前有选择股票
+		if (gl_dataContainerChinaStock.IsSymbol(gl_systemConfiguration.GetCurrentStock())) {
+			auto pStock = gl_dataContainerChinaStock.GetStock(gl_systemConfiguration.GetCurrentStock());
+			SetCurrentStock(pStock);
+		}
+	}
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -548,7 +562,7 @@ void CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	AddTask(CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, 1); // 开始执行时间为：1
 
 	// 辅助任务。在随后的正点分钟执行。
-	AddTask(CHINA_MARKET_ACCESSORY_TASK__, GetNextTime(lTimeMinute, 0, 1, 0));
+	AddTask(CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__, GetNextTime(lTimeMinute, 0, 1, 0));
 
 	// 市场重置
 	if (lCurrentTime < 91300) {
@@ -665,7 +679,7 @@ void CChinaMarket::TaskPerSecond(long lCurrentTime) {
 	IsWebBusy();
 }
 
-void CChinaMarket::TaskAccessoryTask(long lCurrentTime) {
+void CChinaMarket::TaskAccessoryPerMinuteTask(long lCurrentTime) {
 	CheckFastReceivingData(lCurrentTime);
 	CheckMarketOpen(lCurrentTime);// 判断中国股票市场开市状态
 	SetCheckActiveStockFlag(lCurrentTime);
@@ -678,7 +692,7 @@ void CChinaMarket::TaskAccessoryTask(long lCurrentTime) {
 		gl_systemConfiguration.SetUpdate(false);
 	}
 
-	AddTask(CHINA_MARKET_ACCESSORY_TASK__, GetNextTime(lCurrentTime, 0, 1, 0)); // 每分钟整点执行一次
+	AddTask(CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__, GetNextTime(lCurrentTime, 0, 1, 0)); // 每分钟整点执行一次
 }
 
 void CChinaMarket::TaskPreparingMarketOpen(long lCurrentTime) {
@@ -1141,8 +1155,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
 		}
 
 		dataChinaWeekLine.SaveCurrentWeekLine();
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 
@@ -1664,8 +1677,7 @@ void CChinaMarket::UpdateChosenStockDB() const {
 		}
 		setChinaChosenStock.m_pDatabase->CommitTrans();
 		setChinaChosenStock.Close();
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 }
@@ -1687,8 +1699,7 @@ void CChinaMarket::AppendChosenStockDB() {
 		}
 		setChinaChosenStock.m_pDatabase->CommitTrans();
 		setChinaChosenStock.Close();
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 }
