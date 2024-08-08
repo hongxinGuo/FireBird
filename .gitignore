@@ -261,3 +261,7 @@ __pycache__/
 *.pyc
 /FireBird/logs
 /GoogleUnitTest/logs
+/FireBird/SystemConfiguration.bak
+/FireBird/SystemConfiguration.bak
+/FireBird/SystemConfiguration.bak
+/FireBird/SystemConfiguration.json
