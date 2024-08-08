@@ -111,7 +111,7 @@ namespace FireBirdTest {
 
 		// »Ö¸´Ô­×´
 		gl_finnhubInaccessibleExchange.DeleteExchange(gl_FinnhubInquiryType.GetInquiryType(_T("WebSocketTrades")), _T("SZ"));
-		gl_finnhubInaccessibleExchange.SetUpdate(false);
+		gl_finnhubInaccessibleExchange.NeedUpdate(false);
 	}
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestSaveDB1) {

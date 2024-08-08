@@ -162,6 +162,5 @@ namespace FireBirdTest {
 
 		// »Ö¸´Ô­×´
 		gl_systemConfiguration.SetUsingFinnhubWebSocket(true);
-		gl_systemConfiguration.SetUpdate(false);
 	}
 }

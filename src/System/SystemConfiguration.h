@@ -275,7 +275,7 @@ public:
 	[[nodiscard]] bool IsInitialized() const noexcept { return m_fInitialized; }
 
 	bool IsNeedUpdate() const noexcept { return m_fUpdate; }
-	void SetUpdate(bool fFlag) noexcept { m_fUpdate = fFlag; }
+	void NeedUpdate(bool fFlag) noexcept { m_fUpdate = fFlag; }
 
 	// ÎÞÐè´æ´¢
 	void SetExitingSystem(const bool bExit) { m_fExitingSystem = bExit; }

@@ -129,8 +129,7 @@ BOOL CFireBirdApp::InitInstance() {
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
 
-	// 调度在命令行中指定的命令。  如果
-	// 用 /RegServer、/Register、/Unregserver 或 /Unregister 启动应用程序，则返回 FALSE。
+	// 调度在命令行中指定的命令。  如果用 /RegServer、/Register、/Unregserver 或 /Unregister 启动应用程序，则返回 FALSE。
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
 	// 主窗口已初始化，因此显示它并对其进行更新
@@ -145,9 +144,9 @@ int CFireBirdApp::ExitInstance() {
 
 	// Under VisualStudio, this must be called before main finishes to work around a known VS issue
 	spdlog::drop_all();
-#ifdef _TRACE_SCHEDULE_TASK___
-	gl_traceLogger->dump_backtrace();
-#endif
+
+	//无论跟踪到了什么都在退出时存储之。
+	gl_traceLogger->dump_backtrace(); 
 
 	AfxOleTerm(FALSE);
 

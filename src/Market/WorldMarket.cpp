@@ -168,8 +168,14 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 	return 0;
 }
 
-int CWorldMarket::ProcessImmediateTask(long lMarketTime) {
-	return 0;
+int CWorldMarket::ProcessCurrentImmediateTask(long lMarketTime) {
+	ASSERT(!m_marketImmediateTask.Empty());
+
+	auto pTask = m_marketImmediateTask.GetTask();
+	auto taskType = pTask->GetType();
+	m_marketImmediateTask.DiscardCurrentTask();
+
+	return taskType;
 }
 
 void CWorldMarket::TaskCreateTask(long lCurrentTime) {
@@ -552,7 +558,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_finnhubInaccessibleExchange.IsNeedUpdate()) { // 更新禁止访问证券交易所名单
 		gl_runtime.background_executor()->post([] {
 			gl_finnhubInaccessibleExchange.UpdateDB();
-			gl_finnhubInaccessibleExchange.SetUpdate(false);
+			gl_finnhubInaccessibleExchange.NeedUpdate(false);
 		});
 	}
 

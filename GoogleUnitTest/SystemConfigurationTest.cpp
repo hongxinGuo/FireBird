@@ -17,7 +17,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			gl_systemConfiguration.SetWorkingMode(false);
-			gl_systemConfiguration.SetUpdate(false);
+			gl_systemConfiguration.NeedUpdate(false);
 
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -195,7 +195,7 @@ namespace FireBirdTest {
 	TEST_F(CSystemConfigurationTest, TestChangeFinnhubAccountType) {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100);
 		const bool bSaved = gl_systemConfiguration.IsNeedUpdate();
-		gl_systemConfiguration.SetUpdate(false);
+		gl_systemConfiguration.NeedUpdate(false);
 		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(220);
 
 		gl_systemConfiguration.ChangeFinnhubAccountTypeToFree();
@@ -210,7 +210,6 @@ namespace FireBirdTest {
 
 		// »Ö¸´Ô­×´
 		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(1100);
-		gl_systemConfiguration.SetUpdate(bSaved);
 	}
 
 	TEST_F(CSystemConfigurationTest, TestLoadSaveWithNlohmannjson) {
@@ -226,8 +225,7 @@ namespace FireBirdTest {
 
 			const string sTemp = jsSystemConfiguration[json::json_pointer("/ChinaMarket/RealtimeServer")];
 			EXPECT_TRUE(sTemp==_T("sina"));
-		}
-		catch (json::type_error&) {
+		} catch (json::type_error&) {
 			EXPECT_TRUE(FALSE);
 		}
 	}

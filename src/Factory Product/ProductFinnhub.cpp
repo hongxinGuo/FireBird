@@ -21,14 +21,13 @@ bool CProductFinnhub::CheckAccessRight(CWebDataPtr pWebData) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 void CProductFinnhub::AddInaccessibleExchange() {
-	gl_finnhubInaccessibleExchange.SetUpdate(true);
+	gl_finnhubInaccessibleExchange.NeedUpdate(true);
 	try { // 存在此申请类型
 		const auto pExchange = gl_finnhubInaccessibleExchange.GetExchange(m_iInquireType);
 		if (!pExchange->HaveExchange(m_strInquiringExchange)) {	// 新的交易所代码？
 			pExchange->AddExchange(m_strInquiringExchange);
 		}
-	}
-	catch (out_of_range&) {	// 不存在此申请类型？则存储此新类型和该交易所名称
+	} catch (out_of_range&) {	// 不存在此申请类型？则存储此新类型和该交易所名称
 		const auto pNewExchange = make_shared<CInaccessibleExchanges>();
 		pNewExchange->SetFunction(m_iInquireType);
 		pNewExchange->SetFunctionString(gl_FinnhubInquiryType.GetInquiryString(m_iInquireType));

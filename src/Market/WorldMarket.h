@@ -5,9 +5,6 @@
 #include "FinnhubWebSocket.h"
 #include "TiingoIEXWebSocket.h"
 
-//#include"FinnhubCryptoSymbol.h"
-//#include"FinnhubForexSymbol.h"
-
 #include "MarketStatus.h"
 #include"MarketHoliday.h"
 
@@ -34,7 +31,7 @@ public:
 
 	bool IsTimeToResetSystem(long lCurrentTime) final { return (lCurrentTime > 165759) && (lCurrentTime < 170501); }
 	int ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由ScheduleTask调度
-	int ProcessImmediateTask(long lMarketTime) override; // 即时任务调度，由ScheduleTask调度
+	int ProcessCurrentImmediateTask(long lMarketTime) override; // 即时任务调度，由ScheduleTask调度
 
 	void TaskCreateTask(long lCurrentTime);
 	void TaskResetMarket(long lCurrentTime);

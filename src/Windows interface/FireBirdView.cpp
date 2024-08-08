@@ -65,10 +65,6 @@ END_MESSAGE_MAP()
 
 CFireBirdView::CFireBirdView() {
 	m_iCurrentShowType = _SHOW_DAY_LINE_DATA_; // 显示日线数据
-	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
-		m_pCurrentDataHistoryCandle = gl_pChinaMarket->GetCurrentStock()->GetDataChinaDayLine();
-	}
-	else m_pCurrentDataHistoryCandle = nullptr;
 	m_lCurrentPos = 0;
 	m_rectClient.SetRect(CPoint(0, 0), CPoint(0.0));
 
@@ -510,9 +506,24 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	CPoint ptCurrent;
 	const CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
 
-	if (m_vRSShow.size() != m_pCurrentDataHistoryCandle->Size()) m_vRSShow.resize(m_pCurrentDataHistoryCandle->Size());
 	if (pCurrentStock == nullptr) return;
-	if (!m_pCurrentDataHistoryCandle->IsDataLoaded()) return;
+	//当前被操作的历史数据容器
+	CVirtualDataHistoryCandleExtend* pHistoryData;
+	switch (m_iCurrentShowType) {
+	case _SHOW_DAY_LINE_DATA_:
+		pHistoryData = pCurrentStock->GetDataChinaDayLine();
+		break;
+	case _SHOW_WEEK_LINE_DATA_:
+		pHistoryData = pCurrentStock->GetDataChinaWeekLine();
+		break;
+	default:
+		pHistoryData = nullptr;
+		break;
+	}
+
+	if (m_vRSShow.size() != pHistoryData->Size()) m_vRSShow.resize(pHistoryData->Size());
+
+	if (!pHistoryData->IsDataLoaded()) return;
 
 	const long lXHigh = m_rectClient.bottom / 2;
 	const long lXLow = m_rectClient.bottom;
@@ -526,13 +537,13 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 		pDC->SelectObject(&penWhite1);
 		switch (m_iShowRSOption) {
 		case 0: // 显示相对指数的强度
-			m_pCurrentDataHistoryCandle->GetRSIndex1(m_vRSShow);
+			pHistoryData->GetRSIndex1(m_vRSShow);
 			break;
 		case 1:
-			m_pCurrentDataHistoryCandle->GetRS1(m_vRSShow);
+			pHistoryData->GetRS1(m_vRSShow);
 			break;
 		case 2:
-			m_pCurrentDataHistoryCandle->GetRSLogarithm1(m_vRSShow);
+			pHistoryData->GetRSLogarithm1(m_vRSShow);
 			break;
 		default:
 			// 错误
@@ -543,47 +554,47 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	// 画相对强度3日均线
 	if (m_fShow3DaysRS) {
 		pDC->SelectObject(&penYellow1);
-		m_pCurrentDataHistoryCandle->GetRS3(m_vRSShow);
+		pHistoryData->GetRS3(m_vRSShow);
 		ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度5日均线
 	if (m_fShow5DaysRS) {
 		pDC->SelectObject(&penGreen1);
-		m_pCurrentDataHistoryCandle->GetRS5(m_vRSShow);
+		pHistoryData->GetRS5(m_vRSShow);
 		ZoomIn(m_vRSShow, 50, 1.5);
 		ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度10日均线
 	if (m_fShow10DaysRS) {
 		pDC->SelectObject(&penRed1);
-		m_pCurrentDataHistoryCandle->GetRS10(m_vRSShow);
+		pHistoryData->GetRS10(m_vRSShow);
 		ZoomIn(m_vRSShow, 50, 3);
 		ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度30日均线
 	if (m_fShow30DaysRS) {
 		pDC->SelectObject(&penYellow1);
-		m_pCurrentDataHistoryCandle->GetRS30(m_vRSShow);
+		pHistoryData->GetRS30(m_vRSShow);
 		ZoomIn(m_vRSShow, 50, 3);
 		ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度60日均线
 	if (m_fShow60DaysRS) {
 		pDC->SelectObject(&penBlue1);
-		m_pCurrentDataHistoryCandle->GetRS60(m_vRSShow);
+		pHistoryData->GetRS60(m_vRSShow);
 		ZoomIn(m_vRSShow, 50, 6);
 		ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度120日均线
 	if (m_fShow120DaysRS) {
 		pDC->SelectObject(&penWhite1);
-		m_pCurrentDataHistoryCandle->GetRS120(m_vRSShow);
+		pHistoryData->GetRS120(m_vRSShow);
 		ZoomIn(m_vRSShow, 50, 6);
 		ShowCurrentRS(pDC, m_vRSShow);
 	}
 
 	////////////////////////////////////////////////////////////////画日线蜡烛线
-	m_pCurrentDataHistoryCandle->ShowData(pDC, m_rectClient);
+	pHistoryData->ShowData(pDC, m_rectClient);
 
 	pDC->SelectObject(ppen);
 }
@@ -604,23 +615,6 @@ bool CFireBirdView::RSLineTo(CDC* pDC, int i, double dValue, int iSize) {
 	SysCallLineTo(pDC, m_rectClient.right - 1 - 3 * i, y);
 	if (3 * i > iSize) return false;
 	if (m_rectClient.right <= 3 * i) return false; // 画到窗口左边框为止
-	return true;
-}
-
-bool CFireBirdView::UpdateHistoryDataContainer(const CChinaStockPtr& pStock) {
-	if (pStock != nullptr) {
-		switch (m_iCurrentShowType) {
-		case _SHOW_DAY_LINE_DATA_:
-			m_pCurrentDataHistoryCandle = pStock->GetDataChinaDayLine();
-			break;
-		case _SHOW_WEEK_LINE_DATA_:
-			m_pCurrentDataHistoryCandle = pStock->GetDataChinaWeekLine();
-			break;
-		default:
-			m_pCurrentDataHistoryCandle = nullptr;
-			break;
-		}
-	}
 	return true;
 }
 
@@ -669,8 +663,8 @@ void CFireBirdView::Show(CDC* pdc) {
 
 	CRect rect;
 	SysCallGetClientRect(&rect);
-	if ((gl_pChinaMarket->GetCurrentStock() != nullptr) && (gl_pChinaMarket->GetCurrentStock()->IsDayLineLoaded())) {}
-	else {
+	CChinaStockPtr pStock = gl_pChinaMarket->GetCurrentStock();
+	if (pStock == nullptr || !pStock->IsDayLineLoaded()) {
 		pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
 		m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
 		SysCallBitBlt(pdc, 0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
@@ -678,8 +672,8 @@ void CFireBirdView::Show(CDC* pdc) {
 		return;
 	}
 
-	ASSERT(gl_pChinaMarket->GetCurrentStock() != nullptr);
-	ASSERT(gl_pChinaMarket->GetCurrentStock()->IsDayLineLoaded());
+	ASSERT(pStock != nullptr);
+	ASSERT(pStock->IsDayLineLoaded());
 	switch (m_iCurrentShowType) {
 	case _SHOW_DAY_LINE_DATA_: // show day line(or week line) stock data
 	case _SHOW_WEEK_LINE_DATA_:
@@ -896,9 +890,6 @@ void CFireBirdView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
 
 void CFireBirdView::OnShowDayLine() {
 	m_iCurrentShowType = _SHOW_DAY_LINE_DATA_;
-	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
-		m_pCurrentDataHistoryCandle = gl_pChinaMarket->GetCurrentStock()->GetDataChinaDayLine();
-	}
 }
 
 void CFireBirdView::OnUpdateShowDayLine(CCmdUI* pCmdUI) {
@@ -917,9 +908,6 @@ void CFireBirdView::OnUpdateShowRealTime(CCmdUI* pCmdUI) {
 
 void CFireBirdView::OnShowWeekLine() {
 	m_iCurrentShowType = _SHOW_WEEK_LINE_DATA_;
-	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
-		m_pCurrentDataHistoryCandle = gl_pChinaMarket->GetCurrentStock()->GetDataChinaWeekLine();
-	}
 }
 
 void CFireBirdView::OnUpdateShowWeekLine(CCmdUI* pCmdUI) {

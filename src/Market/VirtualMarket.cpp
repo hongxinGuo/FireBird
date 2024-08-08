@@ -4,7 +4,8 @@
 
 #include "VirtualMarket.h"
 
-#include "HighPerformanceCounter.h"
+#include <spdlog/stopwatch.h>
+
 #include"VirtualDataSource.h"
 
 CVirtualMarket::CVirtualMarket() {
@@ -44,14 +45,28 @@ void CVirtualMarket::ScheduleTask() {
 
 	// 执行本市场各项定时任务。当市场正在重置时暂停
 	if (!IsResetting()) {
-		CHighPerformanceCounter counter;
+		spdlog::stopwatch sw;
+		int taskType = ProcessTask(lCurrentMarketTime); // 执行定时任务
 #ifdef _TRACE_SCHEDULE_TASK___
-		counter.start();
+		if (taskType != 0) gl_traceLogger->trace("{} ms {}", gl_mapMarketMapIndex.at(taskType), sw.elapsed_ms());
 #endif
-		int taskType = ProcessTask(lCurrentMarketTime);
+
+		sw.reset();
+		auto immediateTaskSize = m_marketImmediateTask.Size();
+		vector<int> vTaskType;
+		for (int i = 0; i < immediateTaskSize; i++) {
+			auto pTask = m_marketImmediateTask.GetTask();
+			auto p = ProcessCurrentImmediateTask(lCurrentMarketTime); // 执行所有即时任务
+			vTaskType.push_back(p);
+		}
+		ASSERT(vTaskType.size() == immediateTaskSize);
 #ifdef _TRACE_SCHEDULE_TASK___
-		counter.stop();
-		if (taskType != 0) gl_traceLogger->trace("{} ms {}", counter.GetElapsedMillisecond(), gl_mapMarketMapIndex.at(taskType));
+		if (immediateTaskSize > 0) {
+			for (int i = 0; i < immediateTaskSize; i++) {
+				gl_traceLogger->trace("{}", gl_mapMarketMapIndex.at(vTaskType.at(i)));
+			}
+			gl_traceLogger->trace("{}ms", sw.elapsed_ms());
+		}
 #endif
 	}
 }

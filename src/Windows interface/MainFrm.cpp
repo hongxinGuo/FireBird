@@ -7,7 +7,6 @@
 
 #include "FireBird.h"
 #include "MainFrm.h"
-#include"FireBirdView.h"
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
@@ -719,13 +718,6 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	default:
 		break;
 	}
-	if (gl_pChinaMarket->IsCurrentStockChanged()) {
-		const auto pChild = static_cast<CMDIChildWnd*>(GetActiveFrame());
-		const auto pView = static_cast<CFireBirdView*>(pChild->GetActiveView());
-		if (pView != nullptr) {
-			pView->UpdateHistoryDataContainer(gl_pChinaMarket->GetCurrentStock());
-		}
-	}
 
 	SysCallOnChar(nChar, nRepCnt, nFlags);
 }
@@ -770,13 +762,6 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		default:
 			// 无需处理字符，略过
 			break;
-		}
-	}
-	if (gl_pChinaMarket->IsCurrentStockChanged()) {
-		const auto pChild = static_cast<CMDIChildWnd*>(GetActiveFrame());
-		const auto pView = static_cast<CFireBirdView*>(pChild->GetActiveView());
-		if (pView != nullptr) {
-			pView->UpdateHistoryDataContainer(gl_pChinaMarket->GetCurrentStock());
 		}
 	}
 	gl_pChinaMarket->AddTask(CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__, 1); // 立即更新自选股数据库
@@ -963,8 +948,7 @@ void CMainFrame::OnBuildCreateWeekLine() {
 	});
 }
 
-void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
-}
+void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {}
 
 void CMainFrame::OnRebuildChinaMarketStockWeekLineRS() {
 	gl_runtime.background_executor()->post([] {
@@ -972,8 +956,7 @@ void CMainFrame::OnRebuildChinaMarketStockWeekLineRS() {
 	});
 }
 
-void CMainFrame::OnUpdateRebuildChinaMarketStockWeekLineRS(CCmdUI* pCmdUI) {
-}
+void CMainFrame::OnUpdateRebuildChinaMarketStockWeekLineRS(CCmdUI* pCmdUI) {}
 
 void CMainFrame::OnBuildCurrentWeekLine() {
 	gl_runtime.background_executor()->post([] {
@@ -999,8 +982,7 @@ void CMainFrame::OnBuildRebuildCurrentWeekLine() {
 	});
 }
 
-void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
-}
+void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {}
 
 void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
 	gl_runtime.background_executor()->post([] {
@@ -1011,8 +993,7 @@ void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
 	});
 }
 
-void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {
-}
+void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {}
 
 void CMainFrame::OnUpdateStockSection() {
 	gl_dataContainerChinaStockSymbol.SetUpdateStockSection(true);

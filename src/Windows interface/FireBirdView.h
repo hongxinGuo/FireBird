@@ -53,8 +53,6 @@ public:
 	int GetCurrentShowType() const noexcept { return m_iCurrentShowType; }
 	void SetCurrentShowType(const int iValue) noexcept { m_iCurrentShowType = iValue; }
 
-	bool UpdateHistoryDataContainer(const CChinaStockPtr& pStock);
-
 	void ZoomIn(vector<double>& vData, double dLevel, double dRate);
 
 	//系统包裹函数
@@ -93,9 +91,6 @@ protected:
 
 	UINT m_uIdTimer;
 	int m_iCurrentShowType; // 当前显示状态（日线、周线或实时。。。）
-
-	//当前被操作的历史数据容器
-	CVirtualDataHistoryCandleExtend* m_pCurrentDataHistoryCandle;
 
 	bool m_fShowTransactionGraph; // 显示交易具体情况的图
 	CRect m_rectTransactionGraph; // 交易具体情况图的位置和大小。

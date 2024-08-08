@@ -83,7 +83,7 @@ namespace FireBirdTest {
 		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(true);
 		gl_systemConfiguration.ChangeFinnhubAccountTypeToPaid();
 		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(1100);
-		gl_systemConfiguration.SetUpdate(false);
+		gl_systemConfiguration.NeedUpdate(false);
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100);
 	}
 

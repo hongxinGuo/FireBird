@@ -58,17 +58,17 @@ void CFireBirdPropertyRealtimeGridCtrl::OnPropertyChanged(CMFCPropertyGridProper
 		default:
 			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_INFO);
 		}
-		gl_systemConfiguration.SetUpdate(true);
+		gl_systemConfiguration.NeedUpdate(true);
 		break;
 	case SYSTEM_DEBUG_MODE_:
 		ASSERT(pVar->vt == VT_BOOL);
 		gl_systemConfiguration.SetDebugMode(pVar->boolVal);
-		gl_systemConfiguration.SetUpdate(true);
+		gl_systemConfiguration.NeedUpdate(true);
 		break;
 	case SYSTEM_RELOAD_SYSTEM_:
 		ASSERT(pVar->vt == VT_BOOL);
 		gl_systemConfiguration.SetReloadSystem(pVar->boolVal);
-		gl_systemConfiguration.SetUpdate(true);
+		gl_systemConfiguration.NeedUpdate(true);
 		break;
 	default:
 		TRACE("未处理PropertyGridCtrl例外\n"); // 未处理例外
@@ -88,8 +88,7 @@ CPropertyRealtimeWnd::CPropertyRealtimeWnd() noexcept {
 	m_pPropSystemOption = nullptr;
 }
 
-CPropertyRealtimeWnd::~CPropertyRealtimeWnd() {
-}
+CPropertyRealtimeWnd::~CPropertyRealtimeWnd() {}
 
 BEGIN_MESSAGE_MAP(CPropertyRealtimeWnd, CDockablePane)
 	ON_WM_CREATE()
@@ -172,8 +171,7 @@ void CPropertyRealtimeWnd::OnExpandAllProperties() {
 	m_wndPropList.ExpandAll();
 }
 
-void CPropertyRealtimeWnd::OnUpdateExpandAllProperties(CCmdUI* /* pCmdUI */) {
-}
+void CPropertyRealtimeWnd::OnUpdateExpandAllProperties(CCmdUI* /* pCmdUI */) {}
 
 void CPropertyRealtimeWnd::OnSortProperties() {
 	m_wndPropList.SetAlphabeticMode(!m_wndPropList.IsAlphabeticMode());
@@ -183,17 +181,13 @@ void CPropertyRealtimeWnd::OnUpdateSortProperties(CCmdUI* pCmdUI) {
 	pCmdUI->SetCheck(m_wndPropList.IsAlphabeticMode());
 }
 
-void CPropertyRealtimeWnd::OnProperties1() {
-}
+void CPropertyRealtimeWnd::OnProperties1() {}
 
-void CPropertyRealtimeWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {
-}
+void CPropertyRealtimeWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {}
 
-void CPropertyRealtimeWnd::OnProperties2() {
-}
+void CPropertyRealtimeWnd::OnProperties2() {}
 
-void CPropertyRealtimeWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {
-}
+void CPropertyRealtimeWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {}
 
 void CPropertyRealtimeWnd::InitPropList() {
 	SetPropListFont();

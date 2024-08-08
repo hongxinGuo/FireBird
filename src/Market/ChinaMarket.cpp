@@ -62,7 +62,18 @@ CChinaMarket::CChinaMarket() {
 // 目前不允许此析构函数完成任何功能。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CChinaMarket::~CChinaMarket() {}
+CChinaMarket::~CChinaMarket() {
+	if (GetCurrentStock() == nullptr) {
+		if (gl_systemConfiguration.GetCurrentStock().GetLength() > 0) {
+			gl_systemConfiguration.SetCurrentStock(_T(""));
+			gl_systemConfiguration.NeedUpdate(true);
+		}
+	}
+	else if (GetCurrentStock()->GetSymbol() != gl_systemConfiguration.GetCurrentStock()) {
+		gl_systemConfiguration.SetCurrentStock(gl_pChinaMarket->GetCurrentStock()->GetSymbol());
+		gl_systemConfiguration.NeedUpdate(true);
+	}
+}
 
 void CChinaMarket::ResetMarket() {
 	CString str = _T("重置中国股市于北京标准时间：");
@@ -231,9 +242,9 @@ int CChinaMarket::ProcessTask(long lCurrentTime) {
 		case CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__:
 			TaskProcessAndSaveDayLine(lCurrentTime);
 			break;
-		case CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__:
-			TaskLoadCurrentStockHistoryData();
-			break;
+		//case CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__:
+		//TaskLoadCurrentStockHistoryData();
+		//break;
 		case CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__:
 			TaskAccessoryPerMinuteTask(lCurrentTime);
 			break;
@@ -252,8 +263,28 @@ int CChinaMarket::ProcessTask(long lCurrentTime) {
 	return 0;
 }
 
-int CChinaMarket::ProcessImmediateTask(long lMarketTime) {
-	return 0;
+int CChinaMarket::ProcessCurrentImmediateTask(long lMarketTime) {
+	ASSERT(!m_marketImmediateTask.Empty());
+
+	auto pTask = m_marketImmediateTask.GetTask();
+	auto taskType = pTask->GetType();
+	m_marketImmediateTask.DiscardCurrentTask();
+	switch (taskType) {
+	//case CHINA_MARKET_LOAD_TEMP_RT_DATA__:
+	//break;
+	//case CHINA_MARKET_PREPARING_MARKET_OPEN__:
+	//break;
+	case CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__:
+		TaskLoadCurrentStockHistoryData();
+		break;
+	case CHINA_MARKET_UPDATE_CURRENT_STOCK__: // 
+		TaskSetCurrentStock();
+		break;
+	default:
+		ASSERT(0); // 错误的任务号
+		break;
+	}
+	return pTask->GetType();
 }
 
 bool CChinaMarket::TaskCheckMarketReady(long lCurrentTime) {
@@ -485,6 +516,7 @@ void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
 		}
 	}
 }
+
 void CChinaMarket::TaskSetCurrentStock() {
 	if (gl_systemConfiguration.GetCurrentStock() != _T("")) { // 当前有选择股票
 		if (gl_dataContainerChinaStock.IsSymbol(gl_systemConfiguration.GetCurrentStock())) {
@@ -689,7 +721,7 @@ void CChinaMarket::TaskAccessoryPerMinuteTask(long lCurrentTime) {
 		gl_runtime.background_executor()->post([] {
 			gl_systemConfiguration.UpdateDB();
 		});
-		gl_systemConfiguration.SetUpdate(false);
+		gl_systemConfiguration.NeedUpdate(false);
 	}
 
 	AddTask(CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__, GetNextTime(lCurrentTime, 0, 1, 0)); // 每分钟整点执行一次
@@ -1018,7 +1050,7 @@ void CChinaMarket::SetCurrentStock(const CString& strStockCode) {
 	ASSERT(m_pCurrentStock != nullptr);
 	if (!m_pCurrentStock->IsDayLineLoaded()) {
 		ASSERT(!m_pCurrentStock->IsWeekLineLoaded());
-		AddTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
+		AddImmediateTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
 	}
 }
 
@@ -1042,7 +1074,7 @@ void CChinaMarket::SetCurrentStock(const CChinaStockPtr& pStock) {
 	SetCurrentStockChanged(true);
 	m_pCurrentStock->SetDayLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
 	m_pCurrentStock->SetWeekLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
-	AddTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
+	AddImmediateTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
 }
 
 void CChinaMarket::ResetCurrentStock() {

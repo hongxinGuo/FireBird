@@ -35,7 +35,7 @@ public:
 	bool IsDummyTime(long lTime) final { return !IsWorkingTime(lTime); }
 
 	int ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由基类的ScheduleTask调度
-	int ProcessImmediateTask(long lMarketTime) override; // 即时任务调度，由ScheduleTask调度
+	int ProcessCurrentImmediateTask(long lMarketTime) override; // 即时任务调度，由ScheduleTask调度
 
 	// 各种任务
 	virtual void TaskCreateTask(long lCurrentTime);

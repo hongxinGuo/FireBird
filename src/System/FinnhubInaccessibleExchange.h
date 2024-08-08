@@ -83,7 +83,7 @@ public:
 	size_t GetItemSize() const noexcept { return m_mapExchange.size(); }
 
 	bool IsNeedUpdate() const noexcept { return m_fUpdate; }
-	void SetUpdate(const bool fUpdate) noexcept { m_fUpdate = fUpdate; }
+	void NeedUpdate(const bool fUpdate) noexcept { m_fUpdate = fUpdate; }
 
 protected:
 	CString m_strFileName; // ÅäÖÃÎÄ¼şÃû³Æ

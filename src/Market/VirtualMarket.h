@@ -29,7 +29,7 @@ public:
 		ASSERT(0);// 每日定时任务调度,由ScheduleTask调度，由各市场定义其各自的任务,不允许调用本基类函数
 		return 0;
 	}
-	virtual int ProcessImmediateTask(long) {
+	virtual int ProcessCurrentImmediateTask(long) {
 		ASSERT(0);// 即时任务调度,由ScheduleTask调度，由各市场定义其各自的任务,不允许调用本基类函数
 		return 0;
 	}

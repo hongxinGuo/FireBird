@@ -106,7 +106,7 @@ void CFinnhubInaccessibleExchange::UpdateDB() {
 	rename(gl_systemConfiguration.GetConfigurationFileDirectory() + strOld, gl_systemConfiguration.GetConfigurationFileDirectory() + strNew); // ±£´æ±¸·Ý
 	UpdateJson();
 	SaveDB();
-	SetUpdate(false);
+	NeedUpdate(false);
 }
 
 bool CFinnhubInaccessibleExchange::LoadDB() {
@@ -137,9 +137,7 @@ void CFinnhubInaccessibleExchange::SaveDB() const {
 void CFinnhubInaccessibleExchange::Update() {
 	try {
 		m_lUpdateDate = m_finnhubInaccessibleExchange.at("UpdateDate");
-	}
-	catch (json::exception&) {
-	}
+	} catch (json::exception&) {}
 	try {
 		for (int i = 0; i < m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).size(); i++) {
 			const int size = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).size();
@@ -156,9 +154,7 @@ void CFinnhubInaccessibleExchange::Update() {
 				gl_finnhubInaccessibleExchange.m_mapExchange[gl_FinnhubInquiryType.GetInquiryType(pExchange->GetFunctionString())] = pExchange;
 			}
 		}
-	}
-	catch (json::exception&) {
-	}
+	} catch (json::exception&) {}
 }
 
 void CFinnhubInaccessibleExchange::UpdateJson() {
@@ -192,8 +188,7 @@ bool CFinnhubInaccessibleExchange::HaveExchange(int iInquireType, const CString&
 			return true;
 		}
 		return false;
-	}
-	catch (exception&) {
+	} catch (exception&) {
 		return false;
 	}
 }

@@ -162,6 +162,6 @@ namespace FireBirdTest {
 
 		// »Ö¸´Ô­×´
 		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(true);
-		gl_systemConfiguration.SetUpdate(false);
+		gl_systemConfiguration.NeedUpdate(false);
 	}
 }

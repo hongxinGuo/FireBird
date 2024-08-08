@@ -34,9 +34,10 @@ enum {
 
 	CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, // 每十秒钟检查一次，有待处理的日线数据就处理
 
-	CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, //Note 即时执行任务。装载当前股票的日线数据
 	CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__, // 每分钟重复执行的辅助任务（如确定工作时间与否、是否快速接收数据等等）
 	CHINA_MARKET_PREPARING_MARKET_OPEN__, // 在股市开盘（092959）前做必要的准备
+	// China market即时任务
+	CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, //Note 即时执行任务。装载当前股票的日线数据
 	CHINA_MARKET_UPDATE_CURRENT_STOCK__, //Note 即时执行任务。更新当前股票。
 
 	// World market
@@ -46,6 +47,7 @@ enum {
 	WORLD_MARKET_UPDATE_DB__, // 更新市场各数据库。每一分钟一次。
 	WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, // 监测各WebSocket状态。每分钟一次
 	WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__,	// 处理各WebSocket接收到的数据。每秒钟一次
+	// World market即时任务
 
 	//
 	TASK_END

@@ -58,17 +58,17 @@ void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pPro
 		default:
 			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_INFO);
 		}
-		gl_systemConfiguration.SetUpdate(true);
+		gl_systemConfiguration.NeedUpdate(true);
 		break;
 	case SYSTEM_DEBUG_MODE_:
 		ASSERT(pVar->vt == VT_BOOL);
 		gl_systemConfiguration.SetDebugMode(pVar->boolVal);
-		gl_systemConfiguration.SetUpdate(true);
+		gl_systemConfiguration.NeedUpdate(true);
 		break;
 	case SYSTEM_RELOAD_SYSTEM_:
 		ASSERT(pVar->vt == VT_BOOL);
 		gl_systemConfiguration.SetReloadSystem(pVar->boolVal);
-		gl_systemConfiguration.SetUpdate(true);
+		gl_systemConfiguration.NeedUpdate(true);
 		break;
 	default:
 		TRACE("未处理PropertyGridCtrl例外\n"); // 未处理例外
@@ -85,7 +85,7 @@ END_MESSAGE_MAP()
 void CFireBirdComboBox::OnCbnSelChange() {
 	if (gl_systemConfiguration.GetDisplayPropertyPage() != GetCurSel()) {
 		gl_systemConfiguration.SetDisplayPropertyPage(GetCurSel());
-		gl_systemConfiguration.SetUpdate(true);
+		gl_systemConfiguration.NeedUpdate(true);
 	}
 }
 
@@ -105,8 +105,7 @@ CPropertiesWnd::CPropertiesWnd() noexcept {
 	m_pPropTiingoCryptoWebSocket = nullptr;
 }
 
-CPropertiesWnd::~CPropertiesWnd() {
-}
+CPropertiesWnd::~CPropertiesWnd() {}
 
 BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_WM_CREATE()
@@ -212,8 +211,7 @@ void CPropertiesWnd::OnExpandAllProperties() {
 	m_wndPropList.ExpandAll();
 }
 
-void CPropertiesWnd::OnUpdateExpandAllProperties(CCmdUI* /* pCmdUI */) {
-}
+void CPropertiesWnd::OnUpdateExpandAllProperties(CCmdUI* /* pCmdUI */) {}
 
 void CPropertiesWnd::OnSortProperties() {
 	m_wndPropList.SetAlphabeticMode(!m_wndPropList.IsAlphabeticMode());
@@ -223,17 +221,13 @@ void CPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI) {
 	pCmdUI->SetCheck(m_wndPropList.IsAlphabeticMode());
 }
 
-void CPropertiesWnd::OnProperties1() {
-}
+void CPropertiesWnd::OnProperties1() {}
 
-void CPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {
-}
+void CPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {}
 
-void CPropertiesWnd::OnProperties2() {
-}
+void CPropertiesWnd::OnProperties2() {}
 
-void CPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {
-}
+void CPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {}
 
 void CPropertiesWnd::InitPropList() {
 	SetPropListFont();
