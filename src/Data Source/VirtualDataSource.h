@@ -76,6 +76,8 @@ public:
 
 	bool IsWebError() const noexcept { return m_fWebError; }
 	void SetWebError(bool fFlag) noexcept { m_fWebError = fFlag; }
+	DWORD GetWebErrorCode() const noexcept { return m_dwWebErrorCode.load(); }
+	void SetWebErrorCode(INT64 dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
 
 	long GetInquiringNumber() const noexcept { return m_lInquiringNumber; }
 	void SetInquiringNumber(const long lValue) noexcept { m_lInquiringNumber = lValue; }
@@ -97,6 +99,7 @@ protected:
 	CVirtualProductWebDataPtr m_pCurrentProduct;
 
 	bool m_fWebError; //ÍøÂç¶ÁÈ¡´íÎó
+	atomic_int64_t m_dwWebErrorCode{0}; // ÍøÂç´íÎóÂë
 
 	InternetOption m_internetOption;
 	CString m_strInquiry; // ²éÑ¯ËùÐèµÄ×Ö·û´®£¨m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).

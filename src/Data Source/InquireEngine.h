@@ -48,6 +48,7 @@ public:
 
 	bool IsWebError() const noexcept { return m_fWebError; }
 	void SetWebError(bool fFlag) noexcept { m_fWebError = fFlag; }
+	DWORD GetErrorCode() const noexcept { return m_dwErrorCode; }
 
 	void SetContentLength(long length) noexcept { m_lContentLength = length; }
 	long GetContentLength() const noexcept { return m_lContentLength; } // 仅用于测试中
@@ -64,6 +65,7 @@ protected:
 	shared_ptr<CInternetSession> m_pSession;
 	CHttpFile* m_pFile; // 网络文件指针
 	DWORD m_dwHTTPStatusCode; //网络状态码
+	DWORD m_dwErrorCode{0}; // 网络错误码
 
 	bool m_fWebError; //网络读取错误代码。也用于网络错误判断的依据：当为零时无错误。
 	string m_sBuffer; // 接收到数据的缓冲区

@@ -4,8 +4,10 @@
 #include "PropertiesWnd.h"
 
 #include "ChinaMarket.h"
+#include "FinnhubDataSource.h"
 #include "MainFrm.h"
 #include "FireBird.h"
+#include "WorldMarket.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -394,6 +396,21 @@ void CPropertiesWnd::SetPropListFont() {
 void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	if (gl_pChinaMarket->IsWebBusy()) m_pPropChinaMarketWebStatus->SetColor(RGB(192, 0, 0));
 	else m_pPropChinaMarketWebStatus->SetColor(RGB(0, 192, 0));
+
+	if (gl_pChinaMarket->IsWebBusy()) {
+		m_pPropWorldMarketWebStatus->SetValue(_T("Disabled"));
+	}
+	else {
+		if (gl_pFinnhubDataSource->IsWebError()) {
+			char buffer[100];
+			sprintf_s(buffer, _T("running (EC:%5d)"), gl_pFinnhubDataSource->GetWebErrorCode());
+			CString str = buffer;
+			m_pPropWorldMarketWebStatus->SetValue(str);
+		}
+		else {
+			m_pPropWorldMarketWebStatus->SetValue(_T("running"));
+		}
+	}
 
 	CString str = _T("");
 	switch (gl_pFinnhubWebSocket->GetState()) {

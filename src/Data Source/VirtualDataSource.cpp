@@ -101,6 +101,7 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 				else SetWebBusy(false);
 				s_LastInquiryTime = ttCurrentInquiryTime;
 				SetCurrentInquiryTime(ttCurrentInquiryTime);
+				SetWebErrorCode(pEngine->GetErrorCode());
 				return pWebData;
 			});
 			vResults.emplace_back(std::move(result));
