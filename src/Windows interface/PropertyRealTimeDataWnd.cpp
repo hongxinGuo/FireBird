@@ -88,7 +88,8 @@ CPropertyRealtimeWnd::CPropertyRealtimeWnd() noexcept {
 	m_pPropSystemOption = nullptr;
 }
 
-CPropertyRealtimeWnd::~CPropertyRealtimeWnd() {}
+CPropertyRealtimeWnd::~CPropertyRealtimeWnd() {
+}
 
 BEGIN_MESSAGE_MAP(CPropertyRealtimeWnd, CDockablePane)
 	ON_WM_CREATE()
@@ -171,7 +172,8 @@ void CPropertyRealtimeWnd::OnExpandAllProperties() {
 	m_wndPropList.ExpandAll();
 }
 
-void CPropertyRealtimeWnd::OnUpdateExpandAllProperties(CCmdUI* /* pCmdUI */) {}
+void CPropertyRealtimeWnd::OnUpdateExpandAllProperties(CCmdUI* /* pCmdUI */) {
+}
 
 void CPropertyRealtimeWnd::OnSortProperties() {
 	m_wndPropList.SetAlphabeticMode(!m_wndPropList.IsAlphabeticMode());
@@ -181,13 +183,17 @@ void CPropertyRealtimeWnd::OnUpdateSortProperties(CCmdUI* pCmdUI) {
 	pCmdUI->SetCheck(m_wndPropList.IsAlphabeticMode());
 }
 
-void CPropertyRealtimeWnd::OnProperties1() {}
+void CPropertyRealtimeWnd::OnProperties1() {
+}
 
-void CPropertyRealtimeWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {}
+void CPropertyRealtimeWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {
+}
 
-void CPropertyRealtimeWnd::OnProperties2() {}
+void CPropertyRealtimeWnd::OnProperties2() {
+}
 
-void CPropertyRealtimeWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {}
+void CPropertyRealtimeWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {
+}
 
 void CPropertyRealtimeWnd::InitPropList() {
 	SetPropListFont();
@@ -242,34 +248,9 @@ void CPropertyRealtimeWnd::InitPropList() {
 
 	CMFCPropertyGridProperty* pGroup2 = new CMFCPropertyGridProperty(_T("China market"));
 
-	LOGFONT lf;
-	CFont* font = CFont::FromHandle(static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
-	font->GetLogFont(&lf);
-
-	_tcscpy_s(lf.lfFaceName, _T("Arial"));
-
-	pGroup2->AddSubItem(new CMFCPropertyGridFontProperty(_T("Font"), lf, CF_EFFECTS | CF_SCREENFONTS, _T("Specifies the default font for the window")));
 	pGroup2->AddSubItem(new CMFCPropertyGridProperty(_T("Use System Font"), static_cast<_variant_t>(true), _T("Specifies that the window uses MS Shell Dlg font")));
 
 	m_wndPropList.AddProperty(pGroup2);
-
-	CMFCPropertyGridProperty* pGroup3 = new CMFCPropertyGridProperty(_T("World market"));
-
-	CMFCPropertyGridColorProperty* pColorProp = new CMFCPropertyGridColorProperty(_T("Window Color"), RGB(210, 192, 254), nullptr, _T("Specifies the default window color"));
-	pColorProp->EnableOtherButton(_T("Other..."));
-	pColorProp->EnableAutomaticButton(_T("Default"), ::GetSysColor(COLOR_3DFACE));
-	pGroup3->AddSubItem(pColorProp);
-
-	static constexpr TCHAR szFilter[] = _T("Icon Files(*.ico)|*.ico|All Files(*.*)|*.*||");
-	pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("Icon"), TRUE, _T(""), _T("ico"), 0, szFilter, _T("Specifies the window icon")));
-
-	pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("Folder"), _T("c:\\")));
-
-	m_wndPropList.AddProperty(pGroup3);
-
-	CMFCPropertyGridProperty* pGroup5 = new CMFCPropertyGridProperty(_T("Web Socket"));
-
-	m_wndPropList.AddProperty(pGroup5);
 }
 
 void CPropertyRealtimeWnd::OnSetFocus(CWnd* pOldWnd) {

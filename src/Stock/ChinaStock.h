@@ -56,8 +56,8 @@ public:
 	int GetRatio() const final { return 1000; }
 
 public:
+	void UpdateRTData(const CWebRTDataPtr& pRTData);
 	void UpdateStatus(const CWebRTDataPtr& pRTData);
-	void UpdateProfile(const CWebRTDataPtr& pRTData);
 
 	// 本股票各变量状态
 	long GetHighLimitFromTengxun() const noexcept { return m_lHighLimitFromTengxun; }

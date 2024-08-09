@@ -88,12 +88,12 @@ public:
 protected:
 	vector<CVirtualHistoryCandleExtendPtr> m_vHistoryData;
 
-	atomic_bool m_fDataLoaded; // 数据装载与否标识
+	atomic_bool m_fDataLoaded{false}; // 数据装载与否标识
 
-	bool m_fDatabaseTodayUpdated; // 数据库今日是否已更新标识
+	bool m_fDatabaseTodayUpdated{false}; // 数据库今日是否已更新标识
 
 protected:
-	bool m_fBasicDataLoaded;
+	bool m_fBasicDataLoaded{false};
 };
 
 using CVirtualDataHistoryCandleExtendPtr = shared_ptr<CVirtualDataHistoryCandleExtend>;

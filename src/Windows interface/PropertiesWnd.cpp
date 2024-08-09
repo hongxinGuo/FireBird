@@ -105,7 +105,8 @@ CPropertiesWnd::CPropertiesWnd() noexcept {
 	m_pPropTiingoCryptoWebSocket = nullptr;
 }
 
-CPropertiesWnd::~CPropertiesWnd() {}
+CPropertiesWnd::~CPropertiesWnd() {
+}
 
 BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_WM_CREATE()
@@ -211,7 +212,8 @@ void CPropertiesWnd::OnExpandAllProperties() {
 	m_wndPropList.ExpandAll();
 }
 
-void CPropertiesWnd::OnUpdateExpandAllProperties(CCmdUI* /* pCmdUI */) {}
+void CPropertiesWnd::OnUpdateExpandAllProperties(CCmdUI* /* pCmdUI */) {
+}
 
 void CPropertiesWnd::OnSortProperties() {
 	m_wndPropList.SetAlphabeticMode(!m_wndPropList.IsAlphabeticMode());
@@ -221,13 +223,17 @@ void CPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI) {
 	pCmdUI->SetCheck(m_wndPropList.IsAlphabeticMode());
 }
 
-void CPropertiesWnd::OnProperties1() {}
+void CPropertiesWnd::OnProperties1() {
+}
 
-void CPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {}
+void CPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {
+}
 
-void CPropertiesWnd::OnProperties2() {}
+void CPropertiesWnd::OnProperties2() {
+}
 
-void CPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {}
+void CPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {
+}
 
 void CPropertiesWnd::InitPropList() {
 	SetPropListFont();
@@ -288,14 +294,12 @@ void CPropertiesWnd::InitPropList() {
 	m_pPropChinaMarketWebStatus->Enable(false);
 	pGroup2->AddSubItem(m_pPropChinaMarketWebStatus);
 
-	LOGFONT lf;
-	CFont* font = CFont::FromHandle(static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
-	font->GetLogFont(&lf);
-
-	_tcscpy_s(lf.lfFaceName, _T("Arial"));
-
-	pGroup2->AddSubItem(new CMFCPropertyGridFontProperty(_T("Font"), lf, CF_EFFECTS | CF_SCREENFONTS, _T("Specifies the default font for the window")));
-	pGroup2->AddSubItem(new CMFCPropertyGridProperty(_T("Use System Font"), static_cast<_variant_t>(true), _T("Specifies that the window uses MS Shell Dlg font")));
+	//LOGFONT lf;
+	//CFont* font = CFont::FromHandle(static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
+	//font->GetLogFont(&lf);
+	//_tcscpy_s(lf.lfFaceName, _T("Arial"));
+	//pGroup2->AddSubItem(new CMFCPropertyGridFontProperty(_T("Font"), lf, CF_EFFECTS | CF_SCREENFONTS, _T("Specifies the default font for the window")));
+	//pGroup2->AddSubItem(new CMFCPropertyGridProperty(_T("Use System Font"), static_cast<_variant_t>(true), _T("Specifies that the window uses MS Shell Dlg font")));
 
 	m_wndPropList.AddProperty(pGroup2);
 
@@ -304,15 +308,9 @@ void CPropertiesWnd::InitPropList() {
 	m_pPropWorldMarketWebStatus->Enable(FALSE);
 	pGroup3->AddSubItem(m_pPropWorldMarketWebStatus);
 
-	CMFCPropertyGridColorProperty* pColorProp = new CMFCPropertyGridColorProperty(_T("Window Color"), RGB(210, 192, 254), nullptr, _T("Specifies the default window color"));
-	pColorProp->EnableOtherButton(_T("Other..."));
-	pColorProp->EnableAutomaticButton(_T("Default"), ::GetSysColor(COLOR_3DFACE));
-	pGroup3->AddSubItem(pColorProp);
-
-	static constexpr TCHAR szFilter[] = _T("Icon Files(*.ico)|*.ico|All Files(*.*)|*.*||");
-	pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("Icon"), TRUE, _T(""), _T("ico"), 0, szFilter, _T("Specifies the window icon")));
-
-	pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("Folder"), _T("c:\\")));
+	//static constexpr TCHAR szFilter[] = _T("Icon Files(*.ico)|*.ico|All Files(*.*)|*.*||");
+	//pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("Icon"), TRUE, _T(""), _T("ico"), 0, szFilter, _T("Specifies the window icon")));
+	//pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("Folder"), _T("c:\\")));
 
 	m_wndPropList.AddProperty(pGroup3);
 

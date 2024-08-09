@@ -448,7 +448,7 @@ namespace FireBirdTest {
 			pRTData->SetPSell(i, i * 34567);
 			pRTData->SetVSell(i, i * 45678);
 		}
-		stock.UpdateStatus(pRTData);
+		stock.UpdateRTData(pRTData);
 		stock.Reset();
 		EXPECT_TRUE(stock.IsNotChecked());
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
@@ -517,7 +517,7 @@ namespace FireBirdTest {
 			pRTData->SetPSell(i, i * 34567);
 			pRTData->SetVSell(i, i * 45678);
 		}
-		stock.UpdateStatus(pRTData);
+		stock.UpdateRTData(pRTData);
 		long lDateDest = ConvertToDate(stock.GetTransactionTime(), 0);
 		EXPECT_EQ(lDateSource, lDateDest);
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
@@ -547,13 +547,13 @@ namespace FireBirdTest {
 		pRTData->SetTotalValue(0);
 		pRTData->SetCurrentValue(0);
 		pRTData->SetHigh(0);
-		stock.UpdateStatus(pRTData);
+		stock.UpdateRTData(pRTData);
 		EXPECT_EQ(stock.GetCurrentValue(), 4);
 		EXPECT_EQ(stock.GetTotalValue(), 3);
 		EXPECT_EQ(stock.GetHigh(), 0);
 		pRTData->SetTotalValue(1);
 		pRTData->SetCurrentValue(2);
-		stock.UpdateStatus(pRTData);
+		stock.UpdateRTData(pRTData);
 		EXPECT_EQ(stock.GetCurrentValue(), 2);
 		EXPECT_EQ(stock.GetTotalValue(), 1);
 	}

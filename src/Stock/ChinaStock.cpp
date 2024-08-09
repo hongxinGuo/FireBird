@@ -349,7 +349,7 @@ void CChinaStock::UpdateCurrentHistoryCandle(const CVirtualHistoryCandleExtendPt
 	pBeUpdated->SetCanceledSellVolumeAbove200000(m_lCanceledSellVolumeAbove200000);
 }
 
-void CChinaStock::UpdateStatus(const CWebRTDataPtr& pRTData) {
+void CChinaStock::UpdateRTData(const CWebRTDataPtr& pRTData) {
 	SetTransactionTime(pRTData->GetTransactionTime());
 	SetLastClose(pRTData->GetLastClose());
 	SetNew(pRTData->GetNew());
@@ -374,9 +374,8 @@ void CChinaStock::UpdateStatus(const CWebRTDataPtr& pRTData) {
 	}
 }
 
-void CChinaStock::UpdateProfile(const CWebRTDataPtr& pRTData) {
+void CChinaStock::UpdateStatus(const CWebRTDataPtr& pRTData) {
 	SetActive(true);
-	SetDayLineLoaded(false);
 	SetSymbol(pRTData->GetSymbol()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
 	if (pRTData->GetStockName() != _T("")) SetDisplaySymbol(pRTData->GetStockName()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
 	SetIPOStatus(_STOCK_IPOED_);
@@ -704,7 +703,7 @@ void CChinaStock::ProcessRTData() {
 	for (INT64 i = 0; i < lTotalNumber; i++) {
 		const CWebRTDataPtr pRTData = PopRTData(); // 采用同步机制获取数据
 		if (pRTData->IsActive()) {// 数据有效
-			UpdateStatus(pRTData); // 更新股票现时状态。
+			UpdateRTData(pRTData); // 更新股票现时状态。
 			if (gl_pChinaMarket->IsMarketOpened() && IsNeedProcessRTData()) {// 开市时间内计算具体情况。指数类股票无需计算交易情况和挂单变化
 				ProcessOneRTData(pRTData);
 				CheckCurrentRTData();

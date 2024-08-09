@@ -455,7 +455,7 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 		const auto pStock = gl_dataContainerChinaStock.GetStock(pRTData->GetSymbol());
 		if (!pStock->IsActive()) {
 			if (pRTData->IsValidTime(14)) {
-				pStock->UpdateProfile(pRTData);
+				pStock->UpdateStatus(pRTData);
 			}
 		}
 		if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
