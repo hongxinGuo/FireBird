@@ -108,57 +108,38 @@ public:
 	}
 
 	[[nodiscard]] int GetRTServer() const { return m_iChinaMarketRealtimeServer; }
-	[[nodiscard]] bool IsUsingSinaRTServer() const noexcept {
-		if (m_iChinaMarketRealtimeServer == 0) return true;
-		return false;
-	}
-	[[nodiscard]] bool IsUsingNeteaseRTServer() const noexcept {
-		if (m_iChinaMarketRealtimeServer == 1) return true;
-		return false;
-	}
-	[[nodiscard]] bool IsUsingTengxunRTServer() const noexcept {
-		if (m_iChinaMarketRealtimeServer == 2) return true;
-		return false;
-	}
+	[[nodiscard]] bool IsUsingSinaRTServer() const noexcept { return m_iChinaMarketRealtimeServer == 0; }
+	[[nodiscard]] bool IsUsingNeteaseRTServer() const noexcept { return m_iChinaMarketRealtimeServer == 1; }
+	[[nodiscard]] bool IsUsingTengxunRTServer() const noexcept { return m_iChinaMarketRealtimeServer == 2; }
+	[[nodiscard]] bool IsUsingNeteaseDayLineServer() const noexcept { return m_iChinaMarketDayLineServer == 0; }
+	[[nodiscard]] bool IsUsingTengxunDayLineServer() const noexcept { return m_iChinaMarketDayLineServer == 1; }
 
-	[[nodiscard]] bool IsUsingNeteaseDayLineServer() const noexcept {
-		if (m_iChinaMarketDayLineServer == 0) return true;
-		return false;
-	}
-
-	[[nodiscard]] bool IsUsingTengxunDayLineServer() const noexcept {
-		if (m_iChinaMarketDayLineServer == 1) return true;
-		return false;
-	}
 	void SetCurrentStock(const CString& stock) noexcept { m_strCurrentStock = stock; }
 	CString GetCurrentStock() const noexcept { return m_strCurrentStock; }
 
 	// WebSocket
 	[[nodiscard]] bool IsUsingFinnhubWebSocket() const noexcept { return m_bUsingFinnhubWebSocket; }
 	void SetUsingFinnhubWebSocket(const bool bUsingFinnhubWebSocket) noexcept { m_bUsingFinnhubWebSocket = bUsingFinnhubWebSocket; }
-	[[nodiscard]] bool IsUsingTiingoIEXWebSocket() const noexcept { return m_bUsingTiingoIEXWebSocket; }
 
+	[[nodiscard]] bool IsUsingTiingoIEXWebSocket() const noexcept { return m_bUsingTiingoIEXWebSocket; }
 	void SetUsingTiingoIEXWebSocket(const bool bUsingTiingoIEXWebSocket) noexcept {
 		m_fUpdate = true;
 		m_bUsingTiingoIEXWebSocket = bUsingTiingoIEXWebSocket;
 	}
 
 	[[nodiscard]] bool IsUsingTiingoCryptoWebSocket() const noexcept { return m_bUsingTiingoCryptoWebSocket; }
-
 	void SetUsingTiingoCryptoWebSocket(const bool bUsingTiingoCryptoWebSocket) noexcept {
 		m_fUpdate = true;
 		m_bUsingTiingoCryptoWebSocket = bUsingTiingoCryptoWebSocket;
 	}
 
 	[[nodiscard]] bool IsUsingTiingoForexWebSocket() const noexcept { return m_bUsingTiingoForexWebSocket; }
-
 	void SetUsingTiingoForexWebSocket(const bool bUsingTiingoForexWebSocket) noexcept {
 		m_fUpdate = true;
 		m_bUsingTiingoForexWebSocket = bUsingTiingoForexWebSocket;
 	}
 
 	[[nodiscard]] bool IsUsingQuandlWebSocket() const noexcept { return m_bUsingQuandlWebSocket; }
-
 	void SetUsingQuandlWebSocket(const bool bUsingQuandlWebSocket) noexcept {
 		m_fUpdate = true;
 		m_bUsingQuandlWebSocket = bUsingQuandlWebSocket;
@@ -166,14 +147,12 @@ public:
 
 	// ChinaMarket
 	[[nodiscard]] int GetSavingChinaMarketStockDayLineThread() const noexcept { return m_iSavingChinaMarketStockDayLineThread; }
-
 	void SetSavingChinaMarketStockDayLineThread(const int iSavingChinaMarketStockDayLineThread) noexcept {
 		m_fUpdate = true;
 		m_iSavingChinaMarketStockDayLineThread = iSavingChinaMarketStockDayLineThread;
 	}
 
 	[[nodiscard]] bool IsFastInquiringRTData() const noexcept { return m_bFastInquiringRTData; }
-
 	void SetFastInquiringRTData(const bool fFlag) noexcept {
 		m_fUpdate = true;
 		m_bFastInquiringRTData = fFlag;
@@ -197,35 +176,30 @@ public:
 	}
 
 	[[nodiscard]] int GetStockBasicFinancialUpdateRate() const noexcept { return m_iStockBasicFinancialUpdateRate; }
-
 	void SetStockBasicFinancialUpdateRate(const int iRate) noexcept {
 		m_fUpdate = true;
 		m_iStockBasicFinancialUpdateRate = iRate;
 	}
 
 	[[nodiscard]] int GetInsideTransactionUpdateRate() const noexcept { return m_iInsideTransactionUpdateRate; }
-
 	void SetInsideTransactionUpdateRate(const int iRate) noexcept {
 		m_fUpdate = true;
 		m_iInsideTransactionUpdateRate = iRate;
 	}
 
 	[[nodiscard]] int GetInsideSentimentUpdateRate() const noexcept { return m_iInsideSentimentUpdateRate; }
-
 	void SetInsideSentimentUpdateRate(const int iRate) noexcept {
 		m_fUpdate = true;
 		m_iInsideSentimentUpdateRate = iRate;
 	}
 
 	[[nodiscard]] int GetStockPeerUpdateRate() const noexcept { return m_iStockPeerUpdateRate; }
-
 	void SetStockPeerUpdateRate(const int iRate) noexcept {
 		m_fUpdate = true;
 		m_iStockPeerUpdateRate = iRate;
 	}
 
 	[[nodiscard]] int GetEPSSurpriseUpdateRate() const noexcept { return m_iEPSSurpriseUpdateRate; }
-
 	void SetEPSSurpriseUpdateRate(const int iRate) noexcept {
 		m_fUpdate = true;
 		m_iEPSSurpriseUpdateRate = iRate;
@@ -246,7 +220,6 @@ public:
 	}
 
 	void SetSystemDisplayRect(const RECT rect) noexcept { m_rSystemDisplay = rect; }
-
 	void SetSystemDisplayRect(const int cx, const int cy) noexcept {
 		m_rSystemDisplay.left = 0;
 		m_rSystemDisplay.right = cx;
@@ -300,19 +273,19 @@ protected:
 
 	// 系统配置
 	int m_iLogLevel; // spdlog日志文件记录等级: trace, debug, info, warn, error, critical, off
-	bool m_bDebugMode; // 系统是否是测试状态
-	bool m_bReloadSystem; // 系统是否允许周期性重启
+	bool m_bDebugMode{false}; // 系统是否是测试状态
+	bool m_bReloadSystem{false}; // 系统是否允许周期性重启
 	CString m_strDatabaseAccountName; // 数据库账户名称
 	CString m_strDatabaseAccountPassword; // 数据库账户密码
 	int m_iBackgroundThreadPermittedNumber; // 后台线程最大允许值
 
 	// 系统参数
-	int m_iChinaMarketRealtimeServer; // 中国市场实时数据服务器.0:新浪实时数据服务器； 1:网易实时数据服务器。
-	int m_iChinaMarketDayLineServer; // 中国市场日线数据服务器。0:网易日线服务器；1:腾讯日线服务器。
-	int m_iChinaMarketRTDataInquiryTime; // 中国市场实时数据查询间隔时间
+	int m_iChinaMarketRealtimeServer{0}; // 中国市场实时数据服务器.0:新浪实时数据服务器； 1:网易实时数据服务器。
+	int m_iChinaMarketDayLineServer{0}; // 中国市场日线数据服务器。0:网易日线服务器；1:腾讯日线服务器。
+	int m_iChinaMarketRTDataInquiryTime{250}; // 中国市场实时数据查询间隔时间,单位为毫秒
 
 	// World Market
-	long m_lMarketResettingTime;
+	long m_lMarketResettingTime{170000};
 	CString m_strFinnhubToken; // 令牌
 	CString m_strTiingoToken; // 令牌
 	CString m_strQuandlToken; // 令牌
@@ -325,34 +298,34 @@ protected:
 	CString m_strCurrentStock{_T("")}; // 当前所选股票
 
 	// WebSocket
-	bool m_bUsingFinnhubWebSocket;
-	bool m_bUsingTiingoIEXWebSocket;
-	bool m_bUsingTiingoCryptoWebSocket;
-	bool m_bUsingTiingoForexWebSocket;
-	bool m_bUsingQuandlWebSocket;
+	bool m_bUsingFinnhubWebSocket{true};
+	bool m_bUsingTiingoIEXWebSocket{true};
+	bool m_bUsingTiingoCryptoWebSocket{true};
+	bool m_bUsingTiingoForexWebSocket{true};
+	bool m_bUsingQuandlWebSocket{true};
 
 	// ChinaMarket
-	int m_iSavingChinaMarketStockDayLineThread; // 存储日线历史数据时的并发线程数。
-	bool m_bFastInquiringRTData;
-	int m_iNumberOfRTDataSource; // 实时数据申请引擎数， 默认为4
-	int m_iSinaRTDataInquiryPerTime; // 新浪实时数据每次查询股票数
-	int m_iNeteaseRTDataInquiryPerTime; // 网易实时数据每次查询股票数
-	int m_iTengxunRTDataInquiryPerTime; // 腾讯实时数据每次查询股票数
+	int m_iSavingChinaMarketStockDayLineThread{4}; // 存储日线历史数据时的并发线程数。
+	bool m_bFastInquiringRTData{false};
+	int m_iNumberOfRTDataSource{4}; // 实时数据申请引擎数， 默认为4
+	int m_iSinaRTDataInquiryPerTime{850}; // 新浪实时数据每次查询股票数
+	int m_iNeteaseRTDataInquiryPerTime{900}; // 网易实时数据每次查询股票数
+	int m_iTengxunRTDataInquiryPerTime{900}; // 腾讯实时数据每次查询股票数
 
 	// 网络数据更新频率（以天数记）
-	int m_iStockProfileUpdateRate; // 默认45天更新一次
-	int m_iInsideTransactionUpdateRate; // 默认45天更新一次
-	int m_iInsideSentimentUpdateRate; // 默认45天更新一次
-	int m_iStockBasicFinancialUpdateRate; // 默认45天更新一次
-	int m_iStockPeerUpdateRate; // 默认90天更新一次
-	int m_iEPSSurpriseUpdateRate; // 默认90天更新一次
-	int m_iSECFilingsUpdateRate; // 默认30天更新一次
+	int m_iStockProfileUpdateRate{365}; // 默认365天更新一次
+	int m_iInsideTransactionUpdateRate{30}; // 默认30天更新一次
+	int m_iInsideSentimentUpdateRate{30}; // 默认30天更新一次
+	int m_iStockBasicFinancialUpdateRate{45}; // 默认45天更新一次
+	int m_iStockPeerUpdateRate{90}; // 默认90天更新一次
+	int m_iEPSSurpriseUpdateRate{90}; // 默认90天更新一次
+	int m_iSECFilingsUpdateRate{30}; // 默认30天更新一次
 
 	// 测试系统
 	CString m_strBenchmarkTestFileDirectory; // 性能测试文件所在的目录
 
-	bool m_fUpdate;
-	bool m_fInitialized = false;
+	bool m_fUpdate{false};
+	bool m_fInitialized{false};
 
 	// 以下为无需存储之系统参数
 	//

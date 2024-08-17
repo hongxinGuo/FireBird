@@ -55,7 +55,6 @@ public:
 		m_vHistoryData.clear();
 		m_fDataLoaded = false;
 	}
-
 	CVirtualHistoryCandleExtendPtr GetData(const long lIndex) const { return m_vHistoryData.at(lIndex); }
 
 	bool Add(const CVirtualHistoryCandleExtendPtr& pData) {
@@ -87,12 +86,8 @@ public:
 
 protected:
 	vector<CVirtualHistoryCandleExtendPtr> m_vHistoryData;
-
 	atomic_bool m_fDataLoaded{false}; // 数据装载与否标识
-
 	bool m_fDatabaseTodayUpdated{false}; // 数据库今日是否已更新标识
-
-protected:
 	bool m_fBasicDataLoaded{false};
 };
 

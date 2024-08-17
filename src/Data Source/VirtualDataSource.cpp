@@ -97,7 +97,7 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 					ASSERT(pWebData == nullptr);
 				counter.stop();
 				time_t ttCurrentInquiryTime = counter.GetElapsedMillisecond();
-				if (s_LastInquiryTime > 200 && ttCurrentInquiryTime > 200) SetWebBusy(true); // 
+				if (s_LastInquiryTime > m_iMaxNormalInquireTime && ttCurrentInquiryTime > m_iMaxNormalInquireTime) SetWebBusy(true); // 
 				else SetWebBusy(false);
 				s_LastInquiryTime = ttCurrentInquiryTime;
 				SetCurrentInquiryTime(ttCurrentInquiryTime);

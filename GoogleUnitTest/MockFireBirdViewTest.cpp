@@ -40,7 +40,7 @@ namespace FireBirdTest {
 		}
 
 		void TearDown() override {
-			gl_pChinaMarket->ResetCurrentStock();
+			gl_pChinaMarket->ClearCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			s_pFireBirdView = nullptr;
 
@@ -216,7 +216,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockFireBirdViewTest, TestOnUpdateShowRSInLogarithm) {
 		CCmdUI cmdUI;
-		gl_pChinaMarket->ResetCurrentStock();
+		gl_pChinaMarket->ClearCurrentStock();
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUIEnable(_, false))
 		.Times(1);
 		s_pFireBirdView->OnUpdateShowRsInLogarithm(&cmdUI);
@@ -255,7 +255,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockFireBirdViewTest, TestOnUpdateShowRSInLinear) {
 		CCmdUI cmdUI;
-		gl_pChinaMarket->ResetCurrentStock();
+		gl_pChinaMarket->ClearCurrentStock();
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUIEnable(_, false))
 		.Times(1);
 		s_pFireBirdView->OnUpdateShowRsInLinear(&cmdUI);
@@ -283,7 +283,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockFireBirdViewTest, TestOnUpdateShowRSIndex) {
 		CCmdUI cmdUI;
-		gl_pChinaMarket->ResetCurrentStock();
+		gl_pChinaMarket->ClearCurrentStock();
 		EXPECT_CALL(*s_pFireBirdView, SysCallCmdUIEnable(_, false))
 		.Times(1);
 		s_pFireBirdView->OnUpdateShowRsIndex(&cmdUI);

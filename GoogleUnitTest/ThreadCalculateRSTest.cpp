@@ -17,7 +17,7 @@ namespace FireBirdTest {
 		}
 
 		static void TearDownTestSuite() {
-			gl_pChinaMarket->ResetCurrentStock();
+			gl_pChinaMarket->ClearCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			SCOPED_TRACE("");
 			GeneralCheck();

@@ -99,7 +99,7 @@ CSystemConfiguration::CSystemConfiguration() {
 	sm_bInitialized = true;
 
 	m_fUpdate = false; // update flag
-	m_fInitialized = true;
+	m_fInitialized = false;
 	char buffer[200];
 	_getcwd(buffer, 200);
 	m_strDirectory = buffer;

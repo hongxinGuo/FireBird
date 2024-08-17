@@ -27,6 +27,7 @@ CFinnhubDataSource::CFinnhubDataSource() {
 	m_strSuffix = _T("&token=");
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
+	m_iMaxNormalInquireTime = 1000;
 
 	CFinnhubDataSource::ConfigureInternetOption();
 

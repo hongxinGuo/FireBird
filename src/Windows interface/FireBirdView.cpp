@@ -696,7 +696,6 @@ void CFireBirdView::Show(CDC* pdc) {
 }
 
 // CFireBirdView 打印
-
 void CFireBirdView::OnFilePrintPreview() {
 #ifndef SHARED_HANDayLineERS
 	AFXPrintPreview(this);
@@ -708,9 +707,11 @@ BOOL CFireBirdView::OnPreparePrinting(CPrintInfo* pInfo) {
 	return DoPreparePrinting(pInfo);
 }
 
-void CFireBirdView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {}
+void CFireBirdView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
+}
 
-void CFireBirdView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {}
+void CFireBirdView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
+}
 
 void CFireBirdView::OnRButtonUp(UINT /* nFlags */, CPoint point) {
 	ClientToScreen(&point);
@@ -724,7 +725,6 @@ void CFireBirdView::OnContextMenu(CWnd* /* pWnd */, CPoint point) {
 }
 
 // CFireBirdView 诊断
-
 #ifdef _DEBUG
 CFireBirdDoc* CFireBirdView::GetDocument() const // 非调试版本是内联的
 {
@@ -734,7 +734,6 @@ CFireBirdDoc* CFireBirdView::GetDocument() const // 非调试版本是内联的
 #endif //_DEBUG
 
 // CFireBirdView 消息处理程序
-
 void CFireBirdView::OnTimer(UINT_PTR nIDEvent) {
 	CDC* pdc = GetDC();
 

@@ -94,7 +94,7 @@ void CChinaMarket::ResetMarket() {
 	Load10DaysRSStrongStockDB();
 
 	if (gl_systemConfiguration.GetCurrentStock() != _T("")) {
-		AddImmediateTask(CHINA_MARKET_UPDATE_CURRENT_STOCK__, 0);
+		AddImmediateTask(CHINA_MARKET_UPDATE_CURRENT_STOCK__);
 	}
 
 	gl_ProcessChinaMarketRTData.release();
@@ -233,18 +233,12 @@ int CChinaMarket::ProcessTask(long lCurrentTime) {
 		case CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__:
 			TaskUpdateStockProfileDB(lCurrentTime);
 			break;
-		case CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__:
-			TaskUpdateChosenStockDB();
-			break;
 		case CHINA_MARKET_UPDATE_STOCK_SECTION__:
 			TaskUpdateStockSection();
 			break;
 		case CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__:
 			TaskProcessAndSaveDayLine(lCurrentTime);
 			break;
-		//case CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__:
-		//TaskLoadCurrentStockHistoryData();
-		//break;
 		case CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__:
 			TaskAccessoryPerMinuteTask(lCurrentTime);
 			break;
@@ -270,10 +264,9 @@ int CChinaMarket::ProcessCurrentImmediateTask(long lMarketTime) {
 	auto taskType = pTask->GetType();
 	m_marketImmediateTask.DiscardCurrentTask();
 	switch (taskType) {
-	//case CHINA_MARKET_LOAD_TEMP_RT_DATA__:
-	//break;
-	//case CHINA_MARKET_PREPARING_MARKET_OPEN__:
-	//break;
+	case CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__:
+		TaskUpdateChosenStockDB();
+		break;
 	case CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__:
 		TaskLoadCurrentStockHistoryData();
 		break;
@@ -1050,7 +1043,7 @@ void CChinaMarket::SetCurrentStock(const CString& strStockCode) {
 	ASSERT(m_pCurrentStock != nullptr);
 	if (!m_pCurrentStock->IsDayLineLoaded()) {
 		ASSERT(!m_pCurrentStock->IsWeekLineLoaded());
-		AddImmediateTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
+		AddImmediateTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__); // 装载日线历史数据
 	}
 }
 
@@ -1074,13 +1067,7 @@ void CChinaMarket::SetCurrentStock(const CChinaStockPtr& pStock) {
 	SetCurrentStockChanged(true);
 	m_pCurrentStock->SetDayLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
 	m_pCurrentStock->SetWeekLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
-	AddImmediateTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, 1); // 装载日线历史数据
-}
-
-void CChinaMarket::ResetCurrentStock() {
-	if (m_pCurrentStock != nullptr) {
-		m_pCurrentStock = nullptr;
-	}
+	AddImmediateTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__); // 装载日线历史数据
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

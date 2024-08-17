@@ -23,22 +23,23 @@ enum {
 	CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, // 实时数据处理。自093000开始至1130500，然后从130000至150500，每次间隔一秒钟（不得超过三秒钟）
 	CHINA_MARKET_SAVE_TEMP_RT_DATA__, // 存储临时实时数据。自093000开始至1130500，然后从130000至150500，每次间隔五分钟
 	CHINA_MARKET_BUILD_TODAY_DATABASE__,  // 实时数据处理。每日一次，时间为150500
-	CHINA_MARKET_VALIDATE_TODAY_DATABASE__, // 检查今日数据是否处理过，没有的话则处理之
+	CHINA_MARKET_VALIDATE_TODAY_DATABASE__, //not implemented 检查今日数据是否处理过，没有的话则处理之
 
 	CHINA_MARKET_CHOICE_10_RS_STRONG_STOCK_SET__, // 实时数据处理。每日一次，时间为150500
 
 	CHINA_MARKET_UPDATE_OPTION_DB__, // 每五分钟更新一次系统选项数据库
 	CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, // 每五分钟更新一次股票简介数据库
-	CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__, // 更新自选股数据库
 	CHINA_MARKET_UPDATE_STOCK_SECTION__, // 更新全段股票数据库
 
 	CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, // 每十秒钟检查一次，有待处理的日线数据就处理
 
 	CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__, // 每分钟重复执行的辅助任务（如确定工作时间与否、是否快速接收数据等等）
 	CHINA_MARKET_PREPARING_MARKET_OPEN__, // 在股市开盘（092959）前做必要的准备
+
 	// China market即时任务
-	CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, //Note 即时执行任务。装载当前股票的日线数据
-	CHINA_MARKET_UPDATE_CURRENT_STOCK__, //Note 即时执行任务。更新当前股票。
+	CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__, //Note 即时任务。 更新自选股数据库
+	CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, //Note 即时任务。装载当前股票的日线数据
+	CHINA_MARKET_UPDATE_CURRENT_STOCK__, //Note 即时任务。更新当前股票。
 
 	// World market
 	WORLD_MARKET_CREATE_TASK__, // 生成其他任务的初始任务。每日240000
@@ -47,6 +48,8 @@ enum {
 	WORLD_MARKET_UPDATE_DB__, // 更新市场各数据库。每一分钟一次。
 	WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, // 监测各WebSocket状态。每分钟一次
 	WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__,	// 处理各WebSocket接收到的数据。每秒钟一次
+
+	WORLD_MARKET_CONNECT_FINNHUB_WEB_SOCKET__, // 自动连接finnhub web socket
 	// World market即时任务
 
 	//

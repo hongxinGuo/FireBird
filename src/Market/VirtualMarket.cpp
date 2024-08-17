@@ -133,10 +133,10 @@ void CVirtualMarket::AddImmediateTask(const CMarketTaskPtr& pTask) {
 	m_marketImmediateTask.AddTask(pTask);
 }
 
-void CVirtualMarket::AddImmediateTask(const long lTaskType, const long lExecuteTime) {
+void CVirtualMarket::AddImmediateTask(const long lTaskType) {
 	const auto pTask = make_shared<CMarketTask>();
 	pTask->SetType(lTaskType);
-	pTask->SetTime(lExecuteTime);
+	pTask->SetTime(0);
 	AddImmediateTask(pTask);
 }
 

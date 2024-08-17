@@ -14,7 +14,7 @@
 #include"RSReference.h"
 #include"ClassDeclaration.h"
 
-#undef max
+#undef max //Note 包含concurrencpp.h之前，需要undefined max
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 

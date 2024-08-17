@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//
+// 各调度函数。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
@@ -9,8 +9,7 @@ void TaskSchedulePer100ms(); // 主任务调度函数，由定时timer gl_timerMainSchedule
 void TaskSchedulePerSecond(); // 每秒执行一次的各辅助任务。
 void TaskExitSystem();
 
-// world market task
-void TaskCheckWorldMarketReady();
+void TaskCheckWorldMarketReady();// world market task
 
 void InitializeMarkets();
 void AssignDataSourceAndWebInquiryToMarket();

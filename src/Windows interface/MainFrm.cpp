@@ -327,7 +327,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	// 设置每秒执行一次的辅助工作线程调度，用于执行各项辅助工作。
 	gl_aTimer.at(GENERAL_TASK_PER_SECOND__) = gl_runtime.timer_queue()->make_timer(
-		100ms,
+		1000ms,
 		1000ms,
 		gl_runtime.thread_executor(), // 此为辅助调度任务
 		::TaskSchedulePerSecond);
@@ -764,7 +764,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 			break;
 		}
 	}
-	gl_pChinaMarket->AddTask(CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__, 1); // 立即更新自选股数据库
+	gl_pChinaMarket->AddImmediateTask(CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__); // 立即更新自选股数据库
 	SysCallOnKeyUp(nChar, nRepCnt, nFlags);
 }
 
@@ -948,7 +948,8 @@ void CMainFrame::OnBuildCreateWeekLine() {
 	});
 }
 
-void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {}
+void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
+}
 
 void CMainFrame::OnRebuildChinaMarketStockWeekLineRS() {
 	gl_runtime.background_executor()->post([] {
@@ -956,7 +957,8 @@ void CMainFrame::OnRebuildChinaMarketStockWeekLineRS() {
 	});
 }
 
-void CMainFrame::OnUpdateRebuildChinaMarketStockWeekLineRS(CCmdUI* pCmdUI) {}
+void CMainFrame::OnUpdateRebuildChinaMarketStockWeekLineRS(CCmdUI* pCmdUI) {
+}
 
 void CMainFrame::OnBuildCurrentWeekLine() {
 	gl_runtime.background_executor()->post([] {
@@ -982,7 +984,8 @@ void CMainFrame::OnBuildRebuildCurrentWeekLine() {
 	});
 }
 
-void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {}
+void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
+}
 
 void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
 	gl_runtime.background_executor()->post([] {
@@ -993,7 +996,8 @@ void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
 	});
 }
 
-void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {}
+void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeekLineTable(CCmdUI* pCmdUI) {
+}
 
 void CMainFrame::OnUpdateStockSection() {
 	gl_dataContainerChinaStockSymbol.SetUpdateStockSection(true);

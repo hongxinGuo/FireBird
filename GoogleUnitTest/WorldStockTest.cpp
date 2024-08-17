@@ -1240,7 +1240,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.UpdateSECFilingsDB());
 
 		CSetSECFilings setSECFilings;
-		int iCounter = 0;
 		setSECFilings.m_strFilter = _T("[symbol] = 'MFI'");
 		setSECFilings.m_strSort = _T("[accessNumber]");
 		setSECFilings.Open();

@@ -95,7 +95,7 @@ public:
 	CChinaStockPtr GetCurrentStock() const noexcept { return m_pCurrentStock; }
 	void SetCurrentStock(const CString& strStockCode);
 	void SetCurrentStock(const CChinaStockPtr& pStock);
-	void ResetCurrentStock();
+	void ClearCurrentStock() noexcept { m_pCurrentStock = nullptr; }
 	bool IsCurrentStockChanged() const noexcept { return m_fCurrentStockChanged; }
 	void SetCurrentStockChanged(const bool fFlag) noexcept { m_fCurrentStockChanged = fFlag; }
 

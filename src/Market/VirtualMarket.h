@@ -1,12 +1,7 @@
 #pragma once
 
-#include "globedef.h"
 #include"VirtualDataSource.h"
-
 #include"MarketTaskQueue.h"
-
-using std::vector;
-using std::weak_ptr;
 
 class CVirtualMarket {
 public:
@@ -55,12 +50,8 @@ public:
 	void AdjustTaskTime();
 
 	// MarketImmediateTask
-	bool IsMarketImmediateTaskEmpty() const { return m_marketImmediateTask.Empty(); }
 	void AddImmediateTask(const CMarketTaskPtr& pTask);
-	void AddImmediateTask(long lTaskType, long lExecuteTime);
-	CMarketTaskPtr GetMarketImmediateTask() const { return m_marketImmediateTask.GetTask(); }
-	void DiscardCurrentMarketImmediateTask() { m_marketImmediateTask.DiscardCurrentTask(); }
-	vector<CMarketTaskPtr> GetMarketImmediateTasks() { return m_marketImmediateTask.GetTasks(); }
+	void AddImmediateTask(long lTaskType);
 
 	// MarketDisplayTask
 	bool HaveNewTask() const;
@@ -107,7 +98,7 @@ public:
 	void CalculateTime() noexcept; // 计算本市场的各时间
 	void CalculateLastTradeDate() noexcept;
 
-	virtual bool IsReadyToInquireWebData(long lCurrentMarketTime) { return true; }
+	virtual bool IsReadyToInquireWebData(long /*lCurrentMarketTime*/) { return true; }
 
 	virtual bool IsTimeToResetSystem(long) { return false; } // 默认永远处于非重启市场状态，继承类需要各自设置之
 	bool IsSystemReady() const noexcept { return m_fSystemReady; }
@@ -129,7 +120,7 @@ protected:
 	CString m_strMarketId{_T("Warning: CVirtualMarket Called.")}; // 该市场标识字符串
 
 	CMarketTaskQueue m_marketTask; // 本市场当前任务队列
-	CMarketTaskQueue m_marketImmediateTask; // 本市场当前即时执行任务队列（此任务序列一次执行完毕，无需等待）
+	CMarketTaskQueue m_marketImmediateTask; // 本市场当前即时任务队列（此任务序列一次执行完毕，无需等待）
 	ConcurrentQueue<CMarketTaskPtr> m_qMarketDisplayTask; // 当前任务显示队列
 	long m_lLastQueueLength{0};
 

@@ -160,6 +160,10 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 			TaskProcessWebSocketData(lCurrentTime);
 			TaskPerSecond(lCurrentTime);
 			break;
+		case WORLD_MARKET_CONNECT_FINNHUB_WEB_SOCKET__:
+			ASSERT(!gl_systemConfiguration.IsUsingFinnhubWebSocket());
+			gl_systemConfiguration.SetUsingFinnhubWebSocket(true); // 只设置标识，实际启动由其他任务完成。
+			break;
 		default:
 			break;
 		}
@@ -215,29 +219,9 @@ void CWorldMarket::TaskMonitorWebSocket(long lCurrentTime) {
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lCurrentTime, 0, 1, 0));
 	if (!IsSystemReady()) return;
 
-	MonitorFinnhubWebSocket();
-	MonitorTiingoCryptoWebSocket();
-	MonitorTiingoForexWebSocket();
-	MonitorTiingoIEXWebSocket();
-}
-
-void CWorldMarket::MonitorFinnhubWebSocket() {
-	ASSERT(IsSystemReady());
 	gl_pFinnhubWebSocket->MonitorWebSocket(GetFinnhubWebSocketSymbols());
-}
-
-void CWorldMarket::MonitorTiingoCryptoWebSocket() const {
-	ASSERT(IsSystemReady());
 	gl_pTiingoCryptoWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldCrypto.GetSymbols());
-}
-
-void CWorldMarket::MonitorTiingoIEXWebSocket() const {
-	ASSERT(IsSystemReady());
 	gl_pTiingoIEXWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldStock.GetSymbols());
-}
-
-void CWorldMarket::MonitorTiingoForexWebSocket() const {
-	ASSERT(IsSystemReady());
 	gl_pTiingoForexWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldForex.GetSymbols());
 }
 

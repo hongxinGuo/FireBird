@@ -90,7 +90,7 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetSystemReady(true); // 离开此测试时，默认系统已准备好。
 			EXPECT_TRUE(gl_pChinaMarket->IsCheckingActiveStock());
 
-			gl_pChinaMarket->ResetCurrentStock();
+			gl_pChinaMarket->ClearCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 				const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(i);
@@ -894,7 +894,7 @@ namespace FireBirdTest {
 		gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
 		pStock = gl_pChinaMarket->GetCurrentStock();
 		EXPECT_STREQ(pStock->GetSymbol(), _T("600000.SS"));
-		gl_pChinaMarket->ResetCurrentStock();
+		gl_pChinaMarket->ClearCurrentStock();
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr);
 
 		//恢复原状

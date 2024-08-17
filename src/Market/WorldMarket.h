@@ -38,10 +38,6 @@ public:
 	bool TaskCheckMarketReady(long lCurrentTime);
 	void TaskProcessWebSocketData(long lCurrentTime);
 	void TaskMonitorWebSocket(long lCurrentTime);
-	void MonitorFinnhubWebSocket();
-	void MonitorTiingoCryptoWebSocket() const;
-	void MonitorTiingoIEXWebSocket() const;
-	void MonitorTiingoForexWebSocket() const;
 	void TaskUpdateWorldMarketDB(long lCurrentTime);
 
 	bool TaskUpdateTiingoIndustry();

@@ -750,9 +750,6 @@
     <ClInclude Include="..\src\accessory\simdjsonGetValue.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\IncludeLib.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\System\ScheduleTask.h">
       <Filter>头文件\System</Filter>
     </ClInclude>

@@ -29,7 +29,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
-			gl_pChinaMarket->ResetCurrentStock();
+			gl_pChinaMarket->ClearCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			gl_pChinaMarket->SetCurrentEditStockChanged(false);
 			gl_pChinaMarket->SetUpdateOptionDB(false); // 这里使用了实际的数据库，故而不允许更新
@@ -49,7 +49,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
-			gl_pChinaMarket->ResetCurrentStock();
+			gl_pChinaMarket->ClearCurrentStock();
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			gl_pChinaMarket->ClearChoiceStockContainer();
 			gl_pChinaMarket->SetCalculatingDayLineRS(false);

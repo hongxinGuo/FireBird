@@ -110,6 +110,7 @@ protected:
 	CString m_strHeaders; // OpenURL时的headers字符串值， 默认为_T("")
 
 	long m_lInquiringNumber; // 每次查询数量
+	int m_iMaxNormalInquireTime{300}; // 最大正常查询时间（每个具体的数据源皆不同）
 	atomic_int64_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）
 
 	static atomic_long sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
