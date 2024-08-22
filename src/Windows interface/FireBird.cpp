@@ -41,7 +41,7 @@ CFireBirdApp::CFireBirdApp() {
 	System::Windows::Forms::Application::SetUnhandledExceptionMode(System::Windows::Forms::UnhandledExceptionMode::ThrowException);
 #endif
 
-	SetAppID(_T("FiriBird.AppID.0.28"));
+	SetAppID(_T("FireBird.AppID.0.30"));
 
 	// 将所有重要的初始化放置在 InitInstance 中
 }
@@ -52,7 +52,7 @@ CFireBirdApp theApp;
 bool IsFireBirdAlreadyRunning(const CString& strProgramToken) {
 	const HANDLE hMutex = ::CreateMutex(nullptr, false, strProgramToken); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
 	bool bAlreadyRunning = false;
-	if (hMutex) {
+	if (hMutex != nullptr) {
 		if (ERROR_ALREADY_EXISTS == ::GetLastError()) {
 			bAlreadyRunning = true;
 		}

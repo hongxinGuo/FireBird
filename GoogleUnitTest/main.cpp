@@ -91,7 +91,7 @@ namespace FireBirdTest {
 
 			//Bug Resharper的UnitTest要运行程序才能找到所有的测试函数，结果这里产生副作用。工作目录为X64/Debug,如果目录中没有systemConfiguration.json文件时，
 			// 程序就会生成一个新文件，导致下面的断言失败。目前先屏蔽掉这个断言
-			//EXPECT_TRUE(gl_systemConfiguration.IsNeedUpdate()) << gl_systemConfiguration.GetConfigurationFileDirectoryAndName();
+			//ASSERT_TRUE(gl_systemConfiguration.IsNeedUpdate()) << gl_systemConfiguration.GetConfigurationFileDirectoryAndName();
 			//gl_systemConfiguration.NeedUpdate(false);
 			gl_systemConfiguration.SetConfigurationFileDirectory(_T("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\"));
 			gl_systemConfiguration.SetDefaultFileName(_T("systemConfigurationTest.json"));

@@ -68,6 +68,28 @@ bool CFinnhubDataSource::Reset() {
 	return true;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 经测试，这里所有的timeout时间，都是数据中断后等待的时间。如果有数据，无论接收发送的速度多慢，都不会触发计时器，亦即不会出现timeout。
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CFinnhubDataSource::ConfigureInternetOption() {
+	m_internetOption.option_connect_timeout = 15000;
+	m_internetOption.option_receive_timeout = 10000;
+	m_internetOption.option_data_receive_timeout = 10000;
+	m_internetOption.option_send_timeout = 1000;
+	m_internetOption.option_connect_retries = 1;
+}
+
+void CFinnhubDataSource::CheckInaccessible(const CWebDataPtr& pWebData) const {
+	ASSERT(m_pCurrentProduct != nullptr);
+	if (m_pCurrentProduct->CheckInaccessible(pWebData)) {
+		// 如果系统报告无权查询此类数据, 目前先在软件系统消息中报告
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 由系统调度器调度，采用GetTickCount()来确定当前时间。
@@ -833,26 +855,4 @@ bool CFinnhubDataSource::InquireCryptoDayLine() {
 		}
 	}
 	return fHaveInquiry;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 经测试，这里所有的timeout时间，都是数据中断后等待的时间。如果有数据，无论接收发送的速度多慢，都不会触发计时器，亦即不会出现timeout。
-//
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CFinnhubDataSource::ConfigureInternetOption() {
-	m_internetOption.option_connect_timeout = 10000;
-	m_internetOption.option_receive_timeout = 8000;
-	m_internetOption.option_data_receive_timeout = 8000;
-	m_internetOption.option_send_timeout = 1000;
-	m_internetOption.option_connect_retries = 1;
-}
-
-void CFinnhubDataSource::CheckInaccessible(const CWebDataPtr& pWebData) const {
-	ASSERT(m_pCurrentProduct != nullptr);
-	if (m_pCurrentProduct->CheckInaccessible(pWebData)) {
-		// 如果系统报告无权查询此类数据, 目前先在软件系统消息中报告
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
-	}
 }

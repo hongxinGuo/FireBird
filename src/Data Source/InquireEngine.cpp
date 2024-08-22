@@ -68,7 +68,7 @@ CWebDataPtr CInquireEngine::GetWebData() {
 		OpenFile();
 		GetFileHeaderInformation();
 		if (m_lContentLength > 0) {
-			m_sBuffer.resize(m_lContentLength + 1); // 调整缓存区大小，比实际数据大1字节,以防止越界访问。
+			m_sBuffer.resize(m_lContentLength + 1); //Note 调整缓存区大小，比实际数据大1字节,用于存储string最后隐藏的0x000,以防止越界访问。
 		}
 		else {
 			m_sBuffer.resize(1024 * 1024);// 服务器不回报数据长度时，设置初始缓冲区为1M。
@@ -149,10 +149,10 @@ UINT CInquireEngine::ReadWebFileOneTime() {
 
 //
 // Debug编译模式下，使用memcpy函数完成，耗时154纳秒
-// release编译模式下：使用逐字节拷贝，16KB耗时11微秒，使用memcpy函数完成，耗时120纳秒。
+// release编译模式下，使用memcpy函数完成，耗时120纳秒。
 //
 void CInquireEngine::XferReadingToBuffer(UINT uByteRead) {
-	ASSERT(m_sBuffer.size() >= m_lByteRead + uByteRead);
+	ASSERT(m_sBuffer.size() > m_lByteRead + uByteRead);
 	memcpy(&m_sBuffer.at(m_lByteRead), m_dataBuffer, uByteRead);
 }
 
@@ -195,13 +195,13 @@ void CInquireEngine::VerifyDataLength() const {
 }
 
 void CInquireEngine::TransferDataToWebData(const CWebDataPtr& pWebData) {
-	ASSERT(m_sBuffer.size() > m_lByteRead); // Note 即使知道数据总长度，也要多加上一个字节以防止越界。不知为何
-	m_sBuffer.resize(m_lByteRead); // Note 缓冲区大小为实际数据量
+	ASSERT(m_sBuffer.size() > m_lByteRead); // Note 即使知道数据总长度，也要多加上一个字节以防止越界，因string最后有一个隐藏的字符0x000
+	m_sBuffer.resize(m_lByteRead); //缓冲区大小为实际数据量，不包括最后的字符0x000
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
 }
 
 void CInquireEngine::TESTSetBuffer(const char* buffer, const INT64 lTotalNumber) {
-	m_sBuffer.resize(lTotalNumber + 1);
+	m_sBuffer.resize(lTotalNumber);
 	for (INT64 i = 0; i < lTotalNumber; i++) { m_sBuffer.at(i) = buffer[i]; }
 	m_lByteRead = lTotalNumber;
 }
@@ -210,8 +210,10 @@ void CInquireEngine::TESTSetBuffer(CString str) {
 	const INT64 lTotalNumber = str.GetLength();
 	const char* buffer = str.GetBuffer();
 
-	m_sBuffer.resize(lTotalNumber + 1);
-	for (INT64 i = 0; i < lTotalNumber; i++) { m_sBuffer.at(i) = buffer[i]; }
+	m_sBuffer.resize(lTotalNumber);
+	for (INT64 i = 0; i < lTotalNumber; i++) {
+		m_sBuffer.at(i) = buffer[i];
+	}
 	m_lByteRead = lTotalNumber;
 }
 

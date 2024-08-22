@@ -179,6 +179,5 @@
     <None Include="res\Watchdog.rc2">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

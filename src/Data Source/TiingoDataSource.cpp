@@ -28,6 +28,14 @@ bool CTiingoDataSource::Reset() {
 	return true;
 }
 
+void CTiingoDataSource::ConfigureInternetOption() {
+	m_internetOption.option_connect_timeout = 12000;
+	m_internetOption.option_receive_timeout = 12000;
+	m_internetOption.option_data_receive_timeout = 12000;
+	m_internetOption.option_send_timeout = 1000;
+	m_internetOption.option_connect_retries = 1;
+}
+
 bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	const long long llTickCount = GetTickCount();
 
@@ -124,12 +132,4 @@ bool CTiingoDataSource::InquireDayLine() {
 		}
 	}
 	return fHaveInquiry;
-}
-
-void CTiingoDataSource::ConfigureInternetOption() {
-	m_internetOption.option_connect_timeout = 12000;
-	m_internetOption.option_receive_timeout = 12000;
-	m_internetOption.option_data_receive_timeout = 12000;
-	m_internetOption.option_send_timeout = 1000;
-	m_internetOption.option_connect_retries = 1;
 }
