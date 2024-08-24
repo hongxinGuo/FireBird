@@ -23,16 +23,10 @@ CChinaStock::CChinaStock() {
 	m_dRealtimeRS = 0;
 	m_dRealtimeRSIndex = 0;
 
-	m_lAttackBuyAmount = 0;
-	m_lAttackSellAmount = 0;
 	m_lAttackBuyVolume = 0;
-	m_lCurrentAttackBuy = 0;
 	m_lAttackSellVolume = 0;
-	m_lCurrentAttackSell = 0;
 	m_lStrongBuyVolume = 0;
-	m_lCurrentStrongBuy = 0;
 	m_lStrongSellVolume = 0;
-	m_lCurrentStrongSell = 0;
 	m_lUnknownVolume = 0;
 	m_lCurrentUnknown = 0;
 	m_lCanceledBuyVolume = 0;
@@ -277,8 +271,12 @@ void CChinaStock::UpdateCurrentHistoryCandle(const CVirtualHistoryCandleExtendPt
 	pBeUpdated->SetAmount(m_llAmount);
 	pBeUpdated->SetUpDown(static_cast<double>(m_lUpDown) / GetRatio());
 	pBeUpdated->SetUpDownRate(m_dUpDownRate);
-	if (m_llTotalValue != 0) { pBeUpdated->SetChangeHandRate(static_cast<double>(100) * m_llAmount / m_llTotalValue); }
-	else { pBeUpdated->SetChangeHandRate(0.0); }
+	if (m_llTotalValue != 0) {
+		pBeUpdated->SetChangeHandRate(static_cast<double>(100) * m_llAmount / m_llTotalValue);
+	}
+	else {
+		pBeUpdated->SetChangeHandRate(0.0);
+	}
 	pBeUpdated->SetTotalValue(m_llTotalValue);
 	pBeUpdated->SetCurrentValue(m_llCurrentValue);
 
@@ -846,7 +844,9 @@ void CChinaStock::CalculateOneRTData(const CWebRTDataPtr& pRTData) {
 			m_nCurrentTransactionType = UNKNOWN_BUYSELL_;
 			m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
 		}
-		else { CalculateOneDeal(pRTData, lCurrentGuadanTransactionPrice); }
+		else {
+			CalculateOneDeal(pRTData, lCurrentGuadanTransactionPrice);
+		}
 	}
 
 	// 下面开始分析挂单情况

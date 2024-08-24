@@ -196,13 +196,16 @@ void CInquireEngine::VerifyDataLength() const {
 
 void CInquireEngine::TransferDataToWebData(const CWebDataPtr& pWebData) {
 	ASSERT(m_sBuffer.size() > m_lByteRead); // Note 即使知道数据总长度，也要多加上一个字节以防止越界，因string最后有一个隐藏的字符0x000
-	m_sBuffer.resize(m_lByteRead); //缓冲区大小为实际数据量，不包括最后的字符0x000
+	m_sBuffer.resize(m_lByteRead); //Note 缓冲区大小为实际数据量，抛弃掉最后的字符0x000. 切记
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
 }
 
 void CInquireEngine::TESTSetBuffer(const char* buffer, const INT64 lTotalNumber) {
-	m_sBuffer.resize(lTotalNumber);
-	for (INT64 i = 0; i < lTotalNumber; i++) { m_sBuffer.at(i) = buffer[i]; }
+	m_sBuffer.resize(lTotalNumber + 1);
+	for (INT64 i = 0; i < lTotalNumber; i++) {
+		m_sBuffer.at(i) = buffer[i];
+	}
+	m_sBuffer.at(lTotalNumber) = 0x000;
 	m_lByteRead = lTotalNumber;
 }
 
@@ -210,10 +213,11 @@ void CInquireEngine::TESTSetBuffer(CString str) {
 	const INT64 lTotalNumber = str.GetLength();
 	const char* buffer = str.GetBuffer();
 
-	m_sBuffer.resize(lTotalNumber);
+	m_sBuffer.resize(lTotalNumber + 1);
 	for (INT64 i = 0; i < lTotalNumber; i++) {
 		m_sBuffer.at(i) = buffer[i];
 	}
+	m_sBuffer.at(lTotalNumber) = 0x000;
 	m_lByteRead = lTotalNumber;
 }
 

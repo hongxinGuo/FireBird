@@ -5,7 +5,6 @@
 
 #include "ChinaMarket.h"
 #include "MainFrm.h"
-#include "FireBird.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -111,7 +110,26 @@ void CPropertyRealtimeWnd::InitPropList() {
 
 	CMFCPropertyGridProperty* pGroup2 = new CMFCPropertyGridProperty(_T("China market"));
 
-	pGroup2->AddSubItem(new CMFCPropertyGridProperty(_T("Use System Font"), static_cast<_variant_t>(true), _T("Specifies that the window uses MS Shell Dlg font")));
+	m_pPropStockAttackBuy = new CMFCPropertyGridProperty(_T("Attack Buy:"), _T("0.00"));
+	m_pPropStockAttackBuy->Enable(FALSE);
+	pGroup2->AddSubItem(m_pPropStockAttackBuy);
+	m_pPropStockAttackSell = new CMFCPropertyGridProperty(_T("Attack Sell:"), _T("0.00"));
+	m_pPropStockAttackSell->Enable(FALSE);
+	pGroup2->AddSubItem(m_pPropStockAttackSell);
+
+	m_pPropStockStrongBuy = new CMFCPropertyGridProperty(_T("Strong Buy:"), _T("0.00"));
+	m_pPropStockStrongBuy->Enable(FALSE);
+	pGroup2->AddSubItem(m_pPropStockStrongBuy);
+	m_pPropStockStrongSell = new CMFCPropertyGridProperty(_T("Strong Sell:"), _T("0.00"));
+	m_pPropStockStrongSell->Enable(FALSE);
+	pGroup2->AddSubItem(m_pPropStockStrongSell);
+
+	m_pPropStockCancelBuy = new CMFCPropertyGridProperty(_T("Cancel Buy:"), _T("0.00"));
+	m_pPropStockCancelBuy->Enable(FALSE);
+	pGroup2->AddSubItem(m_pPropStockCancelBuy);
+	m_pPropStockCancelSell = new CMFCPropertyGridProperty(_T("Cancel Sell:"), _T("0.00"));
+	m_pPropStockCancelSell->Enable(FALSE);
+	pGroup2->AddSubItem(m_pPropStockCancelSell);
 
 	m_wndPropList.AddProperty(pGroup2);
 }
@@ -147,5 +165,34 @@ void CPropertyRealtimeWnd::SetPropListFont() {
 }
 
 void CPropertyRealtimeWnd::OnTimer(UINT_PTR nIDEvent) {
+	auto pStock = gl_pChinaMarket->GetCurrentStock();
+
+	if (pStock != nullptr) {
+		if (pStock->GetVolume() > 0) {
+			char buffer[100];
+			INT64 volume = pStock->GetVolume();
+			sprintf_s(buffer, 100, "0.%02lld", pStock->GetAttackBuyVolume() * 100 / volume);
+			CString str = buffer;
+			m_pPropStockAttackBuy->SetValue(str);
+			sprintf_s(buffer, 100, _T("0.%02lld"), pStock->GetAttackSellVolume() * 100 / volume);
+			str = buffer;
+			m_pPropStockAttackSell->SetValue(str);
+
+			sprintf_s(buffer, 100, "0.%02lld", pStock->GetStrongBuyVolume() * 100 / volume);
+			str = buffer;
+			m_pPropStockStrongBuy->SetValue(str);
+			sprintf_s(buffer, 100, _T("0.%02lld"), pStock->GetStrongSellVolume() * 100 / volume);
+			str = buffer;
+			m_pPropStockStrongSell->SetValue(str);
+
+			sprintf_s(buffer, 100, "0.%02lld", pStock->GetCanceledBuyVolume() * 100 / volume);
+			str = buffer;
+			m_pPropStockCancelBuy->SetValue(str);
+			sprintf_s(buffer, 100, _T("0.%02lld"), pStock->GetCanceledSellVolume() * 100 / volume);
+			str = buffer;
+			m_pPropStockCancelSell->SetValue(str);
+		}
+	}
+
 	CDockablePane::OnTimer(nIDEvent);
 }

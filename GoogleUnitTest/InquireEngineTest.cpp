@@ -60,7 +60,8 @@ namespace FireBirdTest {
 		EXPECT_TRUE(pWebData != nullptr);
 		EXPECT_EQ(pWebData->GetTime(), 10) << "设置为当前的UTCTime";
 		EXPECT_TRUE(pWebData->GetDataBuffer().at(11) == '}');
-		EXPECT_EQ(pWebData->GetDataBuffer().size(), 12);
+		EXPECT_TRUE(pWebData->GetDataBuffer().at(pWebData->GetBufferLength()-1) != 0x000) << "最后的0x000已经抛弃掉了";
+		EXPECT_EQ(pWebData->GetDataBuffer().size(), 12) << "最后的字符0x000已经被抛弃掉了";
 
 		// restore
 		TestSetUTCTime(tUTCTime);
