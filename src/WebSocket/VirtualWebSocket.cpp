@@ -45,8 +45,7 @@ bool CVirtualWebSocket::ConnectAndSendMessage(const vectorString& vSymbol) {
 		//ASSERT(!IsOpen()); // Connect调用Connecting,是异步的。
 		while (!IsOpen()) Sleep(1);
 		Send(m_vSymbol);
-	}
-	catch (exception& e) {
+	} catch (exception& e) {
 		const CString sError = e.what();
 		gl_systemMessage.PushInnerSystemInformationMessage(sError);
 		return false;
@@ -116,7 +115,7 @@ void CVirtualWebSocket::Connecting(const string& url, const ix::OnMessageCallbac
 }
 
 void CVirtualWebSocket::MonitorWebSocket(bool fDataSourceError, bool fWebSocketOpened, const vectorString& vSymbol) {
-	if (fDataSourceError) {
+	if (fDataSourceError) { // 相关的DataSource出现错误
 		if (IsOpen()) {
 			TaskDisconnect();
 		}
@@ -126,6 +125,7 @@ void CVirtualWebSocket::MonitorWebSocket(bool fDataSourceError, bool fWebSocketO
 	if (fWebSocketOpened) { // 接收web socket数据？
 		if (IsError() || IsIdle()) { // 出现问题？
 			if (IsOpen()) {
+				gl_dailyWebSocketLogger->info("Error or Idle, close");
 				TaskDisconnect(); // 如果出现问题时处于打开状态，则关闭之（为了随后的再打开）
 			}
 		}

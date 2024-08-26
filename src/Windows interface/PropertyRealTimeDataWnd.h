@@ -1,15 +1,5 @@
 #pragma once
 
-class CPropertiesToolBar2 : public CMFCToolBar {
-public:
-	void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) override { CMFCToolBar::OnUpdateCmdUI(static_cast<CFrameWnd*>(GetOwner()), bDisableIfNoHndler); }
-	BOOL AllowShowOnList() const override { return FALSE; }
-};
-
-class CFireBirdPropertyRealtimeGridCtrl : public CMFCPropertyGridCtrl {
-	void OnPropertyChanged(CMFCPropertyGridProperty* pProp) const override;
-};
-
 class CPropertyRealtimeWnd : public CDockablePane {
 	// Construction
 public:
@@ -25,17 +15,18 @@ public:
 
 protected:
 	CFont m_fntPropList;
-	CFireBirdPropertyRealtimeGridCtrl m_wndPropList;
-
-	CMFCPropertyGridProperty* m_pPropStockStrongBuy{nullptr};
-	CMFCPropertyGridProperty* m_pPropStockStrongSell{nullptr};
-	CMFCPropertyGridProperty* m_pPropStockAttackBuy{nullptr};
-	CMFCPropertyGridProperty* m_pPropStockAttackSell{nullptr};
-
-	CMFCPropertyGridProperty* m_pPropStockCancelBuy{nullptr};
-	CMFCPropertyGridProperty* m_pPropStockCancelSell{nullptr};
+	CMFCPropertyGridCtrl m_wndPropList;
 
 	// chinaMarket realtime group
+	CMFCPropertyGridProperty* m_pChinaMarketStock{ nullptr };
+	CMFCPropertyGridProperty* m_pPropVolume{ nullptr };
+
+	CMFCPropertyGridProperty* m_pPropStockAttackBuy{ nullptr };
+	CMFCPropertyGridProperty* m_pPropStockStrongBuy{ nullptr };
+	CMFCPropertyGridProperty* m_pPropStockCancelBuy{ nullptr };
+	CMFCPropertyGridProperty* m_pPropStockAttackSell{ nullptr };
+	CMFCPropertyGridProperty* m_pPropStockStrongSell{ nullptr };
+	CMFCPropertyGridProperty* m_pPropStockCancelSell{ nullptr };
 
 	UINT m_uIdTimer;
 

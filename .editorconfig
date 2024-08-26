@@ -161,6 +161,7 @@ resharper_place_namespace_definitions_on_same_line = true
 resharper_requires_expression_braces = end_of_line
 resharper_simple_block_style = do_not_change
 resharper_simple_embedded_statement_style = do_not_change
+resharper_space_within_initializer_braces = true
 resharper_toplevel_function_declaration_return_type_style = on_single_line
 resharper_toplevel_function_definition_return_type_style = on_single_line
 resharper_type_declaration_braces = end_of_line

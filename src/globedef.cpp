@@ -34,6 +34,8 @@
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
+HANDLE gl_hFireBirdMutex{nullptr};
+
 shared_ptr<spdlog::logger> gl_dailyLogger = nullptr;
 shared_ptr<spdlog::logger> gl_traceLogger; // 跟踪日志，用于系统调试
 shared_ptr<spdlog::logger> gl_dailyWebSocketLogger = nullptr;

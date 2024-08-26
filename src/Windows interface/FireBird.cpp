@@ -50,9 +50,9 @@ CFireBirdApp::CFireBirdApp() {
 CFireBirdApp theApp;
 
 bool IsFireBirdAlreadyRunning(const CString& strProgramToken) {
-	const HANDLE hMutex = ::CreateMutex(nullptr, false, strProgramToken); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
+	gl_hFireBirdMutex = ::CreateMutex(nullptr, false, strProgramToken); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
 	bool bAlreadyRunning = false;
-	if (hMutex != nullptr) {
+	if (gl_hFireBirdMutex != nullptr) {
 		if (ERROR_ALREADY_EXISTS == ::GetLastError()) {
 			bAlreadyRunning = true;
 		}
@@ -140,6 +140,7 @@ BOOL CFireBirdApp::InitInstance() {
 }
 
 int CFireBirdApp::ExitInstance() {
+
 	gl_dailyLogger->info("FireBird App exit"); 
 
 	// Under VisualStudio, this must be called before main finishes to work around a known VS issue

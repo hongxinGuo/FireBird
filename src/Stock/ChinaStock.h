@@ -409,55 +409,55 @@ public:
 	void TestSetGuadanDeque(const INT64 lPrice, const INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
 
 protected:
-	short m_nHand{100}; // 每手股数
+	short m_nHand{ 100 }; // 每手股数
 
-	long m_lHighLimitFromTengxun; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
-	long m_lLowLimitFromTengxun; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
-	long m_lHighLimit; // 涨停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
-	long m_lLowLimit; // 跌停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
+	long m_lHighLimitFromTengxun{ 0 }; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
+	long m_lLowLimitFromTengxun{ 0 }; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
+	long m_lHighLimit{ 0 }; // 涨停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
+	long m_lLowLimit{ 0 }; // 跌停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
 	array<long, 5> m_lPBuy; // 买盘价。单位：0.001元
 	array<long, 5> m_lVBuy; // 买盘量。单位：股
 	array<long, 5> m_lPSell; // 卖盘价。单位：0.001元
 	array<long, 5> m_lVSell; // 卖盘量。单位：股
-	double m_dRealtimeRS; // 当日实时相对强度 单位：1%
-	double m_dRealtimeRSIndex; // 当日实时相对强度（相对于指数）单位：1%
+	double m_dRealtimeRS{ 0 }; // 当日实时相对强度 单位：1%
+	double m_dRealtimeRSIndex{ 0 }; // 当日实时相对强度（相对于指数）单位：1%
 
 	// 以下变量用于分析买入卖出具体情况
-	INT64 m_lAttackBuyAmount{0}; // 向上买入金额
-	INT64 m_lAttackSellAmount{0}; // 向下卖出金额
-	INT64 m_lCurrentAttackBuy{0};
-	INT64 m_lCurrentStrongBuy{0};
-	INT64 m_lCurrentAttackSell{0};
-	INT64 m_lCurrentStrongSell{0};
+	INT64 m_lAttackBuyAmount{ 0 }; // 向上买入金额
+	INT64 m_lAttackSellAmount{ 0 }; // 向下卖出金额
+	INT64 m_lCurrentAttackBuy{ 0 };
+	INT64 m_lCurrentStrongBuy{ 0 };
+	INT64 m_lCurrentAttackSell{ 0 };
+	INT64 m_lCurrentStrongSell{ 0 };
 
-	INT64 m_lOrdinaryBuyNumberBelow5000{0}; // 本交易日低于5000股的成交笔数
-	INT64 m_lOrdinaryBuyNumberBelow10000{0}; // 本交易日低于10000股的成交笔数
-	INT64 m_lOrdinaryBuyNumberBelow20000{0}; // 本交易日低于20000股的成交笔数
-	INT64 m_lOrdinaryBuyNumberBelow50000{0}; //
-	INT64 m_lOrdinaryBuyNumberBelow100000{0}; // 本交易日低于100000股的成交笔数
-	INT64 m_lOrdinaryBuyNumberBelow200000{0}; //
-	INT64 m_lOrdinaryBuyNumberAbove200000{0}; //
-	INT64 m_lOrdinarySellNumberBelow5000{0}; // 本交易日低于5000股的成交笔数
-	INT64 m_lOrdinarySellNumberBelow10000{0}; // 本交易日低于10000股的成交笔数
-	INT64 m_lOrdinarySellNumberBelow20000{0}; // 本交易日低于20000股的成交笔数
-	INT64 m_lOrdinarySellNumberBelow50000{0}; //
-	INT64 m_lOrdinarySellNumberBelow100000{0}; // 本交易日低于100000股的成交笔数
-	INT64 m_lOrdinarySellNumberBelow200000{0}; //
-	INT64 m_lOrdinarySellNumberAbove200000{0}; //
-	INT64 m_lOrdinaryBuyVolumeBelow5000{0}; // 本交易日低于5000股的成交股数
-	INT64 m_lOrdinaryBuyVolumeBelow10000{0}; // 本交易日低于10000股的成交股数
-	INT64 m_lOrdinaryBuyVolumeBelow20000{0}; // 本交易日低于20000股的成交股数
-	INT64 m_lOrdinaryBuyVolumeBelow50000{0}; //
-	INT64 m_lOrdinaryBuyVolumeBelow100000{0}; // 本交易日低于100000股的成交股数
-	INT64 m_lOrdinaryBuyVolumeBelow200000{0}; //
-	INT64 m_lOrdinaryBuyVolumeAbove200000{0}; //
-	INT64 m_lOrdinarySellVolumeBelow5000{0}; // 本交易日低于5000股的成交股数
-	INT64 m_lOrdinarySellVolumeBelow10000{0}; // 本交易日低于10000股的成交股数
-	INT64 m_lOrdinarySellVolumeBelow20000{0}; // 本交易日低于20000股的成交股数
-	INT64 m_lOrdinarySellVolumeBelow50000{0}; //
-	INT64 m_lOrdinarySellVolumeBelow100000{0}; // 本交易日低于100000股的成交股数
-	INT64 m_lOrdinarySellVolumeBelow200000{0}; //
-	INT64 m_lOrdinarySellVolumeAbove200000{0}; //
+	INT64 m_lOrdinaryBuyNumberBelow5000{ 0 }; // 本交易日低于5000股的成交笔数
+	INT64 m_lOrdinaryBuyNumberBelow10000{ 0 }; // 本交易日低于10000股的成交笔数
+	INT64 m_lOrdinaryBuyNumberBelow20000{ 0 }; // 本交易日低于20000股的成交笔数
+	INT64 m_lOrdinaryBuyNumberBelow50000{ 0 }; //
+	INT64 m_lOrdinaryBuyNumberBelow100000{ 0 }; // 本交易日低于100000股的成交笔数
+	INT64 m_lOrdinaryBuyNumberBelow200000{ 0 }; //
+	INT64 m_lOrdinaryBuyNumberAbove200000{ 0 }; //
+	INT64 m_lOrdinarySellNumberBelow5000{ 0 }; // 本交易日低于5000股的成交笔数
+	INT64 m_lOrdinarySellNumberBelow10000{ 0 }; // 本交易日低于10000股的成交笔数
+	INT64 m_lOrdinarySellNumberBelow20000{ 0 }; // 本交易日低于20000股的成交笔数
+	INT64 m_lOrdinarySellNumberBelow50000{ 0 }; //
+	INT64 m_lOrdinarySellNumberBelow100000{ 0 }; // 本交易日低于100000股的成交笔数
+	INT64 m_lOrdinarySellNumberBelow200000{ 0 }; //
+	INT64 m_lOrdinarySellNumberAbove200000{ 0 }; //
+	INT64 m_lOrdinaryBuyVolumeBelow5000{ 0 }; // 本交易日低于5000股的成交股数
+	INT64 m_lOrdinaryBuyVolumeBelow10000{ 0 }; // 本交易日低于10000股的成交股数
+	INT64 m_lOrdinaryBuyVolumeBelow20000{ 0 }; // 本交易日低于20000股的成交股数
+	INT64 m_lOrdinaryBuyVolumeBelow50000{ 0 }; //
+	INT64 m_lOrdinaryBuyVolumeBelow100000{ 0 }; // 本交易日低于100000股的成交股数
+	INT64 m_lOrdinaryBuyVolumeBelow200000{ 0 }; //
+	INT64 m_lOrdinaryBuyVolumeAbove200000{ 0 }; //
+	INT64 m_lOrdinarySellVolumeBelow5000{ 0 }; // 本交易日低于5000股的成交股数
+	INT64 m_lOrdinarySellVolumeBelow10000{ 0 }; // 本交易日低于10000股的成交股数
+	INT64 m_lOrdinarySellVolumeBelow20000{ 0 }; // 本交易日低于20000股的成交股数
+	INT64 m_lOrdinarySellVolumeBelow50000{ 0 }; //
+	INT64 m_lOrdinarySellVolumeBelow100000{ 0 }; // 本交易日低于100000股的成交股数
+	INT64 m_lOrdinarySellVolumeBelow200000{ 0 }; //
+	INT64 m_lOrdinarySellVolumeAbove200000{ 0 }; //
 
 	// 当日分钟数据 皆为240个（60 * 4）
 	vector<INT64> m_vOrdinaryBuy5000;
@@ -476,63 +476,63 @@ protected:
 	vector<INT64> m_vOrdinarySellAbove200000;
 
 	// 以下为需存储项
-	INT64 m_lTransactionNumber{0}; // 本交易日的成交笔数
-	INT64 m_lTransactionNumberBelow5000{0}; // 本交易日低于5000股的成交笔数
-	INT64 m_lTransactionNumberBelow50000{0}; //
-	INT64 m_lTransactionNumberBelow200000{0}; //
-	INT64 m_lTransactionNumberAbove200000{0}; //
+	INT64 m_lTransactionNumber{ 0 }; // 本交易日的成交笔数
+	INT64 m_lTransactionNumberBelow5000{ 0 }; // 本交易日低于5000股的成交笔数
+	INT64 m_lTransactionNumberBelow50000{ 0 }; //
+	INT64 m_lTransactionNumberBelow200000{ 0 }; //
+	INT64 m_lTransactionNumberAbove200000{ 0 }; //
 
-	INT64 m_lOrdinaryBuyVolume{0};
-	INT64 m_lOrdinarySellVolume{0};
-	INT64 m_lAttackBuyVolume{0}; // 向上买入。成交价高于卖一价但低于卖二价。此数量包括下面的强买量。
-	INT64 m_lStrongBuyVolume{0}; // 向上强力买入,成交价超过之前的卖二报价
-	INT64 m_lAttackSellVolume{0}; // 向下卖出。成交价低于买一价但高于买二价。
-	INT64 m_lStrongSellVolume{0}; // 向下强力卖出,成交价低于之前的买二报价
-	INT64 m_lUnknownVolume{0}; // 不明状态的成交量
-	INT64 m_lCurrentUnknown{0}; // 当前成交量中的不明状态成交量
-	INT64 m_lCanceledBuyVolume{0}; // 买单撤单量
-	INT64 m_lCanceledSellVolume{0}; // 卖单撤单量
+	INT64 m_lOrdinaryBuyVolume{ 0 };
+	INT64 m_lOrdinarySellVolume{ 0 };
+	INT64 m_lAttackBuyVolume{ 0 }; // 向上买入。成交价高于卖一价但低于卖二价。此数量包括下面的强买量。
+	INT64 m_lStrongBuyVolume{ 0 }; // 向上强力买入,成交价超过之前的卖二报价
+	INT64 m_lAttackSellVolume{ 0 }; // 向下卖出。成交价低于买一价但高于买二价。
+	INT64 m_lStrongSellVolume{ 0 }; // 向下强力卖出,成交价低于之前的买二报价
+	INT64 m_lUnknownVolume{ 0 }; // 不明状态的成交量
+	INT64 m_lCurrentUnknown{ 0 }; // 当前成交量中的不明状态成交量
+	INT64 m_lCanceledBuyVolume{ 0 }; // 买单撤单量
+	INT64 m_lCanceledSellVolume{ 0 }; // 卖单撤单量
 
-	INT64 m_lAttackBuyBelow50000{0};
-	INT64 m_lAttackBuyBelow200000{0};
-	INT64 m_lAttackBuyAbove200000{0};
-	INT64 m_lAttackSellBelow50000{0};
-	INT64 m_lAttackSellBelow200000{0};
-	INT64 m_lAttackSellAbove200000{0};
+	INT64 m_lAttackBuyBelow50000{ 0 };
+	INT64 m_lAttackBuyBelow200000{ 0 };
+	INT64 m_lAttackBuyAbove200000{ 0 };
+	INT64 m_lAttackSellBelow50000{ 0 };
+	INT64 m_lAttackSellBelow200000{ 0 };
+	INT64 m_lAttackSellAbove200000{ 0 };
 
-	INT64 m_llLastSavedVolume; // 如果交易中途系统退出，则再次登入时上次的交易数量
+	INT64 m_llLastSavedVolume{ 0 }; // 如果交易中途系统退出，则再次登入时上次的交易数量
 
-	bool m_fHaveFirstRTData; // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
-	bool m_fNeedProcessRTData; //指数类股票无需计算交易和挂单情况
-	bool m_fRTDataCalculated; // 实时数据显示需要更新
+	bool m_fHaveFirstRTData{ false }; // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
+	bool m_fNeedProcessRTData{ true }; //指数类股票无需计算交易和挂单情况
+	bool m_fRTDataCalculated{ false }; // 实时数据显示需要更新
 
-	bool m_fChosen; // 此股票是否是自选股票.
-	bool m_fSaveToChosenStockDB; // 是否存储至自选股票池。
-	bool m_fMinLineUpdated; // 今天的分钟资料是否更新过.
+	bool m_fChosen{ false }; // 此股票是否是自选股票.
+	bool m_fSaveToChosenStockDB{ false }; // 是否存储至自选股票池。
+	bool m_fMinLineUpdated{ false }; // 今天的分钟资料是否更新过.
 
 	// 挂单的具体情况。
 	map<INT64, INT64> m_mapGuadan; // 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
-	CWebRTDataPtr m_pLastRTData; // 从m_qRTData读出的上一个实时数据。
-	INT64 m_lCurrentGuadanTransactionVolume{0}; // 当前挂单交易量（不是目前时间的交易量，而是实时数据队列最前面数据的时间的交易量）
-	double m_dCurrentGuadanTransactionPrice; // 当前成交价格
-	int m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
-	INT64 m_lCurrentCanceledSellVolume{0};
-	INT64 m_lCurrentCanceledBuyVolume{0};
+	CWebRTDataPtr m_pLastRTData{ nullptr }; // 从m_qRTData读出的上一个实时数据。
+	INT64 m_lCurrentGuadanTransactionVolume{ 0 }; // 当前挂单交易量（不是目前时间的交易量，而是实时数据队列最前面数据的时间的交易量）
+	double m_dCurrentGuadanTransactionPrice{ 0 }; // 当前成交价格
+	int m_nCurrentTransactionType{ 0 }; // 当前交易类型（强买、进攻型买入。。。。）
+	INT64 m_lCurrentCanceledSellVolume{ 0 };
+	INT64 m_lCurrentCanceledBuyVolume{ 0 };
 
-	INT64 m_lCanceledBuyVolumeBelow5000{0}; // 本交易日低于5000股的撤单股数
-	INT64 m_lCanceledBuyVolumeBelow10000{0}; // 本交易日低于10000股的撤单股数
-	INT64 m_lCanceledBuyVolumeBelow20000{0}; // 本交易日低于20000股的撤单股数
-	INT64 m_lCanceledBuyVolumeBelow50000{0}; //
-	INT64 m_lCanceledBuyVolumeBelow100000{0}; // 本交易日低于100000股的撤单股数
-	INT64 m_lCanceledBuyVolumeBelow200000{0}; //
-	INT64 m_lCanceledBuyVolumeAbove200000{0}; //
-	INT64 m_lCanceledSellVolumeBelow5000{0}; // 本交易日低于5000股的撤单股数
-	INT64 m_lCanceledSellVolumeBelow10000{0}; // 本交易日低于10000股的撤单股数
-	INT64 m_lCanceledSellVolumeBelow20000{0}; // 本交易日低于20000股的撤单股数
-	INT64 m_lCanceledSellVolumeBelow50000{0}; //
-	INT64 m_lCanceledSellVolumeBelow100000{0}; // 本交易日低于100000股的撤单股数
-	INT64 m_lCanceledSellVolumeBelow200000{0}; //
-	INT64 m_lCanceledSellVolumeAbove200000{0}; //
+	INT64 m_lCanceledBuyVolumeBelow5000{ 0 }; // 本交易日低于5000股的撤单股数
+	INT64 m_lCanceledBuyVolumeBelow10000{ 0 }; // 本交易日低于10000股的撤单股数
+	INT64 m_lCanceledBuyVolumeBelow20000{ 0 }; // 本交易日低于20000股的撤单股数
+	INT64 m_lCanceledBuyVolumeBelow50000{ 0 }; //
+	INT64 m_lCanceledBuyVolumeBelow100000{ 0 }; // 本交易日低于100000股的撤单股数
+	INT64 m_lCanceledBuyVolumeBelow200000{ 0 }; //
+	INT64 m_lCanceledBuyVolumeAbove200000{ 0 }; //
+	INT64 m_lCanceledSellVolumeBelow5000{ 0 }; // 本交易日低于5000股的撤单股数
+	INT64 m_lCanceledSellVolumeBelow10000{ 0 }; // 本交易日低于10000股的撤单股数
+	INT64 m_lCanceledSellVolumeBelow20000{ 0 }; // 本交易日低于20000股的撤单股数
+	INT64 m_lCanceledSellVolumeBelow50000{ 0 }; //
+	INT64 m_lCanceledSellVolumeBelow100000{ 0 }; // 本交易日低于100000股的撤单股数
+	INT64 m_lCanceledSellVolumeBelow200000{ 0 }; //
+	INT64 m_lCanceledSellVolumeAbove200000{ 0 }; //
 
 	queue<COneDealPtr> m_qDeal; // 具体成交信息队列（目前尚未使用）。
 
@@ -543,5 +543,5 @@ protected:
 	// 周线容器
 	CContainerChinaWeekLine m_dataWeekLine;
 
-	bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
+	bool m_fDayLineDBUpdated{ false }; // 日线历史数据库更新标识
 };

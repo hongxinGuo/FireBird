@@ -20,6 +20,8 @@ using std::binary_semaphore;
 
 #include "spdlog/sinks/daily_file_sink.h"
 
+extern HANDLE gl_hFireBirdMutex;
+
 extern std::counting_semaphore<8> gl_BackgroundWorkingThread; // 最多后台工作线程允许数量
 
 extern binary_semaphore gl_UpdateWorldMarketDB; // 此信号量用于更新WorldMarket数据库

@@ -15,27 +15,6 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CResourceViewBar
 
-////////////////////////////////////////////////////////////////////////////////////
-//
-// Configuration实时改变处理函数
-//
-////////////////////////////////////////////////////////////////////////////////////
-void CFireBirdPropertyRealtimeGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pProp) const {
-	COleVariant value;
-	LPVARIANT pVar;
-	CStringW wStr;
-	CString str;
-	value = pProp->GetValue();
-	pVar = static_cast<LPVARIANT>(value);
-	switch (pProp->GetData()) {
-	default:
-		TRACE("未处理PropertyGridCtrl例外\n"); // 未处理例外
-	//ASSERT(0);
-		break;
-	}
-	CMFCPropertyGridCtrl::OnPropertyChanged(pProp);
-}
-
 //
 // CPropertyWnd
 //
@@ -108,30 +87,32 @@ void CPropertyRealtimeWnd::InitPropList() {
 	m_wndPropList.SetVSDotNetLook();
 	m_wndPropList.MarkModifiedProperties();
 
-	CMFCPropertyGridProperty* pGroup2 = new CMFCPropertyGridProperty(_T("China market"));
+	m_pChinaMarketStock = new CMFCPropertyGridProperty(_T(""));
 
+	m_pPropVolume = new CMFCPropertyGridProperty(_T("Volume:"), _T("0.00"));
+	m_pPropVolume->Enable(FALSE);
+	m_pChinaMarketStock->AddSubItem(m_pPropVolume);
 	m_pPropStockAttackBuy = new CMFCPropertyGridProperty(_T("Attack Buy:"), _T("0.00"));
 	m_pPropStockAttackBuy->Enable(FALSE);
-	pGroup2->AddSubItem(m_pPropStockAttackBuy);
-	m_pPropStockAttackSell = new CMFCPropertyGridProperty(_T("Attack Sell:"), _T("0.00"));
-	m_pPropStockAttackSell->Enable(FALSE);
-	pGroup2->AddSubItem(m_pPropStockAttackSell);
-
+	m_pChinaMarketStock->AddSubItem(m_pPropStockAttackBuy);
 	m_pPropStockStrongBuy = new CMFCPropertyGridProperty(_T("Strong Buy:"), _T("0.00"));
 	m_pPropStockStrongBuy->Enable(FALSE);
-	pGroup2->AddSubItem(m_pPropStockStrongBuy);
-	m_pPropStockStrongSell = new CMFCPropertyGridProperty(_T("Strong Sell:"), _T("0.00"));
-	m_pPropStockStrongSell->Enable(FALSE);
-	pGroup2->AddSubItem(m_pPropStockStrongSell);
-
+	m_pChinaMarketStock->AddSubItem(m_pPropStockStrongBuy);
 	m_pPropStockCancelBuy = new CMFCPropertyGridProperty(_T("Cancel Buy:"), _T("0.00"));
 	m_pPropStockCancelBuy->Enable(FALSE);
-	pGroup2->AddSubItem(m_pPropStockCancelBuy);
+	m_pChinaMarketStock->AddSubItem(m_pPropStockCancelBuy);
+
+	m_pPropStockAttackSell = new CMFCPropertyGridProperty(_T("Attack Sell:"), _T("0.00"));
+	m_pPropStockAttackSell->Enable(FALSE);
+	m_pChinaMarketStock->AddSubItem(m_pPropStockAttackSell);
+	m_pPropStockStrongSell = new CMFCPropertyGridProperty(_T("Strong Sell:"), _T("0.00"));
+	m_pPropStockStrongSell->Enable(FALSE);
+	m_pChinaMarketStock->AddSubItem(m_pPropStockStrongSell);
 	m_pPropStockCancelSell = new CMFCPropertyGridProperty(_T("Cancel Sell:"), _T("0.00"));
 	m_pPropStockCancelSell->Enable(FALSE);
-	pGroup2->AddSubItem(m_pPropStockCancelSell);
+	m_pChinaMarketStock->AddSubItem(m_pPropStockCancelSell);
 
-	m_wndPropList.AddProperty(pGroup2);
+	m_wndPropList.AddProperty(m_pChinaMarketStock);
 }
 
 void CPropertyRealtimeWnd::OnSetFocus(CWnd* pOldWnd) {
@@ -168,11 +149,16 @@ void CPropertyRealtimeWnd::OnTimer(UINT_PTR nIDEvent) {
 	auto pStock = gl_pChinaMarket->GetCurrentStock();
 
 	if (pStock != nullptr) {
+		CString symbol = pStock->GetSymbol();
+		m_pChinaMarketStock->SetName(symbol);
 		if (pStock->GetVolume() > 0) {
 			char buffer[100];
 			INT64 volume = pStock->GetVolume();
-			sprintf_s(buffer, 100, "0.%02lld", pStock->GetAttackBuyVolume() * 100 / volume);
+			sprintf_s(buffer, 100, "%lld", volume);
 			CString str = buffer;
+			m_pPropVolume->SetValue(str);
+			sprintf_s(buffer, 100, "0.%02lld", pStock->GetAttackBuyVolume() * 100 / volume);
+			str = buffer;
 			m_pPropStockAttackBuy->SetValue(str);
 			sprintf_s(buffer, 100, _T("0.%02lld"), pStock->GetAttackSellVolume() * 100 / volume);
 			str = buffer;
@@ -192,6 +178,9 @@ void CPropertyRealtimeWnd::OnTimer(UINT_PTR nIDEvent) {
 			str = buffer;
 			m_pPropStockCancelSell->SetValue(str);
 		}
+	}
+	else {
+		m_pChinaMarketStock->SetName(_T(""));
 	}
 
 	CDockablePane::OnTimer(nIDEvent);

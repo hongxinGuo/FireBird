@@ -208,8 +208,23 @@ void TaskSchedulePer100ms() {
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////
 void TaskSchedulePerSecond() {
-	gl_pSinaRTDataSource->CalcTotalBytePerSecond(); // 计算每秒读取的数据量
-	gl_systemMessage.CalcScheduleTaskTimePerSecond(); // 计算每秒调度所需的时间
+	try {
+		gl_pSinaRTDataSource->CalcTotalBytePerSecond(); // 计算每秒读取的数据量
+		gl_systemMessage.CalcScheduleTaskTimePerSecond(); // 计算每秒调度所需的时间
+	} catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
+		CString str = _T("TaskSchedulePerSecond unhandled exception founded : ");
+		str += e->what();
+		gl_systemMessage.PushErrorMessage(str);
+		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
+	}
+	catch (CException* e) {
+		char buffer[1000];
+		CString str = _T("TaskSchedulePerSecond unhandled CException founded : ");
+		e->GetErrorMessage(buffer, 1);
+		str += buffer;
+		gl_systemMessage.PushErrorMessage(str);
+		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
+	}
 }
 
 void TaskExitSystem() {

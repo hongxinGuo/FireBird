@@ -169,6 +169,8 @@ CMainFrame::~CMainFrame() {
 
 	gl_systemConfiguration.SetExitingSystem(true);
 
+	if (gl_hFireBirdMutex != nullptr) ::CloseHandle(gl_hFireBirdMutex); //Note 采用显式关闭。偶尔程序出现无法再次启动的现象（Mutex未关闭）。
+
 	time_t tt, tt2;
 	time(&tt); // Note 系统退出时避免调用GetUTCTime(),因为调度函数可能已经不再执行了
 	while (gl_ThreadStatus.IsWebInquiringThreadRunning()) {
