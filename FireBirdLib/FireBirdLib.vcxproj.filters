@@ -771,6 +771,9 @@
     <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h">
       <Filter>头文件\Windows interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Windows interface\ChildFrm.h">
+      <Filter>头文件\Windows interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1290,6 +1293,9 @@
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Windows interface\PropertyRealTimeDataWnd.cpp">
+      <Filter>源文件\windows interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\ChildFrm.cpp">
       <Filter>源文件\windows interface</Filter>
     </ClCompile>
   </ItemGroup>
