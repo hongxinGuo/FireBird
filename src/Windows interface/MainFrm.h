@@ -9,7 +9,7 @@
 
 constexpr UINT STOCK_ANALYSIS_TIMER_ = 1;
 
-class CMainFrame : public CFrameWndEx {
+class CMainFrame : public CMDIFrameWndEx {
 	DECLARE_DYNCREATE(CMainFrame)
 
 public:
@@ -25,17 +25,17 @@ public:
 	void UpdateInnerSystemStatus();
 
 	// 需包裹的调用系统函数的函数（以便于使用GMock），前缀为SysCall
-	virtual void SysCallOnTimer(UINT_PTR nIDEvent) { CFrameWndEx::OnTimer(nIDEvent); }
+	virtual void SysCallOnTimer(UINT_PTR nIDEvent) { CMDIFrameWndEx::OnTimer(nIDEvent); }
 	virtual void SysCallSetPaneText(int iIndex, LPCTSTR lpszNewText) { m_wndStatusBar.SetPaneText(iIndex, lpszNewText); }
 	virtual void SysCallSetInnerSystemPaneText(int iIndex, LPCTSTR lpszNewText) { m_wndInnerSystemBar.SetPaneText(iIndex, lpszNewText); }
-	virtual void SysCallOnSysCommand(UINT nID, LPARAM lParam) { CFrameWndEx::OnSysCommand(nID, lParam); }
+	virtual void SysCallOnSysCommand(UINT nID, LPARAM lParam) { CMDIFrameWndEx::OnSysCommand(nID, lParam); }
 	virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->Enable(fFlag); }
 	virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->SetCheck(fFlag); }
 	virtual LRESULT SysCallSendMessage(UINT message, WPARAM wParam, LPARAM lParam) { return SendMessage(message, wParam, lParam); }
-	virtual BOOL SysCallPreTranslateMessage(MSG* pMsg) { return CFrameWndEx::PreTranslateMessage(pMsg); }
+	virtual BOOL SysCallPreTranslateMessage(MSG* pMsg) { return CMDIFrameWndEx::PreTranslateMessage(pMsg); }
 	virtual void SysCallInvalidate() { Invalidate(); }
-	virtual void SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags) { CFrameWndEx::OnChar(nChar, nRepCnt, nFlags); }
-	virtual void SysCallOnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) { CFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags); }
+	virtual void SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags) { CMDIFrameWndEx::OnChar(nChar, nRepCnt, nFlags); }
+	virtual void SysCallOnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) { CMDIFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags); }
 
 	virtual void CalculateTodayRS();
 	virtual void ProcessChinaMarketStock();
@@ -47,6 +47,10 @@ public:
 	BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = nullptr, CCreateContext* pContext = nullptr) override;
 
 	// 实现
+#ifdef _DEBUG
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
+#endif
 
 protected:
 	UINT m_uIdTimer;

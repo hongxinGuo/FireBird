@@ -1,9 +1,7 @@
-// ChildFrm.cpp : implementation of the CChildFrame class
+﻿// ChildFrm.cpp: CChildFrame 类的实现
 //
 
-#include "pch.h"
-#include "framework.h"
-//#include "FireBird.h"
+#include"pch.h"
 
 #include "ChildFrm.h"
 
@@ -16,27 +14,27 @@
 IMPLEMENT_DYNCREATE(CChildFrame, CMDIChildWndEx)
 
 BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWndEx)
+	//    ON_COMMAND(ID_AMERICA_MARKET_REBULID_DAY_LINE, &CChildFrame::OnWorldMarketRebuldayLine)
 END_MESSAGE_MAP()
 
-// CChildFrame construction/destruction
+// CChildFrame 构造/析构
 
-CChildFrame::CChildFrame() noexcept {
-	// TODO: add member initialization code here
+CChildFrame::CChildFrame() {
+	// TODO: 在此添加成员初始化代码
 }
 
-CChildFrame::~CChildFrame()
-{
+CChildFrame::~CChildFrame() {
 }
 
 BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs) {
-	// TODO: Modify the Window class or styles here by modifying the CREATESTRUCT cs
+	// TODO: 在此处通过修改 CREATESTRUCT cs 来修改窗口类或样式
 	if (!CMDIChildWndEx::PreCreateWindow(cs))
 		return FALSE;
 
 	return TRUE;
 }
 
-// CChildFrame diagnostics
+// CChildFrame 诊断
 
 #ifdef _DEBUG
 void CChildFrame::AssertValid() const {
@@ -48,4 +46,4 @@ void CChildFrame::Dump(CDumpContext& dc) const {
 }
 #endif //_DEBUG
 
-// CChildFrame message handlers
+// CChildFrame 消息处理程序

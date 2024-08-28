@@ -10,6 +10,8 @@
 #include "FireBirdView.h" 
 
 #include <spdlog/spdlog.h>
+
+#include "ChildFrm.h"
 #include "spdlog/sinks/basic_file_sink.h"
 
 #ifndef _MBCS
@@ -96,6 +98,15 @@ BOOL CFireBirdApp::InitInstance() {
 
 	CWinAppEx::InitInstance();
 
+	// Initialize OLE libraries
+	if (!AfxOleInit())
+	{
+		AfxMessageBox(IDP_OLE_INIT_FAILED);
+		return FALSE;
+	}
+
+	AfxEnableControlContainer();
+
 	EnableTaskbarInteraction(FALSE);
 
 	// 标准初始化
@@ -116,14 +127,24 @@ BOOL CFireBirdApp::InitInstance() {
 	theApp.GetTooltipManager()->SetTooltipParams(AFX_TOOLTIP_TYPE_ALL,
 		RUNTIME_CLASS(CMFCToolTipCtrl), &ttParams);
 
-	CSingleDocTemplate* pDocTemplate = new CSingleDocTemplate(
-		IDR_MAINFRAME,
+	CMultiDocTemplate* pDocTemplate = new CMultiDocTemplate(
+		IDR_FIREBIRDTYPE,
 		RUNTIME_CLASS(CFireBirdDoc),
-		RUNTIME_CLASS(CMainFrame), // main SDI frame window
+		RUNTIME_CLASS(CChildFrame), // main SDI frame window
 		RUNTIME_CLASS(CFireBirdView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
+
+	// create main MDI Frame window
+	CMainFrame* pMainFrame = new CMainFrame;
+	if (!pMainFrame || !pMainFrame->LoadFrame(IDR_MAINFRAME))
+	{
+		delete pMainFrame;
+		return FALSE;
+	}
+	m_pMainWnd = pMainFrame;
+
 
 	// 分析标准 shell 命令、DDE、打开文件操作的命令行
 	CCommandLineInfo cmdInfo;
@@ -133,8 +154,8 @@ BOOL CFireBirdApp::InitInstance() {
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
 	// 主窗口已初始化，因此显示它并对其进行更新
-	m_pMainWnd->ShowWindow(SW_SHOW);
-	m_pMainWnd->UpdateWindow();
+	pMainFrame->ShowWindow(m_nCmdShow);
+	pMainFrame->UpdateWindow();
 
 	return TRUE;
 }

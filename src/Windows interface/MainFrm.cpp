@@ -36,13 +36,13 @@ using namespace concurrencpp;
 
 bool CMainFrame::sm_fGlobeInit = false;
 
-IMPLEMENT_DYNCREATE(CMainFrame, CFrameWndEx)
+IMPLEMENT_DYNCREATE(CMainFrame, CMDIFrameWndEx)
 
 constexpr int iMaxUserToolbars = 10;
 constexpr UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
 constexpr UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 
-BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
+BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_WINDOW_MANAGER, &CMainFrame::OnWindowManager)
 	ON_COMMAND(ID_VIEW_CUSTOMIZE, &CMainFrame::OnViewCustomize)
@@ -221,7 +221,15 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemMessage.PushInformationMessage(_T("重置系统"));
 
 	// 生成系统外观显示部件
-	if (CFrameWndEx::OnCreate(lpCreateStruct) == -1) return -1;
+	if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1) return -1;
+
+	CMDITabInfo mdiTabParams;
+	mdiTabParams.m_style = CMFCTabCtrl::STYLE_3D_ONENOTE; // 其他可用样式...
+	mdiTabParams.m_bActiveTabCloseButton = TRUE; // 设置为 FALSE 会将关闭按钮放置在选项卡区域的右侧
+	mdiTabParams.m_bTabIcons = FALSE; // 设置为 TRUE 将在 MDI 选项卡上启用文档图标
+	mdiTabParams.m_bAutoColor = TRUE; // 设置为 FALSE 将禁用 MDI 选项卡的自动着色
+	mdiTabParams.m_bDocumentMenu = TRUE; // 在选项卡区域的右边缘启用文档菜单
+	EnableMDITabbedGroups(TRUE, mdiTabParams);
 
 	if (!m_wndMenuBar.Create(this)) {
 		TRACE0("未能创建菜单栏\n");
@@ -265,6 +273,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 		return -1; // 未能创建
 	}
 	m_wndInnerSystemBar.SetIndicators(innerSystemIndicators, sizeof(innerSystemIndicators) / sizeof(UINT));
+
+	// TODO: 如果您不希望工具栏和菜单栏可停靠，请删除这五行
+	m_wndMenuBar.EnableDocking(CBRS_ALIGN_ANY);
+	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
+	EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&m_wndMenuBar);
+	DockPane(&m_wndToolBar);
 
 	// 启用 Visual Studio 2005 样式停靠窗口行为
 	CDockingManager::SetDockingMode(DT_SMART);
@@ -354,7 +369,7 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
-	if (!CFrameWndEx::PreCreateWindow(cs)) return FALSE;
+	if (!CMDIFrameWndEx::PreCreateWindow(cs)) return FALSE;
 	// TODO: 在此处通过修改CREATESTRUCT cs 来修改窗口类或样式
 
 	return TRUE;
@@ -393,6 +408,18 @@ BOOL CMainFrame::CreateDockingWindows() {
 	return TRUE;
 }
 
+// CMainFrame 诊断
+
+#ifdef _DEBUG
+void CMainFrame::AssertValid() const {
+	CMDIFrameWndEx::AssertValid();
+}
+
+void CMainFrame::Dump(CDumpContext& dc) const {
+	CMDIFrameWndEx::Dump(dc);
+}
+#endif //_DEBUG
+
 // CMainFrame 消息处理程序
 
 void CMainFrame::OnWindowManager() {
@@ -406,7 +433,7 @@ void CMainFrame::OnViewCustomize() {
 }
 
 LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
-	const LRESULT lres = CFrameWndEx::OnToolbarCreateNew(wp, lp);
+	const LRESULT lres = CMDIFrameWndEx::OnToolbarCreateNew(wp, lp);
 	if (lres == 0) { return 0; }
 
 	const auto pUserToolbar = (CMFCToolBar*)lres;
@@ -423,7 +450,7 @@ LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
 BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext) {
 	// 基类将执行真正的工作
 
-	if (!CFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext)) { return FALSE; }
+	if (!CMDIFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext)) { return FALSE; }
 
 	CString strCustomize;
 	const BOOL bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
@@ -438,7 +465,7 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 }
 
 void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
-	CFrameWndEx::OnSettingChange(uFlags, lpszSection);
+	CMDIFrameWndEx::OnSettingChange(uFlags, lpszSection);
 	m_wndOutput.UpdateFonts();
 }
 
@@ -464,7 +491,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 void CMainFrame::UpdateStatus() {
 	ASSERT(!IsMarketResetting());
 	CString str;
-	char buffer[30]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	char buffer[30]{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 	const CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
 
@@ -1151,7 +1178,7 @@ void CMainFrame::OnUpdateMaintainChinaMarketStockDayLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnSize(UINT nType, int cx, int cy) {
-	CFrameWndEx::OnSize(nType, cx, cy);
+	CMDIFrameWndEx::OnSize(nType, cx, cy);
 
 	gl_systemConfiguration.SetCurrentWindowRect(cx, cy);
 }
