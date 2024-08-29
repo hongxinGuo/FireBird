@@ -11,7 +11,7 @@ long GetDayOfWeek() {
 }
 
 time_t ConvertToTTime(const long lDate, const time_t tTimeZone, const long lTime) {
-	tm tmMarket{0, 0, 0, 0, 0, 0};
+	tm tmMarket{ 0, 0, 0, 0, 0, 0 };
 
 	ASSERT(lDate >= 19700101);
 	tmMarket.tm_year = lDate / 10000 - 1900;
@@ -301,7 +301,7 @@ CString ConvertDateToChineseTimeStampString(const long lDate) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 time_t ConvertBufferToTime(CString strFormat, const char* BufferMarketTime, const time_t tTimeZoneOffset) {
-	tm tm_{0, 0, 0, 0, 0, 0};
+	tm tm_{ 0, 0, 0, 0, 0, 0 };
 	int year, month, day, hour, minute, second;
 
 	sscanf_s(BufferMarketTime, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
@@ -320,7 +320,7 @@ time_t ConvertBufferToTime(CString strFormat, const char* BufferMarketTime, cons
 }
 
 time_t ConvertStringToTime(CString strFormat, CString strMarketTime, const time_t tTimeZoneOffset) {
-	tm tm_{0, 0, 0, 0, 0, 0};
+	tm tm_{ 0, 0, 0, 0, 0, 0 };
 	int year, month, day, hour, minute, second;
 
 	sscanf_s(strMarketTime.GetBuffer(), strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
@@ -346,4 +346,27 @@ time_t XferToTTime(CString strTime, const CString& strFormat) {
 	time_t tt = _mktime64(&t1);
 	tt += hourOffset * 3600 + minuteOffset * 60;
 	return tt;
+}
+
+int XferChinaMarketTimeToIndex(long lTime) {
+	const long hhmm = lTime / 100;
+	const long hh = lTime / 10000;
+	const long mm = hhmm - hh * 100;
+	if (hh < 9) return 0;
+	int i = (hh - 9) * 60 + mm - 30;
+	if (i < 0) return 0;
+	if (i < 120) return i;
+	if (i < 210) return 120;
+	if (i < 330) return i - 90;
+	return 239;
+}
+
+int XferChinaMarketTimeToIndex(const tm* ptm) {
+	if (ptm->tm_hour < 9) return 0;
+	int i = (ptm->tm_hour - 9) * 60 + ptm->tm_min - 30;
+	if (i < 0) return 0;
+	if (i < 120) return i;
+	if (i < 210) return 120;
+	if (i < 330) return i - 90;
+	return 239;
 }

@@ -250,13 +250,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	}
 
 	CString strToolBarName;
-	BOOL bNameValid = strToolBarName.LoadString(IDS_TOOLBAR_STANDARD);
-	ASSERT(bNameValid);
+	ASSERT(strToolBarName.LoadString(IDS_TOOLBAR_STANDARD));
 	m_wndToolBar.SetWindowText(strToolBarName);
 
 	CString strCustomize;
-	bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
-	ASSERT(bNameValid);
+	ASSERT(strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE));
 	m_wndToolBar.EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
 
 	// Allow user-defined toolbars operations:
@@ -310,7 +308,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	if (CMFCToolBar::GetUserImages() == nullptr) {
 		// 加载用户定义的工具栏图像
-		if (m_UserImages.Load(_T(".\\UserImages.bmp"))) { CMFCToolBar::SetUserImages(&m_UserImages); }
+		if (m_UserImages.Load(_T(".\\UserImages.bmp"))) {
+			CMFCToolBar::SetUserImages(&m_UserImages);
+		}
 	}
 
 	// 启用菜单个性化(最近使用的命令)
@@ -378,8 +378,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 BOOL CMainFrame::CreateDockingWindows() {
 	// 创建输出窗口
 	CString strOutputWnd;
-	BOOL bNameValid = strOutputWnd.LoadString(IDS_OUTPUT_WND);
-	ASSERT(bNameValid);
+	ASSERT(strOutputWnd.LoadString(IDS_OUTPUT_WND));
 	if (!m_wndOutput.Create(strOutputWnd, this, CRect(0, 0, 100, 100), TRUE, ID_VIEW_OUTPUTWND,
 	                        WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI)) {
 		TRACE0("未能创建输出窗口\n");
@@ -388,8 +387,7 @@ BOOL CMainFrame::CreateDockingWindows() {
 
 	// Create properties window
 	CString strPropertiesWnd;
-	bNameValid = strPropertiesWnd.LoadString(IDS_PROPERTIES_WND);
-	ASSERT(bNameValid);
+	ASSERT(strPropertiesWnd.LoadString(IDS_PROPERTIES_WND));
 	if (!m_wndProperties.Create(strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_PROPERTIESWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI)) {
 		TRACE0("Failed to create Properties window\n");
 		return FALSE; // failed to create
@@ -397,8 +395,7 @@ BOOL CMainFrame::CreateDockingWindows() {
 
 	// Create Realtime property window
 	CString strPropertyRealtimeWnd;
-	bNameValid = strPropertyRealtimeWnd.LoadString(IDS_PROPERTY_REALTIME_WND);
-	ASSERT(bNameValid);
+	ASSERT(strPropertyRealtimeWnd.LoadString(IDS_PROPERTY_REALTIME_WND));
 	if (!m_wndPropertyRealTime.Create(strPropertyRealtimeWnd, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_PROPERTY_REALTIME_WND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI)) {
 		TRACE0("Failed to create Property realtime window\n");
 		return FALSE; // failed to create
@@ -440,8 +437,7 @@ LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
 	ASSERT_VALID(pUserToolbar);
 
 	CString strCustomize;
-	const BOOL bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
-	ASSERT(bNameValid);
+	ASSERT(strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE));
 
 	pUserToolbar->EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
 	return lres;
@@ -453,8 +449,7 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	if (!CMDIFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext)) { return FALSE; }
 
 	CString strCustomize;
-	const BOOL bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
-	ASSERT(bNameValid);
+	ASSERT(strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE));
 
 	for (int i = 0; i < iMaxUserToolbars; i++) {
 		CMFCToolBar* pUserToolbar = GetUserToolBarByIndex(i);

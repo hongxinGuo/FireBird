@@ -144,7 +144,7 @@ public:
 	afx_msg void OnUpdateShowWeekLine(CCmdUI* pCmdUI);
 };
 
-#ifndef _DEBUG  // FireBirdView.cpp 中的调试版本
+#ifndef _DEBUG  // 调试版本在FireBirdView.cpp中
 inline CFireBirdDoc* CFireBirdView::GetDocument() const {
 	return reinterpret_cast<CFireBirdDoc*>(m_pDocument);
 }

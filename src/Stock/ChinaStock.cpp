@@ -18,6 +18,13 @@ CChinaStock::CChinaStock() {
 		m_lVBuy.at(i) = m_lVSell.at(i) = 0;
 	}
 
+	m_vOrdinaryBuy.resize(240);
+	m_vOrdinarySell.resize(240);
+	m_vAttackBuy.resize(240);
+	m_vAttackSell.resize(240);
+	m_vStrongBuy.resize(240);
+	m_vStrongSell.resize(240);
+
 	CChinaStock::Reset();
 }
 
@@ -110,6 +117,15 @@ void CChinaStock::Reset() {
 
 	m_dCurrentGuadanTransactionPrice = 0;
 	m_nCurrentTransactionType = 0;
+
+	for (int i = 0; i < 240; i++) {
+		m_vOrdinaryBuy.at(i) = 0;
+		m_vOrdinarySell.at(i) = 0;
+		m_vAttackBuy.at(i) = 0;
+		m_vAttackSell.at(i) = 0;
+		m_vStrongBuy.at(i) = 0;
+		m_vStrongSell.at(i) = 0;
+	}
 
 	m_fChosen = false;
 	m_fSaveToChosenStockDB = false;
@@ -636,11 +652,23 @@ bool CChinaStock::ProcessOneRTData(const CWebRTDataPtr& pRTData) {
 	CalculateHighLowLimit(pRTData);
 	if (HaveFirstRTData()) {// 如果开始计算（第二次收到实时数据及以后）
 		CalculateOneRTData(pRTData);
+		UpdateVolumeVector();
 	}
 	else {// 第一次收到实时数据，则只初始化系统而不计算
 		InitializeCalculatingRTDataEnvironment(pRTData);
 	}
 	return true;
+}
+
+void CChinaStock::UpdateVolumeVector() {
+	int index = gl_pChinaMarket->XferMarketTimeToIndex();
+	ASSERT(index >= 0 && index < 240);
+	m_vOrdinaryBuy.at(index) = m_lOrdinaryBuyVolume;
+	m_vOrdinarySell.at(index) = m_lOrdinarySellVolume;
+	m_vAttackBuy.at(index) = m_lAttackBuyVolume;
+	m_vAttackSell.at(index) = m_lAttackSellVolume;
+	m_vStrongBuy.at(index) = m_lStrongBuyVolume;
+	m_vStrongSell.at(index) = m_lStrongSellVolume;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

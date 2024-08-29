@@ -185,6 +185,10 @@ bool CChinaMarket::IsWorkingTime(long lTime) {
 	return true;
 }
 
+int CChinaMarket::XferMarketTimeToIndex() {
+	return XferChinaMarketTimeToIndex(&m_tmMarket);
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////
 //
 // 各任务调度处理函数
@@ -1387,7 +1391,7 @@ void CChinaMarket::DeleteDayLine(long lDate) const {
 }
 
 void CChinaMarket::DeleteDayLineBasicInfo(long lDate) const {
-	char buffer[20]{0x000};
+	char buffer[20]{ 0x000 };
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 
 	_ltoa_s(lDate, buffer, 10);
@@ -1405,7 +1409,7 @@ void CChinaMarket::DeleteDayLineBasicInfo(long lDate) const {
 }
 
 void CChinaMarket::DeleteDayLineExtendInfo(long lDate) const {
-	char buffer[20]{0x000};
+	char buffer[20]{ 0x000 };
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
 	_ltoa_s(lDate, buffer, 10);

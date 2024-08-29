@@ -33,6 +33,8 @@ public:
 	int ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由ScheduleTask调度
 	int ProcessCurrentImmediateTask(long lMarketTime) override; // 即时任务调度，由ScheduleTask调度
 
+	int XferMarketTimeToIndex() override;
+
 	void TaskCreateTask(long lCurrentTime);
 	void TaskResetMarket(long lCurrentTime);
 	bool TaskCheckMarketReady(long lCurrentTime);

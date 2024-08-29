@@ -134,7 +134,7 @@ bool CFireBirdView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, 
 }
 
 void CFireBirdView::ShowRealtimeData(CDC* pDC) {
-	constexpr int cFirstPosition = 0;
+	constexpr int cFirstPosition = 600;
 	constexpr int cSecondPosition = cFirstPosition + 200;
 	constexpr int cThirdPosition = cSecondPosition + 300;
 	const CRect rectBuySell(cFirstPosition, 0, cFirstPosition + 150, 400);

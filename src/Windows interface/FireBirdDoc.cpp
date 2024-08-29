@@ -28,8 +28,10 @@ BOOL CFireBirdDoc::OnNewDocument() {
 // CFireBirdDoc 序列化
 
 void CFireBirdDoc::Serialize(CArchive& ar) {
-	if (ar.IsStoring()) { }
-	else { }
+	if (ar.IsStoring()) {
+	}
+	else {
+	}
 }
 
 #ifdef SHARED_HANDayLineERS

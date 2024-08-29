@@ -340,15 +340,81 @@ namespace FireBirdTest {
 	TEST_F(TimeConvertTest, TestXferToTTime) {
 		CString strTime = _T("2019-07-05T15:49:15.157000+00:00");
 		time_t t = XferToTTime(strTime, _T("%4d-%02d-%02dT%02d:%02d:%02d.%06d+%02d:%02d"));
-		tm t1{15, 49, 15, 05, 07, 2019};
+		tm t1{ 15, 49, 15, 05, 07, 2019 };
 		time_t t2 = _mktime64(&t1);
 		EXPECT_EQ(t2, t);
 
 		strTime = _T("2019-07-05T15:49:15.157000+08:15");
 		t = XferToTTime(strTime, _T("%4d-%02d-%02dT%02d:%02d:%02d.%06d+%02d:%02d"));
-		tm t3{15, 49, 15, 05, 07, 2019};
+		tm t3{ 15, 49, 15, 05, 07, 2019 };
 		t2 = _mktime64(&t3);
 		t2 += 3600 * 8 + 60 * 15;
 		EXPECT_EQ(t2, t);
+	}
+
+	TEST_F(TimeConvertTest, TestXferTimeToIndex) {
+		EXPECT_EQ(XferChinaMarketTimeToIndex(10), 0);
+		EXPECT_EQ(XferChinaMarketTimeToIndex(85000), 0);
+		EXPECT_EQ(XferChinaMarketTimeToIndex(92900), 0);
+		EXPECT_EQ(XferChinaMarketTimeToIndex(93000), 0);
+		EXPECT_EQ(XferChinaMarketTimeToIndex(93100), 1);
+		EXPECT_EQ(XferChinaMarketTimeToIndex(112900), 119);
+		EXPECT_EQ(XferChinaMarketTimeToIndex(113000), 120);
+		EXPECT_EQ(XferChinaMarketTimeToIndex(113100), 120);
+		EXPECT_EQ(XferChinaMarketTimeToIndex(125900), 120);
+		EXPECT_EQ(XferChinaMarketTimeToIndex(130000), 120);
+		EXPECT_EQ(XferChinaMarketTimeToIndex(130100), 121);
+		EXPECT_EQ(XferChinaMarketTimeToIndex(145900), 239);
+		EXPECT_EQ(XferChinaMarketTimeToIndex(150000), 239);
+		EXPECT_EQ(XferChinaMarketTimeToIndex(150100), 239);
+		EXPECT_EQ(XferChinaMarketTimeToIndex(190000), 239);
+	}
+
+	TEST_F(TimeConvertTest, TestXferTimeToIndex2) {
+		tm tm_;
+		tm_.tm_hour = 0;
+		tm_.tm_min = 0;
+		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 0);
+		tm_.tm_hour = 8;
+		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 0);
+		tm_.tm_hour = 9;
+		tm_.tm_min = 29;
+		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 0);
+		tm_.tm_hour = 9;
+		tm_.tm_min = 30;
+		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 0);
+		tm_.tm_hour = 9;
+		tm_.tm_min = 31;
+		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 1);
+		tm_.tm_hour = 11;
+		tm_.tm_min = 29;
+		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 119);
+		tm_.tm_hour = 11;
+		tm_.tm_min = 30;
+		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 120);
+		tm_.tm_hour = 11;
+		tm_.tm_min = 31;
+		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 120);
+		tm_.tm_hour = 12;
+		tm_.tm_min = 59;
+		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 120);
+		tm_.tm_hour = 13;
+		tm_.tm_min = 0;
+		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 120);
+		tm_.tm_hour = 13;
+		tm_.tm_min = 1;
+		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 121);
+		tm_.tm_hour = 14;
+		tm_.tm_min = 59;
+		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 239);
+		tm_.tm_hour = 15;
+		tm_.tm_min = 0;
+		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 239);
+		tm_.tm_hour = 15;
+		tm_.tm_min = 1;
+		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 239);
+		tm_.tm_hour = 17;
+		tm_.tm_min = 31;
+		EXPECT_EQ(XferChinaMarketTimeToIndex(&tm_), 239);
 	}
 }

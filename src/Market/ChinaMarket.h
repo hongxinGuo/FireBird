@@ -34,6 +34,8 @@ public:
 	bool IsDummyTime() final { return !IsWorkingTime(); }
 	bool IsDummyTime(long lTime) final { return !IsWorkingTime(lTime); }
 
+	int XferMarketTimeToIndex() override;
+
 	int ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由基类的ScheduleTask调度
 	int ProcessCurrentImmediateTask(long lMarketTime) override; // 即时任务调度，由ScheduleTask调度
 

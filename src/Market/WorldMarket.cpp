@@ -182,6 +182,10 @@ int CWorldMarket::ProcessCurrentImmediateTask(long lMarketTime) {
 	return taskType;
 }
 
+int CWorldMarket::XferMarketTimeToIndex() {
+	return XferChinaMarketTimeToIndex(&m_tmMarket);
+}
+
 void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 	const long lTimeMinute = (lCurrentTime / 100) * 100; // 当前小时和分钟
 

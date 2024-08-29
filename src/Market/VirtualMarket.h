@@ -98,6 +98,11 @@ public:
 	void CalculateTime() noexcept; // 计算本市场的各时间
 	void CalculateLastTradeDate() noexcept;
 
+	virtual int XferMarketTimeToIndex() {// 将本市场的市场时间变成显示位置的偏移（各市场分别实现）
+		ASSERT(false);
+		return 0;
+	}
+
 	virtual bool IsReadyToInquireWebData(long /*lCurrentMarketTime*/) { return true; }
 
 	virtual bool IsTimeToResetSystem(long) { return false; } // 默认永远处于非重启市场状态，继承类需要各自设置之
@@ -117,12 +122,12 @@ public:
 	void TEST_SetFormattedMarketDate(const long lDate) noexcept { m_lMarketDate = lDate; }
 
 protected:
-	CString m_strMarketId{_T("Warning: CVirtualMarket Called.")}; // 该市场标识字符串
+	CString m_strMarketId{ _T("Warning: CVirtualMarket Called.") }; // 该市场标识字符串
 
 	CMarketTaskQueue m_marketTask; // 本市场当前任务队列
 	CMarketTaskQueue m_marketImmediateTask; // 本市场当前即时任务队列（此任务序列一次执行完毕，无需等待）
 	ConcurrentQueue<CMarketTaskPtr> m_qMarketDisplayTask; // 当前任务显示队列
-	long m_lLastQueueLength{0};
+	long m_lLastQueueLength{ 0 };
 
 	vector<CVirtualDataSourcePtr> m_vDataSource; // 本市场中的各网络数据源。
 
@@ -136,20 +141,20 @@ protected:
 	CString m_strCountry;
 	CString m_strSource;
 
-	long m_lMarketTimeZone{-8 * 3600}; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。与_get_timezone函数相符。
+	long m_lMarketTimeZone{ -8 * 3600 }; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。与_get_timezone函数相符。
 
 	// 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
-	long m_lMarketDate{0}; //本市场的日期
-	long m_lMarketTime{0}; // 本市场的时间
-	long m_lMarketLastTradeDate{0}; // 本市场的上次交易日期
-	tm m_tmMarket{0, 0, 0, 1, 0, 1970}; // 本市场时间结构
+	long m_lMarketDate{ 0 }; //本市场的日期
+	long m_lMarketTime{ 0 }; // 本市场的时间
+	long m_lMarketLastTradeDate{ 0 }; // 本市场的上次交易日期
+	tm m_tmMarket{ 0, 0, 0, 1, 0, 1970 }; // 本市场时间结构
 
 	//系统状态区
-	bool m_fSystemReady{false}; // 市场初始态已经设置好.默认为假
-	bool m_fResettingMarket{false}; // 市场正在重启标识
+	bool m_fSystemReady{ false }; // 市场初始态已经设置好.默认为假
+	bool m_fResettingMarket{ false }; // 市场正在重启标识
 
 private:
-	bool m_fResetMarket{true}; // 重启系统标识
+	bool m_fResetMarket{ true }; // 重启系统标识
 };
 
 using CVirtualMarketWeakPtr = weak_ptr<CVirtualMarket>;

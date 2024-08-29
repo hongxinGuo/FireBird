@@ -36,3 +36,6 @@ void GetMarketTimeStruct(tm* tm_, time_t tUTC, time_t tTimeZone);
 [[nodiscard]] time_t ConvertStringToTime(CString strFormat, CString strMarketTime, time_t tTimeZoneOffset);
 
 [[nodiscard]] time_t XferToTTime(CString strTime, const CString& strFormat);
+
+int XferChinaMarketTimeToIndex(long lTime); // lTime为HHMMSS制式
+int XferChinaMarketTimeToIndex(const tm* ptm); // lTime为HHMMSS制式

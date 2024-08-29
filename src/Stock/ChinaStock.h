@@ -305,6 +305,7 @@ public:
 	// 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
 	void ProcessRTData();
 	bool ProcessOneRTData(const CWebRTDataPtr& pRTData);
+	void UpdateVolumeVector();
 	void CalculateHighLowLimit(const CWebRTDataPtr& pRTData);
 	void CalculateOneDeal(const CWebRTDataPtr& pRTData, INT64 lCurrentGuadanTransactionPrice);
 	void IncreaseTransactionNumber();
@@ -474,6 +475,14 @@ protected:
 	vector<INT64> m_vOrdinarySell100000;
 	vector<INT64> m_vOrdinarySell200000;
 	vector<INT64> m_vOrdinarySellAbove200000;
+
+	// 当日分钟数据 皆为240个（60 * 4）
+	vector<INT64> m_vOrdinaryBuy;
+	vector<INT64> m_vAttackBuy;
+	vector<INT64> m_vStrongBuy;
+	vector<INT64> m_vOrdinarySell;
+	vector<INT64> m_vAttackSell;
+	vector<INT64> m_vStrongSell;
 
 	// 以下为需存储项
 	INT64 m_lTransactionNumber{ 0 }; // 本交易日的成交笔数
