@@ -21,6 +21,85 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+void ShowHistoryData(CDC* pDC, CVirtualDataHistoryCandleExtend* pHistoryCandle, CRect rectClient) {
+	constexpr COLORREF crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)),
+	                   crRed(RGB(255, 0, 0));
+	CPen penGreen1(PS_SOLID, 1, crGreen), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
+	long lHigh = 0;
+	auto vData = pHistoryCandle->GetDataVector();
+	auto it = vData.end();
+	--it;
+	int i = 0;
+	long lLow = (*it)->GetLow();
+	for (; it != vData.begin(); --it) {
+		if (lHigh < (*it)->GetHigh()) lHigh = (*it)->GetHigh();
+		if ((*it)->GetLow() > 0) { if (lLow > (*it)->GetLow()) lLow = (*it)->GetLow(); }
+		if (3 * i > vData.size()) break;
+		if (rectClient.right <= 3 * i) break; // 画到
+		i++;
+	}
+
+	it = vData.end();
+	--it;
+	i = 0;
+	pDC->SelectObject(&penRed1);
+	for (; it != vData.begin(); --it) {
+		const long x = rectClient.right - 2 - i * 3;
+		int y = (0.5 - static_cast<double>((*it)->GetHigh() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
+		pDC->MoveTo(x, y);
+		if ((*it)->GetHigh() == (*it)->GetLow()) { y = y - 1; }
+		else { y = (0.5 - static_cast<double>((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height(); }
+		pDC->LineTo(x, y);
+		long lDate = (*it)->GetMarketDate();
+		i++;
+		if (3 * i > vData.size()) break;
+		if (rectClient.right <= 3 * i) break; // 画到窗口左边框为止
+	}
+}
+
+void ShowRealtimeVolume(CDC* pDC, const vector<INT64>& vVolume, const vector<INT64>& vData, int iRightPos, CRect rectClient, bool fUpsideDown) {
+	ASSERT(vData.size() == 240);
+
+	constexpr COLORREF crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)),
+	                   crRed(RGB(255, 0, 0));
+	int iPenWidth = rectClient.Width() / 240;
+	CPen penGreen1(PS_SOLID, iPenWidth, crGreen), penWhite1(PS_SOLID, iPenWidth, crWhite), penRed1(PS_SOLID, iPenWidth, crRed);
+
+	if (fUpsideDown) { // sell volume
+		pDC->SelectObject(&penGreen1);
+	}
+	else { // buy volume
+		pDC->SelectObject(&penRed1);
+	}
+	INT64 height;
+	if (vVolume.at(0) > 0) {
+		height = vData.at(0) * rectClient.Height() / vVolume.at(0);
+		if (fUpsideDown) {
+			pDC->MoveTo(rectClient.left, rectClient.top);
+			pDC->LineTo(rectClient.left, rectClient.top + height);
+		}
+		else {
+			pDC->MoveTo(rectClient.left, rectClient.bottom);
+			pDC->LineTo(rectClient.left, rectClient.bottom - height);
+		}
+	}
+
+	for (int i = 1; i < iRightPos; i++) {
+		INT64 differVolume = vVolume.at(i) - vVolume.at(i - 1);
+		if (differVolume > 0) {
+			height = (vData.at(i) - vData.at(i - 1)) * rectClient.Height() / differVolume;
+			if (fUpsideDown) {
+				pDC->MoveTo(rectClient.left + iPenWidth * i, rectClient.top);
+				pDC->LineTo(rectClient.left + iPenWidth * i, rectClient.top + height);
+			}
+			else {
+				pDC->MoveTo(rectClient.left + iPenWidth * i, rectClient.bottom);
+				pDC->LineTo(rectClient.left + iPenWidth * i, rectClient.bottom - height);
+			}
+		}
+	}
+}
+
 // CFireBirdView
 
 IMPLEMENT_DYNCREATE(CFireBirdView, CView)
@@ -84,7 +163,7 @@ CFireBirdView::CFireBirdView() {
 }
 
 bool CFireBirdView::ShowGuadan(CDC* pDC, const CChinaStockPtr& pStock, int iXStart, int iYStart, int iYEnd) {
-	CString str = _T("abcd");
+	CString str = _T("");
 	const CSize sizeText = SysCallGetTextExtent(pDC, str);
 	const int iNumberOfLine = (iYEnd - iYStart) / sizeText.cy;
 
@@ -121,7 +200,7 @@ bool CFireBirdView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, 
 	}
 	else return false;
 
-	CString str = _T("abcd");
+	CString str = _T("");
 	CSize sizeText = pDC->GetTextExtent(str);
 	char buffer[30];
 
@@ -134,21 +213,79 @@ bool CFireBirdView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, 
 }
 
 void CFireBirdView::ShowRealtimeData(CDC* pDC) {
-	constexpr int cFirstPosition = 600;
-	constexpr int cSecondPosition = cFirstPosition + 200;
-	constexpr int cThirdPosition = cSecondPosition + 300;
+	const CRect rectVolume(2, 0, 962, 100);
+	int cFirstPosition = rectVolume.right + 500;
+	int cSecondPosition = cFirstPosition + 200;
+	int cThirdPosition = cSecondPosition + 300;
 	const CRect rectBuySell(cFirstPosition, 0, cFirstPosition + 150, 400);
 	const CRect rectOrdinaryBuySell(cSecondPosition, 0, cSecondPosition + 300, 400);
 	const CRect rectAttackBuySell(cThirdPosition, 0, cThirdPosition + 100, 400);
-	const CRect rectCanceledBuySell(0, 450, 300, 850);
-	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
-		ShowBuySell(pDC, gl_pChinaMarket->GetCurrentStock(), rectBuySell);
-		ShowOrdinaryBuySell(pDC, gl_pChinaMarket->GetCurrentStock(), rectOrdinaryBuySell);
-		ShowAttackBuySell(pDC, gl_pChinaMarket->GetCurrentStock(), rectAttackBuySell);
-		ShowCanceledBuySell(pDC, gl_pChinaMarket->GetCurrentStock(), rectCanceledBuySell);
+	const CRect rectCanceledBuySell(cFirstPosition, 450, cFirstPosition + 300, 850);
+
+	auto thisStock = gl_pChinaMarket->GetCurrentStock();
+
+	if (thisStock != nullptr) {
+		ShowVolume(pDC, thisStock, rectVolume);
+		ShowBuySell(pDC, thisStock, rectBuySell);
+		ShowOrdinaryBuySell(pDC, thisStock, rectOrdinaryBuySell);
+		ShowAttackBuySell(pDC, thisStock, rectAttackBuySell);
+		ShowCanceledBuySell(pDC, thisStock, rectCanceledBuySell);
 	}
 
 	//ShowRealtimeGuadan(pDC);
+}
+
+void CFireBirdView::ShowVolume(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea) {
+	auto vVolume = pStock->GetVolumeVector();
+	auto vAttackVolume = pStock->GetAttackBuyVolumeVector();
+	CRect rectOrdinaryBuyVolume, rectOrdinarySellVolume;
+	CRect rectAttackBuyVolume, rectAttackSellVolume;
+	CRect rectStrongBuyVolume, rectStrongSellVolume;
+	CRect rectCancelBuyVolume, rectCancelSellVolume;
+	int iHeight = 100;
+	rectOrdinaryBuyVolume.top = 0;
+	rectOrdinaryBuyVolume.left = rectArea.left;
+	rectOrdinaryBuyVolume.right = rectArea.right;
+	rectOrdinaryBuyVolume.bottom = iHeight;
+	rectOrdinarySellVolume.top = rectOrdinaryBuyVolume.bottom + 1;
+	rectOrdinarySellVolume.left = rectArea.left;
+	rectOrdinarySellVolume.right = rectArea.right;
+	rectOrdinarySellVolume.bottom = rectOrdinaryBuyVolume.bottom + iHeight;
+	rectAttackBuyVolume.top = rectOrdinarySellVolume.bottom;
+	rectAttackBuyVolume.left = rectArea.left;
+	rectAttackBuyVolume.right = rectArea.right;
+	rectAttackBuyVolume.bottom = rectOrdinarySellVolume.bottom + iHeight;
+	rectAttackSellVolume.top = rectAttackBuyVolume.bottom + 1;
+	rectAttackSellVolume.left = rectArea.left;
+	rectAttackSellVolume.right = rectArea.right;
+	rectAttackSellVolume.bottom = rectAttackBuyVolume.bottom + iHeight;
+	rectStrongBuyVolume.top = rectAttackSellVolume.bottom + 1;
+	rectStrongBuyVolume.left = rectArea.left;
+	rectStrongBuyVolume.right = rectArea.right;
+	rectStrongBuyVolume.bottom = rectAttackSellVolume.bottom + iHeight;
+	rectStrongSellVolume.top = rectStrongBuyVolume.bottom + 1;
+	rectStrongSellVolume.left = rectArea.left;
+	rectStrongSellVolume.right = rectArea.right;
+	rectStrongSellVolume.bottom = rectStrongBuyVolume.bottom + iHeight;
+	rectCancelBuyVolume.top = rectStrongSellVolume.bottom + 1;
+	rectCancelBuyVolume.left = rectArea.left;
+	rectCancelBuyVolume.right = rectArea.right;
+	rectCancelBuyVolume.bottom = rectStrongSellVolume.bottom + iHeight;
+	rectCancelSellVolume.top = rectCancelBuyVolume.bottom + 1;
+	rectCancelSellVolume.left = rectArea.left;
+	rectCancelSellVolume.right = rectArea.right;
+	rectCancelSellVolume.bottom = rectCancelBuyVolume.bottom + iHeight;
+
+	const int index = gl_pChinaMarket->XferMarketTimeToIndex();
+	ShowRealtimeVolume(pDC, vVolume, pStock->GetOrdinaryBuyVolumeVector(), index, rectOrdinaryBuyVolume, false);
+	ShowRealtimeVolume(pDC, vVolume, pStock->GetOrdinarySellVolumeVector(), index, rectOrdinarySellVolume, true);
+	ShowRealtimeVolume(pDC, vVolume, pStock->GetAttackBuyVolumeVector(), index, rectAttackBuyVolume, false);
+	ShowRealtimeVolume(pDC, vVolume, pStock->GetAttackSellVolumeVector(), index, rectAttackSellVolume, true);
+	ShowRealtimeVolume(pDC, vVolume, pStock->GetStrongBuyVolumeVector(), index, rectStrongBuyVolume, false);
+	ShowRealtimeVolume(pDC, vVolume, pStock->GetStrongSellVolumeVector(), index, rectStrongSellVolume, true);
+	// Note cancel volume有时会超过当时的成交数量，导致显示越界。暂停使用
+	//ShowRealtimeVolume(pDC, vVolume, pStock->GetCancelBuyVolumeVector(), index, rectCancelBuyVolume, false);
+	//ShowRealtimeVolume(pDC, vVolume, pStock->GetCancelSellVolumeVector(), index, rectCancelSellVolume, true);
 }
 
 void CFireBirdView::ShowRealtimeGuadan(CDC* pDC) {
@@ -594,7 +731,8 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	}
 
 	////////////////////////////////////////////////////////////////画日线蜡烛线
-	pHistoryData->ShowData(pDC, m_rectClient);
+	ShowHistoryData(pDC, pHistoryData, m_rectClient);
+	//pHistoryData->ShowData(pDC, m_rectClient);
 
 	pDC->SelectObject(ppen);
 }
@@ -637,20 +775,20 @@ BOOL CFireBirdView::PreCreateWindow(CREATESTRUCT& cs) {
 
 // CFireBirdView 绘图
 
-void CFireBirdView::OnDraw(CDC* pdc) {
+void CFireBirdView::OnDraw(CDC* pDC) {
 	const CFireBirdDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc) return;
 
-	pdc = GetDC();
+	pDC = GetDC();
 
-	Show(pdc);
+	Show(pDC);
 
-	ReleaseDC(pdc);
+	ReleaseDC(pDC);
 }
 
 void CFireBirdView::Show(CDC* pdc) {
-	CBitmap* pOldBitmap = nullptr;
+	CBitmap* pOldBitmap;
 	COLORREF crGray(RGB(24, 24, 24));
 
 	// create memory DC

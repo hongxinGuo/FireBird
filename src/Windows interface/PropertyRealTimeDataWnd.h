@@ -21,9 +21,11 @@ protected:
 	CMFCPropertyGridProperty* m_pChinaMarketStock{ nullptr };
 	CMFCPropertyGridProperty* m_pPropVolume{ nullptr };
 
+	CMFCPropertyGridProperty* m_pPropStockOrdinaryBuy{ nullptr };
 	CMFCPropertyGridProperty* m_pPropStockAttackBuy{ nullptr };
 	CMFCPropertyGridProperty* m_pPropStockStrongBuy{ nullptr };
 	CMFCPropertyGridProperty* m_pPropStockCancelBuy{ nullptr };
+	CMFCPropertyGridProperty* m_pPropStockOrdinarySell{ nullptr };
 	CMFCPropertyGridProperty* m_pPropStockAttackSell{ nullptr };
 	CMFCPropertyGridProperty* m_pPropStockStrongSell{ nullptr };
 	CMFCPropertyGridProperty* m_pPropStockCancelSell{ nullptr };

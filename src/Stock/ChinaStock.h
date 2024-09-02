@@ -42,6 +42,8 @@ using std::map;
 #include <queue>
 using std::queue;
 
+bool IsShareA(const CString& strStockCode);
+
 // 证券名称数据包
 class CChinaStock : public CVirtualStock {
 public:
@@ -357,8 +359,6 @@ public:
 	void UnloadDayLine() noexcept { m_dataDayLine.Unload(); }
 	bool StoreDayLine(const CDayLinePtr& pDayLine) { return m_dataDayLine.Add(pDayLine); }
 	CDayLinePtr GetDayLine(const long lIndex) const { return static_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
-	void ShowDayLine(CDC* pDC, const CRect rectClient) { m_dataDayLine.ShowData(pDC, rectClient); }
-	void ShowWeekLine(CDC* pDC, const CRect rectClient) { m_dataWeekLine.ShowData(pDC, rectClient); }
 	void Get1DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS1(vRS); }
 	void GetRSIndex1Day(vector<double>& vRS) const { m_dataDayLine.GetRSIndex1(vRS); }
 	void GetRSLogarithm1Day(vector<double>& vRS) const { m_dataDayLine.GetRSLogarithm1(vRS); }
@@ -404,6 +404,16 @@ public:
 	CVirtualDataHistoryCandleExtend* GetDataChinaWeekLine() noexcept { return &m_dataWeekLine; }
 
 	bool IsShareA() const { return ::IsShareA(GetSymbol()); }
+
+	vector<INT64>& GetVolumeVector() { return m_vVolume; }
+	vector<INT64>& GetOrdinaryBuyVolumeVector() { return m_vOrdinaryBuy; }
+	vector<INT64>& GetOrdinarySellVolumeVector() { return m_vOrdinarySell; }
+	vector<INT64>& GetAttackBuyVolumeVector() { return m_vAttackBuy; }
+	vector<INT64>& GetAttackSellVolumeVector() { return m_vAttackSell; }
+	vector<INT64>& GetStrongBuyVolumeVector() { return m_vStrongBuy; }
+	vector<INT64>& GetStrongSellVolumeVector() { return m_vStrongSell; }
+	vector<INT64>& GetCancelBuyVolumeVector() { return m_vCancelBuy; }
+	vector<INT64>& GetCancelSellVolumeVector() { return m_vCancelSell; }
 
 public:
 	// 测试专用函数
@@ -477,12 +487,15 @@ protected:
 	vector<INT64> m_vOrdinarySellAbove200000;
 
 	// 当日分钟数据 皆为240个（60 * 4）
+	vector<INT64> m_vVolume;
 	vector<INT64> m_vOrdinaryBuy;
 	vector<INT64> m_vAttackBuy;
 	vector<INT64> m_vStrongBuy;
 	vector<INT64> m_vOrdinarySell;
 	vector<INT64> m_vAttackSell;
 	vector<INT64> m_vStrongSell;
+	vector<INT64> m_vCancelBuy;
+	vector<INT64> m_vCancelSell;
 
 	// 以下为需存储项
 	INT64 m_lTransactionNumber{ 0 }; // 本交易日的成交笔数

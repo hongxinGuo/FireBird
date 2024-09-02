@@ -512,20 +512,23 @@ void CMainFrame::UpdateStatus() {
 	SysCallSetPaneText(5, buffer);
 
 	// 显示当前读取的新浪实时数据股票代码
-	SysCallSetPaneText(6, gl_systemMessage.GetStockCodeForInquiringRTData());
+	str = gl_systemMessage.GetStockCodeForInquiringRTData();
+	SysCallSetPaneText(6, str);
 
 	// 显示活跃股票总数
 	sprintf_s(buffer, _T("%d"), gl_dataContainerChinaStock.GetActiveStockSize());
 	SysCallSetPaneText(7, buffer);
 
 	// 显示当前读取网易日线历史的股票代码
-	SysCallSetPaneText(8, gl_systemMessage.GetStockCodeForInquiryDayLine());
+	str = gl_systemMessage.GetStockCodeForInquiryDayLine();
+	SysCallSetPaneText(8, str);
 
-	SysCallSetPaneText(9, gl_pWorldMarket->GetCurrentFunction());
+	str = gl_pWorldMarket->GetCurrentFunction();
+	SysCallSetPaneText(9, str);
 
 	// 更新当前抓取的实时数据大小
 	str = FormatToMK(gl_pSinaRTDataSource->GetTotalByteReadPerSecond());
-	m_wndStatusBar.SetPaneText(10, str);
+	SysCallSetPaneText(10, str);
 
 	// 更新当前申请网络数据的工作线程数
 	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfWebInquiringThread());
@@ -538,7 +541,8 @@ void CMainFrame::UpdateStatus() {
 	SysCallSetPaneText(12, buffer);
 
 	//更新当地时间的显示
-	SysCallSetPaneText(13, gl_pChinaMarket->GetStringOfLocalTime());
+	str = gl_pChinaMarket->GetStringOfLocalTime();
+	SysCallSetPaneText(13, str);
 }
 
 void CMainFrame::UpdateInnerSystemStatus() {

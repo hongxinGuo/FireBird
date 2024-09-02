@@ -9,6 +9,31 @@
 #include<gsl/gsl>
 using namespace gsl;
 
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 判断strStockCode是否为沪深A股主板的股票代码。
+// 沪市A股代码以600或601开头，深市A股代码以000或001开头。
+//
+///////////////////////////////////////////////////////////////////////////////////////////////
+bool IsShareA(const CString& strStockCode) {
+	const CString strSymbol = GetStockSymbol(strStockCode);
+	if (IsShanghaiExchange(strStockCode)) {
+		if ((strSymbol[0] == '6') && (strSymbol[1] == '0')) {
+			if ((strSymbol[2] == '0') || (strSymbol[2] == '1')) {
+				return true;
+			}
+		}
+	}
+	else if (IsShenzhenExchange(strStockCode)) {
+		if ((strSymbol[0] == '0') && (strSymbol[1] == '0')) {
+			if ((strSymbol[2] == '0') || (strSymbol[2] == '2')) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 CChinaStock::CChinaStock() {
 	m_lDayLineStartDate = _CHINA_MARKET_BEGIN_DATE_; //
 	m_lDayLineEndDate = _CHINA_MARKET_BEGIN_DATE_; //
@@ -18,12 +43,15 @@ CChinaStock::CChinaStock() {
 		m_lVBuy.at(i) = m_lVSell.at(i) = 0;
 	}
 
+	m_vVolume.resize(240);
 	m_vOrdinaryBuy.resize(240);
 	m_vOrdinarySell.resize(240);
 	m_vAttackBuy.resize(240);
 	m_vAttackSell.resize(240);
 	m_vStrongBuy.resize(240);
 	m_vStrongSell.resize(240);
+	m_vCancelBuy.resize(240);
+	m_vCancelSell.resize(240);
 
 	CChinaStock::Reset();
 }
@@ -119,12 +147,15 @@ void CChinaStock::Reset() {
 	m_nCurrentTransactionType = 0;
 
 	for (int i = 0; i < 240; i++) {
+		m_vVolume.at(i) = 0;
 		m_vOrdinaryBuy.at(i) = 0;
 		m_vOrdinarySell.at(i) = 0;
 		m_vAttackBuy.at(i) = 0;
 		m_vAttackSell.at(i) = 0;
 		m_vStrongBuy.at(i) = 0;
 		m_vStrongSell.at(i) = 0;
+		m_vCancelBuy.at(i) = 0;
+		m_vCancelSell.at(i) = 0;
 	}
 
 	m_fChosen = false;
@@ -663,12 +694,15 @@ bool CChinaStock::ProcessOneRTData(const CWebRTDataPtr& pRTData) {
 void CChinaStock::UpdateVolumeVector() {
 	int index = gl_pChinaMarket->XferMarketTimeToIndex();
 	ASSERT(index >= 0 && index < 240);
+	m_vVolume.at(index) = m_llVolume;
 	m_vOrdinaryBuy.at(index) = m_lOrdinaryBuyVolume;
 	m_vOrdinarySell.at(index) = m_lOrdinarySellVolume;
 	m_vAttackBuy.at(index) = m_lAttackBuyVolume;
 	m_vAttackSell.at(index) = m_lAttackSellVolume;
 	m_vStrongBuy.at(index) = m_lStrongBuyVolume;
 	m_vStrongSell.at(index) = m_lStrongSellVolume;
+	m_vCancelBuy.at(index) = m_lCanceledBuyVolume;
+	m_vCancelSell.at(index) = m_lCanceledSellVolume;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

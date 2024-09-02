@@ -72,6 +72,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(7, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(8, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(9, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(10, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(11, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(12, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(13, _)).Times(1);
@@ -93,6 +94,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(7, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(8, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(9, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(10, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(11, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(12, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(13, _)).Times(1);
@@ -536,7 +538,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockMainFrameTest, TestOnUpdateMaintainDayLine) {
 		CCmdUI cmdUI;
-		constexpr tm tm_{0, 0, 0, 0, 0, 0, 4}; // 星期四
+		constexpr tm tm_{ 0, 0, 0, 0, 0, 0, 4 }; // 星期四
 		gl_pChinaMarket->TEST_SetMarketTM(tm_);
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(180000); // DummyTime
 		EXPECT_TRUE(gl_pChinaMarket->IsDummyTime());

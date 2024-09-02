@@ -6,13 +6,10 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"VirtualHistoryCandleExtend.h"
+#include "DayLine.h"
+#include "VirtualHistoryCandleExtend.h"
+#include "VirtualSetHistoryCandleBasic.h"
 
-#include<vector>
-#include<memory>
-#include<atomic>
-using std::vector;
-using std::shared_ptr;
 using std::atomic_bool;
 
 class CVirtualDataHistoryCandleExtend {
@@ -39,8 +36,6 @@ public:
 	void UpdateData(const vector<CVirtualHistoryCandleExtendPtr>& vTempData);
 	void UpdateData(const vector<CDayLinePtr>& vTempDayLine);
 
-	void ShowData(CDC* pDC, CRect rectClient);
-
 protected:
 	bool UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, const CString& strStockSymbol = _T("")) const;
 
@@ -56,6 +51,7 @@ public:
 		m_fDataLoaded = false;
 	}
 	CVirtualHistoryCandleExtendPtr GetData(const long lIndex) const { return m_vHistoryData.at(lIndex); }
+	vector<CVirtualHistoryCandleExtendPtr>& GetDataVector() { return m_vHistoryData; }
 
 	bool Add(const CVirtualHistoryCandleExtendPtr& pData) {
 		m_vHistoryData.push_back(pData);
@@ -86,9 +82,9 @@ public:
 
 protected:
 	vector<CVirtualHistoryCandleExtendPtr> m_vHistoryData;
-	atomic_bool m_fDataLoaded{false}; // 数据装载与否标识
-	bool m_fDatabaseTodayUpdated{false}; // 数据库今日是否已更新标识
-	bool m_fBasicDataLoaded{false};
+	atomic_bool m_fDataLoaded{ false }; // 数据装载与否标识
+	bool m_fDatabaseTodayUpdated{ false }; // 数据库今日是否已更新标识
+	bool m_fBasicDataLoaded{ false };
 };
 
 using CVirtualDataHistoryCandleExtendPtr = shared_ptr<CVirtualDataHistoryCandleExtend>;

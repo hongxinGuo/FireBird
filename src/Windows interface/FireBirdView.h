@@ -17,6 +17,7 @@ protected: // 使用protected关键字，以保证仅从序列化创建
 	// 特性
 public:
 	~CFireBirdView() override = default;
+	// ReSharper disable once CppHidingFunction
 	CFireBirdDoc* GetDocument() const;
 
 	CRect GetClientSize() const noexcept { return m_rectClient; }
@@ -41,6 +42,7 @@ public:
 	bool ShowGuadan(CDC* pDC, const CChinaStockPtr& pStock, int iXStart, int iYStart, int iYEnd);
 	bool ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart);
 	void ShowRealtimeGuadan(CDC* pdc);
+	void ShowVolume(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea);
 	void ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
 	void ShowOrdinaryBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea);
 	void ShowAttackBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea);

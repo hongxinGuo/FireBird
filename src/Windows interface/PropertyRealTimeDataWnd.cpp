@@ -92,6 +92,9 @@ void CPropertyRealtimeWnd::InitPropList() {
 	m_pPropVolume = new CMFCPropertyGridProperty(_T("Volume:"), _T("0.00"));
 	m_pPropVolume->Enable(FALSE);
 	m_pChinaMarketStock->AddSubItem(m_pPropVolume);
+	m_pPropStockOrdinaryBuy = new CMFCPropertyGridProperty(_T("Ordinary Buy:"), _T("0.00"));
+	m_pPropStockOrdinaryBuy->Enable(FALSE);
+	m_pChinaMarketStock->AddSubItem(m_pPropStockOrdinaryBuy);
 	m_pPropStockAttackBuy = new CMFCPropertyGridProperty(_T("Attack Buy:"), _T("0.00"));
 	m_pPropStockAttackBuy->Enable(FALSE);
 	m_pChinaMarketStock->AddSubItem(m_pPropStockAttackBuy);
@@ -102,6 +105,9 @@ void CPropertyRealtimeWnd::InitPropList() {
 	m_pPropStockCancelBuy->Enable(FALSE);
 	m_pChinaMarketStock->AddSubItem(m_pPropStockCancelBuy);
 
+	m_pPropStockOrdinarySell = new CMFCPropertyGridProperty(_T("Ordinary Sell:"), _T("0.00"));
+	m_pPropStockOrdinarySell->Enable(FALSE);
+	m_pChinaMarketStock->AddSubItem(m_pPropStockOrdinarySell);
 	m_pPropStockAttackSell = new CMFCPropertyGridProperty(_T("Attack Sell:"), _T("0.00"));
 	m_pPropStockAttackSell->Enable(FALSE);
 	m_pChinaMarketStock->AddSubItem(m_pPropStockAttackSell);
@@ -157,6 +163,13 @@ void CPropertyRealtimeWnd::OnTimer(UINT_PTR nIDEvent) {
 			sprintf_s(buffer, 100, "%lld", volume);
 			CString str = buffer;
 			m_pPropVolume->SetValue(str);
+			sprintf_s(buffer, 100, "0.%02lld", pStock->GetOrdinaryBuyVolume() * 100 / volume);
+			str = buffer;
+			m_pPropStockOrdinaryBuy->SetValue(str);
+			sprintf_s(buffer, 100, _T("0.%02lld"), pStock->GetOrdinarySellVolume() * 100 / volume);
+			str = buffer;
+			m_pPropStockOrdinarySell->SetValue(str);
+
 			sprintf_s(buffer, 100, "0.%02lld", pStock->GetAttackBuyVolume() * 100 / volume);
 			str = buffer;
 			m_pPropStockAttackBuy->SetValue(str);

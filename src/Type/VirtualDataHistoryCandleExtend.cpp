@@ -177,41 +177,6 @@ void CVirtualDataHistoryCandleExtend::UpdateData(const vector<CDayLinePtr>& vTem
 	SetDataLoaded(true);
 }
 
-void CVirtualDataHistoryCandleExtend::ShowData(CDC* pDC, CRect rectClient) {
-	constexpr COLORREF crBlue(RGB(0, 0, 255)), crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)),
-	                   crRed(RGB(255, 0, 0));
-	CPen penGreen1(PS_SOLID, 1, crGreen), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
-	long lHigh = 0;
-	auto it = m_vHistoryData.end();
-	--it;
-	int i = 0;
-	long lLow = (*it)->GetLow();
-	for (; it != m_vHistoryData.begin(); --it) {
-		if (lHigh < (*it)->GetHigh()) lHigh = (*it)->GetHigh();
-		if ((*it)->GetLow() > 0) { if (lLow > (*it)->GetLow()) lLow = (*it)->GetLow(); }
-		if (3 * i > m_vHistoryData.size()) break;
-		if (rectClient.right <= 3 * i) break; // »­µ½
-		i++;
-	}
-
-	it = m_vHistoryData.end();
-	--it;
-	i = 0;
-	pDC->SelectObject(&penRed1);
-	for (; it != m_vHistoryData.begin(); --it) {
-		const long x = rectClient.right - 2 - i * 3;
-		int y = (0.5 - static_cast<double>((*it)->GetHigh() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
-		pDC->MoveTo(x, y);
-		if ((*it)->GetHigh() == (*it)->GetLow()) { y = y - 1; }
-		else { y = (0.5 - static_cast<double>((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height(); }
-		pDC->LineTo(x, y);
-		long lDate = (*it)->GetMarketDate();
-		i++;
-		if (3 * i > m_vHistoryData.size()) break;
-		if (rectClient.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
-	}
-}
-
 bool CVirtualDataHistoryCandleExtend::GetStartEndDate(long& lStartDate, long& lEndDate) const {
 	if (m_vHistoryData.empty()) return false;
 
