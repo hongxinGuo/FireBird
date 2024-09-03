@@ -15,7 +15,6 @@ enum {
 	NO_TRANSACTION_ = 8
 };
 
-#include "accessory.h"
 #include"RSReference.h"
 
 #include"VirtualStock.h"
