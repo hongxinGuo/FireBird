@@ -5,6 +5,7 @@
 #include"WorldMarket.h"
 
 #include"MockFinnhubDataSource.h"
+#include "ProductFinnhubCompanyProfileConcise.h"
 
 #include"ProductTiingoStockSymbol.h"
 
@@ -27,18 +28,47 @@ namespace FireBirdTest {
 		void SetUp() override {
 			SCOPED_TRACE("");
 			GeneralCheck();
+			pProduct = make_shared<CProductFinnhubCompanyProfileConcise>();
+			pProduct->SetReceivedDataStatus(0);
+			pProduct->SetInquiringExchange(_T("US")); // 交易所为US,防止添加禁用交易所。
+			m_FinnhubDataSource.SetCurrentInquiry(pProduct);
 		}
 
 		void TearDown() override {
 			// clearUp
+			pProduct = nullptr;
 
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 
 	protected:
+		CFinnhubCompanyProfileConcisePtr pProduct{ nullptr };
 		CFinnhubDataSource m_FinnhubDataSource;
 	};
+
+	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData1) {
+		CWebDataPtr pwd = make_shared<CWebData>();
+		pwd->Test_SetBuffer_(_T("{\"error\":\"You don't have access to this resource.\"}"));
+
+		EXPECT_EQ(ERROR_FINNHUB_NO_RIGHT_TO_ACCESS__, m_FinnhubDataSource.IsAErrorMessageData(pwd));
+		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
+		EXPECT_TRUE(pProduct->IsNoRightToAccess());
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData2) {
+		CWebDataPtr pwd = make_shared<CWebData>();
+		pwd->Test_SetBuffer_(_T("{\"error\":\"Please use an API key.\"}"));
+
+		EXPECT_EQ(ERROR_FINNHUB_MISSING_API_KEY__, m_FinnhubDataSource.IsAErrorMessageData(pwd));
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData4) {
+		CWebDataPtr pwd = make_shared<CWebData>();
+		pwd->Test_SetBuffer_(_T("{\"no error\":\"Please use an API key.\"}"));
+
+		EXPECT_EQ(ERROR_NO_ERROR__, m_FinnhubDataSource.IsAErrorMessageData(pwd)) << "非错误信息，正常返回";
+	}
 
 	TEST_F(CFinnhubDataSourceTest, TestIsUpdateCountryList) {
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateCountryList());

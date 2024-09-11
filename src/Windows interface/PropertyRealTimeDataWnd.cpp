@@ -89,6 +89,9 @@ void CPropertyRealtimeWnd::InitPropList() {
 
 	m_pChinaMarketStock = new CMFCPropertyGridProperty(_T(""));
 
+	m_pPropNew = new CMFCPropertyGridProperty(_T("Current Price:"), _T("0.00"));
+	m_pPropNew->Enable(FALSE);
+	m_pChinaMarketStock->AddSubItem(m_pPropNew);
 	m_pPropVolume = new CMFCPropertyGridProperty(_T("Volume:"), _T("0.00"));
 	m_pPropVolume->Enable(FALSE);
 	m_pChinaMarketStock->AddSubItem(m_pPropVolume);
@@ -159,9 +162,12 @@ void CPropertyRealtimeWnd::OnTimer(UINT_PTR nIDEvent) {
 		m_pChinaMarketStock->SetName(symbol);
 		if (pStock->GetVolume() > 0) {
 			char buffer[100];
+			sprintf_s(buffer, 100, "%ld", pStock->GetNew());
+			CString str = buffer;
+			m_pPropNew->SetValue(str);
 			INT64 volume = pStock->GetVolume();
 			sprintf_s(buffer, 100, "%lld", volume);
-			CString str = buffer;
+			str = buffer;
 			m_pPropVolume->SetValue(str);
 			sprintf_s(buffer, 100, "0.%02lld", pStock->GetOrdinaryBuyVolume() * 100 / volume);
 			str = buffer;

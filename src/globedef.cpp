@@ -34,11 +34,12 @@
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
-HANDLE gl_hFireBirdMutex{nullptr};
+HANDLE gl_hFireBirdMutex{ nullptr };
 
 shared_ptr<spdlog::logger> gl_dailyLogger = nullptr;
 shared_ptr<spdlog::logger> gl_traceLogger; // ¸ú×ÙÈÕÖ¾£¬ÓÃÓÚÏµÍ³µ÷ÊÔ
 shared_ptr<spdlog::logger> gl_dailyWebSocketLogger = nullptr;
+shared_ptr<spdlog::logger> gl_SoftwareDevelopingLogger = nullptr;
 
 // ÒÔÏÂ±äÁ¿½ÔÎªÎ¨Ò»ÊµÀı
 CSystemConfiguration gl_systemConfiguration; // ÏµÍ³ÅäÖÃ²ÎÊıµÄ×Ü»ã.´ËÈ«¾Ö±äÁ¿ÒªÎ»ÓÚËùÓĞÈ«¾Ö±äÁ¿µÄ×îÇ°Ãæ£¬ÒÔ±£Ö¤µÚÒ»¸ö³õÊ¼»¯¡£
@@ -52,10 +53,10 @@ CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub½ûÖ¹·ÃÎÊ½
 time_t gl_tUTCTime = 0; // ËùÓĞµÄÊĞ³¡Ê¹ÓÃÍ¬Ò»¸öĞ­µ÷ÊÀ½çÊ±£¨Coordinated Universal Time£©
 
 // ÎªÁËÊÂÏÈ³õÊ¼»¯£¬ĞÅºÅÁ¿±ØĞëÉùÃ÷ÎªÈ«¾Ö±äÁ¿
-binary_semaphore gl_UpdateChinaMarketDB{1}; // ÓÃÓÚ¸üĞÂChinaMarketÊı¾İ¿â¡£todo ÓÉÓÚ¶ÔMySQLÊı¾İ¿â²»Ì«ÁË½â£¬Å¼¶û»á³öÏÖ´æ´¢ÎÊÌâ£¬ÎÒ¹À¼ÆÓëÍ¬²½ÓĞ¹Ø£¬¹Ê¶øÉèÖÃ»¥³â±äÁ¿
-binary_semaphore gl_UpdateWorldMarketDB{1}; // ÓÃÓÚ¸üĞÂWorldMarketÊı¾İ¿â¡£todo ÓÉÓÚ¶ÔMySQLÊı¾İ¿â²»Ì«ÁË½â£¬Å¼¶û»á³öÏÖ´æ´¢ÎÊÌâ£¬ÎÒ¹À¼ÆÓëÍ¬²½ÓĞ¹Ø£¬¹Ê¶øÉèÖÃ»¥³â±äÁ¿
-binary_semaphore gl_ProcessChinaMarketRTData{1}; // µ±´¦ÀíÖĞ¹úÊĞ³¡µÄÊµÊ±Êı¾İÊ±£¬²»ÔÊĞíÍ¬Ê±´æ´¢Ö®¡£
-counting_semaphore<8> gl_BackgroundWorkingThread{8}; // ×î¶àºóÌ¨¹¤×÷Ïß³ÌÔÊĞíÊıÁ¿
+binary_semaphore gl_UpdateChinaMarketDB{ 1 }; // ÓÃÓÚ¸üĞÂChinaMarketÊı¾İ¿â¡£todo ÓÉÓÚ¶ÔMySQLÊı¾İ¿â²»Ì«ÁË½â£¬Å¼¶û»á³öÏÖ´æ´¢ÎÊÌâ£¬ÎÒ¹À¼ÆÓëÍ¬²½ÓĞ¹Ø£¬¹Ê¶øÉèÖÃ»¥³â±äÁ¿
+binary_semaphore gl_UpdateWorldMarketDB{ 1 }; // ÓÃÓÚ¸üĞÂWorldMarketÊı¾İ¿â¡£todo ÓÉÓÚ¶ÔMySQLÊı¾İ¿â²»Ì«ÁË½â£¬Å¼¶û»á³öÏÖ´æ´¢ÎÊÌâ£¬ÎÒ¹À¼ÆÓëÍ¬²½ÓĞ¹Ø£¬¹Ê¶øÉèÖÃ»¥³â±äÁ¿
+binary_semaphore gl_ProcessChinaMarketRTData{ 1 }; // µ±´¦ÀíÖĞ¹úÊĞ³¡µÄÊµÊ±Êı¾İÊ±£¬²»ÔÊĞíÍ¬Ê±´æ´¢Ö®¡£
+counting_semaphore<8> gl_BackgroundWorkingThread{ 8 }; // ×î¶àºóÌ¨¹¤×÷Ïß³ÌÔÊĞíÊıÁ¿
 
 concurrencpp::runtime gl_runtime; // ¹¤×÷Ïß³ÌÔËĞĞµ÷¶ÈÆ÷
 int gl_concurrency_level = 4; // ²¢ĞĞ¼ÆËãÔÊĞí×î´óÊıÁ¿¡£Ä¬ÈÏÎªËÄ¸öĞ­³Ì

@@ -133,7 +133,7 @@ CSystemConfiguration::CSystemConfiguration() {
 	m_strFinnhubToken = "bv985d748v6ujthqfke0"; // Finnhub token
 	m_strTiingoToken = "c897a00b7cfc2adffc630d23befd5316a4683156"; // Tiingo token
 	m_strQuandlToken = _T(""); // Quandl token
-	m_iWorldMarketFinnhubInquiryTime = 1100; // 默认每小时最多查询3300次
+	m_iWorldMarketFinnhubInquiryTime = 60000 / 50; // 默认每分钟最多查询50次
 	m_iWorldMarketTiingoInquiryTime = 3600000 / 500; // 默认每小时最多查询500次。 默认免费账户的查询频率为每小时500次(每次7200毫秒）；付费账户为每小时20000次（每次180毫秒）
 	m_iWorldMarketQuandlInquiryTime = 3600000 / 100; // 默认每小时最多查询100次
 	m_bFinnhubAccountFeePaid = true; // 默认为付费账户，由程序决定是否改为免费账户（自己改也可以）

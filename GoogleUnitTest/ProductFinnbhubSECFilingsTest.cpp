@@ -52,9 +52,9 @@ namespace FireBirdTest {
 	}
 
 	// 不足三个字符
-	Test_FinnhubWebData SECFilings102(2, _T("AAPL"), _T("{}"));
+	Test_FinnhubWebData SECFilings102(3, _T("AAPL"), _T("{}"));
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData SECFilings103(3, _T("AAPL"), _T("{\"accessNumber\":\"0000320193-24-000056\",\"symbol\":\"AAPL\",\"cik\":\"320193\",\"form\":\"4\",\"filedDate\":\"2024-04-15 00:00:00\",\"acceptedDate\":\"2024-04-15 18:31:11\",\"reportUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml\",\"filingUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html\"}]"));
+	Test_FinnhubWebData SECFilings103(4, _T("AAPL"), _T("{\"accessNumber\":\"0000320193-24-000056\",\"symbol\":\"AAPL\",\"cik\":\"320193\",\"form\":\"4\",\"filedDate\":\"2024-04-15 00:00:00\",\"acceptedDate\":\"2024-04-15 18:31:11\",\"reportUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml\",\"filingUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html\"}]"));
 	// 正确的数据
 	Test_FinnhubWebData SECFilings110(10, _T("AAPL"), _T("[{\"accessNumber\":\"0000320193-24-000056\",\"symbol\":\"AAPL\",\"cik\":\"320193\",\"form\":\"4\",\"filedDate\":\"2024-04-15 00:00:00\",\"acceptedDate\":\"2024-04-15 18:31:11\",\"reportUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml\",\"filingUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html\"}]"));
 
@@ -77,14 +77,14 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex{0};
+		long m_lIndex{ 0 };
 		CSECFilingsPtr pvSECFilings;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubSECFilings m_finnhubSECFilings;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubSECFilings1, ParseFinnhubSECFilingsTest,
-	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &SECFilings102, &SECFilings103, &SECFilings110));
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData2, &SECFilings102, &SECFilings103, &SECFilings110));
 
 	TEST_P(ParseFinnhubSECFilingsTest, TestParseFinnhubSECFilings2) {
 		pvSECFilings = m_finnhubSECFilings.ParseFinnhubStockSECFilings(m_pWebData);
@@ -95,17 +95,14 @@ namespace FireBirdTest {
 		case 1: // 无权利访问的数据
 			EXPECT_TRUE(pvSECFilings->empty());
 			break;
-		case 2: // 不足三个字符
+		case 2: // 空数据
 			EXPECT_TRUE(pvSECFilings->empty());
 			break;
-		case 3: // 格式不对
-			EXPECT_TRUE(pvSECFilings->empty()) << "没有改变";
+		case 3: // 不足三个字符
+			EXPECT_TRUE(pvSECFilings->empty());
 			break;
-		case 4: // 第二个数据缺Code2
+		case 4: // 格式不对
 			EXPECT_TRUE(pvSECFilings->empty()) << "没有改变";
-			break;
-		case 5: // 正确的数据，但超过2000个字符
-			EXPECT_FALSE(pvSECFilings->empty()) << "多余2000个字符时截断";
 			break;
 		case 10:
 			EXPECT_EQ(pvSECFilings->size(), 1);
@@ -147,13 +144,13 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex{0};
+		long m_lIndex{ 0 };
 		CWebDataPtr m_pWebData;
 		CProductFinnhubSECFilings m_finnhubSECFilings;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubSECFilings, ProcessFinnhubSECFilingsTest,
-	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &SECFilings102, &SECFilings103,&SECFilings110));
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData2, &SECFilings102, &SECFilings103,&SECFilings110));
 
 	TEST_P(ProcessFinnhubSECFilingsTest, TestProcessFinnhubSECFilings1) {
 		string s;
@@ -173,24 +170,20 @@ namespace FireBirdTest {
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
 			break;
-		case 2: // 不足三个字符
+		case 2: // 空数据
 			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
 			break;
-		case 3: // 格式不对
-			EXPECT_TRUE(pStock->m_pvSECFilings->empty()) << "没有改变";
+		case 3: // 不足三个字符
+			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
 			break;
-		case 4: // 第二个数据缺Code2
+		case 4: // 格式不对
 			EXPECT_TRUE(pStock->m_pvSECFilings->empty()) << "没有改变";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
-			break;
-		case 5: // 正确的数据，但超过200个字符
-			EXPECT_FALSE(pStock->m_pvSECFilings->empty()) << "多余2000个字符时截断";
-			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 10:
 			EXPECT_FALSE(pStock->m_pvSECFilings->empty());

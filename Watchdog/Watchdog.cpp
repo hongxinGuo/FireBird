@@ -52,9 +52,30 @@ CWatchdogApp::CWatchdogApp() noexcept {
 
 CWatchdogApp theApp;
 
+HANDLE gl_hMutex = nullptr;
+
+bool IsFireBirdWatchdogAlreadyRunning(const CString& strProgramToken) {
+	gl_hMutex = ::CreateMutex(nullptr, false, strProgramToken); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
+	bool bAlreadyRunning = false;
+	if (gl_hMutex) {
+		if (ERROR_ALREADY_EXISTS == ::GetLastError()) {
+			bAlreadyRunning = true;
+		}
+	}
+	return bAlreadyRunning;
+}
+
 // CWatchdogApp initialization
 
 BOOL CWatchdogApp::InitInstance() {
+	if (IsFireBirdWatchdogAlreadyRunning(_T("FireBirdWatchdog"))) {
+		MessageBox(nullptr,
+		           "Only one instance can run!",
+		           "FireBird Watchdog Warning:",
+		           MB_OK | MB_ICONEXCLAMATION);
+		return false;
+	}
+
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
 	// visual styles.  Otherwise, any window creation will fail.
@@ -126,6 +147,8 @@ BOOL CWatchdogApp::InitInstance() {
 
 int CWatchdogApp::ExitInstance() {
 	AfxOleTerm(FALSE);
+
+	if (gl_hMutex != nullptr) ::CloseHandle(gl_hMutex);
 
 	return CWinAppEx::ExitInstance();
 }

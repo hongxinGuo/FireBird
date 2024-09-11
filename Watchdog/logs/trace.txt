@@ -1,0 +1,22 @@
+[2024-09-11 08:41:00.075] [basic_trace_logger] [info] ****************** Backtrace Start ******************
+[2024-09-11 08:40:53.098] [basic_trace_logger] [trace] 世界市场系统初始化检查 ms 0ms
+[2024-09-11 08:40:53.098] [basic_trace_logger] [trace] 中国市场系统初始化检查 ms 0ms
+[2024-09-11 08:40:53.206] [basic_trace_logger] [trace] 世界市场处理WebSocket数据 ms 0ms
+[2024-09-11 08:40:53.206] [basic_trace_logger] [trace] 中国市场分配并处理实时数据 ms 0ms
+[2024-09-11 08:40:54.079] [basic_trace_logger] [trace] 世界市场系统初始化检查 ms 0ms
+[2024-09-11 08:40:54.079] [basic_trace_logger] [trace] 中国市场系统初始化检查 ms 0ms
+[2024-09-11 08:40:54.190] [basic_trace_logger] [trace] 世界市场处理WebSocket数据 ms 0ms
+[2024-09-11 08:40:54.190] [basic_trace_logger] [trace] 中国市场分配并处理实时数据 ms 0ms
+[2024-09-11 08:40:55.073] [basic_trace_logger] [trace] 世界市场系统初始化检查 ms 0ms
+[2024-09-11 08:40:55.073] [basic_trace_logger] [trace] 中国市场系统初始化检查 ms 0ms
+[2024-09-11 08:40:55.182] [basic_trace_logger] [trace] 世界市场处理WebSocket数据 ms 0ms
+[2024-09-11 08:40:55.182] [basic_trace_logger] [trace] 中国市场分配并处理实时数据 ms 0ms
+[2024-09-11 08:40:56.061] [basic_trace_logger] [trace] 世界市场系统初始化检查 ms 0ms
+[2024-09-11 08:40:56.061] [basic_trace_logger] [trace] 中国市场系统初始化检查 ms 0ms
+[2024-09-11 08:40:56.173] [basic_trace_logger] [trace] 世界市场处理WebSocket数据 ms 0ms
+[2024-09-11 08:40:56.173] [basic_trace_logger] [trace] 中国市场分配并处理实时数据 ms 0ms
+[2024-09-11 08:40:57.060] [basic_trace_logger] [trace] 世界市场系统初始化检查 ms 0ms
+[2024-09-11 08:40:57.061] [basic_trace_logger] [trace] 中国市场系统初始化检查 ms 0ms
+[2024-09-11 08:40:57.171] [basic_trace_logger] [trace] 世界市场处理WebSocket数据 ms 0ms
+[2024-09-11 08:40:57.171] [basic_trace_logger] [trace] 中国市场分配并处理实时数据 ms 0ms
+[2024-09-11 08:41:00.075] [basic_trace_logger] [info] ****************** Backtrace End ********************

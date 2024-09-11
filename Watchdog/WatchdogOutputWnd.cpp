@@ -75,14 +75,11 @@ int CWatchdogOutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	CString strTabName;
 
 	// Attach list windows to tab:
-	BOOL bNameValid = strTabName.LoadString(IDS_BUILD_TAB);
-	ASSERT(bNameValid);
+	ASSERT(strTabName.LoadString(IDS_BUILD_TAB));
 	m_wndTabs.AddTab(&m_wndOutputBuild, strTabName, (UINT)0);
-	bNameValid = strTabName.LoadString(IDS_DEBUG_TAB);
-	ASSERT(bNameValid);
+	ASSERT(strTabName.LoadString(IDS_DEBUG_TAB));
 	m_wndTabs.AddTab(&m_wndOutputDebug, strTabName, (UINT)1);
-	bNameValid = strTabName.LoadString(IDS_FIND_TAB);
-	ASSERT(bNameValid);
+	ASSERT(strTabName.LoadString(IDS_FIND_TAB));
 	m_wndTabs.AddTab(&m_wndOutputFind, strTabName, (UINT)2);
 
 	// Fill output tabs with some dummy text (nothing magic here)

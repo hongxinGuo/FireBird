@@ -32,10 +32,9 @@ bool CVirtualWebProduct::IsVoidJson(const CWebDataPtr& pWebData) {
 // 如果是美国交易所不允许的话，需要连续10次不允许后才将美国交易所添加进禁入名单。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CVirtualWebProduct::CheckInaccessible(const CWebDataPtr& pWebData) {
+bool CVirtualWebProduct::CheckInaccessible() {
 	static int s_iCounter = 0; // 当交易所为美国时，使用此计数器来判断是否将美国交易所添加进限制名单
 
-	CheckAccessRight(pWebData);
 	if (!IsNoRightToAccess()) {
 		s_iCounter = 0;
 		return false;

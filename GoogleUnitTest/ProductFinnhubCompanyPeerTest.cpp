@@ -52,13 +52,13 @@ namespace FireBirdTest {
 	}
 
 	// 不足三个字符
-	Test_FinnhubWebData finnhubWebData102(2, _T("AAPL"), _T("{}"));
+	Test_FinnhubWebData finnhubWebData102(3, _T("AAPL"), _T("{}"));
 	// 格式不对(缺开始的‘[’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData103(3, _T("AAPL"), _T("\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+	Test_FinnhubWebData finnhubWebData103(4, _T("AAPL"), _T("\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
 	// 格式不对
-	Test_FinnhubWebData finnhubWebData104(4, _T("AAPL"), _T("[\"AAPL,\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+	Test_FinnhubWebData finnhubWebData104(5, _T("AAPL"), _T("[\"AAPL,\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
 	// 正确的数据,但超过200个字符
-	Test_FinnhubWebData finnhubWebData105(5, _T("AAPL"), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"]"));
+	Test_FinnhubWebData finnhubWebData105(6, _T("AAPL"), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"]"));
 	// 正确的数据
 	Test_FinnhubWebData finnhubWebData110(10, _T("AAPL"), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
 
@@ -83,14 +83,14 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex{0};
+		long m_lIndex{ 0 };
 		json m_jsonPeer;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCompanyPeer m_finnhubCompanyPeer;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubStockPeer1, ParseFinnhubStockPeerTest,
-	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
+	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData2, &finnhubWebData102, &finnhubWebData103, &finnhubWebData104, &finnhubWebData105,
 		                         &finnhubWebData110));
 
 	TEST_P(ParseFinnhubStockPeerTest, TestParseFinnhubStockPeer2) {
@@ -102,16 +102,19 @@ namespace FireBirdTest {
 		case 1: // 无权利访问的数据
 			EXPECT_TRUE(m_jsonPeer.empty());
 			break;
-		case 2: // 不足三个字符
+		case 2: // 空数据
 			EXPECT_TRUE(m_jsonPeer.empty());
 			break;
-		case 3: // 格式不对
+		case 3: // 不足三个字符
+			EXPECT_TRUE(m_jsonPeer.empty());
+			break;
+		case 4: // 格式不对
 			EXPECT_TRUE(m_jsonPeer.empty()) << "没有改变";
 			break;
-		case 4: // 第二个数据缺Code2
+		case 5: // 第二个数据缺Code2
 			EXPECT_TRUE(m_jsonPeer.empty()) << "没有改变";
 			break;
-		case 5: // 正确的数据，但超过2000个字符
+		case 6: // 正确的数据，但超过2000个字符
 			EXPECT_FALSE(m_jsonPeer.empty()) << "多余2000个字符时截断";
 			break;
 		case 10:
@@ -144,7 +147,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		long m_lIndex{0};
+		long m_lIndex{ 0 };
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCompanyPeer m_finnhubCompanyPeer;
 	};
@@ -172,25 +175,25 @@ namespace FireBirdTest {
 			EXPECT_FALSE(pStock->IsUpdatePeer());
 			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
 			break;
-		case 2: // 不足三个字符
+		case 3: // 不足三个字符
 			EXPECT_TRUE(pStock->GetPeer().empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
 			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
 			break;
-		case 3: // 格式不对
+		case 4: // 格式不对
 			EXPECT_TRUE(pStock->GetPeer().empty()) << "没有改变";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
 			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
 			break;
-		case 4: // 第二个数据缺Code2
+		case 5: // 第二个数据缺Code2
 			EXPECT_TRUE(pStock->GetPeer().empty()) << "没有改变";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
 			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";
 			break;
-		case 5: // 正确的数据，但超过200个字符
+		case 6: // 正确的数据，但超过200个字符
 			EXPECT_FALSE(pStock->GetPeer().empty()) << "多余2000个字符时截断";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;

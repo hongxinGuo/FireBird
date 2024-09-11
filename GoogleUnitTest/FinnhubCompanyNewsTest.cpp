@@ -51,7 +51,8 @@ namespace FireBirdTest {
 		companyNews.SetIndex(1);
 		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(1);
 		CString strMessage = companyNews.GetInquiryFunction() + pStock->GetSymbol();
-		const int iUpdateDate = pStock->GetCompanyNewsUpdateDate();
+		int iMarketData360 = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360);
+		const int iUpdateDate = pStock->GetCompanyNewsUpdateDate() > iMarketData360 ? pStock->GetCompanyNewsUpdateDate() : iMarketData360;
 		XferDateToYearMonthDay(iUpdateDate, year, month, day);
 		sprintf_s(buffer, _T("%4d-%02d-%02d"), year, month, day);
 		CString strTemp = buffer;

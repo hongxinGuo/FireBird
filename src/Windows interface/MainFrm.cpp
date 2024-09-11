@@ -164,12 +164,18 @@ void CMainFrame::Reset() {
 }
 
 CMainFrame::~CMainFrame() {
+	//if (m_hOutputBarIcon != nullptr) ::CloseHandle(m_hOutputBarIcon);
+	//if (m_hPropertiesBarIcon != nullptr) ::CloseHandle(m_hPropertiesBarIcon);
+
 	if (!gl_systemConfiguration.IsWorkingMode())
 		TRACE("使用了Test驱动\n");
 
 	gl_systemConfiguration.SetExitingSystem(true);
 
-	if (gl_hFireBirdMutex != nullptr) ::CloseHandle(gl_hFireBirdMutex); //Note 采用显式关闭。偶尔程序出现无法再次启动的现象（Mutex未关闭）。
+	if (gl_hFireBirdMutex != nullptr) {
+		::CloseHandle(gl_hFireBirdMutex); //Note 采用显式关闭。偶尔程序出现无法再次启动的现象（Mutex未关闭）。
+		gl_hFireBirdMutex = nullptr;
+	}
 
 	time_t tt, tt2;
 	time(&tt); // Note 系统退出时避免调用GetUTCTime(),因为调度函数可能已经不再执行了

@@ -33,6 +33,7 @@ extern map<int, string> gl_stringList;
 extern shared_ptr<spdlog::logger> gl_dailyLogger;
 extern shared_ptr<spdlog::logger> gl_traceLogger; // 每日跟踪日志，用于系统调试
 extern shared_ptr<spdlog::logger> gl_dailyWebSocketLogger;
+extern shared_ptr<spdlog::logger> gl_SoftwareDevelopingLogger;
 
 extern time_t gl_tUTCTime; // 所有的市场使用同一个协调世界时（Coordinated Universal Time）
 inline time_t GetUTCTime() noexcept { return gl_tUTCTime; }

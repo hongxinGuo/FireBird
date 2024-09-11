@@ -14,7 +14,6 @@ CSinaRTDataSource::CSinaRTDataSource() {
 	// User-Agent部分只用于说明格式,即报头皆以\r\n（CRLF)结束
 	//m_strHeaders = _T("User-Agent:FireBird\r\nReferer:https://finance.sina.com.cn\r\n");
 	m_strHeaders = _T("Referer:https://finance.sina.com.cn\r\n");
-
 	m_strInquiryFunction = _T("https://hq.sinajs.cn/list="); // 新浪实时数据服务器已使用https格式
 	m_strInquiryToken = _T("");
 	m_lInquiringNumber = 850; // 新浪实时数据查询数量默认值
@@ -59,6 +58,32 @@ bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 void CSinaRTDataSource::GenerateCurrentInquiryMessage() {
 	ASSERT(m_pCurrentProduct != nullptr);
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// 当申请新浪数据时未添加报头验证数据（格式为： Referer:https://finance.sina.com.cn），系统返回数据为："Forbidden"。
+///
+///
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+enum_ErrorMessageData CSinaRTDataSource::IsAErrorMessageData(const CWebDataPtr& pWebData) {
+	m_eErrorMessageData = ERROR_NO_ERROR__;
+	if (pWebData->GetBufferLength() == 9) { // 是字符串"Forbidden"？
+		const string_view s = pWebData->GetStringView(0, 9);
+		if (s == _T("Forbidden")) {
+			m_eErrorMessageData = ERROR_SINA_HEADER_NEEDED__;
+		}
+	}
+	switch (m_eErrorMessageData) {
+	case ERROR_SINA_HEADER_NEEDED__:
+		break;
+	case ERROR_NO_ERROR__:
+		break;
+	default:
+		ASSERT(0);
+		break;
+	}
+	return m_eErrorMessageData;;
 }
 
 /// <summary>

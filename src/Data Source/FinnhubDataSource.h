@@ -27,7 +27,7 @@ public:
 	bool GenerateInquiryMessage(long lCurrentTime) override;
 
 	void ConfigureInternetOption() override;
-	void CheckInaccessible(const CWebDataPtr& pWebData) const override;
+	enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr& pWebData) override;
 
 	void Inquire(long lCurrentTime);
 
@@ -97,50 +97,50 @@ public:
 	void SetUpdateSECFilings(const bool fFlag) noexcept { m_fUpdateSECFilings = fFlag; }
 
 protected:
-	long m_lCurrentUpdateDayLinePos{0}; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
-	long m_lCurrentUpdateEPSSurprisePos{0}; // 此变量无需每日更新
-	long m_lCurrentUpdateSECFilingsPos{0};
+	long m_lCurrentUpdateDayLinePos{ 0 }; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
+	long m_lCurrentUpdateEPSSurprisePos{ 0 }; // 此变量无需每日更新
+	long m_lCurrentUpdateSECFilingsPos{ 0 };
 
-	bool m_fUpdateSymbol{true}; // 每日更新公司代码库
-	bool m_fUpdateMarketStatus{true}; // 每日查询市场状态
-	bool m_fUpdateMarketHoliday{true}; // 每日查询市场假日
-	bool m_fUpdateForexExchange{true}; // 每日更新Forex交易所
-	bool m_fUpdateForexSymbol{true}; // 每日更新Forex交易所代码
-	bool m_fUpdateCryptoExchange{true}; // 每日更新Crypto交易所
-	bool m_fUpdateCryptoSymbol{true}; // 每日更新Crypto交易所代码
-	bool m_fUpdateCountryList{true};
-	bool m_fUpdateStockProfile{true}; // 每日更新公司简介
-	bool m_fUpdateCompanyNews{true}; // 每日更新公司新闻
-	bool m_fUpdateCompanyPriceMetrics{true};
-	bool m_fUpdateStockBasicFinancial{true}; // 每日更新公司日线
-	bool m_fUpdateStockDayLine{true}; // 每日更新公司日线数据
-	bool m_fUpdateForexDayLine{true}; // 每日更新Forex日线数据
-	bool m_fUpdateCryptoDayLine{true}; // 每日更新Crypto日线数据
-	bool m_fUpdatePeer{true}; // 每90天更新Peers数据
-	bool m_fUpdateInsiderTransaction{true}; // 每30天更新InsiderTransaction数据
-	bool m_fUpdateInsiderSentiment{true}; // 每30天更新InsiderSentiment数据
-	bool m_fUpdateEconomicCalendar{true}; // 每日更新经济日历数据
-	bool m_fUpdateEPSSurprise{true};
-	bool m_fUpdateSECFilings{true};
+	bool m_fUpdateSymbol{ true }; // 每日更新公司代码库
+	bool m_fUpdateMarketStatus{ true }; // 每日查询市场状态
+	bool m_fUpdateMarketHoliday{ true }; // 每日查询市场假日
+	bool m_fUpdateForexExchange{ true }; // 每日更新Forex交易所
+	bool m_fUpdateForexSymbol{ true }; // 每日更新Forex交易所代码
+	bool m_fUpdateCryptoExchange{ true }; // 每日更新Crypto交易所
+	bool m_fUpdateCryptoSymbol{ true }; // 每日更新Crypto交易所代码
+	bool m_fUpdateCountryList{ true };
+	bool m_fUpdateStockProfile{ true }; // 每日更新公司简介
+	bool m_fUpdateCompanyNews{ true }; // 每日更新公司新闻
+	bool m_fUpdateCompanyPriceMetrics{ true };
+	bool m_fUpdateStockBasicFinancial{ true }; // 每日更新公司日线
+	bool m_fUpdateStockDayLine{ true }; // 每日更新公司日线数据
+	bool m_fUpdateForexDayLine{ true }; // 每日更新Forex日线数据
+	bool m_fUpdateCryptoDayLine{ true }; // 每日更新Crypto日线数据
+	bool m_fUpdatePeer{ true }; // 每90天更新Peers数据
+	bool m_fUpdateInsiderTransaction{ true }; // 每30天更新InsiderTransaction数据
+	bool m_fUpdateInsiderSentiment{ true }; // 每30天更新InsiderSentiment数据
+	bool m_fUpdateEconomicCalendar{ true }; // 每日更新经济日历数据
+	bool m_fUpdateEPSSurprise{ true };
+	bool m_fUpdateSECFilings{ true };
 
 	CFinnhubFactory m_FinnhubFactory;
 
 private:
-	bool m_fFinnhubDataInquiryFinished{false};
-	bool m_fInquiringFinnhubStockSymbol = {false};
-	bool m_fInquiringFinnhubMarketStatus = {false};
-	bool m_fInquiringFinnhubMarketHoliday = {false};
-	bool m_fInquiringFinnhubStockProfile = {false};
-	bool m_fInquiringFinnhubCompanyNews = {false};
-	bool m_fInquiringFinnhubCompanyBasicFinancial = {false};
-	bool m_fInquiringFinnhubStockDayLine = {false};
-	bool m_fInquiringFinnhubStockInsiderTransaction = {false};
-	bool m_fInquiringFinnhubStockInsiderSentiment = {false};
-	bool m_fInquiringFinnhubStockPeer = {false};
-	bool m_fInquiringFinnhubStockEPSSurprise = {false};
-	bool m_fInquiringFinnhubStockSECFilings = {false};
-	bool m_fInquiringFinnhubForexDayLine = {false};
-	bool m_fInquiringFinnhubCryptoDayLine = {false};
+	bool m_fFinnhubDataInquiryFinished{ false };
+	bool m_fInquiringFinnhubStockSymbol = { false };
+	bool m_fInquiringFinnhubMarketStatus = { false };
+	bool m_fInquiringFinnhubMarketHoliday = { false };
+	bool m_fInquiringFinnhubStockProfile = { false };
+	bool m_fInquiringFinnhubCompanyNews = { false };
+	bool m_fInquiringFinnhubCompanyBasicFinancial = { false };
+	bool m_fInquiringFinnhubStockDayLine = { false };
+	bool m_fInquiringFinnhubStockInsiderTransaction = { false };
+	bool m_fInquiringFinnhubStockInsiderSentiment = { false };
+	bool m_fInquiringFinnhubStockPeer = { false };
+	bool m_fInquiringFinnhubStockEPSSurprise = { false };
+	bool m_fInquiringFinnhubStockSECFilings = { false };
+	bool m_fInquiringFinnhubForexDayLine = { false };
+	bool m_fInquiringFinnhubCryptoDayLine = { false };
 
 	long m_lCurrentRTDataQuotePos;
 	long m_lCurrentForexExchangePos;

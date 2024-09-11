@@ -17,6 +17,8 @@ public:
 
 	void ConfigureInternetOption() override; // 在读取网络数据前的准备工作，默认为设置Sina RT的m_pSession状态。
 	void GenerateCurrentInquiryMessage() override;
+
+	enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr& pWebData) override;
 };
 
 using CSinaRTDataSourcePtr = shared_ptr<CSinaRTDataSource>;

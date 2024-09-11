@@ -399,6 +399,9 @@
     <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">
       <Project>{f77641f7-1df8-4461-9338-a8e502e570dc}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">
+      <Project>{b467f394-de2a-47f9-a2c2-4be78225b908}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -463,7 +466,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;_OPENSSL_USE_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>

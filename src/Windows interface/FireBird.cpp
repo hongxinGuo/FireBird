@@ -14,6 +14,15 @@
 #include "ChildFrm.h"
 #include "spdlog/sinks/basic_file_sink.h"
 
+#ifdef _DEBUG
+#pragma comment(lib, "/vc/x64/MTd/libcrypto.lib")
+#pragma comment(lib, "/vc/x64/MTd/libssl.lib")
+#else
+#pragma comment(lib, "/vc/x64/MT/libcrypto.lib")
+#pragma comment(lib, "/vc/x64/MT/libssl.lib")
+#endif
+
+
 #ifndef _MBCS
 #error _T("本系统使用多字节字符集")
 #endif
@@ -52,7 +61,7 @@ CFireBirdApp::CFireBirdApp() {
 CFireBirdApp theApp;
 
 bool IsFireBirdAlreadyRunning(const CString& strProgramToken) {
-	gl_hFireBirdMutex = ::CreateMutex(nullptr, false, strProgramToken); // 采用创建系统命名互斥对象的方式来实现只运行单一实例
+	gl_hFireBirdMutex = ::CreateMutex(nullptr, false, strProgramToken); // 采用创建系统命名互斥对象的方式来实现只运行单一实例。在MainFrame的析构函数中关闭。
 	bool bAlreadyRunning = false;
 	if (gl_hFireBirdMutex != nullptr) {
 		if (ERROR_ALREADY_EXISTS == ::GetLastError()) {
@@ -82,6 +91,8 @@ BOOL CFireBirdApp::InitInstance() {
 
 	gl_traceLogger = spdlog::basic_logger_mt("basic_trace_logger", "logs/trace.txt");
 	gl_traceLogger->enable_backtrace(20); // 20个回溯消息
+
+	gl_SoftwareDevelopingLogger = spdlog::basic_logger_mt("software_developing_logger", "logs/softwareDeveloping.txt");
 
 	gl_dailyLogger->info("FireBird App begin running");
 
@@ -161,6 +172,7 @@ BOOL CFireBirdApp::InitInstance() {
 }
 
 int CFireBirdApp::ExitInstance() {
+	if (gl_hFireBirdMutex != nullptr) ::CloseHandle(gl_hFireBirdMutex);
 
 	gl_dailyLogger->info("FireBird App exit"); 
 

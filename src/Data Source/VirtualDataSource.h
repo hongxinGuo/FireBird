@@ -3,6 +3,16 @@
 #include"VirtualWebProduct.h"
 #include "InquireEngine.h"
 
+enum enum_ErrorMessageData {
+	ERROR_NO_ERROR__ = 0,
+	ERROR_FINNHUB_NO_RIGHT_TO_ACCESS__,
+	ERROR_FINNHUB_MISSING_API_KEY__,
+	ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH__,
+	ERROR_FINNHUB_NOT_HANDLED__,
+
+	ERROR_SINA_HEADER_NEEDED__, // 
+};
+
 class CVirtualDataSource : public std::enable_shared_from_this<CVirtualDataSource> {
 	friend CVirtualWebProduct;
 
@@ -23,8 +33,7 @@ public:
 	void RunWorkingThread(long lMarketTime);
 	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual void GenerateCurrentInquiryMessage();
-	virtual void CheckInaccessible(const CWebDataPtr&) const {
-	}
+	virtual enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr&) { return ERROR_NO_ERROR__; } // 此WebData内容为错误信息？
 
 	void SetDefaultSessionOption();
 
@@ -99,7 +108,8 @@ protected:
 	CVirtualProductWebDataPtr m_pCurrentProduct;
 
 	bool m_fWebError; //网络读取错误
-	atomic_int64_t m_dwWebErrorCode{0}; // 网络错误码
+	atomic_int64_t m_dwWebErrorCode{ 0 }; // 网络错误码
+	enum_ErrorMessageData m_eErrorMessageData{ ERROR_NO_ERROR__ };
 
 	InternetOption m_internetOption;
 	CString m_strInquiry; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
@@ -110,7 +120,7 @@ protected:
 	CString m_strHeaders; // OpenURL时的headers字符串值， 默认为_T("")
 
 	long m_lInquiringNumber; // 每次查询数量
-	int m_iMaxNormalInquireTime{300}; // 最大正常查询时间（每个具体的数据源皆不同）
+	int m_iMaxNormalInquireTime{ 300 }; // 最大正常查询时间（每个具体的数据源皆不同）
 	atomic_int64_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）
 
 	static atomic_long sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
@@ -121,7 +131,7 @@ protected:
 	atomic_bool m_fEnable; // 允许执行标识
 	atomic_bool m_fInquiring;
 	atomic_bool m_bIsWorkingThreadRunning;
-	atomic_bool m_bWebBusy{false};
+	atomic_bool m_bWebBusy{ false };
 };
 
 using CVirtualDataSourcePtr = shared_ptr<CVirtualDataSource>;

@@ -50,7 +50,6 @@ bool CVirtualWebSocket::ConnectAndSendMessage(const vectorString& vSymbol) {
 		gl_systemMessage.PushInnerSystemInformationMessage(sError);
 		return false;
 	}
-
 	return true;
 }
 

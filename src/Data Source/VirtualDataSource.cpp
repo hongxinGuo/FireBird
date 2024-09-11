@@ -121,7 +121,7 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 			m_fWebError = true;
 		}
 		if (!gl_systemConfiguration.IsExitingSystem() && !pvWebData->empty()) {
-			CheckInaccessible(pvWebData->at(0));
+			m_eErrorMessageData = IsAErrorMessageData(pvWebData->at(0)); // 返回的数据是错误信息？
 			m_pCurrentProduct->ParseAndStoreWebData(pvWebData);
 			m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource智能指针
 		}

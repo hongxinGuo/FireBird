@@ -3,6 +3,8 @@
 /// finnhub.io中为免费用户使用的数据逐渐减少，需要设置一新的数据库来存储各数据的免费与否的状态。
 ///
 /// 20231126：20231127后，stock DayLine和Crypto DayLine不再免费。
+///
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
 #include"SystemConfiguration.h"
@@ -13,6 +15,12 @@
 #include "FinnhubDataSource.h"
 
 #include"WorldMarket.h"
+
+map<string, enum_ErrorMessageData> mapErrorMap{
+	{ _T("You don't have access to this resource."), ERROR_FINNHUB_NO_RIGHT_TO_ACCESS__ },
+	{ _T("Please use an API key."), ERROR_FINNHUB_MISSING_API_KEY__ },
+	{ _T(""), ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH__ }
+};
 
 CFinnhubDataSource::CFinnhubDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
@@ -82,12 +90,53 @@ void CFinnhubDataSource::ConfigureInternetOption() {
 	m_internetOption.option_connect_retries = 1;
 }
 
-void CFinnhubDataSource::CheckInaccessible(const CWebDataPtr& pWebData) const {
+enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr& pWebData) {
 	ASSERT(m_pCurrentProduct != nullptr);
-	if (m_pCurrentProduct->CheckInaccessible(pWebData)) {
-		// 如果系统报告无权查询此类数据, 目前先在软件系统消息中报告
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
+
+	m_eErrorMessageData = ERROR_NO_ERROR__;
+	json js;
+	pWebData->CreateJson(js);
+
+	try {
+		string error = js.at(_T("error"));
+		int i;
+		CString s;
+		try {
+			m_eErrorMessageData = mapErrorMap.at(error);
+		} catch (exception&) {
+			m_eErrorMessageData = ERROR_FINNHUB_NOT_HANDLED__;
+		}
+		switch (m_eErrorMessageData) {
+		case ERROR_FINNHUB_NO_RIGHT_TO_ACCESS__:// 无权申请
+			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
+			if (m_pCurrentProduct->CheckInaccessible()) {
+				// 如果系统报告无权查询此类数据, 目前先在软件系统消息中报告
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
+			}
+			break;
+		case ERROR_FINNHUB_MISSING_API_KEY__: // 缺少API key
+			break;
+		case ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH__:// 申请频率超高
+			// 降低查询频率200ms。
+			// todo 这里最好只向系统报告频率超出，由系统决定如何修正。
+			i = gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime();
+			gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(i + 200);
+			break;
+		case ERROR_FINNHUB_NOT_HANDLED__: // error not handled
+			gl_dailyLogger->warn("finnhub error not processed: {}", error);
+			gl_SoftwareDevelopingLogger->warn("finnhub error not processed: {}", error);
+			s = _T("finnhub error not processed:");
+			s += error.c_str();
+			gl_systemMessage.PushInnerSystemInformationMessage(s);
+			break;
+		default: // 缺省分支不应该出现
+			ASSERT(false);
+			break;
+		}
+	} catch (json::exception&) { // no error. do nothing
+		m_eErrorMessageData = ERROR_NO_ERROR__;
 	}
+	return m_eErrorMessageData;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

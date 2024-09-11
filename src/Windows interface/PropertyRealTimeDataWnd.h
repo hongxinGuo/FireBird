@@ -19,6 +19,7 @@ protected:
 
 	// chinaMarket realtime group
 	CMFCPropertyGridProperty* m_pChinaMarketStock{ nullptr };
+	CMFCPropertyGridProperty* m_pPropNew{ nullptr };
 	CMFCPropertyGridProperty* m_pPropVolume{ nullptr };
 
 	CMFCPropertyGridProperty* m_pPropStockOrdinaryBuy{ nullptr };

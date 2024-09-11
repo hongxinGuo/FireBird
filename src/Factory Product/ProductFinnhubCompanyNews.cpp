@@ -12,10 +12,18 @@ CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/company-news?symbol=");
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 提供最新一年内的免费公司新闻，付费版提供最近20年内的公司新闻
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 CString CProductFinnhubCompanyNews::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	CString strMessage = m_strInquiryFunction + pStock->GetSymbol();
-	CString strTemp = ConvertDateToTimeStamp(pStock->GetCompanyNewsUpdateDate());
+	long limitTime = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360); // 最近一年内
+	long limitTime2 = limitTime > pStock->GetCompanyNewsUpdateDate() ? limitTime : pStock->GetCompanyNewsUpdateDate();
+	CString strTemp = ConvertDateToTimeStamp(limitTime2);
 	strMessage += _T("&from=");
 	strMessage += strTemp;
 	strTemp = ConvertDateToTimeStamp(gl_pWorldMarket->GetMarketDate());
@@ -91,8 +99,7 @@ CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebD
 			if (!s.empty()) pCompanyNews->m_strURL = s.c_str();
 			pvFinnhubCompanyNews->push_back(pCompanyNews);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock News "), e.what());
 		return pvFinnhubCompanyNews; // 没有公司简介
 	}
