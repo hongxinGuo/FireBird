@@ -14,6 +14,7 @@
 #include "ChildFrm.h"
 #include "spdlog/sinks/basic_file_sink.h"
 
+// IXWebSocket需要OpenSSL，本系统直接使用。
 #ifdef _DEBUG
 #pragma comment(lib, "/vc/x64/MTd/libcrypto.lib")
 #pragma comment(lib, "/vc/x64/MTd/libssl.lib")

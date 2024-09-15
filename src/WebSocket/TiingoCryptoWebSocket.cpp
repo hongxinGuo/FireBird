@@ -74,6 +74,7 @@ void CTiingoCryptoWebSocket::Send(const vectorString& vSymbol) {
 }
 
 void CTiingoCryptoWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
+	if (IsConnecting()) return; // 如果正在连接，则不监控该socket
 	CVirtualWebSocket::MonitorWebSocket(gl_pTiingoDataSource->IsWebError(), gl_systemConfiguration.IsUsingTiingoCryptoWebSocket(), vSymbol);
 }
 
@@ -149,8 +150,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 						strSymbol = jsonGetString(it2);
 						m_vCurrentInquireSymbol.emplace_back(strSymbol.c_str());
 					}
-				}
-				catch (json::exception&) { //注册信息：{"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
+				} catch (json::exception&) { //注册信息：{"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
@@ -202,8 +202,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			}
 		}
 		else { return false; }
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo Crypto WebSocket "), e.what());
 		return false;
 	}

@@ -103,6 +103,8 @@ public:
 	void SetWebBusy(bool busy) noexcept { m_bWebBusy = busy; }
 	bool IsWebBusy() const noexcept { return m_bWebBusy.load(); }
 
+	virtual void ReportErrorNotHandled(const string& sError);
+
 protected:
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // Õ¯¬Á≤È—Ø√¸¡Ó∂”¡–
 	CVirtualProductWebDataPtr m_pCurrentProduct;

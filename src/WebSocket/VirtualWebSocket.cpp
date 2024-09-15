@@ -24,6 +24,11 @@ void CVirtualWebSocket::Reset() {
 }
 
 void CVirtualWebSocket::TaskConnectAndSendMessage(vectorString vSymbol) {
+	if (IsConnecting()) { // 如果正在连接，则不再生成第二个连接
+		TRACE("WebSocket正在连接中，不再生成第二个连接\n");
+		gl_dailyWebSocketLogger->info("{} WebSocket正在连接中，不再生成第二个连接", m_url);
+		return;
+	}
 	TRACE("TaskConnectAndSendMessage\n");
 	gl_dailyWebSocketLogger->info("{} TaskConnectAndSendMessage", m_url);
 	gl_runtime.thread_executor()->post([this, vSymbol] {
@@ -39,6 +44,7 @@ void CVirtualWebSocket::TaskConnectAndSendMessage(vectorString vSymbol) {
 // 
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CVirtualWebSocket::ConnectAndSendMessage(const vectorString& vSymbol) {
+	//ASSERT(IsClosed());
 	try {
 		AppendSymbol(vSymbol);
 		Connect();

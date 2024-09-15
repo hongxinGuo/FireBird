@@ -75,6 +75,7 @@ void CTiingoForexWebSocket::Send(const vectorString& vSymbol) {
 }
 
 void CTiingoForexWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
+	if (IsConnecting()) return; // 如果正在连接，则不监控该socket
 	CVirtualWebSocket::MonitorWebSocket(gl_pTiingoDataSource->IsWebError(), gl_systemConfiguration.IsUsingTiingoForexWebSocket(), vSymbol);
 }
 
@@ -148,8 +149,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 						strSymbol = jsonGetString(it3);
 						m_vCurrentInquireSymbol.push_back(strSymbol.c_str());
 					}
-				}
-				catch (json::exception&) { // {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
+				} catch (json::exception&) { // {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
@@ -193,8 +193,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 			// ERROR
 			return false;
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo Forex WebSocket "), e.what());
 		return false;
 	}

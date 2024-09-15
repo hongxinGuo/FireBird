@@ -123,11 +123,7 @@ enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr&
 			gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(i + 200);
 			break;
 		case ERROR_FINNHUB_NOT_HANDLED__: // error not handled
-			gl_dailyLogger->warn("finnhub error not processed: {}", error);
-			gl_SoftwareDevelopingLogger->warn("finnhub error not processed: {}", error);
-			s = _T("finnhub error not processed:");
-			s += error.c_str();
-			gl_systemMessage.PushInnerSystemInformationMessage(s);
+			ReportErrorNotHandled(error);
 			break;
 		default: // 缺省分支不应该出现
 			ASSERT(false);
@@ -746,7 +742,7 @@ bool CFinnhubDataSource::InquireSECFilings() {
 			product->SetIndex(m_lCurrentUpdateSECFilingsPos);
 			StoreInquiry(product);
 			SetInquiring(true);
-			gl_dataContainerFinnhubStock.GetStock(m_lCurrentUpdateSECFilingsPos)->SetEPSSurpriseUpdated(true);
+			gl_dataContainerFinnhubStock.GetStock(m_lCurrentUpdateSECFilingsPos)->SetSECFilingsUpdated(true);
 			gl_pWorldMarket->SetCurrentFunction(_T("SEC Filings:") + pStock->GetSymbol());
 		}
 		else {

@@ -65,6 +65,7 @@ void CTiingoIEXWebSocket::Send(const vectorString& vSymbol) {
 }
 
 void CTiingoIEXWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
+	if (IsConnecting()) return; // 如果正在连接，则不监控该socket
 	CVirtualWebSocket::MonitorWebSocket(gl_pTiingoDataSource->IsWebError(), gl_systemConfiguration.IsUsingTiingoIEXWebSocket(), vSymbol);
 }
 
@@ -192,8 +193,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 						strSymbol = jsonGetString(it2);
 						m_vCurrentInquireSymbol.emplace_back(strSymbol.c_str());
 					}
-				}
-				catch (json::exception&) { // 注册ID {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
+				} catch (json::exception&) { // 注册ID {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
@@ -217,8 +217,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 			// ERROR
 			return false;
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo IEX WebSocket "), e.what());
 		return false;
 	}

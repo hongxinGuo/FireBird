@@ -35,6 +35,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#include <spdlog/sinks/basic_file_sink.h>
+
 #include"GeneralCheck.h"
 
 #include"ChinaMarket.h"
@@ -88,6 +90,7 @@ namespace FireBirdTest {
 
 			gl_dailyLogger = spdlog::daily_logger_mt("daily_logger", "logs/daily.txt", 2, 30);
 			gl_dailyWebSocketLogger = spdlog::daily_logger_mt("dailyWebSocketLogger", "logs/dailyWebSocket.txt", 2, 30);
+			gl_SoftwareDevelopingLogger = spdlog::basic_logger_mt("software_developing_logger", "logs/softwareDeveloping.txt");
 
 			//Bug Resharper的UnitTest要运行程序才能找到所有的测试函数，结果这里产生副作用。工作目录为X64/Debug,如果目录中没有systemConfiguration.json文件时，
 			// 程序就会生成一个新文件，导致下面的断言失败。目前先屏蔽掉这个断言

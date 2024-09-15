@@ -81,7 +81,6 @@ public:
 		const auto pData = make_shared<string>(data);
 		m_qWebSocketData.enqueue(pData);
 	}
-
 	void PushData(const shared_ptr<string>& pData) { m_qWebSocketData.enqueue(pData); }
 	shared_ptr<string> PopData() {
 		shared_ptr<string> pString;
@@ -95,17 +94,17 @@ public:
 
 protected:
 	ix::WebSocket m_webSocket;
-	string m_url{""};
+	string m_url{ "" };
 
-	int m_iStatusCode{0}; // WebSocket返回的状态码。正确：200， 错误：400等。
-	bool m_fError{false};
-	string m_statusMessage{""}; // 正确时为状态信息，错误时为错误信息。
-	int m_iSubscriptionId{0};
+	int m_iStatusCode{ 0 }; // WebSocket返回的状态码。正确：200， 错误：400等。
+	bool m_fError{ false };
+	string m_statusMessage{ "" }; // 正确时为状态信息，错误时为错误信息。
+	int m_iSubscriptionId{ 0 };
 
 	vectorString m_vSymbol;
 	map<string, size_t> m_mapSymbol;
 
-	time_t m_HeartbeatTime{0}; // 最新心跳时间， UTC制式
+	time_t m_HeartbeatTime{ 0 }; // 最新心跳时间， UTC制式
 
 	ConcurrentQueue<shared_ptr<string>> m_qWebSocketData; // 接收到的WebSocket数据
 };

@@ -42,7 +42,7 @@ public:
 	bool ShowGuadan(CDC* pDC, const CChinaStockPtr& pStock, int iXStart, int iYStart, int iYEnd);
 	bool ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart);
 	void ShowRealtimeGuadan(CDC* pdc);
-	void ShowVolume(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea);
+	void ShowVolume(CDC* pDC, const CChinaStockPtr& pStock);
 	void ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
 	void ShowOrdinaryBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea);
 	void ShowAttackBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea);
@@ -96,6 +96,11 @@ protected:
 
 	bool m_fShowTransactionGraph; // 显示交易具体情况的图
 	CRect m_rectTransactionGraph; // 交易具体情况图的位置和大小。
+
+	CRect m_rectOrdinaryBuyVolume, m_rectOrdinarySellVolume;
+	CRect m_rectAttackBuyVolume, m_rectAttackSellVolume;
+	CRect m_rectStrongBuyVolume, m_rectStrongSellVolume;
+	CRect m_rectCancelBuyVolume, m_rectCancelSellVolume;
 
 	long m_lCurrentPos;
 

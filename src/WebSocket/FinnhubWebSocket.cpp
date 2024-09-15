@@ -118,6 +118,7 @@ string CFinnhubWebSocket::CreateFinnhubWebSocketString(string sSymbol) {
 }
 
 void CFinnhubWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
+	if (IsConnecting()) return; // 如果正在连接，则不监控该socket
 	CVirtualWebSocket::MonitorWebSocket(gl_pFinnhubDataSource->IsWebError(), gl_systemConfiguration.IsUsingFinnhubWebSocket(), vSymbol);
 }
 

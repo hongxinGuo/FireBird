@@ -63,6 +63,16 @@ namespace FireBirdTest {
 		EXPECT_EQ(ERROR_FINNHUB_MISSING_API_KEY__, m_FinnhubDataSource.IsAErrorMessageData(pwd));
 	}
 
+	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData3) {
+		CWebDataPtr pwd = make_shared<CWebData>();
+		pwd->Test_SetBuffer_(_T("{\"error\":\"Not Handled\"}"));
+
+		EXPECT_EQ(ERROR_FINNHUB_NOT_HANDLED__, m_FinnhubDataSource.IsAErrorMessageData(pwd));
+		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("error not processed:Not Handled"));
+		// 恢复原状
+	}
+
 	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData4) {
 		CWebDataPtr pwd = make_shared<CWebData>();
 		pwd->Test_SetBuffer_(_T("{\"no error\":\"Please use an API key.\"}"));
@@ -212,6 +222,14 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateEPSSurprise());
 		m_FinnhubDataSource.SetUpdateEPSSurprise(true);
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateEPSSurprise());
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestIsUpdateSECFilings) {
+		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateSECFilings());
+		m_FinnhubDataSource.SetUpdateSECFilings(false);
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateSECFilings());
+		m_FinnhubDataSource.SetUpdateSECFilings(true);
+		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateSECFilings());
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestIsUpdateMarketStatus) {
@@ -842,6 +860,49 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateEPSSurprise()) << "股票都查询完了";
 		const CString str2 = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str2, _T("Finnhub EPS Surprise Updated"));
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestInquirySECFilings) {
+		gl_pWorldMarket->SetSystemReady(true);
+		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
+			const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
+			pStock->SetSECFilingsUpdated(true);
+		}
+		gl_dataContainerFinnhubStock.GetStock(1)->SetSECFilingsUpdated(false); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
+		gl_dataContainerFinnhubStock.GetStock(10)->SetSECFilingsUpdated(false);
+		m_FinnhubDataSource.SetUpdateSECFilings(false);
+		EXPECT_FALSE(m_FinnhubDataSource.InquireSECFilings()) << "Finnhub EPS Surprise  Updated";
+
+		m_FinnhubDataSource.SetUpdateSECFilings(true);
+		m_FinnhubDataSource.SetInquiring(true);
+		EXPECT_FALSE(m_FinnhubDataSource.InquireSECFilings()) << "其他FinnhubInquiry正在进行";
+
+		m_FinnhubDataSource.SetInquiring(false);
+		EXPECT_TRUE(m_FinnhubDataSource.InquireSECFilings());
+		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
+		CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubSECFilings"));
+		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsSECFilingsUpdated());
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(10)->IsSECFilingsUpdated());
+		gl_dataContainerFinnhubStock.GetStock(1)->SetSECFilingsUpdated(true);
+		const CString str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str, _T("Inquiring finnhub stock SEC Filings..."));
+
+		m_FinnhubDataSource.SetInquiring(false);
+		EXPECT_TRUE(m_FinnhubDataSource.InquireSECFilings());
+		p = m_FinnhubDataSource.GetCurrentProduct();
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubSECFilings"));
+		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsSECFilingsUpdated());
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(10)->IsSECFilingsUpdated());
+		gl_dataContainerFinnhubStock.GetStock(10)->SetUpdatePeer(false);
+
+		m_FinnhubDataSource.SetInquiring(false);
+		EXPECT_FALSE(m_FinnhubDataSource.InquireSECFilings()) << "第三次查询时没有找到待查询的股票";
+		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateSECFilings()) << "股票都查询完了";
+		const CString str2 = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str2, _T("Finnhub SEC Filings Updated"));
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryForexExchange) {

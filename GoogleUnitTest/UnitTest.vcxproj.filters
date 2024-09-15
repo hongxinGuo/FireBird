@@ -630,6 +630,12 @@
     <ClCompile Include="ProductTiingoStockSymbolsTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
+    <ClCompile Include="MockTiingoCryptoWebSocketTest.cpp">
+      <Filter>Test源文件\Web Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="MockTiingoForexWebSocketTest.cpp">
+      <Filter>Test源文件\Web Socket</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockMainFrm.h">
@@ -709,6 +715,12 @@
     </ClInclude>
     <ClInclude Include="MockInquireEngine.h">
       <Filter>Mock class\Data Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MockTiingoCryptoWebSocket.h">
+      <Filter>Mock class\WebSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="MockTiingoForexWebSocket.h">
+      <Filter>Mock class\WebSocket</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

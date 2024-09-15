@@ -102,7 +102,9 @@
     <ClCompile Include="MockSinaRTDataSourceTest.cpp" />
     <ClCompile Include="MockTengxunDayLineDataSourceTest.cpp" />
     <ClCompile Include="MockTengxunRTDataSourceTest.cpp" />
+    <ClCompile Include="MockTiingoCryptoWebSocketTest.cpp" />
     <ClCompile Include="MockTiingoDataSourceTest.cpp" />
+    <ClCompile Include="MockTiingoForexWebSocketTest.cpp" />
     <ClCompile Include="MockTiingoIEXWebSocketTest.cpp" />
     <ClCompile Include="MockVirtualDataSourceTest.cpp" />
     <ClCompile Include="MockVirtualWebSocketTest.cpp" />
@@ -242,6 +244,8 @@
     <ClCompile Include="WeekLineTest.cpp" />
     <ClInclude Include="MockFinnhubWebSocket.h" />
     <ClInclude Include="MockInquireEngine.h" />
+    <ClInclude Include="MockTiingoCryptoWebSocket.h" />
+    <ClInclude Include="MockTiingoForexWebSocket.h" />
     <ClInclude Include="MockTiingoIEXWebSocket.h" />
   </ItemGroup>
   <ItemGroup>

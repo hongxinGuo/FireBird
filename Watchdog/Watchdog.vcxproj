@@ -257,6 +257,11 @@
   <ItemGroup>
     <None Include="res\Watchdog.rc2" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">
+      <Project>{f77641f7-1df8-4461-9338-a8e502e570dc}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

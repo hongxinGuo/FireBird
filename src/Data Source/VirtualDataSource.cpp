@@ -149,3 +149,11 @@ void CVirtualDataSource::GenerateCurrentInquiryMessage() {
 void CVirtualDataSource::CreateTotalInquiringString() {
 	m_strInquiry = m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken;
 }
+
+void CVirtualDataSource::ReportErrorNotHandled(const string& sError) {
+	gl_dailyLogger->warn("error not processed: {}", sError);
+	gl_SoftwareDevelopingLogger->warn("error not processed: {}", sError);
+	CString s = _T("error not processed:");
+	s += sError.c_str();
+	gl_systemMessage.PushInnerSystemInformationMessage(s);
+}

@@ -146,6 +146,41 @@ CFireBirdView::CFireBirdView() {
 	m_iCurrentShowType = _SHOW_DAY_LINE_DATA_; // 显示日线数据
 	m_lCurrentPos = 0;
 	m_rectClient.SetRect(CPoint(0, 0), CPoint(0.0));
+	int iHeight = 100;
+	CRect rectArea{ 2, 0, 962, 100 };
+
+	m_rectOrdinaryBuyVolume.top = 0;
+	m_rectOrdinaryBuyVolume.left = rectArea.left;
+	m_rectOrdinaryBuyVolume.right = rectArea.right;
+	m_rectOrdinaryBuyVolume.bottom = iHeight;
+	m_rectOrdinarySellVolume.top = m_rectOrdinaryBuyVolume.bottom + 1;
+	m_rectOrdinarySellVolume.left = rectArea.left;
+	m_rectOrdinarySellVolume.right = rectArea.right;
+	m_rectOrdinarySellVolume.bottom = m_rectOrdinaryBuyVolume.bottom + iHeight;
+	m_rectAttackBuyVolume.top = m_rectOrdinarySellVolume.bottom;
+	m_rectAttackBuyVolume.left = rectArea.left;
+	m_rectAttackBuyVolume.right = rectArea.right;
+	m_rectAttackBuyVolume.bottom = m_rectOrdinarySellVolume.bottom + iHeight;
+	m_rectAttackSellVolume.top = m_rectAttackBuyVolume.bottom + 1;
+	m_rectAttackSellVolume.left = rectArea.left;
+	m_rectAttackSellVolume.right = rectArea.right;
+	m_rectAttackSellVolume.bottom = m_rectAttackBuyVolume.bottom + iHeight;
+	m_rectStrongBuyVolume.top = m_rectAttackSellVolume.bottom + 1;
+	m_rectStrongBuyVolume.left = rectArea.left;
+	m_rectStrongBuyVolume.right = rectArea.right;
+	m_rectStrongBuyVolume.bottom = m_rectAttackSellVolume.bottom + iHeight;
+	m_rectStrongSellVolume.top = m_rectStrongBuyVolume.bottom + 1;
+	m_rectStrongSellVolume.left = rectArea.left;
+	m_rectStrongSellVolume.right = rectArea.right;
+	m_rectStrongSellVolume.bottom = m_rectStrongBuyVolume.bottom + iHeight;
+	m_rectCancelBuyVolume.top = m_rectStrongSellVolume.bottom + 1;
+	m_rectCancelBuyVolume.left = rectArea.left;
+	m_rectCancelBuyVolume.right = rectArea.right;
+	m_rectCancelBuyVolume.bottom = m_rectStrongSellVolume.bottom + iHeight;
+	m_rectCancelSellVolume.top = m_rectCancelBuyVolume.bottom + 1;
+	m_rectCancelSellVolume.left = rectArea.left;
+	m_rectCancelSellVolume.right = rectArea.right;
+	m_rectCancelSellVolume.bottom = m_rectCancelBuyVolume.bottom + iHeight;
 
 	m_fShowRS = false;
 	m_fShow3DaysRS = false;
@@ -225,67 +260,29 @@ void CFireBirdView::ShowRealtimeData(CDC* pDC) {
 	auto thisStock = gl_pChinaMarket->GetCurrentStock();
 
 	if (thisStock != nullptr) {
-		ShowVolume(pDC, thisStock, rectVolume);
-		ShowBuySell(pDC, thisStock, rectBuySell);
-		ShowOrdinaryBuySell(pDC, thisStock, rectOrdinaryBuySell);
-		ShowAttackBuySell(pDC, thisStock, rectAttackBuySell);
-		ShowCanceledBuySell(pDC, thisStock, rectCanceledBuySell);
+		ShowVolume(pDC, thisStock);
+		//ShowBuySell(pDC, thisStock, rectBuySell);
+		//ShowOrdinaryBuySell(pDC, thisStock, rectOrdinaryBuySell);
+		//ShowAttackBuySell(pDC, thisStock, rectAttackBuySell);
+		//ShowCanceledBuySell(pDC, thisStock, rectCanceledBuySell);
 	}
 
 	//ShowRealtimeGuadan(pDC);
 }
 
-void CFireBirdView::ShowVolume(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea) {
+void CFireBirdView::ShowVolume(CDC* pDC, const CChinaStockPtr& pStock) {
 	auto vVolume = pStock->GetVolumeVector();
-	auto vAttackVolume = pStock->GetAttackBuyVolumeVector();
-	CRect rectOrdinaryBuyVolume, rectOrdinarySellVolume;
-	CRect rectAttackBuyVolume, rectAttackSellVolume;
-	CRect rectStrongBuyVolume, rectStrongSellVolume;
-	CRect rectCancelBuyVolume, rectCancelSellVolume;
-	int iHeight = 100;
-	rectOrdinaryBuyVolume.top = 0;
-	rectOrdinaryBuyVolume.left = rectArea.left;
-	rectOrdinaryBuyVolume.right = rectArea.right;
-	rectOrdinaryBuyVolume.bottom = iHeight;
-	rectOrdinarySellVolume.top = rectOrdinaryBuyVolume.bottom + 1;
-	rectOrdinarySellVolume.left = rectArea.left;
-	rectOrdinarySellVolume.right = rectArea.right;
-	rectOrdinarySellVolume.bottom = rectOrdinaryBuyVolume.bottom + iHeight;
-	rectAttackBuyVolume.top = rectOrdinarySellVolume.bottom;
-	rectAttackBuyVolume.left = rectArea.left;
-	rectAttackBuyVolume.right = rectArea.right;
-	rectAttackBuyVolume.bottom = rectOrdinarySellVolume.bottom + iHeight;
-	rectAttackSellVolume.top = rectAttackBuyVolume.bottom + 1;
-	rectAttackSellVolume.left = rectArea.left;
-	rectAttackSellVolume.right = rectArea.right;
-	rectAttackSellVolume.bottom = rectAttackBuyVolume.bottom + iHeight;
-	rectStrongBuyVolume.top = rectAttackSellVolume.bottom + 1;
-	rectStrongBuyVolume.left = rectArea.left;
-	rectStrongBuyVolume.right = rectArea.right;
-	rectStrongBuyVolume.bottom = rectAttackSellVolume.bottom + iHeight;
-	rectStrongSellVolume.top = rectStrongBuyVolume.bottom + 1;
-	rectStrongSellVolume.left = rectArea.left;
-	rectStrongSellVolume.right = rectArea.right;
-	rectStrongSellVolume.bottom = rectStrongBuyVolume.bottom + iHeight;
-	rectCancelBuyVolume.top = rectStrongSellVolume.bottom + 1;
-	rectCancelBuyVolume.left = rectArea.left;
-	rectCancelBuyVolume.right = rectArea.right;
-	rectCancelBuyVolume.bottom = rectStrongSellVolume.bottom + iHeight;
-	rectCancelSellVolume.top = rectCancelBuyVolume.bottom + 1;
-	rectCancelSellVolume.left = rectArea.left;
-	rectCancelSellVolume.right = rectArea.right;
-	rectCancelSellVolume.bottom = rectCancelBuyVolume.bottom + iHeight;
 
 	const int index = gl_pChinaMarket->XferMarketTimeToIndex();
-	ShowRealtimeVolume(pDC, vVolume, pStock->GetOrdinaryBuyVolumeVector(), index, rectOrdinaryBuyVolume, false);
-	ShowRealtimeVolume(pDC, vVolume, pStock->GetOrdinarySellVolumeVector(), index, rectOrdinarySellVolume, true);
-	ShowRealtimeVolume(pDC, vVolume, pStock->GetAttackBuyVolumeVector(), index, rectAttackBuyVolume, false);
-	ShowRealtimeVolume(pDC, vVolume, pStock->GetAttackSellVolumeVector(), index, rectAttackSellVolume, true);
-	ShowRealtimeVolume(pDC, vVolume, pStock->GetStrongBuyVolumeVector(), index, rectStrongBuyVolume, false);
-	ShowRealtimeVolume(pDC, vVolume, pStock->GetStrongSellVolumeVector(), index, rectStrongSellVolume, true);
+	ShowRealtimeVolume(pDC, vVolume, pStock->GetOrdinaryBuyVolumeVector(), index, m_rectOrdinaryBuyVolume, false);
+	ShowRealtimeVolume(pDC, vVolume, pStock->GetOrdinarySellVolumeVector(), index, m_rectOrdinarySellVolume, true);
+	ShowRealtimeVolume(pDC, vVolume, pStock->GetAttackBuyVolumeVector(), index, m_rectAttackBuyVolume, false);
+	ShowRealtimeVolume(pDC, vVolume, pStock->GetAttackSellVolumeVector(), index, m_rectAttackSellVolume, true);
+	ShowRealtimeVolume(pDC, vVolume, pStock->GetStrongBuyVolumeVector(), index, m_rectStrongBuyVolume, false);
+	ShowRealtimeVolume(pDC, vVolume, pStock->GetStrongSellVolumeVector(), index, m_rectStrongSellVolume, true);
 	// Note cancel volume有时会超过当时的成交数量，导致显示越界。暂停使用
-	//ShowRealtimeVolume(pDC, vVolume, pStock->GetCancelBuyVolumeVector(), index, rectCancelBuyVolume, false);
-	//ShowRealtimeVolume(pDC, vVolume, pStock->GetCancelSellVolumeVector(), index, rectCancelSellVolume, true);
+	//ShowRealtimeVolume(pDC, vVolume, pStock->GetCancelBuyVolumeVector(), index, m_rectCancelBuyVolume, false);
+	//ShowRealtimeVolume(pDC, vVolume, pStock->GetCancelSellVolumeVector(), index, m_rectCancelSellVolume, true);
 }
 
 void CFireBirdView::ShowRealtimeGuadan(CDC* pDC) {

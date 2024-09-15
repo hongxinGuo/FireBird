@@ -46,7 +46,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebError());
 		gl_pFinnhubDataSource->SetWebError(true);
 
-		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(1)
+		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(2)
+		.WillOnce(Return(ix::ReadyState::Open))
 		.WillOnce(Return(ix::ReadyState::Open));
 		EXPECT_CALL(m_finnhubWebSocket, TaskDisconnect()).Times(1);
 
@@ -61,7 +62,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebError());
 		gl_pFinnhubDataSource->SetWebError(true);
 
-		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(1)
+		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(2)
+		.WillOnce(Return(ix::ReadyState::Closed))
 		.WillOnce(Return(ix::ReadyState::Closed));
 
 		EXPECT_CALL(m_finnhubWebSocket, TaskDisconnect()).Times(0); // "web Socket已关闭，无需再次关闭";
@@ -78,7 +80,8 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingFinnhubWebSocket());
 		m_finnhubWebSocket.SetError(true);
 
-		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(2)
+		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(3)
+		.WillOnce(Return(ix::ReadyState::Open))
 		.WillOnce(Return(ix::ReadyState::Open))
 		.WillOnce(Return(ix::ReadyState::Closed));
 
@@ -97,7 +100,8 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingFinnhubWebSocket());
 		m_finnhubWebSocket.SetError(true);
 
-		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(2)
+		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(3)
+		.WillOnce(Return(ix::ReadyState::Closed))
 		.WillOnce(Return(ix::ReadyState::Closed))
 		.WillOnce(Return(ix::ReadyState::Closed));
 
@@ -116,7 +120,8 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingFinnhubWebSocket());
 		m_finnhubWebSocket.SetError(true);
 
-		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(2)
+		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(3)
+		.WillOnce(Return(ix::ReadyState::Open))
 		.WillOnce(Return(ix::ReadyState::Open))
 		.WillOnce(Return(ix::ReadyState::Open));
 
@@ -134,7 +139,8 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingFinnhubWebSocket());
 		m_finnhubWebSocket.SetError(true);
 
-		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(2)
+		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(3)
+		.WillOnce(Return(ix::ReadyState::Closed))
 		.WillOnce(Return(ix::ReadyState::Closed))
 		.WillOnce(Return(ix::ReadyState::Open));
 
@@ -153,7 +159,8 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetUsingFinnhubWebSocket(false);
 		m_finnhubWebSocket.SetError(true);
 
-		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(1)
+		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(2)
+		.WillOnce(Return(ix::ReadyState::Open))
 		.WillOnce(Return(ix::ReadyState::Open));
 
 		EXPECT_CALL(m_finnhubWebSocket, TaskDisconnect()).Times(1);
@@ -162,5 +169,21 @@ namespace FireBirdTest {
 
 		// 恢复原状
 		gl_systemConfiguration.SetUsingFinnhubWebSocket(true);
+	}
+
+	TEST_F(CMockFinnhubWebSocketTest, TestMonitorWebSocket8) {
+		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
+		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebError());
+		EXPECT_TRUE(gl_systemConfiguration.IsUsingFinnhubWebSocket());
+
+		EXPECT_CALL(m_finnhubWebSocket, GetState()).Times(1)
+		.WillOnce(Return(ix::ReadyState::Connecting));
+
+		EXPECT_CALL(m_finnhubWebSocket, TaskDisconnect()).Times(0);
+		EXPECT_CALL(m_finnhubWebSocket, TaskConnectAndSendMessage(_)).Times(0);
+
+		m_finnhubWebSocket.MonitorWebSocket(vSymbol);
+
+		// 恢复原状
 	}
 }

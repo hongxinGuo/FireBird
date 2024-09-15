@@ -258,23 +258,17 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 		pBasicFinancial->m_symbol = s.c_str();
 
 		ptMetric = jsonGetChild(js, _T("metric"));
-		try { pBasicFinancial->m_10DayAverageTradingVolume = jsonGetDouble(ptMetric, _T("10DayAverageTradingVolume")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_10DayAverageTradingVolume = jsonGetDouble(ptMetric, _T("10DayAverageTradingVolume")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_13WeekPriceReturnDaily = jsonGetDouble(ptMetric, _T("13WeekPriceReturnDaily")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_13WeekPriceReturnDaily = jsonGetDouble(ptMetric, _T("13WeekPriceReturnDaily")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_26WeekPriceReturnDaily = jsonGetDouble(ptMetric, _T("26WeekPriceReturnDaily")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_26WeekPriceReturnDaily = jsonGetDouble(ptMetric, _T("26WeekPriceReturnDaily")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_3MonthAverageTradingVolume = jsonGetDouble(ptMetric, _T("3MonthAverageTradingVolume")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_3MonthAverageTradingVolume = jsonGetDouble(ptMetric, _T("3MonthAverageTradingVolume")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_52WeekHigh = jsonGetDouble(ptMetric, _T("52WeekHigh")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_52WeekHigh = jsonGetDouble(ptMetric, _T("52WeekHigh")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_52WeekLow = jsonGetDouble(ptMetric, _T("52WeekLow")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_52WeekLow = jsonGetDouble(ptMetric, _T("52WeekLow")); } catch (json::exception&) {
 		}
 		try {
 			s = jsonGetString(ptMetric, _T("52WeekHighDate"));
@@ -282,8 +276,7 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 				static_cast<void>(sscanf_s(s.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day));
 				pBasicFinancial->m_52WeekHighDate = XferYearMonthDayToYYYYMMDD(year, month, day);
 			}
-		}
-		catch (json::exception&) {
+		} catch (json::exception&) {
 		}
 		try {
 			s = jsonGetString(ptMetric, _T("52WeekLowDate"));
@@ -291,378 +284,259 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 				static_cast<void>(sscanf_s(s.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day));
 				pBasicFinancial->m_52WeekLowDate = XferYearMonthDayToYYYYMMDD(year, month, day);
 			}
+		} catch (json::exception&) {
 		}
-		catch (json::exception&) {
+		try { pBasicFinancial->m_52WeekPriceReturnDaily = jsonGetDouble(ptMetric, _T("52WeekPriceReturnDaily")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_52WeekPriceReturnDaily = jsonGetDouble(ptMetric, _T("52WeekPriceReturnDaily")); }
-		catch (json::exception&) {
-		}
-		try { pBasicFinancial->m_5DayPriceReturnDaily = jsonGetDouble(ptMetric, _T("5DayPriceReturnDaily")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_5DayPriceReturnDaily = jsonGetDouble(ptMetric, _T("5DayPriceReturnDaily")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_assetTurnoverAnnual = jsonGetDouble(ptMetric, _T("assetTurnoverAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_assetTurnoverAnnual = jsonGetDouble(ptMetric, _T("assetTurnoverAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_assetTurnoverTTM = jsonGetDouble(ptMetric, _T("assetTurnoverTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_assetTurnoverTTM = jsonGetDouble(ptMetric, _T("assetTurnoverTTM")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_beta = jsonGetDouble(ptMetric, _T("beta")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_beta = jsonGetDouble(ptMetric, _T("beta")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_bookValuePerShareAnnual = jsonGetDouble(ptMetric, _T("bookValuePerShareAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_bookValuePerShareAnnual = jsonGetDouble(ptMetric, _T("bookValuePerShareAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_bookValuePerShareQuarterly = jsonGetDouble(ptMetric, _T("bookValuePerShareQuarterly")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_bookValuePerShareQuarterly = jsonGetDouble(ptMetric, _T("bookValuePerShareQuarterly")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_bookValueShareGrowth5Y = jsonGetDouble(ptMetric, _T("bookValueShareGrowth5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_bookValueShareGrowth5Y = jsonGetDouble(ptMetric, _T("bookValueShareGrowth5Y")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_capitalSpendingGrowth5Y = jsonGetDouble(ptMetric, _T("capitalSpendingGrowth5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_capitalSpendingGrowth5Y = jsonGetDouble(ptMetric, _T("capitalSpendingGrowth5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_cashFlowPerShareAnnual = jsonGetDouble(ptMetric, _T("cashFlowPerShareAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_cashFlowPerShareAnnual = jsonGetDouble(ptMetric, _T("cashFlowPerShareAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_cashFlowPerShareTTM = jsonGetDouble(ptMetric, _T("cashFlowPerShareTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_cashFlowPerShareTTM = jsonGetDouble(ptMetric, _T("cashFlowPerShareTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_cashPerSharePerShareAnnual = jsonGetDouble(ptMetric, _T("cashPerSharePerShareAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_cashPerSharePerShareAnnual = jsonGetDouble(ptMetric, _T("cashPerSharePerShareAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_cashPerSharePerShareQuarterly = jsonGetDouble(ptMetric, _T("cashPerSharePerShareQuarterly")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_cashPerSharePerShareQuarterly = jsonGetDouble(ptMetric, _T("cashPerSharePerShareQuarterly")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_currentEV_freeCashFlowAnnual = jsonGetDouble(ptMetric, _T("currentEv/freeCashFlowAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_currentEV_freeCashFlowAnnual = jsonGetDouble(ptMetric, _T("currentEv/freeCashFlowAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_currentEV_freeCashFlowTTM = jsonGetDouble(ptMetric, _T("currentEv/freeCashFlowTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_currentEV_freeCashFlowTTM = jsonGetDouble(ptMetric, _T("currentEv/freeCashFlowTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_currentDividendYieldTTM = jsonGetDouble(ptMetric, _T("currentDividendYieldTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_currentDividendYieldTTM = jsonGetDouble(ptMetric, _T("currentDividendYieldTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_currentRatioAnnual = jsonGetDouble(ptMetric, _T("currentRatioAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_currentRatioAnnual = jsonGetDouble(ptMetric, _T("currentRatioAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_currentRatioQuarterly = jsonGetDouble(ptMetric, _T("currentRatioQuarterly")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_currentRatioQuarterly = jsonGetDouble(ptMetric, _T("currentRatioQuarterly")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_dividendGrowthRate5Y = jsonGetDouble(ptMetric, _T("dividendGrowthRate5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_dividendGrowthRate5Y = jsonGetDouble(ptMetric, _T("dividendGrowthRate5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_dividendPerShare5Y = jsonGetDouble(ptMetric, _T("dividendPerShare5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_dividendPerShare5Y = jsonGetDouble(ptMetric, _T("dividendPerShare5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_dividendPerShareAnnual = jsonGetDouble(ptMetric, _T("dividendPerShareAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_dividendPerShareAnnual = jsonGetDouble(ptMetric, _T("dividendPerShareAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_dividendsPerShareTTM = jsonGetDouble(ptMetric, _T("dividendsPerShareTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_dividendsPerShareTTM = jsonGetDouble(ptMetric, _T("dividendsPerShareTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_dividendYield5Y = jsonGetDouble(ptMetric, _T("dividendYield5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_dividendYield5Y = jsonGetDouble(ptMetric, _T("dividendYield5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_dividendYieldIndicatedAnnual = jsonGetDouble(ptMetric, _T("dividendYieldIndicatedAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_dividendYieldIndicatedAnnual = jsonGetDouble(ptMetric, _T("dividendYieldIndicatedAnnual")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_ebitdaCagr5Y = jsonGetDouble(ptMetric, _T("ebitdaCagr5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_ebitdaCagr5Y = jsonGetDouble(ptMetric, _T("ebitdaCagr5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_ebitdaInterimCagr5Y = jsonGetDouble(ptMetric, _T("ebitdaInterimCagr5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_ebitdaInterimCagr5Y = jsonGetDouble(ptMetric, _T("ebitdaInterimCagr5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_ebitdPerShareTTM = jsonGetDouble(ptMetric, _T("ebitdPerShareTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_ebitdPerShareTTM = jsonGetDouble(ptMetric, _T("ebitdPerShareTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_epsBasicExclExtraItemsAnnual = jsonGetDouble(ptMetric, _T("epsBasicExclExtraItemsAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_epsBasicExclExtraItemsAnnual = jsonGetDouble(ptMetric, _T("epsBasicExclExtraItemsAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_epsBasicExclExtraItemsTTM = jsonGetDouble(ptMetric, _T("epsBasicExclExtraItemsTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_epsBasicExclExtraItemsTTM = jsonGetDouble(ptMetric, _T("epsBasicExclExtraItemsTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_epsExclExtraItemsAnnual = jsonGetDouble(ptMetric, _T("epsExclExtraItemsAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_epsExclExtraItemsAnnual = jsonGetDouble(ptMetric, _T("epsExclExtraItemsAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_epsExclExtraItemsTTM = jsonGetDouble(ptMetric, _T("epsExclExtraItemsTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_epsExclExtraItemsTTM = jsonGetDouble(ptMetric, _T("epsExclExtraItemsTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_epsGrowth3Y = jsonGetDouble(ptMetric, _T("epsGrowth3Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_epsGrowth3Y = jsonGetDouble(ptMetric, _T("epsGrowth3Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_epsGrowth5Y = jsonGetDouble(ptMetric, _T("epsGrowth5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_epsGrowth5Y = jsonGetDouble(ptMetric, _T("epsGrowth5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_epsGrowthQuarterlyYoy = jsonGetDouble(ptMetric, _T("epsGrowthQuarterlyYoy")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_epsGrowthQuarterlyYoy = jsonGetDouble(ptMetric, _T("epsGrowthQuarterlyYoy")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_epsGrowthTTMYoy = jsonGetDouble(ptMetric, _T("epsGrowthTTMYoy")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_epsGrowthTTMYoy = jsonGetDouble(ptMetric, _T("epsGrowthTTMYoy")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_epsInclExtraItemsAnnual = jsonGetDouble(ptMetric, _T("epsInclExtraItemsAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_epsInclExtraItemsAnnual = jsonGetDouble(ptMetric, _T("epsInclExtraItemsAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_epsInclExtraItemsTTM = jsonGetDouble(ptMetric, _T("epsInclExtraItemsTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_epsInclExtraItemsTTM = jsonGetDouble(ptMetric, _T("epsInclExtraItemsTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_epsNormalizedAnnual = jsonGetDouble(ptMetric, _T("epsNormalizedAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_epsNormalizedAnnual = jsonGetDouble(ptMetric, _T("epsNormalizedAnnual")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_focfCagr5Y = jsonGetDouble(ptMetric, _T("focfCagr5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_focfCagr5Y = jsonGetDouble(ptMetric, _T("focfCagr5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_freeCashFlowAnnual = jsonGetDouble(ptMetric, _T("freeCashFlowAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_freeCashFlowAnnual = jsonGetDouble(ptMetric, _T("freeCashFlowAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_freeCashFlowPerShareTTM = jsonGetDouble(ptMetric, _T("freeCashFlowPerShareTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_freeCashFlowPerShareTTM = jsonGetDouble(ptMetric, _T("freeCashFlowPerShareTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_freeCashFlowTTM = jsonGetDouble(ptMetric, _T("freeCashFlowTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_freeCashFlowTTM = jsonGetDouble(ptMetric, _T("freeCashFlowTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_freeOperatingCashFlow_revenue5Y = jsonGetDouble(ptMetric, _T("freeOperatingCashFlow/revenue5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_freeOperatingCashFlow_revenue5Y = jsonGetDouble(ptMetric, _T("freeOperatingCashFlow/revenue5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_freeOperatingCashFlow_revenueTTM = jsonGetDouble(ptMetric, _T("freeOperatingCashFlow/revenueTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_freeOperatingCashFlow_revenueTTM = jsonGetDouble(ptMetric, _T("freeOperatingCashFlow/revenueTTM")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_grossMargin5Y = jsonGetDouble(ptMetric, _T("grossMargin5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_grossMargin5Y = jsonGetDouble(ptMetric, _T("grossMargin5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_grossMarginAnnual = jsonGetDouble(ptMetric, _T("grossMarginAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_grossMarginAnnual = jsonGetDouble(ptMetric, _T("grossMarginAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_grossMarginTTM = jsonGetDouble(ptMetric, _T("grossMarginTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_grossMarginTTM = jsonGetDouble(ptMetric, _T("grossMarginTTM")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_inventoryTurnoverAnnual = jsonGetDouble(ptMetric, _T("inventoryTurnoverAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_inventoryTurnoverAnnual = jsonGetDouble(ptMetric, _T("inventoryTurnoverAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_inventoryTurnoverTTM = jsonGetDouble(ptMetric, _T("inventoryTurnoverTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_inventoryTurnoverTTM = jsonGetDouble(ptMetric, _T("inventoryTurnoverTTM")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_longTermDebt_equityAnnual = jsonGetDouble(ptMetric, _T("longTermDebt/equityAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_longTermDebt_equityAnnual = jsonGetDouble(ptMetric, _T("longTermDebt/equityAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_longTermDebt_equityQuarterly = jsonGetDouble(ptMetric, _T("longTermDebt/equityQuarterly")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_longTermDebt_equityQuarterly = jsonGetDouble(ptMetric, _T("longTermDebt/equityQuarterly")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_marketCapitalization = jsonGetDouble(ptMetric, _T("marketCapitalization")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_marketCapitalization = jsonGetDouble(ptMetric, _T("marketCapitalization")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_monthToDatePriceReturnDaily = jsonGetDouble(ptMetric, _T("monthToDatePriceReturnDaily")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_monthToDatePriceReturnDaily = jsonGetDouble(ptMetric, _T("monthToDatePriceReturnDaily")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_netDebtAnnual = jsonGetDouble(ptMetric, _T("netDebtAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_netDebtAnnual = jsonGetDouble(ptMetric, _T("netDebtAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_netDebtInterim = jsonGetDouble(ptMetric, _T("netDebtInterim")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_netDebtInterim = jsonGetDouble(ptMetric, _T("netDebtInterim")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_netIncomeEmployeeAnnual = jsonGetDouble(ptMetric, _T("netIncomeEmployeeAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_netIncomeEmployeeAnnual = jsonGetDouble(ptMetric, _T("netIncomeEmployeeAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_netIncomeEmployeeTTM = jsonGetDouble(ptMetric, _T("netIncomeEmployeeTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_netIncomeEmployeeTTM = jsonGetDouble(ptMetric, _T("netIncomeEmployeeTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_netInterestCoverageAnnual = jsonGetDouble(ptMetric, _T("netInterestCoverageAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_netInterestCoverageAnnual = jsonGetDouble(ptMetric, _T("netInterestCoverageAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_netInterestCoverageTTM = jsonGetDouble(ptMetric, _T("netInterestCoverageTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_netInterestCoverageTTM = jsonGetDouble(ptMetric, _T("netInterestCoverageTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_netMarginGrowth5Y = jsonGetDouble(ptMetric, _T("netMarginGrowth5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_netMarginGrowth5Y = jsonGetDouble(ptMetric, _T("netMarginGrowth5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_netProfitMargin5Y = jsonGetDouble(ptMetric, _T("netProfitMargin5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_netProfitMargin5Y = jsonGetDouble(ptMetric, _T("netProfitMargin5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_netProfitMarginAnnual = jsonGetDouble(ptMetric, _T("netProfitMarginAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_netProfitMarginAnnual = jsonGetDouble(ptMetric, _T("netProfitMarginAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_netProfitMarginTTM = jsonGetDouble(ptMetric, _T("netProfitMarginTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_netProfitMarginTTM = jsonGetDouble(ptMetric, _T("netProfitMarginTTM")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_payoutRatioAnnual = jsonGetDouble(ptMetric, _T("payoutRatioAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_payoutRatioAnnual = jsonGetDouble(ptMetric, _T("payoutRatioAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_payoutRatioTTM = jsonGetDouble(ptMetric, _T("payoutRatioTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_payoutRatioTTM = jsonGetDouble(ptMetric, _T("payoutRatioTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_pbAnnual = jsonGetDouble(ptMetric, _T("pbAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_pbAnnual = jsonGetDouble(ptMetric, _T("pbAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_pbQuarterly = jsonGetDouble(ptMetric, _T("pbQuarterly")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_pbQuarterly = jsonGetDouble(ptMetric, _T("pbQuarterly")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_pcfShareTTM = jsonGetDouble(ptMetric, _T("pcfShareTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_pcfShareTTM = jsonGetDouble(ptMetric, _T("pcfShareTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_peBasicExclExtraTTM = jsonGetDouble(ptMetric, _T("peBasicExclExtraTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_peBasicExclExtraTTM = jsonGetDouble(ptMetric, _T("peBasicExclExtraTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_peExclExtraAnnual = jsonGetDouble(ptMetric, _T("peExclExtraAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_peExclExtraAnnual = jsonGetDouble(ptMetric, _T("peExclExtraAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_peExclExtraHighTTM = jsonGetDouble(ptMetric, _T("peExclExtraHighTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_peExclExtraHighTTM = jsonGetDouble(ptMetric, _T("peExclExtraHighTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_peExclExtraTTM = jsonGetDouble(ptMetric, _T("peExclExtraTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_peExclExtraTTM = jsonGetDouble(ptMetric, _T("peExclExtraTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_peExclLowTTM = jsonGetDouble(ptMetric, _T("peExclLowTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_peExclLowTTM = jsonGetDouble(ptMetric, _T("peExclLowTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_peInclExtraTTM = jsonGetDouble(ptMetric, _T("peInclExtraTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_peInclExtraTTM = jsonGetDouble(ptMetric, _T("peInclExtraTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_peNormalizedAnnual = jsonGetDouble(ptMetric, _T("peNormalizedAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_peNormalizedAnnual = jsonGetDouble(ptMetric, _T("peNormalizedAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_pfcfShareAnnual = jsonGetDouble(ptMetric, _T("pfcfShareAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_pfcfShareAnnual = jsonGetDouble(ptMetric, _T("pfcfShareAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_pfcfShareTTM = jsonGetDouble(ptMetric, _T("pfcfShareTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_pfcfShareTTM = jsonGetDouble(ptMetric, _T("pfcfShareTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_pretaxMargin5Y = jsonGetDouble(ptMetric, _T("pretaxMargin5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_pretaxMargin5Y = jsonGetDouble(ptMetric, _T("pretaxMargin5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_pretaxMarginAnnual = jsonGetDouble(ptMetric, _T("pretaxMarginAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_pretaxMarginAnnual = jsonGetDouble(ptMetric, _T("pretaxMarginAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_pretaxMarginTTM = jsonGetDouble(ptMetric, _T("pretaxMarginTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_pretaxMarginTTM = jsonGetDouble(ptMetric, _T("pretaxMarginTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_priceRelativeToSP50013Week = jsonGetDouble(ptMetric, _T("priceRelativeToS&P50013Week")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_priceRelativeToSP50013Week = jsonGetDouble(ptMetric, _T("priceRelativeToS&P50013Week")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_priceRelativeToSP50026Week = jsonGetDouble(ptMetric, _T("priceRelativeToS&P50026Week")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_priceRelativeToSP50026Week = jsonGetDouble(ptMetric, _T("priceRelativeToS&P50026Week")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_priceRelativeToSP5004Week = jsonGetDouble(ptMetric, _T("priceRelativeToS&P5004Week")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_priceRelativeToSP5004Week = jsonGetDouble(ptMetric, _T("priceRelativeToS&P5004Week")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_priceRelativeToSP50052Week = jsonGetDouble(ptMetric, _T("priceRelativeToS&P50052Week")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_priceRelativeToSP50052Week = jsonGetDouble(ptMetric, _T("priceRelativeToS&P50052Week")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_priceRelativeToSP500Ytd = jsonGetDouble(ptMetric, _T("priceRelativeToS&P500Ytd")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_priceRelativeToSP500Ytd = jsonGetDouble(ptMetric, _T("priceRelativeToS&P500Ytd")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_psAnnual = jsonGetDouble(ptMetric, _T("psAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_psAnnual = jsonGetDouble(ptMetric, _T("psAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_psTTM = jsonGetDouble(ptMetric, _T("psTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_psTTM = jsonGetDouble(ptMetric, _T("psTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_ptbvAnnual = jsonGetDouble(ptMetric, _T("ptbvAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_ptbvAnnual = jsonGetDouble(ptMetric, _T("ptbvAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_ptbvQuarterly = jsonGetDouble(ptMetric, _T("ptbvQuarterly")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_ptbvQuarterly = jsonGetDouble(ptMetric, _T("ptbvQuarterly")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_quickRatioAnnual = jsonGetDouble(ptMetric, _T("quickRatioAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_quickRatioAnnual = jsonGetDouble(ptMetric, _T("quickRatioAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_quickRatioQuarterly = jsonGetDouble(ptMetric, _T("quickRatioQuarterly")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_quickRatioQuarterly = jsonGetDouble(ptMetric, _T("quickRatioQuarterly")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_receivablesTurnoverAnnual = jsonGetDouble(ptMetric, _T("receivablesTurnoverAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_receivablesTurnoverAnnual = jsonGetDouble(ptMetric, _T("receivablesTurnoverAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_receivablesTurnoverTTM = jsonGetDouble(ptMetric, _T("receivablesTurnoverTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_receivablesTurnoverTTM = jsonGetDouble(ptMetric, _T("receivablesTurnoverTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_revenueEmployeeAnnual = jsonGetDouble(ptMetric, _T("revenueEmployeeAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_revenueEmployeeAnnual = jsonGetDouble(ptMetric, _T("revenueEmployeeAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_revenueEmployeeTTM = jsonGetDouble(ptMetric, _T("revenueEmployeeTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_revenueEmployeeTTM = jsonGetDouble(ptMetric, _T("revenueEmployeeTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_revenueGrowth3Y = jsonGetDouble(ptMetric, _T("revenueGrowth3Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_revenueGrowth3Y = jsonGetDouble(ptMetric, _T("revenueGrowth3Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_revenueGrowth5Y = jsonGetDouble(ptMetric, _T("revenueGrowth5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_revenueGrowth5Y = jsonGetDouble(ptMetric, _T("revenueGrowth5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_revenueGrowthQuarterlyYoy = jsonGetDouble(ptMetric, _T("revenueGrowthQuarterlyYoy")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_revenueGrowthQuarterlyYoy = jsonGetDouble(ptMetric, _T("revenueGrowthQuarterlyYoy")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_revenueGrowthTTMYoy = jsonGetDouble(ptMetric, _T("revenueGrowthTTMYoy")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_revenueGrowthTTMYoy = jsonGetDouble(ptMetric, _T("revenueGrowthTTMYoy")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_revenuePerShareAnnual = jsonGetDouble(ptMetric, _T("revenuePerShareAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_revenuePerShareAnnual = jsonGetDouble(ptMetric, _T("revenuePerShareAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_revenuePerShareTTM = jsonGetDouble(ptMetric, _T("revenuePerShareTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_revenuePerShareTTM = jsonGetDouble(ptMetric, _T("revenuePerShareTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_revenueShareGrowth5Y = jsonGetDouble(ptMetric, _T("revenueShareGrowth5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_revenueShareGrowth5Y = jsonGetDouble(ptMetric, _T("revenueShareGrowth5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_roaa5Y = jsonGetDouble(ptMetric, _T("roaa5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_roaa5Y = jsonGetDouble(ptMetric, _T("roaa5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_roae5Y = jsonGetDouble(ptMetric, _T("roae5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_roae5Y = jsonGetDouble(ptMetric, _T("roae5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_roaeTTM = jsonGetDouble(ptMetric, _T("roaeTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_roaeTTM = jsonGetDouble(ptMetric, _T("roaeTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_roaRfy = jsonGetDouble(ptMetric, _T("roaRfy")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_roaRfy = jsonGetDouble(ptMetric, _T("roaRfy")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_roeRfy = jsonGetDouble(ptMetric, _T("roeRfy")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_roeRfy = jsonGetDouble(ptMetric, _T("roeRfy")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_roeTTM = jsonGetDouble(ptMetric, _T("roeTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_roeTTM = jsonGetDouble(ptMetric, _T("roeTTM")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_roi5Y = jsonGetDouble(ptMetric, _T("roi5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_roi5Y = jsonGetDouble(ptMetric, _T("roi5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_roiAnnual = jsonGetDouble(ptMetric, _T("roiAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_roiAnnual = jsonGetDouble(ptMetric, _T("roiAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_roiTTM = jsonGetDouble(ptMetric, _T("roiTTM")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_roiTTM = jsonGetDouble(ptMetric, _T("roiTTM")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_tangibleBookValuePerShareAnnual = jsonGetDouble(ptMetric, _T("tangibleBookValuePerShareAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_tangibleBookValuePerShareAnnual = jsonGetDouble(ptMetric, _T("tangibleBookValuePerShareAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_tangibleBookValuePerShareQuarterly = jsonGetDouble(ptMetric, _T("tangibleBookValuePerShareQuarterly")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_tangibleBookValuePerShareQuarterly = jsonGetDouble(ptMetric, _T("tangibleBookValuePerShareQuarterly")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_tbvCagr5Y = jsonGetDouble(ptMetric, _T("tbvCagr5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_tbvCagr5Y = jsonGetDouble(ptMetric, _T("tbvCagr5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_totalDebtCagr5Y = jsonGetDouble(ptMetric, _T("totalDebtCagr5Y")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_totalDebtCagr5Y = jsonGetDouble(ptMetric, _T("totalDebtCagr5Y")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_totalDebt_totalEquityAnnual = jsonGetDouble(ptMetric, _T("totalDebt/totalEquityAnnual")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_totalDebt_totalEquityAnnual = jsonGetDouble(ptMetric, _T("totalDebt/totalEquityAnnual")); } catch (json::exception&) {
 		}
-		try { pBasicFinancial->m_totalDebt_totalEquityQuarterly = jsonGetDouble(ptMetric, _T("totalDebt/totalEquityQuarterly")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_totalDebt_totalEquityQuarterly = jsonGetDouble(ptMetric, _T("totalDebt/totalEquityQuarterly")); } catch (json::exception&) {
 		}
 
-		try { pBasicFinancial->m_yearToDatePriceReturnDaily = jsonGetDouble(ptMetric, _T("yearToDatePriceReturnDaily")); }
-		catch (json::exception&) {
+		try { pBasicFinancial->m_yearToDatePriceReturnDaily = jsonGetDouble(ptMetric, _T("yearToDatePriceReturnDaily")); } catch (json::exception&) {
 		}
 
 		s = js.at(_T("metricType")); // 目前共五种类型："all", "perShare", "marketCapitalization","metric","eps"
@@ -678,8 +552,7 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 		if (!ptSeries.empty()) {
 			bool fAnnualEmpty = false;
 			bool fQuarterlyEmpty = false;
-			try { ptAnnual = jsonGetChild(&ptSeries, _T("annual")); }
-			catch (json::exception&) { fAnnualEmpty = true; }
+			try { ptAnnual = jsonGetChild(&ptSeries, _T("annual")); } catch (json::exception&) { fAnnualEmpty = true; }
 			if (!fAnnualEmpty && !ptAnnual.empty()) {
 				GetSeasonData(&ptAnnual, pBasicFinancial->m_annual.m_cashRatio, _T("cashRatio"));
 				GetSeasonData(&ptAnnual, pBasicFinancial->m_annual.m_currentRatio, _T("currentRatio"));
@@ -701,8 +574,7 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 				GetSeasonData(&ptAnnual, pBasicFinancial->m_annual.m_totalDebtToTotalCapital, _T("totalDebtToTotalCapital"));
 				GetSeasonData(&ptAnnual, pBasicFinancial->m_annual.m_totalRatio, _T("totalRatio"));
 			}
-			try { ptQuarterly = jsonGetChild(&ptSeries, _T("quarterly")); }
-			catch (json::exception&) { fQuarterlyEmpty = true; }
+			try { ptQuarterly = jsonGetChild(&ptSeries, _T("quarterly")); } catch (json::exception&) { fQuarterlyEmpty = true; }
 			if (!fQuarterlyEmpty && !ptQuarterly.empty()) {
 				GetSeasonData(&ptQuarterly, pBasicFinancial->m_quarter.m_cashRatio, _T("cashRatio"));
 				GetSeasonData(&ptQuarterly, pBasicFinancial->m_quarter.m_currentRatio, _T("currentRatio"));
@@ -725,15 +597,14 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 				GetSeasonData(&ptQuarterly, pBasicFinancial->m_quarter.m_totalRatio, _T("totalRatio"));
 			}
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock basic financials "), e.what());
 		return nullptr;
 	}
 	return pBasicFinancial;
 }
 
-bool CProductFinnhubCompanyBasicFinancial::GetSeasonData(json* pjs, vector<CValueOfPeriod>& vData, const char* szMsg) {
+void CProductFinnhubCompanyBasicFinancial::GetSeasonData(json* pjs, vector<CValueOfPeriod>& vData, const char* szMsg) {
 	try {
 		json ptChild;
 		ptChild = jsonGetChild(pjs, szMsg);
@@ -742,23 +613,20 @@ bool CProductFinnhubCompanyBasicFinancial::GetSeasonData(json* pjs, vector<CValu
 		for (size_t i = 0; i < vDataTemp.size(); i++) {
 			vData.push_back(vDataTemp[i]);
 		}
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		// do nothing
-		return false;
 	}
-	return true;
 }
 
 //
 // [{"period":"2021-03-31", "v" : -2.8522}, { "period":"2020-12-31","v" : -0.6159 }]
 //
-bool CProductFinnhubCompanyBasicFinancial::Parse(json* pjs, vector<CValueOfPeriod>& vecData) {
+void CProductFinnhubCompanyBasicFinancial::Parse(json* pjs, vector<CValueOfPeriod>& vecData) {
 	try {
 		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
-			CValueOfPeriod sv{0, 0};
+			CValueOfPeriod sv{ 0, 0 };
 			string sDate;
-			int year{0}, month{0}, day{0};
+			int year{ 0 }, month{ 0 }, day{ 0 };
 			sDate = jsonGetString(it, _T("period"));
 			if (!sDate.empty()) {
 				static_cast<void>(sscanf_s(sDate.c_str(), "%04d-%02d-%02d", &year, &month, &day));
@@ -767,10 +635,7 @@ bool CProductFinnhubCompanyBasicFinancial::Parse(json* pjs, vector<CValueOfPerio
 				vecData.push_back(sv);
 			}
 		}
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		// just skip
 	}
-
-	return true;
 }

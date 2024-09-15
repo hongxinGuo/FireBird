@@ -77,6 +77,9 @@ enum_ErrorMessageData CSinaRTDataSource::IsAErrorMessageData(const CWebDataPtr& 
 	switch (m_eErrorMessageData) {
 	case ERROR_SINA_HEADER_NEEDED__:
 		break;
+	case ERROR_FINNHUB_NOT_HANDLED__:
+		ReportErrorNotHandled(_T("sina data source error not handled"));
+		break;
 	case ERROR_NO_ERROR__:
 		break;
 	default:

@@ -14,8 +14,8 @@ public:
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
 	CFinnhubStockBasicFinancialPtr ParseFinnhubStockBasicFinancial(CWebDataPtr pWebData);
-	bool GetSeasonData(json* pjs, vector<CValueOfPeriod>& vData, const char* szMsg);
-	bool Parse(json* pjs, vector<CValueOfPeriod>& vecData);
+	void GetSeasonData(json* pjs, vector<CValueOfPeriod>& vData, const char* szMsg);
+	void Parse(json* pjs, vector<CValueOfPeriod>& vecData);
 };
 
 using CProductFinnhubCompanyBasicFinancialPtr = shared_ptr<CProductFinnhubCompanyBasicFinancial>;
