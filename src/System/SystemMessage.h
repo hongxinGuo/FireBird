@@ -115,26 +115,6 @@ public:
 
 	void DisplayDayLineInfo(COutputList* pOutputList, const CString& strTime) { m_DayLineInformation.Display(pOutputList, strTime); }
 
-	void PushTransactionMessage(const CString& str) { m_Transaction.PushMessage(str); }
-	CString PopTransactionMessage() { return m_Transaction.PopMessage(); }
-	size_t TransactionInfoSize() const { return m_Transaction.Size(); }
-	void DisplayTransaction(COutputList* pOutputList, const CString& strTime) { m_Transaction.Display(pOutputList, strTime); }
-
-	void PushCancelSellMessage(const CString& str) { m_CancelSell.PushMessage(str); }
-	CString PopCancelSellMessage() { return m_CancelSell.PopMessage(); }
-	size_t CancelSellInfoSize() const { return m_CancelSell.Size(); }
-	void DisplayCancelSell(COutputList* pOutputList, const CString& strTime) { m_CancelSell.Display(pOutputList, strTime); }
-
-	void PushCancelBuyMessage(const CString& str) { m_CancelBuy.PushMessage(str); }
-	CString PopCancelBuyMessage() { return m_CancelBuy.PopMessage(); }
-	size_t CancelBuyInfoSize() const { return m_CancelBuy.Size(); }
-	void DisplayCancelBuy(COutputList* pOutputList, const CString& strTime) { m_CancelBuy.Display(pOutputList, strTime); }
-
-	void PushTrace2Message(const CString& str) { m_Trace2.PushMessage(str); }
-	CString PopTrace2Message() { return m_Trace2.PopMessage(); }
-	size_t Trace2Size() const { return m_Trace2.Size(); }
-	void DisplayTrace2(COutputList* pOutputList, const CString& strTime) { m_Trace2.Display(pOutputList, strTime); }
-
 	void PushWebSocketInfoMessage(const CString& str) { m_WebSocketInfo.PushMessage(str); }
 	CString PopWebSocketInfoMessage() { return m_WebSocketInfo.PopMessage(); }
 	size_t WebSocketInfoSize() const { return m_WebSocketInfo.Size(); }
@@ -209,8 +189,8 @@ protected:
 	CString m_strCurrentTiingoWebSocketForex;
 	CString m_strCurrentTiingoWebSocketCrypto;
 
-	atomic_long m_lScheduleTaskTime{0};
-	atomic_long m_lScheduleTaskTimePerSecond{0};
+	atomic_long m_lScheduleTaskTime{ 0 };
+	atomic_long m_lScheduleTaskTimePerSecond{ 0 };
 };
 
 extern CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在全局变量初始化时的前面，其他全局变量初始化时用到此变量。

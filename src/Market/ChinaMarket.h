@@ -70,8 +70,6 @@ public:
 	bool TaskUpdateOptionDB(long lCurrentTime);
 	bool TaskUpdateChosenStockDB();
 
-	bool TaskShowCurrentTransaction() const;
-
 	bool TaskUpdateStockSection(); //
 
 	bool ProcessDayLine();

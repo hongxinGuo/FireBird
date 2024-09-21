@@ -48,8 +48,7 @@ shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExc
 			str = s.c_str();
 			pvExchange->push_back(str);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Exchange "), e.what());
 		return pvExchange;
 	}
@@ -58,5 +57,5 @@ shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExc
 
 void CProductFinnhubCryptoExchange::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
-	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->m_fUpdateCryptoExchange = false;
+	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->SetUpdateCryptoExchange(false);
 }

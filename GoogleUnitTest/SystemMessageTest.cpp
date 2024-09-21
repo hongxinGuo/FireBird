@@ -134,49 +134,12 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("TEST"));
 	}
 
-	TEST_F(SystemMessageTest, TestGetFindDequeSize) {
-		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_EQ(gl_systemMessage.TransactionInfoSize(), 0);
-		gl_systemMessage.PushTransactionMessage(_T("TEST"));
-		EXPECT_EQ(gl_systemMessage.TransactionInfoSize(), 1);
-		const CString str = gl_systemMessage.PopTransactionMessage();
-		EXPECT_EQ(gl_systemMessage.TransactionInfoSize(), 0);
-		EXPECT_STREQ(str, _T("TEST"));
-	}
-
-	TEST_F(SystemMessageTest, TestGetCancelSellDequeSize) {
-		EXPECT_EQ(gl_systemMessage.CancelSellInfoSize(), 0);
-		gl_systemMessage.PushCancelSellMessage(_T("TEST"));
-		EXPECT_EQ(gl_systemMessage.CancelSellInfoSize(), 1);
-		const CString str = gl_systemMessage.PopCancelSellMessage();
-		EXPECT_EQ(gl_systemMessage.CancelSellInfoSize(), 0);
-		EXPECT_STREQ(str, _T("TEST"));
-	}
-
-	TEST_F(SystemMessageTest, TestGetCancelBuyDequeSize) {
-		EXPECT_EQ(gl_systemMessage.CancelBuyInfoSize(), 0);
-		gl_systemMessage.PushCancelBuyMessage(_T("TEST"));
-		EXPECT_EQ(gl_systemMessage.CancelBuyInfoSize(), 1);
-		const CString str = gl_systemMessage.PopCancelBuyMessage();
-		EXPECT_EQ(gl_systemMessage.CancelBuyInfoSize(), 0);
-		EXPECT_STREQ(str, _T("TEST"));
-	}
-
 	TEST_F(SystemMessageTest, TestGetWebSocketInfoDequeSize) {
 		EXPECT_EQ(gl_systemMessage.WebSocketInfoSize(), 0);
 		gl_systemMessage.PushWebSocketInfoMessage(_T("TEST"));
 		EXPECT_EQ(gl_systemMessage.WebSocketInfoSize(), 1);
 		const CString str = gl_systemMessage.PopWebSocketInfoMessage();
 		EXPECT_EQ(gl_systemMessage.WebSocketInfoSize(), 0);
-		EXPECT_STREQ(str, _T("TEST"));
-	}
-
-	TEST_F(SystemMessageTest, TestGetTrace2DequeSize) {
-		EXPECT_EQ(gl_systemMessage.Trace2Size(), 0);
-		gl_systemMessage.PushTrace2Message(_T("TEST"));
-		EXPECT_EQ(gl_systemMessage.Trace2Size(), 1);
-		const CString str = gl_systemMessage.PopTrace2Message();
-		EXPECT_EQ(gl_systemMessage.Trace2Size(), 0);
 		EXPECT_STREQ(str, _T("TEST"));
 	}
 
@@ -236,5 +199,21 @@ namespace FireBirdTest {
 	TEST_F(SystemMessageTest, TestGetCurrentTiingoWebSocketCrypto) {
 		gl_systemMessage.SetCurrentTiingoWebSocketCrypto(_T("600000.SS"));
 		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketCrypto(), _T("600000.SS"));
+	}
+
+	TEST_F(SystemMessageTest, TestIncreaseScheduleTaskTime) {
+		EXPECT_EQ(gl_systemMessage.GetScheduleTaskTimePerSecond(), 0);
+
+		gl_systemMessage.IncreaseScheduleTaskTime(100);
+		gl_systemMessage.CalcScheduleTaskTimePerSecond();
+
+		EXPECT_EQ(gl_systemMessage.GetScheduleTaskTimePerSecond(), 100);
+
+		gl_systemMessage.IncreaseScheduleTaskTime(100);
+		gl_systemMessage.CalcScheduleTaskTimePerSecond();
+		EXPECT_EQ(gl_systemMessage.GetScheduleTaskTimePerSecond(), 100) << "m_lScheduleTaskTime be reset";
+
+		gl_systemMessage.CalcScheduleTaskTimePerSecond();
+		EXPECT_EQ(gl_systemMessage.GetScheduleTaskTimePerSecond(), 0) << "m_lScheduleTaskTime be reset";
 	}
 }

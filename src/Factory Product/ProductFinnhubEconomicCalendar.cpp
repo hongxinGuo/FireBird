@@ -59,8 +59,7 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalen
 			pEconomicCalendar->m_strUnit = s.c_str();
 			pvEconomicCalendar->push_back(pEconomicCalendar);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Economic Calendar "), e.what());
 	}
 	return pvEconomicCalendar;
@@ -68,7 +67,7 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalen
 void CProductFinnhubEconomicCalendar::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
 
-	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->m_fUpdateEconomicCalendar = false;
+	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->SetUpdateEconomicCalendar(false);
 	if (IsNoRightToAccess()) {
 		gl_systemConfiguration.ChangeFinnhubAccountTypeToFree();
 	}

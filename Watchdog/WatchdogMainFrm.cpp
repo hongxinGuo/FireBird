@@ -142,7 +142,6 @@ int CWatchdogMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	}
 
 	// enable menu personalization (most-recently used commands)
-	// TODO: define your own basic commands, ensuring that each pulldown menu has at least one basic command.
 	CList<UINT, UINT> lstBasicCommands;
 
 	lstBasicCommands.AddTail(ID_FILE_NEW);
@@ -186,7 +185,6 @@ int CWatchdogMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 BOOL CWatchdogMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 	if (!CMDIFrameWndEx::PreCreateWindow(cs))
 		return FALSE;
-	// TODO: Modify the Window class or styles here by modifying the CREATESTRUCT cs
 
 	return TRUE;
 }

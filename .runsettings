@@ -241,14 +241,18 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdDoc.cpp</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdDoc.h</Source>
+								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\ChildFrm.cpp</Source>
+								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\ChildFrm.h</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBird.cpp</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBird.h</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdView.cpp</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdView.h</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\OutputWnd.cpp</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\OutputWnd.h</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertiesWnd.cpp</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertiesWnd.h</Source>
+                                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertiesWnd.cpp</Source>
+                                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertiesWnd.h</Source>
+                                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertyRealTimeDataWnd.cpp</Source>
+                                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\PropertyRealTimeDataWnd.h</Source>
 							</Exclude>
 						</Sources>
 

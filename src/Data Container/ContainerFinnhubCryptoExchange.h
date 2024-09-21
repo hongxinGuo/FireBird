@@ -20,13 +20,10 @@ public:
 	bool LoadDB();
 	bool UpdateDB();
 
-	bool IsNeedUpdate() const noexcept {
-		if (m_lLastTotalCryptoExchange < m_vCryptoExchange.size()) return true;
-		return false;
-	}
+	bool IsNeedUpdate() const noexcept { return m_lLastTotalCryptoExchange < m_vCryptoExchange.size(); }
 
 protected:
 	vectorString m_vCryptoExchange;
 	map<string, size_t> m_mapCryptoExchange;
-	long m_lLastTotalCryptoExchange;
+	long m_lLastTotalCryptoExchange{ 0 };
 };

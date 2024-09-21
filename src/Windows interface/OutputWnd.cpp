@@ -40,15 +40,11 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	if (!m_wndOutputInformation.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
 		!m_wndOutputDayLineInfo.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
-		!m_wndOutputTransaction.Create(dwStyle, rectDummy, &m_wndTabs, 4) ||
-		!m_wndOutputCancelSell.Create(dwStyle, rectDummy, &m_wndTabs, 5) ||
-		!m_wndOutputCancelBuy.Create(dwStyle, rectDummy, &m_wndTabs, 6) ||
-		!m_wndOutputTrace2.Create(dwStyle, rectDummy, &m_wndTabs, 7) ||
-		!m_wndOutputWebSocketInfo.Create(dwStyle, rectDummy, &m_wndTabs, 8) ||
-		!m_wndOutputInnerSystemInformation.Create(dwStyle, rectDummy, &m_wndTabs, 9) ||
-		!m_wndChinaMarketTaskQueue.Create(dwStyle, rectDummy, &m_wndTabs, 10) ||
-		!m_wndWorldMarketTaskQueue.Create(dwStyle, rectDummy, &m_wndTabs, 11) ||
-		!m_wndErrorMessage.Create(dwStyle, rectDummy, &m_wndTabs, 12)) {
+		!m_wndOutputWebSocketInfo.Create(dwStyle, rectDummy, &m_wndTabs, 4) ||
+		!m_wndOutputInnerSystemInformation.Create(dwStyle, rectDummy, &m_wndTabs, 5) ||
+		!m_wndChinaMarketTaskQueue.Create(dwStyle, rectDummy, &m_wndTabs, 6) ||
+		!m_wndWorldMarketTaskQueue.Create(dwStyle, rectDummy, &m_wndTabs, 7) ||
+		!m_wndErrorMessage.Create(dwStyle, rectDummy, &m_wndTabs, 8)) {
 		TRACE0("未能创建输出窗口\n");
 		return -1;      // 未能创建
 	}
@@ -57,40 +53,21 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	CString strTabName;
 
-	// 将列表窗口附加到选项卡:
-	BOOL bNameValid = strTabName.LoadString(IDS_INFORMATION_TAB);
-	ASSERT(bNameValid);
+	// 将列表窗口附加到选项卡。所有的串表必须有效。 
+	ASSERT(strTabName.LoadString(IDS_INFORMATION_TAB));
 	m_wndTabs.AddTab(&m_wndOutputInformation, strTabName, (UINT)0);
-	bNameValid = strTabName.LoadString(IDS_DAYLINE_INFO_TAB);
-	ASSERT(bNameValid);
+	ASSERT(strTabName.LoadString(IDS_DAYLINE_INFO_TAB));
 	m_wndTabs.AddTab(&m_wndOutputDayLineInfo, strTabName, (UINT)1);
-	bNameValid = strTabName.LoadString(IDS_CHINA_MARKET_TASK_QUEUE);
-	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndChinaMarketTaskQueue, strTabName, (UINT)2);  // 错误消息
-	bNameValid = strTabName.LoadString(IDS_WORLD_MARKET_TASK_QUEUE);
-	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndWorldMarketTaskQueue, strTabName, (UINT)3);  // 错误消息
-	bNameValid = strTabName.LoadString(IDS_TRANSACTION_TAB);
-	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputTransaction, strTabName, (UINT)4);
-	bNameValid = strTabName.LoadString(IDS_CANCEL_SELL_TAB);
-	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputCancelSell, strTabName, (UINT)5);
-	bNameValid = strTabName.LoadString(IDS_CANCEL_BUY_TAB);
-	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputCancelBuy, strTabName, (UINT)6);
-	bNameValid = strTabName.LoadString(IDS_TRACE2_TAB);
-	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputTrace2, strTabName, (UINT)7);
-	bNameValid = strTabName.LoadString(IDS_WEB_SOCKET_INFO_TAB);
-	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputWebSocketInfo, strTabName, (UINT)8);
-	bNameValid = strTabName.LoadString(IDS_INNER_SYSTEM_INFORMATION_TAB2); // WebSocket消息
-	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputInnerSystemInformation, strTabName, (UINT)9); // 软件系统消息
-	bNameValid = strTabName.LoadString(IDS_ERROR_MESSAGE);
-	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)10);  // 错误消息
+	ASSERT(strTabName.LoadString(IDS_CHINA_MARKET_TASK_QUEUE)); //中国市场任务执行序列 
+	m_wndTabs.AddTab(&m_wndChinaMarketTaskQueue, strTabName, (UINT)2);
+	ASSERT(strTabName.LoadString(IDS_WORLD_MARKET_TASK_QUEUE));  //美国市场任务执行序列
+	m_wndTabs.AddTab(&m_wndWorldMarketTaskQueue, strTabName, (UINT)3);
+	ASSERT(strTabName.LoadString(IDS_WEB_SOCKET_INFO_TAB)); // WebSocket消息
+	m_wndTabs.AddTab(&m_wndOutputWebSocketInfo, strTabName, (UINT)4);
+	ASSERT(strTabName.LoadString(IDS_INNER_SYSTEM_INFORMATION_TAB2)); // 软件系统消息
+	m_wndTabs.AddTab(&m_wndOutputInnerSystemInformation, strTabName, (UINT)5);
+	ASSERT(strTabName.LoadString(IDS_ERROR_MESSAGE)); // 错误消息
+	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)6);
 
 	// 设置500毫秒每次的软调度
 	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(3), 500, nullptr);
@@ -128,10 +105,6 @@ void COutputWnd::AdjustHorzScroll(CListBox& wndListBox) {
 void COutputWnd::UpdateFonts() {
 	m_wndOutputInformation.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputDayLineInfo.SetFont(&afxGlobalData.fontRegular);
-	m_wndOutputTransaction.SetFont(&afxGlobalData.fontRegular);
-	m_wndOutputCancelSell.SetFont(&afxGlobalData.fontRegular);
-	m_wndOutputCancelBuy.SetFont(&afxGlobalData.fontRegular);
-	m_wndOutputTrace2.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputWebSocketInfo.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputInnerSystemInformation.SetFont(&afxGlobalData.fontRegular);
 	m_wndChinaMarketTaskQueue.SetFont(&afxGlobalData.fontRegular);
@@ -176,50 +149,6 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		gl_systemMessage.DisplayDayLineInfo(&m_wndOutputDayLineInfo, strTime);
 		if (fUpdate) {
 			m_wndOutputDayLineInfo.SetCurAtLastLine();
-		}
-	}
-
-	if (m_wndOutputTransaction.GetCount() > 10000) m_wndOutputTransaction.TruncateList(1000);
-	fUpdate = false;
-	if ((gl_systemMessage.TransactionInfoSize()) > 0) {
-		lCurrentPos = m_wndOutputTransaction.GetCurSel();
-		if (m_wndOutputTransaction.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayTransaction(&m_wndOutputTransaction, strTime);
-		if (fUpdate) {
-			m_wndOutputTransaction.SetCurAtLastLine();
-		}
-	}
-
-	if (m_wndOutputCancelSell.GetCount() > 10000) m_wndOutputCancelSell.TruncateList(1000);
-	fUpdate = false;
-	if ((gl_systemMessage.CancelSellInfoSize()) > 0) {
-		lCurrentPos = m_wndOutputCancelSell.GetCurSel();
-		if (m_wndOutputCancelSell.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayCancelSell(&m_wndOutputCancelSell, strTime);
-		if (fUpdate) {
-			m_wndOutputCancelSell.SetCurAtLastLine();
-		}
-	}
-
-	if (m_wndOutputCancelBuy.GetCount() > 10000) m_wndOutputCancelBuy.TruncateList(1000);
-	fUpdate = false;
-	if ((gl_systemMessage.CancelBuyInfoSize()) > 0) {
-		lCurrentPos = m_wndOutputCancelBuy.GetCurSel();
-		if (m_wndOutputCancelBuy.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayCancelBuy(&m_wndOutputCancelBuy, strTime);
-		if (fUpdate) {
-			m_wndOutputCancelBuy.SetCurAtLastLine();
-		}
-	}
-
-	if (m_wndOutputTrace2.GetCount() > 10000) m_wndOutputTrace2.TruncateList(1000);
-	fUpdate = false;
-	if ((gl_systemMessage.Trace2Size()) > 0) {
-		lCurrentPos = m_wndOutputTrace2.GetCurSel();
-		if (m_wndOutputTrace2.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayTrace2(&m_wndOutputTrace2, strTime);
-		if (fUpdate) {
-			m_wndOutputTrace2.SetCurAtLastLine();
 		}
 	}
 

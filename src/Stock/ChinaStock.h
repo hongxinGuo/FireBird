@@ -334,10 +334,6 @@ public:
 	void CheckBuyGuadan(const array<bool, 10>& fNeedCheck, int i);
 	void CalculateCanceledBuyVolume(INT64 lCurrentCanceledBuyVolume);
 	void CheckCurrentRTData() const;
-	void ShowCurrentTransaction();
-	void ShowCurrentInformationOfCancelingGuadan();
-	virtual void ReportGuadanTransaction();
-	virtual void ReportGuadan();
 
 	void PushRTData(const CWebRTDataPtr& pData) { m_qRTData.enqueue(pData); }
 	CWebRTDataPtr PopRTData() {

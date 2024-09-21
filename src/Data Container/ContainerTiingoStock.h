@@ -30,13 +30,10 @@ public:
 	bool UpdateDB();
 	bool LoadDB();
 
-	bool IsNeedUpdate() const noexcept {
-		if (m_lLastTotalTiingoStock < m_vTiingoStock.size()) return true;
-		return false;
-	}
+	bool IsNeedUpdate() const noexcept { return m_lLastTotalTiingoStock < m_vTiingoStock.size(); }
 
 protected:
 	vector<CTiingoStockPtr> m_vTiingoStock;
 	map<CString, size_t> m_mapTiingoStock;
-	long m_lLastTotalTiingoStock;
+	long m_lLastTotalTiingoStock{ 0 };
 };

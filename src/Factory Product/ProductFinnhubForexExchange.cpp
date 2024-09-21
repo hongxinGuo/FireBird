@@ -43,8 +43,7 @@ shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExcha
 			str = s.c_str();
 			pvExchange->push_back(str);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Exchange "), e.what());
 	}
 	return pvExchange;
@@ -52,5 +51,5 @@ shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExcha
 
 void CProductFinnhubForexExchange::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
-	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->m_fUpdateForexExchange = false;
+	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->SetUpdateForexExchange(false);
 }

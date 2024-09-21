@@ -53,8 +53,7 @@ CCountrysPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const C
 			pCountry->m_strCurrencyCode = s.c_str();
 			pvCountry->push_back(pCountry);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Country List "), e.what());
 		return pvCountry;
 	}
@@ -65,5 +64,5 @@ CCountrysPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const C
 
 void CProductFinnhubEconomicCountryList::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
-	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->m_fUpdateCountryList = false;
+	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->SetUpdateCountryList(false);
 }

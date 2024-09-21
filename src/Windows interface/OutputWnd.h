@@ -26,7 +26,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 protected:
-	int m_iLineNumber{10}; // 可显示行数,初始为10行
+	int m_iLineNumber{ 10 }; // 可显示行数,初始为10行
 
 public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -47,10 +47,6 @@ protected:
 	COutputList m_wndOutputDayLineInfo;
 	COutputList m_wndChinaMarketTaskQueue;
 	COutputList m_wndWorldMarketTaskQueue;
-	COutputList m_wndOutputTransaction;
-	COutputList m_wndOutputCancelSell;
-	COutputList m_wndOutputCancelBuy;
-	COutputList m_wndOutputTrace2;
 	COutputList m_wndOutputWebSocketInfo;
 	COutputList m_wndOutputInnerSystemInformation;
 	COutputList m_wndErrorMessage;
@@ -70,7 +66,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	time_t timeLast{0};
+	time_t timeLast{ 0 };
 
 public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);

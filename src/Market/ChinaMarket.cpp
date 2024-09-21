@@ -969,21 +969,6 @@ bool CChinaMarket::TaskUpdateChosenStockDB() {
 	return false;
 }
 
-bool CChinaMarket::TaskShowCurrentTransaction() const {
-	// 显示当前交易情况
-	const CChinaStockPtr pCurrentStock = GetCurrentStock();
-
-	if (pCurrentStock != nullptr) {
-		if (pCurrentStock->IsRTDataCalculated()) {
-			if (pCurrentStock->GetCurrentTransactionVolume() > 0) pCurrentStock->ReportGuadanTransaction();
-			pCurrentStock->ReportGuadan();
-			pCurrentStock->SetRTDataCalculated(false);
-		}
-	}
-
-	return true;
-}
-
 bool CChinaMarket::TaskUpdateStockSection() {
 	if (gl_dataContainerChinaStockSymbol.IsUpdateStockSection()) {
 		gl_runtime.background_executor()->post([] {

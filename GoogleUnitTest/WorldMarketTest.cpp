@@ -403,8 +403,7 @@ namespace FireBirdTest {
 
 		try {
 			gl_dataContainerFinnhubStock.UpdateProfileDB();
-		}
-		catch (std::exception& e) {
+		} catch (std::exception& e) {
 			EXPECT_TRUE(false) << e.what();
 		}
 		catch (CException* e) {
@@ -540,6 +539,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestUpdateTiingoStockDB) {
 		CSetTiingoStock setTiingoStock;
+		EXPECT_FALSE(gl_dataContainerTiingoStock.IsNeedUpdate());
 
 		const auto pTiingoStock = make_shared<CTiingoStock>();
 		pTiingoStock->m_fIsActive = true;
@@ -561,6 +561,8 @@ namespace FireBirdTest {
 
 		gl_dataContainerTiingoStock.Add(pTiingoStock);
 
+		EXPECT_TRUE(gl_dataContainerTiingoStock.IsNeedUpdate()) << "添加了一个股票";
+
 		gl_dataContainerTiingoStock.UpdateDB(); // 更新代码集
 
 		// 恢复原状
@@ -581,10 +583,12 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestUpdateForexExchangeDB) {
 		const CString strSymbol = _T("US.US.US");
 
+		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.IsNeedUpdate());
 		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.UpdateDB()) << "没有新Forex Exchange";
 
 		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.IsExchange(strSymbol)); // 确保是一个新股票代码
 		gl_dataContainerFinnhubForexExchange.Add(strSymbol);
+		EXPECT_TRUE(gl_dataContainerFinnhubForexExchange.IsNeedUpdate());
 		EXPECT_TRUE(gl_dataContainerFinnhubForexExchange.UpdateDB());
 
 		CSetFinnhubForexExchange setForexExchange;
@@ -605,10 +609,12 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestUpdateCryptoExchangeDB) {
 		const string sSymbol = _T("US.US.US");
 
+		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.IsNeedUpdate());
 		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.UpdateDB()) << "没有新Crypto Exchange";
 
 		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.IsExchange(sSymbol)); // 确保是一个新Crypto代码
 		gl_dataContainerFinnhubCryptoExchange.Add(sSymbol);
+		EXPECT_TRUE(gl_dataContainerFinnhubCryptoExchange.IsNeedUpdate());
 		EXPECT_TRUE(gl_dataContainerFinnhubCryptoExchange.UpdateDB());
 
 		CSetFinnhubCryptoExchange setCryptoExchange;

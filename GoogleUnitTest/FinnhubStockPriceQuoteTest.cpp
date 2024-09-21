@@ -83,6 +83,9 @@ namespace FireBirdTest {
 			m_pStock->SetOpen(0);
 			m_pStock->SetLastClose(0);
 			m_pStock->SetTransactionTime(0);
+			m_pStock->SetActive(false);
+			m_pStock->SetIPOStatus(_STOCK_NULL_);
+			m_pStock->SetUpdateProfileDB(false);
 			m_pWebData = pData->m_pData;
 			m_finnhubStockPriceQuote.CheckAccessRight(m_pWebData);
 
@@ -118,6 +121,10 @@ namespace FireBirdTest {
 		                         &finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
 
 	TEST_P(ProcessFinnhubStockQuoteTest, TestParseFinnhubStockQuote0) {
+		auto tt = gl_tUTCTime;
+		if (m_lIndex == 10) {
+			gl_tUTCTime = 1615507200;
+		}
 		m_finnhubStockPriceQuote.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // ¿ÕÊý¾Ý
@@ -145,6 +152,14 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pStock->GetOpen(), 120400);
 			EXPECT_EQ(m_pStock->GetLastClose(), 121960);
 			EXPECT_EQ(m_pStock->GetTransactionTime(), 1615507200);
+
+			EXPECT_TRUE(m_pStock->IsActive());
+			EXPECT_TRUE(m_pStock->IsIPOed());
+			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+
+		// »Ö¸´Ô­×´
+			m_pStock->SetUpdateProfileDB(false);
+			gl_tUTCTime = tt;
 			break;
 		default:
 			break;
