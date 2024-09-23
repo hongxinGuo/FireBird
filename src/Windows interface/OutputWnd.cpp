@@ -53,7 +53,8 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	CString strTabName;
 
-	// 将列表窗口附加到选项卡。所有的串表必须有效。 
+	// 将列表窗口附加到选项卡。所有的串表必须有效。
+	/*
 	ASSERT(strTabName.LoadString(IDS_INFORMATION_TAB));
 	m_wndTabs.AddTab(&m_wndOutputInformation, strTabName, (UINT)0);
 	ASSERT(strTabName.LoadString(IDS_DAYLINE_INFO_TAB));
@@ -68,6 +69,28 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	m_wndTabs.AddTab(&m_wndOutputInnerSystemInformation, strTabName, (UINT)5);
 	ASSERT(strTabName.LoadString(IDS_ERROR_MESSAGE)); // 错误消息
 	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)6);
+	*/
+	BOOL bNameValid = strTabName.LoadString(IDS_INFORMATION_TAB);
+	ASSERT(bNameValid);
+	m_wndTabs.AddTab(&m_wndOutputInformation, strTabName, (UINT)0);
+	bNameValid = strTabName.LoadString(IDS_DAYLINE_INFO_TAB);
+	ASSERT(bNameValid);
+	m_wndTabs.AddTab(&m_wndOutputDayLineInfo, strTabName, (UINT)1);
+	bNameValid = strTabName.LoadString(IDS_CHINA_MARKET_TASK_QUEUE);
+	ASSERT(bNameValid);
+	m_wndTabs.AddTab(&m_wndChinaMarketTaskQueue, strTabName, (UINT)2);  // 错误消息
+	bNameValid = strTabName.LoadString(IDS_WORLD_MARKET_TASK_QUEUE);
+	ASSERT(bNameValid);
+	m_wndTabs.AddTab(&m_wndWorldMarketTaskQueue, strTabName, (UINT)3);  // 错误消息
+	bNameValid = strTabName.LoadString(IDS_WEB_SOCKET_INFO_TAB);
+	ASSERT(bNameValid);
+	m_wndTabs.AddTab(&m_wndOutputWebSocketInfo, strTabName, (UINT)4);
+	bNameValid = strTabName.LoadString(IDS_INNER_SYSTEM_INFORMATION_TAB2); // WebSocket消息
+	ASSERT(bNameValid);
+	m_wndTabs.AddTab(&m_wndOutputInnerSystemInformation, strTabName, (UINT)5); // 软件系统消息
+	bNameValid = strTabName.LoadString(IDS_ERROR_MESSAGE);
+	ASSERT(bNameValid);
+	m_wndTabs.AddTab(&m_wndErrorMessage, strTabName, (UINT)6);  // 错误消息
 
 	// 设置500毫秒每次的软调度
 	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(3), 500, nullptr);
