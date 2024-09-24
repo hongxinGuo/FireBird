@@ -10,6 +10,11 @@ enum enum_ErrorMessageData {
 	ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH__,
 	ERROR_FINNHUB_NOT_HANDLED__,
 
+	ERROR_TIINGO_NO_RIGHT_TO_ACCESS__,
+	ERROR_TIINGO_MISSING_API_KEY__,
+	ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__,
+	ERROR_TIINGO_NOT_HANDLED__,
+
 	ERROR_SINA_HEADER_NEEDED__, // 
 };
 
@@ -88,6 +93,9 @@ public:
 	DWORD GetWebErrorCode() const noexcept { return m_dwWebErrorCode.load(); }
 	void SetWebErrorCode(INT64 dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
 
+	DWORD GetHTTPStatusCode() const noexcept { return m_dwHTTPStatusCode.load(); }
+	void SetHTTPStatusCode(INT64 dwStatusCode) noexcept { m_dwHTTPStatusCode = dwStatusCode; }
+
 	long GetInquiringNumber() const noexcept { return m_lInquiringNumber; }
 	void SetInquiringNumber(const long lValue) noexcept { m_lInquiringNumber = lValue; }
 
@@ -110,6 +118,7 @@ protected:
 	CVirtualProductWebDataPtr m_pCurrentProduct;
 
 	bool m_fWebError; //ÍøÂç¶ÁÈ¡´íÎó
+	atomic_int64_t m_dwHTTPStatusCode{ 0 }; // ÍøÂç×´Ì¬Âë
 	atomic_int64_t m_dwWebErrorCode{ 0 }; // ÍøÂç´íÎóÂë
 	enum_ErrorMessageData m_eErrorMessageData{ ERROR_NO_ERROR__ };
 

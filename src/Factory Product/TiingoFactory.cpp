@@ -11,6 +11,7 @@
 #include"ProductTiingoCryptoSymbol.h"
 
 #include"ProductDummy.h"
+#include "ProductTiingoMarketNews.h"
 
 CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;
@@ -25,7 +26,9 @@ CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarke
 	case COMPANY_PROFILE_:
 	case COMPANY_PROFILE_CONCISE_:
 	case COMPANY_EXECUTIVE_: // Premium
-	case MARKET_NEWS_:
+	case MARKET_NEWS_: // Premium
+		p = make_shared<CProductTiingoMarketNews>();
+		break;
 	case COMPANY_NEWS_:
 	case PRESS_RELEASE_: // Premium
 	case NEWS_SENTIMENT_:

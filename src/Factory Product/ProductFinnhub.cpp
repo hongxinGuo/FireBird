@@ -10,7 +10,7 @@ bool CProductFinnhub::CheckAccessRight(CWebDataPtr pWebData) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return false;
 	}
-	if (IsNoRightToAccess()) m_iReceivedDataStatus = 0;
+	if (IsNoRightToAccess()) m_iReceivedDataStatus = GOOD_DATA__;
 	return true;
 }
 
@@ -41,8 +41,7 @@ bool CProductFinnhub::IsValidData(const CWebDataPtr& pWebData) {
 		m_iReceivedDataStatus = VOID_DATA_;
 		return false;
 	}
-	if (!CheckAccessRight(pWebData)) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+	if (IsNoRightToAccess()) {
 		return false;
 	}
 	return true;

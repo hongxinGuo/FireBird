@@ -16,7 +16,7 @@
 
 #include"WorldMarket.h"
 
-map<string, enum_ErrorMessageData> mapErrorMap{
+map<string, enum_ErrorMessageData> mapFinnhubErrorMap{
 	{ _T("You don't have access to this resource."), ERROR_FINNHUB_NO_RIGHT_TO_ACCESS__ },
 	{ _T("Please use an API key."), ERROR_FINNHUB_MISSING_API_KEY__ },
 	{ _T(""), ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH__ }
@@ -94,6 +94,8 @@ enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr&
 	ASSERT(m_pCurrentProduct != nullptr);
 
 	m_eErrorMessageData = ERROR_NO_ERROR__;
+	if (m_dwHTTPStatusCode == 200) return m_eErrorMessageData; // OK? return no error
+
 	json js;
 	pWebData->CreateJson(js);
 
@@ -102,7 +104,7 @@ enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr&
 		int i;
 		CString s;
 		try {
-			m_eErrorMessageData = mapErrorMap.at(error);
+			m_eErrorMessageData = mapFinnhubErrorMap.at(error);
 		} catch (exception&) {
 			m_eErrorMessageData = ERROR_FINNHUB_NOT_HANDLED__;
 		}

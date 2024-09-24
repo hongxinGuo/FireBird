@@ -68,6 +68,8 @@ void CSinaRTDataSource::GenerateCurrentInquiryMessage() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 enum_ErrorMessageData CSinaRTDataSource::IsAErrorMessageData(const CWebDataPtr& pWebData) {
 	m_eErrorMessageData = ERROR_NO_ERROR__;
+	if (m_dwHTTPStatusCode == 200) return m_eErrorMessageData; // OK? return no error
+
 	if (pWebData->GetBufferLength() == 9) { // ÊÇ×Ö·û´®"Forbidden"£¿
 		const string_view s = pWebData->GetStringView(0, 9);
 		if (s == _T("Forbidden")) {
@@ -76,9 +78,7 @@ enum_ErrorMessageData CSinaRTDataSource::IsAErrorMessageData(const CWebDataPtr& 
 	}
 	switch (m_eErrorMessageData) {
 	case ERROR_SINA_HEADER_NEEDED__:
-		break;
-	case ERROR_FINNHUB_NOT_HANDLED__:
-		ReportErrorNotHandled(_T("sina data source error not handled"));
+		ReportErrorNotHandled(_T("inquiry headed needed"));
 		break;
 	case ERROR_NO_ERROR__:
 		break;

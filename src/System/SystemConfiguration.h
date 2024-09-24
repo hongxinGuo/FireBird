@@ -34,6 +34,10 @@ public:
 	void ChangeFinnhubAccountTypeToPaid();
 	bool IsPaidTypeFinnhubAccount() const noexcept { return m_bFinnhubAccountFeePaid; }
 
+	void ChangeTiingoAccountTypeToFree();
+	void ChangeTiingoAccountTypeToPaid();
+	bool IsPaidTypeTiingoAccount() const noexcept { return m_bTiingoAccountFeePaid; }
+
 	void SetConfigurationFileDirectory(const CString& fileDirectory) { m_strDirectory = fileDirectory; }
 	[[nodiscard]] CString GetConfigurationFileDirectory() { return m_strDirectory; }
 	void SetDefaultFileName(const CString& fileName) { m_strFileName = fileName; }
@@ -269,63 +273,63 @@ protected:
 	CString m_strFileName; // 配置文件名称
 
 	// 环境配置
-	int m_iDisplayPropertyPage{0}; // application : 0, 
+	int m_iDisplayPropertyPage{ 0 }; // application : 0, 
 
 	// 系统配置
 	int m_iLogLevel; // spdlog日志文件记录等级: trace, debug, info, warn, error, critical, off
-	bool m_bDebugMode{false}; // 系统是否是测试状态
-	bool m_bReloadSystem{false}; // 系统是否允许周期性重启
+	bool m_bDebugMode{ false }; // 系统是否是测试状态
+	bool m_bReloadSystem{ false }; // 系统是否允许周期性重启
 	CString m_strDatabaseAccountName; // 数据库账户名称
 	CString m_strDatabaseAccountPassword; // 数据库账户密码
 	int m_iBackgroundThreadPermittedNumber; // 后台线程最大允许值
 
 	// 系统参数
-	int m_iChinaMarketRealtimeServer{0}; // 中国市场实时数据服务器.0:新浪实时数据服务器； 1:网易实时数据服务器。
-	int m_iChinaMarketDayLineServer{0}; // 中国市场日线数据服务器。0:网易日线服务器；1:腾讯日线服务器。
-	int m_iChinaMarketRTDataInquiryTime{250}; // 中国市场实时数据查询间隔时间,单位为毫秒
+	int m_iChinaMarketRealtimeServer{ 0 }; // 中国市场实时数据服务器.0:新浪实时数据服务器； 1:网易实时数据服务器。
+	int m_iChinaMarketDayLineServer{ 0 }; // 中国市场日线数据服务器。0:网易日线服务器；1:腾讯日线服务器。
+	int m_iChinaMarketRTDataInquiryTime{ 250 }; // 中国市场实时数据查询间隔时间,单位为毫秒
 
 	// World Market
-	long m_lMarketResettingTime{170000};
+	long m_lMarketResettingTime{ 170000 };
 	CString m_strFinnhubToken; // 令牌
 	CString m_strTiingoToken; // 令牌
 	CString m_strQuandlToken; // 令牌
-	bool m_bFinnhubAccountFeePaid{true}; // 付费账户或者免费账户
-	bool m_bTiingoAccountFeePaid{true};
-	bool m_bQuandlAccountFeePaid{true};
-	int m_iWorldMarketFinnhubInquiryTime{1100}; // 每次查询间隔时间，单位为毫秒。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
-	int m_iWorldMarketTiingoInquiryTime{3600000 / 500}; // 每次查询间隔时间，单位为毫秒。付费账户每小时5000次，免费账户每小时50次。
-	int m_iWorldMarketQuandlInquiryTime{3600000 / 100}; // 每次查询间隔时间，单位为毫秒
-	CString m_strCurrentStock{_T("")}; // 当前所选股票
+	bool m_bFinnhubAccountFeePaid{ true }; // 付费账户或者免费账户
+	bool m_bTiingoAccountFeePaid{ true };
+	bool m_bQuandlAccountFeePaid{ true };
+	int m_iWorldMarketFinnhubInquiryTime{ 1100 }; // 每次查询间隔时间，单位为毫秒。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
+	int m_iWorldMarketTiingoInquiryTime{ 3600000 / 500 }; // 每次查询间隔时间，单位为毫秒。付费账户每小时5000次，免费账户每小时50次。
+	int m_iWorldMarketQuandlInquiryTime{ 3600000 / 100 }; // 每次查询间隔时间，单位为毫秒
+	CString m_strCurrentStock{ _T("") }; // 当前所选股票
 
 	// WebSocket
-	bool m_bUsingFinnhubWebSocket{true};
-	bool m_bUsingTiingoIEXWebSocket{true};
-	bool m_bUsingTiingoCryptoWebSocket{true};
-	bool m_bUsingTiingoForexWebSocket{true};
-	bool m_bUsingQuandlWebSocket{true};
+	bool m_bUsingFinnhubWebSocket{ true };
+	bool m_bUsingTiingoIEXWebSocket{ true };
+	bool m_bUsingTiingoCryptoWebSocket{ true };
+	bool m_bUsingTiingoForexWebSocket{ true };
+	bool m_bUsingQuandlWebSocket{ true };
 
 	// ChinaMarket
-	int m_iSavingChinaMarketStockDayLineThread{4}; // 存储日线历史数据时的并发线程数。
-	bool m_bFastInquiringRTData{false};
-	int m_iNumberOfRTDataSource{4}; // 实时数据申请引擎数， 默认为4
-	int m_iSinaRTDataInquiryPerTime{850}; // 新浪实时数据每次查询股票数
-	int m_iNeteaseRTDataInquiryPerTime{900}; // 网易实时数据每次查询股票数
-	int m_iTengxunRTDataInquiryPerTime{900}; // 腾讯实时数据每次查询股票数
+	int m_iSavingChinaMarketStockDayLineThread{ 4 }; // 存储日线历史数据时的并发线程数。
+	bool m_bFastInquiringRTData{ false };
+	int m_iNumberOfRTDataSource{ 4 }; // 实时数据申请引擎数， 默认为4
+	int m_iSinaRTDataInquiryPerTime{ 850 }; // 新浪实时数据每次查询股票数
+	int m_iNeteaseRTDataInquiryPerTime{ 900 }; // 网易实时数据每次查询股票数
+	int m_iTengxunRTDataInquiryPerTime{ 900 }; // 腾讯实时数据每次查询股票数
 
 	// 网络数据更新频率（以天数记）
-	int m_iStockProfileUpdateRate{365}; // 默认365天更新一次
-	int m_iInsideTransactionUpdateRate{30}; // 默认30天更新一次
-	int m_iInsideSentimentUpdateRate{30}; // 默认30天更新一次
-	int m_iStockBasicFinancialUpdateRate{45}; // 默认45天更新一次
-	int m_iStockPeerUpdateRate{90}; // 默认90天更新一次
-	int m_iEPSSurpriseUpdateRate{90}; // 默认90天更新一次
-	int m_iSECFilingsUpdateRate{30}; // 默认30天更新一次
+	int m_iStockProfileUpdateRate{ 365 }; // 默认365天更新一次
+	int m_iInsideTransactionUpdateRate{ 30 }; // 默认30天更新一次
+	int m_iInsideSentimentUpdateRate{ 30 }; // 默认30天更新一次
+	int m_iStockBasicFinancialUpdateRate{ 45 }; // 默认45天更新一次
+	int m_iStockPeerUpdateRate{ 90 }; // 默认90天更新一次
+	int m_iEPSSurpriseUpdateRate{ 90 }; // 默认90天更新一次
+	int m_iSECFilingsUpdateRate{ 30 }; // 默认30天更新一次
 
 	// 测试系统
 	CString m_strBenchmarkTestFileDirectory; // 性能测试文件所在的目录
 
-	bool m_fUpdate{false};
-	bool m_fInitialized{false};
+	bool m_fUpdate{ false };
+	bool m_fInitialized{ false };
 
 	// 以下为无需存储之系统参数
 	//
@@ -334,9 +338,9 @@ protected:
 	RECT m_rCurrentWindow; // 当前窗口位素面积
 
 	//无需存储的变量
-	std::atomic_bool m_fExitingSystem{false}; //  系统退出标识，用于终止其他线程。
-	bool m_fExitingCalculatingRS{false}; // 用于通知工作线程退出的信号
-	bool m_fWorkingMode{true}; // 正常模式标识，默认为假。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
+	std::atomic_bool m_fExitingSystem{ false }; //  系统退出标识，用于终止其他线程。
+	bool m_fExitingCalculatingRS{ false }; // 用于通知工作线程退出的信号
+	bool m_fWorkingMode{ true }; // 正常模式标识，默认为假。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 };
 
 extern std::string gl_sSystemConfiguration; // 系统配置信息

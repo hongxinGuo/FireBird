@@ -55,11 +55,11 @@ namespace FireBirdTest {
 		EXPECT_TRUE(sTemp == _T("600026.SS"));
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubToken"));
-		EXPECT_TRUE(sTemp == _T("bv985d748v6ujthqfke0"));
+		EXPECT_TRUE(sTemp == _T("bv985d748v6u0"));
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/TiingoToken"));
-		EXPECT_TRUE(sTemp == _T("c897a00b7cfc2adffc630d23befd5316a4683156"));
+		EXPECT_TRUE(sTemp == _T("c897a00b7cfc2630d235316a4683156"));
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/QuandlToken"));
-		EXPECT_TRUE(sTemp == _T("aBMXMyoTyiy_N3pMb3ex"));
+		EXPECT_TRUE(sTemp == _T("aBMXMyo_N3pMb3ex"));
 
 		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubAccountFeePaid")));
 		EXPECT_FALSE(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/TiingoAccountFeePaid")));

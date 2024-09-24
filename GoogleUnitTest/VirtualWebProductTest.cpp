@@ -113,7 +113,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualWebProductTest, TestGetReceivedDataStatus) {
-		EXPECT_EQ(webProduct.GetReceivedDataStatus(), 0);
+		EXPECT_EQ(webProduct.GetReceivedDataStatus(), GOOD_DATA__);
 
 		webProduct.SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 		EXPECT_EQ(webProduct.GetReceivedDataStatus(), NO_ACCESS_RIGHT_);

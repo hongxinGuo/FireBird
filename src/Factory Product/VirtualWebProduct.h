@@ -49,8 +49,9 @@ public:
 };
 
 enum {
-	VOID_DATA_ = 1,
-	NO_ACCESS_RIGHT_ = 2,
+	GOOD_DATA__ = 1,
+	VOID_DATA_,
+	NO_ACCESS_RIGHT_,
 };
 
 [[nodiscard]] bool CompareDayLineDate(const CDayLinePtr& p1, const CDayLinePtr& p2);
@@ -105,7 +106,7 @@ protected:
 	CString m_strInquiringExchange; // 目前查询的交易所代码
 	long m_lIndex; // 当虚处理的product为一聚合时，这个是索引
 	int m_iInquireType; // product索引，Finnhub申请的索引，如SYMBOL_LOOKUP_等
-	int m_iReceivedDataStatus; // 0:有效数据；1:void data(只有{}或[]两个数据); 2:没有权利申请（{"error": "You don't have access to this resource."}）
+	int m_iReceivedDataStatus{ GOOD_DATA__ }; // 0:有效数据；1:void data(只有{}或[]两个数据); 2:没有权利申请（{"error": "You don't have access to this resource."}）
 };
 
 using CVirtualWebProductPtr = shared_ptr<CVirtualWebProduct>;

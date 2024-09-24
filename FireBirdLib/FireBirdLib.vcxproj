@@ -103,6 +103,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSICIndustry.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.h" />
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenCrypto.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenForex.h" />
@@ -110,6 +111,12 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStockDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h" />
+    <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyDividend.h" />
+    <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyStatement.h" />
+    <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoDayLine.h" />
+    <ClInclude Include="..\src\Factory Product\ProductTiingoForexDayLine.h" />
+    <ClInclude Include="..\src\Factory Product\ProductTiingoFundmentalDefinitoion.h" />
+    <ClInclude Include="..\src\Factory Product\ProductTiingoMarketNews.h" />
     <ClInclude Include="..\src\Factory Product\VirtualChinaMarketWebProduct.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketHoliday.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketStatus.h" />
@@ -184,7 +191,9 @@
     <ClInclude Include="..\src\Type\America market\NaicsIndustry.h" />
     <ClInclude Include="..\src\Type\America market\SICIndustry.h" />
     <ClInclude Include="..\src\Type\America market\TiingoCryptoSymbol.h" />
+    <ClInclude Include="..\src\Type\America market\TiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\Type\America market\TiingoIndustry.h" />
+    <ClInclude Include="..\src\Type\America market\TiingoMarketNews.h" />
     <ClInclude Include="..\src\Type\America market\TiingoStock.h" />
     <ClInclude Include="..\src\Type\China market\DayLine.h" />
     <ClInclude Include="..\src\Type\China market\Guadan.h" />
@@ -292,6 +301,7 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetSICIndustry.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.cpp" />
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetWorldStock.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketHoliday.cpp" />
@@ -326,7 +336,11 @@
     <ClCompile Include="..\src\Factory Product\ProductTengxunRT.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingo.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoCompanyProfile.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoSymbol.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductTiingoForexDayLine.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductTiingoMarketNews.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockSymbol.cpp" />
     <ClCompile Include="..\src\Factory Product\QuandlFactory.cpp" />
@@ -365,6 +379,7 @@
     <ClCompile Include="..\src\Type\America market\SICIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoCryptoSymbol.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoIndustry.cpp" />
+    <ClCompile Include="..\src\Type\America market\TiingoMarketNews.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoStock.cpp" />
     <ClCompile Include="..\src\Type\China market\DayLine.cpp" />
     <ClCompile Include="..\src\Type\China market\Guadan.cpp" />

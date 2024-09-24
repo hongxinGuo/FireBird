@@ -64,11 +64,11 @@ std::string gl_sSystemConfiguration = R"(
 
 "WorldMarket" : {
 	"MarketResettingTime" : 170000,
-	"FinnhubToken" : "bv985d748v6ujthqfke0",
+	"FinnhubToken" : "bv985d748v6u0",
 	"FinnhubAccountFeePaid" : true,
-	"TiingoToken" : "c897a00b7cfc2adffc630d23befd5316a4683156",
+	"TiingoToken" : "c897a00b7cfc2630d235316a4683156",
 	"TiingoAccountFeePaid" : false,
-	"QuandlToken" : "aBMXMyoTyiy_N3pMb3ex",
+	"QuandlToken" : "aBMXMyo_N3pMb3ex",
 	"QuandlAccountFeePaid" : false,
 	"FinnhubInquiryTime" : 1100,
 	"TiingoInquiryTime" : 9000,
@@ -130,8 +130,8 @@ CSystemConfiguration::CSystemConfiguration() {
 
 	// World Market
 	m_lMarketResettingTime = 170000; // 默认市场重置时间为170000
-	m_strFinnhubToken = "bv985d748v6ujthqfke0"; // Finnhub token
-	m_strTiingoToken = "c897a00b7cfc2adffc630d23befd5316a4683156"; // Tiingo token
+	m_strFinnhubToken = ""; // Finnhub token
+	m_strTiingoToken = ""; // Tiingo token
 	m_strQuandlToken = _T(""); // Quandl token
 	m_iWorldMarketFinnhubInquiryTime = 60000 / 50; // 默认每分钟最多查询50次
 	m_iWorldMarketTiingoInquiryTime = 3600000 / 500; // 默认每小时最多查询500次。 默认免费账户的查询频率为每小时500次(每次7200毫秒）；付费账户为每小时20000次（每次180毫秒）
@@ -559,6 +559,18 @@ void CSystemConfiguration::ChangeFinnhubAccountTypeToFree() {
 void CSystemConfiguration::ChangeFinnhubAccountTypeToPaid() {
 	m_bFinnhubAccountFeePaid = true;
 	m_iWorldMarketFinnhubInquiryTime = 220; // 每次220毫秒
+	m_fUpdate = true;
+}
+
+void CSystemConfiguration::ChangeTiingoAccountTypeToFree() {
+	m_bTiingoAccountFeePaid = false;
+	m_iWorldMarketTiingoInquiryTime = 1100; // 每次1100毫秒
+	m_fUpdate = true;
+}
+
+void CSystemConfiguration::ChangeTiingoAccountTypeToPaid() {
+	m_bFinnhubAccountFeePaid = true;
+	m_iWorldMarketTiingoInquiryTime = 220; // 每次220毫秒
 	m_fUpdate = true;
 }
 

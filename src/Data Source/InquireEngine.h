@@ -4,11 +4,11 @@
 
 struct InternetOption {
 public:
-	int option_connect_retries{1};
-	int option_connect_timeout{5};
-	int option_receive_timeout{5000};
-	int option_data_receive_timeout{12000};
-	int option_send_timeout{2000};
+	int option_connect_retries{ 1 };
+	int option_connect_timeout{ 5 };
+	int option_receive_timeout{ 5000 };
+	int option_data_receive_timeout{ 12000 };
+	int option_send_timeout{ 2000 };
 };
 
 #include"concurrentqueue/concurrentqueue.h"
@@ -50,6 +50,8 @@ public:
 	void SetWebError(bool fFlag) noexcept { m_fWebError = fFlag; }
 	DWORD GetErrorCode() const noexcept { return m_dwErrorCode; }
 
+	DWORD GetHTTPStatusCode() const noexcept { return m_dwHTTPStatusCode; }
+
 	void SetContentLength(long length) noexcept { m_lContentLength = length; }
 	long GetContentLength() const noexcept { return m_lContentLength; } // 仅用于测试中
 	void SetBufferSize(long size) { m_sBuffer.resize(size); }
@@ -62,19 +64,19 @@ public:
 	void TESTSetWebBuffer(const char* buffer, INT64 lTotalNumber);
 
 protected:
-	shared_ptr<CInternetSession> m_pSession{nullptr}; // 初始化时必须生成指针。
-	CHttpFile* m_pFile{nullptr}; // 网络文件指针
-	DWORD m_dwHTTPStatusCode{0}; //网络状态码
-	DWORD m_dwErrorCode{0}; // 网络错误码
+	shared_ptr<CInternetSession> m_pSession{ nullptr }; // 初始化时必须生成指针。
+	CHttpFile* m_pFile{ nullptr }; // 网络文件指针
+	DWORD m_dwHTTPStatusCode{ 0 }; //网络状态码
+	DWORD m_dwErrorCode{ 0 }; // 网络错误码
 
-	bool m_fWebError{false}; //网络读取错误代码。也用于网络错误判断的依据：当为零时无错误。
+	bool m_fWebError{ false }; //网络读取错误代码。也用于网络错误判断的依据：当为零时无错误。
 	string m_sBuffer{}; // 接收到数据的缓冲区
-	long m_lByteRead{0}; // 接收到的字符数.
+	long m_lByteRead{ 0 }; // 接收到的字符数.
 
 	CString m_strInquiry; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
 	CString m_strHeaders;
 
-	long m_lContentLength{0}; // 预期的网络数据长度（使用QueryInfo(HTTP_QUERY_CONTENT_LENGTH)得到的数据）
+	long m_lContentLength{ 0 }; // 预期的网络数据长度（使用QueryInfo(HTTP_QUERY_CONTENT_LENGTH)得到的数据）
 
 private:
 	char m_dataBuffer[WEB_SOURCE_DATA_BUFFER_SIZE_]; //网络数据缓存

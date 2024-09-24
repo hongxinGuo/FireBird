@@ -3,13 +3,7 @@
 #include"VirtualDataSource.h"
 #include"TiingoFactory.h"
 
-#include"ProductTiingoStockSymbol.h"
-#include"ProductTiingoCryptoSymbol.h"
-
 class CTiingoDataSource : public CVirtualDataSource {
-	friend CProductTiingoStockSymbol;
-	friend CProductTiingoCryptoSymbol;
-
 public:
 	CTiingoDataSource();
 	// 只能有一个实例,不允许赋值、拷贝
@@ -24,12 +18,16 @@ public:
 	bool GenerateInquiryMessage(long lCurrentTime) override;
 
 	void ConfigureInternetOption() override; // 配置internet参数。
+	enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr& pWebData) override;
 
 	void Inquire(long lCurrentTime);
+	virtual bool InquireCompanyNews();
 	virtual bool InquireCompanySymbol();
 	virtual bool InquireCryptoSymbol();
 	virtual bool InquireDayLine();
 
+	bool IsUpdateMarketNews() const noexcept { return m_fUpdateMarketNews; }
+	void SetUpdateMarketNews(bool fFlag) noexcept { m_fUpdateMarketNews = fFlag; }
 	bool IsUpdateStockSymbol() const noexcept { return m_fUpdateStockSymbol; }
 	void SetUpdateStockSymbol(bool fFlag) noexcept { m_fUpdateStockSymbol = fFlag; }
 	bool IsUpdateCryptoSymbol() const noexcept { return m_fUpdateCryptoSymbol; }
@@ -40,11 +38,12 @@ public:
 protected:
 	CTiingoFactory m_TiingoFactory;
 
+	bool m_fUpdateMarketNews{ true }; // 每日更新市场新闻
 	bool m_fUpdateStockSymbol; // 每日更新公司代码库
 	bool m_fUpdateCryptoSymbol; // 每日更新crypto代码库
 	bool m_fUpdateDayLine; // 每日更新公司日线数据
 
-	bool m_fTiingoDataInquiryFinished{false};
+	bool m_fTiingoDataInquiryFinished{ false };
 };
 
 using CTiingoDataSourcePtr = shared_ptr<CTiingoDataSource>;

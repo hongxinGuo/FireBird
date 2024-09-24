@@ -67,6 +67,7 @@ enum NET_ERROR {
 	ERROR_HTTP_REDIRECT_FAILED,
 };
 
+extern map<long, string> gl_mapHTTPStatusCode;
 extern map<long, string> gl_mapNetError;
 
 class COutputList;

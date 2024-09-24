@@ -97,7 +97,7 @@ namespace FireBirdTest {
 		CProductTiingoStockSymbol m_tiingoStockSymbolProduct;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStock,
+	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStockProfile,
 	                         ParseTiingoStockTest,
 	                         testing::Values(&tiingoWebData1, &tiingoWebData2,
 		                         &tiingoWebData3, &tiingoWebData4, &tiingoWebData10));
@@ -201,7 +201,7 @@ namespace FireBirdTest {
 		CProductTiingoStockSymbol m_tiingoStockSymbolProduct;
 	};
 
-	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStock,
+	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStockProfile,
 	                         ProcessTiingoStockTest,
 	                         testing::Values(&tiingoWebData1, &tiingoWebData2,
 		                         &tiingoWebData3, &tiingoWebData4, &tiingoWebData10));

@@ -29,7 +29,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			pProduct = make_shared<CProductFinnhubCompanyProfileConcise>();
-			pProduct->SetReceivedDataStatus(0);
+			pProduct->SetReceivedDataStatus(GOOD_DATA__);
 			pProduct->SetInquiringExchange(_T("US")); // 交易所为US,防止添加禁用交易所。
 			m_FinnhubDataSource.SetCurrentInquiry(pProduct);
 		}
@@ -76,8 +76,31 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData4) {
 		CWebDataPtr pwd = make_shared<CWebData>();
 		pwd->Test_SetBuffer_(_T("{\"no error\":\"Please use an API key.\"}"));
+		EXPECT_EQ(m_FinnhubDataSource.GetHTTPStatusCode(), 0);
 
 		EXPECT_EQ(ERROR_NO_ERROR__, m_FinnhubDataSource.IsAErrorMessageData(pwd)) << "非错误信息，正常返回";
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData5) {
+		CWebDataPtr pwd = make_shared<CWebData>();
+		pwd->Test_SetBuffer_(_T("{\"error\":\"Please use an API key.\"}"));
+		m_FinnhubDataSource.SetHTTPStatusCode(200);
+
+		EXPECT_EQ(ERROR_NO_ERROR__, m_FinnhubDataSource.IsAErrorMessageData(pwd)) << "HTTPStatusCode == 200，无视错误代码，正常返回";
+
+		// 恢复原状
+		m_FinnhubDataSource.SetHTTPStatusCode(0);
+	}
+
+	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData6) {
+		CWebDataPtr pwd = make_shared<CWebData>();
+		pwd->Test_SetBuffer_(_T("{\"no error\":\"Please use an API key.\"}"));
+		m_FinnhubDataSource.SetHTTPStatusCode(200);
+
+		EXPECT_EQ(ERROR_NO_ERROR__, m_FinnhubDataSource.IsAErrorMessageData(pwd)) << "HTTPStatusCode == 200，正常返回";
+
+		// 恢复原状
+		m_FinnhubDataSource.SetHTTPStatusCode(0);
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestIsUpdateCountryList) {

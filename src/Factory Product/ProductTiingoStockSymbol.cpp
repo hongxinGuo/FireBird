@@ -25,9 +25,10 @@ void CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		char buffer[100];
 		long lTemp = 0;
 		for (const auto& pTiingoStock : *pvTiingoStock) {
-			if (!gl_dataContainerTiingoStock.IsStock(pTiingoStock->m_strTicker)) { gl_dataContainerTiingoStock.Add(pTiingoStock); }
-			if (gl_dataContainerFinnhubStock.IsSymbol(pTiingoStock->m_strTicker)) {
-				// Tiingo的Symbol信息只是用于Finnhub的一个补充。
+			if (!gl_dataContainerTiingoStock.IsStock(pTiingoStock->m_strTicker)) {
+				gl_dataContainerTiingoStock.Add(pTiingoStock);
+			}
+			if (gl_dataContainerFinnhubStock.IsSymbol(pTiingoStock->m_strTicker)) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
 				lTemp++;
 				const auto pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoStock->m_strTicker);
 				if (pStock->IsNeedUpdateProfile(pTiingoStock)) {
@@ -78,7 +79,7 @@ void CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoStocksPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CWebDataPtr& pWebData) {
 	auto pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
-	string strNotAvailable{_T("Field not available for free/evaluation")}; // Tiingo免费账户有多项内容空缺，会返回此信息。
+	string strNotAvailable{ _T("Field not available for free/evaluation") }; // Tiingo免费账户有多项内容空缺，会返回此信息。
 	CString strNULL = _T(" ");
 	CTiingoStockPtr pStock = nullptr;
 	string s1;
@@ -168,8 +169,7 @@ CTiingoStocksPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CWebDat
 			pvTiingoStock->push_back(pStock);
 			iCount++;
 		}
-	}
-	catch (simdjson_error& error) {
+	} catch (simdjson_error& error) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo Stock Symbol "), error.what());
 	}
 
@@ -178,5 +178,5 @@ CTiingoStocksPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CWebDat
 
 void CProductTiingoStockSymbol::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
-	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->m_fUpdateStockSymbol = false;
+	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateStockSymbol(false);
 }

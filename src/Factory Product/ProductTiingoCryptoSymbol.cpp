@@ -83,8 +83,7 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 			pvTiingoCrypto->push_back(pTiingoCrypto);
 			iCount++;
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		if (pTiingoCrypto != nullptr) ReportJSonErrorToSystemMessage(_T("Tiingo crypto symbol ") + pTiingoCrypto->m_strTicker, e.what());
 	}
 
@@ -92,5 +91,5 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 }
 void CProductTiingoCryptoSymbol::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
-	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->m_fUpdateCryptoSymbol = false;
+	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateCryptoSymbol(false);
 }

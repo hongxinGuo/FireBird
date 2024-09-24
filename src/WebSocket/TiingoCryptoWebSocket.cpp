@@ -83,7 +83,7 @@ void CTiingoCryptoWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 /// ∏Ò Ω£∫
 /// {
 ///  "eventName" : "subscribe",
-///  "authorization" : d897a00b7cfc2adffc630d23befd5316a4683156, // tiingo token
+///  "authorization" : d897a00b7cfc2630d235316a4683156, // tiingo token
 ///  "eventData" :
 ///   {
 ///    "thresholdLevel" : 5,

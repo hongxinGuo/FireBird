@@ -10,7 +10,7 @@
 CVirtualWebProduct::CVirtualWebProduct() {
 	m_lIndex = -1; // 预先设置为越界
 
-	m_iReceivedDataStatus = 0;
+	m_iReceivedDataStatus = GOOD_DATA__;
 	m_iInquireType = -1; // 预先设置为越界
 
 	m_strInquiryFunction = _T("");

@@ -64,5 +64,9 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
 		EXPECT_TRUE(m_pTiingoDataSource->HaveInquiry());
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
+
+		//»Ö¸´Ô­×´
+		gl_systemMessage.PopInformationMessage();
 	}
 }

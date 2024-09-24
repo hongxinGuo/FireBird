@@ -75,4 +75,28 @@ namespace FireBirdTest {
 		// 恢复原状
 		gl_pChinaMarket->SetSystemReady(true);
 	}
+
+	TEST_F(CMockSinaRTDataSourceTest, TestIsAErrorMessageData1) {
+		CWebDataPtr pwd = make_shared<CWebData>();
+		pwd->Test_SetBuffer_(_T("Forbidden"));
+		EXPECT_EQ(SinaDataSource.GetHTTPStatusCode(), 0);
+		SinaDataSource.SetHTTPStatusCode(200);
+
+		EXPECT_EQ(ERROR_NO_ERROR__, SinaDataSource.IsAErrorMessageData(pwd)) << "HTTPStatusCode == 200，无视错误代码，正常返回";
+
+		// 恢复原状
+		SinaDataSource.SetHTTPStatusCode(0);
+	}
+
+	TEST_F(CMockSinaRTDataSourceTest, TestIsAErrorMessageData2) {
+		CWebDataPtr pwd = make_shared<CWebData>();
+		pwd->Test_SetBuffer_(_T("Forbidden"));
+		EXPECT_EQ(SinaDataSource.GetHTTPStatusCode(), 0);
+
+		EXPECT_EQ(ERROR_SINA_HEADER_NEEDED__, SinaDataSource.IsAErrorMessageData(pwd));
+		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+
+		// 恢复原状
+		gl_systemMessage.PopInnerSystemInformationMessage();
+	}
 }
