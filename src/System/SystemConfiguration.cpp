@@ -345,18 +345,8 @@ void CSystemConfiguration::Update(json& jsonData) {
 		m_fUpdate = true;
 	}
 	try {
-		m_bFinnhubAccountFeePaid = jsonData.at("WorldMarket").at("FinnhubAccountFeePaid");
-	} catch (json::out_of_range&) {
-		m_fUpdate = true;
-	}
-	try {
 		sTemp = jsonData.at("WorldMarket").at("TiingoToken"); // Tiingo token
 		m_strTiingoToken = sTemp.c_str();
-	} catch (json::out_of_range&) {
-		m_fUpdate = true;
-	}
-	try {
-		m_bTiingoAccountFeePaid = jsonData.at("WorldMarket").at("TiingoAccountFeePaid");
 	} catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
@@ -553,25 +543,21 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 void CSystemConfiguration::ChangeFinnhubAccountTypeToFree() {
 	m_bFinnhubAccountFeePaid = false;
 	m_iWorldMarketFinnhubInquiryTime = 1100; // 每次1100毫秒
-	m_fUpdate = true;
 }
 
 void CSystemConfiguration::ChangeFinnhubAccountTypeToPaid() {
 	m_bFinnhubAccountFeePaid = true;
 	m_iWorldMarketFinnhubInquiryTime = 220; // 每次220毫秒
-	m_fUpdate = true;
 }
 
 void CSystemConfiguration::ChangeTiingoAccountTypeToFree() {
 	m_bTiingoAccountFeePaid = false;
-	m_iWorldMarketTiingoInquiryTime = 1100; // 每次1100毫秒
-	m_fUpdate = true;
+	m_iWorldMarketTiingoInquiryTime = 9000; // 每次9000毫秒
 }
 
 void CSystemConfiguration::ChangeTiingoAccountTypeToPaid() {
 	m_bFinnhubAccountFeePaid = true;
-	m_iWorldMarketTiingoInquiryTime = 220; // 每次220毫秒
-	m_fUpdate = true;
+	m_iWorldMarketTiingoInquiryTime = 9000; // 每次9000毫秒
 }
 
 void CSystemConfiguration::UsingSinaRealtimeServer() {

@@ -8,6 +8,7 @@
 
 #include "ProductTiingoStockDayLine.h"
 
+#include "accessory.h"
 #include "TimeConvert.h"
 
 CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
@@ -16,22 +17,14 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///
-/// 即使是免费账户，tiingo日线也能够提供30年以上的数据，故而至少申请一次全部数据（自19800101开始）。
-///	此后为了减少数据流量，可以只申请未下载的数据。
-///	Finnhub的免费日线只提供一年的。本系统最初的执行时间为2019年，即finnhub没有2018年以前的日线。
+/// 即使是免费账户，tiingo日线也能够提供30年以上的数据，故而申请全部数据。
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
 CString CProductTiingoStockDayLine::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(GetIndex());
-	CString strParam;
-	if (pStock->GetDayLineStartDate() > 20180101) {
-		strParam = pStock->GetTiingoDayLineInquiryParam(19800101, GetMarket()->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
-	}
-	else {
-		strParam = pStock->GetTiingoDayLineInquiryParam(pStock->GetDayLineEndDate(), GetMarket()->GetMarketDate());
-	}
+	CString strParam = GetTiingoDayLineInquiryParam(pStock->GetSymbol(), 19800101, GetMarket()->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
 	pStock->SetDayLineNeedUpdate(false);
 
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -53,14 +46,14 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pStock->UpdateDayLine(*pvDayLine);
 		pStock->SetDayLineNeedSaving(true);
 		pStock->SetUpdateProfileDB(true);
-		//TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
-		return;
 	}
 	else {
 		pStock->SetDayLineNeedSaving(false);
 		pStock->SetUpdateProfileDB(false);
-		//TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
 	}
+	// 清除tiingo stock的日线更新标识
+	auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pStock->GetSymbol());
+	pTiingoStock->SetDayLineNeedUpdate(false);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -116,13 +109,13 @@ CDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataP
 		strMessage += s.c_str();
 		gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
 		return pvDayLine;
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		// 正确， do nothing，继续执行
 	}
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			auto pDayLine = make_shared<CDayLine>();
+			//pDayLine->SetExchange(_T("US")); // 所有的Tiingo证券皆为美国市场。
 			s = jsonGetString(it, _T("date"));
 			CString str = s.c_str();
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
@@ -140,8 +133,7 @@ CDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataP
 			pDayLine->SetVolume(lTemp);
 			pvDayLine->push_back(pDayLine);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		CString str3 = pWebData->GetDataBuffer().c_str();
 		str3 = str3.Left(120);
 		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e.what());

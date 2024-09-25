@@ -129,7 +129,10 @@ CVectorTiingoMarketNewsPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const
 void CProductTiingoMarketNews::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateMarketNews(false);
-	if (IsNoRightToAccess()) {
-		gl_systemConfiguration.ChangeTiingoAccountTypeToFree(); // Note 在此确定Tiingo账户类型
+	if (IsNoRightToAccess()) { // Note 在此确定Tiingo账户类型
+		gl_systemConfiguration.ChangeTiingoAccountTypeToFree();
+	}
+	else {
+		gl_systemConfiguration.ChangeTiingoAccountTypeToPaid();
 	}
 }

@@ -11,6 +11,8 @@ public:
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CTiingoFundamentalDefinitionsPtr ParseTiingoFundamentalDefinition(const CWebDataPtr& pWebData);
+
+	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
 };
 
-using CTiingoFundamentalDefinitionPtr = shared_ptr<CProductTiingoFundamentalDefinition>;
+using CProductTiingoFundamentalDefinitionPtr = shared_ptr<CProductTiingoFundamentalDefinition>;

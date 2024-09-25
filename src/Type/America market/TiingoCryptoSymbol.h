@@ -16,6 +16,9 @@ public:
 	void Append(CSetTiingoCrypto& setTiingoCrypto);
 	void Save(CSetTiingoCrypto& setTiingoCrypto);
 
+	void SetDayLineNeedUpdate(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
+	bool IsDayLineNeedUpdate() const noexcept { return m_fUpdateDayLine; }
+
 	CString m_strTicker;
 	CString m_strName;
 	CString m_strDescription; // 此项已废弃不用了。
@@ -23,6 +26,7 @@ public:
 	CString m_strQuoteCurrency;
 
 	// 无需存储数据区
+	bool m_fUpdateDayLine{ true };
 };
 
 using CTiingoCryptoSymbolPtr = shared_ptr<CTiingoCryptoSymbol>;

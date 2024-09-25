@@ -36,6 +36,6 @@ void CSetCompanyNews::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("Image"), m_Image, 50000);
 	RFX_Text(pFX, _T("RelatedSymbol"), m_RelatedSymbol);
 	RFX_Text(pFX, _T("Source"), m_Source, 50000);
-	RFX_Text(pFX, _T("Summary"), m_Summary, 50000);
+	RFX_Text(pFX, _T("Summary"), m_Summary, 50000); // Note 默认字符长度为255，更长的话需要设定
 	RFX_Text(pFX, _T("URL"), m_URL, 50000);
 }

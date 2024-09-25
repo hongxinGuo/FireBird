@@ -121,6 +121,8 @@ enum {
 	ECONOMIC_ECONOMIC_ = ECONOMIC_CODES_ + 1,	//Premium
 
 	// Global Filings Search
+
+	TIINGO_FUNDAMENTAL_DEFINITION_ = 3000,
 };
 
 class CFinnhubInquiryType {

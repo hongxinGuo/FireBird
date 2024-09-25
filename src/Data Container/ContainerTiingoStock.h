@@ -15,7 +15,7 @@ public:
 
 	void Add(const CTiingoStockPtr& pTiingoStock);
 	bool Delete(const CTiingoStockPtr& pStock);
-	size_t GetTotalStock() const noexcept { return m_vTiingoStock.size(); }
+	size_t Size() const noexcept { return m_vTiingoStock.size(); }
 
 	bool IsStock(const CString& strSymbol) const noexcept {
 		if (m_mapTiingoStock.contains(strSymbol)) return true;

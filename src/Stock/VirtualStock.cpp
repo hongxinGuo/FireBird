@@ -39,7 +39,6 @@ void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	m_strDisplaySymbol = setStockSymbol.m_DisplaySymbol;
 	m_strExchangeCode = setStockSymbol.m_Exchange;
 	m_strSymbol = setStockSymbol.m_Symbol;
-	m_lSymbol = atol(m_strSymbol.Left(6));
 	m_lDayLineStartDate = setStockSymbol.m_DayLineStartDate;
 	m_lDayLineEndDate = setStockSymbol.m_DayLineEndDate;
 	m_lIPOStatus = setStockSymbol.m_IPOStatus;

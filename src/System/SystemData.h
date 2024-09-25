@@ -8,6 +8,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include "ContainerTiingoFundamentalDefinition.h"
 #include"concurrentqueue/concurrentqueue.h"
 using namespace moodycamel;
 
@@ -58,6 +59,7 @@ extern CContainerFinnhubCryptoExchange gl_dataContainerFinnhubCryptoExchange;
 extern CContainerWorldStock gl_dataContainerFinnhubStock;
 extern CContainerTiingoStock gl_dataContainerTiingoStock;
 extern CContainerTiingoCryptoSymbol gl_dataContainerTiingoCryptoSymbol;
+extern CContainerTiingoFundamentalDefinition gl_dataContainerTiingoFundamentalDefinition;
 
 extern CContainerChosenStock gl_dataContainerChosenWorldStock;
 extern CContainerChosenForex gl_dataContainerChosenWorldForex;

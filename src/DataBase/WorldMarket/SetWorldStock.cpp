@@ -115,5 +115,5 @@ void CSetWorldStock::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[TiingoSector]"), m_TiingoSector);
 	RFX_Text(pFX, _T("[CompanyWebSite]"), m_CompanyWebSite);
 	RFX_Text(pFX, _T("[SECFilingWebSite]"), m_SECFilingWebSite);
-	RFX_Text(pFX, _T("UpdateDate"), m_UpdateDate, 10000); // RFX_Text默认最大长度为256.
+	RFX_Text(pFX, _T("UpdateDate"), m_UpdateDate, 10000); // Note RFX_Text默认最大长度为256.
 }

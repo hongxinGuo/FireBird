@@ -106,6 +106,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_USING_TENGXUN_DAYLINE_DATA_SERVER, &CMainFrame::OnUpdateUsingTengxunDayLineDataServer)
 	ON_COMMAND(ID_USING_TENGXUN_REALTIME_DATA_SERVER, &CMainFrame::OnUsingTengxunRealtimeDataServer)
 	ON_UPDATE_COMMAND_UI(ID_USING_TENGXUN_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingTengxunRealtimeDataServer)
+	ON_COMMAND(ID_UPDATE_TIINGO_FUNDAMENTAL_DEFINITION, &CMainFrame::OnUpdateTiingoFundamentalDefinition)
+	ON_UPDATE_COMMAND_UI(ID_UPDATE_TIINGO_FUNDAMENTAL_DEFINITION, &CMainFrame::OnUpdateUpdateTiingoFundamentalDefinition)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1215,5 +1217,18 @@ void CMainFrame::OnUpdateUsingTengxunDayLineDataServer(CCmdUI* pCmdUI) {
 	}
 	else {
 		SysCallCmdUISetCheck(pCmdUI, false);
+	}
+}
+
+void CMainFrame::OnUpdateTiingoFundamentalDefinition() {
+	gl_pWorldMarket->SetPermitUpdateTiingoFundamentalDefinitionDB(true);
+}
+
+void CMainFrame::OnUpdateUpdateTiingoFundamentalDefinition(CCmdUI* pCmdUI) {
+	if (gl_dataContainerTiingoFundamentalDefinition.IsNeedUpdate()) {
+		pCmdUI->Enable(true);
+	}
+	else {
+		pCmdUI->Enable(false);
 	}
 }

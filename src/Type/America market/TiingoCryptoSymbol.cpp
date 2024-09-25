@@ -12,6 +12,8 @@ void CTiingoCryptoSymbol::Reset() {
 	m_strDescription = _T("");
 	m_strBaseCurrency = _T("");
 	m_strQuoteCurrency = _T("");
+
+	m_fUpdateDayLine = true;
 }
 
 void CTiingoCryptoSymbol::Load(const CSetTiingoCrypto& setTiingoCrypto) {
@@ -36,11 +38,11 @@ void CTiingoCryptoSymbol::Save(CSetTiingoCrypto& setTiingoCrypto) {
 		|| (m_strQuoteCurrency.GetLength() > 20)) {
 		gl_systemMessage.PushErrorMessage(_T("Tiingo Crypto ") + m_strTicker + _T(" ×Ö·û´®Ì«³¤"));
 	}
-	m_strName = m_strName.Left(100);
-	m_strTicker = m_strTicker.Left(45);
-	m_strDescription = m_strDescription.Left(100);
-	m_strBaseCurrency = m_strBaseCurrency.Left(20);
-	m_strQuoteCurrency = m_strQuoteCurrency.Left(20);
+	m_strName = m_strName.Left(99);
+	m_strTicker = m_strTicker.Left(44);
+	m_strDescription = m_strDescription.Left(99);
+	m_strBaseCurrency = m_strBaseCurrency.Left(19);
+	m_strQuoteCurrency = m_strQuoteCurrency.Left(19);
 
 	setTiingoCrypto.m_Ticker = m_strTicker;
 	setTiingoCrypto.m_Name = m_strName;

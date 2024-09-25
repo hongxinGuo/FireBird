@@ -27,6 +27,7 @@
     <ClInclude Include="..\src\accessory\ThreadStatus.h" />
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
     <ClInclude Include="..\src\ClassDeclaration.h" />
+    <ClInclude Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\Data Container\ContainerVirtualStock.h" />
     <ClInclude Include="..\src\Data Container\ContainerChinaDayLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerChinaStock.h" />
@@ -102,6 +103,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSECFilings.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSICIndustry.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.h" />
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock.h" />
@@ -115,7 +117,7 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyStatement.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoForexDayLine.h" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoFundmentalDefinitoion.h" />
+    <ClInclude Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoMarketNews.h" />
     <ClInclude Include="..\src\Factory Product\VirtualChinaMarketWebProduct.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketHoliday.h" />
@@ -241,6 +243,7 @@
     <ClCompile Include="..\src\accessory\simdjsonGetValue.cpp" />
     <ClCompile Include="..\src\accessory\ThreadStatus.cpp" />
     <ClCompile Include="..\src\accessory\TimeConvert.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerVirtualStock.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerChinaDayLine.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerChinaStock.cpp" />
@@ -300,6 +303,7 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetSECFiling.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetSICIndustry.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.cpp" />
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock.cpp" />
@@ -378,6 +382,7 @@
     <ClCompile Include="..\src\Type\America market\NaicesIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\SICIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoCryptoSymbol.cpp" />
+    <ClCompile Include="..\src\Type\America market\TiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoMarketNews.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoStock.cpp" />

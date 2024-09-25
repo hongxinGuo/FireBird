@@ -795,11 +795,17 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoForexDayLine.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoFundmentalDefinitoion.h">
+    <ClInclude Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Type\America market\TiingoFundamentalDefinition.h">
       <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoFundamentalDefinition.h">
+      <Filter>头文件\database\WorldMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.h">
+      <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1342,6 +1348,15 @@
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoDayLine.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoFundamentalDefinition.cpp">
+      <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoFundamentalDefinition.cpp">
+      <Filter>源文件\database\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.cpp">
+      <Filter>源文件\Data container\Tiingo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

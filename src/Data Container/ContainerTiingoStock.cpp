@@ -38,8 +38,7 @@ bool CContainerTiingoStock::UpdateDB() {
 			setTiingoStock.m_pDatabase->CommitTrans();
 			setTiingoStock.Close();
 			m_lLastTotalTiingoStock = m_vTiingoStock.size();
-		}
-		catch (CException* e) {
+		} catch (CException* e) {
 			ReportInformationAndDeleteException(e);
 		}
 	}
@@ -59,7 +58,9 @@ bool CContainerTiingoStock::LoadDB() {
 			pTiingoStock->Load(setTiingoStock);
 			Add(pTiingoStock);
 		}
-		else { setTiingoStock.Delete(); }
+		else {
+			setTiingoStock.Delete();
+		}
 		setTiingoStock.MoveNext();
 	}
 	setTiingoStock.m_pDatabase->CommitTrans();

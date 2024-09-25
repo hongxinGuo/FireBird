@@ -68,7 +68,10 @@ void CProductFinnhubEconomicCalendar::UpdateDataSourceStatus(CVirtualDataSourceP
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
 
 	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->SetUpdateEconomicCalendar(false);
-	if (IsNoRightToAccess()) {
-		gl_systemConfiguration.ChangeFinnhubAccountTypeToFree(); // Note 在此确定Finnhub账户类型
+	if (IsNoRightToAccess()) {// Note 在此确定Finnhub账户类型
+		gl_systemConfiguration.ChangeFinnhubAccountTypeToFree();
+	}
+	else {
+		gl_systemConfiguration.ChangeFinnhubAccountTypeToPaid();
 	}
 }

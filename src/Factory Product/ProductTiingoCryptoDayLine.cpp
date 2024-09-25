@@ -6,12 +6,12 @@
 #include"WorldStock.h"
 #include"WorldMarket.h"
 
-#include "ProductTiingoStockDayLine.h"
+#include "ProductTiingoCryptoDayLine.h"
 
 #include "TimeConvert.h"
 
-CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
-	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/daily/");
+CProductTiingoCryptoDayLine::CProductTiingoCryptoDayLine() {
+	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/crypto/price?");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -21,46 +21,41 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 ///	Finnhub的免费日线只提供一年的。本系统最初的执行时间为2019年，即finnhub没有2018年以前的日线。
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
-CString CProductTiingoStockDayLine::CreateMessage() {
+CString CProductTiingoCryptoDayLine::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pStock = gl_dataContainerFinnhubStock.GetStock(GetIndex());
-	CString strParam;
-	if (pStock->GetDayLineStartDate() > 20180101) {
-		strParam = pStock->GetTiingoDayLineInquiryParam(19800101, GetMarket()->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
-	}
-	else {
-		strParam = pStock->GetTiingoDayLineInquiryParam(pStock->GetDayLineEndDate(), GetMarket()->GetMarketDate());
-	}
-	pStock->SetDayLineNeedUpdate(false);
+	const auto pCrypto = gl_dataContainerTiingoCryptoSymbol.GetSymbol(GetIndex());
+	CString strParam = pCrypto->m_strName + _T("&startDate=2010-01-02&resampleFreq=1day"); // 永远申请完整日线
+	pCrypto->SetDayLineNeedUpdate(false);
 
 	m_strInquiry = m_strInquiryFunction + strParam;
 	return m_strInquiry;
 }
 
-void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
-
-	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
-	const CDayLinesPtr pvDayLine = ParseTiingoStockDayLine(pWebData);
-	pStock->SetDayLineNeedUpdate(false);
+	const auto pCrypto = gl_dataFinnhubCryptoSymbol.GetSymbol(m_lIndex);
+	const CDayLinesPtr pvDayLine = ParseTiingoCryptoDayLine(pWebData);
+	pCrypto->SetDayLineNeedUpdate(false);
+	/*
 	if (!pvDayLine->empty()) {
 		for (const auto& pDayLine2 : *pvDayLine) {
-			pDayLine2->SetExchange(pStock->GetExchangeCode());
-			pDayLine2->SetStockSymbol(pStock->GetSymbol());
-			pDayLine2->SetDisplaySymbol(pStock->GetTicker());
+			pDayLine2->SetExchange(pCrypto->GetExchangeCode());
+			pDayLine2->SetCryptoSymbol(pCrypto->GetSymbol());
+			pDayLine2->SetDisplaySymbol(pCrypto->GetTicker());
 		}
-		pStock->UpdateDayLine(*pvDayLine);
-		pStock->SetDayLineNeedSaving(true);
-		pStock->SetUpdateProfileDB(true);
-		//TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
+		pCrypto->UpdateDayLine(*pvDayLine);
+		pCrypto->SetDayLineNeedSaving(true);
+		pCrypto->SetUpdateProfileDB(true);
+		//TRACE("处理Tiingo %s日线数据\n", pCrypto->GetSymbol().GetBuffer());
 		return;
 	}
 	else {
-		pStock->SetDayLineNeedSaving(false);
-		pStock->SetUpdateProfileDB(false);
-		//TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
+		pCrypto->SetDayLineNeedSaving(false);
+		pCrypto->SetUpdateProfileDB(false);
+		//TRACE("处理Tiingo %s日线数据\n", pCrypto->GetSymbol().GetBuffer());
 	}
+	*/
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,7 +96,7 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // 如果没有股票600600.SS日线数据，则返回：{"detail":"Error:Ticker '600600.SS' not found"}
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataPtr& pWebData) {
+CDayLinesPtr CProductTiingoCryptoDayLine::ParseTiingoCryptoDayLine(const CWebDataPtr& pWebData) {
 	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
 	string s;
 	long year, month, day;
@@ -142,7 +137,7 @@ CDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataP
 	} catch (json::exception& e) {
 		CString str3 = pWebData->GetDataBuffer().c_str();
 		str3 = str3.Left(120);
-		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e.what());
+		ReportJSonErrorToSystemMessage(_T("Tiingo Crypto DayLine ") + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}
 	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。

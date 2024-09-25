@@ -11,6 +11,7 @@
 #include"ProductTiingoCryptoSymbol.h"
 
 #include"ProductDummy.h"
+#include "ProductTiingoFundamentalDefinition.h"
 #include "ProductTiingoMarketNews.h"
 
 CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
@@ -61,16 +62,25 @@ CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarke
 	case FOREX_CANDLES_:
 	case FOREX_ALL_RATES_:
 	case CRYPTO_EXCHANGE_:
+		break;
 	case CRYPTO_SYMBOLS_:
 		p = make_shared<CProductTiingoCryptoSymbol>();
 		break;
 	case CRYPTO_CANDLES_:
 	case ECONOMIC_COUNTRY_LIST_:
 	case ECONOMIC_CALENDAR_:
+		break;
+	case TIINGO_FUNDAMENTAL_DEFINITION_:
+		p = make_shared<CProductTiingoFundamentalDefinition>();
+		break;
 	default:
 		p = make_shared<CProductDummy>();
 		gl_systemMessage.PushErrorMessage(_T("Tiingo product未实现"));
 		break;
+	}
+	if (p == nullptr) {
+		p = make_shared<CProductDummy>();
+		gl_systemMessage.PushErrorMessage(_T("Tiingo product未实现"));
 	}
 	p->SetMarket(pMarket);
 	p->SetInquireType(iInquireType);

@@ -21,13 +21,17 @@ public:
 	enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr& pWebData) override;
 
 	void Inquire(long lCurrentTime);
-	virtual bool InquireCompanyNews();
+	virtual bool InquireMarketNews();
+	virtual bool InquireFundamentalDefinition();
 	virtual bool InquireCompanySymbol();
 	virtual bool InquireCryptoSymbol();
 	virtual bool InquireDayLine();
+	bool InquireDayLine2();
 
 	bool IsUpdateMarketNews() const noexcept { return m_fUpdateMarketNews; }
 	void SetUpdateMarketNews(bool fFlag) noexcept { m_fUpdateMarketNews = fFlag; }
+	bool IsUpdateFundamentalDefinition() const noexcept { return m_fUpdateFundamentalDefinitions; }
+	void SetUpdateFundamentalDefinition(bool fFlag) noexcept { m_fUpdateFundamentalDefinitions = fFlag; }
 	bool IsUpdateStockSymbol() const noexcept { return m_fUpdateStockSymbol; }
 	void SetUpdateStockSymbol(bool fFlag) noexcept { m_fUpdateStockSymbol = fFlag; }
 	bool IsUpdateCryptoSymbol() const noexcept { return m_fUpdateCryptoSymbol; }
@@ -39,9 +43,10 @@ protected:
 	CTiingoFactory m_TiingoFactory;
 
 	bool m_fUpdateMarketNews{ true }; // 每日更新市场新闻
-	bool m_fUpdateStockSymbol; // 每日更新公司代码库
-	bool m_fUpdateCryptoSymbol; // 每日更新crypto代码库
-	bool m_fUpdateDayLine; // 每日更新公司日线数据
+	bool m_fUpdateFundamentalDefinitions{ true }; // 每日更新基本数据定义库
+	bool m_fUpdateStockSymbol{ true }; // 每日更新公司代码库
+	bool m_fUpdateCryptoSymbol{ true }; // 每日更新crypto代码库
+	bool m_fUpdateDayLine{ true }; // 每日更新公司日线数据
 
 	bool m_fTiingoDataInquiryFinished{ false };
 };

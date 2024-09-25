@@ -5,6 +5,8 @@
 #include<memory>
 #include<vector>
 
+using std::vector;
+
 class CTiingoFundamentalDefinition final {
 public:
 	CTiingoFundamentalDefinition();
@@ -26,7 +28,7 @@ public:
 	CString m_strName;
 	CString m_strDescription;
 	CString m_strStatementType;
-	CString m_strUnit;
+	CString m_strUnits;
 
 	// 无需存储数据区
 };

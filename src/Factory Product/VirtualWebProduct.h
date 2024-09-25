@@ -78,7 +78,7 @@ public:
 	bool IsVoidJson(const CWebDataPtr& pWebData);
 
 	bool IsVoidData() const noexcept { return m_iReceivedDataStatus == VOID_DATA_; }
-	virtual bool CheckAccessRight(CWebDataPtr pWebData) { return true; }
+	virtual bool CheckAccessRight(CWebDataPtr pWebData) { return true; }  // todo 不再使用，准备删除之
 	bool IsNoRightToAccess() const noexcept { return m_iReceivedDataStatus == NO_ACCESS_RIGHT_; }
 	int GetReceivedDataStatus() const noexcept { return m_iReceivedDataStatus; }
 	void SetReceivedDataStatus(int iType) noexcept { m_iReceivedDataStatus = iType; }

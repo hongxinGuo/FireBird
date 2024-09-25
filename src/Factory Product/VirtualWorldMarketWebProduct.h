@@ -12,4 +12,6 @@ public:
 	~CVirtualWorldMarketWebProduct() override = default;
 
 	[[nodiscard]] CWorldMarketPtr GetMarket() const noexcept;
+
+	bool IsValidData(const CWebDataPtr& pWebData);
 };

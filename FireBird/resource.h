@@ -140,6 +140,9 @@
 #define ID_USING_TENGXUN_RT_DATA_SERVER 32917
 #define ID_USING_TENGXUN_REALTIME_DATA_SERVER 32918
 #define ID_32919                        32919
+#define ID_32920                        32920
+#define ID_                             32921
+#define ID_UPDATE_TIINGO_FUNDAMENTAL_DEFINITION 32922
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -178,7 +181,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32920
+#define _APS_NEXT_COMMAND_VALUE         32923
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

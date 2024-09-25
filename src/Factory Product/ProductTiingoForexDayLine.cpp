@@ -7,11 +7,11 @@
 #include"WorldStock.h"
 #include"WorldMarket.h"
 
-#include "ProductTiingoCryptoDayLine.h"
+#include "ProductTiingoForexDayLine.h"
 
 #include "TimeConvert.h"
 
-CProductTiingoCryptoDayLine::CProductTiingoCryptoDayLine() {
+CProductTiingoForexDayLine::CProductTiingoForexDayLine() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/daily/");
 }
 
@@ -22,10 +22,10 @@ CProductTiingoCryptoDayLine::CProductTiingoCryptoDayLine() {
 ///	Finnhub的免费日线只提供一年的。本系统最初的执行时间为2019年，即finnhub没有2018年以前的日线。
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
-CString CProductTiingoCryptoDayLine::CreateMessage() {
+CString CProductTiingoForexDayLine::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 	/*
-	const auto pCrypto = gl_dataContainerFinnhubCrypto.GetStock(GetIndex());
+	const auto pForex = gl_dataContainerFinnhubForex.GetStock(GetIndex());
 	CString strParam;
 	if (pStock->GetDayLineStartDate() > 20180101) {
 		strParam = pStock->GetTiingoDayLineInquiryParam(19800101, GetMarket()->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。

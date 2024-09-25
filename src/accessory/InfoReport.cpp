@@ -35,8 +35,9 @@ void ReportWebError(const DWORD dwErrorNo, const long long llTime, const CString
 
 void ReportInformationAndDeleteException(CException* e) {
 	char buffer[200];
+	if (e == nullptr) return;
 	e->GetErrorMessage(buffer, 200);
 	const CString str = buffer;
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
-	delete e;
+	//delete e;
 }

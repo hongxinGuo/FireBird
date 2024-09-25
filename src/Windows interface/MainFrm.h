@@ -139,4 +139,6 @@ public:
 	afx_msg void OnUpdateUsingTengxunDayLineDataServer(CCmdUI* pCmdUI);
 	afx_msg void OnUsingTengxunRealtimeDataServer();
 	afx_msg void OnUpdateUsingTengxunRealtimeDataServer(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateTiingoFundamentalDefinition();
+	afx_msg void OnUpdateUpdateTiingoFundamentalDefinition(CCmdUI* pCmdUI);
 };

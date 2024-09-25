@@ -23,6 +23,8 @@ void CTiingoStock::Reset() {
 	m_strSECFilingWebSite = _T("");
 	m_lDailyDataUpdateDate = 19800101;
 	m_lStatementUpdateDate = 19800101;
+
+	m_fUpdateDayLine = true;
 }
 
 void CTiingoStock::Load(const CSetTiingoStock& setTiingoStock) {

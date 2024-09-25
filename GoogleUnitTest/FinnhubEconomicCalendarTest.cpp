@@ -63,9 +63,13 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()) << "有权处理时不更改";
 		EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate());
-		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100);
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 220);
 
 		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(true);
+
+		// 恢复原状
+		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(1100);
+		gl_systemConfiguration.NeedUpdate(false);
 	}
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestUpdateDataSourceStatus2) {
@@ -78,7 +82,6 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		EXPECT_FALSE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()) << "无权处理时更改为免费账户";
-		EXPECT_TRUE(gl_systemConfiguration.IsNeedUpdate());
 
 		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(true);
 		gl_systemConfiguration.ChangeFinnhubAccountTypeToPaid();

@@ -35,14 +35,3 @@ void CProductFinnhub::AddInaccessibleExchange() {
 		gl_finnhubInaccessibleExchange.SetExchange(m_iInquireType, pNewExchange);
 	}
 }
-
-bool CProductFinnhub::IsValidData(const CWebDataPtr& pWebData) {
-	if (pWebData->IsVoidJson()) {
-		m_iReceivedDataStatus = VOID_DATA_;
-		return false;
-	}
-	if (IsNoRightToAccess()) {
-		return false;
-	}
-	return true;
-}

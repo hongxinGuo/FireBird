@@ -101,6 +101,11 @@ namespace FireBirdTest {
 	TEST_F(CTiingoDataSourceTest, TestInquireTiingoDayLine) {
 		CWorldStockPtr pStock;
 
+		EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate());
+		ASSERT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount());
+		auto lTime = gl_systemConfiguration.GetWorldMarketTiingoInquiryTime();
+		gl_systemConfiguration.ChangeTiingoAccountTypeToFree();
+
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
@@ -146,5 +151,9 @@ namespace FireBirdTest {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
 			pStock->SetDayLineNeedUpdate(true);
 		}
+
+		gl_systemConfiguration.ChangeTiingoAccountTypeToPaid();
+		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(lTime);
+		gl_systemConfiguration.NeedUpdate(false);
 	}
 }

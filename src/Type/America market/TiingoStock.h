@@ -21,6 +21,9 @@ public:
 	void Append(CSetTiingoStock& setTiingoStock);
 	void Save(CSetTiingoStock& setTiingoStock);
 
+	bool IsDayLineNeedUpdate() const noexcept { return m_fUpdateDayLine; }
+	void SetDayLineNeedUpdate(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
+
 public:
 	CString m_strTiingoPermaTicker; // Tiingo永久代码标识
 	CString m_strTicker;
@@ -40,6 +43,7 @@ public:
 	long m_lDailyDataUpdateDate;
 
 	// 无需存储数据区
+	bool m_fUpdateDayLine{ true };
 };
 
 using CTiingoStockPtr = shared_ptr<CTiingoStock>;

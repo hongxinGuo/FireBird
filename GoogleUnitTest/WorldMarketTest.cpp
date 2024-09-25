@@ -183,16 +183,16 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestAddTiingoStock) {
 		const auto pStock = make_shared<CTiingoStock>();
-		const auto lTotalStock = gl_dataContainerTiingoStock.GetTotalStock();
+		const auto lTotalStock = gl_dataContainerTiingoStock.Size();
 		pStock->m_strTicker = _T("ABCDEF");
 
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsStock(pStock));
 		gl_dataContainerTiingoStock.Add(pStock);
 		EXPECT_TRUE(gl_dataContainerTiingoStock.IsStock(pStock));
-		EXPECT_EQ(gl_dataContainerTiingoStock.GetTotalStock(), lTotalStock + 1);
+		EXPECT_EQ(gl_dataContainerTiingoStock.Size(), lTotalStock + 1);
 		gl_dataContainerTiingoStock.Delete(pStock);
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsStock(pStock));
-		EXPECT_EQ(gl_dataContainerTiingoStock.GetTotalStock(), lTotalStock);
+		EXPECT_EQ(gl_dataContainerTiingoStock.Size(), lTotalStock);
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteTiingoStock) {
