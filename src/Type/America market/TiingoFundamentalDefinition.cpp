@@ -39,7 +39,7 @@ void CTiingoFundamentalDefinition::Save(CSetTiingoFundamentalDefinition& setTiin
 	}
 	m_strDataCode = m_strDataCode.Left(44);
 	m_strName = m_strName.Left(98);
-	m_strDescription = m_strDescription;
+	m_strDescription = m_strDescription.Left(598);
 	m_strStatementType = m_strStatementType.Left(44);
 	m_strUnits = m_strUnits.Left(44);
 

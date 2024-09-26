@@ -116,12 +116,7 @@ void CTiingoDataSource::Inquire(long lCurrentTime) {
 		InquireFundamentalDefinition();
 		InquireCompanySymbol();
 		InquireCryptoSymbol();
-		if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户？
-			InquireDayLine2();
-		}
-		else {
-			InquireDayLine();
-		}
+		InquireDayLine();
 		if (!IsInquiring()) {
 			if (!m_fTiingoDataInquiryFinished) {
 				gl_systemMessage.PushInformationMessage(_T("Tiingo data inquiry finished"));
@@ -158,7 +153,7 @@ bool CTiingoDataSource::InquireCompanySymbol() {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_);
 		StoreInquiry(p);
 		SetInquiring(true);
-		gl_systemMessage.PushInformationMessage(_T("Tiingo stock symbol已更新"));
+		gl_systemMessage.PushInformationMessage(_T("Inquire Tiingo stock symbol..."));
 		return true;
 	}
 	return false;
@@ -169,31 +164,34 @@ bool CTiingoDataSource::InquireCryptoSymbol() {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_);
 		StoreInquiry(p);
 		SetInquiring(true);
-		gl_systemMessage.PushInformationMessage(_T("Tiingo crypto symbol已更新"));
+		gl_systemMessage.PushInformationMessage(_T("Inquiring Tiingo crypto symbol..."));
 
 		return true;
 	}
 	return false;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Tiingo的下载日线数据与Finnhub的日线下载函数，只允许同时运行其中之一。
-// 目前此功能只用于下载自选股票的日线数据。
+// 
+// 付费账户下载所有日线，免费账户仅下载自选股票的日线。
+// Note 当接收市场新闻时，同时决定本账户是否是付费的。如果是免费账户，则同时关闭除自选股票外的其他日线查询申请
 //
-//
-//////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoDataSource::InquireDayLine() {
 	bool fHaveInquiry = false;
-	size_t lStockSetSize = gl_dataContainerChosenWorldStock.Size();
+	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && IsUpdateDayLine()) {
 		CWorldStockPtr pStock;
 		bool fFound = false;
-		for (long lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
-			if (gl_dataContainerChosenWorldStock.GetStock(lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
-				pStock = gl_dataContainerChosenWorldStock.GetStock(lCurrentUpdateDayLinePos);
+		long lCurrentUpdateDayLinePos;
+		for (lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
+			auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdateDayLinePos);
+			if (pTiingoStock->IsDayLineNeedUpdate()) {
+				pTiingoStock->SetDayLineNeedUpdate(false);
 				fFound = true;
 				break;
 			}
@@ -201,22 +199,20 @@ bool CTiingoDataSource::InquireDayLine() {
 		if (fFound) {
 			fHaveInquiry = true;
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, STOCK_PRICE_CANDLES_);
-			p->SetIndex(gl_dataContainerFinnhubStock.GetOffset(pStock->GetSymbol()));
+			p->SetIndex(lCurrentUpdateDayLinePos);
 			StoreInquiry(p);
-			//gl_pWorldMarket->SetCurrentFunction(_T("Tiingo Stock日线：") + pStock->GetSymbol());
 			SetInquiring(true);
-			//TRACE("申请Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		else {
 			SetUpdateDayLine(false);
-			const CString str = "美国市场自选股票日线历史数据更新完毕";
+			const CString str = "Tiingo股票日线历史数据更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
 	return fHaveInquiry;
 }
 
-bool CTiingoDataSource::InquireDayLine2() {
+bool CTiingoDataSource::InquireFinancialState() {
 	bool fHaveInquiry = false;
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 
@@ -225,9 +221,10 @@ bool CTiingoDataSource::InquireDayLine2() {
 		CWorldStockPtr pStock;
 		bool fFound = false;
 		for (long lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
-			if (gl_dataContainerTiingoStock.GetStock(lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
-				gl_dataContainerTiingoStock.GetStock(lCurrentUpdateDayLinePos)->SetDayLineNeedUpdate(false);
-				pStock = gl_dataContainerFinnhubStock.GetStock((gl_dataContainerTiingoStock.GetStock(lCurrentUpdateDayLinePos)->m_strName));
+			auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdateDayLinePos);
+			if (pTiingoStock->IsDayLineNeedUpdate()) {
+				pTiingoStock->SetDayLineNeedUpdate(false);
+				pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoStock->m_strTicker);
 				ASSERT(pStock != nullptr);
 				fFound = true;
 				break;
@@ -242,7 +239,7 @@ bool CTiingoDataSource::InquireDayLine2() {
 		}
 		else {
 			SetUpdateDayLine(false);
-			const CString str = "美国市场自选股票日线历史数据更新完毕";
+			const CString str = "Tiingo股票日线历史数据更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}

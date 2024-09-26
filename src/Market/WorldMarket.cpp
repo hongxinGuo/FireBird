@@ -411,6 +411,32 @@ void CWorldMarket::UpdateSECFilingsDB() {
 	}
 }
 
+void CWorldMarket::UpdateTiingoStockDayLineStatus() {
+	int iTotal;
+	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
+		iTotal = gl_dataContainerTiingoStock.Size();
+		for (int i = 0; i < iTotal; i++) {
+			auto pStock = gl_dataContainerTiingoStock.GetStock(i);
+			pStock->SetDayLineNeedUpdate(true);
+		}
+	}
+	else {
+		iTotal = gl_dataContainerTiingoStock.Size();
+		for (int i = 0; i < iTotal; i++) {
+			auto pStock = gl_dataContainerTiingoStock.GetStock(i);
+			pStock->SetDayLineNeedUpdate(false);
+		}
+		iTotal = gl_dataContainerChosenWorldStock.Size();
+		for (int i = 0; i < iTotal; i++) {
+			auto p = gl_dataContainerChosenWorldStock.GetStock(i);
+			if (gl_dataContainerTiingoStock.IsStock(p->GetSymbol())) {
+				auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(p->GetSymbol());
+				pTiingoStock->SetDayLineNeedUpdate(true);
+			}
+		}
+	}
+}
+
 bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
 	if (!IsSystemReady()) {
 		if (!gl_pFinnhubDataSource->IsUpdateSymbol() && !gl_pFinnhubDataSource->IsUpdateForexExchange() && !gl_pFinnhubDataSource->IsUpdateForexSymbol()
@@ -561,7 +587,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 
-	long lNextTime = GetNextTime(lCurrentTime, 0, 1, 0);
+	long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
 	if (IsTimeToResetSystem(lNextTime)) lNextTime = 170510;
 	ASSERT(!IsTimeToResetSystem(lNextTime));// 重启系统时各数据库需要重新装入，故而此时不允许更新数据库。
 	AddTask(WORLD_MARKET_UPDATE_DB__, lNextTime); // 每五分钟更新一次

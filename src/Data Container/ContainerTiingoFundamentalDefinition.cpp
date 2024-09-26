@@ -51,7 +51,6 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB() {
 			setTiingoFundamentalDefinition.Close();
 		}
 	}
-
 	return true;
 }
 

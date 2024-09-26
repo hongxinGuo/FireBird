@@ -26,7 +26,7 @@ public:
 	virtual bool InquireCompanySymbol();
 	virtual bool InquireCryptoSymbol();
 	virtual bool InquireDayLine();
-	bool InquireDayLine2();
+	virtual bool InquireFinancialState();
 
 	bool IsUpdateMarketNews() const noexcept { return m_fUpdateMarketNews; }
 	void SetUpdateMarketNews(bool fFlag) noexcept { m_fUpdateMarketNews = fFlag; }

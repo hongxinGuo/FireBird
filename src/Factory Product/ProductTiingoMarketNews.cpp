@@ -10,13 +10,12 @@
 
 #include"jsonParse.h"
 
-#include"TiingoStock.h"
 #include "ProductTiingoMarketNews.h"
 
-#include "JsonGetValue.h"
 #include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"
+#include "WorldMarket.h"
 
 CProductTiingoMarketNews::CProductTiingoMarketNews() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/news?");
@@ -135,4 +134,5 @@ void CProductTiingoMarketNews::UpdateDataSourceStatus(CVirtualDataSourcePtr pDat
 	else {
 		gl_systemConfiguration.ChangeTiingoAccountTypeToPaid();
 	}
+	gl_pWorldMarket->UpdateTiingoStockDayLineStatus(); // 根据账户是付费还是免费的，设置日线更新方式。
 }

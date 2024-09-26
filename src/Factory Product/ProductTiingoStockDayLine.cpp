@@ -23,9 +23,8 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 CString CProductTiingoStockDayLine::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pStock = gl_dataContainerFinnhubStock.GetStock(GetIndex());
-	CString strParam = GetTiingoDayLineInquiryParam(pStock->GetSymbol(), 19800101, GetMarket()->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
-	pStock->SetDayLineNeedUpdate(false);
+	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
+	CString strParam = GetTiingoDayLineInquiryParam(pStock->m_strTicker, 19800101, GetMarket()->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
 
 	m_strInquiry = m_strInquiryFunction + strParam;
 	return m_strInquiry;
@@ -34,7 +33,9 @@ CString CProductTiingoStockDayLine::CreateMessage() {
 void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
 
-	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
+	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
+	auto pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoStock->m_strTicker);
+	ASSERT(pStock != nullptr);
 	const CDayLinesPtr pvDayLine = ParseTiingoStockDayLine(pWebData);
 	pStock->SetDayLineNeedUpdate(false);
 	if (!pvDayLine->empty()) {
@@ -52,7 +53,6 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pStock->SetUpdateProfileDB(false);
 	}
 	// 清除tiingo stock的日线更新标识
-	auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pStock->GetSymbol());
 	pTiingoStock->SetDayLineNeedUpdate(false);
 }
 

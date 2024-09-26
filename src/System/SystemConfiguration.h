@@ -173,7 +173,6 @@ public:
 
 	// data update rate
 	[[nodiscard]] int GetStockProfileUpdateRate() const noexcept { return m_iStockProfileUpdateRate; }
-
 	void SetStockProfileUpdateRate(const int iRate) noexcept {
 		m_fUpdate = true;
 		m_iStockProfileUpdateRate = iRate;
@@ -210,14 +209,18 @@ public:
 	}
 
 	[[nodiscard]] int GetSECFilingsUpdateRate() const noexcept { return m_iSECFilingsUpdateRate; }
-
 	void SetSECFilingsUpdateRate(const int iRate) noexcept {
 		m_fUpdate = true;
 		m_iSECFilingsUpdateRate = iRate;
 	}
 
-	[[nodiscard]] CString GetBenchmarkTestFileDirectory() const noexcept { return m_strBenchmarkTestFileDirectory; }
+	[[nodiscard]] int GetTiingoStockFinancialStateUpdateRate() const noexcept { return m_iTiingoStockFinancialStateUpdateRate; }
+	void SetTiingoStockFinancialStateUpdateRate(const int iRate) noexcept {
+		m_fUpdate = true;
+		m_iTiingoStockFinancialStateUpdateRate = iRate;
+	}
 
+	[[nodiscard]] CString GetBenchmarkTestFileDirectory() const noexcept { return m_strBenchmarkTestFileDirectory; }
 	void SetBenchmarkTestFileDirectory(const CString& strFileDirectory) {
 		m_fUpdate = true;
 		m_strBenchmarkTestFileDirectory = strFileDirectory;
@@ -317,6 +320,7 @@ protected:
 	int m_iTengxunRTDataInquiryPerTime{ 900 }; // 腾讯实时数据每次查询股票数
 
 	// 网络数据更新频率（以天数记）
+	// Finnhub数据
 	int m_iStockProfileUpdateRate{ 365 }; // 默认365天更新一次
 	int m_iInsideTransactionUpdateRate{ 30 }; // 默认30天更新一次
 	int m_iInsideSentimentUpdateRate{ 30 }; // 默认30天更新一次
@@ -324,6 +328,8 @@ protected:
 	int m_iStockPeerUpdateRate{ 90 }; // 默认90天更新一次
 	int m_iEPSSurpriseUpdateRate{ 90 }; // 默认90天更新一次
 	int m_iSECFilingsUpdateRate{ 30 }; // 默认30天更新一次
+	// Tiingo 数据
+	int m_iTiingoStockFinancialStateUpdateRate{ 45 }; // Tiingo公司金融数据更新
 
 	// 测试系统
 	CString m_strBenchmarkTestFileDirectory; // 性能测试文件所在的目录

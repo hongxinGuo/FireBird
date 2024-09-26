@@ -54,6 +54,8 @@ public:
 	bool UpdateEPSSurpriseDB();
 	void UpdateSECFilingsDB();
 
+	void UpdateTiingoStockDayLineStatus();
+
 	// ¸÷ÖÖ×´Ì¬
 
 	CString GetCurrentFunction() { return m_strCurrentFunction; }
