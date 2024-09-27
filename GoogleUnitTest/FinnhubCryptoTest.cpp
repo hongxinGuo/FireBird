@@ -3,7 +3,7 @@
 #include"WorldMarket.h"
 #include"GeneralCheck.h"
 
-#include"FinnhubCryptoSymbol.h"
+#include"FinnhubCrypto.h"
 #include"SetFinnhubCryptoSymbol.h"
 #include"SetCryptoDayLine.h"
 
@@ -13,25 +13,29 @@ namespace FireBirdTest {
 	class CFinnhubCryptoSymbolTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestInitialize) {
-		CFinnhubCryptoSymbol FinnhubCryptoSymbol;
+		CFinnhubCrypto FinnhubCryptoSymbol;
 		EXPECT_STREQ(FinnhubCryptoSymbol.GetDescription(), _T(" "));
 		EXPECT_STREQ(FinnhubCryptoSymbol.GetDisplaySymbol(), _T(" "));
 		EXPECT_STREQ(FinnhubCryptoSymbol.GetSymbol(), _T(" "));
@@ -45,55 +49,55 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetRatio) {
-		const CFinnhubCryptoSymbol symbol;
+		const CFinnhubCrypto symbol;
 
 		EXPECT_EQ(symbol.GetRatio(), 1000);
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetDescription) {
-		CFinnhubCryptoSymbol symbol;
+		CFinnhubCrypto symbol;
 
 		symbol.SetDescription(_T("abcdefg"));
 		EXPECT_STREQ(symbol.GetDescription(), _T("abcdefg"));
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetDisplaySymbol) {
-		CFinnhubCryptoSymbol symbol;
+		CFinnhubCrypto symbol;
 
 		symbol.SetDisplaySymbol(_T("abcdefg"));
 		EXPECT_STREQ(symbol.GetDisplaySymbol(), _T("abcdefg"));
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetSymbol) {
-		CFinnhubCryptoSymbol symbol;
+		CFinnhubCrypto symbol;
 
 		symbol.SetSymbol(_T("abcdefg"));
 		EXPECT_STREQ(symbol.GetSymbol(), _T("abcdefg"));
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetDayLineStartDate) {
-		CFinnhubCryptoSymbol symbol;
+		CFinnhubCrypto symbol;
 
 		symbol.SetDayLineStartDate(20202020);
 		EXPECT_EQ(symbol.GetDayLineStartDate(), 20202020);
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetDayLineEndDate) {
-		CFinnhubCryptoSymbol symbol;
+		CFinnhubCrypto symbol;
 
 		symbol.SetDayLineEndDate(10101010);
 		EXPECT_EQ(symbol.GetDayLineEndDate(), 10101010);
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetIPOStatus) {
-		CFinnhubCryptoSymbol symbol;
+		CFinnhubCrypto symbol;
 
 		symbol.SetIPOStatus(_STOCK_IPOED_);
 		EXPECT_EQ(symbol.GetIPOStatus(), _STOCK_IPOED_);
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetDayLineNeedSaving) {
-		CFinnhubCryptoSymbol symbol;
+		CFinnhubCrypto symbol;
 
 		EXPECT_FALSE(symbol.IsDayLineNeedSaving());
 		symbol.SetDayLineNeedSaving(true);
@@ -103,7 +107,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestSetCheckDayLineStatus) {
-		CFinnhubCryptoSymbol symbol;
+		CFinnhubCrypto symbol;
 
 		EXPECT_TRUE(symbol.IsDayLineNeedUpdate());
 		symbol.SetIPOStatus(_STOCK_NULL_);
@@ -118,7 +122,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestHaveNewDayLineData) {
-		CFinnhubCryptoSymbol symbol;
+		CFinnhubCrypto symbol;
 		vector<CDayLinePtr> vDayLine;
 
 		const CDayLinePtr pDayLine = make_shared<CDayLine>();
@@ -133,7 +137,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestUpdateDayLineStartEndDate) {
-		CFinnhubCryptoSymbol symbol;
+		CFinnhubCrypto symbol;
 		vector<CDayLinePtr> vDayLine;
 		CDayLinePtr pDayLine;
 
@@ -166,7 +170,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetFinnhubDayLineInquiringString1) {
-		CFinnhubCryptoSymbol symbol;
+		CFinnhubCrypto symbol;
 
 		symbol.SetSymbol(_T("ABCDE"));
 		const CString str = symbol.GetFinnhubDayLineInquiryParam(123456789);
@@ -174,7 +178,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetFinnhubDayLineInquiringString2) {
-		CFinnhubCryptoSymbol symbol;
+		CFinnhubCrypto symbol;
 
 		symbol.SetSymbol(_T("ABCDE"));
 		const CString str = symbol.GetFinnhubDayLineInquiryParam(1131536000);
@@ -183,7 +187,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestAppend) {
 		CSetFinnhubCryptoSymbol setFinnhubCryptoSymbol, setFinnhubCryptoSymbol2;
-		CFinnhubCryptoSymbol FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
+		CFinnhubCrypto FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
 
 		FinnhubCryptoSymbol.SetDescription(_T("abc"));
 		FinnhubCryptoSymbol.SetDisplaySymbol(_T("cba"));
@@ -228,7 +232,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestUpdate) {
 		CSetFinnhubCryptoSymbol setFinnhubCryptoSymbol, setFinnhubCryptoSymbol2, setFinnhubCryptoSymbol3;
-		CFinnhubCryptoSymbol FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
+		CFinnhubCrypto FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
 
 		FinnhubCryptoSymbol.SetDescription(_T("abc"));
 		FinnhubCryptoSymbol.SetDisplaySymbol(_T("cba"));
@@ -291,7 +295,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestUpdateDayLineDB) {
-		CFinnhubCryptoSymbol FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
+		CFinnhubCrypto FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
 		auto pDayLine = make_shared<CDayLine>();
 		vector<CDayLinePtr> vDayLine;
 		CSetCryptoDayLine setCryptoDayLine;

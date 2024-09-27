@@ -7,8 +7,8 @@ CTiingoStock::CTiingoStock() {
 }
 
 void CTiingoStock::Reset() {
+	CVirtualStock::Reset();
 	m_strTiingoPermaTicker = _T("");
-	m_strTicker = _T("");
 	m_strName = _T("");
 	m_fIsActive = false;
 	m_fIsADR = false;
@@ -23,13 +23,11 @@ void CTiingoStock::Reset() {
 	m_strSECFilingWebSite = _T("");
 	m_lDailyDataUpdateDate = 19800101;
 	m_lStatementUpdateDate = 19800101;
-
-	m_fUpdateDayLine = true;
 }
 
 void CTiingoStock::Load(const CSetTiingoStock& setTiingoStock) {
 	m_strTiingoPermaTicker = setTiingoStock.m_TiingoPermaTicker;
-	m_strTicker = setTiingoStock.m_Ticker;
+	m_strSymbol = setTiingoStock.m_Ticker;
 	m_strName = setTiingoStock.m_Name;
 	m_fIsActive = setTiingoStock.m_IsActive;
 	m_fIsADR = setTiingoStock.m_IsADR;
@@ -71,7 +69,7 @@ void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
 	m_strSECFilingWebSite = m_strSECFilingWebSite.Left(150);
 
 	setTiingoStock.m_TiingoPermaTicker = m_strTiingoPermaTicker;
-	setTiingoStock.m_Ticker = m_strTicker;
+	setTiingoStock.m_Ticker = m_strSymbol;
 	setTiingoStock.m_Name = m_strName;
 	setTiingoStock.m_IsActive = m_fIsActive;
 	setTiingoStock.m_IsADR = m_fIsADR;

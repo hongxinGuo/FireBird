@@ -23,7 +23,7 @@ public:
 	}
 
 	bool IsStock(const CWorldStockPtr& pStock) const { return IsStock(pStock->GetSymbol()); }
-	bool IsStock(const CTiingoStockPtr& pTiingoStock) const { return IsStock(pTiingoStock->m_strTicker); }
+	bool IsStock(const CTiingoStockPtr& pTiingoStock) const { return IsStock(pTiingoStock->GetSymbol()); }
 	CTiingoStockPtr GetStock(const size_t lIndex) const { return m_vTiingoStock.at(lIndex); }
 	CTiingoStockPtr GetStock(const CString& strTicker) const { return m_vTiingoStock.at(m_mapTiingoStock.at(strTicker)); }
 

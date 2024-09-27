@@ -1,7 +1,7 @@
 #pragma once
 
 #include"ContainerVirtualStock.h"
-#include "FinnhubCryptoSymbol.h"
+#include "FinnhubCrypto.h"
 
 class CContainerChosenCrypto final : public CContainerVirtualStock {
 public:
@@ -16,8 +16,8 @@ public:
 	bool LoadDB();
 	//bool UpdateDB();
 
-	CFinnhubCryptoSymbolPtr GetCryptoSymbol(size_t lIndex) { return dynamic_pointer_cast<CFinnhubCryptoSymbol>(Get(lIndex)); }
-	CFinnhubCryptoSymbolPtr GetCryptoSymbol(const CString& strStockCode) { return dynamic_pointer_cast<CFinnhubCryptoSymbol>(Get(strStockCode)); }
+	CFinnhubCryptoPtr GetCryptoSymbol(size_t lIndex) { return dynamic_pointer_cast<CFinnhubCrypto>(Get(lIndex)); }
+	CFinnhubCryptoPtr GetCryptoSymbol(const CString& strStockCode) { return dynamic_pointer_cast<CFinnhubCrypto>(Get(strStockCode)); }
 
 protected:
 	long m_lChosenCryptoPos;

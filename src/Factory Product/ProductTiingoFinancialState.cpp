@@ -103,7 +103,7 @@ CProductTiingoFinancialState::CProductTiingoFinancialState() {
 
 CString CProductTiingoFinancialState::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
-	CString strParam = _T("/") + pStock->m_strTicker + _T("/statements?"); // 如果日线未完全申请过时，申请完整日线。
+	CString strParam = _T("/") + pStock->GetSymbol() + _T("/statements?"); // 如果日线未完全申请过时，申请完整日线。
 	//CString strParam = _T("/AAPL/statements?"); // 如果日线未完全申请过时，申请完整日线。 测试用
 
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -165,7 +165,7 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CTiingoFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialState(const CWebDataPtr& pWebData) {
 	auto pvTiingoFinancialState = make_shared<vector<CTiingoFinancialStatePtr>>();
 	CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
-	CString symbol = pStock->m_strTicker;
+	CString symbol = pStock->GetSymbol();
 	CString exchange = _T("US");
 	string s1;
 	CString strNumber;

@@ -88,7 +88,7 @@ CContainerStockSymbol gl_dataContainerChinaStockSymbol;
 
 // World market处理的数据
 CContainerFinnhubForexSymbol gl_dataFinnhubForexSymbol;
-CContainerFinnhubCryptoSymbol gl_dataFinnhubCryptoSymbol;
+CContainerFinnhubCrypto gl_dataFinnhubCryptoSymbol;
 CContainerFinnhubCountry gl_dataContainerFinnhubCountry;
 CContainerFinnhubEconomicCalendar gl_dataContainerFinnhubEconomicCalendar;
 

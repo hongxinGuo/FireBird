@@ -7,12 +7,12 @@
 
 #include"TiingoDataSource.h"
 
-#include"ProductTiingoStockSymbol.h"
+#include"ProductTiingoStock.h"
 
 using namespace testing;
 
 namespace FireBirdTest {
-	class CProductTiingoStockSymbolTest : public Test {
+	class CProductTiingoStockTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
@@ -36,23 +36,23 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CProductTiingoStockSymbol stockSymbol;
+		CProductTiingoStock stockSymbol;
 	};
 
-	TEST_F(CProductTiingoStockSymbolTest, TestInitialize) {
+	TEST_F(CProductTiingoStockTest, TestInitialize) {
 		EXPECT_EQ(stockSymbol.GetIndex(), -1);
 		EXPECT_STREQ(stockSymbol.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/fundamentals/meta?"));
 	}
 
-	TEST_F(CProductTiingoStockSymbolTest, TestCreatMessage) {
+	TEST_F(CProductTiingoStockTest, TestCreatMessage) {
 		EXPECT_STREQ(stockSymbol.CreateMessage(), stockSymbol.GetInquiryFunction());
 	}
 
-	TEST_F(CProductTiingoStockSymbolTest, TestProcessWebData) {
+	TEST_F(CProductTiingoStockTest, TestProcessWebData) {
 		// ÓÉMockWorldMarketTest¸ºÔð²âÊÔ
 	}
 
-	TEST_F(CProductTiingoStockSymbolTest, TestUpdateDataSourceStatus) {
+	TEST_F(CProductTiingoStockTest, TestUpdateDataSourceStatus) {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateStockSymbol());
 
 		stockSymbol.UpdateDataSourceStatus(gl_pTiingoDataSource);
@@ -95,7 +95,7 @@ namespace FireBirdTest {
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
 		CTiingoStocksPtr m_pvStock;
-		CProductTiingoStockSymbol m_tiingoStockSymbolProduct;
+		CProductTiingoStock m_tiingoStockSymbolProduct;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStockProfile,
@@ -118,7 +118,7 @@ namespace FireBirdTest {
 		case 4:
 			EXPECT_EQ(m_pvStock->size(), 1);
 			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoPermaTicker, _T("US000000000091"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTicker, _T("AA"));
+			EXPECT_STREQ(m_pvStock->at(0)->GetSymbol(), _T("AA"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strName, _T("Alcoa Corp"));
 			EXPECT_TRUE(m_pvStock->at(0)->m_fIsActive);
 			EXPECT_FALSE(m_pvStock->at(0)->m_fIsADR);
@@ -137,7 +137,7 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_EQ(m_pvStock->size(), 2);
 			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoPermaTicker, _T("US000000000247"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTicker, _T("NEW SYMBOL"));
+			EXPECT_STREQ(m_pvStock->at(0)->GetSymbol(), _T("NEW SYMBOL"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strName, _T("Agilent Technologies Inc"));
 			EXPECT_TRUE(m_pvStock->at(0)->m_fIsActive);
 			EXPECT_FALSE(m_pvStock->at(0)->m_fIsADR);
@@ -153,7 +153,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvStock->at(0)->m_lStatementUpdateDate, 20210305);
 			EXPECT_EQ(m_pvStock->at(0)->m_lDailyDataUpdateDate, 20210312);
 			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoPermaTicker, _T("US000000000091"));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strTicker, _T("AA"));
+			EXPECT_STREQ(m_pvStock->at(1)->GetSymbol(), _T("AA"));
 			EXPECT_STREQ(m_pvStock->at(1)->m_strName, _T("New Name"));
 			EXPECT_TRUE(m_pvStock->at(1)->m_fIsActive);
 			EXPECT_FALSE(m_pvStock->at(1)->m_fIsADR);
@@ -199,7 +199,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CProductTiingoStockSymbol m_tiingoStockSymbolProduct;
+		CProductTiingoStock m_tiingoStockSymbolProduct;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStockProfile,

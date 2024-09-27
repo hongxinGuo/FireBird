@@ -84,7 +84,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CFinnhubCryptoSymbolsPtr m_pvCryptoSymbol;
+		CFinnhubCryptosPtr m_pvCryptoSymbol;
 		CProductFinnhubCryptoSymbol m_finnhubCryptoSymbolProduct;
 	};
 
@@ -155,7 +155,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData215, &finnhubWebData220));
 
 	TEST_P(ProcessFinnhubCryptoSymbolTest, TestProcessFinnhubCryptoSymbol) {
-		CFinnhubCryptoSymbolPtr pCrypto;
+		CFinnhubCryptoPtr pCrypto;
 		m_finnhubCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // ¿ÕÊý¾Ý

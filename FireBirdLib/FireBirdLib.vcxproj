@@ -38,7 +38,7 @@
     <ClInclude Include="..\src\Data Container\ContainerCryptoDayLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubCountry.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubCryptoExchange.h" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubCryptoSymbol.h" />
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubCrypto.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubForexExchange.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubForexSymbol.h" />
@@ -154,7 +154,7 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyProfile.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoSymbol.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockDayLine.h" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoStockSymbol.h" />
+    <ClInclude Include="..\src\Factory Product\ProductTiingoStock.h" />
     <ClInclude Include="..\src\Factory Product\QuandlFactory.h" />
     <ClInclude Include="..\src\Factory Product\TiingoFactory.h" />
     <ClInclude Include="..\src\Factory Product\VirtualDataFactory.h" />
@@ -182,7 +182,7 @@
     <ClInclude Include="..\src\Type\America market\EconomicCalendar.h" />
     <ClInclude Include="..\src\Type\America market\EPSSurprise.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubCompanyNews.h" />
-    <ClInclude Include="..\src\Type\America market\FinnhubCryptoSymbol.h" />
+    <ClInclude Include="..\src\Type\America market\FinnhubCrypto.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubForexSymbol.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubRecommendationTrends.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubStockBasicFinancial.h" />
@@ -256,7 +256,7 @@
     <ClCompile Include="..\src\Data Container\ContainerCryptoDayLine.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerFinnhubCountry.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerFinnhubCryptoExchange.cpp" />
-    <ClCompile Include="..\src\Data Container\ContainerFinnhubCryptoSymbol.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubCrypto.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerFinnhubForexExchange.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerFinnhubForexSymbol.cpp" />
@@ -350,7 +350,7 @@
     <ClCompile Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoMarketNews.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockDayLine.cpp" />
-    <ClCompile Include="..\src\Factory Product\ProductTiingoStockSymbol.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductTiingoStock.cpp" />
     <ClCompile Include="..\src\Factory Product\QuandlFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\TiingoFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\VirtualChinaMarketWebProduct.cpp" />
@@ -376,7 +376,7 @@
     <ClCompile Include="..\src\Type\America market\EconomicCalendar.cpp" />
     <ClCompile Include="..\src\Type\America market\EPSSurprise.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubCompanyNews.cpp" />
-    <ClCompile Include="..\src\Type\America market\FinnhubCryptoSymbol.cpp" />
+    <ClCompile Include="..\src\Type\America market\FinnhubCrypto.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubForexSymbol.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubRecommendationTrends.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubStockBasicFinancial.cpp" />

@@ -24,7 +24,7 @@ CString CProductTiingoStockDayLine::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
-	CString strParam = GetTiingoDayLineInquiryParam(pStock->m_strTicker, 19800101, GetMarket()->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
+	CString strParam = GetTiingoDayLineInquiryParam(pStock->GetSymbol(), 19800101, GetMarket()->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
 
 	m_strInquiry = m_strInquiryFunction + strParam;
 	return m_strInquiry;
@@ -34,7 +34,7 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
 
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
-	auto pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoStock->m_strTicker);
+	auto pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoStock->GetSymbol());
 	ASSERT(pStock != nullptr);
 	const CDayLinesPtr pvDayLine = ParseTiingoStockDayLine(pWebData);
 	pStock->SetDayLineNeedUpdate(false);

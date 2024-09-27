@@ -3,10 +3,10 @@
 #include"ProductTiingo.h"
 #include"TiingoStock.h"
 
-class CProductTiingoStockSymbol final : public CProductTiingo {
+class CProductTiingoStock final : public CProductTiingo {
 public:
-	CProductTiingoStockSymbol();
-	~CProductTiingoStockSymbol() override = default;
+	CProductTiingoStock();
+	~CProductTiingoStock() override = default;
 
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
@@ -15,4 +15,4 @@ public:
 	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
 };
 
-using CTiingoStockSymbolPtr = shared_ptr<CProductTiingoStockSymbol>;
+using CProductTiingoStockPtr = shared_ptr<CProductTiingoStock>;

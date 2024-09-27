@@ -366,7 +366,7 @@
     <ClCompile Include="EPSSurpriseTest.cpp">
       <Filter>Test源文件\Type\World market</Filter>
     </ClCompile>
-    <ClCompile Include="FinnhubCryptoSymbolTest.cpp">
+    <ClCompile Include="FinnhubCryptoTest.cpp">
       <Filter>Test源文件\Type\World market</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubExchangeTest.cpp">

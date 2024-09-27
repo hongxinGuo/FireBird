@@ -1264,7 +1264,7 @@ namespace FireBirdTest {
 		stock.SetSymbol(_T("asdjfkajsfkj"));
 
 		pTiingoStock->m_strTiingoPermaTicker = _T("askfkasjf");
-		pTiingoStock->m_strTicker = _T("asdjfkajsfkj");
+		pTiingoStock->SetSymbol(_T("asdjfkajsfkj"));
 		pTiingoStock->m_strName = _T("sdlfkjsdfkjg");
 		pTiingoStock->m_fIsActive = true;
 		pTiingoStock->m_fIsADR = true;
@@ -1290,7 +1290,7 @@ namespace FireBirdTest {
 		stock.SetSymbol(_T("asdjfkajsfkj"));
 
 		pTiingoStock->m_strTiingoPermaTicker = _T("askfkasjf");
-		pTiingoStock->m_strTicker = _T("asdjfkajsfkj");
+		pTiingoStock->SetSymbol(_T("asdjfkajsfkj"));
 		pTiingoStock->m_strName = _T("sdlfkjsdfkjg");
 		pTiingoStock->m_fIsActive = true;
 		pTiingoStock->m_fIsADR = true;
@@ -1309,7 +1309,7 @@ namespace FireBirdTest {
 		stock.UpdateStockProfile(pTiingoStock);
 
 		EXPECT_STREQ(stock.GetTiingoPermaTicker(), pTiingoStock->m_strTiingoPermaTicker);
-		EXPECT_STREQ(stock.GetSymbol(), pTiingoStock->m_strTicker);
+		EXPECT_STREQ(stock.GetSymbol(), pTiingoStock->GetSymbol());
 		EXPECT_TRUE(stock.TiingoIsActive());
 		EXPECT_TRUE(stock.IsADR());
 		EXPECT_EQ(stock.GetSICCode(), pTiingoStock->m_iSICCode);

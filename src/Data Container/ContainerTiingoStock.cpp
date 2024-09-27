@@ -11,7 +11,7 @@ void CContainerTiingoStock::Reset() {
 }
 
 void CContainerTiingoStock::Add(const CTiingoStockPtr& pTiingoStock) {
-	m_mapTiingoStock[pTiingoStock->m_strTicker] = m_vTiingoStock.size();
+	m_mapTiingoStock[pTiingoStock->GetSymbol()] = m_vTiingoStock.size();
 	m_vTiingoStock.push_back(pTiingoStock);
 }
 
@@ -19,8 +19,8 @@ bool CContainerTiingoStock::Delete(const CTiingoStockPtr& pTiingoStock) {
 	if (pTiingoStock == nullptr) return false;
 	if (!IsStock(pTiingoStock)) return false;
 
-	m_vTiingoStock.erase(m_vTiingoStock.begin() + m_mapTiingoStock.at(pTiingoStock->m_strTicker));
-	m_mapTiingoStock.erase(pTiingoStock->m_strTicker);
+	m_vTiingoStock.erase(m_vTiingoStock.begin() + m_mapTiingoStock.at(pTiingoStock->GetSymbol()));
+	m_mapTiingoStock.erase(pTiingoStock->GetSymbol());
 
 	return true;
 }

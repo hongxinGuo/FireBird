@@ -10,7 +10,7 @@ public:
 
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CFinnhubCryptoSymbolsPtr ParseFinnhubCryptoSymbol(const CWebDataPtr& pWebData);
+	CFinnhubCryptosPtr ParseFinnhubCryptoSymbol(const CWebDataPtr& pWebData);
 };
 
 using CFinnhubCryptoSymbolProductPtr = shared_ptr<CProductFinnhubCryptoSymbol>;

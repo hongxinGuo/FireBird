@@ -2,7 +2,7 @@
 
 #include"SetWorldChosenCrypto.h"
 #include "containerChosenCrypto.h"
-#include"FinnhubCryptoSymbol.h"
+#include"FinnhubCrypto.h"
 
 CContainerChosenCrypto::CContainerChosenCrypto() {
 	CContainerChosenCrypto::Reset();
@@ -16,7 +16,7 @@ void CContainerChosenCrypto::Reset() {
 
 bool CContainerChosenCrypto::LoadDB() {
 	CSetWorldChosenCrypto setWorldChosenCrypto;
-	CFinnhubCryptoSymbolPtr pCrypto = nullptr;
+	CFinnhubCryptoPtr pCrypto = nullptr;
 
 	setWorldChosenCrypto.Open();
 	setWorldChosenCrypto.m_pDatabase->BeginTrans();

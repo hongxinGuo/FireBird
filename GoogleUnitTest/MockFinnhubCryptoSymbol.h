@@ -3,7 +3,7 @@
 #include"FinnhubCryptoSymbol.h"
 
 namespace testing {
-	class CMockFinnhubCryptoSymbol final : public CFinnhubCryptoSymbol {
+	class CMockFinnhubCryptoSymbol final : public CFinnhubCrypto {
 	public:
 		MOCK_METHOD(bool, UpdateDayLineDB, (), (override));
 	};

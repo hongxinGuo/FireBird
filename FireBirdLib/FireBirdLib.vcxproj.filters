@@ -399,7 +399,7 @@
     <ClInclude Include="..\src\Type\America market\FinnhubCompanyNews.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\FinnhubCryptoSymbol.h">
+    <ClInclude Include="..\src\Type\America market\FinnhubCrypto.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Type\America market\FinnhubForexSymbol.h">
@@ -603,7 +603,7 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockDayLine.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoStockSymbol.h">
+    <ClInclude Include="..\src\Factory Product\ProductTiingoStock.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\QuandlFactory.h">
@@ -636,7 +636,7 @@
     <ClInclude Include="..\src\Data Container\ContainerFinnhubCryptoExchange.h">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubCryptoSymbol.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubCrypto.h">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.h">
@@ -977,7 +977,7 @@
     <ClCompile Include="..\src\Type\America market\FinnhubCompanyNews.cpp">
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\America market\FinnhubCryptoSymbol.cpp">
+    <ClCompile Include="..\src\Type\America market\FinnhubCrypto.cpp">
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\FinnhubForexSymbol.cpp">
@@ -1169,7 +1169,7 @@
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockDayLine.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductTiingoStockSymbol.cpp">
+    <ClCompile Include="..\src\Factory Product\ProductTiingoStock.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\QuandlFactory.cpp">
@@ -1208,7 +1208,7 @@
     <ClCompile Include="..\src\Data Container\ContainerFinnhubCryptoExchange.cpp">
       <Filter>源文件\Data container\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\ContainerFinnhubCryptoSymbol.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubCrypto.cpp">
       <Filter>源文件\Data container\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.cpp">

@@ -8,20 +8,24 @@ namespace FireBirdTest {
 	class CTiingoStockTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
@@ -29,7 +33,7 @@ namespace FireBirdTest {
 		CTiingoStock tiingo;
 
 		EXPECT_STREQ(tiingo.m_strTiingoPermaTicker, _T(""));
-		EXPECT_STREQ(tiingo.m_strTicker, _T(""));
+		EXPECT_STREQ(tiingo.GetSymbol(), _T(""));
 		EXPECT_STREQ(tiingo.m_strName, _T(""));
 		EXPECT_FALSE(tiingo.m_fIsActive);
 		EXPECT_FALSE(tiingo.m_fIsADR);
@@ -51,7 +55,7 @@ namespace FireBirdTest {
 		CSetTiingoStock setTiingoStock;
 
 		stock.m_strTiingoPermaTicker = _T("aasdfasdfj");
-		stock.m_strTicker = _T("000001.US");
+		stock.SetSymbol(_T("000001.US"));
 		stock.m_strName = _T("adkjkf");
 		stock.m_fIsActive = true;
 		stock.m_fIsADR = true;
@@ -78,7 +82,7 @@ namespace FireBirdTest {
 		setTiingoStock.Close();
 
 		EXPECT_STREQ(stock.m_strTiingoPermaTicker, stock2.m_strTiingoPermaTicker);
-		EXPECT_STREQ(stock.m_strTicker, stock2.m_strTicker);
+		EXPECT_STREQ(stock.GetSymbol(), stock2.GetSymbol());
 		EXPECT_STREQ(stock.m_strName, stock2.m_strName);
 		EXPECT_TRUE(stock.m_fIsActive == stock2.m_fIsActive);
 		EXPECT_TRUE(stock.m_fIsADR == stock2.m_fIsADR);

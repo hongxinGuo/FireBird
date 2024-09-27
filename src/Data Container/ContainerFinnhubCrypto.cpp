@@ -1,31 +1,31 @@
 #include "pch.h"
 
-#include "ContainerFinnhubCryptoSymbol.h"
+#include "ContainerFinnhubCrypto.h"
 #include"SetFinnhubCryptoSymbol.h"
-#include"FinnhubCryptoSymbol.h"
+#include"FinnhubCrypto.h"
 
 #include "InfoReport.h"
 
-CContainerFinnhubCryptoSymbol::CContainerFinnhubCryptoSymbol() {
-	CContainerFinnhubCryptoSymbol::Reset();
+CContainerFinnhubCrypto::CContainerFinnhubCrypto() {
+	CContainerFinnhubCrypto::Reset();
 }
 
-void CContainerFinnhubCryptoSymbol::Reset() {
+void CContainerFinnhubCrypto::Reset() {
 	CContainerVirtualStock::Reset();
 
 	m_lLastTotalSymbol = 0;
 }
 
-bool CContainerFinnhubCryptoSymbol::LoadDB() {
+bool CContainerFinnhubCrypto::LoadDB() {
 	CSetFinnhubCryptoSymbol setCryptoSymbol;
-	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
+	CFinnhubCryptoPtr pSymbol = nullptr;
 
 	setCryptoSymbol.m_strSort = _T("[Symbol]");
 	setCryptoSymbol.Open();
 	setCryptoSymbol.m_pDatabase->BeginTrans();
 	while (!setCryptoSymbol.IsEOF()) {
 		if (!IsSymbol(setCryptoSymbol.m_Symbol)) {
-			pSymbol = make_shared<CFinnhubCryptoSymbol>();
+			pSymbol = make_shared<CFinnhubCrypto>();
 			pSymbol->LoadSymbol(setCryptoSymbol);
 			pSymbol->SetCheckingDayLineStatus();
 			if (m_mapSymbol.contains(pSymbol->GetSymbol())) { gl_systemMessage.PushErrorMessage(_T("Finnhub Crypto发现重复代码：") + pSymbol->GetSymbol()); }
@@ -43,10 +43,10 @@ bool CContainerFinnhubCryptoSymbol::LoadDB() {
 	return true;
 }
 
-bool CContainerFinnhubCryptoSymbol::UpdateDB() {
+bool CContainerFinnhubCrypto::UpdateDB() {
 	try {
 		const long lTotalCryptoSymbol = static_cast<long>(m_vStock.size());
-		CFinnhubCryptoSymbolPtr pSymbol;
+		CFinnhubCryptoPtr pSymbol;
 		CSetFinnhubCryptoSymbol setCryptoSymbol;
 		bool fUpdateSymbol = false;
 
@@ -84,8 +84,7 @@ bool CContainerFinnhubCryptoSymbol::UpdateDB() {
 			setCryptoSymbol.m_pDatabase->CommitTrans();
 			setCryptoSymbol.Close();
 		}
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 

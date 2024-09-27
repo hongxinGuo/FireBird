@@ -867,7 +867,7 @@ bool CFinnhubDataSource::InquireCryptoDayLine() {
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && IsUpdateCryptoDayLine()) {
-		CFinnhubCryptoSymbolPtr pCryptoSymbol;
+		CFinnhubCryptoPtr pCryptoSymbol;
 		long lCurrentUpdateCryptoDayLinePos;
 		bool fFound = false;
 		if (!m_fInquiringFinnhubCryptoDayLine) {

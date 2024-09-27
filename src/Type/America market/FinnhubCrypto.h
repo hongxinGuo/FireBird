@@ -7,14 +7,14 @@
 #include<memory>
 #include<vector>
 
-class CFinnhubCryptoSymbol : public CVirtualStock {
+class CFinnhubCrypto : public CVirtualStock {
 public:
-	CFinnhubCryptoSymbol();
+	CFinnhubCrypto();
 	// 不允许赋值。
-	CFinnhubCryptoSymbol(const CFinnhubCryptoSymbol&) = delete;
-	CFinnhubCryptoSymbol& operator=(const CFinnhubCryptoSymbol&) = delete;
-	CFinnhubCryptoSymbol(const CFinnhubCryptoSymbol&&) noexcept = delete;
-	CFinnhubCryptoSymbol& operator=(const CFinnhubCryptoSymbol&&) noexcept = delete;
+	CFinnhubCrypto(const CFinnhubCrypto&) = delete;
+	CFinnhubCrypto& operator=(const CFinnhubCrypto&) = delete;
+	CFinnhubCrypto(const CFinnhubCrypto&&) noexcept = delete;
+	CFinnhubCrypto& operator=(const CFinnhubCrypto&&) noexcept = delete;
 	void Reset() override;
 	int GetRatio() const override { return 1000; } // 比例为1000
 
@@ -34,5 +34,5 @@ public:
 	CContainerCryptoDayLine m_dataDayLine;
 };
 
-typedef shared_ptr<CFinnhubCryptoSymbol> CFinnhubCryptoSymbolPtr;
-typedef shared_ptr<vector<CFinnhubCryptoSymbolPtr>> CFinnhubCryptoSymbolsPtr;
+typedef shared_ptr<CFinnhubCrypto> CFinnhubCryptoPtr;
+typedef shared_ptr<vector<CFinnhubCryptoPtr>> CFinnhubCryptosPtr;

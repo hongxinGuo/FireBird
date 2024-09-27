@@ -85,6 +85,7 @@ namespace FireBirdTest {
 			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_tiingoFinancialStateProduct.SetIndex(m_lIndex);
 		}
 
 		void TearDown() override {
@@ -120,11 +121,9 @@ namespace FireBirdTest {
 			break;
 		case 4:
 			EXPECT_EQ(m_pvFinancialState->size(), 1);
-
 			break;
 		case 10:
 			EXPECT_EQ(m_pvFinancialState->size(), 1);
-
 			break;
 		default:
 			break;

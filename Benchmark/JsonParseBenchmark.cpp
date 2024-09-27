@@ -14,7 +14,7 @@
 
 #include"SaveAndLoad.h"
 #include"JsonParse.h"
-#include "ProductTiingoStockSymbol.h"
+#include "ProductTiingoStock.h"
 #include"WebData.h"
 
 #include"simdjson.h"
@@ -268,14 +268,14 @@ public:
 	string sWorldStockUpdateParameter;
 	string sTiingoSymbol;
 	CWebDataPtr pWebData;
-	bool bError{false};
+	bool bError{ false };
 
 	simdjson::padded_string USExchangedStockCode;
 };
 
 // 这种方法比使用atof() * 1000快一倍
 BENCHMARK_F(CJsonParse, StrToDecimal)(benchmark::State& state) {
-	constexpr string_view svData{"12345.7654"};
+	constexpr string_view svData{ "12345.7654" };
 	for (auto _ : state) {
 		StrToDecimal(svData, 3);
 	}
@@ -316,7 +316,7 @@ BENCHMARK_F(CJsonParse, ParseTengxunDayLineUsingSimdjson)(benchmark::State& stat
 }
 
 BENCHMARK_F(CJsonParse, ParseTiingoFundamentalsUsingSimdjson)(benchmark::State& state) {
-	CProductTiingoStockSymbol p;
+	CProductTiingoStock p;
 	for (auto _ : state) {
 		auto vData = p.ParseTiingoStockSymbol(pWebData); // 默认测试文件中的股票代码为sh000001.
 	}
@@ -331,8 +331,7 @@ public:
 		sv = sv.substr(21, sv.length() - 21 - 2);
 		try {
 			js = json::parse(s.begin() + 21, s.end() - 2);
-		}
-		catch (json::parse_error&) {
+		} catch (json::parse_error&) {
 			fDone = false;
 		}
 		pWebData = make_shared<CWebData>();

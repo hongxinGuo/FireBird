@@ -21,7 +21,7 @@ using gsl::not_null;
 #include "ContainerChosenStock.h"
 #include "ContainerFinnhubCountry.h"
 #include "ContainerFinnhubCryptoExchange.h"
-#include "containerFinnhubCryptoSymbol.h"
+#include "containerFinnhubCrypto.h"
 #include "ContainerFinnhubEconomicCalendar.h"
 #include "ContainerFinnhubForexExchange.h"
 #include "containerFinnhubForexSymbol.h"
@@ -48,7 +48,7 @@ extern CContainerStockSymbol gl_dataContainerChinaStockSymbol;
 
 // WorldMarket处理的数据
 extern CContainerFinnhubForexSymbol gl_dataFinnhubForexSymbol;
-extern CContainerFinnhubCryptoSymbol gl_dataFinnhubCryptoSymbol;
+extern CContainerFinnhubCrypto gl_dataFinnhubCryptoSymbol;
 extern CContainerFinnhubCountry gl_dataContainerFinnhubCountry;
 extern CContainerFinnhubEconomicCalendar gl_dataContainerFinnhubEconomicCalendar;
 

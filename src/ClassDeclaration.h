@@ -70,4 +70,4 @@ class CWebRTData;
 typedef shared_ptr<CWebRTData> CWebRTDataPtr;
 
 class CFinnhubForexSymbol;
-class CFinnhubCryptoSymbol;
+class CFinnhubCrypto;

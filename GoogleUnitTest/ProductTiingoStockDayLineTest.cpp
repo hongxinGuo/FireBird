@@ -44,7 +44,7 @@ namespace FireBirdTest {
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage1) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
 		stockPriceCandle.SetMarket(gl_pWorldMarket);
-		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->m_strTicker);
+		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
 		pStock->SetDayLineStartDate(20171231); // 早于20180101
 		const CString strMessage = stockPriceCandle.CreateMessage();
 		const long lMarketDate = gl_pWorldMarket->GetMarketDate();
@@ -63,7 +63,7 @@ namespace FireBirdTest {
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage2) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
 		stockPriceCandle.SetMarket(gl_pWorldMarket);
-		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->m_strTicker);
+		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
 		pStock->SetDayLineStartDate(20171231); // 早于20180101
 		const CString strMessage = stockPriceCandle.CreateMessage();
 		const long lMarketDate = gl_pWorldMarket->GetMarketDate();
@@ -276,7 +276,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			auto symbol = gl_dataContainerTiingoStock.GetStock(0)->m_strTicker;
+			auto symbol = gl_dataContainerTiingoStock.GetStock(0)->GetSymbol();
 			gl_dataContainerFinnhubStock.GetStock(symbol)->SetDayLineNeedUpdate(false);
 			gl_dataContainerFinnhubStock.GetStock(symbol)->SetDayLineNeedSaving(false);
 			gl_dataContainerFinnhubStock.GetStock(symbol)->SetUpdateProfileDB(false);
@@ -299,7 +299,7 @@ namespace FireBirdTest {
 		CDayLinesPtr pvDayLine;
 		CString strMessage;
 		CDayLinePtr pDayLine;
-		CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->m_strTicker);
+		CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
 
 		m_tiingoStockPriceCandle.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {

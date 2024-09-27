@@ -5,7 +5,7 @@
 #include<memory>
 #include<vector>
 
-class CTiingoStock final {
+class CTiingoStock : public CVirtualStock {
 public:
 	CTiingoStock();
 	// 不允许复制和赋值。
@@ -13,22 +13,23 @@ public:
 	CTiingoStock& operator=(const CTiingoStock&) = delete;
 	CTiingoStock(const CTiingoStock&&) noexcept = delete;
 	CTiingoStock& operator=(const CTiingoStock&&) noexcept = delete;
-	~CTiingoStock() = default;
+	~CTiingoStock() override = default;
+	int GetRatio() const override { return 3; };
 
-	void Reset();
+	void Reset() override;
 
 	void Load(const CSetTiingoStock& setTiingoStock);
 	void Append(CSetTiingoStock& setTiingoStock);
 	void Save(CSetTiingoStock& setTiingoStock);
 
-	bool IsDayLineNeedUpdate() const noexcept { return m_fUpdateDayLine; }
-	void SetDayLineNeedUpdate(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
 	bool IsFinancialStateNeedUpdate() const noexcept { return m_fUpdateFinancialState; }
 	void SetFinancialStateNeedUpdate(bool fFlag) noexcept { m_fUpdateFinancialState = fFlag; }
+	bool IsSaveFinancialState() const noexcept { return m_fSaveFinancialState; }
+	void SetSaveFinancialState(bool fFlag) noexcept { m_fSaveFinancialState = fFlag; }
 
 public:
 	CString m_strTiingoPermaTicker; // Tiingo永久代码标识
-	CString m_strTicker;
+	//CString m_strTicker; // 这个使用VirtualStock中的m_strSymbol。
 	CString m_strName;
 	bool m_fIsActive; //
 	bool m_fIsADR;
@@ -45,8 +46,8 @@ public:
 	long m_lDailyDataUpdateDate;
 
 	// 无需存储数据区
-	bool m_fUpdateDayLine{ true };
 	bool m_fUpdateFinancialState{ true };
+	bool m_fSaveFinancialState{ false };
 };
 
 using CTiingoStockPtr = shared_ptr<CTiingoStock>;

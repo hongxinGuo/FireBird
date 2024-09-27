@@ -337,7 +337,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 	CString str;
 	bool fUpdated = false;
-	CFinnhubCryptoSymbolPtr pSymbol = nullptr;
+	CFinnhubCryptoPtr pSymbol = nullptr;
 	const size_t symbolSize = gl_dataFinnhubCryptoSymbol.Size();
 
 	for (int i = 0; i < symbolSize; ++i) {

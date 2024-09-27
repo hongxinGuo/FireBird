@@ -195,7 +195,7 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubCryptoCandleTest, TestProcessFinnhubCryptoCandle) {
 		CString strMessage;
-		CFinnhubCryptoSymbolPtr pCrypto = gl_dataFinnhubCryptoSymbol.GetSymbol(0);
+		CFinnhubCryptoPtr pCrypto = gl_dataFinnhubCryptoSymbol.GetSymbol(0);
 		m_finnhubCryptoDayLine.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对

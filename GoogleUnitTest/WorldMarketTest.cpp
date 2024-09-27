@@ -15,7 +15,7 @@
 #include"SetFinnhubForexSymbol.h"
 
 #include"FinnhubDataSource.h"
-#include"FinnhubCryptoSymbol.h"
+#include"FinnhubCrypto.h"
 #include "InfoReport.h"
 #include "WorldMarket.h"
 
@@ -115,21 +115,21 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsStock(pStock));
 
 		const auto pTiingoStock = make_shared<CTiingoStock>();
-		pTiingoStock->m_strTicker = _T("000000.SS");
+		pTiingoStock->SetSymbol(_T("000000.SS"));
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsStock(pTiingoStock));
-		pTiingoStock->m_strTicker = _T("AA");
+		pTiingoStock->SetSymbol(_T("AA"));
 		EXPECT_TRUE(gl_dataContainerTiingoStock.IsStock(pTiingoStock));
-		pTiingoStock->m_strTicker = _T("600601.SS");
+		pTiingoStock->SetSymbol(_T("600601.SS"));
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsStock(pTiingoStock));
-		pTiingoStock->m_strTicker = _T("A");
+		pTiingoStock->SetSymbol(_T("A"));
 		EXPECT_TRUE(gl_dataContainerTiingoStock.IsStock(pTiingoStock));
-		pTiingoStock->m_strTicker = _T("000001.SZ");
+		pTiingoStock->SetSymbol(_T("000001.SZ"));
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsStock(pTiingoStock));
 	}
 
 	TEST_F(CWorldMarketTest, TestGetTiingoStock) {
 		CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(0); // A
-		EXPECT_STREQ(pStock->m_strTicker, _T("A")) << "第一个股票代码为A";
+		EXPECT_STREQ(pStock->GetSymbol(), _T("A")) << "第一个股票代码为A";
 		pStock = gl_dataContainerTiingoStock.GetStock(_T("A"));
 		EXPECT_FALSE(pStock == nullptr);
 		EXPECT_STREQ(pStock->m_strName, _T("Agilent Technologies Inc"));
@@ -184,7 +184,7 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestAddTiingoStock) {
 		const auto pStock = make_shared<CTiingoStock>();
 		const auto lTotalStock = gl_dataContainerTiingoStock.Size();
-		pStock->m_strTicker = _T("ABCDEF");
+		pStock->SetSymbol(_T("ABCDEF"));
 
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsStock(pStock));
 		gl_dataContainerTiingoStock.Add(pStock);
@@ -202,7 +202,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_dataContainerTiingoStock.Delete(pStock)) << "空指针";
 
 		pStock = make_shared<CTiingoStock>();
-		pStock->m_strTicker = _T("ABCDEF");
+		pStock->SetSymbol(_T("ABCDEF"));
 		EXPECT_FALSE(gl_dataContainerTiingoStock.Delete(pStock)) << "此股票代码不存在于代码集中";
 	}
 
@@ -299,7 +299,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(_T("BINANCE:USDTUAH")));
 		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(_T("COINBASE:TRIBE-USD")));
 
-		const auto pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		const auto pCryptoSymbol = make_shared<CFinnhubCrypto>();
 		pCryptoSymbol->SetSymbol(_T("ABC"));
 		EXPECT_FALSE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
 		pCryptoSymbol->SetSymbol(_T("BINANCE:USDTUAH"));
@@ -309,7 +309,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddCryptoSymbol) {
-		const auto pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		const auto pCryptoSymbol = make_shared<CFinnhubCrypto>();
 		const auto lTotalCryptoSymbol = gl_dataFinnhubCryptoSymbol.Size();
 		pCryptoSymbol->SetSymbol(_T("000001.SZ"));
 
@@ -325,11 +325,11 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestDeleteCryptoSymbol) {
 		// do nothing. 已经在TestAddCryptoSymbol中测试了DeleteCryptoSymbol函数
-		CFinnhubCryptoSymbolPtr pCryptoSymbol = nullptr;
+		CFinnhubCryptoPtr pCryptoSymbol = nullptr;
 
 		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); // "空指针";
 
-		pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		pCryptoSymbol = make_shared<CFinnhubCrypto>();
 		pCryptoSymbol->SetSymbol(_T("000001.SZ"));
 		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); // "此符号在符号集中不存在";
 	}
@@ -500,7 +500,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateFinnhubCryptoSymbolDB) {
-		auto pCryptoSymbol = make_shared<CFinnhubCryptoSymbol>();
+		auto pCryptoSymbol = make_shared<CFinnhubCrypto>();
 		pCryptoSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
 		EXPECT_FALSE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
 		gl_dataFinnhubCryptoSymbol.Add(pCryptoSymbol);
@@ -554,7 +554,7 @@ namespace FireBirdTest {
 		pTiingoStock->m_strSECFilingWebSite = _T("abc");
 		pTiingoStock->m_strSICIndustry = _T("Computer Science");
 		pTiingoStock->m_strSICSector = _T("Communication");
-		pTiingoStock->m_strTicker = _T("ABCDEF"); // 新代码
+		pTiingoStock->SetSymbol(_T("ABCDEF")); // 新代码
 		pTiingoStock->m_strTiingoIndustry = _T("Computer");
 		pTiingoStock->m_strTiingoPermaTicker = _T("abcdefg");
 		pTiingoStock->m_strTiingoSector = _T("gfedcba");

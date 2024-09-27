@@ -1080,7 +1080,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryCryptoDayLine) {
-		CFinnhubCryptoSymbolPtr pStock;
+		CFinnhubCryptoPtr pStock;
 
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_dataFinnhubCryptoSymbol.Size(); i++) {

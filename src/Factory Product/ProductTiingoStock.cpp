@@ -3,34 +3,34 @@
 #include"jsonParse.h"
 
 #include"TiingoStock.h"
-#include "ProductTiingoStockSymbol.h"
+#include "ProductTiingoStock.h"
 
 #include "TiingoDataSource.h"
 #include "TimeConvert.h"
 
 #include"simdjsonGetValue.h"
 
-CProductTiingoStockSymbol::CProductTiingoStockSymbol() {
+CProductTiingoStock::CProductTiingoStock() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");
 }
 
-CString CProductTiingoStockSymbol::CreateMessage() {
+CString CProductTiingoStock::CreateMessage() {
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
 }
 
-void CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductTiingoStock::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoStock = ParseTiingoStockSymbol(pWebData);
 	if (!pvTiingoStock->empty()) {
 		char buffer[100];
 		long lTemp = 0;
 		for (const auto& pTiingoStock : *pvTiingoStock) {
-			if (!gl_dataContainerTiingoStock.IsStock(pTiingoStock->m_strTicker)) {
+			if (!gl_dataContainerTiingoStock.IsStock(pTiingoStock->GetSymbol())) {
 				gl_dataContainerTiingoStock.Add(pTiingoStock);
 			}
-			if (gl_dataContainerFinnhubStock.IsSymbol(pTiingoStock->m_strTicker)) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
+			if (gl_dataContainerFinnhubStock.IsSymbol(pTiingoStock->GetSymbol())) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
 				lTemp++;
-				const auto pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoStock->m_strTicker);
+				const auto pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoStock->GetSymbol());
 				if (pStock->IsNeedUpdateProfile(pTiingoStock)) {
 					pStock->UpdateStockProfile(pTiingoStock);
 					pStock->SetUpdateProfileDB(true);
@@ -77,7 +77,7 @@ void CProductTiingoStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // 使用simdjson解析，速度为Nlohmann-json的三倍。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoStocksPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CWebDataPtr& pWebData) {
+CTiingoStocksPtr CProductTiingoStock::ParseTiingoStockSymbol(const CWebDataPtr& pWebData) {
 	auto pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
 	string strNotAvailable{ _T("Field not available for free/evaluation") }; // Tiingo免费账户有多项内容空缺，会返回此信息。
 	CString strNULL = _T(" ");
@@ -104,7 +104,7 @@ CTiingoStocksPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CWebDat
 			pStock->m_strTiingoPermaTicker = s1.c_str();;
 			s1 = jsonGetStringView(itemValue, _T("ticker"));
 			std::ranges::transform(s1, s1.begin(), ::toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。(需要使用::toupper）
-			pStock->m_strTicker = s1.c_str();
+			pStock->SetSymbol(s1.c_str());
 			s1 = jsonGetStringView(itemValue, _T("name"));
 			pStock->m_strName = s1.c_str();;
 			pStock->m_fIsActive = jsonGetBool(itemValue, _T("isActive"));
@@ -176,7 +176,7 @@ CTiingoStocksPtr CProductTiingoStockSymbol::ParseTiingoStockSymbol(const CWebDat
 	return pvTiingoStock;
 }
 
-void CProductTiingoStockSymbol::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
+void CProductTiingoStock::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateStockSymbol(false);
 	gl_systemMessage.PushInformationMessage(_T("Tiingo stock symbol已更新"));
