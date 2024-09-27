@@ -36,6 +36,8 @@ public:
 	void SetUpdateStockSymbol(bool fFlag) noexcept { m_fUpdateStockSymbol = fFlag; }
 	bool IsUpdateCryptoSymbol() const noexcept { return m_fUpdateCryptoSymbol; }
 	void SetUpdateCryptoSymbol(bool fFlag) noexcept { m_fUpdateCryptoSymbol = fFlag; }
+	bool IsUpdateFinancialStatement() const noexcept { return m_fUpdateFinancialStatement; }
+	void SetUpdateFinancialStatement(bool fFlag) noexcept { m_fUpdateFinancialStatement = fFlag; }
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
 
@@ -46,6 +48,7 @@ protected:
 	bool m_fUpdateFundamentalDefinitions{ true }; // 每日更新基本数据定义库
 	bool m_fUpdateStockSymbol{ true }; // 每日更新公司代码库
 	bool m_fUpdateCryptoSymbol{ true }; // 每日更新crypto代码库
+	bool m_fUpdateFinancialStatement{ true }; // 每日更新财经数据
 	bool m_fUpdateDayLine{ true }; // 每日更新公司日线数据
 
 	bool m_fTiingoDataInquiryFinished{ false };

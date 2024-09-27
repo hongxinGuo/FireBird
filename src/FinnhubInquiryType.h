@@ -123,6 +123,7 @@ enum {
 	// Global Filings Search
 
 	TIINGO_FUNDAMENTAL_DEFINITION_ = 3000,
+	TIINGO_FINANCIAL_STATEMENT__,
 };
 
 class CFinnhubInquiryType {

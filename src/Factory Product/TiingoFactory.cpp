@@ -11,6 +11,7 @@
 #include"ProductTiingoCryptoSymbol.h"
 
 #include"ProductDummy.h"
+#include "ProductTiingoFinancialState.h"
 #include "ProductTiingoFundamentalDefinition.h"
 #include "ProductTiingoMarketNews.h"
 
@@ -72,6 +73,9 @@ CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarke
 		break;
 	case TIINGO_FUNDAMENTAL_DEFINITION_:
 		p = make_shared<CProductTiingoFundamentalDefinition>();
+		break;
+	case TIINGO_FINANCIAL_STATEMENT__:
+		p = make_shared<CProductTiingoFinancialState>();
 		break;
 	default:
 		p = make_shared<CProductDummy>();

@@ -104,6 +104,7 @@ CProductTiingoFinancialState::CProductTiingoFinancialState() {
 CString CProductTiingoFinancialState::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	CString strParam = _T("/") + pStock->m_strTicker + _T("/statements?"); // 如果日线未完全申请过时，申请完整日线。
+	//CString strParam = _T("/AAPL/statements?"); // 如果日线未完全申请过时，申请完整日线。 测试用
 
 	m_strInquiry = m_strInquiryFunction + strParam;
 	return m_strInquiry;
@@ -112,9 +113,18 @@ CString CProductTiingoFinancialState::CreateMessage() {
 void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
 	const auto pvTiingoFinancialState = ParseTiingoFinancialState(pWebData);
+
 	if (!pvTiingoFinancialState->empty()) {
+		/*
+		CSetTiingoFinancialState setFinancialState;
+		setFinancialState.Open();
+		setFinancialState.m_pDatabase->BeginTrans();
 		for (const auto& pTiingoFinancialState : *pvTiingoFinancialState) {
+			pTiingoFinancialState->Append(setFinancialState);
 		}
+		setFinancialState.m_pDatabase->CommitTrans();
+		setFinancialState.Close();
+		*/
 	}
 	// 清除tiingo stock的金融数据更新标识
 	pTiingoStock->SetFinancialStateNeedUpdate(false);
@@ -154,7 +164,9 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialState(const CWebDataPtr& pWebData) {
 	auto pvTiingoFinancialState = make_shared<vector<CTiingoFinancialStatePtr>>();
-	CTiingoStockPtr pStock = nullptr;
+	CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
+	CString symbol = pStock->m_strTicker;
+	CString exchange = _T("US");
 	string s1;
 	CString strNumber;
 
@@ -169,6 +181,8 @@ CTiingoFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialStat
 		for (auto item : doc) {
 			int iCount = 0;
 			auto pFinancialStatePtr = make_shared<CTiingoFinancialState>();
+			pFinancialStatePtr->m_symbol = symbol;
+			pFinancialStatePtr->m_exchange = exchange;
 			auto itemValue = item.value();
 			auto year2 = jsonGetInt64(itemValue, _T("year"));
 			auto quarter = jsonGetInt64(itemValue, _T("quarter"));

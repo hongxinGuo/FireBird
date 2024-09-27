@@ -5,7 +5,7 @@
 
 class CSetTiingoFinancialState : public CVirtualRecordset {
 public:
-	CSetTiingoFinancialState(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("tiingo_financial_states"), CDatabase* pDatabase = nullptr);
+	CSetTiingoFinancialState(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("tiingo_financial_state"), CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 

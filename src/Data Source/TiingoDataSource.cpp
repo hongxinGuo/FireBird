@@ -116,6 +116,7 @@ void CTiingoDataSource::Inquire(long lCurrentTime) {
 		InquireFundamentalDefinition();
 		InquireCompanySymbol();
 		InquireCryptoSymbol();
+		InquireFinancialState();
 		InquireDayLine();
 		if (!IsInquiring()) {
 			if (!m_fTiingoDataInquiryFinished) {
@@ -217,29 +218,27 @@ bool CTiingoDataSource::InquireFinancialState() {
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
-	if (!IsInquiring() && IsUpdateDayLine()) {
-		CWorldStockPtr pStock;
+	if (!IsInquiring() && IsUpdateFinancialStatement()) {
+		long lCurrentUpdateDayLinePos;
 		bool fFound = false;
-		for (long lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
+		for (lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
 			auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdateDayLinePos);
-			if (pTiingoStock->IsDayLineNeedUpdate()) {
-				pTiingoStock->SetDayLineNeedUpdate(false);
-				pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoStock->m_strTicker);
-				ASSERT(pStock != nullptr);
+			if (pTiingoStock->IsFinancialStateNeedUpdate()) {
+				pTiingoStock->SetFinancialStateNeedUpdate(false);
 				fFound = true;
 				break;
 			}
 		}
 		if (fFound) {
 			fHaveInquiry = true;
-			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, STOCK_PRICE_CANDLES_);
-			p->SetIndex(gl_dataContainerFinnhubStock.GetOffset(pStock->GetSymbol()));
+			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, TIINGO_FINANCIAL_STATEMENT__);
+			p->SetIndex(lCurrentUpdateDayLinePos);
 			StoreInquiry(p);
 			SetInquiring(true);
 		}
 		else {
-			SetUpdateDayLine(false);
-			const CString str = "Tiingo股票日线历史数据更新完毕";
+			SetUpdateFinancialStatement(false);
+			const CString str = "Tiingo financial statements更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
