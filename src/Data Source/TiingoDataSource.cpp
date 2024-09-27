@@ -191,7 +191,7 @@ bool CTiingoDataSource::InquireDayLine() {
 		for (lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
 			auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdateDayLinePos);
 			if (pTiingoStock->IsDayLineNeedUpdate()) {
-				pTiingoStock->SetDayLineNeedUpdate(false);
+				//pTiingoStock->SetDayLineNeedUpdate(false);
 				fFound = true;
 				break;
 			}

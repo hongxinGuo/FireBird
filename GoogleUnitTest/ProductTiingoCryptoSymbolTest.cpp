@@ -52,7 +52,9 @@ namespace FireBirdTest {
 		stockSymbol.UpdateDataSourceStatus(gl_pTiingoDataSource);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Tiingo crypto symbol已更新"));
 
+		// 恢复原状
 		gl_pTiingoDataSource->SetUpdateCryptoSymbol(true);
 	}
 

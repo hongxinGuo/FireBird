@@ -23,6 +23,8 @@ public:
 
 	bool IsDayLineNeedUpdate() const noexcept { return m_fUpdateDayLine; }
 	void SetDayLineNeedUpdate(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
+	bool IsFinancialStateNeedUpdate() const noexcept { return m_fUpdateFinancialState; }
+	void SetFinancialStateNeedUpdate(bool fFlag) noexcept { m_fUpdateFinancialState = fFlag; }
 
 public:
 	CString m_strTiingoPermaTicker; // Tiingo永久代码标识
@@ -44,6 +46,7 @@ public:
 
 	// 无需存储数据区
 	bool m_fUpdateDayLine{ true };
+	bool m_fUpdateFinancialState{ true };
 };
 
 using CTiingoStockPtr = shared_ptr<CTiingoStock>;

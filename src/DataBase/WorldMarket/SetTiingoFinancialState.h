@@ -18,15 +18,16 @@ public:
 	// 以同时支持 Unicode 和这些转换)。
 
 	long m_ID;
-	CString m_Symbol;
-	CString m_Exchange;
+	CString m_symbol;
+	CString m_exchange;
+	int m_yearQuarter;
 	CString m_accoci;
 	CString m_acctPay;
 	CString m_acctRec;
-	CString m_assetCurrent;
-	CString m_assetNotCurrent;
-	CString assetTurnover;
-	CString m_boolVal;
+	CString m_assetsCurrent;
+	CString m_assetsNonCurrent;
+	CString m_assetTurnover;
+	CString m_bookVal;
 	CString m_businessAcqDisposals;
 	CString m_bvps;
 	CString m_capex;
@@ -63,7 +64,7 @@ public:
 	CString m_issrepayDebt;
 	CString m_issrepayEquity;
 	CString m_liabilitiesCurrent;
-	CString m_liabilitiesEquity;
+	CString m_liabilitiesNonCurrent;
 	CString m_longTermDebtEquity;
 	CString m_marketCap;
 	CString m_ncf;
@@ -72,7 +73,7 @@ public:
 	CString m_ncfo;
 	CString m_ncfx;
 	CString m_netinc;
-	CString m_netincComStock;
+	CString m_netIncComStock;
 	CString m_netIncDiscOps;
 	CString m_netMargin;
 	CString m_nonControllingInterests;
@@ -96,15 +97,15 @@ public:
 	CString m_sbcomp;
 	CString m_sga;
 	CString m_shareFactor;
-	CString m_shareBasic;
+	CString m_sharesBasic;
 	CString m_shareswa;
-	CString m_sharewaDil;
+	CString m_shareswaDil;
 	CString m_taxAssets;
 	CString m_taxExp;
 	CString m_taxLiabilities;
 	CString m_totalAssets;
 	CString m_totalLiabilities;
-	CString m_railingPEG1Y;
+	CString m_trailingPEG1Y;
 
 public:
 	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持

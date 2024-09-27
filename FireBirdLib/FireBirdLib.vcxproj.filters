@@ -783,7 +783,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.h">
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyStatement.h">
+    <ClInclude Include="..\src\Factory Product\ProductTiingoFinancialState.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyDividend.h">
@@ -1369,6 +1369,9 @@
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoFinancialState.cpp">
       <Filter>源文件\database\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingoFinancialState.cpp">
+      <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

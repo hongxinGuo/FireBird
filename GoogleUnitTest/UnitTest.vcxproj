@@ -133,6 +133,7 @@
     <ClCompile Include="HighPerformanceCounterTest.cpp" />
     <ClCompile Include="jsonParseTest.cpp" />
     <ClCompile Include="ChinaStockCodeConverterTest.cpp" />
+    <ClCompile Include="ProductTiingoFinancialStateTest.cpp" />
     <ClCompile Include="ProductTiingoFundamentalDefinitionTest.cpp" />
     <ClCompile Include="ProductTiingoMarketNewsTest.cpp" />
     <ClCompile Include="ScheduleTaskTest.cpp" />

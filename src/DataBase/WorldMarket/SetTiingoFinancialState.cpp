@@ -7,15 +7,16 @@
 CSetTiingoFinancialState::CSetTiingoFinancialState(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
-	m_Symbol = _T("");
-	m_Exchange = _T("");
+	m_symbol = _T("");
+	m_exchange = _T("");
+	m_yearQuarter = 0;
 	m_accoci = _T("");
 	m_acctPay = _T("");
 	m_acctRec = _T("");
-	m_assetCurrent = _T("");
-	m_assetNotCurrent = _T("");
-	CString assetTurnover = _T("");
-	m_boolVal = _T("");
+	m_assetsCurrent = _T("");
+	m_assetsNonCurrent = _T("");
+	m_assetTurnover = _T("");
+	m_bookVal = _T("");
 	m_businessAcqDisposals = _T("");
 	m_bvps = _T("");
 	m_capex = _T("");
@@ -52,7 +53,7 @@ CSetTiingoFinancialState::CSetTiingoFinancialState(const CString& strSchema, con
 	m_issrepayDebt = _T("");
 	m_issrepayEquity = _T("");
 	m_liabilitiesCurrent = _T("");
-	m_liabilitiesEquity = _T("");
+	m_liabilitiesNonCurrent = _T("");
 	m_longTermDebtEquity = _T("");
 	m_marketCap = _T("");
 	m_ncf = _T("");
@@ -61,7 +62,7 @@ CSetTiingoFinancialState::CSetTiingoFinancialState(const CString& strSchema, con
 	m_ncfo = _T("");
 	m_ncfx = _T("");
 	m_netinc = _T("");
-	m_netincComStock = _T("");
+	m_netIncComStock = _T("");
 	m_netIncDiscOps = _T("");
 	m_netMargin = _T("");
 	m_nonControllingInterests = _T("");
@@ -85,17 +86,17 @@ CSetTiingoFinancialState::CSetTiingoFinancialState(const CString& strSchema, con
 	m_sbcomp = _T("");
 	m_sga = _T("");
 	m_shareFactor = _T("");
-	m_shareBasic = _T("");
+	m_sharesBasic = _T("");
 	m_shareswa = _T("");
-	m_sharewaDil = _T("");
+	m_shareswaDil = _T("");
 	m_taxAssets = _T("");
 	m_taxExp = _T("");
 	m_taxLiabilities = _T("");
 	m_totalAssets = _T("");
 	m_totalLiabilities = _T("");
-	m_railingPEG1Y = _T("");
+	m_trailingPEG1Y = _T("");
 
-	m_nFields = 88;
+	m_nFields = 89;
 }
 
 void CSetTiingoFinancialState::DoFieldExchange(CFieldExchange* pFX) {
@@ -104,15 +105,16 @@ void CSetTiingoFinancialState::DoFieldExchange(CFieldExchange* pFX) {
 	// 成员变量的类型，而不是数据库字段的类型。
 	// ODBC 尝试自动将列值转换为所请求的类型
 	RFX_Long(pFX, _T("[ID]"), m_ID);
-	RFX_Text(pFX, _T("symbol"), m_Symbol);
-	RFX_Text(pFX, _T("exchange"), m_Exchange);
+	RFX_Text(pFX, _T("symbol"), m_symbol);
+	RFX_Text(pFX, _T("exchange"), m_exchange);
+	RFX_Int(pFX, _T("yearQuarter"), m_yearQuarter);
 	RFX_Text(pFX, _T("accoci"), m_accoci);
 	RFX_Text(pFX, _T("acctPay"), m_acctPay);
 	RFX_Text(pFX, _T("acctRec"), m_acctRec);
-	RFX_Text(pFX, _T("assetCurrent"), m_assetCurrent);
-	RFX_Text(pFX, _T("assetNotCurrent"), m_assetNotCurrent);
-	RFX_Text(pFX, _T("assetTurnover"), assetTurnover);
-	RFX_Text(pFX, _T("boolVal"), m_boolVal);
+	RFX_Text(pFX, _T("assetsCurrent"), m_assetsCurrent);
+	RFX_Text(pFX, _T("assetsNonCurrent"), m_assetsNonCurrent);
+	RFX_Text(pFX, _T("assetTurnover"), m_assetTurnover);
+	RFX_Text(pFX, _T("bookVal"), m_bookVal);
 	RFX_Text(pFX, _T("businessAcqDisposals"), m_businessAcqDisposals);
 	RFX_Text(pFX, _T("bvps"), m_bvps);
 	RFX_Text(pFX, _T("capex"), m_capex);
@@ -149,7 +151,7 @@ void CSetTiingoFinancialState::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("issrepayDebt"), m_issrepayDebt);
 	RFX_Text(pFX, _T("issrepayEquity"), m_issrepayEquity);
 	RFX_Text(pFX, _T("liabilitiesCurrent"), m_liabilitiesCurrent);
-	RFX_Text(pFX, _T("liabilitiesEquity"), m_liabilitiesEquity);
+	RFX_Text(pFX, _T("liabilitiesNonCurrent"), m_liabilitiesNonCurrent);
 	RFX_Text(pFX, _T("longTermDebtEquity"), m_longTermDebtEquity);
 	RFX_Text(pFX, _T("marketCap"), m_marketCap);
 	RFX_Text(pFX, _T("ncf"), m_ncf);
@@ -158,7 +160,7 @@ void CSetTiingoFinancialState::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("ncfo"), m_ncfo);
 	RFX_Text(pFX, _T("ncfx"), m_ncfx);
 	RFX_Text(pFX, _T("netinc"), m_netinc);
-	RFX_Text(pFX, _T("netincComStock"), m_netincComStock);
+	RFX_Text(pFX, _T("netIncComStock"), m_netIncComStock);
 	RFX_Text(pFX, _T("netIncDiscOps"), m_netIncDiscOps);
 	RFX_Text(pFX, _T("netMargin"), m_netMargin);
 	RFX_Text(pFX, _T("nonControllingInterests"), m_nonControllingInterests);
@@ -182,13 +184,13 @@ void CSetTiingoFinancialState::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("sbcomp"), m_sbcomp);
 	RFX_Text(pFX, _T("sga"), m_sga);
 	RFX_Text(pFX, _T("shareFactor"), m_shareFactor);
-	RFX_Text(pFX, _T("shareBasic"), m_shareBasic);
+	RFX_Text(pFX, _T("sharesBasic"), m_sharesBasic);
 	RFX_Text(pFX, _T("shareswa"), m_shareswa);
-	RFX_Text(pFX, _T("sharewaDil"), m_sharewaDil);
+	RFX_Text(pFX, _T("shareswaDil"), m_shareswaDil);
 	RFX_Text(pFX, _T("taxAssets"), m_taxAssets);
 	RFX_Text(pFX, _T("taxExp"), m_taxExp);
 	RFX_Text(pFX, _T("taxLiabilities"), m_taxLiabilities);
 	RFX_Text(pFX, _T("totalAssets"), m_totalAssets);
 	RFX_Text(pFX, _T("totalLiabilities"), m_totalLiabilities);
-	RFX_Text(pFX, _T("railingPEG1Y"), m_railingPEG1Y);
+	RFX_Text(pFX, _T("trailingPEG1Y"), m_trailingPEG1Y);
 }

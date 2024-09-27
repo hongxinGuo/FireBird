@@ -115,7 +115,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStockDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyDividend.h" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyStatement.h" />
+    <ClInclude Include="..\src\Factory Product\ProductTiingoFinancialState.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoForexDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.h" />
@@ -345,6 +345,7 @@
     <ClCompile Include="..\src\Factory Product\ProductTiingoCompanyProfile.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoSymbol.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductTiingoFinancialState.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoForexDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoMarketNews.cpp" />

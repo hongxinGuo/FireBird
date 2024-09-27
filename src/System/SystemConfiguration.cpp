@@ -80,8 +80,8 @@ std::string gl_sSystemConfiguration = R"(
 	"BasicFinancial" : 45,
 	"InsideTransaction" : 30,
 	"InsideSentiment" : 30,
-	"StockPeer" : 90
-	"TiingoStockFinancialState" : 45,
+	"StockPeer" : 90,
+	"TiingoStockFinancialState" : 45
 },
 "TestConfiguration" : {
 	"BenchmarkTestFileDirectory" : "C:\\FireBird\\Test Data\\Benchmark\\"
