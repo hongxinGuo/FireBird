@@ -69,3 +69,16 @@ bool CContainerTiingoStock::LoadDB() {
 
 	return true;
 }
+
+bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
+	return std::ranges::any_of(m_vTiingoStock, [](const CTiingoStockPtr& pStock) { return pStock->IsSaveFinancialState(); });
+}
+
+void CContainerTiingoStock::UpdateFinancialStateDB() const {
+	for (auto& pStock : m_vTiingoStock) {
+		if (pStock->IsSaveFinancialState()) {
+			pStock->UpdateFinancialStateDB();
+			pStock->SetSaveFinancialState(false);
+		}
+	}
+}

@@ -7,7 +7,7 @@
 #include"ProductFinnhubCompanyInsiderTransaction.h"
 #include"ProductFinnhubCompanyInsiderSentiment.h"
 
-#include"ProductTiingoStockSymbol.h"
+#include"ProductTiingoStock.h"
 
 #include"SetFinnhubForexExchange.h"
 #include"SetFinnhubCryptoExchange.h"

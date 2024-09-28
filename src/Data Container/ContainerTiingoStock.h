@@ -32,6 +32,9 @@ public:
 
 	bool IsNeedUpdate() const noexcept { return m_lLastTotalTiingoStock < m_vTiingoStock.size(); }
 
+	bool IsUpdateFinancialStateDB() noexcept;
+	void UpdateFinancialStateDB() const;
+
 protected:
 	vector<CTiingoStockPtr> m_vTiingoStock;
 	map<CString, size_t> m_mapTiingoStock;

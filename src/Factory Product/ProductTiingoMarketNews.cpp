@@ -134,5 +134,5 @@ void CProductTiingoMarketNews::UpdateDataSourceStatus(CVirtualDataSourcePtr pDat
 	else {
 		gl_systemConfiguration.ChangeTiingoAccountTypeToPaid();
 	}
-	gl_pWorldMarket->UpdateTiingoStockDayLineStatus(); // 根据账户是付费还是免费的，设置日线更新方式。
+	gl_pWorldMarket->UpdateTiingoStockStatus(); // 根据账户是付费还是免费的，设置日线更新方式。
 }

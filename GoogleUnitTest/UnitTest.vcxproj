@@ -317,7 +317,7 @@
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <Profile>false</Profile>
+      <Profile>true</Profile>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <GenerateMapFile>false</GenerateMapFile>
       <MapExports>true</MapExports>

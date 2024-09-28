@@ -9,6 +9,8 @@
 map<string, enum_ErrorMessageData> mapTiingoErrorMap{
 	{ _T("You do not have permission to access the News API"), ERROR_TIINGO_NO_RIGHT_TO_ACCESS__ },
 	{ _T("Please use an API key."), ERROR_FINNHUB_MISSING_API_KEY__ },
+	{ _T("Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service."), ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__ },
+	{ _T("Error: resampleFreq must be in 'Min' or 'Hour' only"), ERROR_TIINGO_FREQUENCY__ },
 	{ _T(""), ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH__ }
 };
 
@@ -69,6 +71,9 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
 			break;
 		case ERROR_TIINGO_MISSING_API_KEY__: // 缺少API key
+			break;
+		case ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__: // 需要购买附加许可证
+			gl_pTiingoDataSource->SetUpdateFinancialStatement(false); //Note 目前只有这个数据是需要add-on许可证的。
 			break;
 		case ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__:// 申请频率超高
 			// 降低查询频率200ms。

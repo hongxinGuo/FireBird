@@ -101,6 +101,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <Profile>true</Profile>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>

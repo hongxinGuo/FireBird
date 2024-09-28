@@ -54,7 +54,7 @@ public:
 	bool UpdateEPSSurpriseDB();
 	void UpdateSECFilingsDB();
 
-	void UpdateTiingoStockDayLineStatus();
+	void UpdateTiingoStockStatus(); // 根据付费还是免费账户的不同，更改需要申请的数据类型
 
 	// 各种状态
 

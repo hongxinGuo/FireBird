@@ -5,6 +5,8 @@
 #include<memory>
 #include<vector>
 
+#include "TiingoFinancialState.h"
+
 class CTiingoStock : public CVirtualStock {
 public:
 	CTiingoStock();
@@ -27,9 +29,12 @@ public:
 	bool IsSaveFinancialState() const noexcept { return m_fSaveFinancialState; }
 	void SetSaveFinancialState(bool fFlag) noexcept { m_fSaveFinancialState = fFlag; }
 
+	void UpdateFinancialState(const CTiingoFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
+	bool UpdateFinancialStateDB() const;
+
 public:
 	CString m_strTiingoPermaTicker; // Tiingo永久代码标识
-	//CString m_strTicker; // 这个使用VirtualStock中的m_strSymbol。
+	//CString m_strTicker; // 这个使用VirtualStock中的m_strSymbol来代替。
 	CString m_strName;
 	bool m_fIsActive; //
 	bool m_fIsADR;
@@ -44,6 +49,9 @@ public:
 	CString m_strSECFilingWebSite;
 	long m_lStatementUpdateDate;
 	long m_lDailyDataUpdateDate;
+
+protected:
+	CTiingoFinancialStatesPtr m_pvFinancialState{ nullptr };
 
 	// 无需存储数据区
 	bool m_fUpdateFinancialState{ true };

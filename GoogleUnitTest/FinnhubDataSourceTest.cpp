@@ -7,7 +7,7 @@
 #include"MockFinnhubDataSource.h"
 #include "ProductFinnhubCompanyProfileConcise.h"
 
-#include"ProductTiingoStockSymbol.h"
+#include"ProductTiingoStock.h"
 
 using namespace testing;
 

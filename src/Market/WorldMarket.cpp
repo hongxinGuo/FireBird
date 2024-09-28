@@ -411,7 +411,7 @@ void CWorldMarket::UpdateSECFilingsDB() {
 	}
 }
 
-void CWorldMarket::UpdateTiingoStockDayLineStatus() {
+void CWorldMarket::UpdateTiingoStockStatus() {
 	int iTotal;
 	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
 		iTotal = gl_dataContainerTiingoStock.Size();
@@ -425,15 +425,18 @@ void CWorldMarket::UpdateTiingoStockDayLineStatus() {
 		for (int i = 0; i < iTotal; i++) {
 			auto pStock = gl_dataContainerTiingoStock.GetStock(i);
 			pStock->SetDayLineNeedUpdate(false);
+			pStock->SetFinancialStateNeedUpdate(false);
 		}
 		iTotal = gl_dataContainerChosenWorldStock.Size();
 		for (int i = 0; i < iTotal; i++) {
 			auto p = gl_dataContainerChosenWorldStock.GetStock(i);
 			if (gl_dataContainerTiingoStock.IsStock(p->GetSymbol())) {
-				auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(p->GetSymbol());
-				pTiingoStock->SetDayLineNeedUpdate(true);
+				auto pStock = gl_dataContainerTiingoStock.GetStock(p->GetSymbol());
+				pStock->SetDayLineNeedUpdate(true);
+				pStock->SetFinancialStateNeedUpdate(true);
 			}
 		}
+		gl_dataContainerTiingoStock.GetStock(_T("ZG"))->SetFinancialStateNeedUpdate(true); // Note Zillow公司，用于测试
 	}
 }
 
@@ -530,6 +533,22 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_UpdateWorldMarketDB.release();
 		});
 	}
+	if (gl_dataContainerFinnhubStock.IsSaveEPSSurpriseDB()) { // stock EPS surprise
+		gl_runtime.background_executor()->post([this] {
+			gl_UpdateWorldMarketDB.acquire();
+			this->UpdateEPSSurpriseDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+	if (gl_dataContainerFinnhubStock.IsSaveSECFilingsDB()) { // stock EPS surprise
+		gl_runtime.background_executor()->post([this] {
+			gl_UpdateWorldMarketDB.acquire();
+			this->UpdateSECFilingsDB();
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+
+	// Tiingo部分
 	if (gl_dataContainerTiingoStock.IsNeedUpdate()) { // Tiingo Stock
 		gl_runtime.background_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
@@ -554,17 +573,10 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			});
 		}
 	}
-	if (gl_dataContainerFinnhubStock.IsSaveEPSSurpriseDB()) { // stock EPS surprise
-		gl_runtime.background_executor()->post([this] {
+	if (gl_dataContainerTiingoStock.IsUpdateFinancialStateDB()) {
+		gl_runtime.background_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
-			this->UpdateEPSSurpriseDB();
-			gl_UpdateWorldMarketDB.release();
-		});
-	}
-	if (gl_dataContainerFinnhubStock.IsSaveSECFilingsDB()) { // stock EPS surprise
-		gl_runtime.background_executor()->post([this] {
-			gl_UpdateWorldMarketDB.acquire();
-			this->UpdateSECFilingsDB();
+			gl_dataContainerTiingoStock.UpdateFinancialStateDB();
 			gl_UpdateWorldMarketDB.release();
 		});
 	}

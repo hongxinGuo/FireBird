@@ -85,3 +85,73 @@ void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
 	setTiingoStock.m_StatementUpdateDate = m_lStatementUpdateDate;
 	setTiingoStock.m_DailyDataUpdateDate = m_lDailyDataUpdateDate;
 }
+
+bool CTiingoStock::UpdateFinancialStateDB() const {
+	CSetTiingoFinancialState setFinancialState;
+	vector<CTiingoFinancialStatePtr> vOldFinancialState;
+	CTiingoFinancialStatePtr pTiingoFinancialState = nullptr;
+	long lSizeOfOldDayLine = 0;
+	bool fNeedUpdate = false;
+	const size_t lSize = m_pvFinancialState->size();
+	long lLastDate = 0;
+
+	setFinancialState.m_strFilter = _T("[symbol] = '");
+	setFinancialState.m_strFilter += m_strSymbol;
+	setFinancialState.m_strFilter += _T("'");
+	setFinancialState.m_strSort = _T("[yearQuarter]");
+	setFinancialState.Open();
+	setFinancialState.m_pDatabase->BeginTrans();
+
+	while (!setFinancialState.IsEOF()) {
+		if (setFinancialState.m_yearQuarter > lLastDate) {
+			lLastDate = setFinancialState.m_yearQuarter;
+			pTiingoFinancialState = make_shared<CTiingoFinancialState>();
+			pTiingoFinancialState->Load(setFinancialState);
+
+			vOldFinancialState.push_back(pTiingoFinancialState);
+			lSizeOfOldDayLine++;
+		}
+		else {
+			setFinancialState.Delete(); //删除日期重复的数据
+		}
+		setFinancialState.MoveNext();
+	}
+	setFinancialState.m_pDatabase->CommitTrans();
+	setFinancialState.Close();
+
+	setFinancialState.m_strFilter = _T("[ID] = 1");
+	setFinancialState.Open();
+	setFinancialState.m_pDatabase->BeginTrans();
+	if (lSizeOfOldDayLine > 0) {// 有旧数据
+		long lCurrentPos = 0;
+		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
+			pTiingoFinancialState = m_pvFinancialState->at(i);
+			if (pTiingoFinancialState->m_yearQuarter < vOldFinancialState.at(0)->m_yearQuarter) {	// 有更早的新数据？
+				pTiingoFinancialState->Append(setFinancialState);
+			}
+			else {
+				while ((lCurrentPos < lSizeOfOldDayLine) && vOldFinancialState.at(lCurrentPos)->m_yearQuarter < pTiingoFinancialState->m_yearQuarter) lCurrentPos++;
+				if (lCurrentPos < lSizeOfOldDayLine) {
+					if (vOldFinancialState.at(lCurrentPos)->m_yearQuarter > pTiingoFinancialState->m_yearQuarter) { // 前数据集中有遗漏的日期
+						pTiingoFinancialState->Append(setFinancialState);
+						fNeedUpdate = true;
+					}
+				}
+				else {
+					pTiingoFinancialState->Append(setFinancialState);
+					fNeedUpdate = true;
+				}
+			}
+		}
+	}
+	else {// 没有旧数据
+		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
+			pTiingoFinancialState = m_pvFinancialState->at(i);
+			pTiingoFinancialState->Append(setFinancialState);
+		}
+	}
+	setFinancialState.m_pDatabase->CommitTrans();
+	setFinancialState.Close();
+
+	return fNeedUpdate;
+}

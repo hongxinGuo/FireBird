@@ -55,7 +55,6 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 	pSetHistoryCandleBasic->Open();
 	pSetHistoryCandleBasic->m_pDatabase->BeginTrans();
 	if (lSizeOfOldDayLine > 0) {// 有旧数据
-
 		long lCurrentPos = 0;
 		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
 			pHistoryCandle = GetData(i);

@@ -114,20 +114,11 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
 	const auto pvTiingoFinancialState = ParseTiingoFinancialState(pWebData);
 
-	if (!pvTiingoFinancialState->empty()) {
-		/*
-		CSetTiingoFinancialState setFinancialState;
-		setFinancialState.Open();
-		setFinancialState.m_pDatabase->BeginTrans();
-		for (const auto& pTiingoFinancialState : *pvTiingoFinancialState) {
-			pTiingoFinancialState->Append(setFinancialState);
-		}
-		setFinancialState.m_pDatabase->CommitTrans();
-		setFinancialState.Close();
-		*/
-	}
+	pTiingoStock->UpdateFinancialState(pvTiingoFinancialState);
+
 	// 清除tiingo stock的金融数据更新标识
 	pTiingoStock->SetFinancialStateNeedUpdate(false);
+	pTiingoStock->SetSaveFinancialState(true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -262,6 +253,8 @@ CTiingoFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialStat
 	} catch (simdjson_error& error) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo financial state "), error.what());
 	}
+	std::ranges::sort(pvTiingoFinancialState->begin(), pvTiingoFinancialState->end(),
+	                  [](const CTiingoFinancialStatePtr& p1, const CTiingoFinancialStatePtr& p2) { return p1->m_yearQuarter < p2->m_yearQuarter; });
 
 	return pvTiingoFinancialState;
 }

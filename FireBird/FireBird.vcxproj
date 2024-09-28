@@ -127,7 +127,7 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>
       </AdditionalDependencies>
-      <Profile>false</Profile>
+      <Profile>true</Profile>
       <HeapCommitSize>40971520</HeapCommitSize>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
