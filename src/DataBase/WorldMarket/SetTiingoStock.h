@@ -32,8 +32,8 @@ public:
 	CString m_Location;
 	CString m_CompanyWebSite;
 	CString m_SECFilingWebSite;
-	long m_StatementUpdateDate;
-	long m_DailyDataUpdateDate;
+
+	CString m_UpdateDate;
 
 public:
 	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX Ö§³Ö

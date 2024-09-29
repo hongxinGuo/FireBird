@@ -469,8 +469,7 @@ void CWorldStock::UpdateInsiderTransactionDB() {
 		}
 		setInsiderTransaction.m_pDatabase->CommitTrans();
 		setInsiderTransaction.Close();
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 }
@@ -514,8 +513,7 @@ void CWorldStock::UpdateInsiderSentimentDB() {
 		}
 		setInsiderSentiment.m_pDatabase->CommitTrans();
 		setInsiderSentiment.Close();
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 }
@@ -647,8 +645,7 @@ void CWorldStock::AppendBasicFinancialAnnual() const {
 		m_pBasicFinancial->AppendAnnualData(setAnnual);
 		setAnnual.m_pDatabase->CommitTrans();
 		setAnnual.Close();
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 }
@@ -663,8 +660,7 @@ void CWorldStock::AppendBasicFinancialQuarter() const {
 		m_pBasicFinancial->AppendQuarterData(setQuarter);
 		setQuarter.m_pDatabase->CommitTrans();
 		setQuarter.Close();
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 }
@@ -696,8 +692,8 @@ bool CWorldStock::IsNeedUpdateProfile(const CTiingoStockPtr& pTiingoStock) {
 	if (m_iSICCode != pTiingoStock->m_iSICCode) return true;
 	if (m_strCompanyWebSite.Compare(pTiingoStock->m_strCompanyWebSite) != 0) return true;
 	if (m_strSECFilingWebSite.Compare(pTiingoStock->m_strSECFilingWebSite) != 0) return true;
-	if (GetTiingoDailyDataUpdateDate() != pTiingoStock->m_lDailyDataUpdateDate) return true;
-	if (GetTiingoStatementUpdateDate() != pTiingoStock->m_lStatementUpdateDate) return true;
+	if (GetTiingoDailyDataUpdateDate() != pTiingoStock->GetDailyDataUpdateDate()) return true;
+	if (GetTiingoStatementUpdateDate() != pTiingoStock->GetCompanyFinancialStatementUpdateDate()) return true;
 	return false;
 }
 
@@ -720,8 +716,8 @@ void CWorldStock::UpdateStockProfile(const CTiingoStockPtr& pTiingoStock) {
 	m_iSICCode = pTiingoStock->m_iSICCode;
 	m_strCompanyWebSite = pTiingoStock->m_strCompanyWebSite;
 	m_strSECFilingWebSite = pTiingoStock->m_strSECFilingWebSite;
-	SetTiingoDailyDataUpdateDate(pTiingoStock->m_lDailyDataUpdateDate);
-	SetTiingoStatementUpdateDate(pTiingoStock->m_lStatementUpdateDate);
+	SetTiingoDailyDataUpdateDate(pTiingoStock->GetDailyDataUpdateDate());
+	SetTiingoStatementUpdateDate(pTiingoStock->GetCompanyFinancialStatementUpdateDate());
 }
 
 void CWorldStock::UpdateDayLineStartEndDate() {
@@ -861,8 +857,7 @@ long CWorldStock::GetProfileUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsCompanyProfileConcise");
 		return lDate;
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		return 19800101;
 	}
 }
@@ -875,8 +870,7 @@ long CWorldStock::GetCompanyNewsUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsCompanyNews");
 		return lDate;
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		return 19800101;
 	}
 }
@@ -889,8 +883,7 @@ long CWorldStock::GetBasicFinancialUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsBasicFinancials");
 		return lDate;
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		return 19800101;
 	}
 }
@@ -903,8 +896,7 @@ long CWorldStock::GetLastRTDataUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockPriceQuote");
 		return lDate;
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		return 19800101;
 	}
 }
@@ -917,8 +909,7 @@ long CWorldStock::GetPeerUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsPeer");
 		return lDate;
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		return 19800101;
 	}
 }
@@ -931,8 +922,7 @@ long CWorldStock::GetInsiderTransactionUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsInsiderTransaction");
 		return lDate;
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		return 19800101;
 	}
 }
@@ -945,8 +935,7 @@ long CWorldStock::GetInsiderSentimentUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsInsiderSentiment");
 		return lDate;
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		return 19800101;
 	}
 }
@@ -959,8 +948,7 @@ long CWorldStock::GetLastEPSSurpriseUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockEstimatesEPSSurprise");
 		return lDate;
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		return 19800101;
 	}
 }
@@ -973,8 +961,7 @@ long CWorldStock::GetSECFilingsUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsSECFilings");
 		return lDate;
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		return 19800101;
 	}
 }
@@ -987,8 +974,7 @@ long CWorldStock::GetTiingoStatementUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Tiingo")).at("StockFundamentalsCompanyProfile");
 		return lDate;
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		return 19800101;
 	}
 }
@@ -1001,8 +987,7 @@ long CWorldStock::GetTiingoDailyDataUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Tiingo")).at("StockPriceCandles");
 		return lDate;
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		return 19800101;
 	}
 }

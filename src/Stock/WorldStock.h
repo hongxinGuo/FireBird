@@ -243,7 +243,7 @@ public:
 
 public:
 	vector<CEPSSurprisePtr> m_vEPSSurprise;
-	bool m_fEPSSurpriseUpdated{false};
+	bool m_fEPSSurpriseUpdated{ false };
 	atomic_bool m_fEPSSurpriseNeedSave;
 
 	vector<CInsiderTransactionPtr> m_vInsiderTransaction;
@@ -252,9 +252,9 @@ public:
 	vector<CInsiderSentimentPtr> m_vInsiderSentiment;
 	long m_lInsiderSentimentStartDate;
 
-	CSECFilingsPtr m_pvSECFilings{nullptr};
-	bool m_fSECFilingsUpdated{false};
-	atomic_bool m_fSECFilingsNeedSave{false};
+	CSECFilingsPtr m_pvSECFilings{ nullptr };
+	bool m_fSECFilingsUpdated{ false };
+	atomic_bool m_fSECFilingsNeedSave{ false };
 
 protected:
 	// Finnhub symbol信息
@@ -293,7 +293,6 @@ protected:
 	CString m_strLogo;
 	CString m_strFinnhubIndustry;
 	json m_jsonPeer; // 读取到的Peer数据为json制式
-	json m_jsonUpdateDate; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
 
 	// Tiingo Symbol信息
 	CString m_strTiingoPermaTicker; // Tiingo永久代码标识

@@ -107,6 +107,8 @@ protected:
 	CString m_strSymbol; // 股票代码。二十位以内，后两位为市场前缀。如600601.SS，000001.SZ, AAPL.US, RIG.US
 	CString m_strDisplaySymbol;
 
+	json m_jsonUpdateDate; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
+
 	// 实时数据区
 	time_t m_TransactionTime; // 实时数据交易时间
 	long m_lLastClose; // 以0.001元计的收盘价

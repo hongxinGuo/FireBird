@@ -70,7 +70,7 @@ namespace FireBirdTest {
 	// 第二个数据缺项
 	Test_TiingoWebData tiingoWebData3(3, _T(""),_T("[{\"permaTicker\":\"US000000000247\",\"ticker\":\"a\",\"name\":\"Agilent Technologies Inc\",\"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-05T23:02:07.999Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.052Z\"},{\"Missing\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
 	// 正确的数据
-	Test_TiingoWebData tiingoWebData4(4, _T(""), _T("[{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"sector have data\",\"industry\":\"industry have new data\",\"sicCode\":1234,\"sicSector\":\"sicSector have data\",\"sicIndustry\":\"sicIndustry have data\",\"reportingCurrency\":\"usd\",\"location\":\"location have data\",\"companyWebsite\":\"companyWebsite have data\",\"secFilingWebsite\":\"secFileingWebsite have data\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
+	Test_TiingoWebData tiingoWebData4(4, _T(""), _T("[{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"sector have data\",\"industry\":\"industry have new data\",\"sicCode\":1234,\"sicSector\":\"sicSector have data\",\"sicIndustry\":\"sicIndustry have data\",\"reportingCurrency\":\"usd\",\"location\":\"location have data\",\"companyWebsite\":\"companyWebsite have data\",\"secFilingWebsite\":\"secFilingWebsite have data\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
 	// 正确的数据
 	Test_TiingoWebData tiingoWebData10(10, _T(""),_T("[{\"permaTicker\":\"US000000000247\",\"ticker\":\"new symbol\",\"name\":\"Agilent Technologies Inc\",\"isActive\":true,\"isADR\":false,\"sector\":\"\",\"industry\":\"free\",\"sicCode\":\"Field\",\"sicSector\":\"not\",\"sicIndustry\":\"for\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"free\",\"secFilingWebsite\":\"Field\",\"statementLastUpdated\":\"2021-03-05T23:02:07.999Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.052Z\"},{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"New Name\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\"}]"));
 
@@ -129,9 +129,9 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvStock->at(0)->m_strReportingCurrency, _T("usd"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strLocation, _T("location have data"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strCompanyWebSite, _T("companyWebsite have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strSECFilingWebSite, _T("secFileingWebsite have data"));
-			EXPECT_EQ(m_pvStock->at(0)->m_lStatementUpdateDate, 20210302);
-			EXPECT_EQ(m_pvStock->at(0)->m_lDailyDataUpdateDate, 20210312);
+			EXPECT_STREQ(m_pvStock->at(0)->m_strSECFilingWebSite, _T("secFilingWebsite have data"));
+			EXPECT_EQ(m_pvStock->at(0)->GetCompanyFinancialStatementUpdateDate(), 20210302);
+			EXPECT_EQ(m_pvStock->at(0)->GetDailyDataUpdateDate(), 20210312);
 			EXPECT_EQ(m_pvStock->at(0)->m_iSICCode, 1234);
 			break;
 		case 10:
@@ -150,8 +150,8 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvStock->at(0)->m_strLocation, _T(" "));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strCompanyWebSite, _T("free"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strSECFilingWebSite, _T("Field"));
-			EXPECT_EQ(m_pvStock->at(0)->m_lStatementUpdateDate, 20210305);
-			EXPECT_EQ(m_pvStock->at(0)->m_lDailyDataUpdateDate, 20210312);
+			EXPECT_EQ(m_pvStock->at(0)->GetCompanyFinancialStatementUpdateDate(), 20210305);
+			EXPECT_EQ(m_pvStock->at(0)->GetDailyDataUpdateDate(), 20210312);
 			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoPermaTicker, _T("US000000000091"));
 			EXPECT_STREQ(m_pvStock->at(1)->GetSymbol(), _T("AA"));
 			EXPECT_STREQ(m_pvStock->at(1)->m_strName, _T("New Name"));
@@ -166,8 +166,8 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvStock->at(1)->m_strLocation, _T(" "));
 			EXPECT_STREQ(m_pvStock->at(1)->m_strCompanyWebSite, _T(" "));
 			EXPECT_STREQ(m_pvStock->at(1)->m_strSECFilingWebSite, _T(" "));
-			EXPECT_EQ(m_pvStock->at(1)->m_lStatementUpdateDate, 20210302);
-			EXPECT_EQ(m_pvStock->at(1)->m_lDailyDataUpdateDate, 20210312);
+			EXPECT_EQ(m_pvStock->at(1)->GetCompanyFinancialStatementUpdateDate(), 20210302);
+			EXPECT_EQ(m_pvStock->at(1)->GetDailyDataUpdateDate(), 20210312);
 			break;
 		default:
 			break;

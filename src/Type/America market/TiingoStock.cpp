@@ -2,6 +2,8 @@
 
 #include"TiingoStock.h"
 
+#include "JsonParse.h"
+
 CTiingoStock::CTiingoStock() {
 	Reset();
 }
@@ -21,11 +23,18 @@ void CTiingoStock::Reset() {
 	m_strLocation = _T("");
 	m_strCompanyWebSite = _T("");
 	m_strSECFilingWebSite = _T("");
-	m_lDailyDataUpdateDate = 19800101;
-	m_lStatementUpdateDate = 19800101;
+	SetDailyDataUpdateDate(19800101);
+	SetCompanyFinancialStatementUpdateDate(19800101);
 }
 
-void CTiingoStock::Load(const CSetTiingoStock& setTiingoStock) {
+void CTiingoStock::ResetAllUpdateDate() {
+	m_jsonUpdateDate["Tiingo"]["StockFundamentalsCompanyProfile"] = 19800101;
+	m_jsonUpdateDate["Tiingo"]["StockPriceCandles"] = 19800101;
+	m_jsonUpdateDate["Tiingo"]["CompanyFinancialStatement"] = 19800101;
+	m_jsonUpdateDate["Tiingo"]["DailyData"] = 19800101;
+}
+
+void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
 	m_strTiingoPermaTicker = setTiingoStock.m_TiingoPermaTicker;
 	m_strSymbol = setTiingoStock.m_Ticker;
 	m_strName = setTiingoStock.m_Name;
@@ -40,8 +49,12 @@ void CTiingoStock::Load(const CSetTiingoStock& setTiingoStock) {
 	m_strLocation = setTiingoStock.m_Location;
 	m_strCompanyWebSite = setTiingoStock.m_CompanyWebSite;
 	m_strSECFilingWebSite = setTiingoStock.m_SECFilingWebSite;
-	m_lStatementUpdateDate = setTiingoStock.m_StatementUpdateDate;
-	m_lDailyDataUpdateDate = setTiingoStock.m_DailyDataUpdateDate;
+	if (setTiingoStock.m_UpdateDate.IsEmpty()) {
+		ResetAllUpdateDate();
+	}
+	else {
+		CreateJsonWithNlohmann(m_jsonUpdateDate, setTiingoStock.m_UpdateDate);
+	}
 }
 
 void CTiingoStock::Append(CSetTiingoStock& setTiingoStock) {
@@ -82,8 +95,9 @@ void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
 	setTiingoStock.m_Location = m_strLocation;
 	setTiingoStock.m_CompanyWebSite = m_strCompanyWebSite;
 	setTiingoStock.m_SECFilingWebSite = m_strSECFilingWebSite;
-	setTiingoStock.m_StatementUpdateDate = m_lStatementUpdateDate;
-	setTiingoStock.m_DailyDataUpdateDate = m_lDailyDataUpdateDate;
+	const string sUpdateDate = m_jsonUpdateDate.dump();
+	setTiingoStock.m_UpdateDate = sUpdateDate.c_str();
+	ASSERT(sUpdateDate.size() < 10000);
 }
 
 bool CTiingoStock::UpdateFinancialStateDB() const {

@@ -114,7 +114,9 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
 	const auto pvTiingoFinancialState = ParseTiingoFinancialState(pWebData);
 
-	pTiingoStock->UpdateFinancialState(pvTiingoFinancialState);
+	if (pvTiingoFinancialState->size() > 0) { // 为空时没有更新的必要。
+		pTiingoStock->UpdateFinancialState(pvTiingoFinancialState);
+	}
 
 	// 清除tiingo stock的金融数据更新标识
 	pTiingoStock->SetFinancialStateNeedUpdate(false);
@@ -192,7 +194,7 @@ CTiingoFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialStat
 				else {
 					value4 = jsonGetDouble(value.value());
 				}
-				TRACE("%s\n", s.c_str());
+				//TRACE("%s\n", s.c_str());
 				int index = s_mapItem.at(s.c_str());
 				iCount++;
 				pFinancialStatePtr->Assign(index, value4);
@@ -209,7 +211,7 @@ CTiingoFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialStat
 				else {
 					value4 = jsonGetDouble(value.value());
 				}
-				TRACE("%s\n", s.c_str());
+				//TRACE("%s\n", s.c_str());
 				int index = s_mapItem.at(s.c_str());
 				iCount++;
 				pFinancialStatePtr->Assign(index, value4);
@@ -226,7 +228,7 @@ CTiingoFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialStat
 				else {
 					value4 = jsonGetDouble(value.value());
 				}
-				TRACE("%s\n", s.c_str());
+				//TRACE("%s\n", s.c_str());
 				int index = s_mapItem.at(s.c_str());
 				iCount++;
 				pFinancialStatePtr->Assign(index, value4);
@@ -243,7 +245,7 @@ CTiingoFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialStat
 				else {
 					value4 = jsonGetDouble(value.value());
 				}
-				TRACE("%s\n", s.c_str());
+				//TRACE("%s\n", s.c_str());
 				int index = s_mapItem.at(s.c_str());
 				iCount++;
 				pFinancialStatePtr->Assign(index, value4);

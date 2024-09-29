@@ -23,7 +23,7 @@ public:
 	bool IsNeedUpdate() const noexcept { return m_lLastTotalCryptoExchange < m_vCryptoExchange.size(); }
 
 protected:
-	vectorString m_vCryptoExchange;
+	vector<string> m_vCryptoExchange;
 	map<string, size_t> m_mapCryptoExchange;
 	long m_lLastTotalCryptoExchange{ 0 };
 };

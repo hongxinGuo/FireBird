@@ -1277,8 +1277,8 @@ namespace FireBirdTest {
 		pTiingoStock->m_strLocation = _T("mcmvkmcvkv");
 		pTiingoStock->m_strCompanyWebSite = _T(",mcvmcv");
 		pTiingoStock->m_strSECFilingWebSite = _T(".,m,.cmv,.");
-		pTiingoStock->m_lStatementUpdateDate = 457843759;
-		pTiingoStock->m_lDailyDataUpdateDate = 234234;
+		pTiingoStock->SetCompanyFinancialStatementUpdateDate(457843759);
+		pTiingoStock->SetDailyDataUpdateDate(234234);
 		stock.UpdateStockProfile(pTiingoStock);
 
 		EXPECT_FALSE(stock.IsNeedUpdateProfile(pTiingoStock));
@@ -1303,8 +1303,8 @@ namespace FireBirdTest {
 		pTiingoStock->m_strLocation = _T("mcmvkmcvkv");
 		pTiingoStock->m_strCompanyWebSite = _T(",mcvmcv");
 		pTiingoStock->m_strSECFilingWebSite = _T(".,m,.cmv,.");
-		pTiingoStock->m_lStatementUpdateDate = 457843759;
-		pTiingoStock->m_lDailyDataUpdateDate = 234234;
+		pTiingoStock->SetCompanyFinancialStatementUpdateDate(457843759);
+		pTiingoStock->SetDailyDataUpdateDate(234234);
 
 		stock.UpdateStockProfile(pTiingoStock);
 
@@ -1319,8 +1319,8 @@ namespace FireBirdTest {
 		EXPECT_STREQ(stock.GetSICSector(), pTiingoStock->m_strSICSector);
 		EXPECT_STREQ(stock.GetCompanyWebSite(), pTiingoStock->m_strCompanyWebSite);
 		EXPECT_STREQ(stock.GetSECFilingWebSite(), pTiingoStock->m_strSECFilingWebSite);
-		EXPECT_EQ(stock.GetTiingoStatementUpdateDate(), pTiingoStock->m_lStatementUpdateDate);
-		EXPECT_EQ(stock.GetTiingoDailyDataUpdateDate(), pTiingoStock->m_lDailyDataUpdateDate);
+		EXPECT_EQ(stock.GetTiingoStatementUpdateDate(), pTiingoStock->GetCompanyFinancialStatementUpdateDate());
+		EXPECT_EQ(stock.GetTiingoDailyDataUpdateDate(), pTiingoStock->GetDailyDataUpdateDate());
 	}
 
 	TEST_F(CWorldStockTest, TestHaveNewDayLineData) {

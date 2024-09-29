@@ -190,13 +190,13 @@ void CTiingoFinancialState::Load(const CSetTiingoFinancialState& setTiingoFinanc
 	m_trailingPEG1Y = atof(setTiingoFinancialState.m_trailingPEG1Y);
 }
 
-void CTiingoFinancialState::Append(CSetTiingoFinancialState& setTiingoFinancialState) {
+void CTiingoFinancialState::Append(CSetTiingoFinancialState& setTiingoFinancialState) const {
 	setTiingoFinancialState.AddNew();
 	Save(setTiingoFinancialState);
 	setTiingoFinancialState.Update();
 }
 
-void CTiingoFinancialState::Save(CSetTiingoFinancialState& setTiingoFinancialState) {
+void CTiingoFinancialState::Save(CSetTiingoFinancialState& setTiingoFinancialState) const {
 	setTiingoFinancialState.m_symbol = m_symbol;
 	setTiingoFinancialState.m_exchange = m_exchange;
 	setTiingoFinancialState.m_yearQuarter = m_yearQuarter;
@@ -304,7 +304,7 @@ void CTiingoFinancialState::Assign(int index, double fValue) {
 	case 5:
 		m_assetsNonCurrent = fValue;
 		break;
-	case 6:
+	case 6: // 尚未使用
 		m_assetTurnover = fValue;
 		break;
 	case 7:
@@ -361,7 +361,7 @@ void CTiingoFinancialState::Assign(int index, double fValue) {
 	case 24:
 		m_ebt = fValue;
 		break;
-	case 25:
+	case 25: // 尚未使用
 		m_enterpriseVal = fValue;
 		break;
 	case 26:
@@ -379,7 +379,7 @@ void CTiingoFinancialState::Assign(int index, double fValue) {
 	case 30:
 		m_freeCashFlow = fValue;
 		break;
-	case 31:
+	case 31: // 尚未使用
 		m_fxRate = fValue;
 		break;
 	case 32:
@@ -424,7 +424,7 @@ void CTiingoFinancialState::Assign(int index, double fValue) {
 	case 45:
 		m_longTermDebtEquity = fValue;
 		break;
-	case 46:
+	case 46: // 尚未使用
 		m_marketCap = fValue;
 		break;
 	case 47:
@@ -451,7 +451,7 @@ void CTiingoFinancialState::Assign(int index, double fValue) {
 	case 54:
 		m_netIncDiscOps = fValue;
 		break;
-	case 55:
+	case 55: // 尚未使用
 		m_netMargin = fValue;
 		break;
 	case 56:
@@ -463,16 +463,16 @@ void CTiingoFinancialState::Assign(int index, double fValue) {
 	case 58:
 		m_opinc = fValue;
 		break;
-	case 59:
+	case 59: // 尚未使用
 		m_opMargin = fValue;
 		break;
 	case 60:
 		m_payDiv = fValue;
 		break;
-	case 61:
+	case 61: // 尚未使用
 		m_pbRatio = fValue;
 		break;
-	case 62:
+	case 62: // 尚未使用
 		m_peRatio = fValue;
 		break;
 	case 63:
@@ -541,7 +541,7 @@ void CTiingoFinancialState::Assign(int index, double fValue) {
 	case 84:
 		m_totalLiabilities = fValue;
 		break;
-	case 85:
+	case 85: // 尚未使用
 		m_trailingPEG1Y = fValue;
 		break;
 	default:

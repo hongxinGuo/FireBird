@@ -18,8 +18,8 @@ public:
 	void Reset();
 
 	void Load(const CSetTiingoFinancialState& setTiingoFinancialState);
-	void Append(CSetTiingoFinancialState& setTiingoFinancialState);
-	void Save(CSetTiingoFinancialState& setTiingoFinancialState);
+	void Append(CSetTiingoFinancialState& setTiingoFinancialState) const;
+	void Save(CSetTiingoFinancialState& setTiingoFinancialState) const;
 
 	void Assign(int index, double fValue);
 

@@ -161,11 +161,11 @@ CTiingoStocksPtr CProductTiingoStock::ParseTiingoStockSymbol(const CWebDataPtr& 
 			s1 = jsonGetStringView(itemValue, _T("statementLastUpdated"));
 			if (!s1.empty()) str = s1.c_str();;
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			pStock->m_lStatementUpdateDate = XferYearMonthDayToYYYYMMDD(year, month, day);
+			pStock->SetCompanyFinancialStatementUpdateDate(XferYearMonthDayToYYYYMMDD(year, month, day));
 			s1 = jsonGetStringView(itemValue, _T("dailyLastUpdated"));
 			str = s1.c_str();;
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			pStock->m_lDailyDataUpdateDate = XferYearMonthDayToYYYYMMDD(year, month, day);
+			pStock->SetDailyDataUpdateDate(XferYearMonthDayToYYYYMMDD(year, month, day));
 			pvTiingoStock->push_back(pStock);
 			iCount++;
 		}

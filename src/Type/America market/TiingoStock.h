@@ -2,9 +2,6 @@
 
 #include"SetTiingoStock.h"
 
-#include<memory>
-#include<vector>
-
 #include "TiingoFinancialState.h"
 
 class CTiingoStock : public CVirtualStock {
@@ -19,8 +16,9 @@ public:
 	int GetRatio() const override { return 3; };
 
 	void Reset() override;
+	void ResetAllUpdateDate();
 
-	void Load(const CSetTiingoStock& setTiingoStock);
+	void Load(CSetTiingoStock& setTiingoStock);
 	void Append(CSetTiingoStock& setTiingoStock);
 	void Save(CSetTiingoStock& setTiingoStock);
 
@@ -31,6 +29,13 @@ public:
 
 	void UpdateFinancialState(const CTiingoFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
 	bool UpdateFinancialStateDB() const;
+
+	long GetDailyDataUpdateDate() { return m_jsonUpdateDate["Tiingo"]["DailyData"]; }
+	void SetDailyDataUpdateDate(long lDate) { m_jsonUpdateDate["Tiingo"]["DailyData"] = lDate; }
+	//long GetDailyDataUpdateDate() { return m_jsonUpdateDate["Tiingo"]["DailyData"]; }
+	//void SetDailyDataUpdateDate(long lDate) { m_jsonUpdateDate["Tiingo"]["DailyData"] = lDate; }
+	long GetCompanyFinancialStatementUpdateDate() { return m_jsonUpdateDate["Tiingo"]["CompanyFinancialStatement"]; }
+	void SetCompanyFinancialStatementUpdateDate(long lDate) { m_jsonUpdateDate["Tiingo"]["CompanyFinancialStatement"] = lDate; }
 
 public:
 	CString m_strTiingoPermaTicker; // Tiingo”¿æ√¥˙¬Î±Í ∂
@@ -47,8 +52,6 @@ public:
 	CString m_strLocation;
 	CString m_strCompanyWebSite;
 	CString m_strSECFilingWebSite;
-	long m_lStatementUpdateDate;
-	long m_lDailyDataUpdateDate;
 
 protected:
 	CTiingoFinancialStatesPtr m_pvFinancialState{ nullptr };

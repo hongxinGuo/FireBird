@@ -73,7 +73,8 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		case ERROR_TIINGO_MISSING_API_KEY__: // 缺少API key
 			break;
 		case ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__: // 需要购买附加许可证
-			gl_pTiingoDataSource->SetUpdateFinancialStatement(false); //Note 目前只有这个数据是需要add-on许可证的。
+			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
+		//gl_pTiingoDataSource->SetUpdateFinancialStatement(false); //Note 目前只有这个数据是需要add-on许可证的。
 			break;
 		case ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__:// 申请频率超高
 			// 降低查询频率200ms。
