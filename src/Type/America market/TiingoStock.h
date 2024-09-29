@@ -24,18 +24,21 @@ public:
 
 	bool IsFinancialStateNeedUpdate() const noexcept { return m_fUpdateFinancialState; }
 	void SetFinancialStateNeedUpdate(bool fFlag) noexcept { m_fUpdateFinancialState = fFlag; }
-	bool IsSaveFinancialState() const noexcept { return m_fSaveFinancialState; }
-	void SetSaveFinancialState(bool fFlag) noexcept { m_fSaveFinancialState = fFlag; }
+
+	bool IsUpdateFinancialStateDB() const noexcept { return m_fUpdateFinancialStateDB; }
+	void SetUpdateFinancialStateDB(bool fFlag) noexcept { m_fUpdateFinancialStateDB = fFlag; }
 
 	void UpdateFinancialState(const CTiingoFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
-	bool UpdateFinancialStateDB() const;
+	void UpdateFinancialStateDB() const;
 
 	long GetDailyDataUpdateDate() { return m_jsonUpdateDate["Tiingo"]["DailyData"]; }
 	void SetDailyDataUpdateDate(long lDate) { m_jsonUpdateDate["Tiingo"]["DailyData"] = lDate; }
-	//long GetDailyDataUpdateDate() { return m_jsonUpdateDate["Tiingo"]["DailyData"]; }
-	//void SetDailyDataUpdateDate(long lDate) { m_jsonUpdateDate["Tiingo"]["DailyData"] = lDate; }
 	long GetCompanyFinancialStatementUpdateDate() { return m_jsonUpdateDate["Tiingo"]["CompanyFinancialStatement"]; }
 	void SetCompanyFinancialStatementUpdateDate(long lDate) { m_jsonUpdateDate["Tiingo"]["CompanyFinancialStatement"] = lDate; }
+	long GetDayLineUpdateDate() { return m_jsonUpdateDate["Tiingo"]["DayLine"]; }
+	void SetDayLineUpdateDate(long lDate) { m_jsonUpdateDate["Tiingo"]["DayLine"] = lDate; }
+	long GetCompanyProfileUpdateDate() { return m_jsonUpdateDate["Tiingo"]["CompanyProfile"]; }
+	void SetCompanyProfileUpdateDate(long lDate) { m_jsonUpdateDate["Tiingo"]["CompanyProfile"] = lDate; }
 
 public:
 	CString m_strTiingoPermaTicker; // Tiingo永久代码标识
@@ -58,7 +61,15 @@ protected:
 
 	// 无需存储数据区
 	bool m_fUpdateFinancialState{ true };
-	bool m_fSaveFinancialState{ false };
+	bool m_fUpdateCompanyProfile{ true };
+	bool m_fUpdateDayLine{ true };
+	bool m_fUpdateDailyData{ true };
+
+	// 更新数据库
+	bool m_fUpdateFinancialStateDB{ false };
+	bool m_fUpdateCompanyProfileDB{ false };
+	bool m_fUpdateDayLineDB{ false };
+	bool m_fUpdateDailyDataDB{ false };
 };
 
 using CTiingoStockPtr = shared_ptr<CTiingoStock>;

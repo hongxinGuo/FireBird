@@ -28,8 +28,8 @@ void CTiingoStock::Reset() {
 }
 
 void CTiingoStock::ResetAllUpdateDate() {
-	m_jsonUpdateDate["Tiingo"]["StockFundamentalsCompanyProfile"] = 19800101;
-	m_jsonUpdateDate["Tiingo"]["StockPriceCandles"] = 19800101;
+	m_jsonUpdateDate["Tiingo"]["CompanyProfile"] = 19800101;
+	m_jsonUpdateDate["Tiingo"]["DayLine"] = 19800101;
 	m_jsonUpdateDate["Tiingo"]["CompanyFinancialStatement"] = 19800101;
 	m_jsonUpdateDate["Tiingo"]["DailyData"] = 19800101;
 }
@@ -100,12 +100,11 @@ void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
 	ASSERT(sUpdateDate.size() < 10000);
 }
 
-bool CTiingoStock::UpdateFinancialStateDB() const {
+void CTiingoStock::UpdateFinancialStateDB() const {
 	CSetTiingoFinancialState setFinancialState;
 	vector<CTiingoFinancialStatePtr> vOldFinancialState;
 	CTiingoFinancialStatePtr pTiingoFinancialState = nullptr;
 	long lSizeOfOldDayLine = 0;
-	bool fNeedUpdate = false;
 	const size_t lSize = m_pvFinancialState->size();
 	long lLastDate = 0;
 
@@ -148,12 +147,10 @@ bool CTiingoStock::UpdateFinancialStateDB() const {
 				if (lCurrentPos < lSizeOfOldDayLine) {
 					if (vOldFinancialState.at(lCurrentPos)->m_yearQuarter > pTiingoFinancialState->m_yearQuarter) { // 前数据集中有遗漏的日期
 						pTiingoFinancialState->Append(setFinancialState);
-						fNeedUpdate = true;
 					}
 				}
 				else {
 					pTiingoFinancialState->Append(setFinancialState);
-					fNeedUpdate = true;
 				}
 			}
 		}
@@ -166,6 +163,4 @@ bool CTiingoStock::UpdateFinancialStateDB() const {
 	}
 	setFinancialState.m_pDatabase->CommitTrans();
 	setFinancialState.Close();
-
-	return fNeedUpdate;
 }

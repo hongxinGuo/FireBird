@@ -71,14 +71,14 @@ bool CContainerTiingoStock::LoadDB() {
 }
 
 bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
-	return std::ranges::any_of(m_vTiingoStock, [](const CTiingoStockPtr& pStock) { return pStock->IsSaveFinancialState(); });
+	return std::ranges::any_of(m_vTiingoStock, [](const CTiingoStockPtr& pStock) { return pStock->IsUpdateFinancialStateDB(); });
 }
 
 void CContainerTiingoStock::UpdateFinancialStateDB() const {
 	for (auto& pStock : m_vTiingoStock) {
-		if (pStock->IsSaveFinancialState()) {
+		if (pStock->IsUpdateFinancialStateDB()) {
 			pStock->UpdateFinancialStateDB();
-			pStock->SetSaveFinancialState(false);
+			pStock->SetUpdateFinancialStateDB(false);
 		}
 	}
 }

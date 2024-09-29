@@ -120,7 +120,7 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	// 清除tiingo stock的金融数据更新标识
 	pTiingoStock->SetFinancialStateNeedUpdate(false);
-	pTiingoStock->SetSaveFinancialState(true);
+	pTiingoStock->SetUpdateFinancialStateDB(true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
