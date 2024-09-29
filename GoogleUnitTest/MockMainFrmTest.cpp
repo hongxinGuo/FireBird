@@ -637,7 +637,7 @@ namespace FireBirdTest {
 	TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS) {
 		CCmdUI cmdUI;
 		EXPECT_THAT(gl_dataContainerChinaStock.IsDayLineDBUpdated(), IsFalse());
-		EXPECT_THAT(gl_dataContainerChinaStock.IsDayLineNeedSaving(), IsFalse());
+		EXPECT_THAT(gl_dataContainerChinaStock.IsUpdateDayLineDB(), IsFalse());
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
 
@@ -645,12 +645,12 @@ namespace FireBirdTest {
 		pStock->SetDayLineDBUpdated(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
-		pStock->SetDayLineNeedSaving(true);
+		pStock->SetUpdateDayLineDB(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
 
 		pStock->SetDayLineDBUpdated(false);
-		pStock->SetDayLineNeedSaving(false);
+		pStock->SetUpdateDayLineDB(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
 	}
@@ -658,7 +658,7 @@ namespace FireBirdTest {
 	TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS1) {
 		CCmdUI cmdUI;
 		EXPECT_THAT(gl_dataContainerChinaStock.IsDayLineDBUpdated(), IsFalse());
-		EXPECT_THAT(gl_dataContainerChinaStock.IsDayLineNeedSaving(), IsFalse());
+		EXPECT_THAT(gl_dataContainerChinaStock.IsUpdateDayLineDB(), IsFalse());
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
 
@@ -666,12 +666,12 @@ namespace FireBirdTest {
 		pStock->SetDayLineDBUpdated(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
-		pStock->SetDayLineNeedSaving(true);
+		pStock->SetUpdateDayLineDB(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
 
 		pStock->SetDayLineDBUpdated(false);
-		pStock->SetDayLineNeedSaving(false);
+		pStock->SetUpdateDayLineDB(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
 	}
@@ -713,7 +713,7 @@ namespace FireBirdTest {
 	TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS2) {
 		CCmdUI cmdUI;
 		EXPECT_THAT(gl_dataContainerChinaStock.IsDayLineDBUpdated(), IsFalse());
-		EXPECT_THAT(gl_dataContainerChinaStock.IsDayLineNeedSaving(), IsFalse());
+		EXPECT_THAT(gl_dataContainerChinaStock.IsUpdateDayLineDB(), IsFalse());
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
 
@@ -721,12 +721,12 @@ namespace FireBirdTest {
 		pStock->SetDayLineDBUpdated(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
-		pStock->SetDayLineNeedSaving(true);
+		pStock->SetUpdateDayLineDB(true);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, false)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
 
 		pStock->SetDayLineDBUpdated(false);
-		pStock->SetDayLineNeedSaving(false);
+		pStock->SetUpdateDayLineDB(false);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallCmdUIEnable(_, true)).Times(1);
 		gl_pMockMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
 	}

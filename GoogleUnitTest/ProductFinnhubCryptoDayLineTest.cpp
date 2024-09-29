@@ -199,77 +199,77 @@ namespace FireBirdTest {
 		m_finnhubCryptoDayLine.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
-			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
-			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());
 			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetIPOStatus(), _STOCK_DELISTED_);
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
 			break;
 		case 2: // s项报告not ok
-			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
-			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());
 			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
 			break;
 		case 3: // s项报告 no data
-			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
-			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());
 			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
 			break;
 		case 4: //数据缺乏t项
-			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
-			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());
 			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
 			break;
 		case 5: // 数据缺乏c项，非有效数据。
-			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
-			EXPECT_TRUE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
+			EXPECT_TRUE(pCrypto->IsUpdateDayLineDB());
 			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0) << "数据缺乏c项，非有效数据";
 			break;
 		case 6:
-			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
-			EXPECT_TRUE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
+			EXPECT_TRUE(pCrypto->IsUpdateDayLineDB());
 			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
 			break;
 		case 7:
-			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
-			EXPECT_TRUE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
+			EXPECT_TRUE(pCrypto->IsUpdateDayLineDB());
 			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
 			break;
 		case 8:
-			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
-			EXPECT_TRUE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
+			EXPECT_TRUE(pCrypto->IsUpdateDayLineDB());
 			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
 			break;
 		case 9:
-			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
-			EXPECT_TRUE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
+			EXPECT_TRUE(pCrypto->IsUpdateDayLineDB());
 			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
 			break;
 		case 10:
-			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
-			EXPECT_TRUE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
+			EXPECT_TRUE(pCrypto->IsUpdateDayLineDB());
 			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 2);
 			break;
 		case 11: // 没有s项
-			EXPECT_FALSE(pCrypto->IsDayLineNeedUpdate());
-			EXPECT_FALSE(pCrypto->IsDayLineNeedSaving());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLine());
+			EXPECT_FALSE(pCrypto->IsUpdateDayLineDB());
 			EXPECT_TRUE(pCrypto->IsUpdateProfileDB());
 			EXPECT_EQ(pCrypto->GetDayLineSize(), 0);
 			break;
 		default:
 			break;
 		}
-		pCrypto->SetDayLineNeedUpdate(true);
-		pCrypto->SetDayLineNeedSaving(false);
+		pCrypto->SetUpdateDayLine(true);
+		pCrypto->SetUpdateDayLineDB(false);
 		pCrypto->SetUpdateProfileDB(false);
 		pCrypto->UnloadDayLine();
 	}

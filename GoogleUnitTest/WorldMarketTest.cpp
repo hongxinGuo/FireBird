@@ -452,12 +452,12 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestUpdateDayLineDB) {
 		EXPECT_TRUE(gl_pWorldMarket->UpdateStockDayLineDB());
 
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(0)->IsDayLineNeedSaving()) << "此标识被重置";
-		gl_dataContainerFinnhubStock.GetStock(0)->SetDayLineNeedSaving(true);
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(0)->IsUpdateDayLineDB()) << "此标识被重置";
+		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateDayLineDB(true);
 
 		EXPECT_TRUE(gl_pWorldMarket->UpdateStockDayLineDB());
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
-			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(i)->IsDayLineNeedSaving()) << "此标识被重置";
+			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(i)->IsUpdateDayLineDB()) << "此标识被重置";
 		}
 	}
 
@@ -855,7 +855,7 @@ namespace FireBirdTest {
 			pStock->SetIPOStatus(_STOCK_IPOED_);
 			pStock->SetDayLineStartDate(20200101);
 			pStock->SetDayLineEndDate(20200101);
-			pStock->SetDayLineNeedUpdate(false);
+			pStock->SetUpdateDayLine(false);
 			pStock->SetUpdateProfileDB(false);
 		}
 		gl_pFinnhubDataSource->SetUpdateStockProfile(false);
@@ -866,7 +866,7 @@ namespace FireBirdTest {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
 			EXPECT_EQ(pStock->GetDayLineStartDate(), 29900101);
 			EXPECT_EQ(pStock->GetDayLineEndDate(), 19800101);
-			EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pStock->IsUpdateDayLine());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		}
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateStockProfile());

@@ -108,13 +108,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerWorldStockTest, TestIsNeedSaveDayLine) {
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsDayLineNeedSaving());
-		gl_dataContainerFinnhubStock.Get(0)->SetDayLineNeedSaving(true);
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateDayLineDB());
+		gl_dataContainerFinnhubStock.Get(0)->SetUpdateDayLineDB(true);
 
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsDayLineNeedSaving());
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateDayLineDB());
 
 		// »Ö¸´Ô­×´
-		gl_dataContainerFinnhubStock.Get(0)->SetDayLineNeedSaving(false);
+		gl_dataContainerFinnhubStock.Get(0)->SetUpdateDayLineDB(false);
 	}
 
 	TEST_F(CContainerWorldStockTest, TestIsSaveInsiderTransaction) {

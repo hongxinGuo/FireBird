@@ -36,7 +36,7 @@ namespace FireBirdTest {
 
 			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
-				pStock->SetDayLineNeedUpdate(true);
+				pStock->SetUpdateDayLine(true);
 				if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
 
 				if (IsEarlyThen(pStock->GetDayLineEndDate(), s_pMockChinaMarket->GetMarketDate(), 30)) {
@@ -50,7 +50,7 @@ namespace FireBirdTest {
 			while (!s_pMockChinaMarket->IsMarketTaskEmpty()) s_pMockChinaMarket->DiscardCurrentMarketTask();
 
 			EXPECT_TRUE(s_pMockChinaMarket != nullptr) << "此Mock变量在EnvironmentSetUp.h中生成";
-			EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineNeedSaving());
+			EXPECT_FALSE(gl_dataContainerChinaStock.IsUpdateDayLineDB());
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedSaveNumber(), 0);
 
 			ASSERT_THAT(gl_pNeteaseDayLineDataSource, NotNull());
@@ -61,7 +61,7 @@ namespace FireBirdTest {
 
 		static void TearDownTestSuite() {
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
-			EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineNeedSaving());
+			EXPECT_FALSE(gl_dataContainerChinaStock.IsUpdateDayLineDB());
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedSaveNumber(), 0);
 
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
@@ -93,7 +93,7 @@ namespace FireBirdTest {
 			if (gl_dataContainerChinaStock.GetDayLineNeedSaveNumber() > 0) {
 				for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 					const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(i);
-					if (pStock->IsDayLineNeedSaving()) { EXPECT_STREQ(pStock->GetSymbol(), _T("")); }
+					if (pStock->IsUpdateDayLineDB()) { EXPECT_STREQ(pStock->GetSymbol(), _T("")); }
 				}
 			}
 			s_pMockChinaMarket->SetRSEndDate(19900101);

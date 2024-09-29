@@ -30,8 +30,8 @@ void CVirtualStock::Reset() {
 	m_lDayLineEndDate = 19000101;
 	m_lIPOStatus = _STOCK_NOT_CHECKED_; // 默认状态为无效股票代码。
 
-	m_fDayLineNeedUpdate = true; // 默认状态下日线需要更新
-	m_fDayLineNeedSaving = false;
+	m_fUpdateDayLine = true; // 默认状态下日线需要更新
+	m_fUpdateDayLineDB = false;
 }
 
 void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {

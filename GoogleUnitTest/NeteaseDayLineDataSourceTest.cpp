@@ -80,10 +80,10 @@ namespace FireBirdTest {
 		CString strSymbol = strMessage.Left(61);
 		strSymbol = strSymbol.Right(7);
 		const auto pStock = gl_dataContainerChinaStock.GetStock(XferNeteaseToStandard(strSymbol));
-		EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+		EXPECT_FALSE(pStock->IsUpdateDayLine());
 
 		// »Ö¸´Ô­×´
-		pStock->SetDayLineNeedUpdate(true);
+		pStock->SetUpdateDayLine(true);
 	}
 
 	TEST_F(CNeteaseDayLineDataSourceTest, TestCreateProduct) {
@@ -104,7 +104,7 @@ namespace FireBirdTest {
 
 		// »Ö¸´Ô­Ì¬
 		for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
-			gl_dataContainerChinaStock.GetStock(i)->SetDayLineNeedUpdate(true);
+			gl_dataContainerChinaStock.GetStock(i)->SetUpdateDayLine(true);
 		}
 	}
 }

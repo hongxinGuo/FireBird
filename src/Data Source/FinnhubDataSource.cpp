@@ -483,7 +483,7 @@ bool CFinnhubDataSource::InquireStockDayLine() {
 		}
 		for (lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentUpdateDayLinePos);
-			if (pStock->IsDayLineNeedUpdate()) {
+			if (pStock->IsUpdateDayLine()) {
 				// 目前免费账户只能下载美国市场的股票日线。
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pStock->GetExchangeCode())) {
 					fFound = true;
@@ -804,7 +804,7 @@ bool CFinnhubDataSource::InquireForexDayLine() {
 		}
 		for (lCurrentUpdateForexDayLinePos = 0; lCurrentUpdateForexDayLinePos < lStockSetSize; lCurrentUpdateForexDayLinePos++) {
 			pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(lCurrentUpdateForexDayLinePos);
-			if (pForexSymbol->IsDayLineNeedUpdate()) {
+			if (pForexSymbol->IsUpdateDayLine()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pForexSymbol->GetExchangeCode())) {
 					fFound = true;
 					break;
@@ -876,7 +876,7 @@ bool CFinnhubDataSource::InquireCryptoDayLine() {
 		}
 		for (lCurrentUpdateCryptoDayLinePos = 0; lCurrentUpdateCryptoDayLinePos < lStockSetSize; lCurrentUpdateCryptoDayLinePos++) {
 			pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(lCurrentUpdateCryptoDayLinePos);
-			if (pCryptoSymbol->IsDayLineNeedUpdate()) {
+			if (pCryptoSymbol->IsUpdateDayLine()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pCryptoSymbol->GetExchangeCode())) {
 					fFound = true;
 					break;

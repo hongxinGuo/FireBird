@@ -294,7 +294,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 
 	for (int i = 0; i < symbolSize; i++) {
 		pSymbol = gl_dataFinnhubForexSymbol.GetSymbol(i);
-		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pSymbol->IsUpdateDayLineDBAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
 					gl_runtime.background_executor()->post([pSymbol] {
@@ -342,7 +342,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 
 	for (int i = 0; i < symbolSize; ++i) {
 		pSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(i);
-		if (pSymbol->IsDayLineNeedSavingAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pSymbol->IsUpdateDayLineDBAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
 					gl_runtime.background_executor()->post([pSymbol] {
@@ -417,14 +417,14 @@ void CWorldMarket::UpdateTiingoStockStatus() {
 		iTotal = gl_dataContainerTiingoStock.Size();
 		for (int i = 0; i < iTotal; i++) {
 			auto pStock = gl_dataContainerTiingoStock.GetStock(i);
-			pStock->SetDayLineNeedUpdate(true);
+			pStock->SetUpdateDayLine(true);
 		}
 	}
 	else {
 		iTotal = gl_dataContainerTiingoStock.Size();
 		for (int i = 0; i < iTotal; i++) {
 			auto pStock = gl_dataContainerTiingoStock.GetStock(i);
-			pStock->SetDayLineNeedUpdate(false);
+			pStock->SetUpdateDayLine(false);
 			pStock->SetFinancialStateNeedUpdate(false);
 		}
 		iTotal = gl_dataContainerChosenWorldStock.Size();
@@ -432,7 +432,7 @@ void CWorldMarket::UpdateTiingoStockStatus() {
 			auto p = gl_dataContainerChosenWorldStock.GetStock(i);
 			if (gl_dataContainerTiingoStock.IsStock(p->GetSymbol())) {
 				auto pStock = gl_dataContainerTiingoStock.GetStock(p->GetSymbol());
-				pStock->SetDayLineNeedUpdate(true);
+				pStock->SetUpdateDayLine(true);
 				pStock->SetFinancialStateNeedUpdate(true);
 			}
 		}
@@ -505,7 +505,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_UpdateWorldMarketDB.release();
 		});
 	}
-	if (gl_dataContainerFinnhubStock.IsDayLineNeedSaving()) { // stock dayLine
+	if (gl_dataContainerFinnhubStock.IsUpdateDayLineDB()) { // stock dayLine
 		gl_runtime.background_executor()->post([this] {
 			gl_UpdateWorldMarketDB.acquire();
 			this->UpdateStockDayLineDB();

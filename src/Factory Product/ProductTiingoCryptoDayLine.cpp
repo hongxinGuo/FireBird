@@ -26,7 +26,7 @@ CString CProductTiingoCryptoDayLine::CreateMessage() {
 
 	const auto pCrypto = gl_dataContainerTiingoCryptoSymbol.GetSymbol(GetIndex());
 	CString strParam = pCrypto->m_strName + _T("&startDate=2010-01-02&resampleFreq=1day"); // 永远申请完整日线
-	pCrypto->SetDayLineNeedUpdate(false);
+	pCrypto->SetUpdateDayLine(false);
 
 	m_strInquiry = m_strInquiryFunction + strParam;
 	return m_strInquiry;
@@ -36,7 +36,7 @@ void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
 	const auto pCrypto = gl_dataFinnhubCryptoSymbol.GetSymbol(m_lIndex);
 	const CDayLinesPtr pvDayLine = ParseTiingoCryptoDayLine(pWebData);
-	pCrypto->SetDayLineNeedUpdate(false);
+	pCrypto->SetUpdateDayLine(false);
 	/*
 	if (!pvDayLine->empty()) {
 		for (const auto& pDayLine2 : *pvDayLine) {
@@ -45,13 +45,13 @@ void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pDayLine2->SetDisplaySymbol(pCrypto->GetTicker());
 		}
 		pCrypto->UpdateDayLine(*pvDayLine);
-		pCrypto->SetDayLineNeedSaving(true);
+		pCrypto->SetUpdateDayLineDB(true);
 		pCrypto->SetUpdateProfileDB(true);
 		//TRACE("处理Tiingo %s日线数据\n", pCrypto->GetSymbol().GetBuffer());
 		return;
 	}
 	else {
-		pCrypto->SetDayLineNeedSaving(false);
+		pCrypto->SetUpdateDayLineDB(false);
 		pCrypto->SetUpdateProfileDB(false);
 		//TRACE("处理Tiingo %s日线数据\n", pCrypto->GetSymbol().GetBuffer());
 	}

@@ -26,7 +26,7 @@ void CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	const auto pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(m_lIndex);
 	const auto pvDayLine = ParseFinnhubCryptoCandle(pWebData);
-	pCryptoSymbol->SetDayLineNeedUpdate(false);
+	pCryptoSymbol->SetUpdateDayLine(false);
 	if (!pvDayLine->empty()) {
 		for (const auto& pDayLine : *pvDayLine) {
 			pDayLine->SetExchange(pCryptoSymbol->GetExchangeCode());
@@ -38,11 +38,11 @@ void CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pCryptoSymbol->UpdateDayLineStartEndDate();
 		if (gl_pWorldMarket->GetLastTradeDate() <= pCryptoSymbol->GetDayLineEndDate()) { pCryptoSymbol->SetIPOStatus(_STOCK_IPOED_); }
 		else { pCryptoSymbol->SetIPOStatus(_STOCK_DELISTED_); }
-		pCryptoSymbol->SetDayLineNeedSaving(true);
+		pCryptoSymbol->SetUpdateDayLineDB(true);
 		pCryptoSymbol->SetUpdateProfileDB(true);
 	}
 	else {
-		pCryptoSymbol->SetDayLineNeedSaving(false);
+		pCryptoSymbol->SetUpdateDayLineDB(false);
 		if (!pCryptoSymbol->IsDelisted()) {
 			pCryptoSymbol->SetIPOStatus(_STOCK_DELISTED_);
 			pCryptoSymbol->SetUpdateProfileDB(true);

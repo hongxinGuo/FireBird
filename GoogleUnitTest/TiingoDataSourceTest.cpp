@@ -107,10 +107,10 @@ namespace FireBirdTest {
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
 			pStock = gl_dataContainerTiingoStock.GetStock(i);
-			pStock->SetDayLineNeedUpdate(false);
+			pStock->SetUpdateDayLine(false);
 		}
-		gl_dataContainerTiingoStock.GetStock(1)->SetDayLineNeedUpdate(true);
-		gl_dataContainerTiingoStock.GetStock(2)->SetDayLineNeedUpdate(true);
+		gl_dataContainerTiingoStock.GetStock(1)->SetUpdateDayLine(true);
+		gl_dataContainerTiingoStock.GetStock(2)->SetUpdateDayLine(true);
 		m_pTiingoDataSource->SetUpdateDayLine(false);
 		EXPECT_FALSE(m_pTiingoDataSource->InquireDayLine()) << "DayLine Updated";
 
@@ -125,19 +125,19 @@ namespace FireBirdTest {
 		CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockDayLine"));
 		//EXPECT_EQ(p->GetIndex(), lStockIndex) << "第一个待查询股票位置是第一个股票";
-		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(1)->IsDayLineNeedUpdate()) << "待数据处理后方重置此标识";
-		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(2)->IsDayLineNeedUpdate());
+		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(1)->IsUpdateDayLine()) << "待数据处理后方重置此标识";
+		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(2)->IsUpdateDayLine());
 
-		gl_dataContainerTiingoStock.GetStock(1)->SetDayLineNeedUpdate(false);
+		gl_dataContainerTiingoStock.GetStock(1)->SetUpdateDayLine(false);
 		m_pTiingoDataSource->SetInquiring(false);
 		EXPECT_TRUE(m_pTiingoDataSource->InquireDayLine());
 		//lStockIndex = gl_dataContainerFinnhubStock.GetOffset(tiingoSymbol2);
 		p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockDayLine"));
 		//EXPECT_EQ(p->GetIndex(), lStockIndex) << "第二个待查询股票位置是第三个股票";
-		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(2)->IsDayLineNeedUpdate()) << "待数据处理后方重置此标识";
+		EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(2)->IsUpdateDayLine()) << "待数据处理后方重置此标识";
 
-		gl_dataContainerTiingoStock.GetStock(2)->SetDayLineNeedUpdate(false);
+		gl_dataContainerTiingoStock.GetStock(2)->SetUpdateDayLine(false);
 		m_pTiingoDataSource->SetInquiring(false);
 		EXPECT_FALSE(m_pTiingoDataSource->InquireDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateDayLine()) << "股票都查询完了";
@@ -147,12 +147,12 @@ namespace FireBirdTest {
 		// 恢复原状
 		for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
 			pStock = gl_dataContainerTiingoStock.GetStock(i);
-			pStock->SetDayLineNeedUpdate(true);
+			pStock->SetUpdateDayLine(true);
 		}
 
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			auto pStock2 = gl_dataContainerFinnhubStock.GetStock(i);
-			pStock2->SetDayLineNeedUpdate(true);
+			pStock2->SetUpdateDayLine(true);
 		}
 
 		gl_systemConfiguration.NeedUpdate(false);

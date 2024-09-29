@@ -131,8 +131,8 @@ namespace FireBirdTest {
 			const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(_T("AAPL"));
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			ASSERT_FALSE(pStock->IsUpdateProfileDB()) << "不允许更新股票代码库";
-			EXPECT_FALSE(pStock->IsDayLineNeedSaving());
-			EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
+			EXPECT_TRUE(pStock->IsUpdateDayLine());
 
 			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 15) << "最初装载了15个";
 			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 11) << "最初装载了11个";

@@ -265,23 +265,23 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldStockTest, TestIsDayLineNeedUpdate) {
-		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-		stock.SetDayLineNeedUpdate(false);
-		EXPECT_FALSE(stock.IsDayLineNeedUpdate());
-		stock.SetDayLineNeedUpdate(true);
-		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsUpdateDayLine());
+		stock.SetUpdateDayLine(false);
+		EXPECT_FALSE(stock.IsUpdateDayLine());
+		stock.SetUpdateDayLine(true);
+		EXPECT_TRUE(stock.IsUpdateDayLine());
 	}
 
 	TEST_F(CWorldStockTest, TestIsDayLineNeededSaving) {
 		// 此两个函数是具备同步机制的，这里没有进行测试
-		EXPECT_FALSE(stock.IsDayLineNeedSaving());
-		stock.SetDayLineNeedSaving(true);
-		EXPECT_TRUE(stock.IsDayLineNeedSaving());
-		stock.SetDayLineNeedSaving(false);
-		EXPECT_FALSE(stock.IsDayLineNeedSaving());
-		stock.SetDayLineNeedSaving(true);
-		EXPECT_TRUE(stock.IsDayLineNeedSavingAndClearFlag());
-		EXPECT_FALSE(stock.IsDayLineNeedSaving());
+		EXPECT_FALSE(stock.IsUpdateDayLineDB());
+		stock.SetUpdateDayLineDB(true);
+		EXPECT_TRUE(stock.IsUpdateDayLineDB());
+		stock.SetUpdateDayLineDB(false);
+		EXPECT_FALSE(stock.IsUpdateDayLineDB());
+		stock.SetUpdateDayLineDB(true);
+		EXPECT_TRUE(stock.IsUpdateDayLineDBAndClearFlag());
+		EXPECT_FALSE(stock.IsUpdateDayLineDB());
 	}
 
 	TEST_F(CWorldStockTest, TestGetProfileUpdateDate) {
@@ -601,34 +601,34 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus1) {
-		stock.SetDayLineNeedUpdate(true);
+		stock.SetUpdateDayLine(true);
 		stock.SetActive(false);
 		for (int i = 1; i < 6; i++) {
 			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "非活跃股票工作日不更新日线\n";
-			stock.SetDayLineNeedUpdate(true);
+			stock.SetUpdateDayLine(true);
 		}
 	}
 
 	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus2) {
-		stock.SetDayLineNeedUpdate(true);
+		stock.SetUpdateDayLine(true);
 		stock.SetIPOStatus(_STOCK_NULL_);
 		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, 0)) << "无效股票不检查日线\n";
 	}
 
 	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus3) {
-		stock.SetDayLineNeedUpdate(true);
+		stock.SetUpdateDayLine(true);
 		stock.SetIPOStatus(_STOCK_DELISTED_);
 		for (int i = 0; i < 7; i++) {
 			if (i == 4)
 				EXPECT_TRUE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
 			else
 				EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
-			stock.SetDayLineNeedUpdate(true);
+			stock.SetUpdateDayLine(true);
 		}
 	}
 
 	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus4) {
-		stock.SetDayLineNeedUpdate(true);
+		stock.SetUpdateDayLine(true);
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(GetPrevDay(gl_pWorldMarket->GetMarketDate(), 100));
@@ -641,13 +641,13 @@ namespace FireBirdTest {
 		const long lCurrentDay = gl_pWorldMarket->GetMarketDate();
 		const long lPrevDay = GetPrevDay(lCurrentDay);
 
-		stock.SetDayLineNeedUpdate(true);
+		stock.SetUpdateDayLine(true);
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(lCurrentDay); // 本日交易日日线已接收
 		for (int i = 1; i < 6; i++) {
 			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线";
-			stock.SetDayLineNeedUpdate(true); // 重置状态
+			stock.SetUpdateDayLine(true); // 重置状态
 		}
 		stock.SetDayLineEndDate(lPrevDay); // 本日交易日日线尚未接收
 		for (int i = 1; i < 6; i++) { EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线"; }
@@ -657,13 +657,13 @@ namespace FireBirdTest {
 		const long lCurrentDay = gl_pWorldMarket->GetMarketDate();
 		const long lPrevDay = GetPrevDay(lCurrentDay);
 
-		stock.SetDayLineNeedUpdate(true);
+		stock.SetUpdateDayLine(true);
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(GetPrevDay(lCurrentDay)); // 上一交易日日线数据已接收
 		for (int i = 1; i < 6; i++) {
 			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线 " << i;
-			stock.SetDayLineNeedUpdate(true); // 重置之
+			stock.SetUpdateDayLine(true); // 重置之
 		}
 		stock.SetDayLineEndDate(GetPrevDay(lCurrentDay, 2)); // 上一交易日日线数据未接收
 		for (int i = 1; i < 6; i++) { EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线"; }
@@ -673,24 +673,24 @@ namespace FireBirdTest {
 		const long lCurrentDate = gl_pWorldMarket->GetMarketDate();
 		const long lPrevMonday = GetPrevMonday(lCurrentDate);
 
-		stock.SetDayLineNeedUpdate(true);
+		stock.SetUpdateDayLine(true);
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetActive(true);
 		stock.SetDayLineEndDate(GetPrevDay(lPrevMonday, 3)); // 上一交易日日线数据已接收
 		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 2), GetPrevDay(lPrevMonday, 3), 170000, 6)) << "周六，检查上一交易日日线";
-		stock.SetDayLineNeedUpdate(true); // 重置之
+		stock.SetUpdateDayLine(true); // 重置之
 		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 1), GetPrevDay(lPrevMonday, 3), 170000, 0)) << "周日，检查上一交易日日线";
 	}
 
 	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus8) {
-		stock.SetDayLineNeedUpdate(true);
+		stock.SetUpdateDayLine(true);
 		stock.SetIPOStatus(_STOCK_NOT_YET_LIST_);
 		for (int i = 0; i < 7; i++) {
 			if (i == 4)
 				EXPECT_TRUE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
 			else
 				EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期四检查日线\n";
-			stock.SetDayLineNeedUpdate(true);
+			stock.SetUpdateDayLine(true);
 		}
 	}
 
@@ -808,17 +808,17 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldStockTest, TestUpdateDayLineDB1) {
-		EXPECT_FALSE(stock.IsDayLineNeedSaving());
+		EXPECT_FALSE(stock.IsUpdateDayLineDB());
 		EXPECT_FALSE(stock.UpdateDayLineDB()) << "更新日线标识为假时，无需执行实际操作";
 	}
 
 	TEST_F(CWorldStockTest, TestUpdateDayLineDB2) {
-		EXPECT_FALSE(stock.IsDayLineNeedSaving());
-		stock.SetDayLineNeedSaving(true); // 需要更新
+		EXPECT_FALSE(stock.IsUpdateDayLineDB());
+		stock.SetUpdateDayLineDB(true); // 需要更新
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
 
 		EXPECT_FALSE(stock.UpdateDayLineDB()) << "日线数据为零时，无需执行实际操作";
-		EXPECT_FALSE(stock.IsDayLineNeedSaving()) << "更新标识已被重置为假";
+		EXPECT_FALSE(stock.IsUpdateDayLineDB()) << "更新标识已被重置为假";
 	}
 
 	TEST_F(CWorldStockTest, TestUpdateDayLineDB3) {
@@ -826,8 +826,8 @@ namespace FireBirdTest {
 		CDayLinePtr pDayLine;
 		CSetWorldStockDayLine setDayLine;
 
-		EXPECT_FALSE(stock.IsDayLineNeedSaving());
-		stock.SetDayLineNeedSaving(true); // 需要更新
+		EXPECT_FALSE(stock.IsUpdateDayLineDB());
+		stock.SetUpdateDayLineDB(true); // 需要更新
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
 
 		pDayLine = make_shared<CDayLine>();
@@ -857,16 +857,16 @@ namespace FireBirdTest {
 		stock.UpdateDayLine(vDayLine);
 
 		EXPECT_FALSE(stock.UpdateDayLineDB()) << "无需执行实际操作";
-		EXPECT_FALSE(stock.IsDayLineNeedSaving()) << "更新标识已被重置为假";
+		EXPECT_FALSE(stock.IsUpdateDayLineDB()) << "更新标识已被重置为假";
 		EXPECT_EQ(stock.GetDayLineSize(), 0) << "已清除日线数据";
 
-		stock.SetDayLineNeedSaving(true); // 需要更新
+		stock.SetUpdateDayLineDB(true); // 需要更新
 		stock.SetDayLineStartDate(20200102); // 日线开始日期晚于当前日线数据日期
 		stock.SetDayLineEndDate(20210123); // 日线结束日期不早于当前日线数据日期
 		stock.UpdateDayLine(vDayLine);
 
 		EXPECT_TRUE(stock.UpdateDayLineDB()) << "执行实际操作";
-		EXPECT_FALSE(stock.IsDayLineNeedSaving()) << "更新标识已被重置为假";
+		EXPECT_FALSE(stock.IsUpdateDayLineDB()) << "更新标识已被重置为假";
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
 		EXPECT_EQ(stock.GetDayLineStartDate(), 20200101) << "日线开始日期已更新为较早日期";
 		EXPECT_TRUE(stock.IsUpdateProfileDB());

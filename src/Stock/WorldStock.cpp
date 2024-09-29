@@ -309,22 +309,22 @@ bool CWorldStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
 /// <param name="lDayOfWeek"></param>
 /// <returns></returns>
 bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek) {
-	ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
+	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 	if (IsNullStock()) {
-		SetDayLineNeedUpdate(false);
-		return m_fDayLineNeedUpdate;
+		SetUpdateDayLine(false);
+		return m_fUpdateDayLine;
 	}
 	if (IsDelisted() || IsNotYetList()) {
 		// 摘牌股票?
 		if (lDayOfWeek != 4) {
 			// 每星期四检查一次
-			SetDayLineNeedUpdate(false);
-			return m_fDayLineNeedUpdate;
+			SetUpdateDayLine(false);
+			return m_fUpdateDayLine;
 		}
 	}
 	else if ((!IsNotChecked()) && (IsEarlyThen(m_lDayLineEndDate, gl_pWorldMarket->GetMarketDate(), 100))) {
-		SetDayLineNeedUpdate(false);
-		return m_fDayLineNeedUpdate;
+		SetUpdateDayLine(false);
+		return m_fUpdateDayLine;
 	}
 	else {
 		if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) {
@@ -332,25 +332,25 @@ bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate,
 			if (lTime > 170000) {
 				if (lTodayDate <= GetDayLineEndDate()) {
 					// 最新日线数据为今日的数据，而当前时间为下午五时之后
-					SetDayLineNeedUpdate(false); // 日线数据不需要更新
-					return m_fDayLineNeedUpdate;
+					SetUpdateDayLine(false); // 日线数据不需要更新
+					return m_fUpdateDayLine;
 				}
 			}
 			else {
 				if (lLastTradeDate <= GetDayLineEndDate()) {
 					// 最新日线数据为上一个交易日的数据,而当前时间为下午五时之前。
-					SetDayLineNeedUpdate(false); // 日线数据不需要更新
-					return m_fDayLineNeedUpdate;
+					SetUpdateDayLine(false); // 日线数据不需要更新
+					return m_fUpdateDayLine;
 				}
 			}
 		}
 		else if (lLastTradeDate <= GetDayLineEndDate()) {
 			// 周六周日时， 最新日线数据为上一个交易日的数据
-			SetDayLineNeedUpdate(false); // 日线数据不需要更新
-			return m_fDayLineNeedUpdate;
+			SetUpdateDayLine(false); // 日线数据不需要更新
+			return m_fUpdateDayLine;
 		}
 	}
-	return m_fDayLineNeedUpdate;
+	return m_fUpdateDayLine;
 }
 
 void CWorldStock::Save(CSetWorldStock& setWorldStock) const {
@@ -617,7 +617,7 @@ bool CWorldStock::UpdateSECFilingsDB() const {
 }
 
 bool CWorldStock::UpdateDayLineDB() {
-	if (IsDayLineNeedSavingAndClearFlag()) {
+	if (IsUpdateDayLineDBAndClearFlag()) {
 		// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 		if (GetDayLineSize() > 0) {
 			if (HaveNewDayLineData()) {

@@ -61,7 +61,7 @@ long CContainerChinaStock::LoadStockProfileDB() {
 		}
 		setChinaStockSymbol.MoveNext();
 	}
-	if (IsDayLineNeedUpdate()) {
+	if (IsUpdateDayLine()) {
 		lDayLineNeedCheck = GetDayLineNeedUpdateNumber();
 		if (gl_pChinaMarket->GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage(_T("每星期一复查退市股票日线"));
 		TRACE("尚余%d个股票需要检查日线数据\n", lDayLineNeedCheck);
@@ -175,11 +175,11 @@ CString CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 
 	while (!fFoundStock && (iCount++ < Size())) {
 		const CChinaStockPtr pStock = GetStock(lIndex);
-		if (!pStock->IsDayLineNeedUpdate()) { // 日线数据不需要更新。在系统初始时，设置此m_fDayLineNeedUpdate标识
+		if (!pStock->IsUpdateDayLine()) { // 日线数据不需要更新。在系统初始时，设置此m_fUpdateDayLine标识
 			lIndex = GetNextIndex(lIndex);
 		}
 		else if (pStock->GetDayLineEndDate() >= gl_pChinaMarket->GetLastTradeDate()) {//上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
-			pStock->SetDayLineNeedUpdate(false); // 此股票日线资料不需要更新了。
+			pStock->SetUpdateDayLine(false); // 此股票日线资料不需要更新了。
 			lIndex = GetNextIndex(lIndex);
 		}
 		else {
@@ -194,9 +194,9 @@ CString CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 
 	// 找到了需申请日线历史数据的股票
 	const CChinaStockPtr pStock = GetStock(lIndex);
-	ASSERT(!pStock->IsDayLineNeedSaving());
-	ASSERT(pStock->IsDayLineNeedUpdate());
-	pStock->SetDayLineNeedUpdate(false);
+	ASSERT(!pStock->IsUpdateDayLineDB());
+	ASSERT(pStock->IsUpdateDayLine());
+	pStock->SetUpdateDayLine(false);
 	strReturn += XferStandardToNetease(pStock->GetSymbol());
 	return strReturn;
 }
@@ -221,11 +221,11 @@ CString CContainerChinaStock::CreateTengxunDayLineInquiringStr() {
 
 	while (!fFoundStock && (iCount++ < Size())) {
 		const CChinaStockPtr pStock = GetStock(lIndex);
-		if (!pStock->IsDayLineNeedUpdate()) { // 日线数据不需要更新。在系统初始时，设置此m_fDayLineNeedUpdate标识
+		if (!pStock->IsUpdateDayLine()) { // 日线数据不需要更新。在系统初始时，设置此m_fUpdateDayLine标识
 			lIndex = GetNextIndex(lIndex);
 		}
 		else if (pStock->GetDayLineEndDate() >= gl_pChinaMarket->GetLastTradeDate()) {//上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
-			pStock->SetDayLineNeedUpdate(false); // 此股票日线资料不需要更新了。
+			pStock->SetUpdateDayLine(false); // 此股票日线资料不需要更新了。
 			lIndex = GetNextIndex(lIndex);
 		}
 		else {
@@ -240,9 +240,9 @@ CString CContainerChinaStock::CreateTengxunDayLineInquiringStr() {
 
 	// 找到了需申请日线历史数据的股票
 	const CChinaStockPtr pStock = GetStock(lIndex);
-	ASSERT(!pStock->IsDayLineNeedSaving());
-	ASSERT(pStock->IsDayLineNeedUpdate());
-	pStock->SetDayLineNeedUpdate(false);
+	ASSERT(!pStock->IsUpdateDayLineDB());
+	ASSERT(pStock->IsUpdateDayLine());
+	pStock->SetUpdateDayLine(false);
 	strReturn += XferStandardToTengxun(pStock->GetSymbol());
 	return strReturn;
 }
@@ -258,7 +258,7 @@ void CContainerChinaStock::ProcessRTData() {
 
 void CContainerChinaStock::ClearDayLineNeedUpdateStatus() const {
 	for (const auto& pStock : m_vStock) {
-		pStock->SetDayLineNeedUpdate(false);
+		pStock->SetUpdateDayLine(false);
 	}
 }
 
@@ -283,22 +283,22 @@ void CContainerChinaStock::UnloadDayLine() noexcept {
 }
 
 void CContainerChinaStock::SetDayLineNeedMaintain() const {
-	SetDayLineNeedUpdate();
+	SetUpdateDayLine();
 	for (auto& pStock : m_vStock) {
 		pStock->SetDayLineEndDate(19900101);
 	}
 }
 
-void CContainerChinaStock::SetDayLineNeedUpdate() const {
+void CContainerChinaStock::SetUpdateDayLine() const {
 	for (const auto& pStock : m_vStock) {
-		pStock->SetDayLineNeedUpdate(true);
+		pStock->SetUpdateDayLine(true);
 	}
 }
 
 long CContainerChinaStock::GetDayLineNeedUpdateNumber() const {
 	long l = 0;
 	for (const auto& pStock : m_vStock) {
-		if (pStock->IsDayLineNeedUpdate()) l++;
+		if (pStock->IsUpdateDayLine()) l++;
 	}
 	return l;
 }
@@ -306,7 +306,7 @@ long CContainerChinaStock::GetDayLineNeedUpdateNumber() const {
 long CContainerChinaStock::GetDayLineNeedSaveNumber() const {
 	long l = 0;
 	for (const auto& pStock : m_vStock) {
-		if (pStock->IsDayLineNeedSaving()) ++l;
+		if (pStock->IsUpdateDayLineDB()) ++l;
 	}
 	return l;
 }
@@ -327,7 +327,7 @@ bool CContainerChinaStock::SaveDayLineData() {
 
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
-		if (pStock->IsDayLineNeedSavingAndClearFlag()) {
+		if (pStock->IsUpdateDayLineDBAndClearFlag()) {
 			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pStock->GetDayLineSize() > 0) {
 				if (pStock->HaveNewDayLineData()) {

@@ -26,14 +26,15 @@ void CProductTiingoStock::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		long lTemp = 0;
 		for (const auto& pTiingoStock : *pvTiingoStock) {
 			if (!gl_dataContainerTiingoStock.IsStock(pTiingoStock->GetSymbol())) {
+				pTiingoStock->SetUpdateProfileDB(true); // 将此股票存入数据库。
 				gl_dataContainerTiingoStock.Add(pTiingoStock);
 			}
 			if (gl_dataContainerFinnhubStock.IsSymbol(pTiingoStock->GetSymbol())) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
 				lTemp++;
 				const auto pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoStock->GetSymbol());
 				if (pStock->IsNeedUpdateProfile(pTiingoStock)) {
-					pStock->UpdateStockProfile(pTiingoStock);
 					pStock->SetUpdateProfileDB(true);
+					pStock->UpdateStockProfile(pTiingoStock);
 				}
 			}
 			else {
@@ -161,11 +162,12 @@ CTiingoStocksPtr CProductTiingoStock::ParseTiingoStockSymbol(const CWebDataPtr& 
 			s1 = jsonGetStringView(itemValue, _T("statementLastUpdated"));
 			if (!s1.empty()) str = s1.c_str();;
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			pStock->SetCompanyFinancialStatementUpdateDate(XferYearMonthDayToYYYYMMDD(year, month, day));
+			//pStock->SetCompanyFinancialStatementUpdateDate(XferYearMonthDayToYYYYMMDD(year, month, day));
 			s1 = jsonGetStringView(itemValue, _T("dailyLastUpdated"));
 			str = s1.c_str();;
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			pStock->SetDailyDataUpdateDate(XferYearMonthDayToYYYYMMDD(year, month, day));
+			//pStock->SetDailyDataUpdateDate(XferYearMonthDayToYYYYMMDD(year, month, day));
+			pStock->SetUpdateProfileDB(true); // 所有申请到的股票，皆当成新股票对待，需要存入数据库。
 			pvTiingoStock->push_back(pStock);
 			iCount++;
 		}

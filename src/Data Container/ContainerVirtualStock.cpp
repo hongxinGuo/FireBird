@@ -30,12 +30,12 @@ bool CContainerVirtualStock::IsUpdateProfileDB() noexcept {
 	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsUpdateProfileDB(); });
 }
 
-bool CContainerVirtualStock::IsDayLineNeedUpdate() noexcept {
-	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsDayLineNeedUpdate(); });
+bool CContainerVirtualStock::IsUpdateDayLine() noexcept {
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsUpdateDayLine(); });
 }
 
-bool CContainerVirtualStock::IsDayLineNeedSaving() noexcept {
-	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsDayLineNeedSaving(); });
+bool CContainerVirtualStock::IsUpdateDayLineDB() noexcept {
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsUpdateDayLineDB(); });
 }
 
 void CContainerVirtualStock::Add(const CVirtualStockPtr& pStock) {

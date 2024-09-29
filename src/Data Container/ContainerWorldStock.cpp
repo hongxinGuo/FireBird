@@ -57,7 +57,7 @@ void CContainerWorldStock::ResetDayLine() {
 		pStock->SetIPOStatus(_STOCK_NOT_CHECKED_);
 		pStock->SetDayLineStartDate(29900101);
 		pStock->SetDayLineEndDate(19800101);
-		pStock->SetDayLineNeedUpdate(true);
+		pStock->SetUpdateDayLine(true);
 		pStock->SetUpdateProfileDB(true);
 	}
 }
@@ -149,8 +149,7 @@ void CContainerWorldStock::UpdateProfileDB() {
 			}
 			setWorldStock.m_pDatabase->CommitTrans();
 			setWorldStock.Close();
-		}
-		catch (CException* e) {
+		} catch (CException* e) {
 			ReportInformationAndDeleteException(e);
 		}
 	}
@@ -258,8 +257,7 @@ void CContainerWorldStock::UpdateBasicFinancialMetricDB(const vector<CWorldStock
 		setBasicFinancialMetric.m_pDatabase->CommitTrans();
 		setBasicFinancialMetric.Close();
 		ASSERT(iCurrentUpdated == iBasicFinancialNeedUpdate);
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 }

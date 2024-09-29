@@ -33,7 +33,7 @@ CString CProductTiingoForexDayLine::CreateMessage() {
 	else {
 		strParam = pStock->GetTiingoDayLineInquiryParam(pStock->GetDayLineEndDate(), GetMarket()->GetMarketDate());
 	}
-	pStock->SetDayLineNeedUpdate(false);
+	pStock->SetUpdateDayLine(false);
 	m_strInquiry = m_strInquiryFunction + strParam;
 		*/
 	return m_strInquiry;
@@ -44,7 +44,7 @@ void CProductTiingoForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	/*
 	const auto pForex = gl_dataContainerFinnhubForex.GetForex(m_lIndex);
 	const CDayLinesPtr pvDayLine = ParseTiingoForexDayLine(pWebData);
-	pForex->SetDayLineNeedUpdate(false);
+	pForex->SetUpdateDayLine(false);
 	if (!pvDayLine->empty()) {
 		for (const auto& pDayLine2 : *pvDayLine) {
 			pDayLine2->SetExchange(pForex->GetExchangeCode());
@@ -52,13 +52,13 @@ void CProductTiingoForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pDayLine2->SetDisplaySymbol(pForex->GetTicker());
 		}
 		pForex->UpdateDayLine(*pvDayLine);
-		pForex->SetDayLineNeedSaving(true);
+		pForex->SetUpdateDayLineDB(true);
 		pForex->SetUpdateProfileDB(true);
 		//TRACE("处理Tiingo %s日线数据\n", pForex->GetSymbol().GetBuffer());
 		return;
 	}
 	else {
-		pForex->SetDayLineNeedSaving(false);
+		pForex->SetUpdateDayLineDB(false);
 		pForex->SetUpdateProfileDB(false);
 		//TRACE("处理Tiingo %s日线数据\n", pForex->GetSymbol().GetBuffer());
 	}

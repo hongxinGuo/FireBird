@@ -79,10 +79,10 @@ namespace FireBirdTest {
 		TengxunDayLineDataSource.SetInquiring(false);
 		TengxunDayLineDataSource.SetUpdateDayLine(true);
 		for (long l = 0; l < gl_dataContainerChinaStock.Size(); l++) {
-			gl_dataContainerChinaStock.GetStock(l)->SetDayLineNeedUpdate(false);
+			gl_dataContainerChinaStock.GetStock(l)->SetUpdateDayLine(false);
 		}
-		gl_dataContainerChinaStock.GetStock(0)->SetDayLineNeedUpdate(true);
-		gl_dataContainerChinaStock.GetStock(10)->SetDayLineNeedUpdate(true);
+		gl_dataContainerChinaStock.GetStock(0)->SetUpdateDayLine(true);
+		gl_dataContainerChinaStock.GetStock(10)->SetUpdateDayLine(true);
 
 		EXPECT_FALSE(TengxunDayLineDataSource.IsInquiring());
 		EXPECT_TRUE(TengxunDayLineDataSource.Inquire()) << gl_tUTCTime;
@@ -109,7 +109,7 @@ namespace FireBirdTest {
 
 		// »Ö¸´Ô­×´
 		for (long l = 0; l < gl_dataContainerChinaStock.Size(); l++) {
-			gl_dataContainerChinaStock.GetStock(l)->SetDayLineNeedUpdate(true);
+			gl_dataContainerChinaStock.GetStock(l)->SetUpdateDayLine(true);
 		}
 	}
 

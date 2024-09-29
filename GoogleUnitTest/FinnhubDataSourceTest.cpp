@@ -662,10 +662,10 @@ namespace FireBirdTest {
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
-			pStock->SetDayLineNeedUpdate(false);
+			pStock->SetUpdateDayLine(false);
 		}
-		gl_dataContainerFinnhubStock.GetStock(3001)->SetDayLineNeedUpdate(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
-		gl_dataContainerFinnhubStock.GetStock(3010)->SetDayLineNeedUpdate(true);
+		gl_dataContainerFinnhubStock.GetStock(3001)->SetUpdateDayLine(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
+		gl_dataContainerFinnhubStock.GetStock(3010)->SetUpdateDayLine(true);
 		m_FinnhubDataSource.SetUpdateStockDayLine(false);
 		EXPECT_FALSE(m_FinnhubDataSource.InquireStockDayLine()) << "DayLine Updated";
 
@@ -679,19 +679,19 @@ namespace FireBirdTest {
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockDayLine"));
 		EXPECT_EQ(p->GetIndex(), 3001) << "第一个待查询股票位置";
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(3001)->IsDayLineNeedUpdate()) << "查询时不更新，该标识在接收到网络数据后才更新";
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(3010)->IsDayLineNeedUpdate());
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(3001)->IsUpdateDayLine()) << "查询时不更新，该标识在接收到网络数据后才更新";
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(3010)->IsUpdateDayLine());
 
 		m_FinnhubDataSource.SetInquiring(false);
-		gl_dataContainerFinnhubStock.GetStock(3001)->SetDayLineNeedUpdate(false);
+		gl_dataContainerFinnhubStock.GetStock(3001)->SetUpdateDayLine(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireStockDayLine());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockDayLine"));
 		EXPECT_EQ(p->GetIndex(), 3010) << "第一个待查询股票位置";
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(3010)->IsDayLineNeedUpdate()) << "查询时不更新，该标识在接收到网络数据后才更新";
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(3010)->IsUpdateDayLine()) << "查询时不更新，该标识在接收到网络数据后才更新";
 
 		m_FinnhubDataSource.SetInquiring(false);
-		gl_dataContainerFinnhubStock.GetStock(3010)->SetDayLineNeedUpdate(false);
+		gl_dataContainerFinnhubStock.GetStock(3010)->SetUpdateDayLine(false);
 		EXPECT_FALSE(m_FinnhubDataSource.InquireStockDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateStockDayLine()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
@@ -703,7 +703,7 @@ namespace FireBirdTest {
 		// 恢复原状
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
-			pStock->SetDayLineNeedUpdate(true);
+			pStock->SetUpdateDayLine(true);
 		}
 		m_FinnhubDataSource.SetUpdateStockDayLine(true);
 	}
@@ -983,10 +983,10 @@ namespace FireBirdTest {
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_dataFinnhubForexSymbol.Size(); i++) {
 			pStock = gl_dataFinnhubForexSymbol.GetSymbol(i);
-			pStock->SetDayLineNeedUpdate(false);
+			pStock->SetUpdateDayLine(false);
 		}
-		gl_dataFinnhubForexSymbol.GetSymbol(1)->SetDayLineNeedUpdate(true);
-		gl_dataFinnhubForexSymbol.GetSymbol(10)->SetDayLineNeedUpdate(true);
+		gl_dataFinnhubForexSymbol.GetSymbol(1)->SetUpdateDayLine(true);
+		gl_dataFinnhubForexSymbol.GetSymbol(10)->SetUpdateDayLine(true);
 		m_FinnhubDataSource.SetUpdateForexDayLine(false);
 		EXPECT_FALSE(m_FinnhubDataSource.InquireForexDayLine()) << "Finnhub Forex Symbol DayLine Updated";
 
@@ -1000,19 +1000,19 @@ namespace FireBirdTest {
 		CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexDayLine"));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
-		EXPECT_TRUE(gl_dataFinnhubForexSymbol.GetSymbol(1)->IsDayLineNeedUpdate()) << "查询时不更新，该标识在接收到网络数据后才更新";
-		EXPECT_TRUE(gl_dataFinnhubForexSymbol.GetSymbol(10)->IsDayLineNeedUpdate());
+		EXPECT_TRUE(gl_dataFinnhubForexSymbol.GetSymbol(1)->IsUpdateDayLine()) << "查询时不更新，该标识在接收到网络数据后才更新";
+		EXPECT_TRUE(gl_dataFinnhubForexSymbol.GetSymbol(10)->IsUpdateDayLine());
 
 		m_FinnhubDataSource.SetInquiring(false);
-		gl_dataFinnhubForexSymbol.GetSymbol(1)->SetDayLineNeedUpdate(false);
+		gl_dataFinnhubForexSymbol.GetSymbol(1)->SetUpdateDayLine(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireForexDayLine());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexDayLine"));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";
-		EXPECT_TRUE(gl_dataFinnhubForexSymbol.GetSymbol(10)->IsDayLineNeedUpdate()) << "查询时不更新，该标识在接收到网络数据后才更新";
+		EXPECT_TRUE(gl_dataFinnhubForexSymbol.GetSymbol(10)->IsUpdateDayLine()) << "查询时不更新，该标识在接收到网络数据后才更新";
 
 		m_FinnhubDataSource.SetInquiring(false);
-		gl_dataFinnhubForexSymbol.GetSymbol(10)->SetDayLineNeedUpdate(false);
+		gl_dataFinnhubForexSymbol.GetSymbol(10)->SetUpdateDayLine(false);
 		EXPECT_FALSE(m_FinnhubDataSource.InquireForexDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateForexDayLine()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
@@ -1023,7 +1023,7 @@ namespace FireBirdTest {
 
 		for (int i = 0; i < gl_dataFinnhubForexSymbol.Size(); i++) {
 			pStock = gl_dataFinnhubForexSymbol.GetSymbol(i);
-			pStock->SetDayLineNeedUpdate(true);
+			pStock->SetUpdateDayLine(true);
 		}
 
 		// 恢复原状
@@ -1085,10 +1085,10 @@ namespace FireBirdTest {
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_dataFinnhubCryptoSymbol.Size(); i++) {
 			pStock = gl_dataFinnhubCryptoSymbol.GetSymbol(i);
-			pStock->SetDayLineNeedUpdate(false);
+			pStock->SetUpdateDayLine(false);
 		}
-		gl_dataFinnhubCryptoSymbol.GetSymbol(1)->SetDayLineNeedUpdate(true);
-		gl_dataFinnhubCryptoSymbol.GetSymbol(10)->SetDayLineNeedUpdate(true);
+		gl_dataFinnhubCryptoSymbol.GetSymbol(1)->SetUpdateDayLine(true);
+		gl_dataFinnhubCryptoSymbol.GetSymbol(10)->SetUpdateDayLine(true);
 		m_FinnhubDataSource.SetUpdateCryptoDayLine(false);
 		EXPECT_FALSE(m_FinnhubDataSource.InquireCryptoDayLine()) << "Finnhub Crypto Symbol DayLine Updated";
 
@@ -1102,19 +1102,19 @@ namespace FireBirdTest {
 		CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCryptoDayLine"));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
-		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.GetSymbol(1)->IsDayLineNeedUpdate()) << "查询时不更新，该标识在接收到网络数据后才更新";
-		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.GetSymbol(10)->IsDayLineNeedUpdate());
+		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.GetSymbol(1)->IsUpdateDayLine()) << "查询时不更新，该标识在接收到网络数据后才更新";
+		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.GetSymbol(10)->IsUpdateDayLine());
 
 		m_FinnhubDataSource.SetInquiring(false);
-		gl_dataFinnhubCryptoSymbol.GetSymbol(1)->SetDayLineNeedUpdate(false);
+		gl_dataFinnhubCryptoSymbol.GetSymbol(1)->SetUpdateDayLine(false);
 		EXPECT_TRUE(m_FinnhubDataSource.InquireCryptoDayLine());
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCryptoDayLine"));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";
-		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.GetSymbol(10)->IsDayLineNeedUpdate()) << "查询时不更新，该标识在接收到网络数据后才更新";
+		EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.GetSymbol(10)->IsUpdateDayLine()) << "查询时不更新，该标识在接收到网络数据后才更新";
 
 		m_FinnhubDataSource.SetInquiring(false);
-		gl_dataFinnhubCryptoSymbol.GetSymbol(10)->SetDayLineNeedUpdate(false);
+		gl_dataFinnhubCryptoSymbol.GetSymbol(10)->SetUpdateDayLine(false);
 		EXPECT_FALSE(m_FinnhubDataSource.InquireCryptoDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateCryptoDayLine()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 2) << "Inquiring and Inquired";
@@ -1125,7 +1125,7 @@ namespace FireBirdTest {
 
 		for (int i = 0; i < gl_dataFinnhubCryptoSymbol.Size(); i++) {
 			pStock = gl_dataFinnhubCryptoSymbol.GetSymbol(i);
-			pStock->SetDayLineNeedUpdate(true);
+			pStock->SetUpdateDayLine(true);
 		}
 
 		// 恢复原状

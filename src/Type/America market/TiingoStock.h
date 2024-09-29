@@ -61,14 +61,10 @@ protected:
 
 	// 无需存储数据区
 	bool m_fUpdateFinancialState{ true };
-	bool m_fUpdateCompanyProfile{ true };
-	bool m_fUpdateDayLine{ true };
 	bool m_fUpdateDailyData{ true };
 
 	// 更新数据库
 	bool m_fUpdateFinancialStateDB{ false };
-	bool m_fUpdateCompanyProfileDB{ false };
-	bool m_fUpdateDayLineDB{ false };
 	bool m_fUpdateDailyDataDB{ false };
 };
 

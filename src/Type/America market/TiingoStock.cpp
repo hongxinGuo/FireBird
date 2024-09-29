@@ -24,6 +24,7 @@ void CTiingoStock::Reset() {
 	m_strCompanyWebSite = _T("");
 	m_strSECFilingWebSite = _T("");
 	SetDailyDataUpdateDate(19800101);
+	//SetDayLineUpdateDate(19800101);
 	SetCompanyFinancialStatementUpdateDate(19800101);
 }
 

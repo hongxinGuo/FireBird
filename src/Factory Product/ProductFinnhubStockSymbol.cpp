@@ -36,7 +36,7 @@ void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	for (const auto& pStock2 : *pvStock) {
 		if (!gl_dataContainerFinnhubStock.IsSymbol(pStock2)) {
 			pStock2->SetTodayNewStock(true);
-			pStock2->SetUpdateProfileDB(true);
+			pStock2->SetUpdateProfileDB(true); // 此股票需要加入数据库中。
 			gl_dataContainerFinnhubStock.Add(pStock2);
 			const auto str = _T("Finnhub发现新代码:") + pStock2->GetSymbol();
 			gl_systemMessage.PushInnerSystemInformationMessage(str);
@@ -111,8 +111,7 @@ CWorldStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWebDa
 			if (!s.empty()) pStock->SetType(s.c_str());
 			pvStock->push_back(pStock);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Symbol "), e.what());
 		return pvStock;
 	}

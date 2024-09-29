@@ -37,7 +37,7 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	auto pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoStock->GetSymbol());
 	ASSERT(pStock != nullptr);
 	const CDayLinesPtr pvDayLine = ParseTiingoStockDayLine(pWebData);
-	pStock->SetDayLineNeedUpdate(false);
+	pStock->SetUpdateDayLine(false);
 	if (!pvDayLine->empty()) {
 		for (const auto& pDayLine2 : *pvDayLine) {
 			pDayLine2->SetExchange(pStock->GetExchangeCode());
@@ -45,15 +45,15 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pDayLine2->SetDisplaySymbol(pStock->GetTicker());
 		}
 		pStock->UpdateDayLine(*pvDayLine);
-		pStock->SetDayLineNeedSaving(true);
+		pStock->SetUpdateDayLineDB(true);
 		pStock->SetUpdateProfileDB(true);
 	}
 	else {
-		pStock->SetDayLineNeedSaving(false);
+		pStock->SetUpdateDayLineDB(false);
 		pStock->SetUpdateProfileDB(false);
 	}
 	// 清除tiingo stock的日线更新标识
-	pTiingoStock->SetDayLineNeedUpdate(false);
+	pTiingoStock->SetUpdateDayLine(false);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

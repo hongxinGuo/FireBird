@@ -42,14 +42,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubForexDayLineTest, TestCreatMessage) {
-		gl_dataFinnhubForexSymbol.GetSymbol(1)->SetDayLineNeedUpdate(true);
+		gl_dataFinnhubForexSymbol.GetSymbol(1)->SetUpdateDayLine(true);
 		forexDayLine.SetMarket(gl_pWorldMarket);
 		forexDayLine.SetIndex(1);
 		EXPECT_STREQ(forexDayLine.CreateMessage(),
 		             forexDayLine.GetInquiryFunction() + gl_dataFinnhubForexSymbol.GetSymbol(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
-		EXPECT_TRUE(gl_dataFinnhubForexSymbol.GetSymbol(1)->IsDayLineNeedUpdate()) << "接收到的数据处理后方设置此标识";
+		EXPECT_TRUE(gl_dataFinnhubForexSymbol.GetSymbol(1)->IsUpdateDayLine()) << "接收到的数据处理后方设置此标识";
 
-		gl_dataFinnhubForexSymbol.GetSymbol(1)->SetDayLineNeedUpdate(true);
+		gl_dataFinnhubForexSymbol.GetSymbol(1)->SetUpdateDayLine(true);
 	}
 
 	TEST_F(CFinnhubForexDayLineTest, TestProcessWebData) {
@@ -218,67 +218,67 @@ namespace FireBirdTest {
 		m_finnhubForexDayLine.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
-			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
-			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pForex->IsUpdateDayLineDB());
+			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
 			break;
 		case 2: // s项报告not ok
-			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
-			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pForex->IsUpdateDayLineDB());
+			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
 		case 3: // s项报告 no data
-			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
-			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pForex->IsUpdateDayLineDB());
+			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
 			break;
 		case 4:
-			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
-			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pForex->IsUpdateDayLineDB());
+			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
 			break;
 		case 5: // 缺乏C项，无效数据
 			EXPECT_EQ(pForex->GetDayLineSize(), 0);
-			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
-			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pForex->IsUpdateDayLineDB());
+			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
 			break;
 		case 6:
 			EXPECT_EQ(pForex->GetDayLineSize(), 2);
-			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
-			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pForex->IsUpdateDayLineDB());
+			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
 			break;
 		case 7:
 			EXPECT_EQ(pForex->GetDayLineSize(), 2);
-			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
-			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pForex->IsUpdateDayLineDB());
+			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
 			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 			break;
 		case 8:
 			EXPECT_EQ(pForex->GetDayLineSize(), 2);
-			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
-			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pForex->IsUpdateDayLineDB());
+			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
 			break;
 		case 9:
 			EXPECT_EQ(pForex->GetDayLineSize(), 2);
-			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
-			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pForex->IsUpdateDayLineDB());
+			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
 			break;
 		case 10:
 			EXPECT_EQ(pForex->GetDayLineSize(), 2);
-			EXPECT_TRUE(pForex->IsDayLineNeedSaving());
-			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pForex->IsUpdateDayLineDB());
+			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
 			break;
 		case 11: // 没有s项
-			EXPECT_FALSE(pForex->IsDayLineNeedSaving());
-			EXPECT_FALSE(pForex->IsDayLineNeedUpdate());
+			EXPECT_FALSE(pForex->IsUpdateDayLineDB());
+			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			break;

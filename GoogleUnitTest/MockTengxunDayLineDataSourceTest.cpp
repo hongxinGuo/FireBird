@@ -45,7 +45,7 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetSystemReady(true);
 			gl_pChinaMarket->SetCurrentStockChanged(false);
 			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
-				gl_dataContainerChinaStock.GetStock(i)->SetDayLineNeedUpdate(true);
+				gl_dataContainerChinaStock.GetStock(i)->SetUpdateDayLine(true);
 			}
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 
@@ -83,7 +83,7 @@ namespace FireBirdTest {
 		gl_pNeteaseRTDataSource->SetWebError(false);
 		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_TRUE(gl_dataContainerChinaStock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(gl_dataContainerChinaStock.IsUpdateDayLine());
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(120000); // dummy time and > 114500
 		m_pMockTengxunDayLineDataSource->SetInquiring(true);
 		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, Inquire).Times(0);
@@ -96,7 +96,7 @@ namespace FireBirdTest {
 		gl_pNeteaseRTDataSource->SetWebError(false);
 		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 		gl_pChinaMarket->SetSystemReady(true);
-		EXPECT_TRUE(gl_dataContainerChinaStock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(gl_dataContainerChinaStock.IsUpdateDayLine());
 		gl_pChinaMarket->TEST_SetFormattedMarketTime(120000); // dummy time and > 114500
 		m_pMockTengxunDayLineDataSource->SetInquiring(false);
 		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, Inquire).Times(1);

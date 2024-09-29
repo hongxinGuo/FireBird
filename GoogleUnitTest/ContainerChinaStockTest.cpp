@@ -96,17 +96,17 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerChinaStockTest, TestSetAllDayLineNeedUpdate) {
 		for (int i = 0; i < m_containerChinaStock.GetLoadedStockSize(); i++) {
-			EXPECT_TRUE(m_containerChinaStock.GetStock(i)->IsDayLineNeedUpdate());
+			EXPECT_TRUE(m_containerChinaStock.GetStock(i)->IsUpdateDayLine());
 		}
-		EXPECT_TRUE(m_containerChinaStock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(m_containerChinaStock.IsUpdateDayLine());
 		m_containerChinaStock.ClearDayLineNeedUpdateStatus();
 
-		m_containerChinaStock.SetDayLineNeedUpdate();
+		m_containerChinaStock.SetUpdateDayLine();
 
-		EXPECT_TRUE(m_containerChinaStock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(m_containerChinaStock.IsUpdateDayLine());
 
 		for (int i = 0; i < m_containerChinaStock.GetLoadedStockSize(); i++) {
-			EXPECT_TRUE(m_containerChinaStock.GetStock(i)->IsDayLineNeedUpdate());
+			EXPECT_TRUE(m_containerChinaStock.GetStock(i)->IsUpdateDayLine());
 		}
 	}
 
@@ -116,14 +116,14 @@ namespace FireBirdTest {
 		for (int i = 0; i < m_containerChinaStock.Size(); i++) {
 			vEndDate[i] = m_containerChinaStock.GetStock(i)->GetDayLineEndDate();
 		}
-		EXPECT_TRUE(m_containerChinaStock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(m_containerChinaStock.IsUpdateDayLine());
 		EXPECT_EQ(m_containerChinaStock.GetStock(1)->GetDayLineEndDate(), 20210430);
 		m_containerChinaStock.GetStock(1)->SetDayLineEndDate(20200101);
 		m_containerChinaStock.ClearDayLineNeedUpdateStatus();
 
 		m_containerChinaStock.SetDayLineNeedMaintain();
 
-		EXPECT_TRUE(m_containerChinaStock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(m_containerChinaStock.IsUpdateDayLine());
 		EXPECT_EQ(m_containerChinaStock.GetStock(1)->GetDayLineEndDate(), 19900101);
 
 		// »Ö¸´Ô­×´

@@ -26,7 +26,7 @@ void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(m_lIndex);
 	const CDayLinesPtr pvDayLine = ParseFinnhubForexCandle(pWebData);
-	pForexSymbol->SetDayLineNeedUpdate(false);
+	pForexSymbol->SetUpdateDayLine(false);
 	if (!pvDayLine->empty()) {
 		for (const auto& pDayLine : *pvDayLine) {
 			pDayLine->SetExchange(pForexSymbol->GetExchangeCode());
@@ -36,13 +36,13 @@ void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		}
 		pForexSymbol->SetIPOStatus(_STOCK_IPOED_);
 		pForexSymbol->UpdateDayLine(*pvDayLine);
-		pForexSymbol->SetDayLineNeedSaving(true);
+		pForexSymbol->SetUpdateDayLineDB(true);
 		pForexSymbol->SetUpdateProfileDB(true);
 		//TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
 		return;
 	}
 	else {
-		pForexSymbol->SetDayLineNeedSaving(false);
+		pForexSymbol->SetUpdateDayLineDB(false);
 		pForexSymbol->SetUpdateProfileDB(false);
 		//TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
 	}

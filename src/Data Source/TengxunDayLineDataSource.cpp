@@ -47,7 +47,7 @@ bool CTengxunDayLineDataSource::Reset() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTengxunDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请腾讯日线数据。
-	if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsDayLineNeedUpdate() && gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) {
+	if (gl_pChinaMarket->IsSystemReady() && gl_dataContainerChinaStock.IsUpdateDayLine() && gl_pChinaMarket->IsDummyTime() && (gl_pChinaMarket->GetMarketTime() > 114500)) {
 		if (!IsInquiring()) {
 			Inquire();
 			return true;
@@ -65,10 +65,10 @@ bool CTengxunDayLineDataSource::Inquire() {
 		bool fFound = false;
 		for (long lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
 			pStock = gl_dataContainerChinaStock.GetStock(lCurrentUpdateDayLinePos);
-			if (!pStock->IsDayLineNeedUpdate()) { // 无需更新？
+			if (!pStock->IsUpdateDayLine()) { // 无需更新？
 			}
 			else if (pStock->GetDayLineEndDate() >= gl_pChinaMarket->GetLastTradeDate()) {//上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
-				pStock->SetDayLineNeedUpdate(false); // 此股票日线资料不需要更新了。
+				pStock->SetUpdateDayLine(false); // 此股票日线资料不需要更新了。
 			}
 			else {
 				fFound = true;
@@ -83,7 +83,7 @@ bool CTengxunDayLineDataSource::Inquire() {
 			}
 			SetDownLoadingStockCode(pStock->GetSymbol());
 			gl_systemMessage.SetStockCodeForInquiryDayLine(pStock->GetSymbol());
-			pStock->SetDayLineNeedUpdate(false);
+			pStock->SetUpdateDayLine(false);
 			SetInquiring(true);
 			return true;
 		}

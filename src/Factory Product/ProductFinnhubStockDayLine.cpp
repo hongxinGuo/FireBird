@@ -27,7 +27,7 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	const auto pvDayLine = ParseFinnhubStockCandle(pWebData);
-	pStock->SetDayLineNeedUpdate(false);
+	pStock->SetUpdateDayLine(false);
 	for (const auto& pDayLine : *pvDayLine) {
 		pDayLine->SetExchange(pStock->GetExchangeCode());
 		pDayLine->SetStockSymbol(pStock->GetSymbol());
@@ -39,7 +39,7 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pStock->UpdateDayLine(*pvDayLine);
 		if (pStock->GetDayLineSize() > 0) {
 			// 添加了新数据
-			pStock->SetDayLineNeedSaving(true);
+			pStock->SetUpdateDayLineDB(true);
 			pStock->SetUpdateProfileDB(true);
 			const long lSize = pStock->GetDayLineSize() - 1;
 			const auto pDayLine = pStock->GetDayLine(lSize);

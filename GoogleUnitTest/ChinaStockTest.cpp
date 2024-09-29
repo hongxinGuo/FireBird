@@ -92,7 +92,7 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetUpdateOptionDB(false);
 			if (pStock != nullptr) {
 				pStock->SetDayLineDBUpdated(false);
-				if (pStock->IsDayLineNeedSaving()) pStock->SetDayLineNeedSaving(false);
+				if (pStock->IsUpdateDayLineDB()) pStock->SetUpdateDayLineDB(false);
 				pStock = nullptr;
 			}
 			EXPECT_THAT(gl_dataContainerChinaStock.Size(), Eq(5040));
@@ -320,24 +320,24 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestIsDayLineNeedUpdate) {
 		CChinaStock stock;
-		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-		stock.SetDayLineNeedUpdate(false);
-		EXPECT_FALSE(stock.IsDayLineNeedUpdate());
-		stock.SetDayLineNeedUpdate(true);
-		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsUpdateDayLine());
+		stock.SetUpdateDayLine(false);
+		EXPECT_FALSE(stock.IsUpdateDayLine());
+		stock.SetUpdateDayLine(true);
+		EXPECT_TRUE(stock.IsUpdateDayLine());
 	}
 
 	TEST_F(CChinaStockTest, TestIsDayLineNeededSaving) {
 		// 此两个函数是具备同步机制的，这里没有进行测试
 		CChinaStock stock;
-		EXPECT_FALSE(stock.IsDayLineNeedSaving());
-		stock.SetDayLineNeedSaving(true);
-		EXPECT_TRUE(stock.IsDayLineNeedSaving());
-		stock.SetDayLineNeedSaving(false);
-		EXPECT_FALSE(stock.IsDayLineNeedSaving());
-		stock.SetDayLineNeedSaving(true);
-		EXPECT_TRUE(stock.IsDayLineNeedSavingAndClearFlag());
-		EXPECT_FALSE(stock.IsDayLineNeedSaving());
+		EXPECT_FALSE(stock.IsUpdateDayLineDB());
+		stock.SetUpdateDayLineDB(true);
+		EXPECT_TRUE(stock.IsUpdateDayLineDB());
+		stock.SetUpdateDayLineDB(false);
+		EXPECT_FALSE(stock.IsUpdateDayLineDB());
+		stock.SetUpdateDayLineDB(true);
+		EXPECT_TRUE(stock.IsUpdateDayLineDBAndClearFlag());
+		EXPECT_FALSE(stock.IsUpdateDayLineDB());
 	}
 
 	TEST_F(CChinaStockTest, TestInitialize) {
@@ -1237,12 +1237,12 @@ namespace FireBirdTest {
 		CChinaStock stock;
 
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsNotChecked());
 		setChinaStockSymbol.Open();
 		stock.LoadStockCodeDB(setChinaStockSymbol);
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsIPOed());
 		EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS"));
 		stock.SetIPOStatus(_STOCK_NULL_);
@@ -1261,13 +1261,13 @@ namespace FireBirdTest {
 		CSetChinaStockSymbol setChinaStockSymbol;
 		CChinaStock stock;
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsNotChecked());
 		setChinaStockSymbol.m_strSort = _T("[ID]");
 		setChinaStockSymbol.Open();
 		stock.LoadStockCodeDB(setChinaStockSymbol);
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsIPOed());
 		EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS")) << "第一个股票";
 		EXPECT_EQ(stock.GetDayLineStartDate(), setChinaStockSymbol.m_DayLineStartDate);
@@ -1283,7 +1283,7 @@ namespace FireBirdTest {
 		stock.SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
 		const long lCurrentDate = gl_pChinaMarket->GetMarketDate();
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsNotChecked());
 		setChinaStockSymbol.Open();
 		stock.LoadStockCodeDB(setChinaStockSymbol);
@@ -1301,7 +1301,7 @@ namespace FireBirdTest {
 		gl_pChinaMarket->CalculateTime();
 		stock.SetDayLineEndDate(GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsNotChecked());
 		setChinaStockSymbol.m_strFilter = _T("[Symbol] = '000003.SZ'");
 		setChinaStockSymbol.Open();
@@ -1359,26 +1359,26 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestSetCheckingDayLineStatus) {
 		CChinaStock stock;
-		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsUpdateDayLine());
 		stock.SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
 		EXPECT_FALSE(stock.CheckDayLineStatus());
-		EXPECT_FALSE(stock.IsDayLineNeedUpdate()) << stock.GetDayLineEndDate() << gl_pChinaMarket->GetMarketDate();
-		stock.SetDayLineNeedUpdate(true);
+		EXPECT_FALSE(stock.IsUpdateDayLine()) << stock.GetDayLineEndDate() << gl_pChinaMarket->GetMarketDate();
+		stock.SetUpdateDayLine(true);
 		stock.SetDayLineEndDate(gl_pChinaMarket->GetLastTradeDate());
 		EXPECT_FALSE(stock.CheckDayLineStatus());
-		EXPECT_FALSE(stock.IsDayLineNeedUpdate());
-		stock.SetDayLineNeedUpdate(true);
+		EXPECT_FALSE(stock.IsUpdateDayLine());
+		stock.SetUpdateDayLine(true);
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetDayLineEndDate(_CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_TRUE(stock.CheckDayLineStatus());
-		EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+		EXPECT_TRUE(stock.IsUpdateDayLine());
 		stock.SetIPOStatus(_STOCK_DELISTED_);
 		stock.SetDayLineEndDate(_CHINA_MARKET_BEGIN_DATE_ + 1);
 		stock.CheckDayLineStatus();
 		if (gl_pChinaMarket->GetDayOfWeek() == 1)
-			EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+			EXPECT_TRUE(stock.IsUpdateDayLine());
 		else
-			EXPECT_FALSE(stock.IsDayLineNeedUpdate());
+			EXPECT_FALSE(stock.IsUpdateDayLine());
 	}
 
 	TEST_F(CChinaStockTest, TestRTDataDeque) {

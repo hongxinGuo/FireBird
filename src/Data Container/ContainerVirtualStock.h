@@ -18,8 +18,8 @@ public:
 	bool IsSymbol(const CString& strSymbol) const { return m_mapSymbol.contains(strSymbol); }
 	bool IsSymbol(const CVirtualStockPtr& p) const { return IsSymbol(p->GetSymbol()); }
 	bool IsUpdateProfileDB() noexcept;
-	bool IsDayLineNeedUpdate() noexcept;
-	bool IsDayLineNeedSaving() noexcept;
+	bool IsUpdateDayLine() noexcept;
+	bool IsUpdateDayLineDB() noexcept;
 
 	CVirtualStockPtr Get(const size_t lIndex) { return m_vStock.at(lIndex); }
 	CVirtualStockPtr Get(const CString& strSymbol) { return m_vStock.at(m_mapSymbol.at(strSymbol)); }

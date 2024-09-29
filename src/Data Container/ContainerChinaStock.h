@@ -35,7 +35,7 @@ public:
 	[[nodiscard]] bool IsDayLineDBUpdated() noexcept;
 
 	void SetDayLineNeedMaintain() const;
-	void SetDayLineNeedUpdate() const;
+	void SetUpdateDayLine() const;
 
 	void ClearDayLineDBUpdatedFlag() noexcept;
 	void ClearDayLineNeedUpdateStatus() const;

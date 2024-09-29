@@ -16,8 +16,8 @@ public:
 	void Append(CSetTiingoCrypto& setTiingoCrypto);
 	void Save(CSetTiingoCrypto& setTiingoCrypto);
 
-	void SetDayLineNeedUpdate(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
-	bool IsDayLineNeedUpdate() const noexcept { return m_fUpdateDayLine; }
+	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
+	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 
 	CString m_strTicker;
 	CString m_strName;

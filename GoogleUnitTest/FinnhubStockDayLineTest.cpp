@@ -42,14 +42,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockDayLineTest, TestCreatMessage) {
-		gl_dataContainerFinnhubStock.GetStock(1)->SetDayLineNeedUpdate(true);
+		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateDayLine(true);
 		stockDayLine.SetMarket(gl_pWorldMarket);
 		stockDayLine.SetIndex(1);
 		EXPECT_STREQ(stockDayLine.CreateMessage(),
 		             stockDayLine.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsDayLineNeedUpdate()) << "接收到的数据处理后方重置此标识";
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsUpdateDayLine()) << "接收到的数据处理后方重置此标识";
 
-		gl_dataContainerFinnhubStock.GetStock(1)->SetDayLineNeedUpdate(true);
+		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateDayLine(true);
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser
@@ -96,8 +96,8 @@ namespace FireBirdTest {
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateCompanyProfile(true);
 			m_pStock->SetUpdateProfileDB(false);
-			m_pStock->SetDayLineNeedSaving(false);
-			m_pStock->SetDayLineNeedUpdate(true);
+			m_pStock->SetUpdateDayLineDB(false);
+			m_pStock->SetUpdateDayLine(true);
 			m_pStock->UnloadDayLine();
 
 			SCOPED_TRACE("");
@@ -123,62 +123,62 @@ namespace FireBirdTest {
 		m_finnhubStockDayLine.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
-			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 2: // s项报告not ok
 			strMessage = _T("日线返回值不为ok");
 			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
-			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 3: // s项报告 no data
-			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 4:
-			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 5: // 缺乏C项，为无效数据
-			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 6:
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 7:
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 8:
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 9:
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 10:
 			EXPECT_EQ(m_pStock->GetDayLineSize(), 3);
-			EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_TRUE(m_pStock->IsUpdateDayLineDB());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 11: // 没有s项
 			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
-			EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
-			EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
+			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
 		default:

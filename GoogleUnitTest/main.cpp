@@ -119,7 +119,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_dataContainerChinaStock.IsUpdateProfileDB());
 			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
-				pStock->SetDayLineNeedUpdate(true);
+				pStock->SetUpdateDayLine(true);
 				if (pStock->GetDayLineEndDate() == 20210430) pStock->SetIPOStatus(_STOCK_IPOED_); // 修改活跃股票的IPO状态
 
 				if (IsEarlyThen(pStock->GetDayLineEndDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
@@ -165,7 +165,7 @@ namespace FireBirdTest {
 
 			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 				const auto pStock = gl_dataContainerChinaStock.GetStock(i);
-				EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetSymbol();
+				EXPECT_TRUE(pStock->IsUpdateDayLine()) << pStock->GetSymbol();
 			}
 
 			gl_systemConfiguration.SetExitingSystem(true);

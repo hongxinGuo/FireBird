@@ -388,7 +388,7 @@ void CChinaMarket::CreateStock(const CString& strStockCode, const CString& strSt
 	pStock->SetUpdateProfileDB(true);
 	pStock->SetNeedProcessRTData(fProcessRTData);
 	gl_dataContainerChinaStock.Add(pStock);
-	ASSERT(pStock->IsDayLineNeedUpdate());
+	ASSERT(pStock->IsUpdateDayLine());
 	const CString str = _T("china Market生成新代码") + pStock->GetSymbol();
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
 }
@@ -848,7 +848,7 @@ void CChinaMarket::ProcessTodayStock() {
 bool CChinaMarket::IsTaskOfSavingDayLineDBFinished() {
 	static bool s_bTaskOfSavingDayLineFinished = false;
 	if (s_bTaskOfSavingDayLineFinished) {
-		if ((!gl_dataContainerChinaStock.IsDayLineNeedSaving()) && (!gl_dataContainerChinaStock.IsDayLineNeedUpdate()) && (!IsDayLineNeedProcess())) {
+		if ((!gl_dataContainerChinaStock.IsUpdateDayLineDB()) && (!gl_dataContainerChinaStock.IsUpdateDayLine()) && (!IsDayLineNeedProcess())) {
 			s_bTaskOfSavingDayLineFinished = false;
 			TRACE("日线历史数据更新完毕\n");
 			const CString str = "中国市场日线历史数据更新完毕";
@@ -860,7 +860,7 @@ bool CChinaMarket::IsTaskOfSavingDayLineDBFinished() {
 		}
 	}
 	else {
-		if (gl_dataContainerChinaStock.IsDayLineNeedUpdate() || IsDayLineNeedProcess() || gl_dataContainerChinaStock.IsDayLineNeedSaving()) {
+		if (gl_dataContainerChinaStock.IsUpdateDayLine() || IsDayLineNeedProcess() || gl_dataContainerChinaStock.IsUpdateDayLineDB()) {
 			s_bTaskOfSavingDayLineFinished = true;
 		}
 	}
@@ -1009,7 +1009,7 @@ void CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 		}
 
 		// 判断是否存储日线库和股票代码库
-		if (gl_dataContainerChinaStock.IsDayLineNeedSaving()) {
+		if (gl_dataContainerChinaStock.IsUpdateDayLineDB()) {
 			gl_dataContainerChinaStock.SaveDayLineData();
 		}
 		gl_UpdateChinaMarketDB.release();
@@ -1350,7 +1350,7 @@ bool CChinaMarket::ProcessDayLine() {
 		pStock->UpdateStatusByDownloadedDayLine();
 
 		pStock->SetDayLineLoaded(true);
-		pStock->SetDayLineNeedSaving(true); // 设置存储日线标识
+		pStock->SetUpdateDayLineDB(true); // 设置存储日线标识
 
 		succeed = gl_qDayLine.try_dequeue(pData);
 	}

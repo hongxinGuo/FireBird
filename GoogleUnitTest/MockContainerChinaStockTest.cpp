@@ -59,21 +59,21 @@ namespace FireBirdTest {
 	TEST_F(CMockContainerChinaStockTest, TestSetDayLineNeedUpdate) {
 		for (size_t l = 0; l < s_pMockContainerChinaStock->GetLoadedStockSize(); l++) {
 			const auto pStock = s_pMockContainerChinaStock->GetStock(l);
-			pStock->SetDayLineNeedUpdate(false);
+			pStock->SetUpdateDayLine(false);
 		}
 
-		s_pMockContainerChinaStock->SetDayLineNeedUpdate();
+		s_pMockContainerChinaStock->SetUpdateDayLine();
 
 		for (size_t l = 0; l < s_pMockContainerChinaStock->GetLoadedStockSize(); l++) {
 			const auto pStock = s_pMockContainerChinaStock->GetStock(l);
-			EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pStock->IsUpdateDayLine());
 		}
 	}
 
 	TEST_F(CMockContainerChinaStockTest, TestSetDayLineNeedMaintain) {
 		for (size_t l = 0; l < s_pMockContainerChinaStock->GetLoadedStockSize(); l++) {
 			const auto pStock = s_pMockContainerChinaStock->GetStock(l);
-			pStock->SetDayLineNeedUpdate(false);
+			pStock->SetUpdateDayLine(false);
 			pStock->SetDayLineEndDate(20200101);
 		}
 
@@ -81,7 +81,7 @@ namespace FireBirdTest {
 
 		for (size_t l = 0; l < s_pMockContainerChinaStock->GetLoadedStockSize(); l++) {
 			const auto pStock = s_pMockContainerChinaStock->GetStock(l);
-			EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+			EXPECT_TRUE(pStock->IsUpdateDayLine());
 			EXPECT_EQ(pStock->GetDayLineEndDate(), 19900101);
 		}
 	}

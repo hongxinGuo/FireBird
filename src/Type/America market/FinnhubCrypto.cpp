@@ -18,18 +18,18 @@ void CFinnhubCrypto::Reset() {
 }
 
 void CFinnhubCrypto::SetCheckingDayLineStatus() {
-	ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
+	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 	if (IsNullStock()) {
-		SetDayLineNeedUpdate(false);
+		SetUpdateDayLine(false);
 	}
 	else if ((IsDelisted() || IsNotYetList()) && (gl_pWorldMarket->GetDayOfWeek() != 2)) {
 		// 每星期二检查退市或未上市证券
-		SetDayLineNeedUpdate(false);
+		SetUpdateDayLine(false);
 	}
 	// 不再更新日线数据比上上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
 	else if (gl_pWorldMarket->GetLastTradeDate() <= GetDayLineEndDate()) {
 		// 最新日线数据为今日或者上一个交易日的数据。
-		SetDayLineNeedUpdate(false); // 日线数据不需要更新
+		SetUpdateDayLine(false); // 日线数据不需要更新
 	}
 }
 
