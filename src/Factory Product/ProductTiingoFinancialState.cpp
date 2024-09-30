@@ -116,11 +116,11 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	if (pvTiingoFinancialState->size() > 0) { // 为空时没有更新的必要。
 		pTiingoStock->UpdateFinancialState(pvTiingoFinancialState);
+		pTiingoStock->SetUpdateFinancialStateDB(true);
 	}
 
 	// 清除tiingo stock的金融数据更新标识
 	pTiingoStock->SetFinancialStateNeedUpdate(false);
-	pTiingoStock->SetUpdateFinancialStateDB(true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

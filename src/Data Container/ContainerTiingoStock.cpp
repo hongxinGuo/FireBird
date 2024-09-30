@@ -2,48 +2,48 @@
 #include "ContainerTiingoStock.h"
 #include "InfoReport.h"
 
-CContainerTiingoStock::CContainerTiingoStock() { Reset(); }
+CContainerTiingoStock::CContainerTiingoStock() {
+	Reset();
+}
 
 void CContainerTiingoStock::Reset() {
-	m_vTiingoStock.resize(0);
-	m_mapTiingoStock.clear();
-	m_lLastTotalTiingoStock = 0;
+	CContainerVirtualStock::Reset();
 }
 
-void CContainerTiingoStock::Add(const CTiingoStockPtr& pTiingoStock) {
-	m_mapTiingoStock[pTiingoStock->GetSymbol()] = m_vTiingoStock.size();
-	m_vTiingoStock.push_back(pTiingoStock);
-}
-
-bool CContainerTiingoStock::Delete(const CTiingoStockPtr& pTiingoStock) {
-	if (pTiingoStock == nullptr) return false;
-	if (!IsStock(pTiingoStock)) return false;
-
-	m_vTiingoStock.erase(m_vTiingoStock.begin() + m_mapTiingoStock.at(pTiingoStock->GetSymbol()));
-	m_mapTiingoStock.erase(pTiingoStock->GetSymbol());
-
-	return true;
-}
-
-bool CContainerTiingoStock::UpdateDB() {
-	if (m_lLastTotalTiingoStock < m_vTiingoStock.size()) {
+/// <summary>
+/// 这种查询方式比较晦涩，但结果正确。目前使用此函数。(可能出现存储多个相同代码的问题，研究之）
+/// </summary>
+void CContainerTiingoStock::UpdateDB() {
+	if (IsUpdateProfileDB()) {
 		try {
-			CSetTiingoStock setTiingoStock;
-			setTiingoStock.Open();
-			setTiingoStock.m_pDatabase->BeginTrans();
-			for (long l = m_lLastTotalTiingoStock; l < m_vTiingoStock.size(); l++) {
-				const CTiingoStockPtr pTiingoStock = m_vTiingoStock.at(l);
-				pTiingoStock->Append(setTiingoStock);
+			CSetTiingoStock setWorldStock;
+			setWorldStock.m_strSort = _T("[Ticker]");
+			setWorldStock.Open();
+			setWorldStock.m_pDatabase->BeginTrans();
+			while (!setWorldStock.IsEOF()) {	//更新原有的代码集状态
+				const CTiingoStockPtr pStock = GetStock(setWorldStock.m_Ticker);
+				ASSERT(pStock != nullptr);
+				if (pStock->IsUpdateProfileDB()) {
+					pStock->Update(setWorldStock);
+					pStock->SetUpdateProfileDB(false);
+				}
+				setWorldStock.MoveNext();
 			}
-			setTiingoStock.m_pDatabase->CommitTrans();
-			setTiingoStock.Close();
-			m_lLastTotalTiingoStock = m_vTiingoStock.size();
+			for (size_t l = 0; l < m_vStock.size(); l++) {
+				const CTiingoStockPtr pStock = GetStock(l);
+				ASSERT(pStock != nullptr);
+				if (pStock->IsUpdateProfileDB()) {
+					pStock->Append(setWorldStock);
+					pStock->SetUpdateProfileDB(false);
+					pStock->SetTodayNewStock(false);
+				}
+			}
+			setWorldStock.m_pDatabase->CommitTrans();
+			setWorldStock.Close();
 		} catch (CException* e) {
 			ReportInformationAndDeleteException(e);
 		}
 	}
-
-	return true;
 }
 
 bool CContainerTiingoStock::LoadDB() {
@@ -53,7 +53,7 @@ bool CContainerTiingoStock::LoadDB() {
 	setTiingoStock.Open();
 	setTiingoStock.m_pDatabase->BeginTrans();
 	while (!setTiingoStock.IsEOF()) {
-		if (!IsStock(setTiingoStock.m_Ticker)) {
+		if (!IsSymbol(setTiingoStock.m_Ticker)) {
 			const auto pTiingoStock = make_shared<CTiingoStock>();
 			pTiingoStock->Load(setTiingoStock);
 			Add(pTiingoStock);
@@ -65,20 +65,19 @@ bool CContainerTiingoStock::LoadDB() {
 	}
 	setTiingoStock.m_pDatabase->CommitTrans();
 	setTiingoStock.Close();
-	m_lLastTotalTiingoStock = m_vTiingoStock.size();
 
 	return true;
 }
 
 bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
-	return std::ranges::any_of(m_vTiingoStock, [](const CTiingoStockPtr& pStock) { return pStock->IsUpdateFinancialStateDB(); });
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CTiingoStock>(pStock)->IsUpdateFinancialStateDB(); });
 }
 
 void CContainerTiingoStock::UpdateFinancialStateDB() const {
-	for (auto& pStock : m_vTiingoStock) {
-		if (pStock->IsUpdateFinancialStateDB()) {
-			pStock->UpdateFinancialStateDB();
-			pStock->SetUpdateFinancialStateDB(false);
+	for (auto& pStock : m_vStock) {
+		if (dynamic_pointer_cast<CTiingoStock>(pStock)->IsUpdateFinancialStateDB()) {
+			dynamic_pointer_cast<CTiingoStock>(pStock)->UpdateFinancialStateDB();
+			dynamic_pointer_cast<CTiingoStock>(pStock)->SetUpdateFinancialStateDB(false);
 		}
 	}
 }

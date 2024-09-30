@@ -247,7 +247,7 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_TRUE(gl_dataContainerTiingoStock.IsStock(_T("NEW SYMBOL")));
+			EXPECT_TRUE(gl_dataContainerTiingoStock.IsSymbol(_T("NEW SYMBOL")));
 			EXPECT_TRUE((pTiingoStock = gl_dataContainerTiingoStock.GetStock(_T("NEW SYMBOL"))) != nullptr);
 			pStock = gl_dataContainerFinnhubStock.GetStock(_T("AA"));
 			EXPECT_STREQ(pStock->GetName(), _T("New Name")) << "更改为此新名字";

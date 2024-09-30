@@ -20,6 +20,7 @@ public:
 	void Load(CSetTiingoStock& setTiingoStock);
 	void Append(CSetTiingoStock& setTiingoStock);
 	void Save(CSetTiingoStock& setTiingoStock);
+	void Update(CSetTiingoStock& setTiingoStock);
 
 	bool IsFinancialStateNeedUpdate() const noexcept { return m_fUpdateFinancialState; }
 	void SetFinancialStateNeedUpdate(bool fFlag) noexcept { m_fUpdateFinancialState = fFlag; }

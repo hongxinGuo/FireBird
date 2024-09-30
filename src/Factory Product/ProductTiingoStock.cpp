@@ -24,7 +24,7 @@ void CProductTiingoStock::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		char buffer[100];
 		long lTemp = 0;
 		for (const auto& pTiingoStock : *pvTiingoStock) {
-			if (!gl_dataContainerTiingoStock.IsStock(pTiingoStock->GetSymbol())) {
+			if (!gl_dataContainerTiingoStock.IsSymbol(pTiingoStock->GetSymbol())) {
 				pTiingoStock->SetUpdateProfileDB(true); // 将此股票存入数据库。
 				gl_dataContainerTiingoStock.Add(pTiingoStock);
 			}

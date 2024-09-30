@@ -141,7 +141,8 @@ namespace FireBirdTest {
 
 			EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty()) << gl_pWorldMarket->GetMarketTask()->GetType();
 
-			EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 4847) << "默认状态下数据库总数为4847(全部上海股票和小部分美国股票)";
+			EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 4847) << "默认状态下数据库总数为4847";
+			EXPECT_EQ(gl_dataContainerTiingoStock.Size(), 21106) << "默认状态下数据库总数为21106";
 
 			//	for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			//		const auto p_stock = gl_dataContainerFinnhubStock.GetStock(l);

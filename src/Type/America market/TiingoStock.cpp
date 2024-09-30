@@ -97,7 +97,14 @@ void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
 	ASSERT(sUpdateDate.size() < 10000);
 }
 
+void CTiingoStock::Update(CSetTiingoStock& setTiingoStock) {
+	setTiingoStock.Edit();
+	Save(setTiingoStock);
+	setTiingoStock.Update();
+}
+
 void CTiingoStock::UpdateFinancialStateDB() const {
+	ASSERT(m_pvFinancialState != nullptr);
 	CSetTiingoFinancialState setFinancialState;
 	vector<CTiingoFinancialStatePtr> vOldFinancialState;
 	CTiingoFinancialStatePtr pTiingoFinancialState = nullptr;

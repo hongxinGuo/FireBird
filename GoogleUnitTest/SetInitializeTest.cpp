@@ -35,6 +35,7 @@
 #include"SetForexDayLine.h"
 
 #include"SetChinaChosenStock.h"
+#include "SetTiingoMarketNews.h"
 #include"SetWorldChosenForex.h"
 #include"SetWorldChosenCrypto.h"
 #include"SetWorldChosenStock.h"
@@ -413,7 +414,43 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setTiingoStock.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setTiingoStock.GetDefaultSQL(), _T("[tiingo_stock_fundanmental]"));
+		EXPECT_STREQ(setTiingoStock.GetDefaultSQL(), _T("[tiingo_stock_fundamental]"));
+	}
+
+	TEST_F(SetInitializeTest, TestTiingoFinancialStateInitialize) {
+		CSetTiingoFinancialState setTiingoFinancialState;
+
+		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
+		EXPECT_STREQ(setTiingoFinancialState.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+		gl_systemConfiguration.SetWorkingMode(true);
+		EXPECT_STREQ(setTiingoFinancialState.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
+		gl_systemConfiguration.SetWorkingMode(false);
+
+		EXPECT_STREQ(setTiingoFinancialState.GetDefaultSQL(), _T("[tiingo_financial_state]"));
+	}
+
+	TEST_F(SetInitializeTest, TestTiingoFundamentalDefinitionInitialize) {
+		CSetTiingoFundamentalDefinition setTiingoFundamentalDefinition;
+
+		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
+		EXPECT_STREQ(setTiingoFundamentalDefinition.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+		gl_systemConfiguration.SetWorkingMode(true);
+		EXPECT_STREQ(setTiingoFundamentalDefinition.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
+		gl_systemConfiguration.SetWorkingMode(false);
+
+		EXPECT_STREQ(setTiingoFundamentalDefinition.GetDefaultSQL(), _T("[tiingo_fundamental_definitions]"));
+	}
+
+	TEST_F(SetInitializeTest, TestTiingoMarketNewsInitialize) {
+		CSetTiingoMarketNews setTiingoMarketNews;
+
+		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
+		EXPECT_STREQ(setTiingoMarketNews.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+		gl_systemConfiguration.SetWorkingMode(true);
+		EXPECT_STREQ(setTiingoMarketNews.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
+		gl_systemConfiguration.SetWorkingMode(false);
+
+		EXPECT_STREQ(setTiingoMarketNews.GetDefaultSQL(), _T("[tiingo_market_news]"));
 	}
 
 	TEST_F(SetInitializeTest, TestWorldStockInitialize) {

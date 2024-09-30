@@ -430,7 +430,7 @@ void CWorldMarket::UpdateTiingoStockStatus() {
 		iTotal = gl_dataContainerChosenWorldStock.Size();
 		for (int i = 0; i < iTotal; i++) {
 			auto p = gl_dataContainerChosenWorldStock.GetStock(i);
-			if (gl_dataContainerTiingoStock.IsStock(p->GetSymbol())) {
+			if (gl_dataContainerTiingoStock.IsSymbol(p->GetSymbol())) {
 				auto pStock = gl_dataContainerTiingoStock.GetStock(p->GetSymbol());
 				pStock->SetUpdateDayLine(true);
 				pStock->SetFinancialStateNeedUpdate(true);
@@ -549,7 +549,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	}
 
 	// Tiingo²¿·Ö
-	if (gl_dataContainerTiingoStock.IsNeedUpdate()) { // Tiingo Stock
+	if (gl_dataContainerTiingoStock.IsUpdateProfileDB()) { // Tiingo Stock
 		gl_runtime.background_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerTiingoStock.UpdateDB();

@@ -31,12 +31,10 @@ bool CContainerTiingoFundamentalDefinition::Delete(const CTiingoFundamentalDefin
 bool CContainerTiingoFundamentalDefinition::UpdateDB() {
 	if (m_lLastTotalTiingoFundamentalDefinition < m_vTiingoFundamentalDefinition.size()) {
 		CSetTiingoFundamentalDefinition setTiingoFundamentalDefinition;
-		int i = 0;
 		try {
 			setTiingoFundamentalDefinition.Open();
 			setTiingoFundamentalDefinition.m_pDatabase->BeginTrans();
 			for (long l = m_lLastTotalTiingoFundamentalDefinition; l < m_vTiingoFundamentalDefinition.size(); l++) {
-				i = l;
 				const CTiingoFundamentalDefinitionPtr pTiingoFundamentalDefinition = m_vTiingoFundamentalDefinition.at(l);
 				ASSERT(pTiingoFundamentalDefinition != nullptr);
 				pTiingoFundamentalDefinition->Append(setTiingoFundamentalDefinition);
@@ -45,7 +43,6 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB() {
 			setTiingoFundamentalDefinition.Close();
 			m_lLastTotalTiingoFundamentalDefinition = m_vTiingoFundamentalDefinition.size();
 		} catch (CException* e) {
-			int i2 = i;
 			ReportInformationAndDeleteException(e);
 			setTiingoFundamentalDefinition.m_pDatabase->CommitTrans();
 			setTiingoFundamentalDefinition.Close();
