@@ -4,11 +4,6 @@
 #include "FinnhubCrypto.h"
 
 CFinnhubCrypto::CFinnhubCrypto() {
-	CFinnhubCrypto::Reset();
-}
-
-void CFinnhubCrypto::Reset() {
-	CVirtualStock::Reset();
 	m_strDescription = _T(" ");
 	m_strDisplaySymbol = _T(" ");
 	m_strExchangeCode = _T(" ");

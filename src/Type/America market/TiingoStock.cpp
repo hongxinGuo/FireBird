@@ -5,11 +5,6 @@
 #include "JsonParse.h"
 
 CTiingoStock::CTiingoStock() {
-	Reset();
-}
-
-void CTiingoStock::Reset() {
-	CVirtualStock::Reset();
 	m_strTiingoPermaTicker = _T("");
 	m_strName = _T("");
 	m_fIsActive = false;
@@ -23,16 +18,17 @@ void CTiingoStock::Reset() {
 	m_strLocation = _T("");
 	m_strCompanyWebSite = _T("");
 	m_strSECFilingWebSite = _T("");
+	SetCompanyProfileUpdateDate(1980101);
 	SetDailyDataUpdateDate(19800101);
-	//SetDayLineUpdateDate(19800101);
+	SetDayLineUpdateDate(19800101);
 	SetCompanyFinancialStatementUpdateDate(19800101);
 }
 
 void CTiingoStock::ResetAllUpdateDate() {
-	m_jsonUpdateDate["Tiingo"]["CompanyProfile"] = 19800101;
-	m_jsonUpdateDate["Tiingo"]["DayLine"] = 19800101;
-	m_jsonUpdateDate["Tiingo"]["CompanyFinancialStatement"] = 19800101;
-	m_jsonUpdateDate["Tiingo"]["DailyData"] = 19800101;
+	m_jsonUpdateDate["CompanyProfile"] = 19800101;
+	m_jsonUpdateDate["DayLine"] = 19800101;
+	m_jsonUpdateDate["CompanyFinancialStatement"] = 19800101;
+	m_jsonUpdateDate["DailyData"] = 19800101;
 }
 
 void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {

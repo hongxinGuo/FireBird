@@ -3,10 +3,6 @@
 #include "VirtualStock.h"
 
 CVirtualStock::CVirtualStock() {
-	CVirtualStock::Reset();
-}
-
-void CVirtualStock::Reset() {
 	m_strDescription = _T("");
 	m_strExchangeCode = _T("");
 	m_strSymbol = _T("");

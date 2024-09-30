@@ -53,7 +53,7 @@ public:
 	CChinaStock(const CChinaStock&&) noexcept = delete;
 	CChinaStock& operator=(const CChinaStock&&) noexcept = delete;
 	~CChinaStock() override = default;
-	void Reset() override;
+
 	int GetRatio() const final { return 1000; }
 
 public:

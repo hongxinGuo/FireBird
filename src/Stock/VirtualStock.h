@@ -17,7 +17,7 @@ public:
 	CVirtualStock(const CVirtualStock&&) noexcept = delete;
 	CVirtualStock& operator=(const CVirtualStock&&) noexcept = delete;
 	virtual ~CVirtualStock() = default;
-	virtual void Reset();
+
 	virtual int GetRatio() const = 0;
 
 	virtual void LoadSymbol(CVirtualSetStockSymbol& setStockSymbol);
@@ -70,14 +70,6 @@ public:
 	bool IsTodayNewStock() const noexcept { return m_fTodayNewStock; }
 	void SetTodayNewStock(const bool fFlag) noexcept { m_fTodayNewStock = fFlag; }
 
-	bool IsUpdateProfileDB() const noexcept { return m_fUpdateProfileDB; }
-	void SetUpdateProfileDB(const bool fFlag) noexcept { m_fUpdateProfileDB = fFlag; }
-	bool IsUpdateProfileDBAndClearFlag() noexcept { return m_fUpdateProfileDB.exchange(false); }
-
-	bool IsUpdateCompanyNewsDB() const noexcept { return m_fUpdateCompanyNewsDB; }
-	void SetUpdateCompanyNewsDB(const bool fFlag) noexcept { m_fUpdateCompanyNewsDB = fFlag; }
-	bool IsUpdateCompanyNewsDBAndClearFlag() noexcept { return m_fUpdateCompanyNewsDB.exchange(false); }
-
 	bool IsActive() const noexcept { return m_fActive; }
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
 
@@ -97,14 +89,22 @@ public:
 	// 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(const bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
+
 	bool IsUpdateDayLineDB() const noexcept { return m_fUpdateDayLineDB; }
 	void SetUpdateDayLineDB(const bool fFlag) noexcept { m_fUpdateDayLineDB = fFlag; }
 	bool IsUpdateDayLineDBAndClearFlag() noexcept { return m_fUpdateDayLineDB.exchange(false); }
+	bool IsUpdateProfileDB() const noexcept { return m_fUpdateProfileDB; }
+	void SetUpdateProfileDB(const bool fFlag) noexcept { m_fUpdateProfileDB = fFlag; }
+	bool IsUpdateProfileDBAndClearFlag() noexcept { return m_fUpdateProfileDB.exchange(false); }
+
+	bool IsUpdateCompanyNewsDB() const noexcept { return m_fUpdateCompanyNewsDB; }
+	void SetUpdateCompanyNewsDB(const bool fFlag) noexcept { m_fUpdateCompanyNewsDB = fFlag; }
+	bool IsUpdateCompanyNewsDBAndClearFlag() noexcept { return m_fUpdateCompanyNewsDB.exchange(false); }
 
 protected:
 	CString m_strDescription; // 该证券的描述
 	CString m_strExchangeCode; // 证券所属交易所。美国为US，上海为SS，深圳为SZ；外汇为forex等。
-	CString m_strSymbol; // 股票代码。二十位以内，后两位为市场前缀。如600601.SS，000001.SZ, AAPL.US, RIG.US
+	CString m_strSymbol; // 股票代码。二十位以内，后两位为市场前缀。如600601.SS，000001.SZ, AAPL（美国股票没有后缀）
 	CString m_strDisplaySymbol;
 
 	json m_jsonUpdateDate; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
@@ -131,8 +131,9 @@ protected:
 	long m_lIPOStatus; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
 	// 未上市（无效股票代码）为_STOCK_NULL_；正常为_STOCK_IPOED_；已通过IPO但尚未上市或退市为_STOCK_DELISTED；其他情况尚未出现，留待以后处理。
 
+	atomic_bool m_fUpdateDayLine{ true }; // 日线需要更新。默认为真
+
 	atomic_bool m_fUpdateProfileDB{ false }; // 更新股票简介
 	atomic_bool m_fUpdateCompanyNewsDB{ false }; // 更新公司新闻
-	atomic_bool m_fUpdateDayLine{ true }; // 日线需要更新。默认为真
 	atomic_bool m_fUpdateDayLineDB{ false }; // 日线历史数据已处理，等待存储。
 };

@@ -15,7 +15,7 @@ public:
 	CFinnhubCrypto& operator=(const CFinnhubCrypto&) = delete;
 	CFinnhubCrypto(const CFinnhubCrypto&&) noexcept = delete;
 	CFinnhubCrypto& operator=(const CFinnhubCrypto&&) noexcept = delete;
-	void Reset() override;
+
 	int GetRatio() const override { return 1000; } // ±ÈÀýÎª1000
 
 	virtual bool UpdateDayLineDB() { return m_dataDayLine.SaveDB(m_strSymbol); }

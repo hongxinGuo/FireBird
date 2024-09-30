@@ -53,12 +53,6 @@ CChinaStock::CChinaStock() {
 	m_vCancelBuy.resize(240);
 	m_vCancelSell.resize(240);
 
-	CChinaStock::Reset();
-}
-
-void CChinaStock::Reset() {
-	CVirtualStock::Reset();
-
 	m_lDayLineStartDate = _CHINA_MARKET_BEGIN_DATE_; //
 	m_lDayLineEndDate = _CHINA_MARKET_BEGIN_DATE_; //
 	m_nHand = 100;

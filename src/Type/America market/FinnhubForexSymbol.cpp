@@ -4,11 +4,6 @@
 #include "FinnhubForexSymbol.h"
 
 CFinnhubForexSymbol::CFinnhubForexSymbol() {
-	CFinnhubForexSymbol::Reset();
-}
-
-void CFinnhubForexSymbol::Reset() {
-	CVirtualStock::Reset();
 	m_strDescription = _T(" ");
 	m_strDisplaySymbol = _T(" ");
 	m_strExchangeCode = _T(" ");

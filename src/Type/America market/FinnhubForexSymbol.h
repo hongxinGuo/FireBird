@@ -14,7 +14,7 @@ public:
 	CFinnhubForexSymbol& operator=(const CFinnhubForexSymbol&) = delete;
 	CFinnhubForexSymbol(const CFinnhubForexSymbol&&) noexcept = delete;
 	CFinnhubForexSymbol& operator=(const CFinnhubForexSymbol&&) noexcept = delete;
-	void Reset() override;
+
 	int GetRatio() const final { return 1000; }
 
 	virtual bool UpdateDayLineDB() { return m_dataDayLine.SaveDB(m_strSymbol); }

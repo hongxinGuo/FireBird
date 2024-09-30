@@ -15,7 +15,6 @@ public:
 	~CTiingoStock() override = default;
 	int GetRatio() const override { return 3; };
 
-	void Reset() override;
 	void ResetAllUpdateDate();
 
 	void Load(CSetTiingoStock& setTiingoStock);
@@ -31,14 +30,14 @@ public:
 	void UpdateFinancialState(const CTiingoFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
 	void UpdateFinancialStateDB() const;
 
-	long GetDailyDataUpdateDate() { return m_jsonUpdateDate["Tiingo"]["DailyData"]; }
-	void SetDailyDataUpdateDate(long lDate) { m_jsonUpdateDate["Tiingo"]["DailyData"] = lDate; }
-	long GetCompanyFinancialStatementUpdateDate() { return m_jsonUpdateDate["Tiingo"]["CompanyFinancialStatement"]; }
-	void SetCompanyFinancialStatementUpdateDate(long lDate) { m_jsonUpdateDate["Tiingo"]["CompanyFinancialStatement"] = lDate; }
-	long GetDayLineUpdateDate() { return m_jsonUpdateDate["Tiingo"]["DayLine"]; }
-	void SetDayLineUpdateDate(long lDate) { m_jsonUpdateDate["Tiingo"]["DayLine"] = lDate; }
-	long GetCompanyProfileUpdateDate() { return m_jsonUpdateDate["Tiingo"]["CompanyProfile"]; }
-	void SetCompanyProfileUpdateDate(long lDate) { m_jsonUpdateDate["Tiingo"]["CompanyProfile"] = lDate; }
+	long GetDailyDataUpdateDate() { return m_jsonUpdateDate["DailyData"]; }
+	void SetDailyDataUpdateDate(long lDate) { m_jsonUpdateDate["DailyData"] = lDate; }
+	long GetCompanyFinancialStatementUpdateDate() { return m_jsonUpdateDate["CompanyFinancialStatement"]; }
+	void SetCompanyFinancialStatementUpdateDate(long lDate) { m_jsonUpdateDate["CompanyFinancialStatement"] = lDate; }
+	long GetDayLineUpdateDate() { return m_jsonUpdateDate["DayLine"]; }
+	void SetDayLineUpdateDate(long lDate) { m_jsonUpdateDate["DayLine"] = lDate; }
+	long GetCompanyProfileUpdateDate() { return m_jsonUpdateDate["CompanyProfile"]; }
+	void SetCompanyProfileUpdateDate(long lDate) { m_jsonUpdateDate["CompanyProfile"] = lDate; }
 
 public:
 	CString m_strTiingoPermaTicker; // Tiingo”¿æ√¥˙¬Î±Í ∂

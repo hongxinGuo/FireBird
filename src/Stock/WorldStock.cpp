@@ -87,15 +87,6 @@ CWorldStock::CWorldStock() {
 
 	m_pBasicFinancial = nullptr;
 
-	CWorldStock::Reset();
-}
-
-CWorldStock::~CWorldStock() {
-}
-
-void CWorldStock::Reset() {
-	CVirtualStock::Reset();
-
 	ResetAllUpdateDate();
 	// Finnhub SymbolÊý¾Ý
 	m_strIPODate = _T(" ");
@@ -165,6 +156,9 @@ void CWorldStock::Reset() {
 	m_lInsiderTransactionEndDate = 19800101;
 
 	m_pBasicFinancial = nullptr;
+}
+
+CWorldStock::~CWorldStock() {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -692,8 +686,6 @@ bool CWorldStock::IsNeedUpdateProfile(const CTiingoStockPtr& pTiingoStock) {
 	if (m_iSICCode != pTiingoStock->m_iSICCode) return true;
 	if (m_strCompanyWebSite.Compare(pTiingoStock->m_strCompanyWebSite) != 0) return true;
 	if (m_strSECFilingWebSite.Compare(pTiingoStock->m_strSECFilingWebSite) != 0) return true;
-	if (GetTiingoDailyDataUpdateDate() != pTiingoStock->GetDailyDataUpdateDate()) return true;
-	if (GetTiingoStatementUpdateDate() != pTiingoStock->GetCompanyFinancialStatementUpdateDate()) return true;
 	return false;
 }
 
