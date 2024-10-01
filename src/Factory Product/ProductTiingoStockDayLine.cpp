@@ -31,26 +31,30 @@ CString CProductTiingoStockDayLine::CreateMessage() {
 }
 
 void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	ASSERT(m_lIndex >= 0);
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
-	auto pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoStock->GetSymbol());
-	ASSERT(pStock != nullptr);
 	const CDayLinesPtr pvDayLine = ParseTiingoStockDayLine(pWebData);
-	pStock->SetUpdateDayLine(false);
 	if (!pvDayLine->empty()) {
+		long lastClose = 0;
 		for (const auto& pDayLine2 : *pvDayLine) {
-			pDayLine2->SetExchange(pStock->GetExchangeCode());
-			pDayLine2->SetStockSymbol(pStock->GetSymbol());
-			pDayLine2->SetDisplaySymbol(pStock->GetTicker());
+			pDayLine2->SetExchange(pTiingoStock->GetExchangeCode());
+			pDayLine2->SetStockSymbol(pTiingoStock->GetSymbol());
+			pDayLine2->SetDisplaySymbol(pTiingoStock->GetDisplaySymbol());
+			if ((lastClose != 0) && (pDayLine2->GetLastClose() == 0)) pDayLine2->SetLastClose(lastClose);
+			lastClose = pDayLine2->GetClose();
 		}
-		pStock->UpdateDayLine(*pvDayLine);
-		pStock->SetUpdateDayLineDB(true);
-		pStock->SetUpdateProfileDB(true);
+		if (!IsEarlyThen(pvDayLine->at(pvDayLine->size() - 1)->GetMarketDate(), GetMarket()->GetMarketDate(), 100)) {
+			pTiingoStock->SetIPOStatus(_STOCK_IPOED_);
+		}
+		pTiingoStock->UpdateDayLine(*pvDayLine);
+		pTiingoStock->SetDayLineUpdateDate(pvDayLine->at(pvDayLine->size() - 1)->GetMarketDate());
+		pTiingoStock->SetUpdateDayLineDB(true);
+		pTiingoStock->SetUpdateProfileDB(true);
 	}
 	else {
-		pStock->SetUpdateDayLineDB(false);
-		pStock->SetUpdateProfileDB(false);
+		pTiingoStock->SetUpdateDayLineDB(false);
+		pTiingoStock->SetUpdateProfileDB(false);
 	}
 	// 清除tiingo stock的日线更新标识
 	pTiingoStock->SetUpdateDayLine(false);

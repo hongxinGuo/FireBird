@@ -299,7 +299,7 @@ namespace FireBirdTest {
 		CDayLinesPtr pvDayLine;
 		CString strMessage;
 		CDayLinePtr pDayLine;
-		CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
+		CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(0); // 这个是当前处理的股票
 
 		m_tiingoStockPriceCandle.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {

@@ -230,10 +230,6 @@ public:
 	CString GetSECFilingWebSite() noexcept { return m_strSECFilingWebSite; }
 	void SetSECFilingWebSite(const CString& strSECFilingWebSite) noexcept { m_strSECFilingWebSite = strSECFilingWebSite; }
 
-	long GetTiingoStatementUpdateDate();
-	void SetTiingoStatementUpdateDate(long lStatementUpdateDate) noexcept;
-	long GetTiingoDailyDataUpdateDate();
-	void SetTiingoDailyDataUpdateDate(long lDailyDataUpdateDate) noexcept;
 	CString GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const;
 	CString GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) const;
 	CString GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTime);

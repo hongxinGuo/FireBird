@@ -22,14 +22,12 @@ void CProductTiingoStock::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoStock = ParseTiingoStockSymbol(pWebData);
 	if (!pvTiingoStock->empty()) {
 		char buffer[100];
-		long lTemp = 0;
 		for (const auto& pTiingoStock : *pvTiingoStock) {
 			if (!gl_dataContainerTiingoStock.IsSymbol(pTiingoStock->GetSymbol())) {
 				pTiingoStock->SetUpdateProfileDB(true); // 将此股票存入数据库。
 				gl_dataContainerTiingoStock.Add(pTiingoStock);
 			}
 			if (gl_dataContainerFinnhubStock.IsSymbol(pTiingoStock->GetSymbol())) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
-				lTemp++;
 				const auto pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoStock->GetSymbol());
 				if (pStock->IsNeedUpdateProfile(pTiingoStock)) {
 					pStock->SetUpdateProfileDB(true);
@@ -41,9 +39,9 @@ void CProductTiingoStock::ParseAndStoreWebData(CWebDataPtr pWebData) {
 				// do nothing now.
 			}
 		}
-		sprintf_s(buffer, _T("%6d"), lTemp);
+		sprintf_s(buffer, _T("%6d"), pvTiingoStock->size());
 		const CString strNumber = buffer;
-		const CString str = _T("今日Tiingo Stock Symbol活跃股票总数为") + strNumber;
+		const CString str = _T("今日Tiingo Stock总数为") + strNumber;
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 	}
 }

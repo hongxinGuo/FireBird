@@ -66,6 +66,7 @@ public:
 	// Êý¾Ý¿â²Ù×÷
 	virtual bool UpdateCompanyNewsDB();
 	virtual bool UpdateStockDayLineDB();
+	bool UpdateTiingoStockDayLineDB();
 	virtual bool UpdateInsiderTransactionDB();
 	virtual bool UpdateInsiderSentimentDB();
 	virtual bool UpdateTiingoIndustry();

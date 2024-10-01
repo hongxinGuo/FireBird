@@ -429,9 +429,6 @@
     <ClInclude Include="..\src\Type\America market\TiingoIndustry.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\TiingoStock.h">
-      <Filter>头文件\Type\America market</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Type\China market\DayLine.h">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
@@ -813,6 +810,15 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoFinancialState.h">
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Stock\TiingoStock.h">
+      <Filter>头文件\Stock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\ContainerTiingoStockDayLine.h">
+      <Filter>头文件\Data container\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockDayLine.h">
+      <Filter>头文件\database\WorldMarket</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1005,9 +1011,6 @@
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\TiingoIndustry.cpp">
-      <Filter>源文件\Type\America market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Type\America market\TiingoStock.cpp">
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\China market\DayLine.cpp">
@@ -1372,6 +1375,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTiingoFinancialState.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Stock\TiingoStock.cpp">
+      <Filter>源文件\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoStockDayLine.cpp">
+      <Filter>源文件\Data container\Tiingo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

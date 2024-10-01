@@ -3,6 +3,8 @@
 #include"TiingoStock.h"
 
 #include "JsonParse.h"
+#include "TimeConvert.h"
+#include "WorldMarket.h"
 
 CTiingoStock::CTiingoStock() {
 	m_strTiingoPermaTicker = _T("");
@@ -167,4 +169,86 @@ void CTiingoStock::UpdateFinancialStateDB() const {
 	}
 	setFinancialState.m_pDatabase->CommitTrans();
 	setFinancialState.Close();
+}
+
+bool CTiingoStock::UpdateDayLineDB() {
+	if (IsUpdateDayLineDBAndClearFlag()) {
+		// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (GetDayLineSize() > 0) {
+			if (HaveNewDayLineData()) {
+				SaveDayLine();
+				UpdateDayLineStartEndDate();
+				SetUpdateProfileDB(true);
+				const CString str = GetSymbol() + _T("日线资料存储完成");
+				gl_systemMessage.PushDayLineInfoMessage(str);
+				//TRACE("更新%s日线数据\n", GetSymbol().GetBuffer());
+				UnloadDayLine();
+				return true;
+			}
+			UnloadDayLine();
+		}
+	}
+	return false;
+}
+
+void CTiingoStock::UpdateDayLineStartEndDate() {
+	long lStartDate = 0, lEndDate = 0;
+	if (m_dataDayLine.GetStartEndDate(lStartDate, lEndDate)) {
+		if (lStartDate < GetDayLineStartDate()) {
+			SetDayLineStartDate(lStartDate);
+			m_fUpdateProfileDB = true;
+		}
+		if (lEndDate > m_lDayLineEndDate) {
+			SetDayLineEndDate(lEndDate);
+			m_fUpdateProfileDB = true;
+		}
+	}
+}
+
+bool CTiingoStock::HaveNewDayLineData() const {
+	if (m_dataDayLine.Empty()) return false;
+	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate)
+		|| (m_dataDayLine.GetData(0)->GetMarketDate() < m_lDayLineStartDate))
+		return true;
+	return false;
+}
+
+bool CTiingoStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek) {
+	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
+	if (IsNullStock()) {
+		SetUpdateDayLine(false);
+		return m_fUpdateDayLine;
+	}
+	if (IsDelisted() || IsNotYetList()) {	// 摘牌股票?
+		if (lDayOfWeek != 3) {
+			// 每星期三检查一次
+			SetUpdateDayLine(false);
+			return m_fUpdateDayLine;
+		}
+	}
+	else if ((!IsNotChecked()) && (IsEarlyThen(m_lDayLineEndDate, gl_pWorldMarket->GetMarketDate(), 100))) {
+		SetUpdateDayLine(false);
+		return m_fUpdateDayLine;
+	}
+	else {
+		if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) { // 周一至周五
+			if (lTime > 170000) {
+				if (lTodayDate <= GetDayLineEndDate()) { // 最新日线数据为今日的数据，而当前时间为下午五时之后
+					SetUpdateDayLine(false); // 日线数据不需要更新
+					return m_fUpdateDayLine;
+				}
+			}
+			else {
+				if (lLastTradeDate <= GetDayLineEndDate()) {// 最新日线数据为上一个交易日的数据,而当前时间为下午五时之前。
+					SetUpdateDayLine(false); // 日线数据不需要更新
+					return m_fUpdateDayLine;
+				}
+			}
+		}
+		else if (lLastTradeDate <= GetDayLineEndDate()) { // 周六周日时， 最新日线数据为上一个交易日的数据
+			SetUpdateDayLine(false); // 日线数据不需要更新
+			return m_fUpdateDayLine;
+		}
+	}
+	return m_fUpdateDayLine;
 }

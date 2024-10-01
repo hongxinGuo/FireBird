@@ -28,17 +28,19 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	const auto pvDayLine = ParseFinnhubStockCandle(pWebData);
 	pStock->SetUpdateDayLine(false);
+	long lastClose = 0;
 	for (const auto& pDayLine : *pvDayLine) {
 		pDayLine->SetExchange(pStock->GetExchangeCode());
 		pDayLine->SetStockSymbol(pStock->GetSymbol());
 		pDayLine->SetDisplaySymbol(pStock->GetTicker());
 		const auto lTemp = ConvertToDate(pDayLine->m_time, GetMarket()->GetMarketTimeZone());
 		pDayLine->SetDate(lTemp);
+		if ((lastClose != 0) && (pDayLine->GetLastClose() == 0)) pDayLine->SetLastClose(lastClose);
+		lastClose = pDayLine->GetClose();
 	}
 	if (!pvDayLine->empty()) {
 		pStock->UpdateDayLine(*pvDayLine);
-		if (pStock->GetDayLineSize() > 0) {
-			// 添加了新数据
+		if (pStock->GetDayLineSize() > 0) {// 添加了新数据
 			pStock->SetUpdateDayLineDB(true);
 			pStock->SetUpdateProfileDB(true);
 			const long lSize = pStock->GetDayLineSize() - 1;
@@ -71,8 +73,7 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pW
 			gl_systemMessage.PushErrorMessage(_T("日线返回值不为ok"));
 			return pvDayLine;
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 's' ") + GetInquiryFunction(), e.what());
 		return pvDayLine;
@@ -87,8 +88,7 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pW
 			pDayLine->SetTime(tTemp);
 			pvDayLine->push_back(pDayLine);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 't' ") + GetInquiryFunction(), e.what());
 		return pvDayLine;
 	}
@@ -131,8 +131,7 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pW
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetVolume(llTemp);
 		}
-	}
-	catch (json::exception& e) { ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiryFunction(), e.what()); }
+	} catch (json::exception& e) { ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiryFunction(), e.what()); }
 	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
 
 	return pvDayLine;

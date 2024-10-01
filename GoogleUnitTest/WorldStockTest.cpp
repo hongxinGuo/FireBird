@@ -56,9 +56,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 19800101);
-
-		EXPECT_EQ(stock.GetTiingoStatementUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetTiingoDailyDataUpdateDate(), 19800101);
 	}
 
 	TEST_F(CWorldStockTest, TestGetRatio) {
@@ -1319,8 +1316,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(stock.GetSICSector(), pTiingoStock->m_strSICSector);
 		EXPECT_STREQ(stock.GetCompanyWebSite(), pTiingoStock->m_strCompanyWebSite);
 		EXPECT_STREQ(stock.GetSECFilingWebSite(), pTiingoStock->m_strSECFilingWebSite);
-		EXPECT_EQ(stock.GetTiingoStatementUpdateDate(), pTiingoStock->GetCompanyFinancialStatementUpdateDate());
-		EXPECT_EQ(stock.GetTiingoDailyDataUpdateDate(), pTiingoStock->GetDailyDataUpdateDate());
 	}
 
 	TEST_F(CWorldStockTest, TestHaveNewDayLineData) {
@@ -1561,8 +1556,6 @@ namespace FireBirdTest {
 		stock.SetInsiderSentimentUpdateDate(20000107);
 		stock.SetCompanyNewsUpdateDate(20000108);
 		stock.SetBasicFinancialUpdateDate(20000109);
-		stock.SetTiingoDailyDataUpdateDate(20202020);
-		stock.SetTiingoStatementUpdateDate(20201220);
 
 		setWorldStock.Open();
 		setWorldStock.m_pDatabase->BeginTrans();
@@ -1636,8 +1629,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetPeerUpdateDate(), stock2.GetPeerUpdateDate());
 		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), stock2.GetInsiderTransactionUpdateDate());
 		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), stock2.GetInsiderSentimentUpdateDate());
-		EXPECT_EQ(stock.GetTiingoDailyDataUpdateDate(), stock2.GetTiingoDailyDataUpdateDate());
-		EXPECT_EQ(stock.GetTiingoStatementUpdateDate(), stock2.GetTiingoStatementUpdateDate());
 	}
 
 	TEST_F(CWorldStockTest, TestCheckCompanyNewsUpdated) {

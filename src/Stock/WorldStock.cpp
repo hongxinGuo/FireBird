@@ -708,8 +708,6 @@ void CWorldStock::UpdateStockProfile(const CTiingoStockPtr& pTiingoStock) {
 	m_iSICCode = pTiingoStock->m_iSICCode;
 	m_strCompanyWebSite = pTiingoStock->m_strCompanyWebSite;
 	m_strSECFilingWebSite = pTiingoStock->m_strSECFilingWebSite;
-	SetTiingoDailyDataUpdateDate(pTiingoStock->GetDailyDataUpdateDate());
-	SetTiingoStatementUpdateDate(pTiingoStock->GetCompanyFinancialStatementUpdateDate());
 }
 
 void CWorldStock::UpdateDayLineStartEndDate() {
@@ -960,32 +958,6 @@ long CWorldStock::GetSECFilingsUpdateDate() {
 
 void CWorldStock::SetSECFilingsUpdateDate(const long lDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsSECFilings"] = lDate;
-}
-
-long CWorldStock::GetTiingoStatementUpdateDate() {
-	try {
-		const long lDate = m_jsonUpdateDate.at(_T("Tiingo")).at("StockFundamentalsCompanyProfile");
-		return lDate;
-	} catch (json::exception&) {
-		return 19800101;
-	}
-}
-
-void CWorldStock::SetTiingoStatementUpdateDate(const long lStatementUpdateDate) noexcept {
-	m_jsonUpdateDate["Tiingo"]["StockFundamentalsCompanyProfile"] = lStatementUpdateDate;
-}
-
-long CWorldStock::GetTiingoDailyDataUpdateDate() {
-	try {
-		const long lDate = m_jsonUpdateDate.at(_T("Tiingo")).at("StockPriceCandles");
-		return lDate;
-	} catch (json::exception&) {
-		return 19800101;
-	}
-}
-
-void CWorldStock::SetTiingoDailyDataUpdateDate(const long lDailyDataUpdateDate) noexcept {
-	m_jsonUpdateDate["Tiingo"]["StockPriceCandles"] = lDailyDataUpdateDate;
 }
 
 CString CWorldStock::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const {

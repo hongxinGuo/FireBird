@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ContainerTiingoStockDayLine.h"
 #include"SetTiingoStock.h"
 
 #include "TiingoFinancialState.h"
@@ -29,7 +30,19 @@ public:
 	void SetUpdateFinancialStateDB(bool fFlag) noexcept { m_fUpdateFinancialStateDB = fFlag; }
 
 	void UpdateFinancialState(const CTiingoFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
+	void UpdateDayLine(const vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UpdateFinancialStateDB() const;
+	bool UpdateDayLineDB();
+
+	void UpdateDayLineStartEndDate();
+	long GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
+	CDayLinePtr GetDayLine(const long lIndex) const { return dynamic_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
+	void UnloadDayLine() { m_dataDayLine.Unload(); }
+	void SaveDayLine() { m_dataDayLine.SaveDB(m_strSymbol); }
+
+	bool HaveNewDayLineData() const;
+
+	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
 
 	long GetDailyDataUpdateDate() { return m_jsonUpdateDate["DailyData"]; }
 	void SetDailyDataUpdateDate(long lDate) { m_jsonUpdateDate["DailyData"] = lDate; }
@@ -58,6 +71,8 @@ public:
 
 protected:
 	CTiingoFinancialStatesPtr m_pvFinancialState{ nullptr };
+
+	CContainerTiingoStockDayLine m_dataDayLine;
 
 	// 无需存储数据区
 	bool m_fUpdateFinancialState{ true };

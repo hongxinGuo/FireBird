@@ -31,7 +31,7 @@ void CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		}
 		sprintf_s(buffer, _T("%zd"), pvTiingoCrypto->size());
 		const CString strNumber = buffer;
-		const CString str = _T("今日Tiingo Crypto Symbol活跃总数为") + strNumber;
+		const CString str = _T("今日Tiingo Crypto总数为") + strNumber;
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 	}
 }

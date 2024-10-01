@@ -8,6 +8,7 @@
 #include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"
+#include "WorldMarket.h"
 
 map<CString, int> s_mapItem{
 	{ _T("accoci"), 1 },
@@ -120,6 +121,7 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	}
 
 	// 清除tiingo stock的金融数据更新标识
+	pTiingoStock->SetCompanyFinancialStatementUpdateDate(gl_pWorldMarket->GetMarketDate());
 	pTiingoStock->SetFinancialStateNeedUpdate(false);
 }
 
