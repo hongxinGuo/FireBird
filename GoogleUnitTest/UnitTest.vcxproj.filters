@@ -13,9 +13,6 @@
     <Filter Include="Test头文件">
       <UniqueIdentifier>{e95130e2-b771-4e91-b152-51fb6264d415}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\Data Base">
-      <UniqueIdentifier>{d6d8ef2e-9218-4538-a6d4-8797a72b801e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\Factory Product">
       <UniqueIdentifier>{6d8b6e28-d09f-4dda-be0f-331245a2b014}</UniqueIdentifier>
     </Filter>
@@ -145,6 +142,9 @@
     <Filter Include="Test源文件\Factory Product\ChinaMarket">
       <UniqueIdentifier>{0957aa20-c814-4c6e-a498-30e7397787d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\DataBase">
+      <UniqueIdentifier>{d6d8ef2e-9218-4538-a6d4-8797a72b801e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -175,7 +175,7 @@
       <Filter>Test源文件\辅助检查函数</Filter>
     </ClCompile>
     <ClCompile Include="SetInitializeTest.cpp">
-      <Filter>Test源文件\Data Base</Filter>
+      <Filter>Test源文件\DataBase</Filter>
     </ClCompile>
     <ClCompile Include="NeteaseDayLineWebDataTest.cpp">
       <Filter>Test源文件\Type\China Market\NeteaseDayLineWebData</Filter>
@@ -307,7 +307,7 @@
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>
     <ClCompile Include="VirtualRecordsetTest.cpp">
-      <Filter>Test源文件\Data Base</Filter>
+      <Filter>Test源文件\DataBase</Filter>
     </ClCompile>
     <ClCompile Include="ChinaStockCodeConverterTest.cpp">
       <Filter>Test源文件\accessory</Filter>
@@ -391,9 +391,6 @@
       <Filter>Test源文件\Type\World market</Filter>
     </ClCompile>
     <ClCompile Include="TiingoIndustryTest.cpp">
-      <Filter>Test源文件\Type\World market</Filter>
-    </ClCompile>
-    <ClCompile Include="TiingoStockTest.cpp">
       <Filter>Test源文件\Type\World market</Filter>
     </ClCompile>
     <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp">
@@ -644,6 +641,9 @@
     </ClCompile>
     <ClCompile Include="ProductTiingoFinancialStateTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="TiingoStockTest.cpp">
+      <Filter>Test源文件\Stock\World stock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

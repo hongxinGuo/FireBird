@@ -14,7 +14,7 @@ public:
 	CTiingoStock(const CTiingoStock&&) noexcept = delete;
 	CTiingoStock& operator=(const CTiingoStock&&) noexcept = delete;
 	~CTiingoStock() override = default;
-	int GetRatio() const override { return 3; };
+	int GetRatio() const override { return 1000; };
 
 	void ResetAllUpdateDate();
 

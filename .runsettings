@@ -66,6 +66,8 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>ReportJsonError</Function>
 								<Function>ReportWebError</Function>
 								<Function>to_byte_string</Function>
+                                <Function>ThreadBuildDayLineRS</Function>
+                                <Function>ThreadBuildWeekLineRS</Function>
 
 								<Function>CChinaStock::Calculate10RSStrongStockSet</Function>
 								<Function>CChinaStock::Calculate10RSStrong1StockSet</Function>
@@ -101,7 +103,7 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CWorldMarket::ProcessFinnhubWebSocketData</Function>
 								<Function>CWorldMarket::ProcessTiingoIEXWebSocketData</Function>
 								<Function>CWorldMarket::ProcessTiingoCryptoWebSocketData</Function>
-								<Function>CWorldMarket::ProcessTiingoForexWebSocketData</Function>
+                                <Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
 
 								<Function>CContainerChinaStock::BuildDayLine</Function>
 								<Function>CContainerChinaStock::BuildDayLineRS</Function>
@@ -115,7 +117,12 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CContainerChinaStock::DeleteTodayTempDB</Function>
 								<Function>CContainerChinaStock::UpdateTodayTempDB</Function>
 								<Function>CContainerChinaStock::TaskSaveDayLineData</Function>
-
+                                <Function>CContainerChinaStock::SaveDayLineData</Function>
+								
+								<Function>CContainerWorldStock::UpdateBasicFinancialAnnualDB</Function>
+								<Function>CContainerWorldStock::UpdateBasicFinancialDB</Function>
+								<Function>CContainerWorldStock::UpdateBasicFinancialMetricDB</Function>
+								<Function>CContainerWorldStock::UpdateBasicFinancialQuarterDB</Function>
 
 								<Function>CMainFrame::ResetMarket</Function>
 								<Function>CMainFrame::OnCreate</Function>
@@ -234,11 +241,12 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Source>.*\\vc\\include\\.*</Source>
 								<Source>C:\\dev\\vcpkg\\*.*</Source>
 								<Source>d:\\cfiles\\projects\\winssl\\*.*</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\googletest\\*.*</Source>
+								<Source>C:\\users\\hxguo\\source\\repos\\concurrencpp\\source\\*.*</Source>
+                                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\googletest\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\Packages\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\DataBase\\*.*</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\*.*</Source>
+                                <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdDoc.cpp</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdDoc.h</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\ChildFrm.cpp</Source>

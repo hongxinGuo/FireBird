@@ -20,7 +20,7 @@ CTiingoStock::CTiingoStock() {
 	m_strLocation = _T("");
 	m_strCompanyWebSite = _T("");
 	m_strSECFilingWebSite = _T("");
-	SetCompanyProfileUpdateDate(1980101);
+	SetCompanyProfileUpdateDate(19800101);
 	SetDailyDataUpdateDate(19800101);
 	SetDayLineUpdateDate(19800101);
 	SetCompanyFinancialStatementUpdateDate(19800101);
