@@ -115,14 +115,13 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
 	const auto pvTiingoFinancialState = ParseTiingoFinancialState(pWebData);
 
+	pTiingoStock->SetCompanyFinancialStatementUpdateDate(gl_pWorldMarket->GetMarketDate());
+	pTiingoStock->SetFinancialStateNeedUpdate(false);
+	pTiingoStock->SetUpdateProfileDB(true);
 	if (pvTiingoFinancialState->size() > 0) { // 为空时没有更新的必要。
 		pTiingoStock->UpdateFinancialState(pvTiingoFinancialState);
 		pTiingoStock->SetUpdateFinancialStateDB(true);
 	}
-
-	// 清除tiingo stock的金融数据更新标识
-	pTiingoStock->SetCompanyFinancialStatementUpdateDate(gl_pWorldMarket->GetMarketDate());
-	pTiingoStock->SetFinancialStateNeedUpdate(false);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

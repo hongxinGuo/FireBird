@@ -32,7 +32,7 @@ void CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr 
 	pStock->SetUpdateProfileDB(true);
 	if (!pvInsiderTransaction->empty()) {
 		pStock->UpdateInsiderTransaction(*pvInsiderTransaction);
-		pStock->SetSaveInsiderTransaction(true);
+		pStock->SetUpdateInsiderTransactionDB(true);
 	}
 }
 

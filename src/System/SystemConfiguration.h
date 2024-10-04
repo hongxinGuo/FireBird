@@ -214,10 +214,10 @@ public:
 		m_iSECFilingsUpdateRate = iRate;
 	}
 
-	[[nodiscard]] int GetTiingoStockFinancialStateUpdateRate() const noexcept { return m_iTiingoStockFinancialStateUpdateRate; }
-	void SetTiingoStockFinancialStateUpdateRate(const int iRate) noexcept {
+	[[nodiscard]] int GetTiingoCompanyFinancialStateUpdateRate() const noexcept { return m_iTiingoCompanyFinancialStateUpdateRate; }
+	void SetTiingoCompanyFinancialStateUpdateRate(const int iRate) noexcept {
 		m_fUpdate = true;
-		m_iTiingoStockFinancialStateUpdateRate = iRate;
+		m_iTiingoCompanyFinancialStateUpdateRate = iRate;
 	}
 
 	[[nodiscard]] CString GetBenchmarkTestFileDirectory() const noexcept { return m_strBenchmarkTestFileDirectory; }
@@ -329,7 +329,7 @@ protected:
 	int m_iEPSSurpriseUpdateRate{ 90 }; // 默认90天更新一次
 	int m_iSECFilingsUpdateRate{ 30 }; // 默认30天更新一次
 	// Tiingo 数据
-	int m_iTiingoStockFinancialStateUpdateRate{ 45 }; // Tiingo公司金融数据更新
+	int m_iTiingoCompanyFinancialStateUpdateRate{ 45 }; // Tiingo公司金融数据更新
 
 	// 测试系统
 	CString m_strBenchmarkTestFileDirectory; // 性能测试文件所在的目录

@@ -80,7 +80,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/FinancialDataUpdateRate/InsideSentiment")), 30);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/FinancialDataUpdateRate/StockPeer")), 90);
 
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/FinancialDataUpdateRate/TiingoStockFinancialState")), 45);
+		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/FinancialDataUpdateRate/TiingoCompanyFinancialState")), 45);
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/TestConfiguration/BenchmarkTestFileDirectory"));
 		EXPECT_STREQ(sTemp.c_str(), _T("C:\\FireBird\\Test Data\\Benchmark\\"));
@@ -225,7 +225,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(jsSystemConfiguration[json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")] == gl_systemConfiguration.IsUsingTiingoIEXWebSocket());
 			EXPECT_TRUE(jsSystemConfiguration["ChinaMarket"]["CurrentStock"] == _T("600026.SS"));
 
-			EXPECT_TRUE(jsSystemConfiguration[json::json_pointer("/FinancialDataUpdateRate/TiingoStockFinancialState")] == gl_systemConfiguration.GetTiingoStockFinancialStateUpdateRate());
+			EXPECT_TRUE(jsSystemConfiguration[json::json_pointer("/FinancialDataUpdateRate/TiingoCompanyFinancialState")] == gl_systemConfiguration.GetTiingoCompanyFinancialStateUpdateRate());
 
 			const string sTemp = jsSystemConfiguration[json::json_pointer("/ChinaMarket/RealtimeServer")];
 			EXPECT_TRUE(sTemp==_T("sina"));

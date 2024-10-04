@@ -46,7 +46,7 @@ public:
 	virtual bool TaskResetMarket(long lCurrentTime);
 	void TaskDistributeAndCalculateRTData(long lCurrentTime);
 	void TaskProcessAndSaveDayLine(long lCurrentTime);
-	void TaskSaveTempData(long lCurrentTime);
+	void TaskUpdateTempDataDB(long lCurrentTime);
 	void TaskLoadCurrentStockHistoryData() const;// 装载当前股票日线
 	void TaskPerSecond(long lCurrentTime); // 每秒一次的辅助任务
 	void TaskAccessoryPerMinuteTask(long lCurrentTime); // 每分钟重复执行的辅助任务
@@ -210,8 +210,8 @@ public:
 	bool IsFastReceivingRTData() const noexcept { return m_fFastReceivingRTData; }
 	bool IsRTDataSetCleared() const noexcept { return m_fRTDataSetCleared; }
 	void SetRTDataSetCleared(const bool fFlag) noexcept { m_fRTDataSetCleared = fFlag; }
-	bool IsSavingTempData() const noexcept { return m_fSaveTempData; }
-	void SetSavingTempData(const bool fFlag) noexcept { m_fSaveTempData = fFlag; }
+	bool IsUpdateTempDataDB() const noexcept { return m_fUpdateTempDataDB; }
+	void SetUpdateTempDataDB(const bool fFlag) noexcept { m_fUpdateTempDataDB = fFlag; }
 
 	bool IsCurrentEditStockChanged() const noexcept { return m_fCurrentEditStockChanged; }
 	void SetCurrentEditStockChanged(const bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
@@ -289,7 +289,7 @@ protected:
 	bool m_fMarketOpened; // 是否开市
 	bool m_fFastReceivingRTData; // 是否开始接收实时数据
 	bool m_fRTDataSetCleared; // 实时数据库已清除标识。九点三十分之前为假，之后设置为真。
-	bool m_fSaveTempData; // 存储临时实时数据标识
+	bool m_fUpdateTempDataDB; // 存储临时实时数据标识
 	CChinaStockPtr m_pCurrentStock; // 当前显示的股票
 
 	time_t m_ttNewestTransactionTime;

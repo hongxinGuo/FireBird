@@ -42,6 +42,8 @@ public:
 
 	bool HaveNewDayLineData() const;
 
+	void CheckUpdateStatus(long lTodayDate);
+	void CheckFinancialStateUpdateStatus(long lTodayDate);
 	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
 
 	long GetDailyDataUpdateDate() { return m_jsonUpdateDate["DailyData"]; }

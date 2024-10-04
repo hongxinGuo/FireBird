@@ -35,8 +35,8 @@ public:
 
 	bool IsUpdateCompanyNewsDB();
 	bool IsUpdateBasicFinancialDB();
-	bool IsSaveInsiderTransaction();
-	bool IsSaveInsiderSentiment();
+	bool IsUpdateInsiderTransactionDB();
+	bool IsUpdateInsiderSentimentDB();
 	bool IsSaveEPSSurpriseDB();
 	bool IsSaveSECFilingsDB();
 };

@@ -108,9 +108,9 @@ public:
 	bool IsUpdateInsiderTransaction() const noexcept { return m_fUpdateFinnhubInsiderTransaction; }
 	void SetUpdateInsiderTransaction(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderTransaction = fFlag; }
 	bool CheckInsiderTransactionStatus(long lCurrentDate);
-	bool IsSaveInsiderTransaction() const noexcept { return m_fSaveFinnhubInsiderTransaction; }
-	void SetSaveInsiderTransaction(const bool fFlag) noexcept { m_fSaveFinnhubInsiderTransaction = fFlag; }
-	bool IsSaveInsiderTransactionAndClearFlag() { return m_fSaveFinnhubInsiderTransaction.exchange(false); }
+	bool IsUpdateInsiderTransactionDB() const noexcept { return m_fUpdateFinnhubInsiderTransactionDB; }
+	void SetUpdateInsiderTransactionDB(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderTransactionDB = fFlag; }
+	bool IsUpdateInsiderTransactionDBAndClearFlag() { return m_fUpdateFinnhubInsiderTransactionDB.exchange(false); }
 
 	bool HaveInsiderSentiment() const noexcept { return !m_vInsiderSentiment.empty(); }
 	void UnloadInsiderSentiment() { m_vInsiderSentiment.resize(0); }
@@ -118,9 +118,9 @@ public:
 	bool IsUpdateInsiderSentiment() const noexcept { return m_fUpdateFinnhubInsiderSentiment; }
 	void SetUpdateInsiderSentiment(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderSentiment = fFlag; }
 	bool CheckInsiderSentimentStatus(long lCurrentDate);
-	bool IsSaveInsiderSentiment() const noexcept { return m_fSaveFinnhubInsiderSentiment; }
-	void SetSaveInsiderSentiment(const bool fFlag) noexcept { m_fSaveFinnhubInsiderSentiment = fFlag; }
-	bool IsSaveInsiderSentimentAndClearFlag() { return m_fSaveFinnhubInsiderSentiment.exchange(false); }
+	bool IsUpdateInsiderSentimentDB() const noexcept { return m_fUpdateFinnhubInsiderSentimentDB; }
+	void SetUpdateInsiderSentimentDB(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderSentimentDB = fFlag; }
+	bool IsUpdateInsiderSentimentDBAndClearFlag() { return m_fUpdateFinnhubInsiderSentimentDB.exchange(false); }
 
 	CString GetType() const { return m_strType; }
 	void SetType(const CString& strType) { m_strType = strType; }
@@ -316,8 +316,8 @@ protected:
 	bool m_fUpdateFinnhubInsiderTransaction; // 公司内部交易数据已更新
 	bool m_fUpdateFinnhubInsiderSentiment; // 公司内部交易情绪数据已更新
 	atomic_bool m_fUpdateFinnhubBasicFinancialDB; // 基本财务数据需要保存
-	atomic_bool m_fSaveFinnhubInsiderTransaction; // 内部交易数据需要存储
-	atomic_bool m_fSaveFinnhubInsiderSentiment; // 内部交易情绪数据需要存储
+	atomic_bool m_fUpdateFinnhubInsiderTransactionDB; // 内部交易数据需要存储
+	atomic_bool m_fUpdateFinnhubInsiderSentimentDB; // 内部交易情绪数据需要存储
 };
 
 using CWorldStockPtr = shared_ptr<CWorldStock>;

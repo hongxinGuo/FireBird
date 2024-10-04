@@ -213,6 +213,22 @@ bool CTiingoStock::HaveNewDayLineData() const {
 	return false;
 }
 
+void CTiingoStock::CheckUpdateStatus(long lTodayDate) {
+	//CheckProfileUpdateStatus(lTodayDate);
+	//CheckFinancialStateUpdateStatus(lTodayDate);
+	//CheckCompanyNewsUpdateStatus(lTodayDate);
+	CheckDayLineUpdateStatus(lTodayDate, gl_pWorldMarket->GetLastTradeDate(), gl_pWorldMarket->GetMarketTime(), gl_pWorldMarket->GetDayOfWeek());
+}
+
+void CTiingoStock::CheckFinancialStateUpdateStatus(long lTodayDate) {
+	if (IsEarlyThen(GetCompanyFinancialStatementUpdateDate(), lTodayDate, gl_systemConfiguration.GetTiingoCompanyFinancialStateUpdateRate())) {
+		m_fUpdateFinancialState = true;
+	}
+	else {
+		m_fUpdateFinancialState = false;
+	}
+}
+
 bool CTiingoStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek) {
 	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 	if (IsNullStock()) {

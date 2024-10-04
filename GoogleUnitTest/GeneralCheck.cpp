@@ -93,7 +93,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_systemConfiguration.IsFastInquiringRTData()) << "DEBUG模式时默认为假";
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 			EXPECT_FALSE(gl_pChinaMarket->IsRTDataSetCleared());
-			EXPECT_TRUE(gl_pChinaMarket->IsSavingTempData());
+			EXPECT_TRUE(gl_pChinaMarket->IsUpdateTempDataDB());
 			EXPECT_FALSE(gl_pChinaMarket->IsUpdateOptionDB());
 			EXPECT_FALSE(gl_pChinaMarket->IsWebBusy());
 			EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess());

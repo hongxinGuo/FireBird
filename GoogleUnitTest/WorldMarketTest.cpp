@@ -669,7 +669,7 @@ namespace FireBirdTest {
 		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(_T("A"));
 		EXPECT_FALSE(pStock->HaveInsiderTransaction()) << "此时尚未存入数据";
 
-		pStock->SetSaveInsiderTransaction(true);
+		pStock->SetUpdateInsiderTransactionDB(true);
 		pStock->SetInsiderTransactionUpdateDate(20210123);
 		pStock->UpdateInsiderTransaction(vInsiderTransaction);
 
@@ -677,7 +677,7 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 		//gl_systemMessage.PopDayLineInfoMessage();
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(_T("A"))->IsSaveInsiderTransaction());
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(_T("A"))->IsUpdateInsiderTransactionDB());
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(_T("A"))->HaveInsiderTransaction()) << "存储后并没有删除数据";
 		gl_dataContainerFinnhubStock.GetStock(_T("A"))->UnloadInsiderTransaction();
 
@@ -739,14 +739,14 @@ namespace FireBirdTest {
 		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(_T("A"));
 		EXPECT_FALSE(pStock->HaveInsiderSentiment()) << "此时尚未存入数据";
 
-		pStock->SetSaveInsiderSentiment(true);
+		pStock->SetUpdateInsiderSentimentDB(true);
 		pStock->SetInsiderSentimentUpdateDate(20210101);
 		pStock->UpdateInsiderSentiment(vInsiderSentiment);
 
 		EXPECT_TRUE(gl_pWorldMarket->UpdateInsiderSentimentDB());
 
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(_T("A"))->IsSaveInsiderSentiment());
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(_T("A"))->IsUpdateInsiderSentimentDB());
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(_T("A"))->HaveInsiderSentiment()) << "存储后并没有删除数据";
 
 		// 验证并恢复原状

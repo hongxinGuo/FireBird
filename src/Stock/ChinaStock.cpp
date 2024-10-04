@@ -153,7 +153,7 @@ CChinaStock::CChinaStock() {
 	}
 
 	m_fChosen = false;
-	m_fSaveToChosenStockDB = false;
+	m_fUpdateChosenStockDB = false;
 
 	m_fDayLineDBUpdated = false;
 

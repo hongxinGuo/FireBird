@@ -491,14 +491,14 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_UpdateWorldMarketDB.release();
 		});
 	}
-	if (gl_dataContainerFinnhubStock.IsSaveInsiderTransaction()) { // Insider Transaction
+	if (gl_dataContainerFinnhubStock.IsUpdateInsiderTransactionDB()) { // Insider Transaction
 		gl_runtime.background_executor()->post([this] {
 			gl_UpdateWorldMarketDB.acquire();
 			this->UpdateInsiderTransactionDB();
 			gl_UpdateWorldMarketDB.release();
 		});
 	}
-	if (gl_dataContainerFinnhubStock.IsSaveInsiderSentiment()) { // Insider Sentiment
+	if (gl_dataContainerFinnhubStock.IsUpdateInsiderSentimentDB()) { // Insider Sentiment
 		gl_runtime.background_executor()->post([this] {
 			gl_UpdateWorldMarketDB.acquire();
 			this->UpdateInsiderSentimentDB();
@@ -671,7 +671,7 @@ bool CWorldMarket::UpdateInsiderTransactionDB() {
 	int iCounter = 0;
 	for (long i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
-		if (pStock->IsSaveInsiderTransactionAndClearFlag()) {
+		if (pStock->IsUpdateInsiderTransactionDBAndClearFlag()) {
 			if (pStock->HaveInsiderTransaction()) {
 				iCounter++;
 				pStock->UpdateInsiderTransactionDB();
@@ -687,7 +687,7 @@ bool CWorldMarket::UpdateInsiderTransactionDB() {
 bool CWorldMarket::UpdateInsiderSentimentDB() {
 	for (long i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
-		if (pStock->IsSaveInsiderSentimentAndClearFlag()) {
+		if (pStock->IsUpdateInsiderSentimentDBAndClearFlag()) {
 			if (pStock->HaveInsiderSentiment()) {
 				pStock->UpdateInsiderSentimentDB();
 			}

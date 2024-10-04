@@ -78,7 +78,7 @@ namespace FireBirdTest {
 			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101);
-			m_pStock->SetSaveInsiderSentiment(false);
+			m_pStock->SetUpdateInsiderSentimentDB(false);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			m_pWebData = pData->m_pData;
 			m_finnhubCompanyInsiderSentiment.CheckAccessRight(m_pWebData);
@@ -92,7 +92,7 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateProfileDB(false);
-			m_pStock->SetSaveInsiderSentiment(false);
+			m_pStock->SetUpdateInsiderSentimentDB(false);
 			m_pStock->SetInsiderSentimentUpdateDate(19800101);
 
 			SCOPED_TRACE("");
@@ -116,17 +116,17 @@ namespace FireBirdTest {
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
 			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
 			break;
 		case 1: // 无权利访问的数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
 			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
 			break;
 		case 2: // 正确
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_TRUE(m_pStock->IsSaveInsiderSentiment());
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentimentDB());
 			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
@@ -134,19 +134,19 @@ namespace FireBirdTest {
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
 			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
 			break;
 		case 4:
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
 			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
 			break;
 		case 5: // 空数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
 			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
 			break;
 		default:
 			break;
@@ -162,7 +162,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
-			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
 			m_pWebData = pData->m_pData;
 			m_finnhubCompanyInsiderSentiment.CheckAccessRight(m_pWebData);
 
@@ -176,7 +176,7 @@ namespace FireBirdTest {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			m_pStock->SetUpdateProfileDB(false);
-			m_pStock->SetSaveInsiderSentiment(false);
+			m_pStock->SetUpdateInsiderSentimentDB(false);
 			m_pStock->SetInsiderSentimentUpdateDate(19800101);
 
 			SCOPED_TRACE("");
@@ -199,37 +199,37 @@ namespace FireBirdTest {
 		switch (m_lIndex) {
 		case 0: // 空数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 1: // 无权利访问的数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 2: // 正确
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_TRUE(m_pStock->IsSaveInsiderSentiment());
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentimentDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 3: // 缺乏data项
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 4: // 缺乏Symbol
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 5: //空数据
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_FALSE(m_pStock->IsSaveInsiderSentiment());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;

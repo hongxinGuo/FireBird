@@ -243,8 +243,8 @@ public:
 	// 各种状态标识提取和设置
 	bool IsChosen() const noexcept { return m_fChosen; }
 	void SetChosen(const bool fChosen) noexcept { m_fChosen = fChosen; }
-	bool IsSaveToChosenStockDB() const noexcept { return m_fSaveToChosenStockDB; }
-	void SetSaveToChosenStockDB(const bool fSaved) noexcept { m_fSaveToChosenStockDB = fSaved; }
+	bool IsUpdateChosenStockDB() const noexcept { return m_fUpdateChosenStockDB; }
+	void SetUpdateChosenStockDB(const bool fSaved) noexcept { m_fUpdateChosenStockDB = fSaved; }
 
 	bool IsSameStock(const CChinaStockPtr& pStock) const;
 
@@ -524,7 +524,7 @@ protected:
 	bool m_fRTDataCalculated{ false }; // 实时数据显示需要更新
 
 	bool m_fChosen{ false }; // 此股票是否是自选股票.
-	bool m_fSaveToChosenStockDB{ false }; // 是否存储至自选股票池。
+	bool m_fUpdateChosenStockDB{ false }; // 是否存储至自选股票池。
 	bool m_fMinLineUpdated{ false }; // 今天的分钟资料是否更新过.
 
 	// 挂单的具体情况。

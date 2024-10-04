@@ -131,7 +131,7 @@ void CChinaMarket::Reset() {
 	m_fCurrentEditStockChanged = false;
 	m_fFastReceivingRTData = true;
 	m_fRTDataSetCleared = false;
-	m_fSaveTempData = true;
+	m_fUpdateTempDataDB = true;
 	m_pCurrentStock = nullptr;
 
 	m_ttNewestTransactionTime = 0;
@@ -223,7 +223,7 @@ int CChinaMarket::ProcessTask(long lCurrentTime) {
 			TaskDistributeAndCalculateRTData(lCurrentTime);
 			break;
 		case CHINA_MARKET_SAVE_TEMP_RT_DATA__:
-			TaskSaveTempData(lCurrentTime);
+			TaskUpdateTempDataDB(lCurrentTime);
 			break;
 		case CHINA_MARKET_BUILD_TODAY_DATABASE__:
 			TaskProcessTodayStock(lCurrentTime);
@@ -662,7 +662,7 @@ void CChinaMarket::TaskExitSystem(long lCurrentTime) {
 // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-void CChinaMarket::TaskSaveTempData(long lCurrentTime) {
+void CChinaMarket::TaskUpdateTempDataDB(long lCurrentTime) {
 	if (lCurrentTime < 150500) { // 中国市场股票交易截止时间为150000。
 		long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
 		if ((lNextTime >= 113500) && (lNextTime < 125730)) lNextTime = 125730;
@@ -732,7 +732,7 @@ void CChinaMarket::TaskPreparingMarketOpen(long lCurrentTime) {
 bool CChinaMarket::AddChosenStock(const CChinaStockPtr& pStock) {
 	if (std::ranges::count(m_avChosenStock.at(0).begin(), m_avChosenStock.at(0).end(), pStock) == 0) {
 		m_avChosenStock.at(0).push_back(pStock);
-		ASSERT(!pStock->IsSaveToChosenStockDB());
+		ASSERT(!pStock->IsUpdateChosenStockDB());
 		return true;
 	}
 	return false;
@@ -742,7 +742,7 @@ bool CChinaMarket::DeleteChosenStock(const CChinaStockPtr& pStock) {
 	const auto it = std::ranges::find(m_avChosenStock.at(0).cbegin(), m_avChosenStock.at(0).cend(), pStock);
 	if (it == m_avChosenStock.at(0).end()) { return false; }
 	(*it)->SetChosen(false);
-	(*it)->SetSaveToChosenStockDB(false);
+	(*it)->SetUpdateChosenStockDB(false);
 	m_avChosenStock.at(0).erase(it);
 	return true;
 }
@@ -1681,7 +1681,7 @@ void CChinaMarket::UpdateChosenStockDB() const {
 			setChinaChosenStock.AddNew();
 			setChinaChosenStock.m_Symbol = pStock->GetSymbol();
 			setChinaChosenStock.Update();
-			pStock->SetSaveToChosenStockDB(true);
+			pStock->SetUpdateChosenStockDB(true);
 		}
 		setChinaChosenStock.m_pDatabase->CommitTrans();
 		setChinaChosenStock.Close();
@@ -1698,11 +1698,11 @@ void CChinaMarket::AppendChosenStockDB() {
 		setChinaChosenStock.m_pDatabase->BeginTrans();
 		for (const auto& pStock : m_avChosenStock.at(0)) {
 			ASSERT(pStock->IsChosen());
-			if (!pStock->IsSaveToChosenStockDB()) {
+			if (!pStock->IsUpdateChosenStockDB()) {
 				setChinaChosenStock.AddNew();
 				setChinaChosenStock.m_Symbol = pStock->GetSymbol();
 				setChinaChosenStock.Update();
-				pStock->SetSaveToChosenStockDB(true);
+				pStock->SetUpdateChosenStockDB(true);
 			}
 		}
 		setChinaChosenStock.m_pDatabase->CommitTrans();
@@ -1725,7 +1725,7 @@ void CChinaMarket::LoadChosenStockDB() {
 				m_avChosenStock.at(0).push_back(pStock);
 			}
 			pStock->SetChosen(true);
-			pStock->SetSaveToChosenStockDB(true);
+			pStock->SetUpdateChosenStockDB(true);
 		}
 		setChinaChosenStock.MoveNext();
 	}

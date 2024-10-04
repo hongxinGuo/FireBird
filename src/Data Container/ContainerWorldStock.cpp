@@ -290,12 +290,12 @@ bool CContainerWorldStock::IsUpdateBasicFinancialDB() {
 	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CWorldStock>(pStock)->IsUpdateBasicFinancialDB(); });
 }
 
-bool CContainerWorldStock::IsSaveInsiderTransaction() {
-	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& P) { return dynamic_pointer_cast<CWorldStock>(P)->IsSaveInsiderTransaction(); });
+bool CContainerWorldStock::IsUpdateInsiderTransactionDB() {
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& P) { return dynamic_pointer_cast<CWorldStock>(P)->IsUpdateInsiderTransactionDB(); });
 }
 
-bool CContainerWorldStock::IsSaveInsiderSentiment() {
-	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsSaveInsiderSentiment(); });
+bool CContainerWorldStock::IsUpdateInsiderSentimentDB() {
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsUpdateInsiderSentimentDB(); });
 }
 
 bool CContainerWorldStock::IsSaveEPSSurpriseDB() {

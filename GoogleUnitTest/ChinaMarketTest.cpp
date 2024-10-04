@@ -400,7 +400,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask4) {
-		tm tm_{0};
+		tm tm_{ 0 };
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
 		tm_.tm_mday = 7; // 2019年11月9日是星期四。
@@ -475,7 +475,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask5) {
-		tm tm_{0};
+		tm tm_{ 0 };
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
 		tm_.tm_mday = 9; // 2019年11月9日是星期六。
@@ -533,7 +533,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask6) {
-		tm tm_{0};
+		tm tm_{ 0 };
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
 		tm_.tm_mday = 10; // 2019年11月10日是星期日。
@@ -592,7 +592,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask7) {
-		tm tm_{0};
+		tm tm_{ 0 };
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
 		tm_.tm_mday = 9; // 2019年11月9日是星期六。
@@ -653,7 +653,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask8) {
-		tm tm_{0};
+		tm tm_{ 0 };
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
 		tm_.tm_mday = 10; // 2019年11月10日是星期日。
@@ -723,7 +723,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask9) {
-		tm tm_{0};
+		tm tm_{ 0 };
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
 		tm_.tm_mday = 10; // 2019年11月10日是星期日。
@@ -1025,12 +1025,12 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pChinaMarket->IsRTDataSetCleared());
 	}
 
-	TEST_F(CChinaMarketTest, TestIsSavingTempData) {
-		EXPECT_TRUE(gl_pChinaMarket->IsSavingTempData());
-		gl_pChinaMarket->SetSavingTempData(false);
-		EXPECT_FALSE(gl_pChinaMarket->IsSavingTempData());
-		gl_pChinaMarket->SetSavingTempData(true);
-		EXPECT_TRUE(gl_pChinaMarket->IsSavingTempData());
+	TEST_F(CChinaMarketTest, TestIsUpdateTempDataDB) {
+		EXPECT_TRUE(gl_pChinaMarket->IsUpdateTempDataDB());
+		gl_pChinaMarket->SetUpdateTempDataDB(false);
+		EXPECT_FALSE(gl_pChinaMarket->IsUpdateTempDataDB());
+		gl_pChinaMarket->SetUpdateTempDataDB(true);
+		EXPECT_TRUE(gl_pChinaMarket->IsUpdateTempDataDB());
 	}
 
 	TEST_F(CChinaMarketTest, TestIsUpdateStockProfileDB) {

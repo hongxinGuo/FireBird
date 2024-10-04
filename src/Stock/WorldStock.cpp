@@ -77,9 +77,9 @@ CWorldStock::CWorldStock() {
 	m_fUpdateFinnhubPeer = true;
 
 	m_fUpdateFinnhubInsiderTransaction = true;
-	m_fSaveFinnhubInsiderTransaction = false;
+	m_fUpdateFinnhubInsiderTransactionDB = false;
 	m_fUpdateFinnhubInsiderSentiment = true;
-	m_fSaveFinnhubInsiderSentiment = false;
+	m_fUpdateFinnhubInsiderSentimentDB = false;
 	m_fUpdateFinnhubBasicFinancialDB = false;
 
 	m_lInsiderSentimentStartDate = 19800101;
@@ -147,9 +147,9 @@ CWorldStock::CWorldStock() {
 	m_fUpdateFinnhubPeer = true;
 
 	m_fUpdateFinnhubInsiderTransaction = true;
-	m_fSaveFinnhubInsiderTransaction = false;
+	m_fUpdateFinnhubInsiderTransactionDB = false;
 	m_fUpdateFinnhubInsiderSentiment = true;
-	m_fSaveFinnhubInsiderSentiment = false;
+	m_fUpdateFinnhubInsiderSentimentDB = false;
 	m_fUpdateFinnhubBasicFinancialDB = false;
 
 	m_lInsiderSentimentStartDate = 19800101;

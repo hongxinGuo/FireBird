@@ -366,11 +366,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldStockTest, TestIsInsiderTransactionNeedSave) {
-		EXPECT_FALSE(stock.IsSaveInsiderTransaction());
-		stock.SetSaveInsiderTransaction(true);
-		EXPECT_TRUE(stock.IsSaveInsiderTransaction());
-		EXPECT_TRUE(stock.IsSaveInsiderTransactionAndClearFlag());
-		EXPECT_FALSE(stock.IsSaveInsiderTransaction());
+		EXPECT_FALSE(stock.IsUpdateInsiderTransactionDB());
+		stock.SetUpdateInsiderTransactionDB(true);
+		EXPECT_TRUE(stock.IsUpdateInsiderTransactionDB());
+		EXPECT_TRUE(stock.IsUpdateInsiderTransactionDBAndClearFlag());
+		EXPECT_FALSE(stock.IsUpdateInsiderTransactionDB());
 	}
 
 	TEST_F(CWorldStockTest, TestIsInsiderSentimentNeedUpdate) {
@@ -382,11 +382,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldStockTest, TestIsInsiderSentimentNeedSave) {
-		EXPECT_FALSE(stock.IsSaveInsiderSentiment());
-		stock.SetSaveInsiderSentiment(true);
-		EXPECT_TRUE(stock.IsSaveInsiderSentiment());
-		EXPECT_TRUE(stock.IsSaveInsiderSentimentAndClearFlag());
-		EXPECT_FALSE(stock.IsSaveInsiderSentiment());
+		EXPECT_FALSE(stock.IsUpdateInsiderSentimentDB());
+		stock.SetUpdateInsiderSentimentDB(true);
+		EXPECT_TRUE(stock.IsUpdateInsiderSentimentDB());
+		EXPECT_TRUE(stock.IsUpdateInsiderSentimentDBAndClearFlag());
+		EXPECT_FALSE(stock.IsUpdateInsiderSentimentDB());
 	}
 
 	TEST_F(CWorldStockTest, TestGetDescription) {

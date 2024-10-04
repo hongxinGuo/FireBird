@@ -31,7 +31,7 @@ void CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pW
 	pStock->SetUpdateProfileDB(true);
 	if (!pvInsiderSentiment->empty()) {
 		pStock->UpdateInsiderSentiment(*pvInsiderSentiment);
-		pStock->SetSaveInsiderSentiment(true);
+		pStock->SetUpdateInsiderSentimentDB(true);
 	}
 }
 
@@ -72,8 +72,7 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 	try {
 		pt1 = jsonGetChild(js, _T("data"));
 		stockSymbol = jsonGetString(js, _T("symbol"));
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Sentiment ") + GetInquiryFunction(), e.what());
 		return pvInsiderSentiment;
 	}
@@ -91,8 +90,7 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 			pInsiderSentiment->m_mspr = jsonGetDouble(it, _T("mspr"));
 			pvInsiderSentiment->push_back(pInsiderSentiment);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderSentiment->m_strSymbol + _T(" Insider Sentiment "), e.what());
 		return pvInsiderSentiment;
 	}

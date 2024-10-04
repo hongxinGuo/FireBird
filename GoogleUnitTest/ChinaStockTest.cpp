@@ -925,13 +925,13 @@ namespace FireBirdTest {
 	TEST_F(CChinaStockTest, TestReadOnlyFunctions) {
 	}
 
-	TEST_F(CChinaStockTest, TestIsSaveToChosenStockDB) {
+	TEST_F(CChinaStockTest, TestIsUpdateChosenStockDB) {
 		CChinaStock stock;
-		EXPECT_FALSE(stock.IsSaveToChosenStockDB());
-		stock.SetSaveToChosenStockDB(true);
-		EXPECT_TRUE(stock.IsSaveToChosenStockDB());
-		stock.SetSaveToChosenStockDB(false);
-		EXPECT_FALSE(stock.IsSaveToChosenStockDB());
+		EXPECT_FALSE(stock.IsUpdateChosenStockDB());
+		stock.SetUpdateChosenStockDB(true);
+		EXPECT_TRUE(stock.IsUpdateChosenStockDB());
+		stock.SetUpdateChosenStockDB(false);
+		EXPECT_FALSE(stock.IsUpdateChosenStockDB());
 	}
 
 	TEST_F(CChinaStockTest, TestIsChosen) {

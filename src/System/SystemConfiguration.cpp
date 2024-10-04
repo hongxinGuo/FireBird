@@ -81,7 +81,7 @@ std::string gl_sSystemConfiguration = R"(
 	"InsideTransaction" : 30,
 	"InsideSentiment" : 30,
 	"StockPeer" : 90,
-	"TiingoStockFinancialState" : 45
+	"TiingoCompanyFinancialState" : 45
 },
 "TestConfiguration" : {
 	"BenchmarkTestFileDirectory" : "C:\\FireBird\\Test Data\\Benchmark\\"
@@ -157,7 +157,7 @@ CSystemConfiguration::CSystemConfiguration() {
 	m_iEPSSurpriseUpdateRate = 90;
 	m_iSECFilingsUpdateRate = 30;
 
-	m_iTiingoStockFinancialStateUpdateRate = 45;
+	m_iTiingoCompanyFinancialStateUpdateRate = 45;
 
 	// spdlog日志等级
 	m_iLogLevel = SPDLOG_LEVEL_TRACE; // 默认记录等级为跟踪级（所有日志皆记录）
@@ -429,7 +429,7 @@ void CSystemConfiguration::Update(json& jsonData) {
 		m_fUpdate = true;
 	}
 	try {
-		m_iTiingoStockFinancialStateUpdateRate = jsonData.at("FinancialDataUpdateRate").at("TiingoStockFinancialState");
+		m_iTiingoCompanyFinancialStateUpdateRate = jsonData.at("FinancialDataUpdateRate").at("TiingoCompanyFinancialState");
 	} catch (json::out_of_range&) {
 		m_fUpdate = true;
 	}
@@ -544,7 +544,7 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	jsonData["FinancialDataUpdateRate"]["EPSSurprise"] = m_iEPSSurpriseUpdateRate;
 	jsonData["FinancialDataUpdateRate"]["SECFilings"] = m_iSECFilingsUpdateRate;
 
-	jsonData["FinancialDataUpdateRate"]["TiingoStockFinancialState"] = m_iTiingoStockFinancialStateUpdateRate;
+	jsonData["FinancialDataUpdateRate"]["TiingoCompanyFinancialState"] = m_iTiingoCompanyFinancialStateUpdateRate;
 
 	// 测试系统选项
 	jsonData["TestConfiguration"]["BenchmarkTestFileDirectory"] = m_strBenchmarkTestFileDirectory;

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ContainerTiingoStock.h"
 #include "InfoReport.h"
+#include "WorldMarket.h"
 
 CContainerTiingoStock::CContainerTiingoStock() {
 	Reset();
@@ -49,6 +50,7 @@ void CContainerTiingoStock::UpdateDB() {
 bool CContainerTiingoStock::LoadDB() {
 	CSetTiingoStock setTiingoStock;
 	CString strSymbol = _T("");
+	CString str;
 
 	setTiingoStock.Open();
 	setTiingoStock.m_pDatabase->BeginTrans();
@@ -56,9 +58,13 @@ bool CContainerTiingoStock::LoadDB() {
 		if (!IsSymbol(setTiingoStock.m_Ticker)) {
 			const auto pTiingoStock = make_shared<CTiingoStock>();
 			pTiingoStock->Load(setTiingoStock);
+			pTiingoStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 			Add(pTiingoStock);
 		}
 		else {
+			str = _T("发现重复代码：");
+			str += setTiingoStock.m_Ticker;
+			gl_systemMessage.PushInnerSystemInformationMessage(str);
 			setTiingoStock.Delete();
 		}
 		setTiingoStock.MoveNext();

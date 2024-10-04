@@ -117,24 +117,24 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.Get(0)->SetUpdateDayLineDB(false);
 	}
 
-	TEST_F(CContainerWorldStockTest, TestIsSaveInsiderTransaction) {
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSaveInsiderTransaction());
-		gl_dataContainerFinnhubStock.GetStock(0)->SetSaveInsiderTransaction(true);
+	TEST_F(CContainerWorldStockTest, TestIsUpdateInsiderTransactionDB) {
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateInsiderTransactionDB());
+		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateInsiderTransactionDB(true);
 
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSaveInsiderTransaction());
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateInsiderTransactionDB());
 
 		// »Ö¸´Ô­×´
-		gl_dataContainerFinnhubStock.GetStock(0)->SetSaveInsiderTransaction(false);
+		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateInsiderTransactionDB(false);
 	}
 
 	TEST_F(CContainerWorldStockTest, TestIsSaveInsiderSentiment) {
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSaveInsiderSentiment());
-		gl_dataContainerFinnhubStock.GetStock(0)->SetSaveInsiderSentiment(true);
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateInsiderSentimentDB());
+		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateInsiderSentimentDB(true);
 
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSaveInsiderSentiment());
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateInsiderSentimentDB());
 
 		// »Ö¸´Ô­×´
-		gl_dataContainerFinnhubStock.GetStock(0)->SetSaveInsiderSentiment(false);
+		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateInsiderSentimentDB(false);
 	}
 
 	TEST_F(CContainerWorldStockTest, TestIsUpdateBasicFinancialDB) {
