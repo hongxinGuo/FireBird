@@ -1,10 +1,10 @@
-// CSetTiingoFinancialState.cpp : CSetTiingoFinancialState 类的实现
+// CSetTiingoCompanyFinancialState.cpp : CSetTiingoCompanyFinancialState 类的实现
 
 #include"pch.h"
 
-#include "SetTiingoFinancialState.h"
+#include "SetTiingoCompanyFinancialState.h"
 
-CSetTiingoFinancialState::CSetTiingoFinancialState(const CString& strSchema, const CString& strTable, CDatabase* pdb)
+CSetTiingoCompanyFinancialState::CSetTiingoCompanyFinancialState(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_ID = 0;
 	m_symbol = _T("");
@@ -99,7 +99,7 @@ CSetTiingoFinancialState::CSetTiingoFinancialState(const CString& strSchema, con
 	m_nFields = 89;
 }
 
-void CSetTiingoFinancialState::DoFieldExchange(CFieldExchange* pFX) {
+void CSetTiingoCompanyFinancialState::DoFieldExchange(CFieldExchange* pFX) {
 	pFX->SetFieldType(CFieldExchange::outputColumn);
 	// RFX_Text() 和 RFX_Text() 这类宏依赖的是
 	// 成员变量的类型，而不是数据库字段的类型。

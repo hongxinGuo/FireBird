@@ -36,7 +36,7 @@ long CContainerChinaStock::GetActiveStockSize() const {
 
 long CContainerChinaStock::LoadStockProfileDB() {
 	CSetChinaStockSymbol setChinaStockSymbol;
-	char buffer[30]{0, 0, 0};
+	char buffer[30]{ 0, 0, 0 };
 	CString str;
 	long lDayLineNeedCheck = 0;
 
@@ -115,8 +115,7 @@ void CContainerChinaStock::UpdateStockProfileDB() {
 			setChinaStockSymbol.Close();
 			m_lLoadedStock = m_vStock.size();
 			ASSERT(iCount == iStockCodeNeedUpdate);
-		}
-		catch (CException* e) {
+		} catch (CException* e) {
 			ReportInformationAndDeleteException(e);
 		}
 	}
@@ -268,8 +267,7 @@ void CContainerChinaStock::ClearDayLineNeedUpdateStatus() const {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 CString CContainerChinaStock::GetStockName(const CString& strStockCode) {
-	try { return (GetStock(m_mapSymbol.at(strStockCode))->GetDisplaySymbol()); }
-	catch (exception& e) {
+	try { return (GetStock(m_mapSymbol.at(strStockCode))->GetDisplaySymbol()); } catch (exception& e) {
 		ReportErrorToSystemMessage(_T("GetStockName ") + strStockCode + _T(" "), e);
 		return _T("");
 	}
@@ -321,7 +319,7 @@ long CContainerChinaStock::GetDayLineNeedSaveNumber() const {
 // 主线程的删除函数只在不调用工作线程（无需存储日线数据）的情况下方才执行。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CContainerChinaStock::SaveDayLineData() {
+bool CContainerChinaStock::UpdateDayLineDB() {
 	CString str;
 	bool fSave = false;
 
@@ -496,7 +494,7 @@ bool CContainerChinaStock::Choice10RSStrongStockSet(CRSReference* pRef, int iInd
 long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	long iCount = 0;
 	try {
-		char buffer[20]{0};
+		char buffer[20]{ 0 };
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CSetDayLineExtendInfo setDayLineExtendInfo;
 
@@ -551,8 +549,7 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 		str += buffer;
 		str += _T("个股票");
 		gl_systemMessage.PushInformationMessage(str);
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 
@@ -560,7 +557,7 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 }
 
 void CContainerChinaStock::DeleteDayLineBasicInfo(long lDate) const {
-	char buffer[20]{0x000};
+	char buffer[20]{ 0x000 };
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 
 	_ltoa_s(lDate, buffer, 10);
@@ -578,7 +575,7 @@ void CContainerChinaStock::DeleteDayLineBasicInfo(long lDate) const {
 }
 
 void CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) const {
-	char buffer[20]{0x000};
+	char buffer[20]{ 0x000 };
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
 	_ltoa_s(lDate, buffer, 10);
@@ -602,7 +599,7 @@ void CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) const {
 // 使用ExecuteSQL(_T("TRUNCATE `chinamarket`.`today`;"))，保证能够快速删除任意大小的记录集。
 //
 //////////////////////////////////////////////////////////////////////////////////
-void CContainerChinaStock::SaveTempRTData() {
+void CContainerChinaStock::UpdateTempRTDB() {
 	try {
 		CSetDayLineTodaySaved setDayLineTemp;
 		long lStock = 0;
@@ -634,8 +631,7 @@ void CContainerChinaStock::SaveTempRTData() {
 		}
 		setDayLineTemp.m_pDatabase->CommitTrans();
 		setDayLineTemp.Close();
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 }

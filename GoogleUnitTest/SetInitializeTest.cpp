@@ -26,6 +26,7 @@
 #include"SetSICIndustry.h"
 #include"SetTiingoIndustry.h"
 #include"SetTiingoStock.h"
+#include"SetTiingoCompanyFinancialState.h"
 #include"SetWorldStock.h"
 
 #include"SetDayLineBasicInfo.h"
@@ -406,6 +407,18 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setTiingoIndustry.GetDefaultSQL(), _T("[tiingo_industry]"));
 	}
 
+	TEST_F(SetInitializeTest, TestTiingoCompanyFinancialStateInitialize) {
+		CSetTiingoCompanyFinancialState setTiingoCompanyFinancialState;
+
+		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
+		EXPECT_STREQ(setTiingoCompanyFinancialState.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+		gl_systemConfiguration.SetWorkingMode(true);
+		EXPECT_STREQ(setTiingoCompanyFinancialState.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
+		gl_systemConfiguration.SetWorkingMode(false);
+
+		EXPECT_STREQ(setTiingoCompanyFinancialState.GetDefaultSQL(), _T("[tiingo_company_financial_state]"));
+	}
+
 	TEST_F(SetInitializeTest, TestTiingoStockInitialize) {
 		CSetTiingoStock setTiingoStock;
 
@@ -419,7 +432,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(SetInitializeTest, TestTiingoFinancialStateInitialize) {
-		CSetTiingoFinancialState setTiingoFinancialState;
+		CSetTiingoCompanyFinancialState setTiingoFinancialState;
 
 		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		EXPECT_STREQ(setTiingoFinancialState.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
@@ -427,7 +440,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setTiingoFinancialState.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setTiingoFinancialState.GetDefaultSQL(), _T("[tiingo_financial_state]"));
+		EXPECT_STREQ(setTiingoFinancialState.GetDefaultSQL(), _T("[tiingo_company_financial_state]"));
 	}
 
 	TEST_F(SetInitializeTest, TestTiingoFundamentalDefinitionInitialize) {

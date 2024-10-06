@@ -1,7 +1,7 @@
 #pragma once
 
 #include"ProductTiingo.h"
-#include"TiingoFinancialState.h"
+#include"TiingoCompanyFinancialState.h"
 
 class CProductTiingoFinancialState final : public CProductTiingo {
 public:
@@ -10,7 +10,7 @@ public:
 
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CTiingoFinancialStatesPtr ParseTiingoFinancialState(const CWebDataPtr& pWebData);
+	CTiingoCompanyFinancialStatesPtr ParseTiingoFinancialState(const CWebDataPtr& pWebData);
 };
 
 using CProductTiingoFinancialStatePtr = shared_ptr<CProductTiingoFinancialState>;

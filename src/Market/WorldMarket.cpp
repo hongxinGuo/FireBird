@@ -425,7 +425,7 @@ void CWorldMarket::UpdateTiingoStockStatus() {
 		for (int i = 0; i < iTotal; i++) {
 			auto pStock = gl_dataContainerTiingoStock.GetStock(i);
 			pStock->SetUpdateDayLine(false);
-			pStock->SetFinancialStateNeedUpdate(false);
+			pStock->SetUpdateFinancialState(false);
 		}
 		iTotal = gl_dataContainerChosenWorldStock.Size();
 		for (int i = 0; i < iTotal; i++) {
@@ -433,10 +433,10 @@ void CWorldMarket::UpdateTiingoStockStatus() {
 			if (gl_dataContainerTiingoStock.IsSymbol(p->GetSymbol())) {
 				auto pStock = gl_dataContainerTiingoStock.GetStock(p->GetSymbol());
 				pStock->SetUpdateDayLine(true);
-				pStock->SetFinancialStateNeedUpdate(true);
+				pStock->SetUpdateFinancialState(true);
 			}
 		}
-		gl_dataContainerTiingoStock.GetStock(_T("ZG"))->SetFinancialStateNeedUpdate(true); // Note Zillow公司，用于测试
+		gl_dataContainerTiingoStock.GetStock(_T("ZG"))->SetUpdateFinancialState(true); // Note Zillow公司，用于测试
 	}
 }
 
@@ -565,7 +565,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	}
 	if (IsPermitUpdateTiingoFundamentalDefinitionDB()) {
 		SetPermitUpdateTiingoFundamentalDefinitionDB(false);
-		if (gl_dataContainerTiingoFundamentalDefinition.IsNeedUpdate()) { // Tiingo crypto symbol
+		if (gl_dataContainerTiingoFundamentalDefinition.IsUpdateDB()) { // Tiingo crypto symbol
 			gl_runtime.background_executor()->post([] {
 				gl_UpdateWorldMarketDB.acquire();
 				gl_dataContainerTiingoFundamentalDefinition.UpdateDB();

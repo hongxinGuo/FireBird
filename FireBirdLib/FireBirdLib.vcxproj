@@ -104,7 +104,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSECFilings.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSICIndustry.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoFinancialState.h" />
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.h" />
@@ -209,7 +209,7 @@
     <ClInclude Include="..\src\Type\China market\WebRTData.h" />
     <ClInclude Include="..\src\Type\China market\WeekLine.h" />
     <ClInclude Include="..\src\Type\SECFiling.h" />
-    <ClInclude Include="..\src\Type\TiingoFinancialState.h" />
+    <ClInclude Include="..\src\Type\TiingoCompanyFinancialState.h" />
     <ClInclude Include="..\src\Type\VirtualDataHistoryCandleExtend.h" />
     <ClInclude Include="..\src\Type\VirtualHistoryCandleBasic.h" />
     <ClInclude Include="..\src\Type\VirtualHistoryCandleExtend.h" />
@@ -308,7 +308,7 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetSECFiling.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetSICIndustry.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoFinancialState.cpp" />
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.cpp" />
@@ -402,7 +402,7 @@
     <ClCompile Include="..\src\Type\China market\WebRTData.cpp" />
     <ClCompile Include="..\src\Type\China market\WeekLine.cpp" />
     <ClCompile Include="..\src\Type\SECFiling.cpp" />
-    <ClCompile Include="..\src\Type\TiingoFinancialState.cpp" />
+    <ClCompile Include="..\src\Type\TiingoCompanyFinancialState.cpp" />
     <ClCompile Include="..\src\Type\VirtualDataHistoryCandleExtend.cpp" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandleBasic.cpp" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandleExtend.cpp" />

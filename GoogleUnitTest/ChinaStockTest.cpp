@@ -318,7 +318,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsDelisted());
 	}
 
-	TEST_F(CChinaStockTest, TestIsDayLineNeedUpdate) {
+	TEST_F(CChinaStockTest, TestIsUpdateDayLine) {
 		CChinaStock stock;
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		stock.SetUpdateDayLine(false);

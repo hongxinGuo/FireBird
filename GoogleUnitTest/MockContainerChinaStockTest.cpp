@@ -56,7 +56,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(s_pMockContainerChinaStock->GetActiveStockSize(), 2);
 	}
 
-	TEST_F(CMockContainerChinaStockTest, TestSetDayLineNeedUpdate) {
+	TEST_F(CMockContainerChinaStockTest, TestSetUpdateDayLine) {
 		for (size_t l = 0; l < s_pMockContainerChinaStock->GetLoadedStockSize(); l++) {
 			const auto pStock = s_pMockContainerChinaStock->GetStock(l);
 			pStock->SetUpdateDayLine(false);

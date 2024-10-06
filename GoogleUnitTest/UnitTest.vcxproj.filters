@@ -645,6 +645,15 @@
     <ClCompile Include="TiingoStockTest.cpp">
       <Filter>Test源文件\Stock\World stock</Filter>
     </ClCompile>
+    <ClCompile Include="TiingoCompanyFinancialStateTest.cpp">
+      <Filter>Test源文件\Type\World market</Filter>
+    </ClCompile>
+    <ClCompile Include="TiingoFundamentalDefinitionTest.cpp">
+      <Filter>Test源文件\Type\World market</Filter>
+    </ClCompile>
+    <ClCompile Include="ContainerTiingoFundamentalDefinitionTest.cpp">
+      <Filter>Test源文件\Data Container\Tiingo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockMainFrm.h">

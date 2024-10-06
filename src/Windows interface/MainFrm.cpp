@@ -1225,7 +1225,7 @@ void CMainFrame::OnUpdateTiingoFundamentalDefinition() {
 }
 
 void CMainFrame::OnUpdateUpdateTiingoFundamentalDefinition(CCmdUI* pCmdUI) {
-	if (gl_dataContainerTiingoFundamentalDefinition.IsNeedUpdate()) {
+	if (gl_dataContainerTiingoFundamentalDefinition.IsUpdateDB()) {
 		pCmdUI->Enable(true);
 	}
 	else {

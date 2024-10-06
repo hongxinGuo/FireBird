@@ -157,6 +157,13 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(stock.GetUpDownRate(), 1.1);
 	}
 
+	TEST_F(CTiingoStockTest, TestIsUpdateFinancialState) {
+		EXPECT_TRUE(stock.IsUpdateFinancialState());
+
+		stock.SetUpdateFinancialState(false);
+		EXPECT_FALSE(stock.IsUpdateFinancialState());
+	}
+
 	TEST_F(CTiingoStockTest, TestIsTodayNewStock) {
 		EXPECT_FALSE(stock.IsTodayNewStock());
 		stock.SetTodayNewStock(true);
@@ -266,7 +273,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsNotYetList());
 	}
 
-	TEST_F(CTiingoStockTest, TestIsDayLineNeedUpdate) {
+	TEST_F(CTiingoStockTest, TestIsUpdateDayLine) {
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		stock.SetUpdateDayLine(false);
 		EXPECT_FALSE(stock.IsUpdateDayLine());

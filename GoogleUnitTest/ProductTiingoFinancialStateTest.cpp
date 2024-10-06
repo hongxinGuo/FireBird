@@ -98,7 +98,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CTiingoFinancialStatesPtr m_pvFinancialState;
+		CTiingoCompanyFinancialStatesPtr m_pvFinancialState;
 		CProductTiingoFinancialState m_tiingoFinancialStateProduct;
 	};
 
@@ -163,7 +163,7 @@ namespace FireBirdTest {
 		                         &tiingoFinancialState3, &tiingoFinancialState4, &tiingoFinancialState10));
 
 	TEST_P(ProcessTiingoFinancialStateTest, TestProcessFinancialState) {
-		CTiingoFinancialStatePtr pTiingoFinancialState = nullptr;
+		CTiingoCompanyFinancialStatePtr pTiingoFinancialState = nullptr;
 		CWorldStockPtr pStock = nullptr;
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 		m_tiingoFinancialStateProduct.ParseAndStoreWebData(m_pWebData);

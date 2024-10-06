@@ -27,7 +27,7 @@ public:
 	void UnloadDayLine() noexcept;
 	bool BuildWeekLine(long lStartDate);
 	long BuildDayLine(long lCurrentTradeDay);
-	void SaveTempRTData();
+	void UpdateTempRTDB();
 	static void DeleteTempRTData();
 	bool BuildDayLineRS(long lDate);
 	bool BuildWeekLineRS(long lDate);
@@ -47,7 +47,7 @@ public:
 	CString CreateTengxunDayLineInquiringStr();
 
 	void ProcessRTData();
-	bool SaveDayLineData();
+	bool UpdateDayLineDB();
 
 	[[nodiscard]] long GetDayLineNeedUpdateNumber() const;
 	[[nodiscard]] long GetDayLineNeedSaveNumber() const;

@@ -78,7 +78,7 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CChinaStock::CalculatingWeekLine</Function>
 
 								<Function>CContainerChinaStock::DeleteTempRTData</Function>
-								<Function>CContainerChinaStock::SaveTempRTData</Function>
+								<Function>CContainerChinaStock::UpdateTempRTDB</Function>
 								<Function>CContainerChinaStock::UnloadDayLine</Function>
 
 								<Function>CChinaMarket::BuildCurrentWeekWeekLineTable</Function>
@@ -90,6 +90,9 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CChinaMarket::DeleteWeekLine</Function>
 								<Function>CChinaMarket::SaveRTData</Function>
 								<Function>CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDate</Function>
+								<Function>CChinaMarket::TaskChoiceRSSet</Function>
+								<Function>CChinaMarket::TaskLoadCurrentStockHistoryData</Function>
+                                <Function>CChinaMarket::TaskLoadCurrentStockHistoryData</Function>
 
 								<Function>CWorldMarket::StartFinnhubWebSocket</Function>
 								<Function>CWorldMarket::StartTiingoIEXWebSocket</Function>
@@ -103,7 +106,11 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CWorldMarket::ProcessFinnhubWebSocketData</Function>
 								<Function>CWorldMarket::ProcessTiingoIEXWebSocketData</Function>
 								<Function>CWorldMarket::ProcessTiingoCryptoWebSocketData</Function>
-                                <Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
+								<Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
+								<Function>CWorldMarket::TaskUpdateSICIndustry</Function>
+                                <Function>CWorldMarket::TaskUpdateNaicsIndustry</Function>
+								<Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
+								<Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
 
 								<Function>CContainerChinaStock::BuildDayLine</Function>
 								<Function>CContainerChinaStock::BuildDayLineRS</Function>
@@ -116,8 +123,8 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CContainerChinaStock::DeleteDayLineExtendInfo</Function>
 								<Function>CContainerChinaStock::DeleteTodayTempDB</Function>
 								<Function>CContainerChinaStock::UpdateTodayTempDB</Function>
-								<Function>CContainerChinaStock::TaskSaveDayLineData</Function>
-                                <Function>CContainerChinaStock::SaveDayLineData</Function>
+								<Function>CContainerChinaStock::TaskUpdateDayLineDB</Function>
+                                <Function>CContainerChinaStock::UpdateDayLineDB</Function>
 								
 								<Function>CContainerWorldStock::UpdateBasicFinancialAnnualDB</Function>
 								<Function>CContainerWorldStock::UpdateBasicFinancialDB</Function>
@@ -245,8 +252,8 @@ Included items must then not match any entries in the exclude list to remain inc
                                 <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\googletest\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\Packages\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\*.*</Source>
-								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\DataBase\\*.*</Source>
                                 <Source>C:\\users\\hxguo\\source\\repos\\FireBird\\lib\\*.*</Source>
+								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\FireBird\\source\\DataBase\\*.*</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdDoc.cpp</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\FireBirdDoc.h</Source>
 								<Source>C:\\users\\hxguo\\source\\repos\\FireBird\\src\\windows interface\\ChildFrm.cpp</Source>

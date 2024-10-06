@@ -957,7 +957,7 @@ namespace FireBirdTest {
 		pStock->SetUpdateDayLineDB(false);
 	}
 
-	TEST_F(CChinaMarketTest, TestIsDayLineNeedUpdate) {
+	TEST_F(CChinaMarketTest, TestIsUpdateDayLine) {
 		CChinaStockPtr pStock;
 		EXPECT_TRUE(gl_dataContainerChinaStock.IsUpdateDayLine());
 		for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {

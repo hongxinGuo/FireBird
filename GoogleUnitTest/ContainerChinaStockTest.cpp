@@ -94,7 +94,7 @@ namespace FireBirdTest {
 		m_containerChinaStock.Delete(pStock);
 	}
 
-	TEST_F(CContainerChinaStockTest, TestSetAllDayLineNeedUpdate) {
+	TEST_F(CContainerChinaStockTest, TestSetUpdateAllDayLine) {
 		for (int i = 0; i < m_containerChinaStock.GetLoadedStockSize(); i++) {
 			EXPECT_TRUE(m_containerChinaStock.GetStock(i)->IsUpdateDayLine());
 		}

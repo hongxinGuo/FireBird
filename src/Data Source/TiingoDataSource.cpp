@@ -229,8 +229,8 @@ bool CTiingoDataSource::InquireFinancialState() {
 		bool fFound = false;
 		for (lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
 			auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdateDayLinePos);
-			if (pTiingoStock->IsFinancialStateNeedUpdate()) {
-				pTiingoStock->SetFinancialStateNeedUpdate(false);
+			if (pTiingoStock->IsUpdateFinancialState()) {
+				pTiingoStock->SetUpdateFinancialState(false);
 				fFound = true;
 				break;
 			}

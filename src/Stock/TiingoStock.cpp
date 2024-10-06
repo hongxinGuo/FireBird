@@ -107,9 +107,9 @@ void CTiingoStock::Update(CSetTiingoStock& setTiingoStock) {
 
 void CTiingoStock::UpdateFinancialStateDB() const {
 	ASSERT(m_pvFinancialState != nullptr);
-	CSetTiingoFinancialState setFinancialState;
-	vector<CTiingoFinancialStatePtr> vOldFinancialState;
-	CTiingoFinancialStatePtr pTiingoFinancialState = nullptr;
+	CSetTiingoCompanyFinancialState setFinancialState;
+	vector<CTiingoCompanyFinancialStatePtr> vOldFinancialState;
+	CTiingoCompanyFinancialStatePtr pTiingoFinancialState = nullptr;
 	long lSizeOfOldDayLine = 0;
 	const size_t lSize = m_pvFinancialState->size();
 	long lLastDate = 0;
@@ -124,7 +124,7 @@ void CTiingoStock::UpdateFinancialStateDB() const {
 	while (!setFinancialState.IsEOF()) {
 		if (setFinancialState.m_yearQuarter > lLastDate) {
 			lLastDate = setFinancialState.m_yearQuarter;
-			pTiingoFinancialState = make_shared<CTiingoFinancialState>();
+			pTiingoFinancialState = make_shared<CTiingoCompanyFinancialState>();
 			pTiingoFinancialState->Load(setFinancialState);
 
 			vOldFinancialState.push_back(pTiingoFinancialState);

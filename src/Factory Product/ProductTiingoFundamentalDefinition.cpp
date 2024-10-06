@@ -22,7 +22,7 @@ void CProductTiingoFundamentalDefinition::ParseAndStoreWebData(CWebDataPtr pWebD
 	const auto pvFundamentalDefinition = ParseTiingoFundamentalDefinition(pWebData);
 	if (!pvFundamentalDefinition->empty()) {
 		for ([[maybe_unused]] const auto& pDefinition : *pvFundamentalDefinition) {
-			if (!gl_dataContainerTiingoFundamentalDefinition.IsDefinition(pDefinition->m_strDataCode)) {
+			if (!gl_dataContainerTiingoFundamentalDefinition.HaveDefinition(pDefinition->m_strDataCode)) {
 				gl_dataContainerTiingoFundamentalDefinition.Add(pDefinition);
 			}
 		}

@@ -1,11 +1,11 @@
-// CSetTiingoFinancialState.h : CSetTiingoFinancialState 的声明
+// CSetTiingoCompanyFinancialState.h : CSetTiingoCompanyFinancialState 的声明
 
 #pragma once
 #include"VirtualRecordset.h"
 
-class CSetTiingoFinancialState : public CVirtualRecordset {
+class CSetTiingoCompanyFinancialState : public CVirtualRecordset {
 public:
-	CSetTiingoFinancialState(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("tiingo_financial_state"), CDatabase* pDatabase = nullptr);
+	CSetTiingoCompanyFinancialState(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("tiingo_company_financial_state"), CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 

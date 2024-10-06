@@ -46,7 +46,7 @@ public:
 	virtual bool TaskResetMarket(long lCurrentTime);
 	void TaskDistributeAndCalculateRTData(long lCurrentTime);
 	void TaskProcessAndSaveDayLine(long lCurrentTime);
-	void TaskUpdateTempDataDB(long lCurrentTime);
+	void TaskUpdateTempRTDB(long lCurrentTime);
 	void TaskLoadCurrentStockHistoryData() const;// 装载当前股票日线
 	void TaskPerSecond(long lCurrentTime); // 每秒一次的辅助任务
 	void TaskAccessoryPerMinuteTask(long lCurrentTime); // 每分钟重复执行的辅助任务

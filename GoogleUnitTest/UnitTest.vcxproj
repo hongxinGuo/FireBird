@@ -77,6 +77,7 @@
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="CompanyNewsTest.cpp" />
     <ClCompile Include="ContainerFinnhubEconomicCalendarTest.cpp" />
+    <ClCompile Include="ContainerTiingoFundamentalDefinitionTest.cpp" />
     <ClCompile Include="ContainerVirtualStockTest.cpp" />
     <ClCompile Include="ConvertToStringTest.cpp" />
     <ClCompile Include="ContainerChinaStockTest.cpp" />
@@ -143,10 +144,12 @@
     <ClCompile Include="TaskDistributeTengxunRTDataToProperStockTest.cpp" />
     <ClCompile Include="TengxunDayLineDataSourceTest.cpp" />
     <ClCompile Include="TengxunRTDataSourceImpTest.cpp" />
+    <ClCompile Include="TiingoCompanyFinancialStateTest.cpp" />
     <ClCompile Include="TiingoCryptoSymbolTest.cpp" />
     <ClCompile Include="TiingoCryptoWebSocketTest.cpp" />
     <ClCompile Include="TiingoDataSourceTest.cpp" />
     <ClCompile Include="TiingoForexWebSocketTest.cpp" />
+    <ClCompile Include="TiingoFundamentalDefinitionTest.cpp" />
     <ClCompile Include="TiingoIEXWebSocketTest.cpp" />
     <ClCompile Include="ContainerChinaDayLineTest.cpp" />
     <ClCompile Include="ProductFinnhubCompanyPeerTest.cpp" />

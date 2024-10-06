@@ -3,7 +3,7 @@
 #include "ContainerTiingoStockDayLine.h"
 #include"SetTiingoStock.h"
 
-#include "TiingoFinancialState.h"
+#include "TiingoCompanyFinancialState.h"
 
 class CTiingoStock : public CVirtualStock {
 public:
@@ -23,13 +23,13 @@ public:
 	void Save(CSetTiingoStock& setTiingoStock);
 	void Update(CSetTiingoStock& setTiingoStock);
 
-	bool IsFinancialStateNeedUpdate() const noexcept { return m_fUpdateFinancialState; }
-	void SetFinancialStateNeedUpdate(bool fFlag) noexcept { m_fUpdateFinancialState = fFlag; }
+	bool IsUpdateFinancialState() const noexcept { return m_fUpdateFinancialState; }
+	void SetUpdateFinancialState(bool fFlag) noexcept { m_fUpdateFinancialState = fFlag; }
 
 	bool IsUpdateFinancialStateDB() const noexcept { return m_fUpdateFinancialStateDB; }
 	void SetUpdateFinancialStateDB(bool fFlag) noexcept { m_fUpdateFinancialStateDB = fFlag; }
 
-	void UpdateFinancialState(const CTiingoFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
+	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
 	void UpdateDayLine(const vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UpdateFinancialStateDB() const;
 	bool UpdateDayLineDB();
@@ -72,7 +72,7 @@ public:
 	CString m_strSECFilingWebSite;
 
 protected:
-	CTiingoFinancialStatesPtr m_pvFinancialState{ nullptr };
+	CTiingoCompanyFinancialStatesPtr m_pvFinancialState{ nullptr };
 
 	CContainerTiingoStockDayLine m_dataDayLine;
 

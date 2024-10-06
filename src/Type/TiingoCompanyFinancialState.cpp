@@ -1,14 +1,10 @@
 #include"pch.h"
 
-#include"TiingoFinancialState.h"
+#include"TiingoCompanyFinancialState.h"
 
 #include "ConvertToString.h"
 
-CTiingoFinancialState::CTiingoFinancialState() {
-	Reset();
-}
-
-void CTiingoFinancialState::Reset() {
+CTiingoCompanyFinancialState::CTiingoCompanyFinancialState() {
 	m_symbol = _T("");
 	m_exchange = _T("");
 	m_yearQuarter = 0;
@@ -99,7 +95,7 @@ void CTiingoFinancialState::Reset() {
 	m_trailingPEG1Y = 0;
 }
 
-void CTiingoFinancialState::Load(const CSetTiingoFinancialState& setTiingoFinancialState) {
+void CTiingoCompanyFinancialState::Load(const CSetTiingoCompanyFinancialState& setTiingoFinancialState) {
 	m_symbol = setTiingoFinancialState.m_symbol;
 	m_exchange = setTiingoFinancialState.m_exchange;
 	m_yearQuarter = setTiingoFinancialState.m_yearQuarter;
@@ -190,13 +186,13 @@ void CTiingoFinancialState::Load(const CSetTiingoFinancialState& setTiingoFinanc
 	m_trailingPEG1Y = atof(setTiingoFinancialState.m_trailingPEG1Y);
 }
 
-void CTiingoFinancialState::Append(CSetTiingoFinancialState& setTiingoFinancialState) const {
+void CTiingoCompanyFinancialState::Append(CSetTiingoCompanyFinancialState& setTiingoFinancialState) const {
 	setTiingoFinancialState.AddNew();
 	Save(setTiingoFinancialState);
 	setTiingoFinancialState.Update();
 }
 
-void CTiingoFinancialState::Save(CSetTiingoFinancialState& setTiingoFinancialState) const {
+void CTiingoCompanyFinancialState::Save(CSetTiingoCompanyFinancialState& setTiingoFinancialState) const {
 	setTiingoFinancialState.m_symbol = m_symbol;
 	setTiingoFinancialState.m_exchange = m_exchange;
 	setTiingoFinancialState.m_yearQuarter = m_yearQuarter;
@@ -287,7 +283,7 @@ void CTiingoFinancialState::Save(CSetTiingoFinancialState& setTiingoFinancialSta
 	setTiingoFinancialState.m_trailingPEG1Y = ConvertValueToString(m_trailingPEG1Y);
 }
 
-void CTiingoFinancialState::Assign(int index, double fValue) {
+void CTiingoCompanyFinancialState::Assign(int index, double fValue) {
 	switch (index) {
 	case 1:
 		m_accoci = fValue;

@@ -1,31 +1,29 @@
 #pragma once
 
-#include"SetTiingoFinancialState.h"
+#include"SetTiingoCompanyFinancialState.h"
 
 #include<memory>
 #include<vector>
 
-class CTiingoFinancialState final {
+class CTiingoCompanyFinancialState final {
 public:
-	CTiingoFinancialState();
+	CTiingoCompanyFinancialState();
 	// 不允许复制和赋值。
-	CTiingoFinancialState(const CTiingoFinancialState&) = delete;
-	CTiingoFinancialState& operator=(const CTiingoFinancialState&) = delete;
-	CTiingoFinancialState(const CTiingoFinancialState&&) noexcept = delete;
-	CTiingoFinancialState& operator=(const CTiingoFinancialState&&) noexcept = delete;
-	~CTiingoFinancialState() = default;
+	CTiingoCompanyFinancialState(const CTiingoCompanyFinancialState&) = delete;
+	CTiingoCompanyFinancialState& operator=(const CTiingoCompanyFinancialState&) = delete;
+	CTiingoCompanyFinancialState(const CTiingoCompanyFinancialState&&) noexcept = delete;
+	CTiingoCompanyFinancialState& operator=(const CTiingoCompanyFinancialState&&) noexcept = delete;
+	~CTiingoCompanyFinancialState() = default;
 
-	void Reset();
-
-	void Load(const CSetTiingoFinancialState& setTiingoFinancialState);
-	void Append(CSetTiingoFinancialState& setTiingoFinancialState) const;
-	void Save(CSetTiingoFinancialState& setTiingoFinancialState) const;
+	void Load(const CSetTiingoCompanyFinancialState& setTiingoFinancialState);
+	void Append(CSetTiingoCompanyFinancialState& setTiingoFinancialState) const;
+	void Save(CSetTiingoCompanyFinancialState& setTiingoFinancialState) const;
 
 	void Assign(int index, double fValue);
 
 public:
-	CString m_symbol;
-	CString m_exchange;
+	CString m_symbol{ _T("") };
+	CString m_exchange{ _T("") };
 	int m_yearQuarter{ 0 };
 	double m_accoci{ 0 };
 	double m_acctPay{ 0 };
@@ -116,5 +114,5 @@ public:
 	// 无需存储数据区
 };
 
-using CTiingoFinancialStatePtr = shared_ptr<CTiingoFinancialState>;
-using CTiingoFinancialStatesPtr = shared_ptr<vector<CTiingoFinancialStatePtr>>;
+using CTiingoCompanyFinancialStatePtr = shared_ptr<CTiingoCompanyFinancialState>;
+using CTiingoCompanyFinancialStatesPtr = shared_ptr<vector<CTiingoCompanyFinancialStatePtr>>;

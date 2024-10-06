@@ -261,7 +261,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsNotYetList());
 	}
 
-	TEST_F(CWorldStockTest, TestIsDayLineNeedUpdate) {
+	TEST_F(CWorldStockTest, TestIsUpdateDayLine) {
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		stock.SetUpdateDayLine(false);
 		EXPECT_FALSE(stock.IsUpdateDayLine());
@@ -357,7 +357,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsSECFilingsNeedSave());
 	}
 
-	TEST_F(CWorldStockTest, TestIsInsiderTransactionNeedUpdate) {
+	TEST_F(CWorldStockTest, TestIsUpdateInsiderTransaction) {
 		EXPECT_TRUE(stock.IsUpdateInsiderTransaction());
 		stock.SetUpdateInsiderTransaction(false);
 		EXPECT_FALSE(stock.IsUpdateInsiderTransaction());
@@ -373,7 +373,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateInsiderTransactionDB());
 	}
 
-	TEST_F(CWorldStockTest, TestIsInsiderSentimentNeedUpdate) {
+	TEST_F(CWorldStockTest, TestIsUpdateInsiderSentiment) {
 		EXPECT_TRUE(stock.IsUpdateInsiderSentiment());
 		stock.SetUpdateInsiderSentiment(false);
 		EXPECT_FALSE(stock.IsUpdateInsiderSentiment());

@@ -223,7 +223,7 @@ int CChinaMarket::ProcessTask(long lCurrentTime) {
 			TaskDistributeAndCalculateRTData(lCurrentTime);
 			break;
 		case CHINA_MARKET_SAVE_TEMP_RT_DATA__:
-			TaskUpdateTempDataDB(lCurrentTime);
+			TaskUpdateTempRTDB(lCurrentTime);
 			break;
 		case CHINA_MARKET_BUILD_TODAY_DATABASE__:
 			TaskProcessTodayStock(lCurrentTime);
@@ -662,7 +662,7 @@ void CChinaMarket::TaskExitSystem(long lCurrentTime) {
 // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-void CChinaMarket::TaskUpdateTempDataDB(long lCurrentTime) {
+void CChinaMarket::TaskUpdateTempRTDB(long lCurrentTime) {
 	if (lCurrentTime < 150500) { // 中国市场股票交易截止时间为150000。
 		long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
 		if ((lNextTime >= 113500) && (lNextTime < 125730)) lNextTime = 125730;
@@ -674,7 +674,7 @@ void CChinaMarket::TaskUpdateTempDataDB(long lCurrentTime) {
 		gl_runtime.background_executor()->post([] {
 			gl_UpdateChinaMarketDB.acquire();
 			gl_ProcessChinaMarketRTData.acquire();
-			gl_dataContainerChinaStock.SaveTempRTData();
+			gl_dataContainerChinaStock.UpdateTempRTDB();
 			gl_ProcessChinaMarketRTData.release();
 			gl_UpdateChinaMarketDB.release();
 		});
@@ -1010,7 +1010,7 @@ void CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 
 		// 判断是否存储日线库和股票代码库
 		if (gl_dataContainerChinaStock.IsUpdateDayLineDB()) {
-			gl_dataContainerChinaStock.SaveDayLineData();
+			gl_dataContainerChinaStock.UpdateDayLineDB();
 		}
 		gl_UpdateChinaMarketDB.release();
 	});

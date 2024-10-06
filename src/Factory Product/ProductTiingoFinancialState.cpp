@@ -116,7 +116,7 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoFinancialState = ParseTiingoFinancialState(pWebData);
 
 	pTiingoStock->SetCompanyFinancialStatementUpdateDate(gl_pWorldMarket->GetMarketDate());
-	pTiingoStock->SetFinancialStateNeedUpdate(false);
+	pTiingoStock->SetUpdateFinancialState(false);
 	pTiingoStock->SetUpdateProfileDB(true);
 	if (pvTiingoFinancialState->size() > 0) { // 为空时没有更新的必要。
 		pTiingoStock->UpdateFinancialState(pvTiingoFinancialState);
@@ -156,8 +156,8 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // 使用simdjson解析，速度为Nlohmann-json的三倍。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialState(const CWebDataPtr& pWebData) {
-	auto pvTiingoFinancialState = make_shared<vector<CTiingoFinancialStatePtr>>();
+CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialState(const CWebDataPtr& pWebData) {
+	auto pvTiingoFinancialState = make_shared<vector<CTiingoCompanyFinancialStatePtr>>();
 	CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
 	CString symbol = pStock->GetSymbol();
 	CString exchange = _T("US");
@@ -174,7 +174,7 @@ CTiingoFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialStat
 
 		for (auto item : doc) {
 			int iCount = 0;
-			auto pFinancialStatePtr = make_shared<CTiingoFinancialState>();
+			auto pFinancialStatePtr = make_shared<CTiingoCompanyFinancialState>();
 			pFinancialStatePtr->m_symbol = symbol;
 			pFinancialStatePtr->m_exchange = exchange;
 			auto itemValue = item.value();
@@ -257,7 +257,7 @@ CTiingoFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialStat
 		ReportJSonErrorToSystemMessage(_T("Tiingo financial state "), error.what());
 	}
 	std::ranges::sort(pvTiingoFinancialState->begin(), pvTiingoFinancialState->end(),
-	                  [](const CTiingoFinancialStatePtr& p1, const CTiingoFinancialStatePtr& p2) { return p1->m_yearQuarter < p2->m_yearQuarter; });
+	                  [](const CTiingoCompanyFinancialStatePtr& p1, const CTiingoCompanyFinancialStatePtr& p2) { return p1->m_yearQuarter < p2->m_yearQuarter; });
 
 	return pvTiingoFinancialState;
 }
