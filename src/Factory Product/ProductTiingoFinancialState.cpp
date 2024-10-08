@@ -5,7 +5,7 @@
 #include"TiingoStock.h"
 #include "ProductTiingoFinancialState.h"
 
-#include "TiingoDataSource.h"
+//#include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"
 #include "WorldMarket.h"
@@ -122,6 +122,7 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pTiingoStock->UpdateFinancialState(pvTiingoFinancialState);
 		pTiingoStock->SetUpdateFinancialStateDB(true);
 	}
+	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

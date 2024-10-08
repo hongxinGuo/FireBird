@@ -69,21 +69,19 @@ public:
 	void UsingTengxunRealtimeServer();
 
 	void SetChinaMarketRealtimeServer(const int iChinaMarketRealtimeServer) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_iChinaMarketRealtimeServer = iChinaMarketRealtimeServer;
 	}
-
 	[[nodiscard]] int GetChinaMarketDayLineServer() const noexcept { return m_iChinaMarketDayLineServer; }
 
 	void SetChinaMarketDayLineServer(const int iChinaMarketDayLineServer) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_iChinaMarketDayLineServer = iChinaMarketDayLineServer;
 	}
-
 	[[nodiscard]] int GetChinaMarketRTDataInquiryTime() const noexcept { return m_iChinaMarketRTDataInquiryTime; }
 
 	void SetChinaMarketRTDataInquiryTime(const int iChinaMarketRTDataInquiryTime) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_iChinaMarketRTDataInquiryTime = iChinaMarketRTDataInquiryTime;
 	}
 
@@ -94,20 +92,17 @@ public:
 	[[nodiscard]] CString GetQuandlToken() noexcept { return m_strQuandlToken; }
 	[[nodiscard]] int GetWorldMarketFinnhubInquiryTime() const noexcept { return m_iWorldMarketFinnhubInquiryTime; } // 单位为毫秒
 	void SetWorldMarketFinnhubInquiryTime(const int iWorldMarketFinnhubInquiryTime) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_iWorldMarketFinnhubInquiryTime = iWorldMarketFinnhubInquiryTime;
 	}
-
 	[[nodiscard]] int GetWorldMarketTiingoInquiryTime() const noexcept { return m_iWorldMarketTiingoInquiryTime; }
-
 	void SetWorldMarketTiingoInquiryTime(const int iWorldMarketTiingoInquiryTime) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_iWorldMarketTiingoInquiryTime = iWorldMarketTiingoInquiryTime;
 	}
-
 	[[nodiscard]] int GetWorldMarketQuandlInquiryTime() const noexcept { return m_iWorldMarketQuandlInquiryTime; }
 	void SetWorldMarketQuandlInquiryTime(const int iWorldMarketQuandlInquiryTime) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_iWorldMarketQuandlInquiryTime = iWorldMarketQuandlInquiryTime;
 	}
 
@@ -121,44 +116,72 @@ public:
 	void SetCurrentStock(const CString& stock) noexcept { m_strCurrentStock = stock; }
 	CString GetCurrentStock() const noexcept { return m_strCurrentStock; }
 
+	// Tiingo.com
+	void ChangeTiingoAccountTypeToFree2();
+	void ChangeTiingoAccountTypeToPaid2();
+	bool IsPaidTypeTiingoAccount2() const noexcept { return m_bTiingoAccountFeePaid2; }
+	[[nodiscard]] CString GetTiingoToken2() noexcept { return m_strTiingoToken2; }
+
+	[[nodiscard]] int GetTiingoHourLyRequestLimit() const noexcept { return m_iTiingoHourLyRequestLimit; }
+	void SetTiingoHourLyRequestLimit(const int iTiingoHourLyRequestLimit) noexcept {
+		m_fUpdateDB = true;
+		m_iTiingoHourLyRequestLimit = iTiingoHourLyRequestLimit;
+	}
+	[[nodiscard]] long GetTiingoDailyRequestLimit() const noexcept { return m_lTiingoDailyRequestLimit; }
+	void SetTiingoDailyRequestLimit(const long lTiingoDailyRequestLimit) noexcept {
+		m_fUpdateDB = true;
+		m_lTiingoDailyRequestLimit = lTiingoDailyRequestLimit;
+	}
+	[[nodiscard]] long long GetTiingoBandWidth() const noexcept { return m_llTiingoBandWidth; }
+	void SetTiingoBandWidth(const long long llTiingoBandWidth) noexcept {
+		m_fUpdateDB = true;
+		m_llTiingoBandWidth = llTiingoBandWidth;
+	}
+	[[nodiscard]] long long GetTiingoBandWidthLeft() const noexcept { return m_llTiingoBandWidthLeft; }
+	void DecreaseTiingoBandWidth(long long llSize) noexcept { m_llTiingoBandWidthLeft -= llSize; }
+	void SetTiingoBandWidthLeft(const long long llTiingoBandWidthLeft) noexcept {
+		m_fUpdateDB = true;
+		m_llTiingoBandWidthLeft = llTiingoBandWidthLeft;
+	}
+
 	// WebSocket
 	[[nodiscard]] bool IsUsingFinnhubWebSocket() const noexcept { return m_bUsingFinnhubWebSocket; }
 	void SetUsingFinnhubWebSocket(const bool bUsingFinnhubWebSocket) noexcept { m_bUsingFinnhubWebSocket = bUsingFinnhubWebSocket; }
 
 	[[nodiscard]] bool IsUsingTiingoIEXWebSocket() const noexcept { return m_bUsingTiingoIEXWebSocket; }
 	void SetUsingTiingoIEXWebSocket(const bool bUsingTiingoIEXWebSocket) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_bUsingTiingoIEXWebSocket = bUsingTiingoIEXWebSocket;
 	}
 
 	[[nodiscard]] bool IsUsingTiingoCryptoWebSocket() const noexcept { return m_bUsingTiingoCryptoWebSocket; }
 	void SetUsingTiingoCryptoWebSocket(const bool bUsingTiingoCryptoWebSocket) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_bUsingTiingoCryptoWebSocket = bUsingTiingoCryptoWebSocket;
 	}
 
 	[[nodiscard]] bool IsUsingTiingoForexWebSocket() const noexcept { return m_bUsingTiingoForexWebSocket; }
 	void SetUsingTiingoForexWebSocket(const bool bUsingTiingoForexWebSocket) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_bUsingTiingoForexWebSocket = bUsingTiingoForexWebSocket;
 	}
 
 	[[nodiscard]] bool IsUsingQuandlWebSocket() const noexcept { return m_bUsingQuandlWebSocket; }
 	void SetUsingQuandlWebSocket(const bool bUsingQuandlWebSocket) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_bUsingQuandlWebSocket = bUsingQuandlWebSocket;
 	}
 
 	// ChinaMarket
 	[[nodiscard]] int GetSavingChinaMarketStockDayLineThread() const noexcept { return m_iSavingChinaMarketStockDayLineThread; }
 	void SetSavingChinaMarketStockDayLineThread(const int iSavingChinaMarketStockDayLineThread) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_iSavingChinaMarketStockDayLineThread = iSavingChinaMarketStockDayLineThread;
 	}
 
 	[[nodiscard]] bool IsFastInquiringRTData() const noexcept { return m_bFastInquiringRTData; }
 	void SetFastInquiringRTData(const bool fFlag) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_bFastInquiringRTData = fFlag;
 	}
 
@@ -174,55 +197,55 @@ public:
 	// data update rate
 	[[nodiscard]] int GetStockProfileUpdateRate() const noexcept { return m_iStockProfileUpdateRate; }
 	void SetStockProfileUpdateRate(const int iRate) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_iStockProfileUpdateRate = iRate;
 	}
 
 	[[nodiscard]] int GetStockBasicFinancialUpdateRate() const noexcept { return m_iStockBasicFinancialUpdateRate; }
 	void SetStockBasicFinancialUpdateRate(const int iRate) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_iStockBasicFinancialUpdateRate = iRate;
 	}
 
 	[[nodiscard]] int GetInsideTransactionUpdateRate() const noexcept { return m_iInsideTransactionUpdateRate; }
 	void SetInsideTransactionUpdateRate(const int iRate) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_iInsideTransactionUpdateRate = iRate;
 	}
 
 	[[nodiscard]] int GetInsideSentimentUpdateRate() const noexcept { return m_iInsideSentimentUpdateRate; }
 	void SetInsideSentimentUpdateRate(const int iRate) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_iInsideSentimentUpdateRate = iRate;
 	}
 
 	[[nodiscard]] int GetStockPeerUpdateRate() const noexcept { return m_iStockPeerUpdateRate; }
 	void SetStockPeerUpdateRate(const int iRate) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_iStockPeerUpdateRate = iRate;
 	}
 
 	[[nodiscard]] int GetEPSSurpriseUpdateRate() const noexcept { return m_iEPSSurpriseUpdateRate; }
 	void SetEPSSurpriseUpdateRate(const int iRate) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_iEPSSurpriseUpdateRate = iRate;
 	}
 
 	[[nodiscard]] int GetSECFilingsUpdateRate() const noexcept { return m_iSECFilingsUpdateRate; }
 	void SetSECFilingsUpdateRate(const int iRate) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_iSECFilingsUpdateRate = iRate;
 	}
 
 	[[nodiscard]] int GetTiingoCompanyFinancialStateUpdateRate() const noexcept { return m_iTiingoCompanyFinancialStateUpdateRate; }
 	void SetTiingoCompanyFinancialStateUpdateRate(const int iRate) noexcept {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_iTiingoCompanyFinancialStateUpdateRate = iRate;
 	}
 
 	[[nodiscard]] CString GetBenchmarkTestFileDirectory() const noexcept { return m_strBenchmarkTestFileDirectory; }
 	void SetBenchmarkTestFileDirectory(const CString& strFileDirectory) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 		m_strBenchmarkTestFileDirectory = strFileDirectory;
 	}
 
@@ -254,8 +277,8 @@ public:
 
 	[[nodiscard]] bool IsInitialized() const noexcept { return m_fInitialized; }
 
-	bool IsNeedUpdate() const noexcept { return m_fUpdate; }
-	void NeedUpdate(bool fFlag) noexcept { m_fUpdate = fFlag; }
+	bool IsUpdateDB() const noexcept { return m_fUpdateDB; }
+	void SetUpdateDB(bool fFlag) noexcept { m_fUpdateDB = fFlag; }
 
 	// 无需存储
 	void SetExitingSystem(const bool bExit) { m_fExitingSystem = bExit; }
@@ -304,6 +327,14 @@ protected:
 	int m_iWorldMarketQuandlInquiryTime{ 3600000 / 100 }; // 每次查询间隔时间，单位为毫秒
 	CString m_strCurrentStock{ _T("") }; // 当前所选股票
 
+	// Tiingo.com
+	bool m_bTiingoAccountFeePaid2{ true };
+	CString m_strTiingoToken2{ _T("") };
+	int m_iTiingoHourLyRequestLimit{ 500 };
+	long m_lTiingoDailyRequestLimit{ 20000 };
+	long long m_llTiingoBandWidth{ 5368709120 };
+	long long m_llTiingoBandWidthLeft{ 5368709120 };
+
 	// WebSocket
 	bool m_bUsingFinnhubWebSocket{ true };
 	bool m_bUsingTiingoIEXWebSocket{ true };
@@ -334,7 +365,7 @@ protected:
 	// 测试系统
 	CString m_strBenchmarkTestFileDirectory; // 性能测试文件所在的目录
 
-	bool m_fUpdate{ false };
+	bool m_fUpdateDB{ false };
 	bool m_fInitialized{ false };
 
 	// 以下为无需存储之系统参数

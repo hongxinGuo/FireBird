@@ -60,17 +60,17 @@ void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pPro
 		default:
 			gl_systemConfiguration.SetLogLevel(SPDLOG_LEVEL_INFO);
 		}
-		gl_systemConfiguration.NeedUpdate(true);
+		gl_systemConfiguration.SetUpdateDB(true);
 		break;
 	case SYSTEM_DEBUG_MODE_:
 		ASSERT(pVar->vt == VT_BOOL);
 		gl_systemConfiguration.SetDebugMode(pVar->boolVal);
-		gl_systemConfiguration.NeedUpdate(true);
+		gl_systemConfiguration.SetUpdateDB(true);
 		break;
 	case SYSTEM_RELOAD_SYSTEM_:
 		ASSERT(pVar->vt == VT_BOOL);
 		gl_systemConfiguration.SetReloadSystem(pVar->boolVal);
-		gl_systemConfiguration.NeedUpdate(true);
+		gl_systemConfiguration.SetUpdateDB(true);
 		break;
 	default:
 		TRACE("未处理PropertyGridCtrl例外\n"); // 未处理例外
@@ -87,7 +87,7 @@ END_MESSAGE_MAP()
 void CFireBirdComboBox::OnCbnSelChange() {
 	if (gl_systemConfiguration.GetDisplayPropertyPage() != GetCurSel()) {
 		gl_systemConfiguration.SetDisplayPropertyPage(GetCurSel());
-		gl_systemConfiguration.NeedUpdate(true);
+		gl_systemConfiguration.SetUpdateDB(true);
 	}
 }
 

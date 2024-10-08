@@ -66,12 +66,12 @@ CChinaMarket::~CChinaMarket() {
 	if (GetCurrentStock() == nullptr) {
 		if (gl_systemConfiguration.GetCurrentStock().GetLength() > 0) {
 			gl_systemConfiguration.SetCurrentStock(_T(""));
-			gl_systemConfiguration.NeedUpdate(true);
+			gl_systemConfiguration.SetUpdateDB(true);
 		}
 	}
 	else if (GetCurrentStock()->GetSymbol() != gl_systemConfiguration.GetCurrentStock()) {
 		gl_systemConfiguration.SetCurrentStock(gl_pChinaMarket->GetCurrentStock()->GetSymbol());
-		gl_systemConfiguration.NeedUpdate(true);
+		gl_systemConfiguration.SetUpdateDB(true);
 	}
 }
 
@@ -714,11 +714,11 @@ void CChinaMarket::TaskAccessoryPerMinuteTask(long lCurrentTime) {
 	SetCheckActiveStockFlag(lCurrentTime);
 	ResetEffectiveRTDataRatio(); // 重置有效实时数据比率
 
-	if (gl_systemConfiguration.IsNeedUpdate()) { // 每分钟检查一次系统配置是否需要存储。
+	if (gl_systemConfiguration.IsUpdateDB()) { // 每分钟检查一次系统配置是否需要存储。
 		gl_runtime.background_executor()->post([] {
 			gl_systemConfiguration.UpdateDB();
 		});
-		gl_systemConfiguration.NeedUpdate(false);
+		gl_systemConfiguration.SetUpdateDB(false);
 	}
 
 	AddTask(CHINA_MARKET_PER_MINUTE_ACCESSORY_TASK__, GetNextTime(lCurrentTime, 0, 1, 0)); // 每分钟整点执行一次

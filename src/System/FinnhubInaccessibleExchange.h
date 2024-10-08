@@ -82,8 +82,8 @@ public:
 	bool HaveExchange(int iInquireType, const CString& strExchangeCode) const;
 	size_t GetItemSize() const noexcept { return m_mapExchange.size(); }
 
-	bool IsNeedUpdate() const noexcept { return m_fUpdate; }
-	void NeedUpdate(const bool fUpdate) noexcept { m_fUpdate = fUpdate; }
+	bool IsUpdateDB() const noexcept { return m_fUpdateDB; }
+	void SetUpdateDB(const bool fUpdate) noexcept { m_fUpdateDB = fUpdate; }
 
 protected:
 	CString m_strFileName; // ≈‰÷√Œƒº˛√˚≥∆
@@ -92,7 +92,7 @@ protected:
 	map<int, CInaccessibleExchangesPtr> m_mapExchange; //
 
 	bool m_fInitialized = false;
-	bool m_fUpdate;
+	bool m_fUpdateDB;
 
 	json m_finnhubInaccessibleExchange;
 };

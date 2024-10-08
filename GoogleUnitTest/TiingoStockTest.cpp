@@ -164,6 +164,13 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateFinancialState());
 	}
 
+	TEST_F(CTiingoStockTest, TestIsUpdateFinancialStateDB) {
+		EXPECT_FALSE(stock.IsUpdateFinancialStateDB());
+
+		stock.SetUpdateFinancialStateDB(true);
+		EXPECT_TRUE(stock.IsUpdateFinancialStateDB());
+	}
+
 	TEST_F(CTiingoStockTest, TestIsTodayNewStock) {
 		EXPECT_FALSE(stock.IsTodayNewStock());
 		stock.SetTodayNewStock(true);
@@ -609,5 +616,57 @@ namespace FireBirdTest {
 		stock.SetDayLineStartDate(20210101);
 		stock.SetDayLineEndDate(20210210);
 		EXPECT_FALSE(stock.HaveNewDayLineData());
+	}
+
+	TEST_F(CTiingoStockTest, TestUpdateFinancialStateDB) {
+		stock.SetSymbol(_T("AAPL"));
+		CTiingoCompanyFinancialStatesPtr pvState = make_shared<vector<CTiingoCompanyFinancialStatePtr>>();
+		CTiingoCompanyFinancialStatePtr pState = make_shared<CTiingoCompanyFinancialState>();
+		pState->m_symbol = _T("AAPL");
+		pState->m_yearQuarter = 202001; // 早于最早的数据
+		pState->m_exchange = _T("Test"); // 虚假交易所代码，用于删除
+		pvState->push_back(pState);
+		pState = make_shared<CTiingoCompanyFinancialState>();
+		pState->m_symbol = _T("AAPL");
+		pState->m_yearQuarter = 202301; // 存在于集合中
+		pState->m_exchange = _T("Test");
+		pvState->push_back(pState);
+		pState = make_shared<CTiingoCompanyFinancialState>();
+		pState->m_symbol = _T("AAPL");
+		pState->m_yearQuarter = 202305; // 居中新数据
+		pState->m_exchange = _T("Test");
+		pvState->push_back(pState);
+		pState = make_shared<CTiingoCompanyFinancialState>();
+		pState->m_symbol = _T("AAPL");
+		pState->m_yearQuarter = 202404; // 晚于最新数据
+		pState->m_exchange = _T("Test");
+		pvState->push_back(pState);
+
+		stock.UpdateFinancialState(pvState);
+
+		stock.UpdateFinancialStateDB();
+
+		CSetTiingoCompanyFinancialState setState;
+
+		setState.m_strFilter = _T("[Exchange] = 'Test'");
+		setState.m_strSort = _T("[yearQuarter]");
+		setState.Open();
+		setState.m_pDatabase->BeginTrans();
+		EXPECT_FALSE(setState.IsEOF());
+		EXPECT_EQ(setState.m_yearQuarter, 202001);
+		setState.Delete();
+		setState.MoveNext();
+		EXPECT_FALSE(setState.IsEOF());
+		EXPECT_EQ(setState.m_yearQuarter, 202305);
+		setState.Delete();
+		setState.MoveNext();
+		EXPECT_FALSE(setState.IsEOF());
+		EXPECT_EQ(setState.m_yearQuarter, 202404);
+		setState.Delete();
+		setState.MoveNext();
+		EXPECT_TRUE(setState.IsEOF());
+
+		setState.m_pDatabase->CommitTrans();
+		setState.Close();
 	}
 }

@@ -34,6 +34,7 @@ void CProductTiingoMarketNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		for (const auto& pTiingoStock : *pvTiingoMarketNews) {
 		}
 	}
+	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

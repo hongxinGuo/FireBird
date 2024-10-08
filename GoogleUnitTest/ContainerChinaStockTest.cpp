@@ -1,7 +1,6 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-#include"ChinaMarket.h"
 
 #include"ContainerChinaStock.h"
 

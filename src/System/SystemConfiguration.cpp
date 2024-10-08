@@ -75,6 +75,15 @@ std::string gl_sSystemConfiguration = R"(
 	"QuandlInquiryTime" : 36000
 },
 
+"Tiingo" : {
+	"AccountFeePaid" : true,
+	"Token" : "c897a00b7cfc2630d235316a4683156",
+	"HourlyRequestLimit" : 500,
+	"DailyRequestLimit" : 20000,
+	"BandWidth" : 5368709120,
+	"BandWidthLeft" : 5368709120
+},
+
 "FinancialDataUpdateRate" : {
 	"StockProfile" : 365,
 	"BasicFinancial" : 45,
@@ -99,7 +108,7 @@ CSystemConfiguration::CSystemConfiguration() {
 	}
 	sm_bInitialized = true;
 
-	m_fUpdate = false; // update flag
+	m_fUpdateDB = false; // update flag
 	m_fInitialized = false;
 	char buffer[200];
 	_getcwd(buffer, 200);
@@ -166,7 +175,7 @@ CSystemConfiguration::CSystemConfiguration() {
 	m_strBenchmarkTestFileDirectory = _T("C:\\FireBird\\Test Data\\Benchmark\\"); // Benchmark默认目录
 
 	if (!LoadDB()) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 
 	// 具体工作计算机的初始参数
@@ -181,7 +190,7 @@ CSystemConfiguration::CSystemConfiguration() {
 }
 
 CSystemConfiguration::~CSystemConfiguration() {
-	if (IsNeedUpdate()) {
+	if (IsUpdateDB()) {
 		UpdateDB();
 	}
 }
@@ -193,7 +202,7 @@ void CSystemConfiguration::UpdateDB() {
 	rename(GetConfigurationFileDirectory() + strOld, GetConfigurationFileDirectory() + strNew); // 保存备份
 
 	SaveDB();
-	NeedUpdate(false);
+	SetUpdateDB(false);
 }
 
 void CSystemConfiguration::Update(json& jsonData) {
@@ -216,43 +225,43 @@ void CSystemConfiguration::Update(json& jsonData) {
 		}
 		else m_iDisplayPropertyPage = 0; // 默认使用
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 
 	// 系统配置
 	try {
 		m_iLogLevel = jsonData.at("SystemConfiguration").at("LogLevel");
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 
 	try {
 		m_bDebugMode = jsonData.at("SystemConfiguration").at("DebugMode");
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_bReloadSystem = jsonData.at("SystemConfiguration").at("ReloadSystem");
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 
 	try {
 		sTemp = jsonData.at("SystemConfiguration").at("DatabaseAccountName");
 		m_strDatabaseAccountName = sTemp.c_str();
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		sTemp = jsonData.at("SystemConfiguration").at("DatabaseAccountPassword");
 		m_strDatabaseAccountPassword = sTemp.c_str();
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iBackgroundThreadPermittedNumber = jsonData.at("SystemConfiguration").at("BackgroundThreadPermittedNumber");
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 
 	// ChinaMarket
@@ -269,10 +278,10 @@ void CSystemConfiguration::Update(json& jsonData) {
 		}
 		else { // 非法服务器名称，使用默认sina服务器
 			m_iChinaMarketRealtimeServer = 0;
-			m_fUpdate = true;
+			m_fUpdateDB = true;
 		}
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		sTemp = jsonData.at("ChinaMarket").at("DayLineServer"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
@@ -284,165 +293,198 @@ void CSystemConfiguration::Update(json& jsonData) {
 		}
 		else {// 非法服务器名称，使用默认sina服务器
 			m_iChinaMarketDayLineServer = 0;
-			m_fUpdate = true;
+			m_fUpdateDB = true;
 		}
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iChinaMarketRTDataInquiryTime = jsonData.at("ChinaMarket").at("RealtimeInquiryTime"); // 实时数据查询时间间隔（单位：毫秒）
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iSavingChinaMarketStockDayLineThread = jsonData.at("ChinaMarket").at("SavingStockDayLineThread"); // 保存股票日线数据线程数量
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iNumberOfRTDataSource = jsonData.at("ChinaMarket").at("NumberOfRTDataSource"); // Sina实时数据申请引擎数
 		if (m_iNumberOfRTDataSource > 4) {
 			m_iNumberOfRTDataSource = 4;
-			m_fUpdate = true;
+			m_fUpdateDB = true;
 		}
 		if (m_iNumberOfRTDataSource < 1) {
 			m_iNumberOfRTDataSource = 1;
-			m_fUpdate = true;
+			m_fUpdateDB = true;
 		}
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iSinaRTDataInquiryPerTime = jsonData.at("ChinaMarket").at("SinaRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iNeteaseRTDataInquiryPerTime = jsonData.at("ChinaMarket").at("NeteaseRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iTengxunRTDataInquiryPerTime = jsonData.at("ChinaMarket").at("TengxunRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		sTemp = jsonData.at("ChinaMarket").at("CurrentStock"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 		m_strCurrentStock = sTemp.c_str();
 	} catch (json::out_of_range&) {
 		m_strCurrentStock = _T("");
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 
 	// WorldMarket
 	try {
 		m_lMarketResettingTime = jsonData.at("WorldMarket").at("MarketResettingTime"); // 市场重置时间
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		sTemp = jsonData.at("WorldMarket").at("FinnhubToken"); // Finnhub token
 		m_strFinnhubToken = sTemp.c_str();
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		sTemp = jsonData.at("WorldMarket").at("TiingoToken"); // Tiingo token
 		m_strTiingoToken = sTemp.c_str();
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		sTemp = jsonData.at("WorldMarket").at("QuandlToken"); // Quandl token
 		m_strQuandlToken = sTemp.c_str();
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_bQuandlAccountFeePaid = jsonData.at("WorldMarket").at("QuandlAccountFeePaid");
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iWorldMarketFinnhubInquiryTime = jsonData.at("WorldMarket").at("FinnhubInquiryTime"); // 默认每小时最多查询3000次
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iWorldMarketTiingoInquiryTime = jsonData.at("WorldMarket").at("TiingoInquiryTime"); // 默认每小时最多查询400次
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iWorldMarketQuandlInquiryTime = jsonData.at("WorldMarket").at("QuandlInquiryTime"); // 默认每小时最多查询100次
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
+	}
+
+	// Tiingo.com
+	try {
+		m_bTiingoAccountFeePaid2 = jsonData.at("Tiingo").at("AccountFeePaid"); // 
+	} catch (json::out_of_range&) {
+		m_fUpdateDB = true;
+	}
+	try {
+		sTemp = jsonData.at("Tiingo").at("Token"); //
+		m_strTiingoToken2 = sTemp.c_str();
+	} catch (json::out_of_range&) {
+		m_fUpdateDB = true;
+	}
+	try {
+		m_iTiingoHourLyRequestLimit = jsonData.at("Tiingo").at("HourlyRequestLimit"); // 
+	} catch (json::out_of_range&) {
+		m_fUpdateDB = true;
+	}
+	try {
+		m_lTiingoDailyRequestLimit = jsonData.at("Tiingo").at("DailyRequestLimit"); // 
+	} catch (json::out_of_range&) {
+		m_fUpdateDB = true;
+	}
+	try {
+		m_llTiingoBandWidth = jsonData.at("Tiingo").at("BandWidth"); // 
+	} catch (json::out_of_range&) {
+		m_fUpdateDB = true;
+	}
+	try {
+		m_llTiingoBandWidthLeft = jsonData.at("Tiingo").at("BandWidthLeft"); // 
+	} catch (json::out_of_range&) {
+		m_fUpdateDB = true;
 	}
 
 	// WebSocket
 	try {
 		m_bUsingFinnhubWebSocket = jsonData.at("WebSocket").at("UsingFinnhubWebSocket"); // 是否使用Finnhub的WebSocket
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_bUsingTiingoIEXWebSocket = jsonData.at("WebSocket").at("UsingTiingoIEXWebSocket"); // 是否使用Tiingo的WebSocket
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_bUsingTiingoCryptoWebSocket = jsonData.at("WebSocket").at("UsingTiingoCryptoWebSocket"); // 是否使用Tiingo的WebSocket
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_bUsingTiingoForexWebSocket = jsonData.at("WebSocket").at("UsingTiingoForexWebSocket"); // 是否使用Tiingo的WebSocket
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 
 	// Financial Data Update Rate
 	try {
 		m_iStockBasicFinancialUpdateRate = jsonData.at("FinancialDataUpdateRate").at("StockBasicFinancial");
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iStockProfileUpdateRate = jsonData.at("FinancialDataUpdateRate").at("StockProfile");
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iInsideTransactionUpdateRate = jsonData.at("FinancialDataUpdateRate").at("InsideTransaction");
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iInsideSentimentUpdateRate = jsonData.at("FinancialDataUpdateRate").at("InsideSentiment");
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iStockPeerUpdateRate = jsonData.at("FinancialDataUpdateRate").at("StockPeer");
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iTiingoCompanyFinancialStateUpdateRate = jsonData.at("FinancialDataUpdateRate").at("TiingoCompanyFinancialState");
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 
 	try {
 		m_iEPSSurpriseUpdateRate = jsonData.at("FinancialDataUpdateRate").at("EPSSurprise");
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 	try {
 		m_iSECFilingsUpdateRate = jsonData.at("FinancialDataUpdateRate").at("SECFilings");
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 
 	// 测试系统选项
@@ -450,7 +492,7 @@ void CSystemConfiguration::Update(json& jsonData) {
 		sTemp = jsonData.at("TestConfiguration").at("BenchmarkTestFileDirectory");
 		m_strBenchmarkTestFileDirectory = sTemp.c_str();
 	} catch (json::out_of_range&) {
-		m_fUpdate = true;
+		m_fUpdateDB = true;
 	}
 }
 
@@ -530,6 +572,14 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	jsonData["WorldMarket"]["TiingoInquiryTime"] = m_iWorldMarketTiingoInquiryTime;
 	jsonData["WorldMarket"]["QuandlInquiryTime"] = m_iWorldMarketQuandlInquiryTime;
 
+	// Tiingo.com
+	jsonData["Tiingo"]["AccountFeePaid"] = m_bTiingoAccountFeePaid2;
+	jsonData["Tiingo"]["Token"] = m_strTiingoToken2;
+	jsonData["Tiingo"]["HourlyRequestLimit"] = m_iTiingoHourLyRequestLimit;
+	jsonData["Tiingo"]["DailyRequestLimit"] = m_lTiingoDailyRequestLimit;
+	jsonData["Tiingo"]["BandWidth"] = m_llTiingoBandWidth;
+	jsonData["Tiingo"]["BandWidthLeft"] = m_llTiingoBandWidthLeft;
+
 	// Web socket
 	jsonData["WebSocket"]["UsingFinnhubWebSocket"] = m_bUsingFinnhubWebSocket;
 	jsonData["WebSocket"]["UsingTiingoIEXWebSocket"] = m_bUsingTiingoIEXWebSocket;
@@ -566,7 +616,17 @@ void CSystemConfiguration::ChangeTiingoAccountTypeToFree() {
 }
 
 void CSystemConfiguration::ChangeTiingoAccountTypeToPaid() {
-	m_bFinnhubAccountFeePaid = true;
+	m_bTiingoAccountFeePaid = true;
+	m_iWorldMarketTiingoInquiryTime = 9000; // 每次9000毫秒
+}
+
+void CSystemConfiguration::ChangeTiingoAccountTypeToFree2() {
+	m_bTiingoAccountFeePaid2 = false;
+	m_iWorldMarketTiingoInquiryTime = 9000; // 每次9000毫秒
+}
+
+void CSystemConfiguration::ChangeTiingoAccountTypeToPaid2() {
+	m_bTiingoAccountFeePaid2 = true;
 	m_iWorldMarketTiingoInquiryTime = 9000; // 每次9000毫秒
 }
 

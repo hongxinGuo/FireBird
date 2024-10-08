@@ -1,6 +1,5 @@
 #pragma once
 
-#include"WorldStock.h"
 #include"TiingoStock.h"
 
 #include"ContainerVirtualStock.h"
@@ -13,7 +12,7 @@ public:
 	CContainerTiingoStock& operator=(const CContainerTiingoStock& other) = delete;
 	CContainerTiingoStock& operator=(CContainerTiingoStock&& other) noexcept = delete;
 	~CContainerTiingoStock() override = default;
-	void Reset();
+	void Reset() override;
 
 	CTiingoStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CTiingoStock>(Get(lIndex)); }
 	CTiingoStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CTiingoStock>(Get(strStockCode)); }

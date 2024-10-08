@@ -183,6 +183,7 @@ namespace FireBirdTest {
 			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
+			m_llTiingoBandWidthLeft = gl_systemConfiguration.GetTiingoBandWidthLeft();
 
 			m_tiingoStockSymbolProduct.SetMarket(gl_pWorldMarket);
 			m_tiingoStockSymbolProduct.SetIndex(0);
@@ -192,6 +193,8 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
+			gl_systemConfiguration.SetTiingoBandWidthLeft(m_llTiingoBandWidthLeft);
+			gl_systemConfiguration.SetUpdateDB(false);
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -201,6 +204,7 @@ namespace FireBirdTest {
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
 		CProductTiingoStock m_tiingoStockSymbolProduct;
+		long long m_llTiingoBandWidthLeft;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStockProfile,
@@ -211,8 +215,10 @@ namespace FireBirdTest {
 	TEST_P(ProcessTiingoStockTest, TestProcessStockProfile) {
 		CTiingoStockPtr pTiingoStock = nullptr;
 		CWorldStockPtr pStock = nullptr;
+		long long llDataSize = m_pWebData->GetBufferLength();
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 		m_tiingoStockSymbolProduct.ParseAndStoreWebData(m_pWebData);
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoBandWidthLeft(), m_llTiingoBandWidthLeft - llDataSize);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();

@@ -169,7 +169,7 @@ namespace FireBirdTest {
 
 		// »Ö¸´Ô­×´
 		gl_systemConfiguration.SetUsingTiingoForexWebSocket(true);
-		gl_systemConfiguration.NeedUpdate(false);
+		gl_systemConfiguration.SetUpdateDB(false);
 	}
 
 	TEST_F(CMockTiingoForexWebSocketTest, TestMonitorWebSocket8) {

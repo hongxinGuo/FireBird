@@ -36,10 +36,24 @@ public:
 	void SetUpdateStockSymbol(bool fFlag) noexcept { m_fUpdateStockSymbol = fFlag; }
 	bool IsUpdateCryptoSymbol() const noexcept { return m_fUpdateCryptoSymbol; }
 	void SetUpdateCryptoSymbol(bool fFlag) noexcept { m_fUpdateCryptoSymbol = fFlag; }
-	bool IsUpdateFinancialStatement() const noexcept { return m_fUpdateFinancialStatement; }
-	void SetUpdateFinancialStatement(bool fFlag) noexcept { m_fUpdateFinancialStatement = fFlag; }
+	bool IsUpdateFinancialState() const noexcept { return m_fUpdateFinancialState; }
+	void SetUpdateFinancialState(bool fFlag) noexcept { m_fUpdateFinancialState = fFlag; }
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
+
+	void SetHourlyRequestPermit(int iPermit) noexcept { m_iHourlyRequestPermit = iPermit; }
+	int GetHourlyRequestPermit() const noexcept { return m_iHourlyRequestPermit; }
+	void SetDailyRequestPermit(long lPermit) noexcept { m_lDailyRequestPermit = lPermit; }
+	long GetDailyRequestPermit() const noexcept { return m_lDailyRequestPermit; }
+	void SetBandWidth(long long llBandWidth) noexcept { m_llBandWidthLeft = llBandWidth; }
+	long long GetBandWidthLeft() const noexcept { return m_llBandWidthLeft; }
+	void SetBandWidthLeft(long long llLeft) noexcept { m_llBandWidthLeft = llLeft; }
+
+	bool ReachRequestLimit() const noexcept { return m_iHourlyRequestPermit <= 0 || m_lDailyRequestPermit <= 0; }
+	void ReduceRequestPermit() noexcept {
+		m_iHourlyRequestPermit--;
+		m_lDailyRequestPermit--;
+	}
 
 protected:
 	CTiingoFactory m_TiingoFactory;
@@ -48,10 +62,15 @@ protected:
 	bool m_fUpdateFundamentalDefinitions{ true }; // 每日更新基本数据定义库
 	bool m_fUpdateStockSymbol{ true }; // 每日更新公司代码库
 	bool m_fUpdateCryptoSymbol{ true }; // 每日更新crypto代码库
-	bool m_fUpdateFinancialStatement{ true }; // 每日更新财经数据
+	bool m_fUpdateFinancialState{ true }; // 每日更新财经数据
 	bool m_fUpdateDayLine{ true }; // 每日更新公司日线数据
 
 	bool m_fTiingoDataInquiryFinished{ false };
+
+	// 带宽限制
+	int m_iHourlyRequestPermit{ 500 };
+	long m_lDailyRequestPermit{ 20000 };
+	long long m_llBandWidthLeft{ 5368709120 };
 };
 
 using CTiingoDataSourcePtr = shared_ptr<CTiingoDataSource>;

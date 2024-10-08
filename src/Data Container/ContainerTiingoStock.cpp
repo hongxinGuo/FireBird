@@ -50,7 +50,6 @@ void CContainerTiingoStock::UpdateDB() {
 bool CContainerTiingoStock::LoadDB() {
 	CSetTiingoStock setTiingoStock;
 	CString strSymbol = _T("");
-	CString str;
 
 	setTiingoStock.Open();
 	setTiingoStock.m_pDatabase->BeginTrans();
@@ -62,7 +61,7 @@ bool CContainerTiingoStock::LoadDB() {
 			Add(pTiingoStock);
 		}
 		else {
-			str = _T("发现重复代码：");
+			CString str = "发现重复代码：";
 			str += setTiingoStock.m_Ticker;
 			gl_systemMessage.PushInnerSystemInformationMessage(str);
 			setTiingoStock.Delete();

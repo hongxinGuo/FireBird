@@ -276,6 +276,8 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
+			gl_systemConfiguration.SetTiingoBandWidthLeft(5368709120);
+			gl_systemConfiguration.SetUpdateDB(false);
 			auto symbol = gl_dataContainerTiingoStock.GetStock(0)->GetSymbol();
 			gl_dataContainerFinnhubStock.GetStock(symbol)->SetUpdateDayLine(false);
 			gl_dataContainerFinnhubStock.GetStock(symbol)->SetUpdateDayLineDB(false);

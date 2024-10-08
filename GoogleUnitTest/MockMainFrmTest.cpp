@@ -54,7 +54,7 @@ namespace FireBirdTest {
 			gl_pChinaMarket->ClearChoiceStockContainer();
 			gl_pChinaMarket->SetCalculatingDayLineRS(false);
 			gl_systemConfiguration.SetExitingSystem(false);
-			gl_systemConfiguration.NeedUpdate(false);
+			gl_systemConfiguration.SetUpdateDB(false);
 
 			SCOPED_TRACE("");
 			GeneralCheck();

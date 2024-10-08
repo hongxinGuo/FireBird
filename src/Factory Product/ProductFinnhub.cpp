@@ -21,7 +21,7 @@ bool CProductFinnhub::CheckAccessRight(CWebDataPtr pWebData) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 void CProductFinnhub::AddInaccessibleExchange() {
-	gl_finnhubInaccessibleExchange.NeedUpdate(true);
+	gl_finnhubInaccessibleExchange.SetUpdateDB(true);
 	try { // 存在此申请类型
 		const auto pExchange = gl_finnhubInaccessibleExchange.GetExchange(m_iInquireType);
 		if (!pExchange->HaveExchange(m_strInquiringExchange)) {	// 新的交易所代码？

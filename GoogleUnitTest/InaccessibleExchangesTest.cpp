@@ -36,7 +36,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(inaccessibleExchange.HaveExchange(_T("SZ"))) << "默认包括US";
 		EXPECT_TRUE(inaccessibleExchange.HaveExchange(_T("SS"))) << "默认包括US";
 		EXPECT_FALSE(inaccessibleExchange.HaveExchange(_T("FA"))) << "默认不包括FA";
-		const vector<CString> v{_T("US2"), _T("SZ2"), _T("SS2")};
+		const vector<CString> v{ _T("US2"), _T("SZ2"), _T("SS2") };
 		inaccessibleExchange.Assign(_T("Another"), 2, v);
 
 		EXPECT_TRUE(inaccessibleExchange.HaveExchange(_T("US2")));
@@ -111,7 +111,7 @@ namespace FireBirdTest {
 
 		// 恢复原状
 		gl_finnhubInaccessibleExchange.DeleteExchange(gl_FinnhubInquiryType.GetInquiryType(_T("WebSocketTrades")), _T("SZ"));
-		gl_finnhubInaccessibleExchange.NeedUpdate(false);
+		gl_finnhubInaccessibleExchange.SetUpdateDB(false);
 	}
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestSaveDB1) {

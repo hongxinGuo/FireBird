@@ -35,8 +35,8 @@ namespace FireBirdTest {
 	}
 
 	void SystemConfigurationCheck() {
-		EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate()) << "不允许更新系统配置";
-		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsNeedUpdate()) << "不允许更新禁入交易所名单";
+		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB()) << "不允许更新系统配置";
+		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsUpdateDB()) << "不允许更新禁入交易所名单";
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingNeteaseDayLineServer());
 		if (gl_UpdateChinaMarketDB.try_acquire()) {
@@ -52,6 +52,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(false) << "gl_UpdateWorldMarketDB被锁住了";
 		}
 
+		ASSERT_FALSE(gl_systemConfiguration.IsUpdateDB()) << "正常测试时不允许更改，需要更改时注释掉本行";
 		EXPECT_FALSE(gl_systemConfiguration.IsDebugMode());
 		EXPECT_STREQ(gl_systemConfiguration.GetDatabaseAccountName(), _T("FireBird"));
 		EXPECT_STREQ(gl_systemConfiguration.GetDatabaseAccountPassword(), _T("firebird"));
@@ -69,6 +70,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100) << "默认每次查询时间为1100毫秒";
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 3600000 / 400) << "默认每小时查询最大数量为400";
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime(), 3600000 / 100) << "默认每小时查询最大数量为100";
+
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoBandWidthLeft(), 5368709120);
 
 		EXPECT_EQ(gl_systemConfiguration.GetInsideTransactionUpdateRate(), 30);
 		EXPECT_EQ(gl_systemConfiguration.GetStockProfileUpdateRate(), 365);

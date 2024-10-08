@@ -81,7 +81,7 @@ CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 		ASSERT(FALSE);
 	}
 
-	m_fUpdate = false; // update flag
+	m_fUpdateDB = false; // update flag
 	m_fInitialized = true;
 	m_strFileName = _T("FinnhubInaccessibleExchange.json"); // json file name
 	m_lUpdateDate = 19800101;
@@ -93,7 +93,7 @@ CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 }
 
 CFinnhubInaccessibleExchange::~CFinnhubInaccessibleExchange() {
-	if (IsNeedUpdate()) {
+	if (IsUpdateDB()) {
 		UpdateDB();
 	}
 }
@@ -106,7 +106,7 @@ void CFinnhubInaccessibleExchange::UpdateDB() {
 	rename(gl_systemConfiguration.GetConfigurationFileDirectory() + strOld, gl_systemConfiguration.GetConfigurationFileDirectory() + strNew); // 保存备份
 	UpdateJson();
 	SaveDB();
-	NeedUpdate(false);
+	SetUpdateDB(false);
 }
 
 bool CFinnhubInaccessibleExchange::LoadDB() {
@@ -164,7 +164,7 @@ void CFinnhubInaccessibleExchange::UpdateJson() {
 	for (const auto& val : m_mapExchange | std::views::values) {
 		if (val->HaveExchange()) {
 			// 有exchange数据的话才建立数据集
-			auto jsonExchange = json{{"Function", val->GetFunctionString()}};
+			auto jsonExchange = json{ { "Function", val->GetFunctionString() } };
 			for (int i = 0; i < val->ExchangeSize(); i++) {
 				auto s = val->GetExchange(i);
 				jsonExchange[_T("Exchange")].push_back(s);

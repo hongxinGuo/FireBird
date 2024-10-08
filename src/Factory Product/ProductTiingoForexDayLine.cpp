@@ -7,7 +7,7 @@
 #include"WorldStock.h"
 #include"WorldMarket.h"
 
-#include "ProductTiingoForexDayLine.h"
+//#include "ProductTiingoForexDayLine.h"
 
 #include "TimeConvert.h"
 
@@ -41,6 +41,7 @@ CString CProductTiingoForexDayLine::CreateMessage() {
 
 void CProductTiingoForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
+	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 	/*
 	const auto pForex = gl_dataContainerFinnhubForex.GetForex(m_lIndex);
 	const CDayLinesPtr pvDayLine = ParseTiingoForexDayLine(pWebData);

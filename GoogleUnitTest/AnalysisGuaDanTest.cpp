@@ -3,7 +3,6 @@
 #include"GeneralCheck.h"
 
 #include"ChinaStock.h"
-#include"ChinaMarket.h"
 
 namespace FireBirdTest {
 	struct GuadanData {
@@ -447,7 +446,7 @@ namespace FireBirdTest {
 		                         &Guadan11, &Guadan12, &Guadan13, &Guadan14, &Guadan15));
 
 	TEST_P(NeedCheckTest, TestNeedCheck) {
-		array<bool, 10> fNeedCheck{true, true, true, true, true, true, true, true, true, true};
+		array<bool, 10> fNeedCheck{ true, true, true, true, true, true, true, true, true, true };
 
 		EXPECT_FALSE(m_stock.HaveFirstRTData());
 		m_stock.SetLastRTData(pLastData);

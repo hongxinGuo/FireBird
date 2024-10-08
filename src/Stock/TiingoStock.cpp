@@ -172,8 +172,7 @@ void CTiingoStock::UpdateFinancialStateDB() const {
 }
 
 bool CTiingoStock::UpdateDayLineDB() {
-	if (IsUpdateDayLineDBAndClearFlag()) {
-		// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+	if (IsUpdateDayLineDBAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 		if (GetDayLineSize() > 0) {
 			if (HaveNewDayLineData()) {
 				SaveDayLine();

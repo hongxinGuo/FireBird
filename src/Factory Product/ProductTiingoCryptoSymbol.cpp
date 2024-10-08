@@ -34,6 +34,7 @@ void CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		const CString str = _T("今日Tiingo Crypto总数为") + strNumber;
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 	}
+	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

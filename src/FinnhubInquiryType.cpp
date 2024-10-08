@@ -29,7 +29,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[WEBSOCKET_NEWS_] = _T("WebSocketNews"); // Premium
 
 	// Stock Fundamentals
-	m_mapFinnhubInquiryIndexToString[SYMBOL_LOOKUP_] = _T("StockFundamentalsSymolLookup");
+	m_mapFinnhubInquiryIndexToString[SYMBOL_LOOKUP_] = _T("StockFundamentalsSymbolLookup");
 	m_mapFinnhubInquiryIndexToString[STOCK_SYMBOLS_] = _T("StockFundamentalsSymbols");
 	m_mapFinnhubInquiryIndexToString[MARKET_STATUS_] = _T("StockFundamentalsMarketStatus");
 	m_mapFinnhubInquiryIndexToString[MARKET_HOLIDAY_] = _T("StockFundamentalsMarketHoliday");
@@ -46,14 +46,14 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[FUND_OWNERSHIP_] = _T("StockFundamentalsFundOwnership"); //Premium
 	m_mapFinnhubInquiryIndexToString[INSIDER_TRANSACTION_] = _T("StockFundamentalsInsiderTransaction");
 	m_mapFinnhubInquiryIndexToString[INSIDER_SENTIMENT_] = _T("StockFundamentalsInsiderSentiment");
-	m_mapFinnhubInquiryIndexToString[FINANCIAL_] = _T("StockFundamentalsFiniacial"); //Premium
-	m_mapFinnhubInquiryIndexToString[FINANCIAL_AS_REPORTED_] = _T("StockFundamentalsFinaicialAsReported");
+	m_mapFinnhubInquiryIndexToString[FINANCIAL_] = _T("StockFundamentalsFinancial"); //Premium
+	m_mapFinnhubInquiryIndexToString[FINANCIAL_AS_REPORTED_] = _T("StockFundamentalsFinancialAsReported");
 	m_mapFinnhubInquiryIndexToString[REVENUE_BREAKDOWN_] = _T("StockFundamentalsRevenueBreakdown");
 	m_mapFinnhubInquiryIndexToString[SEC_FILINGS_] = _T("StockFundamentalsSECFilings");
 	m_mapFinnhubInquiryIndexToString[INTERNATIONAL_FILINGS_] = _T("StockFundamentalsInternationalFilings"); //Premium
 	m_mapFinnhubInquiryIndexToString[SEC_SENTIMENT_ANALYSIS_] = _T("StockFundamentalsSECSentimentAnalysis"); //Premium
-	m_mapFinnhubInquiryIndexToString[SIMILARITY_INDEX_] = _T("StockFundamentalsSemilarityIndex"); //Premium
-	m_mapFinnhubInquiryIndexToString[IPO_CALENDAR_] = _T("StockFundamentalsIPOCanlendar");
+	m_mapFinnhubInquiryIndexToString[SIMILARITY_INDEX_] = _T("StockFundamentalsSimilarityIndex"); //Premium
+	m_mapFinnhubInquiryIndexToString[IPO_CALENDAR_] = _T("StockFundamentalsIPOCalendar");
 	m_mapFinnhubInquiryIndexToString[DIVIDENDS_] = _T("StockFundamentalsDividends"); //Premium
 	m_mapFinnhubInquiryIndexToString[SECTOR_METRICS_] = _T("SectorMetrics"); // Premium
 	m_mapFinnhubInquiryIndexToString[PRICE_METRICS_] = _T("PriceMetrics"); // Premium
@@ -82,7 +82,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 
 	// ETF & Indices
 	m_mapFinnhubInquiryIndexToString[ETFS_INDICES_CONSTITUENTS_] = _T("ETFSIndicesConstituents");
-	m_mapFinnhubInquiryIndexToString[ETFS_HISTORY_CONSTITUENTS_] = _T("ETFSIndicesHistoryConstitunets"); // Premium
+	m_mapFinnhubInquiryIndexToString[ETFS_HISTORY_CONSTITUENTS_] = _T("ETFSIndicesHistoryConstituents"); // Premium
 	m_mapFinnhubInquiryIndexToString[ETFS_PROFILE_] = _T("ETFSIndicesProfile"); // Premium
 	m_mapFinnhubInquiryIndexToString[ETFS_HOLDINGS_] = _T("ETFSIndicesHoldings"); // Premium
 	m_mapFinnhubInquiryIndexToString[ETFS_SECTOR_] = _T("ETFSIndicesSector"); // Premium
@@ -112,7 +112,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 
 	// Technical Analysis
 	m_mapFinnhubInquiryIndexToString[TECHNICAL_ANALYSIS_PATTERN_RECOGNITION_] = _T("TechnicalAnalysisPatternRecognition"); // Premium
-	m_mapFinnhubInquiryIndexToString[TECHNICAL_ANALYSIS_SUPPORT_RESISTANCE_] = _T("TechnicalAnalysisSurportResistance"); // Premium
+	m_mapFinnhubInquiryIndexToString[TECHNICAL_ANALYSIS_SUPPORT_RESISTANCE_] = _T("TechnicalAnalysisSupportResistance"); // Premium
 	m_mapFinnhubInquiryIndexToString[TECHNICAL_ANALYSIS_AGGREGATE_INDICATORS_] = _T("TechnicalAnalysisAggregateIndicators"); // Premium
 	m_mapFinnhubInquiryIndexToString[TECHNICAL_ANALYSIS_TECHNICAL_INDICATORS_] = _T("TechnicalAnalysisTechnicalIndicators");
 
@@ -124,7 +124,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_SUPPLY_CHAIN_] = _T("AlternativeDataSupplyChain"); // Premium
 	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_COMPANY_ESG_] = _T("AlternativeDataCompanyESG"); // Premium
 	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_EARNING_QUALITY_SCORE_] = _T("AlternativeDataQualityScore"); // Premium
-	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_USPTO_PATENTS_] = _T("AlternativeDataUSPTOpatents");
+	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_USPTO_PATENTS_] = _T("AlternativeDataUSPTOPatents");
 	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_VISA_APPLICATION_] = _T("AlternativeDataVISAApplication"); //
 	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_SENATE_LOBBYING_] = _T("AlternativeDataSenateLobbying"); //
 	m_mapFinnhubInquiryIndexToString[ALTERNATIVE_DATA_USA_SPENDING_] = _T("AlternativeDataUSASpending"); //
@@ -145,7 +145,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex[_T("WebSocketNews")] = WEBSOCKET_NEWS_; // Premium
 
 	// Stock Fundamentals
-	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsSymolLookup")] = SYMBOL_LOOKUP_;
+	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsSymbolLookup")] = SYMBOL_LOOKUP_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsSymbols")] = STOCK_SYMBOLS_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsMarketStatus")] = MARKET_STATUS_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsMarketHoliday")] = MARKET_HOLIDAY_;
@@ -162,14 +162,14 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsFundOwnership")] = FUND_OWNERSHIP_; //Premium
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsInsiderTransaction")] = INSIDER_TRANSACTION_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsInsiderSentiment")] = INSIDER_SENTIMENT_;
-	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsFiniacial")] = FINANCIAL_; //Premium
-	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsFinaicialAsReported")] = FINANCIAL_AS_REPORTED_;
+	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsFinancial")] = FINANCIAL_; //Premium
+	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsFinancialAsReported")] = FINANCIAL_AS_REPORTED_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsRevenueBreakdown")] = REVENUE_BREAKDOWN_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsSECFilings")] = SEC_FILINGS_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsInternationalFilings")] = INTERNATIONAL_FILINGS_; //Premium
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsSECSentimentAnalysis")] = SEC_SENTIMENT_ANALYSIS_; //Premium
-	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsSemilarityIndex")] = SIMILARITY_INDEX_; //Premium
-	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsIPOCanlendar")] = IPO_CALENDAR_;
+	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsSimilarityIndex")] = SIMILARITY_INDEX_; //Premium
+	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsIPOCalendar")] = IPO_CALENDAR_;
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsDividends")] = DIVIDENDS_; //Premium
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsSectorMetrics")] = SECTOR_METRICS_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("StockFundamentalsPriceMetrics")] = PRICE_METRICS_; // Premium
@@ -198,7 +198,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 
 	// ETF & Indices
 	m_mapFinnhubInquiryStringToIndex[_T("ETFSIndicesConstituents")] = ETFS_INDICES_CONSTITUENTS_;
-	m_mapFinnhubInquiryStringToIndex[_T("ETFSIndicesHistoryConstitunets")] = ETFS_HISTORY_CONSTITUENTS_; // Premium
+	m_mapFinnhubInquiryStringToIndex[_T("ETFSIndicesHistoryConstituents")] = ETFS_HISTORY_CONSTITUENTS_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("ETFSIndicesProfile")] = ETFS_PROFILE_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("ETFSIndicesHoldings")] = ETFS_HOLDINGS_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("ETFSIndicesSector")] = ETFS_SECTOR_; // Premium
@@ -228,7 +228,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 
 	// Technical Analysis
 	m_mapFinnhubInquiryStringToIndex[_T("TechnicalAnalysisPatternRecognition")] = TECHNICAL_ANALYSIS_PATTERN_RECOGNITION_; // Premium
-	m_mapFinnhubInquiryStringToIndex[_T("TechnicalAnalysisSurportResistance")] = TECHNICAL_ANALYSIS_SUPPORT_RESISTANCE_; // Premium
+	m_mapFinnhubInquiryStringToIndex[_T("TechnicalAnalysisSupportResistance")] = TECHNICAL_ANALYSIS_SUPPORT_RESISTANCE_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("TechnicalAnalysisAggregateIndicators")] = TECHNICAL_ANALYSIS_AGGREGATE_INDICATORS_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("TechnicalAnalysisTechnicalIndicators")] = TECHNICAL_ANALYSIS_TECHNICAL_INDICATORS_;
 
@@ -240,7 +240,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataSupplyChain")] = ALTERNATIVE_DATA_SUPPLY_CHAIN_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataCompanyESG")] = ALTERNATIVE_DATA_COMPANY_ESG_; // Premium
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataQualityScore")] = ALTERNATIVE_DATA_EARNING_QUALITY_SCORE_; // Premium
-	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataUSPTOpatents")] = ALTERNATIVE_DATA_USPTO_PATENTS_;
+	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataUSPTOPatents")] = ALTERNATIVE_DATA_USPTO_PATENTS_;
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataVISAApplication")] = ALTERNATIVE_DATA_VISA_APPLICATION_; //
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataSenateLobbying")] = ALTERNATIVE_DATA_SENATE_LOBBYING_; //
 	m_mapFinnhubInquiryStringToIndex[_T("AlternativeDataUSASpending")] = ALTERNATIVE_DATA_USA_SPENDING_; //

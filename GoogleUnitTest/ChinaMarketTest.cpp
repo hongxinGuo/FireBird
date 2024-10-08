@@ -106,7 +106,7 @@ namespace FireBirdTest {
 			gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
 
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			gl_systemConfiguration.NeedUpdate(false);
+			gl_systemConfiguration.SetUpdateDB(false);
 
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -888,7 +888,7 @@ namespace FireBirdTest {
 		gl_pChinaMarket->SetCurrentStockChanged(false);
 		gl_pChinaMarket->SetCurrentStock(pStock);
 		EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
-		EXPECT_FALSE(gl_systemConfiguration.IsNeedUpdate()) << "股票代码相同，配置文件无需更新";
+		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB()) << "股票代码相同，配置文件无需更新";
 		gl_pChinaMarket->SetCurrentStock(pStock2);
 		EXPECT_TRUE(gl_pChinaMarket->IsCurrentStockChanged());
 		gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));

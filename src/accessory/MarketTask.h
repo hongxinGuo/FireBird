@@ -48,6 +48,9 @@ enum {
 	WORLD_MARKET_UPDATE_DB__, // 更新市场各数据库。每一分钟一次。
 	WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, // 监测各WebSocket状态。每分钟一次
 	WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__,	// 处理各WebSocket接收到的数据。每秒钟一次
+	WORLD_MARKET_TIMER_TASK_PER_MINUTE__,// 每分钟执行一次的任务调度
+	WORLD_MARKET_TIMER_TASK_PER_HOUR__, // 每小时执行一次的任务调度
+	WORLD_MARKET_TIMER_TASK_PER_DAY__, // 每天执行一次的任务调度
 
 	WORLD_MARKET_CONNECT_FINNHUB_WEB_SOCKET__, // 自动连接finnhub web socket
 	// World market即时任务
@@ -73,8 +76,8 @@ public:
 	void SetType(const long lType) { m_lType = lType; }
 
 protected:
-	long m_lTime{0}; // HHMMSS制式
-	long m_lType{0}; // 枚举型任务号
+	long m_lTime{ 0 }; // HHMMSS制式
+	long m_lType{ 0 }; // 枚举型任务号
 };
 
 using CMarketTaskPtr = shared_ptr<CMarketTask>;

@@ -379,7 +379,25 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 	return (fUpdated);
 }
 
-void CWorldMarket::TaskPerSecond(long lCurrentTime) {}
+void CWorldMarket::TaskPerSecond(long lCurrentTime) {
+	static int m_iCountDownPerMinute = 59;
+	static int m_iCountDownPerHour = 3599;
+	static int m_iCountDownPerDay = 3500 * 24 - 1;
+
+	if (--m_iCountDownPerMinute < 0) { // 每分钟一次
+		m_iCountDownPerMinute = 59;
+	}
+	if (--m_iCountDownPerHour < 0) { // 每小时一次
+		ASSERT(gl_systemConfiguration.GetTiingoHourLyRequestLimit() > 100);
+		gl_pTiingoDataSource->SetHourlyRequestPermit(gl_systemConfiguration.GetTiingoHourLyRequestLimit());
+		m_iCountDownPerHour = 3599;
+	}
+	if (--m_iCountDownPerDay < 0) { // 每天一次
+		ASSERT(gl_systemConfiguration.GetTiingoDailyRequestLimit() > 10000);
+		gl_pTiingoDataSource->SetDailyRequestPermit(gl_systemConfiguration.GetTiingoDailyRequestLimit());
+		m_iCountDownPerDay = 3600 * 24 - 1;
+	}
+}
 
 bool CWorldMarket::UpdateEPSSurpriseDB() {
 	CString str;
@@ -599,10 +617,10 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 
-	if (gl_finnhubInaccessibleExchange.IsNeedUpdate()) { // 更新禁止访问证券交易所名单
+	if (gl_finnhubInaccessibleExchange.IsUpdateDB()) { // 更新禁止访问证券交易所名单
 		gl_runtime.background_executor()->post([] {
 			gl_finnhubInaccessibleExchange.UpdateDB();
-			gl_finnhubInaccessibleExchange.NeedUpdate(false);
+			gl_finnhubInaccessibleExchange.SetUpdateDB(false);
 		});
 	}
 

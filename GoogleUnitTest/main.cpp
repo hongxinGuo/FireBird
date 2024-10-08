@@ -161,7 +161,7 @@ namespace FireBirdTest {
 			// 清空预装入的finnhubInaccessibleExchange
 			gl_finnhubInaccessibleExchange.Clear();
 
-			gl_systemConfiguration.NeedUpdate(false);
+			gl_systemConfiguration.SetUpdateDB(false);
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -211,9 +211,9 @@ namespace FireBirdTest {
 			gl_pTiingoForexWebSocket = nullptr;
 
 			// 不更新finnhubInaccessibleExchange文件
-			gl_finnhubInaccessibleExchange.NeedUpdate(false);
+			gl_finnhubInaccessibleExchange.SetUpdateDB(false);
 			// 不更新systemConfiguration文件
-			gl_systemConfiguration.NeedUpdate(false);
+			gl_systemConfiguration.SetUpdateDB(false);
 		}
 	};
 }

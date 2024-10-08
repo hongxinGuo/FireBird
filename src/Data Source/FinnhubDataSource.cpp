@@ -664,8 +664,8 @@ bool CFinnhubDataSource::InquireEconomicCalendar() {
 		const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket, iInquireType);
 		StoreInquiry(product);
 		SetInquiring(true);
-		gl_pWorldMarket->SetCurrentFunction(_T("Finnhub ecomomic calendar updated"));
-		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub ecomomic calendar"));
+		gl_pWorldMarket->SetCurrentFunction(_T("Finnhub economic calendar updated"));
+		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub economic calendar"));
 		return true;
 	}
 	return false;
@@ -851,7 +851,7 @@ bool CFinnhubDataSource::InquireCryptoSymbol() {
 		SetInquiring(true);
 		if (m_lCurrentCryptoExchangePos >= gl_dataContainerFinnhubCryptoExchange.Size()) {
 			SetUpdateCryptoSymbol(false);
-			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub crypto synmbol"));
+			gl_pWorldMarket->SetCurrentFunction(_T("Finnhub crypto symbol"));
 			gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub Crypto symbols"));
 			m_lCurrentCryptoExchangePos = 0;
 		}

@@ -44,7 +44,7 @@ CString XferSinaToNetease(const CString& strSina) {
 	throw exception("XferSinaToNetease bad header");
 }
 
-CString XferNeteaseToStandard(CString strNetease) {
+CString XferNeteaseToStandard(const CString& strNetease) {
 	if (strNetease.GetLength() != 7) throw exception("XferNeteaseToStandard bad format");
 	const CString strSymbol = strNetease.Right(6);
 	switch (strNetease.GetAt(0)) {

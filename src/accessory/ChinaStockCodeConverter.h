@@ -13,7 +13,7 @@ using std::string;
 [[nodiscard]] string XferSinaToStandard(const CString& strSina);
 [[nodiscard]] string XferSinaToStandard(const string_view& svSina);
 [[nodiscard]] CString XferSinaToNetease(const CString& strSina);
-[[nodiscard]] CString XferNeteaseToStandard(CString strNetease);
+[[nodiscard]] CString XferNeteaseToStandard(const CString& strNetease);
 [[nodiscard]] CString XferNeteaseToStandard(const string_view& svNetease);
 [[nodiscard]] CString XferNeteaseToSina(const CString& strNetease);
 [[nodiscard]] inline CString XferTengxunToStandard(const CString& strTengxun) { return XferSinaToStandard(strTengxun).c_str(); }

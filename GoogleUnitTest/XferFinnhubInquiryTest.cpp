@@ -89,7 +89,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(WEBSOCKET_NEWS_), _T("WebSocketNews")); // Premium
 
 		// Stock Fundamentals
-		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(SYMBOL_LOOKUP_), _T("StockFundamentalsSymolLookup"));
+		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(SYMBOL_LOOKUP_), _T("StockFundamentalsSymbolLookup"));
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(STOCK_SYMBOLS_), _T("StockFundamentalsSymbols"));
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(MARKET_STATUS_), _T("StockFundamentalsMarketStatus"));
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(MARKET_HOLIDAY_), _T("StockFundamentalsMarketHoliday"));
@@ -106,14 +106,14 @@ namespace FireBirdTest {
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(FUND_OWNERSHIP_), _T("StockFundamentalsFundOwnership")); //Premium
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(INSIDER_TRANSACTION_), _T("StockFundamentalsInsiderTransaction"));
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(INSIDER_SENTIMENT_), _T("StockFundamentalsInsiderSentiment"));
-		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(FINANCIAL_), _T("StockFundamentalsFiniacial")); //Premium
-		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(FINANCIAL_AS_REPORTED_), _T("StockFundamentalsFinaicialAsReported"));
+		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(FINANCIAL_), _T("StockFundamentalsFinancial")); //Premium
+		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(FINANCIAL_AS_REPORTED_), _T("StockFundamentalsFinancialAsReported"));
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(REVENUE_BREAKDOWN_), _T("StockFundamentalsRevenueBreakdown"));
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(SEC_FILINGS_), _T("StockFundamentalsSECFilings"));
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(INTERNATIONAL_FILINGS_), _T("StockFundamentalsInternationalFilings")); //Premium
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(SEC_SENTIMENT_ANALYSIS_), _T("StockFundamentalsSECSentimentAnalysis")); //Premium
-		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(SIMILARITY_INDEX_), _T("StockFundamentalsSemilarityIndex")); //Premium
-		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(IPO_CALENDAR_), _T("StockFundamentalsIPOCanlendar"));
+		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(SIMILARITY_INDEX_), _T("StockFundamentalsSimilarityIndex")); //Premium
+		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(IPO_CALENDAR_), _T("StockFundamentalsIPOCalendar"));
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(DIVIDENDS_), _T("StockFundamentalsDividends")); //Premium
 
 		// Stock Estimates
@@ -138,7 +138,7 @@ namespace FireBirdTest {
 
 		// ETF & Indices
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(ETFS_INDICES_CONSTITUENTS_), _T("ETFSIndicesConstituents"));
-		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(ETFS_HISTORY_CONSTITUENTS_), _T("ETFSIndicesHistoryConstitunets")); // Premium
+		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(ETFS_HISTORY_CONSTITUENTS_), _T("ETFSIndicesHistoryConstituents")); // Premium
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(ETFS_PROFILE_), _T("ETFSIndicesProfile")); // Premium
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(ETFS_HOLDINGS_), _T("ETFSIndicesHoldings")); // Premium
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(ETFS_SECTOR_), _T("ETFSIndicesSector")); // Premium
@@ -168,7 +168,7 @@ namespace FireBirdTest {
 
 		// Technical Analysis
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(TECHNICAL_ANALYSIS_PATTERN_RECOGNITION_), _T("TechnicalAnalysisPatternRecognition")); // Premium
-		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(TECHNICAL_ANALYSIS_SUPPORT_RESISTANCE_), _T("TechnicalAnalysisSurportResistance")); // Premium
+		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(TECHNICAL_ANALYSIS_SUPPORT_RESISTANCE_), _T("TechnicalAnalysisSupportResistance")); // Premium
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(TECHNICAL_ANALYSIS_AGGREGATE_INDICATORS_), _T("TechnicalAnalysisAggregateIndicators")); // Premium
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(TECHNICAL_ANALYSIS_TECHNICAL_INDICATORS_), _T("TechnicalAnalysisTechnicalIndicators"));
 
@@ -180,7 +180,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_SUPPLY_CHAIN_), _T("AlternativeDataSupplyChain")); // Premium
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_COMPANY_ESG_), _T("AlternativeDataCompanyESG")); // Premium
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_EARNING_QUALITY_SCORE_), _T("AlternativeDataQualityScore")); // Premium
-		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_USPTO_PATENTS_), _T("AlternativeDataUSPTOpatents"));
+		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_USPTO_PATENTS_), _T("AlternativeDataUSPTOPatents"));
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_VISA_APPLICATION_), _T("AlternativeDataVISAApplication")); //
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_COVID_19_), _T("AlternativeDataCOVID_19"));
 		EXPECT_STREQ(gl_FinnhubInquiryType.GetInquiryString(ALTERNATIVE_DATA_FDA_CALENDAR_), _T("AlternativeDataFDACalendar"));
@@ -198,7 +198,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("WebSocketNews")), WEBSOCKET_NEWS_); // Premium
 
 		// Stock Fundamentals
-		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsSymolLookup")), SYMBOL_LOOKUP_);
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsSymbolLookup")), SYMBOL_LOOKUP_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsSymbols")), STOCK_SYMBOLS_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsMarketStatus")), MARKET_STATUS_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsMarketHoliday")), MARKET_HOLIDAY_);
@@ -215,14 +215,14 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsFundOwnership")), FUND_OWNERSHIP_); //Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsInsiderTransaction")), INSIDER_TRANSACTION_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsInsiderSentiment")), INSIDER_SENTIMENT_);
-		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsFiniacial")), FINANCIAL_); //Premium
-		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsFinaicialAsReported")), FINANCIAL_AS_REPORTED_);
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsFinancial")), FINANCIAL_); //Premium
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsFinancialAsReported")), FINANCIAL_AS_REPORTED_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsRevenueBreakdown")), REVENUE_BREAKDOWN_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsSECFilings")), SEC_FILINGS_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsInternationalFilings")), INTERNATIONAL_FILINGS_); //Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsSECSentimentAnalysis")), SEC_SENTIMENT_ANALYSIS_); //Premium
-		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsSemilarityIndex")), SIMILARITY_INDEX_); //Premium
-		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsIPOCanlendar")), IPO_CALENDAR_);
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsSimilarityIndex")), SIMILARITY_INDEX_); //Premium
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsIPOCalendar")), IPO_CALENDAR_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsDividends")), DIVIDENDS_); //Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsSectorMetrics")), SECTOR_METRICS_); //Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("StockFundamentalsPriceMetrics")), PRICE_METRICS_); //Premium
@@ -251,7 +251,7 @@ namespace FireBirdTest {
 
 		// ETF & Indices
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("ETFSIndicesConstituents")), ETFS_INDICES_CONSTITUENTS_);
-		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("ETFSIndicesHistoryConstitunets")), ETFS_HISTORY_CONSTITUENTS_); // Premium
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("ETFSIndicesHistoryConstituents")), ETFS_HISTORY_CONSTITUENTS_); // Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("ETFSIndicesProfile")), ETFS_PROFILE_); // Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("ETFSIndicesHoldings")), ETFS_HOLDINGS_); // Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("ETFSIndicesSector")), ETFS_SECTOR_); // Premium
@@ -281,7 +281,7 @@ namespace FireBirdTest {
 
 		// Technical Analysis
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("TechnicalAnalysisPatternRecognition")), TECHNICAL_ANALYSIS_PATTERN_RECOGNITION_); // Premium
-		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("TechnicalAnalysisSurportResistance")), TECHNICAL_ANALYSIS_SUPPORT_RESISTANCE_); // Premium
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("TechnicalAnalysisSupportResistance")), TECHNICAL_ANALYSIS_SUPPORT_RESISTANCE_); // Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("TechnicalAnalysisAggregateIndicators")), TECHNICAL_ANALYSIS_AGGREGATE_INDICATORS_); // Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("TechnicalAnalysisTechnicalIndicators")), TECHNICAL_ANALYSIS_TECHNICAL_INDICATORS_);
 
@@ -293,7 +293,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("AlternativeDataSupplyChain")), ALTERNATIVE_DATA_SUPPLY_CHAIN_); // Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("AlternativeDataCompanyESG")), ALTERNATIVE_DATA_COMPANY_ESG_); // Premium
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("AlternativeDataQualityScore")), ALTERNATIVE_DATA_EARNING_QUALITY_SCORE_); // Premium
-		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("AlternativeDataUSPTOpatents")), ALTERNATIVE_DATA_USPTO_PATENTS_);
+		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("AlternativeDataUSPTOPatents")), ALTERNATIVE_DATA_USPTO_PATENTS_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("AlternativeDataVISAApplication")), ALTERNATIVE_DATA_VISA_APPLICATION_); //
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("AlternativeDataCOVID_19")), ALTERNATIVE_DATA_COVID_19_);
 		EXPECT_EQ(gl_FinnhubInquiryType.GetInquiryType(_T("AlternativeDataFDACalendar")), ALTERNATIVE_DATA_FDA_CALENDAR_);

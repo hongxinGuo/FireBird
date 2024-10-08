@@ -17,7 +17,7 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			gl_systemConfiguration.SetWorkingMode(false);
-			gl_systemConfiguration.NeedUpdate(false);
+			gl_systemConfiguration.SetUpdateDB(false);
 
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -69,6 +69,15 @@ namespace FireBirdTest {
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/TiingoInquiryTime")), 9000);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/QuandlInquiryTime")), 36000);
 
+		//Tiingo.com
+		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/Tiingo/AccountFeePaid")));
+		sTemp = jsSystemConfiguration.at(json::json_pointer("/Tiingo/Token"));
+		EXPECT_TRUE(sTemp == _T("c897a00b7cfc2630d235316a4683156"));
+		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/HourlyRequestLimit")), 500);
+		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/DailyRequestLimit")), 20000);
+		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/BandWidth")), 5368709120);
+		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/BandWidthLeft")), 5368709120);
+
 		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/WebSocket/UsingFinnhubWebSocket")));
 		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")));
 		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/WebSocket/UsingTiingoCryptoWebSocket")));
@@ -105,6 +114,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100) << "默认每次查询时间为1100毫秒";
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 3600000 / 400) << "默认每小时查询最大数量为400";
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime(), 3600000 / 100) << "默认每小时查询最大数量为100";
+
+		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount2());
+		EXPECT_STREQ(gl_systemConfiguration.GetTiingoToken2(), _T("c897a00b7cfc2630d235316a4683156"));
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoHourLyRequestLimit(), 500);
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoDailyRequestLimit(), 20000);
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoBandWidth(), 5368709120);
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoBandWidthLeft(), 5368709120);
 
 		EXPECT_EQ(gl_systemConfiguration.GetInsideTransactionUpdateRate(), 30);
 		EXPECT_EQ(gl_systemConfiguration.GetStockProfileUpdateRate(), 365);
@@ -196,22 +212,62 @@ namespace FireBirdTest {
 
 	TEST_F(CSystemConfigurationTest, TestChangeFinnhubAccountType) {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100);
-		const bool bSaved = gl_systemConfiguration.IsNeedUpdate();
-		gl_systemConfiguration.NeedUpdate(false);
+		const bool bSaved = gl_systemConfiguration.IsUpdateDB();
+		gl_systemConfiguration.SetUpdateDB(false);
 		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(220);
 
 		gl_systemConfiguration.ChangeFinnhubAccountTypeToFree();
 
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100);
-		EXPECT_TRUE(gl_systemConfiguration.IsNeedUpdate());
+		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
 
 		gl_systemConfiguration.ChangeFinnhubAccountTypeToPaid();
 
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 220);
-		EXPECT_TRUE(gl_systemConfiguration.IsNeedUpdate());
+		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
 
 		// 恢复原状
 		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(1100);
+	}
+
+	TEST_F(CSystemConfigurationTest, TestChangeTiingoAccountType) {
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 9000);
+		const bool bSaved = gl_systemConfiguration.IsUpdateDB();
+		gl_systemConfiguration.SetUpdateDB(false);
+		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(220);
+
+		gl_systemConfiguration.ChangeTiingoAccountTypeToFree();
+
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 9000);
+		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
+
+		gl_systemConfiguration.ChangeTiingoAccountTypeToPaid();
+
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 9000);
+		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
+
+		// 恢复原状
+		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(9000);
+	}
+
+	TEST_F(CSystemConfigurationTest, TestChangeTiingoAccountType2) {
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 9000);
+		const bool bSaved = gl_systemConfiguration.IsUpdateDB();
+		gl_systemConfiguration.SetUpdateDB(false);
+		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(220);
+
+		gl_systemConfiguration.ChangeTiingoAccountTypeToFree2();
+
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 9000);
+		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
+
+		gl_systemConfiguration.ChangeTiingoAccountTypeToPaid2();
+
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 9000);
+		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
+
+		// 恢复原状
+		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(9000);
 	}
 
 	TEST_F(CSystemConfigurationTest, TestLoadSaveWithNlohmannjson) {

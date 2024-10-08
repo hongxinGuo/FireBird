@@ -8,10 +8,10 @@
 
 map<string, enum_ErrorMessageData> mapTiingoErrorMap{
 	{ _T("You do not have permission to access the News API"), ERROR_TIINGO_NO_RIGHT_TO_ACCESS__ },
-	{ _T("Please use an API key."), ERROR_FINNHUB_MISSING_API_KEY__ },
+	{ _T("Please use an API key."), ERROR_TIINGO_MISSING_API_KEY__ },
 	{ _T("Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service."), ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__ },
 	{ _T("Error: resampleFreq must be in 'Min' or 'Hour' only"), ERROR_TIINGO_FREQUENCY__ },
-	{ _T(""), ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH__ }
+	{ _T(""), ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__ }
 };
 
 CTiingoDataSource::CTiingoDataSource() {
@@ -71,6 +71,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
 			break;
 		case ERROR_TIINGO_MISSING_API_KEY__: // 缺少API key
+			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 			break;
 		case ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__: // 需要购买附加许可证
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
@@ -116,6 +117,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 void CTiingoDataSource::Inquire(long lCurrentTime) {
 	ASSERT(!IsInquiring());
 	if (gl_pWorldMarket->IsSystemReady()) {
+		if (ReachRequestLimit()) return;
 		ASSERT(lCurrentTime <= gl_systemConfiguration.GetWorldMarketResettingTime() - 300
 			|| lCurrentTime >= gl_systemConfiguration.GetWorldMarketResettingTime() + 500); // 重启市场时不允许接收网络信息。
 		InquireMarketNews();
@@ -124,7 +126,10 @@ void CTiingoDataSource::Inquire(long lCurrentTime) {
 		InquireCryptoSymbol();
 		InquireFinancialState();
 		InquireDayLine();
-		if (!IsInquiring()) {
+		if (IsInquiring()) {
+			ReduceRequestPermit();
+		}
+		else {
 			if (!m_fTiingoDataInquiryFinished) {
 				gl_systemMessage.PushInformationMessage(_T("Tiingo data inquiry finished"));
 				m_fTiingoDataInquiryFinished = true;
@@ -149,7 +154,7 @@ bool CTiingoDataSource::InquireFundamentalDefinition() {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, TIINGO_FUNDAMENTAL_DEFINITION_);
 		StoreInquiry(p);
 		SetInquiring(true);
-		gl_systemMessage.PushInformationMessage(_T("Tiingo Fundamental Definition已更新"));
+		gl_systemMessage.PushInformationMessage(_T("Inquiring Tiingo Fundamental Definition..."));
 		return true;
 	}
 	return false;
@@ -224,13 +229,13 @@ bool CTiingoDataSource::InquireFinancialState() {
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
-	if (!IsInquiring() && IsUpdateFinancialStatement()) {
+	if (!IsInquiring() && IsUpdateFinancialState()) {
 		long lCurrentUpdateDayLinePos;
 		bool fFound = false;
 		for (lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
 			auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdateDayLinePos);
 			if (pTiingoStock->IsUpdateFinancialState()) {
-				pTiingoStock->SetUpdateFinancialState(false);
+				//pTiingoStock->SetUpdateFinancialState(false);
 				fFound = true;
 				break;
 			}
@@ -243,7 +248,7 @@ bool CTiingoDataSource::InquireFinancialState() {
 			SetInquiring(true);
 		}
 		else {
-			SetUpdateFinancialStatement(false);
+			SetUpdateFinancialState(false);
 			const CString str = "Tiingo financial statements更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
 		}

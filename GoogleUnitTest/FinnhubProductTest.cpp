@@ -93,6 +93,6 @@ namespace FireBirdTest {
 		pExchange->DeleteExchange(_T("AA"));
 		pExchange->DeleteExchange(_T("AB"));
 
-		gl_finnhubInaccessibleExchange.NeedUpdate(false);
+		gl_finnhubInaccessibleExchange.SetUpdateDB(false);
 	}
 }

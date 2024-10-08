@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include"ThreadStatus.h"
 #include"GeneralCheck.h"
 
 #include"ChinaStock.h"
