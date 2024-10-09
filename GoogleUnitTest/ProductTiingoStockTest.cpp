@@ -148,7 +148,7 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvStock->at(0)->m_strSICIndustry, _T("for"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strSICSector, _T("not"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strReportingCurrency, _T("usd"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strLocation, _T(" "));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strLocation, _T(""));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strCompanyWebSite, _T("free"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strSECFilingWebSite, _T("Field"));
 			EXPECT_EQ(m_pvStock->at(0)->GetCompanyFinancialStatementUpdateDate(), 19800101) << "此项冲突，不存储";
@@ -158,15 +158,15 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvStock->at(1)->m_strName, _T("New Name"));
 			EXPECT_TRUE(m_pvStock->at(1)->m_fIsActive);
 			EXPECT_FALSE(m_pvStock->at(1)->m_fIsADR);
-			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoIndustry, _T(" ")) << "当字符串为Field not available for free/evaluation时，返回空串(一个空格)";
-			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoSector, _T(" "));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoIndustry, _T("")) << "当字符串为Field not available for free/evaluation时，返回空串";
+			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoSector, _T(""));
 			EXPECT_EQ(m_pvStock->at(1)->m_iSICCode, 0);
-			EXPECT_STREQ(m_pvStock->at(1)->m_strSICIndustry, _T(" "));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strSICSector, _T(" "));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strSICIndustry, _T(""));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strSICSector, _T(""));
 			EXPECT_STREQ(m_pvStock->at(1)->m_strReportingCurrency, _T("usd"));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strLocation, _T(" "));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strCompanyWebSite, _T(" "));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strSECFilingWebSite, _T(" "));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strLocation, _T(""));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strCompanyWebSite, _T(""));
+			EXPECT_STREQ(m_pvStock->at(1)->m_strSECFilingWebSite, _T(""));
 			EXPECT_EQ(m_pvStock->at(1)->GetCompanyFinancialStatementUpdateDate(), 19800101) << "此项冲突，不存储";
 			EXPECT_EQ(m_pvStock->at(1)->GetDailyDataUpdateDate(), 19800101) << "此项冲突，不存储";
 			break;
@@ -195,6 +195,8 @@ namespace FireBirdTest {
 			// clearUp
 			gl_systemConfiguration.SetTiingoBandWidthLeft(m_llTiingoBandWidthLeft);
 			gl_systemConfiguration.SetUpdateDB(false);
+			gl_dataContainerTiingoStock.GetStock(_T("A"))->SetUpdateProfileDB(false);
+			gl_dataContainerTiingoStock.GetStock(_T("AA"))->SetUpdateProfileDB(false);
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			SCOPED_TRACE("");
 			GeneralCheck();

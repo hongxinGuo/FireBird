@@ -4,15 +4,27 @@
 #include "WorldMarket.h"
 
 CContainerTiingoStock::CContainerTiingoStock() {
-	Reset();
+	CContainerTiingoStock::Reset();
 }
 
 void CContainerTiingoStock::Reset() {
 	CContainerVirtualStock::Reset();
 }
 
+void CContainerTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
+	ASSERT(IsSymbol(pStock->GetSymbol()));
+
+	auto pTiingoStock = GetStock(pStock->GetSymbol());
+	pTiingoStock->UpdateProfile(pStock);
+}
+
 /// <summary>
+/// 
 /// 这种查询方式比较晦涩，但结果正确。目前使用此函数。(可能出现存储多个相同代码的问题，研究之）
+///
+/// 免费账户和付费账户更新的方式不同。
+/// 免费账户只存储新证券即可；付费账户需要更新所有新接收到的数据。
+///
 /// </summary>
 void CContainerTiingoStock::UpdateDB() {
 	if (IsUpdateProfileDB()) {

@@ -5,6 +5,9 @@
 
 #include "TiingoCompanyFinancialState.h"
 
+class CTiingoStock;
+using CTiingoStockPtr = shared_ptr<CTiingoStock>;
+
 class CTiingoStock : public CVirtualStock {
 public:
 	CTiingoStock();
@@ -33,6 +36,8 @@ public:
 	void UpdateDayLine(const vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UpdateFinancialStateDB() const;
 	bool UpdateDayLineDB();
+
+	void UpdateProfile(const CTiingoStockPtr& pStock);
 
 	void UpdateDayLineStartEndDate();
 	long GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }

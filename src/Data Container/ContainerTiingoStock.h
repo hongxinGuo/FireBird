@@ -17,6 +17,8 @@ public:
 	CTiingoStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CTiingoStock>(Get(lIndex)); }
 	CTiingoStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CTiingoStock>(Get(strStockCode)); }
 
+	void UpdateProfile(const CTiingoStockPtr& pStock);
+
 	void UpdateDB();
 	bool LoadDB();
 

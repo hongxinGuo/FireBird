@@ -208,11 +208,6 @@ namespace FireBirdTest {
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_RESET__);
-		EXPECT_EQ(pTask->GetTime(), 92600);
-
-		pTask = gl_pChinaMarket->GetMarketTask();
-		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_LOAD_TEMP_RT_DATA__);
 		EXPECT_EQ(pTask->GetTime(), 92700);
 
@@ -282,11 +277,6 @@ namespace FireBirdTest {
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();
 		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__);
-
-		pTask = gl_pChinaMarket->GetMarketTask();
-		gl_pChinaMarket->DiscardCurrentMarketTask();
-		EXPECT_EQ(pTask->GetType(), CHINA_MARKET_RESET__);
-		EXPECT_EQ(pTask->GetTime(), 92600);
 
 		pTask = gl_pChinaMarket->GetMarketTask();
 		gl_pChinaMarket->DiscardCurrentMarketTask();

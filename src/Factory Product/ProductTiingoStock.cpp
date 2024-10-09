@@ -23,7 +23,12 @@ void CProductTiingoStock::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (!pvTiingoStock->empty()) {
 		char buffer[100];
 		for (const auto& pTiingoStock : *pvTiingoStock) {
-			if (!gl_dataContainerTiingoStock.IsSymbol(pTiingoStock->GetSymbol())) {
+			if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStock->GetSymbol())) {
+				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
+					gl_dataContainerTiingoStock.UpdateProfile(pTiingoStock); // 付费账户使用新数据更新，免费账户无动作
+				}
+			}
+			else {
 				pTiingoStock->SetUpdateProfileDB(true); // 将此股票存入数据库。
 				gl_dataContainerTiingoStock.Add(pTiingoStock);
 			}
@@ -79,7 +84,7 @@ void CProductTiingoStock::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CTiingoStocksPtr CProductTiingoStock::ParseTiingoStockSymbol(const CWebDataPtr& pWebData) {
 	auto pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
 	string strNotAvailable{ _T("Field not available for free/evaluation") }; // Tiingo免费账户有多项内容空缺，会返回此信息。
-	CString strNULL = _T(" ");
+	CString strNULL = _T("");
 	CTiingoStockPtr pStock = nullptr;
 	string s1;
 	CString strNumber;
@@ -146,7 +151,7 @@ CTiingoStocksPtr CProductTiingoStock::ParseTiingoStockSymbol(const CWebDataPtr& 
 			if (s1 != strNotAvailable) {
 				pStock->m_strLocation = s1.c_str();;
 			}
-			else pStock->m_strLocation = _T(" ");
+			else pStock->m_strLocation = strNULL;
 			s1 = jsonGetStringView(itemValue, _T("companyWebsite"));
 			if (s1 != strNotAvailable) {
 				pStock->m_strCompanyWebSite = s1.c_str();;

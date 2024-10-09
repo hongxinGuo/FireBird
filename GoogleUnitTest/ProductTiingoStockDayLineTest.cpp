@@ -278,6 +278,8 @@ namespace FireBirdTest {
 			// clearUp
 			gl_systemConfiguration.SetTiingoBandWidthLeft(5368709120);
 			gl_systemConfiguration.SetUpdateDB(false);
+			gl_dataContainerTiingoStock.GetStock(_T("A"))->SetUpdateProfileDB(false);
+			gl_dataContainerTiingoStock.GetStock(_T("AAPL"))->SetUpdateProfileDB(false);
 			auto symbol = gl_dataContainerTiingoStock.GetStock(0)->GetSymbol();
 			gl_dataContainerFinnhubStock.GetStock(symbol)->SetUpdateDayLine(false);
 			gl_dataContainerFinnhubStock.GetStock(symbol)->SetUpdateDayLineDB(false);

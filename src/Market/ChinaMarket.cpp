@@ -597,10 +597,6 @@ void CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	if (lCurrentTime < 91300) {
 		AddTask(CHINA_MARKET_RESET__, 91300); // 执行时间为：91300
 	}
-	// 再次市场重置
-	if (lCurrentTime < 92600) {
-		AddTask(CHINA_MARKET_RESET__, 92600); // 执行时间为：92600
-	}
 
 	// 装载本日存储的实时数据。必须于市场两次重启后（92600后）再执行，这样才能保证正常设置m_fLoadTodayRTData变量
 	AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, 92700);

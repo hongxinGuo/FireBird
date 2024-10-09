@@ -190,6 +190,41 @@ bool CTiingoStock::UpdateDayLineDB() {
 	return false;
 }
 
+void CTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
+	if (pStock->m_strTiingoSector.GetLength() > 0) {
+		m_strTiingoSector = pStock->m_strTiingoSector;
+		SetUpdateProfileDB(true);
+	}
+	if (pStock->m_strTiingoIndustry.GetLength() > 0) {
+		m_strTiingoIndustry = pStock->m_strTiingoIndustry;
+		SetUpdateProfileDB(true);
+	}
+	if (pStock->m_iSICCode > 0) {
+		m_iSICCode = pStock->m_iSICCode;
+		SetUpdateProfileDB(true);
+	}
+	if (pStock->m_strSICSector.GetLength() > 0) {
+		m_strSICSector = pStock->m_strSICSector;
+		SetUpdateProfileDB(true);
+	}
+	if (pStock->m_strSICIndustry.GetLength() > 0) {
+		m_strSICIndustry = pStock->m_strSICIndustry;
+		SetUpdateProfileDB(true);
+	}
+	if (pStock->m_strLocation.GetLength() > 0) {
+		m_strLocation = pStock->m_strLocation;
+		SetUpdateProfileDB(true);
+	}
+	if (pStock->m_strCompanyWebSite.GetLength() > 0) {
+		m_strCompanyWebSite = pStock->m_strCompanyWebSite;
+		SetUpdateProfileDB(true);
+	}
+	if (pStock->m_strSECFilingWebSite.GetLength() > 0) {
+		m_strSECFilingWebSite = pStock->m_strSECFilingWebSite;
+		SetUpdateProfileDB(true);
+	}
+}
+
 void CTiingoStock::UpdateDayLineStartEndDate() {
 	long lStartDate = 0, lEndDate = 0;
 	if (m_dataDayLine.GetStartEndDate(lStartDate, lEndDate)) {
