@@ -545,7 +545,7 @@ namespace FireBirdTest {
 		auto pTiingoStock = make_shared<CTiingoStock>(); // 这个是数据库中已存在的证券
 		pTiingoStock->m_fIsActive = true;
 		pTiingoStock->m_fIsADR = false;
-		pTiingoStock->m_iSICCode = 1002;
+		pTiingoStock->m_iSicCode = 1002;
 		pTiingoStock->SetDailyDataUpdateDate(20200101);
 		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);
 		pTiingoStock->m_strCompanyWebSite = _T("");
@@ -553,8 +553,8 @@ namespace FireBirdTest {
 		pTiingoStock->m_strName = _T(""); //
 		pTiingoStock->m_strReportingCurrency = _T("");
 		pTiingoStock->m_strSECFilingWebSite = _T("");
-		pTiingoStock->m_strSICIndustry = _T("");
-		pTiingoStock->m_strSICSector = _T("Test"); // 用于删除
+		pTiingoStock->m_strSicIndustry = _T("");
+		pTiingoStock->m_strSicSector = _T("Test"); // 用于删除
 		pTiingoStock->SetSymbol(_T("A")); // 已存在代码
 		pTiingoStock->m_strTiingoIndustry = _T("");
 		pTiingoStock->m_strTiingoPermaTicker = _T("");
@@ -565,7 +565,7 @@ namespace FireBirdTest {
 		pTiingoStock = make_shared<CTiingoStock>();
 		pTiingoStock->m_fIsActive = true;
 		pTiingoStock->m_fIsADR = false;
-		pTiingoStock->m_iSICCode = 1002;
+		pTiingoStock->m_iSicCode = 1002;
 		pTiingoStock->SetDailyDataUpdateDate(20200101);
 		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);
 		pTiingoStock->m_strCompanyWebSite = _T("www.abc.com");
@@ -573,8 +573,8 @@ namespace FireBirdTest {
 		pTiingoStock->m_strName = _T("ABCDE"); // 新代码
 		pTiingoStock->m_strReportingCurrency = _T("US Dollar");
 		pTiingoStock->m_strSECFilingWebSite = _T("abc");
-		pTiingoStock->m_strSICIndustry = _T("Computer Science");
-		pTiingoStock->m_strSICSector = _T("Test");
+		pTiingoStock->m_strSicIndustry = _T("Computer Science");
+		pTiingoStock->m_strSicSector = _T("Test");
 		pTiingoStock->SetSymbol(_T("ABCDEF")); // 新代码
 		pTiingoStock->m_strTiingoIndustry = _T("Computer");
 		pTiingoStock->m_strTiingoPermaTicker = _T("abcdefg");
@@ -593,10 +593,10 @@ namespace FireBirdTest {
 		EXPECT_FALSE(setTiingoStock.IsEOF()) << "存入了两股票代码";
 		setTiingoStock.m_pDatabase->BeginTrans();
 		EXPECT_STREQ(setTiingoStock.m_Ticker, _T("A")) << "已存在代码";
-		EXPECT_EQ(setTiingoStock.m_SICCode, 1002);
+		EXPECT_EQ(setTiingoStock.m_SicCode, 1002);
 		setTiingoStock.Edit();
-		setTiingoStock.m_SICSector = _T("");
-		setTiingoStock.m_SICCode = 0;
+		setTiingoStock.m_SicSector = _T("");
+		setTiingoStock.m_SicCode = 0;
 		setTiingoStock.Update();
 		setTiingoStock.MoveNext();
 		EXPECT_STREQ(setTiingoStock.m_Ticker, _T("ABCDEF")) << "新代码";
@@ -910,8 +910,8 @@ namespace FireBirdTest {
 		EXPECT_THAT(gl_pWorldMarket->UpdateTiingoIndustry(), IsFalse());
 	}
 
-	TEST_F(CWorldMarketTest, TestUpdateSICIndustry) {
-		EXPECT_THAT(gl_pWorldMarket->UpdateSICIndustry(), IsFalse());
+	TEST_F(CWorldMarketTest, TestUpdateSicIndustry) {
+		EXPECT_THAT(gl_pWorldMarket->UpdateSicIndustry(), IsFalse());
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateNaicsIndustry) {

@@ -1,34 +1,34 @@
 #pragma once
 
-#include"SICIndustry.h"
+#include"SicIndustry.h"
 
-class CContainerSICIndustry {
+class CContainerSicIndustry {
 public:
-	CContainerSICIndustry();
-	CContainerSICIndustry(const CContainerSICIndustry& other) = delete;
-	CContainerSICIndustry(CContainerSICIndustry&& other) noexcept = delete;
-	CContainerSICIndustry& operator=(const CContainerSICIndustry& other) = delete;
-	CContainerSICIndustry& operator=(CContainerSICIndustry&& other) noexcept = delete;
-	virtual ~CContainerSICIndustry() = default;
+	CContainerSicIndustry();
+	CContainerSicIndustry(const CContainerSicIndustry& other) = delete;
+	CContainerSicIndustry(CContainerSicIndustry&& other) noexcept = delete;
+	CContainerSicIndustry& operator=(const CContainerSicIndustry& other) = delete;
+	CContainerSicIndustry& operator=(CContainerSicIndustry&& other) noexcept = delete;
+	virtual ~CContainerSicIndustry() = default;
 	void Reset();
 
-	size_t GetTotalSICIndustry() const noexcept { return m_vSICIndustry.size(); }
-	long GetLastTotalSICIndustry() const noexcept { return m_lLastTotalSICIndustry; }
+	size_t GetTotalSicIndustry() const noexcept { return m_vSicIndustry.size(); }
+	long GetLastTotalSicIndustry() const noexcept { return m_lLastTotalSicIndustry; }
 
-	bool IsSICIndustry(const long lSICCode) const {
-		if (!m_mapSICIndustry.contains(lSICCode)) return true;
+	bool IsSicIndustry(const long lSicCode) const {
+		if (!m_mapSicIndustry.contains(lSicCode)) return true;
 		else return false;
 	}
 
-	bool IsSICIndustry(const CSICIndustryPtr& pSICIndustry) const { return IsSICIndustry(pSICIndustry->m_lCode); }
-	void Add(CSICIndustryPtr pSICIndustry);
-	bool Delete(CSICIndustryPtr pSICIndustry);
+	bool IsSicIndustry(const CSicIndustryPtr& pSicIndustry) const { return IsSicIndustry(pSicIndustry->m_lCode); }
+	void Add(CSicIndustryPtr pSicIndustry);
+	bool Delete(CSicIndustryPtr pSicIndustry);
 
 	bool UpdateDB();
 	bool LoadDB();
 
 protected:
-	vector<CSICIndustryPtr> m_vSICIndustry;
-	map<long, long> m_mapSICIndustry;
-	long m_lLastTotalSICIndustry;
+	vector<CSicIndustryPtr> m_vSicIndustry;
+	map<long, long> m_mapSicIndustry;
+	long m_lLastTotalSicIndustry;
 };

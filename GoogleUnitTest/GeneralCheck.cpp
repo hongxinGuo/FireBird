@@ -106,7 +106,6 @@ namespace FireBirdTest {
 			EXPECT_THAT(gl_pChinaMarket->IsCalculatingWeekLineRS(), IsFalse());
 			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 
-			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040);
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试数据库装载的股票数";
 

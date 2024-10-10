@@ -13,9 +13,9 @@ CTiingoStock::CTiingoStock() {
 	m_fIsADR = false;
 	m_strTiingoIndustry = _T("");
 	m_strTiingoSector = _T("");
-	m_iSICCode = 0;
-	m_strSICIndustry = _T("");
-	m_strSICSector = _T("");
+	m_iSicCode = 0;
+	m_strSicIndustry = _T("");
+	m_strSicSector = _T("");
 	m_strReportingCurrency = _T("");
 	m_strLocation = _T("");
 	m_strCompanyWebSite = _T("");
@@ -27,6 +27,8 @@ CTiingoStock::CTiingoStock() {
 }
 
 void CTiingoStock::ResetAllUpdateDate() {
+	m_jsonUpdateDate["StatementLastUpdated"] = 0;
+	m_jsonUpdateDate["DailyLastUpdated"] = 0;
 	m_jsonUpdateDate["CompanyProfile"] = 19800101;
 	m_jsonUpdateDate["DayLine"] = 19800101;
 	m_jsonUpdateDate["CompanyFinancialStatement"] = 19800101;
@@ -39,9 +41,9 @@ void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
 	m_strName = setTiingoStock.m_Name;
 	m_fIsActive = setTiingoStock.m_IsActive;
 	m_fIsADR = setTiingoStock.m_IsADR;
-	m_iSICCode = setTiingoStock.m_SICCode;
-	m_strSICIndustry = setTiingoStock.m_SICIndustry;
-	m_strSICSector = setTiingoStock.m_SICSector;
+	m_iSicCode = setTiingoStock.m_SicCode;
+	m_strSicIndustry = setTiingoStock.m_SicIndustry;
+	m_strSicSector = setTiingoStock.m_SicSector;
 	m_strTiingoIndustry = setTiingoStock.m_TiingoIndustry;
 	m_strTiingoSector = setTiingoStock.m_TiingoSector;
 	m_strReportingCurrency = setTiingoStock.m_ReportingCurrency;
@@ -66,15 +68,15 @@ void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
 	if ((m_strCompanyWebSite.GetLength() > 100)
 		|| (m_strName.GetLength() > 200)
 		|| (m_strSECFilingWebSite.GetLength() > 150)
-		|| (m_strSICIndustry.GetLength() > 100)
-		|| (m_strSICSector.GetLength() > 100)
+		|| (m_strSicIndustry.GetLength() > 100)
+		|| (m_strSicSector.GetLength() > 100)
 		|| (m_strTiingoIndustry.GetLength() > 100)
 		|| (m_strTiingoSector.GetLength() > 100)) {
 		gl_systemMessage.PushErrorMessage(_T("Tiingo stock ") + m_strName + _T(" ×Ö·û´®Ì«³¤"));
 	}
 	m_strName = m_strName.Left(200);
-	m_strSICIndustry = m_strSICIndustry.Left(100);
-	m_strSICSector = m_strSICSector.Left(100);
+	m_strSicIndustry = m_strSicIndustry.Left(100);
+	m_strSicSector = m_strSicSector.Left(100);
 	m_strTiingoIndustry = m_strTiingoIndustry.Left(100);
 	m_strTiingoSector = m_strTiingoSector.Left(100);
 	m_strCompanyWebSite = m_strCompanyWebSite.Left(100);
@@ -85,9 +87,9 @@ void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
 	setTiingoStock.m_Name = m_strName;
 	setTiingoStock.m_IsActive = m_fIsActive;
 	setTiingoStock.m_IsADR = m_fIsADR;
-	setTiingoStock.m_SICCode = m_iSICCode;
-	setTiingoStock.m_SICIndustry = m_strSICIndustry;
-	setTiingoStock.m_SICSector = m_strSICSector;
+	setTiingoStock.m_SicCode = m_iSicCode;
+	setTiingoStock.m_SicIndustry = m_strSicIndustry;
+	setTiingoStock.m_SicSector = m_strSicSector;
 	setTiingoStock.m_TiingoIndustry = m_strTiingoIndustry;
 	setTiingoStock.m_TiingoSector = m_strTiingoSector;
 	setTiingoStock.m_ReportingCurrency = m_strReportingCurrency;
@@ -199,16 +201,16 @@ void CTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
 		m_strTiingoIndustry = pStock->m_strTiingoIndustry;
 		SetUpdateProfileDB(true);
 	}
-	if (pStock->m_iSICCode > 0) {
-		m_iSICCode = pStock->m_iSICCode;
+	if (pStock->m_iSicCode > 0) {
+		m_iSicCode = pStock->m_iSicCode;
 		SetUpdateProfileDB(true);
 	}
-	if (pStock->m_strSICSector.GetLength() > 0) {
-		m_strSICSector = pStock->m_strSICSector;
+	if (pStock->m_strSicSector.GetLength() > 0) {
+		m_strSicSector = pStock->m_strSicSector;
 		SetUpdateProfileDB(true);
 	}
-	if (pStock->m_strSICIndustry.GetLength() > 0) {
-		m_strSICIndustry = pStock->m_strSICIndustry;
+	if (pStock->m_strSicIndustry.GetLength() > 0) {
+		m_strSicIndustry = pStock->m_strSicIndustry;
 		SetUpdateProfileDB(true);
 	}
 	if (pStock->m_strLocation.GetLength() > 0) {

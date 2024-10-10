@@ -42,9 +42,9 @@ namespace FireBirdTest {
 		EXPECT_STREQ(tiingo.m_strName, _T(""));
 		EXPECT_FALSE(tiingo.m_fIsActive);
 		EXPECT_FALSE(tiingo.m_fIsADR);
-		EXPECT_EQ(tiingo.m_iSICCode, 0);
-		EXPECT_STREQ(tiingo.m_strSICIndustry, _T(""));
-		EXPECT_STREQ(tiingo.m_strSICSector, _T(""));
+		EXPECT_EQ(tiingo.m_iSicCode, 0);
+		EXPECT_STREQ(tiingo.m_strSicIndustry, _T(""));
+		EXPECT_STREQ(tiingo.m_strSicSector, _T(""));
 		EXPECT_STREQ(tiingo.m_strTiingoIndustry, _T(""));
 		EXPECT_STREQ(tiingo.m_strTiingoSector, _T(""));
 		EXPECT_STREQ(tiingo.m_strReportingCurrency, _T(""));
@@ -471,9 +471,9 @@ namespace FireBirdTest {
 		stock.m_strName = _T("adkjkf");
 		stock.m_fIsActive = true;
 		stock.m_fIsADR = true;
-		stock.m_iSICCode = 1234;
-		stock.m_strSICIndustry = _T("defg");
-		stock.m_strSICSector = _T("efg");
+		stock.m_iSicCode = 1234;
+		stock.m_strSicIndustry = _T("defg");
+		stock.m_strSicSector = _T("efg");
 		stock.m_strTiingoIndustry = _T("ghi");
 		stock.m_strTiingoSector = _T("defghijk");
 		stock.m_strReportingCurrency = _T("US");
@@ -498,9 +498,9 @@ namespace FireBirdTest {
 		EXPECT_STREQ(stock.m_strName, stock2.m_strName);
 		EXPECT_TRUE(stock.m_fIsActive == stock2.m_fIsActive);
 		EXPECT_TRUE(stock.m_fIsADR == stock2.m_fIsADR);
-		EXPECT_EQ(stock.m_iSICCode, stock2.m_iSICCode);
-		EXPECT_STREQ(stock.m_strSICIndustry, stock2.m_strSICIndustry);
-		EXPECT_STREQ(stock.m_strSICSector, stock2.m_strSICSector);
+		EXPECT_EQ(stock.m_iSicCode, stock2.m_iSicCode);
+		EXPECT_STREQ(stock.m_strSicIndustry, stock2.m_strSicIndustry);
+		EXPECT_STREQ(stock.m_strSicSector, stock2.m_strSicSector);
 		EXPECT_STREQ(stock.m_strTiingoIndustry, stock2.m_strTiingoIndustry);
 		EXPECT_STREQ(stock.m_strTiingoSector, stock2.m_strTiingoSector);
 		EXPECT_STREQ(stock.m_strReportingCurrency, stock2.m_strReportingCurrency);

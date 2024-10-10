@@ -12,9 +12,9 @@ CSetTiingoStock::CSetTiingoStock(const CString& strSchema, const CString& strTab
 	m_Name = _T("");
 	m_IsActive = true;
 	m_IsADR = false;
-	m_SICCode = 0;
-	m_SICIndustry = _T("");
-	m_SICSector = _T("");
+	m_SicCode = 0;
+	m_SicIndustry = _T("");
+	m_SicSector = _T("");
 	m_TiingoIndustry = _T("");
 	m_TiingoSector = _T("");
 	m_ReportingCurrency = _T("");
@@ -37,9 +37,9 @@ void CSetTiingoStock::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[Name]"), m_Name);
 	RFX_Bool(pFX, _T("[IsActive]"), m_IsActive);
 	RFX_Bool(pFX, _T("[IsADR]"), m_IsADR);
-	RFX_Long(pFX, _T("[SICCode]"), m_SICCode);
-	RFX_Text(pFX, _T("[SICIndustry]"), m_SICIndustry);
-	RFX_Text(pFX, _T("[SICSector]"), m_SICSector);
+	RFX_Long(pFX, _T("[SICCode]"), m_SicCode);
+	RFX_Text(pFX, _T("[SICIndustry]"), m_SicIndustry);
+	RFX_Text(pFX, _T("[SICSector]"), m_SicSector);
 	RFX_Text(pFX, _T("[TiingoIndustry]"), m_TiingoIndustry);
 	RFX_Text(pFX, _T("[TiingoSector]"), m_TiingoSector);
 	RFX_Text(pFX, _T("[ReportingCurrency]"), m_ReportingCurrency);

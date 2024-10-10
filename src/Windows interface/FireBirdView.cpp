@@ -683,52 +683,52 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 			// 错误
 			break;
 		}
-		ShowCurrentRS(pDC, m_vRSShow);
+		if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度3日均线
 	if (m_fShow3DaysRS) {
 		pDC->SelectObject(&penYellow1);
 		pHistoryData->GetRS3(m_vRSShow);
-		ShowCurrentRS(pDC, m_vRSShow);
+		if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度5日均线
 	if (m_fShow5DaysRS) {
 		pDC->SelectObject(&penGreen1);
 		pHistoryData->GetRS5(m_vRSShow);
 		ZoomIn(m_vRSShow, 50, 1.5);
-		ShowCurrentRS(pDC, m_vRSShow);
+		if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度10日均线
 	if (m_fShow10DaysRS) {
 		pDC->SelectObject(&penRed1);
 		pHistoryData->GetRS10(m_vRSShow);
 		ZoomIn(m_vRSShow, 50, 3);
-		ShowCurrentRS(pDC, m_vRSShow);
+		if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度30日均线
 	if (m_fShow30DaysRS) {
 		pDC->SelectObject(&penYellow1);
 		pHistoryData->GetRS30(m_vRSShow);
 		ZoomIn(m_vRSShow, 50, 3);
-		ShowCurrentRS(pDC, m_vRSShow);
+		if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度60日均线
 	if (m_fShow60DaysRS) {
 		pDC->SelectObject(&penBlue1);
 		pHistoryData->GetRS60(m_vRSShow);
 		ZoomIn(m_vRSShow, 50, 6);
-		ShowCurrentRS(pDC, m_vRSShow);
+		if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
 	}
 	// 画相对强度120日均线
 	if (m_fShow120DaysRS) {
 		pDC->SelectObject(&penWhite1);
 		pHistoryData->GetRS120(m_vRSShow);
 		ZoomIn(m_vRSShow, 50, 6);
-		ShowCurrentRS(pDC, m_vRSShow);
+		if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
 	}
 
 	////////////////////////////////////////////////////////////////画日线蜡烛线
-	ShowHistoryData(pDC, pHistoryData, m_rectClient);
+	if (pHistoryData->GetDataVector().size() > 0) ShowHistoryData(pDC, pHistoryData, m_rectClient);
 	//pHistoryData->ShowData(pDC, m_rectClient);
 
 	pDC->SelectObject(ppen);
@@ -754,10 +754,8 @@ bool CFireBirdView::RSLineTo(CDC* pDC, int i, double dValue, int iSize) {
 }
 
 void CFireBirdView::ZoomIn(vector<double>& vData, double dLevel, double dRate) {
-	double d = 0;
-
 	for (int i = 0; i < vData.size(); i++) {
-		d = dLevel + (vData.at(i) - dLevel) * dRate;
+		double d = dLevel + (vData.at(i) - dLevel) * dRate;
 		if (d < 0) vData.at(i) = 0;
 		else if (d > 100) vData.at(i) = 100;
 		else vData.at(i) = d;

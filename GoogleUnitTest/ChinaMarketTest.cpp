@@ -44,7 +44,6 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
 			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试数据库中的股票代码总数为5040";
-			EXPECT_EQ(gl_dataContainerChinaStock.GetLoadedStockSize(), 5040) << "测试代码库中的股票代码总数为5040";
 		}
 
 		static void TearDownTestSuite() {
@@ -99,7 +98,6 @@ namespace FireBirdTest {
 			}
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
-			EXPECT_THAT(gl_dataContainerChinaStock.Size(), Eq(5040));
 
 			EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试数据库中的股票代码总数为5040";
 
@@ -1723,6 +1721,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestUpdateStockProfileDB) {
 		ASSERT_THAT(gl_dataContainerChinaStock.IsUpdateProfileDB(), IsFalse()) << "此测试开始时，必须保证没有设置更新代码库的标识，否则会真正更新了测试代码库";
+		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试代码库中的股票代码总数为5040";
 
 		auto pStock = make_shared<CChinaStock>();
 		pStock->SetSymbol(_T("SS.SS.SS"));
@@ -1730,6 +1729,7 @@ namespace FireBirdTest {
 		pStock->SetUpdateProfileDB(true);
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsSymbol(pStock->GetSymbol())); // 确保是一个新股票代码
 		gl_dataContainerChinaStock.Add(pStock);
+		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5041) << "测试代码库中的股票代码总数为5040";
 		pStock = gl_dataContainerChinaStock.GetStock(_T("000001.SS"));
 		EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_IPOED_);
 		pStock->SetUpdateProfileDB(true);
@@ -1747,6 +1747,7 @@ namespace FireBirdTest {
 		setChinaStock.Update();
 		setChinaStock.m_pDatabase->CommitTrans();
 		setChinaStock.Close();
+		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5041) << "测试代码库中的股票代码总数为5040";
 
 		setChinaStock.m_strFilter = _T("[Symbol] = 'SS.SS.SS'");
 		setChinaStock.Open();
@@ -1758,12 +1759,14 @@ namespace FireBirdTest {
 		}
 		setChinaStock.m_pDatabase->CommitTrans();
 		setChinaStock.Close();
+		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5041) << "测试代码库中的股票代码总数为5040";
 
 		pStock = gl_dataContainerChinaStock.GetStock(_T("000001.SS"));
 		pStock->SetIPOStatus(_STOCK_IPOED_); // 恢复原状
 		pStock = gl_dataContainerChinaStock.GetStock(_T("SS.SS.SS"));
 		EXPECT_TRUE(pStock != nullptr);
 		gl_dataContainerChinaStock.Delete(pStock); // 恢复原状
+		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试代码库中的股票代码总数为5040";
 
 		EXPECT_THAT(gl_dataContainerChinaStock.IsUpdateProfileDB(), IsFalse()) << "此测试结束时，必须保证没有设置更新代码库的标识，否则会真正更新了测试代码库";
 

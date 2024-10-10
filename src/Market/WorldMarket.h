@@ -43,7 +43,7 @@ public:
 	void TaskUpdateWorldMarketDB(long lCurrentTime);
 
 	bool TaskUpdateTiingoIndustry();
-	bool TaskUpdateSICIndustry();
+	bool TaskUpdateSicIndustry();
 	bool TaskUpdateNaicsIndustry();
 
 	bool TaskUpdateForexDayLineDB();
@@ -70,7 +70,7 @@ public:
 	virtual bool UpdateInsiderTransactionDB();
 	virtual bool UpdateInsiderSentimentDB();
 	virtual bool UpdateTiingoIndustry();
-	virtual bool UpdateSICIndustry();
+	virtual bool UpdateSicIndustry();
 	virtual bool UpdateNaicsIndustry();
 
 	void RebuildStockDayLineDB();

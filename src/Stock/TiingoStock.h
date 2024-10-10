@@ -51,6 +51,11 @@ public:
 	void CheckFinancialStateUpdateStatus(long lTodayDate);
 	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
 
+	long GetStatementLastUpdatedDate() { return m_jsonUpdateDate["StatementLastUpdated"]; }
+	void SetStatementLastUpdatedDate(long lLDate) { m_jsonUpdateDate["StatementLastUpdated"] = lLDate; }
+	long GetDailyLastUpdatedDate() { return m_jsonUpdateDate["DailyLastUpdated"]; }
+	void SetDailyLastUpdatedDate(long lLDate) { m_jsonUpdateDate["DailyLastUpdated"] = lLDate; }
+
 	long GetDailyDataUpdateDate() { return m_jsonUpdateDate["DailyData"]; }
 	void SetDailyDataUpdateDate(long lDate) { m_jsonUpdateDate["DailyData"] = lDate; }
 	long GetCompanyFinancialStatementUpdateDate() { return m_jsonUpdateDate["CompanyFinancialStatement"]; }
@@ -61,20 +66,23 @@ public:
 	void SetCompanyProfileUpdateDate(long lDate) { m_jsonUpdateDate["CompanyProfile"] = lDate; }
 
 public:
-	CString m_strTiingoPermaTicker; // Tiingo永久代码标识
+	CString m_strTiingoPermaTicker{ _T("") }; // Tiingo永久代码标识
 	//CString m_strTicker; // 这个使用VirtualStock中的m_strSymbol来代替。
-	CString m_strName;
-	bool m_fIsActive; //
-	bool m_fIsADR;
-	INT32 m_iSICCode;
-	CString m_strSICIndustry;
-	CString m_strSICSector;
-	CString m_strTiingoIndustry;
-	CString m_strTiingoSector;
-	CString m_strReportingCurrency;
-	CString m_strLocation;
-	CString m_strCompanyWebSite;
-	CString m_strSECFilingWebSite;
+	CString m_strName{ _T("") };
+	bool m_fIsActive{ false }; //
+	bool m_fIsADR{ false };
+	CString m_strTiingoSector{ _T("") };
+	CString m_strTiingoIndustry{ _T("") };
+	INT32 m_iSicCode{ 0 };
+	CString m_strSicSector{ _T("") };
+	CString m_strSicIndustry{ _T("") };
+	CString m_strReportingCurrency{ _T("") };
+	CString m_strLocation{ _T("") };
+	CString m_strCompanyWebSite{ _T("") };
+	CString m_strSECFilingWebSite{ _T("") };
+	//INT64 m_llStatementLastUpdated{ 0 }; // 此项存储于json结构中
+	//INT64 m_llDailyLastUpdated{ 0 }; // 此项存储于json结构中
+	CString m_strDataProviderPermaTicker{ _T("") };
 
 protected:
 	CTiingoCompanyFinancialStatesPtr m_pvFinancialState{ nullptr };

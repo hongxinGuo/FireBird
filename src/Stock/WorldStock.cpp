@@ -59,9 +59,9 @@ CWorldStock::CWorldStock() {
 	m_fIsADR = false;
 	m_strTiingoIndustry = _T("");
 	m_strTiingoSector = _T("");
-	m_iSICCode = 0;
-	m_strSICIndustry = _T("");
-	m_strSICSector = _T("");
+	m_iSicCode = 0;
+	m_strSicIndustry = _T("");
+	m_strSicSector = _T("");
 	m_strCompanyWebSite = _T("");
 	m_strSECFilingWebSite = _T("");
 
@@ -129,9 +129,9 @@ CWorldStock::CWorldStock() {
 	m_fIsADR = false;
 	m_strTiingoIndustry = _T("");
 	m_strTiingoSector = _T("");
-	m_iSICCode = 0;
-	m_strSICIndustry = _T("");
-	m_strSICSector = _T("");
+	m_iSicCode = 0;
+	m_strSicIndustry = _T("");
+	m_strSicSector = _T("");
 	m_strCompanyWebSite = _T("");
 	m_strSECFilingWebSite = _T("");
 
@@ -235,9 +235,9 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 	m_strTiingoPermaTicker = setWorldStock.m_TiingoPermaTicker;
 	m_fIsActive = setWorldStock.m_IsActive;
 	m_fIsADR = setWorldStock.m_IsADR;
-	m_iSICCode = setWorldStock.m_SICCode;
-	m_strSICIndustry = setWorldStock.m_SICIndustry;
-	m_strSICSector = setWorldStock.m_SICSector;
+	m_iSicCode = setWorldStock.m_SICCode;
+	m_strSicIndustry = setWorldStock.m_SICIndustry;
+	m_strSicSector = setWorldStock.m_SICSector;
 	m_strTiingoIndustry = setWorldStock.m_TiingoIndustry;
 	m_strTiingoSector = setWorldStock.m_TiingoSector;
 	m_strCompanyWebSite = setWorldStock.m_CompanyWebSite;
@@ -398,9 +398,9 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) const {
 	setWorldStock.m_TiingoPermaTicker = m_strTiingoPermaTicker;
 	setWorldStock.m_IsActive = m_fIsActive;
 	setWorldStock.m_IsADR = m_fIsADR;
-	setWorldStock.m_SICCode = m_iSICCode;
-	setWorldStock.m_SICIndustry = m_strSICIndustry.Left(100);
-	setWorldStock.m_SICSector = m_strSICSector.Left(100);
+	setWorldStock.m_SICCode = m_iSicCode;
+	setWorldStock.m_SICIndustry = m_strSicIndustry.Left(100);
+	setWorldStock.m_SICSector = m_strSicSector.Left(100);
 	setWorldStock.m_TiingoIndustry = m_strTiingoIndustry.Left(100);
 	setWorldStock.m_TiingoSector = m_strTiingoSector.Left(100);
 	setWorldStock.m_CompanyWebSite = m_strCompanyWebSite.Left(100);
@@ -681,9 +681,9 @@ bool CWorldStock::IsNeedUpdateProfile(const CTiingoStockPtr& pTiingoStock) {
 	if (m_fIsADR != pTiingoStock->m_fIsADR) return true;
 	if (m_strTiingoIndustry.Compare(pTiingoStock->m_strTiingoIndustry) != 0) return true;
 	if (m_strTiingoSector.Compare(pTiingoStock->m_strTiingoSector) != 0) return true;
-	if (m_strSICIndustry.Compare(pTiingoStock->m_strSICIndustry) != 0) return true;
-	if (m_strSICSector.Compare(pTiingoStock->m_strSICSector) != 0) return true;
-	if (m_iSICCode != pTiingoStock->m_iSICCode) return true;
+	if (m_strSicIndustry.Compare(pTiingoStock->m_strSicIndustry) != 0) return true;
+	if (m_strSicSector.Compare(pTiingoStock->m_strSicSector) != 0) return true;
+	if (m_iSicCode != pTiingoStock->m_iSicCode) return true;
 	if (m_strCompanyWebSite.Compare(pTiingoStock->m_strCompanyWebSite) != 0) return true;
 	if (m_strSECFilingWebSite.Compare(pTiingoStock->m_strSECFilingWebSite) != 0) return true;
 	return false;
@@ -703,9 +703,9 @@ void CWorldStock::UpdateStockProfile(const CTiingoStockPtr& pTiingoStock) {
 	m_fIsADR = pTiingoStock->m_fIsADR;
 	m_strTiingoIndustry = pTiingoStock->m_strTiingoIndustry;
 	m_strTiingoSector = pTiingoStock->m_strTiingoSector;
-	m_strSICIndustry = pTiingoStock->m_strSICIndustry;
-	m_strSICSector = pTiingoStock->m_strSICSector;
-	m_iSICCode = pTiingoStock->m_iSICCode;
+	m_strSicIndustry = pTiingoStock->m_strSicIndustry;
+	m_strSicSector = pTiingoStock->m_strSicSector;
+	m_iSicCode = pTiingoStock->m_iSicCode;
 	m_strCompanyWebSite = pTiingoStock->m_strCompanyWebSite;
 	m_strSECFilingWebSite = pTiingoStock->m_strSECFilingWebSite;
 }

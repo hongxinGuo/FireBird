@@ -215,12 +215,12 @@ public:
 	void TiingoSetActive(const bool fIsActive) noexcept { m_fIsActive = fIsActive; }
 	bool IsADR() const noexcept { return m_fIsADR; }
 	void SetADR(const bool fIsADR) noexcept { m_fIsADR = fIsADR; }
-	INT32 GetSICCode() const noexcept { return m_iSICCode; }
-	void SetSICCode(const INT32 iSICCode) noexcept { m_iSICCode = iSICCode; }
-	CString GetSICIndustry() noexcept { return m_strSICIndustry; }
-	void SetSICIndustry(const CString& strSICIndustry) noexcept { m_strSICIndustry = strSICIndustry; }
-	CString GetSICSector() noexcept { return m_strSICSector; }
-	void SetSICSector(const CString& strSICSector) noexcept { m_strSICSector = strSICSector; }
+	INT32 GetSICCode() const noexcept { return m_iSicCode; }
+	void SetSICCode(const INT32 iSICCode) noexcept { m_iSicCode = iSICCode; }
+	CString GetSICIndustry() noexcept { return m_strSicIndustry; }
+	void SetSICIndustry(const CString& strSICIndustry) noexcept { m_strSicIndustry = strSICIndustry; }
+	CString GetSICSector() noexcept { return m_strSicSector; }
+	void SetSICSector(const CString& strSICSector) noexcept { m_strSicSector = strSICSector; }
 	CString GetTiingoIndustry() noexcept { return m_strTiingoIndustry; }
 	void SetTiingoIndustry(const CString& strTiingoIndustry) noexcept { m_strTiingoIndustry = strTiingoIndustry; }
 	CString GetTiingoSector() noexcept { return m_strTiingoSector; }
@@ -293,9 +293,9 @@ protected:
 	CString m_strTiingoPermaTicker; // Tiingo”¿æ√¥˙¬Î±Í ∂
 	bool m_fIsActive; //
 	bool m_fIsADR;
-	INT32 m_iSICCode;
-	CString m_strSICIndustry;
-	CString m_strSICSector;
+	INT32 m_iSicCode;
+	CString m_strSicIndustry;
+	CString m_strSicSector;
 	CString m_strTiingoIndustry;
 	CString m_strTiingoSector;
 	CString m_strCompanyWebSite;

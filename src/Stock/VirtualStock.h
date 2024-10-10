@@ -102,33 +102,33 @@ public:
 	bool IsUpdateCompanyNewsDBAndClearFlag() noexcept { return m_fUpdateCompanyNewsDB.exchange(false); }
 
 protected:
-	CString m_strDescription; // 该证券的描述
-	CString m_strExchangeCode; // 证券所属交易所。美国为US，上海为SS，深圳为SZ；外汇为forex等。
-	CString m_strSymbol; // 股票代码。二十位以内，后两位为市场前缀。如600601.SS，000001.SZ, AAPL（美国股票没有后缀）
-	CString m_strDisplaySymbol;
+	CString m_strDescription{ _T("") }; // 该证券的描述
+	CString m_strExchangeCode{ _T("") }; // 证券所属交易所。美国为US，上海为SS，深圳为SZ；外汇为forex等。
+	CString m_strSymbol{ _T("") }; // 股票代码。二十位以内，后两位为市场前缀。如600601.SS，000001.SZ, AAPL（美国股票没有后缀）
+	CString m_strDisplaySymbol{ _T("") };
 
 	json m_jsonUpdateDate; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
 
 	// 实时数据区
-	time_t m_TransactionTime; // 实时数据交易时间
-	long m_lLastClose; // 以0.001元计的收盘价
-	long m_lOpen; // 以0.001元计的开盘价
-	long m_lHigh; // 以0.001元计的最高价
-	long m_lLow; // 以0.001元计的最低价
-	long m_lNew; // 以0.001元计的最新价
-	long m_lUpDown; // 涨跌值
-	double m_dUpDownRate; // 涨跌率
-	INT64 m_llVolume; // 以1股计的成交量
-	INT64 m_llAmount; // 以元计的成交金额
-	double m_dChangeHandRate; // 换手率
-	INT64 m_llTotalValue; // 总市值。单位：万元
-	INT64 m_llCurrentValue; // 流通市值。单位：万元
+	time_t m_TransactionTime{ 0 }; // 实时数据交易时间
+	long m_lLastClose{ 0 }; // 以0.001元计的收盘价
+	long m_lOpen{ 0 }; // 以0.001元计的开盘价
+	long m_lHigh{ 0 }; // 以0.001元计的最高价
+	long m_lLow{ 0 }; // 以0.001元计的最低价
+	long m_lNew{ 0 }; // 以0.001元计的最新价
+	long m_lUpDown{ 0 }; // 涨跌值
+	double m_dUpDownRate{ 0 }; // 涨跌率
+	INT64 m_llVolume{ 0 }; // 以1股计的成交量
+	INT64 m_llAmount{ 0 }; // 以元计的成交金额
+	double m_dChangeHandRate{ 0 }; // 换手率
+	INT64 m_llTotalValue{ 0 }; // 总市值。单位：万元
+	INT64 m_llCurrentValue{ 0 }; // 流通市值。单位：万元
 
 	bool m_fTodayNewStock{ false }; // 本日新发现的股票
 	bool m_fActive{ false }; // 是否本日内有数据读入。由新浪实时行情处理函数和网易日线历史数据处理函数来设置。
-	long m_lDayLineStartDate; // 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
-	long m_lDayLineEndDate; // 日线数据更新日。这个是处理日线历史数据时得到的最新日，
-	long m_lIPOStatus; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
+	long m_lDayLineStartDate{ 0 }; // 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
+	long m_lDayLineEndDate{ 0 }; // 日线数据更新日。这个是处理日线历史数据时得到的最新日，
+	long m_lIPOStatus{ _STOCK_NULL_ }; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
 	// 未上市（无效股票代码）为_STOCK_NULL_；正常为_STOCK_IPOED_；已通过IPO但尚未上市或退市为_STOCK_DELISTED；其他情况尚未出现，留待以后处理。
 
 	atomic_bool m_fUpdateDayLine{ true }; // 日线需要更新。默认为真

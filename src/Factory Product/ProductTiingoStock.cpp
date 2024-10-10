@@ -8,6 +8,7 @@
 #include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"
+#include "TimeConvert.h"
 
 CProductTiingoStock::CProductTiingoStock() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");
@@ -126,22 +127,22 @@ CTiingoStocksPtr CProductTiingoStock::ParseTiingoStockSymbol(const CWebDataPtr& 
 
 			sv = itemValue["sicCode"].raw_json();
 			if (sv == ("\"Field not available for free/evaluation\"") || sv.empty()) {
-				pStock->m_iSICCode = 0;
+				pStock->m_iSicCode = 0;
 			}
 			else {
 				string sTemp2(sv);
-				pStock->m_iSICCode = atoi(sTemp2.c_str());
+				pStock->m_iSicCode = atoi(sTemp2.c_str());
 			}
 			s1 = jsonGetStringView(itemValue, _T("sicIndustry"));
 			if (s1.compare(strNotAvailable) != 0) {
-				pStock->m_strSICIndustry = s1.c_str();;
+				pStock->m_strSicIndustry = s1.c_str();;
 			}
-			else pStock->m_strSICIndustry = strNULL;
+			else pStock->m_strSicIndustry = strNULL;
 			s1 = jsonGetStringView(itemValue, _T("sicSector"));
 			if (s1.compare(strNotAvailable) != 0) {
-				pStock->m_strSICSector = s1.c_str();;
+				pStock->m_strSicSector = s1.c_str();;
 			}
-			else pStock->m_strSICSector = strNULL;
+			else pStock->m_strSicSector = strNULL;
 			s1 = jsonGetStringView(itemValue, _T("reportingCurrency"));
 			if (s1.compare(strNotAvailable) != 0) { // 此项应该永远存在
 				pStock->m_strReportingCurrency = s1.c_str();;
@@ -164,12 +165,18 @@ CTiingoStocksPtr CProductTiingoStock::ParseTiingoStockSymbol(const CWebDataPtr& 
 			else pStock->m_strSECFilingWebSite = strNULL;
 			s1 = jsonGetStringView(itemValue, _T("statementLastUpdated"));
 			if (!s1.empty()) str = s1.c_str();;
-			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			//pStock->SetCompanyFinancialStatementUpdateDate(XferYearMonthDayToYYYYMMDD(year, month, day));
+			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02dT"), &year, &month, &day); // 只解析日期
+			pStock->SetStatementLastUpdatedDate(XferYearMonthDayToYYYYMMDD(year, month, day));
 			s1 = jsonGetStringView(itemValue, _T("dailyLastUpdated"));
 			str = s1.c_str();;
-			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			//pStock->SetDailyDataUpdateDate(XferYearMonthDayToYYYYMMDD(year, month, day));
+			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02dT"), &year, &month, &day); // 只解析日期
+			pStock->SetDailyLastUpdatedDate(XferYearMonthDayToYYYYMMDD(year, month, day));
+			s1 = jsonGetStringView(itemValue, _T("dataProviderPermaTicker"));
+			if (s1 != strNotAvailable) {
+				pStock->m_strDataProviderPermaTicker = s1.c_str();
+			}
+			else pStock->m_strSECFilingWebSite = strNULL;
+
 			pStock->SetUpdateProfileDB(true); // 所有申请到的股票，皆当成新股票对待，需要存入数据库。
 			pvTiingoStock->push_back(pStock);
 			iCount++;

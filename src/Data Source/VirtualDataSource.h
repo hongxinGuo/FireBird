@@ -117,33 +117,33 @@ public:
 
 protected:
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列
-	CVirtualProductWebDataPtr m_pCurrentProduct;
+	CVirtualProductWebDataPtr m_pCurrentProduct{ nullptr };
 
-	bool m_fWebError; //网络读取错误
+	bool m_fWebError{ false }; //网络读取错误
 	atomic_int64_t m_dwHTTPStatusCode{ 0 }; // 网络状态码
 	atomic_int64_t m_dwWebErrorCode{ 0 }; // 网络错误码
 	enum_ErrorMessageData m_eErrorMessageData{ ERROR_NO_ERROR__ };
 
 	InternetOption m_internetOption;
-	CString m_strInquiry; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
-	CString m_strInquiryFunction; // 查询字符串功能部分
-	CString m_strParam; // 查询字符串的参数
-	CString m_strSuffix; // 查询字符串的后缀部分
-	CString m_strInquiryToken; // 查询字符串令牌
-	CString m_strHeaders; // OpenURL时的headers字符串值， 默认为_T("")
+	CString m_strInquiry{ _T("") }; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
+	CString m_strInquiryFunction{ _T("") }; // 查询字符串功能部分
+	CString m_strParam{ _T("") }; // 查询字符串的参数
+	CString m_strSuffix{ _T("") }; // 查询字符串的后缀部分
+	CString m_strInquiryToken{ _T("") }; // 查询字符串令牌
+	CString m_strHeaders{ _T("") }; // OpenURL时的headers字符串值， 默认为_T("")
 
-	long m_lInquiringNumber; // 每次查询数量
+	long m_lInquiringNumber{ 1 }; // 每次查询数量
 	int m_iMaxNormalInquireTime{ 300 }; // 最大正常查询时间（每个具体的数据源皆不同）
-	atomic_int64_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）
+	atomic_int64_t m_tCurrentInquiryTime{ 0 }; // 当前接收数据所需时间（以毫秒计）
 
 	static atomic_long sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
 	static atomic_long sm_lTotalByteReadPerSecond; // 
 
-	long long m_llLastTimeTickCount;
+	long long m_llLastTimeTickCount{ 0 };
 
-	atomic_bool m_fEnable; // 允许执行标识
-	atomic_bool m_fInquiring;
-	atomic_bool m_bIsWorkingThreadRunning;
+	atomic_bool m_fEnable{ true }; // 允许执行标识
+	atomic_bool m_fInquiring{ false };
+	atomic_bool m_bIsWorkingThreadRunning{ false };
 	atomic_bool m_bWebBusy{ false };
 };
 

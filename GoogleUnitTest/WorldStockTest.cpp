@@ -1265,9 +1265,9 @@ namespace FireBirdTest {
 		pTiingoStock->m_strName = _T("sdlfkjsdfkjg");
 		pTiingoStock->m_fIsActive = true;
 		pTiingoStock->m_fIsADR = true;
-		pTiingoStock->m_iSICCode = 1234343445;
-		pTiingoStock->m_strSICIndustry = _T("kjkjljkjgklj");
-		pTiingoStock->m_strSICSector = _T("eiruir");
+		pTiingoStock->m_iSicCode = 1234343445;
+		pTiingoStock->m_strSicIndustry = _T("kjkjljkjgklj");
+		pTiingoStock->m_strSicSector = _T("eiruir");
 		pTiingoStock->m_strTiingoIndustry = _T("kdfjgkjfierj");
 		pTiingoStock->m_strTiingoSector = _T("quwerpqi");
 		pTiingoStock->m_strReportingCurrency = _T("asjdxcmsm");
@@ -1291,9 +1291,9 @@ namespace FireBirdTest {
 		pTiingoStock->m_strName = _T("sdlfkjsdfkjg");
 		pTiingoStock->m_fIsActive = true;
 		pTiingoStock->m_fIsADR = true;
-		pTiingoStock->m_iSICCode = 1234343445;
-		pTiingoStock->m_strSICIndustry = _T("kjkjljkjgklj");
-		pTiingoStock->m_strSICSector = _T("eiruir");
+		pTiingoStock->m_iSicCode = 1234343445;
+		pTiingoStock->m_strSicIndustry = _T("kjkjljkjgklj");
+		pTiingoStock->m_strSicSector = _T("eiruir");
 		pTiingoStock->m_strTiingoIndustry = _T("kdfjgkjfierj");
 		pTiingoStock->m_strTiingoSector = _T("quwerpqi");
 		pTiingoStock->m_strReportingCurrency = _T("asjdxcmsm");
@@ -1309,11 +1309,11 @@ namespace FireBirdTest {
 		EXPECT_STREQ(stock.GetSymbol(), pTiingoStock->GetSymbol());
 		EXPECT_TRUE(stock.TiingoIsActive());
 		EXPECT_TRUE(stock.IsADR());
-		EXPECT_EQ(stock.GetSICCode(), pTiingoStock->m_iSICCode);
-		EXPECT_STREQ(stock.GetSICIndustry(), pTiingoStock->m_strSICIndustry);
-		EXPECT_STREQ(stock.GetSICSector(), pTiingoStock->m_strSICSector);
+		EXPECT_EQ(stock.GetSICCode(), pTiingoStock->m_iSicCode);
+		EXPECT_STREQ(stock.GetSICIndustry(), pTiingoStock->m_strSicIndustry);
+		EXPECT_STREQ(stock.GetSICSector(), pTiingoStock->m_strSicSector);
 		EXPECT_STREQ(stock.GetTiingoIndustry(), pTiingoStock->m_strTiingoIndustry);
-		EXPECT_STREQ(stock.GetSICSector(), pTiingoStock->m_strSICSector);
+		EXPECT_STREQ(stock.GetSICSector(), pTiingoStock->m_strSicSector);
 		EXPECT_STREQ(stock.GetCompanyWebSite(), pTiingoStock->m_strCompanyWebSite);
 		EXPECT_STREQ(stock.GetSECFilingWebSite(), pTiingoStock->m_strSECFilingWebSite);
 	}

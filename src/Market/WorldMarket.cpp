@@ -252,11 +252,11 @@ bool CWorldMarket::TaskUpdateTiingoIndustry() {
 	return false;
 }
 
-bool CWorldMarket::TaskUpdateSICIndustry() {
+bool CWorldMarket::TaskUpdateSicIndustry() {
 	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) {// 更新tiingo stock profile与finnhub更新stock profile互斥
 		gl_runtime.background_executor()->post([this] {
 			gl_UpdateWorldMarketDB.acquire();
-			this->UpdateSICIndustry();
+			this->UpdateSicIndustry();
 			gl_UpdateWorldMarketDB.release();
 		});
 		return true;
@@ -720,7 +720,7 @@ bool CWorldMarket::UpdateTiingoIndustry() {
 	return false;
 }
 
-bool CWorldMarket::UpdateSICIndustry() {
+bool CWorldMarket::UpdateSicIndustry() {
 	// not implemented
 	return false;
 }

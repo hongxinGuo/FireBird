@@ -11,6 +11,7 @@
 [[nodiscard]] INT64 ConvertToDateTime(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDDHHMMSS)形式
 [[nodiscard]] bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays);
 [[nodiscard]] inline long XferYearMonthDayToYYYYMMDD(long lYear, long lMonth, long lDay) { return lYear * 10000 + lMonth * 100 + lDay; }
+[[nodiscard]] inline INT64 XferYearMonthDayToYYYYMMDDHHMMSS(long lYear, long lMonth, long lDay, long lHour, long lMinute, long lSecond) { return ((INT64)lYear) * 10000000000 + (INT64)lMonth * 100000000 + (INT64)lDay * 1000000 + lHour * 10000 + lMinute * 100 + lSecond; }
 long TimeSpawn(long lLatelyDate, long lEarlyDate);
 
 void XferDateToYearMonthDay(long lDate, int& year, int& month, int& day);

@@ -107,7 +107,7 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CWorldMarket::ProcessTiingoIEXWebSocketData</Function>
 								<Function>CWorldMarket::ProcessTiingoCryptoWebSocketData</Function>
 								<Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
-								<Function>CWorldMarket::TaskUpdateSICIndustry</Function>
+								<Function>CWorldMarket::TaskUpdateSicIndustry</Function>
                                 <Function>CWorldMarket::TaskUpdateNaicsIndustry</Function>
 								<Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>
 								<Function>CWorldMarket::TaskUpdateWorldMarketDB</Function>

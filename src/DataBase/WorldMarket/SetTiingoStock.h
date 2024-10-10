@@ -23,9 +23,9 @@ public:
 	CString m_Name;
 	BOOL m_IsActive; //
 	BOOL m_IsADR;
-	long m_SICCode;
-	CString m_SICIndustry;
-	CString m_SICSector;
+	long m_SicCode;
+	CString m_SicIndustry;
+	CString m_SicSector;
 	CString m_TiingoIndustry;
 	CString m_TiingoSector;
 	CString m_ReportingCurrency;
