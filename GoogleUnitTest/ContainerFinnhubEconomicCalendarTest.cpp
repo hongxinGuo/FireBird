@@ -12,28 +12,32 @@ namespace FireBirdTest {
 	class CContainerFinnhubEconomicCalendarTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
 		CContainerFinnhubEconomicCalendar m_containerEconomicCalendar;
 	};
 
-	TEST_F(CContainerFinnhubEconomicCalendarTest, TestIsNeedUpdate) {
-		EXPECT_FALSE(m_containerEconomicCalendar.IsNeedUpdate()) << "皆为空，无需更新";
+	TEST_F(CContainerFinnhubEconomicCalendarTest, TestIsUpdateDB) {
+		EXPECT_FALSE(m_containerEconomicCalendar.IsUpdateDB()) << "皆为空，无需更新";
 
 		vector<CEconomicCalendarPtr> vEconomicCalendar;
 		const auto p1 = make_shared<CEconomicCalendar>();
@@ -43,7 +47,7 @@ namespace FireBirdTest {
 
 		m_containerEconomicCalendar.Update(vEconomicCalendar);
 
-		EXPECT_TRUE(m_containerEconomicCalendar.IsNeedUpdate());
+		EXPECT_TRUE(m_containerEconomicCalendar.IsUpdateDB());
 	}
 
 	TEST_F(CContainerFinnhubEconomicCalendarTest, TestUpdate1) {
@@ -56,11 +60,11 @@ namespace FireBirdTest {
 
 		m_containerEconomicCalendar.Update(vEconomicCalendar);
 
-		EXPECT_TRUE(m_containerEconomicCalendar.IsNeedUpdate());
+		EXPECT_TRUE(m_containerEconomicCalendar.IsUpdateDB());
 	}
 
 	TEST_F(CContainerFinnhubEconomicCalendarTest, TestUpdate2) {
-		EXPECT_FALSE(m_containerEconomicCalendar.IsNeedUpdate()) << "皆为空，无需更新";
+		EXPECT_FALSE(m_containerEconomicCalendar.IsUpdateDB()) << "皆为空，无需更新";
 
 		vector<CEconomicCalendarPtr> vEconomicCalendar;
 		const auto p1 = make_shared<CEconomicCalendar>();
@@ -70,6 +74,6 @@ namespace FireBirdTest {
 
 		m_containerEconomicCalendar.Update(vEconomicCalendar);
 
-		EXPECT_TRUE(m_containerEconomicCalendar.IsNeedUpdate());
+		EXPECT_TRUE(m_containerEconomicCalendar.IsUpdateDB());
 	}
 }

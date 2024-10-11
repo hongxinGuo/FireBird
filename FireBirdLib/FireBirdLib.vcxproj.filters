@@ -187,6 +187,18 @@
     <Filter Include="源文件\database\WorldMarket\Tiingo">
       <UniqueIdentifier>{17228aa2-8bea-4e48-a186-8e6afef1e227}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Stock\Tiingo">
+      <UniqueIdentifier>{e8392b50-66ef-4d71-9d23-921bd4858338}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Stock\Tiingo">
+      <UniqueIdentifier>{e527fcca-05f0-48c1-8e01-b6f69933d969}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Stock\Finnhub">
+      <UniqueIdentifier>{e183b9c0-c66d-4e11-8459-2e65ab62c52d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Stock\Finnhub">
+      <UniqueIdentifier>{24d3a4ca-9f15-4559-a896-5185977024dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h">
@@ -321,9 +333,6 @@
     <ClInclude Include="..\src\Stock\VirtualStock.h">
       <Filter>头文件\Stock</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Stock\WorldStock.h">
-      <Filter>头文件\Stock</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\System\SystemConfiguration.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
@@ -348,12 +357,6 @@
     <ClInclude Include="..\src\Type\America market\FinnhubCompanyNews.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\FinnhubCrypto.h">
-      <Filter>头文件\Type\America market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\America market\FinnhubForexSymbol.h">
-      <Filter>头文件\Type\America market</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Type\America market\FinnhubStockBasicFinancial.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
@@ -370,9 +373,6 @@
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Type\America market\SICIndustry.h">
-      <Filter>头文件\Type\America market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\America market\TiingoCryptoSymbol.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Type\America market\TiingoIndustry.h">
@@ -744,9 +744,6 @@
     <ClInclude Include="..\src\Type\TiingoCompanyFinancialState.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Stock\TiingoStock.h">
-      <Filter>头文件\Stock</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockDayLine.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
@@ -830,6 +827,21 @@
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetForexDayLine.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Stock\TiingoCrypto.h">
+      <Filter>头文件\Stock\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Stock\TiingoStock.h">
+      <Filter>头文件\Stock\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Stock\FinnhubCrypto.h">
+      <Filter>头文件\Stock\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Stock\FinnhubForexSymbol.h">
+      <Filter>头文件\Stock\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Stock\WorldStock.h">
+      <Filter>头文件\Stock\Finnhub</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -926,9 +938,6 @@
     <ClCompile Include="..\src\Stock\VirtualStock.cpp">
       <Filter>源文件\Stock</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Stock\WorldStock.cpp">
-      <Filter>源文件\Stock</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\System\FinnhubInaccessibleExchange.cpp">
       <Filter>源文件\System</Filter>
     </ClCompile>
@@ -950,12 +959,6 @@
     <ClCompile Include="..\src\Type\America market\FinnhubCompanyNews.cpp">
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\America market\FinnhubCrypto.cpp">
-      <Filter>源文件\Type\America market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Type\America market\FinnhubForexSymbol.cpp">
-      <Filter>源文件\Type\America market</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Type\America market\FinnhubStockBasicFinancial.cpp">
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
@@ -972,9 +975,6 @@
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\SICIndustry.cpp">
-      <Filter>源文件\Type\America market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Type\America market\TiingoCryptoSymbol.cpp">
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\TiingoIndustry.cpp">
@@ -1328,9 +1328,6 @@
     <ClCompile Include="..\src\Factory Product\ProductTiingoFinancialState.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Stock\TiingoStock.cpp">
-      <Filter>源文件\Stock</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerTiingoStockDayLine.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
     </ClCompile>
@@ -1393,6 +1390,21 @@
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetWorldStock.cpp">
       <Filter>源文件\database\WorldMarket\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Stock\TiingoStock.cpp">
+      <Filter>源文件\Stock\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Stock\TiingoCrypto.cpp">
+      <Filter>源文件\Stock\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Stock\FinnhubCrypto.cpp">
+      <Filter>源文件\Stock\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Stock\FinnhubForexSymbol.cpp">
+      <Filter>源文件\Stock\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Stock\WorldStock.cpp">
+      <Filter>源文件\Stock\Finnhub</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -21,6 +21,7 @@ public:
 	bool UpdateDB();
 
 	bool IsNeedUpdate() const noexcept { return m_lLastTotalCryptoExchange < m_vCryptoExchange.size(); }
+	void SetLastSize(long lSize) noexcept { m_lLastTotalCryptoExchange = lSize; }
 
 protected:
 	vector<string> m_vCryptoExchange;

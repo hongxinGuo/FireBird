@@ -12,8 +12,9 @@ CSetTiingoCrypto::CSetTiingoCrypto(const CString& strSchema, const CString& strT
 	m_BaseCurrency = _T("");
 	m_QuoteCurrency = _T("");
 	m_Description = _T("");
+	m_UpdateDate = _T("{}");
 
-	m_nFields = 6;
+	m_nFields = 7;
 }
 
 void CSetTiingoCrypto::DoFieldExchange(CFieldExchange* pFX) {
@@ -27,4 +28,5 @@ void CSetTiingoCrypto::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[BaseCurrency]"), m_BaseCurrency);
 	RFX_Text(pFX, _T("[QuoteCurrency]"), m_QuoteCurrency);
 	RFX_Text(pFX, _T("[Description]"), m_Description);
+	RFX_Text(pFX, _T("[UpdateDate]"), m_UpdateDate, 10000);
 }

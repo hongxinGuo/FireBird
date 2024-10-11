@@ -686,7 +686,7 @@ bool CFinnhubDataSource::InquireEPSSurprise() {
 		}
 		for (m_lCurrentUpdateEPSSurprisePos = 0; m_lCurrentUpdateEPSSurprisePos < lStockSetSize; m_lCurrentUpdateEPSSurprisePos++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(m_lCurrentUpdateEPSSurprisePos);
-			if (!pStock->IsEPSSurpriseUpdated()) {
+			if (pStock->IsUpdateEPSSurprise()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;
@@ -699,7 +699,7 @@ bool CFinnhubDataSource::InquireEPSSurprise() {
 			product->SetIndex(m_lCurrentUpdateEPSSurprisePos);
 			StoreInquiry(product);
 			SetInquiring(true);
-			gl_dataContainerFinnhubStock.GetStock(m_lCurrentUpdateEPSSurprisePos)->SetEPSSurpriseUpdated(true);
+			gl_dataContainerFinnhubStock.GetStock(m_lCurrentUpdateEPSSurprisePos)->SetUpdateEPSSurprise(false);
 			gl_pWorldMarket->SetCurrentFunction(_T("EPS surprise:") + pStock->GetSymbol());
 			//TRACE("ÉêÇë%s EPS SurpriseÊý¾Ý\n", gl_dataContainerFinnhubStock.GetStock(m_lCurrentUpdateEPSSurprisePos)->GetSymbol().GetBuffer());
 		}

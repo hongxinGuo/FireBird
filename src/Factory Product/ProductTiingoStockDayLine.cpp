@@ -24,7 +24,9 @@ CString CProductTiingoStockDayLine::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
-	CString strParam = GetTiingoDayLineInquiryParam(pStock->GetSymbol(), 19800101, GetMarket()->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
+	long lStartDate = 19800101;
+	if (pStock->GetDayLineEndDate() > 19800101) lStartDate = pStock->GetDayLineEndDate();
+	CString strParam = GetTiingoDayLineInquiryParam(pStock->GetSymbol(), lStartDate, GetMarket()->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
 
 	m_strInquiry = m_strInquiryFunction + strParam;
 	return m_strInquiry;

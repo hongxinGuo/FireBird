@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TiingoCryptoSymbol.h"
+#include "TiingoCrypto.h"
 
 class CContainerTiingoCryptoSymbol final {
 public:
@@ -12,8 +12,8 @@ public:
 	~CContainerTiingoCryptoSymbol() = default;
 	void Reset();
 
-	void Add(const CTiingoCryptoSymbolPtr& pTiingoCrypto);
-	bool Delete(const CTiingoCryptoSymbolPtr& pCrypto);
+	void Add(const CTiingoCryptoPtr& pTiingoCrypto);
+	bool Delete(const CTiingoCryptoPtr& pCrypto);
 	size_t Size() const noexcept { return m_vTiingoCrypto.size(); }
 	long GetLastSize() const noexcept { return m_lLastTotalTiingoCrypto; }
 
@@ -22,10 +22,10 @@ public:
 		return false;
 	}
 
-	bool IsSymbol(const CTiingoCryptoSymbolPtr& pCrypto) const { return IsSymbol(pCrypto->m_strTicker); }
-	CTiingoCryptoSymbolPtr GetSymbol(const long lIndex) const { return m_vTiingoCrypto.at(lIndex); }
+	bool IsSymbol(const CTiingoCryptoPtr& pCrypto) const { return IsSymbol(pCrypto->GetSymbol()); }
+	CTiingoCryptoPtr GetSymbol(const long lIndex) const { return m_vTiingoCrypto.at(lIndex); }
 
-	CTiingoCryptoSymbolPtr GetSymbol(const CString& strTicker) const { return m_vTiingoCrypto.at(m_mapTiingoCrypto.at(strTicker)); }
+	CTiingoCryptoPtr GetSymbol(const CString& strTicker) const { return m_vTiingoCrypto.at(m_mapTiingoCrypto.at(strTicker)); }
 
 	bool UpdateDB();
 	bool LoadDB();
@@ -36,7 +36,7 @@ public:
 	}
 
 protected:
-	vector<CTiingoCryptoSymbolPtr> m_vTiingoCrypto;
+	vector<CTiingoCryptoPtr> m_vTiingoCrypto;
 	map<CString, size_t> m_mapTiingoCrypto;
 	long m_lLastTotalTiingoCrypto;
 };

@@ -327,7 +327,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 	}
 
-	TEST_F(CChinaStockTest, TestIsDayLineNeededSaving) {
+	TEST_F(CChinaStockTest, TestIsUpdateDayLineDB) {
 		// 此两个函数是具备同步机制的，这里没有进行测试
 		CChinaStock stock;
 		EXPECT_FALSE(stock.IsUpdateDayLineDB());
@@ -1956,6 +1956,9 @@ namespace FireBirdTest {
 		}
 		setDayLineExtendInfo.m_pDatabase->CommitTrans();
 		setDayLineExtendInfo.Close();
+
+		// 恢复原状
+		pStock->UnloadDayLine();
 	}
 
 	TEST_F(CChinaStockTest, TestSaveDayLine) {

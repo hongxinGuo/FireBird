@@ -10,7 +10,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CProductTiingoCryptoSymbolTest : public Test {
+	class CProductTiingoCryptoTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
@@ -37,16 +37,16 @@ namespace FireBirdTest {
 		CProductTiingoCryptoSymbol stockSymbol;
 	};
 
-	TEST_F(CProductTiingoCryptoSymbolTest, TestInitialize) {
+	TEST_F(CProductTiingoCryptoTest, TestInitialize) {
 		EXPECT_EQ(stockSymbol.GetIndex(), -1);
 		EXPECT_STREQ(stockSymbol.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/crypto?"));
 	}
 
-	TEST_F(CProductTiingoCryptoSymbolTest, TestCreatMessage) {
+	TEST_F(CProductTiingoCryptoTest, TestCreatMessage) {
 		EXPECT_STREQ(stockSymbol.CreateMessage(), stockSymbol.GetInquiryFunction());
 	}
 
-	TEST_F(CProductTiingoCryptoSymbolTest, TestUpdateDataSourceStatus) {
+	TEST_F(CProductTiingoCryptoTest, TestUpdateDataSourceStatus) {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
 
 		stockSymbol.UpdateDataSourceStatus(gl_pTiingoDataSource);
@@ -105,9 +105,9 @@ namespace FireBirdTest {
 		case 20:
 			EXPECT_EQ(m_pvCrypto->size(), 1);
 			EXPECT_STREQ(m_pvCrypto->at(0)->m_strBaseCurrency, _T("cure"));
-			EXPECT_STREQ(m_pvCrypto->at(0)->m_strTicker, _T("New Symbol"));
+			EXPECT_STREQ(m_pvCrypto->at(0)->GetSymbol(), _T("New Symbol"));
 			EXPECT_STREQ(m_pvCrypto->at(0)->m_strName, _T("CureCoin(CURE/BTC)"));
-			EXPECT_STREQ(m_pvCrypto->at(0)->m_strDescription, _T("")) << "此项已废弃。为了兼容才没有删除";
+			EXPECT_STREQ(m_pvCrypto->at(0)->GetDescription(), _T("")) << "此项已废弃。为了兼容才没有删除";
 			EXPECT_STREQ(m_pvCrypto->at(0)->m_strQuoteCurrency, _T("btc"));
 			break;
 		default:
@@ -155,9 +155,9 @@ namespace FireBirdTest {
 		case 20:
 			EXPECT_EQ(m_pvCrypto->size(), 1);
 			EXPECT_STREQ(m_pvCrypto->at(0)->m_strBaseCurrency, _T("cure"));
-			EXPECT_STREQ(m_pvCrypto->at(0)->m_strTicker, _T("New Symbol"));
+			EXPECT_STREQ(m_pvCrypto->at(0)->GetSymbol(), _T("New Symbol"));
 			EXPECT_STREQ(m_pvCrypto->at(0)->m_strName, _T("CureCoin(CURE/BTC)"));
-			EXPECT_STREQ(m_pvCrypto->at(0)->m_strDescription, _T("")) << "此项已废弃。为了兼容才没有删除";
+			EXPECT_STREQ(m_pvCrypto->at(0)->GetDescription(), _T("")) << "此项已废弃。为了兼容才没有删除";
 			EXPECT_STREQ(m_pvCrypto->at(0)->m_strQuoteCurrency, _T("btc"));
 			break;
 		default:
@@ -197,7 +197,7 @@ namespace FireBirdTest {
 	                         testing::Values(&tiingoWebData11, &tiingoWebData12, &tiingoWebData20));
 
 	TEST_P(ProcessTiingoCryptoTest, TestProcessCryptoSymbol) {
-		CTiingoCryptoSymbolPtr pCrypto;
+		CTiingoCryptoPtr pCrypto;
 		const auto l = gl_dataContainerTiingoCryptoSymbol.Size();
 		m_tiingoCryptoSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {

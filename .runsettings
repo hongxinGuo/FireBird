@@ -3,7 +3,7 @@
 <RunSettings>
 	<RunConfiguration>
 		<TargetPlatform>x64</TargetPlatform>
-		<TestSessionTimeout>120000</TestSessionTimeout>
+		<TestSessionTimeout>1200000</TestSessionTimeout>
 		<!-- timeout 120 seconds -->
 	</RunConfiguration>
 

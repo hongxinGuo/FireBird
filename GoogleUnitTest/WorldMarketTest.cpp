@@ -494,9 +494,11 @@ namespace FireBirdTest {
 		setCryptoSymbol.m_pDatabase->CommitTrans();
 		setCryptoSymbol.Close();
 
+		// »Ö¸´Ô­×´
+		pForexSymbol->SetIPOStatus(_STOCK_IPOED_);
 		pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(_T("SS.SS.US"));
 		EXPECT_TRUE(pForexSymbol != nullptr);
-		gl_dataFinnhubForexSymbol.Delete(pForexSymbol); // »Ö¸´Ô­×´
+		gl_dataFinnhubForexSymbol.Delete(pForexSymbol);
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateFinnhubCryptoSymbolDB) {
@@ -532,9 +534,11 @@ namespace FireBirdTest {
 		setCryptoSymbol.m_pDatabase->CommitTrans();
 		setCryptoSymbol.Close();
 
+		// »Ö¸´Ô­×´
+		pCryptoSymbol->SetIPOStatus(_STOCK_IPOED_);
 		pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(_T("SS.SS.US"));
 		EXPECT_TRUE(pCryptoSymbol != nullptr);
-		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); // »Ö¸´Ô­×´
+		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol);
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateTiingoStockDB) {
@@ -632,7 +636,10 @@ namespace FireBirdTest {
 		setForexExchange.m_pDatabase->CommitTrans();
 		setForexExchange.Close();
 
-		gl_dataContainerFinnhubForexExchange.Delete(strSymbol); // »Ö¸´Ô­×´
+		// »Ö¸´Ô­×´
+		gl_dataContainerFinnhubForexExchange.Delete(strSymbol);
+		gl_dataContainerFinnhubForexExchange.SetLastSize(gl_dataContainerFinnhubForexExchange.Size());
+		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.IsNeedUpdate());
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateCryptoExchangeDB) {
@@ -658,7 +665,10 @@ namespace FireBirdTest {
 		setCryptoExchange.m_pDatabase->CommitTrans();
 		setCryptoExchange.Close();
 
-		gl_dataContainerFinnhubCryptoExchange.Delete(sSymbol); // »Ö¸´Ô­×´
+		// »Ö¸´Ô­×´
+		gl_dataContainerFinnhubCryptoExchange.Delete(sSymbol);
+		gl_dataContainerFinnhubCryptoExchange.SetLastSize(gl_dataContainerFinnhubCryptoExchange.Size());
+		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.IsNeedUpdate());
 	}
 
 	TEST_F(CWorldMarketTest, TaskUpdateInsiderTransactionDB) {
@@ -790,6 +800,8 @@ namespace FireBirdTest {
 		setInsiderSentiment.Delete();
 		setInsiderSentiment.m_pDatabase->CommitTrans();
 		setInsiderSentiment.Close();
+
+		gl_dataContainerFinnhubStock.GetStock(_T("A"))->UnloadInsiderSentiment();
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateEconomicCalendarDB) {
@@ -836,7 +848,7 @@ namespace FireBirdTest {
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
 			pStock->SetLastEPSSurpriseUpdateDate(20200101);
-			pStock->m_fEPSSurpriseUpdated = true;
+			pStock->m_fUpdateEPSSurprise = false;
 		}
 		gl_pFinnhubDataSource->SetUpdateEPSSurprise(false);
 
@@ -845,7 +857,7 @@ namespace FireBirdTest {
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
 			EXPECT_EQ(pStock->GetLastEPSSurpriseUpdateDate(), 19800101);
-			EXPECT_FALSE(pStock->m_fEPSSurpriseUpdated);
+			EXPECT_TRUE(pStock->m_fUpdateEPSSurprise);
 		}
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateEPSSurprise());
 	}

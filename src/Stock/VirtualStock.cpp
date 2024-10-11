@@ -3,6 +3,7 @@
 #include "VirtualStock.h"
 
 CVirtualStock::CVirtualStock() {
+	/*
 	m_strDescription = _T("");
 	m_strExchangeCode = _T("");
 	m_strSymbol = _T("");
@@ -28,6 +29,7 @@ CVirtualStock::CVirtualStock() {
 
 	m_fUpdateDayLine = true; // 默认状态下日线需要更新
 	m_fUpdateDayLineDB = false;
+	*/
 }
 
 void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {

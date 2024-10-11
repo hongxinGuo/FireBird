@@ -20,6 +20,7 @@ public:
 	bool UpdateDB();
 
 	bool IsNeedUpdate() const noexcept { return m_lLastTotalForexExchange < m_vForexExchange.size(); }
+	void SetLastSize(long lSize) noexcept { m_lLastTotalForexExchange = lSize; }
 
 protected:
 	vector<CString> m_vForexExchange;

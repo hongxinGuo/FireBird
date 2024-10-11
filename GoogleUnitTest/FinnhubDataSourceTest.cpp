@@ -846,10 +846,10 @@ namespace FireBirdTest {
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
-			pStock->SetEPSSurpriseUpdated(true);
+			pStock->SetUpdateEPSSurprise(false);
 		}
-		gl_dataContainerFinnhubStock.GetStock(1)->SetEPSSurpriseUpdated(false); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
-		gl_dataContainerFinnhubStock.GetStock(10)->SetEPSSurpriseUpdated(false);
+		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateEPSSurprise(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
+		gl_dataContainerFinnhubStock.GetStock(10)->SetUpdateEPSSurprise(true);
 		m_FinnhubDataSource.SetUpdateEPSSurprise(false);
 		EXPECT_FALSE(m_FinnhubDataSource.InquireEPSSurprise()) << "Finnhub EPS Surprise  Updated";
 
@@ -863,9 +863,9 @@ namespace FireBirdTest {
 		CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockEstimatesEPSSurprise"));
 		EXPECT_EQ(p->GetIndex(), 1) << "第一个待查询股票位置";
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsEPSSurpriseUpdated());
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(10)->IsEPSSurpriseUpdated());
-		gl_dataContainerFinnhubStock.GetStock(1)->SetEPSSurpriseUpdated(true);
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(1)->IsUpdateEPSSurprise());
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(10)->IsUpdateEPSSurprise());
+		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateEPSSurprise(false);
 		const CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock EPS surprise..."));
 
@@ -874,8 +874,8 @@ namespace FireBirdTest {
 		p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubStockEstimatesEPSSurprise"));
 		EXPECT_EQ(p->GetIndex(), 10) << "第二个待查询股票位置";
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsEPSSurpriseUpdated());
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(10)->IsEPSSurpriseUpdated());
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(1)->IsUpdateEPSSurprise());
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(10)->IsUpdateEPSSurprise());
 		gl_dataContainerFinnhubStock.GetStock(10)->SetUpdatePeer(false);
 
 		m_FinnhubDataSource.SetInquiring(false);

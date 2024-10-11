@@ -13,19 +13,19 @@ void CContainerTiingoCryptoSymbol::Reset() {
 	m_lLastTotalTiingoCrypto = 0;
 }
 
-bool CContainerTiingoCryptoSymbol::Delete(const CTiingoCryptoSymbolPtr& pCryptoSymbol) {
+bool CContainerTiingoCryptoSymbol::Delete(const CTiingoCryptoPtr& pCryptoSymbol) {
 	if (pCryptoSymbol == nullptr) return false;
-	if (!IsSymbol(pCryptoSymbol->m_strTicker)) return false;
+	if (!IsSymbol(pCryptoSymbol->GetSymbol())) return false;
 
-	m_vTiingoCrypto.erase(m_vTiingoCrypto.begin() + m_mapTiingoCrypto.at(pCryptoSymbol->m_strTicker));
-	m_mapTiingoCrypto.erase(pCryptoSymbol->m_strTicker);
+	m_vTiingoCrypto.erase(m_vTiingoCrypto.begin() + m_mapTiingoCrypto.at(pCryptoSymbol->GetSymbol()));
+	m_mapTiingoCrypto.erase(pCryptoSymbol->GetSymbol());
 
 	return true;
 }
 
-void CContainerTiingoCryptoSymbol::Add(const CTiingoCryptoSymbolPtr& pCryptoSymbol) {
-	ASSERT(!m_mapTiingoCrypto.contains(pCryptoSymbol->m_strTicker));
-	m_mapTiingoCrypto[pCryptoSymbol->m_strTicker] = m_mapTiingoCrypto.size();
+void CContainerTiingoCryptoSymbol::Add(const CTiingoCryptoPtr& pCryptoSymbol) {
+	ASSERT(!m_mapTiingoCrypto.contains(pCryptoSymbol->GetSymbol()));
+	m_mapTiingoCrypto[pCryptoSymbol->GetSymbol()] = m_mapTiingoCrypto.size();
 	m_vTiingoCrypto.push_back(pCryptoSymbol);
 }
 
@@ -37,7 +37,7 @@ bool CContainerTiingoCryptoSymbol::LoadDB() {
 	setCryptoSymbol.m_pDatabase->BeginTrans();
 	while (!setCryptoSymbol.IsEOF()) {
 		if (!IsSymbol(setCryptoSymbol.m_Ticker)) {
-			const auto pSymbol = make_shared<CTiingoCryptoSymbol>();
+			const auto pSymbol = make_shared<CTiingoCrypto>();
 			pSymbol->Load(setCryptoSymbol);
 			Add(pSymbol);
 		}
@@ -60,14 +60,13 @@ bool CContainerTiingoCryptoSymbol::UpdateDB() {
 			setCryptoSymbol.Open();
 			setCryptoSymbol.m_pDatabase->BeginTrans();
 			for (long l = m_lLastTotalTiingoCrypto; l < lTotalTiingoCryptoSymbol; l++) {
-				const CTiingoCryptoSymbolPtr pSymbol = m_vTiingoCrypto.at(l);
+				const CTiingoCryptoPtr pSymbol = m_vTiingoCrypto.at(l);
 				pSymbol->Append(setCryptoSymbol);
 			}
 			setCryptoSymbol.m_pDatabase->CommitTrans();
 			setCryptoSymbol.Close();
 			m_lLastTotalTiingoCrypto = lTotalTiingoCryptoSymbol;
-		}
-		catch (CException* e) {
+		} catch (CException* e) {
 			ReportInformationAndDeleteException(e);
 		}
 	}

@@ -1,7 +1,7 @@
 #pragma once
 
 #include"ProductTiingo.h"
-#include"TiingoCryptoSymbol.h"
+#include"TiingoCrypto.h"
 
 class CProductTiingoCryptoSymbol final : public CProductTiingo {
 public:

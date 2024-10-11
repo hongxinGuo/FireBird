@@ -42,6 +42,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pTiingoIEXWebSocket->GetSubscriptionId(), 0);
 		gl_pTiingoIEXWebSocket->SetSubscriptionId(101010);
 		EXPECT_EQ(gl_pTiingoIEXWebSocket->GetSubscriptionId(), 101010);
+
+		// 恢复原状
+		gl_pTiingoIEXWebSocket->SetSubscriptionId(0);
 	}
 
 	TEST_F(CTiingoIEXWebSocketTest, TestCreateMessage) {
@@ -54,8 +57,7 @@ namespace FireBirdTest {
 		json jsonMessage;
 		try {
 			jsonMessage = json::parse(str);
-		}
-		catch (json::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
+		} catch (json::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
 		EXPECT_TRUE(jsonMessage["eventName"] == _T("subscribe"));
 		EXPECT_EQ(jsonMessage["eventData"]["thresholdLevel"], 5);
 		EXPECT_EQ(jsonMessage["authorization"], _T("c897a00b7cfc2adffc630d23befd5316a4683156"));

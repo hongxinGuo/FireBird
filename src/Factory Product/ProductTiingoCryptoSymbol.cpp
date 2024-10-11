@@ -3,7 +3,7 @@
 #include"jsonParse.h"
 #include"JsonGetValue.h"
 
-#include"TiingoCryptoSymbol.h"
+#include"TiingoCrypto.h"
 #include "ProductTiingoCryptoSymbol.h"
 
 #include "TiingoDataSource.h"
@@ -25,7 +25,7 @@ void CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (!pvTiingoCrypto->empty()) {
 		char buffer[100];
 		for (const auto& pTiingoCrypto : *pvTiingoCrypto) {
-			if (!gl_dataContainerTiingoCryptoSymbol.IsSymbol(pTiingoCrypto->m_strTicker)) {
+			if (!gl_dataContainerTiingoCryptoSymbol.IsSymbol(pTiingoCrypto->GetSymbol())) {
 				gl_dataContainerTiingoCryptoSymbol.Add(pTiingoCrypto);
 			}
 		}
@@ -58,11 +58,11 @@ void CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWebDataPtr& pWebData) {
-	auto pvTiingoCrypto = make_shared<vector<CTiingoCryptoSymbolPtr>>();
+	auto pvTiingoCrypto = make_shared<vector<CTiingoCryptoPtr>>();
 	CString strNULL = _T(" ");
 	string s;
 	CString str, strNumber;
-	CTiingoCryptoSymbolPtr pTiingoCrypto = nullptr;
+	CTiingoCryptoPtr pTiingoCrypto = nullptr;
 	json js;
 
 	if (!pWebData->CreateJson(js)) return pvTiingoCrypto;
@@ -71,9 +71,9 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 	try {
 		int iCount = 0;
 		for (auto it = js.begin(); it != js.end(); ++it) {
-			pTiingoCrypto = make_shared<CTiingoCryptoSymbol>();
+			pTiingoCrypto = make_shared<CTiingoCrypto>();
 			s = jsonGetString(it, _T("ticker"));
-			pTiingoCrypto->m_strTicker = s.c_str();
+			pTiingoCrypto->SetSymbol(s.c_str());
 			s = jsonGetString(it, _T("name"));
 			if (!s.empty()) pTiingoCrypto->m_strName = s.c_str();
 			s = jsonGetString(it, _T("baseCurrency"));
@@ -85,7 +85,7 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 			iCount++;
 		}
 	} catch (json::exception& e) {
-		if (pTiingoCrypto != nullptr) ReportJSonErrorToSystemMessage(_T("Tiingo crypto symbol ") + pTiingoCrypto->m_strTicker, e.what());
+		if (pTiingoCrypto != nullptr) ReportJSonErrorToSystemMessage(_T("Tiingo crypto symbol ") + pTiingoCrypto->GetSymbol(), e.what());
 	}
 
 	return pvTiingoCrypto;

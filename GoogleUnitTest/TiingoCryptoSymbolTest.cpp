@@ -2,48 +2,52 @@
 
 #include"GeneralCheck.h"
 
-#include"TiingoCryptoSymbol.h"
+#include"TiingoCrypto.h"
 
 namespace FireBirdTest {
 	class CTiingoCryptoSymbolTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
 	TEST_F(CTiingoCryptoSymbolTest, TestInitialize) {
-		const CTiingoCryptoSymbol tiingo;
+		const CTiingoCrypto tiingo;
 
 		EXPECT_STREQ(tiingo.m_strBaseCurrency, _T(""));
-		EXPECT_STREQ(tiingo.m_strTicker, _T(""));
-		EXPECT_STREQ(tiingo.m_strDescription, _T(""));
+		EXPECT_STREQ(tiingo.GetSymbol(), _T(""));
+		EXPECT_STREQ(tiingo.GetDescription(), _T(""));
 		EXPECT_STREQ(tiingo.m_strQuoteCurrency, _T(""));
 		EXPECT_STREQ(tiingo.m_strName, _T(""));
 	}
 
 	TEST_F(CTiingoCryptoSymbolTest, TestSave) {
-		CTiingoCryptoSymbol stock, stock2;
+		CTiingoCrypto stock, stock2;
 		CSetTiingoCrypto setTiingoCrypto;
 
 		stock.m_strBaseCurrency = _T("USD");
-		stock.m_strDescription = _T("abcdefg");
+		stock.SetDescription(_T("abcdefg"));
 		stock.m_strName = _T("NewName");
 		stock.m_strQuoteCurrency = _T("USD2");
-		stock.m_strTicker = _T("ABC");
+		stock.SetSymbol(_T("ABC"));
 
 		setTiingoCrypto.Open();
 		stock.Append(setTiingoCrypto);
@@ -56,8 +60,8 @@ namespace FireBirdTest {
 		setTiingoCrypto.Close();
 
 		EXPECT_STREQ(stock.m_strBaseCurrency, stock2.m_strBaseCurrency);
-		EXPECT_STREQ(stock.m_strTicker, stock2.m_strTicker);
-		EXPECT_STREQ(stock.m_strDescription, stock2.m_strDescription);
+		EXPECT_STREQ(stock.GetSymbol(), stock2.GetSymbol());
+		EXPECT_STREQ(stock.GetDescription(), stock2.GetDescription());
 		EXPECT_TRUE(stock.m_strName == stock2.m_strName);
 		EXPECT_TRUE(stock.m_strQuoteCurrency == stock2.m_strQuoteCurrency);
 	}

@@ -32,7 +32,7 @@ void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	pStock->SetSECFilingsUpdateDate(GetMarket()->GetMarketDate());
 	pStock->SetUpdateProfileDB(true);
 	if (size > 0) {
-		pStock->SetSECFilingsNeedSave(true);
+		pStock->SetUpdateSECFilingsDB(true);
 	}
 }
 
@@ -97,8 +97,7 @@ CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWeb
 			pSECFiling->m_strFilingURL = s1.c_str();
 			pvSECFilings->push_back(pSECFiling);
 		}
-	}
-	catch (simdjson_error& error) {
+	} catch (simdjson_error& error) {
 		ReportJSonErrorToSystemMessage(_T("finnhub SEC Filings "), error.what());
 	}
 	// ∞¥accessNumber≈≈–Ú

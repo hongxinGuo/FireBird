@@ -42,7 +42,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerTiingoCryptoSymbolTest, TestIsNeedUpdate) {
-		const auto pCrypto = make_shared<CTiingoCryptoSymbol>();
+		const auto pCrypto = make_shared<CTiingoCrypto>();
 
 		EXPECT_FALSE(m_dataTiingoCryptoSymbol.IsNeedUpdate());
 		m_dataTiingoCryptoSymbol.Add(pCrypto);
@@ -53,10 +53,10 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 0);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetLastSize(), 0);
 
-		const auto pTiingoCrypto = make_shared<CTiingoCryptoSymbol>();
-		pTiingoCrypto->m_strTicker = _T("SS.SS");
-		const auto pTiingoCrypto2 = make_shared<CTiingoCryptoSymbol>();
-		pTiingoCrypto2->m_strTicker = _T("SS.SS.SS");
+		const auto pTiingoCrypto = make_shared<CTiingoCrypto>();
+		pTiingoCrypto->SetSymbol(_T("SS.SS"));
+		const auto pTiingoCrypto2 = make_shared<CTiingoCrypto>();
+		pTiingoCrypto2->SetSymbol(_T("SS.SS.SS"));
 		m_dataTiingoCryptoSymbol.Add(pTiingoCrypto);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 1);
 
@@ -75,13 +75,13 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol(_T("DKAETH")));
 		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol(_T("KSMUST")));
 		EXPECT_FALSE(m_dataTiingoCryptoSymbol.IsSymbol(_T("500008.SS")));
-		CTiingoCryptoSymbolPtr pTiingoCrypto = m_dataTiingoCryptoSymbol.GetSymbol(_T("DKAETH"));
-		EXPECT_STREQ(pTiingoCrypto->m_strTicker, _T("DKAETH"));
+		CTiingoCryptoPtr pTiingoCrypto = m_dataTiingoCryptoSymbol.GetSymbol(_T("DKAETH"));
+		EXPECT_STREQ(pTiingoCrypto->GetSymbol(), _T("DKAETH"));
 		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol(pTiingoCrypto));
 
 		// 测试UpdateDB
-		pTiingoCrypto = make_shared<CTiingoCryptoSymbol>();
-		pTiingoCrypto->m_strTicker = _T("AA.BB"); // 新代码
+		pTiingoCrypto = make_shared<CTiingoCrypto>();
+		pTiingoCrypto->SetSymbol(_T("AA.BB")); // 新代码
 		m_dataTiingoCryptoSymbol.Add(pTiingoCrypto);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 1279);
 		m_dataTiingoCryptoSymbol.UpdateDB();

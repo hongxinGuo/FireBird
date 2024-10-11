@@ -72,8 +72,8 @@ CWorldStock::CWorldStock() {
 	m_fUpdateCompanyProfile = true;
 	m_fUpdateCompanyNews = true;
 	m_fUpdateBasicFinancial = true;
-	m_fEPSSurpriseUpdated = false;
-	m_fEPSSurpriseNeedSave = false;
+	m_fUpdateEPSSurprise = true;
+	m_fUpdateEPSSurpriseDB = false;
 	m_fUpdateFinnhubPeer = true;
 
 	m_fUpdateFinnhubInsiderTransaction = true;
@@ -142,8 +142,8 @@ CWorldStock::CWorldStock() {
 	m_fUpdateCompanyProfile = true;
 	m_fUpdateCompanyNews = true;
 	m_fUpdateBasicFinancial = true;
-	m_fEPSSurpriseUpdated = false;
-	m_fEPSSurpriseNeedSave = false;
+	m_fUpdateEPSSurprise = true;
+	m_fUpdateEPSSurpriseDB = false;
 	m_fUpdateFinnhubPeer = true;
 
 	m_fUpdateFinnhubInsiderTransaction = true;
@@ -746,21 +746,21 @@ bool CWorldStock::UpdateBasicFinancial(const CFinnhubStockBasicFinancialPtr& pFi
 bool CWorldStock::CheckEPSSurpriseStatus(long lCurrentDate) {
 	const long lLastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
 	if (IsNullStock() || IsDelisted()) {
-		m_fEPSSurpriseUpdated = true;
+		m_fUpdateEPSSurprise = false;
 	}
 	else if ((lLastEPSSurpriseUpdateDate == 19700101) || (lLastEPSSurpriseUpdateDate == 19800101)) { // 没有数据？
-		m_fEPSSurpriseUpdated = true;
+		m_fUpdateEPSSurprise = false;
 	}
 	else if (IsEarlyThen(lLastEPSSurpriseUpdateDate, lCurrentDate, gl_systemConfiguration.GetEPSSurpriseUpdateRate() * 10) && (lLastEPSSurpriseUpdateDate != 19800101)) {// 有早于900天的数据？即已经不更新了
-		m_fEPSSurpriseUpdated = true;
+		m_fUpdateEPSSurprise = false;
 	}
 	else if (!IsEarlyThen(lLastEPSSurpriseUpdateDate, lCurrentDate, gl_systemConfiguration.GetEPSSurpriseUpdateRate())) {	// 有不早于90天的数据？
-		m_fEPSSurpriseUpdated = true;
+		m_fUpdateEPSSurprise = false;
 	}
 	else {
-		m_fEPSSurpriseUpdated = false;
+		m_fUpdateEPSSurprise = true;
 	}
-	return m_fEPSSurpriseUpdated;
+	return m_fUpdateEPSSurprise;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

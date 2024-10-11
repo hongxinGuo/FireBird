@@ -33,8 +33,8 @@ void CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr 
 		pStock->SetLastEPSSurpriseUpdateDate(19700101); // 将日期设置为更早。
 		pStock->SetUpdateProfileDB(true);
 	}
-	pStock->m_fEPSSurpriseUpdated = true;
-	pStock->m_fEPSSurpriseNeedSave = true;
+	pStock->m_fUpdateEPSSurprise = false;
+	pStock->m_fUpdateEPSSurpriseDB = true;
 }
 
 CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurprise(const CWebDataPtr& pWebData) {
@@ -61,8 +61,7 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 			pEPSSurprise->m_dActual = jsonGetDouble(it, _T("actual"));
 			pvEPSSurprise->push_back(pEPSSurprise);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub EPS Surprise "), e.what());
 		return pvEPSSurprise;
 	}

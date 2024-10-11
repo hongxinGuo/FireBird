@@ -406,7 +406,7 @@ bool CWorldMarket::UpdateEPSSurpriseDB() {
 	CWorldStockPtr pStock = nullptr;
 	for (long l = 0; l < stockSize; ++l) {
 		pStock = gl_dataContainerFinnhubStock.GetStock(l);
-		if (pStock->IsEPSSurpriseNeedSaveAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pStock->IsUpdateEPSSurpriseDBAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			pStock->UpdateEPSSurpriseDB();
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
@@ -422,7 +422,7 @@ void CWorldMarket::UpdateSECFilingsDB() {
 	CWorldStockPtr pStock = nullptr;
 	for (long l = 0; l < stockSize; ++l) {
 		pStock = gl_dataContainerFinnhubStock.GetStock(l);
-		if (pStock->IsSECFilingsNeedSaveAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pStock->IsUpdateSECFilingsDBAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			ASSERT(pStock->UpdateSECFilingsDB());
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
@@ -530,7 +530,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_UpdateWorldMarketDB.release();
 		});
 	}
-	if (gl_dataContainerFinnhubEconomicCalendar.IsNeedUpdate()) { // Economic Calendar
+	if (gl_dataContainerFinnhubEconomicCalendar.IsUpdateDB()) { // Economic Calendar
 		gl_runtime.background_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerFinnhubEconomicCalendar.UpdateDB();
@@ -551,14 +551,14 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_UpdateWorldMarketDB.release();
 		});
 	}
-	if (gl_dataContainerFinnhubStock.IsSaveEPSSurpriseDB()) { // stock EPS surprise
+	if (gl_dataContainerFinnhubStock.IsUpdateEPSSurpriseDB()) { // stock EPS surprise
 		gl_runtime.background_executor()->post([this] {
 			gl_UpdateWorldMarketDB.acquire();
 			this->UpdateEPSSurpriseDB();
 			gl_UpdateWorldMarketDB.release();
 		});
 	}
-	if (gl_dataContainerFinnhubStock.IsSaveSECFilingsDB()) { // stock EPS surprise
+	if (gl_dataContainerFinnhubStock.IsUpdateSECFilingsDB()) { // stock EPS surprise
 		gl_runtime.background_executor()->post([this] {
 			gl_UpdateWorldMarketDB.acquire();
 			this->UpdateSECFilingsDB();

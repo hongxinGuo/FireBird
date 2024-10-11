@@ -23,6 +23,7 @@ public:
 	CString m_BaseCurrency;
 	CString m_QuoteCurrency;
 	CString m_Description;
+	CString m_UpdateDate;
 
 public:
 	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX Ö§³Ö

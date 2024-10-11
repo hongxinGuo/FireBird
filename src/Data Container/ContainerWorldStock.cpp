@@ -25,7 +25,7 @@ void CContainerWorldStock::ResetEPSSurprise() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CWorldStockPtr pStock = GetStock(l);
 		pStock->SetLastEPSSurpriseUpdateDate(19800101);
-		pStock->m_fEPSSurpriseUpdated = false;
+		pStock->m_fUpdateEPSSurprise = true;
 	}
 }
 
@@ -298,10 +298,10 @@ bool CContainerWorldStock::IsUpdateInsiderSentimentDB() {
 	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsUpdateInsiderSentimentDB(); });
 }
 
-bool CContainerWorldStock::IsSaveEPSSurpriseDB() {
-	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsEPSSurpriseNeedSave(); });
+bool CContainerWorldStock::IsUpdateEPSSurpriseDB() {
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsUpdateEPSSurpriseDB(); });
 }
 
-bool CContainerWorldStock::IsSaveSECFilingsDB() {
-	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsSECFilingsNeedSave(); });
+bool CContainerWorldStock::IsUpdateSECFilingsDB() {
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& p) { return dynamic_pointer_cast<CWorldStock>(p)->IsUpdateSECFilingsDB(); });
 }

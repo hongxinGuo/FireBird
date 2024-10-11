@@ -187,8 +187,8 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_llTiingoBandWidthLeft = gl_systemConfiguration.GetTiingoBandWidthLeft();
 
-			m_tiingoStockSymbolProduct.SetMarket(gl_pWorldMarket);
-			m_tiingoStockSymbolProduct.SetIndex(0);
+			m_tiingoStockProduct.SetMarket(gl_pWorldMarket);
+			m_tiingoStockProduct.SetIndex(0);
 			gl_pTiingoDataSource->SetUpdateStockSymbol(true);
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 		}
@@ -197,8 +197,12 @@ namespace FireBirdTest {
 			// clearUp
 			gl_systemConfiguration.SetTiingoBandWidthLeft(m_llTiingoBandWidthLeft);
 			gl_systemConfiguration.SetUpdateDB(false);
+			gl_dataContainerFinnhubStock.GetStock(_T("A"))->SetUpdateProfileDB(false);
+			gl_dataContainerFinnhubStock.GetStock(_T("AA"))->SetUpdateProfileDB(false);
 			gl_dataContainerTiingoStock.GetStock(_T("A"))->SetUpdateProfileDB(false);
 			gl_dataContainerTiingoStock.GetStock(_T("AA"))->SetUpdateProfileDB(false);
+			EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
+			EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -207,7 +211,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CProductTiingoStock m_tiingoStockSymbolProduct;
+		CProductTiingoStock m_tiingoStockProduct;
 		long long m_llTiingoBandWidthLeft;
 	};
 
@@ -221,7 +225,7 @@ namespace FireBirdTest {
 		CWorldStockPtr pStock = nullptr;
 		long long llDataSize = m_pWebData->GetBufferLength();
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
-		m_tiingoStockSymbolProduct.ParseAndStoreWebData(m_pWebData);
+		m_tiingoStockProduct.ParseAndStoreWebData(m_pWebData);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoBandWidthLeft(), m_llTiingoBandWidthLeft - llDataSize);
 		switch (m_lIndex) {
 		case 1: // 格式不对
@@ -236,23 +240,12 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1) << "第一个数据是正确的";
 			gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateProfileDB()) << "第一个数据是正确的";
-
-		//恢复原状
-			pStock = gl_dataContainerFinnhubStock.GetStock(_T("A"));
-			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
-			pStock->SetUpdateProfileDB(false);
-			EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 			break;
 		case 4:
-			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1) << "第一个数据是正确的";
 			gl_systemMessage.PopInnerSystemInformationMessage();
+			EXPECT_TRUE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
 			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
-
-		//恢复原状
-			pStock = gl_dataContainerFinnhubStock.GetStock(_T("AA"));
-			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
-			pStock->SetUpdateProfileDB(false);
-			EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 			break;
 		case 10:
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);

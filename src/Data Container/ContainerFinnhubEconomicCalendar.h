@@ -18,10 +18,7 @@ public:
 	bool UpdateDB();
 	bool Update(const vector<CEconomicCalendarPtr>& vEconomicCalendar);
 
-	bool IsNeedUpdate() const noexcept {
-		if (m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size()) return true;
-		return false;
-	}
+	bool IsUpdateDB() const noexcept { return m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size(); }
 
 protected:
 	vector<CEconomicCalendarPtr> m_vEconomicCalendar;

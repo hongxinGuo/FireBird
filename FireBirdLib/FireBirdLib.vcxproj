@@ -170,6 +170,9 @@
     <ClInclude Include="..\src\nlohmannJsonDeclaration.h" />
     <ClInclude Include="..\src\pch.h" />
     <ClInclude Include="..\src\Stock\ChinaStock.h" />
+    <ClInclude Include="..\src\Stock\FinnhubCrypto.h" />
+    <ClInclude Include="..\src\Stock\FinnhubForexSymbol.h" />
+    <ClInclude Include="..\src\Stock\TiingoCrypto.h" />
     <ClInclude Include="..\src\Stock\TiingoStock.h" />
     <ClInclude Include="..\src\Stock\VirtualStock.h" />
     <ClInclude Include="..\src\Stock\WorldStock.h" />
@@ -185,8 +188,6 @@
     <ClInclude Include="..\src\Type\America market\EconomicCalendar.h" />
     <ClInclude Include="..\src\Type\America market\EPSSurprise.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubCompanyNews.h" />
-    <ClInclude Include="..\src\Type\America market\FinnhubCrypto.h" />
-    <ClInclude Include="..\src\Type\America market\FinnhubForexSymbol.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubRecommendationTrends.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubStockBasicFinancial.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubStockExchange.h" />
@@ -196,7 +197,6 @@
     <ClInclude Include="..\src\Type\America market\MarketStatus.h" />
     <ClInclude Include="..\src\Type\America market\NaicsIndustry.h" />
     <ClInclude Include="..\src\Type\America market\SICIndustry.h" />
-    <ClInclude Include="..\src\Type\America market\TiingoCryptoSymbol.h" />
     <ClInclude Include="..\src\Type\America market\TiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\Type\America market\TiingoIndustry.h" />
     <ClInclude Include="..\src\Type\America market\TiingoMarketNews.h" />
@@ -369,6 +369,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\src\Stock\ChinaStock.cpp" />
+    <ClCompile Include="..\src\Stock\FinnhubCrypto.cpp" />
+    <ClCompile Include="..\src\Stock\FinnhubForexSymbol.cpp" />
+    <ClCompile Include="..\src\Stock\TiingoCrypto.cpp" />
     <ClCompile Include="..\src\Stock\TiingoStock.cpp" />
     <ClCompile Include="..\src\Stock\VirtualStock.cpp" />
     <ClCompile Include="..\src\Stock\WorldStock.cpp" />
@@ -380,8 +383,6 @@
     <ClCompile Include="..\src\Type\America market\EconomicCalendar.cpp" />
     <ClCompile Include="..\src\Type\America market\EPSSurprise.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubCompanyNews.cpp" />
-    <ClCompile Include="..\src\Type\America market\FinnhubCrypto.cpp" />
-    <ClCompile Include="..\src\Type\America market\FinnhubForexSymbol.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubRecommendationTrends.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubStockBasicFinancial.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubStockExchange.cpp" />
@@ -389,7 +390,6 @@
     <ClCompile Include="..\src\Type\America market\InsiderTransaction.cpp" />
     <ClCompile Include="..\src\Type\America market\NaicesIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\SICIndustry.cpp" />
-    <ClCompile Include="..\src\Type\America market\TiingoCryptoSymbol.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoMarketNews.cpp" />

@@ -335,26 +335,26 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateCompanyProfile());
 	}
 
-	TEST_F(CWorldStockTest, TestIsEPSSurpriseUpdated) {
-		EXPECT_FALSE(stock.IsEPSSurpriseUpdated());
-		stock.SetEPSSurpriseUpdated(true);
-		EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
+	TEST_F(CWorldStockTest, TestIsUpdateEPSSurprise) {
+		EXPECT_TRUE(stock.IsUpdateEPSSurprise());
+		stock.SetUpdateEPSSurprise(false);
+		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
 	}
 
-	TEST_F(CWorldStockTest, TestIsEPSSurpriseNeedSave) {
-		EXPECT_FALSE(stock.IsEPSSurpriseNeedSave());
-		stock.SetEPSSurpriseNeedSave(true);
-		EXPECT_TRUE(stock.IsEPSSurpriseNeedSave());
-		EXPECT_TRUE(stock.IsEPSSurpriseNeedSaveAndClearFlag());
-		EXPECT_FALSE(stock.IsEPSSurpriseNeedSave());
+	TEST_F(CWorldStockTest, TestIsUpdateEPSSurpriseDB) {
+		EXPECT_FALSE(stock.IsUpdateEPSSurpriseDB());
+		stock.SetUpdateEPSSurpriseDB(true);
+		EXPECT_TRUE(stock.IsUpdateEPSSurpriseDB());
+		EXPECT_TRUE(stock.IsUpdateEPSSurpriseDBAndClearFlag());
+		EXPECT_FALSE(stock.IsUpdateEPSSurpriseDB());
 	}
 
-	TEST_F(CWorldStockTest, TestIsSECFilingsNeedSave) {
-		EXPECT_FALSE(stock.IsSECFilingsNeedSave());
-		stock.SetSECFilingsNeedSave(true);
-		EXPECT_TRUE(stock.IsSECFilingsNeedSave());
-		EXPECT_TRUE(stock.IsSECFilingsNeedSaveAndClearFlag());
-		EXPECT_FALSE(stock.IsSECFilingsNeedSave());
+	TEST_F(CWorldStockTest, TestIsUpdateSECFilingsDB) {
+		EXPECT_FALSE(stock.IsUpdateSECFilingsDB());
+		stock.SetUpdateSECFilingsDB(true);
+		EXPECT_TRUE(stock.IsUpdateSECFilingsDB());
+		EXPECT_TRUE(stock.IsUpdateSECFilingsDBAndClearFlag());
+		EXPECT_FALSE(stock.IsUpdateSECFilingsDB());
 	}
 
 	TEST_F(CWorldStockTest, TestIsUpdateInsiderTransaction) {
@@ -694,39 +694,39 @@ namespace FireBirdTest {
 	TEST_F(CWorldStockTest, TestCheckEPSSurpriseStatus) {
 		constexpr long lCurrentDate = 20200101;
 
-		stock.SetEPSSurpriseUpdated(false);
+		stock.SetUpdateEPSSurprise(true);
 		stock.SetIPOStatus(_STOCK_NULL_);
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
-		EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
+		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
 
-		stock.SetEPSSurpriseUpdated(false);
+		stock.SetUpdateEPSSurprise(true);
 		stock.SetIPOStatus(_STOCK_DELISTED_);
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
-		EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
+		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
 
-		stock.SetEPSSurpriseUpdated(false);
+		stock.SetUpdateEPSSurprise(true);
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetLastEPSSurpriseUpdateDate(19700101);
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
-		EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
+		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
 
-		stock.SetEPSSurpriseUpdated(false);
+		stock.SetUpdateEPSSurprise(true);
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetLastEPSSurpriseUpdateDate(20191003); // 不早于90天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
-		EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
+		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
 
-		stock.SetEPSSurpriseUpdated(false);
+		stock.SetUpdateEPSSurprise(true);
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetLastEPSSurpriseUpdateDate(20191002); // 早于90天， 不早于900天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
-		EXPECT_FALSE(stock.IsEPSSurpriseUpdated());
+		EXPECT_TRUE(stock.IsUpdateEPSSurprise());
 
-		stock.SetEPSSurpriseUpdated(false);
+		stock.SetUpdateEPSSurprise(true);
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetLastEPSSurpriseUpdateDate(20160521); // 早于900天
 		stock.CheckEPSSurpriseStatus(lCurrentDate);
-		EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
+		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
 	}
 
 	TEST_F(CWorldStockTest, TestCheckSECFilingsStatus) {
@@ -1231,7 +1231,7 @@ namespace FireBirdTest {
 
 		stock.SetSymbol(_T("MFI"));
 		stock.SetSECFilings(pvSECFilings);
-		stock.SetSECFilingsNeedSave(true);
+		stock.SetUpdateSECFilingsDB(true);
 		stock.SetSECFilingsUpdated(true);
 
 		EXPECT_TRUE(stock.UpdateSECFilingsDB());

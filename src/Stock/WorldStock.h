@@ -84,12 +84,12 @@ public:
 	bool UpdateBasicFinancial(const CFinnhubStockBasicFinancialPtr& pFinnhubStockBasicFinancial);
 	CFinnhubStockBasicFinancialPtr GetBasicFinancial() noexcept { return m_pBasicFinancial; }
 
-	bool IsEPSSurpriseUpdated() const noexcept { return m_fEPSSurpriseUpdated; }
-	void SetEPSSurpriseUpdated(const bool fFlag) noexcept { m_fEPSSurpriseUpdated = fFlag; }
+	bool IsUpdateEPSSurprise() const noexcept { return m_fUpdateEPSSurprise; }
+	void SetUpdateEPSSurprise(const bool fFlag) noexcept { m_fUpdateEPSSurprise = fFlag; }
 	bool CheckEPSSurpriseStatus(long lCurrentDate);
-	bool IsEPSSurpriseNeedSave() const noexcept { return m_fEPSSurpriseNeedSave; }
-	void SetEPSSurpriseNeedSave(const bool fFlag) noexcept { m_fEPSSurpriseNeedSave = fFlag; }
-	bool IsEPSSurpriseNeedSaveAndClearFlag() { return m_fEPSSurpriseNeedSave.exchange(false); }
+	bool IsUpdateEPSSurpriseDB() const noexcept { return m_fUpdateEPSSurpriseDB; }
+	void SetUpdateEPSSurpriseDB(const bool fFlag) noexcept { m_fUpdateEPSSurpriseDB = fFlag; }
+	bool IsUpdateEPSSurpriseDBAndClearFlag() { return m_fUpdateEPSSurpriseDB.exchange(false); }
 
 	bool IsUpdatePeer() const noexcept { return m_fUpdateFinnhubPeer; }
 	void SetUpdatePeer(bool fFlag) noexcept { m_fUpdateFinnhubPeer = fFlag; }
@@ -98,9 +98,9 @@ public:
 	bool IsSECFilingsUpdated() const noexcept { return m_fSECFilingsUpdated; }
 	void SetSECFilingsUpdated(bool fFlag) noexcept { m_fSECFilingsUpdated = fFlag; }
 	bool CheckSECFilingsStatus(long lCurrentDate);
-	bool IsSECFilingsNeedSave() const noexcept { return m_fSECFilingsNeedSave; }
-	void SetSECFilingsNeedSave(const bool fFlag) noexcept { m_fSECFilingsNeedSave = fFlag; }
-	bool IsSECFilingsNeedSaveAndClearFlag() { return m_fSECFilingsNeedSave.exchange(false); }
+	bool IsUpdateSECFilingsDB() const noexcept { return m_fUpdateSECFilingsDB; }
+	void SetUpdateSECFilingsDB(const bool fFlag) noexcept { m_fUpdateSECFilingsDB = fFlag; }
+	bool IsUpdateSECFilingsDBAndClearFlag() { return m_fUpdateSECFilingsDB.exchange(false); }
 
 	bool HaveInsiderTransaction() const noexcept { return !m_vInsiderTransaction.empty(); }
 	void UnloadInsiderTransaction() { m_vInsiderTransaction.resize(0); }
@@ -238,8 +238,8 @@ public:
 
 public:
 	vector<CEPSSurprisePtr> m_vEPSSurprise;
-	bool m_fEPSSurpriseUpdated{ false };
-	atomic_bool m_fEPSSurpriseNeedSave;
+	bool m_fUpdateEPSSurprise{ true };
+	atomic_bool m_fUpdateEPSSurpriseDB;
 
 	vector<CInsiderTransactionPtr> m_vInsiderTransaction;
 	long m_lInsiderTransactionEndDate;
@@ -249,7 +249,7 @@ public:
 
 	CSECFilingsPtr m_pvSECFilings{ nullptr };
 	bool m_fSECFilingsUpdated{ false };
-	atomic_bool m_fSECFilingsNeedSave{ false };
+	atomic_bool m_fUpdateSECFilingsDB{ false };
 
 protected:
 	// Finnhub symbol–≈œ¢
