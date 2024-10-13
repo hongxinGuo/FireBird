@@ -10,7 +10,7 @@ CContainerTiingoStock::CContainerTiingoStock() {
 CContainerTiingoStock::~CContainerTiingoStock() {
 	//for (const auto& pStock : m_vStock) {
 	//pStock->SetUpdateProfileDB(true);
-	//	}
+	//}
 	//UpdateDB();
 }
 

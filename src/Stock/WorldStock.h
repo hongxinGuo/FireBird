@@ -28,7 +28,7 @@ public:
 	CWorldStock& operator=(const CWorldStock&&) noexcept = delete;
 	~CWorldStock() override;
 
-	void ResetAllUpdateDate();
+	void ResetAllUpdateDate() override;
 	int GetRatio() const final { return 1000; }
 
 	void Load(CSetWorldStock& setWorldStock);

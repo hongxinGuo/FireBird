@@ -11,7 +11,6 @@ using CVirtualStockPtr = shared_ptr<CVirtualStock>;
 class CVirtualStock {
 public:
 	CVirtualStock();
-	void ResetAllUpdateDate();
 	// ≤ª‘ –Ì∏≥÷µ°£
 	CVirtualStock(const CVirtualStock&) = delete;
 	CVirtualStock& operator=(const CVirtualStock&) = delete;
@@ -19,6 +18,7 @@ public:
 	CVirtualStock& operator=(const CVirtualStock&&) noexcept = delete;
 	virtual ~CVirtualStock() = default;
 
+	virtual void ResetAllUpdateDate();
 	virtual int GetRatio() const = 0;
 
 	virtual void LoadSymbol(CVirtualSetStockSymbol& setStockSymbol);

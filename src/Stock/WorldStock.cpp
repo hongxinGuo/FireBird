@@ -182,6 +182,7 @@ void CWorldStock::ResetAllUpdateDate() {
 }
 
 void CWorldStock::Load(CSetWorldStock& setWorldStock) {
+	int iID = setWorldStock.m_ID;
 	m_strSymbol = setWorldStock.m_Symbol;
 	m_strExchangeCode = setWorldStock.m_ExchangeCode;
 	m_strDescription = setWorldStock.m_Description;
