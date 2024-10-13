@@ -5,7 +5,7 @@
 
 class CSetWorldStock : public CVirtualRecordset {
 public:
-	CSetWorldStock(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("stock_profile"), CDatabase* pDatabase = nullptr);
+	CSetWorldStock(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("finnhub_stock_profile"), CDatabase* pDatabase = nullptr);
 	~CSetWorldStock() override = default;
 
 	// 字段/参数数据

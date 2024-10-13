@@ -18,6 +18,7 @@
 #include "SetSECFilings.h"
 
 CWorldStock::CWorldStock() {
+	ResetAllUpdateDate();
 	// Finnhub Symbol数据
 	m_strIPODate = _T(" ");
 	m_strCurrency = _T(" ");
@@ -85,7 +86,6 @@ CWorldStock::CWorldStock() {
 
 	m_pBasicFinancial = nullptr;
 
-	ResetAllUpdateDate();
 	// Finnhub Symbol数据
 	m_strIPODate = _T(" ");
 	m_strCurrency = _T(" ");

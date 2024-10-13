@@ -236,7 +236,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setWorldStockDayLine.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setWorldStockDayLine.GetDefaultSQL(), _T("[stock_dayline]"));
+		EXPECT_STREQ(setWorldStockDayLine.GetDefaultSQL(), _T("[finnhub_stock_dayline]"));
 	}
 
 	TEST_F(SetInitializeTest, TestCryptoDayLineInitialize) {
@@ -248,7 +248,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setCryptoDayLine.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setCryptoDayLine.GetDefaultSQL(), _T("[crypto_dayline]"));
+		EXPECT_STREQ(setCryptoDayLine.GetDefaultSQL(), _T("[finnhub_crypto_dayline]"));
 	}
 
 	TEST_F(SetInitializeTest, TestForexDayLineInitialize) {
@@ -260,7 +260,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setForexDayLine.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setForexDayLine.GetDefaultSQL(), _T("[forex_dayline]"));
+		EXPECT_STREQ(setForexDayLine.GetDefaultSQL(), _T("[finnhub_forex_dayline]"));
 	}
 
 	TEST_F(SetInitializeTest, TestChinaChosenStockInitialize) {
@@ -272,7 +272,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setChinaChosenStock.GetDefaultConnect(), _T("DSN=ChinaMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setChinaChosenStock.GetDefaultSQL(), _T("[choiced_stock]"));
+		EXPECT_STREQ(setChinaChosenStock.GetDefaultSQL(), _T("[choice_stock]"));
 	}
 
 	TEST_F(SetInitializeTest, TestWorldChosenForexInitialize) {
@@ -284,7 +284,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setWorldChosenForex.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setWorldChosenForex.GetDefaultSQL(), _T("[choiced_forex]"));
+		EXPECT_STREQ(setWorldChosenForex.GetDefaultSQL(), _T("[choice_forex]"));
 	}
 
 	TEST_F(SetInitializeTest, TestWorldChosenCryptoInitialize) {
@@ -296,7 +296,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setWorldChosenCrypto.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setWorldChosenCrypto.GetDefaultSQL(), _T("[choiced_crypto]"));
+		EXPECT_STREQ(setWorldChosenCrypto.GetDefaultSQL(), _T("[choice_crypto]"));
 	}
 
 	TEST_F(SetInitializeTest, TestWorldChosenStockInitialize) {
@@ -308,7 +308,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setWorldChosenStock.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setWorldChosenStock.GetDefaultSQL(), _T("[choiced_stock]"));
+		EXPECT_STREQ(setWorldChosenStock.GetDefaultSQL(), _T("[choice_stock]"));
 	}
 
 	TEST_F(SetInitializeTest, TestCountryInitialize) {
@@ -320,7 +320,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setCountry.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setCountry.GetDefaultSQL(), _T("[country_list]"));
+		EXPECT_STREQ(setCountry.GetDefaultSQL(), _T("[finnhub_country_list]"));
 	}
 
 	TEST_F(SetInitializeTest, TestEconomicCalendarInitialize) {
@@ -332,7 +332,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setEconomicCalendar.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setEconomicCalendar.GetDefaultSQL(), _T("[economic_calendar]"));
+		EXPECT_STREQ(setEconomicCalendar.GetDefaultSQL(), _T("[finnhub_economic_calendar]"));
 	}
 
 	TEST_F(SetInitializeTest, TestEPSSurpriseInitialize) {
@@ -356,7 +356,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setInsiderTransaction.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setInsiderTransaction.GetDefaultSQL(), _T("[insider_transaction]"));
+		EXPECT_STREQ(setInsiderTransaction.GetDefaultSQL(), _T("[finnhub_insider_transaction]"));
 	}
 
 	TEST_F(SetInitializeTest, TestInsiderSentimentInitialize) {
@@ -368,7 +368,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setInsiderSentiment.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setInsiderSentiment.GetDefaultSQL(), _T("[insider_sentiment]"));
+		EXPECT_STREQ(setInsiderSentiment.GetDefaultSQL(), _T("[finnhub_insider_sentiment]"));
 	}
 
 	TEST_F(SetInitializeTest, TestNaicsIndustryInitialize) {
@@ -488,7 +488,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setWorldStock.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setWorldStock.GetDefaultSQL(), _T("[stock_profile]"));
+		EXPECT_STREQ(setWorldStock.GetDefaultSQL(), _T("[finnhub_stock_profile]"));
 	}
 
 	TEST_F(SetInitializeTest, TestFinnhubStockBasicFinancialMetricInitialize) {

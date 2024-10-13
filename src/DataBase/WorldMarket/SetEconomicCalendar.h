@@ -8,7 +8,7 @@
 
 class CSetEconomicCalendar : public CVirtualRecordset {
 public:
-	CSetEconomicCalendar(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("economic_calendar"), CDatabase* pDatabase = nullptr);
+	CSetEconomicCalendar(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("finnhub_economic_calendar"), CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 
