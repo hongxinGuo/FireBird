@@ -50,8 +50,6 @@ CWorldStock::CWorldStock() {
 	m_strNaicsSector = _T(" ");
 	m_strNaicsSubsector = _T(" ");
 	m_strState = _T(" ");
-	m_lDayLineStartDate = 29900101;
-	m_lDayLineEndDate = 19800101;
 
 	// Tiingo Symbol数据
 	m_strTiingoPermaTicker = _T("");
@@ -120,8 +118,6 @@ CWorldStock::CWorldStock() {
 	m_strNaicsSector = _T(" ");
 	m_strNaicsSubsector = _T(" ");
 	m_strState = _T(" ");
-	m_lDayLineStartDate = 29900101;
-	m_lDayLineEndDate = 19800101;
 
 	// Tiingo Symbol数据
 	m_strTiingoPermaTicker = _T("");
@@ -169,6 +165,8 @@ CWorldStock::~CWorldStock() {
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldStock::ResetAllUpdateDate() {
+	m_jsonUpdateDate["DayLineStartDate"] = m_lDayLineStartDate;
+	m_jsonUpdateDate["DayLineEndDate"] = m_lDayLineEndDate;
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyProfileConcise"] = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyNews"] = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsBasicFinancials"] = 19800101;
@@ -223,7 +221,7 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 	}
 	m_lDayLineStartDate = setWorldStock.m_DayLineStartDate;
 	m_lDayLineEndDate = setWorldStock.m_DayLineEndDate;
-	if (setWorldStock.m_UpdateDate.IsEmpty()) {
+	if (setWorldStock.m_UpdateDate.GetLength() < 10) {
 		ResetAllUpdateDate();
 	}
 	else {
@@ -316,7 +314,7 @@ bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate,
 			return m_fUpdateDayLine;
 		}
 	}
-	else if ((!IsNotChecked()) && (IsEarlyThen(m_lDayLineEndDate, gl_pWorldMarket->GetMarketDate(), 100))) {
+	else if ((!IsNotChecked()) && (IsEarlyThen(GetDayLineEndDate(), gl_pWorldMarket->GetMarketDate(), 100))) {
 		SetUpdateDayLine(false);
 		return m_fUpdateDayLine;
 	}
@@ -386,8 +384,6 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) const {
 	const string sPeer = m_jsonPeer.dump();
 	ASSERT(sPeer.size() < 2000);
 	setWorldStock.m_Peer = sPeer.c_str();
-	setWorldStock.m_DayLineStartDate = m_lDayLineStartDate;
-	setWorldStock.m_DayLineEndDate = m_lDayLineEndDate;
 
 	const string sUpdateDate = m_jsonUpdateDate.dump();
 	setWorldStock.m_UpdateDate = sUpdateDate.c_str();
@@ -717,17 +713,17 @@ void CWorldStock::UpdateDayLineStartEndDate() {
 			SetDayLineStartDate(lStartDate);
 			m_fUpdateProfileDB = true;
 		}
-		if (lEndDate > m_lDayLineEndDate) {
+		if (lEndDate > GetDayLineEndDate()) {
 			SetDayLineEndDate(lEndDate);
 			m_fUpdateProfileDB = true;
 		}
 	}
 }
 
-bool CWorldStock::HaveNewDayLineData() const {
+bool CWorldStock::HaveNewDayLineData() {
 	if (m_dataDayLine.Empty()) return false;
-	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate)
-		|| (m_dataDayLine.GetData(0)->GetMarketDate() < m_lDayLineStartDate))
+	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > GetDayLineEndDate())
+		|| (m_dataDayLine.GetData(0)->GetMarketDate() < GetDayLineStartDate()))
 		return true;
 	return false;
 }

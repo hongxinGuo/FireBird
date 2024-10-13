@@ -350,7 +350,7 @@ public:
 	//日线相关函数
 	// 日线历史数据
 	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
-	bool HaveNewDayLineData() const;
+	bool HaveNewDayLineData();
 	void UnloadDayLine() noexcept { m_dataDayLine.Unload(); }
 	bool StoreDayLine(const CDayLinePtr& pDayLine) { return m_dataDayLine.Add(pDayLine); }
 	CDayLinePtr GetDayLine(const long lIndex) const { return static_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }

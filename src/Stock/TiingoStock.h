@@ -45,7 +45,7 @@ public:
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	void SaveDayLine() { m_dataDayLine.SaveDB(m_strSymbol); }
 
-	bool HaveNewDayLineData() const;
+	bool HaveNewDayLineData();
 
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckFinancialStateUpdateStatus(long lTodayDate);

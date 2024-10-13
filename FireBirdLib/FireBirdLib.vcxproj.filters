@@ -837,7 +837,7 @@
     <ClInclude Include="..\src\Stock\FinnhubCrypto.h">
       <Filter>头文件\Stock\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Stock\FinnhubForexSymbol.h">
+    <ClInclude Include="..\src\Stock\FinnhubForex.h">
       <Filter>头文件\Stock\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Stock\WorldStock.h">
@@ -1400,7 +1400,7 @@
     <ClCompile Include="..\src\Stock\FinnhubCrypto.cpp">
       <Filter>源文件\Stock\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Stock\FinnhubForexSymbol.cpp">
+    <ClCompile Include="..\src\Stock\FinnhubForex.cpp">
       <Filter>源文件\Stock\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Stock\WorldStock.cpp">

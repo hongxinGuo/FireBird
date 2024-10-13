@@ -6,16 +6,7 @@
 
 CVirtualSetStockSymbol::CVirtualSetStockSymbol(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_ID = 0;
-	m_Description = _T(" ");
-	m_Exchange = _T(" ");
-	m_Symbol = _T(" ");
-	m_DisplaySymbol = _T(" ");
-	m_DayLineStartDate = 29900101;
-	m_DayLineEndDate = 19800101;
-	m_IPOStatus = _STOCK_NOT_CHECKED_;
-
-	m_nFields = 8;
+	m_nFields = 9;
 }
 
 void CVirtualSetStockSymbol::DoFieldExchange(CFieldExchange* pFX) {
@@ -31,4 +22,5 @@ void CVirtualSetStockSymbol::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
 	RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);
 	RFX_Long(pFX, _T("[IPOStatus]"), m_IPOStatus);
+	RFX_Text(pFX, _T("[UpdateDate]"), m_UpdateDate, 10000);
 }

@@ -24,7 +24,7 @@ CProductTiingoCryptoDayLine::CProductTiingoCryptoDayLine() {
 CString CProductTiingoCryptoDayLine::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pCrypto = gl_dataContainerTiingoCryptoSymbol.GetSymbol(GetIndex());
+	const auto pCrypto = gl_dataContainerTiingoCryptoSymbol.GetCrypto(GetIndex());
 	CString strParam = pCrypto->m_strName + _T("&startDate=2010-01-02&resampleFreq=1day"); // 永远申请完整日线
 	pCrypto->SetUpdateDayLine(false);
 

@@ -28,7 +28,7 @@ public:
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	void UpdateDayLineStartEndDate();
-	bool HaveNewDayLineData() const;
+	bool HaveNewDayLineData();
 
 public:
 	CContainerCryptoDayLine m_dataDayLine;

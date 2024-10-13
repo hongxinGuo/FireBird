@@ -3,7 +3,7 @@
 #include"WorldMarket.h"
 #include"GeneralCheck.h"
 
-#include"FinnhubForexSymbol.h"
+#include"FinnhubForex.h"
 #include"SetFinnhubForexSymbol.h"
 #include"SetForexDayLine.h"
 
@@ -35,11 +35,11 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubForexSymbolTest, TestInitialize) {
-		CFinnhubForexSymbol FinnhubForexSymbol;
-		EXPECT_STREQ(FinnhubForexSymbol.GetDescription(), _T(" "));
-		EXPECT_STREQ(FinnhubForexSymbol.GetDisplaySymbol(), _T(" "));
-		EXPECT_STREQ(FinnhubForexSymbol.GetSymbol(), _T(" "));
-		EXPECT_STREQ(FinnhubForexSymbol.GetExchangeCode(), _T(" "));
+		CFinnhubForex FinnhubForexSymbol;
+		EXPECT_STREQ(FinnhubForexSymbol.GetDescription(), _T(""));
+		EXPECT_STREQ(FinnhubForexSymbol.GetDisplaySymbol(), _T(""));
+		EXPECT_STREQ(FinnhubForexSymbol.GetSymbol(), _T(""));
+		EXPECT_STREQ(FinnhubForexSymbol.GetExchangeCode(), _T(""));
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), 29900101);
 		EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 19800101);
 		EXPECT_EQ(FinnhubForexSymbol.GetIPOStatus(), _STOCK_NOT_CHECKED_);
@@ -49,55 +49,55 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetRatio) {
-		const CFinnhubForexSymbol symbol;
+		const CFinnhubForex symbol;
 
 		EXPECT_EQ(symbol.GetRatio(), 1000);
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetDescription) {
-		CFinnhubForexSymbol symbol;
+		CFinnhubForex symbol;
 
 		symbol.SetDescription(_T("abcdefg"));
 		EXPECT_STREQ(symbol.GetDescription(), _T("abcdefg"));
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetDisplaySymbol) {
-		CFinnhubForexSymbol symbol;
+		CFinnhubForex symbol;
 
 		symbol.SetDisplaySymbol(_T("abcdefg"));
 		EXPECT_STREQ(symbol.GetDisplaySymbol(), _T("abcdefg"));
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetSymbol) {
-		CFinnhubForexSymbol symbol;
+		CFinnhubForex symbol;
 
 		symbol.SetSymbol(_T("abcdefg"));
 		EXPECT_STREQ(symbol.GetSymbol(), _T("abcdefg"));
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetDayLineStartDate) {
-		CFinnhubForexSymbol symbol;
+		CFinnhubForex symbol;
 
 		symbol.SetDayLineStartDate(20202020);
 		EXPECT_EQ(symbol.GetDayLineStartDate(), 20202020);
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetDayLineEndDate) {
-		CFinnhubForexSymbol symbol;
+		CFinnhubForex symbol;
 
 		symbol.SetDayLineEndDate(10101010);
 		EXPECT_EQ(symbol.GetDayLineEndDate(), 10101010);
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetIPOStatus) {
-		CFinnhubForexSymbol symbol;
+		CFinnhubForex symbol;
 
 		symbol.SetIPOStatus(_STOCK_IPOED_);
 		EXPECT_EQ(symbol.GetIPOStatus(), _STOCK_IPOED_);
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetUpdateDayLineDB) {
-		CFinnhubForexSymbol symbol;
+		CFinnhubForex symbol;
 
 		EXPECT_FALSE(symbol.IsUpdateDayLineDB());
 		symbol.SetUpdateDayLineDB(true);
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestSetCheckDayLineStatus) {
-		CFinnhubForexSymbol symbol;
+		CFinnhubForex symbol;
 
 		EXPECT_TRUE(symbol.IsUpdateDayLine());
 		symbol.SetIPOStatus(_STOCK_NULL_);
@@ -122,7 +122,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestHaveNewDayLineData) {
-		CFinnhubForexSymbol symbol;
+		CFinnhubForex symbol;
 		vector<CDayLinePtr> vDayLine;
 
 		const CDayLinePtr pDayLine = make_shared<CDayLine>();
@@ -137,7 +137,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestUpdateDayLineStartEndDate) {
-		CFinnhubForexSymbol symbol;
+		CFinnhubForex symbol;
 		vector<CDayLinePtr> vDayLine;
 		CDayLinePtr pDayLine;
 
@@ -170,7 +170,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetFinnhubDayLineInquiringString1) {
-		CFinnhubForexSymbol symbol;
+		CFinnhubForex symbol;
 
 		symbol.SetSymbol(_T("ABCDE"));
 		const CString str = symbol.GetFinnhubDayLineInquiryParam(123456789);
@@ -178,7 +178,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestGetFinnhubDayLineInquiringString2) {
-		CFinnhubForexSymbol symbol;
+		CFinnhubForex symbol;
 
 		symbol.SetSymbol(_T("ABCDE"));
 		const CString str = symbol.GetFinnhubDayLineInquiryParam(1131536000);
@@ -187,7 +187,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubForexSymbolTest, TestAppendSymbol) {
 		CSetFinnhubForexSymbol setFinnhubForexSymbol, setFinnhubForexSymbol2;
-		CFinnhubForexSymbol FinnhubForexSymbol, FinnhubForexSymbol2;
+		CFinnhubForex FinnhubForexSymbol, FinnhubForexSymbol2;
 
 		FinnhubForexSymbol.SetDescription(_T("abc"));
 		FinnhubForexSymbol.SetDisplaySymbol(_T("cba"));
@@ -232,7 +232,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubForexSymbolTest, TestUpdateSymbol) {
 		CSetFinnhubForexSymbol setFinnhubForexSymbol, setFinnhubForexSymbol2, setFinnhubForexSymbol3;
-		CFinnhubForexSymbol FinnhubForexSymbol, FinnhubForexSymbol2;
+		CFinnhubForex FinnhubForexSymbol, FinnhubForexSymbol2;
 
 		FinnhubForexSymbol.SetDescription(_T("abc"));
 		FinnhubForexSymbol.SetDisplaySymbol(_T("cba"));
@@ -295,7 +295,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestSaveDayLine) {
-		CFinnhubForexSymbol FinnhubForexSymbol, FinnhubForexSymbol2;
+		CFinnhubForex FinnhubForexSymbol, FinnhubForexSymbol2;
 		auto pDayLine = make_shared<CDayLine>();
 		vector<CDayLinePtr> vDayLine;
 		CSetForexDayLine setForexDayLine;

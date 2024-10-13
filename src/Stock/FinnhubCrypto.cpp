@@ -4,12 +4,6 @@
 #include "FinnhubCrypto.h"
 
 CFinnhubCrypto::CFinnhubCrypto() {
-	m_strDescription = _T(" ");
-	m_strDisplaySymbol = _T(" ");
-	m_strExchangeCode = _T(" ");
-	m_strSymbol = _T(" ");
-	m_lDayLineStartDate = 29900101;
-	m_lDayLineEndDate = 19800101;
 }
 
 void CFinnhubCrypto::SetCheckingDayLineStatus() {
@@ -59,15 +53,15 @@ void CFinnhubCrypto::UpdateDayLineStartEndDate() {
 			SetDayLineStartDate(lStartDate);
 			m_fUpdateProfileDB = true;
 		}
-		if (lEndDate > m_lDayLineEndDate) {
+		if (lEndDate > GetDayLineEndDate()) {
 			SetDayLineEndDate(lEndDate);
 			m_fUpdateProfileDB = true;
 		}
 	}
 }
 
-bool CFinnhubCrypto::HaveNewDayLineData() const {
+bool CFinnhubCrypto::HaveNewDayLineData() {
 	if (m_dataDayLine.Empty()) return false;
-	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate) return true;
+	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > GetDayLineEndDate()) return true;
 	return false;
 }

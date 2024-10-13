@@ -24,6 +24,8 @@ CTiingoStock::CTiingoStock() {
 	SetDailyDataUpdateDate(19800101);
 	SetDayLineUpdateDate(19800101);
 	SetCompanyFinancialStatementUpdateDate(19800101);
+	SetDayLineStartDate(29900101);
+	SetDayLineEndDate(0);
 }
 
 void CTiingoStock::ResetAllUpdateDate() {
@@ -33,6 +35,8 @@ void CTiingoStock::ResetAllUpdateDate() {
 	m_jsonUpdateDate["DayLine"] = 19800101;
 	m_jsonUpdateDate["CompanyFinancialStatement"] = 19800101;
 	m_jsonUpdateDate["DailyData"] = 19800101;
+	m_jsonUpdateDate["DayLineStartDate"] = 29900101;
+	m_jsonUpdateDate["DayLineEndDate"] = 0;
 }
 
 void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
@@ -50,7 +54,7 @@ void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
 	m_strLocation = setTiingoStock.m_Location;
 	m_strCompanyWebSite = setTiingoStock.m_CompanyWebSite;
 	m_strSECFilingWebSite = setTiingoStock.m_SECFilingWebSite;
-	if (setTiingoStock.m_UpdateDate.IsEmpty()) {
+	if (setTiingoStock.m_UpdateDate.GetLength() < 10) {
 		ResetAllUpdateDate();
 	}
 	else {
@@ -234,17 +238,18 @@ void CTiingoStock::UpdateDayLineStartEndDate() {
 			SetDayLineStartDate(lStartDate);
 			m_fUpdateProfileDB = true;
 		}
-		if (lEndDate > m_lDayLineEndDate) {
+		if (lEndDate > GetDayLineEndDate()) {
 			SetDayLineEndDate(lEndDate);
 			m_fUpdateProfileDB = true;
 		}
 	}
 }
 
-bool CTiingoStock::HaveNewDayLineData() const {
+bool CTiingoStock::HaveNewDayLineData() {
 	if (m_dataDayLine.Empty()) return false;
-	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > m_lDayLineEndDate)
-		|| (m_dataDayLine.GetData(0)->GetMarketDate() < m_lDayLineStartDate))
+	long l1 = GetDayLineStartDate();
+	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > GetDayLineEndDate())
+		|| (m_dataDayLine.GetData(0)->GetMarketDate() < GetDayLineStartDate()))
 		return true;
 	return false;
 }
@@ -278,7 +283,7 @@ bool CTiingoStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate
 			return m_fUpdateDayLine;
 		}
 	}
-	else if ((!IsNotChecked()) && (IsEarlyThen(m_lDayLineEndDate, gl_pWorldMarket->GetMarketDate(), 100))) {
+	else if ((!IsNotChecked()) && (IsEarlyThen(GetDayLineEndDate(), gl_pWorldMarket->GetMarketDate(), 100))) {
 		SetUpdateDayLine(false);
 		return m_fUpdateDayLine;
 	}

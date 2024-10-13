@@ -37,6 +37,8 @@ namespace FireBirdTest {
 		EXPECT_STREQ(tiingo.GetDescription(), _T(""));
 		EXPECT_STREQ(tiingo.m_strQuoteCurrency, _T(""));
 		EXPECT_STREQ(tiingo.m_strName, _T(""));
+
+		EXPECT_EQ(tiingo.GetRatio(), 3);
 	}
 
 	TEST_F(CTiingoCryptoSymbolTest, TestSave) {

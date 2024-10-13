@@ -7,26 +7,15 @@ CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() {
 	Reset();
 }
 
+CContainerTiingoCryptoSymbol::~CContainerTiingoCryptoSymbol() {
+	//for (const auto& pStock : m_vStock) {
+	//pStock->SetUpdateProfileDB(true);
+	//}
+	//UpdateDB();
+}
+
 void CContainerTiingoCryptoSymbol::Reset() {
-	m_vTiingoCrypto.resize(0);
-	m_mapTiingoCrypto.clear();
-	m_lLastTotalTiingoCrypto = 0;
-}
-
-bool CContainerTiingoCryptoSymbol::Delete(const CTiingoCryptoPtr& pCryptoSymbol) {
-	if (pCryptoSymbol == nullptr) return false;
-	if (!IsSymbol(pCryptoSymbol->GetSymbol())) return false;
-
-	m_vTiingoCrypto.erase(m_vTiingoCrypto.begin() + m_mapTiingoCrypto.at(pCryptoSymbol->GetSymbol()));
-	m_mapTiingoCrypto.erase(pCryptoSymbol->GetSymbol());
-
-	return true;
-}
-
-void CContainerTiingoCryptoSymbol::Add(const CTiingoCryptoPtr& pCryptoSymbol) {
-	ASSERT(!m_mapTiingoCrypto.contains(pCryptoSymbol->GetSymbol()));
-	m_mapTiingoCrypto[pCryptoSymbol->GetSymbol()] = m_mapTiingoCrypto.size();
-	m_vTiingoCrypto.push_back(pCryptoSymbol);
+	CContainerVirtualStock::Reset();
 }
 
 bool CContainerTiingoCryptoSymbol::LoadDB() {
@@ -46,30 +35,38 @@ bool CContainerTiingoCryptoSymbol::LoadDB() {
 	}
 	setCryptoSymbol.m_pDatabase->CommitTrans();
 	setCryptoSymbol.Close();
-	m_lLastTotalTiingoCrypto = m_vTiingoCrypto.size();
 
 	return true;
 }
 
-bool CContainerTiingoCryptoSymbol::UpdateDB() {
-	const long lTotalTiingoCryptoSymbol = m_vTiingoCrypto.size();
-
-	if (m_lLastTotalTiingoCrypto < lTotalTiingoCryptoSymbol) {
+void CContainerTiingoCryptoSymbol::UpdateDB() {
+	if (IsUpdateProfileDB()) {
 		try {
-			CSetTiingoCrypto setCryptoSymbol;
-			setCryptoSymbol.Open();
-			setCryptoSymbol.m_pDatabase->BeginTrans();
-			for (long l = m_lLastTotalTiingoCrypto; l < lTotalTiingoCryptoSymbol; l++) {
-				const CTiingoCryptoPtr pSymbol = m_vTiingoCrypto.at(l);
-				pSymbol->Append(setCryptoSymbol);
+			CSetTiingoCrypto setWorldCrypto;
+			setWorldCrypto.m_strSort = _T("[Ticker]");
+			setWorldCrypto.Open();
+			setWorldCrypto.m_pDatabase->BeginTrans();
+			while (!setWorldCrypto.IsEOF()) {	//更新原有的代码集状态
+				const CTiingoCryptoPtr pCrypto = GetCrypto(setWorldCrypto.m_Ticker);
+				ASSERT(pCrypto != nullptr);
+				if (pCrypto->IsUpdateProfileDB()) {
+					pCrypto->Update(setWorldCrypto);
+					pCrypto->SetUpdateProfileDB(false);
+				}
+				setWorldCrypto.MoveNext();
 			}
-			setCryptoSymbol.m_pDatabase->CommitTrans();
-			setCryptoSymbol.Close();
-			m_lLastTotalTiingoCrypto = lTotalTiingoCryptoSymbol;
+			for (size_t l = 0; l < m_vStock.size(); l++) {
+				const CTiingoCryptoPtr pCrypto = GetCrypto(l);
+				ASSERT(pCrypto != nullptr);
+				if (pCrypto->IsUpdateProfileDB()) {
+					pCrypto->Append(setWorldCrypto);
+					pCrypto->SetUpdateProfileDB(false);
+				}
+			}
+			setWorldCrypto.m_pDatabase->CommitTrans();
+			setWorldCrypto.Close();
 		} catch (CException* e) {
 			ReportInformationAndDeleteException(e);
 		}
 	}
-
-	return true;
 }

@@ -40,7 +40,7 @@ CForexSymbolsPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(const CWebD
 
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
-			pSymbol = make_shared<CFinnhubForexSymbol>();
+			pSymbol = make_shared<CFinnhubForex>();
 			s = jsonGetString(it, _T("description"));
 			if (!s.empty()) pSymbol->SetDescription(s.c_str());
 			s = jsonGetString(it,_T("displaySymbol"));

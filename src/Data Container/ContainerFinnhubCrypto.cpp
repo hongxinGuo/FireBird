@@ -10,6 +10,13 @@ CContainerFinnhubCrypto::CContainerFinnhubCrypto() {
 	CContainerFinnhubCrypto::Reset();
 }
 
+CContainerFinnhubCrypto::~CContainerFinnhubCrypto() {
+	//for (const auto& pStock : m_vStock) {
+	//pStock->SetUpdateProfileDB(true);
+	//}
+	//UpdateDB();
+}
+
 void CContainerFinnhubCrypto::Reset() {
 	CContainerVirtualStock::Reset();
 

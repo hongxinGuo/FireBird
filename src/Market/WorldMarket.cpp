@@ -574,7 +574,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_UpdateWorldMarketDB.release();
 		});
 	}
-	if (gl_dataContainerTiingoCryptoSymbol.IsNeedUpdate()) { // Tiingo crypto symbol
+	if (gl_dataContainerTiingoCryptoSymbol.IsUpdateProfileDB()) { // Tiingo crypto symbol
 		gl_runtime.background_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerTiingoCryptoSymbol.UpdateDB();

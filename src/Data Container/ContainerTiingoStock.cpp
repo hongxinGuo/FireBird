@@ -7,6 +7,13 @@ CContainerTiingoStock::CContainerTiingoStock() {
 	CContainerTiingoStock::Reset();
 }
 
+CContainerTiingoStock::~CContainerTiingoStock() {
+	//for (const auto& pStock : m_vStock) {
+	//pStock->SetUpdateProfileDB(true);
+	//	}
+	//UpdateDB();
+}
+
 void CContainerTiingoStock::Reset() {
 	CContainerVirtualStock::Reset();
 }

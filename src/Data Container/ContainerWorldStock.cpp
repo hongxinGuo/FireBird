@@ -17,6 +17,13 @@ CContainerWorldStock::CContainerWorldStock() {
 	CContainerWorldStock::Reset();
 }
 
+CContainerWorldStock::~CContainerWorldStock() {
+	//for (const auto& pStock : m_vStock) {
+	//pStock->SetUpdateProfileDB(true);
+	//}
+	//UpdateProfileDB();
+}
+
 void CContainerWorldStock::Reset() {
 	CContainerVirtualStock::Reset();
 }
@@ -119,7 +126,6 @@ void CContainerWorldStock::UpdateProfileDB() {
 			for (const auto& pStock : m_vStock) {
 				if (pStock->IsUpdateProfileDB()) iStockNeedUpdate++;
 			}
-			if (iStockNeedUpdate > 500) iStockNeedUpdate = 500; // 每次更新500个,保证此任务不占用过多时间（500个大致需要2-5秒钟）。每秒申请一次的话，五分钟最多300个。
 			setWorldStock.m_strSort = _T("[Symbol]");
 			setWorldStock.Open();
 			setWorldStock.m_pDatabase->BeginTrans();

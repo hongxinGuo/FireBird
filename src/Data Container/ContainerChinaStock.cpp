@@ -20,6 +20,13 @@ CContainerChinaStock::CContainerChinaStock() {
 	CContainerChinaStock::Reset();
 }
 
+CContainerChinaStock::~CContainerChinaStock() {
+	//for (const auto& pStock : m_vStock) {
+	//pStock->SetUpdateProfileDB(true);
+	//}
+	//UpdateStockProfileDB();
+}
+
 void CContainerChinaStock::Reset() {
 	CContainerVirtualStock::Reset();
 

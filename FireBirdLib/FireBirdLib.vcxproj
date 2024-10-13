@@ -171,7 +171,7 @@
     <ClInclude Include="..\src\pch.h" />
     <ClInclude Include="..\src\Stock\ChinaStock.h" />
     <ClInclude Include="..\src\Stock\FinnhubCrypto.h" />
-    <ClInclude Include="..\src\Stock\FinnhubForexSymbol.h" />
+    <ClInclude Include="..\src\Stock\FinnhubForex.h" />
     <ClInclude Include="..\src\Stock\TiingoCrypto.h" />
     <ClInclude Include="..\src\Stock\TiingoStock.h" />
     <ClInclude Include="..\src\Stock\VirtualStock.h" />
@@ -370,7 +370,7 @@
     </ClCompile>
     <ClCompile Include="..\src\Stock\ChinaStock.cpp" />
     <ClCompile Include="..\src\Stock\FinnhubCrypto.cpp" />
-    <ClCompile Include="..\src\Stock\FinnhubForexSymbol.cpp" />
+    <ClCompile Include="..\src\Stock\FinnhubForex.cpp" />
     <ClCompile Include="..\src\Stock\TiingoCrypto.cpp" />
     <ClCompile Include="..\src\Stock\TiingoStock.cpp" />
     <ClCompile Include="..\src\Stock\VirtualStock.cpp" />

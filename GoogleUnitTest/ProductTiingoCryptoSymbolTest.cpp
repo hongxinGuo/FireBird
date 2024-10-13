@@ -211,7 +211,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1) << gl_systemMessage.PopInnerSystemInformationMessage();
 
 			gl_systemMessage.PopInnerSystemInformationMessage();
-			pCrypto = gl_dataContainerTiingoCryptoSymbol.GetSymbol(_T("New Symbol"));
+			pCrypto = gl_dataContainerTiingoCryptoSymbol.GetCrypto(_T("New Symbol"));
 			gl_dataContainerTiingoCryptoSymbol.Delete(pCrypto);
 			break;
 		default:

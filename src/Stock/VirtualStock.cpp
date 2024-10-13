@@ -2,34 +2,14 @@
 
 #include "VirtualStock.h"
 
+#include "jsonParse.h"
+
 CVirtualStock::CVirtualStock() {
-	/*
-	m_strDescription = _T("");
-	m_strExchangeCode = _T("");
-	m_strSymbol = _T("");
-	m_strDisplaySymbol = _T("");
+}
 
-	m_TransactionTime = 0;
-	m_lLastClose = m_lOpen = 0;
-	m_lHigh = m_lLow = m_lNew = 0;
-	m_llVolume = 0;
-	m_llAmount = 0;
-	m_lUpDown = 0;
-	m_dUpDownRate = 0;
-	m_dChangeHandRate = 0;
-	m_llTotalValue = m_llCurrentValue = 0;
-
-	m_fTodayNewStock = false;
-	m_fUpdateProfileDB = false;
-	m_fUpdateCompanyNewsDB = false;
-	m_fActive = false;
-	m_lDayLineStartDate = 29900101;
-	m_lDayLineEndDate = 19000101;
-	m_lIPOStatus = _STOCK_NOT_CHECKED_; // 默认状态为无效股票代码。
-
-	m_fUpdateDayLine = true; // 默认状态下日线需要更新
-	m_fUpdateDayLineDB = false;
-	*/
+void CVirtualStock::ResetAllUpdateDate() {
+	m_jsonUpdateDate[_T("DayLineStartDate")] = m_lDayLineStartDate;
+	m_jsonUpdateDate[_T("DayLineEndDate")] = m_lDayLineEndDate;
 }
 
 void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {
@@ -40,6 +20,12 @@ void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	m_lDayLineStartDate = setStockSymbol.m_DayLineStartDate;
 	m_lDayLineEndDate = setStockSymbol.m_DayLineEndDate;
 	m_lIPOStatus = setStockSymbol.m_IPOStatus;
+	if (setStockSymbol.m_UpdateDate.GetLength() < 10) {
+		ResetAllUpdateDate();
+	}
+	else {
+		CreateJsonWithNlohmann(m_jsonUpdateDate, setStockSymbol.m_UpdateDate);
+	}
 }
 
 void CVirtualStock::AppendSymbol(CVirtualSetStockSymbol& setStockSymbol) {
@@ -62,4 +48,29 @@ void CVirtualStock::SaveSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	setStockSymbol.m_DayLineStartDate = m_lDayLineStartDate;
 	setStockSymbol.m_DayLineEndDate = m_lDayLineEndDate;
 	setStockSymbol.m_IPOStatus = m_lIPOStatus;
+	const string sUpdateDate = m_jsonUpdateDate.dump();
+	setStockSymbol.m_UpdateDate = sUpdateDate.c_str();
+	ASSERT(sUpdateDate.size() < 10000);
+}
+
+long CVirtualStock::GetDayLineStartDate() {
+	long l;
+	try {
+		l = m_jsonUpdateDate[_T("DayLineStartDate")];
+	} catch (json::exception&) {
+		m_jsonUpdateDate[_T("DayLineStartDate")] = m_lDayLineStartDate;
+		l = m_lDayLineStartDate;
+	}
+	return l;
+}
+
+long CVirtualStock::GetDayLineEndDate() {
+	long l;
+	try {
+		l = m_jsonUpdateDate[_T("DayLineEndDate")];
+	} catch (json::exception&) {
+		m_jsonUpdateDate[_T("DayLineEndDate")] = m_lDayLineEndDate;
+		l = m_lDayLineEndDate;
+	}
+	return l;
 }

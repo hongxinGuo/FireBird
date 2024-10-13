@@ -1,7 +1,7 @@
 #pragma once
 
 #include"ContainerVirtualStock.h"
-#include "FinnhubForexSymbol.h"
+#include "FinnhubForex.h"
 
 class CContainerChosenForex : public CContainerVirtualStock {
 public:
@@ -16,8 +16,8 @@ public:
 	bool LoadDB();
 	//bool UpdateDB();
 
-	CForexSymbolPtr GetForexSymbol(const size_t lIndex) { return dynamic_pointer_cast<CFinnhubForexSymbol>(Get(lIndex)); }
-	CForexSymbolPtr GetForexSymbol(const CString& strStockCode) { return dynamic_pointer_cast<CFinnhubForexSymbol>(Get(strStockCode)); }
+	CForexSymbolPtr GetForexSymbol(const size_t lIndex) { return dynamic_pointer_cast<CFinnhubForex>(Get(lIndex)); }
+	CForexSymbolPtr GetForexSymbol(const CString& strStockCode) { return dynamic_pointer_cast<CFinnhubForex>(Get(strStockCode)); }
 
 protected:
 	long m_lChosenForexPos;

@@ -6,16 +6,13 @@
 CTiingoCrypto::CTiingoCrypto() {
 }
 
-void CTiingoCrypto::ResetAllUpdateDate() {
-}
-
 void CTiingoCrypto::Load(CSetTiingoCrypto& setTiingoCrypto) {
 	m_strSymbol = setTiingoCrypto.m_Ticker;
 	m_strName = setTiingoCrypto.m_Name;
 	m_strDescription = setTiingoCrypto.m_Description;
 	m_strBaseCurrency = setTiingoCrypto.m_BaseCurrency;
 	m_strQuoteCurrency = setTiingoCrypto.m_QuoteCurrency;
-	if (setTiingoCrypto.m_UpdateDate.IsEmpty()) {
+	if (setTiingoCrypto.m_UpdateDate.GetLength() < 10) {
 		ResetAllUpdateDate();
 	}
 	else {
@@ -51,4 +48,10 @@ void CTiingoCrypto::Save(CSetTiingoCrypto& setTiingoCrypto) {
 	const string sUpdateDate = m_jsonUpdateDate.dump();
 	setTiingoCrypto.m_UpdateDate = sUpdateDate.c_str();
 	ASSERT(sUpdateDate.size() < 10000);
+}
+
+void CTiingoCrypto::Update(CSetTiingoCrypto& setTiingoCrypto) {
+	setTiingoCrypto.Edit();
+	Save(setTiingoCrypto);
+	setTiingoCrypto.Update();
 }

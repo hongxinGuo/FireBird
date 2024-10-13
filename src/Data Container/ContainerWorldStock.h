@@ -11,7 +11,7 @@ public:
 	CContainerWorldStock& operator=(const CContainerWorldStock&) = delete;
 	CContainerWorldStock(const CContainerWorldStock&&) noexcept = delete;
 	CContainerWorldStock& operator=(const CContainerWorldStock&&) noexcept = delete;
-	~CContainerWorldStock() override = default;
+	~CContainerWorldStock() override;
 	void Reset() override;
 
 	CWorldStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CWorldStock>(Get(lIndex)); }

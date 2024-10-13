@@ -36,10 +36,10 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestInitialize) {
 		CFinnhubCrypto FinnhubCryptoSymbol;
-		EXPECT_STREQ(FinnhubCryptoSymbol.GetDescription(), _T(" "));
-		EXPECT_STREQ(FinnhubCryptoSymbol.GetDisplaySymbol(), _T(" "));
-		EXPECT_STREQ(FinnhubCryptoSymbol.GetSymbol(), _T(" "));
-		EXPECT_STREQ(FinnhubCryptoSymbol.GetExchangeCode(), _T(" "));
+		EXPECT_STREQ(FinnhubCryptoSymbol.GetDescription(), _T(""));
+		EXPECT_STREQ(FinnhubCryptoSymbol.GetDisplaySymbol(), _T(""));
+		EXPECT_STREQ(FinnhubCryptoSymbol.GetSymbol(), _T(""));
+		EXPECT_STREQ(FinnhubCryptoSymbol.GetExchangeCode(), _T(""));
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineStartDate(), 29900101);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDayLineEndDate(), 19800101);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetIPOStatus(), _STOCK_NOT_CHECKED_);

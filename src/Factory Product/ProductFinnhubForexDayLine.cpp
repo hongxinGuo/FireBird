@@ -5,7 +5,7 @@
 #include"JsonGetValue.h"
 
 #include"WorldMarket.h"
-#include"FinnhubForexSymbol.h"
+#include"FinnhubForex.h"
 
 #include "ProductFinnhubForexDayLine.h"
 
@@ -68,8 +68,7 @@ CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataPtr pW
 			gl_systemMessage.PushErrorMessage(_T("日线返回值不为ok"));
 			return pvDayLine;
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle没有s项"), e.what());
 		return pvDayLine;
@@ -86,8 +85,7 @@ CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataPtr pW
 			pDayLine->SetDate(lTemp);
 			pvDayLine->push_back(pDayLine);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle missing 't' "), e.what());
 		return pvDayLine;
 	}
@@ -130,8 +128,7 @@ CDayLinesPtr CProductFinnhubForexDayLine::ParseFinnhubForexCandle(CWebDataPtr pW
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetVolume(llTemp);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Candle missing 'v' "), e.what());
 		// 有些外汇交易不提供成交量，忽略就可以了
 	}

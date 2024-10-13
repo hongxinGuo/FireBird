@@ -65,7 +65,7 @@ public:
 	CDayLinePtr GetDayLine(const long lIndex) const { return dynamic_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 
-	bool HaveNewDayLineData() const;
+	bool HaveNewDayLineData();
 
 	bool IsUpdateCompanyProfile() const noexcept { return m_fUpdateCompanyProfile; }
 	void SetUpdateCompanyProfile(const bool fFlag) noexcept { m_fUpdateCompanyProfile = fFlag; }

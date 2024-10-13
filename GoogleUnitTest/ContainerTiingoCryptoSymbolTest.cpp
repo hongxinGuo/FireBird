@@ -38,50 +38,51 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerTiingoCryptoSymbolTest, TestInitialize) {
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 0);
-		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetLastSize(), 0);
 	}
 
-	TEST_F(CContainerTiingoCryptoSymbolTest, TestIsNeedUpdate) {
+	TEST_F(CContainerTiingoCryptoSymbolTest, TestIsUpdateProfileDB) {
 		const auto pCrypto = make_shared<CTiingoCrypto>();
+		pCrypto->SetUpdateProfileDB(true);
 
-		EXPECT_FALSE(m_dataTiingoCryptoSymbol.IsNeedUpdate());
+		EXPECT_FALSE(m_dataTiingoCryptoSymbol.IsUpdateProfileDB());
 		m_dataTiingoCryptoSymbol.Add(pCrypto);
-		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsNeedUpdate());
+		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsUpdateProfileDB());
 	}
 
 	TEST_F(CContainerTiingoCryptoSymbolTest, TestAddDelete) {
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 0);
-		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetLastSize(), 0);
 
-		const auto pTiingoCrypto = make_shared<CTiingoCrypto>();
+		auto pTiingoCrypto = make_shared<CTiingoCrypto>();
 		pTiingoCrypto->SetSymbol(_T("SS.SS"));
-		const auto pTiingoCrypto2 = make_shared<CTiingoCrypto>();
+		auto pTiingoCrypto2 = make_shared<CTiingoCrypto>();
 		pTiingoCrypto2->SetSymbol(_T("SS.SS.SS"));
 		m_dataTiingoCryptoSymbol.Add(pTiingoCrypto);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 1);
 
 		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol(pTiingoCrypto));
 		EXPECT_FALSE(m_dataTiingoCryptoSymbol.IsSymbol(pTiingoCrypto2));
-		EXPECT_FALSE(m_dataTiingoCryptoSymbol.Delete(pTiingoCrypto2));
-		EXPECT_TRUE(m_dataTiingoCryptoSymbol.Delete(pTiingoCrypto));
+		m_dataTiingoCryptoSymbol.Delete(pTiingoCrypto2);
+		m_dataTiingoCryptoSymbol.Delete(pTiingoCrypto);
+
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 0);
 	}
 
 	TEST_F(CContainerTiingoCryptoSymbolTest, TestLoadUpdate) {
-		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetLastSize(), 0) << "初始未装载Crypto代码";
+		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 0) << "初始未装载Crypto代码";
 
 		m_dataTiingoCryptoSymbol.LoadDB();
-		EXPECT_EQ(m_dataTiingoCryptoSymbol.GetLastSize(), 1278) << "默认状态下装载1278个Crypto代码";
+		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 1278) << "默认状态下装载1278个Crypto代码";
 		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol(_T("DKAETH")));
 		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol(_T("KSMUST")));
 		EXPECT_FALSE(m_dataTiingoCryptoSymbol.IsSymbol(_T("500008.SS")));
-		CTiingoCryptoPtr pTiingoCrypto = m_dataTiingoCryptoSymbol.GetSymbol(_T("DKAETH"));
+		CTiingoCryptoPtr pTiingoCrypto = m_dataTiingoCryptoSymbol.GetCrypto(_T("DKAETH"));
 		EXPECT_STREQ(pTiingoCrypto->GetSymbol(), _T("DKAETH"));
 		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol(pTiingoCrypto));
 
 		// 测试UpdateDB
 		pTiingoCrypto = make_shared<CTiingoCrypto>();
 		pTiingoCrypto->SetSymbol(_T("AA.BB")); // 新代码
+		pTiingoCrypto->SetUpdateProfileDB(true);
 		m_dataTiingoCryptoSymbol.Add(pTiingoCrypto);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 1279);
 		m_dataTiingoCryptoSymbol.UpdateDB();

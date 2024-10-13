@@ -13,11 +13,10 @@ public:
 	~CTiingoCrypto() override = default;
 	int GetRatio() const override { return 3; };
 
-	void ResetAllUpdateDate();
-
 	void Load(CSetTiingoCrypto& setTiingoCrypto);
 	void Append(CSetTiingoCrypto& setTiingoCrypto);
 	void Save(CSetTiingoCrypto& setTiingoCrypto);
+	void Update(CSetTiingoCrypto& setTiingoCrypto);
 
 	//CString m_strTicker; //由VirtualStock中的m_strSymbol代替
 	CString m_strName{ _T("") };

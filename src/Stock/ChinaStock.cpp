@@ -35,9 +35,6 @@ bool IsShareA(const CString& strStockCode) {
 }
 
 CChinaStock::CChinaStock() {
-	m_lDayLineStartDate = _CHINA_MARKET_BEGIN_DATE_; //
-	m_lDayLineEndDate = _CHINA_MARKET_BEGIN_DATE_; //
-
 	for (int i = 0; i < 5; i++) {
 		m_lPBuy.at(i) = m_lPSell.at(i) = 0;
 		m_lVBuy.at(i) = m_lVSell.at(i) = 0;
@@ -53,8 +50,6 @@ CChinaStock::CChinaStock() {
 	m_vCancelBuy.resize(240);
 	m_vCancelSell.resize(240);
 
-	m_lDayLineStartDate = _CHINA_MARKET_BEGIN_DATE_; //
-	m_lDayLineEndDate = _CHINA_MARKET_BEGIN_DATE_; //
 	m_nHand = 100;
 
 	m_lHighLimitFromTengxun = m_lLowLimitFromTengxun = 0;
@@ -172,7 +167,7 @@ void CChinaStock::ClearRTDataDeque() {
 	}
 }
 
-bool CChinaStock::HaveNewDayLineData() const {
+bool CChinaStock::HaveNewDayLineData() {
 	if (m_dataDayLine.Size() <= 0) return false;
 	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > GetDayLineEndDate()) return true;
 	return false;
@@ -1163,13 +1158,8 @@ void CChinaStock::CheckCurrentRTData() const {
 }
 
 bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {
-	const long lDayLineEndDate = m_lDayLineEndDate; // 保留目前的日线最后日期
-
 	LoadSymbol(setChinaStockSymbol);
 
-	if (GetDayLineEndDate() < lDayLineEndDate) {// 有时一个股票会有多个记录，以最后的日期为准。
-		SetDayLineEndDate(lDayLineEndDate);
-	}
 	return true;
 }
 

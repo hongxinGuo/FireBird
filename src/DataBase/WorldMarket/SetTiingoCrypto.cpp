@@ -6,14 +6,6 @@
 
 CSetTiingoCrypto::CSetTiingoCrypto(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_ID = 0;
-	m_Ticker = _T("");
-	m_Name = _T("");
-	m_BaseCurrency = _T("");
-	m_QuoteCurrency = _T("");
-	m_Description = _T("");
-	m_UpdateDate = _T("{}");
-
 	m_nFields = 7;
 }
 

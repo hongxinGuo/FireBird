@@ -11,6 +11,7 @@ using CVirtualStockPtr = shared_ptr<CVirtualStock>;
 class CVirtualStock {
 public:
 	CVirtualStock();
+	void ResetAllUpdateDate();
 	// 不允许赋值。
 	CVirtualStock(const CVirtualStock&) = delete;
 	CVirtualStock& operator=(const CVirtualStock&) = delete;
@@ -73,10 +74,10 @@ public:
 	bool IsActive() const noexcept { return m_fActive; }
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
 
-	long GetDayLineStartDate() const noexcept { return m_lDayLineStartDate; }
-	void SetDayLineStartDate(const long lDate) noexcept { m_lDayLineStartDate = lDate; }
-	long GetDayLineEndDate() const noexcept { return m_lDayLineEndDate; }
-	void SetDayLineEndDate(const long lDate) noexcept { m_lDayLineEndDate = lDate; }
+	long GetDayLineStartDate();
+	void SetDayLineStartDate(const long lDate) noexcept { m_jsonUpdateDate[_T("DayLineStartDate")] = lDate; }
+	long GetDayLineEndDate();
+	void SetDayLineEndDate(const long lDate) noexcept { m_jsonUpdateDate[_T("DayLineEndDate")] = lDate; }
 
 	long GetIPOStatus() const noexcept { return m_lIPOStatus; }
 	void SetIPOStatus(const long lValue) noexcept { m_lIPOStatus = lValue; }
@@ -107,6 +108,8 @@ protected:
 	CString m_strSymbol{ _T("") }; // 股票代码。二十位以内，后两位为市场前缀。如600601.SS，000001.SZ, AAPL（美国股票没有后缀）
 	CString m_strDisplaySymbol{ _T("") };
 
+	long m_lDayLineStartDate{ 29900101 };
+	long m_lDayLineEndDate{ 19800101 };
 	json m_jsonUpdateDate; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
 
 	// 实时数据区
@@ -126,8 +129,6 @@ protected:
 
 	bool m_fTodayNewStock{ false }; // 本日新发现的股票
 	bool m_fActive{ false }; // 是否本日内有数据读入。由新浪实时行情处理函数和网易日线历史数据处理函数来设置。
-	long m_lDayLineStartDate{ 29900101 }; // 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
-	long m_lDayLineEndDate{ 0 }; // 日线数据更新日。这个是处理日线历史数据时得到的最新日，
 	long m_lIPOStatus{ _STOCK_NOT_CHECKED_ }; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
 	// 未上市（无效股票代码）为_STOCK_NULL_；正常为_STOCK_IPOED_；已通过IPO但尚未上市或退市为_STOCK_DELISTED；其他情况尚未出现，留待以后处理。
 

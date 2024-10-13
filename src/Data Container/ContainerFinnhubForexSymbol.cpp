@@ -2,11 +2,18 @@
 
 #include"containerFinnhubForexSymbol.h"
 #include"SetFinnhubForexSymbol.h"
-#include"FinnhubForexSymbol.h"
+#include"FinnhubForex.h"
 #include "InfoReport.h"
 
 CContainerFinnhubForexSymbol::CContainerFinnhubForexSymbol() {
 	CContainerFinnhubForexSymbol::Reset();
+}
+
+CContainerFinnhubForexSymbol::~CContainerFinnhubForexSymbol() {
+	//for (const auto& pStock : m_vStock) {
+	//pStock->SetUpdateProfileDB(true);
+	//}
+	//UpdateDB();
 }
 
 void CContainerFinnhubForexSymbol::Reset() {
@@ -23,7 +30,7 @@ bool CContainerFinnhubForexSymbol::LoadDB() {
 	setForexSymbol.m_pDatabase->BeginTrans();
 	while (!setForexSymbol.IsEOF()) {
 		if (!IsSymbol(setForexSymbol.m_Symbol)) {
-			const auto pSymbol = make_shared<CFinnhubForexSymbol>();
+			const auto pSymbol = make_shared<CFinnhubForex>();
 			pSymbol->LoadSymbol(setForexSymbol);
 			pSymbol->SetCheckingDayLineStatus();
 			Add(pSymbol);
@@ -81,8 +88,7 @@ bool CContainerFinnhubForexSymbol::UpdateDB() {
 			setForexSymbol.m_pDatabase->CommitTrans();
 			setForexSymbol.Close();
 		}
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 

@@ -20,14 +20,15 @@ public:
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
 
-	long m_ID;
-	CString m_Description;
-	CString m_Exchange;
-	CString m_Symbol;
-	CStringW m_DisplaySymbol; // 当用于中国股票时，存储的时股票的中文名称，故而需要使用CStringW制式，防止出现非法字符。
-	long m_DayLineStartDate;
-	long m_DayLineEndDate;
-	long m_IPOStatus;
+	long m_ID{ 0 };
+	CString m_Description{ _T("") };
+	CString m_Exchange{ _T("") };
+	CString m_Symbol{ _T("") };
+	CStringW m_DisplaySymbol{ _T("") }; // 当用于中国股票时，存储的时股票的中文名称，故而需要使用CStringW制式，防止出现非法字符。
+	long m_IPOStatus{ _STOCK_NOT_CHECKED_ };
+	long m_DayLineStartDate{ 29900101 };
+	long m_DayLineEndDate{ 0 };
+	CString m_UpdateDate{ _T("") };
 
 public:
 	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持

@@ -1,7 +1,7 @@
 #pragma once
 
-#include"ContainerVirtualStock.h"
 #include "FinnhubCrypto.h"
+#include"ContainerVirtualStock.h"
 
 class CContainerFinnhubCrypto : public CContainerVirtualStock {
 public:
@@ -10,7 +10,7 @@ public:
 	CContainerFinnhubCrypto(CContainerFinnhubCrypto&& other) noexcept = delete;
 	CContainerFinnhubCrypto& operator=(const CContainerFinnhubCrypto& other) = delete;
 	CContainerFinnhubCrypto& operator=(CContainerFinnhubCrypto&& other) noexcept = delete;
-	~CContainerFinnhubCrypto() override = default;
+	~CContainerFinnhubCrypto() override;
 	void Reset() override;
 
 	bool LoadDB();

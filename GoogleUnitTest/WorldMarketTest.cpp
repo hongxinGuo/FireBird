@@ -235,7 +235,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(_T("OANDA:XAU_SGD")));
 		EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(_T("FXCM:EUR/CHF")));
 
-		const auto pForexSymbol = make_shared<CFinnhubForexSymbol>();
+		const auto pForexSymbol = make_shared<CFinnhubForex>();
 		pForexSymbol->SetSymbol(_T("ABC"));
 		EXPECT_FALSE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
 		pForexSymbol->SetSymbol(_T("OANDA:XAU_SGD"));
@@ -245,7 +245,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestAddForexSymbol) {
-		const auto pForexSymbol = make_shared<CFinnhubForexSymbol>();
+		const auto pForexSymbol = make_shared<CFinnhubForex>();
 		const auto lTotalForexSymbol = gl_dataFinnhubForexSymbol.Size();
 		pForexSymbol->SetSymbol(_T("000001.SZ"));
 
@@ -264,7 +264,7 @@ namespace FireBirdTest {
 
 		gl_dataFinnhubForexSymbol.Delete(pForexSymbol); // "空指针";
 
-		pForexSymbol = make_shared<CFinnhubForexSymbol>();
+		pForexSymbol = make_shared<CFinnhubForex>();
 		pForexSymbol->SetSymbol(_T("000001.SZ"));
 		gl_dataFinnhubForexSymbol.Delete(pForexSymbol); // "此符号在符号集中不存在";
 	}
@@ -462,7 +462,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateForexSymbolDB) {
-		auto pForexSymbol = make_shared<CFinnhubForexSymbol>();
+		auto pForexSymbol = make_shared<CFinnhubForex>();
 		pForexSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
 		EXPECT_FALSE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
 		gl_dataFinnhubForexSymbol.Add(pForexSymbol);
