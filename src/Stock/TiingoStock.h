@@ -80,8 +80,6 @@ public:
 	CString m_strLocation{ _T("") };
 	CString m_strCompanyWebSite{ _T("") };
 	CString m_strSECFilingWebSite{ _T("") };
-	//INT64 m_llStatementLastUpdated{ 0 }; // 此项存储于json结构中
-	//INT64 m_llDailyLastUpdated{ 0 }; // 此项存储于json结构中
 	CString m_strDataProviderPermaTicker{ _T("") };
 
 protected:

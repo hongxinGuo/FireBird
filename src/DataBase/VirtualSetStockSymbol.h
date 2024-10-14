@@ -26,8 +26,6 @@ public:
 	CString m_Symbol{ _T("") };
 	CStringW m_DisplaySymbol{ _T("") }; // 当用于中国股票时，存储的时股票的中文名称，故而需要使用CStringW制式，防止出现非法字符。
 	long m_IPOStatus{ _STOCK_NOT_CHECKED_ };
-	long m_DayLineStartDate{ 29900101 };
-	long m_DayLineEndDate{ 0 };
 	CString m_UpdateDate{ _T("") };
 
 public:

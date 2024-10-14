@@ -1,6 +1,5 @@
 #include"pch.h"
 
-#include "jsonParse.h"
 #include"TiingoCrypto.h"
 
 CTiingoCrypto::CTiingoCrypto() {
@@ -12,12 +11,8 @@ void CTiingoCrypto::Load(CSetTiingoCrypto& setTiingoCrypto) {
 	m_strDescription = setTiingoCrypto.m_Description;
 	m_strBaseCurrency = setTiingoCrypto.m_BaseCurrency;
 	m_strQuoteCurrency = setTiingoCrypto.m_QuoteCurrency;
-	if (setTiingoCrypto.m_UpdateDate.GetLength() < 10) {
-		ResetAllUpdateDate();
-	}
-	else {
-		CreateJsonWithNlohmann(m_jsonUpdateDate, setTiingoCrypto.m_UpdateDate);
-	}
+
+	LoadUpdateDate(setTiingoCrypto.m_UpdateDate);
 }
 
 void CTiingoCrypto::Append(CSetTiingoCrypto& setTiingoCrypto) {

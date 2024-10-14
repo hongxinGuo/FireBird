@@ -5,11 +5,27 @@
 #include "jsonParse.h"
 
 CVirtualStock::CVirtualStock() {
+	m_jsonUpdateDate[_T("DayLineStartDate")] = 29900101;
+	m_jsonUpdateDate[_T("DayLineEndDate")] = 19800101;
 }
 
 void CVirtualStock::ResetAllUpdateDate() {
-	m_jsonUpdateDate[_T("DayLineStartDate")] = m_lDayLineStartDate;
-	m_jsonUpdateDate[_T("DayLineEndDate")] = m_lDayLineEndDate;
+	m_jsonUpdateDate[_T("DayLineStartDate")] = 29900101;
+	m_jsonUpdateDate[_T("DayLineEndDate")] = 19800101;
+}
+
+void CVirtualStock::LoadUpdateDate(CString& strUpdateDate) {
+	if (strUpdateDate.GetLength() < 10) {
+		ResetAllUpdateDate();
+	}
+	else {
+		try {
+			CreateJsonWithNlohmann(m_jsonUpdateDate, strUpdateDate);
+		} catch (json::exception&) {
+			CreateJsonWithNlohmann(m_jsonUpdateDate, _T("{}"));
+			ResetAllUpdateDate();
+		}
+	}
 }
 
 void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {
@@ -17,15 +33,8 @@ void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	m_strDisplaySymbol = setStockSymbol.m_DisplaySymbol;
 	m_strExchangeCode = setStockSymbol.m_Exchange;
 	m_strSymbol = setStockSymbol.m_Symbol;
-	m_lDayLineStartDate = setStockSymbol.m_DayLineStartDate;
-	m_lDayLineEndDate = setStockSymbol.m_DayLineEndDate;
 	m_lIPOStatus = setStockSymbol.m_IPOStatus;
-	if (setStockSymbol.m_UpdateDate.GetLength() < 10) {
-		ResetAllUpdateDate();
-	}
-	else {
-		CreateJsonWithNlohmann(m_jsonUpdateDate, setStockSymbol.m_UpdateDate);
-	}
+	LoadUpdateDate(setStockSymbol.m_UpdateDate);
 }
 
 void CVirtualStock::AppendSymbol(CVirtualSetStockSymbol& setStockSymbol) {
@@ -45,8 +54,6 @@ void CVirtualStock::SaveSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	setStockSymbol.m_DisplaySymbol = m_strDisplaySymbol;
 	setStockSymbol.m_Exchange = m_strExchangeCode;
 	setStockSymbol.m_Symbol = m_strSymbol;
-	setStockSymbol.m_DayLineStartDate = m_lDayLineStartDate;
-	setStockSymbol.m_DayLineEndDate = m_lDayLineEndDate;
 	setStockSymbol.m_IPOStatus = m_lIPOStatus;
 	const string sUpdateDate = m_jsonUpdateDate.dump();
 	setStockSymbol.m_UpdateDate = sUpdateDate.c_str();
@@ -58,8 +65,8 @@ long CVirtualStock::GetDayLineStartDate() {
 	try {
 		l = m_jsonUpdateDate[_T("DayLineStartDate")];
 	} catch (json::exception&) {
-		m_jsonUpdateDate[_T("DayLineStartDate")] = m_lDayLineStartDate;
-		l = m_lDayLineStartDate;
+		m_jsonUpdateDate[_T("DayLineStartDate")] = 29900101;
+		l = 29901010;
 	}
 	return l;
 }
@@ -69,8 +76,8 @@ long CVirtualStock::GetDayLineEndDate() {
 	try {
 		l = m_jsonUpdateDate[_T("DayLineEndDate")];
 	} catch (json::exception&) {
-		m_jsonUpdateDate[_T("DayLineEndDate")] = m_lDayLineEndDate;
-		l = m_lDayLineEndDate;
+		m_jsonUpdateDate[_T("DayLineEndDate")] = 19800101;
+		l = 19800101;
 	}
 	return l;
 }

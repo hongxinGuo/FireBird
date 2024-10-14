@@ -2,7 +2,6 @@
 
 #include"TiingoStock.h"
 
-#include "JsonParse.h"
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 
@@ -20,23 +19,18 @@ CTiingoStock::CTiingoStock() {
 	m_strLocation = _T("");
 	m_strCompanyWebSite = _T("");
 	m_strSECFilingWebSite = _T("");
-	SetCompanyProfileUpdateDate(19800101);
-	SetDailyDataUpdateDate(19800101);
-	SetDayLineUpdateDate(19800101);
-	SetCompanyFinancialStatementUpdateDate(19800101);
-	SetDayLineStartDate(29900101);
-	SetDayLineEndDate(0);
+	CTiingoStock::ResetAllUpdateDate();
 }
 
 void CTiingoStock::ResetAllUpdateDate() {
-	m_jsonUpdateDate["StatementLastUpdated"] = 0;
-	m_jsonUpdateDate["DailyLastUpdated"] = 0;
-	m_jsonUpdateDate["CompanyProfile"] = 19800101;
-	m_jsonUpdateDate["DayLine"] = 19800101;
-	m_jsonUpdateDate["CompanyFinancialStatement"] = 19800101;
-	m_jsonUpdateDate["DailyData"] = 19800101;
-	m_jsonUpdateDate["DayLineStartDate"] = 29900101;
-	m_jsonUpdateDate["DayLineEndDate"] = 0;
+	SetStatementLastUpdatedDate(0);
+	SetDailyLastUpdatedDate(0);
+	SetCompanyProfileUpdateDate(19800101);
+	SetDayLineUpdateDate(19800101);
+	SetCompanyFinancialStatementUpdateDate(19800101);
+	SetDailyDataUpdateDate(19800101);
+	SetDayLineStartDate(29900101);
+	SetDayLineEndDate(0);
 }
 
 void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
@@ -54,12 +48,8 @@ void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
 	m_strLocation = setTiingoStock.m_Location;
 	m_strCompanyWebSite = setTiingoStock.m_CompanyWebSite;
 	m_strSECFilingWebSite = setTiingoStock.m_SECFilingWebSite;
-	if (setTiingoStock.m_UpdateDate.GetLength() < 10) {
-		ResetAllUpdateDate();
-	}
-	else {
-		CreateJsonWithNlohmann(m_jsonUpdateDate, setTiingoStock.m_UpdateDate);
-	}
+
+	LoadUpdateDate(setTiingoStock.m_UpdateDate);
 }
 
 void CTiingoStock::Append(CSetTiingoStock& setTiingoStock) {
@@ -247,7 +237,6 @@ void CTiingoStock::UpdateDayLineStartEndDate() {
 
 bool CTiingoStock::HaveNewDayLineData() {
 	if (m_dataDayLine.Empty()) return false;
-	long l1 = GetDayLineStartDate();
 	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > GetDayLineEndDate())
 		|| (m_dataDayLine.GetData(0)->GetMarketDate() < GetDayLineStartDate()))
 		return true;

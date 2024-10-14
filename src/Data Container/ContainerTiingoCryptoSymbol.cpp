@@ -4,7 +4,7 @@
 #include "InfoReport.h"
 
 CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() {
-	Reset();
+	CContainerTiingoCryptoSymbol::Reset();
 }
 
 CContainerTiingoCryptoSymbol::~CContainerTiingoCryptoSymbol() {

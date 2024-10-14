@@ -39,8 +39,6 @@ CSetWorldStock::CSetWorldStock(const CString& strSchema, const CString& strTable
 	m_Logo = _T(" ");
 	m_State = _T(" ");
 
-	m_DayLineStartDate = 29900101;
-	m_DayLineEndDate = 19800101;
 	m_IPOStatus = _STOCK_NOT_CHECKED_;
 
 	// Tiingo Symbol信息
@@ -57,7 +55,7 @@ CSetWorldStock::CSetWorldStock(const CString& strSchema, const CString& strTable
 
 	m_UpdateDate = _T("{}"); // 这个用于存储各更新日期（json制式）
 
-	m_nFields = 50;
+	m_nFields = 48;
 }
 
 void CSetWorldStock::DoFieldExchange(CFieldExchange* pFX) {
@@ -102,8 +100,6 @@ void CSetWorldStock::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[Logo]"), m_Logo);
 	RFX_Text(pFX, _T("[FinnhubIndustry]"), m_FinnhubIndustry);
 	RFX_Text(pFX, _T("[Peer]"), m_Peer, 2000);
-	RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
-	RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);
 	RFX_Long(pFX, _T("[IPOStatus]"), m_IPOStatus);
 	RFX_Text(pFX, _T("[TiingoPermaTicker]"), m_TiingoPermaTicker);
 	RFX_Bool(pFX, _T("[IsActive]"), m_IsActive);

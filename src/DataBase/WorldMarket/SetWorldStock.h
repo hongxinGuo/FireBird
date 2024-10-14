@@ -54,8 +54,6 @@ public:
 	CString m_Logo;
 	CString m_FinnhubIndustry;
 	CString m_Peer;
-	long m_DayLineStartDate;
-	long m_DayLineEndDate;
 	long m_IPOStatus;
 
 	// Tiingo Symbol–≈œ¢

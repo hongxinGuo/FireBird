@@ -18,7 +18,7 @@
 #include "SetSECFilings.h"
 
 CWorldStock::CWorldStock() {
-	ResetAllUpdateDate();
+	CWorldStock::ResetAllUpdateDate();
 	// Finnhub Symbol数据
 	m_strIPODate = _T(" ");
 	m_strCurrency = _T(" ");
@@ -165,8 +165,8 @@ CWorldStock::~CWorldStock() {
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldStock::ResetAllUpdateDate() {
-	m_jsonUpdateDate["DayLineStartDate"] = m_lDayLineStartDate;
-	m_jsonUpdateDate["DayLineEndDate"] = m_lDayLineEndDate;
+	m_jsonUpdateDate["DayLineStartDate"] = 29900101;
+	m_jsonUpdateDate["DayLineEndDate"] = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyProfileConcise"] = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyNews"] = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsBasicFinancials"] = 19800101;
@@ -182,7 +182,6 @@ void CWorldStock::ResetAllUpdateDate() {
 }
 
 void CWorldStock::Load(CSetWorldStock& setWorldStock) {
-	int iID = setWorldStock.m_ID;
 	m_strSymbol = setWorldStock.m_Symbol;
 	m_strExchangeCode = setWorldStock.m_ExchangeCode;
 	m_strDescription = setWorldStock.m_Description;
@@ -220,15 +219,9 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 	if (setWorldStock.m_Peer.GetLength() > 2) {
 		CreateJsonWithNlohmann(m_jsonPeer, setWorldStock.m_Peer);
 	}
-	m_lDayLineStartDate = setWorldStock.m_DayLineStartDate;
-	m_lDayLineEndDate = setWorldStock.m_DayLineEndDate;
-	if (setWorldStock.m_UpdateDate.GetLength() < 10) {
-		ResetAllUpdateDate();
-	}
-	else {
-		CreateJsonWithNlohmann(m_jsonUpdateDate, setWorldStock.m_UpdateDate);
-	}
 	m_lIPOStatus = setWorldStock.m_IPOStatus;
+
+	LoadUpdateDate(setWorldStock.m_UpdateDate);
 
 	// Tiingo信息
 	m_strTiingoPermaTicker = setWorldStock.m_TiingoPermaTicker;

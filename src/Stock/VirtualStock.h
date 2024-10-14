@@ -21,6 +21,7 @@ public:
 	virtual void ResetAllUpdateDate();
 	virtual int GetRatio() const = 0;
 
+	void LoadUpdateDate(CString& strUpdateDate);
 	virtual void LoadSymbol(CVirtualSetStockSymbol& setStockSymbol);
 	virtual void AppendSymbol(CVirtualSetStockSymbol& setStockSymbol);
 	virtual void UpdateSymbol(CVirtualSetStockSymbol& setStockSymbol);
@@ -108,8 +109,6 @@ protected:
 	CString m_strSymbol{ _T("") }; // 股票代码。二十位以内，后两位为市场前缀。如600601.SS，000001.SZ, AAPL（美国股票没有后缀）
 	CString m_strDisplaySymbol{ _T("") };
 
-	long m_lDayLineStartDate{ 29900101 };
-	long m_lDayLineEndDate{ 19800101 };
 	json m_jsonUpdateDate; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
 
 	// 实时数据区
