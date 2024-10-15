@@ -239,6 +239,42 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetDayLineStartDate(), 19980101);
 	}
 
+	TEST_F(CTiingoStockTest, TestGetStatementLastUpdatedDate) {
+		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), 0);
+		stock.SetStatementLastUpdatedDate(19990101);
+		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), 19990101);
+	}
+
+	TEST_F(CTiingoStockTest, TestGetDailyLastUpdatedDate) {
+		EXPECT_EQ(stock.GetDailyLastUpdatedDate(), 0);
+		stock.SetDailyLastUpdatedDate(19910101);
+		EXPECT_EQ(stock.GetDailyLastUpdatedDate(), 19910101);
+	}
+
+	TEST_F(CTiingoStockTest, TestGetDailyDataUpdateDate) {
+		EXPECT_EQ(stock.GetDailyDataUpdateDate(), 19800101);
+		stock.SetDailyDataUpdateDate(19920101);
+		EXPECT_EQ(stock.GetDailyDataUpdateDate(), 19920101);
+	}
+
+	TEST_F(CTiingoStockTest, TestGetCompanyFinancialStatementUpdateDate) {
+		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19800101);
+		stock.SetCompanyFinancialStatementUpdateDate(19930101);
+		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19930101);
+	}
+
+	TEST_F(CTiingoStockTest, TestGetDayLineUpdateDate) {
+		EXPECT_EQ(stock.GetDayLineUpdateDate(), 19800101);
+		stock.SetDayLineUpdateDate(19940101);
+		EXPECT_EQ(stock.GetDayLineUpdateDate(), 19940101);
+	}
+
+	TEST_F(CTiingoStockTest, TestGetCompanyProfileUpdateDate) {
+		EXPECT_EQ(stock.GetCompanyProfileUpdateDate(), 19800101);
+		stock.SetCompanyProfileUpdateDate(19950101);
+		EXPECT_EQ(stock.GetCompanyProfileUpdateDate(), 19950101);
+	}
+
 	TEST_F(CTiingoStockTest, TestGetIPOStatus) {
 		EXPECT_TRUE(stock.IsNotChecked());
 		stock.SetIPOStatus(255);

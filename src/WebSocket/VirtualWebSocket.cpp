@@ -49,7 +49,10 @@ bool CVirtualWebSocket::ConnectAndSendMessage(const vectorString& vSymbol) {
 		AppendSymbol(vSymbol);
 		Connect();
 		//ASSERT(!IsOpen()); // Connect调用Connecting,是异步的。
-		while (!IsOpen()) Sleep(1);
+		while (!IsOpen()) {
+			Sleep(1);
+			if (gl_systemConfiguration.IsExitingSystem()) return true;
+		}
 		Send(m_vSymbol);
 	} catch (exception& e) {
 		const CString sError = e.what();
