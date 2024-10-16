@@ -550,7 +550,6 @@ namespace FireBirdTest {
 		pTiingoStock->m_fIsActive = true;
 		pTiingoStock->m_fIsADR = false;
 		pTiingoStock->m_iSicCode = 1002;
-		pTiingoStock->SetDailyDataUpdateDate(20200101);
 		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);
 		pTiingoStock->m_strCompanyWebSite = _T("");
 		pTiingoStock->m_strLocation = _T("");
@@ -570,7 +569,6 @@ namespace FireBirdTest {
 		pTiingoStock->m_fIsActive = true;
 		pTiingoStock->m_fIsADR = false;
 		pTiingoStock->m_iSicCode = 1002;
-		pTiingoStock->SetDailyDataUpdateDate(20200101);
 		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);
 		pTiingoStock->m_strCompanyWebSite = _T("www.abc.com");
 		pTiingoStock->m_strLocation = _T("Irvine CA USA");

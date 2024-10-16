@@ -9,7 +9,6 @@
 #include "VirtualDataSource.h"
 
 #include"Thread.h"
-#include"ThreadStatus.h"
 
 #include"HighPerformanceCounter.h"
 
@@ -17,25 +16,7 @@ atomic_long CVirtualDataSource::sm_lTotalByteRead = 0;
 atomic_long CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;
 
 CVirtualDataSource::CVirtualDataSource() {
-	m_fEnable = true; // 默认为允许执行
-
 	SetDefaultSessionOption();
-	m_strHeaders = _T("");
-
-	m_fWebError = false;
-	m_strInquiry = _T("");
-	m_strInquiryFunction = _T("");
-	m_strSuffix = _T("");
-	m_strInquiryToken = _T("");
-
-	m_lInquiringNumber = 500; // 每次查询数量默认值为500
-	m_tCurrentInquiryTime = 0;
-	m_pCurrentProduct = nullptr;
-
-	m_fInquiring = false;
-	m_bIsWorkingThreadRunning = false;
-
-	m_llLastTimeTickCount = 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -54,11 +35,9 @@ CVirtualDataSource::CVirtualDataSource() {
 ////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::Run(long lMarketTime) {
 	CVirtualDataSourcePtr p = this->GetShared();
-	if (!IsInquiring() && !IsWorkingThreadRunning()) {
+	if (!IsInquiring()) {
 		gl_runtime.thread_executor()->post([p, lMarketTime] {
-			gl_ThreadStatus.IncreaseWebInquiringThread();
 			p->RunWorkingThread(lMarketTime);
-			gl_ThreadStatus.DecreaseWebInquiringThread();
 		});
 	}
 }
@@ -74,10 +53,11 @@ void CVirtualDataSource::Run(long lMarketTime) {
 void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 	static time_t s_LastInquiryTime = 0;
 
-	SetWorkingThreadRunning(true);
 	if (!IsInquiring()) {
 		ASSERT(!HaveInquiry());
-		GenerateInquiryMessage(lMarketTime);
+		if (GenerateInquiryMessage(lMarketTime)) {
+			ASSERT(IsInquiring());
+		}
 	}
 
 	if (IsInquiring()) {
@@ -121,6 +101,7 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 		else { // web error
 			m_fWebError = true;
 		}
+		ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
 		if (!gl_systemConfiguration.IsExitingSystem() && !pvWebData->empty()) {
 			m_eErrorMessageData = IsAErrorMessageData(pvWebData->at(0)); // 返回的数据是错误信息？
 			m_pCurrentProduct->ParseAndStoreWebData(pvWebData);
@@ -130,7 +111,6 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 		ASSERT(!HaveInquiry()); // 没有现存的申请
 		SetInquiring(false); // 此标识的重置需要位于位于最后一步
 	}
-	SetWorkingThreadRunning(false);
 }
 
 void CVirtualDataSource::SetDefaultSessionOption() {

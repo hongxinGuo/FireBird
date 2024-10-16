@@ -198,7 +198,6 @@ namespace FireBirdTest {
 
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
-			while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1);
 
 			// 以下真实的数据指针需要主动赋值为nullptr
 			gl_pWorldMarket = nullptr;

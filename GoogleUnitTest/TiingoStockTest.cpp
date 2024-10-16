@@ -52,14 +52,11 @@ namespace FireBirdTest {
 		EXPECT_STREQ(tiingo.m_strCompanyWebSite, _T(""));
 		EXPECT_STREQ(tiingo.m_strSECFilingWebSite, _T(""));
 		EXPECT_EQ(tiingo.GetCompanyFinancialStatementUpdateDate(), 19800101);
-		EXPECT_EQ(tiingo.GetDailyDataUpdateDate(), 19800101);
 	}
 
 	TEST_F(CTiingoStockTest, TestResetAllUpdateDate) {
 		stock.ResetAllUpdateDate();
 		EXPECT_EQ(stock.GetCompanyProfileUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetDailyDataUpdateDate(), 19800101);
-		EXPECT_EQ(stock.GetDayLineUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19800101);
 	}
 
@@ -251,22 +248,10 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetDailyLastUpdatedDate(), 19910101);
 	}
 
-	TEST_F(CTiingoStockTest, TestGetDailyDataUpdateDate) {
-		EXPECT_EQ(stock.GetDailyDataUpdateDate(), 19800101);
-		stock.SetDailyDataUpdateDate(19920101);
-		EXPECT_EQ(stock.GetDailyDataUpdateDate(), 19920101);
-	}
-
 	TEST_F(CTiingoStockTest, TestGetCompanyFinancialStatementUpdateDate) {
 		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19800101);
 		stock.SetCompanyFinancialStatementUpdateDate(19930101);
 		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19930101);
-	}
-
-	TEST_F(CTiingoStockTest, TestGetDayLineUpdateDate) {
-		EXPECT_EQ(stock.GetDayLineUpdateDate(), 19800101);
-		stock.SetDayLineUpdateDate(19940101);
-		EXPECT_EQ(stock.GetDayLineUpdateDate(), 19940101);
 	}
 
 	TEST_F(CTiingoStockTest, TestGetCompanyProfileUpdateDate) {
@@ -517,7 +502,6 @@ namespace FireBirdTest {
 		stock.m_strCompanyWebSite = _T("ijk");
 		stock.m_strSECFilingWebSite = _T("https://def.com");
 		stock.SetCompanyFinancialStatementUpdateDate(20202020);
-		stock.SetDailyDataUpdateDate(10101010);
 
 		setTiingoStock.Open();
 		stock.Append(setTiingoStock);
@@ -544,7 +528,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(stock.m_strCompanyWebSite, stock2.m_strCompanyWebSite);
 		EXPECT_STREQ(stock.m_strSECFilingWebSite, stock2.m_strSECFilingWebSite);
 		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), stock2.GetCompanyFinancialStatementUpdateDate());
-		EXPECT_EQ(stock.GetDailyDataUpdateDate(), stock2.GetDailyDataUpdateDate());
 	}
 
 	TEST_F(CTiingoStockTest, TestSaveDayLine) {

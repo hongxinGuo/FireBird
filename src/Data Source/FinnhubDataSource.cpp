@@ -117,6 +117,7 @@ enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr&
 			}
 			break;
 		case ERROR_FINNHUB_MISSING_API_KEY__: // 缺少API key
+			gl_systemMessage.PushErrorMessage(_T("finnhub missing API key"));
 			break;
 		case ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH__:// 申请频率超高
 			// 降低查询频率200ms。

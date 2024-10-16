@@ -170,7 +170,7 @@ CTiingoStocksPtr CProductTiingoStock::ParseTiingoStockSymbol(const CWebDataPtr& 
 			s1 = jsonGetStringView(itemValue, _T("dailyLastUpdated"));
 			str = s1.c_str();;
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02dT"), &year, &month, &day); // 只解析日期
-			pStock->SetDailyLastUpdatedDate(XferYearMonthDayToYYYYMMDD(year, month, day));
+			pStock->SetDailyLastUpdatedDate(XferYearMonthDayToYYYYMMDD(year, month, day)); // 此日期并没有使用。
 			s1 = jsonGetStringView(itemValue, _T("dataProviderPermaTicker"));
 			if (s1 != strNotAvailable) {
 				pStock->m_strDataProviderPermaTicker = s1.c_str();

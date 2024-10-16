@@ -74,9 +74,6 @@ public:
 	bool IsInquiring() const noexcept { return m_fInquiring; }
 	void SetInquiring(const bool fFlag) noexcept { m_fInquiring = fFlag; }
 
-	bool IsWorkingThreadRunning() const noexcept { return m_bIsWorkingThreadRunning; }
-	void SetWorkingThreadRunning(const bool fFlag) noexcept { m_bIsWorkingThreadRunning = fFlag; }
-
 	bool IsEnable() const noexcept { return m_fEnable; }
 	void Enable(const bool fFlag) noexcept { m_fEnable = fFlag; }
 
@@ -132,7 +129,7 @@ protected:
 	CString m_strInquiryToken{ _T("") }; // 查询字符串令牌
 	CString m_strHeaders{ _T("") }; // OpenURL时的headers字符串值， 默认为_T("")
 
-	long m_lInquiringNumber{ 1 }; // 每次查询数量
+	long m_lInquiringNumber{ 500 }; // 每次查询数量默认值为500
 	int m_iMaxNormalInquireTime{ 300 }; // 最大正常查询时间（每个具体的数据源皆不同）
 	atomic_int64_t m_tCurrentInquiryTime{ 0 }; // 当前接收数据所需时间（以毫秒计）
 

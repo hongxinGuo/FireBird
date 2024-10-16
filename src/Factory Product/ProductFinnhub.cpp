@@ -24,14 +24,14 @@ void CProductFinnhub::AddInaccessibleExchange() {
 	gl_finnhubInaccessibleExchange.SetUpdateDB(true);
 	try { // 存在此申请类型
 		const auto pExchange = gl_finnhubInaccessibleExchange.GetExchange(m_iInquireType);
-		if (!pExchange->HaveExchange(m_strInquiringExchange)) {	// 新的交易所代码？
-			pExchange->AddExchange(m_strInquiringExchange);
+		if (!pExchange->HaveSymbol(m_strInquiringExchange)) {	// 新的交易所代码？
+			pExchange->AddSymbol(m_strInquiringExchange);
 		}
 	} catch (out_of_range&) {	// 不存在此申请类型？则存储此新类型和该交易所名称
-		const auto pNewExchange = make_shared<CInaccessibleExchanges>();
+		const auto pNewExchange = make_shared<CInaccessible>();
 		pNewExchange->SetFunction(m_iInquireType);
 		pNewExchange->SetFunctionString(gl_FinnhubInquiryType.GetInquiryString(m_iInquireType));
-		pNewExchange->AddExchange(m_strInquiringExchange);
+		pNewExchange->AddSymbol(m_strInquiringExchange);
 		gl_finnhubInaccessibleExchange.SetExchange(m_iInquireType, pNewExchange);
 	}
 }

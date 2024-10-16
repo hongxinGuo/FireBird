@@ -98,7 +98,7 @@ namespace FireBirdTest {
 	}
 	TEST_F(CTiingoDataSourceTest, TestIsAErrorMessageData3) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(_T("{\"detail\":\"Please use an API key.\"}")); // 无权申请
+		pWebData->Test_SetBuffer_(_T("{\"detail\":\"Please supply a token\"}")); // 无权申请
 		m_pTiingoDataSource->SetHTTPStatusCode(403); // 正常
 		auto pProduct = make_shared<CProductDummy>();
 		pProduct->SetReceivedDataStatus(GOOD_DATA__);
@@ -106,10 +106,11 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_MISSING_API_KEY__);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
-		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0);
+		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
+		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Tiingo missing API key"));
 
 		// 恢复原状
-		//gl_systemMessage.PopInnerSystemInformationMessage();
+		//gl_systemMessage.PopErrorMessage();
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestIsAErrorMessageData4) {

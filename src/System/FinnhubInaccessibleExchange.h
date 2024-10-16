@@ -14,38 +14,9 @@
 #include<set>
 using std::set;
 
-class CInaccessibleExchanges {
-public:
-	CInaccessibleExchanges();
-	CInaccessibleExchanges(const CString& sFunction, int iFunction, const vector<CString>& vExchange);
-	virtual ~CInaccessibleExchanges() = default;
+#include "Inaccessible.h"
 
-	bool Assign(const CString& sFunction, int iFunction, const vector<CString>& vExchange);
-
-	int GetFunction() const noexcept { return m_iFunction; }
-	void SetFunction(const int iFunction) noexcept { m_iFunction = iFunction; }
-	CString GetFunctionString() noexcept { return m_sFunction; }
-	void SetFunctionString(const CString& sFunction) noexcept { m_sFunction = sFunction; }
-
-	bool AddExchange(const CString& sExchangeName);
-	bool DeleteExchange(const CString& sExchangeName);
-
-	bool HaveExchange(const CString& sExchange) const;
-	bool HaveExchange() const;
-
-	size_t ExchangeSize() const noexcept { return m_vExchange.size(); }
-	CString GetExchange(const int iIndex) { return m_vExchange.at(iIndex); }
-
-public:
-
-protected:
-	CString m_sFunction; // 功能名称
-	int m_iFunction; // 功能名称的值
-	vector<CString> m_vExchange; // 所禁止的各交易所名称的序列
-	set<CString> m_setExchange; // 所禁止的交易所名称的集合
-};
-
-using CInaccessibleExchangesPtr = shared_ptr<CInaccessibleExchanges>;
+using CInaccessibleExchangesPtr = shared_ptr<CInaccessible>;
 
 class CFinnhubInaccessibleExchange {
 public:

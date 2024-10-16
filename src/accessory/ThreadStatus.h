@@ -21,14 +21,6 @@ public:
 	static bool IsSavingWorldMarketThreadRunning() noexcept;
 	[[nodiscard]] static bool IsSavingThreadRunning() noexcept;
 
-	void IncreaseWebInquiringThread() noexcept { ++m_NumberOfWebInquiringThread; }
-	void DecreaseWebInquiringThread() noexcept {
-		ASSERT(m_NumberOfWebInquiringThread.load() > 0);
-		--m_NumberOfWebInquiringThread;
-	}
-	int GetNumberOfWebInquiringThread() const noexcept { return m_NumberOfWebInquiringThread.load(); }
-	[[nodiscard]] bool IsWebInquiringThreadRunning() const noexcept { return m_NumberOfWebInquiringThread.load() > 0; }
-
 protected:
 	atomic_int m_NumberOfBackGroundWorkingThreads; //正在计算日线相对强度的线程数。目前最多同时允许BackGroundThreadPermittedNumber个线程
 	atomic_int m_NumberOfWebInquiringThread; //正在运行的提取网络数据工作线程数量

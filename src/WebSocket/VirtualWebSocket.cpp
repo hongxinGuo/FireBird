@@ -50,8 +50,8 @@ bool CVirtualWebSocket::ConnectAndSendMessage(const vectorString& vSymbol) {
 		Connect();
 		//ASSERT(!IsOpen()); // Connect调用Connecting,是异步的。
 		while (!IsOpen()) {
+			if (gl_systemConfiguration.IsExitingSystem()) return false;
 			Sleep(1);
-			if (gl_systemConfiguration.IsExitingSystem()) return true;
 		}
 		Send(m_vSymbol);
 	} catch (exception& e) {

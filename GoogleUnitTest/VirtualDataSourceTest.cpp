@@ -134,14 +134,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(dataSource.IsWebError());
 	}
 
-	TEST_F(CVirtualDataSourceTest, TestIsGetWebDataAndProcessItThreadRunning) {
-		EXPECT_FALSE(dataSource.IsWorkingThreadRunning());
-		dataSource.SetWorkingThreadRunning(true);
-		EXPECT_TRUE(dataSource.IsWorkingThreadRunning());
-		dataSource.SetWorkingThreadRunning(false);
-		EXPECT_FALSE(dataSource.IsWorkingThreadRunning());
-	}
-
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringString) {
 		EXPECT_STREQ(dataSource.GetInquiringString(), _T(""));
 		dataSource.SetInquiringString(_T("abcdefg"));

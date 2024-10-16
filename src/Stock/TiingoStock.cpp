@@ -26,9 +26,7 @@ void CTiingoStock::ResetAllUpdateDate() {
 	SetStatementLastUpdatedDate(0);
 	SetDailyLastUpdatedDate(0);
 	SetCompanyProfileUpdateDate(19800101);
-	SetDayLineUpdateDate(19800101);
 	SetCompanyFinancialStatementUpdateDate(19800101);
-	SetDailyDataUpdateDate(19800101);
 	SetDayLineStartDate(29900101);
 	SetDayLineEndDate(0);
 }

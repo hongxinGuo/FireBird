@@ -97,7 +97,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Connect).Times(1);
 		EXPECT_CALL(*gl_pMockVirtualWebSocket, Send).Times(0); // 系统正在退出时，本函数直接返回
 
-		EXPECT_TRUE(gl_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol)) << "系统正在退出时，本函数直接返回";
+		EXPECT_FALSE(gl_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol)) << "系统正在退出时，本函数直接返回";
 
 		// 恢复原状
 		gl_systemConfiguration.SetExitingSystem(false);

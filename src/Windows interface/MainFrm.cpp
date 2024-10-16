@@ -179,14 +179,6 @@ CMainFrame::~CMainFrame() {
 		gl_hFireBirdMutex = nullptr;
 	}
 
-	time_t tt, tt2;
-	time(&tt); // Note 系统退出时避免调用GetUTCTime(),因为调度函数可能已经不再执行了
-	while (gl_ThreadStatus.IsWebInquiringThreadRunning()) {
-		Sleep(100);
-		time(&tt2);
-		if (tt2 - tt > 2) break;// 等待网络查询线程退出，最长等待时间为2秒
-	}
-
 	if (sm_fGlobeInit) {
 		sm_fGlobeInit = false;
 		ix::uninitNetSystem();// 退出系统时，析构IXWebSocket库，且只能析构一次。
@@ -539,7 +531,7 @@ void CMainFrame::UpdateStatus() {
 	SysCallSetPaneText(10, str);
 
 	// 更新当前申请网络数据的工作线程数
-	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfWebInquiringThread());
+	sprintf_s(buffer, _T("%02d"), 0);
 	SysCallSetPaneText(11, buffer);
 
 	// 更新当前后台工作线程数

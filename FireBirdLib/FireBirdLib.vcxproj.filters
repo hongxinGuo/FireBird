@@ -843,6 +843,12 @@
     <ClInclude Include="..\src\Stock\WorldStock.h">
       <Filter>头文件\Stock\Finnhub</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\System\Inaccessible.h">
+      <Filter>头文件\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\System\TiingoInaccessibleStock.h">
+      <Filter>头文件\System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1405,6 +1411,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Stock\WorldStock.cpp">
       <Filter>源文件\Stock\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\System\Inaccessilbe.cpp">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\System\TiingoInaccessibleStock.cpp">
+      <Filter>源文件\System</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

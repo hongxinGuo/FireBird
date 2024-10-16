@@ -18,66 +18,9 @@ std::string Test_gl_sFinnhubInaccessibleExchange = R"(
 }
 ]})";
 
-CInaccessibleExchanges::CInaccessibleExchanges() {
-	m_sFunction = _T("");
-	m_iFunction = 0;
-	m_vExchange.clear();
-	m_setExchange.clear();
-}
-
-CInaccessibleExchanges::CInaccessibleExchanges(const CString& sFunction, const int iFunction, const vector<CString>& vExchange) {
-	m_sFunction = sFunction;
-	m_iFunction = iFunction;
-	for (auto& s : vExchange) {
-		m_vExchange.push_back(s);
-		m_setExchange.insert(s);
-	}
-}
-
-bool CInaccessibleExchanges::Assign(const CString& sFunction, const int iFunction, const vector<CString>& vExchange) {
-	m_sFunction = sFunction;
-	m_iFunction = iFunction;
-	m_vExchange.clear();
-	m_setExchange.clear();
-	for (auto& s : vExchange) {
-		m_vExchange.push_back(s);
-		m_setExchange.insert(s);
-	}
-	return true;
-}
-
-bool CInaccessibleExchanges::AddExchange(const CString& sExchangeName) {
-	m_vExchange.push_back(sExchangeName);
-	m_setExchange.insert(sExchangeName);
-	return true;
-}
-
-bool CInaccessibleExchanges::DeleteExchange(const CString& sExchangeName) {
-	if (m_setExchange.contains(sExchangeName)) { // 集合中存在此元素？
-		m_setExchange.erase(sExchangeName);
-		for (int position = 0; position < m_vExchange.size(); position++) {
-			if (m_vExchange.at(position).Compare(sExchangeName) == 0) {
-				m_vExchange.erase(m_vExchange.begin() + position);
-				break;
-			}
-		}
-	}
-	return true;
-}
-
-bool CInaccessibleExchanges::HaveExchange(const CString& sExchange) const {
-	if (m_setExchange.contains(sExchange)) return true;
-	return false;
-}
-
-bool CInaccessibleExchanges::HaveExchange() const {
-	if (m_vExchange.empty()) return false;
-	return true;
-}
-
 CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE(_T("FinnhubINaccessibleExchange全局变量只允许存在一个实例\n"));
+		TRACE(_T("FinnhubInaccessibleExchange全局变量只允许存在一个实例\n"));
 		ASSERT(FALSE);
 	}
 
@@ -143,13 +86,13 @@ void CFinnhubInaccessibleExchange::Update() {
 			const int size = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).size();
 			if (size > 0) {
 				// 有exchange数据的话才建立数据集
-				const auto pExchange = make_shared<CInaccessibleExchanges>();
+				const auto pExchange = make_shared<CInaccessible>();
 				string s2 = m_finnhubInaccessibleExchange[_T("InaccessibleExchange")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
 				pExchange->SetFunctionString(s2.c_str());
 				pExchange->SetFunction(gl_FinnhubInquiryType.GetInquiryType(pExchange->GetFunctionString()));
 				for (int j = 0; j < size; j++) {
 					string s = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).at(j);
-					pExchange->AddExchange(s.c_str());
+					pExchange->AddSymbol(s.c_str());
 				}
 				gl_finnhubInaccessibleExchange.m_mapExchange[gl_FinnhubInquiryType.GetInquiryType(pExchange->GetFunctionString())] = pExchange;
 			}
@@ -162,11 +105,11 @@ void CFinnhubInaccessibleExchange::UpdateJson() {
 
 	m_finnhubInaccessibleExchange["UpdateDate"] = m_lUpdateDate;
 	for (const auto& val : m_mapExchange | std::views::values) {
-		if (val->HaveExchange()) {
+		if (val->HaveSymbol()) {
 			// 有exchange数据的话才建立数据集
 			auto jsonExchange = json{ { "Function", val->GetFunctionString() } };
-			for (int i = 0; i < val->ExchangeSize(); i++) {
-				auto s = val->GetExchange(i);
+			for (int i = 0; i < val->SymbolSize(); i++) {
+				auto s = val->GetSymbol(i);
 				jsonExchange[_T("Exchange")].push_back(s);
 			}
 
@@ -178,13 +121,13 @@ void CFinnhubInaccessibleExchange::UpdateJson() {
 void CFinnhubInaccessibleExchange::DeleteExchange(int iInquireType, const CString& strExchange) {
 	if (HaveExchange(iInquireType, strExchange)) {
 		const CInaccessibleExchangesPtr pExchange = GetExchange(iInquireType);
-		pExchange->DeleteExchange(strExchange);
+		pExchange->DeleteSymbol(strExchange);
 	}
 }
 
 bool CFinnhubInaccessibleExchange::HaveExchange(int iInquireType, const CString& strExchangeCode) const {
 	try {
-		if (m_mapExchange.at(iInquireType)->HaveExchange(strExchangeCode)) {
+		if (m_mapExchange.at(iInquireType)->HaveSymbol(strExchangeCode)) {
 			return true;
 		}
 		return false;

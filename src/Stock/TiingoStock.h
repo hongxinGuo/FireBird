@@ -56,12 +56,8 @@ public:
 	long GetDailyLastUpdatedDate() { return m_jsonUpdateDate["DailyLastUpdated"]; }
 	void SetDailyLastUpdatedDate(long lLDate) { m_jsonUpdateDate["DailyLastUpdated"] = lLDate; }
 
-	long GetDailyDataUpdateDate() { return m_jsonUpdateDate["DailyData"]; }
-	void SetDailyDataUpdateDate(long lDate) { m_jsonUpdateDate["DailyData"] = lDate; }
 	long GetCompanyFinancialStatementUpdateDate() { return m_jsonUpdateDate["CompanyFinancialStatement"]; }
 	void SetCompanyFinancialStatementUpdateDate(long lDate) { m_jsonUpdateDate["CompanyFinancialStatement"] = lDate; }
-	long GetDayLineUpdateDate() { return m_jsonUpdateDate["DayLine"]; }
-	void SetDayLineUpdateDate(long lDate) { m_jsonUpdateDate["DayLine"] = lDate; }
 	long GetCompanyProfileUpdateDate() { return m_jsonUpdateDate["CompanyProfile"]; }
 	void SetCompanyProfileUpdateDate(long lDate) { m_jsonUpdateDate["CompanyProfile"] = lDate; }
 

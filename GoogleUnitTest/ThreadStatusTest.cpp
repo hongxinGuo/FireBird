@@ -76,16 +76,4 @@ namespace FireBirdTest {
 		gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 		EXPECT_FALSE(gl_ThreadStatus.IsBackGroundThreadsWorking());
 	}
-
-	TEST_F(ThreadStatusTest, TestIsWebInquiringThreadRunning) {
-		const int iThreads = gl_ThreadStatus.GetNumberOfWebInquiringThread();
-		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iThreads);
-		EXPECT_FALSE(gl_ThreadStatus.IsWebInquiringThreadRunning());
-		gl_ThreadStatus.IncreaseWebInquiringThread();
-		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iThreads + 1);
-		EXPECT_TRUE(gl_ThreadStatus.IsWebInquiringThreadRunning());
-		gl_ThreadStatus.DecreaseWebInquiringThread();
-		EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iThreads);
-		EXPECT_FALSE(gl_ThreadStatus.IsWebInquiringThreadRunning()) << "此时没有查询线程在执行";
-	}
 }

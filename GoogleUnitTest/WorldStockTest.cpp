@@ -1275,7 +1275,6 @@ namespace FireBirdTest {
 		pTiingoStock->m_strCompanyWebSite = _T(",mcvmcv");
 		pTiingoStock->m_strSECFilingWebSite = _T(".,m,.cmv,.");
 		pTiingoStock->SetCompanyFinancialStatementUpdateDate(457843759);
-		pTiingoStock->SetDailyDataUpdateDate(234234);
 		stock.UpdateStockProfile(pTiingoStock);
 
 		EXPECT_FALSE(stock.IsNeedUpdateProfile(pTiingoStock));
@@ -1301,7 +1300,6 @@ namespace FireBirdTest {
 		pTiingoStock->m_strCompanyWebSite = _T(",mcvmcv");
 		pTiingoStock->m_strSECFilingWebSite = _T(".,m,.cmv,.");
 		pTiingoStock->SetCompanyFinancialStatementUpdateDate(457843759);
-		pTiingoStock->SetDailyDataUpdateDate(234234);
 
 		stock.UpdateStockProfile(pTiingoStock);
 

@@ -8,8 +8,31 @@
 
 #include "ProductTiingoStockDayLine.h"
 
-#include "accessory.h"
 #include "TimeConvert.h"
+
+CString GetTiingoDayLineInquiryParam(const CString& strSymbol, long lStartDate, long lCurrentDate) {
+	CString strParam = _T("");
+	char buffer[50];
+	const long year = lCurrentDate / 10000;
+	const long month = lCurrentDate / 100 - year * 100;
+	const long date = lCurrentDate - year * 10000 - month * 100;
+
+	const long year2 = lStartDate / 10000;
+	const long month2 = lStartDate / 100 - year2 * 100;
+	const long date2 = lStartDate - year2 * 10000 - month2 * 100;
+
+	strParam += strSymbol;
+	strParam += _T("/prices?&startDate=");
+	sprintf_s(buffer, _T("%4d-%d-%d"), year2, month2, date2);
+	CString strTemp = buffer;
+	strParam += strTemp;
+	strParam += _T("&endDate=");
+	sprintf_s(buffer, _T("%4d-%d-%d"), year, month, date);
+	strTemp = buffer;
+	strParam += strTemp;
+
+	return strParam;
+}
 
 CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/daily/");
@@ -26,7 +49,7 @@ CString CProductTiingoStockDayLine::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	long lStartDate = 19800101;
 	if (pStock->GetDayLineEndDate() > 19800101) lStartDate = pStock->GetDayLineEndDate();
-	CString strParam = GetTiingoDayLineInquiryParam(pStock->GetSymbol(), lStartDate, GetMarket()->GetMarketDate()); // 如果日线未完全申请过时，申请完整日线。
+	CString strParam = GetTiingoDayLineInquiryParam(pStock->GetSymbol(), lStartDate, GetMarket()->GetMarketDate()); // 如果日线从未申请过时，申请完整日线。
 
 	m_strInquiry = m_strInquiryFunction + strParam;
 	return m_strInquiry;
@@ -50,7 +73,6 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pTiingoStock->SetIPOStatus(_STOCK_IPOED_);
 		}
 		pTiingoStock->UpdateDayLine(*pvDayLine);
-		pTiingoStock->SetDayLineUpdateDate(pvDayLine->at(pvDayLine->size() - 1)->GetMarketDate());
 		pTiingoStock->SetUpdateDayLineDB(true);
 		pTiingoStock->SetUpdateProfileDB(true);
 	}

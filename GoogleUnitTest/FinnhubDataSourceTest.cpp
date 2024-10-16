@@ -61,6 +61,7 @@ namespace FireBirdTest {
 		pwd->Test_SetBuffer_(_T("{\"error\":\"Please use an API key.\"}"));
 
 		EXPECT_EQ(ERROR_FINNHUB_MISSING_API_KEY__, m_FinnhubDataSource.IsAErrorMessageData(pwd));
+		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("finnhub missing API key"));
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData3) {

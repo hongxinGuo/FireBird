@@ -164,7 +164,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, _T("SZ"))) << "已加入SZ交易所";
 
 		// 恢复原状
-		gl_finnhubInaccessibleExchange.GetExchange(STOCK_PRICE_CANDLES_)->DeleteExchange(_T("SZ"));
+		gl_finnhubInaccessibleExchange.GetExchange(STOCK_PRICE_CANDLES_)->DeleteSymbol(_T("SZ"));
 	}
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible5) {
@@ -193,7 +193,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, _T("US"))) << "已加入US交易所";
 
 		// 恢复原状
-		gl_finnhubInaccessibleExchange.GetExchange(STOCK_PRICE_CANDLES_)->DeleteExchange(_T("US"));
-		gl_finnhubInaccessibleExchange.GetExchange(STOCK_PRICE_CANDLES_)->DeleteExchange(_T("AD"));
+		gl_finnhubInaccessibleExchange.GetExchange(STOCK_PRICE_CANDLES_)->DeleteSymbol(_T("US"));
+		gl_finnhubInaccessibleExchange.GetExchange(STOCK_PRICE_CANDLES_)->DeleteSymbol(_T("AD"));
 	}
 }
