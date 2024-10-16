@@ -9,6 +9,7 @@
 
 #include"FinnhubInquiryType.h"
 #include"FinnhubInaccessibleExchange.h"
+#include "TiingoInaccessibleStock.h"
 
 #include"FinnhubDataSource.h"
 #include"NeteaseDayLineDataSource.h"
@@ -49,6 +50,7 @@ CSystemData gl_SystemData;
 
 CFinnhubInquiryType gl_FinnhubInquiryType;
 CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub禁止访问交易所名单（免费账户无法访问的交易所数据）。唯一实例
+CTiingoInaccessibleStock gl_tiingoInaccessibleStock;
 
 time_t gl_tUTCTime = 0; // 所有的市场使用同一个协调世界时（Coordinated Universal Time）
 

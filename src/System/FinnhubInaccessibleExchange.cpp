@@ -24,11 +24,6 @@ CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 		ASSERT(FALSE);
 	}
 
-	m_fUpdateDB = false; // update flag
-	m_fInitialized = true;
-	m_strFileName = _T("FinnhubInaccessibleExchange.json"); // json file name
-	m_lUpdateDate = 19800101;
-
 	ASSERT(m_strFileName.Compare(_T("FinnhubInaccessibleExchange.json")) == 0);
 	if (LoadDB()) {
 		Update();
@@ -86,15 +81,16 @@ void CFinnhubInaccessibleExchange::Update() {
 			const int size = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).size();
 			if (size > 0) {
 				// 有exchange数据的话才建立数据集
-				const auto pExchange = make_shared<CInaccessible>();
+				const auto pInaccessible = make_shared<CInaccessible>();
 				string s2 = m_finnhubInaccessibleExchange[_T("InaccessibleExchange")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
-				pExchange->SetFunctionString(s2.c_str());
-				pExchange->SetFunction(gl_FinnhubInquiryType.GetInquiryType(pExchange->GetFunctionString()));
+				pInaccessible->SetFunctionString(s2.c_str());
+				pInaccessible->SetFunction(gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString()));
 				for (int j = 0; j < size; j++) {
 					string s = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).at(j);
-					pExchange->AddSymbol(s.c_str());
+					pInaccessible->AddSymbol(s.c_str());
 				}
-				gl_finnhubInaccessibleExchange.m_mapExchange[gl_FinnhubInquiryType.GetInquiryType(pExchange->GetFunctionString())] = pExchange;
+				m_mapExchange[gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString())] = pInaccessible;
+				//gl_finnhubInaccessibleExchange.m_mapExchange[gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString())] = pInaccessible;
 			}
 		}
 	} catch (json::exception&) {}

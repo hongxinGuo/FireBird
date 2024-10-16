@@ -225,7 +225,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestGetDayLineEndDate) {
-		EXPECT_EQ(stock.GetDayLineEndDate(), 0);
+		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
 		stock.SetDayLineEndDate(19980101);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 19980101);
 	}

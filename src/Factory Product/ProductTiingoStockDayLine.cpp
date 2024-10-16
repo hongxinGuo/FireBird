@@ -50,8 +50,10 @@ CString CProductTiingoStockDayLine::CreateMessage() {
 	long lStartDate = 19800101;
 	if (pStock->GetDayLineEndDate() > 19800101) lStartDate = pStock->GetDayLineEndDate();
 	CString strParam = GetTiingoDayLineInquiryParam(pStock->GetSymbol(), lStartDate, GetMarket()->GetMarketDate()); // 如果日线从未申请过时，申请完整日线。
+	m_strInquiringSymbol = pStock->GetSymbol();
 
 	m_strInquiry = m_strInquiryFunction + strParam;
+	TRACE("%s\n", m_strInquiry);
 	return m_strInquiry;
 }
 
@@ -59,7 +61,13 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
+
 	const CDayLinesPtr pvDayLine = ParseTiingoStockDayLine(pWebData);
+	CString str = pTiingoStock->GetSymbol();
+	string s = pWebData->GetDataBuffer();
+	CString str2(s.c_str(), 100);
+	str += str2;
+	TRACE("%s\n", str);
 	if (!pvDayLine->empty()) {
 		long lastClose = 0;
 		for (const auto& pDayLine2 : *pvDayLine) {
@@ -72,6 +80,9 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		if (!IsEarlyThen(pvDayLine->at(pvDayLine->size() - 1)->GetMarketDate(), GetMarket()->GetMarketDate(), 100)) {
 			pTiingoStock->SetIPOStatus(_STOCK_IPOED_);
 		}
+		else {
+			pTiingoStock->SetIPOStatus(_STOCK_DELISTED_);
+		}
 		pTiingoStock->UpdateDayLine(*pvDayLine);
 		pTiingoStock->SetUpdateDayLineDB(true);
 		pTiingoStock->SetUpdateProfileDB(true);
@@ -79,6 +90,17 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	else {
 		pTiingoStock->SetUpdateDayLineDB(false);
 		pTiingoStock->SetUpdateProfileDB(false);
+		if (pTiingoStock->GetDayLineEndDate() == 19800101) { // 从没有接收过日线数据？
+			pTiingoStock->SetIPOStatus(_STOCK_NOT_YET_LIST_);
+			pTiingoStock->SetUpdateProfileDB(true);
+		}
+		else if (IsEarlyThen(pTiingoStock->GetDayLineEndDate(), GetMarket()->GetMarketDate(), 100)) {
+			if (!pTiingoStock->IsDelisted()) {
+				pTiingoStock->SetIPOStatus(_STOCK_DELISTED_);
+				pTiingoStock->SetUpdateProfileDB(true);
+			}
+		}
+		// todo 添加其他情况的判断
 	}
 	// 清除tiingo stock的日线更新标识
 	pTiingoStock->SetUpdateDayLine(false);

@@ -22,6 +22,8 @@ public:
 	void UpdateDB();
 	bool LoadDB();
 
+	void ResetDayLineStartEndDate();
+
 	bool IsUpdateFinancialStateDB() noexcept;
 	void UpdateFinancialStateDB() const;
 };

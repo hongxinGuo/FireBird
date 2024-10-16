@@ -108,6 +108,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_USING_TENGXUN_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingTengxunRealtimeDataServer)
 	ON_COMMAND(ID_UPDATE_TIINGO_FUNDAMENTAL_DEFINITION, &CMainFrame::OnUpdateTiingoFundamentalDefinition)
 	ON_UPDATE_COMMAND_UI(ID_UPDATE_TIINGO_FUNDAMENTAL_DEFINITION, &CMainFrame::OnUpdateUpdateTiingoFundamentalDefinition)
+	ON_COMMAND(ID_RESET_TIINGO_DAYLINE_DATE, &CMainFrame::OnResetTiingoDaylineDate)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -122,6 +123,7 @@ static UINT indicators[] =
 	ID_CURRENT_ACTIVE_STOCK,
 	ID_CURRENT_DAYLINE_READING_STOCK,
 	ID_CURRENT_FUNCTION,
+	ID_CURRENT_TIINGO_FUNCTION,
 	ID_CURRENT_RTDATA_SIZE,
 	ID_CURRENT_RUNNING_THREAD,
 	ID_CURRENT_RUNNING_BACKGROUND_THREAD,
@@ -523,26 +525,30 @@ void CMainFrame::UpdateStatus() {
 	str = gl_systemMessage.GetStockCodeForInquiryDayLine();
 	SysCallSetPaneText(8, str);
 
-	str = gl_pWorldMarket->GetCurrentFunction();
+	// 
+	str = gl_pWorldMarket->GetCurrentFinnhubFunction();
 	SysCallSetPaneText(9, str);
+
+	str = gl_pWorldMarket->GetCurrentTiingoFunction();
+	SysCallSetPaneText(10, str);
 
 	// 更新当前抓取的实时数据大小
 	str = FormatToMK(gl_pSinaRTDataSource->GetTotalByteReadPerSecond());
-	SysCallSetPaneText(10, str);
+	SysCallSetPaneText(11, str);
 
 	// 更新当前申请网络数据的工作线程数
 	sprintf_s(buffer, _T("%02d"), 0);
-	SysCallSetPaneText(11, buffer);
+	SysCallSetPaneText(12, buffer);
 
 	// 更新当前后台工作线程数
 	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
 
 	//sprintf_s(buffer, _T("%1.3f"), gl_pChinaMarket->GetCurrentEffectiveRTDataRatio());
-	SysCallSetPaneText(12, buffer);
+	SysCallSetPaneText(13, buffer);
 
 	//更新当地时间的显示
 	str = gl_pChinaMarket->GetStringOfLocalTime();
-	SysCallSetPaneText(13, str);
+	SysCallSetPaneText(14, str);
 }
 
 void CMainFrame::UpdateInnerSystemStatus() {
@@ -1223,4 +1229,9 @@ void CMainFrame::OnUpdateUpdateTiingoFundamentalDefinition(CCmdUI* pCmdUI) {
 	else {
 		pCmdUI->Enable(false);
 	}
+}
+
+void CMainFrame::OnResetTiingoDaylineDate() {
+	// TODO: Add your command handler code here
+	gl_dataContainerTiingoStock.ResetDayLineStartEndDate();
 }

@@ -20,7 +20,7 @@ bool CProductFinnhub::CheckAccessRight(CWebDataPtr pWebData) {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-void CProductFinnhub::AddInaccessibleExchange() {
+void CProductFinnhub::AddInaccessibleSymbol() {
 	gl_finnhubInaccessibleExchange.SetUpdateDB(true);
 	try { // 存在此申请类型
 		const auto pExchange = gl_finnhubInaccessibleExchange.GetExchange(m_iInquireType);

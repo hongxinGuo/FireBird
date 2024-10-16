@@ -65,7 +65,7 @@ namespace FireBirdTest {
 		finnhubProduct.SetInquireType(STOCK_SYMBOLS_);
 		finnhubProduct.SetInquiringExchange(_T("AA")); // 新的交易所代码
 
-		finnhubProduct.AddInaccessibleExchange();
+		finnhubProduct.AddInaccessibleSymbol();
 
 		CInaccessibleExchangesPtr pExchange = gl_finnhubInaccessibleExchange.GetExchange(STOCK_SYMBOLS_);
 		EXPECT_TRUE(pExchange->HaveSymbol(_T("AA")));
@@ -74,7 +74,7 @@ namespace FireBirdTest {
 		finnhubProduct.SetInquireType(STOCK_SYMBOLS_);
 		finnhubProduct.SetInquiringExchange(_T("AB")); // 新的交易所代码
 
-		finnhubProduct.AddInaccessibleExchange();
+		finnhubProduct.AddInaccessibleSymbol();
 
 		pExchange = gl_finnhubInaccessibleExchange.GetExchange(STOCK_SYMBOLS_);
 		EXPECT_TRUE(pExchange->HaveSymbol(_T("AB")));
@@ -83,7 +83,7 @@ namespace FireBirdTest {
 		finnhubProduct.SetInquireType(STOCK_SYMBOLS_);
 		finnhubProduct.SetInquiringExchange(_T("AB")); // 已存在于数据集中的交易所代码
 
-		finnhubProduct.AddInaccessibleExchange();
+		finnhubProduct.AddInaccessibleSymbol();
 
 		pExchange = gl_finnhubInaccessibleExchange.GetExchange(STOCK_SYMBOLS_);
 		EXPECT_TRUE(pExchange->HaveSymbol(_T("AB")));

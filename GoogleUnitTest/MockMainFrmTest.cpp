@@ -76,6 +76,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(11, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(12, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(13, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(14, _)).Times(1);
 		gl_pMockMainFrame->UpdateStatus();
 	}
 
@@ -98,6 +99,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(11, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(12, _)).Times(1);
 		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(13, _)).Times(1);
+		EXPECT_CALL(*gl_pMockMainFrame, SysCallSetPaneText(14, _)).Times(1);
 		gl_pMockMainFrame->UpdateStatus();
 
 		//»Ö¸´Ô­×´

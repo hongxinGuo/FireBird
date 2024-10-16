@@ -437,7 +437,7 @@ namespace FireBirdTest {
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock symbol..."));
 		str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub交易所代码数据查询完毕"));
+		EXPECT_STREQ(str, _T("Finnhub exchanges updated"));
 
 		// 恢复原状
 		m_FinnhubDataSource.SetUpdateSymbol(true);
@@ -487,7 +487,7 @@ namespace FireBirdTest {
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock profile..."));
 		str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub股票简介更新完毕"));
+		EXPECT_STREQ(str, _T("Finnhub company profile basic updated"));
 
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
@@ -540,7 +540,7 @@ namespace FireBirdTest {
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub company news..."));
 		str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub公司新闻更新完毕"));
+		EXPECT_STREQ(str, _T("Finnhub company news updated"));
 
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
@@ -593,7 +593,7 @@ namespace FireBirdTest {
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock insider sentiment..."));
 		str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("US Market Insider Sentiment数据更新完毕"));
+		EXPECT_STREQ(str, _T("US Market Insider Sentiment updated"));
 
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
@@ -646,7 +646,7 @@ namespace FireBirdTest {
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock basic financials..."));
 		str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub股票基本财务情况更新完毕"));
+		EXPECT_STREQ(str, _T("Finnhub basic financial updated"));
 
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
@@ -699,7 +699,7 @@ namespace FireBirdTest {
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock day line..."));
 		str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("US Market日线历史数据更新完毕"));
+		EXPECT_STREQ(str, _T("US Market dayline updated"));
 
 		// 恢复原状
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
@@ -819,7 +819,7 @@ namespace FireBirdTest {
 		CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquiring finnhub stock insider transaction..."));
 		str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("US Market Insider Transaction数据更新完毕"));
+		EXPECT_STREQ(str, _T("US Market Insider Transaction updated"));
 
 		// 恢复原状
 		m_FinnhubDataSource.SetUpdateInsiderTransaction(true);
@@ -974,7 +974,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexSymbol"));
 		EXPECT_EQ(p->GetIndex(), lTotal - 1);
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateForexSymbol());
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Inquiring Finnhub Forex symbols..."));
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub Forex symbols updated"));
 		m_FinnhubDataSource.SetUpdateForexSymbol(true); //恢复原状
 	}
 
@@ -1076,7 +1076,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCryptoSymbol"));
 		EXPECT_EQ(p->GetIndex(), lTotal - 1);
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateCryptoSymbol());
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Inquiring Finnhub Crypto symbols"));
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub Crypto symbols updated"));
 		m_FinnhubDataSource.SetUpdateCryptoSymbol(true); //恢复原状
 	}
 

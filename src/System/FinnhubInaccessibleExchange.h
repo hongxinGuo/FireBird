@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// finnhub tiingo等网站数据分为免费和收费两种，免费账户只能收取部分内容。故而需要在运行中确定是否能够接收到有效数据。
+// finnhub网站数据分为免费和收费两种，免费账户只能收取部分内容。故而需要在运行中确定是否能够接收到有效数据。
 // 此结构中存储各功能不允许接收的交易所名称，在运行中排除该结构中的交易所（不申请）。
 //
 // // 美国市场（交易所代码为US）永远申请，其他交易所根据反馈情况决定是否继续申请。
@@ -10,9 +10,6 @@
 
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 #include"FinnhubInquiryType.h"
-
-#include<set>
-using std::set;
 
 #include "Inaccessible.h"
 
@@ -57,13 +54,13 @@ public:
 	void SetUpdateDB(const bool fUpdate) noexcept { m_fUpdateDB = fUpdate; }
 
 protected:
-	CString m_strFileName; // 配置文件名称
+	CString m_strFileName{ _T("FinnhubInaccessibleExchange.json") };// 配置文件名称
 
-	long m_lUpdateDate; // 本文件更新日期
+	long m_lUpdateDate{ 19800101 }; // 本文件更新日期
 	map<int, CInaccessibleExchangesPtr> m_mapExchange; //
 
-	bool m_fInitialized = false;
-	bool m_fUpdateDB;
+	bool m_fInitialized{ false };
+	bool m_fUpdateDB{ false };
 
 	json m_finnhubInaccessibleExchange;
 };

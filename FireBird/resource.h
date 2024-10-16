@@ -143,6 +143,7 @@
 #define ID_32920                        32920
 #define ID_                             32921
 #define ID_UPDATE_TIINGO_FUNDAMENTAL_DEFINITION 32922
+#define ID_RESET_TIINGO_DAYLINE_DATE    32923
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -174,6 +175,7 @@
 #define ID_CURRENT_TIINGO_FOREX         59169
 #define ID_CURRENT_TIINGO_CRYPTO        59170
 #define ID_CURRENT_FUNCTION             59171
+#define ID_CURRENT_TIINGO_FUNCTION      59172
 #define ID_VIEW_STATUS_BAR2             59394
 
 // Next default values for new objects
@@ -181,7 +183,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32923
+#define _APS_NEXT_COMMAND_VALUE         32924
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

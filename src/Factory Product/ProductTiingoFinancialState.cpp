@@ -106,6 +106,7 @@ CString CProductTiingoFinancialState::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	CString strParam = _T("/") + pStock->GetSymbol() + _T("/statements?"); // 如果日线未完全申请过时，申请完整日线。
 	//CString strParam = _T("/AAPL/statements?"); // 如果日线未完全申请过时，申请完整日线。 测试用
+	m_strInquiringSymbol = pStock->GetSymbol();
 
 	m_strInquiry = m_strInquiryFunction + strParam;
 	return m_strInquiry;

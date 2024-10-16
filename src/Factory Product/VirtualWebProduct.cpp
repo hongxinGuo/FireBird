@@ -8,14 +8,6 @@
 }
 
 CVirtualWebProduct::CVirtualWebProduct() {
-	m_lIndex = -1; // 预先设置为越界
-
-	m_iReceivedDataStatus = GOOD_DATA__;
-	m_iInquireType = -1; // 预先设置为越界
-
-	m_strInquiryFunction = _T("");
-	m_strInquiry = _T("");
-	m_strInquiringExchange = _T("ALL"); // 默认是申请所有的交易所数据。
 }
 
 bool CVirtualWebProduct::IsVoidJson(const CWebDataPtr& pWebData) {
@@ -44,7 +36,7 @@ bool CVirtualWebProduct::CheckInaccessible() {
 			return false;
 		}
 	}
-	AddInaccessibleExchange();
+	AddInaccessibleSymbol();
 	s_iCounter = 0;
 
 	return true;

@@ -24,11 +24,6 @@ CTiingoInaccessibleStock::CTiingoInaccessibleStock() {
 		ASSERT(FALSE);
 	}
 
-	m_fUpdateDB = false; // update flag
-	m_fInitialized = true;
-	m_strFileName = _T("TiingoInaccessibleStock.json"); // json file name
-	m_lUpdateDate = 19800101;
-
 	ASSERT(m_strFileName.Compare(_T("TiingoInaccessibleStock.json")) == 0);
 	if (LoadDB()) {
 		Update();
@@ -85,16 +80,17 @@ void CTiingoInaccessibleStock::Update() {
 		for (int i = 0; i < m_finnhubInaccessibleStock.at(_T("InaccessibleStock")).size(); i++) {
 			const int size = m_finnhubInaccessibleStock.at(_T("InaccessibleStock")).at(i).at(_T("Stock")).size();
 			if (size > 0) {
-				// 有exchange数据的话才建立数据集
-				const auto pStock = make_shared<CInaccessible>();
+				// 有stock数据的话才建立数据集
+				const auto pInaccessible = make_shared<CInaccessible>();
 				string s2 = m_finnhubInaccessibleStock[_T("InaccessibleStock")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
-				pStock->SetFunctionString(s2.c_str());
-				pStock->SetFunction(gl_FinnhubInquiryType.GetInquiryType(pStock->GetFunctionString()));
+				pInaccessible->SetFunctionString(s2.c_str());
+				pInaccessible->SetFunction(gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString()));
 				for (int j = 0; j < size; j++) {
 					string s = m_finnhubInaccessibleStock.at(_T("InaccessibleStock")).at(i).at(_T("Stock")).at(j);
-					pStock->AddSymbol(s.c_str());
+					pInaccessible->AddSymbol(s.c_str());
 				}
-				gl_finnhubInaccessibleStock.m_mapStock[gl_FinnhubInquiryType.GetInquiryType(pStock->GetFunctionString())] = pStock;
+				m_mapStock[gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString())] = pInaccessible;
+				//gl_tiingoInaccessibleStock.m_mapStock[gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString())] = pInaccessible;
 			}
 		}
 	} catch (json::exception&) {}

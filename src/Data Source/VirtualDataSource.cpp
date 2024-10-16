@@ -103,12 +103,12 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 		}
 		ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
 		if (!gl_systemConfiguration.IsExitingSystem() && !pvWebData->empty()) {
-			m_eErrorMessageData = IsAErrorMessageData(pvWebData->at(0)); // 返回的数据是错误信息？
+			m_eErrorMessageData = IsAErrorMessageData(pvWebData->at(0)); // 返回的数据是错误信息？检查错误，判断申请资格，更新禁止目录
 			m_pCurrentProduct->ParseAndStoreWebData(pvWebData);
 			m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource智能指针
 		}
-		ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
 		ASSERT(!HaveInquiry()); // 没有现存的申请
+		ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
 		SetInquiring(false); // 此标识的重置需要位于位于最后一步
 	}
 }

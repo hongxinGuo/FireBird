@@ -6,19 +6,6 @@
 #include "WorldMarket.h"
 
 CTiingoStock::CTiingoStock() {
-	m_strTiingoPermaTicker = _T("");
-	m_strName = _T("");
-	m_fIsActive = false;
-	m_fIsADR = false;
-	m_strTiingoIndustry = _T("");
-	m_strTiingoSector = _T("");
-	m_iSicCode = 0;
-	m_strSicIndustry = _T("");
-	m_strSicSector = _T("");
-	m_strReportingCurrency = _T("");
-	m_strLocation = _T("");
-	m_strCompanyWebSite = _T("");
-	m_strSECFilingWebSite = _T("");
 	CTiingoStock::ResetAllUpdateDate();
 }
 
@@ -28,7 +15,7 @@ void CTiingoStock::ResetAllUpdateDate() {
 	SetCompanyProfileUpdateDate(19800101);
 	SetCompanyFinancialStatementUpdateDate(19800101);
 	SetDayLineStartDate(29900101);
-	SetDayLineEndDate(0);
+	SetDayLineEndDate(19800101);
 }
 
 void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {

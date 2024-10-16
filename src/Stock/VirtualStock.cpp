@@ -5,8 +5,7 @@
 #include "jsonParse.h"
 
 CVirtualStock::CVirtualStock() {
-	m_jsonUpdateDate[_T("DayLineStartDate")] = 29900101;
-	m_jsonUpdateDate[_T("DayLineEndDate")] = 19800101;
+	CVirtualStock::ResetAllUpdateDate();
 }
 
 void CVirtualStock::ResetAllUpdateDate() {

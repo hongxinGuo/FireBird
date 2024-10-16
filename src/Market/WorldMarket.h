@@ -25,8 +25,8 @@ public:
 
 	void Reset();
 	void ResetFinnhub();
-	static void ResetQuandl();
-	static void ResetTiingo();
+	void ResetQuandl();
+	void ResetTiingo() const;
 	void ResetDataContainer();
 
 	bool IsTimeToResetSystem(long lCurrentTime) final { return (lCurrentTime > 165759) && (lCurrentTime < 170501); }
@@ -58,8 +58,10 @@ public:
 
 	// 各种状态
 
-	CString GetCurrentFunction() { return m_strCurrentFunction; }
-	void SetCurrentFunction(const CString& str) { m_strCurrentFunction = str; }
+	CString GetCurrentFinnhubFunction() { return m_strCurrentFinnhubFunction; }
+	void SetCurrentFinnhubFunction(const CString& str) { m_strCurrentFinnhubFunction = str; }
+	CString GetCurrentTiingoFunction() { return m_strCurrentTiingoFunction; }
+	void SetCurrentTiingoFunction(const CString& str) { m_strCurrentTiingoFunction = str; }
 
 	static bool UpdateToken();
 
@@ -109,7 +111,8 @@ protected:
 	CMarketStatussPtr m_pvMarketStatus;
 	CMarketHolidaysPtr m_pvMarketHoliday;
 
-	CString m_strCurrentFunction; // 当前任务和处理的证券名称
+	CString m_strCurrentFinnhubFunction; // 当前任务和处理的证券名称
+	CString m_strCurrentTiingoFunction; // 当前任务和处理的证券名称
 
 	bool m_bFinnhubWebSiteAccessible; // 由于finnhub.io不时被墙，故而需要此标识。
 

@@ -9,6 +9,8 @@ CContainerTiingoStock::CContainerTiingoStock() {
 
 CContainerTiingoStock::~CContainerTiingoStock() {
 	//for (const auto& pStock : m_vStock) {
+	//if (pStock->GetDayLineEndDate() < 19700101) pStock->SetDayLineEndDate(19800101);
+	//	if (pStock->GetDayLineStartDate() == 29900101) {}
 	//pStock->SetUpdateProfileDB(true);
 	//}
 	//UpdateDB();
@@ -91,6 +93,14 @@ bool CContainerTiingoStock::LoadDB() {
 	setTiingoStock.Close();
 
 	return true;
+}
+
+void CContainerTiingoStock::ResetDayLineStartEndDate() {
+	for (int i = 0; i < Size(); i++) {
+		auto pTiingoStock = GetStock(i);
+		pTiingoStock->SetDayLineStartDate(29900101);
+		pTiingoStock->SetDayLineEndDate(19800101);
+	}
 }
 
 bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
