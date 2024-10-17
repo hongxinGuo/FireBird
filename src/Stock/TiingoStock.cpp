@@ -14,6 +14,7 @@ void CTiingoStock::ResetAllUpdateDate() {
 	SetDailyLastUpdatedDate(0);
 	SetCompanyProfileUpdateDate(19800101);
 	SetCompanyFinancialStatementUpdateDate(19800101);
+	SetDayLineUpdateDate(19800101);
 	SetDayLineStartDate(29900101);
 	SetDayLineEndDate(19800101);
 }
@@ -33,6 +34,7 @@ void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
 	m_strLocation = setTiingoStock.m_Location;
 	m_strCompanyWebSite = setTiingoStock.m_CompanyWebSite;
 	m_strSECFilingWebSite = setTiingoStock.m_SECFilingWebSite;
+	m_lIPOStatus = setTiingoStock.m_IPOStatus;
 
 	LoadUpdateDate(setTiingoStock.m_UpdateDate);
 }
@@ -75,6 +77,8 @@ void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
 	setTiingoStock.m_Location = m_strLocation;
 	setTiingoStock.m_CompanyWebSite = m_strCompanyWebSite;
 	setTiingoStock.m_SECFilingWebSite = m_strSECFilingWebSite;
+	setTiingoStock.m_IPOStatus = m_lIPOStatus;
+
 	const string sUpdateDate = m_jsonUpdateDate.dump();
 	setTiingoStock.m_UpdateDate = sUpdateDate.c_str();
 	ASSERT(sUpdateDate.size() < 10000);
@@ -232,6 +236,7 @@ void CTiingoStock::CheckUpdateStatus(long lTodayDate) {
 	//CheckProfileUpdateStatus(lTodayDate);
 	//CheckFinancialStateUpdateStatus(lTodayDate);
 	//CheckCompanyNewsUpdateStatus(lTodayDate);
+	CheckIPOStatus(lTodayDate);
 	CheckDayLineUpdateStatus(lTodayDate, gl_pWorldMarket->GetLastTradeDate(), gl_pWorldMarket->GetMarketTime(), gl_pWorldMarket->GetDayOfWeek());
 }
 
@@ -241,6 +246,15 @@ void CTiingoStock::CheckFinancialStateUpdateStatus(long lTodayDate) {
 	}
 	else {
 		m_fUpdateFinancialState = false;
+	}
+}
+
+void CTiingoStock::CheckIPOStatus(long lCurrentDate) {
+	if (!IsDelisted()) {
+		if (IsEarlyThen(GetDayLineEndDate(), lCurrentDate, 30)) {
+			SetIPOStatus(_STOCK_DELISTED_);
+			SetUpdateProfileDB(true);
+		}
 	}
 }
 

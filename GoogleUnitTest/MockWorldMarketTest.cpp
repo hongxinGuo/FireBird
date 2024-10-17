@@ -40,6 +40,12 @@ namespace FireBirdTest {
 			gl_systemMessage.PopInnerSystemInformationMessage();
 
 			while (!s_pMockWorldMarket->IsMarketTaskEmpty()) s_pMockWorldMarket->DiscardCurrentMarketTask();
+
+			for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
+				auto pStock = gl_dataContainerTiingoStock.GetStock(i);
+				pStock->SetUpdateProfileDB(false);
+			}
+			EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
 		}
 
 		static void TearDownTestSuite() {
@@ -66,12 +72,15 @@ namespace FireBirdTest {
 			EXPECT_TRUE(s_pMockWorldMarket->IsSystemReady());
 			EXPECT_TRUE(s_pMockWorldMarket->IsMarketTaskEmpty());
 
+			EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
+
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
 	};
 
 	TEST_F(CMockWorldMarketTest, TestInResetTime) {
+		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
 		EXPECT_CALL(*s_pMockWorldMarket, GetResetTime())
 		.WillRepeatedly(Return(13000));
 
@@ -79,6 +88,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(s_pMockWorldMarket->InResetTime(12701));
 		EXPECT_TRUE(s_pMockWorldMarket->InResetTime(13459));
 		EXPECT_FALSE(s_pMockWorldMarket->InResetTime(13500));
+		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
 	}
 
 	TEST_F(CMockWorldMarketTest, TestIsReadyToInquireWebData1) {

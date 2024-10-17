@@ -1,1 +1,13 @@
-{"UpdateDate":20241016,"InaccessibleStock":[{"Function":"StockFundamentalsMarketNews","Stock":[""]},{"Function":"StockPriceCandles","Stock":["ACH"]}]}
+{
+  "UpdateDate": 20241016,
+  "InaccessibleStock": [
+    {
+      "Function": "StockFundamentalsMarketNews",
+      "Stock": [ "" ]
+    },
+    {
+      "Function": "StockPriceCandles",
+      "Stock": [ "ACH", "AGAC-U", "AIH", "AJAX", "AKU", "ALNA", "AMAR", "AONE", "APEN", "ATAX" ]
+    }
+  ]
+}

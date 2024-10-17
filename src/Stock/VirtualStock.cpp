@@ -78,5 +78,9 @@ long CVirtualStock::GetDayLineEndDate() {
 		m_jsonUpdateDate[_T("DayLineEndDate")] = 19800101;
 		l = 19800101;
 	}
+	if (l < 19700101) {
+		l = 19800101;
+		SetUpdateProfileDB(true);
+	}
 	return l;
 }

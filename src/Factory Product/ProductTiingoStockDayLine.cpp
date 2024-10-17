@@ -104,6 +104,7 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	}
 	// 清除tiingo stock的日线更新标识
 	pTiingoStock->SetUpdateDayLine(false);
+	pTiingoStock->SetDayLineUpdateDate(GetMarket()->GetMarketDate());
 	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 }
 

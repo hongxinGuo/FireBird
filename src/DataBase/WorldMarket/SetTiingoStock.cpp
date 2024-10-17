@@ -22,8 +22,9 @@ CSetTiingoStock::CSetTiingoStock(const CString& strSchema, const CString& strTab
 	m_CompanyWebSite = _T("");
 	m_SECFilingWebSite = _T("");
 	m_UpdateDate = _T("");
+	m_IPOStatus = 128;
 
-	m_nFields = 16;
+	m_nFields = 17;
 }
 
 void CSetTiingoStock::DoFieldExchange(CFieldExchange* pFX) {
@@ -46,5 +47,6 @@ void CSetTiingoStock::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[Location]"), m_Location);
 	RFX_Text(pFX, _T("[CompanyWebSite]"), m_CompanyWebSite);
 	RFX_Text(pFX, _T("[SECFilingWebSite]"), m_SECFilingWebSite);
+	RFX_Long(pFX, _T("[IPOStatus]"), m_IPOStatus);
 	RFX_Text(pFX, _T("UpdateDate"), m_UpdateDate, 10000); // Note RFX_Text默认最大长度为256.
 }

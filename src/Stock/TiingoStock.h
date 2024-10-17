@@ -49,12 +49,15 @@ public:
 
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckFinancialStateUpdateStatus(long lTodayDate);
+	void CheckIPOStatus(long lCurrentDate);
 	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
 
 	long GetStatementLastUpdatedDate() { return m_jsonUpdateDate["StatementLastUpdated"]; }
 	void SetStatementLastUpdatedDate(long lLDate) { m_jsonUpdateDate["StatementLastUpdated"] = lLDate; }
 	long GetDailyLastUpdatedDate() { return m_jsonUpdateDate["DailyLastUpdated"]; }
 	void SetDailyLastUpdatedDate(long lLDate) { m_jsonUpdateDate["DailyLastUpdated"] = lLDate; }
+	long GetDayLineUpdateDate() { return m_jsonUpdateDate["DayLine"]; }
+	void SetDayLineUpdateDate(long lLDate) { m_jsonUpdateDate["DayLine"] = lLDate; }
 
 	long GetCompanyFinancialStatementUpdateDate() { return m_jsonUpdateDate["CompanyFinancialStatement"]; }
 	void SetCompanyFinancialStatementUpdateDate(long lDate) { m_jsonUpdateDate["CompanyFinancialStatement"] = lDate; }

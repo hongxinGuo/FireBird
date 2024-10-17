@@ -142,6 +142,12 @@ namespace FireBirdTest {
 			}
 			EXPECT_FALSE(gl_dataContainerChinaStock.IsUpdateProfileDB());
 
+			for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
+				auto pStock = gl_dataContainerTiingoStock.GetStock(i);
+				pStock->SetUpdateProfileDB(false);
+			}
+			EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
+
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			EXPECT_GT(gl_dataContainerChinaStock.Size(), 4800);
 			EXPECT_FALSE(gl_pChinaMarket->IsSystemReady()) << "市场默认为尚未准备好";

@@ -32,6 +32,7 @@ public:
 	CString m_Location;
 	CString m_CompanyWebSite;
 	CString m_SECFilingWebSite;
+	long m_IPOStatus;
 
 	CString m_UpdateDate;
 

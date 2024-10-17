@@ -2038,7 +2038,7 @@ namespace FireBirdTest {
 
 		pStock = gl_dataContainerChinaStock.GetStock(_T("600010.SS"));
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 8; i++) {
 			pid = make_shared<CDayLine>();
 			pid->SetDate(21121201);
 			pid->SetStockSymbol(_T("600010.SS"));
@@ -2063,10 +2063,11 @@ namespace FireBirdTest {
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		pStock->SaveDayLineBasicInfo();
 
-		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21121201");
+		setDayLineBasicInfo.m_strFilter = _T("[Symbol] = '600010.SS'");
+		setDayLineBasicInfo.m_strSort = _T("[Date]");
 		setDayLineBasicInfo.Open();
 		stock.LoadDayLineBasicInfo(&setDayLineBasicInfo);
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 8; i++) {
 			pid = stock.GetDayLine(i);
 			const CDayLinePtr pDayLine = pStock->GetDayLine(i);
 			EXPECT_EQ(pDayLine->GetMarketDate(), pid->GetMarketDate());

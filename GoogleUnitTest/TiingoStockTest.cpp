@@ -51,13 +51,24 @@ namespace FireBirdTest {
 		EXPECT_STREQ(tiingo.m_strLocation, _T(""));
 		EXPECT_STREQ(tiingo.m_strCompanyWebSite, _T(""));
 		EXPECT_STREQ(tiingo.m_strSECFilingWebSite, _T(""));
-		EXPECT_EQ(tiingo.GetCompanyFinancialStatementUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetCompanyProfileUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetDayLineUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
+		EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
+		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), 0);
+		EXPECT_EQ(stock.GetDailyLastUpdatedDate(), 0);
 	}
 
 	TEST_F(CTiingoStockTest, TestResetAllUpdateDate) {
 		stock.ResetAllUpdateDate();
 		EXPECT_EQ(stock.GetCompanyProfileUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetDayLineUpdateDate(), 19800101);
+		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
+		EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
+		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), 0);
+		EXPECT_EQ(stock.GetDailyLastUpdatedDate(), 0);
 	}
 
 	TEST_F(CTiingoStockTest, TestGetRatio) {
@@ -389,6 +400,49 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 	}
 
+	TEST_F(CTiingoStockTest, TestCheckIOPStatus1) {
+		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_NOT_CHECKED_);
+		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
+
+		stock.CheckIPOStatus(20240101);
+
+		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_DELISTED_);
+		EXPECT_TRUE(stock.IsUpdateProfileDB());
+	}
+
+	TEST_F(CTiingoStockTest, TestCheckIOPStatus2) {
+		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_NOT_CHECKED_);
+		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
+		stock.SetDayLineEndDate(20240101);
+
+		stock.CheckIPOStatus(20240201);
+
+		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_DELISTED_) << "超出30天，改变证券装态";
+		EXPECT_TRUE(stock.IsUpdateProfileDB());
+	}
+
+	TEST_F(CTiingoStockTest, TestCheckIOPStatus3) {
+		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_NOT_CHECKED_);
+		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
+		stock.SetDayLineEndDate(20240101);
+
+		stock.CheckIPOStatus(20240131);
+
+		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_NOT_CHECKED_) << "未超出30天，不改变证券装态";
+		EXPECT_FALSE(stock.IsUpdateProfileDB());
+	}
+
+	TEST_F(CTiingoStockTest, TestCheckIOPStatus4) {
+		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_NOT_CHECKED_);
+		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
+		stock.SetIPOStatus(_STOCK_DELISTED_);
+
+		stock.CheckIPOStatus(202401031);
+
+		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_DELISTED_);
+		EXPECT_FALSE(stock.IsUpdateProfileDB()) << "已处于delisted状态下，无需更改";
+	}
+
 	TEST_F(CTiingoStockTest, TestCheckCheckDayLineUpdateStatus1) {
 		stock.SetUpdateDayLine(true);
 		stock.SetActive(false);
@@ -439,7 +493,9 @@ namespace FireBirdTest {
 			stock.SetUpdateDayLine(true); // 重置状态
 		}
 		stock.SetDayLineEndDate(lPrevDay); // 本日交易日日线尚未接收
-		for (int i = 1; i < 6; i++) { EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线"; }
+		for (int i = 1; i < 6; i++) {
+			EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线";
+		}
 	}
 
 	TEST_F(CTiingoStockTest, TestCheckCheckDayLineUpdateStatus6) {
