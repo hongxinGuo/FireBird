@@ -60,6 +60,10 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateMarketNews());
 
 		gl_pTiingoDataSource->SetUpdateMarketNews(true);
+
+		// 恢复原状
+		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(9000);
+		gl_systemConfiguration.SetUpdateDB(false);
 	}
 
 	TEST_F(CProductTiingoMarketNewsTest, TestUpdateDataSourceStatus2) {
@@ -70,6 +74,11 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateMarketNews());
 
 		gl_pTiingoDataSource->SetUpdateMarketNews(true);
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 500);
+
+		// 恢复原状
+		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(9000);
+		gl_systemConfiguration.SetUpdateDB(false);
 	}
 
 	// 正确的数据

@@ -4,15 +4,13 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include"ChinaMarket.h"
-
 #include"SystemConfiguration.h"
 
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
 
-#include<string>
-#include<fstream>
+//#include<string>
+//#include<fstream>
 
 #include "resource.h"
 #include "TengxunRTDataSource.h"
@@ -66,8 +64,6 @@ std::string gl_sSystemConfiguration = R"(
 	"MarketResettingTime" : 170000,
 	"FinnhubToken" : "bv985d748v6u0",
 	"FinnhubAccountFeePaid" : true,
-	"TiingoToken" : "c897a00b7cfc2630d235316a4683156",
-	"TiingoAccountFeePaid" : false,
 	"QuandlToken" : "aBMXMyo_N3pMb3ex",
 	"QuandlAccountFeePaid" : false,
 	"FinnhubInquiryTime" : 1100,
@@ -108,85 +104,21 @@ CSystemConfiguration::CSystemConfiguration() {
 	}
 	sm_bInitialized = true;
 
-	m_fUpdateDB = false; // update flag
-	m_fInitialized = false;
 	char buffer[200];
 	_getcwd(buffer, 200);
 	m_strDirectory = buffer;
 	m_strDirectory = m_strDirectory + _T("\\"); //
 	m_strFileName = _T("SystemConfiguration.json"); // json file name
 
-	// 系统配置 
-	m_bDebugMode = false;
-	m_bReloadSystem = false;
-	m_strDatabaseAccountName = _T("FireBird");
-	m_strDatabaseAccountPassword = _T("firebird");
-	m_iBackgroundThreadPermittedNumber = 8; // 后台线程最多8个
-
-	// China Market
-	m_iChinaMarketRealtimeServer = 0; // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据。
-	m_iChinaMarketDayLineServer = 0; // 日线数据服务器。0:网易日线服务器；1：腾讯日线服务器
-	m_iChinaMarketRTDataInquiryTime = 250; // 默认实时数据查询时间间隔为250毫秒
-	m_iSavingChinaMarketStockDayLineThread = 4; // 默认中国股票历史数据存储线程数为4
 #ifdef DEBUG
 	m_bFastInquiringRTData = false; // 用于测试。当需要测试系统实时数据接收负载时，DEBUG状态时设置为真。默认为假
 #else
 	m_bFastInquiringRTData = false;
 #endif
-	m_iNumberOfRTDataSource = 4;
-	m_iSinaRTDataInquiryPerTime = 850;
-	m_iNeteaseRTDataInquiryPerTime = 900;
-	m_iTengxunRTDataInquiryPerTime = 900;
-
-	// World Market
-	m_lMarketResettingTime = 170000; // 默认市场重置时间为170000
-	m_strFinnhubToken = ""; // Finnhub token
-	m_strTiingoToken = ""; // Tiingo token
-	m_strQuandlToken = _T(""); // Quandl token
-	m_iWorldMarketFinnhubInquiryTime = 60000 / 50; // 默认每分钟最多查询50次
-	m_iWorldMarketTiingoInquiryTime = 3600000 / 500; // 默认每小时最多查询500次。 默认免费账户的查询频率为每小时500次(每次7200毫秒）；付费账户为每小时20000次（每次180毫秒）
-	m_iWorldMarketQuandlInquiryTime = 3600000 / 100; // 默认每小时最多查询100次
-	m_bFinnhubAccountFeePaid = true; // 默认为付费账户，由程序决定是否改为免费账户（自己改也可以）
-	m_bQuandlAccountFeePaid = true;// 默认为付费账户，由程序决定是否改为免费账户（自己改也可以）
-	m_bQuandlAccountFeePaid = true;// 默认为付费账户，由程序决定是否改为免费账户（自己改也可以）
-
-	// WebSocket
-	m_bUsingFinnhubWebSocket = true; // 是否使用Finnhub的WebSocket
-	m_bUsingTiingoIEXWebSocket = true; // 是否使用Tiingo的WebSocket
-	m_bUsingTiingoCryptoWebSocket = true; // 是否使用Tiingo的WebSocket
-	m_bUsingTiingoForexWebSocket = true; // 是否使用Tiingo的WebSocket
-	m_bUsingQuandlWebSocket = true;
-
-	// Data Update Rate
-	m_iStockProfileUpdateRate = 365; // 股票概况更新频率，单位为天。默认为365天。
-	m_iStockBasicFinancialUpdateRate = 45; // 基本财务更新频率，单位为天。默认为45天。
-	m_iInsideTransactionUpdateRate = 30; // 内部交易更新频率，单位为天。默认为30天。
-	m_iInsideSentimentUpdateRate = 30; // 内部交易情绪更新频率，单位为天。默认为30天。
-	m_iStockPeerUpdateRate = 90; // 股票对手更新频率，单位为天。默认为90天。
-	m_iEPSSurpriseUpdateRate = 90;
-	m_iSECFilingsUpdateRate = 30;
-
-	m_iTiingoCompanyFinancialStateUpdateRate = 45;
-
-	// spdlog日志等级
-	m_iLogLevel = SPDLOG_LEVEL_TRACE; // 默认记录等级为跟踪级（所有日志皆记录）
-
-	// 测试系统选项
-	m_strBenchmarkTestFileDirectory = _T("C:\\FireBird\\Test Data\\Benchmark\\"); // Benchmark默认目录
 
 	if (!LoadDB()) {
 		m_fUpdateDB = true;
 	}
-
-	// 具体工作计算机的初始参数
-	m_rSystemDisplay.left = 0;
-	m_rSystemDisplay.right = 2600;
-	m_rSystemDisplay.top = 0;
-	m_rSystemDisplay.bottom = 1600;
-	m_rCurrentWindow.left = 0;
-	m_rCurrentWindow.right = 2600;
-	m_rCurrentWindow.top = 0;
-	m_rCurrentWindow.bottom = 1600;
 }
 
 CSystemConfiguration::~CSystemConfiguration() {
@@ -357,12 +289,6 @@ void CSystemConfiguration::Update(json& jsonData) {
 		m_fUpdateDB = true;
 	}
 	try {
-		sTemp = jsonData.at("WorldMarket").at("TiingoToken"); // Tiingo token
-		m_strTiingoToken = sTemp.c_str();
-	} catch (json::out_of_range&) {
-		m_fUpdateDB = true;
-	}
-	try {
 		sTemp = jsonData.at("WorldMarket").at("QuandlToken"); // Quandl token
 		m_strQuandlToken = sTemp.c_str();
 	} catch (json::out_of_range&) {
@@ -391,13 +317,13 @@ void CSystemConfiguration::Update(json& jsonData) {
 
 	// Tiingo.com
 	try {
-		m_bTiingoAccountFeePaid2 = jsonData.at("Tiingo").at("AccountFeePaid"); // 
+		m_bTiingoAccountFeePaid = jsonData.at("Tiingo").at("AccountFeePaid"); // 
 	} catch (json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		sTemp = jsonData.at("Tiingo").at("Token"); //
-		m_strTiingoToken2 = sTemp.c_str();
+		m_strTiingoToken = sTemp.c_str();
 	} catch (json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
@@ -564,8 +490,6 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	jsonData["WorldMarket"]["MarketResettingTime"] = m_lMarketResettingTime;
 	jsonData["WorldMarket"]["FinnhubToken"] = m_strFinnhubToken;
 	jsonData["WorldMarket"]["FinnhubAccountFeePaid"] = m_bFinnhubAccountFeePaid;
-	jsonData["WorldMarket"]["TiingoToken"] = m_strTiingoToken;
-	jsonData["WorldMarket"]["TiingoAccountFeePaid"] = m_bTiingoAccountFeePaid;
 	jsonData["WorldMarket"]["QuandlToken"] = m_strQuandlToken;
 	jsonData["WorldMarket"]["QuandlAccountFeePaid"] = m_bQuandlAccountFeePaid;
 	jsonData["WorldMarket"]["FinnhubInquiryTime"] = m_iWorldMarketFinnhubInquiryTime;
@@ -573,8 +497,8 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	jsonData["WorldMarket"]["QuandlInquiryTime"] = m_iWorldMarketQuandlInquiryTime;
 
 	// Tiingo.com
-	jsonData["Tiingo"]["AccountFeePaid"] = m_bTiingoAccountFeePaid2;
-	jsonData["Tiingo"]["Token"] = m_strTiingoToken2;
+	jsonData["Tiingo"]["AccountFeePaid"] = m_bTiingoAccountFeePaid;
+	jsonData["Tiingo"]["Token"] = m_strTiingoToken;
 	jsonData["Tiingo"]["HourlyRequestLimit"] = m_iTiingoHourLyRequestLimit;
 	jsonData["Tiingo"]["DailyRequestLimit"] = m_lTiingoDailyRequestLimit;
 	jsonData["Tiingo"]["BandWidth"] = m_llTiingoBandWidth;
@@ -617,17 +541,7 @@ void CSystemConfiguration::ChangeTiingoAccountTypeToFree() {
 
 void CSystemConfiguration::ChangeTiingoAccountTypeToPaid() {
 	m_bTiingoAccountFeePaid = true;
-	m_iWorldMarketTiingoInquiryTime = 9000; // 每次9000毫秒
-}
-
-void CSystemConfiguration::ChangeTiingoAccountTypeToFree2() {
-	m_bTiingoAccountFeePaid2 = false;
-	m_iWorldMarketTiingoInquiryTime = 9000; // 每次9000毫秒
-}
-
-void CSystemConfiguration::ChangeTiingoAccountTypeToPaid2() {
-	m_bTiingoAccountFeePaid2 = true;
-	m_iWorldMarketTiingoInquiryTime = 9000; // 每次9000毫秒
+	m_iWorldMarketTiingoInquiryTime = 500; // 每次500毫秒.每小时最大限额为10000。
 }
 
 void CSystemConfiguration::UsingSinaRealtimeServer() {

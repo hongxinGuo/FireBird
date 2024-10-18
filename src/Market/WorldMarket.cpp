@@ -396,12 +396,10 @@ void CWorldMarket::TaskPerSecond(long lCurrentTime) {
 	}
 	if (--m_iCountDownPerHour < 0) { // 每小时一次
 		ASSERT(gl_systemConfiguration.GetTiingoHourLyRequestLimit() > 100);
-		gl_pTiingoDataSource->SetHourlyRequestPermit(gl_systemConfiguration.GetTiingoHourLyRequestLimit());
 		m_iCountDownPerHour = 3599;
 	}
 	if (--m_iCountDownPerDay < 0) { // 每天一次
 		ASSERT(gl_systemConfiguration.GetTiingoDailyRequestLimit() > 10000);
-		gl_pTiingoDataSource->SetDailyRequestPermit(gl_systemConfiguration.GetTiingoDailyRequestLimit());
 		m_iCountDownPerDay = 3600 * 24 - 1;
 	}
 }

@@ -48,11 +48,10 @@ namespace FireBirdTest {
 		json jsonMessage;
 		try {
 			jsonMessage = json::parse(strSymbol);
-		}
-		catch (json::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
+		} catch (json::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
 		EXPECT_TRUE(jsonMessage["eventName"] == _T("subscribe"));
 		EXPECT_EQ(jsonMessage["eventData"]["thresholdLevel"], 2);
-		EXPECT_EQ(jsonMessage["authorization"], _T("c897a00b7cfc2adffc630d23befd5316a4683156"));
+		EXPECT_EQ(jsonMessage["authorization"], _T("c897a00b7cfc2630d235316a4683156"));
 		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(0), _T("a"));
 		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(1), _T("aa"));
 		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(2), _T("aal"));

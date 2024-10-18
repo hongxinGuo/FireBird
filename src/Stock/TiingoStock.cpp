@@ -90,7 +90,7 @@ void CTiingoStock::Update(CSetTiingoStock& setTiingoStock) {
 	setTiingoStock.Update();
 }
 
-void CTiingoStock::UpdateFinancialStateDB() const {
+void CTiingoStock::UpdateFinancialStateDB() {
 	ASSERT(m_pvFinancialState != nullptr);
 	CSetTiingoCompanyFinancialState setFinancialState;
 	vector<CTiingoCompanyFinancialStatePtr> vOldFinancialState;
@@ -154,6 +154,23 @@ void CTiingoStock::UpdateFinancialStateDB() const {
 	}
 	setFinancialState.m_pDatabase->CommitTrans();
 	setFinancialState.Close();
+
+	if (lSizeOfOldDayLine > 0) {
+		if (vOldFinancialState.at(lSizeOfOldDayLine - 1)->m_yearQuarter < m_pvFinancialState->at(m_pvFinancialState->size() - 1)->m_yearQuarter) {
+			SetCompanyFinancialStatementUpdateDate(m_pvFinancialState->at(m_pvFinancialState->size() - 1)->m_yearQuarter);
+			SetUpdateProfileDB(true);
+		}
+		else {
+			if (GetCompanyFinancialStatementUpdateDate() < vOldFinancialState.at(lSizeOfOldDayLine - 1)->m_yearQuarter) {
+				SetCompanyFinancialStatementUpdateDate(vOldFinancialState.at(lSizeOfOldDayLine - 1)->m_yearQuarter);
+				SetUpdateProfileDB(true);
+			}
+		}
+	}
+	else {
+		SetCompanyFinancialStatementUpdateDate(m_pvFinancialState->at(m_pvFinancialState->size() - 1)->m_yearQuarter);
+		SetUpdateProfileDB(true);
+	}
 }
 
 bool CTiingoStock::UpdateDayLineDB() {

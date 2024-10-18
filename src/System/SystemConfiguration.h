@@ -11,6 +11,8 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <spdlog/common.h>
+
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 #include"nlohmann/json.hpp"
 
@@ -33,10 +35,6 @@ public:
 	void ChangeFinnhubAccountTypeToFree();
 	void ChangeFinnhubAccountTypeToPaid();
 	bool IsPaidTypeFinnhubAccount() const noexcept { return m_bFinnhubAccountFeePaid; }
-
-	void ChangeTiingoAccountTypeToFree();
-	void ChangeTiingoAccountTypeToPaid();
-	bool IsPaidTypeTiingoAccount() const noexcept { return m_bTiingoAccountFeePaid; }
 
 	void SetConfigurationFileDirectory(const CString& fileDirectory) { m_strDirectory = fileDirectory; }
 	[[nodiscard]] CString GetConfigurationFileDirectory() { return m_strDirectory; }
@@ -88,7 +86,6 @@ public:
 	// World market
 	long GetWorldMarketResettingTime() const noexcept { return m_lMarketResettingTime; }
 	[[nodiscard]] CString GetFinnhubToken() noexcept { return m_strFinnhubToken; }
-	[[nodiscard]] CString GetTiingoToken() noexcept { return m_strTiingoToken; }
 	[[nodiscard]] CString GetQuandlToken() noexcept { return m_strQuandlToken; }
 	[[nodiscard]] int GetWorldMarketFinnhubInquiryTime() const noexcept { return m_iWorldMarketFinnhubInquiryTime; } // 单位为毫秒
 	void SetWorldMarketFinnhubInquiryTime(const int iWorldMarketFinnhubInquiryTime) noexcept {
@@ -117,10 +114,10 @@ public:
 	CString GetCurrentStock() const noexcept { return m_strCurrentStock; }
 
 	// Tiingo.com
-	void ChangeTiingoAccountTypeToFree2();
-	void ChangeTiingoAccountTypeToPaid2();
-	bool IsPaidTypeTiingoAccount2() const noexcept { return m_bTiingoAccountFeePaid2; }
-	[[nodiscard]] CString GetTiingoToken2() noexcept { return m_strTiingoToken2; }
+	void ChangeTiingoAccountTypeToFree();
+	void ChangeTiingoAccountTypeToPaid();
+	bool IsPaidTypeTiingoAccount() const noexcept { return m_bTiingoAccountFeePaid; }
+	[[nodiscard]] CString GetTiingoToken() noexcept { return m_strTiingoToken; }
 
 	[[nodiscard]] int GetTiingoHourLyRequestLimit() const noexcept { return m_iTiingoHourLyRequestLimit; }
 	void SetTiingoHourLyRequestLimit(const int iTiingoHourLyRequestLimit) noexcept {
@@ -287,6 +284,8 @@ public:
 	bool IsExitingCalculatingRS() const { return m_fExitingCalculatingRS; }
 	void SetWorkingMode(const bool bNormal) { m_fWorkingMode = bNormal; }
 	bool IsWorkingMode() const { return m_fWorkingMode; }
+	void SetTiingoAccountAddOnPaid(const bool bNormal) { m_fTiingoAccountAddOnPaid = bNormal; }
+	bool IsTiingoAccountAddOnPaid() const { return m_fTiingoAccountAddOnPaid; }
 
 	// 当下载新浪或者网易实时数据出现问题时，系统的其他网络活动应该让步。
 	bool IsWebBusy();
@@ -296,18 +295,18 @@ public:
 protected:
 	static bool sm_bInitialized; // 使用静态变量来保证只生成唯一实列。
 	CString m_strDirectory; // 配置文件目录
-	CString m_strFileName; // 配置文件名称
+	CString m_strFileName{ _T("SystemConfiguration.json") }; // 配置文件名称
 
 	// 环境配置
 	int m_iDisplayPropertyPage{ 0 }; // application : 0, 
 
 	// 系统配置
-	int m_iLogLevel; // spdlog日志文件记录等级: trace, debug, info, warn, error, critical, off
+	int m_iLogLevel{ SPDLOG_LEVEL_TRACE }; // spdlog日志文件记录等级: trace, debug, info, warn, error, critical, off。默认记录等级为跟踪级（所有日志皆记录）
 	bool m_bDebugMode{ false }; // 系统是否是测试状态
-	bool m_bReloadSystem{ false }; // 系统是否允许周期性重启
-	CString m_strDatabaseAccountName; // 数据库账户名称
-	CString m_strDatabaseAccountPassword; // 数据库账户密码
-	int m_iBackgroundThreadPermittedNumber; // 后台线程最大允许值
+	bool m_bReloadSystem{ true }; // 系统是否允许周期性重启
+	CString m_strDatabaseAccountName{ _T("FireBird") }; // 数据库账户名称
+	CString m_strDatabaseAccountPassword{ _T("firebird") }; // 数据库账户密码
+	int m_iBackgroundThreadPermittedNumber{ 8 }; // 后台线程最大允许值
 
 	// 系统参数
 	int m_iChinaMarketRealtimeServer{ 0 }; // 中国市场实时数据服务器.0:新浪实时数据服务器； 1:网易实时数据服务器。
@@ -315,21 +314,19 @@ protected:
 	int m_iChinaMarketRTDataInquiryTime{ 250 }; // 中国市场实时数据查询间隔时间,单位为毫秒
 
 	// World Market
-	long m_lMarketResettingTime{ 170000 };
-	CString m_strFinnhubToken; // 令牌
-	CString m_strTiingoToken; // 令牌
-	CString m_strQuandlToken; // 令牌
+	long m_lMarketResettingTime{ 170000 }; // 默认市场重置时间为170000
+	CString m_strFinnhubToken{ _T("") }; // 令牌
+	CString m_strQuandlToken{ _T("") }; // 令牌
 	bool m_bFinnhubAccountFeePaid{ true }; // 付费账户或者免费账户
-	bool m_bTiingoAccountFeePaid{ true };
 	bool m_bQuandlAccountFeePaid{ true };
-	int m_iWorldMarketFinnhubInquiryTime{ 1100 }; // 每次查询间隔时间，单位为毫秒。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
-	int m_iWorldMarketTiingoInquiryTime{ 3600000 / 500 }; // 每次查询间隔时间，单位为毫秒。付费账户每小时5000次，免费账户每小时50次。
-	int m_iWorldMarketQuandlInquiryTime{ 3600000 / 100 }; // 每次查询间隔时间，单位为毫秒
+	int m_iWorldMarketFinnhubInquiryTime{ 60000 / 50 }; // 默认每分钟最多查询50次。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
+	int m_iWorldMarketTiingoInquiryTime{ 3600000 / 500 }; // 每次查询间隔时间，单位为毫秒。付费账户每小时20000次，免费账户每小时500次。
+	int m_iWorldMarketQuandlInquiryTime{ 3600000 / 100 }; // 每次查询间隔时间，单位为毫秒.默认每小时最多查询100次
 	CString m_strCurrentStock{ _T("") }; // 当前所选股票
 
 	// Tiingo.com
-	bool m_bTiingoAccountFeePaid2{ true };
-	CString m_strTiingoToken2{ _T("") };
+	bool m_bTiingoAccountFeePaid{ true };
+	CString m_strTiingoToken{ _T("") };
 	int m_iTiingoHourLyRequestLimit{ 500 };
 	long m_lTiingoDailyRequestLimit{ 20000 };
 	long long m_llTiingoBandWidth{ 5368709120 };
@@ -352,18 +349,18 @@ protected:
 
 	// 网络数据更新频率（以天数记）
 	// Finnhub数据
-	int m_iStockProfileUpdateRate{ 365 }; // 默认365天更新一次
-	int m_iInsideTransactionUpdateRate{ 30 }; // 默认30天更新一次
-	int m_iInsideSentimentUpdateRate{ 30 }; // 默认30天更新一次
-	int m_iStockBasicFinancialUpdateRate{ 45 }; // 默认45天更新一次
-	int m_iStockPeerUpdateRate{ 90 }; // 默认90天更新一次
+	int m_iStockProfileUpdateRate{ 365 };  // 股票概况更新频率，单位为天。默认为365天。
+	int m_iInsideTransactionUpdateRate{ 30 };  // 内部交易更新频率，单位为天。默认为30天
+	int m_iInsideSentimentUpdateRate{ 30 }; // 内部交易情绪更新频率，单位为天。默认为30天。
+	int m_iStockBasicFinancialUpdateRate{ 45 }; // 基本财务更新频率，单位为天。默认为45天。
+	int m_iStockPeerUpdateRate{ 90 }; // 股票对手更新频率，单位为天。默认为90天
 	int m_iEPSSurpriseUpdateRate{ 90 }; // 默认90天更新一次
 	int m_iSECFilingsUpdateRate{ 30 }; // 默认30天更新一次
 	// Tiingo 数据
 	int m_iTiingoCompanyFinancialStateUpdateRate{ 45 }; // Tiingo公司金融数据更新
 
 	// 测试系统
-	CString m_strBenchmarkTestFileDirectory; // 性能测试文件所在的目录
+	CString m_strBenchmarkTestFileDirectory{ _T("C:\\FireBird\\Test Data\\Benchmark\\") }; // 性能测试文件所在的目录
 
 	bool m_fUpdateDB{ false };
 	bool m_fInitialized{ false };
@@ -371,13 +368,14 @@ protected:
 	// 以下为无需存储之系统参数
 	//
 	// 具体工作计算机的参数
-	RECT m_rSystemDisplay; // 显示器位素面积
-	RECT m_rCurrentWindow; // 当前窗口位素面积
+	RECT m_rSystemDisplay{ CRect(0, 0, 2600, 1600) }; // 显示器位素面积
+	RECT m_rCurrentWindow{ CRect(0, 0, 2600, 1600) }; // 当前窗口位素面积
 
 	//无需存储的变量
 	std::atomic_bool m_fExitingSystem{ false }; //  系统退出标识，用于终止其他线程。
 	bool m_fExitingCalculatingRS{ false }; // 用于通知工作线程退出的信号
-	bool m_fWorkingMode{ true }; // 正常模式标识，默认为假。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
+	bool m_fWorkingMode{ true }; // 正常模式标识，默认为真。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
+	bool m_fTiingoAccountAddOnPaid{ true }; // Tiingo账户AddOn功能已购买。申请第一个financial state时判断此标识的真伪。
 };
 
 extern std::string gl_sSystemConfiguration; // 系统配置信息

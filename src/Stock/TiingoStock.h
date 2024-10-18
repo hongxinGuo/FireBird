@@ -34,7 +34,7 @@ public:
 
 	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
 	void UpdateDayLine(const vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
-	void UpdateFinancialStateDB() const;
+	void UpdateFinancialStateDB();
 	bool UpdateDayLineDB();
 
 	void UpdateProfile(const CTiingoStockPtr& pStock);

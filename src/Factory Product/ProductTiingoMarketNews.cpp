@@ -29,9 +29,7 @@ CString CProductTiingoMarketNews::CreateMessage() {
 void CProductTiingoMarketNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoMarketNews = ParseTiingoMarketNews(pWebData);
 	if (!pvTiingoMarketNews->empty()) {
-		char buffer[100];
-		long lTemp = 0;
-		for (const auto& pTiingoStock : *pvTiingoMarketNews) {
+		for (const auto& pMarketNews : *pvTiingoMarketNews) {
 		}
 	}
 	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
@@ -71,12 +69,11 @@ CVectorTiingoMarketNewsPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const
 	CTiingoMarketNewsPtr pMarketNews = nullptr;
 	string s1;
 	CString strNumber;
-	int year, month, day, hour, minute, second, extra;
+	int year, month, day, hour, minute, second;
 	double f;
 	if (!IsValidData(pWebData)) return pvTiingoMarketNews;
 
 	try {
-		string_view sv;
 		string_view svJson = pWebData->GetStringView(0, pWebData->GetBufferLength());
 		ondemand::parser parser;
 		const simdjson::padded_string jsonPadded(svJson);
@@ -104,7 +101,7 @@ CVectorTiingoMarketNewsPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const
 			sscanf_s(s1.c_str(), _T("%04i-%02i-%02iT%02i:%02i:%02iZ"), &year, &month, &day, &hour, &minute, &second);
 			pMarketNews->m_LLPublishDate = static_cast<INT64>(year) * 10000000000 + month * 100000000 + day * 1000000 + hour * 10000 + minute * 100 + second;
 
-			auto jArray = jsonGetArray(itemValue, _T("tickers"));
+			//auto jArray = jsonGetArray(itemValue, _T("tickers"));
 			for (auto value : itemValue[_T("tickers")]) {
 				auto s2 = value.get_string().value();
 				string s4(s2.data(), s2.length());

@@ -41,19 +41,12 @@ public:
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
 
-	void SetHourlyRequestPermit(int iPermit) noexcept { m_iHourlyRequestPermit = iPermit; }
-	int GetHourlyRequestPermit() const noexcept { return m_iHourlyRequestPermit; }
-	void SetDailyRequestPermit(long lPermit) noexcept { m_lDailyRequestPermit = lPermit; }
-	long GetDailyRequestPermit() const noexcept { return m_lDailyRequestPermit; }
 	void SetBandWidth(long long llBandWidth) noexcept { m_llBandWidthLeft = llBandWidth; }
 	long long GetBandWidthLeft() const noexcept { return m_llBandWidthLeft; }
 	void SetBandWidthLeft(long long llLeft) noexcept { m_llBandWidthLeft = llLeft; }
 
-	bool ReachRequestLimit() const noexcept { return m_iHourlyRequestPermit <= 0 || m_lDailyRequestPermit <= 0; }
-	void ReduceRequestPermit() noexcept {
-		m_iHourlyRequestPermit--;
-		m_lDailyRequestPermit--;
-	}
+	void ResetCurrentDayLinePos() noexcept { m_lCurrentUpdateDayLinePos = 0; }
+	void ResetCurrentFinancialStatementPos() noexcept { m_lCurrentUpdateFinancialStatementPos = 0; }
 
 protected:
 	CTiingoFactory m_TiingoFactory;
@@ -67,9 +60,10 @@ protected:
 
 	bool m_fTiingoDataInquiryFinished{ false };
 
+	long m_lCurrentUpdateDayLinePos{ 0 };
+	long m_lCurrentUpdateFinancialStatementPos{ 0 };
+
 	// ´ø¿íÏÞÖÆ
-	int m_iHourlyRequestPermit{ 500 };
-	long m_lDailyRequestPermit{ 20000 };
 	long long m_llBandWidthLeft{ 5368709120 };
 };
 

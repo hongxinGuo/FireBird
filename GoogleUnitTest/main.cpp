@@ -92,7 +92,7 @@ namespace FireBirdTest {
 		~TestEnvironment() override = default;
 
 		void SetUp() override {
-			ASSERT(!gl_systemConfiguration.IsWorkingMode());
+			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 			time(&gl_tUTCTime);
 
 			CreateSimdjsonEmptyArray();
@@ -177,6 +177,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
+			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 
@@ -237,7 +238,7 @@ int main(int argc, char* argv[]) {
 	// gTest takes ownership of the TestEnvironment ptr - we don't delete it.
 	AddGlobalTestEnvironment(new TestEnvironment);
 
-	ASSERT(gl_systemConfiguration.IsWorkingMode());
+	ASSERT(gl_systemConfiguration.IsWorkingMode()); // 预设为是实际系统。
 	gl_systemConfiguration.SetWorkingMode(false); // 实际系统，测试状态为假。
 
 	GTEST_FLAG_SET(death_test_style, "fast");

@@ -56,13 +56,10 @@ namespace FireBirdTest {
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubToken"));
 		EXPECT_TRUE(sTemp == _T("bv985d748v6u0"));
-		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/TiingoToken"));
-		EXPECT_TRUE(sTemp == _T("c897a00b7cfc2630d235316a4683156"));
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/QuandlToken"));
 		EXPECT_TRUE(sTemp == _T("aBMXMyo_N3pMb3ex"));
 
 		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubAccountFeePaid")));
-		EXPECT_FALSE(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/TiingoAccountFeePaid")));
 		EXPECT_FALSE(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/QuandlAccountFeePaid")));
 
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubInquiryTime")), 1100);
@@ -115,8 +112,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 3600000 / 400) << "默认每小时查询最大数量为400";
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime(), 3600000 / 100) << "默认每小时查询最大数量为100";
 
-		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount2());
-		EXPECT_STREQ(gl_systemConfiguration.GetTiingoToken2(), _T("c897a00b7cfc2630d235316a4683156"));
+		EXPECT_STREQ(gl_systemConfiguration.GetTiingoToken(), _T("c897a00b7cfc2630d235316a4683156"));
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoHourLyRequestLimit(), 500);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoDailyRequestLimit(), 20000);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoBandWidth(), 5368709120);
@@ -127,11 +123,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetStockPeerUpdateRate(), 90);
 		EXPECT_EQ(gl_systemConfiguration.GetStockBasicFinancialUpdateRate(), 45);
 
+		// 非储存标识的初始值
+		EXPECT_FALSE(gl_systemConfiguration.IsExitingCalculatingRS());
+		EXPECT_FALSE(gl_systemConfiguration.IsExitingSystem());
+		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode()) << "测试时已经预置为假了";
+		EXPECT_TRUE(gl_systemConfiguration.IsTiingoAccountAddOnPaid());
+
 		//	EXPECT_EQ(gl_systemConfiguration.)
-		//	EXPECT_EQ(gl_systemConfiguration.)
-		//		EXPECT_EQ(gl_systemConfiguration.)
-		//		EXPECT_EQ(gl_systemConfiguration.)
-		//		EXPECT_EQ(gl_systemConfiguration.)
 	}
 
 	TEST_F(CSystemConfigurationTest, TestIsUsingSinaRTServer) {
@@ -212,7 +210,6 @@ namespace FireBirdTest {
 
 	TEST_F(CSystemConfigurationTest, TestChangeFinnhubAccountType) {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100);
-		const bool bSaved = gl_systemConfiguration.IsUpdateDB();
 		gl_systemConfiguration.SetUpdateDB(false);
 		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(220);
 
@@ -228,11 +225,11 @@ namespace FireBirdTest {
 
 		// 恢复原状
 		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(1100);
+		gl_systemConfiguration.SetUpdateDB(false);
 	}
 
 	TEST_F(CSystemConfigurationTest, TestChangeTiingoAccountType) {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 9000);
-		const bool bSaved = gl_systemConfiguration.IsUpdateDB();
 		gl_systemConfiguration.SetUpdateDB(false);
 		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(220);
 
@@ -243,31 +240,12 @@ namespace FireBirdTest {
 
 		gl_systemConfiguration.ChangeTiingoAccountTypeToPaid();
 
-		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 9000);
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 500);
 		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
 
 		// 恢复原状
 		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(9000);
-	}
-
-	TEST_F(CSystemConfigurationTest, TestChangeTiingoAccountType2) {
-		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 9000);
-		const bool bSaved = gl_systemConfiguration.IsUpdateDB();
 		gl_systemConfiguration.SetUpdateDB(false);
-		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(220);
-
-		gl_systemConfiguration.ChangeTiingoAccountTypeToFree2();
-
-		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 9000);
-		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
-
-		gl_systemConfiguration.ChangeTiingoAccountTypeToPaid2();
-
-		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 9000);
-		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
-
-		// 恢复原状
-		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(9000);
 	}
 
 	TEST_F(CSystemConfigurationTest, TestLoadSaveWithNlohmannjson) {
