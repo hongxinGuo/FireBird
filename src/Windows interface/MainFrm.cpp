@@ -109,6 +109,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_UPDATE_TIINGO_FUNDAMENTAL_DEFINITION, &CMainFrame::OnUpdateTiingoFundamentalDefinition)
 	ON_UPDATE_COMMAND_UI(ID_UPDATE_TIINGO_FUNDAMENTAL_DEFINITION, &CMainFrame::OnUpdateUpdateTiingoFundamentalDefinition)
 	ON_COMMAND(ID_RESET_TIINGO_DAYLINE_DATE, &CMainFrame::OnResetTiingoDaylineDate)
+	ON_COMMAND(ID_CREATE_TIINGO_TRADEDAY_DAYLINE, &CMainFrame::OnCreateTiingoTradedayDayline)
+	ON_UPDATE_COMMAND_UI(ID_CREATE_TIINGO_TRADEDAY_DAYLINE, &CMainFrame::OnUpdateCreateTiingoTradedayDayline)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1234,4 +1236,12 @@ void CMainFrame::OnUpdateUpdateTiingoFundamentalDefinition(CCmdUI* pCmdUI) {
 void CMainFrame::OnResetTiingoDaylineDate() {
 	// TODO: Add your command handler code here
 	gl_dataContainerTiingoStock.ResetDayLineStartEndDate();
+}
+
+void CMainFrame::OnCreateTiingoTradedayDayline() {
+	gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine(gl_pWorldMarket->GetMarketTime());
+}
+
+void CMainFrame::OnUpdateCreateTiingoTradedayDayline(CCmdUI* pCmdUI) {
+	// TODO: Add your command update UI handler code here
 }

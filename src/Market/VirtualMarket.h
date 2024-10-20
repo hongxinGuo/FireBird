@@ -78,6 +78,11 @@ public:
 		return m_lMarketLastTradeDate;
 	}
 
+	long GetNewestTradeDate() noexcept {
+		CalculateNewestTradeDate();
+		return m_lMarketNewestTradeDate;
+	}
+
 	bool IsWorkingDay() const noexcept;
 	static bool IsWorkingDay(CTime timeCurrent) noexcept;
 	static bool IsWorkingDay(long lDate) noexcept;
@@ -97,6 +102,7 @@ public:
 
 	void CalculateTime() noexcept; // 计算本市场的各时间
 	void CalculateLastTradeDate() noexcept;
+	void CalculateNewestTradeDate() noexcept;
 
 	virtual int XferMarketTimeToIndex() {// 将本市场的市场时间变成显示位置的偏移（各市场分别实现）
 		ASSERT(false);
@@ -147,6 +153,7 @@ protected:
 	long m_lMarketDate{ 0 }; //本市场的日期
 	long m_lMarketTime{ 0 }; // 本市场的时间
 	long m_lMarketLastTradeDate{ 0 }; // 本市场的上次交易日期
+	long m_lMarketNewestTradeDate{ 0 }; // 本市场最新的交易日期
 	tm m_tmMarket{ 0, 0, 0, 1, 0, 1970 }; // 本市场时间结构
 
 	//系统状态区

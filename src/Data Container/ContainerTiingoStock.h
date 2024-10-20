@@ -1,8 +1,7 @@
 #pragma once
 
-#include"TiingoStock.h"
-
 #include"ContainerVirtualStock.h"
+#include"TiingoStock.h"
 
 class CContainerTiingoStock : public CContainerVirtualStock {
 public:
@@ -23,6 +22,9 @@ public:
 	bool LoadDB();
 
 	void ResetDayLineStartEndDate();
+	void CreateTradeDayDayLine(long lTradeDay);
+
+	long GetTotalActiveStocks() const;
 
 	bool IsUpdateFinancialStateDB() noexcept;
 	void UpdateFinancialStateDB() const;

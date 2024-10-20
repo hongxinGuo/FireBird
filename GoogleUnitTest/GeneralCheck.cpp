@@ -78,6 +78,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetStockProfileUpdateRate(), 365);
 		EXPECT_EQ(gl_systemConfiguration.GetStockPeerUpdateRate(), 90);
 		EXPECT_EQ(gl_systemConfiguration.GetStockBasicFinancialUpdateRate(), 45);
+
+		EXPECT_TRUE(gl_systemConfiguration.IsTiingoAccountAddOnPaid());
 	}
 
 	void ChinaMarketCheck() {

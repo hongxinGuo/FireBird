@@ -14,7 +14,7 @@ struct Test_FinnhubWebData {
 	Test_FinnhubWebData(const long lIndex, const CString& strSymbol, const CString& strData) {
 		m_lIndex = lIndex;
 		m_strSymbol = strSymbol;
-		m_pData = make_shared<CWebData>();
+		m_pData = std::make_shared<CWebData>();
 		m_pData->Test_SetBuffer_(strData);
 	}
 
@@ -35,7 +35,7 @@ struct Test_TiingoWebData {
 	Test_TiingoWebData(const long lIndex, const CString& strSymbol, const CString& strData) {
 		m_lIndex = lIndex;
 		m_strSymbol = strSymbol;
-		m_pData = make_shared<CWebData>();
+		m_pData = std::make_shared<CWebData>();
 		m_pData->Test_SetBuffer_(strData);
 	}
 

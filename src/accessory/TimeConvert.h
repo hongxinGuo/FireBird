@@ -2,6 +2,7 @@
 
 // 时间转换辅助函数。time_t使用UTC（GMT）标准，其他形式的时间为该市场的标准时间，默认采用东八区标准时间。
 [[nodiscard]] long GetDayOfWeek();
+[[nodiscard]] time_t ConvertToTTime(long lYear, long lMonth, long lDay, long lHour, long lMinute, long lSecond, time_t tTimeZone); // 将整型(YYYYMMDD)转变为time_t形式.
 [[nodiscard]] time_t ConvertToTTime(long lDate, time_t tTimeZone, long lTime); // 将整型(YYYYMMDD)转变为time_t形式.
 [[nodiscard]] long ConvertToDate(time_t tUTC, time_t tTimeZone) noexcept;// 将时间转变为整型(YYYYMMDD)形式
 [[nodiscard]] long ConvertToTime(time_t tUTC, time_t tTimeZone) noexcept; // 将时间转变为整数（HHMMSS)形式

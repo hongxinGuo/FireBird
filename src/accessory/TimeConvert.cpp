@@ -10,6 +10,14 @@ long GetDayOfWeek() {
 	return tm_.tm_wday;
 }
 
+time_t ConvertToTTime(long lYear, long lMonth, long lDay, long lHour, long lMinute, long lSecond, time_t tTimeZone) {
+	ASSERT(lYear > 1970);
+	ASSERT(lMonth > 0);
+	tm tmMarket{ lSecond, lMinute, lHour, lDay, lMonth - 1, lYear - 1900 };
+
+	return _mkgmtime(&tmMarket) + tTimeZone;
+}
+
 time_t ConvertToTTime(const long lDate, const time_t tTimeZone, const long lTime) {
 	tm tmMarket{ 0, 0, 0, 0, 0, 0 };
 

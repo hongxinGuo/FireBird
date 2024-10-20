@@ -48,6 +48,8 @@ enum {
 	WORLD_MARKET_UPDATE_DB__, // 更新市场各数据库。每一分钟一次。
 	WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, // 监测各WebSocket状态。每分钟一次
 	WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__,	// 处理各WebSocket接收到的数据。每秒钟一次
+	WORLD_MARKET_TIINGO_INQUIRE_REALTIME_DATA__, // 每日收市后下载当天交易数据，以备生成当天日线数据。
+	WORLD_MARKET_TIINGO_COMPILE_STOCK__, // 收市后生成tiingo日线数据。
 	WORLD_MARKET_TIMER_TASK_PER_MINUTE__,// 每分钟执行一次的任务调度
 	WORLD_MARKET_TIMER_TASK_PER_HOUR__, // 每小时执行一次的任务调度
 	WORLD_MARKET_TIMER_TASK_PER_DAY__, // 每天执行一次的任务调度

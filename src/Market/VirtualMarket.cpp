@@ -210,6 +210,23 @@ void CVirtualMarket::CalculateLastTradeDate() noexcept {
 	m_lMarketLastTradeDate = ConvertToDate(&tmMarketTime);
 }
 
+void CVirtualMarket::CalculateNewestTradeDate() noexcept {
+	time_t tMarket;
+
+	switch (m_tmMarket.tm_wday) {
+	case 0: //星期日
+		tMarket = gl_tUTCTime - 2 * 24 * 3600; //
+		break;
+	case 6: // 星期六
+		tMarket = gl_tUTCTime - 1 * 24 * 3600; //
+		break;
+	default: // 其他
+		tMarket = gl_tUTCTime; //
+	}
+	const tm tmMarketTime = GetMarketTime(tMarket);
+	m_lMarketNewestTradeDate = ConvertToDate(&tmMarketTime);
+}
+
 bool CVirtualMarket::IsWorkingDay() const noexcept {
 	if (m_tmMarket.tm_wday == 0 || m_tmMarket.tm_wday == 6) {
 		return false;

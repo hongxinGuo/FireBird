@@ -172,6 +172,12 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 			ASSERT(!gl_systemConfiguration.IsUsingFinnhubWebSocket());
 			gl_systemConfiguration.SetUsingFinnhubWebSocket(true); // 只设置标识，实际启动由其他任务完成。
 			break;
+		case WORLD_MARKET_TIINGO_INQUIRE_REALTIME_DATA__:
+			gl_pTiingoDataSource->SetUpdateIEXTopOFBook(true); // 
+			break;
+		case WORLD_MARKET_TIINGO_COMPILE_STOCK__:
+			gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine(lCurrentTime);
+			break;
 		default:
 			break;
 		}
@@ -212,6 +218,10 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lCurrentTime);
 
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0));
+
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_REALTIME_DATA__, 210000); // 收市后18点下载tiingo当天数据。
+
+	AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, 210500); //180500生成tiingo当天日线数据
 
 	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
@@ -386,6 +396,21 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 	return (fUpdated);
 }
 
+void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
+	if (!gl_pTiingoDataSource->IsUpdateIEXTopOFBook()) {
+		gl_runtime.background_executor()->post([] {
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataContainerTiingoStock.CreateTradeDayDayLine(gl_pWorldMarket->GetNewestTradeDate());
+			gl_UpdateWorldMarketDB.release();
+		});
+	}
+	else {
+		long lNextTime = GetNextTime(lCurrentTime, 0, 1, 0);
+
+		AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, lNextTime);
+	}
+}
+
 void CWorldMarket::TaskPerSecond(long lCurrentTime) {
 	static int m_iCountDownPerMinute = 59;
 	static int m_iCountDownPerHour = 3599;
@@ -435,32 +460,11 @@ void CWorldMarket::UpdateSECFilingsDB() {
 }
 
 void CWorldMarket::UpdateTiingoStockStatus() {
-	int iTotal;
-	//if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
-	iTotal = gl_dataContainerTiingoStock.Size();
+	int iTotal = gl_dataContainerTiingoStock.Size();
 	for (int i = 0; i < iTotal; i++) {
 		auto pStock = gl_dataContainerTiingoStock.GetStock(i);
 		pStock->SetUpdateDayLine(true);
 	}
-	return;// Note 暂时测试。
-	//}
-	return;
-	iTotal = gl_dataContainerTiingoStock.Size();
-	for (int i = 0; i < iTotal; i++) {
-		auto pStock = gl_dataContainerTiingoStock.GetStock(i);
-		pStock->SetUpdateDayLine(false);
-		pStock->SetUpdateFinancialState(false);
-	}
-	iTotal = gl_dataContainerChosenWorldStock.Size();
-	for (int i = 0; i < iTotal; i++) {
-		auto p = gl_dataContainerChosenWorldStock.GetStock(i);
-		if (gl_dataContainerTiingoStock.IsSymbol(p->GetSymbol())) {
-			auto pStock = gl_dataContainerTiingoStock.GetStock(p->GetSymbol());
-			pStock->SetUpdateDayLine(true);
-			pStock->SetUpdateFinancialState(true);
-		}
-	}
-	gl_dataContainerTiingoStock.GetStock(_T("ZG"))->SetUpdateFinancialState(true); // Note Zillow公司，用于测试
 }
 
 bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {

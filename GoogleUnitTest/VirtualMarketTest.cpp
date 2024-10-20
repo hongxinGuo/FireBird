@@ -192,6 +192,14 @@ namespace FireBirdTest {
 		EXPECT_EQ(virtualMarket.GetLastTradeDate(), LastTradeDate);
 	}
 
+	TEST_F(CVirtualMarketTest, TestCalculateLastTraddeDay) {
+		//todo
+	}
+
+	TEST_F(CVirtualMarketTest, TestCalculateNewestTraddeDay) {
+		//todo
+	}
+
 	TEST_F(CVirtualMarketTest, TestTransferToMarketTime) {
 		tm tm2_;
 		time_t tt;

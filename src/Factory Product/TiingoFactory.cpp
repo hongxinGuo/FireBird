@@ -13,7 +13,9 @@
 #include"ProductDummy.h"
 #include "ProductTiingoFinancialState.h"
 #include "ProductTiingoFundamentalDefinition.h"
+#include "ProductTiingoIEXTopOFBook.h"
 #include "ProductTiingoMarketNews.h"
+#include "TiingoIEXTopOFBook.h"
 
 CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;
@@ -74,8 +76,11 @@ CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarke
 	case TIINGO_FUNDAMENTAL_DEFINITION_:
 		p = make_shared<CProductTiingoFundamentalDefinition>();
 		break;
-	case TIINGO_FINANCIAL_STATEMENT__:
+	case TIINGO_FINANCIAL_STATEMENT_:
 		p = make_shared<CProductTiingoFinancialState>();
+		break;
+	case TIINGO_IEX_TOP_OF_BOOK_:
+		p = make_shared<CProductTiingoIEXTopOFBook>();
 		break;
 	default:
 		p = make_shared<CProductDummy>();

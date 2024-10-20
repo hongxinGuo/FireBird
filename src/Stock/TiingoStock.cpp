@@ -2,6 +2,7 @@
 
 #include"TiingoStock.h"
 
+#include "ConvertToString.h"
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 
@@ -88,6 +89,15 @@ void CTiingoStock::Update(CSetTiingoStock& setTiingoStock) {
 	setTiingoStock.Edit();
 	Save(setTiingoStock);
 	setTiingoStock.Update();
+}
+
+void CTiingoStock::UpdateRTData(CTiingoIEXTopOFBookPtr pIEXTopOfBook) {
+	m_TransactionTime = pIEXTopOfBook->m_llTimestamp;
+	m_lHigh = pIEXTopOfBook->m_lHigh;
+	m_lLow = pIEXTopOfBook->m_lLow;
+	m_lLastClose = pIEXTopOfBook->m_lLastClose;
+	m_lNew = pIEXTopOfBook->m_lNew;
+	m_llVolume = pIEXTopOfBook->m_llVolume;
 }
 
 void CTiingoStock::UpdateFinancialStateDB() {
@@ -190,6 +200,20 @@ bool CTiingoStock::UpdateDayLineDB() {
 		}
 	}
 	return false;
+}
+
+void CTiingoStock::AddDayLine(CSetTiingoStockDayLine& setDayLine, long lTradeDay) {
+	setDayLine.AddNew();
+	setDayLine.m_Date = lTradeDay;
+	setDayLine.m_Symbol = m_strSymbol;
+	setDayLine.m_Exchange = _T("");
+	setDayLine.m_DisplaySymbol = _T("");
+	setDayLine.m_Open = ConvertValueToString(m_lOpen, GetRatio());
+	setDayLine.m_High = ConvertValueToString(m_lHigh, GetRatio());
+	setDayLine.m_Low = ConvertValueToString(m_lLow, GetRatio());
+	setDayLine.m_Close = ConvertValueToString(m_lNew, GetRatio());
+	setDayLine.m_LastClose = ConvertValueToString(m_lLastClose, GetRatio());
+	setDayLine.m_Volume = ConvertValueToString(m_llVolume);
 }
 
 void CTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {

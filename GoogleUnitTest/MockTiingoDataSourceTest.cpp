@@ -54,7 +54,10 @@ namespace FireBirdTest {
 			m_pTiingoDataSource->SetInquiring(true);
 			m_pTiingoDataSource->StoreInquiry(p);
 		}), Return(true)));
+		EXPECT_CALL(*m_pTiingoDataSource, InquireMarketNews()).Times(1);
+		EXPECT_CALL(*m_pTiingoDataSource, InquireFundamentalDefinition()).Times(1);
 		EXPECT_CALL(*m_pTiingoDataSource, InquireCryptoSymbol()).Times(1);
+		EXPECT_CALL(*m_pTiingoDataSource, InquireIEXTopOfBook()).Times(1);
 		EXPECT_CALL(*m_pTiingoDataSource, InquireDayLine()).Times(1);
 
 		EXPECT_FALSE(m_pTiingoDataSource->GenerateInquiryMessage(120500)) << "时间未到，继续等待";
@@ -64,9 +67,9 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
 		EXPECT_TRUE(m_pTiingoDataSource->HaveInquiry());
-		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 0) << gl_systemMessage.PopInformationMessage();
 
 		//恢复原状
-		gl_systemMessage.PopInformationMessage();
+		//gl_systemMessage.PopInformationMessage();
 	}
 }

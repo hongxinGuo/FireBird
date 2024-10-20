@@ -122,8 +122,10 @@ enum {
 
 	// Global Filings Search
 
+	// Tiingo.com
 	TIINGO_FUNDAMENTAL_DEFINITION_ = 3000,
-	TIINGO_FINANCIAL_STATEMENT__,
+	TIINGO_FINANCIAL_STATEMENT_,
+	TIINGO_IEX_TOP_OF_BOOK_,
 };
 
 class CFinnhubInquiryType {

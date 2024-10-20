@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "ContainerTiingoStock.h"
 #include "InfoReport.h"
+#include "SetTiingoStockDayLine.h"
+#include "TimeConvert.h"
 #include "WorldMarket.h"
 
 CContainerTiingoStock::CContainerTiingoStock() {
@@ -101,6 +103,30 @@ void CContainerTiingoStock::ResetDayLineStartEndDate() {
 		pTiingoStock->SetDayLineStartDate(29900101);
 		pTiingoStock->SetDayLineEndDate(19800101);
 	}
+}
+
+void CContainerTiingoStock::CreateTradeDayDayLine(long lTradeDay) {
+	auto lSize = Size();
+	time_t tMarketCloseTime = ConvertToTTime(lTradeDay, 0, 170000);
+	CSetTiingoStockDayLine setDayLine;
+	setDayLine.Open();
+	setDayLine.m_pDatabase->BeginTrans();
+	for (size_t i = 0; i < lSize; i++) {
+		auto pTiingoStock = GetStock(i);
+		if (pTiingoStock->GetTransactionTime() >= tMarketCloseTime) {
+			pTiingoStock->AddDayLine(setDayLine, lTradeDay);
+		}
+	}
+	setDayLine.m_pDatabase->CommitTrans();
+	setDayLine.Close();
+}
+
+long CContainerTiingoStock::GetTotalActiveStocks() const {
+	int iCount = 0;
+	for (auto& pStock : m_vStock) {
+		if (dynamic_pointer_cast<CTiingoStock>(pStock)->m_fIsActive) iCount++;
+	}
+	return iCount;
 }
 
 bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {

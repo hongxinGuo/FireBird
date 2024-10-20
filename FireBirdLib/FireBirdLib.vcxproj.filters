@@ -849,6 +849,12 @@
     <ClInclude Include="..\src\System\TiingoInaccessibleStock.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.h">
+      <Filter>头文件\Factory-Product\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\America market\TiingoIEXTopOFBook.h">
+      <Filter>头文件\Type\America market</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1417,6 +1423,12 @@
     </ClCompile>
     <ClCompile Include="..\src\System\TiingoInaccessibleStock.cpp">
       <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.cpp">
+      <Filter>源文件\Factory-Product\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoIEXTopOfBook.cpp">
+      <Filter>源文件\Type\America market</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

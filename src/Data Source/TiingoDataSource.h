@@ -25,8 +25,9 @@ public:
 	virtual bool InquireFundamentalDefinition();
 	virtual bool InquireCompanySymbol();
 	virtual bool InquireCryptoSymbol();
-	virtual bool InquireDayLine();
+	virtual bool InquireIEXTopOfBook();
 	virtual bool InquireFinancialState();
+	virtual bool InquireDayLine();
 
 	bool IsUpdateMarketNews() const noexcept { return m_fUpdateMarketNews; }
 	void SetUpdateMarketNews(bool fFlag) noexcept { m_fUpdateMarketNews = fFlag; }
@@ -40,6 +41,8 @@ public:
 	void SetUpdateFinancialState(bool fFlag) noexcept { m_fUpdateFinancialState = fFlag; }
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
+	bool IsUpdateIEXTopOFBook() const noexcept { return m_fUpdateIEXTopOFBook; }
+	void SetUpdateIEXTopOFBook(bool fFlag) noexcept { m_fUpdateIEXTopOFBook = fFlag; }
 
 	void SetBandWidth(long long llBandWidth) noexcept { m_llBandWidthLeft = llBandWidth; }
 	long long GetBandWidthLeft() const noexcept { return m_llBandWidthLeft; }
@@ -57,6 +60,7 @@ protected:
 	bool m_fUpdateCryptoSymbol{ true }; // 每日更新crypto代码库
 	bool m_fUpdateFinancialState{ true }; // 每日更新财经数据
 	bool m_fUpdateDayLine{ true }; // 每日更新公司日线数据
+	bool m_fUpdateIEXTopOFBook{ true }; // 定时（每小时）更新IEX last top of book.
 
 	bool m_fTiingoDataInquiryFinished{ false };
 

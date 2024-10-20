@@ -165,22 +165,23 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 
 void CTiingoDataSource::Inquire(long lCurrentTime) {
 	ASSERT(!IsInquiring());
-	if (gl_pWorldMarket->IsSystemReady()) {
-		ASSERT(lCurrentTime <= gl_systemConfiguration.GetWorldMarketResettingTime() - 300
-			|| lCurrentTime >= gl_systemConfiguration.GetWorldMarketResettingTime() + 500); // 重启市场时不允许接收网络信息。
-		InquireMarketNews(); // Note 此项必须位于第一位，用于判断tiingo账户的类型。
-		InquireFundamentalDefinition();
-		InquireCompanySymbol();
-		InquireCryptoSymbol();
-		InquireFinancialState();
-		InquireDayLine();
-		if (!IsInquiring()) {
-			if (!m_fTiingoDataInquiryFinished) {
-				gl_systemMessage.PushInformationMessage(_T("Tiingo data inquiry finished"));
-				m_fTiingoDataInquiryFinished = true;
-			}
+	//if (gl_pWorldMarket->IsSystemReady()) {
+	ASSERT(lCurrentTime <= gl_systemConfiguration.GetWorldMarketResettingTime() - 300
+		|| lCurrentTime >= gl_systemConfiguration.GetWorldMarketResettingTime() + 500); // 重启市场时不允许接收网络信息。
+	InquireMarketNews(); // Note 此项必须位于第一位，用于判断tiingo账户的类型。
+	InquireFundamentalDefinition();
+	InquireCompanySymbol();
+	InquireCryptoSymbol();
+	InquireIEXTopOfBook();
+	InquireFinancialState();
+	InquireDayLine();
+	if (!IsInquiring()) {
+		if (!m_fTiingoDataInquiryFinished) {
+			gl_systemMessage.PushInformationMessage(_T("Tiingo data inquiry finished"));
+			m_fTiingoDataInquiryFinished = true;
 		}
 	}
+	//}
 }
 
 bool CTiingoDataSource::InquireMarketNews() {
@@ -231,67 +232,21 @@ bool CTiingoDataSource::InquireCryptoSymbol() {
 	return false;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// Tiingo的下载日线数据与Finnhub的日线下载函数，只允许同时运行其中之一。
-// 
-// 付费账户下载所有日线，免费账户仅下载自选股票的日线。
-// Note 当接收市场新闻时，同时决定本账户是否是付费的。如果是免费账户，则同时关闭除自选股票外的其他日线查询申请
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTiingoDataSource::InquireDayLine() {
-	bool fHaveInquiry = false;
-	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
-	constexpr int iInquireType = STOCK_PRICE_CANDLES_;
-
-	ASSERT(gl_pWorldMarket->IsSystemReady());
-	if (!IsInquiring() && IsUpdateDayLine()) {
-		CTiingoStockPtr pTiingoStock;
-		bool fFound = false;
-		while (m_lCurrentUpdateDayLinePos < lStockSetSize) {
-			pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lCurrentUpdateDayLinePos);
-			if (pTiingoStock->IsUpdateDayLine()) {
-				if (gl_systemConfiguration.IsTiingoAccountAddOnPaid()) { // 付费账户下载所有股票的日线
-					if (!gl_tiingoInaccessibleStock.HaveStock(iInquireType, pTiingoStock->GetSymbol())) {
-						fFound = true;
-						break;
-					}
-				}
-				else { // 免费账户只下载DOW30和自选股票的日线。
-					if (setDOW30.contains(pTiingoStock->GetSymbol()) || gl_dataContainerChosenWorldStock.IsSymbol(pTiingoStock->GetSymbol())) {
-						if (!gl_tiingoInaccessibleStock.HaveStock(iInquireType, pTiingoStock->GetSymbol())) {
-							fFound = true;
-							break;
-						}
-					}
-				}
-			}
-			m_lCurrentUpdateDayLinePos++;
-		}
-		if (fFound) {
-			fHaveInquiry = true;
-			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
-			p->SetIndex(m_lCurrentUpdateDayLinePos);
-			StoreInquiry(p);
-			SetInquiring(true);
-			gl_pWorldMarket->SetCurrentTiingoFunction(_T("Day line: ") + pTiingoStock->GetSymbol());
-		}
-		else {
-			SetUpdateDayLine(false);
-			const CString str = "Tiingo股票日线历史数据更新完毕";
-			gl_systemMessage.PushInformationMessage(str);
-		}
+bool CTiingoDataSource::InquireIEXTopOfBook() {
+	if (!IsInquiring() && IsUpdateIEXTopOFBook()) {
+		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, TIINGO_IEX_TOP_OF_BOOK_);
+		StoreInquiry(p);
+		SetInquiring(true);
+		return true;
 	}
-	if (m_lCurrentUpdateDayLinePos >= lStockSetSize) m_lCurrentUpdateDayLinePos = 0;
-	return fHaveInquiry;
+	return false;
 }
 
 bool CTiingoDataSource::InquireFinancialState() {
 	bool fHaveInquiry = false;
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
-	constexpr int iInquireType = TIINGO_FINANCIAL_STATEMENT__;
+	constexpr int iInquireType = TIINGO_FINANCIAL_STATEMENT_;
 
-	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && IsUpdateFinancialState()) {
 		bool fFound = false;
 		CTiingoStockPtr pTiingoStock;
@@ -330,5 +285,59 @@ bool CTiingoDataSource::InquireFinancialState() {
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
+	return fHaveInquiry;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Tiingo的下载日线数据与Finnhub的日线下载函数，只允许同时运行其中之一。
+// 
+// 付费账户下载所有日线，免费账户仅下载自选股票的日线。
+// Note 当接收市场新闻时，同时决定本账户是否是付费的。如果是免费账户，则同时关闭除自选股票外的其他日线查询申请
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CTiingoDataSource::InquireDayLine() {
+	bool fHaveInquiry = false;
+	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
+	constexpr int iInquireType = STOCK_PRICE_CANDLES_;
+
+	if (!IsInquiring() && IsUpdateDayLine()) {
+		CTiingoStockPtr pTiingoStock;
+		bool fFound = false;
+		while (m_lCurrentUpdateDayLinePos < lStockSetSize) {
+			pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lCurrentUpdateDayLinePos);
+			if (pTiingoStock->IsUpdateDayLine()) {
+				if (gl_systemConfiguration.IsTiingoAccountAddOnPaid()) { // 付费账户下载所有股票的日线
+					if (!gl_tiingoInaccessibleStock.HaveStock(iInquireType, pTiingoStock->GetSymbol())) {
+						fFound = true;
+						break;
+					}
+				}
+				else { // 免费账户只下载DOW30和自选股票的日线。
+					if (setDOW30.contains(pTiingoStock->GetSymbol()) || gl_dataContainerChosenWorldStock.IsSymbol(pTiingoStock->GetSymbol())) {
+						if (!gl_tiingoInaccessibleStock.HaveStock(iInquireType, pTiingoStock->GetSymbol())) {
+							fFound = true;
+							break;
+						}
+					}
+				}
+			}
+			m_lCurrentUpdateDayLinePos++;
+		}
+		if (fFound) {
+			fHaveInquiry = true;
+			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
+			p->SetIndex(m_lCurrentUpdateDayLinePos);
+			StoreInquiry(p);
+			SetInquiring(true);
+			gl_pWorldMarket->SetCurrentTiingoFunction(_T("Day line: ") + pTiingoStock->GetSymbol());
+		}
+		else {
+			SetUpdateDayLine(false);
+			const CString str = "Tiingo股票日线历史数据更新完毕";
+			gl_systemMessage.PushInformationMessage(str);
+		}
+	}
+	if (m_lCurrentUpdateDayLinePos >= lStockSetSize) m_lCurrentUpdateDayLinePos = 0;
 	return fHaveInquiry;
 }

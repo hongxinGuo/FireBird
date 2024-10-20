@@ -2,8 +2,10 @@
 
 #include "ContainerTiingoStockDayLine.h"
 #include"SetTiingoStock.h"
+#include "SetTiingoStockDayLine.h"
 
 #include "TiingoCompanyFinancialState.h"
+#include "TiingoIEXTopOFBook.h"
 
 class CTiingoStock;
 using CTiingoStockPtr = shared_ptr<CTiingoStock>;
@@ -19,7 +21,7 @@ public:
 	~CTiingoStock() override = default;
 
 	void ResetAllUpdateDate() override;
-	int GetRatio() const override { return 1000; };
+	int GetRatio() const override { return 10000; };
 
 	void Load(CSetTiingoStock& setTiingoStock);
 	void Append(CSetTiingoStock& setTiingoStock);
@@ -32,10 +34,12 @@ public:
 	bool IsUpdateFinancialStateDB() const noexcept { return m_fUpdateFinancialStateDB; }
 	void SetUpdateFinancialStateDB(bool fFlag) noexcept { m_fUpdateFinancialStateDB = fFlag; }
 
+	void UpdateRTData(CTiingoIEXTopOFBookPtr pIEXTopOfBook);
 	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
 	void UpdateDayLine(const vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UpdateFinancialStateDB();
 	bool UpdateDayLineDB();
+	void AddDayLine(CSetTiingoStockDayLine& setDayLine, long lTradeDay);
 
 	void UpdateProfile(const CTiingoStockPtr& pStock);
 

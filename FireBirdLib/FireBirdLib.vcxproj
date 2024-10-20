@@ -121,6 +121,7 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoForexDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.h" />
+    <ClInclude Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoMarketNews.h" />
     <ClInclude Include="..\src\Factory Product\VirtualChinaMarketWebProduct.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketHoliday.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="..\src\Type\America market\NaicsIndustry.h" />
     <ClInclude Include="..\src\Type\America market\SICIndustry.h" />
     <ClInclude Include="..\src\Type\America market\TiingoFundamentalDefinition.h" />
+    <ClInclude Include="..\src\Type\America market\TiingoIEXTopOFBook.h" />
     <ClInclude Include="..\src\Type\America market\TiingoIndustry.h" />
     <ClInclude Include="..\src\Type\America market\TiingoMarketNews.h" />
     <ClInclude Include="..\src\Type\China market\DayLine.h" />
@@ -353,6 +355,7 @@
     <ClCompile Include="..\src\Factory Product\ProductTiingoFinancialState.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoForexDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoMarketNews.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoStock.cpp" />
@@ -395,6 +398,7 @@
     <ClCompile Include="..\src\Type\America market\NaicesIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\SICIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoFundamentalDefinition.cpp" />
+    <ClCompile Include="..\src\Type\America market\TiingoIEXTopOfBook.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoMarketNews.cpp" />
     <ClCompile Include="..\src\Type\China market\DayLine.cpp" />
