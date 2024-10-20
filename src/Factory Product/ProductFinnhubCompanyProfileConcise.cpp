@@ -67,7 +67,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const
 		s = jsonGetString(js, _T("currency"));
 		if (!s.empty()) pStock->SetCurrency(s.c_str());
 		s = jsonGetString(js, _T("exchange"));
-		if (!s.empty()) pStock->SetListedExchange(s.c_str());
+		if (!s.empty()) pStock->SetExchangeCode(s.c_str());
 		s = jsonGetString(js, _T("name"));
 		if (!s.empty()) pStock->SetName(s.c_str());
 		s = jsonGetString(js, _T("finnhubIndustry"));
@@ -82,8 +82,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const
 		if (!s.empty()) pStock->SetWebURL(s.c_str());
 		s = jsonGetString(js, _T("ipo"));
 		if (!s.empty()) pStock->SetIPODate(s.c_str());
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Profile Concise "), e.what());
 		return false; // 出现错误则返回任务失败
 	}

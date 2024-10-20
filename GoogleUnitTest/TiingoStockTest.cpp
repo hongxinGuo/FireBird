@@ -72,11 +72,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestGetRatio) {
-		EXPECT_EQ(stock.GetRatio(), 10000) << "国际市场的股票价格，放大倍数为10000";
+		EXPECT_EQ(stock.GetRatio(), 1000) << "Tiingo.com的股票价格，放大倍数为1000";
 	}
 
 	TEST_F(CTiingoStockTest, TestGetExchangeCode) {
-		EXPECT_STREQ(stock.GetExchangeCode(), _T(""));
+		EXPECT_STREQ(stock.GetExchangeCode(), _T("US"));
 		stock.SetExchangeCode(_T("SS"));
 		EXPECT_STREQ(stock.GetExchangeCode(), _T("SS"));
 	}
@@ -622,14 +622,14 @@ namespace FireBirdTest {
 		setDayLine.Open();
 		setDayLine.m_pDatabase->BeginTrans();
 		EXPECT_TRUE(setDayLine.m_Date == 20200101);
-		EXPECT_STREQ(setDayLine.m_Close, _T("10.0100"));
+		EXPECT_STREQ(setDayLine.m_Close, _T("10.010"));
 		setDayLine.Delete();
 		while (setDayLine.m_Date != 20210101) setDayLine.MoveNext();
-		EXPECT_STREQ(setDayLine.m_Close, _T("12.3450"));
+		EXPECT_STREQ(setDayLine.m_Close, _T("12.345"));
 		setDayLine.Delete();
 		while (setDayLine.m_Date != 20210123) setDayLine.MoveNext();
 		EXPECT_TRUE(setDayLine.m_Date = 20210123);
-		EXPECT_STREQ(setDayLine.m_Close, _T("10.0300"));
+		EXPECT_STREQ(setDayLine.m_Close, _T("10.030"));
 		setDayLine.Delete();
 		setDayLine.m_pDatabase->CommitTrans();
 		setDayLine.Close();

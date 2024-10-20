@@ -461,12 +461,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetEmployeeTotal(), 1234567);
 	}
 
-	TEST_F(CWorldStockTest, TestGetListedExchange) {
-		EXPECT_STREQ(stock.GetListedExchange(), _T(" "));
-		stock.SetListedExchange(_T("abcdef"));
-		EXPECT_STREQ(stock.GetListedExchange(), _T("abcdef"));
-	}
-
 	TEST_F(CWorldStockTest, TestGetGgroup) {
 		EXPECT_STREQ(stock.GetGgroup(), _T(" "));
 		stock.SetGgroup(_T("abcdef"));
@@ -1510,7 +1504,7 @@ namespace FireBirdTest {
 		stock.SetCountry(_T("US"));
 		stock.SetCusip(_T("abcd"));
 		stock.SetSedol(_T("a1b2"));
-		stock.SetListedExchange(_T("NY Market"));
+		stock.SetExchangeCode(_T("NY Market"));
 		stock.SetGgroup(_T("a2b3"));
 		stock.SetGind(_T("Steel"));
 		stock.SetGsector(_T("company"));
@@ -1586,7 +1580,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(stock.GetCusip(), stock2.GetCusip());
 		EXPECT_STREQ(stock.GetSedol(), stock2.GetSedol());
 		EXPECT_EQ(stock.GetEmployeeTotal(), stock2.GetEmployeeTotal());
-		EXPECT_STREQ(stock.GetListedExchange(), stock2.GetListedExchange());
+		EXPECT_STREQ(stock.GetExchangeCode(), stock2.GetExchangeCode());
 		EXPECT_STREQ(stock.GetGgroup(), stock2.GetGgroup());
 		EXPECT_STREQ(stock.GetGsector(), stock2.GetGsector());
 		EXPECT_STREQ(stock.GetGsubind(), stock2.GetGsubind());

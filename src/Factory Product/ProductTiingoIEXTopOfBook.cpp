@@ -28,7 +28,6 @@ CString CProductTiingoIEXTopOFBook::CreateMessage() {
 
 void CProductTiingoIEXTopOFBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoIEXTopOFBook = ParseTiingoIEXTopOFBook(pWebData);
-	time_t tt = GetUTCTime();
 	long lNewestTradeDay = gl_pWorldMarket->GetNewestTradeDate();
 	time_t ttNewestTradeDay = ConvertToTTime(lNewestTradeDay, 0, 120000);
 	if (!pvTiingoIEXTopOFBook->empty()) {
@@ -95,7 +94,6 @@ CTiingoIEXTopOFBooksPtr CProductTiingoIEXTopOFBook::ParseTiingoIEXTopOFBook(cons
 	string s1;
 	CString strNumber;
 	int year, month, day, hour, minute, second;
-	double f;
 	int hourOffset, minuteOffset;
 	if (!IsValidData(pWebData)) return pvTiingoIEXLastTopOFBook;
 
@@ -116,10 +114,11 @@ CTiingoIEXTopOFBooksPtr CProductTiingoIEXTopOFBook::ParseTiingoIEXTopOFBook(cons
 			sscanf_s(s1.c_str(), _T("%04d-%02d-%02dT%02d:%02d:%02d+%02d:%02d"), &year, &month, &day, &hour, &minute, &second, &hourOffset, &minuteOffset);
 			pIEXLastTopOFBook->m_llTimestamp = ConvertToTTime(year, month, day, hour, minute, second, hourOffset * 100 + minuteOffset);
 
-			pIEXLastTopOFBook->m_lHigh = jsonGetDouble(itemValue, _T("high")) * 10000;
-			pIEXLastTopOFBook->m_lLow = jsonGetDouble(itemValue, _T("low")) * 10000;
-			pIEXLastTopOFBook->m_lLastClose = jsonGetDouble(itemValue, _T("prevClose")) * 10000;
-			pIEXLastTopOFBook->m_lOpen = jsonGetDouble(itemValue, _T("open")) * 10000;
+			pIEXLastTopOFBook->m_lHigh = jsonGetDouble(itemValue, _T("high")) * 1000;
+			pIEXLastTopOFBook->m_lLow = jsonGetDouble(itemValue, _T("low")) * 1000;
+			pIEXLastTopOFBook->m_lLastClose = jsonGetDouble(itemValue, _T("prevClose")) * 1000;
+			pIEXLastTopOFBook->m_lOpen = jsonGetDouble(itemValue, _T("open")) * 1000;
+			pIEXLastTopOFBook->m_lNew = jsonGetDouble(itemValue, _T("last")) * 1000;
 			pIEXLastTopOFBook->m_llVolume = jsonGetInt64(itemValue, _T("volume"));
 
 			pvTiingoIEXLastTopOFBook->push_back(pIEXLastTopOFBook);

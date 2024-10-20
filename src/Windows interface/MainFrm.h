@@ -142,6 +142,6 @@ public:
 	afx_msg void OnUpdateTiingoFundamentalDefinition();
 	afx_msg void OnUpdateUpdateTiingoFundamentalDefinition(CCmdUI* pCmdUI);
 	afx_msg void OnResetTiingoDaylineDate();
-	afx_msg void OnCreateTiingoTradedayDayline();
-	afx_msg void OnUpdateCreateTiingoTradedayDayline(CCmdUI* pCmdUI);
+	afx_msg void OnCreateTiingoTradeDayDayline();
+	afx_msg void OnUpdateCreateTiingoTradeDayDayline(CCmdUI* pCmdUI);
 };

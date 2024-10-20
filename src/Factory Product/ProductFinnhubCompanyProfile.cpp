@@ -90,7 +90,7 @@ bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebDat
 		s = jsonGetString(js, _T("description"));
 		if (!s.empty()) pStock->SetDescription(s.c_str());
 		s = jsonGetString(js, _T("exchange"));
-		if (!s.empty()) pStock->SetListedExchange(s.c_str());
+		if (!s.empty()) pStock->SetExchangeCode(s.c_str());
 		s = jsonGetString(js, _T("ggroup"));
 		if (!s.empty()) pStock->SetGgroup(s.c_str());
 		s = jsonGetString(js, _T("gind"));
@@ -132,8 +132,7 @@ bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebDat
 		if (!s.empty()) pStock->SetLogo(s.c_str());
 		s = jsonGetString(js, _T("finnhubIndustry"));
 		if (!s.empty()) pStock->SetFinnhubIndustry(s.c_str());
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Profile "), e.what());
 		return false; // 没有公司简介
 	}

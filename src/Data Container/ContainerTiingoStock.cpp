@@ -105,26 +105,48 @@ void CContainerTiingoStock::ResetDayLineStartEndDate() {
 	}
 }
 
-void CContainerTiingoStock::CreateTradeDayDayLine(long lTradeDay) {
+void CContainerTiingoStock::BuildDayLine(long lDate) {
+	DeleteDayLine(lDate);
+
+	// 存储该日的数据
 	auto lSize = Size();
-	time_t tMarketCloseTime = ConvertToTTime(lTradeDay, 0, 170000);
+	time_t tMarketCloseTime = ConvertToTTime(lDate, 0, 170000);
 	CSetTiingoStockDayLine setDayLine;
 	setDayLine.Open();
 	setDayLine.m_pDatabase->BeginTrans();
 	for (size_t i = 0; i < lSize; i++) {
 		auto pTiingoStock = GetStock(i);
 		if (pTiingoStock->GetTransactionTime() >= tMarketCloseTime) {
-			pTiingoStock->AddDayLine(setDayLine, lTradeDay);
+			pTiingoStock->AddDayLine(setDayLine, lDate);
 		}
 	}
 	setDayLine.m_pDatabase->CommitTrans();
 	setDayLine.Close();
 }
 
-long CContainerTiingoStock::GetTotalActiveStocks() const {
+void CContainerTiingoStock::DeleteDayLine(long lDate) {
+	char buffer[20]{ 0x000 };
+	CSetTiingoStockDayLine setDayLine;
+
+	_ltoa_s(lDate, buffer, 10);
+	const CString strDate = buffer;
+	setDayLine.m_strFilter = _T("[Date] =");
+	setDayLine.m_strFilter += strDate;
+	setDayLine.Open();
+	setDayLine.m_pDatabase->BeginTrans();
+	while (!setDayLine.IsEOF()) {
+		setDayLine.Delete();
+		setDayLine.MoveNext();
+	}
+	setDayLine.m_pDatabase->CommitTrans();
+	setDayLine.Close();
+}
+
+long CContainerTiingoStock::GetTotalActiveStocks() {
 	int iCount = 0;
-	for (auto& pStock : m_vStock) {
-		if (dynamic_pointer_cast<CTiingoStock>(pStock)->m_fIsActive) iCount++;
+	auto lSize = Size();
+	for (int i = 0; i < lSize; i++) {
+		if (GetStock(i)->m_fIsActive) iCount++;
 	}
 	return iCount;
 }

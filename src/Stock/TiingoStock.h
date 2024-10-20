@@ -21,7 +21,7 @@ public:
 	~CTiingoStock() override = default;
 
 	void ResetAllUpdateDate() override;
-	int GetRatio() const override { return 10000; };
+	int GetRatio() const override { return 1000; };
 
 	void Load(CSetTiingoStock& setTiingoStock);
 	void Append(CSetTiingoStock& setTiingoStock);
@@ -39,7 +39,7 @@ public:
 	void UpdateDayLine(const vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UpdateFinancialStateDB();
 	bool UpdateDayLineDB();
-	void AddDayLine(CSetTiingoStockDayLine& setDayLine, long lTradeDay);
+	void AddDayLine(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const;
 
 	void UpdateProfile(const CTiingoStockPtr& pStock);
 

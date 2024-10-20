@@ -7,6 +7,7 @@
 #include "WorldMarket.h"
 
 CTiingoStock::CTiingoStock() {
+	SetExchangeCode(_T("US"));
 	CTiingoStock::ResetAllUpdateDate();
 }
 
@@ -202,7 +203,7 @@ bool CTiingoStock::UpdateDayLineDB() {
 	return false;
 }
 
-void CTiingoStock::AddDayLine(CSetTiingoStockDayLine& setDayLine, long lTradeDay) {
+void CTiingoStock::AddDayLine(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const {
 	setDayLine.AddNew();
 	setDayLine.m_Date = lTradeDay;
 	setDayLine.m_Symbol = m_strSymbol;
@@ -214,6 +215,7 @@ void CTiingoStock::AddDayLine(CSetTiingoStockDayLine& setDayLine, long lTradeDay
 	setDayLine.m_Close = ConvertValueToString(m_lNew, GetRatio());
 	setDayLine.m_LastClose = ConvertValueToString(m_lLastClose, GetRatio());
 	setDayLine.m_Volume = ConvertValueToString(m_llVolume);
+	setDayLine.Update();
 }
 
 void CTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {

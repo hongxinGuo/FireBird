@@ -400,7 +400,7 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 	if (!gl_pTiingoDataSource->IsUpdateIEXTopOFBook()) {
 		gl_runtime.background_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
-			gl_dataContainerTiingoStock.CreateTradeDayDayLine(gl_pWorldMarket->GetNewestTradeDate());
+			gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetNewestTradeDate());
 			gl_UpdateWorldMarketDB.release();
 		});
 	}

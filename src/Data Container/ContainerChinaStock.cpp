@@ -563,7 +563,7 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	return iCount;
 }
 
-void CContainerChinaStock::DeleteDayLineBasicInfo(long lDate) const {
+void CContainerChinaStock::DeleteDayLineBasicInfo(long lDate) {
 	char buffer[20]{ 0x000 };
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 
@@ -581,7 +581,7 @@ void CContainerChinaStock::DeleteDayLineBasicInfo(long lDate) const {
 	setDayLineBasicInfo.Close();
 }
 
-void CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) const {
+void CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
 	char buffer[20]{ 0x000 };
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 

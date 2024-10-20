@@ -10,10 +10,7 @@
 
 #include"DayLine.h"
 #include"ContainerWorldStockDayLine.h"
-#include "EPSSurprise.h"
 #include"FinnhubCompanyNews.h"
-#include "InsiderSentiment.h"
-#include "InsiderTransaction.h"
 #include "SECFiling.h"
 
 #include"SetWorldStock.h"
@@ -147,8 +144,6 @@ public:
 	void SetSedol(const CString& strSedol) { m_strSedol = strSedol; }
 	long GetEmployeeTotal() const noexcept { return m_lEmployeeTotal; }
 	void SetEmployeeTotal(const long lEmployeeTotal) noexcept { m_lEmployeeTotal = lEmployeeTotal; }
-	CString GetListedExchange() const { return m_strListedExchange; }
-	void SetListedExchange(const CString& strListedExchange) { m_strListedExchange = strListedExchange; }
 	CString GetGgroup() const { return m_strGgroup; }
 	void SetGgroup(const CString& strGgroup) { m_strGgroup = strGgroup; }
 	CString GetGind() const { return m_strGind; }
@@ -239,13 +234,13 @@ public:
 public:
 	vector<CEPSSurprisePtr> m_vEPSSurprise;
 	bool m_fUpdateEPSSurprise{ true };
-	atomic_bool m_fUpdateEPSSurpriseDB;
+	atomic_bool m_fUpdateEPSSurpriseDB{ false };
 
 	vector<CInsiderTransactionPtr> m_vInsiderTransaction;
-	long m_lInsiderTransactionEndDate;
+	long m_lInsiderTransactionEndDate{ 19800101 };
 
 	vector<CInsiderSentimentPtr> m_vInsiderSentiment;
-	long m_lInsiderSentimentStartDate;
+	long m_lInsiderSentimentStartDate{ 19800101 };
 
 	CSECFilingsPtr m_pvSECFilings{ nullptr };
 	bool m_fSECFilingsUpdated{ false };
@@ -253,71 +248,72 @@ public:
 
 protected:
 	// Finnhub symbol信息
-	CString m_strType;
-	CString m_strSymbol2; // Alternative ticker for exchanges with multiple tickers for 1 stock such as BSE
-	CString m_strMic;
-	CString m_strFigi; // FIGI identifier
-	CString m_strShareClassFIGI; // Global Share Class FIGI
-	CString m_strCurrency;
+	CString m_strType{ _T(" ") };
+	CString m_strSymbol2{ _T(" ") }; // Alternative ticker for exchanges with multiple tickers for 1 stock such as BSE
+	CString m_strMic{ _T(" ") };
+	CString m_strFigi{ _T(" ") }; // FIGI identifier
+	CString m_strShareClassFIGI{ _T(" ") }; // Global Share Class FIGI
+	CString m_strCurrency{ _T(" ") };
 
 	// Finnhub profile信息
-	CString m_strAddress;
-	CString m_strCity;
-	CString m_strCountry;
-	CString m_strCusip;
-	CString m_strSedol;
-	long m_lEmployeeTotal;
-	CString m_strListedExchange;
-	CString m_strGgroup;
-	CString m_strGind;
-	CString m_strGsector;
-	CString m_strGsubind;
-	CString m_strIPODate;
-	CString m_strIsin;
-	double m_dMarketCapitalization;
-	CString m_strNaics;
-	CString m_strNaicsNationalIndustry;
-	CString m_strNaicsSector;
-	CString m_strNaicsSubsector;
-	CString m_strName;
-	CString m_strPhone;
-	double m_dShareOutstanding;
-	CString m_strState;
-	CString m_strTicker;
-	CString m_strWebURL;
-	CString m_strLogo;
-	CString m_strFinnhubIndustry;
-	json m_jsonPeer; // 读取到的Peer数据为json制式
+	CString m_strAddress{ _T(" ") };
+	CString m_strCity{ _T(" ") };
+	CString m_strCountry{ _T(" ") };
+	CString m_strCusip{ _T(" ") };
+	CString m_strSedol{ _T(" ") };
+	long m_lEmployeeTotal{ 0 };
+	//CString m_strListedExchange{ _T("US") }; // 使用virtualStock中的ExchangeCode
+	CString m_strGgroup{ _T(" ") };
+	CString m_strGind{ _T(" ") };
+	CString m_strGsector{ _T(" ") };
+	CString m_strGsubind{ _T(" ") };
+	CString m_strIPODate{ _T(" ") };
+	CString m_strIsin{ _T(" ") };
+	double m_dMarketCapitalization{ 0 };
+	CString m_strNaics{ _T(" ") };
+	CString m_strNaicsNationalIndustry{ _T(" ") };
+	CString m_strNaicsSector{ _T(" ") };
+	CString m_strNaicsSubsector{ _T(" ") };
+	CString m_strName{ _T(" ") };
+	CString m_strPhone{ _T(" ") };
+	double m_dShareOutstanding{ 0 };
+	CString m_strState{ _T(" ") };
+	CString m_strTicker{ _T(" ") };
+	CString m_strWebURL{ _T(" ") };
+	CString m_strLogo{ _T(" ") };
+	CString m_strFinnhubIndustry{ _T(" ") };
+	json m_jsonPeer{ json({}) }; // 读取到的Peer数据为json制式
 
 	// Tiingo Symbol信息
-	CString m_strTiingoPermaTicker; // Tiingo永久代码标识
-	bool m_fIsActive; //
-	bool m_fIsADR;
-	INT32 m_iSicCode;
-	CString m_strSicIndustry;
-	CString m_strSicSector;
-	CString m_strTiingoIndustry;
-	CString m_strTiingoSector;
-	CString m_strCompanyWebSite;
-	CString m_strSECFilingWebSite;
+	CString m_strTiingoPermaTicker{ _T(" ") }; // Tiingo永久代码标识
+	bool m_fIsActive{ false }; //
+	bool m_fIsADR{ false };
+	INT32 m_iSicCode{ 0 };
+	CString m_strSicIndustry{ _T(" ") };
+	CString m_strSicSector{ _T(" ") };
+	CString m_strTiingoIndustry{ _T(" ") };
+	CString m_strTiingoSector{ _T(" ") };
+	CString m_strCompanyWebSite{ _T(" ") };
+	CString m_strSECFilingWebSite{ _T(" ") };
 
 	// 系统生成信息
 	CContainerWorldStockDayLine m_dataDayLine;
 
 	vector<CCompanyNewsPtr> m_vCompanyNews;
 
-	CFinnhubStockBasicFinancialPtr m_pBasicFinancial;
+	CFinnhubStockBasicFinancialPtr m_pBasicFinancial{ nullptr };
 
 	// 无需存储数据区
-	bool m_fUpdateCompanyProfile; // 更新公司简介
-	bool m_fUpdateCompanyNews; // 更新公司新闻
-	bool m_fUpdateBasicFinancial; // 更新基本财务
-	bool m_fUpdateFinnhubPeer; // 更新同业公司数据
-	bool m_fUpdateFinnhubInsiderTransaction; // 公司内部交易数据已更新
-	bool m_fUpdateFinnhubInsiderSentiment; // 公司内部交易情绪数据已更新
-	atomic_bool m_fUpdateFinnhubBasicFinancialDB; // 基本财务数据需要保存
-	atomic_bool m_fUpdateFinnhubInsiderTransactionDB; // 内部交易数据需要存储
-	atomic_bool m_fUpdateFinnhubInsiderSentimentDB; // 内部交易情绪数据需要存储
+	bool m_fUpdateCompanyProfile{ true }; // 更新公司简介
+	bool m_fUpdateCompanyNews{ true }; // 更新公司新闻
+	bool m_fUpdateBasicFinancial{ true }; // 更新基本财务
+	bool m_fUpdateFinnhubPeer{ true }; // 更新同业公司数据
+	bool m_fUpdateFinnhubInsiderTransaction{ true }; // 更新公司内部交易数据
+	bool m_fUpdateFinnhubInsiderSentiment{ true }; // 更新公司内部交易情绪数据
+
+	atomic_bool m_fUpdateFinnhubBasicFinancialDB{ false }; // 基本财务数据需要保存
+	atomic_bool m_fUpdateFinnhubInsiderTransactionDB{ false }; // 内部交易数据需要存储
+	atomic_bool m_fUpdateFinnhubInsiderSentimentDB{ false }; // 内部交易情绪数据需要存储
 };
 
 using CWorldStockPtr = shared_ptr<CWorldStock>;

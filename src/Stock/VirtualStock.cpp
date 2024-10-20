@@ -84,7 +84,10 @@ long CVirtualStock::GetDayLineEndDate() {
 			l = 19800101;
 			SetUpdateProfileDB(true);
 			if (s_bReport) {
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("tiingo stock dayline end date is zero"));
+				CString str = _T("Tiingo Stock : ");
+				str += m_strSymbol;
+				str += _T(" dayline end date is zero");
+				gl_systemMessage.PushInnerSystemInformationMessage(str);
 				s_bReport = false;
 			}
 		}

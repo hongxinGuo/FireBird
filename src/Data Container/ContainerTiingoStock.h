@@ -22,9 +22,10 @@ public:
 	bool LoadDB();
 
 	void ResetDayLineStartEndDate();
-	void CreateTradeDayDayLine(long lTradeDay);
+	void BuildDayLine(long lDate);
+	static void DeleteDayLine(long lDate);
 
-	long GetTotalActiveStocks() const;
+	long GetTotalActiveStocks();
 
 	bool IsUpdateFinancialStateDB() noexcept;
 	void UpdateFinancialStateDB() const;
