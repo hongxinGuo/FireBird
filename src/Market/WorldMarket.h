@@ -69,13 +69,13 @@ public:
 
 	// Êý¾Ý¿â²Ù×÷
 	virtual bool UpdateCompanyNewsDB();
-	virtual bool UpdateStockDayLineDB();
-	bool UpdateTiingoStockDayLineDB();
+	virtual bool UpdateFinnhubStockDayLineDB();
 	virtual bool UpdateInsiderTransactionDB();
 	virtual bool UpdateInsiderSentimentDB();
 	virtual bool UpdateTiingoIndustry();
 	virtual bool UpdateSicIndustry();
 	virtual bool UpdateNaicsIndustry();
+	virtual void UpdateTiingoStockDayLineDB() { gl_dataContainerTiingoStock.UpdateDayLineDB(); }
 
 	void RebuildStockDayLineDB();
 	virtual void UpdateStockDayLineStartEndDate();

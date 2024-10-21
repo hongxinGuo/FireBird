@@ -6,6 +6,7 @@ CProductTiingoCompanyProfile::CProductTiingoCompanyProfile() {
 }
 
 CString CProductTiingoCompanyProfile::CreateMessage() {
+	m_strInquiringSymbol = _T("All");
 	m_strInquiry = _T("");
 	return m_strInquiry;
 }

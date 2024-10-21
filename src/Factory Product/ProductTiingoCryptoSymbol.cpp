@@ -16,6 +16,7 @@ CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() {
 }
 
 CString CProductTiingoCryptoSymbol::CreateMessage() {
+	m_strInquiringSymbol = _T("All");
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
 }

@@ -174,8 +174,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol(_T("New Symbol"))) << "新增加的代码";
 			pStock = gl_dataContainerFinnhubStock.GetStock(_T("New Symbol"));
 			EXPECT_STREQ(pStock->GetExchangeCode(), _T("AD")) << "第一个交易所";
-			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
-			gl_systemMessage.PopInnerSystemInformationMessage();
+			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 
 		// 恢复原状
 			gl_dataContainerFinnhubStock.Delete(pStock);

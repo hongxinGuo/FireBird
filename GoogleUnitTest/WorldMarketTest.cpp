@@ -450,12 +450,12 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateDayLineDB) {
-		EXPECT_TRUE(gl_pWorldMarket->UpdateStockDayLineDB());
+		EXPECT_TRUE(gl_pWorldMarket->UpdateFinnhubStockDayLineDB());
 
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(0)->IsUpdateDayLineDB()) << "此标识被重置";
 		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateDayLineDB(true);
 
-		EXPECT_TRUE(gl_pWorldMarket->UpdateStockDayLineDB());
+		EXPECT_TRUE(gl_pWorldMarket->UpdateFinnhubStockDayLineDB());
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(i)->IsUpdateDayLineDB()) << "此标识被重置";
 		}

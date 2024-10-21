@@ -281,7 +281,7 @@ namespace FireBirdTest {
 			gl_dataContainerTiingoStock.GetStock(_T("A"))->SetUpdateProfileDB(false);
 			gl_dataContainerTiingoStock.GetStock(_T("AAPL"))->SetUpdateProfileDB(false);
 			auto symbol = gl_dataContainerTiingoStock.GetStock(0)->GetSymbol();
-			gl_dataContainerFinnhubStock.GetStock(symbol)->SetUpdateDayLine(false);
+			gl_dataContainerFinnhubStock.GetStock(symbol)->SetUpdateDayLine(true);
 			gl_dataContainerFinnhubStock.GetStock(symbol)->SetUpdateDayLineDB(false);
 			gl_dataContainerFinnhubStock.GetStock(symbol)->SetUpdateProfileDB(false);
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();

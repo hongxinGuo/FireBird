@@ -1,7 +1,7 @@
 #pragma once
 
-#include"ContainerVirtualStock.h"
 #include"TiingoStock.h"
+#include"ContainerVirtualStock.h"
 
 class CContainerTiingoStock : public CContainerVirtualStock {
 public:
@@ -29,4 +29,7 @@ public:
 
 	bool IsUpdateFinancialStateDB() noexcept;
 	void UpdateFinancialStateDB() const;
+
+	bool IsUpdateDayLineDB();
+	void UpdateDayLineDB();
 };

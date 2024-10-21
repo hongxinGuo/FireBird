@@ -54,9 +54,6 @@ public:
 	void UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews);
 	void UpdateEPSSurprise(const vector<CEPSSurprisePtr>& vEPSSurprise);
 
-	bool IsNeedUpdateProfile(const CTiingoStockPtr& pTiingoStock);
-	void UpdateStockProfile(const CTiingoStockPtr& pTiingoStock);
-
 	void UpdateDayLineStartEndDate();
 	long GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	CDayLinePtr GetDayLine(const long lIndex) const { return dynamic_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
@@ -204,27 +201,6 @@ public:
 	void SetSECFilingsUpdateDate(long lDate) noexcept;
 	long GetSECFilingsUpdateDate();
 
-	CString GetTiingoPermaTicker() noexcept { return m_strTiingoPermaTicker; }
-	void SetTiingoPermaTicker(const CString& strTiingoPermaTicker) noexcept { m_strTiingoPermaTicker = strTiingoPermaTicker; }
-	bool TiingoIsActive() const noexcept { return m_fIsActive; }
-	void TiingoSetActive(const bool fIsActive) noexcept { m_fIsActive = fIsActive; }
-	bool IsADR() const noexcept { return m_fIsADR; }
-	void SetADR(const bool fIsADR) noexcept { m_fIsADR = fIsADR; }
-	INT32 GetSICCode() const noexcept { return m_iSicCode; }
-	void SetSICCode(const INT32 iSICCode) noexcept { m_iSicCode = iSICCode; }
-	CString GetSICIndustry() noexcept { return m_strSicIndustry; }
-	void SetSICIndustry(const CString& strSICIndustry) noexcept { m_strSicIndustry = strSICIndustry; }
-	CString GetSICSector() noexcept { return m_strSicSector; }
-	void SetSICSector(const CString& strSICSector) noexcept { m_strSicSector = strSICSector; }
-	CString GetTiingoIndustry() noexcept { return m_strTiingoIndustry; }
-	void SetTiingoIndustry(const CString& strTiingoIndustry) noexcept { m_strTiingoIndustry = strTiingoIndustry; }
-	CString GetTiingoSector() noexcept { return m_strTiingoSector; }
-	void SetTiingoSector(const CString& strTiingoSector) noexcept { m_strTiingoSector = strTiingoSector; }
-	CString GetCompanyWebSite() noexcept { return m_strCompanyWebSite; }
-	void SetCompanyWebSite(const CString& strCompanyWebSite) noexcept { m_strCompanyWebSite = strCompanyWebSite; }
-	CString GetSECFilingWebSite() noexcept { return m_strSECFilingWebSite; }
-	void SetSECFilingWebSite(const CString& strSECFilingWebSite) noexcept { m_strSECFilingWebSite = strSECFilingWebSite; }
-
 	CString GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const;
 	CString GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) const;
 	CString GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTime);
@@ -283,18 +259,6 @@ protected:
 	CString m_strLogo{ _T(" ") };
 	CString m_strFinnhubIndustry{ _T(" ") };
 	json m_jsonPeer{ json({}) }; // 读取到的Peer数据为json制式
-
-	// Tiingo Symbol信息
-	CString m_strTiingoPermaTicker{ _T(" ") }; // Tiingo永久代码标识
-	bool m_fIsActive{ false }; //
-	bool m_fIsADR{ false };
-	INT32 m_iSicCode{ 0 };
-	CString m_strSicIndustry{ _T(" ") };
-	CString m_strSicSector{ _T(" ") };
-	CString m_strTiingoIndustry{ _T(" ") };
-	CString m_strTiingoSector{ _T(" ") };
-	CString m_strCompanyWebSite{ _T(" ") };
-	CString m_strSECFilingWebSite{ _T(" ") };
 
 	// 系统生成信息
 	CContainerWorldStockDayLine m_dataDayLine;

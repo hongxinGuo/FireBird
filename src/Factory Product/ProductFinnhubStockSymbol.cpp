@@ -38,8 +38,8 @@ void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pStock2->SetTodayNewStock(true);
 			pStock2->SetUpdateProfileDB(true); // 此股票需要加入数据库中。
 			gl_dataContainerFinnhubStock.Add(pStock2);
-			const auto str = _T("Finnhub发现新代码:") + pStock2->GetSymbol();
-			gl_systemMessage.PushInnerSystemInformationMessage(str);
+			//const auto str = _T("Finnhub发现新代码:") + pStock2->GetSymbol();
+			//gl_systemMessage.PushInnerSystemInformationMessage(str);
 		}
 	}
 	char buffer[30];

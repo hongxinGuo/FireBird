@@ -90,6 +90,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		if (pWebData->GetBufferLength() == 137) {
 			auto strView = pWebData->GetStringView(0, 75); // 只使用前75个字符
 			if (strView.compare(_T("You have run over your 500 symbol look up for this month. Please upgrade at")) == 0) { 	// 达到代码限制
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo symbol reach 500"));
 				return ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__;
 			}
 		}

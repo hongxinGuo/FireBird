@@ -15,6 +15,7 @@ CProductTiingoStock::CProductTiingoStock() {
 }
 
 CString CProductTiingoStock::CreateMessage() {
+	m_strInquiringSymbol = _T("All");
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
 }
@@ -32,17 +33,6 @@ void CProductTiingoStock::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			else {
 				pTiingoStock->SetUpdateProfileDB(true); // 将此股票存入数据库。
 				gl_dataContainerTiingoStock.Add(pTiingoStock);
-			}
-			if (gl_dataContainerFinnhubStock.IsSymbol(pTiingoStock->GetSymbol())) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
-				const auto pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoStock->GetSymbol());
-				if (pStock->IsNeedUpdateProfile(pTiingoStock)) {
-					pStock->SetUpdateProfileDB(true);
-					pStock->UpdateStockProfile(pTiingoStock);
-				}
-			}
-			else {
-				// new stock，
-				// do nothing now.
 			}
 		}
 		sprintf_s(buffer, _T("%6d"), pvTiingoStock->size());

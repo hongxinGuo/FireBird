@@ -535,7 +535,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerFinnhubStock.IsUpdateDayLineDB()) { // stock dayLine
 		gl_runtime.background_executor()->post([this] {
 			gl_UpdateWorldMarketDB.acquire();
-			this->UpdateStockDayLineDB();
+			this->UpdateFinnhubStockDayLineDB();
 			gl_UpdateWorldMarketDB.release();
 		});
 	}
@@ -671,18 +671,9 @@ bool CWorldMarket::UpdateToken() {
 	return true;
 }
 
-bool CWorldMarket::UpdateStockDayLineDB() {
+bool CWorldMarket::UpdateFinnhubStockDayLineDB() {
 	for (long i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
-		pStock->UpdateDayLineDB();
-		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
-	}
-	return true;
-}
-
-bool CWorldMarket::UpdateTiingoStockDayLineDB() {
-	for (long i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
-		const CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(i);
 		pStock->UpdateDayLineDB();
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 	}

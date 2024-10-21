@@ -44,9 +44,6 @@ void CWorldStock::ResetAllUpdateDate() {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderSentiment"] = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsSECFilings"] = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = 19800101;
-	//Tiingo自成一体
-	m_jsonUpdateDate["Tiingo"]["StockFundamentalsCompanyProfile"] = 19800101;
-	m_jsonUpdateDate["Tiingo"]["StockPriceCandles"] = 19800101;
 }
 
 void CWorldStock::Load(CSetWorldStock& setWorldStock) {
@@ -64,7 +61,7 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 	m_strCusip = setWorldStock.m_Cusip;
 	m_strSedol = setWorldStock.m_Sedol;
 	m_lEmployeeTotal = setWorldStock.m_EmployeeTotal;
-	m_strExchangeCode = setWorldStock.m_ListedExchange;
+	//m_strExchangeCode = setWorldStock.m_ListedExchange;
 	m_strGgroup = setWorldStock.m_Ggroup;
 	m_strGind = setWorldStock.m_Gind;
 	m_strGsector = setWorldStock.m_Gsector;
@@ -90,18 +87,6 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 	m_lIPOStatus = setWorldStock.m_IPOStatus;
 
 	LoadUpdateDate(setWorldStock.m_UpdateDate);
-
-	// Tiingo信息
-	m_strTiingoPermaTicker = setWorldStock.m_TiingoPermaTicker;
-	m_fIsActive = setWorldStock.m_IsActive;
-	m_fIsADR = setWorldStock.m_IsADR;
-	m_iSicCode = setWorldStock.m_SICCode;
-	m_strSicIndustry = setWorldStock.m_SICIndustry;
-	m_strSicSector = setWorldStock.m_SICSector;
-	m_strTiingoIndustry = setWorldStock.m_TiingoIndustry;
-	m_strTiingoSector = setWorldStock.m_TiingoSector;
-	m_strCompanyWebSite = setWorldStock.m_CompanyWebSite;
-	m_strSECFilingWebSite = setWorldStock.m_SECFilingWebSite;
 }
 
 void CWorldStock::CheckUpdateStatus(long lTodayDate) {
@@ -223,7 +208,7 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) const {
 	setWorldStock.m_Cusip = m_strCusip.Left(20);
 	setWorldStock.m_Sedol = m_strSedol.Left(45);
 	setWorldStock.m_EmployeeTotal = m_lEmployeeTotal;
-	setWorldStock.m_ListedExchange = m_strExchangeCode.Left(100);
+	//setWorldStock.m_ListedExchange = m_strExchangeCode.Left(100);
 	setWorldStock.m_Ggroup = m_strGgroup.Left(45);
 	setWorldStock.m_Gind = m_strGind.Left(45);
 	setWorldStock.m_Gsector = m_strGsector.Left(45);
@@ -251,18 +236,6 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) const {
 	setWorldStock.m_UpdateDate = sUpdateDate.c_str();
 	ASSERT(sUpdateDate.size() < 10000);
 	setWorldStock.m_IPOStatus = m_lIPOStatus;
-
-	// Tiingo信息
-	setWorldStock.m_TiingoPermaTicker = m_strTiingoPermaTicker;
-	setWorldStock.m_IsActive = m_fIsActive;
-	setWorldStock.m_IsADR = m_fIsADR;
-	setWorldStock.m_SICCode = m_iSicCode;
-	setWorldStock.m_SICIndustry = m_strSicIndustry.Left(100);
-	setWorldStock.m_SICSector = m_strSicSector.Left(100);
-	setWorldStock.m_TiingoIndustry = m_strTiingoIndustry.Left(100);
-	setWorldStock.m_TiingoSector = m_strTiingoSector.Left(100);
-	setWorldStock.m_CompanyWebSite = m_strCompanyWebSite.Left(100);
-	setWorldStock.m_SECFilingWebSite = m_strSECFilingWebSite.Left(150);
 }
 
 void CWorldStock::Update(CSetWorldStock& setWorldStock) const {
@@ -530,42 +503,6 @@ void CWorldStock::UpdateEPSSurprise(const vector<CEPSSurprisePtr>& vEPSSurprise)
 	for (auto& p : vEPSSurprise) {
 		m_vEPSSurprise.push_back(p);
 	}
-}
-
-bool CWorldStock::IsNeedUpdateProfile(const CTiingoStockPtr& pTiingoStock) {
-	if (m_strTiingoPermaTicker.Compare(pTiingoStock->m_strTiingoPermaTicker) != 0) return true;
-	if (m_strName.Compare(pTiingoStock->m_strName) != 0) return true;
-	if ((m_fIsActive != pTiingoStock->m_fIsActive)) return true;
-	if (m_fIsADR != pTiingoStock->m_fIsADR) return true;
-	if (m_strTiingoIndustry.Compare(pTiingoStock->m_strTiingoIndustry) != 0) return true;
-	if (m_strTiingoSector.Compare(pTiingoStock->m_strTiingoSector) != 0) return true;
-	if (m_strSicIndustry.Compare(pTiingoStock->m_strSicIndustry) != 0) return true;
-	if (m_strSicSector.Compare(pTiingoStock->m_strSicSector) != 0) return true;
-	if (m_iSicCode != pTiingoStock->m_iSicCode) return true;
-	if (m_strCompanyWebSite.Compare(pTiingoStock->m_strCompanyWebSite) != 0) return true;
-	if (m_strSECFilingWebSite.Compare(pTiingoStock->m_strSECFilingWebSite) != 0) return true;
-	return false;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 使用TiingoStock更新。
-// Ticker, Name, Location和ReportingCurrency这四个数据不使用。
-//
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-void CWorldStock::UpdateStockProfile(const CTiingoStockPtr& pTiingoStock) {
-	m_strTiingoPermaTicker = pTiingoStock->m_strTiingoPermaTicker;
-	m_strName = pTiingoStock->m_strName;
-	m_fIsActive = pTiingoStock->m_fIsActive;
-	m_fIsADR = pTiingoStock->m_fIsADR;
-	m_strTiingoIndustry = pTiingoStock->m_strTiingoIndustry;
-	m_strTiingoSector = pTiingoStock->m_strTiingoSector;
-	m_strSicIndustry = pTiingoStock->m_strSicIndustry;
-	m_strSicSector = pTiingoStock->m_strSicSector;
-	m_iSicCode = pTiingoStock->m_iSicCode;
-	m_strCompanyWebSite = pTiingoStock->m_strCompanyWebSite;
-	m_strSECFilingWebSite = pTiingoStock->m_strSECFilingWebSite;
 }
 
 void CWorldStock::UpdateDayLineStartEndDate() {

@@ -33,7 +33,6 @@ public:
 	CString m_Cusip;
 	CString m_Sedol;
 	long m_EmployeeTotal;
-	CString m_ListedExchange;
 	CString m_Ggroup;
 	CString m_Gind;
 	CString m_Gsector;
@@ -55,18 +54,6 @@ public:
 	CString m_FinnhubIndustry;
 	CString m_Peer;
 	long m_IPOStatus;
-
-	// Tiingo Symbol信息
-	CString m_TiingoPermaTicker; // Tiingo永久代码标识
-	BOOL m_IsActive; //
-	BOOL m_IsADR;
-	long m_SICCode;
-	CString m_SICIndustry;
-	CString m_SICSector;
-	CString m_TiingoIndustry;
-	CString m_TiingoSector;
-	CString m_CompanyWebSite;
-	CString m_SECFilingWebSite;
 
 	CString m_UpdateDate;
 

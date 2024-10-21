@@ -1249,67 +1249,6 @@ namespace FireBirdTest {
 		setSECFilings.Close();
 	}
 
-	TEST_F(CWorldStockTest, TestIsNeedUpdateProfile) {
-		const auto pTiingoStock = make_shared<CTiingoStock>();
-
-		stock.SetSymbol(_T("asdjfkajsfkj"));
-
-		pTiingoStock->m_strTiingoPermaTicker = _T("askfkasjf");
-		pTiingoStock->SetSymbol(_T("asdjfkajsfkj"));
-		pTiingoStock->m_strName = _T("sdlfkjsdfkjg");
-		pTiingoStock->m_fIsActive = true;
-		pTiingoStock->m_fIsADR = true;
-		pTiingoStock->m_iSicCode = 1234343445;
-		pTiingoStock->m_strSicIndustry = _T("kjkjljkjgklj");
-		pTiingoStock->m_strSicSector = _T("eiruir");
-		pTiingoStock->m_strTiingoIndustry = _T("kdfjgkjfierj");
-		pTiingoStock->m_strTiingoSector = _T("quwerpqi");
-		pTiingoStock->m_strReportingCurrency = _T("asjdxcmsm");
-		pTiingoStock->m_strLocation = _T("mcmvkmcvkv");
-		pTiingoStock->m_strCompanyWebSite = _T(",mcvmcv");
-		pTiingoStock->m_strSECFilingWebSite = _T(".,m,.cmv,.");
-		pTiingoStock->SetCompanyFinancialStatementUpdateDate(457843759);
-		stock.UpdateStockProfile(pTiingoStock);
-
-		EXPECT_FALSE(stock.IsNeedUpdateProfile(pTiingoStock));
-	}
-
-	TEST_F(CWorldStockTest, TestUpdateStockProfile) {
-		const auto pTiingoStock = make_shared<CTiingoStock>();
-
-		stock.SetSymbol(_T("asdjfkajsfkj"));
-
-		pTiingoStock->m_strTiingoPermaTicker = _T("askfkasjf");
-		pTiingoStock->SetSymbol(_T("asdjfkajsfkj"));
-		pTiingoStock->m_strName = _T("sdlfkjsdfkjg");
-		pTiingoStock->m_fIsActive = true;
-		pTiingoStock->m_fIsADR = true;
-		pTiingoStock->m_iSicCode = 1234343445;
-		pTiingoStock->m_strSicIndustry = _T("kjkjljkjgklj");
-		pTiingoStock->m_strSicSector = _T("eiruir");
-		pTiingoStock->m_strTiingoIndustry = _T("kdfjgkjfierj");
-		pTiingoStock->m_strTiingoSector = _T("quwerpqi");
-		pTiingoStock->m_strReportingCurrency = _T("asjdxcmsm");
-		pTiingoStock->m_strLocation = _T("mcmvkmcvkv");
-		pTiingoStock->m_strCompanyWebSite = _T(",mcvmcv");
-		pTiingoStock->m_strSECFilingWebSite = _T(".,m,.cmv,.");
-		pTiingoStock->SetCompanyFinancialStatementUpdateDate(457843759);
-
-		stock.UpdateStockProfile(pTiingoStock);
-
-		EXPECT_STREQ(stock.GetTiingoPermaTicker(), pTiingoStock->m_strTiingoPermaTicker);
-		EXPECT_STREQ(stock.GetSymbol(), pTiingoStock->GetSymbol());
-		EXPECT_TRUE(stock.TiingoIsActive());
-		EXPECT_TRUE(stock.IsADR());
-		EXPECT_EQ(stock.GetSICCode(), pTiingoStock->m_iSicCode);
-		EXPECT_STREQ(stock.GetSICIndustry(), pTiingoStock->m_strSicIndustry);
-		EXPECT_STREQ(stock.GetSICSector(), pTiingoStock->m_strSicSector);
-		EXPECT_STREQ(stock.GetTiingoIndustry(), pTiingoStock->m_strTiingoIndustry);
-		EXPECT_STREQ(stock.GetSICSector(), pTiingoStock->m_strSicSector);
-		EXPECT_STREQ(stock.GetCompanyWebSite(), pTiingoStock->m_strCompanyWebSite);
-		EXPECT_STREQ(stock.GetSECFilingWebSite(), pTiingoStock->m_strSECFilingWebSite);
-	}
-
 	TEST_F(CWorldStockTest, TestHaveNewDayLineData) {
 		vector<CDayLinePtr> vDayLine;
 		CSetWorldStockDayLine setDayLine;
@@ -1504,7 +1443,7 @@ namespace FireBirdTest {
 		stock.SetCountry(_T("US"));
 		stock.SetCusip(_T("abcd"));
 		stock.SetSedol(_T("a1b2"));
-		stock.SetExchangeCode(_T("NY Market"));
+		stock.SetExchangeCode(_T("US"));
 		stock.SetGgroup(_T("a2b3"));
 		stock.SetGind(_T("Steel"));
 		stock.SetGsector(_T("company"));
@@ -1526,17 +1465,6 @@ namespace FireBirdTest {
 		stock.SetShareOutstanding(1.14);
 		stock.SetEmployeeTotal(101023);
 		stock.SetMarketCapitalization(34324.234);
-
-		stock.SetTiingoPermaTicker(_T("aasdfasdfj"));
-		stock.TiingoSetActive(true);
-		stock.SetADR(true);
-		stock.SetSICCode(1234);
-		stock.SetSICIndustry(_T("defg"));
-		stock.SetSICSector(_T("efg"));
-		stock.SetTiingoIndustry(_T("ghi"));
-		stock.SetTiingoSector(_T("defghijk"));
-		stock.SetCompanyWebSite(_T("ijk"));
-		stock.SetSECFilingWebSite(_T("https://def.com"));
 
 		stock.SetProfileUpdateDate(20000102);
 		stock.SetLastRTDataUpdateDate(20000103);
@@ -1605,14 +1533,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), stock2.GetLastRTDataUpdateDate());
 		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), stock2.GetLastEPSSurpriseUpdateDate());
 		EXPECT_EQ(stock.GetIPOStatus(), stock2.GetIPOStatus());
-		EXPECT_STREQ(stock.GetTiingoPermaTicker(), stock2.GetTiingoPermaTicker());
-		EXPECT_TRUE(stock.TiingoIsActive() == stock2.TiingoIsActive());
-		EXPECT_TRUE(stock.IsADR() == stock2.IsADR());
-		EXPECT_EQ(stock.GetSICCode(), stock2.GetSICCode());
-		EXPECT_STREQ(stock.GetSICIndustry(), stock2.GetSICIndustry());
-		EXPECT_STREQ(stock.GetSICSector(), stock2.GetSICSector());
-		EXPECT_STREQ(stock.GetCompanyWebSite(), stock2.GetCompanyWebSite());
-		EXPECT_STREQ(stock.GetSECFilingWebSite(), stock2.GetSECFilingWebSite());
 		EXPECT_EQ(stock.GetProfileUpdateDate(), stock2.GetProfileUpdateDate());
 		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), stock2.GetLastRTDataUpdateDate());
 		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), stock2.GetLastEPSSurpriseUpdateDate());

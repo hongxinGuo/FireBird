@@ -15,7 +15,6 @@ CSetWorldStock::CSetWorldStock(const CString& strSchema, const CString& strTable
 	m_Figi = _T(" ");
 	m_Currency = _T(" ");
 	m_Country = _T(" ");
-	m_ListedExchange = _T(" ");
 	m_FinnhubIndustry = _T(" ");
 	m_Peer = _T("{}"); // 这个是json制式数据
 	m_Name = _T(" ");
@@ -41,21 +40,9 @@ CSetWorldStock::CSetWorldStock(const CString& strSchema, const CString& strTable
 
 	m_IPOStatus = _STOCK_NOT_CHECKED_;
 
-	// Tiingo Symbol信息
-	m_TiingoPermaTicker = _T("");
-	m_IsActive = true;
-	m_IsADR = false;
-	m_TiingoIndustry = _T("");
-	m_TiingoSector = _T("");
-	m_SICCode = 0;
-	m_SICIndustry = _T("");
-	m_SICSector = _T("");
-	m_CompanyWebSite = _T("");
-	m_SECFilingWebSite = _T("");
-
 	m_UpdateDate = _T("{}"); // 这个用于存储各更新日期（json制式）
 
-	m_nFields = 48;
+	m_nFields = 37;
 }
 
 void CSetWorldStock::DoFieldExchange(CFieldExchange* pFX) {
@@ -79,7 +66,6 @@ void CSetWorldStock::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[cusip]"), m_Cusip);
 	RFX_Text(pFX, _T("[sedol]"), m_Sedol);
 	RFX_Long(pFX, _T("[EmployeeTotal]"), m_EmployeeTotal);
-	RFX_Text(pFX, _T("[ListedExchange]"), m_ListedExchange);
 	RFX_Text(pFX, _T("[ggroup]"), m_Ggroup);
 	RFX_Text(pFX, _T("[gind]"), m_Gind);
 	RFX_Text(pFX, _T("[gsector]"), m_Gsector);
@@ -101,15 +87,5 @@ void CSetWorldStock::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[FinnhubIndustry]"), m_FinnhubIndustry);
 	RFX_Text(pFX, _T("[Peer]"), m_Peer, 2000);
 	RFX_Long(pFX, _T("[IPOStatus]"), m_IPOStatus);
-	RFX_Text(pFX, _T("[TiingoPermaTicker]"), m_TiingoPermaTicker);
-	RFX_Bool(pFX, _T("[IsActive]"), m_IsActive);
-	RFX_Bool(pFX, _T("[IsADR]"), m_IsADR);
-	RFX_Long(pFX, _T("[SICCode]"), m_SICCode);
-	RFX_Text(pFX, _T("[SICIndustry]"), m_SICIndustry);
-	RFX_Text(pFX, _T("[SICSector]"), m_SICSector);
-	RFX_Text(pFX, _T("[TiingoIndustry]"), m_TiingoIndustry);
-	RFX_Text(pFX, _T("[TiingoSector]"), m_TiingoSector);
-	RFX_Text(pFX, _T("[CompanyWebSite]"), m_CompanyWebSite);
-	RFX_Text(pFX, _T("[SECFilingWebSite]"), m_SECFilingWebSite);
 	RFX_Text(pFX, _T("UpdateDate"), m_UpdateDate, 10000); // Note RFX_Text默认最大长度为256.
 }
