@@ -92,8 +92,9 @@ void CTiingoStock::Update(CSetTiingoStock& setTiingoStock) {
 	setTiingoStock.Update();
 }
 
-void CTiingoStock::UpdateRTData(CTiingoIEXTopOFBookPtr pIEXTopOfBook) {
+void CTiingoStock::UpdateRTData(const CTiingoIEXTopOFBookPtr& pIEXTopOfBook) {
 	m_TransactionTime = pIEXTopOfBook->m_llTimestamp;
+	m_lOpen = pIEXTopOfBook->m_lOpen;
 	m_lHigh = pIEXTopOfBook->m_lHigh;
 	m_lLow = pIEXTopOfBook->m_lLow;
 	m_lLastClose = pIEXTopOfBook->m_lLastClose;
@@ -277,7 +278,7 @@ bool CTiingoStock::HaveNewDayLineData() {
 
 void CTiingoStock::CheckUpdateStatus(long lTodayDate) {
 	//CheckProfileUpdateStatus(lTodayDate);
-	//CheckFinancialStateUpdateStatus(lTodayDate);
+	CheckFinancialStateUpdateStatus(lTodayDate);
 	//CheckCompanyNewsUpdateStatus(lTodayDate);
 	CheckIPOStatus(lTodayDate);
 	CheckDayLineUpdateStatus(lTodayDate, gl_pWorldMarket->GetLastTradeDate(), gl_pWorldMarket->GetMarketTime(), gl_pWorldMarket->GetDayOfWeek());

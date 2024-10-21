@@ -539,6 +539,25 @@ namespace FireBirdTest {
 		}
 	}
 
+	TEST_F(CTiingoStockTest, TestUpdateRTData) {
+		CTiingoIEXTopOFBookPtr pIEX = make_shared<CTiingoIEXTopOFBook>();
+		pIEX->m_llTimestamp = 123456;
+		pIEX->m_lOpen = 1234;
+		pIEX->m_lHigh = 2345;
+		pIEX->m_lLow = 123;
+		pIEX->m_lLastClose = 23456;
+		pIEX->m_lNew = 23;
+		pIEX->m_llVolume = 100000;
+		stock.UpdateRTData(pIEX);
+		EXPECT_EQ(stock.GetTransactionTime(), pIEX->m_llTimestamp);
+		EXPECT_EQ(stock.GetOpen(), pIEX->m_lOpen);
+		EXPECT_EQ(stock.GetHigh(), pIEX->m_lHigh);
+		EXPECT_EQ(stock.GetLow(), pIEX->m_lLow);
+		EXPECT_EQ(stock.GetLastClose(), pIEX->m_lLastClose);
+		EXPECT_EQ(stock.GetNew(), pIEX->m_lNew);
+		EXPECT_EQ(stock.GetVolume(), pIEX->m_llVolume);
+	}
+
 	TEST_F(CTiingoStockTest, TestSave) {
 		CTiingoStock stock, stock2;
 		CSetTiingoStock setTiingoStock;

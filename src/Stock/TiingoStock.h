@@ -34,7 +34,7 @@ public:
 	bool IsUpdateFinancialStateDB() const noexcept { return m_fUpdateFinancialStateDB; }
 	void SetUpdateFinancialStateDB(bool fFlag) noexcept { m_fUpdateFinancialStateDB = fFlag; }
 
-	void UpdateRTData(CTiingoIEXTopOFBookPtr pIEXTopOfBook);
+	void UpdateRTData(const CTiingoIEXTopOFBookPtr& pIEXTopOfBook);
 	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
 	void UpdateDayLine(const vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UpdateFinancialStateDB();
