@@ -4,23 +4,6 @@
 #include"VirtualHistoryCandleBasic.h"
 
 CVirtualHistoryCandleBasic::CVirtualHistoryCandleBasic() {
-	CVirtualHistoryCandleBasic::Reset();
-}
-
-void CVirtualHistoryCandleBasic::Reset() {
-	m_lDate = 0; // 类型
-	m_time = 0;
-	m_strStockSymbol = _T("");
-	m_strDisplaySymbol = _T("");
-	m_lLastClose = m_lOpen = m_lHigh = m_lLow = m_lClose = 0; // 收盘价
-	m_llVolume = 0;
-	m_llAmount = 0;
-	m_dUpDown = 0;
-	m_dUpDownRate = 0;
-	m_llCurrentValue = m_llTotalValue = 0;
-	m_dChangeHandRate = 0;
-	m_dRS = m_dRSLogarithm = m_dRSIndex = m_dRSBackup = 0.0;
-	m_d3RS = m_d5RS = m_d10RS = m_d30RS = m_d60RS = m_d120RS = 0.0;
 }
 
 void CVirtualHistoryCandleBasic::CalculateRSLogarithm1(double dRS) {

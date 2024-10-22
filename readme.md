@@ -1,7 +1,9 @@
 # FireBird
 
 ### 当前状态
-发行Version0.30版本。
+发行Version0.31版本。
+
+Version0.31: 修改数据库结构，添加Tiingo数据支持。vcpkg只管理zlib、nlohmann-json和ms-gsl。
 
 Version0.30：修改各Exchange的数据结构。添加simdjson支持。使用vcpkg管理第三方库（concurrentqueue、concurrencpp、openssl、zlib、nlohmann-json、ms-gsl).
 

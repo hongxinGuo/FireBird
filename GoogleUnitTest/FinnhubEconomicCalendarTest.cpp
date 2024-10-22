@@ -62,7 +62,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()) << "有权处理时不更改";
-		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
+		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 220);
 
 		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(true);

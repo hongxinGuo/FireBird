@@ -4,11 +4,6 @@
 #include "WeekLine.h"
 
 CWeekLine::CWeekLine() {
-	CWeekLine::Reset();
-}
-
-void CWeekLine::Reset() {
-	CVirtualHistoryCandleExtend::Reset();
 }
 
 bool CWeekLine::UpdateWeekLine(const CVirtualHistoryCandleExtendPtr& pHistoryCandleExtend) {

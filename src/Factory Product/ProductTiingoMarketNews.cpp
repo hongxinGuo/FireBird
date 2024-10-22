@@ -129,9 +129,11 @@ void CProductTiingoMarketNews::UpdateDataSourceStatus(CVirtualDataSourcePtr pDat
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateMarketNews(false);
 	if (IsNoRightToAccess()) { // Note 在此确定Tiingo账户类型
 		gl_systemConfiguration.ChangeTiingoAccountTypeToFree();
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("free Tiingo account"));
 	}
 	else {
 		gl_systemConfiguration.ChangeTiingoAccountTypeToPaid();
+		gl_systemMessage.PushInnerSystemInformationMessage(_T("Paid Tiingo account"));
 	}
 	gl_pWorldMarket->UpdateTiingoStockStatus(); // 根据账户是付费还是免费的，设置日线更新方式。
 }

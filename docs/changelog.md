@@ -1,3 +1,9 @@
+2024.10.22 Version0.31
+
+1.修改数据库结构。
+2.添加Tiingo数据支持。
+3.vcpkg只管理zlib、nlohmann-json、ms-gsl,其他库直接包含源代码或者编译后的库。
+
 2023.12.09 Version0.30
 
 修改各exchange的数据结构；添加simdjson支持。

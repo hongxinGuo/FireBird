@@ -527,21 +527,25 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 void CSystemConfiguration::ChangeFinnhubAccountTypeToFree() {
 	m_bFinnhubAccountFeePaid = false;
 	m_iWorldMarketFinnhubInquiryTime = 1100; // 每次1100毫秒
+	m_fUpdateDB = true;
 }
 
 void CSystemConfiguration::ChangeFinnhubAccountTypeToPaid() {
 	m_bFinnhubAccountFeePaid = true;
 	m_iWorldMarketFinnhubInquiryTime = 220; // 每次220毫秒
+	m_fUpdateDB = true;
 }
 
 void CSystemConfiguration::ChangeTiingoAccountTypeToFree() {
 	m_bTiingoAccountFeePaid = false;
 	m_iWorldMarketTiingoInquiryTime = 9000; // 每次9000毫秒
+	m_fUpdateDB = true;
 }
 
 void CSystemConfiguration::ChangeTiingoAccountTypeToPaid() {
 	m_bTiingoAccountFeePaid = true;
 	m_iWorldMarketTiingoInquiryTime = 500; // 每次500毫秒.每小时最大限额为10000。
+	m_fUpdateDB = true;
 }
 
 void CSystemConfiguration::UsingSinaRealtimeServer() {

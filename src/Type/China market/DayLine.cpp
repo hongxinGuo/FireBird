@@ -3,9 +3,4 @@
 #include "DayLine.h"
 
 CDayLine::CDayLine() {
-	CDayLine::Reset();
-}
-
-void CDayLine::Reset() {
-	CVirtualHistoryCandleExtend::Reset();
 }
