@@ -8,14 +8,6 @@
 
 CSetFinnhubRecommendationTrends::CSetFinnhubRecommendationTrends(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_ID = 0;
-	m_Symbol = _T("");
-	m_Period = 19700101; // ∏Ò Ω£∫2020-03-01
-	m_StrongBuy = 0;
-	m_Buy = 0;
-	m_Hold = 0;
-	m_Sell = 0;
-	m_StrongSell = 0;
 	m_nFields = 8;
 }
 

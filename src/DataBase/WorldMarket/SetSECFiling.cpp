@@ -8,15 +8,6 @@
 
 CSetSECFilings::CSetSECFilings(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_ID = 0;
-	m_Symbol = _T(" ");
-	m_CIK = 0;
-	m_AccessNumber = _T(" ");
-	m_ReportURL = _T(" ");
-	m_FilingURL = _T(" ");
-	m_Form = _T(" ");
-	m_AcceptedDate = 0;
-	m_FiledDate = 0;
 	m_nFields = 9;
 }
 

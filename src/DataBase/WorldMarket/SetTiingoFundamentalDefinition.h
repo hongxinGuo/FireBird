@@ -17,12 +17,12 @@ public:
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
 
-	long m_ID;
-	CString m_dataCode;
-	CString m_name;
-	CString m_description;
-	CString m_statementType;
-	CString m_units;
+	long m_ID{ 0 };
+	CString m_dataCode{ _T("") };
+	CString m_name{ _T("") };
+	CString m_description{ _T("") };
+	CString m_statementType{ _T("") };
+	CString m_units{ _T("") };
 
 public:
 	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持

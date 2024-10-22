@@ -80,7 +80,7 @@ CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarke
 		p = make_shared<CProductTiingoFinancialState>();
 		break;
 	case TIINGO_IEX_TOP_OF_BOOK_:
-		p = make_shared<CProductTiingoIEXTopOFBook>();
+		p = make_shared<CProductTiingoIEXTopOfBook>();
 		break;
 	default:
 		p = make_shared<CProductDummy>();

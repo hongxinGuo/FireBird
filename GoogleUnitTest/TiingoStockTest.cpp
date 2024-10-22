@@ -540,7 +540,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestUpdateRTData) {
-		CTiingoIEXTopOFBookPtr pIEX = make_shared<CTiingoIEXTopOFBook>();
+		CTiingoIEXTopOfBookPtr pIEX = make_shared<CTiingoIEXTopOfBook>();
 		pIEX->m_llTimestamp = 123456;
 		pIEX->m_lOpen = 1234;
 		pIEX->m_lHigh = 2345;

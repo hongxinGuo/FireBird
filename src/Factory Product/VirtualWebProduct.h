@@ -6,8 +6,8 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"ClassDeclaration.h"
 #include"WebData.h"
+#include"ClassDeclaration.h"
 
 // 此结构只用于测试中
 struct Test_FinnhubWebData {
@@ -21,9 +21,9 @@ struct Test_FinnhubWebData {
 	~Test_FinnhubWebData() = default;
 
 public:
-	long m_lIndex;
-	CString m_strSymbol;
-	CWebDataPtr m_pData;
+	long m_lIndex{ 0 };
+	CString m_strSymbol{ _T("") };
+	CWebDataPtr m_pData{ nullptr };
 };
 
 extern Test_FinnhubWebData finnhubWebData0;
@@ -39,13 +39,12 @@ struct Test_TiingoWebData {
 		m_pData->Test_SetBuffer_(strData);
 	}
 
-	~Test_TiingoWebData() {
-	}
+	~Test_TiingoWebData() = default;
 
 public:
-	long m_lIndex;
-	CString m_strSymbol;
-	CWebDataPtr m_pData;
+	long m_lIndex{ 0 };
+	CString m_strSymbol{ _T("") };
+	CWebDataPtr m_pData{ nullptr };
 };
 
 enum {
@@ -58,27 +57,22 @@ enum {
 
 class CVirtualWebProduct {
 public:
-	CVirtualWebProduct();
+	CVirtualWebProduct() {} // default do nothing
 	virtual ~CVirtualWebProduct() = default;
 
 	virtual CString CreateMessage() { return _T(""); };
-	virtual void ParseAndStoreWebData(CWebDataPtr pWebData) {
-	};
+	virtual void ParseAndStoreWebData(CWebDataPtr pWebData) {} // default do nothing
 	virtual void ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) {// 一次处理多个接收到的数据。目前只有腾讯日线数据需要这种模式
 		ASSERT(pvWebData->size() == 1);
 		ParseAndStoreWebData(pvWebData->at(0)); // 默认只有一个数据，
 	}
-	virtual void AddInaccessibleSymbol() {
-	} // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
-
-	virtual void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
-	} // default do nothing
+	virtual void AddInaccessibleSymbol() {} // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
+	virtual void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {} // default do nothing
 
 	bool CheckInaccessible();
 	bool IsVoidJson(const CWebDataPtr& pWebData);
 
 	bool IsVoidData() const noexcept { return m_iReceivedDataStatus == VOID_DATA_; }
-	virtual bool CheckAccessRight(CWebDataPtr pWebData) { return true; }  // todo 不再使用，准备删除之
 	bool IsNoRightToAccess() const noexcept { return m_iReceivedDataStatus == NO_ACCESS_RIGHT_; }
 	int GetReceivedDataStatus() const noexcept { return m_iReceivedDataStatus; }
 	void SetReceivedDataStatus(int iType) noexcept { m_iReceivedDataStatus = iType; }
@@ -96,8 +90,14 @@ public:
 	CString GetInquiringExchange() const noexcept { return m_strInquiringExchange; }
 	bool IsUSMarket() const; // 如果是美国市场
 
+	void SetInquiringSymbol(const CString& symbol) noexcept { m_strInquiringSymbol = symbol; }
+	CString GetInquiringSymbol() const noexcept { return m_strInquiringSymbol; }
+
 	void SetInquireType(const int iInquireType) noexcept { m_iInquireType = iInquireType; }
 	int GetInquireType() const noexcept { return m_iInquireType; }
+
+	// 测试用
+	virtual bool CheckAccessRight(CWebDataPtr pWebData) { return true; }  // todo 不再使用，准备删除之
 
 protected:
 	CVirtualMarketWeakPtr m_pMarket;// Product被用于工作线程中。当系统退出时，由于无法保证工作线程先结束，故而此处使用weak_ptr智能指针以防止内存泄露。

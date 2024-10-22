@@ -20,15 +20,15 @@ public:
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
 
-	long m_ID;  // 索引用，自动生成。
-	CString m_Time;
-	CString m_Country;
-	CString m_Event;
-	CString m_Impact;
-	CString m_Actual;
-	CString m_Estimate;
-	CString m_Prev;
-	CString m_Unit;
+	long m_ID{ 0 };  // 索引用，自动生成。
+	CString m_Time{ _T("") };
+	CString m_Country{ _T("") };
+	CString m_Event{ _T("") };
+	CString m_Impact{ _T("") };
+	CString m_Actual{ _T("") };
+	CString m_Estimate{ _T("") };
+	CString m_Prev{ _T("") };
+	CString m_Unit{ _T("") };
 
 	// 重写
 	// 向导生成的虚函数重写

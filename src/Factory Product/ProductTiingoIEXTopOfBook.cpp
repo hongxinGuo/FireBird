@@ -17,17 +17,18 @@
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 
-CProductTiingoIEXTopOFBook::CProductTiingoIEXTopOFBook() {
+CProductTiingoIEXTopOfBook::CProductTiingoIEXTopOfBook() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/iex?");
 }
 
-CString CProductTiingoIEXTopOFBook::CreateMessage() {
+CString CProductTiingoIEXTopOfBook::CreateMessage() {
+	m_strInquiringSymbol = _T("All");
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
 }
 
-void CProductTiingoIEXTopOFBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvTiingoIEXTopOFBook = ParseTiingoIEXTopOFBook(pWebData);
+void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
+	const auto pvTiingoIEXTopOFBook = ParseTiingoIEXTopOfBook(pWebData);
 	long lNewestTradeDay = gl_pWorldMarket->GetNewestTradeDate();
 	time_t ttNewestTradeDay = ConvertToTTime(lNewestTradeDay, 0, 120000);
 	if (!pvTiingoIEXTopOFBook->empty()) {
@@ -87,10 +88,10 @@ void CProductTiingoIEXTopOFBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // ]
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoIEXTopOFBooksPtr CProductTiingoIEXTopOFBook::ParseTiingoIEXTopOFBook(const CWebDataPtr& pWebData) {
-	auto pvTiingoIEXLastTopOFBook = make_shared<vector<CTiingoIEXTopOFBookPtr>>();
+CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(const CWebDataPtr& pWebData) {
+	auto pvTiingoIEXLastTopOFBook = make_shared<vector<CTiingoIEXTopOfBookPtr>>();
 	CString strNULL = _T(" ");
-	CTiingoIEXTopOFBookPtr pIEXLastTopOFBook = nullptr;
+	CTiingoIEXTopOfBookPtr pIEXLastTopOFBook = nullptr;
 	string s1;
 	CString strNumber;
 	int year, month, day, hour, minute, second;
@@ -107,7 +108,7 @@ CTiingoIEXTopOFBooksPtr CProductTiingoIEXTopOFBook::ParseTiingoIEXTopOFBook(cons
 		int iCount = 0;
 		for (auto item : doc) {
 			auto itemValue = item.value();
-			pIEXLastTopOFBook = make_shared<CTiingoIEXTopOFBook>();
+			pIEXLastTopOFBook = make_shared<CTiingoIEXTopOfBook>();
 			s1 = jsonGetStringView(itemValue, _T("ticker"));
 			pIEXLastTopOFBook->m_strTicker = s1.c_str();
 			s1 = jsonGetStringView(itemValue, _T("timestamp"));
@@ -131,7 +132,7 @@ CTiingoIEXTopOFBooksPtr CProductTiingoIEXTopOFBook::ParseTiingoIEXTopOFBook(cons
 	return pvTiingoIEXLastTopOFBook;
 }
 
-void CProductTiingoIEXTopOFBook::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
+void CProductTiingoIEXTopOfBook::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
-	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateIEXTopOFBook(false);
+	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateIEXTopOfBook(false);
 }

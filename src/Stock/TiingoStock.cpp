@@ -92,7 +92,7 @@ void CTiingoStock::Update(CSetTiingoStock& setTiingoStock) {
 	setTiingoStock.Update();
 }
 
-void CTiingoStock::UpdateRTData(const CTiingoIEXTopOFBookPtr& pIEXTopOfBook) {
+void CTiingoStock::UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook) {
 	m_TransactionTime = pIEXTopOfBook->m_llTimestamp;
 	m_lOpen = pIEXTopOfBook->m_lOpen;
 	m_lHigh = pIEXTopOfBook->m_lHigh;
@@ -204,7 +204,7 @@ bool CTiingoStock::UpdateDayLineDB() {
 	return false;
 }
 
-void CTiingoStock::AddDayLine(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const {
+void CTiingoStock::SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const {
 	setDayLine.AddNew();
 	setDayLine.m_Date = lTradeDay;
 	setDayLine.m_Symbol = m_strSymbol;

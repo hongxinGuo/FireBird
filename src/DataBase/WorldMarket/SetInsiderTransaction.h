@@ -18,15 +18,15 @@ public:
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
 
-	long m_ID;  // 索引用，自动生成。
-	CString m_Symbol;
-	CString m_PersonName;
-	CString m_Share;
-	CString m_Change;
-	long m_FilingDate;
-	long m_TransactionDate;
-	CString m_TransactionCode;
-	double m_TransactionPrice;
+	long m_ID{ 0 };  // 索引用，自动生成。
+	CString m_Symbol{ _T("") };
+	CString m_PersonName{ _T("") };
+	CString m_Share{ _T("") };
+	CString m_Change{ _T("") };
+	long m_FilingDate{ 0 };
+	long m_TransactionDate{ 0 };
+	CString m_TransactionCode{ _T("") };
+	double m_TransactionPrice{ 0 };
 
 	// 重写
 	// 向导生成的虚函数重写

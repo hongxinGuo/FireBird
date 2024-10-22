@@ -14,14 +14,14 @@ public:
 	// CString 类型，ODBC 驱动程序将执行所有必要的转换。
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
-	long m_ID;
-	long m_RSEndDate;
-	long m_RSStartDate;
-	long m_LastLoginDate;
-	long m_LastLoginTime;
-	long m_UpdatedDateFor10DaysRS1;
-	long m_UpdatedDateFor10DaysRS2;
-	long m_UpdatedDateFor10DaysRS;
+	long m_ID{ 0 };
+	long m_RSEndDate{ 0 };
+	long m_RSStartDate{ 0 };
+	long m_LastLoginDate{ 0 };
+	long m_LastLoginTime{ 0 };
+	long m_UpdatedDateFor10DaysRS1{ 0 };
+	long m_UpdatedDateFor10DaysRS2{ 0 };
+	long m_UpdatedDateFor10DaysRS{ 0 };
 
 	// 重写
 	// 向导生成的虚函数重写

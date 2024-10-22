@@ -2,5 +2,5 @@
 
 #include"TiingoIEXTopOFBook.h"
 
-CTiingoIEXTopOFBook::CTiingoIEXTopOFBook() {
+CTiingoIEXTopOfBook::CTiingoIEXTopOfBook() {
 }

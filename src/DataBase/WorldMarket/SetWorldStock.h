@@ -18,44 +18,44 @@ public:
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
 
-	long m_ID;
-	CString m_Description;
-	CString m_DisplaySymbol;
-	CString m_Symbol;
-	CString m_ExchangeCode;
-	CString m_Type;
-	CString m_Mic;
-	CString m_Figi;
-	CString m_Currency;
-	CString m_Address;
-	CString m_City;
-	CString m_Country;
-	CString m_Cusip;
-	CString m_Sedol;
-	long m_EmployeeTotal;
-	CString m_Ggroup;
-	CString m_Gind;
-	CString m_Gsector;
-	CString m_Gsubind;
-	CString m_IPODate;
-	CString m_Isin;
-	CString m_MarketCapitalization;
-	CString m_Naics;
-	CString m_NaicsNationalIndustry;
-	CString m_NaicsSector;
-	CString m_NaicsSubsector;
-	CString m_Name;
-	CString m_Phone;
-	CString m_ShareOutstanding;
-	CString m_State;
-	CString m_Ticker;
-	CString m_WebURL;
-	CString m_Logo;
-	CString m_FinnhubIndustry;
-	CString m_Peer;
-	long m_IPOStatus;
+	long m_ID{ 0 };
+	CString m_Description{ _T("") };
+	CString m_DisplaySymbol{ _T("") };
+	CString m_Symbol{ _T("") };
+	CString m_ExchangeCode{ _T("") };
+	CString m_Type{ _T("") };
+	CString m_Mic{ _T("") };
+	CString m_Figi{ _T("") };
+	CString m_Currency{ _T("") };
+	CString m_Address{ _T("") };
+	CString m_City{ _T("") };
+	CString m_Country{ _T("") };
+	CString m_Cusip{ _T("") };
+	CString m_Sedol{ _T("") };
+	long m_EmployeeTotal{ 0 };
+	CString m_Ggroup{ _T("") };
+	CString m_Gind{ _T("") };
+	CString m_Gsector{ _T("") };
+	CString m_Gsubind{ _T("") };
+	CString m_IPODate{ _T("") };
+	CString m_Isin{ _T("") };
+	CString m_MarketCapitalization{ _T("") };
+	CString m_Naics{ _T("") };
+	CString m_NaicsNationalIndustry{ _T("") };
+	CString m_NaicsSector{ _T("") };
+	CString m_NaicsSubsector{ _T("") };
+	CString m_Name{ _T("") };
+	CString m_Phone{ _T("") };
+	CString m_ShareOutstanding{ _T("") };
+	CString m_State{ _T("") };
+	CString m_Ticker{ _T("") };
+	CString m_WebURL{ _T("") };
+	CString m_Logo{ _T("") };
+	CString m_FinnhubIndustry{ _T("") };
+	CString m_Peer{ _T("{}") }; //json制式
+	long m_IPOStatus{ _STOCK_NOT_CHECKED_ };
 
-	CString m_UpdateDate;
+	CString m_UpdateDate{ _T("{}") }; // 这个用于存储各更新日期（json制式）
 
 public:
 	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持

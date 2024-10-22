@@ -17,11 +17,11 @@ public:
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
 
-	long m_ID;
-	BOOL m_Active;
-	int m_Market;
-	long m_IndexNumber;
-	CString m_Comment;
+	long m_ID{ 0 };
+	BOOL m_Active{ false };
+	int m_Market{ 0 };
+	long m_IndexNumber{ 0 };
+	CString m_Comment{ _T("") };
 	// 重写
 	// 向导生成的虚函数重写
 public:

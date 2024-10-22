@@ -6,8 +6,6 @@
 
 CVirtualSetChosenStake::CVirtualSetChosenStake(const CString& strSchema, const CString& strTable, CDatabase* pDatabase)
 	: CVirtualRecordset(strSchema, strTable, pDatabase) {
-	m_ID = 0;
-	m_Symbol = _T("");
 	m_nFields = 2;
 }
 

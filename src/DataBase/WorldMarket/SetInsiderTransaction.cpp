@@ -8,15 +8,6 @@
 
 CSetInsiderTransaction::CSetInsiderTransaction(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_ID = 0;
-	m_Symbol = _T(" ");
-	m_PersonName = _T(" ");
-	m_Share = _T("");
-	m_Change = _T("");
-	m_FilingDate = 19700101;
-	m_TransactionDate = 19700101;
-	m_TransactionCode = _T(" ");
-	m_TransactionPrice = 0.0;
 	m_nFields = 9;
 }
 

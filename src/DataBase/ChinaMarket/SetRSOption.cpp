@@ -4,21 +4,6 @@
 
 CSetRSOption::CSetRSOption(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_ID = 0;
-	m_Index = 0;
-	m_Active = false;
-	m_DayLengthFirst = 0;
-	m_DayLengthSecond = 0;
-	m_DayLengthThird = 0;
-	m_DayLengthFourth = 0;
-	m_StrongDayLengthFirst = 0;
-	m_StrongDayLengthSecond = 0;
-	m_StrongDayLengthThird = 0;
-	m_StrongDayLengthFourth = 0;
-	m_RSStrongFirst = _T("50.000");
-	m_RSStrongSecond = _T("50.000");
-	m_RSStrongThird = _T("50.000");
-	m_RSStrongFourth = _T("50.000");
 	m_nFields = 15;
 }
 

@@ -18,11 +18,11 @@ public:
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
 
-	long m_ID;  // 索引用，自动生成。
-	CString m_Symbol;
-	long m_Date;
-	double m_Actual;
-	double m_Estimate;
+	long m_ID{ 0 };  // 索引用，自动生成。
+	CString m_Symbol{ _T("") };
+	long m_Date{ 0 };
+	double m_Actual{ 0 };
+	double m_Estimate{ 0 };
 
 	// 重写
 	// 向导生成的虚函数重写

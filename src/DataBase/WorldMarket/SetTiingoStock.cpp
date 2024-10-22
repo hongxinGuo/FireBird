@@ -6,24 +6,6 @@
 
 CSetTiingoStock::CSetTiingoStock(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_ID = 0;
-	m_TiingoPermaTicker = _T("");
-	m_Ticker = _T("");
-	m_Name = _T("");
-	m_IsActive = true;
-	m_IsADR = false;
-	m_SicCode = 0;
-	m_SicIndustry = _T("");
-	m_SicSector = _T("");
-	m_TiingoIndustry = _T("");
-	m_TiingoSector = _T("");
-	m_ReportingCurrency = _T("");
-	m_Location = _T("");
-	m_CompanyWebSite = _T("");
-	m_SECFilingWebSite = _T("");
-	m_UpdateDate = _T("");
-	m_IPOStatus = 128;
-
 	m_nFields = 17;
 }
 

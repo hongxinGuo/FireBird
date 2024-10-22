@@ -17,16 +17,16 @@ public:
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
 
-	long m_ID;
-	long m_ids;
-	CString m_tickers;
-	CString m_title;
-	CString m_tag;
-	CString m_source;
-	CString m_description;
-	CString m_url;
-	CString m_crawlDate;
-	CString m_publishedDate;
+	long m_ID{ 0 };
+	long m_ids{ 0 };
+	CString m_tickers{ _T("") };
+	CString m_title{ _T("") };
+	CString m_tag{ _T("") };
+	CString m_source{ _T("") };
+	CString m_description{ _T("") };
+	CString m_url{ _T("") };
+	CString m_crawlDate{ _T("") };
+	CString m_publishedDate{ _T("") };
 
 public:
 	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持

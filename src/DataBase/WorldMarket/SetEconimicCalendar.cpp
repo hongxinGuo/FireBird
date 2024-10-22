@@ -10,14 +10,6 @@
 
 CSetEconomicCalendar::CSetEconomicCalendar(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_ID = 0;
-	m_Country = _T(" ");
-	m_Event = _T(" ");
-	m_Impact = _T(" ");
-	m_Actual = _T(" ");
-	m_Estimate = _T(" ");
-	m_Prev = _T(" ");
-	m_Unit = _T(" ");
 	m_nFields = 9;
 }
 

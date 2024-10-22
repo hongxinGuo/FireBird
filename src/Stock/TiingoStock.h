@@ -34,12 +34,12 @@ public:
 	bool IsUpdateFinancialStateDB() const noexcept { return m_fUpdateFinancialStateDB; }
 	void SetUpdateFinancialStateDB(bool fFlag) noexcept { m_fUpdateFinancialStateDB = fFlag; }
 
-	void UpdateRTData(const CTiingoIEXTopOFBookPtr& pIEXTopOfBook);
+	void UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook);
 	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
 	void UpdateDayLine(const vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UpdateFinancialStateDB();
 	bool UpdateDayLineDB();
-	void AddDayLine(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const;
+	void SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const; // 将当前数据存入日线数据库
 
 	void UpdateProfile(const CTiingoStockPtr& pStock);
 

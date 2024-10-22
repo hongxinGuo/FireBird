@@ -84,10 +84,7 @@ bool CContainerTiingoStock::LoadDB() {
 			Add(pTiingoStock);
 		}
 		else {
-			CString str = "发现重复代码：";
-			str += setTiingoStock.m_Ticker;
-			gl_systemMessage.PushInnerSystemInformationMessage(str);
-			setTiingoStock.Delete();
+			setTiingoStock.Delete(); // 删除重复代码
 		}
 		setTiingoStock.MoveNext();
 	}
@@ -117,7 +114,7 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 	for (size_t i = 0; i < lSize; i++) {
 		auto pTiingoStock = GetStock(i);
 		if (pTiingoStock->GetTransactionTime() >= tMarketCloseTime) {
-			pTiingoStock->AddDayLine(setDayLine, lDate);
+			pTiingoStock->SaveCurrentDataToDayLineDB(setDayLine, lDate);
 		}
 	}
 	setDayLine.m_pDatabase->CommitTrans();

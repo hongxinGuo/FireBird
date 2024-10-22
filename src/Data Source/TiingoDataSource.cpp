@@ -234,7 +234,7 @@ bool CTiingoDataSource::InquireCryptoSymbol() {
 }
 
 bool CTiingoDataSource::InquireIEXTopOfBook() {
-	if (!IsInquiring() && IsUpdateIEXTopOFBook()) {
+	if (!IsInquiring() && IsUpdateIEXTopOfBook()) {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, TIINGO_IEX_TOP_OF_BOOK_);
 		StoreInquiry(p);
 		SetInquiring(true);

@@ -21,8 +21,8 @@ public:
 	// (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
 	// 以同时支持 Unicode 和这些转换)。
 
-	long m_ID;
-	CString m_Symbol;
+	long m_ID{ 0 };
+	CString m_Symbol{ _T("") };
 
 	// 重写
 	// 向导生成的虚函数重写

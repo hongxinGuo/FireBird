@@ -3,16 +3,16 @@
 #include"ProductTiingo.h"
 #include "TiingoIEXTopOFBook.h"
 
-class CProductTiingoIEXTopOFBook final : public CProductTiingo {
+class CProductTiingoIEXTopOfBook final : public CProductTiingo {
 public:
-	CProductTiingoIEXTopOFBook();
-	~CProductTiingoIEXTopOFBook() override = default;
+	CProductTiingoIEXTopOfBook();
+	~CProductTiingoIEXTopOfBook() override = default;
 
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	CTiingoIEXTopOFBooksPtr ParseTiingoIEXTopOFBook(const CWebDataPtr& pWebData);
+	CTiingoIEXTopOfBooksPtr ParseTiingoIEXTopOfBook(const CWebDataPtr& pWebData);
 
 	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
 };
 
-using CProductTiingoIEXTopOFBookPtr = shared_ptr<CProductTiingoIEXTopOFBook>;
+using CProductTiingoIEXTopOfBookPtr = shared_ptr<CProductTiingoIEXTopOfBook>;

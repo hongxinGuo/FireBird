@@ -657,6 +657,9 @@
     <ClCompile Include="InaccessibleTest.cpp">
       <Filter>Test源文件\System</Filter>
     </ClCompile>
+    <ClCompile Include="ProductTiingoIEXTopOfBookTest.cpp">
+      <Filter>Test源文件\Factory Product\Tiingo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockMainFrm.h">

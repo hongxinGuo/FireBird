@@ -7,9 +7,6 @@
 	return p1->GetMarketDate() < p2->GetMarketDate();
 }
 
-CVirtualWebProduct::CVirtualWebProduct() {
-}
-
 bool CVirtualWebProduct::IsVoidJson(const CWebDataPtr& pWebData) {
 	if (pWebData->IsVoidJson()) {
 		m_iReceivedDataStatus = VOID_DATA_;

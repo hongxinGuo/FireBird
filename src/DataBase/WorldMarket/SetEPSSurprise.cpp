@@ -10,11 +10,6 @@
 
 CSetEPSSurprise::CSetEPSSurprise(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_ID = 0;
-	m_Symbol = _T(" ");
-	m_Date = 0;
-	m_Actual = 0;
-	m_Estimate = 0;
 	m_nFields = 5;
 }
 

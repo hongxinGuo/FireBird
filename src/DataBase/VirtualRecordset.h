@@ -21,8 +21,8 @@ public:
 
 	CString GetSchemaConnect() const;// 用于数据集的GetDefaultConnect()，以保持一致性。参数strSchema为该市场的名称
 
-	CString m_Schema; // 数据库名称
-	CString m_Table; // 数据库中默认的表名称
+	CString m_Schema{ _T("") }; // 数据库名称
+	CString m_Table{ _T("") }; // 数据库中默认的表名称
 
 public:
 	CString GetDefaultConnect() override;	// 默认连接字符串

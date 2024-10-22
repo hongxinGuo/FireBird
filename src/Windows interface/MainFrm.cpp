@@ -1244,7 +1244,7 @@ void CMainFrame::OnCreateTiingoTradeDayDayline() {
 
 void CMainFrame::OnUpdateCreateTiingoTradeDayDayline(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
-	if (gl_pTiingoDataSource->IsUpdateIEXTopOFBook()) {
+	if (gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) {
 		pCmdUI->Enable(false);
 	}
 	else {

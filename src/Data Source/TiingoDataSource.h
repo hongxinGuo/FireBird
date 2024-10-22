@@ -41,8 +41,8 @@ public:
 	void SetUpdateFinancialState(bool fFlag) noexcept { m_fUpdateFinancialState = fFlag; }
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
-	bool IsUpdateIEXTopOFBook() const noexcept { return m_fUpdateIEXTopOFBook; }
-	void SetUpdateIEXTopOFBook(bool fFlag) noexcept { m_fUpdateIEXTopOFBook = fFlag; }
+	bool IsUpdateIEXTopOfBook() const noexcept { return m_fUpdateIEXTopOFBook; }
+	void SetUpdateIEXTopOfBook(bool fFlag) noexcept { m_fUpdateIEXTopOFBook = fFlag; }
 
 	void SetBandWidth(long long llBandWidth) noexcept { m_llBandWidthLeft = llBandWidth; }
 	long long GetBandWidthLeft() const noexcept { return m_llBandWidthLeft; }

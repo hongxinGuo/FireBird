@@ -6,19 +6,6 @@
 
 CVirtualSetExchange::CVirtualSetExchange(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_ID = 0;
-	m_Code = _T("");
-	m_Name = _T("");
-	m_Mic = _T("");
-	m_TimeZone = _T("");
-	m_PreMarket = _T("");
-	m_Hour = _T("");
-	m_PostMarket = _T("");
-	m_CloseDate = _T("");
-	m_Country = _T("");
-	m_CountryName = _T("");
-	m_Source = _T("");
-	m_MyUnknownColumn = _T("");
 	m_nFields = 13;
 }
 

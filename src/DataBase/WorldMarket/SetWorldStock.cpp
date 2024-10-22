@@ -6,42 +6,6 @@
 
 CSetWorldStock::CSetWorldStock(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_ID = 0;
-	m_Description = _T(" ");
-	m_DisplaySymbol = _T(" ");
-	m_IPODate = _T(" ");
-	m_Type = _T(" ");
-	m_Mic = _T(" ");
-	m_Figi = _T(" ");
-	m_Currency = _T(" ");
-	m_Country = _T(" ");
-	m_FinnhubIndustry = _T(" ");
-	m_Peer = _T("{}"); // 这个是json制式数据
-	m_Name = _T(" ");
-	m_Phone = _T(" ");
-	m_Symbol = _T(" ");
-	m_EmployeeTotal = 0;
-	m_ExchangeCode = _T(" ");
-	m_Ticker = _T(" ");
-	m_WebURL = _T(" ");
-	m_Cusip = _T(" ");
-	m_Sedol = _T(" ");
-	m_Ggroup = _T(" ");
-	m_Gind = _T(" ");
-	m_Gsector = _T(" ");
-	m_Gsubind = _T(" ");
-	m_Isin = _T(" ");
-	m_Naics = _T(" ");
-	m_NaicsNationalIndustry = _T(" ");
-	m_NaicsSector = _T(" ");
-	m_NaicsSubsector = _T(" ");
-	m_Logo = _T(" ");
-	m_State = _T(" ");
-
-	m_IPOStatus = _STOCK_NOT_CHECKED_;
-
-	m_UpdateDate = _T("{}"); // 这个用于存储各更新日期（json制式）
-
 	m_nFields = 37;
 }
 

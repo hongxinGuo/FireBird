@@ -8,13 +8,6 @@
 
 CSetCountry::CSetCountry(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_ID = 0;
-	m_Code2 = _T(" ");
-	m_Code3 = _T(" ");
-	m_CodeNo = _T(" ");
-	m_Country = _T(" ");
-	m_Currency = _T(" ");
-	m_CurrencyCode = _T(" ");
 	m_nFields = 7;
 }
 

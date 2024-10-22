@@ -57,45 +57,45 @@ namespace FireBirdTest {
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser
-	Test_FinnhubWebData finnhubWebData61(1, _T("OANDA:EUR_ZAR"),
-	                                     _T(
-		                                     "\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubForexCandle61(1, _T("OANDA:EUR_ZAR"),
+	                                         _T(
+		                                         "\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 没有s项
-	Test_FinnhubWebData finnhubWebData62_1(11, _T("OANDA:XAU_SGD"),
-	                                       _T(
-		                                       "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"a\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubForexCandle62_1(11, _T("OANDA:XAU_SGD"),
+	                                           _T(
+		                                           "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"a\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// s项报告非ok
-	Test_FinnhubWebData finnhubWebData62(2, _T("OANDA:EUR_ZAR"),
-	                                     _T(
-		                                     "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"not ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubForexCandle62(2, _T("OANDA:EUR_ZAR"),
+	                                         _T(
+		                                         "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"not ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// s项报告no data
-	Test_FinnhubWebData finnhubWebData63(3, _T("OANDA:EUR_ZAR"),
-	                                     _T(
-		                                     "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"no_data\",\"a\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubForexCandle63(3, _T("OANDA:EUR_ZAR"),
+	                                         _T(
+		                                         "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"no_data\",\"a\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 数据缺乏t项
-	Test_FinnhubWebData finnhubWebData64(4, _T("OANDA:EUR_ZAR"),
-	                                     _T(
-		                                     "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"a\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubForexCandle64(4, _T("OANDA:EUR_ZAR"),
+	                                         _T(
+		                                         "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"a\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 缺乏c项。不影响结果
-	Test_FinnhubWebData finnhubWebData65(5, _T("OANDA:EUR_ZAR"),
-	                                     _T(
-		                                     "{\"a\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubForexCandle65(5, _T("OANDA:EUR_ZAR"),
+	                                         _T(
+		                                         "{\"a\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 缺乏h项
-	Test_FinnhubWebData finnhubWebData66(6, _T("OANDA:EUR_ZAR"),
-	                                     _T(
-		                                     "{\"c\":[1.10159,1.10784],\"a\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubForexCandle66(6, _T("OANDA:EUR_ZAR"),
+	                                         _T(
+		                                         "{\"c\":[1.10159,1.10784],\"a\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 缺乏l项
-	Test_FinnhubWebData finnhubWebData67(7, _T("OANDA:XAU_SGD"),
-	                                     _T(
-		                                     "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"a\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubForexCandle67(7, _T("OANDA:XAU_SGD"),
+	                                         _T(
+		                                         "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"a\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 缺乏o项
-	Test_FinnhubWebData finnhubWebData68(8, _T("OANDA:XAU_SGD"),_T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"a\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubForexCandle68(8, _T("OANDA:XAU_SGD"),_T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"a\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
 	// 缺乏v项
-	Test_FinnhubWebData finnhubWebData69(9, _T("OANDA:XAU_SGD"),
-	                                     _T(
-		                                     "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"a\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubForexCandle69(9, _T("OANDA:XAU_SGD"),
+	                                         _T(
+		                                         "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"a\":[36521,47505]}"));
 	// 正确的数据
-	Test_FinnhubWebData finnhubWebData70(10, _T("OANDA:XAU_SGD"),_T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1575237600, 1574978400],\"v\":[36521,47505]}"));
+	Test_FinnhubWebData finnhubForexCandle70(10, _T("OANDA:XAU_SGD"),_T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1575237600, 1574978400],\"v\":[36521,47505]}"));
 
 	class ParseFinnhubForexCandleTest : public::testing::TestWithParam<Test_FinnhubWebData*> {
 	protected:
@@ -126,8 +126,8 @@ namespace FireBirdTest {
 
 	INSTANTIATE_TEST_SUITE_P(TestParseFinnhubForexCandle1,
 	                         ParseFinnhubForexCandleTest,
-	                         testing::Values(&finnhubWebData61, &finnhubWebData62_1, &finnhubWebData62, &finnhubWebData63, &finnhubWebData64, &finnhubWebData65,
-		                         &finnhubWebData66, &finnhubWebData67, &finnhubWebData68, &finnhubWebData69, &finnhubWebData70));
+	                         testing::Values(&finnhubForexCandle61, &finnhubForexCandle62_1, &finnhubForexCandle62, &finnhubForexCandle63, &finnhubForexCandle64, &finnhubForexCandle65,
+		                         &finnhubForexCandle66, &finnhubForexCandle67, &finnhubForexCandle68, &finnhubForexCandle69, &finnhubForexCandle70));
 
 	TEST_P(ParseFinnhubForexCandleTest, TestParseFinnhubForexCandle0) {
 		CString strMessage;
@@ -208,8 +208,8 @@ namespace FireBirdTest {
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexCandle, ProcessFinnhubForexCandleTest,
-	                         testing::Values(&finnhubWebData61, &finnhubWebData62_1, &finnhubWebData62, &finnhubWebData63, &finnhubWebData64, &finnhubWebData65,
-		                         &finnhubWebData66, &finnhubWebData67, &finnhubWebData68, &finnhubWebData69, &finnhubWebData70));
+	                         testing::Values(&finnhubForexCandle61, &finnhubForexCandle62_1, &finnhubForexCandle62, &finnhubForexCandle63, &finnhubForexCandle64, &finnhubForexCandle65,
+		                         &finnhubForexCandle66, &finnhubForexCandle67, &finnhubForexCandle68, &finnhubForexCandle69, &finnhubForexCandle70));
 
 	TEST_P(ProcessFinnhubForexCandleTest, TestParseFinnhubForexCandle) {
 		CString strMessage;

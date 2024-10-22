@@ -6,26 +6,6 @@
 
 CVirtualSetHistoryCandleBasic::CVirtualSetHistoryCandleBasic(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_ID = 0;
-	m_Date = 0;
-	m_Exchange = _T("");
-	m_Symbol = _T("");
-	m_DisplaySymbol = _T("");
-	m_LastClose = _T("0");
-	m_Open = _T("0");
-	m_High = _T("0");
-	m_Low = _T("0");
-	m_Close = _T("0");
-	m_Volume = _T("0");
-	m_Amount = _T("0");
-	m_UpAndDown = _T("0");
-	m_UpDownRate = _T("0");
-	m_ChangeHandRate = _T("0");
-	m_TotalValue = _T("0");
-	m_CurrentValue = _T("0");
-	m_RS = _T("");	//相对于总市场的强度
-	m_RSIndex = _T("");	//相对于总市场的强度
-	m_RSBackup = _T("");
 	m_nFields = 20;
 }
 

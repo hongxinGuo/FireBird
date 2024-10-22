@@ -173,7 +173,7 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 			gl_systemConfiguration.SetUsingFinnhubWebSocket(true); // 只设置标识，实际启动由其他任务完成。
 			break;
 		case WORLD_MARKET_TIINGO_INQUIRE_REALTIME_DATA__:
-			gl_pTiingoDataSource->SetUpdateIEXTopOFBook(true); // 
+			gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true); // 
 			break;
 		case WORLD_MARKET_TIINGO_COMPILE_STOCK__:
 			gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine(lCurrentTime);
@@ -219,9 +219,9 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0));
 
-	AddTask(WORLD_MARKET_TIINGO_INQUIRE_REALTIME_DATA__, 210000); // 收市后18点下载tiingo当天数据。
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_REALTIME_DATA__, 220000); // 收市后18点下载tiingo当天数据。
 
-	AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, 210500); //180500生成tiingo当天日线数据
+	AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, 220500); //180500生成tiingo当天日线数据
 
 	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
@@ -397,7 +397,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 }
 
 void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
-	if (!gl_pTiingoDataSource->IsUpdateIEXTopOFBook()) {
+	if (!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) {
 		gl_runtime.background_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetNewestTradeDate());

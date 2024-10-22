@@ -4,6 +4,11 @@
 
 #include"FinnhubInaccessibleExchange.h"
 
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 目前仅用于测试中。准备删除
+//
+////////////////////////////////////////////////////////////////////////////////////////////
 bool CProductFinnhub::CheckAccessRight(CWebDataPtr pWebData) {
 	const string s(pWebData->GetStringView(0, pWebData->GetBufferLength()));
 	if (s == _T("{\"error\":\"You don't have access to this resource.\"}")) {

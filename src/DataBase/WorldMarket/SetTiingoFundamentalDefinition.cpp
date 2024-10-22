@@ -6,13 +6,6 @@
 
 CSetTiingoFundamentalDefinition::CSetTiingoFundamentalDefinition(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_ID = 0;
-	m_dataCode = _T("");
-	m_name = _T("");
-	m_description = _T("");
-	m_units = _T("");
-	m_statementType = _T("");
-
 	m_nFields = 6;
 }
 

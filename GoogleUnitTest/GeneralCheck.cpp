@@ -147,10 +147,12 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty()) << gl_pWorldMarket->GetMarketTask()->GetType();
 
 			EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 4847) << "默认状态下数据库总数为4847";
-			EXPECT_EQ(gl_dataContainerTiingoStock.Size(), 21106) << "默认状态下数据库总数为21106";
 
 			EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(_T("A"))->IsUpdateDayLine());
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(_T("A"))->IsUpdateDayLineDB());
+
+			EXPECT_EQ(gl_dataContainerTiingoStock.Size(), 21106) << "默认状态下数据库总数为21106";
+			EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(0)->IsDelisted());
 
 			//	for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			//		const auto p_stock = gl_dataContainerFinnhubStock.GetStock(l);
