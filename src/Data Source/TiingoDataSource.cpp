@@ -311,7 +311,7 @@ bool CTiingoDataSource::InquireDayLine() {
 		while (m_lCurrentUpdateDayLinePos < lStockSetSize) {
 			pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lCurrentUpdateDayLinePos);
 			if (pTiingoStock->IsUpdateDayLine()) {
-				if (gl_systemConfiguration.IsTiingoAccountAddOnPaid()) { // 付费账户下载所有股票的日线
+				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户下载所有股票的日线
 					if (!gl_tiingoInaccessibleStock.HaveStock(iInquireType, pTiingoStock->GetSymbol())) {
 						fFound = true;
 						break;
