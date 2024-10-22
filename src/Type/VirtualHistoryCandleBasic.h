@@ -100,41 +100,41 @@ public:
 
 public:
 	// need to save
-	long m_lDate; // 类型(YYYYMMDD)
-	time_t m_time;
-	CString m_strExchange;
-	CString m_strStockSymbol;
-	CString m_strDisplaySymbol;
+	long m_lDate{ 0 }; // 类型(YYYYMMDD)
+	time_t m_time{ 0 };
+	CString m_strExchange{ _T("") };
+	CString m_strStockSymbol{ _T("") };
+	CString m_strDisplaySymbol{ _T("") };
 
 	// 在不同的市场中，以下数据会放大若干倍（百倍、千倍等）。取决于价格使用几个小数点
-	long m_lLastClose; // 前收盘。单位：0.001元
-	long m_lOpen; // 开盘价
-	long m_lHigh; // 最高价
-	long m_lLow; // 最低价
-	long m_lClose; // 收盘价
+	long m_lLastClose{ 0 }; // 前收盘。单位：0.001元
+	long m_lOpen{ 0 }; // 开盘价
+	long m_lHigh{ 0 }; // 最高价
+	long m_lLow{ 0 }; // 最低价
+	long m_lClose{ 0 }; // 收盘价
 
 	// 以下数值是实际值
-	double m_dUpDown; // 涨跌额
-	double m_dUpDownRate;
-	double m_dChangeHandRate; // 换手率
-	INT64 m_llVolume; // 成交量,单位:股
-	INT64 m_llAmount; // 成交金额,单位:元/万元（大盘）
-	INT64 m_llTotalValue; // 总市值。单位：万元
-	INT64 m_llCurrentValue; // 流通市值。单位：万元
-	double m_dRS; // 相对强弱（最小为0， 最大为100）
-	double m_dRSIndex; // 相对强弱（最小为-50， 最大为150）
-	double m_dRSBackup; // 相对强弱（最小为0， 最大为100）
-	double m_dRSLogarithm; // 相对强度的对数值（最小为0， 最大为100，m_dRSLogarithm = (log(m_dRS) - log(50)) * 50 / (log(100)-log(50)) )
+	double m_dUpDown{ 0 }; // 涨跌额
+	double m_dUpDownRate{ 0 };
+	double m_dChangeHandRate{ 0 }; // 换手率
+	INT64 m_llVolume{ 0 }; // 成交量,单位:股
+	INT64 m_llAmount{ 0 }; // 成交金额,单位:元/万元（大盘）
+	INT64 m_llTotalValue{ 0 }; // 总市值。单位：万元
+	INT64 m_llCurrentValue{ 0 }; // 流通市值。单位：万元
+	double m_dRS{ 0 }; // 相对强弱（最小为0， 最大为100）
+	double m_dRSIndex{ 0 }; // 相对强弱（最小为-50， 最大为150）
+	double m_dRSBackup{ 0 }; // 相对强弱（最小为0， 最大为100）
+	double m_dRSLogarithm{ 0 }; // 相对强度的对数值（最小为0， 最大为100，m_dRSLogarithm = (log(m_dRS) - log(50)) * 50 / (log(100)-log(50)) )
 	// 如果小于50， 则 m_dRSLogarithm = 100 - (log(100 - m_dRS) - log(50)) * 50 / (log(100)-log(50))
 
 public:
 	// don't need to save
-	double m_d3RS;
-	double m_d5RS;
-	double m_d10RS;
-	double m_d30RS;
-	double m_d60RS;
-	double m_d120RS;
+	double m_d3RS{ 0 };
+	double m_d5RS{ 0 };
+	double m_d10RS{ 0 };
+	double m_d30RS{ 0 };
+	double m_d60RS{ 0 };
+	double m_d120RS{ 0 };
 };
 
 using CVirtualHistoryCandleBasicPtr = shared_ptr<CVirtualHistoryCandleBasic>;

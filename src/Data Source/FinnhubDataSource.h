@@ -21,6 +21,7 @@ public:
 
 	void Inquire(long lCurrentTime);
 
+	// 可供申请的项目，目前共21项。
 	virtual bool InquireCountryList();
 	virtual bool InquireCompanySymbol();
 	virtual bool InquireMarketStatus();
@@ -91,6 +92,7 @@ protected:
 	long m_lCurrentUpdateEPSSurprisePos{ 0 }; // 此变量无需每日更新
 	long m_lCurrentUpdateSECFilingsPos{ 0 };
 
+	// 每日更新项目，目前共21项。
 	bool m_fUpdateSymbol{ true }; // 每日更新公司代码库
 	bool m_fUpdateMarketStatus{ true }; // 每日查询市场状态
 	bool m_fUpdateMarketHoliday{ true }; // 每日查询市场假日

@@ -163,71 +163,71 @@ public:
 
 public:
 	// 需要存储的数据
-	INT64 m_lOrdinaryBuyVolume; // 向上买入。成交价接近或等于卖一，但不超过。单位：股
-	INT64 m_lAttackBuyVolume; // 向上进攻性买入，成交价超过卖一价格但不超过卖二价。这个成交数量包括了m_lStrongBuyVolume。
-	INT64 m_lStrongBuyVolume; // 向上强力买入,成交价超过之前的卖二报价。
-	INT64 m_lOrdinarySellVolume;
-	INT64 m_lAttackSellVolume; // 向下卖出，低于买一价但高于买二价
-	INT64 m_lStrongSellVolume; // 向下强力卖出,成交价低于之前的买二报价
-	INT64 m_lUnknownVolume;
-	INT64 m_lCanceledBuyVolume; // 买单撤单量
-	INT64 m_lCanceledSellVolume; // 卖单撤单量
-	INT64 m_lTransactionNumber;
-	INT64 m_lTransactionNumberBelow5000;
-	INT64 m_lTransactionNumberBelow50000;
-	INT64 m_lTransactionNumberBelow200000;
-	INT64 m_lTransactionNumberAbove200000;
+	INT64 m_lOrdinaryBuyVolume{ 0 }; // 向上买入。成交价接近或等于卖一，但不超过。单位：股
+	INT64 m_lAttackBuyVolume{ 0 }; // 向上进攻性买入，成交价超过卖一价格但不超过卖二价。这个成交数量包括了m_lStrongBuyVolume。
+	INT64 m_lStrongBuyVolume{ 0 }; // 向上强力买入,成交价超过之前的卖二报价。
+	INT64 m_lOrdinarySellVolume{ 0 };
+	INT64 m_lAttackSellVolume{ 0 }; // 向下卖出，低于买一价但高于买二价
+	INT64 m_lStrongSellVolume{ 0 }; // 向下强力卖出,成交价低于之前的买二报价
+	INT64 m_lUnknownVolume{ 0 };
+	INT64 m_lCanceledBuyVolume{ 0 }; // 买单撤单量
+	INT64 m_lCanceledSellVolume{ 0 }; // 卖单撤单量
+	INT64 m_lTransactionNumber{ 0 };
+	INT64 m_lTransactionNumberBelow5000{ 0 };
+	INT64 m_lTransactionNumberBelow50000{ 0 };
+	INT64 m_lTransactionNumberBelow200000{ 0 };
+	INT64 m_lTransactionNumberAbove200000{ 0 };
 
-	INT64 m_lAttackBuyBelow50000;
-	INT64 m_lAttackBuyBelow200000;
-	INT64 m_lAttackBuyAbove200000;
-	INT64 m_lAttackSellBelow50000;
-	INT64 m_lAttackSellBelow200000;
-	INT64 m_lAttackSellAbove200000;
+	INT64 m_lAttackBuyBelow50000{ 0 };
+	INT64 m_lAttackBuyBelow200000{ 0 };
+	INT64 m_lAttackBuyAbove200000{ 0 };
+	INT64 m_lAttackSellBelow50000{ 0 };
+	INT64 m_lAttackSellBelow200000{ 0 };
+	INT64 m_lAttackSellAbove200000{ 0 };
 
-	INT64 m_lOrdinaryBuyNumberBelow5000; // 本交易周低于5000股的成交笔数
-	INT64 m_lOrdinaryBuyNumberBelow10000; // 本交易周低于10000股的成交笔数
-	INT64 m_lOrdinaryBuyNumberBelow20000; // 本交易周低于20000股的成交笔数
-	INT64 m_lOrdinaryBuyNumberBelow50000; //
-	INT64 m_lOrdinaryBuyNumberBelow100000; // 本交易周低于100000股的成交笔数
-	INT64 m_lOrdinaryBuyNumberBelow200000; //
-	INT64 m_lOrdinaryBuyNumberAbove200000; //
-	INT64 m_lOrdinarySellNumberBelow5000; // 本交易周低于5000股的成交笔数
-	INT64 m_lOrdinarySellNumberBelow10000; // 本交易周低于10000股的成交笔数
-	INT64 m_lOrdinarySellNumberBelow20000; // 本交易周低于20000股的成交笔数
-	INT64 m_lOrdinarySellNumberBelow50000; //
-	INT64 m_lOrdinarySellNumberBelow100000; // 本交易周低于100000股的成交笔数
-	INT64 m_lOrdinarySellNumberBelow200000; //
-	INT64 m_lOrdinarySellNumberAbove200000; //
-	INT64 m_lOrdinaryBuyVolumeBelow5000; // 本交易周低于5000股的成交股数
-	INT64 m_lOrdinaryBuyVolumeBelow10000; // 本交易周低于10000股的成交股数
-	INT64 m_lOrdinaryBuyVolumeBelow20000; // 本交易周低于20000股的成交股数
-	INT64 m_lOrdinaryBuyVolumeBelow50000; //
-	INT64 m_lOrdinaryBuyVolumeBelow100000; // 本交易周低于100000股的成交股数
-	INT64 m_lOrdinaryBuyVolumeBelow200000; //
-	INT64 m_lOrdinaryBuyVolumeAbove200000; //
-	INT64 m_lOrdinarySellVolumeBelow5000; // 本交易周低于5000股的成交股数
-	INT64 m_lOrdinarySellVolumeBelow10000; // 本交易周低于10000股的成交股数
-	INT64 m_lOrdinarySellVolumeBelow20000; // 本交易周低于20000股的成交股数
-	INT64 m_lOrdinarySellVolumeBelow50000; //
-	INT64 m_lOrdinarySellVolumeBelow100000; // 本交易周低于100000股的成交股数
-	INT64 m_lOrdinarySellVolumeBelow200000; //
-	INT64 m_lOrdinarySellVolumeAbove200000; //
+	INT64 m_lOrdinaryBuyNumberBelow5000{ 0 }; // 本交易周低于5000股的成交笔数
+	INT64 m_lOrdinaryBuyNumberBelow10000{ 0 }; // 本交易周低于10000股的成交笔数
+	INT64 m_lOrdinaryBuyNumberBelow20000{ 0 }; // 本交易周低于20000股的成交笔数
+	INT64 m_lOrdinaryBuyNumberBelow50000{ 0 }; //
+	INT64 m_lOrdinaryBuyNumberBelow100000{ 0 }; // 本交易周低于100000股的成交笔数
+	INT64 m_lOrdinaryBuyNumberBelow200000{ 0 }; //
+	INT64 m_lOrdinaryBuyNumberAbove200000{ 0 }; //
+	INT64 m_lOrdinarySellNumberBelow5000{ 0 }; // 本交易周低于5000股的成交笔数
+	INT64 m_lOrdinarySellNumberBelow10000{ 0 }; // 本交易周低于10000股的成交笔数
+	INT64 m_lOrdinarySellNumberBelow20000{ 0 }; // 本交易周低于20000股的成交笔数
+	INT64 m_lOrdinarySellNumberBelow50000{ 0 }; //
+	INT64 m_lOrdinarySellNumberBelow100000{ 0 }; // 本交易周低于100000股的成交笔数
+	INT64 m_lOrdinarySellNumberBelow200000{ 0 }; //
+	INT64 m_lOrdinarySellNumberAbove200000{ 0 }; //
+	INT64 m_lOrdinaryBuyVolumeBelow5000{ 0 }; // 本交易周低于5000股的成交股数
+	INT64 m_lOrdinaryBuyVolumeBelow10000{ 0 }; // 本交易周低于10000股的成交股数
+	INT64 m_lOrdinaryBuyVolumeBelow20000{ 0 }; // 本交易周低于20000股的成交股数
+	INT64 m_lOrdinaryBuyVolumeBelow50000{ 0 }; //
+	INT64 m_lOrdinaryBuyVolumeBelow100000{ 0 }; // 本交易周低于100000股的成交股数
+	INT64 m_lOrdinaryBuyVolumeBelow200000{ 0 }; //
+	INT64 m_lOrdinaryBuyVolumeAbove200000{ 0 }; //
+	INT64 m_lOrdinarySellVolumeBelow5000{ 0 }; // 本交易周低于5000股的成交股数
+	INT64 m_lOrdinarySellVolumeBelow10000{ 0 }; // 本交易周低于10000股的成交股数
+	INT64 m_lOrdinarySellVolumeBelow20000{ 0 }; // 本交易周低于20000股的成交股数
+	INT64 m_lOrdinarySellVolumeBelow50000{ 0 }; //
+	INT64 m_lOrdinarySellVolumeBelow100000{ 0 }; // 本交易周低于100000股的成交股数
+	INT64 m_lOrdinarySellVolumeBelow200000{ 0 }; //
+	INT64 m_lOrdinarySellVolumeAbove200000{ 0 }; //
 
-	INT64 m_lCanceledBuyVolumeBelow5000; // 本交易周低于5000股的撤单股数
-	INT64 m_lCanceledBuyVolumeBelow10000; // 本交易周低于10000股的撤单股数
-	INT64 m_lCanceledBuyVolumeBelow20000; // 本交易周低于20000股的撤单股数
-	INT64 m_lCanceledBuyVolumeBelow50000; //
-	INT64 m_lCanceledBuyVolumeBelow100000; // 本交易周低于100000股的撤单股数
-	INT64 m_lCanceledBuyVolumeBelow200000; //
-	INT64 m_lCanceledBuyVolumeAbove200000; //
-	INT64 m_lCanceledSellVolumeBelow5000; // 本交易周低于5000股的撤单股数
-	INT64 m_lCanceledSellVolumeBelow10000; // 本交易周低于10000股的撤单股数
-	INT64 m_lCanceledSellVolumeBelow20000; // 本交易周低于20000股的撤单股数
-	INT64 m_lCanceledSellVolumeBelow50000; //
-	INT64 m_lCanceledSellVolumeBelow100000; // 本交易周低于100000股的撤单股数
-	INT64 m_lCanceledSellVolumeBelow200000; //
-	INT64 m_lCanceledSellVolumeAbove200000; //
+	INT64 m_lCanceledBuyVolumeBelow5000{ 0 }; // 本交易周低于5000股的撤单股数
+	INT64 m_lCanceledBuyVolumeBelow10000{ 0 }; // 本交易周低于10000股的撤单股数
+	INT64 m_lCanceledBuyVolumeBelow20000{ 0 }; // 本交易周低于20000股的撤单股数
+	INT64 m_lCanceledBuyVolumeBelow50000{ 0 }; //
+	INT64 m_lCanceledBuyVolumeBelow100000{ 0 }; // 本交易周低于100000股的撤单股数
+	INT64 m_lCanceledBuyVolumeBelow200000{ 0 }; //
+	INT64 m_lCanceledBuyVolumeAbove200000{ 0 }; //
+	INT64 m_lCanceledSellVolumeBelow5000{ 0 }; // 本交易周低于5000股的撤单股数
+	INT64 m_lCanceledSellVolumeBelow10000{ 0 }; // 本交易周低于10000股的撤单股数
+	INT64 m_lCanceledSellVolumeBelow20000{ 0 }; // 本交易周低于20000股的撤单股数
+	INT64 m_lCanceledSellVolumeBelow50000{ 0 }; //
+	INT64 m_lCanceledSellVolumeBelow100000{ 0 }; // 本交易周低于100000股的撤单股数
+	INT64 m_lCanceledSellVolumeBelow200000{ 0 }; //
+	INT64 m_lCanceledSellVolumeAbove200000{ 0 }; //
 
 	// 不需要存储的数据
 };

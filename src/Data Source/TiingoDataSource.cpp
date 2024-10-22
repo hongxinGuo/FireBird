@@ -63,11 +63,14 @@ CTiingoDataSource::CTiingoDataSource() {
 }
 
 bool CTiingoDataSource::Reset() {
+	// 目前共七项
 	m_fUpdateMarketNews = true;
 	m_fUpdateFundamentalDefinitions = true;
 	m_fUpdateStockSymbol = true;
 	m_fUpdateCryptoSymbol = true;
 	m_fUpdateDayLine = true;
+	m_fUpdateFinancialState = true;
+	m_fUpdateIEXTopOFBook = true;
 
 	m_fTiingoDataInquiryFinished = false;
 	return true;
@@ -174,8 +177,8 @@ void CTiingoDataSource::Inquire(long lCurrentTime) {
 	InquireCompanySymbol();
 	InquireCryptoSymbol();
 	InquireIEXTopOfBook();
+	InquireDayLine(); // 申请日线数据要位于包含多项申请的项目之首。
 	InquireFinancialState();
-	InquireDayLine();
 	if (!IsInquiring()) {
 		if (!m_fTiingoDataInquiryFinished) {
 			gl_systemMessage.PushInformationMessage(_T("Tiingo data inquiry finished"));

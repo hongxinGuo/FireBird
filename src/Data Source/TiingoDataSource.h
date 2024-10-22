@@ -21,13 +21,14 @@ public:
 	enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr& pWebData) override;
 
 	void Inquire(long lCurrentTime);
+	// Tiingo.com可供申请的项目，目前共7项。
 	virtual bool InquireMarketNews();
 	virtual bool InquireFundamentalDefinition();
 	virtual bool InquireCompanySymbol();
 	virtual bool InquireCryptoSymbol();
 	virtual bool InquireIEXTopOfBook();
-	virtual bool InquireFinancialState();
 	virtual bool InquireDayLine();
+	virtual bool InquireFinancialState();
 
 	bool IsUpdateMarketNews() const noexcept { return m_fUpdateMarketNews; }
 	void SetUpdateMarketNews(bool fFlag) noexcept { m_fUpdateMarketNews = fFlag; }
@@ -54,6 +55,7 @@ public:
 protected:
 	CTiingoFactory m_TiingoFactory;
 
+	// 每日所需更新项目。目前共七项。
 	bool m_fUpdateMarketNews{ true }; // 每日更新市场新闻
 	bool m_fUpdateFundamentalDefinitions{ true }; // 每日更新基本数据定义库
 	bool m_fUpdateStockSymbol{ true }; // 每日更新公司代码库

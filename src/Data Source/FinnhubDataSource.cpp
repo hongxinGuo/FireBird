@@ -43,7 +43,7 @@ CFinnhubDataSource::CFinnhubDataSource() {
 }
 
 bool CFinnhubDataSource::Reset() {
-	// Finnhub各申请网络数据标识，每日需要重置。
+	// Finnhub各申请网络数据标识，每日需要重置。目前共21项。
 	m_fUpdateCountryList = true;
 	m_fUpdateSymbol = true; // 每日需要更新代码
 	m_fUpdateMarketStatus = true;
@@ -60,7 +60,6 @@ bool CFinnhubDataSource::Reset() {
 	m_fUpdateCryptoSymbol = true;
 	m_fUpdateCryptoDayLine = true;
 	m_fUpdateEconomicCalendar = true;
-
 	m_fUpdatePeer = true;
 	m_fUpdateInsiderTransaction = true;
 	m_fUpdateInsiderSentiment = true;
