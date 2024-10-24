@@ -79,15 +79,15 @@ namespace FireBirdTest {
 		}
 	};
 
-	TEST_F(CMockWorldMarketTest, TestInResetTime) {
+	TEST_F(CMockWorldMarketTest, TestIsResetTime) {
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
 		EXPECT_CALL(*s_pMockWorldMarket, GetResetTime())
 		.WillRepeatedly(Return(13000));
 
-		EXPECT_FALSE(s_pMockWorldMarket->InResetTime(12700));
-		EXPECT_TRUE(s_pMockWorldMarket->InResetTime(12701));
-		EXPECT_TRUE(s_pMockWorldMarket->InResetTime(13459));
-		EXPECT_FALSE(s_pMockWorldMarket->InResetTime(13500));
+		EXPECT_FALSE(s_pMockWorldMarket->IsResetTime(12000));
+		EXPECT_TRUE(s_pMockWorldMarket->IsResetTime(12001));
+		EXPECT_TRUE(s_pMockWorldMarket->IsResetTime(13459));
+		EXPECT_FALSE(s_pMockWorldMarket->IsResetTime(13500));
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
 	}
 
@@ -98,8 +98,8 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockWorldMarket, GetResetTime())
 		.WillRepeatedly(Return(13000));
 
-		EXPECT_TRUE(s_pMockWorldMarket->IsReadyToInquireWebData(12700));
-		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData(12701));
+		EXPECT_TRUE(s_pMockWorldMarket->IsReadyToInquireWebData(12000));
+		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData(12001));
 		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData(13459));
 		EXPECT_TRUE(s_pMockWorldMarket->IsReadyToInquireWebData(13500));
 	}
@@ -112,8 +112,8 @@ namespace FireBirdTest {
 		EXPECT_CALL(*s_pMockWorldMarket, GetResetTime())
 		.WillRepeatedly(Return(13000));
 
-		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData(12700));
-		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData(12701));
+		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData(12000));
+		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData(12001));
 		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData(13459));
 		EXPECT_FALSE(s_pMockWorldMarket->IsReadyToInquireWebData(13500));
 

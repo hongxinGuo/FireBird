@@ -14,6 +14,7 @@
 
 #include "FinnhubDataSource.h"
 
+#include "TimeConvert.h"
 #include"WorldMarket.h"
 
 map<string, enum_ErrorMessageData> mapFinnhubErrorMap{
@@ -165,7 +166,7 @@ bool CFinnhubDataSource::GenerateInquiryMessage(long lCurrentTime) {
 void CFinnhubDataSource::Inquire(const long lCurrentTime) {
 	ASSERT(!IsInquiring());
 	const long resettingTime = gl_systemConfiguration.GetWorldMarketResettingTime();
-	ASSERT(lCurrentTime <= resettingTime - 300 || lCurrentTime >= resettingTime + 500); // 重启市场时不允许接收网络信息。
+	ASSERT(lCurrentTime <= GetPrevTime(resettingTime, 0, 10, 0) || lCurrentTime >= GetNextTime(resettingTime, 0, 5, 0)); // 重启市场时不允许接收网络信息。
 	InquireEconomicCalendar(); // 第一步申请经济日历。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
 	InquireCountryList();
 	// Finnhub不提供Stock Exchange名单，使用预先提供的股票交易所列表。

@@ -194,8 +194,14 @@ namespace FireBirdTest {
 
 	TEST_F(TimeConvertTest, TestGetNextTime) {
 		EXPECT_EQ(122304, GetNextTime(112158, 1, 1, 6));
-		EXPECT_EQ(121212, GetNextTime(115800, 0, 14,12));
+		EXPECT_EQ(121212, GetNextTime(115800, 0, 14, 12));
 		EXPECT_EQ(261202, GetNextTime(221200, 4, 0, 2));
+	}
+
+	TEST_F(TimeConvertTest, TestGetPrevTime) {
+		EXPECT_EQ(102052, GetPrevTime(112158, 1, 1, 6));
+		EXPECT_EQ(105548, GetPrevTime(115000, 0, 54, 12));
+		EXPECT_EQ(181158, GetPrevTime(221200, 4, 0, 2));
 	}
 
 	TEST_F(TimeConvertTest, TestTransferToTTime) {

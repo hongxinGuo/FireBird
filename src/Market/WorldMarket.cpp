@@ -959,6 +959,6 @@ void CWorldMarket::UpdateMarketHoliday(const CMarketHolidaysPtr& pv) const {
 
 bool CWorldMarket::IsReadyToInquireWebData(long lCurrentMarketTime) {
 	if (gl_pChinaMarket->IsWebBusy()) return false;
-	if (InResetTime(lCurrentMarketTime)) return false;
+	if (IsResetTime(lCurrentMarketTime)) return false;
 	return true;
 }

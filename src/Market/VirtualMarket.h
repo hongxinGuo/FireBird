@@ -30,7 +30,7 @@ public:
 	}
 
 	virtual void ResetMarket();
-	bool InResetTime(long lCurrentTime);
+	bool IsResetTime(long lCurrentTime);
 	virtual long GetResetTime() {
 		if (gl_systemConfiguration.IsWorkingMode()) // 不允许在运行状态时调用此函数
 			ASSERT(0);

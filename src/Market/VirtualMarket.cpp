@@ -89,8 +89,8 @@ void CVirtualMarket::ResetMarket() {
 	ASSERT(0); // 不允许调用基类重置市场函数。这里只是为了测试方便的原因才定义一个实现。
 }
 
-bool CVirtualMarket::InResetTime(long lCurrentTime) {
-	return lCurrentTime > GetResetTime() - 300 && lCurrentTime < GetResetTime() + 500;
+bool CVirtualMarket::IsResetTime(long lCurrentTime) {
+	return lCurrentTime > GetPrevTime(GetResetTime(), 0, 10, 0) && lCurrentTime < GetNextTime(GetResetTime(), 0, 5, 0);
 }
 
 bool CVirtualMarket::UpdateMarketInfo() {

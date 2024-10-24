@@ -13,6 +13,8 @@
 
 #include "ContainerWorldStock.h"
 
+#include <CppCoreCheck/Warnings.h>
+
 CContainerWorldStock::CContainerWorldStock() {
 	CContainerWorldStock::Reset();
 }
@@ -170,18 +172,21 @@ void CContainerWorldStock::UpdateProfileDB() {
 bool CContainerWorldStock::UpdateBasicFinancialDB() {
 	static bool s_fInProcess = false;
 	vector<CWorldStockPtr> vStock{};
+	int iCount = 0;
 
 	if (s_fInProcess) {
 		gl_systemMessage.PushErrorMessage(_T("UpdateBasicFinancialDB任务用时超过五分钟"));
 		return false;
 	}
 	s_fInProcess = true;
+	gl_systemMessage.PushInnerSystemInformationMessage(_T("Basic financial update..."));
 
 	vStock.clear();
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CWorldStockPtr pStock = GetStock(l);
 		if (pStock->IsUpdateBasicFinancialDB()) {
 			vStock.push_back(pStock);
+			if (++iCount > 50) break;
 		}
 	}
 
@@ -191,6 +196,7 @@ bool CContainerWorldStock::UpdateBasicFinancialDB() {
 
 	ClearUpdateBasicFinancialFlag(vStock);
 
+	gl_systemMessage.PushInnerSystemInformationMessage(_T("Basic financial updated"));
 	s_fInProcess = false;
 	return true;
 }

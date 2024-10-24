@@ -4,6 +4,7 @@
 #include "TiingoDataSource.h"
 
 #include "TiingoInaccessibleStock.h"
+#include "TimeConvert.h"
 #include"WorldMarket.h"
 
 map<string, enum_ErrorMessageData> mapTiingoErrorMap{
@@ -170,8 +171,8 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 void CTiingoDataSource::Inquire(long lCurrentTime) {
 	ASSERT(!IsInquiring());
 	//if (gl_pWorldMarket->IsSystemReady()) {
-	ASSERT(lCurrentTime <= gl_systemConfiguration.GetWorldMarketResettingTime() - 300
-		|| lCurrentTime >= gl_systemConfiguration.GetWorldMarketResettingTime() + 500); // 重启市场时不允许接收网络信息。
+	ASSERT(lCurrentTime <= GetPrevTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 10, 0)
+		|| lCurrentTime >= GetNextTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 5, 0)); // 重启市场时不允许接收网络信息。
 	InquireMarketNews(); // Note 此项必须位于第一位，用于判断tiingo账户的类型。
 	InquireFundamentalDefinition();
 	InquireCompanySymbol();

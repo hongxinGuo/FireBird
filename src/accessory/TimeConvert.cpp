@@ -276,6 +276,32 @@ long GetNextTime(const long lTime, const long hh, const long mm, const long ss) 
 	return hEnd * 10000 + mEnd * 100 + sEnd;
 }
 
+long GetPrevTime(long lTime, long hh, long mm, long ss) {
+	const long h = lTime / 10000;
+	const long m = (lTime - h * 10000) / 100;
+	const long s = lTime - h * 10000 - m * 100;
+	long mTemp = 0;
+	long hTemp = 0;
+	long mEnd, sEnd;
+	if (s - ss < 0) {
+		mTemp = 1;
+		sEnd = s - ss + 60;
+	}
+	else {
+		sEnd = s - ss;
+	}
+	if (m - mm - mTemp < 0) {
+		hTemp = 1;
+		mEnd = m - mm - mTemp + 60;
+	}
+	else {
+		mEnd = m - mm - mTemp;
+	}
+	const long hEnd = h - hh - hTemp;
+
+	return hEnd * 10000 + mEnd * 100 + sEnd;
+}
+
 void GetUTCTimeStruct(tm* tm_, const time_t* tUTC) { gmtime_s(tm_, tUTC); }
 
 void GetMarketTimeStruct(tm* tm_, const time_t tUTC, const time_t tTimeZone) {
