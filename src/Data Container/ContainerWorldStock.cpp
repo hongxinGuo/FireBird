@@ -13,8 +13,6 @@
 
 #include "ContainerWorldStock.h"
 
-#include <CppCoreCheck/Warnings.h>
-
 CContainerWorldStock::CContainerWorldStock() {
 	CContainerWorldStock::Reset();
 }
@@ -172,7 +170,6 @@ void CContainerWorldStock::UpdateProfileDB() {
 bool CContainerWorldStock::UpdateBasicFinancialDB() {
 	static bool s_fInProcess = false;
 	vector<CWorldStockPtr> vStock{};
-	int iCount = 0;
 
 	if (s_fInProcess) {
 		gl_systemMessage.PushErrorMessage(_T("UpdateBasicFinancialDB任务用时超过五分钟"));
@@ -186,7 +183,6 @@ bool CContainerWorldStock::UpdateBasicFinancialDB() {
 		const CWorldStockPtr pStock = GetStock(l);
 		if (pStock->IsUpdateBasicFinancialDB()) {
 			vStock.push_back(pStock);
-			if (++iCount > 50) break;
 		}
 	}
 
@@ -245,11 +241,16 @@ void CContainerWorldStock::UpdateBasicFinancialMetricDB(const vector<CWorldStock
 		//更新原有的基本财务信息
 		while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
 			if (setBasicFinancialMetric.IsEOF()) break;
-			CWorldStockPtr pStockNeedUpdate = GetStock(setBasicFinancialMetric.m_symbol);
-			if (vStock.end() != std::ranges::find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
-				iCurrentUpdated++;
-				pStockNeedUpdate->UpdateBasicFinancialMetric(setBasicFinancialMetric);
-				pStockNeedUpdate->SetUpdateBasicFinancialDB(false);
+			if (IsSymbol(setBasicFinancialMetric.m_symbol)) {
+				CWorldStockPtr pStockNeedUpdate = GetStock(setBasicFinancialMetric.m_symbol);
+				if (vStock.end() != std::ranges::find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
+					iCurrentUpdated++;
+					pStockNeedUpdate->UpdateBasicFinancialMetric(setBasicFinancialMetric);
+					pStockNeedUpdate->SetUpdateBasicFinancialDB(false);
+				}
+			}
+			else {
+				setBasicFinancialMetric.Delete(); //Note 自动删除代码已不存在的数据。
 			}
 			setBasicFinancialMetric.MoveNext();
 		}

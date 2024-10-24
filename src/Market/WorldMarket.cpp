@@ -555,9 +555,9 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateBasicFinancialDB()) { // Basic financial
 		gl_runtime.background_executor()->post([] {
-			gl_UpdateWorldMarketDB.acquire();
+			//gl_UpdateWorldMarketDB.acquire(); //Todo 此任务很费时，原因待查。目前先不使用此隔绝区
 			gl_dataContainerFinnhubStock.UpdateBasicFinancialDB();
-			gl_UpdateWorldMarketDB.release();
+			//gl_UpdateWorldMarketDB.release();
 		});
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateEPSSurpriseDB()) { // stock EPS surprise
@@ -640,7 +640,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 
-	long lNextTime = GetNextTime(lCurrentTime, 0, 1, 0);
+	long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
 	if (IsTimeToResetSystem(lNextTime)) lNextTime = 170510;
 	ASSERT(!IsTimeToResetSystem(lNextTime));// 重启系统时各数据库需要重新装入，故而此时不允许更新数据库。
 	AddTask(WORLD_MARKET_UPDATE_DB__, lNextTime); // 每五分钟更新一次
