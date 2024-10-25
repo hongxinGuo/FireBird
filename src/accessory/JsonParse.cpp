@@ -149,8 +149,7 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe,
 					pRTData->ParseSinaData(pvStringView->at(j));
 					gl_qChinaMarketRTData.enqueue(pRTData); // Note 多个协程并行往里存时，无法通过size_approx()函数得到队列数量。
 				}
-			}
-			catch (exception& e) {
+			} catch (exception& e) {
 				ReportErrorToSystemMessage(_T("ParseSinaData异常 "), e);
 			}
 			return true;
@@ -171,8 +170,7 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 		while (!pWebData->IsLastDataParagraph()) {
 			pvStringView->emplace_back(pWebData->GetCurrentSinaData());
 		}
-	}
-	catch (exception& e) {
+	} catch (exception& e) {
 		ReportErrorToSystemMessage(_T("ParseSinaData异常 "), e);
 	}
 	auto result = ParseSinaRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView);
@@ -224,8 +222,7 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 					pRTData->ParseTengxunData(sv);
 					gl_qChinaMarketRTData.enqueue(pRTData); // Note 多个协程并行往里存时，无法通过size_approx()函数得到队列数量。
 				}
-			}
-			catch (exception& e) {
+			} catch (exception& e) {
 				ReportErrorToSystemMessage(_T("ParseSinaData异常 "), e);
 			}
 			return true;
@@ -245,8 +242,7 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 		while (!pWebData->IsLastDataParagraph()) {
 			pvStringView->emplace_back(pWebData->GetCurrentTengxunData());
 		}
-	}
-	catch (exception& e) {
+	} catch (exception& e) {
 		ReportErrorToSystemMessage(_T("ParseTengxunData异常 "), e);
 	}
 
@@ -342,8 +338,7 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 
 			pvDayLine->push_back(pDayLine);
 		}
-	}
-	catch (json::exception&) {
+	} catch (json::exception&) {
 		return pvDayLine;
 	}
 	return pvDayLine;
@@ -371,6 +366,7 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 	auto pDayLineData = make_shared<CDayLineWebData>();
 	const CString strSymbol = pWebData->GetStockCode();
+	ASSERT(gl_dataContainerChinaStock.IsSymbol(strSymbol));
 	const CString strDisplaySymbol = gl_dataContainerChinaStock.GetStock(strSymbol)->GetDisplaySymbol();
 	const string_view svData = pWebData->GetStringView(0, pWebData->GetBufferLength());
 
@@ -387,8 +383,7 @@ CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 bool CreateJsonWithNlohmann(json& js, const std::string& s, const long lBeginPos, const long lEndPos) {
 	try {
 		js = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
-	}
-	catch (json::parse_error&) {
+	} catch (json::parse_error&) {
 		js.clear();
 		return false;
 	}
@@ -399,8 +394,7 @@ bool CreateJsonWithNlohmann(json& js, CString& str, const long lBeginPos, const 
 	const string s = str.GetBuffer();
 	try {
 		js = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
-	}
-	catch (json::parse_error&) {
+	} catch (json::parse_error&) {
 		js.clear();
 		return false;
 	}
@@ -441,8 +435,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		strTime = jsonGetString(js, _T("time"));
 		string strSymbol2 = jsonGetString(js, _T("code"));
 		pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str(), -8 * 3600));
-	}
-	catch (json::exception& e) {// 结构不完整
+	} catch (json::exception& e) {// 结构不完整
 		// do nothing
 		CString strError2 = strSymbol4;
 		strError2 += _T(" ");
@@ -481,8 +474,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		pWebRTData->SetPBuy(4, static_cast<long>(jsonGetDouble(js, _T("bid5")) * 1000));
 
 		pWebRTData->CheckNeteaseRTDataActive();
-	}
-	catch (json::exception&) {// 非活跃股票（已下市等）
+	} catch (json::exception&) {// 非活跃股票（已下市等）
 		pWebRTData->SetActive(false);
 	}
 }
@@ -570,8 +562,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 			pWebRTData->CheckNeteaseRTDataActive();
 			pvWebRTData->push_back(pWebRTData);
 		}
-	}
-	catch (simdjson_error& error) {
+	} catch (simdjson_error& error) {
 		const string sError = error.what();
 		CString str = "Netease RT Data Error: ";
 		str += sError.c_str();

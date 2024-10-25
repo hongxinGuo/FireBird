@@ -26,6 +26,9 @@ bool CContainerChosenForex::LoadDB() {
 			m_mapSymbol[setWorldChosenForex.m_Symbol] = m_mapSymbol.size();
 			m_vStock.push_back(pForex);
 		}
+		else {
+			setWorldChosenForex.Delete();
+		}
 		setWorldChosenForex.MoveNext();
 	}
 	setWorldChosenForex.m_pDatabase->CommitTrans();

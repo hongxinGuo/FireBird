@@ -26,6 +26,9 @@ bool CContainerChosenCrypto::LoadDB() {
 			m_mapSymbol[setWorldChosenCrypto.m_Symbol] = m_mapSymbol.size();
 			m_vStock.push_back(pCrypto);
 		}
+		else {
+			setWorldChosenCrypto.Delete(); // 删除已不存在的代码
+		}
 		setWorldChosenCrypto.MoveNext();
 	}
 	setWorldChosenCrypto.m_pDatabase->CommitTrans();

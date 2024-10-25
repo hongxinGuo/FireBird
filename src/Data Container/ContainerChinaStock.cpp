@@ -99,11 +99,16 @@ void CContainerChinaStock::UpdateStockProfileDB() {
 			setChinaStockSymbol.m_pDatabase->BeginTrans();
 			while (iCount < iStockCodeNeedUpdate) {	//更新原有的代码集状态
 				if (setChinaStockSymbol.IsEOF()) break;
-				const CChinaStockPtr pStock = GetStock(setChinaStockSymbol.m_Symbol);
-				if (pStock->IsUpdateProfileDBAndClearFlag()) {
-					//ASSERT(!pStock3->IsTodayNewStock());
-					iCount++;
-					pStock->UpdateSymbol(setChinaStockSymbol);
+				if (IsSymbol(setChinaStockSymbol.m_Symbol)) {
+					const CChinaStockPtr pStock = GetStock(setChinaStockSymbol.m_Symbol);
+					if (pStock->IsUpdateProfileDBAndClearFlag()) {
+						//ASSERT(!pStock3->IsTodayNewStock());
+						iCount++;
+						pStock->UpdateSymbol(setChinaStockSymbol);
+					}
+				}
+				else {
+					setChinaStockSymbol.Delete(); // 删除未使用的代码
 				}
 				setChinaStockSymbol.MoveNext();
 			}

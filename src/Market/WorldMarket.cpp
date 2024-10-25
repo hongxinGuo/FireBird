@@ -219,9 +219,9 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0));
 
-	AddTask(WORLD_MARKET_TIINGO_INQUIRE_REALTIME_DATA__, 220000); // 收市后18点下载tiingo当天数据。
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_REALTIME_DATA__, 180000); // 收市后18点下载tiingo当天数据。
 
-	AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, 220500); //180500生成tiingo当天日线数据
+	AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, 180500); //180500生成tiingo当天日线数据
 
 	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
@@ -555,9 +555,9 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateBasicFinancialDB()) { // Basic financial
 		gl_runtime.background_executor()->post([] {
-			//gl_UpdateWorldMarketDB.acquire(); //Todo 此任务很费时，原因待查。目前先不使用此隔绝区
+			gl_UpdateWorldMarketDB.acquire(); //Todo 此任务很费时，原因待查。目前先不使用此隔绝区
 			gl_dataContainerFinnhubStock.UpdateBasicFinancialDB();
-			//gl_UpdateWorldMarketDB.release();
+			gl_UpdateWorldMarketDB.release();
 		});
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateEPSSurpriseDB()) { // stock EPS surprise

@@ -28,6 +28,9 @@ bool CContainerChosenStock::LoadDB() {
 			m_mapSymbol[setWorldChosenStock.m_Symbol] = m_mapSymbol.size();
 			m_vStock.push_back(pStock);
 		}
+		else {
+			setWorldChosenStock.Delete();
+		}
 		setWorldChosenStock.MoveNext();
 	}
 	setWorldChosenStock.m_pDatabase->CommitTrans();

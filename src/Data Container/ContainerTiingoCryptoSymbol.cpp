@@ -30,7 +30,9 @@ bool CContainerTiingoCryptoSymbol::LoadDB() {
 			pSymbol->Load(setCryptoSymbol);
 			Add(pSymbol);
 		}
-		else { setCryptoSymbol.Delete(); }
+		else {
+			setCryptoSymbol.Delete();
+		}
 		setCryptoSymbol.MoveNext();
 	}
 	setCryptoSymbol.m_pDatabase->CommitTrans();
@@ -47,11 +49,16 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 			setWorldCrypto.Open();
 			setWorldCrypto.m_pDatabase->BeginTrans();
 			while (!setWorldCrypto.IsEOF()) {	//更新原有的代码集状态
-				const CTiingoCryptoPtr pCrypto = GetCrypto(setWorldCrypto.m_Ticker);
-				ASSERT(pCrypto != nullptr);
-				if (pCrypto->IsUpdateProfileDB()) {
-					pCrypto->Update(setWorldCrypto);
-					pCrypto->SetUpdateProfileDB(false);
+				if (IsSymbol(setWorldCrypto.m_Ticker)) {
+					const CTiingoCryptoPtr pCrypto = GetCrypto(setWorldCrypto.m_Ticker);
+					ASSERT(pCrypto != nullptr);
+					if (pCrypto->IsUpdateProfileDB()) {
+						pCrypto->Update(setWorldCrypto);
+						pCrypto->SetUpdateProfileDB(false);
+					}
+				}
+				else {
+					setWorldCrypto.Delete();
 				}
 				setWorldCrypto.MoveNext();
 			}

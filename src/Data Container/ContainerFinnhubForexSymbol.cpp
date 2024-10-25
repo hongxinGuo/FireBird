@@ -83,6 +83,9 @@ bool CContainerFinnhubForexSymbol::UpdateDB() {
 						pSymbol->SetUpdateProfileDB(false);
 					}
 				}
+				else {
+					setForexSymbol.Delete();
+				}
 				setForexSymbol.MoveNext();
 			}
 			setForexSymbol.m_pDatabase->CommitTrans();

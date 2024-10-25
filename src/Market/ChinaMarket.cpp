@@ -1146,15 +1146,21 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
 		while (!setWeekLineBasicInfo.IsEOF()) {
 			pWeekLine = make_shared<CWeekLine>();
 			pWeekLine->LoadBasicData(&setWeekLineBasicInfo);
-			while (!setWeekLineExtendInfo.IsEOF() && (setWeekLineBasicInfo.m_Symbol > setWeekLineExtendInfo.m_Symbol)) { setWeekLineExtendInfo.MoveNext(); }
-			if (setWeekLineExtendInfo.IsEOF()) { setWeekLineExtendInfo.MoveFirst(); }
+			while (!setWeekLineExtendInfo.IsEOF() && (setWeekLineBasicInfo.m_Symbol > setWeekLineExtendInfo.m_Symbol)) {
+				setWeekLineExtendInfo.MoveNext();
+			}
+			if (setWeekLineExtendInfo.IsEOF()) {
+				setWeekLineExtendInfo.MoveFirst();
+			}
 			else if (setWeekLineBasicInfo.m_Symbol == setWeekLineExtendInfo.m_Symbol) {
 				// 由于存在事后补数据的缘故，此两个表的股票可能不是一一对应
 				pWeekLine->LoadExtendData(&setWeekLineExtendInfo);
 				dataChinaWeekLine.Add(pWeekLine);
 				setWeekLineExtendInfo.MoveNext();
 			}
-			else { setWeekLineExtendInfo.MoveFirst(); }
+			else {
+				setWeekLineExtendInfo.MoveFirst();
+			}
 			setWeekLineBasicInfo.MoveNext();
 		}
 
@@ -1722,6 +1728,9 @@ void CChinaMarket::LoadChosenStockDB() {
 			}
 			pStock->SetChosen(true);
 			pStock->SetUpdateChosenStockDB(true);
+		}
+		else {
+			setChinaChosenStock.Delete();
 		}
 		setChinaChosenStock.MoveNext();
 	}

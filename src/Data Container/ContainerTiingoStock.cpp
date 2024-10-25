@@ -45,11 +45,16 @@ void CContainerTiingoStock::UpdateDB() {
 			setWorldStock.Open();
 			setWorldStock.m_pDatabase->BeginTrans();
 			while (!setWorldStock.IsEOF()) {	//更新原有的代码集状态
-				const CTiingoStockPtr pStock = GetStock(setWorldStock.m_Ticker);
-				ASSERT(pStock != nullptr);
-				if (pStock->IsUpdateProfileDB()) {
-					pStock->Update(setWorldStock);
-					pStock->SetUpdateProfileDB(false);
+				if (IsSymbol(setWorldStock.m_Ticker)) {
+					const CTiingoStockPtr pStock = GetStock(setWorldStock.m_Ticker);
+					ASSERT(pStock != nullptr);
+					if (pStock->IsUpdateProfileDB()) {
+						pStock->Update(setWorldStock);
+						pStock->SetUpdateProfileDB(false);
+					}
+				}
+				else {
+					setWorldStock.Delete(); // 删除已不存在的代码。
 				}
 				setWorldStock.MoveNext();
 			}

@@ -86,6 +86,9 @@ bool CContainerFinnhubCrypto::UpdateDB() {
 						pSymbol->SetUpdateProfileDB(false);
 					}
 				}
+				else {
+					setCryptoSymbol.Delete();
+				}
 				setCryptoSymbol.MoveNext();
 			}
 			setCryptoSymbol.m_pDatabase->CommitTrans();

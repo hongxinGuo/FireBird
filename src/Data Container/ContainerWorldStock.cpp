@@ -89,9 +89,6 @@ bool CContainerWorldStock::LoadDB() {
 			}
 		}
 		else {
-			str = _T("发现重复代码：");
-			str += pWorldStock->GetSymbol();
-			gl_systemMessage.PushInnerSystemInformationMessage(str);
 			setWorldStock.Delete(); // 删除此重复代码
 		}
 		setWorldStock.MoveNext();
@@ -165,6 +162,8 @@ void CContainerWorldStock::UpdateProfileDB() {
 //
 // 更新基本金融信息
 //
+// Note 更新300条信息大致需要45秒。
+//
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 bool CContainerWorldStock::UpdateBasicFinancialDB() {
@@ -176,7 +175,6 @@ bool CContainerWorldStock::UpdateBasicFinancialDB() {
 		return false;
 	}
 	s_fInProcess = true;
-	gl_systemMessage.PushInnerSystemInformationMessage(_T("Basic financial update..."));
 
 	vStock.clear();
 	for (size_t l = 0; l < m_vStock.size(); l++) {
@@ -192,7 +190,6 @@ bool CContainerWorldStock::UpdateBasicFinancialDB() {
 
 	ClearUpdateBasicFinancialFlag(vStock);
 
-	gl_systemMessage.PushInnerSystemInformationMessage(_T("Basic financial updated"));
 	s_fInProcess = false;
 	return true;
 }
