@@ -26,10 +26,6 @@ map<string, enum_ErrorMessageData> mapFinnhubErrorMap{
 CFinnhubDataSource::CFinnhubDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	// 无需（也无法）每日更新的变量放在这里
-	m_fUpdateEPSSurprise = true;
-	m_fUpdateSECFilings = true;
-	m_lCurrentUpdateEPSSurprisePos = 0;
-	m_lCurrentUpdateDayLinePos = 0; // 由于证券代码总数有二十万之多，无法在一天之内更新完，故不再重置此索引。
 
 	m_strInquiryFunction = _T(""); // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 	m_strParam = _T("");

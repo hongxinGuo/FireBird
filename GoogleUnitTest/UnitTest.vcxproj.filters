@@ -624,7 +624,7 @@
     <ClCompile Include="AccessoryTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>
-    <ClCompile Include="ProductTiingoStockTest.cpp">
+    <ClCompile Include="ProductTiingoStockProfileTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="MockTiingoCryptoWebSocketTest.cpp">

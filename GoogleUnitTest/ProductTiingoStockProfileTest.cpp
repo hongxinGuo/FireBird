@@ -7,12 +7,12 @@
 
 #include"TiingoDataSource.h"
 
-#include"ProductTiingoStock.h"
+#include"ProductTiingoStockProfile.h"
 
 using namespace testing;
 
 namespace FireBirdTest {
-	class CProductTiingoStockTest : public Test {
+	class CProductTiingoStockProfileTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
@@ -36,23 +36,23 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CProductTiingoStock stockSymbol;
+		CProductTiingoStockProfile stockSymbol;
 	};
 
-	TEST_F(CProductTiingoStockTest, TestInitialize) {
+	TEST_F(CProductTiingoStockProfileTest, TestInitialize) {
 		EXPECT_EQ(stockSymbol.GetIndex(), -1);
 		EXPECT_STREQ(stockSymbol.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/fundamentals/meta?"));
 	}
 
-	TEST_F(CProductTiingoStockTest, TestCreatMessage) {
+	TEST_F(CProductTiingoStockProfileTest, TestCreatMessage) {
 		EXPECT_STREQ(stockSymbol.CreateMessage(), stockSymbol.GetInquiryFunction());
 	}
 
-	TEST_F(CProductTiingoStockTest, TestProcessWebData) {
+	TEST_F(CProductTiingoStockProfileTest, TestProcessWebData) {
 		// 由MockWorldMarketTest负责测试
 	}
 
-	TEST_F(CProductTiingoStockTest, TestUpdateDataSourceStatus) {
+	TEST_F(CProductTiingoStockProfileTest, TestUpdateDataSourceStatus) {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateStockSymbol());
 
 		stockSymbol.UpdateDataSourceStatus(gl_pTiingoDataSource);
@@ -96,7 +96,7 @@ namespace FireBirdTest {
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
 		CTiingoStocksPtr m_pvStock;
-		CProductTiingoStock m_tiingoStockSymbolProduct;
+		CProductTiingoStockProfile m_tiingoStockSymbolProduct;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStockProfile,
@@ -177,7 +177,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ProcessTiingoStockTest : public TestWithParam<Test_TiingoWebData*> {
+	class ProcessTiingoStockProfileTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:
 		void SetUp() override {
 			SCOPED_TRACE("");
@@ -206,40 +206,32 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		CProductTiingoStock m_tiingoStockProduct;
+		CProductTiingoStockProfile m_tiingoStockProduct;
 		long long m_llTiingoBandWidthLeft;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessTiingoStockProfile,
-	                         ProcessTiingoStockTest,
+	                         ProcessTiingoStockProfileTest,
 	                         testing::Values(&tiingoStockWebData1, &tiingoStockWebData2,
 		                         &tiingoStockWebData3, &tiingoStockWebData4, &tiingoStockWebData10));
 
 	//todo 完善之
-	TEST_P(ProcessTiingoStockTest, TestProcessStockProfile) {
+	TEST_P(ProcessTiingoStockProfileTest, TestProcessStockProfile) {
 		CTiingoStockPtr pTiingoStock = nullptr;
 		long long llDataSize = m_pWebData->GetBufferLength();
 		m_tiingoStockProduct.ParseAndStoreWebData(m_pWebData);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoBandWidthLeft(), m_llTiingoBandWidthLeft - llDataSize);
 		switch (m_lIndex) {
 		case 1: // 格式不对
-			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 2: // 格式不对
-			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 3: // 第二个数据缺乏address项,返回一个成功
-			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1) << "第一个数据是正确的";
-			gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 4:
-			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1) << "第一个数据是正确的";
-			gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_TRUE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
 			break;
 		case 10:
-			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
-			gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_TRUE(gl_dataContainerTiingoStock.IsSymbol(_T("NEW SYMBOL")));
 			EXPECT_TRUE((pTiingoStock = gl_dataContainerTiingoStock.GetStock(_T("NEW SYMBOL"))) != nullptr);
 

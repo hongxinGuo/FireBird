@@ -24,16 +24,11 @@ CString CProductTiingoCryptoSymbol::CreateMessage() {
 void CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoCrypto = ParseTiingoCryptoSymbol(pWebData);
 	if (!pvTiingoCrypto->empty()) {
-		char buffer[100];
 		for (const auto& pTiingoCrypto : *pvTiingoCrypto) {
 			if (!gl_dataContainerTiingoCryptoSymbol.IsSymbol(pTiingoCrypto->GetSymbol())) {
 				gl_dataContainerTiingoCryptoSymbol.Add(pTiingoCrypto);
 			}
 		}
-		sprintf_s(buffer, _T("%zd"), pvTiingoCrypto->size());
-		const CString strNumber = buffer;
-		const CString str = _T("今日Tiingo Crypto总数为") + strNumber;
-		gl_systemMessage.PushInnerSystemInformationMessage(str);
 	}
 	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 }

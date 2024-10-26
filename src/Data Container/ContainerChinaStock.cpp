@@ -61,9 +61,6 @@ long CContainerChinaStock::LoadStockProfileDB() {
 			Add(pStock);
 		}
 		else {
-			str = _T("发现重复代码：");
-			str += setChinaStockSymbol.m_Symbol;
-			gl_systemMessage.PushInnerSystemInformationMessage(str);
 			setChinaStockSymbol.Delete(); // 删除此重复代码
 		}
 		setChinaStockSymbol.MoveNext();

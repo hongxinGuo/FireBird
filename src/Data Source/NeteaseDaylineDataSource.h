@@ -26,7 +26,7 @@ public:
 	void ResetDownLoadingStockCode() { m_strDownLoadingStockCode = _T(""); }
 
 protected:
-	CString m_strDownLoadingStockCode;
+	CString m_strDownLoadingStockCode{ _T("") };
 };
 
 using CNeteaseDayLineDataSourcePtr = shared_ptr<CNeteaseDayLineDataSource>;

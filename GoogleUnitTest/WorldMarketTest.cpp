@@ -7,8 +7,6 @@
 #include"ProductFinnhubCompanyInsiderTransaction.h"
 #include"ProductFinnhubCompanyInsiderSentiment.h"
 
-#include"ProductTiingoStock.h"
-
 #include"SetFinnhubForexExchange.h"
 #include"SetFinnhubCryptoExchange.h"
 #include"SetFinnhubCryptoSymbol.h"
@@ -544,7 +542,7 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestUpdateTiingoStockDB) {
 		CSetTiingoStock setTiingoStock;
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
-		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount());
+		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount()) << "函数UpdateProfile只运行在付费账户状态下";
 
 		auto pTiingoStock = make_shared<CTiingoStock>(); // 这个是数据库中已存在的证券
 		pTiingoStock->m_fIsActive = true;
@@ -955,6 +953,11 @@ namespace FireBirdTest {
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_COMPILE_STOCK__);
+		EXPECT_EQ(pTask->GetTime(), 10500);
+		gl_pWorldMarket->DiscardCurrentMarketTask();
+
+		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_RESET__);
 		EXPECT_EQ(pTask->GetTime(), 170000);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
@@ -962,11 +965,6 @@ namespace FireBirdTest {
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_INQUIRE_REALTIME_DATA__);
 		EXPECT_EQ(pTask->GetTime(), 180000);
-		gl_pWorldMarket->DiscardCurrentMarketTask();
-
-		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_COMPILE_STOCK__);
-		EXPECT_EQ(pTask->GetTime(), 180500);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
@@ -1004,13 +1002,13 @@ namespace FireBirdTest {
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_INQUIRE_REALTIME_DATA__);
-		EXPECT_EQ(pTask->GetTime(), 180000);
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_COMPILE_STOCK__);
+		EXPECT_EQ(pTask->GetTime(), 170600);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_COMPILE_STOCK__);
-		EXPECT_EQ(pTask->GetTime(), 180500);
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_INQUIRE_REALTIME_DATA__);
+		EXPECT_EQ(pTask->GetTime(), 180000);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();

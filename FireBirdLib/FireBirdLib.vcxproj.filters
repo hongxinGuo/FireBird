@@ -7,30 +7,6 @@
     <Filter Include="源文件">
       <UniqueIdentifier>{4663b185-3a9c-45e2-a0f2-aef45b8b19d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\Factory-Product">
-      <UniqueIdentifier>{76a0a4a8-1be9-4831-b858-e46a43132bc1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Factory-Product\Finnhub">
-      <UniqueIdentifier>{92ad6536-d0d4-4019-b937-b2831ee5259e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Factory-Product\Quandl">
-      <UniqueIdentifier>{fc758a4f-75ea-45da-816e-27cecc5f6e07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Factory-Product\Tiingo">
-      <UniqueIdentifier>{1a872a98-5840-425b-891d-e0da9f7d1f25}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\Factory-Product">
-      <UniqueIdentifier>{1fbeb56c-04dc-4922-b6bc-13a64060215b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\Factory-Product\Tiingo">
-      <UniqueIdentifier>{f19c941b-0adf-427b-b3d4-bc480b8d0297}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\Factory-Product\Finnhub">
-      <UniqueIdentifier>{8e8d6719-4621-4305-9712-0705ae636df8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\Factory-Product\Quandl">
-      <UniqueIdentifier>{f0291397-6be9-424b-a441-4365188b0d4c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Template">
       <UniqueIdentifier>{9766291e-50ae-41db-800d-43144c852ee1}</UniqueIdentifier>
     </Filter>
@@ -169,12 +145,6 @@
     <Filter Include="源文件\Working thread\World market">
       <UniqueIdentifier>{071c480a-42a0-46e0-b3ca-c318858ef8a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\Factory-Product\ChinaMarket">
-      <UniqueIdentifier>{37524ace-2a5f-48d4-8119-f50869cf2f1c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\Factory-Product\ChinaMarket">
-      <UniqueIdentifier>{73b57d64-57b0-46ab-9a1c-f0df258bad20}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\database\WorldMarket\Finnhub">
       <UniqueIdentifier>{20429787-d6c6-4977-83e4-908c53aa6795}</UniqueIdentifier>
     </Filter>
@@ -198,6 +168,36 @@
     </Filter>
     <Filter Include="头文件\Stock\Finnhub">
       <UniqueIdentifier>{24d3a4ca-9f15-4559-a896-5185977024dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Factory-Product">
+      <UniqueIdentifier>{76a0a4a8-1be9-4831-b858-e46a43132bc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Factory-Product\Finnhub">
+      <UniqueIdentifier>{92ad6536-d0d4-4019-b937-b2831ee5259e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Factory-Product\Quandl">
+      <UniqueIdentifier>{fc758a4f-75ea-45da-816e-27cecc5f6e07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Factory-Product\Tiingo">
+      <UniqueIdentifier>{1a872a98-5840-425b-891d-e0da9f7d1f25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Factory-Product\ChinaMarket">
+      <UniqueIdentifier>{37524ace-2a5f-48d4-8119-f50869cf2f1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Factory-Product">
+      <UniqueIdentifier>{1fbeb56c-04dc-4922-b6bc-13a64060215b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Factory-Product\Tiingo">
+      <UniqueIdentifier>{f19c941b-0adf-427b-b3d4-bc480b8d0297}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Factory-Product\Finnhub">
+      <UniqueIdentifier>{8e8d6719-4621-4305-9712-0705ae636df8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Factory-Product\Quandl">
+      <UniqueIdentifier>{f0291397-6be9-424b-a441-4365188b0d4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Factory-Product\ChinaMarket">
+      <UniqueIdentifier>{73b57d64-57b0-46ab-9a1c-f0df258bad20}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -540,16 +540,13 @@
     <ClInclude Include="..\src\Factory Product\ProductFinnhubStockSymbol.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyProfile.h">
-      <Filter>头文件\Factory-Product\Tiingo</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoSymbol.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockDayLine.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoStock.h">
+    <ClInclude Include="..\src\Factory Product\ProductTiingoStockProfile.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\QuandlFactory.h">
@@ -1142,16 +1139,13 @@
     <ClCompile Include="..\src\Factory Product\ProductFinnhubStockSymbol.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductTiingoCompanyProfile.cpp">
-      <Filter>源文件\Factory-Product\Tiingo</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoSymbol.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockDayLine.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductTiingoStock.cpp">
+    <ClCompile Include="..\src\Factory Product\ProductTiingoStockProfile.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\QuandlFactory.cpp">

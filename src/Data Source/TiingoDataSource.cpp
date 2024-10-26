@@ -17,37 +17,9 @@ map<string, enum_ErrorMessageData> mapTiingoErrorMap{
 };
 
 set<CString> setDOW30{
-	"AAPL",
-	"AMGN",
-	"AMZN",
-	"AXP",
-	"BA",
-	"CAT",
-	"CRM",
-	"CSCO",
-	"CVX",
-	"DIS",
-	"DOW",
-	"IBM",
-	"INTC",
-	"JNJ",
-	"JPM",
-	"KO",
-	"MMM",
-	"MRK",
-	"MSFT",
-	"NKE",
-	"PG",
-	"UNH",
-	"V",
-	"VZ",
-	"WMT",
-	"GS",
-	"HD",
-	"HON",
-	"MCD",
-	"TRV"
-
+	"AAPL", "AMGN", "AMZN", "AXP", "BA", "CAT", "CRM", "CSCO", "CVX", "DIS",
+	"DOW", "IBM", "INTC", "JNJ", "JPM", "KO", "MMM", "MRK", "MSFT", "NKE",
+	"PG", "UNH", "V", "VZ", "WMT", "GS", "HD", "HON", "MCD", "TRV"
 };
 
 CTiingoDataSource::CTiingoDataSource() {

@@ -30,7 +30,7 @@ CString CProductTiingoIEXTopOfBook::CreateMessage() {
 void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoIEXTopOFBook = ParseTiingoIEXTopOfBook(pWebData);
 	long lNewestTradeDay = gl_pWorldMarket->GetNewestTradeDate();
-	time_t ttNewestTradeDay = ConvertToTTime(lNewestTradeDay, 0, 120000);
+	time_t ttNewestTradeDay = ConvertToTTime(lNewestTradeDay, 0, 160000); // 美股下午4点收市
 	if (!pvTiingoIEXTopOFBook->empty()) {
 		for (const auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {
 			if (pIEXTopOFBook->m_llTimestamp > ttNewestTradeDay) { // 只使用不早于一天的实时数据

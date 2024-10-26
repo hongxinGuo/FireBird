@@ -191,7 +191,7 @@
     <ClCompile Include="TiingoFactoryTest.cpp" />
     <ClCompile Include="TiingoIndustryTest.cpp" />
     <ClCompile Include="ProductTiingoStockDayLineTest.cpp" />
-    <ClCompile Include="ProductTiingoStockTest.cpp" />
+    <ClCompile Include="ProductTiingoStockProfileTest.cpp" />
     <ClCompile Include="TiingoStockTest.cpp" />
     <ClCompile Include="TimeConvertTest.cpp" />
     <ClCompile Include="VirtualChinaMarketWebProductTest.cpp" />

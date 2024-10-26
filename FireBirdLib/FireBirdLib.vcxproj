@@ -154,10 +154,9 @@
     <ClInclude Include="..\src\Factory Product\ProductSinaRT.h" />
     <ClInclude Include="..\src\Factory Product\ProductTengxunRT.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingo.h" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyProfile.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoSymbol.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockDayLine.h" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoStock.h" />
+    <ClInclude Include="..\src\Factory Product\ProductTiingoStockProfile.h" />
     <ClInclude Include="..\src\Factory Product\QuandlFactory.h" />
     <ClInclude Include="..\src\Factory Product\TiingoFactory.h" />
     <ClInclude Include="..\src\Factory Product\VirtualDataFactory.h" />
@@ -349,7 +348,6 @@
     <ClCompile Include="..\src\Factory Product\ProductSinaRT.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTengxunRT.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingo.cpp" />
-    <ClCompile Include="..\src\Factory Product\ProductTiingoCompanyProfile.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoSymbol.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoFinancialState.cpp" />
@@ -358,7 +356,7 @@
     <ClCompile Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoMarketNews.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockDayLine.cpp" />
-    <ClCompile Include="..\src\Factory Product\ProductTiingoStock.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductTiingoStockProfile.cpp" />
     <ClCompile Include="..\src\Factory Product\QuandlFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\TiingoFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\VirtualChinaMarketWebProduct.cpp" />

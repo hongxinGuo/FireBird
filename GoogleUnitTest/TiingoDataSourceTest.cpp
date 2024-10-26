@@ -162,7 +162,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_pTiingoDataSource->InquireCompanySymbol());
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
 		const CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
-		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStock"));
+		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockProfile"));
 		EXPECT_TRUE(m_pTiingoDataSource->IsUpdateStockSymbol()) << "此标识需要等处理完数据后方设置";
 		const CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Inquire Tiingo stock symbol..."));

@@ -219,9 +219,9 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0));
 
-	AddTask(WORLD_MARKET_TIINGO_INQUIRE_REALTIME_DATA__, 180000); // 收市后18点下载tiingo当天数据。
+	AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, GetNextTime(lTimeMinute, 0, 5, 0)); //180500生成tiingo当天日线数据
 
-	AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, 180500); //180500生成tiingo当天日线数据
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_REALTIME_DATA__, 180000); // 收市后18点下载tiingo当天数据。
 
 	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
@@ -397,7 +397,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 }
 
 void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
-	if (!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) {
+	if (!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) { // 已经接收到数据？
 		gl_runtime.background_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetNewestTradeDate());
@@ -405,9 +405,7 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 		});
 	}
 	else {
-		long lNextTime = GetNextTime(lCurrentTime, 0, 1, 0);
-
-		AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, lNextTime);
+		AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, GetNextTime(lCurrentTime, 0, 5, 0)); // 五分钟后执行下一次
 	}
 }
 

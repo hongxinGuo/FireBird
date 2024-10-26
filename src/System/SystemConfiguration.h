@@ -119,6 +119,12 @@ public:
 	bool IsPaidTypeTiingoAccount() const noexcept { return m_bTiingoAccountFeePaid; }
 	[[nodiscard]] CString GetTiingoToken() noexcept { return m_strTiingoToken; }
 
+	[[nodiscard]] int GetTiingoIEXTopOfBookUpdateDate() const noexcept { return m_lTiingoIEXTopOfBookUpdateDate; }
+	void SetTiingoIEXTopOfBookUpdateDate(const long lTiingoIEXTopOfBookUpdateDate) noexcept {
+		m_lTiingoIEXTopOfBookUpdateDate = lTiingoIEXTopOfBookUpdateDate;
+		m_fUpdateDB = true;
+	}
+
 	[[nodiscard]] int GetTiingoHourLyRequestLimit() const noexcept { return m_iTiingoHourLyRequestLimit; }
 	void SetTiingoHourLyRequestLimit(const int iTiingoHourLyRequestLimit) noexcept {
 		m_fUpdateDB = true;
@@ -327,6 +333,7 @@ protected:
 	// Tiingo.com
 	bool m_bTiingoAccountFeePaid{ true };
 	CString m_strTiingoToken{ _T("") };
+	long m_lTiingoIEXTopOfBookUpdateDate{ 19800101 };
 	int m_iTiingoHourLyRequestLimit{ 500 };
 	long m_lTiingoDailyRequestLimit{ 20000 };
 	long long m_llTiingoBandWidth{ 5368709120 };

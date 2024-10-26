@@ -15,15 +15,6 @@
 
 CInquireEngine::CInquireEngine(): m_dataBuffer{} {
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
-	m_strInquiry = _T("");
-	m_strHeaders = _T("");
-	m_pFile = nullptr;
-	m_lContentLength = 0;
-	m_dwHTTPStatusCode = 0;
-
-	m_sBuffer.resize(0);
-	m_lByteRead = 0;
-	m_fWebError = false;
 }
 
 CInquireEngine::CInquireEngine(const InternetOption& option, const CString& strInquire, const CString& strHeaders): m_dataBuffer{} {

@@ -57,8 +57,8 @@ namespace FireBirdTest {
 		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, FOREX_CANDLES_)).name(), _T("class CProductFinnhubForexDayLine"));
 		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_PRICE_QUOTE_)).name(), _T("class CProductFinnhubStockPriceQuote"));
 		EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_ESTIMATES_EPS_SURPRISE_)).name(), _T("class CProductFinnhubStockEstimatesEPSSurprise"));
-		//EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStock"));
-		//EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStock"));
-		//EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStock"));
+		//EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStockProfile"));
+		//EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStockProfile"));
+		//EXPECT_STREQ(typeid(*factory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_)).name(), _T("class CProductTiingoStockProfile"));
 	}
 }

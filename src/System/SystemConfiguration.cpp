@@ -72,7 +72,7 @@ std::string gl_sSystemConfiguration = R"(
 },
 
 "Tiingo" : {
-	"AccountFeePaid" : true,
+	"IEXTopOfBookUpdateDate" : 19990101,
 	"Token" : "c897a00b7cfc2630d235316a4683156",
 	"HourlyRequestLimit" : 500,
 	"DailyRequestLimit" : 20000,
@@ -328,6 +328,11 @@ void CSystemConfiguration::Update(json& jsonData) {
 		m_fUpdateDB = true;
 	}
 	try {
+		m_lTiingoIEXTopOfBookUpdateDate = jsonData.at("Tiingo").at("IEXTopOfBookUpdateDate"); // 
+	} catch (json::out_of_range&) {
+		m_fUpdateDB = true;
+	}
+	try {
 		m_iTiingoHourLyRequestLimit = jsonData.at("Tiingo").at("HourlyRequestLimit"); // 
 	} catch (json::out_of_range&) {
 		m_fUpdateDB = true;
@@ -499,6 +504,7 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	// Tiingo.com
 	jsonData["Tiingo"]["AccountFeePaid"] = m_bTiingoAccountFeePaid;
 	jsonData["Tiingo"]["Token"] = m_strTiingoToken;
+	jsonData["Tiingo"]["IEXTopOfBookUpdateDate"] = m_lTiingoIEXTopOfBookUpdateDate;
 	jsonData["Tiingo"]["HourlyRequestLimit"] = m_iTiingoHourLyRequestLimit;
 	jsonData["Tiingo"]["DailyRequestLimit"] = m_lTiingoDailyRequestLimit;
 	jsonData["Tiingo"]["BandWidth"] = m_llTiingoBandWidth;

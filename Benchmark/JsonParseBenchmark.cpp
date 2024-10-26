@@ -14,7 +14,7 @@
 
 #include"SaveAndLoad.h"
 #include"JsonParse.h"
-#include "ProductTiingoStock.h"
+#include "ProductTiingoStockProfile.h"
 #include"WebData.h"
 
 #include"simdjson.h"
@@ -316,7 +316,7 @@ BENCHMARK_F(CJsonParse, ParseTengxunDayLineUsingSimdjson)(benchmark::State& stat
 }
 
 BENCHMARK_F(CJsonParse, ParseTiingoFundamentalsUsingSimdjson)(benchmark::State& state) {
-	CProductTiingoStock p;
+	CProductTiingoStockProfile p;
 	for (auto _ : state) {
 		auto vData = p.ParseTiingoStockSymbol(pWebData); // 默认测试文件中的股票代码为sh000001.
 	}

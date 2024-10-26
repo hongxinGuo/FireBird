@@ -7,8 +7,6 @@
 #include"MockFinnhubDataSource.h"
 #include "ProductFinnhubCompanyProfileConcise.h"
 
-#include"ProductTiingoStock.h"
-
 using namespace testing;
 
 namespace FireBirdTest {

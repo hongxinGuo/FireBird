@@ -4,8 +4,8 @@
 
 #include "TiingoFactory.h"
 
-//#include"ProductTiingoCompanyProfile.h"
-#include"ProductTiingoStock.h"
+//#include"ProductTiingoStockProfile.h"
+#include"ProductTiingoStockProfile.h"
 #include"ProductTiingoStockDayLine.h"
 
 #include"ProductTiingoCryptoSymbol.h"
@@ -22,7 +22,7 @@ CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarke
 
 	switch (iInquireType) {
 	case STOCK_SYMBOLS_:
-		p = make_shared<CProductTiingoStock>();
+		p = make_shared<CProductTiingoStockProfile>();
 		break;
 	case STOCK_PRICE_CANDLES_:
 		p = make_shared<CProductTiingoStockDayLine>();

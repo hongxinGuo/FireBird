@@ -10,12 +10,6 @@ CContainerTiingoStock::CContainerTiingoStock() {
 }
 
 CContainerTiingoStock::~CContainerTiingoStock() {
-	//for (const auto& pStock : m_vStock) {
-	//if (pStock->GetDayLineEndDate() < 19700101) pStock->SetDayLineEndDate(19800101);
-	//	if (pStock->GetDayLineStartDate() == 29900101) {}
-	//pStock->SetUpdateProfileDB(true);
-	//}
-	//UpdateDB();
 }
 
 void CContainerTiingoStock::Reset() {
@@ -23,6 +17,7 @@ void CContainerTiingoStock::Reset() {
 }
 
 void CContainerTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
+	ASSERT(gl_systemConfiguration.IsPaidTypeTiingoAccount()); // 调用此函数时，必须保证是付费账户。
 	ASSERT(IsSymbol(pStock->GetSymbol()));
 
 	auto pTiingoStock = GetStock(pStock->GetSymbol());
@@ -112,7 +107,7 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 
 	// 存储该日的数据
 	auto lSize = Size();
-	time_t tMarketCloseTime = ConvertToTTime(lDate, 0, 170000);
+	time_t tMarketCloseTime = ConvertToTTime(lDate, 0, 160000);
 	CSetTiingoStockDayLine setDayLine;
 	setDayLine.Open();
 	setDayLine.m_pDatabase->BeginTrans();
@@ -124,6 +119,8 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 	}
 	setDayLine.m_pDatabase->CommitTrans();
 	setDayLine.Close();
+
+	gl_systemConfiguration.SetTiingoIEXTopOfBookUpdateDate(lDate);
 }
 
 void CContainerTiingoStock::DeleteDayLine(long lDate) {

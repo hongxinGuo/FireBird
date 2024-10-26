@@ -30,8 +30,8 @@ public:
 	void ResetDownLoadingStockCode() { m_strDownLoadingStockCode = _T(""); }
 
 protected:
-	bool m_fUpdateDayLine; // 每日更新公司日线数据
-	CString m_strDownLoadingStockCode;
+	bool m_fUpdateDayLine{ true }; // 每日更新公司日线数据
+	CString m_strDownLoadingStockCode{ _T("") };
 };
 
 using CTengxunDayLineDataSourcePtr = shared_ptr<CTengxunDayLineDataSource>;

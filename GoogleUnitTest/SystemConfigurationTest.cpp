@@ -67,9 +67,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/QuandlInquiryTime")), 36000);
 
 		//Tiingo.com
-		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/Tiingo/AccountFeePaid")));
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/Tiingo/Token"));
 		EXPECT_TRUE(sTemp == _T("c897a00b7cfc2630d235316a4683156"));
+		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/IEXTopOfBookUpdateDate")), 19990101);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/HourlyRequestLimit")), 500);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/DailyRequestLimit")), 20000);
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/BandWidth")), 5368709120);
@@ -113,6 +113,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime(), 3600000 / 100) << "默认每小时查询最大数量为100";
 
 		EXPECT_STREQ(gl_systemConfiguration.GetTiingoToken(), _T("c897a00b7cfc2630d235316a4683156"));
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate(), 19800101);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoHourLyRequestLimit(), 500);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoDailyRequestLimit(), 20000);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoBandWidth(), 5368709120);

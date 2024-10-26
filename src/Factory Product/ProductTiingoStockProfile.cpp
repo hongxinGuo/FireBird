@@ -3,27 +3,26 @@
 #include"jsonParse.h"
 
 #include"TiingoStock.h"
-#include "ProductTiingoStock.h"
+#include "ProductTiingoStockProfile.h"
 
 #include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"
 #include "TimeConvert.h"
 
-CProductTiingoStock::CProductTiingoStock() {
+CProductTiingoStockProfile::CProductTiingoStockProfile() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");
 }
 
-CString CProductTiingoStock::CreateMessage() {
+CString CProductTiingoStockProfile::CreateMessage() {
 	m_strInquiringSymbol = _T("All");
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
 }
 
-void CProductTiingoStock::ParseAndStoreWebData(CWebDataPtr pWebData) {
+void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoStock = ParseTiingoStockSymbol(pWebData);
 	if (!pvTiingoStock->empty()) {
-		char buffer[100];
 		for (const auto& pTiingoStock : *pvTiingoStock) {
 			if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStock->GetSymbol())) {
 				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
@@ -35,10 +34,6 @@ void CProductTiingoStock::ParseAndStoreWebData(CWebDataPtr pWebData) {
 				gl_dataContainerTiingoStock.Add(pTiingoStock);
 			}
 		}
-		sprintf_s(buffer, _T("%6d"), pvTiingoStock->size());
-		const CString strNumber = buffer;
-		const CString str = _T("今日Tiingo Stock总数为") + strNumber;
-		gl_systemMessage.PushInnerSystemInformationMessage(str);
 	}
 	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 }
@@ -72,7 +67,7 @@ void CProductTiingoStock::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // 使用simdjson解析，速度为Nlohmann-json的三倍。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CTiingoStocksPtr CProductTiingoStock::ParseTiingoStockSymbol(const CWebDataPtr& pWebData) {
+CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDataPtr& pWebData) {
 	auto pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
 	string strNotAvailable{ _T("Field not available for free/evaluation") }; // Tiingo免费账户有多项内容空缺，会返回此信息。
 	CString strNULL = _T("");
@@ -178,7 +173,7 @@ CTiingoStocksPtr CProductTiingoStock::ParseTiingoStockSymbol(const CWebDataPtr& 
 	return pvTiingoStock;
 }
 
-void CProductTiingoStock::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
+void CProductTiingoStockProfile::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateStockSymbol(false);
 	gl_systemMessage.PushInformationMessage(_T("Tiingo stock symbol已更新"));
