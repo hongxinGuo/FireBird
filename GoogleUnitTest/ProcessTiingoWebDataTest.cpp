@@ -4,7 +4,7 @@
 
 #include"WebData.h"
 
-#include"WorldStock.h"
+#include"FinnhubStock.h"
 
 using namespace testing;
 
@@ -83,7 +83,7 @@ namespace FireBirdTest {
 
 	public:
 		long m_lIndex;
-		CWorldStockPtr m_pStock;
+		CFinnhubStockPtr m_pStock;
 		shared_ptr<string> m_pWebData;
 
 		CTiingoForexWebSocket tiingoForexWebSocket;
@@ -195,7 +195,7 @@ namespace FireBirdTest {
 
 	public:
 		long m_lIndex;
-		CWorldStockPtr m_pStock;
+		CFinnhubStockPtr m_pStock;
 		shared_ptr<string> m_pWebData;
 
 		CTiingoCryptoWebSocket tiingoCryptoWebSocket;

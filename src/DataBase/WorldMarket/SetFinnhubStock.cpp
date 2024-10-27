@@ -1,15 +1,15 @@
-// CSetWorldStock.cpp : CSetWorldStock 类的实现
+// CSetFinnhubStock.cpp : CSetFinnhubStock 类的实现
 
 #include"pch.h"
 
-#include "SetWorldStock.h"
+#include "SetFinnhubStock.h"
 
-CSetWorldStock::CSetWorldStock(const CString& strSchema, const CString& strTable, CDatabase* pdb)
+CSetFinnhubStock::CSetFinnhubStock(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
 	m_nFields = 37;
 }
 
-void CSetWorldStock::DoFieldExchange(CFieldExchange* pFX) {
+void CSetFinnhubStock::DoFieldExchange(CFieldExchange* pFX) {
 	pFX->SetFieldType(CFieldExchange::outputColumn);
 	// RFX_Text() 和 RFX_Int() 这类宏依赖的是
 	// 成员变量的类型，而不是数据库字段的类型。

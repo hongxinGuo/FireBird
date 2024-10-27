@@ -8,7 +8,7 @@
 #include"InsiderTransaction.h"
 #include"EPSSurprise.h"
 
-#include"WorldStock.h"
+#include"FinnhubStock.h"
 #include"WorldMarket.h"
 
 #include"SetWorldStockDayLine.h"
@@ -17,7 +17,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CWorldStockTest : public Test {
+	class CFinnhubStockTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
@@ -42,11 +42,11 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CWorldStockPtr pStock;
-		CWorldStock stock;
+		CFinnhubStockPtr pStock;
+		CFinnhubStock stock;
 	};
 
-	TEST_F(CWorldStockTest, TestResetAllUpdateDate) {
+	TEST_F(CFinnhubStockTest, TestResetAllUpdateDate) {
 		stock.ResetAllUpdateDate();
 		EXPECT_EQ(stock.GetProfileUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 19800101);
@@ -58,101 +58,101 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 19800101);
 	}
 
-	TEST_F(CWorldStockTest, TestGetRatio) {
+	TEST_F(CFinnhubStockTest, TestGetRatio) {
 		EXPECT_EQ(stock.GetRatio(), 1000) << "国际市场的股票价格，放大倍数为1000";
 	}
 
-	TEST_F(CWorldStockTest, TestGetExchangeCode) {
+	TEST_F(CFinnhubStockTest, TestGetExchangeCode) {
 		EXPECT_STREQ(stock.GetExchangeCode(), _T("US"));
 		stock.SetExchangeCode(_T("SS"));
 		EXPECT_STREQ(stock.GetExchangeCode(), _T("SS"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetSymbol) {
+	TEST_F(CFinnhubStockTest, TestGetSymbol) {
 		EXPECT_STREQ(stock.GetSymbol(), _T(""));
 		stock.SetSymbol(_T("600000.SS"));
 		EXPECT_STREQ(stock.GetSymbol(), _T("600000.SS"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetTransactionTime) {
+	TEST_F(CFinnhubStockTest, TestGetTransactionTime) {
 		EXPECT_EQ(stock.GetTransactionTime(), 0);
 		stock.SetTransactionTime(1010101010);
 		EXPECT_EQ(stock.GetTransactionTime(), 1010101010);
 	}
 
-	TEST_F(CWorldStockTest, TestGetLastClose) {
+	TEST_F(CFinnhubStockTest, TestGetLastClose) {
 		EXPECT_EQ(stock.GetLastClose(), 0);
 		stock.SetLastClose(10101010);
 		EXPECT_EQ(stock.GetLastClose(), 10101010);
 	}
 
-	TEST_F(CWorldStockTest, TestGetOpen) {
+	TEST_F(CFinnhubStockTest, TestGetOpen) {
 		EXPECT_EQ(stock.GetOpen(), 0);
 		stock.SetOpen(10101);
 		EXPECT_EQ(stock.GetOpen(), 10101);
 	}
 
-	TEST_F(CWorldStockTest, TestGetHigh) {
+	TEST_F(CFinnhubStockTest, TestGetHigh) {
 		EXPECT_EQ(stock.GetHigh(), 0);
 		stock.SetHigh(19980101);
 		EXPECT_EQ(stock.GetHigh(), 19980101);
 	}
 
-	TEST_F(CWorldStockTest, TestGetLow) {
+	TEST_F(CFinnhubStockTest, TestGetLow) {
 		EXPECT_EQ(stock.GetLow(), 0);
 		stock.SetLow(19980101);
 		EXPECT_EQ(stock.GetLow(), 19980101);
 	}
 
-	TEST_F(CWorldStockTest, TestGetNew) {
+	TEST_F(CFinnhubStockTest, TestGetNew) {
 		EXPECT_EQ(stock.GetNew(), 0);
 		stock.SetNew(10101010);
 		EXPECT_EQ(stock.GetNew(), 10101010);
 	}
 
-	TEST_F(CWorldStockTest, TestGetUpDown) {
+	TEST_F(CFinnhubStockTest, TestGetUpDown) {
 		EXPECT_EQ(stock.GetUpDown(), 0);
 		stock.SetUpDown(10101010);
 		EXPECT_EQ(stock.GetUpDown(), 10101010);
 	}
 
-	TEST_F(CWorldStockTest, TestGetAmount) {
+	TEST_F(CFinnhubStockTest, TestGetAmount) {
 		EXPECT_EQ(stock.GetAmount(), 0);
 		stock.SetAmount(1010101010101010);
 		EXPECT_EQ(stock.GetAmount(), 1010101010101010);
 	}
 
-	TEST_F(CWorldStockTest, TestGetVolume) {
+	TEST_F(CFinnhubStockTest, TestGetVolume) {
 		EXPECT_EQ(stock.GetVolume(), 0);
 		stock.SetVolume(10101010);
 		EXPECT_EQ(stock.GetVolume(), 10101010);
 	}
 
-	TEST_F(CWorldStockTest, TestGetTotalValue) {
+	TEST_F(CFinnhubStockTest, TestGetTotalValue) {
 		EXPECT_EQ(stock.GetTotalValue(), 0);
 		stock.SetTotalValue(10101010);
 		EXPECT_EQ(stock.GetTotalValue(), 10101010);
 	}
 
-	TEST_F(CWorldStockTest, TestGetCurrentValue) {
+	TEST_F(CFinnhubStockTest, TestGetCurrentValue) {
 		EXPECT_EQ(stock.GetCurrentValue(), 0);
 		stock.SetCurrentValue(10101010);
 		EXPECT_EQ(stock.GetCurrentValue(), 10101010);
 	}
 
-	TEST_F(CWorldStockTest, TestGetChangeHandRate) {
+	TEST_F(CFinnhubStockTest, TestGetChangeHandRate) {
 		EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 0.0);
 		stock.SetChangeHandRate(1.1);
 		EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 1.1);
 	}
 
-	TEST_F(CWorldStockTest, TestGetUpDownRate) {
+	TEST_F(CFinnhubStockTest, TestGetUpDownRate) {
 		EXPECT_DOUBLE_EQ(stock.GetUpDownRate(), 0.0);
 		stock.SetUpDownRate(1.1);
 		EXPECT_DOUBLE_EQ(stock.GetUpDownRate(), 1.1);
 	}
 
-	TEST_F(CWorldStockTest, TestIsTodayNewStock) {
+	TEST_F(CFinnhubStockTest, TestIsTodayNewStock) {
 		EXPECT_FALSE(stock.IsTodayNewStock());
 		stock.SetTodayNewStock(true);
 		EXPECT_TRUE(stock.IsTodayNewStock());
@@ -160,7 +160,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsTodayNewStock());
 	}
 
-	TEST_F(CWorldStockTest, TestIsUpdateStockProfileDB) {
+	TEST_F(CFinnhubStockTest, TestIsUpdateStockProfileDB) {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		stock.SetUpdateProfileDB(true);
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
@@ -172,7 +172,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 	}
 
-	TEST_F(CWorldStockTest, TestIsUpdateProfileDBAndClearFlag) {
+	TEST_F(CFinnhubStockTest, TestIsUpdateProfileDBAndClearFlag) {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		EXPECT_FALSE(stock.IsUpdateProfileDBAndClearFlag());
 		stock.SetUpdateProfileDB(true);
@@ -180,7 +180,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 	}
 
-	TEST_F(CWorldStockTest, TestIsUpdateCompanyNewsDB) {
+	TEST_F(CFinnhubStockTest, TestIsUpdateCompanyNewsDB) {
 		EXPECT_FALSE(stock.IsUpdateCompanyNewsDB());
 		stock.SetUpdateCompanyNewsDB(true);
 		EXPECT_TRUE(stock.IsUpdateCompanyNewsDB());
@@ -192,7 +192,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateCompanyNewsDB());
 	}
 
-	TEST_F(CWorldStockTest, TestIsUpdateCompanyNewsDBAndClearFlag) {
+	TEST_F(CFinnhubStockTest, TestIsUpdateCompanyNewsDBAndClearFlag) {
 		EXPECT_FALSE(stock.IsUpdateCompanyNewsDB());
 		EXPECT_FALSE(stock.IsUpdateCompanyNewsDBAndClearFlag());
 		stock.SetUpdateCompanyNewsDB(true);
@@ -200,7 +200,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateCompanyNewsDB());
 	}
 
-	TEST_F(CWorldStockTest, TestIsActive) {
+	TEST_F(CFinnhubStockTest, TestIsActive) {
 		EXPECT_FALSE(stock.IsActive());
 		stock.SetActive(true);
 		EXPECT_TRUE(stock.IsActive());
@@ -208,60 +208,60 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsActive());
 	}
 
-	TEST_F(CWorldStockTest, TestGetDayLineEndDate) {
+	TEST_F(CFinnhubStockTest, TestGetDayLineEndDate) {
 		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
 		stock.SetDayLineEndDate(19980102);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 19980102);
 	}
 
-	TEST_F(CWorldStockTest, TestGetDayLineStartDate) {
+	TEST_F(CFinnhubStockTest, TestGetDayLineStartDate) {
 		EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
 		stock.SetDayLineStartDate(19980101);
 		EXPECT_EQ(stock.GetDayLineStartDate(), 19980101);
 	}
 
-	TEST_F(CWorldStockTest, TestGetIPOStatus) {
+	TEST_F(CFinnhubStockTest, TestGetIPOStatus) {
 		EXPECT_TRUE(stock.IsNotChecked());
 		stock.SetIPOStatus(255);
 		EXPECT_EQ(stock.GetIPOStatus(), 255);
 	}
 
-	TEST_F(CWorldStockTest, TestIsNullStock) {
+	TEST_F(CFinnhubStockTest, TestIsNullStock) {
 		stock.SetIPOStatus(_STOCK_NULL_);
 		EXPECT_TRUE(stock.IsNullStock());
 		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
 		EXPECT_FALSE(stock.IsNullStock());
 	}
 
-	TEST_F(CWorldStockTest, TestIsIPOed) {
+	TEST_F(CFinnhubStockTest, TestIsIPOed) {
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		EXPECT_TRUE(stock.IsIPOed());
 		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
 		EXPECT_FALSE(stock.IsIPOed());
 	}
 
-	TEST_F(CWorldStockTest, TestIsNotChecked) {
+	TEST_F(CFinnhubStockTest, TestIsNotChecked) {
 		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
 		EXPECT_TRUE(stock.IsNotChecked());
 		stock.SetIPOStatus(_STOCK_DELISTED_);
 		EXPECT_FALSE(stock.IsNotChecked());
 	}
 
-	TEST_F(CWorldStockTest, TestIsDelisted) {
+	TEST_F(CFinnhubStockTest, TestIsDelisted) {
 		stock.SetIPOStatus(_STOCK_DELISTED_);
 		EXPECT_TRUE(stock.IsDelisted());
 		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
 		EXPECT_FALSE(stock.IsDelisted());
 	}
 
-	TEST_F(CWorldStockTest, TestIsNotYetList) {
+	TEST_F(CFinnhubStockTest, TestIsNotYetList) {
 		stock.SetIPOStatus(_STOCK_NOT_YET_LIST_);
 		EXPECT_TRUE(stock.IsNotYetList());
 		stock.SetIPOStatus(_STOCK_NOT_CHECKED_);
 		EXPECT_FALSE(stock.IsNotYetList());
 	}
 
-	TEST_F(CWorldStockTest, TestIsUpdateDayLine) {
+	TEST_F(CFinnhubStockTest, TestIsUpdateDayLine) {
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		stock.SetUpdateDayLine(false);
 		EXPECT_FALSE(stock.IsUpdateDayLine());
@@ -269,7 +269,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 	}
 
-	TEST_F(CWorldStockTest, TestIsDayLineNeededSaving) {
+	TEST_F(CFinnhubStockTest, TestIsDayLineNeededSaving) {
 		// 此两个函数是具备同步机制的，这里没有进行测试
 		EXPECT_FALSE(stock.IsUpdateDayLineDB());
 		stock.SetUpdateDayLineDB(true);
@@ -281,67 +281,67 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateDayLineDB());
 	}
 
-	TEST_F(CWorldStockTest, TestGetProfileUpdateDate) {
+	TEST_F(CFinnhubStockTest, TestGetProfileUpdateDate) {
 		EXPECT_EQ(stock.GetProfileUpdateDate(), 19800101);
 		stock.SetProfileUpdateDate(10101016);
 		EXPECT_EQ(stock.GetProfileUpdateDate(), 10101016);
 	}
 
-	TEST_F(CWorldStockTest, TestGetCompanyNewsUpdateDate) {
+	TEST_F(CFinnhubStockTest, TestGetCompanyNewsUpdateDate) {
 		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 19800101);
 		stock.SetCompanyNewsUpdateDate(10101017);
 		EXPECT_EQ(stock.GetCompanyNewsUpdateDate(), 10101017);
 	}
 
-	TEST_F(CWorldStockTest, TestGetBasicFinancialUpdateDate) {
+	TEST_F(CFinnhubStockTest, TestGetBasicFinancialUpdateDate) {
 		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), 19800101);
 		stock.SetBasicFinancialUpdateDate(10101018);
 		EXPECT_EQ(stock.GetBasicFinancialUpdateDate(), 10101018);
 	}
 
-	TEST_F(CWorldStockTest, TestGetLastRTDataUpdateDate) {
+	TEST_F(CFinnhubStockTest, TestGetLastRTDataUpdateDate) {
 		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 19800101);
 		stock.SetLastRTDataUpdateDate(10101011);
 		EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 10101011);
 	}
 
-	TEST_F(CWorldStockTest, TestPeerUpdateDate) {
+	TEST_F(CFinnhubStockTest, TestPeerUpdateDate) {
 		EXPECT_EQ(stock.GetPeerUpdateDate(), 19800101);
 		stock.SetPeerUpdateDate(10101012);
 		EXPECT_EQ(stock.GetPeerUpdateDate(), 10101012);
 	}
 
-	TEST_F(CWorldStockTest, TestInsiderTransactionUpdateDate) {
+	TEST_F(CFinnhubStockTest, TestInsiderTransactionUpdateDate) {
 		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 19800101);
 		stock.SetInsiderTransactionUpdateDate(10101013);
 		EXPECT_EQ(stock.GetInsiderTransactionUpdateDate(), 10101013);
 	}
 
-	TEST_F(CWorldStockTest, TestGetInsiderSentimentUpdateDate) {
+	TEST_F(CFinnhubStockTest, TestGetInsiderSentimentUpdateDate) {
 		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), 19800101);
 		stock.SetInsiderSentimentUpdateDate(10101014);
 		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), 10101014);
 	}
 
-	TEST_F(CWorldStockTest, TestLastEPSSurpriseUpdateDate) {
+	TEST_F(CFinnhubStockTest, TestLastEPSSurpriseUpdateDate) {
 		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 19800101);
 		stock.SetLastEPSSurpriseUpdateDate(10101015);
 		EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 10101015);
 	}
 
-	TEST_F(CWorldStockTest, TestIsUpdateCompanyProfile) {
+	TEST_F(CFinnhubStockTest, TestIsUpdateCompanyProfile) {
 		EXPECT_TRUE(stock.IsUpdateCompanyProfile());
 		stock.SetUpdateCompanyProfile(false);
 		EXPECT_FALSE(stock.IsUpdateCompanyProfile());
 	}
 
-	TEST_F(CWorldStockTest, TestIsUpdateEPSSurprise) {
+	TEST_F(CFinnhubStockTest, TestIsUpdateEPSSurprise) {
 		EXPECT_TRUE(stock.IsUpdateEPSSurprise());
 		stock.SetUpdateEPSSurprise(false);
 		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
 	}
 
-	TEST_F(CWorldStockTest, TestIsUpdateEPSSurpriseDB) {
+	TEST_F(CFinnhubStockTest, TestIsUpdateEPSSurpriseDB) {
 		EXPECT_FALSE(stock.IsUpdateEPSSurpriseDB());
 		stock.SetUpdateEPSSurpriseDB(true);
 		EXPECT_TRUE(stock.IsUpdateEPSSurpriseDB());
@@ -349,7 +349,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateEPSSurpriseDB());
 	}
 
-	TEST_F(CWorldStockTest, TestIsUpdateSECFilingsDB) {
+	TEST_F(CFinnhubStockTest, TestIsUpdateSECFilingsDB) {
 		EXPECT_FALSE(stock.IsUpdateSECFilingsDB());
 		stock.SetUpdateSECFilingsDB(true);
 		EXPECT_TRUE(stock.IsUpdateSECFilingsDB());
@@ -357,7 +357,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateSECFilingsDB());
 	}
 
-	TEST_F(CWorldStockTest, TestIsUpdateInsiderTransaction) {
+	TEST_F(CFinnhubStockTest, TestIsUpdateInsiderTransaction) {
 		EXPECT_TRUE(stock.IsUpdateInsiderTransaction());
 		stock.SetUpdateInsiderTransaction(false);
 		EXPECT_FALSE(stock.IsUpdateInsiderTransaction());
@@ -365,7 +365,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.IsUpdateInsiderTransaction());
 	}
 
-	TEST_F(CWorldStockTest, TestIsInsiderTransactionNeedSave) {
+	TEST_F(CFinnhubStockTest, TestIsInsiderTransactionNeedSave) {
 		EXPECT_FALSE(stock.IsUpdateInsiderTransactionDB());
 		stock.SetUpdateInsiderTransactionDB(true);
 		EXPECT_TRUE(stock.IsUpdateInsiderTransactionDB());
@@ -373,7 +373,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateInsiderTransactionDB());
 	}
 
-	TEST_F(CWorldStockTest, TestIsUpdateInsiderSentiment) {
+	TEST_F(CFinnhubStockTest, TestIsUpdateInsiderSentiment) {
 		EXPECT_TRUE(stock.IsUpdateInsiderSentiment());
 		stock.SetUpdateInsiderSentiment(false);
 		EXPECT_FALSE(stock.IsUpdateInsiderSentiment());
@@ -381,7 +381,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.IsUpdateInsiderSentiment());
 	}
 
-	TEST_F(CWorldStockTest, TestIsInsiderSentimentNeedSave) {
+	TEST_F(CFinnhubStockTest, TestIsInsiderSentimentNeedSave) {
 		EXPECT_FALSE(stock.IsUpdateInsiderSentimentDB());
 		stock.SetUpdateInsiderSentimentDB(true);
 		EXPECT_TRUE(stock.IsUpdateInsiderSentimentDB());
@@ -389,193 +389,193 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateInsiderSentimentDB());
 	}
 
-	TEST_F(CWorldStockTest, TestGetDescription) {
+	TEST_F(CFinnhubStockTest, TestGetDescription) {
 		EXPECT_STREQ(stock.GetDescription(), _T(""));
 		stock.SetDescription(_T("abcdef"));
 		EXPECT_STREQ(stock.GetDescription(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetDisplaySymbol) {
+	TEST_F(CFinnhubStockTest, TestGetDisplaySymbol) {
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T(""));
 		stock.SetDisplaySymbol(_T("abcdef"));
 		EXPECT_STREQ(stock.GetDisplaySymbol(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetType) {
+	TEST_F(CFinnhubStockTest, TestGetType) {
 		EXPECT_STREQ(stock.GetType(), _T(" "));
 		stock.SetType(_T("abcdef"));
 		EXPECT_STREQ(stock.GetType(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetMic) {
+	TEST_F(CFinnhubStockTest, TestGetMic) {
 		EXPECT_STREQ(stock.GetMic(), _T(" "));
 		stock.SetMic(_T("abcdef"));
 		EXPECT_STREQ(stock.GetMic(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetFigi) {
+	TEST_F(CFinnhubStockTest, TestGetFigi) {
 		EXPECT_STREQ(stock.GetFigi(), _T(" "));
 		stock.SetFigi(_T("abcdef"));
 		EXPECT_STREQ(stock.GetFigi(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetCurrency) {
+	TEST_F(CFinnhubStockTest, TestGetCurrency) {
 		EXPECT_STREQ(stock.GetCurrency(), _T(" "));
 		stock.SetCurrency(_T("abcdef"));
 		EXPECT_STREQ(stock.GetCurrency(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetAddress) {
+	TEST_F(CFinnhubStockTest, TestGetAddress) {
 		EXPECT_STREQ(stock.GetAddress(), _T(" "));
 		stock.SetAddress(_T("abcdef"));
 		EXPECT_STREQ(stock.GetAddress(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetCity) {
+	TEST_F(CFinnhubStockTest, TestGetCity) {
 		EXPECT_STREQ(stock.GetCity(), _T(" "));
 		stock.SetCity(_T("abcdef"));
 		EXPECT_STREQ(stock.GetCity(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetCountry) {
+	TEST_F(CFinnhubStockTest, TestGetCountry) {
 		EXPECT_STREQ(stock.GetCountry(), _T(" "));
 		stock.SetCountry(_T("abcdef"));
 		EXPECT_STREQ(stock.GetCountry(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetCusip) {
+	TEST_F(CFinnhubStockTest, TestGetCusip) {
 		EXPECT_STREQ(stock.GetCusip(), _T(" "));
 		stock.SetCusip(_T("abcdef"));
 		EXPECT_STREQ(stock.GetCusip(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetSedol) {
+	TEST_F(CFinnhubStockTest, TestGetSedol) {
 		EXPECT_STREQ(stock.GetSedol(), _T(" "));
 		stock.SetSedol(_T("abcdef"));
 		EXPECT_STREQ(stock.GetSedol(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetEmployeeTotal) {
+	TEST_F(CFinnhubStockTest, TestGetEmployeeTotal) {
 		EXPECT_EQ(stock.GetEmployeeTotal(), 0);
 		stock.SetEmployeeTotal(1234567);
 		EXPECT_EQ(stock.GetEmployeeTotal(), 1234567);
 	}
 
-	TEST_F(CWorldStockTest, TestGetGgroup) {
+	TEST_F(CFinnhubStockTest, TestGetGgroup) {
 		EXPECT_STREQ(stock.GetGgroup(), _T(" "));
 		stock.SetGgroup(_T("abcdef"));
 		EXPECT_STREQ(stock.GetGgroup(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetGind) {
+	TEST_F(CFinnhubStockTest, TestGetGind) {
 		EXPECT_STREQ(stock.GetGind(), _T(" "));
 		stock.SetGind(_T("abcdef"));
 		EXPECT_STREQ(stock.GetGind(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetGsector) {
+	TEST_F(CFinnhubStockTest, TestGetGsector) {
 		EXPECT_STREQ(stock.GetGsector(), _T(" "));
 		stock.SetGsector(_T("abcdef"));
 		EXPECT_STREQ(stock.GetGsector(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetGsubind) {
+	TEST_F(CFinnhubStockTest, TestGetGsubind) {
 		EXPECT_STREQ(stock.GetGsubind(), _T(" "));
 		stock.SetGsubind(_T("abcdef"));
 		EXPECT_STREQ(stock.GetGsubind(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetIPODate) {
+	TEST_F(CFinnhubStockTest, TestGetIPODate) {
 		EXPECT_STREQ(stock.GetIPODate(), _T(" "));
 		stock.SetIPODate(_T("abcdef"));
 		EXPECT_STREQ(stock.GetIPODate(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetIsin) {
+	TEST_F(CFinnhubStockTest, TestGetIsin) {
 		EXPECT_STREQ(stock.GetIsin(), _T(" "));
 		stock.SetIsin(_T("abcdef"));
 		EXPECT_STREQ(stock.GetIsin(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetMarketCapitalization) {
+	TEST_F(CFinnhubStockTest, TestGetMarketCapitalization) {
 		EXPECT_DOUBLE_EQ(stock.GetMarketCapitalization(), 0.0);
 		stock.SetMarketCapitalization(10101.010);
 		EXPECT_DOUBLE_EQ(stock.GetMarketCapitalization(), 10101.010);
 	}
 
-	TEST_F(CWorldStockTest, TestGetNaics) {
+	TEST_F(CFinnhubStockTest, TestGetNaics) {
 		EXPECT_STREQ(stock.GetNaics(), _T(" "));
 		stock.SetNaics(_T("abcdef"));
 		EXPECT_STREQ(stock.GetNaics(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetNaicsNationalIndustry) {
+	TEST_F(CFinnhubStockTest, TestGetNaicsNationalIndustry) {
 		EXPECT_STREQ(stock.GetNaicsNationalIndustry(), _T(" "));
 		stock.SetNaicsNationalIndustry(_T("abcdef"));
 		EXPECT_STREQ(stock.GetNaicsNationalIndustry(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetNaicsSector) {
+	TEST_F(CFinnhubStockTest, TestGetNaicsSector) {
 		EXPECT_STREQ(stock.GetNaicsSector(), _T(" "));
 		stock.SetNaicsSector(_T("abcdef"));
 		EXPECT_STREQ(stock.GetNaicsSector(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetNaicsSubsector) {
+	TEST_F(CFinnhubStockTest, TestGetNaicsSubsector) {
 		EXPECT_STREQ(stock.GetNaicsSubsector(), _T(" "));
 		stock.SetNaicsSubsector(_T("abcdef"));
 		EXPECT_STREQ(stock.GetNaicsSubsector(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetName) {
+	TEST_F(CFinnhubStockTest, TestGetName) {
 		EXPECT_STREQ(stock.GetName(), _T(" "));
 		stock.SetName(_T("abcdef"));
 		EXPECT_STREQ(stock.GetName(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetPhone) {
+	TEST_F(CFinnhubStockTest, TestGetPhone) {
 		EXPECT_STREQ(stock.GetPhone(), _T(" "));
 		stock.SetPhone(_T("abcdef"));
 		EXPECT_STREQ(stock.GetPhone(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetShareOutstanding) {
+	TEST_F(CFinnhubStockTest, TestGetShareOutstanding) {
 		EXPECT_DOUBLE_EQ(stock.GetShareOutstanding(), 0.0);
 		stock.SetShareOutstanding(10101.010);
 		EXPECT_DOUBLE_EQ(stock.GetShareOutstanding(), 10101.010);
 	}
 
-	TEST_F(CWorldStockTest, TestGetState) {
+	TEST_F(CFinnhubStockTest, TestGetState) {
 		EXPECT_STREQ(stock.GetState(), _T(" "));
 		stock.SetState(_T("abcdef"));
 		EXPECT_STREQ(stock.GetState(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetWebURL) {
+	TEST_F(CFinnhubStockTest, TestGetWebURL) {
 		EXPECT_STREQ(stock.GetWebURL(), _T(" "));
 		stock.SetWebURL(_T("abcdef"));
 		EXPECT_STREQ(stock.GetWebURL(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetLogo) {
+	TEST_F(CFinnhubStockTest, TestGetLogo) {
 		EXPECT_STREQ(stock.GetLogo(), _T(" "));
 		stock.SetLogo(_T("abcdef"));
 		EXPECT_STREQ(stock.GetLogo(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetTicker) {
+	TEST_F(CFinnhubStockTest, TestGetTicker) {
 		EXPECT_STREQ(stock.GetTicker(), _T(" "));
 		stock.SetTicker(_T("abcdef"));
 		EXPECT_STREQ(stock.GetTicker(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetFinnhubIndustry) {
+	TEST_F(CFinnhubStockTest, TestGetFinnhubIndustry) {
 		EXPECT_STREQ(stock.GetFinnhubIndustry(), _T(" "));
 		stock.SetFinnhubIndustry(_T("abcdef"));
 		EXPECT_STREQ(stock.GetFinnhubIndustry(), _T("abcdef"));
 	}
 
-	TEST_F(CWorldStockTest, TestGetPeer) {
+	TEST_F(CFinnhubStockTest, TestGetPeer) {
 		EXPECT_TRUE(stock.GetPeer().empty());
 		const json jSon = json::parse(_T("[\"abcdef\",\"000001.SS\"]"));
 		stock.SetPeer(jSon);
@@ -584,14 +584,14 @@ namespace FireBirdTest {
 		EXPECT_STREQ(s1.c_str(), _T("[\"abcdef\",\"000001.SS\"]"));
 	}
 
-	TEST_F(CWorldStockTest, TestIsUSMarket) {
+	TEST_F(CFinnhubStockTest, TestIsUSMarket) {
 		stock.SetExchangeCode(_T("SS"));
 		EXPECT_FALSE(stock.IsUSMarket());
 		stock.SetExchangeCode(_T("US"));
 		EXPECT_TRUE(stock.IsUSMarket());
 	}
 
-	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus1) {
+	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus1) {
 		stock.SetUpdateDayLine(true);
 		stock.SetActive(false);
 		for (int i = 1; i < 6; i++) {
@@ -600,13 +600,13 @@ namespace FireBirdTest {
 		}
 	}
 
-	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus2) {
+	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus2) {
 		stock.SetUpdateDayLine(true);
 		stock.SetIPOStatus(_STOCK_NULL_);
 		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, 0)) << "无效股票不检查日线\n";
 	}
 
-	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus3) {
+	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus3) {
 		stock.SetUpdateDayLine(true);
 		stock.SetIPOStatus(_STOCK_DELISTED_);
 		for (int i = 0; i < 7; i++) {
@@ -618,7 +618,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus4) {
+	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus4) {
 		stock.SetUpdateDayLine(true);
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetActive(true);
@@ -628,7 +628,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), 0, 1)) << "早于100天的股票不再更新日线";
 	}
 
-	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus5) {
+	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus5) {
 		const long lCurrentDay = gl_pWorldMarket->GetMarketDate();
 		const long lPrevDay = GetPrevDay(lCurrentDay);
 
@@ -644,7 +644,7 @@ namespace FireBirdTest {
 		for (int i = 1; i < 6; i++) { EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线"; }
 	}
 
-	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus6) {
+	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus6) {
 		const long lCurrentDay = gl_pWorldMarket->GetMarketDate();
 		const long lPrevDay = GetPrevDay(lCurrentDay);
 
@@ -660,7 +660,7 @@ namespace FireBirdTest {
 		for (int i = 1; i < 6; i++) { EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线"; }
 	}
 
-	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus7) {
+	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus7) {
 		const long lCurrentDate = gl_pWorldMarket->GetMarketDate();
 		const long lPrevMonday = GetPrevMonday(lCurrentDate);
 
@@ -673,7 +673,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 1), GetPrevDay(lPrevMonday, 3), 170000, 0)) << "周日，检查上一交易日日线";
 	}
 
-	TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus8) {
+	TEST_F(CFinnhubStockTest, TestCheckCheckDayLineUpdateStatus8) {
 		stock.SetUpdateDayLine(true);
 		stock.SetIPOStatus(_STOCK_NOT_YET_LIST_);
 		for (int i = 0; i < 7; i++) {
@@ -685,7 +685,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	TEST_F(CWorldStockTest, TestCheckEPSSurpriseStatus) {
+	TEST_F(CFinnhubStockTest, TestCheckEPSSurpriseStatus) {
 		constexpr long lCurrentDate = 20200101;
 
 		stock.SetUpdateEPSSurprise(true);
@@ -723,7 +723,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateEPSSurprise());
 	}
 
-	TEST_F(CWorldStockTest, TestCheckSECFilingsStatus) {
+	TEST_F(CFinnhubStockTest, TestCheckSECFilingsStatus) {
 		constexpr long lCurrentDate = 20200101;
 
 		stock.SetSECFilingsUpdated(false);
@@ -749,7 +749,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsSECFilingsUpdated());
 	}
 
-	TEST_F(CWorldStockTest, TestSaveDayLine) {
+	TEST_F(CFinnhubStockTest, TestSaveDayLine) {
 		vector<CDayLinePtr> vDayLine;
 		CSetWorldStockDayLine setDayLine;
 
@@ -798,12 +798,12 @@ namespace FireBirdTest {
 		setDayLine.Close();
 	}
 
-	TEST_F(CWorldStockTest, TestUpdateDayLineDB1) {
+	TEST_F(CFinnhubStockTest, TestUpdateDayLineDB1) {
 		EXPECT_FALSE(stock.IsUpdateDayLineDB());
 		EXPECT_FALSE(stock.UpdateDayLineDB()) << "更新日线标识为假时，无需执行实际操作";
 	}
 
-	TEST_F(CWorldStockTest, TestUpdateDayLineDB2) {
+	TEST_F(CFinnhubStockTest, TestUpdateDayLineDB2) {
 		EXPECT_FALSE(stock.IsUpdateDayLineDB());
 		stock.SetUpdateDayLineDB(true); // 需要更新
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
@@ -812,7 +812,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateDayLineDB()) << "更新标识已被重置为假";
 	}
 
-	TEST_F(CWorldStockTest, TestUpdateDayLineDB3) {
+	TEST_F(CFinnhubStockTest, TestUpdateDayLineDB3) {
 		vector<CDayLinePtr> vDayLine;
 		CDayLinePtr pDayLine;
 		CSetWorldStockDayLine setDayLine;
@@ -883,7 +883,7 @@ namespace FireBirdTest {
 		setDayLine.Close();
 	}
 
-	TEST_F(CWorldStockTest, TestUpdateInsiderTransactionDB) {
+	TEST_F(CFinnhubStockTest, TestUpdateInsiderTransactionDB) {
 		//  测试数据库中只有4个数据，股票代码：A， 内部交易人员：a b c，
 		vector<CInsiderTransactionPtr> vInsiderTransaction;
 		CSetInsiderTransaction setInsiderTransaction;
@@ -955,7 +955,7 @@ namespace FireBirdTest {
 		setInsiderTransaction.Close();
 	}
 
-	TEST_F(CWorldStockTest, TestSaveInsiderSentiment) {
+	TEST_F(CFinnhubStockTest, TestSaveInsiderSentiment) {
 		//  测试数据库中只有4个数据，股票代码：A，
 		vector<CInsiderSentimentPtr> vInsiderSentiment;
 		CSetInsiderSentiment setInsiderSentiment;
@@ -993,7 +993,7 @@ namespace FireBirdTest {
 		setInsiderSentiment.Close();
 	}
 
-	TEST_F(CWorldStockTest, TestUpdateCompanyNewsDB) {
+	TEST_F(CFinnhubStockTest, TestUpdateCompanyNewsDB) {
 		const auto pvCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
 		CSetCompanyNews setCompanyNews;
 
@@ -1030,7 +1030,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(iCount, 2);
 	}
 
-	TEST_F(CWorldStockTest, TestUpdateDayLine) {
+	TEST_F(CFinnhubStockTest, TestUpdateDayLine) {
 		vector<CDayLinePtr> vDayLine;
 		CSetWorldStockDayLine setDayLine;
 
@@ -1076,7 +1076,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
 	}
 
-	TEST_F(CWorldStockTest, TestUpdateDayLineStartEndDate) {
+	TEST_F(CFinnhubStockTest, TestUpdateDayLineStartEndDate) {
 		vector<CDayLinePtr> vDayLine;
 		CSetWorldStockDayLine setDayLine;
 
@@ -1138,14 +1138,14 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 	}
 
-	TEST_F(CWorldStockTest, TestUpdateEPSSurpriseDB1) {
+	TEST_F(CFinnhubStockTest, TestUpdateEPSSurpriseDB1) {
 		vector<CEPSSurprisePtr> vEPS;
 		auto pEPS = make_shared<CEPSSurprise>();
 
 		EXPECT_TRUE(stock.UpdateEPSSurpriseDB()) << "没有数据，返回";
 	}
 
-	TEST_F(CWorldStockTest, TestUpdateEPSSurpriseDB2) {
+	TEST_F(CFinnhubStockTest, TestUpdateEPSSurpriseDB2) {
 		vector<CEPSSurprisePtr> vEPS;
 		auto pEPS = make_shared<CEPSSurprise>();
 
@@ -1166,7 +1166,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.UpdateEPSSurpriseDB()) << "没有新数据，返回假";
 	}
 
-	TEST_F(CWorldStockTest, TestUpdateEPSSurpriseDB3) {
+	TEST_F(CFinnhubStockTest, TestUpdateEPSSurpriseDB3) {
 		vector<CEPSSurprisePtr> vEPS;
 		auto pEPS = make_shared<CEPSSurprise>();
 
@@ -1208,7 +1208,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(i, 1);
 	}
 
-	TEST_F(CWorldStockTest, TestUpdateSECFilingsDB1) {
+	TEST_F(CFinnhubStockTest, TestUpdateSECFilingsDB1) {
 		CSECFilingsPtr pvSECFilings = make_shared<vector<CSECFilingPtr>>();
 		auto pSECFiling = make_shared<CSECFiling>();
 		pSECFiling->m_strSymbol = _T("MFI"); // 已存在代码
@@ -1249,7 +1249,7 @@ namespace FireBirdTest {
 		setSECFilings.Close();
 	}
 
-	TEST_F(CWorldStockTest, TestHaveNewDayLineData) {
+	TEST_F(CFinnhubStockTest, TestHaveNewDayLineData) {
 		vector<CDayLinePtr> vDayLine;
 		CSetWorldStockDayLine setDayLine;
 
@@ -1307,7 +1307,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.HaveNewDayLineData());
 	}
 
-	TEST_F(CWorldStockTest, TestCheckPeerStatus) {
+	TEST_F(CFinnhubStockTest, TestCheckPeerStatus) {
 		EXPECT_TRUE(stock.IsUpdatePeer());
 
 		stock.SetUpdatePeer(false);
@@ -1326,7 +1326,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdatePeer()) << "摘牌股票无需更新Peer";
 	}
 
-	TEST_F(CWorldStockTest, TestHaveInsiderTransaction) {
+	TEST_F(CFinnhubStockTest, TestHaveInsiderTransaction) {
 		const auto pInsiderTransaction = make_shared<CInsiderTransaction>();
 
 		EXPECT_FALSE(stock.HaveInsiderTransaction());
@@ -1336,7 +1336,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.HaveInsiderTransaction());
 	}
 
-	TEST_F(CWorldStockTest, TestCheckInsiderTransactionStatus) {
+	TEST_F(CFinnhubStockTest, TestCheckInsiderTransactionStatus) {
 		EXPECT_TRUE(stock.IsUpdateInsiderTransaction());
 
 		stock.SetUpdateInsiderTransaction(false);
@@ -1355,7 +1355,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateInsiderTransaction()) << "摘牌股票无需更新InsiderTransaction";
 	}
 
-	TEST_F(CWorldStockTest, TestHaveInsiderSentiment) {
+	TEST_F(CFinnhubStockTest, TestHaveInsiderSentiment) {
 		const auto pInsiderSentiment = make_shared<CInsiderSentiment>();
 
 		EXPECT_FALSE(stock.HaveInsiderSentiment());
@@ -1365,7 +1365,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.HaveInsiderSentiment());
 	}
 
-	TEST_F(CWorldStockTest, TestCheckInsiderSentimentStatus) {
+	TEST_F(CFinnhubStockTest, TestCheckInsiderSentimentStatus) {
 		EXPECT_TRUE(stock.IsUpdateInsiderSentiment());
 
 		stock.SetUpdateInsiderSentiment(false);
@@ -1384,7 +1384,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateInsiderSentiment()) << "摘牌股票无需更新InsiderSentiment";
 	}
 
-	TEST_F(CWorldStockTest, TestGetFinnhubDayLineInquiryParam) {
+	TEST_F(CFinnhubStockTest, TestGetFinnhubDayLineInquiryParam) {
 		constexpr long lDate = 20200101;
 
 		const time_t tt = gl_pWorldMarket->TransferToUTCTime(lDate);
@@ -1412,23 +1412,23 @@ namespace FireBirdTest {
 		EXPECT_STREQ(stock.GetFinnhubDayLineInquiryParam(tt), strMiddle2) << "检查一年的数据";
 	}
 
-	TEST_F(CWorldStockTest, TestGetTiingoDayLineInquiryParam) {
+	TEST_F(CFinnhubStockTest, TestGetTiingoDayLineInquiryParam) {
 		stock.SetSymbol(_T("600601.SS"));
 		const CString strParam = "600601.SS/prices?&startDate=2018-1-1&endDate=2020-1-1";
 
 		EXPECT_STREQ(stock.GetTiingoDayLineInquiryParam(20180101, 20200101), strParam);
 	}
 
-	TEST_F(CWorldStockTest, TestGetTiingoDayLineInquiryParam2) {
+	TEST_F(CFinnhubStockTest, TestGetTiingoDayLineInquiryParam2) {
 		stock.SetSymbol(_T("600601.SS"));
 		const CString strParam = "600601.SS/prices?&startDate=1980-1-1&endDate=2020-1-1";
 
 		EXPECT_STREQ(stock.GetTiingoDayLineInquiryParam(19800101, 20200101), strParam);
 	}
 
-	TEST_F(CWorldStockTest, TestSave) {
-		CWorldStock stock2;
-		CSetWorldStock setWorldStock;
+	TEST_F(CFinnhubStockTest, TestSave) {
+		CFinnhubStock stock2;
+		CSetFinnhubStock setWorldStock;
 
 		stock.SetSymbol(_T("000001.US"));
 		stock.SetExchangeCode(_T("US"));
@@ -1543,7 +1543,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetInsiderSentimentUpdateDate(), stock2.GetInsiderSentimentUpdateDate());
 	}
 
-	TEST_F(CWorldStockTest, TestCheckCompanyNewsUpdated) {
+	TEST_F(CFinnhubStockTest, TestCheckCompanyNewsUpdated) {
 		stock.SetCompanyNewsUpdateDate(20220101);
 		EXPECT_FALSE(stock.CheckCompanyNewsUpdateStatus(20220102));
 		stock.SetUpdateCompanyNews(true);

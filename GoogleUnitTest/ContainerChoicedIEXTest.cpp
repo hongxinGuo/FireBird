@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"WorldStock.h"
+#include"FinnhubStock.h"
 #include"ContainerChosenStock.h"
 
 using namespace testing;
@@ -11,20 +11,24 @@ namespace FireBirdTest {
 	class CContainerChosenIEXTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 	protected:
@@ -41,7 +45,7 @@ namespace FireBirdTest {
 		m_dataChosenIEX.LoadDB();
 		EXPECT_EQ(m_dataChosenIEX.Size(), 4) << "默认状态下装载4个代码";
 
-		const CWorldStockPtr pIEX = dynamic_pointer_cast<CWorldStock>(m_dataChosenIEX.Get(2));
+		const CFinnhubStockPtr pIEX = dynamic_pointer_cast<CFinnhubStock>(m_dataChosenIEX.Get(2));
 		EXPECT_STREQ(pIEX->GetSymbol(), _T("AAL")) << "装载时没有排序，使用的是原始位置";
 	}
 }

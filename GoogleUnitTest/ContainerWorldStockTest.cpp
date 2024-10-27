@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"ContainerWorldStock.h"
+#include"ContainerFinnhubStock.h"
 
 using namespace testing;
 
@@ -67,7 +67,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(pStock->IsUpdateBasicFinancialDB());
 			pStock->SetUpdateBasicFinancialDB(true);
 		}
-		vector<CWorldStockPtr> vStock;
+		vector<CFinnhubStockPtr> vStock;
 		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			const auto pStock = gl_dataContainerFinnhubStock.GetStock(l);
 			vStock.push_back(pStock);
@@ -84,7 +84,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerWorldStockTest, TestValidateStockSymbol1) {
-		const auto pStock = make_shared<CWorldStock>();
+		const auto pStock = make_shared<CFinnhubStock>();
 		pStock->SetSymbol(_T("AAPL"));
 		pStock->SetExchangeCode(_T("US"));
 
@@ -92,7 +92,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerWorldStockTest, TestValidateStockSymbol2) {
-		const auto pStock = make_shared<CWorldStock>();
+		const auto pStock = make_shared<CFinnhubStock>();
 		pStock->SetSymbol(_T("600601.SS"));
 		pStock->SetExchangeCode(_T("SS"));
 
@@ -100,7 +100,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerWorldStockTest, TestValidateStockSymbol3) {
-		const auto pStock = make_shared<CWorldStock>();
+		const auto pStock = make_shared<CFinnhubStock>();
 		pStock->SetSymbol(_T("600601SS"));
 		pStock->SetExchangeCode(_T("SS"));
 

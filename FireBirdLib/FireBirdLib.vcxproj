@@ -51,8 +51,8 @@
     <ClInclude Include="..\src\Data Container\ContainerTiingoCryptoSymbol.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoIndustry.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoStock.h" />
-    <ClInclude Include="..\src\Data Container\ContainerWorldStock.h" />
-    <ClInclude Include="..\src\Data Container\ContainerWorldStockDayline.h" />
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubStock.h" />
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubStockDayline.h" />
     <ClInclude Include="..\src\Data Container\VirtualContainer.h" />
     <ClInclude Include="..\src\Data Source\InquireEngine.h" />
     <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h" />
@@ -113,7 +113,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenCrypto.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenForex.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStock.h" />
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStockDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyDividend.h" />
@@ -175,7 +175,7 @@
     <ClInclude Include="..\src\Stock\TiingoCrypto.h" />
     <ClInclude Include="..\src\Stock\TiingoStock.h" />
     <ClInclude Include="..\src\Stock\VirtualStock.h" />
-    <ClInclude Include="..\src\Stock\WorldStock.h" />
+    <ClInclude Include="..\src\Stock\FinnhubStock.h" />
     <ClInclude Include="..\src\System\FinnhubInaccessibleExchange.h" />
     <ClInclude Include="..\src\System\Inaccessible.h" />
     <ClInclude Include="..\src\System\ScheduleTask.h" />
@@ -271,8 +271,8 @@
     <ClCompile Include="..\src\Data Container\ContainerStockSymbol.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerTiingoCryptoSymbol.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerTiingoStock.cpp" />
-    <ClCompile Include="..\src\Data Container\ContainerWorldStock.cpp" />
-    <ClCompile Include="..\src\Data Container\ContainerWorldStockDayLine.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubStock.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubStockDayLine.cpp" />
     <ClCompile Include="..\src\Data Container\VirtualContainer.cpp" />
     <ClCompile Include="..\src\Data Source\InquireEngine.cpp" />
     <ClCompile Include="..\src\Data Source\FinnhubDataSource.cpp" />
@@ -316,7 +316,7 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock.cpp" />
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetWorldStock.cpp" />
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStock.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketHoliday.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketStatus.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubSECFilings.cpp" />
@@ -377,7 +377,7 @@
     <ClCompile Include="..\src\Stock\TiingoCrypto.cpp" />
     <ClCompile Include="..\src\Stock\TiingoStock.cpp" />
     <ClCompile Include="..\src\Stock\VirtualStock.cpp" />
-    <ClCompile Include="..\src\Stock\WorldStock.cpp" />
+    <ClCompile Include="..\src\Stock\FinnhubStock.cpp" />
     <ClCompile Include="..\src\System\FinnhubInaccessibleExchange.cpp" />
     <ClCompile Include="..\src\System\Inaccessilbe.cpp" />
     <ClCompile Include="..\src\System\ScheduleTask.cpp" />

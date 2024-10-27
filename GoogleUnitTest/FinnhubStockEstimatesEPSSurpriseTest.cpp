@@ -88,7 +88,7 @@ namespace FireBirdTest {
 
 	public:
 		long m_lIndex;
-		CWorldStockPtr m_pStock;
+		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CEPSSurprisesPtr m_pvEPSSurprise;
 		CProductFinnhubStockEstimatesEPSSurprise m_finnhubStockEstimatesEPSSurprise;
@@ -170,7 +170,7 @@ namespace FireBirdTest {
 
 	public:
 		long m_lIndex;
-		CWorldStockPtr m_pStock;
+		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubStockEstimatesEPSSurprise m_finnhubStockEstimatesEPSSurprise;
 	};
@@ -180,7 +180,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ProcessFinnhubEPSSurpriseTest, TestProcessFinnhubEPSSurprise) {
-		CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(0);
+		CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(0);
 		m_finnhubStockEstimatesEPSSurprise.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // ¿ÕÊý¾Ý

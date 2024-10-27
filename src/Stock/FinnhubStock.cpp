@@ -6,7 +6,7 @@
 #include"InsiderTransaction.h"
 #include"EPSSurprise.h"
 
-#include "WorldStock.h"
+#include "FinnhubStock.h"
 #include"WorldMarket.h"
 
 #include"FinnhubCompanyNews.h"
@@ -17,12 +17,12 @@
 #include"SetEPSSurprise.h"
 #include "SetSECFilings.h"
 
-CWorldStock::CWorldStock() {
+CFinnhubStock::CFinnhubStock() {
 	SetExchangeCode(_T("US"));
-	CWorldStock::ResetAllUpdateDate();
+	CFinnhubStock::ResetAllUpdateDate();
 }
 
-CWorldStock::~CWorldStock() {
+CFinnhubStock::~CFinnhubStock() {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -32,7 +32,7 @@ CWorldStock::~CWorldStock() {
 ///
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CWorldStock::ResetAllUpdateDate() {
+void CFinnhubStock::ResetAllUpdateDate() {
 	m_jsonUpdateDate["DayLineStartDate"] = 29900101;
 	m_jsonUpdateDate["DayLineEndDate"] = 19800101;
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyProfileConcise"] = 19800101;
@@ -46,7 +46,7 @@ void CWorldStock::ResetAllUpdateDate() {
 	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = 19800101;
 }
 
-void CWorldStock::Load(CSetWorldStock& setWorldStock) {
+void CFinnhubStock::Load(CSetFinnhubStock& setWorldStock) {
 	m_strSymbol = setWorldStock.m_Symbol;
 	m_strExchangeCode = setWorldStock.m_ExchangeCode;
 	m_strDescription = setWorldStock.m_Description;
@@ -89,7 +89,7 @@ void CWorldStock::Load(CSetWorldStock& setWorldStock) {
 	LoadUpdateDate(setWorldStock.m_UpdateDate);
 }
 
-void CWorldStock::CheckUpdateStatus(long lTodayDate) {
+void CFinnhubStock::CheckUpdateStatus(long lTodayDate) {
 	CheckProfileUpdateStatus(lTodayDate);
 	CheckBasicFinancialUpdateStatus(lTodayDate);
 	CheckCompanyNewsUpdateStatus(lTodayDate);
@@ -101,7 +101,7 @@ void CWorldStock::CheckUpdateStatus(long lTodayDate) {
 	CheckInsiderSentimentStatus(lTodayDate);
 }
 
-void CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
+void CFinnhubStock::CheckProfileUpdateStatus(long lTodayDate) {
 	if (IsEarlyThen(GetProfileUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockProfileUpdateRate())) {
 		m_fUpdateCompanyProfile = true;
 	}
@@ -113,7 +113,7 @@ void CWorldStock::CheckProfileUpdateStatus(long lTodayDate) {
 ///
 /// 默认状态为每周更新一次
 ///
-bool CWorldStock::CheckCompanyNewsUpdateStatus(long lTodayDate) {
+bool CFinnhubStock::CheckCompanyNewsUpdateStatus(long lTodayDate) {
 	ASSERT(m_fUpdateCompanyNews);
 	if (!IsEarlyThen(GetCompanyNewsUpdateDate(), lTodayDate, 6)) {
 		// 每星期更新一次公司新闻
@@ -129,7 +129,7 @@ bool CWorldStock::CheckCompanyNewsUpdateStatus(long lTodayDate) {
 /// </summary>
 /// <param name="lTodayDate"></param>
 /// <returns></returns>
-bool CWorldStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
+bool CFinnhubStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
 	if (IsEarlyThen(GetBasicFinancialUpdateDate(), lTodayDate, gl_systemConfiguration.GetStockBasicFinancialUpdateRate())) {
 		// 系统每季更新一次数据，故查询两次即可。
 		m_fUpdateBasicFinancial = true;
@@ -147,7 +147,7 @@ bool CWorldStock::CheckBasicFinancialUpdateStatus(long lTodayDate) {
 /// <param name="lTime"></param>
 /// <param name="lDayOfWeek"></param>
 /// <returns></returns>
-bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek) {
+bool CFinnhubStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek) {
 	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
 	if (IsNullStock()) {
 		SetUpdateDayLine(false);
@@ -192,7 +192,7 @@ bool CWorldStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate,
 	return m_fUpdateDayLine;
 }
 
-void CWorldStock::Save(CSetWorldStock& setWorldStock) const {
+void CFinnhubStock::Save(CSetFinnhubStock& setWorldStock) const {
 	// 由于数据库的格式为定长的字符串，故而需要限制实际字符串的长度。
 	setWorldStock.m_Symbol = m_strSymbol.Left(20);
 	setWorldStock.m_ExchangeCode = m_strExchangeCode.Left(3);
@@ -238,19 +238,19 @@ void CWorldStock::Save(CSetWorldStock& setWorldStock) const {
 	setWorldStock.m_IPOStatus = m_lIPOStatus;
 }
 
-void CWorldStock::Update(CSetWorldStock& setWorldStock) const {
+void CFinnhubStock::Update(CSetFinnhubStock& setWorldStock) const {
 	setWorldStock.Edit();
 	Save(setWorldStock);
 	setWorldStock.Update();
 }
 
-void CWorldStock::Append(CSetWorldStock& setWorldStock) const {
+void CFinnhubStock::Append(CSetFinnhubStock& setWorldStock) const {
 	setWorldStock.AddNew();
 	Save(setWorldStock);
 	setWorldStock.Update();
 }
 
-void CWorldStock::UpdateInsiderTransactionDB() {
+void CFinnhubStock::UpdateInsiderTransactionDB() {
 	try {
 		CSetInsiderTransaction setInsiderTransaction;
 
@@ -299,7 +299,7 @@ void CWorldStock::UpdateInsiderTransactionDB() {
 	}
 }
 
-void CWorldStock::UpdateInsiderSentimentDB() {
+void CFinnhubStock::UpdateInsiderSentimentDB() {
 	try {
 		CSetInsiderSentiment setInsiderSentiment;
 
@@ -349,7 +349,7 @@ void CWorldStock::UpdateInsiderSentimentDB() {
 // 接收到的新闻事先已经按时间顺序存于vector中，只存储数据库中没有的时间点的新闻。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldStock::UpdateCompanyNewsDB() {
+bool CFinnhubStock::UpdateCompanyNewsDB() {
 	ASSERT(m_vCompanyNews.size() > 0);
 	const long lSize = static_cast<long>(m_vCompanyNews.size());
 	if (m_strSymbol.GetLength() > 0) {
@@ -381,7 +381,7 @@ bool CWorldStock::UpdateCompanyNewsDB() {
 	return true;
 }
 
-bool CWorldStock::UpdateEPSSurpriseDB() {
+bool CFinnhubStock::UpdateEPSSurpriseDB() {
 	CSetEPSSurprise setEPSSurprise;
 	const long lLastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
 
@@ -409,7 +409,7 @@ bool CWorldStock::UpdateEPSSurpriseDB() {
 // 接收到的事先已经按accessNumber顺序存于vector中，只存储数据库中没有accessNumber的新闻。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldStock::UpdateSECFilingsDB() const {
+bool CFinnhubStock::UpdateSECFilingsDB() const {
 	ASSERT(m_pvSECFilings->size() > 0);
 	const long lSize = static_cast<long>(m_pvSECFilings->size());
 	if (m_strSymbol.GetLength() > 0) {
@@ -441,7 +441,7 @@ bool CWorldStock::UpdateSECFilingsDB() const {
 	return true;
 }
 
-bool CWorldStock::UpdateDayLineDB() {
+bool CFinnhubStock::UpdateDayLineDB() {
 	if (IsUpdateDayLineDBAndClearFlag()) {
 		// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 		if (GetDayLineSize() > 0) {
@@ -461,7 +461,7 @@ bool CWorldStock::UpdateDayLineDB() {
 	return false;
 }
 
-void CWorldStock::AppendBasicFinancialAnnual() const {
+void CFinnhubStock::AppendBasicFinancialAnnual() const {
 	try {
 		CSetFinnhubStockBasicFinancialAnnual setAnnual;
 		setAnnual.m_strFilter = _T("[ID] = 1");
@@ -475,7 +475,7 @@ void CWorldStock::AppendBasicFinancialAnnual() const {
 	}
 }
 
-void CWorldStock::AppendBasicFinancialQuarter() const {
+void CFinnhubStock::AppendBasicFinancialQuarter() const {
 	try {
 		CSetFinnhubStockBasicFinancialQuarter setQuarter;
 
@@ -490,7 +490,7 @@ void CWorldStock::AppendBasicFinancialQuarter() const {
 	}
 }
 
-void CWorldStock::UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews) {
+void CFinnhubStock::UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews) {
 	m_vCompanyNews.resize(0);
 	for (auto& p : *pvCompanyNews) {
 		m_vCompanyNews.push_back(p);
@@ -498,14 +498,14 @@ void CWorldStock::UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews) {
 	std::ranges::sort(m_vCompanyNews, [](const CCompanyNewsPtr& p1, const CCompanyNewsPtr& p2) { return (p1->m_llDateTime < p2->m_llDateTime); }); // 此序列需要按时间顺序存放，以利于与存储于数据库中的数据作比较。
 }
 
-void CWorldStock::UpdateEPSSurprise(const vector<CEPSSurprisePtr>& vEPSSurprise) {
+void CFinnhubStock::UpdateEPSSurprise(const vector<CEPSSurprisePtr>& vEPSSurprise) {
 	m_vEPSSurprise.resize(0);
 	for (auto& p : vEPSSurprise) {
 		m_vEPSSurprise.push_back(p);
 	}
 }
 
-void CWorldStock::UpdateDayLineStartEndDate() {
+void CFinnhubStock::UpdateDayLineStartEndDate() {
 	long lStartDate = 0, lEndDate = 0;
 	if (m_dataDayLine.GetStartEndDate(lStartDate, lEndDate)) {
 		if (lStartDate < GetDayLineStartDate()) {
@@ -519,7 +519,7 @@ void CWorldStock::UpdateDayLineStartEndDate() {
 	}
 }
 
-bool CWorldStock::HaveNewDayLineData() {
+bool CFinnhubStock::HaveNewDayLineData() {
 	if (m_dataDayLine.Empty()) return false;
 	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > GetDayLineEndDate())
 		|| (m_dataDayLine.GetData(0)->GetMarketDate() < GetDayLineStartDate()))
@@ -527,7 +527,7 @@ bool CWorldStock::HaveNewDayLineData() {
 	return false;
 }
 
-bool CWorldStock::UpdateBasicFinancial(const CFinnhubStockBasicFinancialPtr& pFinnhubStockBasicFinancial) {
+bool CFinnhubStock::UpdateBasicFinancial(const CFinnhubStockBasicFinancialPtr& pFinnhubStockBasicFinancial) {
 	m_pBasicFinancial = pFinnhubStockBasicFinancial;
 
 	return true;
@@ -538,7 +538,7 @@ bool CWorldStock::UpdateBasicFinancial(const CFinnhubStockBasicFinancialPtr& pFi
 // 默认每90天更新一次，已经900天没更新的即不再更新。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldStock::CheckEPSSurpriseStatus(long lCurrentDate) {
+bool CFinnhubStock::CheckEPSSurpriseStatus(long lCurrentDate) {
 	const long lLastEPSSurpriseUpdateDate = GetLastEPSSurpriseUpdateDate();
 	if (IsNullStock() || IsDelisted()) {
 		m_fUpdateEPSSurprise = false;
@@ -563,7 +563,7 @@ bool CWorldStock::CheckEPSSurpriseStatus(long lCurrentDate) {
 // 默认每30天更新一次.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWorldStock::CheckSECFilingsStatus(long lCurrentDate) {
+bool CFinnhubStock::CheckSECFilingsStatus(long lCurrentDate) {
 	const long lSECFilingsUpdateDate = GetSECFilingsUpdateDate();
 	if (IsNullStock() || IsDelisted()) {
 		m_fSECFilingsUpdated = true;
@@ -577,7 +577,7 @@ bool CWorldStock::CheckSECFilingsStatus(long lCurrentDate) {
 	return m_fSECFilingsUpdated;
 }
 
-bool CWorldStock::CheckPeerStatus(long lCurrentDate) {
+bool CFinnhubStock::CheckPeerStatus(long lCurrentDate) {
 	if (IsNullStock() || IsDelisted()) {
 		m_fUpdateFinnhubPeer = false;
 	}
@@ -590,7 +590,7 @@ bool CWorldStock::CheckPeerStatus(long lCurrentDate) {
 	return m_fUpdateFinnhubPeer;
 }
 
-void CWorldStock::UpdateInsiderTransaction(const vector<CInsiderTransactionPtr>& vInsiderTransaction) {
+void CFinnhubStock::UpdateInsiderTransaction(const vector<CInsiderTransactionPtr>& vInsiderTransaction) {
 	m_vInsiderTransaction.resize(0);
 
 	for (auto pInsiderTransaction : vInsiderTransaction) {
@@ -598,7 +598,7 @@ void CWorldStock::UpdateInsiderTransaction(const vector<CInsiderTransactionPtr>&
 	}
 }
 
-bool CWorldStock::CheckInsiderTransactionStatus(long lCurrentDate) {
+bool CFinnhubStock::CheckInsiderTransactionStatus(long lCurrentDate) {
 	if (!IsUSMarket()) {
 		m_fUpdateFinnhubInsiderTransaction = false;
 	}
@@ -614,7 +614,7 @@ bool CWorldStock::CheckInsiderTransactionStatus(long lCurrentDate) {
 	return m_fUpdateFinnhubInsiderTransaction;
 }
 
-void CWorldStock::UpdateInsiderSentiment(const vector<CInsiderSentimentPtr>& vInsiderSentiment) {
+void CFinnhubStock::UpdateInsiderSentiment(const vector<CInsiderSentimentPtr>& vInsiderSentiment) {
 	m_vInsiderSentiment.resize(0);
 
 	for (auto pInsiderSentiment : vInsiderSentiment) {
@@ -622,7 +622,7 @@ void CWorldStock::UpdateInsiderSentiment(const vector<CInsiderSentimentPtr>& vIn
 	}
 }
 
-bool CWorldStock::CheckInsiderSentimentStatus(long lCurrentDate) {
+bool CFinnhubStock::CheckInsiderSentimentStatus(long lCurrentDate) {
 	if (!IsUSMarket()) {
 		m_fUpdateFinnhubInsiderSentiment = false;
 	}
@@ -638,7 +638,7 @@ bool CWorldStock::CheckInsiderSentimentStatus(long lCurrentDate) {
 	return m_fUpdateFinnhubInsiderSentiment;
 }
 
-long CWorldStock::GetProfileUpdateDate() {
+long CFinnhubStock::GetProfileUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsCompanyProfileConcise");
 		return lDate;
@@ -647,11 +647,11 @@ long CWorldStock::GetProfileUpdateDate() {
 	}
 }
 
-void CWorldStock::SetProfileUpdateDate(const long lProfileUpdateDate) noexcept {
+void CFinnhubStock::SetProfileUpdateDate(const long lProfileUpdateDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyProfileConcise"] = lProfileUpdateDate;
 }
 
-long CWorldStock::GetCompanyNewsUpdateDate() {
+long CFinnhubStock::GetCompanyNewsUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsCompanyNews");
 		return lDate;
@@ -660,11 +660,11 @@ long CWorldStock::GetCompanyNewsUpdateDate() {
 	}
 }
 
-void CWorldStock::SetCompanyNewsUpdateDate(const long lCompanyNewsUpdateDate) noexcept {
+void CFinnhubStock::SetCompanyNewsUpdateDate(const long lCompanyNewsUpdateDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsCompanyNews"] = lCompanyNewsUpdateDate;
 }
 
-long CWorldStock::GetBasicFinancialUpdateDate() {
+long CFinnhubStock::GetBasicFinancialUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsBasicFinancials");
 		return lDate;
@@ -673,11 +673,11 @@ long CWorldStock::GetBasicFinancialUpdateDate() {
 	}
 }
 
-void CWorldStock::SetBasicFinancialUpdateDate(const long lBasicFinancialUpdateDate) noexcept {
+void CFinnhubStock::SetBasicFinancialUpdateDate(const long lBasicFinancialUpdateDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsBasicFinancials"] = lBasicFinancialUpdateDate;
 }
 
-long CWorldStock::GetLastRTDataUpdateDate() {
+long CFinnhubStock::GetLastRTDataUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockPriceQuote");
 		return lDate;
@@ -686,11 +686,11 @@ long CWorldStock::GetLastRTDataUpdateDate() {
 	}
 }
 
-void CWorldStock::SetLastRTDataUpdateDate(const long lDate) noexcept {
+void CFinnhubStock::SetLastRTDataUpdateDate(const long lDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockPriceQuote"] = lDate;
 }
 
-long CWorldStock::GetPeerUpdateDate() {
+long CFinnhubStock::GetPeerUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsPeer");
 		return lDate;
@@ -699,11 +699,11 @@ long CWorldStock::GetPeerUpdateDate() {
 	}
 }
 
-void CWorldStock::SetPeerUpdateDate(const long lDate) noexcept {
+void CFinnhubStock::SetPeerUpdateDate(const long lDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsPeer"] = lDate;
 }
 
-long CWorldStock::GetInsiderTransactionUpdateDate() {
+long CFinnhubStock::GetInsiderTransactionUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsInsiderTransaction");
 		return lDate;
@@ -712,11 +712,11 @@ long CWorldStock::GetInsiderTransactionUpdateDate() {
 	}
 }
 
-void CWorldStock::SetInsiderTransactionUpdateDate(const long lDate) noexcept {
+void CFinnhubStock::SetInsiderTransactionUpdateDate(const long lDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderTransaction"] = lDate;
 }
 
-long CWorldStock::GetInsiderSentimentUpdateDate() {
+long CFinnhubStock::GetInsiderSentimentUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsInsiderSentiment");
 		return lDate;
@@ -725,11 +725,11 @@ long CWorldStock::GetInsiderSentimentUpdateDate() {
 	}
 }
 
-void CWorldStock::SetInsiderSentimentUpdateDate(const long lDate) noexcept {
+void CFinnhubStock::SetInsiderSentimentUpdateDate(const long lDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsInsiderSentiment"] = lDate;
 }
 
-long CWorldStock::GetLastEPSSurpriseUpdateDate() {
+long CFinnhubStock::GetLastEPSSurpriseUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockEstimatesEPSSurprise");
 		return lDate;
@@ -738,11 +738,11 @@ long CWorldStock::GetLastEPSSurpriseUpdateDate() {
 	}
 }
 
-void CWorldStock::SetLastEPSSurpriseUpdateDate(const long lDate) noexcept {
+void CFinnhubStock::SetLastEPSSurpriseUpdateDate(const long lDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = lDate;
 }
 
-long CWorldStock::GetSECFilingsUpdateDate() {
+long CFinnhubStock::GetSECFilingsUpdateDate() {
 	try {
 		const long lDate = m_jsonUpdateDate.at(_T("Finnhub")).at("StockFundamentalsSECFilings");
 		return lDate;
@@ -751,11 +751,11 @@ long CWorldStock::GetSECFilingsUpdateDate() {
 	}
 }
 
-void CWorldStock::SetSECFilingsUpdateDate(const long lDate) noexcept {
+void CFinnhubStock::SetSECFilingsUpdateDate(const long lDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsSECFilings"] = lDate;
 }
 
-CString CWorldStock::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const {
+CString CFinnhubStock::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const {
 	CString strParam = _T("");
 	char buffer[50];
 
@@ -774,7 +774,7 @@ CString CWorldStock::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const {
 	return strParam;
 }
 
-CString CWorldStock::GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) const {
+CString CFinnhubStock::GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) const {
 	CString strParam = _T("");
 	char buffer[50];
 	const long year = lCurrentDate / 10000;
@@ -798,7 +798,7 @@ CString CWorldStock::GetTiingoDayLineInquiryParam(long lStartDate, long lCurrent
 	return strParam;
 }
 
-CString CWorldStock::GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTime) {
+CString CFinnhubStock::GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTime) {
 	CString strParam = _T("");
 	char buffer[50];
 
@@ -811,7 +811,7 @@ CString CWorldStock::GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTim
 	return strParam;
 }
 
-bool CWorldStock::IsUSMarket() const {
+bool CFinnhubStock::IsUSMarket() const {
 	if (m_strExchangeCode.Compare(_T("US")) == 0) return true;
 	return false;
 }

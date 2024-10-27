@@ -603,10 +603,10 @@
     <ClInclude Include="..\src\Data Container\ContainerTiingoStock.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerWorldStock.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubStock.h">
       <Filter>头文件\Data container\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerWorldStockDayline.h">
+    <ClInclude Include="..\src\Data Container\ContainerFinnhubStockDayline.h">
       <Filter>头文件\Data container\WorldMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerVirtualStock.h">
@@ -813,7 +813,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSICIndustry.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStock.h">
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStock.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStockDayLine.h">
@@ -837,7 +837,7 @@
     <ClInclude Include="..\src\Stock\FinnhubForex.h">
       <Filter>头文件\Stock\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Stock\WorldStock.h">
+    <ClInclude Include="..\src\Stock\FinnhubStock.h">
       <Filter>头文件\Stock\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\System\Inaccessible.h">
@@ -1202,10 +1202,10 @@
     <ClCompile Include="..\src\Data Container\ContainerTiingoStock.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\ContainerWorldStock.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubStock.cpp">
       <Filter>源文件\Data container\WorldMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\ContainerWorldStockDayLine.cpp">
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubStockDayLine.cpp">
       <Filter>源文件\Data container\WorldMarket</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerVirtualStock.cpp">
@@ -1394,7 +1394,7 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetSICIndustry.cpp">
       <Filter>源文件\database\WorldMarket\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\DataBase\WorldMarket\SetWorldStock.cpp">
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStock.cpp">
       <Filter>源文件\database\WorldMarket\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Stock\TiingoStock.cpp">
@@ -1409,7 +1409,7 @@
     <ClCompile Include="..\src\Stock\FinnhubForex.cpp">
       <Filter>源文件\Stock\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Stock\WorldStock.cpp">
+    <ClCompile Include="..\src\Stock\FinnhubStock.cpp">
       <Filter>源文件\Stock\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\System\Inaccessilbe.cpp">

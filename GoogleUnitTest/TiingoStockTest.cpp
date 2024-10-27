@@ -51,24 +51,20 @@ namespace FireBirdTest {
 		EXPECT_STREQ(tiingo.m_strLocation, _T(""));
 		EXPECT_STREQ(tiingo.m_strCompanyWebSite, _T(""));
 		EXPECT_STREQ(tiingo.m_strSECFilingWebSite, _T(""));
-		EXPECT_EQ(stock.GetCompanyProfileUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetDayLineUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
 		EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
 		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), 0);
-		EXPECT_EQ(stock.GetDailyLastUpdatedDate(), 0);
 	}
 
 	TEST_F(CTiingoStockTest, TestResetAllUpdateDate) {
 		stock.ResetAllUpdateDate();
-		EXPECT_EQ(stock.GetCompanyProfileUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetDayLineUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
 		EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
 		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), 0);
-		EXPECT_EQ(stock.GetDailyLastUpdatedDate(), 0);
 	}
 
 	TEST_F(CTiingoStockTest, TestGetRatio) {
@@ -253,22 +249,10 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), 19990101);
 	}
 
-	TEST_F(CTiingoStockTest, TestGetDailyLastUpdatedDate) {
-		EXPECT_EQ(stock.GetDailyLastUpdatedDate(), 0);
-		stock.SetDailyLastUpdatedDate(19910101);
-		EXPECT_EQ(stock.GetDailyLastUpdatedDate(), 19910101);
-	}
-
 	TEST_F(CTiingoStockTest, TestGetCompanyFinancialStatementUpdateDate) {
 		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19800101);
 		stock.SetCompanyFinancialStatementUpdateDate(19930101);
 		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19930101);
-	}
-
-	TEST_F(CTiingoStockTest, TestGetCompanyProfileUpdateDate) {
-		EXPECT_EQ(stock.GetCompanyProfileUpdateDate(), 19800101);
-		stock.SetCompanyProfileUpdateDate(19950101);
-		EXPECT_EQ(stock.GetCompanyProfileUpdateDate(), 19950101);
 	}
 
 	TEST_F(CTiingoStockTest, TestGetIPOStatus) {
@@ -330,12 +314,6 @@ namespace FireBirdTest {
 		stock.SetUpdateDayLineDB(true);
 		EXPECT_TRUE(stock.IsUpdateDayLineDBAndClearFlag());
 		EXPECT_FALSE(stock.IsUpdateDayLineDB());
-	}
-
-	TEST_F(CTiingoStockTest, TestGetProfileUpdateDate) {
-		EXPECT_EQ(stock.GetCompanyProfileUpdateDate(), 19800101);
-		stock.SetCompanyProfileUpdateDate(10101016);
-		EXPECT_EQ(stock.GetCompanyProfileUpdateDate(), 10101016);
 	}
 
 	TEST_F(CTiingoStockTest, TestUpdateDayLineStartEndDate) {

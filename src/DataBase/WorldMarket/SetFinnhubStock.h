@@ -1,12 +1,12 @@
-// SetWorldStock.h : CSetWorldStock 的声明
+// SetFinnhubStock.h : CSetFinnhubStock 的声明
 
 #pragma once
 #include"VirtualRecordset.h"
 
-class CSetWorldStock : public CVirtualRecordset {
+class CSetFinnhubStock : public CVirtualRecordset {
 public:
-	CSetWorldStock(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("finnhub_stock_profile"), CDatabase* pDatabase = nullptr);
-	~CSetWorldStock() override = default;
+	CSetFinnhubStock(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("finnhub_stock_profile"), CDatabase* pDatabase = nullptr);
+	~CSetFinnhubStock() override = default;
 
 	// 字段/参数数据
 

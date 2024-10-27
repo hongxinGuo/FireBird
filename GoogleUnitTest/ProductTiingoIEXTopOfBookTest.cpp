@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"WorldStock.h"
+#include"FinnhubStock.h"
 #include"WorldMarket.h"
 
 #include"TiingoDataSource.h"

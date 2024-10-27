@@ -44,7 +44,7 @@ namespace FireBirdTest {
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage1) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
 		stockPriceCandle.SetMarket(gl_pWorldMarket);
-		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
 		pStock->SetDayLineStartDate(20171231); // 早于20180101
 		const CString strMessage = stockPriceCandle.CreateMessage();
 		const long lMarketDate = gl_pWorldMarket->GetMarketDate();
@@ -63,7 +63,7 @@ namespace FireBirdTest {
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage2) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
 		stockPriceCandle.SetMarket(gl_pWorldMarket);
-		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
 		pStock->SetDayLineStartDate(20171231); // 早于20180101
 		const CString strMessage = stockPriceCandle.CreateMessage();
 		const long lMarketDate = gl_pWorldMarket->GetMarketDate();

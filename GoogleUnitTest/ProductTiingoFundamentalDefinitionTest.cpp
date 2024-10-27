@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"WorldStock.h"
+#include"FinnhubStock.h"
 #include"WorldMarket.h"
 
 #include"TiingoDataSource.h"
@@ -180,7 +180,7 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessTiingoFundamentalDefinitionTest, TestProcessmarketNews) {
 		CTiingoFundamentalDefinitionPtr pTiingoFundamentalDefinition = nullptr;
-		CWorldStockPtr pStock = nullptr;
+		CFinnhubStockPtr pStock = nullptr;
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 		m_tiingoFundamentalDefinitionProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {

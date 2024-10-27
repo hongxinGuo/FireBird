@@ -58,15 +58,11 @@ public:
 
 	long GetStatementLastUpdatedDate() { return m_jsonUpdateDate["StatementLastUpdated"]; }
 	void SetStatementLastUpdatedDate(long lLDate) { m_jsonUpdateDate["StatementLastUpdated"] = lLDate; }
-	long GetDailyLastUpdatedDate() { return m_jsonUpdateDate["DailyLastUpdated"]; }
-	void SetDailyLastUpdatedDate(long lLDate) { m_jsonUpdateDate["DailyLastUpdated"] = lLDate; }
 	long GetDayLineUpdateDate() { return m_jsonUpdateDate["DayLine"]; }
 	void SetDayLineUpdateDate(long lLDate) { m_jsonUpdateDate["DayLine"] = lLDate; }
 
 	long GetCompanyFinancialStatementUpdateDate() { return m_jsonUpdateDate["CompanyFinancialStatement"]; }
 	void SetCompanyFinancialStatementUpdateDate(long lDate) { m_jsonUpdateDate["CompanyFinancialStatement"] = lDate; }
-	long GetCompanyProfileUpdateDate() { return m_jsonUpdateDate["CompanyProfile"]; }
-	void SetCompanyProfileUpdateDate(long lDate) { m_jsonUpdateDate["CompanyProfile"] = lDate; }
 
 public:
 	CString m_strTiingoPermaTicker{ _T("") }; // Tiingo”¿æ√¥˙¬Î±Í ∂

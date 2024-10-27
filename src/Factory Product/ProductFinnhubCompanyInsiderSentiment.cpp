@@ -5,7 +5,7 @@
 #include"JsonGetValue.h"
 
 #include"WorldMarket.h"
-#include"WorldStock.h"
+#include"FinnhubStock.h"
 
 #include "ProductFinnhubCompanyInsiderSentiment.h"
 
@@ -14,7 +14,7 @@ CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment()
 }
 
 CString CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
-	const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
+	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 
 	const CString strCurrentDate = ConvertDateToTimeStamp(GetMarket()->GetMarketDate());
 	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate;
@@ -24,7 +24,7 @@ CString CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 }
 
 void CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
+	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	const CInsiderSentimentsPtr pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
 	pStock->SetInsiderSentimentUpdateDate(GetMarket()->GetMarketDate());
 	pStock->SetUpdateInsiderSentiment(false);

@@ -154,7 +154,7 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubSECFilingsTest, TestProcessFinnhubSECFilings1) {
 		string s;
-		CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(0);
+		CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(0);
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 		m_finnhubSECFilings.ParseAndStoreWebData(m_pWebData);
 		EXPECT_TRUE(pStock->IsSECFilingsUpdated());

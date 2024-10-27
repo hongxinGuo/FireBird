@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"WorldStock.h"
+#include"FinnhubStock.h"
 #include"WorldMarket.h"
 
 #include"TiingoDataSource.h"
@@ -132,7 +132,6 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvStock->at(0)->m_strCompanyWebSite, _T("companyWebsite have data"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strSECFilingWebSite, _T("secFilingWebsite have data"));
 			EXPECT_EQ(m_pvStock->at(0)->GetStatementLastUpdatedDate(), 20210302);
-			EXPECT_EQ(m_pvStock->at(0)->GetDailyLastUpdatedDate(), 20210312);
 			EXPECT_EQ(m_pvStock->at(0)->m_iSicCode, 1234);
 			EXPECT_STREQ(m_pvStock->at(0)->m_strDataProviderPermaTicker, _T("123456"));
 			break;
@@ -153,7 +152,6 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvStock->at(0)->m_strCompanyWebSite, _T("free"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strSECFilingWebSite, _T("Field"));
 			EXPECT_EQ(m_pvStock->at(0)->GetStatementLastUpdatedDate(), 20210305);
-			EXPECT_EQ(m_pvStock->at(0)->GetDailyLastUpdatedDate(), 20210312);
 			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoPermaTicker, _T("US000000000091"));
 			EXPECT_STREQ(m_pvStock->at(1)->GetSymbol(), _T("AA"));
 			EXPECT_STREQ(m_pvStock->at(1)->m_strName, _T("New Name"));
@@ -169,7 +167,6 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvStock->at(1)->m_strCompanyWebSite, _T(""));
 			EXPECT_STREQ(m_pvStock->at(1)->m_strSECFilingWebSite, _T(""));
 			EXPECT_EQ(m_pvStock->at(1)->GetStatementLastUpdatedDate(), 20210302);
-			EXPECT_EQ(m_pvStock->at(1)->GetDailyLastUpdatedDate(), 20210312);
 			EXPECT_STREQ(m_pvStock->at(1)->m_strDataProviderPermaTicker, _T("123456"));
 			break;
 		default:

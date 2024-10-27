@@ -689,7 +689,7 @@
     <ClInclude Include="MockChinaStock.h">
       <Filter>Mock class\Stock</Filter>
     </ClInclude>
-    <ClInclude Include="MockWorldStock.h">
+    <ClInclude Include="MockFinnhubStock.h">
       <Filter>Mock class\Stock</Filter>
     </ClInclude>
     <ClInclude Include="MockFinnhubForexSymbol.h">

@@ -91,9 +91,9 @@ namespace FireBirdTest {
 
 	public:
 		long m_lIndex;
-		CWorldStockPtr m_pStock;
+		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
-		CWorldStocksPtr m_pvStock;
+		CFinnhubStocksPtr m_pvStock;
 		CProductFinnhubStockSymbol m_finnhubStockSymbolProduct;
 	};
 
@@ -159,7 +159,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData30));
 
 	TEST_P(ProcessFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
-		CWorldStockPtr pStock;
+		CFinnhubStockPtr pStock;
 		m_finnhubStockSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // ¿ÕÊý¾Ý

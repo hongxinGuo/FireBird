@@ -29,7 +29,7 @@ using gsl::not_null;
 #include "ContainerStockSymbol.h"
 #include "ContainerTiingoCryptoSymbol.h"
 #include "ContainerTiingoStock.h"
-#include "ContainerWorldStock.h"
+#include "ContainerFinnhubStock.h"
 
 #include"FinnhubWebSocket.h"
 #include"TiingoIEXWebSocket.h"
@@ -56,7 +56,7 @@ extern CContainerFinnhubStockExchange gl_dataContainerFinnhubStockExchange;
 extern CContainerFinnhubForexExchange gl_dataContainerFinnhubForexExchange;
 extern CContainerFinnhubCryptoExchange gl_dataContainerFinnhubCryptoExchange;
 
-extern CContainerWorldStock gl_dataContainerFinnhubStock;
+extern CContainerFinnhubStock gl_dataContainerFinnhubStock;
 extern CContainerTiingoStock gl_dataContainerTiingoStock;
 extern CContainerTiingoCryptoSymbol gl_dataContainerTiingoCryptoSymbol;
 extern CContainerTiingoFundamentalDefinition gl_dataContainerTiingoFundamentalDefinition;

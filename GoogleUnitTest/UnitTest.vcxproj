@@ -273,7 +273,7 @@
     <ClInclude Include="MockVirtualDataSource.h" />
     <ClInclude Include="MockVirtualWebSocket.h" />
     <ClInclude Include="MockWorldMarket.h" />
-    <ClInclude Include="MockWorldStock.h" />
+    <ClInclude Include="MockFinnhubStock.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FireBirdLib\FireBirdLib.vcxproj">

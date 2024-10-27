@@ -393,7 +393,7 @@ bool CFinnhubDataSource::InquireCompanyNews() {
 			m_fInquiringFinnhubCompanyNews = true;
 		}
 		for (lCurrentCompanyNewsPos = 0; lCurrentCompanyNewsPos < lStockSetSize; lCurrentCompanyNewsPos++) {
-			const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentCompanyNewsPos);
+			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentCompanyNewsPos);
 			if (pStock->IsUpdateCompanyNews()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pStock->GetExchangeCode())) {
 					// 目前只处理美国市场
@@ -436,7 +436,7 @@ bool CFinnhubDataSource::InquireCompanyBasicFinancial() {
 			m_fInquiringFinnhubCompanyBasicFinancial = true;
 		}
 		for (lCurrentBasicFinancialsPos = 0; lCurrentBasicFinancialsPos < lStockSetSize; lCurrentBasicFinancialsPos++) {
-			const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentBasicFinancialsPos);
+			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentBasicFinancialsPos);
 			if (pStock->IsUpdateBasicFinancial()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pStock->GetExchangeCode())) {
 					fFound = true;
@@ -471,7 +471,7 @@ bool CFinnhubDataSource::InquireStockDayLine() {
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && IsUpdateStockDayLine()) {
-		CWorldStockPtr pStock;
+		CFinnhubStockPtr pStock;
 		bool fFound = false;
 		long lCurrentUpdateDayLinePos;
 		if (!m_fInquiringFinnhubStockDayLine) {
@@ -518,7 +518,7 @@ bool CFinnhubDataSource::InquireInsiderTransaction() {
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && IsUpdateInsiderTransaction()) {
 		long lCurrentUpdateInsiderTransactionPos;
-		CWorldStockPtr pStock;
+		CFinnhubStockPtr pStock;
 		bool fFound = false;
 		if (!m_fInquiringFinnhubStockInsiderTransaction) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock insider transaction..."));
@@ -562,7 +562,7 @@ bool CFinnhubDataSource::InquireInsiderSentiment() {
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && IsUpdateInsiderSentiment()) {
 		long lCurrentUpdateInsiderSentimentPos;
-		CWorldStockPtr pStock;
+		CFinnhubStockPtr pStock;
 		bool fFound = false;
 		if (!m_fInquiringFinnhubStockInsiderSentiment) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock insider sentiment..."));
@@ -626,7 +626,7 @@ bool CFinnhubDataSource::InquirePeer() {
 			m_fInquiringFinnhubStockPeer = true;
 		}
 		for (lCurrentUpdatePeerPos = 0; lCurrentUpdatePeerPos < lStockSetSize; lCurrentUpdatePeerPos++) {
-			const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentUpdatePeerPos);
+			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentUpdatePeerPos);
 			if (pStock->IsUpdatePeer()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pStock->GetExchangeCode())) {
 					fFound = true;
@@ -675,7 +675,7 @@ bool CFinnhubDataSource::InquireEPSSurprise() {
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && IsUpdateEPSSurprise()) {
-		CWorldStockPtr pStock;
+		CFinnhubStockPtr pStock;
 		bool fFound = false;
 		if (!m_fInquiringFinnhubStockEPSSurprise) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock EPS surprise..."));
@@ -720,7 +720,7 @@ bool CFinnhubDataSource::InquireSECFilings() {
 
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	if (!IsInquiring() && IsUpdateSECFilings()) {
-		CWorldStockPtr pStock;
+		CFinnhubStockPtr pStock;
 		bool fFound = false;
 		if (!m_fInquiringFinnhubStockSECFilings) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock SEC Filings..."));

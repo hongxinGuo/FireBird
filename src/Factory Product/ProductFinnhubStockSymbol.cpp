@@ -77,9 +77,9 @@ bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(const CString& strStockSy
 // }
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-CWorldStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWebDataPtr& pWebData) {
-	auto pvStock = make_shared<vector<CWorldStockPtr>>();
-	CWorldStockPtr pStock = nullptr;
+CFinnhubStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWebDataPtr& pWebData) {
+	auto pvStock = make_shared<vector<CFinnhubStockPtr>>();
+	CFinnhubStockPtr pStock = nullptr;
 	string s, sError;
 	json js;
 
@@ -88,7 +88,7 @@ CWorldStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWebDa
 
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
-			pStock = make_shared<CWorldStock>();
+			pStock = make_shared<CFinnhubStock>();
 			s = jsonGetString(it, _T("currency"));
 			if (!s.empty()) pStock->SetCurrency(s.c_str());
 			s = jsonGetString(it, _T("description"));

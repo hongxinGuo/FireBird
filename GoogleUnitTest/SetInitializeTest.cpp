@@ -27,7 +27,7 @@
 #include"SetTiingoIndustry.h"
 #include"SetTiingoStock.h"
 #include"SetTiingoCompanyFinancialState.h"
-#include"SetWorldStock.h"
+#include"SetFinnhubStock.h"
 
 #include"SetDayLineBasicInfo.h"
 #include"SetWeekLineBasicInfo.h"
@@ -480,7 +480,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(SetInitializeTest, TestWorldStockInitialize) {
-		CSetWorldStock setWorldStock;
+		CSetFinnhubStock setWorldStock;
 
 		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		EXPECT_STREQ(setWorldStock.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));

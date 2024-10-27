@@ -5,7 +5,7 @@
 #include"JsonGetValue.h"
 
 #include"WorldMarket.h"
-#include"WorldStock.h"
+#include"FinnhubStock.h"
 
 #include "ProductFinnhubStockDayLine.h"
 

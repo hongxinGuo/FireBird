@@ -101,7 +101,7 @@ namespace FireBirdTest {
 
 	public:
 		long m_lIndex;
-		CWorldStockPtr m_pStock;
+		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCompanyInsiderSentiment m_finnhubCompanyInsiderSentiment;
 	};
@@ -185,7 +185,7 @@ namespace FireBirdTest {
 
 	public:
 		long m_lIndex;
-		CWorldStockPtr m_pStock;
+		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CInsiderSentimentsPtr m_pvInsiderSentiment;
 		CProductFinnhubCompanyInsiderSentiment m_finnhubCompanyInsiderSentiment;
@@ -267,7 +267,7 @@ namespace FireBirdTest {
 
 	public:
 		long m_lIndex;
-		CWorldStockPtr m_pStock;
+		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CInsiderSentimentsPtr m_pvInsiderSentiment;
 		CProductFinnhubCompanyInsiderSentiment m_finnhubCompanyInsiderSentiment;

@@ -9,37 +9,37 @@
 #include"FinnhubStockBasicFinancial.h"
 
 #include"DayLine.h"
-#include"ContainerWorldStockDayLine.h"
+#include"ContainerFinnhubStockDayLine.h"
 #include "EPSSurprise.h"
 #include"FinnhubCompanyNews.h"
 #include "InsiderSentiment.h"
 #include "InsiderTransaction.h"
 #include "SECFiling.h"
 
-#include"SetWorldStock.h"
+#include"SetFinnhubStock.h"
 
-class CWorldStock : public CVirtualStock {
+class CFinnhubStock : public CVirtualStock {
 public:
-	CWorldStock();
+	CFinnhubStock();
 	// 不允许复制和赋值。
-	CWorldStock(const CWorldStock&) = delete;
-	CWorldStock& operator=(const CWorldStock&) = delete;
-	CWorldStock(const CWorldStock&&) noexcept = delete;
-	CWorldStock& operator=(const CWorldStock&&) noexcept = delete;
-	~CWorldStock() override;
+	CFinnhubStock(const CFinnhubStock&) = delete;
+	CFinnhubStock& operator=(const CFinnhubStock&) = delete;
+	CFinnhubStock(const CFinnhubStock&&) noexcept = delete;
+	CFinnhubStock& operator=(const CFinnhubStock&&) noexcept = delete;
+	~CFinnhubStock() override;
 
 	void ResetAllUpdateDate() override;
 	int GetRatio() const final { return 1000; }
 
-	void Load(CSetWorldStock& setWorldStock);
+	void Load(CSetFinnhubStock& setWorldStock);
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckProfileUpdateStatus(long lTodayDate);
 	bool CheckCompanyNewsUpdateStatus(long lTodayDate);
 	bool CheckBasicFinancialUpdateStatus(long lTodayDate);
 	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
-	void Save(CSetWorldStock& setWorldStock) const;
-	void Update(CSetWorldStock& setWorldStock) const;
-	void Append(CSetWorldStock& setWorldStock) const;
+	void Save(CSetFinnhubStock& setWorldStock) const;
+	void Update(CSetFinnhubStock& setWorldStock) const;
+	void Append(CSetFinnhubStock& setWorldStock) const;
 	void SaveDayLine() { m_dataDayLine.SaveDB(m_strSymbol); }
 	void UpdateInsiderTransactionDB();
 	void UpdateInsiderSentimentDB();
@@ -264,7 +264,7 @@ protected:
 	json m_jsonPeer{ json({}) }; // 读取到的Peer数据为json制式
 
 	// 系统生成信息
-	CContainerWorldStockDayLine m_dataDayLine;
+	CContainerFinnhubStockDayLine m_dataDayLine;
 
 	vector<CCompanyNewsPtr> m_vCompanyNews;
 
@@ -283,5 +283,5 @@ protected:
 	atomic_bool m_fUpdateFinnhubInsiderSentimentDB{ false }; // 内部交易情绪数据需要存储
 };
 
-using CWorldStockPtr = shared_ptr<CWorldStock>;
-using CWorldStocksPtr = shared_ptr<vector<CWorldStockPtr>>;
+using CFinnhubStockPtr = shared_ptr<CFinnhubStock>;
+using CFinnhubStocksPtr = shared_ptr<vector<CFinnhubStockPtr>>;

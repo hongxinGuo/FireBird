@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"WorldStock.h"
+#include"FinnhubStock.h"
 #include"WorldMarket.h"
 
 #include"ProductTiingoFinancialState.h"
@@ -164,7 +164,7 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessTiingoFinancialStateTest, TestProcessFinancialState) {
 		CTiingoCompanyFinancialStatePtr pTiingoFinancialState = nullptr;
-		CWorldStockPtr pStock = nullptr;
+		CFinnhubStockPtr pStock = nullptr;
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 		m_tiingoFinancialStateProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {

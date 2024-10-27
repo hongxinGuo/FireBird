@@ -49,7 +49,7 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateCompanyNews(true);
 		companyNews.SetMarket(gl_pWorldMarket);
 		companyNews.SetIndex(1);
-		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(1);
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(1);
 		CString strMessage = companyNews.GetInquiryFunction() + pStock->GetSymbol();
 		int iMarketData360 = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360);
 		const int iUpdateDate = pStock->GetCompanyNewsUpdateDate() > iMarketData360 ? pStock->GetCompanyNewsUpdateDate() : iMarketData360;
@@ -114,7 +114,7 @@ namespace FireBirdTest {
 
 	public:
 		long m_lIndex;
-		CWorldStockPtr m_pStock;
+		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCompanyNews m_FinnhubCompanyNews;
 	};

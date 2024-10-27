@@ -1,25 +1,24 @@
 #include "pch.h"
 
-#include "ContainerWorldStockDayLine.h"
+#include "ContainerFinnhubStockDayLine.h"
 
 #include "InfoReport.h"
 #include"SetWorldStockDayLine.h"
 
-CContainerWorldStockDayLine::CContainerWorldStockDayLine() {}
+CContainerFinnhubStockDayLine::CContainerFinnhubStockDayLine() {}
 
-bool CContainerWorldStockDayLine::SaveDB(const CString& strStockSymbol) {
+bool CContainerFinnhubStockDayLine::SaveDB(const CString& strStockSymbol) {
 	try {
 		CSetWorldStockDayLine setWorldStockDayLineBasic;
 		UpdateBasicDB(&setWorldStockDayLineBasic, strStockSymbol);
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 
 	return true;
 }
 
-bool CContainerWorldStockDayLine::LoadDB(const CString& strStockSymbol) {
+bool CContainerFinnhubStockDayLine::LoadDB(const CString& strStockSymbol) {
 	try {
 		CSetWorldStockDayLine setDayLineBasic;
 
@@ -33,8 +32,7 @@ bool CContainerWorldStockDayLine::LoadDB(const CString& strStockSymbol) {
 		setDayLineBasic.Close();
 
 		m_fDataLoaded = true;
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 	return true;

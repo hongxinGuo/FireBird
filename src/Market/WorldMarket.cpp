@@ -430,7 +430,7 @@ bool CWorldMarket::UpdateEPSSurpriseDB() {
 	CString str;
 	const size_t stockSize = gl_dataContainerFinnhubStock.Size();
 
-	CWorldStockPtr pStock = nullptr;
+	CFinnhubStockPtr pStock = nullptr;
 	for (long l = 0; l < stockSize; ++l) {
 		pStock = gl_dataContainerFinnhubStock.GetStock(l);
 		if (pStock->IsUpdateEPSSurpriseDBAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
@@ -446,7 +446,7 @@ void CWorldMarket::UpdateSECFilingsDB() {
 	CString str;
 	const size_t stockSize = gl_dataContainerFinnhubStock.Size();
 
-	CWorldStockPtr pStock = nullptr;
+	CFinnhubStockPtr pStock = nullptr;
 	for (long l = 0; l < stockSize; ++l) {
 		pStock = gl_dataContainerFinnhubStock.GetStock(l);
 		if (pStock->IsUpdateSECFilingsDBAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
@@ -670,7 +670,7 @@ bool CWorldMarket::UpdateToken() {
 
 bool CWorldMarket::UpdateFinnhubStockDayLineDB() {
 	for (long i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
-		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
 		pStock->UpdateDayLineDB();
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 	}
@@ -692,7 +692,7 @@ bool CWorldMarket::UpdateCompanyNewsDB() {
 bool CWorldMarket::UpdateInsiderTransactionDB() {
 	int iCounter = 0;
 	for (long i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
-		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
 		if (pStock->IsUpdateInsiderTransactionDBAndClearFlag()) {
 			if (pStock->HaveInsiderTransaction()) {
 				iCounter++;
@@ -708,7 +708,7 @@ bool CWorldMarket::UpdateInsiderTransactionDB() {
 
 bool CWorldMarket::UpdateInsiderSentimentDB() {
 	for (long i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
-		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
 		if (pStock->IsUpdateInsiderSentimentDBAndClearFlag()) {
 			if (pStock->HaveInsiderSentiment()) {
 				pStock->UpdateInsiderSentimentDB();
@@ -918,7 +918,7 @@ void CWorldMarket::UpdateWorldStockFromWebSocket() {
 
 void CWorldMarket::UpdateWorldStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr& pTiingoIEXbData) {
 	if (gl_dataContainerFinnhubStock.IsSymbol(pTiingoIEXbData->m_sSymbol.c_str())) {
-		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoIEXbData->m_sSymbol.c_str());
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoIEXbData->m_sSymbol.c_str());
 		pStock->SetActive(true);
 		switch (pTiingoIEXbData->m_chMessageType) {
 		case 'T':
@@ -936,7 +936,7 @@ void CWorldMarket::UpdateWorldStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr
 
 void CWorldMarket::UpdateWorldStockFromFinnhubSocket(const CFinnhubSocketPtr& pFinnhubData) {
 	if (gl_dataContainerFinnhubStock.IsSymbol(pFinnhubData->m_sSymbol.c_str())) {
-		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(pFinnhubData->m_sSymbol.c_str());
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(pFinnhubData->m_sSymbol.c_str());
 		pStock->SetActive(true);
 		pStock->SetNew(pFinnhubData->m_dLastPrice * 1000);
 	}

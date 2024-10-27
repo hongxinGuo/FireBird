@@ -9,7 +9,7 @@ public:
 
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	bool ParseFinnhubStockQuote(const CWebDataPtr& pWebData, const CWorldStockPtr& pStock);
+	bool ParseFinnhubStockQuote(const CWebDataPtr& pWebData, const CFinnhubStockPtr& pStock);
 };
 
 using CFinnhubStockPriceQuotePtr = shared_ptr<CProductFinnhubStockPriceQuote>;

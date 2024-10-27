@@ -42,7 +42,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestCreatMessage) {
-		const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(1);
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(1);
 		pStock->SetUpdateBasicFinancial(true);
 		companyBasicFinancial.SetMarket(gl_pWorldMarket);
 		companyBasicFinancial.SetIndex(1);
@@ -492,7 +492,7 @@ namespace FireBirdTest {
 
 	public:
 		long m_lIndex;
-		CWorldStockPtr m_pStock;
+		CFinnhubStockPtr m_pStock;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCompanyBasicFinancial m_finnhubCompanyBasicFinancial;
 	};
@@ -581,7 +581,7 @@ namespace FireBirdTest {
 
 	public:
 		long m_lIndex = 0;
-		CWorldStockPtr m_pStock = nullptr;
+		CFinnhubStockPtr m_pStock = nullptr;
 		CWebDataPtr m_pWebData = nullptr;
 		CProductFinnhubCompanyBasicFinancial m_finnhubCompanyBasicFinancial;
 	};

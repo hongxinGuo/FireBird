@@ -64,7 +64,7 @@ void CProductFinnhubCompanyProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ///  "finnhubIndustry":"Technology"
 ///  }
 /// <returns></returns>
-bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr pStock) const {
+bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebData, CFinnhubStockPtr pStock) const {
 	string s;
 	json js;
 

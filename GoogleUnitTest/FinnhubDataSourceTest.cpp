@@ -442,7 +442,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireCompanyProfileConcise) {
-		CWorldStockPtr pStock;
+		CFinnhubStockPtr pStock;
 		CVirtualProductWebDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
@@ -495,7 +495,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireCompanyNews) {
-		CWorldStockPtr pStock;
+		CFinnhubStockPtr pStock;
 		CVirtualProductWebDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
@@ -548,7 +548,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireInsiderSentiment) {
-		CWorldStockPtr pStock;
+		CFinnhubStockPtr pStock;
 		CVirtualProductWebDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
@@ -601,7 +601,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireStockBasicFinancial) {
-		CWorldStockPtr pStock;
+		CFinnhubStockPtr pStock;
 		CVirtualProductWebDataPtr p = nullptr;
 
 		gl_pWorldMarket->SetSystemReady(true);
@@ -654,7 +654,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireFinnhubStockDayLine) {
-		CWorldStockPtr pStock;
+		CFinnhubStockPtr pStock;
 		CVirtualProductWebDataPtr p = nullptr;
 
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateStockDayLine());
@@ -719,7 +719,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquirePeer) {
-		CWorldStockPtr pStock;
+		CFinnhubStockPtr pStock;
 		CVirtualProductWebDataPtr p = nullptr;
 
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdatePeer());
@@ -771,7 +771,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquireInsiderTransaction) {
-		CWorldStockPtr pStock;
+		CFinnhubStockPtr pStock;
 		CVirtualProductWebDataPtr p = nullptr;
 
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateInsiderTransaction()) << "股票待查询";
@@ -844,7 +844,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubDataSourceTest, TestInquiryEPSSurprise) {
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
-			const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
+			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
 			pStock->SetUpdateEPSSurprise(false);
 		}
 		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateEPSSurprise(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
@@ -887,7 +887,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubDataSourceTest, TestInquirySECFilings) {
 		gl_pWorldMarket->SetSystemReady(true);
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
-			const CWorldStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
+			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
 			pStock->SetSECFilingsUpdated(true);
 		}
 		gl_dataContainerFinnhubStock.GetStock(1)->SetSECFilingsUpdated(false); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面

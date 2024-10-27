@@ -1,7 +1,7 @@
 #pragma once
 
 #include"ContainerVirtualStock.h"
-#include"WorldStock.h"
+#include"FinnhubStock.h"
 
 class CContainerChosenStock : public CContainerVirtualStock {
 public:
@@ -16,8 +16,8 @@ public:
 	bool LoadDB();
 	//bool UpdateDB();
 
-	CWorldStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CWorldStock>(Get(lIndex)); };
-	CWorldStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CWorldStock>(Get(strStockCode)); };
+	CFinnhubStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CFinnhubStock>(Get(lIndex)); };
+	CFinnhubStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CFinnhubStock>(Get(strStockCode)); };
 
 protected:
 	long m_lChosenStockPos;

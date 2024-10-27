@@ -10,7 +10,7 @@ public:
 	CString CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	static bool IsNeedAddExchangeCode(const CString& strStockSymbol, const CString& strExchangeCode);
-	CWorldStocksPtr ParseFinnhubStockSymbol(const CWebDataPtr& pWebData);
+	CFinnhubStocksPtr ParseFinnhubStockSymbol(const CWebDataPtr& pWebData);
 };
 
 using CProductFinnhubCompanySymbolPtr = shared_ptr<CProductFinnhubStockSymbol>;

@@ -126,10 +126,10 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CContainerChinaStock::TaskUpdateDayLineDB</Function>
                                 <Function>CContainerChinaStock::UpdateDayLineDB</Function>
 								
-								<Function>CContainerWorldStock::UpdateBasicFinancialAnnualDB</Function>
-								<Function>CContainerWorldStock::UpdateBasicFinancialDB</Function>
-								<Function>CContainerWorldStock::UpdateBasicFinancialMetricDB</Function>
-								<Function>CContainerWorldStock::UpdateBasicFinancialQuarterDB</Function>
+								<Function>CContainerFinnhubStock::UpdateBasicFinancialAnnualDB</Function>
+								<Function>CContainerFinnhubStock::UpdateBasicFinancialDB</Function>
+								<Function>CContainerFinnhubStock::UpdateBasicFinancialMetricDB</Function>
+								<Function>CContainerFinnhubStock::UpdateBasicFinancialQuarterDB</Function>
 
 								<Function>CMainFrame::ResetMarket</Function>
 								<Function>CMainFrame::OnCreate</Function>

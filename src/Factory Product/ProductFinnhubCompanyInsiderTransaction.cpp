@@ -4,7 +4,7 @@
 #include"JsonGetValue.h"
 
 #include"WorldMarket.h"
-#include"WorldStock.h"
+#include"FinnhubStock.h"
 
 #include "ProductFinnhubCompanyInsiderTransaction.h"
 
@@ -76,8 +76,7 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 	try {
 		pt1 = jsonGetChild(js, _T("data"));
 		stockSymbol = jsonGetString(js, _T("symbol"));
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction ") + GetInquiryFunction(), e.what());
 		return pvInsiderTransaction;
 	}
@@ -101,8 +100,7 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 			pInsiderTransaction->m_dTransactionPrice = jsonGetDouble(it, _T("transactionPrice"));
 			pvInsiderTransaction->push_back(pInsiderTransaction);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderTransaction->m_strSymbol + _T(" Insider Transaction "), e.what());
 		return pvInsiderTransaction;
 	}

@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"WorldStock.h"
+#include"FinnhubStock.h"
 
 #include"FinnhubWebSocket.h"
 #include"TiingoIEXWebSocket.h"

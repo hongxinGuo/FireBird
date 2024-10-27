@@ -9,8 +9,8 @@
 
 #include"Thread.h"
 
-#include"WorldStock.h"
-//#include"MockWorldStock.h"
+#include"FinnhubStock.h"
+//#include"MockFinnhubStock.h"
 
 using namespace testing;
 

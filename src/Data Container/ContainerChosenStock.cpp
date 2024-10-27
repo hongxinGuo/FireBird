@@ -17,7 +17,7 @@ void CContainerChosenStock::Reset() {
 
 bool CContainerChosenStock::LoadDB() {
 	CSetWorldChosenStock setWorldChosenStock;
-	CWorldStockPtr pStock = nullptr;
+	CFinnhubStockPtr pStock = nullptr;
 
 	ASSERT(gl_pWorldMarket != nullptr);
 	setWorldChosenStock.Open();

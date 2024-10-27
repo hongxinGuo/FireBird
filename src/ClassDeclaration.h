@@ -20,8 +20,8 @@ class CChinaMarket;
 typedef shared_ptr<CChinaMarket> CChinaMarketPtr;
 
 // WorldMarket
-class CWorldStock;
-typedef shared_ptr<CWorldStock> CWorldStockPtr;
+class CFinnhubStock;
+typedef shared_ptr<CFinnhubStock> CFinnhubStockPtr;
 class CWorldMarket;
 typedef shared_ptr<CWorldMarket> CWorldMarketPtr;
 
