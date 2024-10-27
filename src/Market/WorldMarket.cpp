@@ -392,8 +392,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 			}
 		}
 	}
-
-	return (fUpdated);
+	return fUpdated;
 }
 
 void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {

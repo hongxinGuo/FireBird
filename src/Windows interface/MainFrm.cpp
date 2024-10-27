@@ -1,5 +1,4 @@
 ﻿// MainFrm.cpp: CMainFrame 类的实现
-//
 #include"pch.h"
 
 #include"ThreadStatus.h"
@@ -35,12 +34,11 @@
 using namespace concurrencpp;
 
 bool CMainFrame::sm_fGlobeInit = false;
-
-IMPLEMENT_DYNCREATE(CMainFrame, CMDIFrameWndEx)
-
 constexpr int iMaxUserToolbars = 10;
 constexpr UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
 constexpr UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
+
+IMPLEMENT_DYNCREATE(CMainFrame, CMDIFrameWndEx)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_WM_CREATE()
@@ -159,14 +157,6 @@ CMainFrame::CMainFrame() {
 		sm_fGlobeInit = true;
 		ix::initNetSystem();// 在Windows环境下，IXWebSocket库需要初始化一次，且只能初始化一次。
 	}
-
-	m_uIdTimer = 0;
-	Reset();
-}
-
-void CMainFrame::Reset() {
-	// 在此之前已经准备好了全局股票池（在CChinaMarket的构造函数中）。
-	m_lCurrentPos = 0;
 }
 
 CMainFrame::~CMainFrame() {
@@ -354,7 +344,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 		::TaskSchedulePerSecond);
 
 	// 设置500毫秒每次的软调度，只用于更新状态任务。
-	m_uIdTimer = SetTimer(STOCK_ANALYSIS_TIMER_, 500, nullptr);
+	m_uIdTimer = SetTimer(1, 500, nullptr);
 	if (m_uIdTimer == 0) {
 		TRACE(_T("生成500ms时钟时失败\n"));
 	}
@@ -408,18 +398,6 @@ BOOL CMainFrame::CreateDockingWindows() {
 	SetDockingWindowIcons(theApp.m_bHiColorIcons);
 	return TRUE;
 }
-
-// CMainFrame 诊断
-
-#ifdef _DEBUG
-void CMainFrame::AssertValid() const {
-	CMDIFrameWndEx::AssertValid();
-}
-
-void CMainFrame::Dump(CDumpContext& dc) const {
-	CMDIFrameWndEx::Dump(dc);
-}
-#endif //_DEBUG
 
 // CMainFrame 消息处理程序
 

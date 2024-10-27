@@ -95,16 +95,6 @@ void CFireBirdComboBox::OnCbnSelChange() {
 // CPropertyWnd
 //
 CPropertiesWnd::CPropertiesWnd() noexcept {
-	m_nComboHeight = 0;
-	m_uIdTimer = 0;
-
-	m_pPropSystemOption = nullptr;
-	m_pPropChinaMarketWebStatus = nullptr;
-	m_pPropWorldMarketWebStatus = nullptr;
-	m_pPropFinnhubWebSocket = nullptr;
-	m_pPropTiingoIEXWebSocket = nullptr;
-	m_pPropTiingoForexWebSocket = nullptr;
-	m_pPropTiingoCryptoWebSocket = nullptr;
 }
 
 CPropertiesWnd::~CPropertiesWnd() {
@@ -305,61 +295,39 @@ void CPropertiesWnd::InitPropList() {
 
 	m_wndPropList.AddProperty(pGroup2);
 
-	CMFCPropertyGridProperty* pGroup3 = new CMFCPropertyGridProperty(_T("World market"));
-	m_pPropWorldMarketWebStatus = new CMFCPropertyGridProperty(_T("(Web Status)"), _T("running"));
+	// finnhub group
+	CMFCPropertyGridProperty* pGroup3 = new CMFCPropertyGridProperty(_T("finnhub.io"));
+	m_pPropWorldMarketWebStatus = new CMFCPropertyGridProperty(_T("Web Status"), _T("running"));
 	m_pPropWorldMarketWebStatus->Enable(FALSE);
 	pGroup3->AddSubItem(m_pPropWorldMarketWebStatus);
-
-	//static constexpr TCHAR szFilter[] = _T("Icon Files(*.ico)|*.ico|All Files(*.*)|*.*||");
-	//pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("Icon"), TRUE, _T(""), _T("ico"), 0, szFilter, _T("Specifies the window icon")));
-	//pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("Folder"), _T("c:\\")));
-
+	m_pPropFinnhubCurrentFunction = new CMFCPropertyGridProperty(_T("Inquiring:"), _T(""));
+	m_pPropFinnhubCurrentFunction->Enable(FALSE);
+	pGroup3->AddSubItem(m_pPropFinnhubCurrentFunction);
 	m_wndPropList.AddProperty(pGroup3);
 
+	// tiingo group
+	CMFCPropertyGridProperty* pGroup4 = new CMFCPropertyGridProperty(_T("Tiingo.com"));
+	m_pPropTiingoCurrentFunction = new CMFCPropertyGridProperty(_T("Inquiring:"), _T(""));
+	m_pPropTiingoCurrentFunction->Enable(FALSE);
+	pGroup4->AddSubItem(m_pPropTiingoCurrentFunction);
+	m_wndPropList.AddProperty(pGroup4);
+
+	// web socket group
 	CMFCPropertyGridProperty* pGroup5 = new CMFCPropertyGridProperty(_T("Web Socket"));
-	m_pPropFinnhubWebSocket = new CMFCPropertyGridProperty(_T("(Finnhub)"), _T("Closed"));
+	m_pPropFinnhubWebSocket = new CMFCPropertyGridProperty(_T("Finnhub"), _T("Closed"));
 	m_pPropFinnhubWebSocket->Enable(false);
 	pGroup5->AddSubItem(m_pPropFinnhubWebSocket);
-	m_pPropTiingoIEXWebSocket = new CMFCPropertyGridProperty(_T("(TiingoIEX)"), _T("Closed"));
+	m_pPropTiingoIEXWebSocket = new CMFCPropertyGridProperty(_T("TiingoIEX"), _T("Closed"));
 	m_pPropTiingoIEXWebSocket->Enable(false);
 	pGroup5->AddSubItem(m_pPropTiingoIEXWebSocket);
-	m_pPropTiingoForexWebSocket = new CMFCPropertyGridProperty(_T("(TiingoForex)"), _T("Closed"));
+	m_pPropTiingoForexWebSocket = new CMFCPropertyGridProperty(_T("TiingoForex"), _T("Closed"));
 	m_pPropTiingoForexWebSocket->Enable(false);
 	pGroup5->AddSubItem(m_pPropTiingoForexWebSocket);
-	m_pPropTiingoCryptoWebSocket = new CMFCPropertyGridProperty(_T("(TiingoCrypto)"), _T("Closed"));
+	m_pPropTiingoCryptoWebSocket = new CMFCPropertyGridProperty(_T("TiingoCrypto"), _T("Closed"));
 	m_pPropTiingoCryptoWebSocket->Enable(false);
 	pGroup5->AddSubItem(m_pPropTiingoCryptoWebSocket);
 
 	m_wndPropList.AddProperty(pGroup5);
-
-	/*
-	CMFCPropertyGridProperty* pSize = new CMFCPropertyGridProperty(_T("Window Size"), 0, TRUE);
-
-	pProp = new CMFCPropertyGridProperty(_T("Height"), static_cast<_variant_t>(250l), _T("Specifies the window's height"));
-	pProp->EnableSpinControl(TRUE, 50, 300);
-	pSize->AddSubItem(pProp);
-
-	pProp = new CMFCPropertyGridProperty(_T("Width"), static_cast<_variant_t>(150l), _T("Specifies the window's width"));
-	pProp->EnableSpinControl(TRUE, 50, 200);
-	pSize->AddSubItem(pProp);
-
-	m_wndPropList[1].AddProperty(pSize);
-
-	CMFCPropertyGridProperty* pGroup4 = new CMFCPropertyGridProperty(_T("Hierarchy"));
-
-	CMFCPropertyGridProperty* pGroup41 = new CMFCPropertyGridProperty(_T("First sub-level"));
-	pGroup4->AddSubItem(pGroup41);
-
-	CMFCPropertyGridProperty* pGroup411 = new CMFCPropertyGridProperty(_T("Second sub-level"));
-	pGroup41->AddSubItem(pGroup411);
-
-	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("Item 1"), static_cast<_variant_t>("Value 1"), _T("This is a description")));
-	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("Item 2"), static_cast<_variant_t>("Value 2"), _T("This is a description")));
-	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("Item 3"), static_cast<_variant_t>("Value 3"), _T("This is a description")));
-
-	pGroup4->Expand(FALSE);
-	m_wndPropList[2].AddProperty(pGroup4);
-	*/
 }
 
 void CPropertiesWnd::OnSetFocus(CWnd* pOldWnd) {
@@ -411,6 +379,13 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 			m_pPropWorldMarketWebStatus->SetValue(_T("running"));
 		}
 	}
+
+	CString strMessage;
+	strMessage = gl_pWorldMarket->GetCurrentFinnhubFunction();
+	m_pPropFinnhubCurrentFunction->SetValue(strMessage);
+
+	strMessage = gl_pWorldMarket->GetCurrentTiingoFunction();
+	m_pPropTiingoCurrentFunction->SetValue(strMessage);
 
 	CString str = _T("");
 	switch (gl_pFinnhubWebSocket->GetState()) {

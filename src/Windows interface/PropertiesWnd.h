@@ -24,10 +24,8 @@ public:
 	~CFireBirdComboBox() override {
 	}
 
-	DECLARE_MESSAGE_MAP()
-
-public:
 	afx_msg void OnCbnSelChange();
+	DECLARE_MESSAGE_MAP()
 };
 
 class CPropertiesWnd : public CDockablePane {
@@ -43,24 +41,7 @@ public:
 		m_wndPropList.SetGroupNameFullWidth(bSet);
 	}
 
-protected:
-	CFont m_fntPropList;
-	CFireBirdComboBox m_wndObjectCombo;
-	CPropertiesToolBar m_wndToolBar;
-	CFireBirdPropertyGridCtrl m_wndPropList;
-
-	// system status group
-	CMFCPropertyGridProperty* m_pPropSystemOption;
-	CMFCPropertyGridColorProperty* m_pPropChinaMarketWebStatus;
-	CMFCPropertyGridProperty* m_pPropWorldMarketWebStatus;
-	CMFCPropertyGridProperty* m_pPropFinnhubWebSocket;
-	CMFCPropertyGridProperty* m_pPropTiingoIEXWebSocket;
-	CMFCPropertyGridProperty* m_pPropTiingoForexWebSocket;
-	CMFCPropertyGridProperty* m_pPropTiingoCryptoWebSocket;
-
-	// chinaMarket realtime group
-
-	UINT m_uIdTimer;
+	UINT m_uIdTimer{ 0 };
 
 	// Implementation
 public:
@@ -84,7 +65,32 @@ protected:
 	void InitPropList();
 	void SetPropListFont();
 
-	int m_nComboHeight;
+protected:
+	CFont m_fntPropList;
+	CFireBirdComboBox m_wndObjectCombo;
+	CPropertiesToolBar m_wndToolBar;
+	CFireBirdPropertyGridCtrl m_wndPropList;
+
+	// system status group
+	CMFCPropertyGridProperty* m_pPropSystemOption{ nullptr };
+	CMFCPropertyGridColorProperty* m_pPropChinaMarketWebStatus{ nullptr };
+	CMFCPropertyGridProperty* m_pPropWorldMarketWebStatus{ nullptr };
+
+	// finnhub.io
+	CMFCPropertyGridProperty* m_pPropFinnhubCurrentFunction{ nullptr };
+
+	// Tiingo.com
+	CMFCPropertyGridProperty* m_pPropTiingoCurrentFunction{ nullptr };
+
+	// web socket group
+	CMFCPropertyGridProperty* m_pPropFinnhubWebSocket{ nullptr };
+	CMFCPropertyGridProperty* m_pPropTiingoIEXWebSocket{ nullptr };
+	CMFCPropertyGridProperty* m_pPropTiingoForexWebSocket{ nullptr };
+	CMFCPropertyGridProperty* m_pPropTiingoCryptoWebSocket{ nullptr };
+
+	// chinaMarket realtime group
+
+	int m_nComboHeight{ 0 };
 
 public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);

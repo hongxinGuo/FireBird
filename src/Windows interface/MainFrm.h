@@ -7,16 +7,12 @@
 #include "PropertiesWnd.h"
 #include "PropertyRealTimeDataWnd.h"
 
-constexpr UINT STOCK_ANALYSIS_TIMER_ = 1;
-
 class CMainFrame : public CMDIFrameWndEx {
 	DECLARE_DYNCREATE(CMainFrame)
 
 public:
 	CMainFrame();
 	~CMainFrame() override;
-
-	void Reset();
 
 	// 特性
 
@@ -46,15 +42,9 @@ public:
 	BOOL PreCreateWindow(CREATESTRUCT& cs) override;
 	BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = nullptr, CCreateContext* pContext = nullptr) override;
 
-	// 实现
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
-
 protected:
-	UINT m_uIdTimer;
-	long m_lCurrentPos;
+	UINT m_uIdTimer{ 0 };
+	long m_lCurrentPos{ 0 };
 
 	char m_aStockCodeTemp[30];
 

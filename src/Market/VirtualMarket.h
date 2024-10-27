@@ -158,7 +158,7 @@ protected:
 
 	//系统状态区
 	bool m_fSystemReady{ false }; // 市场初始态已经设置好.默认为假
-	bool m_fResettingMarket{ false }; // 市场正在重启标识
+	bool m_fResettingMarket{ false }; // 市场正在重启标识，默认为假
 
 private:
 	bool m_fResetMarket{ true }; // 重启系统标识

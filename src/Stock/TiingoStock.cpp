@@ -167,22 +167,8 @@ void CTiingoStock::UpdateFinancialStateDB() {
 	setFinancialState.m_pDatabase->CommitTrans();
 	setFinancialState.Close();
 
-	if (lSizeOfOldDayLine > 0) {
-		if (vOldFinancialState.at(lSizeOfOldDayLine - 1)->m_yearQuarter < m_pvFinancialState->at(m_pvFinancialState->size() - 1)->m_yearQuarter) {
-			SetCompanyFinancialStatementUpdateDate(m_pvFinancialState->at(m_pvFinancialState->size() - 1)->m_yearQuarter);
-			SetUpdateProfileDB(true);
-		}
-		else {
-			if (GetCompanyFinancialStatementUpdateDate() < vOldFinancialState.at(lSizeOfOldDayLine - 1)->m_yearQuarter) {
-				SetCompanyFinancialStatementUpdateDate(vOldFinancialState.at(lSizeOfOldDayLine - 1)->m_yearQuarter);
-				SetUpdateProfileDB(true);
-			}
-		}
-	}
-	else {
-		SetCompanyFinancialStatementUpdateDate(m_pvFinancialState->at(m_pvFinancialState->size() - 1)->m_yearQuarter);
-		SetUpdateProfileDB(true);
-	}
+	SetCompanyFinancialStatementUpdateDate(gl_pWorldMarket->GetMarketDate());
+	SetUpdateProfileDB(true);
 }
 
 bool CTiingoStock::UpdateDayLineDB() {
@@ -255,9 +241,7 @@ bool CTiingoStock::HaveNewDayLineData() {
 }
 
 void CTiingoStock::CheckUpdateStatus(long lTodayDate) {
-	//CheckProfileUpdateStatus(lTodayDate);
 	CheckFinancialStateUpdateStatus(lTodayDate);
-	//CheckCompanyNewsUpdateStatus(lTodayDate);
 	CheckIPOStatus(lTodayDate);
 	CheckDayLineUpdateStatus(lTodayDate, gl_pWorldMarket->GetLastTradeDate(), gl_pWorldMarket->GetMarketTime(), gl_pWorldMarket->GetDayOfWeek());
 }

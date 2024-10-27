@@ -107,16 +107,16 @@ public:
 	bool IsPermitUpdateTiingoFundamentalDefinitionDB() const noexcept { return m_fPermitUpdateTiingoFundamentalDefinitionDB; }
 
 protected:
-	long m_lCurrentUpdateDayLinePos; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
-	long m_lCurrentUpdateEPSSurprisePos; // 此变量无需每日更新
+	long m_lCurrentUpdateDayLinePos{ 0 }; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
+	long m_lCurrentUpdateEPSSurprisePos{ 0 }; // 此变量无需每日更新
 
 	CMarketStatussPtr m_pvMarketStatus;
 	CMarketHolidaysPtr m_pvMarketHoliday;
 
-	CString m_strCurrentFinnhubFunction; // 当前任务和处理的证券名称
-	CString m_strCurrentTiingoFunction; // 当前任务和处理的证券名称
+	CString m_strCurrentFinnhubFunction{ _T("") }; // 当前任务和处理的证券名称
+	CString m_strCurrentTiingoFunction{ _T("") }; // 当前任务和处理的证券名称
 
-	bool m_bFinnhubWebSiteAccessible; // 由于finnhub.io不时被墙，故而需要此标识。
+	bool m_bFinnhubWebSiteAccessible{ true }; // 由于finnhub.io不时被墙，故而需要此标识。
 
 	bool m_fPermitUpdateTiingoFundamentalDefinitionDB{ false };
 };
