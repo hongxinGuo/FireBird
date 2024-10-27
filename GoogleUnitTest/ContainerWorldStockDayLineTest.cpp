@@ -5,12 +5,12 @@
 #include"DayLine.h"
 #include"ContainerFinnhubStockDayLine.h"
 
-#include"SEtWorldStockDayLine.h"
+#include"SEtFinnhubStockDayLine.h"
 
 using namespace testing;
 
 namespace FireBirdTest {
-	class CDataWorldStockDayLineTest : public ::testing::Test {
+	class CDataFinnhubStockDayLineTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
@@ -34,10 +34,10 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		CContainerFinnhubStockDayLine m_dataWorldStockDayLine;
+		CContainerFinnhubStockDayLine m_dataFinnhubStockDayLine;
 	};
 
-	TEST_F(CDataWorldStockDayLineTest, TestSaveDB) {
+	TEST_F(CDataFinnhubStockDayLineTest, TestSaveDB) {
 		vector<CDayLinePtr> vDayLine;
 
 		const CDayLinePtr pDayLine = make_shared<CDayLine>();
@@ -45,26 +45,26 @@ namespace FireBirdTest {
 		pDayLine->SetStockSymbol(_T("A"));
 		pDayLine->SetClose(100);
 		vDayLine.push_back(pDayLine);
-		m_dataWorldStockDayLine.UpdateData(vDayLine);
+		m_dataFinnhubStockDayLine.UpdateData(vDayLine);
 
-		m_dataWorldStockDayLine.SaveDB(_T("A"));
+		m_dataFinnhubStockDayLine.SaveDB(_T("A"));
 
-		m_dataWorldStockDayLine.LoadDB(_T("A"));
-		EXPECT_EQ(m_dataWorldStockDayLine.GetData(m_dataWorldStockDayLine.Size() - 1)->GetMarketDate(),
+		m_dataFinnhubStockDayLine.LoadDB(_T("A"));
+		EXPECT_EQ(m_dataFinnhubStockDayLine.GetData(m_dataFinnhubStockDayLine.Size() - 1)->GetMarketDate(),
 		          20220101) << "新存储数据位于最后";
 
 		// 恢复原状
-		CSetWorldStockDayLine setWorldStockDayLineBasic;
-		setWorldStockDayLineBasic.m_strFilter = _T("[Date] = 20220101");
-		setWorldStockDayLineBasic.Open();
-		setWorldStockDayLineBasic.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setWorldStockDayLineBasic.IsEOF()) << "新存储数据的日期";
-		EXPECT_STREQ(setWorldStockDayLineBasic.m_Symbol, _T("A"));
-		while (!setWorldStockDayLineBasic.IsEOF()) {
-			setWorldStockDayLineBasic.Delete();
-			setWorldStockDayLineBasic.MoveNext();
+		CSetFinnhubStockDayLine setFinnhubStockDayLineBasic;
+		setFinnhubStockDayLineBasic.m_strFilter = _T("[Date] = 20220101");
+		setFinnhubStockDayLineBasic.Open();
+		setFinnhubStockDayLineBasic.m_pDatabase->BeginTrans();
+		EXPECT_FALSE(setFinnhubStockDayLineBasic.IsEOF()) << "新存储数据的日期";
+		EXPECT_STREQ(setFinnhubStockDayLineBasic.m_Symbol, _T("A"));
+		while (!setFinnhubStockDayLineBasic.IsEOF()) {
+			setFinnhubStockDayLineBasic.Delete();
+			setFinnhubStockDayLineBasic.MoveNext();
 		}
-		setWorldStockDayLineBasic.m_pDatabase->CommitTrans();
-		setWorldStockDayLineBasic.Close();
+		setFinnhubStockDayLineBasic.m_pDatabase->CommitTrans();
+		setFinnhubStockDayLineBasic.Close();
 	}
 }

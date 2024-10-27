@@ -816,7 +816,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStock.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStockDayLine.h">
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockDayLine.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetCryptoDayLine.h">

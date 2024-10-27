@@ -7,7 +7,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CContainerWorldStockTest : public Test {
+	class CContainerFinnhubStockTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");
@@ -34,7 +34,7 @@ namespace FireBirdTest {
 	protected:
 	};
 
-	TEST_F(CContainerWorldStockTest, TestResetBasicFinancial) {
+	TEST_F(CContainerFinnhubStockTest, TestResetBasicFinancial) {
 		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			const auto pStock = gl_dataContainerFinnhubStock.GetStock(l);
 			EXPECT_TRUE(pStock->IsUpdateBasicFinancial());
@@ -61,7 +61,7 @@ namespace FireBirdTest {
 		}
 	}
 
-	TEST_F(CContainerWorldStockTest, TestClearUpdateBasicFinancialFlag) {
+	TEST_F(CContainerFinnhubStockTest, TestClearUpdateBasicFinancialFlag) {
 		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			const auto pStock = gl_dataContainerFinnhubStock.GetStock(l);
 			EXPECT_FALSE(pStock->IsUpdateBasicFinancialDB());
@@ -83,7 +83,7 @@ namespace FireBirdTest {
 		// »Ö¸´Ô­×´
 	}
 
-	TEST_F(CContainerWorldStockTest, TestValidateStockSymbol1) {
+	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol1) {
 		const auto pStock = make_shared<CFinnhubStock>();
 		pStock->SetSymbol(_T("AAPL"));
 		pStock->SetExchangeCode(_T("US"));
@@ -91,7 +91,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.ValidateStockSymbol(pStock));
 	}
 
-	TEST_F(CContainerWorldStockTest, TestValidateStockSymbol2) {
+	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol2) {
 		const auto pStock = make_shared<CFinnhubStock>();
 		pStock->SetSymbol(_T("600601.SS"));
 		pStock->SetExchangeCode(_T("SS"));
@@ -99,7 +99,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.ValidateStockSymbol(pStock));
 	}
 
-	TEST_F(CContainerWorldStockTest, TestValidateStockSymbol3) {
+	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol3) {
 		const auto pStock = make_shared<CFinnhubStock>();
 		pStock->SetSymbol(_T("600601SS"));
 		pStock->SetExchangeCode(_T("SS"));
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.ValidateStockSymbol(pStock));
 	}
 
-	TEST_F(CContainerWorldStockTest, TestIsNeedSaveDayLine) {
+	TEST_F(CContainerFinnhubStockTest, TestIsNeedSaveDayLine) {
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateDayLineDB());
 		gl_dataContainerFinnhubStock.Get(0)->SetUpdateDayLineDB(true);
 
@@ -117,7 +117,7 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.Get(0)->SetUpdateDayLineDB(false);
 	}
 
-	TEST_F(CContainerWorldStockTest, TestIsUpdateInsiderTransactionDB) {
+	TEST_F(CContainerFinnhubStockTest, TestIsUpdateInsiderTransactionDB) {
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateInsiderTransactionDB());
 		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateInsiderTransactionDB(true);
 
@@ -127,7 +127,7 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateInsiderTransactionDB(false);
 	}
 
-	TEST_F(CContainerWorldStockTest, TestIsSaveInsiderSentiment) {
+	TEST_F(CContainerFinnhubStockTest, TestIsSaveInsiderSentiment) {
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateInsiderSentimentDB());
 		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateInsiderSentimentDB(true);
 
@@ -137,7 +137,7 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateInsiderSentimentDB(false);
 	}
 
-	TEST_F(CContainerWorldStockTest, TestIsUpdateBasicFinancialDB) {
+	TEST_F(CContainerFinnhubStockTest, TestIsUpdateBasicFinancialDB) {
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateBasicFinancialDB());
 		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateBasicFinancialDB(true);
 
@@ -147,7 +147,7 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateBasicFinancialDB(false);
 	}
 
-	TEST_F(CContainerWorldStockTest, TestIsUpdateCompanyNewsDB) {
+	TEST_F(CContainerFinnhubStockTest, TestIsUpdateCompanyNewsDB) {
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateCompanyNewsDB());
 		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateCompanyNewsDB(true);
 

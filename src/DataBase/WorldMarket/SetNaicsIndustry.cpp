@@ -1,6 +1,6 @@
 // CSetNaicsIndustry.cpp : CSetNaicsIndustry 类的实现
 
-// CSetWorldStockDayLine 实现
+// CSetFinnhubStockDayLine 实现
 
 // 代码生成在 2019年6月2日, 5:10
 

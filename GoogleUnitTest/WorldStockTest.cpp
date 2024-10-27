@@ -11,7 +11,7 @@
 #include"FinnhubStock.h"
 #include"WorldMarket.h"
 
-#include"SetWorldStockDayLine.h"
+#include"SetFinnhubStockDayLine.h"
 #include"SetInsiderTransaction.h"
 
 using namespace testing;
@@ -751,7 +751,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestSaveDayLine) {
 		vector<CDayLinePtr> vDayLine;
-		CSetWorldStockDayLine setDayLine;
+		CSetFinnhubStockDayLine setDayLine;
 
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
@@ -815,7 +815,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubStockTest, TestUpdateDayLineDB3) {
 		vector<CDayLinePtr> vDayLine;
 		CDayLinePtr pDayLine;
-		CSetWorldStockDayLine setDayLine;
+		CSetFinnhubStockDayLine setDayLine;
 
 		EXPECT_FALSE(stock.IsUpdateDayLineDB());
 		stock.SetUpdateDayLineDB(true); // 需要更新
@@ -1032,7 +1032,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestUpdateDayLine) {
 		vector<CDayLinePtr> vDayLine;
-		CSetWorldStockDayLine setDayLine;
+		CSetFinnhubStockDayLine setDayLine;
 
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
@@ -1078,7 +1078,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestUpdateDayLineStartEndDate) {
 		vector<CDayLinePtr> vDayLine;
-		CSetWorldStockDayLine setDayLine;
+		CSetFinnhubStockDayLine setDayLine;
 
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
@@ -1251,7 +1251,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestHaveNewDayLineData) {
 		vector<CDayLinePtr> vDayLine;
-		CSetWorldStockDayLine setDayLine;
+		CSetFinnhubStockDayLine setDayLine;
 
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
 		EXPECT_FALSE(stock.HaveNewDayLineData()) << "没有日线数据";
@@ -1428,7 +1428,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestSave) {
 		CFinnhubStock stock2;
-		CSetFinnhubStock setWorldStock;
+		CSetFinnhubStock setFinnhubStock;
 
 		stock.SetSymbol(_T("000001.US"));
 		stock.SetExchangeCode(_T("US"));
@@ -1477,22 +1477,22 @@ namespace FireBirdTest {
 		stock.SetCompanyNewsUpdateDate(20000108);
 		stock.SetBasicFinancialUpdateDate(20000109);
 
-		setWorldStock.Open();
-		setWorldStock.m_pDatabase->BeginTrans();
-		stock.Append(setWorldStock);
-		setWorldStock.m_pDatabase->CommitTrans();
-		setWorldStock.Close();
+		setFinnhubStock.Open();
+		setFinnhubStock.m_pDatabase->BeginTrans();
+		stock.Append(setFinnhubStock);
+		setFinnhubStock.m_pDatabase->CommitTrans();
+		setFinnhubStock.Close();
 
-		setWorldStock.m_strFilter = _T("[Symbol] = '000001.US'");
-		setWorldStock.Open();
-		stock2.Load(setWorldStock);
-		setWorldStock.m_pDatabase->BeginTrans();
-		while (!setWorldStock.IsEOF()) {
-			setWorldStock.Delete();
-			setWorldStock.MoveNext();
+		setFinnhubStock.m_strFilter = _T("[Symbol] = '000001.US'");
+		setFinnhubStock.Open();
+		stock2.Load(setFinnhubStock);
+		setFinnhubStock.m_pDatabase->BeginTrans();
+		while (!setFinnhubStock.IsEOF()) {
+			setFinnhubStock.Delete();
+			setFinnhubStock.MoveNext();
 		}
-		setWorldStock.m_pDatabase->CommitTrans();
-		setWorldStock.Close();
+		setFinnhubStock.m_pDatabase->CommitTrans();
+		setFinnhubStock.Close();
 
 		EXPECT_STREQ(stock.GetSymbol(), stock2.GetSymbol());
 		EXPECT_STREQ(stock.GetDescription(), stock2.GetDescription());

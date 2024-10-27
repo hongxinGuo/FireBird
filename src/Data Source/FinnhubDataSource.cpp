@@ -363,7 +363,7 @@ bool CFinnhubDataSource::InquireCompanyProfileConcise() {
 			SetInquiring(true);
 			fHaveInquiry = true;
 			gl_pWorldMarket->SetCurrentFinnhubFunction(_T("简介:") + gl_dataContainerFinnhubStock.GetStock(lCurrentProfilePos)->GetSymbol());
-			//TRACE("更新%s简介\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
+			//TRACE("更新%s简介\n", m_vFinnhubStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
 		}
 		else {
 			m_fInquiringFinnhubStockProfile = false;
@@ -409,7 +409,7 @@ bool CFinnhubDataSource::InquireCompanyNews() {
 			SetInquiring(true);
 			fHaveInquiry = true;
 			gl_pWorldMarket->SetCurrentFinnhubFunction(_T("公司新闻:") + gl_dataContainerFinnhubStock.GetStock(lCurrentCompanyNewsPos)->GetSymbol());
-			//TRACE("更新%s公司新闻\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
+			//TRACE("更新%s公司新闻\n", m_vFinnhubStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
 		}
 		else {
 			m_fInquiringFinnhubCompanyNews = false;
@@ -451,7 +451,7 @@ bool CFinnhubDataSource::InquireCompanyBasicFinancial() {
 			SetInquiring(true);
 			fHaveInquiry = true;
 			gl_pWorldMarket->SetCurrentFinnhubFunction(_T("基本财务:") + gl_dataContainerFinnhubStock.GetStock(lCurrentBasicFinancialsPos)->GetSymbol());
-			//TRACE("更新%s简介\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
+			//TRACE("更新%s简介\n", m_vFinnhubStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
 		}
 		else {
 			m_fInquiringFinnhubCompanyBasicFinancial = false;

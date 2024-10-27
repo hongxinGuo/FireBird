@@ -291,7 +291,7 @@ bool CTiingoDataSource::InquireDayLine() {
 					}
 				}
 				else { // 免费账户只下载DOW30和自选股票的日线。
-					if (setDOW30.contains(pTiingoStock->GetSymbol()) || gl_dataContainerChosenWorldStock.IsSymbol(pTiingoStock->GetSymbol())) {
+					if (setDOW30.contains(pTiingoStock->GetSymbol()) || gl_dataContainerChosenFinnhubStock.IsSymbol(pTiingoStock->GetSymbol())) {
 						if (!gl_tiingoInaccessibleStock.HaveStock(iInquireType, pTiingoStock->GetSymbol())) {
 							fFound = true;
 							break;

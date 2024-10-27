@@ -17,4 +17,4 @@ public:
 	// льсп╨╞йЩ
 };
 
-using CContainerWorldStockDayLinePtr = shared_ptr<CContainerFinnhubStockDayLine>;
+using CContainerFinnhubStockDayLinePtr = shared_ptr<CContainerFinnhubStockDayLine>;

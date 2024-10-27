@@ -31,15 +31,15 @@ public:
 	void ResetAllUpdateDate() override;
 	int GetRatio() const final { return 1000; }
 
-	void Load(CSetFinnhubStock& setWorldStock);
+	void Load(CSetFinnhubStock& setFinnhubStock);
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckProfileUpdateStatus(long lTodayDate);
 	bool CheckCompanyNewsUpdateStatus(long lTodayDate);
 	bool CheckBasicFinancialUpdateStatus(long lTodayDate);
 	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
-	void Save(CSetFinnhubStock& setWorldStock) const;
-	void Update(CSetFinnhubStock& setWorldStock) const;
-	void Append(CSetFinnhubStock& setWorldStock) const;
+	void Save(CSetFinnhubStock& setFinnhubStock) const;
+	void Update(CSetFinnhubStock& setFinnhubStock) const;
+	void Append(CSetFinnhubStock& setFinnhubStock) const;
 	void SaveDayLine() { m_dataDayLine.SaveDB(m_strSymbol); }
 	void UpdateInsiderTransactionDB();
 	void UpdateInsiderSentimentDB();

@@ -3,14 +3,14 @@
 #include "ContainerFinnhubStockDayLine.h"
 
 #include "InfoReport.h"
-#include"SetWorldStockDayLine.h"
+#include"SetFinnhubStockDayLine.h"
 
 CContainerFinnhubStockDayLine::CContainerFinnhubStockDayLine() {}
 
 bool CContainerFinnhubStockDayLine::SaveDB(const CString& strStockSymbol) {
 	try {
-		CSetWorldStockDayLine setWorldStockDayLineBasic;
-		UpdateBasicDB(&setWorldStockDayLineBasic, strStockSymbol);
+		CSetFinnhubStockDayLine setFinnhubStockDayLineBasic;
+		UpdateBasicDB(&setFinnhubStockDayLineBasic, strStockSymbol);
 	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
@@ -20,7 +20,7 @@ bool CContainerFinnhubStockDayLine::SaveDB(const CString& strStockSymbol) {
 
 bool CContainerFinnhubStockDayLine::LoadDB(const CString& strStockSymbol) {
 	try {
-		CSetWorldStockDayLine setDayLineBasic;
+		CSetFinnhubStockDayLine setDayLineBasic;
 
 		// 装入DayLine数据
 		setDayLineBasic.m_strFilter = _T("[Symbol] = '");

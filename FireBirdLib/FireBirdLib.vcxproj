@@ -114,7 +114,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenForex.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStock.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldStockDayLine.h" />
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyDividend.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoFinancialState.h" />

@@ -110,7 +110,7 @@ public:
 	afx_msg void OnRebuildEpsSurprise();
 	afx_msg void OnRebuildPeer();
 	afx_msg void OnRebuildDayLine();
-	afx_msg void OnUpdateWorldStockDayLineStartEnd();
+	afx_msg void OnUpdateFinnhubStockDayLineStartEnd();
 	afx_msg void OnRecordFinnhubWebSocket();
 	afx_msg void OnUpdateRecordFinnhubWebSocket(CCmdUI* pCmdUI);
 	afx_msg void OnRecordTiingoCryptoWebSocket();

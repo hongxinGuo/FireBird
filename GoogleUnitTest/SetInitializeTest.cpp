@@ -32,7 +32,7 @@
 #include"SetDayLineBasicInfo.h"
 #include"SetWeekLineBasicInfo.h"
 #include"SetCryptoDayLine.h"
-#include"SetWorldStockDayLine.h"
+#include"SetFinnhubStockDayLine.h"
 #include"SetForexDayLine.h"
 
 #include"SetChinaChosenStock.h"
@@ -227,16 +227,16 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setWeekLineBasicInfo.GetDefaultSQL(), _T("[weekline]"));
 	}
 
-	TEST_F(SetInitializeTest, TestWorldStockDayLineInitialize) {
-		CSetWorldStockDayLine setWorldStockDayLine;
+	TEST_F(SetInitializeTest, TestFinnhubStockDayLineInitialize) {
+		CSetFinnhubStockDayLine setFinnhubStockDayLine;
 
 		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setWorldStockDayLine.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+		EXPECT_STREQ(setFinnhubStockDayLine.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setWorldStockDayLine.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
+		EXPECT_STREQ(setFinnhubStockDayLine.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setWorldStockDayLine.GetDefaultSQL(), _T("[finnhub_stock_dayline]"));
+		EXPECT_STREQ(setFinnhubStockDayLine.GetDefaultSQL(), _T("[finnhub_stock_dayline]"));
 	}
 
 	TEST_F(SetInitializeTest, TestCryptoDayLineInitialize) {
@@ -479,16 +479,16 @@ namespace FireBirdTest {
 		EXPECT_STREQ(setTiingoStockDayLine.GetDefaultSQL(), _T("[tiingo_stock_dayline]"));
 	}
 
-	TEST_F(SetInitializeTest, TestWorldStockInitialize) {
-		CSetFinnhubStock setWorldStock;
+	TEST_F(SetInitializeTest, TestFinnhubStockInitialize) {
+		CSetFinnhubStock setFinnhubStock;
 
 		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
-		EXPECT_STREQ(setWorldStock.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+		EXPECT_STREQ(setFinnhubStock.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(true);
-		EXPECT_STREQ(setWorldStock.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
+		EXPECT_STREQ(setFinnhubStock.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
 		gl_systemConfiguration.SetWorkingMode(false);
 
-		EXPECT_STREQ(setWorldStock.GetDefaultSQL(), _T("[finnhub_stock_profile]"));
+		EXPECT_STREQ(setFinnhubStock.GetDefaultSQL(), _T("[finnhub_stock_profile]"));
 	}
 
 	TEST_F(SetInitializeTest, TestFinnhubStockBasicFinancialMetricInitialize) {

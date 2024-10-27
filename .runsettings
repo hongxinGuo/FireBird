@@ -144,7 +144,7 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CMainFrame::OnViewCustomize</Function>
 								<Function>CMainFrame::OnSize</Function>
 								<Function>CMainFrame::OnSettingChange</Function>
-								<Function>CMainFrame::OnUpdateWorldStockDayLineStartEnd</Function>
+								<Function>CMainFrame::OnUpdateFinnhubStockDayLineStartEnd</Function>
 								<Function>CMainFrame::OnRecordTiingoCryptoWebSocket</Function>
 								<Function>CMainFrame::OnRecordTiingoForexWebSocket</Function>
 								<Function>CMainFrame::OnRecordTiingoIEXWebSocket</Function>

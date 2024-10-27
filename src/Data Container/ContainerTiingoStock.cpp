@@ -35,35 +35,35 @@ void CContainerTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
 void CContainerTiingoStock::UpdateDB() {
 	if (IsUpdateProfileDB()) {
 		try {
-			CSetTiingoStock setWorldStock;
-			setWorldStock.m_strSort = _T("[Ticker]");
-			setWorldStock.Open();
-			setWorldStock.m_pDatabase->BeginTrans();
-			while (!setWorldStock.IsEOF()) {	//更新原有的代码集状态
-				if (IsSymbol(setWorldStock.m_Ticker)) {
-					const CTiingoStockPtr pStock = GetStock(setWorldStock.m_Ticker);
+			CSetTiingoStock setFinnhubStock;
+			setFinnhubStock.m_strSort = _T("[Ticker]");
+			setFinnhubStock.Open();
+			setFinnhubStock.m_pDatabase->BeginTrans();
+			while (!setFinnhubStock.IsEOF()) {	//更新原有的代码集状态
+				if (IsSymbol(setFinnhubStock.m_Ticker)) {
+					const CTiingoStockPtr pStock = GetStock(setFinnhubStock.m_Ticker);
 					ASSERT(pStock != nullptr);
 					if (pStock->IsUpdateProfileDB()) {
-						pStock->Update(setWorldStock);
+						pStock->Update(setFinnhubStock);
 						pStock->SetUpdateProfileDB(false);
 					}
 				}
 				else {
-					setWorldStock.Delete(); // 删除已不存在的代码。
+					setFinnhubStock.Delete(); // 删除已不存在的代码。
 				}
-				setWorldStock.MoveNext();
+				setFinnhubStock.MoveNext();
 			}
 			for (size_t l = 0; l < m_vStock.size(); l++) {
 				const CTiingoStockPtr pStock = GetStock(l);
 				ASSERT(pStock != nullptr);
 				if (pStock->IsUpdateProfileDB()) {
-					pStock->Append(setWorldStock);
+					pStock->Append(setFinnhubStock);
 					pStock->SetUpdateProfileDB(false);
 					pStock->SetTodayNewStock(false);
 				}
 			}
-			setWorldStock.m_pDatabase->CommitTrans();
-			setWorldStock.Close();
+			setFinnhubStock.m_pDatabase->CommitTrans();
+			setFinnhubStock.Close();
 		} catch (CException* e) {
 			ReportInformationAndDeleteException(e);
 		}

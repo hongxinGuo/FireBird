@@ -93,9 +93,9 @@ public:
 	static void ProcessTiingoCryptoWebSocketData();
 	static void ProcessTiingoForexWebSocketData();
 
-	void UpdateWorldStockFromWebSocket();
-	void UpdateWorldStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr& pTiingoIEXbData);
-	void UpdateWorldStockFromFinnhubSocket(const CFinnhubSocketPtr& pFinnhub);
+	void UpdateFinnhubStockFromWebSocket();
+	void UpdateFinnhubStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr& pTiingoIEXbData);
+	void UpdateFinnhubStockFromFinnhubSocket(const CFinnhubSocketPtr& pFinnhub);
 
 	void UpdateMarketStatus(const CMarketStatussPtr& pv) const;
 	void UpdateMarketHoliday(const CMarketHolidaysPtr& pv) const;

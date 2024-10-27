@@ -8,5 +8,5 @@ namespace testing {
 		MOCK_METHOD(bool, UpdateEPSSurpriseDB, (), (override));
 	};
 
-	using CMockWorldStockPtr = shared_ptr<CMockFinnhubStock>;
+	using CMockFinnhubStockPtr = shared_ptr<CMockFinnhubStock>;
 }

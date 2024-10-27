@@ -15,7 +15,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	class CMockWorldStockTest : public Test {
+	class CMockFinnhubStockTest : public Test {
 	protected:
 		static void SetUpTestSuite() {
 			SCOPED_TRACE("");

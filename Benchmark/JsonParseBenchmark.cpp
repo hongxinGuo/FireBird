@@ -249,7 +249,7 @@ public:
 		sNeteaseRTDataForPTree.resize(sNeteaseRTDataForPTree.size() - 2);
 		sNeteaseRTDataForPTree.erase(sNeteaseRTDataForPTree.begin(), sNeteaseRTDataForPTree.begin() + 21);
 
-		sWorldStockUpdateParameter = _T("{\"Finnhub\":{\"StockFundamentalsCompanyProfileConcise\":20230110,\"StockFundamentalsCompanyNews\":20230205,\"StockFundamentalsBasicFinancials\":20230112,\"StockPriceQuote\":19800104,\"StockFundamentalsPeer\":20230115,\"StockFundamentalsInsiderTransaction\":20230116,\"StockFundamentalsInsiderSentiment\":20230117,\"StockEstimatesEPSSurprise\":19800108},\"Tiingo\":{\"StockFundamentalsCompanyProfile\":20221222,\"StockPriceCandles\":20230210}}");
+		sFinnhubStockUpdateParameter = _T("{\"Finnhub\":{\"StockFundamentalsCompanyProfileConcise\":20230110,\"StockFundamentalsCompanyNews\":20230205,\"StockFundamentalsBasicFinancials\":20230112,\"StockPriceQuote\":19800104,\"StockFundamentalsPeer\":20230115,\"StockFundamentalsInsiderTransaction\":20230116,\"StockFundamentalsInsiderSentiment\":20230117,\"StockEstimatesEPSSurprise\":19800108},\"Tiingo\":{\"StockFundamentalsCompanyProfile\":20221222,\"StockPriceCandles\":20230210}}");
 
 		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("tiingo_fundamentals.json");
 		LoadFromFile(strFileName, sTiingoSymbol);
@@ -265,7 +265,7 @@ public:
 	string sv;
 	string sNeteaseRTDataForPTree;
 	string sTengxunDayLine;
-	string sWorldStockUpdateParameter;
+	string sFinnhubStockUpdateParameter;
 	string sTiingoSymbol;
 	CWebDataPtr pWebData;
 	bool bError{ false };

@@ -15,7 +15,7 @@
 #include"TiingoForexWebSocket.h"
 #include"TiingoCryptoWebSocket.h"
 
-#include"SetWorldStockDayLine.h"
+#include"SetFinnhubStockDayLine.h"
 
 #include "ChinaMarket.h"
 #include "InfoReport.h"
@@ -91,7 +91,7 @@ void CWorldMarket::ResetDataContainer() {
 	gl_dataContainerTiingoStock.Reset();
 	gl_dataContainerTiingoCryptoSymbol.Reset();
 
-	gl_dataContainerChosenWorldStock.Reset();
+	gl_dataContainerChosenFinnhubStock.Reset();
 	gl_dataContainerChosenWorldForex.Reset();
 	gl_dataContainerChosenWorldCrypto.Reset();
 }
@@ -106,7 +106,7 @@ void CWorldMarket::ResetMarket() {
 	gl_dataContainerFinnhubStockExchange.LoadDB(); // 装入世界交易所信息
 	gl_dataContainerFinnhubCountry.LoadDB();
 	gl_dataContainerFinnhubStock.LoadDB();
-	gl_dataContainerChosenWorldStock.LoadDB();
+	gl_dataContainerChosenFinnhubStock.LoadDB();
 	gl_dataContainerFinnhubForexExchange.LoadDB();
 	gl_dataFinnhubForexSymbol.LoadDB();
 	gl_dataContainerChosenWorldForex.LoadDB();
@@ -230,7 +230,7 @@ void CWorldMarket::TaskProcessWebSocketData(long lCurrentTime) {
 	ASSERT(!IsTimeToResetSystem(lCurrentTime));	// 下午五时重启系统，各数据库需要重新装入，故而此时不允许更新。
 
 	ProcessWebSocketData();
-	UpdateWorldStockFromWebSocket();
+	UpdateFinnhubStockFromWebSocket();
 
 	long lNextTime = GetNextSecond(lCurrentTime);
 	if (IsTimeToResetSystem(lNextTime)) lNextTime = 170501;
@@ -243,7 +243,7 @@ void CWorldMarket::TaskMonitorWebSocket(long lCurrentTime) {
 
 	gl_pFinnhubWebSocket->MonitorWebSocket(GetFinnhubWebSocketSymbols());
 	gl_pTiingoCryptoWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldCrypto.GetSymbols());
-	gl_pTiingoIEXWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldStock.GetSymbols());
+	gl_pTiingoIEXWebSocket->MonitorWebSocket(gl_dataContainerChosenFinnhubStock.GetSymbols());
 	gl_pTiingoForexWebSocket->MonitorWebSocket(gl_dataContainerChosenWorldForex.GetSymbols());
 }
 
@@ -757,25 +757,25 @@ void CWorldMarket::RebuildStockDayLineDB() {
 void CWorldMarket::UpdateStockDayLineStartEndDate() {
 	try {
 		const CString strFilterPrefix = _T("[Symbol] = '");
-		CSetWorldStockDayLine setWorldStockDayLine;
+		CSetFinnhubStockDayLine setFinnhubStockDayLine;
 
 		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			const auto pStock = gl_dataContainerFinnhubStock.GetStock(l);
-			setWorldStockDayLine.m_strFilter = strFilterPrefix + pStock->GetSymbol() + _T("'");
-			setWorldStockDayLine.m_strSort = _T("[Date]");
-			setWorldStockDayLine.Open();
-			if (!setWorldStockDayLine.IsEOF()) {
-				if (setWorldStockDayLine.m_Date < pStock->GetDayLineStartDate()) {
-					pStock->SetDayLineStartDate(setWorldStockDayLine.m_Date);
+			setFinnhubStockDayLine.m_strFilter = strFilterPrefix + pStock->GetSymbol() + _T("'");
+			setFinnhubStockDayLine.m_strSort = _T("[Date]");
+			setFinnhubStockDayLine.Open();
+			if (!setFinnhubStockDayLine.IsEOF()) {
+				if (setFinnhubStockDayLine.m_Date < pStock->GetDayLineStartDate()) {
+					pStock->SetDayLineStartDate(setFinnhubStockDayLine.m_Date);
 					pStock->SetUpdateProfileDB(true);
 				}
-				setWorldStockDayLine.MoveLast();
-				if (setWorldStockDayLine.m_Date > pStock->GetDayLineEndDate()) {
-					pStock->SetDayLineEndDate(setWorldStockDayLine.m_Date);
+				setFinnhubStockDayLine.MoveLast();
+				if (setFinnhubStockDayLine.m_Date > pStock->GetDayLineEndDate()) {
+					pStock->SetDayLineEndDate(setFinnhubStockDayLine.m_Date);
 					pStock->SetUpdateProfileDB(true);
 				}
 			}
-			setWorldStockDayLine.Close();
+			setFinnhubStockDayLine.Close();
 		}
 	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
@@ -788,7 +788,7 @@ void CWorldMarket::UpdateStockDayLineStartEndDate() {
 vectorString CWorldMarket::GetFinnhubWebSocketSymbols() {
 	vectorString vSymbol;
 
-	vectorString vSymbolTemp = gl_dataContainerChosenWorldStock.GetSymbols();
+	vectorString vSymbolTemp = gl_dataContainerChosenFinnhubStock.GetSymbols();
 	for (auto symbol : vSymbolTemp) {
 		vSymbol.push_back(symbol);
 	}
@@ -888,11 +888,11 @@ void CWorldMarket::ProcessTiingoForexWebSocketData() {
 /// 目前只使用IEX和Crypto的数据，其他数据抛弃掉
 /// </summary>
 /// <returns></returns>
-void CWorldMarket::UpdateWorldStockFromWebSocket() {
+void CWorldMarket::UpdateFinnhubStockFromWebSocket() {
 	auto total = gl_SystemData.GetTiingoIEXSocketSize();
 	for (auto i = 0; i < total; i++) {
 		const CTiingoIEXSocketPtr pIEXData = gl_SystemData.PopTiingoIEXSocket();
-		UpdateWorldStockFromTiingoIEXSocket(pIEXData);
+		UpdateFinnhubStockFromTiingoIEXSocket(pIEXData);
 		gl_systemMessage.SetCurrentTiingoWebSocketIEX(pIEXData->m_sSymbol.c_str());
 	}
 
@@ -911,12 +911,12 @@ void CWorldMarket::UpdateWorldStockFromWebSocket() {
 	total = gl_SystemData.GetFinnhubSocketSize();
 	for (auto i = 0; i < total; i++) {
 		const CFinnhubSocketPtr pFinnhubData = gl_SystemData.PopFinnhubSocket();
-		UpdateWorldStockFromFinnhubSocket(pFinnhubData);
+		UpdateFinnhubStockFromFinnhubSocket(pFinnhubData);
 		gl_systemMessage.SetCurrentFinnhubWebSocketStake(pFinnhubData->m_sSymbol.c_str());
 	}
 }
 
-void CWorldMarket::UpdateWorldStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr& pTiingoIEXbData) {
+void CWorldMarket::UpdateFinnhubStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr& pTiingoIEXbData) {
 	if (gl_dataContainerFinnhubStock.IsSymbol(pTiingoIEXbData->m_sSymbol.c_str())) {
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoIEXbData->m_sSymbol.c_str());
 		pStock->SetActive(true);
@@ -934,7 +934,7 @@ void CWorldMarket::UpdateWorldStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr
 	}
 }
 
-void CWorldMarket::UpdateWorldStockFromFinnhubSocket(const CFinnhubSocketPtr& pFinnhubData) {
+void CWorldMarket::UpdateFinnhubStockFromFinnhubSocket(const CFinnhubSocketPtr& pFinnhubData) {
 	if (gl_dataContainerFinnhubStock.IsSymbol(pFinnhubData->m_sSymbol.c_str())) {
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(pFinnhubData->m_sSymbol.c_str());
 		pStock->SetActive(true);

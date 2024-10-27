@@ -70,33 +70,33 @@ void CContainerFinnhubStock::ResetDayLine() {
 }
 
 bool CContainerFinnhubStock::LoadDB() {
-	CSetFinnhubStock setWorldStock;
-	CFinnhubStockPtr pWorldStock = nullptr;
+	CSetFinnhubStock setFinnhubStock;
+	CFinnhubStockPtr pFinnhubStock = nullptr;
 	CString str;
 	long lMaxSymbolLength = 0;
 
-	setWorldStock.m_strSort = _T("[Symbol]");
-	setWorldStock.Open();
-	setWorldStock.m_pDatabase->BeginTrans();
-	while (!setWorldStock.IsEOF()) {
-		pWorldStock = make_shared<CFinnhubStock>();
-		pWorldStock->Load(setWorldStock);
-		if (!IsSymbol(pWorldStock->GetSymbol())) {
-			pWorldStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
-			Add(pWorldStock);
-			if (pWorldStock->GetSymbol().GetLength() > lMaxSymbolLength) {
-				lMaxSymbolLength = pWorldStock->GetSymbol().GetLength();
+	setFinnhubStock.m_strSort = _T("[Symbol]");
+	setFinnhubStock.Open();
+	setFinnhubStock.m_pDatabase->BeginTrans();
+	while (!setFinnhubStock.IsEOF()) {
+		pFinnhubStock = make_shared<CFinnhubStock>();
+		pFinnhubStock->Load(setFinnhubStock);
+		if (!IsSymbol(pFinnhubStock->GetSymbol())) {
+			pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
+			Add(pFinnhubStock);
+			if (pFinnhubStock->GetSymbol().GetLength() > lMaxSymbolLength) {
+				lMaxSymbolLength = pFinnhubStock->GetSymbol().GetLength();
 			}
 		}
 		else {
-			setWorldStock.Delete(); // 删除此重复代码
+			setFinnhubStock.Delete(); // 删除此重复代码
 		}
-		setWorldStock.MoveNext();
+		setFinnhubStock.MoveNext();
 
-		//ValidateStockSymbol(pWorldStock);
+		//ValidateStockSymbol(pFinnhubStock);
 	}
-	setWorldStock.m_pDatabase->CommitTrans();
-	setWorldStock.Close();
+	setFinnhubStock.m_pDatabase->CommitTrans();
+	setFinnhubStock.Close();
 	Sort();
 
 	ASSERT(lMaxSymbolLength < 20); // 目前WorldMarket数据库的股票代码长度限制为20个字符
@@ -117,25 +117,25 @@ bool CContainerFinnhubStock::LoadDB() {
 void CContainerFinnhubStock::UpdateProfileDB() {
 	if (IsUpdateProfileDB()) {
 		try {
-			CSetFinnhubStock setWorldStock;
+			CSetFinnhubStock setFinnhubStock;
 			int iCurrentUpdated = 0;
 			int iStockNeedUpdate = 0;
 			for (const auto& pStock : m_vStock) {
 				if (pStock->IsUpdateProfileDB()) iStockNeedUpdate++;
 			}
-			setWorldStock.m_strSort = _T("[Symbol]");
-			setWorldStock.Open();
-			setWorldStock.m_pDatabase->BeginTrans();
+			setFinnhubStock.m_strSort = _T("[Symbol]");
+			setFinnhubStock.Open();
+			setFinnhubStock.m_pDatabase->BeginTrans();
 			while (iCurrentUpdated < iStockNeedUpdate) {	//更新原有的代码集状态
-				if (setWorldStock.IsEOF()) break;
-				const CFinnhubStockPtr pStock = GetStock(setWorldStock.m_Symbol);
+				if (setFinnhubStock.IsEOF()) break;
+				const CFinnhubStockPtr pStock = GetStock(setFinnhubStock.m_Symbol);
 				ASSERT(pStock != nullptr);
 				if (pStock->IsUpdateProfileDB()) {
 					iCurrentUpdated++;
-					pStock->Update(setWorldStock);
+					pStock->Update(setFinnhubStock);
 					pStock->SetUpdateProfileDB(false);
 				}
-				setWorldStock.MoveNext();
+				setFinnhubStock.MoveNext();
 			}
 			if (iCurrentUpdated < iStockNeedUpdate) { // 添加新的股票简介
 				for (size_t l = 0; l < m_vStock.size(); l++) {
@@ -143,15 +143,15 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 					ASSERT(pStock != nullptr);
 					if (pStock->IsUpdateProfileDB()) {
 						iCurrentUpdated++;
-						pStock->Append(setWorldStock);
+						pStock->Append(setFinnhubStock);
 						pStock->SetUpdateProfileDB(false);
 						pStock->SetTodayNewStock(false);
 					}
 					if (iCurrentUpdated >= iStockNeedUpdate) break;
 				}
 			}
-			setWorldStock.m_pDatabase->CommitTrans();
-			setWorldStock.Close();
+			setFinnhubStock.m_pDatabase->CommitTrans();
+			setFinnhubStock.Close();
 		} catch (CException* e) {
 			ReportInformationAndDeleteException(e);
 		}

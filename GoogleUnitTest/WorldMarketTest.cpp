@@ -412,29 +412,29 @@ namespace FireBirdTest {
 			ASSERT_FALSE(true);
 		}
 
-		CSetFinnhubStock setWorldStock;
-		setWorldStock.m_strFilter = _T("[Symbol] = '000001.SS'");
-		setWorldStock.Open();
-		EXPECT_FALSE(setWorldStock.IsEOF());
-		EXPECT_STREQ(setWorldStock.m_Currency, _T("No Currency")) << "此条目已更新";
-		setWorldStock.m_pDatabase->BeginTrans();
-		setWorldStock.Edit();
-		setWorldStock.m_Currency = _T("");
-		setWorldStock.Update();
-		setWorldStock.m_pDatabase->CommitTrans();
-		setWorldStock.Close();
+		CSetFinnhubStock setFinnhubStock;
+		setFinnhubStock.m_strFilter = _T("[Symbol] = '000001.SS'");
+		setFinnhubStock.Open();
+		EXPECT_FALSE(setFinnhubStock.IsEOF());
+		EXPECT_STREQ(setFinnhubStock.m_Currency, _T("No Currency")) << "此条目已更新";
+		setFinnhubStock.m_pDatabase->BeginTrans();
+		setFinnhubStock.Edit();
+		setFinnhubStock.m_Currency = _T("");
+		setFinnhubStock.Update();
+		setFinnhubStock.m_pDatabase->CommitTrans();
+		setFinnhubStock.Close();
 
-		CSetFinnhubStock setWorldStock2;
-		setWorldStock2.m_strFilter = _T("[Symbol] = 'SS.SS.US'");
-		setWorldStock2.Open();
-		EXPECT_FALSE(setWorldStock2.IsEOF());
-		setWorldStock2.m_pDatabase->BeginTrans();
-		while (!setWorldStock2.IsEOF()) {
-			setWorldStock2.Delete();
-			setWorldStock2.MoveNext();
+		CSetFinnhubStock setFinnhubStock2;
+		setFinnhubStock2.m_strFilter = _T("[Symbol] = 'SS.SS.US'");
+		setFinnhubStock2.Open();
+		EXPECT_FALSE(setFinnhubStock2.IsEOF());
+		setFinnhubStock2.m_pDatabase->BeginTrans();
+		while (!setFinnhubStock2.IsEOF()) {
+			setFinnhubStock2.Delete();
+			setFinnhubStock2.MoveNext();
 		}
-		setWorldStock2.m_pDatabase->CommitTrans();
-		setWorldStock2.Close();
+		setFinnhubStock2.m_pDatabase->CommitTrans();
+		setFinnhubStock2.Close();
 
 		// 恢复原状
 		pStock = gl_dataContainerFinnhubStock.GetStock(_T("SS.SS.US"));
