@@ -71,7 +71,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCountry(_T(""));
 			m_pWebData = pData->m_pData;
-			m_FinnhubCompanyProfileConcise.CheckAccessRight(m_pWebData);
+			m_FinnhubCompanyProfileConcise.__Test_checkAccessRight(m_pWebData);
 
 			m_FinnhubCompanyProfileConcise.SetMarket(gl_pWorldMarket);
 			m_FinnhubCompanyProfileConcise.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));

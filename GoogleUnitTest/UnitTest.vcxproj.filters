@@ -264,9 +264,6 @@
     <ClCompile Include="ContainerForexDayLineTest.cpp">
       <Filter>Test源文件\Data Container\World Market</Filter>
     </ClCompile>
-    <ClCompile Include="ContainerFinnhubStockDayLineTest.cpp">
-      <Filter>Test源文件\Data Container\World Market</Filter>
-    </ClCompile>
     <ClCompile Include="ContainerChinaDayLineTest.cpp">
       <Filter>Test源文件\Data Container\China Market</Filter>
     </ClCompile>
@@ -447,12 +444,6 @@
     <ClCompile Include="MockChinaStockTest.cpp">
       <Filter>Test源文件\Stock\China stock</Filter>
     </ClCompile>
-    <ClCompile Include="MockFinnhubStockTest.cpp">
-      <Filter>Test源文件\Stock\World stock</Filter>
-    </ClCompile>
-    <ClCompile Include="FinnhubStockTest.cpp">
-      <Filter>Test源文件\Stock\World stock</Filter>
-    </ClCompile>
     <ClCompile Include="JsonGetValueTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>
@@ -485,9 +476,6 @@
     </ClCompile>
     <ClCompile Include="TiingoIEXWebSocketTest.cpp">
       <Filter>Test源文件\Web Socket</Filter>
-    </ClCompile>
-    <ClCompile Include="ContainerFinnhubStockTest.cpp">
-      <Filter>Test源文件\Data Container\World Market</Filter>
     </ClCompile>
     <ClCompile Include="ProductDummyTest.cpp">
       <Filter>Test源文件\Factory Product</Filter>
@@ -660,6 +648,10 @@
     <ClCompile Include="ProductTiingoIEXTopOfBookTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
+    <ClCompile Include="ContainerWorldStockTest.cpp" />
+    <ClCompile Include="ContainerWorldStockDayLineTest.cpp" />
+    <ClCompile Include="MockFinnhubStockTest.cpp" />
+    <ClCompile Include="FinnhubStockTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockMainFrm.h">

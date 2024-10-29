@@ -69,7 +69,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_productFinnhubForexSymbol.CheckAccessRight(m_pWebData);
+			m_productFinnhubForexSymbol.__Test_checkAccessRight(m_pWebData);
 
 			m_pvForexSymbol = nullptr;
 		}
@@ -131,7 +131,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_productFinnhubForexSymbol.CheckAccessRight(m_pWebData);
+			m_productFinnhubForexSymbol.__Test_checkAccessRight(m_pWebData);
 
 			m_productFinnhubForexSymbol.SetMarket(gl_pWorldMarket);
 			m_productFinnhubForexSymbol.SetIndex(0);

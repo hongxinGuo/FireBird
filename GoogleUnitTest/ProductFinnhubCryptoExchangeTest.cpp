@@ -75,7 +75,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_finnhubCryptoExchange.CheckAccessRight(m_pWebData);
+			m_finnhubCryptoExchange.__Test_checkAccessRight(m_pWebData);
 
 			m_pvExchange = nullptr;
 		}
@@ -129,7 +129,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_finnhubCryptoExchange.CheckAccessRight(m_pWebData);
+			m_finnhubCryptoExchange.__Test_checkAccessRight(m_pWebData);
 
 			m_finnhubCryptoExchange.SetMarket(gl_pWorldMarket);
 			EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCryptoExchange());

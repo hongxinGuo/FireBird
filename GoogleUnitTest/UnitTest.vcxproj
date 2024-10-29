@@ -179,7 +179,7 @@
     <ClCompile Include="MockFinnhubCryptoSymbolTest.cpp" />
     <ClCompile Include="MockFinnhubForexSymbolTest.cpp" />
     <ClCompile Include="MockWorldMarketTest.cpp" />
-    <ClCompile Include="MockWorldStockTest.cpp" />
+    <ClCompile Include="MockFinnhubStockTest.cpp" />
     <ClCompile Include="NaicsIndustryTest.cpp" />
     <ClCompile Include="ProcessFinnhubWebDataTest.cpp" />
     <ClCompile Include="ProcessTiingoWebDataTest.cpp" />
@@ -201,7 +201,7 @@
     <ClCompile Include="VirtualWebSocketTest.cpp" />
     <ClCompile Include="VirtualWorldMarketWebProductTest.cpp" />
     <ClCompile Include="WorldMarketTest.cpp" />
-    <ClCompile Include="WorldStockTest.cpp" />
+    <ClCompile Include="FinnhubStockTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
     <ClCompile Include="CalculateHighLowTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />

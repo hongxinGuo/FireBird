@@ -27,9 +27,8 @@ public:
 
 	long GetTotalActiveStocks();
 
-	bool IsUpdateFinancialStateDB() noexcept;
-	void UpdateFinancialStateDB() const;
-
-	bool IsUpdateDayLineDB();
+	void UpdateFinancialStateDB();
 	void UpdateDayLineDB();
+
+	bool IsUpdateFinancialStateDB() noexcept;
 };

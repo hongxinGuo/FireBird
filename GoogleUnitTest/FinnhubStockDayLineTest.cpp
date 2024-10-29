@@ -84,7 +84,7 @@ namespace FireBirdTest {
 			m_lIndex = pData->m_lIndex;
 			pvDayLine = nullptr;
 			m_pWebData = pData->m_pData;
-			m_finnhubStockDayLine.CheckAccessRight(m_pWebData);
+			m_finnhubStockDayLine.__Test_checkAccessRight(m_pWebData);
 
 			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol);
 			m_finnhubStockDayLine.SetMarket(gl_pWorldMarket);

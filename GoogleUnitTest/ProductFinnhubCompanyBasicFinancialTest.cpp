@@ -471,7 +471,7 @@ namespace FireBirdTest {
 			m_pStock->SetUpdateBasicFinancial(true);
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			m_pWebData = pData->m_pData;
-			m_finnhubCompanyBasicFinancial.CheckAccessRight(m_pWebData);
+			m_finnhubCompanyBasicFinancial.__Test_checkAccessRight(m_pWebData);
 
 			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
@@ -561,7 +561,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), 19800101);
 			m_pStock->SetUpdateBasicFinancialDB(false);
 			m_pWebData = pData->m_pData;
-			m_finnhubCompanyBasicFinancial.CheckAccessRight(m_pWebData);
+			m_finnhubCompanyBasicFinancial.__Test_checkAccessRight(m_pWebData);
 
 			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket);
 			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);

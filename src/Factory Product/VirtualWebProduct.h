@@ -97,7 +97,7 @@ public:
 	int GetInquireType() const noexcept { return m_iInquireType; }
 
 	// 测试用
-	virtual bool CheckAccessRight(CWebDataPtr pWebData) { return true; }  // todo 不再使用，准备删除之
+	virtual bool __Test_checkAccessRight(CWebDataPtr pWebData) { return true; }  // todo 不再使用，准备删除之
 
 protected:
 	CVirtualMarketWeakPtr m_pMarket;// Product被用于工作线程中。当系统退出时，由于无法保证工作线程先结束，故而此处使用weak_ptr智能指针以防止内存泄露。
@@ -107,7 +107,7 @@ protected:
 	CString m_strInquiringSymbol{ _T("") }; // 目前查询的证券名称
 	long m_lIndex{ -1 }; // 当虚处理的product为一聚合时，这个是索引。 预先设置为越界
 	int m_iInquireType{ -1 }; // product索引，Finnhub申请的索引，如SYMBOL_LOOKUP_等。 预先设置为越界
-	int m_iReceivedDataStatus{ GOOD_DATA__ }; // 0:有效数据；1:void data(只有{}或[]两个数据); 2:没有权利申请（{"error": "You don't have access to this resource."}）
+	int m_iReceivedDataStatus{ GOOD_DATA__ }; // 1:有效数据；2:void data(只有{}或[]两个数据); 3:没有权利申请
 };
 
 using CVirtualWebProductPtr = shared_ptr<CVirtualWebProduct>;

@@ -4,7 +4,6 @@
 #include"nlohmann/json.hpp"
 
 #include"VirtualStock.h"
-#include"TiingoStock.h"
 
 #include"FinnhubStockBasicFinancial.h"
 

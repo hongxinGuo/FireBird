@@ -109,7 +109,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_finnhubEconomicCalendar.CheckAccessRight(m_pWebData);
+			m_finnhubEconomicCalendar.__Test_checkAccessRight(m_pWebData);
 
 			m_pvEconomicCalendar = nullptr;
 		}
@@ -180,7 +180,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_finnhubEconomicCalendar.CheckAccessRight(m_pWebData);
+			m_finnhubEconomicCalendar.__Test_checkAccessRight(m_pWebData);
 
 			m_finnhubEconomicCalendar.SetMarket(gl_pWorldMarket);
 			m_finnhubEconomicCalendar.SetIndex(0);

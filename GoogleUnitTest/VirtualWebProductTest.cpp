@@ -124,7 +124,7 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible1) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		finnhubWebProduct.CheckAccessRight(pWebData);
+		finnhubWebProduct.__Test_checkAccessRight(pWebData);
 
 		EXPECT_FALSE(finnhubWebProduct.CheckInaccessible());
 	}
@@ -133,7 +133,7 @@ namespace FireBirdTest {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
 		const CString strData = _T("{\"error1\":\"You don't have access to this resourc.\"}");
 		pWebData->Test_SetBuffer_(strData);
-		finnhubWebProduct.CheckAccessRight(pWebData);
+		finnhubWebProduct.__Test_checkAccessRight(pWebData);
 
 		EXPECT_FALSE(finnhubWebProduct.CheckInaccessible()) << "非拒绝提供信息";
 	}
@@ -143,7 +143,7 @@ namespace FireBirdTest {
 		const CString strData = _T("{\"error\":\"You don't have access to this resource.\"}");
 		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.SetInquiringExchange(_T("US"));
-		finnhubWebProduct.CheckAccessRight(pWebData);
+		finnhubWebProduct.__Test_checkAccessRight(pWebData);
 
 		EXPECT_FALSE(finnhubWebProduct.CheckInaccessible()) << "US交易所";
 		EXPECT_TRUE(finnhubWebProduct.IsNoRightToAccess());
@@ -157,7 +157,7 @@ namespace FireBirdTest {
 		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.SetInquiringExchange(_T("SZ"));
 		finnhubWebProduct.SetInquireType(STOCK_PRICE_CANDLES_);
-		finnhubWebProduct.CheckAccessRight(pWebData);
+		finnhubWebProduct.__Test_checkAccessRight(pWebData);
 
 		EXPECT_TRUE(finnhubWebProduct.CheckInaccessible()) << "将SZ交易所列入禁入名单";
 		EXPECT_TRUE(finnhubWebProduct.IsNoRightToAccess());
@@ -175,18 +175,18 @@ namespace FireBirdTest {
 		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.SetInquiringExchange(_T("AD"));
 		finnhubWebProduct.SetInquireType(STOCK_PRICE_CANDLES_);
-		finnhubWebProduct.CheckAccessRight(pWebData);
+		finnhubWebProduct.__Test_checkAccessRight(pWebData);
 
 		finnhubWebProduct.CheckInaccessible(); // 重置内部静态数据
 
 		finnhubWebProduct.SetInquiringExchange(_T("US"));
 
 		for (int i = 0; i < 10; i++) {
-			finnhubWebProduct.CheckAccessRight(pWebData);
+			finnhubWebProduct.__Test_checkAccessRight(pWebData);
 
 			finnhubWebProduct.CheckInaccessible();
 		}
-		finnhubWebProduct.CheckAccessRight(pWebData);
+		finnhubWebProduct.__Test_checkAccessRight(pWebData);
 
 		EXPECT_TRUE(finnhubWebProduct.CheckInaccessible()) << "连续10次后，将US交易所列入禁入名单";
 		EXPECT_TRUE(finnhubWebProduct.IsNoRightToAccess());

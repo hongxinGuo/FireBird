@@ -192,7 +192,7 @@ void CTiingoStock::SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine
 	setDayLine.AddNew();
 	setDayLine.m_Date = lTradeDay;
 	setDayLine.m_Symbol = m_strSymbol;
-	setDayLine.m_Exchange = _T("");
+	setDayLine.m_Exchange = m_strExchangeCode;
 	setDayLine.m_DisplaySymbol = _T("");
 	setDayLine.m_Open = ConvertValueToString(m_lOpen, GetRatio());
 	setDayLine.m_High = ConvertValueToString(m_lHigh, GetRatio());

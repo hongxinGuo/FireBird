@@ -85,7 +85,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pData->m_strSymbol));
 			gl_dataFinnhubCryptoSymbol.GetSymbol(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
 			m_pWebData = pData->m_pData;
-			m_finnhubCryptoDayLine.CheckAccessRight(m_pWebData);
+			m_finnhubCryptoDayLine.__Test_checkAccessRight(m_pWebData);
 
 			m_pvDayLine = nullptr;
 		}
@@ -167,7 +167,7 @@ namespace FireBirdTest {
 			lIPOStatus = gl_dataFinnhubCryptoSymbol.GetSymbol(0)->GetIPOStatus();
 			gl_dataFinnhubCryptoSymbol.GetSymbol(0)->SetIPOStatus(_STOCK_IPOED_);
 			m_pWebData = pData->m_pData;
-			m_finnhubCryptoDayLine.CheckAccessRight(m_pWebData);
+			m_finnhubCryptoDayLine.__Test_checkAccessRight(m_pWebData);
 
 			m_finnhubCryptoDayLine.SetMarket(gl_pWorldMarket);
 			m_finnhubCryptoDayLine.SetIndex(0);

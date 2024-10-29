@@ -13,6 +13,7 @@ map<string, enum_ErrorMessageData> mapTiingoErrorMap{
 	{ _T("Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service."), ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__ },
 	{ _T("Error: resampleFreq must be in 'Min' or 'Hour' only"), ERROR_TIINGO_FREQUENCY__ },
 	{ _T("You have run over your 500 symbol look up for this month. Please upgrade at https://api.tiingo.com/pricing to have your limits increased."), ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__ },
+	{ _T("Error: Endpoint only available for US and US - listed Stocks"), ERROR_TIINGO_ENDPOINT_ONLY_FOR_US_LISTED_STOCK__ },
 	{ _T(""), ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__ }
 };
 

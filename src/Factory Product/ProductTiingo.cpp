@@ -6,20 +6,6 @@
 #include "TiingoDataSource.h"
 #include"TiingoInaccessibleStock.h"
 
-bool CProductTiingo::CheckAccessRight(CWebDataPtr pWebData) {
-	if (gl_pTiingoDataSource->GetWebErrorCode() == 404) { // 404 error
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return false;
-	}
-	const string s(pWebData->GetStringView(0, pWebData->GetBufferLength()));
-	if (s == _T("{\"error\":\"You don't have access to this resource.\"}")) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return false;
-	}
-	if (IsNoRightToAccess()) m_iReceivedDataStatus = GOOD_DATA__;
-	return true;
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 目前finnhub对其免费账户只提供部分内容数据。为了加速轮询速度，受限制的数据(交易所）将不再申请。
@@ -40,4 +26,13 @@ void CProductTiingo::AddInaccessibleSymbol() {
 		pNewStock->AddSymbol(m_strInquiringSymbol);
 		gl_tiingoInaccessibleStock.SetStock(m_iInquireType, pNewStock);
 	}
+}
+
+bool CProductTiingo::__Test_checkAccessRight(CWebDataPtr pWebData) {
+	if (gl_pTiingoDataSource->GetWebErrorCode() == 404) { // 404 error
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		return false;
+	}
+	if (m_iReceivedDataStatus == NO_ACCESS_RIGHT_) m_iReceivedDataStatus = GOOD_DATA__;
+	return true;
 }

@@ -87,7 +87,7 @@ namespace FireBirdTest {
 			m_pStock->SetIPOStatus(_STOCK_NULL_);
 			m_pStock->SetUpdateProfileDB(false);
 			m_pWebData = pData->m_pData;
-			m_finnhubStockPriceQuote.CheckAccessRight(m_pWebData);
+			m_finnhubStockPriceQuote.__Test_checkAccessRight(m_pWebData);
 
 			m_finnhubStockPriceQuote.SetMarket(gl_pWorldMarket);
 			m_finnhubStockPriceQuote.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));

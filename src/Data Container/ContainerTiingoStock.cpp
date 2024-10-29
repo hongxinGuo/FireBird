@@ -95,7 +95,7 @@ bool CContainerTiingoStock::LoadDB() {
 }
 
 void CContainerTiingoStock::ResetDayLineStartEndDate() {
-	for (int i = 0; i < Size(); i++) {
+	for (size_t i = 0; i < Size(); i++) {
 		auto pTiingoStock = GetStock(i);
 		pTiingoStock->SetDayLineStartDate(29900101);
 		pTiingoStock->SetDayLineEndDate(19800101);
@@ -144,31 +144,28 @@ void CContainerTiingoStock::DeleteDayLine(long lDate) {
 long CContainerTiingoStock::GetTotalActiveStocks() {
 	int iCount = 0;
 	auto lSize = Size();
-	for (int i = 0; i < lSize; i++) {
+	for (size_t i = 0; i < lSize; i++) {
 		if (GetStock(i)->m_fIsActive) iCount++;
 	}
 	return iCount;
+}
+
+void CContainerTiingoStock::UpdateFinancialStateDB() {
+	for (size_t i = 0; i < Size(); i++) {
+		auto pStock = GetStock(i);
+		if (pStock->IsUpdateFinancialStateDB()) {
+			pStock->UpdateFinancialStateDB();
+			pStock->SetUpdateFinancialStateDB(false);
+		}
+	}
 }
 
 bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
 	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CTiingoStock>(pStock)->IsUpdateFinancialStateDB(); });
 }
 
-void CContainerTiingoStock::UpdateFinancialStateDB() const {
-	for (auto& pStock : m_vStock) {
-		if (dynamic_pointer_cast<CTiingoStock>(pStock)->IsUpdateFinancialStateDB()) {
-			dynamic_pointer_cast<CTiingoStock>(pStock)->UpdateFinancialStateDB();
-			dynamic_pointer_cast<CTiingoStock>(pStock)->SetUpdateFinancialStateDB(false);
-		}
-	}
-}
-
-bool CContainerTiingoStock::IsUpdateDayLineDB() {
-	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CTiingoStock>(pStock)->IsUpdateDayLineDB(); });
-}
-
 void CContainerTiingoStock::UpdateDayLineDB() {
-	for (long i = 0; i < Size(); i++) {
+	for (size_t i = 0; i < Size(); i++) {
 		const CTiingoStockPtr pStock = GetStock(i);
 		pStock->UpdateDayLineDB();
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。

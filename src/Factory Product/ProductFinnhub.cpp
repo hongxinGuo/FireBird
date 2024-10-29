@@ -4,21 +4,6 @@
 
 #include"FinnhubInaccessibleExchange.h"
 
-////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 目前仅用于测试中。准备删除
-//
-////////////////////////////////////////////////////////////////////////////////////////////
-bool CProductFinnhub::CheckAccessRight(CWebDataPtr pWebData) {
-	const string s(pWebData->GetStringView(0, pWebData->GetBufferLength()));
-	if (s == _T("{\"error\":\"You don't have access to this resource.\"}")) {
-		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-		return false;
-	}
-	if (IsNoRightToAccess()) m_iReceivedDataStatus = GOOD_DATA__;
-	return true;
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 目前finnhub对其免费账户只提供部分内容数据。为了加速轮询速度，受限制的数据(交易所）将不再申请。
@@ -39,4 +24,19 @@ void CProductFinnhub::AddInaccessibleSymbol() {
 		pNewExchange->AddSymbol(m_strInquiringExchange);
 		gl_finnhubInaccessibleExchange.SetExchange(m_iInquireType, pNewExchange);
 	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 目前仅用于测试中。准备删除
+//
+////////////////////////////////////////////////////////////////////////////////////////////
+bool CProductFinnhub::__Test_checkAccessRight(CWebDataPtr pWebData) {
+	const string s(pWebData->GetStringView(0, pWebData->GetBufferLength()));
+	if (s == _T("{\"error\":\"You don't have access to this resource.\"}")) {
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+		return false;
+	}
+	if (IsNoRightToAccess()) m_iReceivedDataStatus = GOOD_DATA__;
+	return true;
 }
