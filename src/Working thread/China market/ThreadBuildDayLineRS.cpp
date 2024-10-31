@@ -26,6 +26,8 @@ UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCa
 
 	gl_systemMessage.PushInformationMessage(_T("开始计算股票相对强度"));
 	time_t tStart = 0, tEnd = 0;
+	vector<result<bool>> vResults;
+
 	time(&tStart);
 	do {
 		if (pMarket->IsWorkingDay(ctCurrent)) {
@@ -40,13 +42,18 @@ UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCa
 				}
 				gl_BackgroundWorkingThread.release();
 				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+				//return true;
 			});
+			//vResults.emplace_back(std::move(result));
 		}
 		ctCurrent += oneDay;
 		lThatDate = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
 	} while (lThatDate <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）
 
-	while (gl_ThreadStatus.IsBackGroundThreadsWorking()) Sleep(100); // 等待所有的工作线程结束
+	//for (auto& pWebData : vResults) {
+	//auto p = pWebData.get(); // 在这里等待所有的线程执行完毕
+	//}
+	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) Sleep(1000);
 
 	if (!gl_systemConfiguration.IsExitingCalculatingRS()) {
 		// 如果顺利完成了计算任务

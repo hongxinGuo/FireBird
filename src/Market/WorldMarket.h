@@ -50,6 +50,7 @@ public:
 	bool TaskUpdateCryptoDayLineDB();
 
 	void TaskCreateTiingoTradeDayDayLine(long lCurrentTime);
+	static void TaskProcessTiingoDayLine();
 
 	void TaskPerSecond(long lCurrentTime);
 

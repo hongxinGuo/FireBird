@@ -64,6 +64,26 @@ public:
 	long GetCompanyFinancialStatementUpdateDate() { return m_jsonUpdateDate["CompanyFinancialStatement"]; }
 	void SetCompanyFinancialStatementUpdateDate(long lDate) { m_jsonUpdateDate["CompanyFinancialStatement"] = lDate; }
 
+	long GetDayLineProcessDate() { return m_jsonUpdateDate["DayLineProcessDate"]; }
+	void SetDayLineProcessDate(long lDate) { m_jsonUpdateDate["DayLineProcessDate"] = lDate; }
+	void Set52WeekLow() { m_jsonUpdateDate["52WeekLow"] = m_v52WeekLow; }
+	void Get52WeekLow();
+	void Set52WeekHigh() { m_jsonUpdateDate["52WeekHigh"] = m_v52WeekHigh; }
+	void Get52WeekHigh();
+
+	bool Have52WeekLowDate(long lDate) { return std::ranges::find(m_v52WeekLow, lDate) != m_v52WeekLow.end(); }
+	bool Have52WeekHighDate(long lDate) { return std::ranges::find(m_v52WeekHigh, lDate) != m_v52WeekHigh.end(); }
+	void Add52WeekLow(long lDate) { m_v52WeekLow.push_back(lDate); }
+	void Delete52WeekLow(long lDate);
+	void Add52WeekHigh(long lDate) { m_v52WeekHigh.push_back(lDate); }
+	void Delete52WeekHigh(long lDate);
+
+	void ProcessDayLine();
+
+	// 测试用函数
+	void Clear52WeekLow() { m_v52WeekLow.clear(); }
+	void Clear52WeekHigh() { m_v52WeekHigh.clear(); }
+
 public:
 	CString m_strTiingoPermaTicker{ _T("") }; // Tiingo永久代码标识
 	//CString m_strTicker; // 这个使用VirtualStock中的m_strSymbol来代替。
@@ -83,8 +103,10 @@ public:
 
 protected:
 	CTiingoCompanyFinancialStatesPtr m_pvFinancialState{ nullptr };
-
 	CContainerTiingoStockDayLine m_dataDayLine;
+
+	vector<long> m_v52WeekLow; // 年度最低价的日期
+	vector<long> m_v52WeekHigh; // 年度最高价的日期
 
 	// 无需存储数据区
 	bool m_fUpdateFinancialState{ true };

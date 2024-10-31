@@ -160,14 +160,21 @@ void CContainerTiingoStock::UpdateFinancialStateDB() {
 	}
 }
 
-bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
-	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CTiingoStock>(pStock)->IsUpdateFinancialStateDB(); });
-}
-
 void CContainerTiingoStock::UpdateDayLineDB() {
 	for (size_t i = 0; i < Size(); i++) {
 		const CTiingoStockPtr pStock = GetStock(i);
 		pStock->UpdateDayLineDB();
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
+	}
+}
+
+bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CTiingoStock>(pStock)->IsUpdateFinancialStateDB(); });
+}
+
+void CContainerTiingoStock::ProcessDayLine() {
+	for (size_t i = 0; i < Size(); i++) {
+		auto pStock = GetStock(i);
+		pStock->ProcessDayLine();
 	}
 }

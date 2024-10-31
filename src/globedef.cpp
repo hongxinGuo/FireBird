@@ -39,6 +39,7 @@ HANDLE gl_hFireBirdMutex{ nullptr };
 
 shared_ptr<spdlog::logger> gl_dailyLogger = nullptr;
 shared_ptr<spdlog::logger> gl_traceLogger; // 跟踪日志，用于系统调试
+shared_ptr<spdlog::logger> gl_warnLogger; // 警告跟踪日志，用于系统调试
 shared_ptr<spdlog::logger> gl_dailyWebSocketLogger = nullptr;
 shared_ptr<spdlog::logger> gl_SoftwareDevelopingLogger = nullptr;
 

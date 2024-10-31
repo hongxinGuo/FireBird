@@ -32,6 +32,7 @@ extern map<int, string> gl_stringList;
 
 extern shared_ptr<spdlog::logger> gl_dailyLogger;
 extern shared_ptr<spdlog::logger> gl_traceLogger; // 每日跟踪日志，用于系统调试
+extern shared_ptr<spdlog::logger> gl_warnLogger; // 每日警告日志，用于系统调试
 extern shared_ptr<spdlog::logger> gl_dailyWebSocketLogger;
 extern shared_ptr<spdlog::logger> gl_SoftwareDevelopingLogger;
 

@@ -65,6 +65,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
 		EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
 		EXPECT_EQ(stock.GetStatementLastUpdatedDate(), 0);
+		EXPECT_EQ(stock.GetDayLineProcessDate(), 19800101);
 	}
 
 	TEST_F(CTiingoStockTest, TestGetRatio) {
@@ -253,6 +254,12 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19800101);
 		stock.SetCompanyFinancialStatementUpdateDate(19930101);
 		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19930101);
+	}
+
+	TEST_F(CTiingoStockTest, TestGetDayLineProcessDate) {
+		EXPECT_EQ(stock.GetDayLineProcessDate(), 19800101);
+		stock.SetDayLineProcessDate(19930101);
+		EXPECT_EQ(stock.GetDayLineProcessDate(), 19930101);
 	}
 
 	TEST_F(CTiingoStockTest, TestGetIPOStatus) {
@@ -517,6 +524,84 @@ namespace FireBirdTest {
 		}
 	}
 
+	TEST_F(CTiingoStockTest, TestAdd52WeekLow) {
+		EXPECT_FALSE(stock.Have52WeekLowDate(20000101)) << "初始时容器为空";
+
+		stock.Add52WeekLow(20000101);
+		stock.Add52WeekLow(20010101);
+
+		EXPECT_FALSE(stock.Have52WeekLowDate(19800101));
+		EXPECT_TRUE(stock.Have52WeekLowDate(20000101));
+		EXPECT_TRUE(stock.Have52WeekLowDate(20010101));
+
+		stock.Delete52WeekLow(19800101);
+		EXPECT_TRUE(stock.Have52WeekLowDate(20000101));
+		EXPECT_TRUE(stock.Have52WeekLowDate(20010101));
+
+		stock.Delete52WeekLow(20000101);
+		EXPECT_FALSE(stock.Have52WeekLowDate(20000101));
+		EXPECT_TRUE(stock.Have52WeekLowDate(20010101));
+	}
+
+	TEST_F(CTiingoStockTest, TestAdd52WeekHigh) {
+		EXPECT_FALSE(stock.Have52WeekHighDate(20000101)) << "初始时容器为空";
+
+		stock.Add52WeekHigh(20000101);
+		stock.Add52WeekHigh(20010101);
+
+		EXPECT_FALSE(stock.Have52WeekHighDate(19800101));
+		EXPECT_TRUE(stock.Have52WeekHighDate(20000101));
+		EXPECT_TRUE(stock.Have52WeekHighDate(20010101));
+
+		stock.Delete52WeekHigh(19800101);
+		EXPECT_TRUE(stock.Have52WeekHighDate(20000101));
+		EXPECT_TRUE(stock.Have52WeekHighDate(20010101));
+
+		stock.Delete52WeekHigh(20000101);
+		EXPECT_FALSE(stock.Have52WeekHighDate(20000101));
+		EXPECT_TRUE(stock.Have52WeekHighDate(20010101));
+	}
+
+	TEST_F(CTiingoStockTest, TestGet52WeekLow) {
+		EXPECT_FALSE(stock.Have52WeekLowDate(20000101)) << "初始时容器为空";
+
+		stock.Add52WeekLow(20000101);
+		stock.Add52WeekLow(20010101);
+		EXPECT_TRUE(stock.Have52WeekLowDate(20000101));
+		EXPECT_TRUE(stock.Have52WeekLowDate(20010101));
+		stock.Get52WeekLow();
+		EXPECT_FALSE(stock.Have52WeekLowDate(20000101)) << "json中内容为空，导致容器被清空";
+		EXPECT_FALSE(stock.Have52WeekLowDate(20010101)) << "json中内容为空，导致容器被清空";
+
+		stock.Add52WeekLow(20000101);
+		stock.Add52WeekLow(20010101);
+		stock.Set52WeekLow(); // 设置json内容
+		stock.Clear52WeekLow();
+		stock.Get52WeekLow();
+		EXPECT_TRUE(stock.Have52WeekLowDate(20000101)) << "从json中设置的数据";
+		EXPECT_TRUE(stock.Have52WeekLowDate(20010101)) << "从json中设置的数据";
+	}
+
+	TEST_F(CTiingoStockTest, TestGet52WeekHigh) {
+		EXPECT_FALSE(stock.Have52WeekHighDate(20000101)) << "初始时容器为空";
+
+		stock.Add52WeekHigh(20000101);
+		stock.Add52WeekHigh(20010101);
+		EXPECT_TRUE(stock.Have52WeekHighDate(20000101));
+		EXPECT_TRUE(stock.Have52WeekHighDate(20010101));
+		stock.Get52WeekHigh();
+		EXPECT_FALSE(stock.Have52WeekHighDate(20000101)) << "json中内容为空，导致容器被清空";
+		EXPECT_FALSE(stock.Have52WeekHighDate(20010101)) << "json中内容为空，导致容器被清空";
+
+		stock.Add52WeekHigh(20000101);
+		stock.Add52WeekHigh(20010101);
+		stock.Set52WeekHigh(); // 设置json内容
+		stock.Clear52WeekHigh();
+		stock.Get52WeekHigh();
+		EXPECT_TRUE(stock.Have52WeekHighDate(20000101)) << "从json中设置的数据";
+		EXPECT_TRUE(stock.Have52WeekHighDate(20010101)) << "从json中设置的数据";
+	}
+
 	TEST_F(CTiingoStockTest, TestUpdateRTData) {
 		CTiingoIEXTopOfBookPtr pIEX = make_shared<CTiingoIEXTopOfBook>();
 		pIEX->m_llTimestamp = 123456;
@@ -540,6 +625,11 @@ namespace FireBirdTest {
 		CTiingoStock stock, stock2;
 		CSetTiingoStock setTiingoStock;
 
+		setTiingoStock.m_strFilter = _T("[Ticker] = '000001.US'");
+		setTiingoStock.Open();
+		EXPECT_TRUE(setTiingoStock.IsEOF()) << setTiingoStock.m_TiingoPermaTicker;
+		setTiingoStock.Close();
+
 		stock.m_strTiingoPermaTicker = _T("aasdfasdfj");
 		stock.SetSymbol(_T("000001.US"));
 		stock.m_strName = _T("adkjkf");
@@ -555,15 +645,23 @@ namespace FireBirdTest {
 		stock.m_strCompanyWebSite = _T("ijk");
 		stock.m_strSECFilingWebSite = _T("https://def.com");
 		stock.SetCompanyFinancialStatementUpdateDate(20202020);
+		stock.Add52WeekLow(20200101);
+		stock.Add52WeekLow(20240101);
+		stock.Add52WeekHigh(20000101);
+		stock.Add52WeekHigh(20040101);
 
 		setTiingoStock.Open();
+		setTiingoStock.m_pDatabase->BeginTrans();
 		stock.Append(setTiingoStock);
+		setTiingoStock.m_pDatabase->CommitTrans();// 使用CommitTrans()后会真正更新数据库。
 		setTiingoStock.Close();
 
 		setTiingoStock.m_strFilter = _T("[Ticker] = '000001.US'");
 		setTiingoStock.Open();
+		setTiingoStock.m_pDatabase->BeginTrans();
 		stock2.Load(setTiingoStock);
 		setTiingoStock.Delete();
+		setTiingoStock.m_pDatabase->CommitTrans(); // 必须使用CommitTrans()来真正删除数据库中的数据。
 		setTiingoStock.Close();
 
 		EXPECT_STREQ(stock.m_strTiingoPermaTicker, stock2.m_strTiingoPermaTicker);
@@ -581,6 +679,10 @@ namespace FireBirdTest {
 		EXPECT_STREQ(stock.m_strCompanyWebSite, stock2.m_strCompanyWebSite);
 		EXPECT_STREQ(stock.m_strSECFilingWebSite, stock2.m_strSECFilingWebSite);
 		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), stock2.GetCompanyFinancialStatementUpdateDate());
+		EXPECT_TRUE(stock.Have52WeekLowDate(20200101));
+		EXPECT_TRUE(stock.Have52WeekLowDate(20240101));
+		EXPECT_TRUE(stock.Have52WeekHighDate(20000101));
+		EXPECT_TRUE(stock.Have52WeekHighDate(20040101));
 	}
 
 	TEST_F(CTiingoStockTest, TestSaveDayLine) {

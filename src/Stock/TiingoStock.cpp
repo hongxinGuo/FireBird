@@ -7,6 +7,8 @@
 #include "WorldMarket.h"
 
 CTiingoStock::CTiingoStock() {
+	m_v52WeekHigh.clear();
+	m_v52WeekLow.clear();
 	SetExchangeCode(_T("US"));
 	CTiingoStock::ResetAllUpdateDate();
 }
@@ -17,6 +19,9 @@ void CTiingoStock::ResetAllUpdateDate() {
 	SetDayLineUpdateDate(19800101);
 	SetDayLineStartDate(29900101);
 	SetDayLineEndDate(19800101);
+	SetDayLineProcessDate(19800101);
+	Set52WeekLow();
+	Set52WeekHigh();
 }
 
 void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
@@ -37,12 +42,14 @@ void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
 	m_lIPOStatus = setTiingoStock.m_IPOStatus;
 
 	LoadUpdateDate(setTiingoStock.m_UpdateDate);
+	Get52WeekHigh();
+	Get52WeekLow();
 }
 
 void CTiingoStock::Append(CSetTiingoStock& setTiingoStock) {
 	setTiingoStock.AddNew();
 	Save(setTiingoStock);
-	setTiingoStock.Update();
+	ASSERT(setTiingoStock.Update());
 }
 
 void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
@@ -79,6 +86,8 @@ void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
 	setTiingoStock.m_SECFilingWebSite = m_strSECFilingWebSite;
 	setTiingoStock.m_IPOStatus = m_lIPOStatus;
 
+	Set52WeekHigh();
+	Set52WeekLow();
 	const string sUpdateDate = m_jsonUpdateDate.dump();
 	setTiingoStock.m_UpdateDate = sUpdateDate.c_str();
 	ASSERT(sUpdateDate.size() < 10000);
@@ -300,4 +309,53 @@ bool CTiingoStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate
 		}
 	}
 	return m_fUpdateDayLine;
+}
+
+void CTiingoStock::Get52WeekLow() {
+	try {
+		m_v52WeekLow.clear();
+		json j = m_jsonUpdateDate["52WeekLow"];
+		for (auto it = j.begin(); it != j.end(); ++it) {
+			m_v52WeekLow.push_back(*it);
+		}
+	} catch (json::exception&) { // 不存在此项
+		// do nothing
+	}
+}
+
+void CTiingoStock::Get52WeekHigh() {
+	try {
+		m_v52WeekHigh.clear();
+		json j = m_jsonUpdateDate["52WeekHigh"];
+		for (auto it = j.begin(); it != j.end(); ++it) {
+			m_v52WeekHigh.push_back(*it);
+		}
+	} catch (json::exception&) { // 不存在此项
+		// do nothing
+	}
+}
+
+void CTiingoStock::Delete52WeekLow(long lDate) {
+	auto it = std::ranges::find(m_v52WeekLow, lDate);
+	if (it != m_v52WeekLow.end()) {
+		m_v52WeekLow.erase(it);
+	}
+}
+
+void CTiingoStock::Delete52WeekHigh(long lDate) {
+	auto it = std::ranges::find(m_v52WeekHigh, lDate);
+	if (it != m_v52WeekHigh.end()) {
+		m_v52WeekHigh.erase(it);
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 处理日线
+//todo 目前查找52周新低和52周新高。
+//
+//////////////////////////////////////////////////////////////////////////////////////////////
+void CTiingoStock::ProcessDayLine() {
+	if (!IsActive()) return; // 不处理非活跃股票的日线
+	if (GetDayLineEndDate() - GetDayLineStartDate() < 250) return; // 不处理日线数量小于一年的股票
 }

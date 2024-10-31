@@ -31,4 +31,6 @@ public:
 	void UpdateDayLineDB();
 
 	bool IsUpdateFinancialStateDB() noexcept;
+
+	void ProcessDayLine();
 };

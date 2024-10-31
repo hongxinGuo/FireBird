@@ -68,7 +68,7 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 			GetCurrentProduct();
 			GenerateCurrentInquiryMessage();
 			CDataInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
-			auto result = gl_runtime.background_executor()->submit([this, pEngine] {
+			auto result = gl_runtime.thread_pool_executor()->submit([this, pEngine] {
 				CHighPerformanceCounter counter;
 				counter.start();
 				auto pWebData = pEngine->GetWebData();

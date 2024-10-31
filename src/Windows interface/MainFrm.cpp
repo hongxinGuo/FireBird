@@ -630,7 +630,7 @@ void CMainFrame::OnCalculateTodayRS() {
 }
 
 void CMainFrame::CalculateTodayRS() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		ThreadBuildDayLineRS(gl_pChinaMarket, gl_pChinaMarket->GetMarketDate());
 	});
 }
@@ -783,7 +783,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 }
 
 void CMainFrame::OnRebuildChinaMarketStockDayLineRS() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		ThreadBuildDayLineRS(gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
 	});
 }

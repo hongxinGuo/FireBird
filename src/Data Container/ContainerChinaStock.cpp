@@ -683,9 +683,6 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 	if (setDayLineBasicInfo.IsEOF()) {
 		// 数据集为空，表明此日没有交易
 		setDayLineBasicInfo.Close();
-		CString str = strDate;
-		str += _T("日数据集为空，没有计算相对强度");
-		gl_systemMessage.PushInformationMessage(str); // 采用同步机制报告信息
 		return false;
 	}
 	setDayLineBasicInfo.m_pDatabase->BeginTrans();
@@ -763,10 +760,6 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 	vIndex.clear();
 	vRS.clear();
 
-	const CString strDate2 = ConvertDateToChineseTimeStampString(lDate);
-	const CString strTemp = strDate2 + _T("的股票日线相对强度计算完成");
-	gl_systemMessage.PushDayLineInfoMessage(strTemp); // 采用同步机制报告信息
-
 	return (true);
 }
 
@@ -800,9 +793,6 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 	setWeekLineBasicInfo.Open();
 	if (setWeekLineBasicInfo.IsEOF()) { // 数据集为空，表明此日没有交易
 		setWeekLineBasicInfo.Close();
-		CString str = strDate;
-		str += _T("日数据集为空， 没有计算相对强度");
-		gl_systemMessage.PushDayLineInfoMessage(str); // 采用同步机制报告信息
 		return false;
 	}
 	setWeekLineBasicInfo.m_pDatabase->BeginTrans();
@@ -863,10 +853,6 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 	vStock.clear();
 	vIndex.clear();
 	vRS.clear();
-
-	const CString strDate2 = ConvertDateToChineseTimeStampString(lDate);
-	const CString strTemp = strDate2 + _T("的股票周线相对强度计算完成");
-	gl_systemMessage.PushInformationMessage(strTemp); // 采用同步机制报告信息
 
 	return (true);
 }

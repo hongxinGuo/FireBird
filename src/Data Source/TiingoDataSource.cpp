@@ -8,12 +8,11 @@
 #include"WorldMarket.h"
 
 map<string, enum_ErrorMessageData> mapTiingoErrorMap{
-	{ _T("You do not have permission to access the News API"), ERROR_TIINGO_NO_RIGHT_TO_ACCESS__ },
+	{ _T("You do not have permission to access the News API"), ERROR_TIINGO_NO_RIGHT_TO_ACCESS__ }, // http状态码：403
 	{ _T("Please supply a token"), ERROR_TIINGO_MISSING_API_KEY__ },
-	{ _T("Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service."), ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__ },
+	{ _T("Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service."), ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__ }, // http状态码：400
 	{ _T("Error: resampleFreq must be in 'Min' or 'Hour' only"), ERROR_TIINGO_FREQUENCY__ },
-	{ _T("You have run over your 500 symbol look up for this month. Please upgrade at https://api.tiingo.com/pricing to have your limits increased."), ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__ },
-	{ _T("Error: Endpoint only available for US and US - listed Stocks"), ERROR_TIINGO_ENDPOINT_ONLY_FOR_US_LISTED_STOCK__ },
+	{ _T("You have run over your 500 symbol look up for this month. Please upgrade at https://api.tiingo.com/pricing to have your limits increased."), ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__ }, // http状态码：200
 	{ _T(""), ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__ }
 };
 
@@ -59,22 +58,61 @@ void CTiingoDataSource::ConfigureInternetOption() {
 }
 
 enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& pWebData) {
+	string_view sView;
+	int iStringViewLength = 0;
+	string s2;
+	int statusCode = 0;
+
 	ASSERT(m_pCurrentProduct != nullptr);
 
 	m_eErrorMessageData = ERROR_NO_ERROR__;
-	if (m_dwHTTPStatusCode == 200) {
+	// 第一次switch处理非json数据格式的错误
+	switch (m_dwHTTPStatusCode) {
+	case 200:
 		if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) return m_eErrorMessageData; // 付费账户直接返回
-		if (pWebData->GetBufferLength() == 137) {
+		if (pWebData->GetBufferLength() == 137) { // 此项为非json格式数据
 			auto strView = pWebData->GetStringView(0, 75); // 只使用前75个字符
 			if (strView.compare(_T("You have run over your 500 symbol look up for this month. Please upgrade at")) == 0) { 	// 达到代码限制
 				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo symbol reach 500"));
 				return ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__;
 			}
 		}
+		break;
+	case 400: // bad request
+		if (pWebData->GetBufferLength() == 62) {
+			auto strView = pWebData->GetStringView(0, 75); // 只使用前75个字符
+			if (strView.compare(_T("[\"Error: Endpoint only available for US and US - listed Stocks\"]")) == 0) { 	// 非美国股票不提供此项数据
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Error: Endpoint only available for US and US - listed Stocks\"]"));
+				return ERROR_TIINGO_ENDPOINT_ONLY_FOR_US_LISTED_STOCK__;
+			}
+		}
+		break;
+	case 403:
+		break;
+	case 404:
+		break;
+	default:
+		break;
 	}
 
 	json js;
-	pWebData->CreateJson(js);
+	if (!pWebData->CreateJson(js)) { // 非json制式，不应该出现。
+		m_eErrorMessageData = ERROR_NO_ERROR__;
+		return m_eErrorMessageData; // 暂时返回正确
+	}
+
+	// 第二次switch处理json制式的错误
+	switch (m_dwHTTPStatusCode) {
+	case 400:
+		break;
+	case 403:
+		break;
+	case 404:
+		break;
+	default:
+		// 未处理的状态
+		break;
+	}
 
 	try {
 		string error = js.at(_T("detail"));
@@ -111,6 +149,12 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 			gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(i + 200);
 			break;
 		case ERROR_TIINGO_NOT_HANDLED__: // error not handled
+			if (pWebData->GetBufferLength() > 50) iStringViewLength = 50;
+			else iStringViewLength = pWebData->GetBufferLength();
+			sView = pWebData->GetStringView(0, iStringViewLength);
+			s2 = sView;
+			statusCode = m_dwHTTPStatusCode;
+			gl_warnLogger->warn("TiingoDataSource Error status not handled http status code = {} message = {}", statusCode, s2.c_str());
 			ReportErrorNotHandled(error);
 			break;
 		default: // 缺省分支不应该出现

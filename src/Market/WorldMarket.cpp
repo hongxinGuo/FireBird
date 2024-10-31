@@ -172,11 +172,14 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 			ASSERT(!gl_systemConfiguration.IsUsingFinnhubWebSocket());
 			gl_systemConfiguration.SetUsingFinnhubWebSocket(true); // 只设置标识，实际启动由其他任务完成。
 			break;
-		case WORLD_MARKET_TIINGO_INQUIRE_REALTIME_DATA__:
+		case WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOL__:
 			gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true); // 
 			break;
 		case WORLD_MARKET_TIINGO_COMPILE_STOCK__:
 			gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine(lCurrentTime);
+			break;
+		case WORLD_MARKET_TIINGO_PROCESS_DAYLINE__:
+			gl_pWorldMarket->TaskProcessTiingoDayLine();
 			break;
 		default:
 			break;
@@ -221,7 +224,10 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, GetNextTime(lTimeMinute, 0, 5, 0)); //180500生成tiingo当天日线数据
 
-	AddTask(WORLD_MARKET_TIINGO_INQUIRE_REALTIME_DATA__, 180000); // 收市后18点下载tiingo当天数据。
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOL__, 180000); // 收市后18点下载tiingo IEX当天数据。
+
+	//todo 收市后18点10分处理Tiingo日线数据
+	//AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, 181000);。
 
 	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
@@ -406,6 +412,12 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 	else {
 		AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, GetNextTime(lCurrentTime, 0, 5, 0)); // 五分钟后执行下一次
 	}
+}
+
+void CWorldMarket::TaskProcessTiingoDayLine() {
+	gl_runtime.background_executor()->post([] {
+		gl_dataContainerTiingoStock.ProcessDayLine();
+	});
 }
 
 void CWorldMarket::TaskPerSecond(long lCurrentTime) {

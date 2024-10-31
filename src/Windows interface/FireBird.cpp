@@ -9,10 +9,10 @@
 #include "FireBirdDoc.h"
 #include "FireBirdView.h" 
 
-#include <spdlog/spdlog.h>
-
 #include "ChildFrm.h"
-#include "spdlog/sinks/basic_file_sink.h"
+#include "InfoReport.h"
+
+#include <spdlog/spdlog.h>
 
 // IXWebSocket需要OpenSSL，本系统直接使用。
 #ifdef _DEBUG
@@ -84,18 +84,14 @@ BOOL CFireBirdApp::InitInstance() {
 		return false;
 	}
 
-	// Create a daily logger - a new file is created every day at 2:30 am
-	gl_dailyLogger = spdlog::daily_logger_mt("daily_logger", "logs/daily.txt", 2, 30);
-	gl_dailyWebSocketLogger = spdlog::daily_logger_mt("dailyWebSocketLogger", "logs/dailyWebSocket.txt", 2, 30);
-	gl_dailyWebSocketLogger->set_level(static_cast<spdlog::level::level_enum>(gl_systemConfiguration.GetLogLevel()));
+	InitializeSpdlog();
+
 	//spdlog::flush_every(chrono::seconds(600)); // 每10分钟刷新一次（只能用于_mt模式生成的日志）
+	gl_dailyWebSocketLogger->set_level(static_cast<spdlog::level::level_enum>(gl_systemConfiguration.GetLogLevel()));
 	gl_dailyLogger->flush_on(spdlog::level::warn); // 警告等级及以上立刻刷新
 	gl_dailyWebSocketLogger->flush_on(spdlog::level::warn);
-
-	gl_traceLogger = spdlog::basic_logger_mt("basic_trace_logger", "logs/trace.txt");
+	gl_warnLogger->flush_on(spdlog::level::trace);
 	gl_traceLogger->enable_backtrace(20); // 20个回溯消息
-
-	gl_SoftwareDevelopingLogger = spdlog::basic_logger_mt("software_developing_logger", "logs/softwareDeveloping.txt");
 
 	gl_dailyLogger->info("FireBird App begin running");
 
