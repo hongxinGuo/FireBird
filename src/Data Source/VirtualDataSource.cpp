@@ -25,8 +25,7 @@ CVirtualDataSource::CVirtualDataSource() {
 ///
 /// Note 调用函数不能使用thread_pool_executor或者background_executor，只能使用thread_executor，否则thread_pool_executor所生成线程的返回值无法读取，原因待查。
 ///
-/// Note 必须使用独立的thread_executor任务序列，不能使用thread_pool_executor或者background_executor，
-//  否则解析工作使用的thread_pool_executor会与之产生冲突，导致产生同步问题。
+/// Note 必须使用独立的thread_executor任务序列，不能使用thread_pool_executor或者background_executor，否则解析工作使用的thread_pool_executor会与之产生冲突，导致产生同步问题。原因不明。
 ///
 ///</summary>
 ///
@@ -37,7 +36,10 @@ void CVirtualDataSource::Run(long lMarketTime) {
 	CVirtualDataSourcePtr p = this->GetShared();
 	if (!IsInquiring()) {
 		gl_runtime.thread_executor()->post([p, lMarketTime] {
-			p->RunWorkingThread(lMarketTime);
+			p->GenerateInquiryMessage(lMarketTime);
+			if (p->IsInquiring()) {
+				p->InquireData(lMarketTime);
+			}
 		});
 	}
 }
@@ -48,33 +50,27 @@ void CVirtualDataSource::Run(long lMarketTime) {
 // 由于待申请的数据可能有多个，故而生成多个线程来申请，并且等待所有的线程完成。
 // 需要多个申请的数据源有：腾讯日线数据。
 //
+//Note 只能使用thread_pool_executor或者background_executor，不能使用thread_executor。
+//
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
+void CVirtualDataSource::InquireData(const long lMarketTime) {
+	ASSERT(IsInquiring());
+
 	static time_t s_LastInquiryTime = 0;
 
-	if (!IsInquiring()) {
-		ASSERT(!HaveInquiry());
-		if (GenerateInquiryMessage(lMarketTime)) {
-			ASSERT(IsInquiring());
-		}
-	}
-
-	if (IsInquiring()) {
-		vector<result<CWebDataPtr>> vResults;
-		while (HaveInquiry()) { // 一次申请可以有多个数据
-			ASSERT(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
-			ASSERT(IsInquiring());
-			GetCurrentProduct();
-			GenerateCurrentInquiryMessage();
-			CDataInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
-			auto result = gl_runtime.thread_pool_executor()->submit([this, pEngine] {
+	vector<result<CWebDataPtr>> vResults;
+	while (HaveInquiry()) { // 一次申请可以有多个数据
+		ASSERT(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
+		ASSERT(IsInquiring());
+		GetCurrentProduct();
+		CreateCurrentInquireString();
+		CDataInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
+		auto result = gl_runtime.thread_pool_executor()->submit([this, pEngine] { // 只能使用thread_pool_executor
 				CHighPerformanceCounter counter;
 				counter.start();
 				auto pWebData = pEngine->GetWebData();
 				if (!pEngine->IsWebError()) this->UpdateStatus(pWebData);
-				else
-					ASSERT(pWebData == nullptr);
 				counter.stop();
 				time_t ttCurrentInquiryTime = counter.GetElapsedMillisecond();
 				if (s_LastInquiryTime > m_iMaxNormalInquireTime && ttCurrentInquiryTime > m_iMaxNormalInquireTime) SetWebBusy(true); // 
@@ -83,34 +79,34 @@ void CVirtualDataSource::RunWorkingThread(const long lMarketTime) {
 				SetCurrentInquiryTime(ttCurrentInquiryTime);
 				SetHTTPStatusCode(pEngine->GetHTTPStatusCode());
 				SetWebErrorCode(pEngine->GetErrorCode());
+				ASSERT(IsInquiring());
 				return pWebData;
 			});
-			vResults.emplace_back(std::move(result));
-		}
-		const shared_ptr<vector<CWebDataPtr>> pvWebData = make_shared<vector<CWebDataPtr>>();
-		for (auto& pWebData : vResults) {
-			auto p = pWebData.get(); // 在这里等待所有的线程执行完毕
-			if (p != nullptr) {
-				sm_lTotalByteRead += p->GetBufferLength();
-				pvWebData->push_back(p);
-			}
-		}
-		if (vResults.size() == pvWebData->size()) { // no web error?
-			m_fWebError = false;
-		}
-		else { // web error
-			m_fWebError = true;
-		}
-		ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
-		if (!gl_systemConfiguration.IsExitingSystem() && !pvWebData->empty()) {
-			m_eErrorMessageData = IsAErrorMessageData(pvWebData->at(0)); // 返回的数据是错误信息？检查错误，判断申请资格，更新禁止目录
-			m_pCurrentProduct->ParseAndStoreWebData(pvWebData);
-			m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource智能指针
-		}
-		ASSERT(!HaveInquiry()); // 没有现存的申请
-		ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
-		SetInquiring(false); // 此标识的重置需要位于位于最后一步
+		vResults.emplace_back(std::move(result));
 	}
+	const shared_ptr<vector<CWebDataPtr>> pvWebData = make_shared<vector<CWebDataPtr>>();
+	for (auto& pWebData : vResults) {
+		auto p = pWebData.get(); // 在这里等待所有的线程执行完毕
+		if (p != nullptr) {
+			sm_lTotalByteRead += p->GetBufferLength();
+			pvWebData->push_back(p);
+		}
+	}
+	if (vResults.size() == pvWebData->size()) { // no web error?
+		m_fWebError = false;
+	}
+	else { // web error
+		m_fWebError = true;
+	}
+	ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
+	if (!gl_systemConfiguration.IsExitingSystem() && !pvWebData->empty()) {
+		m_eErrorMessageData = IsAErrorMessageData(pvWebData->at(0)); // 返回的数据是错误信息？检查错误，判断申请资格，更新禁止目录
+		m_pCurrentProduct->ParseAndStoreWebData(pvWebData);
+		m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource智能指针
+	}
+	ASSERT(!HaveInquiry()); // 没有现存的申请
+	ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
+	SetInquiring(false); // 此标识的重置需要位于位于最后一步
 }
 
 void CVirtualDataSource::SetDefaultSessionOption() {
@@ -121,7 +117,7 @@ void CVirtualDataSource::SetDefaultSessionOption() {
 	m_internetOption.option_connect_retries = 1;
 }
 
-void CVirtualDataSource::GenerateCurrentInquiryMessage() {
+void CVirtualDataSource::CreateCurrentInquireString() {
 	ASSERT(m_pCurrentProduct != nullptr);
 	m_strInquiryFunction = m_pCurrentProduct->CreateMessage();
 	CreateTotalInquiringString();

@@ -124,9 +124,6 @@
     <Filter Include="Test源文件\Data Container\China Market">
       <UniqueIdentifier>{49e03dbc-d9a8-4511-b8d6-fc8faf29bba8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\Data Container\World Market">
-      <UniqueIdentifier>{66a61544-f861-46ad-b7a6-e5ebe054f64d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\accessory">
       <UniqueIdentifier>{566c913d-459e-4291-9c8c-53a5a9848abf}</UniqueIdentifier>
     </Filter>
@@ -257,12 +254,6 @@
     </ClCompile>
     <ClCompile Include="ContainerStockSymbolTest.cpp">
       <Filter>Test源文件\Data Container\China Market</Filter>
-    </ClCompile>
-    <ClCompile Include="ContainerCryptoDayLineTest.cpp">
-      <Filter>Test源文件\Data Container\World Market</Filter>
-    </ClCompile>
-    <ClCompile Include="ContainerForexDayLineTest.cpp">
-      <Filter>Test源文件\Data Container\World Market</Filter>
     </ClCompile>
     <ClCompile Include="ContainerChinaDayLineTest.cpp">
       <Filter>Test源文件\Data Container\China Market</Filter>
@@ -648,10 +639,24 @@
     <ClCompile Include="ProductTiingoIEXTopOfBookTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="ContainerWorldStockTest.cpp" />
-    <ClCompile Include="ContainerWorldStockDayLineTest.cpp" />
-    <ClCompile Include="MockFinnhubStockTest.cpp" />
-    <ClCompile Include="FinnhubStockTest.cpp" />
+    <ClCompile Include="ContainerCryptoDayLineTest.cpp">
+      <Filter>Test源文件\Data Container\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="ContainerForexDayLineTest.cpp">
+      <Filter>Test源文件\Data Container\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="ContainerFinnhubStockDayLineTest.cpp">
+      <Filter>Test源文件\Data Container\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="ContainerFinnhubStockTest.cpp">
+      <Filter>Test源文件\Data Container\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubStockTest.cpp">
+      <Filter>Test源文件\Stock\World stock</Filter>
+    </ClCompile>
+    <ClCompile Include="MockFinnhubStockTest.cpp">
+      <Filter>Test源文件\Stock\World stock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockMainFrm.h">

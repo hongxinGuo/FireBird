@@ -98,7 +98,7 @@ namespace FireBirdTest {
 		dataSource.StoreInquiry(pProduct);
 		dataSource.GetCurrentProduct();
 
-		dataSource.GenerateCurrentInquiryMessage();
+		dataSource.CreateCurrentInquireString();
 		EXPECT_STREQ(dataSource.GetInquiringString(), _T("TestGetInquiry"));
 	}
 

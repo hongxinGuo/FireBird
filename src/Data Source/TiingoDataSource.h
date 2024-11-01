@@ -20,15 +20,15 @@ public:
 	void ConfigureInternetOption() override; // 配置internet参数。
 	enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr& pWebData) override;
 
-	void Inquire(long lCurrentTime);
+	bool Generate(long lCurrentTime);
 	// Tiingo.com可供申请的项目，目前共7项。
-	virtual bool InquireMarketNews();
-	virtual bool InquireFundamentalDefinition();
-	virtual bool InquireCompanySymbol();
-	virtual bool InquireCryptoSymbol();
-	virtual bool InquireIEXTopOfBook();
-	virtual bool InquireDayLine();
-	virtual bool InquireFinancialState();
+	virtual bool GenerateMarketNews();
+	virtual bool GenerateFundamentalDefinition();
+	virtual bool GenerateCompanySymbol();
+	virtual bool GenerateCryptoSymbol();
+	virtual bool GenerateIEXTopOfBook();
+	virtual bool GenerateDayLine();
+	virtual bool GenerateFinancialState();
 
 	bool IsUpdateMarketNews() const noexcept { return m_fUpdateMarketNews; }
 	void SetUpdateMarketNews(bool fFlag) noexcept { m_fUpdateMarketNews = fFlag; }

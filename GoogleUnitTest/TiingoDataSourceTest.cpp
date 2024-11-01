@@ -150,16 +150,13 @@ namespace FireBirdTest {
 		gl_systemMessage.PopInnerSystemInformationMessage();
 	}
 
-	TEST_F(CTiingoDataSourceTest, TestInquireTiingoCompanySymbol) {
+	TEST_F(CTiingoDataSourceTest, TestGenerateTiingoCompanySymbol) {
 		m_pTiingoDataSource->SetUpdateStockSymbol(false);
-		EXPECT_FALSE(m_pTiingoDataSource->InquireCompanySymbol()) << "TiingoCompanySymbol Updated";
+		EXPECT_FALSE(m_pTiingoDataSource->GenerateCompanySymbol()) << "TiingoCompanySymbol Updated";
 
 		m_pTiingoDataSource->SetUpdateStockSymbol(true);
-		m_pTiingoDataSource->SetInquiring(true);
-		EXPECT_FALSE(m_pTiingoDataSource->InquireCompanySymbol());
-
 		m_pTiingoDataSource->SetInquiring(false);
-		EXPECT_TRUE(m_pTiingoDataSource->InquireCompanySymbol());
+		EXPECT_TRUE(m_pTiingoDataSource->GenerateCompanySymbol());
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
 		const CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockProfile"));
@@ -168,16 +165,13 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("Inquire Tiingo stock symbol..."));
 	}
 
-	TEST_F(CTiingoDataSourceTest, TestInquireTiingoCryptoSymbol) {
+	TEST_F(CTiingoDataSourceTest, TestGenerateTiingoCryptoSymbol) {
 		m_pTiingoDataSource->SetUpdateCryptoSymbol(false);
-		EXPECT_FALSE(m_pTiingoDataSource->InquireCryptoSymbol()) << "TiingoCompanySymbol Updated";
+		EXPECT_FALSE(m_pTiingoDataSource->GenerateCryptoSymbol()) << "TiingoCompanySymbol Updated";
 
 		m_pTiingoDataSource->SetUpdateCryptoSymbol(true);
-		m_pTiingoDataSource->SetInquiring(true);
-		EXPECT_FALSE(m_pTiingoDataSource->InquireCryptoSymbol());
-
 		m_pTiingoDataSource->SetInquiring(false);
-		EXPECT_TRUE(m_pTiingoDataSource->InquireCryptoSymbol());
+		EXPECT_TRUE(m_pTiingoDataSource->GenerateCryptoSymbol());
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
 		const CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoCryptoSymbol"));
@@ -186,16 +180,13 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("Inquiring Tiingo crypto symbol..."));
 	}
 
-	TEST_F(CTiingoDataSourceTest, TestInquireTiingoFundamentalDefinition) {
+	TEST_F(CTiingoDataSourceTest, TestGenerateTiingoFundamentalDefinition) {
 		m_pTiingoDataSource->SetUpdateFundamentalDefinition(false);
-		EXPECT_FALSE(m_pTiingoDataSource->InquireFundamentalDefinition()) << "TiingoCompanySymbol Updated";
+		EXPECT_FALSE(m_pTiingoDataSource->GenerateFundamentalDefinition()) << "TiingoCompanySymbol Updated";
 
 		m_pTiingoDataSource->SetUpdateFundamentalDefinition(true);
-		m_pTiingoDataSource->SetInquiring(true);
-		EXPECT_FALSE(m_pTiingoDataSource->InquireFundamentalDefinition());
-
 		m_pTiingoDataSource->SetInquiring(false);
-		EXPECT_TRUE(m_pTiingoDataSource->InquireFundamentalDefinition());
+		EXPECT_TRUE(m_pTiingoDataSource->GenerateFundamentalDefinition());
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
 		const CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoFundamentalDefinition"));
@@ -204,7 +195,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(str, _T("Inquiring Tiingo Fundamental Definition..."));
 	}
 
-	TEST_F(CTiingoDataSourceTest, TestInquireTiingoDayLine) {
+	TEST_F(CTiingoDataSourceTest, TestGenerateTiingoDayLine) {
 		CTiingoStockPtr pStock;
 
 		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
@@ -217,14 +208,11 @@ namespace FireBirdTest {
 		gl_dataContainerTiingoStock.GetStock(1)->SetUpdateDayLine(true);
 		gl_dataContainerTiingoStock.GetStock(2)->SetUpdateDayLine(true);
 		m_pTiingoDataSource->SetUpdateDayLine(false);
-		EXPECT_FALSE(m_pTiingoDataSource->InquireDayLine()) << "DayLine Updated";
+		EXPECT_FALSE(m_pTiingoDataSource->GenerateDayLine()) << "DayLine Updated";
 
 		m_pTiingoDataSource->SetUpdateDayLine(true);
-		m_pTiingoDataSource->SetInquiring(true);
-		EXPECT_FALSE(m_pTiingoDataSource->InquireDayLine());
-
 		m_pTiingoDataSource->SetInquiring(false);
-		EXPECT_TRUE(m_pTiingoDataSource->InquireDayLine());
+		EXPECT_TRUE(m_pTiingoDataSource->GenerateDayLine());
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
 		//auto lStockIndex = gl_dataContainerTiingoStock.GetOffset(tiingoSymbol1);
 		CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
@@ -235,7 +223,7 @@ namespace FireBirdTest {
 
 		gl_dataContainerTiingoStock.GetStock(1)->SetUpdateDayLine(false);
 		m_pTiingoDataSource->SetInquiring(false);
-		EXPECT_TRUE(m_pTiingoDataSource->InquireDayLine());
+		EXPECT_TRUE(m_pTiingoDataSource->GenerateDayLine());
 		//lStockIndex = gl_dataContainerFinnhubStock.GetOffset(tiingoSymbol2);
 		p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockDayLine"));
@@ -244,7 +232,7 @@ namespace FireBirdTest {
 
 		gl_dataContainerTiingoStock.GetStock(2)->SetUpdateDayLine(false);
 		m_pTiingoDataSource->SetInquiring(false);
-		EXPECT_FALSE(m_pTiingoDataSource->InquireDayLine()) << "第三次查询时没有找到待查询的股票";
+		EXPECT_FALSE(m_pTiingoDataSource->GenerateDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateDayLine()) << "股票都查询完了";
 		const CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Tiingo股票日线历史数据更新完毕"));
@@ -263,7 +251,7 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetUpdateDB(false);
 	}
 
-	TEST_F(CTiingoDataSourceTest, TestInquireTiingoFinancialStatement) {
+	TEST_F(CTiingoDataSourceTest, TestGenerateTiingoFinancialStatement) {
 		CTiingoStockPtr pStock;
 
 		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
@@ -276,14 +264,11 @@ namespace FireBirdTest {
 		gl_dataContainerTiingoStock.GetStock(1)->SetUpdateFinancialState(true);
 		gl_dataContainerTiingoStock.GetStock(2)->SetUpdateFinancialState(true);
 		m_pTiingoDataSource->SetUpdateFinancialState(false);
-		EXPECT_FALSE(m_pTiingoDataSource->InquireFinancialState()) << "FinancialState Updated";
+		EXPECT_FALSE(m_pTiingoDataSource->GenerateFinancialState()) << "FinancialState Updated";
 
 		m_pTiingoDataSource->SetUpdateFinancialState(true);
-		m_pTiingoDataSource->SetInquiring(true);
-		EXPECT_FALSE(m_pTiingoDataSource->InquireFinancialState());
-
 		m_pTiingoDataSource->SetInquiring(false);
-		EXPECT_TRUE(m_pTiingoDataSource->InquireFinancialState());
+		EXPECT_TRUE(m_pTiingoDataSource->GenerateFinancialState());
 		EXPECT_TRUE(m_pTiingoDataSource->IsInquiring());
 		//auto lStockIndex = gl_dataContainerTiingoStock.GetOffset(tiingoSymbol1);
 		CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
@@ -294,7 +279,7 @@ namespace FireBirdTest {
 
 		gl_dataContainerTiingoStock.GetStock(1)->SetUpdateFinancialState(false);
 		m_pTiingoDataSource->SetInquiring(false);
-		EXPECT_TRUE(m_pTiingoDataSource->InquireFinancialState());
+		EXPECT_TRUE(m_pTiingoDataSource->GenerateFinancialState());
 		//lStockIndex = gl_dataContainerFinnhubStock.GetOffset(tiingoSymbol2);
 		p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoFinancialState"));
@@ -303,7 +288,7 @@ namespace FireBirdTest {
 
 		gl_dataContainerTiingoStock.GetStock(2)->SetUpdateFinancialState(false);
 		m_pTiingoDataSource->SetInquiring(false);
-		EXPECT_FALSE(m_pTiingoDataSource->InquireFinancialState()) << "第三次查询时没有找到待查询的股票";
+		EXPECT_FALSE(m_pTiingoDataSource->GenerateFinancialState()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateFinancialState()) << "股票都查询完了";
 		const CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("Tiingo financial statements更新完毕"));

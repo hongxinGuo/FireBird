@@ -83,7 +83,7 @@ namespace FireBirdTest {
 		const auto p = make_shared<CProductNeteaseRT>();
 		p->SetInquiryFunction(_T("http://api.money.126.net/data/feed/"));
 		m_pMockNeteaseRTDataSource->SetCurrentInquiry(p);
-		m_pMockNeteaseRTDataSource->GenerateCurrentInquiryMessage();
+		m_pMockNeteaseRTDataSource->CreateCurrentInquireString();
 		const CString str = m_pMockNeteaseRTDataSource->GetInquiringString();
 		EXPECT_STREQ(str.Left(35), _T("http://api.money.126.net/data/feed/"));
 	}

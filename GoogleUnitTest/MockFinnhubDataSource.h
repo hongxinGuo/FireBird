@@ -6,27 +6,27 @@ namespace testing {
 	class CMockFinnhubDataSource final : public CFinnhubDataSource {
 	public:
 		MOCK_METHOD(ULONGLONG, GetTickCount, (), (override));
-		MOCK_METHOD(bool, InquireCountryList, (), (override));
-		MOCK_METHOD(bool, InquireMarketStatus, (), (override));
-		MOCK_METHOD(bool, InquireMarketHoliday, (), (override));
-		MOCK_METHOD(bool, InquireCompanySymbol, (), (override));
-		MOCK_METHOD(bool, InquireCompanyProfileConcise, (), (override));
-		MOCK_METHOD(bool, InquireCompanyNews, (), (override));
-		MOCK_METHOD(bool, InquireCompanyBasicFinancial, (), (override));
-		MOCK_METHOD(bool, InquireStockDayLine, (), (override));
-		MOCK_METHOD(bool, InquireRTQuote, (), (override));
-		MOCK_METHOD(bool, InquirePeer, (), (override));
-		MOCK_METHOD(bool, InquireInsiderTransaction, (), (override));
-		MOCK_METHOD(bool, InquireInsiderSentiment, (), (override));
-		MOCK_METHOD(bool, InquireEconomicCalendar, (), (override));
-		MOCK_METHOD(bool, InquireEPSSurprise, (), (override));
-		MOCK_METHOD(bool, InquireSECFilings, (), (override));
-		MOCK_METHOD(bool, InquireForexExchange, (), (override));
-		MOCK_METHOD(bool, InquireForexSymbol, (), (override));
-		MOCK_METHOD(bool, InquireForexDayLine, (), (override));
-		MOCK_METHOD(bool, InquireCryptoExchange, (), (override));
-		MOCK_METHOD(bool, InquireCryptoSymbol, (), (override));
-		MOCK_METHOD(bool, InquireCryptoDayLine, (), (override));
+		MOCK_METHOD(bool, GenerateCountryList, (), (override));
+		MOCK_METHOD(bool, GenerateMarketStatus, (), (override));
+		MOCK_METHOD(bool, GenerateMarketHoliday, (), (override));
+		MOCK_METHOD(bool, GenerateCompanySymbol, (), (override));
+		MOCK_METHOD(bool, GenerateCompanyProfileConcise, (), (override));
+		MOCK_METHOD(bool, GenerateCompanyNews, (), (override));
+		MOCK_METHOD(bool, GenerateCompanyBasicFinancial, (), (override));
+		MOCK_METHOD(bool, GenerateStockDayLine, (), (override));
+		MOCK_METHOD(bool, GenerateRTQuote, (), (override));
+		MOCK_METHOD(bool, GeneratePeer, (), (override));
+		MOCK_METHOD(bool, GenerateInsiderTransaction, (), (override));
+		MOCK_METHOD(bool, GenerateInsiderSentiment, (), (override));
+		MOCK_METHOD(bool, GenerateEconomicCalendar, (), (override));
+		MOCK_METHOD(bool, GenerateEPSSurprise, (), (override));
+		MOCK_METHOD(bool, GenerateSECFilings, (), (override));
+		MOCK_METHOD(bool, GenerateForexExchange, (), (override));
+		MOCK_METHOD(bool, GenerateForexSymbol, (), (override));
+		MOCK_METHOD(bool, GenerateForexDayLine, (), (override));
+		MOCK_METHOD(bool, GenerateCryptoExchange, (), (override));
+		MOCK_METHOD(bool, GenerateCryptoSymbol, (), (override));
+		MOCK_METHOD(bool, GenerateCryptoDayLine, (), (override));
 	};
 
 	using CMockFinnhubDataSourcePtr = shared_ptr<CMockFinnhubDataSource>;

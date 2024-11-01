@@ -55,7 +55,7 @@ void CNeteaseRTDataSource::Inquire(const long lCurrentTime) {
 	}
 }
 
-void CNeteaseRTDataSource::GenerateCurrentInquiryMessage() {
+void CNeteaseRTDataSource::CreateCurrentInquireString() {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
 

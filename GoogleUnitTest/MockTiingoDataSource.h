@@ -6,12 +6,13 @@ namespace testing {
 	class CMockTiingoDataSource final : public CTiingoDataSource {
 	public:
 		MOCK_METHOD(ULONGLONG, GetTickCount, (), (override));
-		MOCK_METHOD(bool, InquireMarketNews, (), (override));
-		MOCK_METHOD(bool, InquireFundamentalDefinition, (), (override));
-		MOCK_METHOD(bool, InquireCompanySymbol, (), (override));
-		MOCK_METHOD(bool, InquireCryptoSymbol, (), (override));
-		MOCK_METHOD(bool, InquireIEXTopOfBook, (), (override));
-		MOCK_METHOD(bool, InquireDayLine, (), (override));
+		MOCK_METHOD(bool, GenerateMarketNews, (), (override));
+		MOCK_METHOD(bool, GenerateFundamentalDefinition, (), (override));
+		MOCK_METHOD(bool, GenerateCompanySymbol, (), (override));
+		MOCK_METHOD(bool, GenerateCryptoSymbol, (), (override));
+		MOCK_METHOD(bool, GenerateIEXTopOfBook, (), (override));
+		MOCK_METHOD(bool, GenerateDayLine, (), (override));
+		MOCK_METHOD(bool, GenerateFinancialState, (), (override));
 	};
 
 	using CMockTiingoDataSourcePtr = shared_ptr<CMockTiingoDataSource>;

@@ -226,8 +226,7 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOL__, 180000); // 收市后18点下载tiingo IEX当天数据。
 
-	//todo 收市后18点10分处理Tiingo日线数据
-	//AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, 181000);。
+	AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, 181000);
 
 	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
@@ -564,8 +563,8 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateBasicFinancialDB()) { // Basic financial
 		gl_runtime.background_executor()->post([] {
-			gl_UpdateWorldMarketDB.acquire(); //Todo 此任务很费时，原因待查。目前先不使用此隔绝区
-			gl_dataContainerFinnhubStock.UpdateBasicFinancialDB();
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataContainerFinnhubStock.UpdateBasicFinancialDB(); // 此任务很费时，原因待查。目前先不使用此隔绝区
 			gl_UpdateWorldMarketDB.release();
 		});
 	}

@@ -69,7 +69,7 @@ void CNeteaseDayLineDataSource::CreateProduct() {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-void CNeteaseDayLineDataSource::GenerateCurrentInquiryMessage() {
+void CNeteaseDayLineDataSource::CreateCurrentInquireString() {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
 

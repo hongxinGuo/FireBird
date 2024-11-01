@@ -19,30 +19,30 @@ public:
 	void ConfigureInternetOption() override;
 	enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr& pWebData) override;
 
-	void Inquire(long lCurrentTime);
+	bool Generate(long lCurrentTime);
 
 	// 可供申请的项目，目前共21项。
-	virtual bool InquireCountryList();
-	virtual bool InquireCompanySymbol();
-	virtual bool InquireMarketStatus();
-	virtual bool InquireMarketHoliday();
-	virtual bool InquireCompanyProfileConcise();
-	virtual bool InquireCompanyNews();
-	virtual bool InquireCompanyBasicFinancial();
-	virtual bool InquireStockDayLine();
-	virtual bool InquireRTQuote();
-	virtual bool InquirePeer();
-	virtual bool InquireInsiderTransaction();
-	virtual bool InquireInsiderSentiment();
-	virtual bool InquireEconomicCalendar();
-	virtual bool InquireEPSSurprise();
-	virtual bool InquireSECFilings();
-	virtual bool InquireForexExchange();
-	virtual bool InquireForexSymbol();
-	virtual bool InquireForexDayLine();
-	virtual bool InquireCryptoExchange();
-	virtual bool InquireCryptoSymbol();
-	virtual bool InquireCryptoDayLine();
+	virtual bool GenerateCountryList();
+	virtual bool GenerateCompanySymbol();
+	virtual bool GenerateMarketStatus();
+	virtual bool GenerateMarketHoliday();
+	virtual bool GenerateCompanyProfileConcise();
+	virtual bool GenerateCompanyNews();
+	virtual bool GenerateCompanyBasicFinancial();
+	virtual bool GenerateStockDayLine();
+	virtual bool GenerateRTQuote();
+	virtual bool GeneratePeer();
+	virtual bool GenerateInsiderTransaction();
+	virtual bool GenerateInsiderSentiment();
+	virtual bool GenerateEconomicCalendar();
+	virtual bool GenerateEPSSurprise();
+	virtual bool GenerateSECFilings();
+	virtual bool GenerateForexExchange();
+	virtual bool GenerateForexSymbol();
+	virtual bool GenerateForexDayLine();
+	virtual bool GenerateCryptoExchange();
+	virtual bool GenerateCryptoSymbol();
+	virtual bool GenerateCryptoDayLine();
 
 	bool IsUpdateCountryList() const noexcept { return m_fUpdateCountryList; }
 	void SetUpdateCountryList(const bool fFlag) noexcept { m_fUpdateCountryList = fFlag; }

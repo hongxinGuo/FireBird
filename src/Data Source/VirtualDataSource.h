@@ -42,9 +42,9 @@ public:
 	virtual bool Reset() { return true; }
 
 	void Run(long lMarketTime);
-	void RunWorkingThread(long lMarketTime);
+	void InquireData(long lMarketTime);
 	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
-	virtual void GenerateCurrentInquiryMessage();
+	virtual void CreateCurrentInquireString();
 	virtual enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr&) { return ERROR_NO_ERROR__; } // 此WebData内容为错误信息？
 
 	void SetDefaultSessionOption();

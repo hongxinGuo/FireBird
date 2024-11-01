@@ -17,7 +17,7 @@ public:
 	bool GenerateInquiryMessage(long lCurrentTime) override;
 
 	void ConfigureInternetOption() override; // 在读取网络数据前的准备工作，默认为设置NeteaseRT的m_pSession状态。
-	void GenerateCurrentInquiryMessage() override;
+	void CreateCurrentInquireString() override;
 
 	virtual void Inquire(long lCurrentTime);
 };

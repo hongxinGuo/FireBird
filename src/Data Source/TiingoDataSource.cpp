@@ -173,41 +173,35 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (llTickCount > (m_llLastTimeTickCount + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime())) {
 		m_llLastTimeTickCount = llTickCount;
 
-		if (!IsInquiring()) {
-			ASSERT(!HaveInquiry());
-			Inquire(lCurrentTime);
-			if (IsInquiring()) {
-				ASSERT(HaveInquiry());
-				return true;
-			}
-		}
+		ASSERT(!IsInquiring());
+		if (Generate(lCurrentTime)) return true;
 	}
 	return false;
 }
 
-void CTiingoDataSource::Inquire(long lCurrentTime) {
+bool CTiingoDataSource::Generate(long lCurrentTime) {
 	ASSERT(!IsInquiring());
-	//if (gl_pWorldMarket->IsSystemReady()) {
 	ASSERT(lCurrentTime <= GetPrevTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 10, 0)
 		|| lCurrentTime >= GetNextTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 5, 0)); // 重启市场时不允许接收网络信息。
-	InquireMarketNews(); // Note 此项必须位于第一位，用于判断tiingo账户的类型。
-	InquireFundamentalDefinition();
-	InquireCompanySymbol();
-	InquireCryptoSymbol();
-	InquireIEXTopOfBook();
-	InquireDayLine(); // 申请日线数据要位于包含多项申请的项目之首。
-	InquireFinancialState();
+	if (GenerateMarketNews()) return true; // Note 此项必须位于第一位，用于判断tiingo账户的类型。
+	if (GenerateFundamentalDefinition()) return true;
+	if (GenerateCompanySymbol()) return true;
+	if (GenerateCryptoSymbol()) return true;
+	if (GenerateIEXTopOfBook()) return true;
+	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
+	if (GenerateFinancialState()) return true;
 	if (!IsInquiring()) {
 		if (!m_fTiingoDataInquiryFinished) {
 			gl_systemMessage.PushInformationMessage(_T("Tiingo data inquiry finished"));
 			m_fTiingoDataInquiryFinished = true;
 		}
 	}
-	//}
+	return true;
 }
 
-bool CTiingoDataSource::InquireMarketNews() {
-	if (!IsInquiring() && IsUpdateMarketNews()) {
+bool CTiingoDataSource::GenerateMarketNews() {
+	ASSERT(!IsInquiring());
+	if (IsUpdateMarketNews()) {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, MARKET_NEWS_);
 		StoreInquiry(p);
 		SetInquiring(true);
@@ -218,8 +212,9 @@ bool CTiingoDataSource::InquireMarketNews() {
 	return false;
 }
 
-bool CTiingoDataSource::InquireFundamentalDefinition() {
-	if (!IsInquiring() && IsUpdateFundamentalDefinition()) {
+bool CTiingoDataSource::GenerateFundamentalDefinition() {
+	ASSERT(!IsInquiring());
+	if (IsUpdateFundamentalDefinition()) {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, TIINGO_FUNDAMENTAL_DEFINITION_);
 		StoreInquiry(p);
 		SetInquiring(true);
@@ -230,8 +225,9 @@ bool CTiingoDataSource::InquireFundamentalDefinition() {
 	return false;
 }
 
-bool CTiingoDataSource::InquireCompanySymbol() {
-	if (!IsInquiring() && IsUpdateStockSymbol()) {
+bool CTiingoDataSource::GenerateCompanySymbol() {
+	ASSERT(!IsInquiring());
+	if (IsUpdateStockSymbol()) {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_);
 		StoreInquiry(p);
 		SetInquiring(true);
@@ -242,8 +238,9 @@ bool CTiingoDataSource::InquireCompanySymbol() {
 	return false;
 }
 
-bool CTiingoDataSource::InquireCryptoSymbol() {
-	if (!IsInquiring() && IsUpdateCryptoSymbol()) {
+bool CTiingoDataSource::GenerateCryptoSymbol() {
+	ASSERT(!IsInquiring());
+	if (IsUpdateCryptoSymbol()) {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_);
 		StoreInquiry(p);
 		SetInquiring(true);
@@ -254,8 +251,9 @@ bool CTiingoDataSource::InquireCryptoSymbol() {
 	return false;
 }
 
-bool CTiingoDataSource::InquireIEXTopOfBook() {
-	if (!IsInquiring() && IsUpdateIEXTopOfBook()) {
+bool CTiingoDataSource::GenerateIEXTopOfBook() {
+	ASSERT(!IsInquiring());
+	if (IsUpdateIEXTopOfBook()) {
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, TIINGO_IEX_TOP_OF_BOOK_);
 		StoreInquiry(p);
 		SetInquiring(true);
@@ -264,12 +262,13 @@ bool CTiingoDataSource::InquireIEXTopOfBook() {
 	return false;
 }
 
-bool CTiingoDataSource::InquireFinancialState() {
+bool CTiingoDataSource::GenerateFinancialState() {
 	bool fHaveInquiry = false;
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 	constexpr int iInquireType = TIINGO_FINANCIAL_STATEMENT_;
 
-	if (!IsInquiring() && IsUpdateFinancialState()) {
+	ASSERT(!IsInquiring());
+	if (IsUpdateFinancialState()) {
 		bool fFound = false;
 		CTiingoStockPtr pTiingoStock;
 		while (m_lCurrentUpdateFinancialStatementPos < lStockSetSize) {
@@ -318,12 +317,13 @@ bool CTiingoDataSource::InquireFinancialState() {
 // Note 当接收市场新闻时，同时决定本账户是否是付费的。如果是免费账户，则同时关闭除自选股票外的其他日线查询申请
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CTiingoDataSource::InquireDayLine() {
+bool CTiingoDataSource::GenerateDayLine() {
 	bool fHaveInquiry = false;
 	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
 	constexpr int iInquireType = STOCK_PRICE_CANDLES_;
 
-	if (!IsInquiring() && IsUpdateDayLine()) {
+	ASSERT(!IsInquiring());
+	if (IsUpdateDayLine()) {
 		CTiingoStockPtr pTiingoStock;
 		bool fFound = false;
 		while (m_lCurrentUpdateDayLinePos < lStockSetSize) {

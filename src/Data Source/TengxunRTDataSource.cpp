@@ -42,7 +42,7 @@ bool CTengxunRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	return false;
 }
 
-void CTengxunRTDataSource::GenerateCurrentInquiryMessage() {
+void CTengxunRTDataSource::CreateCurrentInquireString() {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();
 }
 

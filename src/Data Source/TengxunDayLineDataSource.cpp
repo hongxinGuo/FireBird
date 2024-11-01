@@ -147,7 +147,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-void CTengxunDayLineDataSource::GenerateCurrentInquiryMessage() {
+void CTengxunDayLineDataSource::CreateCurrentInquireString() {
 	m_strInquiry = m_pCurrentProduct->CreateMessage();// 腾讯日线的查询字符串，在生成product时即完成了
 }
 
