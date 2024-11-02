@@ -43,13 +43,13 @@
 #include <tuple>
 #include <vector>
 
+#include "gmock/gmock.h"
+#include "test/gmock-matchers_test.h"
 #include "gtest/gtest.h"
 
 // Silence warning C4244: 'initializing': conversion from 'int' to 'short',
 // possible loss of data and C4100, unreferenced local parameter
 GTEST_DISABLE_MSC_WARNINGS_PUSH_(4244 4100)
-
-#include "test/gmock-matchers_test.h"
 
 namespace testing {
 namespace gmock_matchers_test {
@@ -1204,13 +1204,16 @@ TEST(SizeIsTest, ExplainsResult) {
   vector<int> container;
   EXPECT_EQ("whose size 0 doesn't match", Explain(m1, container));
   EXPECT_EQ("whose size 0 matches", Explain(m2, container));
-  EXPECT_EQ("whose size 0 matches", Explain(m3, container));
+  EXPECT_EQ("whose size 0 matches, which matches (is equal to 0)",
+            Explain(m3, container));
   EXPECT_EQ("whose size 0 doesn't match", Explain(m4, container));
   container.push_back(0);
   container.push_back(0);
   EXPECT_EQ("whose size 2 matches", Explain(m1, container));
   EXPECT_EQ("whose size 2 doesn't match", Explain(m2, container));
-  EXPECT_EQ("whose size 2 doesn't match", Explain(m3, container));
+  EXPECT_EQ(
+      "whose size 2 doesn't match, isn't equal to 0, and isn't equal to 3",
+      Explain(m3, container));
   EXPECT_EQ("whose size 2 matches", Explain(m4, container));
 }
 
@@ -1475,8 +1478,10 @@ TEST_P(BeginEndDistanceIsTestP, ExplainsResult) {
             Explain(m1, container));
   EXPECT_EQ("whose distance between begin() and end() 0 matches",
             Explain(m2, container));
-  EXPECT_EQ("whose distance between begin() and end() 0 matches",
-            Explain(m3, container));
+  EXPECT_EQ(
+      "whose distance between begin() and end() 0 matches, which matches (is "
+      "equal to 0)",
+      Explain(m3, container));
   EXPECT_EQ(
       "whose distance between begin() and end() 0 doesn't match, which is 1 "
       "less than 1",
@@ -1487,8 +1492,10 @@ TEST_P(BeginEndDistanceIsTestP, ExplainsResult) {
             Explain(m1, container));
   EXPECT_EQ("whose distance between begin() and end() 2 doesn't match",
             Explain(m2, container));
-  EXPECT_EQ("whose distance between begin() and end() 2 doesn't match",
-            Explain(m3, container));
+  EXPECT_EQ(
+      "whose distance between begin() and end() 2 doesn't match, isn't equal "
+      "to 0, and isn't equal to 3",
+      Explain(m3, container));
   EXPECT_EQ(
       "whose distance between begin() and end() 2 matches, which is 1 more "
       "than 1",

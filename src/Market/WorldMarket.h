@@ -57,8 +57,6 @@ public:
 	bool UpdateEPSSurpriseDB();
 	void UpdateSECFilingsDB();
 
-	void UpdateTiingoStockStatus(); // 根据付费还是免费账户的不同，更改需要申请的数据类型
-
 	// 各种状态
 
 	CString GetCurrentFinnhubFunction() { return m_strCurrentFinnhubFunction; }

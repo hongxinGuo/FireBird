@@ -135,5 +135,4 @@ void CProductTiingoMarketNews::UpdateDataSourceStatus(CVirtualDataSourcePtr pDat
 		gl_systemConfiguration.ChangeTiingoAccountTypeToPaid();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Paid Tiingo account"));
 	}
-	gl_pWorldMarket->UpdateTiingoStockStatus(); // 根据账户是付费还是免费的，设置日线更新方式。
 }

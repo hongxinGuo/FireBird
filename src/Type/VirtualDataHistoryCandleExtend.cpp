@@ -106,8 +106,8 @@ bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic*
 		ASSERT(!m_fBasicDataLoaded);
 	ASSERT(pSetHistoryCandleBasic->IsOpen());
 
+	Unload(); // 卸载之前的日线
 	// 装入DayLine数据
-	Unload();
 	while (!pSetHistoryCandleBasic->IsEOF()) {
 		const auto pHistoryCandle = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryCandle->LoadBasicData(pSetHistoryCandleBasic);

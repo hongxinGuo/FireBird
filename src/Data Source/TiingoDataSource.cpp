@@ -262,53 +262,6 @@ bool CTiingoDataSource::GenerateIEXTopOfBook() {
 	return false;
 }
 
-bool CTiingoDataSource::GenerateFinancialState() {
-	bool fHaveInquiry = false;
-	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
-	constexpr int iInquireType = TIINGO_FINANCIAL_STATEMENT_;
-
-	ASSERT(!IsInquiring());
-	if (IsUpdateFinancialState()) {
-		bool fFound = false;
-		CTiingoStockPtr pTiingoStock;
-		while (m_lCurrentUpdateFinancialStatementPos < lStockSetSize) {
-			pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lCurrentUpdateFinancialStatementPos);
-			if (pTiingoStock->IsUpdateFinancialState()) {
-				if (gl_systemConfiguration.IsTiingoAccountAddOnPaid()) {
-					if (!gl_tiingoInaccessibleStock.HaveStock(iInquireType, pTiingoStock->GetSymbol())) {
-						fFound = true;
-						break;
-					}
-				}
-				else {
-					if (setDOW30.contains(pTiingoStock->GetSymbol())) {
-						if (!gl_tiingoInaccessibleStock.HaveStock(iInquireType, pTiingoStock->GetSymbol())) {
-							fFound = true;
-							break;
-						}
-					}
-				}
-			}
-			m_lCurrentUpdateFinancialStatementPos++;
-		}
-		if (fFound) {
-			fHaveInquiry = true;
-			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
-			p->SetIndex(m_lCurrentUpdateFinancialStatementPos);
-			StoreInquiry(p);
-			gl_pWorldMarket->SetCurrentTiingoFunction(_T("Financial statement: ") + pTiingoStock->GetSymbol());
-			SetInquiring(true);
-		}
-		else {
-			if (m_lCurrentUpdateFinancialStatementPos >= lStockSetSize) m_lCurrentUpdateFinancialStatementPos = 0;
-			SetUpdateFinancialState(false);
-			const CString str = "Tiingo financial statements更新完毕";
-			gl_systemMessage.PushInformationMessage(str);
-		}
-	}
-	return fHaveInquiry;
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Tiingo的下载日线数据与Finnhub的日线下载函数，只允许同时运行其中之一。
@@ -361,5 +314,52 @@ bool CTiingoDataSource::GenerateDayLine() {
 		}
 	}
 	if (m_lCurrentUpdateDayLinePos >= lStockSetSize) m_lCurrentUpdateDayLinePos = 0;
+	return fHaveInquiry;
+}
+
+bool CTiingoDataSource::GenerateFinancialState() {
+	bool fHaveInquiry = false;
+	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
+	constexpr int iInquireType = TIINGO_FINANCIAL_STATEMENT_;
+
+	ASSERT(!IsInquiring());
+	if (IsUpdateFinancialState()) {
+		bool fFound = false;
+		CTiingoStockPtr pTiingoStock;
+		while (m_lCurrentUpdateFinancialStatementPos < lStockSetSize) {
+			pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lCurrentUpdateFinancialStatementPos);
+			if (pTiingoStock->IsUpdateFinancialState()) {
+				if (gl_systemConfiguration.IsTiingoAccountAddOnPaid()) {
+					if (!gl_tiingoInaccessibleStock.HaveStock(iInquireType, pTiingoStock->GetSymbol())) {
+						fFound = true;
+						break;
+					}
+				}
+				else {
+					if (setDOW30.contains(pTiingoStock->GetSymbol())) {
+						if (!gl_tiingoInaccessibleStock.HaveStock(iInquireType, pTiingoStock->GetSymbol())) {
+							fFound = true;
+							break;
+						}
+					}
+				}
+			}
+			m_lCurrentUpdateFinancialStatementPos++;
+		}
+		if (fFound) {
+			fHaveInquiry = true;
+			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
+			p->SetIndex(m_lCurrentUpdateFinancialStatementPos);
+			StoreInquiry(p);
+			gl_pWorldMarket->SetCurrentTiingoFunction(_T("Financial statement: ") + pTiingoStock->GetSymbol());
+			SetInquiring(true);
+		}
+		else {
+			if (m_lCurrentUpdateFinancialStatementPos >= lStockSetSize) m_lCurrentUpdateFinancialStatementPos = 0;
+			SetUpdateFinancialState(false);
+			const CString str = "Tiingo financial statements更新完毕";
+			gl_systemMessage.PushInformationMessage(str);
+		}
+	}
 	return fHaveInquiry;
 }

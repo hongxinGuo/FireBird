@@ -2,6 +2,8 @@
 #include "ContainerTiingoStock.h"
 #include "InfoReport.h"
 #include "SetTiingoStockDayLine.h"
+#include "Thread.h"
+#include "ThreadStatus.h"
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 
@@ -173,8 +175,21 @@ bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
 }
 
 void CContainerTiingoStock::ProcessDayLine() {
+	gl_systemMessage.PushInnerSystemInformationMessage(_T("开始处理Tiingo日线数据"));
 	for (size_t i = 0; i < Size(); i++) {
 		auto pStock = GetStock(i);
-		pStock->ProcessDayLine();
+		if (pStock->IsActive() && pStock->GetDayLineEndDate() - pStock->GetDayLineStartDate() > 260) {
+			gl_runtime.background_executor()->post([pStock] {
+				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+				gl_BackgroundWorkingThread.acquire();
+				if (!gl_systemConfiguration.IsExitingSystem()) {
+					pStock->ProcessDayLine();
+				}
+				gl_BackgroundWorkingThread.release();
+				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+			});
+		}
 	}
+	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) Sleep(1000);
+	gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo日线数据处理完毕"));
 }

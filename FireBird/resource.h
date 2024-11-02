@@ -146,6 +146,8 @@
 #define ID_RESET_TIINGO_DAYLINE_DATE    32923
 #define ID_32924                        32924
 #define ID_CREATE_TIINGO_TRADEDAY_DAYLINE 32925
+#define ID_32926                        32926
+#define ID_PROCESS_TIINGO_DAYLINE       32927
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -185,7 +187,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32926
+#define _APS_NEXT_COMMAND_VALUE         32928
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

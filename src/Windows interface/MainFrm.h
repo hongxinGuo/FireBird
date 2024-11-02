@@ -46,7 +46,7 @@ protected:
 	UINT m_uIdTimer{ 0 };
 	long m_lCurrentPos{ 0 };
 
-	char m_aStockCodeTemp[30];
+	char m_aStockCodeTemp[30]{};
 
 	static bool sm_fGlobeInit;
 
@@ -134,4 +134,6 @@ public:
 	afx_msg void OnResetTiingoDaylineDate();
 	afx_msg void OnCreateTiingoTradeDayDayline();
 	afx_msg void OnUpdateCreateTiingoTradeDayDayline(CCmdUI* pCmdUI);
+	afx_msg void OnProcessTiingoDayline();
+	afx_msg void OnUpdateProcessTiingoDayline(CCmdUI* pCmdUI);
 };

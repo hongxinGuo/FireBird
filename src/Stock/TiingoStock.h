@@ -64,7 +64,7 @@ public:
 	long GetCompanyFinancialStatementUpdateDate() { return m_jsonUpdateDate["CompanyFinancialStatement"]; }
 	void SetCompanyFinancialStatementUpdateDate(long lDate) { m_jsonUpdateDate["CompanyFinancialStatement"] = lDate; }
 
-	long GetDayLineProcessDate() { return m_jsonUpdateDate["DayLineProcessDate"]; }
+	long GetDayLineProcessDate();
 	void SetDayLineProcessDate(long lDate) { m_jsonUpdateDate["DayLineProcessDate"] = lDate; }
 	void Set52WeekLow() { m_jsonUpdateDate["52WeekLow"] = m_v52WeekLow; }
 	void Get52WeekLow();
@@ -79,6 +79,7 @@ public:
 	void Delete52WeekHigh(long lDate);
 
 	void ProcessDayLine();
+	int IsLowOrHigh(size_t index, long lClose) const;
 
 	// ≤‚ ‘”√∫Ø ˝
 	void Clear52WeekLow() { m_v52WeekLow.clear(); }

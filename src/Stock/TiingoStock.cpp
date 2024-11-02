@@ -311,6 +311,17 @@ bool CTiingoStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate
 	return m_fUpdateDayLine;
 }
 
+long CTiingoStock::GetDayLineProcessDate() {
+	long l;
+	try {
+		l = m_jsonUpdateDate[_T("DayLineProcessDate")];
+	} catch (json::exception&) {
+		m_jsonUpdateDate[_T("DayLineProcessDate")] = 19800101;
+		l = 19800101;
+	}
+	return l;
+}
+
 void CTiingoStock::Get52WeekLow() {
 	try {
 		m_v52WeekLow.clear();
@@ -352,10 +363,57 @@ void CTiingoStock::Delete52WeekHigh(long lDate) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理日线
-//todo 目前查找52周新低和52周新高。
+//todo 目前只查找52周新低和52周新高。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 void CTiingoStock::ProcessDayLine() {
-	if (!IsActive()) return; // 不处理非活跃股票的日线
-	if (GetDayLineEndDate() - GetDayLineStartDate() < 250) return; // 不处理日线数量小于一年的股票
+	m_dataDayLine.LoadDB(GetSymbol());
+
+	size_t iBeginPos = 0;
+	if (GetDayLineProcessDate() == 19800101) { // 如果没有处理过
+		iBeginPos = 250;
+		// 则清空之前的数据
+		m_v52WeekHigh.clear();
+		m_v52WeekLow.clear();
+	}
+	else {
+		while (m_dataDayLine.GetData(iBeginPos)->GetMarketDate() < GetDayLineProcessDate()) iBeginPos++;
+	}
+	for (size_t index = iBeginPos; index < m_dataDayLine.Size(); index++) {
+		long lClose = m_dataDayLine.GetData(index)->GetClose();
+		switch (IsLowOrHigh(index, lClose)) {
+		case -1: // new low
+			Add52WeekLow(m_dataDayLine.GetData(index)->GetMarketDate());
+			break;
+		case 1: // new high
+			Add52WeekHigh(m_dataDayLine.GetData(index)->GetMarketDate());
+			break;
+		default:
+			break;
+		}
+	}
+	m_dataDayLine.Unload();
+}
+
+int CTiingoStock::IsLowOrHigh(size_t index, long lClose) const {
+	bool fIsLow = true;
+	bool fIsHigh = true;
+	long lCurrentCLose;
+	for (size_t i = index - 250; i < index; i++) {
+		lCurrentCLose = m_dataDayLine.GetData(i)->GetClose();
+		if (lCurrentCLose <= lClose) {
+			fIsLow = false;
+			break;
+		}
+	}
+	if (fIsLow) return -1;
+	for (size_t i = index - 250; i < index; i++) {
+		lCurrentCLose = m_dataDayLine.GetData(i)->GetClose();
+		if (lCurrentCLose >= lClose) {
+			fIsHigh = false;
+			break;
+		}
+	}
+	if (fIsHigh) return 1;
+	return 0; // 既非52周最高价亦非52周最低价
 }

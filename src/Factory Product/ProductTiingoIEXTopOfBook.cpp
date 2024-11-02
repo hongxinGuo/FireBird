@@ -37,6 +37,13 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 				if (gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker)) { // 只更新已有代码
 					auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker);
 					pTiingoStock->UpdateRTData(pIEXTopOFBook);
+					pTiingoStock->SetActive(true);
+					if (pTiingoStock->GetDayLineEndDate() == gl_pWorldMarket->GetLastTradeDate()) { // 只有一个需要更新的日线？
+						// 只有一个日线需要更新时，此时已经更新，就不再需要申请日线更新了。
+						pTiingoStock->SetDayLineEndDate(lNewestTradeDay); // 设置新的日线截止日期
+						pTiingoStock->SetUpdateDayLine(false); // 无需再次更新日线
+						pTiingoStock->SetUpdateProfileDB(true);
+					}
 				}
 			}
 		}

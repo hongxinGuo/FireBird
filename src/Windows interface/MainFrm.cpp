@@ -109,6 +109,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_RESET_TIINGO_DAYLINE_DATE, &CMainFrame::OnResetTiingoDaylineDate)
 	ON_COMMAND(ID_CREATE_TIINGO_TRADEDAY_DAYLINE, &CMainFrame::OnCreateTiingoTradeDayDayline)
 	ON_UPDATE_COMMAND_UI(ID_CREATE_TIINGO_TRADEDAY_DAYLINE, &CMainFrame::OnUpdateCreateTiingoTradeDayDayline)
+	ON_COMMAND(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnProcessTiingoDayline)
+	ON_UPDATE_COMMAND_UI(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnUpdateProcessTiingoDayline)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1222,6 +1224,19 @@ void CMainFrame::OnCreateTiingoTradeDayDayline() {
 
 void CMainFrame::OnUpdateCreateTiingoTradeDayDayline(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
+	if (gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) {
+		pCmdUI->Enable(false);
+	}
+	else {
+		pCmdUI->Enable(true);
+	}
+}
+
+void CMainFrame::OnProcessTiingoDayline() {
+	gl_pWorldMarket->TaskProcessTiingoDayLine();
+}
+
+void CMainFrame::OnUpdateProcessTiingoDayline(CCmdUI* pCmdUI) {
 	if (gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) {
 		pCmdUI->Enable(false);
 	}

@@ -69,8 +69,8 @@ namespace FireBirdTest {
 	Test_TiingoWebData tiingoIEXTopOfBook3(3, _T(""), _T("[{\"ticker\":\"000001\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.62, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"000002\",\"timestamp\" : \"2024-09-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]"));
 	// 正确的数据
 	Test_TiingoWebData tiingoIEXTopOfBook4(4, _T(""), _T("[{\"ticker\":\"000001\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.62, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"000002\",\"timestamp\" : \"2024-09-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]"));
-	// 正确的数据
-	Test_TiingoWebData tiingoIEXTopOfBook10(10, _T(""), _T("[{\"ticker\":\"000001\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.62, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"000002\",\"timestamp\" : \"2024-09-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]"));
+	// 正确的数据 DOW30
+	Test_TiingoWebData tiingoIEXTopOfBook10(10, _T(""), _T("[{\"ticker\":\"IBM\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.62, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"MSFT\",\"timestamp\" : \"2024-09-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]"));
 
 	class ParseTiingoIEXTopOfBookTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:
@@ -132,4 +132,39 @@ namespace FireBirdTest {
 			break;
 		}
 	}
+
+	//todo
+	/*
+	TEST_P(ParseTiingoIEXTopOfBookTest, TestParseAndStoreWebData) {
+		m_tiingoIEXTopOfBookProduct.ParseAndStoreWebData(m_pWebData);
+		switch (m_lIndex) {
+		case 1: // 正确的数据
+			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);
+			EXPECT_STREQ(m_pvIEXTopOfBook->at(0)->m_strTicker, _T("000001"));
+			EXPECT_STREQ(m_pvIEXTopOfBook->at(1)->m_strTicker, _T("000002"));
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_llTimestamp, 1727726400);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLastClose, 11420);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lOpen, 11620);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lHigh, 12300);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLow, 11560);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lNew, 12210);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_llVolume, 543028360);
+			break;
+		case 2: // 格式不对
+			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);
+			break;
+		case 3: // 缺乏address项
+			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);
+			break;
+		case 4:
+			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);
+			break;
+		case 10:
+			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);
+			break;
+		default:
+			break;
+		}
+	}
+	*/
 }

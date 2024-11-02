@@ -49,6 +49,7 @@ public:
 	void Unload() noexcept {
 		m_vHistoryData.clear();
 		m_fDataLoaded = false;
+		m_fBasicDataLoaded = false;
 	}
 	CVirtualHistoryCandleExtendPtr GetData(const long lIndex) const { return m_vHistoryData.at(lIndex); }
 	vector<CVirtualHistoryCandleExtendPtr>& GetDataVector() { return m_vHistoryData; }

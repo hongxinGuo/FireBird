@@ -222,7 +222,7 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0));
 
-	AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, GetNextTime(lTimeMinute, 0, 5, 0)); //180500生成tiingo当天日线数据
+	AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, GetNextTime(lTimeMinute, 0, 1, 0)); //一分钟后生成tiingo当天日线数据
 
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOL__, 180000); // 收市后18点下载tiingo IEX当天数据。
 
@@ -409,12 +409,12 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 		});
 	}
 	else {
-		AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, GetNextTime(lCurrentTime, 0, 5, 0)); // 五分钟后执行下一次
+		AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, GetNextTime(lCurrentTime, 0, 0, 30)); // 30秒后执行下一次
 	}
 }
 
 void CWorldMarket::TaskProcessTiingoDayLine() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		gl_dataContainerTiingoStock.ProcessDayLine();
 	});
 }
@@ -464,14 +464,6 @@ void CWorldMarket::UpdateSECFilingsDB() {
 			ASSERT(pStock->UpdateSECFilingsDB());
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
-	}
-}
-
-void CWorldMarket::UpdateTiingoStockStatus() {
-	int iTotal = gl_dataContainerTiingoStock.Size();
-	for (int i = 0; i < iTotal; i++) {
-		auto pStock = gl_dataContainerTiingoStock.GetStock(i);
-		pStock->SetUpdateDayLine(true);
 	}
 }
 
