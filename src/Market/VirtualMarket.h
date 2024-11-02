@@ -78,8 +78,8 @@ public:
 		return m_lMarketLastTradeDate;
 	}
 
-	long GetNewestTradeDate() noexcept { // 最后交易日
-		CalculateNewestTradeDate();
+	long GetCurrentTradeDate() noexcept { // 最后交易日
+		CalculateCurrentTradeDate();
 		return m_lMarketNewestTradeDate;
 	}
 
@@ -101,8 +101,8 @@ public:
 	CString GetStringOfMarketDateTime() const;
 
 	void CalculateTime() noexcept; // 计算本市场的各时间
-	void CalculateLastTradeDate() noexcept;
-	void CalculateNewestTradeDate() noexcept;
+	void CalculateCurrentTradeDate() noexcept; // 计算当前交易日。周一至周五为当日，周六和周日为周五
+	void CalculateLastTradeDate() noexcept; // 计算当前交易日的上一个交易日。周二至周五为上一日，周六和周日为周四，周一为周五。
 
 	virtual int XferMarketTimeToIndex() {// 将本市场的市场时间变成显示位置的偏移（各市场分别实现）
 		ASSERT(false);

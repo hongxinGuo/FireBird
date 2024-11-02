@@ -94,10 +94,10 @@ public:
 
 	bool IsWebError() const noexcept { return m_fWebError; }
 	void SetWebError(bool fFlag) noexcept { m_fWebError = fFlag; }
-	DWORD GetWebErrorCode() const noexcept { return m_dwWebErrorCode.load(); }
+	auto GetWebErrorCode() const noexcept { return m_dwWebErrorCode.load(); }
 	void SetWebErrorCode(INT64 dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
 
-	DWORD GetHTTPStatusCode() const noexcept { return m_dwHTTPStatusCode.load(); }
+	auto GetHTTPStatusCode() const noexcept { return m_dwHTTPStatusCode.load(); }
 	void SetHTTPStatusCode(INT64 dwStatusCode) noexcept { m_dwHTTPStatusCode = dwStatusCode; }
 
 	long GetInquiringNumber() const noexcept { return m_lInquiringNumber; }

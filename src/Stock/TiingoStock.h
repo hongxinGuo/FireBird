@@ -44,7 +44,7 @@ public:
 	void UpdateProfile(const CTiingoStockPtr& pStock);
 
 	void UpdateDayLineStartEndDate();
-	long GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
+	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	CDayLinePtr GetDayLine(const long lIndex) const { return dynamic_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	void SaveDayLine() { m_dataDayLine.SaveDB(m_strSymbol); }

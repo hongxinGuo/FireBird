@@ -179,7 +179,7 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 			gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine(lCurrentTime);
 			break;
 		case WORLD_MARKET_TIINGO_PROCESS_DAYLINE__:
-			gl_pWorldMarket->TaskProcessTiingoDayLine();
+			gl_pWorldMarket->TaskProcessTiingoDayLine(lCurrentTime);
 			break;
 		default:
 			break;
@@ -224,9 +224,9 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, GetNextTime(lTimeMinute, 0, 1, 0)); //一分钟后生成tiingo当天日线数据
 
-	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOL__, 180000); // 收市后18点下载tiingo IEX当天数据。
+	AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lTimeMinute, 0, 2, 0)); // 两分钟后处理日线数据
 
-	AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, 181000);
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOL__, 180000); // 收市后18点下载tiingo IEX当天数据。
 
 	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
@@ -404,7 +404,7 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 	if (!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) { // 已经接收到数据？
 		gl_runtime.background_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
-			gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetNewestTradeDate());
+			gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
 			gl_UpdateWorldMarketDB.release();
 		});
 	}
@@ -413,10 +413,15 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 	}
 }
 
-void CWorldMarket::TaskProcessTiingoDayLine() {
-	gl_runtime.thread_executor()->post([] {
-		gl_dataContainerTiingoStock.ProcessDayLine();
-	});
+void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
+	if (!gl_pTiingoDataSource->IsUpdateIEXTopOfBook() && !gl_pTiingoDataSource->IsUpdateDayLine()) { // 接收完IEX top_of_book和日线数据后方可处理
+		gl_runtime.thread_executor()->post([] {
+			gl_dataContainerTiingoStock.ProcessDayLine();
+		});
+	}
+	else {
+		AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lCurrentTime, 0, 1, 0)); // 一分钟后执行下一次
+	}
 }
 
 void CWorldMarket::TaskPerSecond(long lCurrentTime) {

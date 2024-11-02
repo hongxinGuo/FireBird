@@ -19,11 +19,11 @@ public:
 	bool LoadDB();
 	bool UpdateDB();
 
-	bool IsNeedUpdate() const noexcept { return m_lLastTotalForexExchange < m_vForexExchange.size(); }
-	void SetLastSize(long lSize) noexcept { m_lLastTotalForexExchange = lSize; }
+	bool IsNeedUpdate() const noexcept { return m_llLastTotalForexExchange < m_vForexExchange.size(); }
+	void SetLastSize(size_t lSize) noexcept { m_llLastTotalForexExchange = lSize; }
 
 protected:
 	vector<CString> m_vForexExchange;
 	map<CString, size_t> m_mapForexExchange;
-	long m_lLastTotalForexExchange{ 0 };
+	size_t m_llLastTotalForexExchange{ 0 };
 };

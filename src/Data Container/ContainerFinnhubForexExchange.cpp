@@ -12,7 +12,7 @@ CContainerFinnhubForexExchange::CContainerFinnhubForexExchange() {
 void CContainerFinnhubForexExchange::Reset() {
 	m_vForexExchange.resize(0);
 	m_mapForexExchange.clear();
-	m_lLastTotalForexExchange = 0;
+	m_llLastTotalForexExchange = 0;
 }
 
 bool CContainerFinnhubForexExchange::Delete(const CString& strForexExchange) {
@@ -41,27 +41,26 @@ bool CContainerFinnhubForexExchange::LoadDB() {
 		setForexExchange.MoveNext();
 	}
 	setForexExchange.Close();
-	m_lLastTotalForexExchange = static_cast<long>(m_vForexExchange.size());
+	m_llLastTotalForexExchange = m_vForexExchange.size();
 
 	return true;
 }
 
 bool CContainerFinnhubForexExchange::UpdateDB() {
-	if (m_lLastTotalForexExchange < m_vForexExchange.size()) {
+	if (m_llLastTotalForexExchange < m_vForexExchange.size()) {
 		try {
 			CSetFinnhubForexExchange setForexExchange;
 			setForexExchange.Open();
 			setForexExchange.m_pDatabase->BeginTrans();
-			for (long l = m_lLastTotalForexExchange; l < m_vForexExchange.size(); l++) {
+			for (auto l = m_llLastTotalForexExchange; l < m_vForexExchange.size(); l++) {
 				setForexExchange.AddNew();
 				setForexExchange.m_Code = m_vForexExchange.at(l);
 				setForexExchange.Update();
 			}
 			setForexExchange.m_pDatabase->CommitTrans();
 			setForexExchange.Close();
-			m_lLastTotalForexExchange = static_cast<long>(m_vForexExchange.size());
-		}
-		catch (CException* e) {
+			m_llLastTotalForexExchange = m_vForexExchange.size();
+		} catch (CException* e) {
 			ReportInformationAndDeleteException(e);
 		}
 		return true;

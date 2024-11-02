@@ -379,7 +379,8 @@ void CTiingoStock::ProcessDayLine() {
 	else {
 		while (m_dataDayLine.GetData(iBeginPos)->GetMarketDate() < GetDayLineProcessDate()) iBeginPos++;
 	}
-	for (size_t index = iBeginPos; index < m_dataDayLine.Size(); index++) {
+	auto dayLineSize = m_dataDayLine.Size();
+	for (size_t index = iBeginPos; index < dayLineSize; index++) {
 		long lClose = m_dataDayLine.GetData(index)->GetClose();
 		switch (IsLowOrHigh(index, lClose)) {
 		case -1: // new low
@@ -396,24 +397,21 @@ void CTiingoStock::ProcessDayLine() {
 }
 
 int CTiingoStock::IsLowOrHigh(size_t index, long lClose) const {
-	bool fIsLow = true;
-	bool fIsHigh = true;
-	long lCurrentCLose;
+	bool fIsNewLow = true;
+	bool fIsNewHigh = true;
 	for (size_t i = index - 250; i < index; i++) {
-		lCurrentCLose = m_dataDayLine.GetData(i)->GetClose();
-		if (lCurrentCLose <= lClose) {
-			fIsLow = false;
+		if (m_dataDayLine.GetData(i)->GetClose() <= lClose) {
+			fIsNewLow = false;
 			break;
 		}
 	}
-	if (fIsLow) return -1;
+	if (fIsNewLow) return -1; // 52周新低价
 	for (size_t i = index - 250; i < index; i++) {
-		lCurrentCLose = m_dataDayLine.GetData(i)->GetClose();
-		if (lCurrentCLose >= lClose) {
-			fIsHigh = false;
+		if (m_dataDayLine.GetData(i)->GetClose() >= lClose) {
+			fIsNewHigh = false;
 			break;
 		}
 	}
-	if (fIsHigh) return 1;
+	if (fIsNewHigh) return 1; // 52周新高价
 	return 0; // 既非52周最高价亦非52周最低价
 }

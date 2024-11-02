@@ -140,8 +140,8 @@ public:
 	void CreateFinnhubInquiryStringToIndexMap();
 
 protected:
-	map<int, CString> m_mapFinnhubInquiryIndexToString;
-	map<CString, int> m_mapFinnhubInquiryStringToIndex;
+	map<size_t, CString> m_mapFinnhubInquiryIndexToString;
+	map<CString, size_t> m_mapFinnhubInquiryStringToIndex;
 };
 
 extern CFinnhubInquiryType gl_FinnhubInquiryType;

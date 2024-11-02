@@ -2,7 +2,7 @@
 ///
 /// Tiingo IEX last top of book。
 ///
-///
+/// 目前每天能够更新的总数大致是2万，其中在股票代码中的大致为六千多。
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
@@ -29,7 +29,7 @@ CString CProductTiingoIEXTopOfBook::CreateMessage() {
 
 void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoIEXTopOFBook = ParseTiingoIEXTopOfBook(pWebData);
-	long lNewestTradeDay = gl_pWorldMarket->GetNewestTradeDate();
+	long lNewestTradeDay = gl_pWorldMarket->GetCurrentTradeDate();
 	time_t ttNewestTradeDay = ConvertToTTime(lNewestTradeDay, 0, 160000); // 美股下午4点收市
 	if (!pvTiingoIEXTopOFBook->empty()) {
 		for (const auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {

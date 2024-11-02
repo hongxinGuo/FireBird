@@ -22,6 +22,6 @@ public:
 
 protected:
 	vector<CEconomicCalendarPtr> m_vEconomicCalendar;
-	map<CString, long> m_mapEconomicCalendar;
-	long m_lLastTotalEconomicCalendar;
+	map<CString, size_t> m_mapEconomicCalendar;
+	size_t m_lLastTotalEconomicCalendar;
 };

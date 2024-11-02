@@ -1233,11 +1233,11 @@ void CMainFrame::OnUpdateCreateTiingoTradeDayDayline(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnProcessTiingoDayline() {
-	gl_pWorldMarket->TaskProcessTiingoDayLine();
+	gl_pWorldMarket->TaskProcessTiingoDayLine(gl_pWorldMarket->GetMarketTime());
 }
 
 void CMainFrame::OnUpdateProcessTiingoDayline(CCmdUI* pCmdUI) {
-	if (gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) {
+	if (gl_pTiingoDataSource->IsUpdateIEXTopOfBook() || gl_pTiingoDataSource->IsUpdateDayLine()) {
 		pCmdUI->Enable(false);
 	}
 	else {

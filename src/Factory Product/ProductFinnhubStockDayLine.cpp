@@ -43,7 +43,7 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		if (pStock->GetDayLineSize() > 0) {// 添加了新数据
 			pStock->SetUpdateDayLineDB(true);
 			pStock->SetUpdateProfileDB(true);
-			const long lSize = pStock->GetDayLineSize() - 1;
+			const auto lSize = pStock->GetDayLineSize() - 1;
 			const auto pDayLine = pStock->GetDayLine(lSize);
 			if (!IsEarlyThen(pDayLine->GetMarketDate(), GetMarket()->GetMarketDate(), 100)) {
 				pStock->SetIPOStatus(_STOCK_IPOED_);

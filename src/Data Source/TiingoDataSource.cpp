@@ -59,7 +59,7 @@ void CTiingoDataSource::ConfigureInternetOption() {
 
 enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& pWebData) {
 	string_view sView;
-	int iStringViewLength = 0;
+	size_t iStringViewLength = 0;
 	string s2;
 	int statusCode = 0;
 

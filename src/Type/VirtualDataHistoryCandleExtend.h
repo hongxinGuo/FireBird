@@ -42,7 +42,7 @@ protected:
 public:
 	vector<CVirtualHistoryCandleExtendPtr>* GetContainer() noexcept { return &m_vHistoryData; }
 
-	long Size() const noexcept { return static_cast<long>(m_vHistoryData.size()); }
+	auto Size() const noexcept { return m_vHistoryData.size(); }
 	bool Empty() const noexcept { return m_vHistoryData.empty(); }
 	bool GetStartEndDate(long& lStartDate, long& lEndDate) const;
 
@@ -51,7 +51,7 @@ public:
 		m_fDataLoaded = false;
 		m_fBasicDataLoaded = false;
 	}
-	CVirtualHistoryCandleExtendPtr GetData(const long lIndex) const { return m_vHistoryData.at(lIndex); }
+	CVirtualHistoryCandleExtendPtr GetData(const size_t lIndex) const { return m_vHistoryData.at(lIndex); }
 	vector<CVirtualHistoryCandleExtendPtr>& GetDataVector() { return m_vHistoryData; }
 
 	bool Add(const CVirtualHistoryCandleExtendPtr& pData) {

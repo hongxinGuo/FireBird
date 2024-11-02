@@ -44,6 +44,8 @@ END_MESSAGE_MAP()
 // CFireBirdApp 构造
 
 CFireBirdApp::CFireBirdApp() {
+	time(&gl_tUTCTime); // 程序运行的第一步即要获取当前时间。以防止出现时间为零的故障。
+
 	m_bHiColorIcons = TRUE;
 
 	// 支持重新启动管理器

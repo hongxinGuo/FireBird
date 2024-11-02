@@ -190,41 +190,41 @@ long CVirtualMarket::GetMarketDate(time_t tUTC) const {
 	return (ConvertToDate(&tm_));
 }
 
+void CVirtualMarket::CalculateCurrentTradeDate() noexcept {
+	time_t tMarket;
+
+	switch (m_tmMarket.tm_wday) {
+	case 0: //星期日
+		tMarket = gl_tUTCTime - 2 * 24 * 3600; // 周五
+		break;
+	case 6: // 星期六
+		tMarket = gl_tUTCTime - 1 * 24 * 3600; // 周五
+		break;
+	default: // 其他
+		tMarket = gl_tUTCTime; // 本日
+	}
+	const tm tmMarketTime = GetMarketTime(tMarket);
+	m_lMarketNewestTradeDate = ConvertToDate(&tmMarketTime);
+}
+
 void CVirtualMarket::CalculateLastTradeDate() noexcept {
 	time_t tMarket;
 
 	switch (m_tmMarket.tm_wday) {
 	case 1: // 星期一
-		tMarket = gl_tUTCTime - 3 * 24 * 3600; //
+		tMarket = gl_tUTCTime - 3 * 24 * 3600; // 上周五
 		break;
 	case 0: //星期日
-		tMarket = gl_tUTCTime - 3 * 24 * 3600; //
+		tMarket = gl_tUTCTime - 3 * 24 * 3600; // 周四
 		break;
 	case 6: // 星期六
-		tMarket = gl_tUTCTime - 2 * 24 * 3600; //
+		tMarket = gl_tUTCTime - 2 * 24 * 3600; // 周四
 		break;
 	default: // 其他
-		tMarket = gl_tUTCTime - 24 * 3600; //
+		tMarket = gl_tUTCTime - 24 * 3600; // 上一日
 	}
 	const tm tmMarketTime = GetMarketTime(tMarket);
 	m_lMarketLastTradeDate = ConvertToDate(&tmMarketTime);
-}
-
-void CVirtualMarket::CalculateNewestTradeDate() noexcept {
-	time_t tMarket;
-
-	switch (m_tmMarket.tm_wday) {
-	case 0: //星期日
-		tMarket = gl_tUTCTime - 2 * 24 * 3600; //
-		break;
-	case 6: // 星期六
-		tMarket = gl_tUTCTime - 1 * 24 * 3600; //
-		break;
-	default: // 其他
-		tMarket = gl_tUTCTime; //
-	}
-	const tm tmMarketTime = GetMarketTime(tMarket);
-	m_lMarketNewestTradeDate = ConvertToDate(&tmMarketTime);
 }
 
 bool CVirtualMarket::IsWorkingDay() const noexcept {

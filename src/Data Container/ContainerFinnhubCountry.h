@@ -12,14 +12,10 @@ public:
 	~CContainerFinnhubCountry() = default;
 	void Reset();
 
-	size_t GetTotalCountry() const noexcept { return m_vCountry.size(); }
-	long GetLastTotalCountry() const noexcept { return m_lLastTotalCountry; }
+	auto GetTotalCountry() const noexcept { return m_vCountry.size(); }
+	auto GetLastTotalCountry() const noexcept { return m_llLastTotalCountry; }
 
-	bool IsCountry(const CString& strCountry) const noexcept {
-		if (m_mapCountry.contains(strCountry)) return true;
-		return false;
-	}
-
+	bool IsCountry(const CString& strCountry) const noexcept { return m_mapCountry.contains(strCountry); }
 	bool IsCountry(const CCountryPtr& pCountry) const noexcept { return IsCountry(pCountry->m_strCountry); }
 	void Add(const CCountryPtr& pCountry);
 	bool Delete(const CCountryPtr& pCountry);
@@ -31,5 +27,5 @@ public:
 protected:
 	vector<CCountryPtr> m_vCountry;
 	map<CString, size_t> m_mapCountry;
-	long m_lLastTotalCountry;
+	size_t m_llLastTotalCountry;
 };

@@ -8,7 +8,7 @@ CContainerFinnhubCountry::CContainerFinnhubCountry() { Reset(); }
 void CContainerFinnhubCountry::Reset() {
 	m_vCountry.resize(0);
 	m_mapCountry.clear();
-	m_lLastTotalCountry = 0;
+	m_llLastTotalCountry = 0;
 }
 
 void CContainerFinnhubCountry::Add(const CCountryPtr& pCountry) {
@@ -34,20 +34,19 @@ bool CContainerFinnhubCountry::Delete(const CCountryPtr& pCountry) {
 //////////////////////////////////////////////////////////////////////////
 void CContainerFinnhubCountry::UpdateDB() {
 	try {
-		if (m_lLastTotalCountry < m_vCountry.size()) {
+		if (m_llLastTotalCountry < m_vCountry.size()) {
 			CSetCountry setCountry;
 			setCountry.Open();
 			setCountry.m_pDatabase->BeginTrans();
-			for (long l = m_lLastTotalCountry; l < m_vCountry.size(); l++) {
+			for (auto l = m_llLastTotalCountry; l < m_vCountry.size(); l++) {
 				const CCountryPtr pCountry = m_vCountry.at(l);
 				pCountry->Append(setCountry);
 			}
 			setCountry.m_pDatabase->CommitTrans();
 			setCountry.Close();
-			m_lLastTotalCountry = m_vCountry.size();
+			m_llLastTotalCountry = m_vCountry.size();
 		}
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 }
@@ -66,7 +65,7 @@ bool CContainerFinnhubCountry::LoadDB() {
 		setCountry.MoveNext();
 	}
 	setCountry.Close();
-	m_lLastTotalCountry = m_vCountry.size();
+	m_llLastTotalCountry = m_vCountry.size();
 
 	return true;
 }
