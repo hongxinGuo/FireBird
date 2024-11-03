@@ -77,15 +77,15 @@ void CFinnhubInaccessibleExchange::Update() {
 		m_lUpdateDate = m_finnhubInaccessibleExchange.at("UpdateDate");
 	} catch (json::exception&) {}
 	try {
-		for (int i = 0; i < m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).size(); i++) {
-			const int size = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).size();
+		for (size_t i = 0; i < m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).size(); i++) {
+			const auto size = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).size();
 			if (size > 0) {
 				// 有exchange数据的话才建立数据集
 				const auto pInaccessible = make_shared<CInaccessible>();
 				string s2 = m_finnhubInaccessibleExchange[_T("InaccessibleExchange")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
 				pInaccessible->SetFunctionString(s2.c_str());
 				pInaccessible->SetFunction(gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString()));
-				for (int j = 0; j < size; j++) {
+				for (size_t j = 0; j < size; j++) {
 					string s = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).at(j);
 					pInaccessible->AddSymbol(s.c_str());
 				}

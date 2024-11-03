@@ -36,7 +36,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubMarketStatusProductTest, TestInitialize) {
-		EXPECT_EQ(MarketStatusProduct.GetIndex(), -1);
+		EXPECT_EQ(MarketStatusProduct.GetIndex(), 0);
 		EXPECT_STREQ(MarketStatusProduct.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/market-status?exchange="));
 	}
 

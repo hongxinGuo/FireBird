@@ -40,7 +40,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestInitialize) {
-		EXPECT_EQ(marketNews.GetIndex(), -1);
+		EXPECT_EQ(marketNews.GetIndex(), 0);
 		EXPECT_STREQ(marketNews.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/fundamentals/definitions?"));
 	}
 

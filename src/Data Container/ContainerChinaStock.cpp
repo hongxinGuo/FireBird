@@ -33,8 +33,8 @@ void CContainerChinaStock::Reset() {
 	m_lLoadedStock = 0;
 }
 
-long CContainerChinaStock::GetActiveStockSize() const {
-	long lTotalActiveStock = 0;
+size_t CContainerChinaStock::GetActiveStockSize() const {
+	size_t lTotalActiveStock = 0;
 	for (const auto& pStock : m_vStock) {
 		if (pStock->IsActive()) lTotalActiveStock++;
 	}
@@ -176,10 +176,10 @@ INT64 CContainerChinaStock::GetTotalAttackSellAmount() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CString CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 	bool fFoundStock = false;
-	int iCount = 0;
+	size_t iCount = 0;
 	CString strTemp;
 	CString strReturn = _T("");
-	long lIndex = 0;
+	size_t lIndex = 0;
 
 	while (!fFoundStock && (iCount++ < Size())) {
 		const CChinaStockPtr pStock = GetStock(lIndex);
@@ -225,7 +225,7 @@ CString CContainerChinaStock::CreateTengxunDayLineInquiringStr() {
 	int iCount = 0;
 	CString strTemp;
 	CString strReturn = _T("");
-	long lIndex = 0;
+	size_t lIndex = 0;
 
 	while (!fFoundStock && (iCount++ < Size())) {
 		const CChinaStockPtr pStock = GetStock(lIndex);

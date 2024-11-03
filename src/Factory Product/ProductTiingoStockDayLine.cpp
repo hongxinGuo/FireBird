@@ -53,7 +53,6 @@ CString CProductTiingoStockDayLine::CreateMessage() {
 	m_strInquiringSymbol = pStock->GetSymbol();
 
 	m_strInquiry = m_strInquiryFunction + strParam;
-	TRACE("%s\n", m_strInquiry);
 	return m_strInquiry;
 }
 

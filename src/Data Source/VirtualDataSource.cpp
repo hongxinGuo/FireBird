@@ -12,8 +12,8 @@
 
 #include"HighPerformanceCounter.h"
 
-atomic_long CVirtualDataSource::sm_lTotalByteRead = 0;
-atomic_long CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;
+atomic_int64_t CVirtualDataSource::sm_lTotalByteRead = 0;
+atomic_int64_t CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;
 
 CVirtualDataSource::CVirtualDataSource() {
 	SetDefaultSessionOption();

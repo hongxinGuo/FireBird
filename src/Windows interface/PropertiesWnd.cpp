@@ -371,7 +371,7 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	else {
 		if (gl_pFinnhubDataSource->IsWebError()) {
 			char buffer[100];
-			sprintf_s(buffer, _T("running (EC:%5d)"), gl_pFinnhubDataSource->GetWebErrorCode());
+			sprintf_s(buffer, _T("running (EC:%5zd)"), gl_pFinnhubDataSource->GetWebErrorCode());
 			CString str = buffer;
 			m_pPropWorldMarketWebStatus->SetValue(str);
 		}

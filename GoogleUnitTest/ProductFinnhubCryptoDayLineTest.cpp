@@ -37,7 +37,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductFinnhubCryptoDayLineTest, TestInitialize) {
-		EXPECT_EQ(cryptoDayLine.GetIndex(), -1);
+		EXPECT_EQ(cryptoDayLine.GetIndex(), 0);
 		EXPECT_STREQ(cryptoDayLine.GetInquiryFunction(), _T("https://finnhub.io/api/v1/crypto/candle?symbol="));
 	}
 

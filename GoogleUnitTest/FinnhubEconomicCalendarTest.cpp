@@ -39,7 +39,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestInitialize) {
-		EXPECT_EQ(economicCalendar.GetIndex(), -1);
+		EXPECT_EQ(economicCalendar.GetIndex(), 0);
 		EXPECT_STREQ(economicCalendar.GetInquiryFunction(), _T("https://finnhub.io/api/v1/calendar/economic?"));
 	}
 

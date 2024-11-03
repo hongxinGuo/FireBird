@@ -78,9 +78,9 @@ long StrToDecimal(const string_view& svData, int power) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-string_view GetNextField(const string_view& svData, long& lCurrentPos, char delimiter) {
+string_view GetNextField(const string_view& svData, size_t& lCurrentPos, char delimiter) {
 	const string_view sv(svData.data() + lCurrentPos, svData.length() - lCurrentPos);
-	const long lEnd = sv.find_first_of(delimiter);
+	const auto lEnd = sv.find_first_of(delimiter);
 	if (lEnd > sv.length()) throw exception("GetNextField() out of range"); // 没找到的话抛出异常
 	lCurrentPos += lEnd + 1; // 将当前位置移至本数据之后
 	return string_view(sv.data(), lEnd);
@@ -137,14 +137,14 @@ void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& str
 result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvStringView) {
 	vector<result<bool>> results;
 	const auto DataSize = pvStringView->size();
-	const int chunk_size = 1 + DataSize / gl_concurrency_level;
-	for (auto i = 0; i < gl_concurrency_level; i++) {
-		long chunk_begin = i * chunk_size;
-		long chunk_end = chunk_begin + chunk_size;
+	const auto chunk_size = 1 + DataSize / gl_concurrency_level;
+	for (int i = 0; i < gl_concurrency_level; i++) {
+		auto chunk_begin = i * chunk_size;
+		auto chunk_end = chunk_begin + chunk_size;
 		if (chunk_end > DataSize) chunk_end = DataSize;
 		auto result = tpe->submit([pvStringView, chunk_begin, chunk_end] {
 			try {
-				for (int j = chunk_begin; j < chunk_end; j++) {
+				for (auto j = chunk_begin; j < chunk_end; j++) {
 					const auto pRTData = make_shared<CWebRTData>();
 					pRTData->ParseSinaData(pvStringView->at(j));
 					gl_qChinaMarketRTData.enqueue(pRTData); // Note 多个协程并行往里存时，无法通过size_approx()函数得到队列数量。
@@ -209,14 +209,14 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 	bool succeed = true;
 	vector<concurrencpp::result<bool>> results;
 	const auto DataSize = pvStringView->size();
-	const int chunk_size = 1 + DataSize / gl_concurrency_level;
-	for (auto i = 0; i < gl_concurrency_level; i++) {
-		long chunk_begin = i * chunk_size;
-		long chunk_end = chunk_begin + chunk_size;
+	const auto chunk_size = 1 + DataSize / gl_concurrency_level;
+	for (int i = 0; i < gl_concurrency_level; i++) {
+		auto chunk_begin = i * chunk_size;
+		auto chunk_end = chunk_begin + chunk_size;
 		if (chunk_end > DataSize) chunk_end = DataSize;
 		auto result = tpe->submit([pvStringView, chunk_begin, chunk_end] {
 			try {
-				for (long j = chunk_begin; j < chunk_end; j++) {
+				for (auto j = chunk_begin; j < chunk_end; j++) {
 					const auto pRTData = make_shared<CWebRTData>();
 					const string_view sv = pvStringView->at(j);
 					pRTData->ParseTengxunData(sv);

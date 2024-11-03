@@ -36,7 +36,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubMarketHolidayProductTest, TestInitialize) {
-		EXPECT_EQ(MarketHolidayProduct.GetIndex(), -1);
+		EXPECT_EQ(MarketHolidayProduct.GetIndex(), 0);
 		EXPECT_STREQ(MarketHolidayProduct.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/market-holiday?exchange="));
 	}
 

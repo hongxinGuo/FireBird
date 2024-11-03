@@ -1,7 +1,7 @@
 #pragma once
 
 long StrToDecimal(const string_view& svData, int power);
-string_view GetNextField(const string_view& svData, long& lCurrentPos, char delimiter);
+string_view GetNextField(const string_view& svData, size_t& lCurrentPos, char delimiter);
 
 void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat);
 void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat, const char* jsonData);

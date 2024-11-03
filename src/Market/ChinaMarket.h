@@ -89,7 +89,7 @@ public:
 	CString GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet);
 	bool CheckValidOfNeteaseDayLineInquiringStr(const CString& str) const;
 
-	static long IncreaseStockInquiringIndex(long& lIndex, long lEndPosition);
+	static size_t IncreaseStockInquiringIndex(size_t& lIndex, size_t lEndPosition);
 
 	// 得到当前显示股票
 	CChinaStockPtr GetCurrentStock() const noexcept { return m_pCurrentStock; }
@@ -101,9 +101,9 @@ public:
 
 	long GetMinLineOffset(time_t tUTC) const;
 
-	long GetCurrentSelectedPosition() const noexcept { return m_lCurrentSelectedPosition; }
+	auto GetCurrentSelectedPosition() const noexcept { return m_lCurrentSelectedPosition; }
 	void SetCurrentSelectedPosition(const long lIndex) noexcept { m_lCurrentSelectedPosition = lIndex; }
-	long GetCurrentSelectedStockSet() const noexcept { return m_lCurrentSelectedStockSet; }
+	auto GetCurrentSelectedStockSet() const noexcept { return m_lCurrentSelectedStockSet; }
 	void SetCurrentSelectedStockSet(const long lIndex) noexcept { m_lCurrentSelectedStockSet = lIndex; }
 	CChinaStockPtr GetCurrentSelectedStock();
 

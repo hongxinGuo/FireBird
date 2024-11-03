@@ -37,7 +37,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductTiingoStockDayLineTest, TestInitialize) {
-		EXPECT_EQ(stockPriceCandle.GetIndex(), -1);
+		EXPECT_EQ(stockPriceCandle.GetIndex(), 0);
 		EXPECT_STREQ(stockPriceCandle.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/daily/"));
 	}
 

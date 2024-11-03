@@ -36,7 +36,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestInitialize) {
-		EXPECT_EQ(productForexSymbol.GetIndex(), -1);
+		EXPECT_EQ(productForexSymbol.GetIndex(), 0);
 		EXPECT_STREQ(productForexSymbol.GetInquiryFunction(), _T("https://finnhub.io/api/v1/forex/symbol?exchange="));
 	}
 

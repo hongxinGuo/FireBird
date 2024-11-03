@@ -38,7 +38,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductTiingoCryptoTest, TestInitialize) {
-		EXPECT_EQ(stockSymbol.GetIndex(), -1);
+		EXPECT_EQ(stockSymbol.GetIndex(), 0);
 		EXPECT_STREQ(stockSymbol.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/crypto?"));
 	}
 

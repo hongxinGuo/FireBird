@@ -38,7 +38,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductTiingoFinancialStateTest, TestInitialize) {
-		EXPECT_EQ(financialState.GetIndex(), -1);
+		EXPECT_EQ(financialState.GetIndex(), 0);
 		EXPECT_STREQ(financialState.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/fundamentals"));
 	}
 

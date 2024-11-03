@@ -14,17 +14,17 @@ CWebData::CWebData() {
 CWebData::~CWebData() {
 }
 
-bool CWebData::GetData(char* buffer, long lDataLength) const {
+bool CWebData::GetData(char* buffer, size_t lDataLength) const {
 	if (lDataLength + m_lCurrentPos > m_sDataBuffer.size()) return false;
-	for (long i = 0; i < lDataLength; i++) {
+	for (size_t i = 0; i < lDataLength; i++) {
 		buffer[i] = m_sDataBuffer.at(i + m_lCurrentPos);
 	}
 	return true;
 }
 
-bool CWebData::SetData(const char* buffer, long lDataLength) {
+bool CWebData::SetData(const char* buffer, size_t lDataLength) {
 	if (lDataLength + m_lCurrentPos > m_sDataBuffer.size()) return false;
-	for (long i = 0; i < lDataLength; i++) {
+	for (size_t i = 0; i < lDataLength; i++) {
 		m_sDataBuffer.at(i + m_lCurrentPos) = buffer[i];
 	}
 	return true;
@@ -44,8 +44,8 @@ bool CWebData::SetData(const char* buffer, long lDataLength) {
 //////////////////////////////////////////////////////////////////////////////////////////////
 string_view CWebData::GetCurrentSinaData() {
 	const string_view svCurrentTotal = string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos);
-	const long lStart = svCurrentTotal.find_first_of('v');
-	const long lEnd = svCurrentTotal.find_first_of(';');
+	const auto lStart = svCurrentTotal.find_first_of('v');
+	const auto lEnd = svCurrentTotal.find_first_of(';');
 	if (lStart > svCurrentTotal.length() || lEnd > svCurrentTotal.length() || lStart > lEnd) {
 		throw std::exception(_T("GetCurrentSinaData() out of range"));
 	}
@@ -72,8 +72,8 @@ string_view CWebData::GetCurrentSinaData() {
 ///////////////////////////////////////////////////////////////////////////////////////////
 string_view CWebData::GetCurrentTengxunData() {
 	const string_view svCurrentTotal = string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos);
-	const long lStart = svCurrentTotal.find_first_of('v');
-	const long lEnd = svCurrentTotal.find_first_of(';');
+	const auto lStart = svCurrentTotal.find_first_of('v');
+	const auto lEnd = svCurrentTotal.find_first_of(';');
 	if (lStart > svCurrentTotal.length() || lEnd > svCurrentTotal.length() || lStart > lEnd) {
 		throw std::exception(_T("GetCurrentTengxunData() out of range"));
 	}

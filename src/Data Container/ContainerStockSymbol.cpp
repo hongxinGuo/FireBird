@@ -67,7 +67,7 @@ bool CContainerStockSymbol::CreateTotalStockContainer() {
 	}
 	return true;
 }
-CString CContainerStockSymbol::GetItemSymbol(long lIndex) {
+CString CContainerStockSymbol::GetItemSymbol(size_t lIndex) {
 	return m_vStockSymbol.at(lIndex);
 }
 
@@ -129,8 +129,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 		setStockSection.Close();
 
 		m_fUpdateStockSection = false;
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 }
@@ -179,7 +178,7 @@ bool CContainerStockSymbol::UpdateStockSection(const CString& strStockCode) cons
 	return UpdateStockSection(iCode / 1000 + iMarket);
 }
 
-bool CContainerStockSymbol::UpdateStockSection(const long lIndex) const {
+bool CContainerStockSymbol::UpdateStockSection(const size_t lIndex) const {
 	if (!m_vStockSection.at(lIndex)->IsActive()) {
 		m_vStockSection.at(lIndex)->SetActive(true);
 		return true;

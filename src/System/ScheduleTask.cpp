@@ -174,7 +174,7 @@ void TaskSchedulePer100ms() {
 	counter.start();
 	try {
 		ScheduleMarketTask();	// 调用主调度函数,由各市场调度函数执行具体任务
-		// not implemented 其他各DataSource的调度，也考虑移至此处。目前各DataSource的调度，在CVirtualMarket的ScheduleTask()中。
+		//todo 其他各DataSource的调度，也考虑移至此处。目前各DataSource的调度，在CVirtualMarket的ScheduleTask()中。
 	} catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
 		CString str = _T("ScheduleMarketTask unhandled exception founded : ");
 		str += e->what();
@@ -189,6 +189,7 @@ void TaskSchedulePer100ms() {
 		str += buffer;
 		gl_systemMessage.PushInformationMessage(str);
 		gl_systemMessage.PushErrorMessage(str);
+		//gl_warnLogger->error("{}", str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 	counter.stop();
@@ -211,18 +212,20 @@ void TaskSchedulePerSecond() {
 	try {
 		gl_pSinaRTDataSource->CalcTotalBytePerSecond(); // 计算每秒读取的数据量
 		gl_systemMessage.CalcScheduleTaskTimePerSecond(); // 计算每秒调度所需的时间
-	} catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
-		CString str = _T("TaskSchedulePerSecond unhandled exception founded : ");
-		str += e->what();
-		gl_systemMessage.PushErrorMessage(str);
+	} catch (std::exception* e) {	// 此处截获本体指针，以备处理完后删除之。
+		CString str1 = "TaskSchedulePerSecond unhandled exception founded : ";
+		str1 += e->what();
+		gl_systemMessage.PushErrorMessage(str1);
+		gl_warnLogger->error("{}", str1.GetBuffer());
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
-	catch (CException* e) {
+	catch (CException* e) {	// 此处截获本体指针，以备处理完后删除之。
 		char buffer[1000];
 		CString str = _T("TaskSchedulePerSecond unhandled CException founded : ");
 		e->GetErrorMessage(buffer, 1);
 		str += buffer;
 		gl_systemMessage.PushErrorMessage(str);
+		gl_warnLogger->error("{}", str.GetBuffer());
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 }

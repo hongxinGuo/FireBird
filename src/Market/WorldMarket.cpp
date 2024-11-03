@@ -220,11 +220,11 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lCurrentTime);
 
-	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0));
-
 	AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, GetNextTime(lTimeMinute, 0, 1, 0)); //一分钟后生成tiingo当天日线数据
 
-	AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lTimeMinute, 0, 2, 0)); // 两分钟后处理日线数据
+	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0)); // 两分钟后开始监测WebSocket
+
+	AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lTimeMinute, 0, 5, 0)); // 五分钟后处理日线数据
 
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOL__, 180000); // 收市后18点下载tiingo IEX当天数据。
 
@@ -416,7 +416,8 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 	if (!gl_pTiingoDataSource->IsUpdateIEXTopOfBook() && !gl_pTiingoDataSource->IsUpdateDayLine()) { // 接收完IEX top_of_book和日线数据后方可处理
 		gl_runtime.thread_executor()->post([] {
-			gl_dataContainerTiingoStock.ProcessDayLine();
+			//Note 暂时先不执行此任务
+			//gl_dataContainerTiingoStock.ProcessDayLine();
 		});
 	}
 	else {
@@ -837,7 +838,7 @@ void CWorldMarket::ProcessWebSocketData() {
 void CWorldMarket::ProcessFinnhubWebSocketData() {
 	const auto total = gl_pFinnhubWebSocket->DataSize();
 	size_t iTotalDataSize = 0;
-	for (auto i = 0; i < total; i++) {
+	for (size_t i = 0; i < total; i++) {
 		const auto pString = gl_pFinnhubWebSocket->PopData();
 		CString strMessage = _T("Finnhub: ");
 		strMessage += pString->c_str();
@@ -851,7 +852,7 @@ void CWorldMarket::ProcessFinnhubWebSocketData() {
 void CWorldMarket::ProcessTiingoIEXWebSocketData() {
 	const auto total = gl_pTiingoIEXWebSocket->DataSize();
 	size_t iTotalDataSize = 0;
-	for (auto i = 0; i < total; i++) {
+	for (size_t i = 0; i < total; i++) {
 		const auto pString = gl_pTiingoIEXWebSocket->PopData();
 		CString strMessage = _T("Tiingo IEX: ");
 		strMessage += pString->c_str();
@@ -866,7 +867,7 @@ void CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 	const auto total = gl_pTiingoCryptoWebSocket->DataSize();
 
 	size_t iTotalDataSize = 0;
-	for (auto i = 0; i < total; i++) {
+	for (size_t i = 0; i < total; i++) {
 		const auto pString = gl_pTiingoCryptoWebSocket->PopData();
 		CString strMessage = _T("Tiingo Crypto: ");
 		strMessage += pString->c_str();
@@ -898,26 +899,26 @@ void CWorldMarket::ProcessTiingoForexWebSocketData() {
 /// <returns></returns>
 void CWorldMarket::UpdateFinnhubStockFromWebSocket() {
 	auto total = gl_SystemData.GetTiingoIEXSocketSize();
-	for (auto i = 0; i < total; i++) {
+	for (size_t i = 0; i < total; i++) {
 		const CTiingoIEXSocketPtr pIEXData = gl_SystemData.PopTiingoIEXSocket();
 		UpdateFinnhubStockFromTiingoIEXSocket(pIEXData);
 		gl_systemMessage.SetCurrentTiingoWebSocketIEX(pIEXData->m_sSymbol.c_str());
 	}
 
 	total = gl_SystemData.GetTiingoCryptoSocketSize();
-	for (auto i = 0; i < total; i++) {
+	for (size_t i = 0; i < total; i++) {
 		const CTiingoCryptoSocketPtr pCryptoData = gl_SystemData.PopTiingoCryptoSocket();
 		gl_systemMessage.SetCurrentTiingoWebSocketCrypto(pCryptoData->m_sSymbol.c_str());
 	}
 
 	total = gl_SystemData.GetTiingoForexSocketSize();
-	for (auto i = 0; i < total; i++) {
+	for (size_t i = 0; i < total; i++) {
 		const CTiingoForexSocketPtr pForexData = gl_SystemData.PopTiingoForexSocket();
 		gl_systemMessage.SetCurrentTiingoWebSocketForex(pForexData->m_sSymbol.c_str());
 	}
 
 	total = gl_SystemData.GetFinnhubSocketSize();
-	for (auto i = 0; i < total; i++) {
+	for (size_t i = 0; i < total; i++) {
 		const CFinnhubSocketPtr pFinnhubData = gl_SystemData.PopFinnhubSocket();
 		UpdateFinnhubStockFromFinnhubSocket(pFinnhubData);
 		gl_systemMessage.SetCurrentFinnhubWebSocketStake(pFinnhubData->m_sSymbol.c_str());

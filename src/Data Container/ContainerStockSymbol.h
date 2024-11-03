@@ -14,7 +14,7 @@ public:
 	~CContainerStockSymbol() override = default;
 	void Reset() override;
 	bool CreateTotalStockContainer();
-	CString GetItemSymbol(long lIndex) override;
+	CString GetItemSymbol(size_t lIndex) override;
 	bool IsEmpty() override { return m_vStockSymbol.empty(); }
 	size_t Size() override;
 
@@ -34,13 +34,13 @@ public:
 	void SetUpdateStockSection(const bool fFlag) noexcept { m_fUpdateStockSection = fFlag; }
 	[[nodiscard]] bool IsUpdateStockSection() const noexcept { return m_fUpdateStockSection; }
 
-	void SetStockSectionActiveFlag(const long lIndex, const bool fFlag) const noexcept { m_vStockSection.at(lIndex)->SetActive(fFlag); }
-	[[nodiscard]] bool IsStockSectionActive(const long lIndex) const noexcept { return m_vStockSection.at(lIndex)->IsActive(); }
+	void SetStockSectionActiveFlag(const size_t lIndex, const bool fFlag) const noexcept { m_vStockSection.at(lIndex)->SetActive(fFlag); }
+	[[nodiscard]] bool IsStockSectionActive(const size_t lIndex) const noexcept { return m_vStockSection.at(lIndex)->IsActive(); }
 
 	void CreateStockSection(const CString& strFirstStockCode);
 
 	[[nodiscard]] bool UpdateStockSection(const CString& strStockCode) const;
-	[[nodiscard]] bool UpdateStockSection(long lIndex) const;
+	[[nodiscard]] bool UpdateStockSection(size_t lIndex) const;
 
 protected:
 	vector<CString> m_vStockSymbol;

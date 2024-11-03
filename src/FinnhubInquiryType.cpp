@@ -15,11 +15,11 @@ CFinnhubInquiryType::CFinnhubInquiryType() {
 	CreateFinnhubInquiryStringToIndexMap();
 }
 
-CString CFinnhubInquiryType::GetInquiryString(const long lInquiryType) {
+CString CFinnhubInquiryType::GetInquiryString(const int lInquiryType) {
 	return m_mapFinnhubInquiryIndexToString.at(lInquiryType);
 }
 
-long CFinnhubInquiryType::GetInquiryType(const CString& strInquiryString) const {
+int CFinnhubInquiryType::GetInquiryType(const CString& strInquiryString) const {
 	return m_mapFinnhubInquiryStringToIndex.at(strInquiryString);
 }
 

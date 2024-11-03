@@ -103,10 +103,10 @@ public:
 	long GetInquiringNumber() const noexcept { return m_lInquiringNumber; }
 	void SetInquiringNumber(const long lValue) noexcept { m_lInquiringNumber = lValue; }
 
-	static long GetTotalByteRead() noexcept { return sm_lTotalByteRead.load(); }
+	static auto GetTotalByteRead() noexcept { return sm_lTotalByteRead.load(); }
 	static void SetTotalByteRead(const long lValue) noexcept { sm_lTotalByteRead = lValue; }
 	static void ClearTotalByteRead() noexcept { sm_lTotalByteRead = 0; }
-	static long GetTotalByteReadPerSecond() noexcept { return sm_lTotalByteReadPerSecond.load(); }
+	static auto GetTotalByteReadPerSecond() noexcept { return sm_lTotalByteReadPerSecond.load(); }
 	static void CalcTotalBytePerSecond() { sm_lTotalByteReadPerSecond = sm_lTotalByteRead.exchange(0); }
 
 	void SetCurrentInquiryTime(const time_t tt) noexcept { m_tCurrentInquiryTime = tt; }
@@ -138,8 +138,8 @@ protected:
 	int m_iMaxNormalInquireTime{ 300 }; // 最大正常查询时间（每个具体的数据源皆不同）
 	atomic_int64_t m_tCurrentInquiryTime{ 0 }; // 当前接收数据所需时间（以毫秒计）
 
-	static atomic_long sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
-	static atomic_long sm_lTotalByteReadPerSecond; // 
+	static atomic_int64_t sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
+	static atomic_int64_t sm_lTotalByteReadPerSecond; // 
 
 	long long m_llLastTimeTickCount{ 0 };
 

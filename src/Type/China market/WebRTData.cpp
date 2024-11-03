@@ -87,7 +87,7 @@ bool CWebRTData::CheckSinaRTDataActive() {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWebRTData::ParseSinaData(const string_view& svData) {
 	ASSERT(svData.length() >= 23);
-	long lCurrentPos = 11; // 跨过字符串："var hq_str_"
+	size_t lCurrentPos = 11; // 跨过字符串："var hq_str_"
 	const string_view svStockSymbol(svData.data() + lCurrentPos, 8);
 	m_strSymbol = XferSinaToStandard(svStockSymbol).c_str();
 	if (svData.length() == 23) { // 空数据: var hq_str_sh688801="";,包括最后的';'分号
@@ -240,7 +240,7 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	long lTemp;
 	float fTemp = 0.0;
 	CString strTengxunStockCode;
-	long lCurrentPos = 12;
+	size_t lCurrentPos = 12;
 
 	m_fActive = false; // 初始状态为无效数据
 	// 市场标识代码（51为深市，1为沪市）

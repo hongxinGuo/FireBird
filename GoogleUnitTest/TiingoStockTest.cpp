@@ -622,7 +622,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestSave) {
-		CTiingoStock stock, stock2;
+		CTiingoStock stock2;
 		CSetTiingoStock setTiingoStock;
 
 		setTiingoStock.m_strFilter = _T("[Ticker] = '000001.US'");

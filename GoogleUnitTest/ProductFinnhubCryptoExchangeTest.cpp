@@ -38,7 +38,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestInitialize) {
-		EXPECT_EQ(cryptoExchange.GetIndex(), -1);
+		EXPECT_EQ(cryptoExchange.GetIndex(), 0);
 		EXPECT_STREQ(cryptoExchange.GetInquiryFunction(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
 	}
 

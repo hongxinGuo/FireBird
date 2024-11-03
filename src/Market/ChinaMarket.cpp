@@ -299,7 +299,7 @@ bool CChinaMarket::TaskCheckMarketReady(long lCurrentTime) {
 
 void CChinaMarket::ChangeToNextStock() {
 	ASSERT(m_pCurrentStock != nullptr);
-	long lIndex = gl_dataContainerChinaStock.GetOffset(m_pCurrentStock);
+	size_t lIndex = gl_dataContainerChinaStock.GetOffset(m_pCurrentStock);
 	CChinaStockPtr pStock = m_pCurrentStock;
 
 	if (IsTotalStockSetSelected()) {
@@ -329,15 +329,16 @@ void CChinaMarket::ChangeToNextStock() {
 
 void CChinaMarket::ChangeToPrevStock() {
 	ASSERT(m_pCurrentStock != nullptr);
-	long lIndex = gl_dataContainerChinaStock.GetOffset(m_pCurrentStock);
+	size_t lIndex = gl_dataContainerChinaStock.GetOffset(m_pCurrentStock);
 	CChinaStockPtr pStock = m_pCurrentStock;
 
 	if (IsTotalStockSetSelected()) {
 		bool fFound = false;
 		while (!fFound) {
-			if (--lIndex < 0) {
+			if (lIndex == 0) {
 				lIndex = gl_dataContainerChinaStock.Size() - 1;
 			}
+			else lIndex--;
 			pStock = gl_dataContainerChinaStock.GetStock(lIndex);
 			if (!pStock->IsNullStock()) fFound = true;
 		}
@@ -393,7 +394,7 @@ void CChinaMarket::CreateStock(const CString& strStockCode, const CString& strSt
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
 }
 
-long CChinaMarket::IncreaseStockInquiringIndex(long& lIndex, long lEndPosition) {
+size_t CChinaMarket::IncreaseStockInquiringIndex(size_t& lIndex, size_t lEndPosition) {
 	if (++lIndex >= lEndPosition) { lIndex = 0; }
 	return lIndex;
 }
@@ -420,7 +421,7 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 	if (lIndex >= 240) lIndex = 239;
 
 	ASSERT((lIndex >= 0) && (lIndex < 240));
-	return (lIndex);
+	return lIndex;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

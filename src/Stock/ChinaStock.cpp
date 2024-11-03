@@ -162,7 +162,7 @@ CChinaStock::CChinaStock() {
 
 void CChinaStock::ClearRTDataDeque() {
 	const auto lTotalNumber = GetRTDataQueueSize();
-	for (auto i = 0; i < lTotalNumber; i++) {
+	for (size_t i = 0; i < lTotalNumber; i++) {
 		CWebRTDataPtr pRTData = PopRTData();
 	}
 }

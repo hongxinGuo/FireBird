@@ -105,7 +105,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 	long lStartDate = GetPrevDay(pStock->GetDayLineEndDate()); // 腾讯日线没有提供昨收盘信息，故而多申请一天数据来更新昨收盘。
 	const long lCurrentDate = gl_pChinaMarket->GetMarketDate();
 	const long yearDiffer = (lCurrentDate - lStartDate) / 10000;
-	const long lStockIndex = gl_dataContainerChinaStock.GetOffset(pStock);
+	const auto lStockIndex = gl_dataContainerChinaStock.GetOffset(pStock);
 	vector<CVirtualWebProductPtr> vProduct;
 	long l = 0;
 	int iCounter = 0;

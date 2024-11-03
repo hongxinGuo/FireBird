@@ -148,7 +148,42 @@ bool CFinnhubDataSource::GenerateInquiryMessage(long lCurrentTime) {
 		m_llLastTimeTickCount = llTickCount;
 
 		ASSERT(!IsInquiring());
-		if (Generate(lCurrentTime)) return true;
+		ASSERT(lCurrentTime <= GetPrevTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 10, 0)
+			|| lCurrentTime >= GetNextTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 5, 0)); // 重启市场时不允许接收网络信息。
+		if (GenerateEconomicCalendar()) return true; // 第一步申请经济日历。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
+		if (GenerateCountryList()) return true;
+		// Finnhub不提供Stock Exchange名单，使用预先提供的股票交易所列表。
+		if (GenerateForexExchange()) return true;
+		if (GenerateCryptoExchange()) return true;
+		if (GenerateMarketStatus()) return true;
+		if (GenerateMarketHoliday()) return true;
+		if (GenerateCompanySymbol()) return true; // 第一个动作，首先申请当日证券代码
+		if (GenerateForexSymbol()) return true;
+		if (GenerateCryptoSymbol()) return true;
+
+		// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
+		if (gl_pWorldMarket->IsSystemReady()) {
+			if (GenerateCompanyProfileConcise()) return true;
+			if (GenerateCompanyNews()) return true;
+			if (GenerateCompanyBasicFinancial()) return true;
+			if (GeneratePeer()) return true;
+			if (GenerateInsiderTransaction()) return true;
+			if (GenerateInsiderSentiment()) return true;
+			if (GenerateCryptoDayLine()) return true; // Crypto dayLine20231127后只限于付费用户使用
+			if (GenerateStockDayLine()) return true; // Stock dayLine20231127后只限于付费用户使用
+			if (GenerateForexDayLine()) return true; // Forex dayLine目前只限于付费用户使用
+			if (GenerateEPSSurprise()) return true;
+			if (GenerateSECFilings()) return true;
+			if (IsUpdateStockDayLine()) {
+				//InquireRTQuote()) return true;
+			}
+			if (!IsInquiring()) {
+				if (!m_fFinnhubDataInquiryFinished) {
+					gl_systemMessage.PushInformationMessage(_T("finnhub data inquiry finished"));
+					m_fFinnhubDataInquiryFinished = true;
+				}
+			}
+		}
 	}
 	return false;
 }
@@ -208,7 +243,7 @@ bool CFinnhubDataSource::GenerateCountryList() {
 }
 
 bool CFinnhubDataSource::GenerateMarketStatus() {
-	const long lExchangeSize = gl_dataContainerFinnhubStockExchange.Size();
+	const auto lExchangeSize = gl_dataContainerFinnhubStockExchange.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquireType = MARKET_STATUS_;
 
@@ -216,7 +251,7 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 	if (IsUpdateMarketStatus()) {
 		CFinnhubStockExchangePtr pExchange;
 		bool fFound = false;
-		long lCurrentStockExchangePos;
+		size_t lCurrentStockExchangePos;
 		if (!m_fInquiringFinnhubMarketStatus) {
 			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub MarketStatus..."));
 			m_fInquiringFinnhubMarketStatus = true;
@@ -250,7 +285,7 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 }
 
 bool CFinnhubDataSource::GenerateMarketHoliday() {
-	const long lExchangeSize = gl_dataContainerFinnhubStockExchange.Size();
+	const auto lExchangeSize = gl_dataContainerFinnhubStockExchange.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquireType = MARKET_HOLIDAY_;
 
@@ -292,7 +327,7 @@ bool CFinnhubDataSource::GenerateMarketHoliday() {
 }
 
 bool CFinnhubDataSource::GenerateCompanySymbol() {
-	const long lExchangeSize = gl_dataContainerFinnhubStockExchange.Size();
+	const auto lExchangeSize = gl_dataContainerFinnhubStockExchange.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquireType = STOCK_SYMBOLS_;
 

@@ -818,7 +818,7 @@ namespace FireBirdTest {
 		tmMarketTime.tm_min = 0;
 		tmMarketTime.tm_sec = 0;
 		time_t tUTC = gl_pChinaMarket->TransferToUTCTime(&tmMarketTime);
-		long lOffset = gl_pChinaMarket->GetMinLineOffset(tUTC);
+		auto lOffset = gl_pChinaMarket->GetMinLineOffset(tUTC);
 		EXPECT_EQ(lOffset, 0);
 		tmMarketTime.tm_hour = 10;
 		tmMarketTime.tm_min = 30;
@@ -1132,8 +1132,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestIncreaseNeteaseDayLineInquiringIndex) {
-		long k = 0;
-		int i = gl_pChinaMarket->IncreaseStockInquiringIndex(k, gl_dataContainerChinaStock.Size());
+		size_t k = 0;
+		auto i = gl_pChinaMarket->IncreaseStockInquiringIndex(k, gl_dataContainerChinaStock.Size());
 		EXPECT_EQ(i, 1);
 		EXPECT_EQ(k, 1);
 		i = gl_pChinaMarket->IncreaseStockInquiringIndex(k, gl_dataContainerChinaStock.Size());

@@ -133,7 +133,7 @@ protected:
 	CMarketTaskQueue m_marketTask; // 本市场当前任务队列
 	CMarketTaskQueue m_marketImmediateTask; // 本市场当前即时任务队列（此任务序列一次执行完毕，无需等待）
 	ConcurrentQueue<CMarketTaskPtr> m_qMarketDisplayTask; // 当前任务显示队列
-	long m_lLastQueueLength{ 0 };
+	size_t m_lLastQueueLength{ 0 };
 
 	vector<CVirtualDataSourcePtr> m_vDataSource; // 本市场中的各网络数据源。
 

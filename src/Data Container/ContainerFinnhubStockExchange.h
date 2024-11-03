@@ -12,9 +12,9 @@ public:
 	~CContainerFinnhubStockExchange() = default;
 	void Reset();
 
-	CFinnhubStockExchangePtr GetExchange(const long lIndex) const { return m_vFinnhubStockExchange.at(lIndex); }
-	CString GetExchangeCode(const long lIndex) const { return m_vFinnhubStockExchange.at(lIndex)->m_strCode; }
-	long Size() const noexcept { return static_cast<long>(m_mapFinnhubStockExchange.size()); }
+	CFinnhubStockExchangePtr GetExchange(const size_t lIndex) const { return m_vFinnhubStockExchange.at(lIndex); }
+	CString GetExchangeCode(const size_t lIndex) const { return m_vFinnhubStockExchange.at(lIndex)->m_strCode; }
+	auto Size() const noexcept { return m_mapFinnhubStockExchange.size(); }
 
 	bool LoadDB();
 

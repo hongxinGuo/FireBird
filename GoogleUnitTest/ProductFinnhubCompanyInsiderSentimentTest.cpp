@@ -37,7 +37,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubCompanyInsiderSentimentTest, TestInitialize) {
-		EXPECT_EQ(companyInsiderSentiment.GetIndex(), -1);
+		EXPECT_EQ(companyInsiderSentiment.GetIndex(), 0);
 		EXPECT_STREQ(companyInsiderSentiment.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol="));
 	}
 

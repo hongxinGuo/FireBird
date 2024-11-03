@@ -20,5 +20,5 @@ public:
 	CFinnhubCryptoPtr GetSymbol(const CString& strStockCode) { return dynamic_pointer_cast<CFinnhubCrypto>(Get(strStockCode)); };
 
 protected:
-	long m_lLastTotalSymbol;
+	size_t m_llLastTotalSymbol;
 };

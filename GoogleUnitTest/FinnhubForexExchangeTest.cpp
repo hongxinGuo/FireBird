@@ -39,7 +39,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubForexExchangeTest, TestInitialize) {
-		EXPECT_EQ(forexExchange.GetIndex(), -1);
+		EXPECT_EQ(forexExchange.GetIndex(), 0);
 		EXPECT_STREQ(forexExchange.GetInquiryFunction(), _T("https://finnhub.io/api/v1/forex/exchange?"));
 	}
 

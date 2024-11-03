@@ -37,7 +37,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestInitialize) {
-		EXPECT_EQ(stockEstimatesEPSSurprise.GetIndex(), -1);
+		EXPECT_EQ(stockEstimatesEPSSurprise.GetIndex(), 0);
 		EXPECT_STREQ(stockEstimatesEPSSurprise.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/earnings?symbol="));
 	}
 

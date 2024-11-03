@@ -133,15 +133,15 @@ public:
 	CFinnhubInquiryType();
 	~CFinnhubInquiryType() = default;
 
-	CString GetInquiryString(long lInquiryType);
-	long GetInquiryType(const CString& strInquiryString) const;
+	CString GetInquiryString(int lInquiryType);
+	int GetInquiryType(const CString& strInquiryString) const;
 
 	void CreateFinnhubInquiryIndexToStringMap();
 	void CreateFinnhubInquiryStringToIndexMap();
 
 protected:
-	map<size_t, CString> m_mapFinnhubInquiryIndexToString;
-	map<CString, size_t> m_mapFinnhubInquiryStringToIndex;
+	map<int, CString> m_mapFinnhubInquiryIndexToString;
+	map<CString, int> m_mapFinnhubInquiryStringToIndex;
 };
 
 extern CFinnhubInquiryType gl_FinnhubInquiryType;

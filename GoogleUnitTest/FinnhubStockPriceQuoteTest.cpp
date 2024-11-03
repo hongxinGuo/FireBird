@@ -37,7 +37,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestInitialize) {
-		EXPECT_EQ(stockPriceQuote.GetIndex(), -1);
+		EXPECT_EQ(stockPriceQuote.GetIndex(), 0);
 		EXPECT_STREQ(stockPriceQuote.GetInquiryFunction(), _T("https://finnhub.io/api/v1/quote?symbol="));
 	}
 

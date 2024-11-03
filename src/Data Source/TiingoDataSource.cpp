@@ -174,7 +174,21 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 		m_llLastTimeTickCount = llTickCount;
 
 		ASSERT(!IsInquiring());
-		if (Generate(lCurrentTime)) return true;
+		ASSERT(lCurrentTime <= GetPrevTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 10, 0)
+			|| lCurrentTime >= GetNextTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 5, 0)); // 重启市场时不允许接收网络信息。
+		if (GenerateMarketNews()) return true; // Note 此项必须位于第一位，用于判断tiingo账户的类型。
+		if (GenerateFundamentalDefinition()) return true;
+		if (GenerateCompanySymbol()) return true;
+		if (GenerateCryptoSymbol()) return true;
+		if (GenerateIEXTopOfBook()) return true;
+		if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
+		if (GenerateFinancialState()) return true;
+		if (!IsInquiring()) {
+			if (!m_fTiingoDataInquiryFinished) {
+				gl_systemMessage.PushInformationMessage(_T("Tiingo data inquiry finished"));
+				m_fTiingoDataInquiryFinished = true;
+			}
+		}
 	}
 	return false;
 }

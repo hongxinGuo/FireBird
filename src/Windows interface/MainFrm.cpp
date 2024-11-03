@@ -500,7 +500,7 @@ void CMainFrame::UpdateStatus() {
 	SysCallSetPaneText(6, str);
 
 	// 显示活跃股票总数
-	sprintf_s(buffer, _T("%d"), gl_dataContainerChinaStock.GetActiveStockSize());
+	sprintf_s(buffer, _T("%zd"), gl_dataContainerChinaStock.GetActiveStockSize());
 	SysCallSetPaneText(7, buffer);
 
 	// 显示当前读取网易日线历史的股票代码

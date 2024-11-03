@@ -40,15 +40,14 @@ bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 			CSetEconomicCalendar setEconomicCalendar;
 			setEconomicCalendar.Open();
 			setEconomicCalendar.m_pDatabase->BeginTrans();
-			for (long l = m_lLastTotalEconomicCalendar; l < m_vEconomicCalendar.size(); l++) {
+			for (auto l = m_lLastTotalEconomicCalendar; l < m_vEconomicCalendar.size(); l++) {
 				const CEconomicCalendarPtr pEconomicCalendar = m_vEconomicCalendar.at(l);
 				pEconomicCalendar->Append(setEconomicCalendar);
 			}
 			setEconomicCalendar.m_pDatabase->CommitTrans();
 			setEconomicCalendar.Close();
 			m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
-		}
-		catch (CException* e) {
+		} catch (CException* e) {
 			ReportInformationAndDeleteException(e);
 		}
 	}

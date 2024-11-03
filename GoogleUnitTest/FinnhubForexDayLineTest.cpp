@@ -37,7 +37,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubForexDayLineTest, TestInitialize) {
-		EXPECT_EQ(forexDayLine.GetIndex(), -1);
+		EXPECT_EQ(forexDayLine.GetIndex(), 0);
 		EXPECT_STREQ(forexDayLine.GetInquiryFunction(), _T("https://finnhub.io/api/v1/forex/candle?symbol="));
 	}
 

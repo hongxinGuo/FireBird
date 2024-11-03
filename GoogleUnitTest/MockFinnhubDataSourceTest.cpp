@@ -131,6 +131,8 @@ namespace FireBirdTest {
 		m_pMockFinnhubDataSource->SetInquiring(false);
 		gl_pWorldMarket->SetSystemReady(false);
 		InSequence Seq;
+		EXPECT_CALL(*m_pMockFinnhubDataSource, GetTickCount()).Times(1)
+		.WillOnce(Return(300000 + 100000));
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateEconomicCalendar()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateCountryList()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateForexExchange()).Times(1);
@@ -155,13 +157,15 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateSECFilings()).Times(0);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateRTQuote()).Times(0);
 
-		m_pMockFinnhubDataSource->Generate(120000);
+		m_pMockFinnhubDataSource->GenerateInquiryMessage(120000);
 	}
 
 	TEST_F(CMockFinnhubDataSourceTest, TestInquiryFinnhub3) {
 		m_pMockFinnhubDataSource->SetInquiring(false);
 		gl_pWorldMarket->SetSystemReady(true);
 		InSequence Seq;
+		EXPECT_CALL(*m_pMockFinnhubDataSource, GetTickCount()).Times(1)
+		.WillOnce(Return(300000 + 100000));
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateEconomicCalendar()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateCountryList()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateForexExchange()).Times(1);
@@ -185,7 +189,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateSECFilings()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateRTQuote()).Times(0);
 
-		m_pMockFinnhubDataSource->Generate(120000);
+		m_pMockFinnhubDataSource->GenerateInquiryMessage(120000);
 
 		const CString str = gl_systemMessage.PopInformationMessage();
 		EXPECT_STREQ(str, _T("finnhub data inquiry finished"));

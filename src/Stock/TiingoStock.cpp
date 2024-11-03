@@ -396,6 +396,14 @@ void CTiingoStock::ProcessDayLine() {
 	m_dataDayLine.Unload();
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+///
+/// Note tiingo的日线数据没有除权，直接使用当前值，导致除权后一年内的数据无法正确计算52周新低和新高。
+/// 目前Tiingo.com的除权信息为Beta状态，需要另外申请。
+///
+///
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 int CTiingoStock::IsLowOrHigh(size_t index, long lClose) const {
 	bool fIsNewLow = true;
 	bool fIsNewHigh = true;

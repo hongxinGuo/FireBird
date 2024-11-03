@@ -26,9 +26,9 @@ public:
 	CWebData& operator=(const CWebData&&) noexcept = delete;
 	~CWebData();
 
-	void Resize(const long lSize) { m_sDataBuffer.resize(lSize); }
+	void Resize(const size_t lSize) { m_sDataBuffer.resize(lSize); }
 
-	void IncreaseCurrentPos(const long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
+	void IncreaseCurrentPos(const size_t lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
 	void ResetCurrentPos() noexcept { m_lCurrentPos = 0; }
 
 	bool OutOfRange() const noexcept { return m_lCurrentPos >= m_sDataBuffer.size(); }
@@ -42,13 +42,13 @@ public:
 	size_t GetBufferLength() const noexcept { return m_sDataBuffer.size(); }
 
 	string GetDataBuffer() noexcept { return m_sDataBuffer; }
-	long GetCurrentPos() const noexcept { return m_lCurrentPos; }
-	void SetCurrentPos(const long lValue) noexcept { m_lCurrentPos = lValue; }
-	string_view GetStringView(const int iDataPos, const int iDataLength) const { return string_view(m_sDataBuffer.c_str() + iDataPos, iDataLength); }
-	bool GetData(char* buffer, long lDataLength) const; // 从m_lCurrentPos开始拷贝
-	bool SetData(const char* buffer, long lDataLength); // 从m_lCurrentPos开始填充。
-	char GetData(const long lIndex) const { return m_sDataBuffer.at(lIndex); }
-	void SetData(const long lIndex, const char cValue) { m_sDataBuffer.at(lIndex) = cValue; }
+	auto GetCurrentPos() const noexcept { return m_lCurrentPos; }
+	void SetCurrentPos(const size_t lValue) noexcept { m_lCurrentPos = lValue; }
+	string_view GetStringView(const int iDataPos, const size_t iDataLength) const { return string_view(m_sDataBuffer.c_str() + iDataPos, iDataLength); }
+	bool GetData(char* buffer, size_t lDataLength) const; // 从m_lCurrentPos开始拷贝
+	bool SetData(const char* buffer, size_t lDataLength); // 从m_lCurrentPos开始填充。
+	char GetData(const size_t lIndex) const { return m_sDataBuffer.at(lIndex); }
+	void SetData(const size_t lIndex, const char cValue) { m_sDataBuffer.at(lIndex) = cValue; }
 	char GetCurrentPosData() const { return m_sDataBuffer.at(m_lCurrentPos); }
 	void SetCurrentPosData(const char cValue) { m_sDataBuffer.at(m_lCurrentPos) = cValue; }
 
@@ -68,8 +68,8 @@ protected:
 	time_t m_tTime; // 此数据的提取时间。UTC格式
 	CString m_strStockCode; // 此数据的相关证券代码，可以空缺
 	string m_sDataBuffer;
-	long m_lCurrentPos;
-	long m_lCurrentParagraphStartPos; // 当前段起始位置
+	size_t m_lCurrentPos;
+	size_t m_lCurrentParagraphStartPos; // 当前段起始位置
 	string_view m_svCurrentParagraph{}; // 当前段数据
 
 	CString m_strErrorMessage; // 错误信息

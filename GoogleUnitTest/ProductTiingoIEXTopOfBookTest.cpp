@@ -40,7 +40,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductTiingoIEXTopOfBookTest, TestInitialize) {
-		EXPECT_EQ(IEXTopOfBook.GetIndex(), -1);
+		EXPECT_EQ(IEXTopOfBook.GetIndex(), 0);
 		EXPECT_STREQ(IEXTopOfBook.GetInquiringSymbol(), _T(""));
 		EXPECT_STREQ(IEXTopOfBook.GetInquiryFunction(), _T("https://api.tiingo.com/iex?"));
 	}

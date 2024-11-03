@@ -37,7 +37,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubCompanyPeerTest, TestInitialize) {
-		EXPECT_EQ(companyPeer.GetIndex(), -1);
+		EXPECT_EQ(companyPeer.GetIndex(), 0);
 		EXPECT_STREQ(companyPeer.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/peers?symbol="));
 	}
 

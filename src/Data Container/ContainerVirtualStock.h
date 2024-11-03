@@ -9,7 +9,7 @@ public:
 	~CContainerVirtualStock() override = default ;
 
 	void Reset() override;
-	CString GetItemSymbol(long lIndex) override;
+	CString GetItemSymbol(size_t lIndex) override;
 	vector<string> GetSymbols();
 
 	bool IsEmpty() override { return m_vStock.empty(); }

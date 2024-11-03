@@ -15,8 +15,8 @@ public:
 	~CContainerChinaStock() override;
 	void Reset() override;
 
-	[[nodiscard]] long GetActiveStockSize() const;
-	[[nodiscard]] long GetLoadedStockSize() const noexcept { return m_lLoadedStock; }
+	[[nodiscard]] size_t GetActiveStockSize() const;
+	[[nodiscard]] auto GetLoadedStockSize() const noexcept { return m_lLoadedStock; }
 
 	CChinaStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CChinaStock>(Get(strStockCode)); }
 	CChinaStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CChinaStock>(Get(lIndex)); }
@@ -63,5 +63,5 @@ private:
 	static void DeleteDayLineExtendInfo(long lDate);
 
 protected:
-	long m_lLoadedStock; // 本次装载的股票总数
+	size_t m_lLoadedStock; // 本次装载的股票总数
 };

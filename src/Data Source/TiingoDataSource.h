@@ -15,12 +15,13 @@ public:
 
 	bool Reset() override;
 
-	bool GenerateInquiryMessage(long lCurrentTime) override;
-
 	void ConfigureInternetOption() override; // 配置internet参数。
 	enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr& pWebData) override;
 
+	bool GenerateInquiryMessage(long lCurrentTime) override;
+
 	bool Generate(long lCurrentTime);
+
 	// Tiingo.com可供申请的项目，目前共7项。
 	virtual bool GenerateMarketNews();
 	virtual bool GenerateFundamentalDefinition();

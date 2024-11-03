@@ -20,5 +20,5 @@ public:
 	CFinnhubStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CFinnhubStock>(Get(strStockCode)); };
 
 protected:
-	long m_lChosenStockPos;
+	size_t m_lChosenStockPos;
 };

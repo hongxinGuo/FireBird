@@ -40,7 +40,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubEconomicCountryListTest, TestInitialize) {
-		EXPECT_EQ(countryList.GetIndex(), -1);
+		EXPECT_EQ(countryList.GetIndex(), 0);
 		EXPECT_STREQ(countryList.GetInquiryFunction(), _T("https://finnhub.io/api/v1/country?"));
 	}
 

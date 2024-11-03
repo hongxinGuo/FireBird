@@ -353,7 +353,7 @@ public:
 	bool HaveNewDayLineData();
 	void UnloadDayLine() noexcept { m_dataDayLine.Unload(); }
 	bool StoreDayLine(const CDayLinePtr& pDayLine) { return m_dataDayLine.Add(pDayLine); }
-	CDayLinePtr GetDayLine(const long lIndex) const { return static_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
+	CDayLinePtr GetDayLine(const size_t lIndex) const { return static_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
 	void Get1DaysRS(vector<double>& vRS) const { m_dataDayLine.GetRS1(vRS); }
 	void GetRSIndex1Day(vector<double>& vRS) const { m_dataDayLine.GetRSIndex1(vRS); }
 	void GetRSLogarithm1Day(vector<double>& vRS) const { m_dataDayLine.GetRSLogarithm1(vRS); }

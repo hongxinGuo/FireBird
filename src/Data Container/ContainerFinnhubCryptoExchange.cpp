@@ -52,7 +52,7 @@ bool CContainerFinnhubCryptoExchange::UpdateDB() {
 			CSetFinnhubCryptoExchange setCryptoExchange;
 			setCryptoExchange.Open();
 			setCryptoExchange.m_pDatabase->BeginTrans();
-			for (long l = m_lLastTotalCryptoExchange; l < m_vCryptoExchange.size(); l++) {
+			for (auto l = m_lLastTotalCryptoExchange; l < m_vCryptoExchange.size(); l++) {
 				setCryptoExchange.AddNew();
 				setCryptoExchange.m_Code = m_vCryptoExchange.at(l).c_str();
 				setCryptoExchange.Update();
@@ -60,8 +60,7 @@ bool CContainerFinnhubCryptoExchange::UpdateDB() {
 			setCryptoExchange.m_pDatabase->CommitTrans();
 			setCryptoExchange.Close();
 			m_lLastTotalCryptoExchange = static_cast<long>(m_vCryptoExchange.size());
-		}
-		catch (CException* e) {
+		} catch (CException* e) {
 			ReportInformationAndDeleteException(e);
 		}
 		return true;

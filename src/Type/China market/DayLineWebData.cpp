@@ -57,7 +57,7 @@ bool CDayLineWebData::ProcessNeteaseDayLineData() {
 
 string_view CDayLineWebData::GetCurrentNeteaseData() {
 	const string_view svCurrentTotal = string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos);
-	const long lEnd = svCurrentTotal.find_first_of(0x0d);
+	const auto lEnd = svCurrentTotal.find_first_of(0x0d);
 	if (lEnd > svCurrentTotal.length()) {
 		throw std::exception(_T("GetCurrentNeteaseDayLine() out of range"));
 	}
@@ -81,7 +81,7 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLine(const string_view& svData)
 	auto pDayLine = make_shared<CDayLine>();
 
 	try {
-		long lCurrentPos = 0;
+		size_t lCurrentPos = 0;
 		// 日期
 		sv = GetNextField(svData, lCurrentPos, ',');
 		sscanf_s(sv.data(), _T("%04d-%02d-%02d"), &year, &month, &day);
@@ -140,8 +140,7 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLine(const string_view& svData)
 		// 流通市值的数据形式有两种，故而需要程序判定。
 		sv = GetNextField(svData, lCurrentPos, 0x0d); // 最后的数据没有字符','隔断，直接使用最后的\r\n
 		pDayLine->SetCurrentValue(sv.data()); // 流通市值的单位为：元。
-	}
-	catch ([[maybe_unused]] std::exception& e) {
+	} catch ([[maybe_unused]] std::exception& e) {
 		return nullptr;
 	}
 	return pDayLine;

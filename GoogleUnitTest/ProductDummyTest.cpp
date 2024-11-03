@@ -36,7 +36,7 @@ namespace FireBirdTest {
 	TEST_F(CProductDummyTest, TestInitialize) {
 		EXPECT_STREQ(typeid(dummy).name(), _T("class CProductDummy"));
 		EXPECT_STREQ(dummy.GetInquiryFunction(), _T(""));
-		EXPECT_EQ(dummy.GetIndex(), -1);
+		EXPECT_EQ(dummy.GetIndex(), 0);
 	}
 
 	TEST_F(CProductDummyTest, TestCreateMessage) {

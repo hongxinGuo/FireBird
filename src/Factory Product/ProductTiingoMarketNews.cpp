@@ -71,7 +71,7 @@ CVectorTiingoMarketNewsPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const
 	string s1;
 	CString strNumber;
 	int year, month, day, hour, minute, second;
-	double f;
+	float f;
 	if (!IsValidData(pWebData)) return pvTiingoMarketNews;
 
 	try {
@@ -88,7 +88,7 @@ CVectorTiingoMarketNewsPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const
 			s1 = jsonGetStringView(itemValue, _T("source"));
 			pMarketNews->m_strSource = s1.c_str();
 			s1 = jsonGetStringView(itemValue, _T("crawlDate"));
-			sscanf_s(s1.c_str(), _T("%04i-%02i-%02iT%02i:%02i:%02i.%dZ"), &year, &month, &day, &hour, &minute, &second, &f);
+			sscanf_s(s1.c_str(), _T("%04i-%02i-%02iT%02i:%02i:%02i.%fZ"), &year, &month, &day, &hour, &minute, &second, &f);
 			pMarketNews->m_llCrawlDate = static_cast<INT64>(year) * 10000000000 + month * 100000000 + day * 1000000 + hour * 10000 + minute * 100 + second;
 			s1 = jsonGetStringView(itemValue, _T("description"));
 			pMarketNews->m_strDescription = s1.c_str();

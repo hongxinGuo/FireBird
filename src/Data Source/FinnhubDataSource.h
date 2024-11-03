@@ -134,9 +134,9 @@ private:
 	bool m_fInquiringFinnhubForexDayLine = { false };
 	bool m_fInquiringFinnhubCryptoDayLine = { false };
 
-	long m_lCurrentRTDataQuotePos{ 0 };
-	long m_lCurrentForexExchangePos{ 0 };
-	long m_lCurrentCryptoExchangePos{ 0 };
+	size_t m_lCurrentRTDataQuotePos{ 0 };
+	size_t m_lCurrentForexExchangePos{ 0 };
+	size_t m_lCurrentCryptoExchangePos{ 0 };
 };
 
 using CFinnhubDataSourcePtr = shared_ptr<CFinnhubDataSource>;

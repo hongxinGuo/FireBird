@@ -13,7 +13,7 @@ void CContainerVirtualStock::Reset() {
 	m_mapSymbol.clear();
 }
 
-CString CContainerVirtualStock::GetItemSymbol(long lIndex) {
+CString CContainerVirtualStock::GetItemSymbol(size_t lIndex) {
 	return m_vStock.at(lIndex)->GetSymbol();
 }
 

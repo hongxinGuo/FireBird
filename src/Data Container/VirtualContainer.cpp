@@ -12,15 +12,15 @@ void CVirtualContainer::Reset() {
 	m_lTengxunRTDataInquiringIndex = 0;
 }
 
-long CVirtualContainer::GetNextIndex(long lIndex) {
+size_t CVirtualContainer::GetNextIndex(size_t lIndex) {
 	if (++lIndex >= Size()) { lIndex = 0; }
 	return lIndex;
 }
 
-CString CVirtualContainer::GetNextStockInquiringMiddleStr(long& iStockIndex, const CString& strDelimiter, long lTotalNumber, CString (*StockCodeTransfer)(const CString& str)) {
+CString CVirtualContainer::GetNextStockInquiringMiddleStr(size_t& iStockIndex, const CString& strDelimiter, size_t lTotalNumber, CString (*StockCodeTransfer)(const CString& str)) {
 	if (IsEmpty()) return StockCodeTransfer(_T("600000.SH")); // 当没有证券可查询时，返回一个有效字符串
 	CString strReturn = _T("");
-	int iCount = 0;
+	size_t iCount = 0;
 	while ((iStockIndex < Size()) && (iCount++ < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
 		strReturn += StockCodeTransfer(GetItemSymbol(iStockIndex));
 		if (iCount < lTotalNumber) { // 如果不是最后一个，则添加后缀

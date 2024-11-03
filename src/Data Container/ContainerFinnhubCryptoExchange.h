@@ -21,10 +21,10 @@ public:
 	bool UpdateDB();
 
 	bool IsNeedUpdate() const noexcept { return m_lLastTotalCryptoExchange < m_vCryptoExchange.size(); }
-	void SetLastSize(long lSize) noexcept { m_lLastTotalCryptoExchange = lSize; }
+	void SetLastSize(size_t lSize) noexcept { m_lLastTotalCryptoExchange = lSize; }
 
 protected:
 	vector<string> m_vCryptoExchange;
 	map<string, size_t> m_mapCryptoExchange;
-	long m_lLastTotalCryptoExchange{ 0 };
+	size_t m_lLastTotalCryptoExchange{ 0 };
 };
