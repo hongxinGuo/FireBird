@@ -4,7 +4,7 @@
 
 #include"VirtualSetHistoryCandleBasic.h"
 
-class CSetCryptoDayLine : public CVirtualSetHistoryCandleBasic {
+class CSetCryptoDayLine final : public CVirtualSetHistoryCandleBasic {
 public:
 	CSetCryptoDayLine(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("finnhub_crypto_dayline"), CDatabase* pDatabase = nullptr)
 		: CVirtualSetHistoryCandleBasic(strSchema, strTable, pDatabase) {}

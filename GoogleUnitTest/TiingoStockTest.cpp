@@ -409,22 +409,22 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_NOT_CHECKED_);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
 		stock.SetDayLineEndDate(20240101);
+		stock.SetIPOStatus(_STOCK_IPOED_);
 
 		stock.CheckIPOStatus(20240131);
 
-		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_NOT_CHECKED_) << "未超出30天，不改变证券装态";
+		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_IPOED_) << "未超出30天，不改变证券装态";
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 	}
 
 	TEST_F(CTiingoStockTest, TestCheckIOPStatus4) {
 		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_NOT_CHECKED_);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
-		stock.SetIPOStatus(_STOCK_DELISTED_);
 
 		stock.CheckIPOStatus(202401031);
 
 		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_DELISTED_);
-		EXPECT_FALSE(stock.IsUpdateProfileDB()) << "已处于delisted状态下，无需更改";
+		EXPECT_TRUE(stock.IsUpdateProfileDB()) << "已处于IPOed状态下，无需更改";
 	}
 
 	TEST_F(CTiingoStockTest, TestCheckDayLineUpdateStatus1) {

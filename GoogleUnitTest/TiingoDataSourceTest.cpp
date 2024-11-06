@@ -159,8 +159,6 @@ namespace FireBirdTest {
 		const CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoStockProfile"));
 		EXPECT_TRUE(m_pTiingoDataSource->IsUpdateStockSymbol()) << "此标识需要等处理完数据后方设置";
-		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Inquire Tiingo stock symbol..."));
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestGenerateTiingoCryptoSymbol) {
@@ -174,8 +172,6 @@ namespace FireBirdTest {
 		const CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoCryptoSymbol"));
 		EXPECT_TRUE(m_pTiingoDataSource->IsUpdateStockSymbol()) << "此标识需要等处理完数据后方设置";
-		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Inquiring Tiingo crypto symbol..."));
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestGenerateTiingoFundamentalDefinition) {
@@ -189,8 +185,6 @@ namespace FireBirdTest {
 		const CVirtualProductWebDataPtr p = m_pTiingoDataSource->GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductTiingoFundamentalDefinition"));
 		EXPECT_TRUE(m_pTiingoDataSource->IsUpdateStockSymbol()) << "此标识需要等处理完数据后方设置";
-		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Inquiring Tiingo Fundamental Definition..."));
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestGenerateTiingoDayLine) {

@@ -269,13 +269,18 @@ void CTiingoStock::CheckFinancialStateUpdateStatus(long lTodayDate) {
 //
 //////////////////////////////////////////////////////////////////////////////////////
 void CTiingoStock::CheckIPOStatus(long lCurrentDate) {
-	if (IsEarlyThen(GetDayLineEndDate(), lCurrentDate, 100)) {
-		SetIPOStatus(_STOCK_DELISTED_);
+	if (IsEarlyThen(GetDayLineEndDate(), lCurrentDate, 30)) {
+		if (!IsDelisted()) {
+			SetIPOStatus(_STOCK_DELISTED_);
+			SetUpdateProfileDB(true);
+		}
 	}
 	else {
-		SetIPOStatus(_STOCK_IPOED_);
+		if (!IsIPOed()) {
+			SetIPOStatus(_STOCK_IPOED_);
+			SetUpdateProfileDB(true);
+		}
 	}
-	SetUpdateProfileDB(true);
 }
 
 bool CTiingoStock::CheckDayLineUpdateStatus(long lCurrentDate) {

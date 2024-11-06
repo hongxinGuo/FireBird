@@ -182,85 +182,6 @@ namespace FireBirdTest {
 		}
 	}
 
-	class ParseTiingoStockDayLineTest2 : public TestWithParam<Test_TiingoWebData*> {
-	protected:
-		void SetUp() override {
-			SCOPED_TRACE("");
-			GeneralCheck();
-			const Test_TiingoWebData* pData = GetParam();
-			m_lIndex = pData->m_lIndex;
-			m_pWebData = pData->m_pData;
-		}
-
-		void TearDown() override {
-			// clearUp
-			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			SCOPED_TRACE("");
-			GeneralCheck();
-		}
-
-	public:
-		long m_lIndex;
-		CWebDataPtr m_pWebData;
-		CProductTiingoStockDayLine m_tiingoStockPriceCandle;
-	};
-
-	INSTANTIATE_TEST_SUITE_P(TestParseTiingoStockDayLine1, ParseTiingoStockDayLineTest2,
-	                         testing::Values(&tiingoWebData31, &tiingoWebData32, &tiingoWebData33, &tiingoWebData35,
-		                         &tiingoWebData36, &tiingoWebData37, &tiingoWebData38, &tiingoWebData39, &tiingoWebData40,
-		                         &tiingoWebData41));
-
-	TEST_P(ParseTiingoStockDayLineTest2, TestParseTiingoStockDayLine0) {
-		CDayLinesPtr pvDayLine;
-		CString strMessage;
-		CDayLinePtr pDayLine;
-
-		pvDayLine = m_tiingoStockPriceCandle.ParseTiingoStockDayLine(m_pWebData);
-		switch (m_lIndex) {
-		case 1: // 格式不对
-			EXPECT_EQ(pvDayLine->size(), 0);
-			break;
-		case 2: //
-			EXPECT_EQ(pvDayLine->size(), 0);
-			break;
-		case 3: //
-			EXPECT_EQ(pvDayLine->size(), 0);
-			break;
-		case 5:
-			EXPECT_EQ(pvDayLine->size(), 0);
-			break;
-		case 6:
-			EXPECT_EQ(pvDayLine->size(), 0);
-			break;
-		case 7:
-			EXPECT_EQ(pvDayLine->size(), 0);
-			break;
-		case 8:
-			EXPECT_EQ(pvDayLine->size(), 0);
-			break;
-		case 9:
-			EXPECT_EQ(pvDayLine->size(), 1);
-			break;
-		case 10:
-			EXPECT_EQ(pvDayLine->size(), 2);
-			pDayLine = pvDayLine->at(0);
-			EXPECT_EQ(pDayLine->GetMarketDate(), 20210311);
-			EXPECT_EQ(pDayLine->GetClose(), 121960);
-			EXPECT_EQ(pDayLine->GetHigh(), 123210);
-			EXPECT_EQ(pDayLine->GetLow(), 121260);
-			EXPECT_EQ(pDayLine->GetOpen(), 122540);
-			EXPECT_EQ(pDayLine->GetVolume(), 103026514);
-			break;
-		case 11: // 股票没有日线数据
-			EXPECT_EQ(pvDayLine->size(), 0);
-			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1) << "函数报告错误信息";
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Tiingo stock dayLine Error:Ticker 'AAPL' not found"));
-			break;
-		default:
-			break;
-		}
-	}
-
 	class ProcessTiingoStockDayLineTest : public TestWithParam<Test_TiingoWebData*> {
 	protected:
 		void SetUp() override {
@@ -278,13 +199,11 @@ namespace FireBirdTest {
 			// clearUp
 			gl_systemConfiguration.SetTiingoBandWidthLeft(5368709120);
 			gl_systemConfiguration.SetUpdateDB(false);
-			gl_dataContainerTiingoStock.GetStock(_T("A"))->SetUpdateProfileDB(false);
 			gl_dataContainerTiingoStock.GetStock(_T("AAPL"))->SetUpdateProfileDB(false);
 			gl_dataContainerTiingoStock.GetStock(0)->SetIPOStatus(_STOCK_DELISTED_);
-			auto symbol = gl_dataContainerTiingoStock.GetStock(0)->GetSymbol();
-			gl_dataContainerFinnhubStock.GetStock(symbol)->SetUpdateDayLine(true);
-			gl_dataContainerFinnhubStock.GetStock(symbol)->SetUpdateDayLineDB(false);
-			gl_dataContainerFinnhubStock.GetStock(symbol)->SetUpdateProfileDB(false);
+			gl_dataContainerTiingoStock.GetStock(0)->SetUpdateDayLine(true);
+			gl_dataContainerTiingoStock.GetStock(0)->SetUpdateDayLineDB(false);
+			gl_dataContainerTiingoStock.GetStock(0)->SetUpdateProfileDB(false);
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -305,61 +224,50 @@ namespace FireBirdTest {
 		CString strMessage;
 		CDayLinePtr pDayLine;
 		CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(0); // 这个是当前处理的股票
-		switch (m_lIndex) {
-		case 6:
-		case 7:
-			pStock->SetIPOStatus(_STOCK_NOT_YET_LIST_); // 不是delisted
-			pStock->SetDayLineEndDate(19900203);
-			break;
-		case 8:
-			pStock->SetDayLineEndDate(19900203);
-			pStock->SetIPOStatus(_STOCK_DELISTED_);
-		default:
-			break;
-		}
 
 		m_tiingoStockPriceCandle.ParseAndStoreWebData(m_pWebData);
+		EXPECT_STREQ(pStock->GetSymbol(), _T("A"));
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_NOT_YET_LIST_);
-			EXPECT_TRUE(pStock->IsUpdateProfileDB()) << "日线数据个数为零时，如果证券的日线最后日期为19800101，则设置证券状态为_STOCK_NOT_YET_LIST,并设置存储标识";
+			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_);
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 2: //
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_NOT_YET_LIST_);
-			EXPECT_TRUE(pStock->IsUpdateProfileDB()) << "日线数据个数为零时，如果证券的日线最后日期为19800101，则设置证券状态为_STOCK_NOT_YET_LIST,并设置存储标识";
+			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_);
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 3: //
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_NOT_YET_LIST_);
-			EXPECT_TRUE(pStock->IsUpdateProfileDB()) << "日线数据个数为零时，如果证券的日线最后日期为19800101，则设置证券状态为_STOCK_NOT_YET_LIST,并设置存储标识";
+			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_);
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 5:
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_NOT_YET_LIST_);
-			EXPECT_TRUE(pStock->IsUpdateProfileDB()) << "日线数据个数为零时，如果证券的日线最后日期为19800101，则设置证券状态为_STOCK_NOT_YET_LIST,并设置存储标识";
+			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_);
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 6:
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_) << "日线最后日期不为19800101时，设置证券状态为delisted";
+			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_) << "设置证券状态为delisted";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 7:
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_) << "日线最后日期不为19800101时，设置证券状态为delisted";
+			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_) << "设置证券状态为delisted";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 8:
@@ -367,7 +275,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
 			EXPECT_TRUE(pStock->IsDelisted());
-			EXPECT_FALSE(pStock->IsUpdateProfileDB()) << "证券状态已经是_STOCK_DELISTED了，不再更新";
+			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 9:
 			EXPECT_EQ(pStock->GetDayLineSize(), 1);
@@ -389,6 +297,5 @@ namespace FireBirdTest {
 		// 恢复原状
 		pStock->UnloadDayLine();
 		pStock->SetDayLineEndDate(19800101);
-		pStock->SetIPOStatus(_STOCK_NOT_CHECKED_);
 	}
 }

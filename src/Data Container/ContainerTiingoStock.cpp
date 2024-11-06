@@ -77,6 +77,7 @@ bool CContainerTiingoStock::LoadDB() {
 	CString strSymbol = _T("");
 	long lDayLine{ 0 }, lFS{ 0 };
 
+	setTiingoStock.m_strSort = _T("[Ticker]");
 	setTiingoStock.Open();
 	setTiingoStock.m_pDatabase->BeginTrans();
 	while (!setTiingoStock.IsEOF()) {

@@ -44,6 +44,8 @@ namespace FireBirdTest {
 			for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
 				auto pStock = gl_dataContainerTiingoStock.GetStock(i);
 				pStock->SetUpdateProfileDB(false);
+				pStock->SetUpdateDayLine(true);
+				pStock->SetUpdateDayLineDB(false);
 			}
 			EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
 		}

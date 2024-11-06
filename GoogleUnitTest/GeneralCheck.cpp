@@ -153,6 +153,8 @@ namespace FireBirdTest {
 
 			EXPECT_EQ(gl_dataContainerTiingoStock.Size(), 21106) << "默认状态下数据库总数为21106";
 			EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(0)->IsDelisted());
+			EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(0)->IsUpdateDayLine());
+			EXPECT_FALSE(gl_dataContainerTiingoStock.GetStock(0)->IsUpdateDayLineDB());
 
 			//	for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			//		const auto p_stock = gl_dataContainerFinnhubStock.GetStock(l);
