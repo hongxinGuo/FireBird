@@ -38,6 +38,8 @@ void CVirtualHistoryCandleBasic::SaveBasicData(not_null<CVirtualSetHistoryCandle
 	pVirtualSetHistoryCandleBasic->m_Low = ConvertValueToString(GetLow(), GetRatio());
 	pVirtualSetHistoryCandleBasic->m_Open = ConvertValueToString(GetOpen(), GetRatio());
 	pVirtualSetHistoryCandleBasic->m_Close = ConvertValueToString(GetClose(), GetRatio());
+	pVirtualSetHistoryCandleBasic->m_dividend = ConvertValueToString(GetDividend());
+	pVirtualSetHistoryCandleBasic->m_splitFactor = ConvertValueToString(GetSplitFactor());
 	pVirtualSetHistoryCandleBasic->m_Volume = ConvertValueToString(GetVolume());
 	pVirtualSetHistoryCandleBasic->m_Amount = ConvertValueToString(GetAmount());
 	pVirtualSetHistoryCandleBasic->m_UpAndDown = ConvertValueToString(GetUpDown());
@@ -68,6 +70,8 @@ void CVirtualHistoryCandleBasic::LoadBasicData(not_null<CVirtualSetHistoryCandle
 	m_lHigh = atof(pVirtualSetHistoryCandleBasic->m_High) * GetRatio();
 	m_lLow = atof(pVirtualSetHistoryCandleBasic->m_Low) * GetRatio();
 	m_lClose = atof(pVirtualSetHistoryCandleBasic->m_Close) * GetRatio();
+	m_dSplitFactor = atof(pVirtualSetHistoryCandleBasic->m_splitFactor);
+	m_dDividend = atof(pVirtualSetHistoryCandleBasic->m_dividend);
 	m_dUpDown = atof(pVirtualSetHistoryCandleBasic->m_UpAndDown);
 	m_llVolume = atoll(pVirtualSetHistoryCandleBasic->m_Volume);
 	m_llAmount = atoll(pVirtualSetHistoryCandleBasic->m_Amount);

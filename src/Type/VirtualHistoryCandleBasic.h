@@ -62,9 +62,15 @@ public:
 	long GetClose() const noexcept { return m_lClose; }
 	void SetClose(const char* buffer) noexcept { m_lClose = static_cast<long>(atof(buffer)); }
 	void SetClose(const long lValue) noexcept { m_lClose = lValue; }
+	double GetDividend() const noexcept { return m_dDividend; }
+	void SetDividend(const char* buffer) noexcept { m_dDividend = atof(buffer); }
+	void SetDividend(const double dValue) noexcept { m_dDividend = dValue; }
 	double GetUpDown() const noexcept { return m_dUpDown; }
 	void SetUpDown(const char* buffer) noexcept { m_dUpDown = atof(buffer); }
 	void SetUpDown(const double dValue) noexcept { m_dUpDown = dValue; }
+	double GetSplitFactor() const noexcept { return m_dSplitFactor; }
+	void SetSplitFactor(const char* buffer) noexcept { m_dSplitFactor = atof(buffer); }
+	void SetSplitFactor(const double dValue) noexcept { m_dSplitFactor = dValue; }
 	double GetUpDownRate() const noexcept { return m_dUpDownRate; }
 	void SetUpDownRate(const char* buffer) noexcept { m_dUpDownRate = atof(buffer); }
 	void SetUpDownRate(const double dValue) noexcept { m_dUpDownRate = dValue; }
@@ -113,6 +119,8 @@ public:
 	long m_lClose{ 0 }; // 收盘价
 
 	// 以下数值是实际值
+	double m_dDividend{ 0 }; // 股息
+	double m_dSplitFactor{ 1.0 }; // 拆分比率
 	double m_dUpDown{ 0 }; // 涨跌额
 	double m_dUpDownRate{ 0 };
 	double m_dChangeHandRate{ 0 }; // 换手率

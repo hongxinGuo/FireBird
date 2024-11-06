@@ -109,7 +109,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetTengxunRTDataInquiryPerTime(), 900) << "测试文件中的数值";
 
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100) << "默认每次查询时间为1100毫秒";
-		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 3600000 / 400) << "默认每小时查询最大数量为400";
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 200) << "默认每小时查询最大数量为20000";
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime(), 3600000 / 100) << "默认每小时查询最大数量为100";
 
 		EXPECT_STREQ(gl_systemConfiguration.GetTiingoToken(), _T("c897a00b7cfc2630d235316a4683156"));
@@ -230,7 +230,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CSystemConfigurationTest, TestChangeTiingoAccountType) {
-		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 9000);
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 200);
 		gl_systemConfiguration.SetUpdateDB(false);
 		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(220);
 
@@ -241,11 +241,10 @@ namespace FireBirdTest {
 
 		gl_systemConfiguration.ChangeTiingoAccountTypeToPaid();
 
-		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 500);
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 200);
 		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
 
 		// 恢复原状
-		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(9000);
 		gl_systemConfiguration.SetUpdateDB(false);
 	}
 

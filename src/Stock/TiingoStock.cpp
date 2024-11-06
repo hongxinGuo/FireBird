@@ -291,7 +291,7 @@ bool CTiingoStock::CheckDayLineUpdateStatus(long lCurrentDate) {
 		SetUpdateDayLine(false);
 		return false;
 	}
-	if (GetDayLineUpdateDate() == lCurrentDate) {
+	if (GetDayLineEndDate() == lCurrentDate) {
 		SetUpdateDayLine(false);
 		return false;
 	}

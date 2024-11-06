@@ -34,6 +34,8 @@ public:
 	CString m_Close{ _T("") };	//今日收盘价
 	CString m_Volume{ _T("") };	//今日总成交数量。单位：股。
 	CString m_Amount{ _T("") };	//今日总成交金额。单位：元
+	CString m_dividend{ _T("") }; // 今日股息。单位0.001元
+	CString m_splitFactor{ _T("") }; // 今日拆分。 单位未比例数
 	CString m_UpAndDown{ _T("") };	//今日涨跌
 	CString m_UpDownRate{ _T("") }; // 今日涨跌幅度，单位1%。
 	CString m_ChangeHandRate{ _T("") }; // 今日换手率

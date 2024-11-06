@@ -141,6 +141,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		case ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__: // 需要购买附加许可证
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 			gl_systemConfiguration.SetTiingoAccountAddOnPaid(false);
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Add-on permission needed"));
 			break;
 		case ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__:// 申请频率超高
 			// 降低查询频率200ms。
@@ -180,11 +181,13 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (GenerateFundamentalDefinition()) return true;
 	if (GenerateCompanySymbol()) return true;
 	if (GenerateCryptoSymbol()) return true;
-	TRACE("\n tiingo dayline need update before IEX: %d\n", gl_dataContainerTiingoStock.GetDayLineNeedUpdateNumber());
-	if (GenerateIEXTopOfBook()) return true;
-	TRACE("\n tiingo dayline need update after IEX: %d\n", gl_dataContainerTiingoStock.GetDayLineNeedUpdateNumber());
-	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
-	if (GenerateFinancialState()) return true;
+	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户才能够日线和金融数据
+		if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
+		if (GenerateFinancialState()) return true;
+	}
+	else { // 免费账户使用IEX数据更新日线
+		if (GenerateIEXTopOfBook(lCurrentTime)) return true;
+	}
 
 	ASSERT(!IsInquiring());
 	if (!m_fTiingoDataInquiryFinished) {
@@ -242,17 +245,25 @@ bool CTiingoDataSource::GenerateCryptoSymbol() {
 	return false;
 }
 
-bool CTiingoDataSource::GenerateIEXTopOfBook() {
+bool CTiingoDataSource::GenerateIEXTopOfBook(long lCurrentTime) {
 	ASSERT(!IsInquiring());
 	if (IsUpdateIEXTopOfBook()) {
+		if (lCurrentTime < 180000) { // 18点后方可接收IEX数据
+			gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(180000, 0, 1, 0));
+			SetUpdateIEXTopOfBook(false);
+			return false;
+		}
 		if (gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate() < gl_pWorldMarket->GetCurrentTradeDate()) {
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, TIINGO_IEX_TOP_OF_BOOK_);
 			StoreInquiry(p);
 			SetInquiring(true);
 			gl_pWorldMarket->SetCurrentTiingoFunction(_T("IEX top of book"));
+			gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 1, 0));
 			return true;
 		}
-		SetUpdateIEXTopOfBook(false); // 申请过最近交易日的数据了
+		else {
+			SetUpdateIEXTopOfBook(false); // 申请过最近交易日的数据了
+		}
 	}
 	return false;
 }
@@ -324,10 +335,11 @@ bool CTiingoDataSource::GenerateFinancialState() {
 					fFound = true;
 					break;
 				}
-
-				if (setDOW30.contains(pTiingoStock->GetSymbol())) { // 免费账户或者power账户只能申请DOW30.
-					fFound = true;
-					break;
+				else {
+					if (setDOW30.contains(pTiingoStock->GetSymbol())) { // 免费账户或者power账户只能申请DOW30.
+						fFound = true;
+						break;
+					}
 				}
 			}
 		}

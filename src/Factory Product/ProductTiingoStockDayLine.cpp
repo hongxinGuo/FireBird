@@ -155,6 +155,10 @@ CDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataP
 			dTemp = jsonGetDouble(it, _T("open"));
 			pDayLine->SetOpen(dTemp * 1000);
 			lTemp = jsonGetLong(it, _T("volume"));
+			dTemp = jsonGetDouble(it, _T("divCash"));
+			pDayLine->SetDividend(dTemp);
+			dTemp = jsonGetDouble(it, _T("splitFactor"));
+			pDayLine->SetSplitFactor(dTemp);
 			pDayLine->SetVolume(lTemp);
 			pvDayLine->push_back(pDayLine);
 		}

@@ -10,7 +10,7 @@ namespace testing {
 		MOCK_METHOD(bool, GenerateFundamentalDefinition, (), (override));
 		MOCK_METHOD(bool, GenerateCompanySymbol, (), (override));
 		MOCK_METHOD(bool, GenerateCryptoSymbol, (), (override));
-		MOCK_METHOD(bool, GenerateIEXTopOfBook, (), (override));
+		MOCK_METHOD(bool, GenerateIEXTopOfBook, (long lCurrentTime), (override));
 		MOCK_METHOD(bool, GenerateDayLine, (), (override));
 		MOCK_METHOD(bool, GenerateFinancialState, (), (override));
 	};

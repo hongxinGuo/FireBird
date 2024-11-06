@@ -67,7 +67,7 @@ namespace FireBirdTest {
 		// »Ö¸´Ô­×´
 		gl_systemMessage.PopInnerSystemInformationMessage();
 		gl_systemMessage.PopInformationMessage();
-		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(9000);
+		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(200);
 		gl_systemConfiguration.SetUpdateDB(false);
 	}
 
@@ -79,7 +79,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateMarketNews());
 
 		gl_pTiingoDataSource->SetUpdateMarketNews(true);
-		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 500);
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 200);
 
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
@@ -87,7 +87,7 @@ namespace FireBirdTest {
 		// »Ö¸´Ô­×´
 		gl_systemMessage.PopInnerSystemInformationMessage();
 		gl_systemMessage.PopInformationMessage();
-		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(9000);
+		gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(200);
 		gl_systemConfiguration.SetUpdateDB(false);
 	}
 

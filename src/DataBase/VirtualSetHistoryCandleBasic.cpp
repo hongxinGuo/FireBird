@@ -6,7 +6,7 @@
 
 CVirtualSetHistoryCandleBasic::CVirtualSetHistoryCandleBasic(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
-	m_nFields = 20;
+	m_nFields = 22;
 }
 
 void CVirtualSetHistoryCandleBasic::DoFieldExchange(CFieldExchange* pFX) {
@@ -26,6 +26,8 @@ void CVirtualSetHistoryCandleBasic::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Text(pFX, _T("[Close]"), m_Close);
 	RFX_Text(pFX, _T("[Volume]"), m_Volume);
 	RFX_Text(pFX, _T("[Amount]"), m_Amount);
+	RFX_Text(pFX, _T("[Dividend]"), m_dividend);
+	RFX_Text(pFX, _T("[SplitFactor]"), m_splitFactor);
 	RFX_Text(pFX, _T("[UpAndDown]"), m_UpAndDown);
 	RFX_Text(pFX, _T("[UpDownRate]"), m_UpDownRate);
 	RFX_Text(pFX, _T("[ChangeHandRate]"), m_ChangeHandRate);

@@ -187,6 +187,7 @@ namespace FireBirdTest {
 		default: // 其他
 			tUTC -= 24 * 3600; //
 		}
+		tUTC -= 8 * 3600 + 1800;
 		GetMarketTimeStruct(&tm_, tUTC, virtualMarket.GetMarketTimeZone());
 		const long LastTradeDate = ConvertToDate(&tm_);
 		EXPECT_EQ(virtualMarket.GetLastTradeDate(), LastTradeDate);
@@ -295,6 +296,7 @@ namespace FireBirdTest {
 			default: // 其他
 				tUTC -= 24 * 3600; //
 			}
+			tUTC -= 8 * 3600 + 1800;
 			GetMarketTimeStruct(&tm_, tUTC, virtualMarket.GetMarketTimeZone());
 			long LastTradeDate = ConvertToDate(&tm_);
 			EXPECT_EQ(virtualMarket.GetLastTradeDate(), LastTradeDate);

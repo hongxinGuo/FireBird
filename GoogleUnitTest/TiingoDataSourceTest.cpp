@@ -124,12 +124,12 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
-		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0);
+		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 		EXPECT_FALSE(gl_systemConfiguration.IsTiingoAccountAddOnPaid());
 
 		// »Ö¸´Ô­×´
 		gl_systemConfiguration.SetTiingoAccountAddOnPaid(true);
-		//gl_systemMessage.PopInnerSystemInformationMessage();
+		gl_systemMessage.PopInnerSystemInformationMessage();
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestIsAErrorMessageData5) {
