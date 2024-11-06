@@ -34,6 +34,14 @@ bool CContainerVirtualStock::IsUpdateDayLine() noexcept {
 	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsUpdateDayLine(); });
 }
 
+size_t CContainerVirtualStock::GetDayLineNeedUpdateNumber() const {
+	size_t size = 0;
+	for (auto pSymbol : m_vStock) {
+		if (pSymbol->IsUpdateDayLine()) size++;
+	}
+	return size;
+}
+
 bool CContainerVirtualStock::IsUpdateDayLineDB() noexcept {
 	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return pStock->IsUpdateDayLineDB(); });
 }

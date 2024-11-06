@@ -71,34 +71,13 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			if ((lastClose != 0) && (pDayLine2->GetLastClose() == 0)) pDayLine2->SetLastClose(lastClose);
 			lastClose = pDayLine2->GetClose();
 		}
-		if (!IsEarlyThen(pvDayLine->at(pvDayLine->size() - 1)->GetMarketDate(), GetMarket()->GetMarketDate(), 100)) {
-			pTiingoStock->SetIPOStatus(_STOCK_IPOED_);
-		}
-		else {
-			pTiingoStock->SetIPOStatus(_STOCK_DELISTED_);
-		}
 		pTiingoStock->UpdateDayLine(*pvDayLine);
 		pTiingoStock->SetUpdateDayLineDB(true);
-		pTiingoStock->SetUpdateProfileDB(true);
-	}
-	else {
-		pTiingoStock->SetUpdateDayLineDB(false);
-		pTiingoStock->SetUpdateProfileDB(false);
-		if (pTiingoStock->GetDayLineEndDate() == 19800101) { // 从没有接收过日线数据？
-			pTiingoStock->SetIPOStatus(_STOCK_NOT_YET_LIST_);
-			pTiingoStock->SetUpdateProfileDB(true);
-		}
-		else if (IsEarlyThen(pTiingoStock->GetDayLineEndDate(), GetMarket()->GetMarketDate(), 100)) {
-			if (!pTiingoStock->IsDelisted()) {
-				pTiingoStock->SetIPOStatus(_STOCK_DELISTED_);
-				pTiingoStock->SetUpdateProfileDB(true);
-			}
-		}
-		// todo 添加其他情况的判断
 	}
 	// 清除tiingo stock的日线更新标识
 	pTiingoStock->SetUpdateDayLine(false);
 	pTiingoStock->SetDayLineUpdateDate(GetMarket()->GetMarketDate());
+	pTiingoStock->SetUpdateProfileDB(true);
 	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 }
 

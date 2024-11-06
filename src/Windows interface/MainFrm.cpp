@@ -519,8 +519,12 @@ void CMainFrame::UpdateStatus() {
 	SysCallSetPaneText(11, str);
 
 	// 更新当前申请网络数据的工作线程数
-	sprintf_s(buffer, _T("%02d"), 0);
-	SysCallSetPaneText(12, buffer);
+	if (gl_ThreadStatus.IsSavingThreadRunning()) {
+		SysCallSetPaneText(12, "Saving");
+	}
+	else {
+		SysCallSetPaneText(12, "");
+	}
 
 	// 更新当前后台工作线程数
 	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
@@ -632,7 +636,7 @@ void CMainFrame::OnCalculateTodayRS() {
 }
 
 void CMainFrame::CalculateTodayRS() {
-	gl_runtime.thread_executor()->post([] {
+	gl_runtime.background_executor()->post([] {
 		ThreadBuildDayLineRS(gl_pChinaMarket, gl_pChinaMarket->GetMarketDate());
 	});
 }
@@ -785,7 +789,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 }
 
 void CMainFrame::OnRebuildChinaMarketStockDayLineRS() {
-	gl_runtime.thread_executor()->post([] {
+	gl_runtime.background_executor()->post([] {
 		ThreadBuildDayLineRS(gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
 	});
 }

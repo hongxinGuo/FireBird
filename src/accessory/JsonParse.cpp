@@ -173,7 +173,7 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 	} catch (exception& e) {
 		ReportErrorToSystemMessage(_T("ParseSinaData异常 "), e);
 	}
-	auto result = ParseSinaRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView);
+	auto result = ParseSinaRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView); //Note 必须使用thread_pool_executor
 	result.get();
 }
 
@@ -246,7 +246,7 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 		ReportErrorToSystemMessage(_T("ParseTengxunData异常 "), e);
 	}
 
-	auto result = ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView);
+	auto result = ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView); //Note 必须使用thread_pool_executor
 	result.get(); // 等待线程执行完后方继续。
 }
 

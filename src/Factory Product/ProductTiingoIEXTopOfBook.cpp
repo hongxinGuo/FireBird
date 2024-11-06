@@ -33,18 +33,21 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	time_t ttNewestTradeDay = ConvertToTTime(lNewestTradeDay, 0, 160000); // 美股下午4点收市
 	if (!pvTiingoIEXTopOFBook->empty()) {
 		for (const auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {
-			if (pIEXTopOFBook->m_llTimestamp > ttNewestTradeDay) { // 只使用不早于一天的实时数据
-				if (gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker)) { // 只更新已有代码
-					auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker);
-					pTiingoStock->UpdateRTData(pIEXTopOFBook);
-					pTiingoStock->SetActive(true);
-					if (pTiingoStock->GetDayLineEndDate() == gl_pWorldMarket->GetLastTradeDate()) { // 只有一个需要更新的日线？
-						// 只有一个日线需要更新时，此时已经更新，就不再需要申请日线更新了。
-						pTiingoStock->SetDayLineEndDate(lNewestTradeDay); // 设置新的日线截止日期
-						pTiingoStock->SetUpdateDayLine(false); // 无需再次更新日线
-						pTiingoStock->SetUpdateProfileDB(true);
-					}
+			if (pIEXTopOFBook->m_llTimestamp < ttNewestTradeDay) continue; // 只使用不早于一天的实时数据
+			if (!gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker)) continue; // 只更新已有代码
+			auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker);
+			if (pTiingoStock->GetDayLineStartDate() == 29900101) continue; // 如果从未下载过日线数据，则不更新（让日线更新任务来完成首次下载任务）。
+
+			pTiingoStock->UpdateRTData(pIEXTopOFBook);
+			pTiingoStock->SetActive(true);
+			if (pTiingoStock->GetDayLineEndDate() >= gl_pWorldMarket->GetLastTradeDate()) { // 只有一个需要更新的日线？
+				// 只有一个日线需要更新时，此时已经更新，就不再需要申请日线更新了。
+				pTiingoStock->SetUpdateDayLine(false); // 无需再次更新日线
+				pTiingoStock->SetDayLineEndDate(lNewestTradeDay); // 设置新的日线截止日期
+				if (gl_pWorldMarket->GetMarketTime() > 170000) {
+					pTiingoStock->SetDayLineUpdateDate(lNewestTradeDay); // 休市后申请的数据则更新日线采集日期，否则不更新
 				}
+				pTiingoStock->SetUpdateProfileDB(true);
 			}
 		}
 	}

@@ -26,6 +26,7 @@ void CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (!pvTiingoCrypto->empty()) {
 		for (const auto& pTiingoCrypto : *pvTiingoCrypto) {
 			if (!gl_dataContainerTiingoCryptoSymbol.IsSymbol(pTiingoCrypto->GetSymbol())) {
+				pTiingoCrypto->SetUpdateProfileDB(true);
 				gl_dataContainerTiingoCryptoSymbol.Add(pTiingoCrypto);
 			}
 		}
@@ -77,6 +78,7 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 			s = jsonGetString(it, _T("quoteCurrency"));
 			pTiingoCrypto->m_strQuoteCurrency = s.c_str();
 
+			pTiingoCrypto->SetUpdateProfileDB(true); // 所有申请到的股票，皆当成新股票对待，需要存入数据库。
 			pvTiingoCrypto->push_back(pTiingoCrypto);
 			iCount++;
 		}

@@ -49,7 +49,6 @@ public:
 	void ProcessRTData();
 	bool UpdateDayLineDB();
 
-	[[nodiscard]] long GetDayLineNeedUpdateNumber() const;
 	[[nodiscard]] long GetDayLineNeedSaveNumber() const;
 
 	bool Choice10RSStrong2StockSet();

@@ -172,10 +172,10 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 			ASSERT(!gl_systemConfiguration.IsUsingFinnhubWebSocket());
 			gl_systemConfiguration.SetUsingFinnhubWebSocket(true); // 只设置标识，实际启动由其他任务完成。
 			break;
-		case WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOL__:
+		case WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__:
 			gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true); // 
 			break;
-		case WORLD_MARKET_TIINGO_COMPILE_STOCK__:
+		case WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__:
 			gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine(lCurrentTime);
 			break;
 		case WORLD_MARKET_TIINGO_PROCESS_DAYLINE__:
@@ -220,13 +220,13 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lCurrentTime);
 
-	AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, GetNextTime(lTimeMinute, 0, 1, 0)); //一分钟后生成tiingo当天日线数据
+	AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(lTimeMinute, 0, 1, 0)); //一分钟后生成tiingo当天日线数据
 
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0)); // 两分钟后开始监测WebSocket
 
 	AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lTimeMinute, 0, 5, 0)); // 五分钟后处理日线数据
 
-	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOL__, 180000); // 收市后18点下载tiingo IEX当天数据。
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, 180000); // 收市后18点下载tiingo IEX当天数据。
 
 	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
@@ -374,8 +374,8 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 							pSymbol->UpdateDayLineStartEndDate();
 							pSymbol->SetUpdateProfileDB(true);
 							pSymbol->UnloadDayLine();
-							const CString str = pSymbol->GetSymbol() + _T("日线资料存储完成");
-							gl_systemMessage.PushDayLineInfoMessage(str);
+							const CString str2 = pSymbol->GetSymbol() + _T("日线资料存储完成");
+							gl_systemMessage.PushDayLineInfoMessage(str2);
 						}
 						gl_UpdateWorldMarketDB.release();
 					});
@@ -401,7 +401,9 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 }
 
 void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
-	if (!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) { // 已经接收到数据？
+	if (gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate() < gl_pWorldMarket->GetCurrentTradeDate()
+		&& !gl_pTiingoDataSource->IsUpdateIEXTopOfBook()
+		&& lCurrentTime > 180500) { // 当前交易日未处理过IEX、已经接收到数据且已过休市时间？
 		gl_runtime.background_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
@@ -409,13 +411,13 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 		});
 	}
 	else {
-		AddTask(WORLD_MARKET_TIINGO_COMPILE_STOCK__, GetNextTime(lCurrentTime, 0, 0, 30)); // 30秒后执行下一次
+		AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(lCurrentTime, 0, 1, 0)); // 一分钟后执行下一次
 	}
 }
 
 void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 	if (!gl_pTiingoDataSource->IsUpdateIEXTopOfBook() && !gl_pTiingoDataSource->IsUpdateDayLine()) { // 接收完IEX top_of_book和日线数据后方可处理
-		gl_runtime.thread_executor()->post([] {
+		gl_runtime.background_executor()->post([] {
 			//Note 暂时先不执行此任务
 			//gl_dataContainerTiingoStock.ProcessDayLine();
 		});
@@ -596,15 +598,12 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_UpdateWorldMarketDB.release();
 		});
 	}
-	if (IsPermitUpdateTiingoFundamentalDefinitionDB()) {
-		SetPermitUpdateTiingoFundamentalDefinitionDB(false);
-		if (gl_dataContainerTiingoFundamentalDefinition.IsUpdateDB()) { // Tiingo crypto symbol
-			gl_runtime.background_executor()->post([] {
-				gl_UpdateWorldMarketDB.acquire();
-				gl_dataContainerTiingoFundamentalDefinition.UpdateDB();
-				gl_UpdateWorldMarketDB.release();
-			});
-		}
+	if (gl_dataContainerTiingoFundamentalDefinition.IsUpdateDB()) { // Tiingo crypto symbol
+		gl_runtime.background_executor()->post([] {
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataContainerTiingoFundamentalDefinition.UpdateDB();
+			gl_UpdateWorldMarketDB.release();
+		});
 	}
 	if (gl_dataContainerTiingoStock.IsUpdateFinancialStateDB()) {
 		gl_runtime.background_executor()->post([] {
@@ -646,7 +645,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 
-	long lNextTime = GetNextTime(lCurrentTime, 0, 5, 0);
+	long lNextTime = GetNextTime(lCurrentTime, 0, 1, 0);
 	if (IsTimeToResetSystem(lNextTime)) lNextTime = 170510;
 	ASSERT(!IsTimeToResetSystem(lNextTime));// 重启系统时各数据库需要重新装入，故而此时不允许更新数据库。
 	AddTask(WORLD_MARKET_UPDATE_DB__, lNextTime); // 每五分钟更新一次

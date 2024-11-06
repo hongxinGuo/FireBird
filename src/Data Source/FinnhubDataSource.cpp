@@ -144,51 +144,9 @@ bool CFinnhubDataSource::GenerateInquiryMessage(long lCurrentTime) {
 	const long long llTickCount = GetTickCount();
 
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请finnhub各数据。
-	if (llTickCount > (m_llLastTimeTickCount + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime())) {
-		m_llLastTimeTickCount = llTickCount;
+	if (llTickCount <= (m_llLastTimeTickCount + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime())) return false;
 
-		ASSERT(!IsInquiring());
-		ASSERT(lCurrentTime <= GetPrevTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 10, 0)
-			|| lCurrentTime >= GetNextTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 5, 0)); // 重启市场时不允许接收网络信息。
-		if (GenerateEconomicCalendar()) return true; // 第一步申请经济日历。此信息为premium，使用此信息来决定账户类型（免费还是收费）。
-		if (GenerateCountryList()) return true;
-		// Finnhub不提供Stock Exchange名单，使用预先提供的股票交易所列表。
-		if (GenerateForexExchange()) return true;
-		if (GenerateCryptoExchange()) return true;
-		if (GenerateMarketStatus()) return true;
-		if (GenerateMarketHoliday()) return true;
-		if (GenerateCompanySymbol()) return true; // 第一个动作，首先申请当日证券代码
-		if (GenerateForexSymbol()) return true;
-		if (GenerateCryptoSymbol()) return true;
-
-		// 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时不会执行查询任务
-		if (gl_pWorldMarket->IsSystemReady()) {
-			if (GenerateCompanyProfileConcise()) return true;
-			if (GenerateCompanyNews()) return true;
-			if (GenerateCompanyBasicFinancial()) return true;
-			if (GeneratePeer()) return true;
-			if (GenerateInsiderTransaction()) return true;
-			if (GenerateInsiderSentiment()) return true;
-			if (GenerateCryptoDayLine()) return true; // Crypto dayLine20231127后只限于付费用户使用
-			if (GenerateStockDayLine()) return true; // Stock dayLine20231127后只限于付费用户使用
-			if (GenerateForexDayLine()) return true; // Forex dayLine目前只限于付费用户使用
-			if (GenerateEPSSurprise()) return true;
-			if (GenerateSECFilings()) return true;
-			if (IsUpdateStockDayLine()) {
-				//InquireRTQuote()) return true;
-			}
-			if (!IsInquiring()) {
-				if (!m_fFinnhubDataInquiryFinished) {
-					gl_systemMessage.PushInformationMessage(_T("finnhub data inquiry finished"));
-					m_fFinnhubDataInquiryFinished = true;
-				}
-			}
-		}
-	}
-	return false;
-}
-
-bool CFinnhubDataSource::Generate(const long lCurrentTime) {
+	m_llLastTimeTickCount = llTickCount;
 	ASSERT(!IsInquiring());
 	ASSERT(lCurrentTime <= GetPrevTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 10, 0)
 		|| lCurrentTime >= GetNextTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 5, 0)); // 重启市场时不允许接收网络信息。
@@ -219,14 +177,14 @@ bool CFinnhubDataSource::Generate(const long lCurrentTime) {
 		if (IsUpdateStockDayLine()) {
 			//InquireRTQuote()) return true;
 		}
-		if (!IsInquiring()) {
-			if (!m_fFinnhubDataInquiryFinished) {
-				gl_systemMessage.PushInformationMessage(_T("finnhub data inquiry finished"));
-				m_fFinnhubDataInquiryFinished = true;
-			}
+
+		ASSERT(!IsInquiring());
+		if (!m_fFinnhubDataInquiryFinished) {
+			gl_systemMessage.PushInformationMessage(_T("finnhub data inquiry finished"));
+			m_fFinnhubDataInquiryFinished = true;
 		}
 	}
-	return true;
+	return false;
 }
 
 bool CFinnhubDataSource::GenerateCountryList() {
@@ -252,10 +210,6 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 		CFinnhubStockExchangePtr pExchange;
 		bool fFound = false;
 		size_t lCurrentStockExchangePos;
-		if (!m_fInquiringFinnhubMarketStatus) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub MarketStatus..."));
-			m_fInquiringFinnhubMarketStatus = true;
-		}
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
 			if (!gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsMarketStatusUpdated()) {
 				pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
@@ -274,7 +228,6 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 			gl_pWorldMarket->SetCurrentFinnhubFunction(_T("Market status: ") + pExchange->m_strCode);
 		}
 		else {
-			m_fInquiringFinnhubMarketStatus = false;
 			fHaveInquiry = false;
 			SetUpdateMarketStatus(false);
 			const CString str = "Inquire finnhub MarketStatus finished";
@@ -294,10 +247,6 @@ bool CFinnhubDataSource::GenerateMarketHoliday() {
 		CFinnhubStockExchangePtr pExchange;
 		bool fFound = false;
 		long lCurrentStockExchangePos;
-		if (!m_fInquiringFinnhubMarketHoliday) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub market holiday..."));
-			m_fInquiringFinnhubMarketHoliday = true;
-		}
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
 			if (!gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsMarketHolidayUpdated()) {
 				pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
@@ -316,7 +265,6 @@ bool CFinnhubDataSource::GenerateMarketHoliday() {
 			gl_pWorldMarket->SetCurrentFinnhubFunction(_T("Market holiday: ") + pExchange->m_strCode);
 		}
 		else {
-			m_fInquiringFinnhubMarketHoliday = false;
 			fHaveInquiry = false;
 			SetUpdateMarketHoliday(false);
 			const CString str = "Inquire finnhub market holiday finished";
@@ -336,10 +284,6 @@ bool CFinnhubDataSource::GenerateCompanySymbol() {
 		CFinnhubStockExchangePtr pExchange;
 		bool fFound = false;
 		long lCurrentStockExchangePos;
-		if (!m_fInquiringFinnhubStockSymbol) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock symbol..."));
-			m_fInquiringFinnhubStockSymbol = true;
-		}
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
 			if (!gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsStockSymbolUpdated()) {
 				pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
@@ -359,7 +303,6 @@ bool CFinnhubDataSource::GenerateCompanySymbol() {
 			//TRACE("申请%s交易所证券代码\n", pExchange->m_strCode.GetBuffer());
 		}
 		else {
-			m_fInquiringFinnhubStockSymbol = false;
 			fHaveInquiry = false;
 			SetUpdateSymbol(false);
 			const CString str = "Finnhub exchanges updated";
@@ -379,10 +322,6 @@ bool CFinnhubDataSource::GenerateCompanyProfileConcise() {
 	if (IsUpdateStockProfile()) {
 		long lCurrentProfilePos;
 		bool fFound = false;
-		if (!m_fInquiringFinnhubStockProfile) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock profile..."));
-			m_fInquiringFinnhubStockProfile = true;
-		}
 		for (lCurrentProfilePos = 0; lCurrentProfilePos < lStockSetSize; lCurrentProfilePos++) {
 			if (const auto pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentProfilePos); pStock->IsUpdateCompanyProfile()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pStock->GetExchangeCode())) {
@@ -401,7 +340,6 @@ bool CFinnhubDataSource::GenerateCompanyProfileConcise() {
 			//TRACE("更新%s简介\n", m_vFinnhubStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
 		}
 		else {
-			m_fInquiringFinnhubStockProfile = false;
 			SetUpdateStockProfile(false);
 			const CString str = "Finnhub company profile basic updated";
 			gl_systemMessage.PushInformationMessage(str);
@@ -424,10 +362,6 @@ bool CFinnhubDataSource::GenerateCompanyNews() {
 	if (IsUpdateCompanyNews()) {
 		long lCurrentCompanyNewsPos;
 		bool fFound = false;
-		if (!m_fInquiringFinnhubCompanyNews) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub company news..."));
-			m_fInquiringFinnhubCompanyNews = true;
-		}
 		for (lCurrentCompanyNewsPos = 0; lCurrentCompanyNewsPos < lStockSetSize; lCurrentCompanyNewsPos++) {
 			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentCompanyNewsPos);
 			if (pStock->IsUpdateCompanyNews()) {
@@ -448,7 +382,6 @@ bool CFinnhubDataSource::GenerateCompanyNews() {
 			//TRACE("更新%s公司新闻\n", m_vFinnhubStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
 		}
 		else {
-			m_fInquiringFinnhubCompanyNews = false;
 			SetUpdateCompanyNews(false);
 			const CString str = "Finnhub company news updated";
 			gl_systemMessage.PushInformationMessage(str);
@@ -468,10 +401,6 @@ bool CFinnhubDataSource::GenerateCompanyBasicFinancial() {
 	if (IsUpdateStockBasicFinancial()) {
 		bool fFound = false;
 		long lCurrentBasicFinancialsPos;
-		if (!m_fInquiringFinnhubCompanyBasicFinancial) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock basic financials..."));
-			m_fInquiringFinnhubCompanyBasicFinancial = true;
-		}
 		for (lCurrentBasicFinancialsPos = 0; lCurrentBasicFinancialsPos < lStockSetSize; lCurrentBasicFinancialsPos++) {
 			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentBasicFinancialsPos);
 			if (pStock->IsUpdateBasicFinancial()) {
@@ -491,7 +420,6 @@ bool CFinnhubDataSource::GenerateCompanyBasicFinancial() {
 			//TRACE("更新%s简介\n", m_vFinnhubStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
 		}
 		else {
-			m_fInquiringFinnhubCompanyBasicFinancial = false;
 			SetUpdateStockBasicFinancial(false);
 			const CString str = "Finnhub basic financial updated";
 			gl_systemMessage.PushInformationMessage(str);
@@ -512,10 +440,6 @@ bool CFinnhubDataSource::GenerateStockDayLine() {
 		CFinnhubStockPtr pStock;
 		bool fFound = false;
 		long lCurrentUpdateDayLinePos;
-		if (!m_fInquiringFinnhubStockDayLine) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock day line..."));
-			m_fInquiringFinnhubStockDayLine = true;
-		}
 		for (lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentUpdateDayLinePos);
 			if (pStock->IsUpdateDayLine()) {
@@ -536,7 +460,6 @@ bool CFinnhubDataSource::GenerateStockDayLine() {
 			//TRACE("申请%s日线数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		else {
-			m_fInquiringFinnhubStockDayLine = false;
 			fHaveInquiry = false;
 			SetUpdateStockDayLine(false);
 			//lCurrentUpdateDayLinePos = 0; // 重置此索引。所有的日线数据更新一次所需时间要超过24小时，故保持更新即可。
@@ -559,10 +482,6 @@ bool CFinnhubDataSource::GenerateInsiderTransaction() {
 		long lCurrentUpdateInsiderTransactionPos;
 		CFinnhubStockPtr pStock;
 		bool fFound = false;
-		if (!m_fInquiringFinnhubStockInsiderTransaction) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock insider transaction..."));
-			m_fInquiringFinnhubStockInsiderTransaction = true;
-		}
 		for (lCurrentUpdateInsiderTransactionPos = 0; lCurrentUpdateInsiderTransactionPos < lStockSetSize; lCurrentUpdateInsiderTransactionPos++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentUpdateInsiderTransactionPos);
 			if (pStock->IsUpdateInsiderTransaction()) {
@@ -583,7 +502,6 @@ bool CFinnhubDataSource::GenerateInsiderTransaction() {
 			//TRACE("申请%s 内部交易数据\n", pStock->GetSymbol().GetBuffer());
 		}
 		else {
-			m_fInquiringFinnhubStockInsiderTransaction = false;
 			fHaveInquiry = false;
 			SetUpdateInsiderTransaction(false);
 			const CString str = "US Market Insider Transaction updated";
@@ -604,10 +522,6 @@ bool CFinnhubDataSource::GenerateInsiderSentiment() {
 		long lCurrentUpdateInsiderSentimentPos;
 		CFinnhubStockPtr pStock;
 		bool fFound = false;
-		if (!m_fInquiringFinnhubStockInsiderSentiment) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock insider sentiment..."));
-			m_fInquiringFinnhubStockInsiderSentiment = true;
-		}
 		for (lCurrentUpdateInsiderSentimentPos = 0; lCurrentUpdateInsiderSentimentPos < lStockSetSize; lCurrentUpdateInsiderSentimentPos++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentUpdateInsiderSentimentPos);
 			if (pStock->IsUpdateInsiderSentiment()) {
@@ -626,7 +540,6 @@ bool CFinnhubDataSource::GenerateInsiderSentiment() {
 			gl_pWorldMarket->SetCurrentFinnhubFunction(_T("内部交易情绪:") + pStock->GetSymbol());
 		}
 		else {
-			m_fInquiringFinnhubStockInsiderSentiment = false;
 			fHaveInquiry = false;
 			SetUpdateInsiderSentiment(false);
 			//TRACE("FinnhubInsider Sentiment更新完毕\n");
@@ -661,10 +574,6 @@ bool CFinnhubDataSource::GeneratePeer() {
 	if (IsUpdatePeer()) {
 		long lCurrentUpdatePeerPos;
 		bool fFound = false;
-		if (!m_fInquiringFinnhubStockPeer) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock peer..."));
-			m_fInquiringFinnhubStockPeer = true;
-		}
 		for (lCurrentUpdatePeerPos = 0; lCurrentUpdatePeerPos < lStockSetSize; lCurrentUpdatePeerPos++) {
 			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentUpdatePeerPos);
 			if (pStock->IsUpdatePeer()) {
@@ -684,7 +593,6 @@ bool CFinnhubDataSource::GeneratePeer() {
 			//TRACE("申请%s Peer数据\n", GetStock(lCurrentUpdatePeerPos)->GetSymbol().GetBuffer());
 		}
 		else {
-			m_fInquiringFinnhubStockPeer = false;
 			fHaveInquiry = false;
 			SetUpdatePeer(false);
 			const CString str = "Finnhub Peer Updated";
@@ -719,10 +627,6 @@ bool CFinnhubDataSource::GenerateEPSSurprise() {
 	if (IsUpdateEPSSurprise()) {
 		CFinnhubStockPtr pStock;
 		bool fFound = false;
-		if (!m_fInquiringFinnhubStockEPSSurprise) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock EPS surprise..."));
-			m_fInquiringFinnhubStockEPSSurprise = true;
-		}
 		for (m_lCurrentUpdateEPSSurprisePos = 0; m_lCurrentUpdateEPSSurprisePos < lStockSetSize; m_lCurrentUpdateEPSSurprisePos++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(m_lCurrentUpdateEPSSurprisePos);
 			if (pStock->IsUpdateEPSSurprise()) {
@@ -743,7 +647,6 @@ bool CFinnhubDataSource::GenerateEPSSurprise() {
 			//TRACE("申请%s EPS Surprise数据\n", gl_dataContainerFinnhubStock.GetStock(m_lCurrentUpdateEPSSurprisePos)->GetSymbol().GetBuffer());
 		}
 		else {
-			m_fInquiringFinnhubStockEPSSurprise = false;
 			m_lCurrentUpdateEPSSurprisePos = 0;
 			fHaveInquiry = false;
 			SetUpdateEPSSurprise(false);
@@ -765,10 +668,6 @@ bool CFinnhubDataSource::GenerateSECFilings() {
 	if (IsUpdateSECFilings()) {
 		CFinnhubStockPtr pStock;
 		bool fFound = false;
-		if (!m_fInquiringFinnhubStockSECFilings) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub stock SEC Filings..."));
-			m_fInquiringFinnhubStockSECFilings = true;
-		}
 		for (m_lCurrentUpdateSECFilingsPos = 0; m_lCurrentUpdateSECFilingsPos < lStockSetSize; m_lCurrentUpdateSECFilingsPos++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(m_lCurrentUpdateSECFilingsPos);
 			if (!pStock->IsSECFilingsUpdated()) {
@@ -788,7 +687,6 @@ bool CFinnhubDataSource::GenerateSECFilings() {
 			gl_pWorldMarket->SetCurrentFinnhubFunction(_T("SEC Filings:") + pStock->GetSymbol());
 		}
 		else {
-			m_fInquiringFinnhubStockSECFilings = false;
 			m_lCurrentUpdateSECFilingsPos = 0;
 			fHaveInquiry = false;
 			SetUpdateSECFilings(false);
@@ -841,10 +739,6 @@ bool CFinnhubDataSource::GenerateForexDayLine() {
 		CForexSymbolPtr pForexSymbol = nullptr;
 		long lCurrentUpdateForexDayLinePos;
 		bool fFound = false;
-		if (!m_fInquiringFinnhubForexDayLine) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub forex day line..."));
-			m_fInquiringFinnhubForexDayLine = true;
-		}
 		for (lCurrentUpdateForexDayLinePos = 0; lCurrentUpdateForexDayLinePos < lStockSetSize; lCurrentUpdateForexDayLinePos++) {
 			pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(lCurrentUpdateForexDayLinePos);
 			if (pForexSymbol->IsUpdateDayLine()) {
@@ -864,7 +758,6 @@ bool CFinnhubDataSource::GenerateForexDayLine() {
 			//TRACE("申请%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());
 		}
 		else {
-			m_fInquiringFinnhubForexDayLine = false;
 			SetUpdateForexDayLine(false);
 			//TRACE("Finnhub Forex日线更新完毕\n");
 			const CString str = "Forex DayLine Updated";
@@ -917,10 +810,6 @@ bool CFinnhubDataSource::GenerateCryptoDayLine() {
 		CFinnhubCryptoPtr pCryptoSymbol;
 		long lCurrentUpdateCryptoDayLinePos;
 		bool fFound = false;
-		if (!m_fInquiringFinnhubCryptoDayLine) {
-			gl_systemMessage.PushInformationMessage(_T("Inquiring finnhub crypto day line..."));
-			m_fInquiringFinnhubCryptoDayLine = true;
-		}
 		for (lCurrentUpdateCryptoDayLinePos = 0; lCurrentUpdateCryptoDayLinePos < lStockSetSize; lCurrentUpdateCryptoDayLinePos++) {
 			pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(lCurrentUpdateCryptoDayLinePos);
 			if (pCryptoSymbol->IsUpdateDayLine()) {
@@ -940,7 +829,6 @@ bool CFinnhubDataSource::GenerateCryptoDayLine() {
 			//TRACE("申请%s日线数据\n", pCryptoSymbol->GetSymbol().GetBuffer());
 		}
 		else {
-			m_fInquiringFinnhubCryptoDayLine = false;
 			SetUpdateCryptoDayLine(false);
 			//TRACE("Finnhub Crypto日线更新完毕\n");
 			const CString str = "Crypto DayLine Updated";

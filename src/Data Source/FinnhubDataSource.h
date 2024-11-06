@@ -19,8 +19,6 @@ public:
 	void ConfigureInternetOption() override;
 	enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr& pWebData) override;
 
-	bool Generate(long lCurrentTime);
-
 	// 可供申请的项目，目前共21项。
 	virtual bool GenerateCountryList();
 	virtual bool GenerateCompanySymbol();
@@ -88,10 +86,6 @@ public:
 	void SetUpdateSECFilings(const bool fFlag) noexcept { m_fUpdateSECFilings = fFlag; }
 
 protected:
-	long m_lCurrentUpdateDayLinePos{ 0 }; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
-	long m_lCurrentUpdateEPSSurprisePos{ 0 }; // 此变量无需每日更新
-	long m_lCurrentUpdateSECFilingsPos{ 0 };
-
 	// 每日更新项目，目前共21项。
 	bool m_fUpdateSymbol{ true }; // 每日更新公司代码库
 	bool m_fUpdateMarketStatus{ true }; // 每日查询市场状态
@@ -119,20 +113,9 @@ protected:
 
 private:
 	bool m_fFinnhubDataInquiryFinished{ false };
-	bool m_fInquiringFinnhubStockSymbol = { false };
-	bool m_fInquiringFinnhubMarketStatus = { false };
-	bool m_fInquiringFinnhubMarketHoliday = { false };
-	bool m_fInquiringFinnhubStockProfile = { false };
-	bool m_fInquiringFinnhubCompanyNews = { false };
-	bool m_fInquiringFinnhubCompanyBasicFinancial = { false };
-	bool m_fInquiringFinnhubStockDayLine = { false };
-	bool m_fInquiringFinnhubStockInsiderTransaction = { false };
-	bool m_fInquiringFinnhubStockInsiderSentiment = { false };
-	bool m_fInquiringFinnhubStockPeer = { false };
-	bool m_fInquiringFinnhubStockEPSSurprise = { false };
-	bool m_fInquiringFinnhubStockSECFilings = { false };
-	bool m_fInquiringFinnhubForexDayLine = { false };
-	bool m_fInquiringFinnhubCryptoDayLine = { false };
+	size_t m_lCurrentUpdateDayLinePos{ 0 }; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
+	size_t m_lCurrentUpdateEPSSurprisePos{ 0 }; // 此变量无需每日更新
+	size_t m_lCurrentUpdateSECFilingsPos{ 0 };
 
 	size_t m_lCurrentRTDataQuotePos{ 0 };
 	size_t m_lCurrentForexExchangePos{ 0 };

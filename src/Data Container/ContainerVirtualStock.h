@@ -19,6 +19,7 @@ public:
 	bool IsSymbol(const CVirtualStockPtr& p) const { return IsSymbol(p->GetSymbol()); }
 	bool IsUpdateProfileDB() noexcept;
 	bool IsUpdateDayLine() noexcept;
+	size_t GetDayLineNeedUpdateNumber() const;
 	bool IsUpdateDayLineDB() noexcept;
 
 	CVirtualStockPtr Get(const size_t lIndex) { return m_vStock.at(lIndex); }

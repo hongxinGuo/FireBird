@@ -302,14 +302,6 @@ void CContainerChinaStock::SetUpdateDayLine() const {
 	}
 }
 
-long CContainerChinaStock::GetDayLineNeedUpdateNumber() const {
-	long l = 0;
-	for (const auto& pStock : m_vStock) {
-		if (pStock->IsUpdateDayLine()) l++;
-	}
-	return l;
-}
-
 long CContainerChinaStock::GetDayLineNeedSaveNumber() const {
 	long l = 0;
 	for (const auto& pStock : m_vStock) {

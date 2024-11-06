@@ -75,6 +75,7 @@ void CContainerTiingoStock::UpdateDB() {
 bool CContainerTiingoStock::LoadDB() {
 	CSetTiingoStock setTiingoStock;
 	CString strSymbol = _T("");
+	long lDayLine{ 0 }, lFS{ 0 };
 
 	setTiingoStock.Open();
 	setTiingoStock.m_pDatabase->BeginTrans();
@@ -84,6 +85,8 @@ bool CContainerTiingoStock::LoadDB() {
 			pTiingoStock->Load(setTiingoStock);
 			pTiingoStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 			Add(pTiingoStock);
+			if (pTiingoStock->IsUpdateFinancialStateDB()) lFS++;
+			if (pTiingoStock->IsUpdateDayLine()) lDayLine++;
 		}
 		else {
 			setTiingoStock.Delete(); // 删除重复代码
@@ -93,6 +96,7 @@ bool CContainerTiingoStock::LoadDB() {
 	setTiingoStock.m_pDatabase->CommitTrans();
 	setTiingoStock.Close();
 
+	TRACE("Tiingo dayLine# %d, Financial statement# %d", lDayLine, lFS);
 	return true;
 }
 
@@ -104,13 +108,16 @@ void CContainerTiingoStock::ResetDayLineStartEndDate() {
 	}
 }
 
+// 存储该日的数据
+// 
 void CContainerTiingoStock::BuildDayLine(long lDate) {
-	DeleteDayLine(lDate);
-
-	// 存储该日的数据
+	CSetTiingoStockDayLine setDayLine;
 	auto lSize = Size();
 	time_t tMarketCloseTime = ConvertToTTime(lDate, 0, 160000);
-	CSetTiingoStockDayLine setDayLine;
+
+	DeleteDayLine(lDate);
+
+	setDayLine.m_strFilter = _T("[ID] = 1"); // 这里必须设定一个限定项，否则当数据表很大时，打开时间会非常长
 	setDayLine.Open();
 	setDayLine.m_pDatabase->BeginTrans();
 	for (size_t i = 0; i < lSize; i++) {

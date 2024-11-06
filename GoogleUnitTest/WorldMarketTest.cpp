@@ -948,7 +948,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_COMPILE_STOCK__);
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__);
 		EXPECT_EQ(pTask->GetTime(), 10100);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
@@ -968,7 +968,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOL__);
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__);
 		EXPECT_EQ(pTask->GetTime(), 180000);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
@@ -1002,7 +1002,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_COMPILE_STOCK__);
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__);
 		EXPECT_EQ(pTask->GetTime(), 170200);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
@@ -1017,7 +1017,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
-		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOL__);
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__);
 		EXPECT_EQ(pTask->GetTime(), 180000);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 

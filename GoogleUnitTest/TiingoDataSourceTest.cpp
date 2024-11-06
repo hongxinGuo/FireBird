@@ -31,8 +31,6 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			gl_pTiingoDataSource->ResetCurrentDayLinePos();
-			gl_pTiingoDataSource->ResetCurrentFinancialStatementPos();
 
 			SCOPED_TRACE("");
 			GeneralCheck();

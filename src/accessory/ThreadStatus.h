@@ -19,7 +19,7 @@ public:
 
 	static bool IsSavingChinaMarketThreadRunning() noexcept;
 	static bool IsSavingWorldMarketThreadRunning() noexcept;
-	[[nodiscard]] static bool IsSavingThreadRunning() noexcept;
+	static bool IsSavingThreadRunning() noexcept;
 
 protected:
 	atomic_int m_NumberOfBackGroundWorkingThreads; //正在计算日线相对强度的线程数。目前最多同时允许BackGroundThreadPermittedNumber个线程

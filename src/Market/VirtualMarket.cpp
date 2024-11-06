@@ -203,6 +203,7 @@ void CVirtualMarket::CalculateCurrentTradeDate() noexcept {
 	default: // 其他
 		tMarket = gl_tUTCTime; // 本日
 	}
+	tMarket -= 9 * 3600 + 1800; // 9点半开市
 	const tm tmMarketTime = GetMarketTime(tMarket);
 	m_lMarketNewestTradeDate = ConvertToDate(&tmMarketTime);
 }
@@ -223,6 +224,7 @@ void CVirtualMarket::CalculateLastTradeDate() noexcept {
 	default: // 其他
 		tMarket = gl_tUTCTime - 24 * 3600; // 上一日
 	}
+	tMarket -= 9 * 3600 + 1800; // 9点半开市
 	const tm tmMarketTime = GetMarketTime(tMarket);
 	m_lMarketLastTradeDate = ConvertToDate(&tmMarketTime);
 }

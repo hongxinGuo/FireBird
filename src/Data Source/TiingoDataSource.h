@@ -20,8 +20,6 @@ public:
 
 	bool GenerateInquiryMessage(long lCurrentTime) override;
 
-	bool Generate(long lCurrentTime);
-
 	// Tiingo.com可供申请的项目，目前共7项。
 	virtual bool GenerateMarketNews();
 	virtual bool GenerateFundamentalDefinition();
@@ -50,9 +48,6 @@ public:
 	long long GetBandWidthLeft() const noexcept { return m_llBandWidthLeft; }
 	void SetBandWidthLeft(long long llLeft) noexcept { m_llBandWidthLeft = llLeft; }
 
-	void ResetCurrentDayLinePos() noexcept { m_lCurrentUpdateDayLinePos = 0; }
-	void ResetCurrentFinancialStatementPos() noexcept { m_lCurrentUpdateFinancialStatementPos = 0; }
-
 protected:
 	CTiingoFactory m_TiingoFactory;
 
@@ -66,9 +61,6 @@ protected:
 	bool m_fUpdateIEXTopOFBook{ true }; // 定时（每小时）更新IEX last top of book.
 
 	bool m_fTiingoDataInquiryFinished{ false };
-
-	long m_lCurrentUpdateDayLinePos{ 0 };
-	long m_lCurrentUpdateFinancialStatementPos{ 0 };
 
 	// 带宽限制
 	long long m_llBandWidthLeft{ 5368709120 };

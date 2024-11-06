@@ -23,23 +23,21 @@ CThreadStatus::CThreadStatus() {
 }
 
 bool CThreadStatus::IsSavingWorldMarketThreadRunning() noexcept {
-	bool bSavingWorldMarketDB = true;
 	if (gl_UpdateWorldMarketDB.try_acquire()) {
-		bSavingWorldMarketDB = false;
 		gl_UpdateWorldMarketDB.release();
+		return false;
 	}
-	return bSavingWorldMarketDB;
+	return true;
 }
 
 bool CThreadStatus::IsSavingChinaMarketThreadRunning() noexcept {
-	bool bSavingChinaMarketDB = true;
 	if (gl_UpdateChinaMarketDB.try_acquire()) {
-		bSavingChinaMarketDB = false;
 		gl_UpdateChinaMarketDB.release();
+		return false;
 	}
-
-	return bSavingChinaMarketDB;
+	return true;
 }
-[[nodiscard]] bool CThreadStatus::IsSavingThreadRunning() noexcept {
+
+bool CThreadStatus::IsSavingThreadRunning() noexcept {
 	return IsSavingChinaMarketThreadRunning() || IsSavingWorldMarketThreadRunning();
 }

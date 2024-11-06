@@ -250,7 +250,7 @@ bool CTiingoStock::HaveNewDayLineData() {
 void CTiingoStock::CheckUpdateStatus(long lTodayDate) {
 	CheckFinancialStateUpdateStatus(lTodayDate);
 	CheckIPOStatus(lTodayDate);
-	CheckDayLineUpdateStatus(lTodayDate, gl_pWorldMarket->GetLastTradeDate(), gl_pWorldMarket->GetMarketTime(), gl_pWorldMarket->GetDayOfWeek());
+	CheckDayLineUpdateStatus(lTodayDate);
 }
 
 void CTiingoStock::CheckFinancialStateUpdateStatus(long lTodayDate) {
@@ -262,53 +262,35 @@ void CTiingoStock::CheckFinancialStateUpdateStatus(long lTodayDate) {
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////////////
+//
+// 基本不再使用此标识。目前只用于区分是否是活跃股票。
+// 
+//
+//////////////////////////////////////////////////////////////////////////////////////
 void CTiingoStock::CheckIPOStatus(long lCurrentDate) {
-	if (!IsDelisted()) {
-		if (IsEarlyThen(GetDayLineEndDate(), lCurrentDate, 30)) {
-			SetIPOStatus(_STOCK_DELISTED_);
-			SetUpdateProfileDB(true);
-		}
-	}
-}
-
-bool CTiingoStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek) {
-	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
-	if (IsNullStock()) {
-		SetUpdateDayLine(false);
-		return m_fUpdateDayLine;
-	}
-	if (IsDelisted() || IsNotYetList()) {	// 摘牌股票?
-		if (lDayOfWeek != 3) {
-			// 每星期三检查一次
-			SetUpdateDayLine(false);
-			return m_fUpdateDayLine;
-		}
-	}
-	else if ((!IsNotChecked()) && (IsEarlyThen(GetDayLineEndDate(), gl_pWorldMarket->GetMarketDate(), 100))) {
-		SetUpdateDayLine(false);
-		return m_fUpdateDayLine;
+	if (IsEarlyThen(GetDayLineEndDate(), lCurrentDate, 100)) {
+		SetIPOStatus(_STOCK_DELISTED_);
 	}
 	else {
-		if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) { // 周一至周五
-			if (lTime > 170000) {
-				if (lTodayDate <= GetDayLineEndDate()) { // 最新日线数据为今日的数据，而当前时间为下午五时之后
-					SetUpdateDayLine(false); // 日线数据不需要更新
-					return m_fUpdateDayLine;
-				}
-			}
-			else {
-				if (lLastTradeDate <= GetDayLineEndDate()) {// 最新日线数据为上一个交易日的数据,而当前时间为下午五时之前。
-					SetUpdateDayLine(false); // 日线数据不需要更新
-					return m_fUpdateDayLine;
-				}
-			}
-		}
-		else if (lLastTradeDate <= GetDayLineEndDate()) { // 周六周日时， 最新日线数据为上一个交易日的数据
-			SetUpdateDayLine(false); // 日线数据不需要更新
-			return m_fUpdateDayLine;
-		}
+		SetIPOStatus(_STOCK_IPOED_);
 	}
-	return m_fUpdateDayLine;
+	SetUpdateProfileDB(true);
+}
+
+bool CTiingoStock::CheckDayLineUpdateStatus(long lCurrentDate) {
+	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
+
+	if (IsDelisted()) {// 每七天检查一次停牌股票
+		if (IsEarlyThen(GetDayLineUpdateDate(), lCurrentDate, 7)) return true;
+		SetUpdateDayLine(false);
+		return false;
+	}
+	if (GetDayLineUpdateDate() == lCurrentDate) {
+		SetUpdateDayLine(false);
+		return false;
+	}
+	return true;
 }
 
 long CTiingoStock::GetDayLineProcessDate() {

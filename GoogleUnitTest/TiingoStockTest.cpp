@@ -4,7 +4,6 @@
 #include "SetTiingoStockDayLine.h"
 
 #include"TiingoStock.h"
-#include "TimeConvert.h"
 #include "WorldMarket.h"
 
 namespace FireBirdTest {
@@ -428,100 +427,22 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateProfileDB()) << "已处于delisted状态下，无需更改";
 	}
 
-	TEST_F(CTiingoStockTest, TestCheckCheckDayLineUpdateStatus1) {
-		stock.SetUpdateDayLine(true);
-		stock.SetActive(false);
-		for (int i = 1; i < 6; i++) {
-			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "非活跃股票工作日不更新日线\n";
-			stock.SetUpdateDayLine(true);
-		}
-	}
-
-	TEST_F(CTiingoStockTest, TestCheckCheckDayLineUpdateStatus2) {
-		stock.SetUpdateDayLine(true);
-		stock.SetIPOStatus(_STOCK_NULL_);
-		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, 0)) << "无效股票不检查日线\n";
-	}
-
-	TEST_F(CTiingoStockTest, TestCheckCheckDayLineUpdateStatus3) {
+	TEST_F(CTiingoStockTest, TestCheckDayLineUpdateStatus1) {
 		stock.SetUpdateDayLine(true);
 		stock.SetIPOStatus(_STOCK_DELISTED_);
-		for (int i = 0; i < 7; i++) {
-			if (i == 3)
-				EXPECT_TRUE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期三检查日线\n";
-			else
-				EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期三检查日线\n";
-			stock.SetUpdateDayLine(true);
-		}
+		stock.SetDayLineUpdateDate(20200101);
+		stock.SetDayLineEndDate(20200101);
+		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(20200101)) << "退市股票每七天检查一次";
+		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(20200108)) << "退市股票每七天检查一次";
+		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(20200109)) << "退市股票每七天检查一次";
 	}
 
-	TEST_F(CTiingoStockTest, TestCheckCheckDayLineUpdateStatus4) {
+	TEST_F(CTiingoStockTest, TestCheckDayLineUpdateStatus2) {
 		stock.SetUpdateDayLine(true);
-		stock.SetIPOStatus(_STOCK_IPOED_);
-		stock.SetActive(true);
-		stock.SetDayLineEndDate(GetPrevDay(gl_pWorldMarket->GetMarketDate(), 100));
-		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), 0, 1));
-		stock.SetDayLineEndDate(GetPrevDay(stock.GetDayLineEndDate()));
-		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetMarketDate(), gl_pWorldMarket->GetMarketDate(), 0, 1)) << "早于100天的股票不再更新日线";
-	}
-
-	TEST_F(CTiingoStockTest, TestCheckCheckDayLineUpdateStatus5) {
-		const long lCurrentDay = gl_pWorldMarket->GetMarketDate();
-		const long lPrevDay = GetPrevDay(lCurrentDay);
-
-		stock.SetUpdateDayLine(true);
-		stock.SetIPOStatus(_STOCK_IPOED_);
-		stock.SetActive(true);
-		stock.SetDayLineEndDate(lCurrentDay); // 本日交易日日线已接收
-		for (int i = 1; i < 6; i++) {
-			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线";
-			stock.SetUpdateDayLine(true); // 重置状态
-		}
-		stock.SetDayLineEndDate(lPrevDay); // 本日交易日日线尚未接收
-		for (int i = 1; i < 6; i++) {
-			EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170001, i)) << "时间晚于17时后，检查当天日线";
-		}
-	}
-
-	TEST_F(CTiingoStockTest, TestCheckCheckDayLineUpdateStatus6) {
-		const long lCurrentDay = gl_pWorldMarket->GetMarketDate();
-		const long lPrevDay = GetPrevDay(lCurrentDay);
-
-		stock.SetUpdateDayLine(true);
-		stock.SetIPOStatus(_STOCK_IPOED_);
-		stock.SetActive(true);
-		stock.SetDayLineEndDate(GetPrevDay(lCurrentDay)); // 上一交易日日线数据已接收
-		for (int i = 1; i < 6; i++) {
-			EXPECT_FALSE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线 " << i;
-			stock.SetUpdateDayLine(true); // 重置之
-		}
-		stock.SetDayLineEndDate(GetPrevDay(lCurrentDay, 2)); // 上一交易日日线数据未接收
-		for (int i = 1; i < 6; i++) { EXPECT_TRUE(stock.CheckDayLineUpdateStatus(lCurrentDay, lPrevDay, 170000, i)) << "时间不晚于17时，检查上一交易日日线"; }
-	}
-
-	TEST_F(CTiingoStockTest, TestCheckCheckDayLineUpdateStatus7) {
-		const long lCurrentDate = gl_pWorldMarket->GetMarketDate();
-		const long lPrevMonday = GetPrevMonday(lCurrentDate);
-
-		stock.SetUpdateDayLine(true);
-		stock.SetIPOStatus(_STOCK_IPOED_);
-		stock.SetActive(true);
-		stock.SetDayLineEndDate(GetPrevDay(lPrevMonday, 3)); // 上一交易日日线数据已接收
-		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 2), GetPrevDay(lPrevMonday, 3), 170000, 6)) << "周六，检查上一交易日日线";
-		stock.SetUpdateDayLine(true); // 重置之
-		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(GetPrevDay(lPrevMonday, 1), GetPrevDay(lPrevMonday, 3), 170000, 0)) << "周日，检查上一交易日日线";
-	}
-
-	TEST_F(CTiingoStockTest, TestCheckCheckDayLineUpdateStatus8) {
-		stock.SetUpdateDayLine(true);
-		stock.SetIPOStatus(_STOCK_NOT_YET_LIST_);
-		for (int i = 0; i < 7; i++) {
-			if (i == 3)
-				EXPECT_TRUE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期三检查日线\n";
-			else
-				EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期三检查日线\n";
-			stock.SetUpdateDayLine(true);
-		}
+		stock.SetIPOStatus(_STOCK_DELISTED_);
+		stock.SetDayLineUpdateDate(20100101);
+		stock.SetDayLineEndDate(20100101);
+		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(20200101)) << "退市股票每七天检查一次";
 	}
 
 	TEST_F(CTiingoStockTest, TestAdd52WeekLow) {

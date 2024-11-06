@@ -73,12 +73,12 @@ public:
 	long GetDateOfMonth() const noexcept { return m_tmMarket.tm_mday; }
 	long GetYear() const noexcept { return m_tmMarket.tm_year + 1900; }
 
-	long GetLastTradeDate() noexcept { // 最后交易日的前一个交易日
+	long GetLastTradeDate() noexcept { // 最后交易日的前一个交易日（从昨日九点半至本日九点半）
 		CalculateLastTradeDate();
 		return m_lMarketLastTradeDate;
 	}
 
-	long GetCurrentTradeDate() noexcept { // 最后交易日
+	long GetCurrentTradeDate() noexcept { // 最后交易日（从本日九点半至次日九点半）
 		CalculateCurrentTradeDate();
 		return m_lMarketNewestTradeDate;
 	}

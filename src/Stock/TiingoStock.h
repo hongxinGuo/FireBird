@@ -54,7 +54,7 @@ public:
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckFinancialStateUpdateStatus(long lTodayDate);
 	void CheckIPOStatus(long lCurrentDate);
-	bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
+	bool CheckDayLineUpdateStatus(long lCurrentDate);
 
 	long GetStatementLastUpdatedDate() { return m_jsonUpdateDate["StatementLastUpdated"]; }
 	void SetStatementLastUpdatedDate(long lLDate) { m_jsonUpdateDate["StatementLastUpdated"] = lLDate; }

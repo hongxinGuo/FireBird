@@ -35,12 +35,12 @@ CVirtualDataSource::CVirtualDataSource() {
 void CVirtualDataSource::Run(long lMarketTime) {
 	CVirtualDataSourcePtr p = this->GetShared();
 	if (!IsInquiring()) {
-		gl_runtime.thread_executor()->post([p, lMarketTime] {
-			p->GenerateInquiryMessage(lMarketTime);
-			if (p->IsInquiring()) {
-				p->InquireData(lMarketTime);
-			}
-		});
+		gl_runtime.thread_executor()->post([p, lMarketTime] { //Note 此处必须使用thread_executor
+				p->GenerateInquiryMessage(lMarketTime);
+				if (p->IsInquiring()) {
+					p->InquireData(lMarketTime);
+				}
+			});
 	}
 }
 
@@ -66,7 +66,7 @@ void CVirtualDataSource::InquireData(const long lMarketTime) {
 		GetCurrentProduct();
 		CreateCurrentInquireString();
 		CDataInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
-		auto result = gl_runtime.thread_pool_executor()->submit([this, pEngine] { // 只能使用thread_pool_executor
+		auto result = gl_runtime.thread_pool_executor()->submit([this, pEngine] { //Note 只能使用thread_pool_executor或者background_executor
 				CHighPerformanceCounter counter;
 				counter.start();
 				auto pWebData = pEngine->GetWebData();

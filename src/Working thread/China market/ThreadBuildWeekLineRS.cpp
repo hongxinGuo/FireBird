@@ -2,7 +2,6 @@
 //
 // 计算从gl_lRelativeStrongEndDate至gl_lDay的相对强度线程。
 //
-// 此线程调用ThreadBuildWeekLineRSOfDate线程，目前最多允许同时生成8个线程。
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////
@@ -65,24 +64,4 @@ UINT ThreadBuildWeekLineRS(const not_null<CChinaMarketPtr>& pMarket, long startC
 	pMarket->SetCalculatingWeekLineRS(false); // 本线程顺利退出，处于非运行状态
 
 	return 30;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////
-//
-// 计算给定日期的周线相对强度。
-// 最多允许八个工作线程并行。
-//
-/////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadBuildWeekLineRSOfDate(long lDate) {
-	gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-	gl_BackgroundWorkingThread.acquire();
-	ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
-
-	if (!gl_systemConfiguration.IsExitingSystem() && !gl_systemConfiguration.IsExitingCalculatingRS()) {
-		gl_dataContainerChinaStock.BuildWeekLineRS(lDate);
-	}
-	gl_BackgroundWorkingThread.release();
-	gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-
-	return 31;
 }
