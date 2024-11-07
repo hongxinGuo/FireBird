@@ -123,6 +123,7 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoMarketNews.h" />
+    <ClInclude Include="..\src\Factory Product\ProductTiingoStockDailyMeta.h" />
     <ClInclude Include="..\src\Factory Product\VirtualChinaMarketWebProduct.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketHoliday.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketStatus.h" />
@@ -203,6 +204,7 @@
     <ClInclude Include="..\src\Type\America market\TiingoIEXTopOFBook.h" />
     <ClInclude Include="..\src\Type\America market\TiingoIndustry.h" />
     <ClInclude Include="..\src\Type\America market\TiingoMarketNews.h" />
+    <ClInclude Include="..\src\Type\America market\TiingoStockDailyMeta.h" />
     <ClInclude Include="..\src\Type\China market\DayLine.h" />
     <ClInclude Include="..\src\Type\China market\Guadan.h" />
     <ClInclude Include="..\src\Type\China market\DayLineWebData.h" />
@@ -355,6 +357,7 @@
     <ClCompile Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoMarketNews.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductTiingoStockDailyMeta.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockProfile.cpp" />
     <ClCompile Include="..\src\Factory Product\QuandlFactory.cpp" />

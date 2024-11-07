@@ -26,6 +26,7 @@ public:
 	virtual bool GenerateCompanySymbol();
 	virtual bool GenerateCryptoSymbol();
 	virtual bool GenerateIEXTopOfBook(long lCurrentTime);
+	virtual bool GenerateStockDailyMeta();
 	virtual bool GenerateDayLine();
 	virtual bool GenerateFinancialState();
 
@@ -37,6 +38,8 @@ public:
 	void SetUpdateStockSymbol(bool fFlag) noexcept { m_fUpdateStockSymbol = fFlag; }
 	bool IsUpdateCryptoSymbol() const noexcept { return m_fUpdateCryptoSymbol; }
 	void SetUpdateCryptoSymbol(bool fFlag) noexcept { m_fUpdateCryptoSymbol = fFlag; }
+	bool IsUpdateStockDailyMeta() const noexcept { return m_fUpdateStockDailyMeta; }
+	void SetUpdateStockDailyMeta(bool fFlag) noexcept { m_fUpdateStockDailyMeta = fFlag; }
 	bool IsUpdateFinancialState() const noexcept { return m_fUpdateFinancialState; }
 	void SetUpdateFinancialState(bool fFlag) noexcept { m_fUpdateFinancialState = fFlag; }
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
@@ -56,8 +59,9 @@ protected:
 	bool m_fUpdateFundamentalDefinitions{ true }; // 每日更新基本数据定义库
 	bool m_fUpdateStockSymbol{ true }; // 每日更新公司代码库
 	bool m_fUpdateCryptoSymbol{ true }; // 每日更新crypto代码库
-	bool m_fUpdateFinancialState{ true }; // 每日更新财经数据
+	bool m_fUpdateStockDailyMeta{ true }; // 每日更新公司状态
 	bool m_fUpdateDayLine{ true }; // 每日更新公司日线数据
+	bool m_fUpdateFinancialState{ true }; // 每日更新财经数据
 	bool m_fUpdateIEXTopOFBook{ true }; // 定时（每小时）更新IEX last top of book.
 
 	bool m_fTiingoDataInquiryFinished{ false };

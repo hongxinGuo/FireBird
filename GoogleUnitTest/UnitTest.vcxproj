@@ -139,6 +139,7 @@
     <ClCompile Include="ProductTiingoFundamentalDefinitionTest.cpp" />
     <ClCompile Include="ProductTiingoIEXTopOfBookTest.cpp" />
     <ClCompile Include="ProductTiingoMarketNewsTest.cpp" />
+    <ClCompile Include="ProductTiingoStockDailyMetaTest.cpp" />
     <ClCompile Include="ScheduleTaskTest.cpp" />
     <ClCompile Include="simdjsonGetValueTest.cpp" />
     <ClCompile Include="SystemConfigurationTest.cpp" />

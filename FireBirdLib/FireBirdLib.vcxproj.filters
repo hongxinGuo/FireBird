@@ -199,6 +199,12 @@
     <Filter Include="头文件\Factory-Product\ChinaMarket">
       <UniqueIdentifier>{73b57d64-57b0-46ab-9a1c-f0df258bad20}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Type\America market\Tiingo">
+      <UniqueIdentifier>{b2497ca9-967c-47a1-ad27-40ee5ca7ddb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Type\America market\Finnhub">
+      <UniqueIdentifier>{3b6cb82e-a04e-47e7-85d8-7a03e3e0fa8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h">
@@ -354,15 +360,6 @@
     <ClInclude Include="..\src\Type\America market\EPSSurprise.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\FinnhubCompanyNews.h">
-      <Filter>头文件\Type\America market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\America market\FinnhubStockBasicFinancial.h">
-      <Filter>头文件\Type\America market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\America market\FinnhubStockExchange.h">
-      <Filter>头文件\Type\America market</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Type\America market\InsiderSentiment.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
@@ -373,9 +370,6 @@
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Type\America market\SICIndustry.h">
-      <Filter>头文件\Type\America market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\America market\TiingoIndustry.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Type\China market\DayLine.h">
@@ -657,9 +651,6 @@
     <ClInclude Include="..\src\Type\America market\MarketHoliday.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\FinnhubRecommendationTrends.h">
-      <Filter>头文件\Type\America market</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingo.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
@@ -714,9 +705,6 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoMarketNews.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\TiingoMarketNews.h">
-      <Filter>头文件\Type\America market</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingoFinancialState.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
@@ -732,14 +720,8 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\TiingoFundamentalDefinition.h">
-      <Filter>头文件\Type\America market</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.h">
       <Filter>头文件\Data container\Tiingo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\TiingoCompanyFinancialState.h">
-      <Filter>头文件\Type\America market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockDayLine.h">
       <Filter>头文件\Data container\Tiingo</Filter>
@@ -849,8 +831,38 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Type\TiingoCompanyFinancialState.h">
+      <Filter>头文件\Type\America market\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\America market\TiingoFundamentalDefinition.h">
+      <Filter>头文件\Type\America market\Tiingo</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\Type\America market\TiingoIEXTopOFBook.h">
-      <Filter>头文件\Type\America market</Filter>
+      <Filter>头文件\Type\America market\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\America market\TiingoIndustry.h">
+      <Filter>头文件\Type\America market\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\America market\TiingoMarketNews.h">
+      <Filter>头文件\Type\America market\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\America market\TiingoStockDailyMeta.h">
+      <Filter>头文件\Type\America market\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\America market\FinnhubCompanyNews.h">
+      <Filter>头文件\Type\America market\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\America market\FinnhubRecommendationTrends.h">
+      <Filter>头文件\Type\America market\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\America market\FinnhubStockBasicFinancial.h">
+      <Filter>头文件\Type\America market\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\America market\FinnhubStockExchange.h">
+      <Filter>头文件\Type\America market\Finnhub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductTiingoStockDailyMeta.h">
+      <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1423,6 +1435,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\TiingoIEXTopOfBook.cpp">
       <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingoStockDailyMeta.cpp">
+      <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

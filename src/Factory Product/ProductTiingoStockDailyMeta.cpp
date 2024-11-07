@@ -12,26 +12,30 @@
 
 #include "ProductTiingoStockDailyMeta.h"
 
-#include "TiingoDataSource.h"
-
 #include"simdjsonGetValue.h"
 #include "WorldMarket.h"
 
 CProductTiingoStockDailyMeta::CProductTiingoStockDailyMeta() {
-	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/news?");
+	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/daily/");
 }
 
 CString CProductTiingoStockDailyMeta::CreateMessage() {
-	m_strInquiringSymbol = _T("All");
-	m_strInquiry = m_strInquiryFunction;
+	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
+
+	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
+	m_strInquiringSymbol = pStock->GetSymbol();
+
+	m_strInquiry = m_strInquiryFunction + m_strInquiringSymbol + _T("?");
 	return m_strInquiry;
 }
 
 void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pvTiingoStockDailyMeta = ParseTiingoStockDailyMeta(pWebData);
-	if (!pvTiingoStockDailyMeta->empty()) {
-		for (const auto& pStockDailyMeta : *pvTiingoStockDailyMeta) {
-		}
+	const auto pTiingoStockDailyMeta = ParseTiingoStockDailyMeta(pWebData);
+	if (pTiingoStockDailyMeta == nullptr) return;
+	if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStockDailyMeta->m_strCode)) {
+		auto pStock = gl_dataContainerTiingoStock.GetStock(pTiingoStockDailyMeta->m_strCode);
+		pStock->UpdateDailyMeta(pTiingoStockDailyMeta);
+		pStock->SetUpdateStockDailyMeta(false);
 	}
 	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 }
@@ -64,15 +68,12 @@ void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CVectorTiingoStockDailyMetaPtr CProductTiingoStockDailyMeta::ParseTiingoStockDailyMeta(const CWebDataPtr& pWebData) {
-	auto pvTiingoStockDailyMeta = make_shared<vector<CTiingoStockDailyMetaPtr>>();
-	CString strNULL = _T(" ");
-	CTiingoStockDailyMetaPtr pStockDailyMeta = nullptr;
+CTiingoStockDailyMetaPtr CProductTiingoStockDailyMeta::ParseTiingoStockDailyMeta(const CWebDataPtr& pWebData) {
 	string s1;
-	CString strNumber;
-	int year, month, day, hour, minute, second;
-	float f;
-	if (!IsValidData(pWebData)) return pvTiingoStockDailyMeta;
+	int year, month, day;
+	if (!IsValidData(pWebData)) return nullptr;
+
+	auto pTiingoStockDailyMeta = make_shared<CTiingoStockDailyMeta>();
 
 	try {
 		string_view svJson = pWebData->GetStringView(0, pWebData->GetBufferLength());
@@ -80,26 +81,24 @@ CVectorTiingoStockDailyMetaPtr CProductTiingoStockDailyMeta::ParseTiingoStockDai
 		const simdjson::padded_string jsonPadded(svJson);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 
-		CString str;
-		int iCount = 0;
+		s1 = jsonGetStringView(doc, "ticker");
+		pTiingoStockDailyMeta->m_strCode = s1.c_str();
+		s1 = jsonGetStringView(doc, "name");
+		pTiingoStockDailyMeta->m_strName = s1.c_str();
+		s1 = jsonGetStringView(doc, "exchangeCode");
+		pTiingoStockDailyMeta->m_strExchange = s1.c_str();
+		s1 = jsonGetStringView(doc, "description");
+		pTiingoStockDailyMeta->m_strDescription = s1.c_str();
+		s1 = jsonGetStringView(doc, "startDate", "1900-01-01");
+		sscanf_s(s1.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day);
+		pTiingoStockDailyMeta->m_lHistoryDayLineStartDate = year * 10000 + month * 100 + day;
+		s1 = jsonGetStringView(doc, "endDate", "1900-01-01");
+		sscanf_s(s1.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day);
+		pTiingoStockDailyMeta->m_lHistoryDayLineEndDate = year * 10000 + month * 100 + day;
 	} catch (simdjson_error& error) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo market news "), error.what());
+		ReportJSonErrorToSystemMessage(_T("Tiingo ticker daily: "), error.what());
+		pTiingoStockDailyMeta = nullptr;
 	}
 
-	return pvTiingoStockDailyMeta;
-}
-
-void CProductTiingoStockDailyMeta::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
-	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
-	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateStockDailyMeta(false);
-	gl_systemMessage.PushInformationMessage(_T("Tiingo market news已更新"));
-
-	if (IsNoRightToAccess()) { // Note 在此确定Tiingo账户类型
-		gl_systemConfiguration.ChangeTiingoAccountTypeToFree();
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("free Tiingo account"));
-	}
-	else {
-		gl_systemConfiguration.ChangeTiingoAccountTypeToPaid();
-		gl_systemMessage.PushInnerSystemInformationMessage(_T("Paid Tiingo account"));
-	}
+	return pTiingoStockDailyMeta;
 }

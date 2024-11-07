@@ -3,6 +3,7 @@
 #include"TiingoStock.h"
 
 #include "ConvertToString.h"
+#include "TiingoStockDailyMeta.h"
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 
@@ -22,6 +23,8 @@ void CTiingoStock::ResetAllUpdateDate() {
 	SetDayLineProcessDate(19800101);
 	Set52WeekLow();
 	Set52WeekHigh();
+	SetHistoryDayLineStartDate(19000101);
+	SetHistoryDayLineEndDate(19000101);
 }
 
 void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
@@ -223,6 +226,29 @@ void CTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
 	m_strCompanyWebSite = pStock->m_strCompanyWebSite;
 	m_strSECFilingWebSite = pStock->m_strSECFilingWebSite;
 	SetUpdateProfileDB(true);
+}
+
+void CTiingoStock::UpdateDailyMeta(const CTiingoStockDailyMetaPtr& pMeta) {
+	if (pMeta->m_lHistoryDayLineStartDate == 19000101) {
+		SetHistoryDayLineStartDate(19500101);
+		SetUpdateProfileDB(true);
+	}
+	else {
+		if (GetHistoryDayLineStartDate() != pMeta->m_lHistoryDayLineStartDate) {
+			SetHistoryDayLineStartDate(pMeta->m_lHistoryDayLineStartDate);
+			SetUpdateProfileDB(true);
+		}
+	}
+	if (pMeta->m_lHistoryDayLineEndDate == 19000101) {
+		SetHistoryDayLineEndDate(19500101);
+		SetUpdateProfileDB(true);
+	}
+	else {
+		if (GetHistoryDayLineEndDate() != pMeta->m_lHistoryDayLineEndDate) {
+			SetHistoryDayLineEndDate(pMeta->m_lHistoryDayLineEndDate);
+			SetUpdateProfileDB(true);
+		}
+	}
 }
 
 void CTiingoStock::UpdateDayLineStartEndDate() {

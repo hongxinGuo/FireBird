@@ -6,6 +6,7 @@
 
 #include "TiingoCompanyFinancialState.h"
 #include "TiingoIEXTopOFBook.h"
+#include "TiingoStockDailyMeta.h"
 
 class CTiingoStock;
 using CTiingoStockPtr = shared_ptr<CTiingoStock>;
@@ -28,6 +29,9 @@ public:
 	void Save(CSetTiingoStock& setTiingoStock);
 	void Update(CSetTiingoStock& setTiingoStock);
 
+	bool IsUpdateStockDailyMeta() const noexcept { return m_fUpdateStockDailyMeta; }
+	void SetUpdateStockDailyMeta(bool fFlag) noexcept { m_fUpdateStockDailyMeta = fFlag; }
+
 	bool IsUpdateFinancialState() const noexcept { return m_fUpdateFinancialState; }
 	void SetUpdateFinancialState(bool fFlag) noexcept { m_fUpdateFinancialState = fFlag; }
 
@@ -42,6 +46,7 @@ public:
 	void SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const; // 将当前数据存入日线数据库
 
 	void UpdateProfile(const CTiingoStockPtr& pStock);
+	void UpdateDailyMeta(const CTiingoStockDailyMetaPtr& pMeta);
 
 	void UpdateDayLineStartEndDate();
 	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
@@ -63,6 +68,11 @@ public:
 
 	long GetCompanyFinancialStatementUpdateDate() { return m_jsonUpdateDate["CompanyFinancialStatement"]; }
 	void SetCompanyFinancialStatementUpdateDate(long lDate) { m_jsonUpdateDate["CompanyFinancialStatement"] = lDate; }
+
+	long GetHistoryDayLineStartDate() { return m_jsonUpdateDate["HistoryDayLineStartDate"]; }
+	void SetHistoryDayLineStartDate(long lDate) { m_jsonUpdateDate["HistoryDayLineStartDate"] = lDate; }
+	long GetHistoryDayLineEndDate() { return m_jsonUpdateDate["HistoryDayLineEndDate"]; }
+	void SetHistoryDayLineEndDate(long lDate) { m_jsonUpdateDate["HistoryDayLineEndDate"] = lDate; }
 
 	long GetDayLineProcessDate();
 	void SetDayLineProcessDate(long lDate) { m_jsonUpdateDate["DayLineProcessDate"] = lDate; }
@@ -110,6 +120,7 @@ protected:
 	vector<long> m_v52WeekHigh; // 年度最高价的日期
 
 	// 无需存储数据区
+	bool m_fUpdateStockDailyMeta{ true };
 	bool m_fUpdateFinancialState{ true };
 	bool m_fUpdateDailyData{ true };
 

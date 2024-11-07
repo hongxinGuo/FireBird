@@ -182,6 +182,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (GenerateCompanySymbol()) return true;
 	if (GenerateCryptoSymbol()) return true;
 	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户才能够日线和金融数据
+		if (GenerateStockDailyMeta()) return true;
 		if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
 		if (GenerateFinancialState()) return true;
 	}
@@ -266,6 +267,48 @@ bool CTiingoDataSource::GenerateIEXTopOfBook(long lCurrentTime) {
 		}
 	}
 	return false;
+}
+
+bool CTiingoDataSource::GenerateStockDailyMeta() {
+	bool fHaveInquiry = false;
+	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
+	constexpr int iInquireType = TIINGO_STOCK_DAILY_META__;
+
+	ASSERT(!IsInquiring());
+	if (IsUpdateStockDailyMeta()) {
+		long lCurrentUpdatePos;
+		bool fFound = false;
+		CTiingoStockPtr pTiingoStock;
+		for (lCurrentUpdatePos = 0; lCurrentUpdatePos < lStockSetSize; lCurrentUpdatePos++) {
+			pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdatePos);
+			if (pTiingoStock->IsUpdateStockDailyMeta()) {
+				//if (gl_systemConfiguration.IsTiingoAccountAddOnPaid()) {
+				fFound = true;
+				break;
+				//}
+				//else {
+				//if (setDOW30.contains(pTiingoStock->GetSymbol())) { // 免费账户或者power账户只能申请DOW30.
+				//	fFound = true;
+				//	break;
+				//	}
+				//	}
+			}
+		}
+		if (fFound) {
+			fHaveInquiry = true;
+			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
+			p->SetIndex(lCurrentUpdatePos);
+			StoreInquiry(p);
+			gl_pWorldMarket->SetCurrentTiingoFunction(_T("daily meta: ") + pTiingoStock->GetSymbol());
+			SetInquiring(true);
+		}
+		else {
+			SetUpdateStockDailyMeta(false);
+			const CString str = "Tiingo stock daily meta updated";
+			gl_systemMessage.PushInformationMessage(str);
+		}
+	}
+	return fHaveInquiry;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

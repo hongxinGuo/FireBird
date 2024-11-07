@@ -433,7 +433,9 @@ namespace FireBirdTest {
 		stock.SetDayLineUpdateDate(20200101);
 		stock.SetDayLineEndDate(20200101);
 		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(20200101)) << "退市股票每七天检查一次";
+		stock.SetUpdateDayLine(true);
 		EXPECT_FALSE(stock.CheckDayLineUpdateStatus(20200108)) << "退市股票每七天检查一次";
+		stock.SetUpdateDayLine(true);
 		EXPECT_TRUE(stock.CheckDayLineUpdateStatus(20200109)) << "退市股票每七天检查一次";
 	}
 

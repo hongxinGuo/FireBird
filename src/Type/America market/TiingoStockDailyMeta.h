@@ -5,20 +5,16 @@ using std::shared_ptr;
 
 class CTiingoStockDailyMeta final {
 public:
-	CTiingoStockDailyMeta();
+	CTiingoStockDailyMeta() {}
 	~CTiingoStockDailyMeta() = default;
 
-	void Append(CSetTiingoStockDailyMeta& setTiingoStockDailyMeta) const;
-	void Load(const CSetTiingoStockDailyMeta& setTiingoStockDailyMeta);
-
 public:
-	CString m_strCode2;
-	CString m_strCode3;
-	CString m_strCodeNo;
-	CString m_strCountry;
-	CString m_strCurrency;
-	CString m_strCurrencyCode;
+	CString m_strCode{ "" };
+	CString m_strName{ "" };
+	CString m_strDescription{ "" };
+	CString m_strExchange{ "" };
+	long m_lHistoryDayLineStartDate{ 19000101 };
+	long m_lHistoryDayLineEndDate{ 19000101 };
 };
 
-using CTiingoStockDailyMetaPtr = shared_ptr<CCountry>;
-using CCountrysPtr = shared_ptr<vector<CCountryPtr>>;
+using CTiingoStockDailyMetaPtr = shared_ptr<CTiingoStockDailyMeta>;
