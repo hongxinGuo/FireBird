@@ -508,10 +508,10 @@ void CMainFrame::UpdateStatus() {
 	SysCallSetPaneText(8, str);
 
 	// 
-	str = gl_pWorldMarket->GetCurrentFinnhubFunction();
+	str = gl_systemMessage.GetCurrentFinnhubFunction();
 	SysCallSetPaneText(9, str);
 
-	str = gl_pWorldMarket->GetCurrentTiingoFunction();
+	str = gl_systemMessage.GetCurrentTiingoFunction();
 	SysCallSetPaneText(10, str);
 
 	// 更新当前抓取的实时数据大小

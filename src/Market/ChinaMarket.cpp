@@ -847,7 +847,6 @@ bool CChinaMarket::IsTaskOfSavingDayLineDBFinished() {
 	if (s_bTaskOfSavingDayLineFinished) {
 		if ((!gl_dataContainerChinaStock.IsUpdateDayLineDB()) && (!gl_dataContainerChinaStock.IsUpdateDayLine()) && (!IsDayLineNeedProcess())) {
 			s_bTaskOfSavingDayLineFinished = false;
-			TRACE("日线历史数据更新完毕\n");
 			const CString str = "中国市场日线历史数据更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
 			if (gl_dataContainerChinaStock.IsDayLineDBUpdated()) { // 更新股票池数据库

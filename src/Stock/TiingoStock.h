@@ -60,6 +60,7 @@ public:
 	void CheckFinancialStateUpdateStatus(long lTodayDate);
 	void CheckIPOStatus(long lCurrentDate);
 	bool CheckDayLineUpdateStatus(long lCurrentDate);
+	bool CheckStockDailyMetaStatus(long lCurrentDate);
 
 	long GetStatementLastUpdatedDate() { return m_jsonUpdateDate["StatementLastUpdated"]; }
 	void SetStatementLastUpdatedDate(long lLDate) { m_jsonUpdateDate["StatementLastUpdated"] = lLDate; }
@@ -73,6 +74,8 @@ public:
 	void SetHistoryDayLineStartDate(long lDate) { m_jsonUpdateDate["HistoryDayLineStartDate"] = lDate; }
 	long GetHistoryDayLineEndDate() { return m_jsonUpdateDate["HistoryDayLineEndDate"]; }
 	void SetHistoryDayLineEndDate(long lDate) { m_jsonUpdateDate["HistoryDayLineEndDate"] = lDate; }
+	long GetUpdateStockDailyMetaDate() { return m_jsonUpdateDate["UpdateStockDailyMetaDate"]; }
+	void SetUpdateStockDailyMetaDate(long lDate) { m_jsonUpdateDate["UpdateStockDailyMetaDate"] = lDate; }
 
 	long GetDayLineProcessDate();
 	void SetDayLineProcessDate(long lDate) { m_jsonUpdateDate["DayLineProcessDate"] = lDate; }

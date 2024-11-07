@@ -381,10 +381,10 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	}
 
 	CString strMessage;
-	strMessage = gl_pWorldMarket->GetCurrentFinnhubFunction();
+	strMessage = gl_systemMessage.GetCurrentFinnhubFunction();
 	m_pPropFinnhubCurrentFunction->SetValue(strMessage);
 
-	strMessage = gl_pWorldMarket->GetCurrentTiingoFunction();
+	strMessage = gl_systemMessage.GetCurrentTiingoFunction();
 	m_pPropTiingoCurrentFunction->SetValue(strMessage);
 
 	CString str = _T("");

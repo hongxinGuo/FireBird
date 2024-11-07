@@ -21,10 +21,11 @@ void CTiingoStock::ResetAllUpdateDate() {
 	SetDayLineStartDate(29900101);
 	SetDayLineEndDate(19800101);
 	SetDayLineProcessDate(19800101);
-	Set52WeekLow();
-	Set52WeekHigh();
 	SetHistoryDayLineStartDate(19000101);
 	SetHistoryDayLineEndDate(19000101);
+	SetUpdateStockDailyMetaDate(19800101);
+	Set52WeekLow();
+	Set52WeekHigh();
 }
 
 void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
@@ -277,6 +278,7 @@ void CTiingoStock::CheckUpdateStatus(long lTodayDate) {
 	CheckFinancialStateUpdateStatus(lTodayDate);
 	CheckIPOStatus(lTodayDate);
 	CheckDayLineUpdateStatus(lTodayDate);
+	CheckStockDailyMetaStatus(lTodayDate);
 }
 
 void CTiingoStock::CheckFinancialStateUpdateStatus(long lTodayDate) {
@@ -295,16 +297,39 @@ void CTiingoStock::CheckFinancialStateUpdateStatus(long lTodayDate) {
 //
 //////////////////////////////////////////////////////////////////////////////////////
 void CTiingoStock::CheckIPOStatus(long lCurrentDate) {
-	if (IsEarlyThen(GetDayLineEndDate(), lCurrentDate, 30)) {
+	if (GetHistoryDayLineStartDate() == 19000101) { // 从未申请过StockDailyMeta?
+		if (!IsNotChecked()) {
+			SetIPOStatus(_STOCK_NOT_CHECKED_);
+			SetUpdateProfileDB(true);
+		}
+		return;
+	}
+	if (GetHistoryDayLineStartDate() == 19500101) { // 没有日线
 		if (!IsDelisted()) {
 			SetIPOStatus(_STOCK_DELISTED_);
 			SetUpdateProfileDB(true);
 		}
+		return;
+	}
+	if (IsEarlyThen(GetDayLineEndDate(), lCurrentDate, 30)) {
+		if (GetDayLineEndDate() == 19800101) {
+			if (!IsNotChecked()) {
+				SetIPOStatus(_STOCK_NOT_CHECKED_);
+				SetUpdateProfileDB(true);
+			}
+			return;
+		}
+		if (!IsDelisted()) {
+			SetIPOStatus(_STOCK_DELISTED_);
+			SetUpdateProfileDB(true);
+		}
+		return;
 	}
 	else {
 		if (!IsIPOed()) {
 			SetIPOStatus(_STOCK_IPOED_);
 			SetUpdateProfileDB(true);
+			return;
 		}
 	}
 }
@@ -322,6 +347,16 @@ bool CTiingoStock::CheckDayLineUpdateStatus(long lCurrentDate) {
 		return false;
 	}
 	return true;
+}
+
+bool CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
+	if (GetUpdateStockDailyMetaDate() >= lCurrentDate) {
+		SetUpdateStockDailyMeta(false);
+	}
+	else {
+		SetUpdateStockDailyMeta(true);
+	}
+	return IsUpdateStockDailyMeta();
 }
 
 long CTiingoStock::GetDayLineProcessDate() {

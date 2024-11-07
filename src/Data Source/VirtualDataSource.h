@@ -143,8 +143,8 @@ protected:
 
 	long long m_llLastTimeTickCount{ 0 };
 
-	atomic_bool m_fEnable{ true }; // 允许执行标识
 	atomic_bool m_fInquiring{ false };
+	atomic_bool m_fEnable{ true }; // 允许执行标识
 	atomic_bool m_bIsWorkingThreadRunning{ false };
 	atomic_bool m_bWebBusy{ false };
 };

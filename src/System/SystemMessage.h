@@ -165,6 +165,11 @@ public:
 	long GetScheduleTaskTimePerSecond() const noexcept { return m_lScheduleTaskTimePerSecond.load(); }
 	void IncreaseScheduleTaskTime(long lTime) noexcept { m_lScheduleTaskTime += lTime; }
 
+	CString GetCurrentFinnhubFunction() const;
+	void SetCurrentFinnhubFunction(const CString& str);
+	CString GetCurrentTiingoFunction() const;
+	void SetCurrentTiingoFunction(const CString& str);
+
 protected:
 	// 信息输出队列群
 	CSystemDeque m_SystemInformation;
@@ -189,6 +194,9 @@ protected:
 	CString m_strCurrentTiingoWebSocketIEX;
 	CString m_strCurrentTiingoWebSocketForex;
 	CString m_strCurrentTiingoWebSocketCrypto;
+
+	CString m_strCurrentFinnhubFunction{ _T("") }; // 当前任务和处理的证券名称
+	CString m_strCurrentTiingoFunction{ _T("") }; // 当前任务和处理的证券名称
 
 	atomic_long m_lScheduleTaskTime{ 0 };
 	atomic_long m_lScheduleTaskTimePerSecond{ 0 };

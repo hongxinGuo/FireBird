@@ -31,12 +31,25 @@ CString CProductTiingoStockDailyMeta::CreateMessage() {
 
 void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pTiingoStockDailyMeta = ParseTiingoStockDailyMeta(pWebData);
-	if (pTiingoStockDailyMeta == nullptr) return;
-	if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStockDailyMeta->m_strCode)) {
-		auto pStock = gl_dataContainerTiingoStock.GetStock(pTiingoStockDailyMeta->m_strCode);
-		pStock->UpdateDailyMeta(pTiingoStockDailyMeta);
+	if (pTiingoStockDailyMeta == nullptr) {
+		auto pStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
 		pStock->SetUpdateStockDailyMeta(false);
+		return;
 	}
+	auto pStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
+	if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStockDailyMeta->m_strCode)) {
+		auto pStock2 = gl_dataContainerTiingoStock.GetStock(pTiingoStockDailyMeta->m_strCode);
+		if (pStock->GetSymbol().Compare(pStock2->GetSymbol()) == 0) {
+			pStock->UpdateDailyMeta(pTiingoStockDailyMeta);
+			pStock->SetUpdateStockDailyMetaDate(gl_pWorldMarket->GetMarketDate());
+		}
+		else {
+			CString str = _T("Tiingo stock daily meta not match: ");
+			str += pStock->GetSymbol() + _T("  ") + pStock2->GetSymbol();
+			gl_systemMessage.PushInnerSystemInformationMessage(str);
+		}
+	}
+	pStock->SetUpdateStockDailyMeta(false);
 	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 }
 

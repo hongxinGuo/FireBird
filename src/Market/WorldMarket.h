@@ -59,11 +59,6 @@ public:
 
 	// 各种状态
 
-	CString GetCurrentFinnhubFunction() { return m_strCurrentFinnhubFunction; }
-	void SetCurrentFinnhubFunction(const CString& str) { m_strCurrentFinnhubFunction = str; }
-	CString GetCurrentTiingoFunction() { return m_strCurrentTiingoFunction; }
-	void SetCurrentTiingoFunction(const CString& str) { m_strCurrentTiingoFunction = str; }
-
 	static bool UpdateToken();
 
 	// 数据库操作
@@ -99,8 +94,7 @@ public:
 	void UpdateMarketStatus(const CMarketStatussPtr& pv) const;
 	void UpdateMarketHoliday(const CMarketHolidaysPtr& pv) const;
 
-	// check function
-	bool IsReadyToInquireWebData(long lCurrentMarketTime) override;
+	bool IsReadyToInquireWebData(long lCurrentMarketTime) override { return !IsResetTime(lCurrentMarketTime); }
 
 	void SetPermitUpdateTiingoFundamentalDefinitionDB(bool fFlag) noexcept { m_fPermitUpdateTiingoFundamentalDefinitionDB = fFlag; }
 	bool IsPermitUpdateTiingoFundamentalDefinitionDB() const noexcept { return m_fPermitUpdateTiingoFundamentalDefinitionDB; }
@@ -111,9 +105,6 @@ protected:
 
 	CMarketStatussPtr m_pvMarketStatus;
 	CMarketHolidaysPtr m_pvMarketHoliday;
-
-	CString m_strCurrentFinnhubFunction{ _T("") }; // 当前任务和处理的证券名称
-	CString m_strCurrentTiingoFunction{ _T("") }; // 当前任务和处理的证券名称
 
 	bool m_bFinnhubWebSiteAccessible{ true }; // 由于finnhub.io不时被墙，故而需要此标识。
 

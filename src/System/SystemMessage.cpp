@@ -151,6 +151,8 @@ binary_semaphore s_CurrentFinnhubWebSocketStake{ 1 };
 binary_semaphore s_CurrentTiingoWebSocketIEX{ 1 };
 binary_semaphore s_CurrentTiingoWebSocketCrypto{ 1 };
 binary_semaphore s_CurrentTiingoWebSocketForex{ 1 };
+binary_semaphore s_sReadCurrentFinnhubFunction{ 1 };
+binary_semaphore s_sReadCurrentTiingoFunction{ 1 };
 
 CSystemDeque::CSystemDeque() {}
 
@@ -234,6 +236,32 @@ CString CSystemMessage::GetCurrentTiingoWebSocketCrypto() const {
 	CString s = m_strCurrentTiingoWebSocketCrypto;
 	s_CurrentTiingoWebSocketCrypto.release();
 	return s;
+}
+
+CString CSystemMessage::GetCurrentFinnhubFunction() const {
+	s_sReadCurrentFinnhubFunction.acquire();
+	CString str = m_strCurrentFinnhubFunction;
+	s_sReadCurrentFinnhubFunction.release();
+	return str;
+}
+
+void CSystemMessage::SetCurrentFinnhubFunction(const CString& str) {
+	s_sReadCurrentFinnhubFunction.acquire();
+	m_strCurrentFinnhubFunction = str;
+	s_sReadCurrentFinnhubFunction.release();
+}
+
+CString CSystemMessage::GetCurrentTiingoFunction() const {
+	s_sReadCurrentTiingoFunction.acquire();
+	CString str = m_strCurrentTiingoFunction;
+	s_sReadCurrentTiingoFunction.release();
+	return str;
+}
+
+void CSystemMessage::SetCurrentTiingoFunction(const CString& str) {
+	s_sReadCurrentTiingoFunction.acquire();
+	m_strCurrentTiingoFunction = str;
+	s_sReadCurrentTiingoFunction.release();
 }
 
 void CSystemDeque::Display(COutputList* pOutputList, const CString& strTime) {

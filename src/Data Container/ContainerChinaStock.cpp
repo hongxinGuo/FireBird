@@ -68,7 +68,6 @@ long CContainerChinaStock::LoadStockProfileDB() {
 	if (IsUpdateDayLine()) {
 		lDayLineNeedCheck = GetDayLineNeedUpdateNumber();
 		if (gl_pChinaMarket->GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage(_T("每星期一复查退市股票日线"));
-		TRACE("尚余%d个股票需要检查日线数据\n", lDayLineNeedCheck);
 		_itoa_s(lDayLineNeedCheck, buffer, 10);
 		str = buffer;
 		str += _T("个股票需要检查日线数据");

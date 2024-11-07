@@ -66,7 +66,7 @@ void CVirtualDataSource::InquireData(const long lMarketTime) {
 		GetCurrentProduct();
 		CreateCurrentInquireString();
 		CDataInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
-		auto result = gl_runtime.thread_pool_executor()->submit([this, pEngine] { //Note 只能使用thread_pool_executor或者background_executor
+		auto result = gl_runtime.background_executor()->submit([this, pEngine] { //Note 只能使用thread_pool_executor或者background_executor
 				CHighPerformanceCounter counter;
 				counter.start();
 				auto pWebData = pEngine->GetWebData();
