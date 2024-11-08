@@ -45,11 +45,19 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 ///////////////////////////////////////////////////////////////////////////////////////////
 CString CProductTiingoStockDayLine::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
+	long lStartDate, lEndDate;
 
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
-	long lStartDate = 19800101;
-	if (pStock->GetDayLineEndDate() > 19800101) lStartDate = pStock->GetDayLineEndDate();
-	CString strParam = GetTiingoDayLineInquiryParam(pStock->GetSymbol(), lStartDate, GetMarket()->GetMarketDate()); // 如果日线从未申请过时，申请完整日线。
+	if (pStock->IsActive()) { // 活跃股票
+		lStartDate = 19800101;
+		if (pStock->GetDayLineEndDate() > 19800101) lStartDate = pStock->GetDayLineEndDate();
+		lEndDate = GetMarket()->GetMarketDate();
+	}
+	else { // 退市股票更新全部日线
+		lStartDate = 19800101;
+		lEndDate = GetMarket()->GetMarketDate();
+	}
+	CString strParam = GetTiingoDayLineInquiryParam(pStock->GetSymbol(), lStartDate, lEndDate); // 如果日线从未申请过时，申请完整日线。
 	m_strInquiringSymbol = pStock->GetSymbol();
 
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -76,8 +84,10 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	}
 	// 清除tiingo stock的日线更新标识
 	pTiingoStock->SetUpdateDayLine(false);
-	pTiingoStock->SetDayLineUpdateDate(GetMarket()->GetMarketDate());
 	pTiingoStock->SetUpdateProfileDB(true);
+	if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 新股票？
+		gl_dataContainerTiingoNewSymbol.Delete(pTiingoStock); //Note 下载完日线数据后，就从Tiingo新代码容器中删除之。
+	}
 	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 }
 

@@ -121,7 +121,7 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoPermaTicker, _T("US000000000191"));
 			EXPECT_STREQ(m_pvStock->at(0)->GetSymbol(), _T("AA"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strName, _T("Alcoa Corp"));
-			EXPECT_TRUE(m_pvStock->at(0)->m_fIsActive);
+			EXPECT_TRUE(m_pvStock->at(0)->IsActive());
 			EXPECT_FALSE(m_pvStock->at(0)->m_fIsADR);
 			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoIndustry, _T("industry have new data"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoSector, _T("sector have data"));
@@ -140,7 +140,7 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoPermaTicker, _T("US000000001247"));
 			EXPECT_STREQ(m_pvStock->at(0)->GetSymbol(), _T("NEW SYMBOL"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strName, _T("Agilent Technologies Inc"));
-			EXPECT_TRUE(m_pvStock->at(0)->m_fIsActive);
+			EXPECT_TRUE(m_pvStock->at(0)->IsActive());
 			EXPECT_FALSE(m_pvStock->at(0)->m_fIsADR);
 			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoIndustry, _T("free"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoSector, _T(""));
@@ -155,7 +155,7 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoPermaTicker, _T("US000000000091"));
 			EXPECT_STREQ(m_pvStock->at(1)->GetSymbol(), _T("AA"));
 			EXPECT_STREQ(m_pvStock->at(1)->m_strName, _T("New Name"));
-			EXPECT_TRUE(m_pvStock->at(1)->m_fIsActive);
+			EXPECT_TRUE(m_pvStock->at(1)->IsActive());
 			EXPECT_FALSE(m_pvStock->at(1)->m_fIsADR);
 			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoIndustry, _T("")) << "当字符串为Field not available for free/evaluation时，返回空串";
 			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoSector, _T(""));

@@ -55,29 +55,14 @@ void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// [{
-//	"source":"cnbc.com",
-//		"crawlDate" : "2019-01-29T22:20:01.696871Z",
-//		"description" : "Apple CEO Tim Cook told CNBC that trade tensions between the U.S. and China have improved since late
-//		December.",
-//		"url" : "https://www.cnbc.com/2019/01/29/apples-ceo-sees-optimism-as-trade-tension-between-us-and-china-lessens.html",
-//		"publishedDate" : "2019-01-29T22:17:00Z",
-//		"tags" : [
-//			"China",
-//				"Economic Measures",
-//				"Economics",
-//				"Markets",
-//				"Stock",
-//				"Technology",
-//				"Tiingo Top",
-//				"Trade"
-//		] ,
-//		"tickers": [
-//			"aapl"
-//		] ,
-//		"id" : 15063835,
-//		"title" : "Apple CEO Tim Cook on US-China trade negotiations: 'There is a bit more optimism in the air'"
-// }...]
+//	{
+//		"ticker": "AAPL",
+//		"name" : "Apple Inc.",
+//		"exchangeCode" : "NASDAQ",
+//		"startDate" : "1980-12-12",
+//		"endDate" : "2019-01-25",
+//		"description" : "Apple Inc. (Apple) designs, manufactures and markets mobile communication and media devices"
+//	}
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,10 +87,10 @@ CTiingoStockDailyMetaPtr CProductTiingoStockDailyMeta::ParseTiingoStockDailyMeta
 		pTiingoStockDailyMeta->m_strExchange = s1.c_str();
 		s1 = jsonGetStringView(doc, "description");
 		pTiingoStockDailyMeta->m_strDescription = s1.c_str();
-		s1 = jsonGetStringView(doc, "startDate", "1900-01-01");
+		s1 = jsonGetStringView(doc, "startDate", "1900-01-01"); // 如果没有日线开始日期（即没有日线数据），则设置为19000101
 		sscanf_s(s1.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day);
 		pTiingoStockDailyMeta->m_lHistoryDayLineStartDate = year * 10000 + month * 100 + day;
-		s1 = jsonGetStringView(doc, "endDate", "1900-01-01");
+		s1 = jsonGetStringView(doc, "endDate", "1900-01-01"); // 如果没有日线结束日期（即没有日线数据），则设置为19000101
 		sscanf_s(s1.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day);
 		pTiingoStockDailyMeta->m_lHistoryDayLineEndDate = year * 10000 + month * 100 + day;
 	} catch (simdjson_error& error) {

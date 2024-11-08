@@ -127,7 +127,7 @@ protected:
 	INT64 m_llCurrentValue{ 0 }; // 流通市值。单位：万元
 
 	bool m_fTodayNewStock{ false }; // 本日新发现的股票
-	bool m_fActive{ false }; // 是否本日内有数据读入。由新浪实时行情处理函数和网易日线历史数据处理函数来设置。
+	bool m_fActive{ false }; // 是否是活跃股票
 	long m_lIPOStatus{ _STOCK_NOT_CHECKED_ }; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
 	// 未上市（无效股票代码）为_STOCK_NULL_；正常为_STOCK_IPOED_；已通过IPO但尚未上市或退市为_STOCK_DELISTED；其他情况尚未出现，留待以后处理。
 

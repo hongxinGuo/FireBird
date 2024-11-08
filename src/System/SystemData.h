@@ -8,7 +8,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "ContainerTiingoFundamentalDefinition.h"
 #include"concurrentqueue/concurrentqueue.h"
 using namespace moodycamel;
 
@@ -30,6 +29,8 @@ using gsl::not_null;
 #include "ContainerTiingoCryptoSymbol.h"
 #include "ContainerTiingoStock.h"
 #include "ContainerFinnhubStock.h"
+#include "ContainerTiingoFundamentalDefinition.h"
+#include "ContainerTiingoNewSymbol.h"
 
 #include"FinnhubWebSocket.h"
 #include"TiingoIEXWebSocket.h"
@@ -58,6 +59,7 @@ extern CContainerFinnhubCryptoExchange gl_dataContainerFinnhubCryptoExchange;
 
 extern CContainerFinnhubStock gl_dataContainerFinnhubStock;
 extern CContainerTiingoStock gl_dataContainerTiingoStock;
+extern CContainerTiingoNewSymbol gl_dataContainerTiingoNewSymbol;
 extern CContainerTiingoCryptoSymbol gl_dataContainerTiingoCryptoSymbol;
 extern CContainerTiingoFundamentalDefinition gl_dataContainerTiingoFundamentalDefinition;
 

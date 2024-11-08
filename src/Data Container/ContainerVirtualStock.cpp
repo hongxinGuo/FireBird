@@ -64,6 +64,13 @@ void CContainerVirtualStock::Delete(const CVirtualStockPtr& pStock) {
 	UpdateSymbolMap();
 }
 
+void CContainerVirtualStock::Delete(const CString& strSymbol) {
+	if (!IsSymbol(strSymbol)) return;
+
+	auto pStock = Get(strSymbol);
+	Delete(pStock);
+}
+
 void CContainerVirtualStock::UpdateSymbolMap() {
 	m_mapSymbol.clear();
 	int j = 0;

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include"VirtualStock.h"
 #include "VirtualContainer.h"
+#include"VirtualStock.h"
 
 class CContainerVirtualStock : public CVirtualContainer {
 public:
@@ -30,6 +30,7 @@ public:
 
 	void Add(const CVirtualStockPtr& pStock);
 	void Delete(const CVirtualStockPtr& pStock);
+	void Delete(const CString& strSymbol);
 	void UpdateSymbolMap();
 	void Sort();
 

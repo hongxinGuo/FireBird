@@ -55,6 +55,7 @@ void CVirtualDataSource::Run(long lMarketTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::InquireData(const long lMarketTime) {
+	CString str = typeid(*this).name();
 	ASSERT(IsInquiring());
 
 	static time_t s_LastInquiryTime = 0;
@@ -105,7 +106,11 @@ void CVirtualDataSource::InquireData(const long lMarketTime) {
 		m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource智能指针
 	}
 	ASSERT(!HaveInquiry()); // 没有现存的申请
-	ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
+	//ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
+	if (!IsInquiring()) {
+		gl_systemMessage.PushInnerSystemInformationMessage(str);
+		gl_warnLogger->warn("CVirtualWebData.InquireData() reentry: {}", str.GetBuffer());
+	}
 	SetInquiring(false); // 此标识的重置需要位于位于最后一步
 }
 

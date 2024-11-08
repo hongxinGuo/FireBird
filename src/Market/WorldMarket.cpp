@@ -89,6 +89,7 @@ void CWorldMarket::ResetDataContainer() {
 	gl_dataContainerFinnhubStock.Reset();
 
 	gl_dataContainerTiingoStock.Reset();
+	gl_dataContainerTiingoNewSymbol.Reset();
 	gl_dataContainerTiingoCryptoSymbol.Reset();
 
 	gl_dataContainerChosenFinnhubStock.Reset();

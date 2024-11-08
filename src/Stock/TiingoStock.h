@@ -59,13 +59,12 @@ public:
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckFinancialStateUpdateStatus(long lTodayDate);
 	void CheckIPOStatus(long lCurrentDate);
-	bool CheckDayLineUpdateStatus(long lCurrentDate);
 	bool CheckStockDailyMetaStatus(long lCurrentDate);
 
 	long GetStatementLastUpdatedDate() { return m_jsonUpdateDate["StatementLastUpdated"]; }
 	void SetStatementLastUpdatedDate(long lLDate) { m_jsonUpdateDate["StatementLastUpdated"] = lLDate; }
-	long GetDayLineUpdateDate() { return m_jsonUpdateDate["DayLine"]; }
-	void SetDayLineUpdateDate(long lLDate) { m_jsonUpdateDate["DayLine"] = lLDate; }
+	long GetDailyUpdateDate() { return m_jsonUpdateDate["DailyUpdate"]; }
+	void SetDailyUpdateDate(long lLDate) { m_jsonUpdateDate["DailyUpdate"] = lLDate; }
 
 	long GetCompanyFinancialStatementUpdateDate() { return m_jsonUpdateDate["CompanyFinancialStatement"]; }
 	void SetCompanyFinancialStatementUpdateDate(long lDate) { m_jsonUpdateDate["CompanyFinancialStatement"] = lDate; }
@@ -102,7 +101,7 @@ public:
 	CString m_strTiingoPermaTicker{ _T("") }; // Tiingo永久代码标识
 	//CString m_strTicker; // 这个使用VirtualStock中的m_strSymbol来代替。
 	CString m_strName{ _T("") };
-	bool m_fIsActive{ false }; //
+	// bool m_fIsActive{ false }; // 这个使用VirtualStock中的m_fActive来代替
 	bool m_fIsADR{ false };
 	CString m_strTiingoSector{ _T("") };
 	CString m_strTiingoIndustry{ _T("") };

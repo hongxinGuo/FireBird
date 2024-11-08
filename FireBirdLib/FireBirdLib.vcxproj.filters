@@ -864,6 +864,9 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockDailyMeta.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Data Container\ContainerTiingoNewSymbol.h">
+      <Filter>头文件\Data container\Tiingo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1438,6 +1441,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockDailyMeta.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoNewSymbol.cpp">
+      <Filter>源文件\Data container\Tiingo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

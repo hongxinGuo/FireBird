@@ -20,18 +20,50 @@ CString CProductTiingoStockProfile::CreateMessage() {
 	return m_strInquiry;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// tiingo fundamental meta数据中有重复代码，更新日期最近的那个活跃股票是正确的，其他皆需删除。
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoStock = ParseTiingoStockSymbol(pWebData);
-	if (!pvTiingoStock->empty()) {
-		for (const auto& pTiingoStock : *pvTiingoStock) {
+	CTiingoStocksPtr pvNewTiingoStock = make_shared<vector<CTiingoStockPtr>>();
+
+	std::ranges::sort(*pvTiingoStock, [](const CTiingoStockPtr& pData1, const CTiingoStockPtr& pData2) { return pData1->GetSymbol().Compare(pData2->GetSymbol()) < 0; });
+
+	CTiingoStockPtr pStock = pvTiingoStock->at(0);
+	for (size_t l = 1; l < pvTiingoStock->size(); l++) {
+		CTiingoStockPtr pStock2 = pvTiingoStock->at(l);
+		if (pStock->GetSymbol().Compare(pStock2->GetSymbol()) != 0) { // 代码不同
+			pvNewTiingoStock->push_back(pStock);
+			pStock = pStock2;
+		}
+		else { // 相同代码
+			if (pStock->IsActive()) {
+				if (pStock2->IsActive()) {
+					if (pStock->GetDailyUpdateDate() < pStock2->GetDailyUpdateDate()) { // 都是活跃股票时，比较最后更新日期，保留更新的那个。
+						TRACE("active %s: %d ---- %d\n", pStock->GetSymbol(), pStock->GetDailyUpdateDate(), pStock2->GetDailyUpdateDate());
+						pStock = pStock2;
+					}
+				}
+			}
+			else {
+				pStock = pStock2;
+			}
+		}
+	}
+	if (!pvNewTiingoStock->empty()) {
+		for (const auto& pTiingoStock : *pvNewTiingoStock) {
 			if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStock->GetSymbol())) {
 				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
 					gl_dataContainerTiingoStock.UpdateProfile(pTiingoStock); // 付费账户使用新数据更新，免费账户无动作
 				}
 			}
 			else {
-				pTiingoStock->SetUpdateProfileDB(true); // 将此股票存入数据库。
-				gl_dataContainerTiingoStock.Add(pTiingoStock);
+				pTiingoStock->SetUpdateProfileDB(true);
+				gl_dataContainerTiingoStock.Add(pTiingoStock); // 将此股票存入数据库。
+				gl_dataContainerTiingoNewSymbol.Add(pTiingoStock); // 也存入新股容器中。
 			}
 		}
 	}
@@ -97,7 +129,7 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 			pStock->SetSymbol(s1.c_str());
 			s1 = jsonGetStringView(itemValue, _T("name"));
 			pStock->m_strName = s1.c_str();;
-			pStock->m_fIsActive = jsonGetBool(itemValue, _T("isActive"));
+			pStock->SetActive(jsonGetBool(itemValue, _T("isActive")));
 			pStock->m_fIsADR = jsonGetBool(itemValue,_T("isADR"));
 			s1 = jsonGetStringView(itemValue, _T("industry"));
 			if (s1.compare(strNotAvailable) != 0) {
@@ -155,6 +187,7 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 			s1 = jsonGetStringView(itemValue, _T("dailyLastUpdated"));
 			str = s1.c_str();;
 			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02dT"), &year, &month, &day); // 只解析日期
+			pStock->SetDailyUpdateDate(XferYearMonthDayToYYYYMMDD(year, month, day));
 			s1 = jsonGetStringView(itemValue, _T("dataProviderPermaTicker"));
 			if (s1 != strNotAvailable) {
 				pStock->m_strDataProviderPermaTicker = s1.c_str();
@@ -168,7 +201,6 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 	} catch (simdjson_error& error) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo Stock Symbol "), error.what());
 	}
-
 	return pvTiingoStock;
 }
 

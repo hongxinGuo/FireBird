@@ -155,7 +155,7 @@ long CContainerTiingoStock::GetTotalActiveStocks() {
 	int iCount = 0;
 	auto lSize = Size();
 	for (size_t i = 0; i < lSize; i++) {
-		if (GetStock(i)->m_fIsActive) iCount++;
+		if (GetStock(i)->IsActive()) iCount++;
 	}
 	return iCount;
 }

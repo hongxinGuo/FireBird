@@ -1,6 +1,6 @@
 #pragma once
-
 #include"TiingoStock.h"
+
 #include"ContainerVirtualStock.h"
 
 class CContainerTiingoStock : public CContainerVirtualStock {

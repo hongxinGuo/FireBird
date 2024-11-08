@@ -545,7 +545,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount()) << "函数UpdateProfile只运行在付费账户状态下";
 
 		auto pTiingoStock = make_shared<CTiingoStock>(); // 这个是数据库中已存在的证券
-		pTiingoStock->m_fIsActive = true;
+		pTiingoStock->SetActive(true);
 		pTiingoStock->m_fIsADR = false;
 		pTiingoStock->m_iSicCode = 1002;
 		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);
@@ -564,7 +564,7 @@ namespace FireBirdTest {
 		gl_dataContainerTiingoStock.UpdateProfile(pTiingoStock);
 
 		pTiingoStock = make_shared<CTiingoStock>();
-		pTiingoStock->m_fIsActive = true;
+		pTiingoStock->SetActive(true);
 		pTiingoStock->m_fIsADR = false;
 		pTiingoStock->m_iSicCode = 1002;
 		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);

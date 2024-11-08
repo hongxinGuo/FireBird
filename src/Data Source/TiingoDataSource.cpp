@@ -181,12 +181,13 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (GenerateFundamentalDefinition()) return true;
 	if (GenerateCompanySymbol()) return true;
 	if (GenerateCryptoSymbol()) return true;
-	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户才能够日线和金融数据
-		if (GenerateStockDailyMeta()) return true;
-		//if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
-		//if (GenerateFinancialState()) return true;
+	//if (GenerateIEXTopOfBook(181010)) return true; // 测试用
+	if (GenerateStockDailyMeta()) return true;
+	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
+	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户才能够金融数据
+		if (GenerateFinancialState()) return true;
 	}
-	else { // 免费账户使用IEX数据更新日线
+	if (!gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 免费账户使用IEX数据更新日线
 		if (GenerateIEXTopOfBook(lCurrentTime)) return true;
 	}
 
@@ -283,8 +284,15 @@ bool CTiingoDataSource::GenerateStockDailyMeta() {
 		for (lCurrentUpdatePos = 0; lCurrentUpdatePos < lStockSetSize; lCurrentUpdatePos++) {
 			pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdatePos);
 			if (pTiingoStock->IsUpdateStockDailyMeta()) {
-				fFound = true;
-				break;
+				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 如果是付费账户的话
+					fFound = true;
+					break;
+				}
+				if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 免费账户只更新新股票的Daily meta
+					fFound = true;
+					break;
+				}
+				pTiingoStock->SetUpdateStockDailyMeta(false); // 免费账户时不更新旧股票的DailyMeta
 			}
 		}
 		if (fFound) {
@@ -326,15 +334,31 @@ bool CTiingoDataSource::GenerateDayLine() {
 		for (lCurrentUpdatePos = 0; lCurrentUpdatePos < lStockSetSize; lCurrentUpdatePos++) {
 			pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdatePos);
 			if (pTiingoStock->IsUpdateDayLine()) {
-				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户下载所有股票的日线
-					fFound = true;
-					break;
-				}
-				else { // 免费账户只下载DOW30和自选股票的日线。
-					if (setDOW30.contains(pTiingoStock->GetSymbol()) || gl_dataContainerChosenFinnhubStock.IsSymbol(pTiingoStock->GetSymbol())) {
+				if (pTiingoStock->IsActive()) { // 活跃股票？
+					if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户下载所有股票的日线
 						fFound = true;
 						break;
 					}
+					if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 免费账户只更新新股票的日线
+						fFound = true;
+						break;
+					}
+					pTiingoStock->SetUpdateDayLine(false); // 免费账户时，不更新旧股票的日线
+				}
+				else { // 不活跃股票
+					if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户下载所有股票的日线
+						if (pTiingoStock->GetHistoryDayLineStartDate() != pTiingoStock->GetDayLineStartDate() || pTiingoStock->GetHistoryDayLineEndDate() != pTiingoStock->GetDayLineEndDate()) { // 只更新日线数据没有收集齐的非活跃股票
+							fFound = true;
+							break;
+						}
+					}
+					if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 免费账户只更新新股票的日线
+						if (pTiingoStock->GetHistoryDayLineStartDate() < pTiingoStock->GetHistoryDayLineEndDate()) { // 有日线资料？
+							fFound = true;
+							break;
+						}
+					}
+					pTiingoStock->SetUpdateDayLine(false); // 其他情况时无需更新不活跃股票的日线
 				}
 			}
 		}

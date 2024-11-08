@@ -2,6 +2,14 @@
 
 #include "GeneralCheck.h"
 
+#include"SetDayLineBasicInfo.h"
+#include"SetWeekLineBasicInfo.h"
+
+#include"SetChinaChosenStock.h"
+#include"SetWorldChosenForex.h"
+#include"SetWorldChosenCrypto.h"
+#include"SetWorldChosenStock.h"
+
 #include"SetChinaStockSymbol.h"
 #include"SetCurrentWeekLine.h"
 #include"SetDayLineExtendInfo.h"
@@ -24,23 +32,16 @@
 #include"SetInsiderSentiment.h"
 #include"SetNaicsIndustry.h"
 #include"SetSICIndustry.h"
-#include"SetTiingoIndustry.h"
-#include"SetTiingoStock.h"
-#include"SetTiingoCompanyFinancialState.h"
 #include"SetFinnhubStock.h"
-
-#include"SetDayLineBasicInfo.h"
-#include"SetWeekLineBasicInfo.h"
-#include"SetCryptoDayLine.h"
 #include"SetFinnhubStockDayLine.h"
+#include"SetCryptoDayLine.h"
 #include"SetForexDayLine.h"
 
-#include"SetChinaChosenStock.h"
 #include "SetTiingoMarketNews.h"
 #include "SetTiingoStockDayLine.h"
-#include"SetWorldChosenForex.h"
-#include"SetWorldChosenCrypto.h"
-#include"SetWorldChosenStock.h"
+#include"SetTiingoStock.h"
+#include"SetTiingoCompanyFinancialState.h"
+#include"SetTiingoIndustry.h"
 
 using namespace testing;
 

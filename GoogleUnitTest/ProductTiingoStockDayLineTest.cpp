@@ -44,8 +44,8 @@ namespace FireBirdTest {
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage1) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
 		stockPriceCandle.SetMarket(gl_pWorldMarket);
-		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
-		pStock->SetDayLineStartDate(20171231); // 早于20180101
+		const auto pStock = gl_dataContainerTiingoStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
+		EXPECT_TRUE(pStock->GetDayLineEndDate() < 19800101);
 		const CString strMessage = stockPriceCandle.CreateMessage();
 		const long lMarketDate = gl_pWorldMarket->GetMarketDate();
 		const long year = lMarketDate / 10000;
@@ -57,14 +57,14 @@ namespace FireBirdTest {
 		CString strMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
 		const CString strTest = _T("https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-1-1&endDate=") + strEndDate;
 
-		EXPECT_STREQ(strMessage, strTest) << "当股票日线的起始日期早于20180101时，使用之前的结束日期为申请数据的起始日期";
+		EXPECT_STREQ(strMessage, strTest) << "使用之前的结束日期为申请数据的起始日期";
 	}
 
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage2) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
 		stockPriceCandle.SetMarket(gl_pWorldMarket);
-		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
-		pStock->SetDayLineStartDate(20171231); // 早于20180101
+		const auto pStock = gl_dataContainerTiingoStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
+		pStock->SetDayLineEndDate(19700101); // 早于20180101
 		const CString strMessage = stockPriceCandle.CreateMessage();
 		const long lMarketDate = gl_pWorldMarket->GetMarketDate();
 		const long year = lMarketDate / 10000;

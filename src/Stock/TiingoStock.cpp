@@ -17,7 +17,7 @@ CTiingoStock::CTiingoStock() {
 void CTiingoStock::ResetAllUpdateDate() {
 	SetStatementLastUpdatedDate(0);
 	SetCompanyFinancialStatementUpdateDate(19800101);
-	SetDayLineUpdateDate(19800101);
+	SetDailyUpdateDate(19800101);
 	SetDayLineStartDate(29900101);
 	SetDayLineEndDate(19800101);
 	SetDayLineProcessDate(19800101);
@@ -32,7 +32,7 @@ void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
 	m_strTiingoPermaTicker = setTiingoStock.m_TiingoPermaTicker;
 	m_strSymbol = setTiingoStock.m_Ticker;
 	m_strName = setTiingoStock.m_Name;
-	m_fIsActive = setTiingoStock.m_IsActive;
+	SetActive(setTiingoStock.m_IsActive);
 	m_fIsADR = setTiingoStock.m_IsADR;
 	m_iSicCode = setTiingoStock.m_SicCode;
 	m_strSicIndustry = setTiingoStock.m_SicIndustry;
@@ -77,7 +77,7 @@ void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
 	setTiingoStock.m_TiingoPermaTicker = m_strTiingoPermaTicker;
 	setTiingoStock.m_Ticker = m_strSymbol;
 	setTiingoStock.m_Name = m_strName;
-	setTiingoStock.m_IsActive = m_fIsActive;
+	setTiingoStock.m_IsActive = IsActive();
 	setTiingoStock.m_IsADR = m_fIsADR;
 	setTiingoStock.m_SicCode = m_iSicCode;
 	setTiingoStock.m_SicIndustry = m_strSicIndustry;
@@ -229,6 +229,13 @@ void CTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
 	SetUpdateProfileDB(true);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 使用从daily meta处得到的数据更新tiingo股票profile。
+// 目前只使用日线开始和结束两个数据，其他数据暂时忽略。
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CTiingoStock::UpdateDailyMeta(const CTiingoStockDailyMetaPtr& pMeta) {
 	if (pMeta->m_lHistoryDayLineStartDate == 19000101) {
 		SetHistoryDayLineStartDate(19500101);
@@ -277,7 +284,6 @@ bool CTiingoStock::HaveNewDayLineData() {
 void CTiingoStock::CheckUpdateStatus(long lTodayDate) {
 	CheckFinancialStateUpdateStatus(lTodayDate);
 	CheckIPOStatus(lTodayDate);
-	CheckDayLineUpdateStatus(lTodayDate);
 	CheckStockDailyMetaStatus(lTodayDate);
 }
 
@@ -311,6 +317,7 @@ void CTiingoStock::CheckIPOStatus(long lCurrentDate) {
 		}
 		return;
 	}
+	auto l = GetDayLineEndDate();
 	if (IsEarlyThen(GetDayLineEndDate(), lCurrentDate, 30)) {
 		if (GetDayLineEndDate() == 19800101) {
 			if (!IsNotChecked()) {
@@ -332,21 +339,6 @@ void CTiingoStock::CheckIPOStatus(long lCurrentDate) {
 			return;
 		}
 	}
-}
-
-bool CTiingoStock::CheckDayLineUpdateStatus(long lCurrentDate) {
-	ASSERT(IsUpdateDayLine()); // 默认状态为日线数据需要更新
-
-	if (IsDelisted()) {// 每七天检查一次停牌股票
-		if (IsEarlyThen(GetDayLineUpdateDate(), lCurrentDate, 7)) return true;
-		SetUpdateDayLine(false);
-		return false;
-	}
-	if (GetDayLineEndDate() == lCurrentDate) {
-		SetUpdateDayLine(false);
-		return false;
-	}
-	return true;
 }
 
 bool CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
