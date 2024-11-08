@@ -182,7 +182,6 @@ namespace FireBirdTest {
 			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_llTiingoBandWidthLeft = gl_systemConfiguration.GetTiingoBandWidthLeft();
 
 			m_tiingoStockProduct.SetMarket(gl_pWorldMarket);
 			m_tiingoStockProduct.SetIndex(0);
@@ -191,7 +190,6 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			gl_systemConfiguration.SetTiingoBandWidthLeft(m_llTiingoBandWidthLeft);
 			gl_systemConfiguration.SetUpdateDB(false);
 			gl_dataContainerTiingoStock.GetStock(_T("A"))->SetUpdateProfileDB(false);
 			gl_dataContainerTiingoStock.GetStock(_T("AA"))->SetUpdateProfileDB(false);
@@ -217,7 +215,6 @@ namespace FireBirdTest {
 		CTiingoStockPtr pTiingoStock = nullptr;
 		long long llDataSize = m_pWebData->GetBufferLength();
 		m_tiingoStockProduct.ParseAndStoreWebData(m_pWebData);
-		EXPECT_EQ(gl_systemConfiguration.GetTiingoBandWidthLeft(), m_llTiingoBandWidthLeft - llDataSize);
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			break;

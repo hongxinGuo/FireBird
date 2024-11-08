@@ -31,7 +31,6 @@ void CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			}
 		}
 	}
-	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

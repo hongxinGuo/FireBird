@@ -179,7 +179,6 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			gl_systemConfiguration.SetTiingoBandWidthLeft(5368709120);
 			gl_systemConfiguration.SetUpdateDB(false);
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
 			SCOPED_TRACE("");

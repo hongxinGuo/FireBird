@@ -72,7 +72,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime(), 3600000 / 100) << "默认每小时查询最大数量为100";
 
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount());
-		EXPECT_EQ(gl_systemConfiguration.GetTiingoBandWidthLeft(), 5368709120);
 
 		EXPECT_EQ(gl_systemConfiguration.GetInsideTransactionUpdateRate(), 30);
 		EXPECT_EQ(gl_systemConfiguration.GetStockProfileUpdateRate(), 365);

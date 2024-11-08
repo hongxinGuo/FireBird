@@ -122,7 +122,7 @@ void CTiingoStock::UpdateFinancialStateDB() {
 	const size_t lSize = m_pvFinancialState->size();
 	long lLastDate = 0;
 
-	setFinancialState.m_strFilter = _T("[symbol] = '");
+	setFinancialState.m_strFilter = _T("[Symbol] = '");
 	setFinancialState.m_strFilter += m_strSymbol;
 	setFinancialState.m_strFilter += _T("'");
 	setFinancialState.m_strSort = _T("[yearQuarter]");
@@ -283,7 +283,6 @@ bool CTiingoStock::HaveNewDayLineData() {
 
 void CTiingoStock::CheckUpdateStatus(long lTodayDate) {
 	CheckFinancialStateUpdateStatus(lTodayDate);
-	CheckIPOStatus(lTodayDate);
 	CheckStockDailyMetaStatus(lTodayDate);
 }
 
@@ -293,51 +292,6 @@ void CTiingoStock::CheckFinancialStateUpdateStatus(long lTodayDate) {
 	}
 	else {
 		m_fUpdateFinancialState = false;
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////
-//
-// 基本不再使用此标识。目前只用于区分是否是活跃股票。
-// 
-//
-//////////////////////////////////////////////////////////////////////////////////////
-void CTiingoStock::CheckIPOStatus(long lCurrentDate) {
-	if (GetHistoryDayLineStartDate() == 19000101) { // 从未申请过StockDailyMeta?
-		if (!IsNotChecked()) {
-			SetIPOStatus(_STOCK_NOT_CHECKED_);
-			SetUpdateProfileDB(true);
-		}
-		return;
-	}
-	if (GetHistoryDayLineStartDate() == 19500101) { // 没有日线
-		if (!IsDelisted()) {
-			SetIPOStatus(_STOCK_DELISTED_);
-			SetUpdateProfileDB(true);
-		}
-		return;
-	}
-	auto l = GetDayLineEndDate();
-	if (IsEarlyThen(GetDayLineEndDate(), lCurrentDate, 30)) {
-		if (GetDayLineEndDate() == 19800101) {
-			if (!IsNotChecked()) {
-				SetIPOStatus(_STOCK_NOT_CHECKED_);
-				SetUpdateProfileDB(true);
-			}
-			return;
-		}
-		if (!IsDelisted()) {
-			SetIPOStatus(_STOCK_DELISTED_);
-			SetUpdateProfileDB(true);
-		}
-		return;
-	}
-	else {
-		if (!IsIPOed()) {
-			SetIPOStatus(_STOCK_IPOED_);
-			SetUpdateProfileDB(true);
-			return;
-		}
 	}
 }
 

@@ -15,7 +15,7 @@ void CSetTiingoCompanyFinancialState::DoFieldExchange(CFieldExchange* pFX) {
 	// 成员变量的类型，而不是数据库字段的类型。
 	// ODBC 尝试自动将列值转换为所请求的类型
 	RFX_Long(pFX, _T("[ID]"), m_ID);
-	RFX_Text(pFX, _T("symbol"), m_symbol);
+	RFX_Text(pFX, _T("Symbol"), m_symbol);
 	RFX_Text(pFX, _T("exchange"), m_exchange);
 	RFX_Int(pFX, _T("yearQuarter"), m_yearQuarter);
 	RFX_Text(pFX, _T("accoci"), m_accoci);

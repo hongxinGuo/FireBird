@@ -28,7 +28,7 @@
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
     <ClInclude Include="..\src\ClassDeclaration.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.h" />
-    <ClInclude Include="..\src\Data Container\ContainerTiingoNewSymbol.h" />
+    <ClInclude Include="..\src\Data Container\ContainerTiingoSymbol.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockDayLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerVirtualStock.h" />
     <ClInclude Include="..\src\Data Container\ContainerChinaDayLine.h" />

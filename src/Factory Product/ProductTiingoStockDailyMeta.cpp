@@ -50,7 +50,6 @@ void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		}
 	}
 	pStock->SetUpdateStockDailyMeta(false);
-	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

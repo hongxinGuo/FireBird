@@ -93,7 +93,6 @@ namespace FireBirdTest {
 			pStock->SetUpdateStockDailyMeta(true);
 			pStock->SetUpdateProfileDB(false);
 
-			gl_systemConfiguration.SetTiingoBandWidthLeft(5368709120);
 			gl_systemConfiguration.SetUpdateDB(false);
 
 			SCOPED_TRACE("");
@@ -163,7 +162,6 @@ namespace FireBirdTest {
 			const Test_TiingoWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pWebData = pData->m_pData;
-			m_llTiingoBandWidthLeft = gl_systemConfiguration.GetTiingoBandWidthLeft();
 		}
 
 		void TearDown() override {

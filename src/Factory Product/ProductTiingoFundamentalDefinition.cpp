@@ -29,7 +29,6 @@ void CProductTiingoFundamentalDefinition::ParseAndStoreWebData(CWebDataPtr pWebD
 			}
 		}
 	}
-	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

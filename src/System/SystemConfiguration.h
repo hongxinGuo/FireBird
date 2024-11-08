@@ -135,17 +135,6 @@ public:
 		m_fUpdateDB = true;
 		m_lTiingoDailyRequestLimit = lTiingoDailyRequestLimit;
 	}
-	[[nodiscard]] long long GetTiingoBandWidth() const noexcept { return m_llTiingoBandWidth; }
-	void SetTiingoBandWidth(const long long llTiingoBandWidth) noexcept {
-		m_fUpdateDB = true;
-		m_llTiingoBandWidth = llTiingoBandWidth;
-	}
-	[[nodiscard]] long long GetTiingoBandWidthLeft() const noexcept { return m_llTiingoBandWidthLeft; }
-	void DecreaseTiingoBandWidth(long long llSize) noexcept { m_llTiingoBandWidthLeft -= llSize; }
-	void SetTiingoBandWidthLeft(const long long llTiingoBandWidthLeft) noexcept {
-		m_fUpdateDB = true;
-		m_llTiingoBandWidthLeft = llTiingoBandWidthLeft;
-	}
 
 	// WebSocket
 	[[nodiscard]] bool IsUsingFinnhubWebSocket() const noexcept { return m_bUsingFinnhubWebSocket; }

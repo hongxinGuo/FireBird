@@ -52,6 +52,8 @@ public:
 	void TaskCreateTiingoTradeDayDayLine(long lCurrentTime);
 	void TaskProcessTiingoDayLine(long lCurrentTime);
 
+	static void TaskDeleteDelistedStock();
+
 	void TaskPerSecond(long lCurrentTime);
 
 	bool UpdateEPSSurpriseDB();
@@ -93,6 +95,10 @@ public:
 
 	void UpdateMarketStatus(const CMarketStatussPtr& pv) const;
 	void UpdateMarketHoliday(const CMarketHolidaysPtr& pv) const;
+
+	static void DeleteTiingoDelistedStock();
+	static void DeleteTiingoDayLine(const CTiingoStockPtr& pStock);
+	static void DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock);
 
 	bool IsReadyToInquireWebData(long lCurrentMarketTime) override { return !IsResetTime(lCurrentMarketTime); }
 

@@ -58,7 +58,6 @@ public:
 
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckFinancialStateUpdateStatus(long lTodayDate);
-	void CheckIPOStatus(long lCurrentDate);
 	bool CheckStockDailyMetaStatus(long lCurrentDate);
 
 	long GetStatementLastUpdatedDate() { return m_jsonUpdateDate["StatementLastUpdated"]; }

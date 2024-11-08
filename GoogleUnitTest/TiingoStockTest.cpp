@@ -384,61 +384,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 	}
 
-	//todo test
-	TEST_F(CTiingoStockTest, TestCheckIOPStatus1) {
-		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_DELISTED_);
-		EXPECT_EQ(stock.GetHistoryDayLineStartDate(), 19000101); // 未申请过dailyMeta。
-
-		stock.CheckIPOStatus(20240101);
-
-		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_NOT_CHECKED_) << "从未申请过日线";
-		EXPECT_TRUE(stock.IsUpdateProfileDB());
-	}
-	TEST_F(CTiingoStockTest, TestCheckIOPStatus2) {
-		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_NOT_CHECKED_);
-		EXPECT_EQ(stock.GetHistoryDayLineStartDate(), 19500101); // 申请过DailyMeta，发现没有日线后，修改日期至19500101
-		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
-		stock.SetDayLineEndDate(20240101);
-
-		stock.CheckIPOStatus(20240201);
-
-		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_DELISTED_) << "本股票没有任何日线数据";
-		EXPECT_TRUE(stock.IsUpdateProfileDB());
-	}
-
-	TEST_F(CTiingoStockTest, TestCheckIOPStatus3) {
-		EXPECT_EQ(stock.GetHistoryDayLineStartDate(), 19600101); // 申请过dailyMeta，日线开始日期
-		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_DELISTED_);
-		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101); // 没有申请过日线数据
-
-		stock.CheckIPOStatus(20240131);
-
-		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_NOT_CHECKED_) << "未申请过日线数据，状态改为没检查过";
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-	}
-
-	TEST_F(CTiingoStockTest, TestCheckIOPStatus4) {
-		EXPECT_EQ(stock.GetHistoryDayLineStartDate(), 19600101); // 申请过dailyMeta，日线开始日期
-		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_DELISTED_);
-		stock.SetDayLineEndDate(19900101); // 申请过日线数据，结束日期未19900101
-
-		stock.CheckIPOStatus(20240131);
-
-		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_DELISTED_) << "未申请过日线数据，状态改为没检查过";
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-	}
-
-	TEST_F(CTiingoStockTest, TestCheckIOPStatus5) {
-		EXPECT_EQ(stock.GetHistoryDayLineStartDate(), 19600101); // 申请过dailyMeta，日线开始日期
-		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_DELISTED_);
-		stock.SetDayLineEndDate(20240130); // 申请过日线数据，结束日期未20240130，未早于30天
-
-		stock.CheckIPOStatus(20240131);
-
-		EXPECT_EQ(stock.GetIPOStatus(), _STOCK_IPOED_) << "活跃股票";
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-	}
-
 	TEST_F(CTiingoStockTest, TestAdd52WeekLow) {
 		EXPECT_FALSE(stock.Have52WeekLowDate(20000101)) << "初始时容器为空";
 

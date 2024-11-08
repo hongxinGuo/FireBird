@@ -13,6 +13,7 @@ public:
 	CTiingoStocksPtr ParseTiingoStockSymbol(const CWebDataPtr& pWebData);
 
 	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
+	static CTiingoStocksPtr DeleteDuplicatedSymbol(const CTiingoStocksPtr& pvTiingoStock);
 };
 
 using CProductTiingoStockProfilePtr = shared_ptr<CProductTiingoStockProfile>;

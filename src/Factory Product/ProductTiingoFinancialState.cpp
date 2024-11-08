@@ -122,7 +122,6 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		pTiingoStock->UpdateFinancialState(pvTiingoFinancialState);
 		pTiingoStock->SetUpdateFinancialStateDB(true);
 	}
-	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

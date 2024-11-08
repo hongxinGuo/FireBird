@@ -88,7 +88,6 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 新股票？
 		gl_dataContainerTiingoNewSymbol.Delete(pTiingoStock); //Note 下载完日线数据后，就从Tiingo新代码容器中删除之。
 	}
-	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

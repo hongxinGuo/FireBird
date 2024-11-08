@@ -864,7 +864,7 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockDailyMeta.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerTiingoNewSymbol.h">
+    <ClInclude Include="..\src\Data Container\ContainerTiingoSymbol.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
   </ItemGroup>

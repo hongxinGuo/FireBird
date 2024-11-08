@@ -116,8 +116,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate(), 19800101);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoHourLyRequestLimit(), 500);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoDailyRequestLimit(), 20000);
-		EXPECT_EQ(gl_systemConfiguration.GetTiingoBandWidth(), 5368709120);
-		EXPECT_EQ(gl_systemConfiguration.GetTiingoBandWidthLeft(), 5368709120);
 
 		EXPECT_EQ(gl_systemConfiguration.GetInsideTransactionUpdateRate(), 30);
 		EXPECT_EQ(gl_systemConfiguration.GetStockProfileUpdateRate(), 365);

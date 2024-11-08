@@ -203,7 +203,6 @@ namespace FireBirdTest {
 
 		void TearDown() override {
 			// clearUp
-			gl_systemConfiguration.SetTiingoBandWidthLeft(5368709120);
 			gl_systemConfiguration.SetUpdateDB(false);
 			gl_dataContainerTiingoStock.GetStock(_T("AAPL"))->SetUpdateProfileDB(false);
 			gl_dataContainerTiingoStock.GetStock(0)->SetIPOStatus(_STOCK_DELISTED_);

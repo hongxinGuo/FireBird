@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "ContainerTiingoNewSymbol.h"
+#include "ContainerTiingoSymbol.h"
 
-CContainerTiingoNewSymbol::CContainerTiingoNewSymbol() {
-	CContainerTiingoNewSymbol::Reset();
+CContainerTiingoSymbol::CContainerTiingoSymbol() {
+	CContainerTiingoSymbol::Reset();
 }
 
-CContainerTiingoNewSymbol::~CContainerTiingoNewSymbol() {
+CContainerTiingoSymbol::~CContainerTiingoSymbol() {
 }
 
-void CContainerTiingoNewSymbol::Reset() {
+void CContainerTiingoSymbol::Reset() {
 	CContainerVirtualStock::Reset();
 }

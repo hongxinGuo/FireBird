@@ -222,7 +222,7 @@ namespace FireBirdTest {
 		setNaicsIndustry.m_pDatabase->CommitTrans();
 		setNaicsIndustry.Close();
 
-		setNaicsIndustry2.m_strFilter = _T("[symbol] = 'AAAAA'");
+		setNaicsIndustry2.m_strFilter = _T("[Symbol] = 'AAAAA'");
 		setNaicsIndustry2.Open();
 		setNaicsIndustry2.m_pDatabase->BeginTrans();
 		EXPECT_TRUE(!setNaicsIndustry2.IsEOF()) << "此时已经存入了AAAAA";

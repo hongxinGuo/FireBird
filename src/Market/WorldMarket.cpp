@@ -437,6 +437,12 @@ void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 	}
 }
 
+void CWorldMarket::TaskDeleteDelistedStock() {
+	gl_runtime.background_executor()->post([] {
+		DeleteTiingoDelistedStock();
+	});
+}
+
 void CWorldMarket::TaskPerSecond(long lCurrentTime) {
 	static int m_iCountDownPerMinute = 59;
 	static int m_iCountDownPerHour = 3599;
@@ -970,4 +976,45 @@ void CWorldMarket::UpdateMarketHoliday(const CMarketHolidaysPtr& pv) const {
 	for (auto p : *pv) {
 		m_pvMarketHoliday->push_back(p);
 	}
+}
+
+void CWorldMarket::DeleteTiingoDelistedStock() {
+	while (gl_dataContainerTiingoDelistedSymbol.Size() > 0) {
+		auto pTiingoDelistedStock = gl_dataContainerTiingoDelistedSymbol.GetStock(0);
+		DeleteTiingoDayLine(pTiingoDelistedStock);
+		DeleteTiingoFinancialStatement(pTiingoDelistedStock);
+		ASSERT(gl_dataContainerTiingoStock.IsSymbol(pTiingoDelistedStock));
+		gl_dataContainerTiingoStock.Delete(pTiingoDelistedStock->GetSymbol());
+		gl_dataContainerTiingoDelistedSymbol.Delete(pTiingoDelistedStock);
+	}
+}
+
+void CWorldMarket::DeleteTiingoDayLine(const CTiingoStockPtr& pStock) {
+	CSetTiingoStockDayLine setDayLine;
+	setDayLine.m_strFilter = _T("[Symbol] = '");
+	setDayLine.m_strFilter += pStock->GetSymbol() + _T("'");
+
+	setDayLine.Open();
+	setDayLine.m_pDatabase->BeginTrans();
+	while (!setDayLine.IsEOF()) {
+		setDayLine.Delete();
+		setDayLine.MoveNext();
+	}
+	setDayLine.m_pDatabase->CommitTrans();
+	setDayLine.Close();
+}
+
+void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock) {
+	CSetTiingoCompanyFinancialState setDayLine;
+	setDayLine.m_strFilter = _T("[Symbol] = '");
+	setDayLine.m_strFilter += pStock->GetSymbol() + _T("'");
+
+	setDayLine.Open();
+	setDayLine.m_pDatabase->BeginTrans();
+	while (!setDayLine.IsEOF()) {
+		setDayLine.Delete();
+		setDayLine.MoveNext();
+	}
+	setDayLine.m_pDatabase->CommitTrans();
+	setDayLine.Close();
 }

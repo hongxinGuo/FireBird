@@ -38,7 +38,6 @@ void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pCrypto = gl_dataFinnhubCryptoSymbol.GetSymbol(m_lIndex);
 	const CDayLinesPtr pvDayLine = ParseTiingoCryptoDayLine(pWebData);
 	pCrypto->SetUpdateDayLine(false);
-	gl_systemConfiguration.DecreaseTiingoBandWidth(pWebData->GetBufferLength());
 	/*
 	if (!pvDayLine->empty()) {
 		for (const auto& pDayLine2 : *pvDayLine) {
