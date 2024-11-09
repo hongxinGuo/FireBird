@@ -45,19 +45,12 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 ///////////////////////////////////////////////////////////////////////////////////////////
 CString CProductTiingoStockDayLine::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
-	long lStartDate, lEndDate;
 
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
-	if (pStock->IsActive()) { // 活跃股票
-		lStartDate = 19800101;
-		if (pStock->GetDayLineEndDate() > 19800101) lStartDate = pStock->GetDayLineEndDate();
-		lEndDate = GetMarket()->GetMarketDate();
-	}
-	else { // 退市股票更新全部日线
-		lStartDate = 19800101;
-		lEndDate = GetMarket()->GetMarketDate();
-	}
-	CString strParam = GetTiingoDayLineInquiryParam(pStock->GetSymbol(), lStartDate, lEndDate); // 如果日线从未申请过时，申请完整日线。
+	ASSERT(pStock->IsActive()); // 活跃股票
+	long lStartDate = 19800101;
+	if (pStock->GetDayLineEndDate() > 19800101) lStartDate = pStock->GetDayLineEndDate();
+	CString strParam = GetTiingoDayLineInquiryParam(pStock->GetSymbol(), lStartDate, GetMarket()->GetMarketDate()); // 如果日线从未申请过时，申请完整日线。
 	m_strInquiringSymbol = pStock->GetSymbol();
 
 	m_strInquiry = m_strInquiryFunction + strParam;

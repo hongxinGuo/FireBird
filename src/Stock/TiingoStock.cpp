@@ -218,14 +218,14 @@ void CTiingoStock::SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine
 
 void CTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
 	ASSERT(gl_systemConfiguration.IsPaidTypeTiingoAccount()); // 调用此函数时，必须保证是付费账户。
-	m_strTiingoSector = pStock->m_strTiingoSector;
-	m_strTiingoIndustry = pStock->m_strTiingoIndustry;
-	m_iSicCode = pStock->m_iSicCode;
-	m_strSicSector = pStock->m_strSicSector;
-	m_strSicIndustry = pStock->m_strSicIndustry;
-	m_strLocation = pStock->m_strLocation;
-	m_strCompanyWebSite = pStock->m_strCompanyWebSite;
-	m_strSECFilingWebSite = pStock->m_strSECFilingWebSite;
+	if (pStock->m_strTiingoSector.GetLength() > 1) m_strTiingoSector = pStock->m_strTiingoSector;
+	if (pStock->m_strTiingoIndustry.GetLength() > 1)m_strTiingoIndustry = pStock->m_strTiingoIndustry;
+	if (pStock->m_iSicCode > 0)m_iSicCode = pStock->m_iSicCode;
+	if (pStock->m_strSicSector.GetLength() > 1)m_strSicSector = pStock->m_strSicSector;
+	if (pStock->m_strSicIndustry.GetLength() > 1)m_strSicIndustry = pStock->m_strSicIndustry;
+	if (pStock->m_strLocation.GetLength() > 1)m_strLocation = pStock->m_strLocation;
+	if (pStock->m_strCompanyWebSite.GetLength() > 1)m_strCompanyWebSite = pStock->m_strCompanyWebSite;
+	if (pStock->m_strSECFilingWebSite.GetLength() > 1)m_strSECFilingWebSite = pStock->m_strSECFilingWebSite;
 	SetUpdateProfileDB(true);
 }
 

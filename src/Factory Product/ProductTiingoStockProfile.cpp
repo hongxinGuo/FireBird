@@ -33,7 +33,14 @@ void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	std::ranges::sort(*pvTiingoStock, [](const CTiingoStockPtr& pData1, const CTiingoStockPtr& pData2) { return pData1->GetSymbol().Compare(pData2->GetSymbol()) < 0; });
 
 	// 删除代码集中重复的代码，相同代码的多个活跃股票则保留DailyUpdate最新的那个，其他也都删除。
-	const auto pvNewTiingoStock = DeleteDuplicatedSymbol(pvTiingoStock);
+	CTiingoStocksPtr pvNewTiingoStock;
+
+	if (pvTiingoStock->empty()) {
+		pvNewTiingoStock = pvTiingoStock;
+	}
+	else {
+		pvNewTiingoStock = DeleteDuplicatedSymbol(pvTiingoStock);
+	}
 
 	gl_dataContainerTiingoDelistedSymbol.Reset();
 	gl_dataContainerTiingoNewSymbol.Reset();

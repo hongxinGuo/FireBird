@@ -83,6 +83,8 @@ namespace FireBirdTest {
 
 			auto pStock = gl_dataContainerTiingoStock.GetStock("AAPL");
 			EXPECT_TRUE(pStock->IsUpdateStockDailyMeta());
+			auto index = gl_dataContainerTiingoStock.GetOffset(pStock);
+			m_tiingoStockDailyMetaProduct.SetIndex(index);
 		}
 
 		void TearDown() override {

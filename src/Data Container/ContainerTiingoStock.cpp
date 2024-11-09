@@ -75,7 +75,6 @@ void CContainerTiingoStock::UpdateDB() {
 bool CContainerTiingoStock::LoadDB() {
 	CSetTiingoStock setTiingoStock;
 	CString strSymbol = _T("");
-	long lDayLine{ 0 }, lFS{ 0 };
 
 	setTiingoStock.m_strSort = _T("[Ticker]");
 	setTiingoStock.Open();
@@ -86,8 +85,6 @@ bool CContainerTiingoStock::LoadDB() {
 			pTiingoStock->Load(setTiingoStock);
 			pTiingoStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 			Add(pTiingoStock);
-			if (pTiingoStock->IsUpdateFinancialStateDB()) lFS++;
-			if (pTiingoStock->IsUpdateDayLine()) lDayLine++;
 		}
 		else {
 			setTiingoStock.Delete(); // É¾³ýÖØ¸´´úÂë
@@ -97,7 +94,6 @@ bool CContainerTiingoStock::LoadDB() {
 	setTiingoStock.m_pDatabase->CommitTrans();
 	setTiingoStock.Close();
 
-	TRACE("Tiingo dayLine# %d, Financial statement# %d", lDayLine, lFS);
 	return true;
 }
 

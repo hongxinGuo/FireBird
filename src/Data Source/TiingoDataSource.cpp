@@ -381,12 +381,7 @@ bool CTiingoDataSource::GenerateFinancialState() {
 					fFound = true;
 					break;
 				}
-				else {
-					if (setDOW30.contains(pTiingoStock->GetSymbol())) { // 免费账户或者power账户只能申请DOW30.
-						fFound = true;
-						break;
-					}
-				}
+				pTiingoStock->SetUpdateFinancialState(false); // 免费账户不更新
 			}
 		}
 		if (fFound) {

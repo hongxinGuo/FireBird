@@ -45,7 +45,7 @@ namespace FireBirdTest {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
 		stockPriceCandle.SetMarket(gl_pWorldMarket);
 		const auto pStock = gl_dataContainerTiingoStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
-		EXPECT_TRUE(pStock->GetDayLineEndDate() < 19800101);
+		pStock->SetDayLineEndDate(19700101);
 		const CString strMessage = stockPriceCandle.CreateMessage();
 		const long lMarketDate = gl_pWorldMarket->GetMarketDate();
 		const long year = lMarketDate / 10000;
@@ -237,61 +237,52 @@ namespace FireBirdTest {
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_);
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 2: //
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_);
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 3: //
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_);
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 5:
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_);
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 6:
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_) << "设置证券状态为delisted";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 7:
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_) << "设置证券状态为delisted";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 8:
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			EXPECT_TRUE(pStock->IsDelisted());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 9:
 			EXPECT_EQ(pStock->GetDayLineSize(), 1);
-			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_) << "设置证券状态为delisted";
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_TRUE(pStock->IsUpdateDayLineDB());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			break;
 		case 10:
 			EXPECT_EQ(pStock->GetDayLineSize(), 2);
-			EXPECT_EQ(pStock->GetIPOStatus(), _STOCK_DELISTED_) << "设置证券状态为delisted";
 			EXPECT_FALSE(pStock->IsUpdateDayLine());
 			EXPECT_TRUE(pStock->IsUpdateDayLineDB());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());

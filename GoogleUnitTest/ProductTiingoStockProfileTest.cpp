@@ -71,7 +71,7 @@ namespace FireBirdTest {
 	// 第二个数据缺项
 	Test_TiingoWebData tiingoStockWebData3(3, _T(""),_T("[{\"permaTicker\":\"US000000000500\",\"ticker\":\"a\",\"name\":\"Agilent Technologies Inc\",\"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-05T23:02:07.999Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.052Z\",\"dataProviderPermaTicker\":\"123456\"},{\"Missing\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\",\"dataProviderPermaTicker\":\"123456\"}]"));
 	// 正确的数据
-	Test_TiingoWebData tiingoStockWebData4(4, _T(""), _T("[{\"permaTicker\":\"US000000000191\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"sector have data\",\"industry\":\"industry have new data\",\"sicCode\":1234,\"sicSector\":\"sicSector have data\",\"sicIndustry\":\"sicIndustry have data\",\"reportingCurrency\":\"usd\",\"location\":\"location have data\",\"companyWebsite\":\"companyWebsite have data\",\"secFilingWebsite\":\"secFilingWebsite have data\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\",\"dataProviderPermaTicker\":\"123456\"}]"));
+	Test_TiingoWebData tiingoStockWebData4(4, _T(""), _T("[{\"permaTicker\":\"US000000000191\",\"ticker\":\"aa\",\"name\":\"Alcoa Corp\", \"isActive\":true,\"isADR\":false,\"sector\":\"sector have data\",\"industry\":null,\"sicCode\":1234,\"sicSector\":\"sicSector have data\",\"sicIndustry\":\"sicIndustry have data\",\"reportingCurrency\":\"usd\",\"location\":\"location have data\",\"companyWebsite\":\"companyWebsite have data\",\"secFilingWebsite\":\"secFilingWebsite have data\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\",\"dataProviderPermaTicker\":\"123456\"}]"));
 	// 正确的数据
 	Test_TiingoWebData tiingoStockWebData10(10, _T(""),_T("[{\"permaTicker\":\"US000000001247\",\"ticker\":\"new symbol\",\"name\":\"Agilent Technologies Inc\",\"isActive\":true,\"isADR\":false,\"sector\":\"\",\"industry\":\"free\",\"sicCode\":\"Field\",\"sicSector\":\"not\",\"sicIndustry\":\"for\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"free\",\"secFilingWebsite\":\"Field\",\"statementLastUpdated\":\"2021-03-05T23:02:07.999Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.052Z\",\"dataProviderPermaTicker\":\"123456\"},{\"permaTicker\":\"US000000000091\",\"ticker\":\"aa\",\"name\":\"New Name\", \"isActive\":true,\"isADR\":false,\"sector\":\"Field not available for free/evaluation\",\"industry\":\"Field not available for free/evaluation\",\"sicCode\":\"Field not available for free/evaluation\",\"sicSector\":\"Field not available for free/evaluation\",\"sicIndustry\":\"Field not available for free/evaluation\",\"reportingCurrency\":\"usd\",\"location\":\"Field not available for free/evaluation\",\"companyWebsite\":\"Field not available for free/evaluation\",\"secFilingWebsite\":\"Field not available for free/evaluation\",\"statementLastUpdated\":\"2021-03-02T23:02:04.611Z\",\"dailyLastUpdated\":\"2021-03-12T21:54:08.226Z\",\"dataProviderPermaTicker\":\"123456\"}]"));
 
@@ -123,7 +123,7 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvStock->at(0)->m_strName, _T("Alcoa Corp"));
 			EXPECT_TRUE(m_pvStock->at(0)->IsActive());
 			EXPECT_FALSE(m_pvStock->at(0)->m_fIsADR);
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoIndustry, _T("industry have new data"));
+			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoIndustry, _T("")) << "内容为null时返回空串_T("")";
 			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoSector, _T("sector have data"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strSicIndustry, _T("sicIndustry have data"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strSicSector, _T("sicSector have data"));
@@ -213,7 +213,6 @@ namespace FireBirdTest {
 	//todo 完善之
 	TEST_P(ProcessTiingoStockProfileTest, TestProcessStockProfile) {
 		CTiingoStockPtr pTiingoStock = nullptr;
-		long long llDataSize = m_pWebData->GetBufferLength();
 		m_tiingoStockProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
@@ -223,14 +222,10 @@ namespace FireBirdTest {
 		case 3: // 第二个数据缺乏address项,返回一个成功
 			break;
 		case 4:
-			EXPECT_TRUE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
+			EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
 			break;
 		case 10:
-			EXPECT_TRUE(gl_dataContainerTiingoStock.IsSymbol(_T("NEW SYMBOL")));
-			EXPECT_TRUE((pTiingoStock = gl_dataContainerTiingoStock.GetStock(_T("NEW SYMBOL"))) != nullptr);
-
-		// 恢复原状
-			gl_dataContainerTiingoStock.Delete(pTiingoStock);
+			EXPECT_FALSE(gl_dataContainerTiingoStock.IsSymbol(_T("NEW SYMBOL"))) << "抛弃退市股票";
 			break;
 		default:
 			break;

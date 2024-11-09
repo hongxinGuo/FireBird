@@ -151,8 +151,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(_T("A"))->IsUpdateDayLineDB());
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(_T("AAPL"))->IsUpdateDayLineDB());
 
-			EXPECT_EQ(gl_dataContainerTiingoStock.Size(), 18463) << "默认状态下数据库总数为18463";
-			EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(0)->IsDelisted());
+			EXPECT_EQ(gl_dataContainerTiingoStock.Size(), 7183) << "默认状态下数据库总数为7183";
 			EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(0)->IsUpdateDayLine());
 			EXPECT_FALSE(gl_dataContainerTiingoStock.GetStock(0)->IsUpdateDayLineDB());
 

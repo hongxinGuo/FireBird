@@ -48,7 +48,9 @@ bool CContainerVirtualStock::IsUpdateDayLineDB() noexcept {
 
 void CContainerVirtualStock::Add(const CVirtualStockPtr& pStock) {
 	if (pStock == nullptr) return;
-	if (IsSymbol(pStock->GetSymbol())) return;
+	if (IsSymbol(pStock->GetSymbol())) {
+		return;
+	}
 
 	m_mapSymbol[pStock->GetSymbol()] = m_vStock.size(); // 使用下标生成新的映射
 	m_vStock.push_back(pStock);
