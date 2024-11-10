@@ -51,7 +51,7 @@ class CNeteaseDayLineWebInquiry;
 
 // Web data source
 class CInquireEngine;
-typedef shared_ptr<CInquireEngine> CDataInquireEnginePtr;
+typedef shared_ptr<CInquireEngine> CInquireEnginePtr;
 class CVirtualDataSource;
 typedef shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;
 

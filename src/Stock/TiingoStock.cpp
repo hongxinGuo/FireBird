@@ -283,6 +283,7 @@ bool CTiingoStock::HaveNewDayLineData() {
 
 void CTiingoStock::CheckUpdateStatus(long lTodayDate) {
 	CheckFinancialStateUpdateStatus(lTodayDate);
+	CheckDayLineUpdateStatus(lTodayDate);
 	CheckStockDailyMetaStatus(lTodayDate);
 }
 
@@ -292,6 +293,16 @@ void CTiingoStock::CheckFinancialStateUpdateStatus(long lTodayDate) {
 	}
 	else {
 		m_fUpdateFinancialState = false;
+	}
+}
+
+void CTiingoStock::CheckDayLineUpdateStatus(long llTodayDate) {
+	if (GetDayLineEndDate() == gl_pWorldMarket->GetCurrentTradeDate()) {
+		m_fUpdateDayLine = false;
+	}
+	else {
+		ASSERT(GetDayLineEndDate() < gl_pWorldMarket->GetCurrentTradeDate());
+		m_fUpdateDayLine = true;
 	}
 }
 

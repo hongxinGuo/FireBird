@@ -41,6 +41,7 @@ CChinaMarket::CChinaMarket() {
 	}
 	m_strMarketId = _T("中国股票市场");
 	m_lMarketTimeZone = -8 * 3600; // 北京标准时间位于东八区，超前GMT8小时
+	m_lOpenMarketTime = 9 * 3600 + 900; // 中国股市开市时间为九点十五分
 
 	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
 	m_fUsingTengxunRTDataReceiver = true; // 使用腾讯实时数据提取器

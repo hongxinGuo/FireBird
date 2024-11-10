@@ -38,7 +38,7 @@ void CVirtualDataSource::Run(long lMarketTime) {
 		gl_runtime.thread_executor()->post([p, lMarketTime] { //Note 此处必须使用thread_executor
 				p->GenerateInquiryMessage(lMarketTime);
 				if (p->IsInquiring()) {
-					p->InquireData(lMarketTime);
+					p->InquireData();
 				}
 			});
 	}
@@ -54,19 +54,18 @@ void CVirtualDataSource::Run(long lMarketTime) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataSource::InquireData(const long lMarketTime) {
+void CVirtualDataSource::InquireData() {
 	CString str = typeid(*this).name();
+	ASSERT(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
 	ASSERT(IsInquiring());
 
 	static time_t s_LastInquiryTime = 0;
 
 	vector<result<CWebDataPtr>> vResults;
 	while (HaveInquiry()) { // 一次申请可以有多个数据
-		ASSERT(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
-		ASSERT(IsInquiring());
 		GetCurrentProduct();
 		CreateCurrentInquireString();
-		CDataInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
+		CInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
 		auto background = gl_runtime.background_executor();
 		auto result = gl_runtime.background_executor()->submit([this, pEngine] { //Note 只能使用thread_pool_executor或者background_executor
 				CHighPerformanceCounter counter;
@@ -81,7 +80,6 @@ void CVirtualDataSource::InquireData(const long lMarketTime) {
 				SetCurrentInquiryTime(ttCurrentInquiryTime);
 				SetHTTPStatusCode(pEngine->GetHTTPStatusCode());
 				SetWebErrorCode(pEngine->GetErrorCode());
-				ASSERT(IsInquiring());
 				return pWebData;
 			});
 		vResults.emplace_back(std::move(result));
@@ -101,7 +99,6 @@ void CVirtualDataSource::InquireData(const long lMarketTime) {
 	else { // web error
 		m_fWebError = true;
 	}
-	ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
 	if (!gl_systemConfiguration.IsExitingSystem() && !pvWebData->empty()) {
 		m_eErrorMessageData = IsAErrorMessageData(pvWebData->at(0)); // 返回的数据是错误信息？检查错误，判断申请资格，更新禁止目录
 		m_pCurrentProduct->ParseAndStoreWebData(pvWebData);

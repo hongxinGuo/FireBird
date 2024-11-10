@@ -82,4 +82,4 @@ private:
 	char m_dataBuffer[WEB_SOURCE_DATA_BUFFER_SIZE_]; //ÍøÂçÊı¾İ»º´æ
 };
 
-using CDataInquireEnginePtr = shared_ptr<CInquireEngine>;
+using CInquireEnginePtr = shared_ptr<CInquireEngine>;

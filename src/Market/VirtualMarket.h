@@ -73,15 +73,9 @@ public:
 	long GetDateOfMonth() const noexcept { return m_tmMarket.tm_mday; }
 	long GetYear() const noexcept { return m_tmMarket.tm_year + 1900; }
 
-	long GetLastTradeDate() noexcept { // 最后交易日的前一个交易日（从昨日九点半至本日九点半）
-		CalculateLastTradeDate();
-		return m_lMarketLastTradeDate;
-	}
-
-	long GetCurrentTradeDate() noexcept { // 最后交易日（从本日九点半至次日九点半）
-		CalculateCurrentTradeDate();
-		return m_lMarketNewestTradeDate;
-	}
+	long GetLastTradeDate() noexcept { return CalculateLastTradeDate(); }// 当前交易日的前一个交易日（从昨日开市时间至本日开市时间）
+	long GetCurrentTradeDate() noexcept { return CalculateCurrentTradeDate(); }// 当前交易日（从本日九点半至次日开市时间）
+	long GetNextTradeDate() noexcept { return CalculateNextTradeDate(); }// 下一个交易日（从次日开市时间至后日开市时间）
 
 	bool IsWorkingDay() const noexcept;
 	static bool IsWorkingDay(CTime timeCurrent) noexcept;
@@ -101,8 +95,9 @@ public:
 	CString GetStringOfMarketDateTime() const;
 
 	void CalculateTime() noexcept; // 计算本市场的各时间
-	void CalculateCurrentTradeDate() noexcept; // 计算当前交易日。周一至周五为当日，周六和周日为周五
-	void CalculateLastTradeDate() noexcept; // 计算当前交易日的上一个交易日。周二至周五为上一日，周六和周日为周四，周一为周五。
+	long CalculateNextTradeDate() noexcept;
+	long CalculateCurrentTradeDate() noexcept; // 计算当前交易日。周一至周五为当日，周六和周日为周五
+	long CalculateLastTradeDate() noexcept; // 计算当前交易日的上一个交易日。周二至周五为上一日，周六和周日为周四，周一为周五。
 
 	virtual int XferMarketTimeToIndex() {// 将本市场的市场时间变成显示位置的偏移（各市场分别实现）
 		ASSERT(false);
@@ -152,13 +147,16 @@ protected:
 	// 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
 	long m_lMarketDate{ 0 }; //本市场的日期
 	long m_lMarketTime{ 0 }; // 本市场的时间
-	long m_lMarketLastTradeDate{ 0 }; // 本市场的上次交易日期
-	long m_lMarketNewestTradeDate{ 0 }; // 本市场最新的交易日期
+	long m_lMarketLastTradeDate{ 0 }; // 本市场的上次交易日
+	long m_lMarketCurrentTradeDate{ 0 }; // 本市场当前交易日
+	long m_lMarketNextTradeDate{ 0 }; // 本市场下一个交易日
 	tm m_tmMarket{ 0, 0, 0, 1, 0, 1970 }; // 本市场时间结构
 
 	//系统状态区
 	bool m_fSystemReady{ false }; // 市场初始态已经设置好.默认为假
 	bool m_fResettingMarket{ false }; // 市场正在重启标识，默认为假
+
+	long m_lOpenMarketTime{ 0 }; // 市场开市时间（由各具体市场实际确定）
 
 private:
 	bool m_fResetMarket{ true }; // 重启系统标识

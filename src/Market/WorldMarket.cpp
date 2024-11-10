@@ -30,13 +30,15 @@ CWorldMarket::CWorldMarket() {
 		TRACE("CWorldMarket市场变量只允许存在一个实例\n");
 	}
 
+	m_strMarketId = _T("美国市场");
+	m_lMarketTimeZone = 4 * 3600; // 美国股市使用美东标准时间, GMT + 4
+	m_lOpenMarketTime = 9 * 3600 + 1800; // 中国股市开市时间为九点三十分
+
 	// 无需（也无法）每日更新的变量放在这里
 	m_lCurrentUpdateEPSSurprisePos = 0;
 	m_lCurrentUpdateDayLinePos = 0; // 由于证券代码总数有二十万之多，无法在一天之内更新完，故不再重置此索引。
 	m_bFinnhubWebSiteAccessible = true;
 
-	m_strMarketId = _T("美国市场");
-	m_lMarketTimeZone = 4 * 3600; // 美国股市使用美东标准时间, GMT + 4
 	CalculateTime();
 
 	m_pvMarketStatus = make_shared<vector<CMarketStatusPtr>>();

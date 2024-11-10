@@ -22,7 +22,7 @@ public:
 	~CTiingoStock() override = default;
 
 	void ResetAllUpdateDate() override;
-	int GetRatio() const override { return 1000; };
+	int GetRatio() const override { return 10000; }; // 
 
 	void Load(CSetTiingoStock& setTiingoStock);
 	void Append(CSetTiingoStock& setTiingoStock);
@@ -58,6 +58,7 @@ public:
 
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckFinancialStateUpdateStatus(long lTodayDate);
+	void CheckDayLineUpdateStatus(long llTodayDate);
 	bool CheckStockDailyMetaStatus(long lCurrentDate);
 
 	long GetStatementLastUpdatedDate() { return m_jsonUpdateDate["StatementLastUpdated"]; }

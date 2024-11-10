@@ -104,6 +104,7 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 	auto pvTiingoIEXLastTopOFBook = make_shared<vector<CTiingoIEXTopOfBookPtr>>();
 	CString strNULL = _T(" ");
 	CTiingoIEXTopOfBookPtr pIEXLastTopOFBook = nullptr;
+	CTiingoStock stock;
 	string s1;
 	CString strNumber;
 	int year, month, day, hour, minute, second;
@@ -127,11 +128,11 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 			sscanf_s(s1.c_str(), _T("%04d-%02d-%02dT%02d:%02d:%02d+%02d:%02d"), &year, &month, &day, &hour, &minute, &second, &hourOffset, &minuteOffset);
 			pIEXLastTopOFBook->m_llTimestamp = ConvertToTTime(year, month, day, hour, minute, second, hourOffset * 100 + minuteOffset);
 
-			pIEXLastTopOFBook->m_lHigh = jsonGetDouble(itemValue, _T("high")) * 1000;
-			pIEXLastTopOFBook->m_lLow = jsonGetDouble(itemValue, _T("low")) * 1000;
-			pIEXLastTopOFBook->m_lLastClose = jsonGetDouble(itemValue, _T("prevClose")) * 1000;
-			pIEXLastTopOFBook->m_lOpen = jsonGetDouble(itemValue, _T("open")) * 1000;
-			pIEXLastTopOFBook->m_lNew = jsonGetDouble(itemValue, _T("last")) * 1000;
+			pIEXLastTopOFBook->m_lHigh = jsonGetDouble(itemValue, _T("high")) * stock.GetRatio();
+			pIEXLastTopOFBook->m_lLow = jsonGetDouble(itemValue, _T("low")) * stock.GetRatio();
+			pIEXLastTopOFBook->m_lLastClose = jsonGetDouble(itemValue, _T("prevClose")) * stock.GetRatio();
+			pIEXLastTopOFBook->m_lOpen = jsonGetDouble(itemValue, _T("open")) * stock.GetRatio();
+			pIEXLastTopOFBook->m_lNew = jsonGetDouble(itemValue, _T("last")) * stock.GetRatio();
 			pIEXLastTopOFBook->m_llVolume = jsonGetInt64(itemValue, _T("volume"));
 
 			pvTiingoIEXLastTopOFBook->push_back(pIEXLastTopOFBook);

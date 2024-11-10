@@ -465,11 +465,11 @@ namespace FireBirdTest {
 	TEST_F(CTiingoStockTest, TestUpdateRTData) {
 		CTiingoIEXTopOfBookPtr pIEX = make_shared<CTiingoIEXTopOfBook>();
 		pIEX->m_llTimestamp = 123456;
-		pIEX->m_lOpen = 1234;
-		pIEX->m_lHigh = 2345;
-		pIEX->m_lLow = 123;
-		pIEX->m_lLastClose = 23456;
-		pIEX->m_lNew = 23;
+		pIEX->m_lOpen = 12340;
+		pIEX->m_lHigh = 23450;
+		pIEX->m_lLow = 1230;
+		pIEX->m_lLastClose = 234560;
+		pIEX->m_lNew = 230;
 		pIEX->m_llVolume = 100000;
 		stock.UpdateRTData(pIEX);
 		EXPECT_EQ(stock.GetTransactionTime(), pIEX->m_llTimestamp);

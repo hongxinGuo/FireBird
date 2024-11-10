@@ -136,7 +136,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			ASSERT_FALSE(pStock->IsUpdateProfileDB()) << "不允许更新股票代码库";
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			EXPECT_TRUE(pStock->IsUpdateDayLine());
+			//Note EXPECT_TRUE(pStock->IsUpdateDayLine());
 
 			EXPECT_EQ(gl_dataContainerFinnhubCryptoExchange.Size(), 15) << "最初装载了15个";
 			EXPECT_EQ(gl_dataContainerFinnhubForexExchange.Size(), 11) << "最初装载了11个";
@@ -147,12 +147,11 @@ namespace FireBirdTest {
 
 			EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 4847) << "默认状态下数据库总数为4847";
 
-			EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(_T("A"))->IsUpdateDayLine());
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(_T("A"))->IsUpdateDayLineDB());
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(_T("AAPL"))->IsUpdateDayLineDB());
 
 			EXPECT_EQ(gl_dataContainerTiingoStock.Size(), 7183) << "默认状态下数据库总数为7183";
-			EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(0)->IsUpdateDayLine());
+			//Note EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(0)->IsUpdateDayLine());
 			EXPECT_FALSE(gl_dataContainerTiingoStock.GetStock(0)->IsUpdateDayLineDB());
 
 			//	for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {

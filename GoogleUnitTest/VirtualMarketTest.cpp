@@ -271,6 +271,35 @@ namespace FireBirdTest {
 		EXPECT_EQ(lMarketDate2, lMarketDate);
 	}
 
+	TEST_F(CVirtualMarketTest, TestGetNextTradeDate) {
+		time_t tUTC;
+		tm tm_, tm2;
+
+		for (int i = 0; i < 7; i++) {
+			time(&tUTC);
+			tUTC += i * 60 * 60 * 24;
+			GetMarketTimeStruct(&tm2, tUTC, virtualMarket.GetMarketTimeZone());
+			tm_ = tm2;
+			virtualMarket.TEST_SetUTCTime(tUTC);
+			virtualMarket.TEST_SetMarketTM(tm2);
+
+			switch (tm_.tm_wday) {
+			case 6: //星期六
+				tUTC += 2 * 24 * 3600; //
+				break;
+			case 5: // 星期五
+				tUTC += 3 * 24 * 3600; //
+				break;
+			default: // 其他
+				tUTC += 24 * 3600;
+				break;
+			}
+			GetMarketTimeStruct(&tm_, tUTC, virtualMarket.GetMarketTimeZone());
+			long nextTradeDate = ConvertToDate(&tm_);
+			EXPECT_EQ(virtualMarket.GetNextTradeDate(), nextTradeDate);
+		}
+	}
+
 	TEST_F(CVirtualMarketTest, TestGetCurrentTradeDate) {
 		time_t tUTC;
 		tm tm_, tm2;
@@ -293,7 +322,6 @@ namespace FireBirdTest {
 			default: // 其他
 				break;
 			}
-			tUTC -= 9 * 3600 + 1800;
 			GetMarketTimeStruct(&tm_, tUTC, virtualMarket.GetMarketTimeZone());
 			long currentTradeDate = ConvertToDate(&tm_);
 			EXPECT_EQ(virtualMarket.GetCurrentTradeDate(), currentTradeDate);
@@ -325,7 +353,6 @@ namespace FireBirdTest {
 			default: // 其他
 				tUTC -= 24 * 3600; //
 			}
-			tUTC -= 9 * 3600 + 1800;
 			GetMarketTimeStruct(&tm_, tUTC, virtualMarket.GetMarketTimeZone());
 			long LastTradeDate = ConvertToDate(&tm_);
 			EXPECT_EQ(virtualMarket.GetLastTradeDate(), LastTradeDate);
