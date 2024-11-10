@@ -67,6 +67,7 @@ void CVirtualDataSource::InquireData(const long lMarketTime) {
 		GetCurrentProduct();
 		CreateCurrentInquireString();
 		CDataInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
+		auto background = gl_runtime.background_executor();
 		auto result = gl_runtime.background_executor()->submit([this, pEngine] { //Note 只能使用thread_pool_executor或者background_executor
 				CHighPerformanceCounter counter;
 				counter.start();
@@ -95,6 +96,7 @@ void CVirtualDataSource::InquireData(const long lMarketTime) {
 	}
 	if (vResults.size() == pvWebData->size()) { // no web error?
 		m_fWebError = false;
+		gl_warnLogger->warn("{}", "virtualDataSource thread number not match {} -- {}", vResults.size(), pvWebData->size());
 	}
 	else { // web error
 		m_fWebError = true;

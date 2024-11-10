@@ -182,15 +182,15 @@ void CContainerTiingoStock::ProcessDayLine() {
 	gl_systemMessage.PushInnerSystemInformationMessage(_T("开始处理Tiingo日线数据"));
 	for (size_t i = 0; i < Size(); i++) {
 		auto pStock = GetStock(i);
-		if (pStock->IsActive() && pStock->GetDayLineEndDate() - pStock->GetDayLineStartDate() > 260) {
+		if (pStock->GetDayLineEndDate() - pStock->GetDayLineStartDate() > 260) { // 只处理一年以上的日线
 			gl_runtime.background_executor()->post([pStock] {
+				gl_BackgroundWorkingThread.acquire(); // 最多八个线程
 				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-				gl_BackgroundWorkingThread.acquire();
 				if (!gl_systemConfiguration.IsExitingSystem()) {
 					pStock->ProcessDayLine();
 				}
-				gl_BackgroundWorkingThread.release();
 				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+				gl_BackgroundWorkingThread.release();
 			});
 		}
 	}

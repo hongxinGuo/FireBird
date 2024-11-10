@@ -273,6 +273,13 @@ public:
 	void SetUpdateDB(bool fFlag) noexcept { m_fUpdateDB = fFlag; }
 
 	// 无需存储
+	void SetThreadPoolExecutorCurrencyLevel(int level) noexcept { m_iThreadPoolExecutorConcurrencyLevel = level; }
+	int GetThreadPoolExecutorCurrencyLevel() const noexcept { return m_iThreadExecutorConcurrencyLevel; }
+	void SetThreadExecutorCurrencyLevel(int level) noexcept { m_iThreadExecutorConcurrencyLevel = level; }
+	int GetThreadExecutorCurrencyLevel() const noexcept { return m_iThreadExecutorConcurrencyLevel; }
+	void SetBackgroundExecutorCurrencyLevel(int level) noexcept { m_iBackgroundExecutorConcurrencyLevel = level; }
+	int GetBackgroundExecutorCurrencyLevel() const noexcept { return m_iBackgroundExecutorConcurrencyLevel; }
+
 	void SetExitingSystem(const bool bExit) { m_fExitingSystem = bExit; }
 	bool IsExitingSystem() { return m_fExitingSystem; }
 	void SetExitingCalculatingRS(const bool bExit) { m_fExitingCalculatingRS = bExit; }
@@ -368,6 +375,10 @@ protected:
 	RECT m_rCurrentWindow{ CRect(0, 0, 2600, 1600) }; // 当前窗口位素面积
 
 	//无需存储的变量
+	int m_iThreadPoolExecutorConcurrencyLevel{ 1 }; // 一般是CPU的逻辑核心数
+	int m_iThreadExecutorConcurrencyLevel{ 1 }; // 数量很大。
+	int m_iBackgroundExecutorConcurrencyLevel{ 1 }; // 一般是CUP逻辑核的4倍。
+
 	std::atomic_bool m_fExitingSystem{ false }; //  系统退出标识，用于终止其他线程。
 	bool m_fExitingCalculatingRS{ false }; // 用于通知工作线程退出的信号
 	bool m_fWorkingMode{ true }; // 正常模式标识，默认为真。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。

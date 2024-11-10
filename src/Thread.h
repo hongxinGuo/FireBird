@@ -19,6 +19,7 @@
 using namespace concurrencpp;
 
 extern concurrencpp::runtime gl_runtime;
+extern concurrencpp::runtime gl_backgroundRuntime;
 extern int gl_concurrency_level; // 并行计算允许最大数量
 
 using gsl::not_null;
