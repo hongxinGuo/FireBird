@@ -5,8 +5,6 @@
 #include"TiingoStock.h"
 #include "ProductTiingoFinancialState.h"
 
-//#include "TiingoDataSource.h"
-
 #include"simdjsonGetValue.h"
 #include "WorldMarket.h"
 
@@ -154,6 +152,7 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 //   }
 //]
 // 使用simdjson解析，速度为Nlohmann-json的三倍。
+// 有些股票缺乏某些部分的数据，忽略之即可。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialState(const CWebDataPtr& pWebData) {
@@ -183,78 +182,89 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 			pFinancialStatePtr->m_yearQuarter = year2 * 100 + quarter;
 			auto date = jsonGetStringView(itemValue, _T("date"));
 			auto item2 = itemValue["statementData"];
-			auto statesCashFlow = jsonGetArray(item2.value(), _T("cashFlow"));
-			for (auto item4 : statesCashFlow) {
-				auto name = jsonGetStringView(item4.value(), _T("dataCode"));
-				string s(name.data(), name.length());
-				auto value = item4[_T("value")];
-				double value4;
-				if (value.is_integer()) {
-					value4 = jsonGetInt64(value.value());
+			try {
+				auto statesCashFlow = jsonGetArray(item2.value(), _T("cashFlow"));
+				for (auto item4 : statesCashFlow) {
+					auto name = jsonGetStringView(item4.value(), _T("dataCode"));
+					string s(name.data(), name.length());
+					auto value = item4[_T("value")];
+					double value4;
+					if (value.is_integer()) {
+						value4 = jsonGetInt64(value.value());
+					}
+					else {
+						value4 = jsonGetDouble(value.value());
+					}
+					//TRACE("%s\n", s.c_str());
+					int index = s_mapItem.at(s.c_str());
+					iCount++;
+					pFinancialStatePtr->Assign(index, value4);
 				}
-				else {
-					value4 = jsonGetDouble(value.value());
-				}
-				//TRACE("%s\n", s.c_str());
-				int index = s_mapItem.at(s.c_str());
-				iCount++;
-				pFinancialStatePtr->Assign(index, value4);
+			} catch (simdjson_error& error) {
 			}
-			auto incomeStatement = jsonGetArray(item2.value(), _T("incomeStatement"));
-			for (auto item4 : incomeStatement) {
-				auto name = jsonGetStringView(item4.value(), _T("dataCode"));
-				string s(name.data(), name.length());
-				auto value = item4[_T("value")];
-				double value4;
-				if (value.is_integer()) {
-					value4 = jsonGetInt64(value.value());
+			try {
+				auto incomeStatement = jsonGetArray(item2.value(), _T("incomeStatement"));
+				for (auto item4 : incomeStatement) {
+					auto name = jsonGetStringView(item4.value(), _T("dataCode"));
+					string s(name.data(), name.length());
+					auto value = item4[_T("value")];
+					double value4;
+					if (value.is_integer()) {
+						value4 = jsonGetInt64(value.value());
+					}
+					else {
+						value4 = jsonGetDouble(value.value());
+					}
+					//TRACE("%s\n", s.c_str());
+					int index = s_mapItem.at(s.c_str());
+					iCount++;
+					pFinancialStatePtr->Assign(index, value4);
 				}
-				else {
-					value4 = jsonGetDouble(value.value());
-				}
-				//TRACE("%s\n", s.c_str());
-				int index = s_mapItem.at(s.c_str());
-				iCount++;
-				pFinancialStatePtr->Assign(index, value4);
+			} catch (simdjson_error& error) {
 			}
-			auto balanceSheet = jsonGetArray(item2.value(), _T("balanceSheet"));
-			for (auto item4 : balanceSheet) {
-				auto name = jsonGetStringView(item4.value(), _T("dataCode"));
-				string s(name.data(), name.length());
-				auto value = item4[_T("value")];
-				double value4;
-				if (value.is_integer()) {
-					value4 = jsonGetInt64(value.value());
+			try {
+				auto balanceSheet = jsonGetArray(item2.value(), _T("balanceSheet"));
+				for (auto item4 : balanceSheet) {
+					auto name = jsonGetStringView(item4.value(), _T("dataCode"));
+					string s(name.data(), name.length());
+					auto value = item4[_T("value")];
+					double value4;
+					if (value.is_integer()) {
+						value4 = jsonGetInt64(value.value());
+					}
+					else {
+						value4 = jsonGetDouble(value.value());
+					}
+					//TRACE("%s\n", s.c_str());
+					int index = s_mapItem.at(s.c_str());
+					iCount++;
+					pFinancialStatePtr->Assign(index, value4);
 				}
-				else {
-					value4 = jsonGetDouble(value.value());
-				}
-				//TRACE("%s\n", s.c_str());
-				int index = s_mapItem.at(s.c_str());
-				iCount++;
-				pFinancialStatePtr->Assign(index, value4);
+			} catch (simdjson_error& error) {
 			}
-			auto overview = jsonGetArray(item2.value(), _T("overview"));
-			for (auto item4 : overview) {
-				auto name = jsonGetStringView(item4.value(), _T("dataCode"));
-				string s(name.data(), name.length());
-				auto value = item4[_T("value")];
-				double value4;
-				if (value.is_integer()) {
-					value4 = jsonGetInt64(value.value());
+			try {
+				auto overview = jsonGetArray(item2.value(), _T("overview"));
+				for (auto item4 : overview) {
+					auto name = jsonGetStringView(item4.value(), _T("dataCode"));
+					string s(name.data(), name.length());
+					auto value = item4[_T("value")];
+					double value4;
+					if (value.is_integer()) {
+						value4 = jsonGetInt64(value.value());
+					}
+					else {
+						value4 = jsonGetDouble(value.value());
+					}
+					//TRACE("%s\n", s.c_str());
+					int index = s_mapItem.at(s.c_str());
+					iCount++;
+					pFinancialStatePtr->Assign(index, value4);
 				}
-				else {
-					value4 = jsonGetDouble(value.value());
-				}
-				//TRACE("%s\n", s.c_str());
-				int index = s_mapItem.at(s.c_str());
-				iCount++;
-				pFinancialStatePtr->Assign(index, value4);
+			} catch (simdjson_error& error) {
 			}
 			pvTiingoFinancialState->push_back(pFinancialStatePtr);
 		}
 	} catch (simdjson_error& error) {
-		ReportJSonErrorToSystemMessage(_T("Tiingo financial state "), error.what());
 	}
 	std::ranges::sort(pvTiingoFinancialState->begin(), pvTiingoFinancialState->end(),
 	                  [](const CTiingoCompanyFinancialStatePtr& p1, const CTiingoCompanyFinancialStatePtr& p2) { return p1->m_yearQuarter < p2->m_yearQuarter; });

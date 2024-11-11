@@ -91,6 +91,7 @@ public:
 	void Delete52WeekHigh(long lDate);
 
 	void ProcessDayLine();
+	double GetSplitFactor(size_t beginPos, size_t endPos);
 	int IsLowOrHigh(size_t index, long lClose) const;
 
 	// ≤‚ ‘”√∫Ø ˝

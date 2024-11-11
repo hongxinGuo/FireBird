@@ -184,6 +184,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	//if (GenerateIEXTopOfBook(181010)) return true; // 测试用
 	if (GenerateStockDailyMeta()) return true;
 	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
+	ASSERT(gl_dataContainerTiingoNewSymbol.IsEmpty()); // 日线更新完后此容器会被清空
 	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户才能够金融数据
 		if (GenerateFinancialState()) return true;
 	}

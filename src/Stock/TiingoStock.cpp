@@ -297,21 +297,29 @@ void CTiingoStock::CheckFinancialStateUpdateStatus(long lTodayDate) {
 }
 
 void CTiingoStock::CheckDayLineUpdateStatus(long llTodayDate) {
-	if (GetDayLineEndDate() == gl_pWorldMarket->GetCurrentTradeDate()) {
+	if (GetDayLineEndDate() == gl_pWorldMarket->GetCurrentTradeDate()) { // 已
 		m_fUpdateDayLine = false;
+		return;
 	}
-	else {
-		ASSERT(GetDayLineEndDate() < gl_pWorldMarket->GetCurrentTradeDate());
-		m_fUpdateDayLine = true;
+	if (GetDayLineStartDate() == GetHistoryDayLineStartDate() && GetDayLineEndDate() == GetHistoryDayLineEndDate()) { // 需下载的日线已下载
+		m_fUpdateDayLine = false;
+		return;
 	}
+	if (GetHistoryDayLineStartDate() == 19500101 && GetDayLineStartDate() == 29900101) { // 已经检查过，没有日线数据
+		ASSERT(GetHistoryDayLineEndDate() == 19500101);
+		ASSERT(GetDayLineEndDate() == 19800101);
+		m_fUpdateDayLine = false;
+		return;
+	}
+	ASSERT(GetDayLineEndDate() < gl_pWorldMarket->GetCurrentTradeDate());
+	m_fUpdateDayLine = true;
 }
 
 void CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
-	if (GetUpdateStockDailyMetaDate() == gl_pWorldMarket->GetCurrentTradeDate()) {
+	if (GetUpdateStockDailyMetaDate() >= gl_pWorldMarket->GetCurrentTradeDate()) {
 		SetUpdateStockDailyMeta(false);
 	}
 	else {
-		ASSERT(GetUpdateStockDailyMetaDate() < gl_pWorldMarket->GetCurrentTradeDate());
 		SetUpdateStockDailyMeta(true);
 	}
 }
@@ -384,7 +392,34 @@ void CTiingoStock::ProcessDayLine() {
 	else {
 		while (m_dataDayLine.GetData(iBeginPos)->GetMarketDate() < GetDayLineProcessDate()) iBeginPos++;
 	}
+	auto calculatePos = iBeginPos - 250;
 	auto dayLineSize = m_dataDayLine.Size();
+	double dSplitFactor = GetSplitFactor(calculatePos, dayLineSize);
+	double dCurrentSplitFactor = 1;
+	if (dSplitFactor > 1.00001) { // 总体是扩股的。
+		for (auto index = calculatePos; index < dayLineSize; index++) { // 向前除权
+			if ((m_dataDayLine.GetData(index)->m_dSplitFactor < 1.00001) && (m_dataDayLine.GetData(index)->m_dSplitFactor > 0.99999)) {
+				// do nothing
+			}
+			else {
+				dCurrentSplitFactor *= m_dataDayLine.GetData(index)->m_dSplitFactor;
+			}
+			m_dataDayLine.GetData(index)->m_lLastClose *= dCurrentSplitFactor;
+		}
+	}
+	else { // 总体是缩股的。
+		for (auto index = dayLineSize; index > calculatePos; index--) { // 向后除权
+			m_dataDayLine.GetData(index)->m_lLastClose /= dCurrentSplitFactor; // 使用除法向后除权。要先计算，然后才算splitFactor
+			if ((m_dataDayLine.GetData(index)->m_dSplitFactor < 1.0001) && (m_dataDayLine.GetData(index)->m_dSplitFactor > 0.9999)) {
+				// do nothing
+			}
+			else {
+				if (m_dataDayLine.GetData(index)->m_dSplitFactor > 0.0001) {
+					dCurrentSplitFactor *= m_dataDayLine.GetData(index)->m_dSplitFactor; // 基本上会小于1，故而使用除法。
+				}
+			}
+		}
+	}
 	for (size_t index = iBeginPos; index < dayLineSize; index++) {
 		long lClose = m_dataDayLine.GetData(index)->GetClose();
 		switch (IsLowOrHigh(index, lClose)) {
@@ -399,6 +434,17 @@ void CTiingoStock::ProcessDayLine() {
 		}
 	}
 	m_dataDayLine.Unload();
+}
+
+double CTiingoStock::GetSplitFactor(size_t beginPos, size_t endPos) {
+	double dRatio = 1;
+	for (auto index = beginPos; index < endPos; index++) {
+		auto splitFactor = m_dataDayLine.GetData(index)->m_dSplitFactor;
+		if (splitFactor > 0.00001) {
+			dRatio *= splitFactor;
+		}
+	}
+	return dRatio;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
