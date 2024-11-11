@@ -68,7 +68,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestGetRatio) {
-		EXPECT_EQ(stock.GetRatio(), 1000) << "Tiingo.com的股票价格，放大倍数为1000";
+		EXPECT_EQ(stock.GetRatio(), 10000) << "Tiingo.com的股票价格，放大倍数为10000";
 	}
 
 	TEST_F(CTiingoStockTest, TestGetExchangeCode) {
@@ -323,33 +323,33 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestUpdateDayLineStartEndDate) {
-		vector<CDayLinePtr> vDayLine;
+		auto pvDayLine = make_shared<vector<CTiingoDayLinePtr>>();
 		CSetTiingoStockDayLine setDayLine;
 
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		CTiingoDayLinePtr pDayLine = make_shared<CTiingoDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
 		pDayLine->SetDate(20210101); // 这个需要添加进数据库
 		pDayLine->SetClose(10010);
-		vDayLine.push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
+		pvDayLine->push_back(pDayLine);
+		pDayLine = make_shared<CTiingoDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
 		pDayLine->SetDate(20210102); // 这个需要添加进数据库
 		pDayLine->SetClose(12345);
-		vDayLine.push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
+		pvDayLine->push_back(pDayLine);
+		pDayLine = make_shared<CTiingoDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
 		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
 		pDayLine->SetClose(10020);
-		vDayLine.push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
+		pvDayLine->push_back(pDayLine);
+		pDayLine = make_shared<CTiingoDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
 		pDayLine->SetDate(20210123); // 这个需要添加进数据库
 		pDayLine->SetClose(10030);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		stock.SetSymbol(_T("A"));
 		stock.SetDayLineEndDate(20210107);
-		stock.UpdateDayLine(vDayLine);
+		stock.UpdateDayLine(pvDayLine);
 
 		stock.SetUpdateProfileDB(false);
 		stock.SetDayLineStartDate(20210107);
@@ -546,33 +546,33 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestSaveDayLine) {
-		vector<CDayLinePtr> vDayLine;
+		auto pvDayLine = make_shared<vector<CTiingoDayLinePtr>>();
 		CSetTiingoStockDayLine setDayLine;
 
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		CTiingoDayLinePtr pDayLine = make_shared<CTiingoDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
-		pDayLine->SetDate(20200101); // 这个日期早于数据库中的最早日期，需要添加进数据库
-		pDayLine->SetClose(10010);
-		vDayLine.push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
+		pDayLine->SetDate(19800101); // 这个日期早于数据库中的最早日期，需要添加进数据库
+		pDayLine->SetClose(115);
+		pvDayLine->push_back(pDayLine);
+		pDayLine = make_shared<CTiingoDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
 		pDayLine->SetDate(20210101); // 这个日期为新日期，需要添加进数据库
-		pDayLine->SetClose(12345);
-		vDayLine.push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
+		pDayLine->SetClose(12340);
+		pvDayLine->push_back(pDayLine);
+		pDayLine = make_shared<CTiingoDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
 		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
 		pDayLine->SetClose(10020);
-		vDayLine.push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
+		pvDayLine->push_back(pDayLine);
+		pDayLine = make_shared<CTiingoDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
-		pDayLine->SetDate(20210123); // 这个日期为新日期，需要添加进数据库
-		pDayLine->SetClose(10030);
-		vDayLine.push_back(pDayLine);
+		pDayLine->SetDate(20241111); // 这个日期为新日期，需要添加进数据库
+		pDayLine->SetClose(135);
+		pvDayLine->push_back(pDayLine);
 
 		stock.SetSymbol(_T("A"));
 		stock.SetDayLineEndDate(20210107);
-		stock.UpdateDayLine(vDayLine);
+		stock.UpdateDayLine(pvDayLine);
 
 		stock.SaveDayLine();
 
@@ -580,51 +580,51 @@ namespace FireBirdTest {
 		setDayLine.m_strSort = _T("[Date]");
 		setDayLine.Open();
 		setDayLine.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(setDayLine.m_Date == 20200101);
-		EXPECT_STREQ(setDayLine.m_Close, _T("10.010"));
+		EXPECT_TRUE(setDayLine.m_Date == 19800101);
+		EXPECT_STREQ(setDayLine.m_Close, _T("0.0115"));
 		setDayLine.Delete();
 		while (setDayLine.m_Date != 20210101) setDayLine.MoveNext();
-		EXPECT_STREQ(setDayLine.m_Close, _T("12.345"));
+		EXPECT_STREQ(setDayLine.m_Close, _T("1.2340"));
 		setDayLine.Delete();
-		while (setDayLine.m_Date != 20210123) setDayLine.MoveNext();
-		EXPECT_TRUE(setDayLine.m_Date = 20210123);
-		EXPECT_STREQ(setDayLine.m_Close, _T("10.030"));
+		while (setDayLine.m_Date != 20241111) setDayLine.MoveNext();
+		EXPECT_TRUE(setDayLine.m_Date = 20241111);
+		EXPECT_STREQ(setDayLine.m_Close, _T("0.0135"));
 		setDayLine.Delete();
 		setDayLine.m_pDatabase->CommitTrans();
 		setDayLine.Close();
 	}
 
 	TEST_F(CTiingoStockTest, TestHaveNewDayLineData) {
-		vector<CDayLinePtr> vDayLine;
+		auto pvDayLine = make_shared<vector<CTiingoDayLinePtr>>();
 		//CSetTiingoStockDayLine setDayLine;
 
 		EXPECT_EQ(stock.GetDayLineSize(), 0);
 		EXPECT_FALSE(stock.HaveNewDayLineData()) << "没有日线数据";
 
-		CDayLinePtr pDayLine = make_shared<CDayLine>();
+		CTiingoDayLinePtr pDayLine = make_shared<CTiingoDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
 		pDayLine->SetDate(20210101); // 这个需要添加进数据库
 		pDayLine->SetClose(10010);
-		vDayLine.push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
+		pvDayLine->push_back(pDayLine);
+		pDayLine = make_shared<CTiingoDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
 		pDayLine->SetDate(20210102); // 这个需要添加进数据库
 		pDayLine->SetClose(12345);
-		vDayLine.push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
+		pvDayLine->push_back(pDayLine);
+		pDayLine = make_shared<CTiingoDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
 		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
 		pDayLine->SetClose(10020);
-		vDayLine.push_back(pDayLine);
-		pDayLine = make_shared<CDayLine>();
+		pvDayLine->push_back(pDayLine);
+		pDayLine = make_shared<CTiingoDayLine>();
 		pDayLine->SetStockSymbol(_T("A"));
 		pDayLine->SetDate(20210123); // 这个需要添加进数据库
 		pDayLine->SetClose(10030);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		stock.SetSymbol(_T("A"));
 		stock.SetDayLineEndDate(20210107);
-		stock.UpdateDayLine(vDayLine);
+		stock.UpdateDayLine(pvDayLine);
 
 		EXPECT_EQ(stock.GetDayLineSize(), 4);
 

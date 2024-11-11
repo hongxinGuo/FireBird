@@ -306,14 +306,14 @@ void CTiingoStock::CheckDayLineUpdateStatus(long llTodayDate) {
 	}
 }
 
-bool CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
-	if (GetUpdateStockDailyMetaDate() >= lCurrentDate) {
+void CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
+	if (GetUpdateStockDailyMetaDate() == gl_pWorldMarket->GetCurrentTradeDate()) {
 		SetUpdateStockDailyMeta(false);
 	}
 	else {
+		ASSERT(GetUpdateStockDailyMetaDate() < gl_pWorldMarket->GetCurrentTradeDate());
 		SetUpdateStockDailyMeta(true);
 	}
-	return IsUpdateStockDailyMeta();
 }
 
 long CTiingoStock::GetDayLineProcessDate() {

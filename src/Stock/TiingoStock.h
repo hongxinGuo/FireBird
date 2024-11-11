@@ -40,7 +40,7 @@ public:
 
 	void UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook);
 	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
-	void UpdateDayLine(const vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
+	void UpdateDayLine(CTiingoDayLinesPtr vTempDayLine) { m_dataDayLine.UpdateData(vTempDayLine); }
 	void UpdateFinancialStateDB();
 	bool UpdateDayLineDB();
 	void SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const; // 将当前数据存入日线数据库
@@ -50,7 +50,7 @@ public:
 
 	void UpdateDayLineStartEndDate();
 	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
-	CDayLinePtr GetDayLine(const long lIndex) const { return dynamic_pointer_cast<CDayLine>(m_dataDayLine.GetData(lIndex)); }
+	CTiingoDayLinePtr GetDayLine(const long lIndex) const { return m_dataDayLine.GetData(lIndex); }
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	void SaveDayLine() { m_dataDayLine.SaveDB(m_strSymbol); }
 
@@ -59,7 +59,7 @@ public:
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckFinancialStateUpdateStatus(long lTodayDate);
 	void CheckDayLineUpdateStatus(long llTodayDate);
-	bool CheckStockDailyMetaStatus(long lCurrentDate);
+	void CheckStockDailyMetaStatus(long lCurrentDate);
 
 	long GetStatementLastUpdatedDate() { return m_jsonUpdateDate["StatementLastUpdated"]; }
 	void SetStatementLastUpdatedDate(long lLDate) { m_jsonUpdateDate["StatementLastUpdated"] = lLDate; }

@@ -249,7 +249,7 @@ long CVirtualMarket::CalculateLastTradeDate() noexcept {
 	tMarket -= m_lOpenMarketTime; // 减去开市时间，具体值由各市场预先设定
 	const tm tmMarketTime = GetMarketTime(tMarket);
 	m_lMarketLastTradeDate = ConvertToDate(&tmMarketTime);
-	return m_lMarketCurrentTradeDate;
+	return m_lMarketLastTradeDate;
 }
 
 bool CVirtualMarket::IsWorkingDay() const noexcept {

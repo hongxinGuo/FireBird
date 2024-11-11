@@ -62,15 +62,15 @@ bool CTengxunDayLineDataSource::Inquire() {
 		bool fFound = false;
 		for (long lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
 			pStock = gl_dataContainerChinaStock.GetStock(lCurrentUpdateDayLinePos);
-			if (!pStock->IsUpdateDayLine()) { // 无需更新？
+			if (!pStock->IsUpdateDayLine()) { // 需要更新？
+				continue;
 			}
-			else if (pStock->GetDayLineEndDate() >= gl_pChinaMarket->GetLastTradeDate()) {//上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
-				pStock->SetUpdateDayLine(false); // 此股票日线资料不需要更新了。
+			if (pStock->GetDayLineEndDate() >= gl_pChinaMarket->GetLastTradeDate()) {//上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
+				pStock->SetUpdateDayLine(false);
+				continue;
 			}
-			else {
-				fFound = true;
-				break;
-			}
+			fFound = true;
+			break;
 		}
 		if (fFound) {
 			const vector<CVirtualProductWebDataPtr> vProduct = CreateProduct(pStock);

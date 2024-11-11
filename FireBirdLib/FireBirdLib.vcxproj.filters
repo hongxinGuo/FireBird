@@ -867,6 +867,9 @@
     <ClInclude Include="..\src\Data Container\ContainerTiingoSymbol.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Type\America market\TiingoDayLine.h">
+      <Filter>头文件\Type\America market\Tiingo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1444,6 +1447,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerTiingoNewSymbol.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoDayLine.cpp">
+      <Filter>源文件\Type\America market</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@ using std::vector;
 class CDayLine final : public CVirtualHistoryCandleExtend {
 public:
 	CDayLine();
+	int GetRatio() const override { return 1000; };
 };
 
 using CDayLinePtr = shared_ptr<CDayLine>;

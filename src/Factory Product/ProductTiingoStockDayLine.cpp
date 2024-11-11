@@ -62,7 +62,7 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
 
-	const CDayLinesPtr pvDayLine = ParseTiingoStockDayLine(pWebData);
+	const CTiingoDayLinesPtr pvDayLine = ParseTiingoStockDayLine(pWebData);
 	if (!pvDayLine->empty()) {
 		long lastClose = 0;
 		for (const auto& pDayLine2 : *pvDayLine) {
@@ -72,7 +72,7 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			if (lastClose != 0 && pDayLine2->GetLastClose() == 0) pDayLine2->SetLastClose(lastClose);
 			lastClose = pDayLine2->GetClose();
 		}
-		pTiingoStock->UpdateDayLine(*pvDayLine);
+		pTiingoStock->UpdateDayLine(pvDayLine);
 		pTiingoStock->SetUpdateDayLineDB(true);
 	}
 	// 清除tiingo stock的日线更新标识
@@ -121,9 +121,10 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // 如果没有股票600600.SS日线数据，则返回：{"detail":"Error:Ticker '600600.SS' not found"}
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataPtr& pWebData) {
-	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
+CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataPtr& pWebData) {
+	auto pvDayLine = make_shared<vector<CTiingoDayLinePtr>>();
 	string s;
+	CTiingoStock stock;
 	long year, month, day;
 	json js;
 
@@ -141,7 +142,7 @@ CDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataP
 	}
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
-			auto pDayLine = make_shared<CDayLine>();
+			auto pDayLine = make_shared<CTiingoDayLine>();
 			//pDayLine->SetExchange(_T("US")); // 所有的Tiingo证券皆为美国市场。
 			s = jsonGetString(it, _T("date"));
 			CString str = s.c_str();
@@ -149,13 +150,13 @@ CDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataP
 			long lTemp = XferYearMonthDayToYYYYMMDD(year, month, day);
 			pDayLine->SetDate(lTemp);
 			double dTemp = jsonGetDouble(it,_T("close"));
-			pDayLine->SetClose(dTemp * 1000);
+			pDayLine->SetClose(dTemp * stock.GetRatio());
 			dTemp = jsonGetDouble(it,_T("high"));
-			pDayLine->SetHigh(dTemp * 1000);
+			pDayLine->SetHigh(dTemp * stock.GetRatio());
 			dTemp = jsonGetDouble(it, _T("low"));
-			pDayLine->SetLow(dTemp * 1000);
+			pDayLine->SetLow(dTemp * stock.GetRatio());
 			dTemp = jsonGetDouble(it, _T("open"));
-			pDayLine->SetOpen(dTemp * 1000);
+			pDayLine->SetOpen(dTemp * stock.GetRatio());
 			lTemp = jsonGetLong(it, _T("volume"));
 			dTemp = jsonGetDouble(it, _T("divCash"));
 			pDayLine->SetDividend(dTemp);
@@ -170,7 +171,7 @@ CDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataP
 		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}
-	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
+	std::ranges::sort(*pvDayLine, [](const CTiingoDayLinePtr& pData1, const CTiingoDayLinePtr& pData2) { return pData1->GetMarketDate() < pData2->GetMarketDate(); }); // 以日期早晚顺序排列。
 
 	return pvDayLine;
 }

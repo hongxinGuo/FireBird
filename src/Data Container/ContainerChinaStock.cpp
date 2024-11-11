@@ -175,26 +175,25 @@ INT64 CContainerChinaStock::GetTotalAttackSellAmount() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CString CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 	bool fFoundStock = false;
-	size_t iCount = 0;
 	CString strTemp;
 	CString strReturn = _T("");
 	size_t lIndex = 0;
 
-	while (!fFoundStock && (iCount++ < Size())) {
+	while (!fFoundStock && (lIndex < Size())) {
 		const CChinaStockPtr pStock = GetStock(lIndex);
 		if (!pStock->IsUpdateDayLine()) { // 日线数据不需要更新。在系统初始时，设置此m_fUpdateDayLine标识
-			lIndex = GetNextIndex(lIndex);
+			lIndex++;
 		}
 		else if (pStock->GetDayLineEndDate() >= gl_pChinaMarket->GetLastTradeDate()) {//上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
 			pStock->SetUpdateDayLine(false); // 此股票日线资料不需要更新了。
-			lIndex = GetNextIndex(lIndex);
+			lIndex++;
 		}
 		else {
 			fFoundStock = true;
 		}
 	}
 
-	if (iCount >= Size()) {	//  没有找到需要申请日线的证券
+	if (lIndex >= Size()) {	//  没有找到需要申请日线的证券
 		TRACE("未找到需更新日线历史数据的股票\n");
 		return _T("");
 	}
@@ -220,27 +219,22 @@ CString CContainerChinaStock::CreateNeteaseDayLineInquiringStr() {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CString CContainerChinaStock::CreateTengxunDayLineInquiringStr() {
-	bool fFoundStock = false;
-	int iCount = 0;
 	CString strTemp;
 	CString strReturn = _T("");
 	size_t lIndex = 0;
 
-	while (!fFoundStock && (iCount++ < Size())) {
+	while (lIndex < Size()) {
 		const CChinaStockPtr pStock = GetStock(lIndex);
-		if (!pStock->IsUpdateDayLine()) { // 日线数据不需要更新。在系统初始时，设置此m_fUpdateDayLine标识
-			lIndex = GetNextIndex(lIndex);
+		if (pStock->IsUpdateDayLine()) { // 日线数据不需要更新。在系统初始时，设置此m_fUpdateDayLine标识
+			break;
 		}
-		else if (pStock->GetDayLineEndDate() >= gl_pChinaMarket->GetLastTradeDate()) {//上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
-			pStock->SetUpdateDayLine(false); // 此股票日线资料不需要更新了。
-			lIndex = GetNextIndex(lIndex);
+		if (pStock->GetDayLineEndDate() >= gl_pChinaMarket->GetLastTradeDate()) {//上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
+			break;
 		}
-		else {
-			fFoundStock = true;
-		}
+		lIndex++;
 	}
 
-	if (iCount >= Size()) {	//  没有找到需要申请日线的证券
+	if (lIndex >= Size()) {	//  没有找到需要申请日线的证券
 		TRACE("未找到需更新日线历史数据的股票\n");
 		return _T("");
 	}

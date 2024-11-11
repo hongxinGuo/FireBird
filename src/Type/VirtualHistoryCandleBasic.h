@@ -111,8 +111,8 @@ public:
 	CString m_strStockSymbol{ _T("") };
 	CString m_strDisplaySymbol{ _T("") };
 
-	// 在不同的市场中，以下数据会放大若干倍（百倍、千倍等）。取决于价格使用几个小数点
-	long m_lLastClose{ 0 }; // 前收盘。单位：0.001元
+	// 在不同的市场中，以下数据会放大若干倍（百倍、千倍、万倍等）。取决于价格使用几个小数点
+	long m_lLastClose{ 0 }; // 前收盘。
 	long m_lOpen{ 0 }; // 开盘价
 	long m_lHigh{ 0 }; // 最高价
 	long m_lLow{ 0 }; // 最低价

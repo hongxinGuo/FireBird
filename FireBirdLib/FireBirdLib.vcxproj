@@ -201,6 +201,7 @@
     <ClInclude Include="..\src\Type\America market\MarketStatus.h" />
     <ClInclude Include="..\src\Type\America market\NaicsIndustry.h" />
     <ClInclude Include="..\src\Type\America market\SICIndustry.h" />
+    <ClInclude Include="..\src\Type\America market\TiingoDayLine.h" />
     <ClInclude Include="..\src\Type\America market\TiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\Type\America market\TiingoIEXTopOFBook.h" />
     <ClInclude Include="..\src\Type\America market\TiingoIndustry.h" />
@@ -400,6 +401,7 @@
     <ClCompile Include="..\src\Type\America market\InsiderTransaction.cpp" />
     <ClCompile Include="..\src\Type\America market\NaicesIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\SICIndustry.cpp" />
+    <ClCompile Include="..\src\Type\America market\TiingoDayLine.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoIEXTopOfBook.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoIndustry.cpp" />
