@@ -40,8 +40,13 @@ void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStockDailyMeta->m_strCode)) {
 		auto pStock2 = gl_dataContainerTiingoStock.GetStock(pTiingoStockDailyMeta->m_strCode);
 		if (pStock->GetSymbol().Compare(pStock2->GetSymbol()) == 0) {
-			pStock->UpdateDailyMeta(pTiingoStockDailyMeta);
-			pStock->SetUpdateStockDailyMetaDate(gl_pWorldMarket->GetMarketDate());
+			pStock->UpdateDailyMeta(pTiingoStockDailyMeta); // 目前只更新HistoryDayLineBeginDate和HistoryDayLineEndDate。
+			if (gl_pWorldMarket->GetMarketTime() > 170000) { // 如果已过本日交易时间。网站已更新HistoryDatLineEndDate为当前交易日
+				pStock->SetUpdateStockDailyMetaDate(gl_pWorldMarket->GetCurrentTradeDate());
+			}
+			else { // 否则设置为上一交易日。网站在本日交易结束后才会更新HistoryDatLineEndDate为当前交易日
+				pStock->SetUpdateStockDailyMetaDate(gl_pWorldMarket->GetLastTradeDate());
+			}
 		}
 		else {
 			CString str = _T("Tiingo stock daily meta not match: ");

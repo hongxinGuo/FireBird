@@ -94,10 +94,10 @@ void CVirtualDataSource::InquireData() {
 	}
 	if (vResults.size() == pvWebData->size()) { // no web error?
 		m_fWebError = false;
-		gl_warnLogger->warn("{}", "virtualDataSource thread number not match {} -- {}", vResults.size(), pvWebData->size());
 	}
 	else { // web error
 		m_fWebError = true;
+		gl_warnLogger->warn("virtualDataSource thread number not match {} -- {}", vResults.size(), pvWebData->size());
 	}
 	if (!gl_systemConfiguration.IsExitingSystem() && !pvWebData->empty()) {
 		m_eErrorMessageData = IsAErrorMessageData(pvWebData->at(0)); // 返回的数据是错误信息？检查错误，判断申请资格，更新禁止目录

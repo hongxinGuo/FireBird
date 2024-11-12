@@ -1,7 +1,5 @@
 #include "pch.h"
 
-#include"jsonParse.h"
-
 #include"TiingoStock.h"
 #include "ProductTiingoFinancialState.h"
 
@@ -200,7 +198,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 					iCount++;
 					pFinancialStatePtr->Assign(index, value4);
 				}
-			} catch (simdjson_error& error) {
+			} catch (simdjson_error&) {
 			}
 			try {
 				auto incomeStatement = jsonGetArray(item2.value(), _T("incomeStatement"));
@@ -220,7 +218,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 					iCount++;
 					pFinancialStatePtr->Assign(index, value4);
 				}
-			} catch (simdjson_error& error) {
+			} catch (simdjson_error&) {
 			}
 			try {
 				auto balanceSheet = jsonGetArray(item2.value(), _T("balanceSheet"));
@@ -240,7 +238,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 					iCount++;
 					pFinancialStatePtr->Assign(index, value4);
 				}
-			} catch (simdjson_error& error) {
+			} catch (simdjson_error&) {
 			}
 			try {
 				auto overview = jsonGetArray(item2.value(), _T("overview"));
@@ -260,11 +258,11 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 					iCount++;
 					pFinancialStatePtr->Assign(index, value4);
 				}
-			} catch (simdjson_error& error) {
+			} catch (simdjson_error&) {
 			}
 			pvTiingoFinancialState->push_back(pFinancialStatePtr);
 		}
-	} catch (simdjson_error& error) {
+	} catch (simdjson_error&) {
 	}
 	std::ranges::sort(pvTiingoFinancialState->begin(), pvTiingoFinancialState->end(),
 	                  [](const CTiingoCompanyFinancialStatePtr& p1, const CTiingoCompanyFinancialStatePtr& p2) { return p1->m_yearQuarter < p2->m_yearQuarter; });

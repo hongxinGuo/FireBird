@@ -181,7 +181,7 @@ bool CFinnhubDataSource::GenerateInquiryMessage(long lCurrentTime) {
 		ASSERT(!IsInquiring());
 		if (!m_fFinnhubDataInquiryFinished) {
 			gl_systemMessage.PushInformationMessage(_T("finnhub data inquiry finished"));
-			gl_systemMessage.SetCurrentFinnhubFunction(_T(""));
+			gl_systemMessage.SetCurrentFinnhubFunction(_T("finished"));
 			m_fFinnhubDataInquiryFinished = true;
 		}
 	}

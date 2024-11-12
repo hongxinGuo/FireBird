@@ -173,32 +173,89 @@ namespace FireBirdTest {
 		sprintf_s(buffer, _T("%02d:%02d:%02d "), tm_.tm_hour, tm_.tm_min, tm_.tm_sec);
 		str = buffer;
 		EXPECT_EQ(str.Compare(virtualMarket.GetStringOfMarketTime()), 0);
-
-		switch (tm_.tm_wday) {
-		case 1: // 星期一
-			tUTC -= 3 * 24 * 3600; //
-			break;
-		case 0: //星期日
-			tUTC -= 3 * 24 * 3600; //
-			break;
-		case 6: // 星期六
-			tUTC -= 2 * 24 * 3600; //
-			break;
-		default: // 其他
-			tUTC -= 24 * 3600; //
-		}
-		tUTC -= 8 * 3600 + 1800;
-		GetMarketTimeStruct(&tm_, tUTC, virtualMarket.GetMarketTimeZone());
-		const long LastTradeDate = ConvertToDate(&tm_);
-		EXPECT_EQ(virtualMarket.GetLastTradeDate(), LastTradeDate);
 	}
 
 	TEST_F(CVirtualMarketTest, TestCalculateLastTraddeDay) {
-		//todo
+		time_t tMarket;
+		auto tUTCTime = gl_tUTCTime;
+
+		for (int i = 0; i < 7; i++) {
+			gl_tUTCTime = tUTCTime + i * 24 * 3600;
+			tm tmMarketTime2 = virtualMarket.GetMarketTime(gl_tUTCTime);
+
+			switch (tmMarketTime2.tm_wday) {
+			case 1: // 星期一
+				tMarket = gl_tUTCTime - 3 * 24 * 3600; // 上周五
+				break;
+			case 0: //星期日
+				tMarket = gl_tUTCTime - 3 * 24 * 3600; // 周四
+				break;
+			case 6: // 星期六
+				tMarket = gl_tUTCTime - 2 * 24 * 3600; // 周四
+				break;
+			default: // 其他
+				tMarket = gl_tUTCTime - 24 * 3600; // 上一日
+			}
+			const tm tmMarketTime = virtualMarket.GetMarketTime(tMarket);
+			auto lMarketLastTradeDate = ConvertToDate(&tmMarketTime);
+			EXPECT_EQ(virtualMarket.CalculateLastTradeDate(), lMarketLastTradeDate) << i;
+		}
+
+		// 恢复原状
+		gl_tUTCTime = tUTCTime;
 	}
 
-	TEST_F(CVirtualMarketTest, TestCalculateNewestTraddeDay) {
-		//todo
+	TEST_F(CVirtualMarketTest, TestCalculateCurrentTradeDay) {
+		time_t tMarket;
+		auto tUTCTime = gl_tUTCTime;
+		for (int i = 0; i < 7; i++) {
+			gl_tUTCTime = tUTCTime + i * 24 * 3600;
+			tm tmMarketTime2 = virtualMarket.GetMarketTime(gl_tUTCTime);
+
+			switch (tmMarketTime2.tm_wday) {
+			case 0: //星期日
+				tMarket = gl_tUTCTime - 2 * 24 * 3600; // 周五
+				break;
+			case 6: // 星期六
+				tMarket = gl_tUTCTime - 1 * 24 * 3600; // 周五
+				break;
+			default: // 其他
+				tMarket = gl_tUTCTime; // 本日
+			}
+			const tm tmMarketTime = virtualMarket.GetMarketTime(tMarket);
+			auto lMarketCurrentTradeDate = ConvertToDate(&tmMarketTime);
+			EXPECT_EQ(virtualMarket.CalculateCurrentTradeDate(), lMarketCurrentTradeDate) << i;
+		}
+
+		// 恢复原状
+		gl_tUTCTime = tUTCTime;
+	}
+
+	TEST_F(CVirtualMarketTest, TestCalculateNextTraddeDay) {
+		time_t tMarket;
+		auto tUTCTime = gl_tUTCTime;
+
+		for (int i = 0; i < 7; i++) {
+			gl_tUTCTime = tUTCTime + i * 24 * 3600;
+			tm tmMarketTime2 = virtualMarket.GetMarketTime(gl_tUTCTime);
+
+			switch (tmMarketTime2.tm_wday) {
+			case 6: // 星期六
+				tMarket = gl_tUTCTime + 2 * 24 * 3600; // 下周一
+				break;
+			case 5: // 周五
+				tMarket = gl_tUTCTime + 3 * 24 * 3600; // 下周一
+				break;
+			default: // 其他
+				tMarket = gl_tUTCTime + 24 * 3600; // 次日
+			}
+			const tm tmMarketTime = virtualMarket.GetMarketTime(tMarket);
+			auto lMarketNextTradeDate = ConvertToDate(&tmMarketTime);
+			EXPECT_EQ(virtualMarket.CalculateNextTradeDate(), lMarketNextTradeDate) << i;
+		}
+
+		// 恢复原状
+		gl_tUTCTime = tUTCTime;
 	}
 
 	TEST_F(CVirtualMarketTest, TestTransferToMarketTime) {

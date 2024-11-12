@@ -178,6 +178,13 @@ bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
 	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CTiingoStock>(pStock)->IsUpdateFinancialStateDB(); });
 }
 
+void CContainerTiingoStock::UpdateAllFinancialState() {
+	for (size_t index = 0; index < m_vStock.size(); index++) {
+		auto pStock = GetStock(index);
+		pStock->SetUpdateFinancialState(true);
+	}
+}
+
 void CContainerTiingoStock::ProcessDayLine() {
 	gl_systemMessage.PushInnerSystemInformationMessage(_T("开始处理Tiingo日线数据"));
 	for (size_t i = 0; i < Size(); i++) {

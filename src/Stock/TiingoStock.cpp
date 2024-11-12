@@ -301,16 +301,6 @@ void CTiingoStock::CheckDayLineUpdateStatus(long llTodayDate) {
 		m_fUpdateDayLine = false;
 		return;
 	}
-	if (GetDayLineStartDate() == GetHistoryDayLineStartDate() && GetDayLineEndDate() == GetHistoryDayLineEndDate()) { // 需下载的日线已下载
-		m_fUpdateDayLine = false;
-		return;
-	}
-	if (GetHistoryDayLineStartDate() == 19500101 && GetDayLineStartDate() == 29900101) { // 已经检查过，没有日线数据
-		ASSERT(GetHistoryDayLineEndDate() == 19500101);
-		ASSERT(GetDayLineEndDate() == 19800101);
-		m_fUpdateDayLine = false;
-		return;
-	}
 	ASSERT(GetDayLineEndDate() < gl_pWorldMarket->GetCurrentTradeDate());
 	m_fUpdateDayLine = true;
 }

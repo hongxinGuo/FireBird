@@ -195,7 +195,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	ASSERT(!IsInquiring());
 	if (!m_fTiingoDataInquiryFinished) {
 		gl_systemMessage.PushInformationMessage(_T("Tiingo data inquiry finished"));
-		gl_systemMessage.SetCurrentTiingoFunction(_T(""));
+		gl_systemMessage.SetCurrentTiingoFunction(_T("finished"));
 		m_fTiingoDataInquiryFinished = true;
 	}
 	return false;
