@@ -91,7 +91,8 @@ public:
 	void Delete52WeekHigh(long lDate);
 
 	void ProcessDayLine();
-	double GetSplitFactor(size_t beginPos, size_t endPos);
+	double CalculateSplitFactor(size_t beginPos, size_t endPos) const;
+	void NormalizeStockCloseValue(double dSplitFactor, size_t calculatePos, size_t dayLineSize) const;
 	int IsLowOrHigh(size_t index, long lClose) const;
 
 	// ≤‚ ‘”√∫Ø ˝

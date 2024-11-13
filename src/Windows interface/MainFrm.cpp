@@ -640,7 +640,7 @@ void CMainFrame::OnCalculateTodayRS() {
 }
 
 void CMainFrame::CalculateTodayRS() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		ThreadBuildDayLineRS(gl_pChinaMarket, gl_pChinaMarket->GetMarketDate());
 	});
 }
@@ -793,7 +793,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 }
 
 void CMainFrame::OnRebuildChinaMarketStockDayLineRS() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		ThreadBuildDayLineRS(gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
 	});
 }
@@ -976,7 +976,7 @@ void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnRebuildChinaMarketStockWeekLineRS() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		ThreadBuildWeekLineRS(gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
 	});
 }
@@ -1232,6 +1232,10 @@ void CMainFrame::OnCreateTiingoTradeDayDayline() {
 
 void CMainFrame::OnUpdateCreateTiingoTradeDayDayline(CCmdUI* pCmdUI) {
 	// TODO: Add your command update UI handler code here
+	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
+		pCmdUI->Enable(false);
+		return;
+	}
 	if (gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) {
 		pCmdUI->Enable(false);
 	}
@@ -1241,14 +1245,20 @@ void CMainFrame::OnUpdateCreateTiingoTradeDayDayline(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnProcessTiingoDayline() {
-	gl_pWorldMarket->TaskProcessTiingoDayLine(gl_pWorldMarket->GetMarketTime());
+	gl_runtime.thread_executor()->post([] {
+		gl_dataContainerTiingoStock.TaskProcessDayLine();
+	});
 }
 
 void CMainFrame::OnUpdateProcessTiingoDayline(CCmdUI* pCmdUI) {
+#ifdef _DEBUG
+	pCmdUI->Enable(true); // 调试模式时随时可以执行
+#else
 	if (gl_pTiingoDataSource->IsUpdateIEXTopOfBook() || gl_pTiingoDataSource->IsUpdateDayLine()) {
 		pCmdUI->Enable(false);
 	}
 	else {
 		pCmdUI->Enable(true);
 	}
+#endif
 }

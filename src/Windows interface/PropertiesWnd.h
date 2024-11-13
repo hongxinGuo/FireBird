@@ -72,8 +72,16 @@ protected:
 	CFireBirdPropertyGridCtrl m_wndPropList;
 
 	// system status group
+	CMFCPropertyGridProperty* m_pPropThreadPoolExecutorMaxWorkerIdleTime{ nullptr };
+	CMFCPropertyGridProperty* m_pPropBackgroundExecutorMaxWorkerIdleTime{ nullptr };
+	CMFCPropertyGridProperty* m_pPropCurrentWorkingThread{ nullptr };
+
 	CMFCPropertyGridProperty* m_pPropSystemOption{ nullptr };
+
+	// china market
 	CMFCPropertyGridColorProperty* m_pPropChinaMarketWebStatus{ nullptr };
+
+	// world market
 	CMFCPropertyGridProperty* m_pPropWorldMarketWebStatus{ nullptr };
 
 	// finnhub.io

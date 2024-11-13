@@ -7,6 +7,8 @@
 #include "FinnhubDataSource.h"
 #include "MainFrm.h"
 #include "FireBird.h"
+#include "Thread.h"
+#include "ThreadStatus.h"
 #include "WorldMarket.h"
 
 #ifdef _DEBUG
@@ -235,7 +237,7 @@ void CPropertiesWnd::InitPropList() {
 	m_wndPropList.SetVSDotNetLook();
 	m_wndPropList.MarkModifiedProperties();
 
-	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("System Option"));
+	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("System Status"));
 	CString s;
 	switch (gl_systemConfiguration.GetLogLevel()) {
 	case SPDLOG_LEVEL_TRACE:
@@ -276,6 +278,15 @@ void CPropertiesWnd::InitPropList() {
 	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Debug Mode"), static_cast<_variant_t>(gl_systemConfiguration.IsDebugMode()), _T("Debug mode"), SYSTEM_DEBUG_MODE_));
 	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Reload System"), static_cast<_variant_t>(gl_systemConfiguration.IsReloadSystem()), _T("Reload System"), SYSTEM_RELOAD_SYSTEM_));
 
+	m_pPropThreadPoolExecutorMaxWorkerIdleTime = new CMFCPropertyGridProperty(_T("Thread pool idle time:"), _T(""));
+	m_pPropThreadPoolExecutorMaxWorkerIdleTime->Enable(false);
+	pGroup1->AddSubItem(m_pPropThreadPoolExecutorMaxWorkerIdleTime);
+	m_pPropBackgroundExecutorMaxWorkerIdleTime = new CMFCPropertyGridProperty(_T("Background idle time:"), _T(""));
+	m_pPropBackgroundExecutorMaxWorkerIdleTime->Enable(false);
+	pGroup1->AddSubItem(m_pPropBackgroundExecutorMaxWorkerIdleTime);
+	m_pPropCurrentWorkingThread = new CMFCPropertyGridProperty(_T("working thread:"), _T(""));
+	m_pPropCurrentWorkingThread->Enable(false);
+	pGroup1->AddSubItem(m_pPropCurrentWorkingThread);
 	m_wndPropList.AddProperty(pGroup1);
 
 	CMFCPropertyGridProperty* pGroup2 = new CMFCPropertyGridProperty(_T("China market"));
@@ -285,13 +296,6 @@ void CPropertiesWnd::InitPropList() {
 	m_pPropChinaMarketWebStatus->EnableAutomaticButton(_T("Default"), ::GetSysColor(COLOR_3DFACE), false);
 	m_pPropChinaMarketWebStatus->Enable(false);
 	pGroup2->AddSubItem(m_pPropChinaMarketWebStatus);
-
-	//LOGFONT lf;
-	//CFont* font = CFont::FromHandle(static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
-	//font->GetLogFont(&lf);
-	//_tcscpy_s(lf.lfFaceName, _T("Arial"));
-	//pGroup2->AddSubItem(new CMFCPropertyGridFontProperty(_T("Font"), lf, CF_EFFECTS | CF_SCREENFONTS, _T("Specifies the default font for the window")));
-	//pGroup2->AddSubItem(new CMFCPropertyGridProperty(_T("Use System Font"), static_cast<_variant_t>(true), _T("Specifies that the window uses MS Shell Dlg font")));
 
 	m_wndPropList.AddProperty(pGroup2);
 
@@ -362,6 +366,23 @@ void CPropertiesWnd::SetPropListFont() {
 }
 
 void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
+	char buffer[100];
+	CString str;
+	auto threadPooExecutorMaxIdleTime = gl_runtime.thread_pool_executor()->max_worker_idle_time();
+	auto l = threadPooExecutorMaxIdleTime.count();
+	sprintf_s(buffer, _T("%d"), l);
+	str = buffer;
+	m_pPropThreadPoolExecutorMaxWorkerIdleTime->SetValue(str);
+	auto backgroundExecutorMaxIdleTime = gl_runtime.background_executor()->max_worker_idle_time();
+	l = backgroundExecutorMaxIdleTime.count();
+	sprintf_s(buffer, _T("%d"), l);
+	str = buffer;
+	m_pPropBackgroundExecutorMaxWorkerIdleTime->SetValue(str);
+
+	sprintf_s(buffer, _T("%d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
+	str = buffer;
+	m_pPropCurrentWorkingThread->SetValue(str); // 后台工作线程数
+
 	if (gl_pChinaMarket->IsWebBusy()) m_pPropChinaMarketWebStatus->SetColor(RGB(192, 0, 0));
 	else m_pPropChinaMarketWebStatus->SetColor(RGB(0, 192, 0));
 
@@ -370,24 +391,23 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	}
 	else {
 		if (gl_pFinnhubDataSource->IsWebError()) {
-			char buffer[100];
-			sprintf_s(buffer, _T("running (EC:%5zd)"), gl_pFinnhubDataSource->GetWebErrorCode());
-			CString str = buffer;
-			m_pPropWorldMarketWebStatus->SetValue(str);
+			char buffer2[100];
+			sprintf_s(buffer2, _T("running (EC:%5zd)"), gl_pFinnhubDataSource->GetWebErrorCode());
+			CString str3 = buffer2;
+			m_pPropWorldMarketWebStatus->SetValue(str3);
 		}
 		else {
 			m_pPropWorldMarketWebStatus->SetValue(_T("running"));
 		}
 	}
 
-	CString strMessage;
-	strMessage = gl_systemMessage.GetCurrentFinnhubFunction();
+	CString strMessage = gl_systemMessage.GetCurrentFinnhubFunction();
 	m_pPropFinnhubCurrentFunction->SetValue(strMessage);
 
 	strMessage = gl_systemMessage.GetCurrentTiingoFunction();
 	m_pPropTiingoCurrentFunction->SetValue(strMessage);
 
-	CString str = _T("");
+	str = _T("");
 	switch (gl_pFinnhubWebSocket->GetState()) {
 	case ix::ReadyState::Closed:
 		str = _T("Closed");

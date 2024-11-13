@@ -366,15 +366,19 @@ void CTiingoStock::Delete52WeekHigh(long lDate) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理日线
-//todo 目前只查找52周新低和52周新高。
+// 目前只查找52周新低和52周新高。
+// Note 目前采用的方法极其简单，导致计算的时间较长，每个股票的计算时间大致为
+// 故而采用后台持续执行的模式，单一工作线程调用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 void CTiingoStock::ProcessDayLine() {
 	m_dataDayLine.LoadDB(GetSymbol());
 
+	if (m_dataDayLine.Size() < 300) return; // 最少300个日线数据
+
 	size_t iBeginPos = 0;
 	if (GetDayLineProcessDate() == 19800101) { // 如果没有处理过
-		iBeginPos = 250;
+		iBeginPos = 251;
 		// 则清空之前的数据
 		m_v52WeekHigh.clear();
 		m_v52WeekLow.clear();
@@ -382,34 +386,13 @@ void CTiingoStock::ProcessDayLine() {
 	else {
 		while (m_dataDayLine.GetData(iBeginPos)->GetMarketDate() < GetDayLineProcessDate()) iBeginPos++;
 	}
-	auto calculatePos = iBeginPos - 250;
+	if (iBeginPos < 251) iBeginPos = 251;
+	size_t calculatePos = iBeginPos - 250;
 	auto dayLineSize = m_dataDayLine.Size();
-	double dSplitFactor = GetSplitFactor(calculatePos, dayLineSize);
-	double dCurrentSplitFactor = 1;
-	if (dSplitFactor > 1.00001) { // 总体是扩股的。
-		for (auto index = calculatePos; index < dayLineSize; index++) { // 向前除权
-			if ((m_dataDayLine.GetData(index)->m_dSplitFactor < 1.00001) && (m_dataDayLine.GetData(index)->m_dSplitFactor > 0.99999)) {
-				// do nothing
-			}
-			else {
-				dCurrentSplitFactor *= m_dataDayLine.GetData(index)->m_dSplitFactor;
-			}
-			m_dataDayLine.GetData(index)->m_lLastClose *= dCurrentSplitFactor;
-		}
-	}
-	else { // 总体是缩股的。
-		for (auto index = dayLineSize; index > calculatePos; index--) { // 向后除权
-			m_dataDayLine.GetData(index)->m_lLastClose /= dCurrentSplitFactor; // 使用除法向后除权。要先计算，然后才算splitFactor
-			if ((m_dataDayLine.GetData(index)->m_dSplitFactor < 1.0001) && (m_dataDayLine.GetData(index)->m_dSplitFactor > 0.9999)) {
-				// do nothing
-			}
-			else {
-				if (m_dataDayLine.GetData(index)->m_dSplitFactor > 0.0001) {
-					dCurrentSplitFactor *= m_dataDayLine.GetData(index)->m_dSplitFactor; // 基本上会小于1，故而使用除法。
-				}
-			}
-		}
-	}
+	double dSplitFactor = CalculateSplitFactor(calculatePos, dayLineSize);
+
+	NormalizeStockCloseValue(dSplitFactor, calculatePos, dayLineSize);
+
 	for (size_t index = iBeginPos; index < dayLineSize; index++) {
 		long lClose = m_dataDayLine.GetData(index)->GetClose();
 		switch (IsLowOrHigh(index, lClose)) {
@@ -426,7 +409,7 @@ void CTiingoStock::ProcessDayLine() {
 	m_dataDayLine.Unload();
 }
 
-double CTiingoStock::GetSplitFactor(size_t beginPos, size_t endPos) {
+double CTiingoStock::CalculateSplitFactor(size_t beginPos, size_t endPos) const {
 	double dRatio = 1;
 	for (auto index = beginPos; index < endPos; index++) {
 		auto splitFactor = m_dataDayLine.GetData(index)->m_dSplitFactor;
@@ -435,6 +418,34 @@ double CTiingoStock::GetSplitFactor(size_t beginPos, size_t endPos) {
 		}
 	}
 	return dRatio;
+}
+
+void CTiingoStock::NormalizeStockCloseValue(double dSplitFactor, size_t calculatePos, size_t dayLineSize) const {
+	double dCurrentSplitFactor = 1;
+	if (dSplitFactor > 1.00001) { // 总体是扩股的。
+		for (auto index = calculatePos; index < dayLineSize; index++) { // 向后复权（目前的股价会变大）
+			if ((m_dataDayLine.GetData(index)->m_dSplitFactor < 1.00001) && (m_dataDayLine.GetData(index)->m_dSplitFactor > 0.99999)) {
+				// do nothing
+			}
+			else {
+				dCurrentSplitFactor *= m_dataDayLine.GetData(index)->m_dSplitFactor;
+			}
+			m_dataDayLine.GetData(index)->m_lClose *= dCurrentSplitFactor;
+		}
+	}
+	else { // 总体是缩股的。
+		for (auto index = dayLineSize - 1; index >= calculatePos; index--) { // 向前复权（保持目前的股价不变）
+			m_dataDayLine.GetData(index)->m_lClose *= dCurrentSplitFactor; // 使用除法向前复权。要先计算，然后才算splitFactor
+			if ((m_dataDayLine.GetData(index)->m_dSplitFactor < 1.0001) && (m_dataDayLine.GetData(index)->m_dSplitFactor > 0.9999)) {
+				// do nothing
+			}
+			else {
+				if (m_dataDayLine.GetData(index)->m_dSplitFactor > 0.0001) {
+					dCurrentSplitFactor /= m_dataDayLine.GetData(index)->m_dSplitFactor;
+				}
+			}
+		}
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

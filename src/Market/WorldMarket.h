@@ -51,6 +51,8 @@ public:
 
 	void TaskCreateTiingoTradeDayDayLine(long lCurrentTime);
 	void TaskProcessTiingoDayLine(long lCurrentTime);
+	void TaskProcessTiingoDayLine2(long lCurrentTime);
+	void ProcessTiingoStockDayLine(const CTiingoStockPtr& pStock);
 
 	static void TaskDeleteDelistedStock();
 

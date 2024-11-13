@@ -660,6 +660,9 @@
     <ClCompile Include="ProductTiingoStockDailyMetaTest.cpp">
       <Filter>Test源文件\Factory Product\Tiingo</Filter>
     </ClCompile>
+    <ClCompile Include="ContainerTiingoStockTest.cpp">
+      <Filter>Test源文件\Data Container\Tiingo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockMainFrm.h">

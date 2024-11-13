@@ -13,6 +13,7 @@ map<string, enum_ErrorMessageData> mapTiingoErrorMap{
 	{ _T("Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service."), ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__ }, // http状态码：400
 	{ _T("Error: resampleFreq must be in 'Min' or 'Hour' only"), ERROR_TIINGO_FREQUENCY__ },
 	{ _T("You have run over your 500 symbol look up for this month. Please upgrade at https://api.tiingo.com/pricing to have your limits increased."), ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__ }, // http状态码：200
+	{ _T("Not found."), ERROR_TIINGO_NOT_FOUND__ },
 	{ _T(""), ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__ }
 };
 
@@ -61,6 +62,9 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 	ASSERT(m_pCurrentProduct != nullptr);
 
 	string s2;
+	CString str;
+	string_view strView;
+	long l;
 
 	m_eErrorMessageData = ERROR_NO_ERROR__;
 	// 第一次switch处理非json数据格式的错误
@@ -68,7 +72,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 	case 200:
 		if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) return m_eErrorMessageData; // 付费账户直接返回
 		if (pWebData->GetBufferLength() == 137) { // 此项为非json格式数据
-			auto strView = pWebData->GetStringView(0, 75); // 只使用前75个字符
+			strView = pWebData->GetStringView(0, 75); // 只使用前75个字符
 			if (strView.compare(_T("You have run over your 500 symbol look up for this month. Please upgrade at")) == 0) { 	// 达到代码限制
 				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo symbol reach 500"));
 				return ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__;
@@ -77,19 +81,49 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		break;
 	case 400: // bad request
 		if (pWebData->GetBufferLength() == 62) {
-			auto strView = pWebData->GetStringView(0, 75); // 只使用前75个字符
+			strView = pWebData->GetStringView(0, 62);
 			if (strView.compare(_T("[\"Error: Endpoint only available for US and US - listed Stocks\"]")) == 0) { 	// 非美国股票不提供此项数据
 				gl_systemMessage.PushInnerSystemInformationMessage(_T("Error: Endpoint only available for US and US - listed Stocks\"]"));
+				gl_warnLogger->warn("{}", str.GetBuffer());
 				return ERROR_TIINGO_ENDPOINT_ONLY_FOR_US_LISTED_STOCK__;
 			}
 		}
 		break;
 	case 403:
-		break;
+		l = pWebData->GetBufferLength() > 30 ? 30 : pWebData->GetBufferLength();
+		strView = pWebData->GetStringView(0, l); //
+		s2 = strView;
+		str = _T("Warning: Tiingo no handled ");
+		str += s2.c_str();
+		str += _T("  ") + m_pCurrentProduct->GetInquiry();
+		gl_systemMessage.PushInnerSystemInformationMessage(str);
+		gl_warnLogger->warn("{}", str.GetBuffer());
+		return ERROR_TIINGO_NOT_HANDLED__;
 	case 404:
-		break;
+		if (pWebData->GetBufferLength() == 23) {
+			strView = pWebData->GetStringView(0, 23); // 
+			if (strView.compare(_T("{\"detail\":\"Not found.\"}")) == 0) { 	//
+				str = _T("Warning: Tiingo symbol not exist: ");
+				str += m_pCurrentProduct->GetInquiry();
+				gl_systemMessage.PushInnerSystemInformationMessage(str);
+				gl_warnLogger->warn("{}", str.GetBuffer());
+				return ERROR_TIINGO_NOT_FOUND__;
+			}
+		}
+		str = _T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange();
+		gl_systemMessage.PushInnerSystemInformationMessage(str);
+		gl_warnLogger->warn("{}", str.GetBuffer());
+		return ERROR_TIINGO_NO_RIGHT_TO_ACCESS__; // 目前日线数据无申请权利时返回错误代码404。
 	default:
-		break;
+		l = pWebData->GetBufferLength() > 30 ? 30 : pWebData->GetBufferLength();
+		strView = pWebData->GetStringView(0, l); //
+		s2 = strView;
+		str = _T("Warning: Tiingo no handled ");
+		str += s2.c_str();
+		str += _T("  ") + m_pCurrentProduct->GetInquiry();
+		gl_systemMessage.PushInnerSystemInformationMessage(str);
+		gl_warnLogger->warn("{}", str.GetBuffer());
+		return ERROR_TIINGO_NOT_HANDLED__;
 	}
 
 	json js;
@@ -123,9 +157,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		} catch (exception&) {
 			m_eErrorMessageData = ERROR_TIINGO_NOT_HANDLED__;
 		}
-		if (m_dwHTTPStatusCode == 404) { // 404错误。目前日线数据无申请权利时返回错误代码404。
-			m_eErrorMessageData = ERROR_TIINGO_NO_RIGHT_TO_ACCESS__;
-		}
+
 		switch (m_eErrorMessageData) {
 		case ERROR_TIINGO_NO_RIGHT_TO_ACCESS__:// 无权申请
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
@@ -149,6 +181,9 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 			i = gl_systemConfiguration.GetWorldMarketTiingoInquiryTime();
 			gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(i + 200);
 			break;
+		case ERROR_TIINGO_NOT_FOUND__:
+			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
+			gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo symbol not exist"));
 		case ERROR_TIINGO_NOT_HANDLED__: // error not handled
 			if (pWebData->GetBufferLength() > 50) iStringViewLength = 50;
 			else iStringViewLength = pWebData->GetBufferLength();
@@ -185,12 +220,14 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (GenerateStockDailyMeta()) return true;
 	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
 	ASSERT(gl_dataContainerTiingoNewSymbol.IsEmpty()); // 日线更新完后此容器会被清空
-	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户才能够金融数据
-		if (GenerateFinancialState()) return true;
+	if (!gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户才能够申请金融数据
+		ASSERT(IsUpdateFinancialState() == false);
 	}
-	if (!gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 免费账户使用IEX数据更新日线
-		if (GenerateIEXTopOfBook(lCurrentTime)) return true;
+	if (GenerateFinancialState()) return true;
+	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 免费账户使用IEX数据更新日线
+		ASSERT(IsUpdateIEXTopOfBook() == false);
 	}
+	if (GenerateIEXTopOfBook(lCurrentTime)) return true;
 
 	ASSERT(!IsInquiring());
 	if (!m_fTiingoDataInquiryFinished) {

@@ -78,6 +78,7 @@
     <ClCompile Include="CompanyNewsTest.cpp" />
     <ClCompile Include="ContainerFinnhubEconomicCalendarTest.cpp" />
     <ClCompile Include="ContainerTiingoFundamentalDefinitionTest.cpp" />
+    <ClCompile Include="ContainerTiingoStockTest.cpp" />
     <ClCompile Include="ContainerVirtualStockTest.cpp" />
     <ClCompile Include="ConvertToStringTest.cpp" />
     <ClCompile Include="ContainerChinaStockTest.cpp" />

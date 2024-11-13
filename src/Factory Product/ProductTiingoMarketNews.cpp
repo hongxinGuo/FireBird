@@ -128,12 +128,16 @@ void CProductTiingoMarketNews::UpdateDataSourceStatus(CVirtualDataSourcePtr pDat
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateMarketNews(false);
 	gl_systemMessage.PushInformationMessage(_T("Tiingo market news已更新"));
 
-	if (IsNoRightToAccess()) { // Note 在此确定Tiingo账户类型
+	if (IsNoRightToAccess()) { // 免费账户
 		gl_systemConfiguration.ChangeTiingoAccountTypeToFree();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("free Tiingo account"));
+		gl_pTiingoDataSource->SetUpdateFinancialState(false); // 不允许申请金融数据
+		gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true); // 使用IEX topOFBook收集日线数据
 	}
 	else {
 		gl_systemConfiguration.ChangeTiingoAccountTypeToPaid();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("Paid Tiingo account"));
+		gl_pTiingoDataSource->SetUpdateFinancialState(true); // 申请金融数据
+		gl_pTiingoDataSource->SetUpdateIEXTopOfBook(false); // 不使用IEX
 	}
 }

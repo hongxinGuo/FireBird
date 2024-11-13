@@ -61,9 +61,6 @@
     <Filter Include="源文件\Data container\China Market">
       <UniqueIdentifier>{1ca960b7-a7ac-4422-b6e6-9ded4ecd11b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\Data container\WorldMarket">
-      <UniqueIdentifier>{17f75dc6-2a2d-4ec9-8ff2-081d76e3b05c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\Type">
       <UniqueIdentifier>{b294b92d-0cb6-4f5b-8947-5d49ad7f6ab4}</UniqueIdentifier>
     </Filter>
@@ -1220,12 +1217,6 @@
     <ClCompile Include="..\src\Data Container\ContainerTiingoStock.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\ContainerFinnhubStock.cpp">
-      <Filter>源文件\Data container\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Container\ContainerFinnhubStockDayLine.cpp">
-      <Filter>源文件\Data container\WorldMarket</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerVirtualStock.cpp">
       <Filter>源文件\Data container</Filter>
     </ClCompile>
@@ -1450,6 +1441,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\TiingoDayLine.cpp">
       <Filter>源文件\Type\America market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubStock.cpp">
+      <Filter>源文件\Data container\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubStockDayLine.cpp">
+      <Filter>源文件\Data container\Finnhub</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
