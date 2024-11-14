@@ -97,18 +97,20 @@ void CVirtualDataSource::InquireData() {
 	}
 	else { // web error
 		m_fWebError = true;
-		gl_warnLogger->warn("virtualDataSource thread number not match {} -- {}", vResults.size(), pvWebData->size());
+		CString strMessage2 = str + m_strInquiry;
+		gl_warnLogger->warn("virtualDataSource thread number not match {} -- {}  {}", vResults.size(), pvWebData->size(), strMessage2.GetBuffer());
 	}
 	if (!gl_systemConfiguration.IsExitingSystem() && !pvWebData->empty()) {
 		m_eErrorMessageData = IsAErrorMessageData(pvWebData->at(0)); // 返回的数据是错误信息？检查错误，判断申请资格，更新禁止目录
 		m_pCurrentProduct->ParseAndStoreWebData(pvWebData);
-		m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource智能指针
+		m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource的智能指针
 	}
 	ASSERT(!HaveInquiry()); // 没有现存的申请
 	//ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
 	if (!IsInquiring()) {
-		gl_systemMessage.PushInnerSystemInformationMessage(str);
-		gl_warnLogger->warn("CVirtualWebData.InquireData() reentry: {}", str.GetBuffer());
+		CString strMessage = str + m_strInquiry;
+		gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
+		gl_warnLogger->warn("CVirtualWebData.InquireData() reentry: {}", strMessage.GetBuffer());
 	}
 	SetInquiring(false); // 此标识的重置需要位于位于最后一步
 }

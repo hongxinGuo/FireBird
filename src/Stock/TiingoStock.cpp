@@ -298,7 +298,7 @@ void CTiingoStock::CheckDayLineUpdateStatus(long llTodayDate) {
 		return;
 	}
 	ASSERT(GetDayLineEndDate() < gl_pWorldMarket->GetCurrentTradeDate());
-	m_fUpdateDayLine = true;
+	m_fUpdateDayLine = false; //todo
 }
 
 void CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
@@ -306,7 +306,7 @@ void CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
 		SetUpdateStockDailyMeta(false);
 	}
 	else {
-		SetUpdateStockDailyMeta(true);
+		SetUpdateStockDailyMeta(false); //todo
 	}
 }
 
@@ -441,6 +441,7 @@ void CTiingoStock::ProcessDayLine() {
 
 	m_dataDayLine.Unload();
 
+	gl_systemMessage.PushDayLineInfoMessage(GetSymbol());
 	SetUpdate52WeekHighLowDB(true);
 }
 
@@ -647,28 +648,30 @@ double CTiingoStock::CalculateSplitFactor(size_t beginPos, size_t endPos) const 
 
 void CTiingoStock::NormalizeStockCloseValue(double dSplitFactor, size_t calculatePos, size_t dayLineSize) const {
 	double dCurrentSplitFactor = 1;
-	if (dSplitFactor > 1.00001) { // 总体是扩股的。
-		for (auto index = calculatePos; index < dayLineSize; index++) { // 向后复权（目前的股价会变大）
-			if ((m_dataDayLine.GetData(index)->m_dSplitFactor < 1.00001) && (m_dataDayLine.GetData(index)->m_dSplitFactor > 0.99999)) {
-				// do nothing
-			}
-			else {
-				dCurrentSplitFactor *= m_dataDayLine.GetData(index)->m_dSplitFactor;
-			}
-			m_dataDayLine.GetData(index)->m_lClose *= dCurrentSplitFactor;
-		}
-	}
-	else { // 总体是缩股的。
+	if (dSplitFactor < 1) { // 总体是缩股的。
 		for (auto index = dayLineSize - 1; index >= calculatePos; index--) { // 向前复权（保持目前的股价不变）
 			m_dataDayLine.GetData(index)->m_lClose *= dCurrentSplitFactor; // 使用除法向前复权。要先计算，然后才算splitFactor
-			if ((m_dataDayLine.GetData(index)->m_dSplitFactor < 1.0001) && (m_dataDayLine.GetData(index)->m_dSplitFactor > 0.9999)) {
+			auto currentSplitFactor = m_dataDayLine.GetData(index)->m_dSplitFactor;
+			if (currentSplitFactor < 1.0001 && currentSplitFactor > 0.9999) {
 				// do nothing
 			}
 			else {
-				if (m_dataDayLine.GetData(index)->m_dSplitFactor > 0.0001) {
-					dCurrentSplitFactor /= m_dataDayLine.GetData(index)->m_dSplitFactor;
+				if (currentSplitFactor > 0.0001) {
+					dCurrentSplitFactor /= currentSplitFactor;
 				}
 			}
+		}
+	}
+	else { // 总体是扩股的。
+		for (auto index = calculatePos; index < dayLineSize; index++) { // 向后复权（目前的股价会变大）
+			auto currentSplitFactor = m_dataDayLine.GetData(index)->m_dSplitFactor;
+			if ((currentSplitFactor < 1.0001) && currentSplitFactor > 0.9999) {
+				// do nothing
+			}
+			else {
+				dCurrentSplitFactor *= currentSplitFactor;
+			}
+			m_dataDayLine.GetData(index)->m_lClose *= dCurrentSplitFactor;
 		}
 	}
 }

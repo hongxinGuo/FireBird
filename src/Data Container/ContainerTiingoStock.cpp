@@ -200,18 +200,24 @@ void CContainerTiingoStock::SetUpdateFinancialState(bool fFlag) {
 
 void CContainerTiingoStock::TaskProcessDayLine() {
 	gl_systemMessage.PushInnerSystemInformationMessage(_T("开始处理Tiingo日线数据"));
-	for (size_t i = 0; i < Size(); i++) {
-		auto pStock = GetStock(i);
-		if (pStock->GetDayLineEndDate() - pStock->GetDayLineStartDate() > 20000) { // 只处理有两年以上日线的股票
+	auto lSize = Size();
+	size_t index = 0;
+	while (index < lSize) {
+		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 7) Sleep(100);
+		if (gl_systemConfiguration.IsExitingSystem()) return;
+		auto pStock = GetStock(index);
+		if (IsEarlyThen(pStock->GetDayLineStartDate(), pStock->GetDayLineEndDate(), 500)) { // 只处理有两年以上日线的股票
 			gl_runtime.thread_executor()->post([pStock] {
-				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 				gl_BackgroundWorkingThread.acquire(); // 最多八个线程
+				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 				if (gl_systemConfiguration.IsExitingSystem()) return;
-				pStock->ProcessDayLine2();
-				gl_BackgroundWorkingThread.release();
+				gl_systemMessage.PushDayLineInfoMessage(_T("start ") + pStock->GetSymbol());
+				pStock->ProcessDayLine();
 				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+				gl_BackgroundWorkingThread.release();
 			});
 		}
+		index++;
 	}
 
 	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) Sleep(1000);
