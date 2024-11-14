@@ -37,6 +37,11 @@ public:
 
 	bool IsUpdateFinancialStateDB() const noexcept { return m_fUpdateFinancialStateDB; }
 	void SetUpdateFinancialStateDB(bool fFlag) noexcept { m_fUpdateFinancialStateDB = fFlag; }
+	bool IsUpdate52WeekHighLowDB() const noexcept { return m_fUpdate52WeekHighLowDB; }
+	void SetUpdate52WeekHighLowDB(bool fFlag) noexcept { m_fUpdate52WeekHighLowDB = fFlag; }
+
+	bool IsDayLineLoaded() const noexcept { return m_dataDayLine.IsDayLineLoaded(); }
+	void SetDayLineLoaded(bool fFlag) noexcept { m_dataDayLine.SetDayLineLoaded(fFlag); }
 
 	void UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook);
 	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
@@ -78,10 +83,6 @@ public:
 
 	long GetDayLineProcessDate();
 	void SetDayLineProcessDate(long lDate) { m_jsonUpdateDate["DayLineProcessDate"] = lDate; }
-	void Set52WeekLow() { m_jsonUpdateDate["52WeekLow"] = m_v52WeekLow; }
-	void Get52WeekLow();
-	void Set52WeekHigh() { m_jsonUpdateDate["52WeekHigh"] = m_v52WeekHigh; }
-	void Get52WeekHigh();
 
 	bool Have52WeekLowDate(long lDate) { return std::ranges::find(m_v52WeekLow, lDate) != m_v52WeekLow.end(); }
 	bool Have52WeekHighDate(long lDate) { return std::ranges::find(m_v52WeekHigh, lDate) != m_v52WeekHigh.end(); }
@@ -90,12 +91,27 @@ public:
 	void Add52WeekHigh(long lDate) { m_v52WeekHigh.push_back(lDate); }
 	void Delete52WeekHigh(long lDate);
 
-	void ProcessDayLine();
+	void Update52WeekHighLowDB();
+	void Update52WeekHighDB() const;
+	void Update52WeekLowDB() const;
+	void Delete52WeekHighDB() const;
+	void Delete52WeekLowDB() const;
+
+	void ProcessDayLine(); // 系统调用这个函数
+	void FindHighLow3(size_t endPos);
+	void FindHighLow2(size_t endPos);
+	void FindAll52WeekLow(size_t beginPos, size_t endPos);
+	void FindAll52WeekHigh(size_t beginPos, size_t endPos);
+	size_t FindCurrent52WeekLow(size_t beginPos, size_t endPos, long& value) const;
+	size_t FindCurrent52WeekHigh(size_t beginPos, size_t endPos, long& value) const;
 	double CalculateSplitFactor(size_t beginPos, size_t endPos) const;
 	void NormalizeStockCloseValue(double dSplitFactor, size_t calculatePos, size_t dayLineSize) const;
 	int IsLowOrHigh(size_t index, long lClose) const;
 
 	// 测试用函数
+	void ProcessDayLine2(); // 用于测试
+	void ProcessDayLine3(); // 用于测试
+
 	void Clear52WeekLow() { m_v52WeekLow.clear(); }
 	void Clear52WeekHigh() { m_v52WeekHigh.clear(); }
 
@@ -116,12 +132,12 @@ public:
 	CString m_strSECFilingWebSite{ _T("") };
 	CString m_strDataProviderPermaTicker{ _T("") };
 
+	vector<long> m_v52WeekLow; // 年度最低价的日期
+	vector<long> m_v52WeekHigh; // 年度最高价的日期
+
 protected:
 	CTiingoCompanyFinancialStatesPtr m_pvFinancialState{ nullptr };
 	CContainerTiingoStockDayLine m_dataDayLine;
-
-	vector<long> m_v52WeekLow; // 年度最低价的日期
-	vector<long> m_v52WeekHigh; // 年度最高价的日期
 
 	// 无需存储数据区
 	bool m_fUpdateStockDailyMeta{ true };
@@ -131,6 +147,7 @@ protected:
 	// 更新数据库
 	bool m_fUpdateFinancialStateDB{ false };
 	bool m_fUpdateDailyDataDB{ false };
+	bool m_fUpdate52WeekHighLowDB{ false };
 };
 
 using CTiingoStockPtr = shared_ptr<CTiingoStock>;

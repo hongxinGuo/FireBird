@@ -29,6 +29,9 @@ public:
 		return true;
 	}
 
+	bool IsDayLineLoaded() const noexcept { return m_fDataLoaded.load(); }
+	void SetDayLineLoaded(bool fFlag) noexcept { m_fDataLoaded = fFlag; }
+
 	void Unload() noexcept {
 		m_vHistoryData.clear();
 		m_fDataLoaded = false;

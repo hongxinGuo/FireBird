@@ -3,6 +3,8 @@
 #include"TiingoStock.h"
 
 #include "ConvertToString.h"
+#include "SetTiingoStock52WeekHigh.h"
+#include "SetTiingoStock52WeekLow.h"
 #include "TiingoStockDailyMeta.h"
 #include "TimeConvert.h"
 #include "WorldMarket.h"
@@ -24,8 +26,6 @@ void CTiingoStock::ResetAllUpdateDate() {
 	SetHistoryDayLineStartDate(19000101);
 	SetHistoryDayLineEndDate(19000101);
 	SetUpdateStockDailyMetaDate(19800101);
-	Set52WeekLow();
-	Set52WeekHigh();
 }
 
 void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
@@ -46,8 +46,6 @@ void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
 	m_lIPOStatus = setTiingoStock.m_IPOStatus;
 
 	LoadUpdateDate(setTiingoStock.m_UpdateDate);
-	Get52WeekHigh();
-	Get52WeekLow();
 }
 
 void CTiingoStock::Append(CSetTiingoStock& setTiingoStock) {
@@ -90,8 +88,6 @@ void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
 	setTiingoStock.m_SECFilingWebSite = m_strSECFilingWebSite;
 	setTiingoStock.m_IPOStatus = m_lIPOStatus;
 
-	Set52WeekHigh();
-	Set52WeekLow();
 	const string sUpdateDate = m_jsonUpdateDate.dump();
 	setTiingoStock.m_UpdateDate = sUpdateDate.c_str();
 	ASSERT(sUpdateDate.size() < 10000);
@@ -325,30 +321,6 @@ long CTiingoStock::GetDayLineProcessDate() {
 	return l;
 }
 
-void CTiingoStock::Get52WeekLow() {
-	try {
-		m_v52WeekLow.clear();
-		json j = m_jsonUpdateDate["52WeekLow"];
-		for (auto it = j.begin(); it != j.end(); ++it) {
-			m_v52WeekLow.push_back(*it);
-		}
-	} catch (json::exception&) { // 不存在此项
-		// do nothing
-	}
-}
-
-void CTiingoStock::Get52WeekHigh() {
-	try {
-		m_v52WeekHigh.clear();
-		json j = m_jsonUpdateDate["52WeekHigh"];
-		for (auto it = j.begin(); it != j.end(); ++it) {
-			m_v52WeekHigh.push_back(*it);
-		}
-	} catch (json::exception&) { // 不存在此项
-		// do nothing
-	}
-}
-
 void CTiingoStock::Delete52WeekLow(long lDate) {
 	auto it = std::ranges::find(m_v52WeekLow, lDate);
 	if (it != m_v52WeekLow.end()) {
@@ -363,6 +335,85 @@ void CTiingoStock::Delete52WeekHigh(long lDate) {
 	}
 }
 
+void CTiingoStock::Update52WeekHighLowDB() {
+	if (IsUpdate52WeekHighLowDB()) {
+		SetUpdate52WeekHighLowDB(false);
+		Update52WeekHighDB();
+		Update52WeekLowDB();
+	}
+}
+
+void CTiingoStock::Update52WeekHighDB() const {
+	CSetTiingoStock52WeekHigh set52WeekHigh;
+	auto lSize = m_v52WeekHigh.size();
+	Delete52WeekHighDB();
+
+	set52WeekHigh.m_strFilter = _T("[ID] = 1");
+	set52WeekHigh.Open();
+	set52WeekHigh.m_pDatabase->BeginTrans();
+	for (size_t index = 0; index < lSize; index++) {
+		set52WeekHigh.AddNew();
+		set52WeekHigh.m_Symbol = GetSymbol();
+		set52WeekHigh.m_Exchange = GetExchangeCode();
+		set52WeekHigh.m_Date = m_v52WeekHigh.at(index);
+		set52WeekHigh.Update();
+	}
+	set52WeekHigh.m_pDatabase->CommitTrans();
+	set52WeekHigh.Close();
+}
+
+void CTiingoStock::Update52WeekLowDB() const {
+	CSetTiingoStock52WeekLow set52WeekLow;
+	auto lSize = m_v52WeekLow.size();
+
+	Delete52WeekLowDB();
+
+	set52WeekLow.m_strFilter = _T("[ID] = 1");
+	set52WeekLow.Open();
+	set52WeekLow.m_pDatabase->BeginTrans();
+	for (size_t index = 0; index < lSize; index++) {
+		set52WeekLow.AddNew();
+		set52WeekLow.m_Symbol = GetSymbol();
+		set52WeekLow.m_Exchange = GetExchangeCode();
+		set52WeekLow.m_Date = m_v52WeekLow.at(index);
+		set52WeekLow.Update();
+	}
+	set52WeekLow.m_pDatabase->CommitTrans();
+	set52WeekLow.Close();
+}
+
+void CTiingoStock::Delete52WeekHighDB() const {
+	CSetTiingoStock52WeekHigh set52WeekHigh;
+
+	set52WeekHigh.m_strFilter = _T("[Symbol] ='");
+	set52WeekHigh.m_strFilter += GetSymbol() + _T("'");
+	set52WeekHigh.m_strSort = _T("[Date]");
+	set52WeekHigh.Open();
+	set52WeekHigh.m_pDatabase->BeginTrans();
+	while (!set52WeekHigh.IsEOF()) {
+		set52WeekHigh.Delete();
+		set52WeekHigh.MoveNext();
+	}
+	set52WeekHigh.m_pDatabase->CommitTrans();
+	set52WeekHigh.Close();
+}
+
+void CTiingoStock::Delete52WeekLowDB() const {
+	CSetTiingoStock52WeekLow set52WeekLow;
+
+	set52WeekLow.m_strFilter = _T("[Symbol] ='");
+	set52WeekLow.m_strFilter += GetSymbol() + _T("'");
+	set52WeekLow.m_strSort = _T("[Date]");
+	set52WeekLow.Open();
+	set52WeekLow.m_pDatabase->BeginTrans();
+	while (!set52WeekLow.IsEOF()) {
+		set52WeekLow.Delete();
+		set52WeekLow.MoveNext();
+	}
+	set52WeekLow.m_pDatabase->CommitTrans();
+	set52WeekLow.Close();
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理日线
@@ -372,41 +423,215 @@ void CTiingoStock::Delete52WeekHigh(long lDate) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 void CTiingoStock::ProcessDayLine() {
-	m_dataDayLine.LoadDB(GetSymbol());
+	if (!IsDayLineLoaded()) {
+		m_dataDayLine.LoadDB(GetSymbol());
+	}
 
 	if (m_dataDayLine.Size() < 300) return; // 最少300个日线数据
+	m_v52WeekHigh.clear();
+	m_v52WeekLow.clear();
 
-	size_t iBeginPos = 0;
-	if (GetDayLineProcessDate() == 19800101) { // 如果没有处理过
-		iBeginPos = 251;
-		// 则清空之前的数据
-		m_v52WeekHigh.clear();
-		m_v52WeekLow.clear();
+	auto endPos = m_dataDayLine.Size();
+	double dSplitFactor = CalculateSplitFactor(0, endPos);
+
+	NormalizeStockCloseValue(dSplitFactor, 0, endPos);
+
+	FindHighLow3(endPos);
+	//FindHighLow2(endPos);
+
+	m_dataDayLine.Unload();
+
+	SetUpdate52WeekHighLowDB(true);
+}
+
+void CTiingoStock::ProcessDayLine2() {
+	if (!IsDayLineLoaded()) {
+		m_dataDayLine.LoadDB(GetSymbol());
 	}
-	else {
-		while (m_dataDayLine.GetData(iBeginPos)->GetMarketDate() < GetDayLineProcessDate()) iBeginPos++;
+
+	if (m_dataDayLine.Size() < 300) return; // 最少300个日线数据
+	m_v52WeekHigh.clear();
+	m_v52WeekLow.clear();
+
+	auto endPos = m_dataDayLine.Size();
+	double dSplitFactor = CalculateSplitFactor(0, endPos);
+
+	NormalizeStockCloseValue(dSplitFactor, 0, endPos);
+
+	FindHighLow2(endPos);
+
+	UnloadDayLine();
+	SetUpdate52WeekHighLowDB(true);
+}
+
+void CTiingoStock::ProcessDayLine3() {
+	if (!IsDayLineLoaded()) {
+		m_dataDayLine.LoadDB(GetSymbol());
 	}
-	if (iBeginPos < 251) iBeginPos = 251;
-	size_t calculatePos = iBeginPos - 250;
-	auto dayLineSize = m_dataDayLine.Size();
-	double dSplitFactor = CalculateSplitFactor(calculatePos, dayLineSize);
 
-	NormalizeStockCloseValue(dSplitFactor, calculatePos, dayLineSize);
+	if (m_dataDayLine.Size() < 300) return; // 最少300个日线数据
+	m_v52WeekHigh.clear();
+	m_v52WeekLow.clear();
 
-	for (size_t index = iBeginPos; index < dayLineSize; index++) {
-		long lClose = m_dataDayLine.GetData(index)->GetClose();
-		switch (IsLowOrHigh(index, lClose)) {
+	auto endPos = m_dataDayLine.Size();
+	double dSplitFactor = CalculateSplitFactor(0, endPos);
+
+	NormalizeStockCloseValue(dSplitFactor, 0, endPos);
+
+	FindHighLow3(endPos);
+
+	m_dataDayLine.Unload();
+
+	SetUpdate52WeekHighLowDB(true);
+}
+
+void CTiingoStock::FindHighLow3(size_t endPos) {
+	for (size_t currentPos = 250; currentPos < endPos; currentPos++) { // 从第250个位置开始寻找。
+		long lClose = m_dataDayLine.GetData(currentPos)->GetClose();
+		switch (IsLowOrHigh(currentPos, lClose)) {
 		case -1: // new low
-			Add52WeekLow(m_dataDayLine.GetData(index)->GetMarketDate());
+			Add52WeekLow(m_dataDayLine.GetData(currentPos)->GetMarketDate());
 			break;
 		case 1: // new high
-			Add52WeekHigh(m_dataDayLine.GetData(index)->GetMarketDate());
+			Add52WeekHigh(m_dataDayLine.GetData(currentPos)->GetMarketDate());
 			break;
 		default:
 			break;
 		}
 	}
-	m_dataDayLine.Unload();
+}
+
+void CTiingoStock::FindHighLow2(size_t endPos) {
+	FindAll52WeekLow(0, endPos);
+	FindAll52WeekHigh(0, endPos);
+}
+
+void CTiingoStock::FindAll52WeekLow(size_t beginPos, size_t endPos) {
+	bool fFound = false;
+	size_t currentBeginPos = beginPos;
+	size_t currentEndPos = currentBeginPos + 250 > endPos ? endPos : currentBeginPos + 250;
+	size_t current52WeekLowPos = beginPos;
+	long lCurrent52WeekLowValue = m_dataDayLine.GetData(beginPos)->m_lClose;
+
+	while (currentBeginPos < endPos - 1) {
+		if (fFound) {
+			bool fCurrentFound = false;
+			for (auto index = currentBeginPos; index <= current52WeekLowPos; index++) {
+				if (currentEndPos == endPos) {
+					currentBeginPos = endPos - 1;
+					fCurrentFound = false;
+					break;
+				}
+				if (m_dataDayLine.GetData(currentEndPos)->m_lClose < lCurrent52WeekLowValue) { // 找到了
+					lCurrent52WeekLowValue = m_dataDayLine.GetData(currentEndPos)->m_lClose;
+					current52WeekLowPos = currentEndPos;
+					currentBeginPos = current52WeekLowPos - 250;
+					Add52WeekLow(m_dataDayLine.GetData(currentEndPos)->m_lDate);
+					fCurrentFound = true;
+					break;
+				}
+				currentEndPos++;
+			}
+			if (!fCurrentFound) {
+				if (currentEndPos < endPos - 1) {
+					currentBeginPos = current52WeekLowPos + 1;
+					currentEndPos = endPos < currentBeginPos + 250 ? endPos : currentBeginPos + 250;
+				}
+				else {
+					break; // 全部查询完毕
+				}
+				fFound = false;
+			}
+		}
+		else { // 找寻下一个新低位置
+			if (currentBeginPos + 250 < endPos) {
+				currentEndPos = currentBeginPos + 250;
+			}
+			else {
+				currentEndPos = endPos;
+			}
+			current52WeekLowPos = FindCurrent52WeekLow(currentBeginPos, currentEndPos, lCurrent52WeekLowValue);
+			lCurrent52WeekLowValue = m_dataDayLine.GetData(current52WeekLowPos)->m_lClose;
+			fFound = true;
+		}
+	}
+}
+
+void CTiingoStock::FindAll52WeekHigh(size_t beginPos, size_t endPos) {
+	bool fFound = false;
+	size_t currentBeginPos = beginPos;
+	size_t currentEndPos = currentBeginPos + 250 > endPos ? endPos : currentBeginPos + 250;
+	size_t current52WeekLowPos = beginPos;
+	long lCurrent52WeekHighValue = m_dataDayLine.GetData(beginPos)->m_lClose;
+
+	while (currentBeginPos < endPos - 1) {
+		if (fFound) { // 有最高价
+			bool fCurrentFound = false;
+			for (auto index = currentBeginPos; index <= current52WeekLowPos; index++) { // 查询到最新的新低价
+				if (currentEndPos == endPos) {
+					currentBeginPos = endPos - 1;
+					fCurrentFound = false;
+					break;
+				}
+				if (m_dataDayLine.GetData(currentEndPos)->m_lClose > lCurrent52WeekHighValue) { // 找到了
+					lCurrent52WeekHighValue = m_dataDayLine.GetData(currentEndPos)->m_lClose;
+					current52WeekLowPos = currentEndPos;
+					currentBeginPos = current52WeekLowPos - 250;
+					Add52WeekHigh(m_dataDayLine.GetData(currentEndPos)->m_lDate);
+					fCurrentFound = true;
+					break;
+				}
+				currentEndPos++;
+			}
+			if (!fCurrentFound) {
+				if (currentEndPos < endPos - 1) {
+					currentBeginPos = current52WeekLowPos + 1;
+					currentEndPos = endPos < currentBeginPos + 250 ? endPos : currentBeginPos + 250;
+				}
+				else {
+					break; // 全部查询完毕
+				}
+				fFound = false;
+			}
+		}
+		else { // 找寻下一个新低位置
+			if (currentBeginPos + 250 < endPos) {
+				currentEndPos = currentBeginPos + 250;
+			}
+			else {
+				currentEndPos = endPos;
+			}
+			current52WeekLowPos = FindCurrent52WeekHigh(currentBeginPos, currentEndPos, lCurrent52WeekHighValue);
+			lCurrent52WeekHighValue = m_dataDayLine.GetData(current52WeekLowPos)->m_lClose;
+			fFound = true;
+		}
+	}
+}
+
+size_t CTiingoStock::FindCurrent52WeekLow(size_t beginPos, size_t endPos, long& value) const {
+	auto pos = beginPos;
+	value = m_dataDayLine.GetData(beginPos)->m_lClose + 1;
+
+	for (auto index = beginPos; index < endPos; index++) {
+		if (m_dataDayLine.GetData(index)->m_lClose < value) {
+			pos = index;
+			value = m_dataDayLine.GetData(index)->m_lClose;
+		}
+	}
+	return pos;
+}
+
+size_t CTiingoStock::FindCurrent52WeekHigh(size_t beginPos, size_t endPos, long& value) const {
+	auto pos = beginPos;
+	value = m_dataDayLine.GetData(beginPos)->m_lClose - 1;
+
+	for (auto index = beginPos; index < endPos; index++) {
+		if (m_dataDayLine.GetData(index)->m_lClose > value) {
+			pos = index;
+			value = m_dataDayLine.GetData(index)->m_lClose;
+		}
+	}
+	return pos;
 }
 
 double CTiingoStock::CalculateSplitFactor(size_t beginPos, size_t endPos) const {
@@ -451,12 +676,11 @@ void CTiingoStock::NormalizeStockCloseValue(double dSplitFactor, size_t calculat
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
 ///
-/// Note tiingo的日线数据没有除权，直接使用当前值，导致除权后一年内的数据无法正确计算52周新低和新高。
-/// 目前Tiingo.com的除权信息为Beta状态，需要另外申请。
-///
+/// 已申请了Add-on账户，可以接收到除权信息了。
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 int CTiingoStock::IsLowOrHigh(size_t index, long lClose) const {
+	ASSERT(index >= 250);
 	bool fIsNewLow = true;
 	bool fIsNewHigh = true;
 	for (size_t i = index - 250; i < index; i++) {

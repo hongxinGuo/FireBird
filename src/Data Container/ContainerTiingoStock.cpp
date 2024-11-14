@@ -174,8 +174,21 @@ void CContainerTiingoStock::UpdateDayLineDB() {
 	}
 }
 
+void CContainerTiingoStock::Update52WeekHighLowDB() {
+	auto lSize = Size();
+	for (size_t i = 0; i < lSize; i++) {
+		const CTiingoStockPtr pStock = GetStock(i);
+		pStock->Update52WeekHighLowDB();
+		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
+	}
+}
+
 bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
 	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CTiingoStock>(pStock)->IsUpdateFinancialStateDB(); });
+}
+
+bool CContainerTiingoStock::IsUpdate52WeekHighLowDB() noexcept {
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CTiingoStock>(pStock)->IsUpdate52WeekHighLowDB(); });
 }
 
 void CContainerTiingoStock::SetUpdateFinancialState(bool fFlag) {
@@ -194,7 +207,7 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 				gl_BackgroundWorkingThread.acquire(); // 最多八个线程
 				if (gl_systemConfiguration.IsExitingSystem()) return;
-				pStock->ProcessDayLine();
+				pStock->ProcessDayLine2();
 				gl_BackgroundWorkingThread.release();
 				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 			});

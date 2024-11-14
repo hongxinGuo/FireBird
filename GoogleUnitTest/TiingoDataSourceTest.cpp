@@ -92,15 +92,15 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_NO_RIGHT_TO_ACCESS__);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
-		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 
 		// 恢复原状
-		gl_systemMessage.PopInnerSystemInformationMessage();
+		gl_systemMessage.PopErrorMessage();
 	}
 	TEST_F(CTiingoDataSourceTest, TestIsAErrorMessageData3) {
 		CWebDataPtr pWebData = make_shared<CWebData>();
 		pWebData->Test_SetBuffer_(_T("{\"detail\":\"Please supply a token\"}")); // 无权申请
-		m_pTiingoDataSource->SetHTTPStatusCode(403); // 正常
+		m_pTiingoDataSource->SetHTTPStatusCode(403); // 403 forbidden
 		auto pProduct = make_shared<CProductDummy>();
 		pProduct->SetReceivedDataStatus(GOOD_DATA__);
 		m_pTiingoDataSource->SetCurrentInquiry(pProduct);

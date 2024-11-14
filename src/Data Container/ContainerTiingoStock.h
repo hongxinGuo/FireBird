@@ -29,8 +29,11 @@ public:
 
 	void UpdateFinancialStateDB();
 	void UpdateDayLineDB();
+	void Update52WeekHighLowDB();
 
 	bool IsUpdateFinancialStateDB() noexcept;
+	bool IsUpdate52WeekHighLowDB() noexcept;
+
 	void SetUpdateFinancialState(bool fFlag);
 
 	void TaskProcessDayLine();

@@ -422,46 +422,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.Have52WeekHighDate(20010101));
 	}
 
-	TEST_F(CTiingoStockTest, TestGet52WeekLow) {
-		EXPECT_FALSE(stock.Have52WeekLowDate(20000101)) << "初始时容器为空";
-
-		stock.Add52WeekLow(20000101);
-		stock.Add52WeekLow(20010101);
-		EXPECT_TRUE(stock.Have52WeekLowDate(20000101));
-		EXPECT_TRUE(stock.Have52WeekLowDate(20010101));
-		stock.Get52WeekLow();
-		EXPECT_FALSE(stock.Have52WeekLowDate(20000101)) << "json中内容为空，导致容器被清空";
-		EXPECT_FALSE(stock.Have52WeekLowDate(20010101)) << "json中内容为空，导致容器被清空";
-
-		stock.Add52WeekLow(20000101);
-		stock.Add52WeekLow(20010101);
-		stock.Set52WeekLow(); // 设置json内容
-		stock.Clear52WeekLow();
-		stock.Get52WeekLow();
-		EXPECT_TRUE(stock.Have52WeekLowDate(20000101)) << "从json中设置的数据";
-		EXPECT_TRUE(stock.Have52WeekLowDate(20010101)) << "从json中设置的数据";
-	}
-
-	TEST_F(CTiingoStockTest, TestGet52WeekHigh) {
-		EXPECT_FALSE(stock.Have52WeekHighDate(20000101)) << "初始时容器为空";
-
-		stock.Add52WeekHigh(20000101);
-		stock.Add52WeekHigh(20010101);
-		EXPECT_TRUE(stock.Have52WeekHighDate(20000101));
-		EXPECT_TRUE(stock.Have52WeekHighDate(20010101));
-		stock.Get52WeekHigh();
-		EXPECT_FALSE(stock.Have52WeekHighDate(20000101)) << "json中内容为空，导致容器被清空";
-		EXPECT_FALSE(stock.Have52WeekHighDate(20010101)) << "json中内容为空，导致容器被清空";
-
-		stock.Add52WeekHigh(20000101);
-		stock.Add52WeekHigh(20010101);
-		stock.Set52WeekHigh(); // 设置json内容
-		stock.Clear52WeekHigh();
-		stock.Get52WeekHigh();
-		EXPECT_TRUE(stock.Have52WeekHighDate(20000101)) << "从json中设置的数据";
-		EXPECT_TRUE(stock.Have52WeekHighDate(20010101)) << "从json中设置的数据";
-	}
-
 	TEST_F(CTiingoStockTest, TestUpdateRTData) {
 		CTiingoIEXTopOfBookPtr pIEX = make_shared<CTiingoIEXTopOfBook>();
 		pIEX->m_llTimestamp = 123456;
@@ -702,5 +662,40 @@ namespace FireBirdTest {
 
 		setState.m_pDatabase->CommitTrans();
 		setState.Close();
+	}
+
+	TEST_F(CTiingoStockTest, TestProcessDayLine) {
+		auto pStock = make_shared<CTiingoStock>();
+		pStock->SetSymbol(_T("AAPL"));
+		pStock->ProcessDayLine();
+
+		auto pStock3 = make_shared<CTiingoStock>();
+		pStock3->SetSymbol(_T("AAPL"));
+		pStock3->ProcessDayLine3();
+
+		auto pStock2 = make_shared<CTiingoStock>();
+		pStock2->SetSymbol(_T("AAPL"));
+		pStock2->ProcessDayLine2();
+
+		EXPECT_TRUE(pStock3->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
+		EXPECT_TRUE(pStock3->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
+		EXPECT_TRUE(pStock->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
+		EXPECT_TRUE(pStock->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
+
+		for (int i = 0; i < pStock3->m_v52WeekLow.size(); i++) {
+			EXPECT_TRUE(pStock3->m_v52WeekLow.at(i) == pStock2->m_v52WeekLow.at(i)) << i;
+		}
+		for (int i = 0; i < pStock3->m_v52WeekLow.size(); i++) {
+			EXPECT_TRUE(pStock3->m_v52WeekHigh.at(i) == pStock2->m_v52WeekHigh.at(i)) << i;
+		}
+		for (int i = 0; i < pStock->m_v52WeekLow.size(); i++) {
+			EXPECT_TRUE(pStock->m_v52WeekLow.at(i) == pStock2->m_v52WeekLow.at(i)) << i;
+		}
+		for (int i = 0; i < pStock->m_v52WeekLow.size(); i++) {
+			EXPECT_TRUE(pStock->m_v52WeekHigh.at(i) == pStock2->m_v52WeekHigh.at(i)) << i;
+		}
+		CString str = pStock->GetSymbol();
+
+		//
 	}
 }

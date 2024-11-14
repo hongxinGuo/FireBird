@@ -9,8 +9,6 @@
 
 map<string, enum_ErrorMessageData> mapTiingoErrorMap{
 	{ _T("You do not have permission to access the News API"), ERROR_TIINGO_NO_RIGHT_TO_ACCESS__ }, // http状态码：403
-	{ _T("Please supply a token"), ERROR_TIINGO_MISSING_API_KEY__ },
-	{ _T("Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service."), ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__ }, // http状态码：400
 	{ _T("Error: resampleFreq must be in 'Min' or 'Hour' only"), ERROR_TIINGO_FREQUENCY__ },
 	{ _T("You have run over your 500 symbol look up for this month. Please upgrade at https://api.tiingo.com/pricing to have your limits increased."), ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__ }, // http状态码：200
 	{ _T("Not found."), ERROR_TIINGO_NOT_FOUND__ },
@@ -75,6 +73,8 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 			strView = pWebData->GetStringView(0, 75); // 只使用前75个字符
 			if (strView.compare(_T("You have run over your 500 symbol look up for this month. Please upgrade at")) == 0) { 	// 达到代码限制
 				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo symbol reach 500"));
+				s2 = strView;
+				gl_warnLogger->warn("{}", s2);
 				return ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__;
 			}
 		}
@@ -84,12 +84,45 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 			strView = pWebData->GetStringView(0, 62);
 			if (strView.compare(_T("[\"Error: Endpoint only available for US and US - listed Stocks\"]")) == 0) { 	// 非美国股票不提供此项数据
 				gl_systemMessage.PushInnerSystemInformationMessage(_T("Error: Endpoint only available for US and US - listed Stocks\"]"));
-				gl_warnLogger->warn("{}", str.GetBuffer());
+				s2 = strView;
+				gl_warnLogger->warn("{}", s2);
 				return ERROR_TIINGO_ENDPOINT_ONLY_FOR_US_LISTED_STOCK__;
 			}
 		}
 		break;
 	case 403:
+		if (pWebData->GetBufferLength() == 34) {
+			strView = pWebData->GetStringView(0, 34);
+			if (strView.compare(_T("{\"detail\":\"Please supply a token\"}")) == 0) { 	// 需要令牌
+				gl_systemMessage.PushErrorMessage(_T("Tiingo missing API key"));
+				m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
+				s2 = strView;
+				gl_warnLogger->warn("{}", s2);
+				return ERROR_TIINGO_MISSING_API_KEY__;
+			}
+		}
+		if (pWebData->GetBufferLength() == 62) {
+			strView = pWebData->GetStringView(0, 62);
+			if (strView.compare(_T("{\"detail\":\"You do not have permission to access the News API\"}")) == 0) { 	// 非美国股票不提供此项数据
+				gl_systemMessage.PushErrorMessage(_T("Tiingo missing API key"));
+				m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
+				s2 = strView;
+				gl_warnLogger->warn("{}", s2);
+				return ERROR_TIINGO_NO_RIGHT_TO_ACCESS__;
+			}
+		}
+		if (pWebData->GetBufferLength() == 216) {
+			strView = pWebData->GetStringView(0, 216);
+			if (strView.compare(_T("{\"detail\":\"Error: Free and Power plans are limited to the DOW 30. If you would like access to all supported tickers, then please E-mail support@tiingo.com to get the Fundamental Data API added as an add-on service.\"}")) == 0) { 	// 非美国股票不提供此项数据
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Add-on permission needed"));
+				m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
+				gl_systemConfiguration.SetTiingoAccountAddOnPaid(false);
+				s2 = strView;
+				gl_warnLogger->warn("{}", s2);
+				return ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__;
+			}
+		}
+
 		l = pWebData->GetBufferLength() > 30 ? 30 : pWebData->GetBufferLength();
 		strView = pWebData->GetStringView(0, l); //
 		s2 = strView;
@@ -132,19 +165,6 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		return m_eErrorMessageData; // 暂时返回正确
 	}
 
-	// 第二次switch处理json制式的错误
-	switch (m_dwHTTPStatusCode) {
-	case 400:
-		break;
-	case 403:
-		break;
-	case 404:
-		break;
-	default:
-		// 未处理的状态
-		break;
-	}
-
 	try {
 		string_view sView;
 		size_t iStringViewLength;
@@ -169,11 +189,6 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		case ERROR_TIINGO_MISSING_API_KEY__: // 缺少API key
 			gl_systemMessage.PushErrorMessage(_T("Tiingo missing API key"));
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
-			break;
-		case ERROR_TIINGO_ADD_ON_PERMISSION_NEEDED__: // 需要购买附加许可证
-			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
-			gl_systemConfiguration.SetTiingoAccountAddOnPaid(false);
-			gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo Add-on permission needed"));
 			break;
 		case ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__:// 申请频率超高
 			// 降低查询频率200ms。
