@@ -74,8 +74,12 @@ void CVirtualDataSource::InquireData() {
 				if (!pEngine->IsWebError()) this->UpdateStatus(pWebData);
 				counter.stop();
 				time_t ttCurrentInquiryTime = counter.GetElapsedMillisecond();
-				if (s_LastInquiryTime > m_iMaxNormalInquireTime && ttCurrentInquiryTime > m_iMaxNormalInquireTime) SetWebBusy(true); // 
-				else SetWebBusy(false);
+				if (s_LastInquiryTime > m_iMaxNormalInquireTime && ttCurrentInquiryTime > m_iMaxNormalInquireTime) {
+					SetWebBusy(true); //
+				}
+				else {
+					SetWebBusy(false);
+				}
 				s_LastInquiryTime = ttCurrentInquiryTime;
 				SetCurrentInquiryTime(ttCurrentInquiryTime);
 				SetHTTPStatusCode(pEngine->GetHTTPStatusCode());

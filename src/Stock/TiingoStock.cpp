@@ -298,7 +298,7 @@ void CTiingoStock::CheckDayLineUpdateStatus(long llTodayDate) {
 		return;
 	}
 	ASSERT(GetDayLineEndDate() < gl_pWorldMarket->GetCurrentTradeDate());
-	m_fUpdateDayLine = false; //todo
+	m_fUpdateDayLine = true; //todo
 }
 
 void CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
@@ -306,7 +306,7 @@ void CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
 		SetUpdateStockDailyMeta(false);
 	}
 	else {
-		SetUpdateStockDailyMeta(false); //todo
+		SetUpdateStockDailyMeta(true); //todo
 	}
 }
 
@@ -414,6 +414,7 @@ void CTiingoStock::Delete52WeekLowDB() const {
 	set52WeekLow.Close();
 }
 
+constexpr double __SMALL_DOUBLE_ = 0.00005;
 /////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理日线
@@ -423,8 +424,14 @@ void CTiingoStock::Delete52WeekLowDB() const {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 void CTiingoStock::ProcessDayLine() {
+	if (gl_systemConfiguration.IsExitingSystem()) return;
 	if (!IsDayLineLoaded()) {
 		m_dataDayLine.LoadDB(GetSymbol());
+	}
+
+	for (size_t index = 0; index < m_dataDayLine.Size(); index++) {
+		double d = m_dataDayLine.GetData(index)->m_lClose;
+		m_vClose.push_back(d);
 	}
 
 	if (m_dataDayLine.Size() < 300) return; // 最少300个日线数据
@@ -436,18 +443,22 @@ void CTiingoStock::ProcessDayLine() {
 
 	NormalizeStockCloseValue(dSplitFactor, 0, endPos);
 
-	FindHighLow3(endPos);
-	//FindHighLow2(endPos);
+	//FindHighLow3(endPos);
+	FindHighLow2(endPos);
 
 	m_dataDayLine.Unload();
 
-	gl_systemMessage.PushDayLineInfoMessage(GetSymbol());
 	SetUpdate52WeekHighLowDB(true);
 }
 
 void CTiingoStock::ProcessDayLine2() {
 	if (!IsDayLineLoaded()) {
 		m_dataDayLine.LoadDB(GetSymbol());
+	}
+
+	for (size_t index = 0; index < m_dataDayLine.Size(); index++) {
+		double d = m_dataDayLine.GetData(index)->m_lClose;
+		m_vClose.push_back(d);
 	}
 
 	if (m_dataDayLine.Size() < 300) return; // 最少300个日线数据
@@ -470,6 +481,11 @@ void CTiingoStock::ProcessDayLine3() {
 		m_dataDayLine.LoadDB(GetSymbol());
 	}
 
+	for (size_t index = 0; index < m_dataDayLine.Size(); index++) {
+		double d = m_dataDayLine.GetData(index)->m_lClose;
+		m_vClose.push_back(d);
+	}
+
 	if (m_dataDayLine.Size() < 300) return; // 最少300个日线数据
 	m_v52WeekHigh.clear();
 	m_v52WeekLow.clear();
@@ -488,8 +504,8 @@ void CTiingoStock::ProcessDayLine3() {
 
 void CTiingoStock::FindHighLow3(size_t endPos) {
 	for (size_t currentPos = 250; currentPos < endPos; currentPos++) { // 从第250个位置开始寻找。
-		long lClose = m_dataDayLine.GetData(currentPos)->GetClose();
-		switch (IsLowOrHigh(currentPos, lClose)) {
+		auto dClose = m_vClose[currentPos];
+		switch (IsLowOrHigh(currentPos, dClose)) {
 		case -1: // new low
 			Add52WeekLow(m_dataDayLine.GetData(currentPos)->GetMarketDate());
 			break;
@@ -510,52 +526,57 @@ void CTiingoStock::FindHighLow2(size_t endPos) {
 void CTiingoStock::FindAll52WeekLow(size_t beginPos, size_t endPos) {
 	bool fFound = false;
 	size_t currentBeginPos = beginPos;
-	size_t currentEndPos = currentBeginPos + 250 > endPos ? endPos : currentBeginPos + 250;
+	size_t currentPos = 0;
 	size_t current52WeekLowPos = beginPos;
-	long lCurrent52WeekLowValue = m_dataDayLine.GetData(beginPos)->m_lClose;
+	auto dCurrent52WeekLowValue = m_vClose[beginPos];
 
-	while (currentBeginPos < endPos - 1) {
+	while (currentPos < endPos) {
 		if (fFound) {
 			bool fCurrentFound = false;
+			double belowCurrent52WeekLow = dCurrent52WeekLowValue - __SMALL_DOUBLE_;
 			for (auto index = currentBeginPos; index <= current52WeekLowPos; index++) {
-				if (currentEndPos == endPos) {
-					currentBeginPos = endPos - 1;
+				if (currentPos == endPos) {
 					fCurrentFound = false;
 					break;
 				}
-				if (m_dataDayLine.GetData(currentEndPos)->m_lClose < lCurrent52WeekLowValue) { // 找到了
-					lCurrent52WeekLowValue = m_dataDayLine.GetData(currentEndPos)->m_lClose;
-					current52WeekLowPos = currentEndPos;
-					currentBeginPos = current52WeekLowPos - 250;
-					Add52WeekLow(m_dataDayLine.GetData(currentEndPos)->m_lDate);
+				if (m_vClose[currentPos] < belowCurrent52WeekLow) { // 找到了
+					Add52WeekLow(m_dataDayLine.GetData(currentPos)->m_lDate);
+					dCurrent52WeekLowValue = m_vClose[currentPos];
+					current52WeekLowPos = currentPos;
+					currentBeginPos = currentPos - 250;
+					currentPos++;
 					fCurrentFound = true;
 					break;
 				}
-				currentEndPos++;
+				currentPos++;
 			}
 			if (!fCurrentFound) {
-				if (currentEndPos < endPos - 1) {
-					currentBeginPos = current52WeekLowPos + 1;
-					currentEndPos = endPos < currentBeginPos + 250 ? endPos : currentBeginPos + 250;
-				}
-				else {
-					break; // 全部查询完毕
-				}
+				currentBeginPos = current52WeekLowPos + 1;
 				fFound = false;
 			}
 		}
 		else { // 找寻下一个新低位置
-			if (currentBeginPos + 250 < endPos) {
-				currentEndPos = currentBeginPos + 250;
-			}
-			else {
-				currentEndPos = endPos;
-			}
-			current52WeekLowPos = FindCurrent52WeekLow(currentBeginPos, currentEndPos, lCurrent52WeekLowValue);
-			lCurrent52WeekLowValue = m_dataDayLine.GetData(current52WeekLowPos)->m_lClose;
+			currentPos = currentBeginPos + 250 > endPos ? endPos : currentBeginPos + 250;
+			current52WeekLowPos = FindCurrent52WeekLow(currentBeginPos, currentPos, dCurrent52WeekLowValue);
+			dCurrent52WeekLowValue = m_vClose[current52WeekLowPos];
 			fFound = true;
 		}
 	}
+}
+
+size_t CTiingoStock::FindCurrent52WeekLow(size_t beginPos, size_t endPos, double& value) const {
+	auto pos = beginPos;
+	value = m_vClose[beginPos];
+	double belowCurrentValue = value - __SMALL_DOUBLE_;
+
+	for (auto index = beginPos; index < endPos; index++) {
+		if (m_vClose[index] < belowCurrentValue) {
+			pos = index;
+			value = m_vClose[index];
+			belowCurrentValue = value - __SMALL_DOUBLE_;
+		}
+	}
+	return pos;
 }
 
 void CTiingoStock::FindAll52WeekHigh(size_t beginPos, size_t endPos) {
@@ -563,10 +584,11 @@ void CTiingoStock::FindAll52WeekHigh(size_t beginPos, size_t endPos) {
 	size_t currentBeginPos = beginPos;
 	size_t currentEndPos = currentBeginPos + 250 > endPos ? endPos : currentBeginPos + 250;
 	size_t current52WeekLowPos = beginPos;
-	long lCurrent52WeekHighValue = m_dataDayLine.GetData(beginPos)->m_lClose;
+	auto dCurrent52WeekHighValue = m_vClose[beginPos];
 
 	while (currentBeginPos < endPos - 1) {
 		if (fFound) { // 有最高价
+			auto aboveCurrent52WeekHigh = dCurrent52WeekHighValue + __SMALL_DOUBLE_;
 			bool fCurrentFound = false;
 			for (auto index = currentBeginPos; index <= current52WeekLowPos; index++) { // 查询到最新的新低价
 				if (currentEndPos == endPos) {
@@ -574,8 +596,9 @@ void CTiingoStock::FindAll52WeekHigh(size_t beginPos, size_t endPos) {
 					fCurrentFound = false;
 					break;
 				}
-				if (m_dataDayLine.GetData(currentEndPos)->m_lClose > lCurrent52WeekHighValue) { // 找到了
-					lCurrent52WeekHighValue = m_dataDayLine.GetData(currentEndPos)->m_lClose;
+				if (m_vClose[currentEndPos] > aboveCurrent52WeekHigh) { // 找到了
+					dCurrent52WeekHighValue = m_vClose[currentEndPos];
+					aboveCurrent52WeekHigh = dCurrent52WeekHighValue + __SMALL_DOUBLE_;
 					current52WeekLowPos = currentEndPos;
 					currentBeginPos = current52WeekLowPos - 250;
 					Add52WeekHigh(m_dataDayLine.GetData(currentEndPos)->m_lDate);
@@ -602,34 +625,23 @@ void CTiingoStock::FindAll52WeekHigh(size_t beginPos, size_t endPos) {
 			else {
 				currentEndPos = endPos;
 			}
-			current52WeekLowPos = FindCurrent52WeekHigh(currentBeginPos, currentEndPos, lCurrent52WeekHighValue);
-			lCurrent52WeekHighValue = m_dataDayLine.GetData(current52WeekLowPos)->m_lClose;
+			current52WeekLowPos = FindCurrent52WeekHigh(currentBeginPos, currentEndPos, dCurrent52WeekHighValue);
+			dCurrent52WeekHighValue = m_vClose[current52WeekLowPos];
 			fFound = true;
 		}
 	}
 }
 
-size_t CTiingoStock::FindCurrent52WeekLow(size_t beginPos, size_t endPos, long& value) const {
+size_t CTiingoStock::FindCurrent52WeekHigh(size_t beginPos, size_t endPos, double& value) const {
 	auto pos = beginPos;
-	value = m_dataDayLine.GetData(beginPos)->m_lClose + 1;
+	value = m_vClose[beginPos];
+	auto aboveCurrentValue = value + __SMALL_DOUBLE_;
 
 	for (auto index = beginPos; index < endPos; index++) {
-		if (m_dataDayLine.GetData(index)->m_lClose < value) {
+		if (m_vClose[index] > aboveCurrentValue) {
 			pos = index;
-			value = m_dataDayLine.GetData(index)->m_lClose;
-		}
-	}
-	return pos;
-}
-
-size_t CTiingoStock::FindCurrent52WeekHigh(size_t beginPos, size_t endPos, long& value) const {
-	auto pos = beginPos;
-	value = m_dataDayLine.GetData(beginPos)->m_lClose - 1;
-
-	for (auto index = beginPos; index < endPos; index++) {
-		if (m_dataDayLine.GetData(index)->m_lClose > value) {
-			pos = index;
-			value = m_dataDayLine.GetData(index)->m_lClose;
+			value = m_vClose[index];
+			aboveCurrentValue = value + __SMALL_DOUBLE_;
 		}
 	}
 	return pos;
@@ -639,24 +651,24 @@ double CTiingoStock::CalculateSplitFactor(size_t beginPos, size_t endPos) const 
 	double dRatio = 1;
 	for (auto index = beginPos; index < endPos; index++) {
 		auto splitFactor = m_dataDayLine.GetData(index)->m_dSplitFactor;
-		if (splitFactor > 0.00001) {
+		if (splitFactor > __SMALL_DOUBLE_) {
 			dRatio *= splitFactor;
 		}
 	}
 	return dRatio;
 }
 
-void CTiingoStock::NormalizeStockCloseValue(double dSplitFactor, size_t calculatePos, size_t dayLineSize) const {
+void CTiingoStock::NormalizeStockCloseValue(double dSplitFactor, size_t calculatePos, size_t dayLineSize) {
 	double dCurrentSplitFactor = 1;
 	if (dSplitFactor < 1) { // 总体是缩股的。
-		for (auto index = dayLineSize - 1; index >= calculatePos; index--) { // 向前复权（保持目前的股价不变）
-			m_dataDayLine.GetData(index)->m_lClose *= dCurrentSplitFactor; // 使用除法向前复权。要先计算，然后才算splitFactor
+		for (auto index = dayLineSize - 1; index > calculatePos; index--) { // 向前复权（保持目前的股价不变）
+			m_vClose[index] *= dCurrentSplitFactor; // 使用除法向前复权。要先计算，然后才算splitFactor
 			auto currentSplitFactor = m_dataDayLine.GetData(index)->m_dSplitFactor;
-			if (currentSplitFactor < 1.0001 && currentSplitFactor > 0.9999) {
+			if (currentSplitFactor < 1 + __SMALL_DOUBLE_ && currentSplitFactor > 1 - __SMALL_DOUBLE_) {
 				// do nothing
 			}
 			else {
-				if (currentSplitFactor > 0.0001) {
+				if (currentSplitFactor > __SMALL_DOUBLE_) {
 					dCurrentSplitFactor /= currentSplitFactor;
 				}
 			}
@@ -665,13 +677,13 @@ void CTiingoStock::NormalizeStockCloseValue(double dSplitFactor, size_t calculat
 	else { // 总体是扩股的。
 		for (auto index = calculatePos; index < dayLineSize; index++) { // 向后复权（目前的股价会变大）
 			auto currentSplitFactor = m_dataDayLine.GetData(index)->m_dSplitFactor;
-			if ((currentSplitFactor < 1.0001) && currentSplitFactor > 0.9999) {
+			if ((currentSplitFactor < 1 + __SMALL_DOUBLE_) && currentSplitFactor > 1 - __SMALL_DOUBLE_) {
 				// do nothing
 			}
 			else {
 				dCurrentSplitFactor *= currentSplitFactor;
 			}
-			m_dataDayLine.GetData(index)->m_lClose *= dCurrentSplitFactor;
+			m_vClose[index] *= dCurrentSplitFactor;
 		}
 	}
 }
@@ -682,19 +694,21 @@ void CTiingoStock::NormalizeStockCloseValue(double dSplitFactor, size_t calculat
 /// 已申请了Add-on账户，可以接收到除权信息了。
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-int CTiingoStock::IsLowOrHigh(size_t index, long lClose) const {
+int CTiingoStock::IsLowOrHigh(size_t index, double dClose) const {
 	ASSERT(index >= 250);
 	bool fIsNewLow = true;
 	bool fIsNewHigh = true;
+	double belowClose = dClose + __SMALL_DOUBLE_;
 	for (size_t i = index - 250; i < index; i++) {
-		if (m_dataDayLine.GetData(i)->GetClose() <= lClose) {
+		if (m_vClose[i] < belowClose) {
 			fIsNewLow = false;
 			break;
 		}
 	}
 	if (fIsNewLow) return -1; // 52周新低价
+	double aboveClose = dClose - __SMALL_DOUBLE_;
 	for (size_t i = index - 250; i < index; i++) {
-		if (m_dataDayLine.GetData(i)->GetClose() >= lClose) {
+		if (m_vClose[i] > aboveClose) {
 			fIsNewHigh = false;
 			break;
 		}

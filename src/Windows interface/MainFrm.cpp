@@ -640,7 +640,7 @@ void CMainFrame::OnCalculateTodayRS() {
 }
 
 void CMainFrame::CalculateTodayRS() {
-	gl_runtime.thread_executor()->post([] {
+	gl_runtime.background_executor()->post([] {
 		ThreadBuildDayLineRS(gl_pChinaMarket, gl_pChinaMarket->GetMarketDate());
 	});
 }
@@ -793,7 +793,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 }
 
 void CMainFrame::OnRebuildChinaMarketStockDayLineRS() {
-	gl_runtime.thread_executor()->post([] {
+	gl_runtime.background_executor()->post([] {
 		ThreadBuildDayLineRS(gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
 	});
 }
@@ -976,7 +976,7 @@ void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnRebuildChinaMarketStockWeekLineRS() {
-	gl_runtime.thread_executor()->post([] {
+	gl_runtime.background_executor()->post([] {
 		ThreadBuildWeekLineRS(gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
 	});
 }
@@ -1245,7 +1245,7 @@ void CMainFrame::OnUpdateCreateTiingoTradeDayDayline(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnProcessTiingoDayline() {
-	gl_runtime.thread_executor()->post([] {
+	gl_runtime.background_executor()->post([] {
 		gl_dataContainerTiingoStock.TaskProcessDayLine();
 	});
 }

@@ -22,7 +22,7 @@ using std::binary_semaphore;
 
 extern HANDLE gl_hFireBirdMutex;
 
-extern std::counting_semaphore<8> gl_BackgroundWorkingThread; // 最多后台工作线程允许数量
+extern std::counting_semaphore<16> gl_BackgroundWorkingThread; // 最多后台工作线程允许数量
 
 extern binary_semaphore gl_UpdateWorldMarketDB; // 此信号量用于更新WorldMarket数据库
 extern binary_semaphore gl_ProcessChinaMarketRTData; // 处理中国市场的实时数据时，不允许同时存储之。

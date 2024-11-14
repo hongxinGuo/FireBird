@@ -671,7 +671,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerTiingoStock.IsUpdate52WeekHighLowDB()) { // stock dayLine
 		gl_runtime.background_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
-			gl_dataContainerTiingoStock.Update52WeekHighLowDB();
+			//todo gl_dataContainerTiingoStock.Update52WeekHighLowDB();
 			gl_UpdateWorldMarketDB.release();
 		});
 	}

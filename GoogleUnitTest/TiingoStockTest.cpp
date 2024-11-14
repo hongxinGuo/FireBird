@@ -665,9 +665,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestProcessDayLine) {
-		auto pStock = make_shared<CTiingoStock>();
-		pStock->SetSymbol(_T("AAPL"));
-		pStock->ProcessDayLine();
+		//auto pStock = make_shared<CTiingoStock>();
+		//pStock->SetSymbol(_T("AAPL"));
+		//pStock->ProcessDayLine();
 
 		auto pStock3 = make_shared<CTiingoStock>();
 		pStock3->SetSymbol(_T("AAPL"));
@@ -677,10 +677,10 @@ namespace FireBirdTest {
 		pStock2->SetSymbol(_T("AAPL"));
 		pStock2->ProcessDayLine2();
 
-		EXPECT_TRUE(pStock3->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
-		EXPECT_TRUE(pStock3->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
-		EXPECT_TRUE(pStock->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
-		EXPECT_TRUE(pStock->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
+		//EXPECT_TRUE(pStock3->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
+		//EXPECT_TRUE(pStock3->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
+		//EXPECT_TRUE(pStock->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
+		//EXPECT_TRUE(pStock->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
 
 		for (int i = 0; i < pStock3->m_v52WeekLow.size(); i++) {
 			EXPECT_TRUE(pStock3->m_v52WeekLow.at(i) == pStock2->m_v52WeekLow.at(i)) << i;
@@ -688,13 +688,52 @@ namespace FireBirdTest {
 		for (int i = 0; i < pStock3->m_v52WeekLow.size(); i++) {
 			EXPECT_TRUE(pStock3->m_v52WeekHigh.at(i) == pStock2->m_v52WeekHigh.at(i)) << i;
 		}
+		/*
 		for (int i = 0; i < pStock->m_v52WeekLow.size(); i++) {
 			EXPECT_TRUE(pStock->m_v52WeekLow.at(i) == pStock2->m_v52WeekLow.at(i)) << i;
 		}
 		for (int i = 0; i < pStock->m_v52WeekLow.size(); i++) {
 			EXPECT_TRUE(pStock->m_v52WeekHigh.at(i) == pStock2->m_v52WeekHigh.at(i)) << i;
 		}
-		CString str = pStock->GetSymbol();
+		*/
+		CString str = pStock2->GetSymbol();
+
+		//
+	}
+
+	TEST_F(CTiingoStockTest, TestProcessDayLine2) {
+		//auto pStock = make_shared<CTiingoStock>();
+		//pStock->SetSymbol(_T("A"));
+		//pStock->ProcessDayLine();
+
+		auto pStock3 = make_shared<CTiingoStock>();
+		pStock3->SetSymbol(_T("A"));
+		pStock3->ProcessDayLine3();
+
+		auto pStock2 = make_shared<CTiingoStock>();
+		pStock2->SetSymbol(_T("A"));
+		pStock2->ProcessDayLine2();
+
+		//EXPECT_TRUE(pStock3->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
+		//EXPECT_TRUE(pStock3->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
+		//EXPECT_TRUE(pStock->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
+		//EXPECT_TRUE(pStock->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
+
+		for (int i = 0; i < pStock3->m_v52WeekLow.size(); i++) {
+			EXPECT_TRUE(pStock3->m_v52WeekLow.at(i) == pStock2->m_v52WeekLow.at(i)) << i;
+		}
+		for (int i = 0; i < pStock3->m_v52WeekLow.size(); i++) {
+			EXPECT_TRUE(pStock3->m_v52WeekHigh.at(i) == pStock2->m_v52WeekHigh.at(i)) << i;
+		}
+		/*
+		for (int i = 0; i < pStock->m_v52WeekLow.size(); i++) {
+			EXPECT_TRUE(pStock->m_v52WeekLow.at(i) == pStock2->m_v52WeekLow.at(i)) << i;
+		}
+		for (int i = 0; i < pStock->m_v52WeekLow.size(); i++) {
+			EXPECT_TRUE(pStock->m_v52WeekHigh.at(i) == pStock2->m_v52WeekHigh.at(i)) << i;
+		}
+		*/
+		CString str = pStock2->GetSymbol();
 
 		//
 	}

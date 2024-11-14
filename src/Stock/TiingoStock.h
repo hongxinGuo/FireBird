@@ -102,11 +102,11 @@ public:
 	void FindHighLow2(size_t endPos);
 	void FindAll52WeekLow(size_t beginPos, size_t endPos);
 	void FindAll52WeekHigh(size_t beginPos, size_t endPos);
-	size_t FindCurrent52WeekLow(size_t beginPos, size_t endPos, long& value) const;
-	size_t FindCurrent52WeekHigh(size_t beginPos, size_t endPos, long& value) const;
+	size_t FindCurrent52WeekLow(size_t beginPos, size_t endPos, double& value) const;
+	size_t FindCurrent52WeekHigh(size_t beginPos, size_t endPos, double& value) const;
 	double CalculateSplitFactor(size_t beginPos, size_t endPos) const;
-	void NormalizeStockCloseValue(double dSplitFactor, size_t calculatePos, size_t dayLineSize) const;
-	int IsLowOrHigh(size_t index, long lClose) const;
+	void NormalizeStockCloseValue(double dSplitFactor, size_t calculatePos, size_t dayLineSize);
+	int IsLowOrHigh(size_t index, double dClose) const;
 
 	// 测试用函数
 	void ProcessDayLine2(); // 用于测试
@@ -134,6 +134,8 @@ public:
 
 	vector<long> m_v52WeekLow; // 年度最低价的日期
 	vector<long> m_v52WeekHigh; // 年度最高价的日期
+
+	vector<double> m_vClose; // 收盘价
 
 protected:
 	CTiingoCompanyFinancialStatesPtr m_pvFinancialState{ nullptr };

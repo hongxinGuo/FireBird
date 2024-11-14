@@ -26,6 +26,7 @@ UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCa
 
 	gl_systemMessage.PushInformationMessage(_T("开始计算股票相对强度"));
 	time_t tStart = 0, tEnd = 0;
+	vector<result<void>> vResults;
 
 	time(&tStart);
 	do {
@@ -33,7 +34,7 @@ UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCa
 			// 星期六和星期日无交易，略过
 			// 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
 			// 需要限制工作线程的并行数量
-			gl_runtime.thread_executor()->post([lThatDate] {
+			auto result = gl_runtime.background_executor()->submit([lThatDate] {
 				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 				gl_BackgroundWorkingThread.acquire();
 				if (!gl_systemConfiguration.IsExitingSystem() && !gl_systemConfiguration.IsExitingCalculatingRS()) {
@@ -42,12 +43,14 @@ UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCa
 				gl_BackgroundWorkingThread.release();
 				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 			});
+			vResults.emplace_back(std::move(result));
 		}
 		ctCurrent += oneDay;
 		lThatDate = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
 	} while (lThatDate <= pMarket->GetMarketDate()); // 计算至当前日期（包括今日）
-
-	while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) Sleep(1000);
+	for (auto& result2 : vResults) {
+		result2.get(); // 在这里等待所有的线程执行完毕
+	}
 
 	if (!gl_systemConfiguration.IsExitingCalculatingRS()) {
 		// 如果顺利完成了计算任务
