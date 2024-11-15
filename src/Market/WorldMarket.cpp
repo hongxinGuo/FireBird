@@ -425,7 +425,7 @@ void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
 		if (!gl_pTiingoDataSource->IsUpdateDayLine()) { // 接收完日线数据后方可处理
 			gl_runtime.thread_executor()->post([] {
-				gl_dataContainerTiingoStock.TaskProcessDayLine2();
+				gl_dataContainerTiingoStock.TaskProcessDayLine();
 			});
 		}
 		else {
@@ -435,7 +435,7 @@ void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 	else {
 		if (!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) { // 接收完IEX日线数据后方可处理
 			gl_runtime.thread_executor()->post([] {
-				gl_dataContainerTiingoStock.TaskProcessDayLine2();
+				gl_dataContainerTiingoStock.TaskProcessDayLine();
 			});
 		}
 		else {
@@ -671,7 +671,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerTiingoStock.IsUpdate52WeekHighLowDB()) { // stock dayLine
 		gl_runtime.background_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
-			//todo gl_dataContainerTiingoStock.Update52WeekHighLowDB();
+			gl_dataContainerTiingoStock.Update52WeekHighLowDB();
 			gl_UpdateWorldMarketDB.release();
 		});
 	}

@@ -385,7 +385,11 @@
     <ClCompile Include="..\src\Stock\FinnhubCrypto.cpp" />
     <ClCompile Include="..\src\Stock\FinnhubForex.cpp" />
     <ClCompile Include="..\src\Stock\TiingoCrypto.cpp" />
-    <ClCompile Include="..\src\Stock\TiingoStock.cpp" />
+    <ClCompile Include="..\src\Stock\TiingoStock.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</WholeProgramOptimization>
+      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
+    </ClCompile>
     <ClCompile Include="..\src\Stock\VirtualStock.cpp" />
     <ClCompile Include="..\src\Stock\FinnhubStock.cpp" />
     <ClCompile Include="..\src\System\FinnhubInaccessibleExchange.cpp" />

@@ -298,7 +298,7 @@ void CTiingoStock::CheckDayLineUpdateStatus(long llTodayDate) {
 		return;
 	}
 	ASSERT(GetDayLineEndDate() < gl_pWorldMarket->GetCurrentTradeDate());
-	m_fUpdateDayLine = true;
+	m_fUpdateDayLine = true; //todo
 }
 
 void CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
@@ -306,7 +306,7 @@ void CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
 		SetUpdateStockDailyMeta(false);
 	}
 	else {
-		SetUpdateStockDailyMeta(true);
+		SetUpdateStockDailyMeta(true); // todo
 	}
 }
 
@@ -336,11 +336,9 @@ void CTiingoStock::Delete52WeekHigh(long lDate) {
 }
 
 void CTiingoStock::Update52WeekHighLowDB() {
-	if (IsUpdate52WeekHighLowDB()) {
-		SetUpdate52WeekHighLowDB(false);
-		Update52WeekHighDB();
-		Update52WeekLowDB();
-	}
+	SetUpdate52WeekHighLowDB(false);
+	Update52WeekHighDB();
+	Update52WeekLowDB();
 }
 
 void CTiingoStock::Update52WeekHighDB() const {
@@ -414,7 +412,7 @@ void CTiingoStock::Delete52WeekLowDB() const {
 	set52WeekLow.Close();
 }
 
-constexpr double __SMALL_DOUBLE_ = 0.00005;
+constexpr double __SMALL_DOUBLE_ = 0.000005;
 /////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理日线
@@ -443,8 +441,8 @@ void CTiingoStock::ProcessDayLine() {
 
 	NormalizeStockCloseValue(dSplitFactor, 0, endPos);
 
-	//FindHighLow3(endPos);
-	FindHighLow2(endPos);
+	//FindHighLow3(endPos); // 这种是最简单的。耗时虽然长，但与数据库操作相比还是短的，故而采用更快速的算法没有那么必须了。
+	FindHighLow2(endPos); // 这种速度较快。
 
 	m_dataDayLine.Unload();
 
@@ -480,8 +478,9 @@ void CTiingoStock::ProcessDayLine3() {
 	if (!IsDayLineLoaded()) {
 		m_dataDayLine.LoadDB(GetSymbol());
 	}
+	auto endPos = m_dataDayLine.Size();
 
-	for (size_t index = 0; index < m_dataDayLine.Size(); index++) {
+	for (size_t index = 0; index < endPos; index++) {
 		double d = m_dataDayLine.GetData(index)->m_lClose;
 		m_vClose.push_back(d);
 	}
@@ -490,7 +489,6 @@ void CTiingoStock::ProcessDayLine3() {
 	m_v52WeekHigh.clear();
 	m_v52WeekLow.clear();
 
-	auto endPos = m_dataDayLine.Size();
 	double dSplitFactor = CalculateSplitFactor(0, endPos);
 
 	NormalizeStockCloseValue(dSplitFactor, 0, endPos);
@@ -516,6 +514,29 @@ void CTiingoStock::FindHighLow3(size_t endPos) {
 			break;
 		}
 	}
+}
+
+int CTiingoStock::IsLowOrHigh(size_t index, double dClose) const {
+	ASSERT(index >= 250);
+	bool fIsNewLow = true;
+	bool fIsNewHigh = true;
+	double belowClose = dClose + __SMALL_DOUBLE_;
+	for (size_t i = index - 250; i < index; i++) {
+		if (m_vClose[i] < belowClose) {
+			fIsNewLow = false;
+			break;
+		}
+	}
+	if (fIsNewLow) return -1; // 52周新低价
+	double aboveClose = dClose - __SMALL_DOUBLE_;
+	for (size_t i = index - 250; i < index; i++) {
+		if (m_vClose[i] > aboveClose) {
+			fIsNewHigh = false;
+			break;
+		}
+	}
+	if (fIsNewHigh) return 1; // 52周新高价
+	return 0; // 既非52周最高价亦非52周最低价
 }
 
 void CTiingoStock::FindHighLow2(size_t endPos) {
@@ -685,33 +706,4 @@ void CTiingoStock::NormalizeStockCloseValue(double dSplitFactor, size_t calculat
 			m_vClose[index] *= dCurrentSplitFactor;
 		}
 	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-///
-///
-/// 已申请了Add-on账户，可以接收到除权信息了。
-///
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-int CTiingoStock::IsLowOrHigh(size_t index, double dClose) const {
-	ASSERT(index >= 250);
-	bool fIsNewLow = true;
-	bool fIsNewHigh = true;
-	double belowClose = dClose + __SMALL_DOUBLE_;
-	for (size_t i = index - 250; i < index; i++) {
-		if (m_vClose[i] < belowClose) {
-			fIsNewLow = false;
-			break;
-		}
-	}
-	if (fIsNewLow) return -1; // 52周新低价
-	double aboveClose = dClose - __SMALL_DOUBLE_;
-	for (size_t i = index - 250; i < index; i++) {
-		if (m_vClose[i] > aboveClose) {
-			fIsNewHigh = false;
-			break;
-		}
-	}
-	if (fIsNewHigh) return 1; // 52周新高价
-	return 0; // 既非52周最高价亦非52周最低价
 }
