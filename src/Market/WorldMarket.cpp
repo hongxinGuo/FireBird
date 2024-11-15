@@ -425,7 +425,7 @@ void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
 		if (!gl_pTiingoDataSource->IsUpdateDayLine()) { // 接收完日线数据后方可处理
 			gl_runtime.thread_executor()->post([] {
-				gl_dataContainerTiingoStock.TaskProcessDayLine();
+				gl_dataContainerTiingoStock.TaskProcessDayLine2();
 			});
 		}
 		else {
@@ -435,7 +435,7 @@ void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 	else {
 		if (!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) { // 接收完IEX日线数据后方可处理
 			gl_runtime.thread_executor()->post([] {
-				gl_dataContainerTiingoStock.TaskProcessDayLine();
+				gl_dataContainerTiingoStock.TaskProcessDayLine2();
 			});
 		}
 		else {

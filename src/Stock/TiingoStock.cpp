@@ -298,7 +298,7 @@ void CTiingoStock::CheckDayLineUpdateStatus(long llTodayDate) {
 		return;
 	}
 	ASSERT(GetDayLineEndDate() < gl_pWorldMarket->GetCurrentTradeDate());
-	m_fUpdateDayLine = true; //todo
+	m_fUpdateDayLine = true;
 }
 
 void CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
@@ -306,7 +306,7 @@ void CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
 		SetUpdateStockDailyMeta(false);
 	}
 	else {
-		SetUpdateStockDailyMeta(true); //todo
+		SetUpdateStockDailyMeta(true);
 	}
 }
 
@@ -598,7 +598,6 @@ void CTiingoStock::FindAll52WeekHigh(size_t beginPos, size_t endPos) {
 				}
 				if (m_vClose[currentEndPos] > aboveCurrent52WeekHigh) { // ур╣╫ак
 					dCurrent52WeekHighValue = m_vClose[currentEndPos];
-					aboveCurrent52WeekHigh = dCurrent52WeekHighValue + __SMALL_DOUBLE_;
 					current52WeekLowPos = currentEndPos;
 					currentBeginPos = current52WeekLowPos - 250;
 					Add52WeekHigh(m_dataDayLine.GetData(currentEndPos)->m_lDate);

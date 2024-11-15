@@ -1165,7 +1165,7 @@ void CMainFrame::OnUpdateMaintainChinaMarketStockDayLine(CCmdUI* pCmdUI) {
 #ifndef _DEBUG
 		if (gl_pChinaMarket->GetMarketTime() > 151000)
 #endif
-		SysCallCmdUIEnable(pCmdUI, true);
+			SysCallCmdUIEnable(pCmdUI, true);
 	}
 	else {
 		SysCallCmdUIEnable(pCmdUI, false);

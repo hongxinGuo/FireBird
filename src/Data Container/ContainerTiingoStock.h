@@ -37,4 +37,5 @@ public:
 	void SetUpdateFinancialState(bool fFlag);
 
 	void TaskProcessDayLine();
+	void TaskProcessDayLine2();
 };

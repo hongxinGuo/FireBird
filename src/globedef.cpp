@@ -59,7 +59,7 @@ time_t gl_tUTCTime = 0; // 所有的市场使用同一个协调世界时（Coordinated Universal
 binary_semaphore gl_UpdateChinaMarketDB{ 1 }; // 用于更新ChinaMarket数据库。todo 由于对MySQL数据库不太了解，偶尔会出现存储问题，我估计与同步有关，故而设置互斥变量
 binary_semaphore gl_UpdateWorldMarketDB{ 1 }; // 用于更新WorldMarket数据库。todo 由于对MySQL数据库不太了解，偶尔会出现存储问题，我估计与同步有关，故而设置互斥变量
 binary_semaphore gl_ProcessChinaMarketRTData{ 1 }; // 当处理中国市场的实时数据时，不允许同时存储之。
-counting_semaphore<16> gl_BackgroundWorkingThread{ 16 }; // 最多后台工作线程允许数量
+counting_semaphore<8> gl_BackgroundWorkingThread{ 8 }; // 最多后台工作线程允许数量
 
 concurrencpp::runtime gl_runtime; // 工作线程运行调度器
 concurrencpp::runtime gl_backgroundRuntime; // 后台工作线程运行调度器
