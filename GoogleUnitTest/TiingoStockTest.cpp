@@ -677,8 +677,8 @@ namespace FireBirdTest {
 		pStock2->SetSymbol(_T("ACI"));
 		pStock2->ProcessDayLine2();
 
-		//EXPECT_TRUE(pStock3->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
-		//EXPECT_TRUE(pStock3->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
+		EXPECT_TRUE(pStock3->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
+		EXPECT_TRUE(pStock3->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
 		//EXPECT_TRUE(pStock->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
 		//EXPECT_TRUE(pStock->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
 
@@ -714,8 +714,8 @@ namespace FireBirdTest {
 		pStock2->SetSymbol(_T("A"));
 		pStock2->ProcessDayLine2();
 
-		//EXPECT_TRUE(pStock3->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
-		//EXPECT_TRUE(pStock3->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
+		EXPECT_TRUE(pStock3->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
+		EXPECT_TRUE(pStock3->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
 		//EXPECT_TRUE(pStock->m_v52WeekLow.size() == pStock2->m_v52WeekLow.size());
 		//EXPECT_TRUE(pStock->m_v52WeekHigh.size() == pStock2->m_v52WeekHigh.size());
 

@@ -5,6 +5,8 @@ enum configuration_option {
 	SYSTEM_FAST_CPU,
 	SYSTEM_DEBUG_MODE_,
 	SYSTEM_RELOAD_SYSTEM_,
+	FINNHUB_DATA_SOURCE_ENABLE_,
+	TIINGO_DATA_SOURCE_ENABLE_
 };
 
 class CPropertiesToolBar : public CMFCToolBar {

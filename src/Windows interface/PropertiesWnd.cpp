@@ -9,6 +9,7 @@
 #include "FireBird.h"
 #include "Thread.h"
 #include "ThreadStatus.h"
+#include "TiingoDataSource.h"
 #include "WorldMarket.h"
 
 #ifdef _DEBUG
@@ -73,6 +74,14 @@ void CFireBirdPropertyGridCtrl::OnPropertyChanged(CMFCPropertyGridProperty* pPro
 		ASSERT(pVar->vt == VT_BOOL);
 		gl_systemConfiguration.SetReloadSystem(pVar->boolVal);
 		gl_systemConfiguration.SetUpdateDB(true);
+		break;
+	case FINNHUB_DATA_SOURCE_ENABLE_:
+		ASSERT(pVar->vt == VT_BOOL);
+		gl_pFinnhubDataSource->Enable(pVar->boolVal);
+		break;
+	case TIINGO_DATA_SOURCE_ENABLE_:
+		ASSERT(pVar->vt == VT_BOOL);
+		gl_pTiingoDataSource->Enable(pVar->boolVal);
 		break;
 	default:
 		TRACE("未处理PropertyGridCtrl例外\n"); // 未处理例外
@@ -301,6 +310,7 @@ void CPropertiesWnd::InitPropList() {
 
 	// finnhub group
 	CMFCPropertyGridProperty* pGroup3 = new CMFCPropertyGridProperty(_T("finnhub.io"));
+	pGroup3->AddSubItem(new CMFCPropertyGridProperty(_T("Data Source"), static_cast<_variant_t>(gl_pFinnhubDataSource->IsEnable()), _T("Enable"), FINNHUB_DATA_SOURCE_ENABLE_));
 	m_pPropWorldMarketWebStatus = new CMFCPropertyGridProperty(_T("Web Status"), _T("running"));
 	m_pPropWorldMarketWebStatus->Enable(FALSE);
 	pGroup3->AddSubItem(m_pPropWorldMarketWebStatus);
@@ -311,6 +321,7 @@ void CPropertiesWnd::InitPropList() {
 
 	// tiingo group
 	CMFCPropertyGridProperty* pGroup4 = new CMFCPropertyGridProperty(_T("Tiingo.com"));
+	pGroup4->AddSubItem(new CMFCPropertyGridProperty(_T("Data Source"), static_cast<_variant_t>(gl_pTiingoDataSource->IsEnable()), _T("Enable"), TIINGO_DATA_SOURCE_ENABLE_));
 	m_pPropTiingoCurrentFunction = new CMFCPropertyGridProperty(_T("Inquiring:"), _T(""));
 	m_pPropTiingoCurrentFunction->Enable(FALSE);
 	pGroup4->AddSubItem(m_pPropTiingoCurrentFunction);

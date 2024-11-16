@@ -225,7 +225,7 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0)); // 两分钟后开始监测WebSocket
 
-	//AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lTimeMinute, 0, 1, 0)); // 五分钟后处理日线数据
+	AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lTimeMinute, 0, 5, 0)); // 五分钟后处理日线数据
 
 	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }

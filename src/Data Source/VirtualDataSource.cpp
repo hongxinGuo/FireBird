@@ -101,7 +101,7 @@ void CVirtualDataSource::InquireData() {
 	}
 	else { // web error
 		m_fWebError = true;
-		CString strMessage2 = str + m_strInquiry;
+		CString strMessage2 = str + m_strInquiry.Left(70);
 		gl_warnLogger->warn("virtualDataSource thread number not match {} -- {}  {}", vResults.size(), pvWebData->size(), strMessage2.GetBuffer());
 	}
 	if (!gl_systemConfiguration.IsExitingSystem() && !pvWebData->empty()) {
@@ -112,7 +112,7 @@ void CVirtualDataSource::InquireData() {
 	ASSERT(!HaveInquiry()); // 没有现存的申请
 	//ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
 	if (!IsInquiring()) {
-		CString strMessage = str + m_strInquiry;
+		CString strMessage = str + m_strInquiry.Left(70);
 		gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 		gl_warnLogger->warn("CVirtualWebData.InquireData() reentry: {}", strMessage.GetBuffer());
 	}
