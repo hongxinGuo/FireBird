@@ -50,12 +50,12 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CWorldMarketTest, TestIsResetSystemTime) {
-		EXPECT_FALSE(gl_pWorldMarket->IsTimeToResetSystem(165759));
-		EXPECT_TRUE(gl_pWorldMarket->IsTimeToResetSystem(165800));
-		EXPECT_TRUE(gl_pWorldMarket->IsTimeToResetSystem(165801));
-		EXPECT_TRUE(gl_pWorldMarket->IsTimeToResetSystem(170459));
-		EXPECT_TRUE(gl_pWorldMarket->IsTimeToResetSystem(170500));
-		EXPECT_FALSE(gl_pWorldMarket->IsTimeToResetSystem(170501));
+		EXPECT_FALSE(gl_pWorldMarket->IsTimeToResetSystem(GetPrevTime(gl_pWorldMarket->GetResetTime(), 0, 2, 1)));
+		EXPECT_TRUE(gl_pWorldMarket->IsTimeToResetSystem(GetPrevTime(gl_pWorldMarket->GetResetTime(), 0, 2, 0)));
+		EXPECT_TRUE(gl_pWorldMarket->IsTimeToResetSystem(GetPrevTime(gl_pWorldMarket->GetResetTime(), 0, 1, 59)));
+		EXPECT_TRUE(gl_pWorldMarket->IsTimeToResetSystem(GetNextTime(gl_pWorldMarket->GetResetTime(), 0, 4, 59)));
+		EXPECT_TRUE(gl_pWorldMarket->IsTimeToResetSystem(GetNextTime(gl_pWorldMarket->GetResetTime(), 0, 5, 0)));
+		EXPECT_FALSE(gl_pWorldMarket->IsTimeToResetSystem(GetNextTime(gl_pWorldMarket->GetResetTime(), 0, 5, 1)));
 	}
 
 	TEST_F(CWorldMarketTest, TestTransferMarketTime) {
@@ -959,7 +959,7 @@ namespace FireBirdTest {
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_RESET__);
-		EXPECT_EQ(pTask->GetTime(), 170000);
+		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime());
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
@@ -973,7 +973,7 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestTaskCreateTask2) {
 		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
 
-		gl_pWorldMarket->TaskCreateTask(170110);
+		gl_pWorldMarket->TaskCreateTask(gl_pWorldMarket->GetResetTime() + 110);
 
 		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());
 		auto pTask = gl_pWorldMarket->GetMarketTask();
@@ -983,22 +983,22 @@ namespace FireBirdTest {
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__);
-		EXPECT_EQ(pTask->GetTime(), 170110);
+		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 110);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_UPDATE_DB__);
-		EXPECT_EQ(pTask->GetTime(), 170140);
+		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 140);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__);
-		EXPECT_EQ(pTask->GetTime(), 170300);
+		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 300);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_PROCESS_DAYLINE__);
-		EXPECT_EQ(pTask->GetTime(), 170600);
+		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 600);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		pTask = gl_pWorldMarket->GetMarketTask();
@@ -1012,12 +1012,12 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestTaskProcessWebSocketData1) {
 		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
 
-		gl_pWorldMarket->TaskProcessWebSocketData(165758);
+		gl_pWorldMarket->TaskProcessWebSocketData(GetPrevTime(gl_pWorldMarket->GetResetTime(), 0, 2, 1));
 
 		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());
 		const auto pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__);
-		EXPECT_EQ(pTask->GetTime(), 165759);
+		EXPECT_EQ(pTask->GetTime(), GetNextTime(gl_pWorldMarket->GetResetTime(), 0, 5, 1));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
@@ -1026,12 +1026,12 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestTaskProcessWebSocketData2) {
 		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
 
-		gl_pWorldMarket->TaskProcessWebSocketData(165759);
+		gl_pWorldMarket->TaskProcessWebSocketData(gl_pWorldMarket->GetResetTime() - 201);
 
 		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());
 		const auto pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__);
-		EXPECT_EQ(pTask->GetTime(), 170501);
+		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 501);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());

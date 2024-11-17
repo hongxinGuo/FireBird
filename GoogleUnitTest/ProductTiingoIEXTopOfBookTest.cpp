@@ -52,13 +52,15 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductTiingoIEXTopOfBookTest, TestUpdateDataSourceStatus1) {
-		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateIEXTopOfBook());
+		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) << "付费账户";
+		gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true);
+
 		IEXTopOfBook.UpdateDataSourceStatus(gl_pTiingoDataSource);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateIEXTopOfBook());
 
 		// 恢复原状
-		gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true);
+		gl_pTiingoDataSource->SetUpdateIEXTopOfBook(false);
 	}
 
 	// 正确的数据

@@ -7,6 +7,7 @@
 
 #include "MarketStatus.h"
 #include"MarketHoliday.h"
+#include "TimeConvert.h"
 
 class CWorldMarket : public CVirtualMarket {
 public:
@@ -29,7 +30,7 @@ public:
 	void ResetTiingo() const;
 	void ResetDataContainer();
 
-	bool IsTimeToResetSystem(long lCurrentTime) final { return (lCurrentTime > 165759) && (lCurrentTime < 170501); }
+	bool IsTimeToResetSystem(long lCurrentTime) final { return (lCurrentTime > GetPrevTime(GetResetTime(), 0, 2, 1)) && (lCurrentTime < GetNextTime(GetResetTime(), 0, 5, 1)); }
 	int ProcessTask(long lCurrentTime) override; // 每日定时任务调度,由ScheduleTask调度
 	int ProcessCurrentImmediateTask(long lMarketTime) override; // 即时任务调度，由ScheduleTask调度
 

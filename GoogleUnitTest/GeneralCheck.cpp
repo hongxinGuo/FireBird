@@ -200,6 +200,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateInsiderSentiment());
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateInsiderTransaction());
 
+		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) << "¸¶·ÑÕË»§";
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateStockSymbol());
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
 

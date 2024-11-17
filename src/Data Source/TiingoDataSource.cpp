@@ -235,13 +235,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (GenerateStockDailyMeta()) return true;
 	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
 	ASSERT(gl_dataContainerTiingoNewSymbol.IsEmpty()); // 日线更新完后此容器会被清空
-	if (!gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 付费账户才能够申请金融数据
-		ASSERT(IsUpdateFinancialState() == false);
-	}
 	if (GenerateFinancialState()) return true;
-	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 免费账户使用IEX数据更新日线
-		ASSERT(IsUpdateIEXTopOfBook() == false);
-	}
 	if (GenerateIEXTopOfBook(lCurrentTime)) return true;
 
 	ASSERT(!IsInquiring());

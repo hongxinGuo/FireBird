@@ -237,7 +237,7 @@ void CWorldMarket::TaskProcessWebSocketData(long lCurrentTime) {
 	UpdateFinnhubStockFromWebSocket();
 
 	long lNextTime = GetNextSecond(lCurrentTime);
-	if (IsTimeToResetSystem(lNextTime)) lNextTime = 170501;
+	if (IsTimeToResetSystem(lNextTime)) lNextTime = GetResetTime() + 501;
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lNextTime);
 }
 
@@ -702,7 +702,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	}
 
 	long lNextTime = GetNextTime(lCurrentTime, 0, 1, 0);
-	if (IsTimeToResetSystem(lNextTime)) lNextTime = 170510;
+	if (IsTimeToResetSystem(lNextTime)) lNextTime = GetResetTime() + 510;
 	ASSERT(!IsTimeToResetSystem(lNextTime));// 重启系统时各数据库需要重新装入，故而此时不允许更新数据库。
 	AddTask(WORLD_MARKET_UPDATE_DB__, lNextTime); // 每五分钟更新一次
 }

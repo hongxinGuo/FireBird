@@ -236,6 +236,9 @@
     <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Lib\Date\src\tz.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
