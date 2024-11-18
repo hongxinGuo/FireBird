@@ -41,3 +41,5 @@ inline time_t GetUTCTime() noexcept { return gl_tUTCTime; }
 inline void TestSetUTCTime(time_t time) noexcept { gl_tUTCTime = time; }
 
 #define _TRACE_SCHEDULE_TASK___ // 跟踪任务调度
+
+#define __MAX_BACKGROUND_WORKING_THREAD__ 32

@@ -184,7 +184,6 @@ void CContainerTiingoStock::Update52WeekHighLowDB() {
 			counter++;
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
-		if (counter > 300) break; // 每次只更新300个。
 	}
 }
 
@@ -214,7 +213,7 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 	auto lSize = Size();
 	vector<result<int>> vResults;
 	for (size_t index = 0; index < lSize; index++) {
-		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber()) {
+		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber() * 2) {
 			Sleep(100); //Note 控制住线程数量，以利于其他后台线程能够顺利执行。
 		}
 		auto pStock = GetStock(index);

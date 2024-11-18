@@ -342,6 +342,9 @@ void CTiingoStock::Update52WeekHighLowDB() {
 	SetUpdate52WeekHighLowDB(false);
 	Update52WeekHighDB();
 	Update52WeekLowDB();
+
+	m_v52WeekHigh.clear();
+	m_v52WeekLow.clear();
 }
 
 void CTiingoStock::Update52WeekHighDB() const {

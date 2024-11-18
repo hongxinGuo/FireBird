@@ -691,22 +691,32 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerTiingoStock.IsUpdateDayLineDB()) { // stock dayLine
-		gl_runtime.background_executor()->post([] {
-			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-			gl_UpdateWorldMarketDB.acquire();
-			gl_dataContainerTiingoStock.UpdateDayLineDB();
-			gl_UpdateWorldMarketDB.release();
-			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-		});
+		static bool s_fNotRunning1 = true;
+		if (s_fNotRunning1) {
+			s_fNotRunning1 = false;
+			gl_runtime.background_executor()->post([] {
+				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+				gl_UpdateWorldMarketDB.acquire();
+				gl_dataContainerTiingoStock.UpdateDayLineDB();
+				gl_UpdateWorldMarketDB.release();
+				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+				s_fNotRunning1 = true;
+			});
+		}
 	}
 	if (gl_dataContainerTiingoStock.IsUpdate52WeekHighLowDB()) { // stock dayLine
-		gl_runtime.background_executor()->post([] {
-			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-			gl_UpdateWorldMarketDB.acquire();
-			gl_dataContainerTiingoStock.Update52WeekHighLowDB();
-			gl_UpdateWorldMarketDB.release();
-			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-		});
+		static bool s_fNotRunning2 = true;
+		if (s_fNotRunning2) {
+			s_fNotRunning2 = false;
+			gl_runtime.background_executor()->post([] {
+				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+				gl_UpdateWorldMarketDB.acquire();
+				gl_dataContainerTiingoStock.Update52WeekHighLowDB();
+				gl_UpdateWorldMarketDB.release();
+				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+				s_fNotRunning2 = true;
+			});
+		}
 	}
 
 	TaskUpdateForexDayLineDB(); // 这个函数内部继续生成工作线程
