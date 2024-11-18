@@ -335,6 +335,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemConfiguration.SetThreadExecutorCurrencyLevel(gl_runtime.thread_executor()->max_concurrency_level());
 	gl_systemConfiguration.SetBackgroundExecutorCurrencyLevel(gl_runtime.background_executor()->max_concurrency_level());
 
+	for (int i = 0; i < 16 - gl_systemConfiguration.GetBackgroundThreadPermittedNumber(); i++) {
+		gl_BackgroundWorkingThread.acquire();
+	}
+
 	// 设置100毫秒每次的工作线程调度，用于完成系统各项定时任务。
 	gl_aTimer.at(GENERAL_TASK_PER_100MS__) = gl_runtime.timer_queue()->make_timer(
 		1000ms,
@@ -623,6 +627,10 @@ void CMainFrame::UpdateInnerSystemStatus() {
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	if ((nID & 0Xfff0) == SC_CLOSE) {	// 如果是退出系统
 		gl_systemConfiguration.SetExitingSystem(true); // 提示各工作线程中途退出
+
+		for (int i = 0; i < 16 - gl_systemConfiguration.GetBackgroundThreadPermittedNumber(); i++) {
+			gl_BackgroundWorkingThread.release();
+		}
 		TRACE("应用户申请，准备退出程序\n");
 		for (auto& timer : gl_aTimer) {// 退出所有的计时器，关闭所有的工作线程。
 			timer.cancel();

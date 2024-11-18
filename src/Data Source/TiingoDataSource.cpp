@@ -231,6 +231,9 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (GenerateFundamentalDefinition()) return true;
 	if (GenerateCompanySymbol()) return true;
 	if (GenerateCryptoSymbol()) return true;
+#ifndef _DEBUG
+	if (lCurrentTime < 170100) return true; // 休市后方才下载dailyMeta、日线等数据。
+#endif
 	//if (GenerateIEXTopOfBook(181010)) return true; // 测试用
 	if (GenerateStockDailyMeta()) return true;
 	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。

@@ -205,15 +205,18 @@ void CContainerTiingoStock::SetUpdateFinancialState(bool fFlag) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 ///
-/// 这个协程在运行一段时间后会发生阻塞，原因不明。暂时不使用并行处理，改为串行。
+/// 需要控制住线程数量，以利于其他后台线程能够顺利执行。
 ///
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////
-void CContainerTiingoStock::TaskProcessDayLine2() {
+void CContainerTiingoStock::TaskProcessDayLine() {
 	gl_systemMessage.PushInnerSystemInformationMessage(_T("开始处理Tiingo日线数据"));
 	auto lSize = Size();
 	vector<result<int>> vResults;
 	for (size_t index = 0; index < lSize; index++) {
+		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber()) {
+			Sleep(100); //Note 控制住线程数量，以利于其他后台线程能够顺利执行。
+		}
 		auto pStock = GetStock(index);
 		if (IsEarlyThen(pStock->GetDayLineStartDate(), pStock->GetDayLineEndDate(), 500)) { // 只处理有两年以上日线的股票
 			auto result = gl_runtime.background_executor()->submit([pStock] {
@@ -241,7 +244,7 @@ void CContainerTiingoStock::TaskProcessDayLine2() {
 //
 //
 ///////////////////////////////////////////////////////////////////////
-void CContainerTiingoStock::TaskProcessDayLine() {
+void CContainerTiingoStock::TaskProcessDayLine2() {
 	gl_systemMessage.PushInnerSystemInformationMessage(_T("开始处理Tiingo日线数据"));
 	auto lSize = Size();
 	vector<result<int>> vResults;
