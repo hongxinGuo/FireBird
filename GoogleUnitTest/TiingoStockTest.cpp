@@ -534,7 +534,7 @@ namespace FireBirdTest {
 		stock.SetDayLineEndDate(20210107);
 		stock.UpdateDayLine(pvDayLine);
 
-		stock.SaveDayLine();
+		stock.SaveDayLineDB();
 
 		setDayLine.m_strFilter = _T("[Symbol] = 'A'");
 		setDayLine.m_strSort = _T("[Date]");

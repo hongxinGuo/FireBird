@@ -66,7 +66,12 @@ namespace FireBirdTest {
 		time(&tt);
 		gmtime_s(&tm2_, &tt);
 		const tm tm_ = gl_pWorldMarket->GetMarketTime(GetUTCTime());
-		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour - 4) || (tm_.tm_hour == tm2_.tm_hour + 20))) << "WorldMarket默认为西四区(美东标准时间)";
+		if (gl_pWorldMarket->GetMarketTimeZone() == 4 * 3600) { //美东夏时制？
+			EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour - 4) || (tm_.tm_hour == tm2_.tm_hour + 20))) << "WorldMarket默认为西四区(美东夏时制标准时间)";
+		}
+		else {
+			EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour - 5) || (tm_.tm_hour == tm2_.tm_hour + 19))) << "WorldMarket默认为西四区(美东标准时间)";
+		}
 	}
 
 	TEST_F(CWorldMarketTest, TestGetTotalStock) {

@@ -217,12 +217,11 @@ void CContainerTiingoStock::TaskProcessDayLine2() {
 		auto pStock = GetStock(index);
 		if (IsEarlyThen(pStock->GetDayLineStartDate(), pStock->GetDayLineEndDate(), 500)) { // 只处理有两年以上日线的股票
 			auto result = gl_runtime.background_executor()->submit([pStock] {
-				gl_BackgroundWorkingThread.acquire(); // 最多八个线程
 				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-				gl_systemMessage.PushDayLineInfoMessage(pStock->GetSymbol());
+				gl_BackgroundWorkingThread.acquire(); // 最多八个线程
 				pStock->ProcessDayLine();
-				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 				gl_BackgroundWorkingThread.release();
+				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 				return 1;
 			});
 			vResults.emplace_back(std::move(result));
@@ -232,6 +231,7 @@ void CContainerTiingoStock::TaskProcessDayLine2() {
 	for (auto& result2 : vResults) {
 		i += result2.get(); // 在这里等待所有的线程执行完毕
 	}
+	gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_CALCULATE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 1, 0)); // 一分钟后计算
 	gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo日线数据处理完毕"));
 }
 
@@ -253,5 +253,6 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) break;
 	}
+	gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_CALCULATE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 1, 0)); // 一分钟后计算
 	gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo日线数据处理完毕"));
 }

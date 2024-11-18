@@ -39,7 +39,7 @@ public:
 	void Save(CSetFinnhubStock& setFinnhubStock) const;
 	void Update(CSetFinnhubStock& setFinnhubStock) const;
 	void Append(CSetFinnhubStock& setFinnhubStock) const;
-	void SaveDayLine() { m_dataDayLine.SaveDB(m_strSymbol); }
+	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }
 	void UpdateInsiderTransactionDB();
 	void UpdateInsiderSentimentDB();
 	virtual bool UpdateCompanyNewsDB();

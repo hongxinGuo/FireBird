@@ -50,6 +50,7 @@
 #include"FinnhubInaccessibleExchange.h"
 #include "InfoReport.h"
 #include"ThreadStatus.h"
+#include "TiingoDataSource.h"
 #include"TimeConvert.h"
 
 using namespace testing;
@@ -167,6 +168,8 @@ namespace FireBirdTest {
 
 			// 清空预装入的finnhubInaccessibleExchange
 			gl_finnhubInaccessibleExchange.Clear();
+
+			gl_pTiingoDataSource->SetUpdateIEXTopOfBook(false); // 默认为付费账户
 
 			gl_systemConfiguration.SetUpdateDB(false);
 			SCOPED_TRACE("");

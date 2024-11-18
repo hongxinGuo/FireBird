@@ -57,7 +57,7 @@ public:
 	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	CTiingoDayLinePtr GetDayLine(const long lIndex) const { return m_dataDayLine.GetData(lIndex); }
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
-	void SaveDayLine() { m_dataDayLine.SaveDB(m_strSymbol); }
+	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }
 
 	bool HaveNewDayLineData();
 

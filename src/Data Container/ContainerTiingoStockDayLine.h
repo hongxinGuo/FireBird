@@ -17,14 +17,18 @@ public:
 
 	auto Size() const noexcept { return m_vHistoryData.size(); }
 	bool Empty() const noexcept { return m_vHistoryData.empty(); }
-	bool UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const CString& strStockSymbol) const;
+	void UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const CString& strStockSymbol);
+	bool UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const CString& strStockSymbol) const;
 	bool LoadBasicDB(CSetTiingoStockDayLine* pSetHistoryCandleBasic);
 	bool GetStartEndDate(long& lStartDate, long& lEndDate) const;
 
 	void UpdateData(CTiingoDayLinesPtr pvTempDayLine);
-	CTiingoDayLinePtr GetData(const size_t lIndex) const { return m_vHistoryData.at(lIndex); }
+	CTiingoDayLinePtr GetData(const size_t lIndex) const {
+		ASSERT(lIndex < Size());
+		return m_vHistoryData.at(lIndex);
+	}
 
-	bool Add(const CTiingoDayLinePtr& pData) {
+	bool Add(CTiingoDayLinePtr pData) {
 		m_vHistoryData.push_back(pData);
 		return true;
 	}

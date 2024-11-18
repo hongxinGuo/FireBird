@@ -2,8 +2,8 @@
 
 #include"VirtualMarket.h"
 
-#include "FinnhubWebSocket.h"
 #include "TiingoIEXWebSocket.h"
+#include "FinnhubWebSocket.h"
 
 #include "MarketStatus.h"
 #include"MarketHoliday.h"
@@ -52,8 +52,7 @@ public:
 
 	void TaskCreateTiingoTradeDayDayLine(long lCurrentTime);
 	void TaskProcessTiingoDayLine(long lCurrentTime);
-	void TaskProcessTiingoDayLine2(long lCurrentTime);
-	void ProcessTiingoStockDayLine(const CTiingoStockPtr& pStock);
+	void TaskTiingoCalculate(long lCurrentTime);
 
 	static void TaskDeleteDelistedStock();
 
@@ -74,7 +73,6 @@ public:
 	virtual bool UpdateTiingoIndustry();
 	virtual bool UpdateSicIndustry();
 	virtual bool UpdateNaicsIndustry();
-	virtual void UpdateTiingoStockDayLineDB() { gl_dataContainerTiingoStock.UpdateDayLineDB(); }
 
 	void RebuildStockDayLineDB();
 	virtual void UpdateStockDayLineStartEndDate();

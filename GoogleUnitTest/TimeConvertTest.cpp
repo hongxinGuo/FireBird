@@ -205,7 +205,12 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(TimeConvertTest, TestTransferToTTime) {
-		EXPECT_EQ(315601200, ConvertToTTime(19800101, gl_pWorldMarket->GetMarketTimeZone(), 150000)) << "美东标准时间的19800101150000，其UTC时间为315601200";
+		if (gl_pWorldMarket->GetMarketTimeZone() == 4 * 3600) { // 美东夏时制？
+			EXPECT_EQ(315601200, ConvertToTTime(19800101, gl_pWorldMarket->GetMarketTimeZone(), 150000)) << "美东标准时间的19800101150000，其UTC时间为315601200";
+		}
+		else {
+			EXPECT_EQ(315604800, ConvertToTTime(19800101, gl_pWorldMarket->GetMarketTimeZone(), 150000)) << "美东夏时制标准时间的19800101150000，其UTC时间为315601200";
+		}
 		EXPECT_EQ(315558000, ConvertToTTime(19800101, gl_pChinaMarket->GetMarketTimeZone(), 150000)) << "北京标准时间的19800101150000，其UTC时间为315558000";
 	}
 

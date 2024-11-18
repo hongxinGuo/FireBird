@@ -91,7 +91,7 @@ bool CContainerTiingoFundamentalDefinition::LoadDB() {
 	}
 	setTiingoFundamentalDefinition.m_pDatabase->CommitTrans();
 	setTiingoFundamentalDefinition.Close();
-	m_fUpdated = false; // Note 
+	m_fUpdated = false;
 
 	return true;
 }

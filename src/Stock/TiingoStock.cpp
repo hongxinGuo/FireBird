@@ -178,21 +178,24 @@ void CTiingoStock::UpdateFinancialStateDB() {
 	SetUpdateProfileDB(true);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 由于tiingo更新完日线数据后需要再次处理日线，故而此处默认为不卸载日线。这样能够加速后面的处理过程。
+//
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoStock::UpdateDayLineDB() {
 	if (IsUpdateDayLineDBAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
-		if (GetDayLineSize() > 0) {
-			if (HaveNewDayLineData()) {
-				SaveDayLine();
-				UpdateDayLineStartEndDate();
-				SetUpdateProfileDB(true);
-				const CString str = GetSymbol() + _T("日线资料存储完成");
-				gl_systemMessage.PushDayLineInfoMessage(str);
-				//TRACE("更新%s日线数据\n", GetSymbol().GetBuffer());
-				UnloadDayLine();
-				return true;
-			}
+		if (HaveNewDayLineData()) {
+			SaveDayLineDB();
+			UpdateDayLineStartEndDate();
+			SetUpdateProfileDB(true);
+			const CString str = GetSymbol() + _T("日线资料存储完成");
+			gl_systemMessage.PushDayLineInfoMessage(str);
 			UnloadDayLine();
+			return true;
 		}
+		UnloadDayLine();
 	}
 	return false;
 }
@@ -298,7 +301,7 @@ void CTiingoStock::CheckDayLineUpdateStatus(long llTodayDate) {
 		return;
 	}
 	ASSERT(GetDayLineEndDate() < gl_pWorldMarket->GetCurrentTradeDate());
-	m_fUpdateDayLine = true; //todo
+	m_fUpdateDayLine = true;
 }
 
 void CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
@@ -306,7 +309,7 @@ void CTiingoStock::CheckStockDailyMetaStatus(long lCurrentDate) {
 		SetUpdateStockDailyMeta(false);
 	}
 	else {
-		SetUpdateStockDailyMeta(true); // todo
+		SetUpdateStockDailyMeta(true);
 	}
 }
 
@@ -417,8 +420,9 @@ constexpr double __SMALL_DOUBLE_ = 0.000005;
 //
 // 处理日线
 // 目前只查找52周新低和52周新高。
-// Note 目前采用的方法极其简单，导致计算的时间较长，每个股票的计算时间大致为
+// Note 目前采用的方法极其简单，导致计算的时间较长，每个股票的计算时间大致为1-3秒
 // 故而采用后台持续执行的模式，单一工作线程调用。
+// 
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 void CTiingoStock::ProcessDayLine() {
@@ -576,6 +580,7 @@ void CTiingoStock::FindAll52WeekLow(size_t beginPos, size_t endPos) {
 }
 
 size_t CTiingoStock::FindCurrent52WeekLow(size_t beginPos, size_t endPos, double& value) const {
+	ASSERT(beginPos < endPos);
 	auto pos = beginPos;
 	value = m_vClose[beginPos];
 	double belowCurrentValue = value - __SMALL_DOUBLE_;
@@ -643,6 +648,7 @@ void CTiingoStock::FindAll52WeekHigh(size_t beginPos, size_t endPos) {
 }
 
 size_t CTiingoStock::FindCurrent52WeekHigh(size_t beginPos, size_t endPos, double& value) const {
+	ASSERT(beginPos < endPos);
 	auto pos = beginPos;
 	value = m_vClose[beginPos];
 	auto aboveCurrentValue = value + __SMALL_DOUBLE_;

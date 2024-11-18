@@ -53,6 +53,7 @@ enum {
 	WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, // 每日收市后下载当天交易数据，以备生成当天日线数据。
 	WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, // 收市后生成tiingo日线数据。
 	WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, // 处理Tiingo的日线数据
+	WORLD_MARKET_TIINGO_CALCULATE__, // 计算tiingo的数据
 
 	WORLD_MARKET_TIMER_TASK_PER_MINUTE__,// 每分钟执行一次的任务调度
 	WORLD_MARKET_TIMER_TASK_PER_HOUR__, // 每小时执行一次的任务调度
