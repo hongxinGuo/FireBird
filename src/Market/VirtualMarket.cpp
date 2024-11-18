@@ -1,12 +1,12 @@
 #include"pch.h"
 
 #include"TimeConvert.h"
-
 #include "VirtualMarket.h"
+#include"VirtualDataSource.h"
 
 #include <spdlog/stopwatch.h>
 
-#include"VirtualDataSource.h"
+using namespace std::chrono;
 
 CVirtualMarket::CVirtualMarket() {
 	m_fResetMarket = true;
@@ -17,8 +17,9 @@ CVirtualMarket::CVirtualMarket() {
 	m_tmMarket.tm_year = 1970;
 	m_tmMarket.tm_yday = 1;
 
-	m_strMarketId = _T("Warning: CVirtualMarket Called.");
 	m_lMarketTimeZone = -8 * 3600; // 本系统默认标准时间为东八区（北京标准时间）。
+
+	m_strMarketId = _T("Warning: CVirtualMarket Called.");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -166,6 +167,17 @@ shared_ptr<vector<CMarketTaskPtr>> CVirtualMarket::DiscardOutDatedTask(long m_lC
 
 vector<CMarketTaskPtr> CVirtualMarket::GetDisplayMarketTask() {
 	return vector<CMarketTaskPtr>();
+}
+
+time_t CVirtualMarket::GetMarketLocalTimeOffset(string_view strLocalNameOfMarket) {
+	const time_zone* zoneLondon = chrono::locate_zone("Europe/London");
+	auto zoneLocalMarket = chrono::locate_zone(strLocalNameOfMarket);
+	auto now = system_clock::now();
+	local_time<system_clock::duration> ltLocalMarket = zoneLocalMarket->to_local(now);
+	local_time<system_clock::duration> ltLondon = zoneLondon->to_local(now);
+	auto a = ltLondon.time_since_epoch() - ltLocalMarket.time_since_epoch();
+	m_lMarketTimeZone = a.count() / 10000000;
+	return m_lMarketTimeZone;
 }
 
 tm CVirtualMarket::GetMarketTime(time_t tUTC) const {

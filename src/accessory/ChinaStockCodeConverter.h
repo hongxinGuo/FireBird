@@ -2,6 +2,8 @@
 
 using std::string;
 
+//import std;
+
 // 股票代码采用国家标准制式
 [[nodiscard]] inline bool IsShanghaiExchange(const CString& strStandardCode) { return strStandardCode.Right(2).Compare(_T("SS")) == 0; }
 [[nodiscard]] inline bool IsShenzhenExchange(const CString& strStandardCode) { return strStandardCode.Right(2).Compare(_T("SZ")) == 0; }

@@ -24,6 +24,13 @@
 #include "TiingoInaccessibleStock.h"
 #include "TimeConvert.h"
 
+//#undef min
+//#include "date/date.h"
+//#include <date/tz.h>
+//using namespace date;
+
+using namespace std::chrono;
+
 CWorldMarket::CWorldMarket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
@@ -31,8 +38,9 @@ CWorldMarket::CWorldMarket() {
 	}
 
 	m_strMarketId = _T("美国市场");
-	m_lMarketTimeZone = 4 * 3600; // 美国股市使用美东标准时间, GMT + 4
-	m_lOpenMarketTime = 9 * 3600 + 1800; // 中国股市开市时间为九点三十分
+
+	m_lMarketTimeZone = GetMarketLocalTimeOffset(_T("America/New_York")); // 美国股市使用美东标准时间, GMT + 4
+	m_lOpenMarketTime = 9 * 3600 + 1800; // 美国股市开市时间为九点三十分
 
 	// 无需（也无法）每日更新的变量放在这里
 	m_lCurrentUpdateEPSSurprisePos = 0;

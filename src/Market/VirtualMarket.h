@@ -3,6 +3,11 @@
 #include"VirtualDataSource.h"
 #include"MarketTaskQueue.h"
 
+//#undef min
+//#include<date/date.h>
+//#include<date/tz.h>
+//using namespace date;
+
 class CVirtualMarket {
 public:
 	CVirtualMarket();
@@ -59,6 +64,7 @@ public:
 	vector<CMarketTaskPtr> GetDisplayMarketTask();
 
 	// 时间函数
+	time_t GetMarketLocalTimeOffset(string_view sLocalNameOfMarket);
 	tm GetMarketTime(time_t tUTC) const; // 得到本市场的时间（从UTC时间）
 	time_t TransferToUTCTime(tm* tmMarketTime) const; // 将市场时间结构转化为UTC时间
 	time_t TransferToUTCTime(long lMarketDate, long lMarketTime = 150000) const; // 将市场时间结构转化为UTC时间
@@ -142,6 +148,7 @@ protected:
 	CString m_strCountry;
 	CString m_strSource;
 
+	//time_zone* const m_ptzMarket; // 市场的时区。由具体市场各自实现。
 	long m_lMarketTimeZone{ -8 * 3600 }; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。与_get_timezone函数相符。
 
 	// 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。

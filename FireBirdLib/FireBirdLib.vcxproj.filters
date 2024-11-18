@@ -1460,8 +1460,5 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekLow.cpp">
       <Filter>源文件\database\WorldMarket\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\Lib\Date\src\tz.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

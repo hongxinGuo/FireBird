@@ -236,9 +236,6 @@
     <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Lib\Date\src\tz.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -519,7 +516,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;_OPENSSL_USE_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;_OPENSSL_USE_DLL;%(PreprocessorDefinitions);HAS_REMOTE_API;AUTO_DOWNLOAD</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -535,6 +532,7 @@
       <BrowseInformation>false</BrowseInformation>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <TranslateIncludes>false</TranslateIncludes>
+      <EnableModules>false</EnableModules>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -554,7 +552,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);HAS_REMOTE_API;AUTO_DOWNLOAD</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -566,6 +564,7 @@
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <EnableModules>false</EnableModules>
     </ClCompile>
     <Link>
       <SubSystem>
