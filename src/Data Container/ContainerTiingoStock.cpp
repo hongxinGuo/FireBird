@@ -174,16 +174,23 @@ void CContainerTiingoStock::UpdateDayLineDB() {
 	}
 }
 
-void CContainerTiingoStock::Update52WeekHighLowDB() {
+void CContainerTiingoStock::TaskUpdate52WeekHighLowDB() {
 	auto lSize = Size();
-	int counter = 0;
 	for (size_t i = 0; i < lSize; i++) {
+		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber() * 2) {
+			Sleep(100);
+		}
 		const CTiingoStockPtr pStock = GetStock(i);
 		if (pStock->IsUpdate52WeekHighLowDB()) {
-			pStock->Update52WeekHighLowDB();
-			counter++;
+			gl_runtime.background_executor()->post([pStock] {
+				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+				gl_UpdateWorldMarketDB.acquire();
+				if (gl_systemConfiguration.IsExitingSystem()) return; // 如果程序正在退出，则停止存储。
+				pStock->Update52WeekHighLowDB();
+				gl_UpdateWorldMarketDB.release();
+				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+			});
 		}
-		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 	}
 }
 

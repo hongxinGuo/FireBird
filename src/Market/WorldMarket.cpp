@@ -26,13 +26,6 @@
 #include "TiingoInaccessibleStock.h"
 #include "TimeConvert.h"
 
-//#undef min
-//#include "date/date.h"
-//#include <date/tz.h>
-//using namespace date;
-
-using namespace std::chrono;
-
 CWorldMarket::CWorldMarket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
@@ -41,7 +34,7 @@ CWorldMarket::CWorldMarket() {
 
 	m_strMarketId = _T("美国市场");
 
-	m_lMarketTimeZone = GetMarketLocalTimeOffset(_T("America/New_York")); // 美国股市使用美东标准时间, GMT + 4
+	m_lMarketTimeZone = GetMarketLocalTimeOffset(_T("America/New_York")); // 美国股市使用美东标准时间
 	m_lOpenMarketTime = 9 * 3600 + 1800; // 美国股市开市时间为九点三十分
 
 	// 无需（也无法）每日更新的变量放在这里
@@ -312,8 +305,53 @@ bool CWorldMarket::TaskUpdateNaicsIndustry() {
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //
+//	将Tiingo日线数据存入数据库．
+//
+// 无论是否执行了存储函数，都需要将下载的日线历史数据删除，这样能够节省内存的占用。由于实际存储功能使用线程模式实现，
+// 故而其执行时间可能晚于主线程，导致主线程删除日线数据时出现同步问题。解决的方法是让工作线程独立删除存储后的日线数据，
+// 主线程的删除函数只在不调用工作线程（无需存储日线数据）的情况下方才执行。
+//
+//
+//////////////////////////////////////////////////////////////////////////////////////////
+bool CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
+	bool fUpdated = false;
+	CTiingoStockPtr pTiingoStock = nullptr;
+	const size_t symbolSize = gl_dataContainerTiingoStock.Size();
+
+	for (int i = 0; i < symbolSize; i++) {
+		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber() * 2) {
+			Sleep(100);
+		}
+		pTiingoStock = gl_dataContainerTiingoStock.GetStock(i);
+		if (pTiingoStock->IsUpdateDayLineDBAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+			if (pTiingoStock->GetDayLineSize() > 0) {
+				if (pTiingoStock->HaveNewDayLineData()) {
+					gl_runtime.background_executor()->post([pTiingoStock] {
+						gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+						gl_UpdateWorldMarketDB.acquire();
+						if (gl_systemConfiguration.IsExitingSystem()) return;// 如果程序正在退出，则停止存储。
+						pTiingoStock->UpdateDayLineDB();
+						pTiingoStock->UpdateDayLineStartEndDate();
+						pTiingoStock->SetUpdateProfileDB(true);
+						pTiingoStock->UnloadDayLine();
+						const CString str = pTiingoStock->GetSymbol() + _T("日线资料存储完成");
+						gl_systemMessage.PushDayLineInfoMessage(str);
+						gl_UpdateWorldMarketDB.release();
+						gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+					});
+					fUpdated = true;
+				}
+				else pTiingoStock->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
+			}
+		}
+	}
+
+	return (fUpdated);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//
 //	将Forex日线数据存入数据库．
-//  此函数由工作线程ThreadForexDayLineSaveProc调用，尽量不要使用全局变量。(目前使用主线程调用之，以消除同步问题的出现）
 //
 // 无论是否执行了存储函数，都需要将下载的日线历史数据删除，这样能够节省内存的占用。由于实际存储功能使用线程模式实现，
 // 故而其执行时间可能晚于主线程，导致主线程删除日线数据时出现同步问题。解决的方法是让工作线程独立删除存储后的日线数据，
@@ -332,6 +370,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
 					gl_runtime.background_executor()->post([pSymbol] {
+						gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 						gl_UpdateWorldMarketDB.acquire();
 						if (!gl_systemConfiguration.IsExitingSystem()) {// 如果程序正在退出，则停止存储。
 							pSymbol->UpdateDayLineDB();
@@ -342,6 +381,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 							gl_systemMessage.PushDayLineInfoMessage(str);
 						}
 						gl_UpdateWorldMarketDB.release();
+						gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 					});
 					fUpdated = true;
 				}
@@ -380,6 +420,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
 					gl_runtime.background_executor()->post([pSymbol] {
+						gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 						gl_UpdateWorldMarketDB.acquire();
 						if (!gl_systemConfiguration.IsExitingSystem()) { // 如果程序正在退出，则停止存储。
 							pSymbol->UpdateDayLineDB();
@@ -390,6 +431,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 							gl_systemMessage.PushDayLineInfoMessage(str2);
 						}
 						gl_UpdateWorldMarketDB.release();
+						gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 					});
 					fUpdated = true;
 				}
@@ -690,33 +732,25 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 		});
 	}
-	if (gl_dataContainerTiingoStock.IsUpdateDayLineDB()) { // stock dayLine
-		static bool s_fNotRunning1 = true;
-		if (s_fNotRunning1) {
-			s_fNotRunning1 = false;
-			gl_runtime.background_executor()->post([] {
-				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-				gl_UpdateWorldMarketDB.acquire();
-				gl_dataContainerTiingoStock.UpdateDayLineDB();
-				gl_UpdateWorldMarketDB.release();
-				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-				s_fNotRunning1 = true;
-			});
-		}
+
+	if (gl_dataContainerTiingoStock.IsUpdateDayLineDB()) {
+		gl_runtime.background_executor()->post([this] {
+			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+			gl_UpdateWorldMarketDB.acquire();
+			this->TaskUpdateTiingoStockDayLineDB();
+			gl_UpdateWorldMarketDB.release();
+			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+		});
 	}
+
 	if (gl_dataContainerTiingoStock.IsUpdate52WeekHighLowDB()) { // stock dayLine
-		static bool s_fNotRunning2 = true;
-		if (s_fNotRunning2) {
-			s_fNotRunning2 = false;
-			gl_runtime.background_executor()->post([] {
-				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-				gl_UpdateWorldMarketDB.acquire();
-				gl_dataContainerTiingoStock.Update52WeekHighLowDB();
-				gl_UpdateWorldMarketDB.release();
-				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-				s_fNotRunning2 = true;
-			});
-		}
+		gl_runtime.background_executor()->post([] {
+			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataContainerTiingoStock.TaskUpdate52WeekHighLowDB();
+			gl_UpdateWorldMarketDB.release();
+			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+		});
 	}
 
 	TaskUpdateForexDayLineDB(); // 这个函数内部继续生成工作线程

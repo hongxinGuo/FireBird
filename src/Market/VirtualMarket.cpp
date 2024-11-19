@@ -6,7 +6,7 @@
 
 #include <spdlog/stopwatch.h>
 
-using namespace std::chrono;
+//using namespace std::chrono;
 
 CVirtualMarket::CVirtualMarket() {
 	m_fResetMarket = true;
@@ -169,14 +169,21 @@ vector<CMarketTaskPtr> CVirtualMarket::GetDisplayMarketTask() {
 	return vector<CMarketTaskPtr>();
 }
 
-time_t CVirtualMarket::GetMarketLocalTimeOffset(string_view strLocalNameOfMarket) {
-	const time_zone* zoneLondon = chrono::locate_zone("Europe/London");
-	auto zoneLocalMarket = chrono::locate_zone(strLocalNameOfMarket);
-	auto now = system_clock::now();
-	local_time<system_clock::duration> ltLocalMarket = zoneLocalMarket->to_local(now);
-	local_time<system_clock::duration> ltLondon = zoneLondon->to_local(now);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//todo 这个函数导致内存泄漏，估计是时区数据库初始化后，程序退出时没有卸载。
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+time_t CVirtualMarket::GetMarketLocalTimeOffset(CString strLocalNameOfMarket) {
+	auto zoneLondon = chrono::locate_zone("Europe/London");
+	auto zoneLocalMarket = chrono::locate_zone(strLocalNameOfMarket.GetBuffer());
+	auto now = chrono::system_clock::now();
+	chrono::local_time<chrono::system_clock::duration> ltLocalMarket = zoneLocalMarket->to_local(now);
+	chrono::local_time<chrono::system_clock::duration> ltLondon = zoneLondon->to_local(now);
 	auto a = ltLondon.time_since_epoch() - ltLocalMarket.time_since_epoch();
 	m_lMarketTimeZone = a.count() / 10000000;
+
 	return m_lMarketTimeZone;
 }
 

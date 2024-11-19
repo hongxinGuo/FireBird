@@ -7,6 +7,8 @@
 
 #include "MarketStatus.h"
 #include"MarketHoliday.h"
+#include "SystemConfiguration.h"
+#include "TiingoStock.h"
 #include "TimeConvert.h"
 
 class CWorldMarket : public CVirtualMarket {
@@ -46,6 +48,8 @@ public:
 	bool TaskUpdateTiingoIndustry();
 	bool TaskUpdateSicIndustry();
 	bool TaskUpdateNaicsIndustry();
+
+	bool TaskUpdateTiingoStockDayLineDB();
 
 	bool TaskUpdateForexDayLineDB();
 	bool TaskUpdateCryptoDayLineDB();

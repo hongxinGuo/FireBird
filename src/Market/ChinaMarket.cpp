@@ -33,7 +33,6 @@
 #include<gsl/gsl>
 
 using namespace gsl;
-using namespace std::chrono;
 
 CChinaMarket::CChinaMarket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
@@ -42,9 +41,9 @@ CChinaMarket::CChinaMarket() {
 	}
 	m_strMarketId = _T("中国股票市场");
 
-	m_lMarketTimeZone = GetMarketLocalTimeOffset(_T("Asia/Shanghai")); // 美国股市使用美东标准时间, GMT + 4
-
+	m_lMarketTimeZone = GetMarketLocalTimeOffset(_T("Asia/Shanghai")); // 中国股市
 	//m_lMarketTimeZone = -8 * 3600; // 北京标准时间位于东八区，超前GMT8小时
+
 	m_lOpenMarketTime = 9 * 3600 + 900; // 中国股市开市时间为九点十五分
 
 	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器

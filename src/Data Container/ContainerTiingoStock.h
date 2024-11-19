@@ -29,7 +29,7 @@ public:
 
 	void UpdateFinancialStateDB();
 	void UpdateDayLineDB();
-	void Update52WeekHighLowDB();
+	void TaskUpdate52WeekHighLowDB();
 
 	bool IsUpdateFinancialStateDB() noexcept;
 	bool IsUpdate52WeekHighLowDB() noexcept;
