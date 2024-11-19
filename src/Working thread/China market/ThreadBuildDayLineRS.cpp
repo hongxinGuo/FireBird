@@ -30,7 +30,7 @@ UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCa
 
 	time(&tStart);
 	do {
-		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber() * 2) {
+		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber()) {
 			Sleep(100); //Note 控制住线程数量，以利于其他后台线程能够顺利执行。
 		}
 		if (pMarket->IsWorkingDay(ctCurrent)) {

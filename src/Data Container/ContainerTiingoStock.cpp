@@ -177,7 +177,7 @@ void CContainerTiingoStock::UpdateDayLineDB() {
 void CContainerTiingoStock::TaskUpdate52WeekHighLowDB() {
 	auto lSize = Size();
 	for (size_t i = 0; i < lSize; i++) {
-		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber() * 2) {
+		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber()) {
 			Sleep(100);
 		}
 		const CTiingoStockPtr pStock = GetStock(i);
@@ -199,7 +199,8 @@ bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
 }
 
 bool CContainerTiingoStock::IsUpdate52WeekHighLowDB() noexcept {
-	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CTiingoStock>(pStock)->IsUpdate52WeekHighLowDB(); });
+	//return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CTiingoStock>(pStock)->IsUpdate52WeekHighLowDB(); });
+	return m_fUpdate52WeekHighLowDB;
 }
 
 void CContainerTiingoStock::SetUpdateFinancialState(bool fFlag) {
@@ -220,7 +221,7 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 	auto lSize = Size();
 	vector<result<int>> vResults;
 	for (size_t index = 0; index < lSize; index++) {
-		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber() * 2) {
+		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber()) {
 			Sleep(100); //Note 控制住线程数量，以利于其他后台线程能够顺利执行。
 		}
 		auto pStock = GetStock(index);
@@ -240,6 +241,7 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 	for (auto& result2 : vResults) {
 		i += result2.get(); // 在这里等待所有的线程执行完毕
 	}
+	m_fUpdate52WeekHighLowDB = true;
 	gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_CALCULATE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 1, 0)); // 一分钟后计算
 	gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo日线数据处理完毕"));
 }

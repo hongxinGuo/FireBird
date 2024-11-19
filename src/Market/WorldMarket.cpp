@@ -319,7 +319,7 @@ bool CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
 	const size_t symbolSize = gl_dataContainerTiingoStock.Size();
 
 	for (int i = 0; i < symbolSize; i++) {
-		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber() * 2) {
+		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber()) {
 			Sleep(100);
 		}
 		pTiingoStock = gl_dataContainerTiingoStock.GetStock(i);
@@ -479,7 +479,7 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
 		if (!gl_pTiingoDataSource->IsUpdateDayLine()) { // 接收完日线数据后方可处理
-			gl_runtime.thread_executor()->post([] {
+			gl_runtime.background_executor()->post([] {
 				gl_dataContainerTiingoStock.TaskProcessDayLine();
 			});
 		}
@@ -489,7 +489,7 @@ void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 	}
 	else {
 		if (!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) { // 接收完IEX日线数据后方可处理
-			gl_runtime.thread_executor()->post([] {
+			gl_runtime.background_executor()->post([] {
 				gl_dataContainerTiingoStock.TaskProcessDayLine();
 			});
 		}

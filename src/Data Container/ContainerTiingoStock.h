@@ -38,4 +38,6 @@ public:
 
 	void TaskProcessDayLine();
 	void TaskProcessDayLine2();
+
+	bool m_fUpdate52WeekHighLowDB{ false };
 };

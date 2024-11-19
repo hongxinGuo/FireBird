@@ -47,7 +47,7 @@ public:
 	CString CreateTengxunDayLineInquiringStr();
 
 	void ProcessRTData();
-	bool UpdateDayLineDB();
+	bool TaskUpdateDayLineDB();
 
 	[[nodiscard]] long GetDayLineNeedSaveNumber() const;
 

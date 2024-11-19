@@ -1010,7 +1010,7 @@ void CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 
 		// 判断是否存储日线库和股票代码库
 		if (gl_dataContainerChinaStock.IsUpdateDayLineDB()) {
-			gl_dataContainerChinaStock.UpdateDayLineDB();
+			gl_dataContainerChinaStock.TaskUpdateDayLineDB();
 		}
 		gl_UpdateChinaMarketDB.release();
 	});
