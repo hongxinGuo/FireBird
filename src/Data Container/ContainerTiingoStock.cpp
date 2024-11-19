@@ -175,23 +175,33 @@ void CContainerTiingoStock::UpdateDayLineDB() {
 }
 
 void CContainerTiingoStock::TaskUpdate52WeekHighLowDB() {
+	gl_systemMessage.PushInnerSystemInformationMessage("52 week high and low");
+	m_fUpdate52WeekHighLowDB = false;
 	auto lSize = Size();
+	vector<result<void>> results;
 	for (size_t i = 0; i < lSize; i++) {
-		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber()) {
-			Sleep(100);
-		}
 		const CTiingoStockPtr pStock = GetStock(i);
 		if (pStock->IsUpdate52WeekHighLowDB()) {
-			gl_runtime.background_executor()->post([pStock] {
+			gl_BackgroundWorkingThread.acquire();
+			auto result = gl_runtime.thread_executor()->submit([pStock] {
 				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-				gl_UpdateWorldMarketDB.acquire();
-				if (gl_systemConfiguration.IsExitingSystem()) return; // 如果程序正在退出，则停止存储。
-				pStock->Update52WeekHighLowDB();
-				gl_UpdateWorldMarketDB.release();
+				//gl_UpdateWorldMarketDB.acquire();
+				if (!gl_systemConfiguration.IsExitingSystem()) { // 如果程序正在退出，则停止存储。
+					gl_systemMessage.PushDayLineInfoMessage(pStock->GetSymbol());
+					pStock->Update52WeekHighLowDB();
+				}
+				//gl_UpdateWorldMarketDB.release();
 				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+				gl_BackgroundWorkingThread.release();
 			});
+			results.emplace_back(std::move(result));
 		}
 	}
+	for (auto& result : results) {
+		result.get();
+	}
+	gl_systemMessage.PushInnerSystemInformationMessage(_T("tiingo 52 week calculated"));
+	gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_CALCULATE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 1, 0)); // 一分钟后计算
 }
 
 bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
@@ -219,30 +229,27 @@ void CContainerTiingoStock::SetUpdateFinancialState(bool fFlag) {
 void CContainerTiingoStock::TaskProcessDayLine() {
 	gl_systemMessage.PushInnerSystemInformationMessage(_T("开始处理Tiingo日线数据"));
 	auto lSize = Size();
-	vector<result<int>> vResults;
+	vector<result<void>> vResults;
 	for (size_t index = 0; index < lSize; index++) {
-		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber()) {
-			Sleep(100); //Note 控制住线程数量，以利于其他后台线程能够顺利执行。
-		}
 		auto pStock = GetStock(index);
 		if (IsEarlyThen(pStock->GetDayLineStartDate(), pStock->GetDayLineEndDate(), 500)) { // 只处理有两年以上日线的股票
-			auto result = gl_runtime.background_executor()->submit([pStock] {
+			gl_BackgroundWorkingThread.acquire(); // 最多八个线程
+			auto result = gl_runtime.thread_executor()->submit([pStock] {
 				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-				gl_BackgroundWorkingThread.acquire(); // 最多八个线程
-				pStock->ProcessDayLine();
-				gl_BackgroundWorkingThread.release();
+				if (!gl_systemConfiguration.IsExitingSystem()) {
+					gl_systemMessage.PushDayLineInfoMessage(pStock->GetSymbol());
+					pStock->ProcessDayLine();
+				}
 				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-				return 1;
+				gl_BackgroundWorkingThread.release();
 			});
 			vResults.emplace_back(std::move(result));
 		}
 	}
-	int i = 0;
 	for (auto& result2 : vResults) {
-		i += result2.get(); // 在这里等待所有的线程执行完毕
+		result2.get(); // 在这里等待所有的线程执行完毕
 	}
 	m_fUpdate52WeekHighLowDB = true;
-	gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_CALCULATE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 1, 0)); // 一分钟后计算
 	gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo日线数据处理完毕"));
 }
 

@@ -322,8 +322,8 @@ bool CContainerChinaStock::TaskUpdateDayLineDB() {
 			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pStock->GetDayLineSize() > 0) {
 				if (pStock->HaveNewDayLineData()) {
-					gl_runtime.background_executor()->post([pStock] {
-						gl_UpdateChinaMarketDB.acquire();
+					gl_UpdateChinaMarketDB.acquire();
+					gl_runtime.thread_executor()->post([pStock] {
 						if (!gl_systemConfiguration.IsExitingSystem()) {
 							const bool fDataSaved = pStock->SaveDayLineBasicInfo();
 							pStock->UpdateDayLineStartEndDate();
@@ -359,7 +359,7 @@ bool CContainerChinaStock::BuildWeekLine(long lStartDate) {
 	gl_systemMessage.PushInformationMessage(_T("重新生成周线历史数据"));
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
-		gl_runtime.background_executor()->post([pStock, lStartDate] {
+		gl_runtime.thread_executor()->post([pStock, lStartDate] {
 			gl_UpdateChinaMarketDB.acquire();
 			if (!gl_systemConfiguration.IsExitingSystem()) pStock->BuildWeekLine(lStartDate);
 			gl_UpdateChinaMarketDB.release();

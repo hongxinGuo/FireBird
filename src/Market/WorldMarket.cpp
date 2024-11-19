@@ -269,7 +269,7 @@ void CWorldMarket::TaskResetMarket(long lCurrentTime) {
 
 bool CWorldMarket::TaskUpdateTiingoIndustry() {
 	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) { // 更新tiingo stock profile与finnhub更新stock profile互斥
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateWorldMarketDB.acquire();
 			this->UpdateTiingoIndustry();
 			gl_UpdateWorldMarketDB.release();
@@ -281,7 +281,7 @@ bool CWorldMarket::TaskUpdateTiingoIndustry() {
 
 bool CWorldMarket::TaskUpdateSicIndustry() {
 	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) {// 更新tiingo stock profile与finnhub更新stock profile互斥
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateWorldMarketDB.acquire();
 			this->UpdateSicIndustry();
 			gl_UpdateWorldMarketDB.release();
@@ -293,7 +293,7 @@ bool CWorldMarket::TaskUpdateSicIndustry() {
 
 bool CWorldMarket::TaskUpdateNaicsIndustry() {
 	if (!gl_pFinnhubDataSource->IsUpdateStockProfile()) {// 更新tiingo stock profile与finnhub更新stock profile互斥
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateWorldMarketDB.acquire();
 			this->UpdateNaicsIndustry();
 			gl_UpdateWorldMarketDB.release();
@@ -319,16 +319,13 @@ bool CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
 	const size_t symbolSize = gl_dataContainerTiingoStock.Size();
 
 	for (int i = 0; i < symbolSize; i++) {
-		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber()) {
-			Sleep(100);
-		}
 		pTiingoStock = gl_dataContainerTiingoStock.GetStock(i);
 		if (pTiingoStock->IsUpdateDayLineDBAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pTiingoStock->GetDayLineSize() > 0) {
 				if (pTiingoStock->HaveNewDayLineData()) {
-					gl_runtime.background_executor()->post([pTiingoStock] {
+					gl_UpdateWorldMarketDB.acquire();
+					gl_runtime.thread_executor()->post([pTiingoStock] {
 						gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-						gl_UpdateWorldMarketDB.acquire();
 						if (gl_systemConfiguration.IsExitingSystem()) return;// 如果程序正在退出，则停止存储。
 						pTiingoStock->UpdateDayLineDB();
 						pTiingoStock->UpdateDayLineStartEndDate();
@@ -369,7 +366,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 		if (pSymbol->IsUpdateDayLineDBAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
-					gl_runtime.background_executor()->post([pSymbol] {
+					gl_runtime.thread_executor()->post([pSymbol] {
 						gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 						gl_UpdateWorldMarketDB.acquire();
 						if (!gl_systemConfiguration.IsExitingSystem()) {// 如果程序正在退出，则停止存储。
@@ -419,7 +416,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 		if (pSymbol->IsUpdateDayLineDBAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
-					gl_runtime.background_executor()->post([pSymbol] {
+					gl_runtime.thread_executor()->post([pSymbol] {
 						gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 						gl_UpdateWorldMarketDB.acquire();
 						if (!gl_systemConfiguration.IsExitingSystem()) { // 如果程序正在退出，则停止存储。
@@ -458,7 +455,7 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 	if (gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate() < gl_pWorldMarket->GetCurrentTradeDate()
 		&& !gl_pTiingoDataSource->IsUpdateIEXTopOfBook()
 		&& lCurrentTime > 180500) { // 当前交易日未处理过IEX、已经接收到数据且已过休市时间？
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
 			gl_UpdateWorldMarketDB.release();
@@ -479,7 +476,7 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
 		if (!gl_pTiingoDataSource->IsUpdateDayLine()) { // 接收完日线数据后方可处理
-			gl_runtime.background_executor()->post([] {
+			gl_runtime.thread_executor()->post([] {
 				gl_dataContainerTiingoStock.TaskProcessDayLine();
 			});
 		}
@@ -489,7 +486,7 @@ void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 	}
 	else {
 		if (!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) { // 接收完IEX日线数据后方可处理
-			gl_runtime.background_executor()->post([] {
+			gl_runtime.thread_executor()->post([] {
 				gl_dataContainerTiingoStock.TaskProcessDayLine();
 			});
 		}
@@ -503,7 +500,7 @@ void CWorldMarket::TaskTiingoCalculate(long lCurrentTime) {
 }
 
 void CWorldMarket::TaskDeleteDelistedStock() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		DeleteTiingoDelistedStock();
 	});
 }
@@ -573,7 +570,7 @@ bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
 
 void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerFinnhubCountry.GetLastTotalCountry() < gl_dataContainerFinnhubCountry.GetTotalCountry()) { // 国家名称
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerFinnhubCountry.UpdateDB();
@@ -582,7 +579,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerFinnhubForexExchange.IsNeedUpdate()) { // ForexExchange
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerFinnhubForexExchange.UpdateDB();
@@ -591,7 +588,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataFinnhubForexSymbol.IsUpdateProfileDB()) { // Forex symbol
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataFinnhubForexSymbol.UpdateDB();
@@ -600,7 +597,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerFinnhubCryptoExchange.IsNeedUpdate()) { // Crypto Exchange
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerFinnhubCryptoExchange.UpdateDB();
@@ -609,7 +606,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataFinnhubCryptoSymbol.IsUpdateProfileDB()) { // crypto symbol
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataFinnhubCryptoSymbol.UpdateDB();
@@ -618,7 +615,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateInsiderTransactionDB()) { // Insider Transaction
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.thread_executor()->post([this] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			this->UpdateInsiderTransactionDB();
@@ -627,7 +624,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateInsiderSentimentDB()) { // Insider Sentiment
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.thread_executor()->post([this] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			this->UpdateInsiderSentimentDB();
@@ -636,7 +633,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateDayLineDB()) { // stock dayLine
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.thread_executor()->post([this] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			this->UpdateFinnhubStockDayLineDB();
@@ -645,7 +642,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerFinnhubEconomicCalendar.IsUpdateDB()) { // Economic Calendar
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerFinnhubEconomicCalendar.UpdateDB();
@@ -654,7 +651,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateCompanyNewsDB()) { // Company News
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.thread_executor()->post([this] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			this->UpdateCompanyNewsDB();
@@ -663,7 +660,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateBasicFinancialDB()) { // Basic financial
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerFinnhubStock.UpdateBasicFinancialDB(); // 此任务很费时，原因待查。目前先不使用此隔绝区
@@ -672,7 +669,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateEPSSurpriseDB()) { // stock EPS surprise
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.thread_executor()->post([this] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			this->UpdateEPSSurpriseDB();
@@ -681,7 +678,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateSECFilingsDB()) { // stock EPS surprise
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.thread_executor()->post([this] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			this->UpdateSECFilingsDB();
@@ -694,7 +691,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerTiingoStock.IsUpdateProfileDB()) { // Tiingo Stock
 		static int s_counter = 0;
 		if (s_counter > 30) {
-			gl_runtime.background_executor()->post([] {
+			gl_runtime.thread_executor()->post([] {
 				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 				gl_UpdateWorldMarketDB.acquire();
 				gl_dataContainerTiingoStock.UpdateDB();
@@ -706,7 +703,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		s_counter++;
 	}
 	if (gl_dataContainerTiingoCryptoSymbol.IsUpdateProfileDB()) { // Tiingo crypto symbol
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerTiingoCryptoSymbol.UpdateDB();
@@ -715,7 +712,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerTiingoFundamentalDefinition.IsUpdateDB()) { // Tiingo crypto symbol
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerTiingoFundamentalDefinition.UpdateDB();
@@ -724,7 +721,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerTiingoStock.IsUpdateFinancialStateDB()) {
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerTiingoStock.UpdateFinancialStateDB();
@@ -734,7 +731,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	}
 
 	if (gl_dataContainerTiingoStock.IsUpdateDayLineDB()) {
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.thread_executor()->post([this] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			this->TaskUpdateTiingoStockDayLineDB();
@@ -744,7 +741,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	}
 
 	if (gl_dataContainerTiingoStock.IsUpdate52WeekHighLowDB()) { // stock dayLine
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_UpdateWorldMarketDB.acquire();
 			gl_dataContainerTiingoStock.TaskUpdate52WeekHighLowDB();
@@ -759,7 +756,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (!gl_pFinnhubDataSource->IsUpdateSymbol() && gl_dataContainerFinnhubStock.IsUpdateProfileDB()) { // stock profile
 		static int s_counter2 = 0;
 		if (s_counter2 > 30) {
-			gl_runtime.background_executor()->post([] {
+			gl_runtime.thread_executor()->post([] {
 				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 				gl_UpdateWorldMarketDB.acquire();
 				gl_dataContainerFinnhubStock.UpdateProfileDB();
@@ -773,7 +770,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 
 	if (gl_finnhubInaccessibleExchange.IsUpdateDB()) { // 更新禁止访问证券交易所名单
 		gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_finnhubInaccessibleExchange.UpdateDB();
 			gl_finnhubInaccessibleExchange.SetUpdateDB(false);
 			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
@@ -781,7 +778,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	}
 
 	if (gl_tiingoInaccessibleStock.IsUpdateDB()) { // 更新禁止访问证券交易所名单
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 			gl_tiingoInaccessibleStock.UpdateDB();
 			gl_tiingoInaccessibleStock.SetUpdateDB(false);

@@ -505,7 +505,7 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const CString& str) co
 void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
 	if (m_fCalculateChosen10RS) {
 		if (gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() <= 0 && gl_dataContainerChinaStock.GetDayLineNeedSaveNumber() <= 0) {
-			gl_runtime.background_executor()->post([this, lCurrentTime] {
+			gl_runtime.thread_executor()->post([this, lCurrentTime] {
 				gl_ProcessChinaMarketRTData.acquire();
 				this->TaskChoice10RSStrongStockSet(lCurrentTime);
 				this->TaskChoice10RSStrong1StockSet(lCurrentTime);
@@ -672,7 +672,7 @@ void CChinaMarket::TaskUpdateTempRTDB(long lCurrentTime) {
 	if (IsSystemReady()) {
 		const CString str = "存储临时数据";
 		gl_systemMessage.PushDayLineInfoMessage(str);
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_UpdateChinaMarketDB.acquire();
 			gl_ProcessChinaMarketRTData.acquire();
 			gl_dataContainerChinaStock.UpdateTempRTDB();
@@ -687,7 +687,7 @@ void CChinaMarket::TaskLoadCurrentStockHistoryData() const {
 	ASSERT(!m_pCurrentStock->IsDayLineLoaded());
 	ASSERT(!m_pCurrentStock->IsWeekLineLoaded());
 	auto pStock = m_pCurrentStock;
-	gl_runtime.background_executor()->post([pStock] {
+	gl_runtime.thread_executor()->post([pStock] {
 		pStock->UnloadDayLine();
 		// 装入日线数据
 		pStock->LoadDayLine(pStock->GetSymbol());
@@ -695,7 +695,7 @@ void CChinaMarket::TaskLoadCurrentStockHistoryData() const {
 		pStock->CalculateDayLineRSIndex();
 		pStock->SetDayLineLoaded(true);
 	});
-	gl_runtime.background_executor()->post([pStock] {
+	gl_runtime.thread_executor()->post([pStock] {
 		pStock->UnloadWeekLine();
 		// 装入周线数据
 		pStock->LoadWeekLine();
@@ -716,7 +716,7 @@ void CChinaMarket::TaskAccessoryPerMinuteTask(long lCurrentTime) {
 	ResetEffectiveRTDataRatio(); // 重置有效实时数据比率
 
 	if (gl_systemConfiguration.IsUpdateDB()) { // 每分钟检查一次系统配置是否需要存储。
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_systemConfiguration.UpdateDB();
 		});
 		gl_systemConfiguration.SetUpdateDB(false);
@@ -765,7 +765,7 @@ bool CChinaMarket::SetCheckActiveStockFlag(long lCurrentTime) {
 
 bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
 	if (IsSystemReady() && !m_fChosen10RSStrong1StockSet && (lCurrentTime > 151100) && IsWorkingDay()) {
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateChinaMarketDB.acquire();
 			gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));
 
@@ -785,7 +785,7 @@ bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
 
 bool CChinaMarket::TaskChoice10RSStrong2StockSet(long lCurrentTime) {
 	if (IsSystemReady() && !m_fChosen10RSStrong2StockSet && (lCurrentTime > 151200) && IsWorkingDay()) {
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateChinaMarketDB.acquire();
 			gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));
 
@@ -814,7 +814,7 @@ bool CChinaMarket::TaskChoice10RSStrongStockSet(long lCurrentTime) {
 
 bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
 	if (IsSystemReady()) {
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateChinaMarketDB.acquire();
 			this->ProcessTodayStock();
 			gl_UpdateChinaMarketDB.release();
@@ -935,7 +935,7 @@ bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, GetNextTime(lCurrentTime, 0, 5, 0));
 
 	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_UpdateChinaMarketDB.acquire();
 			gl_dataContainerChinaStock.UpdateStockProfileDB();
 			gl_UpdateChinaMarketDB.release();
@@ -948,7 +948,7 @@ bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 bool CChinaMarket::TaskUpdateOptionDB(long lCurrentTime) {
 	AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, GetNextTime(lCurrentTime, 0, 5, 0));
 
-	gl_runtime.background_executor()->post([this] {
+	gl_runtime.thread_executor()->post([this] {
 		gl_UpdateChinaMarketDB.acquire();
 		this->UpdateOptionDB();
 		gl_UpdateChinaMarketDB.release();
@@ -959,7 +959,7 @@ bool CChinaMarket::TaskUpdateOptionDB(long lCurrentTime) {
 
 bool CChinaMarket::TaskUpdateChosenStockDB() {
 	if (IsUpdateChosenStockDB()) {
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateChinaMarketDB.acquire();
 			this->AppendChosenStockDB();
 			gl_UpdateChinaMarketDB.release();
@@ -971,7 +971,7 @@ bool CChinaMarket::TaskUpdateChosenStockDB() {
 
 bool CChinaMarket::TaskUpdateStockSection() {
 	if (gl_dataContainerChinaStockSymbol.IsUpdateStockSection()) {
-		gl_runtime.background_executor()->post([] {
+		gl_runtime.thread_executor()->post([] {
 			gl_UpdateChinaMarketDB.acquire();
 			gl_dataContainerChinaStockSymbol.UpdateStockSectionDB();
 			gl_UpdateChinaMarketDB.release();
@@ -1002,7 +1002,7 @@ bool CChinaMarket::ChangeDayLineStockCodeTypeToStandard() {
 void CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 	if (gl_systemConfiguration.IsExitingSystem()) return; // 如果退出系统的话则不再处理日线
 
-	gl_runtime.background_executor()->post([this] {
+	gl_runtime.thread_executor()->post([this] {
 		gl_UpdateChinaMarketDB.acquire();
 		if (IsDayLineNeedProcess()) {
 			this->ProcessDayLine();
@@ -1367,7 +1367,7 @@ void CChinaMarket::Choice10RSStrongStockSet() {
 	for (int i = 0; i < 10; i++) {
 		if (m_aRSStrongOption.at(i).m_fActive) {
 			auto pref = &m_aRSStrongOption.at(i);
-			gl_runtime.background_executor()->post([pref, i] {
+			gl_runtime.thread_executor()->post([pref, i] {
 				ThreadChoice10RSStrongStockSet(pref, i);
 			});
 		}
@@ -1421,7 +1421,7 @@ bool CChinaMarket::TaskLoadTempRTData(long lTheDate, long lCurrentTime) {
 	ASSERT(!m_fTodayTempDataLoaded);
 
 	if (IsSystemReady()) {
-		gl_runtime.background_executor()->post([this, lTheDate] {
+		gl_runtime.thread_executor()->post([this, lTheDate] {
 			gl_ProcessChinaMarketRTData.acquire();
 			this->LoadTempRTData(lTheDate);
 			gl_ProcessChinaMarketRTData.release();

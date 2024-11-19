@@ -650,7 +650,7 @@ void CMainFrame::OnCalculateTodayRS() {
 }
 
 void CMainFrame::CalculateTodayRS() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		ThreadBuildDayLineRS(gl_pChinaMarket, gl_pChinaMarket->GetMarketDate());
 	});
 }
@@ -662,7 +662,7 @@ void CMainFrame::OnProcessTodayStock() {
 }
 
 void CMainFrame::ProcessChinaMarketStock() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
 		gl_pChinaMarket->ProcessTodayStock();
 		gl_UpdateChinaMarketDB.release();
@@ -803,7 +803,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 }
 
 void CMainFrame::OnRebuildChinaMarketStockDayLineRS() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		ThreadBuildDayLineRS(gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
 	});
 }
@@ -836,7 +836,7 @@ void CMainFrame::OnUpdateAbortBuildingRS(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnCalculate10dayRS1() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
 		gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));
 
@@ -852,7 +852,7 @@ void CMainFrame::OnCalculate10dayRS1() {
 }
 
 void CMainFrame::OnCalculate10dayRS2() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
 		gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));
 
@@ -977,7 +977,7 @@ void BuildWeekLine(long lStartDate) {
 
 void CMainFrame::OnBuildCreateWeekLine() {
 	auto lStartDate = 19900101;
-	gl_runtime.background_executor()->post([lStartDate] {
+	gl_runtime.thread_executor()->post([lStartDate] {
 		BuildWeekLine(lStartDate);
 	});
 }
@@ -986,7 +986,7 @@ void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnRebuildChinaMarketStockWeekLineRS() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		ThreadBuildWeekLineRS(gl_pChinaMarket, _CHINA_MARKET_BEGIN_DATE_);
 	});
 }
@@ -995,7 +995,7 @@ void CMainFrame::OnUpdateRebuildChinaMarketStockWeekLineRS(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnBuildCurrentWeekLine() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
 		gl_pChinaMarket->BuildWeekLineOfCurrentWeek();
 		gl_UpdateChinaMarketDB.release();
@@ -1013,7 +1013,7 @@ void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildRebuildCurrentWeekLine() {
 	auto lStartDate = gl_pChinaMarket->GetMarketDate();
-	gl_runtime.background_executor()->post([lStartDate] {
+	gl_runtime.thread_executor()->post([lStartDate] {
 		BuildWeekLine(lStartDate);
 	});
 }
@@ -1022,7 +1022,7 @@ void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
 		gl_pChinaMarket->DeleteCurrentWeekWeekLine();// 清除当前周周线表
 		gl_pChinaMarket->BuildCurrentWeekWeekLineTable();// 生成新的当前周周线
@@ -1039,7 +1039,7 @@ void CMainFrame::OnUpdateStockSection() {
 }
 
 void CMainFrame::OnUpdateStockCode() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
 		gl_dataContainerChinaStock.UpdateStockProfileDB();
 		gl_UpdateChinaMarketDB.release();
@@ -1059,7 +1059,7 @@ void CMainFrame::OnRebuildDayLine() {
 }
 
 void CMainFrame::OnUpdateFinnhubStockDayLineStartEnd() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		gl_UpdateWorldMarketDB.acquire();
 		gl_pWorldMarket->UpdateStockDayLineStartEndDate();
 		gl_UpdateWorldMarketDB.release();
@@ -1175,7 +1175,7 @@ void CMainFrame::OnUpdateMaintainChinaMarketStockDayLine(CCmdUI* pCmdUI) {
 #ifndef _DEBUG
 		if (gl_pChinaMarket->GetMarketTime() > 151000)
 #endif
-		SysCallCmdUIEnable(pCmdUI, true);
+			SysCallCmdUIEnable(pCmdUI, true);
 	}
 	else {
 		SysCallCmdUIEnable(pCmdUI, false);
@@ -1255,7 +1255,7 @@ void CMainFrame::OnUpdateCreateTiingoTradeDayDayline(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnProcessTiingoDayline() {
-	gl_runtime.background_executor()->post([] {
+	gl_runtime.thread_executor()->post([] {
 		gl_dataContainerTiingoStock.TaskProcessDayLine();
 	});
 }

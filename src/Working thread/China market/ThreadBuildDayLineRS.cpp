@@ -30,16 +30,13 @@ UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCa
 
 	time(&tStart);
 	do {
-		while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > gl_systemConfiguration.GetBackgroundThreadPermittedNumber()) {
-			Sleep(100); //Note 控制住线程数量，以利于其他后台线程能够顺利执行。
-		}
 		if (pMarket->IsWorkingDay(ctCurrent)) {
 			// 星期六和星期日无交易，略过
 			// 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
 			// 需要限制工作线程的并行数量
-			auto result = gl_runtime.background_executor()->submit([lThatDate] {
+			gl_BackgroundWorkingThread.acquire();
+			auto result = gl_runtime.thread_executor()->submit([lThatDate] {
 				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-				gl_BackgroundWorkingThread.acquire();
 				if (!gl_systemConfiguration.IsExitingSystem() && !gl_systemConfiguration.IsExitingCalculatingRS()) {
 					gl_dataContainerChinaStock.BuildDayLineRS(lThatDate); // 调用实际执行函数
 				}

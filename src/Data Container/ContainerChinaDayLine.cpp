@@ -16,8 +16,7 @@ bool CContainerChinaDayLine::SaveDB(const CString& strStockSymbol) {
 	try {
 		CSetDayLineBasicInfo setDayLineBasic;
 		UpdateBasicDB(&setDayLineBasic, strStockSymbol);
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 
@@ -78,15 +77,23 @@ CWeekLinePtr CContainerChinaDayLine::CreateNewWeekLine(long& lCurrentDayLinePos)
 	auto pWeekLine = make_shared<CWeekLine>();
 	if (lNextMonday < lNewestDay) {
 		// 中间数据
-		while (GetData(lCurrentDayLinePos)->GetMarketDate() < lNextMonday) { pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(GetData(lCurrentDayLinePos++))); }
+		while (GetData(lCurrentDayLinePos)->GetMarketDate() < lNextMonday) {
+			pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(GetData(lCurrentDayLinePos++)));
+		}
 	}
 	else {
 		// 最后一组数据
-		while (lCurrentDayLinePos <= (Size() - 1)) { pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(GetData(lCurrentDayLinePos++))); }
+		while (lCurrentDayLinePos <= (Size() - 1)) {
+			pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(GetData(lCurrentDayLinePos++)));
+		}
 	}
 
-	if (pWeekLine->GetLastClose() > 0) { pWeekLine->SetUpDownRate(pWeekLine->GetUpDown() * 100 * 1000 / pWeekLine->GetLastClose()); }
-	else { pWeekLine->SetUpDownRate(pWeekLine->GetUpDown() * 100 * 1000 / pWeekLine->GetOpen()); }
+	if (pWeekLine->GetLastClose() > 0) {
+		pWeekLine->SetUpDownRate(pWeekLine->GetUpDown() * 100 * 1000 / pWeekLine->GetLastClose());
+	}
+	else {
+		pWeekLine->SetUpDownRate(pWeekLine->GetUpDown() * 100 * 1000 / pWeekLine->GetOpen());
+	}
 
 	return pWeekLine;
 }
