@@ -114,6 +114,8 @@ namespace FireBirdTest {
 
 		EXPECT_STREQ(gl_systemConfiguration.GetTiingoToken(), _T("c897a00b7cfc2630d235316a4683156"));
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate(), 19800101);
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoStockDayLineProcessedDate(), 19800101);
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoStock52WeekHighLowUpdateDate(), 19800101);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoHourLyRequestLimit(), 500);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoDailyRequestLimit(), 20000);
 

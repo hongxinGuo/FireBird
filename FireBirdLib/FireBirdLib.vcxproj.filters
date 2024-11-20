@@ -873,6 +873,9 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekLow.h">
       <Filter>头文件\database\WorldMarket\Tiingo</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.h">
+      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1458,6 +1461,9 @@
       <Filter>源文件\database\WorldMarket\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekLow.cpp">
+      <Filter>源文件\database\WorldMarket\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.cpp">
       <Filter>源文件\database\WorldMarket\Tiingo</Filter>
     </ClCompile>
   </ItemGroup>

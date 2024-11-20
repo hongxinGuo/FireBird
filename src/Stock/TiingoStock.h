@@ -2,6 +2,8 @@
 
 #include "ContainerTiingoStockDayLine.h"
 #include"SetTiingoStock.h"
+#include "SetTiingoStock52WeekHigh.h"
+#include "SetTiingoStock52WeekLow.h"
 #include "SetTiingoStockDayLine.h"
 
 #include "TiingoCompanyFinancialState.h"
@@ -92,10 +94,11 @@ public:
 	void Delete52WeekHigh(long lDate);
 
 	void Update52WeekHighLowDB();
-	void Update52WeekHighDB() const;
-	void Update52WeekLowDB() const;
+	void Update52WeekHighDB(CSetTiingoStock52WeekHigh& set52WeekHigh) const;
+	void Update52WeekLowDB(CSetTiingoStock52WeekLow& set52WeekLow) const;
 	void Delete52WeekHighDB() const;
 	void Delete52WeekLowDB() const;
+	bool IsEnough52WeekLow();
 
 	void ProcessDayLine(); // 系统调用这个函数
 	void FindHighLow3(size_t endPos);

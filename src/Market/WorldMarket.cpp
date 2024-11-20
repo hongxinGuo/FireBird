@@ -187,6 +187,9 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 		case WORLD_MARKET_TIINGO_PROCESS_DAYLINE__:
 			gl_pWorldMarket->TaskProcessTiingoDayLine(lCurrentTime);
 			break;
+		case WORLD_MARKET_TIINGO_UPDATE_52WEEK_HIGH_LOW__:
+			gl_pWorldMarket->TaskUpdateTiingoStock52WeekHighLowDB(lCurrentTime);
+			break;
 		case WORLD_MARKET_TIINGO_CALCULATE__:
 			gl_pWorldMarket->TaskTiingoCalculate(lCurrentTime);
 			break;
@@ -323,7 +326,7 @@ bool CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
 		if (pTiingoStock->IsUpdateDayLineDBAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
 			if (pTiingoStock->GetDayLineSize() > 0) {
 				if (pTiingoStock->HaveNewDayLineData()) {
-					gl_UpdateWorldMarketDB.acquire();
+					gl_BackgroundWorkingThread.acquire();
 					gl_runtime.thread_executor()->post([pTiingoStock] {
 						gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 						if (gl_systemConfiguration.IsExitingSystem()) return;// 如果程序正在退出，则停止存储。
@@ -333,8 +336,8 @@ bool CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
 						pTiingoStock->UnloadDayLine();
 						const CString str = pTiingoStock->GetSymbol() + _T("日线资料存储完成");
 						gl_systemMessage.PushDayLineInfoMessage(str);
-						gl_UpdateWorldMarketDB.release();
 						gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+						gl_BackgroundWorkingThread.release();
 					});
 					fUpdated = true;
 				}
@@ -474,6 +477,7 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
+	if (gl_systemConfiguration.GetTiingoStockDayLineProcessedDate() >= GetCurrentTradeDate()) return; // 已更新完52WeekHighLow,不再自动更新。
 	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
 		if (!gl_pTiingoDataSource->IsUpdateDayLine()) { // 接收完日线数据后方可处理
 			gl_runtime.thread_executor()->post([] {
@@ -496,7 +500,17 @@ void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 	}
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 
+//
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldMarket::TaskTiingoCalculate(long lCurrentTime) {
+	gl_runtime.thread_executor()->post([] {
+		gl_dataContainerTiingoStock.TaskCalculate();
+	});
 }
 
 void CWorldMarket::TaskDeleteDelistedStock() {
@@ -740,16 +754,6 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 
-	if (gl_dataContainerTiingoStock.IsUpdate52WeekHighLowDB()) { // stock dayLine
-		gl_runtime.thread_executor()->post([] {
-			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-			gl_UpdateWorldMarketDB.acquire();
-			gl_dataContainerTiingoStock.TaskUpdate52WeekHighLowDB();
-			gl_UpdateWorldMarketDB.release();
-			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-		});
-	}
-
 	TaskUpdateForexDayLineDB(); // 这个函数内部继续生成工作线程
 	TaskUpdateCryptoDayLineDB(); // 这个函数内部继续生成工作线程
 
@@ -790,6 +794,18 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (IsTimeToResetSystem(lNextTime)) lNextTime = GetResetTime() + 510;
 	ASSERT(!IsTimeToResetSystem(lNextTime));// 重启系统时各数据库需要重新装入，故而此时不允许更新数据库。
 	AddTask(WORLD_MARKET_UPDATE_DB__, lNextTime); // 每五分钟更新一次
+}
+
+void CWorldMarket::TaskUpdateTiingoStock52WeekHighLowDB(long lCurrentTime) {
+	if (gl_dataContainerTiingoStock.IsUpdate52WeekHighLowDB()) { // stock dayLine
+		gl_runtime.thread_executor()->post([] {
+			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataContainerTiingoStock.TaskUpdate52WeekHighLowDB();
+			gl_UpdateWorldMarketDB.release();
+			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+		});
+	}
 }
 
 bool CWorldMarket::UpdateToken() {

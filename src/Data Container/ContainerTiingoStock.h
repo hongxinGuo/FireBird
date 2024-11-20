@@ -30,6 +30,11 @@ public:
 	void UpdateFinancialStateDB();
 	void UpdateDayLineDB();
 	void TaskUpdate52WeekHighLowDB();
+	void TaskUpdate52WeekHighLowDB2();
+	void TaskCalculate();
+	void Delete52WeekHighData();
+
+	void Delete52WeekLowData();
 
 	bool IsUpdateFinancialStateDB() noexcept;
 	bool IsUpdate52WeekHighLowDB() noexcept;
@@ -38,6 +43,4 @@ public:
 
 	void TaskProcessDayLine();
 	void TaskProcessDayLine2();
-
-	bool m_fUpdate52WeekHighLowDB{ false };
 };

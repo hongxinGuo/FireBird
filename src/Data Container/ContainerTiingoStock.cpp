@@ -1,6 +1,8 @@
+#include "ContainerTiingoStock.h"
 #include "pch.h"
 #include "ContainerTiingoStock.h"
 #include "InfoReport.h"
+#include "SetTiingoStockCurrentTrace.h"
 #include "SetTiingoStockDayLine.h"
 #include "Thread.h"
 #include "ThreadStatus.h"
@@ -174,9 +176,10 @@ void CContainerTiingoStock::UpdateDayLineDB() {
 	}
 }
 
-void CContainerTiingoStock::TaskUpdate52WeekHighLowDB() {
+void CContainerTiingoStock::TaskUpdate52WeekHighLowDB2() {
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week high and low");
-	m_fUpdate52WeekHighLowDB = false;
+	Delete52WeekHighData();
+	Delete52WeekLowData();
 	auto lSize = Size();
 	vector<result<void>> results;
 	for (size_t i = 0; i < lSize; i++) {
@@ -185,12 +188,9 @@ void CContainerTiingoStock::TaskUpdate52WeekHighLowDB() {
 			gl_BackgroundWorkingThread.acquire();
 			auto result = gl_runtime.thread_executor()->submit([pStock] {
 				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-				//gl_UpdateWorldMarketDB.acquire();
 				if (!gl_systemConfiguration.IsExitingSystem()) { // 如果程序正在退出，则停止存储。
-					gl_systemMessage.PushDayLineInfoMessage(pStock->GetSymbol());
 					pStock->Update52WeekHighLowDB();
 				}
-				//gl_UpdateWorldMarketDB.release();
 				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
 				gl_BackgroundWorkingThread.release();
 			});
@@ -200,8 +200,85 @@ void CContainerTiingoStock::TaskUpdate52WeekHighLowDB() {
 	for (auto& result : results) {
 		result.get();
 	}
-	gl_systemMessage.PushInnerSystemInformationMessage(_T("tiingo 52 week calculated"));
+	gl_systemConfiguration.SetTiingoStock52WeekHighLowUpdateDate(gl_pWorldMarket->GetCurrentTradeDate());
 	gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_CALCULATE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 1, 0)); // 一分钟后计算
+	gl_systemMessage.PushInnerSystemInformationMessage(_T("tiingo 52 week calculated"));
+}
+
+void CContainerTiingoStock::TaskUpdate52WeekHighLowDB() {
+	gl_systemMessage.PushInnerSystemInformationMessage("52 week high and low");
+	Delete52WeekHighData();
+	Delete52WeekLowData();
+
+	CSetTiingoStock52WeekHigh set52WeekHigh;
+	set52WeekHigh.m_strFilter = _T("[ID] = 1");
+	set52WeekHigh.Open();
+	set52WeekHigh.m_pDatabase->BeginTrans();
+
+	CSetTiingoStock52WeekLow set52WeekLow;
+	set52WeekLow.m_strFilter = _T("[ID] = 1");
+	set52WeekLow.Open();
+
+	auto lSize = Size();
+	for (size_t i = 0; i < lSize; i++) {
+		const CTiingoStockPtr pStock = GetStock(i);
+		if (pStock->IsUpdate52WeekHighLowDB()) {
+			if (!gl_systemConfiguration.IsExitingSystem()) { // 如果程序正在退出，则停止存储。
+				pStock->Update52WeekHighDB(set52WeekHigh);
+				pStock->Update52WeekLowDB(set52WeekLow);
+			}
+		}
+	}
+	set52WeekHigh.m_pDatabase->CommitTrans();
+	set52WeekHigh.Close();
+
+	set52WeekLow.m_pDatabase->CommitTrans();
+	set52WeekLow.Close();
+
+	gl_systemConfiguration.SetTiingoStock52WeekHighLowUpdateDate(gl_pWorldMarket->GetCurrentTradeDate());
+	gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_CALCULATE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 1, 0)); // 一分钟后计算
+	gl_systemMessage.PushInnerSystemInformationMessage(_T("tiingo 52 week calculated"));
+}
+
+void CContainerTiingoStock::TaskCalculate() {
+	auto lSize = Size();
+	CSetTiingoStockCurrentTrace setCurrentTrace;
+	setCurrentTrace.m_strFilter = _T("[ID] = 1");
+	setCurrentTrace.Open();
+	setCurrentTrace.m_pDatabase->BeginTrans();
+	for (size_t index = 0; index < lSize; index++) {
+		auto pStock = GetStock(index);
+		if (pStock->IsEnough52WeekLow()) {
+			setCurrentTrace.AddNew();
+			setCurrentTrace.m_Date = gl_pWorldMarket->GetMarketDate();
+			setCurrentTrace.m_Symbol = pStock->GetSymbol();
+			setCurrentTrace.Update();
+		}
+		pStock->m_v52WeekLow.clear(); //Note 直到这里才清空
+		pStock->m_v52WeekHigh.clear();
+	}
+	setCurrentTrace.m_pDatabase->CommitTrans();
+	setCurrentTrace.Close();
+}
+
+void CContainerTiingoStock::Delete52WeekHighData() {
+	CDatabase database;
+
+	database.Open(_T("WorldMarket"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
+	database.BeginTrans();
+	database.ExecuteSQL(_T("TRUNCATE `worldmarket`.`tiingo_stock_52week_high`;"));
+	database.CommitTrans();
+	database.Close();
+}
+
+void CContainerTiingoStock::Delete52WeekLowData() {
+	CDatabase database;
+
+	database.Open(_T("WorldMarket"), FALSE, FALSE, _T("ODBC;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
+	database.BeginTrans();
+	database.ExecuteSQL(_T("TRUNCATE `worldmarket`.`tiingo_stock_52week_low`;"));
+	database.CommitTrans();
+	database.Close();
 }
 
 bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
@@ -209,8 +286,7 @@ bool CContainerTiingoStock::IsUpdateFinancialStateDB() noexcept {
 }
 
 bool CContainerTiingoStock::IsUpdate52WeekHighLowDB() noexcept {
-	//return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CTiingoStock>(pStock)->IsUpdate52WeekHighLowDB(); });
-	return m_fUpdate52WeekHighLowDB;
+	return std::ranges::any_of(m_vStock, [](const CVirtualStockPtr& pStock) { return dynamic_pointer_cast<CTiingoStock>(pStock)->IsUpdate52WeekHighLowDB(); });
 }
 
 void CContainerTiingoStock::SetUpdateFinancialState(bool fFlag) {
@@ -233,7 +309,7 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 	for (size_t index = 0; index < lSize; index++) {
 		auto pStock = GetStock(index);
 		if (IsEarlyThen(pStock->GetDayLineStartDate(), pStock->GetDayLineEndDate(), 500)) { // 只处理有两年以上日线的股票
-			gl_BackgroundWorkingThread.acquire(); // 最多八个线程
+			gl_BackgroundWorkingThread.acquire();
 			auto result = gl_runtime.thread_executor()->submit([pStock] {
 				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
 				if (!gl_systemConfiguration.IsExitingSystem()) {
@@ -249,7 +325,8 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 	for (auto& result2 : vResults) {
 		result2.get(); // 在这里等待所有的线程执行完毕
 	}
-	m_fUpdate52WeekHighLowDB = true;
+	gl_systemConfiguration.SetTiingoStockDayLineProcessedDate(gl_pWorldMarket->GetMarketDate());
+	gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_UPDATE_52WEEK_HIGH_LOW__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 1, 0)); // 一分钟后计算
 	gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo日线数据处理完毕"));
 }
 

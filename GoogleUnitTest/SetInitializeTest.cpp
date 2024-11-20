@@ -42,6 +42,7 @@
 #include"SetTiingoStock.h"
 #include"SetTiingoCompanyFinancialState.h"
 #include"SetTiingoIndustry.h"
+#include "SetTiingoStockCurrentTrace.h"
 
 using namespace testing;
 
@@ -430,6 +431,18 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetWorkingMode(false);
 
 		EXPECT_STREQ(setTiingoStock.GetDefaultSQL(), _T("[tiingo_stock_fundamental]"));
+	}
+
+	TEST_F(SetInitializeTest, TestTiingoStockCurrentTraceInitialize) {
+		CSetTiingoStockCurrentTrace setTiingoStockCurrentTrace;
+
+		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
+		EXPECT_STREQ(setTiingoStockCurrentTrace.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+		gl_systemConfiguration.SetWorkingMode(true);
+		EXPECT_STREQ(setTiingoStockCurrentTrace.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
+		gl_systemConfiguration.SetWorkingMode(false);
+
+		EXPECT_STREQ(setTiingoStockCurrentTrace.GetDefaultSQL(), _T("[tiingo_stock_current_trace]"));
 	}
 
 	TEST_F(SetInitializeTest, TestTiingoFinancialStateInitialize) {

@@ -3,8 +3,7 @@
 #include"TiingoStock.h"
 
 #include "ConvertToString.h"
-#include "SetTiingoStock52WeekHigh.h"
-#include "SetTiingoStock52WeekLow.h"
+
 #include "TiingoStockDailyMeta.h"
 #include "TimeConvert.h"
 #include "WorldMarket.h"
@@ -296,7 +295,7 @@ void CTiingoStock::CheckFinancialStateUpdateStatus(long lTodayDate) {
 }
 
 void CTiingoStock::CheckDayLineUpdateStatus(long llTodayDate) {
-	if (GetDayLineEndDate() == gl_pWorldMarket->GetCurrentTradeDate()) { // 已
+	if (GetDayLineEndDate() >= gl_pWorldMarket->GetCurrentTradeDate()) { // 已更新？
 		m_fUpdateDayLine = false;
 		return;
 	}
@@ -340,21 +339,32 @@ void CTiingoStock::Delete52WeekHigh(long lDate) {
 
 void CTiingoStock::Update52WeekHighLowDB() {
 	SetUpdate52WeekHighLowDB(false);
-	Update52WeekHighDB();
-	Update52WeekLowDB();
 
-	m_v52WeekHigh.clear();
-	m_v52WeekLow.clear();
-}
-
-void CTiingoStock::Update52WeekHighDB() const {
 	CSetTiingoStock52WeekHigh set52WeekHigh;
-	auto lSize = m_v52WeekHigh.size();
-	Delete52WeekHighDB();
-
 	set52WeekHigh.m_strFilter = _T("[ID] = 1");
 	set52WeekHigh.Open();
 	set52WeekHigh.m_pDatabase->BeginTrans();
+
+	Update52WeekHighDB(set52WeekHigh);
+
+	set52WeekHigh.m_pDatabase->CommitTrans();
+	set52WeekHigh.Close();
+
+	CSetTiingoStock52WeekLow set52WeekLow;
+	set52WeekLow.m_strFilter = _T("[ID] = 1");
+	set52WeekLow.Open();
+
+	set52WeekLow.m_pDatabase->BeginTrans();
+
+	Update52WeekLowDB(set52WeekLow);
+
+	set52WeekLow.m_pDatabase->CommitTrans();
+	set52WeekLow.Close();
+}
+
+void CTiingoStock::Update52WeekHighDB(CSetTiingoStock52WeekHigh& set52WeekHigh) const {
+	auto lSize = m_v52WeekHigh.size();
+
 	for (size_t index = 0; index < lSize; index++) {
 		set52WeekHigh.AddNew();
 		set52WeekHigh.m_Symbol = GetSymbol();
@@ -362,19 +372,11 @@ void CTiingoStock::Update52WeekHighDB() const {
 		set52WeekHigh.m_Date = m_v52WeekHigh.at(index);
 		set52WeekHigh.Update();
 	}
-	set52WeekHigh.m_pDatabase->CommitTrans();
-	set52WeekHigh.Close();
 }
 
-void CTiingoStock::Update52WeekLowDB() const {
-	CSetTiingoStock52WeekLow set52WeekLow;
+void CTiingoStock::Update52WeekLowDB(CSetTiingoStock52WeekLow& set52WeekLow) const {
 	auto lSize = m_v52WeekLow.size();
 
-	Delete52WeekLowDB();
-
-	set52WeekLow.m_strFilter = _T("[ID] = 1");
-	set52WeekLow.Open();
-	set52WeekLow.m_pDatabase->BeginTrans();
 	for (size_t index = 0; index < lSize; index++) {
 		set52WeekLow.AddNew();
 		set52WeekLow.m_Symbol = GetSymbol();
@@ -382,8 +384,6 @@ void CTiingoStock::Update52WeekLowDB() const {
 		set52WeekLow.m_Date = m_v52WeekLow.at(index);
 		set52WeekLow.Update();
 	}
-	set52WeekLow.m_pDatabase->CommitTrans();
-	set52WeekLow.Close();
 }
 
 void CTiingoStock::Delete52WeekHighDB() const {
@@ -416,6 +416,15 @@ void CTiingoStock::Delete52WeekLowDB() const {
 	}
 	set52WeekLow.m_pDatabase->CommitTrans();
 	set52WeekLow.Close();
+}
+
+bool CTiingoStock::IsEnough52WeekLow() {
+	ranges::sort(m_v52WeekLow, [](const long l1, const long l2) { return l1 > l2; });
+	auto lDate = GetPrevDay(gl_pWorldMarket->GetCurrentTradeDate(), 365);
+	if (m_v52WeekLow.at(4) > lDate) {
+		return true;
+	}
+	return false;
 }
 
 constexpr double __SMALL_DOUBLE_ = 0.000005;

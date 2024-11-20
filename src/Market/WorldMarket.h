@@ -44,6 +44,7 @@ public:
 	void TaskProcessWebSocketData(long lCurrentTime);
 	void TaskMonitorWebSocket(long lCurrentTime);
 	void TaskUpdateWorldMarketDB(long lCurrentTime);
+	void TaskUpdateTiingoStock52WeekHighLowDB(long lCurrentTime);
 
 	bool TaskUpdateTiingoIndustry();
 	bool TaskUpdateSicIndustry();

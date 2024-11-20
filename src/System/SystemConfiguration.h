@@ -124,6 +124,17 @@ public:
 		m_lTiingoIEXTopOfBookUpdateDate = lTiingoIEXTopOfBookUpdateDate;
 		m_fUpdateDB = true;
 	}
+	[[nodiscard]] int GetTiingoStockDayLineProcessedDate() const noexcept { return m_lTiingoStockDayLineProcessedDate; }
+	void SetTiingoStockDayLineProcessedDate(const long lTiingoStockDayLineProcessedDate) noexcept {
+		m_lTiingoStockDayLineProcessedDate = lTiingoStockDayLineProcessedDate;
+		m_fUpdateDB = true;
+	}
+
+	[[nodiscard]] int GetTiingoStock52WeekHighLowUpdateDate() const noexcept { return m_lTiingoStock52WeekHighLowUpdateDate; }
+	void SetTiingoStock52WeekHighLowUpdateDate(const long l52WeekHighLowUpdateDate) noexcept {
+		m_lTiingoStock52WeekHighLowUpdateDate = l52WeekHighLowUpdateDate;
+		m_fUpdateDB = true;
+	}
 
 	[[nodiscard]] int GetTiingoHourLyRequestLimit() const noexcept { return m_iTiingoHourLyRequestLimit; }
 	void SetTiingoHourLyRequestLimit(const int iTiingoHourLyRequestLimit) noexcept {
@@ -330,6 +341,8 @@ protected:
 	bool m_bTiingoAccountFeePaid{ true };
 	CString m_strTiingoToken{ _T("") };
 	long m_lTiingoIEXTopOfBookUpdateDate{ 19800101 };
+	long m_lTiingoStockDayLineProcessedDate{ 19800101 };
+	long m_lTiingoStock52WeekHighLowUpdateDate{ 19800101 };
 	int m_iTiingoHourLyRequestLimit{ 500 };
 	long m_lTiingoDailyRequestLimit{ 20000 };
 	long long m_llTiingoBandWidth{ 5368709120 };
