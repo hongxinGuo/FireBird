@@ -3,7 +3,7 @@
 
 CSetTiingoStockCurrentTrace::CSetTiingoStockCurrentTrace(const CString& strSchema, const CString& strTable, CDatabase* pDatabase)
 	: CVirtualRecordset(strSchema, strTable, pDatabase) {
-	m_nFields = 3;
+	m_nFields = 4;
 }
 
 void CSetTiingoStockCurrentTrace::DoFieldExchange(CFieldExchange* pFX) {
@@ -14,4 +14,5 @@ void CSetTiingoStockCurrentTrace::DoFieldExchange(CFieldExchange* pFX) {
 	RFX_Long(pFX, _T("[ID]"), m_ID);
 	RFX_Long(pFX, _T("[Date]"), m_Date);
 	RFX_Text(pFX, _T("[Symbol]"), m_Symbol);
+	RFX_Long(pFX, _T("[SICCode]"), m_SICCode);
 }

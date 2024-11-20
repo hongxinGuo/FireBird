@@ -252,6 +252,7 @@ void CContainerTiingoStock::TaskCalculate() {
 			setCurrentTrace.AddNew();
 			setCurrentTrace.m_Date = gl_pWorldMarket->GetMarketDate();
 			setCurrentTrace.m_Symbol = pStock->GetSymbol();
+			setCurrentTrace.m_SICCode = pStock->m_iSicCode;
 			setCurrentTrace.Update();
 		}
 		pStock->m_v52WeekLow.clear(); //Note 直到这里才清空

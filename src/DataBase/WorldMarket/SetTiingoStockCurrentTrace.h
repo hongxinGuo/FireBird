@@ -20,6 +20,7 @@ public:
 	long m_ID{ 0 };
 	long m_Date{ 19800101 };
 	CString m_Symbol{ _T("") }; // Tiingo永久代码标识
+	long m_SICCode{ 0 };
 
 public:
 	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持
