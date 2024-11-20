@@ -1,5 +1,14 @@
 ﻿// FireBird.cpp: 定义应用程序的类行为。
 //
+// 可以使用Virtual leak detector(vld)查找内存泄漏。
+// 由于vld官方源码支持只到vs2015，故而需要手工修改源代码，才能使用VS2022编译。
+// 且dbghelp.dll需要使用目录C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\VsTest\X64中的那个版本
+// 需要将vld\VS2022文件夹中的文件dbghelp.dll Microsoft.DTfW.DHL.manifest vld_x64.dll三个文件拷贝至执行文件夹中
+//
+#ifdef _DEBUG
+//#include"vld.h" // 需要检测内存泄漏时包括此头文件,只用于debug版本中。
+#endif
+
 #include"pch.h"
 
 #include "FireBird.h"  
@@ -86,9 +95,11 @@ BOOL CFireBirdApp::InitInstance() {
 		return false;
 	}
 
+	//const auto& timeZoneDatabase = chrono::get_tzdb(); // initialize the time zone database
+
 	InitializeSpdlog();
 
-	//spdlog::flush_every(chrono::seconds(600)); // 每10分钟刷新一次（只能用于_mt模式生成的日志）
+	spdlog::flush_every(chrono::seconds(600)); // 每10分钟刷新一次（只能用于_mt模式生成的日志）
 	gl_dailyWebSocketLogger->set_level(static_cast<spdlog::level::level_enum>(gl_systemConfiguration.GetLogLevel()));
 	gl_dailyLogger->flush_on(spdlog::level::warn); // 警告等级及以上立刻刷新
 	gl_dailyWebSocketLogger->flush_on(spdlog::level::warn);

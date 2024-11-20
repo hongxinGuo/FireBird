@@ -171,13 +171,13 @@ vector<CMarketTaskPtr> CVirtualMarket::GetDisplayMarketTask() {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//todo 这个函数导致内存泄漏，估计是时区数据库初始化后，程序退出时没有卸载。
+//bug 这个函数导致内存泄漏，估计是时区数据库初始化后，程序退出时没有卸载。
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 time_t CVirtualMarket::GetMarketLocalTimeOffset(CString strLocalNameOfMarket) {
-	auto zoneLondon = chrono::locate_zone("Europe/London");
-	auto zoneLocalMarket = chrono::locate_zone(strLocalNameOfMarket.GetBuffer());
+	const chrono::time_zone* zoneLondon = chrono::locate_zone("Europe/London"); //bug memory leak
+	const chrono::time_zone* zoneLocalMarket = chrono::locate_zone(strLocalNameOfMarket.GetBuffer());
 	auto now = chrono::system_clock::now();
 	chrono::local_time<chrono::system_clock::duration> ltLocalMarket = zoneLocalMarket->to_local(now);
 	chrono::local_time<chrono::system_clock::duration> ltLondon = zoneLondon->to_local(now);
