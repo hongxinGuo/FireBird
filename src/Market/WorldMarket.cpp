@@ -509,7 +509,9 @@ void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldMarket::TaskTiingoCalculate(long lCurrentTime) {
 	gl_runtime.thread_executor()->post([] {
+		gl_systemMessage.PushInnerSystemInformationMessage("calculateing 52 week low");
 		gl_dataContainerTiingoStock.TaskCalculate();
+		gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
 	});
 }
 

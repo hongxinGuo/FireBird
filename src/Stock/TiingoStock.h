@@ -99,6 +99,7 @@ public:
 	void Delete52WeekHighDB() const;
 	void Delete52WeekLowDB() const;
 	bool IsEnough52WeekLow();
+	void Load52WeekLow();
 
 	void ProcessDayLine(); // 系统调用这个函数
 	void FindHighLow3(size_t endPos);

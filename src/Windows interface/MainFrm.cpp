@@ -111,6 +111,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CREATE_TIINGO_TRADEDAY_DAYLINE, &CMainFrame::OnUpdateCreateTiingoTradeDayDayline)
 	ON_COMMAND(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnProcessTiingoDayline)
 	ON_UPDATE_COMMAND_UI(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnUpdateProcessTiingoDayline)
+	ON_COMMAND(ID_CALCULATE_NEW_LOW_FIVE_TIMES, &CMainFrame::OnCalculateNewLowFiveTimes)
+	ON_UPDATE_COMMAND_UI(ID_CALCULATE_NEW_LOW_FIVE_TIMES, &CMainFrame::OnUpdateCalculateNewLowFiveTimes)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1271,4 +1273,12 @@ void CMainFrame::OnUpdateProcessTiingoDayline(CCmdUI* pCmdUI) {
 		pCmdUI->Enable(true);
 	}
 #endif
+}
+
+void CMainFrame::OnCalculateNewLowFiveTimes() {
+	gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_CALCULATE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 0, 10));
+}
+
+void CMainFrame::OnUpdateCalculateNewLowFiveTimes(CCmdUI* pCmdUI) {
+	// TODO: Add your command update UI handler code here
 }

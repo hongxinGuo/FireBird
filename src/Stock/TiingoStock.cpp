@@ -419,12 +419,32 @@ void CTiingoStock::Delete52WeekLowDB() const {
 }
 
 bool CTiingoStock::IsEnough52WeekLow() {
+	if (m_v52WeekLow.size() < 6) {
+		return false;
+	}
 	ranges::sort(m_v52WeekLow, [](const long l1, const long l2) { return l1 > l2; });
 	auto lDate = GetPrevDay(gl_pWorldMarket->GetCurrentTradeDate(), 365);
 	if (m_v52WeekLow.at(4) > lDate) {
 		return true;
 	}
 	return false;
+}
+
+void CTiingoStock::Load52WeekLow() {
+	m_v52WeekLow.clear();
+
+	CSetTiingoStock52WeekLow setLow;
+	setLow.m_strFilter = _T("[Symbol] = '");
+	setLow.m_strFilter += GetSymbol() + _T("'");
+	setLow.m_strSort = _T("[Date]");
+	setLow.Open();
+	setLow.m_pDatabase->BeginTrans();
+	while (!setLow.IsEOF()) {
+		m_v52WeekLow.push_back(setLow.m_Date);
+		setLow.MoveNext();
+	}
+	setLow.m_pDatabase->CommitTrans();
+	setLow.Close();
 }
 
 constexpr double __SMALL_DOUBLE_ = 0.000005;

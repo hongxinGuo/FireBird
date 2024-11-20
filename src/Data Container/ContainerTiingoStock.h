@@ -30,7 +30,6 @@ public:
 	void UpdateFinancialStateDB();
 	void UpdateDayLineDB();
 	void TaskUpdate52WeekHighLowDB();
-	void TaskUpdate52WeekHighLowDB2();
 	void TaskCalculate();
 	void Delete52WeekHighData();
 
