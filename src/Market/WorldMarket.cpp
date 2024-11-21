@@ -1,4 +1,3 @@
-#include "WorldMarket.h"
 #include"pch.h"
 
 #include"systemData.h"
@@ -32,9 +31,10 @@ CWorldMarket::CWorldMarket() {
 		TRACE("CWorldMarket市场变量只允许存在一个实例\n");
 	}
 
-	m_strMarketId = _T("美国市场");
+	m_strCode = _T("US");
+	m_strTimeZone = _T("America/New_York");
 
-	m_lMarketTimeZone = GetMarketLocalTimeOffset(_T("America/New_York")); // 美国股市使用美东标准时间
+	m_lMarketTimeZone = GetMarketLocalTimeOffset(m_strTimeZone); // 美国股市使用美东标准时间
 	m_lOpenMarketTime = 9 * 3600 + 1800; // 美国股市开市时间为九点三十分
 
 	// 无需（也无法）每日更新的变量放在这里
@@ -103,7 +103,7 @@ void CWorldMarket::ResetDataContainer() {
 }
 
 void CWorldMarket::ResetMarket() {
-	m_fResettingMarket = true;
+	m_fMarketResetting = true;
 
 	Reset();
 
@@ -133,7 +133,7 @@ void CWorldMarket::ResetMarket() {
 	str += GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(str);
 
-	m_fResettingMarket = false;
+	m_fMarketResetting = false;
 }
 
 void CWorldMarket::PrepareToCloseMarket() {
@@ -262,10 +262,10 @@ void CWorldMarket::TaskMonitorWebSocket(long lCurrentTime) {
 
 void CWorldMarket::TaskResetMarket(long lCurrentTime) {
 	// 市场时间十七时重启系统
-	ASSERT(!m_fResettingMarket);
+	ASSERT(!m_fMarketResetting);
 	ResetMarket();
 	SetSystemReady(false);
-	ASSERT(!m_fResettingMarket);
+	ASSERT(!m_fMarketResetting);
 
 	AddTask(WORLD_MARKET_CHECK_SYSTEM_READY__, lCurrentTime); // 每次重置系统时，必须设置系统状态检查任务
 }

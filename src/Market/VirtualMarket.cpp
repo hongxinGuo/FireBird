@@ -18,10 +18,6 @@ CVirtualMarket::CVirtualMarket() {
 	m_lMarketDate = 0;
 	m_tmMarket.tm_year = 1970;
 	m_tmMarket.tm_yday = 1;
-
-	m_lMarketTimeZone = -8 * 3600; // 本系统默认标准时间为东八区（北京标准时间）。
-
-	m_strMarketId = _T("Warning: CVirtualMarket Called.");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,7 +45,7 @@ void CVirtualMarket::ScheduleTask() {
 	}
 
 	// 执行本市场各项定时任务。当市场正在重置时暂停
-	if (!IsResetting()) {
+	if (!IsMarketResetting()) {
 		spdlog::stopwatch sw;
 		int taskType = ProcessTask(lCurrentMarketTime); // 执行定时任务
 #ifdef _TRACE_SCHEDULE_TASK___

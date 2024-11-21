@@ -36,7 +36,7 @@ public:
 			ASSERT(0);
 		return 0;
 	}
-	bool IsResetting() const noexcept { return m_fResettingMarket; }
+	bool IsMarketResetting() const noexcept { return m_fMarketResetting; }
 
 	virtual bool UpdateMarketInfo(); // 更新本市场信息。
 
@@ -66,7 +66,6 @@ public:
 	long GetMarketDate(time_t tUTC) const; // 得到本市场的日期
 
 	long GetMarketTimeZone() const noexcept { return m_lMarketTimeZone; }
-	CString GetMarketID() const noexcept { return m_strMarketId; }
 	long GetMarketTime() const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
 	long GetMarketDate() const noexcept { return m_lMarketDate; } // 得到本市场的当地日期， 格式为：yyyymmdd
 	long GetDayOfWeek() const noexcept { return m_tmMarket.tm_wday; } // days since Sunday - [0, 6]
@@ -124,8 +123,6 @@ public:
 	void TEST_SetFormattedMarketDate(const long lDate) noexcept { m_lMarketDate = lDate; }
 
 protected:
-	CString m_strMarketId{ _T("Warning: CVirtualMarket Called.") }; // 该市场标识字符串
-
 	CMarketTaskQueue m_marketTask; // 本市场当前任务队列
 	CMarketTaskQueue m_marketImmediateTask; // 本市场当前即时任务队列（此任务序列一次执行完毕，无需等待）
 	ConcurrentQueue<CMarketTaskPtr> m_qMarketDisplayTask; // 当前任务显示队列
@@ -133,7 +130,7 @@ protected:
 
 	vector<CVirtualDataSourcePtr> m_vDataSource; // 本市场中的各网络数据源。
 
-	// Finnhub.io提供的信息
+	// 本市场基本信息。 Finnhub.io提供的信息，位于worldmarket的finnhub_stock_exchange数据集中。
 	CString m_strCode;
 	CString m_strName;
 	CString m_strMic;
@@ -143,22 +140,25 @@ protected:
 	CString m_strCountry;
 	CString m_strSource;
 
-	//time_zone* const m_ptzMarket; // 市场的时区。由具体市场各自实现。
 	long m_lMarketTimeZone{ -8 * 3600 }; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。与_get_timezone函数相符。
-
+	CString m_strLocalMarketTimeZone{ _T("") }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
+	const chrono::time_zone* m_tzMarket{ nullptr }; // 本市场当地时区
+	chrono::sys_info m_localMarketTimeZoneSystemInformation; // 当地时区系统信息
+	chrono::local_info m_localMarketTimeZoneLocalInformation; // 当地时区本地信息
 	// 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
 	long m_lMarketDate{ 0 }; //本市场的日期
 	long m_lMarketTime{ 0 }; // 本市场的时间
+	tm m_tmMarket{ 0, 0, 0, 1, 0, 1970 }; // 本市场时间结构
+
 	long m_lMarketLastTradeDate{ 0 }; // 本市场的上次交易日
 	long m_lMarketCurrentTradeDate{ 0 }; // 本市场当前交易日
 	long m_lMarketNextTradeDate{ 0 }; // 本市场下一个交易日
-	tm m_tmMarket{ 0, 0, 0, 1, 0, 1970 }; // 本市场时间结构
 
 	static chrono::system_clock::time_point s_tpNow;
 
 	//系统状态区
 	bool m_fSystemReady{ false }; // 市场初始态已经设置好.默认为假
-	bool m_fResettingMarket{ false }; // 市场正在重启标识，默认为假
+	bool m_fMarketResetting{ false }; // 市场正在重启标识，默认为假
 
 	long m_lOpenMarketTime{ 0 }; // 市场开市时间（由各具体市场实际确定）
 

@@ -62,7 +62,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockMainFrameTest, TestUpdateStatus1) {
-		EXPECT_FALSE(gl_pChinaMarket->IsResetting()) << "Ä¬ÈÏ×´Ì¬";
+		EXPECT_FALSE(gl_pChinaMarket->IsMarketResetting()) << "Ä¬ÈÏ×´Ì¬";
 		InSequence seq;
 		gl_pChinaMarket->SetCurrentEditStockChanged(false);
 		gl_pChinaMarket->SetCurrentStockChanged(false);
@@ -81,7 +81,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockMainFrameTest, TestUpdateStatus2) {
-		EXPECT_FALSE(gl_pChinaMarket->IsResetting()) << "Ä¬ÈÏ×´Ì¬";
+		EXPECT_FALSE(gl_pChinaMarket->IsMarketResetting()) << "Ä¬ÈÏ×´Ì¬";
 		gl_pChinaMarket->SetCurrentEditStockChanged(true);
 		gl_pChinaMarket->SetCurrentStockChanged(true);
 		gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockMainFrameTest, TestUpdateInnerSystemStatus) {
-		EXPECT_FALSE(gl_pChinaMarket->IsResetting()) << "Ä¬ÈÏ×´Ì¬";
+		EXPECT_FALSE(gl_pChinaMarket->IsMarketResetting()) << "Ä¬ÈÏ×´Ì¬";
 		gl_systemMessage.SetProcessedFinnhubWebSocket(1);
 		gl_systemMessage.SetProcessedTiingoIEXWebSocket(1);
 		gl_systemMessage.SetProcessedTiingoCryptoWebSocket(1);

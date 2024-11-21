@@ -95,8 +95,6 @@ BOOL CFireBirdApp::InitInstance() {
 		return false;
 	}
 
-	//const auto& timeZoneDatabase = chrono::get_tzdb(); // initialize the time zone database
-
 	InitializeSpdlog();
 
 	spdlog::flush_every(chrono::seconds(600)); // 每10分钟刷新一次（只能用于_mt模式生成的日志）

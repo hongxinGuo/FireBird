@@ -130,7 +130,7 @@ void ResetMarkets() {
 
 bool IsMarketResetting() {
 	for (const auto& pMarket : gl_vMarket) {
-		if (pMarket->IsResetting()) return true;
+		if (pMarket->IsMarketResetting()) return true;
 	}
 	return false;
 }

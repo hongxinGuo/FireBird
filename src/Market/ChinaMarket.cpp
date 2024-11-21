@@ -39,10 +39,11 @@ CChinaMarket::CChinaMarket() {
 	if (static int siInstance = 0; ++siInstance > 1) {
 		TRACE(_T("ChinaMarket市场变量只允许存在一个实例\n"));
 	}
-	m_strMarketId = _T("中国股票市场");
 
-	m_lMarketTimeZone = GetMarketLocalTimeOffset(_T("Asia/Shanghai")); // 中国股市
-	//m_lMarketTimeZone = -8 * 3600; // 北京标准时间位于东八区，超前GMT8小时
+	m_strCode = _T("SS");
+	m_strTimeZone = _T("Asia/Shanghai");
+
+	m_lMarketTimeZone = GetMarketLocalTimeOffset(m_strTimeZone); // 中国股市位于上海
 
 	m_lOpenMarketTime = 9 * 3600 + 900; // 中国股市开市时间为九点十五分
 
@@ -81,7 +82,7 @@ CChinaMarket::~CChinaMarket() {
 
 void CChinaMarket::ResetMarket() {
 	CString str = _T("重置中国股市于北京标准时间：");
-	m_fResettingMarket = true;
+	m_fMarketResetting = true;
 	str += GetStringOfMarketTime();
 	gl_systemMessage.PushInformationMessage(str);
 	gl_ProcessChinaMarketRTData.acquire();
@@ -102,7 +103,7 @@ void CChinaMarket::ResetMarket() {
 	}
 
 	gl_ProcessChinaMarketRTData.release();
-	m_fResettingMarket = false;
+	m_fMarketResetting = false;
 }
 
 void CChinaMarket::Reset() {

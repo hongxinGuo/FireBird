@@ -103,7 +103,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsWebBusy());
 			EXPECT_FALSE(gl_pChinaMarket->IsDayLineNeedProcess());
 			EXPECT_TRUE(gl_pChinaMarket->IsMarketTaskEmpty());
-			EXPECT_FALSE(gl_pChinaMarket->IsResetting());
+			EXPECT_FALSE(gl_pChinaMarket->IsMarketResetting());
 			EXPECT_THAT(gl_pChinaMarket->IsCalculatingDayLineRS(), IsFalse());
 			EXPECT_THAT(gl_pChinaMarket->IsCalculatingWeekLineRS(), IsFalse());
 			EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
