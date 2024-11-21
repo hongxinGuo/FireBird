@@ -177,9 +177,10 @@ vector<CMarketTaskPtr> CVirtualMarket::GetDisplayMarketTask() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 time_t CVirtualMarket::GetMarketLocalTimeOffset(CString strLocalNameOfMarket) {
-	const chrono::time_zone* zoneLocalMarket = chrono::locate_zone(strLocalNameOfMarket.GetBuffer());
-	auto sysInfo = zoneLocalMarket->get_info(chrono::sys_seconds());
-	m_lMarketTimeZone = -sysInfo.offset.count();
+	m_tzMarket = chrono::locate_zone(strLocalNameOfMarket.GetBuffer());
+	m_localMarketTimeZoneSystemInformation = m_tzMarket->get_info(chrono::sys_seconds());
+	m_localMarketTimeZoneLocalInformation = m_tzMarket->get_info(chrono::local_seconds());
+	m_lMarketTimeZone = -m_localMarketTimeZoneSystemInformation.offset.count();
 
 	return m_lMarketTimeZone;
 }
