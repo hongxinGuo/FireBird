@@ -176,13 +176,9 @@ vector<CMarketTaskPtr> CVirtualMarket::GetDisplayMarketTask() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 time_t CVirtualMarket::GetMarketLocalTimeOffset(CString strLocalNameOfMarket) {
-	const chrono::time_zone* zoneLondon = chrono::locate_zone("Europe/London"); //bug memory leak
 	const chrono::time_zone* zoneLocalMarket = chrono::locate_zone(strLocalNameOfMarket.GetBuffer());
-	auto now = chrono::system_clock::now();
-	chrono::local_time<chrono::system_clock::duration> ltLocalMarket = zoneLocalMarket->to_local(now);
-	chrono::local_time<chrono::system_clock::duration> ltLondon = zoneLondon->to_local(now);
-	auto a = ltLondon.time_since_epoch() - ltLocalMarket.time_since_epoch();
-	m_lMarketTimeZone = a.count() / 10000000;
+	auto sysInfo = zoneLocalMarket->get_info(chrono::sys_seconds());
+	m_lMarketTimeZone = -sysInfo.offset.count();
 
 	return m_lMarketTimeZone;
 }
