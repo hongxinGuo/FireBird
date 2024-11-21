@@ -210,9 +210,6 @@
     <ClInclude Include="..\src\accessory\ConvertToString.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\HighPerformanceCounter.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\accessory\InfoReport.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
@@ -882,9 +879,6 @@
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\accessory\ConvertToString.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\accessory\HighPerformanceCounter.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\accessory\InfoReport.cpp">

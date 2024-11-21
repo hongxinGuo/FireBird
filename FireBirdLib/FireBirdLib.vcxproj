@@ -16,7 +16,6 @@
     <ClInclude Include="..\src\accessory\MarketTask.h" />
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h" />
     <ClInclude Include="..\src\accessory\ConvertToString.h" />
-    <ClInclude Include="..\src\accessory\HighPerformanceCounter.h" />
     <ClInclude Include="..\src\accessory\InfoReport.h" />
     <ClInclude Include="..\src\accessory\JsonGetValue.h" />
     <ClInclude Include="..\src\accessory\JsonParse.h" />
@@ -247,7 +246,6 @@
     <ClCompile Include="..\src\accessory\MarketTask.cpp" />
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp" />
     <ClCompile Include="..\src\accessory\ConvertToString.cpp" />
-    <ClCompile Include="..\src\accessory\HighPerformanceCounter.cpp" />
     <ClCompile Include="..\src\accessory\InfoReport.cpp" />
     <ClCompile Include="..\src\accessory\JsonGetValue.cpp" />
     <ClCompile Include="..\src\accessory\JsonParse.cpp" />

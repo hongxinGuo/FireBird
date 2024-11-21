@@ -8,6 +8,8 @@
 
 //using namespace std::chrono;
 
+chrono::system_clock::time_point CVirtualMarket::s_tpNow = chrono::system_clock::now();
+
 CVirtualMarket::CVirtualMarket() {
 	m_fResetMarket = true;
 
@@ -75,6 +77,9 @@ void CVirtualMarket::ScheduleTask() {
 }
 
 void CVirtualMarket::CalculateTime() noexcept {
+	s_tpNow = chrono::system_clock::now();
+	gl_tUTCTime = chrono::system_clock::to_time_t(s_tpNow);
+
 	time(&gl_tUTCTime);
 
 	GetMarketTimeStruct(&m_tmMarket, gl_tUTCTime, m_lMarketTimeZone);

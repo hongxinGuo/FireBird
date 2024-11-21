@@ -154,6 +154,8 @@ protected:
 	long m_lMarketNextTradeDate{ 0 }; // 本市场下一个交易日
 	tm m_tmMarket{ 0, 0, 0, 1, 0, 1970 }; // 本市场时间结构
 
+	static chrono::system_clock::time_point s_tpNow;
+
 	//系统状态区
 	bool m_fSystemReady{ false }; // 市场初始态已经设置好.默认为假
 	bool m_fResettingMarket{ false }; // 市场正在重启标识，默认为假

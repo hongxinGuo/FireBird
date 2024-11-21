@@ -270,9 +270,6 @@
     <ClCompile Include="ProductFinnhubCompanyBasicFinancialTest.cpp">
       <Filter>Test源文件\Factory Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="HighPerformanceCounterTest.cpp">
-      <Filter>Test源文件\accessory</Filter>
-    </ClCompile>
     <ClCompile Include="SystemConfigurationTest.cpp">
       <Filter>Test源文件\System</Filter>
     </ClCompile>

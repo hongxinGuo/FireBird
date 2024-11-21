@@ -134,7 +134,6 @@
     <ClCompile Include="ProductFinnhubCompanyInsiderSentimentTest.cpp" />
     <ClCompile Include="FinnhubStockBasicFinancialsTest.cpp" />
     <ClCompile Include="FinnhubWebSocketTest.cpp" />
-    <ClCompile Include="HighPerformanceCounterTest.cpp" />
     <ClCompile Include="jsonParseTest.cpp" />
     <ClCompile Include="ChinaStockCodeConverterTest.cpp" />
     <ClCompile Include="ProductTiingoFinancialStateTest.cpp" />

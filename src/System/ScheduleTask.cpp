@@ -13,7 +13,6 @@
 #include"QuandlDataSource.h"
 
 #include"ChinaMarket.h"
-#include "HighPerformanceCounter.h"
 #include"WorldMarket.h"
 
 #include "simdjsonGetValue.h"
@@ -160,7 +159,6 @@ void SetMaxCurrencyLevel() {
 /////////////////////////////////////////////////////////////////////////////////////////////
 void TaskSchedulePer100ms() {
 	static bool s_Processing = false;
-	CHighPerformanceCounter counter;
 	if (IsMarketResetting()) return;// 市场重启需要较长时间，无法并行工作，故而暂停调度。
 	if (s_Processing) {
 		gl_dailyLogger->warn("TaskSchedulePer100ms()发生重入");
@@ -171,7 +169,7 @@ void TaskSchedulePer100ms() {
 		return;
 	}
 	s_Processing = true;
-	counter.start();
+	auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 	try {
 		ScheduleMarketTask();	// 调用主调度函数,由各市场调度函数执行具体任务
 		//todo 其他各DataSource的调度，也考虑移至此处。目前各DataSource的调度，在CVirtualMarket的ScheduleTask()中。
@@ -192,8 +190,8 @@ void TaskSchedulePer100ms() {
 		//gl_warnLogger->error("{}", str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
-	counter.stop();
-	gl_systemMessage.IncreaseScheduleTaskTime(counter.GetElapsedMicroSecond());
+	auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+	gl_systemMessage.IncreaseScheduleTaskTime((end - start).count());
 	s_Processing = false;
 }
 

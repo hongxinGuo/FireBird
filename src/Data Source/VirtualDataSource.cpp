@@ -68,12 +68,11 @@ void CVirtualDataSource::InquireData() {
 		CInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
 		auto background = gl_runtime.background_executor();
 		auto result = gl_runtime.background_executor()->submit([this, pEngine] { //Note 只能使用thread_pool_executor或者background_executor
-				CHighPerformanceCounter counter;
-				counter.start();
+				auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 				auto pWebData = pEngine->GetWebData();
 				if (!pEngine->IsWebError()) this->UpdateStatus(pWebData);
-				counter.stop();
-				time_t ttCurrentInquiryTime = counter.GetElapsedMillisecond();
+				auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+				time_t ttCurrentInquiryTime = (end - start).count();
 				if (s_LastInquiryTime > m_iMaxNormalInquireTime && ttCurrentInquiryTime > m_iMaxNormalInquireTime) {
 					SetWebBusy(true); //
 				}

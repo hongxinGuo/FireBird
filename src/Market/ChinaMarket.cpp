@@ -540,14 +540,13 @@ void CChinaMarket::TaskSetCurrentStock() {
 void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
 	gl_runtime.thread_pool_executor()->post([this] { // 无需等待结果，直接返回
 			gl_ProcessChinaMarketRTData.acquire();
-			CHighPerformanceCounter counter;
-			counter.start();
+			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 
 			this->DistributeRTData();
 			this->CalculateRTData();
 
-			counter.stop();
-			this->SetDistributeAndCalculateTime(counter.GetElapsedMillisecond());
+			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+			this->SetDistributeAndCalculateTime((end - start).count());
 			gl_ProcessChinaMarketRTData.release();
 		});
 
