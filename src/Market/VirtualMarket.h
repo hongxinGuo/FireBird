@@ -59,7 +59,6 @@ public:
 	vector<CMarketTaskPtr> GetDisplayMarketTask();
 
 	// 时间函数
-	time_t GetMarketLocalTimeOffset(CString sLocalNameOfMarket);
 	tm GetMarketTime(time_t tUTC) const; // 得到本市场的时间（从UTC时间）
 	time_t TransferToUTCTime(tm* tmMarketTime) const; // 将市场时间结构转化为UTC时间
 	time_t TransferToUTCTime(long lMarketDate, long lMarketTime = 150000) const; // 将市场时间结构转化为UTC时间
