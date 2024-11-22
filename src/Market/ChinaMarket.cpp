@@ -1000,8 +1000,6 @@ bool CChinaMarket::ChangeDayLineStockCodeTypeToStandard() {
 }
 
 void CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
-	if (gl_systemConfiguration.IsExitingSystem()) return; // 如果退出系统的话则不再处理日线
-
 	gl_runtime.thread_executor()->post([this] {
 		gl_UpdateChinaMarketDB.acquire();
 		if (IsDayLineNeedProcess()) {
