@@ -34,6 +34,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Watchdog", "Watchdog\Watchd
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IXWebSocketLib", "IXWebSocketLib\IXWebSocketLib.vcxproj", "{B467F394-DE2A-47F9-A2C2-4BE78225B908}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCApplicationTestChronoLocate_zoneMemoryLeak", "MFCApplicationTestChronoLocate_zoneMemoryLeak\MFCApplicationTestChronoLocate_zoneMemoryLeak.vcxproj", "{A1B6643A-968D-47E1-808B-38E582D03883}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -98,6 +100,14 @@ Global
 		{B467F394-DE2A-47F9-A2C2-4BE78225B908}.Release|x64.Build.0 = Release|x64
 		{B467F394-DE2A-47F9-A2C2-4BE78225B908}.Release|x86.ActiveCfg = Release|x64
 		{B467F394-DE2A-47F9-A2C2-4BE78225B908}.Release|x86.Build.0 = Release|x64
+		{A1B6643A-968D-47E1-808B-38E582D03883}.Debug|x64.ActiveCfg = Debug|x64
+		{A1B6643A-968D-47E1-808B-38E582D03883}.Debug|x64.Build.0 = Debug|x64
+		{A1B6643A-968D-47E1-808B-38E582D03883}.Debug|x86.ActiveCfg = Debug|Win32
+		{A1B6643A-968D-47E1-808B-38E582D03883}.Debug|x86.Build.0 = Debug|Win32
+		{A1B6643A-968D-47E1-808B-38E582D03883}.Release|x64.ActiveCfg = Release|x64
+		{A1B6643A-968D-47E1-808B-38E582D03883}.Release|x64.Build.0 = Release|x64
+		{A1B6643A-968D-47E1-808B-38E582D03883}.Release|x86.ActiveCfg = Release|Win32
+		{A1B6643A-968D-47E1-808B-38E582D03883}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
