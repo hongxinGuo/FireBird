@@ -169,6 +169,21 @@ vector<CMarketTaskPtr> CVirtualMarket::GetDisplayMarketTask() {
 	return vector<CMarketTaskPtr>();
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//bug 这个函数导致内存泄漏，估计是时区数据库初始化后，程序退出时没有卸载。
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+time_t CVirtualMarket::GetMarketLocalTimeOffset(CString strLocalNameOfMarket) {
+	m_tzMarket = chrono::locate_zone(strLocalNameOfMarket.GetBuffer());
+	m_localMarketTimeZoneSystemInformation = m_tzMarket->get_info(chrono::sys_seconds());
+	m_localMarketTimeZoneLocalInformation = m_tzMarket->get_info(chrono::local_seconds());
+	m_lMarketTimeZone = -m_localMarketTimeZoneSystemInformation.offset.count();
+
+	return m_lMarketTimeZone;
+}
+
 tm CVirtualMarket::GetMarketTime(time_t tUTC) const {
 	tm tm_{};
 

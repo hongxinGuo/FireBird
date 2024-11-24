@@ -10,7 +10,6 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
-#include "HighPerformanceCounter.h"
 #include "InfoReport.h"
 #include"SetDayLineExtendInfo.h"
 #include"SetDayLineTodaySaved.h"
@@ -540,14 +539,13 @@ void CChinaMarket::TaskSetCurrentStock() {
 void CChinaMarket::TaskDistributeAndCalculateRTData(long lCurrentTime) {
 	gl_runtime.thread_pool_executor()->post([this] { // 无需等待结果，直接返回
 			gl_ProcessChinaMarketRTData.acquire();
-			CHighPerformanceCounter counter;
-			counter.start();
+			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 
 			this->DistributeRTData();
 			this->CalculateRTData();
 
-			counter.stop();
-			this->SetDistributeAndCalculateTime(counter.GetElapsedMillisecond());
+			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+			this->SetDistributeAndCalculateTime((end - start).count());
 			gl_ProcessChinaMarketRTData.release();
 		});
 
@@ -767,9 +765,7 @@ bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
 	if (IsSystemReady() && !m_fChosen10RSStrong1StockSet && (lCurrentTime > 151100) && IsWorkingDay()) {
 		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateChinaMarketDB.acquire();
-			gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));
-
-			// 添加一个注释
+			gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));// 添加一个注释
 			if (gl_dataContainerChinaStock.Choice10RSStrong1StockSet()) {
 				gl_systemMessage.PushInformationMessage(_T("10日RS1计算完毕\n"));
 				this->SetUpdatedDateFor10DaysRS1(this->GetMarketDate());
@@ -787,9 +783,7 @@ bool CChinaMarket::TaskChoice10RSStrong2StockSet(long lCurrentTime) {
 	if (IsSystemReady() && !m_fChosen10RSStrong2StockSet && (lCurrentTime > 151200) && IsWorkingDay()) {
 		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateChinaMarketDB.acquire();
-			gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));
-
-			// 添加一个注释
+			gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));// 添加一个注释
 			if (gl_dataContainerChinaStock.Choice10RSStrong2StockSet()) {
 				gl_systemMessage.PushInformationMessage(_T("10日RS2计算完毕\n"));
 				this->SetUpdatedDateFor10DaysRS2(this->GetMarketDate());
@@ -1001,7 +995,6 @@ bool CChinaMarket::ChangeDayLineStockCodeTypeToStandard() {
 
 void CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 	gl_runtime.thread_executor()->post([this] {
-		gl_UpdateChinaMarketDB.acquire();
 		if (IsDayLineNeedProcess()) {
 			this->ProcessDayLine();
 		}
@@ -1010,7 +1003,6 @@ void CChinaMarket::TaskProcessAndSaveDayLine(long lCurrentTime) {
 		if (gl_dataContainerChinaStock.IsUpdateDayLineDB()) {
 			gl_dataContainerChinaStock.TaskUpdateDayLineDB();
 		}
-		gl_UpdateChinaMarketDB.release();
 	});
 
 	if (!IsTaskOfSavingDayLineDBFinished()) {// 当尚未更新完日线历史数据时

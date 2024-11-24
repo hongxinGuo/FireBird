@@ -11,12 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\accessory\accessory.h" />
     <ClInclude Include="..\src\accessory\MarketTaskQueue.h" />
     <ClInclude Include="..\src\accessory\MarketTask.h" />
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h" />
     <ClInclude Include="..\src\accessory\ConvertToString.h" />
-    <ClInclude Include="..\src\accessory\HighPerformanceCounter.h" />
     <ClInclude Include="..\src\accessory\InfoReport.h" />
     <ClInclude Include="..\src\accessory\JsonGetValue.h" />
     <ClInclude Include="..\src\accessory\JsonParse.h" />
@@ -243,11 +241,9 @@
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
     </ClCompile>
-    <ClCompile Include="..\src\accessory\accessory.cpp" />
     <ClCompile Include="..\src\accessory\MarketTask.cpp" />
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp" />
     <ClCompile Include="..\src\accessory\ConvertToString.cpp" />
-    <ClCompile Include="..\src\accessory\HighPerformanceCounter.cpp" />
     <ClCompile Include="..\src\accessory\InfoReport.cpp" />
     <ClCompile Include="..\src\accessory\JsonGetValue.cpp" />
     <ClCompile Include="..\src\accessory\JsonParse.cpp" />

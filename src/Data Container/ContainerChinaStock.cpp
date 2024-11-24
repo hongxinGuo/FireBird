@@ -361,7 +361,9 @@ bool CContainerChinaStock::BuildWeekLine(long lStartDate) {
 		const CChinaStockPtr pStock = GetStock(l);
 		gl_runtime.thread_executor()->post([pStock, lStartDate] {
 			gl_UpdateChinaMarketDB.acquire();
-			if (!gl_systemConfiguration.IsExitingSystem()) pStock->BuildWeekLine(lStartDate);
+			if (!gl_systemConfiguration.IsExitingSystem()) {
+				pStock->BuildWeekLine(lStartDate);
+			}
 			gl_UpdateChinaMarketDB.release();
 		});
 	}

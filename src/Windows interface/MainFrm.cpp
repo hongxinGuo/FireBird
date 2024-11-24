@@ -840,9 +840,7 @@ void CMainFrame::OnUpdateAbortBuildingRS(CCmdUI* pCmdUI) {
 void CMainFrame::OnCalculate10dayRS1() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
-		gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));
-
-		// 添加一个注释
+		gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));// 添加一个注释
 		if (gl_dataContainerChinaStock.Choice10RSStrong1StockSet()) {
 			gl_systemMessage.PushInformationMessage(_T("10日RS1计算完毕\n"));
 			gl_pChinaMarket->SetUpdatedDateFor10DaysRS1(gl_pChinaMarket->GetMarketDate());
@@ -856,9 +854,7 @@ void CMainFrame::OnCalculate10dayRS1() {
 void CMainFrame::OnCalculate10dayRS2() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateChinaMarketDB.acquire();
-		gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));
-
-		// 添加一个注释
+		gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));// 添加一个注释
 		if (gl_dataContainerChinaStock.Choice10RSStrong2StockSet()) {
 			gl_systemMessage.PushInformationMessage(_T("10日RS2计算完毕\n"));
 			gl_pChinaMarket->SetUpdatedDateFor10DaysRS2(gl_pChinaMarket->GetMarketDate());

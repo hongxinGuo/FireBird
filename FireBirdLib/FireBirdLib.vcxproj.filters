@@ -210,9 +210,6 @@
     <ClInclude Include="..\src\accessory\ConvertToString.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\HighPerformanceCounter.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\accessory\InfoReport.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
@@ -690,9 +687,6 @@
     <ClInclude Include="..\src\Type\SECFiling.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\accessory.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h">
       <Filter>头文件\Windows interface</Filter>
     </ClInclude>
@@ -882,9 +876,6 @@
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\accessory\ConvertToString.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\accessory\HighPerformanceCounter.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\accessory\InfoReport.cpp">
@@ -1314,9 +1305,6 @@
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\accessory\accessory.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Windows interface\PropertyRealTimeDataWnd.cpp">

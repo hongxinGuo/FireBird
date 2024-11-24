@@ -57,6 +57,7 @@ public:
 	bool HaveNewTask() const;
 	shared_ptr<vector<CMarketTaskPtr>> DiscardOutDatedTask(long m_lCurrentMarketTime);
 	vector<CMarketTaskPtr> GetDisplayMarketTask();
+	time_t GetMarketLocalTimeOffset(CString strLocalNameOfMarket);
 
 	// 时间函数
 	tm GetMarketTime(time_t tUTC) const; // 得到本市场的时间（从UTC时间）
@@ -142,8 +143,11 @@ protected:
 	CString m_strCountry;
 	CString m_strSource;
 
-	//time_zone* const m_ptzMarket; // 市场的时区。由具体市场各自实现。
-	long m_lMarketTimeZone{ -8 * 3600 }; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。与_get_timezone函数相符。
+	long m_lMarketTimeZone{ 0 }; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。与_get_timezone函数相符。
+	CString m_strLocalMarketTimeZone{ _T("") }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
+	const chrono::time_zone* m_tzMarket{ nullptr }; // 本市场当地时区
+	chrono::sys_info m_localMarketTimeZoneSystemInformation; // 当地时区系统信息
+	chrono::local_info m_localMarketTimeZoneLocalInformation; // 当地时区本地信息
 
 	// 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
 	long m_lMarketDate{ 0 }; //本市场的日期
