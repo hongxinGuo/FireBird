@@ -34,7 +34,7 @@ namespace FireBirdTest {
 		const long lDate = ConvertToDate(&tm_);
 		const time_t tt = _mkgmtime(&tm_2);
 		const long lDate2 = ConvertToDate(tt, 0); // UTC时间
-		const long lDate3 = ConvertToDate(tt, -8 * 3600); // 东八区时间
+		const long lDate3 = ConvertToDate(tt, gl_pChinaMarket->GetMarketTimeZone()); // 东八区时间
 		EXPECT_EQ(lDate, 20000105);
 		EXPECT_EQ(lDate2, 20000105);
 		EXPECT_EQ(lDate3, 20000106) << "东八区时间比UTC时间早8小时，故而是6日了";
@@ -52,7 +52,7 @@ namespace FireBirdTest {
 		const long lTime = ConvertToTime(&tm_);
 		const time_t tt = _mkgmtime(&tm_2);
 		const long lTime2 = ConvertToTime(tt, 0); // UTC时间
-		const long lTime3 = ConvertToTime(tt, -8 * 3600); // 东八区时间
+		const long lTime3 = ConvertToTime(tt, gl_pChinaMarket->GetMarketTimeZone()); // 东八区时间
 		EXPECT_EQ(lTime, lTime2);
 		EXPECT_EQ(lTime, 102030);
 		EXPECT_EQ(lTime2, 102030);
@@ -71,7 +71,7 @@ namespace FireBirdTest {
 		const INT64 lDateTime = ConvertToDateTime(&tm_);
 		const time_t tt = _mkgmtime(&tm_2);
 		const INT64 lDateTime2 = ConvertToDateTime(tt, 0); // UTC时间
-		const INT64 lDateTime3 = ConvertToDateTime(tt, -8 * 3600); // 东八区时间
+		const INT64 lDateTime3 = ConvertToDateTime(tt, gl_pChinaMarket->GetMarketTimeZone()); // 东八区时间
 		EXPECT_EQ(lDateTime, lDateTime2);
 		EXPECT_EQ(lDateTime, 20000105102030);
 		EXPECT_EQ(lDateTime2, 20000105102030);
@@ -301,7 +301,7 @@ namespace FireBirdTest {
 		                         &Data104, &Data105, &Data106));
 
 	TEST_P(ConvertBufferToTimeTest, TestConvertBufferToTime) {
-		const time_t tt = ConvertBufferToTime(strFormat, strBuffer.GetBuffer(), -8 * 3600);
+		const time_t tt = ConvertBufferToTime(strFormat, strBuffer.GetBuffer(), gl_pChinaMarket->GetMarketTimeZone());
 		tm tm_;
 		const INT64 year = iTime / 10000000000;
 		const INT64 month = iTime / 100000000 - year * 100;
@@ -318,14 +318,14 @@ namespace FireBirdTest {
 		tm_.tm_isdst = 0;
 		time_t tt2 = _mkgmtime(&tm_);
 		if (tt2 > -1) {
-			tt2 -= 8 * 3600; // ConvertBufferToTime默认使用东八区标准时间
+			tt2 += gl_pChinaMarket->GetMarketTimeZone(); // ConvertBufferToTime默认使用东八区标准时间
 		}
 		if (iTime < 19000101000000) tt2 = iTime;
 		EXPECT_EQ(tt, tt2);
 	}
 
 	TEST_P(ConvertBufferToTimeTest, TestConvertStringToTime) {
-		const time_t tt = ConvertStringToTime(strFormat, strBuffer, -8 * 3600);
+		const time_t tt = ConvertStringToTime(strFormat, strBuffer, gl_pChinaMarket->GetMarketTimeZone());
 		tm tm_;
 		const INT64 year = iTime / 10000000000;
 		const INT64 month = iTime / 100000000 - year * 100;
@@ -342,7 +342,7 @@ namespace FireBirdTest {
 		tm_.tm_isdst = 0;
 		time_t tt2 = _mkgmtime(&tm_);
 		if (tt2 > -1) {
-			tt2 -= 8 * 3600; // ConvertStringToTime默认采用东八区标准时间
+			tt2 += gl_pChinaMarket->GetMarketTimeZone(); // ConvertStringToTime默认采用东八区标准时间
 		}
 		if (iTime < 19000101000000) tt2 = iTime;
 		EXPECT_EQ(tt, tt2);

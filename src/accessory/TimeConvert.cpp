@@ -306,7 +306,7 @@ void GetUTCTimeStruct(tm* tm_, const time_t* tUTC) { gmtime_s(tm_, tUTC); }
 
 void GetMarketTimeStruct(tm* tm_, const time_t tUTC, const time_t tTimeZone) {
 	time_t tMarket;
-	tMarket = tUTC - tTimeZone;
+	tMarket = tUTC - tTimeZone; //Note timeZoneOffset
 	gmtime_s(tm_, &tMarket);
 }
 

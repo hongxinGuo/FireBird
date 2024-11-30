@@ -11,8 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\accessory\MarketTaskQueue.h" />
-    <ClInclude Include="..\src\accessory\MarketTask.h" />
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h" />
     <ClInclude Include="..\src\accessory\ConvertToString.h" />
     <ClInclude Include="..\src\accessory\InfoReport.h" />
@@ -168,6 +166,9 @@
     <ClInclude Include="..\src\FinnhubInquiryType.h" />
     <ClInclude Include="..\src\globedef.h" />
     <ClInclude Include="..\src\Market\ChinaMarket.h" />
+    <ClInclude Include="..\src\Market\MarketTask.h" />
+    <ClInclude Include="..\src\Market\MarketTaskQueue.h" />
+    <ClInclude Include="..\src\Market\MarketTime.h" />
     <ClInclude Include="..\src\Market\VirtualMarket.h" />
     <ClInclude Include="..\src\Market\WorldMarket.h" />
     <ClInclude Include="..\src\nlohmannJsonDeclaration.h" />
@@ -241,13 +242,11 @@
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
     </ClCompile>
-    <ClCompile Include="..\src\accessory\MarketTask.cpp" />
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp" />
     <ClCompile Include="..\src\accessory\ConvertToString.cpp" />
     <ClCompile Include="..\src\accessory\InfoReport.cpp" />
     <ClCompile Include="..\src\accessory\JsonGetValue.cpp" />
     <ClCompile Include="..\src\accessory\JsonParse.cpp" />
-    <ClCompile Include="..\src\accessory\MarketTaskQueue.cpp" />
     <ClCompile Include="..\src\accessory\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\src\accessory\SaveAndLoad.cpp" />
     <ClCompile Include="..\src\accessory\simdjsonGetValue.cpp" />
@@ -320,29 +319,29 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
-      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Speed</FavorSizeOrSpeed>
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</WholeProgramOptimization>
-      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AnySuitable</InlineFunctionExpansion>
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IntrinsicFunctions>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
+      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</InlineFunctionExpansion>
+      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IntrinsicFunctions>
+      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStock.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekHigh.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
-      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AnySuitable</InlineFunctionExpansion>
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IntrinsicFunctions>
-      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Speed</FavorSizeOrSpeed>
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</WholeProgramOptimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</InlineFunctionExpansion>
+      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IntrinsicFunctions>
+      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
+      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekLow.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
-      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AnySuitable</InlineFunctionExpansion>
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IntrinsicFunctions>
-      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Speed</FavorSizeOrSpeed>
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</WholeProgramOptimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</InlineFunctionExpansion>
+      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IntrinsicFunctions>
+      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
+      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketHoliday.cpp" />
@@ -394,6 +393,9 @@
     <ClCompile Include="..\src\FinnhubInquiryType.cpp" />
     <ClCompile Include="..\src\globedef.cpp" />
     <ClCompile Include="..\src\Market\ChinaMarket.cpp" />
+    <ClCompile Include="..\src\Market\MarketTask.cpp" />
+    <ClCompile Include="..\src\Market\MarketTaskQueue.cpp" />
+    <ClCompile Include="..\src\Market\MarketTime.cpp" />
     <ClCompile Include="..\src\Market\VirtualMarket.cpp" />
     <ClCompile Include="..\src\Market\WorldMarket.cpp" />
     <ClCompile Include="..\src\pch.cpp">
@@ -405,12 +407,12 @@
     <ClCompile Include="..\src\Stock\FinnhubForex.cpp" />
     <ClCompile Include="..\src\Stock\TiingoCrypto.cpp" />
     <ClCompile Include="..\src\Stock\TiingoStock.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</WholeProgramOptimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
-      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AnySuitable</InlineFunctionExpansion>
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IntrinsicFunctions>
-      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Speed</FavorSizeOrSpeed>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
+      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
+      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</InlineFunctionExpansion>
+      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IntrinsicFunctions>
+      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Neither</FavorSizeOrSpeed>
     </ClCompile>
     <ClCompile Include="..\src\Stock\VirtualStock.cpp" />
     <ClCompile Include="..\src\Stock\FinnhubStock.cpp" />

@@ -17,7 +17,7 @@ CVirtualMarket::CVirtualMarket() {
 	m_tmMarket.tm_year = 1970;
 	m_tmMarket.tm_yday = 1;
 
-	m_lMarketTimeZone = -8 * 3600; // 本系统默认标准时间为东八区（北京标准时间）。
+	m_lMarketTimeZone = -8 * 3600; // 本系统默认标准时间为东八区（北京标准时间）。 //Note timeZoneOffset
 
 	m_strMarketId = _T("Warning: CVirtualMarket Called.");
 }
@@ -179,7 +179,7 @@ time_t CVirtualMarket::GetMarketLocalTimeOffset(CString strLocalNameOfMarket) {
 	m_tzMarket = chrono::locate_zone(strLocalNameOfMarket.GetBuffer());
 	m_localMarketTimeZoneSystemInformation = m_tzMarket->get_info(chrono::sys_seconds());
 	m_localMarketTimeZoneLocalInformation = m_tzMarket->get_info(chrono::local_seconds());
-	m_lMarketTimeZone = -m_localMarketTimeZoneSystemInformation.offset.count();
+	m_lMarketTimeZone = -m_localMarketTimeZoneSystemInformation.offset.count(); //Note timeZoneOffset
 
 	return m_lMarketTimeZone;
 }
