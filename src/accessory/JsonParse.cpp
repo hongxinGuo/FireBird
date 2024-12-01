@@ -435,7 +435,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		pWebRTData->SetStockName(XferToCString(sName)); // 将utf-8字符集转换为多字节字符集
 		strTime = jsonGetString(js, _T("time"));
 		string strSymbol2 = jsonGetString(js, _T("code"));
-		pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str(), gl_pChinaMarket->GetMarketTimeZone()));
+		pWebRTData->SetTransactionTime(gl_pChinaMarket->ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
 	} catch (json::exception& e) {// 结构不完整
 		// do nothing
 		CString strError2 = strSymbol4;
@@ -555,7 +555,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 			pWebRTData->SetPSell(2, StrToDecimal(jsonGetRawJsonToken(item, _T("ask3")), 3));
 			pWebRTData->SetPSell(1, StrToDecimal(jsonGetRawJsonToken(item, _T("ask2")), 3));
 			strTime = jsonGetStringView(item, _T("time"));
-			pWebRTData->SetTransactionTime(ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str(), gl_pChinaMarket->GetMarketTimeZone()));
+			pWebRTData->SetTransactionTime(gl_pChinaMarket->ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()));
 
 			pWebRTData->SetLastClose(StrToDecimal(jsonGetRawJsonToken(item, _T("yestclose")), 3));
 			pWebRTData->SetAmount(StrToDecimal(jsonGetRawJsonToken(item, _T("turnover")), 0));

@@ -93,6 +93,7 @@
     <ClCompile Include="InquireEngineTest.cpp" />
     <ClCompile Include="MarketTaskQueueTest.cpp" />
     <ClCompile Include="MarketTaskTest.cpp" />
+    <ClCompile Include="MarketTimeTest.cpp" />
     <ClCompile Include="MockContainerChinaStockTest.cpp" />
     <ClCompile Include="MockFinnhubDataSourceTest.cpp" />
     <ClCompile Include="FinnhubProductTest.cpp" />

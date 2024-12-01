@@ -7,8 +7,6 @@
 [[nodiscard]] long ConvertToDate(time_t tUTC, time_t tTimeZone) noexcept;// 将时间转变为整型(YYYYMMDD)形式
 [[nodiscard]] long ConvertToTime(time_t tUTC, time_t tTimeZone) noexcept; // 将时间转变为整数（HHMMSS)形式
 [[nodiscard]] INT64 ConvertToDateTime(time_t tUTC, time_t tTimeZone) noexcept; // 将时间转变为整数（YYYYMMDDHHMMSS)形式
-[[nodiscard]] long ConvertToDate(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
-[[nodiscard]] long ConvertToTime(const tm* ptm) noexcept; // 将时间转变为整型(HHMMSS)形式
 [[nodiscard]] INT64 ConvertToDateTime(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDDHHMMSS)形式
 [[nodiscard]] bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays);
 [[nodiscard]] inline long XferYearMonthDayToYYYYMMDD(long lYear, long lMonth, long lDay) { return lYear * 10000 + lMonth * 100 + lDay; }
@@ -35,8 +33,6 @@ void GetMarketTimeStruct(tm* tm_, time_t tUTC, time_t tTimeZone);
 [[nodiscard]] CString ConvertDateToString(long lDate, const CString& strFormat);
 [[nodiscard]] CString ConvertDateToTimeStamp(long lDate);
 [[nodiscard]] CString ConvertDateToChineseTimeStampString(long lDate);
-[[nodiscard]] time_t ConvertBufferToTime(CString strFormat, const char* BufferMarketTime, time_t tTimeZoneOffset);
-[[nodiscard]] time_t ConvertStringToTime(CString strFormat, CString strMarketTime, time_t tTimeZoneOffset);
 
 [[nodiscard]] time_t XferToTTime(CString strTime, const CString& strFormat);
 

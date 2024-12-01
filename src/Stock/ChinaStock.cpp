@@ -209,7 +209,7 @@ void CChinaStock::SaveTempInfo(CSetDayLineTodaySaved* pSetDayLineTemp) const {
 }
 
 void CChinaStock::UpdateCurrentHistoryCandle(const CVirtualHistoryCandleExtendPtr& pBeUpdated) const {
-	pBeUpdated->SetDate(ConvertToDate(m_TransactionTime, gl_pChinaMarket->GetMarketTimeZone()));
+	pBeUpdated->SetDate(gl_pChinaMarket->ConvertToDate(m_TransactionTime));
 	pBeUpdated->SetExchange(m_strExchangeCode);
 	pBeUpdated->SetStockSymbol(m_strSymbol);
 	pBeUpdated->SetDisplaySymbol(m_strDisplaySymbol);

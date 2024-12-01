@@ -86,10 +86,10 @@ CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWeb
 			s1 = jsonGetStringView(itemValue, _T("form"));
 			pSECFiling->m_strForm = s1.c_str();
 			s1 = jsonGetStringView(itemValue, _T("filedDate"));
-			time_t m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", s1.c_str(), 0);	//转成UTC时间
+			time_t m_time = gl_pWorldMarket->ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", s1.c_str());	//转成UTC时间
 			pSECFiling->m_iFiledDate = m_time;
 			s1 = jsonGetStringView(itemValue, _T("acceptedDate"));
-			m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", s1.c_str(), 0);	//转成UTC时间
+			m_time = gl_pWorldMarket->ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", s1.c_str());	//转成UTC时间
 			pSECFiling->m_iAcceptedDate = m_time;
 			s1 = jsonGetStringView(itemValue, _T("reportUrl"));
 			pSECFiling->m_strReportURL = s1.c_str();

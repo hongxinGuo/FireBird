@@ -51,10 +51,6 @@ INT64 ConvertToDateTime(const time_t tUTC, const time_t tTimeZone) noexcept {
 		static_cast<INT64>(tm_.tm_mday) * 1000000 + tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 
-long ConvertToDate(const tm* ptm) noexcept { return ((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday); }
-
-long ConvertToTime(const tm* ptm) noexcept { return (ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec); }
-
 INT64 ConvertToDateTime(const tm* ptm) noexcept {
 	return ((static_cast<INT64>(ptm->tm_year) + 1900) * 10000000000 + (static_cast<INT64>(ptm->tm_mon) + 1) * 100000000 +
 		static_cast<INT64>(ptm->tm_mday) * 1000000 + ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
@@ -327,49 +323,6 @@ CString ConvertDateToTimeStamp(const long lDate) {
 
 CString ConvertDateToChineseTimeStampString(const long lDate) {
 	return ConvertDateToString(lDate, _T("%4d年%2d月%2d日"));
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 将逝去的时间转换成UTC时间。
-//
-////////////////////////////////////////////////////////////////////////////////////////////
-time_t ConvertBufferToTime(CString strFormat, const char* BufferMarketTime, const time_t tTimeZoneOffset) {
-	tm tm_{ 0, 0, 0, 0, 0, 0 };
-	int year, month, day, hour, minute, second;
-
-	sscanf_s(BufferMarketTime, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
-	tm_.tm_year = year - 1900;
-	tm_.tm_mon = month - 1;
-	tm_.tm_mday = day;
-	tm_.tm_hour = hour;
-	tm_.tm_min = minute;
-	tm_.tm_sec = second;
-	tm_.tm_isdst = 0;
-	time_t tt = _mkgmtime(&tm_); // 先变成GMT时间
-	if (tt > -1) {
-		tt += tTimeZoneOffset; // 然后改成本市场UTC时间
-	}
-	return tt;
-}
-
-time_t ConvertStringToTime(CString strFormat, CString strMarketTime, const time_t tTimeZoneOffset) {
-	tm tm_{ 0, 0, 0, 0, 0, 0 };
-	int year, month, day, hour, minute, second;
-
-	sscanf_s(strMarketTime.GetBuffer(), strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
-	tm_.tm_year = year - 1900;
-	tm_.tm_mon = month - 1;
-	tm_.tm_mday = day;
-	tm_.tm_hour = hour;
-	tm_.tm_min = minute;
-	tm_.tm_sec = second;
-	tm_.tm_isdst = 0;
-	time_t tt = _mkgmtime(&tm_);
-	if (tt > -1) {
-		tt += tTimeZoneOffset; //
-	}
-	return tt;
 }
 
 time_t XferToTTime(CString strTime, const CString& strFormat) {

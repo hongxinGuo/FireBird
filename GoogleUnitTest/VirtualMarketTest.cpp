@@ -1,5 +1,6 @@
 #include"pch.h"
 
+#include "ChinaMarket.h"
 #include"TimeConvert.h"
 
 #include"VirtualMarket.h"
@@ -156,7 +157,7 @@ namespace FireBirdTest {
 		virtualMarket.CalculateLastTradeDate();
 		EXPECT_EQ(virtualMarket.GetDayOfWeek(), tm_.tm_wday);
 
-		const long day = ConvertToDate(&tm_);
+		const long day = virtualMarket.ConvertToDate(&tm_);
 		EXPECT_EQ(virtualMarket.GetMarketDate(), day);
 		EXPECT_EQ(virtualMarket.GetMonthOfYear(), tm_.tm_mon + 1);
 		EXPECT_EQ(virtualMarket.GetDateOfMonth(), tm_.tm_mday);
@@ -197,7 +198,7 @@ namespace FireBirdTest {
 				tMarket = gl_tUTCTime - 24 * 3600; // 上一日
 			}
 			const tm tmMarketTime = virtualMarket.GetMarketTime(tMarket);
-			auto lMarketLastTradeDate = ConvertToDate(&tmMarketTime);
+			auto lMarketLastTradeDate = virtualMarket.ConvertToDate(&tmMarketTime);
 			EXPECT_EQ(virtualMarket.CalculateLastTradeDate(), lMarketLastTradeDate) << i;
 		}
 
@@ -223,7 +224,7 @@ namespace FireBirdTest {
 				tMarket = gl_tUTCTime; // 本日
 			}
 			const tm tmMarketTime = virtualMarket.GetMarketTime(tMarket);
-			auto lMarketCurrentTradeDate = ConvertToDate(&tmMarketTime);
+			auto lMarketCurrentTradeDate = virtualMarket.ConvertToDate(&tmMarketTime);
 			EXPECT_EQ(virtualMarket.CalculateCurrentTradeDate(), lMarketCurrentTradeDate) << i;
 		}
 
@@ -250,7 +251,7 @@ namespace FireBirdTest {
 				tMarket = gl_tUTCTime + 24 * 3600; // 次日
 			}
 			const tm tmMarketTime = virtualMarket.GetMarketTime(tMarket);
-			auto lMarketNextTradeDate = ConvertToDate(&tmMarketTime);
+			auto lMarketNextTradeDate = virtualMarket.ConvertToDate(&tmMarketTime);
 			EXPECT_EQ(virtualMarket.CalculateNextTradeDate(), lMarketNextTradeDate) << i;
 		}
 
@@ -352,7 +353,7 @@ namespace FireBirdTest {
 				break;
 			}
 			GetMarketTimeStruct(&tm_, tUTC, virtualMarket.GetMarketTimeZone());
-			long nextTradeDate = ConvertToDate(&tm_);
+			long nextTradeDate = virtualMarket.ConvertToDate(&tm_);
 			EXPECT_EQ(virtualMarket.GetNextTradeDate(), nextTradeDate);
 		}
 	}
@@ -380,7 +381,7 @@ namespace FireBirdTest {
 				break;
 			}
 			GetMarketTimeStruct(&tm_, tUTC, virtualMarket.GetMarketTimeZone());
-			long currentTradeDate = ConvertToDate(&tm_);
+			long currentTradeDate = virtualMarket.ConvertToDate(&tm_);
 			EXPECT_EQ(virtualMarket.GetCurrentTradeDate(), currentTradeDate);
 		}
 	}
@@ -411,7 +412,7 @@ namespace FireBirdTest {
 				tUTC -= 24 * 3600; //
 			}
 			GetMarketTimeStruct(&tm_, tUTC, virtualMarket.GetMarketTimeZone());
-			long LastTradeDate = ConvertToDate(&tm_);
+			long LastTradeDate = virtualMarket.ConvertToDate(&tm_);
 			EXPECT_EQ(virtualMarket.GetLastTradeDate(), LastTradeDate);
 		}
 	}
@@ -516,5 +517,97 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualMarketTest, TestUpdateMarketInfo) {
 		EXPECT_TRUE(virtualMarket.UpdateMarketInfo());
+	}
+
+	struct strConvertBufferToTime {
+		strConvertBufferToTime(const CString& strFormat, const CString& strBuffer, const INT64 iTime) {
+			m_strFormat = strFormat;
+			m_strBuffer = strBuffer;
+			m_Time = iTime;
+		}
+
+	public:
+		CString m_strFormat;
+		CString m_strBuffer;
+		INT64 m_Time;
+	};
+
+	strConvertBufferToTime Data101(_T("%4d%2d%2d%2d%2d%2d"), _T("20191030102030"), 20191030102030);
+	strConvertBufferToTime Data102(_T("%d-%d-%d %d:%d:%d"), _T("2019-10-30 10:12:30"), 20191030101230);
+	strConvertBufferToTime Data105(_T("%4d/%2d/%2d %2d:%2d:%2d"), _T("2019/11/05 12:11:15"), 20191105121115);
+	strConvertBufferToTime Data103(_T("%4d/%2d/%2d %2d:%2d:%2d"), _T("0"), -1);
+	strConvertBufferToTime Data104(_T("%4d/%4d/%4d %2d:%2d:%2d"), _T("1900/01/01"), -1);
+	strConvertBufferToTime Data106(_T("%4d/%4d%4d %2d:%2d:%2d"), _T(" 12:12:12"), -1);
+
+	class ConvertBufferToTimeTest : public::testing::TestWithParam<strConvertBufferToTime*> {
+	protected:
+		void SetUp() override {
+			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
+			const strConvertBufferToTime* pData = GetParam();
+			strBuffer = pData->m_strBuffer;
+			strFormat = pData->m_strFormat;
+			iTime = pData->m_Time;
+		}
+
+		void TearDown() override {
+			// clearUp
+		}
+
+	public:
+		CString strFormat;
+		CString strBuffer;
+		INT64 iTime;
+		CVirtualMarket virtualMarket;
+	};
+
+	INSTANTIATE_TEST_SUITE_P(TestConvertBufferToTime, ConvertBufferToTimeTest, testing::Values(&Data101, &Data102, &Data103,
+		                         &Data104, &Data105, &Data106));
+
+	TEST_P(ConvertBufferToTimeTest, TestConvertBufferToTime) {
+		const time_t tt = gl_pChinaMarket->ConvertBufferToTime(strFormat, strBuffer.GetBuffer());
+		tm tm_;
+		const INT64 year = iTime / 10000000000;
+		const INT64 month = iTime / 100000000 - year * 100;
+		const INT64 day = iTime / 1000000 - year * 10000 - month * 100;
+		const INT64 hour = iTime / 10000 - year * 1000000 - month * 10000 - day * 100;
+		const INT64 minute = iTime / 100 - year * 100000000 - month * 1000000 - day * 10000 - hour * 100;
+		const INT64 second = iTime - year * 10000000000 - month * 100000000 - day * 1000000 - hour * 10000 - minute * 100;
+		tm_.tm_year = year - 1900;
+		tm_.tm_mon = month - 1;
+		tm_.tm_mday = day;
+		tm_.tm_hour = hour;
+		tm_.tm_min = minute;
+		tm_.tm_sec = second;
+		tm_.tm_isdst = 0;
+		time_t tt2 = _mkgmtime(&tm_);
+		if (tt2 > -1) {
+			tt2 += gl_pChinaMarket->GetMarketTimeZone(); // ConvertBufferToTime默认使用东八区标准时间
+		}
+		if (iTime < 19000101000000) tt2 = iTime;
+		EXPECT_EQ(tt, tt2);
+	}
+
+	TEST_P(ConvertBufferToTimeTest, TestConvertStringToTime) {
+		const time_t tt = gl_pChinaMarket->ConvertStringToTime(strFormat, strBuffer);
+		tm tm_;
+		const INT64 year = iTime / 10000000000;
+		const INT64 month = iTime / 100000000 - year * 100;
+		const INT64 day = iTime / 1000000 - year * 10000 - month * 100;
+		const INT64 hour = iTime / 10000 - year * 1000000 - month * 10000 - day * 100;
+		const INT64 minute = iTime / 100 - year * 100000000 - month * 1000000 - day * 10000 - hour * 100;
+		const INT64 second = iTime - year * 10000000000 - month * 100000000 - day * 1000000 - hour * 10000 - minute * 100;
+		tm_.tm_year = year - 1900;
+		tm_.tm_mon = month - 1;
+		tm_.tm_mday = day;
+		tm_.tm_hour = hour;
+		tm_.tm_min = minute;
+		tm_.tm_sec = second;
+		tm_.tm_isdst = 0;
+		time_t tt2 = _mkgmtime(&tm_);
+		if (tt2 > -1) {
+			tt2 += gl_pChinaMarket->GetMarketTimeZone(); // ConvertStringToTime默认采用东八区标准时间
+		}
+		if (iTime < 19000101000000) tt2 = iTime;
+		EXPECT_EQ(tt, tt2);
 	}
 }

@@ -110,8 +110,8 @@ namespace FireBirdTest {
 			EXPECT_STREQ(pvSECFilings->at(0)->m_strAccessNumber, _T("0000320193-24-000056"));
 			EXPECT_EQ(pvSECFilings->at(0)->m_iCIK, 320193);
 			EXPECT_STREQ(pvSECFilings->at(0)->m_strForm, _T("4"));
-			EXPECT_EQ(pvSECFilings->at(0)->m_iAcceptedDate, 1713205871);
-			EXPECT_EQ(pvSECFilings->at(0)->m_iFiledDate, 1713139200);
+			EXPECT_EQ(pvSECFilings->at(0)->m_iAcceptedDate, 1713205871 + gl_pWorldMarket->GetMarketTimeZone());
+			EXPECT_EQ(pvSECFilings->at(0)->m_iFiledDate, 1713139200 + gl_pWorldMarket->GetMarketTimeZone());
 			EXPECT_STREQ(pvSECFilings->at(0)->m_strFilingURL, _T("https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html"));
 			EXPECT_STREQ(pvSECFilings->at(0)->m_strReportURL, _T("https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml"));
 			break;
