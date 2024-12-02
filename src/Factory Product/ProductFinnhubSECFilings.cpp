@@ -86,11 +86,20 @@ CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWeb
 			s1 = jsonGetStringView(itemValue, _T("form"));
 			pSECFiling->m_strForm = s1.c_str();
 			s1 = jsonGetStringView(itemValue, _T("filedDate"));
+			std::stringstream ss(s1);
+			chrono::sys_seconds tpTime;
+			chrono::from_stream(ss, "%F %T", tpTime);
+			tpTime -= gl_pWorldMarket->GetMarketTimeZoneOffset();
+			pSECFiling->m_iFiledDate = tpTime.time_since_epoch().count();
 			time_t m_time = gl_pWorldMarket->ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", s1.c_str());	//转成UTC时间
-			pSECFiling->m_iFiledDate = m_time;
+			ASSERT(pSECFiling->m_iFiledDate == m_time); // Note 
 			s1 = jsonGetStringView(itemValue, _T("acceptedDate"));
+			std::stringstream ss2(s1);
+			chrono::from_stream(ss2, "%F %T", tpTime);
+			tpTime -= gl_pWorldMarket->GetMarketTimeZoneOffset();
+			pSECFiling->m_iAcceptedDate = tpTime.time_since_epoch().count();
 			m_time = gl_pWorldMarket->ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", s1.c_str());	//转成UTC时间
-			pSECFiling->m_iAcceptedDate = m_time;
+			ASSERT(pSECFiling->m_iFiledDate == m_time); // Note 
 			s1 = jsonGetStringView(itemValue, _T("reportUrl"));
 			pSECFiling->m_strReportURL = s1.c_str();
 			s1 = jsonGetStringView(itemValue, _T("filingUrl"));

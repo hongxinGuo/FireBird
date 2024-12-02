@@ -54,6 +54,7 @@ CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub½ûÖ¹·ÃÎÊ½
 CTiingoInaccessibleStock gl_tiingoInaccessibleStock;
 
 time_t gl_tUTCTime = 0; // ËùÓĞµÄÊĞ³¡Ê¹ÓÃÍ¬Ò»¸öĞ­µ÷ÊÀ½çÊ±£¨Coordinated Universal Time£©
+chrono::system_clock::time_point gl_now; // µ±Ç°ÏµÍ³Ê±ÖÓµÄÊ±¼ä´Á¡£Note ×¼±¸Ê¹ÓÃ´ËÊ±ÖÓ´úÌægl_tUTCTime
 
 // ÎªÁËÊÂÏÈ³õÊ¼»¯£¬ĞÅºÅÁ¿±ØĞëÉùÃ÷ÎªÈ«¾Ö±äÁ¿
 binary_semaphore gl_UpdateChinaMarketDB{ 1 }; // ÓÃÓÚ¸üĞÂChinaMarketÊı¾İ¿â¡£todo ÓÉÓÚ¶ÔMySQLÊı¾İ¿â²»Ì«ÁË½â£¬Å¼¶û»á³öÏÖ´æ´¢ÎÊÌâ£¬ÎÒ¹À¼ÆÓëÍ¬²½ÓĞ¹Ø£¬¹Ê¶øÉèÖÃ»¥³â±äÁ¿

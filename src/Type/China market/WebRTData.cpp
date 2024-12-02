@@ -1,7 +1,6 @@
 ﻿#include"pch.h"
 #include"globedef.h"
 
-#include"TimeConvert.h"
 #include"ChinaStockCodeConverter.h"
 
 #include"jsonParse.h"
@@ -80,8 +79,8 @@ bool CWebRTData::CheckSinaRTDataActive() {
 // 20：”3100″，“卖一”申报3100股，即31手；
 // 21：”26.92″，“卖一”报价
 // (22, 23), (24, 25), (26, 27), (28, 29)分别为“卖二”至“卖四的情况”
-// 30：”2008 - 01 - 11″，日期；（此日期为当地市场的日期）
-// 31：”15:05:32″，时间；（此时间为当地市场的时间，此处为东八区北京标准时间）
+// 30："2008-01-11″，日期；（此日期为当地市场的日期）
+// 31："15:05:32″，时间；（此时间为当地市场的时间，此处为东八区北京标准时间）
 // 32：”00”，  不明数据
 //
 // 
@@ -151,8 +150,19 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 	string sTime(sv.data(), sv.size());
 	sTime += ' '; //添加一个空格，以利于下面的转换
 	const string_view svTime = GetNextField(svData, lCurrentPos, ',');
-	sTime.append(svTime.data(), svTime.size());
-	m_time = gl_pChinaMarket->ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", sTime.c_str());	//转成UTC时间。新浪实时数据的时区为东八区
+	if (svTime.length() == 0) { // 没有时间？
+		sTime += _T("15:00:00"); // 使用闭市时间
+	}
+	else {
+		sTime.append(svTime.data(), svTime.size());
+	}
+	std::stringstream ss(sTime);
+	chrono::from_stream(ss, "%F %T", m_tpTime); // 
+	//ss >> chrono::parse("%F %T", m_tpTime);
+	m_tpTime -= gl_pChinaMarket->GetMarketTimeZoneOffset();
+	m_time = m_tpTime.time_since_epoch().count();
+	auto tt = gl_pChinaMarket->ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", sTime.c_str());	//转成UTC时间。新浪实时数据的时区为东八区
+	ASSERT(tt == m_time);
 	// 后面的数据为字符串"00",无效数据，不再处理
 	// 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
 	// 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
@@ -309,7 +319,12 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	// 30 成交日期和时间.格式为：yyyymmddhhmmss. 此时间采用的时区为东八区（北京标准时间）
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	const string sTime(sv.data(), sv.size());
-	m_time = gl_pChinaMarket->ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", sTime.c_str()); // 转成UTC时间。腾讯实时数据的时区为东八区
+	std::stringstream ss(sTime);
+	chrono::from_stream(ss, "%Y%m%d%H%M%S", m_tpTime);
+	m_tpTime -= gl_pChinaMarket->GetMarketTimeZoneOffset();
+	m_time = m_tpTime.time_since_epoch().count();
+	auto tt = gl_pChinaMarket->ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", sTime.c_str()); // 转成UTC时间。腾讯实时数据的时区为东八区
+	ASSERT(m_time == tt);
 	// 涨跌
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	// 涨跌率
@@ -400,6 +415,8 @@ bool CWebRTData::IsValidTime(long lDays) const {
 	if (m_time < (GetUTCTime() - lDays * 24 * 3600)) {// 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
 		return false;
 	}
-	if (m_time > GetUTCTime()) { return false; }
+	if (m_time > GetUTCTime()) {
+		return false;
+	}
 	return true;
 }

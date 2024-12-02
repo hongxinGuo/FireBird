@@ -4,10 +4,6 @@
 #include "VirtualMarket.h"
 #include"VirtualDataSource.h"
 
-#include <spdlog/stopwatch.h>
-
-//using namespace std::chrono;
-
 CVirtualMarket::CVirtualMarket() {
 	m_fResetMarket = true;
 
@@ -40,13 +36,13 @@ void CVirtualMarket::ScheduleTask() {
 
 	// 执行本市场各项定时任务。当市场正在重置时暂停
 	if (!IsResetting()) {
-		spdlog::stopwatch sw;
+		auto begin = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 		int taskType = ProcessTask(lCurrentMarketTime); // 执行定时任务
+		auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 #ifdef _TRACE_SCHEDULE_TASK___
-		if (taskType != 0) gl_traceLogger->trace("{} ms {}", gl_mapMarketMapIndex.at(taskType), sw.elapsed_ms());
+		if (taskType != 0) gl_traceLogger->trace("{} ms {}", gl_mapMarketMapIndex.at(taskType), (end - begin).count());
 #endif
 
-		sw.reset();
 		auto immediateTaskSize = m_marketImmediateTask.Size();
 		vector<int> vTaskType;
 		for (int i = 0; i < immediateTaskSize; i++) {
@@ -60,7 +56,7 @@ void CVirtualMarket::ScheduleTask() {
 			for (int i = 0; i < immediateTaskSize; i++) {
 				gl_traceLogger->trace("{}", gl_mapMarketMapIndex.at(vTaskType.at(i)));
 			}
-			gl_traceLogger->trace("{}ms", sw.elapsed_ms());
+			gl_traceLogger->trace("{}ms", (end - begin).count());
 		}
 #endif
 	}
@@ -151,4 +147,234 @@ shared_ptr<vector<CMarketTaskPtr>> CVirtualMarket::DiscardOutDatedTask(long m_lC
 
 vector<CMarketTaskPtr> CVirtualMarket::GetDisplayMarketTask() {
 	return vector<CMarketTaskPtr>();
+}
+
+void CVirtualMarket::CalculateTime() noexcept {
+	time(&gl_tUTCTime);
+
+	GetMarketTimeStruct(&m_tmMarket, gl_tUTCTime);
+	m_lMarketDate = ConvertToDate(&m_tmMarket);
+	m_lMarketTime = ConvertToTime(&m_tmMarket);
+}
+
+tm CVirtualMarket::GetMarketTime(time_t tUTC) const {
+	tm tm_{};
+
+	GetMarketTimeStruct(&tm_, tUTC);
+
+	return tm_;
+}
+
+long CVirtualMarket::GetMarketDate(time_t tUTC) const {
+	tm tm_{};
+
+	GetMarketTimeStruct(&tm_, tUTC);
+
+	return ConvertToDate(&tm_);
+}
+
+bool CVirtualMarket::IsWorkingDay() const noexcept {
+	if (m_tmMarket.tm_wday == 0 || m_tmMarket.tm_wday == 6) {
+		return false;
+	}
+	return true;
+}
+
+bool CVirtualMarket::IsWorkingDay(CTime timeCurrent) noexcept {
+	if ((timeCurrent.GetDayOfWeek() == 1) || (timeCurrent.GetDayOfWeek() == 7)) {
+		return false;
+	}
+	return true;
+}
+
+bool CVirtualMarket::IsWorkingDay(long lDate) noexcept {
+	const long year = lDate / 10000;
+	const long month = lDate / 100 - year * 100;
+	const long day = lDate - year * 10000 - month * 100;
+	const CTime ct(year, month, day, 12, 0, 0);
+
+	if ((ct.GetDayOfWeek() == 1) || (ct.GetDayOfWeek() == 7)) {
+		return false;
+	}
+	return true;
+}
+
+long CVirtualMarket::CalculateNextTradeDate() noexcept {
+	time_t tMarket;
+	const tm tmMarketTime2 = GetMarketTime(gl_tUTCTime - m_lOpenMarketTime);
+
+	switch (tmMarketTime2.tm_wday) {
+	case 6: // 星期六
+		tMarket = gl_tUTCTime + 2 * 24 * 3600; // 下周一
+		break;
+	case 5: // 周五
+		tMarket = gl_tUTCTime + 3 * 24 * 3600; // 下周一
+		break;
+	default: // 其他
+		tMarket = gl_tUTCTime + 24 * 3600; // 次日
+	}
+	tMarket -= m_lOpenMarketTime; // 减去开市时间，具体值由各市场预先设定
+	const tm tmMarketTime = GetMarketTime(tMarket);
+	m_lMarketNextTradeDate = ConvertToDate(&tmMarketTime);
+	return m_lMarketNextTradeDate;
+}
+
+long CVirtualMarket::CalculateCurrentTradeDate() noexcept {
+	time_t tMarket;
+
+	const tm tmMarketTime2 = GetMarketTime(gl_tUTCTime - m_lOpenMarketTime);
+
+	switch (tmMarketTime2.tm_wday) {
+	case 0: //星期日
+		tMarket = gl_tUTCTime - 2 * 24 * 3600; // 周五
+		break;
+	case 6: // 星期六
+		tMarket = gl_tUTCTime - 1 * 24 * 3600; // 周五
+		break;
+	default: // 其他
+		tMarket = gl_tUTCTime; // 本日
+	}
+	tMarket -= m_lOpenMarketTime; // 减去开市时间，具体值由各市场预先设定
+	const tm tmMarketTime = GetMarketTime(tMarket);
+	m_lMarketCurrentTradeDate = ConvertToDate(&tmMarketTime);
+	return m_lMarketCurrentTradeDate;
+}
+
+long CVirtualMarket::CalculateLastTradeDate() noexcept {
+	time_t tMarket;
+	const tm tmMarketTime2 = GetMarketTime(gl_tUTCTime - m_lOpenMarketTime);
+
+	switch (tmMarketTime2.tm_wday) {
+	case 1: // 星期一
+		tMarket = gl_tUTCTime - 3 * 24 * 3600; // 上周五
+		break;
+	case 0: //星期日
+		tMarket = gl_tUTCTime - 3 * 24 * 3600; // 周四
+		break;
+	case 6: // 星期六
+		tMarket = gl_tUTCTime - 2 * 24 * 3600; // 周四
+		break;
+	default: // 其他
+		tMarket = gl_tUTCTime - 24 * 3600; // 上一日
+	}
+	tMarket -= m_lOpenMarketTime; // 减去开市时间，具体值由各市场预先设定
+	const tm tmMarketTime = GetMarketTime(tMarket);
+	m_lMarketLastTradeDate = ConvertToDate(&tmMarketTime);
+	return m_lMarketLastTradeDate;
+}
+
+time_t CVirtualMarket::TransferToUTCTime(tm* tmMarketTime) const {
+	return _mkgmtime(tmMarketTime) - m_lMarketTimeZone;
+}
+
+time_t CVirtualMarket::TransferToUTCTime(long lMarketDate, long lMarketTime) const {
+	return ConvertToTTime(lMarketDate, m_lMarketTimeZone, lMarketTime);
+}
+
+CString CVirtualMarket::GetStringOfMarketDate() const {
+	return ConvertDateToChineseTimeStampString(m_lMarketDate);
+}
+
+CString CVirtualMarket::GetStringOfLocalTime() const {
+	char buffer[30];
+	tm tmLocal;
+
+	localtime_s(&tmLocal, &gl_tUTCTime);
+	sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+	CString str = buffer;
+	return (str);
+}
+
+CString CVirtualMarket::GetStringOfLocalDateTime() const {
+	char buffer[100];
+	tm tmLocal;
+
+	localtime_s(&tmLocal, &gl_tUTCTime);
+	sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+	CString str = buffer;
+	return (str);
+}
+
+CString CVirtualMarket::GetStringOfMarketTime() const {
+	char buffer[30];
+
+	sprintf_s(buffer, _T("%02d:%02d:%02d "), m_tmMarket.tm_hour, m_tmMarket.tm_min, m_tmMarket.tm_sec);
+	CString str = buffer;
+	return (str);
+}
+
+CString CVirtualMarket::GetStringOfMarketDateTime() const {
+	char buffer[100];
+
+	sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), m_tmMarket.tm_year + 1900, m_tmMarket.tm_mon + 1, m_tmMarket.tm_mday, m_tmMarket.tm_hour, m_tmMarket.tm_min, m_tmMarket.tm_sec);
+	CString str = buffer;
+	return (str);
+}
+
+long CVirtualMarket::ConvertToDate(const time_t tUTC) const noexcept {
+	tm tm_;
+	GetMarketTimeStruct(&tm_, tUTC);
+	return ((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 将逝去的时间转换成UTC时间。
+//
+////////////////////////////////////////////////////////////////////////////////////////////
+time_t CVirtualMarket::ConvertBufferToTime(CString strFormat, const char* BufferMarketTime) {
+	tm tm_{ 0, 0, 0, 0, 0, 0 };
+	int year, month, day, hour, minute, second;
+
+	sscanf_s(BufferMarketTime, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
+	tm_.tm_year = year - 1900;
+	tm_.tm_mon = month - 1;
+	tm_.tm_mday = day;
+	tm_.tm_hour = hour;
+	tm_.tm_min = minute;
+	tm_.tm_sec = second;
+	tm_.tm_isdst = 0;
+	time_t tt = _mkgmtime(&tm_); // 先变成GMT的UTC时间
+	if (tt > -1) {
+		tt -= m_lMarketTimeZone; // 然后改成本市场的UTC时间
+	}
+	return tt;
+}
+
+time_t CVirtualMarket::ConvertStringToTime(CString strFormat, CString strMarketTime) {
+	tm tm_{ 0, 0, 0, 0, 0, 0 };
+	int year, month, day, hour, minute, second;
+
+	sscanf_s(strMarketTime.GetBuffer(), strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
+	tm_.tm_year = year - 1900;
+	tm_.tm_mon = month - 1;
+	tm_.tm_mday = day;
+	tm_.tm_hour = hour;
+	tm_.tm_min = minute;
+	tm_.tm_sec = second;
+	tm_.tm_isdst = 0;
+	time_t tt = _mkgmtime(&tm_); // GMT时间
+	if (tt > -1) {
+		tt -= m_lMarketTimeZone; // 然后改成本市场UTC时间
+	}
+	return tt;
+}
+
+void CVirtualMarket::GetMarketTimeStruct(tm* tm_, time_t tUTC) const {
+	time_t tMarket = tUTC + m_lMarketTimeZone;
+	gmtime_s(tm_, &tMarket);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//bug 这个函数导致内存泄漏，估计是时区数据库初始化后，程序退出时没有卸载。
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+time_t CVirtualMarket::GetMarketLocalTimeOffset(CString strLocalNameOfMarket) {
+	m_tzMarket = chrono::locate_zone(strLocalNameOfMarket.GetBuffer());
+	m_localMarketSystemInformation = m_tzMarket->get_info(chrono::sys_seconds());
+	m_lMarketTimeZone = m_localMarketSystemInformation.offset.count();
+
+	return m_lMarketTimeZone;
 }

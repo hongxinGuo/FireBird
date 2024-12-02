@@ -159,6 +159,8 @@ public:
 
 	void SetDataSource(const long lDataSource) noexcept { m_lDataSource = lDataSource; }
 	[[nodiscard]] long GetDataSource() const noexcept { return m_lDataSource; }
+	[[nodiscard]] auto GetTimePoint() const noexcept { return m_tpTime; }
+	void SetTimePoint(std::chrono::sys_seconds time) noexcept { m_tpTime = time; }
 	[[nodiscard]] time_t GetTransactionTime() const noexcept { return m_time; }
 	void SetTransactionTime(const time_t time) noexcept { m_time = time; }
 	[[nodiscard]] CString GetSymbol() { return m_strSymbol; }
@@ -214,6 +216,7 @@ public:
 protected:
 	long m_lDataSource; // 实时数据来源标识。0：非法数据；1：新浪网站；2：腾讯网站；3：网易网站；。。。
 	// Serialized data
+	std::chrono::sys_seconds m_tpTime;
 	time_t m_time; // 交易发生时的UTC时间
 	CString m_strSymbol; // 证券代码, 600001.SS，002389.SZ，
 	CString m_strStockName; // 证券名称

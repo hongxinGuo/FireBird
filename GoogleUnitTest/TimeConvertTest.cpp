@@ -216,8 +216,8 @@ namespace FireBirdTest {
 
 		time(&tt);
 		gmtime_s(&tm2_, &tt);
-		GetMarketTimeStruct(&tm_, tt, -8 * 3600);
-		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour + 8) || (tm_.tm_hour == tm2_.tm_hour - 16)));
+		GetMarketTimeStruct(&tm_, tt, 8 * 3600);
+		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour + 8) || (tm_.tm_hour == tm2_.tm_hour - 16))) << "东八区时间超前8小时";
 	}
 
 	TEST_F(TimeConvertTest, TestXferToTTime) {

@@ -168,7 +168,6 @@
     <ClInclude Include="..\src\Market\ChinaMarket.h" />
     <ClInclude Include="..\src\Market\MarketTask.h" />
     <ClInclude Include="..\src\Market\MarketTaskQueue.h" />
-    <ClInclude Include="..\src\Market\MarketTime.h" />
     <ClInclude Include="..\src\Market\VirtualMarket.h" />
     <ClInclude Include="..\src\Market\WorldMarket.h" />
     <ClInclude Include="..\src\nlohmannJsonDeclaration.h" />
@@ -395,7 +394,6 @@
     <ClCompile Include="..\src\Market\ChinaMarket.cpp" />
     <ClCompile Include="..\src\Market\MarketTask.cpp" />
     <ClCompile Include="..\src\Market\MarketTaskQueue.cpp" />
-    <ClCompile Include="..\src\Market\MarketTime.cpp" />
     <ClCompile Include="..\src\Market\VirtualMarket.cpp" />
     <ClCompile Include="..\src\Market\WorldMarket.cpp" />
     <ClCompile Include="..\src\pch.cpp">

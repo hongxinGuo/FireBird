@@ -870,9 +870,6 @@
     <ClInclude Include="..\src\Market\MarketTask.h">
       <Filter>头文件\Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Market\MarketTime.h">
-      <Filter>头文件\Market</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1455,9 +1452,6 @@
       <Filter>源文件\Market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Market\MarketTaskQueue.cpp">
-      <Filter>源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Market\MarketTime.cpp">
       <Filter>源文件\Market</Filter>
     </ClCompile>
   </ItemGroup>

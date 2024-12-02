@@ -41,4 +41,7 @@ extern time_t gl_tUTCTime; // 所有的市场使用同一个协调世界时（Coordinated Univer
 inline time_t GetUTCTime() noexcept { return gl_tUTCTime; }
 inline void TestSetUTCTime(time_t time) noexcept { gl_tUTCTime = time; }
 
+using namespace std;
+extern chrono::system_clock::time_point gl_now;
+
 #define _TRACE_SCHEDULE_TASK___ // 跟踪任务调度

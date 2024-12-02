@@ -2,7 +2,6 @@
 
 #include"VirtualDataSource.h"
 #include"MarketTaskQueue.h"
-#include "MarketTime.h"
 
 class CVirtualMarket {
 public:
@@ -59,55 +58,58 @@ public:
 	shared_ptr<vector<CMarketTaskPtr>> DiscardOutDatedTask(long m_lCurrentMarketTime);
 	vector<CMarketTaskPtr> GetDisplayMarketTask();
 
-	// 时间函数套层
-	void InitializeMarketTime(const CString& strLocalPosition, long OpenTime) { m_marketTime.Initialize(strLocalPosition, OpenTime); }
-	auto GetMarketTimeZone() const { return m_marketTime.GetMarketTimeZone(); }
-	void CalculateTime() { m_marketTime.CalculateTime(); }
-	CString GetStringOfMarketTime() const { return m_marketTime.GetStringOfMarketTime(); }
-	long GetMarketDate() const { return m_marketTime.GetMarketDate(); }
-	auto GetMarketDate(time_t tUTC) const { return m_marketTime.GetMarketDate(tUTC); }
-	long GetMarketTime() const { return m_marketTime.GetMarketTime(); }
-	tm GetMarketTime(time_t tUTC) const { return m_marketTime.GetMarketTime(tUTC); }
+	// 时间函数
+	void CalculateTime() noexcept; // 计算本市场的各时间
 
-	bool IsWorkingDay() const { return m_marketTime.IsWorkingDay(); }
-	auto IsWorkingDay(long date) const { return m_marketTime.IsWorkingDay(date); }
-	auto IsWorkingDay(CTime ct) const { return m_marketTime.IsWorkingDay(ct); }
+	time_t GetMarketLocalTimeOffset(CString strLocalNameOfMarket);
 
-	auto GetDayOfWeek() const { return m_marketTime.GetDayOfWeek(); }
+	tm GetMarketTime(time_t tUTC) const;
+	long GetMarketDate(time_t tUTC) const; // 得到本市场的日期
+	auto GetMarketTimeZoneOffset() const { return m_localMarketSystemInformation.offset; }
+	long GetMarketTimeZone() const noexcept { return m_lMarketTimeZone; }
+	long GetMarketTime() const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
+	long GetMarketDate() const noexcept { return m_lMarketDate; } // 得到本市场的当地日期， 格式为：yyyymmdd
+	long GetDayOfWeek() const noexcept { return m_tmMarket.tm_wday; } // days since Sunday - [0, 6]
+	long GetMonthOfYear() const noexcept { return m_tmMarket.tm_mon + 1; }
+	long GetDateOfMonth() const noexcept { return m_tmMarket.tm_mday; }
+	long GetYear() const noexcept { return m_tmMarket.tm_year + 1900; }
+	auto GetMarketTM() { return &m_tmMarket; }
 
-	auto CalculateLastTradeDate() { return m_marketTime.CalculateLastTradeDate(); }
-	auto CalculateCurrentTradeDate() { return m_marketTime.CalculateCurrentTradeDate(); }
-	auto CalculateNextTradeDate() { return m_marketTime.CalculateNextTradeDate(); }
+	bool IsWorkingDay() const noexcept;
+	static bool IsWorkingDay(CTime timeCurrent) noexcept;
+	static bool IsWorkingDay(long lDate) noexcept;
 
-	auto GetCurrentTradeDate() { return m_marketTime.GetCurrentTradeDate(); }
-	auto GetLastTradeDate() { return m_marketTime.GetLastTradeDate(); }
-	auto GetNextTradeDate() { return m_marketTime.GetNextTradeDate(); }
+	long CalculateNextTradeDate() noexcept;
+	long CalculateCurrentTradeDate() noexcept; // 计算当前交易日。周一至周五为当日，周六和周日为周五
+	long CalculateLastTradeDate() noexcept; // 计算当前交易日的上一个交易日。周二至周五为上一日，周六和周日为周四，周一为周五。
 
-	auto TransferToUTCTime(tm* tm_) const { return m_marketTime.TransferToUTCTime(tm_); }
-	auto TransferToUTCTime(long Date) const { return m_marketTime.TransferToUTCTime(Date); }
-	auto TransferToUTCTime(long date, long time) const { return m_marketTime.TransferToUTCTime(date, time); }
+	long GetLastTradeDate() noexcept { return CalculateLastTradeDate(); }// 当前交易日的前一个交易日（从昨日开市时间至本日开市时间）
+	long GetCurrentTradeDate() noexcept { return CalculateCurrentTradeDate(); }// 当前交易日（从本日九点半至次日开市时间）
+	long GetNextTradeDate() noexcept { return CalculateNextTradeDate(); }// 下一个交易日（从次日开市时间至后日开市时间）
 
-	auto GetMonthOfYear() const { return m_marketTime.GetMonthOfYear(); }
-	auto GetDateOfMonth() const { return m_marketTime.GetDateOfMonth(); }
-	auto GetYear() const { return m_marketTime.GetYear(); }
-	auto GetMarketTM() { return m_marketTime.GetMarketTM(); }
+	time_t TransferToUTCTime(tm* tmMarketTime) const; // 将市场时间结构转化为UTC时间
+	time_t TransferToUTCTime(long lMarketDate, long lMarketTime = 150000) const; // 将市场时间结构转化为UTC时间
 
-	auto GetStringOfMarketDate() const { return m_marketTime.GetStringOfMarketDate(); }
-	auto GetStringOfLocalTime() const { return m_marketTime.GetStringOfLocalTime(); }
-	auto GetStringOfLocalDateTime() const { return m_marketTime.GetStringOfLocalDateTime(); }
-	auto GetStringOfMarketDateTime() const { return m_marketTime.GetStringOfMarketDateTime(); }
+	CString GetStringOfLocalTime() const; // 得到本地时间的字符串
+	CString GetStringOfMarketTime() const; // 得到本市场时间的字符串
+	CString GetStringOfMarketDate() const;
+	CString GetStringOfMarketDateTime() const;
+	CString GetStringOfLocalDateTime() const;
 
-	long ConvertToDate(time_t tUTC) const noexcept { return m_marketTime.ConvertToDate(tUTC); }
-	long ConvertToDate(const tm* ptm) const noexcept { return m_marketTime.ConvertToDate(ptm); }
+	long ConvertToDate(time_t tUTC) const noexcept;
+	static long ConvertToDate(const tm* ptm) noexcept { return ((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday); }
+	static long ConvertToTime(const tm* ptm) noexcept { return (ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec); }
 
-	time_t ConvertBufferToTime(const CString& strFormat, const char* BufferMarketTime) { return m_marketTime.ConvertBufferToTime(strFormat, BufferMarketTime); }
-	time_t ConvertStringToTime(const CString& strFormat, const CString& strMarketTime) { return m_marketTime.ConvertStringToTime(strFormat, strMarketTime); }
+	time_t ConvertBufferToTime(CString strFormat, const char* BufferMarketTime);
+	time_t ConvertStringToTime(CString strFormat, CString strMarketTime);
+
+	void GetMarketTimeStruct(tm* tm_, time_t tUTC) const;
 
 	// 测试用
-	auto TEST_SetUTCTime(time_t tUTC) const { m_marketTime.TEST_SetUTCTime(tUTC); }
-	auto TEST_SetMarketTM(const tm& tm_) { m_marketTime.TEST_SetMarketTM(tm_); }
-	auto TEST_SetFormattedMarketDate(long date) { m_marketTime.TEST_SetFormattedMarketDate(date); }
-	auto TEST_SetFormattedMarketTime(long time) { m_marketTime.TEST_SetFormattedMarketTime(time); }
+	static void TEST_SetUTCTime(const time_t Time) noexcept { gl_tUTCTime = Time; }
+	void TEST_SetFormattedMarketTime(const long lTime) noexcept { m_lMarketTime = lTime; } // 此函数只用于测试
+	void TEST_SetMarketTM(const tm& tm_) noexcept { m_tmMarket = tm_; }
+	void TEST_SetFormattedMarketDate(const long lDate) noexcept { m_lMarketDate = lDate; }
 
 	/////
 	CString GetMarketID() const noexcept { return m_strMarketId; }
@@ -159,8 +161,24 @@ protected:
 	bool m_fSystemReady{ false }; // 市场初始态已经设置好.默认为假
 	bool m_fResettingMarket{ false }; // 市场正在重启标识，默认为假
 
-	CMarketTime m_marketTime;
+	// 系统时间区
+	const chrono::time_zone* m_tzMarket{ nullptr }; // 本市场当地时区
+	chrono::sys_info m_localMarketSystemInformation;
+	long m_lMarketTimeZone{ 0 }; // 该市场的时区与GMT之差（以秒计，正值处于东十二区（超前），负值处于西十二区（滞后））。
+	CString m_strLocalMarketTimeZone{ _T("") }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
 
+	// 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
+	//chrono::zoned_time<chrono::duration<int>, chrono::local_t> m_zonedTime; // 用于存储当前市场的时钟。
+	chrono::zoned_seconds m_zonedSeconds;
+	chrono::zoned_seconds* m_pZonedSeconds;
+	long m_lMarketDate{ 0 }; //本市场的日期
+	long m_lMarketTime{ 0 }; // 本市场的时间
+	long m_lMarketLastTradeDate{ 0 }; // 本市场的上次交易日
+	long m_lMarketCurrentTradeDate{ 0 }; // 本市场当前交易日
+	long m_lMarketNextTradeDate{ 0 }; // 本市场下一个交易日
+	tm m_tmMarket{ 0, 0, 0, 1, 0, 1970 }; // 本市场时间结构
+
+	long m_lOpenMarketTime{ 0 }; // 市场开市时间（由各具体市场实际确定）
 private:
 	bool m_fResetMarket{ true }; // 重启系统标识
 };

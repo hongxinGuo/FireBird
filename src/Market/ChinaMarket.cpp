@@ -39,8 +39,9 @@ CChinaMarket::CChinaMarket() {
 		TRACE(_T("ChinaMarket市场变量只允许存在一个实例\n"));
 	}
 	m_strMarketId = _T("中国股票市场");
-
-	InitializeMarketTime(_T("Asia/Shanghai"), 9 * 3600 + 900);// 北京标准时间位于东八区， 中国股市开市时间为九点十五分
+	m_strLocalMarketTimeZone = _T("Asia/Shanghai");
+	m_lOpenMarketTime = 9 * 3600 + 900;
+	m_lMarketTimeZone = GetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 北京标准时间位于东八区， 中国股市开市时间为九点十五分
 
 	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
 	m_fUsingTengxunRTDataReceiver = true; // 使用腾讯实时数据提取器

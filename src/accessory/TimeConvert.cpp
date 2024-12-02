@@ -29,7 +29,7 @@ time_t ConvertToTTime(const long lDate, const time_t tTimeZone, const long lTime
 	tmMarket.tm_min = lTime / 100 - (lTime / 10000) * 100;
 	tmMarket.tm_sec = lTime - (lTime / 100) * 100;
 
-	return _mkgmtime(&tmMarket) + tTimeZone;
+	return _mkgmtime(&tmMarket) - tTimeZone;
 }
 
 long ConvertToDate(const time_t tUTC, const time_t tTimeZone) noexcept {
@@ -302,7 +302,7 @@ void GetUTCTimeStruct(tm* tm_, const time_t* tUTC) { gmtime_s(tm_, tUTC); }
 
 void GetMarketTimeStruct(tm* tm_, const time_t tUTC, const time_t tTimeZone) {
 	time_t tMarket;
-	tMarket = tUTC - tTimeZone; //Note timeZoneOffset
+	tMarket = tUTC + tTimeZone;
 	gmtime_s(tm_, &tMarket);
 }
 
