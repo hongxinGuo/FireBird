@@ -442,7 +442,6 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		pWebRTData->SetTimePoint(tpTime);
 		auto tt = tpTime.time_since_epoch().count();
 		pWebRTData->SetTransactionTime(tt);
-		auto tt2 = gl_pChinaMarket->ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str()); //Note
 	} catch (json::exception& e) {// 结构不完整
 		// do nothing
 		CString strError2 = strSymbol4;
@@ -568,8 +567,6 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 			tpTime -= gl_pChinaMarket->GetMarketTimeZoneOffset();
 			auto tt = tpTime.time_since_epoch().count();
 			pWebRTData->SetTransactionTime(tt);
-			auto tt2 = gl_pChinaMarket->ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strTime.c_str());
-			ASSERT(tt == tt2);
 			pWebRTData->SetLastClose(StrToDecimal(jsonGetRawJsonToken(item, _T("yestclose")), 3));
 			pWebRTData->SetAmount(StrToDecimal(jsonGetRawJsonToken(item, _T("turnover")), 0));
 

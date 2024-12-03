@@ -39,7 +39,7 @@ namespace FireBirdTest {
 	TEST_F(CWebRTDataTest1, TestTengxunInitialize) {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CWebRTData RTData;
-		EXPECT_EQ(RTData.GetTransactionTime(), 0);
+		EXPECT_EQ(RTData.GetTimePoint().time_since_epoch().count(), 0);
 		EXPECT_STREQ(RTData.GetSymbol(), _T(""));
 		EXPECT_STREQ(RTData.GetStockName(), _T(""));
 		EXPECT_EQ(RTData.GetOpen(), 0);
@@ -61,7 +61,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWebRTDataTest1, TestTengxunRTDataActive) {
-		const time_t t = gl_tUTCTime;
+		const time_t t = GetUTCTime();
 		CWebRTData id;
 		EXPECT_FALSE(id.CheckTengxunRTDataActive());
 		tm tm_;
@@ -79,7 +79,7 @@ namespace FireBirdTest {
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
 		const time_t tt2 = gl_pChinaMarket->TransferToUTCTime(&tm_);
-		gl_pChinaMarket->TEST_SetUTCTime(tt);
+		TestSetUTCTime(tt);
 		id.SetTransactionTime(tt2);
 		EXPECT_FALSE(id.IsValidTime(14));
 		EXPECT_FALSE(id.CheckTengxunRTDataActive()) << "High,Low,Open,Volume皆为零,且无效时间";
@@ -102,7 +102,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(id.CheckTengxunRTDataActive());
 
 		// 恢复原状
-		gl_tUTCTime = t;
+		TestSetUTCTime(t);
 	}
 
 	struct TengxunRTData {
@@ -295,7 +295,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(4), 12490);
 			EXPECT_EQ(m_RTData.GetHighLimitFromTengxun(), 13160);
 			EXPECT_EQ(m_RTData.GetLowLimitFromTengxun(), 10760);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
+			EXPECT_EQ(m_RTData.GetTimePoint().time_since_epoch().count(), tTime);
 			break;
 		case 1:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
@@ -325,7 +325,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 3540);
 			EXPECT_EQ(m_RTData.GetVSell(4), 357700);
 			EXPECT_EQ(m_RTData.GetPSell(4), 3550);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
+			EXPECT_EQ(m_RTData.GetTimePoint().time_since_epoch().count(), tTime);
 			break;
 		case 2:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
@@ -362,7 +362,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetVSell(3), 202600);
 			EXPECT_EQ(m_RTData.GetPSell(3), 3540);
 			EXPECT_EQ(m_RTData.GetPSell(4), 3550);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
+			EXPECT_EQ(m_RTData.GetTimePoint().time_since_epoch().count(), tTime);
 			EXPECT_EQ(m_RTData.GetCurrentValue(), 7682000000);
 			EXPECT_EQ(m_RTData.GetTotalValue(), 7682000000);
 			EXPECT_EQ(m_RTData.GetHighLimitFromTengxun(), 3810);

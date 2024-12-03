@@ -60,10 +60,9 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestTransferMarketTime) {
 		tm tm2_;
-		time_t tt;
+		time_t tt = GetUTCTime();
 
 		gl_pWorldMarket->CalculateTime();
-		time(&tt);
 		gmtime_s(&tm2_, &tt);
 		const tm tm_ = gl_pWorldMarket->GetMarketTime(GetUTCTime());
 		if (gl_pWorldMarket->GetMarketTimeZone() == 4 * 3600) { //美东夏时制？
@@ -957,10 +956,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetTime(), 10200);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
+#ifndef _DEBUG
+		//Note 为了方便调试，测试版不再添加以下任务。发行版依然添加。
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_PROCESS_DAYLINE__);
 		EXPECT_EQ(pTask->GetTime(), 10500);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
+#endif
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_RESET__);
@@ -1001,10 +1003,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 300);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
+#ifndef _DEBUG
+		//Note 为了方便调试，测试版不再添加以下任务。发行版依然添加。
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_PROCESS_DAYLINE__);
 		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 600);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
+#endif
 
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CREATE_TASK__);

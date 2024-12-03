@@ -25,10 +25,9 @@ UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCa
 	const CTimeSpan oneDay(1, 0, 0, 0);
 
 	gl_systemMessage.PushInformationMessage(_T("开始计算股票相对强度"));
-	time_t tStart = 0, tEnd = 0;
 	vector<result<void>> vResults;
 
-	time(&tStart);
+	auto start = chrono::time_point_cast<chrono::seconds>(chrono::steady_clock::now());
 	do {
 		if (pMarket->IsWorkingDay(ctCurrent)) {
 			// 星期六和星期日无交易，略过
@@ -57,8 +56,8 @@ UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCa
 		pMarket->SetRSEndDate(pMarket->GetMarketDate());
 		pMarket->SetUpdateOptionDB(true); // 更新选项数据库
 		// 显示花费的时间
-		time(&tEnd);
-		const long tDiffer = tEnd - tStart;
+		auto end = chrono::time_point_cast<chrono::seconds>(chrono::steady_clock::now());
+		const long tDiffer = (end - start).count();
 		const long hour = tDiffer / 3600;
 		const long min = tDiffer / 60 - hour * 60;
 		const long second = tDiffer - hour * 3600 - min * 60;

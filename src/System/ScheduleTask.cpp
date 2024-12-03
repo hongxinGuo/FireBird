@@ -171,6 +171,9 @@ void TaskSchedulePer100ms() {
 	s_Processing = true;
 	auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 	try {
+		// 获取系统时间戳。
+		gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now());
+
 		ScheduleMarketTask();	// 调用主调度函数,由各市场调度函数执行具体任务
 		//todo 其他各DataSource的调度，也考虑移至此处。目前各DataSource的调度，在CVirtualMarket的ScheduleTask()中。
 	} catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。

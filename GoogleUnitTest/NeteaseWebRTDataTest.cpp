@@ -39,7 +39,7 @@ namespace FireBirdTest {
 	TEST_F(CWebRTDataTest2, TestNeteaseInitialize) {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CWebRTData RTData;
-		EXPECT_EQ(RTData.GetTransactionTime(), 0);
+		EXPECT_EQ(RTData.GetTimePoint().time_since_epoch().count(), 0);
 		EXPECT_STREQ(RTData.GetSymbol(), _T(""));
 		EXPECT_STREQ(RTData.GetStockName(), _T(""));
 		EXPECT_EQ(RTData.GetOpen(), 0);
@@ -61,7 +61,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWebRTDataTest2, TestNeteaseRTDataActive) {
-		const time_t tTemp = gl_tUTCTime;
+		const time_t tTemp = GetUTCTime();
 		CWebRTData id;
 		EXPECT_FALSE(id.CheckNeteaseRTDataActive());
 		tm tm_;
@@ -72,7 +72,7 @@ namespace FireBirdTest {
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
 		const time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
-		gl_pChinaMarket->TEST_SetUTCTime(tt);
+		TestSetUTCTime(tt);
 		id.SetTransactionTime(tt);
 		EXPECT_TRUE(id.IsValidTime(14));
 		EXPECT_FALSE(id.CheckNeteaseRTDataActive());
@@ -82,7 +82,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(id.CheckNeteaseRTDataActive());
 
 		// 恢复原状
-		gl_tUTCTime = tTemp;
+		TestSetUTCTime(tTemp);
 	}
 
 	struct NeteaseRTData {
@@ -178,7 +178,7 @@ namespace FireBirdTest {
 		tm_.tm_sec = 55;
 		tTime3 = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		tUTCTime = GetUTCTime();
-		gl_pChinaMarket->TEST_SetUTCTime(tTime);
+		TestSetUTCTime(tTime);
 
 		switch (m_iCount) {
 		case 0:
@@ -209,12 +209,12 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pRTData->GetPSell(3), 12330);
 			EXPECT_EQ(m_pRTData->GetVSell(4), 609700);
 			EXPECT_EQ(m_pRTData->GetPSell(4), 12340);
-			EXPECT_EQ(m_pRTData->GetTransactionTime(), tTime);
+			EXPECT_EQ(m_pRTData->GetTimePoint().time_since_epoch().count(), tTime);
 			break;
 		case 1:
 			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600601.SS"));
 			EXPECT_FALSE(m_pRTData->IsActive());
-			EXPECT_EQ(m_pRTData->GetTransactionTime(), tTime3);
+			EXPECT_EQ(m_pRTData->GetTimePoint().time_since_epoch().count(), tTime3);
 			++it;
 			ParseOneNeteaseRTData(it, m_pRTData);
 			EXPECT_TRUE(m_pRTData->IsActive());
@@ -244,7 +244,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pRTData->GetPSell(3), 12330);
 			EXPECT_EQ(m_pRTData->GetVSell(4), 609700);
 			EXPECT_EQ(m_pRTData->GetPSell(4), 12340);
-			EXPECT_EQ(m_pRTData->GetTransactionTime(), tTime2) << "每个数据中有两个时间，以较早的时间为准";
+			EXPECT_EQ(m_pRTData->GetTimePoint().time_since_epoch().count(), tTime2) << "每个数据中有两个时间，以较早的时间为准";
 			break;
 		case 2:
 			EXPECT_FALSE(m_pRTData->IsActive());
@@ -285,17 +285,17 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pRTData->GetPSell(3), 12330);
 			EXPECT_EQ(m_pRTData->GetVSell(4), 609700);
 			EXPECT_EQ(m_pRTData->GetPSell(4), 12340);
-			EXPECT_EQ(m_pRTData->GetTransactionTime(), tTime2) << "由于第一个数据有错误，故而没有更新时间。所以使用的是第二个数据的时间";
+			EXPECT_EQ(m_pRTData->GetTimePoint().time_since_epoch().count(), tTime2) << "由于第一个数据有错误，故而没有更新时间。所以使用的是第二个数据的时间";
 			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 			break;
 		case 4: // 只有报头
 			EXPECT_FALSE(m_pRTData->IsActive());
 			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600001.SS")); // 没有设置，仍是初始值
-			EXPECT_EQ(m_pRTData->GetTransactionTime(), tTime2) << "每个数据中有两个时间，以较早的时间为准";
+			EXPECT_EQ(m_pRTData->GetTimePoint().time_since_epoch().count(), tTime2) << "每个数据中有两个时间，以较早的时间为准";
 		default:
 			break;
 		}
 		// 恢复原态
-		gl_pChinaMarket->TEST_SetUTCTime(tUTCTime);
+		TestSetUTCTime(tUTCTime);
 	}
 }

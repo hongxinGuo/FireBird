@@ -40,6 +40,8 @@ public:
 	void SetDisplaySymbol(const CString& str) noexcept { m_strDisplaySymbol = str; }
 
 	// 基本实时数据，需要更新
+	std::chrono::sys_seconds GetTimePoint() const noexcept { return m_tpTime; }
+	virtual void SetTimePoint(const std::chrono::sys_seconds time) noexcept { m_tpTime = time; }
 	time_t GetTransactionTime() const noexcept { return m_TransactionTime; }
 	virtual void SetTransactionTime(const time_t time) noexcept { m_TransactionTime = time; }
 	long GetLastClose() const noexcept { return m_lLastClose; }
@@ -112,6 +114,7 @@ protected:
 	json m_jsonUpdateDate{ json({}) }; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
 
 	// 实时数据区
+	std::chrono::sys_seconds m_tpTime{};
 	time_t m_TransactionTime{ 0 }; // 实时数据交易时间
 	long m_lLastClose{ 0 }; // 以0.001元计的收盘价
 	long m_lOpen{ 0 }; // 以0.001元计的开盘价

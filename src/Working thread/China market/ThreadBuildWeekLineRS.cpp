@@ -22,9 +22,8 @@ UINT ThreadBuildWeekLineRS(const not_null<CChinaMarketPtr>& pMarket, long startC
 	CTime ctCurrent(year, month, day, 12, 0, 0);
 	const CTimeSpan sevenDays(7, 0, 0, 0);
 
-	time_t tStart = 0, tEnd = 0;
 	vector<result<void>> results;
-	time(&tStart);
+	auto start = chrono::time_point_cast<chrono::seconds>(chrono::steady_clock::now());
 	do {
 		// 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
 		// 每次调用时生成新的局部变量，启动工作线程后执行分离动作（detach），其资源由系统在工作线程执行完后进行回收。
@@ -51,8 +50,8 @@ UINT ThreadBuildWeekLineRS(const not_null<CChinaMarketPtr>& pMarket, long startC
 	if (!gl_systemConfiguration.IsExitingCalculatingRS()) {
 		// 如果顺利完成了计算任务
 		// 显示花费的时间
-		time(&tEnd);
-		const long tDiffer = tEnd - tStart;
+		auto end = chrono::time_point_cast<chrono::seconds>(chrono::steady_clock::now());
+		const long tDiffer = (end - start).count();
 		const long hour = tDiffer / 3600;
 		const long min = tDiffer / 60 - hour * 60;
 		const long second = tDiffer - hour * 3600 - min * 60;

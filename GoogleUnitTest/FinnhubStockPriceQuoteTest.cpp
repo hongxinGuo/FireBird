@@ -121,9 +121,9 @@ namespace FireBirdTest {
 		                         &finnhubWebData57, &finnhubWebData58, &finnhubWebData58, &finnhubWebData60));
 
 	TEST_P(ProcessFinnhubStockQuoteTest, TestParseFinnhubStockQuote0) {
-		auto tt = gl_tUTCTime;
+		auto tt = GetUTCTime();
 		if (m_lIndex == 10) {
-			gl_tUTCTime = 1615507200;
+			TestSetUTCTime(1615507200);
 		}
 		m_finnhubStockPriceQuote.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
@@ -159,7 +159,7 @@ namespace FireBirdTest {
 
 		// »Ö¸´Ô­×´
 			m_pStock->SetUpdateProfileDB(false);
-			gl_tUTCTime = tt;
+			TestSetUTCTime(tt);
 			break;
 		default:
 			break;

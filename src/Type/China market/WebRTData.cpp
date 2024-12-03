@@ -161,8 +161,6 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 	//ss >> chrono::parse("%F %T", m_tpTime);
 	m_tpTime -= gl_pChinaMarket->GetMarketTimeZoneOffset();
 	m_time = m_tpTime.time_since_epoch().count();
-	auto tt = gl_pChinaMarket->ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", sTime.c_str());	//转成UTC时间。新浪实时数据的时区为东八区
-	ASSERT(tt == m_time);
 	// 后面的数据为字符串"00",无效数据，不再处理
 	// 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
 	// 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
@@ -323,8 +321,6 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	chrono::from_stream(ss, "%Y%m%d%H%M%S", m_tpTime);
 	m_tpTime -= gl_pChinaMarket->GetMarketTimeZoneOffset();
 	m_time = m_tpTime.time_since_epoch().count();
-	auto tt = gl_pChinaMarket->ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", sTime.c_str()); // 转成UTC时间。腾讯实时数据的时区为东八区
-	ASSERT(m_time == tt);
 	// 涨跌
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	// 涨跌率

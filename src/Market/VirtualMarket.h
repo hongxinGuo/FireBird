@@ -106,7 +106,6 @@ public:
 	void GetMarketTimeStruct(tm* tm_, time_t tUTC) const;
 
 	// 测试用
-	static void TEST_SetUTCTime(const time_t Time) noexcept { gl_tUTCTime = Time; }
 	void TEST_SetFormattedMarketTime(const long lTime) noexcept { m_lMarketTime = lTime; } // 此函数只用于测试
 	void TEST_SetMarketTM(const tm& tm_) noexcept { m_tmMarket = tm_; }
 	void TEST_SetFormattedMarketDate(const long lDate) noexcept { m_lMarketDate = lDate; }

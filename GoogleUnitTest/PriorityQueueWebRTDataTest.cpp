@@ -39,6 +39,6 @@ namespace FireBirdTest {
 		gl_PriorityQueueRTData.PushData(pRTData);
 		gl_PriorityQueueRTData.PushData(pRTData2);
 		const CWebRTDataPtr pRTData3 = gl_PriorityQueueRTData.PopData();
-		EXPECT_EQ(pRTData3->GetTransactionTime(), 0) << "有优先权的队列，交易时间早的位于前列";
+		EXPECT_EQ(pRTData->GetTimePoint().time_since_epoch().count(), 0) << "有优先权的队列，交易时间早的位于前列";
 	}
 }

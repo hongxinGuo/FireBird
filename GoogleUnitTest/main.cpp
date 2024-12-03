@@ -95,7 +95,7 @@ namespace FireBirdTest {
 
 		void SetUp() override {
 			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
-			time(&gl_tUTCTime);
+			gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now());
 
 			CreateSimdjsonEmptyArray();
 

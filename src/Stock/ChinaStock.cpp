@@ -299,6 +299,7 @@ void CChinaStock::UpdateCurrentHistoryCandle(const CVirtualHistoryCandleExtendPt
 }
 
 void CChinaStock::UpdateRTData(const CWebRTDataPtr& pRTData) {
+	SetTimePoint(pRTData->GetTimePoint());
 	SetTransactionTime(pRTData->GetTransactionTime());
 	SetLastClose(pRTData->GetLastClose());
 	SetNew(pRTData->GetNew());
@@ -844,6 +845,7 @@ void CChinaStock::CalculateOneDeal(const CWebRTDataPtr& pRTData, INT64 lCurrentG
 		CalculateStrongSell();
 	}
 	ASSERT(GetTransactionTime() >= pRTData->GetTransactionTime());
+	ASSERT(GetTimePoint() >= pRTData->GetTimePoint());
 	const INT64 I = pRTData->GetVolume();
 	const INT64 j = GetOrdinaryBuyVolume() + GetOrdinarySellVolume()
 	+ GetAttackBuyVolume() + GetAttackSellVolume()

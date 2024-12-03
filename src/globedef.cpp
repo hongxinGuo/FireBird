@@ -53,8 +53,7 @@ CFinnhubInquiryType gl_FinnhubInquiryType;
 CFinnhubInaccessibleExchange gl_finnhubInaccessibleExchange; // finnhub禁止访问交易所名单（免费账户无法访问的交易所数据）。唯一实例
 CTiingoInaccessibleStock gl_tiingoInaccessibleStock;
 
-time_t gl_tUTCTime = 0; // 所有的市场使用同一个协调世界时（Coordinated Universal Time）
-chrono::system_clock::time_point gl_now; // 当前系统时钟的时间戳。Note 准备使用此时钟代替gl_tUTCTime
+std::chrono::sys_seconds gl_tpNow; // 当前系统时钟的时间戳， 所有的市场使用同一个协调世界时（Coordinated Universal Time）
 
 // 为了事先初始化，信号量必须声明为全局变量
 binary_semaphore gl_UpdateChinaMarketDB{ 1 }; // 用于更新ChinaMarket数据库。todo 由于对MySQL数据库不太了解，偶尔会出现存储问题，我估计与同步有关，故而设置互斥变量

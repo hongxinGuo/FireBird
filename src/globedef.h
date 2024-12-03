@@ -37,11 +37,8 @@ extern shared_ptr<spdlog::logger> gl_warnLogger; // 每日警告日志，用于系统调试
 extern shared_ptr<spdlog::logger> gl_dailyWebSocketLogger;
 extern shared_ptr<spdlog::logger> gl_SoftwareDevelopingLogger;
 
-extern time_t gl_tUTCTime; // 所有的市场使用同一个协调世界时（Coordinated Universal Time）
-inline time_t GetUTCTime() noexcept { return gl_tUTCTime; }
-inline void TestSetUTCTime(time_t time) noexcept { gl_tUTCTime = time; }
-
-using namespace std;
-extern chrono::system_clock::time_point gl_now;
+extern std::chrono::sys_seconds gl_tpNow; // 所有的市场使用同一个协调世界时（Coordinated Universal Time）
+inline time_t GetUTCTime() noexcept { return gl_tpNow.time_since_epoch().count(); }
+inline void TestSetUTCTime(time_t time) noexcept { gl_tpNow = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(time)); }
 
 #define _TRACE_SCHEDULE_TASK___ // 跟踪任务调度

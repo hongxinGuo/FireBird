@@ -85,7 +85,7 @@ namespace FireBirdTest {
 		gl_dataContainerChinaStock.GetStock(10)->SetUpdateDayLine(true);
 
 		EXPECT_FALSE(TengxunDayLineDataSource.IsInquiring());
-		EXPECT_TRUE(TengxunDayLineDataSource.Inquire()) << gl_tUTCTime;
+		EXPECT_TRUE(TengxunDayLineDataSource.Inquire()) << GetUTCTime();
 		EXPECT_GT(TengxunDayLineDataSource.InquiryQueueSize(), 0);
 		EXPECT_TRUE(TengxunDayLineDataSource.IsInquiring());
 		EXPECT_TRUE(TengxunDayLineDataSource.HaveInquiry());

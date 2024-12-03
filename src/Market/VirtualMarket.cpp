@@ -150,9 +150,7 @@ vector<CMarketTaskPtr> CVirtualMarket::GetDisplayMarketTask() {
 }
 
 void CVirtualMarket::CalculateTime() noexcept {
-	time(&gl_tUTCTime);
-
-	GetMarketTimeStruct(&m_tmMarket, gl_tUTCTime);
+	GetMarketTimeStruct(&m_tmMarket, GetUTCTime());
 	m_lMarketDate = ConvertToDate(&m_tmMarket);
 	m_lMarketTime = ConvertToTime(&m_tmMarket);
 }
@@ -201,17 +199,17 @@ bool CVirtualMarket::IsWorkingDay(long lDate) noexcept {
 
 long CVirtualMarket::CalculateNextTradeDate() noexcept {
 	time_t tMarket;
-	const tm tmMarketTime2 = GetMarketTime(gl_tUTCTime - m_lOpenMarketTime);
+	const tm tmMarketTime2 = GetMarketTime(GetUTCTime() - m_lOpenMarketTime);
 
 	switch (tmMarketTime2.tm_wday) {
 	case 6: // 星期六
-		tMarket = gl_tUTCTime + 2 * 24 * 3600; // 下周一
+		tMarket = GetUTCTime() + 2 * 24 * 3600; // 下周一
 		break;
 	case 5: // 周五
-		tMarket = gl_tUTCTime + 3 * 24 * 3600; // 下周一
+		tMarket = GetUTCTime() + 3 * 24 * 3600; // 下周一
 		break;
 	default: // 其他
-		tMarket = gl_tUTCTime + 24 * 3600; // 次日
+		tMarket = GetUTCTime() + 24 * 3600; // 次日
 	}
 	tMarket -= m_lOpenMarketTime; // 减去开市时间，具体值由各市场预先设定
 	const tm tmMarketTime = GetMarketTime(tMarket);
@@ -222,17 +220,17 @@ long CVirtualMarket::CalculateNextTradeDate() noexcept {
 long CVirtualMarket::CalculateCurrentTradeDate() noexcept {
 	time_t tMarket;
 
-	const tm tmMarketTime2 = GetMarketTime(gl_tUTCTime - m_lOpenMarketTime);
+	const tm tmMarketTime2 = GetMarketTime(GetUTCTime() - m_lOpenMarketTime);
 
 	switch (tmMarketTime2.tm_wday) {
 	case 0: //星期日
-		tMarket = gl_tUTCTime - 2 * 24 * 3600; // 周五
+		tMarket = GetUTCTime() - 2 * 24 * 3600; // 周五
 		break;
 	case 6: // 星期六
-		tMarket = gl_tUTCTime - 1 * 24 * 3600; // 周五
+		tMarket = GetUTCTime() - 1 * 24 * 3600; // 周五
 		break;
 	default: // 其他
-		tMarket = gl_tUTCTime; // 本日
+		tMarket = GetUTCTime(); // 本日
 	}
 	tMarket -= m_lOpenMarketTime; // 减去开市时间，具体值由各市场预先设定
 	const tm tmMarketTime = GetMarketTime(tMarket);
@@ -242,20 +240,20 @@ long CVirtualMarket::CalculateCurrentTradeDate() noexcept {
 
 long CVirtualMarket::CalculateLastTradeDate() noexcept {
 	time_t tMarket;
-	const tm tmMarketTime2 = GetMarketTime(gl_tUTCTime - m_lOpenMarketTime);
+	const tm tmMarketTime2 = GetMarketTime(GetUTCTime() - m_lOpenMarketTime);
 
 	switch (tmMarketTime2.tm_wday) {
 	case 1: // 星期一
-		tMarket = gl_tUTCTime - 3 * 24 * 3600; // 上周五
+		tMarket = GetUTCTime() - 3 * 24 * 3600; // 上周五
 		break;
 	case 0: //星期日
-		tMarket = gl_tUTCTime - 3 * 24 * 3600; // 周四
+		tMarket = GetUTCTime() - 3 * 24 * 3600; // 周四
 		break;
 	case 6: // 星期六
-		tMarket = gl_tUTCTime - 2 * 24 * 3600; // 周四
+		tMarket = GetUTCTime() - 2 * 24 * 3600; // 周四
 		break;
 	default: // 其他
-		tMarket = gl_tUTCTime - 24 * 3600; // 上一日
+		tMarket = GetUTCTime() - 24 * 3600; // 上一日
 	}
 	tMarket -= m_lOpenMarketTime; // 减去开市时间，具体值由各市场预先设定
 	const tm tmMarketTime = GetMarketTime(tMarket);
@@ -278,8 +276,8 @@ CString CVirtualMarket::GetStringOfMarketDate() const {
 CString CVirtualMarket::GetStringOfLocalTime() const {
 	char buffer[30];
 	tm tmLocal;
-
-	localtime_s(&tmLocal, &gl_tUTCTime);
+	auto tt = GetUTCTime();
+	localtime_s(&tmLocal, &tt);
 	sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 	CString str = buffer;
 	return (str);
@@ -288,8 +286,8 @@ CString CVirtualMarket::GetStringOfLocalTime() const {
 CString CVirtualMarket::GetStringOfLocalDateTime() const {
 	char buffer[100];
 	tm tmLocal;
-
-	localtime_s(&tmLocal, &gl_tUTCTime);
+	auto tt = GetUTCTime();
+	localtime_s(&tmLocal, &tt);
 	sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 	CString str = buffer;
 	return (str);

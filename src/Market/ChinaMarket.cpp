@@ -448,8 +448,10 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 	}
 	if (pRTData->IsActive()) { // 此实时数据有效？
 		IncreaseRTDataReceived();
-		if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
+		if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) { //Note 改为timePoint
+			//if (m_tpNewTransactionTime < pRTData->GetTimePoint()) {
 			m_ttNewestTransactionTime = pRTData->GetTransactionTime();
+			m_tpNewTransactionTime = pRTData->GetTimePoint();
 		}
 		const auto pStock = gl_dataContainerChinaStock.GetStock(pRTData->GetSymbol());
 		if (!pStock->IsActive()) {
@@ -457,10 +459,12 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 				pStock->UpdateStatus(pRTData);
 			}
 		}
-		if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
+		if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？Note 改为timePoint
+			//if (pRTData->GetTimePoint() > pStock->GetTimePoint()) {
 			m_lNewRTDataReceivedInCurrentMinute++;
 			pStock->PushRTData(pRTData); // 存储新的数据至数据池
 			pStock->SetTransactionTime(pRTData->GetTransactionTime()); // 设置最新接受到实时数据的时间
+			pStock->SetTimePoint(pRTData->GetTimePoint());
 		}
 	}
 	return true;

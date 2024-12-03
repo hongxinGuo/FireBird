@@ -37,7 +37,7 @@ namespace FireBirdTest {
 	TEST_F(CStockWebRTDataTest, TestInitialize) {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CWebRTData RTData;
-		EXPECT_EQ(RTData.GetTransactionTime(), 0);
+		EXPECT_EQ(RTData.GetTimePoint().time_since_epoch().count(), 0);
 		EXPECT_STREQ(RTData.GetSymbol(), _T(""));
 		EXPECT_STREQ(RTData.GetStockName(), _T(""));
 		EXPECT_EQ(RTData.GetOpen(), 0);
@@ -80,15 +80,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(rtData.IsActive());
 		rtData.SetActive(false);
 		EXPECT_FALSE(rtData.IsActive());
-	}
-
-	TEST_F(CStockWebRTDataTest, TestGetTransactionTime) {
-		CWebRTData rtData;
-		EXPECT_FALSE(rtData.GetTransactionTime());
-		rtData.SetTransactionTime(true);
-		EXPECT_TRUE(rtData.GetTransactionTime());
-		rtData.SetTransactionTime(false);
-		EXPECT_FALSE(rtData.GetTransactionTime());
 	}
 
 	TEST_F(CStockWebRTDataTest, TestGetLastClose) {
@@ -202,7 +193,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockWebRTDataTest, TestIsDataTimeAtCurrentDate) {
-		const time_t time = gl_tUTCTime;
+		const time_t time = GetUTCTime();
 		tm tm_;
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
@@ -211,7 +202,7 @@ namespace FireBirdTest {
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
 		const time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
-		gl_pChinaMarket->TEST_SetUTCTime(tt);
+		TestSetUTCTime(tt);
 		CWebRTData data;
 		data.SetTransactionTime(tt);
 		EXPECT_TRUE(data.IsValidTime(14));
@@ -224,11 +215,11 @@ namespace FireBirdTest {
 		EXPECT_FALSE(data.IsValidTime(14)) << _T("数据有问题：成交时间晚于当前时间");
 
 		// 恢复原状
-		gl_tUTCTime = time;
+		TestSetUTCTime(time);
 	}
 
 	TEST_F(CStockWebRTDataTest, TestCheckSinaRTDataMarket) {
-		const time_t tTime = gl_tUTCTime;
+		const time_t tTime = GetUTCTime();
 		tm tm_;
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
@@ -237,7 +228,7 @@ namespace FireBirdTest {
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
 		const time_t tt = gl_pChinaMarket->TransferToUTCTime(&tm_);
-		gl_pChinaMarket->TEST_SetUTCTime(tt);
+		TestSetUTCTime(tt);
 		CWebRTData data;
 		data.SetTransactionTime(tt);
 		EXPECT_TRUE(data.CheckSinaRTDataActive());
@@ -247,7 +238,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(data.CheckSinaRTDataActive());
 
 		// 恢复原状
-		gl_tUTCTime = tTime;
+		TestSetUTCTime(tTime);
 	}
 
 	struct SinaRTData {
@@ -411,7 +402,7 @@ namespace FireBirdTest {
 		tm_.tm_sec = 0;
 		tTime = gl_pChinaMarket->TransferToUTCTime(&tm_);
 		tUTCTime = GetUTCTime();
-		gl_pChinaMarket->TEST_SetUTCTime(tTime);
+		TestSetUTCTime(tTime);
 		switch (m_iCount) {
 		case 33: // 有错误，前缀出错
 		case 34: // 有错误，前缀出错
@@ -461,6 +452,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
 			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
+			EXPECT_EQ(m_RTData.GetTimePoint().time_since_epoch().count(), tTime);
 			break;
 		case 1: // 所有价格皆为零
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -495,7 +487,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 0);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 0);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime - 3 * 3600) << "交易时间不是默认的15:00:00,而是12:00:00";
+			EXPECT_EQ(m_RTData.GetTimePoint().time_since_epoch().count(), tTime - 3 * 3600) << "交易时间不是默认的15:00:00,而是12:00:00";
 			break;
 		case 2:
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -530,7 +522,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 0);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
+			EXPECT_EQ(m_RTData.GetTimePoint().time_since_epoch().count(), tTime);
 			break;
 		case 3:
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -565,7 +557,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
+			EXPECT_EQ(m_RTData.GetTimePoint().time_since_epoch().count(), tTime);
 			break;
 		case 4:
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -600,7 +592,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
+			EXPECT_EQ(m_RTData.GetTimePoint().time_since_epoch().count(), tTime);
 			break;
 		case 5:
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -635,7 +627,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPSell(3), 11580);
 			EXPECT_EQ(m_RTData.GetVSell(4), 262900);
 			EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-			EXPECT_EQ(m_RTData.GetTransactionTime(), tTime);
+			EXPECT_EQ(m_RTData.GetTimePoint().time_since_epoch().count(), tTime);
 			break;
 		case 6:
 			EXPECT_TRUE(m_RTData.IsActive());
@@ -1193,6 +1185,6 @@ namespace FireBirdTest {
 			break;
 		}
 		// 恢复原态
-		gl_pChinaMarket->TEST_SetUTCTime(tUTCTime);
+		TestSetUTCTime(tUTCTime);
 	}
 }

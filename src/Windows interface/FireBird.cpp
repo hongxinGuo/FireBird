@@ -2,12 +2,12 @@
 //
 #include"pch.h"
 
-#include "FireBird.h"  
+#include "FireBird.h"
 
 #include "MainFrm.h"
 
 #include "FireBirdDoc.h"
-#include "FireBirdView.h" 
+#include "FireBirdView.h"
 
 #include "ChildFrm.h"
 #include "InfoReport.h"
@@ -24,7 +24,6 @@
 #pragma comment(lib, "/vc/x64/MT/libssl.lib")
 #pragma comment(lib, "/R/concurrencpp.lib")
 #endif
-
 
 #ifndef _MBCS
 #error _T("本系统使用多字节字符集")
@@ -44,7 +43,7 @@ END_MESSAGE_MAP()
 // CFireBirdApp 构造
 
 CFireBirdApp::CFireBirdApp() {
-	time(&gl_tUTCTime); // 程序运行的第一步即要获取当前时间。以防止出现时间为零的故障。
+	gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now()); // 程序运行的第一步即要获取当前时间。以防止出现时间为零的故障。
 
 	m_bHiColorIcons = TRUE;
 
@@ -80,9 +79,9 @@ bool IsFireBirdAlreadyRunning(const CString& strProgramToken) {
 BOOL CFireBirdApp::InitInstance() {
 	if (IsFireBirdAlreadyRunning(_T("FireBirdStockAnalysis"))) {
 		MessageBox(nullptr,
-			"Only one instance can run!",
-			"FireBird Warning:",
-			MB_OK | MB_ICONEXCLAMATION);
+		           "Only one instance can run!",
+		           "FireBird Warning:",
+		           MB_OK | MB_ICONEXCLAMATION);
 		return false;
 	}
 
@@ -111,8 +110,7 @@ BOOL CFireBirdApp::InitInstance() {
 	CWinAppEx::InitInstance();
 
 	// Initialize OLE libraries
-	if (!AfxOleInit())
-	{
+	if (!AfxOleInit()) {
 		AfxMessageBox(IDP_OLE_INIT_FAILED);
 		return FALSE;
 	}
@@ -137,7 +135,7 @@ BOOL CFireBirdApp::InitInstance() {
 	CMFCToolTipInfo ttParams;
 	ttParams.m_bVislManagerTheme = TRUE;
 	theApp.GetTooltipManager()->SetTooltipParams(AFX_TOOLTIP_TYPE_ALL,
-		RUNTIME_CLASS(CMFCToolTipCtrl), &ttParams);
+	                                             RUNTIME_CLASS(CMFCToolTipCtrl), &ttParams);
 
 	CMultiDocTemplate* pDocTemplate = new CMultiDocTemplate(
 		IDR_FIREBIRDTYPE,
@@ -150,13 +148,11 @@ BOOL CFireBirdApp::InitInstance() {
 
 	// create main MDI Frame window
 	CMainFrame* pMainFrame = new CMainFrame;
-	if (!pMainFrame || !pMainFrame->LoadFrame(IDR_MAINFRAME))
-	{
+	if (!pMainFrame || !pMainFrame->LoadFrame(IDR_MAINFRAME)) {
 		delete pMainFrame;
 		return FALSE;
 	}
 	m_pMainWnd = pMainFrame;
-
 
 	// 分析标准 shell 命令、DDE、打开文件操作的命令行
 	CCommandLineInfo cmdInfo;
@@ -175,13 +171,13 @@ BOOL CFireBirdApp::InitInstance() {
 int CFireBirdApp::ExitInstance() {
 	if (gl_hFireBirdMutex != nullptr) ::CloseHandle(gl_hFireBirdMutex);
 
-	gl_dailyLogger->info("FireBird App exit"); 
+	gl_dailyLogger->info("FireBird App exit");
 
 	// Under VisualStudio, this must be called before main finishes to work around a known VS issue
 	spdlog::drop_all();
 
 	//无论跟踪到了什么都在退出时存储之。
-	gl_traceLogger->dump_backtrace(); 
+	gl_traceLogger->dump_backtrace();
 
 	AfxOleTerm(FALSE);
 
@@ -191,8 +187,7 @@ int CFireBirdApp::ExitInstance() {
 // CFireBirdApp 消息处理程序
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
-class CAboutDlg : public CDialogEx
-{
+class CAboutDlg : public CDialogEx {
 public:
 	CAboutDlg();
 

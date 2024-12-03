@@ -3,8 +3,7 @@
 #include "TimeConvert.h"
 
 long GetDayOfWeek() {
-	time_t tUTC = 0;
-	time(&tUTC);
+	time_t tUTC = GetUTCTime();
 	tm tm_;
 	GetMarketTimeStruct(&tm_, tUTC, 0);
 	return tm_.tm_wday;
