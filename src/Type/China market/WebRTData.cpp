@@ -10,7 +10,7 @@
 
 void CWebRTData::Reset() {
 	m_lDataSource = INVALID_RT_WEB_DATA_;
-	m_time = 0;
+	m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(0));
 	m_strSymbol = _T("");
 	m_strStockName = _T("");
 	m_lLastClose = 0;
@@ -158,9 +158,8 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 	}
 	std::stringstream ss(sTime);
 	chrono::from_stream(ss, "%F %T", m_tpTime); // 
-	//ss >> chrono::parse("%F %T", m_tpTime);
+	//ss >> chrono::parse("%F %T", m_tpTime); // Note 另一种解析方式
 	m_tpTime -= gl_pChinaMarket->GetMarketTimeZoneOffset();
-	m_time = m_tpTime.time_since_epoch().count();
 	// 后面的数据为字符串"00",无效数据，不再处理
 	// 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
 	// 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
@@ -320,7 +319,6 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	std::stringstream ss(sTime);
 	chrono::from_stream(ss, "%Y%m%d%H%M%S", m_tpTime);
 	m_tpTime -= gl_pChinaMarket->GetMarketTimeZoneOffset();
-	m_time = m_tpTime.time_since_epoch().count();
 	// 涨跌
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	// 涨跌率
@@ -408,10 +406,10 @@ bool CWebRTData::CheckNeteaseRTDataActive() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CWebRTData::IsValidTime(long lDays) const {
-	if (m_time < (GetUTCTime() - lDays * 24 * 3600)) {// 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
+	if (GetTransactionTime() < (GetUTCTime() - lDays * 24 * 3600)) {// 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
 		return false;
 	}
-	if (m_time > GetUTCTime()) {
+	if (m_tpTime > gl_tpNow) {
 		return false;
 	}
 	return true;

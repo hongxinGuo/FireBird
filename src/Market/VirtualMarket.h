@@ -61,11 +61,11 @@ public:
 	// 时间函数
 	void CalculateTime() noexcept; // 计算本市场的各时间
 
-	time_t GetMarketLocalTimeOffset(CString strLocalNameOfMarket);
+	void GetMarketLocalTimeOffset(CString strLocalNameOfMarket);
 
 	tm GetMarketTime(time_t tUTC) const;
 	long GetMarketDate(time_t tUTC) const; // 得到本市场的日期
-	auto GetMarketTimeZoneOffset() const { return m_localMarketSystemInformation.offset; }
+	auto GetMarketTimeZoneOffset() const { return m_timeZoneOffset; }
 	long GetMarketTimeZone() const noexcept { return m_lMarketTimeZone; }
 	long GetMarketTime() const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
 	long GetMarketDate() const noexcept { return m_lMarketDate; } // 得到本市场的当地日期， 格式为：yyyymmdd
@@ -99,9 +99,6 @@ public:
 	long ConvertToDate(time_t tUTC) const noexcept;
 	static long ConvertToDate(const tm* ptm) noexcept { return ((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday); }
 	static long ConvertToTime(const tm* ptm) noexcept { return (ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec); }
-
-	time_t ConvertBufferToTime(CString strFormat, const char* BufferMarketTime);
-	time_t ConvertStringToTime(CString strFormat, CString strMarketTime);
 
 	void GetMarketTimeStruct(tm* tm_, time_t tUTC) const;
 
@@ -163,6 +160,7 @@ protected:
 	// 系统时间区
 	const chrono::time_zone* m_tzMarket{ nullptr }; // 本市场当地时区
 	chrono::sys_info m_localMarketSystemInformation;
+	chrono::seconds m_timeZoneOffset{ 0 };
 	long m_lMarketTimeZone{ 0 }; // 该市场的时区与GMT之差（以秒计，正值处于东十二区（超前），负值处于西十二区（滞后））。
 	CString m_strLocalMarketTimeZone{ _T("") }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
 

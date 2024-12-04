@@ -99,7 +99,7 @@ void CTiingoStock::Update(CSetTiingoStock& setTiingoStock) {
 }
 
 void CTiingoStock::UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook) {
-	m_TransactionTime = pIEXTopOfBook->m_llTimestamp;
+	m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(pIEXTopOfBook->m_llTimestamp));
 	m_lOpen = pIEXTopOfBook->m_lOpen;
 	m_lHigh = pIEXTopOfBook->m_lHigh;
 	m_lLow = pIEXTopOfBook->m_lLow;

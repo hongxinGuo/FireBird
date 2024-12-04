@@ -17,7 +17,6 @@ class CTiingoForexSocket {
 public:
 	CTiingoForexSocket() {
 		m_sDateTime = _T("");
-		m_tTime = 0;
 		m_chMessageType = 'Q';
 		m_sSymbol = _T("");
 		m_dBidSize = m_dBidPrice = m_dMidPrice = m_dAskPrice = m_dAskSize = 0;
@@ -26,7 +25,7 @@ public:
 public:
 	char m_chMessageType; // ±ÿ–Î «'Q'
 	string m_sDateTime; // json ISO format
-	time_t m_tTime;
+	std::chrono::sys_seconds m_tpTime;
 	string m_sSymbol;
 	double m_dBidSize;
 	double m_dBidPrice;

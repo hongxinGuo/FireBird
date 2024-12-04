@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include"TimeConvert.h"
 #include"jsonParse.h"
 #include"JsonGetValue.h"
 
@@ -31,7 +30,7 @@ void CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		for (const auto& pDayLine : *pvDayLine) {
 			pDayLine->SetExchange(pCryptoSymbol->GetExchangeCode());
 			pDayLine->SetStockSymbol(pCryptoSymbol->GetSymbol());
-			const long lTemp = GetMarket()->ConvertToDate(pDayLine->m_time);
+			const long lTemp = GetMarket()->ConvertToDate(pDayLine->GetMarketTime());
 			pDayLine->SetDate(lTemp);
 		}
 		pCryptoSymbol->UpdateDayLine(*pvDayLine);
@@ -135,6 +134,10 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 	}
 	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate);
 	// 清除掉交易日期为零的无效数据
-	for (auto& pDayLine2 : *pvDayLine) { if (pDayLine2->m_time > 0) { pvDayLineReturn->push_back(pDayLine2); } }
+	for (auto& pDayLine2 : *pvDayLine) {
+		if (pDayLine2->GetMarketTime() > 0) {
+			pvDayLineReturn->push_back(pDayLine2);
+		}
+	}
 	return pvDayLineReturn;
 }

@@ -32,7 +32,7 @@ namespace FireBirdTest {
 
 	TEST_F(COneDealTest, TestInitialize) {
 		const COneDeal oneDeal;
-		EXPECT_EQ(oneDeal.GetMarketTime(), 0);
+		EXPECT_EQ(oneDeal.GetMarketTime().time_since_epoch().count(), 0);
 		EXPECT_EQ(oneDeal.GetType(), 0);
 		EXPECT_EQ(oneDeal.GetPrice(), 0);
 		EXPECT_EQ(oneDeal.GetVolume(), 0);
@@ -41,7 +41,7 @@ namespace FireBirdTest {
 	TEST_F(COneDealTest, TestGetTime) {
 		COneDeal oneDeal;
 		oneDeal.SetTime(20202020);
-		EXPECT_EQ(oneDeal.GetMarketTime(), 20202020);
+		EXPECT_EQ(oneDeal.GetMarketTime().time_since_epoch().count(), 20202020);
 	}
 
 	TEST_F(COneDealTest, TestGetType) {

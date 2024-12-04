@@ -10,22 +10,17 @@ enum {
 
 class COneGuadan {
 public:
-	COneGuadan() noexcept {
-		m_time = 0;
-		m_lVolume = 0;
-		m_lStatus = 0;
-	}
-
-	void SetTime(time_t t) noexcept { m_time = t; }
-	time_t GetMarketTime() const noexcept { return m_time; }
+	void SetTime(chrono::sys_seconds time) noexcept { m_tpTime = time; }
+	void SetTime(time_t t) noexcept { m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(t)); }
+	chrono::sys_seconds GetMarketTime() const noexcept { return m_tpTime; }
 	void SetVolume(const long lVolume) noexcept { m_lVolume = lVolume; }
 	long GetVolume() const noexcept { return m_lVolume; }
 	void SetStatus(const long lStatus) noexcept { m_lStatus = lStatus; }
 	long GetStatus() const noexcept { return m_lStatus; }
 
-	time_t m_time;
-	long m_lVolume;
-	long m_lStatus;
+	chrono::sys_seconds m_tpTime{ chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(0)) };
+	long m_lVolume{ 0 };
+	long m_lStatus{ 0 };
 };
 
 class CGuadan {

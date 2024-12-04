@@ -1213,8 +1213,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestGetNewestTransactionTime) {
-		gl_pChinaMarket->SetNewestTransactionTime(10101010);
-		EXPECT_EQ(gl_pChinaMarket->GetNewestTransactionTime(), 10101010);
+		gl_pChinaMarket->SetTransactionTime(10101010);
+		EXPECT_EQ(gl_pChinaMarket->GetTransactionTime(), 10101010);
 	}
 
 	TEST_F(CChinaMarketTest, TesstIsTodayTempRTDataLoaded) {

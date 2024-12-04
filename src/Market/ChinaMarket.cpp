@@ -41,7 +41,7 @@ CChinaMarket::CChinaMarket() {
 	m_strMarketId = _T("中国股票市场");
 	m_strLocalMarketTimeZone = _T("Asia/Shanghai");
 	m_lOpenMarketTime = 9 * 3600 + 900;
-	m_lMarketTimeZone = GetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 北京标准时间位于东八区， 中国股市开市时间为九点十五分
+	GetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 北京标准时间位于东八区， 中国股市开市时间为九点十五分
 
 	m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
 	m_fUsingTengxunRTDataReceiver = true; // 使用腾讯实时数据提取器
@@ -135,7 +135,7 @@ void CChinaMarket::Reset() {
 	m_fUpdateTempDataDB = true;
 	m_pCurrentStock = nullptr;
 
-	m_ttNewestTransactionTime = 0;
+	m_tpNewTransactionTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(0));
 
 	m_iCountDownTengxunNumber = 10;
 
@@ -448,9 +448,7 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 	}
 	if (pRTData->IsActive()) { // 此实时数据有效？
 		IncreaseRTDataReceived();
-		if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) { //Note 改为timePoint
-			//if (m_tpNewTransactionTime < pRTData->GetTimePoint()) {
-			m_ttNewestTransactionTime = pRTData->GetTransactionTime();
+		if (m_tpNewTransactionTime < pRTData->GetTimePoint()) {
 			m_tpNewTransactionTime = pRTData->GetTimePoint();
 		}
 		const auto pStock = gl_dataContainerChinaStock.GetStock(pRTData->GetSymbol());
@@ -459,12 +457,11 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 				pStock->UpdateStatus(pRTData);
 			}
 		}
-		if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？Note 改为timePoint
-			//if (pRTData->GetTimePoint() > pStock->GetTimePoint()) {
+		if (pRTData->GetTimePoint() > pStock->GetTimePoint()) {// 新的数据？
 			m_lNewRTDataReceivedInCurrentMinute++;
 			pStock->PushRTData(pRTData); // 存储新的数据至数据池
-			pStock->SetTransactionTime(pRTData->GetTransactionTime()); // 设置最新接受到实时数据的时间
-			pStock->SetTimePoint(pRTData->GetTimePoint());
+			pStock->SetTransactionTime(pRTData->GetTransactionTime());
+			pStock->SetTimePoint(pRTData->GetTimePoint()); // 设置最新接受到实时数据的时间
 		}
 	}
 	return true;
@@ -823,7 +820,7 @@ bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
 void CChinaMarket::ProcessTodayStock() {
 	ASSERT(IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
-	const long lDate = GetMarketDate(GetNewestTransactionTime());
+	const long lDate = GetMarketDate(GetTransactionTime());
 	if (lDate == GetMarketDate()) {
 		gl_dataContainerChinaStock.BuildDayLine(lDate);
 		// 计算本日日线相对强度

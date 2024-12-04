@@ -161,8 +161,8 @@ public:
 	long GetDataSource() const noexcept { return m_lDataSource; }
 	auto GetTimePoint() const noexcept { return m_tpTime; }
 	void SetTimePoint(std::chrono::sys_seconds time) noexcept { m_tpTime = time; }
-	time_t GetTransactionTime() const noexcept { return m_time; }
-	void SetTransactionTime(const time_t time) noexcept { m_time = time; }
+	time_t GetTransactionTime() const noexcept { return m_tpTime.time_since_epoch().count(); }
+	void SetTransactionTime(const time_t time) noexcept { m_tpTime = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(time)); }
 	CString GetSymbol() { return m_strSymbol; }
 	void SetSymbol(const CString& str) { m_strSymbol = str; }
 	CString GetStockName() const { return m_strStockName; }
@@ -216,8 +216,7 @@ public:
 protected:
 	long m_lDataSource; // 实时数据来源标识。0：非法数据；1：新浪网站；2：腾讯网站；3：网易网站；。。。
 	// Serialized data
-	std::chrono::sys_seconds m_tpTime;
-	time_t m_time; // 交易发生时的UTC时间
+	std::chrono::sys_seconds m_tpTime; // 交易发生时的system_clock时间
 	CString m_strSymbol; // 证券代码, 600001.SS，002389.SZ，
 	CString m_strStockName; // 证券名称
 	long m_lOpen; // 今日开盘。单位：0.001元

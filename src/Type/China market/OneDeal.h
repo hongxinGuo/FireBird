@@ -31,8 +31,9 @@ public:
 	COneDeal();
 	~COneDeal();
 
-	time_t GetMarketTime() const noexcept { return m_time; }
-	void SetTime(time_t time) noexcept { m_time = time; }
+	auto GetMarketTime() const noexcept { return m_tpTime; }
+	void SetTime(std::chrono::sys_seconds time) noexcept { m_tpTime = time; }
+	void SetTime(time_t time) noexcept { m_tpTime = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(time)); }
 	long GetType() const noexcept { return m_lType; }
 	void SetType(long lType) noexcept { m_lType = lType; }
 	long GetPrice() const noexcept { return m_lPrice; }
@@ -41,10 +42,10 @@ public:
 	void SetVolume(long lVolume) noexcept { m_lVolume = lVolume; }
 
 protected:
-	time_t m_time;       // 交易时间
-	long m_lType;      // 交易类型
-	long m_lPrice;     // 成交价格。单位：0.001元。
-	long m_lVolume;    // 交易数量。单位：股。
+	std::chrono::sys_seconds m_tpTime{ std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(0)) };      // 交易时间
+	long m_lType{ 0 };      // 交易类型
+	long m_lPrice{ 0 };     // 成交价格。单位：0.001元。
+	long m_lVolume{ 0 };    // 交易数量。单位：股。
 };
 
 using COneDealPtr = shared_ptr<COneDeal>;

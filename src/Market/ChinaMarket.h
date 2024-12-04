@@ -203,8 +203,10 @@ public:
 	int GetCountDownTengxunNumber() const noexcept { return m_iCountDownTengxunNumber; }
 	void SetCountDownTengxunNumber(const int iValue) noexcept { m_iCountDownTengxunNumber = iValue; }
 
-	void SetNewestTransactionTime(const time_t tt) noexcept { m_ttNewestTransactionTime = tt; }
-	time_t GetNewestTransactionTime() const noexcept { return m_ttNewestTransactionTime; }
+	void SetTransactionTime(chrono::sys_seconds time) noexcept { m_tpNewTransactionTime = time; }
+	void SetTransactionTime(const time_t tt) noexcept { m_tpNewTransactionTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(tt)); }
+	auto GetTransactionTimePoint() const noexcept { return m_tpNewTransactionTime; }
+	time_t GetTransactionTime() const noexcept { return m_tpNewTransactionTime.time_since_epoch().count(); }
 	bool IsMarketOpened() const noexcept { return m_fMarketOpened; }
 	void SetMarketOpened(const bool fFlag) noexcept { m_fMarketOpened = fFlag; }
 	bool IsFastReceivingRTData() const noexcept { return m_fFastReceivingRTData; }
@@ -292,7 +294,6 @@ protected:
 	bool m_fUpdateTempDataDB; // 存储临时实时数据标识
 	CChinaStockPtr m_pCurrentStock; // 当前显示的股票
 
-	time_t m_ttNewestTransactionTime;
 	chrono::sys_seconds m_tpNewTransactionTime;
 
 	bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取器

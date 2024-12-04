@@ -72,7 +72,7 @@ namespace FireBirdTest {
 				pStock->ClearRTDataDeque();
 				pStock->SetTransactionTime(s_tCurrentMarketTime - 10);
 			}
-			gl_pChinaMarket->SetNewestTransactionTime(s_tCurrentMarketTime - 10);
+			gl_pChinaMarket->SetTransactionTime(s_tCurrentMarketTime - 10);
 			pRTData = make_shared<CWebRTData>();
 			pRTData->SetDataSource(pData->m_iSourceType);
 			pRTData->SetSymbol(pData->m_strSymbol);
@@ -115,25 +115,25 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1) << _T("无效实时数据，报错后直接返回");
 			break;
 		case 2:
-			EXPECT_EQ(gl_pChinaMarket->GetNewestTransactionTime(), s_tCurrentMarketTime - 10);
+			EXPECT_EQ(gl_pChinaMarket->GetTransactionTime(), s_tCurrentMarketTime - 10);
 			EXPECT_TRUE(pStock->IsActive());
 			EXPECT_EQ(pStock->GetTransactionTime(), s_tCurrentMarketTime - 10);
 			EXPECT_EQ(pStock->GetRTDataQueueSize(), 0);
 			break;
 		case 3:
-			EXPECT_EQ(gl_pChinaMarket->GetNewestTransactionTime(), s_tCurrentMarketTime);
+			EXPECT_EQ(gl_pChinaMarket->GetTransactionTime(), s_tCurrentMarketTime);
 			EXPECT_TRUE(pStock->IsActive());
 			EXPECT_EQ(pStock->GetTransactionTime() - s_tCurrentMarketTime, 0);
 			EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
 			break;
 		case 4:
-			EXPECT_EQ(gl_pChinaMarket->GetNewestTransactionTime() - s_tCurrentMarketTime, 0);
+			EXPECT_EQ(gl_pChinaMarket->GetTransactionTime() - s_tCurrentMarketTime, 0);
 		//EXPECT_FALSE(pStock->IsActive());
 			EXPECT_EQ(pStock->GetTransactionTime() - s_tCurrentMarketTime, 0);
 			EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
 			break;
 		case 5:
-			EXPECT_EQ(gl_pChinaMarket->GetNewestTransactionTime() - s_tCurrentMarketTime, -5);
+			EXPECT_EQ(gl_pChinaMarket->GetTransactionTime() - s_tCurrentMarketTime, -5);
 			EXPECT_EQ(pStock->GetTransactionTime() - s_tCurrentMarketTime, -5);
 			EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
 			EXPECT_TRUE(pStock->IsActive());

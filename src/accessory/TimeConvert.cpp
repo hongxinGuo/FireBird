@@ -324,16 +324,6 @@ CString ConvertDateToChineseTimeStampString(const long lDate) {
 	return ConvertDateToString(lDate, _T("%4dƒÍ%2d‘¬%2d»’"));
 }
 
-time_t XferToTTime(CString strTime, const CString& strFormat) {
-	tm t1{};
-	int hourOffset, minuteOffset;
-	int noUse;
-	sscanf_s(strTime.GetBuffer(), strFormat, &t1.tm_year, &t1.tm_mon, &t1.tm_mday, &t1.tm_hour, &t1.tm_min, &t1.tm_sec, &noUse, &hourOffset, &minuteOffset);
-	time_t tt = _mktime64(&t1);
-	tt += hourOffset * 3600 + minuteOffset * 60;
-	return tt;
-}
-
 int XferChinaMarketTimeToIndex(long lTime) {
 	const long hhmm = lTime / 100;
 	const long hh = lTime / 10000;

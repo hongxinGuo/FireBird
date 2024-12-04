@@ -31,7 +31,7 @@ void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		for (const auto& pDayLine : *pvDayLine) {
 			pDayLine->SetExchange(pForexSymbol->GetExchangeCode());
 			pDayLine->SetStockSymbol(pForexSymbol->GetSymbol());
-			const long lTemp = GetMarket()->ConvertToDate(pDayLine->m_time);
+			const long lTemp = GetMarket()->ConvertToDate(pDayLine->GetMarketTime());
 			pDayLine->SetDate(lTemp);
 		}
 		pForexSymbol->SetIPOStatus(_STOCK_IPOED_);

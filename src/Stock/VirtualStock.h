@@ -42,8 +42,8 @@ public:
 	// 基本实时数据，需要更新
 	std::chrono::sys_seconds GetTimePoint() const noexcept { return m_tpTime; }
 	virtual void SetTimePoint(const std::chrono::sys_seconds time) noexcept { m_tpTime = time; }
-	time_t GetTransactionTime() const noexcept { return m_TransactionTime; }
-	virtual void SetTransactionTime(const time_t time) noexcept { m_TransactionTime = time; }
+	time_t GetTransactionTime() const noexcept { return m_tpTime.time_since_epoch().count(); }
+	virtual void SetTransactionTime(const time_t time) noexcept { m_tpTime = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(time)); }
 	long GetLastClose() const noexcept { return m_lLastClose; }
 	virtual void SetLastClose(const long lValue) noexcept { m_lLastClose = lValue; }
 	long GetOpen() const noexcept { return m_lOpen; }
@@ -114,8 +114,7 @@ protected:
 	json m_jsonUpdateDate{ json({}) }; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
 
 	// 实时数据区
-	std::chrono::sys_seconds m_tpTime{};
-	time_t m_TransactionTime{ 0 }; // 实时数据交易时间
+	std::chrono::sys_seconds m_tpTime{};// 实时数据交易时间
 	long m_lLastClose{ 0 }; // 以0.001元计的收盘价
 	long m_lOpen{ 0 }; // 以0.001元计的开盘价
 	long m_lHigh{ 0 }; // 以0.001元计的最高价

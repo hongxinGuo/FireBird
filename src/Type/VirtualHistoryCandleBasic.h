@@ -41,8 +41,10 @@ public:
 
 	long GetMarketDate() const noexcept { return m_lDate; }
 	void SetDate(const long lDate) noexcept { m_lDate = lDate; }
-	time_t GetMarketTime() const noexcept { return m_time; }
-	void SetTime(const time_t t) noexcept { m_time = t; }
+	auto GetMarketTimePoint() const noexcept { return m_tpTime; }
+	time_t GetMarketTime() const noexcept { return m_tpTime.time_since_epoch().count(); }
+	void SetTime(std::chrono::sys_seconds time) noexcept { m_tpTime = time; }
+	void SetTime(const time_t t) noexcept { m_tpTime = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(t)); }
 	CString GetExchange() const { return m_strExchange; }
 	void SetExchange(const CString& strExchange) { m_strExchange = strExchange; }
 	CString GetStockSymbol() const { return m_strStockSymbol; }
@@ -106,7 +108,7 @@ public:
 public:
 	// need to save
 	long m_lDate{ 0 }; // ¿‡–Õ(YYYYMMDD)
-	time_t m_time{ 0 };
+	std::chrono::sys_seconds m_tpTime{ std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(0)) };
 	CString m_strExchange{ _T("") };
 	CString m_strStockSymbol{ _T("") };
 	CString m_strDisplaySymbol{ _T("") };

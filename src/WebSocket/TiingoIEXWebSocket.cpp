@@ -120,7 +120,14 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 	string strSymbol;
 	string sTicker, sExchange, sValue;
 	CTiingoIEXSocketPtr pIEXData = nullptr;
-
+	chrono::time_point<chrono::system_clock, chrono::nanoseconds> tpTime;
+	chrono::sys_seconds tpTime1;
+	stringstream ss;
+	chrono::sys_seconds tpTime2;
+	chrono::minutes Minutes;
+	string sString;
+	tm tm_;
+	time_t tt;
 	try {
 		if (json js; CreateJsonWithNlohmann(js, *pData)) {
 			int i = 0;
@@ -145,6 +152,9 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 				switch (chType) {
 				case 'Q': // top-of-book update message
 					pIEXData->m_sDateTime = jsonGetString(++it);
+					ss.str(pIEXData->m_sDateTime);
+					chrono::from_stream(ss, "%FT%H:%M:%12S%Ez", tpTime, &sString, &Minutes);
+					pIEXData->m_tpTime = chrono::time_point_cast<chrono::seconds>(tpTime);
 					pIEXData->m_iNanoseconds = jsonGetLongLong(++it);
 					pIEXData->m_sSymbol = jsonGetString(++it);
 					pIEXData->m_dBidSize = jsonGetDouble(++it);

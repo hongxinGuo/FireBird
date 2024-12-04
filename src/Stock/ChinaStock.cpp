@@ -209,7 +209,7 @@ void CChinaStock::SaveTempInfo(CSetDayLineTodaySaved* pSetDayLineTemp) const {
 }
 
 void CChinaStock::UpdateCurrentHistoryCandle(const CVirtualHistoryCandleExtendPtr& pBeUpdated) const {
-	pBeUpdated->SetDate(gl_pChinaMarket->ConvertToDate(m_TransactionTime));
+	pBeUpdated->SetDate(gl_pChinaMarket->ConvertToDate(GetTransactionTime()));
 	pBeUpdated->SetExchange(m_strExchangeCode);
 	pBeUpdated->SetStockSymbol(m_strSymbol);
 	pBeUpdated->SetDisplaySymbol(m_strDisplaySymbol);
@@ -1262,7 +1262,7 @@ bool CChinaStock::IsVolumeConsistence() noexcept {
 	}
 	if (GetVolume() != GetOrdinaryBuyVolume() + GetOrdinarySellVolume() + GetAttackBuyVolume()
 		+ GetAttackSellVolume() + GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume()) {
-		TRACE(_T("%14Id %s股数%d\n"), ConvertToDateTime(m_TransactionTime, gl_pChinaMarket->GetMarketTimeZone()), GetSymbol().GetBuffer(), GetVolume());
+		TRACE(_T("%14Id %s股数%d\n"), ConvertToDateTime(GetTransactionTime(), gl_pChinaMarket->GetMarketTimeZone()), GetSymbol().GetBuffer(), GetVolume());
 		TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
 		      GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
 		return false;

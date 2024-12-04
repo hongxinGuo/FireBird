@@ -34,7 +34,5 @@ CString ConvertDateToString(long lDate, const CString& strFormat);
 CString ConvertDateToTimeStamp(long lDate);
 CString ConvertDateToChineseTimeStampString(long lDate);
 
-time_t XferToTTime(CString strTime, const CString& strFormat);
-
 int XferChinaMarketTimeToIndex(long lTime); // lTime为HHMMSS制式
 int XferChinaMarketTimeToIndex(const tm* ptm); // lTime为HHMMSS制式

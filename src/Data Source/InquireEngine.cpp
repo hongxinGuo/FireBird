@@ -157,7 +157,7 @@ bool CInquireEngine::IncreaseBufferSizeIfNeeded(long lIncreaseSize) {
 
 CWebDataPtr CInquireEngine::CreateWebData() {
 	const auto pWebData = make_shared<CWebData>();
-	pWebData->SetTime(GetUTCTime());
+	pWebData->SetTime(gl_tpNow);
 	TransferDataToWebData(pWebData); // 将接收到的数据转移至pWebData中。由于使用std::move来加快速度，源数据不能再被使用。
 
 	return pWebData;

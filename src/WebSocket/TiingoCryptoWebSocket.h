@@ -25,6 +25,7 @@ public:
 public:
 	char m_chMessageType; // "Q" or "T"
 	string m_sDateTime; // json ISO format
+	std::chrono::sys_seconds m_tpTime;
 	string m_sSymbol;
 	string m_strExchange;
 	double m_dBidSize;

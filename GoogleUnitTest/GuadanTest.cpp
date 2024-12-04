@@ -8,28 +8,32 @@ namespace FireBirdTest {
 	class COneGuadanTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
 	TEST_F(COneGuadanTest, TestSetTime) {
 		COneGuadan OneGuadan;
-		EXPECT_EQ(OneGuadan.GetMarketTime(), 0);
+		EXPECT_EQ(OneGuadan.GetMarketTime().time_since_epoch().count(), 0);
 		OneGuadan.SetTime(10101010);
-		EXPECT_EQ(OneGuadan.GetMarketTime(), 10101010);
+		EXPECT_EQ(OneGuadan.GetMarketTime().time_since_epoch().count(), 10101010);
 	}
 
 	TEST_F(COneGuadanTest, TestSetVolume) {
@@ -54,7 +58,7 @@ namespace FireBirdTest {
 			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		}
 
-		static void TearDownTestSuite() { }
+		static void TearDownTestSuite() {}
 
 		void SetUp() override {
 			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
@@ -128,9 +132,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(Guadan.GetCurrentPos(), 1);
 		Guadan.AddGuadan(OneGuadan2);
 		EXPECT_EQ(Guadan.GetCurrentPos(), 2);
-		EXPECT_EQ(Guadan.GetGuadan().GetMarketTime(), 20202020);
-		EXPECT_EQ(Guadan.GetGuadan(0).GetMarketTime(), 10101010);
-		EXPECT_EQ(Guadan.GetGuadan(1).GetMarketTime(), 20202020);
+		EXPECT_EQ(Guadan.GetGuadan().GetMarketTime().time_since_epoch().count(), 20202020);
+		EXPECT_EQ(Guadan.GetGuadan(0).GetMarketTime().time_since_epoch().count(), 10101010);
+		EXPECT_EQ(Guadan.GetGuadan(1).GetMarketTime().time_since_epoch().count(), 20202020);
 	}
 
 	TEST_F(CGuadanTest, TestSetStatus) {

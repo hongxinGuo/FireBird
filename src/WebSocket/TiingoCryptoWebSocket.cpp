@@ -137,6 +137,10 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			string sMessageType;
 			char chType;
 			string sType;
+			stringstream ss;
+			chrono::time_point<chrono::system_clock, chrono::microseconds> tpTime;
+			chrono::minutes Minutes;
+			string sString;
 			json js2, js3, js4;
 			json::iterator it;
 			sType = jsonGetString(js, _T("messageType"));
@@ -171,6 +175,9 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					pCryptoData->m_chMessageType = 'T';
 					pCryptoData->m_sSymbol = jsonGetString(++it); // 证券名称
 					pCryptoData->m_sDateTime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
+					ss.str(pCryptoData->m_sDateTime);
+					chrono::from_stream(ss, "%FT%H:%M:%9S%Ez", tpTime, &sString, &Minutes);
+					pCryptoData->m_tpTime = chrono::time_point_cast<chrono::seconds>(tpTime);
 					pCryptoData->m_strExchange = jsonGetString(++it); // 交易所
 					pCryptoData->m_dLastSize = jsonGetDouble(++it); // 最新数量
 					pCryptoData->m_dLastPrice = jsonGetDouble(++it); // 最新价格
@@ -179,6 +186,9 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					pCryptoData->m_chMessageType = 'Q';
 					pCryptoData->m_sSymbol = jsonGetString(++it); // 证券名称
 					pCryptoData->m_sDateTime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
+					ss.str(pCryptoData->m_sDateTime);
+					chrono::from_stream(ss, "%FT%H:%M:%9S%Ez", tpTime, &sString, &Minutes);
+					pCryptoData->m_tpTime = chrono::time_point_cast<chrono::seconds>(tpTime);
 					pCryptoData->m_strExchange = jsonGetString(++it);// 交易所
 					pCryptoData->m_dBidSize = jsonGetDouble(++it); // 买价数量
 					pCryptoData->m_dBidPrice = jsonGetDouble(++it); // 买价

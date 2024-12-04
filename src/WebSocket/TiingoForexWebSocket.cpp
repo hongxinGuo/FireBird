@@ -136,6 +136,10 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 			char chType;
 			string sService;
 			string sType;
+			stringstream ss;
+			chrono::time_point<chrono::system_clock, chrono::microseconds> tpTime;
+			chrono::minutes Minutes;
+			string sString;
 			json::iterator it;
 			json js2, js3, js4;
 			sType = jsonGetString(js, _T("messageType"));
@@ -174,7 +178,9 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				pForexData->m_chMessageType = sMessageType.at(0);
 				pForexData->m_sSymbol = jsonGetString(++it); // 证券名称
 				sDatetime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
-				pForexData->m_tTime = XferToTTime(sDatetime.c_str(), _T("%4d-%02d-%02dT%02d:%02d:%02d.%06d+%02d:%02d"));
+				ss.str(pForexData->m_sDateTime);
+				chrono::from_stream(ss, "%FT%H:%M:%9S%Ez", tpTime, &sString, &Minutes);
+				pForexData->m_tpTime = chrono::time_point_cast<chrono::seconds>(tpTime);
 				pForexData->m_dBidSize = jsonGetDouble(++it); // 买价数量
 				pForexData->m_dBidPrice = jsonGetDouble(++it); // 买价
 				pForexData->m_dMidPrice = jsonGetDouble(++it); // 中间价 （BidPrice + AskPrice)/2

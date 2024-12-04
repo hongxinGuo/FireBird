@@ -315,49 +315,6 @@ long CVirtualMarket::ConvertToDate(const time_t tUTC) const noexcept {
 	return ((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 将逝去的时间转换成UTC时间。
-//
-////////////////////////////////////////////////////////////////////////////////////////////
-time_t CVirtualMarket::ConvertBufferToTime(CString strFormat, const char* BufferMarketTime) {
-	tm tm_{ 0, 0, 0, 0, 0, 0 };
-	int year, month, day, hour, minute, second;
-
-	sscanf_s(BufferMarketTime, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
-	tm_.tm_year = year - 1900;
-	tm_.tm_mon = month - 1;
-	tm_.tm_mday = day;
-	tm_.tm_hour = hour;
-	tm_.tm_min = minute;
-	tm_.tm_sec = second;
-	tm_.tm_isdst = 0;
-	time_t tt = _mkgmtime(&tm_); // 先变成GMT的UTC时间
-	if (tt > -1) {
-		tt -= m_lMarketTimeZone; // 然后改成本市场的UTC时间
-	}
-	return tt;
-}
-
-time_t CVirtualMarket::ConvertStringToTime(CString strFormat, CString strMarketTime) {
-	tm tm_{ 0, 0, 0, 0, 0, 0 };
-	int year, month, day, hour, minute, second;
-
-	sscanf_s(strMarketTime.GetBuffer(), strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
-	tm_.tm_year = year - 1900;
-	tm_.tm_mon = month - 1;
-	tm_.tm_mday = day;
-	tm_.tm_hour = hour;
-	tm_.tm_min = minute;
-	tm_.tm_sec = second;
-	tm_.tm_isdst = 0;
-	time_t tt = _mkgmtime(&tm_); // GMT时间
-	if (tt > -1) {
-		tt -= m_lMarketTimeZone; // 然后改成本市场UTC时间
-	}
-	return tt;
-}
-
 void CVirtualMarket::GetMarketTimeStruct(tm* tm_, time_t tUTC) const {
 	time_t tMarket = tUTC + m_lMarketTimeZone;
 	gmtime_s(tm_, &tMarket);
@@ -369,10 +326,9 @@ void CVirtualMarket::GetMarketTimeStruct(tm* tm_, time_t tUTC) const {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-time_t CVirtualMarket::GetMarketLocalTimeOffset(CString strLocalNameOfMarket) {
+void CVirtualMarket::GetMarketLocalTimeOffset(CString strLocalNameOfMarket) {
 	m_tzMarket = chrono::locate_zone(strLocalNameOfMarket.GetBuffer());
 	m_localMarketSystemInformation = m_tzMarket->get_info(chrono::sys_seconds());
-	m_lMarketTimeZone = m_localMarketSystemInformation.offset.count();
-
-	return m_lMarketTimeZone;
+	m_timeZoneOffset = m_localMarketSystemInformation.offset;
+	m_lMarketTimeZone = m_timeZoneOffset.count();
 }
