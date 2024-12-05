@@ -1,7 +1,7 @@
 #pragma once
 
 #include"VirtualWebProduct.h"
-#include "InquireEngine.h"
+import DataSource.InquireEngine;
 
 enum enum_ErrorMessageData {
 	ERROR_NO_ERROR__ = 0,

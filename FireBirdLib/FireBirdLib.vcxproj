@@ -19,7 +19,11 @@
     <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\src\accessory\RSReference.h" />
     <ClInclude Include="..\src\accessory\SaveAndLoad.h" />
-    <ClInclude Include="..\src\accessory\simdjsonGetValue.h" />
+    <ClCompile Include="..\src\accessory\simdjsonGetValue.ixx">
+      <FileType>Document</FileType>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\accessory\ThreadStatus.h" />
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
     <ClInclude Include="..\src\ClassDeclaration.h" />
@@ -51,7 +55,11 @@
     <ClInclude Include="..\src\Data Container\ContainerFinnhubStock.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubStockDayline.h" />
     <ClInclude Include="..\src\Data Container\VirtualContainer.h" />
-    <ClInclude Include="..\src\Data Source\InquireEngine.h" />
+    <ClCompile Include="..\src\Data Source\InquireEngine.ixx">
+      <FileType>Document</FileType>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h" />
     <ClInclude Include="..\src\Data Source\FinnhubDataSource.h" />
     <ClInclude Include="..\src\Data Source\NeteaseDaylineDataSource.h" />
@@ -542,7 +550,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -578,7 +586,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <BrowseInformation>false</BrowseInformation>

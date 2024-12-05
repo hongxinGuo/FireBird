@@ -20,8 +20,9 @@
 #include "InfoReport.h"
 #include "Thread.h"
 
-#include"simdjsonGetValue.h"
-//using namespace simdjson;
+import simdjson.GetValue;
+#include"simdjson.h"
+using namespace simdjson;
 
 #include"ConvertToString.h"
 #include"SystemMessage.h"

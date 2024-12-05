@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"InquireEngine.h"
+import DataSource.InquireEngine;
 
 #include"WorldMarket.h"
 

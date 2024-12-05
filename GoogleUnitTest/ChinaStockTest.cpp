@@ -458,7 +458,7 @@ namespace FireBirdTest {
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CChinaStock stock;
 		constexpr long lDate = 21091101;
-		const time_t tt = ConvertToTTime(lDate, gl_pChinaMarket->GetMarketTimeZone(), 150000);
+		const time_t tt = ConvertToTTime(lDate, gl_pChinaMarket->GetMarketTimeZoneOffset().count(), 150000);
 		const CString strDate = _T("21091101"); // 最好设置此日期为未来，以防止误操作实际数据库
 
 		stock.SetSymbol(_T("600000.SS"));

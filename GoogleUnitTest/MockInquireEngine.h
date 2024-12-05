@@ -1,6 +1,6 @@
 #pragma once
 
-#include"InquireEngine.h"
+import DataSource.InquireEngine;
 
 namespace FireBirdTest {
 	class CMockInquireEngineTest;

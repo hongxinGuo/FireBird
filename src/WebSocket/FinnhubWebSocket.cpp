@@ -7,7 +7,10 @@
 
 #include "FinnhubDataSource.h"
 
-#include"simdjsonGetValue.h"
+import simdjson.GetValue;
+#include"simdjson.h"
+using namespace simdjson;
+
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 

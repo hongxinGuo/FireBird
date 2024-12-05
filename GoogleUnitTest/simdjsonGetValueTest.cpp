@@ -1,7 +1,9 @@
 #include"pch.h"
 
 #include "GeneralCheck.h"
-#include"simdjsonGetValue.h"
+import simdjson.GetValue;
+
+#include"simdjson.h"
 using namespace simdjson;
 
 using namespace testing;
@@ -179,8 +181,7 @@ namespace FireBirdTest {
 					break;
 				}
 			}
-		}
-		catch (simdjson_error& error) {
+		} catch (simdjson_error& error) {
 			EXPECT_TRUE(false) << error.what();
 		}
 	}
@@ -235,8 +236,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(vArray.size(), 6);
 			EXPECT_EQ(vArray.at(0), 1);
 			EXPECT_EQ(vArray.at(5), 6);
-		}
-		catch (simdjson_error& error) {
+		} catch (simdjson_error& error) {
 			EXPECT_TRUE(false) << error.what();
 		}
 	}
@@ -264,8 +264,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(vi.at(0), 1);
 			EXPECT_EQ(vi.at(1), 2);
 			EXPECT_EQ(vi.at(2), 0);
-		}
-		catch (simdjson_error& error) {
+		} catch (simdjson_error& error) {
 			EXPECT_TRUE(false) << error.what();
 		}
 	}
@@ -345,8 +344,7 @@ namespace FireBirdTest {
 			EXPECT_THROW(string_view str2 = jsonGetStringView(value2, "string"), simdjson_error);
 			EXPECT_THROW(bool b2 = jsonGetBool(value2, "bool"), simdjson_error);
 			EXPECT_THROW(auto aa2 = jsonGetArray(value2, "array"), simdjson_error);
-		}
-		catch (simdjson_error& error) {
+		} catch (simdjson_error& error) {
 			EXPECT_TRUE(false) << error.what();
 		}
 	}

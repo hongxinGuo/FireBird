@@ -9,7 +9,11 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
-#include "simdjsonGetValue.h"
+#include"simdjson.h"
+
+import simdjson.GetValue;
+
+using namespace simdjson;
 
 ondemand::array gl_simdjsonEmptyArray;
 
@@ -24,8 +28,7 @@ double jsonGetDouble(ondemand::value& value, const string_view& key, double defa
 	ondemand::value valueInner = value[key].value();
 	try {
 		return valueInner.get_double();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (valueInner.is_null()) return defaultValue;
 		throw simdjson_error(error); // 不是null的话抛出simdjson_error
 	}
@@ -35,8 +38,7 @@ INT64 jsonGetInt64(ondemand::value& value, const string_view& key, const INT64 d
 	ondemand::value valueInner = value[key].value();
 	try {
 		return valueInner.get_int64();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (valueInner.is_null()) return defaultValue;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -46,8 +48,7 @@ bool jsonGetBool(ondemand::value& value, const string_view& key) {
 	ondemand::value valueInner = value[key].value();
 	try {
 		return valueInner.get_bool();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (valueInner.is_null()) return false;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -57,8 +58,7 @@ string_view jsonGetStringView(ondemand::value& value, const string_view& key, co
 	ondemand::value valueInner = value[key].value();
 	try {
 		return valueInner.get_string();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (valueInner.is_null()) return defaultValue;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -72,8 +72,7 @@ ondemand::array jsonGetArray(ondemand::value& value, const string_view& key) {
 	ondemand::value valueInner = value[key].value();
 	try {
 		return valueInner.get_array();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (valueInner.is_null()) return gl_simdjsonEmptyArray;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -82,8 +81,7 @@ ondemand::array jsonGetArray(ondemand::value& value, const string_view& key) {
 double jsonGetDouble(ondemand::value& value, double defaultValue) {
 	try {
 		return value.get_double();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (value.is_null()) return defaultValue;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -92,8 +90,7 @@ double jsonGetDouble(ondemand::value& value, double defaultValue) {
 INT64 jsonGetInt64(ondemand::value& value, const INT64 defaultValue) {
 	try {
 		return value.get_int64();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (value.is_null()) return defaultValue;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -102,19 +99,17 @@ INT64 jsonGetInt64(ondemand::value& value, const INT64 defaultValue) {
 bool jsonGetBool(ondemand::value& value) {
 	try {
 		return value.get_bool();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (value.is_null()) return false;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
 }
 
 string_view jsonGetStringView(ondemand::value& value) {
-	static string s_s{""}; // 需要静态数据，保证离开函数后数据仍然有效
+	static string s_s{ "" }; // 需要静态数据，保证离开函数后数据仍然有效
 	try {
 		return value.get_string();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (value.is_null()) return s_s;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -127,8 +122,7 @@ string_view jsonGetRawJsonToken(ondemand::value& value) {
 ondemand::array jsonGetArray(ondemand::value& value) {
 	try {
 		return value.get_array();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (value.is_null()) return gl_simdjsonEmptyArray; // 数据为null时返回空数组
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -138,8 +132,7 @@ double jsonGetDouble(ondemand::object& object, const string_view& key, double de
 	ondemand::value valueInner = object[key].value();
 	try {
 		return valueInner.get_double();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (valueInner.is_null()) return defaultValue;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -149,8 +142,7 @@ INT64 jsonGetInt64(ondemand::object& object, const string_view& key, const INT64
 	ondemand::value valueInner = object[key].value();
 	try {
 		return valueInner.get_int64();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (valueInner.is_null()) return defaultValue;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -160,8 +152,7 @@ bool jsonGetBool(ondemand::object& object, const string_view& key) {
 	ondemand::value valueInner = object[key].value();
 	try {
 		return valueInner.get_bool();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (valueInner.is_null()) return false;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -171,8 +162,7 @@ string_view jsonGetStringView(ondemand::object& object, const string_view& key, 
 	ondemand::value valueInner = object[key].value();
 	try {
 		return valueInner.get_string();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (valueInner.is_null()) return defaultValue;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -186,8 +176,7 @@ ondemand::array jsonGetArray(ondemand::object& object, const string_view& key) {
 	ondemand::value valueInner = object[key].value();
 	try {
 		return valueInner.get_array();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (valueInner.is_null()) return gl_simdjsonEmptyArray;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -197,8 +186,7 @@ double jsonGetDouble(ondemand::document& doc, const string_view& key, const doub
 	ondemand::value valueInner = doc[key].value();
 	try {
 		return valueInner.get_double();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (valueInner.is_null()) return defaultValue;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -208,8 +196,7 @@ INT64 jsonGetInt64(ondemand::document& doc, const string_view& key, const INT64 
 	ondemand::value valueInner = doc[key].value();
 	try {
 		return valueInner.get_int64();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (valueInner.is_null()) return defaultValue;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -219,8 +206,7 @@ bool jsonGetBool(ondemand::document& doc, const string_view& key) {
 	ondemand::value valueInner = doc[key].value();
 	try {
 		return valueInner.get_bool();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (valueInner.is_null()) return false;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -230,8 +216,7 @@ string_view jsonGetStringView(ondemand::document& doc, const string_view& key, c
 	ondemand::value valueInner = doc[key].value();
 	try {
 		return valueInner.get_string();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (valueInner.is_null()) return defaultValue;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
@@ -245,8 +230,7 @@ ondemand::array jsonGetArray(ondemand::document& doc, const string_view& key) {
 	ondemand::value valueInner = doc[key].value();
 	try {
 		return valueInner.get_array();
-	}
-	catch ([[maybe_unused]] simdjson_error& error) {
+	} catch ([[maybe_unused]] simdjson_error& error) {
 		if (valueInner.is_null()) return gl_simdjsonEmptyArray;
 		throw simdjson_error(error); // 其他错误继续抛出simdjson_error
 	}
