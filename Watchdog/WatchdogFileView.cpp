@@ -1,9 +1,8 @@
-#include "pch.h"
 #include "framework.h"
-#include "WatchdogMainFrm.h"
-#include "WatchdogFileView.h"
 #include "Resource.h"
-#include "Watchdog.h"
+import Watchdog.App;
+import Watchdog.MainFrm;
+import Watchdog.FileView;
 
 #ifdef _DEBUG
 #undef THIS_FILE

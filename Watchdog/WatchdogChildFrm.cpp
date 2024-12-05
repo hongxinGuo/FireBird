@@ -1,11 +1,10 @@
 // ChildFrm.cpp : implementation of the CWatchdogChildFrame class
 //
 
-#include "pch.h"
 #include "framework.h"
 //#include "Watchdog.h"
 
-#include "WatchdogChildFrm.h"
+import Watchdog.ChildFrm;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
