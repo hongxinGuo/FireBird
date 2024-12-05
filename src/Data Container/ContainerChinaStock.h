@@ -1,8 +1,9 @@
 #pragma once
 
-#include"RSReference.h"
 #include"ChinaStock.h"
 #include"ContainerVirtualStock.h"
+
+#include"Thread.h"
 
 class CContainerChinaStock : public CContainerVirtualStock {
 public:

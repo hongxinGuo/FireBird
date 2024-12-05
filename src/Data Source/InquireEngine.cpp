@@ -6,12 +6,17 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
+#include"globedef.h"
+
+#include"SystemData.h"
+
+#include "SystemMessage.h"
+
 #include <afxinet.h>
 
 import DataSource.InquireEngine;
 
-#include"Thread.h"
-#include"WebData.h"
+#include "Thread.h"
 
 #include "InfoReport.h"
 

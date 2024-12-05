@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"SystemMessage.h"
+
 #include"TiingoCrypto.h"
 
 CTiingoCrypto::CTiingoCrypto() {

@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include"SystemData.h"
+
 #include "ContainerTiingoSymbol.h"
 
 CContainerTiingoSymbol::CContainerTiingoSymbol() {

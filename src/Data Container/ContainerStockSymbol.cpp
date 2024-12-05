@@ -3,6 +3,7 @@
 #include"ChinaStockCodeConverter.h"
 #include "ContainerStockSymbol.h"
 
+#include "ChinaStock.h"
 #include"SetStockSection.h"
 #include "InfoReport.h"
 

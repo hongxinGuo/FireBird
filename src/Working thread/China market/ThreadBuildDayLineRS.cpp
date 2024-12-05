@@ -8,13 +8,17 @@
 ///////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#include"globedef.h"
+
+#include"SystemMessage.h"
+
 #include"ThreadStatus.h"
-#include"Thread.h"
+#include "Thread.h"
 
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
 
-UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCalculatingDate) {
+UINT ThreadBuildDayLineRS(const CChinaMarketPtr& pMarket, long startCalculatingDate) {
 	pMarket->SetCalculatingDayLineRS(true);
 	long lThatDate = startCalculatingDate;
 

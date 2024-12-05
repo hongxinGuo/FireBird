@@ -1,5 +1,9 @@
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+
+#include"globedef.h"
+
 #include "ChinaMarket.h"
 
 #include"VirtualMarket.h"

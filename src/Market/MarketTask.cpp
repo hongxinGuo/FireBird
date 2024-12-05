@@ -2,6 +2,8 @@
 
 #include "MarketTask.h"
 
+#include<map>
+
 map<long, string> gl_mapMarketMapIndex;
 
 CMarketTask::CMarketTask() {

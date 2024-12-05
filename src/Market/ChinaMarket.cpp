@@ -1,9 +1,14 @@
 ﻿#include"pch.h"
 
+#include"globedef.h"
+
+#include"SystemData.h"
+#include"SystemMessage.h"
+
 #include"ConvertToString.h"
 #include"TimeConvert.h"
 #include"ChinaStockCodeConverter.h"
-#include"Thread.h"
+#include "Thread.h"
 
 #include"ThreadStatus.h"
 
@@ -28,10 +33,6 @@
 #include "TengxunRTDataSource.h"
 
 #define WM_FIREBIRD_EXIT                0X500
-
-#include<gsl/gsl>
-
-using namespace gsl;
 
 CChinaMarket::CChinaMarket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
@@ -1101,7 +1102,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek() {
 	return true;
 }
 
-bool CChinaMarket::CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CVirtualHistoryCandleExtendPtr>*> pvData) {
+bool CChinaMarket::CreateStockCodeSet(set<CString>& setStockCode, vector<CVirtualHistoryCandleExtendPtr>* pvData) {
 	vector<CString> vectorStockCode;
 
 	for (const auto& pData : *pvData) {

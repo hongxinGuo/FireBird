@@ -7,6 +7,12 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#include"globedef.h"
+
+#include"nlohmann/json.hpp"
+
+#include"SystemMessage.h"
+
 #include"FinnhubInquiryType.h"
 #include"FinnhubInaccessibleExchange.h"
 #include "TiingoInaccessibleStock.h"
@@ -28,7 +34,7 @@
 #include "ChinaMarket.h"
 #include "WorldMarket.h"
 
-#include"thread.h"
+#include "Thread.h"
 #include"threadStatus.h"
 
 #undef max

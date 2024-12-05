@@ -1,5 +1,7 @@
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+
 #include"GeneralCheck.h"
 
 #include"FinnhubStockBasicFinancial.h"
@@ -8,24 +10,28 @@ namespace FireBirdTest {
 	class CFinnhubStockBasicFinancialTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
-	TEST_F(CFinnhubStockBasicFinancialTest, TestInitialize) { }
+	TEST_F(CFinnhubStockBasicFinancialTest, TestInitialize) {}
 
 	TEST_F(CFinnhubStockBasicFinancialTest, TestIsNewData) {
 		CFinnhubStockBasicFinancial finnhubStockBasicFinancial;
@@ -47,7 +53,7 @@ namespace FireBirdTest {
 		data.m_value = 3.0;
 		vDBData.push_back(data);
 
-		CValueOfPeriod valueData{20190101, 1.0};
+		CValueOfPeriod valueData{ 20190101, 1.0 };
 		EXPECT_FALSE(finnhubStockBasicFinancial.IsNewData(_T("currentRatio"), valueData, vDBData)) << "数据已存在于数据库中";
 		EXPECT_TRUE(finnhubStockBasicFinancial.IsNewData(_T("cashRatio"), valueData, vDBData));
 		valueData.m_period = 20220101;
@@ -62,9 +68,9 @@ namespace FireBirdTest {
 		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("300020.SZ");
-		instance.m_quarter.m_cashRatio.push_back({20210930, 1.0}); // 数据库中已有
-		instance.m_quarter.m_cashRatio.push_back({20211231, 2.0}); // 数据库中已有
-		instance.m_quarter.m_cashRatio.push_back({20220331, 3.0}); // 这个是新数据
+		instance.m_quarter.m_cashRatio.push_back({ 20210930, 1.0 }); // 数据库中已有
+		instance.m_quarter.m_cashRatio.push_back({ 20211231, 2.0 }); // 数据库中已有
+		instance.m_quarter.m_cashRatio.push_back({ 20220331, 3.0 }); // 这个是新数据
 
 		setQuarter.m_strFilter = _T("[Symbol] = '300020.SZ'");
 		setQuarter.Open();
@@ -111,9 +117,9 @@ namespace FireBirdTest {
 		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("300020.SZ");
-		instance.m_annual.m_cashRatio.push_back({20191231, 1.0}); // 数据库中已有
-		instance.m_annual.m_cashRatio.push_back({20201231, 2.0}); // 数据库中已有
-		instance.m_annual.m_cashRatio.push_back({20211231, 3.0}); // 这个是新数据
+		instance.m_annual.m_cashRatio.push_back({ 20191231, 1.0 }); // 数据库中已有
+		instance.m_annual.m_cashRatio.push_back({ 20201231, 2.0 }); // 数据库中已有
+		instance.m_annual.m_cashRatio.push_back({ 20211231, 3.0 }); // 这个是新数据
 
 		setAnnual.m_strFilter = _T("[Symbol] = '300020.SZ'");
 		setAnnual.Open();
@@ -160,25 +166,25 @@ namespace FireBirdTest {
 		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("200054.SZ");
-		instance.m_annual.m_cashRatio.push_back({19800101, 1.0});
-		instance.m_annual.m_currentRatio.push_back({19800101, 2.0});
-		instance.m_annual.m_ebitPerShare.push_back({19800101, 3.0});
-		instance.m_annual.m_eps.push_back({19800101, 4.0});
-		instance.m_annual.m_grossMargin.push_back({19800101, 5.0});
-		instance.m_annual.m_longtermDebtTotalAsset.push_back({19800101, 6.0});
-		instance.m_annual.m_longtermDebtTotalCapital.push_back({19800101, 7.0});
-		instance.m_annual.m_longtermDebtTotalEquity.push_back({19800101, 8.0});
-		instance.m_annual.m_netDebtToTotalCapital.push_back({19800101, 9.0});
-		instance.m_annual.m_netDebtToTotalEquity.push_back({19800101, 10.0});
-		instance.m_annual.m_netMargin.push_back({19800101, 11.0});
-		instance.m_annual.m_operatingMargin.push_back({19800101, 12.0});
-		instance.m_annual.m_pretaxMargin.push_back({19800101, 13.0});
-		instance.m_annual.m_salesPerShare.push_back({19800101, 14.0});
-		instance.m_annual.m_sgaToSale.push_back({19800101, 15.0});
-		instance.m_annual.m_totalDebtToEquity.push_back({19800101, 16.0});
-		instance.m_annual.m_totalDebtToTotalAsset.push_back({19800101, 17.0});
-		instance.m_annual.m_totalDebtToTotalCapital.push_back({19800101, 18.0});
-		instance.m_annual.m_totalRatio.push_back({19800101, 19.0});
+		instance.m_annual.m_cashRatio.push_back({ 19800101, 1.0 });
+		instance.m_annual.m_currentRatio.push_back({ 19800101, 2.0 });
+		instance.m_annual.m_ebitPerShare.push_back({ 19800101, 3.0 });
+		instance.m_annual.m_eps.push_back({ 19800101, 4.0 });
+		instance.m_annual.m_grossMargin.push_back({ 19800101, 5.0 });
+		instance.m_annual.m_longtermDebtTotalAsset.push_back({ 19800101, 6.0 });
+		instance.m_annual.m_longtermDebtTotalCapital.push_back({ 19800101, 7.0 });
+		instance.m_annual.m_longtermDebtTotalEquity.push_back({ 19800101, 8.0 });
+		instance.m_annual.m_netDebtToTotalCapital.push_back({ 19800101, 9.0 });
+		instance.m_annual.m_netDebtToTotalEquity.push_back({ 19800101, 10.0 });
+		instance.m_annual.m_netMargin.push_back({ 19800101, 11.0 });
+		instance.m_annual.m_operatingMargin.push_back({ 19800101, 12.0 });
+		instance.m_annual.m_pretaxMargin.push_back({ 19800101, 13.0 });
+		instance.m_annual.m_salesPerShare.push_back({ 19800101, 14.0 });
+		instance.m_annual.m_sgaToSale.push_back({ 19800101, 15.0 });
+		instance.m_annual.m_totalDebtToEquity.push_back({ 19800101, 16.0 });
+		instance.m_annual.m_totalDebtToTotalAsset.push_back({ 19800101, 17.0 });
+		instance.m_annual.m_totalDebtToTotalCapital.push_back({ 19800101, 18.0 });
+		instance.m_annual.m_totalRatio.push_back({ 19800101, 19.0 });
 
 		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ'");
 		setAnnual.Open();
@@ -290,25 +296,25 @@ namespace FireBirdTest {
 		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("200054.SZ");
-		instance.m_quarter.m_cashRatio.push_back({19800101, 1.0});
-		instance.m_quarter.m_currentRatio.push_back({19800101, 2.0});
-		instance.m_quarter.m_ebitPerShare.push_back({19800101, 3.0});
-		instance.m_quarter.m_eps.push_back({19800101, 4.0});
-		instance.m_quarter.m_grossMargin.push_back({19800101, 5.0});
-		instance.m_quarter.m_longtermDebtTotalAsset.push_back({19800101, 6.0});
-		instance.m_quarter.m_longtermDebtTotalCapital.push_back({19800101, 7.0});
-		instance.m_quarter.m_longtermDebtTotalEquity.push_back({19800101, 8.0});
-		instance.m_quarter.m_netDebtToTotalCapital.push_back({19800101, 9.0});
-		instance.m_quarter.m_netDebtToTotalEquity.push_back({19800101, 10.0});
-		instance.m_quarter.m_netMargin.push_back({19800101, 11.0});
-		instance.m_quarter.m_operatingMargin.push_back({19800101, 12.0});
-		instance.m_quarter.m_pretaxMargin.push_back({19800101, 13.0});
-		instance.m_quarter.m_salesPerShare.push_back({19800101, 14.0});
-		instance.m_quarter.m_sgaToSale.push_back({19800101, 15.0});
-		instance.m_quarter.m_totalDebtToEquity.push_back({19800101, 16.0});
-		instance.m_quarter.m_totalDebtToTotalAsset.push_back({19800101, 17.0});
-		instance.m_quarter.m_totalDebtToTotalCapital.push_back({19800101, 18.0});
-		instance.m_quarter.m_totalRatio.push_back({19800101, 19.0});
+		instance.m_quarter.m_cashRatio.push_back({ 19800101, 1.0 });
+		instance.m_quarter.m_currentRatio.push_back({ 19800101, 2.0 });
+		instance.m_quarter.m_ebitPerShare.push_back({ 19800101, 3.0 });
+		instance.m_quarter.m_eps.push_back({ 19800101, 4.0 });
+		instance.m_quarter.m_grossMargin.push_back({ 19800101, 5.0 });
+		instance.m_quarter.m_longtermDebtTotalAsset.push_back({ 19800101, 6.0 });
+		instance.m_quarter.m_longtermDebtTotalCapital.push_back({ 19800101, 7.0 });
+		instance.m_quarter.m_longtermDebtTotalEquity.push_back({ 19800101, 8.0 });
+		instance.m_quarter.m_netDebtToTotalCapital.push_back({ 19800101, 9.0 });
+		instance.m_quarter.m_netDebtToTotalEquity.push_back({ 19800101, 10.0 });
+		instance.m_quarter.m_netMargin.push_back({ 19800101, 11.0 });
+		instance.m_quarter.m_operatingMargin.push_back({ 19800101, 12.0 });
+		instance.m_quarter.m_pretaxMargin.push_back({ 19800101, 13.0 });
+		instance.m_quarter.m_salesPerShare.push_back({ 19800101, 14.0 });
+		instance.m_quarter.m_sgaToSale.push_back({ 19800101, 15.0 });
+		instance.m_quarter.m_totalDebtToEquity.push_back({ 19800101, 16.0 });
+		instance.m_quarter.m_totalDebtToTotalAsset.push_back({ 19800101, 17.0 });
+		instance.m_quarter.m_totalDebtToTotalCapital.push_back({ 19800101, 18.0 });
+		instance.m_quarter.m_totalRatio.push_back({ 19800101, 19.0 });
 
 		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ'");
 		setQuarter.Open();
@@ -419,25 +425,25 @@ namespace FireBirdTest {
 		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("200054.SZ");
-		instance.m_quarter.m_cashRatio.push_back({19800101, 1.0});
-		instance.m_quarter.m_currentRatio.push_back({19800101, 2.0});
-		instance.m_quarter.m_ebitPerShare.push_back({19800101, 3.0});
-		instance.m_quarter.m_eps.push_back({19800101, 4.0});
-		instance.m_quarter.m_grossMargin.push_back({19800101, 5.0});
-		instance.m_quarter.m_longtermDebtTotalAsset.push_back({19800101, 6.0});
-		instance.m_quarter.m_longtermDebtTotalCapital.push_back({19800101, 7.0});
-		instance.m_quarter.m_longtermDebtTotalEquity.push_back({19800101, 8.0});
-		instance.m_quarter.m_netDebtToTotalCapital.push_back({19800101, 9.0});
-		instance.m_quarter.m_netDebtToTotalEquity.push_back({19800101, 10.0});
-		instance.m_quarter.m_netMargin.push_back({19800101, 11.0});
-		instance.m_quarter.m_operatingMargin.push_back({19800101, 12.0});
-		instance.m_quarter.m_pretaxMargin.push_back({19800101, 13.0});
-		instance.m_quarter.m_salesPerShare.push_back({19800101, 14.0});
-		instance.m_quarter.m_sgaToSale.push_back({19800101, 15.0});
-		instance.m_quarter.m_totalDebtToEquity.push_back({19800101, 16.0});
-		instance.m_quarter.m_totalDebtToTotalAsset.push_back({19800101, 17.0});
-		instance.m_quarter.m_totalDebtToTotalCapital.push_back({19800101, 18.0});
-		instance.m_quarter.m_totalRatio.push_back({19800101, 19.0});
+		instance.m_quarter.m_cashRatio.push_back({ 19800101, 1.0 });
+		instance.m_quarter.m_currentRatio.push_back({ 19800101, 2.0 });
+		instance.m_quarter.m_ebitPerShare.push_back({ 19800101, 3.0 });
+		instance.m_quarter.m_eps.push_back({ 19800101, 4.0 });
+		instance.m_quarter.m_grossMargin.push_back({ 19800101, 5.0 });
+		instance.m_quarter.m_longtermDebtTotalAsset.push_back({ 19800101, 6.0 });
+		instance.m_quarter.m_longtermDebtTotalCapital.push_back({ 19800101, 7.0 });
+		instance.m_quarter.m_longtermDebtTotalEquity.push_back({ 19800101, 8.0 });
+		instance.m_quarter.m_netDebtToTotalCapital.push_back({ 19800101, 9.0 });
+		instance.m_quarter.m_netDebtToTotalEquity.push_back({ 19800101, 10.0 });
+		instance.m_quarter.m_netMargin.push_back({ 19800101, 11.0 });
+		instance.m_quarter.m_operatingMargin.push_back({ 19800101, 12.0 });
+		instance.m_quarter.m_pretaxMargin.push_back({ 19800101, 13.0 });
+		instance.m_quarter.m_salesPerShare.push_back({ 19800101, 14.0 });
+		instance.m_quarter.m_sgaToSale.push_back({ 19800101, 15.0 });
+		instance.m_quarter.m_totalDebtToEquity.push_back({ 19800101, 16.0 });
+		instance.m_quarter.m_totalDebtToTotalAsset.push_back({ 19800101, 17.0 });
+		instance.m_quarter.m_totalDebtToTotalCapital.push_back({ 19800101, 18.0 });
+		instance.m_quarter.m_totalRatio.push_back({ 19800101, 19.0 });
 
 		setQuarter.m_strFilter = _T("[Symbol] = '200054.SZ'");
 		setQuarter.Open();
@@ -555,25 +561,25 @@ namespace FireBirdTest {
 		CItemOfBasicFinancialSeasonData dbData;
 
 		instance.m_symbol = _T("200054.SZ");
-		instance.m_annual.m_cashRatio.push_back({19800101, 1.0});
-		instance.m_annual.m_currentRatio.push_back({19800101, 2.0});
-		instance.m_annual.m_ebitPerShare.push_back({19800101, 3.0});
-		instance.m_annual.m_eps.push_back({19800101, 4.0});
-		instance.m_annual.m_grossMargin.push_back({19800101, 5.0});
-		instance.m_annual.m_longtermDebtTotalAsset.push_back({19800101, 6.0});
-		instance.m_annual.m_longtermDebtTotalCapital.push_back({19800101, 7.0});
-		instance.m_annual.m_longtermDebtTotalEquity.push_back({19800101, 8.0});
-		instance.m_annual.m_netDebtToTotalCapital.push_back({19800101, 9.0});
-		instance.m_annual.m_netDebtToTotalEquity.push_back({19800101, 10.0});
-		instance.m_annual.m_netMargin.push_back({19800101, 11.0});
-		instance.m_annual.m_operatingMargin.push_back({19800101, 12.0});
-		instance.m_annual.m_pretaxMargin.push_back({19800101, 13.0});
-		instance.m_annual.m_salesPerShare.push_back({19800101, 14.0});
-		instance.m_annual.m_sgaToSale.push_back({19800101, 15.0});
-		instance.m_annual.m_totalDebtToEquity.push_back({19800101, 16.0});
-		instance.m_annual.m_totalDebtToTotalAsset.push_back({19800101, 17.0});
-		instance.m_annual.m_totalDebtToTotalCapital.push_back({19800101, 18.0});
-		instance.m_annual.m_totalRatio.push_back({19800101, 19.0});
+		instance.m_annual.m_cashRatio.push_back({ 19800101, 1.0 });
+		instance.m_annual.m_currentRatio.push_back({ 19800101, 2.0 });
+		instance.m_annual.m_ebitPerShare.push_back({ 19800101, 3.0 });
+		instance.m_annual.m_eps.push_back({ 19800101, 4.0 });
+		instance.m_annual.m_grossMargin.push_back({ 19800101, 5.0 });
+		instance.m_annual.m_longtermDebtTotalAsset.push_back({ 19800101, 6.0 });
+		instance.m_annual.m_longtermDebtTotalCapital.push_back({ 19800101, 7.0 });
+		instance.m_annual.m_longtermDebtTotalEquity.push_back({ 19800101, 8.0 });
+		instance.m_annual.m_netDebtToTotalCapital.push_back({ 19800101, 9.0 });
+		instance.m_annual.m_netDebtToTotalEquity.push_back({ 19800101, 10.0 });
+		instance.m_annual.m_netMargin.push_back({ 19800101, 11.0 });
+		instance.m_annual.m_operatingMargin.push_back({ 19800101, 12.0 });
+		instance.m_annual.m_pretaxMargin.push_back({ 19800101, 13.0 });
+		instance.m_annual.m_salesPerShare.push_back({ 19800101, 14.0 });
+		instance.m_annual.m_sgaToSale.push_back({ 19800101, 15.0 });
+		instance.m_annual.m_totalDebtToEquity.push_back({ 19800101, 16.0 });
+		instance.m_annual.m_totalDebtToTotalAsset.push_back({ 19800101, 17.0 });
+		instance.m_annual.m_totalDebtToTotalCapital.push_back({ 19800101, 18.0 });
+		instance.m_annual.m_totalRatio.push_back({ 19800101, 19.0 });
 
 		setAnnual.m_strFilter = _T("[Symbol] = '200054.SZ'");
 		setAnnual.Open();

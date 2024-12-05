@@ -1,10 +1,10 @@
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+
 #include"GeneralCheck.h"
 
 #include"MockChinaMarket.h"
-
-//#include"thread.h"
 
 using namespace testing;
 

@@ -10,8 +10,10 @@
 #include "TiingoIEXTopOFBook.h"
 #include "TiingoStockDailyMeta.h"
 
+#include "VirtualStock.h"
+
 class CTiingoStock;
-using CTiingoStockPtr = shared_ptr<CTiingoStock>;
+typedef shared_ptr<CTiingoStock> CTiingoStockPtr;
 
 class CTiingoStock : public CVirtualStock {
 public:

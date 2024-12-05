@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"SystemConfiguration.h"
+
 #include"VirtualDataHistoryCandleExtend.h"
 #include"DayLine.h"
 

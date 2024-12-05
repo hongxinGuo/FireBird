@@ -1,5 +1,9 @@
 #include "pch.h"
 
+#include"globedef.h"
+
+#include"SystemConfiguration.h"
+
 #include"FinnhubInquiryType.h"
 
 #include "FinnhubInaccessibleExchange.h"

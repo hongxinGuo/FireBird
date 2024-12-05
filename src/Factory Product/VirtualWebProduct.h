@@ -9,6 +9,7 @@
 #include"WebData.h"
 
 using std::vector;
+using std::weak_ptr;
 
 class CDayLine;
 typedef shared_ptr<CDayLine> CDayLinePtr;

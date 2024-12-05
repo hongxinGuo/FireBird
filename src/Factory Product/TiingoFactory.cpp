@@ -1,5 +1,8 @@
 #include "pch.h"
 
+#include"SystemData.h"
+#include"SystemMessage.h"
+
 #include"FinnhubInquiryType.h"
 
 #include "TiingoFactory.h"

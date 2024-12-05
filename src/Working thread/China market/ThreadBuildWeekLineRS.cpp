@@ -7,12 +7,16 @@
 ///////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include"Thread.h"
+#include"globedef.h"
+
+#include"SystemMessage.h"
+
+#include "Thread.h"
 #include"TimeConvert.h"
 #include"ThreadStatus.h"
 #include"ChinaMarket.h"
 
-UINT ThreadBuildWeekLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCalculatingDate) {
+UINT ThreadBuildWeekLineRS(const CChinaMarketPtr& pMarket, long startCalculatingDate) {
 	pMarket->SetCalculatingWeekLineRS(true);
 	long lToday = GetPrevMonday(startCalculatingDate);
 

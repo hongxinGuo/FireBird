@@ -1,7 +1,7 @@
 #pragma once
 
-#include"TiingoStock.h"
 #include"ContainerVirtualStock.h"
+#include"TiingoStock.h"
 
 class CContainerTiingoSymbol : public CContainerVirtualStock {
 public:

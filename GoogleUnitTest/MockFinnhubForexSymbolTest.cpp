@@ -5,9 +5,11 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+
 #include"GeneralCheck.h"
 
-#include"Thread.h"
+#include "Thread.h"
 
 using namespace testing;
 

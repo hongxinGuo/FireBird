@@ -1,6 +1,8 @@
 #include"pch.h"
 
-#include"Thread.h"
+//#include"gtest/gtest.h"
+
+#include "Thread.h"
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"

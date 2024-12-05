@@ -1,5 +1,12 @@
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+
+#include"globedef.h"
+
+#include"SystemConfiguration.h"
+#include"SystemMessage.h"
+
 #include"afxinet.h"
 
 #include"MockInquireEngine.h"

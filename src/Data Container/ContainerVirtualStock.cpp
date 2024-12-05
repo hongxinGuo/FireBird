@@ -2,6 +2,8 @@
 
 #include "ContainerVirtualStock.h"
 
+#include "VirtualWebSocket.h"
+
 CContainerVirtualStock::CContainerVirtualStock() {
 	CContainerVirtualStock::Reset();
 }

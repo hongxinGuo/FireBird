@@ -1,8 +1,10 @@
 #include"pch.h"
 
-#include"GeneralCheck.h"
+//#include"gtest/gtest.h"
 
-#include"ChinaStock.h"
+#include"SystemMessage.h"
+
+#include"GeneralCheck.h"
 
 #include"WebData.h"
 #include"DayLineWebData.h"

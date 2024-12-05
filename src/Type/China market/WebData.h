@@ -8,7 +8,12 @@
 
 #include"nlohmannJsonDeclaration.h"
 
-using namespace std;
+#include<chrono>
+
+#include<string>
+using std::string;
+using std::string_view;
+//using namespace std;
 
 class CDayLineWebData;
 class CVirtualDataSource;
@@ -43,7 +48,7 @@ public:
 
 	time_t GetTime() const noexcept { return m_tpTime.time_since_epoch().count(); }
 	void SetTime(std::chrono::sys_seconds time) noexcept { m_tpTime = time; }
-	void SetTime(const time_t tTime) noexcept { m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(tTime)); }
+	void SetTime(const time_t tTime) noexcept { m_tpTime = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(tTime)); }
 	CString GetStockCode() const noexcept { return m_strStockCode; }
 	void SetStockCode(const CString& strStockCode) noexcept { m_strStockCode = strStockCode; }
 	size_t GetBufferLength() const noexcept { return m_sDataBuffer.size(); }
@@ -72,7 +77,7 @@ public:
 	void Test_SetBuffer_(CString strBuffer);
 
 protected:
-	chrono::sys_seconds m_tpTime;// 此数据的提取时间。time point格式
+	std::chrono::sys_seconds m_tpTime;// 此数据的提取时间。time point格式
 	CString m_strStockCode; // 此数据的相关证券代码，可以空缺
 	string m_sDataBuffer;
 	size_t m_lCurrentPos;

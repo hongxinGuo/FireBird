@@ -1,5 +1,7 @@
 #pragma once
 
+#include"SystemData.h"
+
 long StrToDecimal(const string_view& svData, int power);
 string_view GetNextField(const string_view& svData, size_t& lCurrentPos, char delimiter);
 

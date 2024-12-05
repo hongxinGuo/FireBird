@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "framework.h"
-
 #include "PropertiesWnd.h"
+
+#include"SystemMessage.h"
 
 #include "ChinaMarket.h"
 #include "FinnhubDataSource.h"

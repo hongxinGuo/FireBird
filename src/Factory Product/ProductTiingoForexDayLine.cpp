@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include"SystemMessage.h"
+
 #include "ProductTiingoForexDayLine.h"
 
 #include"jsonParse.h"

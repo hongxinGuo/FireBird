@@ -1,5 +1,7 @@
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+
 #include"GeneralCheck.h"
 
 #include"ChinaMarket.h"
@@ -85,7 +87,7 @@ namespace FireBirdTest {
 
 	TEST_F(CMockFireBirdViewTest, TestShowCurrentRS) {
 		CDC DC;
-		vector<double> vRS{5, 10, 20, 30};
+		vector<double> vRS{ 5, 10, 20, 30 };
 		const CRect rect(0, 0, 100, 100);
 		s_pFireBirdView->SetClientSize(rect);
 		EXPECT_CALL(*s_pFireBirdView, SysCallMoveTo(&DC, 99, 85))
@@ -390,7 +392,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockFireBirdViewTest, TestEnlarge) {
-		vector<double> vData{0, 100, 50, 49, 51};
+		vector<double> vData{ 0, 100, 50, 49, 51 };
 
 		s_pFireBirdView->ZoomIn(vData, 50, 10);
 		EXPECT_EQ(vData.at(0), 0);

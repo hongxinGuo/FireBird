@@ -222,9 +222,6 @@
     <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\RSReference.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\accessory\SaveAndLoad.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
@@ -336,9 +333,6 @@
     <ClInclude Include="..\src\System\SystemConfiguration.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\System\SystemConstantChinaMarket.h">
-      <Filter>头文件\System</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\System\SystemData.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
@@ -430,9 +424,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\src\targetver.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Thread.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\src\FinnhubInquiryType.h">
@@ -541,9 +532,6 @@
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerChinaDayLine.h">
-      <Filter>头文件\Data container\China Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerChinaStock.h">
       <Filter>头文件\Data container\China Market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerChinaWeekLine.h">
@@ -860,6 +848,18 @@
     </ClInclude>
     <ClInclude Include="..\src\Market\MarketTask.h">
       <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\accessory\RSReference.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\ContainerChinaStock.h">
+      <Filter>头文件\Data container\China Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Thread.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\System\SystemConstantChinaMarket.h">
+      <Filter>头文件\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

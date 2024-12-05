@@ -1,5 +1,7 @@
 #pragma once
 
+#include"SystemData.h"
+
 #include"VirtualWebProduct.h"
 
 import DataSource.InquireEngine;

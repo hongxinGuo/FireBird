@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"SystemMessage.h"
+
 #include"NeteaseRTDataSource.h"
 #include"ProductNeteaseRT.h"
 

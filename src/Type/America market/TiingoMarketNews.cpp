@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"SystemMessage.h"
+
 #include"TiingoMarketNews.h"
 
 CTiingoMarketNews::CTiingoMarketNews() {

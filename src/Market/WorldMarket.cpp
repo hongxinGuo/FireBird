@@ -1,10 +1,13 @@
 #include"pch.h"
 
+#include"globedef.h"
+
 #include"systemData.h"
+#include"SystemMessage.h"
 
 #include "WorldMarket.h"
 
-#include"thread.h"
+#include "Thread.h"
 
 #include"FinnhubInaccessibleExchange.h"
 

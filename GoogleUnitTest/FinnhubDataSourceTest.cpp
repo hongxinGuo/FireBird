@@ -1,5 +1,9 @@
 ﻿#include"pch.h"
 
+//#include"gtest/gtest.h"
+
+#include"SystemMessage.h"
+
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"

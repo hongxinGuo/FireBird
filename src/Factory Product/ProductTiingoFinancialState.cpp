@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include"SystemData.h"
+
 #include"TiingoStock.h"
 #include "ProductTiingoFinancialState.h"
 

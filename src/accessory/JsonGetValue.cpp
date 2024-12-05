@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"SystemConfiguration.h"
+
 #include "JsonGetValue.h"
 
 json jsonGetChild(json* pjs, const char* szKey) {

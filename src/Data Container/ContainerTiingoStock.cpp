@@ -1,13 +1,20 @@
-#include "ContainerTiingoStock.h"
 #include "pch.h"
+
+#include"globedef.h"
+
+#include"SystemData.h"
+
+#include"SystemMessage.h"
+
 #include "ContainerTiingoStock.h"
 #include "InfoReport.h"
 #include "SetTiingoStockCurrentTrace.h"
 #include "SetTiingoStockDayLine.h"
-#include "Thread.h"
 #include "ThreadStatus.h"
 #include "TimeConvert.h"
 #include "WorldMarket.h"
+#include"TiingoStock.h"
+#include "Thread.h"
 
 CContainerTiingoStock::CContainerTiingoStock() {
 	CContainerTiingoStock::Reset();

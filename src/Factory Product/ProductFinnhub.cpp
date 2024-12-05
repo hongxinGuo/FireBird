@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"nlohmann/json.hpp"
+
 #include"ProductFinnhub.h"
 
 #include"FinnhubInaccessibleExchange.h"

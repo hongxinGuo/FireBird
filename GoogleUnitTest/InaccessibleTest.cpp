@@ -1,5 +1,9 @@
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+
+#include"SystemConfiguration.h"
+
 #include"GeneralCheck.h"
 #include"Inaccessible.h"
 

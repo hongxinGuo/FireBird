@@ -7,6 +7,11 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+
+#include"SystemConfiguration.h"
+#include"SystemMessage.h"
+
 #include"GeneralCheck.h"
 
 namespace FireBirdTest {

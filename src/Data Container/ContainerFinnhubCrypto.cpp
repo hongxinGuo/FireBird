@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include"SystemMessage.h"
+
 #include "ContainerFinnhubCrypto.h"
 #include"SetFinnhubCryptoSymbol.h"
 #include"FinnhubCrypto.h"

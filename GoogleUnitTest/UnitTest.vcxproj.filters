@@ -435,9 +435,6 @@
     <ClCompile Include="JsonGetValueTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\pch.cpp">
-      <Filter>Test源文件</Filter>
-    </ClCompile>
     <ClCompile Include="ContainerChoicedCryptoTest.cpp">
       <Filter>Test源文件\Data Container\Chosen</Filter>
     </ClCompile>
@@ -659,6 +656,9 @@
     </ClCompile>
     <ClCompile Include="ContainerTiingoStockDayLineTest.cpp">
       <Filter>Test源文件\Data Container\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Test源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

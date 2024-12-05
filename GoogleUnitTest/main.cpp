@@ -35,7 +35,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+
+#include"globedef.h"
+
 #include <spdlog/sinks/basic_file_sink.h>
+
+#include"SystemMessage.h"
 
 #include"GeneralCheck.h"
 

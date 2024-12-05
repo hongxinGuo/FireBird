@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TiingoCrypto.h"
+#include "ContainerVirtualStock.h"
 
 class CContainerTiingoCryptoSymbol : public CContainerVirtualStock {
 public:

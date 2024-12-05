@@ -5,12 +5,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+
 #include"GeneralCheck.h"
 
-#include"Thread.h"
+#include "Thread.h"
 
 #include"FinnhubStock.h"
-//#include"MockFinnhubStock.h"
 
 using namespace testing;
 

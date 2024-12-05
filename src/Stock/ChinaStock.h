@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include "WebRTData.h"
-
 //成交的具体情况，分为三种：买，进攻性买，强买，。买是价位为卖一位置；进攻性买价位是至少卖二，且成交价位高于卖一低于卖二；
 //强买价位至少卖三，且成交价位至少高于卖二。判断卖与之相类似。
 enum {
@@ -15,7 +13,9 @@ enum {
 	NO_TRANSACTION_ = 8
 };
 
-#include"RSReference.h"
+#include"Thread.h"
+
+#include "WebRTData.h"
 
 #include"VirtualStock.h"
 
@@ -32,10 +32,11 @@ enum {
 #include"ContainerChinaDayLine.h"
 
 #include"concurrentqueue/concurrentqueue.h"
+
 using namespace moodycamel;
 
 class CChinaStock;
-using CChinaStockPtr = shared_ptr<CChinaStock>;
+typedef shared_ptr<CChinaStock> CChinaStockPtr;
 
 using std::map;
 #include <queue>
@@ -562,3 +563,5 @@ protected:
 
 	bool m_fDayLineDBUpdated{ false }; // 日线历史数据库更新标识
 };
+
+using CChinaStockPtr = shared_ptr<CChinaStock>;

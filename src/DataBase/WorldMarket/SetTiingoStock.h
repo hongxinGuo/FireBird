@@ -2,6 +2,7 @@
 
 #pragma once
 #include"VirtualRecordset.h"
+#include"SystemConstantChinaMarket.h"
 
 class CSetTiingoStock : public CVirtualRecordset {
 public:

@@ -5,10 +5,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include "ChinaMarket.h"
+//#include"gtest/gtest.h"
+
+#include"SystemMessage.h"
+
 #include"GeneralCheck.h"
 
-#include"Thread.h"
+#include "Thread.h"
 
 #include"MockWorldMarket.h"
 
