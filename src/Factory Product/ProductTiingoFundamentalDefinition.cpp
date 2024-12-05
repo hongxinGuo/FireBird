@@ -7,7 +7,9 @@
 
 #include "TiingoDataSource.h"
 
-#include"simdjsonGetValue.h"
+import simdjson.GetValue;
+#include"simdjson.h"
+using namespace simdjson;
 
 CProductTiingoFundamentalDefinition::CProductTiingoFundamentalDefinition() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals/definitions?");

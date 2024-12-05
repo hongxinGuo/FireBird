@@ -44,7 +44,7 @@
 
 #include"MockMainFrm.h"
 
-#include"simdjsonGetValue.h"
+import simdjson.GetValue;
 
 #include"ScheduleTask.h"
 #include"FinnhubInaccessibleExchange.h"

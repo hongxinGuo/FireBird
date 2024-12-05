@@ -15,7 +15,7 @@
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
 
-#include "simdjsonGetValue.h"
+import simdjson.GetValue;
 #include "Thread.h"
 
 void TaskCheckWorldMarketReady() {

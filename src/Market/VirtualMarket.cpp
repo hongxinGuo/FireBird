@@ -10,6 +10,12 @@ CVirtualMarket::CVirtualMarket() {
 	m_strMarketId = _T("Warning: CVirtualMarket Called.");
 }
 
+CVirtualMarket::~CVirtualMarket() {
+	if (m_pTimeZone != nullptr) {
+		m_pTimeZone = nullptr;
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 唯一的调度函数。所有的市场皆使用此函数，具体的差异由数据源（DataSource）和不同的任务序列来区分。
@@ -197,7 +203,7 @@ bool CVirtualMarket::IsWorkingDay(long lDate) noexcept {
 	return true;
 }
 
-long CVirtualMarket::CalculateNextTradeDate() noexcept {
+long CVirtualMarket::CalculateNextTradeDate() const noexcept {
 	time_t tMarket;
 	const tm tmMarketTime2 = GetMarketTime(GetUTCTime() - m_lOpenMarketTime);
 
@@ -213,8 +219,7 @@ long CVirtualMarket::CalculateNextTradeDate() noexcept {
 	}
 	tMarket -= m_lOpenMarketTime; // 减去开市时间，具体值由各市场预先设定
 	const tm tmMarketTime = GetMarketTime(tMarket);
-	m_lMarketNextTradeDate = ConvertToDate(&tmMarketTime);
-	return m_lMarketNextTradeDate;
+	return ConvertToDate(&tmMarketTime);
 }
 
 long CVirtualMarket::CalculateCurrentTradeDate() noexcept {
@@ -234,8 +239,7 @@ long CVirtualMarket::CalculateCurrentTradeDate() noexcept {
 	}
 	tMarket -= m_lOpenMarketTime; // 减去开市时间，具体值由各市场预先设定
 	const tm tmMarketTime = GetMarketTime(tMarket);
-	m_lMarketCurrentTradeDate = ConvertToDate(&tmMarketTime);
-	return m_lMarketCurrentTradeDate;
+	return ConvertToDate(&tmMarketTime);
 }
 
 long CVirtualMarket::CalculateLastTradeDate() noexcept {
@@ -257,16 +261,15 @@ long CVirtualMarket::CalculateLastTradeDate() noexcept {
 	}
 	tMarket -= m_lOpenMarketTime; // 减去开市时间，具体值由各市场预先设定
 	const tm tmMarketTime = GetMarketTime(tMarket);
-	m_lMarketLastTradeDate = ConvertToDate(&tmMarketTime);
-	return m_lMarketLastTradeDate;
+	return ConvertToDate(&tmMarketTime);
 }
 
 time_t CVirtualMarket::TransferToUTCTime(tm* tmMarketTime) const {
-	return _mkgmtime(tmMarketTime) - m_lMarketTimeZone;
+	return _mkgmtime(tmMarketTime) - m_timeZoneOffset.count();
 }
 
 time_t CVirtualMarket::TransferToUTCTime(long lMarketDate, long lMarketTime) const {
-	return ConvertToTTime(lMarketDate, m_lMarketTimeZone, lMarketTime);
+	return ConvertToTTime(lMarketDate, m_timeZoneOffset.count(), lMarketTime);
 }
 
 CString CVirtualMarket::GetStringOfMarketDate() const {
@@ -316,7 +319,7 @@ long CVirtualMarket::ConvertToDate(const time_t tUTC) const noexcept {
 }
 
 void CVirtualMarket::GetMarketTimeStruct(tm* tm_, time_t tUTC) const {
-	time_t tMarket = tUTC + m_lMarketTimeZone;
+	time_t tMarket = tUTC + m_timeZoneOffset.count();
 	gmtime_s(tm_, &tMarket);
 }
 
@@ -327,8 +330,6 @@ void CVirtualMarket::GetMarketTimeStruct(tm* tm_, time_t tUTC) const {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualMarket::GetMarketLocalTimeOffset(CString strLocalNameOfMarket) {
-	m_tzMarket = chrono::locate_zone(strLocalNameOfMarket.GetBuffer());
-	m_localMarketSystemInformation = m_tzMarket->get_info(chrono::sys_seconds());
-	m_timeZoneOffset = m_localMarketSystemInformation.offset;
-	m_lMarketTimeZone = m_timeZoneOffset.count();
+	m_pTimeZone = chrono::locate_zone(strLocalNameOfMarket.GetBuffer());
+	m_timeZoneOffset = m_pTimeZone->get_info(chrono::sys_seconds()).offset;
 }

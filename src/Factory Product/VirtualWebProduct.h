@@ -9,6 +9,8 @@
 #include"WebData.h"
 #include"ClassDeclaration.h"
 
+using std::vector;
+
 // 此结构只用于测试中
 struct Test_FinnhubWebData {
 	Test_FinnhubWebData(const long lIndex, const CString& strSymbol, const CString& strData) {

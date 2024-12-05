@@ -3,8 +3,11 @@
 #include"TiingoStock.h"
 #include "ProductTiingoFinancialState.h"
 
-#include"simdjsonGetValue.h"
+import simdjson.GetValue;
 #include "WorldMarket.h"
+
+#include"simdjson.h"
+using namespace simdjson;
 
 map<CString, int> s_mapItem{
 	{ _T("accoci"), 1 },

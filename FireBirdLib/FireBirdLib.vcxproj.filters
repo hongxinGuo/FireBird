@@ -666,14 +666,8 @@
     <ClInclude Include="..\src\Data Container\VirtualContainer.h">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\accessory\simdjsonGetValue.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\System\ScheduleTask.h">
       <Filter>头文件\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Source\InquireEngine.h">
-      <Filter>头文件\Data Source</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
@@ -1453,6 +1447,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Market\MarketTaskQueue.cpp">
       <Filter>源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\simdjsonGetValue.ixx">
+      <Filter>头文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\InquireEngine.ixx">
+      <Filter>头文件\Data Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

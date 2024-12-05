@@ -6,8 +6,9 @@
 #include "ProductFinnhubSECFilings.h"
 
 #include"jsonParse.h"
-#include"simdjsonGetValue.h"
-#include "TimeConvert.h"
+import simdjson.GetValue;
+#include"simdjson.h"
+using namespace simdjson;
 
 CProductFinnhubSECFilings::CProductFinnhubSECFilings() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/filings?symbol=");

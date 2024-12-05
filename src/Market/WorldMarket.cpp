@@ -32,9 +32,9 @@ CWorldMarket::CWorldMarket() {
 	}
 
 	m_strMarketId = _T("美国市场");
-	m_strLocalMarketTimeZone = _T("America/New_York");
+	m_strTimeZoneName = _T("America/New_York");
 	m_lOpenMarketTime = 9 * 3600 + 1800;
-	GetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 美国股市使用美东标准时间, 美国股市开市时间为九点三十分
+	GetMarketLocalTimeOffset(m_strTimeZoneName);// 美国股市使用美东标准时间, 美国股市开市时间为九点三十分
 
 	// 无需（也无法）每日更新的变量放在这里
 	m_lCurrentUpdateEPSSurprisePos = 0;

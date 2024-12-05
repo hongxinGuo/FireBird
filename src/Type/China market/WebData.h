@@ -10,6 +10,8 @@
 
 #include"nlohmannJsonDeclaration.h"
 
+using namespace std;
+
 constexpr int DefaultWebDataBufferSize_ = 1024 * 1024;
 
 class CWebData final {
@@ -36,7 +38,7 @@ public:
 	bool IsLastDataParagraph() const noexcept { return m_lCurrentPos >= m_sDataBuffer.size() - 2; }// 已读至最后一段数据
 
 	time_t GetTime() const noexcept { return m_tpTime.time_since_epoch().count(); }
-	void SetTime(chrono::sys_seconds time) noexcept { m_tpTime = time; }
+	void SetTime(std::chrono::sys_seconds time) noexcept { m_tpTime = time; }
 	void SetTime(const time_t tTime) noexcept { m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(tTime)); }
 	CString GetStockCode() const noexcept { return m_strStockCode; }
 	void SetStockCode(const CString& strStockCode) noexcept { m_strStockCode = strStockCode; }
