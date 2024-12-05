@@ -310,7 +310,8 @@
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <CompileAsManaged>false</CompileAsManaged>
-      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <ControlFlowGuard>
+      </ControlFlowGuard>
       <CompileAs>CompileAsCpp</CompileAs>
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <DisableSpecificWarnings>

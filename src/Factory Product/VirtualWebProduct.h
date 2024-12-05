@@ -7,9 +7,16 @@
 #pragma once
 
 #include"WebData.h"
-#include"ClassDeclaration.h"
 
 using std::vector;
+
+class CDayLine;
+typedef shared_ptr<CDayLine> CDayLinePtr;
+class CVirtualDataSource;
+typedef shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;
+class CVirtualMarket;
+typedef shared_ptr<CVirtualMarket> CVirtualMarketPtr;
+typedef weak_ptr<CVirtualMarket> CVirtualMarketWeakPtr;
 
 // 此结构只用于测试中
 struct Test_FinnhubWebData {

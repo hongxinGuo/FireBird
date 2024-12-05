@@ -12,7 +12,9 @@
 #pragma once
 
 #include"RSReference.h"
-#include"ClassDeclaration.h"
+
+class CChinaMarket;
+typedef shared_ptr<CChinaMarket> CChinaMarketPtr;
 
 #undef max //Note 包含concurrencpp.h之前，需要undefined max
 #include"concurrencpp/concurrencpp.h"

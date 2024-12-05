@@ -441,9 +441,6 @@
     <ClInclude Include="..\src\nlohmannJsonDeclaration.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ClassDeclaration.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\System\FinnhubInaccessibleExchange.h">
       <Filter>头文件\System</Filter>
     </ClInclude>

@@ -6,11 +6,15 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"ClassDeclaration.h"
-
 #include"nlohmannJsonDeclaration.h"
 
 using namespace std;
+
+class CDayLineWebData;
+class CVirtualDataSource;
+typedef shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;
+class CInquireEngine;
+typedef shared_ptr<CInquireEngine> CInquireEnginePtr;
 
 constexpr int DefaultWebDataBufferSize_ = 1024 * 1024;
 
