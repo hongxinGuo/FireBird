@@ -9,7 +9,7 @@
 //#include "Watchdog.h"
 #endif
 
-#include "WatchdogDoc.h"
+import Watchdog.Document;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

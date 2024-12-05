@@ -3,11 +3,12 @@
 
 #include "pch.h"
 #include "framework.h"
-#include "Watchdog.h"
-
-#include "WatchdogMainFrm.h"
 
 #include"afxmsg_.h"
+#include "resource.h"
+
+import Watchdog.MainFrm;
+import Watchdog.App;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

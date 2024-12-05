@@ -1,8 +1,8 @@
-#include "pch.h"
 #include "framework.h"
 
-#include "WatchdogPropertiesWnd.h"
-#include "Watchdog.h"
+#include "resource.h"
+import Watchdog.App;
+import Watchdog.PropertiesWnd;
 
 #ifdef _DEBUG
 #undef THIS_FILE

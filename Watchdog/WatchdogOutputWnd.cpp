@@ -1,12 +1,8 @@
-#include "pch.h"
-
+#include "framework.h"
 #include"afxwin.h"
 
-#include "framework.h"
-
-#include "WatchdogOutputWnd.h"
 #include "Resource.h"
-//#include "WatchdogMainFrm.h"
+import Watchdog.OutputWnd;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

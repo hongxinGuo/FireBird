@@ -15,46 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Watchdog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WatchdogMainFrm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WatchdogChildFrm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WatchdogDoc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WatchdogView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WatchdogFileView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WatchdogClassView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewTree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WatchdogOutputWnd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WatchdogPropertiesWnd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -89,8 +56,35 @@
     <ClCompile Include="WatchdogPropertiesWnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="WatchdogView.ixx">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WatchdogDoc.ixx">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Watchdog.ixx">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WatchdogChildFrm.ixx">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WatchdogClassView.ixx">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WatchdogFileView.ixx">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WatchdogMainFrm.ixx">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WatchdogOutputWnd.ixx">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WatchdogPropertiesWnd.ixx">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewTree.ixx">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,8 @@
-#include "pch.h"
 #include "framework.h"
-#include "WatchdogClassView.h"
-#include "Watchdog.h"
+
+#include "resource.h"
+import Watchdog.App;
+import Watchdog.ClassView;
 
 class CClassViewMenuButton : public CMFCToolBarMenuButton {
 	friend class CWatchdogClassView;

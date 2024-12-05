@@ -1,16 +1,17 @@
 // Watchdog.cpp : Defines the class behaviors for the application.
 //
 
-#include "pch.h"
 #include "framework.h"
 #include "afxwinappex.h"
 #include "afxdialogex.h"
-#include "Watchdog.h"
-#include "WatchdogMainFrm.h"
+#include "resource.h"
 
-#include "WatchdogChildFrm.h"
-#include "WatchdogDoc.h"
-#include "WatchdogView.h"
+import Watchdog.MainFrm;
+import Watchdog.ViewTree;
+import Watchdog.Document;
+import Watchdog.View;
+import Watchdog.ChildFrm;
+import Watchdog.App;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
