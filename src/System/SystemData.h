@@ -11,9 +11,6 @@
 #include"concurrentqueue/concurrentqueue.h"
 using namespace moodycamel;
 
-#include <gsl/pointers>
-using gsl::not_null;
-
 #include "ContainerChinaStock.h"
 #include "containerChosenCrypto.h"
 #include "ContainerChosenForex.h"

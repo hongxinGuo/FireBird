@@ -1,5 +1,9 @@
 #include "pch.h"
 
+#include"globedef.h"
+
+#include"SystemMessage.h"
+
 #include"jsonParse.h"
 #include"JsonGetValue.h"
 

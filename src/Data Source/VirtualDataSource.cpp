@@ -6,9 +6,14 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
-#include "VirtualDataSource.h"
+#include"globedef.h"
 
-#include"Thread.h"
+#include"SystemMessage.h"
+
+#include "VirtualDataSource.h"
+#include"WebData.h"
+
+#include "Thread.h"
 
 atomic_int64_t CVirtualDataSource::sm_lTotalByteRead = 0;
 atomic_int64_t CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;

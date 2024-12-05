@@ -1,5 +1,9 @@
 ﻿#include"pch.h"
 
+//#include"gtest/gtest.h"
+
+#include"SystemData.h"
+
 #include"GeneralCheck.h"
 
 namespace FireBirdTest {

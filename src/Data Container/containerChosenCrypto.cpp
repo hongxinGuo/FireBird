@@ -3,6 +3,7 @@
 #include"SetWorldChosenCrypto.h"
 #include "containerChosenCrypto.h"
 #include"FinnhubCrypto.h"
+#include "SystemData.h"
 
 CContainerChosenCrypto::CContainerChosenCrypto() {
 	CContainerChosenCrypto::Reset();

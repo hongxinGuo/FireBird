@@ -1,6 +1,8 @@
 #include "pch.h"
+
 #include "ContainerTiingoCryptoSymbol.h"
 
+#include "ContainerVirtualStock.h"
 #include "InfoReport.h"
 
 CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() {

@@ -1,5 +1,7 @@
 #pragma once
 
+#include"gmock/gmock.h"
+
 import DataSource.InquireEngine;
 
 namespace FireBirdTest {

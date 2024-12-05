@@ -1,20 +1,17 @@
 #pragma once
 
-#ifndef __AFXWIN_H__
-#error"在包含此文件之前必须先包含“stdafx.h”文件以生成 PCH 文件"
-#endif
-
 #if _MSVC_LANG < 202002L
 #error "本系统使用C++20及以上标准"
 #endif
 
 #include <semaphore>
+#include<map>
+#include<string>
+#include<memory>
 using std::binary_semaphore;
-
-#include"SystemConstantChinaMarket.h"
-#include"SystemConfiguration.h"
-#include"SystemData.h"
-#include"SystemMessage.h"
+using std::map;
+using std::string;
+using std::shared_ptr;
 
 #include "spdlog/sinks/daily_file_sink.h"
 #define __MAX_BACKGROUND_WORKING_THREAD__ 32

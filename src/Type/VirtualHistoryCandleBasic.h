@@ -9,9 +9,6 @@
 
 #include"VirtualSetHistoryCandleBasic.h"
 
-#include<gsl/gsl>
-using gsl::not_null;
-
 #include<memory>
 
 class CVirtualHistoryCandleBasic {
@@ -19,9 +16,9 @@ public:
 	CVirtualHistoryCandleBasic();
 	virtual ~CVirtualHistoryCandleBasic() = default;;
 
-	void SaveBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) const; // 存储基本数据
-	void AppendBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) const;
-	void LoadBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic);
+	void SaveBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const; // 存储基本数据
+	void AppendBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const;
+	void LoadBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic);
 
 	virtual int GetRatio() const = 0;
 

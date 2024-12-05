@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"globedef.h"
+
 #include "TimeConvert.h"
 
 long GetDayOfWeek() {

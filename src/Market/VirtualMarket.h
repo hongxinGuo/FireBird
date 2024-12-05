@@ -84,7 +84,7 @@ public:
 
 	long GetLastTradeDate() noexcept { return CalculateLastTradeDate(); }// 当前交易日的前一个交易日（从昨日开市时间至本日开市时间）
 	long GetCurrentTradeDate() noexcept { return CalculateCurrentTradeDate(); }// 当前交易日（从本日九点半至次日开市时间）
-	long GetNextTradeDate() noexcept { return CalculateNextTradeDate(); }// 下一个交易日（从次日开市时间至后日开市时间）
+	long GetNextTradeDate() const noexcept { return CalculateNextTradeDate(); }// 下一个交易日（从次日开市时间至后日开市时间）
 
 	time_t TransferToUTCTime(tm* tmMarketTime) const; // 将市场时间结构转化为UTC时间
 	time_t TransferToUTCTime(long lMarketDate, long lMarketTime = 150000) const; // 将市场时间结构转化为UTC时间

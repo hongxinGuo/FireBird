@@ -8,6 +8,7 @@
 #include"pch.h"
 
 #include"SystemConfiguration.h"
+#include"SystemMessage.h"
 
 #include"FinnhubInquiryType.h"
 #include"FinnhubInaccessibleExchange.h"

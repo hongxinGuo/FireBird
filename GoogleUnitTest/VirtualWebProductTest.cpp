@@ -1,9 +1,11 @@
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+
+#include"GeneralCheck.h"
 #include "ChinaMarket.h"
 #include "FinnhubInaccessibleExchange.h"
 #include "FinnhubInquiryType.h"
-#include"GeneralCheck.h"
 #include "ProductFinnhub.h"
 
 #include"WorldMarket.h"

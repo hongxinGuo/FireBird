@@ -1,8 +1,10 @@
-﻿// MainFrm.cpp: CMainFrame 类的实现
-#include"pch.h"
+﻿#include"pch.h"
+
+#include"globedef.h"
+
+#include"SystemMessage.h"
 
 #include"ThreadStatus.h"
-#include"Thread.h"
 
 #include "FireBird.h"
 #include "MainFrm.h"
@@ -24,10 +26,11 @@
 #include <ixwebsocket/IXNetSystem.h>
 
 #include "ConvertToString.h"
-import simdjson.GetValue;
 #include "TimeConvert.h"
 
 #include"ScheduleTask.h"
+#include "Thread.h"
+import simdjson.GetValue;
 
 #undef max
 #include"concurrencpp/concurrencpp.h"

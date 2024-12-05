@@ -5,6 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include"VirtualRecordset.h"
+#include"SystemConstantChinaMarket.h"
 
 class CVirtualSetStockSymbol : public CVirtualRecordset {
 public:

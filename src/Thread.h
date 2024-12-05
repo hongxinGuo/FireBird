@@ -10,33 +10,34 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
+#undef max //Note 包含concurrencpp.h之前，需要undefined max
+#include"concurrencpp/concurrencpp.h"
 
 #include"RSReference.h"
 
+class CChinaStock;
+typedef shared_ptr<CChinaStock> CChinaStockPtr;
 class CChinaMarket;
 typedef shared_ptr<CChinaMarket> CChinaMarketPtr;
 
-#undef max //Note 包含concurrencpp.h之前，需要undefined max
-#include"concurrencpp/concurrencpp.h"
+using std::vector;
 using namespace concurrencpp;
 
 extern concurrencpp::runtime gl_runtime;
 extern concurrencpp::runtime gl_backgroundRuntime;
 extern int gl_concurrency_level; // 并行计算允许最大数量
 
-using gsl::not_null;
-
 // 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDay执行具体任务，最多生成8个工作线程。
-UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCalculatingDate); // 此工作线程返回值为11, 参数为当前最后计算日期
+UINT ThreadBuildDayLineRS(const CChinaMarketPtr& pMarket, long startCalculatingDate); // 此工作线程返回值为11, 参数为当前最后计算日期
 // 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDate执行具体任务，最多生成8个工作线程。
-UINT ThreadBuildWeekLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCalculatingDate); // 此工作线程返回值为30, 参数为当前最后计算日期
+UINT ThreadBuildWeekLineRS(const CChinaMarketPtr& pMarket, long startCalculatingDate); // 此工作线程返回值为30, 参数为当前最后计算日期
 
 //各种计算用工作线程
 // 计算10日强股票集（使用外部pRef提供的参数）
 UINT ThreadChoice10RSStrongStockSet(CRSReference* pRef, int iIndex); // 此线程返回值为103
 // 计算股票的10日强势与否
-UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, const CRSReference* pRef, const not_null<CChinaStockPtr>& pStock); // 此线程返回值为104
+UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, const CRSReference* pRef, const CChinaStockPtr& pStock); // 此线程返回值为104
 // 计算股票的10日强势与否1
-UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, const not_null<CChinaStockPtr>& pStock); // 此线程返回值为105
+UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, const CChinaStockPtr& pStock); // 此线程返回值为105
 // 计算股票的10日强势与否2
-UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, const not_null<CChinaStockPtr>& pStock); // 此线程返回值为106
+UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, const CChinaStockPtr& pStock); // 此线程返回值为106

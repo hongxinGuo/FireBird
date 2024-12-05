@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"globedef.h"
+
 #include"TimeConvert.h"
 #include "VirtualMarket.h"
 #include"VirtualDataSource.h"

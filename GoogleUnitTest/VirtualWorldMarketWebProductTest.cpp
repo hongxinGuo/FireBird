@@ -1,9 +1,12 @@
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+
+#include"GeneralCheck.h"
+
 #include"VirtualWorldMarketWebProduct.h"
 #include "WorldMarket.h"
 #include "FinnhubInaccessibleExchange.h"
-#include"GeneralCheck.h"
 
 using namespace testing;
 

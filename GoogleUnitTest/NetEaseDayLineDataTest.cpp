@@ -1,5 +1,7 @@
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+
 #include"GeneralCheck.h"
 
 #include"ChinaMarket.h" // 网易日线历史数据的读取在CChinaMarket类中。

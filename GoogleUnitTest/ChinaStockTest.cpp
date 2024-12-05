@@ -1,9 +1,12 @@
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+#include"gmock/gmock.h"
+#include"ChinaStock.h"
+
 #include"GeneralCheck.h"
 #include"TimeConvert.h"
 
-#include"ChinaStock.h"
 #include"ChinaMarket.h"
 #include"WebRTData.h"
 #include"DayLineWebData.h"

@@ -1,5 +1,7 @@
 #pragma once
 
+#include"gmock/gmock.h"
+
 #include"NeteaseRTDataSource.h"
 
 namespace testing {

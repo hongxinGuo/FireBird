@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include"globedef.h"
+
 #include"jsonParse.h"
 #include"JsonGetValue.h"
 

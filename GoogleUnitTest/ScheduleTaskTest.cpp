@@ -1,10 +1,10 @@
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+
 #include"GeneralCheck.h"
 
 #include"JsonParse.h"
-#include "WebData.h"
-#include "WebRTData.h"
 
 namespace FireBirdTest {
 	class ScheduleTaskTest : public testing::Test {

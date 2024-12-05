@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"SystemConfiguration.h"
+
 #include"FinnhubInquiryType.h"
 
 CFinnhubInquiryType::CFinnhubInquiryType() {

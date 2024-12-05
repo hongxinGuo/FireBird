@@ -1,7 +1,9 @@
 #pragma once
-#include "MarketTaskQueue.h"
 
-enum NET_ERROR {
+#include"concurrentqueue/concurrentqueue.h"
+using namespace moodycamel;
+
+enum {
 	ERROR_INTERNET_OUT_OF_HANDLES = 12001,
 	ERROR_INTERNET_TIMEOUT,
 	ERROR_INTERNET_EXTENDED_ERROR,
@@ -71,9 +73,6 @@ extern map<long, string> gl_mapHTTPStatusCode;
 extern map<long, string> gl_mapNetError;
 
 class COutputList;
-
-#include"concurrentqueue/concurrentqueue.h"
-using namespace moodycamel;
 
 using std::atomic_long;
 

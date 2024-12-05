@@ -9,6 +9,11 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#include"globedef.h"
+
+#include"SystemConfiguration.h"
+#include"SystemMessage.h"
+
 #include "ThreadStatus.h"
 
 CThreadStatus::CThreadStatus() {

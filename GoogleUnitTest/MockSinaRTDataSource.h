@@ -1,5 +1,7 @@
 #pragma once
 
+#include"gmock/gmock.h"
+
 #include"SinaRTDataSource.h"
 
 namespace testing {

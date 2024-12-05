@@ -17,7 +17,13 @@
     <ClInclude Include="..\src\accessory\JsonGetValue.h" />
     <ClInclude Include="..\src\accessory\JsonParse.h" />
     <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h" />
-    <ClInclude Include="..\src\accessory\RSReference.h" />
+    <ClInclude Include="..\src\accessory\RSReference.h">
+      <FileType>Document</FileType>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
+    </ClInclude>
     <ClInclude Include="..\src\accessory\SaveAndLoad.h" />
     <ClCompile Include="..\src\accessory\simdjsonGetValue.ixx">
       <FileType>Document</FileType>
@@ -190,12 +196,24 @@
     <ClInclude Include="..\src\System\Inaccessible.h" />
     <ClInclude Include="..\src\System\ScheduleTask.h" />
     <ClInclude Include="..\src\System\SystemConfiguration.h" />
-    <ClInclude Include="..\src\System\SystemConstantChinaMarket.h" />
+    <ClInclude Include="..\src\System\SystemConstantChinaMarket.h">
+      <FileType>Document</FileType>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
+    </ClInclude>
     <ClInclude Include="..\src\System\SystemData.h" />
     <ClInclude Include="..\src\System\SystemMessage.h" />
     <ClInclude Include="..\src\System\TiingoInaccessibleStock.h" />
     <ClInclude Include="..\src\targetver.h" />
-    <ClInclude Include="..\src\Thread.h" />
+    <ClInclude Include="..\src\Thread.h">
+      <FileType>Document</FileType>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
+    </ClInclude>
     <ClInclude Include="..\src\Type\America market\Country.h" />
     <ClInclude Include="..\src\Type\America market\EconomicCalendar.h" />
     <ClInclude Include="..\src\Type\America market\EPSSurprise.h" />

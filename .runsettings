@@ -56,7 +56,6 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>^ATL::.*</Function>
 								<Function>^moodycamel::.*</Function>
 								<Function>^nlohmann::.*</Function>
-								<Function>^gsl::.*</Function>
 								<Function>^concurrencpp::.*</Function>
 								<Function>^FireBirdTest::.*</Function>
 								<Function>.*::__GetTestMethodInfo.*</Function>

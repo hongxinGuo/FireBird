@@ -2,6 +2,8 @@
 //
 #include"pch.h"
 
+#include"globedef.h"
+
 #include "FireBird.h"
 
 #include "MainFrm.h"

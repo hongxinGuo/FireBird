@@ -1,6 +1,8 @@
 #pragma once
 
-#include"FinnhubForexSymbol.h"
+#include"gmock/gmock.h"
+
+#include "FinnhubForex.h"
 
 namespace testing {
 	class CMockFinnhubForexSymbol final : public CFinnhubForex {

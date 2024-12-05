@@ -10,6 +10,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
+#include"SystemMessage.h"
+
 #include"ChinaStockCodeConverter.h"
 #include "TengxunDayLineDataSource.h"
 #include"ProductTengxunDayLine.h"

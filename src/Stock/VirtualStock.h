@@ -1,6 +1,9 @@
 #pragma once
 
+#include"SystemConfiguration.h"
+
 #include"VirtualSetStockSymbol.h"
+#include"SystemConstantChinaMarket.h"
 
 using std::shared_ptr;
 using std::atomic_bool;

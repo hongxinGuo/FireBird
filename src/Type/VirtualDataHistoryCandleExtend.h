@@ -11,6 +11,7 @@
 #include "VirtualSetHistoryCandleBasic.h"
 
 using std::atomic_bool;
+using std::vector;
 
 class CVirtualDataHistoryCandleExtend {
 public:

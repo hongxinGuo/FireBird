@@ -4,6 +4,8 @@
 #include <concurrencpp/timers/timer.h>
 using concurrencpp::timer;
 
+#include<map>
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 所有需要定时调度得任务，皆有相应得任务号，在timer数组gl_aTimer中保留对应得位置。

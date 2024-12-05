@@ -1,5 +1,7 @@
 #include"pch.h"
 
+//#include"gtest/gtest.h"
+
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 #include"MockChinaStock.h"

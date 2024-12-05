@@ -5,7 +5,11 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include"Thread.h"
+//#include"gtest/gtest.h"
+
+#include"SystemMessage.h"
+
+#include "Thread.h"
 #include"TimeConvert.h"
 
 #include"ChinaStock.h"
