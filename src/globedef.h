@@ -16,8 +16,6 @@ using std::binary_semaphore;
 #include"SystemData.h"
 #include"SystemMessage.h"
 
-#include"ClassDeclaration.h"
-
 #include "spdlog/sinks/daily_file_sink.h"
 #define __MAX_BACKGROUND_WORKING_THREAD__ 32
 

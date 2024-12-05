@@ -100,7 +100,8 @@
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <CompileAsManaged>false</CompileAsManaged>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <ControlFlowGuard>
+      </ControlFlowGuard>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <CompileAs>CompileAsCpp</CompileAs>
       <SupportJustMyCode>true</SupportJustMyCode>

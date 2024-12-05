@@ -5,6 +5,11 @@
 ///
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
+class CVirtualWebProduct;
+typedef shared_ptr<CVirtualWebProduct> CVirtualProductWebDataPtr;
+class CVirtualMarket;
+typedef shared_ptr<CVirtualMarket> CVirtualMarketPtr;
+//typedef weak_ptr<CVirtualMarket> CVirtualMarketWeakPtr;
 
 class CVirtualDataFactory {
 public:

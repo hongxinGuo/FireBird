@@ -1,7 +1,10 @@
 #pragma once
 
 #include"VirtualWebProduct.h"
+
 import DataSource.InquireEngine;
+class CVirtualWebProduct;
+typedef shared_ptr<CVirtualWebProduct> CVirtualProductWebDataPtr;
 
 enum enum_ErrorMessageData {
 	ERROR_NO_ERROR__ = 0,

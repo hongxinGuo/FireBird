@@ -6,6 +6,9 @@
 #pragma once
 #include "VirtualWebProduct.h"
 
+class CChinaMarket;
+typedef shared_ptr<CChinaMarket> CChinaMarketPtr;
+
 class CVirtualChinaMarketWebProduct : public CVirtualWebProduct {
 public:
 	CVirtualChinaMarketWebProduct() = default;
