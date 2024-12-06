@@ -25,7 +25,7 @@ import FireBird.Thread;
 #include "QuandlDataSource.h"
 #include "ThreadStatus.h"
 #include "TiingoDataSource.h"
-#include "TiingoInaccessibleStock.h"
+import FireBird.Tiingo.InaccessibleStock; 
 #include "TimeConvert.h"
 
 CWorldMarket::CWorldMarket() {

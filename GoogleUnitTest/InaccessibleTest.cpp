@@ -5,7 +5,7 @@
 import System.Configuration;
 
 #include"GeneralCheck.h"
-#include"Inaccessible.h"
+import FireBird.System.Inaccessible;
 
 namespace FireBirdTest {
 	class CInaccessibleTest : public testing::Test {

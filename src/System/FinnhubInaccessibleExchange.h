@@ -8,11 +8,11 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"FinnhubInquiryType.h"
+import FireBird.FinnhubInquiryType;
 #include"nlohmann/json.hpp"
 #include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
-#include "Inaccessible.h"
+import FireBird.System.Inaccessible;
 
 using CInaccessibleExchangesPtr = shared_ptr<CInaccessible>;
 

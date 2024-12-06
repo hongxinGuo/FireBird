@@ -3,7 +3,7 @@
 #include"SystemData.h"
 #include"SystemMessage.h"
 
-#include"FinnhubInquiryType.h"
+import FireBird.FinnhubInquiryType;
 
 #include "TiingoFactory.h"
 

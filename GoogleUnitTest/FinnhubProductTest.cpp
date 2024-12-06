@@ -6,7 +6,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubInquiryType.h"
+import FireBird.FinnhubInquiryType;
 
 #include"ProductFinnhub.h"
 #include"finnhubInaccessibleExchange.h"

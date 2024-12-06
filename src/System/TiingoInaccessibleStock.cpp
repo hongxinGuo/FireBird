@@ -2,11 +2,14 @@
 
 #include"globedef.h"
 
+#include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
+#include"nlohmann/json.hpp"
+
 import System.Configuration;
 
-#include"FinnhubInquiryType.h"
+import FireBird.FinnhubInquiryType;
 
-#include "TiingoInaccessibleStock.h"
+import FireBird.Tiingo.InaccessibleStock;
 
 std::string Test_gl_sTiingoInaccessibleStock = R"(
 { "UpdateDate" : 20221205,

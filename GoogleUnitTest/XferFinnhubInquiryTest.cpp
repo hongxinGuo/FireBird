@@ -4,7 +4,7 @@
 
 #include"WorldMarket.h"
 #include"GeneralCheck.h"
-#include"FinnhubInquiryType.h"
+import FireBird.FinnhubInquiryType;
 
 namespace FireBirdTest {
 	class CXferFinnhubInquiryTest : public ::testing::Test {

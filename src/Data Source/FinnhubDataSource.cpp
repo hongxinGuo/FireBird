@@ -10,7 +10,7 @@
 import System.Configuration;
 #include"SystemMessage.h"
 
-#include"FinnhubInquiryType.h"
+import FireBird.FinnhubInquiryType;
 #include"FinnhubInaccessibleExchange.h"
 
 #include "FinnhubDataSource.h"

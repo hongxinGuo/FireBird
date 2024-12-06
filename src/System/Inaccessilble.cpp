@@ -1,8 +1,8 @@
 #include "pch.h"
 
-#include"FinnhubInquiryType.h"
+import FireBird.FinnhubInquiryType;
 
-#include "Inaccessible.h"
+import FireBird.System.Inaccessible;
 
 std::string Test_gl_sFinnhubInaccessibleSymbol = R"(
 { "UpdateDate" : 20221205,
