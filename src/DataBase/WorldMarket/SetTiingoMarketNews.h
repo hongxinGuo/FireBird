@@ -1,7 +1,7 @@
 // CSetTiingoMarketNews.h : CSetTiingoMarketNews µÄÉùÃ÷
 
 #pragma once
-#include"VirtualRecordset.h"
+import FireBird.Set.VirtualRecordset;
 
 class CSetTiingoMarketNews : public CVirtualRecordset {
 public:

@@ -1,6 +1,6 @@
 // CSetWorldChosenForex.h : CSetChinaChosenForex µÄÉùÃ÷
 #pragma once
-#include"VirtualSetChosenStake.h"
+import FireBird.Set.VirtualChosenStake;
 
 class CSetWorldChosenForex : public CVirtualSetChosenStake {
 public:

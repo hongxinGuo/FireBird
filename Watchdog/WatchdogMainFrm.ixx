@@ -1,8 +1,8 @@
 // MainFrm.h : interface of the CWatchdogMainFrame class
 //
 
-module;
 #include"pch.h"
+module;
 export module Watchdog.MainFrm;
 
 import Watchdog.FileView;

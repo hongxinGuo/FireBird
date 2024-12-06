@@ -1,7 +1,7 @@
 // SetFinnhubStock.h : CSetFinnhubStock µÄÉùÃ÷
 
 #pragma once
-#include"VirtualRecordset.h"
+import FireBird.Set.VirtualRecordset;
 #include"SystemConstantChinaMarket.h"
 
 class CSetFinnhubStock : public CVirtualRecordset {

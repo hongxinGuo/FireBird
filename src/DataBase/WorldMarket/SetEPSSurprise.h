@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include"VirtualRecordset.h"
+import FireBird.Set.VirtualRecordset;
 
 class CSetEPSSurprise : public CVirtualRecordset {
 public:

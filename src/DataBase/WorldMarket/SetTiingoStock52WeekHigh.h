@@ -1,7 +1,7 @@
 // CSetTiingoStock52WeekHigh.h : CSetTiingoStock52WeekHigh µÄÉùÃ÷
 #pragma once
 
-#include"VirtualRecordset.h"
+import FireBird.Set.VirtualRecordset;
 
 class CSetTiingoStock52WeekHigh : public CVirtualRecordset {
 public:

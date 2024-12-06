@@ -11,7 +11,7 @@
 
 #include"SetChinaChosenStock.h"
 #include"SetWorldChosenForex.h"
-#include"SetWorldChosenCrypto.h"
+import FireBird.Set.WorldChosenCrypto;
 #include"SetWorldChosenStock.h"
 
 #include"SetChinaStockSymbol.h"

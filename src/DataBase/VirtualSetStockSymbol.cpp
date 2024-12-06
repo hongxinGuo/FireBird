@@ -2,7 +2,7 @@
 
 #include"pch.h"
 
-#include "VirtualSetStockSymbol.h"
+import FireBird.Set.VirtualStockSymbol;
 
 CVirtualSetStockSymbol::CVirtualSetStockSymbol(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {

@@ -6,7 +6,7 @@
 
 #include"WorldMarket.h"
 
-#include"VirtualRecordset.h"
+import FireBird.Set.VirtualRecordset;
 
 using namespace testing;
 

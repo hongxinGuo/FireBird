@@ -276,35 +276,11 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineExtendInfo.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenCrypto.h">
-      <Filter>头文件\database\WorldMarket</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenForex.h">
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h">
       <Filter>头文件\database\WorldMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\VirtualRecordset.h">
-      <Filter>头文件\database</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\VirtualSetChosenStake.h">
-      <Filter>头文件\database</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\VirtualSetExchange.h">
-      <Filter>头文件\database</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandle.h">
-      <Filter>头文件\database</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandleBasic.h">
-      <Filter>头文件\database</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandleExtend.h">
-      <Filter>头文件\database</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\VirtualSetStockSymbol.h">
-      <Filter>头文件\database</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductDummy.h">
       <Filter>头文件\Factory-Product</Filter>
@@ -1450,6 +1426,30 @@
     </ClCompile>
     <ClCompile Include="..\src\System\Inaccessible.ixx">
       <Filter>头文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\VirtualRecordset.ixx">
+      <Filter>头文件\database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\VirtualSetStockSymbol.ixx">
+      <Filter>头文件\database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandleBasic.ixx">
+      <Filter>头文件\database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandleExtend.ixx">
+      <Filter>头文件\database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandle.ixx">
+      <Filter>头文件\database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\VirtualSetExchange.ixx">
+      <Filter>头文件\database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\VirtualSetChosenStake.ixx">
+      <Filter>头文件\database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetWorldChosenCrypto.ixx">
+      <Filter>头文件\database\WorldMarket</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

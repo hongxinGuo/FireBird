@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include"VirtualSetHistoryCandleBasic.h"
+import FireBird.Set.VirtualHistoryCandleBasic;
 
 class CSetForexDayLine final : public CVirtualSetHistoryCandleBasic {
 public:

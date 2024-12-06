@@ -1,10 +1,6 @@
-// VirtualSetHistoryCandle.cpp : CVirtualSetHistoryCandle 类的实现
-
-// CVirtualSetHistoryCandle 实现
-
 #include"pch.h"
 
-#include "VirtualSetHistoryCandle.h"
+import FireBird.Set.VirtualHistoryCandle;
 
 CVirtualSetHistoryCandle::CVirtualSetHistoryCandle(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {

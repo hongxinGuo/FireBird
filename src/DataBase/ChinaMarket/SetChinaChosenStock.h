@@ -1,7 +1,7 @@
 // SetChinaChosenStock.h : CSetChinaChosenStock µÄÉùÃ÷
 
 #pragma once
-#include"VirtualSetChosenStake.h"
+import FireBird.Set.VirtualChosenStake;
 
 class CSetChinaChosenStock : public CVirtualSetChosenStake {
 public:

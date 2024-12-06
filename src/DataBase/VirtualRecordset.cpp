@@ -7,8 +7,7 @@
 #include"pch.h"
 
 import System.Configuration;
-
-#include "VirtualRecordset.h"
+import FireBird.Set.VirtualRecordset;
 
 CString CVirtualRecordset::GetSchemaConnect() const {
 	if (gl_systemConfiguration.IsWorkingMode()) { // 工作时使用系统配置文件中的用户名和密码
