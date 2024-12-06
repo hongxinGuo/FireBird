@@ -1,5 +1,4 @@
-#include "framework.h"
-#include"afxwin.h"
+#include"pch.h"
 
 #include "Resource.h"
 import Watchdog.OutputWnd;

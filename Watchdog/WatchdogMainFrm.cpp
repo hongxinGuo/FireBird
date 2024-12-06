@@ -1,7 +1,6 @@
 // MainFrm.cpp : implementation of the CWatchdogMainFrame class
 //
-
-#include "framework.h"
+#include"pch.h"
 
 #include"afxmsg_.h"
 #include "resource.h"

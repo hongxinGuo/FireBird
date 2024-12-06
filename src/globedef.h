@@ -1,9 +1,5 @@
 #pragma once
 
-#if _MSVC_LANG < 202002L
-#error "本系统使用C++20及以上标准"
-#endif
-
 #include "spdlog/sinks/daily_file_sink.h"
 
 #include <semaphore>
