@@ -9,7 +9,7 @@
 
 #include"GeneralCheck.h"
 
-#include "Thread.h"
+import FireBird.Thread;
 
 using namespace testing;
 

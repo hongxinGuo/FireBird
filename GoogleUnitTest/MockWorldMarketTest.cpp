@@ -11,7 +11,7 @@
 
 #include"GeneralCheck.h"
 
-#include "Thread.h"
+import FireBird.Thread;
 
 #include"MockWorldMarket.h"
 

@@ -2,7 +2,7 @@
 
 ////#include"gtest/gtest.h"
 
-#include "Thread.h"
+import FireBird.Thread;
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"

@@ -13,7 +13,7 @@ enum {
 	NO_TRANSACTION_ = 8
 };
 
-#include"Thread.h"
+import FireBird.Thread;
 
 #include "WebRTData.h"
 

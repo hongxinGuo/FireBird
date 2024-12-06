@@ -136,11 +136,6 @@ using std::array;
 using std::shared_ptr;
 using std::string_view;
 
-class CWebData;
-using CWebDataPtr = std::shared_ptr<CWebData>;
-class CWebRTData;
-using CWebRTDataPtr = std::shared_ptr<CWebRTData>;
-
 class CWebRTData final {
 public:
 	// 初始化
@@ -240,3 +235,5 @@ protected:
 	// 非存储数据
 	bool m_fActive; // 本股票是否存在有效实时数据
 };
+
+using CWebRTDataPtr = shared_ptr<CWebRTData>;

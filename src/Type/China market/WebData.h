@@ -87,4 +87,4 @@ protected:
 	CString m_strErrorMessage; // ´íÎóĞÅÏ¢
 };
 
-using CWebDataPtr = shared_ptr<CWebData>;
+using CWebDataPtr = std::shared_ptr<CWebData>;

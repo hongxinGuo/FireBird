@@ -34,7 +34,7 @@
 #include "ChinaMarket.h"
 #include "WorldMarket.h"
 
-#include "Thread.h"
+import FireBird.Thread;
 #include"threadStatus.h"
 
 #undef max

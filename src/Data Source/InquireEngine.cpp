@@ -16,7 +16,7 @@
 
 import DataSource.InquireEngine;
 
-#include "Thread.h"
+import FireBird.Thread;
 
 #include "InfoReport.h"
 

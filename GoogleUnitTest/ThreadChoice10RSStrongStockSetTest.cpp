@@ -5,7 +5,7 @@
 #include"GeneralCheck.h"
 #include"MockChinaMarket.h"
 
-#include"thread.h"
+import FireBird.Thread;
 
 using namespace testing;
 

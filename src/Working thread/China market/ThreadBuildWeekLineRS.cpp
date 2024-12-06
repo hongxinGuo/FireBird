@@ -9,9 +9,13 @@
 
 #include"globedef.h"
 
+#undef max //Note 包含concurrencpp.h之前，需要undefined max
+#include"concurrencpp/concurrencpp.h"
+using namespace concurrencpp;
+
 #include"SystemMessage.h"
 
-#include "Thread.h"
+import FireBird.Thread;
 #include"TimeConvert.h"
 #include"ThreadStatus.h"
 #include"ChinaMarket.h"

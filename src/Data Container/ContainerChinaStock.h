@@ -3,7 +3,7 @@
 #include"ChinaStock.h"
 #include"ContainerVirtualStock.h"
 
-#include"Thread.h"
+import FireBird.Thread;
 
 class CContainerChinaStock : public CContainerVirtualStock {
 public:

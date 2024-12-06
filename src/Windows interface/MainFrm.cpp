@@ -29,7 +29,7 @@
 #include "TimeConvert.h"
 
 #include"ScheduleTask.h"
-#include "Thread.h"
+import FireBird.Thread;
 import simdjson.GetValue;
 
 #undef max

@@ -13,7 +13,10 @@
 #include"SystemMessage.h"
 
 #include"ThreadStatus.h"
-#include "Thread.h"
+#undef max //Note 包含concurrencpp.h之前，需要undefined max
+#include"concurrencpp/concurrencpp.h"
+using namespace concurrencpp;
+import FireBird.Thread;
 
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
