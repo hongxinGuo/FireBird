@@ -1,8 +1,8 @@
 #include"pch.h"
 
-////#include"gtest/gtest.h"
+//#include"gtest/gtest.h"
 
-#include"SystemConfiguration.h"
+import System.Configuration;
 
 #include"GeneralCheck.h"
 

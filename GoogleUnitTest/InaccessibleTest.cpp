@@ -2,7 +2,7 @@
 
 ////#include"gtest/gtest.h"
 
-#include"SystemConfiguration.h"
+import System.Configuration;
 
 #include"GeneralCheck.h"
 #include"Inaccessible.h"

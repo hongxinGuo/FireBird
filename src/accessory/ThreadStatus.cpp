@@ -11,7 +11,7 @@
 
 #include"globedef.h"
 
-#include"SystemConfiguration.h"
+import System.Configuration;
 #include"SystemMessage.h"
 
 #include "ThreadStatus.h"

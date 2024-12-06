@@ -330,9 +330,6 @@
     <ClInclude Include="..\src\Stock\VirtualStock.h">
       <Filter>头文件\Stock</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\System\SystemConfiguration.h">
-      <Filter>头文件\System</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\System\SystemData.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
@@ -1450,6 +1447,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Source\InquireEngine.ixx">
       <Filter>头文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\System\SystemConfiguration.ixx">
+      <Filter>头文件\System</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

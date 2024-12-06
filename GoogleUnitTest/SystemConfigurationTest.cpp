@@ -9,6 +9,7 @@
 #include"TengxunRTDataSource.h"
 
 #include"GeneralCheck.h"
+#include <spdlog/common.h>
 
 namespace FireBirdTest {
 	class CSystemConfigurationTest : public testing::Test {

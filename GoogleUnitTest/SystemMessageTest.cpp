@@ -9,7 +9,7 @@
 
 ////#include"gtest/gtest.h"
 
-#include"SystemConfiguration.h"
+import System.Configuration;
 #include"SystemMessage.h"
 
 #include"GeneralCheck.h"
