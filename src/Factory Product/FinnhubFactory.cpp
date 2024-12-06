@@ -3,7 +3,7 @@
 #include"SystemMessage.h"
 
 #include"FinnhubStock.h"
-#include"FinnhubInquiryType.h"
+import FireBird.FinnhubInquiryType;
 
 #include"ProductFinnhubCompanyProfile.h"
 #include"ProductFinnhubCompanyProfileConcise.h"

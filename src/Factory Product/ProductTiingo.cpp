@@ -2,9 +2,9 @@
 
 #include"ProductTiingo.h"
 
-#include "FinnhubInquiryType.h"
+import FireBird.FinnhubInquiryType;
 #include "TiingoDataSource.h"
-#include"TiingoInaccessibleStock.h"
+import FireBird.Tiingo.InaccessibleStock; 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //

@@ -2,7 +2,7 @@
 
 import System.Configuration;
 
-#include"FinnhubInquiryType.h"
+import FireBird.FinnhubInquiryType;
 
 CFinnhubInquiryType::CFinnhubInquiryType() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

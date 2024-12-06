@@ -178,7 +178,13 @@
     <ClInclude Include="..\src\Factory Product\VirtualDataFactory.h" />
     <ClInclude Include="..\src\Factory Product\VirtualWebProduct.h" />
     <ClInclude Include="..\src\Factory Product\VirtualWorldMarketWebProduct.h" />
-    <ClInclude Include="..\src\FinnhubInquiryType.h" />
+    <ClCompile Include="..\src\FinnhubInquiryType.ixx">
+      <FileType>Document</FileType>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\globedef.h" />
     <ClInclude Include="..\src\Market\ChinaMarket.h" />
     <ClInclude Include="..\src\Market\MarketTask.h" />
@@ -195,7 +201,11 @@
     <ClInclude Include="..\src\Stock\VirtualStock.h" />
     <ClInclude Include="..\src\Stock\FinnhubStock.h" />
     <ClInclude Include="..\src\System\FinnhubInaccessibleExchange.h" />
-    <ClInclude Include="..\src\System\Inaccessible.h" />
+    <ClCompile Include="..\src\System\Inaccessible.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\System\ScheduleTask.h" />
     <ClCompile Include="..\src\System\SystemConfiguration.ixx">
       <FileType>Document</FileType>
@@ -211,7 +221,11 @@
     </ClInclude>
     <ClInclude Include="..\src\System\SystemData.h" />
     <ClInclude Include="..\src\System\SystemMessage.h" />
-    <ClInclude Include="..\src\System\TiingoInaccessibleStock.h" />
+    <ClCompile Include="..\src\System\TiingoInaccessibleStock.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\targetver.h" />
     <ClCompile Include="..\src\Thread.ixx">
       <FileType>Document</FileType>
@@ -446,7 +460,7 @@
     <ClCompile Include="..\src\Stock\VirtualStock.cpp" />
     <ClCompile Include="..\src\Stock\FinnhubStock.cpp" />
     <ClCompile Include="..\src\System\FinnhubInaccessibleExchange.cpp" />
-    <ClCompile Include="..\src\System\Inaccessilbe.cpp" />
+    <ClCompile Include="..\src\System\Inaccessilble.cpp" />
     <ClCompile Include="..\src\System\ScheduleTask.cpp" />
     <ClCompile Include="..\src\System\SystemConfiguration.cpp" />
     <ClCompile Include="..\src\System\SystemMessage.cpp" />

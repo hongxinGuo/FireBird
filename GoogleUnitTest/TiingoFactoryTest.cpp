@@ -5,7 +5,7 @@
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
-#include"FinnhubInquiryType.h"
+import FireBird.FinnhubInquiryType;
 
 #include"TiingoFactory.h"
 

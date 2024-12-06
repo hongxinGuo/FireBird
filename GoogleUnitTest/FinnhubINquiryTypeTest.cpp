@@ -4,7 +4,7 @@
 
 #include"WorldMarket.h"
 
-#include"FinnhubInquiryType.h"
+import FireBird.FinnhubInquiryType;
 
 using namespace testing;
 

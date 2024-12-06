@@ -423,9 +423,6 @@
     <ClInclude Include="..\src\targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\FinnhubInquiryType.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\nlohmannJsonDeclaration.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -782,12 +779,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Stock\FinnhubStock.h">
       <Filter>头文件\Stock\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\System\Inaccessible.h">
-      <Filter>头文件\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\System\TiingoInaccessibleStock.h">
-      <Filter>头文件\System</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
@@ -1394,7 +1385,7 @@
     <ClCompile Include="..\src\Stock\FinnhubStock.cpp">
       <Filter>源文件\Stock\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\System\Inaccessilbe.cpp">
+    <ClCompile Include="..\src\System\Inaccessilble.cpp">
       <Filter>源文件\System</Filter>
     </ClCompile>
     <ClCompile Include="..\src\System\TiingoInaccessibleStock.cpp">
@@ -1450,6 +1441,15 @@
     </ClCompile>
     <ClCompile Include="..\src\Thread.ixx">
       <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\System\TiingoInaccessibleStock.ixx">
+      <Filter>头文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\FinnhubInquiryType.ixx">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\System\Inaccessible.ixx">
+      <Filter>头文件\System</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
