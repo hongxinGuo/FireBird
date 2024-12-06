@@ -1,6 +1,6 @@
 #include"pch.h"
 
-//#include"gtest/gtest.h"
+////#include"gtest/gtest.h"
 
 #include"ThreadStatus.h"
 #include"ChinaMarket.h"

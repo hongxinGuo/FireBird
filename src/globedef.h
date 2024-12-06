@@ -4,6 +4,8 @@
 #error "本系统使用C++20及以上标准"
 #endif
 
+#include "spdlog/sinks/daily_file_sink.h"
+
 #include <semaphore>
 #include<map>
 #include<string>
@@ -13,7 +15,6 @@ using std::map;
 using std::string;
 using std::shared_ptr;
 
-#include "spdlog/sinks/daily_file_sink.h"
 #define __MAX_BACKGROUND_WORKING_THREAD__ 32
 
 extern HANDLE gl_hFireBirdMutex;

@@ -10,8 +10,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
-#undef max //Note 包含concurrencpp.h之前，需要undefined max
-#include"concurrencpp/concurrencpp.h"
 
 #include"RSReference.h"
 
@@ -21,6 +19,8 @@ class CChinaMarket;
 typedef shared_ptr<CChinaMarket> CChinaMarketPtr;
 
 using std::vector;
+#undef max //Note 包含concurrencpp.h之前，需要undefined max
+#include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
 extern concurrencpp::runtime gl_runtime;

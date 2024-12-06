@@ -27,8 +27,9 @@
     <ClInclude Include="..\src\accessory\SaveAndLoad.h" />
     <ClCompile Include="..\src\accessory\simdjsonGetValue.ixx">
       <FileType>Document</FileType>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClInclude Include="..\src\accessory\ThreadStatus.h" />
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
@@ -62,8 +63,9 @@
     <ClInclude Include="..\src\Data Container\VirtualContainer.h" />
     <ClCompile Include="..\src\Data Source\InquireEngine.ixx">
       <FileType>Document</FileType>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h" />
     <ClInclude Include="..\src\Data Source\FinnhubDataSource.h" />

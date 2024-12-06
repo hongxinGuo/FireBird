@@ -4,14 +4,10 @@
 // However, files listed here are ALL re-compiled if any one of them is updated between builds.
 // Do not add files here that you will be updating frequently as this negates the performance advantage.
 
-#ifndef PCH_H_INCLUDE_
-#define PCH_H_INCLUDE_
+#ifndef PCH_H
+#define PCH_H
 
-#include"stdafx.h"
+// add headers that you want to pre-compile here
+#include"..\src\stdafx.h"
 
-using namespace std;
-
-#include"gtest/gtest.h"
-#include"gmock/gmock.h"
-
-#endif
+#endif //PCH_H

@@ -1,5 +1,6 @@
+#include"pch.h"
 module;
-#include"afxinet.h"
+#include <afxinet.h>
 #include"concurrentqueue/concurrentqueue.h"
 #include"VirtualWebProduct.h"
 export module DataSource.InquireEngine;
