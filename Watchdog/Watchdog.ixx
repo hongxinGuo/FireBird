@@ -1,13 +1,8 @@
 // Watchdog.h : main header file for the Watchdog application
 //
 module;
+#include"pch.h"
 #include <afxwinappex.h>
-
-#ifndef __AFXWIN_H__
-	#error "include 'pch.h' before including this file for PCH"
-#endif
-
-
 #include "resource.h"       // main symbols
 export module Watchdog.App;
 

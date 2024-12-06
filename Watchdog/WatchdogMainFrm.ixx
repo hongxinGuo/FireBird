@@ -2,7 +2,7 @@
 //
 
 module;
-#include"stdafx.h"
+#include"pch.h"
 export module Watchdog.MainFrm;
 
 import Watchdog.FileView;

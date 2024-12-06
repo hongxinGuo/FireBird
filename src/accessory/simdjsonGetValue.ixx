@@ -1,5 +1,5 @@
+#include"pch.h"
 module;
-#include"stdafx.h"
 #include"simdjson.h"
 export module simdjson.GetValue;
 

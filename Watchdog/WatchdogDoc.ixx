@@ -2,6 +2,7 @@
 //
 
 module;
+#include"pch.h"
 #include <afxwin.h>
 export module Watchdog.Document;
 
