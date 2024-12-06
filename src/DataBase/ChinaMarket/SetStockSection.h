@@ -1,7 +1,7 @@
 // SetSymbol.h : CSetActiveStockCode µÄÉùÃ÷
 
 #pragma once
-#include"VirtualRecordset.h"
+import FireBird.Set.VirtualRecordset;
 
 class CSetStockSection : public CVirtualRecordset {
 public:

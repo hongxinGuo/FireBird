@@ -1,7 +1,7 @@
 // CSetTiingoIndustry.h : CSetTiingoIndustry µÄÉùÃ÷
 #pragma once
 
-#include"VirtualRecordset.h"
+import FireBird.Set.VirtualRecordset;
 
 class CSetTiingoIndustry : public CVirtualRecordset {
 public:

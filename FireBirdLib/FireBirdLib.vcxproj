@@ -90,13 +90,39 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetStockSection.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineBasicInfo.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineExtendInfo.h" />
-    <ClInclude Include="..\src\DataBase\VirtualRecordset.h" />
-    <ClInclude Include="..\src\DataBase\VirtualSetChosenStake.h" />
-    <ClInclude Include="..\src\DataBase\VirtualSetExchange.h" />
-    <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandle.h" />
-    <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandleBasic.h" />
-    <ClInclude Include="..\src\DataBase\VirtualSetHistoryCandleExtend.h" />
-    <ClInclude Include="..\src\DataBase\VirtualSetStockSymbol.h" />
+    <ClCompile Include="..\src\DataBase\VirtualRecordset.ixx">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\VirtualSetChosenStake.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\VirtualSetExchange.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandle.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandleBasic.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\VirtualSetHistoryCandleExtend.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\VirtualSetStockSymbol.ixx">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetCountry.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetCryptoDayLine.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetEconomicCalendar.h" />
@@ -125,7 +151,11 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekLow.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockDayLine.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenCrypto.h" />
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetWorldChosenCrypto.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenForex.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStock.h" />

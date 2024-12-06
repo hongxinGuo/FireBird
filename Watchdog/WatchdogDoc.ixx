@@ -1,8 +1,8 @@
 // WatchdogDoc.h : interface of the CWatchdogDoc class
 //
 
-module;
 #include"pch.h"
+module;
 #include <afxwin.h>
 export module Watchdog.Document;
 

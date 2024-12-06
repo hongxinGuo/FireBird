@@ -1,8 +1,8 @@
 // ChildFrm.h : interface of the CWatchdogChildFrame class
 //
 
-module;
 #include"pch.h"
+module;
 export module Watchdog.ChildFrm;
 
 export {

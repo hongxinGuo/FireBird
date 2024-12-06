@@ -8,7 +8,7 @@
 
 #include "DayLine.h"
 #include "VirtualHistoryCandleExtend.h"
-#include "VirtualSetHistoryCandleBasic.h"
+import FireBird.Set.VirtualHistoryCandleBasic;
 
 using std::atomic_bool;
 using std::vector;

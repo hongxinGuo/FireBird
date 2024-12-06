@@ -1,5 +1,5 @@
 #pragma once
-#include"VirtualRecordset.h"
+import FireBird.Set.VirtualRecordset;
 
 class CSetRSStrong1Stock : public CVirtualRecordset {
 public:

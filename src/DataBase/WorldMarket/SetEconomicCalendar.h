@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include"VirtualRecordset.h"
+import FireBird.Set.VirtualRecordset;
 
 // 代码生成在 2019年6月2日, 5:10
 

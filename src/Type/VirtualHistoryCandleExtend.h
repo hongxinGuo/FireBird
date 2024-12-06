@@ -6,11 +6,13 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"VirtualHistoryCandleBasic.h"
-#include"VirtualSetHistoryCandleExtend.h"
-#include"VirtualSetHistoryCandle.h"
+import FireBird.Set.VirtualHistoryCandleBasic;
+import FireBird.Set.VirtualHistoryCandleExtend;
+import FireBird.Set.VirtualHistoryCandle;
 
 #include<memory>
+
+#include "VirtualHistoryCandleBasic.h"
 
 class CVirtualHistoryCandleExtend;
 using CVirtualHistoryCandleExtendPtr = shared_ptr<CVirtualHistoryCandleExtend>;

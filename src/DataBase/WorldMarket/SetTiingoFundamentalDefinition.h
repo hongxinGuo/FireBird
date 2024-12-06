@@ -1,7 +1,7 @@
 // CSetTiingoFundamentalDefinition.h : CSetTiingoFundamentalDefinition µÄÉùÃ÷
 
 #pragma once
-#include"VirtualRecordset.h"
+import FireBird.Set.VirtualRecordset;
 
 class CSetTiingoFundamentalDefinition : public CVirtualRecordset {
 public:

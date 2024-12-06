@@ -1,7 +1,7 @@
 // CSetTiingoStockCurrentTrace.h : CSetTiingoStock µÄÉùÃ÷
 
 #pragma once
-#include"VirtualRecordset.h"
+import FireBird.Set.VirtualRecordset;
 
 class CSetTiingoStockCurrentTrace : public CVirtualRecordset {
 public:

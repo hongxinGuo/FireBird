@@ -1,6 +1,7 @@
 #include "pch.h"
 
-#include"SetWorldChosenCrypto.h"
+import FireBird.Set.WorldChosenCrypto;
+
 #include "containerChosenCrypto.h"
 #include"FinnhubCrypto.h"
 #include "SystemData.h"
