@@ -1,7 +1,8 @@
 // WatchdogView.cpp : implementation of the CWatchdogView class
 //
 
-#include "framework.h"
+#include"pch.h"
+
 #include "resource.h"
 // SHARED_HANDLERS can be defined in an ATL project implementing preview, thumbnail
 // and search filter handlers and allows sharing of document code with that project.

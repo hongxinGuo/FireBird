@@ -1,7 +1,8 @@
 // WatchdogDoc.cpp : implementation of the CWatchdogDoc class
 //
 
-#include "framework.h"
+#include"pch.h"
+
 // SHARED_HANDLERS can be defined in an ATL project implementing preview, thumbnail
 // and search filter handlers and allows sharing of document code with that project.
 #ifndef SHARED_HANDLERS

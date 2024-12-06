@@ -1,4 +1,5 @@
-#include "framework.h"
+#include"pch.h"
+
 #include "Resource.h"
 import Watchdog.App;
 import Watchdog.MainFrm;

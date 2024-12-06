@@ -17,13 +17,13 @@
     <ClInclude Include="..\src\accessory\JsonGetValue.h" />
     <ClInclude Include="..\src\accessory\JsonParse.h" />
     <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h" />
-    <ClInclude Include="..\src\accessory\RSReference.h">
+    <ClCompile Include="..\src\accessory\RSReference.ixx">
       <FileType>Document</FileType>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
-    </ClInclude>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\accessory\SaveAndLoad.h" />
     <ClCompile Include="..\src\accessory\simdjsonGetValue.ixx">
       <FileType>Document</FileType>
@@ -586,6 +586,7 @@
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <TranslateIncludes>false</TranslateIncludes>
       <EnableModules>false</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -618,6 +619,7 @@
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <EnableModules>false</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>

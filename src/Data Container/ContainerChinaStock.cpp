@@ -13,7 +13,7 @@
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
 
-#include"RSReference.h"
+import FireBird.RelativeStrongReference;
 #include"Thread.h"
 
 #include"SetRSStrongStock.h"
