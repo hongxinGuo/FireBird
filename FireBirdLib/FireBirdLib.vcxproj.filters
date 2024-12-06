@@ -849,9 +849,6 @@
     <ClInclude Include="..\src\Data Container\ContainerChinaStock.h">
       <Filter>头文件\Data container\China Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Thread.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\System\SystemConstantChinaMarket.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
@@ -1450,6 +1447,9 @@
     </ClCompile>
     <ClCompile Include="..\src\accessory\RSReference.ixx">
       <Filter>头文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Thread.ixx">
+      <Filter>头文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

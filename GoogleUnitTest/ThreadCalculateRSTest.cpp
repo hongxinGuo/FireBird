@@ -6,9 +6,9 @@
 #include"GeneralCheck.h"
 #include"MockChinaStock.h"
 
-#include"thread.h"
-
 using namespace testing;
+
+import FireBird.Thread;
 
 namespace FireBirdTest {
 	class CThreadCalculateRSTest : public Test {

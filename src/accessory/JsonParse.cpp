@@ -18,7 +18,7 @@
 
 #include "ChinaStockCodeConverter.h"
 #include "InfoReport.h"
-#include "Thread.h"
+import FireBird.Thread;
 
 import simdjson.GetValue;
 #include"simdjson.h"
@@ -32,9 +32,9 @@ using namespace simdjson;
 
 #include"spdlog/spdlog.h"
 
-// 包含concurrencpp.h之前，需要注销max的定义
-#undef max
+
 #include "ChinaMarket.h"
+#undef max // 包含concurrencpp.h之前，需要注销max的定义
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 

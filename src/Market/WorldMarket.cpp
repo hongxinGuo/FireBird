@@ -7,7 +7,7 @@
 
 #include "WorldMarket.h"
 
-#include "Thread.h"
+import FireBird.Thread;
 
 #include"FinnhubInaccessibleExchange.h"
 

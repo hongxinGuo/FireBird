@@ -8,7 +8,7 @@
 #include "FinnhubDataSource.h"
 #include "MainFrm.h"
 #include "FireBird.h"
-#include "Thread.h"
+import FireBird.Thread;
 #include "ThreadStatus.h"
 #include "TiingoDataSource.h"
 #include "WorldMarket.h"

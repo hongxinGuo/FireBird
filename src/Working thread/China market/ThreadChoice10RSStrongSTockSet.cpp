@@ -10,7 +10,7 @@
 
 #include"SystemMessage.h"
 
-#include"Thread.h"
+import FireBird.Thread;
 
 #include"ChinaMarket.h"
 

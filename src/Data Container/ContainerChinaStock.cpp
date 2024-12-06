@@ -14,7 +14,7 @@
 #include "ContainerChinaStock.h"
 
 import FireBird.RelativeStrongReference;
-#include"Thread.h"
+import FireBird.Thread;
 
 #include"SetRSStrongStock.h"
 #include"SetRSStrong1Stock.h"

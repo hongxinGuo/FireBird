@@ -1,6 +1,7 @@
 #pragma once
 
 #include"DayLine.h"
+#include"WebData.h"
 
 class CDayLineWebData final {
 public:

@@ -1,4 +1,6 @@
 #include "pch.h"
+#undef max //Note 包含concurrencpp.h之前，需要undefined max
+#include"concurrencpp/concurrencpp.h"
 
 #include"globedef.h"
 
@@ -14,7 +16,10 @@
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 #include"TiingoStock.h"
-#include "Thread.h"
+import FireBird.Thread;
+
+using namespace concurrencpp;
+
 
 CContainerTiingoStock::CContainerTiingoStock() {
 	CContainerTiingoStock::Reset();
@@ -188,7 +193,7 @@ void CContainerTiingoStock::TaskUpdate52WeekHighLowDB() {
 	Delete52WeekHighData();
 	Delete52WeekLowData();
 	auto lSize = Size();
-	vector<result<void>> results;
+	vector<concurrencpp::result<void>> results;
 	for (size_t i = 0; i < lSize; i++) {
 		const CTiingoStockPtr pStock = GetStock(i);
 		if (pStock->IsUpdate52WeekHighLowDB()) {
@@ -312,7 +317,6 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 void CContainerTiingoStock::TaskProcessDayLine2() {
 	gl_systemMessage.PushInnerSystemInformationMessage(_T("开始处理Tiingo日线数据"));
 	auto lSize = Size();
-	vector<result<int>> vResults;
 	for (size_t index = 0; index < lSize; index++) {
 		auto pStock = GetStock(index);
 		if (IsEarlyThen(pStock->GetDayLineStartDate(), pStock->GetDayLineEndDate(), 500)) { // 只处理有两年以上日线的股票

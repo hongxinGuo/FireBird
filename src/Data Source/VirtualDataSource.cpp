@@ -13,7 +13,13 @@
 #include "VirtualDataSource.h"
 #include"WebData.h"
 
-#include "Thread.h"
+#undef max //Note 包含concurrencpp.h之前，需要undefined max
+#include"concurrencpp/concurrencpp.h"
+using namespace concurrencpp;
+
+
+import FireBird.Thread;
+using std::vector;
 
 atomic_int64_t CVirtualDataSource::sm_lTotalByteRead = 0;
 atomic_int64_t CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;

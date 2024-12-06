@@ -9,7 +9,7 @@
 
 #include"SystemMessage.h"
 
-#include "Thread.h"
+import FireBird.Thread;
 #include"TimeConvert.h"
 
 #include"ChinaStock.h"

@@ -8,7 +8,7 @@
 #include"ConvertToString.h"
 #include"TimeConvert.h"
 #include"ChinaStockCodeConverter.h"
-#include "Thread.h"
+import FireBird.Thread;
 
 #include"ThreadStatus.h"
 

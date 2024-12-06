@@ -213,13 +213,13 @@
     <ClInclude Include="..\src\System\SystemMessage.h" />
     <ClInclude Include="..\src\System\TiingoInaccessibleStock.h" />
     <ClInclude Include="..\src\targetver.h" />
-    <ClInclude Include="..\src\Thread.h">
+    <ClCompile Include="..\src\Thread.ixx">
       <FileType>Document</FileType>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
-    </ClInclude>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Type\America market\Country.h" />
     <ClInclude Include="..\src\Type\America market\EconomicCalendar.h" />
     <ClInclude Include="..\src\Type\America market\EPSSurprise.h" />
