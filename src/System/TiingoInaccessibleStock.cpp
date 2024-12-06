@@ -2,7 +2,7 @@
 
 #include"globedef.h"
 
-#include"SystemConfiguration.h"
+import System.Configuration;
 
 #include"FinnhubInquiryType.h"
 

@@ -7,7 +7,7 @@
 
 #include "MarketStatus.h"
 #include"MarketHoliday.h"
-#include "SystemConfiguration.h"
+import System.Configuration;
 #include "TiingoStock.h"
 #include "TimeConvert.h"
 

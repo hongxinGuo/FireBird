@@ -6,13 +6,10 @@
 
 #include"globedef.h"
 
-#include"SystemConfiguration.h"
+import System.Configuration;
 
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
-
-//#include<string>
-//#include<fstream>
 
 #include "resource.h"
 #include "TengxunRTDataSource.h"

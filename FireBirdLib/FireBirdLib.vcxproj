@@ -197,7 +197,11 @@
     <ClInclude Include="..\src\System\FinnhubInaccessibleExchange.h" />
     <ClInclude Include="..\src\System\Inaccessible.h" />
     <ClInclude Include="..\src\System\ScheduleTask.h" />
-    <ClInclude Include="..\src\System\SystemConfiguration.h" />
+    <ClCompile Include="..\src\System\SystemConfiguration.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\System\SystemConstantChinaMarket.h">
       <FileType>Document</FileType>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>

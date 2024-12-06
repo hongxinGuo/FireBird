@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"SystemConfiguration.h"
+import System.Configuration;
 
 #include "JsonGetValue.h"
 

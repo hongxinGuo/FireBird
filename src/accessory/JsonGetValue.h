@@ -1,6 +1,7 @@
 #pragma once
 
-#include"nlohmannJsonDeclaration.h"
+#include"nlohmann/json.hpp"
+#include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
 [[nodiscard]] json jsonGetChild(json* pjs, const char* szKey);
 [[nodiscard]] std::string jsonGetString(json* pjs, const char* szKey, const char* szDefault = _T(""));
