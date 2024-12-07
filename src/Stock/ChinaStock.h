@@ -13,6 +13,7 @@ enum {
 	NO_TRANSACTION_ = 8
 };
 
+import FireBird.RelativeStrongReference;
 import FireBird.Thread;
 
 #include "WebRTData.h"
@@ -36,7 +37,7 @@ import FireBird.Thread;
 using namespace moodycamel;
 
 class CChinaStock;
-typedef shared_ptr<CChinaStock> CChinaStockPtr;
+typedef std::shared_ptr<CChinaStock> CChinaStockPtr;
 
 using std::map;
 #include <queue>

@@ -1,9 +1,9 @@
 #pragma once
 
-#include"VirtualDataFactory.h"
+import FireBird.Product.VirtualFactory;
 
 class CVirtualMarket;
-typedef shared_ptr<CVirtualMarket> CVirtualMarketPtr;
+typedef std::shared_ptr<CVirtualMarket> CVirtualMarketPtr;
 //typedef weak_ptr<CVirtualMarket> CVirtualMarketWeakPtr;
 
 class CTiingoFactory final : public CVirtualDataFactory {

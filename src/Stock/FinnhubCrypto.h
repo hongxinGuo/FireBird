@@ -34,5 +34,5 @@ public:
 	CContainerCryptoDayLine m_dataDayLine;
 };
 
-typedef shared_ptr<CFinnhubCrypto> CFinnhubCryptoPtr;
-typedef shared_ptr<vector<CFinnhubCryptoPtr>> CFinnhubCryptosPtr;
+using CFinnhubCryptoPtr = std::shared_ptr<CFinnhubCrypto>;
+using CFinnhubCryptosPtr = std::shared_ptr<vector<CFinnhubCryptoPtr>>;

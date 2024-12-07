@@ -205,7 +205,11 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockProfile.h" />
     <ClInclude Include="..\src\Factory Product\QuandlFactory.h" />
     <ClInclude Include="..\src\Factory Product\TiingoFactory.h" />
-    <ClInclude Include="..\src\Factory Product\VirtualDataFactory.h" />
+    <ClCompile Include="..\src\Factory Product\VirtualDataFactory.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Factory Product\VirtualWebProduct.h" />
     <ClInclude Include="..\src\Factory Product\VirtualWorldMarketWebProduct.h" />
     <ClCompile Include="..\src\FinnhubInquiryType.ixx">

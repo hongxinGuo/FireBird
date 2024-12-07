@@ -285,9 +285,6 @@
     <ClInclude Include="..\src\Factory Product\ProductDummy.h">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\VirtualDataFactory.h">
-      <Filter>头文件\Factory-Product</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Factory Product\VirtualWebProduct.h">
       <Filter>头文件\Factory-Product</Filter>
     </ClInclude>
@@ -1450,6 +1447,9 @@
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetWorldChosenCrypto.ixx">
       <Filter>头文件\database\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\VirtualDataFactory.ixx">
+      <Filter>头文件\Factory-Product</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 #include"MockChinaStock.h"
+#include"ChinaStock.h"
 
 using namespace testing;
 
