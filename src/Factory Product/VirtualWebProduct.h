@@ -12,11 +12,11 @@ using std::vector;
 using std::weak_ptr;
 
 class CDayLine;
-typedef shared_ptr<CDayLine> CDayLinePtr;
+typedef std::shared_ptr<CDayLine> CDayLinePtr;
 class CVirtualDataSource;
-typedef shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;
+typedef std::shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;
 class CVirtualMarket;
-typedef shared_ptr<CVirtualMarket> CVirtualMarketPtr;
+typedef std::shared_ptr<CVirtualMarket> CVirtualMarketPtr;
 typedef weak_ptr<CVirtualMarket> CVirtualMarketWeakPtr;
 
 // 此结构只用于测试中

@@ -13,7 +13,7 @@
 #include "VirtualStock.h"
 
 class CTiingoStock;
-typedef shared_ptr<CTiingoStock> CTiingoStockPtr;
+typedef std::shared_ptr<CTiingoStock> CTiingoStockPtr;
 
 class CTiingoStock : public CVirtualStock {
 public:

@@ -32,6 +32,9 @@
 import FireBird.Thread;
 import simdjson.GetValue;
 
+#include"ChinaMarket.h"
+
+
 #undef max
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;

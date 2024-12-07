@@ -137,7 +137,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		gl_warnLogger->warn("{}", str.GetBuffer());
 		return ERROR_TIINGO_NOT_HANDLED__;
 	case 404:
-		if (pWebData->GetBufferLength() == 23) {
+		if (pWebData->GetBufferLength() == 23) { // {"detail":"Not found."}
 			strView = pWebData->GetStringView(0, 23); // 
 			if (strView.compare(_T("{\"detail\":\"Not found.\"}")) == 0) { 	//
 				str = _T("Warning: Tiingo symbol not exist: ");

@@ -1,10 +1,11 @@
 #pragma once
 
-#include"SystemData.h"
-
 #include"VirtualMarket.h"
-
+#include"SystemData.h"
+#include"ChinaStock.h"
 #include"ContainerChinaStock.h"
+
+import FireBird.RelativeStrongReference;
 
 using std::set;
 using std::atomic_int64_t;

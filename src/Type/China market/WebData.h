@@ -17,9 +17,9 @@ using std::string_view;
 
 class CDayLineWebData;
 class CVirtualDataSource;
-typedef shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;
+typedef std::shared_ptr<CVirtualDataSource> CVirtualDataSourcePtr;
 class CInquireEngine;
-typedef shared_ptr<CInquireEngine> CInquireEnginePtr;
+typedef std::shared_ptr<CInquireEngine> CInquireEnginePtr;
 
 constexpr int DefaultWebDataBufferSize_ = 1024 * 1024;
 

@@ -16,7 +16,7 @@ import System.Configuration;
 
 using namespace testing;
 class CVirtualWebProduct;
-typedef shared_ptr<CVirtualWebProduct> CVirtualProductWebDataPtr;
+typedef std::shared_ptr<CVirtualWebProduct> CVirtualProductWebDataPtr;
 
 namespace FireBirdTest {
 	static CMockInquireEnginePtr m_pInquireEngine; // 为了方便查找出错位置,将mock变量声明为全局的。

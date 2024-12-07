@@ -6,7 +6,7 @@
 
 import DataSource.InquireEngine;
 class CVirtualWebProduct;
-typedef shared_ptr<CVirtualWebProduct> CVirtualProductWebDataPtr;
+typedef std::shared_ptr<CVirtualWebProduct> CVirtualProductWebDataPtr;
 
 enum enum_ErrorMessageData {
 	ERROR_NO_ERROR__ = 0,

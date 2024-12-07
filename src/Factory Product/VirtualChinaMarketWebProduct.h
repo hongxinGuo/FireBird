@@ -7,7 +7,7 @@
 #include "VirtualWebProduct.h"
 
 class CChinaMarket;
-typedef shared_ptr<CChinaMarket> CChinaMarketPtr;
+typedef std::shared_ptr<CChinaMarket> CChinaMarketPtr;
 
 class CVirtualChinaMarketWebProduct : public CVirtualWebProduct {
 public:
