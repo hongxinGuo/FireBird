@@ -1,6 +1,6 @@
 #pragma once
 
-#include"VirtualDataFactory.h"
+import FireBird.Product.VirtualFactory;
 
 class CQuandlFactory final : public CVirtualDataFactory {
 public:
