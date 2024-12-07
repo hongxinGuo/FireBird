@@ -1,10 +1,13 @@
 #include"pch.h"
 module;
-#include"ChinaStock.h"
-#include"ChinaMarket.h"
-#undef max //Note 包含concurrencpp.h之前，需要undefined max
+#undef max
 #include"concurrencpp/concurrencpp.h"
 export module FireBird.Thread;
+
+class CChinaStock;
+using CChinaStockPtr = std::shared_ptr<CChinaStock>;
+class CChinaMarket;
+using CChinaMarketPtr = std::shared_ptr<CChinaMarket>;
 
 import FireBird.RelativeStrongReference;
 
