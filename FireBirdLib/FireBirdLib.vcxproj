@@ -269,7 +269,11 @@
     <ClInclude Include="..\src\Stock\TiingoStock.h" />
     <ClInclude Include="..\src\Stock\VirtualStock.h" />
     <ClInclude Include="..\src\Stock\FinnhubStock.h" />
-    <ClInclude Include="..\src\System\FinnhubInaccessibleExchange.h" />
+    <ClCompile Include="..\src\System\FinnhubInaccessibleExchange.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\src\System\Inaccessible.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
@@ -333,12 +337,28 @@
     <ClInclude Include="..\src\WebSocket\TiingoForexWebSocket.h" />
     <ClInclude Include="..\src\WebSocket\TiingoIEXWebSocket.h" />
     <ClInclude Include="..\src\WebSocket\VirtualWebSocket.h" />
-    <ClInclude Include="..\src\Windows interface\ChildFrm.h" />
+    <ClCompile Include="..\src\Windows interface\ChildFrm.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Windows interface\MainFrm.h" />
-    <ClInclude Include="..\src\Windows interface\OutputWnd.h" />
-    <ClInclude Include="..\src\Windows interface\FireBirdDoc.h" />
+    <ClCompile Include="..\src\Windows interface\OutputWnd.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\FireBirdDoc.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Windows interface\FireBirdView.h" />
-    <ClInclude Include="..\src\Windows interface\PropertiesWnd.h" />
+    <ClCompile Include="..\src\Windows interface\PropertiesWnd.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\src\Windows interface\PropertyRealTimeDataWnd.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>

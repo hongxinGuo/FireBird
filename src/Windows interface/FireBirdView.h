@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include"ChinaStock.h"
-#include"FireBirdDoc.h"
+import FireBird.WindowInterface.Doc;
 
 enum {
 	_SHOW_DAY_LINE_DATA_ = 1,

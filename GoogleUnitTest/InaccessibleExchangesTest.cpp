@@ -6,7 +6,9 @@
 
 #include"GeneralCheck.h"
 
-#include"FinnhubInaccessibleExchange.h"
+import FireBird.System.Inaccessible;
+import FireBird.FinnhubInquiryType;
+import FireBird.System.FinnhubInaccessibleExchange;
 
 namespace FireBirdTest {
 	class CFinnhubInaccessibleExchangeTest : public testing::Test {

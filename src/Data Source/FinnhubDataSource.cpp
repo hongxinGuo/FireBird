@@ -7,11 +7,11 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-import System.Configuration;
+import FireBird.System.Configuration;
 #include"SystemMessage.h"
 
 import FireBird.FinnhubInquiryType;
-#include"FinnhubInaccessibleExchange.h"
+import FireBird.System.FinnhubInaccessibleExchange;
 
 #include "FinnhubDataSource.h"
 

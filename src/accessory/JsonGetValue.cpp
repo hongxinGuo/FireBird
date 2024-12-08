@@ -1,6 +1,6 @@
 #include"pch.h"
 
-import System.Configuration;
+import FireBird.System.Configuration;
 
 #include"nlohmann/json.hpp"
 import FireBird.Accessory.JsonGetValue;

@@ -4,7 +4,7 @@
 
 #include"SystemMessage.h"
 
-#include "OutputWnd.h"
+import FireBird.WindowInterface.OutputWnd;
 #include "resource.h"
 #include "MainFrm.h"
 

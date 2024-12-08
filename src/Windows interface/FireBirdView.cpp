@@ -12,7 +12,7 @@
 #include "FireBird.h"
 #endif
 
-#include "FireBirdDoc.h"
+import FireBird.WindowInterface.Doc;
 #include "FireBirdView.h"
 
 #ifdef _DEBUG

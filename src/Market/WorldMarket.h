@@ -7,7 +7,7 @@
 
 #include "MarketStatus.h"
 #include"MarketHoliday.h"
-import System.Configuration;
+import FireBird.System.Configuration;
 #include "TiingoStock.h"
 import FireBird.Accessory.TimeConvert;
 

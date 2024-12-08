@@ -7,9 +7,7 @@
 
 #include "WorldMarket.h"
 
- 
-
-#include"FinnhubInaccessibleExchange.h"
+ import FireBird.System.FinnhubInaccessibleExchange;
 
 #include"FinnhubDataSource.h"
 

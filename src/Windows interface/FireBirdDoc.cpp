@@ -7,7 +7,7 @@
 #ifndef SHARED_HANDayLineERS
 #endif
 
-#include "FireBirdDoc.h"
+import FireBird.WindowInterface.Doc;
 
 IMPLEMENT_DYNCREATE(CFireBirdDoc, CDocument)
 

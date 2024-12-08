@@ -6,7 +6,7 @@
 
 #include"globedef.h"
 
-import System.Configuration;
+import FireBird.System.Configuration;
 
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"

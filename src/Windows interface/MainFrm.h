@@ -3,8 +3,8 @@
 #pragma once
 
 #include"stdafx.h"
-#include "OutputWnd.h"
-#include "PropertiesWnd.h"
+import FireBird.WindowInterface.OutputWnd;
+import FireBird.WindowInterface.PropertiesWnd;
 import FireBird.WindowInterface.PropertyRealTimeDataWnd;
 
 class CMainFrame : public CMDIFrameWndEx {

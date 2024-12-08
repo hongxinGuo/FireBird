@@ -4,7 +4,8 @@
 
 #include"ProductFinnhub.h"
 
-#include"FinnhubInaccessibleExchange.h"
+import FireBird.FinnhubInquiryType;
+import FireBird.System.FinnhubInaccessibleExchange;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //

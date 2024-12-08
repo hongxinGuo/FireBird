@@ -1,6 +1,6 @@
 #pragma once
 
-import System.Configuration;
+import FireBird.System.Configuration;
 
 import FireBird.Set.VirtualStockSymbol;
 

@@ -1,6 +1,6 @@
 #include"pch.h"
 
-import System.Configuration;
+import FireBird.System.Configuration;
 
 #include"VirtualDataHistoryCandleExtend.h"
 #include"DayLine.h"
