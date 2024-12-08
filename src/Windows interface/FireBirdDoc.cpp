@@ -6,8 +6,7 @@
 // ATL 项目中进行定义，并允许与该项目共享文档代码。
 #ifndef SHARED_HANDayLineERS
 #endif
-
-import FireBird.WindowInterface.Doc;
+module FireBird.WindowInterface.Doc;
 
 IMPLEMENT_DYNCREATE(CFireBirdDoc, CDocument)
 

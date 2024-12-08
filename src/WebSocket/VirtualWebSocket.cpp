@@ -5,8 +5,7 @@
 #include"SystemMessage.h"
 #include "WorldMarket.h"
 #include <ixwebsocket/IXWebSocket.h>
-
-import FireBird.WebSocket.Virtual;
+module FireBird.WebSocket.Virtual;
 
 CVirtualWebSocket::CVirtualWebSocket() {
 	m_iSubscriptionId = 0;

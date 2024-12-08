@@ -6,7 +6,7 @@
 
 #include"GeneralCheck.h"
 
-import DataSource.InquireEngine;
+import FireBird.DataSource.InquireEngine;
 
 #include"WorldMarket.h"
 

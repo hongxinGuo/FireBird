@@ -11,7 +11,7 @@
 #include "pch.h"
 #include"simdjson.h"
 
-import simdjson.GetValue;
+import FireBird.Simdjson.GetValue;
 
 using namespace simdjson;
 

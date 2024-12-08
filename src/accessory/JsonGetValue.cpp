@@ -1,9 +1,9 @@
 #include"pch.h"
-
+#include"nlohmann/json.hpp"
 import FireBird.System.Configuration;
 
-#include"nlohmann/json.hpp"
-import FireBird.Accessory.JsonGetValue;
+module FireBird.Accessory.JsonGetValue;
+
 
  nlohmann::ordered_json jsonGetChild( nlohmann::ordered_json* pjs, const char* szKey) {
 	auto& js = pjs->at(szKey);

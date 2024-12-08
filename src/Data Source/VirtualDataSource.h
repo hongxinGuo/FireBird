@@ -4,7 +4,8 @@
 
 #include"VirtualWebProduct.h"
 
-import DataSource.InquireEngine;
+import FireBird.DataSource.InquireEngine;
+
 class CVirtualWebProduct;
 typedef std::shared_ptr<CVirtualWebProduct> CVirtualProductWebDataPtr;
 

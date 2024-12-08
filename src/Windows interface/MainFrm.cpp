@@ -4,11 +4,8 @@
 
 #include"SystemMessage.h"
 
-import FireBird.System.ThreadStatus;
 
 #include "FireBird.h"
-import FireBird.WindowInterface.MainFrm;
-
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
@@ -22,20 +19,19 @@ import FireBird.WindowInterface.MainFrm;
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 #include"QuandlDataSource.h"
-
-#include <ixwebsocket/IXNetSystem.h>
-
-import FireBird.Accessory.ConvertToString;
-import FireBird.Accessory.TimeConvert;
-
 #include"ScheduleTask.h"
-
-import simdjson.GetValue;
-
+#include <ixwebsocket/IXNetSystem.h>
 #include"ChinaMarket.h"
-
 #undef max
 #include"concurrencpp/concurrencpp.h"
+import FireBird.Accessory.ConvertToString;
+import FireBird.Accessory.TimeConvert;
+import FireBird.System.ThreadStatus;
+import FireBird.Simdjson.GetValue;
+module FireBird.WindowInterface.MainFrm;
+
+
+
 using namespace concurrencpp;
 
 bool CMainFrame::sm_fGlobeInit = false;

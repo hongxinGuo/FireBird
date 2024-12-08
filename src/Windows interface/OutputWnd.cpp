@@ -1,15 +1,15 @@
 ﻿#include"pch.h"
 
-#include"globedef.h"
-
 #include "resource.h"
+#include"globedef.h"
 #include"SystemMessage.h"
-
-import FireBird.WindowInterface.OutputWnd;
-import FireBird.WindowInterface.MainFrm;
-
 #include"ChinaMarket.h"
 #include "WorldMarket.h"
+
+import FireBird.WindowInterface.MainFrm;
+module FireBird.WindowInterface.OutputWnd;
+
+
 
 /////////////////////////////////////////////////////////////////////////////
 // COutputBar

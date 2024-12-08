@@ -1,7 +1,7 @@
 #include"pch.h"
 module;
 #include"simdjson.h"
-export module simdjson.GetValue;
+export module FireBird.Simdjson.GetValue;
 
 using namespace simdjson;
 using std::string_view;

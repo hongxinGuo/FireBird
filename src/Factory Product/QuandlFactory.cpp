@@ -2,7 +2,7 @@
 #include"VirtualWebProduct.h"
 #include"VirtualMarket.h"
 
-import FireBird.Factory.Quandl;
+module FireBird.Factory.Quandl;
 
 CVirtualProductWebDataPtr CQuandlFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	return CVirtualProductWebDataPtr();

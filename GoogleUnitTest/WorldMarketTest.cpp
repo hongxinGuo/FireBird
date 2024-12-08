@@ -21,8 +21,9 @@
 
 #include"FinnhubDataSource.h"
 #include"FinnhubCrypto.h"
-import FireBird.Accessory.InfoReport;
 #include "WorldMarket.h"
+
+import FireBird.Accessory.InfoReport;
 
 using namespace testing;
 

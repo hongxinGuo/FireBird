@@ -2,7 +2,7 @@
 
 #include"pch.h"
 
-import FireBird.Set.VirtualChosenStake;
+module FireBird.Set.VirtualChosenStake;
 
 CVirtualSetChosenStake::CVirtualSetChosenStake(const CString& strSchema, const CString& strTable, CDatabase* pDatabase)
 	: CVirtualRecordset(strSchema, strTable, pDatabase) {

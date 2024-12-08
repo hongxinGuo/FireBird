@@ -1,6 +1,6 @@
 #include"pch.h"
 
-import FireBird.Set.VirtualHistoryCandle;
+module FireBird.Set.VirtualHistoryCandle;
 
 CVirtualSetHistoryCandle::CVirtualSetHistoryCandle(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {
