@@ -6,7 +6,7 @@
 
 #include"VirtualWorldMarketWebProduct.h"
 #include "WorldMarket.h"
-#include "FinnhubInaccessibleExchange.h"
+import FireBird.System.FinnhubInaccessibleExchange;
 
 using namespace testing;
 

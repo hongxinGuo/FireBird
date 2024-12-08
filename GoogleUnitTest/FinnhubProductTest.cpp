@@ -9,7 +9,7 @@
 import FireBird.FinnhubInquiryType;
 
 #include"ProductFinnhub.h"
-#include"finnhubInaccessibleExchange.h"
+import FireBird.System.FinnhubInaccessibleExchange;
 
 using namespace testing;
 

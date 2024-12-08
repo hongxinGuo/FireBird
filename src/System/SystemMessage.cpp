@@ -2,10 +2,10 @@
 
 #include"globedef.h"
 
-import System.Configuration;
+import FireBird.System.Configuration;
 
 #include "SystemMessage.h"
-#include"OutputWnd.h"
+import FireBird.WindowInterface.OutputWnd;
 
 map<long, string> gl_mapHTTPStatusCode{
 	// Informational

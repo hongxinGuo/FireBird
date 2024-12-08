@@ -18,7 +18,7 @@
 
 #include "GeneralCheck.h"
 
-#include "FinnhubInaccessibleExchange.h"
+import FireBird.System.FinnhubInaccessibleExchange;
 #include "NeteaseDayLineDataSource.h"
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"

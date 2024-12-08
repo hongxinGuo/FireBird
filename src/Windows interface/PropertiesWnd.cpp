@@ -3,8 +3,7 @@
 #include"globedef.h"
 
 #include "framework.h"
-#include "PropertiesWnd.h"
-
+import FireBird.WindowInterface.PropertiesWnd;
 #include"SystemMessage.h"
 
 #include "ChinaMarket.h"

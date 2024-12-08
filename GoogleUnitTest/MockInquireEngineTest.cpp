@@ -4,7 +4,7 @@
 
 #include"globedef.h"
 
-import System.Configuration;
+import FireBird.System.Configuration;
 #include"SystemMessage.h"
 
 #include"afxinet.h"

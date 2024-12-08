@@ -13,7 +13,7 @@
 module;
 #include <spdlog/common.h>
 #include"nlohmann/json.hpp"
-export module System.Configuration;
+export module FireBird.System.Configuration;
 
 export {
 	class CSystemConfiguration final {

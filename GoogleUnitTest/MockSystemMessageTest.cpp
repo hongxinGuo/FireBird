@@ -5,7 +5,7 @@
 #include"GeneralCheck.h"
 
 #include"MockSystemMessage.h"
-#include"OutputWnd.h"
+import FireBird.WindowInterface.OutputWnd;
 
 using namespace testing;
 using namespace testing;

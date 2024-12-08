@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-import System.Configuration;
+import FireBird.System.Configuration;
 import FireBird.Set.VirtualRecordset;
 
 CString CVirtualRecordset::GetSchemaConnect() const {

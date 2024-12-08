@@ -2,7 +2,7 @@
 
 ////#include"gtest/gtest.h"
 
-import System.Configuration;
+import FireBird.System.Configuration;
 
 #include"GeneralCheck.h"
 

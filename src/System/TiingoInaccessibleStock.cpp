@@ -4,7 +4,7 @@
 
 #include"nlohmann/json.hpp"
 
-import System.Configuration;
+import FireBird.System.Configuration;
 
 import FireBird.FinnhubInquiryType;
 

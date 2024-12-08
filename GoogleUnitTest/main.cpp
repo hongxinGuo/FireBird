@@ -53,7 +53,7 @@
 import simdjson.GetValue;
 
 #include"ScheduleTask.h"
-#include"FinnhubInaccessibleExchange.h"
+import FireBird.System.FinnhubInaccessibleExchange;
 import FireBird.Accessory.InfoReport;
 import FireBird.System.ThreadStatus;
 #include "TiingoDataSource.h"

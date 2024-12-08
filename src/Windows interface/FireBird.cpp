@@ -8,10 +8,11 @@
 
 #include "MainFrm.h"
 
-#include "FireBirdDoc.h"
+import FireBird.WindowInterface.Doc;
+
 #include "FireBirdView.h"
 
-#include "ChildFrm.h"
+import FireBird.WindowInterface.ChildFrm;
 import FireBird.Accessory.InfoReport;
 
 #include <spdlog/spdlog.h>

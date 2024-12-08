@@ -14,7 +14,7 @@
 #include"SystemMessage.h"
 
 import FireBird.FinnhubInquiryType;
-#include"FinnhubInaccessibleExchange.h"
+import FireBird.System.FinnhubInaccessibleExchange;
 import FireBird.Tiingo.InaccessibleStock; 
 
 #include"FinnhubDataSource.h"

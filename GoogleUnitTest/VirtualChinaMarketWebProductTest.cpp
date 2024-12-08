@@ -5,7 +5,7 @@
 #include"GeneralCheck.h"
 
 #include "ChinaMarket.h"
-#include "FinnhubInaccessibleExchange.h"
+import FireBird.System.FinnhubInaccessibleExchange;
 
 #include"VirtualChinaMarketWebProduct.h"
 

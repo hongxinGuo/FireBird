@@ -363,12 +363,6 @@
     <ClInclude Include="..\src\Windows interface\MainFrm.h">
       <Filter>头文件\Windows interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Windows interface\OutputWnd.h">
-      <Filter>头文件\Windows interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Windows interface\FireBirdDoc.h">
-      <Filter>头文件\Windows interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Windows interface\FireBirdView.h">
       <Filter>头文件\Windows interface</Filter>
     </ClInclude>
@@ -377,9 +371,6 @@
     </ClInclude>
     <ClInclude Include="..\src\targetver.h">
       <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\System\FinnhubInaccessibleExchange.h">
-      <Filter>头文件\System</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Source\FinnhubDataSource.h">
       <Filter>头文件\Data Source\WorldMarket</Filter>
@@ -543,9 +534,6 @@
     <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Windows interface\PropertiesWnd.h">
-      <Filter>头文件\Windows interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Source\TengxunRTDataSource.h">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
@@ -596,9 +584,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Type\SECFiling.h">
       <Filter>头文件\Type\America market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Windows interface\ChildFrm.h">
-      <Filter>头文件\Windows interface</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingoMarketNews.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
@@ -1443,6 +1428,21 @@
       <Filter>头文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Windows interface\PropertyRealTimeDataWnd.ixx">
+      <Filter>头文件\Windows interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\System\FinnhubInaccessibleExchange.ixx">
+      <Filter>头文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\PropertiesWnd.ixx">
+      <Filter>头文件\Windows interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\OutputWnd.ixx">
+      <Filter>头文件\Windows interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\ChildFrm.ixx">
+      <Filter>头文件\Windows interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\FireBirdDoc.ixx">
       <Filter>头文件\Windows interface</Filter>
     </ClCompile>
   </ItemGroup>
