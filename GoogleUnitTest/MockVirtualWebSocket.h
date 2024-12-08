@@ -2,7 +2,7 @@
 
 //#include"gmock/gmock.h"
 
-#include"VirtualWebSocket.h"
+import FireBird.WebSocket.Virtual;
 
 namespace testing {
 	class CMockVirtualWebSocket final : public CVirtualWebSocket {

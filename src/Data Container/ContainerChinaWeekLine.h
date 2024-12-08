@@ -1,9 +1,9 @@
 #pragma once
 
-#include "VirtualDataHistoryCandleExtend.h"
+#include "VirtualContainerHistoryCandleExtend.h"
 #include"WeekLine.h"
 
-class CContainerChinaWeekLine : public CVirtualDataHistoryCandleExtend {
+class CContainerChinaWeekLine : public CVirtualContainerHistoryCandleExtend {
 public:
 	CContainerChinaWeekLine();
 	~CContainerChinaWeekLine() override = default;

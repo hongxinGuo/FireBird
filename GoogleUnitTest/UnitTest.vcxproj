@@ -207,7 +207,7 @@
     <ClCompile Include="CalculateHighLowTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
     <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp" />
-    <ClCompile Include="VirtualDataHistoryCandleExtendTest.cpp" />
+    <ClCompile Include="VirtualContainerndleExtendTest.cpp" />
     <ClCompile Include="VirtualHistoryCandleExtendTest.cpp" />
     <ClCompile Include="CountryTest.cpp" />
     <ClCompile Include="EconomicCalendarTest.cpp" />

@@ -12,7 +12,7 @@ import FireBird.Set.VirtualHistoryCandle;
 
 #include<memory>
 
-#include "VirtualHistoryCandleBasic.h"
+import FireBird.HistoryCandle.VirtualBasic;
 
 class CVirtualHistoryCandleExtend;
 using CVirtualHistoryCandleExtendPtr = shared_ptr<CVirtualHistoryCandleExtend>;

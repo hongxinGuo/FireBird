@@ -8,7 +8,7 @@ import FireBird.WindowInterface.PropertiesWnd;
 
 #include "ChinaMarket.h"
 #include "FinnhubDataSource.h"
-#include "MainFrm.h"
+import FireBird.WindowInterface.MainFrm;
 #include "FireBird.h"
 
 import FireBird.System.ThreadStatus;

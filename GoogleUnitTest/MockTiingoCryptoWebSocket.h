@@ -2,7 +2,7 @@
 
 //#include"gmock/gmock.h"
 
-#include"TiingoCryptoWebSocket.h"
+import FireBird.WebSocket.TiingoCrypto;
 
 namespace testing {
 	class CMockTiingoCryptoWebSocket final : public CTiingoCryptoWebSocket {

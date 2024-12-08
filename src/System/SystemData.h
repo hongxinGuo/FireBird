@@ -29,10 +29,10 @@ using namespace moodycamel;
 #include "ContainerTiingoFundamentalDefinition.h"
 #include "ContainerTiingoSymbol.h"
 
-#include"FinnhubWebSocket.h"
-#include"TiingoIEXWebSocket.h"
-#include"TiingoCryptoWebSocket.h"
-#include"TiingoForexWebSocket.h"
+import FireBird.WebSocket.Finnhub;
+import FireBird.WebSocket.TiingoIEX;
+import FireBird.WebSocket.TiingoForex;
+import FireBird.WebSocket.TiingoCrypto;
 
 #include "DayLineWebData.h"
 

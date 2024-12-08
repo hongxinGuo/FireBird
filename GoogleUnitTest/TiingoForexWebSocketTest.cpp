@@ -6,7 +6,7 @@
 
 #include"WorldMarket.h"
 
-#include"TiingoForexWebSocket.h"
+import FireBird.WebSocket.TiingoForex;
 
 using namespace testing;
 

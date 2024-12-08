@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SetTiingoStockDayLine.h"
-#include "TiingoDayLine.h"
+import FireBird.HistoryCandle.TiingoDayLine;
 
 class CContainerTiingoStockDayLine {
 public:

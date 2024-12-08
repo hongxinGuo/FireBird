@@ -2,11 +2,11 @@
 
 #include"globedef.h"
 
+#include "resource.h"
 #include"SystemMessage.h"
 
 import FireBird.WindowInterface.OutputWnd;
-#include "resource.h"
-#include "MainFrm.h"
+import FireBird.WindowInterface.MainFrm;
 
 #include"ChinaMarket.h"
 #include "WorldMarket.h"

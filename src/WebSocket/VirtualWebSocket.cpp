@@ -3,11 +3,10 @@
 #include"globedef.h"
 
 #include"SystemMessage.h"
-
-#include"VirtualWebSocket.h"
-
- 
 #include "WorldMarket.h"
+#include <ixwebsocket/IXWebSocket.h>
+
+import FireBird.WebSocket.Virtual;
 
 CVirtualWebSocket::CVirtualWebSocket() {
 	m_iSubscriptionId = 0;

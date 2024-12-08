@@ -7,7 +7,7 @@
 import FireBird.System.ThreadStatus;
 
 #include "FireBird.h"
-#include "MainFrm.h"
+import FireBird.WindowInterface.MainFrm;
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"

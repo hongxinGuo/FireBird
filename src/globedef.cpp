@@ -26,10 +26,10 @@ import FireBird.Tiingo.InaccessibleStock;
 #include"TengxunDayLineDataSource.h"
 #include"TiingoDataSource.h"
 
-#include"FinnhubWebSocket.h"
-#include"TiingoCryptoWebSocket.h"
-#include"TiingoForexWebSocket.h"
-#include"TiingoIEXWebSocket.h"
+import FireBird.WebSocket.Finnhub;
+import FireBird.WebSocket.TiingoIEX;
+import FireBird.WebSocket.TiingoForex;
+import FireBird.WebSocket.TiingoCrypto;
 
 #include "ChinaMarket.h"
 #include "WorldMarket.h"

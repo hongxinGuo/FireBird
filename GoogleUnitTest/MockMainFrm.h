@@ -1,8 +1,7 @@
 #pragma once
 
 //#include"gmock/gmock.h"
-
-#include"MainFrm.h"
+import FireBird.WindowInterface.MainFrm;
 
 namespace testing {
 	class CMockMainFrame final : public CMainFrame {

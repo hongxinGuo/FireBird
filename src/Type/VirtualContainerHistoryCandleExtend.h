@@ -13,10 +13,10 @@ import FireBird.Set.VirtualHistoryCandleBasic;
 using std::atomic_bool;
 using std::vector;
 
-class CVirtualDataHistoryCandleExtend {
+class CVirtualContainerHistoryCandleExtend {
 public:
-	CVirtualDataHistoryCandleExtend();
-	virtual ~CVirtualDataHistoryCandleExtend() = default;
+	CVirtualContainerHistoryCandleExtend();
+	virtual ~CVirtualContainerHistoryCandleExtend() = default;
 	void Reset(); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
 	// 所有的派生类皆需要定义此两个存储和提取函数，不允许调用此基类函数
@@ -89,4 +89,4 @@ protected:
 	bool m_fBasicDataLoaded{ false };
 };
 
-using CVirtualDataHistoryCandleExtendPtr = shared_ptr<CVirtualDataHistoryCandleExtend>;
+using CVirtualContainerHistoryCandleExtendPtr = shared_ptr<CVirtualContainerHistoryCandleExtend>;

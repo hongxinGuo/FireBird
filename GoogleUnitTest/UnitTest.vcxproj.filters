@@ -324,7 +324,7 @@
     <ClCompile Include="WeekLineTest.cpp">
       <Filter>Test源文件\Type\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="VirtualDataHistoryCandleExtendTest.cpp">
+    <ClCompile Include="VirtualContainerndleExtendTest.cpp">
       <Filter>Test源文件\Type</Filter>
     </ClCompile>
     <ClCompile Include="VirtualHistoryCandleExtendTest.cpp">

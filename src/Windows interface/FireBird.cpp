@@ -6,14 +6,14 @@
 
 #include "FireBird.h"
 
-#include "MainFrm.h"
+import FireBird.WindowInterface.MainFrm;
 
 import FireBird.WindowInterface.Doc;
-
-#include "FireBirdView.h"
-
 import FireBird.WindowInterface.ChildFrm;
 import FireBird.Accessory.InfoReport;
+import FireBird.System.Configuration;
+
+#include "FireBirdView.h"
 
 #include <spdlog/spdlog.h>
 

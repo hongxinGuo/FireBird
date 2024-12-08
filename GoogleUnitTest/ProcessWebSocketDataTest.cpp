@@ -8,11 +8,12 @@
 #include"GeneralCheck.h"
 
 #include"FinnhubStock.h"
+#include <ixwebsocket/IXWebSocket.h>
 
-#include"FinnhubWebSocket.h"
-#include"TiingoIEXWebSocket.h"
-#include"TiingoCryptoWebSocket.h"
-#include"TiingoForexWebSocket.h"
+import FireBird.WebSocket.Finnhub;
+import FireBird.WebSocket.TiingoIEX;
+import FireBird.WebSocket.TiingoForex;
+import FireBird.WebSocket.TiingoCrypto;
 
 using namespace testing;
 

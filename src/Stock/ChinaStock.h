@@ -396,8 +396,8 @@ public:
 	bool CalculateWeekLineRSLogarithm() { return m_dataWeekLine.CalculateRSLogarithm0(); }
 
 	// 当前被处理历史数据容器
-	CVirtualDataHistoryCandleExtend* GetDataChinaDayLine() noexcept { return &m_dataDayLine; }
-	CVirtualDataHistoryCandleExtend* GetDataChinaWeekLine() noexcept { return &m_dataWeekLine; }
+	CVirtualContainerHistoryCandleExtend* GetDataChinaDayLine() noexcept { return &m_dataDayLine; }
+	CVirtualContainerHistoryCandleExtend* GetDataChinaWeekLine() noexcept { return &m_dataWeekLine; }
 
 	bool IsShareA() const { return ::IsShareA(GetSymbol()); }
 

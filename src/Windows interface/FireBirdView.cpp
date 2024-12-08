@@ -21,7 +21,7 @@ import FireBird.WindowInterface.Doc;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void ShowHistoryData(CDC* pDC, CVirtualDataHistoryCandleExtend* pHistoryCandle, CRect rectClient) {
+void ShowHistoryData(CDC* pDC, CVirtualContainerHistoryCandleExtend* pHistoryCandle, CRect rectClient) {
 	constexpr COLORREF crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)),
 	                   crRed(RGB(255, 0, 0));
 	CPen penGreen1(PS_SOLID, 1, crGreen), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
@@ -642,7 +642,7 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 
 	if (pCurrentStock == nullptr) return;
 	//当前被操作的历史数据容器
-	CVirtualDataHistoryCandleExtend* pHistoryData;
+	CVirtualContainerHistoryCandleExtend* pHistoryData;
 	switch (m_iCurrentShowType) {
 	case _SHOW_DAY_LINE_DATA_:
 		pHistoryData = pCurrentStock->GetDataChinaDayLine();

@@ -313,7 +313,11 @@
     <ClInclude Include="..\src\Type\America market\MarketStatus.h" />
     <ClInclude Include="..\src\Type\America market\NaicsIndustry.h" />
     <ClInclude Include="..\src\Type\America market\SICIndustry.h" />
-    <ClInclude Include="..\src\Type\America market\TiingoDayLine.h" />
+    <ClCompile Include="..\src\Type\America market\TiingoDayLine.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Type\America market\TiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\Type\America market\TiingoIEXTopOFBook.h" />
     <ClInclude Include="..\src\Type\America market\TiingoIndustry.h" />
@@ -329,20 +333,48 @@
     <ClInclude Include="..\src\Type\China market\WeekLine.h" />
     <ClInclude Include="..\src\Type\SECFiling.h" />
     <ClInclude Include="..\src\Type\TiingoCompanyFinancialState.h" />
-    <ClInclude Include="..\src\Type\VirtualDataHistoryCandleExtend.h" />
-    <ClInclude Include="..\src\Type\VirtualHistoryCandleBasic.h" />
+    <ClInclude Include="..\src\Type\VirtualContainerHistoryCandleExtend.h" />
+    <ClCompile Include="..\src\Type\VirtualHistoryCandleBasic.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Type\VirtualHistoryCandleExtend.h" />
-    <ClInclude Include="..\src\WebSocket\FinnhubWebSocket.h" />
-    <ClInclude Include="..\src\WebSocket\TiingoCryptoWebSocket.h" />
-    <ClInclude Include="..\src\WebSocket\TiingoForexWebSocket.h" />
-    <ClInclude Include="..\src\WebSocket\TiingoIEXWebSocket.h" />
-    <ClInclude Include="..\src\WebSocket\VirtualWebSocket.h" />
+    <ClCompile Include="..\src\WebSocket\FinnhubWebSocket.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\WebSocket\TiingoCryptoWebSocket.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\WebSocket\TiingoForexWebSocket.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\WebSocket\TiingoIEXWebSocket.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\WebSocket\VirtualWebSocket.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\src\Windows interface\ChildFrm.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClInclude Include="..\src\Windows interface\MainFrm.h" />
+    <ClCompile Include="..\src\Windows interface\MainFrm.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\src\Windows interface\OutputWnd.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
@@ -577,7 +609,7 @@
     <ClCompile Include="..\src\Type\China market\WeekLine.cpp" />
     <ClCompile Include="..\src\Type\SECFiling.cpp" />
     <ClCompile Include="..\src\Type\TiingoCompanyFinancialState.cpp" />
-    <ClCompile Include="..\src\Type\VirtualDataHistoryCandleExtend.cpp" />
+    <ClCompile Include="..\src\Type\VirtualContainerHistoryCandleExtend.cpp" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandleBasic.cpp" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandleExtend.cpp" />
     <ClCompile Include="..\src\WebSocket\FinnhubWebSocket.cpp" />

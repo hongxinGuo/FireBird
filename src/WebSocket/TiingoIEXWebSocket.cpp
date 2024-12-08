@@ -3,11 +3,12 @@
 #include"globedef.h"
 
 #include"SystemMessage.h"
+#include <ixwebsocket/IXWebSocket.h>
 
 #include"JsonParse.h"
 import FireBird.Accessory.JsonGetValue;
 
-#include "TiingoIEXWebSocket.h"
+import FireBird.WebSocket.TiingoIEX;
 
 #include "TiingoDataSource.h"
 

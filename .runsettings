@@ -186,7 +186,7 @@ Included items must then not match any entries in the exclude list to remain inc
 								<Function>CVirtualMarket::ProcessTask</Function>
 								<Function>CVirtualMarket::ResetMarket</Function>
 
-								<Function>CVirtualDataHistoryCandleExtend::ShowData</Function>
+								<Function>CVirtualContainerHistoryCandleExtend::ShowData</Function>
 
 								<Function>CTodayTempDB::DeleteCurrentContent</Function>
 
