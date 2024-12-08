@@ -1,11 +1,14 @@
 #include "pch.h"
 
 #include"globedef.h"
-#include"nlohmann/json.hpp"
-import FireBird.System.Configuration;
-import FireBird.FinnhubInquiryType;
-module FireBird.Tiingo.InaccessibleStock;
 
+#include"nlohmann/json.hpp"
+
+import FireBird.System.Configuration;
+
+import FireBird.FinnhubInquiryType;
+
+import FireBird.Tiingo.InaccessibleStock;
 
 std::string Test_gl_sTiingoInaccessibleStock = R"(
 { "UpdateDate" : 20221205,

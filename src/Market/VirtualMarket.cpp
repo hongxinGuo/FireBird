@@ -1,10 +1,10 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include "VirtualMarket.h"
-#include"VirtualDataSource.h"
 
 import FireBird.Accessory.TimeConvert;
+#include "VirtualMarket.h"
+#include"VirtualDataSource.h"
 
 CVirtualMarket::CVirtualMarket() {
 	m_fResetMarket = true;

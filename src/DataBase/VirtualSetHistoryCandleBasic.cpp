@@ -2,7 +2,7 @@
 
 #include"pch.h"
 
-module FireBird.Set.VirtualHistoryCandleBasic;
+import FireBird.Set.VirtualHistoryCandleBasic;
 
 CVirtualSetHistoryCandleBasic::CVirtualSetHistoryCandleBasic(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {

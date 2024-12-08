@@ -1,19 +1,23 @@
 #include "pch.h"
 
 #include"globedef.h"
+
 #include"SystemMessage.h"
 #include <ixwebsocket/IXWebSocket.h>
-#include "FinnhubDataSource.h"
-#include"JsonParse.h"
-#include"simdjson.h"
-#include "WorldMarket.h"
-import FireBird.Accessory.JsonGetValue;
-import FireBird.WebSocket.Finnhub;
-import FireBird.Simdjson.GetValue;
-import FireBird.Accessory.TimeConvert;
-module FireBird.WebSocket.Finnhub;
 
+#include"JsonParse.h"
+import FireBird.Accessory.JsonGetValue;
+
+import FireBird.WebSocket.Finnhub;
+
+#include "FinnhubDataSource.h"
+
+import simdjson.GetValue;
+#include"simdjson.h"
 using namespace simdjson;
+
+import FireBird.Accessory.TimeConvert;
+#include "WorldMarket.h"
 
 void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	string str;

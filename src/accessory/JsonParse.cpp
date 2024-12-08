@@ -21,7 +21,7 @@
 import FireBird.Accessory.ChinaStockCodeConverter;
 import FireBird.Accessory.InfoReport;
 
-import FireBird.Simdjson.GetValue;
+import simdjson.GetValue;
 #include"simdjson.h"
 using namespace simdjson;
 

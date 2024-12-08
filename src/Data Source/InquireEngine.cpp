@@ -7,12 +7,17 @@
 #include "pch.h"
 
 #include"globedef.h"
-#include"SystemData.h"
-#include "SystemMessage.h"
-#include <afxinet.h>
-import FireBird.Accessory.InfoReport;
-module FireBird.DataSource.InquireEngine;
 
+#include"SystemData.h"
+
+#include "SystemMessage.h"
+
+#include <afxinet.h>
+
+import DataSource.InquireEngine;
+
+
+import FireBird.Accessory.InfoReport;
 
 CInquireEngine::CInquireEngine(): m_dataBuffer{} {
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。

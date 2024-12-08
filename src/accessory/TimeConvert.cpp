@@ -2,7 +2,7 @@
 
 #include"globedef.h"
 
-module FireBird.Accessory.TimeConvert;
+import FireBird.Accessory.TimeConvert;
 
 long GetDayOfWeek() {
 	time_t tUTC = GetUTCTime();

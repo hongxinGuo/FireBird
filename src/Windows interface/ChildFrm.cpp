@@ -3,10 +3,11 @@
 
 #include"pch.h"
 
+import FireBird.WindowInterface.ChildFrm;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-module FireBird.WindowInterface.ChildFrm;
 
 // CChildFrame
 

@@ -6,6 +6,7 @@
 #include"pch.h"
 module;
 #include"SystemConstantChinaMarket.h"
+
 export module FireBird.Set.VirtualStockSymbol;
 
 import FireBird.Set.VirtualRecordset;

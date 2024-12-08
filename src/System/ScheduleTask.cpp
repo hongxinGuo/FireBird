@@ -19,7 +19,7 @@
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
 
-import FireBird.Simdjson.GetValue;
+import simdjson.GetValue;
  
 
 void TaskCheckWorldMarketReady() {

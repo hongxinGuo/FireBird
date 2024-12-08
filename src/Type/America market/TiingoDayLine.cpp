@@ -1,7 +1,7 @@
 #include "pch.h"
 
+import FireBird.HistoryCandle.TiingoDayLine;
 #include"TiingoStock.h"
-module FireBird.HistoryCandle.TiingoDayLine; 
 
 CTiingoDayLine::CTiingoDayLine() {
 }

@@ -10,10 +10,11 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"SystemMessage.h"
-import FireBird.System.Configuration;
-module FireBird.System.ThreadStatus;
 
+import FireBird.System.Configuration;
+#include"SystemMessage.h"
+
+import FireBird.System.ThreadStatus;
 
 CThreadStatus::CThreadStatus() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

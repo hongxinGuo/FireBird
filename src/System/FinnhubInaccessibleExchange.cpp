@@ -2,10 +2,12 @@
 
 #include"globedef.h"
 #include"nlohmann/json.hpp"
-import FireBird.System.Configuration;
-import FireBird.FinnhubInquiryType;
-module FireBird.System.FinnhubInaccessibleExchange;
 
+import FireBird.System.Configuration;
+
+import FireBird.FinnhubInquiryType;
+
+import FireBird.System.FinnhubInaccessibleExchange;
 
 std::string Test_gl_sFinnhubInaccessibleExchange = R"(
 { "UpdateDate" : 20221205,

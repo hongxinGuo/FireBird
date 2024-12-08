@@ -3,7 +3,7 @@ module;
 #include <afxinet.h>
 #include"concurrentqueue/concurrentqueue.h"
 #include"VirtualWebProduct.h"
-export module FireBird.DataSource.InquireEngine;
+export module DataSource.InquireEngine;
 
 using namespace moodycamel;
 using std::string;

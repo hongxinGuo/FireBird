@@ -3,6 +3,8 @@
 #include"SystemMessage.h"
 
 #include"FinnhubStock.h"
+import FireBird.FinnhubInquiryType;
+
 #include"ProductFinnhubCompanyProfile.h"
 #include"ProductFinnhubCompanyProfileConcise.h"
 #include"ProductFinnhubCompanyNews.h"
@@ -32,13 +34,11 @@
 
 #include"ProductDummy.h"
 
+import FireBird.Factory.Finnhub;
 #include"VirtualWebProduct.h"
 #include"VirtualMarket.h"
 
 #include "ProductFinnhubSECFilings.h"
-import FireBird.FinnhubInquiryType;
-module FireBird.Factory.Finnhub; 
-
 
 CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;

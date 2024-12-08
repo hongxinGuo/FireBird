@@ -5,7 +5,7 @@
 #include"TiingoStock.h"
 #include "ProductTiingoFinancialState.h"
 
-import FireBird.Simdjson.GetValue;
+import simdjson.GetValue;
 #include "WorldMarket.h"
 
 #include"simdjson.h"

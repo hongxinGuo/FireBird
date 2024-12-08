@@ -1,5 +1,6 @@
 #include"pch.h"
-module FireBird.Accessory.ChinaStockCodeConverter;
+
+import FireBird.Accessory.ChinaStockCodeConverter;
 
 string XferSinaToStandard(const CString& strSina) {
 	const string strSymbol = strSina.Right(6).GetBuffer();

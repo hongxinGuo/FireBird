@@ -51,7 +51,7 @@
 import FireBird.WindowInterface.MainFrm;
 #include"MockMainFrm.h"
 
-import FireBird.Simdjson.GetValue;
+import simdjson.GetValue;
 
 #include"ScheduleTask.h"
 import FireBird.System.FinnhubInaccessibleExchange;

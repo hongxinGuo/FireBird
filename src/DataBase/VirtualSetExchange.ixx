@@ -8,7 +8,6 @@ module;
 export module FireBird.Set.Exchange;
 
 import FireBird.Set.VirtualRecordset;
-
 export {
 	class CVirtualSetExchange : public CVirtualRecordset {
 	public:

@@ -2,7 +2,7 @@
 
 #include"pch.h"
 
-module FireBird.Set.Exchange;
+import FireBird.Set.Exchange;
 
 CVirtualSetExchange::CVirtualSetExchange(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {

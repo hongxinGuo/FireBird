@@ -2,6 +2,9 @@
 
 #include"SystemData.h"
 #include"SystemMessage.h"
+
+import FireBird.FinnhubInquiryType;
+import FireBird.Factory.Tiingo;
 #include"VirtualWebProduct.h"
 #include"VirtualMarket.h"
 
@@ -18,10 +21,6 @@
 #include "ProductTiingoMarketNews.h"
 #include "ProductTiingoStockDailyMeta.h"
 #include "TiingoIEXTopOFBook.h"
-import FireBird.FinnhubInquiryType;
-module FireBird.Factory.Tiingo; 
-
-
 
 CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;

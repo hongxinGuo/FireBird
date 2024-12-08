@@ -5,7 +5,7 @@
 #include"SystemMessage.h"
 
 #include "GeneralCheck.h"
-import FireBird.Simdjson.GetValue;
+import simdjson.GetValue;
 
 #include"simdjson.h"
 using namespace simdjson;

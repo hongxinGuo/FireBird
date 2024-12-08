@@ -4,13 +4,15 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include "resource.h"
 #include"globedef.h"
+
+import FireBird.System.Configuration;
+
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
 
+#include "resource.h"
 #include "TengxunRTDataSource.h"
-module FireBird.System.Configuration;
 
 bool CSystemConfiguration::sm_bInitialized = false;
 
