@@ -93,7 +93,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnablePREfast>false</EnablePREfast>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <BrowseInformation>false</BrowseInformation>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -114,7 +114,7 @@
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <TranslateIncludes>false</TranslateIncludes>
       <EnableModules>false</EnableModules>
-      <BuildStlModules>true</BuildStlModules>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -166,7 +166,7 @@
       <PreprocessorDefinitions>_WINDOWS;NDEBUG;_OPENSSL_USE_DLL;%(PreprocessorDefinitions);HAS_REMOTE_API;AUTO_DOWNLOAD</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SupportJustMyCode>true</SupportJustMyCode>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
@@ -177,7 +177,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <EnableModules>false</EnableModules>
-      <BuildStlModules>true</BuildStlModules>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -6,8 +6,8 @@
 #include"SystemMessage.h"
 #include"SystemData.h"
 
-#include"TimeConvert.h"
-#include"ChinaStockCodeConverter.h"
+import FireBird.Accessory.TimeConvert;
+import FireBird.Accessory.ChinaStockCodeConverter;
 
 #include"ChinaMarket.h"
 #include"ChinaStock.h"

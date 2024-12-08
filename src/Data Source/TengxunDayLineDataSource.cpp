@@ -12,12 +12,12 @@
 
 #include"SystemMessage.h"
 
-#include"ChinaStockCodeConverter.h"
+import FireBird.Accessory.ChinaStockCodeConverter;
 #include "TengxunDayLineDataSource.h"
 #include"ProductTengxunDayLine.h"
 
 #include"ChinaMarket.h"
-#include "TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 
 CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

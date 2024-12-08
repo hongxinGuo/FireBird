@@ -1,7 +1,7 @@
 #pragma once
 
 #include"VirtualDataSource.h"
-#include"FinnhubFactory.h"
+import FireBird.Factory.Finnhub;
 
 class CFinnhubDataSource : public CVirtualDataSource {
 public:

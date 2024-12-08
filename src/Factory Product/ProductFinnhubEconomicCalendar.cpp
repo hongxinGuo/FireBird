@@ -9,7 +9,7 @@
 #include "pch.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include "ProductFinnhubEconomicCalendar.h"
 
@@ -35,13 +35,13 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalen
 	auto pvEconomicCalendar = make_shared<vector<CEconomicCalendarPtr>>();
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
 	string s;
-	json js;
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return pvEconomicCalendar;
 	if (!IsValidData(pWebData)) return pvEconomicCalendar;
 
 	try {
-		json js2 = jsonGetChild(js, _T("economicCalendar"));
+		nlohmann::ordered_json js2 = jsonGetChild(js, _T("economicCalendar"));
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			pEconomicCalendar = make_shared<CEconomicCalendar>();
 			s = jsonGetString(it, _T("country"));
@@ -59,7 +59,7 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalen
 			pEconomicCalendar->m_strUnit = s.c_str();
 			pvEconomicCalendar->push_back(pEconomicCalendar);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Economic Calendar "), e.what());
 	}
 	return pvEconomicCalendar;

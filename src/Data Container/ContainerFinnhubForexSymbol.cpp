@@ -3,7 +3,7 @@
 #include"containerFinnhubForexSymbol.h"
 #include"SetFinnhubForexSymbol.h"
 #include"FinnhubForex.h"
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 
 CContainerFinnhubForexSymbol::CContainerFinnhubForexSymbol() {
 	CContainerFinnhubForexSymbol::Reset();

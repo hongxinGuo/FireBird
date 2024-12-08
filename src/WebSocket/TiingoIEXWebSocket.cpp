@@ -5,7 +5,7 @@
 #include"SystemMessage.h"
 
 #include"JsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include "TiingoIEXWebSocket.h"
 
@@ -89,7 +89,7 @@ void CTiingoIEXWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 ///////////////////////////////////////////////////////////////////////
 string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
 	vectorString vSymbol2;
-	json jsonMessage;
+	nlohmann::ordered_json jsonMessage;
 	jsonMessage["eventName"] = _T("subscribe");
 	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
 	jsonMessage["eventData"]["thresholdLevel"] = 5; // threshold的有效数字为0或者5
@@ -133,14 +133,14 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 	tm tm_;
 	time_t tt;
 	try {
-		if (json js; CreateJsonWithNlohmann(js, *pData)) {
+		if (nlohmann::ordered_json js; CreateJsonWithNlohmann(js, *pData)) {
 			int i = 0;
 			string sMessageType;
 			char chType;
 			string sService;
 			string sType;
-			json js2, js3, js4;
-			json::iterator it;
+			nlohmann::ordered_json js2, js3, js4;
+			nlohmann::ordered_json::iterator it;
 			sType = jsonGetString(js, _T("messageType"));
 			if (sType.empty()) return false;
 			switch (sType.at(0)) {
@@ -207,7 +207,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 						strSymbol = jsonGetString(it2);
 						m_vCurrentInquireSymbol.emplace_back(strSymbol.c_str());
 					}
-				} catch (json::exception&) { // 注册ID {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
+				} catch (nlohmann::ordered_json::exception&) { // 注册ID {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
@@ -231,7 +231,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 			// ERROR
 			return false;
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo IEX WebSocket "), e.what());
 		return false;
 	}

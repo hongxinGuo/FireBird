@@ -2,7 +2,7 @@
 
 #include "ContainerFinnhubStockDayLine.h"
 
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 #include"SetFinnhubStockDayLine.h"
 
 CContainerFinnhubStockDayLine::CContainerFinnhubStockDayLine() {}

@@ -6,7 +6,7 @@
 
 #include"GeneralCheck.h"
 
-#include"TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 #include"WorldMarket.h"
 
 #include"ProductFinnhubCompanyNews.h"

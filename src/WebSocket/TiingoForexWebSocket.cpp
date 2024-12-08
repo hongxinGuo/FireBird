@@ -5,8 +5,8 @@
 #include"SystemMessage.h"
 
 #include"JsonParse.h"
-#include"JsonGetValue.h"
-#include"TimeConvert.h"
+import FireBird.Accessory.JsonGetValue;
+import FireBird.Accessory.TimeConvert;
 
 #include "TiingoForexWebSocket.h"
 
@@ -99,7 +99,7 @@ void CTiingoForexWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 ///////////////////////////////////////////////////////////////////////
 string CTiingoForexWebSocket::CreateMessage(const vectorString& vSymbol) {
 	vectorString vSymbol2;
-	json jsonMessage;
+	nlohmann::ordered_json jsonMessage;
 	jsonMessage["eventName"] = _T("subscribe");
 	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
 	jsonMessage["eventData"]["thresholdLevel"] = 5; // //7£ºA top - of - book update that is due to a change in either the bid / ask price or size.
@@ -134,7 +134,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 	CTiingoForexSocketPtr pForexData = nullptr;
 
 	try {
-		if (json js; CreateJsonWithNlohmann(js, *pData)) {
+		if (nlohmann::ordered_json js; CreateJsonWithNlohmann(js, *pData)) {
 			string sDatetime;
 			string sMessageType;
 			char chType;
@@ -144,8 +144,8 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 			chrono::time_point<chrono::system_clock, chrono::microseconds> tpTime;
 			chrono::minutes Minutes;
 			string sString;
-			json::iterator it;
-			json js2, js3, js4;
+			nlohmann::ordered_json::iterator it;
+			nlohmann::ordered_json js2, js3, js4;
 			sType = jsonGetString(js, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {
@@ -157,7 +157,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 						strSymbol = jsonGetString(it3);
 						m_vCurrentInquireSymbol.push_back(strSymbol.c_str());
 					}
-				} catch (json::exception&) { // {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
+				} catch (nlohmann::ordered_json::exception&) { // {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
@@ -203,7 +203,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 			// ERROR
 			return false;
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo Forex WebSocket "), e.what());
 		return false;
 	}

@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include "ProductFinnhubCryptoExchange.h"
 
@@ -37,7 +37,7 @@ shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExc
 	CString str = _T("");
 	string sError;
 	auto pvExchange = make_shared<vector<CString>>();
-	json js;
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return pvExchange;
 	if (!IsValidData(pWebData)) return pvExchange;
@@ -48,7 +48,7 @@ shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExc
 			str = s.c_str();
 			pvExchange->push_back(str);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Exchange "), e.what());
 		return pvExchange;
 	}

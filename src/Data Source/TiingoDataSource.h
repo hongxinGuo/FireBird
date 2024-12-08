@@ -1,7 +1,7 @@
 #pragma once
 
 #include"VirtualDataSource.h"
-#include"TiingoFactory.h"
+import FireBird.Factory.Tiingo;
 
 class CTiingoDataSource : public CVirtualDataSource {
 public:

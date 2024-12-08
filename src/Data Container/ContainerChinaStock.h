@@ -4,7 +4,6 @@
 #include"ContainerVirtualStock.h"
 
 import FireBird.RelativeStrongReference;
-import FireBird.Thread;
 
 class CContainerChinaStock : public CContainerVirtualStock {
 public:

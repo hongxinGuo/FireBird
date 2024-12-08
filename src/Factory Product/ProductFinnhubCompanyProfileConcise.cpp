@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include"worldMarket.h"
 
@@ -53,7 +53,7 @@ void CProductFinnhubCompanyProfileConcise::ParseAndStoreWebData(CWebDataPtr pWeb
 bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const CWebDataPtr& pWebData, const CFinnhubStockPtr& pStock) const {
 	string s;
 	string sError;
-	json js;
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return false;
 	if (pWebData->IsVoidJson()) return true; // 即使为空，也完成了查询。
@@ -82,7 +82,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const
 		if (!s.empty()) pStock->SetWebURL(s.c_str());
 		s = jsonGetString(js, _T("ipo"));
 		if (!s.empty()) pStock->SetIPODate(s.c_str());
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Profile Concise "), e.what());
 		return false; // 出现错误则返回任务失败
 	}

@@ -28,70 +28,70 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CSystemConfigurationTest, TestGlobeVariable) {
-		json jsSystemConfiguration = json::parse(gl_sSystemConfiguration);
+		nlohmann::ordered_json jsSystemConfiguration = nlohmann::ordered_json::parse(gl_sSystemConfiguration);
 		string sTemp;
 
-		sTemp = jsSystemConfiguration.at(json::json_pointer("/Environment/Display/PropertyPage"));
+		sTemp = jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/Environment/Display/PropertyPage"));
 		EXPECT_TRUE(sTemp== _T("System Status"));
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/LogLevel")), SPDLOG_LEVEL_INFO);
-		EXPECT_NE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/LogLevel")), SPDLOG_LEVEL_ERROR) << "预先设置的为info级";
-		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/UsingFastCPU")));
-		EXPECT_FALSE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/DebugMode")));
-		EXPECT_FALSE(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/ReloadSystem")));
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/SystemConfiguration/LogLevel")), SPDLOG_LEVEL_INFO);
+		EXPECT_NE(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/SystemConfiguration/LogLevel")), SPDLOG_LEVEL_ERROR) << "预先设置的为info级";
+		EXPECT_TRUE(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/SystemConfiguration/UsingFastCPU")));
+		EXPECT_FALSE(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/SystemConfiguration/DebugMode")));
+		EXPECT_FALSE(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/SystemConfiguration/ReloadSystem")));
 
-		sTemp = jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/DatabaseAccountName"));
+		sTemp = jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/SystemConfiguration/DatabaseAccountName"));
 		EXPECT_TRUE(sTemp == _T("FireBird"));
-		sTemp = jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/DatabaseAccountPassword"));
+		sTemp = jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/SystemConfiguration/DatabaseAccountPassword"));
 		EXPECT_TRUE(sTemp == _T("firebird"));
 
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/BackgroundThreadPermittedNumber")), 8);
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/SystemConfiguration/SavingThreadPermittedNumber")), 4);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/SystemConfiguration/BackgroundThreadPermittedNumber")), 8);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/SystemConfiguration/SavingThreadPermittedNumber")), 4);
 
-		sTemp = jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/RealtimeServer"));
+		sTemp = jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/ChinaMarket/RealtimeServer"));
 		EXPECT_TRUE(sTemp == _T("sina"));
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/RealtimeInquiryTime")), 250);
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/SavingStockDayLineThread")), 4);
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/SinaRTDataInquiryPerTime")), 850);
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/NeteaseRTDataInquiryPerTime")), 900);
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/TengxunRTDataInquiryPerTime")), 900);
-		sTemp = jsSystemConfiguration.at(json::json_pointer("/ChinaMarket/CurrentStock"));
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/ChinaMarket/RealtimeInquiryTime")), 250);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/ChinaMarket/SavingStockDayLineThread")), 4);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/ChinaMarket/SinaRTDataInquiryPerTime")), 850);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/ChinaMarket/NeteaseRTDataInquiryPerTime")), 900);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/ChinaMarket/TengxunRTDataInquiryPerTime")), 900);
+		sTemp = jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/ChinaMarket/CurrentStock"));
 		EXPECT_TRUE(sTemp == _T("600026.SS"));
 
-		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubToken"));
+		sTemp = jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/WorldMarket/FinnhubToken"));
 		EXPECT_TRUE(sTemp == _T("bv985d748v6u0"));
-		sTemp = jsSystemConfiguration.at(json::json_pointer("/WorldMarket/QuandlToken"));
+		sTemp = jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/WorldMarket/QuandlToken"));
 		EXPECT_TRUE(sTemp == _T("aBMXMyo_N3pMb3ex"));
 
-		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubAccountFeePaid")));
-		EXPECT_FALSE(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/QuandlAccountFeePaid")));
+		EXPECT_TRUE(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/WorldMarket/FinnhubAccountFeePaid")));
+		EXPECT_FALSE(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/WorldMarket/QuandlAccountFeePaid")));
 
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/FinnhubInquiryTime")), 1100);
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/TiingoInquiryTime")), 9000);
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/WorldMarket/QuandlInquiryTime")), 36000);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/WorldMarket/FinnhubInquiryTime")), 1100);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/WorldMarket/TiingoInquiryTime")), 9000);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/WorldMarket/QuandlInquiryTime")), 36000);
 
 		//Tiingo.com
-		sTemp = jsSystemConfiguration.at(json::json_pointer("/Tiingo/Token"));
+		sTemp = jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/Tiingo/Token"));
 		EXPECT_TRUE(sTemp == _T("c897a00b7cfc2630d235316a4683156"));
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/IEXTopOfBookUpdateDate")), 19990101);
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/HourlyRequestLimit")), 500);
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/DailyRequestLimit")), 20000);
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/BandWidth")), 5368709120);
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/Tiingo/BandWidthLeft")), 5368709120);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/Tiingo/IEXTopOfBookUpdateDate")), 19990101);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/Tiingo/HourlyRequestLimit")), 500);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/Tiingo/DailyRequestLimit")), 20000);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/Tiingo/BandWidth")), 5368709120);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/Tiingo/BandWidthLeft")), 5368709120);
 
-		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/WebSocket/UsingFinnhubWebSocket")));
-		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")));
-		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/WebSocket/UsingTiingoCryptoWebSocket")));
-		EXPECT_TRUE(jsSystemConfiguration.at(json::json_pointer("/WebSocket/UsingTiingoForexWebSocket")));
+		EXPECT_TRUE(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/WebSocket/UsingFinnhubWebSocket")));
+		EXPECT_TRUE(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")));
+		EXPECT_TRUE(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/WebSocket/UsingTiingoCryptoWebSocket")));
+		EXPECT_TRUE(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/WebSocket/UsingTiingoForexWebSocket")));
 
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/FinancialDataUpdateRate/StockProfile")), 365);
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/FinancialDataUpdateRate/BasicFinancial")), 45);
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/FinancialDataUpdateRate/InsideTransaction")), 30);
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/FinancialDataUpdateRate/InsideSentiment")), 30);
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/FinancialDataUpdateRate/StockPeer")), 90);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/FinancialDataUpdateRate/StockProfile")), 365);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/FinancialDataUpdateRate/BasicFinancial")), 45);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/FinancialDataUpdateRate/InsideTransaction")), 30);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/FinancialDataUpdateRate/InsideSentiment")), 30);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/FinancialDataUpdateRate/StockPeer")), 90);
 
-		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/FinancialDataUpdateRate/TiingoCompanyFinancialState")), 30);
+		EXPECT_EQ(jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/FinancialDataUpdateRate/TiingoCompanyFinancialState")), 30);
 
-		sTemp = jsSystemConfiguration.at(json::json_pointer("/TestConfiguration/BenchmarkTestFileDirectory"));
+		sTemp = jsSystemConfiguration.at(nlohmann::ordered_json::json_pointer("/TestConfiguration/BenchmarkTestFileDirectory"));
 		EXPECT_STREQ(sTemp.c_str(), _T("C:\\FireBird\\Test Data\\Benchmark\\"));
 	}
 
@@ -252,21 +252,21 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CSystemConfigurationTest, TestLoadSaveWithNlohmannjson) {
-		json jsSystemConfiguration = json::parse(gl_sSystemConfiguration);
+		nlohmann::ordered_json jsSystemConfiguration = nlohmann::ordered_json::parse(gl_sSystemConfiguration);
 
 		gl_systemConfiguration.SaveDB();
 		gl_systemConfiguration.LoadDB();
 
 		try {
-			EXPECT_TRUE(jsSystemConfiguration[json::json_pointer("/WebSocket/UsingFinnhubWebSocket")] == gl_systemConfiguration.IsUsingFinnhubWebSocket()) << "FinnhubWebSocket预设为真";
-			EXPECT_TRUE(jsSystemConfiguration[json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")] == gl_systemConfiguration.IsUsingTiingoIEXWebSocket());
+			EXPECT_TRUE(jsSystemConfiguration[nlohmann::ordered_json::json_pointer("/WebSocket/UsingFinnhubWebSocket")] == gl_systemConfiguration.IsUsingFinnhubWebSocket()) << "FinnhubWebSocket预设为真";
+			EXPECT_TRUE(jsSystemConfiguration[nlohmann::ordered_json::json_pointer("/WebSocket/UsingTiingoIEXWebSocket")] == gl_systemConfiguration.IsUsingTiingoIEXWebSocket());
 			EXPECT_TRUE(jsSystemConfiguration["ChinaMarket"]["CurrentStock"] == _T("600026.SS"));
 
-			EXPECT_TRUE(jsSystemConfiguration[json::json_pointer("/FinancialDataUpdateRate/TiingoCompanyFinancialState")] == gl_systemConfiguration.GetTiingoCompanyFinancialStateUpdateRate());
+			EXPECT_TRUE(jsSystemConfiguration[nlohmann::ordered_json::json_pointer("/FinancialDataUpdateRate/TiingoCompanyFinancialState")] == gl_systemConfiguration.GetTiingoCompanyFinancialStateUpdateRate());
 
-			const string sTemp = jsSystemConfiguration[json::json_pointer("/ChinaMarket/RealtimeServer")];
+			const string sTemp = jsSystemConfiguration[nlohmann::ordered_json::json_pointer("/ChinaMarket/RealtimeServer")];
 			EXPECT_TRUE(sTemp==_T("sina"));
-		} catch (json::type_error&) {
+		} catch (nlohmann::ordered_json::type_error&) {
 			EXPECT_TRUE(FALSE);
 		}
 	}

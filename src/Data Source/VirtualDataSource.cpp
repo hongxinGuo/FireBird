@@ -17,8 +17,6 @@
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
-
-import FireBird.Thread;
 using std::vector;
 
 atomic_int64_t CVirtualDataSource::sm_lTotalByteRead = 0;

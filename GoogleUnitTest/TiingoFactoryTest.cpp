@@ -7,7 +7,7 @@
 #include"WorldMarket.h"
 import FireBird.FinnhubInquiryType;
 
-#include"TiingoFactory.h"
+import FireBird.Factory.Tiingo;
 
 using namespace testing;
 

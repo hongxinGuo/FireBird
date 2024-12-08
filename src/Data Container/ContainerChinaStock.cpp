@@ -4,17 +4,17 @@
 
 #include"SystemMessage.h"
 
-#include"ConvertToString.h"
-#include"ThreadStatus.h"
-#include"TimeConvert.h"
-#include"ChinaStockCodeConverter.h"
-#include"InfoReport.h"
+import FireBird.Accessory.ConvertToString;
+import FireBird.System.ThreadStatus;
+import FireBird.Accessory.TimeConvert;
+import FireBird.Accessory.ChinaStockCodeConverter;
+import FireBird.Accessory.InfoReport;
 
 #include"ChinaMarket.h"
 #include "ContainerChinaStock.h"
 
 import FireBird.RelativeStrongReference;
-import FireBird.Thread;
+ 
 
 #include"SetRSStrongStock.h"
 #include"SetRSStrong1Stock.h"

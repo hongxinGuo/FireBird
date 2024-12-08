@@ -2,7 +2,7 @@
 
 ////#include"gtest/gtest.h"
 
-#include"TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"

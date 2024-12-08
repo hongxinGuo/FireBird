@@ -4,7 +4,7 @@
 
 #include"SystemMessage.h"
 
-#include"ThreadStatus.h"
+import FireBird.System.ThreadStatus;
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 

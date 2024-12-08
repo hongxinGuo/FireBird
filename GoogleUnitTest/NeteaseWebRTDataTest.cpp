@@ -166,7 +166,7 @@ namespace FireBirdTest {
 	                         ));
 
 	TEST_P(CalculateNeteaseWebRTDataTest, TestParseOneNeteaseData) {
-		json js;
+		nlohmann::ordered_json js;
 		EXPECT_TRUE(m_pNeteaseWebRTData->CreateJson(js));
 		auto it = js.begin();
 		ParseOneNeteaseRTData(it, m_pRTData);

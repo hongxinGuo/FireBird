@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ContainerForexDayLine.h"
 
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 #include"SetForexDayLine.h"
 
 CContainerForexDayLine::CContainerForexDayLine() {}
@@ -10,8 +10,7 @@ bool CContainerForexDayLine::SaveDB(const CString& strCryptoSymbol) {
 	try {
 		CSetForexDayLine setForexDayLineBasic;
 		UpdateBasicDB(&setForexDayLineBasic, strCryptoSymbol);
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 

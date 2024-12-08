@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ContainerCryptoDayLine.h"
 
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 #include"SetCryptoDayLine.h"
 
 CContainerCryptoDayLine::CContainerCryptoDayLine() {}
@@ -10,8 +10,7 @@ bool CContainerCryptoDayLine::SaveDB(const CString& strCryptoSymbol) {
 	try {
 		CSetCryptoDayLine setCryptoDayLineBasic;
 		UpdateBasicDB(&setCryptoDayLineBasic, strCryptoSymbol);
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 

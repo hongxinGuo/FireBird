@@ -9,14 +9,14 @@
 #include"SystemMessage.h"
 
 #include "ContainerTiingoStock.h"
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 #include "SetTiingoStockCurrentTrace.h"
 #include "SetTiingoStockDayLine.h"
-#include "ThreadStatus.h"
-#include "TimeConvert.h"
+import FireBird.System.ThreadStatus;
+import FireBird.Accessory.TimeConvert;
 #include "WorldMarket.h"
 #include"TiingoStock.h"
-import FireBird.Thread;
+ 
 
 using namespace concurrencpp;
 

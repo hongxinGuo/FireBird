@@ -7,7 +7,6 @@
 #include"GeneralCheck.h"
 
 #include"FinnhubInaccessibleExchange.h"
-#include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 
 namespace FireBirdTest {
 	class CFinnhubInaccessibleExchangeTest : public testing::Test {
@@ -25,7 +24,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestGlobeVariable) {
-		json jsFinnhubInaccessibleExchange = json::parse(Test_gl_sFinnhubInaccessibleExchange);
+		nlohmann::ordered_json jsFinnhubInaccessibleExchange = nlohmann::ordered_json::parse(Test_gl_sFinnhubInaccessibleExchange);
 		CInaccessible exchange;
 		const string s2 = jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Function")];
 		exchange.SetFunctionString(s2.c_str());

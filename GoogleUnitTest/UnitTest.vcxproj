@@ -302,7 +302,7 @@
       <EnablePREfast>false</EnablePREfast>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <SDLCheck>true</SDLCheck>
@@ -321,7 +321,7 @@
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <TranslateIncludes>false</TranslateIncludes>
       <EnableModules>false</EnableModules>
-      <BuildStlModules>true</BuildStlModules>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
@@ -355,14 +355,14 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4003</DisableSpecificWarnings>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <BrowseInformation>false</BrowseInformation>
       <EnableModules>false</EnableModules>
-      <BuildStlModules>true</BuildStlModules>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

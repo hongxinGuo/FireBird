@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "framework.h"
 
-#include "PropertyRealTimeDataWnd.h"
+import FireBird.WindowInterface.PropertyRealTimeDataWnd;
 
 #include "ChinaMarket.h"
 #include "MainFrm.h"

@@ -20,7 +20,7 @@ void CVirtualStock::LoadUpdateDate(CString& strUpdateDate) {
 	else {
 		try {
 			CreateJsonWithNlohmann(m_jsonUpdateDate, strUpdateDate);
-		} catch (json::exception&) {
+		} catch (nlohmann::ordered_json::exception&) {
 			CreateJsonWithNlohmann(m_jsonUpdateDate, _T("{}"));
 			ResetAllUpdateDate();
 		}
@@ -63,7 +63,7 @@ long CVirtualStock::GetDayLineStartDate() {
 	long l;
 	try {
 		l = m_jsonUpdateDate[_T("DayLineStartDate")];
-	} catch (json::exception&) {
+	} catch (nlohmann::ordered_json::exception&) {
 		m_jsonUpdateDate[_T("DayLineStartDate")] = 29900101;
 		l = 29901010;
 	}
@@ -77,7 +77,7 @@ long CVirtualStock::GetDayLineEndDate() {
 		if (l < 19800101) {
 			m_jsonUpdateDate[_T("DayLineEndDate")] = 19800101;
 		}
-	} catch (json::exception&) {
+	} catch (nlohmann::ordered_json::exception&) {
 		m_jsonUpdateDate[_T("DayLineEndDate")] = 19800101;
 		l = 19800101;
 	}

@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include "ProductFinnhubCryptoSymbol.h"
 
@@ -45,7 +45,7 @@ CFinnhubCryptosPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSymbol(const C
 	auto pvCryptoSymbol = make_shared<vector<CFinnhubCryptoPtr>>();
 	string s;
 	string sError;
-	json js;
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return pvCryptoSymbol;
 	if (!IsValidData(pWebData)) return pvCryptoSymbol;
@@ -61,8 +61,7 @@ CFinnhubCryptosPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSymbol(const C
 			pSymbol->SetSymbol(s.c_str());
 			pvCryptoSymbol->push_back(pSymbol);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Symbol "), e.what());
 	}
 	return pvCryptoSymbol;

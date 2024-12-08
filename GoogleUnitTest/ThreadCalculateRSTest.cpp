@@ -9,7 +9,7 @@
 
 using namespace testing;
 
-import FireBird.Thread;
+ 
 
 namespace FireBirdTest {
 	class CThreadCalculateRSTest : public Test {

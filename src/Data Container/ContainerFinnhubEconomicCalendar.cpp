@@ -2,7 +2,7 @@
 #include "ContainerFinnhubEconomicCalendar.h"
 #include"SetEconomicCalendar.h"
 
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 
 CContainerFinnhubEconomicCalendar::CContainerFinnhubEconomicCalendar() {
 	Reset();

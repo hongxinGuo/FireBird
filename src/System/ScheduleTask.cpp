@@ -20,7 +20,7 @@
 #include"WorldMarket.h"
 
 import simdjson.GetValue;
-import FireBird.Thread;
+ 
 
 void TaskCheckWorldMarketReady() {
 	if (gl_pWorldMarket->IsSystemReady()) return;

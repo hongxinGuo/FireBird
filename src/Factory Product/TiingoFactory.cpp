@@ -4,8 +4,9 @@
 #include"SystemMessage.h"
 
 import FireBird.FinnhubInquiryType;
-
-#include "TiingoFactory.h"
+import FireBird.Factory.Tiingo;
+#include"VirtualWebProduct.h"
+#include"VirtualMarket.h"
 
 //#include"ProductTiingoStockProfile.h"
 #include"ProductTiingoStockProfile.h"

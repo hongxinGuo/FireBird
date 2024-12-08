@@ -12,14 +12,12 @@
 
 #include"SystemMessage.h"
 
-#include"ThreadStatus.h"
+import FireBird.System.ThreadStatus;
 #undef max //Note 包含concurrencpp.h之前，需要undefined max
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
-import FireBird.Thread;
 
 #include"ChinaMarket.h"
-#include"WorldMarket.h"
 
 UINT ThreadBuildDayLineRS(const CChinaMarketPtr& pMarket, long startCalculatingDate) {
 	pMarket->SetCalculatingDayLineRS(true);

@@ -6,7 +6,7 @@
 #include"ProductNeteaseRT.h"
 
 #include"ChinaMarket.h"
-#include "ChinaStockCodeConverter.h"
+import FireBird.Accessory.ChinaStockCodeConverter;
 
 CNeteaseRTDataSource::CNeteaseRTDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

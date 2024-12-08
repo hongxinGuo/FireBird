@@ -6,7 +6,7 @@
 #include"SetFinnhubCryptoSymbol.h"
 #include"FinnhubCrypto.h"
 
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 
 CContainerFinnhubCrypto::CContainerFinnhubCrypto() {
 	CContainerFinnhubCrypto::Reset();

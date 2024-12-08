@@ -13,6 +13,24 @@ using std::atomic_int64_t;
 constexpr int c_SelectedStockStartPosition = 0;
 constexpr int c_10DaysRSStockSetStartPosition = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）
 
+class CChinaMarket;
+using CChinaMarketPtr = shared_ptr<CChinaMarket>;
+
+// 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDay执行具体任务，最多生成8个工作线程。
+UINT ThreadBuildDayLineRS(const CChinaMarketPtr& pMarket, long startCalculatingDate); // 此工作线程返回值为11, 参数为当前最后计算日期
+// 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDate执行具体任务，最多生成8个工作线程。
+UINT ThreadBuildWeekLineRS(const CChinaMarketPtr& pMarket, long startCalculatingDate); // 此工作线程返回值为30, 参数为当前最后计算日期
+
+//各种计算用工作线程
+// 计算10日强股票集（使用外部pRef提供的参数）
+UINT ThreadChoice10RSStrongStockSet(CRSReference* pRef, int iIndex); // 此线程返回值为103
+// 计算股票的10日强势与否
+UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, const CRSReference* pRef, const CChinaStockPtr& pStock); // 此线程返回值为104
+// 计算股票的10日强势与否1
+UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, const CChinaStockPtr& pStock); // 此线程返回值为105
+// 计算股票的10日强势与否2
+UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, const CChinaStockPtr& pStock); // 此线程返回值为106
+
 class CChinaMarket : public CVirtualMarket {
 public:
 	CChinaMarket();
@@ -332,6 +350,5 @@ private:
 	long m_lNewRTDataReceivedInCurrentMinute; // 每分钟接收到的新实时数据数量
 };
 
-using CChinaMarketPtr = shared_ptr<CChinaMarket>;
 
 extern CChinaMarketPtr gl_pChinaMarket; // 中国股票市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。

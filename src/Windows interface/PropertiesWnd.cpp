@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include"globedef.h"
+
 #include "framework.h"
 #include "PropertiesWnd.h"
 
@@ -8,8 +11,8 @@
 #include "FinnhubDataSource.h"
 #include "MainFrm.h"
 #include "FireBird.h"
-import FireBird.Thread;
-#include "ThreadStatus.h"
+
+import FireBird.System.ThreadStatus;
 #include "TiingoDataSource.h"
 #include "WorldMarket.h"
 

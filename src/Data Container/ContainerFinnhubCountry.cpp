@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ContainerFinnhubCountry.h"
 
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 
 CContainerFinnhubCountry::CContainerFinnhubCountry() { Reset(); }
 

@@ -6,7 +6,7 @@
 
 #include"SystemMessage.h"
 
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 
 void ReportErrorToSystemMessage(const CString& strPrefix, const exception& e) {
 	CString strError = strPrefix;

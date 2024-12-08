@@ -1,13 +1,13 @@
 #include"pch.h"
 
-#include"TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 
 #include"DayLine.h"
 #include "ContainerChinaDayLine.h"
 #include"SetDayLineBasicInfo.h"
 #include"SetDayLineExtendInfo.h"
 
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 
 CContainerChinaDayLine::CContainerChinaDayLine() {
 }

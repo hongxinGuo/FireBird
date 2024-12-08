@@ -97,8 +97,8 @@
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <TranslateIncludes>false</TranslateIncludes>
       <EnableModules>false</EnableModules>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <BuildStlModules>true</BuildStlModules>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -174,8 +174,8 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnableModules>false</EnableModules>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <BuildStlModules>true</BuildStlModules>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

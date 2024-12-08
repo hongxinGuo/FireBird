@@ -34,8 +34,8 @@ import FireBird.Tiingo.InaccessibleStock;
 #include "ChinaMarket.h"
 #include "WorldMarket.h"
 
-import FireBird.Thread;
-#include"threadStatus.h"
+ 
+import FireBird.System.ThreadStatus;
 
 #undef max
 #include"concurrencpp/concurrencpp.h"

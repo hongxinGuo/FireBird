@@ -138,7 +138,7 @@ void CSystemConfiguration::UpdateDB() {
 	SetUpdateDB(false);
 }
 
-void CSystemConfiguration::Update(json& jsonData) {
+void CSystemConfiguration::Update(nlohmann::ordered_json& jsonData) {
 	string sTemp;
 	CString str1, str2, str3;
 	str1.LoadString(nullptr, IDS_PROPERTYVIEW_SYSTEM_STATUS); // Note 使用LoadString时，必须明确声明hInstance为nullptr，否则报错
@@ -157,44 +157,44 @@ void CSystemConfiguration::Update(json& jsonData) {
 			m_iDisplayPropertyPage = 2;
 		}
 		else m_iDisplayPropertyPage = 0; // 默认使用
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 
 	// 系统配置
 	try {
 		m_iLogLevel = jsonData.at("SystemConfiguration").at("LogLevel");
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 
 	try {
 		m_bDebugMode = jsonData.at("SystemConfiguration").at("DebugMode");
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_bReloadSystem = jsonData.at("SystemConfiguration").at("ReloadSystem");
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 
 	try {
 		sTemp = jsonData.at("SystemConfiguration").at("DatabaseAccountName");
 		m_strDatabaseAccountName = sTemp.c_str();
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		sTemp = jsonData.at("SystemConfiguration").at("DatabaseAccountPassword");
 		m_strDatabaseAccountPassword = sTemp.c_str();
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iBackgroundThreadPermittedNumber = jsonData.at("SystemConfiguration").at("BackgroundThreadPermittedNumber");
 		if (m_iBackgroundThreadPermittedNumber > 16) m_iBackgroundThreadPermittedNumber = 16;
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 
@@ -214,7 +214,7 @@ void CSystemConfiguration::Update(json& jsonData) {
 			m_iChinaMarketRealtimeServer = 0;
 			m_fUpdateDB = true;
 		}
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
@@ -229,17 +229,17 @@ void CSystemConfiguration::Update(json& jsonData) {
 			m_iChinaMarketDayLineServer = 0;
 			m_fUpdateDB = true;
 		}
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iChinaMarketRTDataInquiryTime = jsonData.at("ChinaMarket").at("RealtimeInquiryTime"); // 实时数据查询时间间隔（单位：毫秒）
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iSavingChinaMarketStockDayLineThread = jsonData.at("ChinaMarket").at("SavingStockDayLineThread"); // 保存股票日线数据线程数量
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
@@ -252,28 +252,28 @@ void CSystemConfiguration::Update(json& jsonData) {
 			m_iNumberOfRTDataSource = 1;
 			m_fUpdateDB = true;
 		}
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iSinaRTDataInquiryPerTime = jsonData.at("ChinaMarket").at("SinaRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iNeteaseRTDataInquiryPerTime = jsonData.at("ChinaMarket").at("NeteaseRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iTengxunRTDataInquiryPerTime = jsonData.at("ChinaMarket").at("TengxunRTDataInquiryPerTime"); // Sina实时数据每次查询股票数
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		sTemp = jsonData.at("ChinaMarket").at("CurrentStock"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 		m_strCurrentStock = sTemp.c_str();
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_strCurrentStock = _T("");
 		m_fUpdateDB = true;
 	}
@@ -281,152 +281,152 @@ void CSystemConfiguration::Update(json& jsonData) {
 	// WorldMarket
 	try {
 		m_lMarketResettingTime = jsonData.at("WorldMarket").at("MarketResettingTime"); // 市场重置时间
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		sTemp = jsonData.at("WorldMarket").at("FinnhubToken"); // Finnhub token
 		m_strFinnhubToken = sTemp.c_str();
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		sTemp = jsonData.at("WorldMarket").at("QuandlToken"); // Quandl token
 		m_strQuandlToken = sTemp.c_str();
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_bQuandlAccountFeePaid = jsonData.at("WorldMarket").at("QuandlAccountFeePaid");
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iWorldMarketFinnhubInquiryTime = jsonData.at("WorldMarket").at("FinnhubInquiryTime"); // 默认每小时最多查询3000次
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iWorldMarketTiingoInquiryTime = jsonData.at("WorldMarket").at("TiingoInquiryTime"); // 默认每小时最多查询400次
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iWorldMarketQuandlInquiryTime = jsonData.at("WorldMarket").at("QuandlInquiryTime"); // 默认每小时最多查询100次
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 
 	// Tiingo.com
 	try {
 		m_bTiingoAccountFeePaid = jsonData.at("Tiingo").at("AccountFeePaid"); // 
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		sTemp = jsonData.at("Tiingo").at("Token"); //
 		m_strTiingoToken = sTemp.c_str();
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_lTiingoIEXTopOfBookUpdateDate = jsonData.at("Tiingo").at("IEXTopOfBookUpdateDate"); // 
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_lTiingoStockDayLineProcessedDate = jsonData.at("Tiingo").at("StockDayLineProcessedDate"); // 
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_lTiingoStock52WeekHighLowUpdateDate = jsonData.at("Tiingo").at("Stock52WeekHighLowUpdateDate"); // 
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iTiingoHourLyRequestLimit = jsonData.at("Tiingo").at("HourlyRequestLimit"); // 
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_lTiingoDailyRequestLimit = jsonData.at("Tiingo").at("DailyRequestLimit"); // 
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_llTiingoBandWidth = jsonData.at("Tiingo").at("BandWidth"); // 
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_llTiingoBandWidthLeft = jsonData.at("Tiingo").at("BandWidthLeft"); // 
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 
 	// WebSocket
 	try {
 		m_bUsingFinnhubWebSocket = jsonData.at("WebSocket").at("UsingFinnhubWebSocket"); // 是否使用Finnhub的WebSocket
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_bUsingTiingoIEXWebSocket = jsonData.at("WebSocket").at("UsingTiingoIEXWebSocket"); // 是否使用Tiingo的WebSocket
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_bUsingTiingoCryptoWebSocket = jsonData.at("WebSocket").at("UsingTiingoCryptoWebSocket"); // 是否使用Tiingo的WebSocket
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_bUsingTiingoForexWebSocket = jsonData.at("WebSocket").at("UsingTiingoForexWebSocket"); // 是否使用Tiingo的WebSocket
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 
 	// Financial Data Update Rate
 	try {
 		m_iStockBasicFinancialUpdateRate = jsonData.at("FinancialDataUpdateRate").at("StockBasicFinancial");
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iStockProfileUpdateRate = jsonData.at("FinancialDataUpdateRate").at("StockProfile");
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iInsideTransactionUpdateRate = jsonData.at("FinancialDataUpdateRate").at("InsideTransaction");
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iInsideSentimentUpdateRate = jsonData.at("FinancialDataUpdateRate").at("InsideSentiment");
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iStockPeerUpdateRate = jsonData.at("FinancialDataUpdateRate").at("StockPeer");
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iTiingoCompanyFinancialStateUpdateRate = jsonData.at("FinancialDataUpdateRate").at("TiingoCompanyFinancialState");
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 
 	try {
 		m_iEPSSurpriseUpdateRate = jsonData.at("FinancialDataUpdateRate").at("EPSSurprise");
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		m_iSECFilingsUpdateRate = jsonData.at("FinancialDataUpdateRate").at("SECFilings");
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 
@@ -434,12 +434,12 @@ void CSystemConfiguration::Update(json& jsonData) {
 	try {
 		sTemp = jsonData.at("TestConfiguration").at("BenchmarkTestFileDirectory");
 		m_strBenchmarkTestFileDirectory = sTemp.c_str();
-	} catch (json::out_of_range&) {
+	} catch (nlohmann::ordered_json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 }
 
-void CSystemConfiguration::UpdateJsonData(json& jsonData) {
+void CSystemConfiguration::UpdateJsonData(nlohmann::ordered_json& jsonData) {
 	jsonData.clear(); // 清除之前的数据。
 	CString str;
 
@@ -593,9 +593,9 @@ bool CSystemConfiguration::IsWebBusy() {
 bool CSystemConfiguration::LoadDB() {
 	fstream f(GetConfigurationFileDirectoryAndName(), ios::in);
 	if (f.is_open()) {
-		json systemConfiguration;
+		nlohmann::ordered_json systemConfiguration;
 		f >> systemConfiguration;
-		//systemConfiguration = json::parse(f); // 这种方式等价于 f >> m_systemConfiguration;
+		//systemConfiguration = nlohmann::ordered_json::parse(f); // 这种方式等价于 f >> m_systemConfiguration;
 		f.close();
 		Update(systemConfiguration);
 		return true;
@@ -604,7 +604,7 @@ bool CSystemConfiguration::LoadDB() {
 }
 
 void CSystemConfiguration::SaveDB() {
-	json systemConfiguration;
+	nlohmann::ordered_json systemConfiguration;
 
 	UpdateJsonData(systemConfiguration);
 	fstream f(GetConfigurationFileDirectoryAndName(), ios::out);

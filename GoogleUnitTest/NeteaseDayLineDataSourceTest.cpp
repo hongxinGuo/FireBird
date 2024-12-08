@@ -7,7 +7,7 @@
 #include"NeteaseDayLineDataSource.h"
 //#include"WorldMarket.h"
 #include"ChinaMarket.h"
-#include "ChinaStockCodeConverter.h"
+import FireBird.Accessory.ChinaStockCodeConverter;
 #include "SinaRTDataSource.h"
 
 using namespace testing;

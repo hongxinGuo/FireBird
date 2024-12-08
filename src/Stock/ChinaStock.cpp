@@ -1,7 +1,7 @@
 #include"pch.h"
 
-#include"TimeConvert.h"
-#include"ChinaStockCodeConverter.h"
+import FireBird.Accessory.TimeConvert;
+import FireBird.Accessory.ChinaStockCodeConverter;
 
 #include "ChinaStock.h"
 #include"ChinaMarket.h"

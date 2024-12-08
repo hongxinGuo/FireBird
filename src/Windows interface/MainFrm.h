@@ -5,7 +5,7 @@
 #include"stdafx.h"
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
-#include "PropertyRealTimeDataWnd.h"
+import FireBird.WindowInterface.PropertyRealTimeDataWnd;
 
 class CMainFrame : public CMDIFrameWndEx {
 	DECLARE_DYNCREATE(CMainFrame)

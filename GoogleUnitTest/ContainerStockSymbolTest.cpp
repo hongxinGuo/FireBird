@@ -5,7 +5,7 @@
 #include"GeneralCheck.h"
 
 #include"ContainerStockSymbol.h"
-#include"ChinaStockCodeConverter.h"
+import FireBird.Accessory.ChinaStockCodeConverter;
 
 using namespace testing;
 

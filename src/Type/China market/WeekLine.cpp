@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 #include "WeekLine.h"
 
 CWeekLine::CWeekLine() {

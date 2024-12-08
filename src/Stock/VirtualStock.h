@@ -6,7 +6,6 @@ import FireBird.Set.VirtualStockSymbol;
 
 #include"SystemConstantChinaMarket.h"
 
-#include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 #include"nlohmann/json.hpp"
 
 using std::shared_ptr;
@@ -118,7 +117,7 @@ protected:
 	CString m_strSymbol{ _T("") }; // 股票代码。二十位以内，后两位为市场前缀。如600601.SS，000001.SZ, AAPL（美国股票没有后缀）
 	CString m_strDisplaySymbol{ _T("") };
 
-	json m_jsonUpdateDate{ json({}) }; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
+	nlohmann::ordered_json m_jsonUpdateDate{ nlohmann::ordered_json({}) }; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
 
 	// 实时数据区
 	std::chrono::sys_seconds m_tpTime{};// 实时数据交易时间

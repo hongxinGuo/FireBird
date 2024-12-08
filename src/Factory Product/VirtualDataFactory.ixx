@@ -2,7 +2,7 @@
 module;
 #include"VirtualWebProduct.h"
 #include"VirtualMarket.h"
-export module FireBird.Product.VirtualFactory;
+export module  FireBird.Factory.Virtual;
 
 export {
 	class CVirtualDataFactory {

@@ -4,7 +4,7 @@
 
 #include"SystemMessage.h"
 
-#include"ThreadStatus.h"
+import FireBird.System.ThreadStatus;
 
 #include "FireBird.h"
 #include "MainFrm.h"
@@ -25,15 +25,14 @@
 
 #include <ixwebsocket/IXNetSystem.h>
 
-#include "ConvertToString.h"
-#include "TimeConvert.h"
+import FireBird.Accessory.ConvertToString;
+import FireBird.Accessory.TimeConvert;
 
 #include"ScheduleTask.h"
-import FireBird.Thread;
+
 import simdjson.GetValue;
 
 #include"ChinaMarket.h"
-
 
 #undef max
 #include"concurrencpp/concurrencpp.h"

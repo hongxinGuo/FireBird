@@ -1,8 +1,8 @@
 #include "pch.h"
 
-#include"TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include"worldMarket.h"
 
@@ -70,7 +70,7 @@ void CProductFinnhubCompanyNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ///		}
 CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebDataPtr& pWebData) {
 	string s;
-	json js;
+	nlohmann::ordered_json js;
 	auto pvFinnhubCompanyNews = make_shared<vector<CCompanyNewsPtr>>();
 
 	if (!pWebData->CreateJson(js)) return pvFinnhubCompanyNews;
@@ -99,7 +99,7 @@ CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebD
 			if (!s.empty()) pCompanyNews->m_strURL = s.c_str();
 			pvFinnhubCompanyNews->push_back(pCompanyNews);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock News "), e.what());
 		return pvFinnhubCompanyNews; // 没有公司简介
 	}

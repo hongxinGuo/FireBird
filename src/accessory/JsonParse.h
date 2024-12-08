@@ -15,9 +15,9 @@ CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData);
 shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, const CString& strStockCode);
 bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived);
 
-bool CreateJsonWithNlohmann(json& js, CString& str, long lBeginPos = 0, long lEndPos = 0);
-bool CreateJsonWithNlohmann(json& js, const std::string& s, long lBeginPos = 0, long lEndPos = 0);
-void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRTData);
-shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs);
+bool CreateJsonWithNlohmann(nlohmann::ordered_json& js, CString& str, long lBeginPos = 0, long lEndPos = 0);
+bool CreateJsonWithNlohmann(nlohmann::ordered_json& js, const std::string& s, long lBeginPos = 0, long lEndPos = 0);
+void ParseOneNeteaseRTData(const nlohmann::ordered_json::iterator& it, const CWebRTDataPtr& pWebRTData);
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(nlohmann::ordered_json* pjs);
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJsonData);
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(const CWebDataPtr& pData); // ½âÎöÒ»¸öWebData

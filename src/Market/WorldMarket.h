@@ -9,7 +9,7 @@
 #include"MarketHoliday.h"
 import System.Configuration;
 #include "TiingoStock.h"
-#include "TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 
 class CWorldMarket : public CVirtualMarket {
 public:

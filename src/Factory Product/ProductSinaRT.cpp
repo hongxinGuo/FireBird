@@ -4,7 +4,7 @@
 
 #include"ProductSinaRT.h"
 #include"ChinaMarket.h"
-#include "ChinaStockCodeConverter.h"
+import FireBird.Accessory.ChinaStockCodeConverter;
 
 #include"JsonParse.h"
 #include "SinaRTDataSource.h"

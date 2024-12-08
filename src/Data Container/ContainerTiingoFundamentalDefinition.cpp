@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "ContainerTiingoFundamentalDefinition.h"
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 
 CContainerTiingoFundamentalDefinition::CContainerTiingoFundamentalDefinition() {
 	m_vTiingoFundamentalDefinition.resize(0);

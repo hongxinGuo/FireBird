@@ -5,7 +5,7 @@
 #include"SystemMessage.h"
 
 #include"JsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include "FinnhubWebSocket.h"
 
@@ -15,7 +15,7 @@ import simdjson.GetValue;
 #include"simdjson.h"
 using namespace simdjson;
 
-#include "TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 #include "WorldMarket.h"
 
 void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
@@ -118,7 +118,7 @@ void CFinnhubWebSocket::Send(const vectorString& vSymbol) {
 /// 如{"type":"subscribe","symbol":"MSFT"}, {"type":"subscribe","symbol":"BINANCE:LTCBTC"}, {"type":"subscribe","symbol":"OANDA:AUD_SGD"}
 /// </summary>
 string CFinnhubWebSocket::CreateFinnhubWebSocketString(string sSymbol) {
-	json symbol;
+	nlohmann::ordered_json symbol;
 	symbol["type"] = _T("subscribe");
 	symbol["symbol"] = sSymbol;
 	return symbol.dump();
@@ -145,11 +145,11 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 	string code;
 
 	try {
-		if (json pt; CreateJsonWithNlohmann(pt, *pData)) {
+		if (nlohmann::ordered_json pt; CreateJsonWithNlohmann(pt, *pData)) {
 			sType = jsonGetString(&pt, _T("type"));
 			if (sType == _T("trade")) { // {"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
-				json js2;
-				json pt3;
+				nlohmann::ordered_json js2;
+				nlohmann::ordered_json pt3;
 				// 交易数据
 				js2 = jsonGetChild(&pt, _T("data"));
 				for (auto it = js2.begin(); it != js2.end(); ++it) {
@@ -186,7 +186,7 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("Finnhub Web Socket json error"));
 			return false;
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Process One Finnhub WebSocketData "), e.what());
 		return false;
 	}
