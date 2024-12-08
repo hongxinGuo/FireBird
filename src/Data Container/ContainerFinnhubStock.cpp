@@ -7,7 +7,7 @@
 #include "pch.h"
 #include"SystemMessage.h"
 
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 #include"WorldMarket.h"
 
 #include"SetFinnhubStock.h"

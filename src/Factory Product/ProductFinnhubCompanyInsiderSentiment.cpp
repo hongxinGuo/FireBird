@@ -1,8 +1,8 @@
 #include "pch.h"
 
-#include"TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include"WorldMarket.h"
 #include"FinnhubStock.h"
@@ -59,12 +59,12 @@ void CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pW
 //
 CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockInsiderSentiment(const CWebDataPtr& pWebData) {
 	auto pvInsiderSentiment = make_shared<vector<CInsiderSentimentPtr>>();
-	json pt1;
+	nlohmann::ordered_json pt1;
 	string sError;
 	string s;
 	string stockSymbol;
 	CInsiderSentimentPtr pInsiderSentiment = nullptr;
-	json js;
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return pvInsiderSentiment;
 	if (!IsValidData(pWebData)) return pvInsiderSentiment;
@@ -72,7 +72,7 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 	try {
 		pt1 = jsonGetChild(js, _T("data"));
 		stockSymbol = jsonGetString(js, _T("symbol"));
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Sentiment ") + GetInquiryFunction(), e.what());
 		return pvInsiderSentiment;
 	}
@@ -90,7 +90,7 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 			pInsiderSentiment->m_mspr = jsonGetDouble(it, _T("mspr"));
 			pvInsiderSentiment->push_back(pInsiderSentiment);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderSentiment->m_strSymbol + _T(" Insider Sentiment "), e.what());
 		return pvInsiderSentiment;
 	}

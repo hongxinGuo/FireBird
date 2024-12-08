@@ -14,7 +14,6 @@ enum {
 };
 
 import FireBird.RelativeStrongReference;
-import FireBird.Thread;
 
 #include "WebRTData.h"
 

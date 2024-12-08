@@ -6,7 +6,7 @@
 
 #include"VirtualWebSocket.h"
 
-import FireBird.Thread;
+ 
 #include "WorldMarket.h"
 
 CVirtualWebSocket::CVirtualWebSocket() {

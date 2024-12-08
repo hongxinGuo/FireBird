@@ -5,17 +5,16 @@
 #include"SystemData.h"
 #include"SystemMessage.h"
 
-#include"ConvertToString.h"
-#include"TimeConvert.h"
-#include"ChinaStockCodeConverter.h"
-import FireBird.Thread;
+import FireBird.Accessory.ConvertToString;
+import FireBird.Accessory.TimeConvert;
+import FireBird.Accessory.ChinaStockCodeConverter;
 
-#include"ThreadStatus.h"
+import FireBird.System.ThreadStatus;
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 #include"SetDayLineExtendInfo.h"
 #include"SetDayLineTodaySaved.h"
 #include"SetOption.h"

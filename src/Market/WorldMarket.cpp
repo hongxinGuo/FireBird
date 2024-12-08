@@ -7,7 +7,7 @@
 
 #include "WorldMarket.h"
 
-import FireBird.Thread;
+ 
 
 #include"FinnhubInaccessibleExchange.h"
 
@@ -21,12 +21,12 @@ import FireBird.Thread;
 #include"SetFinnhubStockDayLine.h"
 
 #include "ChinaMarket.h"
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 #include "QuandlDataSource.h"
-#include "ThreadStatus.h"
+import FireBird.System.ThreadStatus;
 #include "TiingoDataSource.h"
 import FireBird.Tiingo.InaccessibleStock; 
-#include "TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 
 CWorldMarket::CWorldMarket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

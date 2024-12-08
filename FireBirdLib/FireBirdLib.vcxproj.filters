@@ -204,18 +204,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\accessory\ConvertToString.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\accessory\InfoReport.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\accessory\JsonGetValue.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\accessory\JsonParse.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
@@ -223,12 +211,6 @@
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
     <ClInclude Include="..\src\accessory\SaveAndLoad.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\accessory\ThreadStatus.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\accessory\TimeConvert.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Source\VirtualDataSource.h">
@@ -396,9 +378,6 @@
     <ClInclude Include="..\src\targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\nlohmannJsonDeclaration.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\System\FinnhubInaccessibleExchange.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
@@ -419,9 +398,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Data Source\TiingoDataSource.h">
       <Filter>头文件\Data Source\WorldMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\FinnhubFactory.h">
-      <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductFinnhub.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
@@ -490,12 +466,6 @@
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockProfile.h">
-      <Filter>头文件\Factory-Product\Tiingo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\QuandlFactory.h">
-      <Filter>头文件\Factory-Product\Quandl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\TiingoFactory.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerChinaDayLine.h">
@@ -626,9 +596,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Type\SECFiling.h">
       <Filter>头文件\Type\America market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h">
-      <Filter>头文件\Windows interface</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Windows interface\ChildFrm.h">
       <Filter>头文件\Windows interface</Filter>
@@ -1412,9 +1379,6 @@
     <ClCompile Include="..\src\accessory\RSReference.ixx">
       <Filter>头文件\Accessory</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Thread.ixx">
-      <Filter>头文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\System\TiingoInaccessibleStock.ixx">
       <Filter>头文件\System</Filter>
     </ClCompile>
@@ -1450,6 +1414,36 @@
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\VirtualDataFactory.ixx">
       <Filter>头文件\Factory-Product</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\TiingoFactory.ixx">
+      <Filter>头文件\Factory-Product\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\QuandlFactory.ixx">
+      <Filter>头文件\Factory-Product\Quandl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\FinnhubFactory.ixx">
+      <Filter>头文件\Factory-Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.ixx">
+      <Filter>头文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\ConvertToString.ixx">
+      <Filter>头文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\InfoReport.ixx">
+      <Filter>头文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\JsonGetValue.ixx">
+      <Filter>头文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\TimeConvert.ixx">
+      <Filter>头文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\ThreadStatus.ixx">
+      <Filter>头文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\PropertyRealTimeDataWnd.ixx">
+      <Filter>头文件\Windows interface</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

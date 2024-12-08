@@ -5,10 +5,10 @@
 
 #include"TiingoStock.h"
 
-#include "ConvertToString.h"
+import FireBird.Accessory.ConvertToString;
 
 #include "TiingoStockDailyMeta.h"
-#include "TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 #include "WorldMarket.h"
 
 CTiingoStock::CTiingoStock() {
@@ -319,7 +319,7 @@ long CTiingoStock::GetDayLineProcessDate() {
 	long l;
 	try {
 		l = m_jsonUpdateDate[_T("DayLineProcessDate")];
-	} catch (json::exception&) {
+	} catch (nlohmann::ordered_json::exception&) {
 		m_jsonUpdateDate[_T("DayLineProcessDate")] = 19800101;
 		l = 19800101;
 	}

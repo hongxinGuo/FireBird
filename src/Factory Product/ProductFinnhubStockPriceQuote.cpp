@@ -3,7 +3,7 @@
 #include"globedef.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include"FinnhubStock.h"
 
@@ -38,7 +38,7 @@ void CProductFinnhubStockPriceQuote::ParseAndStoreWebData(CWebDataPtr pWebData) 
 }
 
 bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(const CWebDataPtr& pWebData, const CFinnhubStockPtr& pStock) {
-	json js;
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return false;
 	if (!IsValidData(pWebData)) return false;
@@ -56,7 +56,7 @@ bool CProductFinnhubStockPriceQuote::ParseFinnhubStockQuote(const CWebDataPtr& p
 		pStock->SetLastClose(dTemp * 1000);
 		const auto tt = jsonGetLongLong(js,_T("t"));
 		pStock->SetTransactionTime(tt);
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		// 数据格式不对，跳过。
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Quote "), e.what());
 		return false;

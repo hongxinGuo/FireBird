@@ -44,7 +44,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann1) {
-		json js;
+		nlohmann::ordered_json js;
 		string s{ _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}") };
 		EXPECT_TRUE(CreateJsonWithNlohmann(js, s));
 		const string sSubscribe = js.at((_T("eventName")));
@@ -54,7 +54,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann2) {
-		json js;
+		nlohmann::ordered_json js;
 		const string s{ _T("NoUse{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}NoUseToo") };
 		EXPECT_TRUE(CreateJsonWithNlohmann(js, s, 5, 8)); // 排除前面的NoUse和后面的NoUseToo
 		const string sSubscribe = js.at((_T("eventName")));
@@ -62,7 +62,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann3) {
-		json js;
+		nlohmann::ordered_json js;
 		const string s{ _T("NoUse{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}NoUseToo") };
 
 		EXPECT_FALSE(CreateJsonWithNlohmann(js, s, 0, 0)); // 排除前面的NoUse和后面的NoUseToo
@@ -71,7 +71,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann4) {
-		json js;
+		nlohmann::ordered_json js;
 		CString s = _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}");
 		EXPECT_TRUE(CreateJsonWithNlohmann(js, s));
 		const string sSubscribe = js.at((_T("eventName")));
@@ -82,7 +82,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann5) {
-		json js;
+		nlohmann::ordered_json js;
 		CString s = _T("NoUse{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}NoUseToo");
 		EXPECT_TRUE(CreateJsonWithNlohmann(js, s, 5, 8)); // 排除前面的NoUse和后面的NoUseToo
 		const string sSubscribe = js.at((_T("eventName")));
@@ -90,7 +90,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann6) {
-		json js;
+		nlohmann::ordered_json js;
 		CString s = _T("NoUse{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}NoUseToo");
 
 		EXPECT_FALSE(CreateJsonWithNlohmann(js, s, 0, 0)); // 排除前面的NoUse和后面的NoUseToo

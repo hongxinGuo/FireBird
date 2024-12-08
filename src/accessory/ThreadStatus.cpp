@@ -14,7 +14,7 @@
 import System.Configuration;
 #include"SystemMessage.h"
 
-#include "ThreadStatus.h"
+import FireBird.System.ThreadStatus;
 
 CThreadStatus::CThreadStatus() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

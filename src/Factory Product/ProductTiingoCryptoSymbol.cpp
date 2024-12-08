@@ -3,7 +3,7 @@
 #include"SystemMessage.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include"TiingoCrypto.h"
 #include "ProductTiingoCryptoSymbol.h"
@@ -61,7 +61,7 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 	string s;
 	CString str, strNumber;
 	CTiingoCryptoPtr pTiingoCrypto = nullptr;
-	json js;
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return pvTiingoCrypto;
 	if (!IsValidData(pWebData)) return pvTiingoCrypto;
@@ -83,7 +83,7 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 			pvTiingoCrypto->push_back(pTiingoCrypto);
 			iCount++;
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		if (pTiingoCrypto != nullptr) ReportJSonErrorToSystemMessage(_T("Tiingo crypto symbol ") + pTiingoCrypto->GetSymbol(), e.what());
 	}
 

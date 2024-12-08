@@ -2,7 +2,6 @@
 
 #include"globedef.h"
 
-#include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 #include"nlohmann/json.hpp"
 
 import System.Configuration;
@@ -82,7 +81,7 @@ void CTiingoInaccessibleStock::SaveDB() const {
 void CTiingoInaccessibleStock::Update() {
 	try {
 		m_lUpdateDate = m_finnhubInaccessibleStock.at("UpdateDate");
-	} catch (json::exception&) {}
+	} catch (nlohmann::ordered_json::exception&) {}
 	try {
 		for (size_t i = 0; i < m_finnhubInaccessibleStock.at(_T("InaccessibleStock")).size(); i++) {
 			const auto size = m_finnhubInaccessibleStock.at(_T("InaccessibleStock")).at(i).at(_T("Stock")).size();
@@ -100,7 +99,7 @@ void CTiingoInaccessibleStock::Update() {
 				//gl_tiingoInaccessibleStock.m_mapStock[gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString())] = pInaccessible;
 			}
 		}
-	} catch (json::exception&) {}
+	} catch (nlohmann::ordered_json::exception&) {}
 }
 
 void CTiingoInaccessibleStock::UpdateJson() {
@@ -110,7 +109,7 @@ void CTiingoInaccessibleStock::UpdateJson() {
 	for (const auto& val : m_mapStock | std::views::values) {
 		if (val->HaveSymbol()) {
 			// 有exchange数据的话才建立数据集
-			auto jsonStock = json{ { "Function", val->GetFunctionString() } };
+			auto jsonStock = nlohmann::ordered_json{ { "Function", val->GetFunctionString() } };
 			for (int i = 0; i < val->SymbolSize(); i++) {
 				auto s = val->GetSymbol(i);
 				jsonStock[_T("Stock")].push_back(s);

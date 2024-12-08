@@ -9,7 +9,7 @@
 
 #include"GeneralCheck.h"
 
-import FireBird.Thread;
+ 
 
 #include"FinnhubStock.h"
 

@@ -7,7 +7,7 @@
 
 #include"GeneralCheck.h"
 
-#include"ConvertToString.h"
+import FireBird.Accessory.ConvertToString;
 
 namespace FireBirdTest {
 	struct StrConvertDoubleToString {

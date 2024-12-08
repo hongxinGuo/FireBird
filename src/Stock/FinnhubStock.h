@@ -1,6 +1,5 @@
 #pragma once
 
-#include"nlohmannJsonDeclaration.h"
 #include"nlohmann/json.hpp"
 
 #include"VirtualStock.h"
@@ -181,8 +180,8 @@ public:
 	void SetLogo(const CString& strLogo) { m_strLogo = strLogo; }
 	CString GetFinnhubIndustry() const { return m_strFinnhubIndustry; }
 	void SetFinnhubIndustry(const CString& strFinnhubIndustry) { m_strFinnhubIndustry = strFinnhubIndustry; }
-	json GetPeer() { return m_jsonPeer; }
-	void SetPeer(const json& jsonPeer) { m_jsonPeer = jsonPeer; }
+	nlohmann::ordered_json GetPeer() { return m_jsonPeer; }
+	void SetPeer(const nlohmann::ordered_json& jsonPeer) { m_jsonPeer = jsonPeer; }
 	void SetSECFilings(const CSECFilingsPtr& pv) noexcept { m_pvSECFilings = pv; }
 	long GetProfileUpdateDate();
 	void SetProfileUpdateDate(long lProfileUpdateDate) noexcept;
@@ -260,7 +259,7 @@ protected:
 	CString m_strWebURL{ _T(" ") };
 	CString m_strLogo{ _T(" ") };
 	CString m_strFinnhubIndustry{ _T(" ") };
-	json m_jsonPeer{ json({}) }; // 读取到的Peer数据为json制式
+	nlohmann::ordered_json m_jsonPeer{ nlohmann::ordered_json({}) }; // 读取到的Peer数据为json制式
 
 	// 系统生成信息
 	CContainerFinnhubStockDayLine m_dataDayLine;

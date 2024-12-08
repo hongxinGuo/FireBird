@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"ConvertToString.h"
+import FireBird.Accessory.ConvertToString;
 
 CString ConvertValueToString(const long lValue, const int iDividend) {
 	char buffer[50]{};

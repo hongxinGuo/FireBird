@@ -2,7 +2,7 @@
 
 #include"TiingoCompanyFinancialState.h"
 
-#include "ConvertToString.h"
+import FireBird.Accessory.ConvertToString;
 
 CTiingoCompanyFinancialState::CTiingoCompanyFinancialState() {
 	m_symbol = _T("");

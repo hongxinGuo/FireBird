@@ -1,7 +1,7 @@
 #pragma once
 
 #include"VirtualDataSource.h"
-#include"QuandlFactory.h"
+import FireBird.Factory.Quandl;
 
 class CQuandlDataSource : public CVirtualDataSource {
 public:

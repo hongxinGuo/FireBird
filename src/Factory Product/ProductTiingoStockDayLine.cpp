@@ -3,14 +3,14 @@
 #include"SystemMessage.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include"FinnhubStock.h"
 #include"WorldMarket.h"
 
 #include "ProductTiingoStockDayLine.h"
 
-#include "TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 
 CString GetTiingoDayLineInquiryParam(const CString& strSymbol, long lStartDate, long lCurrentDate) {
 	CString strParam = _T("");
@@ -128,7 +128,7 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 	string s;
 	CTiingoStock stock;
 	long year, month, day;
-	json js;
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return pvDayLine;
 	if (!IsValidData(pWebData)) return pvDayLine;
@@ -139,7 +139,7 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 		strMessage += s.c_str();
 		gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
 		return pvDayLine;
-	} catch (json::exception&) {
+	} catch (nlohmann::ordered_json::exception&) {
 		// 正确， do nothing，继续执行
 	}
 	try {
@@ -167,7 +167,7 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 			pDayLine->SetVolume(lTemp);
 			pvDayLine->push_back(pDayLine);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		CString str3 = pWebData->GetDataBuffer().c_str();
 		str3 = str3.Left(120);
 		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e.what());

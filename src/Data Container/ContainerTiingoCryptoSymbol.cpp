@@ -3,7 +3,7 @@
 #include "ContainerTiingoCryptoSymbol.h"
 
 #include "ContainerVirtualStock.h"
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 
 CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() {
 	CContainerTiingoCryptoSymbol::Reset();

@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"ConvertToString.h"
+import FireBird.Accessory.ConvertToString;
 #include"InsiderTransaction.h"
 
 CInsiderTransaction::CInsiderTransaction() {

@@ -1,14 +1,14 @@
 #include "pch.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include"WorldMarket.h"
 #include"FinnhubStock.h"
 
 #include "ProductFinnhubStockEstimatesEPSSurprise.h"
 
-#include "TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 
 CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurprise() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");
@@ -43,7 +43,7 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 	CEPSSurprisePtr pEPSSurprise = nullptr;
 	long year = 0, month = 0, day = 0;
 	string sError;
-	json js;
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return pvEPSSurprise;
 	if (!IsValidData(pWebData)) return pvEPSSurprise;
@@ -61,7 +61,7 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 			pEPSSurprise->m_dActual = jsonGetDouble(it, _T("actual"));
 			pvEPSSurprise->push_back(pEPSSurprise);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub EPS Surprise "), e.what());
 		return pvEPSSurprise;
 	}

@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include"Country.h"
 
@@ -31,7 +31,7 @@ CCountrysPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const C
 	auto pvCountry = make_shared<vector<CCountryPtr>>();
 	CCountryPtr pCountry = nullptr;
 	string s;
-	json js;
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return pvCountry;
 	if (!IsValidData(pWebData)) return pvCountry;
@@ -53,7 +53,7 @@ CCountrysPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const C
 			pCountry->m_strCurrencyCode = s.c_str();
 			pvCountry->push_back(pCountry);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Country List "), e.what());
 		return pvCountry;
 	}

@@ -6,7 +6,7 @@
 
 #include"GeneralCheck.h"
 
-#include"ChinaStockCodeConverter.h"
+import FireBird.Accessory.ChinaStockCodeConverter;
 
 namespace FireBirdTest {
 	class StockCodeConverterTest : public testing::Test {

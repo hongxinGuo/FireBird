@@ -15,7 +15,7 @@ import FireBird.FinnhubInquiryType;
 
 #include "FinnhubDataSource.h"
 
-#include "TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 #include"WorldMarket.h"
 
 map<string, enum_ErrorMessageData> mapFinnhubErrorMap{
@@ -93,7 +93,7 @@ enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr&
 	m_eErrorMessageData = ERROR_NO_ERROR__;
 	if (m_dwHTTPStatusCode == 200) return m_eErrorMessageData; // OK? return no error
 
-	json js;
+	nlohmann::ordered_json js;
 	pWebData->CreateJson(js);
 
 	try {
@@ -129,7 +129,7 @@ enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr&
 			ASSERT(false);
 			break;
 		}
-	} catch (json::exception&) { // no error. do nothing
+	} catch (nlohmann::ordered_json::exception&) { // no error. do nothing
 		m_eErrorMessageData = ERROR_NO_ERROR__;
 	}
 	return m_eErrorMessageData;

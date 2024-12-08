@@ -7,17 +7,13 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 module;
-
-#include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 #include"nlohmann/json.hpp"
-
 export module FireBird.Tiingo.InaccessibleStock;
-import FireBird.System.Inaccessible;
 
+import FireBird.System.Inaccessible;
 import FireBird.FinnhubInquiryType;
 
 export  {
-
 	using CInaccessibleStocksPtr = shared_ptr<CInaccessible>;
 
 	class CTiingoInaccessibleStock {
@@ -67,7 +63,7 @@ export  {
 		bool m_fInitialized{ false };
 		bool m_fUpdateDB{ false };
 
-		json m_finnhubInaccessibleStock;
+		nlohmann::ordered_json m_finnhubInaccessibleStock;
 	};
 
 	using CTiingoInaccessibleStockPtr = shared_ptr<CTiingoInaccessibleStock>;

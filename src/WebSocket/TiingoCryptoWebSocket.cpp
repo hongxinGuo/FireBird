@@ -5,7 +5,7 @@
 #include"SystemMessage.h"
 
 #include"JsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include "TiingoCryptoWebSocket.h"
 
@@ -98,7 +98,7 @@ void CTiingoCryptoWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 ///////////////////////////////////////////////////////////////////////
 string CTiingoCryptoWebSocket::CreateMessage(const vectorString& vSymbol) {
 	vectorString vSymbol2;
-	json message;
+	nlohmann::ordered_json message;
 	message["eventName"] = _T("subscribe");
 	message["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
 	message["eventData"]["thresholdLevel"] = 2; // thresholdLevel的有效数字为2或者5
@@ -135,7 +135,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 	string sTickers;
 
 	try {
-		if (json js; CreateJsonWithNlohmann(js, *pData)) {
+		if (nlohmann::ordered_json js; CreateJsonWithNlohmann(js, *pData)) {
 			CTiingoCryptoSocketPtr pCryptoData;
 			string sService;
 			string sMessageType;
@@ -145,8 +145,8 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			chrono::time_point<chrono::system_clock, chrono::microseconds> tpTime;
 			chrono::minutes Minutes;
 			string sString;
-			json js2, js3, js4;
-			json::iterator it;
+			nlohmann::ordered_json js2, js3, js4;
+			nlohmann::ordered_json::iterator it;
 			sType = jsonGetString(js, _T("messageType"));
 			chType = sType.at(0);
 			switch (chType) {
@@ -158,7 +158,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 						strSymbol = jsonGetString(it2);
 						m_vCurrentInquireSymbol.emplace_back(strSymbol.c_str());
 					}
-				} catch (json::exception&) { //注册信息：{"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
+				} catch (nlohmann::ordered_json::exception&) { //注册信息：{"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
 					ASSERT(GetSubscriptionId() == 0);
 					SetSubscriptionId(jsonGetInt(&js2, _T("subscriptionId")));
 				}
@@ -216,7 +216,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 			}
 		}
 		else { return false; }
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Tiingo Crypto WebSocket "), e.what());
 		return false;
 	}

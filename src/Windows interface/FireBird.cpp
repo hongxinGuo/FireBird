@@ -12,7 +12,7 @@
 #include "FireBirdView.h"
 
 #include "ChildFrm.h"
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 
 #include <spdlog/spdlog.h>
 

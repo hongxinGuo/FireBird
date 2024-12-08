@@ -2,7 +2,7 @@
 
 #include"globedef.h"
 
-#include"TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 #include "VirtualMarket.h"
 #include"VirtualDataSource.h"
 

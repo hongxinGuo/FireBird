@@ -4,9 +4,9 @@
 
 #include"SystemMessage.h"
 
-#include"TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include"WorldMarket.h"
 #include"FinnhubStock.h"
@@ -59,10 +59,10 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pWebData) {
 	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
-	json js2;
+	nlohmann::ordered_json js2;
 	CDayLinePtr pDayLine = nullptr;
 	string sError;
-	json js;
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return pvDayLine;
 	if (!IsValidData(pWebData)) return pvDayLine;
@@ -77,7 +77,7 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pW
 			gl_systemMessage.PushErrorMessage(_T("日线返回值不为ok"));
 			return pvDayLine;
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 's' ") + GetInquiryFunction(), e.what());
 		return pvDayLine;
@@ -92,7 +92,7 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pW
 			pDayLine->SetTime(tTemp);
 			pvDayLine->push_back(pDayLine);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle missing 't' ") + GetInquiryFunction(), e.what());
 		return pvDayLine;
 	}
@@ -135,7 +135,7 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pW
 			pDayLine = pvDayLine->at(i++);
 			pDayLine->SetVolume(llTemp);
 		}
-	} catch (json::exception& e) { ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiryFunction(), e.what()); }
+	} catch (nlohmann::ordered_json::exception& e) { ReportJSonErrorToSystemMessage(_T("Finnhub Stock Candle Error#3 ") + GetInquiryFunction(), e.what()); }
 	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // 以日期早晚顺序排列。
 
 	return pvDayLine;

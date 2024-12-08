@@ -3,7 +3,7 @@
 #include"SystemMessage.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include "ProductFinnhubStockSymbol.h"
 
@@ -83,7 +83,7 @@ CFinnhubStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWeb
 	auto pvStock = make_shared<vector<CFinnhubStockPtr>>();
 	CFinnhubStockPtr pStock = nullptr;
 	string s, sError;
-	json js;
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return pvStock;
 	if (!IsValidData(pWebData)) return pvStock;
@@ -113,7 +113,7 @@ CFinnhubStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWeb
 			if (!s.empty()) pStock->SetType(s.c_str());
 			pvStock->push_back(pStock);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Symbol "), e.what());
 		return pvStock;
 	}

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChinaStockCodeConverter.h"
+import FireBird.Accessory.ChinaStockCodeConverter;
 
 class CVirtualContainer {
 public:

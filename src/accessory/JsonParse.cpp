@@ -11,27 +11,26 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#include"globedef.h"
+
 #include "JsonParse.h"
 
 #include"WebData.h"
 #include"WebRTData.h"
 
-#include "ChinaStockCodeConverter.h"
-#include "InfoReport.h"
-import FireBird.Thread;
+import FireBird.Accessory.ChinaStockCodeConverter;
+import FireBird.Accessory.InfoReport;
 
 import simdjson.GetValue;
 #include"simdjson.h"
 using namespace simdjson;
 
-#include"ConvertToString.h"
+import FireBird.Accessory.ConvertToString;
 #include"SystemMessage.h"
 
-#include"JsonGetValue.h"
-#include"NlohmannJsonDeclaration.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include"spdlog/spdlog.h"
-
 
 #include "ChinaMarket.h"
 #undef max // 包含concurrencpp.h之前，需要注销max的定义
@@ -87,7 +86,7 @@ string_view GetNextField(const string_view& svData, size_t& lCurrentPos, char de
 	return string_view(sv.data(), lEnd);
 }
 
-void ReportJsonError(const json::parse_error& e, const std::string& s) {
+void ReportJsonError(const nlohmann::ordered_json::parse_error& e, const std::string& s) {
 	char buffer[180]{}, buffer2[100]{};
 	int i;
 	CString str = e.what();
@@ -339,7 +338,7 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 
 			pvDayLine->push_back(pDayLine);
 		}
-	} catch (json::exception&) {
+	} catch (nlohmann::ordered_json::exception&) {
 		return pvDayLine;
 	}
 	return pvDayLine;
@@ -381,21 +380,21 @@ CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 	return pDayLineData;
 }
 
-bool CreateJsonWithNlohmann(json& js, const std::string& s, const long lBeginPos, const long lEndPos) {
+bool CreateJsonWithNlohmann(nlohmann::ordered_json& js, const std::string& s, const long lBeginPos, const long lEndPos) {
 	try {
-		js = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
-	} catch (json::parse_error&) {
+		js = nlohmann::ordered_json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
+	} catch (nlohmann::ordered_json::parse_error&) {
 		js.clear();
 		return false;
 	}
 	return true;
 }
 
-bool CreateJsonWithNlohmann(json& js, CString& str, const long lBeginPos, const long lEndPos) {
+bool CreateJsonWithNlohmann(nlohmann::ordered_json& js, CString& str, const long lBeginPos, const long lEndPos) {
 	const string s = str.GetBuffer();
 	try {
-		js = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
-	} catch (json::parse_error&) {
+		js = nlohmann::ordered_json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
+	} catch (nlohmann::ordered_json::parse_error&) {
 		js.clear();
 		return false;
 	}
@@ -422,10 +421,10 @@ bool CreateJsonWithNlohmann(json& js, CString& str, const long lBeginPos, const 
 // 现在采用wstring和CStringW两次过渡，就可以正常显示了。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRTData) {
+void ParseOneNeteaseRTData(const nlohmann::ordered_json::iterator& it, const CWebRTDataPtr& pWebRTData) {
 	string strTime;
 	CString strSymbol4;
-	json js = it.value();
+	nlohmann::ordered_json js = it.value();
 	const string symbolName = it.key();
 
 	try {
@@ -442,7 +441,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		pWebRTData->SetTimePoint(tpTime);
 		auto tt = tpTime.time_since_epoch().count();
 		pWebRTData->SetTransactionTime(tt);
-	} catch (json::exception& e) {// 结构不完整
+	} catch (nlohmann::ordered_json::exception& e) {// 结构不完整
 		// do nothing
 		CString strError2 = strSymbol4;
 		strError2 += _T(" ");
@@ -481,12 +480,12 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		pWebRTData->SetPBuy(4, static_cast<long>(jsonGetDouble(js, _T("bid5")) * 1000));
 
 		pWebRTData->CheckNeteaseRTDataActive();
-	} catch (json::exception&) {// 非活跃股票（已下市等）
+	} catch (nlohmann::ordered_json::exception&) {// 非活跃股票（已下市等）
 		pWebRTData->SetActive(false);
 	}
 }
 
-shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(nlohmann::ordered_json* pjs) {
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
 	for (auto it = pjs->begin(); it != pjs->end(); ++it) {

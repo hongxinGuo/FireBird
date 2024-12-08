@@ -6,7 +6,7 @@
 
 #include"GeneralCheck.h"
 
-#include"TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 
 #include"InsiderSentiment.h"
 #include"InsiderTransaction.h"
@@ -581,9 +581,9 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockTest, TestGetPeer) {
 		EXPECT_TRUE(stock.GetPeer().empty());
-		const json jSon = json::parse(_T("[\"abcdef\",\"000001.SS\"]"));
+		const nlohmann::ordered_json jSon = nlohmann::ordered_json::parse(_T("[\"abcdef\",\"000001.SS\"]"));
 		stock.SetPeer(jSon);
-		const json jSon2 = stock.GetPeer();
+		const nlohmann::ordered_json jSon2 = stock.GetPeer();
 		const string s1 = jSon2.dump();
 		EXPECT_STREQ(s1.c_str(), _T("[\"abcdef\",\"000001.SS\"]"));
 	}

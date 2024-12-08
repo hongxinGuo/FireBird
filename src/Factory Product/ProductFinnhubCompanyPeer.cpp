@@ -21,16 +21,16 @@ void CProductFinnhubCompanyPeer::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
-	const json jsonPeer = ParseFinnhubStockPeer(pWebData);
+	const nlohmann::ordered_json jsonPeer = ParseFinnhubStockPeer(pWebData);
 	pStock->SetPeer(jsonPeer);
 	pStock->SetPeerUpdateDate(GetMarket()->GetMarketDate());
 	pStock->SetUpdatePeer(false);
 	pStock->SetUpdateProfileDB(true);
 }
 
-json CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(const CWebDataPtr& pWebData) {
-	json jsonPeer; // 默认的空状态（没有竞争对手)
-	json js;
+nlohmann::ordered_json CProductFinnhubCompanyPeer::ParseFinnhubStockPeer(const CWebDataPtr& pWebData) {
+	nlohmann::ordered_json jsonPeer; // 默认的空状态（没有竞争对手)
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return jsonPeer;
 	if (!IsValidData(pWebData)) return jsonPeer;

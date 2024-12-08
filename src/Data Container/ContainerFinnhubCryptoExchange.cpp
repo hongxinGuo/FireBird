@@ -2,7 +2,7 @@
 
 #include "ContainerFinnhubCryptoExchange.h"
 
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 #include"SetFinnhubCryptoExchange.h"
 
 CContainerFinnhubCryptoExchange::CContainerFinnhubCryptoExchange() {

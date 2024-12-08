@@ -88,7 +88,7 @@ namespace FireBirdTest {
 
 	public:
 		long m_lIndex{ 0 };
-		json m_jsonPeer;
+		nlohmann::ordered_json m_jsonPeer;
 		CWebDataPtr m_pWebData;
 		CProductFinnhubCompanyPeer m_finnhubCompanyPeer;
 	};

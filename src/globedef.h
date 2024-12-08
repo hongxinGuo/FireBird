@@ -15,6 +15,12 @@ using std::shared_ptr;
 
 extern HANDLE gl_hFireBirdMutex;
 
+#undef max
+#include"concurrencpp/concurrencpp.h"
+extern concurrencpp::runtime gl_runtime;
+extern concurrencpp::runtime gl_backgroundRuntime;
+extern int gl_concurrency_level; // 并行计算允许最大数量
+
 extern std::counting_semaphore<__MAX_BACKGROUND_WORKING_THREAD__> gl_BackgroundWorkingThread; // 最多后台工作线程允许数量
 
 extern binary_semaphore gl_UpdateWorldMarketDB; // 此信号量用于更新WorldMarket数据库

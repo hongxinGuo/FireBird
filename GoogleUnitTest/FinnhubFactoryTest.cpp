@@ -8,7 +8,7 @@
 
 import FireBird.FinnhubInquiryType;
 
-#include"FinnhubFactory.h"
+import FireBird.Factory.Finnhub;
 
 using namespace testing;
 

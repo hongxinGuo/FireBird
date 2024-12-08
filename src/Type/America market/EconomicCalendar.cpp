@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"ConvertToString.h"
+import FireBird.Accessory.ConvertToString;
 #include "EconomicCalendar.h"
 
 CEconomicCalendar::CEconomicCalendar() {

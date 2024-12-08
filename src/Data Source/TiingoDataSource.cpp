@@ -8,7 +8,7 @@ import FireBird.FinnhubInquiryType;
 #include "TiingoDataSource.h"
 
 import FireBird.Tiingo.InaccessibleStock; 
-#include "TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 #include"WorldMarket.h"
 
 map<string, enum_ErrorMessageData> mapTiingoErrorMap{
@@ -163,7 +163,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		return ERROR_TIINGO_NOT_HANDLED__;
 	}
 
-	json js;
+	nlohmann::ordered_json js;
 	if (!pWebData->CreateJson(js)) { // 非json制式，不应该出现。
 		m_eErrorMessageData = ERROR_NO_ERROR__;
 		return m_eErrorMessageData; // 暂时返回正确
@@ -216,7 +216,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 			ASSERT(false);
 			break;
 		}
-	} catch (json::exception&) { // no error. do nothing
+	} catch (nlohmann::ordered_json::exception&) { // no error. do nothing
 		m_eErrorMessageData = ERROR_NO_ERROR__;
 	}
 	return m_eErrorMessageData;

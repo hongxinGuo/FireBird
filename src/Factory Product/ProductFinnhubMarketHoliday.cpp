@@ -1,11 +1,11 @@
 #include "pch.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include "ProductFinnhubMarketHoliday.h"
 
-#include "TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 #include "WorldMarket.h"
 
 CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
@@ -56,7 +56,7 @@ CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const
 	string s, sError;
 	long year, month, day;
 	CString sExchange, sTimeZone;
-	json js;
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return pvHoliday;
 	if (!IsValidData(pWebData)) return pvHoliday;
@@ -80,8 +80,7 @@ CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const
 			pHoliday->m_strTimeZone = sTimeZone;
 			pvHoliday->push_back(pHoliday);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub market holiday "), e.what());
 		return pvHoliday;
 	}

@@ -15,9 +15,9 @@ using namespace concurrencpp;
 
 #include"SystemMessage.h"
 
-import FireBird.Thread;
-#include"TimeConvert.h"
-#include"ThreadStatus.h"
+ 
+import FireBird.Accessory.TimeConvert;
+import FireBird.System.ThreadStatus;
 #include"ChinaMarket.h"
 
 UINT ThreadBuildWeekLineRS(const CChinaMarketPtr& pMarket, long startCalculatingDate) {

@@ -1,7 +1,7 @@
 ﻿#include"pch.h"
 #include"globedef.h"
 
-#include"ChinaStockCodeConverter.h"
+import FireBird.Accessory.ChinaStockCodeConverter;
 
 #include"jsonParse.h"
 #include"WebRTData.h"

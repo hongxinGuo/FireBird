@@ -9,7 +9,7 @@
 
 #include"GeneralCheck.h"
 
-#include"TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 
 namespace FireBirdTest {
 	class TimeConvertTest : public ::testing::Test {

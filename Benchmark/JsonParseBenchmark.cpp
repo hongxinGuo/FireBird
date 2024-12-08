@@ -10,8 +10,6 @@
 
 #include<benchmark/benchmark.h>
 
-#include"nlohmannJSonDeclaration.h"
-
 #include"SaveAndLoad.h"
 #include"JsonParse.h"
 #include "ProductTiingoStockProfile.h"
@@ -330,8 +328,8 @@ public:
 		sv = s;
 		sv = sv.substr(21, sv.length() - 21 - 2);
 		try {
-			js = json::parse(s.begin() + 21, s.end() - 2);
-		} catch (json::parse_error&) {
+			js = nlohmann::ordered_json::parse(s.begin() + 21, s.end() - 2);
+		} catch (nlohmann::ordered_json::parse_error&) {
 			fDone = false;
 		}
 		pWebData = make_shared<CWebData>();
@@ -344,7 +342,7 @@ public:
 	CWebDataPtr pWebData;
 	string s;
 	string_view sv;
-	json js; // 此处不能使用智能指针，否则出现重入问题，原因不明。
+	nlohmann::ordered_json js; // 此处不能使用智能指针，否则出现重入问题，原因不明。
 	vector<CWebRTDataPtr> vWebRTDataReceived;
 	bool fDone;
 };

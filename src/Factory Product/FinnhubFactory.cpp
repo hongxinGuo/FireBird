@@ -34,7 +34,9 @@ import FireBird.FinnhubInquiryType;
 
 #include"ProductDummy.h"
 
-#include "FinnhubFactory.h"
+import FireBird.Factory.Finnhub;
+#include"VirtualWebProduct.h"
+#include"VirtualMarket.h"
 
 #include "ProductFinnhubSECFilings.h"
 

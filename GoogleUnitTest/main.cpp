@@ -54,10 +54,10 @@ import simdjson.GetValue;
 
 #include"ScheduleTask.h"
 #include"FinnhubInaccessibleExchange.h"
-#include "InfoReport.h"
-#include"ThreadStatus.h"
+import FireBird.Accessory.InfoReport;
+import FireBird.System.ThreadStatus;
 #include "TiingoDataSource.h"
-#include"TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 
 using namespace testing;
 

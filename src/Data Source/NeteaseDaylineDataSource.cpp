@@ -6,7 +6,7 @@
 #include"ProductNeteaseDayLine.h"
 
 #include"ChinaMarket.h"
-#include "ChinaStockCodeConverter.h"
+import FireBird.Accessory.ChinaStockCodeConverter;
 
 CNeteaseDayLineDataSource::CNeteaseDayLineDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

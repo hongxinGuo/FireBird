@@ -6,7 +6,7 @@
 #include"SetWeekLineExtendInfo.h"
 #include"SetCurrentWeekLine.h"
 
-#include "InfoReport.h"
+import FireBird.Accessory.InfoReport;
 
 CContainerChinaWeekLine::CContainerChinaWeekLine() {
 }
@@ -17,8 +17,7 @@ bool CContainerChinaWeekLine::SaveDB(const CString& strStockSymbol) {
 		CSetWeekLineExtendInfo setWeekLineExtend;
 		UpdateBasicDB(&setWeekLineBasic, strStockSymbol);
 		SaveExtendDB(&setWeekLineExtend);
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 
@@ -39,8 +38,7 @@ void CContainerChinaWeekLine::SaveCurrentWeekLine() const {
 		setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
 		setCurrentWeekLineInfo.Close();
 		TRACE("存储了%d个当前周周线数据\n", m_vHistoryData.size());
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 }

@@ -3,14 +3,14 @@
 #include"globedef.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include"WorldMarket.h"
 #include"FinnhubStock.h"
 
 #include "ProductFinnhubCompanyInsiderTransaction.h"
 
-#include "TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 
 CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransaction() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol=");
@@ -64,13 +64,13 @@ void CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr 
 //
 CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubStockInsiderTransaction(const CWebDataPtr& pWebData) {
 	auto pvInsiderTransaction = make_shared<vector<CInsiderTransactionPtr>>();
-	json pt1;
+	nlohmann::ordered_json pt1;
 	string sError;
 	string s;
 	string stockSymbol;
 	long year, month, day;
 	CInsiderTransactionPtr pInsiderTransaction = nullptr;
-	json js;
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return pvInsiderTransaction;
 	if (!IsValidData(pWebData)) return pvInsiderTransaction;
@@ -78,7 +78,7 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 	try {
 		pt1 = jsonGetChild(js, _T("data"));
 		stockSymbol = jsonGetString(js, _T("symbol"));
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Insider Transaction ") + GetInquiryFunction(), e.what());
 		return pvInsiderTransaction;
 	}
@@ -102,7 +102,7 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 			pInsiderTransaction->m_dTransactionPrice = jsonGetDouble(it, _T("transactionPrice"));
 			pvInsiderTransaction->push_back(pInsiderTransaction);
 		}
-	} catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderTransaction->m_strSymbol + _T(" Insider Transaction "), e.what());
 		return pvInsiderTransaction;
 	}

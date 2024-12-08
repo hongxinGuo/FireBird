@@ -6,7 +6,7 @@
 #include"WebData.h"
 
 #include "JsonParse.h"
-#include "TimeConvert.h"
+import FireBird.Accessory.TimeConvert;
 
 CDayLineWebData::CDayLineWebData() {
 	Reset();

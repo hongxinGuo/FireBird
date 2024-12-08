@@ -8,7 +8,6 @@ import System.Configuration;
 
 #include"TiingoIEXWebSocket.h"
 
-#include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 #include"nlohmann/json.hpp"
 
 using namespace testing;
@@ -61,10 +60,10 @@ namespace FireBirdTest {
 		vSymbol.push_back(_T("AAL"));
 		vSymbol.push_back(_T("AAPL"));
 		string str = gl_pTiingoIEXWebSocket->CreateMessage(vSymbol);
-		json jsonMessage;
+		nlohmann::ordered_json jsonMessage;
 		try {
-			jsonMessage = json::parse(str);
-		} catch (json::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
+			jsonMessage = nlohmann::ordered_json::parse(str);
+		} catch (nlohmann::ordered_json::exception&) { EXPECT_TRUE(false) << "此str应该是json制式的"; }
 		EXPECT_TRUE(jsonMessage["eventName"] == _T("subscribe"));
 		EXPECT_EQ(jsonMessage["eventData"]["thresholdLevel"], 5);
 		EXPECT_EQ(jsonMessage["authorization"], _T("c897a00b7cfc2630d235316a4683156"));

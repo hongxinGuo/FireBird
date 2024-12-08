@@ -12,7 +12,6 @@
 #include"pch.h"
 module;
 #include <spdlog/common.h>
-#include"nlohmannJsonDeclaration.h" // 按照顺序输出json，必须使用此ordered_json,以保证解析后的数据与解析前的顺序一致。
 #include"nlohmann/json.hpp"
 export module System.Configuration;
 
@@ -30,8 +29,8 @@ export {
 		void UpdateDB();
 		bool LoadDB();
 		void SaveDB();
-		void Update(json& jsonData);
-		void UpdateJsonData(json& jsonData);
+		void Update(nlohmann::ordered_json& jsonData);
+		void UpdateJsonData(nlohmann::ordered_json& jsonData);
 
 		void ChangeFinnhubAccountTypeToFree();
 		void ChangeFinnhubAccountTypeToPaid();

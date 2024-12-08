@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include"jsonParse.h"
-#include"JsonGetValue.h"
+import FireBird.Accessory.JsonGetValue;
 
 #include"WorldMarket.h"
 
@@ -47,7 +47,7 @@ CMarketStatussPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const CW
 	auto pvMarketStatus = make_shared<vector<CMarketStatusPtr>>();
 	CMarketStatusPtr pMarketStatus = nullptr;
 	string s, sError;
-	json js;
+	nlohmann::ordered_json js;
 
 	if (!pWebData->CreateJson(js)) return pvMarketStatus;
 	if (!IsValidData(pWebData)) return pvMarketStatus;
@@ -66,8 +66,7 @@ CMarketStatussPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const CW
 		pMarketStatus->m_tt = jsonGetLongLong(js, _T("t"));
 
 		pvMarketStatus->push_back(pMarketStatus);
-	}
-	catch (json::exception& e) {
+	} catch (nlohmann::ordered_json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Market Status "), e.what());
 		return pvMarketStatus;
 	}
