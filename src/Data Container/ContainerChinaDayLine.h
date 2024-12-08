@@ -1,9 +1,9 @@
 #pragma once
 
 #include"WeekLine.h"
-#include "VirtualDataHistoryCandleExtend.h"
+#include "VirtualContainerHistoryCandleExtend.h"
 
-class CContainerChinaDayLine : public CVirtualDataHistoryCandleExtend {
+class CContainerChinaDayLine : public CVirtualContainerHistoryCandleExtend {
 public:
 	CContainerChinaDayLine();
 	CContainerChinaDayLine(const CContainerChinaDayLine& other) = delete;

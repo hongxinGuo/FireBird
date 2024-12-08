@@ -2,7 +2,7 @@
 
 //#include"gmock/gmock.h"
 
-#include"FinnhubWebSocket.h"
+import FireBird.WebSocket.Finnhub;
 
 namespace testing {
 	class CMockFinnhubWebSocket final : public CFinnhubWebSocket {

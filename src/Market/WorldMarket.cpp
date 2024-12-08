@@ -11,10 +11,10 @@
 
 #include"FinnhubDataSource.h"
 
-#include"FinnhubWebSocket.h"
-#include"TiingoIEXWebSocket.h"
-#include"TiingoForexWebSocket.h"
-#include"TiingoCryptoWebSocket.h"
+import FireBird.WebSocket.Finnhub;
+import FireBird.WebSocket.TiingoIEX;
+import FireBird.WebSocket.TiingoForex;
+import FireBird.WebSocket.TiingoCrypto;
 
 #include"SetFinnhubStockDayLine.h"
 

@@ -6,7 +6,7 @@ import FireBird.System.Configuration;
 
 #include"GeneralCheck.h"
 
-#include"TiingoIEXWebSocket.h"
+import FireBird.WebSocket.TiingoIEX;
 
 #include"nlohmann/json.hpp"
 

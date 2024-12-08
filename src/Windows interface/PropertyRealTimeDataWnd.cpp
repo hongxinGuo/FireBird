@@ -4,7 +4,7 @@
 import FireBird.WindowInterface.PropertyRealTimeDataWnd;
 
 #include "ChinaMarket.h"
-#include "MainFrm.h"
+import FireBird.WindowInterface.MainFrm;
 
 #ifdef _DEBUG
 #undef THIS_FILE

@@ -48,6 +48,7 @@
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
 
+import FireBird.WindowInterface.MainFrm;
 #include"MockMainFrm.h"
 
 import simdjson.GetValue;

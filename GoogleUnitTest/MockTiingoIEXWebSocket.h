@@ -2,7 +2,7 @@
 
 //#include"gmock/gmock.h"
 
-#include"TiingoIEXWebSocket.h"
+import FireBird.WebSocket.TiingoIEX;
 
 namespace testing {
 	class CMockTiingoIEXWebSocket final : public CTiingoIEXWebSocket {

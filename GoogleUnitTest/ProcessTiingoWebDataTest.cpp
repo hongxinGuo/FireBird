@@ -12,7 +12,7 @@
 
 #include"FinnhubStock.h"
 #include "SystemData.h"
-#include "TiingoForexWebSocket.h"
+import FireBird.WebSocket.TiingoForex;
 
 using namespace testing;
 

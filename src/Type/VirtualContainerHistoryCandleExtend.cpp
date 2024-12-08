@@ -2,10 +2,10 @@
 
 import FireBird.System.Configuration;
 
-#include"VirtualDataHistoryCandleExtend.h"
+#include "VirtualContainerHistoryCandleExtend.h"
 #include"DayLine.h"
 
-CVirtualDataHistoryCandleExtend::CVirtualDataHistoryCandleExtend() {
+CVirtualContainerHistoryCandleExtend::CVirtualContainerHistoryCandleExtend() {
 	Reset();
 }
 
@@ -19,7 +19,7 @@ CVirtualDataHistoryCandleExtend::CVirtualDataHistoryCandleExtend() {
 //  自动删除旧数据中的重复数据。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, const CString& strStockSymbol) const {
+bool CVirtualContainerHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, const CString& strStockSymbol) const {
 	vector<CVirtualHistoryCandleExtendPtr> vOldHistoryCandle;
 	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
 	long lSizeOfOldDayLine = 0;
@@ -90,7 +90,7 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 	return fNeedUpdate;
 }
 
-bool CVirtualDataHistoryCandleExtend::SaveExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend) const {
+bool CVirtualContainerHistoryCandleExtend::SaveExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend) const {
 	ASSERT(!m_vHistoryData.empty());
 
 	pSetHistoryCandleExtend->m_strFilter = _T("[ID] = 1");
@@ -103,7 +103,7 @@ bool CVirtualDataHistoryCandleExtend::SaveExtendDB(CVirtualSetHistoryCandleExten
 	return true;
 }
 
-bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic) {
+bool CVirtualContainerHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic) {
 	if (gl_systemConfiguration.IsWorkingMode())
 		ASSERT(!m_fBasicDataLoaded);
 	ASSERT(pSetHistoryCandleBasic->IsOpen());
@@ -126,7 +126,7 @@ bool CVirtualDataHistoryCandleExtend::LoadBasicDB(CVirtualSetHistoryCandleBasic*
 //
 //
 ////////////////////////////////////////////////////////////////////////////
-bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend) {
+bool CVirtualContainerHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExtend* pSetHistoryCandleExtend) {
 	int iPosition = 0;
 
 	if (gl_systemConfiguration.IsWorkingMode())
@@ -153,7 +153,7 @@ bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExten
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataHistoryCandleExtend::UpdateData(const vector<CVirtualHistoryCandleExtendPtr>& vTempData) {
+void CVirtualContainerHistoryCandleExtend::UpdateData(const vector<CVirtualHistoryCandleExtendPtr>& vTempData) {
 	Unload(); // 清除已载入的数据（如果有的话）
 	for (const auto& p : vTempData) {
 		if (p->IsActive()) Add(p);
@@ -166,7 +166,7 @@ void CVirtualDataHistoryCandleExtend::UpdateData(const vector<CVirtualHistoryCan
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataHistoryCandleExtend::UpdateData(const vector<CDayLinePtr>& vTempDayLine) {
+void CVirtualContainerHistoryCandleExtend::UpdateData(const vector<CDayLinePtr>& vTempDayLine) {
 	Unload(); // 清除已载入的日线数据（如果有的话）
 	// 将日线数据以时间为正序存入
 	for (const auto& pDayLine : vTempDayLine) {
@@ -178,7 +178,7 @@ void CVirtualDataHistoryCandleExtend::UpdateData(const vector<CDayLinePtr>& vTem
 	SetDataLoaded(true);
 }
 
-bool CVirtualDataHistoryCandleExtend::GetStartEndDate(long& lStartDate, long& lEndDate) const {
+bool CVirtualContainerHistoryCandleExtend::GetStartEndDate(long& lStartDate, long& lEndDate) const {
 	if (m_vHistoryData.empty()) return false;
 
 	lStartDate = m_vHistoryData.at(0)->GetMarketDate();
@@ -186,7 +186,7 @@ bool CVirtualDataHistoryCandleExtend::GetStartEndDate(long& lStartDate, long& lE
 	return true;
 }
 
-void CVirtualDataHistoryCandleExtend::Reset() {
+void CVirtualContainerHistoryCandleExtend::Reset() {
 	m_vHistoryData.clear();
 
 	m_fDataLoaded = false;
@@ -195,7 +195,7 @@ void CVirtualDataHistoryCandleExtend::Reset() {
 	m_fBasicDataLoaded = false;
 }
 
-bool CVirtualDataHistoryCandleExtend::CalculateRS0() {
+bool CVirtualContainerHistoryCandleExtend::CalculateRS0() {
 	CalculateRS1(3);
 	CalculateRS1(5);
 	CalculateRS1(10);
@@ -205,7 +205,7 @@ bool CVirtualDataHistoryCandleExtend::CalculateRS0() {
 	return true;
 }
 
-bool CVirtualDataHistoryCandleExtend::CalculateRSLogarithm0() {
+bool CVirtualContainerHistoryCandleExtend::CalculateRSLogarithm0() {
 	CalculateRSLogarithm1(3);
 	CalculateRSLogarithm1(5);
 	CalculateRSLogarithm1(10);
@@ -215,7 +215,7 @@ bool CVirtualDataHistoryCandleExtend::CalculateRSLogarithm0() {
 	return true;
 }
 
-bool CVirtualDataHistoryCandleExtend::CalculateRSIndex0() {
+bool CVirtualContainerHistoryCandleExtend::CalculateRSIndex0() {
 	CalculateRSIndex1(3);
 	CalculateRSIndex1(5);
 	CalculateRSIndex1(10);
@@ -225,7 +225,7 @@ bool CVirtualDataHistoryCandleExtend::CalculateRSIndex0() {
 	return true;
 }
 
-bool CVirtualDataHistoryCandleExtend::CalculateRSLogarithm1(INT64 lNumber) {
+bool CVirtualContainerHistoryCandleExtend::CalculateRSLogarithm1(INT64 lNumber) {
 	const INT64 lTotalNumber = m_vHistoryData.size();
 	for (INT64 i = lNumber; i < lTotalNumber; i++) {
 		double dTempRS = 0;
@@ -256,7 +256,7 @@ bool CVirtualDataHistoryCandleExtend::CalculateRSLogarithm1(INT64 lNumber) {
 	return true;
 }
 
-bool CVirtualDataHistoryCandleExtend::CalculateRS1(INT64 lNumber) {
+bool CVirtualContainerHistoryCandleExtend::CalculateRS1(INT64 lNumber) {
 	const INT64 lTotalNumber = m_vHistoryData.size();
 	for (INT64 i = lNumber; i < lTotalNumber; i++) {
 		double dTempRS = 0;
@@ -287,7 +287,7 @@ bool CVirtualDataHistoryCandleExtend::CalculateRS1(INT64 lNumber) {
 	return true;
 }
 
-bool CVirtualDataHistoryCandleExtend::CalculateRSIndex1(INT64 lNumber) {
+bool CVirtualContainerHistoryCandleExtend::CalculateRSIndex1(INT64 lNumber) {
 	const INT64 lTotalNumber = m_vHistoryData.size();
 	for (INT64 i = lNumber; i < lTotalNumber; i++) {
 		double dTempRS = 0;
@@ -318,38 +318,38 @@ bool CVirtualDataHistoryCandleExtend::CalculateRSIndex1(INT64 lNumber) {
 	return true;
 }
 
-void CVirtualDataHistoryCandleExtend::GetRS1(vector<double>& vRS) const {
+void CVirtualContainerHistoryCandleExtend::GetRS1(vector<double>& vRS) const {
 	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->GetRSIndex(); }
 }
 
-void CVirtualDataHistoryCandleExtend::GetRSIndex1(vector<double>& vRS) const {
+void CVirtualContainerHistoryCandleExtend::GetRSIndex1(vector<double>& vRS) const {
 	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->GetRSIndex(); }
 }
 
-void CVirtualDataHistoryCandleExtend::GetRSLogarithm1(vector<double>& vRS) const {
+void CVirtualContainerHistoryCandleExtend::GetRSLogarithm1(vector<double>& vRS) const {
 	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->GetRSLogarithm(); }
 }
 
-void CVirtualDataHistoryCandleExtend::GetRS3(vector<double>& vRS) const {
+void CVirtualContainerHistoryCandleExtend::GetRS3(vector<double>& vRS) const {
 	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->Get3RS(); }
 }
 
-void CVirtualDataHistoryCandleExtend::GetRS5(vector<double>& vRS) const {
+void CVirtualContainerHistoryCandleExtend::GetRS5(vector<double>& vRS) const {
 	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->Get5RS(); }
 }
 
-void CVirtualDataHistoryCandleExtend::GetRS10(vector<double>& vRS) const {
+void CVirtualContainerHistoryCandleExtend::GetRS10(vector<double>& vRS) const {
 	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->Get10RS(); }
 }
 
-void CVirtualDataHistoryCandleExtend::GetRS30(vector<double>& vRS) const {
+void CVirtualContainerHistoryCandleExtend::GetRS30(vector<double>& vRS) const {
 	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->Get30RS(); }
 }
 
-void CVirtualDataHistoryCandleExtend::GetRS60(vector<double>& vRS) const {
+void CVirtualContainerHistoryCandleExtend::GetRS60(vector<double>& vRS) const {
 	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->Get60RS(); }
 }
 
-void CVirtualDataHistoryCandleExtend::GetRS120(vector<double>& vRS) const {
+void CVirtualContainerHistoryCandleExtend::GetRS120(vector<double>& vRS) const {
 	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->Get120RS(); }
 }

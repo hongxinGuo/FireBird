@@ -2,8 +2,8 @@
 
 #include"VirtualMarket.h"
 
-#include "TiingoIEXWebSocket.h"
-#include "FinnhubWebSocket.h"
+import FireBird.WebSocket.TiingoIEX;
+import FireBird.WebSocket.Finnhub;
 
 #include "MarketStatus.h"
 #include"MarketHoliday.h"

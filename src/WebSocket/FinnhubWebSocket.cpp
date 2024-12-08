@@ -3,11 +3,12 @@
 #include"globedef.h"
 
 #include"SystemMessage.h"
+#include <ixwebsocket/IXWebSocket.h>
 
 #include"JsonParse.h"
 import FireBird.Accessory.JsonGetValue;
 
-#include "FinnhubWebSocket.h"
+import FireBird.WebSocket.Finnhub;
 
 #include "FinnhubDataSource.h"
 

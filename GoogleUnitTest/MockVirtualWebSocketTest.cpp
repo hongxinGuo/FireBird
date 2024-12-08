@@ -7,9 +7,12 @@
 #include"SystemMessage.h"
 
 #include"GeneralCheck.h"
+#include <ixwebsocket/IXWebSocket.h>
 
-#include"MockVirtualWebSocket.h"
+import FireBird.WebSocket.Virtual;
+#include "MockVirtualWebSocket.h"
 #include "WorldMarket.h"
+#include <ixwebsocket/IXWebSocket.h>
 
 using namespace testing;
 

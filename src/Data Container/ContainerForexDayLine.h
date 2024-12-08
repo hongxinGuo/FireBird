@@ -1,8 +1,8 @@
 #pragma once
 
-#include "VirtualDataHistoryCandleExtend.h"
+#include "VirtualContainerHistoryCandleExtend.h"
 
-class CContainerForexDayLine final : public CVirtualDataHistoryCandleExtend {
+class CContainerForexDayLine final : public CVirtualContainerHistoryCandleExtend {
 public:
 	CContainerForexDayLine();
 	CContainerForexDayLine(const CContainerForexDayLine& other) = delete;

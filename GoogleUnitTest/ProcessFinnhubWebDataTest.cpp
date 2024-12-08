@@ -12,7 +12,7 @@
 
 #include"WebData.h"
 
-#include"FinnhubWebSocket.h"
+import FireBird.WebSocket.Finnhub;
 
 using namespace testing;
 

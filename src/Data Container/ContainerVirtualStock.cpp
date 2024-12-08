@@ -2,7 +2,7 @@
 
 #include "ContainerVirtualStock.h"
 
-#include "VirtualWebSocket.h"
+import FireBird.WebSocket.Virtual;
 
 CContainerVirtualStock::CContainerVirtualStock() {
 	CContainerVirtualStock::Reset();

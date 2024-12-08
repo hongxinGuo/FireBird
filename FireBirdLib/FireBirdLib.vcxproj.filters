@@ -336,32 +336,11 @@
     <ClInclude Include="..\src\Type\China market\WeekLine.h">
       <Filter>头文件\Type\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\VirtualDataHistoryCandleExtend.h">
-      <Filter>头文件\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\VirtualHistoryCandleBasic.h">
+    <ClInclude Include="..\src\Type\VirtualContainerHistoryCandleExtend.h">
       <Filter>头文件\Type</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Type\VirtualHistoryCandleExtend.h">
       <Filter>头文件\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\WebSocket\FinnhubWebSocket.h">
-      <Filter>头文件\Web Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\WebSocket\TiingoCryptoWebSocket.h">
-      <Filter>头文件\Web Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\WebSocket\TiingoForexWebSocket.h">
-      <Filter>头文件\Web Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\WebSocket\TiingoIEXWebSocket.h">
-      <Filter>头文件\Web Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\WebSocket\VirtualWebSocket.h">
-      <Filter>头文件\Web Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Windows interface\MainFrm.h">
-      <Filter>头文件\Windows interface</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Windows interface\FireBirdView.h">
       <Filter>头文件\Windows interface</Filter>
@@ -744,9 +723,6 @@
     <ClInclude Include="..\src\Data Container\ContainerTiingoSymbol.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\TiingoDayLine.h">
-      <Filter>头文件\Type\America market\Tiingo</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekHigh.h">
       <Filter>头文件\database\WorldMarket\Tiingo</Filter>
     </ClInclude>
@@ -926,7 +902,7 @@
     <ClCompile Include="..\src\Type\China market\WeekLine.cpp">
       <Filter>源文件\Type\China market</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\VirtualDataHistoryCandleExtend.cpp">
+    <ClCompile Include="..\src\Type\VirtualContainerHistoryCandleExtend.cpp">
       <Filter>源文件\Type</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\VirtualHistoryCandleBasic.cpp">
@@ -1444,6 +1420,30 @@
     </ClCompile>
     <ClCompile Include="..\src\Windows interface\FireBirdDoc.ixx">
       <Filter>头文件\Windows interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\MainFrm.ixx">
+      <Filter>头文件\Windows interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\WebSocket\VirtualWebSocket.ixx">
+      <Filter>头文件\Web Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\WebSocket\TiingoIEXWebSocket.ixx">
+      <Filter>头文件\Web Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\WebSocket\TiingoForexWebSocket.ixx">
+      <Filter>头文件\Web Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\WebSocket\TiingoCryptoWebSocket.ixx">
+      <Filter>头文件\Web Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\WebSocket\FinnhubWebSocket.ixx">
+      <Filter>头文件\Web Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\VirtualHistoryCandleBasic.ixx">
+      <Filter>头文件\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoDayLine.ixx">
+      <Filter>头文件\Type\America market\Tiingo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -100,7 +100,6 @@ void CWatchdogFileView::FillFileView() {
 	m_wndFileView.InsertItem(_T("FakeAppDoc.h"), 2, 2, hInc);
 	m_wndFileView.InsertItem(_T("FakeAppView.h"), 2, 2, hInc);
 	m_wndFileView.InsertItem(_T("Resource.h"), 2, 2, hInc);
-	m_wndFileView.InsertItem(_T("MainFrm.h"), 2, 2, hInc);
 
 	const HTREEITEM hRes = m_wndFileView.InsertItem(_T("FakeApp Resource Files"), 0, 0, hRoot);
 

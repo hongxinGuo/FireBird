@@ -7,7 +7,8 @@
 #include"GeneralCheck.h"
 #include"ChinaMarket.h"
 
-#include"MockMainFrm.h"
+import FireBird.WindowInterface.MainFrm;
+#include "MockMainFrm.h"
 #include "NeteaseRTDataSource.h"
 #include "TengxunRTDataSource.h"
 

@@ -6,7 +6,7 @@
 
 #include"GeneralCheck.h"
 
-#include"virtualWebSocket.h"
+import FireBird.WebSocket.Virtual;
 
 using namespace testing;
 
