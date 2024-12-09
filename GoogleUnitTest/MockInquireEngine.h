@@ -2,7 +2,7 @@
 
 //#include"gmock/gmock.h"
 
-import DataSource.InquireEngine;
+import FireBird.DataSource.InquireEngine;
 
 namespace FireBirdTest {
 	class CMockInquireEngineTest;

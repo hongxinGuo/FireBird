@@ -7,22 +7,21 @@
 
 #include "WorldMarket.h"
 
- import FireBird.System.FinnhubInaccessibleExchange;
-
 #include"FinnhubDataSource.h"
+#include "ChinaMarket.h"
+#include "QuandlDataSource.h"
+#include "TiingoDataSource.h"
+#include"SetFinnhubStockDayLine.h"
 
+import FireBird.System.FinnhubInaccessibleExchange;
 import FireBird.WebSocket.Finnhub;
 import FireBird.WebSocket.TiingoIEX;
 import FireBird.WebSocket.TiingoForex;
 import FireBird.WebSocket.TiingoCrypto;
 
-#include"SetFinnhubStockDayLine.h"
 
-#include "ChinaMarket.h"
 import FireBird.Accessory.InfoReport;
-#include "QuandlDataSource.h"
 import FireBird.System.ThreadStatus;
-#include "TiingoDataSource.h"
 import FireBird.Tiingo.InaccessibleStock; 
 import FireBird.Accessory.TimeConvert;
 

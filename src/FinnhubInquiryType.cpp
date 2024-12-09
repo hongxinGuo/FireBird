@@ -1,8 +1,8 @@
 #include"pch.h"
 
 import FireBird.System.Configuration;
+module FireBird.FinnhubInquiryType;
 
-import FireBird.FinnhubInquiryType;
 
 CFinnhubInquiryType::CFinnhubInquiryType() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

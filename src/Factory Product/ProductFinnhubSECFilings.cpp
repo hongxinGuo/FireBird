@@ -6,7 +6,7 @@
 #include "ProductFinnhubSECFilings.h"
 
 #include"jsonParse.h"
-import simdjson.GetValue;
+import FireBird.Simdjson.GetValue;
 #include"simdjson.h"
 using namespace simdjson;
 

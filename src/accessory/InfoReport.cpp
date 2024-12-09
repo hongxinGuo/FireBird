@@ -1,12 +1,10 @@
 #include"pch.h"
 
 #include"globedef.h"
-
-#include <spdlog/sinks/basic_file_sink.h>
-
 #include"SystemMessage.h"
 
-import FireBird.Accessory.InfoReport;
+#include <spdlog/sinks/basic_file_sink.h>
+module FireBird.Accessory.InfoReport;
 
 void ReportErrorToSystemMessage(const CString& strPrefix, const exception& e) {
 	CString strError = strPrefix;

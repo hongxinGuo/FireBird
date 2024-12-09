@@ -1,16 +1,12 @@
 #include "pch.h"
 
 #include"globedef.h"
-
 #include"SystemMessage.h"
 #include <ixwebsocket/IXWebSocket.h>
-
 #include"JsonParse.h"
-import FireBird.Accessory.JsonGetValue;
-
-import FireBird.WebSocket.TiingoIEX;
-
 #include "TiingoDataSource.h"
+import FireBird.Accessory.JsonGetValue;
+module FireBird.WebSocket.TiingoIEX;
 
 void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 	gl_pTiingoIEXWebSocket->SetError(false);

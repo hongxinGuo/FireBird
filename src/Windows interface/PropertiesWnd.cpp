@@ -3,19 +3,20 @@
 #include"globedef.h"
 
 #include "framework.h"
-import FireBird.WindowInterface.PropertiesWnd;
 #include"SystemMessage.h"
 
 #include "ChinaMarket.h"
 #include "FinnhubDataSource.h"
-import FireBird.WindowInterface.MainFrm;
 #include "FireBird.h"
 
-import FireBird.System.ThreadStatus;
 #include "TiingoDataSource.h"
 #include "WorldMarket.h"
 
 #include <spdlog/common.h>
+import FireBird.System.ThreadStatus;
+import FireBird.WindowInterface.MainFrm;
+module FireBird.WindowInterface.PropertiesWnd; 
+
 
 #ifdef _DEBUG
 #undef THIS_FILE
