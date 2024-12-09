@@ -1,7 +1,7 @@
 #pragma once
 
 #include"FinnhubStock.h"
-#include"ContainerVirtualStock.h"
+import FireBird.Container.VirtualStock;
 
 class CContainerFinnhubStock final : public CContainerVirtualStock {
 public:

@@ -21,7 +21,7 @@
 #include "ContainerFinnhubForexExchange.h"
 #include "containerFinnhubForexSymbol.h"
 #include "ContainerFinnhubStockExchange.h"
-#include "ContainerStockSymbol.h"
+import FireBird.Container.StockSymbol;
 #include "ContainerTiingoCryptoSymbol.h"
 #include "ContainerTiingoStock.h"
 #include "ContainerFinnhubStock.h"

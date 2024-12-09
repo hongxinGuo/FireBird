@@ -5,7 +5,7 @@
 #include"GeneralCheck.h"
 #include"ChinaMarket.h"
 
-#include"ContainerVirtualStock.h"
+import FireBird.Container.VirtualStock;
 
 using namespace testing;
 

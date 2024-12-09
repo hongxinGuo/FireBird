@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
-
-#include "ContainerVirtualStock.h"
+module;
+#include"nlohmannjsonHeader.h"
+module FireBird.Container.VirtualStock;
 
 import FireBird.WebSocket.Virtual;
 

@@ -17,7 +17,9 @@ import FireBird.RelativeStrongReference;
 
 import FireBird.Type.WebRTData;
 
-#include"VirtualStock.h"
+import FireBird.Stock.Virtual;
+#include"nlohmannjsonHeader.h"
+#include"concurrentqueueHeader.h"
 
 #include"SetDayLineBasicInfo.h"
 #include"SetDayLineExtendInfo.h"
@@ -30,14 +32,13 @@ import FireBird.HistoryCandle.DayLine;
 #include"ContainerChinaWeekLine.h"
 #include"ContainerChinaDayLine.h"
 
-#include"concurrentqueueHeader.h"
+using std::map;
+#include <queue>
+using std::queue;
 
 class CChinaStock;
 typedef std::shared_ptr<CChinaStock> CChinaStockPtr;
 
-using std::map;
-#include <queue>
-using std::queue;
 
 bool IsShareA(const CString& strStockCode);
 

@@ -12,7 +12,7 @@
 #include"pch.h"
 module;
 #include <spdlog/common.h>
-#include"nlohmann/json.hpp"
+#include"NlohmannJsonHeader.h"
 export module FireBird.System.Configuration;
 
 export {

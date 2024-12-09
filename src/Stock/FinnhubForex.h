@@ -1,7 +1,8 @@
 #pragma once
 
-#include"VirtualStock.h"
+import FireBird.Stock.Virtual;
 #include"ContainerForexDayLine.h"
+#include"nlohmannjsonHeader.h"
 
 #include<memory>
 #include<vector>

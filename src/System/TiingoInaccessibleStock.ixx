@@ -7,7 +7,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 module;
-#include"nlohmann/json.hpp"
+#include"NlohmannJsonHeader.h"
 export module FireBird.Tiingo.InaccessibleStock;
 
 import FireBird.System.Inaccessible;

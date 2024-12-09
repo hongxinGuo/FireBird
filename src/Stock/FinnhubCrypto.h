@@ -1,6 +1,7 @@
 #pragma once
 
-#include"VirtualStock.h"
+import FireBird.Stock.Virtual;
+#include"nlohmannjsonHeader.h"
 
 #include"ContainerCryptoDayLine.h"
 

@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"SICIndustry.h"
+module FireBird.Type.SICIndustry;
 
 CSICIndustry::CSICIndustry() {
 	m_lCode = 0;

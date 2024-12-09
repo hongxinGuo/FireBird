@@ -1,7 +1,7 @@
 #pragma once
 
 #include"ChinaStock.h"
-#include"ContainerVirtualStock.h"
+import FireBird.Container.VirtualStock;
 
 import FireBird.RelativeStrongReference;
 

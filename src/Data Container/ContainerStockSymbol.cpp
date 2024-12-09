@@ -1,11 +1,12 @@
 #include "pch.h"
-
-import FireBird.Accessory.ChinaStockCodeConverter;
-#include "ContainerStockSymbol.h"
-
+module;
+#include"SystemConstantChinaMarket.h"
 #include "ChinaStock.h"
 #include"SetStockSection.h"
+module FireBird.Container.StockSymbol;
+
 import FireBird.Accessory.InfoReport;
+import FireBird.Accessory.ChinaStockCodeConverter;
 
 CContainerStockSymbol::CContainerStockSymbol() {
 	CContainerStockSymbol::Reset();

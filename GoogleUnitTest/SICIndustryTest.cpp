@@ -6,7 +6,7 @@ import FireBird.System.Configuration;
 
 #include"GeneralCheck.h"
 
-#include"SICIndustry.h"
+import FireBird.Type.SICIndustry;
 
 namespace FireBirdTest {
 	class CSICIndustryTest : public ::testing::Test {

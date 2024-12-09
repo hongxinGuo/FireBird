@@ -8,7 +8,7 @@ import FireBird.System.Configuration;
 
 import FireBird.WebSocket.TiingoCrypto;
 
-#include"nlohmann/json.hpp"
+#include"NlohmannJsonHeader.h"
 
 using namespace testing;
 

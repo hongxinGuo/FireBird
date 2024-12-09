@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TiingoCrypto.h"
-#include "ContainerVirtualStock.h"
+import FireBird.Container.VirtualStock;
 
 class CContainerTiingoCryptoSymbol : public CContainerVirtualStock {
 public:

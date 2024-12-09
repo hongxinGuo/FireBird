@@ -9,13 +9,13 @@
 
 #include"globedef.h"
 
-#include"nlohmann/json.hpp"
+#include"NlohmannJsonHeader.h"
 
 import FireBird.System.Message;
 
 import FireBird.FinnhubInquiryType;
 import FireBird.System.FinnhubInaccessibleExchange;
-import FireBird.Tiingo.InaccessibleStock; 
+import FireBird.Tiingo.InaccessibleStock;
 
 #include"FinnhubDataSource.h"
 #include"NeteaseDayLineDataSource.h"
@@ -34,7 +34,6 @@ import FireBird.WebSocket.TiingoCrypto;
 #include "ChinaMarket.h"
 #include "WorldMarket.h"
 
- 
 import FireBird.System.ThreadStatus;
 
 #undef max

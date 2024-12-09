@@ -1,10 +1,6 @@
 ﻿#include"pch.h"
-
+module;
 #include"globedef.h"
-
-import FireBird.System.Message;
-
-
 #include "FireBird.h"
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
@@ -25,6 +21,7 @@ import FireBird.System.Message;
 #include"concurrencpp/concurrencpp.h"
 module FireBird.WindowInterface.MainFrm;
 
+import FireBird.System.Message;
 import FireBird.System.ScheduleTask;
 import FireBird.Accessory.ConvertToString;
 import FireBird.Accessory.TimeConvert;

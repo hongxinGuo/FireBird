@@ -10,7 +10,8 @@
 #include "TiingoIEXTopOFBook.h"
 #include "TiingoStockDailyMeta.h"
 
-#include "VirtualStock.h"
+import FireBird.Stock.Virtual;
+#include"nlohmannjsonHeader.h"
 
 class CTiingoStock;
 typedef std::shared_ptr<CTiingoStock> CTiingoStockPtr;

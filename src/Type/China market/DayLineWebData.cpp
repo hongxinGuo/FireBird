@@ -1,5 +1,5 @@
 #include"pch.h"
-
+module;
 #include"ChinaMarket.h"
 #include"nlohmann/json_fwd.hpp"
 #include "JsonParse.h"

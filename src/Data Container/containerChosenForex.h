@@ -1,6 +1,6 @@
 #pragma once
 
-#include"ContainerVirtualStock.h"
+import FireBird.Container.VirtualStock;
 #include "FinnhubForex.h"
 
 class CContainerChosenForex : public CContainerVirtualStock {

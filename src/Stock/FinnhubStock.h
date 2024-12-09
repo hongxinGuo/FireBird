@@ -1,8 +1,8 @@
 #pragma once
 
-#include"nlohmann/json.hpp"
+#include"NlohmannJsonHeader.h"
 
-#include"VirtualStock.h"
+import FireBird.Stock.Virtual;
 
 #include"FinnhubStockBasicFinancial.h"
 
@@ -12,8 +12,7 @@ import FireBird.HistoryCandle.DayLine;
 #include"FinnhubCompanyNews.h"
 #include "InsiderSentiment.h"
 #include "InsiderTransaction.h"
-#include "SECFiling.h"
-
+import FireBird.Type.SECFiling;
 #include"SetFinnhubStock.h"
 
 class CFinnhubStock : public CVirtualStock {

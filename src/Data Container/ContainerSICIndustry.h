@@ -1,6 +1,6 @@
 #pragma once
 
-#include"SicIndustry.h"
+import FireBird.Type.SICIndustry;
 
 class CContainerSicIndustry {
 public:

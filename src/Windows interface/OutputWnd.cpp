@@ -1,5 +1,5 @@
 ﻿#include"pch.h"
-
+module;
 #include "resource.h"
 #include"globedef.h"
 #include"ChinaMarket.h"

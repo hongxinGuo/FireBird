@@ -314,8 +314,7 @@
       </ControlFlowGuard>
       <CompileAs>CompileAsCpp</CompileAs>
       <FunctionLevelLinking>false</FunctionLevelLinking>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
+      <DisableSpecificWarnings>4324</DisableSpecificWarnings>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>

@@ -1,5 +1,5 @@
 #include"pch.h"
-#include"SECFiling.h"
+module FireBird.Type.SECFiling;
 
 CSECFiling::CSECFiling() {
 	m_strSymbol = _T(" ");

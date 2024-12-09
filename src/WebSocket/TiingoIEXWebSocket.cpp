@@ -1,5 +1,5 @@
 #include "pch.h"
-
+module;
 #include"globedef.h"
 import FireBird.System.Message;
 #include <ixwebsocket/IXWebSocket.h>

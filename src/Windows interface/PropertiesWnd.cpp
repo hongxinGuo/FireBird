@@ -1,7 +1,6 @@
 #include "pch.h"
-
+module;
 #include"globedef.h"
-
 #include "framework.h"
 
 #include "ChinaMarket.h"

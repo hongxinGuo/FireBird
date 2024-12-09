@@ -1,8 +1,8 @@
 #include"pch.h"
-
-#include "VirtualStock.h"
-
+module;
 #include "jsonParse.h"
+#include"NlohmannJsonHeader.h"
+module FireBird.Stock.Virtual;
 
 CVirtualStock::CVirtualStock() {
 	CVirtualStock::ResetAllUpdateDate();

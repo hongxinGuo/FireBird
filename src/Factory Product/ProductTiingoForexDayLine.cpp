@@ -1,12 +1,11 @@
 #include "pch.h"
 
-
 #include"VirtualDataSource.h"
 #include "ProductTiingoForexDayLine.h"
 #include"jsonParse.h"
 #include"FinnhubStock.h"
 #include"WorldMarket.h"
-#include"nlohmann/json.hpp"
+#include"NlohmannJsonHeader.h"
 import FireBird.System.Message;
 import FireBird.Accessory.TimeConvert;
 import FireBird.Accessory.JsonGetValue;

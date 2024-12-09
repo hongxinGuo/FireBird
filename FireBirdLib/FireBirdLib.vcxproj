@@ -33,6 +33,7 @@
     </ClCompile>
     <ClInclude Include="..\src\accessory\ConcurrentQueueHeader.h" />
     <ClInclude Include="..\src\accessory\JsonParse.h" />
+    <ClInclude Include="..\src\accessory\NlohmannJsonHeader.h" />
     <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h" />
     <ClCompile Include="..\src\accessory\RSReference.ixx">
       <FileType>Document</FileType>
@@ -61,7 +62,11 @@
     <ClInclude Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoSymbol.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockDayLine.h" />
-    <ClInclude Include="..\src\Data Container\ContainerVirtualStock.h" />
+    <ClCompile Include="..\src\Data Container\ContainerVirtualStock.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Data Container\ContainerChinaDayLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerChinaStock.h" />
     <ClInclude Include="..\src\Data Container\ContainerChinaWeekLine.h" />
@@ -79,7 +84,11 @@
     <ClInclude Include="..\src\Data Container\ContainerForexDayLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerNaicsIndustry.h" />
     <ClInclude Include="..\src\Data Container\ContainerSICIndustry.h" />
-    <ClInclude Include="..\src\Data Container\ContainerStockSymbol.h" />
+    <ClCompile Include="..\src\Data Container\ContainerStockSymbol.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Data Container\ContainerTiingoCryptoSymbol.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoIndustry.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoStock.h" />
@@ -305,7 +314,11 @@
     <ClInclude Include="..\src\Stock\FinnhubForex.h" />
     <ClInclude Include="..\src\Stock\TiingoCrypto.h" />
     <ClInclude Include="..\src\Stock\TiingoStock.h" />
-    <ClInclude Include="..\src\Stock\VirtualStock.h" />
+    <ClCompile Include="..\src\Stock\VirtualStock.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Stock\FinnhubStock.h" />
     <ClCompile Include="..\src\System\FinnhubInaccessibleExchange.ixx">
       <FileType>Document</FileType>
@@ -358,7 +371,11 @@
     <ClInclude Include="..\src\Type\America market\MarketHoliday.h" />
     <ClInclude Include="..\src\Type\America market\MarketStatus.h" />
     <ClInclude Include="..\src\Type\America market\NaicsIndustry.h" />
-    <ClInclude Include="..\src\Type\America market\SICIndustry.h" />
+    <ClCompile Include="..\src\Type\America market\SICIndustry.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\src\Type\America market\TiingoDayLine.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
@@ -409,7 +426,11 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClInclude Include="..\src\Type\SECFiling.h" />
+    <ClCompile Include="..\src\Type\SECFiling.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Type\TiingoCompanyFinancialState.h" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandleBasic.ixx">
       <FileType>Document</FileType>
@@ -484,6 +505,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MaxSpeed</Optimization>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4324</DisableSpecificWarnings>
     </ClCompile>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp" />
     <ClCompile Include="..\src\accessory\ConvertToString.cpp" />
@@ -799,6 +821,7 @@
       <TranslateIncludes>false</TranslateIncludes>
       <EnableModules>false</EnableModules>
       <BuildStlModules>false</BuildStlModules>
+      <DisableSpecificWarnings>4324</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>

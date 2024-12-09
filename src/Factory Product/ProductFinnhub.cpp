@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"nlohmann/json.hpp"
+#include"NlohmannJsonHeader.h"
 
 #include"ProductFinnhub.h"
 

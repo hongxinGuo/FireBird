@@ -2,7 +2,7 @@
 
 #include "ContainerTiingoCryptoSymbol.h"
 
-#include "ContainerVirtualStock.h"
+import FireBird.Container.VirtualStock;
 import FireBird.Accessory.InfoReport;
 
 CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() {
