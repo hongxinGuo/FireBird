@@ -1,7 +1,7 @@
 #include"pch.h"
 
-////#include"gtest/gtest.h"
-//#include"gmock/gmock.h"
+ 
+ 
 
 #include"WorldMarket.h"
 #include"GeneralCheck.h"

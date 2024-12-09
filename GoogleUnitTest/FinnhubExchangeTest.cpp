@@ -1,7 +1,5 @@
 #include"pch.h"
 
-//#include"gtest/gtest.h"
-
 import FireBird.System.Configuration;
 
 #include"GeneralCheck.h"

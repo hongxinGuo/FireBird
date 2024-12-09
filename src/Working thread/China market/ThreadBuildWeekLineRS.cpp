@@ -8,17 +8,12 @@
 #include"pch.h"
 
 #include"globedef.h"
-
-#undef max //Note 包含concurrencpp.h之前，需要undefined max
-#include"concurrencpp/concurrencpp.h"
-using namespace concurrencpp;
+#include"ConCurrenCppHeader.h"
+#include"ChinaMarket.h"
 
 import FireBird.System.Message;
-
- 
 import FireBird.Accessory.TimeConvert;
 import FireBird.System.ThreadStatus;
-#include"ChinaMarket.h"
 
 UINT ThreadBuildWeekLineRS(const CChinaMarketPtr& pMarket, long startCalculatingDate) {
 	pMarket->SetCalculatingWeekLineRS(true);

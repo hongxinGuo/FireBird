@@ -14,9 +14,7 @@ import FireBird.System.Message;
 #include"nlohmann/json_fwd.hpp"
 import FireBird.Type.WebData;
 
-#undef max //Note 包含concurrencpp.h之前，需要undefined max
-#include"concurrencpp/concurrencpp.h"
-using namespace concurrencpp;
+#include"ConCurrenCppHeader.h"
 
 using std::vector;
 

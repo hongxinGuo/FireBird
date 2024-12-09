@@ -31,6 +31,7 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
+    <ClInclude Include="..\src\accessory\ConCurrenCppHeader.h" />
     <ClInclude Include="..\src\accessory\ConcurrentQueueHeader.h" />
     <ClInclude Include="..\src\accessory\JsonParse.h" />
     <ClInclude Include="..\src\accessory\NlohmannJsonHeader.h" />

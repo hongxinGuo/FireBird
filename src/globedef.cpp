@@ -10,12 +10,7 @@
 #include"globedef.h"
 
 #include"NlohmannJsonHeader.h"
-
-import FireBird.System.Message;
-
-import FireBird.FinnhubInquiryType;
-import FireBird.System.FinnhubInaccessibleExchange;
-import FireBird.Tiingo.InaccessibleStock;
+#include"ConCurrenCppHeader.h"
 
 #include"FinnhubDataSource.h"
 #include"NeteaseDayLineDataSource.h"
@@ -26,19 +21,21 @@ import FireBird.Tiingo.InaccessibleStock;
 #include"TengxunDayLineDataSource.h"
 #include"TiingoDataSource.h"
 
+#include "ChinaMarket.h"
+#include "WorldMarket.h"
+
+import FireBird.System.Message;
+
+import FireBird.FinnhubInquiryType;
+import FireBird.System.FinnhubInaccessibleExchange;
+import FireBird.Tiingo.InaccessibleStock;
+
 import FireBird.WebSocket.Finnhub;
 import FireBird.WebSocket.TiingoIEX;
 import FireBird.WebSocket.TiingoForex;
 import FireBird.WebSocket.TiingoCrypto;
 
-#include "ChinaMarket.h"
-#include "WorldMarket.h"
-
 import FireBird.System.ThreadStatus;
-
-#undef max
-#include"concurrencpp/concurrencpp.h"
-using namespace concurrencpp;
 
 HANDLE gl_hFireBirdMutex{ nullptr };
 

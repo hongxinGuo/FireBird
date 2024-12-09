@@ -678,6 +678,9 @@
     <ClInclude Include="..\src\accessory\NlohmannJsonHeader.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\accessory\ConCurrenCppHeader.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">

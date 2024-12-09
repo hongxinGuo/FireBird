@@ -1,6 +1,6 @@
 #pragma once
 
-//#include"gmock/gmock.h"
+ 
 import FireBird.WindowInterface.MainFrm;
 
 namespace testing {

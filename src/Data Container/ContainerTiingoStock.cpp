@@ -1,24 +1,20 @@
 #include "pch.h"
-#undef max //Note 包含concurrencpp.h之前，需要undefined max
-#include"concurrencpp/concurrencpp.h"
 
 #include"globedef.h"
+#include"ConCurrenCppHeader.h"
 
 #include"SystemData.h"
 
-import FireBird.System.Message;
-
 #include "ContainerTiingoStock.h"
-import FireBird.Accessory.InfoReport;
 #include "SetTiingoStockCurrentTrace.h"
 #include "SetTiingoStockDayLine.h"
-import FireBird.System.ThreadStatus;
-import FireBird.Accessory.TimeConvert;
 #include "WorldMarket.h"
 #include"TiingoStock.h"
  
-
-using namespace concurrencpp;
+import FireBird.System.Message;
+import FireBird.Accessory.InfoReport;
+import FireBird.System.ThreadStatus;
+import FireBird.Accessory.TimeConvert;
 
 
 CContainerTiingoStock::CContainerTiingoStock() {

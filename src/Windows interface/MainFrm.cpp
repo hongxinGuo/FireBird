@@ -17,8 +17,7 @@ module;
 #include"QuandlDataSource.h"
 #include <ixwebsocket/IXNetSystem.h>
 #include"ChinaMarket.h"
-#undef max
-#include"concurrencpp/concurrencpp.h"
+#include"ConCurrenCppHeader.h"
 module FireBird.WindowInterface.MainFrm;
 
 import FireBird.System.Message;
@@ -27,9 +26,6 @@ import FireBird.Accessory.ConvertToString;
 import FireBird.Accessory.TimeConvert;
 import FireBird.System.ThreadStatus;
 import FireBird.Simdjson.GetValue;
-
-
-using namespace concurrencpp;
 
 bool CMainFrame::sm_fGlobeInit = false;
 constexpr int iMaxUserToolbars = 10;

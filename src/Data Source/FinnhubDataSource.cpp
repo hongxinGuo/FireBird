@@ -7,17 +7,15 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#include "FinnhubDataSource.h"
+#include"WorldMarket.h"
+
 import FireBird.System.Configuration;
 import FireBird.System.Message;
-
 import FireBird.FinnhubInquiryType;
 import FireBird.System.FinnhubInaccessibleExchange;
-
-#include "FinnhubDataSource.h"
 import FireBird.WebProduct.Virtual;
-
 import FireBird.Accessory.TimeConvert;
-#include"WorldMarket.h"
 
 map<string, enum_ErrorMessageData> mapFinnhubErrorMap{
 	{ _T("You don't have access to this resource."), ERROR_FINNHUB_NO_RIGHT_TO_ACCESS__ },

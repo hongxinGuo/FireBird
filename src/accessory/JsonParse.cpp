@@ -14,29 +14,27 @@
 #include"globedef.h"
 
 #include"nlohmann/json_fwd.hpp"
-import FireBird.Type.WebData;
 #include "JsonParse.h"
+#include"spdlog/spdlog.h"
+
+#include "ChinaMarket.h"
+#include"ConCurrenCppHeader.h"
+#include"simdjson.h"
+using namespace simdjson;
 
 import FireBird.Type.WebRTData;
+import FireBird.Type.WebData;
 
 import FireBird.Accessory.ChinaStockCodeConverter;
 import FireBird.Accessory.InfoReport;
 
 import FireBird.Simdjson.GetValue;
-#include"simdjson.h"
-using namespace simdjson;
 
 import FireBird.Accessory.ConvertToString;
 import FireBird.System.Message;
 
 import FireBird.Accessory.JsonGetValue;
 
-#include"spdlog/spdlog.h"
-
-#include "ChinaMarket.h"
-#undef max // 包含concurrencpp.h之前，需要注销max的定义
-#include"concurrencpp/concurrencpp.h"
-using namespace concurrencpp;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //

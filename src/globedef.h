@@ -1,6 +1,7 @@
 #pragma once
 
 #include "spdlog/sinks/daily_file_sink.h"
+#include"ConCurrenCppHeader.h"
 
 #include <semaphore>
 #include<map>
@@ -15,8 +16,6 @@ using std::shared_ptr;
 
 extern HANDLE gl_hFireBirdMutex;
 
-#undef max
-#include"concurrencpp/concurrencpp.h"
 extern concurrencpp::runtime gl_runtime;
 extern concurrencpp::runtime gl_backgroundRuntime;
 extern int gl_concurrency_level; // 并行计算允许最大数量

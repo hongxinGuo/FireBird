@@ -1,6 +1,6 @@
 ﻿#include"pch.h"
 
-////#include"gtest/gtest.h"
+ 
 
 import FireBird.System.Message;
 
