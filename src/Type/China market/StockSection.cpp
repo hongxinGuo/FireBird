@@ -1,5 +1,5 @@
 #include"pch.h"
-#include "StockSection.h"
+module FireBird.Type.StockSection;
 
 CStockSection::CStockSection() {
 	m_fActive = false;

@@ -10,6 +10,7 @@
 
 #include"GeneralCheck.h"
 
+#include"nlohmann/json_fwd.hpp"
 #include"WebData.h"
 
 import FireBird.WebSocket.Finnhub;

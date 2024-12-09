@@ -1,7 +1,7 @@
 #pragma once
 
 #include"ProductTiingo.h"
-#include"DayLine.h"
+import FireBird.HistoryCandle.DayLine;
 
 class CProductTiingoCryptoDayLine final : public CProductTiingo {
 public:

@@ -2,7 +2,7 @@
 
 #include <queue>
 
-#include"WebRTData.h"
+import FireBird.Type.WebRTData;
 #include"PriorityQueueWebRTData.h"
 
 class CPriorityQueueWebRTData final {

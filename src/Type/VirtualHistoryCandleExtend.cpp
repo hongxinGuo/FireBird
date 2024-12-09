@@ -1,7 +1,8 @@
 #include"pch.h"
 
+module FireBird.HistoryCandle.VirtualExtend;
+
 import FireBird.Accessory.ConvertToString;
-#include"VirtualHistoryCandleExtend.h"
 
 CVirtualHistoryCandleExtend::CVirtualHistoryCandleExtend() {
 }

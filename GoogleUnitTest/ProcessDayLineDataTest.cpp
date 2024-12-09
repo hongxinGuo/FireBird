@@ -6,8 +6,9 @@
 
 #include"GeneralCheck.h"
 
+#include"nlohmann/json_fwd.hpp"
 #include"WebData.h"
-#include"DayLineWebData.h"
+import FireBird.Type.DayLineWebData;
 
 namespace FireBirdTest {
 	struct NeteaseDayLineData {

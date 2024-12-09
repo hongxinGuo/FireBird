@@ -6,8 +6,8 @@
 
 #include"ChinaMarket.h" // 网易日线历史数据的读取在CChinaMarket类中。
 
-#include"DayLine.h"
-#include"DayLineWebData.h"
+import FireBird.HistoryCandle.DayLine;
+import FireBird.Type.DayLineWebData;
 
 namespace FireBirdTest {
 	struct NetEaseDayLineData {

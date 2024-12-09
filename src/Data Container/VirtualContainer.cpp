@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "VirtualContainer.h"
+module FireBird.Container.Virtual;
 
 CVirtualContainer::CVirtualContainer() {
 	CVirtualContainer::Reset();

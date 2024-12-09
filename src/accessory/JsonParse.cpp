@@ -13,10 +13,11 @@
 
 #include"globedef.h"
 
+#include"nlohmann/json_fwd.hpp"
+#include"WebData.h"
 #include "JsonParse.h"
 
-#include"WebData.h"
-#include"WebRTData.h"
+import FireBird.Type.WebRTData;
 
 import FireBird.Accessory.ChinaStockCodeConverter;
 import FireBird.Accessory.InfoReport;

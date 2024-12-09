@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include "Guadan.h"
+module FireBird.Type.Guadan;
 
 CGuadan::CGuadan() {
 	m_lCurrentVolume = 0;

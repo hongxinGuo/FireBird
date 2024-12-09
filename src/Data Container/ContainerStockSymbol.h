@@ -1,7 +1,7 @@
 #pragma once
 
-#include"StockSection.h"
-#include "VirtualContainer.h"
+import FireBird.Type.StockSection;
+import FireBird.Container.Virtual;
 
 class CContainerStockSymbol : public CVirtualContainer {
 public:

@@ -2,7 +2,7 @@
 
 import FireBird.Accessory.TimeConvert;
 
-#include"DayLine.h"
+import FireBird.HistoryCandle.DayLine;
 #include "ContainerChinaDayLine.h"
 #include"SetDayLineBasicInfo.h"
 #include"SetDayLineExtendInfo.h"

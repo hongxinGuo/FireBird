@@ -6,9 +6,10 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "DayLine.h"
-#include "VirtualHistoryCandleExtend.h"
+import FireBird.HistoryCandle.DayLine;
+import FireBird.HistoryCandle.VirtualExtend;
 import FireBird.Set.VirtualHistoryCandleBasic;
+import FireBird.Set.VirtualHistoryCandleExtend;
 
 using std::atomic_bool;
 using std::vector;

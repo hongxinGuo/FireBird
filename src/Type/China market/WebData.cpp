@@ -1,7 +1,8 @@
 #include"pch.h"
-
-#include"WebData.h"
 #include"JsonParse.h"
+
+#include"nlohmann/json_fwd.hpp"
+#include"WebData.h"
 
 CWebData::CWebData() {
 	m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(0));

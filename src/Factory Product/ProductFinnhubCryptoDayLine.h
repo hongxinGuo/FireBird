@@ -1,6 +1,6 @@
 #pragma once
 
-#include"DayLine.h"
+import FireBird.HistoryCandle.DayLine;
 
 #include"ProductFinnhub.h"
 

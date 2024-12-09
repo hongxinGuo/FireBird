@@ -7,8 +7,9 @@
 #include"GeneralCheck.h"
 
 #include"JsonParse.h"
-#include "WebData.h"
-#include "WebRTData.h"
+#include"nlohmann/json_fwd.hpp"
+#include"WebData.h"
+import FireBird.Type.WebRTData;
 
 namespace FireBirdTest {
 	class jsonParseTest : public testing::Test {

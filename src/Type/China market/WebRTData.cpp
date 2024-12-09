@@ -1,12 +1,10 @@
 ﻿#include"pch.h"
+
 #include"globedef.h"
-
-import FireBird.Accessory.ChinaStockCodeConverter;
-
-#include"jsonParse.h"
-#include"WebRTData.h"
-
 #include "ChinaMarket.h"
+#include"jsonParse.h"
+import FireBird.Accessory.ChinaStockCodeConverter;
+module FireBird.Type.WebRTData;
 
 void CWebRTData::Reset() {
 	m_lDataSource = INVALID_RT_WEB_DATA_;

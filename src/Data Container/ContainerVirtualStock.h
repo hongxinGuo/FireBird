@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "VirtualContainer.h"
+import FireBird.Container.Virtual;
 #include"VirtualStock.h"
 
 class CContainerVirtualStock : public CVirtualContainer {

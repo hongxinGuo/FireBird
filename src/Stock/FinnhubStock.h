@@ -6,7 +6,7 @@
 
 #include"FinnhubStockBasicFinancial.h"
 
-#include"DayLine.h"
+import FireBird.HistoryCandle.DayLine;
 #include"ContainerFinnhubStockDayLine.h"
 #include "EPSSurprise.h"
 #include"FinnhubCompanyNews.h"

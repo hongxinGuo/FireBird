@@ -5,7 +5,7 @@
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
-#include"DayLine.h"
+import FireBird.HistoryCandle.DayLine;
 #include"SetForexDayLine.h"
 
 namespace FireBirdTest {

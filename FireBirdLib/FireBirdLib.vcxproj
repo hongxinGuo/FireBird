@@ -84,13 +84,19 @@
     <ClInclude Include="..\src\Data Container\ContainerTiingoStock.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubStock.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubStockDayline.h" />
-    <ClInclude Include="..\src\Data Container\VirtualContainer.h" />
+    <ClCompile Include="..\src\Data Container\VirtualContainer.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\VirtualContainerHistoryCandleExtend.cpp" />
     <ClCompile Include="..\src\Data Source\InquireEngine.ixx">
       <FileType>Document</FileType>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
+    <ClInclude Include="..\src\Data Container\VirtualContainerHistoryCandleExtend.h" />
     <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h" />
     <ClInclude Include="..\src\Data Source\FinnhubDataSource.h" />
     <ClInclude Include="..\src\Data Source\NeteaseDaylineDataSource.h" />
@@ -323,23 +329,58 @@
     <ClInclude Include="..\src\Type\America market\TiingoIndustry.h" />
     <ClInclude Include="..\src\Type\America market\TiingoMarketNews.h" />
     <ClInclude Include="..\src\Type\America market\TiingoStockDailyMeta.h" />
-    <ClInclude Include="..\src\Type\China market\DayLine.h" />
-    <ClInclude Include="..\src\Type\China market\Guadan.h" />
-    <ClInclude Include="..\src\Type\China market\DayLineWebData.h" />
-    <ClInclude Include="..\src\Type\China market\OneDeal.h" />
-    <ClInclude Include="..\src\Type\China market\StockSection.h" />
-    <ClInclude Include="..\src\Type\China market\WebData.h" />
-    <ClInclude Include="..\src\Type\China market\WebRTData.h" />
-    <ClInclude Include="..\src\Type\China market\WeekLine.h" />
+    <ClCompile Include="..\src\Type\China market\DayLine.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\Guadan.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\DayLineWebData.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\OneDeal.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\StockSection.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClInclude Include="..\src\Type\China market\WebData.h">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Default</CompileAs>
+    </ClInclude>
+    <ClCompile Include="..\src\Type\China market\WebRTData.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\WeekLine.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Type\SECFiling.h" />
     <ClInclude Include="..\src\Type\TiingoCompanyFinancialState.h" />
-    <ClInclude Include="..\src\Type\VirtualContainerHistoryCandleExtend.h" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandleBasic.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClInclude Include="..\src\Type\VirtualHistoryCandleExtend.h" />
+    <ClCompile Include="..\src\Type\VirtualHistoryCandleExtend.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\src\WebSocket\FinnhubWebSocket.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
@@ -609,7 +650,6 @@
     <ClCompile Include="..\src\Type\China market\WeekLine.cpp" />
     <ClCompile Include="..\src\Type\SECFiling.cpp" />
     <ClCompile Include="..\src\Type\TiingoCompanyFinancialState.cpp" />
-    <ClCompile Include="..\src\Type\VirtualContainerHistoryCandleExtend.cpp" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandleBasic.cpp" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandleExtend.cpp" />
     <ClCompile Include="..\src\WebSocket\FinnhubWebSocket.cpp" />

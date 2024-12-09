@@ -6,7 +6,7 @@ import FireBird.System.Configuration;
 
 #include"GeneralCheck.h"
 
-#include"Guadan.h"
+import FireBird.Type.Guadan;
 
 namespace FireBirdTest {
 	class COneGuadanTest : public ::testing::Test {

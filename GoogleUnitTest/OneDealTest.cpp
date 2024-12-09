@@ -5,7 +5,7 @@
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
-#include"OneDeal.h"
+import FireBird.Type.OneDeal;
 
 namespace FireBirdTest {
 	class COneDealTest : public ::testing::Test {

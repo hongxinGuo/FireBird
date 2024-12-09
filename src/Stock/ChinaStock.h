@@ -15,7 +15,7 @@ enum {
 
 import FireBird.RelativeStrongReference;
 
-#include "WebRTData.h"
+import FireBird.Type.WebRTData;
 
 #include"VirtualStock.h"
 
@@ -25,9 +25,8 @@ import FireBird.RelativeStrongReference;
 #include"SetDayLineTodaySaved.h"
 #include"SetChinaStockSymbol.h"
 
-#include"OneDeal.h"
-
-#include"DayLine.h"
+import FireBird.Type.OneDeal;
+import FireBird.HistoryCandle.DayLine;
 #include"ContainerChinaWeekLine.h"
 #include"ContainerChinaDayLine.h"
 

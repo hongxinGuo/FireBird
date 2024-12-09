@@ -7,12 +7,11 @@
 #pragma once
 
 #include<chrono>
-
 #include<string>
+#include"nlohmann/json_fwd.hpp"
+
 using std::string;
 using std::string_view;
-
-#include"nlohmann/json_fwd.hpp"
 
 class CDayLineWebData;
 class CVirtualDataSource;

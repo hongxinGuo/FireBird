@@ -10,7 +10,8 @@
 
 #include"ChinaMarket.h"
 
-#include"WebRTData.h"
+import FireBird.Type.WebRTData;
+#include"nlohmann/json_fwd.hpp"
 #include"WebData.h"
 
 using namespace testing;

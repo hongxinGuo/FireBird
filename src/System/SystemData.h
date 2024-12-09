@@ -34,7 +34,7 @@ import FireBird.WebSocket.TiingoIEX;
 import FireBird.WebSocket.TiingoForex;
 import FireBird.WebSocket.TiingoCrypto;
 
-#include "DayLineWebData.h"
+import FireBird.Type.DayLineWebData;
 
 // 处理后的各种数据
 extern ConcurrentQueue<CWebRTDataPtr> gl_qChinaMarketRTData; // 中国市场新浪实时数据队列。

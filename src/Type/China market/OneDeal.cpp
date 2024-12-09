@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include "OneDeal.h"
+module FireBird.Type.OneDeal;
 
 COneDeal::COneDeal() {
 	m_lType = 0;

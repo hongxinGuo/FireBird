@@ -14,7 +14,7 @@
 #include"JsonParse.h"
 #include "ProductTiingoStockProfile.h"
 #include"WebData.h"
-
+#include"nlohmann/json_fwd.hpp"
 #include"simdjson.h"
 using namespace simdjson;
 

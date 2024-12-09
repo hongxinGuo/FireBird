@@ -5,7 +5,7 @@
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
-#include"DayLineWebData.h"
+import FireBird.Type.DayLineWebData;
 
 namespace FireBirdTest {
 	class CDownLoadedNeteaseDayLineTest : public testing::Test {

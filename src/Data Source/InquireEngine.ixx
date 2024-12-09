@@ -3,6 +3,8 @@ module;
 #include <afxinet.h>
 #include"concurrentqueue/concurrentqueue.h"
 #include"VirtualWebProduct.h"
+#include"nlohmann/json_fwd.hpp"
+#include"WebData.h"
 export module FireBird.DataSource.InquireEngine;
 
 using namespace moodycamel;

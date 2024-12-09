@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include "DayLine.h"
+module FireBird.HistoryCandle.DayLine;
 
 CDayLine::CDayLine() {
 }

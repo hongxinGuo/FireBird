@@ -4,7 +4,7 @@
 
 #include"GeneralCheck.h"
 
-#include"DayLine.h"
+import FireBird.HistoryCandle.DayLine;
 #include"ContainerFinnhubStockDayLine.h"
 
 #include"SEtFinnhubStockDayLine.h"

@@ -4,7 +4,7 @@
 
 #include"GeneralCheck.h"
 
-#include"StockSection.h"
+import FireBird.Type.StockSection;
 
 namespace FireBirdTest {
 	class CStockSectionTest : public ::testing::Test {

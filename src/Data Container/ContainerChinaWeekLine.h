@@ -1,7 +1,7 @@
 #pragma once
 
 #include "VirtualContainerHistoryCandleExtend.h"
-#include"WeekLine.h"
+import FireBird.HistoryCandle.WeekLine;
 
 class CContainerChinaWeekLine : public CVirtualContainerHistoryCandleExtend {
 public:

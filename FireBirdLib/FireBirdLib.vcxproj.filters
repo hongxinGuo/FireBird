@@ -312,36 +312,6 @@
     <ClInclude Include="..\src\Type\America market\SICIndustry.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\China market\DayLine.h">
-      <Filter>头文件\Type\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\China market\Guadan.h">
-      <Filter>头文件\Type\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\China market\DayLineWebData.h">
-      <Filter>头文件\Type\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\China market\OneDeal.h">
-      <Filter>头文件\Type\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\China market\StockSection.h">
-      <Filter>头文件\Type\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\China market\WebData.h">
-      <Filter>头文件\Type\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\China market\WebRTData.h">
-      <Filter>头文件\Type\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\China market\WeekLine.h">
-      <Filter>头文件\Type\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\VirtualContainerHistoryCandleExtend.h">
-      <Filter>头文件\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Type\VirtualHistoryCandleExtend.h">
-      <Filter>头文件\Type</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Windows interface\FireBirdView.h">
       <Filter>头文件\Windows interface</Filter>
     </ClInclude>
@@ -552,9 +522,6 @@
     <ClInclude Include="..\src\Factory Product\ProductTengxunRT.h">
       <Filter>头文件\Factory-Product\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\VirtualContainer.h">
-      <Filter>头文件\Data container</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\System\ScheduleTask.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
@@ -744,6 +711,12 @@
     <ClInclude Include="..\src\System\SystemConstantChinaMarket.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Data Container\VirtualContainerHistoryCandleExtend.h">
+      <Filter>头文件\Data container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\China market\WebData.h">
+      <Filter>头文件\Type\China market</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -901,9 +874,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Type\China market\WeekLine.cpp">
       <Filter>源文件\Type\China market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Type\VirtualContainerHistoryCandleExtend.cpp">
-      <Filter>源文件\Type</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\VirtualHistoryCandleBasic.cpp">
       <Filter>源文件\Type</Filter>
@@ -1444,6 +1414,36 @@
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\TiingoDayLine.ixx">
       <Filter>头文件\Type\America market\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\VirtualHistoryCandleExtend.ixx">
+      <Filter>头文件\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\DayLine.ixx">
+      <Filter>头文件\Type\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\VirtualContainerHistoryCandleExtend.cpp">
+      <Filter>源文件\Data container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\VirtualContainer.ixx">
+      <Filter>头文件\Data container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\Guadan.ixx">
+      <Filter>头文件\Type\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\OneDeal.ixx">
+      <Filter>头文件\Type\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\StockSection.ixx">
+      <Filter>头文件\Type\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\WeekLine.ixx">
+      <Filter>头文件\Type\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\DayLineWebData.ixx">
+      <Filter>头文件\Type\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\China market\WebRTData.ixx">
+      <Filter>头文件\Type\China market</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

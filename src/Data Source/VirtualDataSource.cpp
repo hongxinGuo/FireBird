@@ -11,6 +11,7 @@
 #include"SystemMessage.h"
 
 #include "VirtualDataSource.h"
+#include"nlohmann/json_fwd.hpp"
 #include"WebData.h"
 
 #undef max //Note 包含concurrencpp.h之前，需要undefined max

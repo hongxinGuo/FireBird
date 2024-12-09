@@ -3,7 +3,7 @@
 //#include"SystemData.h"
 
 #include"VirtualChinaMarketWebProduct.h"
-#include "WebRTData.h"
+import FireBird.Type.WebRTData;
 
 class CProductNeteaseRT final : public CVirtualChinaMarketWebProduct {
 public:
