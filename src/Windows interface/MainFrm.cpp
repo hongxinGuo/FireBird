@@ -23,14 +23,13 @@ import FireBird.System.Message;
 #include"ChinaMarket.h"
 #undef max
 #include"concurrencpp/concurrencpp.h"
+module FireBird.WindowInterface.MainFrm;
 
 import FireBird.System.ScheduleTask;
 import FireBird.Accessory.ConvertToString;
 import FireBird.Accessory.TimeConvert;
 import FireBird.System.ThreadStatus;
 import FireBird.Simdjson.GetValue;
-module FireBird.WindowInterface.MainFrm;
-
 
 
 using namespace concurrencpp;

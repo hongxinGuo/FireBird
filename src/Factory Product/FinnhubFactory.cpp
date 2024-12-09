@@ -30,7 +30,7 @@ import FireBird.System.Message;
 #include"ProductFinnhubEconomicCountryList.h"
 #include"ProductFinnhubEconomicCalendar.h"
 
-#include"ProductDummy.h"
+import FireBird.WebProduct.Dummy;
 
 import FireBird.WebProduct.Virtual;
 #include"VirtualMarket.h"

@@ -8,6 +8,8 @@ import FireBird.Type.WebData;
 class CVirtualWebProduct;
 typedef std::shared_ptr<CVirtualWebProduct> CVirtualProductWebDataPtr;
 
+import FireBird.WebProduct.Virtual;
+
 enum enum_ErrorMessageData {
 	ERROR_NO_ERROR__ = 0,
 	// finnhub

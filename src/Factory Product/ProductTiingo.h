@@ -1,6 +1,6 @@
 #pragma once
 
-#include"VirtualWorldMarketWebProduct.h"
+import FireBird.WebProduct.VirtualWorldMarket;
 
 class CProductTiingo : public CVirtualWorldMarketWebProduct {
 public:

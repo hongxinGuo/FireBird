@@ -6,9 +6,10 @@
 #include "ProductFinnhubSECFilings.h"
 
 #include"jsonParse.h"
-import FireBird.Simdjson.GetValue;
 #include"simdjson.h"
 using namespace simdjson;
+
+import FireBird.Simdjson.GetValue;
 
 CProductFinnhubSECFilings::CProductFinnhubSECFilings() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/filings?symbol=");

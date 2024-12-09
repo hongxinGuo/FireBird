@@ -11,16 +11,16 @@ import FireBird.WebProduct.Virtual;
 
 #include"ProductTiingoCryptoSymbol.h"
 
-#include"ProductDummy.h"
+import FireBird.WebProduct.Dummy;
 #include "ProductTiingoFinancialState.h"
 #include "ProductTiingoFundamentalDefinition.h"
 #include "ProductTiingoIEXTopOFBook.h"
 #include "ProductTiingoMarketNews.h"
 #include "ProductTiingoStockDailyMeta.h"
 #include "TiingoIEXTopOFBook.h"
-import FireBird.FinnhubInquiryType;
 module FireBird.Factory.Tiingo; 
 
+import FireBird.FinnhubInquiryType;
 
 
 CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {

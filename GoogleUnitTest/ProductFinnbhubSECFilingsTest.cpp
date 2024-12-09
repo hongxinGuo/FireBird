@@ -2,13 +2,11 @@
 
 ////#include"gtest/gtest.h"
 
-import FireBird.System.Message;
-
 #include"GeneralCheck.h"
-
 #include"WorldMarket.h"
-
 #include"ProductFinnhubSECFilings.h"
+
+import FireBird.System.Message;
 
 using namespace testing;
 

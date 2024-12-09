@@ -3,9 +3,9 @@
 ////#include"gtest/gtest.h"
 
 #include"GeneralCheck.h"
-
-#include"VirtualWorldMarketWebProduct.h"
 #include "WorldMarket.h"
+import FireBird.WebProduct.VirtualWorldMarket;
+
 import FireBird.System.FinnhubInaccessibleExchange;
 
 using namespace testing;

@@ -203,7 +203,11 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoMarketNews.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockDailyMeta.h" />
-    <ClInclude Include="..\src\Factory Product\VirtualChinaMarketWebProduct.h" />
+    <ClCompile Include="..\src\Factory Product\VirtualChinaMarketWebProduct.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketHoliday.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketStatus.h" />
     <ClInclude Include="..\src\Factory Product\ProductTengxunDayLine.h" />
@@ -212,7 +216,11 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClInclude Include="..\src\Factory Product\ProductDummy.h" />
+    <ClCompile Include="..\src\Factory Product\ProductDummy.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Factory Product\ProductFinnhub.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyBasicFinancial.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubCompanyInsiderSentiment.h" />
@@ -261,7 +269,11 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClInclude Include="..\src\Factory Product\VirtualWorldMarketWebProduct.h" />
+    <ClCompile Include="..\src\Factory Product\VirtualWorldMarketWebProduct.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\src\FinnhubInquiryType.ixx">
       <FileType>Document</FileType>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>

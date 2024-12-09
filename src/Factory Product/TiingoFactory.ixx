@@ -1,9 +1,9 @@
 #include"pch.h"
 module;
-import FireBird.WebProduct.Virtual;
 #include"VirtualMarket.h"
 export module FireBird.Factory.Tiingo;
 
+import FireBird.WebProduct.Virtual;
 import  FireBird.Factory.Virtual;
 
 export {

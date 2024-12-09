@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "VirtualChinaMarketWebProduct.h"
 #include"ChinaMarket.h"
+module FireBird.WebProduct.VirtualChinaMarket;
 
 CChinaMarketPtr CVirtualChinaMarketWebProduct::GetMarket() const noexcept {
 	if (const CVirtualMarketPtr p = m_pMarket.lock()) {

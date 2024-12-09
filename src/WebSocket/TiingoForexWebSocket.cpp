@@ -2,14 +2,14 @@
 
 #include"globedef.h"
 
-import FireBird.System.Message;
 #include <ixwebsocket/IXWebSocket.h>
 #include"JsonParse.h"
 #include "TiingoDataSource.h"
+module FireBird.WebSocket.TiingoForex;
+
+import FireBird.System.Message;
 import FireBird.Accessory.JsonGetValue;
 import FireBird.Accessory.TimeConvert;
-
-module FireBird.WebSocket.TiingoForex;
 
 
 void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {

@@ -3,7 +3,6 @@
 #include"globedef.h"
 
 #include "framework.h"
-import FireBird.System.Message;
 
 #include "ChinaMarket.h"
 #include "FinnhubDataSource.h"
@@ -13,10 +12,11 @@ import FireBird.System.Message;
 #include "WorldMarket.h"
 
 #include <spdlog/common.h>
-import FireBird.System.ThreadStatus;
-import FireBird.WindowInterface.MainFrm;
 module FireBird.WindowInterface.PropertiesWnd; 
 
+import FireBird.System.Message;
+import FireBird.System.ThreadStatus;
+import FireBird.WindowInterface.MainFrm;
 
 #ifdef _DEBUG
 #undef THIS_FILE

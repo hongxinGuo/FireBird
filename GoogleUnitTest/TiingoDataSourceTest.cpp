@@ -9,7 +9,7 @@ import FireBird.System.Message;
 #include"TiingoDataSource.h"
 #include"WorldMarket.h"
 
-#include"ProductDummy.h"
+import FireBird.WebProduct.Dummy;
 
 using namespace testing;
 

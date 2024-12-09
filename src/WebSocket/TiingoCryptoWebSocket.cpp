@@ -1,13 +1,13 @@
 #include "pch.h"
 
 #include"globedef.h"
-import FireBird.System.Message;
 #include"JsonParse.h"
 #include "TiingoDataSource.h"
 #include <ixwebsocket/IXWebSocket.h>
-import FireBird.Accessory.JsonGetValue;
 module FireBird.WebSocket.TiingoCrypto;
 
+import FireBird.Accessory.JsonGetValue;
+import FireBird.System.Message;
 
 void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	gl_pTiingoCryptoWebSocket->SetError(false);

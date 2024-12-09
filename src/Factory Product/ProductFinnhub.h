@@ -1,6 +1,6 @@
 #pragma once
 
-#include"VirtualWorldMarketWebProduct.h"
+import FireBird.WebProduct.VirtualWorldMarket;
 
 using std::dynamic_pointer_cast;
 

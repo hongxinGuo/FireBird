@@ -7,7 +7,7 @@
 #include "ChinaMarket.h"
 import FireBird.System.FinnhubInaccessibleExchange;
 
-#include"VirtualChinaMarketWebProduct.h"
+import FireBird.WebProduct.VirtualChinaMarket;
 
 using namespace testing;
 

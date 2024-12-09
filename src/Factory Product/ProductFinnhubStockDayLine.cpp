@@ -1,17 +1,17 @@
 #include "pch.h"
 
 #include"globedef.h"
-
-import FireBird.System.Message;
-
-import FireBird.Accessory.TimeConvert;
 #include"jsonParse.h"
-import FireBird.Accessory.JsonGetValue;
-
 #include"WorldMarket.h"
 #include"FinnhubStock.h"
 
 #include "ProductFinnhubStockDayLine.h"
+
+import FireBird.System.Message;
+
+import FireBird.Accessory.TimeConvert;
+import FireBird.Accessory.JsonGetValue;
+import FireBird.WebProduct.Virtual;
 
 CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/candle?symbol=");

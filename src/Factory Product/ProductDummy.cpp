@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "ProductDummy.h"
+module FireBird.WebProduct.Dummy;
 
 CProductDummy::CProductDummy() {
 	m_strInquiryFunction = _T("");

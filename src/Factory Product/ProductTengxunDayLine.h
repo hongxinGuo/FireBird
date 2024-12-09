@@ -7,7 +7,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"VirtualChinaMarketWebProduct.h"
+import FireBird.WebProduct.VirtualChinaMarket;
 
 class CProductTengxunDayLine final : public CVirtualChinaMarketWebProduct {
 public:

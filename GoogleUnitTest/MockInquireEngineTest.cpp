@@ -3,16 +3,13 @@
 ////#include"gtest/gtest.h"
 
 #include"globedef.h"
+#include"afxinet.h"
+#include"MockInquireEngine.h"
+#include"GeneralCheck.h"
 
 import FireBird.System.Configuration;
 import FireBird.System.Message;
-
-#include"afxinet.h"
-
-#include"MockInquireEngine.h"
-
-#include"GeneralCheck.h"
-#include "ProductDummy.h"
+import FireBird.WebProduct.Dummy;
 
 using namespace testing;
 class CVirtualWebProduct;

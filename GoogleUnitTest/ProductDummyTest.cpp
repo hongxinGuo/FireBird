@@ -3,7 +3,7 @@
 ////#include"gtest/gtest.h"
 
 #include"GeneralCheck.h"
-#include "ProductDummy.h"
+import FireBird.WebProduct.Dummy;
 
 using namespace testing;
 

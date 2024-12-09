@@ -2,10 +2,11 @@
 
 #include"ChinaMarket.h"
 #include"nlohmann/json_fwd.hpp"
-import FireBird.Type.WebData;
 #include "JsonParse.h"
-import FireBird.Accessory.TimeConvert;
 module FireBird.Type.DayLineWebData;
+
+import FireBird.Accessory.TimeConvert;
+import FireBird.Type.WebData;
 
 CDayLineWebData::CDayLineWebData() {
 	Reset();
