@@ -1,6 +1,6 @@
 #include "pch.h"
-
-import FireBird.System.Message;
+module;
+#include"VirtualDataSource.h"
 
 #include"FinnhubStock.h"
 #include"ProductFinnhubCompanyProfile.h"
@@ -29,16 +29,17 @@ import FireBird.System.Message;
 
 #include"ProductFinnhubEconomicCountryList.h"
 #include"ProductFinnhubEconomicCalendar.h"
-
-import FireBird.WebProduct.Dummy;
-
-import FireBird.WebProduct.Virtual;
 #include"VirtualMarket.h"
+
 
 #include "ProductFinnhubSECFilings.h"
 module FireBird.Factory.Finnhub; 
 
+import FireBird.System.Message;
 import FireBird.FinnhubInquiryType;
+import FireBird.WebProduct.Dummy;
+
+import FireBird.WebProduct.Virtual;
 
 CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;

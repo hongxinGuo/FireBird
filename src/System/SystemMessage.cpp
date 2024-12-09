@@ -1,13 +1,11 @@
 #include"pch.h"
-
+module;
 #include"globedef.h"
-#include"concurrentqueue/concurrentqueue.h"
-using namespace moodycamel;
+#include"concurrentqueueHeader.h"
+module FireBird.System.Message;
 
 import FireBird.System.Configuration;
 import FireBird.WindowInterface.OutputWnd;
-
-module FireBird.System.Message;
 
 map<long, string> gl_mapHTTPStatusCode{
 	// Informational

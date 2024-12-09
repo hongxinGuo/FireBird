@@ -2,6 +2,7 @@
 
 #include"WorldMarket.h"
 #include"FinnhubStock.h"
+#include"VirtualDataSource.h"
 
 #include "ProductFinnhubSECFilings.h"
 

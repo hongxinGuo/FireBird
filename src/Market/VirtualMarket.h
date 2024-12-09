@@ -1,7 +1,9 @@
 #pragma once
 
-#include"MarketTaskQueue.h"
 #include"VirtualDataSource.h"
+//export module FireBird.Market.Virtual;
+
+import FireBird.Market.TaskQueue;
 
 class CVirtualMarket {
 public:

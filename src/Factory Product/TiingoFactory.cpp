@@ -1,9 +1,7 @@
 #include "pch.h"
-
+module;
 #include"SystemData.h"
-import FireBird.System.Message;
-import FireBird.WebProduct.Virtual;
-#include"VirtualMarket.h"
+#include"VirtualDataSource.h"
 
 //#include"ProductTiingoStockProfile.h"
 #include"ProductTiingoStockProfile.h"
@@ -11,7 +9,6 @@ import FireBird.WebProduct.Virtual;
 
 #include"ProductTiingoCryptoSymbol.h"
 
-import FireBird.WebProduct.Dummy;
 #include "ProductTiingoFinancialState.h"
 #include "ProductTiingoFundamentalDefinition.h"
 #include "ProductTiingoIEXTopOFBook.h"
@@ -19,7 +16,10 @@ import FireBird.WebProduct.Dummy;
 #include "ProductTiingoStockDailyMeta.h"
 #include "TiingoIEXTopOFBook.h"
 module FireBird.Factory.Tiingo; 
-
+import FireBird.System.Message;
+#include"VirtualMarket.h"
+import FireBird.WebProduct.Virtual;
+import FireBird.WebProduct.Dummy;
 import FireBird.FinnhubInquiryType;
 
 

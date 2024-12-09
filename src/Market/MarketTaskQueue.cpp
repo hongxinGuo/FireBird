@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "MarketTaskQueue.h"
+module FireBird.Market.TaskQueue;
 
 CMarketTaskQueue::CMarketTaskQueue() {
 	CreateIndexMap();

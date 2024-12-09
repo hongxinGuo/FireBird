@@ -1,4 +1,5 @@
 #include"pch.h"
+module;
 #include"nlohmann/json.hpp"
 module FireBird.Accessory.JsonGetValue;
 

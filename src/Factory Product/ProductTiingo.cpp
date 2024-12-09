@@ -1,9 +1,10 @@
 #include"pch.h"
 
 #include"ProductTiingo.h"
+#include"VirtualDataSource.h"
+#include "TiingoDataSource.h"
 
 import FireBird.FinnhubInquiryType;
-#include "TiingoDataSource.h"
 import FireBird.Tiingo.InaccessibleStock; 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

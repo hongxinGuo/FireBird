@@ -3,7 +3,7 @@
 ////#include"gtest/gtest.h"
 
 import FireBird.System.Message;
-
+#include"VirtualDataSource.h"
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"

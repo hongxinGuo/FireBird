@@ -31,6 +31,7 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
+    <ClInclude Include="..\src\accessory\ConcurrentQueueHeader.h" />
     <ClInclude Include="..\src\accessory\JsonParse.h" />
     <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h" />
     <ClCompile Include="..\src\accessory\RSReference.ixx">
@@ -283,9 +284,20 @@
     </ClCompile>
     <ClInclude Include="..\src\globedef.h" />
     <ClInclude Include="..\src\Market\ChinaMarket.h" />
-    <ClInclude Include="..\src\Market\MarketTask.h" />
-    <ClInclude Include="..\src\Market\MarketTaskQueue.h" />
-    <ClInclude Include="..\src\Market\VirtualMarket.h" />
+    <ClCompile Include="..\src\Market\MarketTask.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Market\MarketTaskQueue.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClInclude Include="..\src\Market\VirtualMarket.h">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Default</CompileAs>
+    </ClInclude>
     <ClInclude Include="..\src\Market\WorldMarket.h" />
     <ClInclude Include="..\src\pch.h" />
     <ClInclude Include="..\src\Stock\ChinaStock.h" />

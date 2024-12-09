@@ -1,8 +1,8 @@
 #include "pch.h"
-
-#include "MarketTask.h"
-
 #include<map>
+
+module FireBird.Market.Task;
+
 
 map<long, string> gl_mapMarketMapIndex;
 

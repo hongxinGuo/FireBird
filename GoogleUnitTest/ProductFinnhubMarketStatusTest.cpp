@@ -6,6 +6,7 @@ import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 
+#include"SystemData.h"
 #include"ProductFinnhubMarketStatus.h"
 #include "WorldMarket.h"
 

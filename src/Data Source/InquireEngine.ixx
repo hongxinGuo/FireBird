@@ -1,13 +1,13 @@
 #include"pch.h"
 module;
 #include <afxinet.h>
-#include"concurrentqueue/concurrentqueue.h"
-import FireBird.WebProduct.Virtual;
+#include"concurrentqueueHeader.h"
 #include"nlohmann/json_fwd.hpp"
 export module FireBird.DataSource.InquireEngine;
 
+import FireBird.WebProduct.Virtual;
 import FireBird.Type.WebData;
-using namespace moodycamel;
+
 using std::string;
 
 export {

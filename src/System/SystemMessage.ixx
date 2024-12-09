@@ -1,9 +1,8 @@
 #include"pch.h"
 module;
-#include"concurrentqueue/concurrentqueue.h"
+#include"concurrentqueueHeader.h"
 export module FireBird.System.Message;
 
-using namespace moodycamel;
 using std::atomic_long;
 import FireBird.WindowInterface.OutputWnd;
 

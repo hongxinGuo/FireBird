@@ -9,8 +9,7 @@ import FireBird.System.Message;
 
 #include"FinnhubStock.h"
 #include <ixwebsocket/IXWebSocket.h>
-#include"concurrentqueue/concurrentqueue.h"
-using namespace moodycamel;
+#include"concurrentqueueHeader.h"
 
 import FireBird.WebSocket.Finnhub;
 import FireBird.WebSocket.TiingoIEX;

@@ -267,9 +267,6 @@
     <ClInclude Include="..\src\Market\ChinaMarket.h">
       <Filter>头文件\Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Market\VirtualMarket.h">
-      <Filter>头文件\Market</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Market\WorldMarket.h">
       <Filter>头文件\Market</Filter>
     </ClInclude>
@@ -681,17 +678,17 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.h">
       <Filter>头文件\database\WorldMarket\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Market\MarketTaskQueue.h">
-      <Filter>头文件\Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Market\MarketTask.h">
-      <Filter>头文件\Market</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerChinaStock.h">
       <Filter>头文件\Data container\China Market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\System\SystemConstantChinaMarket.h">
       <Filter>头文件\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\accessory\ConcurrentQueueHeader.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Market\VirtualMarket.h">
+      <Filter>头文件\Market</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1444,6 +1441,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\VirtualWorldMarketWebProduct.ixx">
       <Filter>头文件\Factory-Product</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Market\MarketTask.ixx">
+      <Filter>头文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Market\MarketTaskQueue.ixx">
+      <Filter>头文件\Market</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -10,10 +10,9 @@
 #include"pch.h"
 module;
 #include <ixwebsocket/IXWebSocket.h>
-#include"concurrentqueue/concurrentqueue.h"
+#include"concurrentqueueHeader.h"
 export module FireBird.WebSocket.Virtual;
 
-using namespace moodycamel;
 using std::string;
 using std::map;
 using std::vector;

@@ -1,5 +1,5 @@
 #include"pch.h"
-
+module;
 #include"globedef.h"
 
 module FireBird.Accessory.TimeConvert;

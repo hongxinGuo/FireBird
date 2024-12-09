@@ -1,6 +1,7 @@
 #pragma once
 
 #include"VirtualDataSource.h"
+#include"VirtualMarket.h"
 import FireBird.Factory.Finnhub;
 
 class CFinnhubDataSource : public CVirtualDataSource {

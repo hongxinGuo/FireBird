@@ -3,7 +3,7 @@
 ////#include"gtest/gtest.h"
 
 #include"GeneralCheck.h"
-#include"MarketTask.h"
+import FireBird.Market.Task;
 
 namespace FireBirdTest {
 	class CMarketTaskTest : public testing::Test {

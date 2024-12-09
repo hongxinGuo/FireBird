@@ -1,18 +1,15 @@
 #include "pch.h"
 
-import FireBird.System.Message;
 
+#include"VirtualDataSource.h"
 #include "ProductTiingoForexDayLine.h"
-
 #include"jsonParse.h"
-import FireBird.Accessory.JsonGetValue;
-
 #include"FinnhubStock.h"
 #include"WorldMarket.h"
-
-//#include "ProductTiingoForexDayLine.h"
-
+#include"nlohmann/json.hpp"
+import FireBird.System.Message;
 import FireBird.Accessory.TimeConvert;
+import FireBird.Accessory.JsonGetValue;
 
 CProductTiingoForexDayLine::CProductTiingoForexDayLine() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/daily/");

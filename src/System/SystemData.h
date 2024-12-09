@@ -8,8 +8,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"concurrentqueue/concurrentqueue.h"
-using namespace moodycamel;
+#include"concurrentqueueHeader.h"
 
 #include "ContainerChinaStock.h"
 #include "containerChosenCrypto.h"

@@ -3,8 +3,7 @@
 ////#include"gtest/gtest.h"
 
 #include"globedef.h"
-#include"concurrentqueue/concurrentqueue.h"
-using namespace moodycamel;
+#include"concurrentqueueHeader.h"
 
 import FireBird.System.Message;
 
