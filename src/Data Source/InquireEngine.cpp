@@ -2,14 +2,14 @@
 
 #include"globedef.h"
 #include"SystemData.h"
-#include "SystemMessage.h"
+import FireBird.System.Message;
 #include <afxinet.h>
 #include"nlohmann/json_fwd.hpp"
-#include"WebData.h"
-import FireBird.Accessory.InfoReport;
-import FireBird.System.Configuration;
 module FireBird.DataSource.InquireEngine;
 
+import FireBird.Type.WebData;
+import FireBird.Accessory.InfoReport;
+import FireBird.System.Configuration;
 
 CInquireEngine::CInquireEngine(): m_dataBuffer{} {
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。

@@ -41,7 +41,7 @@
 
 #include <spdlog/sinks/basic_file_sink.h>
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 
@@ -53,7 +53,7 @@ import FireBird.WindowInterface.MainFrm;
 
 import  FireBird.Simdjson.GetValue;
 
-#include"ScheduleTask.h"
+import FireBird.System.ScheduleTask;
 import FireBird.System.FinnhubInaccessibleExchange;
 import FireBird.Accessory.InfoReport;
 import FireBird.System.ThreadStatus;

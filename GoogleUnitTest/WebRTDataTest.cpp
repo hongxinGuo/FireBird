@@ -4,14 +4,14 @@
 
 #include"globedef.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 
 #include"ChinaMarket.h"
 import FireBird.Type.WebRTData;
 #include"nlohmann/json_fwd.hpp"
-#include"WebData.h"
+import FireBird.Type.WebData;
 
 namespace FireBirdTest {
 	class CStockWebRTDataTest : public testing::Test {

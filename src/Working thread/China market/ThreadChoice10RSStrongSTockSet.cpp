@@ -8,7 +8,7 @@
 
 #include"globedef.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
  
 

@@ -2,14 +2,14 @@
 
 #include"globedef.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
+#include"WorldMarket.h"
+#include "TiingoDataSource.h"
+import FireBird.WebProduct.Virtual;
 
 import FireBird.FinnhubInquiryType;
-#include "TiingoDataSource.h"
-
 import FireBird.Tiingo.InaccessibleStock; 
 import FireBird.Accessory.TimeConvert;
-#include"WorldMarket.h"
 
 map<string, enum_ErrorMessageData> mapTiingoErrorMap{
 	{ _T("You do not have permission to access the News API"), ERROR_TIINGO_NO_RIGHT_TO_ACCESS__ }, // http״̬�룺403

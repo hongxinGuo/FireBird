@@ -2,7 +2,7 @@
 
 #include"globedef.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 
 #include "FireBird.h"
@@ -19,11 +19,12 @@
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
 #include"QuandlDataSource.h"
-#include"ScheduleTask.h"
 #include <ixwebsocket/IXNetSystem.h>
 #include"ChinaMarket.h"
 #undef max
 #include"concurrencpp/concurrencpp.h"
+
+import FireBird.System.ScheduleTask;
 import FireBird.Accessory.ConvertToString;
 import FireBird.Accessory.TimeConvert;
 import FireBird.System.ThreadStatus;

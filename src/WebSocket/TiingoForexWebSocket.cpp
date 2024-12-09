@@ -2,7 +2,7 @@
 
 #include"globedef.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 #include <ixwebsocket/IXWebSocket.h>
 #include"JsonParse.h"
 #include "TiingoDataSource.h"

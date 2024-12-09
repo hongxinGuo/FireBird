@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 import FireBird.Accessory.ChinaStockCodeConverter;
 #include "TengxunDayLineDataSource.h"

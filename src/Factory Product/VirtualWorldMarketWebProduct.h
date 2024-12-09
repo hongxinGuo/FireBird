@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "VirtualWebProduct.h"
+import FireBird.WebProduct.Virtual;
 class CWorldMarket;
 typedef std::shared_ptr<CWorldMarket> CWorldMarketPtr;
 

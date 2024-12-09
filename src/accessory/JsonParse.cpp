@@ -14,7 +14,7 @@
 #include"globedef.h"
 
 #include"nlohmann/json_fwd.hpp"
-#include"WebData.h"
+import FireBird.Type.WebData;
 #include "JsonParse.h"
 
 import FireBird.Type.WebRTData;
@@ -27,7 +27,7 @@ import FireBird.Simdjson.GetValue;
 using namespace simdjson;
 
 import FireBird.Accessory.ConvertToString;
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 import FireBird.Accessory.JsonGetValue;
 

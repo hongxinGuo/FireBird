@@ -3,8 +3,10 @@
 ////#include"gtest/gtest.h"
 
 #include"globedef.h"
+#include"concurrentqueue/concurrentqueue.h"
+using namespace moodycamel;
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 #include <ixwebsocket/IXWebSocket.h>

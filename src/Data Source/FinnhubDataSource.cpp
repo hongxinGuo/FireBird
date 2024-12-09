@@ -8,12 +8,13 @@
 #include"pch.h"
 
 import FireBird.System.Configuration;
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 import FireBird.FinnhubInquiryType;
 import FireBird.System.FinnhubInaccessibleExchange;
 
 #include "FinnhubDataSource.h"
+import FireBird.WebProduct.Virtual;
 
 import FireBird.Accessory.TimeConvert;
 #include"WorldMarket.h"

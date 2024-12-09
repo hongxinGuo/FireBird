@@ -2,11 +2,11 @@
 module;
 #include <afxinet.h>
 #include"concurrentqueue/concurrentqueue.h"
-#include"VirtualWebProduct.h"
+import FireBird.WebProduct.Virtual;
 #include"nlohmann/json_fwd.hpp"
-#include"WebData.h"
 export module FireBird.DataSource.InquireEngine;
 
+import FireBird.Type.WebData;
 using namespace moodycamel;
 using std::string;
 

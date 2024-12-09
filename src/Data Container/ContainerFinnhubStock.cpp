@@ -5,7 +5,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 import FireBird.Accessory.InfoReport;
 #include"WorldMarket.h"

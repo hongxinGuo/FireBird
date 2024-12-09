@@ -10,7 +10,7 @@
 
 #include"globedef.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 import FireBird.System.ThreadStatus;
 #undef max //Note 包含concurrencpp.h之前，需要undefined max

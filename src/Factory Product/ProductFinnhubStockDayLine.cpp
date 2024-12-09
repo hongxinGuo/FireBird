@@ -2,7 +2,7 @@
 
 #include"globedef.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 import FireBird.Accessory.TimeConvert;
 #include"jsonParse.h"

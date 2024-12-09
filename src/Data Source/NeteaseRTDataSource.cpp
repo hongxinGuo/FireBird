@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 #include"NeteaseRTDataSource.h"
 #include"ProductNeteaseRT.h"

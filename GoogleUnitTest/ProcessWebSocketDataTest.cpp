@@ -3,12 +3,14 @@
 ////#include"gtest/gtest.h"
 //#include"gmock/gmock.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 
 #include"FinnhubStock.h"
 #include <ixwebsocket/IXWebSocket.h>
+#include"concurrentqueue/concurrentqueue.h"
+using namespace moodycamel;
 
 import FireBird.WebSocket.Finnhub;
 import FireBird.WebSocket.TiingoIEX;

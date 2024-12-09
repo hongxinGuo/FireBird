@@ -1,8 +1,8 @@
 #include "pch.h"
 
 #include"SystemData.h"
-#include"SystemMessage.h"
-#include"VirtualWebProduct.h"
+import FireBird.System.Message;
+import FireBird.WebProduct.Virtual;
 #include"VirtualMarket.h"
 
 //#include"ProductTiingoStockProfile.h"

@@ -2,7 +2,7 @@
 
 #include<benchmark/benchmark.h>
 
-#include"WebData.h"
+import FireBird.Type.WebData;
 #include"nlohmann/json_fwd.hpp"
 import FireBird.Type.WebRTData;
 

@@ -13,7 +13,7 @@
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
  
 import FireBird.Accessory.TimeConvert;

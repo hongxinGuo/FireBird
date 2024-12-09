@@ -1,6 +1,6 @@
 #include"pch.h"
 module;
-#include"VirtualWebProduct.h"
+import FireBird.WebProduct.Virtual;
 #include"VirtualMarket.h"
 export module FireBird.Factory.Quandl;
 

@@ -2,13 +2,13 @@
 
 ////#include"gtest/gtest.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 
 #include"JsonParse.h"
 #include"nlohmann/json_fwd.hpp"
-#include"WebData.h"
+import FireBird.Type.WebData;
 import FireBird.Type.WebRTData;
 
 namespace FireBirdTest {

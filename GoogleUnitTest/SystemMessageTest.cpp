@@ -10,7 +10,7 @@
 ////#include"gtest/gtest.h"
 
 import FireBird.System.Configuration;
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 

@@ -8,11 +8,11 @@
 
 #include"globedef.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 #include "VirtualDataSource.h"
 #include"nlohmann/json_fwd.hpp"
-#include"WebData.h"
+import FireBird.Type.WebData;
 
 #undef max //Note 包含concurrencpp.h之前，需要undefined max
 #include"concurrencpp/concurrencpp.h"

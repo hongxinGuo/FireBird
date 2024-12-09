@@ -3,7 +3,7 @@
 ////#include"gtest/gtest.h"
 //#include"gmock/gmock.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 #include"SystemData.h"
 
 import FireBird.Accessory.TimeConvert;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include"nlohmann/json_fwd.hpp"
-#include"WebData.h"
+import FireBird.Type.WebData;
 #include"SystemData.h"
 
 long StrToDecimal(const string_view& svData, int power);

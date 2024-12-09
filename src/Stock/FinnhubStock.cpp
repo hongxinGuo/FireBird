@@ -1,5 +1,5 @@
 #include"pch.h"
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 import FireBird.Accessory.ConvertToString;
 import FireBird.Accessory.TimeConvert;

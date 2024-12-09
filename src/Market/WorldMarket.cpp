@@ -3,7 +3,7 @@
 #include"globedef.h"
 
 #include"systemData.h"
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 #include "WorldMarket.h"
 

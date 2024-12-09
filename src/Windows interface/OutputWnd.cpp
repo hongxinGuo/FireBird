@@ -2,7 +2,7 @@
 
 #include "resource.h"
 #include"globedef.h"
-#include"SystemMessage.h"
+import FireBird.System.Message;
 #include"ChinaMarket.h"
 #include "WorldMarket.h"
 

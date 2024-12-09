@@ -2,7 +2,7 @@
 
 #include"globedef.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 #include"jsonParse.h"
 import FireBird.Accessory.JsonGetValue;

@@ -2,7 +2,7 @@
 
 //#include"gmock/gmock.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 namespace testing {
 	class CMockSystemDeque final : public CSystemDeque {

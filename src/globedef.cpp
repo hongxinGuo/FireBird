@@ -11,7 +11,7 @@
 
 #include"nlohmann/json.hpp"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 import FireBird.FinnhubInquiryType;
 import FireBird.System.FinnhubInaccessibleExchange;

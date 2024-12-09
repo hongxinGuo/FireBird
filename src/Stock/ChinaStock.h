@@ -12,6 +12,8 @@ enum {
 	ATTACK_SELL_ = 7,
 	NO_TRANSACTION_ = 8
 };
+#include"concurrentqueue/concurrentqueue.h"
+using namespace moodycamel;
 
 import FireBird.RelativeStrongReference;
 
@@ -29,10 +31,6 @@ import FireBird.Type.OneDeal;
 import FireBird.HistoryCandle.DayLine;
 #include"ContainerChinaWeekLine.h"
 #include"ContainerChinaDayLine.h"
-
-#include"concurrentqueue/concurrentqueue.h"
-
-using namespace moodycamel;
 
 class CChinaStock;
 typedef std::shared_ptr<CChinaStock> CChinaStockPtr;

@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 #include <spdlog/sinks/basic_file_sink.h>
 module FireBird.Accessory.InfoReport;

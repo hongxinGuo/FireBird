@@ -2,7 +2,7 @@
 
 import FireBird.System.Configuration;
 
-#include "VirtualContainerHistoryCandleExtend.h"
+import FireBird.Container.VirtualHistoryCandleExtend;
 import FireBird.HistoryCandle.DayLine;
 
 CVirtualContainerHistoryCandleExtend::CVirtualContainerHistoryCandleExtend() {

@@ -9,6 +9,7 @@
 #include"ChinaMarket.h"
 import FireBird.Accessory.ChinaStockCodeConverter;
 #include "SinaRTDataSource.h"
+import FireBird.WebProduct.Virtual;
 
 using namespace testing;
 

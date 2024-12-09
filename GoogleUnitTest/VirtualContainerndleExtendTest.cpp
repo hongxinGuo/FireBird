@@ -4,7 +4,7 @@
 
 #include"GeneralCheck.h"
 
-#include "VirtualContainerHistoryCandleExtend.h"
+import FireBird.Container.VirtualHistoryCandleExtend;
 
 namespace FireBirdTest {
 	class CVirtualContainerHistoryCandleExtendTest : public ::testing::Test {

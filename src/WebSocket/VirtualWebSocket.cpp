@@ -2,7 +2,7 @@
 
 #include"globedef.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 #include "WorldMarket.h"
 #include <ixwebsocket/IXWebSocket.h>
 module FireBird.WebSocket.Virtual;

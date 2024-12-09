@@ -2,9 +2,9 @@
 
 #include"globedef.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
-#include "ScheduleTask.h"
+import FireBird.System.ScheduleTask;
 
 #include"SinaRTDataSource.h"
 #include"TengxunRTDataSource.h"

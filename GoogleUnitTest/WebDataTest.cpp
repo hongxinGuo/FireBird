@@ -2,11 +2,11 @@
 
 ////#include"gtest/gtest.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 
-#include"WebData.h"
+import FireBird.Type.WebData;
 
 namespace FireBirdTest {
 	class CWebDataTest : public ::testing::Test {

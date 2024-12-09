@@ -6,7 +6,7 @@
 
 #include"SystemData.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 #include "ContainerTiingoStock.h"
 import FireBird.Accessory.InfoReport;

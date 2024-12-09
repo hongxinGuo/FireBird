@@ -10,7 +10,7 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"SystemMessage.h"
+import FireBird.System.Message;
 import FireBird.System.Configuration;
 module FireBird.System.ThreadStatus;
 

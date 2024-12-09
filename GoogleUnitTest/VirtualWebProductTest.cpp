@@ -10,7 +10,7 @@ import FireBird.FinnhubInquiryType;
 
 #include"WorldMarket.h"
 
-#include"VirtualWebProduct.h"
+import FireBird.WebProduct.Virtual;
 
 using namespace testing;
 

@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"SystemData.h"
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 #include"TiingoStock.h"
 

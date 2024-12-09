@@ -2,7 +2,7 @@
 
 ////#include"gtest/gtest.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"

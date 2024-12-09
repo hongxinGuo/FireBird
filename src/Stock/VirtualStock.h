@@ -1,7 +1,6 @@
 #pragma once
 
 import FireBird.System.Configuration;
-
 import FireBird.Set.VirtualStockSymbol;
 
 #include"SystemConstantChinaMarket.h"
@@ -10,9 +9,6 @@ import FireBird.Set.VirtualStockSymbol;
 
 using std::shared_ptr;
 using std::atomic_bool;
-
-class CVirtualStock;
-using CVirtualStockPtr = shared_ptr<CVirtualStock>;
 
 class CVirtualStock {
 public:
@@ -145,3 +141,4 @@ protected:
 	atomic_bool m_fUpdateCompanyNewsDB{ false }; // 更新公司新闻
 	atomic_bool m_fUpdateDayLineDB{ false }; // 日线历史数据已处理，等待存储。
 };
+using CVirtualStockPtr = shared_ptr<CVirtualStock>;

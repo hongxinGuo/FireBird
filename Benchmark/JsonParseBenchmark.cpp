@@ -13,7 +13,7 @@
 #include"SaveAndLoad.h"
 #include"JsonParse.h"
 #include "ProductTiingoStockProfile.h"
-#include"WebData.h"
+import FireBird.Type.WebData;
 #include"nlohmann/json_fwd.hpp"
 #include"simdjson.h"
 using namespace simdjson;

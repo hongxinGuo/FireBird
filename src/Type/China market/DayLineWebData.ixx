@@ -1,11 +1,10 @@
 #include"pch.h"
-
 module;
 #include"nlohmann/json_fwd.hpp"
-#include "WebData.h"
 export module FireBird.Type.DayLineWebData;
 
 import FireBird.HistoryCandle.DayLine;
+import FireBird.Type.WebData;
 using namespace std;
 
 export {

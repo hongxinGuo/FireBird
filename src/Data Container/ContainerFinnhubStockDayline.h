@@ -1,6 +1,6 @@
 #pragma once
 
-#include "VirtualContainerHistoryCandleExtend.h"
+import FireBird.Container.VirtualHistoryCandleExtend;
 
 class CContainerFinnhubStockDayLine final : public CVirtualContainerHistoryCandleExtend {
 public:

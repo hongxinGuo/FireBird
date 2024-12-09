@@ -3,7 +3,7 @@
 #include"globedef.h"
 
 #include"SystemData.h"
-#include"SystemMessage.h"
+import FireBird.System.Message;
 
 import FireBird.Accessory.ConvertToString;
 import FireBird.Accessory.TimeConvert;

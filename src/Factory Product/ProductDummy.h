@@ -1,6 +1,6 @@
 #pragma once
 
-#include"VirtualWebProduct.h"
+import FireBird.WebProduct.Virtual;
 
 class CProductDummy final : public CVirtualWebProduct {
 public:

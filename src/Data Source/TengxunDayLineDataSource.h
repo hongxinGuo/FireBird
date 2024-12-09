@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include"VirtualDataSource.h"
+import FireBird.WebProduct.Virtual;
 
 class CTengxunDayLineDataSource : public CVirtualDataSource {
 public:

@@ -5,13 +5,13 @@
 
 #include"globedef.h"
 
-#include"SystemMessage.h"
+import FireBird.System.Message;
 #include"SystemData.h"
 
 #include"GeneralCheck.h"
 
 #include"nlohmann/json_fwd.hpp"
-#include"WebData.h"
+import FireBird.Type.WebData;
 
 import FireBird.WebSocket.Finnhub;
 
