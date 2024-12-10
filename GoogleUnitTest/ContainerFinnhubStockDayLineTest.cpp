@@ -1,13 +1,10 @@
 #include"pch.h"
 
- 
-
 #include"GeneralCheck.h"
+#include"SEtFinnhubStockDayLine.h"
 
 import FireBird.HistoryCandle.DayLine;
-#include"ContainerFinnhubStockDayLine.h"
-
-#include"SEtFinnhubStockDayLine.h"
+import FireBird.Container.FinnhubStockDayLine;
 
 using namespace testing;
 

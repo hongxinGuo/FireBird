@@ -1,16 +1,12 @@
 #include"pch.h"
 
- 
-
 #include"globedef.h"
+#include"NlohmannJsonHeader.h"
+#include"GeneralCheck.h"
+#include"ChinaMarket.h"
 
 import FireBird.System.Message;
-
-#include"GeneralCheck.h"
-
-#include"ChinaMarket.h"
 import FireBird.Type.WebRTData;
-#include"nlohmann/json_fwd.hpp"
 import FireBird.Type.WebData;
 
 namespace FireBirdTest {

@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"TengxunRTDataSource.h"
-#include"ProductTengxunRT.h"
+import FireBird.WebProduct.TengxunRT;
 
 #include "ChinaMarket.h"
 

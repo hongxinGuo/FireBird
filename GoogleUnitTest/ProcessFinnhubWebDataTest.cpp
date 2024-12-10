@@ -1,16 +1,13 @@
 #include"pch.h"
 
- 
- 
-
 #include"globedef.h"
-
+#include"NlohmannJsonHeader.h"
+#include"FinnhubStock.h"
 import FireBird.System.Message;
 #include"SystemData.h"
 
 #include"GeneralCheck.h"
 
-#include"nlohmann/json_fwd.hpp"
 import FireBird.Type.WebData;
 
 import FireBird.WebSocket.Finnhub;

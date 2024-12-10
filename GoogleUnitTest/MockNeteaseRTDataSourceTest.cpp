@@ -6,7 +6,7 @@
 #include"GeneralCheck.h"
 
 #include"MockNeteaseRTDataSource.h"
-#include "ProductNeteaseRT.h"
+import FireBird.WebProduct.NeteaseRT;
 
 using namespace testing;
 

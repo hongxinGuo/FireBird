@@ -7,7 +7,7 @@ import FireBird.Stock.Virtual;
 #include"FinnhubStockBasicFinancial.h"
 
 import FireBird.HistoryCandle.DayLine;
-#include"ContainerFinnhubStockDayLine.h"
+import FireBird.Container.FinnhubStockDayLine;
 #include "EPSSurprise.h"
 #include"FinnhubCompanyNews.h"
 #include "InsiderSentiment.h"

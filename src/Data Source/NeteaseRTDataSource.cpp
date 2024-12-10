@@ -3,7 +3,7 @@
 import FireBird.System.Message;
 
 #include"NeteaseRTDataSource.h"
-#include"ProductNeteaseRT.h"
+import FireBird.WebProduct.NeteaseRT;
 
 #include"ChinaMarket.h"
 import FireBird.Accessory.ChinaStockCodeConverter;

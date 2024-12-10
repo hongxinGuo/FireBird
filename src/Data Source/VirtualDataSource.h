@@ -1,14 +1,15 @@
 #pragma once
 
-#include"SystemData.h"
-
 import FireBird.DataSource.InquireEngine;
 import FireBird.Type.WebData;
+#include"SystemData.h"
 
 class CVirtualWebProduct;
 typedef std::shared_ptr<CVirtualWebProduct> CVirtualProductWebDataPtr;
 
 import FireBird.WebProduct.Virtual;
+#include<queue>
+using std::queue;
 
 enum enum_ErrorMessageData {
 	ERROR_NO_ERROR__ = 0,

@@ -1,9 +1,9 @@
 #include"pch.h"
 
 #include<benchmark/benchmark.h>
+#include"NlohmannJsonHeader.h"
 
 import FireBird.Type.WebData;
-#include"nlohmann/json_fwd.hpp"
 import FireBird.Type.WebRTData;
 
 CString sSinaWebData = _T("var hq_str_sh600000=\"ÆÖ·¢ÒøÐÐ,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00,\";\n");

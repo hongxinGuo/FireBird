@@ -22,9 +22,25 @@
 #include"TiingoDataSource.h"
 
 #include "ChinaMarket.h"
+#include "containerChosenCrypto.h"
+#include "ContainerChosenForex.h"
+#include "ContainerChosenStock.h"
+#include "ContainerFinnhubCountry.h"
+#include "containerFinnhubCrypto.h"
+#include "ContainerFinnhubCryptoExchange.h"
+#include "ContainerFinnhubEconomicCalendar.h"
+#include "ContainerFinnhubForexExchange.h"
+#include "containerFinnhubForexSymbol.h"
+#include "ContainerFinnhubStockExchange.h"
+#include "ContainerTiingoCryptoSymbol.h"
+#include "ContainerTiingoFundamentalDefinition.h"
+#include "ContainerTiingoStock.h"
+#include "ContainerTiingoSymbol.h"
+#include"VirtualMarket.h"
 #include "WorldMarket.h"
 
 import FireBird.System.Message;
+#include"SystemData.h"
 
 import FireBird.FinnhubInquiryType;
 import FireBird.System.FinnhubInaccessibleExchange;
@@ -36,6 +52,10 @@ import FireBird.WebSocket.TiingoForex;
 import FireBird.WebSocket.TiingoCrypto;
 
 import FireBird.System.ThreadStatus;
+
+import FireBird.Type.DayLineWebData;
+import FireBird.Container.FinnhubStock;
+import FireBird.Container.StockSymbol;
 
 HANDLE gl_hFireBirdMutex{ nullptr };
 

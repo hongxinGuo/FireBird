@@ -264,9 +264,6 @@
     <ClInclude Include="..\src\Stock\ChinaStock.h">
       <Filter>头文件\Stock</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\System\SystemData.h">
-      <Filter>头文件\System</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Type\America market\Country.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
@@ -426,18 +423,6 @@
     <ClInclude Include="..\src\Data Container\ContainerTiingoStock.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubStock.h">
-      <Filter>头文件\Data container\WorldMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubStockDayline.h">
-      <Filter>头文件\Data container\WorldMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerCryptoDayLine.h">
-      <Filter>头文件\Data container</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerNaicsIndustry.h">
-      <Filter>头文件\Data container</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\globedef.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -461,21 +446,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingo.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductNeteaseDayline.h">
-      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductNeteaseRT.h">
-      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductSinaRT.h">
-      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTengxunDayLine.h">
-      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTengxunRT.h">
-      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
@@ -651,9 +621,6 @@
     <ClInclude Include="..\src\Data Container\ContainerChinaStock.h">
       <Filter>头文件\Data container\China Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\System\SystemConstantChinaMarket.h">
-      <Filter>头文件\System</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\accessory\ConcurrentQueueHeader.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
@@ -668,6 +635,9 @@
     </ClInclude>
     <ClInclude Include="..\src\accessory\SaveAndLoad.h">
       <Filter>头文件\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\System\SystemData.h">
+      <Filter>头文件\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1447,6 +1417,36 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerForexDayLine.ixx">
       <Filter>头文件\Data container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerNaicsIndustry.ixx">
+      <Filter>头文件\Data container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerCryptoDayLine.ixx">
+      <Filter>头文件\Data container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubStock.ixx">
+      <Filter>头文件\Data container\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubStockDayline.ixx">
+      <Filter>头文件\Data container\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductNeteaseDayline.ixx">
+      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductNeteaseRT.ixx">
+      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductSinaRT.ixx">
+      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTengxunRT.ixx">
+      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTengxunDayLine.ixx">
+      <Filter>头文件\Factory-Product\ChinaMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\System\SystemConstantChinaMarket.ixx">
+      <Filter>头文件\System</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

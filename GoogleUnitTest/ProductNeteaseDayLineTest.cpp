@@ -6,7 +6,7 @@
 
 #include"ChinaMarket.h"
 
-#include"ProductNeteaseDayLine.h"
+import FireBird.WebProduct.NeteaseDayLine;
 
 using namespace testing;
 

@@ -8,7 +8,7 @@
 //#include"WorldMarket.h"
 #include"ChinaMarket.h"
 
-#include "ProductTengxunRT.h"
+import FireBird.WebProduct.TengxunRT;
 
 using namespace testing;
 

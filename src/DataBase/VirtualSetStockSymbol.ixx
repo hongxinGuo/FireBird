@@ -5,10 +5,10 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 module;
-#include"SystemConstantChinaMarket.h"
 export module FireBird.Set.VirtualStockSymbol;
 
 import FireBird.Set.VirtualRecordset;
+export import FireBird.System.ConstantChinaMarket;
 
 export {
 	class CVirtualSetStockSymbol : public CVirtualRecordset {

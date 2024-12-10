@@ -1,15 +1,14 @@
 ﻿#include"pch.h"
 
- 
-
-import FireBird.System.Message;
-
 #include"GeneralCheck.h"
-
+#include"FinnhubStockExchange.h"
 #include"WorldMarket.h"
-
+#include"FinnhubStock.h"
 #include"MockFinnhubDataSource.h"
 #include "ProductFinnhubCompanyProfileConcise.h"
+
+import FireBird.System.Message;
+#include"SystemData.h"
 
 using namespace testing;
 

@@ -1,7 +1,7 @@
 #include"pch.h"
 module;
 #include"ChinaMarket.h"
-#include"nlohmann/json_fwd.hpp"
+#include"NlohmannJsonHeader.h"
 import FireBird.Accessory.JsonParse;
 module FireBird.Type.DayLineWebData;
 

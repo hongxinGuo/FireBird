@@ -1,15 +1,11 @@
 #include"pch.h"
 
- 
- 
-
-import FireBird.System.Message;
-
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
-
+#include"FinnhubStock.h"
 #include"ProductFinnhubCompanyBasicFinancial.h"
+import FireBird.System.Message;
 
 using namespace testing;
 

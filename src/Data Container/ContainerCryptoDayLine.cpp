@@ -1,8 +1,9 @@
 #include "pch.h"
-#include "ContainerCryptoDayLine.h"
+module;
+#include"SetCryptoDayLine.h"
+module FireBird.Container.CryptoDayLine;
 
 import FireBird.Accessory.InfoReport;
-#include"SetCryptoDayLine.h"
 
 CContainerCryptoDayLine::CContainerCryptoDayLine() {}
 

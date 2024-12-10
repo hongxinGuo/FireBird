@@ -8,8 +8,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"concurrentqueueHeader.h"
-
 #include "ContainerChinaStock.h"
 #include "containerChosenCrypto.h"
 #include "ContainerChosenForex.h"
@@ -21,18 +19,18 @@
 #include "ContainerFinnhubForexExchange.h"
 #include "containerFinnhubForexSymbol.h"
 #include "ContainerFinnhubStockExchange.h"
-import FireBird.Container.StockSymbol;
 #include "ContainerTiingoCryptoSymbol.h"
 #include "ContainerTiingoStock.h"
-#include "ContainerFinnhubStock.h"
 #include "ContainerTiingoFundamentalDefinition.h"
 #include "ContainerTiingoSymbol.h"
+
+import FireBird.Container.FinnhubStock;
+import FireBird.Container.StockSymbol;
 
 import FireBird.WebSocket.Finnhub;
 import FireBird.WebSocket.TiingoIEX;
 import FireBird.WebSocket.TiingoForex;
 import FireBird.WebSocket.TiingoCrypto;
-
 import FireBird.Type.DayLineWebData;
 
 // 处理后的各种数据

@@ -1,9 +1,9 @@
 #include "pch.h"
-
-#include "ContainerFinnhubStockDayLine.h"
+module;
+#include"SetFinnhubStockDayLine.h"
+module FireBird.Container.FinnhubStockDayLine;
 
 import FireBird.Accessory.InfoReport;
-#include"SetFinnhubStockDayLine.h"
 
 CContainerFinnhubStockDayLine::CContainerFinnhubStockDayLine() {}
 

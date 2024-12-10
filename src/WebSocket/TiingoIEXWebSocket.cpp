@@ -2,11 +2,12 @@
 module;
 #include"globedef.h"
 #include <ixwebsocket/IXWebSocket.h>
-import FireBird.Accessory.JsonParse;
 #include "TiingoDataSource.h"
+import FireBird.Accessory.JsonParse;
 module FireBird.WebSocket.TiingoIEX;
 
 import FireBird.System.Message;
+import FireBird.System.Configuration;
 import FireBird.Accessory.JsonGetValue;
 
 void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {

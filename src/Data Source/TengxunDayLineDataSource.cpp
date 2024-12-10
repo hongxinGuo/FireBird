@@ -14,7 +14,7 @@ import FireBird.System.Message;
 
 import FireBird.Accessory.ChinaStockCodeConverter;
 #include "TengxunDayLineDataSource.h"
-#include"ProductTengxunDayLine.h"
+import FireBird.WebProduct.TengxunDayLine;
 
 #include"ChinaMarket.h"
 import FireBird.Accessory.TimeConvert;

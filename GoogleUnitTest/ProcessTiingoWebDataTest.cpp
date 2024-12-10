@@ -3,16 +3,13 @@
  
 
 #include"globedef.h"
+#include"NlohmannJsonHeader.h"
+#include"GeneralCheck.h"
+#include"FinnhubStock.h"
 
 import FireBird.System.Message;
-
-#include"GeneralCheck.h"
-
-#include"nlohmann/json_fwd.hpp"
 import FireBird.Type.WebData;
-
-#include"FinnhubStock.h"
-#include "SystemData.h"
+#include"SystemData.h"
 import FireBird.WebSocket.TiingoForex;
 
 using namespace testing;

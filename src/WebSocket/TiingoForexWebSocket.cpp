@@ -7,6 +7,7 @@ import FireBird.Accessory.JsonParse;
 #include "TiingoDataSource.h"
 module FireBird.WebSocket.TiingoForex;
 
+import FireBird.System.Configuration;
 import FireBird.System.Message;
 import FireBird.Accessory.JsonGetValue;
 import FireBird.Accessory.TimeConvert;

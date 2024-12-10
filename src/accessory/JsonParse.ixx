@@ -7,7 +7,6 @@ import FireBird.Type.WebData;
 import FireBird.Type.DayLineWebData;
 import FireBird.HistoryCandle.DayLine;
 import FireBird.Type.WebRTData;
-//#include"SystemData.h"
 
 export {
 	long StrToDecimal(const string_view& svData, int power);

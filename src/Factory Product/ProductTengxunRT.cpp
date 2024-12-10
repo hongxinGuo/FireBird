@@ -1,10 +1,9 @@
 #include"pch.h"
-
-#include"ProductTengxunRT.h"
-
-//#include "HighPerformanceCounter.h"
-import FireBird.Accessory.JsonParse;
+module;
 #include "TengxunRTDataSource.h"
+module FireBird.WebProduct.TengxunRT;
+
+import FireBird.Accessory.JsonParse;
 
 CProductTengxunRT::CProductTengxunRT() {
 	m_lCurrentStockPosition = 0;

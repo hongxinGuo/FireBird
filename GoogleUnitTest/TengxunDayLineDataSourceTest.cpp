@@ -11,7 +11,7 @@ import FireBird.System.Message;
 #include"TengxunDayLineDataSource.h"
 //#include"WorldMarket.h"
 #include"ChinaMarket.h"
-#include "ProductTengxunDayLine.h"
+import FireBird.WebProduct.TengxunDayLine;
 
 using namespace testing;
 

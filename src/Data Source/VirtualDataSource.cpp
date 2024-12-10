@@ -7,14 +7,13 @@
 #include "pch.h"
 
 #include"globedef.h"
-
-import FireBird.System.Message;
-
 #include "VirtualDataSource.h"
-#include"nlohmann/json_fwd.hpp"
-import FireBird.Type.WebData;
-
+#include"NlohmannJsonHeader.h"
 #include"ConCurrenCppHeader.h"
+
+import FireBird.Type.WebData;
+import FireBird.System.Message;
+import FireBird.System.Configuration;
 
 using std::vector;
 

@@ -2,7 +2,7 @@
 
 #pragma once
 import FireBird.Set.VirtualRecordset;
-#include"SystemConstantChinaMarket.h"
+import FireBird.System.ConstantChinaMarket;
 
 class CSetFinnhubStock : public CVirtualRecordset {
 public:

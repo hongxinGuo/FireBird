@@ -1,12 +1,10 @@
 #include"pch.h"
 
- 
+#include"GeneralCheck.h"
+#include"FinnhubStock.h"
 
 #include"SystemData.h"
-
-#include"GeneralCheck.h"
-
-#include"ContainerFinnhubStock.h"
+import FireBird.Container.FinnhubStock;
 
 using namespace testing;
 

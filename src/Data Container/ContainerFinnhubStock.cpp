@@ -5,14 +5,14 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
-import FireBird.System.Message;
-
-import FireBird.Accessory.InfoReport;
+module;
 #include"WorldMarket.h"
-
 #include"SetFinnhubStock.h"
+#include"FinnhubStock.h"
+module FireBird.Container.FinnhubStock;
 
-#include "ContainerFinnhubStock.h"
+import FireBird.System.Message;
+import FireBird.Accessory.InfoReport;
 
 CContainerFinnhubStock::CContainerFinnhubStock() {
 	CContainerFinnhubStock::Reset();

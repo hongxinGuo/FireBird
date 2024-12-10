@@ -1,10 +1,10 @@
 #pragma once
 
 #include"VirtualMarket.h"
-#include"SystemData.h"
 #include"ChinaStock.h"
 #include"ContainerChinaStock.h"
 
+//export #include"SystemData.h"
 import FireBird.RelativeStrongReference;
 
 using std::set;

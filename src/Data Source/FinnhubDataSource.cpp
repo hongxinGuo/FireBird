@@ -8,6 +8,7 @@
 #include"pch.h"
 
 #include "FinnhubDataSource.h"
+#include"FinnhubStockExchange.h"
 #include"WorldMarket.h"
 
 import FireBird.System.Configuration;

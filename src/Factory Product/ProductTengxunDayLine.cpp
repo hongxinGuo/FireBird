@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
-
-#include "ProductTengxunDayLine.h"
+module;
 #include"ChinaMarket.h"
+module FireBird.WebProduct.TengxunDayLine;
 
 import FireBird.Accessory.JsonParse;
 

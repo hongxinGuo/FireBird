@@ -6,7 +6,7 @@
 
 #include "ChinaMarket.h"
 
-#include"ProductSinaRT.h"
+import FireBird.WebProduct.SinaRT;
 
 using namespace testing;
 

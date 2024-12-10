@@ -1,15 +1,14 @@
 #include"pch.h"
 module;
-#include"SystemConstantChinaMarket.h"
 
 #include"NlohmannJsonHeader.h"
 export module FireBird.Stock.Virtual;
 using std::shared_ptr;
 using std::atomic_bool;
 
+export import FireBird.System.ConstantChinaMarket;
 export import FireBird.System.Configuration;
 export import FireBird.Set.VirtualStockSymbol;
-
 
 export {
 	class CVirtualStock {

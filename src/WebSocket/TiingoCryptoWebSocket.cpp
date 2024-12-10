@@ -8,6 +8,7 @@ module FireBird.WebSocket.TiingoCrypto;
 
 import FireBird.Accessory.JsonGetValue;
 import FireBird.System.Message;
+import FireBird.System.Configuration;
 
 void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 	gl_pTiingoCryptoWebSocket->SetError(false);

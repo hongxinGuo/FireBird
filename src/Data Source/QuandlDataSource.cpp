@@ -1,6 +1,7 @@
 #include"pch.h"
 
 #include "QuandlDataSource.h"
+import FireBird.System.Configuration;
 
 CQuandlDataSource::CQuandlDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

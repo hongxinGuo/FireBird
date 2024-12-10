@@ -1,6 +1,6 @@
 #include"pch.h"
 module;
-#include"nlohmann/json_fwd.hpp"
+#include"NlohmannJsonHeader.h"
 export module FireBird.Type.DayLineWebData;
 
 import FireBird.HistoryCandle.DayLine;

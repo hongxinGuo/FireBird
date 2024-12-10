@@ -17,7 +17,7 @@ module;
 #include "ChinaMarket.h"
 #include"ConCurrenCppHeader.h"
 #include"simdjson.h"
-#include"nlohmann/json_fwd.hpp"
+#include"NlohmannJsonHeader.h"
 module FireBird.Accessory.JsonParse;
 
 using namespace simdjson;

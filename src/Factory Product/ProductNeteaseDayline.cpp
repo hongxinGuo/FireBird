@@ -1,6 +1,8 @@
 #include"pch.h"
+module;
+module FireBird.WebProduct.NeteaseDayLine;
 
-#include"ProductNeteaseDayLine.h"
+#include"SystemData.h"
 import FireBird.Accessory.JsonParse;
 
 CProductNeteaseDayLine::CProductNeteaseDayLine() {

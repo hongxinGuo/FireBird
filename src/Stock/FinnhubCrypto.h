@@ -1,12 +1,12 @@
 #pragma once
 
-import FireBird.Stock.Virtual;
 #include"nlohmannjsonHeader.h"
-
-#include"ContainerCryptoDayLine.h"
-
 #include<memory>
 #include<vector>
+
+import FireBird.Stock.Virtual;
+import FireBird.Container.CryptoDayLine;
+import FireBird.HistoryCandle.DayLine;
 
 class CFinnhubCrypto : public CVirtualStock {
 public:

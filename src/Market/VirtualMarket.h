@@ -1,9 +1,12 @@
 #pragma once
 
 #include"VirtualDataSource.h"
-//export module FireBird.Market.Virtual;
-
+#include"ConcurrentQueueHeader.h"
 import FireBird.Market.TaskQueue;
+import FireBird.System.Configuration;
+
+#include<chrono>
+using namespace std::chrono;
 
 class CVirtualMarket {
 public:

@@ -1,13 +1,12 @@
 #include"pch.h"
-
-import FireBird.System.Message;
-
-#include"ProductSinaRT.h"
+module;
 #include"ChinaMarket.h"
-import FireBird.Accessory.ChinaStockCodeConverter;
-
-import FireBird.Accessory.JsonParse;
 #include "SinaRTDataSource.h"
+module FireBird.WebProduct.SinaRT;
+
+import FireBird.Accessory.ChinaStockCodeConverter;
+import FireBird.System.Message;
+import FireBird.Accessory.JsonParse;
 
 CProductSinaRT::CProductSinaRT() {
 	m_lCurrentStockPosition = 0;

@@ -8,7 +8,7 @@
 module;
 #include<chrono>
 #include<string>
-#include"nlohmann/json_fwd.hpp"
+#include"NlohmannJsonHeader.h"
 export module FireBird.Type.WebData;
 
 

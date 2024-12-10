@@ -1,11 +1,11 @@
 #include "pch.h"
 
 #include"globedef.h"
-#include"SystemData.h"
 #include <afxinet.h>
-#include"nlohmann/json_fwd.hpp"
+#include"NlohmannJsonHeader.h"
 module FireBird.DataSource.InquireEngine;
 
+#include"SystemData.h"
 import FireBird.System.Message;
 import FireBird.Type.WebData;
 import FireBird.Accessory.InfoReport;

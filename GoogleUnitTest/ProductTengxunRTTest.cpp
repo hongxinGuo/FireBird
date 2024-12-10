@@ -7,7 +7,7 @@
 
 #include"WorldMarket.h"
 
-#include"ProductTengxunRT.h"
+import FireBird.WebProduct.TengxunRT;
 
 using namespace testing;
 

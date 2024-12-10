@@ -1,17 +1,7 @@
-﻿#pragma once
-
-//成交的具体情况，分为三种：买，进攻性买，强买，。买是价位为卖一位置；进攻性买价位是至少卖二，且成交价位高于卖一低于卖二；
+﻿//成交的具体情况，分为三种：买，进攻性买，强买，。买是价位为卖一位置；进攻性买价位是至少卖二，且成交价位高于卖一低于卖二；
 //强买价位至少卖三，且成交价位至少高于卖二。判断卖与之相类似。
-enum {
-	ATTACK_BUY_ = 1,
-	STRONG_BUY_ = 2,
-	ORDINARY_BUY_ = 3,
-	UNKNOWN_BUYSELL_ = 4,
-	ORDINARY_SELL_ = 5,
-	STRONG_SELL_ = 6,
-	ATTACK_SELL_ = 7,
-	NO_TRANSACTION_ = 8
-};
+#pragma once
+
 
 import FireBird.RelativeStrongReference;
 
@@ -38,6 +28,17 @@ using std::queue;
 
 class CChinaStock;
 typedef std::shared_ptr<CChinaStock> CChinaStockPtr;
+
+enum {
+	ATTACK_BUY_ = 1,
+	STRONG_BUY_ = 2,
+	ORDINARY_BUY_ = 3,
+	UNKNOWN_BUYSELL_ = 4,
+	ORDINARY_SELL_ = 5,
+	STRONG_SELL_ = 6,
+	ATTACK_SELL_ = 7,
+	NO_TRANSACTION_ = 8
+};
 
 
 bool IsShareA(const CString& strStockCode);

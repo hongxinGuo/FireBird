@@ -1,8 +1,8 @@
 #include"pch.h"
+module;
+module FireBird.WebProduct.NeteaseRT;
 
-#include"ProductNeteaseRT.h"
 #include"SystemData.h"
-
 import FireBird.Accessory.JsonParse;
 
 CProductNeteaseRT::CProductNeteaseRT() {

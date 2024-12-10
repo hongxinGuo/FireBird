@@ -1,11 +1,9 @@
 #include"pch.h"
 
- 
-
 #include"GeneralCheck.h"
 
 import FireBird.HistoryCandle.DayLine;
-#include"ContainerCryptoDayLine.h"
+import FireBird.Container.CryptoDayLine;
 #include"SetCryptoDayLine.h"
 
 using namespace testing;

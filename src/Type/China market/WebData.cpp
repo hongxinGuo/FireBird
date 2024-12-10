@@ -1,7 +1,7 @@
 #include"pch.h"
 import FireBird.Accessory.JsonParse;
 
-#include"nlohmann/json_fwd.hpp"
+#include"NlohmannJsonHeader.h"
 import FireBird.Type.WebData;
 
 CWebData::CWebData() {

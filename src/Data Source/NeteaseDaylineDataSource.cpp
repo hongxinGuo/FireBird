@@ -1,11 +1,10 @@
 #include"pch.h"
 
-import FireBird.System.Message;
-
-#include"NeteaseDayLineDataSource.h"
-#include"ProductNeteaseDayLine.h"
-
 #include"ChinaMarket.h"
+#include"NeteaseDayLineDataSource.h"
+
+import FireBird.System.Message;
+import FireBird.WebProduct.NeteaseDayLine;
 import FireBird.Accessory.ChinaStockCodeConverter;
 
 CNeteaseDayLineDataSource::CNeteaseDayLineDataSource() {

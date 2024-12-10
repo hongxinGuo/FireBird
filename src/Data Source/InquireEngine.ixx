@@ -2,7 +2,7 @@
 module;
 #include <afxinet.h>
 #include"concurrentqueueHeader.h"
-#include"nlohmann/json_fwd.hpp"
+#include"NlohmannJsonHeader.h"
 export module FireBird.DataSource.InquireEngine;
 
 import FireBird.WebProduct.Virtual;

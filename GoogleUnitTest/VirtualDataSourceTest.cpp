@@ -3,7 +3,7 @@
  
 
 #include"GeneralCheck.h"
-#include "ProductNeteaseRT.h"
+import FireBird.WebProduct.NeteaseRT;
 
 #include"VirtualDataSource.h"
 

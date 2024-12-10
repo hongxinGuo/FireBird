@@ -11,11 +11,11 @@
 #include<benchmark/benchmark.h>
 
 #include"SaveAndLoad.h"
-import FireBird.Accessory.JsonParse;
 #include "ProductTiingoStockProfile.h"
-import FireBird.Type.WebData;
-#include"nlohmann/json_fwd.hpp"
+#include"NlohmannJsonHeader.h"
 #include"simdjson.h"
+import FireBird.Accessory.JsonParse;
+import FireBird.Type.WebData;
 using namespace simdjson;
 
 // 这个是目前能够找到的最大的json数据，用于测试ParseWithPTree和ParseWithNlohmannJson的速度
