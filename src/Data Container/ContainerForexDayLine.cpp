@@ -1,8 +1,9 @@
 #include "pch.h"
-#include "ContainerForexDayLine.h"
+module;
+#include"SetForexDayLine.h"
+module FireBird.Container.ForexDayLine;
 
 import FireBird.Accessory.InfoReport;
-#include"SetForexDayLine.h"
 
 CContainerForexDayLine::CContainerForexDayLine() {}
 

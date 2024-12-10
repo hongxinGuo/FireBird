@@ -3,7 +3,7 @@
 #include"ProductTengxunRT.h"
 
 //#include "HighPerformanceCounter.h"
-#include"JsonParse.h"
+import FireBird.Accessory.JsonParse;
 #include "TengxunRTDataSource.h"
 
 CProductTengxunRT::CProductTengxunRT() {

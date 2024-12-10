@@ -22,6 +22,5 @@ export {
 
 		bool m_fUpdated;
 	};
-
 	using CSICIndustryPtr = shared_ptr<CSICIndustry>;
 }

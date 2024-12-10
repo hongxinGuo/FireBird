@@ -6,10 +6,13 @@ import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 
-#include"JsonParse.h"
-#include"nlohmann/json_fwd.hpp"
+#include"nlohmann/json.hpp"
+#include"SystemData.h"
+
+import FireBird.Accessory.JsonParse;
 import FireBird.Type.WebData;
 import FireBird.Type.WebRTData;
+import FireBird.System.Configuration;
 
 namespace FireBirdTest {
 	class jsonParseTest : public testing::Test {

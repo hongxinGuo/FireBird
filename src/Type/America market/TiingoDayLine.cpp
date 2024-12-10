@@ -1,5 +1,5 @@
 #include "pch.h"
-
+module;
 #include"TiingoStock.h"
 module FireBird.HistoryCandle.TiingoDayLine; 
 

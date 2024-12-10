@@ -1,8 +1,9 @@
 #include"pch.h"
 
 #include"ProductNeteaseRT.h"
+#include"SystemData.h"
 
-#include"JsonParse.h"
+import FireBird.Accessory.JsonParse;
 
 CProductNeteaseRT::CProductNeteaseRT() {
 	m_lCurrentStockPosition = 0;

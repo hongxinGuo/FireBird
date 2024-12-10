@@ -1,7 +1,7 @@
 #include "pch.h"
 module;
 #include"globedef.h"
-#include"JsonParse.h"
+import FireBird.Accessory.JsonParse;
 #include "TiingoDataSource.h"
 #include <ixwebsocket/IXWebSocket.h>
 module FireBird.WebSocket.TiingoCrypto;

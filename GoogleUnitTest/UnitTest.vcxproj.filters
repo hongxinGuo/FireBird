@@ -165,9 +165,6 @@
     <ClCompile Include="TengxunWebRTDataTest.cpp">
       <Filter>Test源文件\Type\China Market\WebRTData</Filter>
     </ClCompile>
-    <ClCompile Include="PriorityQueueWebRTDataTest.cpp">
-      <Filter>Test源文件\accessory</Filter>
-    </ClCompile>
     <ClCompile Include="GeneralCheck.cpp">
       <Filter>Test源文件\辅助检查函数</Filter>
     </ClCompile>

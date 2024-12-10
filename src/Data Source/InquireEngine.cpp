@@ -2,11 +2,11 @@
 
 #include"globedef.h"
 #include"SystemData.h"
-import FireBird.System.Message;
 #include <afxinet.h>
 #include"nlohmann/json_fwd.hpp"
 module FireBird.DataSource.InquireEngine;
 
+import FireBird.System.Message;
 import FireBird.Type.WebData;
 import FireBird.Accessory.InfoReport;
 import FireBird.System.Configuration;

@@ -1,6 +1,5 @@
 #include"pch.h"
 module;
-
 export module FireBird.FinnhubInquiryType;
 
 export {

@@ -10,29 +10,25 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
-
+module;
 #include"globedef.h"
-
-#include"nlohmann/json_fwd.hpp"
-#include "JsonParse.h"
 #include"spdlog/spdlog.h"
 
 #include "ChinaMarket.h"
 #include"ConCurrenCppHeader.h"
 #include"simdjson.h"
+#include"nlohmann/json_fwd.hpp"
+module FireBird.Accessory.JsonParse;
+
 using namespace simdjson;
 
 import FireBird.Type.WebRTData;
 import FireBird.Type.WebData;
-
 import FireBird.Accessory.ChinaStockCodeConverter;
 import FireBird.Accessory.InfoReport;
-
 import FireBird.Simdjson.GetValue;
-
 import FireBird.Accessory.ConvertToString;
 import FireBird.System.Message;
-
 import FireBird.Accessory.JsonGetValue;
 
 

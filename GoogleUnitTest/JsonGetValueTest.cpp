@@ -1,11 +1,13 @@
 #include"pch.h"
 
- 
+#include"nlohmann/json.hpp"
+
 
 #include"GeneralCheck.h"
 
-#include"JsonParse.h"
+import FireBird.Accessory.JsonParse;
 import FireBird.Accessory.JsonGetValue;
+import FireBird.System.Configuration;
 
 namespace FireBirdTest {
 	class jsonGetValueTest : public ::testing::Test {

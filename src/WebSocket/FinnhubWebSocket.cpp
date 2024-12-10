@@ -3,7 +3,7 @@ module;
 #include"globedef.h"
 #include <ixwebsocket/IXWebSocket.h>
 #include "FinnhubDataSource.h"
-#include"JsonParse.h"
+import FireBird.Accessory.JsonParse;
 #include"simdjson.h"
 #include "WorldMarket.h"
 module FireBird.WebSocket.Finnhub;

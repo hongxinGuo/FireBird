@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"ProductNeteaseDayLine.h"
-#include"JsonParse.h"
+import FireBird.Accessory.JsonParse;
 
 CProductNeteaseDayLine::CProductNeteaseDayLine() {
 	m_lCurrentStockPosition = 0;

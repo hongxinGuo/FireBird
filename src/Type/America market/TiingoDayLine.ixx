@@ -1,6 +1,5 @@
 #include"pch.h"
 module;
-#include<memory>
 export module FireBird.HistoryCandle.TiingoDayLine;
 
 import FireBird.HistoryCandle.VirtualBasic;

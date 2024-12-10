@@ -1,9 +1,5 @@
-// WatchdogView.h : interface of the CWatchdogView class
-//
-
 #include"pch.h"
 module;
-#include <afxwin.h>
 export module Watchdog.View;
 
 import Watchdog.Document;

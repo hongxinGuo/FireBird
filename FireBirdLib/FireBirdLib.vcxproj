@@ -33,9 +33,11 @@
     </ClCompile>
     <ClInclude Include="..\src\accessory\ConCurrenCppHeader.h" />
     <ClInclude Include="..\src\accessory\ConcurrentQueueHeader.h" />
-    <ClInclude Include="..\src\accessory\JsonParse.h" />
+    <ClCompile Include="..\src\accessory\JsonParse.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\accessory\NlohmannJsonHeader.h" />
-    <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h" />
     <ClCompile Include="..\src\accessory\RSReference.ixx">
       <FileType>Document</FileType>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -43,7 +45,7 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClInclude Include="..\src\accessory\SaveAndLoad.h" />
+    <ClCompile Include="..\src\accessory\SaveAndLoad.cpp" />
     <ClCompile Include="..\src\accessory\simdjsonGetValue.ixx">
       <FileType>Document</FileType>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -60,6 +62,7 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
+    <ClInclude Include="..\src\accessory\SaveAndLoad.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoSymbol.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockDayLine.h" />
@@ -82,9 +85,17 @@
     <ClInclude Include="..\src\Data Container\ContainerFinnhubForexExchange.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubForexSymbol.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubStockExchange.h" />
-    <ClInclude Include="..\src\Data Container\ContainerForexDayLine.h" />
+    <ClCompile Include="..\src\Data Container\ContainerForexDayLine.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Data Container\ContainerNaicsIndustry.h" />
-    <ClInclude Include="..\src\Data Container\ContainerSICIndustry.h" />
+    <ClCompile Include="..\src\Data Container\ContainerSICIndustry.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerStockSymbol.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
@@ -513,8 +524,6 @@
     <ClCompile Include="..\src\accessory\InfoReport.cpp" />
     <ClCompile Include="..\src\accessory\JsonGetValue.cpp" />
     <ClCompile Include="..\src\accessory\JsonParse.cpp" />
-    <ClCompile Include="..\src\accessory\PriorityQueueWebRTData.cpp" />
-    <ClCompile Include="..\src\accessory\SaveAndLoad.cpp" />
     <ClCompile Include="..\src\accessory\simdjsonGetValue.cpp" />
     <ClCompile Include="..\src\accessory\ThreadStatus.cpp" />
     <ClCompile Include="..\src\accessory\TimeConvert.cpp" />

@@ -6,7 +6,7 @@
 
 #include "ProductFinnhubSECFilings.h"
 
-#include"jsonParse.h"
+import FireBird.Accessory.JsonParse;
 #include"simdjson.h"
 using namespace simdjson;
 

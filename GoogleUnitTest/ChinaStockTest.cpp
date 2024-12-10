@@ -10,7 +10,7 @@ import FireBird.Accessory.TimeConvert;
 #include"ChinaMarket.h"
 import FireBird.Type.WebRTData;
 import FireBird.Type.DayLineWebData;
-#include "jsonParse.h"
+import FireBird.Accessory.JsonParse;
 
 using namespace testing;
 

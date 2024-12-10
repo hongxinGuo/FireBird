@@ -2,7 +2,7 @@
 module;
 #include"globedef.h"
 #include "ChinaMarket.h"
-#include"jsonParse.h"
+import FireBird.Accessory.JsonParse;
 module FireBird.Type.WebRTData;
 
 import FireBird.Accessory.ChinaStockCodeConverter;

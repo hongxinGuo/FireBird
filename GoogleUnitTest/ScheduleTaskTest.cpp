@@ -4,7 +4,7 @@
 
 #include"GeneralCheck.h"
 
-#include"JsonParse.h"
+import FireBird.Accessory.JsonParse;
 
 namespace FireBirdTest {
 	class ScheduleTaskTest : public testing::Test {

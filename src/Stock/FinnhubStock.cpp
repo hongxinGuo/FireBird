@@ -12,7 +12,7 @@ import FireBird.Accessory.TimeConvert;
 
 #include"FinnhubCompanyNews.h"
 import FireBird.Accessory.InfoReport;
-#include "JsonParse.h"
+import FireBird.Accessory.JsonParse;
 
 #include"SetInsiderSentiment.h"
 #include"SetEPSSurprise.h"

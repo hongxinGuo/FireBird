@@ -1,5 +1,5 @@
-module;
 #include"pch.h"
+module;
 export module Watchdog.ViewTree;
 
 export {

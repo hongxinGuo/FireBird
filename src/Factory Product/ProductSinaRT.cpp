@@ -6,7 +6,7 @@ import FireBird.System.Message;
 #include"ChinaMarket.h"
 import FireBird.Accessory.ChinaStockCodeConverter;
 
-#include"JsonParse.h"
+import FireBird.Accessory.JsonParse;
 #include "SinaRTDataSource.h"
 
 CProductSinaRT::CProductSinaRT() {

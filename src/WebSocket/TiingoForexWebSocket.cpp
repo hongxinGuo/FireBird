@@ -3,7 +3,7 @@ module;
 #include"globedef.h"
 
 #include <ixwebsocket/IXWebSocket.h>
-#include"JsonParse.h"
+import FireBird.Accessory.JsonParse;
 #include "TiingoDataSource.h"
 module FireBird.WebSocket.TiingoForex;
 

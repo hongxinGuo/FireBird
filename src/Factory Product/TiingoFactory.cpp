@@ -15,9 +15,10 @@ module;
 #include "ProductTiingoMarketNews.h"
 #include "ProductTiingoStockDailyMeta.h"
 #include "TiingoIEXTopOFBook.h"
-module FireBird.Factory.Tiingo; 
-import FireBird.System.Message;
 #include"VirtualMarket.h"
+module FireBird.Factory.Tiingo; 
+
+import FireBird.System.Message;
 import FireBird.WebProduct.Virtual;
 import FireBird.WebProduct.Dummy;
 import FireBird.FinnhubInquiryType;

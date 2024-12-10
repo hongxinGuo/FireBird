@@ -1,5 +1,5 @@
 #include"pch.h"
-
+#include"SetSICIndustry.h"
 module FireBird.Type.SICIndustry;
 
 CSICIndustry::CSICIndustry() {

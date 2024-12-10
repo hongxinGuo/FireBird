@@ -6,9 +6,9 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 module;
-import FireBird.System.Configuration;
 module FireBird.Set.VirtualRecordset;
 
+import FireBird.System.Configuration;
 
 CString CVirtualRecordset::GetSchemaConnect() const {
 	if (gl_systemConfiguration.IsWorkingMode()) { // 工作时使用系统配置文件中的用户名和密码

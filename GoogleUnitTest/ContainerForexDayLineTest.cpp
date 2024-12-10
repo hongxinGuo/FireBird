@@ -1,12 +1,10 @@
 #include"pch.h"
 
- 
-
 #include"GeneralCheck.h"
 
 import FireBird.HistoryCandle.DayLine;
 
-#include"ContainerForexDayLine.h"
+import FireBird.Container.ForexDayLine;
 #include"SetForexDayLine.h"
 
 using namespace testing;

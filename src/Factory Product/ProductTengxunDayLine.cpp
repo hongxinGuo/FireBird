@@ -3,7 +3,7 @@
 #include "ProductTengxunDayLine.h"
 #include"ChinaMarket.h"
 
-#include"JsonParse.h"
+import FireBird.Accessory.JsonParse;
 
 CProductTengxunDayLine::CProductTengxunDayLine() {
 	m_lCurrentStockPosition = 0;

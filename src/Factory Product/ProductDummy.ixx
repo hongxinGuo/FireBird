@@ -1,8 +1,8 @@
 #include"pch.h"
 module;
 export module FireBird.WebProduct.Dummy;
-
 import FireBird.WebProduct.Virtual;
+
 
 export {
 	class CProductDummy final : public CVirtualWebProduct {

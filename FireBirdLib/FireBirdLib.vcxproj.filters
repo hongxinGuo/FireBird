@@ -204,15 +204,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\accessory\JsonParse.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\accessory\PriorityQueueWebRTData.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\accessory\SaveAndLoad.h">
-      <Filter>头文件\Accessory</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Source\VirtualDataSource.h">
       <Filter>头文件\Data Source</Filter>
     </ClInclude>
@@ -444,13 +435,7 @@
     <ClInclude Include="..\src\Data Container\ContainerCryptoDayLine.h">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerForexDayLine.h">
-      <Filter>头文件\Data container</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerNaicsIndustry.h">
-      <Filter>头文件\Data container</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerSICIndustry.h">
       <Filter>头文件\Data container</Filter>
     </ClInclude>
     <ClInclude Include="..\src\globedef.h">
@@ -681,6 +666,9 @@
     <ClInclude Include="..\src\accessory\ConCurrenCppHeader.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\accessory\SaveAndLoad.h">
+      <Filter>头文件\Accessory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -696,12 +684,6 @@
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\accessory\JsonParse.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\accessory\PriorityQueueWebRTData.cpp">
-      <Filter>源文件\Accessory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\accessory\SaveAndLoad.cpp">
       <Filter>源文件\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\accessory\ThreadStatus.cpp">
@@ -1452,6 +1434,18 @@
       <Filter>头文件\Data container</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerStockSymbol.ixx">
+      <Filter>头文件\Data container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\JsonParse.ixx">
+      <Filter>头文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\accessory\SaveAndLoad.cpp">
+      <Filter>源文件\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerSICIndustry.ixx">
+      <Filter>头文件\Data container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerForexDayLine.ixx">
       <Filter>头文件\Data container</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,7 +2,7 @@
 module;
 #include"ChinaMarket.h"
 #include"nlohmann/json_fwd.hpp"
-#include "JsonParse.h"
+import FireBird.Accessory.JsonParse;
 module FireBird.Type.DayLineWebData;
 
 import FireBird.Accessory.TimeConvert;

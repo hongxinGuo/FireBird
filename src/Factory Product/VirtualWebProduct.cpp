@@ -1,7 +1,8 @@
 #include"pch.h"
 module;
-import FireBird.HistoryCandle.DayLine;
 module FireBird.WebProduct.Virtual;
+
+import FireBird.HistoryCandle.DayLine;
 
 [[nodiscard]] bool CompareDayLineDate(const CDayLinePtr& p1, const CDayLinePtr& p2) {
 	return p1->GetMarketDate() < p2->GetMarketDate();

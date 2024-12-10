@@ -1,7 +1,8 @@
 #pragma once
 
 import FireBird.Stock.Virtual;
-#include"ContainerForexDayLine.h"
+import FireBird.Container.ForexDayLine;
+import FireBird.HistoryCandle.DayLine;
 #include"nlohmannjsonHeader.h"
 
 #include<memory>

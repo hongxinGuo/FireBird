@@ -2,9 +2,10 @@
 
 #include"globedef.h"
 #include"NlohmannJsonHeader.h"
+module FireBird.Tiingo.InaccessibleStock;
+
 import FireBird.System.Configuration;
 import FireBird.FinnhubInquiryType;
-module FireBird.Tiingo.InaccessibleStock;
 
 std::string Test_gl_sTiingoInaccessibleStock = R"(
 { "UpdateDate" : 20221205,
