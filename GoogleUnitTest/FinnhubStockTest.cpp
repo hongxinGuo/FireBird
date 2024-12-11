@@ -1,22 +1,22 @@
 #include"pch.h"
 
- 
-
-import FireBird.System.Message;
-
 #include"GeneralCheck.h"
-
-import FireBird.Accessory.TimeConvert;
 
 #include"InsiderSentiment.h"
 #include"InsiderTransaction.h"
 #include"EPSSurprise.h"
 
-#include"FinnhubStock.h"
 #include"WorldMarket.h"
 
 #include"SetFinnhubStockDayLine.h"
 #include"SetInsiderTransaction.h"
+#include"FinnhubCompanyNews.h"
+#include "InsiderSentiment.h"
+#include "InsiderTransaction.h"
+#include"SetFinnhubStock.h"
+import FireBird.Stock.Finnhub;
+import FireBird.System.Message;
+import FireBird.Accessory.TimeConvert;
 
 using namespace testing;
 

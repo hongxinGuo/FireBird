@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ContainerTiingoStockDayLine.h"
+#include"nlohmannjsonHeader.h"
 #include"SetTiingoStock.h"
 #include "SetTiingoStock52WeekHigh.h"
 #include "SetTiingoStock52WeekLow.h"
@@ -9,9 +9,8 @@
 #include "TiingoCompanyFinancialState.h"
 #include "TiingoIEXTopOFBook.h"
 #include "TiingoStockDailyMeta.h"
-
+import FireBird.Container.Tiingo.StockDayLine;
 import FireBird.Stock.Virtual;
-#include"nlohmannjsonHeader.h"
 
 class CTiingoStock;
 typedef std::shared_ptr<CTiingoStock> CTiingoStockPtr;

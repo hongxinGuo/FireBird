@@ -3,7 +3,7 @@
 #include"VirtualDataSource.h"
 #include "ProductTiingoForexDayLine.h"
 import FireBird.Accessory.JsonParse;
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 #include"WorldMarket.h"
 #include"NlohmannJsonHeader.h"
 import FireBird.System.Message;

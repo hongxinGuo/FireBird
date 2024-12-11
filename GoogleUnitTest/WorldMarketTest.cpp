@@ -1,15 +1,12 @@
 #include"pch.h"
 
- 
- 
-
 #include"globedef.h"
 
 import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 
 #include"ProductFinnhubCompanyInsiderTransaction.h"
 #include"ProductFinnhubCompanyInsiderSentiment.h"
@@ -18,9 +15,11 @@ import FireBird.System.Message;
 #include"SetFinnhubCryptoExchange.h"
 #include"SetFinnhubCryptoSymbol.h"
 #include"SetFinnhubForexSymbol.h"
-
+#include"Country.h"
 #include"FinnhubDataSource.h"
-#include"FinnhubCrypto.h"
+import FireBird.Stock.FinnhubCrypto;
+#include"SetEconomicCalendar.h"
+#include"EconomicCalendar.h"
 import FireBird.Accessory.InfoReport;
 #include "WorldMarket.h"
 

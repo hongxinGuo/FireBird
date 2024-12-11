@@ -1,9 +1,9 @@
 #include "pch.h"
-
-#include"containerFinnhubForexSymbol.h"
+module;
 #include"SetFinnhubForexSymbol.h"
-#include"FinnhubForex.h"
+module FireBird.Container.Finnhub.ForexSymbol;
 import FireBird.Accessory.InfoReport;
+import FireBird.Stock.FinnhubForex;
 
 CContainerFinnhubForexSymbol::CContainerFinnhubForexSymbol() {
 	CContainerFinnhubForexSymbol::Reset();

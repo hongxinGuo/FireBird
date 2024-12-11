@@ -1,7 +1,7 @@
 #pragma once
 
 #include"ProductFinnhub.h"
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 
 class CProductFinnhubCompanyProfile final : public CProductFinnhub {
 public:

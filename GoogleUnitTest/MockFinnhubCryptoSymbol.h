@@ -1,8 +1,6 @@
 #pragma once
 
- 
-
-#include "FinnhubCrypto.h"
+import FireBird.Stock.FinnhubCrypto;
 
 namespace testing {
 	class CMockFinnhubCryptoSymbol final : public CFinnhubCrypto {

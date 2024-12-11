@@ -7,7 +7,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
-#include "ContainerFinnhubStockExchange.h"
+#include"FinnhubStockExchange.h"
+module FireBird.Container.Finnhub.StockExchange;
 
 CContainerFinnhubStockExchange::CContainerFinnhubStockExchange() {
 	Reset();

@@ -1,11 +1,9 @@
 #include"pch.h"
 
- 
-
 #include"GeneralCheck.h"
 
-#include"FinnhubCrypto.h"
-#include"containerChosenCrypto.h"
+import FireBird.Stock.FinnhubCrypto;
+import FireBird.Container.Chosen.Crypto;
 
 using namespace testing;
 

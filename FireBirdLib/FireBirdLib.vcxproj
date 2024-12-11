@@ -62,10 +62,26 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClInclude Include="..\src\accessory\SaveAndLoad.h" />
-    <ClInclude Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.h" />
-    <ClInclude Include="..\src\Data Container\ContainerTiingoSymbol.h" />
-    <ClInclude Include="..\src\Data Container\ContainerTiingoStockDayLine.h" />
+    <ClCompile Include="..\src\accessory\SaveAndLoad.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoSymbol.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoStockDayLine.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerVirtualStock.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
@@ -74,21 +90,61 @@
     <ClInclude Include="..\src\Data Container\ContainerChinaDayLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerChinaStock.h" />
     <ClInclude Include="..\src\Data Container\ContainerChinaWeekLine.h" />
-    <ClInclude Include="..\src\Data Container\containerChosenCrypto.h" />
-    <ClInclude Include="..\src\Data Container\containerChosenForex.h" />
-    <ClInclude Include="..\src\Data Container\containerChosenStock.h" />
+    <ClCompile Include="..\src\Data Container\containerChosenCrypto.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\containerChosenForex.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\containerChosenStock.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerCryptoDayLine.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubCountry.h" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubCryptoExchange.h" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubCrypto.h" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.h" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubForexExchange.h" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubForexSymbol.h" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubStockExchange.h" />
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubCountry.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubCryptoExchange.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubCrypto.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubForexExchange.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubForexSymbol.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubStockExchange.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerForexDayLine.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
@@ -108,9 +164,21 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClInclude Include="..\src\Data Container\ContainerTiingoCryptoSymbol.h" />
-    <ClInclude Include="..\src\Data Container\ContainerTiingoIndustry.h" />
-    <ClInclude Include="..\src\Data Container\ContainerTiingoStock.h" />
+    <ClCompile Include="..\src\Data Container\ContainerTiingoCryptoSymbol.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoIndustry.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoStock.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerFinnhubStock.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
@@ -356,8 +424,16 @@
     <ClInclude Include="..\src\Market\WorldMarket.h" />
     <ClInclude Include="..\src\pch.h" />
     <ClInclude Include="..\src\Stock\ChinaStock.h" />
-    <ClInclude Include="..\src\Stock\FinnhubCrypto.h" />
-    <ClInclude Include="..\src\Stock\FinnhubForex.h" />
+    <ClCompile Include="..\src\Stock\FinnhubCrypto.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\Stock\FinnhubForex.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Stock\TiingoCrypto.h" />
     <ClInclude Include="..\src\Stock\TiingoStock.h" />
     <ClCompile Include="..\src\Stock\VirtualStock.ixx">
@@ -365,7 +441,11 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClInclude Include="..\src\Stock\FinnhubStock.h" />
+    <ClCompile Include="..\src\Stock\FinnhubStock.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\src\System\FinnhubInaccessibleExchange.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>

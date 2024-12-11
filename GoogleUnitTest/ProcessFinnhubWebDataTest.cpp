@@ -2,7 +2,7 @@
 
 #include"globedef.h"
 #include"NlohmannJsonHeader.h"
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 import FireBird.System.Message;
 #include"SystemData.h"
 

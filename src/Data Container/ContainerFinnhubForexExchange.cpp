@@ -1,9 +1,9 @@
 #include "pch.h"
-
-#include "ContainerFinnhubForexExchange.h"
+module;
+#include"SetFinnhubForexExchange.h"
+module FireBird.Container.Finnhub.ForexExchange;
 
 import FireBird.Accessory.InfoReport;
-#include"SetFinnhubForexExchange.h"
 
 CContainerFinnhubForexExchange::CContainerFinnhubForexExchange() {
 	Reset();

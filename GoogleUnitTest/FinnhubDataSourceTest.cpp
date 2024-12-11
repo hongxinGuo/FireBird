@@ -3,9 +3,11 @@
 #include"GeneralCheck.h"
 #include"FinnhubStockExchange.h"
 #include"WorldMarket.h"
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 #include"MockFinnhubDataSource.h"
 #include "ProductFinnhubCompanyProfileConcise.h"
+import FireBird.Stock.FinnhubForex;
+import FireBird.Stock.FinnhubCrypto;
 
 import FireBird.System.Message;
 #include"SystemData.h"

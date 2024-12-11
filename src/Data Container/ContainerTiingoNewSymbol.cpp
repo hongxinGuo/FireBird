@@ -2,7 +2,7 @@
 
 #include"SystemData.h"
 
-#include "ContainerTiingoSymbol.h"
+module FireBird.Container.Tiingo.Symbol;
 
 CContainerTiingoSymbol::CContainerTiingoSymbol() {
 	CContainerTiingoSymbol::Reset();

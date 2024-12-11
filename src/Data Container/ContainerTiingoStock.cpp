@@ -1,21 +1,20 @@
 #include "pch.h"
-
+module;
 #include"globedef.h"
 #include"ConCurrenCppHeader.h"
 
 #include"SystemData.h"
-
-#include "ContainerTiingoStock.h"
 #include "SetTiingoStockCurrentTrace.h"
 #include "SetTiingoStockDayLine.h"
 #include "WorldMarket.h"
 #include"TiingoStock.h"
- 
+
+module FireBird.Container.Tiingo.Stock;
+
 import FireBird.System.Message;
 import FireBird.Accessory.InfoReport;
 import FireBird.System.ThreadStatus;
 import FireBird.Accessory.TimeConvert;
-
 
 CContainerTiingoStock::CContainerTiingoStock() {
 	CContainerTiingoStock::Reset();

@@ -2,7 +2,7 @@
 
 #include"SystemData.h"
 #include"WorldMarket.h"
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 
 #include "ProductFinnhubCompanyPeer.h"
 

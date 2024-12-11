@@ -1,13 +1,10 @@
 #include"pch.h"
 
- 
-
 #include"GeneralCheck.h"
-
+#include"TiingoCrypto.h"
 #include"WorldMarket.h"
 
-#include"ContainerTiingoCryptoSymbol.h"
-
+import FireBird.Container.Tinngo.CryptoSymbol;
 using namespace testing;
 
 namespace FireBirdTest {

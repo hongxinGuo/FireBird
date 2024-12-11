@@ -1,6 +1,8 @@
 #include "pch.h"
-#include "ContainerFinnhubEconomicCalendar.h"
+module;
 #include"SetEconomicCalendar.h"
+#include"EconomicCalendar.h"
+module FireBird.Container.Finnhub.EconomicCalender;
 
 import FireBird.Accessory.InfoReport;
 

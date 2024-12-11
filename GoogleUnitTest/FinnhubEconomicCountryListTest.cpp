@@ -1,9 +1,5 @@
 #include"pch.h"
 
- 
-
-import FireBird.System.Message;
-
 #include"GeneralCheck.h"
 
 #include"Country.h"
@@ -12,6 +8,7 @@ import FireBird.System.Message;
 #include"WorldMarket.h"
 
 #include"ProductFinnhubEconomicCountryList.h"
+import FireBird.System.Message;
 
 using namespace testing;
 

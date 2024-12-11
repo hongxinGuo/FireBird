@@ -1,14 +1,12 @@
 #include"pch.h"
 
- 
-
 #include"SystemData.h"
 
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
 
-#include"ContainerTiingoStock.h"
+import FireBird.Container.Tiingo.Stock;
 
 using namespace testing;
 

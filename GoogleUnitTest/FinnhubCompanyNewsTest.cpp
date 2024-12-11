@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 #include"ProductFinnhubCompanyNews.h"
 import FireBird.System.Message;
 import FireBird.Accessory.TimeConvert;

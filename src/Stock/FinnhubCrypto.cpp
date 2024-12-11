@@ -1,7 +1,7 @@
 #include"pch.h"
-
+module;
 #include"WorldMarket.h"
-#include "FinnhubCrypto.h"
+module FireBird.Stock.FinnhubCrypto;
 
 CFinnhubCrypto::CFinnhubCrypto() {
 }

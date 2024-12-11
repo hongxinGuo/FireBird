@@ -1,11 +1,9 @@
 #include"pch.h"
 
- 
-
 #include"GeneralCheck.h"
 
-#include "FinnhubForex.h"
-#include"ContainerChosenForex.h"
+import FireBird.Stock.FinnhubForex;
+import FireBird.Container.Chosen.Forex;
 
 using namespace testing;
 

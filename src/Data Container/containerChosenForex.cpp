@@ -1,9 +1,9 @@
 #include "pch.h"
-
-#include"FinnhubForex.h"
+module;
 #include"SetWorldChosenForex.h"
-#include "ContainerChosenForex.h"
 #include"SystemData.h"
+module FireBird.Container.Chosen.Forex;
+import FireBird.Stock.FinnhubForex;
 
 CContainerChosenForex::CContainerChosenForex() {
 	CContainerChosenForex::Reset();

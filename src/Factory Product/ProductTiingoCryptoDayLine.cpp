@@ -5,7 +5,7 @@ import FireBird.System.Message;
 import FireBird.Accessory.JsonParse;
 import FireBird.Accessory.JsonGetValue;
 
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 #include"WorldMarket.h"
 
 #include "ProductTiingoCryptoDayLine.h"

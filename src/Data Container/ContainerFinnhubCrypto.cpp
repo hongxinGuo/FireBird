@@ -1,11 +1,10 @@
 #include "pch.h"
-
-import FireBird.System.Message;
-
-#include "ContainerFinnhubCrypto.h"
+module;
 #include"SetFinnhubCryptoSymbol.h"
-#include"FinnhubCrypto.h"
+module FireBird.Container.Finnhub.Crypto;
 
+import FireBird.Stock.FinnhubCrypto;
+import FireBird.System.Message;
 import FireBird.Accessory.InfoReport;
 
 CContainerFinnhubCrypto::CContainerFinnhubCrypto() {

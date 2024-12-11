@@ -2,15 +2,14 @@
 
 #include"globedef.h"
 
+#include"WorldMarket.h"
+#include "ProductFinnhubCryptoDayLine.h"
+
+import FireBird.Stock.FinnhubCrypto;
 import FireBird.System.Message;
 
 import FireBird.Accessory.JsonParse;
 import FireBird.Accessory.JsonGetValue;
-
-#include"WorldMarket.h"
-#include"FinnhubCrypto.h"
-
-#include "ProductFinnhubCryptoDayLine.h"
 
 CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/candle?symbol=");

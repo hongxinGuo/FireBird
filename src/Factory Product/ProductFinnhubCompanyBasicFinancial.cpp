@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 import FireBird.System.Message;
 
 import FireBird.Accessory.JsonParse;

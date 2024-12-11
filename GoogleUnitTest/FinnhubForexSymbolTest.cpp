@@ -6,7 +6,7 @@
 #include"WorldMarket.h"
 #include"GeneralCheck.h"
 
-#include"FinnhubForex.h"
+import FireBird.Stock.FinnhubForex;
 #include"SetFinnhubForexSymbol.h"
 #include"SetForexDayLine.h"
 

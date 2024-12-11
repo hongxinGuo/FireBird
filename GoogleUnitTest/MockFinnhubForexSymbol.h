@@ -2,7 +2,7 @@
 
  
 
-#include "FinnhubForex.h"
+import FireBird.Stock.FinnhubForex;
 
 namespace testing {
 	class CMockFinnhubForexSymbol final : public CFinnhubForex {

@@ -1,10 +1,10 @@
 #include "pch.h"
-
-import FireBird.Set.WorldChosenCrypto;
-
-#include "containerChosenCrypto.h"
-#include"FinnhubCrypto.h"
+module;
 #include"SystemData.h"
+module FireBird.Container.Chosen.Crypto;
+
+import FireBird.Stock.FinnhubCrypto;
+import FireBird.Set.WorldChosenCrypto;
 
 CContainerChosenCrypto::CContainerChosenCrypto() {
 	CContainerChosenCrypto::Reset();

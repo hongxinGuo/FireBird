@@ -1,11 +1,9 @@
 #include"pch.h"
 
- 
-
 #include"GeneralCheck.h"
 
 import FireBird.HistoryCandle.DayLine;
-#include"ContainerTiingoStockDayLine.h"
+import FireBird.Container.Tiingo.StockDayLine;
 #include "ProductTiingoStockDayLine.h"
 
 #include"SEtTiingoStockDayLine.h"

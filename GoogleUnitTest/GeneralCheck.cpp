@@ -15,6 +15,7 @@ import FireBird.System.Message;
 
 #include"FinnhubDataSource.h"
 #include"TiingoDataSource.h"
+import FireBird.Stock.Finnhub;
 
 #include "GeneralCheck.h"
 

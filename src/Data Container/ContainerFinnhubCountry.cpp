@@ -1,5 +1,7 @@
 #include "pch.h"
-#include "ContainerFinnhubCountry.h"
+module;
+#include"Country.h"
+module FireBird.Container.Finnhub.Country;
 
 import FireBird.Accessory.InfoReport;
 

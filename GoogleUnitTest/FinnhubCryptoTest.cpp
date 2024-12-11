@@ -5,7 +5,7 @@
 #include"WorldMarket.h"
 #include"GeneralCheck.h"
 
-#include"FinnhubCrypto.h"
+import FireBird.Stock.FinnhubCrypto;
 #include"SetFinnhubCryptoSymbol.h"
 #include"SetCryptoDayLine.h"
 

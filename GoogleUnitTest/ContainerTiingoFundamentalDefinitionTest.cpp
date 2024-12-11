@@ -1,12 +1,10 @@
 #include"pch.h"
 
- 
-
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
-
-#include"ContainerTiingoFundamentalDefinition.h"
+#include"TiingoFundamentalDefinition.h"
+import FireBird.Container.Tiingo.FundamentalDefinition;
 
 using namespace testing;
 

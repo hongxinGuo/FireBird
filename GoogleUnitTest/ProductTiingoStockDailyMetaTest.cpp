@@ -4,7 +4,7 @@
 
 #include"GeneralCheck.h"
 
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 #include"WorldMarket.h"
 
 #include"ProductTiingoStockDailyMeta.h"

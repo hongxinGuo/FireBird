@@ -5,7 +5,7 @@
 #include"SystemData.h"
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 #include"ProductFinnhubStockEstimatesEPSSurprise.h"
 
 import FireBird.System.Message;

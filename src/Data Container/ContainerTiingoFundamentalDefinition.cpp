@@ -1,6 +1,8 @@
 #include "pch.h"
+module;
+#include"TiingoFundamentalDefinition.h"
+module FireBird.Container.Tiingo.FundamentalDefinition;
 
-#include "ContainerTiingoFundamentalDefinition.h"
 import FireBird.Accessory.InfoReport;
 
 CContainerTiingoFundamentalDefinition::CContainerTiingoFundamentalDefinition() {

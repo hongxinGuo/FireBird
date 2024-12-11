@@ -1,6 +1,7 @@
 #pragma once
 
 #include"ProductFinnhub.h"
+import FireBird.Type.SECFiling;
 
 class CProductFinnhubSECFilings final : public CProductFinnhub {
 public:

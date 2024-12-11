@@ -9,6 +9,7 @@ import FireBird.System.Message;
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
+import FireBird.Stock.Finnhub;
 
 #include"ProductFinnhubStockDayLine.h"
 

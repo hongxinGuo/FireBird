@@ -1,10 +1,11 @@
 #include "pch.h"
-
+module;
 #include"SystemData.h"
 #include"WorldMarket.h"
 #include"SetWorldChosenStock.h"
+module FireBird.Container.Chosen.Stock;
 
-#include "ContainerChosenStock.h"
+import FireBird.Stock.Finnhub;
 
 CContainerChosenStock::CContainerChosenStock() {
 	CContainerChosenStock::Reset();

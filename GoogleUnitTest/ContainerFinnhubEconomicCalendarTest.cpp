@@ -1,12 +1,11 @@
 #include"pch.h"
 
- 
-
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
+#include"EconomicCalendar.h"
 
-#include"ContainerFinnhubEconomicCalendar.h"
+import FireBird.Container.Finnhub.EconomicCalender;
 
 using namespace testing;
 

@@ -10,6 +10,9 @@
 #include "FinnhubDataSource.h"
 #include"FinnhubStockExchange.h"
 #include"WorldMarket.h"
+import FireBird.Stock.FinnhubCrypto;
+import FireBird.Stock.FinnhubForex;
+import FireBird.Stock.Finnhub;
 
 import FireBird.System.Configuration;
 import FireBird.System.Message;

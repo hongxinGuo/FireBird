@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include"WorldMarket.h"
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 #include"VirtualDataSource.h"
 
 #include "ProductFinnhubSECFilings.h"

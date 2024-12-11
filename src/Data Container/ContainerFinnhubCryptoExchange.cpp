@@ -1,9 +1,10 @@
 #include "pch.h"
+module;
+#include"SetFinnhubCryptoExchange.h"
 
-#include "ContainerFinnhubCryptoExchange.h"
+module FireBird.Container.Finnhub.CryptoExchange;
 
 import FireBird.Accessory.InfoReport;
-#include"SetFinnhubCryptoExchange.h"
 
 CContainerFinnhubCryptoExchange::CContainerFinnhubCryptoExchange() {
 	Reset();

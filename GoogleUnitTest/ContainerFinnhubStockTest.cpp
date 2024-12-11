@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 
 #include"SystemData.h"
 import FireBird.Container.FinnhubStock;

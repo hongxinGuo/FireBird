@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FinnhubForex.h"
+import FireBird.Stock.FinnhubForex;
 #include"ProductFinnhub.h"
 
 class CProductFinnhubForexSymbol final : public CProductFinnhub {

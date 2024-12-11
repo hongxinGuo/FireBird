@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "SaveAndLoad.h"
+module FireBird.Accessory.SaveAndLoad;
 
 void SaveToFile(const CString& strFileName, CString s) {
 	CFile f;

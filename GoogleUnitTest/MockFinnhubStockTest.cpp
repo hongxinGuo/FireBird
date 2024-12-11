@@ -11,7 +11,7 @@
 
  
 
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 
 using namespace testing;
 

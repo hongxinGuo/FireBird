@@ -2,7 +2,7 @@
 module;
 #include"VirtualDataSource.h"
 
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 #include"ProductFinnhubCompanyProfile.h"
 #include"ProductFinnhubCompanyProfileConcise.h"
 #include"ProductFinnhubCompanyNews.h"

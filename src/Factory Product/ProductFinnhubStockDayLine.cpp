@@ -3,7 +3,7 @@
 #include"globedef.h"
 import FireBird.Accessory.JsonParse;
 #include"WorldMarket.h"
-#include"FinnhubStock.h"
+import FireBird.Stock.Finnhub;
 
 #include "ProductFinnhubStockDayLine.h"
 

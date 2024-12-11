@@ -12,6 +12,9 @@ import FireBird.System.Message;
 #include "QuandlDataSource.h"
 #include "TiingoDataSource.h"
 #include"SetFinnhubStockDayLine.h"
+import FireBird.Stock.FinnhubCrypto;
+import FireBird.Stock.FinnhubForex;
+import FireBird.Stock.Finnhub;
 
 import FireBird.System.FinnhubInaccessibleExchange;
 import FireBird.WebSocket.Finnhub;
@@ -19,10 +22,9 @@ import FireBird.WebSocket.TiingoIEX;
 import FireBird.WebSocket.TiingoForex;
 import FireBird.WebSocket.TiingoCrypto;
 
-
 import FireBird.Accessory.InfoReport;
 import FireBird.System.ThreadStatus;
-import FireBird.Tiingo.InaccessibleStock; 
+import FireBird.Tiingo.InaccessibleStock;
 import FireBird.Accessory.TimeConvert;
 
 CWorldMarket::CWorldMarket() {

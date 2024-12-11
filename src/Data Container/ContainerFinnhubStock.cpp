@@ -8,11 +8,11 @@
 module;
 #include"WorldMarket.h"
 #include"SetFinnhubStock.h"
-#include"FinnhubStock.h"
 module FireBird.Container.FinnhubStock;
 
 import FireBird.System.Message;
 import FireBird.Accessory.InfoReport;
+import FireBird.Stock.Finnhub;
 
 CContainerFinnhubStock::CContainerFinnhubStock() {
 	CContainerFinnhubStock::Reset();

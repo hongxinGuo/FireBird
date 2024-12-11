@@ -22,6 +22,7 @@ import FireBird.Set.WorldChosenCrypto;
 #include"SetRSStrong2Stock.h"
 #include"SetRSStrongStock.h"
 #include"SetStockSection.h"
+#include"SetTiingoFundamentalDefinition.h"
 #include"SetWeekLineExtendInfo.h"
 
 #include"SetCountry.h"

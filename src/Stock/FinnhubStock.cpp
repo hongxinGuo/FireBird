@@ -1,22 +1,28 @@
 #include"pch.h"
+#include"WorldMarket.h"
+
+#include"FinnhubCompanyNews.h"
+#include"InsiderSentiment.h"
+#include"InsiderTransaction.h"
+#include"EPSSurprise.h"
+#include"SetInsiderSentiment.h"
+#include"SetEPSSurprise.h"
+#include "SetSECFilings.h"
+#include"FinnhubStockBasicFinancial.h"
+#include "EPSSurprise.h"
+#include"FinnhubCompanyNews.h"
+#include "InsiderSentiment.h"
+#include "InsiderTransaction.h"
+#include"SetFinnhubStock.h"
+module FireBird.Stock.Finnhub;
+
+import FireBird.Accessory.InfoReport;
+import FireBird.Accessory.JsonParse;
 import FireBird.System.Message;
 
 import FireBird.Accessory.ConvertToString;
 import FireBird.Accessory.TimeConvert;
-#include"InsiderSentiment.h"
-#include"InsiderTransaction.h"
-#include"EPSSurprise.h"
 
-#include "FinnhubStock.h"
-#include"WorldMarket.h"
-
-#include"FinnhubCompanyNews.h"
-import FireBird.Accessory.InfoReport;
-import FireBird.Accessory.JsonParse;
-
-#include"SetInsiderSentiment.h"
-#include"SetEPSSurprise.h"
-#include "SetSECFilings.h"
 
 CFinnhubStock::CFinnhubStock() {
 	SetExchangeCode(_T("US"));
