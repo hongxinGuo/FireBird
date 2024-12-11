@@ -1,8 +1,8 @@
 #include "pch.h"
 
-#include"WorldMarket.h"
+import FireBird.Market.World;
 import FireBird.Stock.Finnhub;
-import FireBird.DataSource.VirtualBase;
+import FireBird.DataSource.Virtual;
 
 #include "ProductFinnhubSECFilings.h"
 

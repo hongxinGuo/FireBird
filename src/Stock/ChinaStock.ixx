@@ -2,6 +2,7 @@
 //强买价位至少卖三，且成交价位至少高于卖二。判断卖与之相类似。
 #include"pch.h"
 module;
+#include"ConcurrentQueueHeader.h"
 #include"SetDayLineExtendInfo.h"
 #include"SetDayLineTodaySaved.h"
 #include"SetChinaStockSymbol.h"

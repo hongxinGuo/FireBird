@@ -1,9 +1,10 @@
 #include"pch.h"
 module;
-#include"VirtualMarket.h"
 export module FireBird.Factory.Virtual;
+
+import FireBird.Market.Virtual;
 import FireBird.WebProduct.Virtual;
-import FireBird.DataSource.VirtualBase;
+import FireBird.DataSource.Virtual;
 
 export {
 	class CVirtualDataFactory {

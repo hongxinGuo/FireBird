@@ -7,8 +7,8 @@ import FireBird.System.Message;
 #include"GeneralCheck.h"
 
 import FireBird.DataSource.TengxunDayLine;
-//#include"WorldMarket.h"
-#include"ChinaMarket.h"
+//import FireBird.Market.World;
+import FireBird.Market.China;
 import FireBird.WebProduct.TengxunDayLine;
 
 using namespace testing;

@@ -1,13 +1,11 @@
 #include"pch.h"
 
- 
- 
+#include"GeneralCheck.h"
+#include"ConcurrentQueueHeader.h"
+import FireBird.Accessory.TimeConvert;
 import FireBird.Stock.ChinaStock;
 
-#include"GeneralCheck.h"
-import FireBird.Accessory.TimeConvert;
-
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 import FireBird.Type.WebRTData;
 import FireBird.Type.DayLineWebData;
 import FireBird.Accessory.JsonParse;

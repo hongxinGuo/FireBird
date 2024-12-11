@@ -9,7 +9,7 @@ module;
 #include"globedef.h"
 #include"NlohmannJsonHeader.h"
 #include"ConCurrenCppHeader.h"
-module FireBird.DataSource.VirtualBase;
+module FireBird.DataSource.Virtual;
 
 import FireBird.Type.WebData;
 import FireBird.System.Message;

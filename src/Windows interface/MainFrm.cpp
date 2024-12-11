@@ -2,14 +2,15 @@
 module;
 #include"globedef.h"
 #include "FireBird.h"
-#include"ChinaMarket.h"
-#include"WorldMarket.h"
 #include <ixwebsocket/IXNetSystem.h>
-#include"ChinaMarket.h"
 #include"ConCurrenCppHeader.h"
+#include"ConcurrentQueueHeader.h"
 module FireBird.WindowInterface.MainFrm;
 
+import FireBird.Market.China;
+import FireBird.Market.World;
 import FireBird.Stock.ChinaStock;
+import FireBird.Market.China;
 
 import FireBird.DataSource.SinaRT;
 import FireBird.DataSource.TengxunRT;

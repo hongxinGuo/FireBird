@@ -8,7 +8,7 @@ import FireBird.DataSource.Finnhub;
 #include"GeneralCheck.h"
 
 #include"MockFinnhubWebSocket.h"
-#include "WorldMarket.h"
+import FireBird.Market.World;
 
 using namespace testing;
 

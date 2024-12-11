@@ -3,10 +3,10 @@ module;
 #include"globedef.h"
 #include "framework.h"
 
-#include "ChinaMarket.h"
+import FireBird.Market.China;
 #include "FireBird.h"
 
-#include "WorldMarket.h"
+import FireBird.Market.World;
 
 #include <spdlog/common.h>
 module FireBird.WindowInterface.PropertiesWnd; 

@@ -8,7 +8,7 @@ import FireBird.DataSource.Tiingo;
 #include"GeneralCheck.h"
 
 #include"MockTiingoCryptoWebSocket.h"
-#include "WorldMarket.h"
+import FireBird.Market.World;
 
 using namespace testing;
 

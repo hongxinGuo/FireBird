@@ -10,6 +10,7 @@
 
 import FireBird.Accessory.JsonParse;
 import FireBird.Accessory.JsonGetValue;
+import FireBird.System.Data;
 
 #include "ProductFinnhubEconomicCalendar.h"
 

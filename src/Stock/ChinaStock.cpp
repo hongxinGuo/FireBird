@@ -1,12 +1,13 @@
 #include"pch.h"
 module;
-#include"ChinaMarket.h"
 
 #include<gsl/gsl>
-
+#include"ConcurrentQueueHeader.h"
 module FireBird.Stock.ChinaStock;
+
 import FireBird.Accessory.TimeConvert;
 import FireBird.Accessory.ChinaStockCodeConverter;
+import FireBird.Market.China;
 using namespace gsl;
 
 ////////////////////////////////////////////////////////////////////////////////////////////

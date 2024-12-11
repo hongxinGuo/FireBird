@@ -1,6 +1,6 @@
 #pragma once
 
-import FireBird.DataSource.VirtualBase;
+import FireBird.DataSource.Virtual;
 
 namespace FireBirdTest {
 	class CMockVirtualDataSourceTest;

@@ -8,7 +8,7 @@ import FireBird.System.Message;
 
 import FireBird.System.Data;
 #include"ProductFinnhubMarketStatus.h"
-#include "WorldMarket.h"
+import FireBird.Market.World;
 
 using namespace testing;
 

@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"ProductTiingo.h"
-import FireBird.DataSource.VirtualBase;
+import FireBird.DataSource.Virtual;
 import FireBird.DataSource.Tiingo;
 
 import FireBird.FinnhubInquiryType;

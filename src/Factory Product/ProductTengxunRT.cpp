@@ -2,6 +2,7 @@
 module;
 module FireBird.WebProduct.TengxunRT;
 
+import FireBird.System.Data;
 import FireBird.DataSource.TengxunRT;
 import FireBird.Accessory.JsonParse;
 

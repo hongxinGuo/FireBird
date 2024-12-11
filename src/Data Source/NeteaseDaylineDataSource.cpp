@@ -1,9 +1,10 @@
 #include"pch.h"
 module;
-#include"ChinaMarket.h"
 module FireBird.DataSource.NeteaseDayLine;
+import FireBird.Market.China;
 
 import FireBird.System.Message;
+import FireBird.System.Configuration;
 import FireBird.WebProduct.NeteaseDayLine;
 import FireBird.Accessory.ChinaStockCodeConverter;
 

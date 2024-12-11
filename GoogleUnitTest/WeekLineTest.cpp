@@ -4,10 +4,12 @@
 
 import FireBird.Accessory.TimeConvert;
 
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 #include"GeneralCheck.h"
 
 import FireBird.HistoryCandle.WeekLine;
+import FireBird.System.ConstantChinaMarket;
+import FireBird.HistoryCandle.DayLine;
 
 #include"SetWeekLineExtendInfo.h"
 

@@ -18,7 +18,7 @@ import FireBird.Simdjson.GetValue;
 using namespace simdjson;
 
 import FireBird.Accessory.TimeConvert;
-#include "WorldMarket.h"
+import FireBird.Market.World;
 
 CProductTiingoIEXTopOfBook::CProductTiingoIEXTopOfBook() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/iex?");

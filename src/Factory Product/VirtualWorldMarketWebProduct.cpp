@@ -1,6 +1,6 @@
 #include "pch.h"
 module;
-#include"WorldMarket.h"
+import FireBird.Market.World;
 module FireBird.WebProduct.VirtualWorldMarket;
 
 CWorldMarketPtr CVirtualWorldMarketWebProduct::GetMarket() const noexcept {

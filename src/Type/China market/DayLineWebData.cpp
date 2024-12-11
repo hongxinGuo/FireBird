@@ -1,6 +1,6 @@
 #include"pch.h"
 module;
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 #include"NlohmannJsonHeader.h"
 module FireBird.Type.DayLineWebData;
 

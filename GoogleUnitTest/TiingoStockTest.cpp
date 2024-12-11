@@ -11,7 +11,7 @@ import FireBird.Type.TiingoCompanyFinancialState;
 
 import FireBird.Stock.TiingoStock;
 
-#include "WorldMarket.h"
+import FireBird.Market.World;
 
 namespace FireBirdTest {
 	class CTiingoStockTest : public ::testing::Test {

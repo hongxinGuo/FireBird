@@ -4,14 +4,15 @@
  
 
 #include"globedef.h"
+#include"ConcurrentQueueHeader.h"
 
 import FireBird.System.Message;
 
 import FireBird.DataSource.TengxunDayLine;
 import FireBird.DataSource.TengxunRT;
 
-#include"WorldMarket.h"
-#include"ChinaMarket.h"
+import FireBird.Market.World;
+import FireBird.Market.China;
 
 import FireBird.DataSource.Finnhub;
 import FireBird.DataSource.Tiingo;

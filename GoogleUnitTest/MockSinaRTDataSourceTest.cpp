@@ -5,7 +5,7 @@
 import FireBird.System.Message;
 
 import FireBird.System.ThreadStatus;
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 #include"GeneralCheck.h"
 
 #include"MockSinaRTDataSource.h"

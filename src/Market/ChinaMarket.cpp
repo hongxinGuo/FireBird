@@ -1,6 +1,18 @@
 ﻿#include"pch.h"
-
+module;
 #include"globedef.h"
+#include"SetDayLineExtendInfo.h"
+#include"SetDayLineTodaySaved.h"
+#include"SetOption.h"
+#include"SetChinaChosenStock.h"
+#include"SetRSStrong2Stock.h"
+#include"SetRSStrong1Stock.h"
+#include"SetRSStrongStock.h"
+#include"SetRSOption.h"
+#include"SetWeekLineExtendInfo.h"
+#include"SetCurrentWeekLine.h"
+#include"ConcurrentQueueHeader.h"
+module FireBird.Market.China;
 
 import FireBird.System.Data;
 import FireBird.System.Message;
@@ -12,20 +24,8 @@ import FireBird.Accessory.ChinaStockCodeConverter;
 import FireBird.System.ThreadStatus;
 
 import FireBird.Stock.ChinaStock;
-#include"ChinaMarket.h"
 
 import FireBird.Accessory.InfoReport;
-#include"SetDayLineExtendInfo.h"
-#include"SetDayLineTodaySaved.h"
-#include"SetOption.h"
-#include"SetChinaChosenStock.h"
-#include"SetRSStrong2Stock.h"
-#include"SetRSStrong1Stock.h"
-#include"SetRSStrongStock.h"
-#include"SetRSOption.h"
-#include"SetWeekLineExtendInfo.h"
-
-#include"SetCurrentWeekLine.h"
 
 import FireBird.DataSource.NeteaseRT;
 import FireBird.DataSource.SinaRT;

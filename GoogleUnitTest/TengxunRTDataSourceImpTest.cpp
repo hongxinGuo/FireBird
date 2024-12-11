@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 
 import FireBird.DataSource.TengxunRT;
 

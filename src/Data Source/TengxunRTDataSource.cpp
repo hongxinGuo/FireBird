@@ -1,8 +1,9 @@
 #include"pch.h"
 module;
-#include "ChinaMarket.h"
+import FireBird.Market.China;
 module FireBird.DataSource.TengxunRT;
 import FireBird.WebProduct.TengxunRT;
+import FireBird.System.Configuration;
 
 CTengxunRTDataSource::CTengxunRTDataSource() {
 	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");

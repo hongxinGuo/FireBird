@@ -10,9 +10,10 @@ module;
 #include "ProductTiingoIEXTopOFBook.h"
 #include "ProductTiingoMarketNews.h"
 #include "ProductTiingoStockDailyMeta.h"
-#include"VirtualMarket.h"
 module FireBird.Factory.Tiingo; 
-import FireBird.DataSource.VirtualBase;
+
+import FireBird.Market.Virtual;
+import FireBird.DataSource.Virtual;
 
 import FireBird.System.Data;
 import FireBird.System.Message;

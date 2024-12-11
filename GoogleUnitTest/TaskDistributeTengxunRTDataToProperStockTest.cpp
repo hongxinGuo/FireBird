@@ -1,16 +1,14 @@
 #include"pch.h"
 
- 
- 
-
 #include"globedef.h"
+#include"ConcurrentQueueHeader.h"
+#include"GeneralCheck.h"
 
 import FireBird.System.Message;
 
-#include"GeneralCheck.h"
 
 import FireBird.Stock.ChinaStock;
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 
 using namespace testing;
 

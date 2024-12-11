@@ -7,7 +7,8 @@ import FireBird.System.Message;
 #include"GeneralCheck.h"
 
 import FireBird.DataSource.Tiingo;
-#include"WorldMarket.h"
+import FireBird.Market.World;
+import FireBird.Stock.TiingoStock;
 
 import FireBird.WebProduct.Dummy;
 

@@ -4,7 +4,7 @@
 
 #include"GeneralCheck.h"
 
-#include"ChinaMarket.h" // 网易日线历史数据的读取在CChinaMarket类中。
+import FireBird.Market.China; // 网易日线历史数据的读取在CChinaMarket类中。
 
 import FireBird.HistoryCandle.DayLine;
 import FireBird.Type.DayLineWebData;

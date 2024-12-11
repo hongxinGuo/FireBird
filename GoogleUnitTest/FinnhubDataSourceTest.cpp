@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 #include"FinnhubStockExchange.h"
-#include"WorldMarket.h"
+import FireBird.Market.World;
 import FireBird.Stock.Finnhub;
 #include"MockFinnhubDataSource.h"
 #include "ProductFinnhubCompanyProfileConcise.h"

@@ -4,7 +4,7 @@
 
 import FireBird.Accessory.TimeConvert;
 
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 #include"GeneralCheck.h"
 
 import FireBird.Container.ChinaStockWeekLine;

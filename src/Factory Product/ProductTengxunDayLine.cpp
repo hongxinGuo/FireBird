@@ -1,9 +1,10 @@
 ﻿#include "pch.h"
 module;
-#include"ChinaMarket.h"
+#include"ConcurrentQueueHeader.h"
 module FireBird.WebProduct.TengxunDayLine;
 
 import FireBird.Accessory.JsonParse;
+import FireBird.Market.China;
 
 CProductTengxunDayLine::CProductTengxunDayLine() {
 	m_lCurrentStockPosition = 0;

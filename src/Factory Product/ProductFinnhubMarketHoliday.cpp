@@ -4,9 +4,10 @@ import FireBird.Accessory.JsonParse;
 import FireBird.Accessory.JsonGetValue;
 
 #include "ProductFinnhubMarketHoliday.h"
+import FireBird.System.Data;
 
 import FireBird.Accessory.TimeConvert;
-#include "WorldMarket.h"
+import FireBird.Market.World;
 
 CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/market-holiday?exchange=");

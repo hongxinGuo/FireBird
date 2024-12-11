@@ -45,8 +45,8 @@ import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 
-#include"ChinaMarket.h"
-#include"WorldMarket.h"
+import FireBird.Market.China;
+import FireBird.Market.World;
 
 import FireBird.WindowInterface.MainFrm;
 #include"MockMainFrm.h"

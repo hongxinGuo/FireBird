@@ -5,10 +5,10 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 module;
-#include"WorldMarket.h"
 export module FireBird.WebProduct.VirtualWorldMarket;
 
 export import FireBird.WebProduct.Virtual;
+import FireBird.Market.World;
 
 export {
 	class CVirtualWorldMarketWebProduct : public CVirtualWebProduct {

@@ -6,7 +6,7 @@
 #include"InsiderTransaction.h"
 #include"EPSSurprise.h"
 
-#include"WorldMarket.h"
+import FireBird.Market.World;
 
 #include"SetFinnhubStockDayLine.h"
 #include"SetInsiderTransaction.h"

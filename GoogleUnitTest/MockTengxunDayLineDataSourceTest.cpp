@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 #include"GeneralCheck.h"
 
 #include"MockTengxunDayLineDataSource.h"

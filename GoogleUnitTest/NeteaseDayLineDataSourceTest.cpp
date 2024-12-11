@@ -5,7 +5,7 @@
 #include"GeneralCheck.h"
 
 import FireBird.DataSource.NeteaseDayLine;
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 import FireBird.Accessory.ChinaStockCodeConverter;
 import FireBird.DataSource.SinaRT;
 import FireBird.WebProduct.Virtual;

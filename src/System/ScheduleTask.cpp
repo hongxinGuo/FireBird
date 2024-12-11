@@ -16,8 +16,8 @@ import FireBird.DataSource.Finnhub;
 import FireBird.DataSource.Tiingo;
 import FireBird.DataSource.Quandl;
 
-#include"ChinaMarket.h"
-#include"WorldMarket.h"
+import FireBird.Market.China;
+import FireBird.Market.World;
 
 import FireBird.Simdjson.GetValue;
  

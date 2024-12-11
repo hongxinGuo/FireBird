@@ -2,7 +2,7 @@
 
  
 
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 
 namespace testing {
 	class CMockChinaMarket final : public CChinaMarket {

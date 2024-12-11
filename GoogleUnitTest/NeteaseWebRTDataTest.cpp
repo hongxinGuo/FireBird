@@ -8,7 +8,7 @@ import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 
 import FireBird.Type.WebRTData;
 import FireBird.Accessory.JsonParse;

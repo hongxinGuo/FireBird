@@ -4,9 +4,9 @@
 
 #include"globedef.h"
 
-#include "ChinaMarket.h"
+import FireBird.Market.China;
 
-#include"VirtualMarket.h"
+import FireBird.Market.Virtual;
 
 #include"GeneralCheck.h"
 

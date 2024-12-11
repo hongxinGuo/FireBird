@@ -2,6 +2,7 @@
 module;
 #include"globedef.h"
 #include <ixwebsocket/IXWebSocket.h>
+#include"ConcurrentQueueHeader.h"
 module FireBird.WebSocket.TiingoCrypto;
 
 import FireBird.System.Data;

@@ -4,6 +4,7 @@ import FireBird.Accessory.JsonParse;
 import FireBird.Accessory.JsonGetValue;
 
 #include "ProductFinnhubForexExchange.h"
+import FireBird.System.Data;
 
 import FireBird.DataSource.Finnhub;
 

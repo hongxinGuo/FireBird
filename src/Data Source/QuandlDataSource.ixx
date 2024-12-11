@@ -1,7 +1,7 @@
 #include"pch.h"
 export module FireBird.DataSource.Quandl;
 
-import FireBird.DataSource.VirtualBase;
+import FireBird.DataSource.Virtual;
 import FireBird.Factory.Quandl;
 
 export {

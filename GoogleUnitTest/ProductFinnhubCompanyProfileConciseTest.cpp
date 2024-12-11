@@ -1,10 +1,11 @@
 #include"pch.h"
 
-import FireBird.System.Message;
-import FireBird.DataSource.VirtualBase;
+#include"globedef.h"
 #include"GeneralCheck.h"
+import FireBird.System.Message;
+import FireBird.DataSource.Virtual;
 
-#include"WorldMarket.h"
+import FireBird.Market.World;
 
 #include"ProductFinnhubCompanyProfileConcise.h"
 

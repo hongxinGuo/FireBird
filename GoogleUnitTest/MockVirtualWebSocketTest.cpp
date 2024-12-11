@@ -12,7 +12,7 @@ import FireBird.System.Message;
 
 import FireBird.WebSocket.Virtual;
 #include "MockVirtualWebSocket.h"
-#include "WorldMarket.h"
+import FireBird.Market.World;
 #include <ixwebsocket/IXWebSocket.h>
 
 using namespace testing;

@@ -2,7 +2,7 @@
 
  
 
-#include"WorldMarket.h"
+import FireBird.Market.World;
 
 namespace testing {
 	class CMockWorldMarket final : public CWorldMarket {

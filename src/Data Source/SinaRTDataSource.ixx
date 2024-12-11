@@ -1,7 +1,7 @@
 #include"pch.h"
 export module FireBird.DataSource.SinaRT;
 
-import FireBird.DataSource.VirtualBase;
+import FireBird.DataSource.Virtual;
 
 export {
 	class CSinaRTDataSource : public CVirtualDataSource {

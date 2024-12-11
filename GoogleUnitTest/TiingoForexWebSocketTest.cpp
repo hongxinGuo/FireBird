@@ -4,7 +4,7 @@
 
 #include"GeneralCheck.h"
 
-#include"WorldMarket.h"
+import FireBird.Market.World;
 
 import FireBird.WebSocket.TiingoForex;
 

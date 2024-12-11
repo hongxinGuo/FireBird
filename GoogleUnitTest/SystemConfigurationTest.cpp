@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"WorldMarket.h"
+import FireBird.Market.World;
 
 import FireBird.DataSource.SinaRT;
 import FireBird.DataSource.NeteaseRT;

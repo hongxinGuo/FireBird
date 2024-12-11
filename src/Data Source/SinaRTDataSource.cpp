@@ -3,7 +3,8 @@
 import FireBird.DataSource.SinaRT;
 import FireBird.WebProduct.SinaRT;
 
-#include"ChinaMarket.h"
+import FireBird.Market.China;
+import FireBird.System.Configuration;
 
 /// <summary>
 /// 新浪实时数据服务器要求提供报头验证数据。

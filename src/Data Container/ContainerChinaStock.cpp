@@ -1,7 +1,7 @@
 #include"pch.h"
 module;
 #include"globedef.h"
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 #include"SetChinaStockSymbol.h"
 module FireBird.Container.ChinaStock;
 

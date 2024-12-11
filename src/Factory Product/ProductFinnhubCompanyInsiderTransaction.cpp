@@ -5,8 +5,9 @@
 import FireBird.Accessory.JsonParse;
 import FireBird.Accessory.JsonGetValue;
 
-#include"WorldMarket.h"
+import FireBird.Market.World;
 import FireBird.Stock.Finnhub;
+import FireBird.System.Data;
 
 #include "ProductFinnhubCompanyInsiderTransaction.h"
 

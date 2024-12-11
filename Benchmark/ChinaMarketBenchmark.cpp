@@ -1,8 +1,9 @@
 #include"pch.h"
 
 #include<benchmark/benchmark.h>
+#include"globedef.h"
 
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 
 class CChinaMarketBenchmark : public benchmark::Fixture {
 public:

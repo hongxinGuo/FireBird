@@ -1,11 +1,10 @@
 #include"pch.h"
 
- 
-
-#include "ChinaMarket.h"
+#include"ConcurrentQueueHeader.h"
 #include"GeneralCheck.h"
 
-#include"WorldMarket.h"
+import FireBird.Market.World;
+import FireBird.Market.China;
 
 import FireBird.WebProduct.TengxunRT;
 

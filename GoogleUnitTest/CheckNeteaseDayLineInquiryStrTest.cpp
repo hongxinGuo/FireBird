@@ -4,7 +4,7 @@
 
 import FireBird.System.Message;
 
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 #include"GeneralCheck.h"
 
 namespace FireBirdTest {

@@ -10,8 +10,8 @@ import FireBird.System.Message;
 
 import FireBird.System.ThreadStatus;
 
-#include "ChinaMarket.h"
-#include "WorldMarket.h"
+import FireBird.Market.China;
+import FireBird.Market.World;
 
 using namespace testing;
 

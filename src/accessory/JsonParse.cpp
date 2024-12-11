@@ -14,11 +14,14 @@ module;
 #include"globedef.h"
 #include"spdlog/spdlog.h"
 
-#include "ChinaMarket.h"
 #include"ConCurrenCppHeader.h"
+#include"ConcurrentQueueHeader.h"
 #include"simdjson.h"
 #include"NlohmannJsonHeader.h"
 module FireBird.Accessory.JsonParse;
+
+import FireBird.Market.China;
+import FireBird.System.Data;
 
 using namespace simdjson;
 

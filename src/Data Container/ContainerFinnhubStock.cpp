@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 module;
-#include"WorldMarket.h"
+import FireBird.Market.World;
 #include"SetFinnhubStock.h"
 module FireBird.Container.FinnhubStock;
 

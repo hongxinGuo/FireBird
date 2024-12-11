@@ -8,7 +8,7 @@
 #include"pch.h"
 module;
 #include"FinnhubStockExchange.h"
-#include"WorldMarket.h"
+import FireBird.Market.World;
 module FireBird.DataSource.Finnhub;
 import FireBird.Stock.FinnhubCrypto;
 import FireBird.Stock.FinnhubForex;

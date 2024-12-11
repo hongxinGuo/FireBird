@@ -20,7 +20,7 @@ import FireBird.Simdjson.GetValue;
 #include"simdjson.h"
 using namespace simdjson;
 
-#include "WorldMarket.h"
+import FireBird.Market.World;
 
 CProductTiingoMarketNews::CProductTiingoMarketNews() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/news?");

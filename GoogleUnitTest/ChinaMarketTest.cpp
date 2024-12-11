@@ -1,7 +1,12 @@
 ﻿#include"pch.h"
 
- 
- 
+#include"ConcurrentQueueHeader.h"
+
+#include"SetOption.h"
+#include"SetCurrentWeekLine.h"
+#include"SetChinaChosenStock.h"
+
+#include"GeneralCheck.h"
 
 import FireBird.System.Message;
 import FireBird.System.Data;
@@ -9,14 +14,8 @@ import FireBird.System.Data;
 import FireBird.Accessory.TimeConvert;
 import FireBird.Accessory.ChinaStockCodeConverter;
 
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 import FireBird.Stock.ChinaStock;
-
-#include"SetOption.h"
-#include"SetCurrentWeekLine.h"
-#include"SetChinaChosenStock.h"
-
-#include"GeneralCheck.h"
 
 using namespace testing;
 

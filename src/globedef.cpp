@@ -11,6 +11,7 @@
 
 #include"NlohmannJsonHeader.h"
 #include"ConCurrenCppHeader.h"
+#include"ConcurrentQueueHeader.h"
 
 import FireBird.DataSource.Finnhub;
 import FireBird.DataSource.NeteaseDayLine;
@@ -21,9 +22,10 @@ import FireBird.DataSource.TengxunRT;
 import FireBird.DataSource.TengxunDayLine;
 import FireBird.DataSource.Tiingo;
 
-#include "ChinaMarket.h"
-#include"VirtualMarket.h"
-#include "WorldMarket.h"
+import FireBird.Market.China;
+import FireBird.Market.Virtual;
+import FireBird.Market.World;
+import FireBird.Market.Task;
 
 import FireBird.System.Message;
 import FireBird.System.Data;

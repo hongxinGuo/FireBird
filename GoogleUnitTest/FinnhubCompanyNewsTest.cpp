@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-#include"WorldMarket.h"
+import FireBird.Market.World;
 import FireBird.Stock.Finnhub;
 #include"ProductFinnhubCompanyNews.h"
 import FireBird.System.Message;

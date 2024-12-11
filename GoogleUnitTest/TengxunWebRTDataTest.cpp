@@ -3,7 +3,7 @@
 #include"globedef.h"
 #include"NlohmannJsonHeader.h"
 #include"GeneralCheck.h"
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 
 import FireBird.System.Message;
 import FireBird.Type.WebRTData;

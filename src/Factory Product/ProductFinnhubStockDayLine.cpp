@@ -2,7 +2,7 @@
 
 #include"globedef.h"
 import FireBird.Accessory.JsonParse;
-#include"WorldMarket.h"
+import FireBird.Market.World;
 import FireBird.Stock.Finnhub;
 
 #include "ProductFinnhubStockDayLine.h"
@@ -12,6 +12,7 @@ import FireBird.System.Message;
 import FireBird.Accessory.TimeConvert;
 import FireBird.Accessory.JsonGetValue;
 import FireBird.WebProduct.Virtual;
+import FireBird.System.Data;
 
 CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/candle?symbol=");

@@ -1,18 +1,21 @@
 #include"pch.h"
-
+module;
 #include"globedef.h"
+#include"SetFinnhubStockDayLine.h"
+#include"MarketStatus.h"
+#include"MarketHoliday.h"
+#include"ConcurrentQueueHeader.h"
+module FireBird.Market.World;
 
 import FireBird.System.Data;
+import FireBird.Market.China;
 import FireBird.System.Message;
 
-#include "WorldMarket.h"
 import FireBird.Type.TiingoCompanyFinancialState;
 
 import FireBird.DataSource.Finnhub;
-#include "ChinaMarket.h"
 import FireBird.DataSource.Quandl;
 import FireBird.DataSource.Tiingo;
-#include"SetFinnhubStockDayLine.h"
 import FireBird.Stock.FinnhubCrypto;
 import FireBird.Stock.FinnhubForex;
 import FireBird.Stock.Finnhub;

@@ -9,10 +9,8 @@
 #include"globedef.h"
 
 import FireBird.System.Message;
-
- 
-
-#include"ChinaMarket.h"
+import FireBird.System.Data;
+import FireBird.Market.China;
 
 UINT ThreadChoice10RSStrong2StockSet(const CChinaMarketPtr& pMarket) {
 	gl_UpdateChinaMarketDB.acquire();

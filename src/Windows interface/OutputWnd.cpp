@@ -2,8 +2,8 @@
 module;
 #include "resource.h"
 #include"globedef.h"
-#include"ChinaMarket.h"
-#include "WorldMarket.h"
+import FireBird.Market.China;
+import FireBird.Market.World;
 module FireBird.WindowInterface.OutputWnd;
 
 import FireBird.WindowInterface.MainFrm;

@@ -3,7 +3,8 @@
  
 
 #include"GeneralCheck.h"
-#include"ChinaMarket.h"
+import FireBird.Market.China;
+import FireBird.System.Data;
 
 import FireBird.Container.VirtualStock;
 

@@ -3,12 +3,12 @@
  
 
 #include"GeneralCheck.h"
-#include "ChinaMarket.h"
+import FireBird.Market.China;
 import FireBird.System.FinnhubInaccessibleExchange;
 import FireBird.FinnhubInquiryType;
 #include "ProductFinnhub.h"
 
-#include"WorldMarket.h"
+import FireBird.Market.World;
 
 import FireBird.WebProduct.Virtual;
 

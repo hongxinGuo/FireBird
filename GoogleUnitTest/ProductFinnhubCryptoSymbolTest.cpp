@@ -7,7 +7,7 @@ import FireBird.System.Message;
 #include"GeneralCheck.h"
 
 #include"ProductFinnhubCryptoSymbol.h"
-#include "WorldMarket.h"
+import FireBird.Market.World;
 
 using namespace testing;
 

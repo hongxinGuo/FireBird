@@ -9,7 +9,7 @@
 
 #include"globedef.h"
 #include"ConCurrenCppHeader.h"
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 
 import FireBird.System.Message;
 import FireBird.Accessory.TimeConvert;

@@ -1,7 +1,7 @@
 #include"pch.h"
 module;
 #include<queue>
-export module FireBird.DataSource.VirtualBase;
+export module FireBird.DataSource.Virtual;
 
 import FireBird.DataSource.InquireEngine;
 export import FireBird.Type.WebData;

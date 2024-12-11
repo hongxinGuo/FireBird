@@ -8,7 +8,7 @@
 
 import FireBird.DataSource.InquireEngine;
 
-#include"WorldMarket.h"
+import FireBird.Market.World;
 
 using namespace testing;
 

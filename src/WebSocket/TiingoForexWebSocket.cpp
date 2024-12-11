@@ -1,7 +1,7 @@
 #include "pch.h"
 module;
 #include"globedef.h"
-
+#include"ConcurrentQueueHeader.h"
 #include <ixwebsocket/IXWebSocket.h>
 module FireBird.WebSocket.TiingoForex;
 import FireBird.DataSource.Quandl;

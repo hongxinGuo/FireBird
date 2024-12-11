@@ -1,8 +1,9 @@
 #include "pch.h"
 
 #include"globedef.h"
-#include"WorldMarket.h"
+import FireBird.Market.World;
 #include "ProductFinnhubForexDayLine.h"
+import FireBird.System.Data;
 
 import FireBird.System.Message;
 

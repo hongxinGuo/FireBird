@@ -3,7 +3,7 @@
  
 
 #include"GeneralCheck.h"
-#include "WorldMarket.h"
+import FireBird.Market.World;
 import FireBird.WebProduct.VirtualWorldMarket;
 
 import FireBird.System.FinnhubInaccessibleExchange;

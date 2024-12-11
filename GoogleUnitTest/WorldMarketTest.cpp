@@ -8,6 +8,8 @@ import FireBird.System.Message;
 
 import FireBird.Stock.Finnhub;
 
+import FireBird.Accessory.TimeConvert;
+
 #include"ProductFinnhubCompanyInsiderTransaction.h"
 #include"ProductFinnhubCompanyInsiderSentiment.h"
 
@@ -21,7 +23,7 @@ import FireBird.Stock.FinnhubCrypto;
 #include"SetEconomicCalendar.h"
 #include"EconomicCalendar.h"
 import FireBird.Accessory.InfoReport;
-#include "WorldMarket.h"
+import FireBird.Market.World;
 
 using namespace testing;
 

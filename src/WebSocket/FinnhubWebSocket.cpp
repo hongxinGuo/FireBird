@@ -3,9 +3,10 @@ module;
 #include"globedef.h"
 #include <ixwebsocket/IXWebSocket.h>
 #include"simdjson.h"
-#include "WorldMarket.h"
+#include"ConcurrentQueueHeader.h"
 module FireBird.WebSocket.Finnhub;
 
+import FireBird.Market.World;
 import FireBird.DataSource.Finnhub;
 import FireBird.Accessory.JsonParse;
 import FireBird.Accessory.JsonGetValue;

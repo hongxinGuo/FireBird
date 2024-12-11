@@ -4,7 +4,7 @@ import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 
-#include"WorldMarket.h"
+import FireBird.Market.World;
 import FireBird.Stock.Finnhub;
 
 #include"ProductFinnhubCompanyPeer.h"

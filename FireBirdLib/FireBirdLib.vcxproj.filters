@@ -246,12 +246,6 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h">
       <Filter>头文件\database\WorldMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Market\ChinaMarket.h">
-      <Filter>头文件\Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Market\WorldMarket.h">
-      <Filter>头文件\Market</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Type\America market\Country.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
@@ -488,9 +482,6 @@
     </ClInclude>
     <ClInclude Include="..\src\accessory\ConcurrentQueueHeader.h">
       <Filter>头文件\Accessory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Market\VirtualMarket.h">
-      <Filter>头文件\Market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\accessory\NlohmannJsonHeader.h">
       <Filter>头文件\Accessory</Filter>
@@ -1447,6 +1438,15 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Source\TiingoDataSource.ixx">
       <Filter>头文件\Data Source\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Market\VirtualMarket.ixx">
+      <Filter>头文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Market\ChinaMarket.ixx">
+      <Filter>头文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Market\WorldMarket.ixx">
+      <Filter>头文件\Market</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

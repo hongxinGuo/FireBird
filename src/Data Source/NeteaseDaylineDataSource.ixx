@@ -1,7 +1,7 @@
 #include"pch.h"
 export module FireBird.DataSource.NeteaseDayLine;
 
-import FireBird.DataSource.VirtualBase;
+import FireBird.DataSource.Virtual;
 
 export {
 	class CNeteaseDayLineDataSource : public CVirtualDataSource {

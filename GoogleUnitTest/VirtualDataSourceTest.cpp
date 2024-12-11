@@ -3,9 +3,9 @@
 #include"GeneralCheck.h"
 import FireBird.WebProduct.NeteaseRT;
 
-import FireBird.DataSource.VirtualBase;
+import FireBird.DataSource.Virtual;
 
-#include"WorldMarket.h"
+import FireBird.Market.World;
 
 using namespace testing;
 

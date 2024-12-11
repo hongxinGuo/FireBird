@@ -1,9 +1,9 @@
 #include"pch.h"
 
- 
-
-#include"ChinaMarket.h"
+import FireBird.Market.China;
 #include"GeneralCheck.h"
+import FireBird.System.Configuration;
+import FireBird.System.ConstantChinaMarket;
 
 import FireBird.HistoryCandle.DayLine;
 #include"SetForexDayLine.h"

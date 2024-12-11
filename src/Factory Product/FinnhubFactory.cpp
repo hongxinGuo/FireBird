@@ -26,11 +26,11 @@ module;
 
 #include"ProductFinnhubEconomicCountryList.h"
 #include"ProductFinnhubEconomicCalendar.h"
-#include"VirtualMarket.h"
 #include "ProductFinnhubSECFilings.h"
 module FireBird.Factory.Finnhub; 
 
-import FireBird.DataSource.VirtualBase;
+import FireBird.Market.Virtual;
+import FireBird.DataSource.Virtual;
 
 import FireBird.Stock.Finnhub;
 import FireBird.System.Message;

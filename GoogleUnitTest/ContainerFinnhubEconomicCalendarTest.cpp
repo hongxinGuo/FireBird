@@ -2,7 +2,7 @@
 
 #include"GeneralCheck.h"
 
-#include"WorldMarket.h"
+import FireBird.Market.World;
 #include"EconomicCalendar.h"
 
 import FireBird.Container.Finnhub.EconomicCalender;

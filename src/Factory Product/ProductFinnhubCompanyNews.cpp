@@ -4,7 +4,8 @@ import FireBird.Accessory.TimeConvert;
 import FireBird.Accessory.JsonParse;
 import FireBird.Accessory.JsonGetValue;
 
-#include"worldMarket.h"
+import FireBird.Market.World;
+import FireBird.System.Data;
 
 #include "ProductFinnhubCompanyNews.h"
 
