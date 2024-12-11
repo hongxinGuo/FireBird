@@ -3,7 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"Country.h"
-#include "FinnhubDataSource.h"
+import FireBird.DataSource.Finnhub;
 
 #include"WorldMarket.h"
 

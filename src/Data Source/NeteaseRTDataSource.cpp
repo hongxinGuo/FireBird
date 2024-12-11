@@ -1,12 +1,12 @@
 #include"pch.h"
+module;
+#include"ChinaMarket.h"
+module FireBird.WebProduct.NeteaseRT;
 
+import FireBird.Accessory.ChinaStockCodeConverter;
 import FireBird.System.Message;
 
-#include"NeteaseRTDataSource.h"
-import FireBird.WebProduct.NeteaseRT;
-
-#include"ChinaMarket.h"
-import FireBird.Accessory.ChinaStockCodeConverter;
+import FireBird.DataSource.NeteaseRT;
 
 CNeteaseRTDataSource::CNeteaseRTDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

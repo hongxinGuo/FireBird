@@ -17,7 +17,7 @@ import FireBird.Stock.ChinaStock;
 #include"MockChinaMarket.h"
 
 #include"GeneralCheck.h"
-#include "NeteaseDayLineDataSource.h"
+import FireBird.DataSource.NeteaseDayLine;
 
 using namespace testing;
 #include<memory>

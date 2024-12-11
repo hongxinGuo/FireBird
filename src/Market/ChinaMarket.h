@@ -7,6 +7,7 @@ import FireBird.HistoryCandle.VirtualExtend;
 import FireBird.Stock.ChinaStock;
 import FireBird.RelativeStrongReference;
 import FireBird.Container.ChinaStockDayLine;
+import FireBird.Type.WebRTData;
 using std::set;
 using std::atomic_int64_t;
 

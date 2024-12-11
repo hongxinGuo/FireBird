@@ -6,11 +6,11 @@
 
 #include "resource.h"
 #include"globedef.h"
-#include "NeteaseRTDataSource.h"
-#include "SinaRTDataSource.h"
+import FireBird.DataSource.SinaRT;
 
-#include "TengxunRTDataSource.h"
+import FireBird.DataSource.TengxunRT;
 module FireBird.System.Configuration;
+import FireBird.DataSource.NeteaseRT;
 
 bool CSystemConfiguration::sm_bInitialized = false;
 

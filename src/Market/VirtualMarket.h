@@ -1,6 +1,6 @@
 #pragma once
 
-#include"VirtualDataSource.h"
+import FireBird.DataSource.VirtualBase;
 #include"ConcurrentQueueHeader.h"
 import FireBird.Market.TaskQueue;
 import FireBird.System.Configuration;

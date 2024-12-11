@@ -4,6 +4,7 @@
 #include"pch.h"
 module;
 export module Watchdog.ChildFrm;
+export import std;
 
 export {
 	class CWatchdogChildFrame : public CMDIChildWndEx {

@@ -2,9 +2,9 @@
 module;
 #include"ChinaMarket.h"
 #include"NlohmannJsonHeader.h"
-import FireBird.Accessory.JsonParse;
 module FireBird.Type.DayLineWebData;
 
+import FireBird.Accessory.JsonParse;
 import FireBird.Accessory.TimeConvert;
 import FireBird.Type.WebData;
 

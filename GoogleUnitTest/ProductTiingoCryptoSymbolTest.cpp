@@ -7,7 +7,7 @@ import FireBird.System.Message;
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
-#include"TiingoDataSource.h"
+import FireBird.DataSource.Tiingo;
 
 #include"ProductTiingoCryptoSymbol.h"
 

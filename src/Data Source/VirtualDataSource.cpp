@@ -5,11 +5,11 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
-
+module;
 #include"globedef.h"
-#include "VirtualDataSource.h"
 #include"NlohmannJsonHeader.h"
 #include"ConCurrenCppHeader.h"
+module FireBird.DataSource.VirtualBase;
 
 import FireBird.Type.WebData;
 import FireBird.System.Message;

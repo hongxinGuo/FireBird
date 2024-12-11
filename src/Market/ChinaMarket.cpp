@@ -2,7 +2,7 @@
 
 #include"globedef.h"
 
-#include"SystemData.h"
+import FireBird.System.Data;
 import FireBird.System.Message;
 
 import FireBird.Accessory.ConvertToString;
@@ -27,9 +27,9 @@ import FireBird.Accessory.InfoReport;
 
 #include"SetCurrentWeekLine.h"
 
-#include "NeteaseRTDataSource.h"
-#include "SinaRTDataSource.h"
-#include "TengxunRTDataSource.h"
+import FireBird.DataSource.NeteaseRT;
+import FireBird.DataSource.SinaRT;
+import FireBird.DataSource.TengxunRT;
 
 #define WM_FIREBIRD_EXIT                0X500
 

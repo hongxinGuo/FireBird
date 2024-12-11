@@ -1,14 +1,12 @@
 #include"pch.h"
 
- 
-
 #include"globedef.h"
 
 import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 
-#include"TengxunDayLineDataSource.h"
+import FireBird.DataSource.TengxunDayLine;
 //#include"WorldMarket.h"
 #include"ChinaMarket.h"
 import FireBird.WebProduct.TengxunDayLine;

@@ -2,24 +2,25 @@
 module;
 #include"globedef.h"
 #include "FireBird.h"
-import FireBird.Stock.ChinaStock;
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
-
-#include"SinaRTDataSource.h"
-#include"TengxunRTDataSource.h"
-#include"NeteaseRTDataSource.h"
-#include"NeteaseDayLineDataSource.h"
-#include"TengxunDayLineDataSource.h"
-
-#include"FinnhubDataSource.h"
-#include"TiingoDataSource.h"
-#include"QuandlDataSource.h"
 #include <ixwebsocket/IXNetSystem.h>
 #include"ChinaMarket.h"
 #include"ConCurrenCppHeader.h"
 module FireBird.WindowInterface.MainFrm;
 
+import FireBird.Stock.ChinaStock;
+
+import FireBird.DataSource.SinaRT;
+import FireBird.DataSource.TengxunRT;
+import FireBird.DataSource.NeteaseRT;
+import FireBird.DataSource.NeteaseDayLine;
+import FireBird.DataSource.TengxunDayLine;
+import FireBird.DataSource.Tiingo;
+
+import FireBird.DataSource.Finnhub;
+import FireBird.DataSource.Quandl;
+import FireBird.DataSource.Quandl;
 import FireBird.System.Message;
 import FireBird.System.ScheduleTask;
 import FireBird.Accessory.ConvertToString;

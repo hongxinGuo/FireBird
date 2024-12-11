@@ -57,7 +57,7 @@ import FireBird.System.ScheduleTask;
 import FireBird.System.FinnhubInaccessibleExchange;
 import FireBird.Accessory.InfoReport;
 import FireBird.System.ThreadStatus;
-#include "TiingoDataSource.h"
+import FireBird.DataSource.Tiingo;
 import FireBird.Accessory.TimeConvert;
 
 using namespace testing;

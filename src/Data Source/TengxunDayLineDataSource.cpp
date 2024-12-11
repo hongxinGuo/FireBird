@@ -9,14 +9,14 @@
 /// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
-
+module;
+#include"ChinaMarket.h"
+module FireBird.DataSource.TengxunDayLine;
+import FireBird.WebProduct.TengxunDayLine;
 import FireBird.System.Message;
 
 import FireBird.Accessory.ChinaStockCodeConverter;
-#include "TengxunDayLineDataSource.h"
-import FireBird.WebProduct.TengxunDayLine;
 
-#include"ChinaMarket.h"
 import FireBird.Accessory.TimeConvert;
 
 CTengxunDayLineDataSource::CTengxunDayLineDataSource() {

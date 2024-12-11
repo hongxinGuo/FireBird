@@ -11,7 +11,7 @@ import FireBird.Accessory.JsonParse;
 
 #include "ProductTiingoIEXTopOFBook.h"
 
-#include "TiingoDataSource.h"
+import FireBird.DataSource.Tiingo;
 
 import FireBird.Simdjson.GetValue;
 #include"simdjson.h"

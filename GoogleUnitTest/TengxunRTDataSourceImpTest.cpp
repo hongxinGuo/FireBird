@@ -1,12 +1,9 @@
 #include"pch.h"
 
- 
-
 #include"GeneralCheck.h"
-
-#include"tengxunRTDataSource.h"
-//#include"WorldMarket.h"
 #include"ChinaMarket.h"
+
+import FireBird.DataSource.TengxunRT;
 
 import FireBird.WebProduct.TengxunRT;
 

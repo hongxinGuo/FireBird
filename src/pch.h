@@ -8,8 +8,10 @@
 #define PCH_H_INCLUDE_
 
 #include"stdafx.h"
-
 using namespace std;
+
+//import std;
+#include "framework.h"
 
 #include"gtest/gtest.h"
 #include"gmock/gmock.h"

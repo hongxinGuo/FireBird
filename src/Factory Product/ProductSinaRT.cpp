@@ -1,9 +1,9 @@
 #include"pch.h"
 module;
 #include"ChinaMarket.h"
-#include "SinaRTDataSource.h"
 module FireBird.WebProduct.SinaRT;
 
+import FireBird.DataSource.SinaRT;
 import FireBird.Accessory.ChinaStockCodeConverter;
 import FireBird.System.Message;
 import FireBird.Accessory.JsonParse;

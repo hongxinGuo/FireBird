@@ -1,7 +1,8 @@
 #include"pch.h"
-import FireBird.Accessory.TimeConvert;
 
 module FireBird.HistoryCandle.WeekLine;
+
+import FireBird.Accessory.TimeConvert;
 
 CWeekLine::CWeekLine() {
 }

@@ -1,10 +1,11 @@
 #include "pch.h"
-
+module;
 #include"globedef.h"
 #include"NlohmannJsonHeader.h"
+module FireBird.System.FinnhubInaccessibleExchange;
+
 import FireBird.System.Configuration;
 import FireBird.FinnhubInquiryType;
-module FireBird.System.FinnhubInaccessibleExchange;
 
 std::string Test_gl_sFinnhubInaccessibleExchange = R"(
 { "UpdateDate" : 20221205,

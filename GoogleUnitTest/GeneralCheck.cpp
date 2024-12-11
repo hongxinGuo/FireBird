@@ -7,22 +7,22 @@
 
 import FireBird.System.Message;
 
-#include "TengxunDayLineDataSource.h"
-#include "TengxunRTDataSource.h"
+import FireBird.DataSource.TengxunDayLine;
+import FireBird.DataSource.TengxunRT;
 
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
 
-#include"FinnhubDataSource.h"
-#include"TiingoDataSource.h"
+import FireBird.DataSource.Finnhub;
+import FireBird.DataSource.Tiingo;
 import FireBird.Stock.Finnhub;
 
 #include "GeneralCheck.h"
 
 import FireBird.System.FinnhubInaccessibleExchange;
-#include "NeteaseDayLineDataSource.h"
-#include "NeteaseRTDataSource.h"
-#include "SinaRTDataSource.h"
+import FireBird.DataSource.NeteaseDayLine;
+import FireBird.DataSource.NeteaseRT;
+import FireBird.DataSource.SinaRT;
 
 using namespace testing;
 

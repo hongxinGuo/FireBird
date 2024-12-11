@@ -4,15 +4,16 @@ module;
 #include "framework.h"
 
 #include "ChinaMarket.h"
-#include "FinnhubDataSource.h"
 #include "FireBird.h"
 
-#include "TiingoDataSource.h"
 #include "WorldMarket.h"
 
 #include <spdlog/common.h>
 module FireBird.WindowInterface.PropertiesWnd; 
+import FireBird.DataSource.Quandl;
+import FireBird.DataSource.Tiingo;
 
+import FireBird.DataSource.Finnhub;
 import FireBird.System.Message;
 import FireBird.System.ThreadStatus;
 import FireBird.WindowInterface.MainFrm;

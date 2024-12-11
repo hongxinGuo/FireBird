@@ -2,7 +2,7 @@
 
  
 
-#include"TiingoDataSource.h"
+import FireBird.DataSource.Tiingo;
 
 namespace testing {
 	class CMockTiingoDataSource final : public CTiingoDataSource {

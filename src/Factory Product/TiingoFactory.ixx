@@ -1,8 +1,8 @@
 #include"pch.h"
 module;
 #include"VirtualMarket.h"
-#include"VirtualDataSource.h"
 export module FireBird.Factory.Tiingo;
+import FireBird.DataSource.VirtualBase;
 
 import FireBird.WebProduct.Virtual;
 import  FireBird.Factory.Virtual;

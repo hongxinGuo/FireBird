@@ -1,5 +1,5 @@
 #include "pch.h"
-
+module;
 #include"globedef.h"
 #include"NlohmannJsonHeader.h"
 module FireBird.Tiingo.InaccessibleStock;

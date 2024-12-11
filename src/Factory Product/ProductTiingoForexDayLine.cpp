@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include"VirtualDataSource.h"
+import FireBird.DataSource.VirtualBase;
 #include "ProductTiingoForexDayLine.h"
 import FireBird.Accessory.JsonParse;
 import FireBird.Stock.Finnhub;

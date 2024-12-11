@@ -1,8 +1,6 @@
 #pragma once
 
- 
-
-#include"QuandlDataSource.h"
+import FireBird.DataSource.Quandl;
 
 namespace testing {
 	class CMockQuandlDataSource final : public CQuandlDataSource {

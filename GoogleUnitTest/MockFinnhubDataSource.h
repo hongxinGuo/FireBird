@@ -1,8 +1,6 @@
 #pragma once
 
- 
-
-#include"FinnhubDataSource.h"
+import FireBird.DataSource.Finnhub;
 
 namespace testing {
 	class CMockFinnhubDataSource final : public CFinnhubDataSource {

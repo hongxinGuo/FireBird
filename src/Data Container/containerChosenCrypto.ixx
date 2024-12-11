@@ -1,9 +1,9 @@
 #include"pch.h"
 module;
-import FireBird.Stock.FinnhubCrypto;
 export module FireBird.Container.Chosen.Crypto;
 
 import FireBird.Container.VirtualStock;
+import FireBird.Stock.FinnhubCrypto;
 
 export {
 	class CContainerChosenCrypto final : public CContainerVirtualStock {

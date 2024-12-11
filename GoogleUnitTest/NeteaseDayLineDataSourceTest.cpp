@@ -4,11 +4,10 @@
 
 #include"GeneralCheck.h"
 
-#include"NeteaseDayLineDataSource.h"
-//#include"WorldMarket.h"
+import FireBird.DataSource.NeteaseDayLine;
 #include"ChinaMarket.h"
 import FireBird.Accessory.ChinaStockCodeConverter;
-#include "SinaRTDataSource.h"
+import FireBird.DataSource.SinaRT;
 import FireBird.WebProduct.Virtual;
 
 using namespace testing;

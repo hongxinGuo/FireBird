@@ -1,13 +1,11 @@
 #include"pch.h"
 
- 
-
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
 #include"MockTengxunDayLineDataSource.h"
-#include "NeteaseRTDataSource.h"
-#include "SinaRTDataSource.h"
+import FireBird.DataSource.NeteaseRT;
+import FireBird.DataSource.SinaRT;
 
 using namespace testing;
 

@@ -1,8 +1,7 @@
 #include "pch.h"
 
-#include"SystemData.h"
-
 module FireBird.Container.Tiingo.Symbol;
+import FireBird.System.Data;
 
 CContainerTiingoSymbol::CContainerTiingoSymbol() {
 	CContainerTiingoSymbol::Reset();

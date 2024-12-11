@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include "QuandlDataSource.h"
+module FireBird.DataSource.Quandl;
 import FireBird.System.Configuration;
 
 CQuandlDataSource::CQuandlDataSource() {

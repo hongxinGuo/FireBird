@@ -4,7 +4,7 @@
 
 #include"globedef.h"
 
-#include "TiingoDataSource.h"
+import FireBird.DataSource.Tiingo;
 #include"GeneralCheck.h"
 
 #include"MockTiingoCryptoWebSocket.h"

@@ -4,7 +4,7 @@
  
 
 import FireBird.System.Message;
-#include"SystemData.h"
+import FireBird.System.Data;
 
 import FireBird.Accessory.TimeConvert;
 import FireBird.Accessory.ChinaStockCodeConverter;

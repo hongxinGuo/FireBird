@@ -15,9 +15,9 @@ import FireBird.System.Message;
 
 #include"MockWorldMarket.h"
 
-#include"FinnhubDataSource.h"
-#include "SinaRTDataSource.h"
-//#include "TiingoDataSource.h"
+import FireBird.DataSource.Finnhub;
+import FireBird.DataSource.SinaRT;
+//import FireBird.DataSource.Tiingo;
 
 using namespace testing;
 

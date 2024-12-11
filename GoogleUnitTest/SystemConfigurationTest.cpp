@@ -1,12 +1,10 @@
 #include"pch.h"
 
- 
-
 #include"WorldMarket.h"
 
-#include"SinaRTDataSource.h"
-#include"NeteaseRTDataSource.h"
-#include"TengxunRTDataSource.h"
+import FireBird.DataSource.SinaRT;
+import FireBird.DataSource.NeteaseRT;
+import FireBird.DataSource.TengxunRT;
 
 #include"GeneralCheck.h"
 #include <spdlog/common.h>

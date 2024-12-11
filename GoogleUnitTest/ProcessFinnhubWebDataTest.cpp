@@ -4,7 +4,7 @@
 #include"NlohmannJsonHeader.h"
 import FireBird.Stock.Finnhub;
 import FireBird.System.Message;
-#include"SystemData.h"
+import FireBird.System.Data;
 
 #include"GeneralCheck.h"
 

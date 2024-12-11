@@ -1,7 +1,7 @@
 #include"pch.h"
 module;
 export module Watchdog.OutputWnd;
-
+import std;
 export {
 	class COutputList : public CListBox {
 		// Construction

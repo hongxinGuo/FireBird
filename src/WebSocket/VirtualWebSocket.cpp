@@ -1,5 +1,5 @@
 #include"pch.h"
-
+module;
 #include"globedef.h"
 #include "WorldMarket.h"
 #include <ixwebsocket/IXWebSocket.h>

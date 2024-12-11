@@ -3,13 +3,12 @@ module;
 #include"globedef.h"
 #include"ConCurrenCppHeader.h"
 
-#include"SystemData.h"
 #include "SetTiingoStockCurrentTrace.h"
 #include "WorldMarket.h"
-import FireBird.Stock.TiingoStock;
-
 module FireBird.Container.Tiingo.Stock;
+import FireBird.System.Data;
 
+import FireBird.Stock.TiingoStock;
 import FireBird.System.Message;
 import FireBird.Accessory.InfoReport;
 import FireBird.System.ThreadStatus;

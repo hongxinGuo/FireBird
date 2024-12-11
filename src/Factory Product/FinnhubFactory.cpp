@@ -1,8 +1,5 @@
 #include "pch.h"
 module;
-#include"VirtualDataSource.h"
-
-import FireBird.Stock.Finnhub;
 #include"ProductFinnhubCompanyProfile.h"
 #include"ProductFinnhubCompanyProfileConcise.h"
 #include"ProductFinnhubCompanyNews.h"
@@ -30,11 +27,12 @@ import FireBird.Stock.Finnhub;
 #include"ProductFinnhubEconomicCountryList.h"
 #include"ProductFinnhubEconomicCalendar.h"
 #include"VirtualMarket.h"
-
-
 #include "ProductFinnhubSECFilings.h"
 module FireBird.Factory.Finnhub; 
 
+import FireBird.DataSource.VirtualBase;
+
+import FireBird.Stock.Finnhub;
 import FireBird.System.Message;
 import FireBird.FinnhubInquiryType;
 import FireBird.WebProduct.Dummy;

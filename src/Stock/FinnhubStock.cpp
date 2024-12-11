@@ -1,4 +1,5 @@
 #include"pch.h"
+module;
 #include"WorldMarket.h"
 
 #include"FinnhubCompanyNews.h"

@@ -12,21 +12,21 @@
 #include"NlohmannJsonHeader.h"
 #include"ConCurrenCppHeader.h"
 
-#include"FinnhubDataSource.h"
-#include"NeteaseDayLineDataSource.h"
-#include"NeteaseRTDataSource.h"
-#include"QuandlDataSource.h"
-#include"SinaRTDataSource.h"
-#include"TengxunRTDataSource.h"
-#include"TengxunDayLineDataSource.h"
-#include"TiingoDataSource.h"
+import FireBird.DataSource.Finnhub;
+import FireBird.DataSource.NeteaseDayLine;
+import FireBird.DataSource.NeteaseRT;
+import FireBird.DataSource.Quandl;
+import FireBird.DataSource.SinaRT;
+import FireBird.DataSource.TengxunRT;
+import FireBird.DataSource.TengxunDayLine;
+import FireBird.DataSource.Tiingo;
 
 #include "ChinaMarket.h"
 #include"VirtualMarket.h"
 #include "WorldMarket.h"
 
 import FireBird.System.Message;
-#include"SystemData.h"
+import FireBird.System.Data;
 
 import FireBird.FinnhubInquiryType;
 import FireBird.System.FinnhubInaccessibleExchange;

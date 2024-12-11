@@ -2,9 +2,9 @@
 module;
 #include"globedef.h"
 #include "ChinaMarket.h"
-import FireBird.Accessory.JsonParse;
 module FireBird.Type.WebRTData;
 
+import FireBird.Accessory.JsonParse;
 import FireBird.Accessory.ChinaStockCodeConverter;
 
 void CWebRTData::Reset() {

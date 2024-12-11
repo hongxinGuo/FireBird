@@ -1,11 +1,9 @@
 #include"pch.h"
 
- 
-
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
-#include"FinnhubDataSource.h"
+import FireBird.DataSource.Finnhub;
 
 #include"ProductFinnhubCryptoExchange.h"
 

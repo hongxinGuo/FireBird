@@ -1,16 +1,13 @@
 #include"pch.h"
 
- 
-
-import FireBird.System.Message;
-
 #include"GeneralCheck.h"
 #include"ChinaMarket.h"
-
-import FireBird.WindowInterface.MainFrm;
 #include "MockMainFrm.h"
-#include "NeteaseRTDataSource.h"
-#include "TengxunRTDataSource.h"
+
+import FireBird.System.Message;
+import FireBird.WindowInterface.MainFrm;
+import FireBird.DataSource.NeteaseRT;
+import FireBird.DataSource.TengxunRT;
 
 using namespace testing;
 

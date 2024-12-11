@@ -1,8 +1,6 @@
 #pragma once
 
- 
-
-#include"NeteaseRTDataSource.h"
+import FireBird.DataSource.NeteaseRT;
 
 namespace testing {
 	class CMockNeteaseRTDataSource final : public CNeteaseRTDataSource {

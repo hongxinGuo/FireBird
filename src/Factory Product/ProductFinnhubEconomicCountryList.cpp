@@ -7,7 +7,7 @@ import FireBird.Accessory.JsonGetValue;
 
 #include "ProductFinnhubEconomicCountryList.h"
 
-#include "FinnhubDataSource.h"
+import FireBird.DataSource.Finnhub;
 
 CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/country?");

@@ -4,8 +4,7 @@ import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 
-#include"nlohmann/json.hpp"
-#include"SystemData.h"
+import FireBird.System.Data;
 
 import FireBird.Accessory.JsonParse;
 import FireBird.Type.WebData;

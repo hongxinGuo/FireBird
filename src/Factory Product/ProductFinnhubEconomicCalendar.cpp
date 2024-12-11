@@ -13,7 +13,7 @@ import FireBird.Accessory.JsonGetValue;
 
 #include "ProductFinnhubEconomicCalendar.h"
 
-#include "FinnhubDataSource.h"
+import FireBird.DataSource.Finnhub;
 
 CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/calendar/economic?");

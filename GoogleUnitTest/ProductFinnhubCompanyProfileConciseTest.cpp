@@ -1,9 +1,7 @@
 #include"pch.h"
 
- 
-
 import FireBird.System.Message;
-#include"VirtualDataSource.h"
+import FireBird.DataSource.VirtualBase;
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"

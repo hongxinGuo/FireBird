@@ -4,7 +4,7 @@
 
 #include"globedef.h"
 
-#include "FinnhubDataSource.h"
+import FireBird.DataSource.Finnhub;
 #include"GeneralCheck.h"
 
 #include"MockFinnhubWebSocket.h"

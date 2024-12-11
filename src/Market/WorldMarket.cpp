@@ -2,16 +2,16 @@
 
 #include"globedef.h"
 
-#include"SystemData.h"
+import FireBird.System.Data;
 import FireBird.System.Message;
 
 #include "WorldMarket.h"
 import FireBird.Type.TiingoCompanyFinancialState;
 
-#include"FinnhubDataSource.h"
+import FireBird.DataSource.Finnhub;
 #include "ChinaMarket.h"
-#include "QuandlDataSource.h"
-#include "TiingoDataSource.h"
+import FireBird.DataSource.Quandl;
+import FireBird.DataSource.Tiingo;
 #include"SetFinnhubStockDayLine.h"
 import FireBird.Stock.FinnhubCrypto;
 import FireBird.Stock.FinnhubForex;

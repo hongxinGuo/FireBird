@@ -5,7 +5,7 @@ import FireBird.Accessory.JsonGetValue;
 
 #include "ProductFinnhubCryptoExchange.h"
 
-#include "FinnhubDataSource.h"
+import FireBird.DataSource.Finnhub;
 
 CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/exchange?");

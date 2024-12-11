@@ -1,6 +1,6 @@
 #include"pch.h"
 #include"globedef.h"
-#include"VirtualDataSource.h"
+import FireBird.DataSource.VirtualBase;
 #include"VirtualMarket.h"
 //module FireBird.Market.Virtual;
 

@@ -3,6 +3,7 @@ module;
 export module Watchdog.View;
 
 import Watchdog.Document;
+export import std;
 
 export {
 	class CWatchdogView : public CView {

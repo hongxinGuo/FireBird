@@ -5,7 +5,7 @@ import FireBird.Accessory.JsonGetValue;
 
 #include "ProductFinnhubForexExchange.h"
 
-#include "FinnhubDataSource.h"
+import FireBird.DataSource.Finnhub;
 
 CProductFinnhubForexExchange::CProductFinnhubForexExchange() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/exchange?");

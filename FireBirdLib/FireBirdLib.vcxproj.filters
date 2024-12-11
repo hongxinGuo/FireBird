@@ -204,9 +204,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\Data Source\VirtualDataSource.h">
-      <Filter>头文件\Data Source</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaChosenStock.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
@@ -282,24 +279,6 @@
     <ClInclude Include="..\src\targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Source\FinnhubDataSource.h">
-      <Filter>头文件\Data Source\WorldMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Source\NeteaseDaylineDataSource.h">
-      <Filter>头文件\Data Source\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Source\NeteaseRTDataSource.h">
-      <Filter>头文件\Data Source\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Source\QuandlDataSource.h">
-      <Filter>头文件\Data Source\WorldMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Source\SinaRTDataSource.h">
-      <Filter>头文件\Data Source\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Source\TiingoDataSource.h">
-      <Filter>头文件\Data Source\WorldMarket</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductFinnhub.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
@@ -371,12 +350,6 @@
     </ClInclude>
     <ClInclude Include="..\src\globedef.h">
       <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h">
-      <Filter>头文件\Data Source\China market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Data Source\TengxunRTDataSource.h">
-      <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketStatus.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
@@ -524,9 +497,6 @@
     </ClInclude>
     <ClInclude Include="..\src\accessory\ConCurrenCppHeader.h">
       <Filter>头文件\Accessory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\System\SystemData.h">
-      <Filter>头文件\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1447,6 +1417,36 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerChinaStock.ixx">
       <Filter>头文件\Data container\China Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\System\SystemData.ixx">
+      <Filter>头文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\VirtualDataSource.ixx">
+      <Filter>头文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\NeteaseDaylineDataSource.ixx">
+      <Filter>头文件\Data Source\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\NeteaseRTDataSource.ixx">
+      <Filter>头文件\Data Source\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\SinaRTDataSource.ixx">
+      <Filter>头文件\Data Source\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\TengxunDayLineDataSource.ixx">
+      <Filter>头文件\Data Source\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\TengxunRTDataSource.ixx">
+      <Filter>头文件\Data Source\China market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\FinnhubDataSource.ixx">
+      <Filter>头文件\Data Source\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\QuandlDataSource.ixx">
+      <Filter>头文件\Data Source\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\TiingoDataSource.ixx">
+      <Filter>头文件\Data Source\WorldMarket</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

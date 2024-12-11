@@ -1,9 +1,5 @@
 #include "pch.h"
 module;
-#include"SystemData.h"
-#include"VirtualDataSource.h"
-
-//#include"ProductTiingoStockProfile.h"
 #include"ProductTiingoStockProfile.h"
 #include"ProductTiingoStockDayLine.h"
 
@@ -16,7 +12,9 @@ module;
 #include "ProductTiingoStockDailyMeta.h"
 #include"VirtualMarket.h"
 module FireBird.Factory.Tiingo; 
+import FireBird.DataSource.VirtualBase;
 
+import FireBird.System.Data;
 import FireBird.System.Message;
 import FireBird.WebProduct.Virtual;
 import FireBird.WebProduct.Dummy;

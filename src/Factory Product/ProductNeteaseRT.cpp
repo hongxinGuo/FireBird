@@ -2,7 +2,7 @@
 module;
 module FireBird.WebProduct.NeteaseRT;
 
-#include"SystemData.h"
+import FireBird.System.Data;
 import FireBird.Accessory.JsonParse;
 
 CProductNeteaseRT::CProductNeteaseRT() {

@@ -2,7 +2,7 @@
 
 #include"WorldMarket.h"
 import FireBird.Stock.Finnhub;
-#include"VirtualDataSource.h"
+import FireBird.DataSource.VirtualBase;
 
 #include "ProductFinnhubSECFilings.h"
 

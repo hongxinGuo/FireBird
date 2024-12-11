@@ -1,6 +1,7 @@
 #include"pch.h"
 module;
 export module Watchdog.PropertiesWnd;
+export import std;
 
 export {
 	class CPropertiesToolBar : public CMFCToolBar {

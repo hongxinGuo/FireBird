@@ -6,10 +6,10 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
-
-#include "FinnhubDataSource.h"
+module;
 #include"FinnhubStockExchange.h"
 #include"WorldMarket.h"
+module FireBird.DataSource.Finnhub;
 import FireBird.Stock.FinnhubCrypto;
 import FireBird.Stock.FinnhubForex;
 import FireBird.Stock.Finnhub;

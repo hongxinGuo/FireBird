@@ -1,4 +1,5 @@
 #include"pch.h"
+module;
 #include"SetSICIndustry.h"
 module FireBird.Type.SICIndustry;
 

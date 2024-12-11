@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include"SystemData.h"
+import FireBird.System.Data;
 
 import FireBird.Stock.TiingoStock;
 #include "ProductTiingoFinancialState.h"

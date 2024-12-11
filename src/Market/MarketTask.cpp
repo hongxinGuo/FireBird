@@ -1,4 +1,5 @@
 #include "pch.h"
+module;
 #include<map>
 
 module FireBird.Market.Task;

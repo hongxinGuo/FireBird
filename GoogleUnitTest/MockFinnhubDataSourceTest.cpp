@@ -11,7 +11,7 @@ import FireBird.System.Message;
 #include"MockFinnhubDataSource.h"
 
 #include"ProductFinnhubStockSymbol.h"
-#include "SinaRTDataSource.h"
+import FireBird.DataSource.SinaRT;
 
 using namespace testing;
 

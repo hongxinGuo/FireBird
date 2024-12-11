@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"SinaRTDataSource.h"
+import FireBird.DataSource.SinaRT;
 import FireBird.WebProduct.SinaRT;
 
 #include"ChinaMarket.h"

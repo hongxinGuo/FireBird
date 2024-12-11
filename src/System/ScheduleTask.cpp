@@ -6,15 +6,15 @@ import FireBird.System.Message;
 
 import FireBird.System.ScheduleTask;
 
-#include"SinaRTDataSource.h"
-#include"TengxunRTDataSource.h"
-#include"NeteaseRTDataSource.h"
-#include"NeteaseDayLineDataSource.h"
-#include"TengxunDayLineDataSource.h"
+import FireBird.DataSource.SinaRT;
+import FireBird.DataSource.TengxunRT;
+import FireBird.DataSource.NeteaseRT;
+import FireBird.DataSource.NeteaseDayLine;
+import FireBird.DataSource.TengxunDayLine;
 
-#include"FinnhubDataSource.h"
-#include"TiingoDataSource.h"
-#include"QuandlDataSource.h"
+import FireBird.DataSource.Finnhub;
+import FireBird.DataSource.Tiingo;
+import FireBird.DataSource.Quandl;
 
 #include"ChinaMarket.h"
 #include"WorldMarket.h"

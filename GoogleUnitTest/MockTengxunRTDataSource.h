@@ -1,8 +1,6 @@
 #pragma once
 
- 
-
-#include"TengxunRTDataSource.h"
+import FireBird.DataSource.TengxunRT;
 
 namespace testing {
 	class CMockTengxunRTDataSource final : public CTengxunRTDataSource {

@@ -1,8 +1,6 @@
 #pragma once
 
- 
-
-#include"NeteaseDayLineDataSource.h"
+import FireBird.DataSource.NeteaseDayLine;
 
 namespace testing {
 	class CMockNeteaseDayLineDataSource final : public CNeteaseDayLineDataSource {

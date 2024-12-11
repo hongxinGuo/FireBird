@@ -1,8 +1,6 @@
 #pragma once
 
- 
-
-#include"SinaRTDataSource.h"
+import FireBird.DataSource.SinaRT;
 
 namespace testing {
 	class CMockSinaRTDataSource final : public CSinaRTDataSource {

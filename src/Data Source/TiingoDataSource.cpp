@@ -4,7 +4,7 @@
 
 import FireBird.System.Message;
 #include"WorldMarket.h"
-#include "TiingoDataSource.h"
+import FireBird.DataSource.Tiingo;
 import FireBird.WebProduct.Virtual;
 
 import FireBird.FinnhubInquiryType;

@@ -1,7 +1,7 @@
 #include"pch.h"
-
+module;
 #include"ChinaMarket.h"
-#include"NeteaseDayLineDataSource.h"
+module FireBird.DataSource.NeteaseDayLine;
 
 import FireBird.System.Message;
 import FireBird.WebProduct.NeteaseDayLine;

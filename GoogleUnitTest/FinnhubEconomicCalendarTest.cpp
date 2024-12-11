@@ -8,7 +8,7 @@ import FireBird.System.Message;
 
 #include"WorldMarket.h"
 
-#include"FinnhubDataSource.h"
+import FireBird.DataSource.Finnhub;
 
 #include"ProductFinnhubEconomicCalendar.h"
 

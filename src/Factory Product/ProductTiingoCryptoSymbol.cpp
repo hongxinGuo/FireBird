@@ -8,7 +8,7 @@ import FireBird.Accessory.JsonGetValue;
 import FireBird.Stock.TiingoCrypto;
 #include "ProductTiingoCryptoSymbol.h"
 
-#include "TiingoDataSource.h"
+import FireBird.DataSource.Tiingo;
 
 CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/crypto?");

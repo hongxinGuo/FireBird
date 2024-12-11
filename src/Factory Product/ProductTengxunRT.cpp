@@ -1,8 +1,8 @@
 #include"pch.h"
 module;
-#include "TengxunRTDataSource.h"
 module FireBird.WebProduct.TengxunRT;
 
+import FireBird.DataSource.TengxunRT;
 import FireBird.Accessory.JsonParse;
 
 CProductTengxunRT::CProductTengxunRT() {

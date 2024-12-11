@@ -1,11 +1,11 @@
 #include"pch.h"
 module;
-#include"SystemData.h"
 #include "WorldMarket.h"
 #include"nlohmannjsonHeader.h"
 
 module FireBird.Stock.TiingoStock;
 
+import FireBird.System.Data;
 import FireBird.Type.TiingoCompanyFinancialState;
 import FireBird.Type.TiingoIEXTopOfBook; 
 import FireBird.Type.TiingoStockDailyMeta;

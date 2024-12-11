@@ -1,4 +1,5 @@
 #include "pch.h"
+module;
 #include"ChinaMarket.h"
 module FireBird.WebProduct.VirtualChinaMarket;
 

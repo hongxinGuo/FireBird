@@ -5,7 +5,7 @@ import FireBird.Accessory.JsonParse;
 #include"TiingoFundamentalDefinition.h"
 #include "ProductTiingoFundamentalDefinition.h"
 
-#include "TiingoDataSource.h"
+import FireBird.DataSource.Tiingo;
 
 import FireBird.Simdjson.GetValue;
 #include"simdjson.h"

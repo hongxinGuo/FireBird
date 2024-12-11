@@ -2,7 +2,7 @@
 module;
 module FireBird.WebProduct.NeteaseDayLine;
 
-#include"SystemData.h"
+import FireBird.System.Data;
 import FireBird.Accessory.JsonParse;
 
 CProductNeteaseDayLine::CProductNeteaseDayLine() {

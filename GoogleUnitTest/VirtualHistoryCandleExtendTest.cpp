@@ -1,6 +1,6 @@
 ﻿#include"pch.h"
 
-#include"SystemData.h"
+import FireBird.System.Data;
 
 #include"GeneralCheck.h"
 import FireBird.System.Configuration;

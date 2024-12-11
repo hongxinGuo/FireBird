@@ -16,7 +16,7 @@ import FireBird.Stock.Finnhub;
 #include"SetFinnhubCryptoSymbol.h"
 #include"SetFinnhubForexSymbol.h"
 #include"Country.h"
-#include"FinnhubDataSource.h"
+import FireBird.DataSource.Finnhub;
 import FireBird.Stock.FinnhubCrypto;
 #include"SetEconomicCalendar.h"
 #include"EconomicCalendar.h"

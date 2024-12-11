@@ -1,8 +1,6 @@
 #pragma once
 
- 
-
-#include"TengxunDayLineDataSource.h"
+import FireBird.DataSource.TengxunDayLine;
 
 namespace testing {
 	class CMockTengxunDayLineDataSource final : public CTengxunDayLineDataSource {

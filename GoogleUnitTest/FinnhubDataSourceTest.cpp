@@ -10,7 +10,7 @@ import FireBird.Stock.FinnhubForex;
 import FireBird.Stock.FinnhubCrypto;
 
 import FireBird.System.Message;
-#include"SystemData.h"
+import FireBird.System.Data;
 
 using namespace testing;
 

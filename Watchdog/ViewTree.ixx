@@ -1,7 +1,7 @@
 #include"pch.h"
 module;
 export module Watchdog.ViewTree;
-
+import std;
 export {
 	class CViewTree : public CTreeCtrl {
 		// Construction

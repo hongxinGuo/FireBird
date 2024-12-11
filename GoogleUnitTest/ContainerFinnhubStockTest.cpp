@@ -3,7 +3,7 @@
 #include"GeneralCheck.h"
 import FireBird.Stock.Finnhub;
 
-#include"SystemData.h"
+import FireBird.System.Data;
 import FireBird.Container.FinnhubStock;
 
 using namespace testing;

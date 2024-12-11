@@ -9,7 +9,7 @@ import FireBird.System.Message;
 import FireBird.Stock.Finnhub;
 #include"WorldMarket.h"
 
-#include"TiingoDataSource.h"
+import FireBird.DataSource.Tiingo;
 
 #include"ProductTiingoFundamentalDefinition.h"
 

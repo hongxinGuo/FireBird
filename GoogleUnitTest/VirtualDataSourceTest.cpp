@@ -1,11 +1,9 @@
 #include"pch.h"
 
- 
-
 #include"GeneralCheck.h"
 import FireBird.WebProduct.NeteaseRT;
 
-#include"VirtualDataSource.h"
+import FireBird.DataSource.VirtualBase;
 
 #include"WorldMarket.h"
 

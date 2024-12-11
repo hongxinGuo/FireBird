@@ -2,10 +2,11 @@
 module;
 #include"globedef.h"
 #include <ixwebsocket/IXWebSocket.h>
-#include "TiingoDataSource.h"
-import FireBird.Accessory.JsonParse;
 module FireBird.WebSocket.TiingoIEX;
 
+import FireBird.DataSource.Quandl;
+import FireBird.DataSource.Tiingo;
+import FireBird.Accessory.JsonParse;
 import FireBird.System.Message;
 import FireBird.System.Configuration;
 import FireBird.Accessory.JsonGetValue;
