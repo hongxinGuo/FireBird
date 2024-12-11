@@ -4,7 +4,7 @@
 
 #include"GeneralCheck.h"
 
-#include"TiingoCrypto.h"
+import FireBird.Stock.TiingoCrypto;
 
 namespace FireBirdTest {
 	class CTiingoCryptoSymbolTest : public ::testing::Test {

@@ -6,6 +6,7 @@
 import FireBird.System.Message;
 
 #include "WorldMarket.h"
+import FireBird.Type.TiingoCompanyFinancialState;
 
 #include"FinnhubDataSource.h"
 #include "ChinaMarket.h"
@@ -15,6 +16,7 @@ import FireBird.System.Message;
 import FireBird.Stock.FinnhubCrypto;
 import FireBird.Stock.FinnhubForex;
 import FireBird.Stock.Finnhub;
+import FireBird.Set.TiingoFundamentalDefinition; 
 
 import FireBird.System.FinnhubInaccessibleExchange;
 import FireBird.WebSocket.Finnhub;

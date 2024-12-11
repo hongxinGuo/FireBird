@@ -1,8 +1,7 @@
 #include"pch.h"
-
+module;
+module FireBird.Stock.TiingoCrypto;
 import FireBird.System.Message;
-
-#include"TiingoCrypto.h"
 
 CTiingoCrypto::CTiingoCrypto() {
 }

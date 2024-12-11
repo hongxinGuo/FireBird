@@ -4,7 +4,7 @@ import FireBird.System.Message;
 
 import FireBird.Accessory.JsonParse;
 
-#include"TiingoStock.h"
+import FireBird.Stock.TiingoStock;
 #include "ProductTiingoStockProfile.h"
 
 #include "TiingoDataSource.h"

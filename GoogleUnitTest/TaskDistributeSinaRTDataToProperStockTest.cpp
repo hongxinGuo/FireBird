@@ -9,7 +9,7 @@ import FireBird.System.Message;
 
 #include"GeneralCheck.h"
 
-#include"ChinaStock.h"
+import FireBird.Stock.ChinaStock;
 #include"ChinaMarket.h"
 
 using namespace testing;

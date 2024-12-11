@@ -1,9 +1,9 @@
 #include"pch.h"
 module;
-#include "TiingoCrypto.h"
 export module FireBird.Container.Tinngo.CryptoSymbol;
 
 import FireBird.Container.VirtualStock;
+import FireBird.Stock.TiingoCrypto;
 
 export {
 	class CContainerTiingoCryptoSymbol : public CContainerVirtualStock {

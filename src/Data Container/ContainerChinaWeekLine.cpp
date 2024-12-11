@@ -1,11 +1,10 @@
 #include"pch.h"
-
-#include "ContainerChinaWeekLine.h"
-
-#include"SetWeekLineBasicInfo.h"
+module;
 #include"SetWeekLineExtendInfo.h"
 #include"SetCurrentWeekLine.h"
+module FireBird.Container.ChinaStockWeekLine;
 
+import FireBird.Set.ChinaStockWeekLineBasicInfo;
 import FireBird.Accessory.InfoReport;
 
 CContainerChinaWeekLine::CContainerChinaWeekLine() {

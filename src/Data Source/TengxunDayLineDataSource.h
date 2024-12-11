@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include"ChinaStock.h"
+import FireBird.Stock.ChinaStock;
 #include"VirtualDataSource.h"
 import FireBird.WebProduct.Virtual;
 

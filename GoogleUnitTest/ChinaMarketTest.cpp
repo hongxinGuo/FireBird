@@ -10,7 +10,7 @@ import FireBird.Accessory.TimeConvert;
 import FireBird.Accessory.ChinaStockCodeConverter;
 
 #include"ChinaMarket.h"
-#include"ChinaStock.h"
+import FireBird.Stock.ChinaStock;
 
 #include"SetOption.h"
 #include"SetCurrentWeekLine.h"

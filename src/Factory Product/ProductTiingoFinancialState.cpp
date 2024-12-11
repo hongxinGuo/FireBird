@@ -2,7 +2,7 @@
 
 #include"SystemData.h"
 
-#include"TiingoStock.h"
+import FireBird.Stock.TiingoStock;
 #include "ProductTiingoFinancialState.h"
 
 import FireBird.Simdjson.GetValue;

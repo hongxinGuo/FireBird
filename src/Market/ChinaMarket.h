@@ -1,12 +1,12 @@
 #pragma once
 
 #include"VirtualMarket.h"
-#include"ChinaStock.h"
-#include"ContainerChinaStock.h"
+import FireBird.Container.ChinaStock;
 
-//export #include"SystemData.h"
+import FireBird.HistoryCandle.VirtualExtend;
+import FireBird.Stock.ChinaStock;
 import FireBird.RelativeStrongReference;
-
+import FireBird.Container.ChinaStockDayLine;
 using std::set;
 using std::atomic_int64_t;
 

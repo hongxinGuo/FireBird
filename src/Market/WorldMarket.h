@@ -8,7 +8,7 @@ import FireBird.WebSocket.Finnhub;
 #include "MarketStatus.h"
 #include"MarketHoliday.h"
 import FireBird.System.Configuration;
-#include "TiingoStock.h"
+import FireBird.Stock.TiingoStock;
 import FireBird.Accessory.TimeConvert;
 
 class CWorldMarket : public CVirtualMarket {

@@ -1,14 +1,9 @@
 #include"pch.h"
 
- 
-
- 
-
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
-#include"ContainerChinaDayLine.h"
-
+import FireBird.Container.ChinaStockDayLine;
 using namespace testing;
 
 namespace FireBirdTest {

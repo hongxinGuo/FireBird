@@ -2,7 +2,7 @@
 
 #include"pch.h"
 
-#include "SetTiingoCompanyFinancialState.h"
+module FireBird.Set.TiingoCompanyFinancialState;
 
 CSetTiingoCompanyFinancialState::CSetTiingoCompanyFinancialState(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {

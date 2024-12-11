@@ -3,6 +3,10 @@
 #include"SystemData.h"
 
 #include"GeneralCheck.h"
+import FireBird.System.Configuration;
+import FireBird.System.ConstantChinaMarket;
+
+import FireBird.HistoryCandle.VirtualExtend;
 
 namespace FireBirdTest {
 	class CVirtualHistoryCandleExtendTest : public ::testing::Test {

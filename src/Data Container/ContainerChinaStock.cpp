@@ -1,7 +1,11 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"ChinaMarket.h"
+#include"SetChinaStockSymbol.h"
+module FireBird.Container.ChinaStock;
 
+import FireBird.RelativeStrongReference;
 import FireBird.System.Message;
 
 import FireBird.Accessory.ConvertToString;
@@ -9,11 +13,6 @@ import FireBird.System.ThreadStatus;
 import FireBird.Accessory.TimeConvert;
 import FireBird.Accessory.ChinaStockCodeConverter;
 import FireBird.Accessory.InfoReport;
-
-#include"ChinaMarket.h"
-#include "ContainerChinaStock.h"
-
-import FireBird.RelativeStrongReference;
  
 
 #include"SetRSStrongStock.h"

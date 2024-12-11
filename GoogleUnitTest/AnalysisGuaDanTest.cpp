@@ -1,10 +1,9 @@
 #include"pch.h"
 
- 
-
 #include"GeneralCheck.h"
 
-#include"ChinaStock.h"
+import FireBird.Stock.ChinaStock;
+import FireBird.Type.WebRTData;
 
 namespace FireBirdTest {
 	struct GuadanData {

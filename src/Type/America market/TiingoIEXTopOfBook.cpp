@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"TiingoIEXTopOFBook.h"
+module FireBird.Type.TiingoIEXTopOfBook; 
 
 CTiingoIEXTopOfBook::CTiingoIEXTopOfBook() {
 }

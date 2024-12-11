@@ -11,7 +11,7 @@ import FireBird.Accessory.ChinaStockCodeConverter;
 
 import FireBird.System.ThreadStatus;
 
-#include"ChinaStock.h"
+import FireBird.Stock.ChinaStock;
 #include"ChinaMarket.h"
 
 import FireBird.Accessory.InfoReport;

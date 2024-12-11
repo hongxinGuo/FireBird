@@ -5,7 +5,7 @@
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 #include"MockChinaStock.h"
-#include"ChinaStock.h"
+import FireBird.Stock.ChinaStock;
 
 using namespace testing;
 

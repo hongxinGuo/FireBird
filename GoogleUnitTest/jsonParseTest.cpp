@@ -1,7 +1,5 @@
 #include"pch.h"
 
- 
-
 import FireBird.System.Message;
 
 #include"GeneralCheck.h"
@@ -13,6 +11,7 @@ import FireBird.Accessory.JsonParse;
 import FireBird.Type.WebData;
 import FireBird.Type.WebRTData;
 import FireBird.System.Configuration;
+import FireBird.HistoryCandle.DayLine;
 
 namespace FireBirdTest {
 	class jsonParseTest : public testing::Test {

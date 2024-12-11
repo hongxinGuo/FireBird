@@ -1,12 +1,12 @@
 #include"pch.h"
-
-import FireBird.Accessory.TimeConvert;
-import FireBird.Accessory.ChinaStockCodeConverter;
-
-#include "ChinaStock.h"
+module;
 #include"ChinaMarket.h"
 
 #include<gsl/gsl>
+
+module FireBird.Stock.ChinaStock;
+import FireBird.Accessory.TimeConvert;
+import FireBird.Accessory.ChinaStockCodeConverter;
 using namespace gsl;
 
 ////////////////////////////////////////////////////////////////////////////////////////////

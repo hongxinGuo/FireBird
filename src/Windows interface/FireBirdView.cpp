@@ -3,7 +3,7 @@
 
 #include"pch.h"
 
-#include"ChinaStock.h"
+import FireBird.Stock.ChinaStock;
 #include"ChinaMarket.h"
 
 // SHARED_HANDayLineERS 可以在实现预览、缩略图和搜索筛选器句柄的

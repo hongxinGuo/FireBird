@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"TiingoCompanyFinancialState.h"
+module FireBird.Type.TiingoCompanyFinancialState;
 
 import FireBird.Accessory.ConvertToString;
 

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include"ChinaStock.h"
+import FireBird.Stock.ChinaStock;
 import FireBird.WindowInterface.Doc;
 
 enum {

@@ -1,9 +1,9 @@
 #include "pch.h"
 module;
-#include"SetTiingoStockDayLine.h"
-module FireBird.Container.Tiingo.StockDayLine;
+module FireBird.Container.TiingoStockDayLine;
 
 import FireBird.Accessory.InfoReport;
+import FireBird.Set.TiingoStockDayLine;
 
 CContainerTiingoStockDayLine::CContainerTiingoStockDayLine() {}
 

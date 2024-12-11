@@ -2,7 +2,7 @@
 
  
 
-#include"ChinaStock.h"
+import FireBird.Stock.ChinaStock;
 
 namespace testing {
 	class CMockChinaStock final : public CChinaStock {

@@ -8,7 +8,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "ContainerChinaStock.h"
+#include<queue>
+import FireBird.Container.ChinaStock;
 import FireBird.Container.Chosen.Crypto;
 import FireBird.Container.Chosen.Forex;
 import FireBird.Container.Chosen.Stock;
@@ -34,6 +35,8 @@ import FireBird.WebSocket.TiingoIEX;
 import FireBird.WebSocket.TiingoForex;
 import FireBird.WebSocket.TiingoCrypto;
 import FireBird.Type.DayLineWebData;
+import FireBird.Type.WebData;
+import FireBird.Type.WebRTData;
 
 // 处理后的各种数据
 extern ConcurrentQueue<CWebRTDataPtr> gl_qChinaMarketRTData; // 中国市场新浪实时数据队列。

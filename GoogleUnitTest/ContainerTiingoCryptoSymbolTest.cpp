@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-#include"TiingoCrypto.h"
+import FireBird.Stock.TiingoCrypto;
 #include"WorldMarket.h"
 
 import FireBird.Container.Tinngo.CryptoSymbol;

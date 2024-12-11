@@ -1,11 +1,11 @@
 #include"pch.h"
 
+#include"SetDayLineExtendInfo.h"
 import FireBird.Accessory.TimeConvert;
 
 import FireBird.HistoryCandle.DayLine;
-#include "ContainerChinaDayLine.h"
-#include"SetDayLineBasicInfo.h"
-#include"SetDayLineExtendInfo.h"
+import FireBird.Set.ChinaStockDayLineBasicInfo; 
+import FireBird.Container.ChinaStockDayLine;
 
 import FireBird.Accessory.InfoReport;
 

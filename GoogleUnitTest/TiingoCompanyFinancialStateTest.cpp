@@ -6,7 +6,7 @@ import FireBird.System.Configuration;
 
 #include"GeneralCheck.h"
 
-#include"TiingoCompanyFinancialState.h"
+import FireBird.Type.TiingoCompanyFinancialState;
 
 namespace FireBirdTest {
 	class CTiingoCompanyFinancialStateTest : public ::testing::Test {

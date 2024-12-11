@@ -3,11 +3,10 @@
 #include"GeneralCheck.h"
 
 import FireBird.HistoryCandle.DayLine;
-import FireBird.Container.Tiingo.StockDayLine;
+import FireBird.Container.TiingoStockDayLine;
 #include "ProductTiingoStockDayLine.h"
 
-#include"SEtTiingoStockDayLine.h"
-
+import FireBird.Set.TiingoStockDayLine;
 using namespace testing;
 
 namespace FireBirdTest {

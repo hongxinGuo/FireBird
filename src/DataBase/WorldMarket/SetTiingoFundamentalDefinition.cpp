@@ -2,7 +2,7 @@
 
 #include"pch.h"
 
-#include "SetTiingoFundamentalDefinition.h"
+module FireBird.Set.TiingoFundamentalDefinition;
 
 CSetTiingoFundamentalDefinition::CSetTiingoFundamentalDefinition(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {

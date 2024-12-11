@@ -1,8 +1,6 @@
-// CSetTiingoStock.cpp : CSetTiingoStock 类的实现
-
 #include"pch.h"
 
-#include "SetTiingoStock.h"
+module FireBird.Set.TiingoStock;
 
 CSetTiingoStock::CSetTiingoStock(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {

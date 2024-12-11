@@ -1,7 +1,7 @@
 #pragma once
 
 #include"ProductTiingo.h"
-#include"TiingoStock.h"
+import FireBird.Stock.TiingoStock;
 
 class CProductTiingoStockProfile final : public CProductTiingo {
 public:

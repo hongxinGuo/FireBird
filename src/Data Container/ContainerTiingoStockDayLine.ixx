@@ -1,9 +1,9 @@
 #include"pch.h"
 module;
-#include "SetTiingoStockDayLine.h"
-export module FireBird.Container.Tiingo.StockDayLine;
+export module FireBird.Container.TiingoStockDayLine;
 
 export import FireBird.HistoryCandle.TiingoDayLine;
+import FireBird.Set.TiingoStockDayLine;
 
 export {
 	class CContainerTiingoStockDayLine {

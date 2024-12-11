@@ -4,9 +4,10 @@
 
 #include "GeneralCheck.h"
 
-#include"SetDayLineBasicInfo.h"
-#include"SetWeekLineBasicInfo.h"
+import FireBird.System.Configuration;
 
+import FireBird.Set.ChinaStockDayLineBasicInfo; 
+import FireBird.Set.ChinaStockWeekLineBasicInfo;
 #include"SetChinaChosenStock.h"
 #include"SetWorldChosenForex.h"
 import FireBird.Set.WorldChosenCrypto;
@@ -22,7 +23,7 @@ import FireBird.Set.WorldChosenCrypto;
 #include"SetRSStrong2Stock.h"
 #include"SetRSStrongStock.h"
 #include"SetStockSection.h"
-#include"SetTiingoFundamentalDefinition.h"
+import FireBird.Set.TiingoFundamentalDefinition; 
 #include"SetWeekLineExtendInfo.h"
 
 #include"SetCountry.h"
@@ -41,9 +42,9 @@ import FireBird.Set.WorldChosenCrypto;
 #include"SetForexDayLine.h"
 
 #include "SetTiingoMarketNews.h"
-#include "SetTiingoStockDayLine.h"
-#include"SetTiingoStock.h"
-#include"SetTiingoCompanyFinancialState.h"
+import FireBird.Set.TiingoStockDayLine;
+import FireBird.Set.TiingoStock;
+import FireBird.Set.TiingoCompanyFinancialState; 
 #include"SetTiingoIndustry.h"
 #include "SetTiingoStockCurrentTrace.h"
 

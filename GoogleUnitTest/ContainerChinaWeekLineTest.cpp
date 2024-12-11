@@ -7,8 +7,7 @@ import FireBird.Accessory.TimeConvert;
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
 
-#include"ContainerChinaWeekLine.h"
-
+import FireBird.Container.ChinaStockWeekLine;
 #include"SetCurrentWeekLine.h"
 
 namespace FireBirdTest {

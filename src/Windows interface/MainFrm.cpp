@@ -2,7 +2,7 @@
 module;
 #include"globedef.h"
 #include "FireBird.h"
-#include"ChinaStock.h"
+import FireBird.Stock.ChinaStock;
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
 

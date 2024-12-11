@@ -12,7 +12,7 @@ import FireBird.System.Message;
  
 import FireBird.Accessory.TimeConvert;
 
-#include"ChinaStock.h"
+import FireBird.Stock.ChinaStock;
 
 #include"MockChinaMarket.h"
 

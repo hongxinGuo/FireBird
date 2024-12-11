@@ -1,7 +1,7 @@
 #pragma once
 
 #include"ProductTiingo.h"
-#include"TiingoCrypto.h"
+import FireBird.Stock.TiingoCrypto;
 
 class CProductTiingoCryptoSymbol final : public CProductTiingo {
 public:

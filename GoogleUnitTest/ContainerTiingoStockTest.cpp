@@ -5,7 +5,7 @@
 #include"GeneralCheck.h"
 
 #include"WorldMarket.h"
-
+import FireBird.Set.TiingoStock;
 import FireBird.Container.Tiingo.Stock;
 
 using namespace testing;

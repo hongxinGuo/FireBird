@@ -1,10 +1,11 @@
 #include "pch.h"
 module;
-#include "TiingoCrypto.h"
+#include"SetTiingoCrypto.h"
 module FireBird.Container.Tinngo.CryptoSymbol;
 
 import FireBird.Container.VirtualStock;
 import FireBird.Accessory.InfoReport;
+import FireBird.Stock.TiingoCrypto;
 
 CContainerTiingoCryptoSymbol::CContainerTiingoCryptoSymbol() {
 	CContainerTiingoCryptoSymbol::Reset();

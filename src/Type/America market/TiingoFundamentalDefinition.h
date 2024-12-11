@@ -1,6 +1,6 @@
 #pragma once
 
-#include"SetTiingoFundamentalDefinition.h"
+import FireBird.Set.TiingoFundamentalDefinition;
 
 #include<memory>
 #include<vector>

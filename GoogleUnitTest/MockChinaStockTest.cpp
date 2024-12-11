@@ -4,7 +4,7 @@
 
  
 
-#include"ChinaStock.h"
+import FireBird.Stock.ChinaStock;
 #include"ChinaMarket.h"
 
 #include"MockChinaStock.h"

@@ -5,9 +5,12 @@
 #include"SystemData.h"
 
 #include"GeneralCheck.h"
-#include "SetTiingoStockDayLine.h"
+import FireBird.Set.TiingoStockDayLine;
+import FireBird.Type.TiingoIEXTopOfBook; 
+import FireBird.Type.TiingoCompanyFinancialState;
 
-#include"TiingoStock.h"
+import FireBird.Stock.TiingoStock;
+
 #include "WorldMarket.h"
 
 namespace FireBirdTest {

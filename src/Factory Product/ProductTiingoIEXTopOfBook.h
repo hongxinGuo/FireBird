@@ -1,7 +1,7 @@
 #pragma once
 
 #include"ProductTiingo.h"
-#include "TiingoIEXTopOFBook.h"
+import FireBird.Type.TiingoIEXTopOfBook; 
 
 class CProductTiingoIEXTopOfBook final : public CProductTiingo {
 public:

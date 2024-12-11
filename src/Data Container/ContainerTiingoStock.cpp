@@ -5,9 +5,8 @@ module;
 
 #include"SystemData.h"
 #include "SetTiingoStockCurrentTrace.h"
-#include "SetTiingoStockDayLine.h"
 #include "WorldMarket.h"
-#include"TiingoStock.h"
+import FireBird.Stock.TiingoStock;
 
 module FireBird.Container.Tiingo.Stock;
 
@@ -15,6 +14,7 @@ import FireBird.System.Message;
 import FireBird.Accessory.InfoReport;
 import FireBird.System.ThreadStatus;
 import FireBird.Accessory.TimeConvert;
+import FireBird.Set.TiingoStockDayLine;
 
 CContainerTiingoStock::CContainerTiingoStock() {
 	CContainerTiingoStock::Reset();

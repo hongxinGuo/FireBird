@@ -2,7 +2,7 @@
 
  
  
-#include"ChinaStock.h"
+import FireBird.Stock.ChinaStock;
 
 #include"GeneralCheck.h"
 import FireBird.Accessory.TimeConvert;

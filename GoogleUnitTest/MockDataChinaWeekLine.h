@@ -1,8 +1,6 @@
 #pragma once
 
- 
-
-#include"ContainerChinaWeekLine.h"
+import FireBird.Container.ChinaStockWeekLine;
 
 namespace testing {
 	class CMockDataChinaWeekLine final : public CContainerChinaWeekLine {

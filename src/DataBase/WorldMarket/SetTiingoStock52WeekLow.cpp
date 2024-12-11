@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SetTiingoStock52WeekLow.h"
+module FireBird.Set.TiingoStock52WeekLow;
 
 CSetTiingoStock52WeekLow::CSetTiingoStock52WeekLow(const CString& strSchema, const CString& strTable, CDatabase* pDatabase)
 	: CVirtualRecordset(strSchema, strTable, pDatabase) {

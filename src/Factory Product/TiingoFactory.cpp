@@ -14,7 +14,6 @@ module;
 #include "ProductTiingoIEXTopOFBook.h"
 #include "ProductTiingoMarketNews.h"
 #include "ProductTiingoStockDailyMeta.h"
-#include "TiingoIEXTopOFBook.h"
 #include"VirtualMarket.h"
 module FireBird.Factory.Tiingo; 
 
@@ -22,6 +21,7 @@ import FireBird.System.Message;
 import FireBird.WebProduct.Virtual;
 import FireBird.WebProduct.Dummy;
 import FireBird.FinnhubInquiryType;
+import FireBird.Type.TiingoIEXTopOfBook; 
 
 
 CVirtualProductWebDataPtr CTiingoFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {

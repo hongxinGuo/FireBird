@@ -1,15 +1,22 @@
 #include"pch.h"
-
+module;
 #include"SystemData.h"
-import FireBird.System.Message;
-
-#include"TiingoStock.h"
-
-import FireBird.Accessory.ConvertToString;
-
-#include "TiingoStockDailyMeta.h"
-import FireBird.Accessory.TimeConvert;
 #include "WorldMarket.h"
+#include"nlohmannjsonHeader.h"
+
+module FireBird.Stock.TiingoStock;
+
+import FireBird.Type.TiingoCompanyFinancialState;
+import FireBird.Type.TiingoIEXTopOfBook; 
+import FireBird.Type.TiingoStockDailyMeta;
+
+import FireBird.Set.TiingoStock;
+import FireBird.Set.TiingoStock52WeekHigh;
+import FireBird.Set.TiingoStock52WeekLow;
+import FireBird.Set.TiingoStockDayLine;
+import FireBird.Accessory.ConvertToString;
+import FireBird.System.Message;
+import FireBird.Accessory.TimeConvert;
 
 CTiingoStock::CTiingoStock() {
 	m_v52WeekHigh.clear();

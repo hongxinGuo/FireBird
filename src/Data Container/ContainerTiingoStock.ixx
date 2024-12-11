@@ -1,9 +1,9 @@
 #include"pch.h"
 module;
-#include"TiingoStock.h"
 export module FireBird.Container.Tiingo.Stock;
 
 import FireBird.Container.VirtualStock;
+import FireBird.Stock.TiingoStock;
 
 export {
 	class CContainerTiingoStock : public CContainerVirtualStock {

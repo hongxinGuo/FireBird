@@ -1,10 +1,8 @@
 #include"pch.h"
 
- 
-
 #include"GeneralCheck.h"
 
-#include"ChinaStock.h"
+import FireBird.Stock.ChinaStock;
 
 namespace FireBirdTest {
 	struct HighLowData {
