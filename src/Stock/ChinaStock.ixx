@@ -3,6 +3,7 @@
 #include"pch.h"
 module;
 #include"ConcurrentQueueHeader.h"
+#include"nlohmannJsonHeader.h"
 #include"SetDayLineExtendInfo.h"
 #include"SetDayLineTodaySaved.h"
 #include"SetChinaStockSymbol.h"

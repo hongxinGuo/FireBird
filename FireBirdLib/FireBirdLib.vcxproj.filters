@@ -37,9 +37,6 @@
     <Filter Include="头文件\Data container\China Market">
       <UniqueIdentifier>{495b8275-5277-4365-be95-2d9235b90bdd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Data container\WorldMarket">
-      <UniqueIdentifier>{39c09b90-7b46-4ebb-b1f5-5c8b6c6b90ca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\Data container">
       <UniqueIdentifier>{107cf94d-eda4-4438-a081-7246d11dc4e3}</UniqueIdentifier>
     </Filter>
@@ -264,9 +261,6 @@
     <ClInclude Include="..\src\Type\America market\NaicsIndustry.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Windows interface\FireBirdView.h">
-      <Filter>头文件\Windows interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -341,9 +335,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockProfile.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\globedef.h">
-      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketStatus.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
@@ -1274,12 +1265,6 @@
     <ClCompile Include="..\src\Data Container\ContainerCryptoDayLine.ixx">
       <Filter>头文件\Data container</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Container\ContainerFinnhubStock.ixx">
-      <Filter>头文件\Data container\WorldMarket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Container\ContainerFinnhubStockDayline.ixx">
-      <Filter>头文件\Data container\WorldMarket</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductNeteaseDayline.ixx">
       <Filter>头文件\Factory-Product\ChinaMarket</Filter>
     </ClCompile>
@@ -1447,6 +1432,18 @@
     </ClCompile>
     <ClCompile Include="..\src\Market\WorldMarket.ixx">
       <Filter>头文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Windows interface\FireBirdView.ixx">
+      <Filter>头文件\Windows interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\globedef.ixx">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubStock.ixx">
+      <Filter>头文件\Data container\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerFinnhubStockDayline.ixx">
+      <Filter>头文件\Data container\Finnhub</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

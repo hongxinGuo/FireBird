@@ -2,7 +2,7 @@
 
  
 
-#include"globedef.h"
+import FireBird.System.Globedef;
 
 #include"GeneralCheck.h"
 

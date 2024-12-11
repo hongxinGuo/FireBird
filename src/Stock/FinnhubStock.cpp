@@ -1,7 +1,5 @@
 #include"pch.h"
 module;
-import FireBird.Market.World;
-
 #include"FinnhubCompanyNews.h"
 #include"InsiderSentiment.h"
 #include"InsiderTransaction.h"
@@ -17,6 +15,7 @@ import FireBird.Market.World;
 #include"SetFinnhubStock.h"
 module FireBird.Stock.Finnhub;
 
+import FireBird.Market.World;
 import FireBird.Accessory.InfoReport;
 import FireBird.Accessory.JsonParse;
 import FireBird.System.Message;

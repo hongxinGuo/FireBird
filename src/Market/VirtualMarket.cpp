@@ -1,9 +1,9 @@
 #include"pch.h"
-#include"globedef.h"
 #include"ConcurrentQueueHeader.h"
 module FireBird.Market.Virtual;
 
 import FireBird.DataSource.Virtual;
+import FireBird.System.Globedef;
 import FireBird.Accessory.TimeConvert;
 
 CVirtualMarket::CVirtualMarket() {

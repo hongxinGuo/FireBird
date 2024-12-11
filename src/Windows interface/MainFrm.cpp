@@ -1,6 +1,6 @@
 ﻿#include"pch.h"
 module;
-#include"globedef.h"
+import FireBird.System.Globedef;
 #include "FireBird.h"
 #include <ixwebsocket/IXNetSystem.h>
 #include"ConCurrenCppHeader.h"

@@ -1,8 +1,8 @@
 #include"pch.h"
 module;
-import FireBird.Market.China;
 export module FireBird.WebProduct.NeteaseDayLine;
 
+import FireBird.Market.China;
 export import FireBird.WebProduct.VirtualChinaMarket;
 
 export {

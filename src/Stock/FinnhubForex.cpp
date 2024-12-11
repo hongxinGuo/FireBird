@@ -1,7 +1,8 @@
 #include"pch.h"
 module;
-import FireBird.Market.World;
 module FireBird.Stock.FinnhubForex;
+
+import FireBird.Market.World;
 
 CFinnhubForex::CFinnhubForex() {
 }

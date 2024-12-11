@@ -1,9 +1,9 @@
 #include "pch.h"
 module;
-import FireBird.Market.World;
 #include"SetWorldChosenStock.h"
 module FireBird.Container.Chosen.Stock;
 
+import FireBird.Market.World;
 import FireBird.Stock.Finnhub;
 import FireBird.System.Data;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include"FireBirdView.h"
+import FireBird.WindowInterface.View;
 
 namespace testing {
 	class CMockFireBirdView final : public CFireBirdView {

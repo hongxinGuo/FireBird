@@ -1,4 +1,6 @@
 #include"pch.h"
+module;
+#include"nlohmannJsonHeader.h"
 export module FireBird.Container.ChinaStock;
 
 import FireBird.Container.VirtualStock;

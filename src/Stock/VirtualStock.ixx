@@ -1,6 +1,5 @@
 #include"pch.h"
 module;
-
 #include"NlohmannJsonHeader.h"
 export module FireBird.Stock.Virtual;
 using std::shared_ptr;

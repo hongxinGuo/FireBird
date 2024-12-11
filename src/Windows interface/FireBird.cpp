@@ -2,9 +2,10 @@
 //
 #include"pch.h"
 
-#include"globedef.h"
+import FireBird.System.Globedef;
 
 #include "FireBird.h"
+#include <spdlog/spdlog.h>
 
 import FireBird.WindowInterface.MainFrm;
 
@@ -13,9 +14,7 @@ import FireBird.WindowInterface.ChildFrm;
 import FireBird.Accessory.InfoReport;
 import FireBird.System.Configuration;
 
-#include "FireBirdView.h"
-
-#include <spdlog/spdlog.h>
+import FireBird.WindowInterface.View;
 
 // IXWebSocket需要OpenSSL，本系统直接使用。
 #ifdef _DEBUG

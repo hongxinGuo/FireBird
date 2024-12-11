@@ -37,7 +37,7 @@
 
  
 
-#include"globedef.h"
+import FireBird.System.Globedef;
 
 #include <spdlog/sinks/basic_file_sink.h>
 

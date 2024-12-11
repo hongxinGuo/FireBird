@@ -1,5 +1,6 @@
 #include"pch.h"
 module;
+#include"nlohmannJsonHeader.h"
 export module FireBird.Container.Finnhub.ForexSymbol;
 
 import FireBird.Container.VirtualStock;

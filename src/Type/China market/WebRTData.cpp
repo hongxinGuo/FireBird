@@ -1,6 +1,6 @@
 ﻿#include"pch.h"
 module;
-#include"globedef.h"
+import FireBird.System.Globedef;
 import FireBird.Market.China;
 module FireBird.Type.WebRTData;
 

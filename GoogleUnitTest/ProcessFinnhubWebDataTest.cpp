@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"globedef.h"
+import FireBird.System.Globedef;
 #include"NlohmannJsonHeader.h"
 import FireBird.Stock.Finnhub;
 import FireBird.System.Message;

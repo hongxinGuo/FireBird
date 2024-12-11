@@ -3,7 +3,7 @@
  
  
 
-#include"globedef.h"
+import FireBird.System.Globedef;
 #include"ConcurrentQueueHeader.h"
 
 import FireBird.System.Message;

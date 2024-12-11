@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include"globedef.h"
+import FireBird.System.Globedef;
 import FireBird.Accessory.JsonParse;
 import FireBird.Market.World;
 import FireBird.Stock.Finnhub;

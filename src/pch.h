@@ -25,4 +25,6 @@ using namespace std;
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
+#define __MAX_BACKGROUND_WORKING_THREAD__ 32
+
 #endif

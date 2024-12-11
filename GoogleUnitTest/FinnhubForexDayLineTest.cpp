@@ -3,7 +3,7 @@
  
  
 
-#include"globedef.h"
+import FireBird.System.Globedef;
 
 import FireBird.System.Message;
 #include"GeneralCheck.h"

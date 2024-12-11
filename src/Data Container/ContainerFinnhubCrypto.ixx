@@ -1,5 +1,6 @@
 #include"pch.h"
 module;
+#include"nlohmannJsonHeader.h"
 export module FireBird.Container.Finnhub.Crypto;
 import FireBird.Container.VirtualStock;
 import FireBird.Stock.FinnhubCrypto;

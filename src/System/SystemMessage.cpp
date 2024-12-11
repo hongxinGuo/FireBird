@@ -1,9 +1,9 @@
 #include"pch.h"
 module;
-#include"globedef.h"
 #include"concurrentqueueHeader.h"
 module FireBird.System.Message;
 
+import FireBird.System.Globedef;
 import FireBird.System.Configuration;
 import FireBird.WindowInterface.OutputWnd;
 

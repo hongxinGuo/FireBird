@@ -10,8 +10,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 module;
-import FireBird.Market.China;
 module FireBird.DataSource.TengxunDayLine;
+
+import FireBird.Market.China;
 import FireBird.WebProduct.TengxunDayLine;
 import FireBird.System.Message;
 

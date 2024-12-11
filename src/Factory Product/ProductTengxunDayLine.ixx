@@ -7,9 +7,9 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 module;
-import FireBird.Market.China;
 export module FireBird.WebProduct.TengxunDayLine;
 
+import FireBird.Market.China;
 import FireBird.WebProduct.VirtualChinaMarket;
 
 export {

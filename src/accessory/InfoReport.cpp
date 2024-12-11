@@ -1,8 +1,9 @@
 #include"pch.h"
 module;
-#include"globedef.h"
 #include <spdlog/sinks/basic_file_sink.h>
 module FireBird.Accessory.InfoReport;
+
+import FireBird.System.Globedef;
 import FireBird.System.Message;
 
 void ReportErrorToSystemMessage(const CString& strPrefix, const exception& e) {

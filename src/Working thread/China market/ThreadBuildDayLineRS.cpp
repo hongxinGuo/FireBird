@@ -8,7 +8,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-#include"globedef.h"
+import FireBird.System.Globedef;
 #include"ConCurrenCppHeader.h"
 
 import FireBird.Market.China;

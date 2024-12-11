@@ -2,7 +2,7 @@
 
  
 
-#include"globedef.h"
+import FireBird.System.Globedef;
 
 import FireBird.Market.World;
 import FireBird.Market.China;

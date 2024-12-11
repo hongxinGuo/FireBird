@@ -2,19 +2,20 @@
 //
 
 #include"pch.h"
-import FireBird.System.Data;
-
-import FireBird.Stock.ChinaStock;
-import FireBird.Market.China;
-
+module;
 // SHARED_HANDayLineERS 可以在实现预览、缩略图和搜索筛选器句柄的
 // ATL 项目中进行定义，并允许与该项目共享文档代码。
 #ifndef SHARED_HANDayLineERS
 #include "FireBird.h"
 #endif
 
+module FireBird.WindowInterface.View;
+
+import FireBird.System.Data;
 import FireBird.WindowInterface.Doc;
-#include "FireBirdView.h"
+
+import FireBird.Stock.ChinaStock;
+import FireBird.Market.China;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
