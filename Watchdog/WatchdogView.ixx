@@ -1,5 +1,5 @@
-#include"pch.h"
 module;
+#include"pch.h"
 export module Watchdog.View;
 
 import Watchdog.Document;

@@ -1,7 +1,7 @@
+module;
 #include"pch.h"
-
 #include "Resource.h"
-import Watchdog.OutputWnd;
+module Watchdog.OutputWnd;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

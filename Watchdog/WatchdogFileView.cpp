@@ -1,9 +1,10 @@
+module;
 #include"pch.h"
 
 #include "Resource.h"
+module Watchdog.FileView;
 import Watchdog.App;
 import Watchdog.MainFrm;
-import Watchdog.FileView;
 
 #ifdef _DEBUG
 #undef THIS_FILE

@@ -1,8 +1,9 @@
+module;
 #include"pch.h"
-
 #include "resource.h"
+module Watchdog.PropertiesWnd;
+
 import Watchdog.App;
-import Watchdog.PropertiesWnd;
 
 #ifdef _DEBUG
 #undef THIS_FILE

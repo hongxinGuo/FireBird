@@ -1,6 +1,6 @@
 // WatchdogDoc.cpp : implementation of the CWatchdogDoc class
 //
-
+module;
 #include"pch.h"
 
 // SHARED_HANDLERS can be defined in an ATL project implementing preview, thumbnail
@@ -8,8 +8,7 @@
 #ifndef SHARED_HANDLERS
 //#include "Watchdog.h"
 #endif
-
-import Watchdog.Document;
+module Watchdog.Document;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

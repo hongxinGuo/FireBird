@@ -1,8 +1,9 @@
+module;
 #include"pch.h"
-
 #include "resource.h"
+module Watchdog.ClassView;
+
 import Watchdog.App;
-import Watchdog.ClassView;
 
 class CClassViewMenuButton : public CMFCToolBarMenuButton {
 	friend class CWatchdogClassView;

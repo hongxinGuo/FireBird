@@ -1,11 +1,10 @@
-// MainFrm.cpp : implementation of the CWatchdogMainFrame class
-//
+module;
 #include"pch.h"
 
 #include"afxmsg_.h"
 #include "resource.h"
+module Watchdog.MainFrm;
 
-import Watchdog.MainFrm;
 import Watchdog.App;
 
 #ifdef _DEBUG

@@ -1,6 +1,6 @@
+module;
 #include"pch.h"
-
-import Watchdog.ViewTree;
+module Watchdog.ViewTree;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
