@@ -4,7 +4,7 @@
 
 #include"pch.h"
 
-#include "SetCountry.h"
+import FireBird.Set.FinnhubCountry;
 
 CSetCountry::CSetCountry(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {

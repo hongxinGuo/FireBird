@@ -1,6 +1,6 @@
 #pragma once
 
-#include"SetTiingoMarketNews.h"
+import FireBird.Set.TiingoMarketNews;
 
 #include<memory>
 #include<vector>

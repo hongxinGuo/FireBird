@@ -237,12 +237,6 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetWeekLineExtendInfo.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenForex.h">
-      <Filter>头文件\database\WorldMarket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h">
-      <Filter>头文件\database\WorldMarket</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Type\America market\Country.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
@@ -348,9 +342,6 @@
     <ClInclude Include="..\src\Type\America market\MarketHoliday.h">
       <Filter>头文件\Type\America market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingo.h">
-      <Filter>头文件\Factory-Product\Tiingo</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h">
       <Filter>头文件\Factory-Product\Finnhub</Filter>
     </ClInclude>
@@ -360,26 +351,11 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoFinancialState.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyDividend.h">
-      <Filter>头文件\Factory-Product\Tiingo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoDayLine.h">
-      <Filter>头文件\Factory-Product\Tiingo</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingoForexDayLine.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.h">
-      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.h">
-      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.h">
-      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubCryptoExchange.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
@@ -403,9 +379,6 @@
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockExchange.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetCountry.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetEconomicCalendar.h">
@@ -1444,6 +1417,33 @@
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductFinnhubStockPriceQuote.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetWorldChosenForex.ixx">
+      <Filter>头文件\database\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.ixx">
+      <Filter>头文件\database\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.ixx">
+      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.ixx">
+      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.ixx">
+      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetCountry.ixx">
+      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingo.ixx">
+      <Filter>头文件\Factory-Product\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingoCompanyDividend.ixx">
+      <Filter>头文件\Factory-Product\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoDayLine.ixx">
+      <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

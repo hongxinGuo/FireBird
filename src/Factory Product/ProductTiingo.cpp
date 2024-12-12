@@ -1,6 +1,7 @@
 #include"pch.h"
 
-#include"ProductTiingo.h"
+module FireBird.Product.Tiingo.Base;
+
 import FireBird.DataSource.Virtual;
 import FireBird.DataSource.Tiingo;
 

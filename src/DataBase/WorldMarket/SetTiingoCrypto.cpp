@@ -2,7 +2,7 @@
 
 #include"pch.h"
 
-#include "SetTiingoCrypto.h"
+import FireBird.Set.TiingoCrypto;
 
 CSetTiingoCrypto::CSetTiingoCrypto(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {

@@ -1,8 +1,8 @@
 #include "pch.h"
 module;
-#include"SetWorldChosenForex.h"
 module FireBird.Container.Chosen.Forex;
 
+import FireBird.Set.WorldChosenForex;
 import FireBird.Stock.FinnhubForex;
 import FireBird.System.Data;
 

@@ -7,7 +7,7 @@
 import FireBird.Market.China;
 import FireBird.System.FinnhubInaccessibleExchange;
 
-import FireBird.WebProduct.VirtualChinaMarket;
+import FireBird.Product.VirtualChinaMarket;
 
 using namespace testing;
 

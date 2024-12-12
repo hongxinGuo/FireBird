@@ -9,7 +9,7 @@ import FireBird.System.Message;
 import FireBird.DataSource.TengxunDayLine;
 //import FireBird.Market.World;
 import FireBird.Market.China;
-import FireBird.WebProduct.TengxunDayLine;
+import FireBird.Product.TengxunDayLine;
 
 using namespace testing;
 

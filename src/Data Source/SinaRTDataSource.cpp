@@ -1,7 +1,7 @@
 #include"pch.h"
 
 import FireBird.DataSource.SinaRT;
-import FireBird.WebProduct.SinaRT;
+import FireBird.Product.SinaRT;
 
 import FireBird.Market.China;
 import FireBird.System.Configuration;

@@ -8,7 +8,7 @@ import FireBird.Accessory.JsonGetValue;
 import FireBird.Stock.Finnhub;
 import FireBird.Market.World;
 
-#include "ProductTiingoCryptoDayLine.h"
+import FireBird.Product.Tiingo.CryptoDayLine;
 
 import FireBird.Accessory.TimeConvert;
 

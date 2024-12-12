@@ -10,7 +10,7 @@ import FireBird.DataSource.Tiingo;
 import FireBird.Market.World;
 import FireBird.Stock.TiingoStock;
 
-import FireBird.WebProduct.Dummy;
+import FireBird.Product.Dummy;
 
 using namespace testing;
 

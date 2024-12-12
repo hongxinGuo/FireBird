@@ -3,7 +3,7 @@ module;
 export module FireBird.Factory.Quandl;
 
 import FireBird.Market.Virtual;
-import FireBird.WebProduct.Virtual;
+import FireBird.Product.Virtual;
 import FireBird.DataSource.Virtual;
 
 import  FireBird.Factory.Virtual;

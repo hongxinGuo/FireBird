@@ -8,7 +8,7 @@ import FireBird.DataSource.NeteaseDayLine;
 import FireBird.Market.China;
 import FireBird.Accessory.ChinaStockCodeConverter;
 import FireBird.DataSource.SinaRT;
-import FireBird.WebProduct.Virtual;
+import FireBird.Product.Virtual;
 
 using namespace testing;
 

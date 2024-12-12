@@ -19,7 +19,7 @@ import FireBird.System.Configuration;
 import FireBird.System.Message;
 import FireBird.FinnhubInquiryType;
 import FireBird.System.FinnhubInaccessibleExchange;
-import FireBird.WebProduct.Virtual;
+import FireBird.Product.Virtual;
 import FireBird.Accessory.TimeConvert;
 
 map<string, enum_ErrorMessageData> mapFinnhubErrorMap{

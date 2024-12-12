@@ -1,9 +1,9 @@
 #include"pch.h"
 module;
-export module FireBird.WebProduct.TengxunRT;
+export module FireBird.Product.TengxunRT;
 
 import FireBird.Market.China;
-import FireBird.WebProduct.VirtualChinaMarket;
+import FireBird.Product.VirtualChinaMarket;
 
 export {
 	class CProductTengxunRT final : public CVirtualChinaMarketWebProduct {

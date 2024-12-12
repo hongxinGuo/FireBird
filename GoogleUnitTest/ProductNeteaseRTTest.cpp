@@ -5,7 +5,7 @@
 
 import FireBird.Market.China;
 
-import FireBird.WebProduct.NeteaseRT;
+import FireBird.Product.NeteaseRT;
 
 using namespace testing;
 

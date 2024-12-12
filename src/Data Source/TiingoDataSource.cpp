@@ -6,7 +6,7 @@
 import FireBird.System.Message;
 import FireBird.Market.World;
 import FireBird.DataSource.Tiingo;
-import FireBird.WebProduct.Virtual;
+import FireBird.Product.Virtual;
 
 import FireBird.FinnhubInquiryType;
 import FireBird.Tiingo.InaccessibleStock; 

@@ -5,7 +5,7 @@
 
 import FireBird.Market.China;
 
-import FireBird.WebProduct.SinaRT;
+import FireBird.Product.SinaRT;
 
 using namespace testing;
 

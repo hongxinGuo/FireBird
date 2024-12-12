@@ -1,7 +1,7 @@
 #include"pch.h"
 module;
-export module FireBird.WebProduct.Dummy;
-import FireBird.WebProduct.Virtual;
+export module FireBird.Product.Dummy;
+import FireBird.Product.Virtual;
 
 
 export {

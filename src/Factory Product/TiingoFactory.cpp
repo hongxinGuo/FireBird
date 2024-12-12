@@ -17,8 +17,8 @@ import FireBird.DataSource.Virtual;
 
 import FireBird.System.Data;
 import FireBird.System.Message;
-import FireBird.WebProduct.Virtual;
-import FireBird.WebProduct.Dummy;
+import FireBird.Product.Virtual;
+import FireBird.Product.Dummy;
 import FireBird.FinnhubInquiryType;
 import FireBird.Type.TiingoIEXTopOfBook; 
 

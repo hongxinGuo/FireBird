@@ -1,13 +1,11 @@
 #include"pch.h"
 module;
 #include"nlohmannjsonHeader.h"
-
-#include"SetTiingoCrypto.h"
-
 #include<memory>
 #include<vector>
 export module FireBird.Stock.TiingoCrypto;
 
+import FireBird.Set.TiingoCrypto;
 import FireBird.Stock.Virtual;
 
 export {

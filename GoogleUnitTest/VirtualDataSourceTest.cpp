@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-import FireBird.WebProduct.NeteaseRT;
+import FireBird.Product.NeteaseRT;
 
 import FireBird.DataSource.Virtual;
 

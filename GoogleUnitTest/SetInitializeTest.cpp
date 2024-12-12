@@ -1,17 +1,9 @@
 #include"pch.h"
 
-import FireBird.System.Data;
 
 #include "GeneralCheck.h"
-
-import FireBird.System.Configuration;
-
-import FireBird.Set.ChinaStockDayLineBasicInfo; 
-import FireBird.Set.ChinaStockWeekLineBasicInfo;
 #include"SetChinaChosenStock.h"
-#include"SetWorldChosenForex.h"
-import FireBird.Set.WorldChosenCrypto;
-#include"SetWorldChosenStock.h"
+
 
 #include"SetChinaStockSymbol.h"
 #include"SetCurrentWeekLine.h"
@@ -23,10 +15,9 @@ import FireBird.Set.WorldChosenCrypto;
 #include"SetRSStrong2Stock.h"
 #include"SetRSStrongStock.h"
 #include"SetStockSection.h"
-import FireBird.Set.TiingoFundamentalDefinition; 
 #include"SetWeekLineExtendInfo.h"
 
-#include"SetCountry.h"
+import FireBird.Set.FinnhubCountry;
 #include"SetFinnhubStockBasicFinancialMetric.h"
 #include"SetFinnhubStockBasicFinancialAnnual.h"
 #include"SetFinnhubStockBasicFinancialQuarter.h"
@@ -41,12 +32,21 @@ import FireBird.Set.TiingoFundamentalDefinition;
 #include"SetCryptoDayLine.h"
 #include"SetForexDayLine.h"
 
-#include "SetTiingoMarketNews.h"
+import FireBird.Set.TiingoMarketNews;
+#include "SetTiingoStockCurrentTrace.h"
+import FireBird.Set.TiingoFundamentalDefinition; 
 import FireBird.Set.TiingoStockDayLine;
 import FireBird.Set.TiingoStock;
 import FireBird.Set.TiingoCompanyFinancialState; 
-#include"SetTiingoIndustry.h"
-#include "SetTiingoStockCurrentTrace.h"
+import FireBird.Set.TiingoIndustry;
+import FireBird.System.Data;
+import FireBird.System.Configuration;
+
+import FireBird.Set.ChinaStockDayLineBasicInfo; 
+import FireBird.Set.ChinaStockWeekLineBasicInfo;
+import FireBird.Set.WorldChosenForex;
+import FireBird.Set.WorldChosenCrypto;
+import FireBird.Set.WorldChosenStock;
 
 using namespace testing;
 

@@ -6,7 +6,7 @@
 import FireBird.Market.World;
 import FireBird.Market.China;
 
-import FireBird.WebProduct.TengxunRT;
+import FireBird.Product.TengxunRT;
 
 using namespace testing;
 

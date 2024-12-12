@@ -1,8 +1,7 @@
 #pragma once
 
-#include"SetTiingoIndustry.h"
-
 #include<memory>
+import FireBird.Set.TiingoIndustry;
 
 class CTiingoIndustry final {
 public:

@@ -11,7 +11,7 @@ import FireBird.System.Message;
 
 import FireBird.Accessory.TimeConvert;
 import FireBird.Accessory.JsonGetValue;
-import FireBird.WebProduct.Virtual;
+import FireBird.Product.Virtual;
 import FireBird.System.Data;
 
 CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {

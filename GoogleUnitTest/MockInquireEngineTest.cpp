@@ -9,7 +9,7 @@
 
 import FireBird.System.Configuration;
 import FireBird.System.Message;
-import FireBird.WebProduct.Dummy;
+import FireBird.Product.Dummy;
 
 using namespace testing;
 class CVirtualWebProduct;

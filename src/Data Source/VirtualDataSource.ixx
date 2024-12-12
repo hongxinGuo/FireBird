@@ -6,7 +6,7 @@ export module FireBird.DataSource.Virtual;
 import FireBird.DataSource.InquireEngine;
 export import FireBird.Type.WebData;
 export import FireBird.System.Data;
-export import FireBird.WebProduct.Virtual;
+export import FireBird.Product.Virtual;
 
 using std::queue;
 

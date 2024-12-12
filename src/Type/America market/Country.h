@@ -1,6 +1,6 @@
 #pragma once
 
-#include"SetCountry.h"
+import FireBird.Set.FinnhubCountry;
 
 using std::vector;
 using std::shared_ptr;

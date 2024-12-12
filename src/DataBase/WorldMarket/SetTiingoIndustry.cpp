@@ -2,7 +2,7 @@
 
 #include"pch.h"
 
-#include "SetTiingoIndustry.h"
+import FireBird.Set.TiingoIndustry;
 
 CSetTiingoIndustry::CSetTiingoIndustry(const CString& strSchema, const CString& strTable, CDatabase* pdb)
 	: CVirtualRecordset(strSchema, strTable, pdb) {

@@ -4,7 +4,7 @@ export module FireBird.Factory.Finnhub;
 
 import FireBird.Market.Virtual;
 import FireBird.DataSource.Virtual;
-import FireBird.WebProduct.Virtual;
+import FireBird.Product.Virtual;
 import  FireBird.Factory.Virtual;
 
 export {

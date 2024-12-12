@@ -13,7 +13,7 @@ module;
 module FireBird.DataSource.TengxunDayLine;
 
 import FireBird.Market.China;
-import FireBird.WebProduct.TengxunDayLine;
+import FireBird.Product.TengxunDayLine;
 import FireBird.System.Message;
 
 import FireBird.Accessory.ChinaStockCodeConverter;

@@ -35,9 +35,9 @@ import FireBird.DataSource.Virtual;
 import FireBird.Stock.Finnhub;
 import FireBird.System.Message;
 import FireBird.FinnhubInquiryType;
-import FireBird.WebProduct.Dummy;
+import FireBird.Product.Dummy;
 
-import FireBird.WebProduct.Virtual;
+import FireBird.Product.Virtual;
 
 CVirtualProductWebDataPtr CFinnhubFactory::CreateProduct(CVirtualMarketPtr pMarket, int iInquireType) {
 	CVirtualProductWebDataPtr p = nullptr;

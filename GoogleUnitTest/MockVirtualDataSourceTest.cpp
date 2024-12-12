@@ -7,7 +7,7 @@
 #include"MockVirtualDataSource.h"
 
 #include"GeneralCheck.h"
-import FireBird.WebProduct.Dummy;
+import FireBird.Product.Dummy;
 
 using namespace testing;
 

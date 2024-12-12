@@ -7,7 +7,7 @@
 #include"pch.h"
 module;
 #include"NlohmannJsonHeader.h"
-export module FireBird.WebProduct.Virtual;
+export module FireBird.Product.Virtual;
 
 import FireBird.Type.WebData;
 using std::vector;

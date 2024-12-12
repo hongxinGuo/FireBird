@@ -7,10 +7,10 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 module;
-export module FireBird.WebProduct.TengxunDayLine;
+export module FireBird.Product.TengxunDayLine;
 
 import FireBird.Market.China;
-import FireBird.WebProduct.VirtualChinaMarket;
+import FireBird.Product.VirtualChinaMarket;
 
 export {
 	class CProductTengxunDayLine final : public CVirtualChinaMarketWebProduct {

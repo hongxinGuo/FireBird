@@ -4,7 +4,7 @@
 
 #include"GeneralCheck.h"
 import FireBird.Market.World;
-import FireBird.WebProduct.VirtualWorldMarket;
+import FireBird.Product.VirtualWorldMarket;
 
 import FireBird.System.FinnhubInaccessibleExchange;
 

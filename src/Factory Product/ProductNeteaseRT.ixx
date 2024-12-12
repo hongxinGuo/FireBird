@@ -1,8 +1,8 @@
 #include"pch.h"
 module;
-export module FireBird.WebProduct.NeteaseRT;
+export module FireBird.Product.NeteaseRT;
 
-import FireBird.WebProduct.VirtualChinaMarket;
+import FireBird.Product.VirtualChinaMarket;
 import FireBird.Type.WebRTData;
 
 export

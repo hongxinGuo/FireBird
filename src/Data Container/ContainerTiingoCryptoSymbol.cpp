@@ -1,8 +1,8 @@
 #include "pch.h"
 module;
-#include"SetTiingoCrypto.h"
 module FireBird.Container.Tinngo.CryptoSymbol;
 
+import FireBird.Set.TiingoCrypto;
 import FireBird.Container.VirtualStock;
 import FireBird.Accessory.InfoReport;
 import FireBird.Stock.TiingoCrypto;

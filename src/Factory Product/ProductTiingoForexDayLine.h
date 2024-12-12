@@ -1,6 +1,6 @@
 #pragma once
 
-#include"ProductTiingo.h"
+import FireBird.Product.Tiingo.Base;
 import FireBird.HistoryCandle.DayLine;
 
 class CProductTiingoForexDayLine final : public CProductTiingo {

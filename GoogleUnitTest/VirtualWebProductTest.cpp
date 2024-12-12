@@ -10,7 +10,7 @@ import FireBird.FinnhubInquiryType;
 
 import FireBird.Market.World;
 
-import FireBird.WebProduct.Virtual;
+import FireBird.Product.Virtual;
 
 using namespace testing;
 

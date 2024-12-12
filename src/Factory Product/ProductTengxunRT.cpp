@@ -1,6 +1,6 @@
 #include"pch.h"
 module;
-module FireBird.WebProduct.TengxunRT;
+module FireBird.Product.TengxunRT;
 
 import FireBird.System.Data;
 import FireBird.DataSource.TengxunRT;

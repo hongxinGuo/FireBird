@@ -1,7 +1,7 @@
 #include"pch.h"
 module;
 #include"ConcurrentQueueHeader.h"
-module FireBird.WebProduct.NeteaseDayLine;
+module FireBird.Product.NeteaseDayLine;
 
 import FireBird.System.Data;
 import FireBird.Accessory.JsonParse;

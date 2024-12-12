@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 module;
-export module FireBird.WebProduct.VirtualChinaMarket;
+export module FireBird.Product.VirtualChinaMarket;
 
-export import FireBird.WebProduct.Virtual;
+export import FireBird.Product.Virtual;
 import FireBird.Market.China;
 
 export {

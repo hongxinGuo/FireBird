@@ -1,6 +1,6 @@
 #include"pch.h"
 module;
-module FireBird.WebProduct.Virtual;
+module FireBird.Product.Virtual;
 
 import FireBird.HistoryCandle.DayLine;
 

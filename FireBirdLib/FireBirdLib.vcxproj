@@ -318,7 +318,10 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetCountry.h" />
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetCountry.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetCryptoDayLine.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetEconomicCalendar.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetEPSSurprise.h" />
@@ -336,7 +339,10 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetNaicsIndustry.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSECFilings.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetSICIndustry.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.h" />
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCrypto.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoCompanyFinancialState.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
@@ -347,8 +353,14 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.h" />
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoIndustry.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoMarketNews.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStock.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
@@ -375,14 +387,27 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenForex.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h" />
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetWorldChosenForex.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyDividend.h" />
+    <ClCompile Include="..\src\Factory Product\ProductTiingoCompanyDividend.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Factory Product\ProductTiingoFinancialState.h" />
-    <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoDayLine.h" />
+    <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoDayLine.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Factory Product\ProductTiingoForexDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.h" />
@@ -450,7 +475,10 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClInclude Include="..\src\Factory Product\ProductTiingo.h" />
+    <ClCompile Include="..\src\Factory Product\ProductTiingo.ixx">
+      <FileType>Document</FileType>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
+    </ClCompile>
     <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoSymbol.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockProfile.h" />

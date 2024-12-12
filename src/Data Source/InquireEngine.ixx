@@ -5,7 +5,7 @@ module;
 #include"NlohmannJsonHeader.h"
 export module FireBird.DataSource.InquireEngine;
 
-import FireBird.WebProduct.Virtual;
+import FireBird.Product.Virtual;
 import FireBird.Type.WebData;
 
 using std::string;

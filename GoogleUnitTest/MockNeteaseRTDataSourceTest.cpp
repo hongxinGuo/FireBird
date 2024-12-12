@@ -6,7 +6,7 @@ import FireBird.Market.China;
 #include"GeneralCheck.h"
 
 #include"MockNeteaseRTDataSource.h"
-import FireBird.WebProduct.NeteaseRT;
+import FireBird.Product.NeteaseRT;
 
 using namespace testing;
 

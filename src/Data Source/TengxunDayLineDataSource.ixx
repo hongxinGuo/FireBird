@@ -3,7 +3,7 @@ export module FireBird.DataSource.TengxunDayLine;
 
 import FireBird.Stock.ChinaStock;
 import FireBird.DataSource.Virtual;
-import FireBird.WebProduct.Virtual;
+import FireBird.Product.Virtual;
 
 export {
 	class CTengxunDayLineDataSource : public CVirtualDataSource {

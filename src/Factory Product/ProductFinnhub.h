@@ -1,7 +1,7 @@
 #pragma once
 
 import FireBird.Market.World;
-import FireBird.WebProduct.VirtualWorldMarket;
+import FireBird.Product.VirtualWorldMarket;
 
 using std::dynamic_pointer_cast;
 

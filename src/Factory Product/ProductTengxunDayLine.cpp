@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 module;
 #include"ConcurrentQueueHeader.h"
-module FireBird.WebProduct.TengxunDayLine;
+module FireBird.Product.TengxunDayLine;
 
 import FireBird.Accessory.JsonParse;
 import FireBird.Market.China;

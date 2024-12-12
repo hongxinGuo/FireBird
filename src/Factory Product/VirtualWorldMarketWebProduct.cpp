@@ -1,6 +1,6 @@
 #include "pch.h"
 module;
-module FireBird.WebProduct.VirtualWorldMarket;
+module FireBird.Product.VirtualWorldMarket;
 
 import FireBird.Market.World;
 

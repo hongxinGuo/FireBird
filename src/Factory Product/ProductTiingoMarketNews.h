@@ -1,6 +1,6 @@
 #pragma once
 
-#include"ProductTiingo.h"
+import FireBird.Product.Tiingo.Base;
 #include "TiingoMarketNews.h"
 
 class CProductTiingoMarketNews final : public CProductTiingo {

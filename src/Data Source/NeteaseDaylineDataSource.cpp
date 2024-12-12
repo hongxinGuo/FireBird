@@ -5,7 +5,7 @@ import FireBird.Market.China;
 
 import FireBird.System.Message;
 import FireBird.System.Configuration;
-import FireBird.WebProduct.NeteaseDayLine;
+import FireBird.Product.NeteaseDayLine;
 import FireBird.Accessory.ChinaStockCodeConverter;
 
 CNeteaseDayLineDataSource::CNeteaseDayLineDataSource() {

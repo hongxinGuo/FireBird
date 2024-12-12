@@ -2,7 +2,7 @@
 module;
 module FireBird.DataSource.TengxunRT;
 
-import FireBird.WebProduct.TengxunRT;
+import FireBird.Product.TengxunRT;
 import FireBird.Market.China;
 import FireBird.System.Configuration;
 
