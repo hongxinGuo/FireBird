@@ -399,10 +399,6 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockDayLine.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h" />
-    <ClCompile Include="..\src\Factory Product\ProductTiingoCompanyDividend.ixx">
-      <FileType>Document</FileType>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
-    </ClCompile>
     <ClInclude Include="..\src\Factory Product\ProductTiingoFinancialState.h" />
     <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoDayLine.ixx">
       <FileType>Document</FileType>

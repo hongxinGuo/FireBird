@@ -1439,9 +1439,6 @@
     <ClCompile Include="..\src\Factory Product\ProductTiingo.ixx">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductTiingoCompanyDividend.ixx">
-      <Filter>头文件\Factory-Product\Tiingo</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoDayLine.ixx">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
