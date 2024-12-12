@@ -8,6 +8,7 @@ import FireBird.Accessory.JsonGetValue;
 import FireBird.System.Data;
 
 import FireBird.Market.World;
+#include<set>
 
 #include"FinnhubStockBasicFinancial.h"
 #include "ProductFinnhubCompanyBasicFinancial.h"

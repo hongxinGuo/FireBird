@@ -1,6 +1,6 @@
 #include "pch.h"
 module;
-import FireBird.System.Globedef;
+#include"globedef.h"
 #include"ConCurrenCppHeader.h"
 #include "SetTiingoStockCurrentTrace.h"
 module FireBird.Container.Tiingo.Stock;

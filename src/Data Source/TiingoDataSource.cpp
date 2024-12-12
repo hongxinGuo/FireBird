@@ -1,6 +1,7 @@
 #include"pch.h"
 
-import FireBird.System.Globedef;
+#include"globedef.h"
+#include<set>
 
 import FireBird.System.Message;
 import FireBird.Market.World;

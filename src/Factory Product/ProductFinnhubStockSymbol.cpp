@@ -1,12 +1,13 @@
 #include "pch.h"
 
+#include "ProductFinnhubStockSymbol.h"
+
 import FireBird.System.Message;
 
 import FireBird.Accessory.JsonParse;
 import FireBird.Accessory.JsonGetValue;
 import FireBird.System.Data;
 
-#include "ProductFinnhubStockSymbol.h"
 
 CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/symbol?exchange=");

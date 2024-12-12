@@ -1,6 +1,6 @@
 #include"pch.h"
 
-import FireBird.System.Globedef;
+#include"globedef.h"
 #include"ConcurrentQueueHeader.h"
 #include"GeneralCheck.h"
 

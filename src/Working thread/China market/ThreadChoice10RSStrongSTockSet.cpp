@@ -6,7 +6,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
-import FireBird.System.Globedef;
+#include"globedef.h"
 
 import FireBird.System.Message;
 import FireBird.System.Data;

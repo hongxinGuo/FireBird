@@ -1,6 +1,6 @@
 #include"pch.h"
 
-import FireBird.System.Globedef;
+#include"globedef.h"
 #include"GeneralCheck.h"
 import FireBird.System.Message;
 import FireBird.DataSource.Virtual;

@@ -1,15 +1,13 @@
 #include "pch.h"
 module;
-import FireBird.System.Globedef;
 #include "framework.h"
-
-import FireBird.Market.China;
+#include"globedef.h"
 #include "FireBird.h"
-
-import FireBird.Market.World;
-
 #include <spdlog/common.h>
 module FireBird.WindowInterface.PropertiesWnd; 
+
+import FireBird.Market.China;
+import FireBird.Market.World;
 import FireBird.DataSource.Quandl;
 import FireBird.DataSource.Tiingo;
 

@@ -480,6 +480,9 @@
     <ClInclude Include="..\src\accessory\ConCurrenCppHeader.h">
       <Filter>头文件\Accessory</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\globedef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -747,9 +750,6 @@
       <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductFinnhubStockEstimatesEPSSurprise.cpp">
-      <Filter>源文件\Factory-Product\Finnhub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Factory Product\ProductFinnhubStockPriceQuote.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductFinnhubStockSymbol.cpp">
@@ -1436,14 +1436,14 @@
     <ClCompile Include="..\src\Windows interface\FireBirdView.ixx">
       <Filter>头文件\Windows interface</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\globedef.ixx">
-      <Filter>头文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerFinnhubStock.ixx">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerFinnhubStockDayline.ixx">
       <Filter>头文件\Data container\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubStockPriceQuote.cpp">
+      <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

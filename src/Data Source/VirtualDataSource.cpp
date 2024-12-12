@@ -6,11 +6,11 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 module;
+#include"globedef.h"
 #include"NlohmannJsonHeader.h"
 #include"ConCurrenCppHeader.h"
 module FireBird.DataSource.Virtual;
 
-import FireBird.System.Globedef;
 import FireBird.Type.WebData;
 import FireBird.System.Message;
 import FireBird.System.Configuration;

@@ -1,8 +1,8 @@
 #include"pch.h"
 module;
-import FireBird.Market.China;
 module FireBird.WebProduct.SinaRT;
 
+import FireBird.Market.China;
 import FireBird.DataSource.SinaRT;
 import FireBird.Accessory.ChinaStockCodeConverter;
 import FireBird.System.Message;

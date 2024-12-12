@@ -2,7 +2,7 @@
 module;
 export module FireBird.Accessory.ChinaStockCodeConverter;
 
-using std::string;
+import std;
 
 export {
 	// 股票代码采用国家标准制式

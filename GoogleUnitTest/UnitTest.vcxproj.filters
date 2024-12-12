@@ -743,5 +743,8 @@
     <ClInclude Include="MockTiingoForexWebSocket.h">
       <Filter>Mock class\WebSocket</Filter>
     </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Test头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

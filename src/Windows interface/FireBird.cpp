@@ -2,7 +2,7 @@
 //
 #include"pch.h"
 
-import FireBird.System.Globedef;
+#include"globedef.h"
 
 #include "FireBird.h"
 #include <spdlog/spdlog.h>

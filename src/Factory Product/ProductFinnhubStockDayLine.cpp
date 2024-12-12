@@ -1,11 +1,11 @@
 #include "pch.h"
 
-import FireBird.System.Globedef;
+#include"globedef.h"
+#include "ProductFinnhubStockDayLine.h"
 import FireBird.Accessory.JsonParse;
 import FireBird.Market.World;
 import FireBird.Stock.Finnhub;
 
-#include "ProductFinnhubStockDayLine.h"
 
 import FireBird.System.Message;
 

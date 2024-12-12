@@ -1,11 +1,11 @@
 ﻿#include"pch.h"
 module;
 #include "resource.h"
-import FireBird.System.Globedef;
-import FireBird.Market.China;
-import FireBird.Market.World;
+#include"globedef.h"
 module FireBird.WindowInterface.OutputWnd;
 
+import FireBird.Market.China;
+import FireBird.Market.World;
 import FireBird.WindowInterface.MainFrm;
 import FireBird.System.Message;
 

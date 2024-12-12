@@ -255,6 +255,7 @@
     <ClInclude Include="MockTiingoCryptoWebSocket.h" />
     <ClInclude Include="MockTiingoForexWebSocket.h" />
     <ClInclude Include="MockTiingoIEXWebSocket.h" />
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockChinaMarket.h" />

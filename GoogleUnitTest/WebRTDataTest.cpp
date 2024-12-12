@@ -1,6 +1,6 @@
 #include"pch.h"
 
-import FireBird.System.Globedef;
+#include"globedef.h"
 #include"NlohmannJsonHeader.h"
 #include"GeneralCheck.h"
 import FireBird.Market.China;

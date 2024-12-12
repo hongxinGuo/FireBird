@@ -1,6 +1,7 @@
 #include"pch.h"
 module;
 #include"nlohmannJsonHeader.h"
+#include<set>
 export module FireBird.Market.China;
 
 export import FireBird.Market.Virtual;

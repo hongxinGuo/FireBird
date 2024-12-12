@@ -1,6 +1,7 @@
 #include "pch.h"
 
-import FireBird.System.Globedef;
+#include"globedef.h"
+#include "ProductFinnhubCompanyInsiderTransaction.h"
 
 import FireBird.Accessory.JsonParse;
 import FireBird.Accessory.JsonGetValue;
@@ -9,7 +10,6 @@ import FireBird.Market.World;
 import FireBird.Stock.Finnhub;
 import FireBird.System.Data;
 
-#include "ProductFinnhubCompanyInsiderTransaction.h"
 
 import FireBird.Accessory.TimeConvert;
 

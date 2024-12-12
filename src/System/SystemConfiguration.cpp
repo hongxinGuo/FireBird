@@ -5,9 +5,9 @@
 #include"pch.h"
 module;
 #include "resource.h"
+#include"globedef.h"
 module FireBird.System.Configuration;
 
-import FireBird.System.Globedef;
 import FireBird.DataSource.SinaRT;
 
 import FireBird.DataSource.TengxunRT;

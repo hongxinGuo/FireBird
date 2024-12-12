@@ -2,7 +2,7 @@
 
  
 
-import FireBird.System.Globedef;
+#include"globedef.h"
 #include"afxinet.h"
 #include"MockInquireEngine.h"
 #include"GeneralCheck.h"

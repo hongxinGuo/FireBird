@@ -1,9 +1,9 @@
 #include"pch.h"
 module;
+#include"globedef.h"
 #include"SetChinaStockSymbol.h"
 module FireBird.Container.ChinaStock;
 
-import FireBird.System.Globedef;
 import FireBird.Market.China;
 import FireBird.RelativeStrongReference;
 import FireBird.System.Message;

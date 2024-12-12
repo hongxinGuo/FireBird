@@ -6,11 +6,11 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
-module;
+
+#include"globedef.h"
 #include"NlohmannJsonHeader.h"
 #include"ConCurrenCppHeader.h"
 #include"ConcurrentQueueHeader.h"
-module FireBird.System.Globedef;
 
 import FireBird.DataSource.Finnhub;
 import FireBird.DataSource.NeteaseDayLine;

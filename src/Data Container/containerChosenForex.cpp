@@ -2,6 +2,7 @@
 module;
 #include"SetWorldChosenForex.h"
 module FireBird.Container.Chosen.Forex;
+
 import FireBird.Stock.FinnhubForex;
 import FireBird.System.Data;
 

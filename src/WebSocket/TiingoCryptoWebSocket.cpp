@@ -1,6 +1,6 @@
 #include "pch.h"
 module;
-import FireBird.System.Globedef;
+#include"globedef.h"
 #include <ixwebsocket/IXWebSocket.h>
 #include"ConcurrentQueueHeader.h"
 module FireBird.WebSocket.TiingoCrypto;

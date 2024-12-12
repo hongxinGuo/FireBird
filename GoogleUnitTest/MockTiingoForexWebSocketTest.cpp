@@ -2,7 +2,7 @@
 
  
 
-import FireBird.System.Globedef;
+#include"globedef.h"
 
 import FireBird.DataSource.Tiingo;
 #include"GeneralCheck.h"

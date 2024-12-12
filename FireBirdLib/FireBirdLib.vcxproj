@@ -388,6 +388,7 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoMarketNews.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockDailyMeta.h" />
+    <ClCompile Include="..\src\Factory Product\ProductFinnhubStockPriceQuote.cpp" />
     <ClCompile Include="..\src\Factory Product\VirtualChinaMarketWebProduct.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
@@ -485,11 +486,11 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\src\globedef.ixx">
+    <ClInclude Include="..\src\globedef.h">
       <FileType>Document</FileType>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
-    </ClCompile>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Default</CompileAs>
+    </ClInclude>
     <ClCompile Include="..\src\Market\ChinaMarket.ixx">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
@@ -882,7 +883,6 @@
     <ClCompile Include="..\src\Factory Product\ProductFinnhubForexSymbol.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubStockDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubStockEstimatesEPSSurprise.cpp" />
-    <ClCompile Include="..\src\Factory Product\ProductFinnhubStockPriceQuote.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubStockSymbol.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductNeteaseDayline.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductNeteaseRT.cpp" />
@@ -981,9 +981,6 @@
     <ClCompile Include="..\src\Working thread\China market\ThreadChoice10RSStrongSTockSet.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">
-      <Project>{f77641f7-1df8-4461-9338-a8e502e570dc}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\IXWebSocketLib\IXWebSocketLib.vcxproj">
       <Project>{b467f394-de2a-47f9-a2c2-4be78225b908}</Project>
     </ProjectReference>

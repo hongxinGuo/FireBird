@@ -1,10 +1,10 @@
 #include"pch.h"
 module;
-import FireBird.System.Globedef;
-import FireBird.Market.World;
+#include"globedef.h"
 #include <ixwebsocket/IXWebSocket.h>
 module FireBird.WebSocket.Virtual;
 
+import FireBird.Market.World;
 import FireBird.System.Message;
 
 CVirtualWebSocket::CVirtualWebSocket() {

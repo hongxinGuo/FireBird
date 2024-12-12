@@ -11,14 +11,14 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 module;
-#include"spdlog/spdlog.h"
+#include"globedef.h"
 #include"ConCurrenCppHeader.h"
 #include"ConcurrentQueueHeader.h"
 #include"simdjson.h"
 #include"NlohmannJsonHeader.h"
+#include"spdlog/spdlog.h"
 module FireBird.Accessory.JsonParse;
 
-import FireBird.System.Globedef;
 import FireBird.Market.China;
 import FireBird.System.Data;
 

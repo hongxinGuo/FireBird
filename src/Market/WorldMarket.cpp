@@ -1,12 +1,12 @@
 #include"pch.h"
 module;
+#include"globedef.h"
 #include"SetFinnhubStockDayLine.h"
 #include"MarketStatus.h"
 #include"MarketHoliday.h"
 #include"ConcurrentQueueHeader.h"
 module FireBird.Market.World;
 
-import FireBird.System.Globedef;
 import FireBird.System.Data;
 import FireBird.Market.China;
 import FireBird.System.Message;

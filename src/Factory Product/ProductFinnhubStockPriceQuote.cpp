@@ -1,14 +1,12 @@
 #include "pch.h"
 
-import FireBird.System.Globedef;
+#include"globedef.h"
+#include "ProductFinnhubStockPriceQuote.h"
+
+import FireBird.System.Data;
 
 import FireBird.Accessory.JsonParse;
 import FireBird.Accessory.JsonGetValue;
-import FireBird.System.Data;
-
-import FireBird.Stock.Finnhub;
-
-#include "ProductFinnhubStockPriceQuote.h"
 
 CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/quote?symbol=");

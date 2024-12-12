@@ -1,5 +1,6 @@
 ﻿#include"pch.h"
 module;
+#include"globedef.h"
 #include"SetDayLineExtendInfo.h"
 #include"SetDayLineTodaySaved.h"
 #include"SetOption.h"
@@ -13,7 +14,6 @@ module;
 #include"ConcurrentQueueHeader.h"
 module FireBird.Market.China;
 
-import FireBird.System.Globedef;
 import FireBird.System.Data;
 import FireBird.System.Message;
 

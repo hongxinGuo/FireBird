@@ -1,8 +1,8 @@
 #include "pch.h"
 module;
-import FireBird.System.Globedef;
-#include <afxinet.h>
+#include"globedef.h"
 #include"NlohmannJsonHeader.h"
+#include <afxinet.h>
 module FireBird.DataSource.InquireEngine;
 
 import FireBird.System.Data;

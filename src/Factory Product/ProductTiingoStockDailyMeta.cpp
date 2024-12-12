@@ -8,19 +8,16 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
 
-import FireBird.System.Globedef;
+#include"globedef.h"
+#include "ProductTiingoStockDailyMeta.h"
+#include"simdjson.h"
 
 import FireBird.System.Message;
-
 import FireBird.Accessory.JsonParse;
-
-#include "ProductTiingoStockDailyMeta.h"
-
 import FireBird.Simdjson.GetValue;
-#include"simdjson.h"
-using namespace simdjson;
-
 import FireBird.Market.World;
+
+using namespace simdjson;
 
 CProductTiingoStockDailyMeta::CProductTiingoStockDailyMeta() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/daily/");

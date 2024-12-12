@@ -1,9 +1,9 @@
 #include "pch.h"
 module;
+#include"globedef.h"
 #include"NlohmannJsonHeader.h"
 module FireBird.System.FinnhubInaccessibleExchange;
 
-import FireBird.System.Globedef;
 import FireBird.System.Configuration;
 import FireBird.FinnhubInquiryType;
 

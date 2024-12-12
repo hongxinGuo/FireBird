@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include<benchmark/benchmark.h>
-import FireBird.System.Globedef;
+#include"globedef.h"
 
 import FireBird.Market.China;
 

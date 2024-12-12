@@ -2,7 +2,7 @@
 
  
 
-import FireBird.System.Globedef;
+#include"globedef.h"
 #include"concurrentqueueHeader.h"
 
 import FireBird.System.Message;
