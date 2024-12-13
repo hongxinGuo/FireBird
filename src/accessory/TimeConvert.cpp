@@ -68,6 +68,13 @@ bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) {
 	return (lNewDate < lLatelyDate);
 }
 
+long XferToYYYYMMDD(const string& sDate) {
+	chrono::year_month_day ymd;
+	stringstream ss(sDate);
+	chrono::from_stream(ss, "%F", ymd);
+	return XferToYYYYMMDD(ymd);
+}
+
 long TimeSpawn(long lLatelyDate, long lEarlyDate) {
 	ASSERT(lEarlyDate >= 19700101);
 	ASSERT(lLatelyDate >= 19700101);

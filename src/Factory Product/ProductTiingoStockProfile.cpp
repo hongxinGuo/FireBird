@@ -23,48 +23,42 @@ CString CProductTiingoStockProfile::CreateMessage() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// tiingo fundamental meta数据中有重复代码，更新日期最近的那个活跃股票是正确的，其他皆需删除。
+// 从数据源处接收到的代码集中有重复代码，更新日期最近的那个活跃股票是正确的，其他皆需删除。
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoStock = ParseTiingoStockSymbol(pWebData);
 
-	std::ranges::sort(*pvTiingoStock, [](const CTiingoStockPtr& pData1, const CTiingoStockPtr& pData2) { return pData1->GetSymbol().Compare(pData2->GetSymbol()) < 0; });
-
-	// 删除代码集中重复的代码，相同代码的多个活跃股票则保留DailyUpdate最新的那个，其他也都删除。
-	CTiingoStocksPtr pvNewTiingoStock;
-
-	if (pvTiingoStock->empty()) {
-		pvNewTiingoStock = pvTiingoStock;
-	}
-	else {
-		pvNewTiingoStock = DeleteDuplicatedSymbol(pvTiingoStock);
-	}
+	ranges::sort(*pvTiingoStock, [](const CTiingoStockPtr& pData1, const CTiingoStockPtr& pData2) { return pData1->GetSymbol().Compare(pData2->GetSymbol()) < 0; });
 
 	gl_dataContainerTiingoDelistedSymbol.Reset();
 	gl_dataContainerTiingoNewSymbol.Reset();
-	if (!pvNewTiingoStock->empty()) {
-		for (const auto& pTiingoStock : *pvNewTiingoStock) {
-			if (!pTiingoStock->IsActive()) { // 退市股票？
-				if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStock->GetSymbol())) { // 目前存在则准备删除，现有代码集中不存在的退市股票直接抛弃
-					gl_dataContainerTiingoDelistedSymbol.Add(pTiingoStock); // 存入退市代码集中，准备删除其日线数据。
-				}
-				continue;
+
+	if (pvTiingoStock->empty()) return;
+
+	// 删除代码集中重复的代码，相同代码的多个活跃股票则保留DailyUpdate最新的那个，其他也都删除。
+	CTiingoStocksPtr pvNewTiingoStock = DeleteDuplicatedSymbol(pvTiingoStock);
+
+	for (const auto& pTiingoStock : *pvNewTiingoStock) {
+		if (!pTiingoStock->IsActive()) { // 退市股票？
+			if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStock->GetSymbol())) { // 目前存在则准备删除，现有代码集中不存在的退市股票直接抛弃
+				gl_dataContainerTiingoDelistedSymbol.Add(pTiingoStock); // 存入退市代码集中，准备删除其日线数据。
 			}
-			if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStock->GetSymbol())) {
-				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
-					gl_dataContainerTiingoStock.UpdateProfile(pTiingoStock); // 付费账户使用新数据更新，免费账户无动作
-				}
-			}
-			else {
-				pTiingoStock->SetUpdateProfileDB(true);
-				gl_dataContainerTiingoStock.Add(pTiingoStock); // 将此股票存入数据库。
-				gl_dataContainerTiingoNewSymbol.Add(pTiingoStock); // 也存入新股容器中。
+			continue;
+		}
+		if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStock->GetSymbol())) {
+			if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
+				gl_dataContainerTiingoStock.UpdateProfile(pTiingoStock); // 付费账户使用新数据更新，免费账户无动作
 			}
 		}
+		else {
+			pTiingoStock->SetUpdateProfileDB(true);
+			gl_dataContainerTiingoStock.Add(pTiingoStock); // 将此股票存入数据库。
+			gl_dataContainerTiingoNewSymbol.Add(pTiingoStock); // 也存入新股容器中。
+		}
 	}
-	gl_pWorldMarket->DeleteTiingoDelistedStock();
+	gl_pWorldMarket->DeleteTiingoDelistedStock(); // 最后从代码即中删除已经退市的股票
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -207,27 +201,35 @@ void CProductTiingoStockProfile::UpdateDataSourceStatus(CVirtualDataSourcePtr pD
 	gl_systemMessage.PushInformationMessage(_T("Tiingo stock symbol已更新"));
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 接收到的数据中有重复代码。保留活跃的；如果有多个活跃的，则保留日线更新日期最新的那个。
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoStocksPtr CProductTiingoStockProfile::DeleteDuplicatedSymbol(const CTiingoStocksPtr& pvTiingoStock) {
 	CTiingoStocksPtr pvNewTiingoStock = make_shared<vector<CTiingoStockPtr>>();
 
-	CTiingoStockPtr pStock = pvTiingoStock->at(0);
+	CTiingoStockPtr pStockFirst = pvTiingoStock->at(0);
 	for (size_t l = 1; l < pvTiingoStock->size(); l++) {
-		CTiingoStockPtr pStock2 = pvTiingoStock->at(l);
-		if (pStock->GetSymbol().Compare(pStock2->GetSymbol()) != 0) { // 代码不同
-			pvNewTiingoStock->push_back(pStock);
-			pStock = pStock2;
+		CTiingoStockPtr pStockNext = pvTiingoStock->at(l);
+		if (pStockFirst->GetSymbol().Compare(pStockNext->GetSymbol()) != 0) { // 代码不同
+			pvNewTiingoStock->push_back(pStockFirst);
+			pStockFirst = pStockNext;
 		}
 		else { // 相同代码
-			if (pStock->IsActive()) {
-				if (pStock2->IsActive()) {
-					if (pStock->GetDailyUpdateDate() < pStock2->GetDailyUpdateDate()) { // 都是活跃股票时，比较最后更新日期，保留更新的那个。
-						TRACE("active %s: %d ---- %d\n", pStock->GetSymbol(), pStock->GetDailyUpdateDate(), pStock2->GetDailyUpdateDate());
-						pStock = pStock2;
+			if (pStockFirst->IsActive()) {
+				if (pStockNext->IsActive()) {
+					if (pStockFirst->GetDailyUpdateDate() < pStockNext->GetDailyUpdateDate()) { // 都是活跃股票时，比较最后更新日期，保留较新的那个。
+						TRACE("active %s: %d ---- %d\n", pStockFirst->GetSymbol(), pStockFirst->GetDailyUpdateDate(), pStockNext->GetDailyUpdateDate());
+						CString str = "多个活跃股票:" + pStockFirst->GetSymbol();
+						gl_systemMessage.PushInnerSystemInformationMessage(str);
+						pStockFirst = pStockNext;
 					}
 				}
 			}
 			else {
-				pStock = pStock2;
+				pStockFirst = pStockNext;
 			}
 		}
 	}

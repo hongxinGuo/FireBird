@@ -424,7 +424,7 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoStockTest, TestUpdateRTData) {
 		CTiingoIEXTopOfBookPtr pIEX = make_shared<CTiingoIEXTopOfBook>();
-		pIEX->m_llTimestamp = 123456;
+		pIEX->m_timeStamp = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(123456));
 		pIEX->m_lOpen = 12340;
 		pIEX->m_lHigh = 23450;
 		pIEX->m_lLow = 1230;
@@ -432,7 +432,7 @@ namespace FireBirdTest {
 		pIEX->m_lNew = 230;
 		pIEX->m_llVolume = 100000;
 		stock.UpdateRTData(pIEX);
-		EXPECT_EQ(stock.GetTransactionTime(), pIEX->m_llTimestamp);
+		EXPECT_EQ(stock.GetTransactionTime(), pIEX->m_timeStamp.time_since_epoch().count());
 		EXPECT_EQ(stock.GetOpen(), pIEX->m_lOpen);
 		EXPECT_EQ(stock.GetHigh(), pIEX->m_lHigh);
 		EXPECT_EQ(stock.GetLow(), pIEX->m_lLow);

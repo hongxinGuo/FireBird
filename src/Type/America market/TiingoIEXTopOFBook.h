@@ -15,7 +15,9 @@ public:
 
 public:
 	CString m_strTicker{ _T("") };
-	INT64 m_llTimestamp{ 0 }; // unix timestamp制式 
+	chrono::sys_seconds m_timeStamp;
+	chrono::sys_seconds m_lastSale;
+	chrono::sys_seconds m_quote;
 	long m_lLastClose{ 0 }; // 前收盘。单位：0.001元
 	long m_lOpen{ 0 }; // 开盘价
 	long m_lHigh{ 0 }; // 最高价

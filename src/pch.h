@@ -8,11 +8,11 @@
 #define PCH_H_INCLUDE_
 
 #include"stdafx.h"
+using namespace std;
 #include"gtest/gtest.h"
 #include"gmock/gmock.h"
+using namespace testing;
 
 #include"globedef.h"
-
-using namespace std;
 
 #endif

@@ -63,6 +63,25 @@ namespace FireBirdTest {
 		EXPECT_EQ(XferYearMonthDayToYYYYMMDD(2020, 1, 2), 20200102);
 	}
 
+	TEST_F(TimeConvertTest, TestXferToYYYYMMDD) {
+		chrono::year y{ 2020 };
+		chrono::month m{ 2 };
+		chrono::month m2{ 5 };
+		chrono::day d{ 20 };
+		chrono::day d2{ 2 };
+		chrono::year y2{ 2023 };
+		chrono::year_month_day ymd{ y, m, d };
+		chrono::year_month_day ymd2{ y2, m2, d2 };
+		EXPECT_EQ(XferToYYYYMMDD(ymd), 20200220);
+		EXPECT_EQ(XferToYYYYMMDD(ymd2), 20230502);
+	}
+
+	TEST_F(TimeConvertTest, TestXferToYYYYMMDD2) {
+		EXPECT_EQ(XferToYYYYMMDD("2020-10-10"), 20201010);
+		EXPECT_EQ(XferToYYYYMMDD("2020-01-02"), 20200102);
+		EXPECT_EQ(XferToYYYYMMDD("2020-1-2"), 20200102);
+	}
+
 	TEST_F(TimeConvertTest, TestGetNextDate) {
 		EXPECT_EQ(GetNextDay(20200101, 1), 20200102);
 		EXPECT_EQ(GetNextDay(20200101, 11), 20200112);

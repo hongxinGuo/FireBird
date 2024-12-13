@@ -422,7 +422,6 @@ bool CreateJsonWithNlohmann(json& js, CString& str, const long lBeginPos, const 
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRTData) {
-	string strTime;
 	CString strSymbol4;
 	json js = it.value();
 	const string symbolName = it.key();
@@ -432,7 +431,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		pWebRTData->SetSymbol(strSymbol4);
 		const string sName = jsonGetString(js, "name");
 		pWebRTData->SetStockName(XferToCString(sName)); // 将utf-8字符集转换为多字节字符集
-		strTime = jsonGetString(js, _T("time"));
+		string strTime = jsonGetString(js, _T("time"));
 		string strSymbol2 = jsonGetString(js, _T("code"));
 		std::stringstream ss(strTime);
 		chrono::sys_seconds tpTime;

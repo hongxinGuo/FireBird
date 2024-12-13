@@ -1077,10 +1077,10 @@ void CWorldMarket::UpdateMarketHoliday(const CMarketHolidaysPtr& pv) const {
 void CWorldMarket::DeleteTiingoDelistedStock() {
 	while (gl_dataContainerTiingoDelistedSymbol.Size() > 0) {
 		auto pTiingoDelistedStock = gl_dataContainerTiingoDelistedSymbol.GetStock(0);
-		DeleteTiingoDayLine(pTiingoDelistedStock);
-		DeleteTiingoFinancialStatement(pTiingoDelistedStock);
+		DeleteTiingoDayLine(pTiingoDelistedStock); // 删除日线
+		DeleteTiingoFinancialStatement(pTiingoDelistedStock); // 删除财经报告
 		ASSERT(gl_dataContainerTiingoStock.IsSymbol(pTiingoDelistedStock));
-		gl_dataContainerTiingoStock.Delete(pTiingoDelistedStock->GetSymbol());
+		gl_dataContainerTiingoStock.Delete(pTiingoDelistedStock->GetSymbol()); // 删除代码
 		gl_dataContainerTiingoDelistedSymbol.Delete(pTiingoDelistedStock);
 	}
 }

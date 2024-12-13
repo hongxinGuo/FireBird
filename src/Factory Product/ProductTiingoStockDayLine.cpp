@@ -79,7 +79,7 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	pTiingoStock->SetUpdateDayLine(false);
 	pTiingoStock->SetUpdateProfileDB(true);
 	if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 新股票？
-		gl_dataContainerTiingoNewSymbol.Delete(pTiingoStock); //Note 下载完日线数据后，就从Tiingo新代码容器中删除之。
+		gl_dataContainerTiingoNewSymbol.Delete(pTiingoStock); // 下载完日线数据后，就从Tiingo新代码容器中删除之。
 	}
 }
 
@@ -124,8 +124,6 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWebDataPtr& pWebData) {
 	auto pvDayLine = make_shared<vector<CTiingoDayLinePtr>>();
 	string s;
-	CTiingoStock stock;
-	long year, month, day;
 	json js;
 
 	if (!pWebData->CreateJson(js)) return pvDayLine;
@@ -142,12 +140,15 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 	}
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
+			CTiingoStock stock;
+			chrono::sys_seconds tpTime;
 			auto pDayLine = make_shared<CTiingoDayLine>();
 			//pDayLine->SetExchange(_T("US")); // 所有的Tiingo证券皆为美国市场。
 			s = jsonGetString(it, _T("date"));
-			CString str = s.c_str();
-			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			long lTemp = XferYearMonthDayToYYYYMMDD(year, month, day);
+			stringstream ss(s);
+			chrono::from_stream(ss, "%FT%H:%M:%6S%Z", tpTime);
+			chrono::year_month_day ymd{ chrono::floor<chrono::days>(tpTime) };
+			long lTemp = XferToYYYYMMDD(ymd);
 			pDayLine->SetDate(lTemp);
 			double dTemp = jsonGetDouble(it,_T("close"));
 			pDayLine->SetClose(dTemp * stock.GetRatio());

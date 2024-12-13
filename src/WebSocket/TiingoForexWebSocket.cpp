@@ -178,6 +178,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 				pForexData->m_chMessageType = sMessageType.at(0);
 				pForexData->m_sSymbol = jsonGetString(++it); // 证券名称
 				sDatetime = jsonGetString(++it); // 时间串："2019-07-05T15:49:15.157000+00:00"
+				ss.clear();
 				ss.str(pForexData->m_sDateTime);
 				chrono::from_stream(ss, "%FT%H:%M:%9S%Ez", tpTime, &sString, &Minutes);
 				pForexData->m_tpTime = chrono::time_point_cast<chrono::seconds>(tpTime);

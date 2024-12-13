@@ -240,7 +240,6 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 	string s;
 	json ptMetric, ptSeries, ptAnnual, ptQuarterly;
 	vector<CValueOfPeriod> vData;
-	int year, month, day;
 	CFinnhubStockBasicFinancialPtr pBasicFinancial = nullptr;
 	json js;
 
@@ -283,18 +282,16 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 		} catch (json::exception&) {
 		}
 		try {
-			s = jsonGetString(ptMetric, _T("52WeekHighDate"));
+			s = jsonGetString(ptMetric, _T("52WeekLowDate"));
 			if (!s.empty()) {
-				static_cast<void>(sscanf_s(s.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day));
-				pBasicFinancial->m_52WeekHighDate = XferYearMonthDayToYYYYMMDD(year, month, day);
+				pBasicFinancial->m_52WeekLowDate = XferToYYYYMMDD(s);
 			}
 		} catch (json::exception&) {
 		}
 		try {
-			s = jsonGetString(ptMetric, _T("52WeekLowDate"));
+			s = jsonGetString(ptMetric, _T("52WeekHighDate"));
 			if (!s.empty()) {
-				static_cast<void>(sscanf_s(s.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day));
-				pBasicFinancial->m_52WeekLowDate = XferYearMonthDayToYYYYMMDD(year, month, day);
+				pBasicFinancial->m_52WeekHighDate = XferToYYYYMMDD(s);
 			}
 		} catch (json::exception&) {
 		}
@@ -877,8 +874,7 @@ void CProductFinnhubCompanyBasicFinancial::Parse(json* pjs, vector<CValueOfPerio
 			int year{ 0 }, month{ 0 }, day{ 0 };
 			sDate = jsonGetString(it, _T("period"));
 			if (!sDate.empty()) {
-				static_cast<void>(sscanf_s(sDate.c_str(), "%04d-%02d-%02d", &year, &month, &day));
-				sv.m_period = XferYearMonthDayToYYYYMMDD(year, month, +day);
+				sv.m_period = XferToYYYYMMDD(sDate);
 				sv.m_value = jsonGetDouble(it, _T("v"));
 				vecData.push_back(sv);
 			}

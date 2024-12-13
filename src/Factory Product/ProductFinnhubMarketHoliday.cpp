@@ -54,7 +54,6 @@ CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const
 	auto pvHoliday = make_shared<vector<CMarketHolidayPtr>>();
 	CMarketHolidayPtr pHoliday = nullptr;
 	string s, sError;
-	long year, month, day;
 	CString sExchange, sTimeZone;
 	json js;
 
@@ -72,16 +71,14 @@ CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const
 			s = jsonGetString(it, _T("eventName"));
 			if (!s.empty()) pHoliday->m_strEventName = s.c_str();
 			s = jsonGetString(it, _T("atDate"));
-			sscanf_s(s.c_str(), _T("%4d-%02d-%02d"), &year, &month, &day);
-			pHoliday->m_lDate = XferYearMonthDayToYYYYMMDD(year, month, day);
+			pHoliday->m_lDate = XferToYYYYMMDD(s);
 			s = jsonGetString(it, _T("tradingHour"));
 			pHoliday->m_strTradingHour = s.c_str();
 			pHoliday->m_strExchange = sExchange;
 			pHoliday->m_strTimeZone = sTimeZone;
 			pvHoliday->push_back(pHoliday);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub market holiday "), e.what());
 		return pvHoliday;
 	}

@@ -336,15 +336,15 @@ bool CTiingoDataSource::GenerateStockDailyMeta() {
 		for (lCurrentUpdatePos = 0; lCurrentUpdatePos < lStockSetSize; lCurrentUpdatePos++) {
 			pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdatePos);
 			if (pTiingoStock->IsUpdateStockDailyMeta()) {
-				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 如果是付费账户的话
+				if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) { // 如果是付费账户的话，更新所有股票
 					fFound = true;
 					break;
 				}
-				if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 免费账户只更新新股票的Daily meta
+				if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 免费账户只更新本日新出现的新股票，保证每月新代码不超过500个。
 					fFound = true;
 					break;
 				}
-				pTiingoStock->SetUpdateStockDailyMeta(false); // 免费账户时不更新旧股票的DailyMeta
+				pTiingoStock->SetUpdateStockDailyMeta(false); // 免费账户不更新旧股票
 			}
 		}
 		if (fFound) {

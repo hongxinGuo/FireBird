@@ -7,7 +7,6 @@
 
 #include"jsonParse.h"
 #include"simdjsonGetValue.h"
-#include "TimeConvert.h"
 
 CProductFinnhubSECFilings::CProductFinnhubSECFilings() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/filings?symbol=");
@@ -66,7 +65,7 @@ void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWebDataPtr& pWebData) {
 	CSECFilingsPtr pvSECFilings = make_shared<vector<CSECFilingPtr>>();
 	string s1;
-
+	std::stringstream ss;
 	if (!IsValidData(pWebData)) return pvSECFilings;
 	try {
 		string_view svJson = pWebData->GetStringView(0, pWebData->GetBufferLength());
@@ -86,14 +85,16 @@ CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWeb
 			s1 = jsonGetStringView(itemValue, _T("form"));
 			pSECFiling->m_strForm = s1.c_str();
 			s1 = jsonGetStringView(itemValue, _T("filedDate"));
-			std::stringstream ss(s1);
+			ss.clear();
+			ss.str(s1);
 			chrono::sys_seconds tpTime;
 			chrono::from_stream(ss, "%F %T", tpTime);
 			tpTime -= gl_pWorldMarket->GetMarketTimeZoneOffset();
 			pSECFiling->m_iFiledDate = tpTime.time_since_epoch().count();
 			s1 = jsonGetStringView(itemValue, _T("acceptedDate"));
-			std::stringstream ss2(s1);
-			chrono::from_stream(ss2, "%F %T", tpTime);
+			ss.clear();
+			ss.str(s1);
+			chrono::from_stream(ss, "%F %T", tpTime);
 			tpTime -= gl_pWorldMarket->GetMarketTimeZoneOffset();
 			pSECFiling->m_iAcceptedDate = tpTime.time_since_epoch().count();
 			s1 = jsonGetStringView(itemValue, _T("reportUrl"));

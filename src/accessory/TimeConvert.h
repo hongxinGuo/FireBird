@@ -9,8 +9,10 @@ long ConvertToTime(time_t tUTC, time_t tTimeZone) noexcept; // ½«Ê±¼ä×ª±äÎªÕûÊý£
 INT64 ConvertToDateTime(time_t tUTC, time_t tTimeZone) noexcept; // ½«Ê±¼ä×ª±äÎªÕûÊý£¨YYYYMMDDHHMMSS)ÐÎÊ½
 INT64 ConvertToDateTime(const tm* ptm) noexcept; // ½«Ê±¼ä×ª±äÎªÕûÐÍ(YYYYMMDDHHMMSS)ÐÎÊ½
 bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays);
-inline long XferYearMonthDayToYYYYMMDD(long lYear, long lMonth, long lDay) { return lYear * 10000 + lMonth * 100 + lDay; }
+inline long XferYearMonthDayToYYYYMMDD(long lYear, long lMonth, long lDay) { return lYear * 10000 + lMonth * 100 + lDay; } //todo »»µôÕâÁ½¸ö
 inline INT64 XferYearMonthDayToYYYYMMDDHHMMSS(long lYear, long lMonth, long lDay, long lHour, long lMinute, long lSecond) { return ((INT64)lYear) * 10000000000 + (INT64)lMonth * 100000000 + (INT64)lDay * 1000000 + lHour * 10000 + lMinute * 100 + lSecond; }
+inline long XferToYYYYMMDD(const chrono::year_month_day& ymd) { return static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + static_cast<unsigned>(ymd.day()); }
+long XferToYYYYMMDD(const string& sDate);
 long TimeSpawn(long lLatelyDate, long lEarlyDate);
 
 void XferDateToYearMonthDay(long lDate, int& year, int& month, int& day);

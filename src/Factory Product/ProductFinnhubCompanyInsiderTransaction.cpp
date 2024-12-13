@@ -66,7 +66,6 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 	string sError;
 	string s;
 	string stockSymbol;
-	long year, month, day;
 	CInsiderTransactionPtr pInsiderTransaction = nullptr;
 	json js;
 
@@ -90,11 +89,9 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 			pInsiderTransaction->m_lShare = jsonGetLongLong(it, _T("share"));
 			pInsiderTransaction->m_lChange = jsonGetLongLong(it, _T("change"));
 			s = jsonGetString(it, _T("filingDate"));
-			sscanf_s(s.c_str(), _T("%4d-%2d-%2d"), &year, &month, &day);
-			pInsiderTransaction->m_lFilingDate = XferYearMonthDayToYYYYMMDD(year, month, day);
+			pInsiderTransaction->m_lFilingDate = XferToYYYYMMDD(s);
 			s = jsonGetString(it, _T("transactionDate"));
-			sscanf_s(s.c_str(), _T("%4d-%2d-%2d"), &year, &month, &day);
-			pInsiderTransaction->m_lTransactionDate = XferYearMonthDayToYYYYMMDD(year, month, day);
+			pInsiderTransaction->m_lTransactionDate = XferToYYYYMMDD(s);
 			s = jsonGetString(it, _T("transactionCode"));
 			pInsiderTransaction->m_strTransactionCode = s.c_str();
 			pInsiderTransaction->m_dTransactionPrice = jsonGetDouble(it, _T("transactionPrice"));

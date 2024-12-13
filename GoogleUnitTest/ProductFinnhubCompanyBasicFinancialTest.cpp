@@ -501,7 +501,7 @@ namespace FireBirdTest {
 	                         testing::Values(&finnhubWebData0, &finnhubWebData1, &finnhubWebData1004, &finnhubWebData1002, &finnhubWebData1003,
 		                         &finnhubWebData1005,&finnhubWebData1006, &finnhubWebData1007));
 
-	TEST_P(ParseFinnhubStockBasicFinancialTest, TestParseFinnhubInsiderTransaction0) {
+	TEST_P(ParseFinnhubStockBasicFinancialTest, TestParseFinnhubStockBasicFinancial0) {
 		CFinnhubStockBasicFinancialPtr pBasicFinancial = m_finnhubCompanyBasicFinancial.ParseFinnhubStockBasicFinancial(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // ¿ÕÊý¾Ý
@@ -517,6 +517,8 @@ namespace FireBirdTest {
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_yearToDatePriceReturnDaily, 63.01775);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_currentEV_freeCashFlowAnnual, 1.2);
+			EXPECT_EQ(pBasicFinancial->m_52WeekHighDate, 20220408);
+			EXPECT_EQ(pBasicFinancial->m_52WeekLowDate, 20210820);
 			EXPECT_EQ(pBasicFinancial->m_annual.m_cashRatio.size(), 2);
 			EXPECT_EQ(pBasicFinancial->m_annual.m_cashRatio.at(0).m_period, 20201231);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_annual.m_cashRatio.at(0).m_value, 0.7634660421545667);
@@ -590,7 +592,7 @@ namespace FireBirdTest {
 	                         testing::Values(&finnhubWebData1004, &finnhubWebData1002, &finnhubWebData1003,
 		                         &finnhubWebData1005, &finnhubWebData1006, &finnhubWebData1007));
 
-	TEST_P(ProcessFinnhubStockBasicFinancialTest, TestProcessFinnhubInsiderTransaction0) {
+	TEST_P(ProcessFinnhubStockBasicFinancialTest, TestParseAndStoreWebData0) {
 		EXPECT_EQ(m_pStock->GetBasicFinancial(), nullptr);
 		m_finnhubCompanyBasicFinancial.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {

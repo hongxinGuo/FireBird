@@ -54,9 +54,7 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 			s = jsonGetString(it, _T("symbol"));
 			pEPSSurprise->m_strSymbol = s.c_str();
 			s = jsonGetString(it,_T("period"));
-			CString str = s.c_str();
-			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			pEPSSurprise->m_lDate = XferYearMonthDayToYYYYMMDD(year, month, day);
+			pEPSSurprise->m_lDate = XferToYYYYMMDD(s);
 			pEPSSurprise->m_dEstimate = jsonGetDouble(it, _T("estimate"));
 			pEPSSurprise->m_dActual = jsonGetDouble(it, _T("actual"));
 			pvEPSSurprise->push_back(pEPSSurprise);

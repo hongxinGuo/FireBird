@@ -110,7 +110,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);
 			EXPECT_STREQ(m_pvIEXTopOfBook->at(0)->m_strTicker, _T("000001"));
 			EXPECT_STREQ(m_pvIEXTopOfBook->at(1)->m_strTicker, _T("000002"));
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_llTimestamp, 1727726400);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_timeStamp.time_since_epoch().count(), 1727726400);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLastClose, 114200);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lOpen, 116213);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lHigh, 123000);

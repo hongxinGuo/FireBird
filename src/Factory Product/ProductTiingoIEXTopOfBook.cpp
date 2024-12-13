@@ -3,6 +3,7 @@
 /// Tiingo IEX last top of book。
 ///
 /// 目前每天能够更新的总数大致是2万，其中在股票代码中的大致为六千多。
+/// 闭市后可以使用此数据来更新当天的日线数据。
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "pch.h"
@@ -38,20 +39,19 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoIEXTopOFBook = ParseTiingoIEXTopOfBook(pWebData);
 	long lNewestTradeDay = gl_pWorldMarket->GetCurrentTradeDate();
 	time_t ttNewestTradeDay = ConvertToTTime(lNewestTradeDay, 0, 160000); // 美股下午4点收市
-	if (!pvTiingoIEXTopOFBook->empty()) {
-		for (const auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {
-			if (pIEXTopOFBook->m_llTimestamp < ttNewestTradeDay) continue; // 只使用不早于一天的实时数据
-			if (!gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker)) continue; // 只更新已有代码
-			auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker);
-			if (!pTiingoStock->IsActive()) continue; // 只更新活跃股票
-			if (pTiingoStock->GetDayLineStartDate() == 29900101) continue; // 如果从未下载过日线数据，则不更新（让日线更新任务来完成首次下载任务）。
-			pTiingoStock->UpdateRTData(pIEXTopOFBook);
-			if (pTiingoStock->GetDayLineEndDate() >= gl_pWorldMarket->GetLastTradeDate()) { // 只有一个需要更新的日线？
-				// 只有一个日线需要更新时，此时已经更新，就不再需要申请日线更新了。
-				pTiingoStock->SetUpdateDayLine(false); // 无需再次更新日线
-				pTiingoStock->SetDayLineEndDate(lNewestTradeDay); // 设置新的日线截止日期
-				pTiingoStock->SetUpdateProfileDB(true);
-			}
+	if (pvTiingoIEXTopOFBook->empty()) return;
+	for (const auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {
+		if (pIEXTopOFBook->m_timeStamp.time_since_epoch().count() < ttNewestTradeDay) continue; // 只使用不早于一天的实时数据
+		if (!gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker)) continue; // 只更新已有代码
+		auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker);
+		if (!pTiingoStock->IsActive()) continue; // 只更新活跃股票
+		if (pTiingoStock->GetDayLineStartDate() == 29900101) continue; // 如果从未下载过日线数据，则不更新（让日线更新任务来完成首次下载任务）。
+		pTiingoStock->UpdateRTData(pIEXTopOFBook);
+		if (pTiingoStock->GetDayLineEndDate() >= gl_pWorldMarket->GetLastTradeDate()) { // 只有一个需要更新的日线？
+			// 只有一个日线需要更新时，此时已经更新，就不再需要申请日线更新了。
+			pTiingoStock->SetUpdateDayLine(false); // 无需再次更新日线
+			pTiingoStock->SetDayLineEndDate(lNewestTradeDay); // 设置新的日线截止日期
+			pTiingoStock->SetUpdateProfileDB(true);
 		}
 	}
 }
@@ -106,6 +106,7 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 	CTiingoIEXTopOfBookPtr pIEXLastTopOFBook = nullptr;
 	CTiingoStock stock;
 	string s1;
+	stringstream ss;
 	CString strNumber;
 	int year, month, day, hour, minute, second;
 	int hourOffset, minuteOffset;
@@ -125,8 +126,14 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 			s1 = jsonGetStringView(itemValue, _T("ticker"));
 			pIEXLastTopOFBook->m_strTicker = s1.c_str();
 			s1 = jsonGetStringView(itemValue, _T("timestamp"));
-			sscanf_s(s1.c_str(), _T("%04d-%02d-%02dT%02d:%02d:%02d+%02d:%02d"), &year, &month, &day, &hour, &minute, &second, &hourOffset, &minuteOffset);
-			pIEXLastTopOFBook->m_llTimestamp = ConvertToTTime(year, month, day, hour, minute, second, hourOffset * 100 + minuteOffset);
+			ss.str(s1);
+			chrono::from_stream(ss, "%FT%T%Ez", pIEXLastTopOFBook->m_timeStamp);
+			s1 = jsonGetStringView(itemValue, _T("lastSaleTimestamp"));
+			ss.str(s1);
+			chrono::from_stream(ss, "%FT%T%Ez", pIEXLastTopOFBook->m_lastSale);
+			s1 = jsonGetStringView(itemValue, _T("quoteTimestamp"));
+			ss.str(s1);
+			chrono::from_stream(ss, "%FT%T%Ez", pIEXLastTopOFBook->m_quote);
 
 			pIEXLastTopOFBook->m_lHigh = jsonGetDouble(itemValue, _T("high")) * stock.GetRatio();
 			pIEXLastTopOFBook->m_lLow = jsonGetDouble(itemValue, _T("low")) * stock.GetRatio();
