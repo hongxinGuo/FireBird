@@ -100,7 +100,6 @@ void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CDayLinesPtr CProductTiingoCryptoDayLine::ParseTiingoCryptoDayLine(const CWebDataPtr& pWebData) {
 	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
 	string s;
-	long year, month, day;
 	json js;
 
 	if (!pWebData->CreateJson(js)) return pvDayLine;
@@ -119,9 +118,7 @@ CDayLinesPtr CProductTiingoCryptoDayLine::ParseTiingoCryptoDayLine(const CWebDat
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			auto pDayLine = make_shared<CDayLine>();
 			s = jsonGetString(it, _T("date"));
-			CString str = s.c_str();
-			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			long lTemp = XferYearMonthDayToYYYYMMDD(year, month, day);
+			long lTemp = XferToYYYYMMDD(s);
 			pDayLine->SetDate(lTemp);
 			double dTemp = jsonGetDouble(it, _T("close"));
 			pDayLine->SetClose(dTemp * 1000);

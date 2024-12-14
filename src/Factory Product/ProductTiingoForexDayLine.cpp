@@ -106,7 +106,6 @@ void CProductTiingoForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CDayLinesPtr CProductTiingoForexDayLine::ParseTiingoForexDayLine(const CWebDataPtr& pWebData) {
 	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
 	string s;
-	long year, month, day;
 	json js;
 
 	if (!pWebData->CreateJson(js)) return pvDayLine;
@@ -125,10 +124,7 @@ CDayLinesPtr CProductTiingoForexDayLine::ParseTiingoForexDayLine(const CWebDataP
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			auto pDayLine = make_shared<CDayLine>();
 			s = jsonGetString(it, _T("date"));
-			CString str = s.c_str();
-			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-			long lTemp = XferYearMonthDayToYYYYMMDD(year, month, day);
-			pDayLine->SetDate(lTemp);
+			pDayLine->SetDate(XferToYYYYMMDD(s));
 			double dTemp = jsonGetDouble(it, _T("close"));
 			pDayLine->SetClose(dTemp * 1000);
 			dTemp = jsonGetDouble(it, _T("high"));
@@ -137,7 +133,7 @@ CDayLinesPtr CProductTiingoForexDayLine::ParseTiingoForexDayLine(const CWebDataP
 			pDayLine->SetLow(dTemp * 1000);
 			dTemp = jsonGetDouble(it, _T("open"));
 			pDayLine->SetOpen(dTemp * 1000);
-			lTemp = jsonGetLong(it, _T("volume"));
+			long lTemp = jsonGetLong(it, _T("volume"));
 			pDayLine->SetVolume(lTemp);
 			pvDayLine->push_back(pDayLine);
 		}

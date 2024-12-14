@@ -14,6 +14,8 @@ public:
 
 	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
 	static CTiingoStocksPtr DeleteDuplicatedSymbol(const CTiingoStocksPtr& pvTiingoStock);
+	void SaveNewSymbol();
+	void SaveDelistedSymbol();
 };
 
 using CProductTiingoStockProfilePtr = shared_ptr<CProductTiingoStockProfile>;

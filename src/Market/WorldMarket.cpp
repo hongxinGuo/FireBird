@@ -233,7 +233,7 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0)); // 两分钟后开始监测WebSocket
 #ifndef _DEBUG
-	AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lTimeMinute, 0, 5, 0)); // 发行版五分钟后自动处理日线数据；测试版手动执行。
+	AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lTimeMinute, 0, 2, 0)); // 发行版两分钟后自动处理日线数据；测试版手动执行。
 #endif
 
 	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
@@ -676,16 +676,11 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 
 	// Tiingo部分
 	if (gl_dataContainerTiingoStock.IsUpdateProfileDB()) { // Tiingo Stock
-		static int s_counter = 0;
-		if (s_counter > 30) {
-			gl_runtime.thread_executor()->post([] {
-				gl_UpdateWorldMarketDB.acquire();
-				gl_dataContainerTiingoStock.UpdateDB();
-				gl_UpdateWorldMarketDB.release();
-			});
-			s_counter = 0;
-		}
-		s_counter++;
+		gl_runtime.thread_executor()->post([] {
+			gl_UpdateWorldMarketDB.acquire();
+			gl_dataContainerTiingoStock.UpdateDB();
+			gl_UpdateWorldMarketDB.release();
+		});
 	}
 	if (gl_dataContainerTiingoCryptoSymbol.IsUpdateProfileDB()) { // Tiingo crypto symbol
 		gl_runtime.thread_executor()->post([] {
@@ -1075,13 +1070,13 @@ void CWorldMarket::UpdateMarketHoliday(const CMarketHolidaysPtr& pv) const {
 }
 
 void CWorldMarket::DeleteTiingoDelistedStock() {
-	while (gl_dataContainerTiingoDelistedSymbol.Size() > 0) {
-		auto pTiingoDelistedStock = gl_dataContainerTiingoDelistedSymbol.GetStock(0);
+	auto Size = gl_dataContainerTiingoDelistedSymbol.Size();
+	for (size_t index = 0; index < Size; index++) {
+		auto pTiingoDelistedStock = gl_dataContainerTiingoDelistedSymbol.GetStock(index);
+		ASSERT(gl_dataContainerTiingoStock.IsSymbol(pTiingoDelistedStock));
 		DeleteTiingoDayLine(pTiingoDelistedStock); // 删除日线
 		DeleteTiingoFinancialStatement(pTiingoDelistedStock); // 删除财经报告
-		ASSERT(gl_dataContainerTiingoStock.IsSymbol(pTiingoDelistedStock));
 		gl_dataContainerTiingoStock.Delete(pTiingoDelistedStock->GetSymbol()); // 删除代码
-		gl_dataContainerTiingoDelistedSymbol.Delete(pTiingoDelistedStock);
 	}
 }
 

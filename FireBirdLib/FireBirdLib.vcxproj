@@ -110,6 +110,8 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStock52WeekLow.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockDayLine.h" />
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockDelistedSymbol.h" />
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockNewSymbol.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenCrypto.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenForex.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h" />
@@ -343,6 +345,8 @@
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">StackFrameRuntimeCheck</BasicRuntimeChecks>
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.cpp" />
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockDelistedSymbol.cpp" />
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockNewSymbol.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketHoliday.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketStatus.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubSECFilings.cpp" />

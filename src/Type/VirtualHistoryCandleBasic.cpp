@@ -61,15 +61,17 @@ void CVirtualHistoryCandleBasic::AppendBasicData(not_null<CVirtualSetHistoryCand
 
 void CVirtualHistoryCandleBasic::LoadBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());
+	auto ratio = GetRatio();
+
 	m_lDate = pVirtualSetHistoryCandleBasic->m_Date;
 	m_strExchange = pVirtualSetHistoryCandleBasic->m_Exchange;
 	m_strStockSymbol = pVirtualSetHistoryCandleBasic->m_Symbol;
 	m_strDisplaySymbol = pVirtualSetHistoryCandleBasic->m_DisplaySymbol;
-	m_lLastClose = atof(pVirtualSetHistoryCandleBasic->m_LastClose) * GetRatio();
-	m_lOpen = atof(pVirtualSetHistoryCandleBasic->m_Open) * GetRatio();
-	m_lHigh = atof(pVirtualSetHistoryCandleBasic->m_High) * GetRatio();
-	m_lLow = atof(pVirtualSetHistoryCandleBasic->m_Low) * GetRatio();
-	m_lClose = atof(pVirtualSetHistoryCandleBasic->m_Close) * GetRatio();
+	m_lLastClose = atof(pVirtualSetHistoryCandleBasic->m_LastClose) * ratio;
+	m_lOpen = atof(pVirtualSetHistoryCandleBasic->m_Open) * ratio;
+	m_lHigh = atof(pVirtualSetHistoryCandleBasic->m_High) * ratio;
+	m_lLow = atof(pVirtualSetHistoryCandleBasic->m_Low) * ratio;
+	m_lClose = atof(pVirtualSetHistoryCandleBasic->m_Close) * ratio;
 	m_dSplitFactor = atof(pVirtualSetHistoryCandleBasic->m_splitFactor);
 	m_dDividend = atof(pVirtualSetHistoryCandleBasic->m_dividend);
 	m_dUpDown = atof(pVirtualSetHistoryCandleBasic->m_UpAndDown);

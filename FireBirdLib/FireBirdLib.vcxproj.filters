@@ -870,6 +870,12 @@
     <ClInclude Include="..\src\Market\MarketTask.h">
       <Filter>头文件\Market</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockNewSymbol.h">
+      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockDelistedSymbol.h">
+      <Filter>头文件\database\WorldMarket\Tiingo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1453,6 +1459,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Market\MarketTaskQueue.cpp">
       <Filter>源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockNewSymbol.cpp">
+      <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockDelistedSymbol.cpp">
+      <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

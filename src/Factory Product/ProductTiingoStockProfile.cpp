@@ -5,6 +5,8 @@
 #include"TiingoStock.h"
 #include "ProductTiingoStockProfile.h"
 
+#include "SetTiingoStockDelistedSymbol.h"
+#include "SetTiingoStockNewSymbol.h"
 #include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"
@@ -59,6 +61,10 @@ void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		}
 	}
 	gl_pWorldMarket->DeleteTiingoDelistedStock(); // 最后从代码即中删除已经退市的股票
+
+	// Note 先在这里存储
+	SaveNewSymbol();
+	SaveDelistedSymbol();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -97,7 +103,6 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 	CTiingoStockPtr pStock = nullptr;
 	string s1;
 	CString strNumber;
-	long year, month, day;
 
 	if (!IsValidData(pWebData)) return pvTiingoStock;
 
@@ -172,13 +177,9 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 			}
 			else pStock->m_strSECFilingWebSite = strNULL;
 			s1 = jsonGetStringView(itemValue, _T("statementLastUpdated"));
-			if (!s1.empty()) str = s1.c_str();;
-			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02dT"), &year, &month, &day); // 只解析日期
-			pStock->SetStatementLastUpdatedDate(XferYearMonthDayToYYYYMMDD(year, month, day));
+			pStock->SetStatementLastUpdatedDate(XferToYYYYMMDD(s1));
 			s1 = jsonGetStringView(itemValue, _T("dailyLastUpdated"));
-			str = s1.c_str();;
-			sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02dT"), &year, &month, &day); // 只解析日期
-			pStock->SetDailyUpdateDate(XferYearMonthDayToYYYYMMDD(year, month, day));
+			pStock->SetDailyUpdateDate(XferToYYYYMMDD(s1));
 			s1 = jsonGetStringView(itemValue, _T("dataProviderPermaTicker"));
 			if (s1 != strNotAvailable) {
 				pStock->m_strDataProviderPermaTicker = s1.c_str();
@@ -234,4 +235,35 @@ CTiingoStocksPtr CProductTiingoStockProfile::DeleteDuplicatedSymbol(const CTiing
 		}
 	}
 	return pvNewTiingoStock;
+}
+
+void CProductTiingoStockProfile::SaveNewSymbol() {
+	CSetTiingoStockNewSymbol setNewSymbol;
+	setNewSymbol.m_strFilter = _T("[ID] = 1");
+	setNewSymbol.Open();
+	setNewSymbol.m_pDatabase->BeginTrans();
+	for (size_t index = 0; index < gl_dataContainerTiingoNewSymbol.Size(); index++) {
+		auto pStock = gl_dataContainerTiingoNewSymbol.GetStock(index);
+		setNewSymbol.AddNew();
+		setNewSymbol.m_date = gl_pWorldMarket->GetMarketDate();
+		setNewSymbol.m_symbol = pStock->GetSymbol();
+		setNewSymbol.Update();
+	}
+	setNewSymbol.m_pDatabase->CommitTrans();
+	setNewSymbol.Close();
+}
+void CProductTiingoStockProfile::SaveDelistedSymbol() {
+	CSetTiingoStockDelistedSymbol setDelistedSymbol;
+	setDelistedSymbol.m_strFilter = _T("[ID] = 1");
+	setDelistedSymbol.Open();
+	setDelistedSymbol.m_pDatabase->BeginTrans();
+	for (size_t index = 0; index < gl_dataContainerTiingoDelistedSymbol.Size(); index++) {
+		auto pStock = gl_dataContainerTiingoDelistedSymbol.GetStock(index);
+		setDelistedSymbol.AddNew();
+		setDelistedSymbol.m_date = gl_pWorldMarket->GetMarketDate();
+		setDelistedSymbol.m_symbol = pStock->GetSymbol();
+		setDelistedSymbol.Update();
+	}
+	setDelistedSymbol.m_pDatabase->CommitTrans();
+	setDelistedSymbol.Close();
 }

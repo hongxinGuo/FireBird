@@ -3,10 +3,11 @@
 #include "TiingoDayLine.h"
 #include"TiingoStock.h"
 
+static CTiingoStock s_stock; // 用于获得各价格的放大比率。
+
 CTiingoDayLine::CTiingoDayLine() {
 }
 
 int CTiingoDayLine::GetRatio() const {
-	CTiingoStock stock;
-	return stock.GetRatio();
+	return s_stock.GetRatio();
 }

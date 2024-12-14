@@ -125,6 +125,8 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 	auto pvDayLine = make_shared<vector<CTiingoDayLinePtr>>();
 	string s;
 	json js;
+	stringstream ss;
+	chrono::year_month_day ymd;
 
 	if (!pWebData->CreateJson(js)) return pvDayLine;
 	if (!IsValidData(pWebData)) return pvDayLine;
@@ -145,10 +147,7 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 			auto pDayLine = make_shared<CTiingoDayLine>();
 			//pDayLine->SetExchange(_T("US")); // 所有的Tiingo证券皆为美国市场。
 			s = jsonGetString(it, _T("date"));
-			stringstream ss(s);
-			chrono::from_stream(ss, "%FT%H:%M:%6S%Z", tpTime);
-			chrono::year_month_day ymd{ chrono::floor<chrono::days>(tpTime) };
-			long lTemp = XferToYYYYMMDD(ymd);
+			long lTemp = XferToYYYYMMDD(s);
 			pDayLine->SetDate(lTemp);
 			double dTemp = jsonGetDouble(it,_T("close"));
 			pDayLine->SetClose(dTemp * stock.GetRatio());
