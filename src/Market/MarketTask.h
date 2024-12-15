@@ -78,14 +78,16 @@ public:
 	~CMarketTask() = default;
 
 	long GetTime() const { return m_lTime; }
+	chrono::sys_seconds GetTpTime() const { return m_tpTime; }
 	void SetTime(const long lTime) { m_lTime = lTime; }
 
 	long GetType() const { return m_lType; }
 	void SetType(const long lType) { m_lType = lType; }
 
 protected:
-	long m_lTime{ 0 }; // HHMMSS制式
 	long m_lType{ 0 }; // 枚举型任务号
+	chrono::sys_seconds m_tpTime; // Note 使用此变量取代HHMMSS制式的m_lTime。
+	long m_lTime{ 0 }; // HHMMSS制式
 };
 
 using CMarketTaskPtr = shared_ptr<CMarketTask>;

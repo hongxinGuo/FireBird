@@ -1230,7 +1230,6 @@ void CMainFrame::OnUpdateUpdateTiingoFundamentalDefinition(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnResetTiingoDaylineDate() {
-	// TODO: Add your command handler code here
 	gl_dataContainerTiingoStock.ResetDayLineStartEndDate();
 }
 
@@ -1239,11 +1238,6 @@ void CMainFrame::OnCreateTiingoTradeDayDayline() {
 }
 
 void CMainFrame::OnUpdateCreateTiingoTradeDayDayline(CCmdUI* pCmdUI) {
-	// TODO: Add your command update UI handler code here
-	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
-		pCmdUI->Enable(false);
-		return;
-	}
 	if (gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) {
 		pCmdUI->Enable(false);
 	}
@@ -1259,16 +1253,7 @@ void CMainFrame::OnProcessTiingoDayline() {
 }
 
 void CMainFrame::OnUpdateProcessTiingoDayline(CCmdUI* pCmdUI) {
-#ifdef _DEBUG
-	pCmdUI->Enable(true); // 调试模式时随时可以执行
-#else
-	if (gl_pTiingoDataSource->IsUpdateIEXTopOfBook() || gl_pTiingoDataSource->IsUpdateDayLine()) {
-		pCmdUI->Enable(false);
-	}
-	else {
-		pCmdUI->Enable(true);
-	}
-#endif
+	pCmdUI->Enable(true); // 随时可以执行
 }
 
 void CMainFrame::OnCalculateNewLowFiveTimes() {
