@@ -228,13 +228,6 @@
     <ClInclude Include="..\src\WebSocket\TiingoForexWebSocket.h" />
     <ClInclude Include="..\src\WebSocket\TiingoIEXWebSocket.h" />
     <ClInclude Include="..\src\WebSocket\VirtualWebSocket.h" />
-    <ClInclude Include="..\src\Windows interface\ChildFrm.h" />
-    <ClInclude Include="..\src\Windows interface\MainFrm.h" />
-    <ClInclude Include="..\src\Windows interface\OutputWnd.h" />
-    <ClInclude Include="..\src\Windows interface\FireBirdDoc.h" />
-    <ClInclude Include="..\src\Windows interface\FireBirdView.h" />
-    <ClInclude Include="..\src\Windows interface\PropertiesWnd.h" />
-    <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
@@ -458,14 +451,6 @@
     <ClCompile Include="..\src\WebSocket\TiingoForexWebSocket.cpp" />
     <ClCompile Include="..\src\WebSocket\TiingoIEXWebSocket.cpp" />
     <ClCompile Include="..\src\WebSocket\VirtualWebSocket.cpp" />
-    <ClCompile Include="..\src\Windows interface\ChildFrm.cpp" />
-    <ClCompile Include="..\src\Windows interface\MainFrm.cpp" />
-    <ClCompile Include="..\src\Windows interface\OutputWnd.cpp" />
-    <ClCompile Include="..\src\Windows interface\FireBird.cpp" />
-    <ClCompile Include="..\src\Windows interface\FireBirdDoc.cpp" />
-    <ClCompile Include="..\src\Windows interface\FireBirdView.cpp" />
-    <ClCompile Include="..\src\Windows interface\PropertiesWnd.cpp" />
-    <ClCompile Include="..\src\Windows interface\PropertyRealTimeDataWnd.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildDayLineRS.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildWeekLineRS.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadChoice10RSStrongSTockSet.cpp" />

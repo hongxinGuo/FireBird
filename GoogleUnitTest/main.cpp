@@ -42,8 +42,6 @@
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
 
-#include"MockMainFrm.h"
-
 #include"simdjsonGetValue.h"
 
 #include"ScheduleTask.h"
@@ -84,7 +82,7 @@ static char THIS_FILE[] = __FILE__;
 
 namespace FireBirdTest {
 	// 构造析构时开销大的Mock类声明为全局变量，在测试系统退出时才析构,这样容易在测试信息窗口中发现故障
-	CMockMainFramePtr gl_pMockMainFrame; // 此Mock类使用真实的各市场类(gl_pChinaMarket, gl_pWorldMarket, ...)
+	//CMockMainFramePtr gl_pMockMainFrame; // 此Mock类使用真实的各市场类(gl_pChinaMarket, gl_pWorldMarket, ...)
 
 	// 测试环境中使用了真实的gl_pChinaMarket、gl_pWorldMarket等变量，析构时需要将其状态恢复原状，以防止其更新相应的数据库。切记。
 	class TestEnvironment : public Environment {
@@ -124,8 +122,8 @@ namespace FireBirdTest {
 			while (gl_systemMessage.InnerSystemInfoSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
 
 			EXPECT_FALSE(CMFCVisualManager::GetInstance() == NULL); //
-			gl_pMockMainFrame = make_shared<CMockMainFrame>();
-			EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL) << "在生成MainFrame时，会生成一个视觉管理器。在退出时需要删除之";
+			//gl_pMockMainFrame = make_shared<CMockMainFrame>();
+			//EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL) << "在生成MainFrame时，会生成一个视觉管理器。在退出时需要删除之";
 
 			EXPECT_TRUE(gl_dataContainerChinaStock.IsUpdateProfileDB());
 			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
@@ -204,8 +202,8 @@ namespace FireBirdTest {
 			ASSERT_THAT(gl_dataContainerChinaStock.IsUpdateProfileDB(), IsFalse()) << "退出时必须保证无需更新代码库";
 
 			gl_systemConfiguration.SetExitingSystem(false);
-			gl_pMockMainFrame = nullptr;
-			EXPECT_TRUE(gl_systemConfiguration.IsExitingSystem()) << "MainFrame析构时设置此标识";
+			//gl_pMockMainFrame = nullptr;
+			//EXPECT_TRUE(gl_systemConfiguration.IsExitingSystem()) << "MainFrame析构时设置此标识";
 
 			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);

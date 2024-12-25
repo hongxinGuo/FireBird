@@ -414,18 +414,6 @@
     <ClInclude Include="..\src\WebSocket\VirtualWebSocket.h">
       <Filter>头文件\Web Socket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Windows interface\MainFrm.h">
-      <Filter>头文件\Windows interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Windows interface\OutputWnd.h">
-      <Filter>头文件\Windows interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Windows interface\FireBirdDoc.h">
-      <Filter>头文件\Windows interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Windows interface\FireBirdView.h">
-      <Filter>头文件\Windows interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -621,9 +609,6 @@
     <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Windows interface\PropertiesWnd.h">
-      <Filter>头文件\Windows interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Source\TengxunRTDataSource.h">
       <Filter>头文件\Data Source\China market</Filter>
     </ClInclude>
@@ -680,12 +665,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Type\SECFiling.h">
       <Filter>头文件\Type\America market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h">
-      <Filter>头文件\Windows interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Windows interface\ChildFrm.h">
-      <Filter>头文件\Windows interface</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingoMarketNews.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
@@ -1058,12 +1037,6 @@
     <ClCompile Include="..\src\WebSocket\VirtualWebSocket.cpp">
       <Filter>源文件\Web Socket</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Windows interface\MainFrm.cpp">
-      <Filter>源文件\windows interface</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Windows interface\OutputWnd.cpp">
-      <Filter>源文件\windows interface</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildDayLineRS.cpp">
       <Filter>源文件\Working thread\China market</Filter>
     </ClCompile>
@@ -1235,15 +1208,6 @@
     <ClCompile Include="..\src\Data Container\ContainerStockSymbol.cpp">
       <Filter>源文件\Data container</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Windows interface\FireBirdDoc.cpp">
-      <Filter>源文件\windows interface</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Windows interface\FireBirdView.cpp">
-      <Filter>源文件\windows interface</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Windows interface\PropertiesWnd.cpp">
-      <Filter>源文件\windows interface</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Data Source\TengxunRTDataSource.cpp">
       <Filter>源文件\Data Source\China market</Filter>
     </ClCompile>
@@ -1292,9 +1256,6 @@
     <ClCompile Include="..\src\System\ScheduleTask.cpp">
       <Filter>源文件\System</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Windows interface\FireBird.cpp">
-      <Filter>源文件\windows interface</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Data Source\InquireEngine.cpp">
       <Filter>源文件\Data Source</Filter>
     </ClCompile>
@@ -1306,12 +1267,6 @@
     </ClCompile>
     <ClCompile Include="..\Lib\simdjson\simdjson.cpp">
       <Filter>源文件\Accessory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Windows interface\PropertyRealTimeDataWnd.cpp">
-      <Filter>源文件\windows interface</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Windows interface\ChildFrm.cpp">
-      <Filter>源文件\windows interface</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTiingoMarketNews.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>

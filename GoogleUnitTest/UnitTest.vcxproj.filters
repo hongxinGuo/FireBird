@@ -153,9 +153,6 @@
     <ClCompile Include="ConvertToStringTest.cpp">
       <Filter>Test源文件\accessory</Filter>
     </ClCompile>
-    <ClCompile Include="MockMainFrmTest.cpp">
-      <Filter>Test源文件\Windows interface</Filter>
-    </ClCompile>
     <ClCompile Include="NeteaseWebRTDataTest.cpp">
       <Filter>Test源文件\Type\China Market\WebRTData</Filter>
     </ClCompile>
@@ -274,9 +271,6 @@
       <Filter>Test源文件\System</Filter>
     </ClCompile>
     <ClCompile Include="SystemMessageTest.cpp">
-      <Filter>Test源文件\System</Filter>
-    </ClCompile>
-    <ClCompile Include="MockSystemMessageTest.cpp">
       <Filter>Test源文件\System</Filter>
     </ClCompile>
     <ClCompile Include="jsonParseTest.cpp">
@@ -446,9 +440,6 @@
     </ClCompile>
     <ClCompile Include="ContainerChoicedIEXTest.cpp">
       <Filter>Test源文件\Data Container\Chosen</Filter>
-    </ClCompile>
-    <ClCompile Include="MockFireBirdViewTest.cpp">
-      <Filter>Test源文件\Windows interface</Filter>
     </ClCompile>
     <ClCompile Include="XferFinnhubInquiryTest.cpp">
       <Filter>Test源文件\System</Filter>
@@ -662,15 +653,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MockMainFrm.h">
-      <Filter>Mock class\Windows interface</Filter>
-    </ClInclude>
-    <ClInclude Include="MockFireBirdView.h">
-      <Filter>Mock class\Windows interface</Filter>
-    </ClInclude>
-    <ClInclude Include="MockSystemMessage.h">
-      <Filter>Mock class\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="GeneralCheck.h">
       <Filter>Test头文件</Filter>
     </ClInclude>

@@ -229,11 +229,25 @@
     <None Include="res\FireBird.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\Windows interface\ChildFrm.h" />
     <ClInclude Include="..\src\Windows interface\FireBird.h" />
+    <ClInclude Include="..\src\Windows interface\FireBirdDoc.h" />
+    <ClInclude Include="..\src\Windows interface\FireBirdView.h" />
+    <ClInclude Include="..\src\Windows interface\MainFrm.h" />
+    <ClInclude Include="..\src\Windows interface\OutputWnd.h" />
+    <ClInclude Include="..\src\Windows interface\PropertiesWnd.h" />
+    <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\Windows interface\ChildFrm.cpp" />
     <ClCompile Include="..\src\Windows interface\FireBird.cpp" />
+    <ClCompile Include="..\src\Windows interface\FireBirdDoc.cpp" />
+    <ClCompile Include="..\src\Windows interface\FireBirdView.cpp" />
+    <ClCompile Include="..\src\Windows interface\MainFrm.cpp" />
+    <ClCompile Include="..\src\Windows interface\OutputWnd.cpp" />
+    <ClCompile Include="..\src\Windows interface\PropertiesWnd.cpp" />
+    <ClCompile Include="..\src\Windows interface\PropertyRealTimeDataWnd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FireBirdLib\FireBirdLib.vcxproj">

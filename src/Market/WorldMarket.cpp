@@ -246,7 +246,7 @@ void CWorldMarket::TaskProcessWebSocketData(long lCurrentTime) {
 	UpdateFinnhubStockFromWebSocket();
 
 	long lNextTime = GetNextSecond(lCurrentTime);
-	if (IsTimeToResetSystem(lNextTime)) lNextTime = GetResetTime() + 501;
+	if (IsTimeToResetSystem(lNextTime)) lNextTime = GetNextTime(GetResetTime(), 0, 5, 1);
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lNextTime);
 }
 

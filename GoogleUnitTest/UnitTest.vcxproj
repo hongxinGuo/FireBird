@@ -222,7 +222,6 @@
     <ClCompile Include="ChinaMarketTest.cpp" />
     <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp" />
     <ClCompile Include="MockContainerChinaDayLineTest.cpp" />
-    <ClCompile Include="MockMainFrmTest.cpp" />
     <ClCompile Include="XferFinnhubInquiryTest.cpp" />
     <ClInclude Include="GeneralCheck.h" />
     <ClInclude Include="MockContainerChinaStock.h" />
@@ -236,10 +235,8 @@
     <ClCompile Include="OneDealTest.cpp" />
     <ClCompile Include="PriorityQueueWebRTDataTest.cpp" />
     <ClCompile Include="ProcessDayLineDataTest.cpp" />
-    <ClCompile Include="MockSystemMessageTest.cpp" />
     <ClCompile Include="TaskDistributeNeteaseRTDataToProperStockTest.cpp" />
     <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp" />
-    <ClCompile Include="MockFireBirdViewTest.cpp" />
     <ClCompile Include="ThreadBuildDayLineRSOfDayTest.cpp" />
     <ClCompile Include="ThreadChoice10RSStrongStockSetTest.cpp" />
     <ClCompile Include="WebDataTest.cpp" />
@@ -261,13 +258,10 @@
     <ClInclude Include="MockChinaMarket.h" />
     <ClInclude Include="MockChinaStock.h" />
     <ClInclude Include="MockDataChinaDayLine.h" />
-    <ClInclude Include="MockMainFrm.h" />
-    <ClInclude Include="MockFireBirdView.h" />
     <ClInclude Include="MockNeteaseDayLineDataSource.h" />
     <ClInclude Include="MockNeteaseRTDataSource.h" />
     <ClInclude Include="MockQuandlDataSource.h" />
     <ClInclude Include="MockSinaRTDataSource.h" />
-    <ClInclude Include="MockSystemMessage.h" />
     <ClInclude Include="MockTengxunDayLineDataSource.h" />
     <ClInclude Include="MockTengxunRTDataSource.h" />
     <ClInclude Include="MockTiingoDataSource.h" />

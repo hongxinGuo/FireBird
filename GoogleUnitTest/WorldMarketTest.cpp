@@ -1036,12 +1036,12 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestTaskProcessWebSocketData2) {
 		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
 
-		gl_pWorldMarket->TaskProcessWebSocketData(gl_pWorldMarket->GetResetTime() - 201);
+		gl_pWorldMarket->TaskProcessWebSocketData(GetPrevTime(gl_pWorldMarket->GetResetTime(), 0, 2, 1));
 
 		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());
 		const auto pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__);
-		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 501);
+		EXPECT_EQ(pTask->GetTime(), GetNextTime(gl_pWorldMarket->GetResetTime(), 0, 5, 1));
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
