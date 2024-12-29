@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/WatchdogQT">
+        <file>Watchdog.ico</file>
+    </qresource>
+</RCC>

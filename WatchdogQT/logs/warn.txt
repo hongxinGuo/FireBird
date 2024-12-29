@@ -1,0 +1,18 @@
+[2024-12-29 19:02:58.985] [basic_warn_logger] [warning] virtualDataSource thread number not match 1 -- 0  class CFinnhubDataSourcehttps://finnhub.io/api/v1/calendar/economic?&token=
+[2024-12-29 19:02:59.288] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2024-12-29 19:03:07.656] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2024-12-29 19:03:15.621] [basic_warn_logger] [warning] virtualDataSource thread number not match 1 -- 0  class CFinnhubDataSourcehttps://finnhub.io/api/v1/calendar/economic?&token=
+[2024-12-29 19:03:16.099] [basic_warn_logger] [warning] virtualDataSource thread number not match 1 -- 0  class CFinnhubDataSourcehttps://finnhub.io/api/v1/calendar/economic?&token=
+[2024-12-29 19:03:16.766] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2024-12-29 19:03:25.822] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2024-12-29 19:03:32.976] [basic_warn_logger] [warning] virtualDataSource thread number not match 1 -- 0  class CFinnhubDataSourcehttps://finnhub.io/api/v1/calendar/economic?&token=
+[2024-12-29 19:03:33.480] [basic_warn_logger] [warning] virtualDataSource thread number not match 1 -- 0  class CFinnhubDataSourcehttps://finnhub.io/api/v1/calendar/economic?&token=
+[2024-12-29 19:03:50.214] [basic_warn_logger] [warning] virtualDataSource thread number not match 1 -- 0  class CFinnhubDataSourcehttps://finnhub.io/api/v1/calendar/economic?&token=
+[2024-12-29 19:03:50.736] [basic_warn_logger] [warning] virtualDataSource thread number not match 1 -- 0  class CFinnhubDataSourcehttps://finnhub.io/api/v1/calendar/economic?&token=
+[2024-12-29 19:04:07.483] [basic_warn_logger] [warning] virtualDataSource thread number not match 1 -- 0  class CFinnhubDataSourcehttps://finnhub.io/api/v1/calendar/economic?&token=
+[2024-12-29 19:04:50.489] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2024-12-29 19:04:59.115] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2024-12-29 19:05:05.839] [basic_warn_logger] [warning] virtualDataSource thread number not match 1 -- 0  class CFinnhubDataSourcehttps://finnhub.io/api/v1/calendar/economic?&token=
+[2024-12-29 19:05:08.122] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2024-12-29 19:05:15.970] [basic_warn_logger] [warning] virtualDataSource thread number not match 1 -- 0  class CNeteaseDayLineDataSourcehttp://quotes.money.163.com/service/chddata.html?code=0601206&start=19
+[2024-12-29 19:05:21.987] [basic_warn_logger] [warning] virtualDataSource thread number not match 1 -- 0  class CFinnhubDataSourcehttps://finnhub.io/api/v1/calendar/economic?&token=

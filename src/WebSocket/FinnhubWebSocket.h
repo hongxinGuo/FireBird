@@ -9,7 +9,7 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg);
 class CFinnhubSocket final {
 public:
 	CFinnhubSocket() {
-		m_sSymbol = _T("");
+		m_sSymbol = ("");
 		m_dLastPrice = m_dLastVolume = 0;
 		m_iSeconds = 0;
 	}
