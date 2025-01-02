@@ -11,6 +11,7 @@ void TaskExitSystem();
 
 void TaskCheckWorldMarketReady();// world market task
 
+void InitializeLogSystem();
 void InitializeMarkets();
 void AssignDataSourceAndWebInquiryToMarket();
 

@@ -23,6 +23,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -30,6 +31,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
@@ -112,11 +114,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="PropertyWidget.cpp" />
+    <ClCompile Include="RealTimeWindow.cpp" />
     <QtRcc Include="FireBirdQT.qrc" />
     <QtUic Include="FireBirdQT.ui" />
     <QtMoc Include="FireBirdQT.h" />
     <ClCompile Include="FireBirdQT.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="PropertyWidget.ui" />
+    <QtUic Include="RealTimeWindow.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="PropertyWidget.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="RealTimeWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="FireBirdQT.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Res\FireBird.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

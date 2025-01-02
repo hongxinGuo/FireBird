@@ -18,6 +18,8 @@
 #include "simdjsonGetValue.h"
 #include "Thread.h"
 
+#include <spdlog/sinks/basic_file_sink.h>
+
 void TaskCheckWorldMarketReady() {
 	if (gl_pWorldMarket->IsSystemReady()) return;
 	if (gl_pFinnhubDataSource->IsUpdateSymbol()) return;
@@ -115,6 +117,24 @@ void InitializeMarkets() {
 	CreateDataSource();
 	CreateMarket();
 	CreateMarketContainer();	//生成市场容器
+}
+
+void InitializeLogSystem() {
+	// Create a daily logger - a new file is created every day at 2:30 am
+	gl_dailyLogger = spdlog::daily_logger_mt("daily_logger", "logs/daily.txt", 2, 30);
+	gl_dailyWebSocketLogger = spdlog::daily_logger_mt("dailyWebSocketLogger", "logs/dailyWebSocket.txt", 2, 30);
+	gl_warnLogger = spdlog::basic_logger_mt("basic_warn_logger", "logs/warn.txt");
+	gl_traceLogger = spdlog::basic_logger_mt("basic_trace_logger", "logs/trace.txt");
+	gl_SoftwareDevelopingLogger = spdlog::basic_logger_mt("software_developing_logger", "logs/softwareDeveloping.txt");
+
+	//spdlog::flush_every(chrono::seconds(600)); // 每10分钟刷新一次（只能用于_mt模式生成的日志）
+	gl_dailyWebSocketLogger->set_level(static_cast<spdlog::level::level_enum>(gl_systemConfiguration.GetLogLevel()));
+	gl_dailyLogger->flush_on(spdlog::level::warn); // 警告等级及以上立刻刷新
+	gl_dailyWebSocketLogger->flush_on(spdlog::level::warn);
+	gl_warnLogger->flush_on(spdlog::level::trace);
+	gl_traceLogger->enable_backtrace(20); // 20个回溯消息
+
+	gl_dailyLogger->info("FireBird App begin running");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -243,12 +263,27 @@ void SystemInitialization() {
 
 	SetMaxCurrencyLevel();
 
-	// 更新系统显示高度和宽度
-	gl_systemConfiguration.SetSystemDisplayRect(GetSystemMetrics(SM_CXFULLSCREEN), GetSystemMetrics(SM_CYFULLSCREEN));
-	gl_systemConfiguration.SetCurrentWindowRect(GetSystemMetrics(SM_CXMAXIMIZED), GetSystemMetrics(SM_CYMAXIMIZED));
-
 	// 初始化各market dataSource WebSocket
 	InitializeMarkets();
 	AssignDataSourceAndWebInquiryToMarket();
 	ResetMarkets(); // 要预先重置一次
+
+	// 设置工作线程最大数量
+	gl_systemConfiguration.SetThreadPoolExecutorCurrencyLevel(gl_runtime.thread_pool_executor()->max_concurrency_level());
+	gl_systemConfiguration.SetThreadExecutorCurrencyLevel(gl_runtime.thread_executor()->max_concurrency_level());
+	gl_systemConfiguration.SetBackgroundExecutorCurrencyLevel(gl_runtime.background_executor()->max_concurrency_level());
+
+	// 设置100毫秒每次的工作线程调度，用于完成系统各项定时任务。
+	gl_aTimer.at(GENERAL_TASK_PER_100MS__) = gl_runtime.timer_queue()->make_timer(
+		1000ms,
+		100ms,
+		gl_runtime.thread_executor(), // 此为主调度任务，任务繁杂，故而使用独立的工作线程来调度任务
+		::TaskSchedulePer100ms);
+
+	// 设置每秒执行一次的辅助工作线程调度，用于执行各项辅助工作。
+	gl_aTimer.at(GENERAL_TASK_PER_SECOND__) = gl_runtime.timer_queue()->make_timer(
+		1000ms,
+		1000ms,
+		gl_runtime.thread_executor(), // 此为辅助调度任务
+		::TaskSchedulePerSecond);
 }

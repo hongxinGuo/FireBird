@@ -10,9 +10,10 @@
 #include "FireBirdView.h"
 
 #include "ChildFrm.h"
-#include "InfoReport.h"
 
 #include <spdlog/spdlog.h>
+
+#include "ScheduleTask.h"
 
 // IXWebSocket需要OpenSSL，本系统直接使用。
 #ifdef _DEBUG
@@ -56,7 +57,7 @@ CFireBirdApp::CFireBirdApp() {
 	System::Windows::Forms::Application::SetUnhandledExceptionMode(System::Windows::Forms::UnhandledExceptionMode::ThrowException);
 #endif
 
-	SetAppID(_T("FireBird.AppID.0.30"));
+	SetAppID(_T("FireBird.AppID.0.31"));
 
 	// 将所有重要的初始化放置在 InitInstance 中
 }
@@ -64,8 +65,8 @@ CFireBirdApp::CFireBirdApp() {
 // 唯一的 CFireBirdApp 对象
 CFireBirdApp theApp;
 
-bool IsFireBirdAlreadyRunning(const CString& strProgramToken) {
-	gl_hFireBirdMutex = ::CreateMutex(nullptr, false, strProgramToken); // 采用创建系统命名互斥对象的方式来实现只运行单一实例。在MainFrame的析构函数中关闭。
+bool IsFireBirdAlreadyRunning(const string& sProgramToken) {
+	gl_hFireBirdMutex = ::CreateMutex(nullptr, false, sProgramToken.c_str()); // 采用创建系统命名互斥对象的方式来实现只运行单一实例。在MainFrame的析构函数中关闭。
 	bool bAlreadyRunning = false;
 	if (gl_hFireBirdMutex != nullptr) {
 		if (ERROR_ALREADY_EXISTS == ::GetLastError()) {
@@ -77,6 +78,8 @@ bool IsFireBirdAlreadyRunning(const CString& strProgramToken) {
 
 // CFireBirdApp 初始化
 BOOL CFireBirdApp::InitInstance() {
+	ASSERT(gl_systemConfiguration.IsWorkingMode()); // 确保此标识初始态为实际状态
+
 	if (IsFireBirdAlreadyRunning(_T("FireBirdStockAnalysis"))) {
 		MessageBox(nullptr,
 		           "Only one instance can run!",
@@ -85,18 +88,7 @@ BOOL CFireBirdApp::InitInstance() {
 		return false;
 	}
 
-	InitializeSpdlog();
-
-	//spdlog::flush_every(chrono::seconds(600)); // 每10分钟刷新一次（只能用于_mt模式生成的日志）
-	gl_dailyWebSocketLogger->set_level(static_cast<spdlog::level::level_enum>(gl_systemConfiguration.GetLogLevel()));
-	gl_dailyLogger->flush_on(spdlog::level::warn); // 警告等级及以上立刻刷新
-	gl_dailyWebSocketLogger->flush_on(spdlog::level::warn);
-	gl_warnLogger->flush_on(spdlog::level::trace);
-	gl_traceLogger->enable_backtrace(20); // 20个回溯消息
-
-	gl_dailyLogger->info("FireBird App begin running");
-
-	ASSERT(gl_systemConfiguration.IsWorkingMode()); // 确保此标识初始态为实际状态
+	InitializeLogSystem();
 
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，

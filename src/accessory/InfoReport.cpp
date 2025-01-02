@@ -1,7 +1,5 @@
 #include"pch.h"
 
-#include <spdlog/sinks/basic_file_sink.h>
-
 #include "InfoReport.h"
 
 void ReportErrorToSystemMessage(const CString& strPrefix, const exception& e) {
@@ -42,13 +40,4 @@ void ReportInformationAndDeleteException(CException* e) {
 	const CString str = buffer;
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
 	//delete e;
-}
-
-void InitializeSpdlog() {
-	// Create a daily logger - a new file is created every day at 2:30 am
-	gl_dailyLogger = spdlog::daily_logger_mt("daily_logger", "logs/daily.txt", 2, 30);
-	gl_dailyWebSocketLogger = spdlog::daily_logger_mt("dailyWebSocketLogger", "logs/dailyWebSocket.txt", 2, 30);
-	gl_warnLogger = spdlog::basic_logger_mt("basic_warn_logger", "logs/warn.txt");
-	gl_traceLogger = spdlog::basic_logger_mt("basic_trace_logger", "logs/trace.txt");
-	gl_SoftwareDevelopingLogger = spdlog::basic_logger_mt("software_developing_logger", "logs/softwareDeveloping.txt");
 }

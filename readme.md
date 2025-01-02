@@ -53,4 +53,6 @@ FireBird从网络股票行情服务器中提取实时行情和历史数据，将处理后的信息存储于数据库
 
 11.spdlog(https://github.com/gabime/spdlog)
 
+12.Qt(https://www.qt.io/)
+
 

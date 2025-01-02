@@ -9,6 +9,8 @@
 #include <spdlog/fmt/bundled/core.h>
 using namespace std;
 
+#include"resource.h"
+
 #ifdef _DEBUG
 #pragma comment(lib, "/D/concurrencpp.lib")
 #else
@@ -29,7 +31,8 @@ WatchdogQT::WatchdogQT(QWidget* parent) : QMainWindow(parent) {
 	connect(timer2, &QChronoTimer::timeout, this, &WatchdogQT::UpdatePer10Second);
 	timer2->start();
 
-	setWindowIcon(QIcon("WatchDog.ico"));
+	setWindowIcon(QIcon(":/WatchdogQT/Watchdog.ico")); // Note 路径需要使用全称。
+	//setWindowIcon(QIcon("WatchDog.ico"));
 
 	ui.setupUi(this);
 

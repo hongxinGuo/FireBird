@@ -1,4 +1,6 @@
 <RCC>
-    <qresource prefix="FireBirdQT">
-    </qresource>
+  <qresource prefix="FireBirdQT">
+    <file>Res/FireBird.ico</file>
+    <file>Res/Stone.jpg</file>
+  </qresource>
 </RCC>

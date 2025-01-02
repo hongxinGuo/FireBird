@@ -46,7 +46,6 @@
 
 #include"ScheduleTask.h"
 #include"FinnhubInaccessibleExchange.h"
-#include "InfoReport.h"
 #include"ThreadStatus.h"
 #include "TiingoDataSource.h"
 #include"TimeConvert.h"
@@ -99,7 +98,7 @@ namespace FireBirdTest {
 
 			SetMaxCurrencyLevel();
 
-			InitializeSpdlog();
+			InitializeLogSystem();
 
 			//Bug Resharper的UnitTest要运行程序才能找到所有的测试函数，结果这里产生副作用。工作目录为X64/Debug,如果目录中没有systemConfiguration.json文件时，
 			// 程序就会生成一个新文件，导致下面的断言失败。目前先屏蔽掉这个断言
