@@ -1046,6 +1046,7 @@ void CMainFrame::OnRebuildDayLine() {
 void CMainFrame::OnUpdateFinnhubStockDayLineStartEnd() {
 	gl_runtime.thread_executor()->post([] {
 		gl_UpdateWorldMarketDB.acquire();
+		TRACE("Finnhub stock dayline start end date\n");
 		gl_pWorldMarket->UpdateStockDayLineStartEndDate();
 		gl_UpdateWorldMarketDB.release();
 	});

@@ -77,7 +77,6 @@ CWebDataPtr CInquireEngine::GetWebData() {
 		} while (lCurrentByteRead > 0);
 		m_dwErrorCode = 0; // 网络正常，重置网络错误码
 	} catch (CInternetException* exception) {//Note 这里一般是使用引用。但我准备在处理完后就删除这个例外，故而直接使用指针。否则由于系统不处理此例外，会导致程序自动退出。
-		SetWebError(true);
 		m_dwErrorCode = exception->m_dwError;
 		ReportWebError(exception->m_dwError, m_strInquiry);
 		exception->Delete();

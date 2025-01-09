@@ -6,10 +6,7 @@
 FireBirdQT::FireBirdQT(QWidget* parent) : QMainWindow(parent) {
 	ui.setupUi(this);
 
-	ui.tabWidget->setVisible(false);
-	ui.tabWidget->clear();
-	this->setCentralWidget(ui.tabWidget);
-	this->setWindowState(Qt::WindowMaximized);
+	//this->setWindowState(Qt::WindowMaximized);
 
 	setWindowIcon(QIcon(":/FireBirdQT/Res/FireBird.ico"));
 }
@@ -18,6 +15,7 @@ FireBirdQT::~FireBirdQT() {
 	// 创建状态栏
 }
 
+/*
 void FireBirdQT::paintEvent(QPaintEvent* event) {
 	QPainter painter(this);
 
@@ -25,7 +23,9 @@ void FireBirdQT::paintEvent(QPaintEvent* event) {
 	                   QPixmap(":/FireBirdQT/Res/Stone.jpg"));
 	event->accept();
 }
+*/
+
 void FireBirdQT::doChangeTabTitle(QString title) {
-	int index = ui.tabWidget->currentIndex();
-	ui.tabWidget->setTabText(index, title);
+	//int index = ui.tabWidget->currentIndex();
+	//ui.tabWidget->setTabText(index, title);
 }

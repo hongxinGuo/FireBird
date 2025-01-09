@@ -11,7 +11,7 @@ public:
 	~FireBirdQT() override;
 
 protected:
-	void paintEvent(QPaintEvent* event) override;
+	//void paintEvent(QPaintEvent* event) override;
 
 private slots:
 	void doChangeTabTitle(QString title);

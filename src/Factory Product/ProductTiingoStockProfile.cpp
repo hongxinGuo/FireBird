@@ -222,9 +222,9 @@ CTiingoStocksPtr CProductTiingoStockProfile::DeleteDuplicatedSymbol(const CTiing
 			if (pStockFirst->IsActive()) {
 				if (pStockNext->IsActive()) {
 					if (pStockFirst->GetDailyUpdateDate() < pStockNext->GetDailyUpdateDate()) { // 都是活跃股票时，比较最后更新日期，保留较新的那个。
-						TRACE("active %s: %d ---- %d\n", pStockFirst->GetSymbol(), pStockFirst->GetDailyUpdateDate(), pStockNext->GetDailyUpdateDate());
+						//TRACE("active %s: %d ---- %d\n", pStockFirst->GetSymbol(), pStockFirst->GetDailyUpdateDate(), pStockNext->GetDailyUpdateDate());
 						CString str = "多个活跃股票:" + pStockFirst->GetSymbol();
-						gl_systemMessage.PushInnerSystemInformationMessage(str);
+						//gl_systemMessage.PushInnerSystemInformationMessage(str);
 						pStockFirst = pStockNext;
 					}
 				}
@@ -238,10 +238,18 @@ CTiingoStocksPtr CProductTiingoStockProfile::DeleteDuplicatedSymbol(const CTiing
 }
 
 void CProductTiingoStockProfile::SaveNewSymbol() {
+	char buffer[30];
+	sprintf_s(buffer, "%8d", gl_pWorldMarket->GetMarketDate());
+	CString str = buffer;
 	CSetTiingoStockNewSymbol setNewSymbol;
-	setNewSymbol.m_strFilter = _T("[ID] = 1");
+	setNewSymbol.m_strFilter = _T("[Date] =") + str;
 	setNewSymbol.Open();
 	setNewSymbol.m_pDatabase->BeginTrans();
+	// 删除之前存储的代码
+	while (!setNewSymbol.IsEOF()) {
+		setNewSymbol.Delete();
+		setNewSymbol.MoveNext();
+	}
 	for (size_t index = 0; index < gl_dataContainerTiingoNewSymbol.Size(); index++) {
 		auto pStock = gl_dataContainerTiingoNewSymbol.GetStock(index);
 		setNewSymbol.AddNew();
@@ -252,11 +260,20 @@ void CProductTiingoStockProfile::SaveNewSymbol() {
 	setNewSymbol.m_pDatabase->CommitTrans();
 	setNewSymbol.Close();
 }
+
 void CProductTiingoStockProfile::SaveDelistedSymbol() {
 	CSetTiingoStockDelistedSymbol setDelistedSymbol;
-	setDelistedSymbol.m_strFilter = _T("[ID] = 1");
+	char buffer[30];
+	sprintf_s(buffer, "%8d", gl_pWorldMarket->GetMarketDate());
+	CString str = buffer;
+	setDelistedSymbol.m_strFilter = _T("[Date] =") + str;
 	setDelistedSymbol.Open();
 	setDelistedSymbol.m_pDatabase->BeginTrans();
+	// 删除之前存储的代码
+	while (!setDelistedSymbol.IsEOF()) {
+		setDelistedSymbol.Delete();
+		setDelistedSymbol.MoveNext();
+	}
 	for (size_t index = 0; index < gl_dataContainerTiingoDelistedSymbol.Size(); index++) {
 		auto pStock = gl_dataContainerTiingoDelistedSymbol.GetStock(index);
 		setDelistedSymbol.AddNew();

@@ -43,7 +43,7 @@ public:
 	virtual bool Reset() { return true; }
 
 	void Run(long lMarketTime);
-	void InquireData();
+	shared_ptr<vector<CWebDataPtr>> InquireData();
 	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual void CreateCurrentInquireString();
 	virtual enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr&) { return ERROR_NO_ERROR__; } // 此WebData内容为错误信息？
@@ -68,14 +68,16 @@ public:
 	void SetCurrentInquiry(const CVirtualProductWebDataPtr& p) { m_pCurrentProduct = p; }
 
 	size_t InquiryQueueSize() const noexcept { return m_qProduct.size(); }
+	void DiscardCurrentInquiry() { m_qProduct.pop(); }
+	void DiscardAllInquiry() { while (m_qProduct.size() > 0) m_qProduct.pop(); }
 	void StoreInquiry(const CVirtualProductWebDataPtr& p) { m_qProduct.push(p); }
+	CVirtualProductWebDataPtr GetFrontProduct() { return m_qProduct.front(); }
 	CVirtualProductWebDataPtr GetCurrentProduct() {
 		m_pCurrentProduct = m_qProduct.front();
 		m_qProduct.pop();
 		return m_pCurrentProduct;
 	}
 	bool HaveInquiry() const { return !m_qProduct.empty(); }
-	void DiscardAllInquiry() { while (m_qProduct.size() > 0) m_qProduct.pop(); }
 
 	bool IsInquiring() const noexcept { return m_fInquiring; }
 	void SetInquiring(const bool fFlag) noexcept { m_fInquiring = fFlag; }
@@ -93,8 +95,11 @@ public:
 	CString GetInquiryToken() const noexcept { return m_strInquiryToken; }
 	void SetInquiryToken(const CString& strToken) noexcept { m_strInquiryToken = strToken; }
 
-	bool IsWebError() const noexcept { return m_fWebError; }
-	void SetWebError(bool fFlag) noexcept { m_fWebError = fFlag; }
+	bool IsWebError() const noexcept { return m_dwWebErrorCode != 0; }
+	void SetWebError(bool fFlag) noexcept {
+		if (fFlag) m_dwWebErrorCode = 1;
+		else m_dwWebErrorCode = 0;
+	}
 	auto GetWebErrorCode() const noexcept { return m_dwWebErrorCode.load(); }
 	void SetWebErrorCode(INT64 dwErrorCode) noexcept { m_dwWebErrorCode = dwErrorCode; }
 
@@ -117,6 +122,8 @@ public:
 	bool IsWebBusy() const noexcept { return m_bWebBusy.load(); }
 
 	virtual void ReportErrorNotHandled(const string& sError);
+
+	void SetErrorMessage(enum_ErrorMessageData error) { m_eErrorMessageData = error; }
 
 protected:
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // 网络查询命令队列

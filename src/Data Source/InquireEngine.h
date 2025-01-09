@@ -46,8 +46,7 @@ public:
 	void SetInquiryString(const CString& strInquiry) { m_strInquiry = strInquiry; }
 	void SetInquiryHeader(const CString& strHeader) { m_strHeaders = strHeader; }
 
-	bool IsWebError() const noexcept { return m_fWebError; }
-	void SetWebError(bool fFlag) noexcept { m_fWebError = fFlag; }
+	bool IsWebError() const noexcept { return m_dwErrorCode != 0; }
 	DWORD GetErrorCode() const noexcept { return m_dwErrorCode; }
 
 	DWORD GetHTTPStatusCode() const noexcept { return m_dwHTTPStatusCode; }

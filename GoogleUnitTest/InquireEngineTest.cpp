@@ -66,12 +66,4 @@ namespace FireBirdTest {
 		// restore
 		TestSetUTCTime(tUTCTime);
 	}
-
-	TEST_F(CInquireEngineTest, TestIsWebError) {
-		EXPECT_FALSE(engine.IsWebError());
-		engine.SetWebError(true);
-		EXPECT_TRUE(engine.IsWebError());
-		engine.SetWebError(false);
-		EXPECT_FALSE(engine.IsWebError());
-	}
 }

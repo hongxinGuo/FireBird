@@ -104,7 +104,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		if (pWebData->GetBufferLength() == 62) {
 			strView = pWebData->GetStringView(0, 62);
 			if (strView.compare(_T("{\"detail\":\"You do not have permission to access the News API\"}")) == 0) { 	// 非美国股票不提供此项数据
-				gl_systemMessage.PushErrorMessage(_T("Tiingo missing API key"));
+				gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo free account no right to access News API"));
 				m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 				s2 = strView;
 				gl_warnLogger->warn("{}", s2);

@@ -99,5 +99,5 @@ void CSinaRTDataSource::ConfigureInternetOption() {
 	m_internetOption.option_receive_timeout = 1000;
 	m_internetOption.option_data_receive_timeout = 1000;
 	m_internetOption.option_send_timeout = 500;
-	m_internetOption.option_connect_retries = 1;
+	m_internetOption.option_connect_retries = 0;
 }

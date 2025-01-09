@@ -126,14 +126,6 @@ namespace FireBirdTest {
 		EXPECT_STREQ(dataSource.GetInquiringString(), _T("abcdef"));
 	}
 
-	TEST_F(CVirtualDataSourceTest, TestIsWebError) {
-		EXPECT_FALSE(dataSource.IsWebError());
-		dataSource.SetWebError(true);
-		EXPECT_TRUE(dataSource.IsWebError());
-		dataSource.SetWebError(false);
-		EXPECT_FALSE(dataSource.IsWebError());
-	}
-
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringString) {
 		EXPECT_STREQ(dataSource.GetInquiringString(), _T(""));
 		dataSource.SetInquiringString(_T("abcdefg"));

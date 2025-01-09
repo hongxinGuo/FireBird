@@ -114,23 +114,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="PropertyWidget.cpp" />
+    <ClCompile Include="PropertyWindow.cpp" />
     <ClCompile Include="RealTimeWindow.cpp" />
     <QtRcc Include="FireBirdQT.qrc" />
     <QtUic Include="FireBirdQT.ui" />
     <QtMoc Include="FireBirdQT.h" />
     <ClCompile Include="FireBirdQT.cpp" />
     <ClCompile Include="main.cpp" />
-    <QtUic Include="PropertyWidget.ui" />
+    <QtUic Include="PropertyWindow.ui" />
     <QtUic Include="RealTimeWindow.ui" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="PropertyWidget.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="RealTimeWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="PropertyWindow.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
