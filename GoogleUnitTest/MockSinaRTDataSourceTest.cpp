@@ -51,15 +51,17 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockSinaRTDataSourceTest, TestGenerateInquiryMessage) {
+		auto timePoint = chrono::time_point<chrono::steady_clock>();
+
 		EXPECT_FALSE(m_pMockSinaRTDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 		gl_pChinaMarket->SetSystemReady(false); // 保证快速申请数据
 
 		m_pMockSinaRTDataSource->SetWebError(true);
 		EXPECT_CALL(*m_pMockSinaRTDataSource, GetTickCount()).Times(3)
-		.WillOnce(Return(0))
-		.WillOnce(Return(gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
-		.WillOnce(Return(1 + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
+		.WillOnce(Return(timePoint))
+		.WillOnce(Return(timePoint + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
+		.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
 
 		EXPECT_FALSE(m_pMockSinaRTDataSource->GenerateInquiryMessage(120000));
 

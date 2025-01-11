@@ -689,7 +689,10 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_dataContainerFinnhubStock.UpdateBasicFinancialDB(); // 此任务很费时，原因待查。目前先不使用此隔绝区
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
-				gl_systemMessage.PushInnerSystemInformationMessage("world market Saving time > 2000ms");
+				char buffer[30];
+				sprintf_s(buffer, "64I", (end - start).count());
+				CString str = buffer;
+				gl_systemMessage.PushInnerSystemInformationMessage("world market Saving time: " + str);
 			}
 			gl_UpdateWorldMarketDB.release();
 		});

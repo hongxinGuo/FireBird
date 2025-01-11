@@ -294,7 +294,7 @@ protected:
 	bool m_fUpdateTempDataDB; // 存储临时实时数据标识
 	CChinaStockPtr m_pCurrentStock; // 当前显示的股票
 
-	chrono::sys_seconds m_tpNewTransactionTime;
+	chrono::sys_seconds m_tpNewTransactionTime{ chrono::duration<long long>(0) };
 
 	bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取器
 	bool m_fUsingNeteaseRTDataReceiver; // 使用网易实时数据提取器

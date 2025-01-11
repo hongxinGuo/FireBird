@@ -118,7 +118,7 @@ enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr&
 		case ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH__:// 申请频率超高
 			// 降低查询频率200ms。
 			// todo 这里最好只向系统报告频率超出，由系统决定如何修正。
-			i = gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime();
+			i = gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime().count();
 			gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(i + 200);
 			break;
 		case ERROR_FINNHUB_NOT_HANDLED__: // error not handled
@@ -141,12 +141,12 @@ enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr&
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFinnhubDataSource::GenerateInquiryMessage(long lCurrentTime) {
-	const long long llTickCount = GetTickCount();
+	const auto llTickCount = GetTickCount();
 
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请finnhub各数据。
-	if (llTickCount <= (m_llLastTimeTickCount + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime())) return false;
+	if (llTickCount <= m_PrevTimePoint + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()) return false;
 
-	m_llLastTimeTickCount = llTickCount;
+	m_PrevTimePoint = llTickCount;
 	ASSERT(!IsInquiring());
 	ASSERT(lCurrentTime <= GetPrevTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 10, 0)
 		|| lCurrentTime >= GetNextTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 5, 0)); // 重启市场时不允许接收网络信息。

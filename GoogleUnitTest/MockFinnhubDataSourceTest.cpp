@@ -45,6 +45,8 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockFinnhubDataSourceTest, TestGenerateInquiryMessage1) {
+		auto timePoint = chrono::time_point<chrono::steady_clock>();
+
 		EXPECT_FALSE(m_pMockFinnhubDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		gl_pSinaRTDataSource->SetWebError(true);
@@ -52,7 +54,7 @@ namespace FireBirdTest {
 
 		m_pMockFinnhubDataSource->SetWebError(true);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GetTickCount()).Times(1)
-		.WillOnce(Return(1));
+		.WillOnce(Return(timePoint + 1ms));
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateEconomicCalendar()).Times(0);
 
 		EXPECT_FALSE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120000)) << "网络报错，不申请数据";
@@ -63,6 +65,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockFinnhubDataSourceTest, TestGenerateInquiryMessage3) {
+		auto timePoint = chrono::time_point<chrono::steady_clock>();
+
 		auto p = make_shared<CVirtualWebProduct>();
 
 		EXPECT_FALSE(m_pMockFinnhubDataSource->IsInquiring());
@@ -70,8 +74,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GetTickCount()).Times(2)
-		.WillOnce(Return(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()))
-		.WillOnce(Return(300000 + 100000));
+		.WillOnce(Return(timePoint + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()))
+		.WillOnce(Return(timePoint + 300000ms + 100000ms));
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateEconomicCalendar()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateCountryList()).Times(1)
@@ -128,11 +132,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockFinnhubDataSourceTest, TestInquiryFinnhub2) {
+		auto timePoint = chrono::time_point<chrono::steady_clock>();
+
 		m_pMockFinnhubDataSource->SetInquiring(false);
 		gl_pWorldMarket->SetSystemReady(false);
 		InSequence Seq;
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GetTickCount()).Times(1)
-		.WillOnce(Return(300000 + 100000));
+		.WillOnce(Return(timePoint + 300000ms + 100000ms));
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateEconomicCalendar()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateCountryList()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateForexExchange()).Times(1);
@@ -161,11 +167,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockFinnhubDataSourceTest, TestInquiryFinnhub3) {
+		auto timePoint = chrono::time_point<chrono::steady_clock>();
+
 		m_pMockFinnhubDataSource->SetInquiring(false);
 		gl_pWorldMarket->SetSystemReady(true);
 		InSequence Seq;
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GetTickCount()).Times(1)
-		.WillOnce(Return(300000 + 100000));
+		.WillOnce(Return(timePoint + 300000ms + 100000ms));
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateEconomicCalendar()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateCountryList()).Times(1);
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateForexExchange()).Times(1);

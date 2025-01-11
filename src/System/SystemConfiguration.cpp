@@ -234,7 +234,9 @@ void CSystemConfiguration::Update(json& jsonData) {
 		m_fUpdateDB = true;
 	}
 	try {
-		m_iChinaMarketRTDataInquiryTime = jsonData.at("ChinaMarket").at("RealtimeInquiryTime"); // 实时数据查询时间间隔（单位：毫秒）
+		//m_iChinaMarketRTDataInquiryTime = jsonData.at("ChinaMarket").at("RealtimeInquiryTime"); // 实时数据查询时间间隔（单位：毫秒）
+		int duration = jsonData.at("ChinaMarket").at("RealtimeInquiryTime");
+		m_chinaMarketRTDataInquiryTime = chrono::milliseconds(duration); // 实时数据查询时间间隔（单位：毫秒）
 	} catch (json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
@@ -303,17 +305,20 @@ void CSystemConfiguration::Update(json& jsonData) {
 		m_fUpdateDB = true;
 	}
 	try {
-		m_iWorldMarketFinnhubInquiryTime = jsonData.at("WorldMarket").at("FinnhubInquiryTime"); // 默认每小时最多查询3000次
+		int duration = jsonData.at("WorldMarket").at("FinnhubInquiryTime");
+		m_worldMarketFinnhubInquiryTime = chrono::milliseconds(duration); // 默认每小时最多查询3000次
 	} catch (json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
-		m_iWorldMarketTiingoInquiryTime = jsonData.at("WorldMarket").at("TiingoInquiryTime"); // 默认每小时最多查询400次
+		int duration = jsonData.at("WorldMarket").at("TiingoInquiryTime");
+		m_worldMarketTiingoInquiryTime = chrono::milliseconds(duration); // 默认每小时最多查询400次
 	} catch (json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
-		m_iWorldMarketQuandlInquiryTime = jsonData.at("WorldMarket").at("QuandlInquiryTime"); // 默认每小时最多查询100次
+		int duration = jsonData.at("WorldMarket").at("QuandlInquiryTime");
+		m_worldMarketQuandlInquiryTime = chrono::milliseconds(duration); // 默认每小时最多查询100次
 	} catch (json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
@@ -497,7 +502,7 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 		break;
 	}
 	jsonData["ChinaMarket"]["NumberOfRTDataSource"] = m_iNumberOfRTDataSource;
-	jsonData["ChinaMarket"]["RealtimeInquiryTime"] = m_iChinaMarketRTDataInquiryTime;
+	jsonData["ChinaMarket"]["RealtimeInquiryTime"] = m_chinaMarketRTDataInquiryTime.count();
 	jsonData["ChinaMarket"]["SavingStockDayLineThread"] = m_iSavingChinaMarketStockDayLineThread;
 	jsonData["ChinaMarket"]["SinaRTDataInquiryPerTime"] = m_iSinaRTDataInquiryPerTime;
 	jsonData["ChinaMarket"]["NeteaseRTDataInquiryPerTime"] = m_iNeteaseRTDataInquiryPerTime;
@@ -510,9 +515,9 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	jsonData["WorldMarket"]["FinnhubAccountFeePaid"] = m_bFinnhubAccountFeePaid;
 	jsonData["WorldMarket"]["QuandlToken"] = m_strQuandlToken;
 	jsonData["WorldMarket"]["QuandlAccountFeePaid"] = m_bQuandlAccountFeePaid;
-	jsonData["WorldMarket"]["FinnhubInquiryTime"] = m_iWorldMarketFinnhubInquiryTime;
-	jsonData["WorldMarket"]["TiingoInquiryTime"] = m_iWorldMarketTiingoInquiryTime;
-	jsonData["WorldMarket"]["QuandlInquiryTime"] = m_iWorldMarketQuandlInquiryTime;
+	jsonData["WorldMarket"]["FinnhubInquiryTime"] = m_worldMarketFinnhubInquiryTime.count();
+	jsonData["WorldMarket"]["TiingoInquiryTime"] = m_worldMarketTiingoInquiryTime.count();
+	jsonData["WorldMarket"]["QuandlInquiryTime"] = m_worldMarketQuandlInquiryTime.count();
 
 	// Tiingo.com
 	jsonData["Tiingo"]["AccountFeePaid"] = m_bTiingoAccountFeePaid;
@@ -547,25 +552,25 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 
 void CSystemConfiguration::ChangeFinnhubAccountTypeToFree() {
 	m_bFinnhubAccountFeePaid = false;
-	m_iWorldMarketFinnhubInquiryTime = 1100; // 每次1100毫秒
+	m_worldMarketFinnhubInquiryTime = 1100ms; // 每次1100毫秒
 	m_fUpdateDB = true;
 }
 
 void CSystemConfiguration::ChangeFinnhubAccountTypeToPaid() {
 	m_bFinnhubAccountFeePaid = true;
-	m_iWorldMarketFinnhubInquiryTime = 220; // 每次220毫秒
+	m_worldMarketFinnhubInquiryTime = 220ms; // 每次220毫秒
 	m_fUpdateDB = true;
 }
 
 void CSystemConfiguration::ChangeTiingoAccountTypeToFree() {
 	m_bTiingoAccountFeePaid = false;
-	m_iWorldMarketTiingoInquiryTime = 9000; // 每次9000毫秒
+	m_worldMarketTiingoInquiryTime = 9000ms; // 每次9000毫秒
 	m_fUpdateDB = true;
 }
 
 void CSystemConfiguration::ChangeTiingoAccountTypeToPaid() {
 	m_bTiingoAccountFeePaid = true;
-	m_iWorldMarketTiingoInquiryTime = 200; // 每次200毫秒.每小时最大限额为20000。
+	m_worldMarketTiingoInquiryTime = 200ms; // 每次200毫秒.每小时最大限额为20000。
 	m_fUpdateDB = true;
 }
 

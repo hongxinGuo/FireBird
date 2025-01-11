@@ -79,7 +79,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateMarketNews());
 
 		gl_pTiingoDataSource->SetUpdateMarketNews(true);
-		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime(), 200);
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime().count(), 200);
 
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);

@@ -7,7 +7,7 @@ namespace testing {
 	public:
 		MOCK_METHOD(void, CreateCurrentInquireString, (), (override));
 		MOCK_METHOD(bool, Inquire, (), (override));
-		MOCK_METHOD(ULONGLONG, GetTickCount, (), (override));
+		MOCK_METHOD((chrono::time_point<chrono::steady_clock>), GetTickCount, (), (override));
 	};
 
 	using CMockTengxunDayLineDataSourcePtr = shared_ptr<CMockTengxunDayLineDataSource>;

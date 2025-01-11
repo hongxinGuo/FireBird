@@ -67,40 +67,39 @@ public:
 	void UsingTengxunRealtimeServer();
 
 	void SetChinaMarketRealtimeServer(const int iChinaMarketRealtimeServer) noexcept {
-		m_fUpdateDB = true;
 		m_iChinaMarketRealtimeServer = iChinaMarketRealtimeServer;
+		m_fUpdateDB = true;
 	}
 	[[nodiscard]] int GetChinaMarketDayLineServer() const noexcept { return m_iChinaMarketDayLineServer; }
 
 	void SetChinaMarketDayLineServer(const int iChinaMarketDayLineServer) noexcept {
-		m_fUpdateDB = true;
 		m_iChinaMarketDayLineServer = iChinaMarketDayLineServer;
-	}
-	[[nodiscard]] int GetChinaMarketRTDataInquiryTime() const noexcept { return m_iChinaMarketRTDataInquiryTime; }
-
-	void SetChinaMarketRTDataInquiryTime(const int iChinaMarketRTDataInquiryTime) noexcept {
 		m_fUpdateDB = true;
-		m_iChinaMarketRTDataInquiryTime = iChinaMarketRTDataInquiryTime;
+	}
+	[[nodiscard]] auto GetChinaMarketRTDataInquiryTime() const noexcept { return m_chinaMarketRTDataInquiryTime; }
+	void SetChinaMarketRTDataInquiryTime(const int iChinaMarketRTDataInquiryTime) noexcept {
+		m_chinaMarketRTDataInquiryTime = chrono::milliseconds(iChinaMarketRTDataInquiryTime);
+		m_fUpdateDB = true;
 	}
 
 	// World market
 	long GetWorldMarketResettingTime() const noexcept { return m_lMarketResettingTime; }
 	[[nodiscard]] CString GetFinnhubToken() noexcept { return m_strFinnhubToken; }
 	[[nodiscard]] CString GetQuandlToken() noexcept { return m_strQuandlToken; }
-	[[nodiscard]] int GetWorldMarketFinnhubInquiryTime() const noexcept { return m_iWorldMarketFinnhubInquiryTime; } // 单位为毫秒
+	[[nodiscard]] auto GetWorldMarketFinnhubInquiryTime() const noexcept { return m_worldMarketFinnhubInquiryTime; } // 单位为毫秒
 	void SetWorldMarketFinnhubInquiryTime(const int iWorldMarketFinnhubInquiryTime) noexcept {
+		m_worldMarketFinnhubInquiryTime = chrono::milliseconds(iWorldMarketFinnhubInquiryTime);
 		m_fUpdateDB = true;
-		m_iWorldMarketFinnhubInquiryTime = iWorldMarketFinnhubInquiryTime;
 	}
-	[[nodiscard]] int GetWorldMarketTiingoInquiryTime() const noexcept { return m_iWorldMarketTiingoInquiryTime; }
+	[[nodiscard]] auto GetWorldMarketTiingoInquiryTime() const noexcept { return m_worldMarketTiingoInquiryTime; }
 	void SetWorldMarketTiingoInquiryTime(const int iWorldMarketTiingoInquiryTime) noexcept {
+		m_worldMarketTiingoInquiryTime = chrono::milliseconds(iWorldMarketTiingoInquiryTime);
 		m_fUpdateDB = true;
-		m_iWorldMarketTiingoInquiryTime = iWorldMarketTiingoInquiryTime;
 	}
-	[[nodiscard]] int GetWorldMarketQuandlInquiryTime() const noexcept { return m_iWorldMarketQuandlInquiryTime; }
+	[[nodiscard]] auto GetWorldMarketQuandlInquiryTime() const noexcept { return m_worldMarketQuandlInquiryTime; }
 	void SetWorldMarketQuandlInquiryTime(const int iWorldMarketQuandlInquiryTime) noexcept {
+		m_worldMarketQuandlInquiryTime = chrono::milliseconds(iWorldMarketQuandlInquiryTime);
 		m_fUpdateDB = true;
-		m_iWorldMarketQuandlInquiryTime = iWorldMarketQuandlInquiryTime;
 	}
 
 	[[nodiscard]] int GetRTServer() const { return m_iChinaMarketRealtimeServer; }
@@ -324,7 +323,7 @@ protected:
 	// 系统参数
 	int m_iChinaMarketRealtimeServer{ 0 }; // 中国市场实时数据服务器.0:新浪实时数据服务器； 1:网易实时数据服务器。
 	int m_iChinaMarketDayLineServer{ 0 }; // 中国市场日线数据服务器。0:网易日线服务器；1:腾讯日线服务器。
-	int m_iChinaMarketRTDataInquiryTime{ 250 }; // 中国市场实时数据查询间隔时间,单位为毫秒
+	chrono::milliseconds m_chinaMarketRTDataInquiryTime{ 250 }; // 中国市场实时数据查询间隔时间,单位为毫秒
 
 	// World Market
 	long m_lMarketResettingTime{ 170000 }; // 默认市场重置时间为170000
@@ -332,9 +331,9 @@ protected:
 	CString m_strQuandlToken{ _T("") }; // 令牌
 	bool m_bFinnhubAccountFeePaid{ true }; // 付费账户或者免费账户
 	bool m_bQuandlAccountFeePaid{ true };
-	int m_iWorldMarketFinnhubInquiryTime{ 60000 / 50 }; // 默认每分钟最多查询50次。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
-	int m_iWorldMarketTiingoInquiryTime{ 200 }; // 每次查询间隔时间，单位为毫秒。付费账户每小时20000次，免费账户每小时500次。
-	int m_iWorldMarketQuandlInquiryTime{ 3600000 / 100 }; // 每次查询间隔时间，单位为毫秒.默认每小时最多查询100次
+	chrono::milliseconds m_worldMarketFinnhubInquiryTime{ 60000 / 50 }; // 默认每分钟最多查询50次。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
+	chrono::milliseconds m_worldMarketTiingoInquiryTime{ 200 };// 每次查询间隔时间，单位为毫秒。付费账户每小时20000次，免费账户每小时500次。
+	chrono::milliseconds m_worldMarketQuandlInquiryTime{ 3600000 / 100 }; // 每次查询间隔时间，单位为毫秒.默认每小时最多查询100次
 	CString m_strCurrentStock{ _T("") }; // 当前所选股票
 
 	// Tiingo.com

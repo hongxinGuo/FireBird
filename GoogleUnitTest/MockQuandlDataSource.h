@@ -5,7 +5,7 @@
 namespace testing {
 	class CMockQuandlDataSource final : public CQuandlDataSource {
 	public:
-		MOCK_METHOD(ULONGLONG, GetTickCount, (), (override));
+		MOCK_METHOD((chrono::time_point<chrono::steady_clock>), GetTickCount, (), (override));
 		MOCK_METHOD(bool, Inquire, (), (override));
 	};
 

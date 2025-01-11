@@ -273,6 +273,7 @@ void SystemInitialization() {
 	gl_systemConfiguration.SetThreadExecutorCurrencyLevel(gl_runtime.thread_executor()->max_concurrency_level());
 	gl_systemConfiguration.SetBackgroundExecutorCurrencyLevel(gl_runtime.background_executor()->max_concurrency_level());
 
+	TRACE("Start scheduling task\n");
 	// 设置100毫秒每次的工作线程调度，用于完成系统各项定时任务。
 	gl_aTimer.at(GENERAL_TASK_PER_100MS__) = gl_runtime.timer_queue()->make_timer(
 		1000ms,

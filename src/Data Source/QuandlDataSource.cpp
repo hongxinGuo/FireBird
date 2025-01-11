@@ -20,10 +20,10 @@ bool CQuandlDataSource::Reset() {
 }
 
 bool CQuandlDataSource::GenerateInquiryMessage(const long lCurrentTime) {
-	const long long llTickCount = GetTickCount();
+	const auto llTickCount = GetTickCount();
 
-	if (llTickCount > (m_llLastTimeTickCount + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime())) {
-		m_llLastTimeTickCount = llTickCount;
+	if (llTickCount > (m_PrevTimePoint + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime())) {
+		m_PrevTimePoint = llTickCount;
 
 		if (!IsInquiring()) {
 			Inquire();

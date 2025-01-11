@@ -52,6 +52,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockQuandlDataSourceTest, TestGenerateInquiryMessage1) {
+		auto timePoint = chrono::time_point<chrono::steady_clock>();
 		auto p = make_shared<CVirtualWebProduct>();
 
 		EXPECT_FALSE(m_pMockQuandlDataSource->IsInquiring());
@@ -59,8 +60,8 @@ namespace FireBirdTest {
 
 		m_pMockQuandlDataSource->SetWebError(true);
 		EXPECT_CALL(*m_pMockQuandlDataSource, GetTickCount()).Times(2)
-		.WillOnce(Return(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime()))
-		.WillOnce(Return(1 + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime()));
+		.WillOnce(Return(timePoint + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime()))
+		.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime()));
 		EXPECT_CALL(*m_pMockQuandlDataSource, Inquire()).Times(1)
 		.WillRepeatedly(DoAll(Invoke([p]() {
 			m_pMockQuandlDataSource->SetInquiring(true);

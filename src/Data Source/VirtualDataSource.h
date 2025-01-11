@@ -61,7 +61,7 @@ public:
 	void SetInquiringString(const CString& str) noexcept { m_strInquiry = str; }
 	void AppendInquiringString(const CString& str) noexcept { m_strInquiry += str; }
 
-	virtual ULONGLONG GetTickCount() { return ::GetTickCount64(); } // 为了测试方便，将GetTickCount64包裹上一层。
+	virtual chrono::time_point<chrono::steady_clock> GetTickCount() { return chrono::steady_clock::now(); } // 为了测试方便，将GetTickCount64包裹上一层。
 
 	// 各状态
 	CVirtualProductWebDataPtr GetCurrentInquiry() const noexcept { return m_pCurrentProduct; }
@@ -149,7 +149,7 @@ protected:
 	static atomic_int64_t sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
 	static atomic_int64_t sm_lTotalByteReadPerSecond; // 
 
-	long long m_llLastTimeTickCount{ 0 };
+	chrono::time_point<chrono::steady_clock> m_PrevTimePoint;
 
 	atomic_bool m_fInquiring{ false };
 	atomic_bool m_fEnable{ true }; // 允许执行标识

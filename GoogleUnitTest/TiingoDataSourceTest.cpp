@@ -92,10 +92,10 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_NO_RIGHT_TO_ACCESS__);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
-		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
+		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 
 		// »Ö¸´Ô­×´
-		gl_systemMessage.PopErrorMessage();
+		gl_systemMessage.PopInnerSystemInformationMessage();
 	}
 	TEST_F(CTiingoDataSourceTest, TestIsAErrorMessageData3) {
 		CWebDataPtr pWebData = make_shared<CWebData>();

@@ -193,7 +193,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		case ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__:// 申请频率超高
 			// 降低查询频率200ms。
 			// todo 这里最好只向系统报告频率超出，由系统决定如何修正。
-			i = gl_systemConfiguration.GetWorldMarketTiingoInquiryTime();
+			i = gl_systemConfiguration.GetWorldMarketTiingoInquiryTime().count();
 			gl_systemConfiguration.SetWorldMarketTiingoInquiryTime(i + 200);
 			break;
 		case ERROR_TIINGO_NOT_FOUND__:
@@ -219,11 +219,11 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 }
 
 bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
-	const long long llTickCount = GetTickCount();
+	const auto llTickCount = GetTickCount();
 
-	if (llTickCount <= (m_llLastTimeTickCount + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime())) return false;
+	if (llTickCount <= (m_PrevTimePoint + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime())) return false;
 
-	m_llLastTimeTickCount = llTickCount;
+	m_PrevTimePoint = llTickCount;
 	ASSERT(!IsInquiring());
 	ASSERT(lCurrentTime <= GetPrevTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 10, 0)
 		|| lCurrentTime >= GetNextTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 5, 0)); // 重启市场时不允许接收网络信息。

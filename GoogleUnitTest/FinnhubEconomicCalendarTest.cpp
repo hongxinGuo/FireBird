@@ -63,7 +63,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()) << "有权处理时不更改";
 		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
-		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 220);
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime().count(), 220);
 
 		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(true);
 
@@ -87,7 +87,7 @@ namespace FireBirdTest {
 		gl_systemConfiguration.ChangeFinnhubAccountTypeToPaid();
 		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(1100);
 		gl_systemConfiguration.SetUpdateDB(false);
-		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime(), 1100);
+		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime().count(), 1100);
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser

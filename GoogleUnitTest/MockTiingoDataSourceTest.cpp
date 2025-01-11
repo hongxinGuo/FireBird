@@ -41,6 +41,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockTiingoDataSourceTest, TestGenerateInquiryMessage1) {
+		auto timePoint = chrono::time_point<chrono::steady_clock>();
 		auto p = make_shared<CVirtualWebProduct>();
 
 		EXPECT_FALSE(m_pTiingoDataSource->IsInquiring());
@@ -48,8 +49,8 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount());
 
 		EXPECT_CALL(*m_pTiingoDataSource, GetTickCount()).Times(2)
-		.WillOnce(Return(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()))
-		.WillOnce(Return(1 + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()));
+		.WillOnce(Return(timePoint + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()))
+		.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()));
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateMarketNews()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateFundamentalDefinition()).Times(1)
@@ -82,6 +83,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CMockTiingoDataSourceTest, TestGenerateInquiryMessage2) {
+		auto timePoint = chrono::time_point<chrono::steady_clock>();
+
 		auto p = make_shared<CVirtualWebProduct>();
 
 		EXPECT_FALSE(m_pTiingoDataSource->IsInquiring());
@@ -90,8 +93,8 @@ namespace FireBirdTest {
 		gl_systemConfiguration.ChangeTiingoAccountTypeToFree();
 
 		EXPECT_CALL(*m_pTiingoDataSource, GetTickCount()).Times(2)
-		.WillOnce(Return(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()))
-		.WillOnce(Return(1 + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()));
+		.WillOnce(Return(timePoint + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()))
+		.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()));
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateMarketNews()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateFundamentalDefinition()).Times(1)
