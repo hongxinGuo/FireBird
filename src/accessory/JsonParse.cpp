@@ -436,7 +436,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		std::stringstream ss(strTime);
 		chrono::sys_seconds tpTime;
 		chrono::from_stream(ss, "%Y/%m/%d %T", tpTime);
-		tpTime -= gl_pChinaMarket->GetMarketTimeZoneOffset();
+		tpTime -= gl_pChinaMarket->GetTimeZone();
 		pWebRTData->SetTimePoint(tpTime);
 		auto tt = tpTime.time_since_epoch().count();
 		pWebRTData->SetTransactionTime(tt);
@@ -562,7 +562,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 			std::stringstream ss(strTime);
 			chrono::sys_seconds tpTime;
 			chrono::from_stream(ss, "%Y/%m/d %T", tpTime);
-			tpTime -= gl_pChinaMarket->GetMarketTimeZoneOffset();
+			tpTime -= gl_pChinaMarket->GetTimeZone();
 			auto tt = tpTime.time_since_epoch().count();
 			pWebRTData->SetTransactionTime(tt);
 			pWebRTData->SetLastClose(StrToDecimal(jsonGetRawJsonToken(item, _T("yestclose")), 3));

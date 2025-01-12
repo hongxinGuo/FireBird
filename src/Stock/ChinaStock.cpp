@@ -1262,7 +1262,7 @@ bool CChinaStock::IsVolumeConsistence() noexcept {
 	}
 	if (GetVolume() != GetOrdinaryBuyVolume() + GetOrdinarySellVolume() + GetAttackBuyVolume()
 		+ GetAttackSellVolume() + GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume()) {
-		TRACE(_T("%14Id %s股数%d\n"), ConvertToDateTime(GetTransactionTime(), gl_pChinaMarket->GetMarketTimeZone()), GetSymbol().GetBuffer(), GetVolume());
+		TRACE(_T("%14Id %s股数%d\n"), ConvertToDateTime(GetTransactionTime(), gl_pChinaMarket->GetTimeZoneValue()), GetSymbol().GetBuffer(), GetVolume());
 		TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
 		      GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
 		return false;

@@ -180,7 +180,8 @@ namespace FireBirdTest {
 
 		for (int i = 0; i < 7; i++) {
 			TestSetUTCTime(tUTCTime + i * 24 * 3600);
-			tm tmMarketTime2 = virtualMarket.GetMarketTime(GetUTCTime());
+			tm tmMarketTime2;
+			virtualMarket.GetMarketTimeStruct(&tmMarketTime2, GetUTCTime());
 
 			switch (tmMarketTime2.tm_wday) {
 			case 1: // 星期一
@@ -195,7 +196,8 @@ namespace FireBirdTest {
 			default: // 其他
 				tMarket = GetUTCTime() - 24 * 3600; // 上一日
 			}
-			const tm tmMarketTime = virtualMarket.GetMarketTime(tMarket);
+			tm tmMarketTime;
+			virtualMarket.GetMarketTimeStruct(&tmMarketTime, tMarket);
 			auto lMarketLastTradeDate = virtualMarket.ConvertToDate(&tmMarketTime);
 			EXPECT_EQ(virtualMarket.CalculateLastTradeDate(), lMarketLastTradeDate) << i;
 		}
@@ -209,7 +211,8 @@ namespace FireBirdTest {
 		auto tUTCTime = GetUTCTime();
 		for (int i = 0; i < 7; i++) {
 			TestSetUTCTime(tUTCTime + i * 24 * 3600);
-			tm tmMarketTime2 = virtualMarket.GetMarketTime(GetUTCTime());
+			tm tmMarketTime2;
+			virtualMarket.GetMarketTimeStruct(&tmMarketTime2, GetUTCTime());
 
 			switch (tmMarketTime2.tm_wday) {
 			case 0: //星期日
@@ -221,7 +224,8 @@ namespace FireBirdTest {
 			default: // 其他
 				tMarket = GetUTCTime(); // 本日
 			}
-			const tm tmMarketTime = virtualMarket.GetMarketTime(tMarket);
+			tm tmMarketTime;
+			virtualMarket.GetMarketTimeStruct(&tmMarketTime, tMarket);
 			auto lMarketCurrentTradeDate = virtualMarket.ConvertToDate(&tmMarketTime);
 			EXPECT_EQ(virtualMarket.CalculateCurrentTradeDate(), lMarketCurrentTradeDate) << i;
 		}
@@ -236,7 +240,8 @@ namespace FireBirdTest {
 
 		for (int i = 0; i < 7; i++) {
 			TestSetUTCTime(tUTCTime + i * 24 * 3600);
-			tm tmMarketTime2 = virtualMarket.GetMarketTime(GetUTCTime());
+			tm tmMarketTime2;
+			virtualMarket.GetMarketTimeStruct(&tmMarketTime2, GetUTCTime());
 
 			switch (tmMarketTime2.tm_wday) {
 			case 6: // 星期六
@@ -248,7 +253,8 @@ namespace FireBirdTest {
 			default: // 其他
 				tMarket = GetUTCTime() + 24 * 3600; // 次日
 			}
-			const tm tmMarketTime = virtualMarket.GetMarketTime(tMarket);
+			tm tmMarketTime;
+			virtualMarket.GetMarketTimeStruct(&tmMarketTime, tMarket);
 			auto lMarketNextTradeDate = virtualMarket.ConvertToDate(&tmMarketTime);
 			EXPECT_EQ(virtualMarket.CalculateNextTradeDate(), lMarketNextTradeDate) << i;
 		}
@@ -262,7 +268,8 @@ namespace FireBirdTest {
 		virtualMarket.CalculateTime();
 		time_t tt = GetUTCTime();
 		gmtime_s(&tm2_, &tt);
-		const tm tm_ = virtualMarket.GetMarketTime(GetUTCTime());
+		tm tm_;
+		virtualMarket.GetMarketTimeStruct(&tm_, GetUTCTime());
 		EXPECT_TRUE(tm_.tm_hour == tm2_.tm_hour) << "VirtualMarket默认为GMT标准时间";
 	}
 
@@ -280,7 +287,7 @@ namespace FireBirdTest {
 		tmMarket.tm_sec = lMarketTime - (lMarketTime / 100) * 100;
 
 		tTime = virtualMarket.TransferToUTCTime(&tmMarket); // 使用默认时间150000.
-		tm2 = virtualMarket.GetMarketTime(tTime);
+		virtualMarket.GetMarketTimeStruct(&tm2, tTime);
 		EXPECT_EQ(tm2.tm_year, 100);
 		EXPECT_EQ(tm2.tm_mon, 2);
 		EXPECT_EQ(tm2.tm_mday, 1);
@@ -289,7 +296,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(tm2.tm_sec, 30);
 
 		tTime = virtualMarket.TransferToUTCTime(lMarketDate); // 使用默认时间150000.
-		tm2 = virtualMarket.GetMarketTime(tTime);
+		virtualMarket.GetMarketTimeStruct(&tm2, tTime);
 		EXPECT_EQ(tm2.tm_year, 100);
 		EXPECT_EQ(tm2.tm_mon, 2);
 		EXPECT_EQ(tm2.tm_mday, 1);
@@ -298,7 +305,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(tm2.tm_sec, 00);
 
 		tTime = virtualMarket.TransferToUTCTime(lMarketDate, lMarketTime);
-		tm3 = virtualMarket.GetMarketTime(tTime);
+		virtualMarket.GetMarketTimeStruct(&tm3, tTime);
 		EXPECT_EQ(tm3.tm_year, 100);
 		EXPECT_EQ(tm3.tm_mon, 2);
 		EXPECT_EQ(tm3.tm_mday, 1);

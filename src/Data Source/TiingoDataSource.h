@@ -60,11 +60,9 @@ protected:
 	bool m_fUpdateStockSymbol{ true }; // 每日更新公司代码库
 	bool m_fUpdateCryptoSymbol{ true }; // 每日更新crypto代码库
 	bool m_fUpdateStockDailyMeta{ true }; // 每日更新公司状态
-	bool m_fUpdateDayLine{ true }; // 每日更新公司日线数据
+	bool m_fUpdateDayLine{ false }; // 每日更新公司日线数据
 	bool m_fUpdateFinancialState{ true }; // 每日更新财经数据
 	bool m_fUpdateIEXTopOFBook{ true }; // 定时（每小时）更新IEX last top of book.
-
-	bool m_fTiingoDataInquiryFinished{ false };
 
 	// 带宽限制
 	long long m_llBandWidthLeft{ 5368709120 };

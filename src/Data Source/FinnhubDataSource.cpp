@@ -144,9 +144,9 @@ bool CFinnhubDataSource::GenerateInquiryMessage(long lCurrentTime) {
 	const auto llTickCount = GetTickCount();
 
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请finnhub各数据。
-	if (llTickCount <= m_PrevTimePoint + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()) return false;
+	if (llTickCount <= m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()) return false;
 
-	m_PrevTimePoint = llTickCount;
+	m_PrevInquireTimePoint = llTickCount;
 	ASSERT(!IsInquiring());
 	ASSERT(lCurrentTime <= GetPrevTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 10, 0)
 		|| lCurrentTime >= GetNextTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 5, 0)); // 重启市场时不允许接收网络信息。

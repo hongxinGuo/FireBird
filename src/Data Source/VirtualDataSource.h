@@ -149,7 +149,7 @@ protected:
 	static atomic_int64_t sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
 	static atomic_int64_t sm_lTotalByteReadPerSecond; // 
 
-	chrono::time_point<chrono::steady_clock> m_PrevTimePoint;
+	chrono::time_point<chrono::steady_clock> m_PrevInquireTimePoint{};
 
 	atomic_bool m_fInquiring{ false };
 	atomic_bool m_fEnable{ true }; // 允许执行标识

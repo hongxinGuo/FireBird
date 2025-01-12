@@ -178,7 +178,18 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 			gl_systemConfiguration.SetUsingFinnhubWebSocket(true); // 只设置标识，实际启动由其他任务完成。
 			break;
 		case WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__:
+			if (lCurrentTime < 180000) {
+				AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(180000, 0, 1, 0));
+				break;
+			}
 			gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true); // 
+			break;
+		case WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__:
+			if (lCurrentTime < 180000) {
+				AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, 180000);
+				break;
+			}
+			gl_pTiingoDataSource->SetUpdateDayLine(true);
 			break;
 		case WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__:
 			gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine(lCurrentTime);
@@ -473,10 +484,11 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 	if (gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate() < gl_pWorldMarket->GetCurrentTradeDate()
 		&& !gl_pTiingoDataSource->IsUpdateIEXTopOfBook()
 		&& lCurrentTime > 180500) { // 当前交易日未处理过IEX、已经接收到数据且已过休市时间？
-		gl_runtime.thread_executor()->post([] {
+		gl_runtime.thread_executor()->post([lCurrentTime] {
 			gl_UpdateWorldMarketDB.acquire();
 			TRACE("IEX top of bool\n");
 			gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
+			gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lCurrentTime, 2, 0, 0)); // 两小时后计算日线
 			gl_UpdateWorldMarketDB.release();
 		});
 	}
@@ -488,7 +500,6 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理tiingo日线数据。
-// 目前采用的方法尚未优化，导致处理所有股票的时间很长，故而决定暂时不使用此函数。
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -525,7 +536,7 @@ void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldMarket::TaskTiingoCalculate(long lCurrentTime) {
 	gl_runtime.thread_executor()->post([] {
-		gl_systemMessage.PushInnerSystemInformationMessage("calculateing 52 week low");
+		gl_systemMessage.PushInnerSystemInformationMessage("calculating 52 week low");
 		gl_dataContainerTiingoStock.TaskCalculate();
 		gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
 	});

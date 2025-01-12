@@ -22,8 +22,8 @@ bool CQuandlDataSource::Reset() {
 bool CQuandlDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	const auto llTickCount = GetTickCount();
 
-	if (llTickCount > (m_PrevTimePoint + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime())) {
-		m_PrevTimePoint = llTickCount;
+	if (llTickCount > (m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime())) {
+		m_PrevInquireTimePoint = llTickCount;
 
 		if (!IsInquiring()) {
 			Inquire();

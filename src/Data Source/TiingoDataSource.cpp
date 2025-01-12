@@ -44,7 +44,6 @@ bool CTiingoDataSource::Reset() {
 	m_fUpdateFinancialState = true;
 	m_fUpdateIEXTopOFBook = true;
 
-	m_fTiingoDataInquiryFinished = false;
 	return true;
 }
 
@@ -221,9 +220,9 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	const auto llTickCount = GetTickCount();
 
-	if (llTickCount <= (m_PrevTimePoint + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime())) return false;
+	if (llTickCount <= (m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime())) return false;
 
-	m_PrevTimePoint = llTickCount;
+	m_PrevInquireTimePoint = llTickCount;
 	ASSERT(!IsInquiring());
 	ASSERT(lCurrentTime <= GetPrevTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 10, 0)
 		|| lCurrentTime >= GetNextTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 5, 0)); // 重启市场时不允许接收网络信息。
@@ -244,11 +243,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (GenerateIEXTopOfBook(lCurrentTime)) return true;
 
 	ASSERT(!IsInquiring());
-	if (!m_fTiingoDataInquiryFinished) {
-		gl_systemMessage.PushInformationMessage(_T("Tiingo data inquiry finished"));
-		gl_systemMessage.SetCurrentTiingoFunction(_T("finished"));
-		m_fTiingoDataInquiryFinished = true;
-	}
+	gl_systemMessage.SetCurrentTiingoFunction(_T("waiting"));
 	return false;
 }
 
@@ -303,11 +298,6 @@ bool CTiingoDataSource::GenerateCryptoSymbol() {
 bool CTiingoDataSource::GenerateIEXTopOfBook(long lCurrentTime) {
 	ASSERT(!IsInquiring());
 	if (IsUpdateIEXTopOfBook()) {
-		if (lCurrentTime < 180000) { // 18点后方可接收IEX数据
-			gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(180000, 0, 1, 0));
-			SetUpdateIEXTopOfBook(false);
-			return false;
-		}
 		if (gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate() < gl_pWorldMarket->GetCurrentTradeDate()) {
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, TIINGO_IEX_TOP_OF_BOOK_);
 			StoreInquiry(p);
@@ -411,6 +401,7 @@ bool CTiingoDataSource::GenerateDayLine() {
 			SetUpdateDayLine(false);
 			const CString str = "Tiingo股票日线历史数据更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
+			gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 1, 0));
 		}
 	}
 	return fHaveInquiry;

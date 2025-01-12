@@ -34,7 +34,7 @@ namespace FireBirdTest {
 		const INT64 lDateTime = ConvertToDateTime(&tm_);
 		const time_t tt = _mkgmtime(&tm_2);
 		const INT64 lDateTime2 = ConvertToDateTime(tt, 0); // UTC时间
-		const INT64 lDateTime3 = ConvertToDateTime(tt, gl_pChinaMarket->GetMarketTimeZone()); // 东八区时间
+		const INT64 lDateTime3 = ConvertToDateTime(tt, gl_pChinaMarket->GetTimeZoneValue()); // 东八区时间
 		EXPECT_EQ(lDateTime, lDateTime2);
 		EXPECT_EQ(lDateTime, 20000105102030);
 		EXPECT_EQ(lDateTime2, 20000105102030);
@@ -187,13 +187,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(TimeConvertTest, TestTransferToTTime) {
-		if (gl_pWorldMarket->GetMarketTimeZone() == 4 * 3600) { // 美东夏时制？
-			EXPECT_EQ(315601200, ConvertToTTime(19800101, gl_pWorldMarket->GetMarketTimeZone(), 150000)) << "美东标准时间的19800101150000，其UTC时间为315601200";
+		if (gl_pWorldMarket->GetTimeZoneValue() == 4 * 3600) { // 美东夏时制？
+			EXPECT_EQ(315601200, ConvertToTTime(19800101, gl_pWorldMarket->GetTimeZoneValue(), 150000)) << "美东标准时间的19800101150000，其UTC时间为315601200";
 		}
 		else {
-			EXPECT_EQ(315604800, ConvertToTTime(19800101, gl_pWorldMarket->GetMarketTimeZone(), 150000)) << "美东夏时制标准时间的19800101150000，其UTC时间为315601200";
+			EXPECT_EQ(315604800, ConvertToTTime(19800101, gl_pWorldMarket->GetTimeZoneValue(), 150000)) << "美东夏时制标准时间的19800101150000，其UTC时间为315601200";
 		}
-		EXPECT_EQ(315558000, ConvertToTTime(19800101, gl_pChinaMarket->GetMarketTimeZone(), 150000)) << "北京标准时间的19800101150000，其UTC时间为315558000";
+		EXPECT_EQ(315558000, ConvertToTTime(19800101, gl_pChinaMarket->GetTimeZoneValue(), 150000)) << "北京标准时间的19800101150000，其UTC时间为315558000";
 	}
 
 	TEST_F(TimeConvertTest, TestTransferToDate2) {

@@ -65,6 +65,7 @@ void CMarketTaskQueue::CreateIndexMap() {
 	gl_mapMarketMapIndex[WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__] = "世界市场监测WebSocket的运行状态";
 	gl_mapMarketMapIndex[WORLD_MARKET_CONNECT_FINNHUB_WEB_SOCKET__] = "世界市场接收finnhub WebSocket数据";
 	gl_mapMarketMapIndex[WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__] = "世界市场查询Tiingo IEX实时数据";
+	gl_mapMarketMapIndex[WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__] = "世界市场查询Tiingo股票日线历史数据";
 	gl_mapMarketMapIndex[WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__] = "世界市场生成Tiingo今日日线数据";
 	gl_mapMarketMapIndex[WORLD_MARKET_TIINGO_PROCESS_DAYLINE__] = "世界市场处理Tiingo日线数据";
 	gl_mapMarketMapIndex[WORLD_MARKET_TIINGO_UPDATE_52WEEK_HIGH_LOW__] = "世界市场更新Tiingo52周新高新低数据";

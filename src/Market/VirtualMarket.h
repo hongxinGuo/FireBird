@@ -63,10 +63,9 @@ public:
 
 	void GetMarketLocalTimeOffset(CString strLocalNameOfMarket);
 
-	tm GetMarketTime(time_t tUTC) const;
 	long GetMarketDate(time_t tUTC) const; // 得到本市场的日期
-	auto GetMarketTimeZoneOffset() const { return m_timeZoneOffset; }
-	long GetMarketTimeZone() const noexcept { return m_lMarketTimeZone; }
+	auto GetTimeZone() const { return m_marketSystemInformation.offset; }
+	long GetTimeZoneValue() const noexcept { return m_marketSystemInformation.offset.count(); }
 	long GetMarketTime() const noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
 	long GetMarketDate() const noexcept { return m_lMarketDate; } // 得到本市场的当地日期， 格式为：yyyymmdd
 	long GetDayOfWeek() const noexcept { return m_tmMarket.tm_wday; } // days since Sunday - [0, 6]
@@ -158,16 +157,11 @@ protected:
 	bool m_fResettingMarket{ false }; // 市场正在重启标识，默认为假
 
 	// 系统时间区
-	const chrono::time_zone* m_tzMarket{ nullptr }; // 本市场当地时区
-	chrono::sys_info m_localMarketSystemInformation;
-	chrono::seconds m_timeZoneOffset{ 0 };
-	long m_lMarketTimeZone{ 0 }; // 该市场的时区与GMT之差（以秒计，正值处于东十二区（超前），负值处于西十二区（滞后））。
 	CString m_strLocalMarketTimeZone{ _T("") }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
+	const chrono::time_zone* m_tzMarket{ nullptr }; // 本市场当地时区
+	chrono::sys_info m_marketSystemInformation{}; // 时区偏移等皆由此推出。
 
 	// 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
-	//chrono::zoned_time<chrono::duration<int>, chrono::local_t> m_zonedTime; // 用于存储当前市场的时钟。
-	chrono::zoned_seconds m_zonedSeconds;
-	chrono::zoned_seconds* m_pZonedSeconds;
 	long m_lMarketDate{ 0 }; //本市场的日期
 	long m_lMarketTime{ 0 }; // 本市场的时间
 	long m_lMarketLastTradeDate{ 0 }; // 本市场的上次交易日

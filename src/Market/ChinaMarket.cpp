@@ -410,7 +410,7 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 	ASSERT(tUTC >= 0);
 	tm tmMarketTime;
 
-	tmMarketTime = GetMarketTime(tUTC);
+	GetMarketTimeStruct(&tmMarketTime, tUTC);
 	tmMarketTime.tm_hour = 9;
 	tmMarketTime.tm_min = 30;
 	tmMarketTime.tm_sec = 0;

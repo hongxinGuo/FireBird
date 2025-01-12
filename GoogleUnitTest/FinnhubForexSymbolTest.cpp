@@ -174,7 +174,7 @@ namespace FireBirdTest {
 
 		symbol.SetSymbol(_T("ABCDE"));
 		const CString str = symbol.GetFinnhubDayLineInquiryParam(123456789);
-		if (gl_pWorldMarket->GetMarketTimeZone() == 4 * 3600) { // 
+		if (gl_pWorldMarket->GetTimeZoneValue() == 4 * 3600) { // 
 			EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=315601200&to=123456789")) << "当前时间小于19800101，315601200就是美东标准时间的19800101";
 		}
 		else {

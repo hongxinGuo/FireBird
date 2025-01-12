@@ -570,7 +570,7 @@ void CSystemConfiguration::ChangeTiingoAccountTypeToFree() {
 
 void CSystemConfiguration::ChangeTiingoAccountTypeToPaid() {
 	m_bTiingoAccountFeePaid = true;
-	m_worldMarketTiingoInquiryTime = 200ms; // 每次200毫秒.每小时最大限额为20000。
+	m_worldMarketTiingoInquiryTime = 500ms; // 每次200毫秒.每小时最大限额为20000。Note 由于两台机器同时申请，故而暂设为500ms。
 	m_fUpdateDB = true;
 }
 
