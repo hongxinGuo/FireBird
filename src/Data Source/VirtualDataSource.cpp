@@ -32,10 +32,11 @@ CVirtualDataSource::CVirtualDataSource() {
 ////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::Run(long lMarketTime) {
 	CVirtualDataSourcePtr p = this->GetShared();
-	if (!IsInquiring()) {
+	if (!p->IsInquiring()) {
 		gl_runtime.thread_executor()->post([p, lMarketTime] { //Note 此处必须使用thread_executor
 				p->GenerateInquiryMessage(lMarketTime);
 				if (p->IsInquiring()) {
+					ASSERT(p->InquiryQueueSize() > 0);
 					auto product = p->GetFrontProduct();
 					ASSERT(product != nullptr);
 					auto pvWebData = p->InquireData();
@@ -110,7 +111,6 @@ shared_ptr<vector<CWebDataPtr>> CVirtualDataSource::InquireData() {
 		gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 		gl_warnLogger->warn("CVirtualWebData.InquireData() reentry: {}", strMessage.GetBuffer());
 	}
-	//SetInquiring(false);
 	return pvWebData;
 }
 

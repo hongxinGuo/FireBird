@@ -337,31 +337,6 @@ void CTiingoStock::Delete52WeekHigh(long lDate) {
 	}
 }
 
-void CTiingoStock::Update52WeekHighLowDB() {
-	SetUpdate52WeekHighLowDB(false);
-
-	CSetTiingoStock52WeekHigh set52WeekHigh;
-	set52WeekHigh.m_strFilter = _T("[ID] = 1");
-	set52WeekHigh.Open();
-	set52WeekHigh.m_pDatabase->BeginTrans();
-
-	Update52WeekHighDB(set52WeekHigh);
-
-	set52WeekHigh.m_pDatabase->CommitTrans();
-	set52WeekHigh.Close();
-
-	CSetTiingoStock52WeekLow set52WeekLow;
-	set52WeekLow.m_strFilter = _T("[ID] = 1");
-	set52WeekLow.Open();
-
-	set52WeekLow.m_pDatabase->BeginTrans();
-
-	Update52WeekLowDB(set52WeekLow);
-
-	set52WeekLow.m_pDatabase->CommitTrans();
-	set52WeekLow.Close();
-}
-
 void CTiingoStock::Update52WeekHighDB(CSetTiingoStock52WeekHigh& set52WeekHigh) const {
 	auto lSize = m_v52WeekHigh.size();
 

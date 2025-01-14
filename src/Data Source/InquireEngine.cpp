@@ -32,7 +32,6 @@ CInquireEngine::CInquireEngine(const InternetOption& option, const CString& strI
 
 	m_sBuffer.resize(0);
 	m_lByteRead = 0;
-	m_fWebError = false;
 }
 
 void CInquireEngine::ConfigureSession(const InternetOption& option) const {
@@ -46,7 +45,7 @@ void CInquireEngine::ConfigureSession(const InternetOption& option) const {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 正常时返回一个包含网络数据的指针，如果出现网络错误或者发生例外，则返回一个空指针。
+// 正常时返回一个包含网络数据的指针，如果出现网络错误或者发生例外，则返回一个数据长度为零的指针。
 //
 //
 // 从网络读取数据。每次读16KB，直到读不到为止。
@@ -81,7 +80,9 @@ CWebDataPtr CInquireEngine::GetWebData() {
 		ReportWebError(exception->m_dwError, m_strInquiry);
 		exception->Delete();
 		DeleteWebFile();
-		return nullptr;
+		auto pWebData = make_shared<CWebData>();
+		pWebData->SetTime(gl_tpNow);
+		return pWebData; // 数据长度为零
 	}
 	DeleteWebFile();
 	VerifyDataLength();
@@ -165,21 +166,9 @@ CWebDataPtr CInquireEngine::CreateWebData() {
 void CInquireEngine::VerifyDataLength() const {
 	if (m_lContentLength > 0) {
 		if (m_lContentLength != m_lByteRead) {
-			CString str = _T("网络数据长度不符。预期长度：");
-			char buffer[100];
-			sprintf_s(buffer, _T("%d"), m_lContentLength);
-			str += buffer;
-			str += _T("，实际长度：");
-			sprintf_s(buffer, _T("%d"), m_lByteRead);
-			str += buffer;
-			str += m_strInquiry.Left(200);
-			gl_systemMessage.PushErrorMessage(str);
-			sprintf_s(buffer, _T("%d"), m_dwHTTPStatusCode);
-			str = _T("Status code : ");
-			str += buffer;
-			str += m_sBuffer.c_str();
-			str = str.Left(400);
-			gl_systemMessage.PushErrorMessage(str);
+			string s = fmt::format("网络数据长度不符。预期长度：{:Ld}，实际长度：{:Ld} Status code : {:Ld}", m_lContentLength, m_lByteRead, m_dwErrorCode);
+			s += m_strInquiry.Left(100);
+			gl_systemMessage.PushErrorMessage(s.c_str());
 		}
 	}
 }

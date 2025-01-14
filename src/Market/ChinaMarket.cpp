@@ -77,10 +77,9 @@ CChinaMarket::~CChinaMarket() {
 }
 
 void CChinaMarket::ResetMarket() {
-	CString str = _T("重置中国股市于北京标准时间：");
 	m_fResettingMarket = true;
-	str += GetStringOfMarketTime();
-	gl_systemMessage.PushInformationMessage(str);
+	string s = _T("重置中国股市于北京标准时间：") + GetStringOfMarketTime();
+	gl_systemMessage.PushInformationMessage(s.c_str());
 	gl_ProcessChinaMarketRTData.acquire();
 	while (gl_ThreadStatus.IsSavingThreadRunning()) { Sleep(1); }
 
@@ -834,9 +833,8 @@ void CChinaMarket::ProcessTodayStock() {
 			SetUpdateOptionDB(true); // 更新状态
 		}
 	}
-	CString str = ConvertDateToChineseTimeStampString(lDate);
-	str += _T("的实时数据处理完毕");
-	gl_systemMessage.PushInformationMessage(str);
+	string s = ConvertDateToChineseTimeStampString(lDate) + _T("的实时数据处理完毕");
+	gl_systemMessage.PushInformationMessage(s.c_str());
 }
 
 bool CChinaMarket::IsTaskOfSavingDayLineDBFinished() {

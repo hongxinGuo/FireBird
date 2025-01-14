@@ -489,21 +489,16 @@ bool CContainerChinaStock::Choice10RSStrongStockSet(CRSReference* pRef, int iInd
 long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	long iCount = 0;
 	try {
-		char buffer[20]{ 0 };
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CSetDayLineExtendInfo setDayLineExtendInfo;
 
-		CString str = "开始处理";
-		str += ConvertDateToChineseTimeStampString(lCurrentTradeDay);
-		str += _T("的实时数据");
-		gl_systemMessage.PushInformationMessage(str);
+		string s = "开始处理" + ConvertDateToChineseTimeStampString(lCurrentTradeDay) + _T("的实时数据");
+		gl_systemMessage.PushInformationMessage(s.c_str());
 
 		DeleteDayLineBasicInfo(lCurrentTradeDay);
 		DeleteDayLineExtendInfo(lCurrentTradeDay);
 
 		// 存储当前交易日的数据
-		_ltoa_s(lCurrentTradeDay, buffer, 10);
-		CString strDate = buffer;
 		setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
@@ -535,15 +530,11 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 		setDayLineExtendInfo.m_pDatabase->CommitTrans();
 		setDayLineExtendInfo.Close();
 
-		str = ConvertDateToChineseTimeStampString(lCurrentTradeDay);
-		str += _T("的日线数据已生成");
-		gl_systemMessage.PushInformationMessage(str);
+		s = ConvertDateToChineseTimeStampString(lCurrentTradeDay) + _T("的日线数据已生成");
+		gl_systemMessage.PushInformationMessage(s.c_str());
 
-		sprintf_s(buffer, _T("%d"), iCount);
-		str = _T("今日处理了");
-		str += buffer;
-		str += _T("个股票");
-		gl_systemMessage.PushInformationMessage(str);
+		s = fmt::format("今日处理了{:d}个股票", iCount);
+		gl_systemMessage.PushInformationMessage(s.c_str());
 	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
@@ -610,13 +601,10 @@ void CContainerChinaStock::UpdateTempRTDB() {
 			const CChinaStockPtr pStock = GetStock(l);
 			if (pStock->IsNeedProcessRTData() && (pStock->GetTransactionTime() + 60 * 60 * 24 > GetUTCTime()) && !pStock->IsVolumeConsistence()) { // 当天的数据成交量不符
 				CString str = pStock->GetSymbol();
-				char buffer[200];
-				sprintf_s(buffer, _T("%I64d %I64d %I64d %I64d %I64d %I64d %I64d %I64d\n"),
-				          pStock->GetVolume(), pStock->GetOrdinaryBuyVolume(), pStock->GetOrdinarySellVolume(), pStock->GetAttackBuyVolume(),
-				          pStock->GetAttackSellVolume(), pStock->GetStrongBuyVolume(), pStock->GetStrongSellVolume(), pStock->GetUnknownVolume());
-				const CString s = buffer;
-				str += _T(" 股数不正确");
-				str += s;
+				string s = fmt::format("股数不正确{:Ld}， {:Ld}， {:Ld}，{:Ld}，{:Ld}，{:Ld}，{:Ld}，{:Ld}",
+				                       pStock->GetVolume(), pStock->GetOrdinaryBuyVolume(), pStock->GetOrdinarySellVolume(), pStock->GetAttackBuyVolume(),
+				                       pStock->GetAttackSellVolume(), pStock->GetStrongBuyVolume(), pStock->GetStrongSellVolume(), pStock->GetUnknownVolume());
+				str += s.c_str();
 				gl_systemMessage.PushInnerSystemInformationMessage(str);
 			}
 			lStock++;
@@ -654,17 +642,15 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 	vector<double> vRS;
 	int iTotalAShare = 0;
 	CString strSQL;
-	char pch[30];
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 	double dShanghaiIndexUpDownRate = 0;
 	double dShenzhenIndexUpDownRate = 0;
 	double dRSIndex;
 
-	sprintf_s(pch, _T("%08d"), lDate);
-	const CString strDate = pch;
+	string sDate = fmt::format("{:08Ld}", lDate);
 	setDayLineBasicInfo.m_strSort = _T("[UpDownRate]");
 	setDayLineBasicInfo.m_strFilter = _T("[Date] =");
-	setDayLineBasicInfo.m_strFilter += strDate;
+	setDayLineBasicInfo.m_strFilter += sDate.c_str();
 	setDayLineBasicInfo.Open();
 	if (setDayLineBasicInfo.IsEOF()) {
 		// 数据集为空，表明此日没有交易
@@ -762,8 +748,6 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 	vector<double> vRS;
 	int iTotalAShare = 0;
 	CString strSQL;
-	char pch[30];
-	//CTime ctTime;
 	CSetWeekLineBasicInfo setWeekLineBasicInfo;
 	double dShanghaiIndexUpDownRate = 0;
 	double dShenzhenIndexUpDownRate = 0;
@@ -771,11 +755,10 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 
 	ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
 
-	sprintf_s(pch, _T("%08d"), lDate);
-	const CString strDate = pch;
+	string sDate = fmt::format("{:08Ld}", lDate);
 	setWeekLineBasicInfo.m_strSort = _T("[UpDownRate]");
 	setWeekLineBasicInfo.m_strFilter = _T("[Date] =");
-	setWeekLineBasicInfo.m_strFilter += strDate;
+	setWeekLineBasicInfo.m_strFilter += sDate.c_str();
 	setWeekLineBasicInfo.Open();
 	if (setWeekLineBasicInfo.IsEOF()) { // 数据集为空，表明此日没有交易
 		setWeekLineBasicInfo.Close();

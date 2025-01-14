@@ -52,12 +52,11 @@ namespace FireBirdTest {
 		const long month = lMarketDate / 100 - year * 100;
 		const long day = lMarketDate - year * 10000 - month * 100;
 		char buffer[30];
-		sprintf_s(buffer, _T("%4d-%d-%d"), year, month, day);
-		const CString strEndDate = buffer;
-		CString strMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
-		const CString strTest = _T("https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-1-1&endDate=") + strEndDate;
+		string sEndDate = fmt::format("{:4Ld}-{:Ld}-{:Ld}", year, month, day);
+		string sMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
+		const string sTest = _T("https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-1-1&endDate=") + sEndDate;
 
-		EXPECT_STREQ(strMessage, strTest) << "使用之前的结束日期为申请数据的起始日期";
+		EXPECT_STREQ(strMessage, sTest.c_str()) << "使用之前的结束日期为申请数据的起始日期";
 	}
 
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage2) {
@@ -73,7 +72,7 @@ namespace FireBirdTest {
 		char buffer[30];
 		sprintf_s(buffer, _T("%4d-%d-%d"), year, month, day);
 		const CString strEndDate = buffer;
-		CString strMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
+		string sMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
 		const CString strTest = _T("https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-1-1&endDate=") + strEndDate;
 		EXPECT_STREQ(strMessage, strTest);
 	}

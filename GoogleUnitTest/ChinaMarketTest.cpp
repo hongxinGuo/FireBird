@@ -1681,16 +1681,14 @@ namespace FireBirdTest {
 		gl_pChinaMarket->LoadDayLine(dataChinaDayLine, lDate);
 
 		CString strSQL;
-		char pch[30];
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CSetDayLineExtendInfo setDayLineExtendInfo;
 		long i = 0;
 
-		sprintf_s(pch, _T("%08d"), lDate);
-		const CString strDate = pch;
+		const string sDate = fmt::format("{:08Ld}", lDate);
 		setDayLineBasicInfo.m_strSort = _T("[Symbol]");
 		setDayLineBasicInfo.m_strFilter = _T("[Date] =");
-		setDayLineBasicInfo.m_strFilter += strDate;
+		setDayLineBasicInfo.m_strFilter += sDate.c_str();
 		setDayLineBasicInfo.Open();
 		while (!setDayLineBasicInfo.IsEOF()) {
 			const CDayLinePtr pDayLine = dynamic_pointer_cast<CDayLine>(dataChinaDayLine.GetData(i++));

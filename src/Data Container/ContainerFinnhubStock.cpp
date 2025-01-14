@@ -72,7 +72,6 @@ void CContainerFinnhubStock::ResetDayLine() {
 bool CContainerFinnhubStock::LoadDB() {
 	CSetFinnhubStock setFinnhubStock;
 	CFinnhubStockPtr pFinnhubStock = nullptr;
-	CString str;
 	long lMaxSymbolLength = 0;
 
 	setFinnhubStock.m_strSort = _T("[Symbol]");
@@ -100,12 +99,9 @@ bool CContainerFinnhubStock::LoadDB() {
 	Sort();
 
 	ASSERT(lMaxSymbolLength < 20); // 目前WorldMarket数据库的股票代码长度限制为20个字符
-	char buffer[100];
-	sprintf_s(buffer, _T("%d"), lMaxSymbolLength);
-	str = _T("WorldMarket股票代码最长长度为");
-	str += buffer;
+	string s = fmt::format("WorldMarket股票代码最长长度为{:Ld}", lMaxSymbolLength);
 #ifdef _DEBUG
-	gl_systemMessage.PushInnerSystemInformationMessage(str);
+	gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
 #endif
 
 	return true;
@@ -187,10 +183,8 @@ bool CContainerFinnhubStock::UpdateBasicFinancialDB() {
 	auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 	UpdateBasicFinancialAnnualDB(vStock);
 	auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-	char buffer[50];
-	sprintf_s(buffer, "%d", (end - start).count());
-	CString str = buffer;
-	gl_systemMessage.PushInnerSystemInformationMessage("finnhub annual db " + str);
+	string s = fmt::format("finnhub annual db time: {:Ld}", (end - start).count());
+	gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
 	UpdateBasicFinancialQuarterDB(vStock);
 	UpdateBasicFinancialMetricDB(vStock);
 

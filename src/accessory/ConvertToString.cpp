@@ -3,40 +3,31 @@
 #include"ConvertToString.h"
 
 CString ConvertValueToString(const long lValue, const int iDividend) {
-	char buffer[50]{};
 	const double d = (static_cast<double>(lValue)) / iDividend;
 
-	sprintf_s(buffer, _T("%.4f"), d);
-	CString str = buffer;
-	return str;
+	string s = fmt::format("{:.4f}", d);
+	return s.c_str();
 }
 
 CString ConvertValueToString(const int iValue, const int iDividend) {
-	char buffer[50]{};
 	const double d = (static_cast<double>(iValue)) / iDividend;
 
-	sprintf_s(buffer, _T("%.4f"), d);
-	CString str = buffer;
-
-	return str;
+	string s = fmt::format("{:.4f}", d);
+	return s.c_str();
 }
 
 CString ConvertValueToString(const INT64 iValue, const int iDividend) {
-	char buffer[50]{};
 	const double d = (static_cast<double>(iValue)) / iDividend;
 
-	sprintf_s(buffer, _T("%.4f"), d);
-	CString str = buffer;
-	return str;
+	string s = fmt::format("{:.4f}", d);
+	return s.c_str();
 }
 
 CString ConvertValueToString(const double dValue, const int iDividend) {
-	char buffer[50]{};
 	const double d = dValue / iDividend;
 
-	sprintf_s(buffer, _T("%.4f"), d);
-	CString str = buffer;
-	return str;
+	string s = fmt::format("{:.4f}", d);
+	return s.c_str();
 }
 
 wstring to_wide_string(const std::string& input) {
@@ -72,15 +63,16 @@ CString XferToCString(const std::string& s) {
 }
 
 CString FormatToMK(long iNumber) {
-	char buffer[100];
+	string s;
 	if (iNumber > 1000000) { // 1M以上的流量？
-		sprintf_s(buffer, _T("%4iM"), iNumber / 1000000);
+		s = fmt::format("{:#4L}M", iNumber / 1000000);
 	}
 	else if (iNumber > 1024) { // 1K以上的流量？
-		sprintf_s(buffer, _T("%4iK"), iNumber / 1024);
+		s = fmt::format("{:4L}K", iNumber / 1024);
 	}
-	else { sprintf_s(buffer, _T("%4i"), iNumber); }
-	CString str = buffer;
+	else {
+		s = fmt::format("{:#4L}", iNumber);
+	}
 
-	return str;
+	return s.c_str();
 }

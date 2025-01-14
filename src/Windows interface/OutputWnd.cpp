@@ -150,7 +150,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	CString str2;
 	long lCurrentPos;
 	bool fUpdate = false;
-	const CString strTime = gl_pChinaMarket->GetStringOfLocalDateTime(); // 消息的前缀，使用当地时间
+	const string sTime = gl_pChinaMarket->GetStringOfLocalDateTime(); // 消息的前缀，使用当地时间
 
 	// 如果显示列表超过10000个，则删除前面的1000个。
 	if (m_wndOutputInformation.GetCount() > 10000) m_wndOutputInformation.TruncateList(1000);
@@ -158,7 +158,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	if ((gl_systemMessage.InformationSize()) > 0) {
 		lCurrentPos = m_wndOutputInformation.GetCurSel();
 		if (m_wndOutputInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayInformation(&m_wndOutputInformation, strTime);
+		gl_systemMessage.DisplayInformation(&m_wndOutputInformation, sTime.c_str());
 		if (fUpdate) {
 			m_wndOutputInformation.SetCurAtLastLine();
 		}
@@ -169,7 +169,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	if ((gl_systemMessage.DayLineInfoSize()) > 0) {
 		lCurrentPos = m_wndOutputDayLineInfo.GetCurSel();
 		if (m_wndOutputDayLineInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayDayLineInfo(&m_wndOutputDayLineInfo, strTime);
+		gl_systemMessage.DisplayDayLineInfo(&m_wndOutputDayLineInfo, sTime.c_str());
 		if (fUpdate) {
 			m_wndOutputDayLineInfo.SetCurAtLastLine();
 		}
@@ -180,7 +180,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	if ((gl_systemMessage.WebSocketInfoSize()) > 0) {
 		lCurrentPos = m_wndOutputWebSocketInfo.GetCurSel();
 		if (m_wndOutputWebSocketInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayWebSocketInfo(&m_wndOutputWebSocketInfo, strTime);
+		gl_systemMessage.DisplayWebSocketInfo(&m_wndOutputWebSocketInfo, sTime.c_str());
 		if (fUpdate) {
 			m_wndOutputWebSocketInfo.SetCurAtLastLine();
 		}
@@ -191,7 +191,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	if ((gl_systemMessage.InnerSystemInfoSize()) > 0) {
 		lCurrentPos = m_wndOutputInnerSystemInformation.GetCurSel();
 		if (m_wndOutputInnerSystemInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayInnerSystemInformation(&m_wndOutputInnerSystemInformation, strTime);
+		gl_systemMessage.DisplayInnerSystemInformation(&m_wndOutputInnerSystemInformation, sTime.c_str());
 		if (fUpdate) {
 			m_wndOutputInnerSystemInformation.SetCurAtLastLine();
 		}
@@ -202,7 +202,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	if ((gl_systemMessage.ErrorMessageSize()) > 0) {
 		lCurrentPos = m_wndErrorMessage.GetCurSel();
 		if (m_wndErrorMessage.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayErrorMessage(&m_wndErrorMessage, strTime);
+		gl_systemMessage.DisplayErrorMessage(&m_wndErrorMessage, sTime.c_str());
 		if (fUpdate) {
 			m_wndErrorMessage.SetCurAtLastLine();
 		}
@@ -213,7 +213,8 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	if (m_wndChinaMarketTaskQueue.GetCount() > 0) m_wndChinaMarketTaskQueue.TruncateList(m_wndChinaMarketTaskQueue.GetCount());
 	int i = 0;
 	for (const auto& pTask : *pvChinaTask) {
-		CString str = strTime + _T(": ");
+		CString str = sTime.c_str();
+		str += _T(": ");
 		sprintf_s(buffer, _T("%06d"), pTask->GetTime());
 		str += buffer;
 		str += _T(": ");
@@ -226,7 +227,8 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	if (m_wndWorldMarketTaskQueue.GetCount() > 0) m_wndWorldMarketTaskQueue.TruncateList(m_wndWorldMarketTaskQueue.GetCount());
 	i = 0;
 	for (const auto& pTask : *pvWorldTask) {
-		CString str = strTime + _T(": ");
+		CString str = sTime.c_str();
+		str += _T(": ");
 		sprintf_s(buffer, _T("%06d"), pTask->GetTime());
 		str += buffer;
 		str += _T(": ");

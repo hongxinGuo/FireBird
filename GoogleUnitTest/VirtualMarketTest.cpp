@@ -164,14 +164,14 @@ namespace FireBirdTest {
 		const long time = tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec;
 		EXPECT_EQ(virtualMarket.GetMarketTime(), time);
 		char buffer[30];
-		sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		sprintf_s(buffer, _T("%02d:%02d:%02d"), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 		CString str = buffer;
 
-		EXPECT_EQ(str.Compare(virtualMarket.GetStringOfLocalTime()), 0);
+		EXPECT_EQ(str.Compare(virtualMarket.GetStringOfLocalTime().c_str()), 0);
 
-		sprintf_s(buffer, _T("%02d:%02d:%02d "), tm_.tm_hour, tm_.tm_min, tm_.tm_sec);
+		sprintf_s(buffer, _T("%02d:%02d:%02d"), tm_.tm_hour, tm_.tm_min, tm_.tm_sec);
 		str = buffer;
-		EXPECT_EQ(str.Compare(virtualMarket.GetStringOfMarketTime()), 0);
+		EXPECT_EQ(str.Compare(virtualMarket.GetStringOfMarketTime().c_str()), 0);
 	}
 
 	TEST_F(CVirtualMarketTest, TestCalculateLastTraddeDay) {
@@ -449,9 +449,9 @@ namespace FireBirdTest {
 		char buffer[30];
 
 		localtime_s(&tmLocal, &tUTC);
-		sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		sprintf_s(buffer, _T("%02d:%02d:%02d"), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 		const CString str = buffer;
-		EXPECT_STREQ(virtualMarket.GetStringOfLocalTime(), str);
+		EXPECT_STREQ(virtualMarket.GetStringOfLocalTime().c_str(), str);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfLocalDateTime) {
@@ -462,9 +462,9 @@ namespace FireBirdTest {
 		char buffer[100];
 
 		localtime_s(&tmLocal, &tUTC);
-		sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d"), tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 		const CString str = buffer;
-		EXPECT_STREQ(virtualMarket.GetStringOfLocalDateTime(), str);
+		EXPECT_STREQ(virtualMarket.GetStringOfLocalDateTime().c_str(), str);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfMarketTime) {
@@ -474,9 +474,9 @@ namespace FireBirdTest {
 		virtualMarket.GetMarketTimeStruct(&tmMarket, GetUTCTime());
 		char buffer[30];
 
-		sprintf_s(buffer, _T("%02d:%02d:%02d "), tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
+		sprintf_s(buffer, _T("%02d:%02d:%02d"), tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
 		const CString str = buffer;
-		EXPECT_STREQ(virtualMarket.GetStringOfMarketTime(), str);
+		EXPECT_STREQ(virtualMarket.GetStringOfMarketTime().c_str(), str);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfMarketDateTime) {
@@ -486,9 +486,9 @@ namespace FireBirdTest {
 		char buffer[100];
 
 		virtualMarket.GetMarketTimeStruct(&tmMarket, GetUTCTime());
-		sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
+		sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d"), tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
 		const CString str = buffer;
-		EXPECT_STREQ(virtualMarket.GetStringOfMarketDateTime(), str);
+		EXPECT_STREQ(virtualMarket.GetStringOfMarketDateTime().c_str(), str);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfMarketDate) {
@@ -498,9 +498,9 @@ namespace FireBirdTest {
 		const long year = lDate / 10000;
 		const long month = lDate / 100 - year * 100;
 		const long day = lDate - year * 10000 - month * 100;
-		sprintf_s(buffer, _T("%4d年%2d月%2d日"), year, month, day);
+		sprintf_s(buffer, _T("%04d年%02d月%02d日"), year, month, day);
 		const CString str = buffer;
-		EXPECT_STREQ(virtualMarket.GetStringOfMarketDate(), str);
+		EXPECT_STREQ(virtualMarket.GetStringOfMarketDate().c_str(), str);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetDateOfWeek) {

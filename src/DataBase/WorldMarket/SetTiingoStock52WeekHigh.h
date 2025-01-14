@@ -5,7 +5,7 @@
 
 class CSetTiingoStock52WeekHigh : public CVirtualRecordset {
 public:
-	CSetTiingoStock52WeekHigh(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("tiingo_stock_52week_High"), CDatabase* pDatabase = nullptr);
+	CSetTiingoStock52WeekHigh(const CString& strSchema = _T("WorldMarket"), const CString& strTable = _T("tiingo_stock_52week_high"), CDatabase* pDatabase = nullptr);
 
 	// 字段/参数数据
 

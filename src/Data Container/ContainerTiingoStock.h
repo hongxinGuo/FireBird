@@ -29,7 +29,8 @@ public:
 
 	void UpdateFinancialStateDB();
 	void UpdateDayLineDB();
-	void TaskUpdate52WeekHighLowDB();
+	void TaskUpdate52WeekHighDB();
+	void TaskUpdate52WeekLowDB();
 	void TaskCalculate();
 	void Delete52WeekHighData();
 
@@ -41,5 +42,4 @@ public:
 	void SetUpdateFinancialState(bool fFlag);
 
 	void TaskProcessDayLine();
-	void TaskProcessDayLine2();
 };

@@ -1390,26 +1390,20 @@ namespace FireBirdTest {
 		const time_t tt = gl_pWorldMarket->TransferToUTCTime(lDate);
 		time_t ttOld = tt - static_cast<time_t>(365) * 24 * 3600;
 
-		char buffer[30];
-		sprintf_s(buffer, _T("%I64i"), tt);
-		const CString strTime = buffer;
-		sprintf_s(buffer, _T("%I64i"), ttOld);
-		CString strTimeOld = buffer;
+		string sTime = fmt::format("{:Ld}", tt);
+		string sTimeOld = fmt::format("{:Ld}", ttOld);
 
 		stock.SetSymbol(_T("600601.SS"));
 		stock.SetDayLineEndDate(20180101); // 早于20190102
-		CString strMiddle2 = "600601.SS&resolution=D";
-		strMiddle2 += _T("&from=") + strTimeOld + _T("&to=") + strTime;
-		EXPECT_STREQ(stock.GetFinnhubDayLineInquiryParam(tt), strMiddle2) << "免费账户最多只能申请一年的日线数据";
+		string sMiddle2 = _T("600601.SS&resolution=D&from=") + sTimeOld + _T("&to=") + sTime;
+		EXPECT_STREQ(stock.GetFinnhubDayLineInquiryParam(tt), sMiddle2.c_str()) << "免费账户最多只能申请一年的日线数据";
 
 		stock.SetSymbol(_T("600601.SS"));
 		stock.SetDayLineEndDate(20190501); // 晚于20190102
 		ttOld = gl_pWorldMarket->TransferToUTCTime(20190501);
-		sprintf_s(buffer, _T("%I64i"), ttOld);
-		strTimeOld = buffer;
-		CString strParam = "600601.SS&resolution=D";
-		strParam += _T("&from=") + strTimeOld + _T("&to=") + strTime;
-		EXPECT_STREQ(stock.GetFinnhubDayLineInquiryParam(tt), strMiddle2) << "检查一年的数据";
+		sTimeOld = fmt::format("{:Ld}", ttOld);
+		string sParam = "600601.SS&resolution=D&from=" + sTimeOld + _T("&to=") + sTime;
+		EXPECT_STREQ(stock.GetFinnhubDayLineInquiryParam(tt), sMiddle2.c_str()) << "检查一年的数据";
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetTiingoDayLineInquiryParam) {

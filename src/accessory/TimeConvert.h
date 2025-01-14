@@ -32,9 +32,8 @@ void GetUTCTimeStruct(tm* tm_, const time_t* tUTC);
 void GetMarketTimeStruct(tm* tm_, time_t tUTC, time_t tTimeZone);
 
 // 时间变换。将buffer中的字符串根据strFormat的制式变换成time_t制式的日期时间，采用UTC（GMT）标准时间
-CString ConvertDateToString(long lDate, const CString& strFormat);
-CString ConvertDateToTimeStamp(long lDate);
-CString ConvertDateToChineseTimeStampString(long lDate);
+string ConvertDateToTimeStamp(long lDate);
+string ConvertDateToChineseTimeStampString(long lDate);
 
 int XferChinaMarketTimeToIndex(long lTime); // lTime为HHMMSS制式
 int XferChinaMarketTimeToIndex(const tm* ptm); // lTime为HHMMSS制式

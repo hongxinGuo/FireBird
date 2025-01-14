@@ -44,7 +44,6 @@ public:
 	void TaskProcessWebSocketData(long lCurrentTime);
 	void TaskMonitorWebSocket(long lCurrentTime);
 	void TaskUpdateWorldMarketDB(long lCurrentTime);
-	void TaskUpdateTiingoStock52WeekHighLowDB(long lCurrentTime);
 
 	bool TaskUpdateTiingoIndustry();
 	bool TaskUpdateSicIndustry();
@@ -57,7 +56,6 @@ public:
 
 	void TaskCreateTiingoTradeDayDayLine(long lCurrentTime);
 	void TaskProcessTiingoDayLine(long lCurrentTime);
-	void TaskTiingoCalculate(long lCurrentTime);
 
 	static void TaskDeleteDelistedStock();
 

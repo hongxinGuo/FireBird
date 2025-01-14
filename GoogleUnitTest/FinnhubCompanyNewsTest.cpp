@@ -43,7 +43,6 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyNewsTest, TestCreatMessage) {
-		char buffer[50]{};
 		int year = 0, month = 0, day = 0;
 
 		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateCompanyNews(true);
@@ -54,16 +53,14 @@ namespace FireBirdTest {
 		int iMarketData360 = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360);
 		const int iUpdateDate = pStock->GetCompanyNewsUpdateDate() > iMarketData360 ? pStock->GetCompanyNewsUpdateDate() : iMarketData360;
 		XferDateToYearMonthDay(iUpdateDate, year, month, day);
-		sprintf_s(buffer, _T("%4d-%02d-%02d"), year, month, day);
-		CString strTemp = buffer;
+		string sTemp = fmt::format("{:4d}-{:02d}-{:02d}", year, month, day);
 		strMessage += _T("&from=");
-		strMessage += strTemp;
+		strMessage += sTemp.c_str();
 		const int iMarketDate = gl_pWorldMarket->GetMarketDate();
 		XferDateToYearMonthDay(iMarketDate, year, month, day);
-		sprintf_s(buffer, _T("%4d-%02d-%02d"), year, month, day);
-		strTemp = buffer;
+		sTemp = fmt::format("{:4d}-{:02d}-{:02d}", year, month, day);
 		strMessage += _T("&to=");
-		strMessage += strTemp;
+		strMessage += sTemp.c_str();
 
 		EXPECT_STREQ(companyNews.CreateMessage(), strMessage);
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsUpdateCompanyNews()) << "处理接收到的数据后才设置此标识";

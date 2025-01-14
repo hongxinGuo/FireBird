@@ -55,7 +55,7 @@ namespace FireBirdTest {
 		}));
 		EXPECT_CALL(*m_pInquireEngine, GetFileHeaderInformation).Times(0);
 
-		EXPECT_TRUE(m_pInquireEngine->GetWebData() == nullptr);
+		EXPECT_TRUE(m_pInquireEngine->GetWebData()->GetBufferLength() == 0) << "出现异常时数据为空";
 
 		EXPECT_TRUE(m_pInquireEngine->IsWebError());
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1) << "出现exception时报告错误信息";
@@ -76,7 +76,7 @@ namespace FireBirdTest {
 		}));
 		EXPECT_CALL(*m_pInquireEngine, ReadWebFileOneTime).Times(0);
 
-		EXPECT_TRUE(m_pInquireEngine->GetWebData() == nullptr);
+		EXPECT_TRUE(m_pInquireEngine->GetWebData()->GetBufferLength() == 0) << "出现异常时数据为空";
 
 		EXPECT_EQ(m_pInquireEngine->GetBufferSize(), 1024 * 1024) << "不知道数据长度时，设置初始缓冲区为1M";
 
@@ -102,8 +102,8 @@ namespace FireBirdTest {
 		.WillOnce(Return(1024))
 		.WillOnce(Return(0));
 
-		CWebDataPtr pWebData = nullptr;
-		EXPECT_TRUE((pWebData = m_pInquireEngine->GetWebData()) != nullptr);
+		CWebDataPtr pWebData = m_pInquireEngine->GetWebData();
+		EXPECT_TRUE(pWebData->GetBufferLength() > 0) << "正常结束时数据不为空";
 
 		EXPECT_FALSE(m_pInquireEngine->IsWebError());
 		EXPECT_EQ(m_pInquireEngine->GetBufferSize(), 0) << "生成WebData后，其内容std::move至WebData中，故而为零";
@@ -112,10 +112,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(pWebData->GetBufferLength(), 1024) << "数据移至此处";
 		EXPECT_EQ(pWebData->GetTime(), GetUTCTime());
 
-		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 2) << "m_lContentLength != m_lByteRead, 系统报告数据长度不符错误";
+		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1) << "m_lContentLength != m_lByteRead, 系统报告数据长度不符错误";
 
 		// 恢复原状
-		gl_systemMessage.PopErrorMessage();
 		gl_systemMessage.PopErrorMessage();
 	}
 
@@ -134,8 +133,8 @@ namespace FireBirdTest {
 		.WillOnce(Return(1024))
 		.WillOnce(Return(0));
 
-		CWebDataPtr pWebData = nullptr;
-		EXPECT_TRUE((pWebData = m_pInquireEngine->GetWebData()) != nullptr);
+		CWebDataPtr pWebData = m_pInquireEngine->GetWebData();
+		EXPECT_TRUE(pWebData->GetBufferLength() > 0) << "正常结束时数据不为空";
 
 		EXPECT_FALSE(m_pInquireEngine->IsWebError());
 		EXPECT_EQ(m_pInquireEngine->GetBufferSize(), 0) << "生成WebData后，其内容std::move至WebData中，故而为零";

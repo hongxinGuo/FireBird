@@ -65,10 +65,9 @@ public:
 protected:
 	shared_ptr<CInternetSession> m_pSession{ nullptr }; // 初始化时必须生成指针。
 	CHttpFile* m_pFile{ nullptr }; // 网络文件指针
-	DWORD m_dwHTTPStatusCode{ 0 }; //网络状态码
-	DWORD m_dwErrorCode{ 0 }; // 网络错误码
+	DWORD m_dwHTTPStatusCode{ 0 }; //网络状态码。无错误时小于200.
+	DWORD m_dwErrorCode{ 0 }; // 网络错误码。无错误时为零。
 
-	bool m_fWebError{ false }; //网络读取错误代码。也用于网络错误判断的依据：当为零时无错误。
 	string m_sBuffer{}; // 接收到数据的缓冲区
 	long m_lByteRead{ 0 }; // 接收到的字符数.
 

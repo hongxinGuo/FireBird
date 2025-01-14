@@ -139,7 +139,6 @@ void CContainerStockSymbol::CreateStockSection(const CString& strFirstStockCode)
 	CString str = _T("");
 	const int iCode = atoi(strCode.GetBuffer());
 	int iMarket = 0;
-	char buffer[10];
 	CChinaStockPtr pStock = nullptr;
 
 	if (IsShanghaiExchange(strFirstStockCode)) {// 上海市场
@@ -152,9 +151,8 @@ void CContainerStockSymbol::CreateStockSection(const CString& strFirstStockCode)
 	// 生成上海股票代码
 	for (int i = iCode; i < (iCode + 1000); i++) {
 		const CString strExchange = GetStockExchange(strFirstStockCode);
-		sprintf_s(buffer, _T("%06d"), i);
-		const CString strStockSymbol = buffer;
-		const CString strStockCode = CreateStockCode(strExchange, strStockSymbol);
+		string sStockSymbol = fmt::format("{:06d}", i);
+		const CString strStockCode = CreateStockCode(strExchange, sStockSymbol.c_str());
 		Add(strStockCode);
 	}
 	if (UpdateStockSection(iCode / 1000 + iMarket)) {

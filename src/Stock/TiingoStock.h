@@ -93,7 +93,6 @@ public:
 	void Add52WeekHigh(long lDate) { m_v52WeekHigh.push_back(lDate); }
 	void Delete52WeekHigh(long lDate);
 
-	void Update52WeekHighLowDB();
 	void Update52WeekHighDB(CSetTiingoStock52WeekHigh& set52WeekHigh) const;
 	void Update52WeekLowDB(CSetTiingoStock52WeekLow& set52WeekLow) const;
 	void Delete52WeekHighDB() const;

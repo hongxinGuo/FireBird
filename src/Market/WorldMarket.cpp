@@ -128,9 +128,8 @@ void CWorldMarket::ResetMarket() {
 		pDataSource->Reset();
 	}
 
-	CString str = _T("重置World Market于美东标准时间：");
-	str += GetStringOfMarketTime();
-	gl_systemMessage.PushInformationMessage(str);
+	string s = _T("重置World Market于美东标准时间：") + GetStringOfMarketTime();
+	gl_systemMessage.PushInformationMessage(s.c_str());
 
 	m_fResettingMarket = false;
 }
@@ -196,12 +195,6 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 			break;
 		case WORLD_MARKET_TIINGO_PROCESS_DAYLINE__:
 			gl_pWorldMarket->TaskProcessTiingoDayLine(lCurrentTime);
-			break;
-		case WORLD_MARKET_TIINGO_UPDATE_52WEEK_HIGH_LOW__:
-			gl_pWorldMarket->TaskUpdateTiingoStock52WeekHighLowDB(lCurrentTime);
-			break;
-		case WORLD_MARKET_TIINGO_CALCULATE__:
-			gl_pWorldMarket->TaskTiingoCalculate(lCurrentTime);
 			break;
 		default:
 			break;
@@ -290,7 +283,8 @@ bool CWorldMarket::TaskUpdateTiingoIndustry() {
 			this->UpdateTiingoIndustry();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
-				gl_systemMessage.PushInnerSystemInformationMessage("Finnhub update Profile Saving time > 2000ms");
+				string s = fmt::format("Finnhub update Profile  Saving time: {:Ld}ms", (end - start).count());
+				gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
 			}
 			gl_UpdateWorldMarketDB.release();
 		});
@@ -401,7 +395,8 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 						}
 						auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 						if ((end - start).count() > 2000) {
-							gl_systemMessage.PushInnerSystemInformationMessage("Finnhub Update forex dayLine Saving time > 2000ms");
+							string s = fmt::format("FFinnhub Update forex dayLine  Saving time: {:Ld}ms", (end - start).count());
+							gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
 						}
 						gl_UpdateWorldMarketDB.release();
 					});
@@ -455,7 +450,8 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 						}
 						auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 						if ((end - start).count() > 2000) {
-							gl_systemMessage.PushInnerSystemInformationMessage("Finnhub update Crypto dayLine Saving time > 2000ms");
+							string s = fmt::format("Finnhub update Crypto dayLine Saving time: {:Ld}ms", (end - start).count());
+							gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
 						}
 						gl_UpdateWorldMarketDB.release();
 					});
@@ -525,21 +521,6 @@ void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 			AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lCurrentTime, 0, 1, 0)); // 一分钟后执行下一次
 		}
 	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 
-//
-//
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-void CWorldMarket::TaskTiingoCalculate(long lCurrentTime) {
-	gl_runtime.thread_executor()->post([] {
-		gl_systemMessage.PushInnerSystemInformationMessage("calculating 52 week low");
-		gl_dataContainerTiingoStock.TaskCalculate();
-		gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
-	});
 }
 
 void CWorldMarket::TaskDeleteDelistedStock() {
@@ -700,10 +681,8 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_dataContainerFinnhubStock.UpdateBasicFinancialDB(); // 此任务很费时，原因待查。目前先不使用此隔绝区
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
-				char buffer[30];
-				sprintf_s(buffer, "64I", (end - start).count());
-				CString str = buffer;
-				gl_systemMessage.PushInnerSystemInformationMessage("world market Saving time: " + str);
+				string s = fmt::format("world market Saving time: {:Ld}ms", (end - start).count());
+				gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
 			}
 			gl_UpdateWorldMarketDB.release();
 		});
@@ -734,7 +713,8 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_dataContainerTiingoStock.UpdateDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
-				gl_systemMessage.PushInnerSystemInformationMessage("Tiingo stock Saving time > 2000ms");
+				string s = fmt::format("Tiingo stock Saving time: {:Ld}ms", (end - start).count());
+				gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
 			}
 			gl_UpdateWorldMarketDB.release();
 		});
@@ -755,6 +735,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_UpdateWorldMarketDB.release();
 		});
 	}
+
 	if (gl_dataContainerTiingoStock.IsUpdateFinancialStateDB()) {
 		gl_runtime.thread_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
@@ -763,7 +744,8 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_dataContainerTiingoStock.UpdateFinancialStateDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
-				gl_systemMessage.PushInnerSystemInformationMessage("Tiingo Financial statement Saving time > 2000ms");
+				string s = fmt::format("Tiingo Financial statement Saving time: {:Ld}ms", (end - start).count());
+				gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
 			}
 			gl_UpdateWorldMarketDB.release();
 		});
@@ -777,7 +759,8 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			this->TaskUpdateTiingoStockDayLineDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
-				gl_systemMessage.PushInnerSystemInformationMessage("Tiingo Stock dayLine Saving time > 2000ms");
+				string s = fmt::format("Tiingo Stock dayLine Saving time: {:Ld}ms", (end - start).count());
+				gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
 			}
 			gl_UpdateWorldMarketDB.release();
 		});
@@ -796,7 +779,8 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 				gl_dataContainerFinnhubStock.UpdateProfileDB();
 				auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 				if ((end - start).count() > 2000) {
-					gl_systemMessage.PushInnerSystemInformationMessage("Finnhub Profile Saving time > 2000ms");
+					string s = fmt::format("Finnhub Profile  Saving time: {:Ld}ms", (end - start).count());
+					gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
 				}
 				gl_UpdateWorldMarketDB.release();
 			});
@@ -823,22 +807,6 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (IsTimeToResetSystem(lNextTime)) lNextTime = GetResetTime() + 510;
 	ASSERT(!IsTimeToResetSystem(lNextTime));// 重启系统时各数据库需要重新装入，故而此时不允许更新数据库。
 	AddTask(WORLD_MARKET_UPDATE_DB__, lNextTime); // 每五分钟更新一次
-}
-
-void CWorldMarket::TaskUpdateTiingoStock52WeekHighLowDB(long lCurrentTime) {
-	if (gl_dataContainerTiingoStock.IsUpdate52WeekHighLowDB()) { // stock dayLine
-		gl_runtime.thread_executor()->post([] {
-			gl_UpdateWorldMarketDB.acquire();
-			TRACE("52 week high low\n");
-			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-			gl_dataContainerTiingoStock.TaskUpdate52WeekHighLowDB();
-			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-			if ((end - start).count() > 2000) {
-				gl_systemMessage.PushInnerSystemInformationMessage("Tiingo 52 week HighLow Saving time > 2000ms");
-			}
-			gl_UpdateWorldMarketDB.release();
-		});
-	}
 }
 
 bool CWorldMarket::UpdateToken() {

@@ -6,7 +6,7 @@
 #include<QChronoTimer>
 
 #include<chrono>
-#include <spdlog/fmt/bundled/core.h>
+#include <spdlog/spdlog.h>
 using namespace std;
 
 #include"resource.h"
@@ -30,6 +30,8 @@ WatchdogQT::WatchdogQT(QWidget* parent) : QMainWindow(parent) {
 	auto* timer2 = new QChronoTimer(10s, this);
 	connect(timer2, &QChronoTimer::timeout, this, &WatchdogQT::UpdatePer10Second);
 	timer2->start();
+
+	setWindowState(Qt::WindowMinimized); // watchdog初始时最小化
 
 	setWindowIcon(QIcon(":/WatchdogQT/Watchdog.ico")); // Note 路径需要使用全称。
 	//setWindowIcon(QIcon("WatchDog.ico"));
@@ -88,12 +90,9 @@ void WatchdogQT::UpdatePer10Second() {
 		if (!IsFireBirdAlreadyRunning("FireBirdStockAnalysis")) {
 			const UINT iReturnCode = WinExec(("C:\\FireBird\\FireBird.exe"), SW_SHOW);
 			tm tmLocal;
-			char buffer[100];
 			const auto time = gl_tpNow.time_since_epoch().count();
 			localtime_s(&tmLocal, &time);
-			sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d"), tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-			string s = "启动FireBird于: ";
-			s += buffer;
+			const string s = fmt::format("启动FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 			if (m_listOutput.size() > 100) m_listOutput.pop_front();
 			m_listOutput.push_back(s);
 			ASSERT(iReturnCode > 31);

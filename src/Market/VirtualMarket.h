@@ -89,11 +89,11 @@ public:
 	time_t TransferToUTCTime(tm* tmMarketTime) const; // 将市场时间结构转化为UTC时间
 	time_t TransferToUTCTime(long lMarketDate, long lMarketTime = 150000) const; // 将市场时间结构转化为UTC时间
 
-	CString GetStringOfLocalTime() const; // 得到本地时间的字符串
-	CString GetStringOfMarketTime() const; // 得到本市场时间的字符串
-	CString GetStringOfMarketDate() const;
-	CString GetStringOfMarketDateTime() const;
-	CString GetStringOfLocalDateTime() const;
+	string GetStringOfLocalTime() const; // 得到本地时间的字符串
+	string GetStringOfMarketTime() const; // 得到本市场时间的字符串
+	string GetStringOfMarketDate() const;
+	string GetStringOfMarketDateTime() const;
+	string GetStringOfLocalDateTime() const;
 
 	long ConvertToDate(time_t tUTC) const noexcept;
 	static long ConvertToDate(const tm* ptm) noexcept { return ((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday); }

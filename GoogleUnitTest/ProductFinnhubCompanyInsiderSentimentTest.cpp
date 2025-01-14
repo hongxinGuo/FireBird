@@ -43,15 +43,13 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyInsiderSentimentTest, TestCreatMessage) {
 		const long lCurrentDate = gl_pWorldMarket->GetMarketDate();
-		char buffer[100];
-		sprintf_s(buffer, _T("%4d-%02d-%02d"), lCurrentDate / 10000, (lCurrentDate % 10000) / 100, lCurrentDate % 100);
-		const CString strCurrentDate = buffer;
+		string sCurrentDate = fmt::format("{:4Ld}-{:02Ld}-{:02Ld}", lCurrentDate / 10000, (lCurrentDate % 10000) / 100, lCurrentDate % 100);
 
 		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateInsiderSentiment(true);
 		companyInsiderSentiment.SetMarket(gl_pWorldMarket);
 		companyInsiderSentiment.SetIndex(1);
 		EXPECT_STREQ(companyInsiderSentiment.CreateMessage(),
-		             companyInsiderSentiment.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate);
+		             companyInsiderSentiment.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol() + _T("&from=1980-01-01&to=") + sCurrentDate.c_str());
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsUpdateInsiderSentiment()) << "接收到的数处理后方设置此标识";
 
 		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateInsiderSentiment(true);

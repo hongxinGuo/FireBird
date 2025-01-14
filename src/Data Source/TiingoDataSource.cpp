@@ -243,7 +243,7 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (GenerateIEXTopOfBook(lCurrentTime)) return true;
 
 	ASSERT(!IsInquiring());
-	gl_systemMessage.SetCurrentTiingoFunction(_T("waiting"));
+	gl_systemMessage.SetCurrentTiingoFunction(_T("idling"));
 	return false;
 }
 

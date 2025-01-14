@@ -1,8 +1,8 @@
-#include "WatchdogQT.h"
+ï»¿#include "WatchdogQT.h"
 #include <QtWidgets/QApplication>
 
 #if _MSVC_LANG <= 201703
-#error "±¾ÏµÍ³Ê¹ÓÃC++20¼°ÒÔÉÏ±ê×¼"
+#error "æœ¬ç³»ç»Ÿä½¿ç”¨C++20åŠä»¥ä¸Šæ ‡å‡†"
 #endif
 
 int main(int argc, char* argv[]) {

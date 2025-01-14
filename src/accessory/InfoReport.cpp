@@ -9,35 +9,20 @@ void ReportErrorToSystemMessage(const CString& strPrefix, const exception& e) {
 }
 
 void ReportWebError(const DWORD dwErrorNo, const CString& strInputMessage) {
-	char buffer[30];
-
-	sprintf_s(buffer, _T("%d"), dwErrorNo);
-	const CString strErrorNo = buffer;
-	CString strMessage = _T("Net Error #") + strErrorNo;
-	strMessage += _T(" message: ");
-	strMessage += strInputMessage;
-	gl_systemMessage.PushErrorMessage(strMessage);
+	string s = fmt::format("Net Error # {:Ld} message: {}", dwErrorNo, strInputMessage.GetString());
+	gl_systemMessage.PushErrorMessage(s.c_str());
 }
 
 void ReportWebError(const DWORD dwErrorNo, const long long llTime, const CString& strInputMessage) {
-	char buffer[30];
-
-	sprintf_s(buffer, _T("%d"), dwErrorNo);
-	const CString strErrorNo = buffer;
-	CString strMessage = _T("Net Error #") + strErrorNo;
-	sprintf_s(buffer, _T(" %lld毫秒"), llTime);
-	strMessage += _T(" 用时:");
-	strMessage += buffer;
-	strMessage += _T(" message: ");
-	strMessage += strInputMessage;
-	gl_systemMessage.PushErrorMessage(strMessage);
+	string s = fmt::format("Net Error # {:Ld} 用时：{:Ld}毫秒 message: {}", dwErrorNo, llTime, strInputMessage.GetString());
+	gl_systemMessage.PushErrorMessage(s.c_str());
 }
 
 void ReportInformationAndDeleteException(CException* e) {
-	char buffer[200];
 	if (e == nullptr) return;
+	char buffer[200];
 	e->GetErrorMessage(buffer, 200);
 	const CString str = buffer;
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
-	//delete e;
+	delete e;
 }

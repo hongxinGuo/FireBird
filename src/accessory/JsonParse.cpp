@@ -91,9 +91,13 @@ void ReportJsonError(const json::parse_error& e, const std::string& s) {
 	int i;
 	CString str = e.what();
 	gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str);
-	for (i = 0; i < 180; i++) buffer[i] = 0x000;
 	for (i = 0; i < 180; i++) {
-		if ((e.byte - 90 + i) < s.size()) { buffer[i] = s.at(e.byte - 90 + i); }
+		buffer[i] = 0x000;
+	}
+	for (i = 0; i < 180; i++) {
+		if ((e.byte - 90 + i) < s.size()) {
+			buffer[i] = s.at(e.byte - 90 + i);
+		}
 		else break;
 	}
 	sprintf_s(buffer2, _T("%d  "), static_cast<long>(s.size()));
@@ -103,6 +107,7 @@ void ReportJsonError(const json::parse_error& e, const std::string& s) {
 	sprintf_s(buffer2, _T("%d  "), i);
 	str += buffer2;
 	str += buffer;
+	string s2 = fmt::format("{:Ld} {:Ld} {:d}", s.size(), e.byte, i);
 	gl_systemMessage.PushErrorMessage(str);
 }
 

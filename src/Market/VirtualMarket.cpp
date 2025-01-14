@@ -267,44 +267,30 @@ time_t CVirtualMarket::TransferToUTCTime(long lMarketDate, long lMarketTime) con
 	return ConvertToTTime(lMarketDate, GetTimeZoneValue(), lMarketTime);
 }
 
-CString CVirtualMarket::GetStringOfMarketDate() const {
+string CVirtualMarket::GetStringOfMarketDate() const {
 	return ConvertDateToChineseTimeStampString(m_lMarketDate);
 }
 
-CString CVirtualMarket::GetStringOfLocalTime() const {
-	char buffer[30];
+string CVirtualMarket::GetStringOfLocalTime() const {
 	tm tmLocal;
 	auto tt = GetUTCTime();
 	localtime_s(&tmLocal, &tt);
-	sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-	CString str = buffer;
-	return (str);
+	return fmt::format("{:02d}:{:02d}:{:02d}", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 }
 
-CString CVirtualMarket::GetStringOfLocalDateTime() const {
-	char buffer[100];
+string CVirtualMarket::GetStringOfLocalDateTime() const {
 	tm tmLocal;
 	auto tt = GetUTCTime();
 	localtime_s(&tmLocal, &tt);
-	sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-	CString str = buffer;
-	return (str);
+	return fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 }
 
-CString CVirtualMarket::GetStringOfMarketTime() const {
-	char buffer[30];
-
-	sprintf_s(buffer, _T("%02d:%02d:%02d "), m_tmMarket.tm_hour, m_tmMarket.tm_min, m_tmMarket.tm_sec);
-	CString str = buffer;
-	return (str);
+string CVirtualMarket::GetStringOfMarketTime() const {
+	return fmt::format("{:02d}:{:02d}:{:02d}", m_tmMarket.tm_hour, m_tmMarket.tm_min, m_tmMarket.tm_sec);
 }
 
-CString CVirtualMarket::GetStringOfMarketDateTime() const {
-	char buffer[100];
-
-	sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), m_tmMarket.tm_year + 1900, m_tmMarket.tm_mon + 1, m_tmMarket.tm_mday, m_tmMarket.tm_hour, m_tmMarket.tm_min, m_tmMarket.tm_sec);
-	CString str = buffer;
-	return (str);
+string CVirtualMarket::GetStringOfMarketDateTime() const {
+	return fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}", m_tmMarket.tm_year + 1900, m_tmMarket.tm_mon + 1, m_tmMarket.tm_mday, m_tmMarket.tm_hour, m_tmMarket.tm_min, m_tmMarket.tm_sec);
 }
 
 long CVirtualMarket::ConvertToDate(const time_t tUTC) const noexcept {

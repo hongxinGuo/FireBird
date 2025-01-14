@@ -23,12 +23,12 @@ CString CProductFinnhubCompanyNews::CreateMessage() {
 	CString strMessage = m_strInquiryFunction + pStock->GetSymbol();
 	long limitTime = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360); // 最近一年内
 	long limitTime2 = limitTime > pStock->GetCompanyNewsUpdateDate() ? limitTime : pStock->GetCompanyNewsUpdateDate();
-	CString strTemp = ConvertDateToTimeStamp(limitTime2);
+	string sTemp = ConvertDateToTimeStamp(limitTime2);
 	strMessage += _T("&from=");
-	strMessage += strTemp;
-	strTemp = ConvertDateToTimeStamp(gl_pWorldMarket->GetMarketDate());
+	strMessage += sTemp.c_str();
+	sTemp = ConvertDateToTimeStamp(gl_pWorldMarket->GetMarketDate());
 	strMessage += _T("&to=");
-	strMessage += strTemp;
+	strMessage += sTemp.c_str();
 
 	m_strInquiry = strMessage;
 	m_strInquiringExchange = pStock->GetExchangeCode();

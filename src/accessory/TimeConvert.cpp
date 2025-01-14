@@ -312,23 +312,19 @@ void GetMarketTimeStruct(tm* tm_, const time_t tUTC, const time_t tTimeZone) {
 	gmtime_s(tm_, &tMarket);
 }
 
-CString ConvertDateToString(const long lDate, const CString& strFormat) {
-	char buffer[30];
+string ConvertDateToTimeStamp(const long lDate) {
+	const long year = lDate / 10000;
+	const long month = lDate / 100 - year * 100;
+	const long day = lDate - year * 10000 - month * 100;
+	return fmt::format("{:04Ld}-{:02Ld}-{:02Ld}", year, month, day);
+}
+
+string ConvertDateToChineseTimeStampString(const long lDate) {
 	const long year = lDate / 10000;
 	const long month = lDate / 100 - year * 100;
 	const long day = lDate - year * 10000 - month * 100;
 
-	sprintf_s(buffer, strFormat, year, month, day);
-	CString str = buffer;
-	return str;
-}
-
-CString ConvertDateToTimeStamp(const long lDate) {
-	return ConvertDateToString(lDate, _T("%04d-%02d-%02d"));
-}
-
-CString ConvertDateToChineseTimeStampString(const long lDate) {
-	return ConvertDateToString(lDate, _T("%4d年%2d月%2d日"));
+	return fmt::format("{:04Ld}年{:02Ld}月{:02Ld}日", year, month, day);
 }
 
 int XferChinaMarketTimeToIndex(long lTime) {

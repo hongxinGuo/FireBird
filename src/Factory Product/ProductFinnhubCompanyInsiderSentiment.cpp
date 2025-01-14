@@ -16,8 +16,8 @@ CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment()
 CString CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 
-	const CString strCurrentDate = ConvertDateToTimeStamp(GetMarket()->GetMarketDate());
-	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + strCurrentDate;
+	const string sCurrentDate = ConvertDateToTimeStamp(GetMarket()->GetMarketDate());
+	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + sCurrentDate.c_str();
 	m_strInquiringExchange = pStock->GetExchangeCode();
 
 	return m_strInquiry;
