@@ -230,10 +230,10 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (GenerateFundamentalDefinition()) return true;
 	if (GenerateCompanySymbol()) return true;
 	if (GenerateCryptoSymbol()) return true;
-	if (GenerateStockDailyMeta()) return true;
+	//if (GenerateStockDailyMeta()) return true;
 	if (GenerateIEXTopOfBook(lCurrentTime)) return true; // Note 此项数据包含所有股票的即时信息，可以用来作为实时数据使用。
-	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
-	if (GenerateFinancialState()) return true;
+	//if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
+	//if (GenerateFinancialState()) return true;
 
 	ASSERT(!IsInquiring());
 	gl_systemMessage.SetCurrentTiingoFunction(_T("idling"));

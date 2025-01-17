@@ -47,7 +47,7 @@ bool CContainerTiingoStockDayLine::LoadDB(const CString& strStockSymbol) {
 //  具体操作的数据表由第一个参数传入，
 //  自动删除旧数据中的重复数据。
 //
-//Note  更新完后，本container中的日西安数据也自动更新为最新数据(以备以后的处理日线数据）
+//Note  更新完后，本container中的日线数据也自动更新为最新数据(以备以后的处理日线数据）
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const CString& strStockSymbol) {
