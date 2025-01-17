@@ -230,10 +230,10 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (GenerateFundamentalDefinition()) return true;
 	if (GenerateCompanySymbol()) return true;
 	if (GenerateCryptoSymbol()) return true;
-	//if (GenerateStockDailyMeta()) return true;
+	if (GenerateStockDailyMeta()) return true;
 	if (GenerateIEXTopOfBook(lCurrentTime)) return true; // Note 此项数据包含所有股票的即时信息，可以用来作为实时数据使用。
-	//if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
-	//if (GenerateFinancialState()) return true;
+	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
+	if (GenerateFinancialState()) return true;
 
 	ASSERT(!IsInquiring());
 	gl_systemMessage.SetCurrentTiingoFunction(_T("idling"));
@@ -296,7 +296,7 @@ bool CTiingoDataSource::GenerateIEXTopOfBook(long lCurrentTime) {
 			StoreInquiry(p);
 			SetInquiring(true);
 			gl_systemMessage.SetCurrentTiingoFunction(_T("IEX top of book"));
-			gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 1, 0));
+			gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(lCurrentTime, 0, 1, 0));
 			return true;
 		}
 		else {

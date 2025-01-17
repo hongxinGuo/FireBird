@@ -47,7 +47,7 @@ public:
 
 	void UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook);
 	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
-	void UpdateDayLine(CTiingoDayLinesPtr vTempDayLine) { m_dataDayLine.UpdateData(vTempDayLine); }
+	void UpdateDayLine(const CTiingoDayLinesPtr& vTempDayLine) { m_dataDayLine.UpdateData(vTempDayLine); }
 	void UpdateFinancialStateDB();
 	bool UpdateDayLineDB();
 	void SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const; // 将当前数据存入日线数据库

@@ -168,14 +168,6 @@ void CContainerTiingoStock::UpdateFinancialStateDB() {
 	}
 }
 
-void CContainerTiingoStock::UpdateDayLineDB() {
-	for (size_t i = 0; i < Size(); i++) {
-		const CTiingoStockPtr pStock = GetStock(i);
-		pStock->UpdateDayLineDB();
-		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
-	}
-}
-
 void CContainerTiingoStock::TaskUpdate52WeekHighDB() {
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week high");
 	Delete52WeekHighData();

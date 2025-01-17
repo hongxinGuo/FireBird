@@ -28,7 +28,6 @@ public:
 	long GetTotalActiveStocks();
 
 	void UpdateFinancialStateDB();
-	void UpdateDayLineDB();
 	void TaskUpdate52WeekHighDB();
 	void TaskUpdate52WeekLowDB();
 	void TaskCalculate();

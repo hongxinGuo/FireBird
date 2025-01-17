@@ -184,14 +184,16 @@ void CTiingoStock::UpdateFinancialStateDB() {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoStock::UpdateDayLineDB() {
-	ASSERT(HaveNewDayLineData());
-	SaveDayLineDB();
-	UpdateDayLineStartEndDate();
-	SetUpdateProfileDB(true);
-	const CString str = GetSymbol() + _T("日线资料存储完成");
-	gl_systemMessage.PushDayLineInfoMessage(str);
-	UnloadDayLine();
-	return true;
+	if (IsUpdateDayLineDBAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		SaveDayLineDB();
+		UpdateDayLineStartEndDate();
+		SetUpdateProfileDB(true);
+		const CString str = GetSymbol() + _T("日线资料存储完成");
+		gl_systemMessage.PushDayLineInfoMessage(str);
+		UnloadDayLine();
+		return true;
+	}
+	return false;
 }
 
 void CTiingoStock::SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const {

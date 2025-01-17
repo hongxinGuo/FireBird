@@ -5,7 +5,8 @@
 #include "InfoReport.h"
 #include"SetTiingoStockDayLine.h"
 
-CContainerTiingoStockDayLine::CContainerTiingoStockDayLine() {}
+CContainerTiingoStockDayLine::CContainerTiingoStockDayLine() {
+}
 
 bool CContainerTiingoStockDayLine::SaveDB(const CString& strStockSymbol) {
 	try {

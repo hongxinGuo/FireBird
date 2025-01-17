@@ -300,7 +300,8 @@ long CVirtualMarket::ConvertToDate(const time_t tUTC) const noexcept {
 }
 
 void CVirtualMarket::GetMarketTimeStruct(tm* tm_, time_t tUTC) const {
-	time_t tMarket = tUTC + GetTimeZoneValue();
+	auto timeZoneOffset = GetTimeZoneValue();
+	time_t tMarket = tUTC + timeZoneOffset;
 	gmtime_s(tm_, &tMarket);
 }
 

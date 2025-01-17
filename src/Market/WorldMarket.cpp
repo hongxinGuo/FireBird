@@ -235,8 +235,8 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lCurrentTime);
 
-	AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, lCurrentTime); // 开始下载日线历史数据
-	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, lCurrentTime); // 开始下载日线历史数据
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(lCurrentTime, 0, 0, 10)); // 开始下载日线历史数据
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, GetNextTime(lCurrentTime, 0, 0, 20)); // 开始下载日线历史数据
 
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0)); // 两分钟后开始监测WebSocket
 
@@ -339,27 +339,22 @@ bool CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
 
 	for (int i = 0; i < symbolSize; i++) {
 		pTiingoStock = gl_dataContainerTiingoStock.GetStock(i);
-		if (pTiingoStock->IsUpdateDayLineDBAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
-			if (pTiingoStock->GetDayLineSize() > 0) {
-				if (pTiingoStock->HaveNewDayLineData()) {
-					gl_BackgroundWorkingThread.acquire();
-					gl_runtime.thread_executor()->post([pTiingoStock] {
-						gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-						if (!gl_systemConfiguration.IsExitingSystem()) {// 如果程序正在退出，则停止存储。
-							pTiingoStock->UpdateDayLineDB();
-							pTiingoStock->UpdateDayLineStartEndDate();
-							pTiingoStock->SetUpdateProfileDB(true);
-							pTiingoStock->UnloadDayLine();
-							const CString str = pTiingoStock->GetSymbol() + _T("日线资料存储完成");
-							gl_systemMessage.PushDayLineInfoMessage(str);
-						}
-						gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-						gl_BackgroundWorkingThread.release();
-					});
-					fUpdated = true;
+		if (pTiingoStock->IsUpdateDayLineDB()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+			gl_BackgroundWorkingThread.acquire();
+			gl_runtime.thread_executor()->post([pTiingoStock] {
+				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+				if (!gl_systemConfiguration.IsExitingSystem()) {// 如果程序正在退出，则停止存储。
+					pTiingoStock->UpdateDayLineDB();
+					pTiingoStock->UpdateDayLineStartEndDate();
+					pTiingoStock->SetUpdateProfileDB(true);
+					pTiingoStock->UnloadDayLine();
+					const CString str = pTiingoStock->GetSymbol() + _T("日线资料存储完成");
+					gl_systemMessage.PushDayLineInfoMessage(str);
 				}
-				else pTiingoStock->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
-			}
+				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+				gl_BackgroundWorkingThread.release();
+			});
+			fUpdated = true;
 		}
 	}
 
@@ -758,7 +753,6 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	if (gl_dataContainerTiingoStock.IsUpdateDayLineDB()) {
 		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateWorldMarketDB.acquire();
-			TRACE("Tiingo Stock dayline\n");
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			this->TaskUpdateTiingoStockDayLineDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
