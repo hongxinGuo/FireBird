@@ -161,41 +161,30 @@ void CPropertyRealtimeWnd::OnTimer(UINT_PTR nIDEvent) {
 		CString symbol = pStock->GetSymbol();
 		m_pChinaMarketStock->SetName(symbol);
 		if (pStock->GetVolume() > 0) {
-			char buffer[100];
-			sprintf_s(buffer, 100, "%ld", pStock->GetNew());
-			CString str = buffer;
-			m_pPropNew->SetValue(str);
+			string s = fmt::format("{:Ld}", pStock->GetNew());
+			m_pPropNew->SetValue(s.c_str());
 			INT64 volume = pStock->GetVolume();
-			sprintf_s(buffer, 100, "%lld", volume);
-			str = buffer;
-			m_pPropVolume->SetValue(str);
-			sprintf_s(buffer, 100, "0.%02lld", pStock->GetOrdinaryBuyVolume() * 100 / volume);
-			str = buffer;
-			m_pPropStockOrdinaryBuy->SetValue(str);
-			sprintf_s(buffer, 100, _T("0.%02lld"), pStock->GetOrdinarySellVolume() * 100 / volume);
-			str = buffer;
-			m_pPropStockOrdinarySell->SetValue(str);
+			s = fmt::format("{:Ld}", volume);
+			m_pPropVolume->SetValue(s.c_str());
+			s = fmt::format("0.{:02Ld}", pStock->GetOrdinaryBuyVolume() * 100 / volume);
+			m_pPropStockOrdinaryBuy->SetValue(s.c_str());
+			s = fmt::format("0.{:02Ld}", pStock->GetOrdinarySellVolume() * 100 / volume);
+			m_pPropStockOrdinarySell->SetValue(s.c_str());
 
-			sprintf_s(buffer, 100, "0.%02lld", pStock->GetAttackBuyVolume() * 100 / volume);
-			str = buffer;
-			m_pPropStockAttackBuy->SetValue(str);
-			sprintf_s(buffer, 100, _T("0.%02lld"), pStock->GetAttackSellVolume() * 100 / volume);
-			str = buffer;
-			m_pPropStockAttackSell->SetValue(str);
+			s = fmt::format("0.{:02Ld}", pStock->GetAttackBuyVolume() * 100 / volume);
+			m_pPropStockAttackBuy->SetValue(s.c_str());
+			s = fmt::format("0.{:02Ld}", pStock->GetAttackSellVolume() * 100 / volume);
+			m_pPropStockAttackSell->SetValue(s.c_str());
 
-			sprintf_s(buffer, 100, "0.%02lld", pStock->GetStrongBuyVolume() * 100 / volume);
-			str = buffer;
-			m_pPropStockStrongBuy->SetValue(str);
-			sprintf_s(buffer, 100, _T("0.%02lld"), pStock->GetStrongSellVolume() * 100 / volume);
-			str = buffer;
-			m_pPropStockStrongSell->SetValue(str);
+			s = fmt::format("0.{:02Ld}", pStock->GetStrongBuyVolume() * 100 / volume);
+			m_pPropStockStrongBuy->SetValue(s.c_str());
+			s = fmt::format("0.{:02Ld}", pStock->GetStrongSellVolume() * 100 / volume);
+			m_pPropStockStrongSell->SetValue(s.c_str());
 
-			sprintf_s(buffer, 100, "0.%02lld", pStock->GetCanceledBuyVolume() * 100 / volume);
-			str = buffer;
-			m_pPropStockCancelBuy->SetValue(str);
-			sprintf_s(buffer, 100, _T("0.%02lld"), pStock->GetCanceledSellVolume() * 100 / volume);
-			str = buffer;
-			m_pPropStockCancelSell->SetValue(str);
+			s = fmt::format("0.{:02Ld}", pStock->GetCanceledBuyVolume() * 100 / volume);
+			m_pPropStockCancelBuy->SetValue(s.c_str());
+			s = fmt::format("0.{:02Ld}", pStock->GetCanceledSellVolume() * 100 / volume);
+			m_pPropStockCancelSell->SetValue(s.c_str());
 		}
 	}
 	else {

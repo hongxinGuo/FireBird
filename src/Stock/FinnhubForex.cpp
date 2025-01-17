@@ -19,26 +19,15 @@ void CFinnhubForex::SetCheckingDayLineStatus() {
 }
 
 CString CFinnhubForex::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) {
-	CString strParam = _T("");
-	char buffer[50];
-
-	strParam += m_strSymbol;
-	strParam += _T("&resolution=D");
-	strParam += _T("&from=");
 	time_t tStartTime = gl_pWorldMarket->TransferToUTCTime(GetDayLineEndDate());
 	if (tStartTime < (tCurrentTime - static_cast<time_t>(365) * 24 * 3600)) {
 		// 免费账户只能读取一年以内的日线数据。
 		tStartTime = (tCurrentTime - static_cast<time_t>(365) * 24 * 3600);
 	}
-	sprintf_s(buffer, _T("%I64i"), tStartTime);
-	CString strTemp = buffer;
-	strParam += strTemp;
-	strParam += _T("&to=");
-	sprintf_s(buffer, _T("%I64i"), tCurrentTime);
-	strTemp = buffer;
-	strParam += strTemp;
 
-	return strParam;
+	string sParam = fmt::format("{}&resolution=D&from={:Ld}&to={:Ld}", m_strSymbol.GetString(), tStartTime, tCurrentTime);
+
+	return sParam.c_str();
 }
 
 void CFinnhubForex::UpdateDayLineStartEndDate() {

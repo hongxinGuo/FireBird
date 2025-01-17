@@ -42,11 +42,8 @@ void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			//gl_systemMessage.PushInnerSystemInformationMessage(str);
 		}
 	}
-	char buffer[30];
-	sprintf_s(buffer, _T("%lld"), pvStock->size());
-	CString str = _T("今日美国市场股票总数为：");
-	str += buffer;
-	//gl_systemMessage.PushInnerSystemInformationMessage(str);
+	string s = fmt::format("今日美国市场股票总数为：{:Ld}", pvStock->size());
+	//gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
 }
 
 bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(const CString& strStockSymbol, const CString& strExchangeCode) {

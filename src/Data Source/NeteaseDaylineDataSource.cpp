@@ -50,9 +50,9 @@ void CNeteaseDayLineDataSource::CreateProduct() {
 		const CString strStockCode = XferNeteaseToStandard(strParam);
 		SetDownLoadingStockCode(strStockCode);
 		gl_systemMessage.SetStockCodeForInquiryDayLine(strStockCode);
-		strParam += _T("&start=19900101&end=");
-		sprintf_s(buffer2, _T("%8d"), gl_pChinaMarket->GetMarketDate());
-		strParam += buffer2;
+		strParam += _T("");
+		string s = fmt::format("&start=19900101&end={:8Ld}", gl_pChinaMarket->GetMarketDate());
+		strParam += s.c_str();
 		m_strParam = strParam;
 		gl_pChinaMarket->CheckValidOfNeteaseDayLineInquiringStr(strParam);
 		const CProductNeteaseDayLinePtr product = make_shared<CProductNeteaseDayLine>();

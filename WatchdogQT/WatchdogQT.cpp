@@ -57,11 +57,9 @@ void WatchdogQT::BuildUI() {
 void WatchdogQT::Update() const {
 	gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now());
 	tm tmLocal;
-	char buffer[100];
 	const auto time = gl_tpNow.time_since_epoch().count();
 	localtime_s(&tmLocal, &time);
-	sprintf_s(buffer, "%02d:%02d:%02d ", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-	string s = buffer;
+	string s = fmt::format("{:02d}:{:02d}:{:02d}", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 	labTime->setText(s.c_str());
 
 	string sTotal;

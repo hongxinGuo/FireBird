@@ -756,59 +756,30 @@ void CFinnhubStock::SetSECFilingsUpdateDate(const long lDate) noexcept {
 }
 
 CString CFinnhubStock::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const {
-	CString strParam = _T("");
-	char buffer[50];
-
-	strParam += m_strSymbol;
-	strParam += _T("&resolution=D");
-	strParam += _T("&from=");
 	const time_t tStartTime = (tCurrentTime - static_cast<time_t>(365) * 24 * 3600); // 检查最近一年的数据
-	sprintf_s(buffer, _T("%I64i"), tStartTime);
-	CString strTemp = buffer;
-	strParam += strTemp;
-	strParam += _T("&to=");
-	sprintf_s(buffer, _T("%I64i"), tCurrentTime);
-	strTemp = buffer;
-	strParam += strTemp;
 
-	return strParam;
+	string sParam = fmt::format("{}&resolution=D&from={:Ld}&to={:Ld}", m_strSymbol.GetString(), tStartTime, tCurrentTime);
+
+	return sParam.c_str();
 }
 
 CString CFinnhubStock::GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) const {
-	CString strParam = _T("");
-	char buffer[50];
 	const long year = lCurrentDate / 10000;
 	const long month = lCurrentDate / 100 - year * 100;
 	const long date = lCurrentDate - year * 10000 - month * 100;
 
-	const long year2 = lStartDate / 10000;
-	const long month2 = lStartDate / 100 - year2 * 100;
-	const long date2 = lStartDate - year2 * 10000 - month2 * 100;
+	const long yearStart = lStartDate / 10000;
+	const long monthStart = lStartDate / 100 - yearStart * 100;
+	const long dateStart = lStartDate - yearStart * 10000 - monthStart * 100;
 
-	strParam += m_strSymbol;
-	strParam += _T("/prices?&startDate=");
-	sprintf_s(buffer, _T("%4d-%d-%d"), year2, month2, date2);
-	CString strTemp = buffer;
-	strParam += strTemp;
-	strParam += _T("&endDate=");
-	sprintf_s(buffer, _T("%4d-%d-%d"), year, month, date);
-	strTemp = buffer;
-	strParam += strTemp;
+	string sParam = fmt::format("{}/prices?&startDate={:4Ld}-{:Ld}-{:Ld}&endDate={:4Ld}-{:Ld}-{:Ld}", m_strSymbol.GetString(), yearStart, monthStart, dateStart, year, month, date);
 
-	return strParam;
+	return sParam.c_str();
 }
 
 CString CFinnhubStock::GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTime) {
-	CString strParam = _T("");
-	char buffer[50];
-
-	strParam += m_strSymbol;
-	strParam += _T("&from=");
-	sprintf_s(buffer, _T("%i"), GetInsiderTransactionUpdateDate());
-	const CString strTemp = buffer;
-	strParam += strTemp;
-
-	return strParam;
+	string sParam = fmt::format("{}&from={:Ld}", m_strSymbol.GetString(), GetInsiderTransactionUpdateDate());
+	return sParam.c_str();
 }
 
 bool CFinnhubStock::IsUSMarket() const {

@@ -40,7 +40,7 @@ public:
 	virtual void ShowRealtimeData(CDC* pDC);
 
 	bool ShowGuadan(CDC* pDC, const CChinaStockPtr& pStock, int iXStart, int iYStart, int iYEnd);
-	bool ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart);
+	bool ShowCurrentTransactionInfo(CDC* pDC, int iXStart, int iYStart);
 	void ShowRealtimeGuadan(CDC* pdc);
 	void ShowVolume(CDC* pDC, const CChinaStockPtr& pStock);
 	void ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);

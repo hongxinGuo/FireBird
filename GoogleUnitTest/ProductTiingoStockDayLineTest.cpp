@@ -41,6 +41,18 @@ namespace FireBirdTest {
 		EXPECT_STREQ(stockPriceCandle.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/daily/"));
 	}
 
+	TEST_F(CProductTiingoStockDayLineTest, TestGetTiingoDayLineInquiryParam) {
+		const CString strParam = "600601.SS/prices?&startDate=2018-1-1&endDate=2020-1-1";
+
+		EXPECT_STREQ(stockPriceCandle.GetDayLineInquiryParam("600601.SS", 20180101, 20200101), strParam);
+	}
+
+	TEST_F(CProductTiingoStockDayLineTest, TestGetTiingoDayLineInquiryParam2) {
+		const CString strParam = "600601.SS/prices?&startDate=1980-1-1&endDate=2020-1-1";
+
+		EXPECT_STREQ(stockPriceCandle.GetDayLineInquiryParam("600601.SS",19800101, 20200101), strParam);
+	}
+
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage1) {
 		stockPriceCandle.SetIndex(0); // 测试数据库中，此股票代码为000001.SS
 		stockPriceCandle.SetMarket(gl_pWorldMarket);
@@ -51,7 +63,6 @@ namespace FireBirdTest {
 		const long year = lMarketDate / 10000;
 		const long month = lMarketDate / 100 - year * 100;
 		const long day = lMarketDate - year * 10000 - month * 100;
-		char buffer[30];
 		string sEndDate = fmt::format("{:4Ld}-{:Ld}-{:Ld}", year, month, day);
 		string sMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
 		const string sTest = _T("https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-1-1&endDate=") + sEndDate;
@@ -69,11 +80,10 @@ namespace FireBirdTest {
 		const long year = lMarketDate / 10000;
 		const long month = lMarketDate / 100 - year * 100;
 		const long day = lMarketDate - year * 10000 - month * 100;
-		char buffer[30];
-		sprintf_s(buffer, _T("%4d-%d-%d"), year, month, day);
-		const CString strEndDate = buffer;
+		string sEndDate = fmt::format("{:4Ld}-{:Ld}-{:Ld}", year, month, day);
 		string sMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
-		const CString strTest = _T("https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-1-1&endDate=") + strEndDate;
+		CString strTest = _T("https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-1-1&endDate=");
+		strTest += sEndDate.c_str();
 		EXPECT_STREQ(strMessage, strTest);
 	}
 

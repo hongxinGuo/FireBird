@@ -89,8 +89,9 @@ string_view GetNextField(const string_view& svData, size_t& lCurrentPos, char de
 void ReportJsonError(const json::parse_error& e, const std::string& s) {
 	char buffer[180]{}, buffer2[100]{};
 	int i;
-	CString str = e.what();
-	gl_systemMessage.PushErrorMessage(_T("Nlohmann JSon Reading Error ") + str);
+	string s2 = "Nlohmann JSon Reading Error ";
+	s2 += e.what();
+	gl_systemMessage.PushErrorMessage(s2.c_str());
 	for (i = 0; i < 180; i++) {
 		buffer[i] = 0x000;
 	}
@@ -100,15 +101,9 @@ void ReportJsonError(const json::parse_error& e, const std::string& s) {
 		}
 		else break;
 	}
-	sprintf_s(buffer2, _T("%d  "), static_cast<long>(s.size()));
-	str = buffer2;
-	sprintf_s(buffer2, _T("%d  "), static_cast<long>(e.byte));
-	str += buffer2;
-	sprintf_s(buffer2, _T("%d  "), i);
-	str += buffer2;
-	str += buffer;
-	string s2 = fmt::format("{:Ld} {:Ld} {:d}", s.size(), e.byte, i);
-	gl_systemMessage.PushErrorMessage(str);
+	s2 += fmt::format("{:Ld} {:Ld} {:d}", s.size(), e.byte, i);
+	s2 += buffer;
+	gl_systemMessage.PushErrorMessage(s2.c_str());
 }
 
 void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat) {

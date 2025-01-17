@@ -469,15 +469,14 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
 void CMainFrame::UpdateStatus() {
 	ASSERT(!IsMarketResetting());
-	CString str;
-	char buffer[30]{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
+	string s;
 	const CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
 
 	//更新状态条
 	if (gl_pChinaMarket->IsCurrentEditStockChanged()) {
-		str = m_aStockCodeTemp;
-		SysCallSetPaneText(1, str);
+		s = m_aStockCodeTemp;
+		SysCallSetPaneText(1, s.c_str());
 		gl_pChinaMarket->SetCurrentEditStockChanged(false);
 	}
 	// 显示股票代码和名称
@@ -488,35 +487,30 @@ void CMainFrame::UpdateStatus() {
 	}
 
 	// 显示当前选择的股票
-	sprintf_s(buffer, _T("%d"), gl_pChinaMarket->GetCurrentSelectedStockSet());
-	SysCallSetPaneText(4, buffer);
+	s = fmt::format("{:Ld}", gl_pChinaMarket->GetCurrentSelectedStockSet());
+	SysCallSetPaneText(4, s.c_str());
 
 	// 显示当前选择的位置
-	sprintf_s(buffer, _T("%d"), gl_pChinaMarket->GetCurrentSelectedPosition());
-	SysCallSetPaneText(5, buffer);
+	s = fmt::format("{:Ld}", gl_pChinaMarket->GetCurrentSelectedPosition());
+	SysCallSetPaneText(5, s.c_str());
 
 	// 显示当前读取的新浪实时数据股票代码
-	str = gl_systemMessage.GetStockCodeForInquiringRTData();
-	SysCallSetPaneText(6, str);
+	SysCallSetPaneText(6, gl_systemMessage.GetStockCodeForInquiringRTData());
 
 	// 显示活跃股票总数
-	sprintf_s(buffer, _T("%zd"), gl_dataContainerChinaStock.GetActiveStockSize());
-	SysCallSetPaneText(7, buffer);
+	s = fmt::format("{:Ld}", gl_dataContainerChinaStock.GetActiveStockSize());
+	SysCallSetPaneText(7, s.c_str());
 
 	// 显示当前读取网易日线历史的股票代码
-	str = gl_systemMessage.GetStockCodeForInquiryDayLine();
-	SysCallSetPaneText(8, str);
+	SysCallSetPaneText(8, gl_systemMessage.GetStockCodeForInquiryDayLine());
 
 	// 
-	str = gl_systemMessage.GetCurrentFinnhubFunction();
-	SysCallSetPaneText(9, str);
+	SysCallSetPaneText(9, gl_systemMessage.GetCurrentFinnhubFunction());
 
-	str = gl_systemMessage.GetCurrentTiingoFunction();
-	SysCallSetPaneText(10, str);
+	SysCallSetPaneText(10, gl_systemMessage.GetCurrentTiingoFunction());
 
 	// 更新当前抓取的实时数据大小
-	str = FormatToMK(gl_pSinaRTDataSource->GetTotalByteReadPerSecond());
-	SysCallSetPaneText(11, str);
+	SysCallSetPaneText(11, FormatToMK(gl_pSinaRTDataSource->GetTotalByteReadPerSecond()));
 
 	// 更新当前申请网络数据的工作线程数
 	if (gl_ThreadStatus.IsSavingThreadRunning()) {
@@ -527,85 +521,77 @@ void CMainFrame::UpdateStatus() {
 	}
 
 	// 更新当前后台工作线程数
-	sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
-
-	//sprintf_s(buffer, _T("%1.3f"), gl_pChinaMarket->GetCurrentEffectiveRTDataRatio());
-	SysCallSetPaneText(13, buffer);
+	s = fmt::format("{:d}", gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
+	SysCallSetPaneText(13, s.c_str());
 
 	//更新当地时间的显示
-	str = gl_pChinaMarket->GetStringOfLocalTime().c_str();
-	SysCallSetPaneText(14, str);
+	SysCallSetPaneText(14, gl_pChinaMarket->GetStringOfLocalTime().c_str());
 }
 
 void CMainFrame::UpdateInnerSystemStatus() {
-	char buffer[30];
-	CString str;
+	string s;
 	// 更新实时数据读取时间
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
 	case 0: // 新浪实时数据
-		sprintf_s(buffer, _T("%5I64d"), gl_pSinaRTDataSource->GetCurrentInquiryTime());
+		s = fmt::format("{:5Ld}", gl_pSinaRTDataSource->GetCurrentInquiryTime());
 		break;
 	case 1: // 更新网易实时数据读取时间
-		sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseRTDataSource->GetCurrentInquiryTime());
+		s = fmt::format("{:5Ld}", gl_pNeteaseRTDataSource->GetCurrentInquiryTime());
 		break;
 	case 2: // 更新腾讯实时数据读取时间
-		sprintf_s(buffer, _T("%5I64d"), gl_pTengxunRTDataSource->GetCurrentInquiryTime());
+		s = fmt::format("{:5Ld}", gl_pTengxunRTDataSource->GetCurrentInquiryTime());
 		break;
 	default: // error
 		break;
 	}
-	SysCallSetInnerSystemPaneText(1, buffer);
+	SysCallSetInnerSystemPaneText(1, s.c_str());
 
 	// 更新实时数据分配及处理时间
-	sprintf_s(buffer, _T("%5I64d"), gl_pChinaMarket->m_ttDistributeAndCalculateTime.load());
-	SysCallSetInnerSystemPaneText(2, buffer);
+	s = fmt::format("{:5Ld}", gl_pChinaMarket->m_ttDistributeAndCalculateTime.load());
+	SysCallSetInnerSystemPaneText(2, s.c_str());
 
 	// 更新TaskSchedulePer100ms()处理时间
 	const long time = gl_systemMessage.GetScheduleTaskTimePerSecond() / 1000;
-	sprintf_s(buffer, _T("%5I32d"), time);
-	SysCallSetInnerSystemPaneText(3, buffer);
+	s = fmt::format("{:5Ld}", time);
+	SysCallSetInnerSystemPaneText(3, s.c_str());
 
 	// 更新日线数据读取时间
 	if (gl_systemConfiguration.IsUsingNeteaseDayLineServer()) { // 网易日线服务器
-		sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseDayLineDataSource->GetCurrentInquiryTime());
+		s = fmt::format("{:5Ld}", gl_pNeteaseDayLineDataSource->GetCurrentInquiryTime());
 	}
 	else if (gl_systemConfiguration.IsUsingTengxunDayLineServer()) { // 腾讯日线服务器
-		sprintf_s(buffer, _T("%5I64d"), gl_pTengxunDayLineDataSource->GetCurrentInquiryTime());
+		s = fmt::format("{:5Ld}", gl_pTengxunDayLineDataSource->GetCurrentInquiryTime());
 	}
-	SysCallSetInnerSystemPaneText(4, buffer);
+	SysCallSetInnerSystemPaneText(4, s.c_str());
 
 	// 更新Finnhub数据读取时间
-	sprintf_s(buffer, _T("%5I64d"), gl_pFinnhubDataSource->GetCurrentInquiryTime());
-	SysCallSetInnerSystemPaneText(5, buffer);
+	s = fmt::format("{:5Ld}", gl_pFinnhubDataSource->GetCurrentInquiryTime());
+	SysCallSetInnerSystemPaneText(5, s.c_str());
 	// 更新Tiingo数据读取时间
-	sprintf_s(buffer, _T("%6I64d"), gl_pTiingoDataSource->GetCurrentInquiryTime());
-	SysCallSetInnerSystemPaneText(6, buffer);
+	s = fmt::format("{:6Ld}", gl_pTiingoDataSource->GetCurrentInquiryTime());
+	SysCallSetInnerSystemPaneText(6, s.c_str());
 	// 更新Quandl数据读取时间
-	sprintf_s(buffer, _T("%6I64d"), gl_pQuandlDataSource->GetCurrentInquiryTime());
+	s = fmt::format("{:6Ld}", gl_pQuandlDataSource->GetCurrentInquiryTime());
 	//SysCallSetInnerSystemPaneText(7, buffer);
 
 	if (gl_systemMessage.GetProcessedFinnhubWebSocket() > 0) {
 		SysCallSetInnerSystemPaneText(8, gl_systemMessage.GetCurrentFinnhubWebSocketStake());
-		str = FormatToMK(gl_systemMessage.GetProcessedFinnhubWebSocket());
-		SysCallSetInnerSystemPaneText(9, str);
+		SysCallSetInnerSystemPaneText(9, FormatToMK(gl_systemMessage.GetProcessedFinnhubWebSocket()));
 	}
 
 	if (gl_systemMessage.GetProcessedTiingoIEXWebSocket() > 0) {
 		SysCallSetInnerSystemPaneText(10, gl_systemMessage.GetCurrentTiingoWebSocketIEX());
-		str = FormatToMK(gl_systemMessage.GetProcessedTiingoIEXWebSocket());
-		SysCallSetInnerSystemPaneText(11, str);
+		SysCallSetInnerSystemPaneText(11, FormatToMK(gl_systemMessage.GetProcessedTiingoIEXWebSocket()));
 	}
 
 	if (gl_systemMessage.GetProcessedTiingoForexWebSocket() > 0) {
 		SysCallSetInnerSystemPaneText(12, gl_systemMessage.GetCurrentTiingoWebSocketForex());
-		str = FormatToMK(gl_systemMessage.GetProcessedTiingoForexWebSocket());
-		SysCallSetInnerSystemPaneText(13, str);
+		SysCallSetInnerSystemPaneText(13, FormatToMK(gl_systemMessage.GetProcessedTiingoForexWebSocket()));
 	}
 
 	if (gl_systemMessage.GetProcessedTiingoCryptoWebSocket() > 0) {
 		SysCallSetInnerSystemPaneText(14, gl_systemMessage.GetCurrentTiingoWebSocketCrypto());
-		str = FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket());
-		SysCallSetInnerSystemPaneText(15, str);
+		SysCallSetInnerSystemPaneText(15, FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket()));
 	}
 }
 

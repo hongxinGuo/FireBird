@@ -38,19 +38,13 @@ UINT ThreadChoice10RSStrong1StockSet(const not_null<CChinaMarketPtr>& pMarket) {
 
 UINT ThreadChoice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
 	gl_UpdateChinaMarketDB.acquire();
-	CString str = _T("开始计算10日RS ");
-	char buffer[30];
-	sprintf_s(buffer, _T("%d"), iIndex);
-	str += buffer;
-	str += _T("\n");
-	gl_systemMessage.PushInformationMessage(str);
+	string s = fmt::format("开始计算10日RS {:d}\n", iIndex);
+	gl_systemMessage.PushInformationMessage(s.c_str());
 
 	// 报告一下
 	if (gl_dataContainerChinaStock.Choice10RSStrongStockSet(pRef, iIndex)) {
-		str = _T("10日RS ");
-		str += buffer;
-		str += _T("计算完毕\n");
-		gl_systemMessage.PushInformationMessage(str);
+		s = fmt::format("10日RS  {:d}计算完毕\n", iIndex);
+		gl_systemMessage.PushInformationMessage(s.c_str());
 	}
 	gl_UpdateChinaMarketDB.release();
 

@@ -238,11 +238,9 @@ CTiingoStocksPtr CProductTiingoStockProfile::DeleteDuplicatedSymbol(const CTiing
 }
 
 void CProductTiingoStockProfile::SaveNewSymbol() {
-	char buffer[30];
-	sprintf_s(buffer, "%8d", gl_pWorldMarket->GetMarketDate());
-	CString str = buffer;
+	string s = fmt::format("[Date] ={:8Ld}", gl_pWorldMarket->GetMarketDate());
 	CSetTiingoStockNewSymbol setNewSymbol;
-	setNewSymbol.m_strFilter = _T("[Date] =") + str;
+	setNewSymbol.m_strFilter = s.c_str();
 	setNewSymbol.Open();
 	setNewSymbol.m_pDatabase->BeginTrans();
 	// 删除之前存储的代码
@@ -263,10 +261,8 @@ void CProductTiingoStockProfile::SaveNewSymbol() {
 
 void CProductTiingoStockProfile::SaveDelistedSymbol() {
 	CSetTiingoStockDelistedSymbol setDelistedSymbol;
-	char buffer[30];
-	sprintf_s(buffer, "%8d", gl_pWorldMarket->GetMarketDate());
-	CString str = buffer;
-	setDelistedSymbol.m_strFilter = _T("[Date] =") + str;
+	string s = fmt::format("[Date] ={:8Ld}", gl_pWorldMarket->GetMarketDate());
+	setDelistedSymbol.m_strFilter = s.c_str();
 	setDelistedSymbol.Open();
 	setDelistedSymbol.m_pDatabase->BeginTrans();
 	// 删除之前存储的代码

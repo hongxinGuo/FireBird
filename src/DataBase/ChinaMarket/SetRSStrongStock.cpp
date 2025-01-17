@@ -11,15 +11,13 @@ CSetRSStrongStock::CSetRSStrongStock(long lIndex, const CString& strSchema, cons
 }
 
 CString CSetRSStrongStock::GetDefaultSQL() {
-	CString str = _T("[") + m_Table;
-	char buffer[10];
+	string s = _T("[");
+	s += m_Table;
 
 	ASSERT((m_lIndex >= 0) && (m_lIndex < 10));
-	sprintf_s(buffer, _T("%1d"), m_lIndex);
-	str += buffer;
-	str += _T("]");
+	s += fmt::format("{:Ld}]", m_lIndex);
 
-	return str;
+	return s.c_str();
 }
 
 void CSetRSStrongStock::DoFieldExchange(CFieldExchange* pFX) {

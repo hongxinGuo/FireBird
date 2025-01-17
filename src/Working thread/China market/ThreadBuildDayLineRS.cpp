@@ -61,10 +61,8 @@ UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCa
 		const long hour = tDiffer / 3600;
 		const long min = tDiffer / 60 - hour * 60;
 		const long second = tDiffer - hour * 3600 - min * 60;
-		char buffer[100];
-		sprintf_s(buffer, _T("计算股票相对强度用时%02d小时%02d分钟%02d秒"), hour, min, second);
-		const CString str = buffer;
-		gl_systemMessage.PushInformationMessage(str);
+		string s = fmt::format("计算股票相对强度用时{:02Ld}小时{:02Ld}分钟{:02Ld}秒", hour, min, second);
+		gl_systemMessage.PushInformationMessage(s.c_str());
 	}
 	else {
 		gl_systemConfiguration.SetExitingCalculatingRS(false); // 如果是计算过程中止了，则重置中止标识。

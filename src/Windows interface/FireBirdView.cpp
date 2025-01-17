@@ -198,8 +198,8 @@ CFireBirdView::CFireBirdView() {
 }
 
 bool CFireBirdView::ShowGuadan(CDC* pDC, const CChinaStockPtr& pStock, int iXStart, int iYStart, int iYEnd) {
-	CString str = _T("");
-	const CSize sizeText = SysCallGetTextExtent(pDC, str);
+	string s = _T("");
+	const CSize sizeText = SysCallGetTextExtent(pDC, s.c_str());
 	const int iNumberOfLine = (iYEnd - iYStart) / sizeText.cy;
 
 	const long lStartPrice = (static_cast<long>(pStock->GetCurrentGuadanTransactionPrice() * 100) - iNumberOfLine / 2) * 10;
@@ -207,42 +207,35 @@ bool CFireBirdView::ShowGuadan(CDC* pDC, const CChinaStockPtr& pStock, int iXSta
 	int j = 0;
 
 	for (int i = iNumberOfLine; i > 0; i--) {
-		sprintf_s(buffer, _T("%7.2f"), (static_cast<double>(lStartPrice) + i * 10) / 1000);
-		CString strPrice;
-		str = buffer;
+		s = fmt::format("{:7.2f}", (static_cast<double>(lStartPrice) + i * 10) / 1000);
+		string sPrice;
 		const long lCurrentPrice = lStartPrice + i * 10;
 
 		if (!pStock->HaveGuadan(lCurrentPrice)) {
 			// 此价位没有挂单
-			strPrice = _T("    ----------");
+			sPrice = _T("    ----------");
 		}
 		else {
-			sprintf_s(buffer, "    %10I64d", pStock->GetGuadan(lCurrentPrice));
-			strPrice = buffer;
+			sPrice = fmt::format("    {:10Ld}", pStock->GetGuadan(lCurrentPrice));
 		}
 
-		str += strPrice;
-		pDC->TextOut(iXStart + 10, iYStart + sizeText.cy * j + 10, str);
+		s += sPrice;
+		pDC->TextOut(iXStart + 10, iYStart + sizeText.cy * j + 10, s.c_str());
 		j++;
 	}
 
 	return true;
 }
 
-bool CFireBirdView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart) {
+bool CFireBirdView::ShowCurrentTransactionInfo(CDC* pDC, int iXStart, int iYStart) {
+	CChinaStockPtr pStock;
 	if (gl_dataContainerChinaStock.Size() > 0) {
 		pStock = gl_dataContainerChinaStock.GetStock(0); // 000001.SS
 	}
 	else return false;
 
-	CString str = _T("");
-	CSize sizeText = pDC->GetTextExtent(str);
-	char buffer[30];
-
-	sprintf_s(buffer, _T("%8.3f"), pStock->GetCurrentGuadanTransactionPrice());
-	str = _T("当前挂单成交价格： ");
-	str += buffer;
-	pDC->TextOut(iXStart, iYStart + 10, str);
+	string s = fmt::format("当前挂单成交价格：{:8.3f}", pStock->GetCurrentGuadanTransactionPrice());
+	pDC->TextOut(iXStart, iYStart + 10, s.c_str());
 
 	return true;
 }
@@ -369,7 +362,7 @@ void CFireBirdView::ShowRealtimeGuadan(CDC* pDC) {
 	if (pCurrentStock != nullptr) {
 		ShowGuadan(pDC, pCurrentStock, 10, 10, 500);
 
-		//ShowCurrentTransactionInfo(pdc, pCurrentStock, 200, 10);
+		//ShowCurrentTransactionInfo(pdc, 200, 10);
 	}
 
 	SysCallSelectObject(pDC, ppen);

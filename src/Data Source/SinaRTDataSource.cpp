@@ -34,6 +34,9 @@ bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 		if (!gl_pChinaMarket->IsFastReceivingRTData() && gl_pChinaMarket->IsSystemReady() && !gl_systemConfiguration.IsDebugMode()) { // 系统配置为测试系统时，不降低轮询速度
 			m_PrevInquireTimePoint = llTickCount + 60000ms; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
 		}
+		if (GetCurrentInquiryTime() > 1000) {
+			m_PrevInquireTimePoint = llTickCount + 8000ms; // 如果响应时间超过1000ms，则等待10秒后再申请。
+		}
 		else {
 			if (!IsInquiring()) {
 				m_PrevInquireTimePoint = llTickCount; // 只有当上一次申请结束后方调整计时基点，这样如果上一次申请超时结束后，保证尽快进行下一次申请。

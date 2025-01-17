@@ -40,7 +40,7 @@ bool CTiingoDataSource::Reset() {
 	m_fUpdateFundamentalDefinitions = true;
 	m_fUpdateStockSymbol = true;
 	m_fUpdateCryptoSymbol = true;
-	m_fUpdateDayLine = true;
+	m_fUpdateDayLine = false; // 更新日线与否由任务决定
 	m_fUpdateFinancialState = true;
 	m_fUpdateIEXTopOFBook = true;
 
@@ -230,17 +230,10 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	if (GenerateFundamentalDefinition()) return true;
 	if (GenerateCompanySymbol()) return true;
 	if (GenerateCryptoSymbol()) return true;
-#ifndef _DEBUG
-	if (lCurrentTime < 170100) {// 休市后方才下载dailyMeta、日线等数据。
-	gl_systemMessage.SetCurrentTiingoFunction(_T("waiting market close"));
-		return true; 
-	}
-#endif
 	if (GenerateStockDailyMeta()) return true;
+	if (GenerateIEXTopOfBook(lCurrentTime)) return true; // Note 此项数据包含所有股票的即时信息，可以用来作为实时数据使用。
 	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
-	ASSERT(gl_dataContainerTiingoNewSymbol.IsEmpty()); // 日线更新完后此容器会被清空
 	if (GenerateFinancialState()) return true;
-	if (GenerateIEXTopOfBook(lCurrentTime)) return true;
 
 	ASSERT(!IsInquiring());
 	gl_systemMessage.SetCurrentTiingoFunction(_T("idling"));

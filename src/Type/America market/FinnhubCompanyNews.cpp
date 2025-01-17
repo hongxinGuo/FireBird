@@ -28,11 +28,9 @@ void CFinnhubCompanyNews::Update(CSetCompanyNews& setCompanyNews) const {
 }
 
 void CFinnhubCompanyNews::Save(CSetCompanyNews& setCompanyNews) const {
-	char buffer[30]{};
 	setCompanyNews.m_CompanySymbol = m_strCompanySymbol.Left(45);
 	setCompanyNews.m_Category = m_strCategory.Left(100);
-	sprintf_s(buffer, _T("%lld"), m_llDateTime);
-	setCompanyNews.m_DateTime = buffer;
+	setCompanyNews.m_DateTime = fmt::format("{:Ld}", m_llDateTime).c_str();
 	setCompanyNews.m_HeadLine = m_strHeadLine.Left(1000);
 	setCompanyNews.m_NewsID = m_iNewsID;
 	setCompanyNews.m_Image = m_strImage.Left(1000);

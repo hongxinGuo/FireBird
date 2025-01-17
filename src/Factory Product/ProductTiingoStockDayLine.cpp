@@ -8,30 +8,17 @@
 
 #include "ProductTiingoStockDayLine.h"
 
-#include "TimeConvert.h"
-
-CString GetTiingoDayLineInquiryParam(const CString& strSymbol, long lStartDate, long lCurrentDate) {
-	CString strParam = _T("");
-	char buffer[50];
+CString CProductTiingoStockDayLine::GetDayLineInquiryParam(const CString& strSymbol, long lStartDate, long lCurrentDate) {
 	const long year = lCurrentDate / 10000;
 	const long month = lCurrentDate / 100 - year * 100;
 	const long date = lCurrentDate - year * 10000 - month * 100;
 
-	const long year2 = lStartDate / 10000;
-	const long month2 = lStartDate / 100 - year2 * 100;
-	const long date2 = lStartDate - year2 * 10000 - month2 * 100;
+	const long yearStart = lStartDate / 10000;
+	const long monthStart = lStartDate / 100 - yearStart * 100;
+	const long dateStart = lStartDate - yearStart * 10000 - monthStart * 100;
 
-	strParam += strSymbol;
-	strParam += _T("/prices?&startDate=");
-	sprintf_s(buffer, _T("%4d-%d-%d"), year2, month2, date2);
-	CString strTemp = buffer;
-	strParam += strTemp;
-	strParam += _T("&endDate=");
-	sprintf_s(buffer, _T("%4d-%d-%d"), year, month, date);
-	strTemp = buffer;
-	strParam += strTemp;
-
-	return strParam;
+	string sParam = fmt::format("{}/prices?&startDate={:4Ld}-{:Ld}-{:Ld}&endDate={:4Ld}-{:Ld}-{:Ld}", strSymbol.GetString(), yearStart, monthStart, dateStart, year, month, date);
+	return sParam.c_str();
 }
 
 CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
@@ -50,7 +37,7 @@ CString CProductTiingoStockDayLine::CreateMessage() {
 	ASSERT(pStock->IsActive()); // 活跃股票
 	long lStartDate = 19800101;
 	if (pStock->GetDayLineEndDate() > 19800101) lStartDate = pStock->GetDayLineEndDate();
-	CString strParam = GetTiingoDayLineInquiryParam(pStock->GetSymbol(), lStartDate, GetMarket()->GetMarketDate()); // 如果日线从未申请过时，申请完整日线。
+	CString strParam = GetDayLineInquiryParam(pStock->GetSymbol(), lStartDate, GetMarket()->GetMarketDate()); // 如果日线从未申请过时，申请完整日线。
 	m_strInquiringSymbol = pStock->GetSymbol();
 
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -126,7 +113,6 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 	string s;
 	json js;
 	stringstream ss;
-	chrono::year_month_day ymd;
 
 	if (!pWebData->CreateJson(js)) return pvDayLine;
 	if (!IsValidData(pWebData)) return pvDayLine;
@@ -143,7 +129,6 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			CTiingoStock stock;
-			chrono::sys_seconds tpTime;
 			auto pDayLine = make_shared<CTiingoDayLine>();
 			//pDayLine->SetExchange(_T("US")); // 所有的Tiingo证券皆为美国市场。
 			s = jsonGetString(it, _T("date"));

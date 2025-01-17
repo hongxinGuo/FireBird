@@ -377,22 +377,17 @@ void CPropertiesWnd::SetPropListFont() {
 }
 
 void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
-	char buffer[100];
-	CString str;
 	auto threadPooExecutorMaxIdleTime = gl_runtime.thread_pool_executor()->max_worker_idle_time();
 	auto l = threadPooExecutorMaxIdleTime.count();
-	sprintf_s(buffer, _T("%d"), l);
-	str = buffer;
-	m_pPropThreadPoolExecutorMaxWorkerIdleTime->SetValue(str);
+	string s = fmt::format("{:Ld}", l);
+	m_pPropThreadPoolExecutorMaxWorkerIdleTime->SetValue(s.c_str());
 	auto backgroundExecutorMaxIdleTime = gl_runtime.background_executor()->max_worker_idle_time();
 	l = backgroundExecutorMaxIdleTime.count();
-	sprintf_s(buffer, _T("%d"), l);
-	str = buffer;
-	m_pPropBackgroundExecutorMaxWorkerIdleTime->SetValue(str);
+	s = fmt::format("{:Ld}", l);
+	m_pPropBackgroundExecutorMaxWorkerIdleTime->SetValue(s.c_str());
 
-	sprintf_s(buffer, _T("%d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
-	str = buffer;
-	m_pPropCurrentWorkingThread->SetValue(str); // 后台工作线程数
+	s = fmt::format("{:d}", gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
+	m_pPropCurrentWorkingThread->SetValue(s.c_str()); // 后台工作线程数
 
 	if (gl_pChinaMarket->IsWebBusy()) m_pPropChinaMarketWebStatus->SetColor(RGB(192, 0, 0));
 	else m_pPropChinaMarketWebStatus->SetColor(RGB(0, 192, 0));
@@ -402,10 +397,8 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	}
 	else {
 		if (gl_pFinnhubDataSource->IsWebError()) {
-			char buffer2[100];
-			sprintf_s(buffer2, _T("running (EC:%5zd)"), gl_pFinnhubDataSource->GetWebErrorCode());
-			CString str3 = buffer2;
-			m_pPropWorldMarketWebStatus->SetValue(str3);
+			string s3 = fmt::format("running (EC:{:5Ld})", gl_pFinnhubDataSource->GetWebErrorCode());
+			m_pPropWorldMarketWebStatus->SetValue(s3.c_str());
 		}
 		else {
 			m_pPropWorldMarketWebStatus->SetValue(_T("running"));
@@ -418,7 +411,7 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	strMessage = gl_systemMessage.GetCurrentTiingoFunction();
 	m_pPropTiingoCurrentFunction->SetValue(strMessage);
 
-	str = _T("");
+	CString str = _T("");
 	switch (gl_pFinnhubWebSocket->GetState()) {
 	case ix::ReadyState::Closed:
 		str = _T("Closed");

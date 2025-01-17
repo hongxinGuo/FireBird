@@ -65,11 +65,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestIsUpdateDayLine) {
-		EXPECT_TRUE(m_pTiingoDataSource->IsUpdateDayLine());
-		m_pTiingoDataSource->SetUpdateDayLine(false);
 		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateDayLine());
 		m_pTiingoDataSource->SetUpdateDayLine(true);
 		EXPECT_TRUE(m_pTiingoDataSource->IsUpdateDayLine());
+		m_pTiingoDataSource->SetUpdateDayLine(false);
+		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateDayLine());
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestIsAErrorMessageData1) {

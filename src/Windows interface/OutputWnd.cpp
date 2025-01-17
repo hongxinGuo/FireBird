@@ -147,7 +147,6 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	if (timeLast >= time) return; // 每秒更新一次
 	timeLast = time;
 
-	CString str2;
 	long lCurrentPos;
 	bool fUpdate = false;
 	const string sTime = gl_pChinaMarket->GetStringOfLocalDateTime(); // 消息的前缀，使用当地时间
@@ -208,18 +207,12 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		}
 	}
 
-	char buffer[50];
 	const auto pvChinaTask = gl_pChinaMarket->DiscardOutDatedTask(gl_pChinaMarket->GetMarketTime());
 	if (m_wndChinaMarketTaskQueue.GetCount() > 0) m_wndChinaMarketTaskQueue.TruncateList(m_wndChinaMarketTaskQueue.GetCount());
 	int i = 0;
 	for (const auto& pTask : *pvChinaTask) {
-		CString str = sTime.c_str();
-		str += _T(": ");
-		sprintf_s(buffer, _T("%06d"), pTask->GetTime());
-		str += buffer;
-		str += _T(": ");
-		str += gl_mapMarketMapIndex.at(pTask->GetType()).c_str();
-		m_wndChinaMarketTaskQueue.AddString(str);
+		string s = fmt::format("{}: {:06Ld}: {}", sTime, pTask->GetTime(), gl_mapMarketMapIndex.at(pTask->GetType()));
+		m_wndChinaMarketTaskQueue.AddString(s.c_str());
 		if (++i >= m_wndChinaMarketTaskQueue.GetLineNumber()) break;
 	}
 
@@ -227,13 +220,8 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	if (m_wndWorldMarketTaskQueue.GetCount() > 0) m_wndWorldMarketTaskQueue.TruncateList(m_wndWorldMarketTaskQueue.GetCount());
 	i = 0;
 	for (const auto& pTask : *pvWorldTask) {
-		CString str = sTime.c_str();
-		str += _T(": ");
-		sprintf_s(buffer, _T("%06d"), pTask->GetTime());
-		str += buffer;
-		str += _T(": ");
-		str += gl_mapMarketMapIndex.at(pTask->GetType()).c_str();
-		m_wndWorldMarketTaskQueue.AddString(str);
+		string s = fmt::format("{}: {:06Ld}: {}", sTime, pTask->GetTime(), gl_mapMarketMapIndex.at(pTask->GetType()));
+		m_wndWorldMarketTaskQueue.AddString(s.c_str());
 		if (++i >= m_wndWorldMarketTaskQueue.GetLineNumber()) break;
 	}
 

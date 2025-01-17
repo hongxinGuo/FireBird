@@ -1116,21 +1116,17 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
 		const long lCurrentMonday = GetCurrentMonday(GetMarketDate());
 		CSetWeekLineBasicInfo setWeekLineBasicInfo;
 		CSetWeekLineExtendInfo setWeekLineExtendInfo;
-		char buffer[10];
 		CWeekLinePtr pWeekLine = nullptr;
 		CContainerChinaWeekLine dataChinaWeekLine;
 
 		DeleteCurrentWeekWeekLine();
 
-		static_cast<void>(sprintf_s(buffer, _T("%08d"), lCurrentMonday));
-		const CString strDate = buffer;
-		setWeekLineBasicInfo.m_strFilter = _T("[Date] = ");
-		setWeekLineBasicInfo.m_strFilter += strDate;
+		string sDate = fmt::format("[Date] = {:08Ld}", lCurrentMonday);
+		setWeekLineBasicInfo.m_strFilter = sDate.c_str();
 		setWeekLineBasicInfo.m_strSort = _T("[Symbol]");
 		setWeekLineBasicInfo.Open();
 
-		setWeekLineExtendInfo.m_strFilter = _T("[Date] = ");
-		setWeekLineExtendInfo.m_strFilter += strDate;
+		setWeekLineExtendInfo.m_strFilter = sDate.c_str();
 		setWeekLineExtendInfo.m_strSort = _T("[Symbol]");
 		setWeekLineExtendInfo.Open();
 
@@ -1165,28 +1161,25 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
 
 bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) const {
 	CString strSQL;
-	char pch[30];
-	//CTime ctTime;
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
-	static_cast<void>(sprintf_s(pch, _T("%08d"), lDate));
-	const CString strDate = pch;
+	string sDate = fmt::format("{:08Ld}", lDate);
 	setDayLineBasicInfo.m_strSort = _T("[Symbol]");
 	setDayLineBasicInfo.m_strFilter = _T("[Date] =");
-	setDayLineBasicInfo.m_strFilter += strDate;
+	setDayLineBasicInfo.m_strFilter += sDate.c_str();
 	setDayLineBasicInfo.Open();
 	if (setDayLineBasicInfo.IsEOF()) {
 		// 数据集为空，表明此日没有交易
 		setDayLineBasicInfo.Close();
-		CString str = strDate;
+		CString str = sDate.c_str();
 		str += _T("日数据集为空，无需处理周线数据");
 		gl_systemMessage.PushDayLineInfoMessage(str); // 采用同步机制报告信息
 		return false;
 	}
 	setDayLineExtendInfo.m_strSort = _T("[Symbol]");
 	setDayLineExtendInfo.m_strFilter = _T("[Date] =");
-	setDayLineExtendInfo.m_strFilter += strDate;
+	setDayLineExtendInfo.m_strFilter += sDate.c_str();
 	setDayLineExtendInfo.Open();
 	setDayLineExtendInfo.m_pDatabase->BeginTrans();
 	setDayLineBasicInfo.m_pDatabase->BeginTrans();
@@ -1257,14 +1250,10 @@ void CChinaMarket::DeleteWeekLineExtendInfo() {
 
 void CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) const {
 	CString strSQL;
-	char pch[30];
-	//CTime ctTime;
 	CSetWeekLineBasicInfo setWeekLineBasicInfo;
 
-	sprintf_s(pch, _T("%08d"), lMonday);
-	const CString strDate = pch;
-	setWeekLineBasicInfo.m_strFilter = _T("[Date] =");
-	setWeekLineBasicInfo.m_strFilter += strDate;
+	string sDate = fmt::format("[Date] = {:08Ld}", lMonday);
+	setWeekLineBasicInfo.m_strFilter = sDate.c_str();
 	setWeekLineBasicInfo.Open();
 	setWeekLineBasicInfo.m_pDatabase->BeginTrans();
 	while (!setWeekLineBasicInfo.IsEOF()) {
@@ -1277,13 +1266,10 @@ void CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) const {
 
 void CChinaMarket::DeleteWeekLineExtendInfo(long lMonday) const {
 	CString strSQL;
-	char pch[30];
 	CSetWeekLineExtendInfo setWeekLineExtendInfo;
 
-	sprintf_s(pch, _T("%08d"), lMonday);
-	const CString strDate = pch;
-	setWeekLineExtendInfo.m_strFilter = _T("[Date] =");
-	setWeekLineExtendInfo.m_strFilter += strDate;
+	string sDate = fmt::format("[Date] = {:08Ld}", lMonday);
+	setWeekLineExtendInfo.m_strFilter = sDate.c_str();
 	setWeekLineExtendInfo.Open();
 	setWeekLineExtendInfo.m_pDatabase->BeginTrans();
 	while (!setWeekLineExtendInfo.IsEOF()) {
