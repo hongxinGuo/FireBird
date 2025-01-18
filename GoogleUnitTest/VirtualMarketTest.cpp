@@ -163,15 +163,12 @@ namespace FireBirdTest {
 
 		const long time = tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec;
 		EXPECT_EQ(virtualMarket.GetMarketTime(), time);
-		char buffer[30];
-		sprintf_s(buffer, _T("%02d:%02d:%02d"), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-		CString str = buffer;
+		string s = fmt::format("{:02d}:{:02d}:{:02d}", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 
-		EXPECT_EQ(str.Compare(virtualMarket.GetStringOfLocalTime().c_str()), 0);
+		EXPECT_EQ(s.compare(virtualMarket.GetStringOfLocalTime()), 0);
 
-		sprintf_s(buffer, _T("%02d:%02d:%02d"), tm_.tm_hour, tm_.tm_min, tm_.tm_sec);
-		str = buffer;
-		EXPECT_EQ(str.Compare(virtualMarket.GetStringOfMarketTime().c_str()), 0);
+		s = fmt::format("{:02d}:{:02d}:{:02d}", tm_.tm_hour, tm_.tm_min, tm_.tm_sec);
+		EXPECT_EQ(s.compare(virtualMarket.GetStringOfMarketTime()), 0);
 	}
 
 	TEST_F(CVirtualMarketTest, TestCalculateLastTraddeDay) {
@@ -446,12 +443,10 @@ namespace FireBirdTest {
 
 		time_t tUTC = GetUTCTime();
 		tm tmLocal;
-		char buffer[30];
 
 		localtime_s(&tmLocal, &tUTC);
-		sprintf_s(buffer, _T("%02d:%02d:%02d"), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-		const CString str = buffer;
-		EXPECT_STREQ(virtualMarket.GetStringOfLocalTime().c_str(), str);
+		string s = fmt::format("{:02d}:{:02d}:{:02d}", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		EXPECT_STREQ(virtualMarket.GetStringOfLocalTime().c_str(), s.c_str());
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfLocalDateTime) {
@@ -459,12 +454,10 @@ namespace FireBirdTest {
 
 		const time_t tUTC = GetUTCTime();
 		tm tmLocal;
-		char buffer[100];
 
 		localtime_s(&tmLocal, &tUTC);
-		sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d"), tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-		const CString str = buffer;
-		EXPECT_STREQ(virtualMarket.GetStringOfLocalDateTime().c_str(), str);
+		string s = fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		EXPECT_STREQ(virtualMarket.GetStringOfLocalDateTime().c_str(), s.c_str());
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfMarketTime) {
@@ -472,35 +465,28 @@ namespace FireBirdTest {
 
 		tm tmMarket;
 		virtualMarket.GetMarketTimeStruct(&tmMarket, GetUTCTime());
-		char buffer[30];
 
-		sprintf_s(buffer, _T("%02d:%02d:%02d"), tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
-		const CString str = buffer;
-		EXPECT_STREQ(virtualMarket.GetStringOfMarketTime().c_str(), str);
+		string s = fmt::format("{:02d}:{:02d}:{:02d}", tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
+		EXPECT_STREQ(virtualMarket.GetStringOfMarketTime().c_str(), s.c_str());
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfMarketDateTime) {
 		virtualMarket.CalculateTime();
 
 		tm tmMarket;
-		char buffer[100];
 
 		virtualMarket.GetMarketTimeStruct(&tmMarket, GetUTCTime());
-		sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d"), tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
-		const CString str = buffer;
-		EXPECT_STREQ(virtualMarket.GetStringOfMarketDateTime().c_str(), str);
+		string s = fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}", tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
+		EXPECT_STREQ(virtualMarket.GetStringOfMarketDateTime().c_str(), s.c_str());
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfMarketDate) {
-		char buffer[30];
-
 		const long lDate = virtualMarket.GetMarketDate();
 		const long year = lDate / 10000;
 		const long month = lDate / 100 - year * 100;
 		const long day = lDate - year * 10000 - month * 100;
-		sprintf_s(buffer, _T("%04d年%02d月%02d日"), year, month, day);
-		const CString str = buffer;
-		EXPECT_STREQ(virtualMarket.GetStringOfMarketDate().c_str(), str);
+		string s = fmt::format("{:04Ld}年{:02Ld}月{:02Ld}日", year, month, day);
+		EXPECT_STREQ(virtualMarket.GetStringOfMarketDate().c_str(), s.c_str());
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetDateOfWeek) {

@@ -36,7 +36,7 @@ void CVirtualDataSource::Run(long lMarketTime) {
 		gl_runtime.thread_executor()->post([p, lMarketTime] { //Note 此处必须使用thread_executor
 				p->GenerateInquiryMessage(lMarketTime);
 				if (p->IsInquiring()) {
-					auto product = p->GetFrontProduct();
+					auto product = p->PeekFrontProduct();
 					ASSERT(product != nullptr);
 					auto pvWebData = p->InquireData();
 					if (!pvWebData->empty()) {

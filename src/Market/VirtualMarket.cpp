@@ -34,32 +34,32 @@ void CVirtualMarket::ScheduleTask() {
 		RunDataSource(lCurrentMarketTime);
 	}
 
-	// 执行本市场各项定时任务。当市场正在重置时暂停
-	if (!IsResetting()) {
-		auto begin = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-		int taskType = ProcessTask(lCurrentMarketTime); // 执行定时任务
-		auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+	// 执行本市场各项定时任务。
+	if (IsResetting()) return; // 当市场正在重置时暂停
+
+	auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+	int taskType = ProcessTask(lCurrentMarketTime); // 执行定时任务
+	auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 #ifdef _TRACE_SCHEDULE_TASK___
-		if (taskType != 0) gl_traceLogger->trace("{} ms {}", gl_mapMarketMapIndex.at(taskType), (end - begin).count());
+	if (taskType != 0) gl_traceLogger->trace("{} ms {}", gl_mapMarketMapIndex.at(taskType), (end - start).count());
 #endif
 
-		auto immediateTaskSize = m_marketImmediateTask.Size();
-		vector<int> vTaskType;
-		for (int i = 0; i < immediateTaskSize; i++) {
-			auto pTask = m_marketImmediateTask.GetTask();
-			auto p = ProcessCurrentImmediateTask(lCurrentMarketTime); // 执行所有即时任务
-			vTaskType.push_back(p);
-		}
-		ASSERT(vTaskType.size() == immediateTaskSize);
-#ifdef _TRACE_SCHEDULE_TASK___
-		if (immediateTaskSize > 0) {
-			for (int i = 0; i < immediateTaskSize; i++) {
-				gl_traceLogger->trace("{}", gl_mapMarketMapIndex.at(vTaskType.at(i)));
-			}
-			gl_traceLogger->trace("{}ms", (end - begin).count());
-		}
-#endif
+	auto immediateTaskSize = m_marketImmediateTask.Size();
+	vector<int> vTaskType;
+	for (int i = 0; i < immediateTaskSize; i++) {
+		auto pTask = m_marketImmediateTask.GetTask();
+		auto p = ProcessCurrentImmediateTask(lCurrentMarketTime); // 执行所有即时任务
+		vTaskType.push_back(p);
 	}
+	ASSERT(vTaskType.size() == immediateTaskSize);
+#ifdef _TRACE_SCHEDULE_TASK___
+	if (immediateTaskSize > 0) {
+		for (int i = 0; i < immediateTaskSize; i++) {
+			gl_traceLogger->trace("{}", gl_mapMarketMapIndex.at(vTaskType.at(i)));
+		}
+		gl_traceLogger->trace("{}ms", (end - start).count());
+	}
+#endif
 }
 
 void CVirtualMarket::RunDataSource(long lMarketTime) const {

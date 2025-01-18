@@ -210,10 +210,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(TimeConvertTest, TestConvertDateToChineseTimeStampString) {
-		char buffer[30];
-		sprintf_s(buffer, _T("%4d年%02d月%02d日"), 2020, 02, 02);
-		const CString str = buffer;
-		EXPECT_STREQ(ConvertDateToChineseTimeStampString(20200202).c_str(), str);
+		string s = fmt::format("{:4d}年{:02d}月{:02d}日", 2020, 2, 2);
+		EXPECT_STREQ(ConvertDateToChineseTimeStampString(20200202).c_str(), s.c_str());
 	}
 
 	TEST_F(TimeConvertTest, TestGetUTCTimeStruct) {

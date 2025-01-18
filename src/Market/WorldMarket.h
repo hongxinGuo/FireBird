@@ -49,7 +49,7 @@ public:
 	bool TaskUpdateSicIndustry();
 	bool TaskUpdateNaicsIndustry();
 
-	bool TaskUpdateTiingoStockDayLineDB();
+	void TaskUpdateTiingoStockDayLineDB();
 
 	bool TaskUpdateForexDayLineDB();
 	bool TaskUpdateCryptoDayLineDB();

@@ -2,13 +2,6 @@
 
 #include "TimeConvert.h"
 
-long GetDayOfWeek() {
-	time_t tUTC = GetUTCTime();
-	tm tm_;
-	GetMarketTimeStruct(&tm_, tUTC, 0);
-	return tm_.tm_wday;
-}
-
 time_t ConvertToTTime(long lYear, long lMonth, long lDay, long lHour, long lMinute, long lSecond, time_t tTimeZone) {
 	ASSERT(lYear > 1970);
 	ASSERT(lMonth > 0);

@@ -11,6 +11,7 @@
 #include"ChinaMarket.h"
 
 UINT ThreadChoice10RSStrong2StockSet(const not_null<CChinaMarketPtr>& pMarket) {
+	TRACE("choice10RS2\n");
 	gl_UpdateChinaMarketDB.acquire();
 	gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));// 添加一个注释
 	if (gl_dataContainerChinaStock.Choice10RSStrong2StockSet()) {
@@ -24,6 +25,7 @@ UINT ThreadChoice10RSStrong2StockSet(const not_null<CChinaMarketPtr>& pMarket) {
 }
 
 UINT ThreadChoice10RSStrong1StockSet(const not_null<CChinaMarketPtr>& pMarket) {
+	TRACE("choice10RS1\n");
 	gl_UpdateChinaMarketDB.acquire();
 	gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));// 添加一个注释
 	if (gl_dataContainerChinaStock.Choice10RSStrong1StockSet()) {
@@ -37,6 +39,7 @@ UINT ThreadChoice10RSStrong1StockSet(const not_null<CChinaMarketPtr>& pMarket) {
 }
 
 UINT ThreadChoice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
+	TRACE("choice10RS\n");
 	gl_UpdateChinaMarketDB.acquire();
 	string s = fmt::format("开始计算10日RS {:d}\n", iIndex);
 	gl_systemMessage.PushInformationMessage(s.c_str());
@@ -52,6 +55,7 @@ UINT ThreadChoice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
 }
 
 UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, const CRSReference* pRef, const not_null<CChinaStockPtr>& pStock) {
+	TRACE("calculate10RS\n");
 	gl_UpdateChinaMarketDB.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem()) {
 		if (pStock->IsShareA() && pStock->IsActive()) {
@@ -73,6 +77,7 @@ UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStro
 }
 
 UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, const not_null<CChinaStockPtr>& pStock) {
+	TRACE("calculate10RS1\n");
 	gl_UpdateChinaMarketDB.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem()) {
 		if (pStock->IsShareA() && pStock->IsActive()) {
@@ -94,6 +99,7 @@ UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 }
 
 UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, const not_null<CChinaStockPtr>& pStock) {
+	TRACE("calculate10RS2\n");
 	gl_UpdateChinaMarketDB.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem()) {
 		if (pStock->IsShareA() && pStock->IsActive()) {

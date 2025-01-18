@@ -636,6 +636,7 @@ void CMainFrame::OnProcessTodayStock() {
 
 void CMainFrame::ProcessChinaMarketStock() {
 	gl_runtime.thread_executor()->post([] {
+		TRACE("China market Process today stock\n");
 		gl_UpdateChinaMarketDB.acquire();
 		gl_pChinaMarket->ProcessTodayStock();
 		gl_UpdateChinaMarketDB.release();
@@ -810,6 +811,7 @@ void CMainFrame::OnUpdateAbortBuildingRS(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnCalculate10dayRS1() {
 	gl_runtime.thread_executor()->post([] {
+		TRACE("Calculate 10day RS1\n");
 		gl_UpdateChinaMarketDB.acquire();
 		gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));// 添加一个注释
 		if (gl_dataContainerChinaStock.Choice10RSStrong1StockSet()) {
@@ -824,6 +826,7 @@ void CMainFrame::OnCalculate10dayRS1() {
 
 void CMainFrame::OnCalculate10dayRS2() {
 	gl_runtime.thread_executor()->post([] {
+		TRACE("calculate10dayRS2\n");
 		gl_UpdateChinaMarketDB.acquire();
 		gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));// 添加一个注释
 		if (gl_dataContainerChinaStock.Choice10RSStrong2StockSet()) {
@@ -912,6 +915,7 @@ void CMainFrame::OnUpdateUsingTengxunRealtimeDataServer(CCmdUI* pCmdUI) {
 }
 
 void BuildWeekLine(long lStartDate) {
+	TRACE("build weekline\n");
 	gl_UpdateChinaMarketDB.acquire();
 
 	const long lStartMonday = GetCurrentMonday(lStartDate);
@@ -965,6 +969,7 @@ void CMainFrame::OnUpdateRebuildChinaMarketStockWeekLineRS(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildCurrentWeekLine() {
 	gl_runtime.thread_executor()->post([] {
+		TRACE("build current weekline\n");
 		gl_UpdateChinaMarketDB.acquire();
 		gl_pChinaMarket->BuildWeekLineOfCurrentWeek();
 		gl_UpdateChinaMarketDB.release();
@@ -992,6 +997,7 @@ void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildRebuildCurrentWeekWeekLineTable() {
 	gl_runtime.thread_executor()->post([] {
+		TRACE("build rebuild\n");
 		gl_UpdateChinaMarketDB.acquire();
 		gl_pChinaMarket->DeleteCurrentWeekWeekLine();// 清除当前周周线表
 		gl_pChinaMarket->BuildCurrentWeekWeekLineTable();// 生成新的当前周周线
@@ -1009,6 +1015,7 @@ void CMainFrame::OnUpdateStockSection() {
 
 void CMainFrame::OnUpdateStockCode() {
 	gl_runtime.thread_executor()->post([] {
+		TRACE("update stock code\n");
 		gl_UpdateChinaMarketDB.acquire();
 		gl_dataContainerChinaStock.UpdateStockProfileDB();
 		gl_UpdateChinaMarketDB.release();

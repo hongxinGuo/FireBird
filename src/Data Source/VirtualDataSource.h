@@ -71,7 +71,7 @@ public:
 	void DiscardCurrentInquiry() { m_qProduct.pop(); }
 	void DiscardAllInquiry() { while (m_qProduct.size() > 0) m_qProduct.pop(); }
 	void StoreInquiry(const CVirtualProductWebDataPtr& p) { m_qProduct.push(p); }
-	CVirtualProductWebDataPtr GetFrontProduct() { return m_qProduct.front(); }
+	CVirtualProductWebDataPtr PeekFrontProduct() { return m_qProduct.front(); }
 	CVirtualProductWebDataPtr GetCurrentProduct() {
 		m_pCurrentProduct = m_qProduct.front();
 		m_qProduct.pop();

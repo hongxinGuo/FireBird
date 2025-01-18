@@ -316,6 +316,7 @@ bool CContainerChinaStock::TaskUpdateDayLineDB() {
 	CString str;
 	bool fSave = false;
 
+	TRACE("China market Update dayLine\n");
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
 		if (pStock->IsUpdateDayLineDBAndClearFlag()) {

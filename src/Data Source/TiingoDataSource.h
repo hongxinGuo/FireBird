@@ -59,7 +59,7 @@ protected:
 	bool m_fUpdateFundamentalDefinitions{ true }; // 每日更新基本数据定义库
 	bool m_fUpdateStockSymbol{ true }; // 每日更新公司代码库
 	bool m_fUpdateCryptoSymbol{ true }; // 每日更新crypto代码库
-	bool m_fUpdateStockDailyMeta{ true }; // 每日更新公司状态
+	bool m_fUpdateStockDailyMeta{ false }; // 每日更新公司状态
 	bool m_fUpdateDayLine{ false }; // 每日更新公司日线数据
 	bool m_fUpdateFinancialState{ true }; // 每日更新财经数据
 	bool m_fUpdateIEXTopOFBook{ true }; // 定时（每小时）更新IEX last top of book.

@@ -762,6 +762,7 @@ bool CChinaMarket::SetCheckActiveStockFlag(long lCurrentTime) {
 bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
 	if (IsSystemReady() && !m_fChosen10RSStrong1StockSet && (lCurrentTime > 151100) && IsWorkingDay()) {
 		gl_runtime.thread_executor()->post([this] {
+			TRACE("choice10RS1\n");
 			gl_UpdateChinaMarketDB.acquire();
 			gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));// 添加一个注释
 			if (gl_dataContainerChinaStock.Choice10RSStrong1StockSet()) {
@@ -779,6 +780,7 @@ bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
 
 bool CChinaMarket::TaskChoice10RSStrong2StockSet(long lCurrentTime) {
 	if (IsSystemReady() && !m_fChosen10RSStrong2StockSet && (lCurrentTime > 151200) && IsWorkingDay()) {
+		TRACE("choice10RS\n");
 		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateChinaMarketDB.acquire();
 			gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));// 添加一个注释
@@ -807,6 +809,7 @@ bool CChinaMarket::TaskChoice10RSStrongStockSet(long lCurrentTime) {
 bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
 	if (IsSystemReady()) {
 		gl_runtime.thread_executor()->post([this] {
+			TRACE("Process today stock\n");
 			gl_UpdateChinaMarketDB.acquire();
 			this->ProcessTodayStock();
 			gl_UpdateChinaMarketDB.release();
@@ -927,6 +930,7 @@ bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 
 	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
 		gl_runtime.thread_executor()->post([] {
+			TRACE("chinamarket update stock profile\n");
 			gl_UpdateChinaMarketDB.acquire();
 			gl_dataContainerChinaStock.UpdateStockProfileDB();
 			gl_UpdateChinaMarketDB.release();
@@ -940,6 +944,7 @@ bool CChinaMarket::TaskUpdateOptionDB(long lCurrentTime) {
 	AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, GetNextTime(lCurrentTime, 0, 5, 0));
 
 	gl_runtime.thread_executor()->post([this] {
+		TRACE("update option\n");
 		gl_UpdateChinaMarketDB.acquire();
 		this->UpdateOptionDB();
 		gl_UpdateChinaMarketDB.release();
@@ -951,6 +956,7 @@ bool CChinaMarket::TaskUpdateOptionDB(long lCurrentTime) {
 bool CChinaMarket::TaskUpdateChosenStockDB() {
 	if (IsUpdateChosenStockDB()) {
 		gl_runtime.thread_executor()->post([this] {
+			TRACE("update chosen stock\n");
 			gl_UpdateChinaMarketDB.acquire();
 			this->AppendChosenStockDB();
 			gl_UpdateChinaMarketDB.release();
@@ -963,6 +969,7 @@ bool CChinaMarket::TaskUpdateChosenStockDB() {
 bool CChinaMarket::TaskUpdateStockSection() {
 	if (gl_dataContainerChinaStockSymbol.IsUpdateStockSection()) {
 		gl_runtime.thread_executor()->post([] {
+			TRACE("update stockSection\n");
 			gl_UpdateChinaMarketDB.acquire();
 			gl_dataContainerChinaStockSymbol.UpdateStockSectionDB();
 			gl_UpdateChinaMarketDB.release();

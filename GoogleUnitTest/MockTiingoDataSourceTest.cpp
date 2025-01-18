@@ -48,6 +48,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount());
 
+		InSequence Seq;
 		EXPECT_CALL(*m_pTiingoDataSource, GetTickCount()).Times(2)
 		.WillOnce(Return(timePoint + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()))
 		.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()));
@@ -59,9 +60,9 @@ namespace FireBirdTest {
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateCryptoSymbol()).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateStockDailyMeta()).Times(1)
-		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateIEXTopOfBook(_)).Times(1)
+		.WillOnce(Return(false));
+		EXPECT_CALL(*m_pTiingoDataSource, GenerateStockDailyMeta()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateDayLine()).Times(1)
 		.WillOnce(Return(false));
@@ -94,6 +95,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount());
 		gl_systemConfiguration.ChangeTiingoAccountTypeToFree();
 
+		InSequence Seq;
 		EXPECT_CALL(*m_pTiingoDataSource, GetTickCount()).Times(2)
 		.WillOnce(Return(timePoint + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()))
 		.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetWorldMarketTiingoInquiryTime()));
@@ -104,8 +106,6 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateCompanySymbol()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateCryptoSymbol()).Times(1)
-		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateStockDailyMeta()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateIEXTopOfBook(120500)).Times(1)
 		.WillRepeatedly(DoAll(Invoke([p]() {
