@@ -89,13 +89,13 @@ CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWeb
 			ss.str(s1);
 			chrono::sys_seconds tpTime;
 			chrono::from_stream(ss, "%F %T", tpTime);
-			tpTime -= gl_pWorldMarket->GetTimeZone();
+			tpTime -= gl_pWorldMarket->GetTimeZoneOffset();
 			pSECFiling->m_iFiledDate = tpTime.time_since_epoch().count();
 			s1 = jsonGetStringView(itemValue, _T("acceptedDate"));
 			ss.clear();
 			ss.str(s1);
 			chrono::from_stream(ss, "%F %T", tpTime);
-			tpTime -= gl_pWorldMarket->GetTimeZone();
+			tpTime -= gl_pWorldMarket->GetTimeZoneOffset();
 			pSECFiling->m_iAcceptedDate = tpTime.time_since_epoch().count();
 			s1 = jsonGetStringView(itemValue, _T("reportUrl"));
 			pSECFiling->m_strReportURL = s1.c_str();

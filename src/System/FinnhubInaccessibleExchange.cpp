@@ -4,6 +4,8 @@
 
 #include "FinnhubInaccessibleExchange.h"
 
+#include <fstream>
+
 std::string Test_gl_sFinnhubInaccessibleExchange = R"(
 { "UpdateDate" : 20221205,
  "InaccessibleExchange" :

@@ -4,6 +4,8 @@
 
 #include "TiingoInaccessibleStock.h"
 
+#include <fstream>
+
 std::string Test_gl_sTiingoInaccessibleStock = R"(
 { "UpdateDate" : 20221205,
  "InaccessibleStock" :

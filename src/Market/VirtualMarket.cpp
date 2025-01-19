@@ -260,11 +260,11 @@ long CVirtualMarket::CalculateLastTradeDate() noexcept {
 }
 
 time_t CVirtualMarket::TransferToUTCTime(tm* tmMarketTime) const {
-	return _mkgmtime(tmMarketTime) - GetTimeZoneValue();
+	return _mkgmtime(tmMarketTime) - GetTimeZone();
 }
 
 time_t CVirtualMarket::TransferToUTCTime(long lMarketDate, long lMarketTime) const {
-	return ConvertToTTime(lMarketDate, GetTimeZoneValue(), lMarketTime);
+	return ConvertToTTime(lMarketDate, GetTimeZone(), lMarketTime);
 }
 
 string CVirtualMarket::GetStringOfMarketDate() const {
@@ -300,18 +300,20 @@ long CVirtualMarket::ConvertToDate(const time_t tUTC) const noexcept {
 }
 
 void CVirtualMarket::GetMarketTimeStruct(tm* tm_, time_t tUTC) const {
-	auto timeZoneOffset = GetTimeZoneValue();
+	auto timeZoneOffset = GetTimeZone();
 	time_t tMarket = tUTC + timeZoneOffset;
 	gmtime_s(tm_, &tMarket);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//bug 这个函数导致内存泄漏，估计是时区数据库初始化后，程序退出时没有卸载。
+//bug 这个函数导致内存泄漏，估计是调用的时区数据库函数locate_zone()初始化后，程序退出时没有卸载。
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualMarket::GetMarketLocalTimeOffset(CString strLocalNameOfMarket) {
 	m_tzMarket = chrono::locate_zone(strLocalNameOfMarket.GetBuffer());
 	m_marketSystemInformation = m_tzMarket->get_info(chrono::sys_seconds());
+	m_TimeZoneOffset = m_marketSystemInformation.offset;
+	m_lTimeZone = m_TimeZoneOffset.count();
 }

@@ -10,6 +10,7 @@
 
 #include<benchmark/benchmark.h>
 
+#include "ChinaMarket.h"
 #include"nlohmannJSonDeclaration.h"
 
 #include"SaveAndLoad.h"
@@ -18,6 +19,7 @@
 #include"WebData.h"
 
 #include"simdjson.h"
+#include "Thread.h"
 using namespace simdjson;
 
 // 这个是目前能够找到的最大的json数据，用于测试ParseWithPTree和ParseWithNlohmannJson的速度
@@ -233,6 +235,8 @@ BENCHMARK(ParseUsingSimdjson);
 class CJsonParse : public benchmark::Fixture {
 public:
 	void SetUp(const benchmark::State& state) override {
+		if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
+
 		CString strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("StockSymbol.json");
 		const string sFileName = (LPCTSTR)strFileName;
 		LoadFromFile(strFileName, sUSExchangeStockCode);
@@ -359,6 +363,7 @@ BENCHMARK_F(CWithNlohmannJson, ParseNeteaseRTDataUsingSimdjson)(benchmark::State
 class CSinaRTData : public benchmark::Fixture {
 public:
 	void SetUp(const benchmark::State& state) override {
+		if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 		const CString strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("SinaRTData.dat");
 		LoadFromFile(strFileName, s);
 		CString str = s.c_str();
@@ -376,10 +381,42 @@ public:
 	CWebDataPtr pWebData;
 };
 
-BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool)(benchmark::State& state) {
+BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool1)(benchmark::State& state) {
+	gl_concurrency_level = 1;
 	for (auto _ : state) {
 		ParseSinaRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
+	gl_concurrency_level = 4;
+}
+
+BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool2)(benchmark::State& state) {
+	gl_concurrency_level = 2;
+	for (auto _ : state) {
+		ParseSinaRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
+	}
+	gl_concurrency_level = 4;
+}
+
+BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool4)(benchmark::State& state) {
+	for (auto _ : state) {
+		ParseSinaRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
+	}
+}
+
+BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool8)(benchmark::State& state) {
+	gl_concurrency_level = 8;
+	for (auto _ : state) {
+		ParseSinaRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
+	}
+	gl_concurrency_level = 4;
+}
+
+BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool16)(benchmark::State& state) {
+	gl_concurrency_level = 16;
+	for (auto _ : state) {
+		ParseSinaRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
+	}
+	gl_concurrency_level = 4;
 }
 
 class CTengxunRTData : public benchmark::Fixture {

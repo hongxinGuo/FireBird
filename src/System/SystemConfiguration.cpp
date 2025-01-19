@@ -9,8 +9,7 @@
 #include "NeteaseRTDataSource.h"
 #include "SinaRTDataSource.h"
 
-//#include<string>
-//#include<fstream>
+#include <fstream>
 
 #include "resource.h"
 #include "TengxunRTDataSource.h"

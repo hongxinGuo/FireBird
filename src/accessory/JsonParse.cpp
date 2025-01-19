@@ -87,22 +87,16 @@ string_view GetNextField(const string_view& svData, size_t& lCurrentPos, char de
 }
 
 void ReportJsonError(const json::parse_error& e, const std::string& s) {
-	char buffer[180]{}, buffer2[100]{};
+	char buffer[180]{};
 	int i;
-	string s2 = "Nlohmann JSon Reading Error ";
-	s2 += e.what();
-	gl_systemMessage.PushErrorMessage(s2.c_str());
-	for (i = 0; i < 180; i++) {
-		buffer[i] = 0x000;
-	}
 	for (i = 0; i < 180; i++) {
 		if ((e.byte - 90 + i) < s.size()) {
 			buffer[i] = s.at(e.byte - 90 + i);
 		}
 		else break;
 	}
-	s2 += fmt::format("{:Ld} {:Ld} {:d}", s.size(), e.byte, i);
-	s2 += buffer;
+	buffer[i] = 0x000;
+	string s2 = fmt::format("Nlohmann JSon Reading Error {} {:Ld} {:Ld} {:d} {}", e.what(), s.size(), e.byte, i, buffer);
 	gl_systemMessage.PushErrorMessage(s2.c_str());
 }
 
@@ -436,7 +430,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		std::stringstream ss(strTime);
 		chrono::sys_seconds tpTime;
 		chrono::from_stream(ss, "%Y/%m/%d %T", tpTime);
-		tpTime -= gl_pChinaMarket->GetTimeZone();
+		tpTime -= gl_pChinaMarket->GetTimeZoneOffset();
 		pWebRTData->SetTimePoint(tpTime);
 		auto tt = tpTime.time_since_epoch().count();
 		pWebRTData->SetTransactionTime(tt);
@@ -516,9 +510,11 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJsonData) {
-	string symbolCode, strTime;
+	string symbolCode;
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 	try {
+		string strTime;
+		auto timeZoneOffset = gl_pChinaMarket->GetTimeZoneOffset();
 		ondemand::parser parser;
 		const padded_string jsonPadded(svJsonData);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
@@ -562,7 +558,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 			std::stringstream ss(strTime);
 			chrono::sys_seconds tpTime;
 			chrono::from_stream(ss, "%Y/%m/d %T", tpTime);
-			tpTime -= gl_pChinaMarket->GetTimeZone();
+			tpTime -= timeZoneOffset;
 			auto tt = tpTime.time_since_epoch().count();
 			pWebRTData->SetTransactionTime(tt);
 			pWebRTData->SetLastClose(StrToDecimal(jsonGetRawJsonToken(item, _T("yestclose")), 3));
