@@ -83,7 +83,7 @@ bool IsFireBirdAlreadyRunning(const string& strProgramToken) {
 }
 
 void WatchdogQT::UpdatePer10Second() {
-	static int s_Counter = 1; // 初始值为60次，即一分钟后执行启动FireBird任务（每十秒钟监视一次）
+	static int s_Counter = 6; // 初始值为6次，即一分钟后执行启动FireBird任务（每十秒钟监视一次）
 	if (--s_Counter < 1) {
 		if (!IsFireBirdAlreadyRunning("FireBirdStockAnalysis")) {
 			const UINT iReturnCode = WinExec(("C:\\FireBird\\FireBird.exe"), SW_SHOW);

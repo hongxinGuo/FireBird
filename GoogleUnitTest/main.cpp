@@ -60,17 +60,6 @@ using namespace testing;
 #error _T("本系统必须使用GOOGLE MOCK")
 #endif
 
-// IXWebSocket需要OpenSSL，本系统直接使用。
-#ifdef _DEBUG
-//#pragma comment(lib, "/vc/x64/MTd/libcrypto.lib")
-//#pragma comment(lib, "/vc/x64/MTd/libssl.lib")
-//#pragma comment(lib, "/D/concurrencpp.lib")
-#else
-//#pragma comment(lib, "/vc/x64/MT/libcrypto.lib")
-//#pragma comment(lib, "/vc/x64/MT/libssl.lib")
-//#pragma comment(lib, "/R/concurrencpp.lib")
-#endif
-
 // 目前使用.runsettings文件来排除外部代码，不再使用ExcludeSourceFromCodeCoverage的模式。且ExcludeSourceFromCodeCoverage模式目前在C20标准下无法编译。
 
 #ifdef _DEBUG

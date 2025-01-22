@@ -136,4 +136,5 @@ public:
 	afx_msg void OnUpdateCreateTiingoTradeDayDayline(CCmdUI* pCmdUI);
 	afx_msg void OnProcessTiingoDayline();
 	afx_msg void OnUpdateProcessTiingoDayline(CCmdUI* pCmdUI);
+	afx_msg void OnCalculateNewLowFiveTimes();
 };

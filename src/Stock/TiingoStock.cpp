@@ -403,7 +403,7 @@ bool CTiingoStock::IsEnough52WeekLow() {
 }
 
 void CTiingoStock::Load52WeekLow() {
-	m_v52WeekLow.clear();
+	if (m_v52WeekLow.size() > 0) return; // 如果已经装入了， 直接返回。
 
 	CSetTiingoStock52WeekLow setLow;
 	setLow.m_strFilter = _T("[Symbol] = '");

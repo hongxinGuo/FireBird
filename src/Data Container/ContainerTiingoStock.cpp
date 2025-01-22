@@ -307,10 +307,10 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 	}
 	gl_systemConfiguration.SetTiingoStockDayLineProcessedDate(gl_pWorldMarket->GetMarketDate());
 
-	auto result2 = gl_runtime.thread_pool_executor()->submit([] {
+	auto result2 = gl_runtime.thread_executor()->submit([] {
 		gl_dataContainerTiingoStock.TaskUpdate52WeekHighDB();
 	});
-	auto result3 = gl_runtime.thread_pool_executor()->submit([] {
+	auto result3 = gl_runtime.thread_executor()->submit([] {
 		gl_dataContainerTiingoStock.TaskUpdate52WeekLowDB();
 	});
 	result2.get();
@@ -321,7 +321,7 @@ void CContainerTiingoStock::TaskProcessDayLine() {
 		pStock->SetUpdate52WeekHighLowDB(false);
 	}
 
-	auto result5 = gl_runtime.thread_pool_executor()->submit([] {
+	auto result5 = gl_runtime.thread_executor()->submit([] {
 		gl_dataContainerTiingoStock.TaskCalculate();
 	});
 	result5.get();

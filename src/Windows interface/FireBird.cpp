@@ -15,17 +15,6 @@
 
 #include "ScheduleTask.h"
 
-// IXWebSocket需要OpenSSL，本系统直接使用。
-#ifdef _DEBUG
-//#pragma comment(lib, "/vc/x64/MTd/libcrypto.lib")
-//#pragma comment(lib, "/vc/x64/MTd/libssl.lib")
-//#pragma comment(lib, "/D/concurrencpp.lib")
-#else
-//#pragma comment(lib, "/vc/x64/MT/libcrypto.lib")
-//#pragma comment(lib, "/vc/x64/MT/libssl.lib")
-//#pragma comment(lib, "/R/concurrencpp.lib")
-#endif
-
 #ifndef _MBCS
 #error _T("本系统使用多字节字符集")
 #endif

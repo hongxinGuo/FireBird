@@ -111,6 +111,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CREATE_TIINGO_TRADEDAY_DAYLINE, &CMainFrame::OnUpdateCreateTiingoTradeDayDayline)
 	ON_COMMAND(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnProcessTiingoDayline)
 	ON_UPDATE_COMMAND_UI(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnUpdateProcessTiingoDayline)
+	ON_COMMAND(ID_CALCULATE_NEW_LOW_FIVE_TIMES, &CMainFrame::OnCalculateNewLowFiveTimes)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1233,4 +1234,10 @@ void CMainFrame::OnProcessTiingoDayline() {
 
 void CMainFrame::OnUpdateProcessTiingoDayline(CCmdUI* pCmdUI) {
 	pCmdUI->Enable(true); // 随时可以执行
+}
+
+void CMainFrame::OnCalculateNewLowFiveTimes() {
+	gl_runtime.thread_executor()->post([] {
+		gl_dataContainerTiingoStock.TaskCalculate();
+	});
 }
