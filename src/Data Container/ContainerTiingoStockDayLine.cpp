@@ -56,8 +56,6 @@ void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoSt
 	CTiingoDayLinePtr pHistoryCandle = nullptr;
 	long lSizeOfOldDayLine = 0;
 
-	ASSERT(Size() > 0);
-
 	const size_t lSize = Size();
 	long lLastDate = 0;
 	pSetTiingoStockDayLine->m_strFilter = _T("[Symbol] = '");

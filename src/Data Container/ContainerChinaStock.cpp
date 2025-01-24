@@ -544,13 +544,9 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 }
 
 void CContainerChinaStock::DeleteDayLineBasicInfo(long lDate) {
-	char buffer[20]{ 0x000 };
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 
-	_ltoa_s(lDate, buffer, 10);
-	const CString strDate = buffer;
-	setDayLineBasicInfo.m_strFilter = _T("[Date] =");
-	setDayLineBasicInfo.m_strFilter += strDate;
+	setDayLineBasicInfo.m_strFilter = fmt::format("[Date] = {:8Ld}", lDate).c_str();
 	setDayLineBasicInfo.Open();
 	setDayLineBasicInfo.m_pDatabase->BeginTrans();
 	while (!setDayLineBasicInfo.IsEOF()) {
@@ -562,13 +558,9 @@ void CContainerChinaStock::DeleteDayLineBasicInfo(long lDate) {
 }
 
 void CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
-	char buffer[20]{ 0x000 };
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
-	_ltoa_s(lDate, buffer, 10);
-	const CString strDate = buffer;
-	setDayLineExtendInfo.m_strFilter = _T("[Date] =");
-	setDayLineExtendInfo.m_strFilter += strDate;
+	setDayLineExtendInfo.m_strFilter = fmt::format("[Date] = {:8Ld}", lDate).c_str();
 	setDayLineExtendInfo.Open();
 	setDayLineExtendInfo.m_pDatabase->BeginTrans();
 	while (!setDayLineExtendInfo.IsEOF()) {
@@ -648,10 +640,8 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 	double dShenzhenIndexUpDownRate = 0;
 	double dRSIndex;
 
-	string sDate = fmt::format("{:08Ld}", lDate);
 	setDayLineBasicInfo.m_strSort = _T("[UpDownRate]");
-	setDayLineBasicInfo.m_strFilter = _T("[Date] =");
-	setDayLineBasicInfo.m_strFilter += sDate.c_str();
+	setDayLineBasicInfo.m_strFilter = fmt::format("[Date] = {:8Ld}", lDate).c_str();
 	setDayLineBasicInfo.Open();
 	if (setDayLineBasicInfo.IsEOF()) {
 		// 数据集为空，表明此日没有交易
@@ -756,10 +746,8 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 
 	ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
 
-	string sDate = fmt::format("{:08Ld}", lDate);
 	setWeekLineBasicInfo.m_strSort = _T("[UpDownRate]");
-	setWeekLineBasicInfo.m_strFilter = _T("[Date] =");
-	setWeekLineBasicInfo.m_strFilter += sDate.c_str();
+	setWeekLineBasicInfo.m_strFilter = fmt::format("[Date] = {:08Ld}", lDate).c_str();
 	setWeekLineBasicInfo.Open();
 	if (setWeekLineBasicInfo.IsEOF()) { // 数据集为空，表明此日没有交易
 		setWeekLineBasicInfo.Close();

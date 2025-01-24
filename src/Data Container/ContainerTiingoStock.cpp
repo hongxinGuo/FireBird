@@ -132,13 +132,9 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 }
 
 void CContainerTiingoStock::DeleteDayLine(long lDate) {
-	char buffer[20]{ 0x000 };
 	CSetTiingoStockDayLine setDayLine;
 
-	_ltoa_s(lDate, buffer, 10);
-	const CString strDate = buffer;
-	setDayLine.m_strFilter = _T("[Date] =");
-	setDayLine.m_strFilter += strDate;
+	setDayLine.m_strFilter = fmt::format("[Date] = {:8Ld}", lDate).c_str();
 	setDayLine.Open();
 	setDayLine.m_pDatabase->BeginTrans();
 	while (!setDayLine.IsEOF()) {
@@ -229,13 +225,73 @@ void CContainerTiingoStock::TaskCalculate() {
 		auto pStock = GetStock(index);
 		pStock->Load52WeekLow();
 		if (pStock->IsEnough52WeekLow()) {
-			setCurrentTrace.AddNew();
-			setCurrentTrace.m_Date = gl_pWorldMarket->GetMarketDate();
-			setCurrentTrace.m_Symbol = pStock->GetSymbol();
-			setCurrentTrace.m_SICCode = pStock->m_iSicCode;
-			setCurrentTrace.Update();
 		}
 		pStock->m_v52WeekLow.clear(); //Note 直到这里才清空
+	}
+	setCurrentTrace.m_pDatabase->CommitTrans();
+	setCurrentTrace.Close();
+	gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//
+// 使用并行工作协程，加速运行
+//
+///////////////////////////////////////////////////////////////////////////////////////////
+void CContainerTiingoStock::TaskCalculate2() {
+	vector<result<int>> results;
+	vector<int> vPos;
+	gl_systemMessage.PushInnerSystemInformationMessage("calculating 52 week low");
+	auto lSize = Size();
+	for (int index = 0; index < lSize; index++) {
+		gl_BackgroundWorkingThread.acquire();
+		auto result = gl_runtime.thread_executor()->submit([this, index] {
+			if (gl_systemConfiguration.IsExitingSystem()) return -1;
+			gl_ThreadStatus.IncreaseBackGroundWorkingThread();
+			bool fFound = false;
+			auto pStock = this->GetStock(index);
+			pStock->Load52WeekLow();
+			if (pStock->IsEnough52WeekLow()) {
+				fFound = true;
+			}
+			pStock->m_v52WeekLow.clear(); //Note 直到这里才清空
+			gl_ThreadStatus.DecreaseBackGroundWorkingThread();
+			gl_BackgroundWorkingThread.release();
+			if (fFound) return index;
+			return -1;
+		});
+		results.emplace_back(std::move(result));
+	}
+
+	for (auto& result2 : results) {
+		auto pos = result2.get(); // 在此等待所有工作线程完成
+		if (pos != -1) {
+			vPos.push_back(pos); // vPos中存储找到的位置。
+		}
+	}
+
+	CSetTiingoStockCurrentTrace setCurrentTrace1;
+	setCurrentTrace1.m_strFilter = fmt::format("[Date] = {:8Ld}", gl_pWorldMarket->GetMarketDate()).c_str();
+	setCurrentTrace1.Open();
+	setCurrentTrace1.m_pDatabase->BeginTrans();
+	while (!setCurrentTrace1.IsEOF()) {
+		setCurrentTrace1.Delete();
+		setCurrentTrace1.MoveNext();
+	}
+	setCurrentTrace1.m_pDatabase->CommitTrans();
+	setCurrentTrace1.Close();
+
+	CSetTiingoStockCurrentTrace setCurrentTrace;
+	setCurrentTrace.m_strFilter = _T("[ID] = 1");
+	setCurrentTrace.Open();
+	setCurrentTrace.m_pDatabase->BeginTrans();
+	for (auto index = 0; index < vPos.size(); index++) {
+		auto pStock = GetStock(vPos.at(index));
+		setCurrentTrace.AddNew();
+		setCurrentTrace.m_Date = gl_pWorldMarket->GetMarketDate();
+		setCurrentTrace.m_Symbol = pStock->GetSymbol();
+		setCurrentTrace.m_SICCode = pStock->m_iSicCode;
+		setCurrentTrace.Update();
 	}
 	setCurrentTrace.m_pDatabase->CommitTrans();
 	setCurrentTrace.Close();

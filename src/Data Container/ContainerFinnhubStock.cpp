@@ -180,11 +180,7 @@ bool CContainerFinnhubStock::UpdateBasicFinancialDB() {
 		}
 	}
 
-	auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 	UpdateBasicFinancialAnnualDB(vStock);
-	auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-	string s = fmt::format("finnhub annual db time: {:Ld}", (end - start).count());
-	gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
 	UpdateBasicFinancialQuarterDB(vStock);
 	UpdateBasicFinancialMetricDB(vStock);
 

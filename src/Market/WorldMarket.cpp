@@ -243,10 +243,6 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0)); // 两分钟后开始监测WebSocket
 
-#ifndef _DEBUG
-	AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lTimeMinute, 0, 2, 0)); // 发行版两分钟后自动处理日线数据；测试版手动执行。
-#endif
-
 	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
 
@@ -674,13 +670,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		gl_runtime.thread_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
 			TRACE("Basic financial\n");
-			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			gl_dataContainerFinnhubStock.UpdateBasicFinancialDB(); // 此任务很费时，原因待查。目前先不使用此隔绝区
-			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-			if ((end - start).count() > 2000) {
-				string s = fmt::format("world market Saving time: {:Ld}ms", (end - start).count());
-				gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
-			}
 			gl_UpdateWorldMarketDB.release();
 		});
 	}

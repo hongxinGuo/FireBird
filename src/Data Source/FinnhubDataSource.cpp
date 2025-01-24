@@ -20,6 +20,7 @@
 map<string, enum_ErrorMessageData> mapFinnhubErrorMap{
 	{ _T("You don't have access to this resource."), ERROR_FINNHUB_NO_RIGHT_TO_ACCESS__ },
 	{ _T("Please use an API key."), ERROR_FINNHUB_MISSING_API_KEY__ },
+	{ _T("API limit reached. Please try again later. Remaining Limit: 0"), ERROR_FINNHUB_REACH_MAX_API_LIMIT__ }, // http状态码：200
 	{ _T(""), ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH__ }
 };
 
@@ -88,6 +89,7 @@ void CFinnhubDataSource::ConfigureInternetOption() {
 
 enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr& pWebData) {
 	ASSERT(m_pCurrentProduct != nullptr);
+	int i2 = 0;
 
 	m_eErrorMessageData = ERROR_NO_ERROR__;
 	if (m_dwHTTPStatusCode == 200) return m_eErrorMessageData; // OK? return no error
@@ -114,6 +116,9 @@ enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr&
 			break;
 		case ERROR_FINNHUB_MISSING_API_KEY__: // 缺少API key
 			gl_systemMessage.PushErrorMessage(_T("finnhub missing API key"));
+			break;
+		case ERROR_FINNHUB_REACH_MAX_API_LIMIT__: // 
+			i2 = 7;
 			break;
 		case ERROR_FINNHUB_INQUIRE_RATE_TOO_HIGH__:// 申请频率超高
 			// 降低查询频率200ms。
@@ -144,7 +149,7 @@ bool CFinnhubDataSource::GenerateInquiryMessage(long lCurrentTime) {
 	const auto llTickCount = GetTickCount();
 
 	if (gl_systemConfiguration.IsWebBusy()) return false; // 网络出现问题时，不申请finnhub各数据。
-	if (llTickCount <= m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()) return false;
+	if (llTickCount < m_PrevInquireTimePoint + gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime()) return false;
 
 	m_PrevInquireTimePoint = llTickCount;
 	ASSERT(!IsInquiring());

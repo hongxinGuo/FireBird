@@ -81,9 +81,6 @@ public:
 	void DistributeRTData();
 	void CalculateRTData();
 
-	// 系统状态区
-	bool IsFastReceivingRTData() noexcept { return m_fFastReceivingRTData; }
-
 	// 实时数据读取
 	CString GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet);
 	CString GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet);

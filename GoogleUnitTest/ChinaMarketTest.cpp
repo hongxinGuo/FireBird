@@ -1685,10 +1685,8 @@ namespace FireBirdTest {
 		CSetDayLineExtendInfo setDayLineExtendInfo;
 		long i = 0;
 
-		const string sDate = fmt::format("{:08Ld}", lDate);
 		setDayLineBasicInfo.m_strSort = _T("[Symbol]");
-		setDayLineBasicInfo.m_strFilter = _T("[Date] =");
-		setDayLineBasicInfo.m_strFilter += sDate.c_str();
+		setDayLineBasicInfo.m_strFilter = fmt::format("[Date] ={:08Ld}", lDate).c_str();
 		setDayLineBasicInfo.Open();
 		while (!setDayLineBasicInfo.IsEOF()) {
 			const CDayLinePtr pDayLine = dynamic_pointer_cast<CDayLine>(dataChinaDayLine.GetData(i++));

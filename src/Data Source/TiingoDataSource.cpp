@@ -11,6 +11,7 @@ map<string, enum_ErrorMessageData> mapTiingoErrorMap{
 	{ _T("You do not have permission to access the News API"), ERROR_TIINGO_NO_RIGHT_TO_ACCESS__ }, // http状态码：403
 	{ _T("Error: resampleFreq must be in 'Min' or 'Hour' only"), ERROR_TIINGO_FREQUENCY__ },
 	{ _T("You have run over your 500 symbol look up for this month. Please upgrade at https://api.tiingo.com/pricing to have your limits increased."), ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__ }, // http状态码：200
+	{ _T("API limit reached.please try again later.Remaining limit:0"), ERROR_TIINGO_REACH_MAX_API_LIMIT__ }, // http状态码：200
 	{ _T("Not found."), ERROR_TIINGO_NOT_FOUND__ },
 	{ _T(""), ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__ }
 };
@@ -199,6 +200,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		case ERROR_TIINGO_NOT_FOUND__:
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 			gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo symbol not exist"));
+			break;
 		case ERROR_TIINGO_NOT_HANDLED__: // error not handled
 			if (pWebData->GetBufferLength() > 50) iStringViewLength = 50;
 			else iStringViewLength = pWebData->GetBufferLength();
@@ -394,7 +396,7 @@ bool CTiingoDataSource::GenerateDayLine() {
 			SetUpdateDayLine(false);
 			const CString str = "Tiingo股票日线历史数据更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
-			gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 1, 0));
+			gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 2, 0));
 		}
 	}
 	return fHaveInquiry;

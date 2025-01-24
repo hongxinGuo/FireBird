@@ -1238,6 +1238,6 @@ void CMainFrame::OnUpdateProcessTiingoDayline(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnCalculateNewLowFiveTimes() {
 	gl_runtime.thread_executor()->post([] {
-		gl_dataContainerTiingoStock.TaskCalculate();
+		gl_dataContainerTiingoStock.TaskCalculate2();
 	});
 }

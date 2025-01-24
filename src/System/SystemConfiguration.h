@@ -332,7 +332,7 @@ protected:
 	bool m_bFinnhubAccountFeePaid{ true }; // 付费账户或者免费账户
 	bool m_bQuandlAccountFeePaid{ true };
 	chrono::milliseconds m_worldMarketFinnhubInquiryTime{ 60000 / 50 }; // 默认每分钟最多查询50次。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
-	chrono::milliseconds m_worldMarketTiingoInquiryTime{ 200 };// 每次查询间隔时间，单位为毫秒。付费账户每小时20000次，免费账户每小时500次。
+	chrono::milliseconds m_worldMarketTiingoInquiryTime{ 400 };// 每次查询间隔时间，单位为毫秒。付费账户每小时20000次，免费账户每小时500次。
 	chrono::milliseconds m_worldMarketQuandlInquiryTime{ 3600000 / 100 }; // 每次查询间隔时间，单位为毫秒.默认每小时最多查询100次
 	CString m_strCurrentStock{ _T("") }; // 当前所选股票
 

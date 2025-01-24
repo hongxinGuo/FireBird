@@ -28,6 +28,7 @@ CString CProductFinnhubEconomicCalendar::CreateMessage() {
 
 void CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
+	if (pvEconomicCalendar->size() == 0) m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 	gl_dataContainerFinnhubEconomicCalendar.Update(*pvEconomicCalendar);
 }
 
@@ -70,8 +71,10 @@ void CProductFinnhubEconomicCalendar::UpdateDataSourceStatus(CVirtualDataSourceP
 	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->SetUpdateEconomicCalendar(false);
 	if (IsNoRightToAccess()) {// Note 在此确定Finnhub账户类型
 		gl_systemConfiguration.ChangeFinnhubAccountTypeToFree();
+		gl_systemMessage.PushInnerSystemInformationMessage("free finnhub account");
 	}
 	else {
 		gl_systemConfiguration.ChangeFinnhubAccountTypeToPaid();
+		gl_systemMessage.PushInnerSystemInformationMessage("paid finnhub account");
 	}
 }
