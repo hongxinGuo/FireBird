@@ -28,8 +28,12 @@ CString CProductFinnhubEconomicCalendar::CreateMessage() {
 
 void CProductFinnhubEconomicCalendar::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvEconomicCalendar = ParseFinnhubEconomicCalendar(pWebData);
-	if (pvEconomicCalendar->size() == 0) m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
-	gl_dataContainerFinnhubEconomicCalendar.Update(*pvEconomicCalendar);
+	if (pvEconomicCalendar->size() == 0) {
+		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
+	}
+	else {
+		gl_dataContainerFinnhubEconomicCalendar.Update(*pvEconomicCalendar);
+	}
 }
 
 CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalendar(const CWebDataPtr& pWebData) {

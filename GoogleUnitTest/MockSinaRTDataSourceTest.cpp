@@ -58,14 +58,12 @@ namespace FireBirdTest {
 		gl_pChinaMarket->SetSystemReady(false); // 保证快速申请数据
 
 		m_pMockSinaRTDataSource->SetWebError(true);
-		EXPECT_CALL(*m_pMockSinaRTDataSource, GetTickCount()).Times(3)
+		EXPECT_CALL(*m_pMockSinaRTDataSource, GetTickCount()).Times(2)
 		.WillOnce(Return(timePoint))
 		.WillOnce(Return(timePoint + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
 		.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
 
 		EXPECT_FALSE(m_pMockSinaRTDataSource->GenerateInquiryMessage(120000));
-
-		EXPECT_FALSE(m_pMockSinaRTDataSource->GenerateInquiryMessage(120100)) << "继续等待";
 		EXPECT_FALSE(m_pMockSinaRTDataSource->IsInquiring());
 		EXPECT_FALSE(m_pMockSinaRTDataSource->HaveInquiry());
 

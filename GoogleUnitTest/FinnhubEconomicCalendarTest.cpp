@@ -67,9 +67,12 @@ namespace FireBirdTest {
 
 		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(true);
 
+		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 		// 恢复原状
 		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(1100);
 		gl_systemConfiguration.SetUpdateDB(false);
+
+		gl_systemMessage.PopInnerSystemInformationMessage();
 	}
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestUpdateDataSourceStatus2) {
@@ -88,6 +91,11 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetWorldMarketFinnhubInquiryTime(1100);
 		gl_systemConfiguration.SetUpdateDB(false);
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime().count(), 1100);
+
+		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+
+		// 恢复原状
+		gl_systemMessage.PopInnerSystemInformationMessage();
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser

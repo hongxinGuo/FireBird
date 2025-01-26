@@ -41,8 +41,10 @@ void CVirtualDataSource::Run(long lMarketTime) {
 					auto pvWebData = p->InquireData();
 					if (!pvWebData->empty()) {
 						p->SetErrorMessage(p->IsAErrorMessageData(pvWebData->at(0))); // 返回的数据是错误信息？检查错误，判断申请资格，更新禁止目录
-						product->ParseAndStoreWebData(pvWebData); //not implemented 应该正确时才执行
-						product->UpdateDataSourceStatus(p);
+						if (!p->IsWebError()) {
+							product->ParseAndStoreWebData(pvWebData); //not implemented 应该正确时才执行
+							product->UpdateDataSourceStatus(p);
+						}
 					}
 					ASSERT(p->IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
 					p->SetInquiring(false);
@@ -78,6 +80,7 @@ shared_ptr<vector<CWebDataPtr>> CVirtualDataSource::InquireData() {
 				auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 				auto pWebData = pEngine->GetWebData();
 				if (!pEngine->IsWebError()) this->UpdateStatus(pWebData);
+				else m_fWebError = true;
 				auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 				time_t ttCurrentInquiryTime = (end - start).count();
 				if (s_LastInquiryTime > m_iMaxNormalInquireTime && ttCurrentInquiryTime > m_iMaxNormalInquireTime) {
