@@ -107,12 +107,16 @@ void CContainerTiingoStock::ResetDayLineStartEndDate() {
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
 // 存储该日的数据
-// 
+// 只有存储的股票才更新其日线结束日期。
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CContainerTiingoStock::BuildDayLine(long lDate) {
 	CSetTiingoStockDayLine setDayLine;
 	auto lSize = Size();
-	time_t tMarketCloseTime = ConvertToTTime(lDate, 0, 160000);
+	time_t tMarketCloseTime = ConvertToTTime(lDate, gl_pWorldMarket->GetTimeZone(), 160000);
 
 	DeleteDayLine(lDate);
 
@@ -123,6 +127,8 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 		auto pTiingoStock = GetStock(i);
 		if (pTiingoStock->GetTransactionTime() >= tMarketCloseTime) {
 			pTiingoStock->SaveCurrentDataToDayLineDB(setDayLine, lDate);
+			pTiingoStock->SetDayLineEndDate(lDate);
+			pTiingoStock->SetUpdateProfileDB(true);
 		}
 	}
 	setDayLine.m_pDatabase->CommitTrans();
