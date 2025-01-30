@@ -60,8 +60,8 @@ namespace FireBirdTest {
 		m_pMockSinaRTDataSource->SetWebError(true);
 		EXPECT_CALL(*m_pMockSinaRTDataSource, GetTickCount()).Times(2)
 		.WillOnce(Return(timePoint))
-		.WillOnce(Return(timePoint + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()))
-		.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
+		.WillOnce(Return(timePoint + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
+		//.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetChinaMarketRTDataInquiryTime()));
 
 		EXPECT_FALSE(m_pMockSinaRTDataSource->GenerateInquiryMessage(120000));
 		EXPECT_FALSE(m_pMockSinaRTDataSource->IsInquiring());

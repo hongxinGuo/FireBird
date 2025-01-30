@@ -34,13 +34,14 @@ bool CContainerFinnhubCryptoExchange::LoadDB() {
 	CSetFinnhubCryptoExchange setCryptoExchange;
 	int i = 0;
 
-	setCryptoExchange.Open();
-	while (!setCryptoExchange.IsEOF()) {
-		m_vCryptoExchange.push_back(setCryptoExchange.m_Code.GetBuffer());
-		m_mapCryptoExchange[setCryptoExchange.m_Code.GetBuffer()] = i++;
-		setCryptoExchange.MoveNext();
+	if (setCryptoExchange.Open()) {
+		while (!setCryptoExchange.IsEOF()) {
+			m_vCryptoExchange.push_back(setCryptoExchange.m_Code.GetBuffer());
+			m_mapCryptoExchange[setCryptoExchange.m_Code.GetBuffer()] = i++;
+			setCryptoExchange.MoveNext();
+		}
+		setCryptoExchange.Close();
 	}
-	setCryptoExchange.Close();
 	m_lLastTotalCryptoExchange = static_cast<long>(m_vCryptoExchange.size());
 
 	return true;
@@ -48,9 +49,8 @@ bool CContainerFinnhubCryptoExchange::LoadDB() {
 
 bool CContainerFinnhubCryptoExchange::UpdateDB() {
 	if (m_lLastTotalCryptoExchange < m_vCryptoExchange.size()) {
-		try {
-			CSetFinnhubCryptoExchange setCryptoExchange;
-			setCryptoExchange.Open();
+		CSetFinnhubCryptoExchange setCryptoExchange;
+		if (setCryptoExchange.Open()) {
 			setCryptoExchange.m_pDatabase->BeginTrans();
 			for (auto l = m_lLastTotalCryptoExchange; l < m_vCryptoExchange.size(); l++) {
 				setCryptoExchange.AddNew();
@@ -59,10 +59,8 @@ bool CContainerFinnhubCryptoExchange::UpdateDB() {
 			}
 			setCryptoExchange.m_pDatabase->CommitTrans();
 			setCryptoExchange.Close();
-			m_lLastTotalCryptoExchange = static_cast<long>(m_vCryptoExchange.size());
-		} catch (CException* e) {
-			ReportInformationAndDeleteException(e);
 		}
+		m_lLastTotalCryptoExchange = static_cast<long>(m_vCryptoExchange.size());
 		return true;
 	}
 	return false;

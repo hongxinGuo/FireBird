@@ -10,8 +10,7 @@ bool CContainerForexDayLine::SaveDB(const CString& strCryptoSymbol) {
 	try {
 		CSetForexDayLine setForexDayLineBasic;
 		UpdateBasicDB(&setForexDayLineBasic, strCryptoSymbol);
-	}
-	catch (CException* e) {
+	} catch (CException* e) {
 		ReportInformationAndDeleteException(e);
 	}
 
@@ -26,9 +25,10 @@ bool CContainerForexDayLine::LoadDB(const CString& strCryptoSymbol) {
 	setDayLineBasic.m_strFilter += strCryptoSymbol;
 	setDayLineBasic.m_strFilter += _T("'");
 	setDayLineBasic.m_strSort = _T("[Date]");
-	setDayLineBasic.Open();
-	LoadBasicDB(&setDayLineBasic);
-	setDayLineBasic.Close();
+	if (setDayLineBasic.Open()) {
+		LoadBasicDB(&setDayLineBasic);
+		setDayLineBasic.Close();
+	}
 
 	m_fDataLoaded = true;
 

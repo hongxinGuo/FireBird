@@ -75,27 +75,28 @@ bool CContainerFinnhubStock::LoadDB() {
 	long lMaxSymbolLength = 0;
 
 	setFinnhubStock.m_strSort = _T("[Symbol]");
-	setFinnhubStock.Open();
-	setFinnhubStock.m_pDatabase->BeginTrans();
-	while (!setFinnhubStock.IsEOF()) {
-		pFinnhubStock = make_shared<CFinnhubStock>();
-		pFinnhubStock->Load(setFinnhubStock);
-		if (!IsSymbol(pFinnhubStock->GetSymbol())) {
-			pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
-			Add(pFinnhubStock);
-			if (pFinnhubStock->GetSymbol().GetLength() > lMaxSymbolLength) {
-				lMaxSymbolLength = pFinnhubStock->GetSymbol().GetLength();
+	if (setFinnhubStock.Open()) {
+		setFinnhubStock.m_pDatabase->BeginTrans();
+		while (!setFinnhubStock.IsEOF()) {
+			pFinnhubStock = make_shared<CFinnhubStock>();
+			pFinnhubStock->Load(setFinnhubStock);
+			if (!IsSymbol(pFinnhubStock->GetSymbol())) {
+				pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
+				Add(pFinnhubStock);
+				if (pFinnhubStock->GetSymbol().GetLength() > lMaxSymbolLength) {
+					lMaxSymbolLength = pFinnhubStock->GetSymbol().GetLength();
+				}
 			}
-		}
-		else {
-			setFinnhubStock.Delete(); // 删除此重复代码
-		}
-		setFinnhubStock.MoveNext();
+			else {
+				setFinnhubStock.Delete(); // 删除此重复代码
+			}
+			setFinnhubStock.MoveNext();
 
-		//ValidateStockSymbol(pFinnhubStock);
+			//ValidateStockSymbol(pFinnhubStock);
+		}
+		setFinnhubStock.m_pDatabase->CommitTrans();
+		setFinnhubStock.Close();
 	}
-	setFinnhubStock.m_pDatabase->CommitTrans();
-	setFinnhubStock.Close();
 	Sort();
 
 	ASSERT(lMaxSymbolLength < 20); // 目前WorldMarket数据库的股票代码长度限制为20个字符
@@ -112,15 +113,14 @@ bool CContainerFinnhubStock::LoadDB() {
 /// </summary>
 void CContainerFinnhubStock::UpdateProfileDB() {
 	if (IsUpdateProfileDB()) {
-		try {
-			CSetFinnhubStock setFinnhubStock;
+		CSetFinnhubStock setFinnhubStock;
+		int iStockNeedUpdate = 0;
+		for (const auto& pStock : m_vStock) {
+			if (pStock->IsUpdateProfileDB()) iStockNeedUpdate++;
+		}
+		setFinnhubStock.m_strSort = _T("[Symbol]");
+		if (setFinnhubStock.Open()) {
 			int iCurrentUpdated = 0;
-			int iStockNeedUpdate = 0;
-			for (const auto& pStock : m_vStock) {
-				if (pStock->IsUpdateProfileDB()) iStockNeedUpdate++;
-			}
-			setFinnhubStock.m_strSort = _T("[Symbol]");
-			setFinnhubStock.Open();
 			setFinnhubStock.m_pDatabase->BeginTrans();
 			while (iCurrentUpdated < iStockNeedUpdate) {	//更新原有的代码集状态
 				if (setFinnhubStock.IsEOF()) break;
@@ -148,8 +148,6 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 			}
 			setFinnhubStock.m_pDatabase->CommitTrans();
 			setFinnhubStock.Close();
-		} catch (CException* e) {
-			ReportInformationAndDeleteException(e);
 		}
 	}
 }
@@ -222,14 +220,13 @@ void CContainerFinnhubStock::UpdateBasicFinancialAnnualDB(const vector<CFinnhubS
 }
 
 void CContainerFinnhubStock::UpdateBasicFinancialMetricDB(const vector<CFinnhubStockPtr>& vStock) {
-	try {
-		CSetFinnhubStockBasicFinancialMetric setBasicFinancialMetric;
-		const auto iBasicFinancialNeedUpdate = vStock.size();
-		size_t iCurrentUpdated = 0;
+	CSetFinnhubStockBasicFinancialMetric setBasicFinancialMetric;
+	const auto iBasicFinancialNeedUpdate = vStock.size();
+	size_t iCurrentUpdated = 0;
 
-		ASSERT(IsUpdateBasicFinancialDB());
-		setBasicFinancialMetric.m_strSort = _T("[Symbol]");
-		setBasicFinancialMetric.Open();
+	ASSERT(IsUpdateBasicFinancialDB());
+	setBasicFinancialMetric.m_strSort = _T("[Symbol]");
+	if (setBasicFinancialMetric.Open()) {
 		setBasicFinancialMetric.m_pDatabase->BeginTrans();
 		//更新原有的基本财务信息
 		while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
@@ -262,10 +259,8 @@ void CContainerFinnhubStock::UpdateBasicFinancialMetricDB(const vector<CFinnhubS
 		}
 		setBasicFinancialMetric.m_pDatabase->CommitTrans();
 		setBasicFinancialMetric.Close();
-		ASSERT(iCurrentUpdated == iBasicFinancialNeedUpdate);
-	} catch (CException* e) {
-		ReportInformationAndDeleteException(e);
 	}
+	ASSERT(iCurrentUpdated == iBasicFinancialNeedUpdate);
 }
 
 void CContainerFinnhubStock::ClearUpdateBasicFinancialFlag(const vector<CFinnhubStockPtr>& vStock) {

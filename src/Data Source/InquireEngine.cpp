@@ -121,7 +121,7 @@ void CInquireEngine::QueryDataLength() {
 	if (str.GetLength() > 0) { // 正常时此字符串不为零
 		char* p;
 		m_lContentLength = strtol(str.GetBuffer(), &p, 10);
-		ASSERT(m_lContentLength > 0);
+		ASSERT(m_lContentLength >= 0);
 	}
 	else { // 服务器无响应
 		m_lContentLength = 0;

@@ -19,21 +19,18 @@ bool CContainerFinnhubStockDayLine::SaveDB(const CString& strStockSymbol) {
 }
 
 bool CContainerFinnhubStockDayLine::LoadDB(const CString& strStockSymbol) {
-	try {
-		CSetFinnhubStockDayLine setDayLineBasic;
+	CSetFinnhubStockDayLine setDayLineBasic;
 
-		// 装入DayLine数据
-		setDayLineBasic.m_strFilter = _T("[Symbol] = '");
-		setDayLineBasic.m_strFilter += strStockSymbol;
-		setDayLineBasic.m_strFilter += _T("'");
-		setDayLineBasic.m_strSort = _T("[Date]");
-		setDayLineBasic.Open();
+	// 装入DayLine数据
+	setDayLineBasic.m_strFilter = _T("[Symbol] = '");
+	setDayLineBasic.m_strFilter += strStockSymbol;
+	setDayLineBasic.m_strFilter += _T("'");
+	setDayLineBasic.m_strSort = _T("[Date]");
+	if (setDayLineBasic.Open()) {
 		LoadBasicDB(&setDayLineBasic);
 		setDayLineBasic.Close();
-
-		m_fDataLoaded = true;
-	} catch (CException* e) {
-		ReportInformationAndDeleteException(e);
 	}
+
+	m_fDataLoaded = true;
 	return true;
 }

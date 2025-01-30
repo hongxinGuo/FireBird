@@ -19,16 +19,17 @@ bool CContainerFinnhubEconomicCalendar::LoadDB() {
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
 	CString strSymbol = _T("");
 
-	setEconomicCalendar.Open();
-	while (!setEconomicCalendar.IsEOF()) {
-		pEconomicCalendar = make_shared<CEconomicCalendar>();
-		pEconomicCalendar->Load(setEconomicCalendar);
-		strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
-		m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
-		m_vEconomicCalendar.push_back(pEconomicCalendar);
-		setEconomicCalendar.MoveNext();
+	if (setEconomicCalendar.Open()) {
+		while (!setEconomicCalendar.IsEOF()) {
+			pEconomicCalendar = make_shared<CEconomicCalendar>();
+			pEconomicCalendar->Load(setEconomicCalendar);
+			strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
+			m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
+			m_vEconomicCalendar.push_back(pEconomicCalendar);
+			setEconomicCalendar.MoveNext();
+		}
+		setEconomicCalendar.Close();
 	}
-	setEconomicCalendar.Close();
 	m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
 
 	return true;
@@ -36,9 +37,8 @@ bool CContainerFinnhubEconomicCalendar::LoadDB() {
 
 bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 	if (m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size()) {
-		try {
-			CSetEconomicCalendar setEconomicCalendar;
-			setEconomicCalendar.Open();
+		CSetEconomicCalendar setEconomicCalendar;
+		if (setEconomicCalendar.Open()) {
 			setEconomicCalendar.m_pDatabase->BeginTrans();
 			for (auto l = m_lLastTotalEconomicCalendar; l < m_vEconomicCalendar.size(); l++) {
 				const CEconomicCalendarPtr pEconomicCalendar = m_vEconomicCalendar.at(l);
@@ -46,10 +46,8 @@ bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 			}
 			setEconomicCalendar.m_pDatabase->CommitTrans();
 			setEconomicCalendar.Close();
-			m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
-		} catch (CException* e) {
-			ReportInformationAndDeleteException(e);
 		}
+		m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
 	}
 
 	return true;

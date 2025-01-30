@@ -28,37 +28,37 @@ bool CContainerFinnhubCrypto::LoadDB() {
 	CFinnhubCryptoPtr pSymbol = nullptr;
 
 	setCryptoSymbol.m_strSort = _T("[Symbol]");
-	setCryptoSymbol.Open();
-	setCryptoSymbol.m_pDatabase->BeginTrans();
-	while (!setCryptoSymbol.IsEOF()) {
-		if (!IsSymbol(setCryptoSymbol.m_Symbol)) {
-			pSymbol = make_shared<CFinnhubCrypto>();
-			pSymbol->LoadSymbol(setCryptoSymbol);
-			pSymbol->SetCheckingDayLineStatus();
-			if (m_mapSymbol.contains(pSymbol->GetSymbol())) { gl_systemMessage.PushErrorMessage(_T("Finnhub Crypto发现重复代码：") + pSymbol->GetSymbol()); }
-			Add(pSymbol);
+	if (setCryptoSymbol.Open()) {
+		setCryptoSymbol.m_pDatabase->BeginTrans();
+		while (!setCryptoSymbol.IsEOF()) {
+			if (!IsSymbol(setCryptoSymbol.m_Symbol)) {
+				pSymbol = make_shared<CFinnhubCrypto>();
+				pSymbol->LoadSymbol(setCryptoSymbol);
+				pSymbol->SetCheckingDayLineStatus();
+				if (m_mapSymbol.contains(pSymbol->GetSymbol())) { gl_systemMessage.PushErrorMessage(_T("Finnhub Crypto发现重复代码：") + pSymbol->GetSymbol()); }
+				Add(pSymbol);
+			}
+			else {
+				setCryptoSymbol.Delete();
+			}
+			setCryptoSymbol.MoveNext();
 		}
-		else {
-			setCryptoSymbol.Delete();
-		}
-		setCryptoSymbol.MoveNext();
+		setCryptoSymbol.m_pDatabase->CommitTrans();
+		setCryptoSymbol.Close();
 	}
-	setCryptoSymbol.m_pDatabase->CommitTrans();
-	setCryptoSymbol.Close();
 	m_llLastTotalSymbol = m_vStock.size();
 
 	return true;
 }
 
 bool CContainerFinnhubCrypto::UpdateDB() {
-	try {
-		const auto lTotalCryptoSymbol = m_vStock.size();
-		CFinnhubCryptoPtr pSymbol;
-		CSetFinnhubCryptoSymbol setCryptoSymbol;
-		bool fUpdateSymbol = false;
+	const auto lTotalCryptoSymbol = m_vStock.size();
+	CFinnhubCryptoPtr pSymbol;
+	CSetFinnhubCryptoSymbol setCryptoSymbol;
+	bool fUpdateSymbol = false;
 
-		if (m_llLastTotalSymbol < lTotalCryptoSymbol) {
-			setCryptoSymbol.Open();
+	if (m_llLastTotalSymbol < lTotalCryptoSymbol) {
+		if (setCryptoSymbol.Open()) {
 			setCryptoSymbol.m_pDatabase->BeginTrans();
 			for (auto l = m_llLastTotalSymbol; l < lTotalCryptoSymbol; l++) {
 				pSymbol = GetSymbol(l);
@@ -66,17 +66,18 @@ bool CContainerFinnhubCrypto::UpdateDB() {
 			}
 			setCryptoSymbol.m_pDatabase->CommitTrans();
 			setCryptoSymbol.Close();
-			m_llLastTotalSymbol = lTotalCryptoSymbol;
 		}
+		m_llLastTotalSymbol = lTotalCryptoSymbol;
+	}
 
-		for (const auto& pSymbol2 : m_vStock) {
-			if (pSymbol2->IsUpdateProfileDB()) {
-				fUpdateSymbol = true;
-				break;
-			}
+	for (const auto& pSymbol2 : m_vStock) {
+		if (pSymbol2->IsUpdateProfileDB()) {
+			fUpdateSymbol = true;
+			break;
 		}
-		if (fUpdateSymbol) {
-			setCryptoSymbol.Open();
+	}
+	if (fUpdateSymbol) {
+		if (setCryptoSymbol.Open()) {
 			setCryptoSymbol.m_pDatabase->BeginTrans();
 			while (!setCryptoSymbol.IsEOF()) {
 				if (m_mapSymbol.contains(setCryptoSymbol.m_Symbol)) {
@@ -94,8 +95,6 @@ bool CContainerFinnhubCrypto::UpdateDB() {
 			setCryptoSymbol.m_pDatabase->CommitTrans();
 			setCryptoSymbol.Close();
 		}
-	} catch (CException* e) {
-		ReportInformationAndDeleteException(e);
 	}
 
 	return true;

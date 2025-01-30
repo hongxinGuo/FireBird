@@ -45,7 +45,7 @@ public:
 	virtual bool Reset() { return true; }
 
 	void Run(long lMarketTime);
-	shared_ptr<vector<CWebDataPtr>> InquireData();
+	void InquireData();
 	virtual bool GenerateInquiryMessage(const long) { return true; } // 继承类必须实现各自的查询任务. 参数为当前市场时间（hhmmss）
 	virtual void CreateCurrentInquireString();
 	virtual enum_ErrorMessageData IsAErrorMessageData(const CWebDataPtr&) { return ERROR_NO_ERROR__; } // 此WebData内容为错误信息？
@@ -145,7 +145,7 @@ protected:
 	CString m_strHeaders{ _T("") }; // OpenURL时的headers字符串值， 默认为_T("")
 
 	long m_lInquiringNumber{ 500 }; // 每次查询数量默认值为500
-	int m_iMaxNormalInquireTime{ 300 }; // 最大正常查询时间（每个具体的数据源皆不同）
+	int m_iMaxNormalInquireTime{ 500 }; // 最大正常查询时间（每个具体的数据源皆不同）
 	atomic_int64_t m_tCurrentInquiryTime{ 0 }; // 当前接收数据所需时间（以毫秒计）
 
 	static atomic_int64_t sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。

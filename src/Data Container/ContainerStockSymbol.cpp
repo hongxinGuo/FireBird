@@ -80,25 +80,25 @@ size_t CContainerStockSymbol::Size() {
 void CContainerStockSymbol::LoadStockSectionDB() const {
 	CSetStockSection setStockSection;
 
-	setStockSection.Open();
-	while (!setStockSection.IsEOF()) {
-		if (!m_vStockSection.at(setStockSection.m_IndexNumber)->IsActive()) {
-			m_vStockSection.at(setStockSection.m_IndexNumber)->SetActive(setStockSection.m_Active);
-			m_vStockSection.at(setStockSection.m_IndexNumber)->SetMarket(setStockSection.m_Market);
-			m_vStockSection.at(setStockSection.m_IndexNumber)->SetIndexNumber(setStockSection.m_IndexNumber);
-			m_vStockSection.at(setStockSection.m_IndexNumber)->SetComment(setStockSection.m_Comment);
+	if (setStockSection.Open()) {
+		while (!setStockSection.IsEOF()) {
+			if (!m_vStockSection.at(setStockSection.m_IndexNumber)->IsActive()) {
+				m_vStockSection.at(setStockSection.m_IndexNumber)->SetActive(setStockSection.m_Active);
+				m_vStockSection.at(setStockSection.m_IndexNumber)->SetMarket(setStockSection.m_Market);
+				m_vStockSection.at(setStockSection.m_IndexNumber)->SetIndexNumber(setStockSection.m_IndexNumber);
+				m_vStockSection.at(setStockSection.m_IndexNumber)->SetComment(setStockSection.m_Comment);
+			}
+			setStockSection.MoveNext();
 		}
-		setStockSection.MoveNext();
+		setStockSection.Close();
 	}
-	setStockSection.Close();
 }
 
 void CContainerStockSymbol::UpdateStockSectionDB() {
-	try {
-		CSetStockSection setStockSection;
+	CSetStockSection setStockSection;
 
-		setStockSection.m_strSort = _T("[ID]");
-		setStockSection.Open();
+	setStockSection.m_strSort = _T("[ID]");
+	if (setStockSection.Open()) {
 		setStockSection.m_pDatabase->BeginTrans();
 		if (setStockSection.IsEOF()) {// ¿Õ±í
 			for (int i = 0; i < 2000; i++) {
@@ -127,11 +127,9 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 		}
 		setStockSection.m_pDatabase->CommitTrans();
 		setStockSection.Close();
-
-		m_fUpdateStockSection = false;
-	} catch (CException* e) {
-		ReportInformationAndDeleteException(e);
 	}
+
+	m_fUpdateStockSection = false;
 }
 
 void CContainerStockSymbol::CreateStockSection(const CString& strFirstStockCode) {

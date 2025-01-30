@@ -20,7 +20,6 @@
 #include "ChinaMarket.h"
 #include "InfoReport.h"
 #include "QuandlDataSource.h"
-#include "ThreadStatus.h"
 #include "TiingoDataSource.h"
 #include "TiingoInaccessibleStock.h"
 #include "TimeConvert.h"
@@ -340,16 +339,10 @@ void CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
 		if (gl_systemConfiguration.IsExitingSystem()) break;// 如果程序正在退出，则停止存储。
 		pTiingoStock = gl_dataContainerTiingoStock.GetStock(i);
 		if (pTiingoStock->IsUpdateDayLineDB()) {
-			gl_BackgroundWorkingThread.acquire();
-			gl_runtime.thread_executor()->post([pTiingoStock] {
-				gl_ThreadStatus.IncreaseBackGroundWorkingThread();
-				pTiingoStock->UpdateDayLineDB();
-				pTiingoStock->UpdateDayLineStartEndDate();
-				pTiingoStock->SetUpdateProfileDB(true);
-				pTiingoStock->UnloadDayLine();
-				gl_ThreadStatus.DecreaseBackGroundWorkingThread();
-				gl_BackgroundWorkingThread.release();
-			});
+			pTiingoStock->SetUpdateProfileDB(true);
+			pTiingoStock->UpdateDayLineDB();
+			pTiingoStock->UpdateDayLineStartEndDate();
+			pTiingoStock->UnloadDayLine();
 		}
 	}
 }
@@ -1123,14 +1116,15 @@ void CWorldMarket::DeleteTiingoDayLine(const CTiingoStockPtr& pStock) {
 	setDayLine.m_strFilter = _T("[Symbol] = '");
 	setDayLine.m_strFilter += pStock->GetSymbol() + _T("'");
 
-	setDayLine.Open();
-	setDayLine.m_pDatabase->BeginTrans();
-	while (!setDayLine.IsEOF()) {
-		setDayLine.Delete();
-		setDayLine.MoveNext();
+	if (setDayLine.Open()) {
+		setDayLine.m_pDatabase->BeginTrans();
+		while (!setDayLine.IsEOF()) {
+			setDayLine.Delete();
+			setDayLine.MoveNext();
+		}
+		setDayLine.m_pDatabase->CommitTrans();
+		setDayLine.Close();
 	}
-	setDayLine.m_pDatabase->CommitTrans();
-	setDayLine.Close();
 }
 
 void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock) {
@@ -1138,12 +1132,13 @@ void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock)
 	setDayLine.m_strFilter = _T("[Symbol] = '");
 	setDayLine.m_strFilter += pStock->GetSymbol() + _T("'");
 
-	setDayLine.Open();
-	setDayLine.m_pDatabase->BeginTrans();
-	while (!setDayLine.IsEOF()) {
-		setDayLine.Delete();
-		setDayLine.MoveNext();
+	if (setDayLine.Open()) {
+		setDayLine.m_pDatabase->BeginTrans();
+		while (!setDayLine.IsEOF()) {
+			setDayLine.Delete();
+			setDayLine.MoveNext();
+		}
+		setDayLine.m_pDatabase->CommitTrans();
+		setDayLine.Close();
 	}
-	setDayLine.m_pDatabase->CommitTrans();
-	setDayLine.Close();
 }

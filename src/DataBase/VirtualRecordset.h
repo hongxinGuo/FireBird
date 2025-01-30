@@ -17,7 +17,7 @@ public:
 		m_Table = strTable;
 	}
 
-	~CVirtualRecordset() override = default;
+	~CVirtualRecordset() override;
 
 	CString GetSchemaConnect() const;// 用于数据集的GetDefaultConnect()，以保持一致性。参数strSchema为该市场的名称
 

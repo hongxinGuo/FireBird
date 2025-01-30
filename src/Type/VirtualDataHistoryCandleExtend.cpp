@@ -32,58 +32,60 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 		pSetHistoryCandleBasic->m_strFilter += strStockSymbol + _T("'");
 		pSetHistoryCandleBasic->m_strSort = _T("[Date]");
 
-		pSetHistoryCandleBasic->Open();
-		pSetHistoryCandleBasic->m_pDatabase->BeginTrans();
-		while (!pSetHistoryCandleBasic->IsEOF()) {
-			if (pSetHistoryCandleBasic->m_Date > lLastDate) {
-				lLastDate = pSetHistoryCandleBasic->m_Date;
-				pHistoryCandle = make_shared<CVirtualHistoryCandleExtend>();
-				pHistoryCandle->LoadBasicData(pSetHistoryCandleBasic);
+		if (pSetHistoryCandleBasic->Open()) {
+			pSetHistoryCandleBasic->m_pDatabase->BeginTrans();
+			while (!pSetHistoryCandleBasic->IsEOF()) {
+				if (pSetHistoryCandleBasic->m_Date > lLastDate) {
+					lLastDate = pSetHistoryCandleBasic->m_Date;
+					pHistoryCandle = make_shared<CVirtualHistoryCandleExtend>();
+					pHistoryCandle->LoadBasicData(pSetHistoryCandleBasic);
 
-				vOldHistoryCandle.push_back(pHistoryCandle);
-				lSizeOfOldDayLine++;
+					vOldHistoryCandle.push_back(pHistoryCandle);
+					lSizeOfOldDayLine++;
+				}
+				else {
+					pSetHistoryCandleBasic->Delete(); //删除日期重复的数据
+				}
+				pSetHistoryCandleBasic->MoveNext();
 			}
-			else {
-				pSetHistoryCandleBasic->Delete(); //删除日期重复的数据
-			}
-			pSetHistoryCandleBasic->MoveNext();
+			pSetHistoryCandleBasic->m_pDatabase->CommitTrans();
+			pSetHistoryCandleBasic->Close();
 		}
-		pSetHistoryCandleBasic->m_pDatabase->CommitTrans();
-		pSetHistoryCandleBasic->Close();
 	}
 	pSetHistoryCandleBasic->m_strFilter = _T("[ID] = 1");
-	pSetHistoryCandleBasic->Open();
-	pSetHistoryCandleBasic->m_pDatabase->BeginTrans();
-	if (lSizeOfOldDayLine > 0) {// 有旧数据
-		long lCurrentPos = 0;
-		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
-			pHistoryCandle = GetData(i);
-			if (pHistoryCandle->GetMarketDate() < vOldHistoryCandle.at(0)->GetMarketDate()) {	// 有更早的新数据？
-				pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
-			}
-			else {
-				while ((lCurrentPos < lSizeOfOldDayLine) && (vOldHistoryCandle.at(lCurrentPos)->GetMarketDate() < pHistoryCandle->GetMarketDate())) lCurrentPos++;
-				if (lCurrentPos < lSizeOfOldDayLine) {
-					if (vOldHistoryCandle.at(lCurrentPos)->GetMarketDate() > pHistoryCandle->GetMarketDate()) { // 前数据集中有遗漏的日期
+	if (pSetHistoryCandleBasic->Open()) {
+		pSetHistoryCandleBasic->m_pDatabase->BeginTrans();
+		if (lSizeOfOldDayLine > 0) {// 有旧数据
+			long lCurrentPos = 0;
+			for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
+				pHistoryCandle = GetData(i);
+				if (pHistoryCandle->GetMarketDate() < vOldHistoryCandle.at(0)->GetMarketDate()) {	// 有更早的新数据？
+					pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
+				}
+				else {
+					while ((lCurrentPos < lSizeOfOldDayLine) && (vOldHistoryCandle.at(lCurrentPos)->GetMarketDate() < pHistoryCandle->GetMarketDate())) lCurrentPos++;
+					if (lCurrentPos < lSizeOfOldDayLine) {
+						if (vOldHistoryCandle.at(lCurrentPos)->GetMarketDate() > pHistoryCandle->GetMarketDate()) { // 前数据集中有遗漏的日期
+							pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
+							fNeedUpdate = true;
+						}
+					}
+					else {
 						pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
 						fNeedUpdate = true;
 					}
 				}
-				else {
-					pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
-					fNeedUpdate = true;
-				}
 			}
 		}
-	}
-	else {// 没有旧数据
-		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
-			pHistoryCandle = GetData(i);
-			pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
+		else {// 没有旧数据
+			for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
+				pHistoryCandle = GetData(i);
+				pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
+			}
 		}
+		pSetHistoryCandleBasic->m_pDatabase->CommitTrans();
+		pSetHistoryCandleBasic->Close();
 	}
-	pSetHistoryCandleBasic->m_pDatabase->CommitTrans();
-	pSetHistoryCandleBasic->Close();
 
 	return fNeedUpdate;
 }
@@ -92,11 +94,12 @@ bool CVirtualDataHistoryCandleExtend::SaveExtendDB(CVirtualSetHistoryCandleExten
 	ASSERT(!m_vHistoryData.empty());
 
 	pSetHistoryCandleExtend->m_strFilter = _T("[ID] = 1");
-	pSetHistoryCandleExtend->Open();
-	pSetHistoryCandleExtend->m_pDatabase->BeginTrans();
-	for (const auto& pData : m_vHistoryData) { pData->AppendExtendData(pSetHistoryCandleExtend); }
-	pSetHistoryCandleExtend->m_pDatabase->CommitTrans();
-	pSetHistoryCandleExtend->Close();
+	if (pSetHistoryCandleExtend->Open()) {
+		pSetHistoryCandleExtend->m_pDatabase->BeginTrans();
+		for (const auto& pData : m_vHistoryData) { pData->AppendExtendData(pSetHistoryCandleExtend); }
+		pSetHistoryCandleExtend->m_pDatabase->CommitTrans();
+		pSetHistoryCandleExtend->Close();
+	}
 
 	return true;
 }
