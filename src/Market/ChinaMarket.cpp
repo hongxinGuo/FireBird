@@ -29,10 +29,6 @@
 
 #define WM_FIREBIRD_EXIT                0X500
 
-#include<gsl/gsl>
-
-using namespace gsl;
-
 CChinaMarket::CChinaMarket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
@@ -1106,7 +1102,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek() {
 	return true;
 }
 
-bool CChinaMarket::CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CVirtualHistoryCandleExtendPtr>*> pvData) {
+bool CChinaMarket::CreateStockCodeSet(set<CString>& setStockCode, vector<CVirtualHistoryCandleExtendPtr>* pvData) {
 	vector<CString> vectorStockCode;
 
 	for (const auto& pData : *pvData) {

@@ -6,9 +6,6 @@
 #include "ChinaStock.h"
 #include"ChinaMarket.h"
 
-#include<gsl/gsl>
-using namespace gsl;
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 判断strStockCode是否为沪深A股主板的股票代码。

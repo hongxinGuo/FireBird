@@ -80,54 +80,52 @@ size_t CContainerStockSymbol::Size() {
 void CContainerStockSymbol::LoadStockSectionDB() const {
 	CSetStockSection setStockSection;
 
-	if (setStockSection.Open()) {
-		while (!setStockSection.IsEOF()) {
-			if (!m_vStockSection.at(setStockSection.m_IndexNumber)->IsActive()) {
-				m_vStockSection.at(setStockSection.m_IndexNumber)->SetActive(setStockSection.m_Active);
-				m_vStockSection.at(setStockSection.m_IndexNumber)->SetMarket(setStockSection.m_Market);
-				m_vStockSection.at(setStockSection.m_IndexNumber)->SetIndexNumber(setStockSection.m_IndexNumber);
-				m_vStockSection.at(setStockSection.m_IndexNumber)->SetComment(setStockSection.m_Comment);
-			}
-			setStockSection.MoveNext();
+	setStockSection.Open();
+	while (!setStockSection.IsEOF()) {
+		if (!m_vStockSection.at(setStockSection.m_IndexNumber)->IsActive()) {
+			m_vStockSection.at(setStockSection.m_IndexNumber)->SetActive(setStockSection.m_Active);
+			m_vStockSection.at(setStockSection.m_IndexNumber)->SetMarket(setStockSection.m_Market);
+			m_vStockSection.at(setStockSection.m_IndexNumber)->SetIndexNumber(setStockSection.m_IndexNumber);
+			m_vStockSection.at(setStockSection.m_IndexNumber)->SetComment(setStockSection.m_Comment);
 		}
-		setStockSection.Close();
+		setStockSection.MoveNext();
 	}
+	setStockSection.Close();
 }
 
 void CContainerStockSymbol::UpdateStockSectionDB() {
 	CSetStockSection setStockSection;
 
 	setStockSection.m_strSort = _T("[ID]");
-	if (setStockSection.Open()) {
-		setStockSection.m_pDatabase->BeginTrans();
-		if (setStockSection.IsEOF()) {// 空表
-			for (int i = 0; i < 2000; i++) {
-				const CStockSectionPtr pStockSection = m_vStockSection.at(i);
-				setStockSection.AddNew();
-				setStockSection.m_ID = i;
-				setStockSection.m_Active = pStockSection->IsActive();
-				setStockSection.m_Market = pStockSection->GetMarket();
-				setStockSection.m_IndexNumber = pStockSection->GetIndexNumber();
-				setStockSection.m_Comment = pStockSection->GetComment();
+	setStockSection.Open();
+	setStockSection.m_pDatabase->BeginTrans();
+	if (setStockSection.IsEOF()) {// 空表
+		for (int i = 0; i < 2000; i++) {
+			const CStockSectionPtr pStockSection = m_vStockSection.at(i);
+			setStockSection.AddNew();
+			setStockSection.m_ID = i;
+			setStockSection.m_Active = pStockSection->IsActive();
+			setStockSection.m_Market = pStockSection->GetMarket();
+			setStockSection.m_IndexNumber = pStockSection->GetIndexNumber();
+			setStockSection.m_Comment = pStockSection->GetComment();
+			setStockSection.Update();
+		}
+	}
+	else {// 表已存在
+		while (!setStockSection.IsEOF()) {
+			if (setStockSection.m_Active != m_vStockSection.at(setStockSection.m_ID)->IsActive()) {
+				setStockSection.Edit();
+				setStockSection.m_Active = m_vStockSection.at(setStockSection.m_ID)->IsActive();
+				setStockSection.m_Market = m_vStockSection.at(setStockSection.m_ID)->GetMarket();
+				setStockSection.m_IndexNumber = m_vStockSection.at(setStockSection.m_ID)->GetIndexNumber();
+				setStockSection.m_Comment = m_vStockSection.at(setStockSection.m_ID)->GetComment();
 				setStockSection.Update();
 			}
+			setStockSection.MoveNext();
 		}
-		else {// 表已存在
-			while (!setStockSection.IsEOF()) {
-				if (setStockSection.m_Active != m_vStockSection.at(setStockSection.m_ID)->IsActive()) {
-					setStockSection.Edit();
-					setStockSection.m_Active = m_vStockSection.at(setStockSection.m_ID)->IsActive();
-					setStockSection.m_Market = m_vStockSection.at(setStockSection.m_ID)->GetMarket();
-					setStockSection.m_IndexNumber = m_vStockSection.at(setStockSection.m_ID)->GetIndexNumber();
-					setStockSection.m_Comment = m_vStockSection.at(setStockSection.m_ID)->GetComment();
-					setStockSection.Update();
-				}
-				setStockSection.MoveNext();
-			}
-		}
-		setStockSection.m_pDatabase->CommitTrans();
-		setStockSection.Close();
 	}
+	setStockSection.m_pDatabase->CommitTrans();
+	setStockSection.Close();
 
 	m_fUpdateStockSection = false;
 }

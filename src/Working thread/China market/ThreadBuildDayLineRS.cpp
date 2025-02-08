@@ -14,7 +14,7 @@
 #include"ChinaMarket.h"
 #include"WorldMarket.h"
 
-UINT ThreadBuildDayLineRS(const not_null<CChinaMarketPtr>& pMarket, long startCalculatingDate) {
+UINT ThreadBuildDayLineRS(const CChinaMarketPtr& pMarket, long startCalculatingDate) {
 	pMarket->SetCalculatingDayLineRS(true);
 	long lThatDate = startCalculatingDate;
 

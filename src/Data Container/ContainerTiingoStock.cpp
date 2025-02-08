@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "ContainerTiingoStock.h"
-#include "InfoReport.h"
 #include "SetTiingoStockCurrentTrace.h"
 #include "SetTiingoStockDayLine.h"
 #include "Thread.h"
@@ -40,34 +39,33 @@ void CContainerTiingoStock::UpdateDB() {
 	if (IsUpdateProfileDB()) {
 		CSetTiingoStock setFinnhubStock;
 		setFinnhubStock.m_strSort = _T("[Ticker]");
-		if (setFinnhubStock.Open()) {
-			setFinnhubStock.m_pDatabase->BeginTrans();
-			while (!setFinnhubStock.IsEOF()) {	//更新原有的代码集状态
-				if (IsSymbol(setFinnhubStock.m_Ticker)) {
-					const CTiingoStockPtr pStock = GetStock(setFinnhubStock.m_Ticker);
-					ASSERT(pStock != nullptr);
-					if (pStock->IsUpdateProfileDB()) {
-						pStock->Update(setFinnhubStock);
-						pStock->SetUpdateProfileDB(false);
-					}
-				}
-				else {
-					setFinnhubStock.Delete(); // 删除已不存在的代码。
-				}
-				setFinnhubStock.MoveNext();
-			}
-			for (size_t l = 0; l < m_vStock.size(); l++) {
-				const CTiingoStockPtr pStock = GetStock(l);
+		setFinnhubStock.Open();
+		setFinnhubStock.m_pDatabase->BeginTrans();
+		while (!setFinnhubStock.IsEOF()) {	//更新原有的代码集状态
+			if (IsSymbol(setFinnhubStock.m_Ticker)) {
+				const CTiingoStockPtr pStock = GetStock(setFinnhubStock.m_Ticker);
 				ASSERT(pStock != nullptr);
 				if (pStock->IsUpdateProfileDB()) {
-					pStock->Append(setFinnhubStock);
+					pStock->Update(setFinnhubStock);
 					pStock->SetUpdateProfileDB(false);
-					pStock->SetTodayNewStock(false);
 				}
 			}
-			setFinnhubStock.m_pDatabase->CommitTrans();
-			setFinnhubStock.Close();
+			else {
+				setFinnhubStock.Delete(); // 删除已不存在的代码。
+			}
+			setFinnhubStock.MoveNext();
 		}
+		for (size_t l = 0; l < m_vStock.size(); l++) {
+			const CTiingoStockPtr pStock = GetStock(l);
+			ASSERT(pStock != nullptr);
+			if (pStock->IsUpdateProfileDB()) {
+				pStock->Append(setFinnhubStock);
+				pStock->SetUpdateProfileDB(false);
+				pStock->SetTodayNewStock(false);
+			}
+		}
+		setFinnhubStock.m_pDatabase->CommitTrans();
+		setFinnhubStock.Close();
 	}
 }
 
@@ -76,23 +74,22 @@ bool CContainerTiingoStock::LoadDB() {
 	CString strSymbol = _T("");
 
 	setTiingoStock.m_strSort = _T("[Ticker]");
-	if (setTiingoStock.Open()) {
-		setTiingoStock.m_pDatabase->BeginTrans();
-		while (!setTiingoStock.IsEOF()) {
-			if (!IsSymbol(setTiingoStock.m_Ticker)) {
-				const auto pTiingoStock = make_shared<CTiingoStock>();
-				pTiingoStock->Load(setTiingoStock);
-				pTiingoStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
-				Add(pTiingoStock);
-			}
-			else {
-				setTiingoStock.Delete(); // 删除重复代码
-			}
-			setTiingoStock.MoveNext();
+	setTiingoStock.Open();
+	setTiingoStock.m_pDatabase->BeginTrans();
+	while (!setTiingoStock.IsEOF()) {
+		if (!IsSymbol(setTiingoStock.m_Ticker)) {
+			const auto pTiingoStock = make_shared<CTiingoStock>();
+			pTiingoStock->Load(setTiingoStock);
+			pTiingoStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
+			Add(pTiingoStock);
 		}
-		setTiingoStock.m_pDatabase->CommitTrans();
-		setTiingoStock.Close();
+		else {
+			setTiingoStock.Delete(); // 删除重复代码
+		}
+		setTiingoStock.MoveNext();
 	}
+	setTiingoStock.m_pDatabase->CommitTrans();
+	setTiingoStock.Close();
 
 	return true;
 }
@@ -119,36 +116,58 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 	DeleteDayLine(lDate);
 
 	setDayLine.m_strFilter = _T("[ID] = 1"); // 这里必须设定一个限定项，否则当数据表很大时，打开时间会非常长
-	if (setDayLine.Open()) {
-		setDayLine.m_pDatabase->BeginTrans();
-		for (size_t i = 0; i < lSize; i++) {
-			auto pTiingoStock = GetStock(i);
-			if (pTiingoStock->GetTransactionTime() >= tMarketCloseTime) {
-				pTiingoStock->SaveCurrentDataToDayLineDB(setDayLine, lDate);
-				pTiingoStock->SetDayLineEndDate(lDate);
-				pTiingoStock->SetUpdateProfileDB(true);
-			}
+	setDayLine.Open();
+	setDayLine.m_pDatabase->BeginTrans();
+	for (size_t i = 0; i < lSize; i++) {
+		auto pTiingoStock = GetStock(i);
+		if (pTiingoStock->GetTransactionTime() >= tMarketCloseTime) {
+			pTiingoStock->SaveCurrentDataToDayLineDB(setDayLine, lDate);
+			pTiingoStock->SetDayLineEndDate(lDate);
+			pTiingoStock->SetUpdateProfileDB(true);
 		}
-		setDayLine.m_pDatabase->CommitTrans();
-		setDayLine.Close();
 	}
+	setDayLine.m_pDatabase->CommitTrans();
+	setDayLine.Close();
 
 	gl_systemConfiguration.SetTiingoIEXTopOfBookUpdateDate(lDate);
+}
+
+void CContainerTiingoStock::LoadDayLine(long lDate) {
+	CSetTiingoStockDayLine setDayLine;
+
+	setDayLine.m_strFilter = fmt::format("[Date] = {:8Ld}", lDate).c_str();
+	setDayLine.Open();
+	setDayLine.m_pDatabase->BeginTrans();
+	while (!setDayLine.IsEOF()) {
+		if (IsSymbol(setDayLine.m_Symbol)) {
+			auto pStock = GetStock(setDayLine.m_Symbol);
+			pStock->SetHigh(atof(setDayLine.m_High) * pStock->GetRatio());
+			pStock->SetLow(atof(setDayLine.m_Low) * pStock->GetRatio());
+			pStock->SetOpen(atof(setDayLine.m_Open) * pStock->GetRatio());
+			pStock->SetNew(atof(setDayLine.m_Close) * pStock->GetRatio());
+			pStock->SetLastClose(atof(setDayLine.m_LastClose) * pStock->GetRatio());
+			pStock->SetVolume(atof(setDayLine.m_Volume));
+			pStock->SetDividend(atof(setDayLine.m_dividend));
+			pStock->SetSpiltFactor(atof(setDayLine.m_splitFactor));
+		}
+		setDayLine.MoveNext();
+	}
+	setDayLine.m_pDatabase->CommitTrans();
+	setDayLine.Close();
 }
 
 void CContainerTiingoStock::DeleteDayLine(long lDate) {
 	CSetTiingoStockDayLine setDayLine;
 
 	setDayLine.m_strFilter = fmt::format("[Date] = {:8Ld}", lDate).c_str();
-	if (setDayLine.Open()) {
-		setDayLine.m_pDatabase->BeginTrans();
-		while (!setDayLine.IsEOF()) {
-			setDayLine.Delete();
-			setDayLine.MoveNext();
-		}
-		setDayLine.m_pDatabase->CommitTrans();
-		setDayLine.Close();
+	setDayLine.Open();
+	setDayLine.m_pDatabase->BeginTrans();
+	while (!setDayLine.IsEOF()) {
+		setDayLine.Delete();
+		setDayLine.MoveNext();
 	}
+	setDayLine.m_pDatabase->CommitTrans();
+	setDayLine.Close();
 }
 
 long CContainerTiingoStock::GetTotalActiveStocks() {

@@ -26,10 +26,9 @@ bool CContainerFinnhubStockDayLine::LoadDB(const CString& strStockSymbol) {
 	setDayLineBasic.m_strFilter += strStockSymbol;
 	setDayLineBasic.m_strFilter += _T("'");
 	setDayLineBasic.m_strSort = _T("[Date]");
-	if (setDayLineBasic.Open()) {
-		LoadBasicDB(&setDayLineBasic);
-		setDayLineBasic.Close();
-	}
+	setDayLineBasic.Open();
+	LoadBasicDB(&setDayLineBasic);
+	setDayLineBasic.Close();
 
 	m_fDataLoaded = true;
 	return true;

@@ -19,17 +19,16 @@ bool CContainerFinnhubEconomicCalendar::LoadDB() {
 	CEconomicCalendarPtr pEconomicCalendar = nullptr;
 	CString strSymbol = _T("");
 
-	if (setEconomicCalendar.Open()) {
-		while (!setEconomicCalendar.IsEOF()) {
-			pEconomicCalendar = make_shared<CEconomicCalendar>();
-			pEconomicCalendar->Load(setEconomicCalendar);
-			strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
-			m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
-			m_vEconomicCalendar.push_back(pEconomicCalendar);
-			setEconomicCalendar.MoveNext();
-		}
-		setEconomicCalendar.Close();
+	setEconomicCalendar.Open();
+	while (!setEconomicCalendar.IsEOF()) {
+		pEconomicCalendar = make_shared<CEconomicCalendar>();
+		pEconomicCalendar->Load(setEconomicCalendar);
+		strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
+		m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
+		m_vEconomicCalendar.push_back(pEconomicCalendar);
+		setEconomicCalendar.MoveNext();
 	}
+	setEconomicCalendar.Close();
 	m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
 
 	return true;
@@ -38,15 +37,14 @@ bool CContainerFinnhubEconomicCalendar::LoadDB() {
 bool CContainerFinnhubEconomicCalendar::UpdateDB() {
 	if (m_lLastTotalEconomicCalendar < m_vEconomicCalendar.size()) {
 		CSetEconomicCalendar setEconomicCalendar;
-		if (setEconomicCalendar.Open()) {
-			setEconomicCalendar.m_pDatabase->BeginTrans();
-			for (auto l = m_lLastTotalEconomicCalendar; l < m_vEconomicCalendar.size(); l++) {
-				const CEconomicCalendarPtr pEconomicCalendar = m_vEconomicCalendar.at(l);
-				pEconomicCalendar->Append(setEconomicCalendar);
-			}
-			setEconomicCalendar.m_pDatabase->CommitTrans();
-			setEconomicCalendar.Close();
+		setEconomicCalendar.Open();
+		setEconomicCalendar.m_pDatabase->BeginTrans();
+		for (auto l = m_lLastTotalEconomicCalendar; l < m_vEconomicCalendar.size(); l++) {
+			const CEconomicCalendarPtr pEconomicCalendar = m_vEconomicCalendar.at(l);
+			pEconomicCalendar->Append(setEconomicCalendar);
 		}
+		setEconomicCalendar.m_pDatabase->CommitTrans();
+		setEconomicCalendar.Close();
 		m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
 	}
 

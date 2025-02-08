@@ -241,8 +241,8 @@ namespace FireBirdTest {
 		}
 
 		gl_systemConfiguration.SetUpdateDB(false);
-		EXPECT_FALSE(gl_pWorldMarket->IsMarketTaskEmpty());
-		gl_pWorldMarket->DiscardCurrentMarketTask();
+		EXPECT_TRUE(gl_pWorldMarket->IsMarketTaskEmpty());
+		//gl_pWorldMarket->DiscardCurrentMarketTask();
 	}
 
 	TEST_F(CTiingoDataSourceTest, TestGenerateTiingoFinancialStatement) {

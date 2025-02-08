@@ -75,28 +75,27 @@ bool CContainerFinnhubStock::LoadDB() {
 	long lMaxSymbolLength = 0;
 
 	setFinnhubStock.m_strSort = _T("[Symbol]");
-	if (setFinnhubStock.Open()) {
-		setFinnhubStock.m_pDatabase->BeginTrans();
-		while (!setFinnhubStock.IsEOF()) {
-			pFinnhubStock = make_shared<CFinnhubStock>();
-			pFinnhubStock->Load(setFinnhubStock);
-			if (!IsSymbol(pFinnhubStock->GetSymbol())) {
-				pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
-				Add(pFinnhubStock);
-				if (pFinnhubStock->GetSymbol().GetLength() > lMaxSymbolLength) {
-					lMaxSymbolLength = pFinnhubStock->GetSymbol().GetLength();
-				}
+	setFinnhubStock.Open();
+	setFinnhubStock.m_pDatabase->BeginTrans();
+	while (!setFinnhubStock.IsEOF()) {
+		pFinnhubStock = make_shared<CFinnhubStock>();
+		pFinnhubStock->Load(setFinnhubStock);
+		if (!IsSymbol(pFinnhubStock->GetSymbol())) {
+			pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
+			Add(pFinnhubStock);
+			if (pFinnhubStock->GetSymbol().GetLength() > lMaxSymbolLength) {
+				lMaxSymbolLength = pFinnhubStock->GetSymbol().GetLength();
 			}
-			else {
-				setFinnhubStock.Delete(); // 删除此重复代码
-			}
-			setFinnhubStock.MoveNext();
-
-			//ValidateStockSymbol(pFinnhubStock);
 		}
-		setFinnhubStock.m_pDatabase->CommitTrans();
-		setFinnhubStock.Close();
+		else {
+			setFinnhubStock.Delete(); // 删除此重复代码
+		}
+		setFinnhubStock.MoveNext();
+
+		//ValidateStockSymbol(pFinnhubStock);
 	}
+	setFinnhubStock.m_pDatabase->CommitTrans();
+	setFinnhubStock.Close();
 	Sort();
 
 	ASSERT(lMaxSymbolLength < 20); // 目前WorldMarket数据库的股票代码长度限制为20个字符
@@ -119,36 +118,35 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 			if (pStock->IsUpdateProfileDB()) iStockNeedUpdate++;
 		}
 		setFinnhubStock.m_strSort = _T("[Symbol]");
-		if (setFinnhubStock.Open()) {
-			int iCurrentUpdated = 0;
-			setFinnhubStock.m_pDatabase->BeginTrans();
-			while (iCurrentUpdated < iStockNeedUpdate) {	//更新原有的代码集状态
-				if (setFinnhubStock.IsEOF()) break;
-				const CFinnhubStockPtr pStock = GetStock(setFinnhubStock.m_Symbol);
+		setFinnhubStock.Open();
+		int iCurrentUpdated = 0;
+		setFinnhubStock.m_pDatabase->BeginTrans();
+		while (iCurrentUpdated < iStockNeedUpdate) {	//更新原有的代码集状态
+			if (setFinnhubStock.IsEOF()) break;
+			const CFinnhubStockPtr pStock = GetStock(setFinnhubStock.m_Symbol);
+			ASSERT(pStock != nullptr);
+			if (pStock->IsUpdateProfileDB()) {
+				iCurrentUpdated++;
+				pStock->Update(setFinnhubStock);
+				pStock->SetUpdateProfileDB(false);
+			}
+			setFinnhubStock.MoveNext();
+		}
+		if (iCurrentUpdated < iStockNeedUpdate) { // 添加新的股票简介
+			for (size_t l = 0; l < m_vStock.size(); l++) {
+				const CFinnhubStockPtr pStock = GetStock(l);
 				ASSERT(pStock != nullptr);
 				if (pStock->IsUpdateProfileDB()) {
 					iCurrentUpdated++;
-					pStock->Update(setFinnhubStock);
+					pStock->Append(setFinnhubStock);
 					pStock->SetUpdateProfileDB(false);
+					pStock->SetTodayNewStock(false);
 				}
-				setFinnhubStock.MoveNext();
+				if (iCurrentUpdated >= iStockNeedUpdate) break;
 			}
-			if (iCurrentUpdated < iStockNeedUpdate) { // 添加新的股票简介
-				for (size_t l = 0; l < m_vStock.size(); l++) {
-					const CFinnhubStockPtr pStock = GetStock(l);
-					ASSERT(pStock != nullptr);
-					if (pStock->IsUpdateProfileDB()) {
-						iCurrentUpdated++;
-						pStock->Append(setFinnhubStock);
-						pStock->SetUpdateProfileDB(false);
-						pStock->SetTodayNewStock(false);
-					}
-					if (iCurrentUpdated >= iStockNeedUpdate) break;
-				}
-			}
-			setFinnhubStock.m_pDatabase->CommitTrans();
-			setFinnhubStock.Close();
 		}
+		setFinnhubStock.m_pDatabase->CommitTrans();
+		setFinnhubStock.Close();
 	}
 }
 
@@ -226,40 +224,39 @@ void CContainerFinnhubStock::UpdateBasicFinancialMetricDB(const vector<CFinnhubS
 
 	ASSERT(IsUpdateBasicFinancialDB());
 	setBasicFinancialMetric.m_strSort = _T("[Symbol]");
-	if (setBasicFinancialMetric.Open()) {
-		setBasicFinancialMetric.m_pDatabase->BeginTrans();
-		//更新原有的基本财务信息
-		while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
-			if (setBasicFinancialMetric.IsEOF()) break;
-			if (IsSymbol(setBasicFinancialMetric.m_symbol)) {
-				CFinnhubStockPtr pStockNeedUpdate = GetStock(setBasicFinancialMetric.m_symbol);
-				if (vStock.end() != std::ranges::find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
-					iCurrentUpdated++;
-					pStockNeedUpdate->UpdateBasicFinancialMetric(setBasicFinancialMetric);
-					pStockNeedUpdate->SetUpdateBasicFinancialDB(false);
-				}
-			}
-			else {
-				setBasicFinancialMetric.Delete(); //Note 自动删除代码已不存在的数据。
-			}
-			setBasicFinancialMetric.MoveNext();
-		}
-		// 添加新的基本财务数据
-		if (iCurrentUpdated < iBasicFinancialNeedUpdate) {
-			ASSERT(setBasicFinancialMetric.IsEOF());
-			for (int i = 0; i < iBasicFinancialNeedUpdate; i++) {
-				const auto& pStockNeedAppend = vStock.at(i);
-				if (pStockNeedAppend->IsUpdateBasicFinancialDB()) {
-					iCurrentUpdated++;
-					pStockNeedAppend->AppendBasicFinancialMetric(setBasicFinancialMetric);
-					pStockNeedAppend->SetUpdateBasicFinancialDB(false);
-					ASSERT(iCurrentUpdated <= iBasicFinancialNeedUpdate);
-				}
+	setBasicFinancialMetric.Open();
+	setBasicFinancialMetric.m_pDatabase->BeginTrans();
+	//更新原有的基本财务信息
+	while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
+		if (setBasicFinancialMetric.IsEOF()) break;
+		if (IsSymbol(setBasicFinancialMetric.m_symbol)) {
+			CFinnhubStockPtr pStockNeedUpdate = GetStock(setBasicFinancialMetric.m_symbol);
+			if (vStock.end() != std::ranges::find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
+				iCurrentUpdated++;
+				pStockNeedUpdate->UpdateBasicFinancialMetric(setBasicFinancialMetric);
+				pStockNeedUpdate->SetUpdateBasicFinancialDB(false);
 			}
 		}
-		setBasicFinancialMetric.m_pDatabase->CommitTrans();
-		setBasicFinancialMetric.Close();
+		else {
+			setBasicFinancialMetric.Delete(); //Note 自动删除代码已不存在的数据。
+		}
+		setBasicFinancialMetric.MoveNext();
 	}
+	// 添加新的基本财务数据
+	if (iCurrentUpdated < iBasicFinancialNeedUpdate) {
+		ASSERT(setBasicFinancialMetric.IsEOF());
+		for (int i = 0; i < iBasicFinancialNeedUpdate; i++) {
+			const auto& pStockNeedAppend = vStock.at(i);
+			if (pStockNeedAppend->IsUpdateBasicFinancialDB()) {
+				iCurrentUpdated++;
+				pStockNeedAppend->AppendBasicFinancialMetric(setBasicFinancialMetric);
+				pStockNeedAppend->SetUpdateBasicFinancialDB(false);
+				ASSERT(iCurrentUpdated <= iBasicFinancialNeedUpdate);
+			}
+		}
+	}
+	setBasicFinancialMetric.m_pDatabase->CommitTrans();
+	setBasicFinancialMetric.Close();
 	ASSERT(iCurrentUpdated == iBasicFinancialNeedUpdate);
 }
 

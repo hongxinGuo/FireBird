@@ -465,12 +465,14 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 	if (gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate() < gl_pWorldMarket->GetCurrentTradeDate()
 		&& !gl_pTiingoDataSource->IsUpdateIEXTopOfBook()
-		&& lCurrentTime > 180500) { // 当前交易日未处理过IEX、已经接收到数据且已过休市时间？
+		&& !gl_pTiingoDataSource->IsUpdateDayLine()
+		&& lCurrentTime > 200500) { // 当前交易日未处理过IEX、已经接收到数据且已过休市时间？
 		gl_runtime.thread_executor()->post([lCurrentTime] {
 			gl_UpdateWorldMarketDB.acquire();
-			TRACE("IEX top of bool\n");
+			TRACE("IEX top of book\n");
 			gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
-			gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lCurrentTime, 0, 5, 0)); // 五分钟后计算日线
+			// Note 暂不自动处理日线数据
+			//gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lCurrentTime, 0, 5, 0)); // 五分钟后计算日线
 			gl_UpdateWorldMarketDB.release();
 		});
 	}
@@ -487,26 +489,14 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldMarket::TaskProcessTiingoDayLine(long lCurrentTime) {
 	if (gl_systemConfiguration.GetTiingoStockDayLineProcessedDate() >= GetCurrentTradeDate()) return; // 已更新完52WeekHighLow,不再自动更新。
-	if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
-		if (!gl_pTiingoDataSource->IsUpdateDayLine()) { // 接收完日线数据后方可处理
-			gl_runtime.thread_executor()->post([] {
-				gl_dataContainerTiingoStock.TaskProcessDayLine();
-			});
-		}
-		else {
-			AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lCurrentTime, 0, 1, 0)); // 一分钟后执行下一次
-		}
-	}
-	else {
-		if (!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) { // 接收完IEX日线数据后方可处理
-			gl_runtime.thread_executor()->post([] {
-				gl_dataContainerTiingoStock.TaskProcessDayLine();
-			});
-		}
-		else {
-			AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(lCurrentTime, 0, 1, 0)); // 一分钟后执行下一次
-		}
-	}
+	ASSERT(!gl_pTiingoDataSource->IsUpdateDayLine());// 接收完日线数据后方可处理
+	ASSERT(!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()); // 接收完IEX日线数据后方可处理
+	gl_runtime.thread_executor()->post([] {
+		gl_dataContainerTiingoStock.TaskProcessDayLine();
+	});
+	gl_runtime.thread_executor()->post([] {
+		gl_dataContainerTiingoStock.TaskProcessDayLine();
+	});
 }
 
 void CWorldMarket::TaskDeleteDelistedStock() {
@@ -1116,15 +1106,14 @@ void CWorldMarket::DeleteTiingoDayLine(const CTiingoStockPtr& pStock) {
 	setDayLine.m_strFilter = _T("[Symbol] = '");
 	setDayLine.m_strFilter += pStock->GetSymbol() + _T("'");
 
-	if (setDayLine.Open()) {
-		setDayLine.m_pDatabase->BeginTrans();
-		while (!setDayLine.IsEOF()) {
-			setDayLine.Delete();
-			setDayLine.MoveNext();
-		}
-		setDayLine.m_pDatabase->CommitTrans();
-		setDayLine.Close();
+	setDayLine.Open();
+	setDayLine.m_pDatabase->BeginTrans();
+	while (!setDayLine.IsEOF()) {
+		setDayLine.Delete();
+		setDayLine.MoveNext();
 	}
+	setDayLine.m_pDatabase->CommitTrans();
+	setDayLine.Close();
 }
 
 void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock) {
@@ -1132,13 +1121,12 @@ void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock)
 	setDayLine.m_strFilter = _T("[Symbol] = '");
 	setDayLine.m_strFilter += pStock->GetSymbol() + _T("'");
 
-	if (setDayLine.Open()) {
-		setDayLine.m_pDatabase->BeginTrans();
-		while (!setDayLine.IsEOF()) {
-			setDayLine.Delete();
-			setDayLine.MoveNext();
-		}
-		setDayLine.m_pDatabase->CommitTrans();
-		setDayLine.Close();
+	setDayLine.Open();
+	setDayLine.m_pDatabase->BeginTrans();
+	while (!setDayLine.IsEOF()) {
+		setDayLine.Delete();
+		setDayLine.MoveNext();
 	}
+	setDayLine.m_pDatabase->CommitTrans();
+	setDayLine.Close();
 }

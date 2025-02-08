@@ -316,7 +316,6 @@ bool CContainerChinaStock::TaskUpdateDayLineDB() {
 	CString str;
 	bool fSave = false;
 
-	TRACE("China market Update dayLine\n");
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
 		if (pStock->IsUpdateDayLineDBAndClearFlag()) {
@@ -500,37 +499,35 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 
 	// 存储当前交易日的数据
 	setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
-	if (setDayLineBasicInfo.Open()) {
-		setDayLineBasicInfo.m_pDatabase->BeginTrans();
-		for (size_t l = 0; l < m_vStock.size(); l++) {
-			const CChinaStockPtr pStock = GetStock(l);
-			if (!pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
-				continue;
-			}
-			iCount++;
-			pStock->SetDayLineEndDate(lCurrentTradeDay);
-			pStock->SetIPOStatus(_STOCK_IPOED_); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
-			pStock->SetUpdateProfileDB(true);
-			pStock->AppendTodayBasicInfo(&setDayLineBasicInfo);
+	setDayLineBasicInfo.Open();
+	setDayLineBasicInfo.m_pDatabase->BeginTrans();
+	for (size_t l = 0; l < m_vStock.size(); l++) {
+		const CChinaStockPtr pStock = GetStock(l);
+		if (!pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
+			continue;
 		}
-		setDayLineBasicInfo.m_pDatabase->CommitTrans();
-		setDayLineBasicInfo.Close();
+		iCount++;
+		pStock->SetDayLineEndDate(lCurrentTradeDay);
+		pStock->SetIPOStatus(_STOCK_IPOED_); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
+		pStock->SetUpdateProfileDB(true);
+		pStock->AppendTodayBasicInfo(&setDayLineBasicInfo);
 	}
+	setDayLineBasicInfo.m_pDatabase->CommitTrans();
+	setDayLineBasicInfo.Close();
 
 	// 存储今日生成的数据于DayLineExtendInfo表中。
 	setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
-	if (setDayLineExtendInfo.Open()) {
-		setDayLineExtendInfo.m_pDatabase->BeginTrans();
-		for (size_t l = 0; l < m_vStock.size(); l++) {
-			const CChinaStockPtr pStock = GetStock(l);
-			if (!pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
-				continue;
-			}
-			pStock->AppendTodayExtendInfo(&setDayLineExtendInfo);
+	setDayLineExtendInfo.Open();
+	setDayLineExtendInfo.m_pDatabase->BeginTrans();
+	for (size_t l = 0; l < m_vStock.size(); l++) {
+		const CChinaStockPtr pStock = GetStock(l);
+		if (!pStock->IsTodayDataActive()) {	// 此股票今天停牌,所有的数据皆为零,不需要存储.
+			continue;
 		}
-		setDayLineExtendInfo.m_pDatabase->CommitTrans();
-		setDayLineExtendInfo.Close();
+		pStock->AppendTodayExtendInfo(&setDayLineExtendInfo);
 	}
+	setDayLineExtendInfo.m_pDatabase->CommitTrans();
+	setDayLineExtendInfo.Close();
 
 	s = ConvertDateToChineseTimeStampString(lCurrentTradeDay) + _T("的日线数据已生成");
 	gl_systemMessage.PushInformationMessage(s.c_str());
@@ -545,15 +542,14 @@ void CContainerChinaStock::DeleteDayLineBasicInfo(long lDate) {
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 
 	setDayLineBasicInfo.m_strFilter = fmt::format("[Date] = {:8Ld}", lDate).c_str();
-	if (setDayLineBasicInfo.Open()) {
-		setDayLineBasicInfo.m_pDatabase->BeginTrans();
-		while (!setDayLineBasicInfo.IsEOF()) {
-			setDayLineBasicInfo.Delete();
-			setDayLineBasicInfo.MoveNext();
-		}
-		setDayLineBasicInfo.m_pDatabase->CommitTrans();
-		setDayLineBasicInfo.Close();
+	setDayLineBasicInfo.Open();
+	setDayLineBasicInfo.m_pDatabase->BeginTrans();
+	while (!setDayLineBasicInfo.IsEOF()) {
+		setDayLineBasicInfo.Delete();
+		setDayLineBasicInfo.MoveNext();
 	}
+	setDayLineBasicInfo.m_pDatabase->CommitTrans();
+	setDayLineBasicInfo.Close();
 }
 
 void CContainerChinaStock::DeleteDayLineExtendInfo(long lDate) {
@@ -583,19 +579,18 @@ void CContainerChinaStock::UpdateTempRTDB() {
 	DeleteTempRTData();
 
 	setDayLineTemp.m_strFilter = _T("[ID] = 1");
-	if (setDayLineTemp.Open()) {
-		setDayLineTemp.m_pDatabase->BeginTrans();
+	setDayLineTemp.Open();
+	setDayLineTemp.m_pDatabase->BeginTrans();
 
-		// 存储今日生成的数据于DayLineToday表中。
-		for (size_t l = 0; l < m_vStock.size(); l++) {
-			const CChinaStockPtr pStock = GetStock(l);
-			setDayLineTemp.AddNew();
-			pStock->SaveTempInfo(&setDayLineTemp);
-			setDayLineTemp.Update();
-		}
-		setDayLineTemp.m_pDatabase->CommitTrans();
-		setDayLineTemp.Close();
+	// 存储今日生成的数据于DayLineToday表中。
+	for (size_t l = 0; l < m_vStock.size(); l++) {
+		const CChinaStockPtr pStock = GetStock(l);
+		setDayLineTemp.AddNew();
+		pStock->SaveTempInfo(&setDayLineTemp);
+		setDayLineTemp.Update();
 	}
+	setDayLineTemp.m_pDatabase->CommitTrans();
+	setDayLineTemp.Close();
 }
 
 void CContainerChinaStock::DeleteTempRTData() {

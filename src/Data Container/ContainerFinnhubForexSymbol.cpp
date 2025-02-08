@@ -26,23 +26,22 @@ bool CContainerFinnhubForexSymbol::LoadDB() {
 	CSetFinnhubForexSymbol setForexSymbol;
 
 	setForexSymbol.m_strSort = _T("[Symbol]");
-	if (setForexSymbol.Open()) {
-		setForexSymbol.m_pDatabase->BeginTrans();
-		while (!setForexSymbol.IsEOF()) {
-			if (!IsSymbol(setForexSymbol.m_Symbol)) {
-				const auto pSymbol = make_shared<CFinnhubForex>();
-				pSymbol->LoadSymbol(setForexSymbol);
-				pSymbol->SetCheckingDayLineStatus();
-				Add(pSymbol);
-			}
-			else {
-				setForexSymbol.Delete();
-			}
-			setForexSymbol.MoveNext();
+	setForexSymbol.Open();
+	setForexSymbol.m_pDatabase->BeginTrans();
+	while (!setForexSymbol.IsEOF()) {
+		if (!IsSymbol(setForexSymbol.m_Symbol)) {
+			const auto pSymbol = make_shared<CFinnhubForex>();
+			pSymbol->LoadSymbol(setForexSymbol);
+			pSymbol->SetCheckingDayLineStatus();
+			Add(pSymbol);
 		}
-		setForexSymbol.m_pDatabase->CommitTrans();
-		setForexSymbol.Close();
+		else {
+			setForexSymbol.Delete();
+		}
+		setForexSymbol.MoveNext();
 	}
+	setForexSymbol.m_pDatabase->CommitTrans();
+	setForexSymbol.Close();
 	m_lastTotalSymbol = m_vStock.size();
 
 	return true;
@@ -55,15 +54,14 @@ bool CContainerFinnhubForexSymbol::UpdateDB() {
 	bool fUpdateSymbol = false;
 
 	if (m_lastTotalSymbol < lTotalForexSymbol) {
-		if (setForexSymbol.Open()) {
-			setForexSymbol.m_pDatabase->BeginTrans();
-			for (auto l = m_lastTotalSymbol; l < lTotalForexSymbol; l++) {
-				pSymbol = GetSymbol(l);
-				pSymbol->AppendSymbol(setForexSymbol);
-			}
-			setForexSymbol.m_pDatabase->CommitTrans();
-			setForexSymbol.Close();
+		setForexSymbol.Open();
+		setForexSymbol.m_pDatabase->BeginTrans();
+		for (auto l = m_lastTotalSymbol; l < lTotalForexSymbol; l++) {
+			pSymbol = GetSymbol(l);
+			pSymbol->AppendSymbol(setForexSymbol);
 		}
+		setForexSymbol.m_pDatabase->CommitTrans();
+		setForexSymbol.Close();
 		m_lastTotalSymbol = lTotalForexSymbol;
 	}
 
@@ -74,24 +72,23 @@ bool CContainerFinnhubForexSymbol::UpdateDB() {
 		}
 	}
 	if (fUpdateSymbol) {
-		if (setForexSymbol.Open()) {
-			setForexSymbol.m_pDatabase->BeginTrans();
-			while (!setForexSymbol.IsEOF()) {
-				if (m_mapSymbol.contains(setForexSymbol.m_Symbol)) {
-					pSymbol = GetSymbol(setForexSymbol.m_Symbol);
-					if (pSymbol->IsUpdateProfileDB()) {
-						pSymbol->UpdateSymbol(setForexSymbol);
-						pSymbol->SetUpdateProfileDB(false);
-					}
+		setForexSymbol.Open();
+		setForexSymbol.m_pDatabase->BeginTrans();
+		while (!setForexSymbol.IsEOF()) {
+			if (m_mapSymbol.contains(setForexSymbol.m_Symbol)) {
+				pSymbol = GetSymbol(setForexSymbol.m_Symbol);
+				if (pSymbol->IsUpdateProfileDB()) {
+					pSymbol->UpdateSymbol(setForexSymbol);
+					pSymbol->SetUpdateProfileDB(false);
 				}
-				else {
-					setForexSymbol.Delete();
-				}
-				setForexSymbol.MoveNext();
 			}
-			setForexSymbol.m_pDatabase->CommitTrans();
-			setForexSymbol.Close();
+			else {
+				setForexSymbol.Delete();
+			}
+			setForexSymbol.MoveNext();
 		}
+		setForexSymbol.m_pDatabase->CommitTrans();
+		setForexSymbol.Close();
 	}
 
 	return true;

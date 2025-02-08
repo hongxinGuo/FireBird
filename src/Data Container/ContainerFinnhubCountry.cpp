@@ -35,15 +35,14 @@ bool CContainerFinnhubCountry::Delete(const CCountryPtr& pCountry) {
 void CContainerFinnhubCountry::UpdateDB() {
 	if (m_llLastTotalCountry < m_vCountry.size()) {
 		CSetCountry setCountry;
-		if (setCountry.Open()) {
-			setCountry.m_pDatabase->BeginTrans();
-			for (auto l = m_llLastTotalCountry; l < m_vCountry.size(); l++) {
-				const CCountryPtr pCountry = m_vCountry.at(l);
-				pCountry->Append(setCountry);
-			}
-			setCountry.m_pDatabase->CommitTrans();
-			setCountry.Close();
+		setCountry.Open();
+		setCountry.m_pDatabase->BeginTrans();
+		for (auto l = m_llLastTotalCountry; l < m_vCountry.size(); l++) {
+			const CCountryPtr pCountry = m_vCountry.at(l);
+			pCountry->Append(setCountry);
 		}
+		setCountry.m_pDatabase->CommitTrans();
+		setCountry.Close();
 		m_llLastTotalCountry = m_vCountry.size();
 	}
 }
@@ -53,16 +52,15 @@ bool CContainerFinnhubCountry::LoadDB() {
 	CCountryPtr pCountry = nullptr;
 
 	setCountry.m_strSort = _T("[Country]");
-	if (setCountry.Open()) {
-		while (!setCountry.IsEOF()) {
-			pCountry = make_shared<CCountry>();
-			pCountry->Load(setCountry);
-			m_mapCountry[pCountry->m_strCountry] = m_vCountry.size();
-			m_vCountry.push_back(pCountry);
-			setCountry.MoveNext();
-		}
-		setCountry.Close();
+	setCountry.Open();
+	while (!setCountry.IsEOF()) {
+		pCountry = make_shared<CCountry>();
+		pCountry->Load(setCountry);
+		m_mapCountry[pCountry->m_strCountry] = m_vCountry.size();
+		m_vCountry.push_back(pCountry);
+		setCountry.MoveNext();
 	}
+	setCountry.Close();
 	m_llLastTotalCountry = m_vCountry.size();
 
 	return true;

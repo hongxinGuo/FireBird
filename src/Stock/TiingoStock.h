@@ -23,6 +23,11 @@ public:
 	CTiingoStock& operator=(const CTiingoStock&&) noexcept = delete;
 	~CTiingoStock() override = default;
 
+	double GetDividend() const { return m_fDividend; }
+	void SetDividend(double dividend) { m_fDividend = dividend; }
+	double GetSpiltFactor() const { return m_fSplitFactor; }
+	void SetSpiltFactor(double spiltFactor) { m_fSplitFactor = spiltFactor; }
+
 	void ResetAllUpdateDate() override;
 	int GetRatio() const override { return 10000; }; // 
 
@@ -123,6 +128,8 @@ public:
 	//CString m_strTicker; // 这个使用VirtualStock中的m_strSymbol来代替。
 	CString m_strName{ _T("") };
 	// bool m_fIsActive{ false }; // 这个使用VirtualStock中的m_fActive来代替
+	double m_fDividend{ 0 };
+	double m_fSplitFactor{ 1 };
 	bool m_fIsADR{ false };
 	CString m_strTiingoSector{ _T("") };
 	CString m_strTiingoIndustry{ _T("") };

@@ -132,7 +132,7 @@ void CProductTiingoMarketNews::UpdateDataSourceStatus(CVirtualDataSourcePtr pDat
 		gl_systemConfiguration.ChangeTiingoAccountTypeToFree();
 		gl_systemMessage.PushInnerSystemInformationMessage(_T("free Tiingo account"));
 		gl_pTiingoDataSource->SetUpdateFinancialState(false); // 不允许申请金融数据
-		gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 1, 30, 0)); // 免费账户90分钟后处理当日日系那。
+		gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 30, 0)); //30分钟后执行
 	}
 	else {
 		gl_systemConfiguration.ChangeTiingoAccountTypeToPaid();

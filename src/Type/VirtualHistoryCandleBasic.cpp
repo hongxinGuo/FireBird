@@ -26,7 +26,7 @@ bool CVirtualHistoryCandleBasic::IsActive() const {
 	return false;
 }
 
-void CVirtualHistoryCandleBasic::SaveBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) const {
+void CVirtualHistoryCandleBasic::SaveBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());
 
 	pVirtualSetHistoryCandleBasic->m_Date = GetMarketDate();
@@ -52,14 +52,14 @@ void CVirtualHistoryCandleBasic::SaveBasicData(not_null<CVirtualSetHistoryCandle
 	pVirtualSetHistoryCandleBasic->m_RSBackup = ConvertValueToString(GetRSBackup());
 }
 
-void CVirtualHistoryCandleBasic::AppendBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) const {
+void CVirtualHistoryCandleBasic::AppendBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());
 	pVirtualSetHistoryCandleBasic->AddNew();
 	SaveBasicData(pVirtualSetHistoryCandleBasic);
 	pVirtualSetHistoryCandleBasic->Update();
 }
 
-void CVirtualHistoryCandleBasic::LoadBasicData(not_null<CVirtualSetHistoryCandleBasic*> pVirtualSetHistoryCandleBasic) {
+void CVirtualHistoryCandleBasic::LoadBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());
 	auto ratio = GetRatio();
 

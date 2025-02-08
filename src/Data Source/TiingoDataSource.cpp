@@ -396,7 +396,10 @@ bool CTiingoDataSource::GenerateDayLine() {
 			SetUpdateDayLine(false);
 			const CString str = "Tiingo股票日线历史数据更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
-			gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 2, 0));
+			if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
+				// Note 暂不自动处理日线数据
+				//gl_pWorldMarket->AddTask(WORLD_MARKET_TIINGO_PROCESS_DAYLINE__, GetNextTime(gl_pWorldMarket->GetMarketTime(), 0, 2, 0));
+			}
 		}
 	}
 	return fHaveInquiry;

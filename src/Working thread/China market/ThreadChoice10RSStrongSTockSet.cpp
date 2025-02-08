@@ -10,7 +10,7 @@
 
 #include"ChinaMarket.h"
 
-UINT ThreadChoice10RSStrong2StockSet(const not_null<CChinaMarketPtr>& pMarket) {
+UINT ThreadChoice10RSStrong2StockSet(const CChinaMarketPtr& pMarket) {
 	TRACE("choice10RS2\n");
 	gl_UpdateChinaMarketDB.acquire();
 	gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));// 添加一个注释
@@ -24,7 +24,7 @@ UINT ThreadChoice10RSStrong2StockSet(const not_null<CChinaMarketPtr>& pMarket) {
 	return 102;
 }
 
-UINT ThreadChoice10RSStrong1StockSet(const not_null<CChinaMarketPtr>& pMarket) {
+UINT ThreadChoice10RSStrong1StockSet(const CChinaMarketPtr& pMarket) {
 	TRACE("choice10RS1\n");
 	gl_UpdateChinaMarketDB.acquire();
 	gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));// 添加一个注释
@@ -54,7 +54,7 @@ UINT ThreadChoice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
 	return 103;
 }
 
-UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, const CRSReference* pRef, const not_null<CChinaStockPtr>& pStock) {
+UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, const CRSReference* pRef, const CChinaStockPtr& pStock) {
 	TRACE("calculate10RS\n");
 	gl_UpdateChinaMarketDB.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem()) {
@@ -76,7 +76,7 @@ UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStro
 	return 104;
 }
 
-UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, const not_null<CChinaStockPtr>& pStock) {
+UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, const CChinaStockPtr& pStock) {
 	TRACE("calculate10RS1\n");
 	gl_UpdateChinaMarketDB.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem()) {
@@ -98,7 +98,7 @@ UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
 	return 105;
 }
 
-UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, const not_null<CChinaStockPtr>& pStock) {
+UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, const CChinaStockPtr& pStock) {
 	TRACE("calculate10RS2\n");
 	gl_UpdateChinaMarketDB.acquire();
 	if (!gl_systemConfiguration.IsExitingSystem()) {

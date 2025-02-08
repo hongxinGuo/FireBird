@@ -34,20 +34,18 @@ bool CContainerChinaDayLine::LoadDB(const CString& strStockSymbol) {
 	setDayLineBasicInfo.m_strFilter += strStockSymbol;
 	setDayLineBasicInfo.m_strFilter += _T("'");
 	setDayLineBasicInfo.m_strSort = _T("[Date]");
-	if (setDayLineBasicInfo.Open()) {
-		LoadBasicDB(&setDayLineBasicInfo);
-		setDayLineBasicInfo.Close();
-	}
+	setDayLineBasicInfo.Open();
+	LoadBasicDB(&setDayLineBasicInfo);
+	setDayLineBasicInfo.Close();
 
 	// 装入DayLineExtendInfo数据
 	setDayLineExtendInfo.m_strFilter = _T("[Symbol] = '");
 	setDayLineExtendInfo.m_strFilter += strStockSymbol;
 	setDayLineExtendInfo.m_strFilter += _T("'");
 	setDayLineExtendInfo.m_strSort = _T("[Date]");
-	if (setDayLineExtendInfo.Open()) {
-		LoadExtendDB(&setDayLineExtendInfo);
-		setDayLineExtendInfo.Close();
-	}
+	setDayLineExtendInfo.Open();
+	LoadExtendDB(&setDayLineExtendInfo);
+	setDayLineExtendInfo.Close();
 
 	m_fDataLoaded = true;
 	ASSERT(!m_fBasicDataLoaded);

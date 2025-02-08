@@ -25,10 +25,9 @@ bool CContainerForexDayLine::LoadDB(const CString& strCryptoSymbol) {
 	setDayLineBasic.m_strFilter += strCryptoSymbol;
 	setDayLineBasic.m_strFilter += _T("'");
 	setDayLineBasic.m_strSort = _T("[Date]");
-	if (setDayLineBasic.Open()) {
-		LoadBasicDB(&setDayLineBasic);
-		setDayLineBasic.Close();
-	}
+	setDayLineBasic.Open();
+	LoadBasicDB(&setDayLineBasic);
+	setDayLineBasic.Close();
 
 	m_fDataLoaded = true;
 

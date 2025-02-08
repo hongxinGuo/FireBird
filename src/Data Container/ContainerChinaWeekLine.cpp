@@ -31,12 +31,11 @@ void CContainerChinaWeekLine::SaveCurrentWeekLine() const {
 	ASSERT(!m_vHistoryData.empty());
 
 	setCurrentWeekLineInfo.m_strFilter = _T("[ID] = 1");
-	if (setCurrentWeekLineInfo.Open()) {
-		setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
-		for (const auto& pData : m_vHistoryData) { pData->Append(&setCurrentWeekLineInfo); }
-		setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
-		setCurrentWeekLineInfo.Close();
-	}
+	setCurrentWeekLineInfo.Open();
+	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
+	for (const auto& pData : m_vHistoryData) { pData->Append(&setCurrentWeekLineInfo); }
+	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
+	setCurrentWeekLineInfo.Close();
 	TRACE("存储了%d个当前周周线数据\n", m_vHistoryData.size());
 }
 
@@ -51,20 +50,18 @@ bool CContainerChinaWeekLine::LoadDB(const CString& strStockCode) {
 	setWeekLineBasicInfo.m_strFilter += strStockCode;
 	setWeekLineBasicInfo.m_strFilter += _T("'");
 	setWeekLineBasicInfo.m_strSort = _T("[Date]");
-	if (setWeekLineBasicInfo.Open()) {
-		LoadBasicDB(&setWeekLineBasicInfo);
-		setWeekLineBasicInfo.Close();
-	}
+	setWeekLineBasicInfo.Open();
+	LoadBasicDB(&setWeekLineBasicInfo);
+	setWeekLineBasicInfo.Close();
 
 	// 装入WeekLineInfo数据
 	setWeekLineExtendInfo.m_strFilter = _T("[Symbol] = '");
 	setWeekLineExtendInfo.m_strFilter += strStockCode;
 	setWeekLineExtendInfo.m_strFilter += _T("'");
 	setWeekLineExtendInfo.m_strSort = _T("[Date]");
-	if (setWeekLineExtendInfo.Open()) {
-		LoadExtendDB(&setWeekLineExtendInfo);
-		setWeekLineExtendInfo.Close();
-	}
+	setWeekLineExtendInfo.Open();
+	LoadExtendDB(&setWeekLineExtendInfo);
+	setWeekLineExtendInfo.Close();
 
 	m_fDataLoaded = true;
 
@@ -76,17 +73,16 @@ bool CContainerChinaWeekLine::LoadDB(const CString& strStockCode) {
 bool CContainerChinaWeekLine::LoadCurrentWeekLine() {
 	CSetCurrentWeekLine setCurrentWeekLineInfo;
 
-	if (setCurrentWeekLineInfo.Open()) {
-		setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
-		while (!setCurrentWeekLineInfo.IsEOF()) {
-			auto pWeekLine = make_shared<CWeekLine>();
-			pWeekLine->Load(&setCurrentWeekLineInfo);
-			Add(pWeekLine);
-			setCurrentWeekLineInfo.MoveNext();
-		}
-		setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
-		setCurrentWeekLineInfo.Close();
+	setCurrentWeekLineInfo.Open();
+	setCurrentWeekLineInfo.m_pDatabase->BeginTrans();
+	while (!setCurrentWeekLineInfo.IsEOF()) {
+		auto pWeekLine = make_shared<CWeekLine>();
+		pWeekLine->Load(&setCurrentWeekLineInfo);
+		Add(pWeekLine);
+		setCurrentWeekLineInfo.MoveNext();
 	}
+	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
+	setCurrentWeekLineInfo.Close();
 
 	return true;
 }

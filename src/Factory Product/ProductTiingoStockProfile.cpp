@@ -241,23 +241,22 @@ void CProductTiingoStockProfile::SaveNewSymbol() {
 	string s = fmt::format("[Date] ={:8Ld}", gl_pWorldMarket->GetMarketDate());
 	CSetTiingoStockNewSymbol setNewSymbol;
 	setNewSymbol.m_strFilter = s.c_str();
-	if (setNewSymbol.Open()) {
-		setNewSymbol.m_pDatabase->BeginTrans();
-		// 删除之前存储的代码
-		while (!setNewSymbol.IsEOF()) {
-			setNewSymbol.Delete();
-			setNewSymbol.MoveNext();
-		}
-		for (size_t index = 0; index < gl_dataContainerTiingoNewSymbol.Size(); index++) {
-			auto pStock = gl_dataContainerTiingoNewSymbol.GetStock(index);
-			setNewSymbol.AddNew();
-			setNewSymbol.m_date = gl_pWorldMarket->GetMarketDate();
-			setNewSymbol.m_symbol = pStock->GetSymbol();
-			setNewSymbol.Update();
-		}
-		setNewSymbol.m_pDatabase->CommitTrans();
-		setNewSymbol.Close();
+	setNewSymbol.Open();
+	setNewSymbol.m_pDatabase->BeginTrans();
+	// 删除之前存储的代码
+	while (!setNewSymbol.IsEOF()) {
+		setNewSymbol.Delete();
+		setNewSymbol.MoveNext();
 	}
+	for (size_t index = 0; index < gl_dataContainerTiingoNewSymbol.Size(); index++) {
+		auto pStock = gl_dataContainerTiingoNewSymbol.GetStock(index);
+		setNewSymbol.AddNew();
+		setNewSymbol.m_date = gl_pWorldMarket->GetMarketDate();
+		setNewSymbol.m_symbol = pStock->GetSymbol();
+		setNewSymbol.Update();
+	}
+	setNewSymbol.m_pDatabase->CommitTrans();
+	setNewSymbol.Close();
 }
 
 void CProductTiingoStockProfile::SaveDelistedSymbol() {

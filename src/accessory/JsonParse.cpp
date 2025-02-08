@@ -28,12 +28,12 @@
 
 #include"JsonGetValue.h"
 #include"NlohmannJsonDeclaration.h"
+#include "ChinaMarket.h"
 
 #include"spdlog/spdlog.h"
 
 // 包含concurrencpp.h之前，需要注销max的定义
 #undef max
-#include "ChinaMarket.h"
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 

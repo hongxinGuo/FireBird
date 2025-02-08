@@ -121,59 +121,57 @@ void CTiingoStock::UpdateFinancialStateDB() {
 	setFinancialState.m_strFilter += m_strSymbol;
 	setFinancialState.m_strFilter += _T("'");
 	setFinancialState.m_strSort = _T("[yearQuarter]");
-	if (setFinancialState.Open()) {
-		setFinancialState.m_pDatabase->BeginTrans();
+	setFinancialState.Open();
+	setFinancialState.m_pDatabase->BeginTrans();
 
-		while (!setFinancialState.IsEOF()) {
-			if (setFinancialState.m_yearQuarter > lLastDate) {
-				lLastDate = setFinancialState.m_yearQuarter;
-				pTiingoFinancialState = make_shared<CTiingoCompanyFinancialState>();
-				pTiingoFinancialState->Load(setFinancialState);
+	while (!setFinancialState.IsEOF()) {
+		if (setFinancialState.m_yearQuarter > lLastDate) {
+			lLastDate = setFinancialState.m_yearQuarter;
+			pTiingoFinancialState = make_shared<CTiingoCompanyFinancialState>();
+			pTiingoFinancialState->Load(setFinancialState);
 
-				vOldFinancialState.push_back(pTiingoFinancialState);
-				lSizeOfOldDayLine++;
-			}
-			else {
-				setFinancialState.Delete(); //删除日期重复的数据
-			}
-			setFinancialState.MoveNext();
+			vOldFinancialState.push_back(pTiingoFinancialState);
+			lSizeOfOldDayLine++;
 		}
-		setFinancialState.m_pDatabase->CommitTrans();
-		setFinancialState.Close();
+		else {
+			setFinancialState.Delete(); //删除日期重复的数据
+		}
+		setFinancialState.MoveNext();
 	}
+	setFinancialState.m_pDatabase->CommitTrans();
+	setFinancialState.Close();
 
 	setFinancialState.m_strFilter = _T("[ID] = 1");
-	if (setFinancialState.Open()) {
-		setFinancialState.m_pDatabase->BeginTrans();
-		if (lSizeOfOldDayLine > 0) {// 有旧数据
-			long lCurrentPos = 0;
-			for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
-				pTiingoFinancialState = m_pvFinancialState->at(i);
-				if (pTiingoFinancialState->m_yearQuarter < vOldFinancialState.at(0)->m_yearQuarter) {	// 有更早的新数据？
-					pTiingoFinancialState->Append(setFinancialState);
-				}
-				else {
-					while ((lCurrentPos < lSizeOfOldDayLine) && vOldFinancialState.at(lCurrentPos)->m_yearQuarter < pTiingoFinancialState->m_yearQuarter) lCurrentPos++;
-					if (lCurrentPos < lSizeOfOldDayLine) {
-						if (vOldFinancialState.at(lCurrentPos)->m_yearQuarter > pTiingoFinancialState->m_yearQuarter) { // 前数据集中有遗漏的日期
-							pTiingoFinancialState->Append(setFinancialState);
-						}
-					}
-					else {
+	setFinancialState.Open();
+	setFinancialState.m_pDatabase->BeginTrans();
+	if (lSizeOfOldDayLine > 0) {// 有旧数据
+		long lCurrentPos = 0;
+		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
+			pTiingoFinancialState = m_pvFinancialState->at(i);
+			if (pTiingoFinancialState->m_yearQuarter < vOldFinancialState.at(0)->m_yearQuarter) {	// 有更早的新数据？
+				pTiingoFinancialState->Append(setFinancialState);
+			}
+			else {
+				while ((lCurrentPos < lSizeOfOldDayLine) && vOldFinancialState.at(lCurrentPos)->m_yearQuarter < pTiingoFinancialState->m_yearQuarter) lCurrentPos++;
+				if (lCurrentPos < lSizeOfOldDayLine) {
+					if (vOldFinancialState.at(lCurrentPos)->m_yearQuarter > pTiingoFinancialState->m_yearQuarter) { // 前数据集中有遗漏的日期
 						pTiingoFinancialState->Append(setFinancialState);
 					}
 				}
+				else {
+					pTiingoFinancialState->Append(setFinancialState);
+				}
 			}
 		}
-		else {// 没有旧数据
-			for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
-				pTiingoFinancialState = m_pvFinancialState->at(i);
-				pTiingoFinancialState->Append(setFinancialState);
-			}
-		}
-		setFinancialState.m_pDatabase->CommitTrans();
-		setFinancialState.Close();
 	}
+	else {// 没有旧数据
+		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
+			pTiingoFinancialState = m_pvFinancialState->at(i);
+			pTiingoFinancialState->Append(setFinancialState);
+		}
+	}
+	setFinancialState.m_pDatabase->CommitTrans();
+	setFinancialState.Close();
 
 	SetCompanyFinancialStatementUpdateDate(gl_pWorldMarket->GetMarketDate());
 	SetUpdateProfileDB(true);
@@ -210,6 +208,8 @@ void CTiingoStock::SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine
 	setDayLine.m_Close = ConvertValueToString(m_lNew, GetRatio());
 	setDayLine.m_LastClose = ConvertValueToString(m_lLastClose, GetRatio());
 	setDayLine.m_Volume = ConvertValueToString(m_llVolume);
+	setDayLine.m_dividend = ConvertValueToString(m_fDividend);
+	setDayLine.m_splitFactor = ConvertValueToString(m_fSplitFactor);
 	setDayLine.Update();
 }
 
@@ -366,15 +366,14 @@ void CTiingoStock::Delete52WeekHighDB() const {
 	set52WeekHigh.m_strFilter = _T("[Symbol] ='");
 	set52WeekHigh.m_strFilter += GetSymbol() + _T("'");
 	set52WeekHigh.m_strSort = _T("[Date]");
-	if (set52WeekHigh.Open()) {
-		set52WeekHigh.m_pDatabase->BeginTrans();
-		while (!set52WeekHigh.IsEOF()) {
-			set52WeekHigh.Delete();
-			set52WeekHigh.MoveNext();
-		}
-		set52WeekHigh.m_pDatabase->CommitTrans();
-		set52WeekHigh.Close();
+	set52WeekHigh.Open();
+	set52WeekHigh.m_pDatabase->BeginTrans();
+	while (!set52WeekHigh.IsEOF()) {
+		set52WeekHigh.Delete();
+		set52WeekHigh.MoveNext();
 	}
+	set52WeekHigh.m_pDatabase->CommitTrans();
+	set52WeekHigh.Close();
 }
 
 void CTiingoStock::Delete52WeekLowDB() const {
@@ -383,15 +382,14 @@ void CTiingoStock::Delete52WeekLowDB() const {
 	set52WeekLow.m_strFilter = _T("[Symbol] ='");
 	set52WeekLow.m_strFilter += GetSymbol() + _T("'");
 	set52WeekLow.m_strSort = _T("[Date]");
-	if (set52WeekLow.Open()) {
-		set52WeekLow.m_pDatabase->BeginTrans();
-		while (!set52WeekLow.IsEOF()) {
-			set52WeekLow.Delete();
-			set52WeekLow.MoveNext();
-		}
-		set52WeekLow.m_pDatabase->CommitTrans();
-		set52WeekLow.Close();
+	set52WeekLow.Open();
+	set52WeekLow.m_pDatabase->BeginTrans();
+	while (!set52WeekLow.IsEOF()) {
+		set52WeekLow.Delete();
+		set52WeekLow.MoveNext();
 	}
+	set52WeekLow.m_pDatabase->CommitTrans();
+	set52WeekLow.Close();
 }
 
 bool CTiingoStock::IsEnough52WeekLow() {
@@ -413,15 +411,14 @@ void CTiingoStock::Load52WeekLow() {
 	setLow.m_strFilter = _T("[Symbol] = '");
 	setLow.m_strFilter += GetSymbol() + _T("'");
 	setLow.m_strSort = _T("[Date]");
-	if (setLow.Open()) {
-		setLow.m_pDatabase->BeginTrans();
-		while (!setLow.IsEOF()) {
-			m_v52WeekLow.push_back(setLow.m_Date);
-			setLow.MoveNext();
-		}
-		setLow.m_pDatabase->CommitTrans();
-		setLow.Close();
+	setLow.Open();
+	setLow.m_pDatabase->BeginTrans();
+	while (!setLow.IsEOF()) {
+		m_v52WeekLow.push_back(setLow.m_Date);
+		setLow.MoveNext();
 	}
+	setLow.m_pDatabase->CommitTrans();
+	setLow.Close();
 }
 
 constexpr double __SMALL_DOUBLE_ = 0.000005;
