@@ -4,7 +4,6 @@
 #include "TiingoDataSource.h"
 
 #include "TiingoInaccessibleStock.h"
-#include "TimeConvert.h"
 #include"WorldMarket.h"
 
 map<string, enum_ErrorMessageData> mapTiingoErrorMap{
@@ -14,12 +13,6 @@ map<string, enum_ErrorMessageData> mapTiingoErrorMap{
 	{ _T("API limit reached.please try again later.Remaining limit:0"), ERROR_TIINGO_REACH_MAX_API_LIMIT__ }, // http״̬�룺200
 	{ _T("Not found."), ERROR_TIINGO_NOT_FOUND__ },
 	{ _T(""), ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__ }
-};
-
-set<CString> setDOW30{
-	"AAPL", "AMGN", "AMZN", "AXP", "BA", "CAT", "CRM", "CSCO", "CVX", "DIS",
-	"DOW", "IBM", "INTC", "JNJ", "JPM", "KO", "MMM", "MRK", "MSFT", "NKE",
-	"PG", "UNH", "V", "VZ", "WMT", "GS", "HD", "HON", "MCD", "TRV"
 };
 
 CTiingoDataSource::CTiingoDataSource() {

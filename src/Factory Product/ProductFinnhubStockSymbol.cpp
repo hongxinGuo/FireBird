@@ -13,6 +13,7 @@ CString CProductFinnhubStockSymbol::CreateMessage() {
 	const auto strParam = gl_dataContainerFinnhubStockExchange.GetExchangeCode(m_lIndex);
 
 	m_strInquiringExchange = strParam;
+	TRACE("stock exchange: %s\n", m_strInquiringExchange);
 	m_strInquiry = m_strInquiryFunction + strParam;
 	return m_strInquiry;
 }
@@ -38,11 +39,16 @@ void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pStock2->SetTodayNewStock(true);
 			pStock2->SetUpdateProfileDB(true); // 此股票需要加入数据库中。
 			gl_dataContainerFinnhubStock.Add(pStock2);
-			//const auto str = _T("Finnhub发现新代码:") + pStock2->GetSymbol();
-			//gl_systemMessage.PushInnerSystemInformationMessage(str);
+		}
+		else {
+			auto pStock = gl_dataContainerFinnhubStock.GetStock(pStock2->GetSymbol());
+			if (pStock->GetExchangeCode().Compare(pStock2->GetExchangeCode()) != 0) {
+				pStock->SetExchangeCode(pStock2->GetExchangeCode());
+				pStock->SetUpdateProfileDB(true);
+			}
 		}
 	}
-	string s = fmt::format("今日美国市场股票总数为：{:Ld}", pvStock->size());
+	//string s = fmt::format("今日{}市场股票总数为：{:Ld}", pvStock->at(0)->GetExchangeCode().GetBuffer(), pvStock->size());
 	//gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
 }
 
@@ -86,6 +92,7 @@ CFinnhubStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWeb
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pStock = make_shared<CFinnhubStock>();
+			pStock->SetExchangeCode(m_strInquiringExchange);
 			s = jsonGetString(it, _T("currency"));
 			if (!s.empty()) pStock->SetCurrency(s.c_str());
 			s = jsonGetString(it, _T("description"));

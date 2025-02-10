@@ -75,6 +75,7 @@ namespace FireBirdTest {
 			m_pStock->SetCurrency(_T(""));
 			m_pWebData = pData->m_pData;
 			m_finnhubStockSymbolProduct.__Test_checkAccessRight(m_pWebData);
+			m_finnhubStockSymbolProduct.SetInquiringExchange(_T("US"));
 
 			m_pvStock = nullptr;
 		}
@@ -120,6 +121,7 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvStock->at(0)->GetIsin(), _T("not null")) << "此时内容不为空，需要双引号";
 			EXPECT_STREQ(m_pvStock->at(1)->GetSymbol(), _T("New Symbol"));
 			EXPECT_STREQ(m_pvStock->at(1)->GetIsin(), _T(" ")) << "当内容为空（null）时，使用默认值“ ”";
+			EXPECT_STREQ(m_pvStock->at(0)->GetExchangeCode(), _T("US"));
 			EXPECT_EQ(m_pvStock->size(), 2);
 			break;
 		default:
@@ -159,7 +161,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData30));
 
 	TEST_P(ProcessFinnhubStockSymbolTest, TestParseFinnhubStockSymbol0) {
-		CFinnhubStockPtr pStock;
+		CFinnhubStockPtr pStock, pStock2;
 		m_finnhubStockSymbolProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
@@ -176,7 +178,13 @@ namespace FireBirdTest {
 			EXPECT_STREQ(pStock->GetExchangeCode(), _T("AD")) << "第一个交易所";
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 
+			pStock2 = gl_dataContainerFinnhubStock.GetStock(_T("A"));
+			EXPECT_TRUE(pStock2->IsUpdateProfileDB());
+
 		// 恢复原状
+			pStock->SetExchangeCode(_T("US"));
+			pStock2->SetUpdateProfileDB(false);
+
 			gl_dataContainerFinnhubStock.Delete(pStock);
 			break;
 		default:

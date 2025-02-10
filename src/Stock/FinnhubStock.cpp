@@ -61,7 +61,6 @@ void CFinnhubStock::Load(CSetFinnhubStock& setFinnhubStock) {
 	m_strCusip = setFinnhubStock.m_Cusip;
 	m_strSedol = setFinnhubStock.m_Sedol;
 	m_lEmployeeTotal = setFinnhubStock.m_EmployeeTotal;
-	//m_strExchangeCode = setFinnhubStock.m_ListedExchange;
 	m_strGgroup = setFinnhubStock.m_Ggroup;
 	m_strGind = setFinnhubStock.m_Gind;
 	m_strGsector = setFinnhubStock.m_Gsector;
