@@ -67,7 +67,7 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const
 		s = jsonGetString(js, _T("currency"));
 		if (!s.empty()) pStock->SetCurrency(s.c_str());
 		s = jsonGetString(js, _T("exchange"));
-		if (!s.empty()) pStock->SetExchangeCode(s.c_str());
+		//if (!s.empty()) pStock->SetExchangeCode(s.c_str()); // 这里是交易所的全称，不使用此项数据。
 		s = jsonGetString(js, _T("name"));
 		if (!s.empty()) pStock->SetName(s.c_str());
 		s = jsonGetString(js, _T("finnhubIndustry"));

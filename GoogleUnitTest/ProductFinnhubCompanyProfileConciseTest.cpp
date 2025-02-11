@@ -102,32 +102,38 @@ namespace FireBirdTest {
 		m_FinnhubCompanyProfileConcise.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
+			EXPECT_STREQ(m_pStock->GetExchangeCode(), _T("US")) << "交易所代码不使用读取的数据";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 1: // 无权利访问的数据
+			EXPECT_STREQ(m_pStock->GetExchangeCode(), _T("US")) << "交易所代码不使用读取的数据";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 2: // 格式不对
+			EXPECT_STREQ(m_pStock->GetExchangeCode(), _T("US")) << "交易所代码不使用读取的数据";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 3: // 缺乏address项
+			EXPECT_STREQ(m_pStock->GetExchangeCode(), _T("US")) << "交易所代码不使用读取的数据";
 			EXPECT_STRNE(m_pStock->GetCountry(), _T("US")) << "没有赋值此项";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 4: // 空数据
+			EXPECT_STREQ(m_pStock->GetExchangeCode(), _T("US")) << "交易所代码不使用读取的数据";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 10:
+			EXPECT_STREQ(m_pStock->GetExchangeCode(), _T("US")) << "交易所代码不使用读取的数据";
 			EXPECT_STREQ(m_pStock->GetTicker(), _T("AAPL"));
 			EXPECT_STREQ(m_pStock->GetCountry(), _T("US"));
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());

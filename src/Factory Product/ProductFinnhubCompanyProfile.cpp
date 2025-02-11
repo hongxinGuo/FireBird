@@ -90,7 +90,7 @@ bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebDat
 		s = jsonGetString(js, _T("description"));
 		if (!s.empty()) pStock->SetDescription(s.c_str());
 		s = jsonGetString(js, _T("exchange"));
-		if (!s.empty()) pStock->SetExchangeCode(s.c_str());
+		//if (!s.empty()) pStock->SetExchangeCode(s.c_str()); // 不使用此项数据
 		s = jsonGetString(js, _T("ggroup"));
 		if (!s.empty()) pStock->SetGgroup(s.c_str());
 		s = jsonGetString(js, _T("gind"));

@@ -10,46 +10,31 @@ CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 }
 
 CString CProductFinnhubStockSymbol::CreateMessage() {
-	const auto strParam = gl_dataContainerFinnhubStockExchange.GetExchangeCode(m_lIndex);
+	m_strInquiringExchange = gl_dataContainerFinnhubStockExchange.GetExchangeCode(m_lIndex);
 
-	m_strInquiringExchange = strParam;
-	TRACE("stock exchange: %s\n", m_strInquiringExchange);
-	m_strInquiry = m_strInquiryFunction + strParam;
+	m_strInquiry = m_strInquiryFunction + m_strInquiringExchange;
 	return m_strInquiry;
 }
 
 void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto strExchangeCode = gl_dataContainerFinnhubStockExchange.GetExchangeCode(m_lIndex);
 	const auto pvStock = ParseFinnhubStockSymbol(pWebData);
 	const auto pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(m_lIndex);
 	pExchange->SetStockSymbolUpdated(true);
-	// 加上交易所代码。
-	for (const auto& pStock3 : *pvStock) {
-		pStock3->SetExchangeCode(strExchangeCode);
-	}
+
 	//检查合法性：只有美国股票代码无须加上交易所后缀。
 	if (!pvStock->empty()) {
 		const auto pStock = pvStock->at(0);
-		if (IsNeedAddExchangeCode(pStock->GetSymbol(), strExchangeCode) && (strExchangeCode.CompareNoCase(_T("US")) == 0)) {
-			gl_systemMessage.PushErrorMessage(_T("股票代码格式不符：") + pStock->GetSymbol() + _T("  ") + strExchangeCode);
+		if (IsNeedAddExchangeCode(pStock->GetSymbol(), m_strInquiringExchange) && (m_strInquiringExchange.CompareNoCase(_T("US")) == 0)) {
+			gl_systemMessage.PushErrorMessage(_T("股票代码格式不符：") + pStock->GetSymbol() + _T("  ") + m_strInquiringExchange);
 		}
 	}
-	for (const auto& pStock2 : *pvStock) {
-		if (!gl_dataContainerFinnhubStock.IsSymbol(pStock2)) {
-			pStock2->SetTodayNewStock(true);
-			pStock2->SetUpdateProfileDB(true); // 此股票需要加入数据库中。
-			gl_dataContainerFinnhubStock.Add(pStock2);
-		}
-		else {
-			auto pStock = gl_dataContainerFinnhubStock.GetStock(pStock2->GetSymbol());
-			if (pStock->GetExchangeCode().Compare(pStock2->GetExchangeCode()) != 0) {
-				pStock->SetExchangeCode(pStock2->GetExchangeCode());
-				pStock->SetUpdateProfileDB(true);
-			}
+	for (const auto& pStock : *pvStock) {
+		if (!gl_dataContainerFinnhubStock.IsSymbol(pStock)) {
+			pStock->SetTodayNewStock(true);
+			pStock->SetUpdateProfileDB(true); // 此股票需要加入数据库中。
+			gl_dataContainerFinnhubStock.Add(pStock);
 		}
 	}
-	//string s = fmt::format("今日{}市场股票总数为：{:Ld}", pvStock->at(0)->GetExchangeCode().GetBuffer(), pvStock->size());
-	//gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
 }
 
 bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(const CString& strStockSymbol, const CString& strExchangeCode) {
@@ -92,7 +77,7 @@ CFinnhubStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWeb
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pStock = make_shared<CFinnhubStock>();
-			pStock->SetExchangeCode(m_strInquiringExchange);
+			pStock->SetExchangeCode(m_strInquiringExchange); // 数据中没有交易所代码，在此处加上。
 			s = jsonGetString(it, _T("currency"));
 			if (!s.empty()) pStock->SetCurrency(s.c_str());
 			s = jsonGetString(it, _T("description"));

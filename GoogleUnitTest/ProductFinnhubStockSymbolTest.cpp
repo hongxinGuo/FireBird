@@ -141,6 +141,7 @@ namespace FireBirdTest {
 
 			m_finnhubStockSymbolProduct.SetMarket(gl_pWorldMarket);
 			m_finnhubStockSymbolProduct.SetIndex(0); // 第一个交易所（AS)
+			m_finnhubStockSymbolProduct.SetInquiringExchange(gl_dataContainerFinnhubStockExchange.GetExchangeCode(0));
 		}
 
 		void TearDown() override {
@@ -175,16 +176,10 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol(_T("New Symbol"))) << "新增加的代码";
 			pStock = gl_dataContainerFinnhubStock.GetStock(_T("New Symbol"));
-			EXPECT_STREQ(pStock->GetExchangeCode(), _T("AD")) << "第一个交易所";
+			EXPECT_STREQ(pStock->GetExchangeCode(), _T("AD")) << "测试数据库的第一个交易所";
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 
-			pStock2 = gl_dataContainerFinnhubStock.GetStock(_T("A"));
-			EXPECT_TRUE(pStock2->IsUpdateProfileDB());
-
 		// 恢复原状
-			pStock->SetExchangeCode(_T("US"));
-			pStock2->SetUpdateProfileDB(false);
-
 			gl_dataContainerFinnhubStock.Delete(pStock);
 			break;
 		default:
