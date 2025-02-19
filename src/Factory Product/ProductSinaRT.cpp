@@ -29,8 +29,10 @@ CString CProductSinaRT::CreateMessage() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 使用thread pool + coroutine协程并行解析，速度比单线程模式要快一倍以上。
+// Note 8个核心的cpu，并行数只能设置为4个左右，更高的设置并不能缩短执行时间，且导致执行时间延长，原因待查。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductSinaRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
+	if (pWebData->GetBufferLength() == 0) return;
 	ParseSinaRTData(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
 }

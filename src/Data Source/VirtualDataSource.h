@@ -131,7 +131,6 @@ protected:
 	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // ÍøÂç²éÑ¯ÃüÁî¶ÓÁĞ
 	CVirtualProductWebDataPtr m_pCurrentProduct{ nullptr };
 
-	bool m_fWebError{ false }; //ÍøÂç¶ÁÈ¡´íÎó
 	atomic_int64_t m_dwHTTPStatusCode{ 0 }; // ÍøÂç×´Ì¬Âë
 	atomic_int64_t m_dwWebErrorCode{ 0 }; // ÍøÂç´íÎóÂë
 	enum_ErrorMessageData m_eErrorMessageData{ ERROR_NO_ERROR__ };

@@ -46,9 +46,9 @@ string_view CWebData::GetCurrentSinaData() {
 	const string_view svCurrentTotal = string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos);
 	const auto lStart = svCurrentTotal.find_first_of('v');
 	const auto lEnd = svCurrentTotal.find_first_of(';');
-	if (lStart > svCurrentTotal.length() || lEnd > svCurrentTotal.length() || lStart > lEnd) {
-		throw std::exception(_T("GetCurrentSinaData() out of range"));
-	}
+	ASSERT(lStart <= svCurrentTotal.length());
+	ASSERT(lEnd <= svCurrentTotal.length());
+	ASSERT(lStart <= lEnd);
 	IncreaseCurrentPos(lEnd + 1); // 将当前位置移至当前数据结束处之后
 	return svCurrentTotal.substr(lStart, lEnd - lStart + 1); // 包括最后的字符';'
 }

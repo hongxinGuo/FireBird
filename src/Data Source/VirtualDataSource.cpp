@@ -57,7 +57,7 @@ void CVirtualDataSource::InquireData() {
 	ASSERT(gl_systemConfiguration.IsWorkingMode()); // 不允许测试
 	ASSERT(IsInquiring());
 
-	static time_t s_LastInquiryTime = 0;
+	auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 
 	vector<result<CWebDataPtr>> vResults;
 	while (HaveInquiry()) { // 一次申请可以有多个数据
@@ -66,19 +66,8 @@ void CVirtualDataSource::InquireData() {
 		CInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
 		auto background = gl_runtime.background_executor();
 		auto result = gl_runtime.background_executor()->submit([this, pEngine] { //Note 只能使用thread_pool_executor或者background_executor
-				auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 				auto pWebData = pEngine->GetWebData();
 				if (!pEngine->IsWebError()) this->UpdateStatus(pWebData);
-				auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-				time_t ttCurrentInquiryTime = (end - start).count();
-				if (s_LastInquiryTime > m_iMaxNormalInquireTime && ttCurrentInquiryTime > m_iMaxNormalInquireTime) {
-					SetWebBusy(true); //
-				}
-				else {
-					SetWebBusy(false);
-				}
-				s_LastInquiryTime = ttCurrentInquiryTime;
-				SetCurrentInquiryTime(ttCurrentInquiryTime);
 				SetHTTPStatusCode(pEngine->GetHTTPStatusCode());
 				SetWebErrorCode(pEngine->GetErrorCode());
 				return pWebData;
@@ -93,26 +82,15 @@ void CVirtualDataSource::InquireData() {
 			pvWebData->push_back(p);
 		}
 	}
-	if (vResults.size() == pvWebData->size()) { // no web error?
-		m_fWebError = false;
-	}
-	else { // web error
-		m_fWebError = true;
-		CString strMessage2 = str + m_strInquiry.Left(70);
-		gl_warnLogger->warn("virtualDataSource thread number not match {} -- {}  {}", vResults.size(), pvWebData->size(), strMessage2.GetBuffer());
-	}
 	if (!gl_systemConfiguration.IsExitingSystem() && !pvWebData->empty()) {
 		m_eErrorMessageData = IsAErrorMessageData(pvWebData->at(0)); // 返回的数据是错误信息？检查错误，判断申请资格，更新禁止目录
 		m_pCurrentProduct->ParseAndStoreWebData(pvWebData);
 		m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource的智能指针
 	}
+	auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
+	SetCurrentInquiryTime((end - start).count());
 	ASSERT(!HaveInquiry()); // 没有现存的申请
-	//ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
-	if (!IsInquiring()) {
-		CString strMessage = str + m_strInquiry.Left(70);
-		gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
-		gl_warnLogger->warn("CVirtualWebData.InquireData() reentry: {}", strMessage.GetBuffer());
-	}
+	ASSERT(IsInquiring()); // 执行到此时，尚不允许申请下次的数据。
 	SetInquiring(false); // 此标识的重置需要位于位于最后一步
 }
 

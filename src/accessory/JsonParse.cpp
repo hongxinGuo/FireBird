@@ -137,14 +137,10 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe,
 		auto chunk_end = chunk_begin + chunk_size;
 		if (chunk_end > DataSize) chunk_end = DataSize;
 		auto result = tpe->submit([pvStringView, chunk_begin, chunk_end] {
-			try {
-				for (auto j = chunk_begin; j < chunk_end; j++) {
-					const auto pRTData = make_shared<CWebRTData>();
-					pRTData->ParseSinaData(pvStringView->at(j));
-					gl_qChinaMarketRTData.enqueue(pRTData); // Note 多个协程并行往里存时，无法通过size_approx()函数得到队列数量。
-				}
-			} catch (exception& e) {
-				ReportErrorToSystemMessage(_T("ParseSinaData异常 "), e);
+			for (auto j = chunk_begin; j < chunk_end; j++) {
+				const auto pRTData = make_shared<CWebRTData>();
+				pRTData->ParseSinaData(pvStringView->at(j));
+				gl_qChinaMarketRTData.enqueue(pRTData); // Note 多个协程并行往里存时，无法通过size_approx()函数得到队列数量。
 			}
 			return true;
 		});
@@ -152,7 +148,7 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe,
 	}
 	bool succeed = true;
 	for (auto& r : results) {
-		succeed = succeed & co_await r;
+		succeed &= co_await r;
 	}
 	co_return succeed;
 }
@@ -160,15 +156,11 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe,
 void ParseSinaRTData(const CWebDataPtr& pWebData) {
 	pWebData->ResetCurrentPos();
 	const shared_ptr<vector<string_view>> pvStringView = make_shared<vector<string_view>>();
-	try {
-		while (!pWebData->IsLastDataParagraph()) {
-			pvStringView->emplace_back(pWebData->GetCurrentSinaData());
-		}
-	} catch (exception& e) {
-		ReportErrorToSystemMessage(_T("ParseSinaData异常 "), e);
+	while (!pWebData->IsLastDataParagraph()) {
+		pvStringView->emplace_back(pWebData->GetCurrentSinaData());
 	}
 	auto result = ParseSinaRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView); //Note 必须使用thread_pool_executor
-	result.get();
+	result.get(); // 堵塞在这里
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
