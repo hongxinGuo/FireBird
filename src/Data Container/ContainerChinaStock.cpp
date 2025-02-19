@@ -123,8 +123,8 @@ void CContainerChinaStock::UpdateStockProfileDB() {
 			setChinaStockSymbol.Close();
 			m_lLoadedStock = m_vStock.size();
 			ASSERT(iCount == iStockCodeNeedUpdate);
-		} catch (CException* e) {
-			ReportInformationAndDeleteException(e);
+		} catch (CException& e) {
+			ReportInformation(e);
 		}
 	}
 }

@@ -10,8 +10,8 @@ bool CContainerForexDayLine::SaveDB(const CString& strCryptoSymbol) {
 	try {
 		CSetForexDayLine setForexDayLineBasic;
 		UpdateBasicDB(&setForexDayLineBasic, strCryptoSymbol);
-	} catch (CException* e) {
-		ReportInformationAndDeleteException(e);
+	} catch (CException& e) {
+		ReportInformation(e);
 	}
 
 	return true;

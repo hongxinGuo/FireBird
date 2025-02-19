@@ -1155,8 +1155,8 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
 		}
 
 		dataChinaWeekLine.SaveCurrentWeekLine();
-	} catch (CException* e) {
-		ReportInformationAndDeleteException(e);
+	} catch (CException& e) {
+		ReportInformation(e);
 	}
 
 	return true;
@@ -1593,12 +1593,8 @@ void CChinaMarket::UpdateOptionDB() {
 		}
 		setOption.m_pDatabase->CommitTrans();
 		setOption.Close();
-	}
-	//catch (CException* e) {
-	//ReportInformationAndDeleteException(e);
-	//}
-	catch (CException* e) {
-		ReportInformationAndDeleteException(e);
+	} catch (CException& e) {
+		ReportInformation(e);
 	}
 }
 
@@ -1667,8 +1663,8 @@ void CChinaMarket::UpdateChosenStockDB() const {
 		}
 		setChinaChosenStock.m_pDatabase->CommitTrans();
 		setChinaChosenStock.Close();
-	} catch (CException* e) {
-		ReportInformationAndDeleteException(e);
+	} catch (CException& e) {
+		ReportInformation(e);
 	}
 }
 
@@ -1689,8 +1685,8 @@ void CChinaMarket::AppendChosenStockDB() {
 		}
 		setChinaChosenStock.m_pDatabase->CommitTrans();
 		setChinaChosenStock.Close();
-	} catch (CException* e) {
-		ReportInformationAndDeleteException(e);
+	} catch (CException& e) {
+		ReportInformation(e);
 	}
 }
 

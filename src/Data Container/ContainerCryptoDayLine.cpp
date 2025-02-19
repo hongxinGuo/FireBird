@@ -10,9 +10,8 @@ bool CContainerCryptoDayLine::SaveDB(const CString& strCryptoSymbol) {
 	try {
 		CSetCryptoDayLine setCryptoDayLineBasic;
 		UpdateBasicDB(&setCryptoDayLineBasic, strCryptoSymbol);
-	}
-	catch (CException* e) {
-		ReportInformationAndDeleteException(e);
+	} catch (CException& e) {
+		ReportInformation(e);
 	}
 
 	return true;

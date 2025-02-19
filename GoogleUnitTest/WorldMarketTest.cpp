@@ -409,8 +409,7 @@ namespace FireBirdTest {
 		} catch (std::exception& e) {
 			EXPECT_TRUE(false) << e.what();
 		}
-		catch (CException* e) {
-			ReportInformationAndDeleteException(e);
+		catch (CException&) {
 		}
 		catch (...) {
 			EXPECT_TRUE(false) << "δ֪exception";

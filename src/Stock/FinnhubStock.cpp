@@ -293,8 +293,8 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 		}
 		setInsiderTransaction.m_pDatabase->CommitTrans();
 		setInsiderTransaction.Close();
-	} catch (CException* e) {
-		ReportInformationAndDeleteException(e);
+	} catch (CException& e) {
+		ReportInformation(e);
 	}
 }
 
@@ -337,8 +337,8 @@ void CFinnhubStock::UpdateInsiderSentimentDB() {
 		}
 		setInsiderSentiment.m_pDatabase->CommitTrans();
 		setInsiderSentiment.Close();
-	} catch (CException* e) {
-		ReportInformationAndDeleteException(e);
+	} catch (CException& e) {
+		ReportInformation(e);
 	}
 }
 
@@ -469,8 +469,8 @@ void CFinnhubStock::AppendBasicFinancialAnnual() const {
 		m_pBasicFinancial->AppendAnnualData(setAnnual);
 		setAnnual.m_pDatabase->CommitTrans();
 		setAnnual.Close();
-	} catch (CException* e) {
-		ReportInformationAndDeleteException(e);
+	} catch (CException& e) {
+		ReportInformation(e);
 	}
 }
 
@@ -484,8 +484,8 @@ void CFinnhubStock::AppendBasicFinancialQuarter() const {
 		m_pBasicFinancial->AppendQuarterData(setQuarter);
 		setQuarter.m_pDatabase->CommitTrans();
 		setQuarter.Close();
-	} catch (CException* e) {
-		ReportInformationAndDeleteException(e);
+	} catch (CException& e) {
+		ReportInformation(e);
 	}
 }
 

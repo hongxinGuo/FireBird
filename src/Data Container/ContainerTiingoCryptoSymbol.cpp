@@ -72,8 +72,8 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 			}
 			setWorldCrypto.m_pDatabase->CommitTrans();
 			setWorldCrypto.Close();
-		} catch (CException* e) {
-			ReportInformationAndDeleteException(e);
+		} catch (CException& e) {
+			ReportInformation(e);
 		}
 	}
 }

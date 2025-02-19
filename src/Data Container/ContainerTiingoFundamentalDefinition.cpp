@@ -61,8 +61,8 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB() {
 					pTiingoFundamentalDefinition->Append(setTiingoFundamentalDefinition);
 				}
 			}
-		} catch (CException* e) {
-			ReportInformationAndDeleteException(e);
+		} catch (CException& e) {
+			ReportInformation(e);
 		}
 		setTiingoFundamentalDefinition.m_pDatabase->CommitTrans();
 		setTiingoFundamentalDefinition.Close();

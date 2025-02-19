@@ -11,8 +11,8 @@ bool CContainerFinnhubStockDayLine::SaveDB(const CString& strStockSymbol) {
 	try {
 		CSetFinnhubStockDayLine setFinnhubStockDayLineBasic;
 		UpdateBasicDB(&setFinnhubStockDayLineBasic, strStockSymbol);
-	} catch (CException* e) {
-		ReportInformationAndDeleteException(e);
+	} catch (CException& e) {
+		ReportInformation(e);
 	}
 
 	return true;

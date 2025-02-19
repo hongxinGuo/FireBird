@@ -98,15 +98,12 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 	auto pvTiingoIEXLastTopOFBook = make_shared<vector<CTiingoIEXTopOfBookPtr>>();
 	CString strNULL = _T(" ");
 	CTiingoIEXTopOfBookPtr pIEXLastTopOFBook = nullptr;
-	CTiingoStock stock;
 	string s1;
-	stringstream ss;
 	CString strNumber;
-	int year, month, day, hour, minute, second;
-	int hourOffset, minuteOffset;
 	if (!IsValidData(pWebData)) return pvTiingoIEXLastTopOFBook;
 
 	try {
+		stringstream ss;
 		string_view svJson = pWebData->GetStringView(0, pWebData->GetBufferLength());
 		ondemand::parser parser;
 		const simdjson::padded_string jsonPadded(svJson);
@@ -115,19 +112,24 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 		CString str;
 		int iCount = 0;
 		for (auto item : doc) {
+			CTiingoStock stock;
 			auto itemValue = item.value();
+			pIEXLastTopOFBook = nullptr;
 			pIEXLastTopOFBook = make_shared<CTiingoIEXTopOfBook>();
 			s1 = jsonGetStringView(itemValue, _T("ticker"));
 			pIEXLastTopOFBook->m_strTicker = s1.c_str();
 			s1 = jsonGetStringView(itemValue, _T("timestamp"));
+			ss.clear();
 			ss.str(s1);
-			chrono::from_stream(ss, "%FT%T%Ez", pIEXLastTopOFBook->m_timeStamp);
+			chrono::from_stream(ss, _T("%FT%T%Ez"), pIEXLastTopOFBook->m_timeStamp);
 			s1 = jsonGetStringView(itemValue, _T("lastSaleTimestamp"));
+			ss.clear();
 			ss.str(s1);
-			chrono::from_stream(ss, "%FT%T%Ez", pIEXLastTopOFBook->m_lastSale);
+			chrono::from_stream(ss, "%FT%T%0z", pIEXLastTopOFBook->m_lastSale);
 			s1 = jsonGetStringView(itemValue, _T("quoteTimestamp"));
+			ss.clear();
 			ss.str(s1);
-			chrono::from_stream(ss, "%FT%T%Ez", pIEXLastTopOFBook->m_quote);
+			chrono::from_stream(ss, "%FT%T%0z", pIEXLastTopOFBook->m_quote);
 
 			pIEXLastTopOFBook->m_lHigh = jsonGetDouble(itemValue, _T("high")) * stock.GetRatio();
 			pIEXLastTopOFBook->m_lLow = jsonGetDouble(itemValue, _T("low")) * stock.GetRatio();

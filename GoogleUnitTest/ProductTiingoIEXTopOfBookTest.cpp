@@ -64,7 +64,7 @@ namespace FireBirdTest {
 	}
 
 	// 正确的数据
-	Test_TiingoWebData tiingoIEXTopOfBook1(1, _T(""), _T("[{\"ticker\":\"000001\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.6213, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"000002\",\"timestamp\" : \"2024-09-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]"));
+	Test_TiingoWebData tiingoIEXTopOfBook1(1, _T(""), _T("[{\"ticker\":\"000001\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.6213, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"000002\",\"timestamp\" : \"2024-03-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]"));
 	// 第一个数据缺项
 	Test_TiingoWebData tiingoIEXTopOfBook2(2,_T(""), _T("[{\"ticker\":\"000001\", \"timestamp\" : \"2024-09-30T20:00:00+00:00\", \"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\", \"open\" : 11.62, \"high\" : 12.3, \"low\" : 11.56, \"mid\" : null, \"tngoLast\" : 12.21, \"last\" : 12.21, \"lastSize\" : null, \"bidSize\" : null, \"bidPrice\" : null, \"askPrice\" : null, \"askSize\" : null, \"volume\" : 543028360, \"prevClose\" : 11.42}, { \"ticker\":\"000002\",\"timestamp\" : \"2024-09-30T20:00:00+00:00\",\"lastSaleTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"quoteTimestamp\" : \"2024-09-30T20:00:00+00:00\",\"open\" : 9.72,\"high\" : 9.72,\"low\" : 9.27,\"mid\" : null,\"tngoLast\" : 9.72,\"last\" : 9.72,\"lastSize\" : null,\"bidSize\" : null,\"bidPrice\" : null,\"askPrice\" : null,\"askSize\" : null,\"volume\" : 579726570,\"prevClose\" : 8.84 }]"));
 	// 第二个数据缺项
@@ -117,6 +117,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLow, 115600);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lNew, 122100);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_llVolume, 543028360);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(1)->m_timeStamp.time_since_epoch().count(), 1711828800);
 			break;
 		case 2: // 格式不对
 			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);

@@ -287,16 +287,12 @@ bool CTiingoDataSource::GenerateCryptoSymbol() {
 bool CTiingoDataSource::GenerateIEXTopOfBook(long lCurrentTime) {
 	ASSERT(!IsInquiring());
 	if (IsUpdateIEXTopOfBook()) {
-		if (gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate() < gl_pWorldMarket->GetCurrentTradeDate()) {
-			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, TIINGO_IEX_TOP_OF_BOOK_);
-			StoreInquiry(p);
-			SetInquiring(true);
-			gl_systemMessage.SetCurrentTiingoFunction(_T("IEX top of book"));
-			return true;
-		}
-		else {
-			SetUpdateIEXTopOfBook(false); // 申请过最近交易日的数据了
-		}
+		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, TIINGO_IEX_TOP_OF_BOOK_);
+		StoreInquiry(p);
+		SetInquiring(true);
+		gl_systemMessage.SetCurrentTiingoFunction(_T("IEX top of book"));
+		SetUpdateIEXTopOfBook(false); // 申请过最近交易日的数据了
+		return true;
 	}
 	return false;
 }

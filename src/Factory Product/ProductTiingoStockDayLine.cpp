@@ -112,7 +112,6 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 	auto pvDayLine = make_shared<vector<CTiingoDayLinePtr>>();
 	string s;
 	json js;
-	stringstream ss;
 
 	if (!pWebData->CreateJson(js)) return pvDayLine;
 	if (!IsValidData(pWebData)) return pvDayLine;

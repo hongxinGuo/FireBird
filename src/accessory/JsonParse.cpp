@@ -432,8 +432,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		chrono::from_stream(ss, "%Y/%m/%d %T", tpTime);
 		tpTime -= gl_pChinaMarket->GetTimeZoneOffset();
 		pWebRTData->SetTimePoint(tpTime);
-		auto tt = tpTime.time_since_epoch().count();
-		pWebRTData->SetTransactionTime(tt);
+		pWebRTData->SetTransactionTime(tpTime.time_since_epoch().count());
 	} catch (json::exception& e) {// 结构不完整
 		// do nothing
 		CString strError2 = strSymbol4;
@@ -514,6 +513,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 	try {
 		string strTime;
+		std::stringstream ss;
 		auto timeZoneOffset = gl_pChinaMarket->GetTimeZoneOffset();
 		ondemand::parser parser;
 		const padded_string jsonPadded(svJsonData);
@@ -555,12 +555,12 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 			pWebRTData->SetPSell(2, StrToDecimal(jsonGetRawJsonToken(item, _T("ask3")), 3));
 			pWebRTData->SetPSell(1, StrToDecimal(jsonGetRawJsonToken(item, _T("ask2")), 3));
 			strTime = jsonGetStringView(item, _T("time"));
-			std::stringstream ss(strTime);
+			ss.clear();
+			ss.str(strTime);
 			chrono::sys_seconds tpTime;
 			chrono::from_stream(ss, "%Y/%m/d %T", tpTime);
 			tpTime -= timeZoneOffset;
-			auto tt = tpTime.time_since_epoch().count();
-			pWebRTData->SetTransactionTime(tt);
+			pWebRTData->SetTransactionTime(tpTime.time_since_epoch().count());
 			pWebRTData->SetLastClose(StrToDecimal(jsonGetRawJsonToken(item, _T("yestclose")), 3));
 			pWebRTData->SetAmount(StrToDecimal(jsonGetRawJsonToken(item, _T("turnover")), 0));
 

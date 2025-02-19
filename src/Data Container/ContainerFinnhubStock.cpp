@@ -222,7 +222,6 @@ void CContainerFinnhubStock::UpdateBasicFinancialMetricDB(const vector<CFinnhubS
 	const auto iBasicFinancialNeedUpdate = vStock.size();
 	size_t iCurrentUpdated = 0;
 
-	ASSERT(IsUpdateBasicFinancialDB());
 	setBasicFinancialMetric.m_strSort = _T("[Symbol]");
 	setBasicFinancialMetric.Open();
 	setBasicFinancialMetric.m_pDatabase->BeginTrans();

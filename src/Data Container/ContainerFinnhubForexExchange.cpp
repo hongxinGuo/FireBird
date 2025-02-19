@@ -60,8 +60,8 @@ bool CContainerFinnhubForexExchange::UpdateDB() {
 			setForexExchange.m_pDatabase->CommitTrans();
 			setForexExchange.Close();
 			m_llLastTotalForexExchange = m_vForexExchange.size();
-		} catch (CException* e) {
-			ReportInformationAndDeleteException(e);
+		} catch (CException& e) {
+			ReportInformation(e);
 		}
 		return true;
 	}

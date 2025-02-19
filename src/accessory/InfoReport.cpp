@@ -26,3 +26,10 @@ void ReportInformationAndDeleteException(CException* e) {
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
 	delete e;
 }
+
+void ReportInformation(CException& e) {
+	char buffer[200];
+	e.GetErrorMessage(buffer, 200);
+	const CString str = buffer;
+	gl_systemMessage.PushInnerSystemInformationMessage(str);
+}

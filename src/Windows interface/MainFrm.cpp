@@ -112,6 +112,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnProcessTiingoDayline)
 	ON_UPDATE_COMMAND_UI(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnUpdateProcessTiingoDayline)
 	ON_COMMAND(ID_CALCULATE_NEW_LOW_FIVE_TIMES, &CMainFrame::OnCalculateNewLowFiveTimes)
+	ON_COMMAND(ID_INQUIRE_IEX_TOP_OF_BOOK, &CMainFrame::OnInquireIexTopOfBook)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1214,7 +1215,11 @@ void CMainFrame::OnResetTiingoDaylineDate() {
 }
 
 void CMainFrame::OnCreateTiingoTradeDayDayline() {
-	gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine(gl_pWorldMarket->GetMarketTime());
+	gl_runtime.thread_executor()->post([] {
+		gl_UpdateWorldMarketDB.acquire();
+		gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
+		gl_UpdateWorldMarketDB.release();
+	});
 }
 
 void CMainFrame::OnUpdateCreateTiingoTradeDayDayline(CCmdUI* pCmdUI) {
@@ -1240,4 +1245,8 @@ void CMainFrame::OnCalculateNewLowFiveTimes() {
 	gl_runtime.thread_executor()->post([] {
 		gl_dataContainerTiingoStock.TaskCalculate2();
 	});
+}
+
+void CMainFrame::OnInquireIexTopOfBook() {
+	gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true); //
 }

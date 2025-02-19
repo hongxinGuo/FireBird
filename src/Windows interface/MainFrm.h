@@ -137,4 +137,5 @@ public:
 	afx_msg void OnProcessTiingoDayline();
 	afx_msg void OnUpdateProcessTiingoDayline(CCmdUI* pCmdUI);
 	afx_msg void OnCalculateNewLowFiveTimes();
+	afx_msg void OnInquireIexTopOfBook();
 };

@@ -17,8 +17,8 @@ bool CContainerChinaWeekLine::SaveDB(const CString& strStockSymbol) {
 		CSetWeekLineExtendInfo setWeekLineExtend;
 		UpdateBasicDB(&setWeekLineBasic, strStockSymbol);
 		SaveExtendDB(&setWeekLineExtend);
-	} catch (CException* e) {
-		ReportInformationAndDeleteException(e);
+	} catch (CException& e) {
+		ReportInformation(e);
 	}
 
 	return true;

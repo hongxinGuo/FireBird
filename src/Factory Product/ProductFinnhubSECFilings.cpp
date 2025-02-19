@@ -65,9 +65,9 @@ void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWebDataPtr& pWebData) {
 	CSECFilingsPtr pvSECFilings = make_shared<vector<CSECFilingPtr>>();
 	string s1;
-	std::stringstream ss;
 	if (!IsValidData(pWebData)) return pvSECFilings;
 	try {
+		std::stringstream ss;
 		string_view svJson = pWebData->GetStringView(0, pWebData->GetBufferLength());
 		ondemand::parser parser;
 		const simdjson::padded_string jsonPadded(svJson);

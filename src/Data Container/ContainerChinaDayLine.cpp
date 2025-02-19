@@ -16,8 +16,8 @@ bool CContainerChinaDayLine::SaveDB(const CString& strStockSymbol) {
 	try {
 		CSetDayLineBasicInfo setDayLineBasic;
 		UpdateBasicDB(&setDayLineBasic, strStockSymbol);
-	} catch (CException* e) {
-		ReportInformationAndDeleteException(e);
+	} catch (CException& e) {
+		ReportInformation(e);
 	}
 
 	return true;
