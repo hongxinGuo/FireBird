@@ -16,6 +16,9 @@ using namespace testing;
 // fmt库默认使用unicode字符,本系统默认使用多字节字符。关闭fmt默认项
 #define FMT_UNICODE 0
 
+#include"simdjson.h"
+using namespace simdjson;
+
 #include"globedef.h"
 
 #endif

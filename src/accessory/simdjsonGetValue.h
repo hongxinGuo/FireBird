@@ -1,8 +1,5 @@
 #pragma once
 
-#include"simdjson.h"
-using namespace simdjson;
-
 void CreateSimdjsonEmptyArray();
 
 [[nodiscard]] double jsonGetDouble(ondemand::value& value, const string_view& key, double defaultValue = 0.0);

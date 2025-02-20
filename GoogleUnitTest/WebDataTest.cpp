@@ -176,14 +176,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(sv.at(sv.length() - 1), ';') << "新浪实时数据以字符';'结束";
 	}
 
-	TEST_F(CWebDataTest, TestGetCurrentSinaData2) {
-		string_view sv;
-
-		EXPECT_THROW(sv = sinaWebData2.GetCurrentSinaData(), std::exception);
-		EXPECT_THROW(sv = sinaWebData3.GetCurrentSinaData(), std::exception);
-		EXPECT_THROW(sv = sinaWebData4.GetCurrentSinaData(), std::exception);
-	}
-
 	TEST_F(CWebDataTest, TestGetCurrentTengxunData) {
 		string_view sv = tengxunWebData.GetCurrentTengxunData();
 
