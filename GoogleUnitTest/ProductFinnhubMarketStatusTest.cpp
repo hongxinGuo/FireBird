@@ -4,6 +4,7 @@
 
 #include"ProductFinnhubMarketStatus.h"
 #include "WorldMarket.h"
+#include"TestWebData.h"
 
 using namespace testing;
 
@@ -43,7 +44,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubMarketStatusProductTest, TestCreatMessage) {
 		MarketStatusProduct.SetMarket(gl_pWorldMarket);
 		MarketStatusProduct.SetIndex(1);
-		EXPECT_STREQ(MarketStatusProduct.CreateMessage(), MarketStatusProduct.GetInquiryFunction() + gl_dataContainerFinnhubStockExchange.GetExchangeCode(1));
+		EXPECT_STREQ(MarketStatusProduct.CreateMessage(), MarketStatusProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetExchangeCode(1));
 	}
 
 	// 正确的数据

@@ -7,6 +7,8 @@
 
 #include "ProductFinnhubStockPriceQuote.h"
 
+#include "WebData.h"
+
 CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/quote?symbol=");
 }

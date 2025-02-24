@@ -21,7 +21,7 @@ using namespace moodycamel;
 #include "ContainerFinnhubEconomicCalendar.h"
 #include "ContainerFinnhubForexExchange.h"
 #include "containerFinnhubForexSymbol.h"
-#include "ContainerFinnhubStockExchange.h"
+#include "ContainerStockExchange.h"
 #include "ContainerStockSymbol.h"
 #include "ContainerTiingoCryptoSymbol.h"
 #include "ContainerTiingoStock.h"
@@ -50,7 +50,7 @@ extern CContainerFinnhubCrypto gl_dataFinnhubCryptoSymbol;
 extern CContainerFinnhubCountry gl_dataContainerFinnhubCountry;
 extern CContainerFinnhubEconomicCalendar gl_dataContainerFinnhubEconomicCalendar;
 
-extern CContainerFinnhubStockExchange gl_dataContainerFinnhubStockExchange;
+extern CContainerStockExchange gl_dataContainerStockExchange;
 extern CContainerFinnhubForexExchange gl_dataContainerFinnhubForexExchange;
 extern CContainerFinnhubCryptoExchange gl_dataContainerFinnhubCryptoExchange;
 

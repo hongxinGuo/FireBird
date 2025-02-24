@@ -9,6 +9,7 @@
 #include "ProductTiingoCryptoDayLine.h"
 
 #include "TimeConvert.h"
+#include "WebData.h"
 
 CProductTiingoCryptoDayLine::CProductTiingoCryptoDayLine() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/crypto/price?");

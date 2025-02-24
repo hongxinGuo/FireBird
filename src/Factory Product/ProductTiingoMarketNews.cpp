@@ -15,6 +15,7 @@
 #include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"
+#include "WebData.h"
 #include "WorldMarket.h"
 
 CProductTiingoMarketNews::CProductTiingoMarketNews() {

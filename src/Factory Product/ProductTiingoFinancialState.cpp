@@ -4,6 +4,7 @@
 #include "ProductTiingoFinancialState.h"
 
 #include"simdjsonGetValue.h"
+#include "WebData.h"
 #include "WorldMarket.h"
 
 map<CString, int> s_mapItem{

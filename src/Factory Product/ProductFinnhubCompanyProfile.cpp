@@ -7,6 +7,8 @@
 
 #include "ProductFinnhubCompanyProfile.h"
 
+#include "WebData.h"
+
 CProductFinnhubCompanyProfile::CProductFinnhubCompanyProfile() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/profile?symbol=");
 }

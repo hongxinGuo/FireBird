@@ -1,7 +1,7 @@
 #pragma once
 
+#include "InternetOption.h"
 #include"VirtualWebProduct.h"
-#include "InquireEngine.h"
 
 enum enum_ErrorMessageData {
 	ERROR_NO_ERROR__ = 0,

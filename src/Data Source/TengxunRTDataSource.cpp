@@ -4,6 +4,7 @@
 #include"ProductTengxunRT.h"
 
 #include "ChinaMarket.h"
+#include "WebData.h"
 
 CTengxunRTDataSource::CTengxunRTDataSource() {
 	m_strInquiryFunction = _T("http://qt.gtimg.cn/q=");

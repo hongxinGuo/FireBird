@@ -5,6 +5,7 @@
 
 #include"ChinaMarket.h"
 #include "ChinaStockCodeConverter.h"
+#include "WebData.h"
 
 CNeteaseDayLineDataSource::CNeteaseDayLineDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());

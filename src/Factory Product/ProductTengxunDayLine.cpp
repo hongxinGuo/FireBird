@@ -4,6 +4,7 @@
 #include"ChinaMarket.h"
 
 #include"JsonParse.h"
+#include "WebData.h"
 
 CProductTengxunDayLine::CProductTengxunDayLine() {
 	m_lCurrentStockPosition = 0;

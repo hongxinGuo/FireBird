@@ -6,6 +6,7 @@
 
 #include"WebRTData.h"
 #include"JsonParse.h"
+#include "WebData.h"
 
 using namespace testing;
 

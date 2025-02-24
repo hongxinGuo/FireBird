@@ -40,7 +40,7 @@
     <ClInclude Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubForexExchange.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubForexSymbol.h" />
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubStockExchange.h" />
+    <ClInclude Include="..\src\Data Container\ContainerStockExchange.h" />
     <ClInclude Include="..\src\Data Container\ContainerForexDayLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerNaicsIndustry.h" />
     <ClInclude Include="..\src\Data Container\ContainerSICIndustry.h" />
@@ -52,6 +52,7 @@
     <ClInclude Include="..\src\Data Container\ContainerFinnhubStockDayline.h" />
     <ClInclude Include="..\src\Data Container\VirtualContainer.h" />
     <ClInclude Include="..\src\Data Source\InquireEngine.h" />
+    <ClInclude Include="..\src\Data Source\InternetOption.h" />
     <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h" />
     <ClInclude Include="..\src\Data Source\FinnhubDataSource.h" />
     <ClInclude Include="..\src\Data Source\NeteaseDaylineDataSource.h" />
@@ -93,7 +94,7 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubRecommendationTrends.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialQuarter.h" />
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockExchange.h" />
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetStockExchange.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetForexDayLine.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetInsiderSentiment.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetInsiderTransaction.h" />
@@ -126,6 +127,7 @@
     <ClInclude Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoMarketNews.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockDailyMeta.h" />
+    <ClInclude Include="..\src\Factory Product\TestWebData.h" />
     <ClInclude Include="..\src\Factory Product\VirtualChinaMarketWebProduct.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketHoliday.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubMarketStatus.h" />
@@ -197,7 +199,7 @@
     <ClInclude Include="..\src\Type\America market\FinnhubCompanyNews.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubRecommendationTrends.h" />
     <ClInclude Include="..\src\Type\America market\FinnhubStockBasicFinancial.h" />
-    <ClInclude Include="..\src\Type\America market\FinnhubStockExchange.h" />
+    <ClInclude Include="..\src\Type\America market\StockExchange.h" />
     <ClInclude Include="..\src\Type\America market\InsiderSentiment.h" />
     <ClInclude Include="..\src\Type\America market\InsiderTransaction.h" />
     <ClInclude Include="..\src\Type\America market\MarketHoliday.h" />
@@ -263,7 +265,7 @@
     <ClCompile Include="..\src\Data Container\ContainerFinnhubEconomicCalendar.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerFinnhubForexExchange.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerFinnhubForexSymbol.cpp" />
-    <ClCompile Include="..\src\Data Container\ContainerFinnhubStockExchange.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerStockExchange.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerForexDayLine.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerStockSymbol.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerTiingoCryptoSymbol.cpp" />
@@ -423,7 +425,7 @@
     <ClCompile Include="..\src\Type\America market\FinnhubCompanyNews.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubRecommendationTrends.cpp" />
     <ClCompile Include="..\src\Type\America market\FinnhubStockBasicFinancial.cpp" />
-    <ClCompile Include="..\src\Type\America market\FinnhubStockExchange.cpp" />
+    <ClCompile Include="..\src\Type\America market\StockExchange.cpp" />
     <ClCompile Include="..\src\Type\America market\InsiderSentment.cpp" />
     <ClCompile Include="..\src\Type\America market\InsiderTransaction.cpp" />
     <ClCompile Include="..\src\Type\America market\NaicesIndustry.cpp" />

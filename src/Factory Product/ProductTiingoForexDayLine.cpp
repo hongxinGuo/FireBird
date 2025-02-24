@@ -10,6 +10,7 @@
 //#include "ProductTiingoForexDayLine.h"
 
 #include "TimeConvert.h"
+#include "WebData.h"
 
 CProductTiingoForexDayLine::CProductTiingoForexDayLine() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/daily/");

@@ -9,6 +9,8 @@
 
 #include "ProductFinnhubCompanyInsiderSentiment.h"
 
+#include "WebData.h"
+
 CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol=");
 }

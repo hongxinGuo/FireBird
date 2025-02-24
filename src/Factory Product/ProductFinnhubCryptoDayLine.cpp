@@ -8,6 +8,8 @@
 
 #include "ProductFinnhubCryptoDayLine.h"
 
+#include "WebData.h"
+
 CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/candle?symbol=");
 }

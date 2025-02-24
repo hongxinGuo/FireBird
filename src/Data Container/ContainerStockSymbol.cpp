@@ -4,7 +4,6 @@
 #include "ContainerStockSymbol.h"
 
 #include"SetStockSection.h"
-#include "InfoReport.h"
 
 CContainerStockSymbol::CContainerStockSymbol() {
 	CContainerStockSymbol::Reset();

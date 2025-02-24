@@ -111,7 +111,9 @@ void CContainerTiingoStock::ResetDayLineStartEndDate() {
 void CContainerTiingoStock::BuildDayLine(long lDate) {
 	CSetTiingoStockDayLine setDayLine;
 	auto lSize = Size();
-	time_t tMarketCloseTime = ConvertToTTime(lDate, gl_pWorldMarket->GetTimeZone(), 160000);
+	time_t tMarketCloseTime = gl_pWorldMarket->TransferToUTCTime(lDate, gl_pWorldMarket->GetMarketCloseTime());
+
+	LoadDayLine(lDate);
 
 	DeleteDayLine(lDate);
 
@@ -134,6 +136,7 @@ void CContainerTiingoStock::BuildDayLine(long lDate) {
 
 void CContainerTiingoStock::LoadDayLine(long lDate) {
 	CSetTiingoStockDayLine setDayLine;
+	time_t ttTradeDay = ConvertToTTime(lDate, gl_pWorldMarket->GetTimeZone(), 170000); // 美股下午4点收市
 
 	setDayLine.m_strFilter = fmt::format("[Date] = {:8Ld}", lDate).c_str();
 	setDayLine.Open();
@@ -141,6 +144,7 @@ void CContainerTiingoStock::LoadDayLine(long lDate) {
 	while (!setDayLine.IsEOF()) {
 		if (IsSymbol(setDayLine.m_Symbol)) {
 			auto pStock = GetStock(setDayLine.m_Symbol);
+			pStock->SetTransactionTime(ttTradeDay);
 			pStock->SetHigh(atof(setDayLine.m_High) * pStock->GetRatio());
 			pStock->SetLow(atof(setDayLine.m_Low) * pStock->GetRatio());
 			pStock->SetOpen(atof(setDayLine.m_Open) * pStock->GetRatio());

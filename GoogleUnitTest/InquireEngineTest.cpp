@@ -3,8 +3,7 @@
 #include"GeneralCheck.h"
 
 #include"InquireEngine.h"
-
-#include"WorldMarket.h"
+#include "WebData.h"
 
 using namespace testing;
 

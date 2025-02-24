@@ -4,6 +4,7 @@
 #include "TiingoDataSource.h"
 
 #include "TiingoInaccessibleStock.h"
+#include "WebData.h"
 #include"WorldMarket.h"
 
 map<string, enum_ErrorMessageData> mapTiingoErrorMap{

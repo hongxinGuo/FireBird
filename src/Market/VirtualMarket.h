@@ -1,6 +1,5 @@
 #pragma once
 
-#include"VirtualDataSource.h"
 #include"MarketTaskQueue.h"
 
 class CVirtualMarket {
@@ -13,7 +12,6 @@ public:
 	CVirtualMarket& operator=(const CVirtualMarket&&) noexcept = delete;
 	virtual ~CVirtualMarket() = default;
 
-public:
 	void ScheduleTask(); // 唯一的调度函数
 
 	// 申请并处理Data source的数据，由最终衍生类的ScheduleMarketTask函数来调度。
@@ -62,6 +60,8 @@ public:
 	void CalculateTime() noexcept; // 计算本市场的各时间
 
 	void GetMarketLocalTimeOffset(CString strLocalNameOfMarket);
+	long GetMarketOpenTime() const { return m_exchange->m_lMarketOpenTime; }
+	long GetMarketCloseTime() const { return m_exchange->m_lMarketCloseTime; }
 
 	long GetMarketDate(time_t tUTC) const; // 得到本市场的日期
 	auto GetTimeZoneOffset() const { return m_TimeZoneOffset; }
@@ -78,13 +78,9 @@ public:
 	static bool IsWorkingDay(CTime timeCurrent) noexcept;
 	static bool IsWorkingDay(long lDate) noexcept;
 
-	long CalculateNextTradeDate() noexcept;
-	long CalculateCurrentTradeDate() noexcept; // 计算当前交易日。周一至周五为当日，周六和周日为周五
-	long CalculateLastTradeDate() noexcept; // 计算当前交易日的上一个交易日。周二至周五为上一日，周六和周日为周四，周一为周五。
-
-	long GetLastTradeDate() noexcept { return CalculateLastTradeDate(); }// 当前交易日的前一个交易日（从昨日开市时间至本日开市时间）
-	long GetCurrentTradeDate() noexcept { return CalculateCurrentTradeDate(); }// 当前交易日（从本日九点半至次日开市时间）
-	long GetNextTradeDate() noexcept { return CalculateNextTradeDate(); }// 下一个交易日（从次日开市时间至后日开市时间）
+	long GetLastTradeDate();// 当前交易日的前一个交易日（从昨日开市时间至本日开市时间）计算当前交易日的上一个交易日。周二至周五为上一日，周六和周日为周四，周一为周五。
+	long GetCurrentTradeDate();// 当前交易日（从本日九点半至次日开市时间）,计算当前交易日。周一至周五为当日，周六和周日为周五
+	long GetNextTradeDate();// 下一个交易日（从次日开市时间至后日开市时间）
 
 	time_t TransferToUTCTime(tm* tmMarketTime) const; // 将市场时间结构转化为UTC时间
 	time_t TransferToUTCTime(long lMarketDate, long lMarketTime = 150000) const; // 将市场时间结构转化为UTC时间
@@ -116,6 +112,8 @@ public:
 	virtual bool IsDummyTime() { return false; } // 空闲时间
 	virtual bool IsDummyTime(long) { return false; } // 参数为市场当前时间hhmmss
 
+	bool IsMarketClosed() const { return m_lMarketTime > GetMarketCloseTime(); }
+
 	virtual int XferMarketTimeToIndex() {// 将本市场的市场时间变成显示位置的偏移（各市场分别实现）
 		ASSERT(false);
 		return 0;
@@ -133,8 +131,8 @@ public:
 	void StoreDataSource(const CVirtualDataSourcePtr& pDataSource) { m_vDataSource.push_back(pDataSource); }
 
 protected:
-	CString m_strMarketId{ _T("Warning: CVirtualMarket Called.") }; // 该市场标识字符串
-
+	CString m_strMarketId{ _T("Warning: CVirtualMarket Called.") }; // 该市场标识字符串,即交易所的代码。中国为SS,美国为US....
+	CStockExchangePtr m_exchange{ nullptr };
 	CMarketTaskQueue m_marketTask; // 本市场当前任务队列
 	CMarketTaskQueue m_marketImmediateTask; // 本市场当前即时任务队列（此任务序列一次执行完毕，无需等待）
 	ConcurrentQueue<CMarketTaskPtr> m_qMarketDisplayTask; // 当前任务显示队列
@@ -171,7 +169,7 @@ protected:
 	long m_lMarketNextTradeDate{ 0 }; // 本市场下一个交易日
 	tm m_tmMarket{ 0, 0, 0, 1, 0, 1970 }; // 本市场时间结构
 
-	long m_lOpenMarketTime{ 0 }; // 市场开市时间（由各具体市场实际确定）
+	long m_lMarketCloseTime{ 0 }; // 市场闭市时间。
 private:
 	bool m_fResetMarket{ true }; // 重启系统标识
 };

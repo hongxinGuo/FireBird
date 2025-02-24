@@ -5,12 +5,14 @@
 
 #include "ProductFinnhubStockSymbol.h"
 
+#include "WebData.h"
+
 CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/symbol?exchange=");
 }
 
 CString CProductFinnhubStockSymbol::CreateMessage() {
-	m_strInquiringExchange = gl_dataContainerFinnhubStockExchange.GetExchangeCode(m_lIndex);
+	m_strInquiringExchange = gl_dataContainerStockExchange.GetExchangeCode(m_lIndex);
 
 	m_strInquiry = m_strInquiryFunction + m_strInquiringExchange;
 	return m_strInquiry;
@@ -18,7 +20,7 @@ CString CProductFinnhubStockSymbol::CreateMessage() {
 
 void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvStock = ParseFinnhubStockSymbol(pWebData);
-	const auto pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(m_lIndex);
+	const auto pExchange = gl_dataContainerStockExchange.GetExchange(m_lIndex);
 	pExchange->SetStockSymbolUpdated(true);
 
 	//检查合法性：只有美国股票代码无须加上交易所后缀。

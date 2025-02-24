@@ -3,12 +3,13 @@
 #include"jsonParse.h"
 #include"JsonGetValue.h"
 
-#include"WorldMarket.h"
 #include"FinnhubStock.h"
-
+#include"ChinaMarket.h"
+#include"WorldMarket.h"
 #include "ProductFinnhubStockEstimatesEPSSurprise.h"
 
 #include "TimeConvert.h"
+#include "WebData.h"
 
 CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurprise() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");

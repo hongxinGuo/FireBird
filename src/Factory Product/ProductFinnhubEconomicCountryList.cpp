@@ -8,6 +8,7 @@
 #include "ProductFinnhubEconomicCountryList.h"
 
 #include "FinnhubDataSource.h"
+#include "WebData.h"
 
 CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/country?");

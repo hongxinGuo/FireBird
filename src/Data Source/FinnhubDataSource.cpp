@@ -15,6 +15,7 @@
 #include "FinnhubDataSource.h"
 
 #include "TimeConvert.h"
+#include "WebData.h"
 #include"WorldMarket.h"
 
 map<string, enum_ErrorMessageData> mapFinnhubErrorMap{
@@ -204,18 +205,18 @@ bool CFinnhubDataSource::GenerateCountryList() {
 }
 
 bool CFinnhubDataSource::GenerateMarketStatus() {
-	const auto lExchangeSize = gl_dataContainerFinnhubStockExchange.Size();
+	const auto lExchangeSize = gl_dataContainerStockExchange.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquireType = MARKET_STATUS_;
 
 	ASSERT(!IsInquiring());
 	if (IsUpdateMarketStatus()) {
-		CFinnhubStockExchangePtr pExchange;
+		CStockExchangePtr pExchange;
 		bool fFound = false;
 		size_t lCurrentStockExchangePos;
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
-			if (!gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsMarketStatusUpdated()) {
-				pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
+			if (!gl_dataContainerStockExchange.GetExchange(lCurrentStockExchangePos)->IsMarketStatusUpdated()) {
+				pExchange = gl_dataContainerStockExchange.GetExchange(lCurrentStockExchangePos);
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pExchange->m_strCode)) {
 					fFound = true;
 					break;
@@ -241,18 +242,18 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 }
 
 bool CFinnhubDataSource::GenerateMarketHoliday() {
-	const auto lExchangeSize = gl_dataContainerFinnhubStockExchange.Size();
+	const auto lExchangeSize = gl_dataContainerStockExchange.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquireType = MARKET_HOLIDAY_;
 
 	ASSERT(!IsInquiring());
 	if (IsUpdateMarketHoliday()) {
-		CFinnhubStockExchangePtr pExchange;
+		CStockExchangePtr pExchange;
 		bool fFound = false;
 		long lCurrentStockExchangePos;
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
-			if (!gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsMarketHolidayUpdated()) {
-				pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
+			if (!gl_dataContainerStockExchange.GetExchange(lCurrentStockExchangePos)->IsMarketHolidayUpdated()) {
+				pExchange = gl_dataContainerStockExchange.GetExchange(lCurrentStockExchangePos);
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pExchange->m_strCode)) {
 					fFound = true;
 					break;
@@ -278,18 +279,18 @@ bool CFinnhubDataSource::GenerateMarketHoliday() {
 }
 
 bool CFinnhubDataSource::GenerateCompanySymbol() {
-	const auto lExchangeSize = gl_dataContainerFinnhubStockExchange.Size();
+	const auto lExchangeSize = gl_dataContainerStockExchange.Size();
 	bool fHaveInquiry = false;
 	constexpr int iInquireType = STOCK_SYMBOLS_;
 
 	ASSERT(!IsInquiring());
 	if (IsUpdateSymbol()) {
-		CFinnhubStockExchangePtr pExchange;
+		CStockExchangePtr pExchange;
 		bool fFound = false;
 		long lCurrentStockExchangePos;
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
-			if (!gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos)->IsStockSymbolUpdated()) {
-				pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(lCurrentStockExchangePos);
+			if (!gl_dataContainerStockExchange.GetExchange(lCurrentStockExchangePos)->IsStockSymbolUpdated()) {
+				pExchange = gl_dataContainerStockExchange.GetExchange(lCurrentStockExchangePos);
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pExchange->m_strCode)) {
 					fFound = true;
 					break;

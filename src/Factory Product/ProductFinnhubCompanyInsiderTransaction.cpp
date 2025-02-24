@@ -9,6 +9,7 @@
 #include "ProductFinnhubCompanyInsiderTransaction.h"
 
 #include "TimeConvert.h"
+#include "WebData.h"
 
 CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransaction() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol=");

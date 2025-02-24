@@ -2,6 +2,8 @@
 
 #include"GeneralCheck.h"
 
+#include"VirtualDataSource.h"
+
 #include"WorldMarket.h"
 #include"FinnhubInquiryType.h"
 

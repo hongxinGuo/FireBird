@@ -49,6 +49,7 @@
 #include"ThreadStatus.h"
 #include "TiingoDataSource.h"
 #include"TimeConvert.h"
+#include"TestWebData.h"
 
 using namespace testing;
 

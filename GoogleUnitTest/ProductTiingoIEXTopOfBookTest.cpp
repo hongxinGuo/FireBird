@@ -1,13 +1,11 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-
 #include"FinnhubStock.h"
-#include"WorldMarket.h"
-
 #include"TiingoDataSource.h"
 
 #include"ProductTiingoIEXTopOfBook.h"
+#include"TestWebData.h"
 
 using namespace testing;
 

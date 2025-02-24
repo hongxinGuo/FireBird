@@ -7,6 +7,7 @@
 #include "ProductTiingoCryptoSymbol.h"
 
 #include "TiingoDataSource.h"
+#include "WebData.h"
 
 CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/crypto?");

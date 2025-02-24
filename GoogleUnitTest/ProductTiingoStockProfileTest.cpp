@@ -8,6 +8,7 @@
 #include"TiingoDataSource.h"
 
 #include"ProductTiingoStockProfile.h"
+#include"TestWebData.h"
 
 using namespace testing;
 

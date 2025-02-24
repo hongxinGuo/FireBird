@@ -6,6 +6,7 @@
 #include"TiingoDataSource.h"
 
 #include"ProductTiingoCryptoSymbol.h"
+#include"TestWebData.h"
 
 using namespace testing;
 

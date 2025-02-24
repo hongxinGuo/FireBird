@@ -5,10 +5,9 @@
 #include "FinnhubInquiryType.h"
 #include"GeneralCheck.h"
 #include "ProductFinnhub.h"
-
 #include"WorldMarket.h"
-
 #include"VirtualWebProduct.h"
+#include"TestWebData.h"
 
 using namespace testing;
 

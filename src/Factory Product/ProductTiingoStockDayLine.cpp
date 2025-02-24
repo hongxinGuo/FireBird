@@ -8,6 +8,8 @@
 
 #include "ProductTiingoStockDayLine.h"
 
+#include "WebData.h"
+
 CString CProductTiingoStockDayLine::GetDayLineInquiryParam(const CString& strSymbol, long lStartDate, long lCurrentDate) {
 	const long year = lCurrentDate / 10000;
 	const long month = lCurrentDate / 100 - year * 100;

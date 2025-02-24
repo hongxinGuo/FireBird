@@ -2,10 +2,8 @@
 
 #include "ChinaMarket.h"
 #include"GeneralCheck.h"
-
-#include"WorldMarket.h"
-
 #include"ProductTengxunRT.h"
+#include "WebData.h"
 
 using namespace testing;
 

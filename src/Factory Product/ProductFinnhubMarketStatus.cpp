@@ -7,12 +7,14 @@
 
 #include "ProductFinnhubMarketStatus.h"
 
+#include "WebData.h"
+
 CProductFinnhubMarketStatus::CProductFinnhubMarketStatus() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/market-status?exchange=");
 }
 
 CString CProductFinnhubMarketStatus::CreateMessage() {
-	const auto strParam = gl_dataContainerFinnhubStockExchange.GetExchangeCode(m_lIndex);
+	const auto strParam = gl_dataContainerStockExchange.GetExchangeCode(m_lIndex);
 
 	m_strInquiringExchange = strParam;
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -21,7 +23,7 @@ CString CProductFinnhubMarketStatus::CreateMessage() {
 
 void CProductFinnhubMarketStatus::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvMarketStatus = ParseFinnhubMarketStatus(pWebData);
-	const auto pExchange = gl_dataContainerFinnhubStockExchange.GetExchange(m_lIndex);
+	const auto pExchange = gl_dataContainerStockExchange.GetExchange(m_lIndex);
 	pExchange->SetMarketStatusUpdated(true);
 
 	if (!pvMarketStatus->empty()) {
@@ -66,8 +68,7 @@ CMarketStatussPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const CW
 		pMarketStatus->m_tt = jsonGetLongLong(js, _T("t"));
 
 		pvMarketStatus->push_back(pMarketStatus);
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Market Status "), e.what());
 		return pvMarketStatus;
 	}

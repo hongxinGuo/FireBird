@@ -3,10 +3,9 @@
 #include"GeneralCheck.h"
 
 #include"tengxunRTDataSource.h"
-//#include"WorldMarket.h"
 #include"ChinaMarket.h"
 
-#include "ProductTengxunRT.h"
+#include"TestWebData.h"
 
 using namespace testing;
 

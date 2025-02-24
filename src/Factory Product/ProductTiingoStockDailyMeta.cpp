@@ -13,6 +13,7 @@
 #include "ProductTiingoStockDailyMeta.h"
 
 #include"simdjsonGetValue.h"
+#include "WebData.h"
 #include "WorldMarket.h"
 
 CProductTiingoStockDailyMeta::CProductTiingoStockDailyMeta() {
@@ -41,7 +42,7 @@ void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		auto pStock2 = gl_dataContainerTiingoStock.GetStock(pTiingoStockDailyMeta->m_strCode);
 		if (pStock->GetSymbol().Compare(pStock2->GetSymbol()) == 0) {
 			pStock->UpdateDailyMeta(pTiingoStockDailyMeta); // 目前只更新HistoryDayLineBeginDate和HistoryDayLineEndDate。
-			if (gl_pWorldMarket->GetMarketTime() > 170000) { // 如果已过本日交易时间。网站已更新HistoryDatLineEndDate为当前交易日
+			if (gl_pWorldMarket->IsMarketClosed()) { // 如果已过本日交易时间。网站已更新HistoryDatLineEndDate为当前交易日
 				pStock->SetUpdateStockDailyMetaDate(gl_pWorldMarket->GetCurrentTradeDate());
 			}
 			else { // 否则设置为上一交易日。网站在本日交易结束后才会更新HistoryDatLineEndDate为当前交易日

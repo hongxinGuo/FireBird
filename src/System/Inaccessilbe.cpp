@@ -1,7 +1,5 @@
 #include "pch.h"
 
-#include"FinnhubInquiryType.h"
-
 #include "Inaccessible.h"
 
 std::string Test_gl_sFinnhubInaccessibleSymbol = R"(

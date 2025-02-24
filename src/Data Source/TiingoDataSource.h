@@ -46,6 +46,8 @@ public:
 	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
 	bool IsUpdateIEXTopOfBook() const noexcept { return m_fUpdateIEXTopOFBook; }
 	void SetUpdateIEXTopOfBook(bool fFlag) noexcept { m_fUpdateIEXTopOFBook = fFlag; }
+	bool IsEndMarketIEXTopOfBookUpdated() const noexcept { return m_fEndMarketIEXTopOfBookUpdated; }
+	void SetEndMarketIEXTopOfBookUpdate(bool fFlag) noexcept { m_fEndMarketIEXTopOfBookUpdated = fFlag; }
 
 	void SetBandWidth(long long llBandWidth) noexcept { m_llBandWidthLeft = llBandWidth; }
 	long long GetBandWidthLeft() const noexcept { return m_llBandWidthLeft; }
@@ -62,7 +64,8 @@ protected:
 	bool m_fUpdateStockDailyMeta{ false }; // 每日更新公司状态
 	bool m_fUpdateDayLine{ false }; // 每日更新公司日线数据
 	bool m_fUpdateFinancialState{ true }; // 每日更新财经数据
-	bool m_fUpdateIEXTopOFBook{ true }; // 定时（每小时）更新IEX last top of book.
+	bool m_fUpdateIEXTopOFBook{ true }; // 定时更新IEX last top of book.
+	bool m_fEndMarketIEXTopOfBookUpdated{ false }; // 最新交易日闭市IEXTopOfBook数据已更新。
 
 	// 带宽限制
 	long long m_llBandWidthLeft{ 5368709120 };

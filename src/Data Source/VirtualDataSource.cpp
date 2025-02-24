@@ -7,8 +7,10 @@
 #include "pch.h"
 
 #include "VirtualDataSource.h"
+#include "InquireEngine.h"
 
 #include"Thread.h"
+#include "WebData.h"
 
 atomic_int64_t CVirtualDataSource::sm_lTotalByteRead = 0;
 atomic_int64_t CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;

@@ -2,8 +2,6 @@
 #include "ContainerFinnhubEconomicCalendar.h"
 #include"SetEconomicCalendar.h"
 
-#include "InfoReport.h"
-
 CContainerFinnhubEconomicCalendar::CContainerFinnhubEconomicCalendar() {
 	Reset();
 }

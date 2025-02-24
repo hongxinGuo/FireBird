@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include "VirtualWorldMarketWebProduct.h"
+
+#include "WebData.h"
 #include"WorldMarket.h"
 
 CWorldMarketPtr CVirtualWorldMarketWebProduct::GetMarket() const noexcept {

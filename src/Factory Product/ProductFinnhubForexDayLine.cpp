@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include"TimeConvert.h"
 #include"jsonParse.h"
 #include"JsonGetValue.h"
 
@@ -8,6 +7,8 @@
 #include"FinnhubForex.h"
 
 #include "ProductFinnhubForexDayLine.h"
+
+#include "WebData.h"
 
 CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/candle?symbol=");

@@ -6,6 +6,7 @@
 
 #include"DayLine.h"
 #include"DayLineWebData.h"
+#include "WebData.h"
 
 namespace FireBirdTest {
 	struct NetEaseDayLineData {

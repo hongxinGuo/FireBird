@@ -8,6 +8,7 @@ CVirtualMarket::CVirtualMarket() {
 	m_fResetMarket = true;
 
 	m_strMarketId = _T("Warning: CVirtualMarket Called.");
+	m_exchange = gl_dataContainerStockExchange.GetExchange("L"); // 默认使用伦敦交易所
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,10 +190,10 @@ bool CVirtualMarket::IsWorkingDay(long lDate) noexcept {
 	return true;
 }
 
-long CVirtualMarket::CalculateNextTradeDate() noexcept {
+long CVirtualMarket::GetNextTradeDate() {
 	time_t tMarket;
 	tm tmMarketTime2;
-	GetMarketTimeStruct(&tmMarketTime2, GetUTCTime() - m_lOpenMarketTime);
+	GetMarketTimeStruct(&tmMarketTime2, GetUTCTime() - m_exchange->m_lMarketOpenTime);
 
 	switch (tmMarketTime2.tm_wday) {
 	case 6: // 星期六
@@ -204,18 +205,18 @@ long CVirtualMarket::CalculateNextTradeDate() noexcept {
 	default: // 其他
 		tMarket = GetUTCTime() + 24 * 3600; // 次日
 	}
-	tMarket -= m_lOpenMarketTime; // 减去开市时间，具体值由各市场预先设定
+	tMarket -= m_exchange->m_lMarketOpenTime; // 减去开市时间，具体值由各市场预先设定
 	tm tmMarketTime;
 	GetMarketTimeStruct(&tmMarketTime, tMarket);
 	m_lMarketNextTradeDate = ConvertToDate(&tmMarketTime);
 	return m_lMarketNextTradeDate;
 }
 
-long CVirtualMarket::CalculateCurrentTradeDate() noexcept {
+long CVirtualMarket::GetCurrentTradeDate() {
 	time_t tMarket;
 
 	tm tmMarketTime2;
-	GetMarketTimeStruct(&tmMarketTime2, GetUTCTime() - m_lOpenMarketTime);
+	GetMarketTimeStruct(&tmMarketTime2, GetUTCTime() - m_exchange->m_lMarketOpenTime);
 
 	switch (tmMarketTime2.tm_wday) {
 	case 0: //星期日
@@ -227,17 +228,17 @@ long CVirtualMarket::CalculateCurrentTradeDate() noexcept {
 	default: // 其他
 		tMarket = GetUTCTime(); // 本日
 	}
-	tMarket -= m_lOpenMarketTime; // 减去开市时间，具体值由各市场预先设定
+	tMarket -= m_exchange->m_lMarketOpenTime; // 减去开市时间，具体值由各市场预先设定
 	tm tmMarketTime;
 	GetMarketTimeStruct(&tmMarketTime, tMarket);
 	m_lMarketCurrentTradeDate = ConvertToDate(&tmMarketTime);
 	return m_lMarketCurrentTradeDate;
 }
 
-long CVirtualMarket::CalculateLastTradeDate() noexcept {
+long CVirtualMarket::GetLastTradeDate() {
 	time_t tMarket;
 	tm tmMarketTime2;
-	GetMarketTimeStruct(&tmMarketTime2, GetUTCTime() - m_lOpenMarketTime);
+	GetMarketTimeStruct(&tmMarketTime2, GetUTCTime() - m_exchange->m_lMarketOpenTime);
 
 	switch (tmMarketTime2.tm_wday) {
 	case 1: // 星期一
@@ -252,7 +253,7 @@ long CVirtualMarket::CalculateLastTradeDate() noexcept {
 	default: // 其他
 		tMarket = GetUTCTime() - 24 * 3600; // 上一日
 	}
-	tMarket -= m_lOpenMarketTime; // 减去开市时间，具体值由各市场预先设定
+	tMarket -= m_exchange->m_lMarketOpenTime; // 减去开市时间，具体值由各市场预先设定
 	tm tmMarketTime;
 	GetMarketTimeStruct(&tmMarketTime, tMarket);
 	m_lMarketLastTradeDate = ConvertToDate(&tmMarketTime);
@@ -300,8 +301,7 @@ long CVirtualMarket::ConvertToDate(const time_t tUTC) const noexcept {
 }
 
 void CVirtualMarket::GetMarketTimeStruct(tm* tm_, time_t tUTC) const {
-	auto timeZoneOffset = GetTimeZone();
-	time_t tMarket = tUTC + timeZoneOffset;
+	time_t tMarket = tUTC + GetTimeZone();
 	gmtime_s(tm_, &tMarket);
 }
 

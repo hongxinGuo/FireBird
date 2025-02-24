@@ -5,6 +5,8 @@
 
 #include "ProductFinnhubForexSymbol.h"
 
+#include "WebData.h"
+
 CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");
 }
@@ -49,8 +51,7 @@ CForexSymbolsPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(const CWebD
 			pSymbol->SetSymbol(s.c_str());
 			pvForexSymbol->push_back(pSymbol);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Forex Symbol "), e.what());
 	}
 

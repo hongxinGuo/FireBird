@@ -2,7 +2,6 @@
 
 #include "ContainerFinnhubCryptoExchange.h"
 
-#include "InfoReport.h"
 #include"SetFinnhubCryptoExchange.h"
 
 CContainerFinnhubCryptoExchange::CContainerFinnhubCryptoExchange() {

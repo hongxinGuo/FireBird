@@ -5,6 +5,7 @@
 #include"GeneralCheck.h"
 
 #include"MockSinaRTDataSource.h"
+#include "WebData.h"
 
 using namespace testing;
 

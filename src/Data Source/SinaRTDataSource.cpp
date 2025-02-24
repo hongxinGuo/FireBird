@@ -4,6 +4,7 @@
 #include"ProductSinaRT.h"
 
 #include"ChinaMarket.h"
+#include "WebData.h"
 
 /// <summary>
 /// 新浪实时数据服务器要求提供报头验证数据。

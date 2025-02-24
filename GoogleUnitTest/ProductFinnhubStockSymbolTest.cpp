@@ -4,6 +4,7 @@
 #include"WorldMarket.h"
 
 #include"ProductFinnhubStockSymbol.h"
+#include"TestWebData.h"
 
 using namespace testing;
 
@@ -43,7 +44,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCompanySymbolProductTest, TestCreatMessage) {
 		companySymbolProduct.SetMarket(gl_pWorldMarket);
 		companySymbolProduct.SetIndex(1);
-		EXPECT_STREQ(companySymbolProduct.CreateMessage(), companySymbolProduct.GetInquiryFunction() + gl_dataContainerFinnhubStockExchange.GetExchangeCode(1));
+		EXPECT_STREQ(companySymbolProduct.CreateMessage(), companySymbolProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetExchangeCode(1));
 	}
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestIsNeedAddExchangeCode) {
@@ -141,7 +142,7 @@ namespace FireBirdTest {
 
 			m_finnhubStockSymbolProduct.SetMarket(gl_pWorldMarket);
 			m_finnhubStockSymbolProduct.SetIndex(0); // 第一个交易所（AS)
-			m_finnhubStockSymbolProduct.SetInquiringExchange(gl_dataContainerFinnhubStockExchange.GetExchangeCode(0));
+			m_finnhubStockSymbolProduct.SetInquiringExchange(gl_dataContainerStockExchange.GetExchangeCode(0));
 		}
 
 		void TearDown() override {

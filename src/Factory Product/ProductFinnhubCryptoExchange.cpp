@@ -6,6 +6,7 @@
 #include "ProductFinnhubCryptoExchange.h"
 
 #include "FinnhubDataSource.h"
+#include "WebData.h"
 
 CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/exchange?");

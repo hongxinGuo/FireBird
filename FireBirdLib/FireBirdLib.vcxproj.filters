@@ -567,9 +567,6 @@
     <ClInclude Include="..\src\Data Container\ContainerFinnhubForexSymbol.h">
       <Filter>头文件\Data container\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Data Container\ContainerFinnhubStockExchange.h">
-      <Filter>头文件\Data container\Finnhub</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Data Container\ContainerTiingoCryptoSymbol.h">
       <Filter>头文件\Data container\Tiingo</Filter>
     </ClInclude>
@@ -732,9 +729,6 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialQuarter.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockExchange.h">
-      <Filter>头文件\database\WorldMarket\Finnhub</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetCountry.h">
       <Filter>头文件\database\WorldMarket\Finnhub</Filter>
     </ClInclude>
@@ -822,9 +816,6 @@
     <ClInclude Include="..\src\Type\America market\FinnhubStockBasicFinancial.h">
       <Filter>头文件\Type\America market\Finnhub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Type\America market\FinnhubStockExchange.h">
-      <Filter>头文件\Type\America market\Finnhub</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Factory Product\ProductTiingoStockDailyMeta.h">
       <Filter>头文件\Factory-Product\Tiingo</Filter>
     </ClInclude>
@@ -854,6 +845,21 @@
     </ClInclude>
     <ClInclude Include="..\src\DataBase\WorldMarket\SetTiingoStockDelistedSymbol.h">
       <Filter>头文件\database\WorldMarket\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\America market\StockExchange.h">
+      <Filter>头文件\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetStockExchange.h">
+      <Filter>头文件\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Container\ContainerStockExchange.h">
+      <Filter>头文件\Data container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\TestWebData.h">
+      <Filter>头文件\Factory-Product</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Source\InternetOption.h">
+      <Filter>头文件\Data Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -969,9 +975,6 @@
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\FinnhubStockBasicFinancial.cpp">
-      <Filter>源文件\Type\America market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Type\America market\FinnhubStockExchange.cpp">
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\InsiderSentment.cpp">
@@ -1168,9 +1171,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerChosenStock.cpp">
       <Filter>源文件\Data container\Chosen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Data Container\ContainerFinnhubStockExchange.cpp">
-      <Filter>源文件\Data container\Finnhub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerFinnhubCountry.cpp">
       <Filter>源文件\Data container\Finnhub</Filter>
@@ -1420,6 +1420,12 @@
     </ClCompile>
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockDelistedSymbol.cpp">
       <Filter>源文件\Database\WorldMarket\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\StockExchange.cpp">
+      <Filter>源文件\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerStockExchange.cpp">
+      <Filter>源文件\Data container</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

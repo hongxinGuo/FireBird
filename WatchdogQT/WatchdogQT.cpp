@@ -11,12 +11,6 @@ using namespace std;
 
 #include"resource.h"
 
-#ifdef _DEBUG
-//#pragma comment(lib, "/D/concurrencpp.lib")
-#else
-//#pragma comment(lib, "/R/concurrencpp.lib")
-#endif
-
 std::chrono::sys_seconds gl_tpNow; // 协调世界时（Coordinated Universal Time）
 
 WatchdogQT::WatchdogQT(QWidget* parent) : QMainWindow(parent) {

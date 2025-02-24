@@ -1,13 +1,11 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-
 #include"Country.h"
 #include "FinnhubDataSource.h"
-
 #include"WorldMarket.h"
-
 #include"ProductFinnhubEconomicCountryList.h"
+#include"TestWebData.h"
 
 using namespace testing;
 

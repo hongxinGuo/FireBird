@@ -15,7 +15,7 @@
 #include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"
-#include "TimeConvert.h"
+#include "WebData.h"
 #include "WorldMarket.h"
 
 CProductTiingoIEXTopOfBook::CProductTiingoIEXTopOfBook() {
@@ -38,15 +38,16 @@ CString CProductTiingoIEXTopOfBook::CreateMessage() {
 void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoIEXTopOFBook = ParseTiingoIEXTopOfBook(pWebData);
 	long lNewestTradeDay = gl_pWorldMarket->GetCurrentTradeDate();
-	time_t ttNewestTradeDay = ConvertToTTime(lNewestTradeDay, 0, 160000); // 美股下午4点收市
+	time_t ttNewestTradeDay = gl_pWorldMarket->TransferToUTCTime(lNewestTradeDay, gl_pWorldMarket->GetMarketCloseTime()); // 美股下午4点收市
 	if (pvTiingoIEXTopOFBook->empty()) return;
 	for (const auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {
 		if (pIEXTopOFBook->m_timeStamp.time_since_epoch().count() < ttNewestTradeDay) continue; // 只使用不早于一天的实时数据
 		if (!gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker)) continue; // 只更新已有代码
 		auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker);
-		if (!pTiingoStock->IsActive()) continue; // 只更新活跃股票
-		if (pTiingoStock->GetDayLineStartDate() == 29900101) continue; // 如果从未下载过日线数据，则不更新（让日线更新任务来完成首次下载任务）。
 		pTiingoStock->UpdateRTData(pIEXTopOFBook);
+	}
+	if (gl_pWorldMarket->IsMarketClosed()) {
+		gl_pWorldMarket->SetEndMarketIEXTopOfBookUpdate(true);
 	}
 }
 
@@ -151,4 +152,7 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 void CProductTiingoIEXTopOfBook::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateIEXTopOfBook(false);
+	if (gl_pWorldMarket->IsMarketClosed()) { // 已闭市？
+		dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetEndMarketIEXTopOfBookUpdate(true); // 本交易日数据是完整的。
+	}
 }

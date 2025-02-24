@@ -6,6 +6,7 @@
 
 #include"JsonParse.h"
 #include "SinaRTDataSource.h"
+#include "WebData.h"
 
 CProductSinaRT::CProductSinaRT() {
 	m_lCurrentStockPosition = 0;

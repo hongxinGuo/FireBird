@@ -2,7 +2,6 @@
 
 #include"JsonParse.h"
 #include"JsonGetValue.h"
-#include"TimeConvert.h"
 
 #include "TiingoForexWebSocket.h"
 

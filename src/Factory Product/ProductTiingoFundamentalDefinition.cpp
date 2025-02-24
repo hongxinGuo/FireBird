@@ -8,6 +8,7 @@
 #include "TiingoDataSource.h"
 
 #include"simdjsonGetValue.h"
+#include "WebData.h"
 
 CProductTiingoFundamentalDefinition::CProductTiingoFundamentalDefinition() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals/definitions?");

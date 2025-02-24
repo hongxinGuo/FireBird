@@ -30,9 +30,10 @@ CWorldMarket::CWorldMarket() {
 		TRACE("CWorldMarket市场变量只允许存在一个实例\n");
 	}
 
-	m_strMarketId = _T("美国市场");
+	m_strMarketId = _T("US");
+	m_exchange = gl_dataContainerStockExchange.GetExchange(m_strMarketId);
+	ASSERT(m_exchange != nullptr);
 	m_strLocalMarketTimeZone = _T("America/New_York");
-	m_lOpenMarketTime = 9 * 3600 + 1800;
 	GetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 美国股市使用美东标准时间, 美国股市开市时间为九点三十分
 
 	// 无需（也无法）每日更新的变量放在这里
@@ -81,7 +82,6 @@ void CWorldMarket::ResetTiingo() const {
 }
 
 void CWorldMarket::ResetDataContainer() {
-	gl_dataContainerFinnhubStockExchange.Reset();
 	gl_dataContainerFinnhubForexExchange.Reset();
 	gl_dataContainerFinnhubCryptoExchange.Reset();
 	gl_dataFinnhubForexSymbol.Reset();
@@ -107,7 +107,6 @@ void CWorldMarket::ResetMarket() {
 
 	UpdateToken();
 
-	gl_dataContainerFinnhubStockExchange.LoadDB(); // 装入世界交易所信息
 	gl_dataContainerFinnhubCountry.LoadDB();
 	gl_dataContainerFinnhubStock.LoadDB();
 	gl_dataContainerChosenFinnhubStock.LoadDB();
@@ -464,9 +463,8 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 }
 
 void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
-	if (!gl_pTiingoDataSource->IsUpdateIEXTopOfBook()
-		&& !gl_pTiingoDataSource->IsUpdateDayLine()
-		&& lCurrentTime > 200500) { // 当前交易日未处理过IEX、已经接收到数据且已过休市时间？
+	if (IsEndMarketIEXTopOfBookUpdated()
+		&& !gl_pTiingoDataSource->IsUpdateDayLine()) { // 当前交易日未处理过IEX、已经接收到数据且已过休市时间？
 		TRACE("process IEX data\n");
 		gl_runtime.thread_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
@@ -476,6 +474,7 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 		});
 	}
 	else {
+		AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(lCurrentTime, 0, 0, 1)); // 
 		AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(lCurrentTime, 0, 1, 0)); // 一分钟后执行下一次
 	}
 }
@@ -1130,4 +1129,8 @@ void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock)
 	}
 	setDayLine.m_pDatabase->CommitTrans();
 	setDayLine.Close();
+}
+
+bool CWorldMarket::IsTodayMarketEnded() {
+	return false;
 }

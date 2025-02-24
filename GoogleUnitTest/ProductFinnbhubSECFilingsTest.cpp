@@ -5,6 +5,7 @@
 #include"WorldMarket.h"
 
 #include"ProductFinnhubSECFilings.h"
+#include"TestWebData.h"
 
 using namespace testing;
 

@@ -11,6 +11,7 @@
 
 #include"simdjsonGetValue.h"
 #include "TimeConvert.h"
+#include "WebData.h"
 #include "WorldMarket.h"
 
 CProductTiingoStockProfile::CProductTiingoStockProfile() {

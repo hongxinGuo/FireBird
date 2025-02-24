@@ -1,10 +1,9 @@
 #include"pch.h"
 
 #include"GeneralCheck.h"
-
 #include"WorldMarket.h"
-
 #include"ProductFinnhubStockDayLine.h"
+#include"TestWebData.h"
 
 using namespace testing;
 

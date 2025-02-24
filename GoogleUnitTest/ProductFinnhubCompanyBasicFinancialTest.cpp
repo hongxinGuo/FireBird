@@ -6,6 +6,8 @@
 
 #include"ProductFinnhubCompanyBasicFinancial.h"
 
+#include"TestWebData.h"
+
 using namespace testing;
 
 namespace FireBirdTest {

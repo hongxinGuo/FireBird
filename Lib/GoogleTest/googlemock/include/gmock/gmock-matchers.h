@@ -4453,6 +4453,10 @@ inline PolymorphicMatcher<internal::FieldMatcher<Class, FieldType>> Field(
 // matches 'matcher'.  For example,
 //   Property(&Foo::str, StartsWith("hi"))
 // matches a Foo object x if and only if x.str() starts with "hi".
+//
+// Warning: Don't use `Property()` against member functions that you do not
+// own, because taking addresses of functions is fragile and generally not part
+// of the contract of the function.
 template <typename Class, typename PropertyType, typename PropertyMatcher>
 inline PolymorphicMatcher<internal::PropertyMatcher<
     Class, PropertyType, PropertyType (Class::*)() const>>
@@ -5551,8 +5555,7 @@ PolymorphicMatcher<internal::ExceptionMatcherImpl<Err>> ThrowsMessage(
   template <typename arg_type>                                                \
   bool name##Matcher::gmock_Impl<arg_type>::MatchAndExplain(                  \
       const arg_type& arg,                                                    \
-      GTEST_INTERNAL_ATTRIBUTE_MAYBE_UNUSED ::testing::MatchResultListener*   \
-          result_listener) const
+      [[maybe_unused]] ::testing::MatchResultListener* result_listener) const
 
 #define MATCHER_P(name, p0, description) \
   GMOCK_INTERNAL_MATCHER(name, name##MatcherP, description, (#p0), (p0))
@@ -5637,8 +5640,8 @@ PolymorphicMatcher<internal::ExceptionMatcherImpl<Err>> ThrowsMessage(
   bool full_name<GMOCK_INTERNAL_MATCHER_TYPE_PARAMS(args)>::                   \
       gmock_Impl<arg_type>::MatchAndExplain(                                   \
           const arg_type& arg,                                                 \
-          GTEST_INTERNAL_ATTRIBUTE_MAYBE_UNUSED ::testing::                    \
-              MatchResultListener* result_listener) const
+          [[maybe_unused]] ::testing::MatchResultListener* result_listener)    \
+          const
 
 #define GMOCK_INTERNAL_MATCHER_TEMPLATE_PARAMS(args) \
   GMOCK_PP_TAIL(                                     \

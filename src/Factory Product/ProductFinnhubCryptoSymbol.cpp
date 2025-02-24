@@ -5,6 +5,8 @@
 
 #include "ProductFinnhubCryptoSymbol.h"
 
+#include "WebData.h"
+
 CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/symbol?exchange=");
 }
@@ -61,8 +63,7 @@ CFinnhubCryptosPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSymbol(const C
 			pSymbol->SetSymbol(s.c_str());
 			pvCryptoSymbol->push_back(pSymbol);
 		}
-	}
-	catch (json::exception& e) {
+	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Symbol "), e.what());
 	}
 	return pvCryptoSymbol;

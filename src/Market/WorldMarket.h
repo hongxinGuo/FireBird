@@ -109,6 +109,10 @@ public:
 	void SetPermitUpdateTiingoFundamentalDefinitionDB(bool fFlag) noexcept { m_fPermitUpdateTiingoFundamentalDefinitionDB = fFlag; }
 	bool IsPermitUpdateTiingoFundamentalDefinitionDB() const noexcept { return m_fPermitUpdateTiingoFundamentalDefinitionDB; }
 
+	bool IsEndMarketIEXTopOfBookUpdated() const noexcept { return m_fEndMarketIEXTopOfBookUpdated; }
+	void SetEndMarketIEXTopOfBookUpdate(bool fFlag) noexcept { m_fEndMarketIEXTopOfBookUpdated = fFlag; }
+	bool IsTodayMarketEnded();
+
 protected:
 	long m_lCurrentUpdateDayLinePos{ 0 }; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
 	long m_lCurrentUpdateEPSSurprisePos{ 0 }; // 此变量无需每日更新
@@ -119,6 +123,8 @@ protected:
 	bool m_bFinnhubWebSiteAccessible{ true }; // 由于finnhub.io不时被墙，故而需要此标识。
 
 	bool m_fPermitUpdateTiingoFundamentalDefinitionDB{ false };
+
+	bool m_fEndMarketIEXTopOfBookUpdated{ false }; // 最新交易日闭市IEXTopOfBook数据已更新。
 };
 
 using CWorldMarketPtr = shared_ptr<CWorldMarket>;

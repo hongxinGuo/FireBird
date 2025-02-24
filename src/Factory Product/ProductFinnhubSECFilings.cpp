@@ -7,6 +7,7 @@
 
 #include"jsonParse.h"
 #include"simdjsonGetValue.h"
+#include "WebData.h"
 
 CProductFinnhubSECFilings::CProductFinnhubSECFilings() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/filings?symbol=");

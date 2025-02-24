@@ -1,17 +1,17 @@
 #pragma once
 
-#include"SetFinnhubStockExchange.h"
+#include"SetStockExchange.h"
 
 #include<memory>
 
-class CFinnhubStockExchange final {
+class CStockExchange final {
 public:
-	CFinnhubStockExchange();
-	~CFinnhubStockExchange() = default;
+	CStockExchange();
+	~CStockExchange() = default;
 
-	void Append(CSetFinnhubStockExchange& setFinnhubExchange) const;
+	void Append(CSetStockExchange& setExchange) const;
 
-	void Load(const CSetFinnhubStockExchange& setFinnhubExchange);
+	void Load(const CSetStockExchange& setExchange);
 
 	void SetStockSymbolUpdated(const bool fFlag) noexcept { m_fStockSymbolUpdated = fFlag; }
 	bool IsStockSymbolUpdated() const noexcept { return m_fStockSymbolUpdated; }
@@ -34,9 +34,12 @@ public:
 	CString m_strSource;
 	CString m_strMyUnknownColumn;
 
+	long m_lMarketOpenTime{ 0 };
+	long m_lMarketCloseTime{ 0 };
+
 	bool m_fStockSymbolUpdated;
 	bool m_fMarketStatusUpdated;
 	bool m_fMarketHolidayUpdated;
 };
 
-using CFinnhubStockExchangePtr = shared_ptr<CFinnhubStockExchange>;
+using CStockExchangePtr = shared_ptr<CStockExchange>;

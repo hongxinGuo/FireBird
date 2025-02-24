@@ -2,10 +2,10 @@
 
 #include"GeneralCheck.h"
 
-#include"FinnhubStockExchange.h"
+#include"StockExchange.h"
 
 namespace FireBirdTest {
-	class CFinnhubExchangeTest : public ::testing::Test {
+	class CExchangeTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
 			SCOPED_TRACE("");
@@ -29,82 +29,82 @@ namespace FireBirdTest {
 		}
 	};
 
-	TEST_F(CFinnhubExchangeTest, TestInitialize) {
-		const CFinnhubStockExchange FinnhubExchange;
-		EXPECT_STREQ(FinnhubExchange.m_strCode, _T(" "));
-		EXPECT_STREQ(FinnhubExchange.m_strName, _T(" "));
-		EXPECT_STREQ(FinnhubExchange.m_strMic, _T(" "));
-		EXPECT_STREQ(FinnhubExchange.m_strTimeZone, _T(" "));
-		EXPECT_STREQ(FinnhubExchange.m_strHour, _T(" "));
-		EXPECT_STREQ(FinnhubExchange.m_strCloseDate, _T(" "));
-		EXPECT_STREQ(FinnhubExchange.m_strCountry, _T(""));
-		EXPECT_STREQ(FinnhubExchange.m_strSource, _T(""));
-		EXPECT_FALSE(FinnhubExchange.m_fStockSymbolUpdated);
-		EXPECT_FALSE(FinnhubExchange.m_fMarketStatusUpdated);
-		EXPECT_FALSE(FinnhubExchange.m_fMarketHolidayUpdated);
+	TEST_F(CExchangeTest, TestInitialize) {
+		const CStockExchange Exchange;
+		EXPECT_STREQ(Exchange.m_strCode, _T(" "));
+		EXPECT_STREQ(Exchange.m_strName, _T(" "));
+		EXPECT_STREQ(Exchange.m_strMic, _T(" "));
+		EXPECT_STREQ(Exchange.m_strTimeZone, _T(" "));
+		EXPECT_STREQ(Exchange.m_strHour, _T(" "));
+		EXPECT_STREQ(Exchange.m_strCloseDate, _T(" "));
+		EXPECT_STREQ(Exchange.m_strCountry, _T(""));
+		EXPECT_STREQ(Exchange.m_strSource, _T(""));
+		EXPECT_FALSE(Exchange.m_fStockSymbolUpdated);
+		EXPECT_FALSE(Exchange.m_fMarketStatusUpdated);
+		EXPECT_FALSE(Exchange.m_fMarketHolidayUpdated);
 	}
 
-	TEST_F(CFinnhubExchangeTest, TestIsStockSymbolUpdated) {
-		CFinnhubStockExchange finnhubExchange;
+	TEST_F(CExchangeTest, TestIsStockSymbolUpdated) {
+		CStockExchange finnhubExchange;
 
 		EXPECT_FALSE(finnhubExchange.IsStockSymbolUpdated());
 		finnhubExchange.SetStockSymbolUpdated(true);
 		EXPECT_TRUE(finnhubExchange.IsStockSymbolUpdated());
 	}
 
-	TEST_F(CFinnhubExchangeTest, TestIsMarketStatusUpdated) {
-		CFinnhubStockExchange finnhubExchange;
+	TEST_F(CExchangeTest, TestIsMarketStatusUpdated) {
+		CStockExchange finnhubExchange;
 
 		EXPECT_FALSE(finnhubExchange.IsMarketStatusUpdated());
 		finnhubExchange.SetMarketStatusUpdated(true);
 		EXPECT_TRUE(finnhubExchange.IsMarketStatusUpdated());
 	}
 
-	TEST_F(CFinnhubExchangeTest, TestIsMarketHolidayUpdated) {
-		CFinnhubStockExchange finnhubExchange;
+	TEST_F(CExchangeTest, TestIsMarketHolidayUpdated) {
+		CStockExchange finnhubExchange;
 
 		EXPECT_FALSE(finnhubExchange.IsMarketHolidayUpdated());
 		finnhubExchange.SetMarketHolidayUpdated(true);
 		EXPECT_TRUE(finnhubExchange.IsMarketHolidayUpdated());
 	}
 
-	TEST_F(CFinnhubExchangeTest, TestAppend) {
-		CSetFinnhubStockExchange setFinnhubExchange, setFinnhubExchange2;
-		CFinnhubStockExchange FinnhubExchange, FinnhubExchange2;
+	TEST_F(CExchangeTest, TestAppend) {
+		CSetStockExchange setExchange, setExchange2;
+		CStockExchange Exchange, Exchange2;
 
-		FinnhubExchange.m_strCode = _T("AA");
-		FinnhubExchange.m_strName = _T("aaa");
-		FinnhubExchange.m_strMic = _T("abdc");
-		FinnhubExchange.m_strTimeZone = _T("Beijing");
-		FinnhubExchange.m_strHour = _T("10101010");
-		FinnhubExchange.m_strCloseDate = _T("20202020");
-		FinnhubExchange.m_strCountry = _T("dfe");
-		FinnhubExchange.m_strSource = _T("abc");
-		FinnhubExchange.m_fStockSymbolUpdated = true;
+		Exchange.m_strCode = _T("AA");
+		Exchange.m_strName = _T("aaa");
+		Exchange.m_strMic = _T("abdc");
+		Exchange.m_strTimeZone = _T("Beijing");
+		Exchange.m_strHour = _T("10101010");
+		Exchange.m_strCloseDate = _T("20202020");
+		Exchange.m_strCountry = _T("dfe");
+		Exchange.m_strSource = _T("abc");
+		Exchange.m_fStockSymbolUpdated = true;
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
-		setFinnhubExchange.Open();
-		setFinnhubExchange.m_pDatabase->BeginTrans();
-		FinnhubExchange.Append(setFinnhubExchange);
-		setFinnhubExchange.m_pDatabase->CommitTrans();
-		setFinnhubExchange.Close();
+		setExchange.Open();
+		setExchange.m_pDatabase->BeginTrans();
+		Exchange.Append(setExchange);
+		setExchange.m_pDatabase->CommitTrans();
+		setExchange.Close();
 
-		setFinnhubExchange2.m_strFilter = _T("[Code] = 'AA'");
-		setFinnhubExchange2.Open();
-		setFinnhubExchange2.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(!setFinnhubExchange2.IsEOF()) << "此时已经存入了AA";
-		FinnhubExchange2.Load(setFinnhubExchange2);
-		EXPECT_STREQ(FinnhubExchange.m_strCode, _T("AA"));
-		EXPECT_STREQ(FinnhubExchange.m_strName, _T("aaa"));
-		EXPECT_STREQ(FinnhubExchange.m_strMic, _T("abdc"));
-		EXPECT_STREQ(FinnhubExchange.m_strTimeZone, _T("Beijing"));
-		EXPECT_STREQ(FinnhubExchange.m_strHour, _T("10101010"));
-		EXPECT_STREQ(FinnhubExchange.m_strCloseDate, _T("20202020"));
-		EXPECT_STREQ(FinnhubExchange.m_strCountry, _T("dfe"));
-		EXPECT_STREQ(FinnhubExchange.m_strSource, _T("abc"));
-		EXPECT_TRUE(FinnhubExchange.m_fStockSymbolUpdated) << "这个参数不存入数据库";
-		setFinnhubExchange2.Delete();
-		setFinnhubExchange2.m_pDatabase->CommitTrans();
-		setFinnhubExchange2.Close();
+		setExchange2.m_strFilter = _T("[Code] = 'AA'");
+		setExchange2.Open();
+		setExchange2.m_pDatabase->BeginTrans();
+		EXPECT_TRUE(!setExchange2.IsEOF()) << "此时已经存入了AA";
+		Exchange2.Load(setExchange2);
+		EXPECT_STREQ(Exchange.m_strCode, _T("AA"));
+		EXPECT_STREQ(Exchange.m_strName, _T("aaa"));
+		EXPECT_STREQ(Exchange.m_strMic, _T("abdc"));
+		EXPECT_STREQ(Exchange.m_strTimeZone, _T("Beijing"));
+		EXPECT_STREQ(Exchange.m_strHour, _T("10101010"));
+		EXPECT_STREQ(Exchange.m_strCloseDate, _T("20202020"));
+		EXPECT_STREQ(Exchange.m_strCountry, _T("dfe"));
+		EXPECT_STREQ(Exchange.m_strSource, _T("abc"));
+		EXPECT_TRUE(Exchange.m_fStockSymbolUpdated) << "这个参数不存入数据库";
+		setExchange2.Delete();
+		setExchange2.m_pDatabase->CommitTrans();
+		setExchange2.Close();
 	}
 }

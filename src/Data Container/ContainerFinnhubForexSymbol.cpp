@@ -3,7 +3,6 @@
 #include"containerFinnhubForexSymbol.h"
 #include"SetFinnhubForexSymbol.h"
 #include"FinnhubForex.h"
-#include "InfoReport.h"
 
 CContainerFinnhubForexSymbol::CContainerFinnhubForexSymbol() {
 	CContainerFinnhubForexSymbol::Reset();

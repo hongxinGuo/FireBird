@@ -2,12 +2,11 @@
 
 #include"GeneralCheck.h"
 
-#include"WorldMarket.h"
-
 #include"FinnhubInquiryType.h"
 
 #include"ProductFinnhub.h"
 #include"finnhubInaccessibleExchange.h"
+#include "WebData.h"
 
 using namespace testing;
 

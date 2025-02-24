@@ -8,6 +8,8 @@
 
 #include "ProductFinnhubCompanyNews.h"
 
+#include "WebData.h"
+
 CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/company-news?symbol=");
 }

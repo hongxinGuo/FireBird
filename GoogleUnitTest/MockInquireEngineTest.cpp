@@ -6,6 +6,7 @@
 
 #include"GeneralCheck.h"
 #include "ProductDummy.h"
+#include "WebData.h"
 
 using namespace testing;
 

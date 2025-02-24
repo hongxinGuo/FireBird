@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "ContainerFinnhubCountry.h"
 
-#include "InfoReport.h"
-
 CContainerFinnhubCountry::CContainerFinnhubCountry() { Reset(); }
 
 void CContainerFinnhubCountry::Reset() {

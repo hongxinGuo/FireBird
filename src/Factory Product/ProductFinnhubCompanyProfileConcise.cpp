@@ -7,6 +7,8 @@
 
 #include "ProductFinnhubCompanyProfileConcise.h"
 
+#include "WebData.h"
+
 CProductFinnhubCompanyProfileConcise::CProductFinnhubCompanyProfileConcise() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/profile2?symbol=");
 }

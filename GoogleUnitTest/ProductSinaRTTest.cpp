@@ -5,6 +5,7 @@
 #include "ChinaMarket.h"
 
 #include"ProductSinaRT.h"
+#include "WebData.h"
 
 using namespace testing;
 

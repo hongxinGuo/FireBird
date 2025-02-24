@@ -4,8 +4,6 @@
 #include"SetFinnhubCryptoSymbol.h"
 #include"FinnhubCrypto.h"
 
-#include "InfoReport.h"
-
 CContainerFinnhubCrypto::CContainerFinnhubCrypto() {
 	CContainerFinnhubCrypto::Reset();
 }

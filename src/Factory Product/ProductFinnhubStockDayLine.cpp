@@ -9,6 +9,8 @@
 
 #include "ProductFinnhubStockDayLine.h"
 
+#include "WebData.h"
+
 CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/candle?symbol=");
 }

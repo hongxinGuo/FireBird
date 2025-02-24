@@ -9,6 +9,7 @@
 #include "ProductFinnhubCompanyBasicFinancial.h"
 
 #include "TimeConvert.h"
+#include "WebData.h"
 
 std::set<string> s_setMetricType;// 目前共五种类型："all", "perShare", "marketCapitalization","metric","eps"
 

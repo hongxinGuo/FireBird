@@ -16,6 +16,7 @@
 
 #include"ChinaMarket.h"
 #include "TimeConvert.h"
+#include "WebData.h"
 
 CTengxunDayLineDataSource::CTengxunDayLineDataSource() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
