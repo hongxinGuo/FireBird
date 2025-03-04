@@ -111,7 +111,7 @@ void CContainerTiingoStock::ResetDayLineStartEndDate() {
 void CContainerTiingoStock::BuildDayLine(long lDate) {
 	CSetTiingoStockDayLine setDayLine;
 	auto lSize = Size();
-	time_t tMarketCloseTime = gl_pWorldMarket->TransferToUTCTime(lDate, gl_pWorldMarket->GetMarketCloseTime());
+	time_t tMarketCloseTime = gl_pWorldMarket->TransferToUTCTime(lDate, 0); // Note 使用当日数据，无论是否是闭市后的数据。
 
 	LoadDayLine(lDate);
 

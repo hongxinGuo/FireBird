@@ -175,23 +175,18 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 			gl_systemConfiguration.SetUsingFinnhubWebSocket(true); // 只设置标识，实际启动由其他任务完成。
 			break;
 		case WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__:
-			if (lCurrentTime < 180000) {
-				AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(180000, 0, 1, 0)); // 每分钟申请一次
-			}
-			else {
-				gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true); //
-			}
+			gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true); //
 			break;
 		case WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__:
-			if (lCurrentTime < 180000) {
+			if (gl_pWorldMarket->GetMarketDate() == gl_pWorldMarket->GetCurrentTradeDate() && lCurrentTime < 180000) {
 				AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, 180000);
 			}
-			else {
+			else { // 当日18时之后或者第二日交易时间前
 				gl_pTiingoDataSource->SetUpdateStockDailyMeta(true);
 				gl_pTiingoDataSource->SetUpdateDayLine(true);
 			}
 			break;
-		case WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__:
+		case WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__: // Note 20点后执行，刚闭市时数据可能不全。
 			ASSERT(!gl_systemConfiguration.IsPaidTypeTiingoAccount()); // 免费账户需要处理当日数据（付费账户下载所有股票的日线）
 			gl_pWorldMarket->TaskCreateTiingoTradeDayDayLine(lCurrentTime);
 			break;
@@ -237,9 +232,9 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 
 	AddTask(WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__, lCurrentTime);
 
-	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(lCurrentTime, 0, 0, 10)); // 开始下载日线历史数据
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, GetNextTime(lCurrentTime, 0, 0, 20)); // 开始下载日线历史数据
 
+	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(lTimeMinute, 0, 1, 0)); // 
 	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0)); // 两分钟后开始监测WebSocket
 
 	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
@@ -462,19 +457,31 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 	return fUpdated;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Note 02/01/2005后，tiingo.com不再提供全部的IEX盘后数据，放弃使用。
+// 如何处理当日数据的逻辑位于此函数中。
+//
+//
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
-	if (IsEndMarketIEXTopOfBookUpdated()
-		&& !gl_pTiingoDataSource->IsUpdateDayLine()) { // 当前交易日未处理过IEX、已经接收到数据且已过休市时间？
-		TRACE("process IEX data\n");
-		gl_runtime.thread_executor()->post([] {
-			gl_UpdateWorldMarketDB.acquire();
-			gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
-			// Note 暂不自动处理日线数据
-			gl_UpdateWorldMarketDB.release();
-		});
+	if (!gl_pTiingoDataSource->IsUpdateDayLine()) { // 当前交易日已经接收到日线数据？
+		if (IsEndMarketIEXTopOfBookUpdated()) {// 已接收到了IEX TopOfBook数据？
+			TRACE("process IEX data\n");
+			gl_systemMessage.PushInnerSystemInformationMessage("process Tiingo IEX data");
+			gl_runtime.thread_executor()->post([] {
+				gl_UpdateWorldMarketDB.acquire();
+				gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
+				gl_UpdateWorldMarketDB.release();
+			});
+		}
+		else { // 尚未接收IEX数据？这是初始状态
+			AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(lCurrentTime, 0, 0, 1)); // 申请IEX数据
+			AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(lCurrentTime, 0, 2, 0)); // 两分钟后处理
+		}
 	}
 	else {
-		AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(lCurrentTime, 0, 0, 1)); // 
 		AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(lCurrentTime, 0, 1, 0)); // 一分钟后执行下一次
 	}
 }

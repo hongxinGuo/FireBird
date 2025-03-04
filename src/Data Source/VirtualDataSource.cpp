@@ -51,6 +51,7 @@ void CVirtualDataSource::Run(long lMarketTime) {
 // 需要多个申请的数据源有：腾讯日线数据。
 //
 //Note 只能使用thread_pool_executor或者background_executor，不能使用thread_executor。
+// Note 20250227, 现在似乎可以使用thread_executor了，原因不明。
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -66,14 +67,13 @@ void CVirtualDataSource::InquireData() {
 		GetCurrentProduct();
 		CreateCurrentInquireString();
 		CInquireEnginePtr pEngine = make_shared<CInquireEngine>(m_internetOption, GetInquiringString(), GetHeaders());
-		auto background = gl_runtime.background_executor();
-		auto result = gl_runtime.background_executor()->submit([this, pEngine] { //Note 只能使用thread_pool_executor或者background_executor
-				auto pWebData = pEngine->GetWebData();
-				if (!pEngine->IsWebError()) this->UpdateStatus(pWebData);
-				SetHTTPStatusCode(pEngine->GetHTTPStatusCode());
-				SetWebErrorCode(pEngine->GetErrorCode());
-				return pWebData;
-			});
+		auto result = gl_runtime.thread_executor()->submit([this, pEngine] {
+			auto pWebData = pEngine->GetWebData();
+			SetWebErrorCode(pEngine->GetErrorCode());
+			SetHTTPStatusCode(pEngine->GetHTTPStatusCode());
+			if (!pEngine->IsWebError()) this->UpdateStatus(pWebData);
+			return pWebData;
+		});
 		vResults.emplace_back(std::move(result));
 	}
 	const shared_ptr<vector<CWebDataPtr>> pvWebData = make_shared<vector<CWebDataPtr>>();
@@ -84,7 +84,7 @@ void CVirtualDataSource::InquireData() {
 			pvWebData->push_back(p);
 		}
 	}
-	if (!gl_systemConfiguration.IsExitingSystem() && !pvWebData->empty()) {
+	if (!gl_systemConfiguration.IsExitingSystem() && !pvWebData->empty() && !IsWebError()) {
 		m_eErrorMessageData = IsAErrorMessageData(pvWebData->at(0)); // 返回的数据是错误信息？检查错误，判断申请资格，更新禁止目录
 		m_pCurrentProduct->ParseAndStoreWebData(pvWebData);
 		m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource的智能指针

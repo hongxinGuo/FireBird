@@ -446,8 +446,7 @@ bool CFinnhubDataSource::GenerateStockDayLine() {
 		long lCurrentUpdateDayLinePos;
 		for (lCurrentUpdateDayLinePos = 0; lCurrentUpdateDayLinePos < lStockSetSize; lCurrentUpdateDayLinePos++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentUpdateDayLinePos);
-			if (pStock->IsUpdateDayLine()) {
-				// 目前免费账户只能下载美国市场的股票日线。
+			if (pStock->IsUpdateDayLine()) { // 目前免费账户只能下载美国市场的股票日线。
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;
@@ -488,8 +487,7 @@ bool CFinnhubDataSource::GenerateInsiderTransaction() {
 		bool fFound = false;
 		for (lCurrentUpdateInsiderTransactionPos = 0; lCurrentUpdateInsiderTransactionPos < lStockSetSize; lCurrentUpdateInsiderTransactionPos++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(lCurrentUpdateInsiderTransactionPos);
-			if (pStock->IsUpdateInsiderTransaction()) {
-				// 目前免费账户只能下载美国市场的内部交易数据。
+			if (pStock->IsUpdateInsiderTransaction()) {	// 目前免费账户只能下载美国市场的内部交易数据。
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;

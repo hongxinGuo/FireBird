@@ -36,16 +36,21 @@ CString CProductTiingoIEXTopOfBook::CreateMessage() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
+	int i = 0;
+	int j = 0;
 	const auto pvTiingoIEXTopOFBook = ParseTiingoIEXTopOfBook(pWebData);
 	long lNewestTradeDay = gl_pWorldMarket->GetCurrentTradeDate();
-	time_t ttNewestTradeDay = gl_pWorldMarket->TransferToUTCTime(lNewestTradeDay, gl_pWorldMarket->GetMarketCloseTime()); // 美股下午4点收市
+	time_t ttNewestTradeDay = gl_pWorldMarket->TransferToUTCTime(lNewestTradeDay, 0); //使用当日数据
 	if (pvTiingoIEXTopOFBook->empty()) return;
+	TRACE("Tiingo IEX TopOfBook number: %d\n", pvTiingoIEXTopOFBook->size());
 	for (const auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {
 		if (pIEXTopOFBook->m_timeStamp.time_since_epoch().count() < ttNewestTradeDay) continue; // 只使用不早于一天的实时数据
 		if (!gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker)) continue; // 只更新已有代码
 		auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker);
 		pTiingoStock->UpdateRTData(pIEXTopOFBook);
+		i++;
 	}
+	TRACE("Tiingo IEX active number: %d\n", i);
 	if (gl_pWorldMarket->IsMarketClosed()) {
 		gl_pWorldMarket->SetEndMarketIEXTopOfBookUpdate(true);
 	}

@@ -192,12 +192,17 @@ static const char kDefaultOutputFormat[] = "xml";
 // The default output file.
 static const char kDefaultOutputFile[] = "test_detail";
 
+// These environment variables are set by Bazel.
+// https://bazel.build/reference/test-encyclopedia#initial-conditions
+//
 // The environment variable name for the test shard index.
 static const char kTestShardIndex[] = "GTEST_SHARD_INDEX";
 // The environment variable name for the total number of test shards.
 static const char kTestTotalShards[] = "GTEST_TOTAL_SHARDS";
 // The environment variable name for the test shard status file.
 static const char kTestShardStatusFile[] = "GTEST_SHARD_STATUS_FILE";
+// The environment variable name for the test output warnings file.
+static const char kTestWarningsOutputFile[] = "TEST_WARNINGS_OUTPUT_FILE";
 
 namespace internal {
 
@@ -257,6 +262,12 @@ GTEST_DEFINE_bool_(
     testing::internal::BoolFromGTestEnv("fail_fast",
                                         testing::GetDefaultFailFast()),
     "True if and only if a test failure should stop further test execution.");
+
+GTEST_DEFINE_bool_(
+    fail_if_no_test_linked,
+    testing::internal::BoolFromGTestEnv("fail_if_no_test_linked", false),
+    "True if and only if the test should fail if no test case (including "
+    "disabled test cases) is linked.");
 
 GTEST_DEFINE_bool_(
     also_run_disabled_tests,
@@ -5869,6 +5880,23 @@ TestSuite* UnitTestImpl::GetTestSuite(
 static void SetUpEnvironment(Environment* env) { env->SetUp(); }
 static void TearDownEnvironment(Environment* env) { env->TearDown(); }
 
+// If the environment variable TEST_WARNINGS_OUTPUT_FILE was provided, appends
+// `str` to the file, creating the file if necessary.
+#if GTEST_HAS_FILE_SYSTEM
+static void AppendToTestWarningsOutputFile(const std::string& str) {
+  const char* const filename = posix::GetEnv(kTestWarningsOutputFile);
+  if (filename == nullptr) {
+    return;
+  }
+  auto* const file = posix::FOpen(filename, "a");
+  if (file == nullptr) {
+    return;
+  }
+  GTEST_CHECK_(fwrite(str.data(), 1, str.size(), file) == str.size());
+  GTEST_CHECK_(posix::FClose(file) == 0);
+}
+#endif  // GTEST_HAS_FILE_SYSTEM
+
 // Runs all tests in this UnitTest object, prints the result, and
 // returns true if all tests are successful.  If any exception is
 // thrown during a test, the test is considered to be failed, but the
@@ -5889,6 +5917,28 @@ bool UnitTestImpl::RunAllTests() {
   // Repeats the call to the post-flag parsing initialization in case the
   // user didn't call InitGoogleTest.
   PostFlagParsingInit();
+
+  // Handle the case where the program has no tests linked.
+  // Sometimes this is a programmer mistake, but sometimes it is intended.
+  if (total_test_count() == 0) {
+    constexpr char kNoTestLinkedMessage[] =
+        "This test program does NOT link in any test case.";
+    constexpr char kNoTestLinkedFatal[] =
+        "This is INVALID. Please make sure to link in at least one test case.";
+    constexpr char kNoTestLinkedWarning[] =
+        "Please make sure this is intended.";
+    const bool fail_if_no_test_linked = GTEST_FLAG_GET(fail_if_no_test_linked);
+    ColoredPrintf(
+        GTestColor::kRed, "%s %s\n", kNoTestLinkedMessage,
+        fail_if_no_test_linked ? kNoTestLinkedFatal : kNoTestLinkedWarning);
+    if (fail_if_no_test_linked) {
+      return false;
+    }
+#if GTEST_HAS_FILE_SYSTEM
+    AppendToTestWarningsOutputFile(std::string(kNoTestLinkedMessage) + ' ' +
+                                   kNoTestLinkedWarning + '\n');
+#endif  // GTEST_HAS_FILE_SYSTEM
+  }
 
 #if GTEST_HAS_FILE_SYSTEM
   // Even if sharding is not on, test runners may want to use the
@@ -6677,6 +6727,7 @@ static bool ParseGoogleTestFlag(const char* const arg) {
   GTEST_INTERNAL_PARSE_FLAG(death_test_style);
   GTEST_INTERNAL_PARSE_FLAG(death_test_use_fork);
   GTEST_INTERNAL_PARSE_FLAG(fail_fast);
+  GTEST_INTERNAL_PARSE_FLAG(fail_if_no_test_linked);
   GTEST_INTERNAL_PARSE_FLAG(filter);
   GTEST_INTERNAL_PARSE_FLAG(internal_run_death_test);
   GTEST_INTERNAL_PARSE_FLAG(list_tests);
