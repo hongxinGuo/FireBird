@@ -475,6 +475,11 @@ void CWorldMarket::TaskCreateTiingoTradeDayDayLine(long lCurrentTime) {
 				gl_dataContainerTiingoStock.BuildDayLine(gl_pWorldMarket->GetCurrentTradeDate());
 				gl_UpdateWorldMarketDB.release();
 			});
+			if (lCurrentTime < 233000) {
+				SetEndMarketIEXTopOfBookUpdate(false);
+				AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(lCurrentTime, 0, 28, 0)); // 申请IEX数据
+				AddTask(WORLD_MARKET_TIINGO_BUILD_TODAY_STOCK_DAYLINE__, GetNextTime(lCurrentTime, 0, 30, 0));
+			}
 		}
 		else { // 尚未接收IEX数据？这是初始状态
 			AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(lCurrentTime, 0, 0, 1)); // 申请IEX数据
