@@ -7,6 +7,7 @@
 #include"WebRTData.h"
 
 #include "ChinaMarket.h"
+#include "TimeConvert.h"
 
 void CWebRTData::Reset() {
 	m_lDataSource = INVALID_RT_WEB_DATA_;
@@ -146,19 +147,15 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 		m_lPSell.at(j) = StrToDecimal(sv, 3);
 	}
 	// 读入成交日期和时间。此时间为东八区（北京标准时间）。
+
 	sv = GetNextField(svData, lCurrentPos, ',');
 	string sTime(sv.data(), sv.size());
 	sTime += ' '; //添加一个空格，以利于下面的转换
 	const string_view svTime = GetNextField(svData, lCurrentPos, ',');
-	if (svTime.length() == 0) { // 没有时间？
-		sTime += _T("15:00:00"); // 使用闭市时间
-	}
-	else {
-		sTime.append(svTime.data(), svTime.size());
-	}
-	std::stringstream ss(sTime);
-	chrono::from_stream(ss, "%F %T", m_tpTime); // 
-	m_tpTime -= gl_pChinaMarket->GetTimeZoneOffset();
+	sTime.append(svTime.data(), svTime.size());
+	// Note 此处不能调用chrono::from_stream(), 否则当使用并行处理以加速时，堵塞在此函数调用上。
+	auto time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", sTime.c_str(), -gl_pChinaMarket->GetTimeZoneOffset().count());	//转成UTC时间。
+	m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(time));
 	// 后面的数据为字符串"00",无效数据，不再处理
 	// 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
 	// 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
@@ -313,11 +310,12 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	lTemp = atol(sv.data());
 	// 30 成交日期和时间.格式为：yyyymmddhhmmss. 此时间采用的时区为东八区（北京标准时间）
+	// Note 此处不能调用chrono::from_stream(), 否则当使用并行处理以加速时，堵塞在此函数调用上。
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	const string sTime(sv.data(), sv.size());
-	std::stringstream ss(sTime);
-	chrono::from_stream(ss, "%Y%m%d%H%M%S", m_tpTime);
-	m_tpTime -= gl_pChinaMarket->GetTimeZoneOffset();
+	auto time = ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", sTime.c_str(), -gl_pChinaMarket->GetTimeZoneOffset().count()); // 转成UTC时间。腾讯实时数据的时区为东八区
+	m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(time));
+
 	// 涨跌
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	// 涨跌率

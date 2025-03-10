@@ -83,7 +83,7 @@ CTiingoForexWebSocketPtr gl_pTiingoForexWebSocket;
 CTiingoCryptoWebSocketPtr gl_pTiingoCryptoWebSocket;
 
 // 处理后的数据
-ConcurrentQueue<CWebRTDataPtr> gl_qChinaMarketRTData(10000); // 中国市场新浪实时数据队列。
+ConcurrentQueue<CWebRTDataPtr> gl_qChinaMarketRTData(1000000); // 中国市场新浪实时数据队列。
 ConcurrentQueue<CDayLineWebDataPtr> gl_qDayLine(1000); // 日线数据
 
 // ChinaMarket处理的数据

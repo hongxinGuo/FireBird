@@ -2,6 +2,29 @@
 
 #include "TimeConvert.h"
 
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 将逝去的时间转换成UTC时间。默认时区为东八区。
+//
+////////////////////////////////////////////////////////////////////////////////////////////
+time_t ConvertBufferToTime(CString strFormat, const char* BufferMarketTime, const time_t tTimeZoneOffset) {
+	tm tm_{ 0, 0, 0, 0, 0, 0 };
+	int year = 1970, month = 1, day = 0, hour = 15, minute = 0, second = 0;
+
+	sscanf_s(BufferMarketTime, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
+	tm_.tm_year = year - 1900;
+	tm_.tm_mon = month - 1;
+	tm_.tm_mday = day;
+	tm_.tm_hour = hour;
+	tm_.tm_min = minute;
+	tm_.tm_sec = second;
+	tm_.tm_isdst = 0;
+	time_t tt = _mkgmtime(&tm_); // 先变成GMT时间
+	if (tt > -1) {
+		tt += tTimeZoneOffset; // 然后改成本市场UTC时间
+	}
+	return tt;
+}
 time_t ConvertToTTime(long lYear, long lMonth, long lDay, long lHour, long lMinute, long lSecond, time_t tTimeZone) {
 	ASSERT(lYear > 1970);
 	ASSERT(lMonth > 0);

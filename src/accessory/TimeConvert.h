@@ -1,6 +1,7 @@
 #pragma once
 
 // 时间转换辅助函数。time_t使用UTC（GMT）标准，其他形式的时间为该市场的标准时间，默认采用东八区标准时间。
+time_t ConvertBufferToTime(CString strFormat, const char* BufferMarketTime, time_t tTimeZoneOffset); // 默认采用东八区标准时间
 time_t ConvertToTTime(long lYear, long lMonth, long lDay, long lHour, long lMinute, long lSecond, time_t tTimeZone); // 将整型(YYYYMMDD)转变为time_t形式.
 time_t ConvertToTTime(long lDate, time_t tTimeZone, long lTime); // 将整型(YYYYMMDD)转变为time_t形式.
 long ConvertToDate(time_t tUTC, time_t tTimeZone) noexcept;// 将时间转变为整型(YYYYMMDD)形式

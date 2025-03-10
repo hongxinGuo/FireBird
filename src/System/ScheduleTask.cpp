@@ -163,7 +163,7 @@ void ScheduleMarketTask() {
 
 void SetMaxCurrencyLevel() {
 	if (gl_runtime.thread_pool_executor()->max_concurrency_level() >= 8) gl_concurrency_level = 4;
-	else gl_concurrency_level = 3;
+	else gl_concurrency_level = 2;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

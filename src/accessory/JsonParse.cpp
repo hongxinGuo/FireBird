@@ -128,7 +128,7 @@ void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& str
 // Note 使用max_concurrency_level时，实际效果大致为4个。估计与调度有关，即CPU的占比增至100%，但解析时间并没有减少。故而将gl_concurrency_level设为4.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvStringView) {
+result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<vector<string_view>> pvStringView) {
 	vector<result<bool>> results;
 	const auto DataSize = pvStringView->size();
 	const auto chunk_size = 1 + DataSize / gl_concurrency_level;
@@ -136,7 +136,7 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe,
 		auto chunk_begin = i * chunk_size;
 		auto chunk_end = chunk_begin + chunk_size;
 		if (chunk_end > DataSize) chunk_end = DataSize;
-		auto result = tpe->submit([pvStringView, chunk_begin, chunk_end] {
+		auto result = gl_runtime.thread_pool_executor()->submit([pvStringView, chunk_begin, chunk_end] {
 			for (auto j = chunk_begin; j < chunk_end; j++) {
 				const auto pRTData = make_shared<CWebRTData>();
 				pRTData->ParseSinaData(pvStringView->at(j));
@@ -148,6 +148,7 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<thread_pool_executor> tpe,
 	}
 	bool succeed = true;
 	for (auto& r : results) {
+		//auto a = r.resolve();
 		succeed &= co_await r;
 	}
 	co_return succeed;
@@ -159,7 +160,7 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 	while (!pWebData->IsLastDataParagraph()) {
 		pvStringView->emplace_back(pWebData->GetCurrentSinaData());
 	}
-	auto result = ParseSinaRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView); //Note 必须使用thread_pool_executor
+	auto result = ParseSinaRTDataUsingCoroutine(pvStringView); //Note 必须使用thread_pool_executor
 	result.get(); // 堵塞在这里
 }
 
