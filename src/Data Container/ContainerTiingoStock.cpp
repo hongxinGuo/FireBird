@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include "ContainerTiingoStock.h"
+
+#include "ConvertToString.h"
 #include "SetTiingoStockCurrentTrace.h"
 #include "SetTiingoStockDayLine.h"
 #include "Thread.h"
@@ -325,6 +327,42 @@ void CContainerTiingoStock::TaskCalculate2() {
 	setCurrentTrace.m_pDatabase->CommitTrans();
 	setCurrentTrace.Close();
 	gl_systemMessage.PushInnerSystemInformationMessage("52 week low Calculated");
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 改正tiingo日线数据中的错误数据。
+//
+//////////////////////////////////////////////////////////////////////////////////////////////
+void CContainerTiingoStock::TaskFixDayLine() {
+	for (int i = 0; i < m_vStock.size(); i++) {
+		auto pStock = GetStock(i);
+
+		CSetTiingoStockDayLine setDayLineBasic;
+		long lLastClose = 0;
+		auto ratio = pStock->GetRatio();
+
+		// 装入DayLine数据
+		setDayLineBasic.m_strFilter = _T("[Symbol] = '");
+		setDayLineBasic.m_strFilter += pStock->GetSymbol();
+		setDayLineBasic.m_strFilter += _T("'");
+		setDayLineBasic.m_strSort = _T("[Date]");
+		setDayLineBasic.Open();
+		setDayLineBasic.m_pDatabase->BeginTrans();
+		while (!setDayLineBasic.IsEOF()) {
+			long currentLastClose = atof(setDayLineBasic.m_LastClose) * ratio;
+			// 如果本交易日的上一个交易日收盘价为零的话，使用上一个交易日的收盘价修复之。
+			if (currentLastClose == 0) {
+				setDayLineBasic.Edit();
+				setDayLineBasic.m_LastClose = ConvertValueToString(lLastClose, ratio);
+				setDayLineBasic.Update();
+			}
+			lLastClose = atof(setDayLineBasic.m_Close) * ratio;
+			setDayLineBasic.MoveNext();
+		}
+		setDayLineBasic.m_pDatabase->CommitTrans();
+		setDayLineBasic.Close();
+	}
 }
 
 void CContainerTiingoStock::Delete52WeekHighData() {

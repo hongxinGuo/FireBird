@@ -112,6 +112,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_PROCESS_TIINGO_DAYLINE, &CMainFrame::OnUpdateProcessTiingoDayline)
 	ON_COMMAND(ID_CALCULATE_NEW_LOW_FIVE_TIMES, &CMainFrame::OnCalculateNewLowFiveTimes)
 	ON_COMMAND(ID_INQUIRE_IEX_TOP_OF_BOOK, &CMainFrame::OnInquireIexTopOfBook)
+	ON_COMMAND(ID_TIINGO_FIX_DAYLINE, &CMainFrame::OnTiingoFixDayline)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1248,4 +1249,11 @@ void CMainFrame::OnCalculateNewLowFiveTimes() {
 
 void CMainFrame::OnInquireIexTopOfBook() {
 	gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true); //
+}
+
+void CMainFrame::OnTiingoFixDayline() {
+	// TODO: Add your command handler code here
+	gl_runtime.thread_executor()->post([] {
+		gl_dataContainerTiingoStock.TaskFixDayLine();
+	});
 }

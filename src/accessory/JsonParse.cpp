@@ -1,11 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// json数据解析的任务皆位于此文件中。
-// 解析是目前最费时的函数，故而DEBUG模式时也要进行全局优化（/GL），只有这样才能在规定时间内处理完数据。
-// Netease实时数据是目前最需要关注的，每300毫秒接收900个数据时，系统基本上独占一个核心处理器了。如果再有耗时的任务，就需要
-// 将其分配到其他核心处理器上，这样就会导致系统的响应时间增加，而且系统的负载也会增加。
+// 数据解析的任务皆位于此文件中。
 //
-// 在DEBUG模式下，boost PTree速度比Nlohmann json快，但Release模式下nlohmann json的速度比boost ptree快50%左右。
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,10 +118,9 @@ void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& str
 // 由于数据中不会包含相同股票的实时数据，故而不会出现同时操作同一个股票的问题，所以可以并行解析
 // 只有工作线程都执行完后，本函数方可退出。
 //
-// 使用这种多线程模式与单线程模式相比，速度快1倍以上。
+// 使用这种多线程模式与单线程模式相比，4个线程时运行时间减至1/3，更多的线程会减少运行时间，但效率降低。
 //
-// Note 调用此函数的线程不能使用thread_pool_executor或者background_executor生成，只能使用thread_executor生成，原因待查。
-// Note 使用max_concurrency_level时，实际效果大致为4个。估计与调度有关，即CPU的占比增至100%，但解析时间并没有减少。故而将gl_concurrency_level设为4.
+// Note 调用此函数得线程不能使用thread_pool_executor或者background_executor生成，只能使用thread_executor生成，原因待查。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<vector<string_view>> pvStringView) {
@@ -160,7 +155,8 @@ void ParseSinaRTData(const CWebDataPtr& pWebData) {
 	while (!pWebData->IsLastDataParagraph()) {
 		pvStringView->emplace_back(pWebData->GetCurrentSinaData());
 	}
-	auto result = ParseSinaRTDataUsingCoroutine(pvStringView); //Note 必须使用thread_pool_executor
+	if (pvStringView->size() < 1) return;
+	auto result = ParseSinaRTDataUsingCoroutine(pvStringView);
 	result.get(); // 堵塞在这里
 }
 
@@ -186,10 +182,9 @@ bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived) {
 // 使用thread pool + coroutine并行解析，每个工作线程解析1/gl_concurrency_level数的数据，将解析后的数据存入缓存队列。
 // 由于数据中不会包含相同股票的实时数据，故而不会出现同时操作同一个股票的问题，所以可以并行解析
 //
-// 使用这种多线程模式与单线程模式相比，速度快1倍以上。
+// 使用这种多线程模式与单线程模式相比，4个线程时运行时间减至1/3，更多的线程会减少运行时间，但效率降低。
 //
 // Note 调用此函数得线程不能使用thread_pool_executor或者background_executor生成，只能使用thread_executor生成，原因待查。
-// Note 使用max_concurrency_level时，实际效果大致为4个。估计与调度有关，即CPU的占比增至100%，但解析时间并没有减少。故而将gl_concurrency_level设为4.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurrencpp::thread_pool_executor> tpe, shared_ptr<vector<string_view>> pvStringView) {
@@ -225,15 +220,11 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 	pWebData->ResetCurrentPos();
 	const shared_ptr<vector<string_view>> pvStringView = make_shared<vector<string_view>>();
-	try {
-		while (!pWebData->IsLastDataParagraph()) {
-			pvStringView->emplace_back(pWebData->GetCurrentTengxunData());
-		}
-	} catch (exception& e) {
-		ReportErrorToSystemMessage(_T("ParseTengxunData异常 "), e);
+	while (!pWebData->IsLastDataParagraph()) {
+		pvStringView->emplace_back(pWebData->GetCurrentTengxunData());
 	}
-
-	auto result = ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView); //Note 必须使用thread_pool_executor
+	if (pvStringView->size() < 1) return;
+	auto result = ParseTengxunRTDataUsingCoroutine(gl_runtime.thread_pool_executor(), pvStringView);
 	result.get(); // 等待线程执行完后方继续。
 }
 
@@ -243,6 +234,8 @@ void ParseTengxunRTData(const CWebDataPtr& pWebData) {
 // 数据制式为： 日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n
 //
 // 日线数据是逆序的，最新日期的在前面。
+//
+// Note 网易已不再提供数据服务
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 CDayLineWebDataPtr ParseNeteaseDayLine(const CWebDataPtr& pWebData) {
@@ -407,6 +400,8 @@ bool CreateJsonWithNlohmann(json& js, CString& str, const long lBeginPos, const 
 //  网易中文股票名称的制式不明，暂时不使用（由于boost ptree对中文的支持不足，其只支持utf8制式，导致提取中文字符时出现乱码）。
 // 现在采用wstring和CStringW两次过渡，就可以正常显示了。
 //
+// Note 网易不再提供数据服务
+//
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRTData) {
 	CString strSymbol4;
@@ -470,6 +465,9 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 	}
 }
 
+//
+// Note 网易不再提供数据服务
+
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
 	auto pvWebRTData = make_shared<vector<CWebRTDataPtr>>();
 
@@ -499,6 +497,9 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs) {
 //                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
 //
 // 目前采用下标方法解析数据，其速度能达到Nlohmann json的三倍以上。
+//
+//
+// Note 网易不再提供数据服务
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJsonData) {
@@ -568,6 +569,9 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 	}
 	return pvWebRTData;
 }
+
+//
+// Note 网易不再提供数据服务
 
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(const CWebDataPtr& pData) {
 	return ParseNeteaseRTDataWithSimdjson(pData->GetStringView(21, pData->GetBufferLength() - 21 - 2)); // 网易json数据

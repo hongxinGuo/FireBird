@@ -169,6 +169,7 @@ BENCHMARK(BM_test)->Unit(benchmark::kMillisecond);
 #include <atomic>
 #include <cassert>
 #include <cstddef>
+#include <functional>
 #include <initializer_list>
 #include <iosfwd>
 #include <limits>
@@ -189,6 +190,14 @@ BENCHMARK(BM_test)->Unit(benchmark::kMillisecond);
 #define BENCHMARK_DISALLOW_COPY_AND_ASSIGN(TypeName) \
   TypeName(const TypeName&) = delete;                \
   TypeName& operator=(const TypeName&) = delete
+
+#ifdef BENCHMARK_HAS_CXX17
+#define BENCHMARK_UNUSED [[maybe_unused]]
+#elif defined(__GNUC__) || defined(__clang__)
+#define BENCHMARK_UNUSED __attribute__((unused))
+#else
+#define BENCHMARK_UNUSED
+#endif
 
 // Used to annotate functions, methods and classes so they
 // are not optimized by the compiler. Useful for tests
@@ -302,7 +311,25 @@ BENCHMARK(BM_test)->Unit(benchmark::kMillisecond);
 #endif  // _MSC_VER_
 
 namespace benchmark {
+
+namespace internal {
+#if (__cplusplus < 201402L || (defined(_MSC_VER) && _MSVC_LANG < 201402L))
+template <typename T, typename... Args>
+std::unique_ptr<T> make_unique(Args&&... args) {
+  return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+}
+#else
+using ::std::make_unique;
+#endif
+}  // namespace internal
+
 class BenchmarkReporter;
+class State;
+
+using IterationCount = int64_t;
+
+// Define alias of Setup/Teardown callback function type
+using callback_function = std::function<void(const benchmark::State&)>;
 
 // Default number of minimum benchmark running time in seconds.
 const char kDefaultMinTimeStr[] = "0.5s";
@@ -382,14 +409,15 @@ BENCHMARK_EXPORT void SetDefaultTimeUnit(TimeUnit unit);
 // benchmark.
 class MemoryManager {
  public:
-  static const int64_t TombstoneValue;
+  static constexpr int64_t TombstoneValue = std::numeric_limits<int64_t>::max();
 
   struct Result {
     Result()
         : num_allocs(0),
           max_bytes_used(0),
           total_allocated_bytes(TombstoneValue),
-          net_heap_growth(TombstoneValue) {}
+          net_heap_growth(TombstoneValue),
+          memory_iterations(0) {}
 
     // The number of allocations made in total between Start and Stop.
     int64_t num_allocs;
@@ -405,6 +433,8 @@ class MemoryManager {
     // ie., total_allocated_bytes - total_deallocated_bytes.
     // Init'ed to TombstoneValue if metric not available.
     int64_t net_heap_growth;
+
+    IterationCount memory_iterations;
   };
 
   virtual ~MemoryManager() {}
@@ -462,7 +492,7 @@ BENCHMARK_EXPORT Benchmark* RegisterBenchmarkInternal(
 
 // Ensure that the standard streams are properly initialized in every TU.
 BENCHMARK_EXPORT int InitializeStreams();
-[[maybe_unused]] static int stream_init_anchor = InitializeStreams();
+BENCHMARK_UNUSED static int stream_init_anchor = InitializeStreams();
 
 }  // namespace internal
 
@@ -653,8 +683,6 @@ typedef std::map<std::string, Counter> UserCounters;
 enum BigO { oNone, o1, oN, oNSquared, oNCubed, oLogN, oNLogN, oAuto, oLambda };
 
 typedef int64_t ComplexityN;
-
-typedef int64_t IterationCount;
 
 enum StatisticUnit { kTime, kPercentage };
 
@@ -1018,7 +1046,7 @@ inline BENCHMARK_ALWAYS_INLINE bool State::KeepRunningInternal(IterationCount n,
 }
 
 struct State::StateIterator {
-  struct [[maybe_unused]] Value {};
+  struct BENCHMARK_UNUSED Value {};
   typedef std::forward_iterator_tag iterator_category;
   typedef Value value_type;
   typedef Value reference;
@@ -1157,10 +1185,10 @@ class BENCHMARK_EXPORT Benchmark {
   //
   // The callback will be passed a State object, which includes the number
   // of threads, thread-index, benchmark arguments, etc.
-  //
-  // The callback must not be NULL or self-deleting.
-  Benchmark* Setup(void (*setup)(const benchmark::State&));
-  Benchmark* Teardown(void (*teardown)(const benchmark::State&));
+  Benchmark* Setup(callback_function&&);
+  Benchmark* Setup(const callback_function&);
+  Benchmark* Teardown(callback_function&&);
+  Benchmark* Teardown(const callback_function&);
 
   // Pass this benchmark object to *func, which can customize
   // the benchmark by calling various methods like Arg, Args,
@@ -1309,7 +1337,6 @@ class BENCHMARK_EXPORT Benchmark {
   std::vector<Statistics> statistics_;
   std::vector<int> thread_counts_;
 
-  typedef void (*callback_function)(const benchmark::State&);
   callback_function setup_;
   callback_function teardown_;
 
@@ -1364,7 +1391,7 @@ class LambdaBenchmark : public Benchmark {
 inline internal::Benchmark* RegisterBenchmark(const std::string& name,
                                               internal::Function* fn) {
   return internal::RegisterBenchmarkInternal(
-      std::make_unique<internal::FunctionBenchmark>(name, fn));
+      benchmark::internal::make_unique<internal::FunctionBenchmark>(name, fn));
 }
 
 template <class Lambda>
@@ -1372,19 +1399,16 @@ internal::Benchmark* RegisterBenchmark(const std::string& name, Lambda&& fn) {
   using BenchType =
       internal::LambdaBenchmark<typename std::decay<Lambda>::type>;
   return internal::RegisterBenchmarkInternal(
-      std::make_unique<BenchType>(name, std::forward<Lambda>(fn)));
+      benchmark::internal::make_unique<BenchType>(name,
+                                                  std::forward<Lambda>(fn)));
 }
 
-#if (!defined(BENCHMARK_GCC_VERSION) || BENCHMARK_GCC_VERSION >= 409)
 template <class Lambda, class... Args>
 internal::Benchmark* RegisterBenchmark(const std::string& name, Lambda&& fn,
                                        Args&&... args) {
   return benchmark::RegisterBenchmark(
       name, [=](benchmark::State& st) { fn(st, args...); });
 }
-#else
-#define BENCHMARK_HAS_NO_VARIADIC_REGISTER_BENCHMARK
-#endif
 
 // The base class for all fixture tests.
 class Fixture : public internal::Benchmark {
@@ -1435,13 +1459,14 @@ class Fixture : public internal::Benchmark {
 #define BENCHMARK_PRIVATE_DECLARE(n)                                           \
   /* NOLINTNEXTLINE(misc-use-anonymous-namespace) */                           \
   static ::benchmark::internal::Benchmark const* const BENCHMARK_PRIVATE_NAME( \
-      n) [[maybe_unused]]
+      n) BENCHMARK_UNUSED
 
 #define BENCHMARK(...)                                                \
   BENCHMARK_PRIVATE_DECLARE(_benchmark_) =                            \
       (::benchmark::internal::RegisterBenchmarkInternal(              \
-          std::make_unique<::benchmark::internal::FunctionBenchmark>( \
-              #__VA_ARGS__, __VA_ARGS__)))
+          benchmark::internal::make_unique<                           \
+              ::benchmark::internal::FunctionBenchmark>(#__VA_ARGS__, \
+                                                        __VA_ARGS__)))
 
 // Old-style macros
 #define BENCHMARK_WITH_ARG(n, a) BENCHMARK(n)->Arg((a))
@@ -1462,11 +1487,12 @@ class Fixture : public internal::Benchmark {
 //}
 // /* Registers a benchmark named "BM_takes_args/int_string_test` */
 // BENCHMARK_CAPTURE(BM_takes_args, int_string_test, 42, std::string("abc"));
-#define BENCHMARK_CAPTURE(func, test_case_name, ...)                  \
-  BENCHMARK_PRIVATE_DECLARE(_benchmark_) =                            \
-      (::benchmark::internal::RegisterBenchmarkInternal(              \
-          std::make_unique<::benchmark::internal::FunctionBenchmark>( \
-              #func "/" #test_case_name,                              \
+#define BENCHMARK_CAPTURE(func, test_case_name, ...)     \
+  BENCHMARK_PRIVATE_DECLARE(_benchmark_) =               \
+      (::benchmark::internal::RegisterBenchmarkInternal( \
+          benchmark::internal::make_unique<              \
+              ::benchmark::internal::FunctionBenchmark>( \
+              #func "/" #test_case_name,                 \
               [](::benchmark::State& st) { func(st, __VA_ARGS__); })))
 
 // This will register a benchmark for a templatized function.  For example:
@@ -1477,22 +1503,24 @@ class Fixture : public internal::Benchmark {
 // BENCHMARK_TEMPLATE(BM_Foo, 1);
 //
 // will register BM_Foo<1> as a benchmark.
-#define BENCHMARK_TEMPLATE1(n, a)                                     \
-  BENCHMARK_PRIVATE_DECLARE(n) =                                      \
-      (::benchmark::internal::RegisterBenchmarkInternal(              \
-          std::make_unique<::benchmark::internal::FunctionBenchmark>( \
-              #n "<" #a ">", n<a>)))
+#define BENCHMARK_TEMPLATE1(n, a)                        \
+  BENCHMARK_PRIVATE_DECLARE(n) =                         \
+      (::benchmark::internal::RegisterBenchmarkInternal( \
+          benchmark::internal::make_unique<              \
+              ::benchmark::internal::FunctionBenchmark>(#n "<" #a ">", n<a>)))
 
-#define BENCHMARK_TEMPLATE2(n, a, b)                                  \
-  BENCHMARK_PRIVATE_DECLARE(n) =                                      \
-      (::benchmark::internal::RegisterBenchmarkInternal(              \
-          std::make_unique<::benchmark::internal::FunctionBenchmark>( \
-              #n "<" #a "," #b ">", n<a, b>)))
+#define BENCHMARK_TEMPLATE2(n, a, b)                                          \
+  BENCHMARK_PRIVATE_DECLARE(n) =                                              \
+      (::benchmark::internal::RegisterBenchmarkInternal(                      \
+          benchmark::internal::make_unique<                                   \
+              ::benchmark::internal::FunctionBenchmark>(#n "<" #a "," #b ">", \
+                                                        n<a, b>)))
 
-#define BENCHMARK_TEMPLATE(n, ...)                                    \
-  BENCHMARK_PRIVATE_DECLARE(n) =                                      \
-      (::benchmark::internal::RegisterBenchmarkInternal(              \
-          std::make_unique<::benchmark::internal::FunctionBenchmark>( \
+#define BENCHMARK_TEMPLATE(n, ...)                       \
+  BENCHMARK_PRIVATE_DECLARE(n) =                         \
+      (::benchmark::internal::RegisterBenchmarkInternal( \
+          benchmark::internal::make_unique<              \
+              ::benchmark::internal::FunctionBenchmark>( \
               #n "<" #__VA_ARGS__ ">", n<__VA_ARGS__>)))
 
 // This will register a benchmark for a templatized function,
@@ -1510,12 +1538,13 @@ class Fixture : public internal::Benchmark {
 #define BENCHMARK_TEMPLATE1_CAPTURE(func, a, test_case_name, ...) \
   BENCHMARK_CAPTURE(func<a>, test_case_name, __VA_ARGS__)
 
-#define BENCHMARK_TEMPLATE2_CAPTURE(func, a, b, test_case_name, ...)  \
-  BENCHMARK_PRIVATE_DECLARE(func) =                                   \
-      (::benchmark::internal::RegisterBenchmarkInternal(              \
-          std::make_unique<::benchmark::internal::FunctionBenchmark>( \
-              #func "<" #a "," #b ">"                                 \
-                    "/" #test_case_name,                              \
+#define BENCHMARK_TEMPLATE2_CAPTURE(func, a, b, test_case_name, ...) \
+  BENCHMARK_PRIVATE_DECLARE(func) =                                  \
+      (::benchmark::internal::RegisterBenchmarkInternal(             \
+          benchmark::internal::make_unique<                          \
+              ::benchmark::internal::FunctionBenchmark>(             \
+              #func "<" #a "," #b ">"                                \
+                    "/" #test_case_name,                             \
               [](::benchmark::State& st) { func<a, b>(st, __VA_ARGS__); })))
 
 #define BENCHMARK_PRIVATE_DECLARE_F(BaseClass, Method)        \
@@ -1584,7 +1613,7 @@ class Fixture : public internal::Benchmark {
 #define BENCHMARK_PRIVATE_REGISTER_F(TestName)           \
   BENCHMARK_PRIVATE_DECLARE(TestName) =                  \
       (::benchmark::internal::RegisterBenchmarkInternal( \
-          std::make_unique<TestName>()))
+          benchmark::internal::make_unique<TestName>()))
 
 // This macro will define and register a benchmark within a fixture class.
 #define BENCHMARK_F(BaseClass, Method)           \
@@ -1717,7 +1746,6 @@ class BENCHMARK_EXPORT BenchmarkReporter {
           complexity_n(0),
           report_big_o(false),
           report_rms(false),
-          memory_result(NULL),
           allocs_per_iter(0.0) {}
 
     std::string benchmark_name() const;
@@ -1773,7 +1801,7 @@ class BENCHMARK_EXPORT BenchmarkReporter {
     UserCounters counters;
 
     // Memory metrics.
-    const MemoryManager::Result* memory_result;
+    MemoryManager::Result memory_result;
     double allocs_per_iter;
   };
 

@@ -8,6 +8,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"pch.h"
 
+#undef max
+
 #include<benchmark/benchmark.h>
 
 #include "ChinaMarket.h"
@@ -401,8 +403,8 @@ BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool4)(benchmark::State& stat
 	}
 }
 
-BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool8)(benchmark::State& state) {
-	gl_concurrency_level = 8;
+BENCHMARK_F(CSinaRTData, ParseSinaRTDataUsingThreadPool6)(benchmark::State& state) {
+	gl_concurrency_level = 6;
 	for (auto _ : state) {
 		ParseSinaRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
@@ -434,19 +436,11 @@ BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool2)(benchmark::State
 	for (auto _ : state) {
 		ParseTengxunRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
-	gl_concurrency_level = 8;
+	gl_concurrency_level = 4;
 }
 
 BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool4)(benchmark::State& state) {
 	for (auto _ : state) {
 		ParseTengxunRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
 	}
-}
-
-BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool8)(benchmark::State& state) {
-	gl_concurrency_level = 8;
-	for (auto _ : state) {
-		ParseTengxunRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
-	}
-	gl_concurrency_level = 8;
 }

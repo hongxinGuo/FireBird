@@ -153,7 +153,7 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 	sTime += ' '; //添加一个空格，以利于下面的转换
 	const string_view svTime = GetNextField(svData, lCurrentPos, ',');
 	sTime.append(svTime.data(), svTime.size());
-	// Note 此处不能调用chrono::from_stream(), 否则当使用并行处理以加速时，堵塞在此函数调用上。
+	// Note 此处不能调用chrono::from_stream(), 否则当使用并行处理以加速时，堵塞在此函数调用上。估计是此函数调用不可重入
 	auto time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", sTime.c_str(), -gl_pChinaMarket->GetTimeZoneOffset().count());	//转成UTC时间。
 	m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(time));
 	// 后面的数据为字符串"00",无效数据，不再处理
@@ -310,7 +310,7 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	lTemp = atol(sv.data());
 	// 30 成交日期和时间.格式为：yyyymmddhhmmss. 此时间采用的时区为东八区（北京标准时间）
-	// Note 此处不能调用chrono::from_stream(), 否则当使用并行处理以加速时，堵塞在此函数调用上。
+	// Note 此处不能调用chrono::from_stream(), 否则当使用并行处理以加速时，堵塞在此函数调用上。估计是此函数调用不可重入
 	sv = GetNextField(svData, lCurrentPos, '~'); //
 	const string sTime(sv.data(), sv.size());
 	auto time = ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", sTime.c_str(), -gl_pChinaMarket->GetTimeZoneOffset().count()); // 转成UTC时间。腾讯实时数据的时区为东八区

@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#undef max
+
 #include<benchmark/benchmark.h>
 
 #include"ChinaMarket.h"

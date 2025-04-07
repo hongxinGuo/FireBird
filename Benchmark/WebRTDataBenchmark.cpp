@@ -1,5 +1,8 @@
 #include"pch.h"
 
+// Note 需要预先消除max的定义
+#undef max
+
 #include<benchmark/benchmark.h>
 
 #include"WebData.h"

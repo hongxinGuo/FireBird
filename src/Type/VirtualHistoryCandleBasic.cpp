@@ -28,16 +28,17 @@ bool CVirtualHistoryCandleBasic::IsActive() const {
 
 void CVirtualHistoryCandleBasic::SaveBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());
+	auto ratio = GetRatio();
 
 	pVirtualSetHistoryCandleBasic->m_Date = GetMarketDate();
 	pVirtualSetHistoryCandleBasic->m_Exchange = GetExchange();
 	pVirtualSetHistoryCandleBasic->m_Symbol = GetStockSymbol();
 	pVirtualSetHistoryCandleBasic->m_DisplaySymbol = GetDisplaySymbol();
-	pVirtualSetHistoryCandleBasic->m_LastClose = ConvertValueToString(GetLastClose(), GetRatio());
-	pVirtualSetHistoryCandleBasic->m_High = ConvertValueToString(GetHigh(), GetRatio());
-	pVirtualSetHistoryCandleBasic->m_Low = ConvertValueToString(GetLow(), GetRatio());
-	pVirtualSetHistoryCandleBasic->m_Open = ConvertValueToString(GetOpen(), GetRatio());
-	pVirtualSetHistoryCandleBasic->m_Close = ConvertValueToString(GetClose(), GetRatio());
+	pVirtualSetHistoryCandleBasic->m_LastClose = ConvertValueToString(GetLastClose(), ratio);
+	pVirtualSetHistoryCandleBasic->m_High = ConvertValueToString(GetHigh(), ratio);
+	pVirtualSetHistoryCandleBasic->m_Low = ConvertValueToString(GetLow(), ratio);
+	pVirtualSetHistoryCandleBasic->m_Open = ConvertValueToString(GetOpen(), ratio);
+	pVirtualSetHistoryCandleBasic->m_Close = ConvertValueToString(GetClose(), ratio);
 	pVirtualSetHistoryCandleBasic->m_dividend = ConvertValueToString(GetDividend());
 	pVirtualSetHistoryCandleBasic->m_splitFactor = ConvertValueToString(GetSplitFactor());
 	pVirtualSetHistoryCandleBasic->m_Volume = ConvertValueToString(GetVolume());

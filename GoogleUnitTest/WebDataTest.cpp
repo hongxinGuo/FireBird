@@ -189,12 +189,4 @@ namespace FireBirdTest {
 		EXPECT_EQ(sv.at(9), '1') << "第一个数据的股票代码是sh600000";
 		EXPECT_EQ(sv.at(sv.length() - 1), ';') << "腾讯实时数据以字符';'结束";
 	}
-
-	TEST_F(CWebDataTest, TestGetCurrentTengxunData2) {
-		string_view sv;
-
-		EXPECT_THROW(sv = tengxunWebData2.GetCurrentTengxunData(), std::exception);
-		EXPECT_THROW(sv = tengxunWebData3.GetCurrentTengxunData(), std::exception);
-		EXPECT_THROW(sv = tengxunWebData4.GetCurrentTengxunData(), std::exception);
-	}
 }

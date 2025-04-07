@@ -11,6 +11,7 @@ map<string, enum_ErrorMessageData> mapTiingoErrorMap{
 	{ _T("You do not have permission to access the News API"), ERROR_TIINGO_NO_RIGHT_TO_ACCESS__ }, // http状态码：403
 	{ _T("Error: resampleFreq must be in 'Min' or 'Hour' only"), ERROR_TIINGO_FREQUENCY__ },
 	{ _T("You have run over your 500 symbol look up for this month. Please upgrade at https://api.tiingo.com/pricing to have your limits increased."), ERROR_TIINGO_REACH_MAX_SYMBOL_LIMIT__ }, // http状态码：200
+	{ _T("Error: You have run over your monthly bandwidth allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased."), ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__ }, // http状态码：429
 	{ _T("API limit reached.please try again later.Remaining limit:0"), ERROR_TIINGO_REACH_MAX_API_LIMIT__ }, // http状态码：200
 	{ _T("Not found."), ERROR_TIINGO_NOT_FOUND__ },
 	{ _T(""), ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__ }
@@ -142,6 +143,18 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 		gl_warnLogger->warn("{}", str.GetBuffer());
 		return ERROR_TIINGO_NO_RIGHT_TO_ACCESS__; // 目前日线数据无申请权利时返回错误代码404。
+	case 429:
+		if (pWebData->GetBufferLength() == 152) {
+			strView = pWebData->GetStringView(0, 152); // 
+			if (strView.compare(_T("{\"detail\":\"Error: You have run over your monthly bandwidth allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.\"}")) == 0) { 	//
+				str = _T("Warning: Tiingo run over your monthly bandwidth");
+				gl_systemMessage.PushInnerSystemInformationMessage(str);
+				gl_warnLogger->warn("{}", str.GetBuffer());
+				m_pCurrentProduct->SetReceivedDataStatus(ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__);
+				return ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__;
+			}
+		}
+		break;
 	default:
 		l = pWebData->GetBufferLength() > 30 ? 30 : pWebData->GetBufferLength();
 		strView = pWebData->GetStringView(0, l); //
@@ -184,6 +197,11 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		case ERROR_TIINGO_MISSING_API_KEY__: // 缺少API key
 			gl_systemMessage.PushErrorMessage(_T("Tiingo missing API key"));
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
+			break;
+		case ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__: // 用尽了每月数据使用量 HTTP status code: 429
+			ASSERT(m_dwHTTPStatusCode == 429);
+			gl_systemMessage.PushErrorMessage(_T("Tiingo run over monthly bandwidth allocation"));
+			m_pCurrentProduct->SetReceivedDataStatus(ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__);
 			break;
 		case ERROR_TIINGO_INQUIRE_RATE_TOO_HIGH__:// 申请频率超高
 			// 降低查询频率200ms。

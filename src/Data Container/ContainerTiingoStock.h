@@ -33,6 +33,9 @@ public:
 	void TaskUpdate52WeekLowDB();
 	void TaskCalculate();
 	void TaskCalculate2();
+
+	void TaskFixDayLine();
+
 	void Delete52WeekHighData();
 
 	void Delete52WeekLowData();
