@@ -667,9 +667,12 @@ void CChinaMarket::TaskUpdateTempRTDB(long lCurrentTime) {
 		gl_systemMessage.PushDayLineInfoMessage(str);
 		gl_runtime.thread_executor()->post([] {
 			gl_UpdateChinaMarketDB.acquire();
+			TRACE("update temp RT data\n");
 			gl_ProcessChinaMarketRTData.acquire();
+			gl_systemMessage.SetChinaMarketSavingFunction(_T("update temp RT data"));
 			gl_dataContainerChinaStock.UpdateTempRTDB();
 			gl_ProcessChinaMarketRTData.release();
+			TRACE("update temp RT data\n");
 			gl_UpdateChinaMarketDB.release();
 		});
 	}
@@ -759,14 +762,16 @@ bool CChinaMarket::SetCheckActiveStockFlag(long lCurrentTime) {
 bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
 	if (IsSystemReady() && !m_fChosen10RSStrong1StockSet && (lCurrentTime > 151100) && IsWorkingDay()) {
 		gl_runtime.thread_executor()->post([this] {
-			TRACE("choice10RS1\n");
 			gl_UpdateChinaMarketDB.acquire();
+			TRACE("choice10RS1\n");
+			gl_systemMessage.SetChinaMarketSavingFunction(_T("choice 10 RS1"));
 			gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));// 添加一个注释
 			if (gl_dataContainerChinaStock.Choice10RSStrong1StockSet()) {
 				gl_systemMessage.PushInformationMessage(_T("10日RS1计算完毕\n"));
 				this->SetUpdatedDateFor10DaysRS1(this->GetMarketDate());
 				this->SetUpdateOptionDB(true); // 更新选项数据库
 			}
+			TRACE("choice10RS1\n");
 			gl_UpdateChinaMarketDB.release();
 		});
 		m_fChosen10RSStrong1StockSet = true;
@@ -777,15 +782,17 @@ bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
 
 bool CChinaMarket::TaskChoice10RSStrong2StockSet(long lCurrentTime) {
 	if (IsSystemReady() && !m_fChosen10RSStrong2StockSet && (lCurrentTime > 151200) && IsWorkingDay()) {
-		TRACE("choice10RS\n");
 		gl_runtime.thread_executor()->post([this] {
 			gl_UpdateChinaMarketDB.acquire();
+			TRACE("choice10RS\n");
+			gl_systemMessage.SetChinaMarketSavingFunction(_T("choice 10 RS"));
 			gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));// 添加一个注释
 			if (gl_dataContainerChinaStock.Choice10RSStrong2StockSet()) {
 				gl_systemMessage.PushInformationMessage(_T("10日RS2计算完毕\n"));
 				this->SetUpdatedDateFor10DaysRS2(this->GetMarketDate());
 				this->SetUpdateOptionDB(true); // 更新选项数据库
 			}
+			TRACE("choice10RS\n");
 			gl_UpdateChinaMarketDB.release();
 		});
 		m_fChosen10RSStrong2StockSet = true;
@@ -806,9 +813,11 @@ bool CChinaMarket::TaskChoice10RSStrongStockSet(long lCurrentTime) {
 bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
 	if (IsSystemReady()) {
 		gl_runtime.thread_executor()->post([this] {
-			TRACE("Process today stock\n");
 			gl_UpdateChinaMarketDB.acquire();
+			TRACE("Process today stock\n");
+			gl_systemMessage.SetChinaMarketSavingFunction(_T("process today stock"));
 			this->ProcessTodayStock();
+			TRACE("Processed today stock\n");
 			gl_UpdateChinaMarketDB.release();
 		});
 		return true;
@@ -927,9 +936,11 @@ bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 
 	if (gl_dataContainerChinaStock.IsUpdateProfileDB()) {
 		gl_runtime.thread_executor()->post([] {
-			TRACE("chinamarket update stock profile\n");
 			gl_UpdateChinaMarketDB.acquire();
+			TRACE("chinamarket update stock profile\n");
+			gl_systemMessage.SetChinaMarketSavingFunction(_T("update stock profile"));
 			gl_dataContainerChinaStock.UpdateStockProfileDB();
+			TRACE("chinamarket updated stock profile\n");
 			gl_UpdateChinaMarketDB.release();
 		});
 		return true;
@@ -941,8 +952,8 @@ bool CChinaMarket::TaskUpdateOptionDB(long lCurrentTime) {
 	AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, GetNextTime(lCurrentTime, 0, 5, 0));
 
 	gl_runtime.thread_executor()->post([this] {
-		TRACE("update option\n");
 		gl_UpdateChinaMarketDB.acquire();
+		gl_systemMessage.SetChinaMarketSavingFunction(_T("update option"));
 		this->UpdateOptionDB();
 		gl_UpdateChinaMarketDB.release();
 	});
@@ -953,9 +964,11 @@ bool CChinaMarket::TaskUpdateOptionDB(long lCurrentTime) {
 bool CChinaMarket::TaskUpdateChosenStockDB() {
 	if (IsUpdateChosenStockDB()) {
 		gl_runtime.thread_executor()->post([this] {
-			TRACE("update chosen stock\n");
 			gl_UpdateChinaMarketDB.acquire();
+			TRACE("update chosen stock\n");
+			gl_systemMessage.SetChinaMarketSavingFunction(_T("update chose stock"));
 			this->AppendChosenStockDB();
+			TRACE("updated chosen stock\n");
 			gl_UpdateChinaMarketDB.release();
 		});
 		return true;
@@ -966,9 +979,11 @@ bool CChinaMarket::TaskUpdateChosenStockDB() {
 bool CChinaMarket::TaskUpdateStockSection() {
 	if (gl_dataContainerChinaStockSymbol.IsUpdateStockSection()) {
 		gl_runtime.thread_executor()->post([] {
-			TRACE("update stockSection\n");
 			gl_UpdateChinaMarketDB.acquire();
+			TRACE("update stockSection\n");
+			gl_systemMessage.SetChinaMarketSavingFunction(_T("update stockSection"));
 			gl_dataContainerChinaStockSymbol.UpdateStockSectionDB();
+			TRACE("updated stockSection\n");
 			gl_UpdateChinaMarketDB.release();
 		});
 		gl_dataContainerChinaStockSymbol.SetUpdateStockSection(false);

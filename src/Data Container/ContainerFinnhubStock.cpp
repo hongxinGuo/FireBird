@@ -266,6 +266,21 @@ void CContainerFinnhubStock::ClearUpdateBasicFinancialFlag(const vector<CFinnhub
 	}
 }
 
+void CContainerFinnhubStock::UpdateInsiderTransactionDB() {
+	for (long i = 0; i < m_vStock.size(); i++) {
+		const CFinnhubStockPtr pStock = GetStock(i);
+		if (pStock->IsUpdateInsiderTransactionDB()) {
+			pStock->SetUpdateInsiderSentimentDB(false);
+			if (pStock->HaveInsiderTransaction()) {
+				pStock->UpdateInsiderTransactionDB();
+			}
+		}
+		if (gl_systemConfiguration.IsExitingSystem()) {
+			break; // 如果程序正在退出，则停止存储。
+		}
+	}
+}
+
 bool CContainerFinnhubStock::ValidateStockSymbol(const CFinnhubStockPtr& pStock) {
 	const CString strSymbol = pStock->GetSymbol();
 	const CString strExchangeCode = pStock->GetExchangeCode();

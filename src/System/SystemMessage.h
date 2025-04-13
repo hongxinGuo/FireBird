@@ -170,6 +170,11 @@ public:
 	CString GetCurrentTiingoFunction() const;
 	void SetCurrentTiingoFunction(const CString& str);
 
+	CString GetChinaMarketSavingFunction() { return m_strChinaMarketSavingFunction; }
+	void SetChinaMarketSavingFunction(const CString& str) { m_strChinaMarketSavingFunction = str; }
+	CString GetWorldMarketSavingFunction() { return m_strWorldMarketSavingFunction; }
+	void SetWorldMarketSavingFunction(const CString& str) { m_strWorldMarketSavingFunction = str; }
+
 protected:
 	// 信息输出队列群
 	CSystemDeque m_SystemInformation;
@@ -197,6 +202,9 @@ protected:
 
 	CString m_strCurrentFinnhubFunction{ _T("") }; // 当前任务和处理的证券名称
 	CString m_strCurrentTiingoFunction{ _T("") }; // 当前任务和处理的证券名称
+
+	CString m_strChinaMarketSavingFunction{ _T("") };
+	CString m_strWorldMarketSavingFunction{ _T("") };
 
 	atomic_long m_lScheduleTaskTime{ 0 };
 	atomic_long m_lScheduleTaskTimePerSecond{ 0 };

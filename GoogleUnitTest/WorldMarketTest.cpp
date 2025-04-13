@@ -710,7 +710,7 @@ namespace FireBirdTest {
 		pStock->SetInsiderTransactionUpdateDate(20210123);
 		pStock->UpdateInsiderTransaction(vInsiderTransaction);
 
-		EXPECT_TRUE(gl_pWorldMarket->UpdateInsiderTransactionDB());
+		gl_pWorldMarket->UpdateInsiderTransactionDB();
 
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 		//gl_systemMessage.PopDayLineInfoMessage();

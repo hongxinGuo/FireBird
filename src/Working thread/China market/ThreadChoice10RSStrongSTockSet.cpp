@@ -25,22 +25,23 @@ UINT ThreadChoice10RSStrong2StockSet(const CChinaMarketPtr& pMarket) {
 }
 
 UINT ThreadChoice10RSStrong1StockSet(const CChinaMarketPtr& pMarket) {
-	TRACE("choice10RS1\n");
 	gl_UpdateChinaMarketDB.acquire();
+	TRACE("choice10RS1\n");
 	gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));// 添加一个注释
 	if (gl_dataContainerChinaStock.Choice10RSStrong1StockSet()) {
 		gl_systemMessage.PushInformationMessage(_T("10日RS1计算完毕\n"));
 		pMarket->SetUpdatedDateFor10DaysRS1(pMarket->GetMarketDate());
 		pMarket->SetUpdateOptionDB(true); // 更新选项数据库
 	}
+	TRACE("choice10RS1\n");
 	gl_UpdateChinaMarketDB.release();
 
 	return 101;
 }
 
 UINT ThreadChoice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
-	TRACE("choice10RS\n");
 	gl_UpdateChinaMarketDB.acquire();
+	TRACE("choice10RS\n");
 	string s = fmt::format("开始计算10日RS {:d}\n", iIndex);
 	gl_systemMessage.PushInformationMessage(s.c_str());
 
@@ -49,14 +50,15 @@ UINT ThreadChoice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
 		s = fmt::format("10日RS  {:d}计算完毕\n", iIndex);
 		gl_systemMessage.PushInformationMessage(s.c_str());
 	}
+	TRACE("choice10RS\n");
 	gl_UpdateChinaMarketDB.release();
 
 	return 103;
 }
 
 UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, const CRSReference* pRef, const CChinaStockPtr& pStock) {
-	TRACE("calculate10RS\n");
 	gl_UpdateChinaMarketDB.acquire();
+	TRACE("calculate10RS\n");
 	if (!gl_systemConfiguration.IsExitingSystem()) {
 		if (pStock->IsShareA() && pStock->IsActive()) {
 			if (!pStock->IsDayLineLoaded()) {
@@ -72,13 +74,14 @@ UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, c
 			}
 		}
 	}
+	TRACE("calculated 10RS\n");
 	gl_UpdateChinaMarketDB.release();
 	return 104;
 }
 
 UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, const CChinaStockPtr& pStock) {
-	TRACE("calculate10RS1\n");
 	gl_UpdateChinaMarketDB.acquire();
+	TRACE("calculate10RS1\n");
 	if (!gl_systemConfiguration.IsExitingSystem()) {
 		if (pStock->IsShareA() && pStock->IsActive()) {
 			if (!pStock->IsDayLineLoaded()) {
@@ -94,13 +97,14 @@ UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, 
 			}
 		}
 	}
+	TRACE("calculated 10RS1\n");
 	gl_UpdateChinaMarketDB.release();
 	return 105;
 }
 
 UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, const CChinaStockPtr& pStock) {
-	TRACE("calculate10RS2\n");
 	gl_UpdateChinaMarketDB.acquire();
+	TRACE("calculate10RS2\n");
 	if (!gl_systemConfiguration.IsExitingSystem()) {
 		if (pStock->IsShareA() && pStock->IsActive()) {
 			if (!pStock->IsDayLineLoaded()) {
@@ -116,6 +120,7 @@ UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, 
 			}
 		}
 	}
+	TRACE("calculated 10RS2\n");
 	gl_UpdateChinaMarketDB.release();
 	return 106;
 }

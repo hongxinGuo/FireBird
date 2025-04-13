@@ -31,6 +31,8 @@ public:
 	void UpdateBasicFinancialMetricDB(const vector<CFinnhubStockPtr>& vStock);
 	static void ClearUpdateBasicFinancialFlag(const vector<CFinnhubStockPtr>& vStock);
 
+	void UpdateInsiderTransactionDB();
+
 	static bool ValidateStockSymbol(const CFinnhubStockPtr& pStock);
 
 	bool IsUpdateCompanyNewsDB();

@@ -191,8 +191,10 @@ bool CTiingoStock::UpdateDayLineDB() {
 		const CString str = GetSymbol() + _T("日线资料存储完成");
 		gl_systemMessage.PushDayLineInfoMessage(str);
 		UnloadDayLine();
+		ASSERT(!IsUpdateDayLineDB());
 		return true;
 	}
+	ASSERT(!IsUpdateDayLineDB());
 	return false;
 }
 

@@ -100,6 +100,8 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 		}
 	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderTransaction->m_strSymbol + _T(" Insider Transaction "), e.what());
+		std::ranges::sort(pvInsiderTransaction->begin(), pvInsiderTransaction->end(),
+		                  [](const CInsiderTransactionPtr& p1, const CInsiderTransactionPtr& p2) { return p1->m_lTransactionDate < p2->m_lTransactionDate; });
 		return pvInsiderTransaction;
 	}
 	std::ranges::sort(pvInsiderTransaction->begin(), pvInsiderTransaction->end(),

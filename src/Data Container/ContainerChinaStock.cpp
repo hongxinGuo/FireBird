@@ -323,6 +323,7 @@ bool CContainerChinaStock::TaskUpdateDayLineDB() {
 			if (pStock->GetDayLineSize() > 0) {
 				if (pStock->HaveNewDayLineData()) {
 					gl_UpdateChinaMarketDB.acquire();
+					gl_systemMessage.SetChinaMarketSavingFunction(_T("update dayline"));
 					gl_runtime.thread_executor()->post([pStock] {
 						if (!gl_systemConfiguration.IsExitingSystem()) {
 							const bool fDataSaved = pStock->SaveDayLineBasicInfo();
@@ -361,9 +362,13 @@ bool CContainerChinaStock::BuildWeekLine(long lStartDate) {
 		const CChinaStockPtr pStock = GetStock(l);
 		gl_runtime.thread_executor()->post([pStock, lStartDate] {
 			gl_UpdateChinaMarketDB.acquire();
+			TRACE("rebuild week line\n");
+			gl_systemMessage.SetChinaMarketSavingFunction(_T("rebuild week line"));
+
 			if (!gl_systemConfiguration.IsExitingSystem()) {
 				pStock->BuildWeekLine(lStartDate);
 			}
+			TRACE("rebuild week line\n");
 			gl_UpdateChinaMarketDB.release();
 		});
 	}

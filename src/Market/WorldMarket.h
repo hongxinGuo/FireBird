@@ -71,7 +71,7 @@ public:
 	// Êý¾Ý¿â²Ù×÷
 	virtual bool UpdateCompanyNewsDB();
 	virtual bool UpdateFinnhubStockDayLineDB();
-	virtual bool UpdateInsiderTransactionDB();
+	void UpdateInsiderTransactionDB() { gl_dataContainerFinnhubStock.UpdateInsiderTransactionDB(); }
 	virtual bool UpdateInsiderSentimentDB();
 	virtual bool UpdateTiingoIndustry();
 	virtual bool UpdateSicIndustry();
