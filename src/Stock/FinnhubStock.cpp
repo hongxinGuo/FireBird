@@ -264,6 +264,7 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 		setInsiderTransaction.m_strSort = _T("[TransactionDate]");
 
 		setInsiderTransaction.Open();
+		setInsiderTransaction.m_pDatabase->BeginTrans();
 		while (!setInsiderTransaction.IsEOF()) {
 			pInsiderTransaction = make_shared<CInsiderTransaction>();
 			pInsiderTransaction->Load(setInsiderTransaction);
@@ -273,7 +274,6 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 			setInsiderTransaction.MoveNext();
 		}
 
-		setInsiderTransaction.m_pDatabase->BeginTrans();
 		for (int i = 0; i < m_vInsiderTransaction.size(); i++) {
 			pInsiderTransaction = m_vInsiderTransaction.at(i);
 			if (pInsiderTransaction->m_lTransactionDate > m_lInsiderTransactionEndDate) { // 只存储较新的数据
