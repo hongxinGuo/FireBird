@@ -276,8 +276,19 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 
 		for (int i = 0; i < m_vInsiderTransaction.size(); i++) {
 			pInsiderTransaction = m_vInsiderTransaction.at(i);
-			if (pInsiderTransaction->m_lTransactionDate > m_lInsiderTransactionEndDate) { // 只存储较新的数据
-				pInsiderTransaction->Append(setInsiderTransaction);
+			if (pInsiderTransaction->m_lTransactionDate > m_lInsiderTransactionEndDate) {
+				pInsiderTransaction->Append(setInsiderTransaction); // 较新的数据直接存储之
+			}
+			else { // 较旧的数据？
+				if (std::ranges::find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
+				                         [pInsiderTransaction](const CInsiderTransactionPtr& p) {
+					                         return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
+						                         && (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
+						                         && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
+						                         && (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
+				                         }) == vInsiderTransaction.end()) { // 如果没找到，则股票代码、人名、交易日期或者交易细节为新的数据，存储该数据
+					pInsiderTransaction->Append(setInsiderTransaction);
+				}
 			}
 		}
 		setInsiderTransaction.m_pDatabase->CommitTrans();

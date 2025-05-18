@@ -270,7 +270,7 @@ void CContainerFinnhubStock::UpdateInsiderTransactionDB() {
 	for (long i = 0; i < m_vStock.size(); i++) {
 		const CFinnhubStockPtr pStock = GetStock(i);
 		if (pStock->IsUpdateInsiderTransactionDB()) {
-			pStock->SetUpdateInsiderSentimentDB(false);
+			pStock->SetUpdateInsiderTransactionDB(false);
 			if (pStock->HaveInsiderTransaction()) {
 				pStock->UpdateInsiderTransactionDB();
 			}
