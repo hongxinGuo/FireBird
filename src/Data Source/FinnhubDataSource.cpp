@@ -198,7 +198,7 @@ bool CFinnhubDataSource::GenerateCountryList() {
 		StoreInquiry(product);
 		SetInquiring(true);
 		gl_systemMessage.SetCurrentFinnhubFunction(_T("Finnhub country List"));
-		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub economic country List"));
+		gl_systemMessage.PushInformationMessage(_T("Finnhub economic country List updated"));
 		return true;
 	}
 	return false;
@@ -613,7 +613,7 @@ bool CFinnhubDataSource::GenerateEconomicCalendar() {
 		StoreInquiry(product);
 		SetInquiring(true);
 		gl_systemMessage.SetCurrentFinnhubFunction(_T("economic calendar updated"));
-		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub economic calendar"));
+		gl_systemMessage.PushInformationMessage(_T("Finnhub economic calendar updated"));
 		return true;
 	}
 	return false;
@@ -704,7 +704,7 @@ bool CFinnhubDataSource::GenerateForexExchange() {
 		StoreInquiry(m_FinnhubFactory.CreateProduct(gl_pWorldMarket, FOREX_EXCHANGE_));
 		SetInquiring(true);
 		gl_systemMessage.SetCurrentFinnhubFunction(_T("forex exchange"));
-		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub forex exchange"));
+		gl_systemMessage.PushInformationMessage(_T("Finnhub forex exchange updated"));
 		return true;
 	}
 	return false;
@@ -773,7 +773,7 @@ bool CFinnhubDataSource::GenerateCryptoExchange() {
 		StoreInquiry(m_FinnhubFactory.CreateProduct(gl_pWorldMarket, CRYPTO_EXCHANGE_));
 		SetInquiring(true);
 		gl_systemMessage.SetCurrentFinnhubFunction(_T("crypto exchange"));
-		gl_systemMessage.PushInformationMessage(_T("Inquiring Finnhub crypto exchange"));
+		gl_systemMessage.PushInformationMessage(_T("Finnhub crypto exchange updated"));
 		return true;
 	}
 	return false;

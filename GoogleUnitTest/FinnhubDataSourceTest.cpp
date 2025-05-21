@@ -283,7 +283,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_FinnhubDataSource.InquiryQueueSize(), 1);
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Inquiring Finnhub economic country List"));
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub economic country List updated"));
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubEconomicCountryList"));
 		EXPECT_EQ(m_FinnhubDataSource.InquiryQueueSize(), 0);
@@ -873,7 +873,7 @@ namespace FireBirdTest {
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexExchange"));
 		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Inquiring Finnhub forex exchange"));
+		EXPECT_STREQ(str, _T("Finnhub forex exchange updated"));
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateForexExchange()) << "此标识需要等处理完数据后方设置";
 	}
 
@@ -965,7 +965,7 @@ namespace FireBirdTest {
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCryptoExchange"));
 		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Inquiring Finnhub crypto exchange"));
+		EXPECT_STREQ(str, _T("Finnhub crypto exchange updated"));
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateCryptoExchange()) << "此标识需要等处理完数据后方设置";
 	}
 
