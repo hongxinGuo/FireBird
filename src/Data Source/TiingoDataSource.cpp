@@ -310,6 +310,8 @@ bool CTiingoDataSource::GenerateIEXTopOfBook(long lCurrentTime) {
 		StoreInquiry(p);
 		SetInquiring(true);
 		gl_systemMessage.SetCurrentTiingoFunction(_T("IEX top of book"));
+		const CString str = "Tiingo IEX top of book Updated";
+		gl_systemMessage.PushInformationMessage(str);
 		SetUpdateIEXTopOfBook(false); // 申请过最近交易日的数据了
 		return true;
 	}
@@ -402,7 +404,7 @@ bool CTiingoDataSource::GenerateDayLine() {
 		else {
 			gl_systemMessage.SetCurrentTiingoFunction(_T(""));
 			SetUpdateDayLine(false);
-			const CString str = "Tiingo股票日线历史数据更新完毕";
+			const CString str = "Tiingo stock dayLine Updated";
 			gl_systemMessage.PushInformationMessage(str);
 			if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
 				// Note 暂不自动处理日线数据
@@ -444,7 +446,7 @@ bool CTiingoDataSource::GenerateFinancialState() {
 		else {
 			gl_systemMessage.SetCurrentTiingoFunction(_T(""));
 			SetUpdateFinancialState(false);
-			const CString str = "Tiingo financial statements更新完毕";
+			const CString str = "Tiingo financial statements Updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}

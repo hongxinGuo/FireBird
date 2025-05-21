@@ -467,7 +467,7 @@ bool CFinnhubDataSource::GenerateStockDayLine() {
 			SetUpdateStockDayLine(false);
 			//lCurrentUpdateDayLinePos = 0; // 重置此索引。所有的日线数据更新一次所需时间要超过24小时，故保持更新即可。
 			//TRACE("Finnhub日线更新完毕，从新开始更新\n");
-			const CString str = "US Market dayline updated";
+			const CString str = "Finnhub dayline updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -506,7 +506,7 @@ bool CFinnhubDataSource::GenerateInsiderTransaction() {
 		else {
 			fHaveInquiry = false;
 			SetUpdateInsiderTransaction(false);
-			const CString str = "US Market Insider Transaction updated";
+			const CString str = "Finnhub Insider Transaction updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -545,7 +545,7 @@ bool CFinnhubDataSource::GenerateInsiderSentiment() {
 			fHaveInquiry = false;
 			SetUpdateInsiderSentiment(false);
 			//TRACE("FinnhubInsider Sentiment更新完毕\n");
-			const CString str = "US Market Insider Sentiment updated";
+			const CString str = "Finnhub Insider Sentiment updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -760,7 +760,7 @@ bool CFinnhubDataSource::GenerateForexDayLine() {
 		else {
 			SetUpdateForexDayLine(false);
 			//TRACE("Finnhub Forex日线更新完毕\n");
-			const CString str = "Forex DayLine Updated";
+			const CString str = "Finnhub Forex DayLine Updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -831,7 +831,7 @@ bool CFinnhubDataSource::GenerateCryptoDayLine() {
 		else {
 			SetUpdateCryptoDayLine(false);
 			//TRACE("Finnhub Crypto日线更新完毕\n");
-			const CString str = "Crypto DayLine Updated";
+			const CString str = "Finnhub Crypto DayLine Updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}

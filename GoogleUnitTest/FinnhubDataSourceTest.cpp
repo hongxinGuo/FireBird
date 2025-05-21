@@ -559,7 +559,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateInsiderSentiment()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("US Market Insider Sentiment updated"));
+		EXPECT_STREQ(str, _T("Finnhub Insider Sentiment updated"));
 
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
@@ -655,7 +655,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateStockDayLine()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("US Market dayline updated"));
+		EXPECT_STREQ(str, _T("Finnhub dayline updated"));
 
 		// 恢复原状
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
@@ -765,7 +765,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateInsiderTransaction()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("US Market Insider Transaction updated"));
+		EXPECT_STREQ(str, _T("Finnhub Insider Transaction updated"));
 
 		// 恢复原状
 		m_FinnhubDataSource.SetUpdateInsiderTransaction(true);
@@ -943,7 +943,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateForexDayLine()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Forex DayLine Updated"));
+		EXPECT_STREQ(str, _T("Finnhub Forex DayLine Updated"));
 
 		for (int i = 0; i < gl_dataFinnhubForexSymbol.Size(); i++) {
 			pStock = gl_dataFinnhubForexSymbol.GetSymbol(i);
@@ -1035,7 +1035,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateCryptoDayLine()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Crypto DayLine Updated"));
+		EXPECT_STREQ(str, _T("Finnhub Crypto DayLine Updated"));
 
 		for (int i = 0; i < gl_dataFinnhubCryptoSymbol.Size(); i++) {
 			pStock = gl_dataFinnhubCryptoSymbol.GetSymbol(i);

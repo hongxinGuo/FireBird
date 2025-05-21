@@ -227,7 +227,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pTiingoDataSource->GenerateDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateDayLine()) << "股票都查询完了";
 		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Tiingo股票日线历史数据更新完毕"));
+		EXPECT_STREQ(str, _T("Tiingo stock dayLine Updated"));
 
 		// 恢复原状
 		for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
@@ -285,7 +285,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pTiingoDataSource->GenerateFinancialState()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateFinancialState()) << "股票都查询完了";
 		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Tiingo financial statements更新完毕"));
+		EXPECT_STREQ(str, _T("Tiingo financial statements Updated"));
 
 		// 恢复原状
 		for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
