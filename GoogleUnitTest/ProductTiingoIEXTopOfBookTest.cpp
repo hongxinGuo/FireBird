@@ -109,11 +109,11 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvIEXTopOfBook->at(0)->m_strTicker, _T("000001"));
 			EXPECT_STREQ(m_pvIEXTopOfBook->at(1)->m_strTicker, _T("000002"));
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_timeStamp.time_since_epoch().count(), 1727726400);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLastClose, 114200);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lOpen, 116213);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lHigh, 123000);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLow, 115600);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lNew, 122100);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLastClose, 11420000);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lOpen, 11621300);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lHigh, 12300000);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLow, 11560000);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lNew, 12210000);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_llVolume, 543028360);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(1)->m_timeStamp.time_since_epoch().count(), 1711828800);
 			break;
@@ -144,11 +144,11 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvIEXTopOfBook->at(0)->m_strTicker, _T("000001"));
 			EXPECT_STREQ(m_pvIEXTopOfBook->at(1)->m_strTicker, _T("000002"));
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_llTimestamp, 1727726400);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLastClose, 114200);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lOpen, 116200);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lHigh, 123000);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLow, 115600);
-			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lNew, 122100);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLastClose, 11420000);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lOpen, 11620000);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lHigh, 1230000);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLow, 11560000);
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lNew, 12210000);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_llVolume, 543028360);
 			break;
 		case 2: // 格式不对

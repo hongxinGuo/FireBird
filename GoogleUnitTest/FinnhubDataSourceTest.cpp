@@ -328,7 +328,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateMarketStatus()) << "交易所都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Inquire finnhub MarketStatus finished"));
+		EXPECT_STREQ(str, _T("Finnhub market status finished"));
 
 		// 恢复原状
 		m_FinnhubDataSource.SetUpdateMarketStatus(true);
@@ -373,7 +373,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateMarketHoliday()) << "交易所都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
 		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Inquire finnhub market holiday finished"));
+		EXPECT_STREQ(str, _T("Finnhub market holiday finished"));
 
 		// 恢复原状
 		m_FinnhubDataSource.SetUpdateMarketHoliday(true);

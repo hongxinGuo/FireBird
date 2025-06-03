@@ -21,12 +21,12 @@ namespace FireBirdTest {
 		long m_lDividend;
 	};
 
-	StrConvertDoubleToString Data0(10.234, _T("10.2340"), 1);
-	StrConvertDoubleToString Data1(-110.2343, _T("-110.2343"), 1);
-	StrConvertDoubleToString Data2(1210.2346, _T("1210.2346"), 1);
-	StrConvertDoubleToString Data3(-10234, _T("-10.2340"), 1000);
-	StrConvertDoubleToString Data4(1, _T("0.0001"), 10000);
-	StrConvertDoubleToString Data5(-12102346, _T("-1210.2346"), 10000);
+	StrConvertDoubleToString Data0(10.234, _T("10.234000"), 1);
+	StrConvertDoubleToString Data1(-110.2343, _T("-110.234300"), 1);
+	StrConvertDoubleToString Data2(1210.2346, _T("1210.234600"), 1);
+	StrConvertDoubleToString Data3(-10234, _T("-10.234000"), 1000);
+	StrConvertDoubleToString Data4(1, _T("0.000100"), 10000);
+	StrConvertDoubleToString Data5(-12102346, _T("-1210.234600"), 10000);
 
 	class ConvertDoubleToStringTest : public testing::TestWithParam<StrConvertDoubleToString*> {
 	protected:
@@ -73,12 +73,12 @@ namespace FireBirdTest {
 		long m_lDividend;
 	};
 
-	StrConvertLongToString Data10(10234, _T("10234.0000"), 1);
-	StrConvertLongToString Data11(-11023.43, _T("-11023.0000"), 1);
-	StrConvertLongToString Data12(12102346, _T("12102346.0000"), 1);
-	StrConvertLongToString Data13(-10234, _T("-10.2340"), 1000);
-	StrConvertLongToString Data14(1102344, _T("110.2344"), 10000);
-	StrConvertLongToString Data15(-12102346, _T("-1210.2346"), 10000);
+	StrConvertLongToString Data10(10234, _T("10234.000000"), 1);
+	StrConvertLongToString Data11(-11023.43, _T("-11023.000000"), 1);
+	StrConvertLongToString Data12(12102346, _T("12102346.000000"), 1);
+	StrConvertLongToString Data13(-10234, _T("-10.234000"), 1000);
+	StrConvertLongToString Data14(1102344, _T("110.234400"), 10000);
+	StrConvertLongToString Data15(-12102346, _T("-1210.234600"), 10000);
 	/*
 	StrConvertLongToString Data6
 	StrConvertLongToString Data7
@@ -130,12 +130,12 @@ namespace FireBirdTest {
 		long m_lDividend;
 	};
 
-	StrConvertIntegerToString Data20(10234, _T("10234.0000"), 1);
-	StrConvertIntegerToString Data21(-11023.43, _T("-11023.0000"), 1);
-	StrConvertIntegerToString Data22(12102346, _T("12102346.0000"), 1);
-	StrConvertIntegerToString Data23(-10234, _T("-10.2340"), 1000);
-	StrConvertIntegerToString Data24(1102344, _T("110.2344"), 10000);
-	StrConvertIntegerToString Data25(-12102346, _T("-1210.2346"), 10000);
+	StrConvertIntegerToString Data20(10234, _T("10234.000000"), 1);
+	StrConvertIntegerToString Data21(-11023.43, _T("-11023.000000"), 1);
+	StrConvertIntegerToString Data22(12102346, _T("12102346.000000"), 1);
+	StrConvertIntegerToString Data23(-10234, _T("-10.234000"), 1000);
+	StrConvertIntegerToString Data24(1102344, _T("110.234400"), 10000);
+	StrConvertIntegerToString Data25(-12102346, _T("-1210.234600"), 10000);
 	/*
 	StrConvertIntegerToString Data26
 	StrConvertIntegerToString Data27
@@ -187,12 +187,12 @@ namespace FireBirdTest {
 		long m_lDividend;
 	};
 
-	StrConvertINT64ToString Data40(10234, _T("10234.0000"), 1);
-	StrConvertINT64ToString Data41(-11023.43, _T("-11023.0000"), 1);
-	StrConvertINT64ToString Data42(12102346, _T("12102346.0000"), 1);
-	StrConvertINT64ToString Data43(-10234, _T("-10.2340"), 1000);
-	StrConvertINT64ToString Data44(1102344, _T("110.2344"), 10000);
-	StrConvertINT64ToString Data45(-12102346, _T("-1210.2346"), 10000);
+	StrConvertINT64ToString Data40(10234, _T("10234.000000"), 1);
+	StrConvertINT64ToString Data41(-11023.43, _T("-11023.000000"), 1);
+	StrConvertINT64ToString Data42(12102346, _T("12102346.000000"), 1);
+	StrConvertINT64ToString Data43(-10234, _T("-10.234000"), 1000);
+	StrConvertINT64ToString Data44(1102344, _T("110.234400"), 10000);
+	StrConvertINT64ToString Data45(-12102346, _T("-1210.234600"), 10000);
 	/*
 	StrConvertINT64ToString Data46
 	StrConvertINT64ToString Data47

@@ -127,7 +127,7 @@ CVectorTiingoMarketNewsPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const
 void CProductTiingoMarketNews::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateMarketNews(false);
-	gl_systemMessage.PushInformationMessage(_T("Tiingo market news已更新"));
+	gl_systemMessage.PushInformationMessage(_T("Tiingo market news updated"));
 
 	if (IsNoRightToAccess()) { // 免费账户
 		gl_systemConfiguration.ChangeTiingoAccountTypeToFree();

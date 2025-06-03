@@ -174,10 +174,10 @@ namespace FireBirdTest {
 			EXPECT_EQ(pvDayLine->size(), 2);
 			pDayLine = pvDayLine->at(0);
 			EXPECT_EQ(pDayLine->GetMarketDate(), 20210311);
-			EXPECT_EQ(pDayLine->GetClose(), 1219600);
-			EXPECT_EQ(pDayLine->GetHigh(), 1232100);
-			EXPECT_EQ(pDayLine->GetLow(), 1212600);
-			EXPECT_EQ(pDayLine->GetOpen(), 1225400);
+			EXPECT_EQ(pDayLine->GetClose(), 121960000);
+			EXPECT_EQ(pDayLine->GetHigh(), 123210000);
+			EXPECT_EQ(pDayLine->GetLow(), 121260000);
+			EXPECT_EQ(pDayLine->GetOpen(), 122540000);
 			EXPECT_EQ(pDayLine->GetVolume(), 103026514);
 			EXPECT_DOUBLE_EQ(pDayLine->GetDividend(), 0);
 			EXPECT_DOUBLE_EQ(pDayLine->GetSplitFactor(), 1.0);

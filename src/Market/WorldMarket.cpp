@@ -639,19 +639,19 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateInsiderSentimentDB()) { // Insider Sentiment
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub Insider Sentiment\n");
 			gl_systemMessage.SetWorldMarketSavingFunction(_T("F Insider Sentiment"));
-			this->UpdateInsiderSentimentDB();
+			gl_pWorldMarket->UpdateInsiderSentimentDB();
 			TRACE("finnhub Insider Sentiment updated\n");
 		});
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateDayLineDB()) { // stock dayLine
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.background_executor()->post([] {
 			gl_UpdateWorldMarketDB.acquire();
 			TRACE("finnhub Stock DayLine\n");
 			gl_systemMessage.SetWorldMarketSavingFunction(_T("F Stock dayLine"));
-			this->UpdateFinnhubStockDayLineDB();
+			gl_pWorldMarket->UpdateFinnhubStockDayLineDB();
 			TRACE("finnhub Stock DayLine updated\n");
 			gl_UpdateWorldMarketDB.release();
 		});
@@ -665,10 +665,10 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateCompanyNewsDB()) { // Company News
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub News\n");
 			gl_systemMessage.SetWorldMarketSavingFunction(_T("F News"));
-			this->UpdateCompanyNewsDB();
+			gl_pWorldMarket->UpdateCompanyNewsDB();
 			TRACE("finnhub News updated\n");
 		});
 	}
@@ -681,25 +681,27 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateEPSSurpriseDB()) { // stock EPS surprise
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub EPS surprise\n");
 			gl_systemMessage.SetWorldMarketSavingFunction(_T("F EPS surprise"));
-			this->UpdateEPSSurpriseDB();
+			gl_pWorldMarket->UpdateEPSSurpriseDB();
 			TRACE("finnhub EPS surprise updated\n");
 		});
 	}
 	if (gl_dataContainerFinnhubStock.IsUpdateSECFilingsDB()) { // stock EPS surprise
-		gl_runtime.background_executor()->post([this] {
+		gl_runtime.background_executor()->post([] {
 			TRACE("finnhub SEC Filings\n");
 			gl_systemMessage.SetWorldMarketSavingFunction(_T("F SEC filings"));
-			this->UpdateSECFilingsDB();
+			gl_pWorldMarket->UpdateSECFilingsDB();
 			TRACE("finnhub SEC Filings updated\n");
 		});
 	}
 
 	// Tiingo²¿·Ö
-	if (gl_dataContainerTiingoStock.IsUpdateProfileDB() && !gl_ThreadStatus.IsSavingWorldMarketThreadRunning()) { // Tiingo Stock
+	static bool s_bUpdatingTiingoStockProfile = false;
+	if (gl_dataContainerTiingoStock.IsUpdateProfileDB() && !gl_ThreadStatus.IsSavingWorldMarketThreadRunning() && !s_bUpdatingTiingoStockProfile) { // Tiingo Stock
 		gl_runtime.background_executor()->post([] {
+			s_bUpdatingTiingoStockProfile = true;
 			gl_UpdateWorldMarketDB.acquire();
 			TRACE("Tiingo stock profile\n");
 			gl_systemMessage.SetWorldMarketSavingFunction(_T("T profile"));
@@ -712,6 +714,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			}
 			TRACE("Tiingo stock profile updated\n");
 			gl_UpdateWorldMarketDB.release();
+			s_bUpdatingTiingoStockProfile = false;
 		});
 	}
 
@@ -733,8 +736,10 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 		});
 	}
 
-	if (gl_dataContainerTiingoStock.IsUpdateFinancialStateDB()) {
+	static bool s_updatingTiingoFinancialState = false;
+	if (gl_dataContainerTiingoStock.IsUpdateFinancialStateDB() && !s_updatingTiingoFinancialState) {
 		gl_runtime.background_executor()->post([] {
+			s_updatingTiingoFinancialState = true;
 			TRACE("Tiingo Financial State\n");
 			gl_systemMessage.SetWorldMarketSavingFunction(_T("T financial state"));
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
@@ -745,16 +750,19 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 				gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
 			}
 			TRACE("Tiingo Financial State updated\n");
+			s_updatingTiingoFinancialState = true;
 		});
 	}
 
-	if (gl_dataContainerTiingoStock.IsUpdateDayLineDB()) {
-		gl_runtime.background_executor()->post([this] {
+	static bool s_updatingTiingoStockDayLine = false;
+	if (gl_dataContainerTiingoStock.IsUpdateDayLineDB() && !s_updatingTiingoStockDayLine) {
+		gl_runtime.background_executor()->post([] {
+			s_updatingTiingoStockDayLine = true;
 			gl_UpdateWorldMarketDB.acquire();
 			TRACE("Update Tiingo stock DayLine\n");
 			gl_systemMessage.SetWorldMarketSavingFunction(_T("T stock dayline"));
 			auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
-			this->TaskUpdateTiingoStockDayLineDB();
+			gl_pWorldMarket->TaskUpdateTiingoStockDayLineDB();
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
 				string s = fmt::format("Tiingo Stock dayLine Saving time: {:Ld}ms", (end - start).count());
@@ -762,6 +770,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			}
 			TRACE("Tiingo stock DayLine updated\n");
 			gl_UpdateWorldMarketDB.release();
+			s_updatingTiingoStockDayLine = false;
 		});
 	}
 
@@ -774,7 +783,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			gl_runtime.background_executor()->post([] {
 				gl_UpdateWorldMarketDB.acquire();
 				TRACE("Finnhub profile\n");
-				gl_systemMessage.SetWorldMarketSavingFunction(_T("F profile"));
+				gl_systemMessage.SetWorldMarketSavingFunction(_T("F stock profile"));
 				auto start = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 				gl_dataContainerFinnhubStock.UpdateProfileDB();
 				auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());

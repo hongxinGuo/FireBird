@@ -29,7 +29,7 @@ public:
 	void SetSpiltFactor(double spiltFactor) { m_fSplitFactor = spiltFactor; }
 
 	void ResetAllUpdateDate() override;
-	int GetRatio() const override { return 10000; }; // 
+	int GetRatio() const override { return 1000000; }; // 
 
 	void Load(CSetTiingoStock& setTiingoStock);
 	void Append(CSetTiingoStock& setTiingoStock);

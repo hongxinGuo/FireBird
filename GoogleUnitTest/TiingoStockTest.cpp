@@ -4,7 +4,6 @@
 #include "SetTiingoStockDayLine.h"
 
 #include"TiingoStock.h"
-#include "WorldMarket.h"
 
 namespace FireBirdTest {
 	class CTiingoStockTest : public ::testing::Test {
@@ -68,7 +67,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestGetRatio) {
-		EXPECT_EQ(stock.GetRatio(), 10000) << "Tiingo.com的股票价格，放大倍数为10000";
+		EXPECT_EQ(stock.GetRatio(), 1000000) << "Tiingo.com的股票价格，放大倍数为1000000";
 	}
 
 	TEST_F(CTiingoStockTest, TestGetExchangeCode) {
@@ -541,14 +540,14 @@ namespace FireBirdTest {
 		setDayLine.Open();
 		setDayLine.m_pDatabase->BeginTrans();
 		EXPECT_TRUE(setDayLine.m_Date == 19800101);
-		EXPECT_STREQ(setDayLine.m_Close, _T("0.0115"));
+		EXPECT_STREQ(setDayLine.m_Close, _T("0.000115"));
 		setDayLine.Delete();
 		while (setDayLine.m_Date != 20210101) setDayLine.MoveNext();
-		EXPECT_STREQ(setDayLine.m_Close, _T("1.2340"));
+		EXPECT_STREQ(setDayLine.m_Close, _T("0.012340"));
 		setDayLine.Delete();
 		while (setDayLine.m_Date != 20241111) setDayLine.MoveNext();
 		EXPECT_TRUE(setDayLine.m_Date = 20241111);
-		EXPECT_STREQ(setDayLine.m_Close, _T("0.0135"));
+		EXPECT_STREQ(setDayLine.m_Close, _T("0.000135"));
 		setDayLine.Delete();
 		setDayLine.m_pDatabase->CommitTrans();
 		setDayLine.Close();

@@ -91,5 +91,5 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 void CProductTiingoCryptoSymbol::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateCryptoSymbol(false);
-	gl_systemMessage.PushInformationMessage(_T("Tiingo crypto symbolÒÑ¸üÐÂ"));
+	gl_systemMessage.PushInformationMessage(_T("Tiingo crypto symbol updated"));
 }

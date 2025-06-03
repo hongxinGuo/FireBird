@@ -59,7 +59,7 @@ namespace FireBirdTest {
 		stockSymbol.UpdateDataSourceStatus(gl_pTiingoDataSource);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateStockSymbol());
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Tiingo stock symbolÒÑ¸üÐÂ"));
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Tiingo stock symbol updated"));
 
 		gl_pTiingoDataSource->SetUpdateStockSymbol(true);
 	}

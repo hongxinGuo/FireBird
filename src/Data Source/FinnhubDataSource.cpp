@@ -234,7 +234,7 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 		else {
 			fHaveInquiry = false;
 			SetUpdateMarketStatus(false);
-			const CString str = "Inquire finnhub MarketStatus finished";
+			const CString str = "Finnhub market status finished";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -271,7 +271,7 @@ bool CFinnhubDataSource::GenerateMarketHoliday() {
 		else {
 			fHaveInquiry = false;
 			SetUpdateMarketHoliday(false);
-			const CString str = "Inquire finnhub market holiday finished";
+			const CString str = "Finnhub market holiday finished";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
