@@ -653,7 +653,6 @@ void CChinaStock::ProcessRTData() {
 			UpdateRTData(pRTData); // 更新股票现时状态。
 			if (gl_pChinaMarket->IsMarketOpened() && IsNeedProcessRTData()) {// 开市时间内计算具体情况。指数类股票无需计算交易情况和挂单变化
 				ProcessOneRTData(pRTData);
-				CheckCurrentRTData();
 				m_fRTDataCalculated = true;
 			}
 		}
@@ -1139,21 +1138,6 @@ bool CChinaStock::HaveGuadan(INT64 lPrice) const {
 	if (!m_mapGuadan.contains(lPrice)) return false;
 	if (m_mapGuadan.at(lPrice) == 0) return false;
 	return true;
-}
-
-void CChinaStock::CheckCurrentRTData() const {
-	if ((GetOrdinaryBuyVolume() < 0) || (GetOrdinarySellVolume() < 0)
-		|| (GetAttackBuyVolume() < 0) || (GetAttackSellVolume() < 0)
-		|| (GetStrongBuyVolume() < 0) || (GetStrongSellVolume() < 0)) {
-		int j = 0;
-		if (GetOrdinaryBuyVolume() < 0) j = 1;
-		if (GetOrdinarySellVolume() < 0) j += 2;
-		if (GetAttackBuyVolume() < 0) j += 4;
-		if (GetAttackSellVolume() < 0) j += 8;
-		if (GetStrongBuyVolume() < 0) j += 16;
-		if (GetStrongSellVolume() < 0) j += 32;
-		TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_pChinaMarket->GetMarketTime(), GetSymbol().GetBuffer(), j);
-	}
 }
 
 bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {

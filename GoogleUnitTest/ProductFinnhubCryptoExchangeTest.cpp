@@ -58,6 +58,8 @@ namespace FireBirdTest {
 		cryptoExchange.UpdateDataSourceStatus(gl_pFinnhubDataSource);
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateCryptoExchange());
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub crypto exchange updated"));
 
 		gl_pFinnhubDataSource->SetUpdateCryptoExchange(true);
 	}

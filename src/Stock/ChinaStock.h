@@ -333,7 +333,6 @@ public:
 	void CalculateCanceledSellVolume(INT64 lCurrentCanceledSellVolume);
 	void CheckBuyGuadan(const array<bool, 10>& fNeedCheck, int i);
 	void CalculateCanceledBuyVolume(INT64 lCurrentCanceledBuyVolume);
-	void CheckCurrentRTData() const;
 
 	void PushRTData(const CWebRTDataPtr& pData) { m_qRTData.enqueue(pData); }
 	CWebRTDataPtr PopRTData() {

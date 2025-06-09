@@ -157,6 +157,7 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 void CProductTiingoIEXTopOfBook::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateIEXTopOfBook(false);
+	gl_systemMessage.PushInformationMessage(_T("Tiingo IEX top of book Updated"));
 	if (gl_pWorldMarket->IsMarketClosed()) { // 已闭市？
 		dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetEndMarketIEXTopOfBookUpdate(true); // 本交易日数据是完整的。
 	}

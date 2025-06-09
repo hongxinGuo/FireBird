@@ -56,6 +56,8 @@ namespace FireBirdTest {
 		IEXTopOfBook.UpdateDataSourceStatus(gl_pTiingoDataSource);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateIEXTopOfBook());
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Tiingo IEX top of book Updated"));
 
 		// »Ö¸´Ô­×´
 		gl_pTiingoDataSource->SetUpdateIEXTopOfBook(false);

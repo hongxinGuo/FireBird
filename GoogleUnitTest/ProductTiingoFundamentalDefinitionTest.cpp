@@ -55,6 +55,8 @@ namespace FireBirdTest {
 		marketNews.UpdateDataSourceStatus(gl_pTiingoDataSource);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateFundamentalDefinition());
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Fundamental definition updated"));
 
 		gl_pTiingoDataSource->SetUpdateFundamentalDefinition(true);
 	}
@@ -65,6 +67,8 @@ namespace FireBirdTest {
 		marketNews.UpdateDataSourceStatus(gl_pTiingoDataSource);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateFundamentalDefinition());
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Fundamental definition updated"));
 
 		gl_pTiingoDataSource->SetUpdateFundamentalDefinition(true);
 	}

@@ -55,6 +55,9 @@ namespace FireBirdTest {
 		forexExchange.UpdateDataSourceStatus(gl_pFinnhubDataSource);
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateForexExchange());
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
+		const CString str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str, _T("Finnhub forex exchange updated"));
 
 		gl_pFinnhubDataSource->SetUpdateForexExchange(true);
 	}

@@ -282,8 +282,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.GenerateCountryList());
 		EXPECT_EQ(m_FinnhubDataSource.InquiryQueueSize(), 1);
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
-		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub economic country List updated"));
+		EXPECT_THAT(gl_systemMessage.InformationSize(), 0);
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubEconomicCountryList"));
 		EXPECT_EQ(m_FinnhubDataSource.InquiryQueueSize(), 0);
@@ -782,8 +781,8 @@ namespace FireBirdTest {
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubEconomicCalendar"));
 
-		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		gl_systemMessage.PopInformationMessage();
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 0);
+		//gl_systemMessage.PopInformationMessage();
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryEPSSurprise) {
@@ -872,8 +871,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexExchange"));
-		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub forex exchange updated"));
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateForexExchange()) << "此标识需要等处理完数据后方设置";
 	}
 
@@ -964,8 +961,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_FinnhubDataSource.IsInquiring());
 		const CVirtualProductWebDataPtr p = m_FinnhubDataSource.GetCurrentProduct();
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCryptoExchange"));
-		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub crypto exchange updated"));
+		EXPECT_EQ(gl_systemMessage.InformationSize(), 0);
 		EXPECT_TRUE(m_FinnhubDataSource.IsUpdateCryptoExchange()) << "此标识需要等处理完数据后方设置";
 	}
 

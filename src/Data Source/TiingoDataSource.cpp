@@ -310,8 +310,7 @@ bool CTiingoDataSource::GenerateIEXTopOfBook(long lCurrentTime) {
 		StoreInquiry(p);
 		SetInquiring(true);
 		gl_systemMessage.SetCurrentTiingoFunction(_T("IEX top of book"));
-		const CString str = "Tiingo IEX top of book Updated";
-		gl_systemMessage.PushInformationMessage(str);
+
 		SetUpdateIEXTopOfBook(false); // 申请过最近交易日的数据了
 		return true;
 	}
