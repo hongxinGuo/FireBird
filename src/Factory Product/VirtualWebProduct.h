@@ -22,6 +22,8 @@ public:
 	virtual ~CVirtualWebProduct() = default;
 
 	virtual CString CreateMessage() { return _T(""); };
+	virtual void CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) {}
+
 	virtual void ParseAndStoreWebData(CWebDataPtr pWebData) {} // default do nothing
 	virtual void ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) {// 一次处理多个接收到的数据。目前只有腾讯日线数据需要这种模式
 		ASSERT(pvWebData->size() == 1);

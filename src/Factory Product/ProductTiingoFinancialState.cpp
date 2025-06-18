@@ -99,12 +99,17 @@ CProductTiingoFinancialState::CProductTiingoFinancialState() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals");
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// ¸ñÊ½Îª£ºhttps://api.tiingo.com/tiingo/fundamentals/AAPL/statements?startDate=1980-01-01
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////
 CString CProductTiingoFinancialState::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
-	CString strParam = _T("/") + pStock->GetSymbol() + _T("/statements?");
+	CString strParam = _T("/") + pStock->GetSymbol() + _T("/statements?startDate=");
 	m_strInquiringSymbol = pStock->GetSymbol();
-
-	m_strInquiry = m_strInquiryFunction + strParam;
+	string sDate = ConvertDateToTimeStamp(pStock->GetCompanyFinancialStatementUpdateDate());
+	m_strInquiry = m_strInquiryFunction + strParam + sDate.c_str();
 	return m_strInquiry;
 }
 

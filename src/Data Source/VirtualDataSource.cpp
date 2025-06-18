@@ -86,6 +86,7 @@ void CVirtualDataSource::InquireData() {
 	}
 	if (!gl_systemConfiguration.IsExitingSystem() && !pvWebData->empty() && !IsWebError()) {
 		m_eErrorMessageData = IsAErrorMessageData(pvWebData->at(0)); // 返回的数据是错误信息？检查错误，判断申请资格，更新禁止目录
+		m_pCurrentProduct->CalculateTotalDataLength(pvWebData);
 		m_pCurrentProduct->ParseAndStoreWebData(pvWebData);
 		m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource的智能指针
 	}

@@ -7,6 +7,7 @@
 #include"ProductTiingoFinancialState.h"
 
 #include"TestWebData.h"
+#include "TimeConvert.h"
 
 using namespace testing;
 
@@ -45,7 +46,10 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoFinancialStateTest, TestCreatMessage) {
 		financialState.SetIndex(1); // stock code is AA
-		EXPECT_STREQ(financialState.CreateMessage(), _T("https://api.tiingo.com/tiingo/fundamentals/AA/statements?"));
+		string sDate = ConvertDateToTimeStamp(gl_dataContainerTiingoStock.GetStock(1)->GetCompanyFinancialStatementUpdateDate());
+		CString strMessage = _T("https://api.tiingo.com/tiingo/fundamentals/AA/statements?startDate=");
+		strMessage += sDate.c_str();
+		EXPECT_STREQ(financialState.CreateMessage(), strMessage);
 	}
 
 	TEST_F(CProductTiingoFinancialStateTest, TestProcessWebData) {

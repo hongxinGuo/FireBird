@@ -5,7 +5,15 @@
 #include "FinnhubInquiryType.h"
 #include "TiingoDataSource.h"
 #include"TiingoInaccessibleStock.h"
+#include "WebData.h"
 
+void CProductTiingo::CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) {
+	for (auto pWebData : *pvWebData) {
+		if (pWebData != nullptr) {
+			gl_TiingoTotalData += pWebData->GetBufferLength();
+		}
+	}
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 目前finnhub对其免费账户只提供部分内容数据。为了加速轮询速度，受限制的数据(交易所）将不再申请。

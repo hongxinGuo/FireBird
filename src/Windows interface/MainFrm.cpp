@@ -152,6 +152,9 @@ static UINT innerSystemIndicators[] =
 	ID_SHOW_TIINGO_CRYPTO_WEBSOCKET_DATASIZE,
 	ID_CURRENT_TIINGO_CRYPTO,
 	ID_SHOW_TIINGO_FOREX_WEBSOCKET_DATASIZE,
+	ID_SHOW_TIINGO_TOTAL_DATASIZE,
+	ID_SHOW_FINNHUB_TOTAL_DATASIZE,
+	ID_SHOW_CHINA_MARKET_TOTAL_DATASIZE,
 };
 
 // CMainFrame 构造/析构
@@ -604,6 +607,10 @@ void CMainFrame::UpdateInnerSystemStatus() {
 		SysCallSetInnerSystemPaneText(14, gl_systemMessage.GetCurrentTiingoWebSocketCrypto());
 		SysCallSetInnerSystemPaneText(15, FormatToMK(gl_systemMessage.GetProcessedTiingoCryptoWebSocket()));
 	}
+
+	SysCallSetInnerSystemPaneText(16, FormatToMK(gl_TiingoTotalData));
+	SysCallSetInnerSystemPaneText(17, FormatToMK(gl_FinnhubTotalData));
+	SysCallSetInnerSystemPaneText(18, FormatToMK(gl_ChinaMarketTotalData));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
