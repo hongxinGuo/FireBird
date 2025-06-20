@@ -162,105 +162,105 @@ CSystemMessage::~CSystemMessage() = default;
 
 void CSystemMessage::SetStockCodeForInquiringRTData(const CString& strStockCode) {
 	s_RTDataStockCode.acquire();
-	m_strStockCodeForInquiringRTData = strStockCode;
+	m_sStockCodeForInquiringRTData = strStockCode;
 	s_RTDataStockCode.release();
 }
 
-CString CSystemMessage::GetStockCodeForInquiringRTData() const {
+string CSystemMessage::GetStockCodeForInquiringRTData() const {
 	s_RTDataStockCode.acquire();
-	CString s = m_strStockCodeForInquiringRTData;
+	string s = m_sStockCodeForInquiringRTData;
 	s_RTDataStockCode.release();
 	return s;
 }
 
 void CSystemMessage::SetStockCodeForInquiryDayLine(const CString& strStockCode) {
 	s_DayLineDataStockCode.acquire();
-	m_strStockCodeForInquiryDayLine = strStockCode;
+	m_sStockCodeForInquiryDayLine = strStockCode;
 	s_DayLineDataStockCode.release();
 }
 
-CString CSystemMessage::GetStockCodeForInquiryDayLine() const {
+string CSystemMessage::GetStockCodeForInquiryDayLine() const {
 	s_DayLineDataStockCode.acquire();
-	CString s = m_strStockCodeForInquiryDayLine;
+	string s = m_sStockCodeForInquiryDayLine;
 	s_DayLineDataStockCode.release();
 	return s;
 }
 
-void CSystemMessage::SetCurrentFinnhubWebSocketStake(const CString& s) {
+void CSystemMessage::SetCurrentFinnhubWebSocketStake(const string& s) {
 	s_CurrentFinnhubWebSocketStake.acquire();
-	m_strCurrentFinnhubWebSocketStake = s;
+	m_sCurrentFinnhubWebSocketStake = s;
 	s_CurrentFinnhubWebSocketStake.release();
 }
 
-CString CSystemMessage::GetCurrentFinnhubWebSocketStake() const {
+string CSystemMessage::GetCurrentFinnhubWebSocketStake() const {
 	s_CurrentFinnhubWebSocketStake.acquire();
-	CString s = m_strCurrentFinnhubWebSocketStake;
+	string s = m_sCurrentFinnhubWebSocketStake;
 	s_CurrentFinnhubWebSocketStake.release();
 	return s;
 }
 
-void CSystemMessage::SetCurrentTiingoWebSocketIEX(const CString& s) {
+void CSystemMessage::SetCurrentTiingoWebSocketIEX(const string& s) {
 	s_CurrentTiingoWebSocketIEX.acquire();
-	m_strCurrentTiingoWebSocketIEX = s;
+	m_sCurrentTiingoWebSocketIEX = s;
 	s_CurrentTiingoWebSocketIEX.release();
 }
 
-CString CSystemMessage::GetCurrentTiingoWebSocketIEX() const {
+string CSystemMessage::GetCurrentTiingoWebSocketIEX() const {
 	s_CurrentTiingoWebSocketIEX.acquire();
-	CString s = m_strCurrentTiingoWebSocketIEX;
+	string s = m_sCurrentTiingoWebSocketIEX;
 	s_CurrentTiingoWebSocketIEX.release();
 	return s;
 }
 
-void CSystemMessage::SetCurrentTiingoWebSocketForex(const CString& s) {
+void CSystemMessage::SetCurrentTiingoWebSocketForex(const string& s) {
 	s_CurrentTiingoWebSocketForex.acquire();
-	m_strCurrentTiingoWebSocketForex = s;
+	m_sCurrentTiingoWebSocketForex = s;
 	s_CurrentTiingoWebSocketForex.release();
 }
 
-CString CSystemMessage::GetCurrentTiingoWebSocketForex() const {
+string CSystemMessage::GetCurrentTiingoWebSocketForex() const {
 	s_CurrentTiingoWebSocketForex.acquire();
-	CString s = m_strCurrentTiingoWebSocketForex;
+	string s = m_sCurrentTiingoWebSocketForex;
 	s_CurrentTiingoWebSocketForex.release();
 	return s;
 }
 
-void CSystemMessage::SetCurrentTiingoWebSocketCrypto(const CString& s) {
+void CSystemMessage::SetCurrentTiingoWebSocketCrypto(const string& s) {
 	s_CurrentTiingoWebSocketCrypto.acquire();
-	m_strCurrentTiingoWebSocketCrypto = s;
+	m_sCurrentTiingoWebSocketCrypto = s;
 	s_CurrentTiingoWebSocketCrypto.release();
 }
 
-CString CSystemMessage::GetCurrentTiingoWebSocketCrypto() const {
+string CSystemMessage::GetCurrentTiingoWebSocketCrypto() const {
 	s_CurrentTiingoWebSocketCrypto.acquire();
-	CString s = m_strCurrentTiingoWebSocketCrypto;
+	string s = m_sCurrentTiingoWebSocketCrypto;
 	s_CurrentTiingoWebSocketCrypto.release();
 	return s;
 }
 
-CString CSystemMessage::GetCurrentFinnhubFunction() const {
+string CSystemMessage::GetCurrentFinnhubFunction() const {
 	s_sReadCurrentFinnhubFunction.acquire();
-	CString str = m_strCurrentFinnhubFunction;
+	string str = m_sCurrentFinnhubFunction;
 	s_sReadCurrentFinnhubFunction.release();
 	return str;
 }
 
 void CSystemMessage::SetCurrentFinnhubFunction(const CString& str) {
 	s_sReadCurrentFinnhubFunction.acquire();
-	m_strCurrentFinnhubFunction = str;
+	m_sCurrentFinnhubFunction = str;
 	s_sReadCurrentFinnhubFunction.release();
 }
 
-CString CSystemMessage::GetCurrentTiingoFunction() const {
+string CSystemMessage::GetCurrentTiingoFunction() const {
 	s_sReadCurrentTiingoFunction.acquire();
-	CString str = m_strCurrentTiingoFunction;
+	string str = m_sCurrentTiingoFunction;
 	s_sReadCurrentTiingoFunction.release();
 	return str;
 }
 
 void CSystemMessage::SetCurrentTiingoFunction(const CString& str) {
 	s_sReadCurrentTiingoFunction.acquire();
-	m_strCurrentTiingoFunction = str;
+	m_sCurrentTiingoFunction = str;
 	s_sReadCurrentTiingoFunction.release();
 }
 

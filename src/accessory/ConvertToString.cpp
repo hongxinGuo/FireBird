@@ -62,17 +62,17 @@ CString XferToCString(const std::string& s) {
 	return strName3;
 }
 
-CString FormatToMK(long iNumber) {
+string FormatToMK(int64_t iNumber) {
 	string s;
-	if (iNumber > 1000000) { // 1M以上的流量？
-		s = fmt::format("{:#4L}M", iNumber / 1000000);
+	if (iNumber > 1024 * 1024) { // 1M以上的流量？
+		s = fmt::format("{:L}M", iNumber / (1024 * 1024));
 	}
 	else if (iNumber > 1024) { // 1K以上的流量？
 		s = fmt::format("{:4L}K", iNumber / 1024);
 	}
 	else {
-		s = fmt::format("{:#4L}", iNumber);
+		s = fmt::format("{:4L}", iNumber);
 	}
 
-	return s.c_str();
+	return s;
 }

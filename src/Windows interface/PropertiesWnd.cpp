@@ -405,11 +405,11 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 		}
 	}
 
-	CString strMessage = gl_systemMessage.GetCurrentFinnhubFunction();
-	m_pPropFinnhubCurrentFunction->SetValue(strMessage);
+	string strMessage = gl_systemMessage.GetCurrentFinnhubFunction();
+	m_pPropFinnhubCurrentFunction->SetValue(strMessage.c_str());
 
 	strMessage = gl_systemMessage.GetCurrentTiingoFunction();
-	m_pPropTiingoCurrentFunction->SetValue(strMessage);
+	m_pPropTiingoCurrentFunction->SetValue(strMessage.c_str());
 
 	CString str = _T("");
 	switch (gl_pFinnhubWebSocket->GetState()) {

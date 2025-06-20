@@ -1052,26 +1052,26 @@ void CWorldMarket::UpdateFinnhubStockFromWebSocket() {
 	for (size_t i = 0; i < total; i++) {
 		const CTiingoIEXSocketPtr pIEXData = gl_SystemData.PopTiingoIEXSocket();
 		UpdateFinnhubStockFromTiingoIEXSocket(pIEXData);
-		gl_systemMessage.SetCurrentTiingoWebSocketIEX(pIEXData->m_sSymbol.c_str());
+		gl_systemMessage.SetCurrentTiingoWebSocketIEX(pIEXData->m_sSymbol);
 	}
 
 	total = gl_SystemData.GetTiingoCryptoSocketSize();
 	for (size_t i = 0; i < total; i++) {
 		const CTiingoCryptoSocketPtr pCryptoData = gl_SystemData.PopTiingoCryptoSocket();
-		gl_systemMessage.SetCurrentTiingoWebSocketCrypto(pCryptoData->m_sSymbol.c_str());
+		gl_systemMessage.SetCurrentTiingoWebSocketCrypto(pCryptoData->m_sSymbol);
 	}
 
 	total = gl_SystemData.GetTiingoForexSocketSize();
 	for (size_t i = 0; i < total; i++) {
 		const CTiingoForexSocketPtr pForexData = gl_SystemData.PopTiingoForexSocket();
-		gl_systemMessage.SetCurrentTiingoWebSocketForex(pForexData->m_sSymbol.c_str());
+		gl_systemMessage.SetCurrentTiingoWebSocketForex(pForexData->m_sSymbol);
 	}
 
 	total = gl_SystemData.GetFinnhubSocketSize();
 	for (size_t i = 0; i < total; i++) {
 		const CFinnhubSocketPtr pFinnhubData = gl_SystemData.PopFinnhubSocket();
 		UpdateFinnhubStockFromFinnhubSocket(pFinnhubData);
-		gl_systemMessage.SetCurrentFinnhubWebSocketStake(pFinnhubData->m_sSymbol.c_str());
+		gl_systemMessage.SetCurrentFinnhubWebSocketStake(pFinnhubData->m_sSymbol);
 	}
 }
 

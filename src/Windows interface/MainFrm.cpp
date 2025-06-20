@@ -481,7 +481,7 @@ void CMainFrame::UpdateStatus() {
 	//更新状态条
 	if (gl_pChinaMarket->IsCurrentEditStockChanged()) {
 		s = m_aStockCodeTemp;
-		SysCallSetPaneText(1, s.c_str());
+		SysCallSetPaneText(1, s);
 		gl_pChinaMarket->SetCurrentEditStockChanged(false);
 	}
 	// 显示股票代码和名称
@@ -493,18 +493,18 @@ void CMainFrame::UpdateStatus() {
 
 	// 显示当前选择的股票
 	s = fmt::format("{:Ld}", gl_pChinaMarket->GetCurrentSelectedStockSet());
-	SysCallSetPaneText(4, s.c_str());
+	SysCallSetPaneText(4, s);
 
 	// 显示当前选择的位置
 	s = fmt::format("{:Ld}", gl_pChinaMarket->GetCurrentSelectedPosition());
-	SysCallSetPaneText(5, s.c_str());
+	SysCallSetPaneText(5, s);
 
 	// 显示当前读取的新浪实时数据股票代码
 	SysCallSetPaneText(6, gl_systemMessage.GetStockCodeForInquiringRTData());
 
 	// 显示活跃股票总数
 	s = fmt::format("{:Ld}", gl_dataContainerChinaStock.GetActiveStockSize());
-	SysCallSetPaneText(7, s.c_str());
+	SysCallSetPaneText(7, s);
 
 	// 显示当前读取网易日线历史的股票代码
 	SysCallSetPaneText(8, gl_systemMessage.GetStockCodeForInquiryDayLine());
@@ -539,7 +539,7 @@ void CMainFrame::UpdateStatus() {
 	//SysCallSetPaneText(13, s.c_str());
 
 	//更新当地时间的显示
-	SysCallSetPaneText(14, gl_pChinaMarket->GetStringOfLocalTime().c_str());
+	SysCallSetPaneText(14, gl_pChinaMarket->GetStringOfLocalTime());
 }
 
 void CMainFrame::UpdateInnerSystemStatus() {
@@ -558,16 +558,16 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	default: // error
 		break;
 	}
-	SysCallSetInnerSystemPaneText(1, s.c_str());
+	SysCallSetInnerSystemPaneText(1, s);
 
 	// 更新实时数据分配及处理时间
 	s = fmt::format("{:5Ld}", gl_pChinaMarket->m_ttDistributeAndCalculateTime.load());
-	SysCallSetInnerSystemPaneText(2, s.c_str());
+	SysCallSetInnerSystemPaneText(2, s);
 
 	// 更新TaskSchedulePer100ms()处理时间
 	const long time = gl_systemMessage.GetScheduleTaskTimePerSecond() / 1000;
 	s = fmt::format("{:5Ld}", time);
-	SysCallSetInnerSystemPaneText(3, s.c_str());
+	SysCallSetInnerSystemPaneText(3, s);
 
 	// 更新日线数据读取时间
 	if (gl_systemConfiguration.IsUsingNeteaseDayLineServer()) { // 网易日线服务器
@@ -576,14 +576,14 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	else if (gl_systemConfiguration.IsUsingTengxunDayLineServer()) { // 腾讯日线服务器
 		s = fmt::format("{:5Ld}", gl_pTengxunDayLineDataSource->GetCurrentInquiryTime());
 	}
-	SysCallSetInnerSystemPaneText(4, s.c_str());
+	SysCallSetInnerSystemPaneText(4, s);
 
 	// 更新Finnhub数据读取时间
 	s = fmt::format("{:5Ld}", gl_pFinnhubDataSource->GetCurrentInquiryTime());
-	SysCallSetInnerSystemPaneText(5, s.c_str());
+	SysCallSetInnerSystemPaneText(5, s);
 	// 更新Tiingo数据读取时间
 	s = fmt::format("{:6Ld}", gl_pTiingoDataSource->GetCurrentInquiryTime());
-	SysCallSetInnerSystemPaneText(6, s.c_str());
+	SysCallSetInnerSystemPaneText(6, s);
 	// 更新Quandl数据读取时间
 	s = fmt::format("{:6Ld}", gl_pQuandlDataSource->GetCurrentInquiryTime());
 	//SysCallSetInnerSystemPaneText(7, buffer);

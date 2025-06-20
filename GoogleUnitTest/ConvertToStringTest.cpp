@@ -250,13 +250,15 @@ namespace FireBirdTest {
 	}
 
 	TEST(FormatToMKTest, TestFormatToMK) {
-		CString str = FormatToMK(123);
-		EXPECT_STREQ(str, _T(" 123"));
+		string str = FormatToMK(123);
+		EXPECT_STREQ(str.c_str(), _T(" 123"));
 		str = FormatToMK(12 * 1024);
-		EXPECT_STREQ(str, _T("  12K"));
+		EXPECT_STREQ(str.c_str(), _T("  12K"));
 		str = FormatToMK(12 * 1024 * 1024);
-		EXPECT_STREQ(str, _T("  12M"));
-		str = FormatToMK(static_cast<long>(12) * 1024 * 1024);
-		EXPECT_STREQ(str, _T("  12M"));
+		EXPECT_STREQ(str.c_str(), _T("12M"));
+		str = FormatToMK(static_cast<int64_t>(12) * 1024 * 1024);
+		EXPECT_STREQ(str.c_str(), _T("12M"));
+		str = FormatToMK(static_cast<int64_t>(1234567) * 1024 * 1024);
+		EXPECT_STREQ(str.c_str(), _T("1234567M"));
 	}
 }

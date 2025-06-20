@@ -147,33 +147,33 @@ public:
 	void ClearProcessedTiingoForexWebSocket() noexcept { m_iProcessedTiingoForexWebSocket = 0; }
 
 	void SetStockCodeForInquiringRTData(const CString& strStockCode);
-	CString GetStockCodeForInquiringRTData() const;
+	string GetStockCodeForInquiringRTData() const;
 
 	void SetStockCodeForInquiryDayLine(const CString& strStockCode);
-	CString GetStockCodeForInquiryDayLine() const;
+	string GetStockCodeForInquiryDayLine() const;
 
-	void SetCurrentFinnhubWebSocketStake(const CString& s);
-	CString GetCurrentFinnhubWebSocketStake() const;
-	void SetCurrentTiingoWebSocketIEX(const CString& s);
-	CString GetCurrentTiingoWebSocketIEX() const;
-	void SetCurrentTiingoWebSocketForex(const CString& s);
-	CString GetCurrentTiingoWebSocketForex() const;
-	void SetCurrentTiingoWebSocketCrypto(const CString& s);
-	CString GetCurrentTiingoWebSocketCrypto() const;
+	void SetCurrentFinnhubWebSocketStake(const string& s);
+	string GetCurrentFinnhubWebSocketStake() const;
+	void SetCurrentTiingoWebSocketIEX(const string& s);
+	string GetCurrentTiingoWebSocketIEX() const;
+	void SetCurrentTiingoWebSocketForex(const string& s);
+	string GetCurrentTiingoWebSocketForex() const;
+	void SetCurrentTiingoWebSocketCrypto(const string& s);
+	string GetCurrentTiingoWebSocketCrypto() const;
 
 	void CalcScheduleTaskTimePerSecond() noexcept { m_lScheduleTaskTimePerSecond = m_lScheduleTaskTime.exchange(0); }
 	long GetScheduleTaskTimePerSecond() const noexcept { return m_lScheduleTaskTimePerSecond.load(); }
 	void IncreaseScheduleTaskTime(long lTime) noexcept { m_lScheduleTaskTime += lTime; }
 
-	CString GetCurrentFinnhubFunction() const;
+	string GetCurrentFinnhubFunction() const;
 	void SetCurrentFinnhubFunction(const CString& str);
-	CString GetCurrentTiingoFunction() const;
+	string GetCurrentTiingoFunction() const;
 	void SetCurrentTiingoFunction(const CString& str);
 
-	CString GetChinaMarketSavingFunction() { return m_strChinaMarketSavingFunction; }
-	void SetChinaMarketSavingFunction(const CString& str) { m_strChinaMarketSavingFunction = str; }
-	CString GetWorldMarketSavingFunction() { return m_strWorldMarketSavingFunction; }
-	void SetWorldMarketSavingFunction(const CString& str) { m_strWorldMarketSavingFunction = str; }
+	string GetChinaMarketSavingFunction() { return m_sChinaMarketSavingFunction; }
+	void SetChinaMarketSavingFunction(const string& str) { m_sChinaMarketSavingFunction = str; }
+	string GetWorldMarketSavingFunction() { return m_sWorldMarketSavingFunction; }
+	void SetWorldMarketSavingFunction(const string& str) { m_sWorldMarketSavingFunction = str; }
 
 protected:
 	// 信息输出队列群
@@ -192,19 +192,19 @@ protected:
 	int m_iProcessedTiingoForexWebSocket;
 	int m_iProcessedTiingoIEXWebSocket;
 
-	CString m_strStockCodeForInquiringRTData;
-	CString m_strStockCodeForInquiryDayLine;
+	string m_sStockCodeForInquiringRTData;
+	string m_sStockCodeForInquiryDayLine;
 
-	CString m_strCurrentFinnhubWebSocketStake;
-	CString m_strCurrentTiingoWebSocketIEX;
-	CString m_strCurrentTiingoWebSocketForex;
-	CString m_strCurrentTiingoWebSocketCrypto;
+	string m_sCurrentFinnhubWebSocketStake;
+	string m_sCurrentTiingoWebSocketIEX;
+	string m_sCurrentTiingoWebSocketForex;
+	string m_sCurrentTiingoWebSocketCrypto;
 
-	CString m_strCurrentFinnhubFunction{ _T("") }; // 当前任务和处理的证券名称
-	CString m_strCurrentTiingoFunction{ _T("") }; // 当前任务和处理的证券名称
+	string m_sCurrentFinnhubFunction{ _T("") }; // 当前任务和处理的证券名称
+	string m_sCurrentTiingoFunction{ _T("") }; // 当前任务和处理的证券名称
 
-	CString m_strChinaMarketSavingFunction{ _T("") };
-	CString m_strWorldMarketSavingFunction{ _T("") };
+	string m_sChinaMarketSavingFunction{ _T("") };
+	string m_sWorldMarketSavingFunction{ _T("") };
 
 	atomic_long m_lScheduleTaskTime{ 0 };
 	atomic_long m_lScheduleTaskTimePerSecond{ 0 };
