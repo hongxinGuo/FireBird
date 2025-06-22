@@ -120,8 +120,8 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 
 	try {
 		s = js.at(_T("detail")); // 是否有报错信息
-		CString strMessage = _T("Tiingo stock dayLine ");
-		strMessage += s.c_str();
+		string strMessage = _T("Tiingo stock dayLine ");
+		strMessage += s;
 		gl_systemMessage.PushErrorMessage(strMessage); // 报告错误信息
 		return pvDayLine;
 	} catch (json::exception&) {

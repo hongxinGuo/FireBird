@@ -56,7 +56,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 	ASSERT(m_pCurrentProduct != nullptr);
 
 	string s2;
-	CString str;
+	string str;
 	string_view strView;
 	long l;
 
@@ -126,7 +126,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		str += s2.c_str();
 		str += _T("  ") + m_pCurrentProduct->GetInquiry();
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
-		gl_warnLogger->warn("{}", str.GetBuffer());
+		gl_warnLogger->warn("{}", str);
 		return ERROR_TIINGO_NOT_HANDLED__;
 	case 404:
 		if (pWebData->GetBufferLength() == 23) {
@@ -135,13 +135,13 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 				str = _T("Warning: Tiingo symbol not exist: ");
 				str += m_pCurrentProduct->GetInquiry();
 				gl_systemMessage.PushInnerSystemInformationMessage(str);
-				gl_warnLogger->warn("{}", str.GetBuffer());
+				gl_warnLogger->warn("{}", str);
 				return ERROR_TIINGO_NOT_FOUND__;
 			}
 		}
 		str = _T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange();
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
-		gl_warnLogger->warn("{}", str.GetBuffer());
+		gl_warnLogger->warn("{}", str);
 		return ERROR_TIINGO_NO_RIGHT_TO_ACCESS__; // 目前日线数据无申请权利时返回错误代码404。
 	case 429:
 		if (pWebData->GetBufferLength() == 152) {
@@ -149,7 +149,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 			if (strView.compare(_T("{\"detail\":\"Error: You have run over your monthly bandwidth allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.\"}")) == 0) { 	//
 				str = _T("Warning: Tiingo run over your monthly bandwidth");
 				gl_systemMessage.PushInnerSystemInformationMessage(str);
-				gl_warnLogger->warn("{}", str.GetBuffer());
+				gl_warnLogger->warn("{}", str);
 				m_pCurrentProduct->SetReceivedDataStatus(ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__);
 				return ERROR_TIINGO_REACH_MAX_BANDWIDTH_LIMIT__;
 			}
@@ -163,7 +163,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		str += s2.c_str();
 		str += _T("  ") + m_pCurrentProduct->GetInquiry();
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
-		gl_warnLogger->warn("{}", str.GetBuffer());
+		gl_warnLogger->warn("{}", str);
 		return ERROR_TIINGO_NOT_HANDLED__;
 	}
 
@@ -191,7 +191,11 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 			if (m_pCurrentProduct->CheckInaccessible()) {
 				// 如果系统报告无权查询此类数据, 目前先在软件系统消息中报告
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
+				string s = _T("No right to access: ");
+				s += m_pCurrentProduct->GetInquiry();
+				s += _T(",  Exchange = ");
+				s += m_pCurrentProduct->GetInquiringExchange();
+				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 			break;
 		case ERROR_TIINGO_MISSING_API_KEY__: // 缺少API key
@@ -352,7 +356,7 @@ bool CTiingoDataSource::GenerateStockDailyMeta() {
 		else {
 			gl_systemMessage.SetCurrentTiingoFunction(_T(""));
 			SetUpdateStockDailyMeta(false);
-			const CString str = "Tiingo stock daily meta updated";
+			const string str = "Tiingo stock daily meta updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -403,7 +407,7 @@ bool CTiingoDataSource::GenerateDayLine() {
 		else {
 			gl_systemMessage.SetCurrentTiingoFunction(_T(""));
 			SetUpdateDayLine(false);
-			const CString str = "Tiingo stock dayLine Updated";
+			const string str = "Tiingo stock dayLine Updated";
 			gl_systemMessage.PushInformationMessage(str);
 			if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
 				// Note 暂不自动处理日线数据
@@ -445,7 +449,7 @@ bool CTiingoDataSource::GenerateFinancialState() {
 		else {
 			gl_systemMessage.SetCurrentTiingoFunction(_T(""));
 			SetUpdateFinancialState(false);
-			const CString str = "Tiingo financial statements Updated";
+			const string str = "Tiingo financial statements Updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}

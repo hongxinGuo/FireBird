@@ -787,8 +787,8 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 
 		s = js.at(_T("metricType")); // 目前共五种类型："all", "perShare", "marketCapitalization","metric","eps"
 		if (!s_setMetricType.contains(s)) {
-			CString str = _T(" metric type out of range: ");
-			str += s.c_str();
+			string str = _T(" metric type out of range: ");
+			str += s;
 			str += _T("   Inquiry string:  ");
 			str += m_strInquiry;
 			gl_systemMessage.PushInnerSystemInformationMessage(str);

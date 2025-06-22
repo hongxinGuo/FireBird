@@ -34,7 +34,9 @@ void CTiingoFundamentalDefinition::Save(CSetTiingoFundamentalDefinition& setTiin
 		|| (m_strName.GetLength() > 100)
 		|| (m_strStatementType.GetLength() > 45)
 		|| (m_strUnits.GetLength() > 45)) {
-		CString s = _T("Tiingo fundamental definitions ") + m_strDataCode + _T(" ×Ö·û´®Ì«³¤");
+		string s = _T("Tiingo fundamental definitions ");
+		s += m_strDataCode;
+		s += _T(" ×Ö·û´®Ì«³¤");
 		gl_systemMessage.PushErrorMessage(s);
 	}
 	m_strDataCode = m_strDataCode.Left(44);

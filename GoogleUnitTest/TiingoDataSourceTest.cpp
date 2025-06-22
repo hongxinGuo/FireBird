@@ -108,7 +108,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_pTiingoDataSource->IsAErrorMessageData(pWebData), ERROR_TIINGO_MISSING_API_KEY__);
 		EXPECT_EQ(pProduct->GetReceivedDataStatus(), NO_ACCESS_RIGHT_);
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Tiingo missing API key"));
+		EXPECT_STREQ(gl_systemMessage.PopErrorMessage().c_str(), _T("Tiingo missing API key"));
 
 		// 恢复原状
 		//gl_systemMessage.PopErrorMessage();
@@ -226,8 +226,8 @@ namespace FireBirdTest {
 		m_pTiingoDataSource->SetInquiring(false);
 		EXPECT_FALSE(m_pTiingoDataSource->GenerateDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateDayLine()) << "股票都查询完了";
-		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Tiingo stock dayLine Updated"));
+		const string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("Tiingo stock dayLine Updated"));
 
 		// 恢复原状
 		for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {
@@ -284,8 +284,8 @@ namespace FireBirdTest {
 		m_pTiingoDataSource->SetInquiring(false);
 		EXPECT_FALSE(m_pTiingoDataSource->GenerateFinancialState()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_pTiingoDataSource->IsUpdateFinancialState()) << "股票都查询完了";
-		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Tiingo financial statements Updated"));
+		const string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("Tiingo financial statements Updated"));
 
 		// 恢复原状
 		for (int i = 0; i < gl_dataContainerTiingoStock.Size(); i++) {

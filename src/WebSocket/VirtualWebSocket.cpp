@@ -55,7 +55,7 @@ bool CVirtualWebSocket::ConnectAndSendMessage(const vectorString& vSymbol) {
 		}
 		Send(m_vSymbol);
 	} catch (exception& e) {
-		const CString sError = e.what();
+		string sError = e.what();
 		gl_systemMessage.PushInnerSystemInformationMessage(sError);
 		return false;
 	}

@@ -100,7 +100,6 @@ enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr&
 	try {
 		string error = js.at(_T("error"));
 		int i;
-		CString s;
 		try {
 			m_eErrorMessageData = mapFinnhubErrorMap.at(error);
 		} catch (exception&) {
@@ -111,7 +110,11 @@ enum_ErrorMessageData CFinnhubDataSource::IsAErrorMessageData(const CWebDataPtr&
 			m_pCurrentProduct->SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 			if (m_pCurrentProduct->CheckInaccessible()) {
 				// 如果系统报告无权查询此类数据, 目前先在软件系统消息中报告
-				gl_systemMessage.PushInnerSystemInformationMessage(_T("No right to access: ") + m_pCurrentProduct->GetInquiry() + _T(",  Exchange = ") + m_pCurrentProduct->GetInquiringExchange());
+				string s = _T("No right to access: ");
+				s += m_pCurrentProduct->GetInquiry();
+				s += _T(",  Exchange = ");
+				s += m_pCurrentProduct->GetInquiringExchange();
+				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 			break;
 		case ERROR_FINNHUB_MISSING_API_KEY__: // 缺少API key
@@ -233,7 +236,7 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 		else {
 			fHaveInquiry = false;
 			SetUpdateMarketStatus(false);
-			const CString str = "Finnhub market status finished";
+			const string str = "Finnhub market status finished";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -270,7 +273,7 @@ bool CFinnhubDataSource::GenerateMarketHoliday() {
 		else {
 			fHaveInquiry = false;
 			SetUpdateMarketHoliday(false);
-			const CString str = "Finnhub market holiday finished";
+			const string str = "Finnhub market holiday finished";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -308,7 +311,7 @@ bool CFinnhubDataSource::GenerateCompanySymbol() {
 		else {
 			fHaveInquiry = false;
 			SetUpdateSymbol(false);
-			const CString str = "Finnhub exchanges updated";
+			const string str = "Finnhub exchanges updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -344,7 +347,7 @@ bool CFinnhubDataSource::GenerateCompanyProfileConcise() {
 		}
 		else {
 			SetUpdateStockProfile(false);
-			const CString str = "Finnhub company profile basic updated";
+			const string str = "Finnhub company profile basic updated";
 			gl_systemMessage.PushInformationMessage(str);
 			fHaveInquiry = false;
 		}
@@ -386,7 +389,7 @@ bool CFinnhubDataSource::GenerateCompanyNews() {
 		}
 		else {
 			SetUpdateCompanyNews(false);
-			const CString str = "Finnhub company news updated";
+			const string str = "Finnhub company news updated";
 			gl_systemMessage.PushInformationMessage(str);
 			fHaveInquiry = false;
 		}
@@ -424,7 +427,7 @@ bool CFinnhubDataSource::GenerateCompanyBasicFinancial() {
 		}
 		else {
 			SetUpdateStockBasicFinancial(false);
-			const CString str = "Finnhub basic financial updated";
+			const string str = "Finnhub basic financial updated";
 			gl_systemMessage.PushInformationMessage(str);
 			fHaveInquiry = false;
 		}
@@ -466,7 +469,7 @@ bool CFinnhubDataSource::GenerateStockDayLine() {
 			SetUpdateStockDayLine(false);
 			//lCurrentUpdateDayLinePos = 0; // 重置此索引。所有的日线数据更新一次所需时间要超过24小时，故保持更新即可。
 			//TRACE("Finnhub日线更新完毕，从新开始更新\n");
-			const CString str = "Finnhub dayline updated";
+			const string str = "Finnhub dayline updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -505,7 +508,7 @@ bool CFinnhubDataSource::GenerateInsiderTransaction() {
 		else {
 			fHaveInquiry = false;
 			SetUpdateInsiderTransaction(false);
-			const CString str = "Finnhub Insider Transaction updated";
+			const string str = "Finnhub Insider Transaction updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -544,7 +547,7 @@ bool CFinnhubDataSource::GenerateInsiderSentiment() {
 			fHaveInquiry = false;
 			SetUpdateInsiderSentiment(false);
 			//TRACE("FinnhubInsider Sentiment更新完毕\n");
-			const CString str = "Finnhub Insider Sentiment updated";
+			const string str = "Finnhub Insider Sentiment updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -596,7 +599,7 @@ bool CFinnhubDataSource::GeneratePeer() {
 		else {
 			fHaveInquiry = false;
 			SetUpdatePeer(false);
-			const CString str = "Finnhub Peer Updated";
+			const string str = "Finnhub Peer Updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -650,7 +653,7 @@ bool CFinnhubDataSource::GenerateEPSSurprise() {
 			m_lCurrentUpdateEPSSurprisePos = 0;
 			fHaveInquiry = false;
 			SetUpdateEPSSurprise(false);
-			const CString str = "Finnhub EPS Surprise Updated";
+			const string str = "Finnhub EPS Surprise Updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -689,7 +692,7 @@ bool CFinnhubDataSource::GenerateSECFilings() {
 			m_lCurrentUpdateSECFilingsPos = 0;
 			fHaveInquiry = false;
 			SetUpdateSECFilings(false);
-			const CString str = "Finnhub SEC Filings Updated";
+			const string str = "Finnhub SEC Filings Updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -757,7 +760,7 @@ bool CFinnhubDataSource::GenerateForexDayLine() {
 		else {
 			SetUpdateForexDayLine(false);
 			//TRACE("Finnhub Forex日线更新完毕\n");
-			const CString str = "Finnhub Forex DayLine Updated";
+			const string str = "Finnhub Forex DayLine Updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}
@@ -827,7 +830,7 @@ bool CFinnhubDataSource::GenerateCryptoDayLine() {
 		else {
 			SetUpdateCryptoDayLine(false);
 			//TRACE("Finnhub Crypto日线更新完毕\n");
-			const CString str = "Finnhub Crypto DayLine Updated";
+			const string str = "Finnhub Crypto DayLine Updated";
 			gl_systemMessage.PushInformationMessage(str);
 		}
 	}

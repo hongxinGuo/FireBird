@@ -28,7 +28,7 @@ void TaskCheckWorldMarketReady() {
 	if (gl_pFinnhubDataSource->IsUpdateCryptoExchange()) return;
 	if (gl_pFinnhubDataSource->IsUpdateCryptoSymbol()) return;
 
-	const CString str = "世界市场初始化完毕";
+	const string str = "世界市场初始化完毕";
 	gl_systemMessage.PushInformationMessage(str);
 	gl_pWorldMarket->SetSystemReady(true);
 	gl_aTimer.at(WORLD_MARKET_CHECK_SYSTEM_READY__).cancel(); // 市场准备好后即删除此任务。
@@ -197,7 +197,7 @@ void TaskSchedulePer100ms() {
 		ScheduleMarketTask();	// 调用主调度函数,由各市场调度函数执行具体任务
 		//todo 其他各DataSource的调度，也考虑移至此处。目前各DataSource的调度，在CVirtualMarket的ScheduleTask()中。
 	} catch (std::exception* e) { // 此处截获本体指针，以备处理完后删除之。
-		CString str = _T("ScheduleMarketTask unhandled exception founded : ");
+		string str = _T("ScheduleMarketTask unhandled exception founded : ");
 		str += e->what();
 		gl_systemMessage.PushInformationMessage(str);
 		gl_systemMessage.PushErrorMessage(str);
@@ -205,12 +205,11 @@ void TaskSchedulePer100ms() {
 	}
 	catch (CException* e) {
 		char buffer[1000];
-		CString str = _T("ScheduleMarketTask unhandled CException founded : ");
+		string str = _T("ScheduleMarketTask unhandled CException founded : ");
 		e->GetErrorMessage(buffer, 1);
 		str += buffer;
 		gl_systemMessage.PushInformationMessage(str);
 		gl_systemMessage.PushErrorMessage(str);
-		//gl_warnLogger->error("{}", str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 	auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
@@ -234,19 +233,19 @@ void TaskSchedulePerSecond() {
 		gl_pSinaRTDataSource->CalcTotalBytePerSecond(); // 计算每秒读取的数据量
 		gl_systemMessage.CalcScheduleTaskTimePerSecond(); // 计算每秒调度所需的时间
 	} catch (std::exception* e) {	// 此处截获本体指针，以备处理完后删除之。
-		CString str1 = "TaskSchedulePerSecond unhandled exception founded : ";
+		string str1 = "TaskSchedulePerSecond unhandled exception founded : ";
 		str1 += e->what();
 		gl_systemMessage.PushErrorMessage(str1);
-		gl_warnLogger->error("{}", str1.GetBuffer());
+		gl_warnLogger->error("{}", str1);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 	catch (CException* e) {	// 此处截获本体指针，以备处理完后删除之。
 		char buffer[1000];
-		CString str = _T("TaskSchedulePerSecond unhandled CException founded : ");
+		string str = _T("TaskSchedulePerSecond unhandled CException founded : ");
 		e->GetErrorMessage(buffer, 1);
 		str += buffer;
 		gl_systemMessage.PushErrorMessage(str);
-		gl_warnLogger->error("{}", str.GetBuffer());
+		gl_warnLogger->error("{}", str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 }

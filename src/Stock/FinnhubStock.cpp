@@ -448,7 +448,8 @@ bool CFinnhubStock::UpdateDayLineDB() {
 				SaveDayLineDB();
 				UpdateDayLineStartEndDate();
 				SetUpdateProfileDB(true);
-				const CString str = GetSymbol() + _T("日线资料存储完成");
+				string str = GetSymbol().GetString();
+				str += _T("日线资料存储完成");
 				gl_systemMessage.PushDayLineInfoMessage(str);
 				//TRACE("更新%s日线数据\n", GetSymbol().GetBuffer());
 				UnloadDayLine();

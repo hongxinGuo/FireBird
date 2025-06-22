@@ -60,7 +60,7 @@ namespace FireBirdTest {
 		pwd->Test_SetBuffer_(_T("{\"error\":\"Please use an API key.\"}"));
 
 		EXPECT_EQ(ERROR_FINNHUB_MISSING_API_KEY__, m_FinnhubDataSource.IsAErrorMessageData(pwd));
-		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("finnhub missing API key"));
+		EXPECT_STREQ(gl_systemMessage.PopErrorMessage().c_str(), _T("finnhub missing API key"));
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestIsAErrorMessageData3) {
@@ -69,7 +69,7 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(ERROR_FINNHUB_NOT_HANDLED__, m_FinnhubDataSource.IsAErrorMessageData(pwd));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("error not processed:Not Handled"));
+		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage().c_str(), _T("error not processed:Not Handled"));
 		// 恢复原状
 	}
 
@@ -326,8 +326,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.GenerateMarketStatus()) << "第三次查询时没有找到待查询的交易所";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateMarketStatus()) << "交易所都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
-		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub market status finished"));
+		string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("Finnhub market status finished"));
 
 		// 恢复原状
 		m_FinnhubDataSource.SetUpdateMarketStatus(true);
@@ -371,8 +371,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.GenerateMarketHoliday()) << "第三次查询时没有找到待查询的交易所";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateMarketHoliday()) << "交易所都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
-		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub market holiday finished"));
+		string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("Finnhub market holiday finished"));
 
 		// 恢复原状
 		m_FinnhubDataSource.SetUpdateMarketHoliday(true);
@@ -416,8 +416,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.GenerateCompanySymbol()) << "第三次查询时没有找到待查询的交易所";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateSymbol()) << "交易所都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
-		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub exchanges updated"));
+		string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("Finnhub exchanges updated"));
 
 		// 恢复原状
 		m_FinnhubDataSource.SetUpdateSymbol(true);
@@ -461,8 +461,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.GenerateCompanyProfileConcise()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateStockProfile()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
-		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub company profile basic updated"));
+		string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("Finnhub company profile basic updated"));
 
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
@@ -509,8 +509,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.GenerateCompanyNews()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateCompanyNews()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
-		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub company news updated"));
+		string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("Finnhub company news updated"));
 
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
@@ -557,8 +557,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.GenerateInsiderSentiment()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateInsiderSentiment()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
-		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub Insider Sentiment updated"));
+		string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("Finnhub Insider Sentiment updated"));
 
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
@@ -605,8 +605,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.GenerateCompanyBasicFinancial()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateStockBasicFinancial()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
-		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub basic financial updated"));
+		string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("Finnhub basic financial updated"));
 
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 			pStock = gl_dataContainerFinnhubStock.GetStock(i);
@@ -653,8 +653,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.GenerateStockDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateStockDayLine()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
-		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub dayline updated"));
+		string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("Finnhub dayline updated"));
 
 		// 恢复原状
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
@@ -715,8 +715,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.GeneratePeer()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdatePeer()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
-		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub Peer Updated"));
+		string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("Finnhub Peer Updated"));
 
 		// 恢复原状
 		m_FinnhubDataSource.SetUpdatePeer(true);
@@ -763,8 +763,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.GenerateInsiderTransaction()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateInsiderTransaction()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
-		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub Insider Transaction updated"));
+		string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("Finnhub Insider Transaction updated"));
 
 		// 恢复原状
 		m_FinnhubDataSource.SetUpdateInsiderTransaction(true);
@@ -819,8 +819,8 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_FALSE(m_FinnhubDataSource.GenerateEPSSurprise()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateEPSSurprise()) << "股票都查询完了";
-		const CString str2 = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str2, _T("Finnhub EPS Surprise Updated"));
+		const string str2 = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str2.c_str(), _T("Finnhub EPS Surprise Updated"));
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquirySECFilings) {
@@ -857,8 +857,8 @@ namespace FireBirdTest {
 		m_FinnhubDataSource.SetInquiring(false);
 		EXPECT_FALSE(m_FinnhubDataSource.GenerateSECFilings()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateSECFilings()) << "股票都查询完了";
-		const CString str2 = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str2, _T("Finnhub SEC Filings Updated"));
+		const string str2 = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str2.c_str(), _T("Finnhub SEC Filings Updated"));
 	}
 
 	TEST_F(CFinnhubDataSourceTest, TestInquiryForexExchange) {
@@ -899,7 +899,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubForexSymbol"));
 		EXPECT_EQ(p->GetIndex(), lTotal - 1);
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateForexSymbol());
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub Forex symbols updated"));
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("Finnhub Forex symbols updated"));
 		m_FinnhubDataSource.SetUpdateForexSymbol(true); //恢复原状
 	}
 
@@ -939,8 +939,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.GenerateForexDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateForexDayLine()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
-		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub Forex DayLine Updated"));
+		string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("Finnhub Forex DayLine Updated"));
 
 		for (int i = 0; i < gl_dataFinnhubForexSymbol.Size(); i++) {
 			pStock = gl_dataFinnhubForexSymbol.GetSymbol(i);
@@ -990,7 +990,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(typeid(*p).name(), _T("class CProductFinnhubCryptoSymbol"));
 		EXPECT_EQ(p->GetIndex(), lTotal - 1);
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateCryptoSymbol());
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub Crypto symbols updated"));
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("Finnhub Crypto symbols updated"));
 		m_FinnhubDataSource.SetUpdateCryptoSymbol(true); //恢复原状
 	}
 
@@ -1030,8 +1030,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_FinnhubDataSource.GenerateCryptoDayLine()) << "第三次查询时没有找到待查询的股票";
 		EXPECT_FALSE(m_FinnhubDataSource.IsUpdateCryptoDayLine()) << "股票都查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << "Inquiring and Inquired";
-		CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("Finnhub Crypto DayLine Updated"));
+		string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("Finnhub Crypto DayLine Updated"));
 
 		for (int i = 0; i < gl_dataFinnhubCryptoSymbol.Size(); i++) {
 			pStock = gl_dataFinnhubCryptoSymbol.GetSymbol(i);
@@ -1074,8 +1074,8 @@ namespace FireBirdTest {
 		gl_pFinnhubDataSource->SetUpdateCryptoSymbol(false);
 		EXPECT_TRUE(gl_pWorldMarket->TaskCheckMarketReady(0));
 		EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
-		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("世界市场初始化完毕"));
+		const string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("世界市场初始化完毕"));
 
 		// 恢复原状
 		while (!gl_pWorldMarket->IsMarketTaskEmpty()) gl_pWorldMarket->DiscardCurrentMarketTask();

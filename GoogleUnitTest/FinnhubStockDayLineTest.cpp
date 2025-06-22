@@ -117,7 +117,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData36, &finnhubWebData37, &finnhubWebData38, &finnhubWebData39, &finnhubWebData40));
 
 	TEST_P(ProcessFinnhubStockCandleTest, TestParseFinnhubStockCandle0) {
-		CString strMessage;
+		string strMessage;
 
 		m_finnhubStockDayLine.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
@@ -128,7 +128,7 @@ namespace FireBirdTest {
 			break;
 		case 2: // s项报告not ok
 			strMessage = _T("日线返回值不为ok");
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage().c_str(), strMessage.c_str());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());

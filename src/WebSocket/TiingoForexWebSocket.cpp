@@ -17,7 +17,7 @@ void ProcessTiingoForexWebSocket(const ix::WebSocketMessagePtr& msg) {
 		break;
 	case ix::WebSocketMessageType::Error:
 		gl_pTiingoForexWebSocket->SetError(true);
-		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason.c_str());
+		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason);
 		break;
 	case ix::WebSocketMessageType::Open:
 		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Forex WebSocket Open"));
@@ -70,7 +70,7 @@ void CTiingoForexWebSocket::Send(const vectorString& vSymbol) {
 
 	const string messageAuth(CreateMessage(vSymbol));
 	ix::WebSocketSendInfo info = m_webSocket.send(messageAuth);
-	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
+	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth);
 }
 
 void CTiingoForexWebSocket::MonitorWebSocket(const vectorString& vSymbol) {

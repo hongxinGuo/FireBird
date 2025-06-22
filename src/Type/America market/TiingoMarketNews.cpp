@@ -25,6 +25,9 @@ void CTiingoMarketNews::Save(CSetTiingoMarketNews& setTiingoMarketNews) {
 		|| (m_strTickers.GetLength() > 200)
 		|| (m_strTitle.GetLength() > 100)
 		|| (m_strUrl.GetLength() > 100)) {
-		gl_systemMessage.PushErrorMessage(_T("Tiingo market news ") + m_strTickers + _T(" ×Ö·û´®Ì«³¤"));
+		string s = _T("Tiingo market news ");
+		s += m_strTickers;
+		s += _T(" ×Ö·û´®Ì«³¤");
+		gl_systemMessage.PushErrorMessage(s);
 	}
 }

@@ -56,7 +56,7 @@ UINT ThreadBuildWeekLineRS(const CChinaMarketPtr& pMarket, long startCalculating
 		const long min = tDiffer / 60 - hour * 60;
 		const long second = tDiffer - hour * 3600 - min * 60;
 		string s = fmt::format("计算股票周线相对强度用时{:02Ld}小时{:02Ld}分钟{:02Ld}秒", hour, min, second);
-		gl_systemMessage.PushInformationMessage(s.c_str());
+		gl_systemMessage.PushInformationMessage(s);
 	}
 	else {
 		gl_systemConfiguration.SetExitingCalculatingRS(false); // 如果是计算过程中止了，则重置中止标识。

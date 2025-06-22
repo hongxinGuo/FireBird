@@ -61,7 +61,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub economic calendar updated"));
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("Finnhub economic calendar updated"));
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()) << "有权处理时不更改";
 		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime().count(), 220);
@@ -86,7 +86,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub economic calendar updated"));
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("Finnhub economic calendar updated"));
 		EXPECT_FALSE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()) << "无权处理时更改为免费账户";
 
 		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(true);

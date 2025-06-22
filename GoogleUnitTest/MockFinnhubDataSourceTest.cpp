@@ -199,7 +199,7 @@ namespace FireBirdTest {
 
 		m_pMockFinnhubDataSource->GenerateInquiryMessage(120000);
 
-		const CString str = gl_systemMessage.PopInformationMessage();
-		EXPECT_STREQ(str, _T("finnhub data inquiry finished"));
+		const string str = gl_systemMessage.PopInformationMessage();
+		EXPECT_STREQ(str.c_str(), _T("finnhub data inquiry finished"));
 	}
 }

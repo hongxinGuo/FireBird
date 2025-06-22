@@ -113,34 +113,34 @@ namespace FireBirdTest {
 		const size_t l = gl_systemMessage.InformationSize();
 		CSystemMessage systemMessage; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), l + 1); // 系统报警队列
-		EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("错误：系统不允许生成多个CSystemMessage实例"));
+		EXPECT_STREQ(gl_systemMessage.PopErrorMessage().c_str(), _T("错误：系统不允许生成多个CSystemMessage实例"));
 	}
 
 	TEST_F(SystemMessageTest, TestGetInformationDequeSize) {
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 0);
 		gl_systemMessage.PushInformationMessage(_T("TEST"));
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		const CString str = gl_systemMessage.PopInformationMessage();
+		const string str = gl_systemMessage.PopInformationMessage();
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 0);
-		EXPECT_STREQ(str, _T("TEST"));
+		EXPECT_STREQ(str.c_str(), _T("TEST"));
 	}
 
 	TEST_F(SystemMessageTest, TestGetDayLineInfoDequeSize) {
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 		gl_systemMessage.PushDayLineInfoMessage(_T("TEST"));
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
-		const CString str = gl_systemMessage.PopDayLineInfoMessage();
+		const string str = gl_systemMessage.PopDayLineInfoMessage();
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
-		EXPECT_STREQ(str, _T("TEST"));
+		EXPECT_STREQ(str.c_str(), _T("TEST"));
 	}
 
 	TEST_F(SystemMessageTest, TestGetWebSocketInfoDequeSize) {
 		EXPECT_EQ(gl_systemMessage.WebSocketInfoSize(), 0);
 		gl_systemMessage.PushWebSocketInfoMessage(_T("TEST"));
 		EXPECT_EQ(gl_systemMessage.WebSocketInfoSize(), 1);
-		const CString str = gl_systemMessage.PopWebSocketInfoMessage();
+		const string str = gl_systemMessage.PopWebSocketInfoMessage();
 		EXPECT_EQ(gl_systemMessage.WebSocketInfoSize(), 0);
-		EXPECT_STREQ(str, _T("TEST"));
+		EXPECT_STREQ(str.c_str(), _T("TEST"));
 	}
 
 	TEST_F(SystemMessageTest, TestGetProcessedFinnhubWebSocket) {

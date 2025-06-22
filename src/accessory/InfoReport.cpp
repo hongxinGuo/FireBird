@@ -3,9 +3,9 @@
 #include "InfoReport.h"
 
 void ReportErrorToSystemMessage(const CString& strPrefix, const exception& e) {
-	CString strError = strPrefix;
+	string strError = strPrefix.GetString();
 	strError += e.what();
-	gl_systemMessage.PushErrorMessage(strError);
+	gl_systemMessage.PushErrorMessage(strError.c_str());
 }
 
 void ReportWebError(const DWORD dwErrorNo, const CString& strInputMessage) {
@@ -22,7 +22,7 @@ void ReportInformationAndDeleteException(CException* e) {
 	if (e == nullptr) return;
 	char buffer[200];
 	e->GetErrorMessage(buffer, 200);
-	const CString str = buffer;
+	const string str = buffer;
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
 	delete e;
 }
@@ -30,6 +30,6 @@ void ReportInformationAndDeleteException(CException* e) {
 void ReportInformation(CException& e) {
 	char buffer[200];
 	e.GetErrorMessage(buffer, 200);
-	const CString str = buffer;
+	const string str = buffer;
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
 }

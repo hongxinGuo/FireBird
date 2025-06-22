@@ -53,7 +53,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateCountryList());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub economic country List updated"));
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("Finnhub economic country List updated"));
 
 		gl_pFinnhubDataSource->SetUpdateCountryList(true);
 	}

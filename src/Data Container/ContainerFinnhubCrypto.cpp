@@ -33,7 +33,11 @@ bool CContainerFinnhubCrypto::LoadDB() {
 			pSymbol = make_shared<CFinnhubCrypto>();
 			pSymbol->LoadSymbol(setCryptoSymbol);
 			pSymbol->SetCheckingDayLineStatus();
-			if (m_mapSymbol.contains(pSymbol->GetSymbol())) { gl_systemMessage.PushErrorMessage(_T("Finnhub Crypto发现重复代码：") + pSymbol->GetSymbol()); }
+			if (m_mapSymbol.contains(pSymbol->GetSymbol())) {
+				string s = _T("Finnhub Crypto发现重复代码：");
+				s += pSymbol->GetSymbol();
+				gl_systemMessage.PushErrorMessage(s);
+			}
 			Add(pSymbol);
 		}
 		else {

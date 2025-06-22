@@ -72,7 +72,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("Test Message"));
+		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage().c_str(), _T("Test Message"));
 	}
 
 	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage5) {
@@ -86,7 +86,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pMockVirtualWebSocket->ConnectAndSendMessage(vSymbol));
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("Test Message"));
+		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage().c_str(), _T("Test Message"));
 	}
 
 	TEST_F(CMockVirtualWebSocketTest, TestConnectAndSendMessage6) {

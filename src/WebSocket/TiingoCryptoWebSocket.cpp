@@ -19,7 +19,7 @@ void ProcessTiingoCryptoWebSocket(const ix::WebSocketMessagePtr& msg) {
 		break;
 	case ix::WebSocketMessageType::Error:
 		gl_pTiingoCryptoWebSocket->SetError(true);
-		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason.c_str());
+		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason);
 		break;
 	case ix::WebSocketMessageType::Open:
 		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo Crypto WebSocket Open"));
@@ -70,7 +70,7 @@ void CTiingoCryptoWebSocket::Send(const vectorString& vSymbol) {
 	ASSERT(IsOpen());
 
 	ix::WebSocketSendInfo info = m_webSocket.send(messageAuth);
-	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
+	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth);
 }
 
 void CTiingoCryptoWebSocket::MonitorWebSocket(const vectorString& vSymbol) {

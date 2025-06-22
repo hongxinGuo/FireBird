@@ -43,12 +43,12 @@ UINT ThreadChoice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
 	gl_UpdateChinaMarketDB.acquire();
 	TRACE("choice10RS\n");
 	string s = fmt::format("开始计算10日RS {:d}\n", iIndex);
-	gl_systemMessage.PushInformationMessage(s.c_str());
+	gl_systemMessage.PushInformationMessage(s);
 
 	// 报告一下
 	if (gl_dataContainerChinaStock.Choice10RSStrongStockSet(pRef, iIndex)) {
 		s = fmt::format("10日RS  {:d}计算完毕\n", iIndex);
-		gl_systemMessage.PushInformationMessage(s.c_str());
+		gl_systemMessage.PushInformationMessage(s);
 	}
 	TRACE("choice10RS\n");
 	gl_UpdateChinaMarketDB.release();

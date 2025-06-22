@@ -1830,7 +1830,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(pStock->IsDayLineDBUpdated());
 		EXPECT_FALSE(gl_dataContainerChinaStock.IsDayLineDBUpdated());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("中国市场日线历史数据更新完毕"));
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("中国市场日线历史数据更新完毕"));
 
 		for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 			const auto china_stock_ptr = gl_dataContainerChinaStock.GetStock(i);

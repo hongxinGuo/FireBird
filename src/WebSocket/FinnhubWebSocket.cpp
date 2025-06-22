@@ -29,7 +29,7 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 		str = _T("Finnhub WebSocket Error: ");
 		str += msg->errorInfo.reason;
 		gl_dailyWebSocketLogger->error("{}", str);
-		gl_systemMessage.PushErrorMessage(str.c_str());
+		gl_systemMessage.PushErrorMessage(str);
 		gl_pFinnhubWebSocket->SetStatusCode(msg->errorInfo.http_status);
 		if (msg->errorInfo.http_status == 429) { // 太多查询（其他终端正在查询）
 			if (s_bWebSocketClosing) return;
@@ -37,8 +37,8 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 			gl_pFinnhubWebSocket->TaskDisconnect();
 			gl_systemConfiguration.SetUsingFinnhubWebSocket(false); // 停止接收
 			str = _T("too many connections，关闭Finnhub Web Socket服务");
-			gl_systemMessage.PushInnerSystemInformationMessage(str.c_str());
-			gl_systemMessage.PushErrorMessage(str.c_str());
+			gl_systemMessage.PushInnerSystemInformationMessage(str);
+			gl_systemMessage.PushErrorMessage(str);
 			gl_dailyWebSocketLogger->error("{}", str);
 			// finnhub webSocket有时会出现EC429（too many connection attempt），由其他账户同时申请所致。此时需要暂停本账户的申请以维持其他账户的申请能够顺利执行
 			// 10分钟后自动重新连接。
@@ -57,7 +57,7 @@ void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 			str += msg->closeInfo.reason;
 		}
 		gl_dailyWebSocketLogger->info("{}", str);
-		gl_systemMessage.PushWebSocketInfoMessage(str.c_str());
+		gl_systemMessage.PushWebSocketInfoMessage(str);
 		break;
 	case ix::WebSocketMessageType::Fragment:
 		gl_systemMessage.PushWebSocketInfoMessage(_T("Finnhub WebSocket Fragment"));
@@ -102,7 +102,7 @@ void CFinnhubWebSocket::Send(const vectorString& vSymbol) {
 		strMessage = CreateFinnhubWebSocketString(vSymbol.at(l));
 		ix::WebSocketSendInfo info = m_webSocket.send(strMessage);
 		ASSERT(info.success);
-		gl_systemMessage.PushInnerSystemInformationMessage(strMessage.c_str());
+		gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 	}
 }
 
@@ -163,14 +163,14 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 			}
 			else if (sType == _T("error")) { // ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
 				sMessage = jsonGetString(&pt, _T("msg"));
-				CString strMessage = "Finnhub WebSocket error message: ";
-				strMessage += sMessage.c_str();
+				string strMessage = "Finnhub WebSocket error message: ";
+				strMessage += sMessage;
 				gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 				return false;
 			}
 			else { // new format or error
-				CString strMsg = _T("Finnhub Web Socket type error: ");
-				strMsg += sType.c_str();
+				string strMsg = _T("Finnhub Web Socket type error: ");
+				strMsg += sType;
 				gl_systemMessage.PushInnerSystemInformationMessage(strMsg);
 				return false;
 			}
@@ -232,8 +232,8 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(const shared_ptr<s
 			const string_view message = s_docFinnhubWebSocket["msg"].get_string();
 			const string_view m2 = message.substr(0, message.length());
 			const string sMessage(m2);
-			CString strMessage = "Finnhub WebSocket error message: ";
-			strMessage += sMessage.c_str();
+			string strMessage = "Finnhub WebSocket error message: ";
+			strMessage += sMessage;
 			gl_systemMessage.PushInnerSystemInformationMessage(strMessage);
 			return false;
 		}

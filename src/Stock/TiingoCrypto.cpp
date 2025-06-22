@@ -27,7 +27,10 @@ void CTiingoCrypto::Save(CSetTiingoCrypto& setTiingoCrypto) {
 		|| (m_strDescription.GetLength() > 100)
 		|| (m_strBaseCurrency.GetLength() > 20)
 		|| (m_strQuoteCurrency.GetLength() > 20)) {
-		gl_systemMessage.PushErrorMessage(_T("Tiingo Crypto ") + m_strSymbol + _T(" ×Ö·û´®Ì«³¤"));
+		string s = _T("Tiingo Crypto ");
+		s += m_strSymbol;
+		s += _T(" ×Ö·û´®Ì«³¤");
+		gl_systemMessage.PushErrorMessage(s);
 	}
 	m_strName = m_strName.Left(99);
 	m_strSymbol = m_strSymbol.Left(44);

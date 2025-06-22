@@ -130,7 +130,7 @@ namespace FireBirdTest {
 		                         &finnhubForexCandle66, &finnhubForexCandle67, &finnhubForexCandle68, &finnhubForexCandle69, &finnhubForexCandle70));
 
 	TEST_P(ParseFinnhubForexCandleTest, TestParseFinnhubForexCandle0) {
-		CString strMessage;
+		string strMessage;
 
 		m_pvDayLine = m_finnhubForexDayLine.ParseFinnhubForexCandle(m_pWebData);
 		switch (m_lIndex) {
@@ -140,7 +140,7 @@ namespace FireBirdTest {
 		case 2: // s项报告not ok
 			EXPECT_EQ(m_pvDayLine->size(), 0);
 			strMessage = _T("日线返回值不为ok");
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), strMessage);
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage().c_str(), strMessage.c_str());
 			break;
 		case 3: // s项报告 no data
 			EXPECT_EQ(m_pvDayLine->size(), 0);

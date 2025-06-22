@@ -104,7 +104,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(TengxunDayLineDataSource.Inquire()) << "查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("中国市场股票日线历史数据更新完毕"));
+		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("中国市场股票日线历史数据更新完毕"));
 		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
 
 		// 恢复原状

@@ -128,7 +128,7 @@ void CWorldMarket::ResetMarket() {
 	}
 
 	string s = _T("重置World Market于美东标准时间：") + GetStringOfMarketTime();
-	gl_systemMessage.PushInformationMessage(s.c_str());
+	gl_systemMessage.PushInformationMessage(s);
 
 	m_fResettingMarket = false;
 }
@@ -282,7 +282,7 @@ bool CWorldMarket::TaskUpdateTiingoIndustry() {
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
 				string s = fmt::format("Finnhub update Profile  Saving time: {:Ld}ms", (end - start).count());
-				gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
+				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 			TRACE("Finnhub update profile ended\n");
 		});
@@ -373,13 +373,14 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 							pSymbol->UpdateDayLineStartEndDate();
 							pSymbol->SetUpdateProfileDB(true);
 							pSymbol->UnloadDayLine();
-							const CString str = pSymbol->GetSymbol() + _T("日线资料存储完成");
+							string str = pSymbol->GetSymbol().GetString();
+							str += _T("日线资料存储完成");
 							gl_systemMessage.PushDayLineInfoMessage(str);
 						}
 						auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 						if ((end - start).count() > 2000) {
 							string s = fmt::format("FFinnhub Update forex dayLine  Saving time: {:Ld}ms", (end - start).count());
-							gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
+							gl_systemMessage.PushInnerSystemInformationMessage(s);
 						}
 						gl_UpdateWorldMarketDB.release();
 					});
@@ -389,7 +390,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 			}
 			else { // 此种情况为有股票代码，但此代码尚未上市
 				pSymbol->SetIPOStatus(_STOCK_NOT_YET_LIST_);
-				CString str1 = pSymbol->GetSymbol();
+				string str1 = pSymbol->GetSymbol().GetString();
 				str1 += _T(" 为未上市股票代码");
 				gl_systemMessage.PushDayLineInfoMessage(str1);
 			}
@@ -429,13 +430,14 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 							pSymbol->UpdateDayLineStartEndDate();
 							pSymbol->SetUpdateProfileDB(true);
 							pSymbol->UnloadDayLine();
-							const CString str2 = pSymbol->GetSymbol() + _T("日线资料存储完成");
+							string str2 = pSymbol->GetSymbol().GetString();
+							str2 += _T("日线资料存储完成");
 							gl_systemMessage.PushDayLineInfoMessage(str2);
 						}
 						auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 						if ((end - start).count() > 2000) {
 							string s = fmt::format("Finnhub update Crypto dayLine Saving time: {:Ld}ms", (end - start).count());
-							gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
+							gl_systemMessage.PushInnerSystemInformationMessage(s);
 						}
 						gl_UpdateWorldMarketDB.release();
 					});
@@ -450,7 +452,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 				}
 				else {// 此种情况为有股票代码，但此代码尚未上市
 					pSymbol->SetIPOStatus(_STOCK_NOT_YET_LIST_);
-					CString str1 = pSymbol->GetSymbol();
+					string str1 = pSymbol->GetSymbol().GetString();
 					str1 += _T(" 为未上市股票代码");
 					gl_systemMessage.PushDayLineInfoMessage(str1);
 				}
@@ -572,7 +574,7 @@ bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {
 	if (!IsSystemReady()) {
 		if (!gl_pFinnhubDataSource->IsUpdateSymbol() && !gl_pFinnhubDataSource->IsUpdateForexExchange() && !gl_pFinnhubDataSource->IsUpdateForexSymbol()
 			&& !gl_pFinnhubDataSource->IsUpdateCryptoExchange() && !gl_pFinnhubDataSource->IsUpdateCryptoSymbol()) {
-			const CString str = "世界市场初始化完毕";
+			const string str = "世界市场初始化完毕";
 			gl_systemMessage.PushInformationMessage(str);
 			SetSystemReady(true);
 		}
@@ -633,7 +635,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
 				string s = fmt::format("Finnhub insider transaction Saving time: {:Ld}ms", (end - start).count());
-				gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
+				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 			TRACE("finnhub Insider Transaction updated\n");
 		});
@@ -710,7 +712,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
 				string s = fmt::format("Tiingo stock Saving time: {:Ld}ms", (end - start).count());
-				gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
+				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 			TRACE("Tiingo stock profile updated\n");
 			gl_UpdateWorldMarketDB.release();
@@ -747,7 +749,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
 				string s = fmt::format("Tiingo Financial statement Saving time: {:Ld}ms", (end - start).count());
-				gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
+				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 			TRACE("Tiingo Financial State updated\n");
 			s_updatingTiingoFinancialState = true;
@@ -766,7 +768,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 			auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 			if ((end - start).count() > 2000) {
 				string s = fmt::format("Tiingo Stock dayLine Saving time: {:Ld}ms", (end - start).count());
-				gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
+				gl_systemMessage.PushInnerSystemInformationMessage(s);
 			}
 			TRACE("Tiingo stock DayLine updated\n");
 			gl_UpdateWorldMarketDB.release();
@@ -789,7 +791,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 				auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 				if ((end - start).count() > 2000) {
 					string s = fmt::format("Finnhub Profile  Saving time: {:Ld}ms", (end - start).count());
-					gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
+					gl_systemMessage.PushInnerSystemInformationMessage(s);
 				}
 				TRACE("Finnhub profile updated\n");
 				gl_UpdateWorldMarketDB.release();
@@ -990,8 +992,8 @@ void CWorldMarket::ProcessFinnhubWebSocketData() {
 	size_t iTotalDataSize = 0;
 	for (size_t i = 0; i < total; i++) {
 		const auto pString = gl_pFinnhubWebSocket->PopData();
-		CString strMessage = _T("Finnhub: ");
-		strMessage += pString->c_str();
+		string strMessage = _T("Finnhub: ");
+		strMessage += *pString;
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
 		gl_pFinnhubWebSocket->ParseFinnhubWebSocketData(pString);
@@ -1004,8 +1006,8 @@ void CWorldMarket::ProcessTiingoIEXWebSocketData() {
 	size_t iTotalDataSize = 0;
 	for (size_t i = 0; i < total; i++) {
 		const auto pString = gl_pTiingoIEXWebSocket->PopData();
-		CString strMessage = _T("Tiingo IEX: ");
-		strMessage += pString->c_str();
+		string strMessage = _T("Tiingo IEX: ");
+		strMessage += *pString;
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
 		gl_pTiingoIEXWebSocket->ParseTiingoIEXWebSocketData(pString);
@@ -1019,8 +1021,8 @@ void CWorldMarket::ProcessTiingoCryptoWebSocketData() {
 	size_t iTotalDataSize = 0;
 	for (size_t i = 0; i < total; i++) {
 		const auto pString = gl_pTiingoCryptoWebSocket->PopData();
-		CString strMessage = _T("Tiingo Crypto: ");
-		strMessage += pString->c_str();
+		string strMessage = _T("Tiingo Crypto: ");
+		strMessage += *pString;
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
 		gl_pTiingoCryptoWebSocket->ParseTiingoCryptoWebSocketData(pString);
@@ -1033,8 +1035,8 @@ void CWorldMarket::ProcessTiingoForexWebSocketData() {
 	size_t iTotalDataSize = 0;
 	for (size_t i = 0; i < total; i++) {
 		const auto pString = gl_pTiingoForexWebSocket->PopData();
-		CString strMessage = _T("Tiingo Forex: ");
-		strMessage += pString->c_str();
+		string strMessage = _T("Tiingo Forex: ");
+		strMessage += *pString;
 		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
 		iTotalDataSize += pString->size();
 		gl_pTiingoForexWebSocket->ParseTiingoForexWebSocketData(pString);

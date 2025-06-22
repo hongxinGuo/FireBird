@@ -82,13 +82,13 @@ public:
 	CSystemDeque();
 	virtual ~CSystemDeque();
 
-	void PushMessage(const CString& str);
-	CString PopMessage();
+	void PushMessage(const string& str);
+	string PopMessage();
 	size_t Size() const;
 
-	void Display(COutputList* pOutputList, const CString& strTime);
+	void Display(COutputList* pOutputList, const string& strTime);
 
-	virtual void SysCallOutputListAddString(COutputList* pOutputList, const CString& str);
+	virtual void SysCallOutputListAddString(COutputList* pOutputList, const string& str);
 
 protected:
 	ConcurrentQueue<string> m_queueMessage;
@@ -104,34 +104,34 @@ public:
 	CSystemMessage& operator=(const CSystemMessage&&) noexcept = delete;
 	~CSystemMessage();
 
-	void PushInformationMessage(const CString& str) { m_SystemInformation.PushMessage(str); }
-	CString PopInformationMessage() { return m_SystemInformation.PopMessage(); }
+	void PushInformationMessage(const string& str) { m_SystemInformation.PushMessage(str); }
+	string PopInformationMessage() { return m_SystemInformation.PopMessage(); }
 	size_t InformationSize() const { return m_SystemInformation.Size(); }
 
-	void DisplayInformation(COutputList* pOutputList, const CString& strTime) { m_SystemInformation.Display(pOutputList, strTime); }
+	void DisplayInformation(COutputList* pOutputList, const string& strTime) { m_SystemInformation.Display(pOutputList, strTime); }
 
-	void PushDayLineInfoMessage(const CString& str) { m_DayLineInformation.PushMessage(str); }
-	CString PopDayLineInfoMessage() { return m_DayLineInformation.PopMessage(); }
+	void PushDayLineInfoMessage(const string& s) { m_DayLineInformation.PushMessage(s); }
+	string PopDayLineInfoMessage() { return m_DayLineInformation.PopMessage(); }
 	size_t DayLineInfoSize() const { return m_DayLineInformation.Size(); }
 
-	void DisplayDayLineInfo(COutputList* pOutputList, const CString& strTime) { m_DayLineInformation.Display(pOutputList, strTime); }
+	void DisplayDayLineInfo(COutputList* pOutputList, const string& strTime) { m_DayLineInformation.Display(pOutputList, strTime); }
 
-	void PushWebSocketInfoMessage(const CString& str) { m_WebSocketInfo.PushMessage(str); }
-	CString PopWebSocketInfoMessage() { return m_WebSocketInfo.PopMessage(); }
+	void PushWebSocketInfoMessage(const string& str) { m_WebSocketInfo.PushMessage(str); }
+	string PopWebSocketInfoMessage() { return m_WebSocketInfo.PopMessage(); }
 	size_t WebSocketInfoSize() const { return m_WebSocketInfo.Size(); }
 
-	void DisplayWebSocketInfo(COutputList* pOutputList, const CString& strTime) { m_WebSocketInfo.Display(pOutputList, strTime); }
+	void DisplayWebSocketInfo(COutputList* pOutputList, const string& strTime) { m_WebSocketInfo.Display(pOutputList, strTime); }
 
-	void PushInnerSystemInformationMessage(const CString& str) { m_InnerSystemInformation.PushMessage(str); }
-	CString PopInnerSystemInformationMessage() { return m_InnerSystemInformation.PopMessage(); }
+	void PushInnerSystemInformationMessage(const string& str) { m_InnerSystemInformation.PushMessage(str); }
+	string PopInnerSystemInformationMessage() { return m_InnerSystemInformation.PopMessage(); }
 	size_t InnerSystemInfoSize() const { return m_InnerSystemInformation.Size(); }
 
-	void DisplayInnerSystemInformation(COutputList* pOutputList, const CString& strTime) { m_InnerSystemInformation.Display(pOutputList, strTime); }
+	void DisplayInnerSystemInformation(COutputList* pOutputList, const string& strTime) { m_InnerSystemInformation.Display(pOutputList, strTime); }
 
-	void PushErrorMessage(const CString& str) { m_ErrorMessage.PushMessage(str); }
-	CString PopErrorMessage() { return m_ErrorMessage.PopMessage(); }
+	void PushErrorMessage(const string& str) { m_ErrorMessage.PushMessage(str); }
+	string PopErrorMessage() { return m_ErrorMessage.PopMessage(); }
 	size_t ErrorMessageSize() const { return m_ErrorMessage.Size(); }
-	void DisplayErrorMessage(COutputList* pOutputList, const CString& strTime) { m_ErrorMessage.Display(pOutputList, strTime); }
+	void DisplayErrorMessage(COutputList* pOutputList, const string& strTime) { m_ErrorMessage.Display(pOutputList, strTime); }
 
 	int GetProcessedFinnhubWebSocket() const noexcept { return m_iProcessedFinnhubWebSocket; }
 	void SetProcessedFinnhubWebSocket(const int iValue) noexcept { m_iProcessedFinnhubWebSocket = iValue; }

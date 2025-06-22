@@ -19,7 +19,7 @@ void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg) {
 		break;
 	case ix::WebSocketMessageType::Error:
 		gl_pTiingoIEXWebSocket->SetError(true);
-		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason.c_str());
+		gl_systemMessage.PushErrorMessage(msg->errorInfo.reason);
 		break;
 	case ix::WebSocketMessageType::Open:
 		gl_systemMessage.PushWebSocketInfoMessage(_T("Tiingo IEX WebSocket Open"));
@@ -61,7 +61,7 @@ void CTiingoIEXWebSocket::Send(const vectorString& vSymbol) {
 	const string messageAuth(CreateMessage(vSymbol));
 	ix::WebSocketSendInfo info = m_webSocket.send(messageAuth);
 
-	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth.c_str());
+	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth);
 }
 
 void CTiingoIEXWebSocket::MonitorWebSocket(const vectorString& vSymbol) {

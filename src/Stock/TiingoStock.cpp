@@ -61,7 +61,10 @@ void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
 		|| (m_strSicSector.GetLength() > 100)
 		|| (m_strTiingoIndustry.GetLength() > 100)
 		|| (m_strTiingoSector.GetLength() > 100)) {
-		gl_systemMessage.PushErrorMessage(_T("Tiingo stock ") + m_strName + _T(" 字符串太长"));
+		string s = _T("Tiingo stock ");
+		s += m_strName;
+		s += _T(" 字符串太长");
+		gl_systemMessage.PushErrorMessage(s);
 	}
 	m_strName = m_strName.Left(200);
 	m_strSicIndustry = m_strSicIndustry.Left(100);
@@ -188,7 +191,8 @@ bool CTiingoStock::UpdateDayLineDB() {
 		SaveDayLineDB();
 		UpdateDayLineStartEndDate();
 		SetUpdateProfileDB(true);
-		const CString str = GetSymbol() + _T("日线资料存储完成");
+		string str = GetSymbol().GetString();
+		str += _T("日线资料存储完成");
 		gl_systemMessage.PushDayLineInfoMessage(str);
 		UnloadDayLine();
 		ASSERT(!IsUpdateDayLineDB());

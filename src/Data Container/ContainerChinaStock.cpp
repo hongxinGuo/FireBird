@@ -44,7 +44,6 @@ size_t CContainerChinaStock::GetActiveStockSize() const {
 long CContainerChinaStock::LoadStockProfileDB() {
 	CSetChinaStockSymbol setChinaStockSymbol;
 	char buffer[30]{ 0, 0, 0 };
-	CString str;
 	long lDayLineNeedCheck = 0;
 
 	setChinaStockSymbol.m_strSort = _T("[Symbol]");
@@ -69,7 +68,7 @@ long CContainerChinaStock::LoadStockProfileDB() {
 		lDayLineNeedCheck = GetDayLineNeedUpdateNumber();
 		if (gl_pChinaMarket->GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage(_T("每星期一复查退市股票日线"));
 		_itoa_s(lDayLineNeedCheck, buffer, 10);
-		str = buffer;
+		string str = buffer;
 		str += _T("个股票需要检查日线数据");
 		gl_systemMessage.PushInformationMessage(str);
 	}
@@ -329,7 +328,8 @@ bool CContainerChinaStock::TaskUpdateDayLineDB() {
 							const bool fDataSaved = pStock->SaveDayLineBasicInfo();
 							pStock->UpdateDayLineStartEndDate();
 							if (fDataSaved) {
-								const CString str = pStock->GetSymbol() + _T("日线资料存储完成");
+								string str = pStock->GetSymbol().GetString();
+								str += _T("日线资料存储完成");
 								gl_systemMessage.PushDayLineInfoMessage(str);
 							}
 							pStock->UnloadDayLine();// 为防止出现同步问题，卸载日线历史数据的任务也由本线程执行。
@@ -343,7 +343,7 @@ bool CContainerChinaStock::TaskUpdateDayLineDB() {
 			else {
 				// 此种情况为有股票代码，但此代码尚未上市
 				pStock->SetIPOStatus(_STOCK_NOT_YET_LIST_);
-				CString str1 = pStock->GetSymbol();
+				string str1 = pStock->GetSymbol().GetString();
 				str1 += _T(" 为未上市股票代码");
 				gl_systemMessage.PushDayLineInfoMessage(str1);
 			}
@@ -497,7 +497,7 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
 	string s = "开始处理" + ConvertDateToChineseTimeStampString(lCurrentTradeDay) + _T("的实时数据");
-	gl_systemMessage.PushInformationMessage(s.c_str());
+	gl_systemMessage.PushInformationMessage(s);
 
 	DeleteDayLineBasicInfo(lCurrentTradeDay);
 	DeleteDayLineExtendInfo(lCurrentTradeDay);
@@ -535,10 +535,10 @@ long CContainerChinaStock::BuildDayLine(long lCurrentTradeDay) {
 	setDayLineExtendInfo.Close();
 
 	s = ConvertDateToChineseTimeStampString(lCurrentTradeDay) + _T("的日线数据已生成");
-	gl_systemMessage.PushInformationMessage(s.c_str());
+	gl_systemMessage.PushInformationMessage(s);
 
 	s = fmt::format("今日处理了{:d}个股票", iCount);
-	gl_systemMessage.PushInformationMessage(s.c_str());
+	gl_systemMessage.PushInformationMessage(s);
 
 	return iCount;
 }

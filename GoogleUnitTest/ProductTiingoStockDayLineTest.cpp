@@ -189,7 +189,7 @@ namespace FireBirdTest {
 		case 11: // 股票没有日线数据
 			EXPECT_EQ(pvDayLine->size(), 0);
 			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1) << "函数报告错误信息";
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage(), _T("Tiingo stock dayLine Error:Ticker 'AAPL' not found"));
+			EXPECT_STREQ(gl_systemMessage.PopErrorMessage().c_str(), _T("Tiingo stock dayLine Error:Ticker 'AAPL' not found"));
 			break;
 		default:
 			break;

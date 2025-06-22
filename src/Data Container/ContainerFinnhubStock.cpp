@@ -100,7 +100,7 @@ bool CContainerFinnhubStock::LoadDB() {
 	ASSERT(lMaxSymbolLength < 20); // 目前WorldMarket数据库的股票代码长度限制为20个字符
 	string s = fmt::format("WorldMarket股票代码最长长度为{:Ld}", lMaxSymbolLength);
 #ifdef _DEBUG
-	gl_systemMessage.PushInnerSystemInformationMessage(s.c_str());
+	gl_systemMessage.PushInnerSystemInformationMessage(s);
 #endif
 
 	return true;

@@ -45,10 +45,10 @@ void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pStock->SetUpdateStockDailyMetaDate(gl_pWorldMarket->GetCurrentTradeDate());
 		}
 		else {
-			CString str = _T("Tiingo stock daily meta not match: ");
+			string str = _T("Tiingo stock daily meta not match: ");
 			str += pStock->GetSymbol() + _T("  ") + pStock2->GetSymbol();
 			gl_systemMessage.PushInnerSystemInformationMessage(str);
-			gl_warnLogger->warn("{}", str.GetBuffer());
+			gl_warnLogger->warn("{}", str);
 		}
 	}
 	pStock->SetUpdateStockDailyMeta(false);

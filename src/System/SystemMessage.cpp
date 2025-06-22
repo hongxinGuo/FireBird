@@ -264,27 +264,27 @@ void CSystemMessage::SetCurrentTiingoFunction(const CString& str) {
 	s_sReadCurrentTiingoFunction.release();
 }
 
-void CSystemDeque::Display(COutputList* pOutputList, const CString& strTime) {
+void CSystemDeque::Display(COutputList* pOutputList, const string& strTime) {
 	size_t lTotal = Size();
 	if (lTotal > pOutputList->GetLineNumber()) lTotal = pOutputList->GetLineNumber();
 	for (int i = 0; i < lTotal; i++) {
-		CString str2 = strTime + _T(": ") + PopMessage();
+		string str2 = strTime + _T(": ") + PopMessage();
 		SysCallOutputListAddString(pOutputList, str2);
 	}
 }
 
-void CSystemDeque::SysCallOutputListAddString(COutputList* pOutputList, const CString& str) {
-	pOutputList->AddString(str);
+void CSystemDeque::SysCallOutputListAddString(COutputList* pOutputList, const string& str) {
+	pOutputList->AddString(str.c_str());
 }
 
-void CSystemDeque::PushMessage(const CString& str) {
-	m_queueMessage.enqueue(str.GetString());
+void CSystemDeque::PushMessage(const string& str) {
+	m_queueMessage.enqueue(str);
 }
 
-CString CSystemDeque::PopMessage() {
+string CSystemDeque::PopMessage() {
 	string str;
 	if (m_queueMessage.try_dequeue(str)) {
-		return str.c_str();
+		return str;
 	}
 	else return _T("");
 }

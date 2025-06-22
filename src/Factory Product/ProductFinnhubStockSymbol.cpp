@@ -27,7 +27,11 @@ void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (!pvStock->empty()) {
 		const auto pStock = pvStock->at(0);
 		if (IsNeedAddExchangeCode(pStock->GetSymbol(), m_strInquiringExchange) && (m_strInquiringExchange.CompareNoCase(_T("US")) == 0)) {
-			gl_systemMessage.PushErrorMessage(_T("股票代码格式不符：") + pStock->GetSymbol() + _T("  ") + m_strInquiringExchange);
+			string s = _T("股票代码格式不符：");
+			s += pStock->GetSymbol();
+			s += _T("  ");
+			s += m_strInquiringExchange;
+			gl_systemMessage.PushErrorMessage(s);
 		}
 	}
 	for (const auto& pStock : *pvStock) {

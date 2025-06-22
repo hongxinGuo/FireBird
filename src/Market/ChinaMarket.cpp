@@ -76,7 +76,7 @@ CChinaMarket::~CChinaMarket() {
 void CChinaMarket::ResetMarket() {
 	m_fResettingMarket = true;
 	string s = _T("重置中国股市于北京标准时间：") + GetStringOfMarketTime();
-	gl_systemMessage.PushInformationMessage(s.c_str());
+	gl_systemMessage.PushInformationMessage(s);
 	gl_ProcessChinaMarketRTData.acquire();
 	while (gl_ThreadStatus.IsSavingThreadRunning()) { Sleep(1); }
 
@@ -387,7 +387,8 @@ void CChinaMarket::CreateStock(const CString& strStockCode, const CString& strSt
 	pStock->SetNeedProcessRTData(fProcessRTData);
 	gl_dataContainerChinaStock.Add(pStock);
 	ASSERT(pStock->IsUpdateDayLine());
-	const CString str = _T("china Market生成新代码") + pStock->GetSymbol();
+	string str = _T("china Market生成新代码");
+	str += pStock->GetSymbol();
 	gl_systemMessage.PushInnerSystemInformationMessage(str);
 }
 
@@ -486,7 +487,7 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const CString& str) co
 	const CString strNetease = str.Left(7);
 	CString strStockCode = XferNeteaseToStandard(strNetease);
 	if (!gl_dataContainerChinaStock.IsSymbol(strStockCode)) {
-		CString strReport = _T("网易日线查询股票代码错误：");
+		string strReport = _T("网易日线查询股票代码错误：");
 		TRACE(_T("网易日线查询股票代码错误：%s\n"), strStockCode.GetBuffer());
 		strReport += strStockCode;
 		gl_systemMessage.PushInnerSystemInformationMessage(strReport);
@@ -663,7 +664,7 @@ void CChinaMarket::TaskUpdateTempRTDB(long lCurrentTime) {
 		AddTask(CHINA_MARKET_SAVE_TEMP_RT_DATA__, lNextTime);
 	}
 	if (IsSystemReady()) {
-		const CString str = "存储临时数据";
+		const string str = "存储临时数据";
 		gl_systemMessage.PushDayLineInfoMessage(str);
 		gl_runtime.thread_executor()->post([] {
 			gl_UpdateChinaMarketDB.acquire();
@@ -843,7 +844,7 @@ void CChinaMarket::ProcessTodayStock() {
 		}
 	}
 	string s = ConvertDateToChineseTimeStampString(lDate) + _T("的实时数据处理完毕");
-	gl_systemMessage.PushInformationMessage(s.c_str());
+	gl_systemMessage.PushInformationMessage(s);
 }
 
 bool CChinaMarket::IsTaskOfSavingDayLineDBFinished() {
@@ -851,7 +852,7 @@ bool CChinaMarket::IsTaskOfSavingDayLineDBFinished() {
 	if (s_bTaskOfSavingDayLineFinished) {
 		if ((!gl_dataContainerChinaStock.IsUpdateDayLineDB()) && (!gl_dataContainerChinaStock.IsUpdateDayLine()) && (!IsDayLineNeedProcess())) {
 			s_bTaskOfSavingDayLineFinished = false;
-			const CString str = "中国市场日线历史数据更新完毕";
+			const string str = "中国市场日线历史数据更新完毕";
 			gl_systemMessage.PushInformationMessage(str);
 			if (gl_dataContainerChinaStock.IsDayLineDBUpdated()) { // 更新股票池数据库
 				gl_dataContainerChinaStock.ClearDayLineDBUpdatedFlag();
@@ -1191,7 +1192,7 @@ bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lD
 	if (setDayLineBasicInfo.IsEOF()) {
 		// 数据集为空，表明此日没有交易
 		setDayLineBasicInfo.Close();
-		CString str = sDate.c_str();
+		string str = sDate;
 		str += _T("日数据集为空，无需处理周线数据");
 		gl_systemMessage.PushDayLineInfoMessage(str); // 采用同步机制报告信息
 		return false;

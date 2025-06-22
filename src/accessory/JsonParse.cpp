@@ -93,11 +93,13 @@ void ReportJsonError(const json::parse_error& e, const std::string& s) {
 	}
 	buffer[i] = 0x000;
 	string s2 = fmt::format("Nlohmann JSon Reading Error {} {:Ld} {:Ld} {:d} {}", e.what(), s.size(), e.byte, i, buffer);
-	gl_systemMessage.PushErrorMessage(s2.c_str());
+	gl_systemMessage.PushErrorMessage(s2);
 }
 
 void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat) {
-	gl_systemMessage.PushErrorMessage(strPrefix + strWhat);
+	string s = strPrefix.GetString();
+	s += strWhat.GetString();
+	gl_systemMessage.PushErrorMessage(s);
 }
 
 void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat, const char* jsonData) {
@@ -423,7 +425,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		pWebRTData->SetTransactionTime(tpTime.time_since_epoch().count());
 	} catch (json::exception& e) {// 结构不完整
 		// do nothing
-		CString strError2 = strSymbol4;
+		string strError2 = strSymbol4.GetString();
 		strError2 += _T(" ");
 		strError2 += e.what();
 		gl_systemMessage.PushErrorMessage(strError2);
@@ -563,8 +565,8 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 		}
 	} catch (simdjson_error& error) {
 		const string sError = error.what();
-		CString str = "Netease RT Data Error: ";
-		str += sError.c_str();
+		string str = "Netease RT Data Error: ";
+		str += sError;
 		gl_systemMessage.PushErrorMessage(str);
 	}
 	return pvWebRTData;
