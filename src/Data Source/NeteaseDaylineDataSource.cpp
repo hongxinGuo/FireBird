@@ -48,8 +48,8 @@ void CNeteaseDayLineDataSource::CreateProduct() {
 	CString strParam = gl_dataContainerChinaStock.CreateNeteaseDayLineInquiringStr();
 	if (strParam.GetLength() > 0) {
 		char buffer2[200];
-		const CString strStockCode = XferNeteaseToStandard(strParam);
-		SetDownLoadingStockCode(strStockCode);
+		const string strStockCode = XferNeteaseToStandard(strParam).GetString();
+		SetDownLoadingStockCode(strStockCode.c_str());
 		gl_systemMessage.SetStockCodeForInquiryDayLine(strStockCode);
 		strParam += _T("");
 		string s = fmt::format("&start=19900101&end={:8Ld}", gl_pChinaMarket->GetMarketDate());

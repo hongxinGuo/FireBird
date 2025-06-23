@@ -160,7 +160,7 @@ CSystemDeque::~CSystemDeque() {}
 
 CSystemMessage::~CSystemMessage() = default;
 
-void CSystemMessage::SetStockCodeForInquiringRTData(const CString& strStockCode) {
+void CSystemMessage::SetStockCodeForInquiringRTData(const string& strStockCode) {
 	s_RTDataStockCode.acquire();
 	m_sStockCodeForInquiringRTData = strStockCode;
 	s_RTDataStockCode.release();
@@ -173,7 +173,7 @@ string CSystemMessage::GetStockCodeForInquiringRTData() const {
 	return s;
 }
 
-void CSystemMessage::SetStockCodeForInquiryDayLine(const CString& strStockCode) {
+void CSystemMessage::SetStockCodeForInquiryDayLine(const string& strStockCode) {
 	s_DayLineDataStockCode.acquire();
 	m_sStockCodeForInquiryDayLine = strStockCode;
 	s_DayLineDataStockCode.release();
@@ -245,7 +245,7 @@ string CSystemMessage::GetCurrentFinnhubFunction() const {
 	return str;
 }
 
-void CSystemMessage::SetCurrentFinnhubFunction(const CString& str) {
+void CSystemMessage::SetCurrentFinnhubFunction(const string& str) {
 	s_sReadCurrentFinnhubFunction.acquire();
 	m_sCurrentFinnhubFunction = str;
 	s_sReadCurrentFinnhubFunction.release();
@@ -258,7 +258,7 @@ string CSystemMessage::GetCurrentTiingoFunction() const {
 	return str;
 }
 
-void CSystemMessage::SetCurrentTiingoFunction(const CString& str) {
+void CSystemMessage::SetCurrentTiingoFunction(const string& str) {
 	s_sReadCurrentTiingoFunction.acquire();
 	m_sCurrentTiingoFunction = str;
 	s_sReadCurrentTiingoFunction.release();

@@ -146,10 +146,10 @@ public:
 	void SetProcessedTiingoForexWebSocket(const int iValue) noexcept { m_iProcessedTiingoForexWebSocket = iValue; }
 	void ClearProcessedTiingoForexWebSocket() noexcept { m_iProcessedTiingoForexWebSocket = 0; }
 
-	void SetStockCodeForInquiringRTData(const CString& strStockCode);
+	void SetStockCodeForInquiringRTData(const string& strStockCode);
 	string GetStockCodeForInquiringRTData() const;
 
-	void SetStockCodeForInquiryDayLine(const CString& strStockCode);
+	void SetStockCodeForInquiryDayLine(const string& strStockCode);
 	string GetStockCodeForInquiryDayLine() const;
 
 	void SetCurrentFinnhubWebSocketStake(const string& s);
@@ -166,9 +166,9 @@ public:
 	void IncreaseScheduleTaskTime(long lTime) noexcept { m_lScheduleTaskTime += lTime; }
 
 	string GetCurrentFinnhubFunction() const;
-	void SetCurrentFinnhubFunction(const CString& str);
+	void SetCurrentFinnhubFunction(const string& str);
 	string GetCurrentTiingoFunction() const;
-	void SetCurrentTiingoFunction(const CString& str);
+	void SetCurrentTiingoFunction(const string& str);
 
 	string GetChinaMarketSavingFunction() { return m_sChinaMarketSavingFunction; }
 	void SetChinaMarketSavingFunction(const string& str) { m_sChinaMarketSavingFunction = str; }

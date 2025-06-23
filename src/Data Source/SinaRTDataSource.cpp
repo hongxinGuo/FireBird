@@ -37,7 +37,7 @@ bool CSinaRTDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 	}
 	else if (GetCurrentInquiryTime() > 2000) {
 		SetCurrentInquiryTime(500);
-		m_PrevInquireTimePoint = llTickCount + 5000ms; // 如果响应时间超过1000ms，则等待5秒后再申请。
+		m_PrevInquireTimePoint = llTickCount + 3000ms; // 如果响应时间超过1000ms，则等待3秒后再申请。
 		return false;
 	}
 	else {

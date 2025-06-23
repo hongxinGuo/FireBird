@@ -179,7 +179,6 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		long long statusCode;
 		string error = js.at(_T("detail"));
 		int i;
-		CString s;
 		try {
 			m_eErrorMessageData = mapTiingoErrorMap.at(error);
 		} catch (exception&) {
@@ -350,7 +349,9 @@ bool CTiingoDataSource::GenerateStockDailyMeta() {
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(lCurrentUpdatePos);
 			StoreInquiry(p);
-			gl_systemMessage.SetCurrentTiingoFunction(_T("daily meta: ") + pTiingoStock->GetSymbol());
+			string s = _T("daily meta: ");
+			s += pTiingoStock->GetSymbol();
+			gl_systemMessage.SetCurrentTiingoFunction(s);
 			SetInquiring(true);
 		}
 		else {
@@ -402,7 +403,9 @@ bool CTiingoDataSource::GenerateDayLine() {
 			p->SetIndex(lCurrentUpdatePos);
 			StoreInquiry(p);
 			SetInquiring(true);
-			gl_systemMessage.SetCurrentTiingoFunction(_T("Day line: ") + pTiingoStock->GetSymbol());
+			string s = _T("Day line: ");
+			s += pTiingoStock->GetSymbol();
+			gl_systemMessage.SetCurrentTiingoFunction(s);
 		}
 		else {
 			gl_systemMessage.SetCurrentTiingoFunction(_T(""));
@@ -443,7 +446,9 @@ bool CTiingoDataSource::GenerateFinancialState() {
 			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
 			p->SetIndex(lCurrentUpdatePos);
 			StoreInquiry(p);
-			gl_systemMessage.SetCurrentTiingoFunction(_T("Financial statement: ") + pTiingoStock->GetSymbol());
+			string s = _T("Financial statement: ");
+			s += pTiingoStock->GetSymbol();
+			gl_systemMessage.SetCurrentTiingoFunction(s);
 			SetInquiring(true);
 		}
 		else {
