@@ -16,7 +16,7 @@ public:
 	void Load(const CSetInsiderSentiment& setInsiderTransaction);
 
 public:
-	CString m_strSymbol;
+	string m_strSymbol;
 	long m_lDate;
 	long m_lChange;
 	double m_mspr;

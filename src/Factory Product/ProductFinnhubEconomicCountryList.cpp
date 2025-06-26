@@ -28,7 +28,7 @@ void CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebDa
 	}
 }
 
-CCountrysPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const CWebDataPtr& pWebData) {
+CCountriesPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const CWebDataPtr& pWebData) {
 	auto pvCountry = make_shared<vector<CCountryPtr>>();
 	CCountryPtr pCountry = nullptr;
 	string s;
@@ -41,17 +41,17 @@ CCountrysPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const C
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pCountry = make_shared<CCountry>();
 			s = jsonGetString(it, _T("code2"));
-			if (!s.empty()) pCountry->m_strCode2 = s.c_str();
+			if (!s.empty()) pCountry->m_strCode2 = s;
 			s = jsonGetString(it,_T("code3"));
-			pCountry->m_strCode3 = s.c_str();
+			pCountry->m_strCode3 = s;
 			s = jsonGetString(it,_T("codeNo"));
-			pCountry->m_strCodeNo = s.c_str();
+			pCountry->m_strCodeNo = s;
 			s = jsonGetString(it,_T("country"));
-			pCountry->m_strCountry = s.c_str();
+			pCountry->m_strCountry = s;
 			s = jsonGetString(it,_T("currency"));
-			pCountry->m_strCurrency = s.c_str();
+			pCountry->m_strCurrency = s;
 			s = jsonGetString(it,_T("currencyCode"));
-			pCountry->m_strCurrencyCode = s.c_str();
+			pCountry->m_strCurrencyCode = s;
 			pvCountry->push_back(pCountry);
 		}
 	} catch (json::exception& e) {

@@ -32,8 +32,8 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTiingoCompanyFinancialStateTest, TestInicialize) {
-		EXPECT_STREQ(financialState.m_symbol, _T(""));
-		EXPECT_STREQ(financialState.m_exchange, _T(""));
+		EXPECT_STREQ(financialState.m_symbol.c_str(), _T(""));
+		EXPECT_STREQ(financialState.m_exchange.c_str(), _T(""));
 		EXPECT_DOUBLE_EQ(financialState.m_yearQuarter, 0);
 		EXPECT_DOUBLE_EQ(financialState.m_accoci, 0);
 		EXPECT_DOUBLE_EQ(financialState.m_acctPay, 0);
@@ -231,8 +231,8 @@ namespace FireBirdTest {
 		setNaicsIndustry2.m_pDatabase->CommitTrans();
 		setNaicsIndustry2.Close();
 
-		EXPECT_STREQ(financialState.m_symbol, _T("AAAAA"));
-		EXPECT_STREQ(financialState.m_exchange, _T("US"));
+		EXPECT_STREQ(financialState.m_symbol.c_str(), _T("AAAAA"));
+		EXPECT_STREQ(financialState.m_exchange.c_str(), _T("US"));
 		EXPECT_DOUBLE_EQ(financialState.m_yearQuarter, 202401);
 		EXPECT_DOUBLE_EQ(financialState.m_accoci, 1);
 		EXPECT_DOUBLE_EQ(financialState.m_acctPay, 2);

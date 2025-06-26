@@ -23,12 +23,12 @@ public:
 
 public:
 	long m_lId;
-	CString m_strTickers;
-	CString m_strTitle;
-	CString m_strTags;
-	CString m_strSource;
-	CString m_strDescription;
-	CString m_strUrl;
+	string m_strTickers;
+	string m_strTitle;
+	string m_strTags;
+	string m_strSource;
+	string m_strDescription;
+	string m_strUrl;
 	long long m_llCrawlDate;
 	long long m_LLPublishDate;
 	// 无需存储数据区

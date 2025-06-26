@@ -22,7 +22,7 @@ void CInsiderSentiment::Update(CSetInsiderSentiment& setInsiderSentiment) const 
 }
 
 void CInsiderSentiment::Save(CSetInsiderSentiment& setInsiderSentiment) const {
-	setInsiderSentiment.m_Symbol = m_strSymbol;
+	setInsiderSentiment.m_Symbol = m_strSymbol.c_str();
 	setInsiderSentiment.m_Date = m_lDate;
 	setInsiderSentiment.m_Change = m_lChange;
 	setInsiderSentiment.m_mspr = m_mspr;

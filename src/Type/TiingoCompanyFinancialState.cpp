@@ -193,8 +193,8 @@ void CTiingoCompanyFinancialState::Append(CSetTiingoCompanyFinancialState& setTi
 }
 
 void CTiingoCompanyFinancialState::Save(CSetTiingoCompanyFinancialState& setTiingoFinancialState) const {
-	setTiingoFinancialState.m_symbol = m_symbol;
-	setTiingoFinancialState.m_exchange = m_exchange;
+	setTiingoFinancialState.m_symbol = m_symbol.c_str();
+	setTiingoFinancialState.m_exchange = m_exchange.c_str();
 	setTiingoFinancialState.m_yearQuarter = m_yearQuarter;
 	setTiingoFinancialState.m_accoci = ConvertValueToString(m_accoci);
 	setTiingoFinancialState.m_acctPay = ConvertValueToString(m_acctPay);

@@ -35,7 +35,7 @@ CChinaMarket::CChinaMarket() {
 		TRACE(_T("ChinaMarket市场变量只允许存在一个实例\n"));
 	}
 	m_strMarketId = _T("SS");
-	m_exchange = gl_dataContainerStockExchange.GetExchange(m_strMarketId);
+	m_exchange = gl_dataContainerStockExchange.GetExchange(m_strMarketId.GetString());
 	ASSERT(m_exchange != nullptr);
 	m_strLocalMarketTimeZone = _T("Asia/Shanghai");
 	GetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 北京标准时间位于东八区， 中国股市开市时间为九点十五分

@@ -33,11 +33,11 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoFundamentalDefinitionTest, TestInitialize) {
 		const CTiingoFundamentalDefinition TiingoFundamentalDefinition;
-		EXPECT_STREQ(TiingoFundamentalDefinition.m_strDataCode, _T(""));
-		EXPECT_STREQ(TiingoFundamentalDefinition.m_strName, _T(""));
-		EXPECT_STREQ(TiingoFundamentalDefinition.m_strDescription, _T(""));
-		EXPECT_STREQ(TiingoFundamentalDefinition.m_strStatementType, _T(""));
-		EXPECT_STREQ(TiingoFundamentalDefinition.m_strUnits, _T(""));
+		EXPECT_STREQ(TiingoFundamentalDefinition.m_strDataCode.c_str(), _T(""));
+		EXPECT_STREQ(TiingoFundamentalDefinition.m_strName.c_str(), _T(""));
+		EXPECT_STREQ(TiingoFundamentalDefinition.m_strDescription.c_str(), _T(""));
+		EXPECT_STREQ(TiingoFundamentalDefinition.m_strStatementType.c_str(), _T(""));
+		EXPECT_STREQ(TiingoFundamentalDefinition.m_strUnits.c_str(), _T(""));
 	}
 
 	TEST_F(CTiingoFundamentalDefinitionTest, TestAppend) {
@@ -62,11 +62,11 @@ namespace FireBirdTest {
 		setTiingoFundamentalDefinition2.m_pDatabase->BeginTrans();
 		EXPECT_TRUE(!setTiingoFundamentalDefinition2.IsEOF()) << "此时已经存入了AA";
 		fundamentalDefinition.Load(setTiingoFundamentalDefinition2);
-		EXPECT_STREQ(fundamentalDefinition.m_strDataCode, _T("aaa"));
-		EXPECT_STREQ(fundamentalDefinition.m_strName, _T("don't reply"));
-		EXPECT_STREQ(fundamentalDefinition.m_strDescription, _T("no description"));
-		EXPECT_STREQ(fundamentalDefinition.m_strStatementType, _T("abdc"));
-		EXPECT_STREQ(fundamentalDefinition.m_strUnits, _T("$"));
+		EXPECT_STREQ(fundamentalDefinition.m_strDataCode.c_str(), _T("aaa"));
+		EXPECT_STREQ(fundamentalDefinition.m_strName.c_str(), _T("don't reply"));
+		EXPECT_STREQ(fundamentalDefinition.m_strDescription.c_str(), _T("no description"));
+		EXPECT_STREQ(fundamentalDefinition.m_strStatementType.c_str(), _T("abdc"));
+		EXPECT_STREQ(fundamentalDefinition.m_strUnits.c_str(), _T("$"));
 		setTiingoFundamentalDefinition2.Delete();
 		setTiingoFundamentalDefinition2.m_pDatabase->CommitTrans();
 		setTiingoFundamentalDefinition2.Close();

@@ -93,7 +93,10 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 			pvInsiderSentiment->push_back(pInsiderSentiment);
 		}
 	} catch (json::exception& e) {
-		ReportJSonErrorToSystemMessage(_T("Finnhub Stock ") + pInsiderSentiment->m_strSymbol + _T(" Insider Sentiment "), e.what());
+		CString str = _T("Finnhub Stock ");
+		str += pInsiderSentiment->m_strSymbol.c_str();
+		str += _T(" Insider Sentiment ");
+		ReportJSonErrorToSystemMessage(str, e.what());
 		return pvInsiderSentiment;
 	}
 	std::ranges::sort(pvInsiderSentiment->begin(), pvInsiderSentiment->end(),

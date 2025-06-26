@@ -15,13 +15,13 @@ public:
 	~CMarketStatus() = default;
 
 public:
-	CString m_strExchange;
-	CString m_strHoliday;
+	string m_strExchange;
+	string m_strHoliday;
 	bool m_bOpen;
-	CString m_strSession;
-	CString m_strTimeZone;
+	string m_strSession;
+	string m_strTimeZone;
 	time_t m_tt;
 };
 
 using CMarketStatusPtr = shared_ptr<CMarketStatus>;
-using CMarketStatussPtr = shared_ptr<vector<CMarketStatusPtr>>;
+using CMarketStatusesPtr = shared_ptr<vector<CMarketStatusPtr>>;

@@ -16,8 +16,8 @@ CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
 CString CProductFinnhubMarketHoliday::CreateMessage() {
 	const auto strParam = gl_dataContainerStockExchange.GetExchangeCode(m_lIndex);
 
-	m_strInquiringExchange = strParam;
-	m_strInquiry = m_strInquiryFunction + strParam;
+	m_strInquiringExchange = strParam.c_str();
+	m_strInquiry = m_strInquiryFunction + strParam.c_str();
 	return m_strInquiry;
 }
 
@@ -55,16 +55,16 @@ CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const
 	auto pvHoliday = make_shared<vector<CMarketHolidayPtr>>();
 	CMarketHolidayPtr pHoliday = nullptr;
 	string s, sError;
-	CString sExchange, sTimeZone;
+	string sExchange, sTimeZone;
 	json js;
 
 	if (!pWebData->CreateJson(js)) return pvHoliday;
 	if (!IsValidData(pWebData)) return pvHoliday;
 
 	s = jsonGetString(js, _T("exchange"));
-	if (!s.empty()) sExchange = s.c_str();
+	if (!s.empty()) sExchange = s;
 	s = jsonGetString(js, _T("timezone"));
-	if (!s.c_str()) sTimeZone = s.c_str();
+	if (!s.c_str()) sTimeZone = s;
 	auto js1 = jsonGetChild(js, _T("data"));
 	try {
 		for (auto it = js1.begin(); it != js1.end(); ++it) {
@@ -74,7 +74,7 @@ CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const
 			s = jsonGetString(it, _T("atDate"));
 			pHoliday->m_lDate = XferToYYYYMMDD(s);
 			s = jsonGetString(it, _T("tradingHour"));
-			pHoliday->m_strTradingHour = s.c_str();
+			pHoliday->m_strTradingHour = s;
 			pHoliday->m_strExchange = sExchange;
 			pHoliday->m_strTimeZone = sTimeZone;
 			pvHoliday->push_back(pHoliday);

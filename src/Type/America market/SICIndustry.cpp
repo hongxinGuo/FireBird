@@ -13,8 +13,8 @@ CSICIndustry::CSICIndustry() {
 void CSICIndustry::Append(CSetSICIndustry& setSICIndustry) const {
 	setSICIndustry.AddNew();
 	setSICIndustry.m_Code = m_lCode;
-	setSICIndustry.m_Industry = m_strIndustry;
-	setSICIndustry.m_Sector = m_strSector;
+	setSICIndustry.m_Industry = m_strIndustry.c_str();
+	setSICIndustry.m_Sector = m_strSector.c_str();
 	setSICIndustry.Update();
 }
 

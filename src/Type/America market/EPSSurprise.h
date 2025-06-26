@@ -13,7 +13,7 @@ public:
 	void Load(const CSetEPSSurprise& setEPSSurprise);
 
 public:
-	CString m_strSymbol;
+	string m_strSymbol;
 	long m_lDate;
 	double m_dActual;
 	double m_dEstimate;

@@ -45,8 +45,8 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	TRACE("Tiingo IEX TopOfBook number: %d\n", pvTiingoIEXTopOFBook->size());
 	for (const auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {
 		if (pIEXTopOFBook->m_timeStamp.time_since_epoch().count() < ttNewestTradeDay) continue; // 只使用不早于一天的实时数据
-		if (!gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker)) continue; // 只更新已有代码
-		auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker);
+		if (!gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker.c_str())) continue; // 只更新已有代码
+		auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker.c_str());
 		pTiingoStock->UpdateRTData(pIEXTopOFBook);
 		i++;
 	}
@@ -123,7 +123,7 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 			pIEXLastTopOFBook = nullptr;
 			pIEXLastTopOFBook = make_shared<CTiingoIEXTopOfBook>();
 			s1 = jsonGetStringView(itemValue, _T("ticker"));
-			pIEXLastTopOFBook->m_strTicker = s1.c_str();
+			pIEXLastTopOFBook->m_strTicker = s1;
 			s1 = jsonGetStringView(itemValue, _T("timestamp"));
 			ss.clear();
 			ss.str(s1);

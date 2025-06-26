@@ -285,7 +285,7 @@ namespace FireBirdTest {
 			break;
 		case 2: // 正确
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 2);
-			EXPECT_STREQ(m_pvInsiderSentiment->at(1)->m_strSymbol, _T("TSLA")) << "数据按日期排列，此第一条排到了第二位";
+			EXPECT_STREQ(m_pvInsiderSentiment->at(1)->m_strSymbol.c_str(), _T("TSLA")) << "数据按日期排列，此第一条排到了第二位";
 			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_lDate, 20220301) << "使用有效日期：每月的第一天，故而要加一";
 			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_lChange, 5540);
 			EXPECT_DOUBLE_EQ(m_pvInsiderSentiment->at(1)->m_mspr, 12.209097);

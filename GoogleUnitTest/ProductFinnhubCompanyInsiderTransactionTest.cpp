@@ -195,8 +195,8 @@ namespace FireBirdTest {
 			break;
 		case 3: // 正确
 			EXPECT_EQ(m_pvInsiderTransaction->size(), 2);
-			EXPECT_STREQ(m_pvInsiderTransaction->at(1)->m_strPersonName, _T("Long Brady K")) << "数据按日期排列，此第一条排到了第二位";
-			EXPECT_STREQ(m_pvInsiderTransaction->at(1)->m_strSymbol, _T("RIG"));
+			EXPECT_STREQ(m_pvInsiderTransaction->at(1)->m_strPersonName.c_str(), _T("Long Brady K")) << "数据按日期排列，此第一条排到了第二位";
+			EXPECT_STREQ(m_pvInsiderTransaction->at(1)->m_strSymbol.c_str(), _T("RIG"));
 			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lShare, 269036);
 			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lChange, -14236);
 			EXPECT_EQ(m_pvInsiderTransaction->at(1)->m_lFilingDate, 20210303);

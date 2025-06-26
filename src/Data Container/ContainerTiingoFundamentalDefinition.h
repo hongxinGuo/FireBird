@@ -15,14 +15,14 @@ public:
 
 	void Add(const CTiingoFundamentalDefinitionPtr& pTiingoFundamentalDefinition);
 	bool Delete(const CTiingoFundamentalDefinitionPtr& pTiingoFundamentalDefinition);
-	bool Delete(const CString& strDataCode);
+	bool Delete(const string& strDataCode);
 	size_t GetTotalDefinition() const noexcept { return m_vTiingoFundamentalDefinition.size(); }
 
-	bool HaveDefinition(const CString& strDataCode) const noexcept { return m_mapTiingoFundamentalDefinition.contains(strDataCode); }
+	bool HaveDefinition(const string& strDataCode) const noexcept { return m_mapTiingoFundamentalDefinition.contains(strDataCode); }
 	bool HaveDefinition(const CTiingoFundamentalDefinitionPtr& pDefinition) const { return HaveDefinition(pDefinition->m_strDataCode); }
 
 	CTiingoFundamentalDefinitionPtr GetFundamentalDefinition(const size_t lIndex) const { return m_vTiingoFundamentalDefinition.at(lIndex); }
-	CTiingoFundamentalDefinitionPtr GetFundamentalDefinition(const CString& strDataCode) const { return m_vTiingoFundamentalDefinition.at(m_mapTiingoFundamentalDefinition.at(strDataCode)); }
+	CTiingoFundamentalDefinitionPtr GetFundamentalDefinition(const string& strDataCode) const { return m_vTiingoFundamentalDefinition.at(m_mapTiingoFundamentalDefinition.at(strDataCode)); }
 
 	bool UpdateDB();
 	bool LoadDB();
@@ -32,7 +32,7 @@ public:
 
 protected:
 	vector<CTiingoFundamentalDefinitionPtr> m_vTiingoFundamentalDefinition;
-	map<CString, size_t> m_mapTiingoFundamentalDefinition;
+	map<string, size_t> m_mapTiingoFundamentalDefinition;
 
 	bool m_fUpdated{ false };
 };

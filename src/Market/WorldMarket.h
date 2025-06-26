@@ -97,7 +97,7 @@ public:
 	void UpdateFinnhubStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr& pTiingoIEXbData);
 	void UpdateFinnhubStockFromFinnhubSocket(const CFinnhubSocketPtr& pFinnhub);
 
-	void UpdateMarketStatus(const CMarketStatussPtr& pv) const;
+	void UpdateMarketStatus(const CMarketStatusesPtr& pv) const;
 	void UpdateMarketHoliday(const CMarketHolidaysPtr& pv) const;
 
 	static void DeleteTiingoDelistedStock();
@@ -117,7 +117,7 @@ protected:
 	long m_lCurrentUpdateDayLinePos{ 0 }; // 由于更新一次日线数据超过24小时，故而将此计数器声明为类变量，且无需每日重置。
 	long m_lCurrentUpdateEPSSurprisePos{ 0 }; // 此变量无需每日更新
 
-	CMarketStatussPtr m_pvMarketStatus;
+	CMarketStatusesPtr m_pvMarketStatus;
 	CMarketHolidaysPtr m_pvMarketHoliday;
 
 	bool m_bFinnhubWebSiteAccessible{ true }; // 由于finnhub.io不时被墙，故而需要此标识。

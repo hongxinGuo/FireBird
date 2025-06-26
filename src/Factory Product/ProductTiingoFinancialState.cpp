@@ -162,8 +162,8 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialState(const CWebDataPtr& pWebData) {
 	auto pvTiingoFinancialState = make_shared<vector<CTiingoCompanyFinancialStatePtr>>();
 	CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
-	CString symbol = pStock->GetSymbol();
-	CString exchange = _T("US");
+	string symbol = pStock->GetSymbol().GetString();
+	string exchange = _T("US");
 	string s1;
 	CString strNumber;
 

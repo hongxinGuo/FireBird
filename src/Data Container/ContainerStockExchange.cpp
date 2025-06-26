@@ -18,10 +18,10 @@ void CContainerStockExchange::Reset() {
 	m_mapStockExchange.clear();
 }
 
-CStockExchangePtr CContainerStockExchange::GetExchange(const CString& strExchangeSymbol) const {
+CStockExchangePtr CContainerStockExchange::GetExchange(const string& strExchangeSymbol) const {
 	if (m_mapStockExchange.contains(strExchangeSymbol)) {
 		for (auto pExchange : m_vStockExchange) {
-			if (pExchange->m_strCode.Compare(strExchangeSymbol) == 0) {
+			if (pExchange->m_strCode.compare(strExchangeSymbol) == 0) {
 				return pExchange;
 			}
 		}

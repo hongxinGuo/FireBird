@@ -17,8 +17,8 @@ public:
 
 public:
 	long m_lCode;
-	CString m_strIndustry;
-	CString m_strSector;
+	string m_strIndustry;
+	string m_strSector;
 
 	bool m_fUpdated;
 };

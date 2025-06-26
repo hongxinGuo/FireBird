@@ -11,7 +11,7 @@ CEPSSurprise::CEPSSurprise() {
 
 void CEPSSurprise::Append(CSetEPSSurprise& setEPSSurprise) const {
 	setEPSSurprise.AddNew();
-	setEPSSurprise.m_Symbol = m_strSymbol;
+	setEPSSurprise.m_Symbol = m_strSymbol.c_str();
 	setEPSSurprise.m_Date = m_lDate;
 	setEPSSurprise.m_Actual = m_dActual;
 	setEPSSurprise.m_Estimate = m_dEstimate;

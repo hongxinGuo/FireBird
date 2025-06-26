@@ -8,29 +8,33 @@ namespace FireBirdTest {
 	class CEconomicCalendarTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
 	TEST_F(CEconomicCalendarTest, TestInitialize) {
 		const CEconomicCalendar EconomicCalendar;
-		EXPECT_STREQ(EconomicCalendar.m_strCountry, _T(" "));
-		EXPECT_STREQ(EconomicCalendar.m_strEvent, _T(" "));
-		EXPECT_STREQ(EconomicCalendar.m_strImpact, _T(" "));
-		EXPECT_STREQ(EconomicCalendar.m_strUnit, _T(" "));
+		EXPECT_STREQ(EconomicCalendar.m_strCountry.c_str(), _T(" "));
+		EXPECT_STREQ(EconomicCalendar.m_strEvent.c_str(), _T(" "));
+		EXPECT_STREQ(EconomicCalendar.m_strImpact.c_str(), _T(" "));
+		EXPECT_STREQ(EconomicCalendar.m_strUnit.c_str(), _T(" "));
 		EXPECT_DOUBLE_EQ(EconomicCalendar.m_dActual, 0.0);
 		EXPECT_DOUBLE_EQ(EconomicCalendar.m_dEstimate, 0.0);
 		EXPECT_DOUBLE_EQ(EconomicCalendar.m_dPrev, 0.0);
@@ -60,11 +64,11 @@ namespace FireBirdTest {
 		setEconomicCalendar2.Open();
 		EXPECT_TRUE(!setEconomicCalendar2.IsEOF()) << "此时已经存入了Abcdefghighlmnop";
 		EconomicCalendar2.Load(setEconomicCalendar2);
-		EXPECT_STREQ(EconomicCalendar2.m_strCountry, _T("US"));
-		EXPECT_STREQ(EconomicCalendar2.m_strEvent, _T("Abcdefghighlmnop"));
-		EXPECT_STREQ(EconomicCalendar2.m_strImpact, _T("High"));
-		EXPECT_STREQ(EconomicCalendar2.m_strTime, _T("20202020"));
-		EXPECT_STREQ(EconomicCalendar2.m_strUnit, _T("Doller"));
+		EXPECT_STREQ(EconomicCalendar2.m_strCountry.c_str(), _T("US"));
+		EXPECT_STREQ(EconomicCalendar2.m_strEvent.c_str(), _T("Abcdefghighlmnop"));
+		EXPECT_STREQ(EconomicCalendar2.m_strImpact.c_str(), _T("High"));
+		EXPECT_STREQ(EconomicCalendar2.m_strTime.c_str(), _T("20202020"));
+		EXPECT_STREQ(EconomicCalendar2.m_strUnit.c_str(), _T("Doller"));
 		EXPECT_DOUBLE_EQ(EconomicCalendar2.m_dActual, 1.2);
 		EXPECT_DOUBLE_EQ(EconomicCalendar2.m_dEstimate, 1.1);
 		EXPECT_DOUBLE_EQ(EconomicCalendar2.m_dPrev, 1.0);

@@ -190,16 +190,16 @@ namespace FireBirdTest {
 		auto pDailyMeta = m_tiingoStockProduct.ParseTiingoStockDailyMeta(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对
-			EXPECT_STREQ(pDailyMeta->m_strCode, _T("AAPL"));
-			EXPECT_STREQ(pDailyMeta->m_strName, _T("Apple Inc"));
-			EXPECT_STREQ(pDailyMeta->m_strExchange, _T("NASDAQ"));
+			EXPECT_STREQ(pDailyMeta->m_strCode.c_str(), _T("AAPL"));
+			EXPECT_STREQ(pDailyMeta->m_strName.c_str(), _T("Apple Inc"));
+			EXPECT_STREQ(pDailyMeta->m_strExchange.c_str(), _T("NASDAQ"));
 			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineStartDate, 19801212);
 			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineEndDate, 20190125);
 			break;
 		case 2: // 日期皆为空null
-			EXPECT_STREQ(pDailyMeta->m_strCode, _T("AAPL"));
-			EXPECT_STREQ(pDailyMeta->m_strName, _T("Apple Inc"));
-			EXPECT_STREQ(pDailyMeta->m_strExchange, _T("NASDAQ"));
+			EXPECT_STREQ(pDailyMeta->m_strCode.c_str(), _T("AAPL"));
+			EXPECT_STREQ(pDailyMeta->m_strName.c_str(), _T("Apple Inc"));
+			EXPECT_STREQ(pDailyMeta->m_strExchange.c_str(), _T("NASDAQ"));
 			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineStartDate, 19000101);
 			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineEndDate, 19000101);
 			break;
@@ -208,9 +208,9 @@ namespace FireBirdTest {
 		case 4:
 			break;
 		case 10:
-			EXPECT_STREQ(pDailyMeta->m_strCode, _T("AAPL"));
-			EXPECT_STREQ(pDailyMeta->m_strName, _T("Apple Inc"));
-			EXPECT_STREQ(pDailyMeta->m_strExchange, _T("NASDAQ"));
+			EXPECT_STREQ(pDailyMeta->m_strCode.c_str(), _T("AAPL"));
+			EXPECT_STREQ(pDailyMeta->m_strName.c_str(), _T("Apple Inc"));
+			EXPECT_STREQ(pDailyMeta->m_strExchange.c_str(), _T("NASDAQ"));
 			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineStartDate, 19801212);
 			EXPECT_EQ(pDailyMeta->m_lHistoryDayLineEndDate, 20190125);
 		// 恢复原状

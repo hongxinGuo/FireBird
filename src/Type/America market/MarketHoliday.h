@@ -14,11 +14,11 @@ public:
 	~CMarketHoliday() = default;
 
 public:
-	CString m_strExchange;
-	CString m_strEventName;
+	string m_strExchange;
+	string m_strEventName;
 	long m_lDate;
-	CString m_strTradingHour;
-	CString m_strTimeZone;
+	string m_strTradingHour;
+	string m_strTimeZone;
 };
 
 using CMarketHolidayPtr = shared_ptr<CMarketHoliday>;

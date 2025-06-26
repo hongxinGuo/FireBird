@@ -14,7 +14,7 @@ public:
 	~CTiingoIEXTopOfBook() = default;
 
 public:
-	CString m_strTicker{ _T("") };
+	string m_strTicker{ _T("") };
 	chrono::sys_seconds m_timeStamp;
 	chrono::sys_seconds m_lastSale;
 	chrono::sys_seconds m_quote;

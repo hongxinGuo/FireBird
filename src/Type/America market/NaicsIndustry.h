@@ -17,10 +17,10 @@ public:
 	bool IsUpdated() const noexcept { return m_fUpdated; }
 
 public:
-	CString m_strNaics;
-	CString m_strNationalIndustry;
-	CString m_strSector;
-	CString m_strSubSector;
+	string m_strNaics;
+	string m_strNationalIndustry;
+	string m_strSector;
+	string m_strSubSector;
 
 	bool m_fUpdated;
 };

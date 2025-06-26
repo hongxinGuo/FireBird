@@ -86,18 +86,18 @@ CVectorTiingoMarketNewsPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const
 			auto itemValue = item.value();
 			pMarketNews = make_shared<CTiingoMarketNews>();
 			s1 = jsonGetStringView(itemValue, _T("source"));
-			pMarketNews->m_strSource = s1.c_str();
+			pMarketNews->m_strSource = s1;
 			s1 = jsonGetStringView(itemValue, _T("crawlDate"));
 			sscanf_s(s1.c_str(), _T("%04i-%02i-%02iT%02i:%02i:%02i.%fZ"), &year, &month, &day, &hour, &minute, &second, &f);
 			pMarketNews->m_llCrawlDate = static_cast<INT64>(year) * 10000000000 + month * 100000000 + day * 1000000 + hour * 10000 + minute * 100 + second;
 			s1 = jsonGetStringView(itemValue, _T("description"));
-			pMarketNews->m_strDescription = s1.c_str();
+			pMarketNews->m_strDescription = s1;
 			s1 = jsonGetStringView(itemValue, _T("url"));
-			pMarketNews->m_strUrl = s1.c_str();
+			pMarketNews->m_strUrl = s1;
 			long l = jsonGetInt64(itemValue, _T("id"));
 			pMarketNews->m_lId = l;
 			s1 = jsonGetStringView(itemValue, _T("title"));
-			pMarketNews->m_strTitle = s1.c_str();
+			pMarketNews->m_strTitle = s1;
 			s1 = jsonGetStringView(itemValue, _T("publishedDate"));
 			sscanf_s(s1.c_str(), _T("%04i-%02i-%02iT%02i:%02i:%02iZ"), &year, &month, &day, &hour, &minute, &second);
 			pMarketNews->m_LLPublishDate = static_cast<INT64>(year) * 10000000000 + month * 100000000 + day * 1000000 + hour * 10000 + minute * 100 + second;
@@ -106,13 +106,13 @@ CVectorTiingoMarketNewsPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const
 			for (auto value : itemValue[_T("tickers")]) {
 				auto s2 = value.get_string().value();
 				string s4(s2.data(), s2.length());
-				pMarketNews->m_strTickers = s4.c_str();
+				pMarketNews->m_strTickers = s4;
 				break; // 只存储第一个证券代码
 			}
 			auto array = jsonGetArray(itemValue, _T("tags"));
 			auto s = array.raw_json().value();
 			string sTemp(s.data(), s.length());
-			pMarketNews->m_strTags = sTemp.c_str();
+			pMarketNews->m_strTags = sTemp;
 
 			pvTiingoMarketNews->push_back(pMarketNews);
 			iCount++;

@@ -22,8 +22,8 @@ public:
 	void Assign(int index, double fValue);
 
 public:
-	CString m_symbol{ _T("") };
-	CString m_exchange{ _T("") };
+	string m_symbol{ _T("") };
+	string m_exchange{ _T("") };
 	int m_yearQuarter{ 0 };
 	double m_accoci{ 0 };
 	double m_acctPay{ 0 };

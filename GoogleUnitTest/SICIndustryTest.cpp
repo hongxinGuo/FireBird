@@ -8,28 +8,32 @@ namespace FireBirdTest {
 	class CSICIndustryTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() { // 本测试类的初始化函数
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		static void TearDownTestSuite() {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void SetUp() override {
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 
 		void TearDown() override {
 			// clearUp
-			SCOPED_TRACE(""); GeneralCheck();
+			SCOPED_TRACE("");
+			GeneralCheck();
 		}
 	};
 
 	TEST_F(CSICIndustryTest, TestInitialize) {
 		const CSICIndustry SICIndustry;
 		EXPECT_EQ(SICIndustry.m_lCode, 0);
-		EXPECT_STREQ(SICIndustry.m_strIndustry, _T(" "));
-		EXPECT_STREQ(SICIndustry.m_strSector, _T(" "));
+		EXPECT_STREQ(SICIndustry.m_strIndustry.c_str(), _T(" "));
+		EXPECT_STREQ(SICIndustry.m_strSector.c_str(), _T(" "));
 		EXPECT_FALSE(SICIndustry.m_fUpdated);
 	}
 
@@ -63,8 +67,8 @@ namespace FireBirdTest {
 		EXPECT_TRUE(!setSICIndustry2.IsEOF()) << "此时已经存入了AA";
 		SICIndustry2.Load(setSICIndustry2);
 		EXPECT_EQ(SICIndustry.m_lCode, 1234);
-		EXPECT_STREQ(SICIndustry.m_strIndustry, _T("aaa"));
-		EXPECT_STREQ(SICIndustry.m_strSector, _T("abdc"));
+		EXPECT_STREQ(SICIndustry.m_strIndustry.c_str(), _T("aaa"));
+		EXPECT_STREQ(SICIndustry.m_strSector.c_str(), _T("abdc"));
 		EXPECT_TRUE(SICIndustry.m_fUpdated);
 		setSICIndustry2.Delete();
 		setSICIndustry2.m_pDatabase->CommitTrans();

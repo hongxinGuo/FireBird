@@ -16,11 +16,11 @@ public:
 	bool IsUpdated() const noexcept { return m_fUpdated; }
 
 public:
-	CString m_strIndustry;
-	CString m_strSector;
+	string m_strIndustry;
+	string m_strSector;
 
 	bool m_fUpdated;
 };
 
 using CTiingoIndustryPtr = shared_ptr<CTiingoIndustry>;
-using CTiingoIndustrysPtr = shared_ptr<vector<CTiingoIndustryPtr>>;
+using CTiingoIndustriesPtr = shared_ptr<vector<CTiingoIndustryPtr>>;

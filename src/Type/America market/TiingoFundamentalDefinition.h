@@ -24,11 +24,11 @@ public:
 	void Save(CSetTiingoFundamentalDefinition& setTiingoFundamentalDefinition);
 
 public:
-	CString m_strDataCode{ _T("") };
-	CString m_strName{ _T("") };
-	CString m_strDescription{ _T("") };
-	CString m_strStatementType{ _T("") };
-	CString m_strUnits{ _T("") };
+	string m_strDataCode{ _T("") };
+	string m_strName{ _T("") };
+	string m_strDescription{ _T("") };
+	string m_strStatementType{ _T("") };
+	string m_strUnits{ _T("") };
 
 	// 无需存储数据区
 };

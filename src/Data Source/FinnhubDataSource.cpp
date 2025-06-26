@@ -219,7 +219,7 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
 			if (!gl_dataContainerStockExchange.GetExchange(lCurrentStockExchangePos)->IsMarketStatusUpdated()) {
 				pExchange = gl_dataContainerStockExchange.GetExchange(lCurrentStockExchangePos);
-				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pExchange->m_strCode)) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pExchange->m_strCode.c_str())) {
 					fFound = true;
 					break;
 				}
@@ -258,7 +258,7 @@ bool CFinnhubDataSource::GenerateMarketHoliday() {
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
 			if (!gl_dataContainerStockExchange.GetExchange(lCurrentStockExchangePos)->IsMarketHolidayUpdated()) {
 				pExchange = gl_dataContainerStockExchange.GetExchange(lCurrentStockExchangePos);
-				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pExchange->m_strCode)) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pExchange->m_strCode.c_str())) {
 					fFound = true;
 					break;
 				}
@@ -297,7 +297,7 @@ bool CFinnhubDataSource::GenerateCompanySymbol() {
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
 			if (!gl_dataContainerStockExchange.GetExchange(lCurrentStockExchangePos)->IsStockSymbolUpdated()) {
 				pExchange = gl_dataContainerStockExchange.GetExchange(lCurrentStockExchangePos);
-				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pExchange->m_strCode)) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pExchange->m_strCode.c_str())) {
 					fFound = true;
 					break;
 				}

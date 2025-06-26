@@ -13,7 +13,7 @@ public:
 	void Load(const CSetFinnhubRecommendationTrends& setFinnhubRecommendationTrends);
 
 public:
-	CString m_strSymbol;
+	string m_strSymbol;
 	long m_lPeriod; // ∏Ò Ω£∫2020-03-01
 	long m_lStrongBuy;
 	long m_lBuy;

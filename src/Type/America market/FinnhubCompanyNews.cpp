@@ -28,16 +28,16 @@ void CFinnhubCompanyNews::Update(CSetCompanyNews& setCompanyNews) const {
 }
 
 void CFinnhubCompanyNews::Save(CSetCompanyNews& setCompanyNews) const {
-	setCompanyNews.m_CompanySymbol = m_strCompanySymbol.Left(45);
-	setCompanyNews.m_Category = m_strCategory.Left(100);
+	setCompanyNews.m_CompanySymbol = m_strCompanySymbol.substr(0, 45).c_str();
+	setCompanyNews.m_Category = m_strCategory.substr(0, 100).c_str();
 	setCompanyNews.m_DateTime = fmt::format("{:Ld}", m_llDateTime).c_str();
-	setCompanyNews.m_HeadLine = m_strHeadLine.Left(1000);
+	setCompanyNews.m_HeadLine = m_strHeadLine.substr(0, 1000).c_str();
 	setCompanyNews.m_NewsID = m_iNewsID;
-	setCompanyNews.m_Image = m_strImage.Left(1000);
-	setCompanyNews.m_RelatedSymbol = m_strRelatedSymbol.Left(45);
-	setCompanyNews.m_Source = m_strSource.Left(500);
-	setCompanyNews.m_Summary = m_strSummary.Left(10000);
-	setCompanyNews.m_URL = m_strURL.Left(1000);
+	setCompanyNews.m_Image = m_strImage.substr(0, 1000).c_str();;
+	setCompanyNews.m_RelatedSymbol = m_strRelatedSymbol.substr(0, 45).c_str();
+	setCompanyNews.m_Source = m_strSource.substr(0, 500).c_str();
+	setCompanyNews.m_Summary = m_strSummary.substr(0, 10000).c_str();
+	setCompanyNews.m_URL = m_strURL.substr(0, 1000).c_str();
 }
 
 void CFinnhubCompanyNews::Load(const CSetCompanyNews& setCompanyNews) {

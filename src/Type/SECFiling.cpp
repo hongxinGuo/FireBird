@@ -14,14 +14,14 @@ CSECFiling::CSECFiling() {
 
 void CSECFiling::Append(CSetSECFilings& setSECFiling) const {
 	setSECFiling.AddNew();
-	setSECFiling.m_Symbol = m_strSymbol;
-	setSECFiling.m_AccessNumber = m_strAccessNumber;
+	setSECFiling.m_Symbol = m_strSymbol.c_str();
+	setSECFiling.m_AccessNumber = m_strAccessNumber.c_str();
 	setSECFiling.m_CIK = m_iCIK;
 	setSECFiling.m_FiledDate = m_iFiledDate;
 	setSECFiling.m_AcceptedDate = m_iAcceptedDate;
-	setSECFiling.m_FilingURL = m_strFilingURL;
-	setSECFiling.m_ReportURL = m_strReportURL;
-	setSECFiling.m_Form = m_strForm;
+	setSECFiling.m_FilingURL = m_strFilingURL.c_str();
+	setSECFiling.m_ReportURL = m_strReportURL.c_str();
+	setSECFiling.m_Form = m_strForm.c_str();
 	setSECFiling.Update();
 }
 

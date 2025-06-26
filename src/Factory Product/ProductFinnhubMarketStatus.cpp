@@ -16,8 +16,8 @@ CProductFinnhubMarketStatus::CProductFinnhubMarketStatus() {
 CString CProductFinnhubMarketStatus::CreateMessage() {
 	const auto strParam = gl_dataContainerStockExchange.GetExchangeCode(m_lIndex);
 
-	m_strInquiringExchange = strParam;
-	m_strInquiry = m_strInquiryFunction + strParam;
+	m_strInquiringExchange = strParam.c_str();
+	m_strInquiry = m_strInquiryFunction + strParam.c_str();
 	return m_strInquiry;
 }
 
@@ -45,7 +45,7 @@ void CProductFinnhubMarketStatus::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // }
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-CMarketStatussPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const CWebDataPtr& pWebData) {
+CMarketStatusesPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const CWebDataPtr& pWebData) {
 	auto pvMarketStatus = make_shared<vector<CMarketStatusPtr>>();
 	CMarketStatusPtr pMarketStatus = nullptr;
 	string s, sError;
@@ -57,14 +57,14 @@ CMarketStatussPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const CW
 	try {
 		pMarketStatus = make_shared<CMarketStatus>();
 		s = jsonGetString(js, _T("exchange"));
-		if (!s.empty()) pMarketStatus->m_strExchange = s.c_str();
+		if (!s.empty()) pMarketStatus->m_strExchange = s;
 		s = jsonGetString(js, _T("holiday"));
-		if (!s.empty()) pMarketStatus->m_strHoliday = s.c_str();
+		if (!s.empty()) pMarketStatus->m_strHoliday = s;
 		pMarketStatus->m_bOpen = js.at(_T("isOpen"));
 		s = jsonGetString(js, _T("session"));
-		if (!s.empty()) pMarketStatus->m_strSession = s.c_str();
+		if (!s.empty()) pMarketStatus->m_strSession = s;
 		s = jsonGetString(js, _T("timezone"));
-		if (!s.empty()) pMarketStatus->m_strTimeZone = s.c_str();
+		if (!s.empty()) pMarketStatus->m_strTimeZone = s;
 		pMarketStatus->m_tt = jsonGetLongLong(js, _T("t"));
 
 		pvMarketStatus->push_back(pMarketStatus);

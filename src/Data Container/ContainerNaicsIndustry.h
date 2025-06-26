@@ -15,7 +15,7 @@ public:
 	size_t GetTotalNaicsIndustry() const noexcept { return m_vNaicsIndustry.size(); }
 	auto GetLastTotalNaicsIndustry() const noexcept { return m_lLastTotalNaicsIndustry; }
 
-	bool IsNaicsIndustry(const CString& strNaicsIndustry) const { return !m_mapNaicsIndustry.contains(strNaicsIndustry); }
+	bool IsNaicsIndustry(const string& strNaicsIndustry) const { return !m_mapNaicsIndustry.contains(strNaicsIndustry); }
 
 	bool IsNaicsIndustry(const CNaicsIndustryPtr& pNaicsIndustry) const { return IsNaicsIndustry(pNaicsIndustry->m_strNaics); }
 	void Add(CNaicsIndustryPtr pNaicsIndustry);
@@ -26,6 +26,6 @@ public:
 
 protected:
 	vector<CNaicsIndustryPtr> m_vNaicsIndustry;
-	map<CString, size_t> m_mapNaicsIndustry;
+	map<string, size_t> m_mapNaicsIndustry;
 	size_t m_lLastTotalNaicsIndustry;
 };

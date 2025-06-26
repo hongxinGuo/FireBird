@@ -37,8 +37,8 @@ public:
 
 class CItemOfBasicFinancialSeasonData {
 public:
-	CString m_symbol;
-	CString m_type;
+	string m_symbol;
+	string m_type;
 	int m_date;
 	double m_value;
 };
@@ -213,13 +213,13 @@ public:
 	void SaveAllQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, const vector<CItemOfBasicFinancialSeasonData>& vDBData);
 	void SaveAllAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, const vector<CItemOfBasicFinancialSeasonData>& vDBData);
 
-	void SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, const vector<CValueOfPeriod>& vData, const CString& typeName, const vector<CItemOfBasicFinancialSeasonData>& vDBData);
+	void SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, const vector<CValueOfPeriod>& vData, const string& typeName, const vector<CItemOfBasicFinancialSeasonData>& vDBData);
 	void LoadQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData);
 
-	void SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, const vector<CValueOfPeriod>& vData, const CString& typeName, const vector<CItemOfBasicFinancialSeasonData>& vDBData);
+	void SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, const vector<CValueOfPeriod>& vData, const string& typeName, const vector<CItemOfBasicFinancialSeasonData>& vDBData);
 	void LoadAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData);
 
-	bool IsNewData(const CString& type, CValueOfPeriod vData, const vector<CItemOfBasicFinancialSeasonData>& vDBData);
+	bool IsNewData(const string& type, CValueOfPeriod vData, const vector<CItemOfBasicFinancialSeasonData>& vDBData);
 
 public:
 	CString m_symbol;

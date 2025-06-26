@@ -78,13 +78,13 @@ CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWeb
 			auto itemValue = item.value();
 			auto pSECFiling = make_shared<CSECFiling>();
 			s1 = jsonGetStringView(itemValue, _T("symbol"));
-			pSECFiling->m_strSymbol = s1.c_str();
+			pSECFiling->m_strSymbol = s1;
 			s1 = jsonGetStringView(itemValue, _T("accessNumber"));
-			pSECFiling->m_strAccessNumber = s1.c_str();
+			pSECFiling->m_strAccessNumber = s1;
 			s1 = jsonGetStringView(itemValue, _T("cik"));
 			pSECFiling->m_iCIK = atoi(s1.c_str());
 			s1 = jsonGetStringView(itemValue, _T("form"));
-			pSECFiling->m_strForm = s1.c_str();
+			pSECFiling->m_strForm = s1;
 			s1 = jsonGetStringView(itemValue, _T("filedDate"));
 			ss.clear();
 			ss.str(s1);
@@ -99,16 +99,16 @@ CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWeb
 			tpTime -= gl_pWorldMarket->GetTimeZoneOffset();
 			pSECFiling->m_iAcceptedDate = tpTime.time_since_epoch().count();
 			s1 = jsonGetStringView(itemValue, _T("reportUrl"));
-			pSECFiling->m_strReportURL = s1.c_str();
+			pSECFiling->m_strReportURL = s1;
 			s1 = jsonGetStringView(itemValue, _T("filingUrl"));
-			pSECFiling->m_strFilingURL = s1.c_str();
+			pSECFiling->m_strFilingURL = s1;
 			pvSECFilings->push_back(pSECFiling);
 		}
 	} catch (simdjson_error& error) {
 		ReportJSonErrorToSystemMessage(_T("finnhub SEC Filings "), error.what());
 	}
 	// °´accessNumberÅÅÐò
-	std::ranges::sort(*pvSECFilings, [](const CSECFilingPtr& p1, const CSECFilingPtr& p2) { return p1->m_strAccessNumber.Compare(p2->m_strAccessNumber); });
+	std::ranges::sort(*pvSECFilings, [](const CSECFilingPtr& p1, const CSECFilingPtr& p2) { return p1->m_strAccessNumber.compare(p2->m_strAccessNumber); });
 
 	return pvSECFilings;
 }

@@ -19,12 +19,12 @@ void CTiingoMarketNews::Append(CSetTiingoMarketNews& setTiingoMarketNews) {
 }
 
 void CTiingoMarketNews::Save(CSetTiingoMarketNews& setTiingoMarketNews) {
-	if ((m_strDescription.GetLength() > 500)
-		|| (m_strSource.GetLength() > 100)
-		|| (m_strTags.GetLength() > 400)
-		|| (m_strTickers.GetLength() > 200)
-		|| (m_strTitle.GetLength() > 100)
-		|| (m_strUrl.GetLength() > 100)) {
+	if ((m_strDescription.length() > 500)
+		|| (m_strSource.length() > 100)
+		|| (m_strTags.length() > 400)
+		|| (m_strTickers.length() > 200)
+		|| (m_strTitle.length() > 100)
+		|| (m_strUrl.length() > 100)) {
 		string s = _T("Tiingo market news ");
 		s += m_strTickers;
 		s += _T(" ×Ö·û´®Ì«³¤");

@@ -9,10 +9,10 @@ public:
 	~CTiingoStockDailyMeta() = default;
 
 public:
-	CString m_strCode{ "" };
-	CString m_strName{ "" };
-	CString m_strDescription{ "" };
-	CString m_strExchange{ "" };
+	string m_strCode{ "" };
+	string m_strName{ "" };
+	string m_strDescription{ "" };
+	string m_strExchange{ "" };
 	long m_lHistoryDayLineStartDate{ 19000101 };
 	long m_lHistoryDayLineEndDate{ 19000101 };
 };

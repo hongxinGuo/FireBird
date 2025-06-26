@@ -44,7 +44,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubMarketStatusProductTest, TestCreatMessage) {
 		MarketStatusProduct.SetMarket(gl_pWorldMarket);
 		MarketStatusProduct.SetIndex(1);
-		EXPECT_STREQ(MarketStatusProduct.CreateMessage(), MarketStatusProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetExchangeCode(1));
+		EXPECT_STREQ(MarketStatusProduct.CreateMessage(), MarketStatusProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetExchangeCode(1).c_str());
 	}
 
 	// 正确的数据
@@ -75,7 +75,7 @@ namespace FireBirdTest {
 		long m_lIndex;
 		CMarketStatusPtr m_pMarketStatus;
 		CWebDataPtr m_pWebData;
-		CMarketStatussPtr m_pvMarketStatus;
+		CMarketStatusesPtr m_pvMarketStatus;
 		CProductFinnhubMarketStatus m_finnhubMarketStatusProduct;
 	};
 
@@ -92,8 +92,8 @@ namespace FireBirdTest {
 			break;
 		case 2: // 正确的数据
 			EXPECT_EQ(m_pvMarketStatus->size(), 1);
-			EXPECT_STREQ(m_pvMarketStatus->at(0)->m_strExchange, _T("US"));
-			EXPECT_STREQ(m_pvMarketStatus->at(0)->m_strHoliday, _T(""));
+			EXPECT_STREQ(m_pvMarketStatus->at(0)->m_strExchange.c_str(), _T("US"));
+			EXPECT_STREQ(m_pvMarketStatus->at(0)->m_strHoliday.c_str(), _T(""));
 			break;
 		default:
 			break;

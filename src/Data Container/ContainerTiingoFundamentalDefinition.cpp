@@ -28,7 +28,7 @@ bool CContainerTiingoFundamentalDefinition::Delete(const CTiingoFundamentalDefin
 	return true;
 }
 
-bool CContainerTiingoFundamentalDefinition::Delete(const CString& strDataCode) {
+bool CContainerTiingoFundamentalDefinition::Delete(const string& strDataCode) {
 	if (HaveDefinition(strDataCode)) {
 		auto p = GetFundamentalDefinition(strDataCode);
 		Delete(p);
@@ -41,11 +41,11 @@ bool CContainerTiingoFundamentalDefinition::Delete(const CString& strDataCode) {
 bool CContainerTiingoFundamentalDefinition::UpdateDB() {
 	if (m_fUpdated) {
 		CSetTiingoFundamentalDefinition setTiingoFundamentalDefinition, setDefinition;
-		map<CString, size_t> mapDefinition;
+		map<string, size_t> mapDefinition;
 		setDefinition.Open();
 		setDefinition.m_pDatabase->BeginTrans();
 		while (!setDefinition.IsEOF()) {
-			mapDefinition[setDefinition.m_dataCode] = mapDefinition.size();
+			mapDefinition[setDefinition.m_dataCode.GetString()] = mapDefinition.size();
 			setDefinition.MoveNext();
 		}
 		setDefinition.m_pDatabase->CommitTrans();
@@ -81,7 +81,7 @@ bool CContainerTiingoFundamentalDefinition::LoadDB() {
 	setTiingoFundamentalDefinition.Open();
 	setTiingoFundamentalDefinition.m_pDatabase->BeginTrans();
 	while (!setTiingoFundamentalDefinition.IsEOF()) {
-		if (!HaveDefinition(setTiingoFundamentalDefinition.m_dataCode)) {
+		if (!HaveDefinition(setTiingoFundamentalDefinition.m_dataCode.GetString())) {
 			const auto pTiingoFundamentalDefinition = make_shared<CTiingoFundamentalDefinition>();
 			pTiingoFundamentalDefinition->Load(setTiingoFundamentalDefinition);
 			Add(pTiingoFundamentalDefinition);

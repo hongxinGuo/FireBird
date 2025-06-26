@@ -14,13 +14,13 @@ public:
 	void Load(const CSetCountry& setCountry);
 
 public:
-	CString m_strCode2;
-	CString m_strCode3;
-	CString m_strCodeNo;
-	CString m_strCountry;
-	CString m_strCurrency;
-	CString m_strCurrencyCode;
+	string m_strCode2;
+	string m_strCode3;
+	string m_strCodeNo;
+	string m_strCountry;
+	string m_strCurrency;
+	string m_strCurrencyCode;
 };
 
 using CCountryPtr = shared_ptr<CCountry>;
-using CCountrysPtr = shared_ptr<vector<CCountryPtr>>;
+using CCountriesPtr = shared_ptr<vector<CCountryPtr>>;

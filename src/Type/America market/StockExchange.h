@@ -2,8 +2,6 @@
 
 #include"SetStockExchange.h"
 
-#include<memory>
-
 class CStockExchange final {
 public:
 	CStockExchange();
@@ -21,18 +19,18 @@ public:
 	bool IsMarketHolidayUpdated() const noexcept { return m_fMarketHolidayUpdated; }
 
 public:
-	CString m_strCode; // 两位的交易所代码。上海市场为SS， 美国市场为US，。。。
-	CString m_strName;
-	CString m_strMic;
-	CString m_strTimeZone;
-	CString m_strPreMarket;
-	CString m_strHour;
-	CString m_strPostMarket;
-	CString m_strCloseDate;
-	CString m_strCountry;
-	CString m_strCountryName;
-	CString m_strSource;
-	CString m_strMyUnknownColumn;
+	string m_strCode; // 两位的交易所代码。上海市场为SS， 美国市场为US，。。。
+	string m_strName;
+	string m_strMic;
+	string m_strTimeZone;
+	string m_strPreMarket;
+	string m_strHour;
+	string m_strPostMarket;
+	string m_strCloseDate;
+	string m_strCountry;
+	string m_strCountryName;
+	string m_strSource;
+	string m_strMyUnknownColumn;
 
 	long m_lMarketOpenTime{ 0 };
 	long m_lMarketCloseTime{ 0 };

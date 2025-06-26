@@ -13,7 +13,7 @@ CFinnhubRecommendationTrends::CFinnhubRecommendationTrends() {
 
 void CFinnhubRecommendationTrends::Append(CSetFinnhubRecommendationTrends& setFinnhubRecommendationTrends) const {
 	setFinnhubRecommendationTrends.AddNew();
-	setFinnhubRecommendationTrends.m_Symbol = m_strSymbol;
+	setFinnhubRecommendationTrends.m_Symbol = m_strSymbol.c_str();
 	setFinnhubRecommendationTrends.m_Period = m_lPeriod;
 	setFinnhubRecommendationTrends.m_StrongBuy = m_lStrongBuy;
 	setFinnhubRecommendationTrends.m_Buy = m_lBuy;

@@ -282,10 +282,10 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 			else { // 较旧的数据？
 				if (std::ranges::find_if(vInsiderTransaction.begin(), vInsiderTransaction.end(),
 				                         [pInsiderTransaction](const CInsiderTransactionPtr& p) {
-					                         return ((p->m_strSymbol.Compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
+					                         return ((p->m_strSymbol.compare(pInsiderTransaction->m_strSymbol) == 0) // 股票代码
 						                         && (p->m_lTransactionDate == pInsiderTransaction->m_lTransactionDate) // 交易时间
-						                         && (p->m_strPersonName.Compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
-						                         && (p->m_strTransactionCode.Compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
+						                         && (p->m_strPersonName.compare(pInsiderTransaction->m_strPersonName) == 0) // 内部交易人员
+						                         && (p->m_strTransactionCode.compare(pInsiderTransaction->m_strTransactionCode) == 0)); // 交易细节
 				                         }) == vInsiderTransaction.end()) { // 如果没找到，则股票代码、人名、交易日期或者交易细节为新的数据，存储该数据
 					pInsiderTransaction->Append(setInsiderTransaction);
 				}
@@ -423,9 +423,9 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 		setSECFilings.m_pDatabase->BeginTrans();
 		while (!setSECFilings.IsEOF()) {
 			pSECFilings = m_pvSECFilings->at(lCurrentPos);
-			while (!setSECFilings.IsEOF() && setSECFilings.m_AccessNumber.Compare(pSECFilings->m_strAccessNumber) < 0) setSECFilings.MoveNext();
+			while (!setSECFilings.IsEOF() && setSECFilings.m_AccessNumber.Compare(pSECFilings->m_strAccessNumber.c_str()) < 0) setSECFilings.MoveNext();
 			if (setSECFilings.IsEOF()) break;
-			if (setSECFilings.m_AccessNumber.Compare(pSECFilings->m_strAccessNumber) > 0) {	// 没有这个AccessNumber的SEC Filings？
+			if (setSECFilings.m_AccessNumber.Compare(pSECFilings->m_strAccessNumber.c_str()) > 0) {	// 没有这个AccessNumber的SEC Filings？
 				pSECFilings->Append(setSECFilings);
 			}
 			if (++lCurrentPos == lSize) break;

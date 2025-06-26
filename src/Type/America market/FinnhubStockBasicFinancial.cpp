@@ -368,13 +368,13 @@ void CFinnhubStockBasicFinancial::SaveAllQuarterData(CSetFinnhubStockBasicFinanc
 	SaveQuarterData(SetQuarterData, m_quarter.m_totalRatio, _T("totalRatio"), vDBData);
 }
 
-void CFinnhubStockBasicFinancial::SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, const vector<CValueOfPeriod>& vData, const CString& typeName, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {
+void CFinnhubStockBasicFinancial::SaveQuarterData(CSetFinnhubStockBasicFinancialQuarter& SetQuarterData, const vector<CValueOfPeriod>& vData, const string& typeName, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	ASSERT(SetQuarterData.IsOpen());
 	for (int i = 0; i < vData.size(); i++) {
 		if (IsNewData(typeName, vData.at(i), vDBData)) {
 			SetQuarterData.AddNew();
 			SetQuarterData.m_symbol = m_symbol;
-			SetQuarterData.m_type = typeName;
+			SetQuarterData.m_type = typeName.c_str();
 			SetQuarterData.m_date = vData.at(i).m_period;
 			SetQuarterData.m_value = vData.at(i).m_value;
 			SetQuarterData.Update();
@@ -408,13 +408,13 @@ void CFinnhubStockBasicFinancial::SaveAllAnnualData(CSetFinnhubStockBasicFinanci
 	SaveAnnualData(setAnnualData, m_annual.m_totalRatio, _T("totalRatio"), vDBData);
 }
 
-void CFinnhubStockBasicFinancial::SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, const vector<CValueOfPeriod>& vData, const CString& typeName, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {
+void CFinnhubStockBasicFinancial::SaveAnnualData(CSetFinnhubStockBasicFinancialAnnual& setAnnualData, const vector<CValueOfPeriod>& vData, const string& typeName, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	ASSERT(setAnnualData.IsOpen());
 	for (int i = 0; i < vData.size(); i++) {
 		if (IsNewData(typeName, vData.at(i), vDBData)) {
 			setAnnualData.AddNew();
 			setAnnualData.m_symbol = m_symbol;
-			setAnnualData.m_type = typeName;
+			setAnnualData.m_type = typeName.c_str();
 			setAnnualData.m_date = vData.at(i).m_period;
 			setAnnualData.m_value = vData.at(i).m_value;
 			setAnnualData.Update();
@@ -426,9 +426,9 @@ void CFinnhubStockBasicFinancial::LoadAnnualData(CSetFinnhubStockBasicFinancialA
 	// not implemented
 }
 
-bool CFinnhubStockBasicFinancial::IsNewData(const CString& type, CValueOfPeriod vData, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {
+bool CFinnhubStockBasicFinancial::IsNewData(const string& type, CValueOfPeriod vData, const vector<CItemOfBasicFinancialSeasonData>& vDBData) {
 	for (int i = 0; i < vDBData.size(); i++) {
-		if ((vDBData.at(i).m_type == type) && (vDBData.at(i).m_date == vData.m_period)) {
+		if ((vDBData.at(i).m_type.compare(type) == 0) && (vDBData.at(i).m_date == vData.m_period)) {
 			return false;
 		}
 	}

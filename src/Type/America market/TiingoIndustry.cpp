@@ -11,8 +11,8 @@ CTiingoIndustry::CTiingoIndustry() {
 
 void CTiingoIndustry::Append(CSetTiingoIndustry& setTiingoIndustry) const {
 	setTiingoIndustry.AddNew();
-	setTiingoIndustry.m_Industry = m_strIndustry;
-	setTiingoIndustry.m_Sector = m_strSector;
+	setTiingoIndustry.m_Industry = m_strIndustry.c_str();
+	setTiingoIndustry.m_Sector = m_strSector.c_str();
 	setTiingoIndustry.Update();
 }
 

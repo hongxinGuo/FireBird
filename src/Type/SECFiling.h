@@ -14,14 +14,14 @@ public:
 	void Load(const CSetSECFilings& setSECFiling);
 
 public:
-	CString m_strSymbol;
+	string m_strSymbol;
 	int m_iCIK;
-	CString m_strAccessNumber;
-	CString m_strForm;
+	string m_strAccessNumber;
+	string m_strForm;
 	time_t m_iFiledDate;
 	time_t m_iAcceptedDate;
-	CString m_strReportURL;
-	CString m_strFilingURL;
+	string m_strReportURL;
+	string m_strFilingURL;
 };
 
 using CSECFilingPtr = shared_ptr<CSECFiling>;

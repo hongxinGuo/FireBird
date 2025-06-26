@@ -108,8 +108,8 @@ namespace FireBirdTest {
 		switch (m_lIndex) {
 		case 1: // 正确的数据
 			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);
-			EXPECT_STREQ(m_pvIEXTopOfBook->at(0)->m_strTicker, _T("000001"));
-			EXPECT_STREQ(m_pvIEXTopOfBook->at(1)->m_strTicker, _T("000002"));
+			EXPECT_STREQ(m_pvIEXTopOfBook->at(0)->m_strTicker.c_str(), _T("000001"));
+			EXPECT_STREQ(m_pvIEXTopOfBook->at(1)->m_strTicker.c_str(), _T("000002"));
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_timeStamp.time_since_epoch().count(), 1727726400);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLastClose, 11420000);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lOpen, 11621300);

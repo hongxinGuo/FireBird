@@ -16,13 +16,13 @@ public:
 	void Load(const CSetInsiderTransaction& setInsiderTransaction);
 
 public:
-	CString m_strSymbol;
-	CString m_strPersonName;
+	string m_strSymbol;
+	string m_strPersonName;
 	INT64 m_lShare;
 	INT64 m_lChange;
 	long m_lFilingDate;
 	long m_lTransactionDate;
-	CString m_strTransactionCode;
+	string m_strTransactionCode;
 	double m_dTransactionPrice;
 };
 

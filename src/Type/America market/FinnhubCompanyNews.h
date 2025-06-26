@@ -39,16 +39,16 @@ public:
 	void Load(const CSetCompanyNews& setCompanyNews);
 
 public:
-	CString m_strCompanySymbol;
-	CString m_strCategory;
+	string m_strCompanySymbol;
+	string m_strCategory;
 	long long m_llDateTime;
-	CString m_strHeadLine;
+	string m_strHeadLine;
 	int m_iNewsID;
-	CString m_strImage;
-	CString m_strRelatedSymbol;
-	CString m_strSource;
-	CString m_strSummary;
-	CString m_strURL;
+	string m_strImage;
+	string m_strRelatedSymbol;
+	string m_strSource;
+	string m_strSummary;
+	string m_strURL;
 };
 
 using CCompanyNewsPtr = shared_ptr<CFinnhubCompanyNews>;

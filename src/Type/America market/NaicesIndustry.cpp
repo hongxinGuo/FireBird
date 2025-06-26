@@ -13,10 +13,10 @@ CNaicsIndustry::CNaicsIndustry() {
 
 void CNaicsIndustry::Append(CSetNaicsIndustry& setNaicsIndustry) const {
 	setNaicsIndustry.AddNew();
-	setNaicsIndustry.m_Naics = m_strNaics;
-	setNaicsIndustry.m_NationalIndustry = m_strNationalIndustry;
-	setNaicsIndustry.m_Sector = m_strSector;
-	setNaicsIndustry.m_SubSector = m_strSubSector;
+	setNaicsIndustry.m_Naics = m_strNaics.c_str();
+	setNaicsIndustry.m_NationalIndustry = m_strNationalIndustry.c_str();
+	setNaicsIndustry.m_Sector = m_strSector.c_str();
+	setNaicsIndustry.m_SubSector = m_strSubSector.c_str();
 	setNaicsIndustry.Update();
 }
 

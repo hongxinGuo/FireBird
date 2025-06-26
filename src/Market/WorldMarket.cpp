@@ -32,7 +32,7 @@ CWorldMarket::CWorldMarket() {
 	}
 
 	m_strMarketId = _T("US");
-	m_exchange = gl_dataContainerStockExchange.GetExchange(m_strMarketId);
+	m_exchange = gl_dataContainerStockExchange.GetExchange(m_strMarketId.GetString());
 	ASSERT(m_exchange != nullptr);
 	m_strLocalMarketTimeZone = _T("America/New_York");
 	GetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 美国股市使用美东标准时间, 美国股市开市时间为九点三十分
@@ -1103,7 +1103,7 @@ void CWorldMarket::UpdateFinnhubStockFromFinnhubSocket(const CFinnhubSocketPtr& 
 	}
 }
 
-void CWorldMarket::UpdateMarketStatus(const CMarketStatussPtr& pv) const {
+void CWorldMarket::UpdateMarketStatus(const CMarketStatusesPtr& pv) const {
 	for (auto p : *pv) {
 		m_pvMarketStatus->push_back(p);
 	}

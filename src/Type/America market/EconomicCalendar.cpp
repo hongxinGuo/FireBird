@@ -32,12 +32,12 @@ void CEconomicCalendar::Append(CSetEconomicCalendar& setEconomicCalendar) const 
 }
 
 void CEconomicCalendar::Save(CSetEconomicCalendar& setEconomicCalendar) const {
-	setEconomicCalendar.m_Time = m_strTime;
-	setEconomicCalendar.m_Country = m_strCountry;
-	setEconomicCalendar.m_Event = m_strEvent;
-	setEconomicCalendar.m_Impact = m_strImpact;
+	setEconomicCalendar.m_Time = m_strTime.c_str();
+	setEconomicCalendar.m_Country = m_strCountry.c_str();
+	setEconomicCalendar.m_Event = m_strEvent.c_str();
+	setEconomicCalendar.m_Impact = m_strImpact.c_str();
 	setEconomicCalendar.m_Actual = ConvertValueToString(m_dActual);
 	setEconomicCalendar.m_Estimate = ConvertValueToString(m_dEstimate);
 	setEconomicCalendar.m_Prev = ConvertValueToString(m_dPrev);
-	setEconomicCalendar.m_Unit = m_strUnit;
+	setEconomicCalendar.m_Unit = m_strUnit.c_str();
 }

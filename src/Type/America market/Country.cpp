@@ -12,12 +12,12 @@ CCountry::CCountry() {
 
 void CCountry::Append(CSetCountry& setCountry) const {
 	setCountry.AddNew();
-	setCountry.m_Code2 = m_strCode2;
-	setCountry.m_Code3 = m_strCode3;
-	setCountry.m_CodeNo = m_strCodeNo;
-	setCountry.m_Country = m_strCountry;
-	setCountry.m_Currency = m_strCurrency;
-	setCountry.m_CurrencyCode = m_strCurrencyCode;
+	setCountry.m_Code2 = m_strCode2.c_str();
+	setCountry.m_Code3 = m_strCode3.c_str();
+	setCountry.m_CodeNo = m_strCodeNo.c_str();
+	setCountry.m_Country = m_strCountry.c_str();
+	setCountry.m_Currency = m_strCurrency.c_str();
+	setCountry.m_CurrencyCode = m_strCurrencyCode.c_str();
 	setCountry.Update();
 }
 

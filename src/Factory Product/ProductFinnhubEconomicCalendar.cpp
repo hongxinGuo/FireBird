@@ -53,16 +53,16 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalen
 			s = jsonGetString(it, _T("country"));
 			if (!s.empty()) pEconomicCalendar->m_strCountry = s.c_str();
 			s = jsonGetString(it,_T("event"));
-			pEconomicCalendar->m_strEvent = s.c_str();
+			pEconomicCalendar->m_strEvent = s;
 			s = jsonGetString(it,_T("impact"));
-			pEconomicCalendar->m_strImpact = s.c_str();
+			pEconomicCalendar->m_strImpact = s;
 			pEconomicCalendar->m_dEstimate = jsonGetDouble(it, _T("estimate"));
 			pEconomicCalendar->m_dActual = jsonGetDouble(it, _T("actual"));
 			pEconomicCalendar->m_dPrev = jsonGetDouble(it, _T("prev"));
 			s = jsonGetString(it,_T("time"));
-			pEconomicCalendar->m_strTime = s.c_str();
+			pEconomicCalendar->m_strTime = s;
 			s = jsonGetString(it,_T("unit"));
-			pEconomicCalendar->m_strUnit = s.c_str();
+			pEconomicCalendar->m_strUnit = s;
 			pvEconomicCalendar->push_back(pEconomicCalendar);
 		}
 	} catch (json::exception& e) {
