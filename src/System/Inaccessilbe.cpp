@@ -23,7 +23,7 @@ CInaccessible::CInaccessible() {
 	m_setSymbol.clear();
 }
 
-CInaccessible::CInaccessible(const CString& sFunction, const int iFunction, const vector<CString>& vSymbol) {
+CInaccessible::CInaccessible(const string& sFunction, const int iFunction, const vector<string>& vSymbol) {
 	m_sFunction = sFunction;
 	m_iFunction = iFunction;
 	for (auto& s : vSymbol) {
@@ -32,7 +32,7 @@ CInaccessible::CInaccessible(const CString& sFunction, const int iFunction, cons
 	}
 }
 
-bool CInaccessible::Assign(const CString& sFunction, const int iFunction, const vector<CString>& vSymbol) {
+bool CInaccessible::Assign(const string& sFunction, const int iFunction, const vector<string>& vSymbol) {
 	m_sFunction = sFunction;
 	m_iFunction = iFunction;
 	m_vSymbol.clear();
@@ -44,17 +44,17 @@ bool CInaccessible::Assign(const CString& sFunction, const int iFunction, const 
 	return true;
 }
 
-bool CInaccessible::AddSymbol(const CString& sSymbolName) {
+bool CInaccessible::AddSymbol(const string& sSymbolName) {
 	m_vSymbol.push_back(sSymbolName);
 	m_setSymbol.insert(sSymbolName);
 	return true;
 }
 
-bool CInaccessible::DeleteSymbol(const CString& sSymbolName) {
+bool CInaccessible::DeleteSymbol(const string& sSymbolName) {
 	if (m_setSymbol.contains(sSymbolName)) { // 集合中存在此元素？
 		m_setSymbol.erase(sSymbolName);
 		for (int position = 0; position < m_vSymbol.size(); position++) {
-			if (m_vSymbol.at(position).Compare(sSymbolName) == 0) {
+			if (m_vSymbol.at(position).compare(sSymbolName) == 0) {
 				m_vSymbol.erase(m_vSymbol.begin() + position);
 				break;
 			}
@@ -63,7 +63,7 @@ bool CInaccessible::DeleteSymbol(const CString& sSymbolName) {
 	return true;
 }
 
-bool CInaccessible::HaveSymbol(const CString& sSymbol) const {
+bool CInaccessible::HaveSymbol(const string& sSymbol) const {
 	if (m_setSymbol.contains(sSymbol)) return true;
 	return false;
 }

@@ -26,7 +26,7 @@ CTiingoInaccessibleStock::CTiingoInaccessibleStock() {
 		ASSERT(FALSE);
 	}
 
-	ASSERT(m_strFileName.Compare(_T("TiingoInaccessibleStock.json")) == 0);
+	ASSERT(m_strFileName.compare(_T("TiingoInaccessibleStock.json")) == 0);
 	if (LoadDB()) {
 		Update();
 	}
@@ -39,19 +39,19 @@ CTiingoInaccessibleStock::~CTiingoInaccessibleStock() {
 }
 
 void CTiingoInaccessibleStock::UpdateDB() {
-	const CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("json");
-	const CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
+	const string strOld = m_strFileName.substr(0, m_strFileName.length() - 4) + _T("json");
+	const string strNew = m_strFileName.substr(0, m_strFileName.length() - 4) + _T("bak");
 
-	DeleteFile(gl_systemConfiguration.GetConfigurationFileDirectory() + strNew);
-	rename(gl_systemConfiguration.GetConfigurationFileDirectory() + strOld, gl_systemConfiguration.GetConfigurationFileDirectory() + strNew); // 保存备份
+	DeleteFile(gl_systemConfiguration.GetConfigurationFileDirectory() + strNew.c_str());
+	rename(gl_systemConfiguration.GetConfigurationFileDirectory() + strOld.c_str(), gl_systemConfiguration.GetConfigurationFileDirectory() + strNew.c_str()); // 保存备份
 	UpdateJson();
 	SaveDB();
 	SetUpdateDB(false);
 }
 
 bool CTiingoInaccessibleStock::LoadDB() {
-	CString str = gl_systemConfiguration.GetConfigurationFileDirectory() + m_strFileName;
-	fstream f(gl_systemConfiguration.GetConfigurationFileDirectory() + m_strFileName, ios::in);
+	string str = gl_systemConfiguration.GetConfigurationFileDirectory().GetString() + m_strFileName;
+	fstream f(gl_systemConfiguration.GetConfigurationFileDirectory().GetString() + m_strFileName, ios::in);
 	if (f.is_open()) {
 		f >> m_finnhubInaccessibleStock;
 		return true;
@@ -59,7 +59,7 @@ bool CTiingoInaccessibleStock::LoadDB() {
 	return false;
 }
 
-bool CTiingoInaccessibleStock::LoadDB(const CString& strFileDirectory) {
+bool CTiingoInaccessibleStock::LoadDB(const string& strFileDirectory) {
 	fstream f(strFileDirectory + m_strFileName, ios::in);
 	if (f.is_open()) {
 		f >> m_finnhubInaccessibleStock;
@@ -69,7 +69,7 @@ bool CTiingoInaccessibleStock::LoadDB(const CString& strFileDirectory) {
 }
 
 void CTiingoInaccessibleStock::SaveDB() const {
-	fstream f(gl_systemConfiguration.GetConfigurationFileDirectory() + m_strFileName, ios::out);
+	fstream f(gl_systemConfiguration.GetConfigurationFileDirectory() + m_strFileName.c_str(), ios::out);
 	f << m_finnhubInaccessibleStock;
 	f.close();
 }
@@ -116,14 +116,14 @@ void CTiingoInaccessibleStock::UpdateJson() {
 	}
 }
 
-void CTiingoInaccessibleStock::DeleteStock(int iInquireType, const CString& strStock) {
+void CTiingoInaccessibleStock::DeleteStock(int iInquireType, const string& strStock) {
 	if (HaveStock(iInquireType, strStock)) {
 		const CInaccessibleStocksPtr pStock = GetStock(iInquireType);
-		pStock->DeleteSymbol(strStock);
+		pStock->DeleteSymbol(strStock.c_str());
 	}
 }
 
-bool CTiingoInaccessibleStock::HaveStock(int iInquireType, const CString& strStockCode) const {
+bool CTiingoInaccessibleStock::HaveStock(int iInquireType, const string& strStockCode) const {
 	try {
 		if (m_mapStock.at(iInquireType)->HaveSymbol(strStockCode)) {
 			return true;

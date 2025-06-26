@@ -79,12 +79,6 @@
     <Filter Include="源文件\Accessory">
       <UniqueIdentifier>{7f85d622-7785-44a6-b36a-041722b580ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Windows interface">
-      <UniqueIdentifier>{1fe83dfa-39e1-44e3-9183-c0796652af23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\windows interface">
-      <UniqueIdentifier>{de9fbc39-40f7-4ea7-aed5-2e6802298abd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Stock">
       <UniqueIdentifier>{ff059202-b73a-4e76-a256-2b1d7540e083}</UniqueIdentifier>
     </Filter>

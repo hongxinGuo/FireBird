@@ -1644,8 +1644,8 @@ namespace FireBirdTest {
 		pStock->UpdateCurrentHistoryCandle(pDayLine);
 
 		EXPECT_EQ(pDayLine->GetMarketDate(), ConvertToDate(pStock->GetTransactionTime(), 0));
-		EXPECT_STREQ(pDayLine->GetExchange(), pStock->GetExchangeCode());
-		EXPECT_STREQ(pDayLine->GetStockSymbol(), pStock->GetSymbol());
+		EXPECT_TRUE(pDayLine->GetExchange().compare(pStock->GetExchangeCode()) == 0);
+		EXPECT_TRUE(pDayLine->GetStockSymbol().compare(pStock->GetSymbol()) == 0);
 		EXPECT_STREQ(pDayLine->GetDisplaySymbol(), pStock->GetDisplaySymbol());
 		EXPECT_EQ(pDayLine->GetLastClose(), pStock->GetLastClose());
 		EXPECT_EQ(pDayLine->GetOpen(), pStock->GetOpen());
@@ -1845,7 +1845,7 @@ namespace FireBirdTest {
 		pDayLine = pStock->GetDayLine(pStock->GetDayLineSize() - 1);
 
 		EXPECT_EQ(pDayLine->GetMarketTime(), 0);
-		EXPECT_STREQ(pDayLine->GetStockSymbol(), _T("600011.SS"));
+		EXPECT_TRUE(pDayLine->GetStockSymbol().compare(_T("600011.SS")) == 0);
 		EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
 		EXPECT_EQ(pDayLine->GetOpen(), pid->GetOpen());
 		EXPECT_EQ(pDayLine->GetHigh(), pid->GetHigh());
@@ -1994,7 +1994,7 @@ namespace FireBirdTest {
 			dayLine.LoadBasicData(&setDayLineBasicInfo);
 			pid = pStock->GetDayLine(i + 1);
 			EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetMarketDate());
-			EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, pid->GetStockSymbol());
+			EXPECT_TRUE(setDayLineBasicInfo.m_Symbol.Compare(pid->GetStockSymbol().c_str()) == 0);
 			EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_LastClose) * pid->GetRatio(), pid->GetLastClose());
 			EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_Open) * pid->GetRatio(), pid->GetOpen());
 			EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_High) * pid->GetRatio(), pid->GetHigh());
@@ -2071,7 +2071,7 @@ namespace FireBirdTest {
 			pid = stock.GetDayLine(i);
 			const CDayLinePtr pDayLine = pStock->GetDayLine(i);
 			EXPECT_EQ(pDayLine->GetMarketDate(), pid->GetMarketDate());
-			EXPECT_STREQ(pDayLine->GetStockSymbol(), pid->GetStockSymbol());
+			EXPECT_TRUE(pDayLine->GetStockSymbol().compare( pid->GetStockSymbol()) == 0);
 			EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
 			EXPECT_EQ(pDayLine->GetOpen(), pid->GetOpen());
 			EXPECT_EQ(pDayLine->GetHigh(), pid->GetHigh());
@@ -2350,7 +2350,7 @@ namespace FireBirdTest {
 		dayLine.LoadExtendData(&setDayLineExtendInfo);
 		setDayLineExtendInfo.Close();
 		EXPECT_EQ(dayLine.GetMarketTime(), 0);
-		EXPECT_STREQ(dayLine.GetStockSymbol(), _T(""));
+		EXPECT_STREQ(dayLine.GetStockSymbol().c_str(), _T(""));
 		EXPECT_EQ(dayLine.GetTransactionNumber(), stock.GetTransactionNumber());
 		EXPECT_EQ(dayLine.GetTransactionNumberBelow5000(), stock.GetTransactionNumberBelow5000());
 		EXPECT_EQ(dayLine.GetTransactionNumberBelow50000(), stock.GetTransactionNumberBelow50000());
@@ -2473,7 +2473,7 @@ namespace FireBirdTest {
 			stock.LoadBasicData(&setWeekLineBasicInfo);
 			pid = pStock->GetWeekLine(i);
 			EXPECT_EQ(setWeekLineBasicInfo.m_Date, pid->GetMarketDate());
-			EXPECT_STREQ(setWeekLineBasicInfo.m_Symbol, pid->GetStockSymbol());
+			EXPECT_STREQ(setWeekLineBasicInfo.m_Symbol, pid->GetStockSymbol().c_str());
 			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_LastClose) * pid->GetRatio(), pid->GetLastClose());
 			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Open) * pid->GetRatio(), pid->GetOpen());
 			EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_High) * pid->GetRatio(), pid->GetHigh());
@@ -2542,7 +2542,7 @@ namespace FireBirdTest {
 			pid = stock.GetWeekLine(i);
 			const CWeekLinePtr pWeekLine = pStock->GetWeekLine(i);
 			EXPECT_EQ(pWeekLine->GetMarketDate(), pid->GetMarketDate());
-			EXPECT_STREQ(pWeekLine->GetStockSymbol(), pid->GetStockSymbol());
+			EXPECT_STREQ(pWeekLine->GetStockSymbol().c_str(), pid->GetStockSymbol().c_str());
 			EXPECT_EQ(pWeekLine->GetLastClose(), pid->GetLastClose());
 			EXPECT_EQ(pWeekLine->GetOpen(), pid->GetOpen());
 			EXPECT_EQ(pWeekLine->GetHigh(), pid->GetHigh());

@@ -25,7 +25,7 @@ public:
 	void UpdateDB();
 
 	bool LoadDB();
-	bool LoadDB(const CString& strFileDirectory);
+	bool LoadDB(const string& strFileDirectory);
 	void SaveDB() const;
 	void Update();
 	void UpdateJson();
@@ -35,24 +35,24 @@ public:
 		m_finnhubInaccessibleStock.clear();
 	}
 
-	void SetDefaultFileName(const CString& fileName) noexcept { m_strFileName = fileName; }
-	CString GetDefaultFileName() { return m_strFileName; }
+	void SetDefaultFileName(const string& fileName) noexcept { m_strFileName = fileName; }
+	string GetDefaultFileName() { return m_strFileName; }
 
 	void SetUpdateDate(const long lDate) noexcept { m_lUpdateDate = lDate; }
 	long GetUpdateDate() const { return m_lUpdateDate; }
 
-	static int GetTiingoInquiryIndex(const CString& sString) { return gl_FinnhubInquiryType.GetInquiryType(sString); }
+	static int GetTiingoInquiryIndex(const string& sString) { return gl_FinnhubInquiryType.GetInquiryType(sString); }
 	CInaccessibleStocksPtr GetStock(int iInquireType) { return m_mapStock.at(iInquireType); }
 	void SetStock(const int iInquireType, const CInaccessibleStocksPtr& pStock) { m_mapStock[iInquireType] = pStock; }
-	void DeleteStock(int iInquireType, const CString& strStock);
-	bool HaveStock(int iInquireType, const CString& strStockCode) const;
+	void DeleteStock(int iInquireType, const string& strStock);
+	bool HaveStock(int iInquireType, const string& strStockCode) const;
 	size_t GetItemSize() const noexcept { return m_mapStock.size(); }
 
 	bool IsUpdateDB() const noexcept { return m_fUpdateDB; }
 	void SetUpdateDB(const bool fUpdate) noexcept { m_fUpdateDB = fUpdate; }
 
 protected:
-	CString m_strFileName{ _T("TiingoInaccessibleStock.json") }; // 配置文件名称
+	string m_strFileName{ _T("TiingoInaccessibleStock.json") }; // 配置文件名称
 
 	long m_lUpdateDate{ 19800101 }; // 本文件更新日期
 	map<int, CInaccessibleStocksPtr> m_mapStock; //

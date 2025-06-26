@@ -32,9 +32,9 @@ namespace FireBirdTest {
 			exchange.AddSymbol(s.c_str());
 		}
 		EXPECT_EQ(jsFinnhubInaccessibleExchange["UpdateDate"], 20221205);
-		EXPECT_STREQ(exchange.GetFunctionString(), _T("StockFundamentalsCompanyProfileConcise"));
-		EXPECT_STREQ(exchange.GetSymbol(0), _T("SS"));
-		EXPECT_STREQ(exchange.GetSymbol(1), _T("SZ"));
+		EXPECT_TRUE(exchange.GetFunctionString().compare( _T("StockFundamentalsCompanyProfileConcise"))== 0);
+		EXPECT_TRUE(exchange.GetSymbol(0).compare(_T("SS"))== 0);
+		EXPECT_TRUE(exchange.GetSymbol(1).compare( _T("SZ")) == 0);
 	}
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestDeleteExchange) {
@@ -73,11 +73,10 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.Update();
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetUpdateDate(), 20230101);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetItemSize(), 1);
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(),
-		             _T("WebSocketTrades"));
+		EXPECT_TRUE(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString().compare( _T("WebSocketTrades")) == 0);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->SymbolSize(), 2);
-		const CString str = gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetSymbol(0);
-		EXPECT_STREQ(str, _T("SS"));
+		const string str = gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetSymbol(0);
+		EXPECT_TRUE(str.compare( _T("SS")) == 0);
 
 		// »Ö¸´Ô­×´
 		DeleteFile(gl_systemConfiguration.GetConfigurationFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));
@@ -104,11 +103,10 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.Update();
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetUpdateDate(), 20230101);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetItemSize(), 1);
-		EXPECT_STREQ(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(),
-		             _T("WebSocketTrades"));
+		EXPECT_TRUE(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString().compare( _T("WebSocketTrades")) == 0);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->SymbolSize(), 2);
-		const CString str = gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetSymbol(0);
-		EXPECT_STREQ(str, _T("SS"));
+		const string str = gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetSymbol(0);
+		EXPECT_TRUE(str.compare( _T("SS")) == 0);
 
 		// »Ö¸´Ô­×´
 		DeleteFile(gl_systemConfiguration.GetConfigurationFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json"));

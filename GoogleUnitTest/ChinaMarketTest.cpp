@@ -1690,7 +1690,7 @@ namespace FireBirdTest {
 		setDayLineBasicInfo.Open();
 		while (!setDayLineBasicInfo.IsEOF()) {
 			const CDayLinePtr pDayLine = dynamic_pointer_cast<CDayLine>(dataChinaDayLine.GetData(i++));
-			EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, pDayLine->GetStockSymbol());
+			EXPECT_TRUE(setDayLineBasicInfo.m_Symbol.Compare(pDayLine->GetStockSymbol().c_str()) == 0);
 			setDayLineBasicInfo.MoveNext();
 		}
 		EXPECT_EQ(i, dataChinaDayLine.Size());

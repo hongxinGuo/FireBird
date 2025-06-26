@@ -31,8 +31,8 @@ void CVirtualHistoryCandleBasic::SaveBasicData(CVirtualSetHistoryCandleBasic* pV
 	auto ratio = GetRatio();
 
 	pVirtualSetHistoryCandleBasic->m_Date = GetMarketDate();
-	pVirtualSetHistoryCandleBasic->m_Exchange = GetExchange();
-	pVirtualSetHistoryCandleBasic->m_Symbol = GetStockSymbol();
+	pVirtualSetHistoryCandleBasic->m_Exchange = GetExchange().c_str();
+	pVirtualSetHistoryCandleBasic->m_Symbol = GetStockSymbol().c_str();
 	pVirtualSetHistoryCandleBasic->m_DisplaySymbol = GetDisplaySymbol();
 	pVirtualSetHistoryCandleBasic->m_LastClose = ConvertValueToString(GetLastClose(), ratio);
 	pVirtualSetHistoryCandleBasic->m_High = ConvertValueToString(GetHigh(), ratio);

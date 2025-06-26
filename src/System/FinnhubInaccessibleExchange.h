@@ -43,11 +43,11 @@ public:
 	void SetUpdateDate(const long lDate) noexcept { m_lUpdateDate = lDate; }
 	long GetUpdateDate() const { return m_lUpdateDate; }
 
-	static int GetFinnhubInquiryIndex(const CString& sString) { return gl_FinnhubInquiryType.GetInquiryType(sString); }
+	static int GetFinnhubInquiryIndex(const string& sString) { return gl_FinnhubInquiryType.GetInquiryType(sString); }
 	CInaccessibleExchangesPtr GetExchange(int iInquireType) { return m_mapExchange.at(iInquireType); }
 	void SetExchange(const int iInquireType, const CInaccessibleExchangesPtr& pExchange) { m_mapExchange[iInquireType] = pExchange; }
-	void DeleteExchange(int iInquireType, const CString& strExchange);
-	bool HaveExchange(int iInquireType, const CString& strExchangeCode) const;
+	void DeleteExchange(int iInquireType, const string& strExchange);
+	bool HaveExchange(int iInquireType, const string& strExchangeCode) const;
 	size_t GetItemSize() const noexcept { return m_mapExchange.size(); }
 
 	bool IsUpdateDB() const noexcept { return m_fUpdateDB; }

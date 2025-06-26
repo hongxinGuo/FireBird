@@ -9,7 +9,7 @@ CVirtualHistoryCandleExtend::CVirtualHistoryCandleExtend() {
 bool CVirtualHistoryCandleExtend::SaveExtendData(CVirtualSetHistoryCandleExtend* pVirtualSetHistoryCandleExtend) const {
 	ASSERT(pVirtualSetHistoryCandleExtend->IsOpen());
 	pVirtualSetHistoryCandleExtend->m_Date = m_lDate;
-	pVirtualSetHistoryCandleExtend->m_Symbol = m_strStockSymbol;
+	pVirtualSetHistoryCandleExtend->m_Symbol = m_strStockSymbol.c_str();
 	pVirtualSetHistoryCandleExtend->m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
 	pVirtualSetHistoryCandleExtend->m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
 	pVirtualSetHistoryCandleExtend->m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
@@ -161,8 +161,8 @@ bool CVirtualHistoryCandleExtend::LoadExtendData(const CVirtualSetHistoryCandleE
 bool CVirtualHistoryCandleExtend::Save(CVirtualSetHistoryCandle* pSet) const {
 	ASSERT(pSet->IsOpen());
 	pSet->m_Date = GetMarketDate();
-	pSet->m_Exchange = GetExchange();
-	pSet->m_Symbol = GetStockSymbol();
+	pSet->m_Exchange = GetExchange().c_str();
+	pSet->m_Symbol = GetStockSymbol().c_str();
 	pSet->m_DisplaySymbol = GetDisplaySymbol();
 	pSet->m_LastClose = ConvertValueToString(GetLastClose(), GetRatio());
 	pSet->m_High = ConvertValueToString(GetHigh(), GetRatio());

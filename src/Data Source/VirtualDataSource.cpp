@@ -33,7 +33,7 @@ CVirtualDataSource::CVirtualDataSource() {
 ///
 ////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::Run(long lMarketTime) {
-	CVirtualDataSourcePtr p = this->GetShared();
+	CVirtualDataSourcePtr p = this->GetShared(); //Note 这里传递至线程时要使用智能指针，以防止原智能指针被解析。
 	if (!IsInquiring()) {
 		gl_runtime.thread_executor()->post([p, lMarketTime] { //Note 此处必须使用thread_executor
 				p->GenerateInquiryMessage(lMarketTime);

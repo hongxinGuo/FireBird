@@ -49,9 +49,9 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetStockCode) {
 		CVirtualHistoryCandleExtend dl;
-		EXPECT_STREQ(dl.GetStockSymbol(), _T(""));
+		EXPECT_STREQ(dl.GetStockSymbol().c_str(), _T(""));
 		dl.SetStockSymbol(_T("600000.SS"));
-		EXPECT_STREQ(dl.GetStockSymbol(), _T("600000.SS"));
+		EXPECT_STREQ(dl.GetStockSymbol().c_str(), _T("600000.SS"));
 	}
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetDisplaySymbol) {

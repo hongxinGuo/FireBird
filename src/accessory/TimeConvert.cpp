@@ -7,11 +7,11 @@
 // 将逝去的时间转换成UTC时间。默认时区为东八区。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
-time_t ConvertBufferToTime(CString strFormat, const char* BufferMarketTime, const time_t tTimeZoneOffset) {
+time_t ConvertBufferToTime(const string& strFormat, const char* BufferMarketTime, const time_t tTimeZoneOffset) {
 	tm tm_{ 0, 0, 0, 0, 0, 0 };
 	int year = 1970, month = 1, day = 0, hour = 15, minute = 0, second = 0;
 
-	sscanf_s(BufferMarketTime, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
+	sscanf_s(BufferMarketTime, strFormat.c_str(), &year, &month, &day, &hour, &minute, &second);
 	tm_.tm_year = year - 1900;
 	tm_.tm_mon = month - 1;
 	tm_.tm_mday = day;

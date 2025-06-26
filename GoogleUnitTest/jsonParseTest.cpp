@@ -162,7 +162,7 @@ namespace FireBirdTest {
 		const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(svData, _T("sh600601"));
 
 		EXPECT_EQ(pvDayLine->size(), 2);
-		EXPECT_STREQ(pvDayLine->at(0)->GetStockSymbol(), _T("600601.SS")) << "此时使用标准股票代码形式";
+		EXPECT_STREQ(pvDayLine->at(0)->GetStockSymbol().c_str(), _T("600601.SS")) << "此时使用标准股票代码形式";
 		EXPECT_EQ(pvDayLine->at(0)->GetMarketDate(), 20230119);
 		EXPECT_EQ(pvDayLine->at(0)->GetOpen(), 2550);
 		EXPECT_EQ(pvDayLine->at(0)->GetClose(), 2600);
@@ -170,7 +170,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(pvDayLine->at(0)->GetLow(), 2550);
 		EXPECT_EQ(pvDayLine->at(0)->GetLastClose(), 0) << "第一个数据没有昨收盘数据";
 		EXPECT_EQ(pvDayLine->at(0)->GetVolume(), 8616200);
-		EXPECT_STREQ(pvDayLine->at(1)->GetStockSymbol(), _T("600601.SS")) << "此时使用标准股票代码形式";
+		EXPECT_STREQ(pvDayLine->at(1)->GetStockSymbol().c_str(), _T("600601.SS")) << "此时使用标准股票代码形式";
 		EXPECT_EQ(pvDayLine->at(1)->GetMarketDate(), 20230120);
 		EXPECT_EQ(pvDayLine->at(1)->GetOpen(), 2600);
 		EXPECT_EQ(pvDayLine->at(1)->GetClose(), 2620);

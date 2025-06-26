@@ -24,14 +24,14 @@ void CProductTiingo::AddInaccessibleSymbol() {
 	gl_tiingoInaccessibleStock.SetUpdateDB(true);
 	try { // 存在此申请类型
 		const auto pStock = gl_tiingoInaccessibleStock.GetStock(m_iInquireType);
-		if (!pStock->HaveSymbol(m_strInquiringSymbol)) {	// 新的证券代码？
-			pStock->AddSymbol(m_strInquiringSymbol);
+		if (!pStock->HaveSymbol(m_strInquiringSymbol.GetString())) {	// 新的证券代码？
+			pStock->AddSymbol(m_strInquiringSymbol.GetString());
 		}
 	} catch (out_of_range&) {	// 不存在此申请类型？则存储此新类型和该证券名称
 		const auto pNewStock = make_shared<CInaccessible>();
 		pNewStock->SetFunction(m_iInquireType);
 		pNewStock->SetFunctionString(gl_FinnhubInquiryType.GetInquiryString(m_iInquireType));
-		pNewStock->AddSymbol(m_strInquiringSymbol);
+		pNewStock->AddSymbol(m_strInquiringSymbol.GetString());
 		gl_tiingoInaccessibleStock.SetStock(m_iInquireType, pNewStock);
 	}
 }

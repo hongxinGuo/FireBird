@@ -245,8 +245,8 @@ public:
 		m_iTiingoCompanyFinancialStateUpdateRate = iRate;
 	}
 
-	[[nodiscard]] CString GetBenchmarkTestFileDirectory() const noexcept { return m_strBenchmarkTestFileDirectory; }
-	void SetBenchmarkTestFileDirectory(const CString& strFileDirectory) {
+	[[nodiscard]] string GetBenchmarkTestFileDirectory() const noexcept { return m_strBenchmarkTestFileDirectory; }
+	void SetBenchmarkTestFileDirectory(const string& strFileDirectory) {
 		m_fUpdateDB = true;
 		m_strBenchmarkTestFileDirectory = strFileDirectory;
 	}
@@ -375,7 +375,7 @@ protected:
 	int m_iTiingoCompanyFinancialStateUpdateRate{ 30 }; // Tiingo公司金融数据更新
 
 	// 测试系统
-	CString m_strBenchmarkTestFileDirectory{ _T("C:\\FireBird\\Test Data\\Benchmark\\") }; // 性能测试文件所在的目录
+	string m_strBenchmarkTestFileDirectory{ _T("C:\\FireBird\\Test Data\\Benchmark\\") }; // 性能测试文件所在的目录
 
 	bool m_fUpdateDB{ false };
 	bool m_fInitialized{ false };

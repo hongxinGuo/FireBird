@@ -140,7 +140,7 @@ namespace FireBirdTest {
 
 		weekLineContainer2.LoadCurrentWeekLine();
 		pWeekLine = static_pointer_cast<CWeekLine>(weekLineContainer2.GetData(0));
-		EXPECT_STREQ(pWeekLine->GetStockSymbol(), _T("600000.SS"));
+		EXPECT_STREQ(pWeekLine->GetStockSymbol().c_str(), _T("600000.SS"));
 		EXPECT_EQ(pWeekLine->GetMarketDate(), 20191230) << "20200101之前的星期一";
 
 		// 恢复原态

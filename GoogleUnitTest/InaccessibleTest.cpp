@@ -23,7 +23,7 @@ namespace FireBirdTest {
 		}
 
 	protected:
-		vector<CString> vSymbols;
+		vector<string> vSymbols;
 		CInaccessible inaccessible;
 	};
 
@@ -32,7 +32,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(inaccessible.HaveSymbol(_T("SZ"))) << "默认包括US";
 		EXPECT_TRUE(inaccessible.HaveSymbol(_T("SS"))) << "默认包括US";
 		EXPECT_FALSE(inaccessible.HaveSymbol(_T("FA"))) << "默认不包括FA";
-		const vector<CString> v{ _T("US2"), _T("SZ2"), _T("SS2") };
+		const vector<string> v{ _T("US2"), _T("SZ2"), _T("SS2") };
 		inaccessible.Assign(_T("Another"), 2, v);
 
 		EXPECT_TRUE(inaccessible.HaveSymbol(_T("US2")));

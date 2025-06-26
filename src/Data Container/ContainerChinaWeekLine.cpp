@@ -106,7 +106,7 @@ void CContainerChinaWeekLine::UpdateData(const vector<CWeekLinePtr>& vTempWeekLi
 
 void CContainerChinaWeekLine::UpdateData(const CVirtualHistoryCandleExtendPtr& pHistoryCandleExtend) const {
 	for (const auto& pData : m_vHistoryData) {
-		if (strcmp(pData->GetStockSymbol(), pHistoryCandleExtend->GetStockSymbol()) == 0) {
+		if (pData->GetStockSymbol().compare(pHistoryCandleExtend->GetStockSymbol()) == 0) {
 			//
 			static_pointer_cast<CWeekLine>(pData)->UpdateWeekLine(pHistoryCandleExtend);
 			break;

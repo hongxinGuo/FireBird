@@ -1092,7 +1092,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek() {
 	CreateStockCodeSet(setWeekLineStockCode, dataChinaWeekLine.GetContainer());
 
 	for (const auto& pData : *pDayLineData) {
-		if (!setWeekLineStockCode.contains(pData->GetStockSymbol())) {
+		if (!setWeekLineStockCode.contains(pData->GetStockSymbol().c_str())) {
 			//周线数据容器中无此日线数据
 			// 存储此日线数据至周线数据容器
 			const auto pWeekLine = make_shared<CWeekLine>();
@@ -1123,8 +1123,8 @@ bool CChinaMarket::CreateStockCodeSet(set<CString>& setStockCode, vector<CVirtua
 	vector<CString> vectorStockCode;
 
 	for (const auto& pData : *pvData) {
-		CString strStockSymbol = pData->GetStockSymbol();
-		vectorStockCode.push_back(strStockSymbol);
+		string strStockSymbol = pData->GetStockSymbol();
+		vectorStockCode.push_back(strStockSymbol.c_str());
 	}
 	setStockCode.insert(vectorStockCode.begin(), vectorStockCode.end());
 

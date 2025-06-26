@@ -112,7 +112,7 @@ namespace FireBirdTest {
 		switch (m_iCount) {
 		case 1:
 			EXPECT_TRUE(m_DayLinePtr != nullptr);
-			EXPECT_STREQ(m_DayLinePtr->GetStockSymbol(), _T("600000.SS"));
+			EXPECT_STREQ(m_DayLinePtr->GetStockSymbol().c_str(), _T("600000.SS"));
 			EXPECT_STREQ(m_DayLinePtr->GetDisplaySymbol(), _T("ÆÖ·¢ÒøÐÐ"));
 			EXPECT_EQ(m_DayLinePtr->GetClose(), 11490);
 			EXPECT_EQ(m_DayLinePtr->GetHigh(), 11560);

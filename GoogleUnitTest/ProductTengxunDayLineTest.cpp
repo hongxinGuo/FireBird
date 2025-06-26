@@ -70,7 +70,7 @@ namespace FireBirdTest {
 
 		const auto vDayLine = pTengxunDayLine->GetProcessedDayLine();
 		EXPECT_EQ(vDayLine.size(), 4) << "两个数据各有两个日期的日线数据";
-		EXPECT_STREQ(vDayLine.at(0)->m_strStockSymbol, _T("600601.SS")) << "腾讯日线不从数据中解析股票代码，而是直接使用被查询股票的代码";
+		EXPECT_STREQ(vDayLine.at(0)->m_strStockSymbol.c_str(), _T("600601.SS")) << "腾讯日线不从数据中解析股票代码，而是直接使用被查询股票的代码";
 		EXPECT_EQ(vDayLine.at(0)->m_lDate, 20230119);
 		EXPECT_EQ(vDayLine.at(0)->m_lLastClose, 0) << "第一个数据没有收盘数据";
 		EXPECT_EQ(vDayLine.at(1)->m_lDate, 20230120);
