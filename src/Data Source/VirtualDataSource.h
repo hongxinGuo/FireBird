@@ -56,8 +56,7 @@ public:
 	virtual void ConfigureInternetOption() {
 		ASSERT(false); // 调用了基类函数ConfigureInternetOption
 	} // 配置internet参数。继承类必须实现此功能，每个网站的状态都不一样，故而需要单独配置。
-	virtual void UpdateStatus(CWebDataPtr pData) {
-	} //成功接收后更新系统状态。
+	virtual void UpdateStatus(CWebDataPtr) {} //成功接收后更新系统状态。
 
 	void CreateTotalInquiringString();
 	string GetInquiringString() const noexcept { return m_strInquiry; }

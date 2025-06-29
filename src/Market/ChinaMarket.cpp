@@ -488,7 +488,7 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(const string& str) con
 	string strStockCode = XferNeteaseToStandard(strNetease);
 	if (!gl_dataContainerChinaStock.IsSymbol(strStockCode)) {
 		string strReport = _T("网易日线查询股票代码错误：");
-		TRACE(_T("网易日线查询股票代码错误：%s\n"), strStockCode);
+		TRACE(_T("网易日线查询股票代码错误：%s\n"), strStockCode.c_str());
 		strReport += strStockCode;
 		gl_systemMessage.PushInnerSystemInformationMessage(strReport);
 		return false;

@@ -22,15 +22,15 @@ public:
 	virtual ~CVirtualWebProduct() = default;
 
 	virtual string CreateMessage() { return _T(""); };
-	virtual void CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>> pvWebData) {}
+	virtual void CalculateTotalDataLength(shared_ptr<vector<CWebDataPtr>>) {}
 
-	virtual void ParseAndStoreWebData(CWebDataPtr pWebData) {} // default do nothing
+	virtual void ParseAndStoreWebData(CWebDataPtr) {} // default do nothing
 	virtual void ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>> pvWebData) {// 一次处理多个接收到的数据。目前只有腾讯日线数据需要这种模式
 		ASSERT(pvWebData->size() == 1);
 		ParseAndStoreWebData(pvWebData->at(0)); // 默认只有一个数据，
 	}
 	virtual void AddInaccessibleSymbol() {} // 检查是否允许申请此类数据（当使用免费账户时，数据源会限制使用其某些功能）
-	virtual void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {} // default do nothing
+	virtual void UpdateDataSourceStatus(CVirtualDataSourcePtr) {} // default do nothing
 
 	bool CheckInaccessible();
 	bool IsVoidJson(const CWebDataPtr& pWebData);
@@ -60,7 +60,7 @@ public:
 	int GetInquireType() const noexcept { return m_iInquireType; }
 
 	// 测试用
-	virtual bool __Test_checkAccessRight(CWebDataPtr pWebData) { return true; }  // todo 不再使用，准备删除之
+	virtual bool __Test_checkAccessRight(CWebDataPtr) { return true; }  // todo 不再使用，准备删除之
 
 protected:
 	CVirtualMarketWeakPtr m_pMarket;// Product被用于工作线程中。当系统退出时，由于无法保证工作线程先结束，故而此处使用weak_ptr智能指针以防止内存泄露。

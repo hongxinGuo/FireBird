@@ -713,7 +713,7 @@ void CChinaStock::CalculateHighLowLimit(const CWebRTDataPtr& pRTData) {
 				iCompare = (static_cast<double>(i2) * 100 + pRTData->GetLastClose() * 0.65) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
 				if (iCompare <= 21) {
 					if ((iCompare % 5) != 0) {// 确保涨跌幅为5%的倍数
-						TRACE("%s iCompare = %i, 不是5的倍数\n", m_strSymbol, iCompare);
+						TRACE("%s iCompare = %i, 不是5的倍数\n", m_strSymbol.c_str(), iCompare);
 					}
 					d1 = static_cast<double>(i2) * 100 / pRTData->GetLastClose();
 					if (d1 > iCompare) {
@@ -745,7 +745,7 @@ void CChinaStock::CalculateHighLowLimit(const CWebRTDataPtr& pRTData) {
 				iCompare = (static_cast<double>(i2) * 100 + pRTData->GetLastClose() * 0.65) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
 				if (iCompare <= 21) {
 					if ((iCompare % 5) != 0) {// 确保涨跌幅为5%的倍数
-						TRACE("%s iCompare = %i, 不是5的倍数\n", m_strSymbol, iCompare);
+						TRACE("%s iCompare = %i, 不是5的倍数\n", m_strSymbol.c_str(), iCompare);
 					}
 					d1 = static_cast<double>(i2) * 100 / pRTData->GetLastClose();
 					if (d1 < iCompare) {
@@ -1235,7 +1235,7 @@ bool CChinaStock::IsTodayDataChanged() const {
 bool CChinaStock::IsVolumeConsistence() noexcept {
 	if ((m_lHighLimit > 0) && (m_lLowLimit > 0)) {
 		if ((m_lHighLimitFromTengxun != m_lHighLimit) || (m_lLowLimitFromTengxun != m_lLowLimit)) {
-			TRACE(_T("%s涨跌停板价格不符：%d %d    %d  %d\n"), GetSymbol(), m_lHighLimitFromTengxun, m_lHighLimit, m_lLowLimitFromTengxun, m_lLowLimit);
+			TRACE(_T("%s涨跌停板价格不符：%d %d    %d  %d\n"), GetSymbol().c_str(), m_lHighLimitFromTengxun, m_lHighLimit, m_lLowLimitFromTengxun, m_lLowLimit);
 		}
 		if ((m_lPBuy[0] > 0) && (m_lPSell[0] > 0)) {// 当涨跌停板打开时
 			m_lHighLimit = m_lLowLimit = 0; // 重置此两变量
@@ -1243,7 +1243,7 @@ bool CChinaStock::IsVolumeConsistence() noexcept {
 	}
 	if (GetVolume() != GetOrdinaryBuyVolume() + GetOrdinarySellVolume() + GetAttackBuyVolume()
 		+ GetAttackSellVolume() + GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume()) {
-		TRACE(_T("%14Id %s股数%d\n"), ConvertToDateTime(GetTransactionTime(), gl_pChinaMarket->GetTimeZone()), GetSymbol(), GetVolume());
+		TRACE(_T("%14Id %s股数%d\n"), ConvertToDateTime(GetTransactionTime(), gl_pChinaMarket->GetTimeZone()), GetSymbol().c_str(), GetVolume());
 		TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
 		      GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
 		return false;

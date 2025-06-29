@@ -1142,7 +1142,7 @@ namespace FireBirdTest {
 		case 31: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
 			EXPECT_TRUE(m_RTData.GetSymbol().compare( _T("600000.SS")) == 0);
-			EXPECT_TRUE(m_RTData.GetStockName().c_str(), _T("浦发银行"));
+			EXPECT_TRUE(m_RTData.GetStockName() == _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
