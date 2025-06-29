@@ -6,7 +6,7 @@
 
 CContainerCryptoDayLine::CContainerCryptoDayLine() {}
 
-bool CContainerCryptoDayLine::SaveDB(const CString& strCryptoSymbol) {
+bool CContainerCryptoDayLine::SaveDB(const string& strCryptoSymbol) {
 	try {
 		CSetCryptoDayLine setCryptoDayLineBasic;
 		UpdateBasicDB(&setCryptoDayLineBasic, strCryptoSymbol);
@@ -17,12 +17,12 @@ bool CContainerCryptoDayLine::SaveDB(const CString& strCryptoSymbol) {
 	return true;
 }
 
-bool CContainerCryptoDayLine::LoadDB(const CString& strCryptoSymbol) {
+bool CContainerCryptoDayLine::LoadDB(const string& strCryptoSymbol) {
 	CSetCryptoDayLine setDayLineBasic;
 
 	// 装入DayLine数据
 	setDayLineBasic.m_strFilter = _T("[Symbol] = '");
-	setDayLineBasic.m_strFilter += strCryptoSymbol;
+	setDayLineBasic.m_strFilter += strCryptoSymbol.c_str();
 	setDayLineBasic.m_strFilter += _T("'");
 	setDayLineBasic.m_strSort = _T("[Date]");
 	setDayLineBasic.Open();

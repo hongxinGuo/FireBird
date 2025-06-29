@@ -100,7 +100,7 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 	lCurrentPos += 10; // 跨过字符串： sh601006="
 	// 读入证券名称
 	string_view sv = GetNextField(svData, lCurrentPos, ',');
-	m_strStockName.Append(sv.data(), sv.length());
+	m_strStockName.append(sv.data(), sv.length());
 	// 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
 	sv = GetNextField(svData, lCurrentPos, ',');
 	m_lOpen = StrToDecimal(sv, 3);
@@ -253,11 +253,11 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	const long lMarket = atol(sv.data());
 
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	m_strStockName.Append(sv.data(), sv.size()); // 设置股票名称
+	m_strStockName.append(sv.data(), sv.size()); // 设置股票名称
 
 	// 六位股票代码
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	m_strSymbol.Append(sv.data(), sv.size());
+	m_strSymbol.append(sv.data(), sv.size());
 	switch (lMarket) {
 	case 1: // 上海市场
 		m_strSymbol += _T(".SS");

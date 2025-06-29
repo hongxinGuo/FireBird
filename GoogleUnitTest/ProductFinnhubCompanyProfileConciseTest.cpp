@@ -40,14 +40,14 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyProfileConciseTest, TestInitialize) {
 		EXPECT_EQ(companyProfileConcise.GetIndex(), 0);
-		EXPECT_STREQ(companyProfileConcise.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/profile2?symbol="));
+		EXPECT_STREQ(companyProfileConcise.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/stock/profile2?symbol="));
 	}
 
 	TEST_F(CFinnhubCompanyProfileConciseTest, TestCreatMessage) {
 		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateCompanyProfile(true);
 		companyProfileConcise.SetMarket(gl_pWorldMarket);
 		companyProfileConcise.SetIndex(1);
-		EXPECT_STREQ(companyProfileConcise.CreateMessage(), companyProfileConcise.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol());
+		EXPECT_STREQ(companyProfileConcise.CreateMessage().c_str(), (companyProfileConcise.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol()).c_str());
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsUpdateCompanyProfile()) << "处理接收到的数据后才设置此标识";
 
 		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateCompanyProfile(true);
@@ -69,14 +69,14 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol);
+			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol.c_str());
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCountry(_T(""));
 			m_pWebData = pData->m_pData;
 			m_FinnhubCompanyProfileConcise.__Test_checkAccessRight(m_pWebData);
 
 			m_FinnhubCompanyProfileConcise.SetMarket(gl_pWorldMarket);
-			m_FinnhubCompanyProfileConcise.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
+			m_FinnhubCompanyProfileConcise.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol.c_str()));
 		}
 
 		void TearDown() override {
@@ -104,40 +104,40 @@ namespace FireBirdTest {
 		m_FinnhubCompanyProfileConcise.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
-			EXPECT_STREQ(m_pStock->GetExchangeCode(), _T("US")) << "交易所代码不使用读取的数据";
+			EXPECT_TRUE(m_pStock->GetExchangeCode()== _T("US")) << "交易所代码不使用读取的数据";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_STREQ(m_pStock->GetExchangeCode(), _T("US")) << "交易所代码不使用读取的数据";
+			EXPECT_TRUE(m_pStock->GetExchangeCode()== _T("US")) << "交易所代码不使用读取的数据";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 2: // 格式不对
-			EXPECT_STREQ(m_pStock->GetExchangeCode(), _T("US")) << "交易所代码不使用读取的数据";
+			EXPECT_TRUE(m_pStock->GetExchangeCode()== _T("US")) << "交易所代码不使用读取的数据";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 3: // 缺乏address项
-			EXPECT_STREQ(m_pStock->GetExchangeCode(), _T("US")) << "交易所代码不使用读取的数据";
+			EXPECT_TRUE(m_pStock->GetExchangeCode()== _T("US")) << "交易所代码不使用读取的数据";
 			EXPECT_STRNE(m_pStock->GetCountry(), _T("US")) << "没有赋值此项";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 4: // 空数据
-			EXPECT_STREQ(m_pStock->GetExchangeCode(), _T("US")) << "交易所代码不使用读取的数据";
+			EXPECT_TRUE(m_pStock->GetExchangeCode()== _T("US")) << "交易所代码不使用读取的数据";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 10:
-			EXPECT_STREQ(m_pStock->GetExchangeCode(), _T("US")) << "交易所代码不使用读取的数据";
-			EXPECT_STREQ(m_pStock->GetTicker(), _T("AAPL"));
-			EXPECT_STREQ(m_pStock->GetCountry(), _T("US"));
+			EXPECT_TRUE(m_pStock->GetExchangeCode()== _T("US")) << "交易所代码不使用读取的数据";
+			EXPECT_TRUE(m_pStock->GetTicker()== _T("AAPL"));
+			EXPECT_TRUE(m_pStock->GetCountry()== _T("US"));
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());

@@ -36,11 +36,11 @@ public:
 	void ChangeFinnhubAccountTypeToPaid();
 	bool IsPaidTypeFinnhubAccount() const noexcept { return m_bFinnhubAccountFeePaid; }
 
-	void SetConfigurationFileDirectory(const CString& fileDirectory) { m_strDirectory = fileDirectory; }
-	[[nodiscard]] CString GetConfigurationFileDirectory() { return m_strDirectory; }
-	void SetDefaultFileName(const CString& fileName) { m_strFileName = fileName; }
-	[[nodiscard]] CString GetDefaultFileName() { return m_strFileName; }
-	[[nodiscard]] CString GetConfigurationFileDirectoryAndName() const { return m_strDirectory + m_strFileName; }
+	void SetConfigurationFileDirectory(const string& fileDirectory) { m_strDirectory = fileDirectory; }
+	[[nodiscard]] string GetConfigurationFileDirectory() { return m_strDirectory; }
+	void SetDefaultFileName(const string& fileName) { m_strFileName = fileName; }
+	[[nodiscard]] string GetDefaultFileName() { return m_strFileName; }
+	[[nodiscard]] string GetConfigurationFileDirectoryAndName() const { return m_strDirectory + m_strFileName; }
 
 	// 环境配置
 	int GetDisplayPropertyPage() const noexcept { return m_iDisplayPropertyPage; }
@@ -53,10 +53,10 @@ public:
 	void SetDebugMode(const bool bFlag) noexcept { m_bDebugMode = bFlag; }
 	[[nodiscard]] bool IsReloadSystem() const noexcept { return m_bReloadSystem; }
 	void SetReloadSystem(const bool bFlag) noexcept { m_bReloadSystem = bFlag; }
-	[[nodiscard]] CString GetDatabaseAccountName() noexcept { return m_strDatabaseAccountName; }
-	void SetDatabaseAccountName(const CString& strAccountName) noexcept { m_strDatabaseAccountName = strAccountName; }
-	[[nodiscard]] CString GetDatabaseAccountPassword() noexcept { return m_strDatabaseAccountPassword; }
-	void SetDatabaseAccountPassword(const CString& strPassword) noexcept { m_strDatabaseAccountPassword = strPassword; }
+	[[nodiscard]] string GetDatabaseAccountName() noexcept { return m_strDatabaseAccountName; }
+	void SetDatabaseAccountName(const string& strAccountName) noexcept { m_strDatabaseAccountName = strAccountName; }
+	[[nodiscard]] string GetDatabaseAccountPassword() noexcept { return m_strDatabaseAccountPassword; }
+	void SetDatabaseAccountPassword(const string& strPassword) noexcept { m_strDatabaseAccountPassword = strPassword; }
 
 	[[nodiscard]] int GetBackgroundThreadPermittedNumber() const noexcept { return m_iBackgroundThreadPermittedNumber; }
 
@@ -84,8 +84,8 @@ public:
 
 	// World market
 	long GetWorldMarketResettingTime() const noexcept { return m_lMarketResettingTime; }
-	[[nodiscard]] CString GetFinnhubToken() noexcept { return m_strFinnhubToken; }
-	[[nodiscard]] CString GetQuandlToken() noexcept { return m_strQuandlToken; }
+	[[nodiscard]] string GetFinnhubToken() noexcept { return m_strFinnhubToken; }
+	[[nodiscard]] string GetQuandlToken() noexcept { return m_strQuandlToken; }
 	[[nodiscard]] auto GetWorldMarketFinnhubInquiryTime() const noexcept { return m_worldMarketFinnhubInquiryTime; } // 单位为毫秒
 	void SetWorldMarketFinnhubInquiryTime(const int iWorldMarketFinnhubInquiryTime) noexcept {
 		m_worldMarketFinnhubInquiryTime = chrono::milliseconds(iWorldMarketFinnhubInquiryTime);
@@ -109,14 +109,14 @@ public:
 	[[nodiscard]] bool IsUsingNeteaseDayLineServer() const noexcept { return m_iChinaMarketDayLineServer == 0; }
 	[[nodiscard]] bool IsUsingTengxunDayLineServer() const noexcept { return m_iChinaMarketDayLineServer == 1; }
 
-	void SetCurrentStock(const CString& stock) noexcept { m_strCurrentStock = stock; }
-	CString GetCurrentStock() const noexcept { return m_strCurrentStock; }
+	void SetCurrentStock(const string& stock) noexcept { m_strCurrentStock = stock; }
+	string GetCurrentStock() const noexcept { return m_strCurrentStock; }
 
 	// Tiingo.com
 	void ChangeTiingoAccountTypeToFree();
 	void ChangeTiingoAccountTypeToPaid();
 	bool IsPaidTypeTiingoAccount() const noexcept { return m_bTiingoAccountFeePaid; }
-	[[nodiscard]] CString GetTiingoToken() noexcept { return m_strTiingoToken; }
+	[[nodiscard]] string GetTiingoToken() noexcept { return m_strTiingoToken; }
 
 	[[nodiscard]] int GetTiingoIEXTopOfBookUpdateDate() const noexcept { return m_lTiingoIEXTopOfBookUpdateDate; }
 	void SetTiingoIEXTopOfBookUpdateDate(const long lTiingoIEXTopOfBookUpdateDate) noexcept {
@@ -306,8 +306,8 @@ public:
 
 protected:
 	static bool sm_bInitialized; // 使用静态变量来保证只生成唯一实列。
-	CString m_strDirectory; // 配置文件目录
-	CString m_strFileName{ _T("SystemConfiguration.json") }; // 配置文件名称
+	string m_strDirectory; // 配置文件目录
+	string m_strFileName{ _T("SystemConfiguration.json") }; // 配置文件名称
 
 	// 环境配置
 	int m_iDisplayPropertyPage{ 0 }; // application : 0, 
@@ -316,8 +316,8 @@ protected:
 	int m_iLogLevel{ SPDLOG_LEVEL_TRACE }; // spdlog日志文件记录等级: trace, debug, info, warn, error, critical, off。默认记录等级为跟踪级（所有日志皆记录）
 	bool m_bDebugMode{ false }; // 系统是否是测试状态
 	bool m_bReloadSystem{ true }; // 系统是否允许周期性重启
-	CString m_strDatabaseAccountName{ _T("FireBird") }; // 数据库账户名称
-	CString m_strDatabaseAccountPassword{ _T("firebird") }; // 数据库账户密码
+	string m_strDatabaseAccountName{ _T("FireBird") }; // 数据库账户名称
+	string m_strDatabaseAccountPassword{ _T("firebird") }; // 数据库账户密码
 	int m_iBackgroundThreadPermittedNumber{ 8 }; // 后台线程最大允许值
 
 	// 系统参数
@@ -327,18 +327,18 @@ protected:
 
 	// World Market
 	long m_lMarketResettingTime{ 170000 }; // 默认市场重置时间为170000
-	CString m_strFinnhubToken{ _T("") }; // 令牌
-	CString m_strQuandlToken{ _T("") }; // 令牌
+	string m_strFinnhubToken{ _T("") }; // 令牌
+	string m_strQuandlToken{ _T("") }; // 令牌
 	bool m_bFinnhubAccountFeePaid{ true }; // 付费账户或者免费账户
 	bool m_bQuandlAccountFeePaid{ true };
 	chrono::milliseconds m_worldMarketFinnhubInquiryTime{ 60000 / 50 }; // 默认每分钟最多查询50次。付费账户每分钟300次（实时数据为900次），免费账户每分钟60次。
 	chrono::milliseconds m_worldMarketTiingoInquiryTime{ 400 };// 每次查询间隔时间，单位为毫秒。付费账户每小时20000次，免费账户每小时500次。
 	chrono::milliseconds m_worldMarketQuandlInquiryTime{ 3600000 / 100 }; // 每次查询间隔时间，单位为毫秒.默认每小时最多查询100次
-	CString m_strCurrentStock{ _T("") }; // 当前所选股票
+	string m_strCurrentStock{ _T("") }; // 当前所选股票
 
 	// Tiingo.com
 	bool m_bTiingoAccountFeePaid{ true };
-	CString m_strTiingoToken{ _T("") };
+	string m_strTiingoToken{ _T("") };
 	long m_lTiingoIEXTopOfBookUpdateDate{ 19800101 };
 	long m_lTiingoStockDayLineProcessedDate{ 19800101 };
 	long m_lTiingoStock52WeekHighLowUpdateDate{ 19800101 };

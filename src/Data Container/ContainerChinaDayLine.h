@@ -12,8 +12,8 @@ public:
 	CContainerChinaDayLine& operator=(CContainerChinaDayLine&& other) noexcept = delete;
 	~CContainerChinaDayLine() override = default;
 
-	bool SaveDB(const CString& strStockSymbol) final;
-	bool LoadDB(const CString& strStockSymbol) final;
+	bool SaveDB(const string& strStockSymbol) final;
+	bool LoadDB(const string& strStockSymbol) final;
 
 	CWeekLinePtr CreateNewWeekLine(long& lCurrentDayLinePos) const;
 

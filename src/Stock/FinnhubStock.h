@@ -173,7 +173,7 @@ public:
 	void SetShareOutstanding(const double dShareOutstanding) noexcept { m_dShareOutstanding = dShareOutstanding; }
 	CString GetState() const { return m_strState; }
 	void SetState(const CString& strState) { m_strState = strState; }
-	CString GetTicker() const { return m_strTicker; }
+	string GetTicker() const { return m_strTicker; }
 	void SetTicker(const CString& strTicker) { m_strTicker = strTicker; }
 	CString GetWebURL() const { return m_strWebURL; }
 	void SetWebURL(const CString& strWebURL) { m_strWebURL = strWebURL; }
@@ -203,9 +203,9 @@ public:
 	void SetSECFilingsUpdateDate(long lDate) noexcept;
 	long GetSECFilingsUpdateDate();
 
-	CString GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const;
-	CString GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) const;
-	CString GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTime);
+	string GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const;
+	string GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) const;
+	string GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTime);
 
 	bool IsUSMarket() const;
 
@@ -256,7 +256,7 @@ protected:
 	CString m_strPhone{ _T(" ") };
 	double m_dShareOutstanding{ 0 };
 	CString m_strState{ _T(" ") };
-	CString m_strTicker{ _T(" ") };
+	string m_strTicker{ _T(" ") };
 	CString m_strWebURL{ _T(" ") };
 	CString m_strLogo{ _T(" ") };
 	CString m_strFinnhubIndustry{ _T(" ") };

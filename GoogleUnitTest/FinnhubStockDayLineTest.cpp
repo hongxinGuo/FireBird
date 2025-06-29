@@ -37,15 +37,15 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockDayLineTest, TestInitialize) {
 		EXPECT_EQ(stockDayLine.GetIndex(), 0);
-		EXPECT_STREQ(stockDayLine.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/candle?symbol="));
+		EXPECT_STREQ(stockDayLine.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/stock/candle?symbol="));
 	}
 
 	TEST_F(CFinnhubStockDayLineTest, TestCreatMessage) {
 		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateDayLine(true);
 		stockDayLine.SetMarket(gl_pWorldMarket);
 		stockDayLine.SetIndex(1);
-		EXPECT_STREQ(stockDayLine.CreateMessage(),
-		             stockDayLine.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
+		EXPECT_TRUE(stockDayLine.CreateMessage() ==
+			stockDayLine.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsUpdateDayLine()) << "接收到的数据处理后方重置此标识";
 
 		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateDayLine(true);
@@ -85,9 +85,9 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubStockDayLine.__Test_checkAccessRight(m_pWebData);
 
-			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol);
+			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol.c_str());
 			m_finnhubStockDayLine.SetMarket(gl_pWorldMarket);
-			m_finnhubStockDayLine.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
+			m_finnhubStockDayLine.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol.c_str()));
 		}
 
 		void TearDown() override {

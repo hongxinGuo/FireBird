@@ -9,7 +9,7 @@ using namespace testing;
 
 namespace FireBirdTest {
 	struct SinaRTData {
-		SinaRTData(int count, const CString& Symbol, int iType, bool fActive, time_t tt) {
+		SinaRTData(int count, const string& Symbol, int iType, bool fActive, time_t tt) {
 			m_iCount = count;
 			m_strSymbol = Symbol;
 			m_iSourceType = iType;
@@ -19,7 +19,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_iCount;
-		CString m_strSymbol;
+		string m_strSymbol;
 		int m_iSourceType;
 		bool m_fActive;
 		time_t m_tt;
@@ -104,7 +104,7 @@ namespace FireBirdTest {
 	TEST_P(TaskDistributeSinaRTDataToProperStockTest, TestCheck) {
 		CString strMessage, strRight;
 		auto lTotalStock = gl_dataContainerChinaStock.Size();
-		CString strSymbol;
+		string strSymbol;
 
 		gl_qChinaMarketRTData.enqueue(pRTData);
 		gl_pChinaMarket->DistributeRTData();

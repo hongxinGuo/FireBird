@@ -13,7 +13,7 @@ public:
 	void Reset() override;
 
 	CTiingoCryptoPtr GetCrypto(const size_t lIndex) { return dynamic_pointer_cast<CTiingoCrypto>(Get(lIndex)); }
-	CTiingoCryptoPtr GetCrypto(const CString& strCryptoCode) { return dynamic_pointer_cast<CTiingoCrypto>(Get(strCryptoCode)); }
+	CTiingoCryptoPtr GetCrypto(const string& strCryptoCode) { return dynamic_pointer_cast<CTiingoCrypto>(Get(strCryptoCode)); }
 
 	void UpdateDB();
 	bool LoadDB();

@@ -60,9 +60,9 @@ public:
 	} //成功接收后更新系统状态。
 
 	void CreateTotalInquiringString();
-	CString GetInquiringString() const noexcept { return m_strInquiry; }
-	void SetInquiringString(const CString& str) noexcept { m_strInquiry = str; }
-	void AppendInquiringString(const CString& str) noexcept { m_strInquiry += str; }
+	string GetInquiringString() const noexcept { return m_strInquiry; }
+	void SetInquiringString(const string& str) noexcept { m_strInquiry = str; }
+	void AppendInquiringString(const string& str) noexcept { m_strInquiry += str; }
 
 	virtual chrono::time_point<chrono::steady_clock> GetTickCount() { return chrono::steady_clock::now(); } // 为了测试方便，将GetTickCount64包裹上一层。
 
@@ -88,15 +88,15 @@ public:
 	bool IsEnable() const noexcept { return m_fEnable; }
 	void Enable(const bool fFlag) noexcept { m_fEnable = fFlag; }
 
-	CString GetHeaders() const noexcept { return m_strHeaders; }
-	void SetHeaders(const CString& strHeaders) noexcept { m_strHeaders = strHeaders; }
+	string GetHeaders() const noexcept { return m_strHeaders; }
+	void SetHeaders(const string& strHeaders) noexcept { m_strHeaders = strHeaders; }
 
-	CString GetInquiryFunction() const noexcept { return m_strInquiryFunction; }
-	void SetInquiryFunction(const CString& strPrefix) noexcept { m_strInquiryFunction = strPrefix; }
-	CString GetInquirySuffix() const noexcept { return m_strSuffix; }
-	void SetInquirySuffix(const CString& strSuffix) noexcept { m_strSuffix = strSuffix; }
-	CString GetInquiryToken() const noexcept { return m_strInquiryToken; }
-	void SetInquiryToken(const CString& strToken) noexcept { m_strInquiryToken = strToken; }
+	string GetInquiryFunction() const noexcept { return m_strInquiryFunction; }
+	void SetInquiryFunction(const string& strPrefix) noexcept { m_strInquiryFunction = strPrefix; }
+	string GetInquirySuffix() const noexcept { return m_strSuffix; }
+	void SetInquirySuffix(const string& strSuffix) noexcept { m_strSuffix = strSuffix; }
+	string GetInquiryToken() const noexcept { return m_strInquiryToken; }
+	void SetInquiryToken(const string& strToken) noexcept { m_strInquiryToken = strToken; }
 
 	bool IsWebError() const noexcept { return m_dwWebErrorCode != 0; }
 	void SetWebError(bool fFlag) noexcept {
@@ -137,12 +137,12 @@ protected:
 	enum_ErrorMessageData m_eErrorMessageData{ ERROR_NO_ERROR__ };
 
 	InternetOption m_internetOption;
-	CString m_strInquiry{ _T("") }; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
-	CString m_strInquiryFunction{ _T("") }; // 查询字符串功能部分
-	CString m_strParam{ _T("") }; // 查询字符串的参数
-	CString m_strSuffix{ _T("") }; // 查询字符串的后缀部分
-	CString m_strInquiryToken{ _T("") }; // 查询字符串令牌
-	CString m_strHeaders{ _T("") }; // OpenURL时的headers字符串值， 默认为_T("")
+	string m_strInquiry{ _T("") }; // 查询所需的字符串（m_strInquiryFunction + m_strParam + m_strSuffix + m_strInquiryToken).
+	string m_strInquiryFunction{ _T("") }; // 查询字符串功能部分
+	string m_strParam{ _T("") }; // 查询字符串的参数
+	string m_strSuffix{ _T("") }; // 查询字符串的后缀部分
+	string m_strInquiryToken{ _T("") }; // 查询字符串令牌
+	string m_strHeaders{ _T("") }; // OpenURL时的headers字符串值， 默认为_T("")
 
 	long m_lInquiringNumber{ 500 }; // 每次查询数量默认值为500
 	int m_iMaxNormalInquireTime{ 500 }; // 最大正常查询时间（每个具体的数据源皆不同）

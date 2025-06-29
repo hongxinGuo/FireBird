@@ -40,11 +40,11 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoCryptoTest, TestInitialize) {
 		EXPECT_EQ(stockSymbol.GetIndex(), 0);
-		EXPECT_STREQ(stockSymbol.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/crypto?"));
+		EXPECT_STREQ(stockSymbol.GetInquiryFunction().c_str(), _T("https://api.tiingo.com/tiingo/crypto?"));
 	}
 
 	TEST_F(CProductTiingoCryptoTest, TestCreatMessage) {
-		EXPECT_STREQ(stockSymbol.CreateMessage(), stockSymbol.GetInquiryFunction());
+		EXPECT_STREQ(stockSymbol.CreateMessage().c_str(), stockSymbol.GetInquiryFunction().c_str());
 	}
 
 	TEST_F(CProductTiingoCryptoTest, TestUpdateDataSourceStatus) {
@@ -105,11 +105,11 @@ namespace FireBirdTest {
 			break;
 		case 20:
 			EXPECT_EQ(m_pvCrypto->size(), 1);
-			EXPECT_STREQ(m_pvCrypto->at(0)->m_strBaseCurrency, _T("cure"));
-			EXPECT_STREQ(m_pvCrypto->at(0)->GetSymbol(), _T("New Symbol"));
-			EXPECT_STREQ(m_pvCrypto->at(0)->m_strName, _T("CureCoin(CURE/BTC)"));
-			EXPECT_STREQ(m_pvCrypto->at(0)->GetDescription(), _T("")) << "此项已废弃。为了兼容才没有删除";
-			EXPECT_STREQ(m_pvCrypto->at(0)->m_strQuoteCurrency, _T("btc"));
+			EXPECT_TRUE(m_pvCrypto->at(0)->m_strBaseCurrency== _T("cure"));
+			EXPECT_TRUE(m_pvCrypto->at(0)->GetSymbol()== _T("New Symbol"));
+			EXPECT_TRUE(m_pvCrypto->at(0)->m_strName == _T("CureCoin(CURE/BTC)"));
+			EXPECT_TRUE(m_pvCrypto->at(0)->GetDescription()== _T("")) << "此项已废弃。为了兼容才没有删除";
+			EXPECT_TRUE(m_pvCrypto->at(0)->m_strQuoteCurrency==_T("btc"));
 			break;
 		default:
 			break;
@@ -155,11 +155,11 @@ namespace FireBirdTest {
 			break;
 		case 20:
 			EXPECT_EQ(m_pvCrypto->size(), 1);
-			EXPECT_STREQ(m_pvCrypto->at(0)->m_strBaseCurrency, _T("cure"));
-			EXPECT_STREQ(m_pvCrypto->at(0)->GetSymbol(), _T("New Symbol"));
-			EXPECT_STREQ(m_pvCrypto->at(0)->m_strName, _T("CureCoin(CURE/BTC)"));
-			EXPECT_STREQ(m_pvCrypto->at(0)->GetDescription(), _T("")) << "此项已废弃。为了兼容才没有删除";
-			EXPECT_STREQ(m_pvCrypto->at(0)->m_strQuoteCurrency, _T("btc"));
+			EXPECT_TRUE(m_pvCrypto->at(0)->m_strBaseCurrency== _T("cure"));
+			EXPECT_TRUE(m_pvCrypto->at(0)->GetSymbol()== _T("New Symbol"));
+			EXPECT_TRUE(m_pvCrypto->at(0)->m_strName== _T("CureCoin(CURE/BTC)"));
+			EXPECT_TRUE(m_pvCrypto->at(0)->GetDescription()== _T("")) << "此项已废弃。为了兼容才没有删除";
+			EXPECT_TRUE(m_pvCrypto->at(0)->m_strQuoteCurrency== _T("btc"));
 			break;
 		default:
 			break;

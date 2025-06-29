@@ -22,7 +22,7 @@ void CDayLineWebData::Reset() {
 bool CDayLineWebData::TransferWebDataToBuffer(const CWebDataPtr& pWebData) {
 	// 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
 	m_sDataBuffer = std::move(pWebData->m_sDataBuffer);
-	m_strStockCode = pWebData->GetStockCode();
+	m_strStockCode = pWebData->GetStockCode().c_str();
 	m_lCurrentPos = 0;
 
 	return true;
@@ -41,7 +41,7 @@ bool CDayLineWebData::ProcessNeteaseDayLineData() {
 		svData = GetCurrentNeteaseData();
 		pCurrentDayLine = ProcessOneNeteaseDayLine(svData);
 		if (pCurrentDayLine == nullptr) {
-			TRACE(_T("%s日线数据出错\n"), m_strStockCode.GetBuffer());
+			TRACE(_T("%s日线数据出错\n"), m_strStockCode);
 			// 清除已暂存的日线数据
 			m_vTempDayLine.clear();
 			return false; // 数据出错，放弃载入
@@ -94,7 +94,7 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLine(const string_view& svData)
 		pDayLine->SetStockSymbol(m_strStockCode); // 读入的股票代码为600601、000001这样的制式，不再处理之，使用本股票的Symbol:600601.SS、000001.SZ直接赋值。
 		// 股票名称
 		sv = GetNextField(svData, lCurrentPos, ',');
-		const CString str(sv.data(), sv.length());
+		const string str(sv.data(), sv.length());
 		pDayLine->SetDisplaySymbol(str);
 		// 收盘价
 		sv = GetNextField(svData, lCurrentPos, ',');

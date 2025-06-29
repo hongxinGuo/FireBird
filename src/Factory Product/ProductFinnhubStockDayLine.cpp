@@ -15,7 +15,7 @@ CProductFinnhubStockDayLine::CProductFinnhubStockDayLine() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/candle?symbol=");
 }
 
-CString CProductFinnhubStockDayLine::CreateMessage() {
+string CProductFinnhubStockDayLine::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	const auto strParam = pStock->GetFinnhubDayLineInquiryParam(GetUTCTime());
 

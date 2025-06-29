@@ -36,7 +36,7 @@ namespace FireBirdTest {
 		CTiingoStock tiingo;
 
 		EXPECT_STREQ(tiingo.m_strTiingoPermaTicker, _T(""));
-		EXPECT_STREQ(tiingo.GetSymbol(), _T(""));
+		EXPECT_STREQ(tiingo.GetSymbol().c_str(), _T(""));
 		EXPECT_STREQ(tiingo.m_strName, _T(""));
 		EXPECT_FALSE(tiingo.IsActive());
 		EXPECT_FALSE(tiingo.m_fIsADR);
@@ -71,15 +71,15 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestGetExchangeCode) {
-		EXPECT_STREQ(stock.GetExchangeCode(), _T("US"));
+		EXPECT_STREQ(stock.GetExchangeCode().c_str(), _T("US"));
 		stock.SetExchangeCode(_T("SS"));
-		EXPECT_STREQ(stock.GetExchangeCode(), _T("SS"));
+		EXPECT_STREQ(stock.GetExchangeCode().c_str(), _T("SS"));
 	}
 
 	TEST_F(CTiingoStockTest, TestGetSymbol) {
-		EXPECT_STREQ(stock.GetSymbol(), _T(""));
+		EXPECT_STREQ(stock.GetSymbol().c_str(), _T(""));
 		stock.SetSymbol(_T("600000.SS"));
-		EXPECT_STREQ(stock.GetSymbol(), _T("600000.SS"));
+		EXPECT_STREQ(stock.GetSymbol().c_str(), _T("600000.SS"));
 	}
 
 	TEST_F(CTiingoStockTest, TestGetTransactionTime) {
@@ -484,7 +484,7 @@ namespace FireBirdTest {
 		setTiingoStock.Close();
 
 		EXPECT_STREQ(stock.m_strTiingoPermaTicker, stock2.m_strTiingoPermaTicker);
-		EXPECT_STREQ(stock.GetSymbol(), stock2.GetSymbol());
+		EXPECT_TRUE(stock.GetSymbol() == stock2.GetSymbol());
 		EXPECT_STREQ(stock.m_strName, stock2.m_strName);
 		EXPECT_TRUE(stock.IsActive() == stock2.IsActive());
 		EXPECT_TRUE(stock.m_fIsADR == stock2.m_fIsADR);
@@ -695,7 +695,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(pStock->m_v52WeekHigh.at(i) == pStock2->m_v52WeekHigh.at(i)) << i;
 		}
 		*/
-		CString str = pStock2->GetSymbol();
+		string str = pStock2->GetSymbol();
 
 		//
 	}
@@ -732,7 +732,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(pStock->m_v52WeekHigh.at(i) == pStock2->m_v52WeekHigh.at(i)) << i;
 		}
 		*/
-		CString str = pStock2->GetSymbol();
+		string str = pStock2->GetSymbol();
 
 		//
 	}

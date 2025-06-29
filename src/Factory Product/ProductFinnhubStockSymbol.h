@@ -7,9 +7,9 @@ public:
 	CProductFinnhubStockSymbol();
 	~CProductFinnhubStockSymbol() override = default;
 
-	CString CreateMessage() override;
+	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	static bool IsNeedAddExchangeCode(const CString& strStockSymbol, const CString& strExchangeCode);
+	static bool IsNeedAddExchangeCode(const string& strStockSymbol, const string& strExchangeCode);
 	CFinnhubStocksPtr ParseFinnhubStockSymbol(const CWebDataPtr& pWebData);
 };
 

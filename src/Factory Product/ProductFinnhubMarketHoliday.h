@@ -8,7 +8,7 @@ public:
 	CProductFinnhubMarketHoliday();
 	~CProductFinnhubMarketHoliday() override = default;
 
-	CString CreateMessage() override;
+	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CMarketHolidaysPtr ParseFinnhubMarketHoliday(const CWebDataPtr& pWebData);
 };

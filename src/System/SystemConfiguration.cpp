@@ -129,10 +129,10 @@ CSystemConfiguration::~CSystemConfiguration() {
 }
 
 void CSystemConfiguration::UpdateDB() {
-	const CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("json");
-	const CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
-	DeleteFile(GetConfigurationFileDirectory() + strNew);
-	rename(GetConfigurationFileDirectory() + strOld, GetConfigurationFileDirectory() + strNew); // 保存备份
+	const string strOld = m_strFileName.substr(0, m_strFileName.length() - 4) + _T("json");
+	const string strNew = m_strFileName.substr(0, m_strFileName.length() - 4) + _T("bak");
+	DeleteFile((GetConfigurationFileDirectory() + strNew).c_str());
+	rename((GetConfigurationFileDirectory() + strOld).c_str(), (GetConfigurationFileDirectory() + strNew).c_str()); // 保存备份
 
 	SaveDB();
 	SetUpdateDB(false);

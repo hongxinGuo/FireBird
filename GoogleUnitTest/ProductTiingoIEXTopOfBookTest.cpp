@@ -39,14 +39,14 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoIEXTopOfBookTest, TestInitialize) {
 		EXPECT_EQ(IEXTopOfBook.GetIndex(), 0);
-		EXPECT_STREQ(IEXTopOfBook.GetInquiringSymbol(), _T(""));
-		EXPECT_STREQ(IEXTopOfBook.GetInquiryFunction(), _T("https://api.tiingo.com/iex?"));
+		EXPECT_STREQ(IEXTopOfBook.GetInquiringSymbol().c_str(), _T(""));
+		EXPECT_STREQ(IEXTopOfBook.GetInquiryFunction().c_str(), _T("https://api.tiingo.com/iex?"));
 	}
 
 	TEST_F(CProductTiingoIEXTopOfBookTest, TestCreatMessage) {
-		EXPECT_STREQ(IEXTopOfBook.CreateMessage(), IEXTopOfBook.GetInquiryFunction());
-		EXPECT_STREQ(IEXTopOfBook.CreateMessage(), _T("https://api.tiingo.com/iex?"));
-		EXPECT_STREQ(IEXTopOfBook.GetInquiringSymbol(), _T("All")) << "此时已被CreateMessage赋值";
+		EXPECT_STREQ(IEXTopOfBook.CreateMessage().c_str(), IEXTopOfBook.GetInquiryFunction().c_str());
+		EXPECT_STREQ(IEXTopOfBook.CreateMessage().c_str(), _T("https://api.tiingo.com/iex?"));
+		EXPECT_STREQ(IEXTopOfBook.GetInquiringSymbol().c_str(), _T("All")) << "此时已被CreateMessage赋值";
 	}
 
 	TEST_F(CProductTiingoIEXTopOfBookTest, TestUpdateDataSourceStatus1) {

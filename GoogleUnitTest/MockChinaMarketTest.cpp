@@ -93,7 +93,9 @@ namespace FireBirdTest {
 			if (gl_dataContainerChinaStock.GetDayLineNeedSaveNumber() > 0) {
 				for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 					const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(i);
-					if (pStock->IsUpdateDayLineDB()) { EXPECT_STREQ(pStock->GetSymbol(), _T("")); }
+					if (pStock->IsUpdateDayLineDB()) {
+						EXPECT_STREQ(pStock->GetSymbol().c_str(), _T(""));
+					}
 				}
 			}
 			s_pMockChinaMarket->SetRSEndDate(19900101);

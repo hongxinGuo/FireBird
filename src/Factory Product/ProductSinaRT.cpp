@@ -20,9 +20,9 @@ CProductSinaRT::CProductSinaRT() {
 // 开市时使用今日活跃股票池
 //
 /////////////////////////////////////////////////////////////////////////////////////
-CString CProductSinaRT::CreateMessage() {
-	const CString strStocks = GetMarket()->GetSinaStockInquiringStr(gl_pSinaRTDataSource->GetInquiringNumber(), GetMarket()->IsCheckingActiveStock());
-	const string_view strSinaStockCode = string_view(strStocks, 8); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
+string CProductSinaRT::CreateMessage() {
+	string strStocks = GetMarket()->GetSinaStockInquiringStr(gl_pSinaRTDataSource->GetInquiringNumber(), GetMarket()->IsCheckingActiveStock());
+	const string_view strSinaStockCode = string_view(strStocks.data(), 8); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
 	gl_systemMessage.SetStockCodeForInquiringRTData(XferSinaToStandard(strSinaStockCode));
 	return m_strInquiryFunction + strStocks;
 }

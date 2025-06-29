@@ -25,13 +25,13 @@ public:
 	bool IsUpdateDayLine() const noexcept { return m_fUpdateDayLine; }
 	void SetUpdateDayLine(bool fFlag) noexcept { m_fUpdateDayLine = fFlag; }
 
-	void SetDownLoadingStockCode(const CString& strStockCode);
-	CString GetDownLoadingStockCode() { return m_strDownLoadingStockCode; }
+	void SetDownLoadingStockCode(const string& strStockCode);
+	string GetDownLoadingStockCode() { return m_strDownLoadingStockCode; }
 	void ResetDownLoadingStockCode() { m_strDownLoadingStockCode = _T(""); }
 
 protected:
 	bool m_fUpdateDayLine{ true }; // 每日更新公司日线数据
-	CString m_strDownLoadingStockCode{ _T("") };
+	string m_strDownLoadingStockCode{ _T("") };
 };
 
 using CTengxunDayLineDataSourcePtr = shared_ptr<CTengxunDayLineDataSource>;

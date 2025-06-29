@@ -21,7 +21,7 @@ public:
 
 	void SetCheckingDayLineStatus();
 
-	CString GetFinnhubDayLineInquiryParam(time_t tCurrentTime);
+	string GetFinnhubDayLineInquiryParam(time_t tCurrentTime);
 
 	void UpdateDayLine(const vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UnloadDayLine() { m_dataDayLine.Unload(); }

@@ -5,7 +5,7 @@
 
 #include"VirtualDataSource.h"
 
-#include"WorldMarket.h"
+//#include"WorldMarket.h"
 
 using namespace testing;
 
@@ -39,10 +39,10 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CVirtualDataSourceTest, TestInitialize) {
-		EXPECT_STREQ(dataSource.GetHeaders(), _T(""));
-		EXPECT_STREQ(dataSource.GetInquiringString(), _T(""));
-		EXPECT_STREQ(dataSource.GetInquiryFunction(), _T(""));
-		EXPECT_STREQ(dataSource.GetInquiryToken(), _T(""));
+		EXPECT_STREQ(dataSource.GetHeaders().c_str(), _T(""));
+		EXPECT_STREQ(dataSource.GetInquiringString().c_str(), _T(""));
+		EXPECT_STREQ(dataSource.GetInquiryFunction().c_str(), _T(""));
+		EXPECT_STREQ(dataSource.GetInquiryToken().c_str(), _T(""));
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestInquire) {
@@ -99,39 +99,39 @@ namespace FireBirdTest {
 		dataSource.GetCurrentProduct();
 
 		dataSource.CreateCurrentInquireString();
-		EXPECT_STREQ(dataSource.GetInquiringString(), _T("TestGetInquiry"));
+		EXPECT_STREQ(dataSource.GetInquiringString().c_str(), _T("TestGetInquiry"));
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetHeaders) {
-		EXPECT_STREQ(dataSource.GetHeaders(), _T(""));
+		EXPECT_STREQ(dataSource.GetHeaders().c_str(), _T(""));
 		dataSource.SetHeaders(_T("abcdefg"));
-		EXPECT_STREQ(dataSource.GetHeaders(), _T("abcdefg"));
+		EXPECT_STREQ(dataSource.GetHeaders().c_str(), _T("abcdefg"));
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringStringPrefix) {
 		dataSource.SetInquiryFunction(_T("abcdefghigh"));
-		EXPECT_STREQ(dataSource.GetInquiryFunction(), _T("abcdefghigh"));
+		EXPECT_STREQ(dataSource.GetInquiryFunction().c_str(), _T("abcdefghigh"));
 		dataSource.SetInquiryFunction(_T(""));
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringStringSuffix) {
 		dataSource.SetInquiryToken(_T("cdefghigh"));
-		EXPECT_STREQ(dataSource.GetInquiryToken(), _T("cdefghigh"));
+		EXPECT_STREQ(dataSource.GetInquiryToken().c_str(), _T("cdefghigh"));
 		dataSource.SetInquiryToken(_T(""));
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestCreateTotalInquiringString) {
 		dataSource.SetInquirySuffix(_T("abcdef"));
 		dataSource.CreateTotalInquiringString();
-		EXPECT_STREQ(dataSource.GetInquiringString(), _T("abcdef"));
+		EXPECT_STREQ(dataSource.GetInquiringString().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringString) {
-		EXPECT_STREQ(dataSource.GetInquiringString(), _T(""));
+		EXPECT_STREQ(dataSource.GetInquiringString().c_str(), _T(""));
 		dataSource.SetInquiringString(_T("abcdefg"));
-		EXPECT_STREQ(dataSource.GetInquiringString(), _T("abcdefg"));
+		EXPECT_STREQ(dataSource.GetInquiringString().c_str(), _T("abcdefg"));
 		dataSource.AppendInquiringString(_T("hijk"));
-		EXPECT_STREQ(dataSource.GetInquiringString(), _T("abcdefghijk"));
+		EXPECT_STREQ(dataSource.GetInquiringString().c_str(), _T("abcdefghijk"));
 	}
 
 	TEST_F(CVirtualDataSourceTest, TestGetInquiringNumber) {

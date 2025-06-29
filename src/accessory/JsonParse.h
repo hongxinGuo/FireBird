@@ -3,14 +3,14 @@
 long StrToDecimal(const string_view& svData, int power);
 string_view GetNextField(const string_view& svData, size_t& lCurrentPos, char delimiter);
 
-void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat);
-void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat, const char* jsonData);
+void ReportJSonErrorToSystemMessage(const string& strPrefix, const string& strWhat);
+void ReportJSonErrorToSystemMessage(const string& strPrefix, const string& strWhat, const char* jsonData);
 
 void ParseSinaRTData(const CWebDataPtr& pWebData);
 void ParseTengxunRTData(const CWebDataPtr& pWebData);
 CDayLineWebDataPtr ParseNeteaseDayLine(const CWebDataPtr& pWebData);
 CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData);
-shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, const CString& strStockCode);
+shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, const string& strStockCode);
 bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived);
 
 bool CreateJsonWithNlohmann(json& js, CString& str, long lBeginPos = 0, long lEndPos = 0);

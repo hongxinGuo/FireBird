@@ -29,7 +29,7 @@ bool CContainerFinnhubCrypto::LoadDB() {
 	setCryptoSymbol.Open();
 	setCryptoSymbol.m_pDatabase->BeginTrans();
 	while (!setCryptoSymbol.IsEOF()) {
-		if (!IsSymbol(setCryptoSymbol.m_Symbol)) {
+		if (!IsSymbol(setCryptoSymbol.m_Symbol.GetString())) {
 			pSymbol = make_shared<CFinnhubCrypto>();
 			pSymbol->LoadSymbol(setCryptoSymbol);
 			pSymbol->SetCheckingDayLineStatus();
@@ -80,8 +80,8 @@ bool CContainerFinnhubCrypto::UpdateDB() {
 		setCryptoSymbol.Open();
 		setCryptoSymbol.m_pDatabase->BeginTrans();
 		while (!setCryptoSymbol.IsEOF()) {
-			if (m_mapSymbol.contains(setCryptoSymbol.m_Symbol)) {
-				pSymbol = GetSymbol(setCryptoSymbol.m_Symbol);
+			if (m_mapSymbol.contains(setCryptoSymbol.m_Symbol.GetString())) {
+				pSymbol = GetSymbol(setCryptoSymbol.m_Symbol.GetString());
 				if (pSymbol->IsUpdateProfileDB()) {
 					pSymbol->UpdateSymbol(setCryptoSymbol);
 					pSymbol->SetUpdateProfileDB(false);

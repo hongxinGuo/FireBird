@@ -78,7 +78,7 @@ namespace FireBirdTest {
 			m_DayLinePtr->SetCurrentValue(-1);
 
 			pWebData = make_shared<CWebData>();
-			pWebData->Test_SetBuffer_(pData->m_strData);
+			pWebData->Test_SetBuffer_(pData->m_strData.GetString());
 			pDownLoadedDayLine = make_shared<CDayLineWebData>();
 			pDownLoadedDayLine->TransferWebDataToBuffer(pWebData);
 			pDownLoadedDayLine->SetStockCode(_T("600000.SS"));
@@ -113,7 +113,7 @@ namespace FireBirdTest {
 		case 1:
 			EXPECT_TRUE(m_DayLinePtr != nullptr);
 			EXPECT_STREQ(m_DayLinePtr->GetStockSymbol().c_str(), _T("600000.SS"));
-			EXPECT_STREQ(m_DayLinePtr->GetDisplaySymbol(), _T("浦发银行"));
+			EXPECT_STREQ(m_DayLinePtr->GetDisplaySymbol().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_DayLinePtr->GetClose(), 11490);
 			EXPECT_EQ(m_DayLinePtr->GetHigh(), 11560);
 			EXPECT_EQ(m_DayLinePtr->GetLow(), 11430);
@@ -141,7 +141,7 @@ namespace FireBirdTest {
 			break;
 		case 9:
 			EXPECT_TRUE(m_DayLinePtr != nullptr);
-			EXPECT_STREQ(m_DayLinePtr->GetDisplaySymbol(), _T("价值7030"));
+			EXPECT_STREQ(m_DayLinePtr->GetDisplaySymbol().c_str(), _T("价值7030"));
 			EXPECT_EQ(m_DayLinePtr->GetClose(), 3658980);
 			EXPECT_EQ(m_DayLinePtr->GetLastClose(), 3654160);
 			EXPECT_EQ(m_DayLinePtr->GetHigh(), 0);

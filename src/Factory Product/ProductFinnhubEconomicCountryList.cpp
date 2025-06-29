@@ -14,7 +14,7 @@ CProductFinnhubEconomicCountryList::CProductFinnhubEconomicCountryList() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/country?");
 }
 
-CString CProductFinnhubEconomicCountryList::CreateMessage() {
+string CProductFinnhubEconomicCountryList::CreateMessage() {
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
 }

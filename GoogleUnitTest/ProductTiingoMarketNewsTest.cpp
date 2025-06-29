@@ -39,11 +39,11 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoMarketNewsTest, TestInitialize) {
 		EXPECT_EQ(marketNews.GetIndex(), 0);
-		EXPECT_STREQ(marketNews.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/news?"));
+		EXPECT_STREQ(marketNews.GetInquiryFunction().c_str(), _T("https://api.tiingo.com/tiingo/news?"));
 	}
 
 	TEST_F(CProductTiingoMarketNewsTest, TestCreatMessage) {
-		EXPECT_STREQ(marketNews.CreateMessage(), marketNews.GetInquiryFunction());
+		EXPECT_STREQ(marketNews.CreateMessage().c_str(), marketNews.GetInquiryFunction().c_str());
 	}
 
 	TEST_F(CProductTiingoMarketNewsTest, TestProcessWebData) {

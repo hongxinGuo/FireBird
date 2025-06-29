@@ -27,7 +27,7 @@ public:
 	void UpdateDB();
 
 	bool LoadDB();
-	bool LoadDB(const CString& strFileDirectory);
+	bool LoadDB(const string& strFileDirectory);
 	void SaveDB() const;
 	void Update();
 	void UpdateJson();
@@ -37,8 +37,8 @@ public:
 		m_finnhubInaccessibleExchange.clear();
 	}
 
-	void SetDefaultFileName(const CString& fileName) noexcept { m_strFileName = fileName; }
-	CString GetDefaultFileName() { return m_strFileName; }
+	void SetDefaultFileName(const string& fileName) noexcept { m_strFileName = fileName; }
+	string GetDefaultFileName() { return m_strFileName; }
 
 	void SetUpdateDate(const long lDate) noexcept { m_lUpdateDate = lDate; }
 	long GetUpdateDate() const { return m_lUpdateDate; }
@@ -54,7 +54,7 @@ public:
 	void SetUpdateDB(const bool fUpdate) noexcept { m_fUpdateDB = fUpdate; }
 
 protected:
-	CString m_strFileName{ _T("FinnhubInaccessibleExchange.json") };// 配置文件名称
+	string m_strFileName{ _T("FinnhubInaccessibleExchange.json") };// 配置文件名称
 
 	long m_lUpdateDate{ 19800101 }; // 本文件更新日期
 	map<int, CInaccessibleExchangesPtr> m_mapExchange; //

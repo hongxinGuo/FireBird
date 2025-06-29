@@ -13,14 +13,14 @@ void CContainerVirtualStock::Reset() {
 	m_mapSymbol.clear();
 }
 
-CString CContainerVirtualStock::GetItemSymbol(size_t lIndex) {
+string CContainerVirtualStock::GetItemSymbol(size_t lIndex) {
 	return m_vStock.at(lIndex)->GetSymbol();
 }
 
 vectorString CContainerVirtualStock::GetSymbols() {
 	vectorString vSymbol;
 	for (long l = 0; l < Size(); l++) {
-		vSymbol.push_back(static_cast<LPCTSTR>(GetItemSymbol(l)));
+		vSymbol.push_back(GetItemSymbol(l));
 	}
 
 	return vSymbol;
@@ -66,7 +66,7 @@ void CContainerVirtualStock::Delete(const CVirtualStockPtr& pStock) {
 	UpdateSymbolMap();
 }
 
-void CContainerVirtualStock::Delete(const CString& strSymbol) {
+void CContainerVirtualStock::Delete(const string& strSymbol) {
 	if (!IsSymbol(strSymbol)) return;
 
 	auto pStock = Get(strSymbol);
@@ -82,6 +82,6 @@ void CContainerVirtualStock::UpdateSymbolMap() {
 }
 
 void CContainerVirtualStock::Sort() {
-	std::ranges::sort(m_vStock, [](const CVirtualStockPtr& p1, const CVirtualStockPtr& p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); });
+	std::ranges::sort(m_vStock, [](const CVirtualStockPtr& p1, const CVirtualStockPtr& p2) { return (p1->GetSymbol().compare(p2->GetSymbol()) < 0); });
 	UpdateSymbolMap();
 }

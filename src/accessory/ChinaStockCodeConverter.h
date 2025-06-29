@@ -5,20 +5,20 @@ using std::string;
 //import std;
 
 // 股票代码采用国家标准制式
-[[nodiscard]] inline bool IsShanghaiExchange(const CString& strStandardCode) { return strStandardCode.Right(2).Compare(_T("SS")) == 0; }
-[[nodiscard]] inline bool IsShenzhenExchange(const CString& strStandardCode) { return strStandardCode.Right(2).Compare(_T("SZ")) == 0; }
-[[nodiscard]] inline CString GetStockSymbol(const CString& strStandardCode) { return strStandardCode.Left(strStandardCode.GetLength() - 3); }
-[[nodiscard]] inline CString GetStockExchange(const CString& strStandardCode) { return (strStandardCode.Right(2)); }
-[[nodiscard]] inline CString CreateStockCode(const CString& strStockExchange, const CString& strStockSymbol) { return strStockSymbol + _T(".") + strStockExchange; }
+[[nodiscard]] inline bool IsShanghaiExchange(const string& strStandardCode) { return strStandardCode.substr(strStandardCode.length() - 2, 2).compare(_T("SS")) == 0; }
+[[nodiscard]] inline bool IsShenzhenExchange(const string& strStandardCode) { return strStandardCode.substr(strStandardCode.length() - 2, 2).compare(_T("SZ")) == 0; }
+[[nodiscard]] inline string GetStockSymbol(const string& strStandardCode) { return strStandardCode.substr(0, strStandardCode.length() - 3); }
+[[nodiscard]] inline string GetStockExchange(const string& strStandardCode) { return (strStandardCode.substr(strStandardCode.length() - 2, 2)); }
+[[nodiscard]] inline string CreateStockCode(const string& strStockExchange, const string& strStockSymbol) { return strStockSymbol + _T(".") + strStockExchange; }
 
 // 股票代码转
-[[nodiscard]] string XferSinaToStandard(const CString& strSina);
+[[nodiscard]] string XferSinaToStandard(const string& strSina);
 [[nodiscard]] string XferSinaToStandard(const string_view& svSina);
-[[nodiscard]] CString XferSinaToNetease(const CString& strSina);
-[[nodiscard]] CString XferNeteaseToStandard(const CString& strNetease);
-[[nodiscard]] CString XferNeteaseToStandard(const string_view& svNetease);
-[[nodiscard]] CString XferNeteaseToSina(const CString& strNetease);
-[[nodiscard]] inline CString XferTengxunToStandard(const CString& strTengxun) { return XferSinaToStandard(strTengxun).c_str(); }
-[[nodiscard]] CString XferStandardToSina(const CString& strStandard);
-[[nodiscard]] CString XferStandardToNetease(const CString& strStandard);
-[[nodiscard]] inline CString XferStandardToTengxun(const CString& strStandardCode) { return XferStandardToSina(strStandardCode); }
+[[nodiscard]] string XferSinaToNetease(const string& strSina);
+[[nodiscard]] string XferNeteaseToStandard(const string& strNetease);
+[[nodiscard]] string XferNeteaseToStandard(const string_view& svNetease);
+[[nodiscard]] string XferNeteaseToSina(const string& strNetease);
+[[nodiscard]] inline string XferTengxunToStandard(const string& strTengxun) { return XferSinaToStandard(strTengxun).c_str(); }
+[[nodiscard]] string XferStandardToSina(const string& strStandard);
+[[nodiscard]] string XferStandardToNetease(const string& strStandard);
+[[nodiscard]] inline string XferStandardToTengxun(const string& strStandardCode) { return XferStandardToSina(strStandardCode); }

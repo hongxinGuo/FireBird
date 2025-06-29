@@ -95,8 +95,8 @@ namespace FireBirdTest {
 	TEST_F(CSystemConfigurationTest, TestInitialize) {
 		EXPECT_EQ(gl_systemConfiguration.GetDisplayPropertyPage(), 0);
 		EXPECT_FALSE(gl_systemConfiguration.IsDebugMode());
-		EXPECT_STREQ(gl_systemConfiguration.GetDatabaseAccountName(), _T("FireBird"));
-		EXPECT_STREQ(gl_systemConfiguration.GetDatabaseAccountPassword(), _T("firebird"));
+		EXPECT_TRUE(gl_systemConfiguration.GetDatabaseAccountName().compare( _T("FireBird")) ==0);
+		EXPECT_TRUE(gl_systemConfiguration.GetDatabaseAccountPassword().compare( _T("firebird")) == 0);
 		EXPECT_EQ(gl_systemConfiguration.GetBackgroundThreadPermittedNumber(), 8);
 
 		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0) << "默认使用新浪实时数据服务器";
@@ -112,7 +112,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketTiingoInquiryTime().count(), 500) << "默认每小时查询最大数量为20000";
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketQuandlInquiryTime().count(), 3600000 / 100) << "默认每小时查询最大数量为100";
 
-		EXPECT_STREQ(gl_systemConfiguration.GetTiingoToken(), _T("c897a00b7cfc2630d235316a4683156"));
+		EXPECT_TRUE(gl_systemConfiguration.GetTiingoToken().compare(_T("c897a00b7cfc2630d235316a4683156")) == 0);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoIEXTopOfBookUpdateDate(), 19800101);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoStockDayLineProcessedDate(), 19800101);
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoStock52WeekHighLowUpdateDate(), 19800101);

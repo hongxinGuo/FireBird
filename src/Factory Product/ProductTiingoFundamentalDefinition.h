@@ -8,7 +8,7 @@ public:
 	CProductTiingoFundamentalDefinition();
 	~CProductTiingoFundamentalDefinition() override = default;
 
-	CString CreateMessage() override;
+	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CTiingoFundamentalDefinitionsPtr ParseTiingoFundamentalDefinition(const CWebDataPtr& pWebData);
 

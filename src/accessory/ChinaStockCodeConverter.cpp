@@ -2,10 +2,11 @@
 
 #include "ChinaStockCodeConverter.h"
 
-string XferSinaToStandard(const CString& strSina) {
-	const string strSymbol = strSina.Right(6).GetBuffer();
-	if (strSina.GetAt(0) == 's') {
-		switch (strSina.GetAt(1)) {
+string XferSinaToStandard(const string& strSina) {
+	ASSERT(strSina.length() >= 6);
+	const string strSymbol = strSina.substr(strSina.length() - 6, 6);
+	if (strSina.at(0) == 's') {
+		switch (strSina.at(1)) {
 		case 'h':
 			return strSymbol + _T(".") + _T("SS");
 		case 'z':
@@ -30,10 +31,11 @@ string XferSinaToStandard(const string_view& svSina) {
 	throw exception("XferSinaToStandard bad header");
 }
 
-CString XferSinaToNetease(const CString& strSina) {
-	const CString strSymbol = strSina.Right(6);
-	if (strSina.GetAt(0) == 's') {
-		switch (strSina.GetAt(1)) {
+string XferSinaToNetease(const string& strSina) {
+	ASSERT(strSina.length() >= 6);
+	const string strSymbol = strSina.substr(strSina.length() - 6, 6);
+	if (strSina.at(0) == 's') {
+		switch (strSina.at(1)) {
 		case 'h':
 			return _T("0") + strSymbol;
 		case 'z':
@@ -44,10 +46,10 @@ CString XferSinaToNetease(const CString& strSina) {
 	throw exception("XferSinaToNetease bad header");
 }
 
-CString XferNeteaseToStandard(const CString& strNetease) {
-	if (strNetease.GetLength() != 7) throw exception("XferNeteaseToStandard bad format");
-	const CString strSymbol = strNetease.Right(6);
-	switch (strNetease.GetAt(0)) {
+string XferNeteaseToStandard(const string& strNetease) {
+	if (strNetease.length() != 7) throw exception("XferNeteaseToStandard bad format");
+	const string strSymbol = strNetease.substr(strNetease.length() - 6, 6);
+	switch (strNetease.at(0)) {
 	case '0':
 		return strSymbol + _T(".") + _T("SS");
 	case '1':
@@ -57,9 +59,9 @@ CString XferNeteaseToStandard(const CString& strNetease) {
 	throw exception("XferNeteaseToStandard bad header");
 }
 
-CString XferNeteaseToStandard(const string_view& svNetease) {
+string XferNeteaseToStandard(const string_view& svNetease) {
 	if (svNetease.length() != 7) throw exception("XferNeteaseToStandard bad format");
-	const CString strSymbol(svNetease.data() + 1, 6);
+	const string strSymbol(svNetease.data() + 1, 6);
 	switch (svNetease.at(0)) {
 	case '0':
 		return strSymbol + _T(".") + _T("SS");
@@ -70,9 +72,9 @@ CString XferNeteaseToStandard(const string_view& svNetease) {
 	throw exception("XferNeteaseToStandard bad header");
 }
 
-CString XferNeteaseToSina(const CString& strNetease) {
-	const CString strSymbol = strNetease.Right(6);
-	switch (strNetease.GetAt(0)) {
+string XferNeteaseToSina(const string& strNetease) {
+	const string strSymbol = strNetease.substr(strNetease.length() - 6, 6);
+	switch (strNetease.at(0)) {
 	case '0':
 		return _T("sh") + strSymbol;
 	case '1':
@@ -82,10 +84,10 @@ CString XferNeteaseToSina(const CString& strNetease) {
 	throw exception("XferNeteaseToSina bad header");
 }
 
-CString XferStandardToSina(const CString& strStandard) {
-	const CString strSymbol = strStandard.Left(6);
-	if (strStandard.GetAt(strStandard.GetLength() - 2) == 'S') {
-		switch (strStandard.GetAt(strStandard.GetLength() - 1)) {
+string XferStandardToSina(const string& strStandard) {
+	const string strSymbol = strStandard.substr(0, 6);
+	if (strStandard.at(strStandard.length() - 2) == 'S') {
+		switch (strStandard.at(strStandard.length() - 1)) {
 		case 'S':
 			return _T("sh") + strSymbol;
 		case 'Z':
@@ -96,10 +98,10 @@ CString XferStandardToSina(const CString& strStandard) {
 	throw exception("XferSinaToStandard bad header");
 }
 
-CString XferStandardToNetease(const CString& strStandard) {
-	const CString strSymbol = strStandard.Left(6);
-	if (strStandard.GetAt(strStandard.GetLength() - 2) == 'S') {
-		switch (strStandard.GetAt(strStandard.GetLength() - 1)) {
+string XferStandardToNetease(const string& strStandard) {
+	const string strSymbol = strStandard.substr(0, 6);
+	if (strStandard.at(strStandard.length() - 2) == 'S') {
+		switch (strStandard.at(strStandard.length() - 1)) {
 		case 'S':
 			return _T("0") + strSymbol;
 		case 'Z':

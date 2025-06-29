@@ -86,9 +86,9 @@ CFinnhubWebSocket::CFinnhubWebSocket() {
 /// finnhub webSocket数据源的格式：wss://ws.finnhub.io/?token=c1i57rv48v6vit20lrc0。
 /// </summary>
 void CFinnhubWebSocket::Connect() {
-	CString strToken = gl_pFinnhubDataSource->GetInquiryToken();
+	string strToken = gl_pFinnhubDataSource->GetInquiryToken();
 	strToken = "/?token=" + strToken;
-	const string urlAndAuth = m_url + strToken.GetBuffer();
+	const string urlAndAuth = m_url + strToken;
 
 	Connecting(urlAndAuth, ProcessFinnhubWebSocket);
 }

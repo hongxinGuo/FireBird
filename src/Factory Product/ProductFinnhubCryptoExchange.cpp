@@ -12,8 +12,8 @@ CProductFinnhubCryptoExchange::CProductFinnhubCryptoExchange() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/exchange?");
 }
 
-CString CProductFinnhubCryptoExchange::CreateMessage() {
-	ASSERT(m_strInquiringExchange.Compare(_T("ALL")) == 0);
+string CProductFinnhubCryptoExchange::CreateMessage() {
+	ASSERT(m_strInquiringExchange.compare(_T("ALL")) == 0);
 	m_strInquiringExchange = _T("ALL"); // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;

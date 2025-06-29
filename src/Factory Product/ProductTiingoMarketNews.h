@@ -8,7 +8,7 @@ public:
 	CProductTiingoMarketNews();
 	~CProductTiingoMarketNews() override = default;
 
-	CString CreateMessage() override;
+	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CVectorTiingoMarketNewsPtr ParseTiingoMarketNews(const CWebDataPtr& pWebData);
 

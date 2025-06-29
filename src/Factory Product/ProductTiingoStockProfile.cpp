@@ -18,7 +18,7 @@ CProductTiingoStockProfile::CProductTiingoStockProfile() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals/meta?");
 }
 
-CString CProductTiingoStockProfile::CreateMessage() {
+string CProductTiingoStockProfile::CreateMessage() {
 	m_strInquiringSymbol = _T("All");
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
@@ -33,7 +33,7 @@ CString CProductTiingoStockProfile::CreateMessage() {
 void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoStock = ParseTiingoStockSymbol(pWebData);
 
-	ranges::sort(*pvTiingoStock, [](const CTiingoStockPtr& pData1, const CTiingoStockPtr& pData2) { return pData1->GetSymbol().Compare(pData2->GetSymbol()) < 0; });
+	ranges::sort(*pvTiingoStock, [](const CTiingoStockPtr& pData1, const CTiingoStockPtr& pData2) { return pData1->GetSymbol().compare(pData2->GetSymbol()) < 0; });
 
 	gl_dataContainerTiingoDelistedSymbol.Reset();
 	gl_dataContainerTiingoNewSymbol.Reset();
@@ -215,7 +215,7 @@ CTiingoStocksPtr CProductTiingoStockProfile::DeleteDuplicatedSymbol(const CTiing
 	CTiingoStockPtr pStockFirst = pvTiingoStock->at(0);
 	for (size_t l = 1; l < pvTiingoStock->size(); l++) {
 		CTiingoStockPtr pStockNext = pvTiingoStock->at(l);
-		if (pStockFirst->GetSymbol().Compare(pStockNext->GetSymbol()) != 0) { // 代码不同
+		if (pStockFirst->GetSymbol().compare(pStockNext->GetSymbol()) != 0) { // 代码不同
 			pvNewTiingoStock->push_back(pStockFirst);
 			pStockFirst = pStockNext;
 		}
@@ -224,7 +224,7 @@ CTiingoStocksPtr CProductTiingoStockProfile::DeleteDuplicatedSymbol(const CTiing
 				if (pStockNext->IsActive()) {
 					if (pStockFirst->GetDailyUpdateDate() < pStockNext->GetDailyUpdateDate()) { // 都是活跃股票时，比较最后更新日期，保留较新的那个。
 						//TRACE("active %s: %d ---- %d\n", pStockFirst->GetSymbol(), pStockFirst->GetDailyUpdateDate(), pStockNext->GetDailyUpdateDate());
-						CString str = "多个活跃股票:" + pStockFirst->GetSymbol();
+						string str = "多个活跃股票:" + pStockFirst->GetSymbol();
 						//gl_systemMessage.PushInnerSystemInformationMessage(str);
 						pStockFirst = pStockNext;
 					}
@@ -253,7 +253,7 @@ void CProductTiingoStockProfile::SaveNewSymbol() {
 		auto pStock = gl_dataContainerTiingoNewSymbol.GetStock(index);
 		setNewSymbol.AddNew();
 		setNewSymbol.m_date = gl_pWorldMarket->GetMarketDate();
-		setNewSymbol.m_symbol = pStock->GetSymbol();
+		setNewSymbol.m_symbol = pStock->GetSymbol().c_str();
 		setNewSymbol.Update();
 	}
 	setNewSymbol.m_pDatabase->CommitTrans();
@@ -275,7 +275,7 @@ void CProductTiingoStockProfile::SaveDelistedSymbol() {
 		auto pStock = gl_dataContainerTiingoDelistedSymbol.GetStock(index);
 		setDelistedSymbol.AddNew();
 		setDelistedSymbol.m_date = gl_pWorldMarket->GetMarketDate();
-		setDelistedSymbol.m_symbol = pStock->GetSymbol();
+		setDelistedSymbol.m_symbol = pStock->GetSymbol().c_str();
 		setDelistedSymbol.Update();
 	}
 	setDelistedSymbol.m_pDatabase->CommitTrans();

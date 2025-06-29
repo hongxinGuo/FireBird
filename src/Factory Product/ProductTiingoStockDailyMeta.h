@@ -8,7 +8,7 @@ public:
 	CProductTiingoStockDailyMeta();
 	~CProductTiingoStockDailyMeta() override = default;
 
-	CString CreateMessage() override;
+	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CTiingoStockDailyMetaPtr ParseTiingoStockDailyMeta(const CWebDataPtr& pWebData);
 };

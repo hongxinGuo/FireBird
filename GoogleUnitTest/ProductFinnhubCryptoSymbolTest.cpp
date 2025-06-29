@@ -37,13 +37,13 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCryptoSymbolProductTest, TestInitialize) {
 		EXPECT_EQ(cryptoSymbolProduct.GetIndex(), 0);
-		EXPECT_STREQ(cryptoSymbolProduct.GetInquiryFunction(), _T("https://finnhub.io/api/v1/crypto/symbol?exchange="));
+		EXPECT_STREQ(cryptoSymbolProduct.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/crypto/symbol?exchange="));
 	}
 
 	TEST_F(CFinnhubCryptoSymbolProductTest, TestCreatMessage) {
 		cryptoSymbolProduct.SetMarket(gl_pWorldMarket);
 		cryptoSymbolProduct.SetIndex(1);
-		EXPECT_STREQ(cryptoSymbolProduct.CreateMessage(), cryptoSymbolProduct.GetInquiryFunction() + gl_dataContainerFinnhubCryptoExchange.GetExchange(1).c_str());
+		EXPECT_STREQ(cryptoSymbolProduct.CreateMessage().c_str(), (cryptoSymbolProduct.GetInquiryFunction() + gl_dataContainerFinnhubCryptoExchange.GetExchange(1)).c_str());
 	}
 
 	TEST_F(CFinnhubCryptoSymbolProductTest, TestProcessWebData) {
@@ -114,8 +114,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvCryptoSymbol->size(), 0);
 			break;
 		case 10:
-			EXPECT_STREQ(m_pvCryptoSymbol->at(0)->GetSymbol(), _T("New Symbol"));
-			EXPECT_STREQ(m_pvCryptoSymbol->at(1)->GetSymbol(), _T("OANDA:DE10YB_EUR"));
+			EXPECT_STREQ(m_pvCryptoSymbol->at(0)->GetSymbol().c_str(), _T("New Symbol"));
+			EXPECT_STREQ(m_pvCryptoSymbol->at(1)->GetSymbol().c_str(), _T("OANDA:DE10YB_EUR"));
 			EXPECT_EQ(m_pvCryptoSymbol->size(), 2);
 			break;
 		default:
@@ -173,7 +173,7 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(_T("New Symbol")));
 			pCrypto = gl_dataFinnhubCryptoSymbol.GetSymbol(_T("New Symbol"));
-			EXPECT_STREQ(pCrypto->GetDescription(), _T("Oanda Singapore 30"));
+			EXPECT_STREQ(pCrypto->GetDescription().c_str(), _T("Oanda Singapore 30"));
 
 		// »Ö¸´Ô­×´
 			gl_dataFinnhubCryptoSymbol.Delete(pCrypto);

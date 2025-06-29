@@ -310,7 +310,9 @@ void CFinnhubStockBasicFinancial::AppendQuarterData(CSetFinnhubStockBasicFinanci
 	CItemOfBasicFinancialSeasonData data;
 
 	ASSERT(setBeSaved.IsOpen());
-	setQuarterly.m_strFilter = _T("[Symbol] = '") + m_symbol + _T("'");
+	setQuarterly.m_strFilter = _T("[Symbol] = '");
+	setQuarterly.m_strFilter += m_symbol.c_str();
+	setQuarterly.m_strFilter += _T("'");
 	setQuarterly.Open();
 	while (!setQuarterly.IsEOF()) {
 		data.m_symbol = setQuarterly.m_symbol;
@@ -331,7 +333,9 @@ void CFinnhubStockBasicFinancial::AppendAnnualData(CSetFinnhubStockBasicFinancia
 	CItemOfBasicFinancialSeasonData data;
 
 	ASSERT(setBeSaved.IsOpen());
-	setAnnual.m_strFilter = _T("[Symbol] = '") + m_symbol + _T("'");
+	setAnnual.m_strFilter = _T("[Symbol] = '");
+	setAnnual.m_strFilter += m_symbol.c_str();
+	setAnnual.m_strFilter += _T("'");
 	setAnnual.Open();
 	while (!setAnnual.IsEOF()) {
 		data.m_symbol = setAnnual.m_symbol;
@@ -373,7 +377,7 @@ void CFinnhubStockBasicFinancial::SaveQuarterData(CSetFinnhubStockBasicFinancial
 	for (int i = 0; i < vData.size(); i++) {
 		if (IsNewData(typeName, vData.at(i), vDBData)) {
 			SetQuarterData.AddNew();
-			SetQuarterData.m_symbol = m_symbol;
+			SetQuarterData.m_symbol = m_symbol.c_str();
 			SetQuarterData.m_type = typeName.c_str();
 			SetQuarterData.m_date = vData.at(i).m_period;
 			SetQuarterData.m_value = vData.at(i).m_value;
@@ -413,7 +417,7 @@ void CFinnhubStockBasicFinancial::SaveAnnualData(CSetFinnhubStockBasicFinancialA
 	for (int i = 0; i < vData.size(); i++) {
 		if (IsNewData(typeName, vData.at(i), vDBData)) {
 			setAnnualData.AddNew();
-			setAnnualData.m_symbol = m_symbol;
+			setAnnualData.m_symbol = m_symbol.c_str();
 			setAnnualData.m_type = typeName.c_str();
 			setAnnualData.m_date = vData.at(i).m_period;
 			setAnnualData.m_value = vData.at(i).m_value;
@@ -450,7 +454,7 @@ void CFinnhubStockBasicFinancial::UpdateMetric(CSetFinnhubStockBasicFinancialMet
 }
 
 void CFinnhubStockBasicFinancial::SaveMetric(CSetFinnhubStockBasicFinancialMetric& setMetric) const {
-	setMetric.m_symbol = m_symbol;
+	setMetric.m_symbol = m_symbol.c_str();
 	setMetric.m_10DayAverageTradingVolume = m_10DayAverageTradingVolume;
 	setMetric.m_13WeekPriceReturnDaily = m_13WeekPriceReturnDaily;
 	setMetric.m_26WeekPriceReturnDaily = m_26WeekPriceReturnDaily;

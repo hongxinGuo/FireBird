@@ -4,7 +4,7 @@
 
 // 此结构只用于测试中
 struct Test_FinnhubWebData {
-	Test_FinnhubWebData(const long lIndex, const CString& strSymbol, const CString& strData) {
+	Test_FinnhubWebData(const long lIndex, const string& strSymbol, const string& strData) {
 		m_lIndex = lIndex;
 		m_strSymbol = strSymbol;
 		m_pData = std::make_shared<CWebData>();
@@ -15,7 +15,7 @@ struct Test_FinnhubWebData {
 
 public:
 	long m_lIndex{ 0 };
-	CString m_strSymbol{ _T("") };
+	string m_strSymbol{ _T("") };
 	CWebDataPtr m_pData{ nullptr };
 };
 
@@ -25,7 +25,7 @@ extern Test_FinnhubWebData finnhubWebData2;
 
 // 此结构只用于测试中
 struct Test_TiingoWebData {
-	Test_TiingoWebData(const long lIndex, const CString& strSymbol, const CString& strData) {
+	Test_TiingoWebData(const long lIndex, const string& strSymbol, const string& strData) {
 		m_lIndex = lIndex;
 		m_strSymbol = strSymbol;
 		m_pData = std::make_shared<CWebData>();
@@ -36,6 +36,6 @@ struct Test_TiingoWebData {
 
 public:
 	long m_lIndex{ 0 };
-	CString m_strSymbol{ _T("") };
+	string m_strSymbol{ _T("") };
 	CWebDataPtr m_pData{ nullptr };
 };

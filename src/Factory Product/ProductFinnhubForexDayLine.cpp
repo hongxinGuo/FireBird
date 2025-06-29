@@ -14,7 +14,7 @@ CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/candle?symbol=");
 }
 
-CString CProductFinnhubForexDayLine::CreateMessage() {
+string CProductFinnhubForexDayLine::CreateMessage() {
 	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(m_lIndex);
 
 	m_strInquiringExchange = pForexSymbol->GetExchangeCode();

@@ -8,7 +8,7 @@ public:
 	CProductTiingoCryptoDayLine();
 	~CProductTiingoCryptoDayLine() override = default;
 
-	CString CreateMessage() override;
+	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CDayLinesPtr ParseTiingoCryptoDayLine(const CWebDataPtr& pWebData);
 };

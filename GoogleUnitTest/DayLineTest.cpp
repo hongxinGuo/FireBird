@@ -53,9 +53,9 @@ namespace FireBirdTest {
 
 	TEST_F(CStockDayLineTest, TestGetDisplaySymbol) {
 		CDayLine dl;
-		EXPECT_STREQ(dl.GetDisplaySymbol(), _T(""));
+		EXPECT_STREQ(dl.GetDisplaySymbol().c_str(), _T(""));
 		dl.SetDisplaySymbol(_T("浦东银行"));
-		EXPECT_STREQ(dl.GetDisplaySymbol(), _T("浦东银行"));
+		EXPECT_STREQ(dl.GetDisplaySymbol().c_str(), _T("浦东银行"));
 	}
 
 	TEST_F(CStockDayLineTest, TestGetLastClose) {

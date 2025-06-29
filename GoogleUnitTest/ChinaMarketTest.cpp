@@ -116,8 +116,8 @@ namespace FireBirdTest {
 		for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 			pStock = gl_dataContainerChinaStock.GetStock(i);
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
-			if (IsShanghaiExchange(pStock->GetSymbol())) { if ((pStock->GetSymbol().Left(6) >= _T("000000")) && (pStock->GetSymbol().Left(6) <= _T("000999"))) { EXPECT_FALSE(pStock->IsNeedProcessRTData()); } }
-			else if ((pStock->GetSymbol().Left(6) >= _T("399000")) && (pStock->GetSymbol().Left(6) <= _T("399999"))) { EXPECT_FALSE(pStock->IsNeedProcessRTData()); }
+			if (IsShanghaiExchange(pStock->GetSymbol())) { if ((pStock->GetSymbol().substr(0, 6) >= _T("000000")) && (pStock->GetSymbol().substr(0, 6) <= _T("000999"))) { EXPECT_FALSE(pStock->IsNeedProcessRTData()); } }
+			else if ((pStock->GetSymbol().substr(0, 6) >= _T("399000")) && (pStock->GetSymbol().substr(0, 6) <= _T("399999"))) { EXPECT_FALSE(pStock->IsNeedProcessRTData()); }
 			else { EXPECT_TRUE(pStock->IsNeedProcessRTData()); }
 		}
 		EXPECT_FALSE(gl_pChinaMarket->IsSelectedStockLoaded());
@@ -131,7 +131,7 @@ namespace FireBirdTest {
 		EXPECT_GT(gl_dataContainerChinaStock.Size(), 0); // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池
 		EXPECT_EQ(gl_dataContainerChinaStock.Size(), 5040) << "测试数据库中的股票代码总数为5040";
 		pStock = gl_dataContainerChinaStock.GetStock(0);
-		EXPECT_STREQ(pStock->GetSymbol(), _T("000001.SS"));
+		EXPECT_STREQ(pStock->GetSymbol().c_str(), _T("000001.SS"));
 		EXPECT_EQ(gl_dataContainerChinaStock.GetOffset(_T("000001.SS")), 0);
 
 		EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedSaveNumber(), 0);
@@ -799,12 +799,12 @@ namespace FireBirdTest {
 		EXPECT_LT(pStock->GetDayLineEndDate(), gl_pChinaMarket->GetLastTradeDate());
 		const long lDate = pStock->GetDayLineEndDate();
 		pStock->SetDayLineEndDate(gl_pChinaMarket->GetMarketDate());
-		CString str = gl_dataContainerChinaStock.CreateNeteaseDayLineInquiringStr();
-		EXPECT_STREQ(str, _T("1000001"));
+		string str = gl_dataContainerChinaStock.CreateNeteaseDayLineInquiringStr();
+		EXPECT_STREQ(str.c_str(), _T("1000001"));
 		pStock = gl_dataContainerChinaStock.GetStock(1);
 		EXPECT_FALSE(pStock->IsUpdateDayLine());
 		str = gl_dataContainerChinaStock.CreateNeteaseDayLineInquiringStr();
-		EXPECT_STREQ(str, _T("1000002"));
+		EXPECT_STREQ(str.c_str(), _T("1000002"));
 
 		gl_dataContainerChinaStock.GetStock(2)->SetDayLineEndDate(lDate); // 恢复原状。
 	}
@@ -855,7 +855,7 @@ namespace FireBirdTest {
 	TEST_F(CChinaMarketTest, TestGetStockName) {
 		//not implemented. 由于stockName存储时使用的是UniCode制式，而本系统默认是Ansi制式，导致无法进行字符串对比。暂时不进行测试了。
 		// EXPECT_STREQ(gl_pChinaMarket->GetStockName(_T("600000.SS")), _T("浦发银行"));
-		EXPECT_STREQ(gl_dataContainerChinaStock.GetStockName(_T("60000.SS")), _T("")); // 没找到时返回空字符串
+		EXPECT_STREQ(gl_dataContainerChinaStock.GetStockName(_T("60000.SS")).c_str(), _T("")); // 没找到时返回空字符串
 	}
 
 	TEST_F(CChinaMarketTest, TestGetStockCode) {
@@ -881,7 +881,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_pChinaMarket->IsCurrentStockChanged());
 		gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
 		pStock = gl_pChinaMarket->GetCurrentStock();
-		EXPECT_STREQ(pStock->GetSymbol(), _T("600000.SS"));
+		EXPECT_STREQ(pStock->GetSymbol().c_str(), _T("600000.SS"));
 		gl_pChinaMarket->ClearCurrentStock();
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr);
 
@@ -1187,7 +1187,7 @@ namespace FireBirdTest {
 	TEST_F(CChinaMarketTest, TestLoadStockCodeDB) {
 		CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(0);
 		EXPECT_THAT(pStock->IsIPOed(), IsTrue());
-		EXPECT_STREQ(pStock->GetSymbol(), _T("000001.SS"));
+		EXPECT_STREQ(pStock->GetSymbol().c_str(), _T("000001.SS"));
 		EXPECT_EQ(pStock->GetDayLineStartDate(), 19901220);
 		EXPECT_FALSE(pStock->IsActive()) << "装载股票代码时永远设置为假";
 		pStock = gl_dataContainerChinaStock.GetStock(_T("600002.SS"));
@@ -1235,7 +1235,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestGetStockPtr) {
 		const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(_T("600000.SS"));
-		EXPECT_STREQ(pStock->GetSymbol(), _T("600000.SS"));
+		EXPECT_STREQ(pStock->GetSymbol().c_str(), _T("600000.SS"));
 	}
 
 	TEST_F(CChinaMarketTest, TestClearDayLineNeedUpdaeStatus) {

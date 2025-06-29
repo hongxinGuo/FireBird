@@ -11,8 +11,8 @@ public:
 	CContainerFinnhubStockDayLine& operator=(CContainerFinnhubStockDayLine&& other) noexcept = delete;
 	~CContainerFinnhubStockDayLine() override = default;
 
-	bool SaveDB(const CString& strStockSymbol) override;
-	bool LoadDB(const CString& strStockSymbol) override;
+	bool SaveDB(const string& strStockSymbol) override;
+	bool LoadDB(const string& strStockSymbol) override;
 
 	// ÌØÓÐº¯Êý
 };

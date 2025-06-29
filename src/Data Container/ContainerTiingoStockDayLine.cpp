@@ -8,7 +8,7 @@
 CContainerTiingoStockDayLine::CContainerTiingoStockDayLine() {
 }
 
-bool CContainerTiingoStockDayLine::SaveDB(const CString& strStockSymbol) {
+bool CContainerTiingoStockDayLine::SaveDB(const string& strStockSymbol) {
 	try {
 		CSetTiingoStockDayLine setTiingoStockDayLineBasic;
 		UpdateDB(&setTiingoStockDayLineBasic, strStockSymbol);
@@ -19,12 +19,12 @@ bool CContainerTiingoStockDayLine::SaveDB(const CString& strStockSymbol) {
 	return true;
 }
 
-bool CContainerTiingoStockDayLine::LoadDB(const CString& strStockSymbol) {
+bool CContainerTiingoStockDayLine::LoadDB(const string& strStockSymbol) {
 	CSetTiingoStockDayLine setDayLineBasic;
 
 	// 装入DayLine数据
 	setDayLineBasic.m_strFilter = _T("[Symbol] = '");
-	setDayLineBasic.m_strFilter += strStockSymbol;
+	setDayLineBasic.m_strFilter += strStockSymbol.c_str();
 	setDayLineBasic.m_strFilter += _T("'");
 	setDayLineBasic.m_strSort = _T("[Date]");
 	setDayLineBasic.Open();
@@ -47,7 +47,7 @@ bool CContainerTiingoStockDayLine::LoadDB(const CString& strStockSymbol) {
 //Note  更新完后，本container中的日线数据也自动更新为最新数据(以备以后的处理日线数据）
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const CString& strStockSymbol) {
+void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) {
 	vector<CTiingoDayLinePtr> vOldHistoryCandle;
 	CTiingoDayLinePtr pHistoryCandle = nullptr;
 	long lSizeOfOldDayLine = 0;
@@ -55,7 +55,8 @@ void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoSt
 	const size_t lSize = Size();
 	long lLastDate = 0;
 	pSetTiingoStockDayLine->m_strFilter = _T("[Symbol] = '");
-	pSetTiingoStockDayLine->m_strFilter += strStockSymbol + _T("'");
+	pSetTiingoStockDayLine->m_strFilter += strStockSymbol.c_str();
+	pSetTiingoStockDayLine->m_strFilter += _T("'");
 	pSetTiingoStockDayLine->m_strSort = _T("[Date]");
 
 	pSetTiingoStockDayLine->Open();
@@ -105,7 +106,7 @@ void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoSt
 	pSetTiingoStockDayLine->Close();
 }
 
-bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const CString& strStockSymbol) const {
+bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) const {
 	CTiingoDayLinePtr pHistoryCandle = nullptr;
 	bool fNeedUpdate = false;
 	long lSizeOfOldDayLine = 0;
@@ -114,9 +115,10 @@ bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoS
 	ASSERT(Size() > 0);
 
 	const size_t lSize = Size();
-	if (strStockSymbol.GetLength() > 0) {
+	if (strStockSymbol.length() > 0) {
 		pSetTiingoStockDayLine->m_strFilter = _T("[Symbol] = '");
-		pSetTiingoStockDayLine->m_strFilter += strStockSymbol + _T("'");
+		pSetTiingoStockDayLine->m_strFilter += strStockSymbol.c_str();
+		pSetTiingoStockDayLine->m_strFilter += _T("'");
 		pSetTiingoStockDayLine->m_strSort = _T("[Date]");
 
 		pSetTiingoStockDayLine->Open();

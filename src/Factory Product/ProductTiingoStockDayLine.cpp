@@ -10,7 +10,7 @@
 
 #include "WebData.h"
 
-CString CProductTiingoStockDayLine::GetDayLineInquiryParam(const CString& strSymbol, long lStartDate, long lCurrentDate) {
+string CProductTiingoStockDayLine::GetDayLineInquiryParam(const string& strSymbol, long lStartDate, long lCurrentDate) {
 	const long year = lCurrentDate / 10000;
 	const long month = lCurrentDate / 100 - year * 100;
 	const long date = lCurrentDate - year * 10000 - month * 100;
@@ -19,8 +19,8 @@ CString CProductTiingoStockDayLine::GetDayLineInquiryParam(const CString& strSym
 	const long monthStart = lStartDate / 100 - yearStart * 100;
 	const long dateStart = lStartDate - yearStart * 10000 - monthStart * 100;
 
-	string sParam = fmt::format("{}/prices?&startDate={:4Ld}-{:Ld}-{:Ld}&endDate={:4Ld}-{:Ld}-{:Ld}", strSymbol.GetString(), yearStart, monthStart, dateStart, year, month, date);
-	return sParam.c_str();
+	string sParam = fmt::format("{}/prices?&startDate={:4Ld}-{:Ld}-{:Ld}&endDate={:4Ld}-{:Ld}-{:Ld}", strSymbol, yearStart, monthStart, dateStart, year, month, date);
+	return sParam;
 }
 
 CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
@@ -32,14 +32,14 @@ CProductTiingoStockDayLine::CProductTiingoStockDayLine() {
 /// 即使是免费账户，tiingo日线也能够提供30年以上的数据，故而申请全部数据。
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////
-CString CProductTiingoStockDayLine::CreateMessage() {
+string CProductTiingoStockDayLine::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
 	ASSERT(pStock->IsActive()); // 活跃股票
 	long lStartDate = 19800101;
 	if (pStock->GetDayLineEndDate() > 19800101) lStartDate = pStock->GetDayLineEndDate();
-	CString strParam = GetDayLineInquiryParam(pStock->GetSymbol(), lStartDate, GetMarket()->GetMarketDate()); // 如果日线从未申请过时，申请完整日线。
+	string strParam = GetDayLineInquiryParam(pStock->GetSymbol(), lStartDate, GetMarket()->GetMarketDate()); // 如果日线从未申请过时，申请完整日线。
 	m_strInquiringSymbol = pStock->GetSymbol();
 
 	m_strInquiry = m_strInquiryFunction + strParam;
@@ -152,8 +152,8 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 			pvDayLine->push_back(pDayLine);
 		}
 	} catch (json::exception& e) {
-		CString str3 = pWebData->GetDataBuffer().c_str();
-		str3 = str3.Left(120);
+		string str3 = pWebData->GetDataBuffer();
+		str3 = str3.substr(0, 120);
 		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}

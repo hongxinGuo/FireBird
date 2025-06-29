@@ -16,7 +16,7 @@ CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() {
 	m_ratio = 3;
 }
 
-CString CProductTiingoCryptoSymbol::CreateMessage() {
+string CProductTiingoCryptoSymbol::CreateMessage() {
 	m_strInquiringSymbol = _T("All");
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;

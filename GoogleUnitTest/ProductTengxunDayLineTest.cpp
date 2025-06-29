@@ -40,22 +40,22 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductTengxunDayLineTest, TestInitialize) {
-		EXPECT_STREQ(tengxunDayLine.GetInquiryFunction(), _T(""));
+		EXPECT_STREQ(tengxunDayLine.GetInquiryFunction().c_str(), _T(""));
 	}
 
 	TEST_F(CProductTengxunDayLineTest, TestCreateMessage) {
-		EXPECT_STREQ(tengxunDayLine.CreateMessage(), _T("")) << "腾讯日线数据的申请字符串由CTengxunDayLineWebInquiry类完成，本Product无需动作，只是返回strInquiry";
+		EXPECT_STREQ(tengxunDayLine.CreateMessage().c_str(), _T("")) << "腾讯日线数据的申请字符串由CTengxunDayLineWebInquiry类完成，本Product无需动作，只是返回strInquiry";
 	}
 
 	TEST_F(CProductTengxunDayLineTest, TestParseAndStoreWebData) {
 		auto pData = make_shared<CWebData>();
 		shared_ptr<vector<CWebDataPtr>> pvWebData = make_shared<vector<CWebDataPtr>>();
-		const CString strTengxunDayLine = _T("{\"code\":0,\"msg\":\"\",\"data\":{\"sh600601\":{\"day\":[[\"2023-01-19\",\"2.550\",\"2.600\",\"2.610\",\"2.550\",\"86162.000\"],[\"2023-01-20\",\"2.600\",\"2.620\",\"2.620\",\"2.590\",\"100735.000\"]],\"qt\":{},\"mx_price\":{\"mx\":[],\"price\":[]},\"prec\":\"2.560\",\"version\":\"16\"}}}");
+		const string strTengxunDayLine = _T("{\"code\":0,\"msg\":\"\",\"data\":{\"sh600601\":{\"day\":[[\"2023-01-19\",\"2.550\",\"2.600\",\"2.610\",\"2.550\",\"86162.000\"],[\"2023-01-20\",\"2.600\",\"2.620\",\"2.620\",\"2.590\",\"100735.000\"]],\"qt\":{},\"mx_price\":{\"mx\":[],\"price\":[]},\"prec\":\"2.560\",\"version\":\"16\"}}}");
 		pData->Test_SetBuffer_(strTengxunDayLine);
 		pData->SetStockCode(_T("600601.SS"));
 		pvWebData->push_back(pData);
 		auto pData2 = make_shared<CWebData>();
-		const CString strTengxunDayLine2 = _T("{\"code\":0,\"msg\":\"\",\"data\":{\"sh600601\":{\"day\":[[\"2023-01-23\",\"2.550\",\"2.650\",\"2.610\",\"2.550\",\"86162.000\"],[\"2023-01-24\",\"2.600\",\"2.620\",\"2.620\",\"2.590\",\"100735.000\"]],\"qt\":{},\"mx_price\":{\"mx\":[],\"price\":[]},\"prec\":\"2.560\",\"version\":\"16\"}}}");
+		const string strTengxunDayLine2 = _T("{\"code\":0,\"msg\":\"\",\"data\":{\"sh600601\":{\"day\":[[\"2023-01-23\",\"2.550\",\"2.650\",\"2.610\",\"2.550\",\"86162.000\"],[\"2023-01-24\",\"2.600\",\"2.620\",\"2.620\",\"2.590\",\"100735.000\"]],\"qt\":{},\"mx_price\":{\"mx\":[],\"price\":[]},\"prec\":\"2.560\",\"version\":\"16\"}}}");
 		pData2->Test_SetBuffer_(strTengxunDayLine2);
 		pData2->SetStockCode(_T("600601.SS"));
 		pvWebData->push_back(pData2);

@@ -41,6 +41,6 @@ bool CVirtualWebProduct::CheckInaccessible() {
 }
 
 bool CVirtualWebProduct::IsUSMarket() const {
-	if (m_strInquiringExchange.Compare(_T("US")) == 0) return true;
+	if (m_strInquiringExchange.compare(_T("US")) == 0) return true;
 	return false;
 }

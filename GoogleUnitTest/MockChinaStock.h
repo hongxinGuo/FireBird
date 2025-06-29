@@ -6,7 +6,7 @@ namespace testing {
 	class CMockChinaStock final : public CChinaStock {
 	public:
 		MOCK_METHOD(bool, SaveDayLineBasicInfo, (), (override));
-		MOCK_METHOD(bool, LoadDayLine, (const CString& strStockCode), (override));
+		MOCK_METHOD(bool, LoadDayLine, (const string& strStockCode), (override));
 		MOCK_METHOD(bool, SaveWeekLine, (), (override));
 		MOCK_METHOD(bool, LoadWeekLine, (), (override));
 		MOCK_METHOD(bool, BuildWeekLine, (long lStartDate), (override));

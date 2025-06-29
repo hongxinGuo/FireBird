@@ -222,7 +222,7 @@ public:
 	bool IsNewData(const string& type, CValueOfPeriod vData, const vector<CItemOfBasicFinancialSeasonData>& vDBData);
 
 public:
-	CString m_symbol;
+	string m_symbol;
 
 	// Metric financials data
 	double m_10DayAverageTradingVolume;

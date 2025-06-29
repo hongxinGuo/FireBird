@@ -700,7 +700,7 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg) {
 }
 
 void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
-	CString strTemp;
+	string strTemp;
 
 	switch (nChar) {
 	case '0':

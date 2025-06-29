@@ -20,9 +20,9 @@ CProductFinnhubEconomicCalendar::CProductFinnhubEconomicCalendar() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/calendar/economic?");
 }
 
-CString CProductFinnhubEconomicCalendar::CreateMessage() {
+string CProductFinnhubEconomicCalendar::CreateMessage() {
 	m_strInquiry = m_strInquiryFunction;
-	ASSERT(m_strInquiringExchange.Compare(_T("ALL")) == 0);
+	ASSERT(m_strInquiringExchange.compare(_T("ALL")) == 0);
 	m_strInquiringExchange = _T("ALL"); // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	return m_strInquiry;
 }

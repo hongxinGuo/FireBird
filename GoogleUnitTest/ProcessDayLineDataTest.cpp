@@ -9,7 +9,7 @@
 
 namespace FireBirdTest {
 	struct NeteaseDayLineData {
-		NeteaseDayLineData(int count, const CString& Symbol, const CString& Data) {
+		NeteaseDayLineData(int count, const string& Symbol, const string& Data) {
 			m_iCount = count;
 			m_strSymbol = Symbol;
 			m_strData = Data;
@@ -17,8 +17,8 @@ namespace FireBirdTest {
 
 	public:
 		int m_iCount;
-		CString m_strSymbol;
-		CString m_strData;
+		string m_strSymbol;
+		string m_strData;
 	};
 
 	NeteaseDayLineData Data1(1, _T("600000.SS"), _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n2019-07-24,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
@@ -54,7 +54,7 @@ namespace FireBirdTest {
 			pWebData->Test_SetBuffer_(pData->m_strData);
 
 			pDownLoadedDayLine = make_shared<CDayLineWebData>();
-			pDownLoadedDayLine->SetStockCode(pData->m_strSymbol);
+			pDownLoadedDayLine->SetStockCode(pData->m_strSymbol.c_str());
 			pDownLoadedDayLine->TransferWebDataToBuffer(pWebData);
 			m_iCount = pData->m_iCount;
 		}

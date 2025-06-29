@@ -53,8 +53,8 @@ namespace FireBirdTest {
 
 		ASSERT_FALSE(gl_systemConfiguration.IsUpdateDB()) << "正常测试时不允许更改，需要更改时注释掉本行";
 		EXPECT_FALSE(gl_systemConfiguration.IsDebugMode());
-		EXPECT_STREQ(gl_systemConfiguration.GetDatabaseAccountName(), _T("FireBird"));
-		EXPECT_STREQ(gl_systemConfiguration.GetDatabaseAccountPassword(), _T("firebird"));
+		EXPECT_TRUE(gl_systemConfiguration.GetDatabaseAccountName().compare( _T("FireBird")) == 0);
+		EXPECT_TRUE(gl_systemConfiguration.GetDatabaseAccountPassword().compare(_T("firebird")) == 0);
 		EXPECT_EQ(gl_systemConfiguration.GetBackgroundThreadPermittedNumber(), 8);
 
 		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0) << "默认使用新浪实时数据服务器";

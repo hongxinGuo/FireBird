@@ -42,11 +42,11 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoStockProfileTest, TestInitialize) {
 		EXPECT_EQ(stockSymbol.GetIndex(), 0);
-		EXPECT_STREQ(stockSymbol.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/fundamentals/meta?"));
+		EXPECT_STREQ(stockSymbol.GetInquiryFunction().c_str(), _T("https://api.tiingo.com/tiingo/fundamentals/meta?"));
 	}
 
 	TEST_F(CProductTiingoStockProfileTest, TestCreatMessage) {
-		EXPECT_STREQ(stockSymbol.CreateMessage(), stockSymbol.GetInquiryFunction());
+		EXPECT_TRUE(stockSymbol.CreateMessage() == stockSymbol.GetInquiryFunction());
 	}
 
 	TEST_F(CProductTiingoStockProfileTest, TestProcessWebData) {
@@ -120,7 +120,7 @@ namespace FireBirdTest {
 		case 4:
 			EXPECT_EQ(m_pvStock->size(), 1);
 			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoPermaTicker, _T("US000000000191"));
-			EXPECT_STREQ(m_pvStock->at(0)->GetSymbol(), _T("AA"));
+			EXPECT_STREQ(m_pvStock->at(0)->GetSymbol().c_str(), _T("AA"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strName, _T("Alcoa Corp"));
 			EXPECT_TRUE(m_pvStock->at(0)->IsActive());
 			EXPECT_FALSE(m_pvStock->at(0)->m_fIsADR);
@@ -139,7 +139,7 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_EQ(m_pvStock->size(), 2);
 			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoPermaTicker, _T("US000000001247"));
-			EXPECT_STREQ(m_pvStock->at(0)->GetSymbol(), _T("NEW SYMBOL"));
+			EXPECT_STREQ(m_pvStock->at(0)->GetSymbol().c_str(), _T("NEW SYMBOL"));
 			EXPECT_STREQ(m_pvStock->at(0)->m_strName, _T("Agilent Technologies Inc"));
 			EXPECT_TRUE(m_pvStock->at(0)->IsActive());
 			EXPECT_FALSE(m_pvStock->at(0)->m_fIsADR);
@@ -154,7 +154,7 @@ namespace FireBirdTest {
 			EXPECT_STREQ(m_pvStock->at(0)->m_strSECFilingWebSite, _T("Field"));
 			EXPECT_EQ(m_pvStock->at(0)->GetStatementLastUpdatedDate(), 20210305);
 			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoPermaTicker, _T("US000000000091"));
-			EXPECT_STREQ(m_pvStock->at(1)->GetSymbol(), _T("AA"));
+			EXPECT_STREQ(m_pvStock->at(1)->GetSymbol().c_str(), _T("AA"));
 			EXPECT_STREQ(m_pvStock->at(1)->m_strName, _T("New Name"));
 			EXPECT_TRUE(m_pvStock->at(1)->IsActive());
 			EXPECT_FALSE(m_pvStock->at(1)->m_fIsADR);

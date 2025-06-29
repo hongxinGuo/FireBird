@@ -57,9 +57,9 @@ namespace FireBirdTest {
 
 	TEST_F(CWeekLineTest, TestGetDisplaySymbol) {
 		CWeekLine dl;
-		EXPECT_STREQ(dl.GetDisplaySymbol(), _T(""));
+		EXPECT_STREQ(dl.GetDisplaySymbol().c_str(), _T(""));
 		dl.SetDisplaySymbol(_T("浦东银行"));
-		EXPECT_STREQ(dl.GetDisplaySymbol(), _T("浦东银行"));
+		EXPECT_STREQ(dl.GetDisplaySymbol().c_str(), _T("浦东银行"));
 	}
 
 	TEST_F(CWeekLineTest, TestGetLastClose) {
@@ -990,7 +990,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(weekLine.GetMarketDate(), GetCurrentMonday(pDayLine->GetMarketDate())) << "周线日期总是当周的星期一";
 		EXPECT_EQ(weekLine.GetMarketTime(), pDayLine->GetMarketTime());
 		EXPECT_TRUE(weekLine.GetStockSymbol().compare(pDayLine->GetStockSymbol()) == 0);
-		EXPECT_STREQ(weekLine.GetDisplaySymbol(), pDayLine->GetDisplaySymbol());
+		EXPECT_TRUE(weekLine.GetDisplaySymbol() == pDayLine->GetDisplaySymbol());
 
 		EXPECT_EQ(weekLine.GetOpen(), pDayLine->GetOpen());
 		EXPECT_EQ(weekLine.GetClose(), pDayLine->GetClose());
@@ -1253,9 +1253,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(weekLine.GetMarketTime(), pDayLine1->GetMarketTime()) << "使用第一个数据的时间";
 		EXPECT_NE(weekLine.GetMarketTime(), pDayLine2->GetMarketTime()) << "使用第一个数据的时间";
 		EXPECT_TRUE(weekLine.GetStockSymbol().compare(pDayLine1->GetStockSymbol()) == 0) << "股票代码不为空时，不更改";
-		EXPECT_TRUE(weekLine.GetDisplaySymbol().Compare(pDayLine1->GetDisplaySymbol()) == 0) << "股票名称不为空时，不更改";
+		EXPECT_TRUE(weekLine.GetDisplaySymbol().compare(pDayLine1->GetDisplaySymbol()) == 0) << "股票名称不为空时，不更改";
 		EXPECT_FALSE(weekLine.GetStockSymbol().compare(pDayLine2->GetStockSymbol()) == 0) << "股票代码不为空时，不更改";
-		EXPECT_STRNE(weekLine.GetDisplaySymbol(), pDayLine2->GetDisplaySymbol()) << "股票名称不为空时，不更改";
+		EXPECT_FALSE(weekLine.GetDisplaySymbol() == pDayLine2->GetDisplaySymbol()) << "股票名称不为空时，不更改";
 
 		EXPECT_EQ(weekLine.GetOpen(), pDayLine1->GetOpen());
 		EXPECT_NE(weekLine.GetOpen(), pDayLine2->GetOpen());

@@ -20,17 +20,17 @@ CProductFinnhubCompanyNews::CProductFinnhubCompanyNews() {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-CString CProductFinnhubCompanyNews::CreateMessage() {
+string CProductFinnhubCompanyNews::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
-	CString strMessage = m_strInquiryFunction + pStock->GetSymbol();
+	string strMessage = m_strInquiryFunction + pStock->GetSymbol();
 	long limitTime = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360); // 最近一年内
 	long limitTime2 = limitTime > pStock->GetCompanyNewsUpdateDate() ? limitTime : pStock->GetCompanyNewsUpdateDate();
 	string sTemp = ConvertDateToTimeStamp(limitTime2);
 	strMessage += _T("&from=");
-	strMessage += sTemp.c_str();
+	strMessage += sTemp;
 	sTemp = ConvertDateToTimeStamp(gl_pWorldMarket->GetMarketDate());
 	strMessage += _T("&to=");
-	strMessage += sTemp.c_str();
+	strMessage += sTemp;
 
 	m_strInquiry = strMessage;
 	m_strInquiringExchange = pStock->GetExchangeCode();

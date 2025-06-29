@@ -12,7 +12,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_iCount;
-		CString m_strData;
+		string m_strData;
 	};
 
 	CheckNeteaseDayLineInquiryStrData Data1(1, _T("0600000"));
@@ -46,7 +46,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_iCount;
-		CString m_strCode;
+		string m_strCode;
 	};
 
 	INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, CheckNeteaseDayLineInquiryStrTest,

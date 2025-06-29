@@ -75,7 +75,7 @@ void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
 	m_strSECFilingWebSite = m_strSECFilingWebSite.Left(150);
 
 	setTiingoStock.m_TiingoPermaTicker = m_strTiingoPermaTicker;
-	setTiingoStock.m_Ticker = m_strSymbol;
+	setTiingoStock.m_Ticker = m_strSymbol.c_str();
 	setTiingoStock.m_Name = m_strName;
 	setTiingoStock.m_IsActive = IsActive();
 	setTiingoStock.m_IsADR = m_fIsADR;
@@ -121,7 +121,7 @@ void CTiingoStock::UpdateFinancialStateDB() {
 	long lLastDate = 0;
 
 	setFinancialState.m_strFilter = _T("[Symbol] = '");
-	setFinancialState.m_strFilter += m_strSymbol;
+	setFinancialState.m_strFilter += m_strSymbol.c_str();
 	setFinancialState.m_strFilter += _T("'");
 	setFinancialState.m_strSort = _T("[yearQuarter]");
 	setFinancialState.Open();
@@ -191,7 +191,7 @@ bool CTiingoStock::UpdateDayLineDB() {
 		SaveDayLineDB();
 		UpdateDayLineStartEndDate();
 		SetUpdateProfileDB(true);
-		string str = GetSymbol().GetString();
+		string str = GetSymbol();
 		str += _T("日线资料存储完成");
 		gl_systemMessage.PushDayLineInfoMessage(str);
 		UnloadDayLine();
@@ -205,8 +205,8 @@ bool CTiingoStock::UpdateDayLineDB() {
 void CTiingoStock::SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const {
 	setDayLine.AddNew();
 	setDayLine.m_Date = lTradeDay;
-	setDayLine.m_Symbol = m_strSymbol;
-	setDayLine.m_Exchange = m_strExchangeCode;
+	setDayLine.m_Symbol = m_strSymbol.c_str();
+	setDayLine.m_Exchange = m_strExchangeCode.c_str();
 	setDayLine.m_DisplaySymbol = _T("");
 	setDayLine.m_Open = ConvertValueToString(m_lOpen, GetRatio());
 	setDayLine.m_High = ConvertValueToString(m_lHigh, GetRatio());
@@ -347,8 +347,8 @@ void CTiingoStock::Update52WeekHighDB(CSetTiingoStock52WeekHigh& set52WeekHigh) 
 
 	for (size_t index = 0; index < lSize; index++) {
 		set52WeekHigh.AddNew();
-		set52WeekHigh.m_Symbol = GetSymbol();
-		set52WeekHigh.m_Exchange = GetExchangeCode();
+		set52WeekHigh.m_Symbol = GetSymbol().c_str();
+		set52WeekHigh.m_Exchange = GetExchangeCode().c_str();
 		set52WeekHigh.m_Date = m_v52WeekHigh.at(index);
 		set52WeekHigh.Update();
 	}
@@ -359,8 +359,8 @@ void CTiingoStock::Update52WeekLowDB(CSetTiingoStock52WeekLow& set52WeekLow) con
 
 	for (size_t index = 0; index < lSize; index++) {
 		set52WeekLow.AddNew();
-		set52WeekLow.m_Symbol = GetSymbol();
-		set52WeekLow.m_Exchange = GetExchangeCode();
+		set52WeekLow.m_Symbol = GetSymbol().c_str();
+		set52WeekLow.m_Exchange = GetExchangeCode().c_str();
 		set52WeekLow.m_Date = m_v52WeekLow.at(index);
 		set52WeekLow.Update();
 	}
@@ -370,7 +370,8 @@ void CTiingoStock::Delete52WeekHighDB() const {
 	CSetTiingoStock52WeekHigh set52WeekHigh;
 
 	set52WeekHigh.m_strFilter = _T("[Symbol] ='");
-	set52WeekHigh.m_strFilter += GetSymbol() + _T("'");
+	set52WeekHigh.m_strFilter += GetSymbol().c_str();
+	set52WeekHigh.m_strFilter += _T("'");
 	set52WeekHigh.m_strSort = _T("[Date]");
 	set52WeekHigh.Open();
 	set52WeekHigh.m_pDatabase->BeginTrans();
@@ -386,7 +387,8 @@ void CTiingoStock::Delete52WeekLowDB() const {
 	CSetTiingoStock52WeekLow set52WeekLow;
 
 	set52WeekLow.m_strFilter = _T("[Symbol] ='");
-	set52WeekLow.m_strFilter += GetSymbol() + _T("'");
+	set52WeekLow.m_strFilter += GetSymbol().c_str();
+	set52WeekLow.m_strFilter += _T("'");
 	set52WeekLow.m_strSort = _T("[Date]");
 	set52WeekLow.Open();
 	set52WeekLow.m_pDatabase->BeginTrans();
@@ -415,7 +417,8 @@ void CTiingoStock::Load52WeekLow() {
 
 	CSetTiingoStock52WeekLow setLow;
 	setLow.m_strFilter = _T("[Symbol] = '");
-	setLow.m_strFilter += GetSymbol() + _T("'");
+	setLow.m_strFilter += GetSymbol().c_str();
+	setLow.m_strFilter += _T("'");
 	setLow.m_strSort = _T("[Date]");
 	setLow.Open();
 	setLow.m_pDatabase->BeginTrans();

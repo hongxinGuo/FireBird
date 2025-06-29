@@ -13,11 +13,10 @@ CProductFinnhubMarketStatus::CProductFinnhubMarketStatus() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/market-status?exchange=");
 }
 
-CString CProductFinnhubMarketStatus::CreateMessage() {
-	const auto strParam = gl_dataContainerStockExchange.GetExchangeCode(m_lIndex);
+string CProductFinnhubMarketStatus::CreateMessage() {
+	m_strInquiringExchange = gl_dataContainerStockExchange.GetExchangeCode(m_lIndex);
+	m_strInquiry = m_strInquiryFunction + m_strInquiringExchange;
 
-	m_strInquiringExchange = strParam.c_str();
-	m_strInquiry = m_strInquiryFunction + strParam.c_str();
 	return m_strInquiry;
 }
 

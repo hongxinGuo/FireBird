@@ -6,6 +6,6 @@ CProductDummy::CProductDummy() {
 	m_strInquiryFunction = _T("");
 }
 
-CString CProductDummy::CreateMessage() {
+string CProductDummy::CreateMessage() {
 	return _T("");
 }

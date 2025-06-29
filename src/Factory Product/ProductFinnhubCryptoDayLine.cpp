@@ -14,7 +14,7 @@ CProductFinnhubCryptoDayLine::CProductFinnhubCryptoDayLine() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/candle?symbol=");
 }
 
-CString CProductFinnhubCryptoDayLine::CreateMessage() {
+string CProductFinnhubCryptoDayLine::CreateMessage() {
 	const auto pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(m_lIndex);
 
 	m_strInquiringExchange = pCryptoSymbol->GetExchangeCode();

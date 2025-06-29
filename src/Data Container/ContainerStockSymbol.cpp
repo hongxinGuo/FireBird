@@ -66,7 +66,7 @@ bool CContainerStockSymbol::CreateTotalStockContainer() {
 	}
 	return true;
 }
-CString CContainerStockSymbol::GetItemSymbol(size_t lIndex) {
+string CContainerStockSymbol::GetItemSymbol(size_t lIndex) {
 	return m_vStockSymbol.at(lIndex);
 }
 
@@ -129,10 +129,10 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 	m_fUpdateStockSection = false;
 }
 
-void CContainerStockSymbol::CreateStockSection(const CString& strFirstStockCode) {
-	CString strCode = GetStockSymbol(strFirstStockCode);
+void CContainerStockSymbol::CreateStockSection(const string& strFirstStockCode) {
+	string strCode = GetStockSymbol(strFirstStockCode);
 	CString str = _T("");
-	const int iCode = atoi(strCode.GetBuffer());
+	const int iCode = atoi(strCode.c_str());
 	int iMarket = 0;
 	CChinaStockPtr pStock = nullptr;
 
@@ -145,9 +145,9 @@ void CContainerStockSymbol::CreateStockSection(const CString& strFirstStockCode)
 	if (m_vStockSection.at((iCode / 1000) + iMarket)->IsBuildStockPtr()) return; // 已经在证券池中建立了
 	// 生成上海股票代码
 	for (int i = iCode; i < (iCode + 1000); i++) {
-		const CString strExchange = GetStockExchange(strFirstStockCode);
+		const string strExchange = GetStockExchange(strFirstStockCode);
 		string sStockSymbol = fmt::format("{:06d}", i);
-		const CString strStockCode = CreateStockCode(strExchange, sStockSymbol.c_str());
+		const string strStockCode = CreateStockCode(strExchange, sStockSymbol.c_str());
 		Add(strStockCode);
 	}
 	if (UpdateStockSection(iCode / 1000 + iMarket)) {
@@ -156,10 +156,10 @@ void CContainerStockSymbol::CreateStockSection(const CString& strFirstStockCode)
 	m_vStockSection.at(iCode / 1000 + iMarket)->SetBuildStockPtr(true); // 已经在证券池中建立了
 }
 
-bool CContainerStockSymbol::UpdateStockSection(const CString& strStockCode) const {
-	CString strCode = GetStockSymbol(strStockCode);
+bool CContainerStockSymbol::UpdateStockSection(const string& strStockCode) const {
+	string strCode = GetStockSymbol(strStockCode);
 	char* pChar;
-	const int iCode = strtol(strCode.GetBuffer(), &pChar, 10);
+	const int iCode = strtol(strCode.c_str(), &pChar, 10);
 	int iMarket = 0;
 
 	if (IsShanghaiExchange(strStockCode)) {// 上海市场
@@ -179,7 +179,7 @@ bool CContainerStockSymbol::UpdateStockSection(const size_t lIndex) const {
 	return false;
 }
 
-bool CContainerStockSymbol::Delete(const CString& strSymbol) {
+bool CContainerStockSymbol::Delete(const string& strSymbol) {
 	if (!IsStockSymbol(strSymbol)) return false;
 
 	m_vStockSymbol.erase(m_vStockSymbol.begin() + m_mapStockSymbol.at(strSymbol));
@@ -188,7 +188,7 @@ bool CContainerStockSymbol::Delete(const CString& strSymbol) {
 	return true;
 }
 
-void CContainerStockSymbol::Add(const CString& strSymbol) {
+void CContainerStockSymbol::Add(const string& strSymbol) {
 	m_mapStockSymbol[strSymbol] = m_vStockSymbol.size();
 	m_vStockSymbol.push_back(strSymbol);
 }

@@ -7,7 +7,7 @@
 
 CContainerFinnhubStockDayLine::CContainerFinnhubStockDayLine() {}
 
-bool CContainerFinnhubStockDayLine::SaveDB(const CString& strStockSymbol) {
+bool CContainerFinnhubStockDayLine::SaveDB(const string& strStockSymbol) {
 	try {
 		CSetFinnhubStockDayLine setFinnhubStockDayLineBasic;
 		UpdateBasicDB(&setFinnhubStockDayLineBasic, strStockSymbol);
@@ -18,12 +18,12 @@ bool CContainerFinnhubStockDayLine::SaveDB(const CString& strStockSymbol) {
 	return true;
 }
 
-bool CContainerFinnhubStockDayLine::LoadDB(const CString& strStockSymbol) {
+bool CContainerFinnhubStockDayLine::LoadDB(const string& strStockSymbol) {
 	CSetFinnhubStockDayLine setDayLineBasic;
 
 	// 装入DayLine数据
 	setDayLineBasic.m_strFilter = _T("[Symbol] = '");
-	setDayLineBasic.m_strFilter += strStockSymbol;
+	setDayLineBasic.m_strFilter += strStockSymbol.c_str();
 	setDayLineBasic.m_strFilter += _T("'");
 	setDayLineBasic.m_strSort = _T("[Date]");
 	setDayLineBasic.Open();

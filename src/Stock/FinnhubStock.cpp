@@ -193,10 +193,10 @@ bool CFinnhubStock::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDat
 
 void CFinnhubStock::Save(CSetFinnhubStock& setFinnhubStock) const {
 	// 由于数据库的格式为定长的字符串，故而需要限制实际字符串的长度。
-	setFinnhubStock.m_Symbol = m_strSymbol.Left(20);
-	setFinnhubStock.m_ExchangeCode = m_strExchangeCode.Left(3);
-	setFinnhubStock.m_Description = m_strDescription.Left(200);
-	setFinnhubStock.m_DisplaySymbol = m_strDisplaySymbol.Left(20);
+	setFinnhubStock.m_Symbol = m_strSymbol.substr(0, 20).c_str();
+	setFinnhubStock.m_ExchangeCode = m_strExchangeCode.substr(0, 3).c_str();
+	setFinnhubStock.m_Description = m_strDescription.substr(0, 200).c_str();
+	setFinnhubStock.m_DisplaySymbol = m_strDisplaySymbol.substr(0, 20).c_str();
 	setFinnhubStock.m_Type = m_strType.Left(25);
 	setFinnhubStock.m_Mic = m_strMic.Left(20);
 	setFinnhubStock.m_Figi = m_strFigi.Left(20);
@@ -223,7 +223,7 @@ void CFinnhubStock::Save(CSetFinnhubStock& setFinnhubStock) const {
 	setFinnhubStock.m_Phone = m_strPhone.Left(100);
 	setFinnhubStock.m_ShareOutstanding = ConvertValueToString(m_dShareOutstanding);
 	setFinnhubStock.m_State = m_strState.Left(45);
-	setFinnhubStock.m_Ticker = m_strTicker.Left(45);
+	setFinnhubStock.m_Ticker = m_strTicker.substr(0, 45).c_str();
 	setFinnhubStock.m_WebURL = m_strWebURL.Left(150);
 	setFinnhubStock.m_Logo = m_strLogo.Left(110);
 	setFinnhubStock.m_FinnhubIndustry = m_strFinnhubIndustry.Left(100);
@@ -260,7 +260,8 @@ void CFinnhubStock::UpdateInsiderTransactionDB() {
 		ASSERT(!m_vInsiderTransaction.empty());
 
 		setInsiderTransaction.m_strFilter = _T("[Symbol] = '");
-		setInsiderTransaction.m_strFilter += m_strSymbol + _T("'");
+		setInsiderTransaction.m_strFilter += m_strSymbol.c_str();
+		setInsiderTransaction.m_strFilter += _T("'");
 		setInsiderTransaction.m_strSort = _T("[TransactionDate]");
 
 		setInsiderTransaction.Open();
@@ -309,7 +310,8 @@ void CFinnhubStock::UpdateInsiderSentimentDB() {
 		ASSERT(!m_vInsiderSentiment.empty());
 
 		setInsiderSentiment.m_strFilter = _T("[Symbol] = '");
-		setInsiderSentiment.m_strFilter += m_strSymbol + _T("'");
+		setInsiderSentiment.m_strFilter += m_strSymbol.c_str();
+		setInsiderSentiment.m_strFilter += _T("'");
 		setInsiderSentiment.m_strSort = _T("[Date]");
 
 		setInsiderSentiment.Open();
@@ -351,12 +353,13 @@ void CFinnhubStock::UpdateInsiderSentimentDB() {
 bool CFinnhubStock::UpdateCompanyNewsDB() {
 	ASSERT(m_vCompanyNews.size() > 0);
 	const long lSize = static_cast<long>(m_vCompanyNews.size());
-	if (m_strSymbol.GetLength() > 0) {
+	if (m_strSymbol.length() > 0) {
 		CCompanyNewsPtr pCompanyNews;
 		CSetCompanyNews setCompanyNews;
 		long lCurrentPos = 0;
 		setCompanyNews.m_strFilter = _T("[Symbol] = '");
-		setCompanyNews.m_strFilter += m_strSymbol + _T("'");
+		setCompanyNews.m_strFilter += m_strSymbol.c_str();
+		setCompanyNews.m_strFilter += _T("'");
 		setCompanyNews.m_strSort = _T("[DateTime]");
 
 		setCompanyNews.Open();
@@ -411,12 +414,13 @@ bool CFinnhubStock::UpdateEPSSurpriseDB() {
 bool CFinnhubStock::UpdateSECFilingsDB() const {
 	ASSERT(m_pvSECFilings->size() > 0);
 	const long lSize = static_cast<long>(m_pvSECFilings->size());
-	if (m_strSymbol.GetLength() > 0) {
+	if (m_strSymbol.length() > 0) {
 		CSECFilingPtr pSECFilings;
 		CSetSECFilings setSECFilings;
 		long lCurrentPos = 0;
 		setSECFilings.m_strFilter = _T("[Symbol] = '");
-		setSECFilings.m_strFilter += m_strSymbol + _T("'");
+		setSECFilings.m_strFilter += m_strSymbol.c_str();
+		setSECFilings.m_strFilter += _T("'");
 		setSECFilings.m_strSort = _T("[accessNumber]");
 
 		setSECFilings.Open();
@@ -448,7 +452,7 @@ bool CFinnhubStock::UpdateDayLineDB() {
 				SaveDayLineDB();
 				UpdateDayLineStartEndDate();
 				SetUpdateProfileDB(true);
-				string str = GetSymbol().GetString();
+				string str = GetSymbol();
 				str += _T("日线资料存储完成");
 				gl_systemMessage.PushDayLineInfoMessage(str);
 				//TRACE("更新%s日线数据\n", GetSymbol().GetBuffer());
@@ -755,15 +759,15 @@ void CFinnhubStock::SetSECFilingsUpdateDate(const long lDate) noexcept {
 	m_jsonUpdateDate["Finnhub"]["StockFundamentalsSECFilings"] = lDate;
 }
 
-CString CFinnhubStock::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const {
+string CFinnhubStock::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const {
 	const time_t tStartTime = (tCurrentTime - static_cast<time_t>(365) * 24 * 3600); // 检查最近一年的数据
 
-	string sParam = fmt::format("{}&resolution=D&from={:Ld}&to={:Ld}", m_strSymbol.GetString(), tStartTime, tCurrentTime);
+	string sParam = fmt::format("{}&resolution=D&from={:Ld}&to={:Ld}", m_strSymbol, tStartTime, tCurrentTime);
 
-	return sParam.c_str();
+	return sParam;
 }
 
-CString CFinnhubStock::GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) const {
+string CFinnhubStock::GetTiingoDayLineInquiryParam(long lStartDate, long lCurrentDate) const {
 	const long year = lCurrentDate / 10000;
 	const long month = lCurrentDate / 100 - year * 100;
 	const long date = lCurrentDate - year * 10000 - month * 100;
@@ -772,17 +776,17 @@ CString CFinnhubStock::GetTiingoDayLineInquiryParam(long lStartDate, long lCurre
 	const long monthStart = lStartDate / 100 - yearStart * 100;
 	const long dateStart = lStartDate - yearStart * 10000 - monthStart * 100;
 
-	string sParam = fmt::format("{}/prices?&startDate={:4Ld}-{:Ld}-{:Ld}&endDate={:4Ld}-{:Ld}-{:Ld}", m_strSymbol.GetString(), yearStart, monthStart, dateStart, year, month, date);
+	string sParam = fmt::format("{}/prices?&startDate={:4Ld}-{:Ld}-{:Ld}&endDate={:4Ld}-{:Ld}-{:Ld}", m_strSymbol, yearStart, monthStart, dateStart, year, month, date);
 
-	return sParam.c_str();
+	return sParam;
 }
 
-CString CFinnhubStock::GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTime) {
-	string sParam = fmt::format("{}&from={:Ld}", m_strSymbol.GetString(), GetInsiderTransactionUpdateDate());
-	return sParam.c_str();
+string CFinnhubStock::GetFinnhubInsiderTransactionInquiryParam(time_t tCurrentTime) {
+	string sParam = fmt::format("{}&from={:Ld}", m_strSymbol, GetInsiderTransactionUpdateDate());
+	return sParam;
 }
 
 bool CFinnhubStock::IsUSMarket() const {
-	if (m_strExchangeCode.Compare(_T("US")) == 0) return true;
+	if (m_strExchangeCode.compare(_T("US")) == 0) return true;
 	return false;
 }

@@ -41,11 +41,11 @@ namespace FireBirdTest {
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestInitialize) {
 		EXPECT_EQ(cryptoExchange.GetIndex(), 0);
-		EXPECT_STREQ(cryptoExchange.GetInquiryFunction(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
+		EXPECT_STREQ(cryptoExchange.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
 	}
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestCreatMessage) {
-		EXPECT_STREQ(cryptoExchange.CreateMessage(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
+		EXPECT_STREQ(cryptoExchange.CreateMessage().c_str(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
 	}
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestProcessWebData) {

@@ -13,7 +13,7 @@ CProductFinnhubSECFilings::CProductFinnhubSECFilings() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/filings?symbol=");
 }
 
-CString CProductFinnhubSECFilings::CreateMessage() {
+string CProductFinnhubSECFilings::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();

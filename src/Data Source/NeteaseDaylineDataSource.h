@@ -22,11 +22,11 @@ public:
 	void UpdateStatus(CWebDataPtr pData) override; // 成功接收后更新系统状态, 此处更新其股票代码
 
 	void SetDownLoadingStockCode(const CString& strStockCode);
-	CString GetDownLoadingStockCode() { return m_strDownLoadingStockCode; }
+	string GetDownLoadingStockCode() { return m_strDownLoadingStockCode; }
 	void ResetDownLoadingStockCode() { m_strDownLoadingStockCode = _T(""); }
 
 protected:
-	CString m_strDownLoadingStockCode{ _T("") };
+	string m_strDownLoadingStockCode{ _T("") };
 };
 
 using CNeteaseDayLineDataSourcePtr = shared_ptr<CNeteaseDayLineDataSource>;

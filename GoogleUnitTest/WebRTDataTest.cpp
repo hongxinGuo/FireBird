@@ -38,8 +38,8 @@ namespace FireBirdTest {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CWebRTData RTData;
 		EXPECT_EQ(RTData.GetTimePoint().time_since_epoch().count(), 0);
-		EXPECT_STREQ(RTData.GetSymbol(), _T(""));
-		EXPECT_STREQ(RTData.GetStockName(), _T(""));
+		EXPECT_STREQ(RTData.GetSymbol().c_str(), _T(""));
+		EXPECT_STREQ(RTData.GetStockName().c_str(), _T(""));
 		EXPECT_EQ(RTData.GetOpen(), 0);
 		EXPECT_EQ(RTData.GetLastClose(), 0);
 		EXPECT_EQ(RTData.GetNew(), 0);
@@ -70,7 +70,7 @@ namespace FireBirdTest {
 	TEST_F(CStockWebRTDataTest, TestGetStockCode) {
 		CWebRTData rtData;
 		rtData.SetSymbol(_T("600000.SS"));
-		EXPECT_STREQ(rtData.GetSymbol(), _T("600000.SS"));
+		EXPECT_STREQ(rtData.GetSymbol().c_str(), _T("600000.SS"));
 	}
 
 	TEST_F(CStockWebRTDataTest, TestIsActive) {
@@ -420,8 +420,8 @@ namespace FireBirdTest {
 		switch (m_iCount) {
 		case 0:
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -456,8 +456,8 @@ namespace FireBirdTest {
 			break;
 		case 1: // 所有价格皆为零
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("002385.SZ"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("平安银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("002385.SZ"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("平安银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 0);
 			EXPECT_EQ(m_RTData.GetLastClose(), 0);
 			EXPECT_EQ(m_RTData.GetNew(), 0);
@@ -491,8 +491,8 @@ namespace FireBirdTest {
 			break;
 		case 2:
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -526,8 +526,8 @@ namespace FireBirdTest {
 			break;
 		case 3:
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), -11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -561,8 +561,8 @@ namespace FireBirdTest {
 			break;
 		case 4:
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), -11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -596,8 +596,8 @@ namespace FireBirdTest {
 			break;
 		case 5:
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), -11560);
@@ -631,16 +631,16 @@ namespace FireBirdTest {
 			break;
 		case 6:
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
 			break;
 		case 7:
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -648,8 +648,8 @@ namespace FireBirdTest {
 			break;
 		case 8:
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -658,8 +658,8 @@ namespace FireBirdTest {
 			break;
 		case 9:
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -669,8 +669,8 @@ namespace FireBirdTest {
 			break;
 		case 10: // 有错误
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -681,8 +681,8 @@ namespace FireBirdTest {
 			break;
 		case 11:
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -694,8 +694,8 @@ namespace FireBirdTest {
 			break;
 		case 12: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -708,8 +708,8 @@ namespace FireBirdTest {
 			break;
 		case 13: // 有错误
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -724,8 +724,8 @@ namespace FireBirdTest {
 			break;
 		case 14: // 有错误
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -740,8 +740,8 @@ namespace FireBirdTest {
 			break;
 		case 15: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -757,8 +757,8 @@ namespace FireBirdTest {
 			break;
 		case 16: // 有错误
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -775,8 +775,8 @@ namespace FireBirdTest {
 			break;
 		case 17: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -794,8 +794,8 @@ namespace FireBirdTest {
 			break;
 		case 18: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -814,8 +814,8 @@ namespace FireBirdTest {
 			break;
 		case 19: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -836,8 +836,8 @@ namespace FireBirdTest {
 			break;
 		case 20: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -860,8 +860,8 @@ namespace FireBirdTest {
 			break;
 		case 21: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -886,8 +886,8 @@ namespace FireBirdTest {
 			break;
 		case 22: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -910,8 +910,8 @@ namespace FireBirdTest {
 			break;
 		case 23: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -935,8 +935,8 @@ namespace FireBirdTest {
 			break;
 		case 24: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -961,8 +961,8 @@ namespace FireBirdTest {
 			break;
 		case 25: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -988,8 +988,8 @@ namespace FireBirdTest {
 			break;
 		case 26: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -1016,8 +1016,8 @@ namespace FireBirdTest {
 			break;
 		case 27: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -1046,8 +1046,8 @@ namespace FireBirdTest {
 			break;
 		case 28: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -1078,8 +1078,8 @@ namespace FireBirdTest {
 			break;
 		case 29: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -1109,8 +1109,8 @@ namespace FireBirdTest {
 			break;
 		case 30: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -1141,8 +1141,8 @@ namespace FireBirdTest {
 			break;
 		case 31: // 出现负值
 			EXPECT_TRUE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_TRUE(m_RTData.GetSymbol().compare( _T("600000.SS")) == 0);
+			EXPECT_TRUE(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 11510);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11490);
 			EXPECT_EQ(m_RTData.GetNew(), 11560);
@@ -1174,11 +1174,11 @@ namespace FireBirdTest {
 			break;
 		case 32: // 没有实时数据
 			EXPECT_FALSE(m_RTData.IsActive());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("000001.SZ"));
+			EXPECT_TRUE(m_RTData.GetSymbol().compare( _T("000001.SZ")) == 0);
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
 			break;
 		case 40: // 没有实时数据的两段数据
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("000001.SZ"));
+			EXPECT_TRUE(m_RTData.GetSymbol().compare( _T("000001.SZ")) == 0);
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
 			break;
 		default:

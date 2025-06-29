@@ -43,11 +43,11 @@ public:
 	void SetTime(std::chrono::sys_seconds time) noexcept { m_tpTime = time; }
 	void SetTime(const time_t t) noexcept { m_tpTime = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(t)); }
 	string GetExchange() const { return m_strExchange; }
-	void SetExchange(const CString& strExchange) { m_strExchange = strExchange; }
+	void SetExchange(const string& strExchange) { m_strExchange = strExchange; }
 	string GetStockSymbol() const { return m_strStockSymbol; }
-	void SetStockSymbol(const CString& str) { m_strStockSymbol = str; }
-	CString GetDisplaySymbol() const { return m_strDisplaySymbol; }
-	void SetDisplaySymbol(const CString& str) { m_strDisplaySymbol = str; }
+	void SetStockSymbol(const string& str) { m_strStockSymbol = str; }
+	string GetDisplaySymbol() const { return m_strDisplaySymbol; }
+	void SetDisplaySymbol(const string& str) { m_strDisplaySymbol = str; }
 
 	long GetLastClose() const noexcept { return m_lLastClose; }
 	void SetLastClose(const long lValue) noexcept { m_lLastClose = lValue; }
@@ -108,7 +108,7 @@ public:
 	std::chrono::sys_seconds m_tpTime{ std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(0)) };
 	string m_strExchange{ _T("") };
 	string m_strStockSymbol{ _T("") };
-	CString m_strDisplaySymbol{ _T("") };
+	string m_strDisplaySymbol{ _T("") };
 
 	// 在不同的市场中，以下数据会放大若干倍（百倍、千倍、万倍等）。取决于价格使用几个小数点
 	long m_lLastClose{ 0 }; // 前收盘。

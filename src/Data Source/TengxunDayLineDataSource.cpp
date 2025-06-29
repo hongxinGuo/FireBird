@@ -80,7 +80,7 @@ bool CTengxunDayLineDataSource::Inquire() {
 				StoreInquiry(product);
 			}
 			SetDownLoadingStockCode(pStock->GetSymbol());
-			gl_systemMessage.SetStockCodeForInquiryDayLine(pStock->GetSymbol().GetString());
+			gl_systemMessage.SetStockCodeForInquiryDayLine(pStock->GetSymbol());
 			pStock->SetUpdateDayLine(false);
 			SetInquiring(true);
 			return true;
@@ -110,7 +110,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 	vector<CVirtualWebProductPtr> vProduct;
 	long l = 0;
 	int iCounter = 0;
-	const CString strStockCode = XferStandardToTengxun(pStock->GetSymbol());
+	const string strStockCode = XferStandardToTengxun(pStock->GetSymbol());
 	shared_ptr<CProductTengxunDayLine> product = nullptr;
 	do {
 		string sStartDate = ConvertDateToTimeStamp(lStartDate);
@@ -122,7 +122,7 @@ vector<CVirtualWebProductPtr> CTengxunDayLineDataSource::CreateProduct(const CCh
 		else {
 			sEndDate = ConvertDateToTimeStamp((year + 6) * 10000 + 1231); // 第七年的最后一天
 		}
-		const CString strTotalMessage = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=") + strStockCode + _T(",day,") + sStartDate.c_str() + _T(",") + sEndDate.c_str() + m_strSuffix;
+		const string strTotalMessage = _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=") + strStockCode + _T(",day,") + sStartDate.c_str() + _T(",") + sEndDate.c_str() + m_strSuffix;
 		product = make_shared<CProductTengxunDayLine>();
 		product->SetMarket(gl_pChinaMarket);
 		product->SetIndex(lStockIndex);
@@ -168,6 +168,6 @@ void CTengxunDayLineDataSource::UpdateStatus(CWebDataPtr pData) {
 /// 这里的strStockCode为标准制式：600000.SS，000001.SZ，
 /// </summary>
 /// <param name="strStockCode"></param>
-void CTengxunDayLineDataSource::SetDownLoadingStockCode(const CString& strStockCode) {
+void CTengxunDayLineDataSource::SetDownLoadingStockCode(const string& strStockCode) {
 	m_strDownLoadingStockCode = strStockCode;
 }

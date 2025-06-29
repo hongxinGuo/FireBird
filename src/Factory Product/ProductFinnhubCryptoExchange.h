@@ -7,7 +7,7 @@ public:
 	CProductFinnhubCryptoExchange();
 	~CProductFinnhubCryptoExchange() override = default;
 
-	CString CreateMessage() override;
+	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
 	shared_ptr<vector<CString>> ParseFinnhubCryptoExchange(const CWebDataPtr& pWebData);

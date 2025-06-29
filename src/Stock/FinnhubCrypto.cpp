@@ -22,12 +22,12 @@ void CFinnhubCrypto::SetCheckingDayLineStatus() {
 	}
 }
 
-CString CFinnhubCrypto::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const {
+string CFinnhubCrypto::GetFinnhubDayLineInquiryParam(time_t tCurrentTime) const {
 	const time_t tStartTime = (tCurrentTime - static_cast<time_t>(365) * 24 * 3600);
 
-	string sParam = fmt::format("{}&resolution=D&from={:Ld}&to={:Ld}", m_strSymbol.GetString(), tStartTime, tCurrentTime);
+	string sParam = fmt::format("{}&resolution=D&from={:Ld}&to={:Ld}", m_strSymbol, tStartTime, tCurrentTime);
 
-	return sParam.c_str();
+	return sParam;
 }
 
 void CFinnhubCrypto::UpdateDayLineStartEndDate() {

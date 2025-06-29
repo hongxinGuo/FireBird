@@ -40,8 +40,8 @@ namespace FireBirdTest {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CWebRTData RTData;
 		EXPECT_EQ(RTData.GetTimePoint().time_since_epoch().count(), 0);
-		EXPECT_STREQ(RTData.GetSymbol(), _T(""));
-		EXPECT_STREQ(RTData.GetStockName(), _T(""));
+		EXPECT_STREQ(RTData.GetSymbol().c_str(), _T(""));
+		EXPECT_STREQ(RTData.GetStockName().c_str(), _T(""));
 		EXPECT_EQ(RTData.GetOpen(), 0);
 		EXPECT_EQ(RTData.GetLastClose(), 0);
 		EXPECT_EQ(RTData.GetNew(), 0);
@@ -267,8 +267,8 @@ namespace FireBirdTest {
 		switch (m_iCount) {
 		case 0:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("浦发银行"));
 			EXPECT_EQ(m_RTData.GetOpen(), 12050);
 			EXPECT_EQ(m_RTData.GetLastClose(), 11960);
 			EXPECT_EQ(m_RTData.GetNew(), 12450);
@@ -299,8 +299,8 @@ namespace FireBirdTest {
 			break;
 		case 1:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("000001.SZ"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("000001.SZ"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -329,13 +329,13 @@ namespace FireBirdTest {
 			break;
 		case 2:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			break;
 		case 3:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetHigh(), 3530);
@@ -370,8 +370,8 @@ namespace FireBirdTest {
 			break;
 		case 4:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), -3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -400,8 +400,8 @@ namespace FireBirdTest {
 			break;
 		case 5:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), -3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -428,16 +428,16 @@ namespace FireBirdTest {
 			break;
 		case 6:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
 			break;
 		case 7:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -445,8 +445,8 @@ namespace FireBirdTest {
 			break;
 		case 8:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -455,8 +455,8 @@ namespace FireBirdTest {
 			break;
 		case 9:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -466,8 +466,8 @@ namespace FireBirdTest {
 			break;
 		case 12:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -478,8 +478,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_RTData.GetPBuy(1), 3490);
 			break;
 		case 13:
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -492,8 +492,8 @@ namespace FireBirdTest {
 			break;
 		case 14:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -507,8 +507,8 @@ namespace FireBirdTest {
 			break;
 		case 16:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -522,8 +522,8 @@ namespace FireBirdTest {
 			break;
 		case 17:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -539,8 +539,8 @@ namespace FireBirdTest {
 			break;
 		case 19:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -555,8 +555,8 @@ namespace FireBirdTest {
 			break;
 		case 20:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -572,8 +572,8 @@ namespace FireBirdTest {
 			break;
 		case 21:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -593,8 +593,8 @@ namespace FireBirdTest {
 			break;
 		case 22:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -616,8 +616,8 @@ namespace FireBirdTest {
 			break;
 		case 23:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -640,8 +640,8 @@ namespace FireBirdTest {
 			break;
 		case 24:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -666,8 +666,8 @@ namespace FireBirdTest {
 			break;
 		case 25:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -693,8 +693,8 @@ namespace FireBirdTest {
 			break;
 		case 26:
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos()) << "错误处理时读至结尾";
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600601.SS"));
-			EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600601.SS"));
+			EXPECT_STREQ(m_RTData.GetStockName().c_str(), _T("方正科技"));
 			EXPECT_EQ(m_RTData.GetOpen(), 3470);
 			EXPECT_EQ(m_RTData.GetLastClose(), 3460);
 			EXPECT_EQ(m_RTData.GetNew(), 3500);
@@ -736,7 +736,7 @@ namespace FireBirdTest {
 			break;
 		case 32: // 没有实时数据
 			EXPECT_EQ(0, m_pTengxunWebRTData->GetCurrentPos());
-			EXPECT_STREQ(m_RTData.GetSymbol(), _T("600002.SS"));
+			EXPECT_STREQ(m_RTData.GetSymbol().c_str(), _T("600002.SS"));
 			EXPECT_EQ(m_RTData.GetHighLimitFromTengxun(), -1000); // 实际值为-1，不存储，故而仍是初始值0
 			EXPECT_EQ(m_RTData.GetLowLimitFromTengxun(), -1000); // 实际值为-1， 不存储，故而仍是初始值0
 			EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票

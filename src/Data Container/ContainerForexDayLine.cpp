@@ -6,7 +6,7 @@
 
 CContainerForexDayLine::CContainerForexDayLine() {}
 
-bool CContainerForexDayLine::SaveDB(const CString& strCryptoSymbol) {
+bool CContainerForexDayLine::SaveDB(const string& strCryptoSymbol) {
 	try {
 		CSetForexDayLine setForexDayLineBasic;
 		UpdateBasicDB(&setForexDayLineBasic, strCryptoSymbol);
@@ -17,12 +17,12 @@ bool CContainerForexDayLine::SaveDB(const CString& strCryptoSymbol) {
 	return true;
 }
 
-bool CContainerForexDayLine::LoadDB(const CString& strCryptoSymbol) {
+bool CContainerForexDayLine::LoadDB(const string& strCryptoSymbol) {
 	CSetForexDayLine setDayLineBasic;
 
 	// 装入DayLine数据
 	setDayLineBasic.m_strFilter = _T("[Symbol] = '");
-	setDayLineBasic.m_strFilter += strCryptoSymbol;
+	setDayLineBasic.m_strFilter += strCryptoSymbol.c_str();
 	setDayLineBasic.m_strFilter += _T("'");
 	setDayLineBasic.m_strSort = _T("[Date]");
 	setDayLineBasic.Open();

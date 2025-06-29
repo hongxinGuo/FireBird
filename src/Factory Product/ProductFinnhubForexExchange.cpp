@@ -12,8 +12,8 @@ CProductFinnhubForexExchange::CProductFinnhubForexExchange() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/exchange?");
 }
 
-CString CProductFinnhubForexExchange::CreateMessage() {
-	ASSERT(m_strInquiringExchange.Compare(_T("ALL")) == 0);
+string CProductFinnhubForexExchange::CreateMessage() {
+	ASSERT(m_strInquiringExchange.compare(_T("ALL")) == 0);
 	m_strInquiringExchange = _T("ALL"); // 申请无需交易所代码的数据时，将交易所代码设置为虚拟的ALL。
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;
@@ -28,10 +28,10 @@ void CProductFinnhubForexExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	}
 }
 
-shared_ptr<vector<CString>> CProductFinnhubForexExchange::ParseFinnhubForexExchange(const CWebDataPtr& pWebData) {
-	auto pvExchange = make_shared<vector<CString>>();
+shared_ptr<vector<string>> CProductFinnhubForexExchange::ParseFinnhubForexExchange(const CWebDataPtr& pWebData) {
+	auto pvExchange = make_shared<vector<string>>();
 	string s;
-	CString str = _T("");
+	string str = _T("");
 	string sError;
 	json js;
 

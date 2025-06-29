@@ -38,8 +38,8 @@ public:
 	time_t GetTime() const noexcept { return m_tpTime.time_since_epoch().count(); }
 	void SetTime(chrono::sys_seconds time) noexcept { m_tpTime = time; }
 	void SetTime(const time_t tTime) noexcept { m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(tTime)); }
-	CString GetStockCode() const noexcept { return m_strStockCode; }
-	void SetStockCode(const CString& strStockCode) noexcept { m_strStockCode = strStockCode; }
+	string GetStockCode() const noexcept { return m_strStockCode; }
+	void SetStockCode(const string& strStockCode) noexcept { m_strStockCode = strStockCode; }
 	size_t GetBufferLength() const noexcept { return m_sDataBuffer.size(); }
 
 	string GetDataBuffer() noexcept { return m_sDataBuffer; }
@@ -63,17 +63,17 @@ public:
 	bool CreateJson(json& js, long lBeginPos = 0, long lEndPos = 0) const;
 
 	// 测试用函数
-	void Test_SetBuffer_(CString strBuffer);
+	void Test_SetBuffer_(string strBuffer);
 
 protected:
 	chrono::sys_seconds m_tpTime;// 此数据的提取时间。time point格式
-	CString m_strStockCode; // 此数据的相关证券代码，可以空缺
+	string m_strStockCode; // 此数据的相关证券代码，可以空缺
 	string m_sDataBuffer;
 	size_t m_lCurrentPos;
 	size_t m_lCurrentParagraphStartPos; // 当前段起始位置
 	string_view m_svCurrentParagraph{}; // 当前段数据
 
-	CString m_strErrorMessage; // 错误信息
+	string m_strErrorMessage; // 错误信息
 };
 
 using CWebDataPtr = shared_ptr<CWebData>;

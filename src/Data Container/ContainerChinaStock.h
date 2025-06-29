@@ -18,9 +18,9 @@ public:
 	[[nodiscard]] size_t GetActiveStockSize() const;
 	[[nodiscard]] auto GetLoadedStockSize() const noexcept { return m_lLoadedStock; }
 
-	CChinaStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CChinaStock>(Get(strStockCode)); }
+	CChinaStockPtr GetStock(const string& strStockCode) { return dynamic_pointer_cast<CChinaStock>(Get(strStockCode)); }
 	CChinaStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CChinaStock>(Get(lIndex)); }
-	CString GetStockName(const CString& strStockCode);
+	string GetStockName(const string& strStockCode);
 
 	long LoadStockProfileDB();
 	void UpdateStockProfileDB();
@@ -43,8 +43,8 @@ public:
 	[[nodiscard]] INT64 GetTotalAttackBuyAmount();
 	[[nodiscard]] INT64 GetTotalAttackSellAmount();
 
-	CString CreateNeteaseDayLineInquiringStr();
-	CString CreateTengxunDayLineInquiringStr();
+	string CreateNeteaseDayLineInquiringStr();
+	string CreateTengxunDayLineInquiringStr();
 
 	void ProcessRTData();
 	bool TaskUpdateDayLineDB();

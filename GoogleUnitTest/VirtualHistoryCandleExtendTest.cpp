@@ -56,9 +56,9 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetDisplaySymbol) {
 		CVirtualHistoryCandleExtend dl;
-		EXPECT_STREQ(dl.GetDisplaySymbol(), _T(""));
+		EXPECT_STREQ(dl.GetDisplaySymbol().c_str(), _T(""));
 		dl.SetDisplaySymbol(_T("浦东银行"));
-		EXPECT_STREQ(dl.GetDisplaySymbol(), _T("浦东银行"));
+		EXPECT_STREQ(dl.GetDisplaySymbol().c_str(), _T("浦东银行"));
 	}
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetLastClose) {

@@ -11,7 +11,7 @@ CProductTengxunDayLine::CProductTengxunDayLine() {
 	m_iInquiryNumber = 0;
 }
 
-CString CProductTengxunDayLine::CreateMessage() {
+string CProductTengxunDayLine::CreateMessage() {
 	return m_strInquiryFunction; // 腾讯日线数据的申请字符串目前由CTengxunDayLineDataSource类完成，本Product无需动作。
 }
 
@@ -51,7 +51,7 @@ void CProductTengxunDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>
 		}
 	}
 	const CDayLineWebDataPtr p = make_shared<CDayLineWebData>();
-	p->SetStockCode(pvWebData->at(0)->GetStockCode());
+	p->SetStockCode(pvWebData->at(0)->GetStockCode().c_str());
 	p->ClearDayLine();
 	CheckAndPrepareDayLine(vDayLine);
 	for (const auto& pData : vDayLine) {

@@ -26,7 +26,7 @@ CFinnhubInaccessibleExchange::CFinnhubInaccessibleExchange() {
 		ASSERT(FALSE);
 	}
 
-	ASSERT(m_strFileName.Compare(_T("FinnhubInaccessibleExchange.json")) == 0);
+	ASSERT(m_strFileName.compare(_T("FinnhubInaccessibleExchange.json")) == 0);
 	if (LoadDB()) {
 		Update();
 	}
@@ -39,18 +39,18 @@ CFinnhubInaccessibleExchange::~CFinnhubInaccessibleExchange() {
 }
 
 void CFinnhubInaccessibleExchange::UpdateDB() {
-	const CString strOld = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("json");
-	const CString strNew = m_strFileName.Left(m_strFileName.GetLength() - 4) + _T("bak");
+	const string strOld = m_strFileName.substr(0, m_strFileName.length() - 4) + _T("json");
+	const string strNew = m_strFileName.substr(0, m_strFileName.length() - 4) + _T("bak");
 
-	DeleteFile(gl_systemConfiguration.GetConfigurationFileDirectory() + strNew);
-	rename(gl_systemConfiguration.GetConfigurationFileDirectory() + strOld, gl_systemConfiguration.GetConfigurationFileDirectory() + strNew); // 保存备份
+	DeleteFile((gl_systemConfiguration.GetConfigurationFileDirectory() + strNew).c_str());
+	rename((gl_systemConfiguration.GetConfigurationFileDirectory() + strOld).c_str(), (gl_systemConfiguration.GetConfigurationFileDirectory() + strNew).c_str()); // 保存备份
 	UpdateJson();
 	SaveDB();
 	SetUpdateDB(false);
 }
 
 bool CFinnhubInaccessibleExchange::LoadDB() {
-	CString str = gl_systemConfiguration.GetConfigurationFileDirectory() + m_strFileName;
+	string str = gl_systemConfiguration.GetConfigurationFileDirectory() + m_strFileName;
 	fstream f(gl_systemConfiguration.GetConfigurationFileDirectory() + m_strFileName, ios::in);
 	if (f.is_open()) {
 		f >> m_finnhubInaccessibleExchange;
@@ -59,7 +59,7 @@ bool CFinnhubInaccessibleExchange::LoadDB() {
 	return false;
 }
 
-bool CFinnhubInaccessibleExchange::LoadDB(const CString& strFileDirectory) {
+bool CFinnhubInaccessibleExchange::LoadDB(const string& strFileDirectory) {
 	fstream f(strFileDirectory + m_strFileName, ios::in);
 	if (f.is_open()) {
 		f >> m_finnhubInaccessibleExchange;

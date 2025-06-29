@@ -6,7 +6,7 @@
 
 namespace FireBirdTest {
 	struct HighLowData {
-		HighLowData(const CString& strStockCode, long lPBuy0, long lPSell0, long lLastClose, long lHighLimit, long lLowLimit, long lHighLimit2, long lLowLimit2) {
+		HighLowData(const string& strStockCode, long lPBuy0, long lPSell0, long lLastClose, long lHighLimit, long lLowLimit, long lHighLimit2, long lLowLimit2) {
 			m_strSymbol = strStockCode;
 			m_lPBuy0 = lPBuy0;
 			m_lPSell0 = lPSell0;
@@ -18,7 +18,7 @@ namespace FireBirdTest {
 		}
 
 	public:
-		CString m_strSymbol;
+		string m_strSymbol;
 		long m_lPBuy0;
 		long m_lPSell0;
 		long m_lLastClose;

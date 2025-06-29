@@ -131,7 +131,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestGetTiingoStock) {
 		CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(0); // A
-		EXPECT_STREQ(pStock->GetSymbol(), _T("A")) << "第一个股票代码为A";
+		EXPECT_STREQ(pStock->GetSymbol().c_str(), _T("A")) << "第一个股票代码为A";
 		pStock = gl_dataContainerTiingoStock.GetStock(_T("A"));
 		EXPECT_FALSE(pStock == nullptr);
 		EXPECT_STREQ(pStock->m_strName, _T("Agilent Technologies Inc"));
@@ -177,10 +177,10 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestGetStock) {
 		CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(0); // 000001.SS
-		EXPECT_STREQ(pStock->GetSymbol(), _T("000001.SS")) << "第一个股票代码为000001.SS";
+		EXPECT_STREQ(pStock->GetSymbol().c_str(), _T("000001.SS")) << "第一个股票代码为000001.SS";
 		pStock = gl_dataContainerFinnhubStock.GetStock(_T("000001.SS"));
 		EXPECT_FALSE(pStock == nullptr);
-		EXPECT_STREQ(pStock->GetDescription(), _T("SSE Composite Index"));
+		EXPECT_STREQ(pStock->GetDescription().c_str(), _T("SSE Composite Index"));
 	}
 
 	TEST_F(CWorldMarketTest, TestAddTiingoStock) {
@@ -216,7 +216,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestAddForexExchange) {
 		const auto lTotalForexExchange = gl_dataContainerFinnhubForexExchange.Size();
-		const CString strForexExchange = _T("000001.SZ");
+		const string strForexExchange = _T("000001.SZ");
 
 		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.IsExchange(strForexExchange));
 		gl_dataContainerFinnhubForexExchange.Add(strForexExchange);
@@ -613,7 +613,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateForexExchangeDB) {
-		const CString strSymbol = _T("US.US.US");
+		const string strSymbol = _T("US.US.US");
 
 		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.IsNeedUpdate());
 		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.UpdateDB()) << "没有新Forex Exchange";

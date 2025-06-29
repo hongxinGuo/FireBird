@@ -85,10 +85,9 @@ bool CWebData::CreateJson(json& js, long lBeginPos, long lEndPos) const {
 	return ::CreateJsonWithNlohmann(js, m_sDataBuffer, lBeginPos, lEndPos);
 }
 
-void CWebData::Test_SetBuffer_(CString strBuffer) {
-	m_sDataBuffer.resize(strBuffer.GetLength());
-	const char* pBuffer = strBuffer.GetBuffer();
+void CWebData::Test_SetBuffer_(string strBuffer) {
+	m_sDataBuffer.resize(strBuffer.length());
 	for (long i = 0; i < m_sDataBuffer.size(); i++) {
-		m_sDataBuffer.at(i) = pBuffer[i];
+		m_sDataBuffer.at(i) = strBuffer[i];
 	}
 }

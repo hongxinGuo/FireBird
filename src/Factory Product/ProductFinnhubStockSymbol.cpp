@@ -11,8 +11,8 @@ CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/symbol?exchange=");
 }
 
-CString CProductFinnhubStockSymbol::CreateMessage() {
-	m_strInquiringExchange = gl_dataContainerStockExchange.GetExchangeCode(m_lIndex).c_str();
+string CProductFinnhubStockSymbol::CreateMessage() {
+	m_strInquiringExchange = gl_dataContainerStockExchange.GetExchangeCode(m_lIndex);
 
 	m_strInquiry = m_strInquiryFunction + m_strInquiringExchange;
 	return m_strInquiry;
@@ -26,7 +26,8 @@ void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	//检查合法性：只有美国股票代码无须加上交易所后缀。
 	if (!pvStock->empty()) {
 		const auto pStock = pvStock->at(0);
-		if (IsNeedAddExchangeCode(pStock->GetSymbol(), m_strInquiringExchange) && (m_strInquiringExchange.CompareNoCase(_T("US")) == 0)) {
+		CString strExchange = m_strInquiringExchange.c_str();
+		if (IsNeedAddExchangeCode(pStock->GetSymbol(), m_strInquiringExchange) && (strExchange.CompareNoCase(_T("US")) == 0)) {
 			string s = _T("股票代码格式不符：");
 			s += pStock->GetSymbol();
 			s += _T("  ");
@@ -43,11 +44,15 @@ void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	}
 }
 
-bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(const CString& strStockSymbol, const CString& strExchangeCode) {
-	const int iLength = strExchangeCode.GetLength();
-	const int iSymbolLength = strStockSymbol.GetLength();
-	const CString strRight = strStockSymbol.Right(iLength);
-	if ((strRight.CompareNoCase(strExchangeCode) == 0) && (strStockSymbol.GetAt(iSymbolLength - iLength - 1) == '.')) {
+bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(const string& strStockSymbol, const string& strExchangeCode) {
+	if (strExchangeCode.compare(_T("US")) == 0) return false; // 美国股票无需掭加交易所代码
+	if (strStockSymbol.length() <= strExchangeCode.length()) return true; // 股票代码长度不大于交易所代码长度时，需要掭加。
+
+	const int iLength = strExchangeCode.length();
+	const int iSymbolLength = strStockSymbol.length();
+	const string strRight = strStockSymbol.substr(strStockSymbol.length() - iLength, iLength);
+	CString strRight2 = strRight.c_str();
+	if ((strRight2.CompareNoCase(strExchangeCode.c_str()) == 0) && (strStockSymbol.at(iSymbolLength - iLength - 1) == '.')) {
 		return true;
 	}
 	return false;

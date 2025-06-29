@@ -12,7 +12,7 @@
 CContainerChinaDayLine::CContainerChinaDayLine() {
 }
 
-bool CContainerChinaDayLine::SaveDB(const CString& strStockSymbol) {
+bool CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
 	try {
 		CSetDayLineBasicInfo setDayLineBasic;
 		UpdateBasicDB(&setDayLineBasic, strStockSymbol);
@@ -23,7 +23,7 @@ bool CContainerChinaDayLine::SaveDB(const CString& strStockSymbol) {
 	return true;
 }
 
-bool CContainerChinaDayLine::LoadDB(const CString& strStockSymbol) {
+bool CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
@@ -31,7 +31,7 @@ bool CContainerChinaDayLine::LoadDB(const CString& strStockSymbol) {
 
 	// 装入DayLine数据
 	setDayLineBasicInfo.m_strFilter = _T("[Symbol] = '");
-	setDayLineBasicInfo.m_strFilter += strStockSymbol;
+	setDayLineBasicInfo.m_strFilter += strStockSymbol.c_str();
 	setDayLineBasicInfo.m_strFilter += _T("'");
 	setDayLineBasicInfo.m_strSort = _T("[Date]");
 	setDayLineBasicInfo.Open();
@@ -40,7 +40,7 @@ bool CContainerChinaDayLine::LoadDB(const CString& strStockSymbol) {
 
 	// 装入DayLineExtendInfo数据
 	setDayLineExtendInfo.m_strFilter = _T("[Symbol] = '");
-	setDayLineExtendInfo.m_strFilter += strStockSymbol;
+	setDayLineExtendInfo.m_strFilter += strStockSymbol.c_str();
 	setDayLineExtendInfo.m_strFilter += _T("'");
 	setDayLineExtendInfo.m_strSort = _T("[Date]");
 	setDayLineExtendInfo.Open();

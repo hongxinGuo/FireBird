@@ -82,15 +82,15 @@ public:
 	void CalculateRTData();
 
 	// 实时数据读取
-	CString GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet);
-	CString GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet);
-	bool CheckValidOfNeteaseDayLineInquiringStr(const CString& str) const;
+	string GetSinaStockInquiringStr(long lTotalNumber, bool fUsingTotalStockSet);
+	string GetNeteaseStockInquiringMiddleStr(long lTotalNumber, bool fUsingTotalStockSet);
+	bool CheckValidOfNeteaseDayLineInquiringStr(const string& str) const;
 
 	static size_t IncreaseStockInquiringIndex(size_t& lIndex, size_t lEndPosition);
 
 	// 得到当前显示股票
 	CChinaStockPtr GetCurrentStock() const noexcept { return m_pCurrentStock; }
-	void SetCurrentStock(const CString& strStockCode);
+	void SetCurrentStock(const string& strStockCode);
 	void SetCurrentStock(const CChinaStockPtr& pStock);
 	void ClearCurrentStock() noexcept { m_pCurrentStock = nullptr; }
 	bool IsCurrentStockChanged() const noexcept { return m_fCurrentStockChanged; }
@@ -254,7 +254,7 @@ public:
 
 	size_t GetCurrentStockSetSize() const;
 
-	void CreateStock(const CString& strStockCode, const CString& strStockName, bool fProcessRTData);
+	void CreateStock(const string& strStockCode, const string& strStockName, bool fProcessRTData);
 
 	void SetCurrentRSStrongIndex(const long lIndex) noexcept { m_lCurrentRSStrongIndex = lIndex; }
 

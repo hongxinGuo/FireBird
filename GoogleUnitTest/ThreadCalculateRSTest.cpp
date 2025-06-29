@@ -35,7 +35,8 @@ namespace FireBirdTest {
 		}
 
 		void TearDown() override {
-			gl_pChinaMarket->SetCurrentStock(nullptr);
+			CChinaStockPtr p = nullptr;
+			gl_pChinaMarket->SetCurrentStock(p);
 			//恢复原状
 			while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
 
@@ -306,7 +307,8 @@ namespace FireBirdTest {
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
 
 		// 恢复原状
-		gl_pChinaMarket->SetCurrentStock(nullptr);
+		CChinaStockPtr p = nullptr;
+		gl_pChinaMarket->SetCurrentStock(p);
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock6) {

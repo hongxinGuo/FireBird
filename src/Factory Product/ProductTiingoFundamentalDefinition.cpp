@@ -14,7 +14,7 @@ CProductTiingoFundamentalDefinition::CProductTiingoFundamentalDefinition() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/fundamentals/definitions?");
 }
 
-CString CProductTiingoFundamentalDefinition::CreateMessage() {
+string CProductTiingoFundamentalDefinition::CreateMessage() {
 	m_strInquiringSymbol = _T("All");
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;

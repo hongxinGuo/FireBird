@@ -96,7 +96,7 @@ namespace FireBirdTest {
 			//gl_systemConfiguration.NeedUpdate(false);
 			gl_systemConfiguration.SetConfigurationFileDirectory(_T("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\"));
 			gl_systemConfiguration.SetDefaultFileName(_T("systemConfigurationTest.json"));
-			ASSERT_STREQ(gl_systemConfiguration.GetConfigurationFileDirectoryAndName(), _T("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\systemConfigurationTest.json"));
+			ASSERT_TRUE(gl_systemConfiguration.GetConfigurationFileDirectoryAndName().compare( _T("C:\\Users\\hxguo\\source\\repos\\FireBird\\GoogleUnitTest\\systemConfigurationTest.json")) == 0);
 			ASSERT_TRUE(gl_systemConfiguration.LoadDB()) << "使用GoogleUnitTest目录中的配置文件";
 			gl_finnhubInaccessibleExchange.LoadDB(); // 重新加载，使用测试目录中的json文件
 			gl_finnhubInaccessibleExchange.Update();

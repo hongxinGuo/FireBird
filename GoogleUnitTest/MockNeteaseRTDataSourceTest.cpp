@@ -37,8 +37,8 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestInitialize) {
-		EXPECT_STREQ(m_pMockNeteaseRTDataSource->GetInquiryFunction(), _T("http://api.money.126.net/data/feed/"));
-		EXPECT_STREQ(m_pMockNeteaseRTDataSource->GetInquiryToken(), _T(""));
+		EXPECT_STREQ(m_pMockNeteaseRTDataSource->GetInquiryFunction().c_str(), _T("http://api.money.126.net/data/feed/"));
+		EXPECT_STREQ(m_pMockNeteaseRTDataSource->GetInquiryToken().c_str(), _T(""));
 		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiringNumber(), 900) << _T("DEBUG模式下网易默认值");
 	}
 
@@ -85,7 +85,7 @@ namespace FireBirdTest {
 		p->SetInquiryFunction(_T("http://api.money.126.net/data/feed/"));
 		m_pMockNeteaseRTDataSource->SetCurrentInquiry(p);
 		m_pMockNeteaseRTDataSource->CreateCurrentInquireString();
-		const CString str = m_pMockNeteaseRTDataSource->GetInquiringString();
-		EXPECT_STREQ(str.Left(35), _T("http://api.money.126.net/data/feed/"));
+		const string str = m_pMockNeteaseRTDataSource->GetInquiringString();
+		EXPECT_STREQ(str.substr(0,35).c_str(), _T("http://api.money.126.net/data/feed/"));
 	}
 }

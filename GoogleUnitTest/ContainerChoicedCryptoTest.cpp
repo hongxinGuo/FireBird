@@ -46,6 +46,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_containerChosenCrypto.Size(), 11) << "默认状态下装载12个代码,但其中的代码DKAETH不属于Crypto代码集，故而只装载了11个";
 
 		const CFinnhubCryptoPtr pCrypto = m_containerChosenCrypto.GetCryptoSymbol(2);
-		EXPECT_STREQ(pCrypto->GetSymbol(), _T("BINANCE:OCEANBTC")) << "装载时没有排序，使用的是原始位置";
+		EXPECT_STREQ(pCrypto->GetSymbol().c_str(), _T("BINANCE:OCEANBTC")) << "装载时没有排序，使用的是原始位置";
 	}
 }

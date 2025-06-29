@@ -11,11 +11,9 @@ CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");
 }
 
-CString CProductFinnhubForexSymbol::CreateMessage() {
-	const auto strParam = gl_dataContainerFinnhubForexExchange.GetExchange(m_lIndex);
-
-	m_strInquiringExchange = strParam;
-	m_strInquiry = m_strInquiryFunction + strParam;
+string CProductFinnhubForexSymbol::CreateMessage() {
+	m_strInquiringExchange = gl_dataContainerFinnhubForexExchange.GetExchange(m_lIndex);
+	m_strInquiry = m_strInquiryFunction + m_strInquiringExchange;
 	return m_strInquiry;
 }
 

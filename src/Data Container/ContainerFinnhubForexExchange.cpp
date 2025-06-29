@@ -15,7 +15,7 @@ void CContainerFinnhubForexExchange::Reset() {
 	m_llLastTotalForexExchange = 0;
 }
 
-bool CContainerFinnhubForexExchange::Delete(const CString& strForexExchange) {
+bool CContainerFinnhubForexExchange::Delete(const string& strForexExchange) {
 	if (!IsExchange(strForexExchange)) return false;
 
 	const auto it = std::ranges::find(m_vForexExchange.begin(), m_vForexExchange.end(), strForexExchange);
@@ -25,7 +25,7 @@ bool CContainerFinnhubForexExchange::Delete(const CString& strForexExchange) {
 	return true;
 }
 
-void CContainerFinnhubForexExchange::Add(const CString& strForexExchange) {
+void CContainerFinnhubForexExchange::Add(const string& strForexExchange) {
 	m_mapForexExchange[strForexExchange] = m_vForexExchange.size();
 	m_vForexExchange.push_back(strForexExchange);
 }
@@ -36,8 +36,8 @@ bool CContainerFinnhubForexExchange::LoadDB() {
 
 	setForexExchange.Open();
 	while (!setForexExchange.IsEOF()) {
-		m_vForexExchange.push_back(setForexExchange.m_Code);
-		m_mapForexExchange[setForexExchange.m_Code] = i++;
+		m_vForexExchange.push_back(setForexExchange.m_Code.GetString());
+		m_mapForexExchange[setForexExchange.m_Code.GetString()] = i++;
 		setForexExchange.MoveNext();
 	}
 	setForexExchange.Close();
@@ -54,7 +54,7 @@ bool CContainerFinnhubForexExchange::UpdateDB() {
 			setForexExchange.m_pDatabase->BeginTrans();
 			for (auto l = m_llLastTotalForexExchange; l < m_vForexExchange.size(); l++) {
 				setForexExchange.AddNew();
-				setForexExchange.m_Code = m_vForexExchange.at(l);
+				setForexExchange.m_Code = m_vForexExchange.at(l).c_str();
 				setForexExchange.Update();
 			}
 			setForexExchange.m_pDatabase->CommitTrans();

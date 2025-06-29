@@ -25,7 +25,7 @@ bool CContainerTiingoCryptoSymbol::LoadDB() {
 	setCryptoSymbol.Open();
 	setCryptoSymbol.m_pDatabase->BeginTrans();
 	while (!setCryptoSymbol.IsEOF()) {
-		if (!IsSymbol(setCryptoSymbol.m_Ticker)) {
+		if (!IsSymbol(setCryptoSymbol.m_Ticker.GetString())) {
 			const auto pSymbol = make_shared<CTiingoCrypto>();
 			pSymbol->Load(setCryptoSymbol);
 			Add(pSymbol);
@@ -49,8 +49,8 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 			setWorldCrypto.Open();
 			setWorldCrypto.m_pDatabase->BeginTrans();
 			while (!setWorldCrypto.IsEOF()) {	//更新原有的代码集状态
-				if (IsSymbol(setWorldCrypto.m_Ticker)) {
-					const CTiingoCryptoPtr pCrypto = GetCrypto(setWorldCrypto.m_Ticker);
+				if (IsSymbol(setWorldCrypto.m_Ticker.GetString())) {
+					const CTiingoCryptoPtr pCrypto = GetCrypto(setWorldCrypto.m_Ticker.GetString());
 					ASSERT(pCrypto != nullptr);
 					if (pCrypto->IsUpdateProfileDB()) {
 						pCrypto->Update(setWorldCrypto);

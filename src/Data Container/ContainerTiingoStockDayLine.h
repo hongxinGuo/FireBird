@@ -12,13 +12,13 @@ public:
 	CContainerTiingoStockDayLine& operator=(CContainerTiingoStockDayLine&& other) noexcept = delete;
 	virtual ~CContainerTiingoStockDayLine() = default;
 
-	bool SaveDB(const CString& strStockSymbol);
-	bool LoadDB(const CString& strStockSymbol);
+	bool SaveDB(const string& strStockSymbol);
+	bool LoadDB(const string& strStockSymbol);
 
 	auto Size() const noexcept { return m_vHistoryData.size(); }
 	bool Empty() const noexcept { return m_vHistoryData.empty(); }
-	void UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const CString& strStockSymbol);
-	bool UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const CString& strStockSymbol) const;
+	void UpdateDB(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol);
+	bool UpdateDB2(CSetTiingoStockDayLine* pSetTiingoStockDayLine, const string& strStockSymbol) const;
 	bool LoadBasicDB(CSetTiingoStockDayLine* pSetHistoryCandleBasic);
 	bool GetStartEndDate(long& lStartDate, long& lEndDate) const;
 

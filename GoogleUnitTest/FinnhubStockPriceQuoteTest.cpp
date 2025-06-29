@@ -37,13 +37,13 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestInitialize) {
 		EXPECT_EQ(stockPriceQuote.GetIndex(), 0);
-		EXPECT_STREQ(stockPriceQuote.GetInquiryFunction(), _T("https://finnhub.io/api/v1/quote?symbol="));
+		EXPECT_STREQ(stockPriceQuote.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/quote?symbol="));
 	}
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestCreatMessage) {
 		stockPriceQuote.SetMarket(gl_pWorldMarket);
 		stockPriceQuote.SetIndex(1);
-		EXPECT_STREQ(stockPriceQuote.CreateMessage(), stockPriceQuote.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol());
+		EXPECT_TRUE(stockPriceQuote.CreateMessage() == stockPriceQuote.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol());
 	}
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestProcessWebData) {
@@ -74,7 +74,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol);
+			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol.c_str());
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetNew(0);
 			m_pStock->SetHigh(0);
@@ -89,7 +89,7 @@ namespace FireBirdTest {
 			m_finnhubStockPriceQuote.__Test_checkAccessRight(m_pWebData);
 
 			m_finnhubStockPriceQuote.SetMarket(gl_pWorldMarket);
-			m_finnhubStockPriceQuote.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
+			m_finnhubStockPriceQuote.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol.c_str()));
 		}
 
 		void TearDown() override {

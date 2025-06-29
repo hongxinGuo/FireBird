@@ -41,7 +41,7 @@ using std::map;
 #include <queue>
 using std::queue;
 
-bool IsShareA(const CString& strStockCode);
+bool IsShareA(const string& strStockCode);
 
 // 证券名称数据包
 class CChinaStock : public CVirtualStock {
@@ -267,7 +267,7 @@ public:
 
 	// 数据库的提取和存储
 	// 日线装载函数，由工作线程ThreadLoadDayLine调用
-	virtual bool LoadDayLine(const CString& strStockCode) { return m_dataDayLine.LoadDB(strStockCode); }
+	virtual bool LoadDayLine(const string& strStockCode) { return m_dataDayLine.LoadDB(strStockCode); }
 	virtual bool SaveDayLineBasicInfo() { return m_dataDayLine.SaveDB(GetSymbol()); }
 
 	bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* pSetDayLineBasicInfo) { return m_dataDayLine.LoadBasicDB(pSetDayLineBasicInfo); }

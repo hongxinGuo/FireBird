@@ -163,7 +163,7 @@ bool CVirtualHistoryCandleExtend::Save(CVirtualSetHistoryCandle* pSet) const {
 	pSet->m_Date = GetMarketDate();
 	pSet->m_Exchange = GetExchange().c_str();
 	pSet->m_Symbol = GetStockSymbol().c_str();
-	pSet->m_DisplaySymbol = GetDisplaySymbol();
+	pSet->m_DisplaySymbol = GetDisplaySymbol().c_str();
 	pSet->m_LastClose = ConvertValueToString(GetLastClose(), GetRatio());
 	pSet->m_High = ConvertValueToString(GetHigh(), GetRatio());
 	pSet->m_Low = ConvertValueToString(GetLow(), GetRatio());
@@ -262,7 +262,9 @@ bool CVirtualHistoryCandleExtend::Load(const CVirtualSetHistoryCandle* pSet) {
 	m_lDate = pSet->m_Date;
 	m_strExchange = pSet->m_Exchange;
 	m_strStockSymbol = pSet->m_Symbol;
-	m_strDisplaySymbol = pSet->m_DisplaySymbol;
+	CString str;
+	str = pSet->m_DisplaySymbol;
+	m_strDisplaySymbol = str.GetString();
 	m_lLastClose = atof(pSet->m_LastClose) * GetRatio();
 	m_lOpen = atof(pSet->m_Open) * GetRatio();
 	m_lHigh = atof(pSet->m_High) * GetRatio();

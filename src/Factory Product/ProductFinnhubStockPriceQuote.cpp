@@ -13,7 +13,7 @@ CProductFinnhubStockPriceQuote::CProductFinnhubStockPriceQuote() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/quote?symbol=");
 }
 
-CString CProductFinnhubStockPriceQuote::CreateMessage() {
+string CProductFinnhubStockPriceQuote::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 	const auto strParam = pStock->GetSymbol();
 

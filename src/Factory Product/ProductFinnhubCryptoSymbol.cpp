@@ -11,8 +11,8 @@ CProductFinnhubCryptoSymbol::CProductFinnhubCryptoSymbol() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/crypto/symbol?exchange=");
 }
 
-CString CProductFinnhubCryptoSymbol::CreateMessage() {
-	const CString strParam = gl_dataContainerFinnhubCryptoExchange.GetExchange(m_lIndex).c_str();
+string CProductFinnhubCryptoSymbol::CreateMessage() {
+	const string strParam = gl_dataContainerFinnhubCryptoExchange.GetExchange(m_lIndex);
 
 	m_strInquiringExchange = strParam;
 	m_strInquiry = m_strInquiryFunction + strParam;

@@ -12,8 +12,8 @@
 // 沪市A股代码以600或601开头，深市A股代码以000或001开头。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
-bool IsShareA(const CString& strStockCode) {
-	const CString strSymbol = GetStockSymbol(strStockCode);
+bool IsShareA(const string& strStockCode) {
+	const string strSymbol = GetStockSymbol(strStockCode);
 	if (IsShanghaiExchange(strStockCode)) {
 		if ((strSymbol[0] == '6') && (strSymbol[1] == '0')) {
 			if ((strSymbol[2] == '0') || (strSymbol[2] == '1')) {
@@ -323,8 +323,8 @@ void CChinaStock::UpdateRTData(const CWebRTDataPtr& pRTData) {
 
 void CChinaStock::UpdateStatus(const CWebRTDataPtr& pRTData) {
 	SetActive(true);
-	SetSymbol(pRTData->GetSymbol()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-	if (pRTData->GetStockName() != _T("")) SetDisplaySymbol(pRTData->GetStockName()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+	SetSymbol(pRTData->GetSymbol().c_str()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+	if (pRTData->GetStockName() != _T("")) SetDisplaySymbol(pRTData->GetStockName().c_str()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
 	SetIPOStatus(_STOCK_IPOED_);
 }
 
@@ -713,7 +713,7 @@ void CChinaStock::CalculateHighLowLimit(const CWebRTDataPtr& pRTData) {
 				iCompare = (static_cast<double>(i2) * 100 + pRTData->GetLastClose() * 0.65) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
 				if (iCompare <= 21) {
 					if ((iCompare % 5) != 0) {// 确保涨跌幅为5%的倍数
-						TRACE("%s iCompare = %i, 不是5的倍数\n", m_strSymbol.GetBuffer(), iCompare);
+						TRACE("%s iCompare = %i, 不是5的倍数\n", m_strSymbol, iCompare);
 					}
 					d1 = static_cast<double>(i2) * 100 / pRTData->GetLastClose();
 					if (d1 > iCompare) {
@@ -745,7 +745,7 @@ void CChinaStock::CalculateHighLowLimit(const CWebRTDataPtr& pRTData) {
 				iCompare = (static_cast<double>(i2) * 100 + pRTData->GetLastClose() * 0.65) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
 				if (iCompare <= 21) {
 					if ((iCompare % 5) != 0) {// 确保涨跌幅为5%的倍数
-						TRACE("%s iCompare = %i, 不是5的倍数\n", m_strSymbol.GetBuffer(), iCompare);
+						TRACE("%s iCompare = %i, 不是5的倍数\n", m_strSymbol, iCompare);
 					}
 					d1 = static_cast<double>(i2) * 100 / pRTData->GetLastClose();
 					if (d1 < iCompare) {
@@ -1149,11 +1149,11 @@ bool CChinaStock::LoadStockCodeDB(CSetChinaStockSymbol& setChinaStockSymbol) {
 void CChinaStock::CheckNeedProcessRTData() {
 	SetNeedProcessRTData(true);
 	if (IsShanghaiExchange(GetSymbol())) {
-		if (GetSymbol().Left(6) <= _T("000999")) {//沪市指数？
+		if (GetSymbol().substr(0, 6) <= _T("000999")) {//沪市指数？
 			SetNeedProcessRTData(false);
 		}
 	}
-	else if ((GetSymbol().Left(6) >= _T("399000"))) {// 深市指数
+	else if ((GetSymbol().substr(0, 6) >= _T("399000"))) {// 深市指数
 		SetNeedProcessRTData(false);
 	}
 }
@@ -1202,7 +1202,7 @@ bool CChinaStock::BuildWeekLine(long lStartDate) {
 
 bool CChinaStock::IsSameStock(const CChinaStockPtr& pStock) const {
 	if (pStock == nullptr) return false;
-	if (m_strSymbol.Compare(pStock->GetSymbol()) == 0) {
+	if (m_strSymbol.compare(pStock->GetSymbol()) == 0) {
 		return true;
 	}
 	return false;
@@ -1235,7 +1235,7 @@ bool CChinaStock::IsTodayDataChanged() const {
 bool CChinaStock::IsVolumeConsistence() noexcept {
 	if ((m_lHighLimit > 0) && (m_lLowLimit > 0)) {
 		if ((m_lHighLimitFromTengxun != m_lHighLimit) || (m_lLowLimitFromTengxun != m_lLowLimit)) {
-			TRACE(_T("%s涨跌停板价格不符：%d %d    %d  %d\n"), GetSymbol().GetBuffer(), m_lHighLimitFromTengxun, m_lHighLimit, m_lLowLimitFromTengxun, m_lLowLimit);
+			TRACE(_T("%s涨跌停板价格不符：%d %d    %d  %d\n"), GetSymbol(), m_lHighLimitFromTengxun, m_lHighLimit, m_lLowLimitFromTengxun, m_lLowLimit);
 		}
 		if ((m_lPBuy[0] > 0) && (m_lPSell[0] > 0)) {// 当涨跌停板打开时
 			m_lHighLimit = m_lLowLimit = 0; // 重置此两变量
@@ -1243,7 +1243,7 @@ bool CChinaStock::IsVolumeConsistence() noexcept {
 	}
 	if (GetVolume() != GetOrdinaryBuyVolume() + GetOrdinarySellVolume() + GetAttackBuyVolume()
 		+ GetAttackSellVolume() + GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume()) {
-		TRACE(_T("%14Id %s股数%d\n"), ConvertToDateTime(GetTransactionTime(), gl_pChinaMarket->GetTimeZone()), GetSymbol().GetBuffer(), GetVolume());
+		TRACE(_T("%14Id %s股数%d\n"), ConvertToDateTime(GetTransactionTime(), gl_pChinaMarket->GetTimeZone()), GetSymbol(), GetVolume());
 		TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
 		      GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
 		return false;

@@ -41,8 +41,8 @@ namespace FireBirdTest {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CWebRTData RTData;
 		EXPECT_EQ(RTData.GetTimePoint().time_since_epoch().count(), 0);
-		EXPECT_STREQ(RTData.GetSymbol(), _T(""));
-		EXPECT_STREQ(RTData.GetStockName(), _T(""));
+		EXPECT_STREQ(RTData.GetSymbol().c_str(), _T(""));
+		EXPECT_STREQ(RTData.GetStockName().c_str(), _T(""));
 		EXPECT_EQ(RTData.GetOpen(), 0);
 		EXPECT_EQ(RTData.GetLastClose(), 0);
 		EXPECT_EQ(RTData.GetNew(), 0);
@@ -184,8 +184,8 @@ namespace FireBirdTest {
 		switch (m_iCount) {
 		case 0:
 			EXPECT_FALSE(m_pRTData->IsActive());
-			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_pRTData->GetStockName(), _T("don't use chinese character")); //虽然此处不允许使用中文，但程序中却可以。
+			EXPECT_STREQ(m_pRTData->GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_pRTData->GetStockName().c_str(), _T("don't use chinese character")); //虽然此处不允许使用中文，但程序中却可以。
 			EXPECT_EQ(m_pRTData->GetOpen(), 12480);
 			EXPECT_EQ(m_pRTData->GetLastClose(), 12570);
 			EXPECT_EQ(m_pRTData->GetNew(), 12290);
@@ -213,14 +213,14 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pRTData->GetTimePoint().time_since_epoch().count(), tTime);
 			break;
 		case 1:
-			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600601.SS"));
+			EXPECT_STREQ(m_pRTData->GetSymbol().c_str(), _T("600601.SS"));
 			EXPECT_FALSE(m_pRTData->IsActive());
 			EXPECT_EQ(m_pRTData->GetTimePoint().time_since_epoch().count(), tTime3);
 			++it;
 			ParseOneNeteaseRTData(it, m_pRTData);
 			EXPECT_TRUE(m_pRTData->IsActive());
-			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_pRTData->GetStockName(), _T("don't use chinese character"));
+			EXPECT_STREQ(m_pRTData->GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_pRTData->GetStockName().c_str(), _T("don't use chinese character"));
 			EXPECT_EQ(m_pRTData->GetOpen(), 12480);
 			EXPECT_EQ(m_pRTData->GetLastClose(), 12570);
 			EXPECT_EQ(m_pRTData->GetNew(), 12290);
@@ -249,19 +249,19 @@ namespace FireBirdTest {
 			break;
 		case 2:
 			EXPECT_FALSE(m_pRTData->IsActive());
-			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600000.SS")); // 没有设置，仍是初始值
+			EXPECT_STREQ(m_pRTData->GetSymbol().c_str(), _T("600000.SS")); // 没有设置，仍是初始值
 			EXPECT_EQ(m_pRTData->GetHigh(), 12480); // 后续部分皆未设置。
 			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1);
 			break;
 		case 3:
 			EXPECT_FALSE(m_pRTData->IsActive());
-			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600601.SS")); // 股票代码已设置
+			EXPECT_STREQ(m_pRTData->GetSymbol().c_str(), _T("600601.SS")); // 股票代码已设置
 			EXPECT_EQ(m_pRTData->GetHigh(), -1) << "此位置出错，使用默认值-1";
 			++it;
 			ParseOneNeteaseRTData(it, m_pRTData);
 			EXPECT_TRUE(m_pRTData->IsActive());
-			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600000.SS"));
-			EXPECT_STREQ(m_pRTData->GetStockName(), _T("don't use chinese character"));
+			EXPECT_STREQ(m_pRTData->GetSymbol().c_str(), _T("600000.SS"));
+			EXPECT_STREQ(m_pRTData->GetStockName().c_str(), _T("don't use chinese character"));
 			EXPECT_EQ(m_pRTData->GetOpen(), 12480);
 			EXPECT_EQ(m_pRTData->GetLastClose(), 12570);
 			EXPECT_EQ(m_pRTData->GetNew(), 12290);
@@ -291,7 +291,7 @@ namespace FireBirdTest {
 			break;
 		case 4: // 只有报头
 			EXPECT_FALSE(m_pRTData->IsActive());
-			EXPECT_STREQ(m_pRTData->GetSymbol(), _T("600001.SS")); // 没有设置，仍是初始值
+			EXPECT_STREQ(m_pRTData->GetSymbol().c_str(), _T("600001.SS")); // 没有设置，仍是初始值
 			EXPECT_EQ(m_pRTData->GetTimePoint().time_since_epoch().count(), tTime2) << "每个数据中有两个时间，以较早的时间为准";
 		default:
 			break;

@@ -33,7 +33,7 @@ void CVirtualHistoryCandleBasic::SaveBasicData(CVirtualSetHistoryCandleBasic* pV
 	pVirtualSetHistoryCandleBasic->m_Date = GetMarketDate();
 	pVirtualSetHistoryCandleBasic->m_Exchange = GetExchange().c_str();
 	pVirtualSetHistoryCandleBasic->m_Symbol = GetStockSymbol().c_str();
-	pVirtualSetHistoryCandleBasic->m_DisplaySymbol = GetDisplaySymbol();
+	pVirtualSetHistoryCandleBasic->m_DisplaySymbol = GetDisplaySymbol().c_str();
 	pVirtualSetHistoryCandleBasic->m_LastClose = ConvertValueToString(GetLastClose(), ratio);
 	pVirtualSetHistoryCandleBasic->m_High = ConvertValueToString(GetHigh(), ratio);
 	pVirtualSetHistoryCandleBasic->m_Low = ConvertValueToString(GetLow(), ratio);
@@ -67,7 +67,9 @@ void CVirtualHistoryCandleBasic::LoadBasicData(CVirtualSetHistoryCandleBasic* pV
 	m_lDate = pVirtualSetHistoryCandleBasic->m_Date;
 	m_strExchange = pVirtualSetHistoryCandleBasic->m_Exchange;
 	m_strStockSymbol = pVirtualSetHistoryCandleBasic->m_Symbol;
-	m_strDisplaySymbol = pVirtualSetHistoryCandleBasic->m_DisplaySymbol;
+	CString str;
+	str = pVirtualSetHistoryCandleBasic->m_DisplaySymbol;
+	m_strDisplaySymbol = str.GetString();
 	m_lLastClose = atof(pVirtualSetHistoryCandleBasic->m_LastClose) * ratio;
 	m_lOpen = atof(pVirtualSetHistoryCandleBasic->m_Open) * ratio;
 	m_lHigh = atof(pVirtualSetHistoryCandleBasic->m_High) * ratio;

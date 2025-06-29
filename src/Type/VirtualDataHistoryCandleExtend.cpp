@@ -17,7 +17,7 @@ CVirtualDataHistoryCandleExtend::CVirtualDataHistoryCandleExtend() {
 //  自动删除旧数据中的重复数据。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, const CString& strStockSymbol) const {
+bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasic* pSetHistoryCandleBasic, const string& strStockSymbol) const {
 	vector<CVirtualHistoryCandleExtendPtr> vOldHistoryCandle;
 	CVirtualHistoryCandleExtendPtr pHistoryCandle = nullptr;
 	long lSizeOfOldDayLine = 0;
@@ -26,10 +26,11 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 	ASSERT(Size() > 0);
 
 	const size_t lSize = Size();
-	if (strStockSymbol.GetLength() > 0) {
+	if (strStockSymbol.length() > 0) {
 		long lLastDate = 0;
 		pSetHistoryCandleBasic->m_strFilter = _T("[Symbol] = '");
-		pSetHistoryCandleBasic->m_strFilter += strStockSymbol + _T("'");
+		pSetHistoryCandleBasic->m_strFilter += strStockSymbol.c_str();
+		pSetHistoryCandleBasic->m_strFilter += _T("'");
 		pSetHistoryCandleBasic->m_strSort = _T("[Date]");
 
 		if (pSetHistoryCandleBasic->Open()) {

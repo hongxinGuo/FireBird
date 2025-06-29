@@ -8,12 +8,12 @@ public:
 	CContainerChinaWeekLine();
 	~CContainerChinaWeekLine() override = default;
 
-	bool LoadDB(const CString& strStockSymbol) final;
+	bool LoadDB(const string& strStockSymbol) final;
 	CContainerChinaWeekLine(const CContainerChinaWeekLine& other) = delete;
 	CContainerChinaWeekLine(CContainerChinaWeekLine&& other) noexcept = delete;
 	CContainerChinaWeekLine& operator=(const CContainerChinaWeekLine& other) = delete;
 	CContainerChinaWeekLine& operator=(CContainerChinaWeekLine&& other) noexcept = delete;
-	bool SaveDB(const CString& strStockSymbol) final;
+	bool SaveDB(const string& strStockSymbol) final;
 
 	void SaveCurrentWeekLine() const;
 	bool LoadCurrentWeekLine();

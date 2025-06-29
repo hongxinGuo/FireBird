@@ -15,7 +15,7 @@ CProductFinnhubCompanyInsiderSentiment::CProductFinnhubCompanyInsiderSentiment()
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/insider-sentiment?symbol=");
 }
 
-CString CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
+string CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 
 	const string sCurrentDate = ConvertDateToTimeStamp(GetMarket()->GetMarketDate());
@@ -93,8 +93,8 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 			pvInsiderSentiment->push_back(pInsiderSentiment);
 		}
 	} catch (json::exception& e) {
-		CString str = _T("Finnhub Stock ");
-		str += pInsiderSentiment->m_strSymbol.c_str();
+		string str = _T("Finnhub Stock ");
+		str += pInsiderSentiment->m_strSymbol;
 		str += _T(" Insider Sentiment ");
 		ReportJSonErrorToSystemMessage(str, e.what());
 		return pvInsiderSentiment;

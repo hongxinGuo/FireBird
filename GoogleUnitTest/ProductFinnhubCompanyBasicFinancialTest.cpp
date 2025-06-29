@@ -40,7 +40,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestInitialize) {
 		EXPECT_EQ(companyBasicFinancial.GetIndex(), 0);
-		EXPECT_STREQ(companyBasicFinancial.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/metric?symbol="));
+		EXPECT_STREQ(companyBasicFinancial.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/stock/metric?symbol="));
 	}
 
 	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestCreatMessage) {
@@ -48,7 +48,7 @@ namespace FireBirdTest {
 		pStock->SetUpdateBasicFinancial(true);
 		companyBasicFinancial.SetMarket(gl_pWorldMarket);
 		companyBasicFinancial.SetIndex(1);
-		EXPECT_STREQ(companyBasicFinancial.CreateMessage(), companyBasicFinancial.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol() + _T("&metric=all"));
+		EXPECT_STREQ(companyBasicFinancial.CreateMessage().c_str(), (companyBasicFinancial.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol() + _T("&metric=all")).c_str());
 		EXPECT_TRUE(pStock->IsUpdateBasicFinancial()) << "处理接收到的数据后方设置此标识";
 
 		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateBasicFinancial(true);
@@ -467,7 +467,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol);
+			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol.c_str());
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), 19800101);
 			m_pStock->SetUpdateBasicFinancial(true);
@@ -476,7 +476,7 @@ namespace FireBirdTest {
 			m_finnhubCompanyBasicFinancial.__Test_checkAccessRight(m_pWebData);
 
 			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket);
-			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
+			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol.c_str());
 			m_finnhubCompanyBasicFinancial.SetIndex(lIndex);
 		}
 
@@ -515,7 +515,7 @@ namespace FireBirdTest {
 			break;
 		case 2: // 正确
 			EXPECT_FALSE(pBasicFinancial == nullptr);
-			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("AAPL"));
+			EXPECT_STREQ(pBasicFinancial->m_symbol.c_str(), _T("AAPL"));
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_yearToDatePriceReturnDaily, 63.01775);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_currentEV_freeCashFlowAnnual, 1.2);
@@ -528,13 +528,13 @@ namespace FireBirdTest {
 			break;
 		case 3: //
 			EXPECT_FALSE(pBasicFinancial == nullptr);
-			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("MBWS.PA")) << "BVDRF的本土代码名称为MBWS.PA";
+			EXPECT_STREQ(pBasicFinancial->m_symbol.c_str(), _T("MBWS.PA")) << "BVDRF的本土代码名称为MBWS.PA";
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.43212);
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 4:
 			EXPECT_FALSE(pBasicFinancial == nullptr);
-			EXPECT_STREQ(pBasicFinancial->m_symbol, _T("OTSCS"));
+			EXPECT_STREQ(pBasicFinancial->m_symbol.c_str(), _T("OTSCS"));
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_52WeekHigh, 1.18);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_52WeekLow, 1.0);
 			EXPECT_DOUBLE_EQ(pBasicFinancial->m_10DayAverageTradingVolume, 0.0) << "没有此项数据，故而其值为初始值";
@@ -560,7 +560,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol);
+			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol.c_str());
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), 19800101);
 			m_pStock->SetUpdateBasicFinancialDB(false);
@@ -568,7 +568,7 @@ namespace FireBirdTest {
 			m_finnhubCompanyBasicFinancial.__Test_checkAccessRight(m_pWebData);
 
 			m_finnhubCompanyBasicFinancial.SetMarket(gl_pWorldMarket);
-			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol);
+			const auto lIndex = gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol.c_str());
 			m_finnhubCompanyBasicFinancial.SetIndex(lIndex);
 		}
 

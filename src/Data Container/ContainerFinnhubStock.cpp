@@ -82,8 +82,8 @@ bool CContainerFinnhubStock::LoadDB() {
 		if (!IsSymbol(pFinnhubStock->GetSymbol())) {
 			pFinnhubStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
 			Add(pFinnhubStock);
-			if (pFinnhubStock->GetSymbol().GetLength() > lMaxSymbolLength) {
-				lMaxSymbolLength = pFinnhubStock->GetSymbol().GetLength();
+			if (pFinnhubStock->GetSymbol().length() > lMaxSymbolLength) {
+				lMaxSymbolLength = pFinnhubStock->GetSymbol().length();
 			}
 		}
 		else {
@@ -122,7 +122,7 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 		setFinnhubStock.m_pDatabase->BeginTrans();
 		while (iCurrentUpdated < iStockNeedUpdate) {	//更新原有的代码集状态
 			if (setFinnhubStock.IsEOF()) break;
-			const CFinnhubStockPtr pStock = GetStock(setFinnhubStock.m_Symbol);
+			const CFinnhubStockPtr pStock = GetStock(setFinnhubStock.m_Symbol.GetString());
 			ASSERT(pStock != nullptr);
 			if (pStock->IsUpdateProfileDB()) {
 				iCurrentUpdated++;
@@ -227,8 +227,8 @@ void CContainerFinnhubStock::UpdateBasicFinancialMetricDB(const vector<CFinnhubS
 	//更新原有的基本财务信息
 	while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
 		if (setBasicFinancialMetric.IsEOF()) break;
-		if (IsSymbol(setBasicFinancialMetric.m_symbol)) {
-			CFinnhubStockPtr pStockNeedUpdate = GetStock(setBasicFinancialMetric.m_symbol);
+		if (IsSymbol(setBasicFinancialMetric.m_symbol.GetString())) {
+			CFinnhubStockPtr pStockNeedUpdate = GetStock(setBasicFinancialMetric.m_symbol.GetString());
 			if (vStock.end() != std::ranges::find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
 				iCurrentUpdated++;
 				pStockNeedUpdate->UpdateBasicFinancialMetric(setBasicFinancialMetric);
@@ -282,12 +282,12 @@ void CContainerFinnhubStock::UpdateInsiderTransactionDB() {
 }
 
 bool CContainerFinnhubStock::ValidateStockSymbol(const CFinnhubStockPtr& pStock) {
-	const CString strSymbol = pStock->GetSymbol();
-	const CString strExchangeCode = pStock->GetExchangeCode();
+	const string strSymbol = pStock->GetSymbol();
+	const string strExchangeCode = pStock->GetExchangeCode();
 
-	if (strExchangeCode.Compare(_T("US")) == 0) return true;
-	const int pos = strSymbol.Find(_T(".") + strExchangeCode);
-	if ((pos + 1) < (strSymbol.GetLength() - strExchangeCode.GetLength())) {
+	if (strExchangeCode.compare(_T("US")) == 0) return true;
+	const int pos = strSymbol.find(_T(".") + strExchangeCode);
+	if ((pos + 1) < (strSymbol.length() - strExchangeCode.length())) {
 		return false;
 	}
 	return true;

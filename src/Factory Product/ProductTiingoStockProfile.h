@@ -8,7 +8,7 @@ public:
 	CProductTiingoStockProfile();
 	~CProductTiingoStockProfile() override = default;
 
-	CString CreateMessage() override;
+	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CTiingoStocksPtr ParseTiingoStockSymbol(const CWebDataPtr& pWebData);
 

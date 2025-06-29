@@ -38,15 +38,15 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubForexDayLineTest, TestInitialize) {
 		EXPECT_EQ(forexDayLine.GetIndex(), 0);
-		EXPECT_STREQ(forexDayLine.GetInquiryFunction(), _T("https://finnhub.io/api/v1/forex/candle?symbol="));
+		EXPECT_TRUE(forexDayLine.GetInquiryFunction()== _T("https://finnhub.io/api/v1/forex/candle?symbol="));
 	}
 
 	TEST_F(CFinnhubForexDayLineTest, TestCreatMessage) {
 		gl_dataFinnhubForexSymbol.GetSymbol(1)->SetUpdateDayLine(true);
 		forexDayLine.SetMarket(gl_pWorldMarket);
 		forexDayLine.SetIndex(1);
-		EXPECT_STREQ(forexDayLine.CreateMessage(),
-		             forexDayLine.GetInquiryFunction() + gl_dataFinnhubForexSymbol.GetSymbol(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
+		EXPECT_TRUE(forexDayLine.CreateMessage() ==
+			forexDayLine.GetInquiryFunction() + gl_dataFinnhubForexSymbol.GetSymbol(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
 		EXPECT_TRUE(gl_dataFinnhubForexSymbol.GetSymbol(1)->IsUpdateDayLine()) << "接收到的数据处理后方设置此标识";
 
 		gl_dataFinnhubForexSymbol.GetSymbol(1)->SetUpdateDayLine(true);
@@ -105,7 +105,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pvDayLine = nullptr;
-			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
+			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol.c_str())) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
 			m_finnhubForexDayLine.__Test_checkAccessRight(m_pWebData);
 		}
@@ -186,7 +186,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
+			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol.c_str())) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
 			m_finnhubForexDayLine.__Test_checkAccessRight(m_pWebData);
 

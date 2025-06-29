@@ -42,16 +42,16 @@ void CTiingoInaccessibleStock::UpdateDB() {
 	const string strOld = m_strFileName.substr(0, m_strFileName.length() - 4) + _T("json");
 	const string strNew = m_strFileName.substr(0, m_strFileName.length() - 4) + _T("bak");
 
-	DeleteFile(gl_systemConfiguration.GetConfigurationFileDirectory() + strNew.c_str());
-	rename(gl_systemConfiguration.GetConfigurationFileDirectory() + strOld.c_str(), gl_systemConfiguration.GetConfigurationFileDirectory() + strNew.c_str()); // 保存备份
+	DeleteFile((gl_systemConfiguration.GetConfigurationFileDirectory() + strNew).c_str());
+	rename((gl_systemConfiguration.GetConfigurationFileDirectory() + strOld).c_str(), (gl_systemConfiguration.GetConfigurationFileDirectory() + strNew).c_str()); // 保存备份
 	UpdateJson();
 	SaveDB();
 	SetUpdateDB(false);
 }
 
 bool CTiingoInaccessibleStock::LoadDB() {
-	string str = gl_systemConfiguration.GetConfigurationFileDirectory().GetString() + m_strFileName;
-	fstream f(gl_systemConfiguration.GetConfigurationFileDirectory().GetString() + m_strFileName, ios::in);
+	string str = gl_systemConfiguration.GetConfigurationFileDirectory() + m_strFileName;
+	fstream f(gl_systemConfiguration.GetConfigurationFileDirectory() + m_strFileName, ios::in);
 	if (f.is_open()) {
 		f >> m_finnhubInaccessibleStock;
 		return true;

@@ -28,7 +28,7 @@ bool CContainerFinnhubForexSymbol::LoadDB() {
 	setForexSymbol.Open();
 	setForexSymbol.m_pDatabase->BeginTrans();
 	while (!setForexSymbol.IsEOF()) {
-		if (!IsSymbol(setForexSymbol.m_Symbol)) {
+		if (!IsSymbol(setForexSymbol.m_Symbol.GetString())) {
 			const auto pSymbol = make_shared<CFinnhubForex>();
 			pSymbol->LoadSymbol(setForexSymbol);
 			pSymbol->SetCheckingDayLineStatus();
@@ -74,8 +74,8 @@ bool CContainerFinnhubForexSymbol::UpdateDB() {
 		setForexSymbol.Open();
 		setForexSymbol.m_pDatabase->BeginTrans();
 		while (!setForexSymbol.IsEOF()) {
-			if (m_mapSymbol.contains(setForexSymbol.m_Symbol)) {
-				pSymbol = GetSymbol(setForexSymbol.m_Symbol);
+			if (m_mapSymbol.contains(setForexSymbol.m_Symbol.GetString())) {
+				pSymbol = GetSymbol(setForexSymbol.m_Symbol.GetString());
 				if (pSymbol->IsUpdateProfileDB()) {
 					pSymbol->UpdateSymbol(setForexSymbol);
 					pSymbol->SetUpdateProfileDB(false);

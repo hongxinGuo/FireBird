@@ -373,7 +373,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 							pSymbol->UpdateDayLineStartEndDate();
 							pSymbol->SetUpdateProfileDB(true);
 							pSymbol->UnloadDayLine();
-							string str = pSymbol->GetSymbol().GetString();
+							string str = pSymbol->GetSymbol();
 							str += _T("日线资料存储完成");
 							gl_systemMessage.PushDayLineInfoMessage(str);
 						}
@@ -390,7 +390,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 			}
 			else { // 此种情况为有股票代码，但此代码尚未上市
 				pSymbol->SetIPOStatus(_STOCK_NOT_YET_LIST_);
-				string str1 = pSymbol->GetSymbol().GetString();
+				string str1 = pSymbol->GetSymbol();
 				str1 += _T(" 为未上市股票代码");
 				gl_systemMessage.PushDayLineInfoMessage(str1);
 			}
@@ -430,7 +430,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 							pSymbol->UpdateDayLineStartEndDate();
 							pSymbol->SetUpdateProfileDB(true);
 							pSymbol->UnloadDayLine();
-							string str2 = pSymbol->GetSymbol().GetString();
+							string str2 = pSymbol->GetSymbol();
 							str2 += _T("日线资料存储完成");
 							gl_systemMessage.PushDayLineInfoMessage(str2);
 						}
@@ -452,7 +452,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 				}
 				else {// 此种情况为有股票代码，但此代码尚未上市
 					pSymbol->SetIPOStatus(_STOCK_NOT_YET_LIST_);
-					string str1 = pSymbol->GetSymbol().GetString();
+					string str1 = pSymbol->GetSymbol();
 					str1 += _T(" 为未上市股票代码");
 					gl_systemMessage.PushDayLineInfoMessage(str1);
 				}
@@ -824,20 +824,20 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 bool CWorldMarket::UpdateToken() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 
-	if (gl_systemConfiguration.GetFinnhubToken().GetLength() > 5) {
-		gl_pFinnhubDataSource->SetInquiryToken(gl_systemConfiguration.GetFinnhubToken());
+	if (gl_systemConfiguration.GetFinnhubToken().length() > 5) {
+		gl_pFinnhubDataSource->SetInquiryToken(gl_systemConfiguration.GetFinnhubToken().c_str());
 	}
 	else {
 		gl_systemMessage.PushInformationMessage(_T("Finnhub Token Needed"));
 	}
-	if (gl_systemConfiguration.GetTiingoToken().GetLength() > 5) {
-		gl_pTiingoDataSource->SetInquiryToken(gl_systemConfiguration.GetTiingoToken());
+	if (gl_systemConfiguration.GetTiingoToken().length() > 5) {
+		gl_pTiingoDataSource->SetInquiryToken(gl_systemConfiguration.GetTiingoToken().c_str());
 	}
 	else {
 		gl_systemMessage.PushInformationMessage(_T("Tiingo Token Needed"));
 	}
-	if (gl_systemConfiguration.GetQuandlToken().GetLength() > 5) {
-		gl_pQuandlDataSource->SetInquiryToken(gl_systemConfiguration.GetQuandlToken());
+	if (gl_systemConfiguration.GetQuandlToken().length() > 5) {
+		gl_pQuandlDataSource->SetInquiryToken(gl_systemConfiguration.GetQuandlToken().c_str());
 	}
 	else {
 		gl_systemMessage.PushInformationMessage(_T("Quandl Token Needed"));
@@ -922,7 +922,7 @@ void CWorldMarket::UpdateStockDayLineStartEndDate() {
 
 		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			const auto pStock = gl_dataContainerFinnhubStock.GetStock(l);
-			setFinnhubStockDayLine.m_strFilter = strFilterPrefix + pStock->GetSymbol() + _T("'");
+			setFinnhubStockDayLine.m_strFilter = strFilterPrefix + pStock->GetSymbol().c_str() + _T("'");
 			setFinnhubStockDayLine.m_strSort = _T("[Date]");
 			setFinnhubStockDayLine.Open();
 			if (!setFinnhubStockDayLine.IsEOF()) {
@@ -1129,7 +1129,8 @@ void CWorldMarket::DeleteTiingoDelistedStock() {
 void CWorldMarket::DeleteTiingoDayLine(const CTiingoStockPtr& pStock) {
 	CSetTiingoStockDayLine setDayLine;
 	setDayLine.m_strFilter = _T("[Symbol] = '");
-	setDayLine.m_strFilter += pStock->GetSymbol() + _T("'");
+	setDayLine.m_strFilter += pStock->GetSymbol().c_str();
+	setDayLine.m_strFilter += _T("'");
 
 	setDayLine.Open();
 	setDayLine.m_pDatabase->BeginTrans();
@@ -1144,7 +1145,8 @@ void CWorldMarket::DeleteTiingoDayLine(const CTiingoStockPtr& pStock) {
 void CWorldMarket::DeleteTiingoFinancialStatement(const CTiingoStockPtr& pStock) {
 	CSetTiingoCompanyFinancialState setDayLine;
 	setDayLine.m_strFilter = _T("[Symbol] = '");
-	setDayLine.m_strFilter += pStock->GetSymbol() + _T("'");
+	setDayLine.m_strFilter += pStock->GetSymbol().c_str();
+	setDayLine.m_strFilter += _T("'");
 
 	setDayLine.Open();
 	setDayLine.m_pDatabase->BeginTrans();

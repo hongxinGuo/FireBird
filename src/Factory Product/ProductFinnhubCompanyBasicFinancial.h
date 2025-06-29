@@ -10,7 +10,7 @@ public:
 	CProductFinnhubCompanyBasicFinancial();
 	~CProductFinnhubCompanyBasicFinancial() override = default;
 
-	CString CreateMessage() override;
+	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
 	CFinnhubStockBasicFinancialPtr ParseFinnhubStockBasicFinancial(CWebDataPtr pWebData);

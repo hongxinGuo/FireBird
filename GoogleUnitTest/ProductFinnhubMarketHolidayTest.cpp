@@ -38,13 +38,13 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubMarketHolidayProductTest, TestInitialize) {
 		EXPECT_EQ(MarketHolidayProduct.GetIndex(), 0);
-		EXPECT_STREQ(MarketHolidayProduct.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/market-holiday?exchange="));
+		EXPECT_STREQ(MarketHolidayProduct.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/stock/market-holiday?exchange="));
 	}
 
 	TEST_F(CFinnhubMarketHolidayProductTest, TestCreatMessage) {
 		MarketHolidayProduct.SetMarket(gl_pWorldMarket);
 		MarketHolidayProduct.SetIndex(1);
-		EXPECT_STREQ(MarketHolidayProduct.CreateMessage(), MarketHolidayProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetExchangeCode(1).c_str());
+		EXPECT_STREQ(MarketHolidayProduct.CreateMessage().c_str(), (MarketHolidayProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetExchangeCode(1)).c_str());
 	}
 
 	// 正确的数据

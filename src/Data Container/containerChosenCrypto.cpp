@@ -21,9 +21,9 @@ bool CContainerChosenCrypto::LoadDB() {
 	setWorldChosenCrypto.Open();
 	setWorldChosenCrypto.m_pDatabase->BeginTrans();
 	while (!setWorldChosenCrypto.IsEOF()) {
-		if (gl_dataFinnhubCryptoSymbol.IsSymbol(setWorldChosenCrypto.m_Symbol)) {
-			pCrypto = gl_dataFinnhubCryptoSymbol.GetSymbol(setWorldChosenCrypto.m_Symbol);
-			m_mapSymbol[setWorldChosenCrypto.m_Symbol] = m_mapSymbol.size();
+		if (gl_dataFinnhubCryptoSymbol.IsSymbol(setWorldChosenCrypto.m_Symbol.GetString())) {
+			pCrypto = gl_dataFinnhubCryptoSymbol.GetSymbol(setWorldChosenCrypto.m_Symbol.GetString());
+			m_mapSymbol[setWorldChosenCrypto.m_Symbol.GetString()] = m_mapSymbol.size();
 			m_vStock.push_back(pCrypto);
 		}
 		else {

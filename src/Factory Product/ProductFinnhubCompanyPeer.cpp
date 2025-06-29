@@ -11,7 +11,7 @@ CProductFinnhubCompanyPeer::CProductFinnhubCompanyPeer() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/peers?symbol=");
 }
 
-CString CProductFinnhubCompanyPeer::CreateMessage() {
+string CProductFinnhubCompanyPeer::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();

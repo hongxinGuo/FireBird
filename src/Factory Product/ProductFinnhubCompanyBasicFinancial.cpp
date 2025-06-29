@@ -24,8 +24,7 @@ CProductFinnhubCompanyBasicFinancial::CProductFinnhubCompanyBasicFinancial() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/metric?symbol=");
 }
 
-CString CProductFinnhubCompanyBasicFinancial::CreateMessage() {
-	CString strMessage;
+string CProductFinnhubCompanyBasicFinancial::CreateMessage() {
 	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();

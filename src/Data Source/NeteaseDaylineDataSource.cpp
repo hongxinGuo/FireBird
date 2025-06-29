@@ -43,12 +43,12 @@ bool CNeteaseDayLineDataSource::GenerateInquiryMessage(const long lCurrentTime) 
 
 void CNeteaseDayLineDataSource::CreateProduct() {
 	// 准备网易日线数据申请格式
-	const CString strMessage = _T("http://quotes.money.163.com/service/chddata.html?code=");;
-	const CString strSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
-	CString strParam = gl_dataContainerChinaStock.CreateNeteaseDayLineInquiringStr();
-	if (strParam.GetLength() > 0) {
+	const string strMessage = _T("http://quotes.money.163.com/service/chddata.html?code=");;
+	const string strSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
+	string strParam = gl_dataContainerChinaStock.CreateNeteaseDayLineInquiringStr();
+	if (strParam.length() > 0) {
 		char buffer2[200];
-		const string strStockCode = XferNeteaseToStandard(strParam).GetString();
+		const string strStockCode = XferNeteaseToStandard(strParam);
 		SetDownLoadingStockCode(strStockCode.c_str());
 		gl_systemMessage.SetStockCodeForInquiryDayLine(strStockCode);
 		strParam += _T("");

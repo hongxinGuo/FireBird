@@ -46,6 +46,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_containerChosenForex.Size(), 3) << "默认状态下装载3个代码";
 
 		const CForexSymbolPtr pForex = m_containerChosenForex.GetForexSymbol(2);
-		EXPECT_STREQ(pForex->GetSymbol(), _T("OANDA:AUD_SGD")) << "装载时没有排序，使用的是原始位置";
+		EXPECT_STREQ(pForex->GetSymbol().c_str(), _T("OANDA:AUD_SGD")) << "装载时没有排序，使用的是原始位置";
 	}
 }

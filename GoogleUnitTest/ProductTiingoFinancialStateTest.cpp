@@ -41,15 +41,15 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoFinancialStateTest, TestInitialize) {
 		EXPECT_EQ(financialState.GetIndex(), 0);
-		EXPECT_STREQ(financialState.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/fundamentals"));
+		EXPECT_STREQ(financialState.GetInquiryFunction().c_str(), _T("https://api.tiingo.com/tiingo/fundamentals"));
 	}
 
 	TEST_F(CProductTiingoFinancialStateTest, TestCreatMessage) {
 		financialState.SetIndex(1); // stock code is AA
 		string sDate = ConvertDateToTimeStamp(gl_dataContainerTiingoStock.GetStock(1)->GetCompanyFinancialStatementUpdateDate());
-		CString strMessage = _T("https://api.tiingo.com/tiingo/fundamentals/AA/statements?startDate=");
-		strMessage += sDate.c_str();
-		EXPECT_STREQ(financialState.CreateMessage(), strMessage);
+		string strMessage = _T("https://api.tiingo.com/tiingo/fundamentals/AA/statements?startDate=");
+		strMessage += sDate;
+		EXPECT_STREQ(financialState.CreateMessage().c_str(), strMessage.c_str());
 	}
 
 	TEST_F(CProductTiingoFinancialStateTest, TestProcessWebData) {

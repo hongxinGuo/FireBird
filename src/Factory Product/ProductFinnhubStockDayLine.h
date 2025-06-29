@@ -7,7 +7,7 @@ public:
 	CProductFinnhubStockDayLine();
 	~CProductFinnhubStockDayLine() override = default;
 
-	CString CreateMessage() override;
+	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CDayLinesPtr ParseFinnhubStockCandle(CWebDataPtr pWebData);
 };

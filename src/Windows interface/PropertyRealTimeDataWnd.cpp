@@ -158,8 +158,8 @@ void CPropertyRealtimeWnd::OnTimer(UINT_PTR nIDEvent) {
 	auto pStock = gl_pChinaMarket->GetCurrentStock();
 
 	if (pStock != nullptr) {
-		CString symbol = pStock->GetSymbol();
-		m_pChinaMarketStock->SetName(symbol);
+		string symbol = pStock->GetSymbol();
+		m_pChinaMarketStock->SetName(symbol.c_str());
 		if (pStock->GetVolume() > 0) {
 			string s = fmt::format("{:Ld}", pStock->GetNew());
 			m_pPropNew->SetValue(s.c_str());

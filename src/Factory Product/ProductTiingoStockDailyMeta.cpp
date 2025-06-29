@@ -20,7 +20,7 @@ CProductTiingoStockDailyMeta::CProductTiingoStockDailyMeta() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/daily/");
 }
 
-CString CProductTiingoStockDailyMeta::CreateMessage() {
+string CProductTiingoStockDailyMeta::CreateMessage() {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
@@ -40,7 +40,7 @@ void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	auto pStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
 	if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStockDailyMeta->m_strCode.c_str())) {
 		auto pStock2 = gl_dataContainerTiingoStock.GetStock(pTiingoStockDailyMeta->m_strCode.c_str());
-		if (pStock->GetSymbol().Compare(pStock2->GetSymbol()) == 0) {
+		if (pStock->GetSymbol().compare(pStock2->GetSymbol()) == 0) {
 			pStock->UpdateDailyMeta(pTiingoStockDailyMeta); // 目前只更新HistoryDayLineBeginDate和HistoryDayLineEndDate。
 			pStock->SetUpdateStockDailyMetaDate(gl_pWorldMarket->GetCurrentTradeDate());
 		}

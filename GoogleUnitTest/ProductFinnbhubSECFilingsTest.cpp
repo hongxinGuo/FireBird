@@ -39,14 +39,14 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubSECFilingsTest, TestInitialize) {
 		EXPECT_EQ(companySECFilings.GetIndex(), 0);
-		EXPECT_STREQ(companySECFilings.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/filings?symbol="));
+		EXPECT_STREQ(companySECFilings.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/stock/filings?symbol="));
 	}
 
 	TEST_F(CFinnhubSECFilingsTest, TestCreatMessage) {
 		gl_dataContainerFinnhubStock.GetStock(1)->SetSECFilingsUpdated(false);
 		companySECFilings.SetMarket(gl_pWorldMarket);
 		companySECFilings.SetIndex(1);
-		EXPECT_STREQ(companySECFilings.CreateMessage(), companySECFilings.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol());
+		EXPECT_STREQ(companySECFilings.CreateMessage().c_str(), (companySECFilings.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol()).c_str());
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(1)->IsSECFilingsUpdated()) << "接收到的数据处理后方设置此标识";
 
 		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdatePeer(true);

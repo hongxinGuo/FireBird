@@ -43,7 +43,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CContainerVirtualStockTest, TestIsInSymbolMap1) {
-		CString strSymbol = gl_dataContainerChinaStock.GetStock(1)->GetSymbol();
+		string strSymbol = gl_dataContainerChinaStock.GetStock(1)->GetSymbol();
 		EXPECT_TRUE(m_containerVirtualStock.IsSymbol(strSymbol)) << "位于1-100之间";
 
 		strSymbol = gl_dataContainerChinaStock.GetStock(101)->GetSymbol();
@@ -68,13 +68,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestGet1) {
-		EXPECT_STREQ(gl_dataContainerChinaStock.GetStock(50)->GetSymbol(), m_containerVirtualStock.Get(50)->GetSymbol());
+		EXPECT_STREQ(gl_dataContainerChinaStock.GetStock(50)->GetSymbol().c_str(), m_containerVirtualStock.Get(50)->GetSymbol().c_str());
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestGet2) {
-		const CString strSymbol = gl_dataContainerChinaStock.GetStock(1)->GetSymbol();
+		const string strSymbol = gl_dataContainerChinaStock.GetStock(1)->GetSymbol();
 
-		EXPECT_STREQ(gl_dataContainerChinaStock.GetStock(strSymbol)->GetSymbol(), m_containerVirtualStock.Get(strSymbol)->GetSymbol());
+		EXPECT_STREQ(gl_dataContainerChinaStock.GetStock(strSymbol)->GetSymbol().c_str(), m_containerVirtualStock.Get(strSymbol)->GetSymbol().c_str());
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestGetOffset) {
@@ -147,11 +147,11 @@ namespace FireBirdTest {
 		const auto pStock = make_shared<CChinaStock>();
 		pStock->SetSymbol(_T("0.A")); // 
 		m_containerVirtualStock.Add(pStock);
-		EXPECT_STREQ(m_containerVirtualStock.Get(m_containerVirtualStock.Size() - 1)->GetSymbol(), _T("0.A"));
+		EXPECT_STREQ(m_containerVirtualStock.Get(m_containerVirtualStock.Size() - 1)->GetSymbol().c_str(), _T("0.A"));
 		EXPECT_EQ(m_containerVirtualStock.Size(), 101);
 
 		m_containerVirtualStock.Sort();
-		EXPECT_STREQ(m_containerVirtualStock.Get(0)->GetSymbol(), _T("0.A")) << "0.A位于第一位";
+		EXPECT_STREQ(m_containerVirtualStock.Get(0)->GetSymbol().c_str(), _T("0.A")) << "0.A位于第一位";
 
 		m_containerVirtualStock.Delete(pStock);
 		EXPECT_EQ(m_containerVirtualStock.Size(), 100);

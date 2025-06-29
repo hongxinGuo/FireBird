@@ -85,10 +85,10 @@ namespace FireBirdTest {
 		const auto pStock = make_shared<CChinaStock>();
 		pStock->SetSymbol(_T("0.A")); // 
 		m_containerChinaStock.Add(pStock);
-		EXPECT_STREQ(m_containerChinaStock.GetStock(m_containerChinaStock.Size() - 1)->GetSymbol(), _T("0.A"));
+		EXPECT_STREQ(m_containerChinaStock.GetStock(m_containerChinaStock.Size() - 1)->GetSymbol().c_str(), _T("0.A"));
 
 		m_containerChinaStock.Sort();
-		EXPECT_STREQ(m_containerChinaStock.GetStock(0)->GetSymbol(), _T("0.A")) << "0.A位于第一位";
+		EXPECT_STREQ(m_containerChinaStock.GetStock(0)->GetSymbol().c_str(), _T("0.A")) << "0.A位于第一位";
 
 		m_containerChinaStock.Delete(pStock);
 	}

@@ -8,7 +8,7 @@ public:
 	CProductTiingoForexDayLine();
 	~CProductTiingoForexDayLine() override = default;
 
-	CString CreateMessage() override;
+	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CDayLinesPtr ParseTiingoForexDayLine(const CWebDataPtr& pWebData);
 };

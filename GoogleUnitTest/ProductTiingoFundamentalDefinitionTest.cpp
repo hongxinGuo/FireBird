@@ -38,11 +38,11 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestInitialize) {
 		EXPECT_EQ(marketNews.GetIndex(), 0);
-		EXPECT_STREQ(marketNews.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/fundamentals/definitions?"));
+		EXPECT_STREQ(marketNews.GetInquiryFunction().c_str(), _T("https://api.tiingo.com/tiingo/fundamentals/definitions?"));
 	}
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestCreatMessage) {
-		EXPECT_STREQ(marketNews.CreateMessage(), marketNews.GetInquiryFunction());
+		EXPECT_STREQ(marketNews.CreateMessage().c_str(), marketNews.GetInquiryFunction().c_str());
 	}
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestProcessWebData) {

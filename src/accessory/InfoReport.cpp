@@ -2,20 +2,20 @@
 
 #include "InfoReport.h"
 
-void ReportErrorToSystemMessage(const CString& strPrefix, const exception& e) {
-	string strError = strPrefix.GetString();
+void ReportErrorToSystemMessage(const string& strPrefix, const exception& e) {
+	string strError = strPrefix;
 	strError += e.what();
-	gl_systemMessage.PushErrorMessage(strError.c_str());
+	gl_systemMessage.PushErrorMessage(strError);
 }
 
-void ReportWebError(const DWORD dwErrorNo, const CString& strInputMessage) {
-	string s = fmt::format("Net Error # {:Ld} message: {}", dwErrorNo, strInputMessage.GetString());
-	gl_systemMessage.PushErrorMessage(s.c_str());
+void ReportWebError(const DWORD dwErrorNo, const string& strInputMessage) {
+	string s = fmt::format("Net Error # {:Ld} message: {}", dwErrorNo, strInputMessage);
+	gl_systemMessage.PushErrorMessage(s);
 }
 
-void ReportWebError(const DWORD dwErrorNo, const long long llTime, const CString& strInputMessage) {
-	string s = fmt::format("Net Error # {:Ld} 用时：{:Ld}毫秒 message: {}", dwErrorNo, llTime, strInputMessage.GetString());
-	gl_systemMessage.PushErrorMessage(s.c_str());
+void ReportWebError(const DWORD dwErrorNo, const long long llTime, const string& strInputMessage) {
+	string s = fmt::format("Net Error # {:Ld} 用时：{:Ld}毫秒 message: {}", dwErrorNo, llTime, strInputMessage);
+	gl_systemMessage.PushErrorMessage(s);
 }
 
 void ReportInformationAndDeleteException(CException* e) {

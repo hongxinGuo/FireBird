@@ -22,7 +22,7 @@ CProductTiingoIEXTopOfBook::CProductTiingoIEXTopOfBook() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/iex?");
 }
 
-CString CProductTiingoIEXTopOfBook::CreateMessage() {
+string CProductTiingoIEXTopOfBook::CreateMessage() {
 	m_strInquiringSymbol = _T("All");
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;

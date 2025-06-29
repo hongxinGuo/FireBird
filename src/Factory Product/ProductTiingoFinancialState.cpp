@@ -104,12 +104,12 @@ CProductTiingoFinancialState::CProductTiingoFinancialState() {
 // ¸ñÊ½Îª£ºhttps://api.tiingo.com/tiingo/fundamentals/AAPL/statements?startDate=1980-01-01
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-CString CProductTiingoFinancialState::CreateMessage() {
+string CProductTiingoFinancialState::CreateMessage() {
 	const auto pStock = gl_dataContainerTiingoStock.GetStock(GetIndex());
-	CString strParam = _T("/") + pStock->GetSymbol() + _T("/statements?startDate=");
+	string strParam = _T("/") + pStock->GetSymbol() + _T("/statements?startDate=");
 	m_strInquiringSymbol = pStock->GetSymbol();
 	string sDate = ConvertDateToTimeStamp(pStock->GetCompanyFinancialStatementUpdateDate());
-	m_strInquiry = m_strInquiryFunction + strParam + sDate.c_str();
+	m_strInquiry = m_strInquiryFunction + strParam + sDate;
 	return m_strInquiry;
 }
 
@@ -162,7 +162,7 @@ void CProductTiingoFinancialState::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinancialState(const CWebDataPtr& pWebData) {
 	auto pvTiingoFinancialState = make_shared<vector<CTiingoCompanyFinancialStatePtr>>();
 	CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
-	string symbol = pStock->GetSymbol().GetString();
+	string symbol = pStock->GetSymbol();
 	string exchange = _T("US");
 	string s1;
 	CString strNumber;

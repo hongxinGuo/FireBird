@@ -17,7 +17,7 @@ public:
 	//bool UpdateDB();
 
 	CFinnhubStockPtr GetStock(const size_t lIndex) { return dynamic_pointer_cast<CFinnhubStock>(Get(lIndex)); };
-	CFinnhubStockPtr GetStock(const CString& strStockCode) { return dynamic_pointer_cast<CFinnhubStock>(Get(strStockCode)); };
+	CFinnhubStockPtr GetStock(const string& strStockCode) { return dynamic_pointer_cast<CFinnhubStock>(Get(strStockCode)); };
 
 protected:
 	size_t m_lChosenStockPos;

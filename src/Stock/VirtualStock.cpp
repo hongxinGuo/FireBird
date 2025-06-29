@@ -29,7 +29,9 @@ void CVirtualStock::LoadUpdateDate(CString& strUpdateDate) {
 
 void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	m_strDescription = setStockSymbol.m_Description;
-	m_strDisplaySymbol = setStockSymbol.m_DisplaySymbol;
+	CString str;
+	str = setStockSymbol.m_DisplaySymbol;
+	m_strDisplaySymbol = str;
 	m_strExchangeCode = setStockSymbol.m_Exchange;
 	m_strSymbol = setStockSymbol.m_Symbol;
 	m_lIPOStatus = setStockSymbol.m_IPOStatus;
@@ -49,10 +51,10 @@ void CVirtualStock::UpdateSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 }
 
 void CVirtualStock::SaveSymbol(CVirtualSetStockSymbol& setStockSymbol) {
-	setStockSymbol.m_Description = m_strDescription;
-	setStockSymbol.m_DisplaySymbol = m_strDisplaySymbol;
-	setStockSymbol.m_Exchange = m_strExchangeCode;
-	setStockSymbol.m_Symbol = m_strSymbol;
+	setStockSymbol.m_Description = m_strDescription.c_str();
+	setStockSymbol.m_DisplaySymbol = m_strDisplaySymbol.c_str();
+	setStockSymbol.m_Exchange = m_strExchangeCode.c_str();
+	setStockSymbol.m_Symbol = m_strSymbol.c_str();
 	setStockSymbol.m_IPOStatus = m_lIPOStatus;
 	const string sUpdateDate = m_jsonUpdateDate.dump();
 	setStockSymbol.m_UpdateDate = sUpdateDate.c_str();

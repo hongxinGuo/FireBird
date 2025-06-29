@@ -13,8 +13,7 @@ CProductFinnhubCompanyProfileConcise::CProductFinnhubCompanyProfileConcise() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/profile2?symbol=");
 }
 
-CString CProductFinnhubCompanyProfileConcise::CreateMessage() {
-	CString strMessage;
+string CProductFinnhubCompanyProfileConcise::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();

@@ -17,7 +17,7 @@ CInquireEngine::CInquireEngine(): m_dataBuffer{} {
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
 }
 
-CInquireEngine::CInquireEngine(const InternetOption& option, const CString& strInquire, const CString& strHeaders): m_dataBuffer{} {
+CInquireEngine::CInquireEngine(const InternetOption& option, const string& strInquire, const string& strHeaders): m_dataBuffer{} {
 	m_pSession = make_shared<CInternetSession>(_T("FireBird")); // 此处需要加上调用程序的名称，否则无法运行单元测试程序（原因不明）。
 	m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, option.option_connect_timeout);
 	m_pSession->SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, option.option_receive_timeout);
@@ -96,9 +96,9 @@ CWebDataPtr CInquireEngine::GetWebData() {
 // 调用函数需要处理exception。
 //
 void CInquireEngine::OpenFile() {
-	m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL(m_strInquiry, 1,
+	m_pFile = static_cast<CHttpFile*>(m_pSession->OpenURL(m_strInquiry.c_str(), 1,
 	                                                      INTERNET_FLAG_TRANSFER_ASCII,
-	                                                      m_strHeaders, m_strHeaders.GetLength()));
+	                                                      m_strHeaders.c_str(), m_strHeaders.length()));
 }
 
 void CInquireEngine::GetFileHeaderInformation() {
@@ -167,7 +167,7 @@ void CInquireEngine::VerifyDataLength() const {
 	if (m_lContentLength > 0) {
 		if (m_lContentLength != m_lByteRead) {
 			string s = fmt::format("网络数据长度不符。预期长度：{:Ld}，实际长度：{:Ld} Status code : {:Ld}", m_lContentLength, m_lByteRead, m_dwErrorCode);
-			s += m_strInquiry.Left(100);
+			s += m_strInquiry.substr(0, 100);
 			gl_systemMessage.PushErrorMessage(s);
 		}
 	}

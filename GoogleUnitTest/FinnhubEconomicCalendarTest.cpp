@@ -39,13 +39,13 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestInitialize) {
 		EXPECT_EQ(economicCalendar.GetIndex(), 0);
-		EXPECT_STREQ(economicCalendar.GetInquiryFunction(), _T("https://finnhub.io/api/v1/calendar/economic?"));
+		EXPECT_TRUE(economicCalendar.GetInquiryFunction()== _T("https://finnhub.io/api/v1/calendar/economic?"));
 	}
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestCreatMessage) {
 		economicCalendar.SetMarket(gl_pWorldMarket);
 		economicCalendar.SetIndex(1);
-		EXPECT_STREQ(economicCalendar.CreateMessage(), economicCalendar.GetInquiryFunction());
+		EXPECT_TRUE(economicCalendar.CreateMessage()== economicCalendar.GetInquiryFunction());
 	}
 
 	TEST_F(CFinnhubEconomicCalendarTest, TestProcessWebData) {

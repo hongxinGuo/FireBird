@@ -59,15 +59,15 @@ namespace FireBirdTest {
 	TEST_F(CVirtualWebProductTest, TestInitialize) {
 		EXPECT_EQ(webProduct.GetIndex(), 0);
 		EXPECT_STREQ(typeid(webProduct).name(), _T("class CVirtualWebProduct"));
-		EXPECT_STREQ(webProduct.GetInquiry(), _T(""));
-		EXPECT_STREQ(webProduct.GetInquiryFunction(), _T(""));
-		EXPECT_STREQ(webProduct.GetInquiringExchange(), _T("ALL"));
+		EXPECT_STREQ(webProduct.GetInquiry().c_str(), _T(""));
+		EXPECT_STREQ(webProduct.GetInquiryFunction().c_str(), _T(""));
+		EXPECT_STREQ(webProduct.GetInquiringExchange().c_str(), _T("ALL"));
 		EXPECT_EQ(webProduct.GetInquireType(), -1);
 	}
 
 	TEST_F(CVirtualWebProductTest, TestIsVoidJson1) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const CString strData = _T("{}");
+		const string strData = _T("{}");
 		pWebData->Test_SetBuffer_(strData);
 
 		EXPECT_TRUE(pWebData->IsVoidJson());
@@ -75,7 +75,7 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualWebProductTest, TestIsVoidJson2) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const CString strData = _T("[]");
+		const string strData = _T("[]");
 		pWebData->Test_SetBuffer_(strData);
 
 		EXPECT_TRUE(pWebData->IsVoidJson());
@@ -83,7 +83,7 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualWebProductTest, TestIsVoidJson3) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const CString strData = _T("{abcdefg}");
+		const string strData = _T("{abcdefg}");
 		pWebData->Test_SetBuffer_(strData);
 
 		EXPECT_FALSE(pWebData->IsVoidJson());
@@ -91,7 +91,7 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualWebProductTest, TestCheckVoidJson1) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const CString strData = _T("{}");
+		const string strData = _T("{}");
 		pWebData->Test_SetBuffer_(strData);
 		EXPECT_TRUE(pWebData->IsVoidJson());
 
@@ -102,7 +102,7 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualWebProductTest, TestCheckVoidJson2) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const CString strData = _T("{abc}");
+		const string strData = _T("{abc}");
 		pWebData->Test_SetBuffer_(strData);
 		EXPECT_FALSE(pWebData->IsVoidJson());
 
@@ -130,7 +130,7 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible2) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const CString strData = _T("{\"error1\":\"You don't have access to this resourc.\"}");
+		const string strData = _T("{\"error1\":\"You don't have access to this resourc.\"}");
 		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.__Test_checkAccessRight(pWebData);
 
@@ -139,7 +139,7 @@ namespace FireBirdTest {
 
 	TEST_F(CVirtualWebProductTest, TestCheckInaccessible3) {
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const CString strData = _T("{\"error\":\"You don't have access to this resource.\"}");
+		const string strData = _T("{\"error\":\"You don't have access to this resource.\"}");
 		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.SetInquiringExchange(_T("US"));
 		finnhubWebProduct.__Test_checkAccessRight(pWebData);
@@ -152,7 +152,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, _T("SZ"))) << "未加入SZ交易所";
 
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const CString strData = _T("{\"error\":\"You don't have access to this resource.\"}");
+		const string strData = _T("{\"error\":\"You don't have access to this resource.\"}");
 		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.SetInquiringExchange(_T("SZ"));
 		finnhubWebProduct.SetInquireType(STOCK_PRICE_CANDLES_);
@@ -170,7 +170,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_finnhubInaccessibleExchange.HaveExchange(STOCK_PRICE_CANDLES_, _T("US"))) << "未加入US交易所";
 
 		const CWebDataPtr pWebData = make_shared<CWebData>();
-		const CString strData = _T("{\"error\":\"You don't have access to this resource.\"}");
+		const string strData = _T("{\"error\":\"You don't have access to this resource.\"}");
 		pWebData->Test_SetBuffer_(strData);
 		finnhubWebProduct.SetInquiringExchange(_T("AD"));
 		finnhubWebProduct.SetInquireType(STOCK_PRICE_CANDLES_);

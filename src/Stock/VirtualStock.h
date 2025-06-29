@@ -27,17 +27,17 @@ public:
 	virtual void UpdateSymbol(CVirtualSetStockSymbol& setStockSymbol);
 	virtual void SaveSymbol(CVirtualSetStockSymbol& setStockSymbol);
 
-	CString GetDescription() const noexcept { return m_strDescription; }
-	void SetDescription(const CString& strDescription) noexcept { m_strDescription = strDescription; }
-	CString GetExchangeCode() const noexcept { return m_strExchangeCode; }
-	void SetExchangeCode(const CString& strExchangeCode) noexcept { m_strExchangeCode = strExchangeCode; }
-	CString GetSymbol() const noexcept { return m_strSymbol; }
-	void SetSymbol(const CString& str) noexcept {
+	string GetDescription() const noexcept { return m_strDescription; }
+	void SetDescription(const string& strDescription) noexcept { m_strDescription = strDescription; }
+	string GetExchangeCode() const noexcept { return m_strExchangeCode; }
+	void SetExchangeCode(const string& strExchangeCode) noexcept { m_strExchangeCode = strExchangeCode; }
+	string GetSymbol() const noexcept { return m_strSymbol; }
+	void SetSymbol(const string& str) noexcept {
 		m_strSymbol = str;
-		const CString s = m_strSymbol.Left(6);
+		const string s = m_strSymbol.substr(0, 6);
 	}
-	CString GetDisplaySymbol() const noexcept { return m_strDisplaySymbol; }
-	void SetDisplaySymbol(const CString& str) noexcept { m_strDisplaySymbol = str; }
+	string GetDisplaySymbol() const noexcept { return m_strDisplaySymbol; }
+	void SetDisplaySymbol(const string& str) noexcept { m_strDisplaySymbol = str; }
 
 	// 基本实时数据，需要更新
 	std::chrono::sys_seconds GetTimePoint() const noexcept { return m_tpTime; }
@@ -106,10 +106,10 @@ public:
 	bool IsUpdateCompanyNewsDBAndClearFlag() noexcept { return m_fUpdateCompanyNewsDB.exchange(false); }
 
 protected:
-	CString m_strDescription{ _T("") }; // 该证券的描述
-	CString m_strExchangeCode{ _T("") }; // 证券所属交易所。美国为US，上海为SS，深圳为SZ；外汇为forex等。
-	CString m_strSymbol{ _T("") }; // 股票代码。二十位以内，后两位为市场前缀。如600601.SS，000001.SZ, AAPL（美国股票没有后缀）
-	CString m_strDisplaySymbol{ _T("") };
+	string m_strDescription{ _T("") }; // 该证券的描述
+	string m_strExchangeCode{ _T("") }; // 证券所属交易所。美国为US，上海为SS，深圳为SZ；外汇为forex等。
+	string m_strSymbol{ _T("") }; // 股票代码。二十位以内，后两位为市场前缀。如600601.SS，000001.SZ, AAPL（美国股票没有后缀）
+	string m_strDisplaySymbol{ _T("") };
 
 	json m_jsonUpdateDate{ json({}) }; // 存储所有的更新日期（json格式）。使用这种方式存储后，当增加或减少更新日期时，无需修改相应数据表的结构。
 

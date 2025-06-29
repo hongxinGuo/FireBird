@@ -7,9 +7,9 @@ public:
 	CProductFinnhubForexExchange();
 	~CProductFinnhubForexExchange() override = default;
 
-	CString CreateMessage() override;
+	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	shared_ptr<vector<CString>> ParseFinnhubForexExchange(const CWebDataPtr& pWebData);
+	shared_ptr<vector<string>> ParseFinnhubForexExchange(const CWebDataPtr& pWebData);
 
 	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
 };

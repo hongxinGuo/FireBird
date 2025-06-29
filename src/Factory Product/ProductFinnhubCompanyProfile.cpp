@@ -13,7 +13,7 @@ CProductFinnhubCompanyProfile::CProductFinnhubCompanyProfile() {
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/profile?symbol=");
 }
 
-CString CProductFinnhubCompanyProfile::CreateMessage() {
+string CProductFinnhubCompanyProfile::CreateMessage() {
 	CString strMessage;
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 

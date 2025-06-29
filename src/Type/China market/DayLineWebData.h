@@ -14,8 +14,8 @@ public:
 	void AppendDayLine(const CDayLinePtr& pData) { m_vTempDayLine.push_back(pData); }
 	//void SetStockCode(CNeteaseDayLineDataSourcePtr pNeteaseWebDayLineData) noexcept { SetStockCode(pNeteaseWebDayLineData->GetDownLoadingStockCode()); }
 
-	void SetStockCode(const CString& strSymbol) noexcept { m_strStockCode = strSymbol; }
-	CString GetStockCode() { return m_strStockCode; }
+	void SetStockCode(const string& strSymbol) noexcept { m_strStockCode = strSymbol; }
+	string GetStockCode() { return m_strStockCode; }
 
 	bool TransferWebDataToBuffer(const CWebDataPtr& pWebData);
 	string GetBuffer() { return m_sDataBuffer; }
@@ -33,7 +33,7 @@ public:
 	bool ReadOneValueOfNeteaseDayLine(const string& pBuffer, char* buffer, INT64& lCurrentPos);
 
 private:
-	CString m_strStockCode;
+	string m_strStockCode;
 	string m_sDataBuffer; // 日线读取缓冲区
 	vector<CDayLinePtr> m_vTempDayLine; // 日线数据缓冲区
 	INT64 m_lCurrentPos;

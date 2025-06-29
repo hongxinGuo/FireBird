@@ -22,7 +22,7 @@ CProductTiingoMarketNews::CProductTiingoMarketNews() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/news?");
 }
 
-CString CProductTiingoMarketNews::CreateMessage() {
+string CProductTiingoMarketNews::CreateMessage() {
 	m_strInquiringSymbol = _T("All");
 	m_strInquiry = m_strInquiryFunction;
 	return m_strInquiry;

@@ -41,13 +41,13 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoStockDailyMetaTest, TestInitialize) {
 		EXPECT_EQ(stockDailyMeta.GetIndex(), 0);
-		EXPECT_STREQ(stockDailyMeta.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/daily/"));
+		EXPECT_STREQ(stockDailyMeta.GetInquiryFunction().c_str(), _T("https://api.tiingo.com/tiingo/daily/"));
 	}
 
 	TEST_F(CProductTiingoStockDailyMetaTest, TestCreatMessage) {
 		stockDailyMeta.SetMarket(gl_pWorldMarket);
 		stockDailyMeta.SetIndex(1); // stock code is AA
-		EXPECT_STREQ(stockDailyMeta.CreateMessage(), _T("https://api.tiingo.com/tiingo/daily/AA?"));
+		EXPECT_STREQ(stockDailyMeta.CreateMessage().c_str(), _T("https://api.tiingo.com/tiingo/daily/AA?"));
 	}
 
 	// 正确的数据

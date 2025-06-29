@@ -37,19 +37,19 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoStockDayLineTest, TestInitialize) {
 		EXPECT_EQ(stockPriceCandle.GetIndex(), 0);
-		EXPECT_STREQ(stockPriceCandle.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/daily/"));
+		EXPECT_STREQ(stockPriceCandle.GetInquiryFunction().c_str(), _T("https://api.tiingo.com/tiingo/daily/"));
 	}
 
 	TEST_F(CProductTiingoStockDayLineTest, TestGetTiingoDayLineInquiryParam) {
-		const CString strParam = "600601.SS/prices?&startDate=2018-1-1&endDate=2020-1-1";
+		const string strParam = "600601.SS/prices?&startDate=2018-1-1&endDate=2020-1-1";
 
-		EXPECT_STREQ(stockPriceCandle.GetDayLineInquiryParam("600601.SS", 20180101, 20200101), strParam);
+		EXPECT_TRUE(stockPriceCandle.GetDayLineInquiryParam("600601.SS", 20180101, 20200101) == strParam);
 	}
 
 	TEST_F(CProductTiingoStockDayLineTest, TestGetTiingoDayLineInquiryParam2) {
-		const CString strParam = "600601.SS/prices?&startDate=1980-1-1&endDate=2020-1-1";
+		const string strParam = "600601.SS/prices?&startDate=1980-1-1&endDate=2020-1-1";
 
-		EXPECT_STREQ(stockPriceCandle.GetDayLineInquiryParam("600601.SS",19800101, 20200101), strParam);
+		EXPECT_TRUE(stockPriceCandle.GetDayLineInquiryParam("600601.SS",19800101, 20200101) == strParam);
 	}
 
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage1) {
@@ -57,7 +57,7 @@ namespace FireBirdTest {
 		stockPriceCandle.SetMarket(gl_pWorldMarket);
 		const auto pStock = gl_dataContainerTiingoStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
 		pStock->SetDayLineEndDate(19700101);
-		const CString strMessage = stockPriceCandle.CreateMessage();
+		const string strMessage = stockPriceCandle.CreateMessage();
 		const long lMarketDate = gl_pWorldMarket->GetMarketDate();
 		const long year = lMarketDate / 10000;
 		const long month = lMarketDate / 100 - year * 100;
@@ -66,7 +66,7 @@ namespace FireBirdTest {
 		string sMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
 		const string sTest = _T("https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-1-1&endDate=") + sEndDate;
 
-		EXPECT_STREQ(strMessage, sTest.c_str()) << "使用之前的结束日期为申请数据的起始日期";
+		EXPECT_TRUE(strMessage == sTest) << "使用之前的结束日期为申请数据的起始日期";
 	}
 
 	TEST_F(CProductTiingoStockDayLineTest, TestCreatMessage2) {
@@ -74,16 +74,16 @@ namespace FireBirdTest {
 		stockPriceCandle.SetMarket(gl_pWorldMarket);
 		const auto pStock = gl_dataContainerTiingoStock.GetStock(gl_dataContainerTiingoStock.GetStock(0)->GetSymbol());
 		pStock->SetDayLineEndDate(19700101); // 早于20180101
-		const CString strMessage = stockPriceCandle.CreateMessage();
+		const string strMessage = stockPriceCandle.CreateMessage();
 		const long lMarketDate = gl_pWorldMarket->GetMarketDate();
 		const long year = lMarketDate / 10000;
 		const long month = lMarketDate / 100 - year * 100;
 		const long day = lMarketDate - year * 10000 - month * 100;
 		string sEndDate = fmt::format("{:4Ld}-{:Ld}-{:Ld}", year, month, day);
 		string sMarketDate = gl_pWorldMarket->GetStringOfMarketDate();
-		CString strTest = _T("https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-1-1&endDate=");
-		strTest += sEndDate.c_str();
-		EXPECT_STREQ(strMessage, strTest);
+		string strTest = _T("https://api.tiingo.com/tiingo/daily/A/prices?&startDate=1980-1-1&endDate=");
+		strTest += sEndDate;
+		EXPECT_TRUE(strMessage == strTest);
 	}
 
 	TEST_F(CProductTiingoStockDayLineTest, TestProcessWebData) {
@@ -239,7 +239,7 @@ namespace FireBirdTest {
 		CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(0); // 这个是当前处理的股票
 
 		m_tiingoStockPriceCandle.ParseAndStoreWebData(m_pWebData);
-		EXPECT_STREQ(pStock->GetSymbol(), _T("A"));
+		EXPECT_STREQ(pStock->GetSymbol().c_str(), _T("A"));
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);

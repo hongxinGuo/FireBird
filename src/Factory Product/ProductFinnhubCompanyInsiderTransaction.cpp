@@ -15,7 +15,7 @@ CProductFinnhubCompanyInsiderTransaction::CProductFinnhubCompanyInsiderTransacti
 	m_strInquiryFunction = _T("https://finnhub.io/api/v1/stock/insider-transactions?symbol=");
 }
 
-CString CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
+string CProductFinnhubCompanyInsiderTransaction::CreateMessage() {
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
@@ -99,8 +99,8 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 			pvInsiderTransaction->push_back(pInsiderTransaction);
 		}
 	} catch (json::exception& e) {
-		CString str = _T("Finnhub Stock ");
-		str += pInsiderTransaction->m_strSymbol.c_str();
+		string str = _T("Finnhub Stock ");
+		str += pInsiderTransaction->m_strSymbol;
 		str += _T(" Insider Transaction ");
 		ReportJSonErrorToSystemMessage(str, e.what());
 		std::ranges::sort(pvInsiderTransaction->begin(), pvInsiderTransaction->end(),

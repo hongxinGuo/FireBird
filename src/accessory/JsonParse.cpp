@@ -96,18 +96,18 @@ void ReportJsonError(const json::parse_error& e, const std::string& s) {
 	gl_systemMessage.PushErrorMessage(s2);
 }
 
-void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat) {
-	string s = strPrefix.GetString();
-	s += strWhat.GetString();
+void ReportJSonErrorToSystemMessage(const string& strPrefix, const string& strWhat) {
+	string s = strPrefix;
+	s += strWhat;
 	gl_systemMessage.PushErrorMessage(s);
 }
 
-void ReportJSonErrorToSystemMessage(const CString& strPrefix, const CString& strWhat, const char* jsonData) {
+void ReportJSonErrorToSystemMessage(const string& strPrefix, const string& strWhat, const char* jsonData) {
 	string s(jsonData);
 	s = s.substr(0, 40);
-	CString str = strWhat;
+	string str = strWhat;
 	str += " ";
-	str += s.c_str();
+	str += s;
 
 	ReportJSonErrorToSystemMessage(strPrefix, str);
 }
@@ -270,9 +270,9 @@ CDayLineWebDataPtr ParseNeteaseDayLine(const CWebDataPtr& pWebData) {
 // 使用simdjson解析速度release模式下比Nholmann json快50%，但debug模式下慢一倍。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, const CString& strStockCode) {
+shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, const string& strStockCode) {
 	auto pvDayLine = make_shared<vector<CDayLinePtr>>();
-	const CString strStockSymbol = XferTengxunToStandard(strStockCode);
+	const string strStockSymbol = XferTengxunToStandard(strStockCode);
 	try {
 		long year, month, day;
 		string_view sv;
@@ -347,15 +347,15 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 //
 CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 	auto pDayLineData = make_shared<CDayLineWebData>();
-	const CString strSymbol = pWebData->GetStockCode();
-	ASSERT(gl_dataContainerChinaStock.IsSymbol(strSymbol));
-	const CString strDisplaySymbol = gl_dataContainerChinaStock.GetStock(strSymbol)->GetDisplaySymbol();
+	const string strSymbol = pWebData->GetStockCode();
+	ASSERT(gl_dataContainerChinaStock.IsSymbol(strSymbol.c_str()));
+	const string strDisplaySymbol = gl_dataContainerChinaStock.GetStock(strSymbol.c_str())->GetDisplaySymbol();
 	const string_view svData = pWebData->GetStringView(0, pWebData->GetBufferLength());
 
-	const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(svData, XferStandardToTengxun(pWebData->GetStockCode()));
+	const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(svData, XferStandardToTengxun(pWebData->GetStockCode().c_str()));
 	std::ranges::sort(*pvDayLine, [](const CDayLinePtr& pData1, const CDayLinePtr& pData2) { return pData1->GetMarketDate() < pData2->GetMarketDate(); });
 	for (const auto& pDayLine : *pvDayLine) {
-		pDayLine->SetStockSymbol(strSymbol);
+		pDayLine->SetStockSymbol(strSymbol.c_str());
 		pDayLine->SetDisplaySymbol(strDisplaySymbol);
 		pDayLineData->AppendDayLine(pDayLine);
 	}
@@ -406,7 +406,7 @@ bool CreateJsonWithNlohmann(json& js, CString& str, const long lBeginPos, const 
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRTData) {
-	CString strSymbol4;
+	string strSymbol4;
 	json js = it.value();
 	const string symbolName = it.key();
 
@@ -414,7 +414,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		strSymbol4 = XferNeteaseToStandard(symbolName);
 		pWebRTData->SetSymbol(strSymbol4);
 		const string sName = jsonGetString(js, "name");
-		pWebRTData->SetStockName(XferToCString(sName)); // 将utf-8字符集转换为多字节字符集
+		pWebRTData->SetStockName(XferToCString(sName).GetString()); // 将utf-8字符集转换为多字节字符集
 		string strTime = jsonGetString(js, _T("time"));
 		string strSymbol2 = jsonGetString(js, _T("code"));
 		std::stringstream ss(strTime);
@@ -425,7 +425,7 @@ void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRT
 		pWebRTData->SetTransactionTime(tpTime.time_since_epoch().count());
 	} catch (json::exception& e) {// 结构不完整
 		// do nothing
-		string strError2 = strSymbol4.GetString();
+		string strError2 = strSymbol4;
 		strError2 += _T(" ");
 		strError2 += e.what();
 		gl_systemMessage.PushErrorMessage(strError2);
@@ -519,7 +519,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 			pWebRTData->SetDataSource(NETEASE_RT_WEB_DATA_);
 			//auto key = item_key.key();
 			ondemand::object item = item_key.value();
-			CString strSymbol4 = XferNeteaseToStandard(jsonGetStringView(item, _T("code")));
+			string strSymbol4 = XferNeteaseToStandard(jsonGetStringView(item, _T("code")));
 			pWebRTData->SetSymbol(strSymbol4);
 			pWebRTData->SetVSell(0, jsonGetInt64(item, _T("askvol1")));
 			pWebRTData->SetVSell(2, jsonGetInt64(item, _T("askvol3")));
@@ -547,7 +547,7 @@ shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJ
 
 			string_view sNameView = jsonGetStringView(item, "name");
 			string sName(sNameView);
-			pWebRTData->SetStockName(XferToCString(sName)); // 将utf-8字符集转换为多字节字符集
+			pWebRTData->SetStockName(XferToCString(sName).GetString()); // 将utf-8字符集转换为多字节字符集
 			pWebRTData->SetPSell(2, StrToDecimal(jsonGetRawJsonToken(item, _T("ask3")), 3));
 			pWebRTData->SetPSell(1, StrToDecimal(jsonGetRawJsonToken(item, _T("ask2")), 3));
 			strTime = jsonGetStringView(item, _T("time"));

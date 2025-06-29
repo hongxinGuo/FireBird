@@ -10,7 +10,7 @@ using namespace testing;
 
 namespace FireBirdTest {
 	struct Test_FinnhubWebData {
-		Test_FinnhubWebData(long lIndex, const CString& strSymbol, const CString& strData) {
+		Test_FinnhubWebData(long lIndex, const string& strSymbol, const string& strData) {
 			m_lIndex = lIndex;
 			m_strSymbol = strSymbol;
 			m_pData = make_shared<CWebData>();
@@ -22,7 +22,7 @@ namespace FireBirdTest {
 
 	public:
 		long m_lIndex;
-		CString m_strSymbol;
+		string m_strSymbol;
 		CWebDataPtr m_pData;
 	};
 

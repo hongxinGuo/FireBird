@@ -44,8 +44,8 @@ void CContainerTiingoStock::UpdateDB() {
 		setFinnhubStock.Open();
 		setFinnhubStock.m_pDatabase->BeginTrans();
 		while (!setFinnhubStock.IsEOF()) {	//更新原有的代码集状态
-			if (IsSymbol(setFinnhubStock.m_Ticker)) {
-				const CTiingoStockPtr pStock = GetStock(setFinnhubStock.m_Ticker);
+			if (IsSymbol(setFinnhubStock.m_Ticker.GetString())) {
+				const CTiingoStockPtr pStock = GetStock(setFinnhubStock.m_Ticker.GetString());
 				ASSERT(pStock != nullptr);
 				if (pStock->IsUpdateProfileDB()) {
 					pStock->Update(setFinnhubStock);
@@ -79,7 +79,7 @@ bool CContainerTiingoStock::LoadDB() {
 	setTiingoStock.Open();
 	setTiingoStock.m_pDatabase->BeginTrans();
 	while (!setTiingoStock.IsEOF()) {
-		if (!IsSymbol(setTiingoStock.m_Ticker)) {
+		if (!IsSymbol(setTiingoStock.m_Ticker.GetString())) {
 			const auto pTiingoStock = make_shared<CTiingoStock>();
 			pTiingoStock->Load(setTiingoStock);
 			pTiingoStock->CheckUpdateStatus(gl_pWorldMarket->GetMarketDate());
@@ -144,8 +144,8 @@ void CContainerTiingoStock::LoadDayLine(long lDate) {
 	setDayLine.Open();
 	setDayLine.m_pDatabase->BeginTrans();
 	while (!setDayLine.IsEOF()) {
-		if (IsSymbol(setDayLine.m_Symbol)) {
-			auto pStock = GetStock(setDayLine.m_Symbol);
+		if (IsSymbol(setDayLine.m_Symbol.GetString())) {
+			auto pStock = GetStock(setDayLine.m_Symbol.GetString());
 			pStock->SetTransactionTime(ttTradeDay);
 			pStock->SetHigh(atof(setDayLine.m_High) * pStock->GetRatio());
 			pStock->SetLow(atof(setDayLine.m_Low) * pStock->GetRatio());
@@ -320,7 +320,7 @@ void CContainerTiingoStock::TaskCalculate2() {
 		auto pStock = GetStock(vPos.at(index));
 		setCurrentTrace.AddNew();
 		setCurrentTrace.m_Date = gl_pWorldMarket->GetMarketDate();
-		setCurrentTrace.m_Symbol = pStock->GetSymbol();
+		setCurrentTrace.m_Symbol = pStock->GetSymbol().c_str();
 		setCurrentTrace.m_SICCode = pStock->m_iSicCode;
 		setCurrentTrace.Update();
 	}
@@ -344,7 +344,7 @@ void CContainerTiingoStock::TaskFixDayLine() {
 
 		// 装入DayLine数据
 		setDayLineBasic.m_strFilter = _T("[Symbol] = '");
-		setDayLineBasic.m_strFilter += pStock->GetSymbol();
+		setDayLineBasic.m_strFilter += pStock->GetSymbol().c_str();
 		setDayLineBasic.m_strFilter += _T("'");
 		setDayLineBasic.m_strSort = _T("[Date]");
 		setDayLineBasic.Open();
