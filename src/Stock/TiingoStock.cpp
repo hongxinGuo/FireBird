@@ -54,40 +54,40 @@ void CTiingoStock::Append(CSetTiingoStock& setTiingoStock) {
 }
 
 void CTiingoStock::Save(CSetTiingoStock& setTiingoStock) {
-	if ((m_strCompanyWebSite.GetLength() > 100)
-		|| (m_strName.GetLength() > 200)
-		|| (m_strSECFilingWebSite.GetLength() > 150)
-		|| (m_strSicIndustry.GetLength() > 100)
-		|| (m_strSicSector.GetLength() > 100)
-		|| (m_strTiingoIndustry.GetLength() > 100)
-		|| (m_strTiingoSector.GetLength() > 100)) {
+	if ((m_strCompanyWebSite.length() > 100)
+		|| (m_strName.length() > 200)
+		|| (m_strSECFilingWebSite.length() > 150)
+		|| (m_strSicIndustry.length() > 100)
+		|| (m_strSicSector.length() > 100)
+		|| (m_strTiingoIndustry.length() > 100)
+		|| (m_strTiingoSector.length() > 100)) {
 		string s = _T("Tiingo stock ");
 		s += m_strName;
 		s += _T(" 字符串太长");
 		gl_systemMessage.PushErrorMessage(s);
 	}
-	m_strName = m_strName.Left(200);
-	m_strSicIndustry = m_strSicIndustry.Left(100);
-	m_strSicSector = m_strSicSector.Left(100);
-	m_strTiingoIndustry = m_strTiingoIndustry.Left(100);
-	m_strTiingoSector = m_strTiingoSector.Left(100);
-	m_strCompanyWebSite = m_strCompanyWebSite.Left(100);
-	m_strSECFilingWebSite = m_strSECFilingWebSite.Left(150);
+	m_strName = m_strName.substr(0, 200);
+	m_strSicIndustry = m_strSicIndustry.substr(0, 100);
+	m_strSicSector = m_strSicSector.substr(0, 100);
+	m_strTiingoIndustry = m_strTiingoIndustry.substr(0, 100);
+	m_strTiingoSector = m_strTiingoSector.substr(0, 100);
+	m_strCompanyWebSite = m_strCompanyWebSite.substr(0, 100);
+	m_strSECFilingWebSite = m_strSECFilingWebSite.substr(0, 150);
 
-	setTiingoStock.m_TiingoPermaTicker = m_strTiingoPermaTicker;
+	setTiingoStock.m_TiingoPermaTicker = m_strTiingoPermaTicker.c_str();
 	setTiingoStock.m_Ticker = m_strSymbol.c_str();
-	setTiingoStock.m_Name = m_strName;
+	setTiingoStock.m_Name = m_strName.c_str();
 	setTiingoStock.m_IsActive = IsActive();
 	setTiingoStock.m_IsADR = m_fIsADR;
 	setTiingoStock.m_SicCode = m_iSicCode;
-	setTiingoStock.m_SicIndustry = m_strSicIndustry;
-	setTiingoStock.m_SicSector = m_strSicSector;
-	setTiingoStock.m_TiingoIndustry = m_strTiingoIndustry;
-	setTiingoStock.m_TiingoSector = m_strTiingoSector;
-	setTiingoStock.m_ReportingCurrency = m_strReportingCurrency;
-	setTiingoStock.m_Location = m_strLocation;
-	setTiingoStock.m_CompanyWebSite = m_strCompanyWebSite;
-	setTiingoStock.m_SECFilingWebSite = m_strSECFilingWebSite;
+	setTiingoStock.m_SicIndustry = m_strSicIndustry.c_str();
+	setTiingoStock.m_SicSector = m_strSicSector.c_str();
+	setTiingoStock.m_TiingoIndustry = m_strTiingoIndustry.c_str();
+	setTiingoStock.m_TiingoSector = m_strTiingoSector.c_str();
+	setTiingoStock.m_ReportingCurrency = m_strReportingCurrency.c_str();
+	setTiingoStock.m_Location = m_strLocation.c_str();
+	setTiingoStock.m_CompanyWebSite = m_strCompanyWebSite.c_str();
+	setTiingoStock.m_SECFilingWebSite = m_strSECFilingWebSite.c_str();
 	setTiingoStock.m_IPOStatus = m_lIPOStatus;
 
 	const string sUpdateDate = m_jsonUpdateDate.dump();
@@ -221,14 +221,14 @@ void CTiingoStock::SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine
 
 void CTiingoStock::UpdateProfile(const CTiingoStockPtr& pStock) {
 	ASSERT(gl_systemConfiguration.IsPaidTypeTiingoAccount()); // 调用此函数时，必须保证是付费账户。
-	if (pStock->m_strTiingoSector.GetLength() > 1) m_strTiingoSector = pStock->m_strTiingoSector;
-	if (pStock->m_strTiingoIndustry.GetLength() > 1)m_strTiingoIndustry = pStock->m_strTiingoIndustry;
+	if (pStock->m_strTiingoSector.length() > 1) m_strTiingoSector = pStock->m_strTiingoSector;
+	if (pStock->m_strTiingoIndustry.length() > 1)m_strTiingoIndustry = pStock->m_strTiingoIndustry;
 	if (pStock->m_iSicCode > 0)m_iSicCode = pStock->m_iSicCode;
-	if (pStock->m_strSicSector.GetLength() > 1)m_strSicSector = pStock->m_strSicSector;
-	if (pStock->m_strSicIndustry.GetLength() > 1)m_strSicIndustry = pStock->m_strSicIndustry;
-	if (pStock->m_strLocation.GetLength() > 1)m_strLocation = pStock->m_strLocation;
-	if (pStock->m_strCompanyWebSite.GetLength() > 1)m_strCompanyWebSite = pStock->m_strCompanyWebSite;
-	if (pStock->m_strSECFilingWebSite.GetLength() > 1)m_strSECFilingWebSite = pStock->m_strSECFilingWebSite;
+	if (pStock->m_strSicSector.length() > 1)m_strSicSector = pStock->m_strSicSector;
+	if (pStock->m_strSicIndustry.length() > 1)m_strSicIndustry = pStock->m_strSicIndustry;
+	if (pStock->m_strLocation.length() > 1)m_strLocation = pStock->m_strLocation;
+	if (pStock->m_strCompanyWebSite.length() > 1)m_strCompanyWebSite = pStock->m_strCompanyWebSite;
+	if (pStock->m_strSECFilingWebSite.length() > 1)m_strSECFilingWebSite = pStock->m_strSECFilingWebSite;
 	SetUpdateProfileDB(true);
 }
 

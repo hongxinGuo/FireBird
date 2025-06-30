@@ -37,7 +37,6 @@ string CProductTiingoIEXTopOfBook::CreateMessage() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	int i = 0;
-	int j = 0;
 	const auto pvTiingoIEXTopOFBook = ParseTiingoIEXTopOfBook(pWebData);
 	long lNewestTradeDay = gl_pWorldMarket->GetCurrentTradeDate();
 	time_t ttNewestTradeDay = gl_pWorldMarket->TransferToUTCTime(lNewestTradeDay, 0); //使用当日数据
@@ -102,10 +101,8 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(const CWebDataPtr& pWebData) {
 	auto pvTiingoIEXLastTopOFBook = make_shared<vector<CTiingoIEXTopOfBookPtr>>();
-	CString strNULL = _T(" ");
 	CTiingoIEXTopOfBookPtr pIEXLastTopOFBook = nullptr;
 	string s1;
-	CString strNumber;
 	if (!IsValidData(pWebData)) return pvTiingoIEXLastTopOFBook;
 
 	try {
@@ -115,7 +112,6 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 		const simdjson::padded_string jsonPadded(svJson);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 
-		CString str;
 		int iCount = 0;
 		for (auto item : doc) {
 			CTiingoStock stock;

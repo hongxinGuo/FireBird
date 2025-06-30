@@ -17,7 +17,7 @@ public:
 	//bool UpdateDB();
 
 	CFinnhubCryptoPtr GetCryptoSymbol(size_t lIndex) { return dynamic_pointer_cast<CFinnhubCrypto>(Get(lIndex)); }
-	CFinnhubCryptoPtr GetCryptoSymbol(const CString& strStockCode) { return dynamic_pointer_cast<CFinnhubCrypto>(Get(strStockCode.GetString())); }
+	CFinnhubCryptoPtr GetCryptoSymbol(const string& strStockCode) { return dynamic_pointer_cast<CFinnhubCrypto>(Get(strStockCode)); }
 
 protected:
 	size_t m_lChosenCryptoPos;

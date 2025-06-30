@@ -22,8 +22,8 @@ string CProductFinnhubCryptoExchange::CreateMessage() {
 void CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvCryptoExchange = ParseFinnhubCryptoExchange(pWebData);
 	for (int i = 0; i < pvCryptoExchange->size(); i++) {
-		if (!gl_dataContainerFinnhubCryptoExchange.IsExchange(static_cast<LPCTSTR>(pvCryptoExchange->at(i)))) {
-			gl_dataContainerFinnhubCryptoExchange.Add(static_cast<LPCTSTR>(pvCryptoExchange->at(i)));
+		if (!gl_dataContainerFinnhubCryptoExchange.IsExchange(pvCryptoExchange->at(i))) {
+			gl_dataContainerFinnhubCryptoExchange.Add(pvCryptoExchange->at(i));
 		}
 	}
 }
@@ -33,11 +33,10 @@ void CProductFinnhubCryptoExchange::ParseAndStoreWebData(CWebDataPtr pWebData) {
 // ["KRAKEN", "HITBTC", "COINBASE", "GEMINI", "POLONIEX", "Binance", "ZB", "BITTREX", "KUCOIN", "OKEX", "BITFINEX", "HUOBI"]
 //
 //
-shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExchange(const CWebDataPtr& pWebData) {
+shared_ptr<vector<string>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExchange(const CWebDataPtr& pWebData) {
 	string s;
-	CString str = _T("");
 	string sError;
-	auto pvExchange = make_shared<vector<CString>>();
+	auto pvExchange = make_shared<vector<string>>();
 	json js;
 
 	if (!pWebData->CreateJson(js)) return pvExchange;
@@ -46,8 +45,7 @@ shared_ptr<vector<CString>> CProductFinnhubCryptoExchange::ParseFinnhubCryptoExc
 	try {
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			s = jsonGetString(it);
-			str = s.c_str();
-			pvExchange->push_back(str);
+			pvExchange->push_back(s);
 		}
 	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Exchange "), e.what());

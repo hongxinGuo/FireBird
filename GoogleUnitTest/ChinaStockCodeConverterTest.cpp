@@ -76,8 +76,8 @@ namespace FireBirdTest {
 		EXPECT_STREQ(XferSinaToStandard(str).c_str(), _T("z00001.SZ"));
 		str = "ss600001";
 		sv = str;
-		EXPECT_THROW(str2 = XferSinaToStandard(str).c_str(), std::exception);
-		EXPECT_THROW(str2 = XferSinaToStandard(sv).c_str(), std::exception);
+		EXPECT_THROW(str2 = XferSinaToStandard(str), std::exception);
+		EXPECT_THROW(str2 = XferSinaToStandard(sv), std::exception);
 	}
 
 	TEST_F(StockCodeConverterTest, TestXferSinaToNetease) {
@@ -85,7 +85,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(XferSinaToNetease(_T("sz000001")).c_str(), _T("1000001"));
 		EXPECT_STREQ(XferSinaToNetease(_T("sh60001")).c_str(), _T("0h60001"));
 		EXPECT_STREQ(XferSinaToNetease(_T("sz00001")).c_str(), _T("1z00001"));
-		EXPECT_THROW(CString str = XferSinaToNetease(_T("ss600001")).c_str(), exception);
+		EXPECT_THROW(string str = XferSinaToNetease(_T("ss600001")), exception);
 	}
 
 	TEST_F(StockCodeConverterTest, TestXferNeteaseToStandard) {

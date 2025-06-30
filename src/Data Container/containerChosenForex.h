@@ -17,7 +17,7 @@ public:
 	//bool UpdateDB();
 
 	CForexSymbolPtr GetForexSymbol(const size_t lIndex) { return dynamic_pointer_cast<CFinnhubForex>(Get(lIndex)); }
-	CForexSymbolPtr GetForexSymbol(const CString& strStockCode) { return dynamic_pointer_cast<CFinnhubForex>(Get(strStockCode.GetString())); }
+	CForexSymbolPtr GetForexSymbol(const string& strStockCode) { return dynamic_pointer_cast<CFinnhubForex>(Get(strStockCode)); }
 
 protected:
 	size_t m_lChosenForexPos;

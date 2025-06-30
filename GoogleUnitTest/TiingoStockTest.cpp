@@ -35,20 +35,20 @@ namespace FireBirdTest {
 	TEST_F(CTiingoStockTest, TestInitialize) {
 		CTiingoStock tiingo;
 
-		EXPECT_STREQ(tiingo.m_strTiingoPermaTicker, _T(""));
+		EXPECT_STREQ(tiingo.m_strTiingoPermaTicker.c_str(), _T(""));
 		EXPECT_STREQ(tiingo.GetSymbol().c_str(), _T(""));
-		EXPECT_STREQ(tiingo.m_strName, _T(""));
+		EXPECT_STREQ(tiingo.m_strName.c_str(), _T(""));
 		EXPECT_FALSE(tiingo.IsActive());
 		EXPECT_FALSE(tiingo.m_fIsADR);
 		EXPECT_EQ(tiingo.m_iSicCode, 0);
-		EXPECT_STREQ(tiingo.m_strSicIndustry, _T(""));
-		EXPECT_STREQ(tiingo.m_strSicSector, _T(""));
-		EXPECT_STREQ(tiingo.m_strTiingoIndustry, _T(""));
-		EXPECT_STREQ(tiingo.m_strTiingoSector, _T(""));
-		EXPECT_STREQ(tiingo.m_strReportingCurrency, _T(""));
-		EXPECT_STREQ(tiingo.m_strLocation, _T(""));
-		EXPECT_STREQ(tiingo.m_strCompanyWebSite, _T(""));
-		EXPECT_STREQ(tiingo.m_strSECFilingWebSite, _T(""));
+		EXPECT_STREQ(tiingo.m_strSicIndustry.c_str(), _T(""));
+		EXPECT_STREQ(tiingo.m_strSicSector.c_str(), _T(""));
+		EXPECT_STREQ(tiingo.m_strTiingoIndustry.c_str(), _T(""));
+		EXPECT_STREQ(tiingo.m_strTiingoSector.c_str(), _T(""));
+		EXPECT_STREQ(tiingo.m_strReportingCurrency.c_str(), _T(""));
+		EXPECT_STREQ(tiingo.m_strLocation.c_str(), _T(""));
+		EXPECT_STREQ(tiingo.m_strCompanyWebSite.c_str(), _T(""));
+		EXPECT_STREQ(tiingo.m_strSECFilingWebSite.c_str(), _T(""));
 		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetDailyUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
@@ -483,20 +483,20 @@ namespace FireBirdTest {
 		setTiingoStock.m_pDatabase->CommitTrans(); // 必须使用CommitTrans()来真正删除数据库中的数据。
 		setTiingoStock.Close();
 
-		EXPECT_STREQ(stock.m_strTiingoPermaTicker, stock2.m_strTiingoPermaTicker);
+		EXPECT_TRUE(stock.m_strTiingoPermaTicker == stock2.m_strTiingoPermaTicker);
 		EXPECT_TRUE(stock.GetSymbol() == stock2.GetSymbol());
-		EXPECT_STREQ(stock.m_strName, stock2.m_strName);
+		EXPECT_TRUE(stock.m_strName == stock2.m_strName);
 		EXPECT_TRUE(stock.IsActive() == stock2.IsActive());
 		EXPECT_TRUE(stock.m_fIsADR == stock2.m_fIsADR);
 		EXPECT_EQ(stock.m_iSicCode, stock2.m_iSicCode);
-		EXPECT_STREQ(stock.m_strSicIndustry, stock2.m_strSicIndustry);
-		EXPECT_STREQ(stock.m_strSicSector, stock2.m_strSicSector);
-		EXPECT_STREQ(stock.m_strTiingoIndustry, stock2.m_strTiingoIndustry);
-		EXPECT_STREQ(stock.m_strTiingoSector, stock2.m_strTiingoSector);
-		EXPECT_STREQ(stock.m_strReportingCurrency, stock2.m_strReportingCurrency);
-		EXPECT_STREQ(stock.m_strLocation, stock2.m_strLocation);
-		EXPECT_STREQ(stock.m_strCompanyWebSite, stock2.m_strCompanyWebSite);
-		EXPECT_STREQ(stock.m_strSECFilingWebSite, stock2.m_strSECFilingWebSite);
+		EXPECT_TRUE(stock.m_strSicIndustry == stock2.m_strSicIndustry);
+		EXPECT_TRUE(stock.m_strSicSector == stock2.m_strSicSector);
+		EXPECT_TRUE(stock.m_strTiingoIndustry == stock2.m_strTiingoIndustry);
+		EXPECT_TRUE(stock.m_strTiingoSector == stock2.m_strTiingoSector);
+		EXPECT_TRUE(stock.m_strReportingCurrency == stock2.m_strReportingCurrency);
+		EXPECT_TRUE(stock.m_strLocation == stock2.m_strLocation);
+		EXPECT_TRUE(stock.m_strCompanyWebSite == stock2.m_strCompanyWebSite);
+		EXPECT_TRUE(stock.m_strSECFilingWebSite == stock2.m_strSECFilingWebSite);
 		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), stock2.GetCompanyFinancialStatementUpdateDate());
 		EXPECT_TRUE(stock.Have52WeekLowDate(20200101));
 		EXPECT_TRUE(stock.Have52WeekLowDate(20240101));

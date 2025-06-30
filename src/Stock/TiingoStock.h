@@ -124,23 +124,23 @@ public:
 	void Clear52WeekHigh() { m_v52WeekHigh.clear(); }
 
 public:
-	CString m_strTiingoPermaTicker{ _T("") }; // Tiingo永久代码标识
+	string m_strTiingoPermaTicker{ _T("") }; // Tiingo永久代码标识
 	//CString m_strTicker; // 这个使用VirtualStock中的m_strSymbol来代替。
-	CString m_strName{ _T("") };
+	string m_strName{ _T("") };
 	// bool m_fIsActive{ false }; // 这个使用VirtualStock中的m_fActive来代替
 	double m_fDividend{ 0 };
 	double m_fSplitFactor{ 1 };
 	bool m_fIsADR{ false };
-	CString m_strTiingoSector{ _T("") };
-	CString m_strTiingoIndustry{ _T("") };
+	string m_strTiingoSector{ _T("") };
+	string m_strTiingoIndustry{ _T("") };
 	INT32 m_iSicCode{ 0 };
-	CString m_strSicSector{ _T("") };
-	CString m_strSicIndustry{ _T("") };
-	CString m_strReportingCurrency{ _T("") };
-	CString m_strLocation{ _T("") };
-	CString m_strCompanyWebSite{ _T("") };
-	CString m_strSECFilingWebSite{ _T("") };
-	CString m_strDataProviderPermaTicker{ _T("") };
+	string m_strSicSector{ _T("") };
+	string m_strSicIndustry{ _T("") };
+	string m_strReportingCurrency{ _T("") };
+	string m_strLocation{ _T("") };
+	string m_strCompanyWebSite{ _T("") };
+	string m_strSECFilingWebSite{ _T("") };
+	string m_strDataProviderPermaTicker{ _T("") };
 
 	vector<long> m_v52WeekLow; // 年度最低价的日期
 	vector<long> m_v52WeekHigh; // 年度最高价的日期

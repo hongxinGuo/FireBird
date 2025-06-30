@@ -66,10 +66,8 @@ void CProductTiingoMarketNews::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CVectorTiingoMarketNewsPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const CWebDataPtr& pWebData) {
 	auto pvTiingoMarketNews = make_shared<vector<CTiingoMarketNewsPtr>>();
-	CString strNULL = _T(" ");
 	CTiingoMarketNewsPtr pMarketNews = nullptr;
 	string s1;
-	CString strNumber;
 	int year, month, day, hour, minute, second;
 	float f;
 	if (!IsValidData(pWebData)) return pvTiingoMarketNews;
@@ -80,7 +78,6 @@ CVectorTiingoMarketNewsPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const
 		const simdjson::padded_string jsonPadded(svJson);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 
-		CString str;
 		int iCount = 0;
 		for (auto item : doc) {
 			auto itemValue = item.value();

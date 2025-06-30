@@ -93,7 +93,7 @@ namespace FireBirdTest {
 	public:
 		long m_lIndex;
 		CWebDataPtr m_pWebData;
-		shared_ptr<vector<CString>> m_pvExchange;
+		shared_ptr<vector<string>> m_pvExchange;
 		CProductFinnhubCryptoExchange m_finnhubCryptoExchange;
 	};
 
@@ -116,8 +116,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvExchange->size(), 0);
 			break;
 		case 10:
-			EXPECT_STREQ(m_pvExchange->at(0), _T("new exchange"));
-			EXPECT_STREQ(m_pvExchange->at(1), _T("FXPIG"));
+			EXPECT_STREQ(m_pvExchange->at(0).c_str(), _T("new exchange"));
+			EXPECT_STREQ(m_pvExchange->at(1).c_str(), _T("FXPIG"));
 			EXPECT_EQ(m_pvExchange->size(), 9);
 			break;
 		default:

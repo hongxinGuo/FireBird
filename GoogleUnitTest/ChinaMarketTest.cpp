@@ -973,7 +973,6 @@ namespace FireBirdTest {
 	TEST_F(CChinaMarketTest, TestProcessDayLine) {
 		const CDayLineWebDataPtr pData = make_shared<CDayLineWebData>();
 		CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(_T("600666.SS"));
-		CString strTest = _T("");
 
 		pData->SetStockCode(_T("600666.SS"));
 		gl_qDayLine.enqueue(pData);
@@ -1680,7 +1679,6 @@ namespace FireBirdTest {
 
 		gl_pChinaMarket->LoadDayLine(dataChinaDayLine, lDate);
 
-		CString strSQL;
 		CSetDayLineBasicInfo setDayLineBasicInfo;
 		CSetDayLineExtendInfo setDayLineExtendInfo;
 		long i = 0;
@@ -1707,7 +1705,7 @@ namespace FireBirdTest {
 		pData->SetStockSymbol(_T("600004.SS"));
 		vData[1] = pData;
 
-		set<CString> setStockCode;
+		set<string> setStockCode;
 		gl_pChinaMarket->CreateStockCodeSet(setStockCode, &vData);
 
 		EXPECT_TRUE(setStockCode.contains(_T("600000.SS")));

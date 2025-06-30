@@ -402,57 +402,57 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetType) {
-		EXPECT_STREQ(stock.GetType(), _T(" "));
+		EXPECT_STREQ(stock.GetType().c_str(), _T(" "));
 		stock.SetType(_T("abcdef"));
-		EXPECT_STREQ(stock.GetType(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetType().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetMic) {
-		EXPECT_STREQ(stock.GetMic(), _T(" "));
+		EXPECT_STREQ(stock.GetMic().c_str(), _T(" "));
 		stock.SetMic(_T("abcdef"));
-		EXPECT_STREQ(stock.GetMic(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetMic().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetFigi) {
-		EXPECT_STREQ(stock.GetFigi(), _T(" "));
+		EXPECT_STREQ(stock.GetFigi().c_str(), _T(" "));
 		stock.SetFigi(_T("abcdef"));
-		EXPECT_STREQ(stock.GetFigi(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetFigi().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetCurrency) {
-		EXPECT_STREQ(stock.GetCurrency(), _T(" "));
+		EXPECT_STREQ(stock.GetCurrency().c_str(), _T(" "));
 		stock.SetCurrency(_T("abcdef"));
-		EXPECT_STREQ(stock.GetCurrency(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetCurrency().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetAddress) {
-		EXPECT_STREQ(stock.GetAddress(), _T(" "));
+		EXPECT_STREQ(stock.GetAddress().c_str(), _T(" "));
 		stock.SetAddress(_T("abcdef"));
-		EXPECT_STREQ(stock.GetAddress(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetAddress().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetCity) {
-		EXPECT_STREQ(stock.GetCity(), _T(" "));
+		EXPECT_STREQ(stock.GetCity().c_str(), _T(" "));
 		stock.SetCity(_T("abcdef"));
-		EXPECT_STREQ(stock.GetCity(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetCity().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetCountry) {
-		EXPECT_STREQ(stock.GetCountry(), _T(" "));
+		EXPECT_STREQ(stock.GetCountry().c_str(), _T(" "));
 		stock.SetCountry(_T("abcdef"));
-		EXPECT_STREQ(stock.GetCountry(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetCountry().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetCusip) {
-		EXPECT_STREQ(stock.GetCusip(), _T(" "));
+		EXPECT_STREQ(stock.GetCusip().c_str(), _T(" "));
 		stock.SetCusip(_T("abcdef"));
-		EXPECT_STREQ(stock.GetCusip(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetCusip().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetSedol) {
-		EXPECT_STREQ(stock.GetSedol(), _T(" "));
+		EXPECT_STREQ(stock.GetSedol().c_str(), _T(" "));
 		stock.SetSedol(_T("abcdef"));
-		EXPECT_STREQ(stock.GetSedol(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetSedol().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetEmployeeTotal) {
@@ -462,39 +462,39 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetGgroup) {
-		EXPECT_STREQ(stock.GetGgroup(), _T(" "));
+		EXPECT_STREQ(stock.GetGgroup().c_str(), _T(" "));
 		stock.SetGgroup(_T("abcdef"));
-		EXPECT_STREQ(stock.GetGgroup(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetGgroup().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetGind) {
-		EXPECT_STREQ(stock.GetGind(), _T(" "));
+		EXPECT_STREQ(stock.GetGind().c_str(), _T(" "));
 		stock.SetGind(_T("abcdef"));
-		EXPECT_STREQ(stock.GetGind(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetGind().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetGsector) {
-		EXPECT_STREQ(stock.GetGsector(), _T(" "));
+		EXPECT_STREQ(stock.GetGsector().c_str(), _T(" "));
 		stock.SetGsector(_T("abcdef"));
-		EXPECT_STREQ(stock.GetGsector(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetGsector().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetGsubind) {
-		EXPECT_STREQ(stock.GetGsubind(), _T(" "));
+		EXPECT_STREQ(stock.GetGsubind().c_str(), _T(" "));
 		stock.SetGsubind(_T("abcdef"));
-		EXPECT_STREQ(stock.GetGsubind(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetGsubind().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetIPODate) {
-		EXPECT_STREQ(stock.GetIPODate(), _T(" "));
+		EXPECT_STREQ(stock.GetIPODate().c_str(), _T(" "));
 		stock.SetIPODate(_T("abcdef"));
-		EXPECT_STREQ(stock.GetIPODate(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetIPODate().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetIsin) {
-		EXPECT_STREQ(stock.GetIsin(), _T(" "));
+		EXPECT_STREQ(stock.GetIsin().c_str(), _T(" "));
 		stock.SetIsin(_T("abcdef"));
-		EXPECT_STREQ(stock.GetIsin(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetIsin().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetMarketCapitalization) {
@@ -504,39 +504,39 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetNaics) {
-		EXPECT_STREQ(stock.GetNaics(), _T(" "));
+		EXPECT_STREQ(stock.GetNaics().c_str(), _T(" "));
 		stock.SetNaics(_T("abcdef"));
-		EXPECT_STREQ(stock.GetNaics(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetNaics().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetNaicsNationalIndustry) {
-		EXPECT_STREQ(stock.GetNaicsNationalIndustry(), _T(" "));
+		EXPECT_STREQ(stock.GetNaicsNationalIndustry().c_str(), _T(" "));
 		stock.SetNaicsNationalIndustry(_T("abcdef"));
-		EXPECT_STREQ(stock.GetNaicsNationalIndustry(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetNaicsNationalIndustry().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetNaicsSector) {
-		EXPECT_STREQ(stock.GetNaicsSector(), _T(" "));
+		EXPECT_STREQ(stock.GetNaicsSector().c_str(), _T(" "));
 		stock.SetNaicsSector(_T("abcdef"));
-		EXPECT_STREQ(stock.GetNaicsSector(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetNaicsSector().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetNaicsSubsector) {
-		EXPECT_STREQ(stock.GetNaicsSubsector(), _T(" "));
+		EXPECT_STREQ(stock.GetNaicsSubsector().c_str(), _T(" "));
 		stock.SetNaicsSubsector(_T("abcdef"));
-		EXPECT_STREQ(stock.GetNaicsSubsector(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetNaicsSubsector().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetName) {
-		EXPECT_STREQ(stock.GetName(), _T(" "));
+		EXPECT_STREQ(stock.GetName().c_str(), _T(" "));
 		stock.SetName(_T("abcdef"));
-		EXPECT_STREQ(stock.GetName(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetName().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetPhone) {
-		EXPECT_STREQ(stock.GetPhone(), _T(" "));
+		EXPECT_STREQ(stock.GetPhone().c_str(), _T(" "));
 		stock.SetPhone(_T("abcdef"));
-		EXPECT_STREQ(stock.GetPhone(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetPhone().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetShareOutstanding) {
@@ -546,21 +546,21 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetState) {
-		EXPECT_STREQ(stock.GetState(), _T(" "));
+		EXPECT_STREQ(stock.GetState().c_str(), _T(" "));
 		stock.SetState(_T("abcdef"));
-		EXPECT_STREQ(stock.GetState(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetState().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetWebURL) {
-		EXPECT_STREQ(stock.GetWebURL(), _T(" "));
+		EXPECT_STREQ(stock.GetWebURL().c_str(), _T(" "));
 		stock.SetWebURL(_T("abcdef"));
-		EXPECT_STREQ(stock.GetWebURL(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetWebURL().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetLogo) {
-		EXPECT_STREQ(stock.GetLogo(), _T(" "));
+		EXPECT_STREQ(stock.GetLogo().c_str(), _T(" "));
 		stock.SetLogo(_T("abcdef"));
-		EXPECT_STREQ(stock.GetLogo(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetLogo().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetTicker) {
@@ -570,9 +570,9 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetFinnhubIndustry) {
-		EXPECT_STREQ(stock.GetFinnhubIndustry(), _T(" "));
+		EXPECT_STREQ(stock.GetFinnhubIndustry().c_str(), _T(" "));
 		stock.SetFinnhubIndustry(_T("abcdef"));
-		EXPECT_STREQ(stock.GetFinnhubIndustry(), _T("abcdef"));
+		EXPECT_STREQ(stock.GetFinnhubIndustry().c_str(), _T("abcdef"));
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetPeer) {
@@ -1493,34 +1493,34 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.GetDescription() == stock2.GetDescription());
 		EXPECT_TRUE(stock.GetExchangeCode() == stock2.GetExchangeCode());
 		EXPECT_TRUE(stock.GetDisplaySymbol() == stock2.GetDisplaySymbol());
-		EXPECT_STREQ(stock.GetType(), stock2.GetType());
-		EXPECT_STREQ(stock.GetMic(), stock2.GetMic());
-		EXPECT_STREQ(stock.GetFigi(), stock2.GetFigi());
-		EXPECT_STREQ(stock.GetCurrency(), stock2.GetCurrency());
-		EXPECT_STREQ(stock.GetAddress(), stock2.GetAddress());
-		EXPECT_STREQ(stock.GetCity(), stock2.GetCity());
-		EXPECT_STREQ(stock.GetCountry(), stock2.GetCountry());
-		EXPECT_STREQ(stock.GetCusip(), stock2.GetCusip());
-		EXPECT_STREQ(stock.GetSedol(), stock2.GetSedol());
+		EXPECT_STREQ(stock.GetType().c_str(), stock2.GetType().c_str());
+		EXPECT_STREQ(stock.GetMic().c_str(), stock2.GetMic().c_str());
+		EXPECT_STREQ(stock.GetFigi().c_str(), stock2.GetFigi().c_str());
+		EXPECT_STREQ(stock.GetCurrency().c_str(), stock2.GetCurrency().c_str());
+		EXPECT_STREQ(stock.GetAddress().c_str(), stock2.GetAddress().c_str());
+		EXPECT_STREQ(stock.GetCity().c_str(), stock2.GetCity().c_str());
+		EXPECT_STREQ(stock.GetCountry().c_str(), stock2.GetCountry().c_str());
+		EXPECT_STREQ(stock.GetCusip().c_str(), stock2.GetCusip().c_str());
+		EXPECT_STREQ(stock.GetSedol().c_str(), stock2.GetSedol().c_str());
 		EXPECT_EQ(stock.GetEmployeeTotal(), stock2.GetEmployeeTotal());
-		EXPECT_TRUE(stock.GetExchangeCode() == stock2.GetExchangeCode());
-		EXPECT_STREQ(stock.GetGgroup(), stock2.GetGgroup());
-		EXPECT_STREQ(stock.GetGsector(), stock2.GetGsector());
-		EXPECT_STREQ(stock.GetGsubind(), stock2.GetGsubind());
-		EXPECT_STREQ(stock.GetIPODate(), stock2.GetIPODate());
-		EXPECT_STREQ(stock.GetIsin(), stock2.GetIsin());
+		EXPECT_TRUE(stock.GetExchangeCode() == stock2.GetExchangeCode()) << stock.GetExchangeCode();
+		EXPECT_STREQ(stock.GetGgroup().c_str(), stock2.GetGgroup().c_str());
+		EXPECT_STREQ(stock.GetGsector().c_str(), stock2.GetGsector().c_str());
+		EXPECT_STREQ(stock.GetGsubind().c_str(), stock2.GetGsubind().c_str());
+		EXPECT_STREQ(stock.GetIPODate().c_str(), stock2.GetIPODate().c_str());
+		EXPECT_STREQ(stock.GetIsin().c_str(), stock2.GetIsin().c_str());
 		EXPECT_DOUBLE_EQ(stock.GetMarketCapitalization(), stock2.GetMarketCapitalization());
-		EXPECT_STREQ(stock.GetNaics(), stock2.GetNaics());
-		EXPECT_STREQ(stock.GetNaicsNationalIndustry(), stock2.GetNaicsNationalIndustry());
-		EXPECT_STREQ(stock.GetNaicsSector(), stock2.GetNaicsSector());
-		EXPECT_STREQ(stock.GetNaicsSubsector(), stock2.GetNaicsSubsector());
-		EXPECT_STREQ(stock.GetName(), stock2.GetName());
-		EXPECT_STREQ(stock.GetPhone(), stock2.GetPhone());
+		EXPECT_STREQ(stock.GetNaics().c_str(), stock2.GetNaics().c_str());
+		EXPECT_STREQ(stock.GetNaicsNationalIndustry().c_str(), stock2.GetNaicsNationalIndustry().c_str());
+		EXPECT_STREQ(stock.GetNaicsSector().c_str(), stock2.GetNaicsSector().c_str());
+		EXPECT_STREQ(stock.GetNaicsSubsector().c_str(), stock2.GetNaicsSubsector().c_str());
+		EXPECT_STREQ(stock.GetName().c_str(), stock2.GetName().c_str());
+		EXPECT_STREQ(stock.GetPhone().c_str(), stock2.GetPhone().c_str());
 		EXPECT_DOUBLE_EQ(stock.GetShareOutstanding(), stock2.GetShareOutstanding());
-		EXPECT_STREQ(stock.GetState(), stock2.GetState());
-		EXPECT_TRUE(stock.GetTicker() == stock2.GetTicker());
-		EXPECT_STREQ(stock.GetWebURL(), stock2.GetWebURL());
-		EXPECT_STREQ(stock.GetLogo(), stock2.GetLogo());
+		EXPECT_STREQ(stock.GetState().c_str(), stock2.GetState().c_str());
+		EXPECT_STREQ(stock.GetTicker().c_str(), stock2.GetTicker().c_str());
+		EXPECT_STREQ(stock.GetWebURL().c_str(), stock2.GetWebURL().c_str());
+		EXPECT_STREQ(stock.GetLogo().c_str(), stock2.GetLogo().c_str());
 		EXPECT_STREQ(stock.GetPeer().dump().c_str(), stock2.GetPeer().dump().c_str());
 		EXPECT_EQ(stock.GetProfileUpdateDate(), stock2.GetProfileUpdateDate());
 		EXPECT_EQ(stock.GetDayLineStartDate(), stock2.GetDayLineStartDate());

@@ -134,7 +134,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(pStock->GetSymbol().c_str(), _T("A")) << "第一个股票代码为A";
 		pStock = gl_dataContainerTiingoStock.GetStock(_T("A"));
 		EXPECT_FALSE(pStock == nullptr);
-		EXPECT_STREQ(pStock->m_strName, _T("Agilent Technologies Inc"));
+		EXPECT_STREQ(pStock->m_strName.c_str(), _T("Agilent Technologies Inc"));
 	}
 
 	TEST_F(CWorldMarketTest, TestIsUpdateProfileDB) {
@@ -399,7 +399,7 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.Add(pStock);
 		pStock = gl_dataContainerFinnhubStock.GetStock(_T("000001.SS"));
 		EXPECT_TRUE(pStock != nullptr);
-		EXPECT_STREQ(pStock->GetCurrency(), _T(""));
+		EXPECT_STREQ(pStock->GetCurrency().c_str(), _T(""));
 		pStock->SetUpdateProfileDB(true);
 		pStock->SetCurrency(_T("No Currency")); // 更新这个条目
 

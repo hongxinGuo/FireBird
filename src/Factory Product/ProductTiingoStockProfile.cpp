@@ -100,10 +100,9 @@ void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDataPtr& pWebData) {
 	auto pvTiingoStock = make_shared<vector<CTiingoStockPtr>>();
 	string strNotAvailable{ _T("Field not available for free/evaluation") }; // Tiingo免费账户有多项内容空缺，会返回此信息。
-	CString strNULL = _T("");
+	string strNULL = _T("");
 	CTiingoStockPtr pStock = nullptr;
 	string s1;
-	CString strNumber;
 
 	if (!IsValidData(pWebData)) return pvTiingoStock;
 
@@ -114,7 +113,6 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 		const simdjson::padded_string jsonPadded(svJson);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 
-		CString str;
 		int iCount = 0;
 		for (auto item : doc) {
 			auto itemValue = item.value();

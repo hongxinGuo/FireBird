@@ -7,7 +7,7 @@
 #include "WebData.h"
 #include "WorldMarket.h"
 
-map<CString, int> s_mapItem{
+map<string, int> s_mapItem{
 	{ _T("accoci"), 1 },
 	{ _T("acctPay"), 2 },
 	{ _T("acctRec"), 3 },
@@ -165,7 +165,6 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 	string symbol = pStock->GetSymbol();
 	string exchange = _T("US");
 	string s1;
-	CString strNumber;
 
 	if (!IsValidData(pWebData)) return pvTiingoFinancialState;
 

@@ -73,7 +73,6 @@ void CContainerTiingoStock::UpdateDB() {
 
 bool CContainerTiingoStock::LoadDB() {
 	CSetTiingoStock setTiingoStock;
-	CString strSymbol = _T("");
 
 	setTiingoStock.m_strSort = _T("[Ticker]");
 	setTiingoStock.Open();

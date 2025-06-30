@@ -35,7 +35,7 @@ CChinaMarket::CChinaMarket() {
 		TRACE(_T("ChinaMarket市场变量只允许存在一个实例\n"));
 	}
 	m_strMarketId = _T("SS");
-	m_exchange = gl_dataContainerStockExchange.GetExchange(m_strMarketId.GetString());
+	m_exchange = gl_dataContainerStockExchange.GetExchange(m_strMarketId);
 	ASSERT(m_exchange != nullptr);
 	m_strLocalMarketTimeZone = _T("Asia/Shanghai");
 	GetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 北京标准时间位于东八区， 中国股市开市时间为九点十五分
@@ -1075,8 +1075,8 @@ void CChinaMarket::SetCurrentStock(const CChinaStockPtr& pStock) {
 bool CChinaMarket::BuildWeekLineOfCurrentWeek() {
 	CContainerChinaDayLine dataChinaDayLine;
 	CContainerChinaWeekLine dataChinaWeekLine;
-	set<CString> setDayLineStockCode;
-	set<CString> setWeekLineStockCode;
+	set<string> setDayLineStockCode;
+	set<string> setWeekLineStockCode;
 	const long lCurrentMonday = GetCurrentMonday(GetMarketDate());
 
 	if (!LoadDayLine(dataChinaDayLine, GetMarketDate())) {
@@ -1120,12 +1120,12 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek() {
 	return true;
 }
 
-bool CChinaMarket::CreateStockCodeSet(set<CString>& setStockCode, vector<CVirtualHistoryCandleExtendPtr>* pvData) {
-	vector<CString> vectorStockCode;
+bool CChinaMarket::CreateStockCodeSet(set<string>& setStockCode, vector<CVirtualHistoryCandleExtendPtr>* pvData) {
+	vector<string> vectorStockCode;
 
 	for (const auto& pData : *pvData) {
 		string strStockSymbol = pData->GetStockSymbol();
-		vectorStockCode.push_back(strStockSymbol.c_str());
+		vectorStockCode.push_back(strStockSymbol);
 	}
 	setStockCode.insert(vectorStockCode.begin(), vectorStockCode.end());
 
@@ -1181,7 +1181,6 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
 }
 
 bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) const {
-	CString strSQL;
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
@@ -1270,7 +1269,6 @@ void CChinaMarket::DeleteWeekLineExtendInfo() {
 }
 
 void CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) const {
-	CString strSQL;
 	CSetWeekLineBasicInfo setWeekLineBasicInfo;
 
 	string sDate = fmt::format("[Date] = {:08Ld}", lMonday);
@@ -1286,7 +1284,6 @@ void CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) const {
 }
 
 void CChinaMarket::DeleteWeekLineExtendInfo(long lMonday) const {
-	CString strSQL;
 	CSetWeekLineExtendInfo setWeekLineExtendInfo;
 
 	string sDate = fmt::format("[Date] = {:08Ld}", lMonday);
@@ -1380,9 +1377,9 @@ void CChinaMarket::DeleteDayLineBasicInfo(long lDate) const {
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 
 	_ltoa_s(lDate, buffer, 10);
-	const CString strDate = buffer;
+	const string strDate = buffer;
 	setDayLineBasicInfo.m_strFilter = _T("[Date] =");
-	setDayLineBasicInfo.m_strFilter += strDate;
+	setDayLineBasicInfo.m_strFilter += strDate.c_str();
 	setDayLineBasicInfo.Open();
 	setDayLineBasicInfo.m_pDatabase->BeginTrans();
 	while (!setDayLineBasicInfo.IsEOF()) {
@@ -1398,9 +1395,9 @@ void CChinaMarket::DeleteDayLineExtendInfo(long lDate) const {
 	CSetDayLineExtendInfo setDayLineExtendInfo;
 
 	_ltoa_s(lDate, buffer, 10);
-	const CString strDate = buffer;
+	const string strDate = buffer;
 	setDayLineExtendInfo.m_strFilter = _T("[Date] =");
-	setDayLineExtendInfo.m_strFilter += strDate;
+	setDayLineExtendInfo.m_strFilter += strDate.c_str();
 	setDayLineExtendInfo.Open();
 	setDayLineExtendInfo.m_pDatabase->BeginTrans();
 	while (!setDayLineExtendInfo.IsEOF()) {

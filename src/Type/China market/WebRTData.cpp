@@ -244,7 +244,6 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 void CWebRTData::ParseTengxunData(const string_view& svData) {
 	long lTemp;
 	float fTemp = 0.0;
-	CString strTengxunStockCode;
 	size_t lCurrentPos = 12;
 
 	m_fActive = false; // 初始状态为无效数据

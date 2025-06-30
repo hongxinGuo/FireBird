@@ -36,8 +36,8 @@ public:
 	void SetByteRead(long number) { m_lByteRead = number; } // 仅用于测试中
 
 	// 各状态
-	void SetInquiryString(const CString& strInquiry) { m_strInquiry = strInquiry; }
-	void SetInquiryHeader(const CString& strHeader) { m_strHeaders = strHeader; }
+	void SetInquiryString(const string& strInquiry) { m_strInquiry = strInquiry; }
+	void SetInquiryHeader(const string& strHeader) { m_strHeaders = strHeader; }
 
 	bool IsWebError() const noexcept { return m_dwErrorCode != 0; }
 	DWORD GetErrorCode() const noexcept { return m_dwErrorCode; }

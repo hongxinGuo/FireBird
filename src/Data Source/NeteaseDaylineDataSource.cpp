@@ -90,6 +90,6 @@ void CNeteaseDayLineDataSource::UpdateStatus(CWebDataPtr pData) {
 /// 这里的strStockCode为标准制式：600000.SS，000001.SZ，
 /// </summary>
 /// <param name="strStockCode"></param>
-void CNeteaseDayLineDataSource::SetDownLoadingStockCode(const CString& strStockCode) {
+void CNeteaseDayLineDataSource::SetDownLoadingStockCode(const string& strStockCode) {
 	m_strDownLoadingStockCode = strStockCode;
 }

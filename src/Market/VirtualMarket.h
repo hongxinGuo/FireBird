@@ -59,7 +59,7 @@ public:
 	// 时间函数
 	void CalculateTime() noexcept; // 计算本市场的各时间
 
-	void GetMarketLocalTimeOffset(CString strLocalNameOfMarket);
+	void GetMarketLocalTimeOffset(string strLocalNameOfMarket);
 	long GetMarketOpenTime() const { return m_exchange->m_lMarketOpenTime; }
 	long GetMarketCloseTime() const { return m_exchange->m_lMarketCloseTime; }
 
@@ -103,7 +103,7 @@ public:
 	void TEST_SetFormattedMarketDate(const long lDate) noexcept { m_lMarketDate = lDate; }
 
 	/////
-	CString GetMarketID() const noexcept { return m_strMarketId; }
+	string GetMarketID() const noexcept { return m_strMarketId; }
 
 	virtual bool IsOrdinaryTradeTime() { return true; } // 日常交易时间
 	virtual bool IsOrdinaryTradeTime(long) { return true; } // 参数为市场当前时间hhmmss
@@ -131,7 +131,7 @@ public:
 	void StoreDataSource(const CVirtualDataSourcePtr& pDataSource) { m_vDataSource.push_back(pDataSource); }
 
 protected:
-	CString m_strMarketId{ _T("Warning: CVirtualMarket Called.") }; // 该市场标识字符串,即交易所的代码。中国为SS,美国为US....
+	string m_strMarketId{ _T("Warning: CVirtualMarket Called.") }; // 该市场标识字符串,即交易所的代码。中国为SS,美国为US....
 	CStockExchangePtr m_exchange{ nullptr };
 	CMarketTaskQueue m_marketTask; // 本市场当前任务队列
 	CMarketTaskQueue m_marketImmediateTask; // 本市场当前即时任务队列（此任务序列一次执行完毕，无需等待）
@@ -141,21 +141,21 @@ protected:
 	vector<CVirtualDataSourcePtr> m_vDataSource; // 本市场中的各网络数据源。
 
 	// Finnhub.io提供的信息
-	CString m_strCode;
-	CString m_strName;
-	CString m_strMic;
-	CString m_strTimeZone;
-	CString m_strHour;
-	CString m_strCloseDate;
-	CString m_strCountry;
-	CString m_strSource;
+	string m_strCode;
+	string m_strName;
+	string m_strMic;
+	string m_strTimeZone;
+	string m_strHour;
+	string m_strCloseDate;
+	string m_strCountry;
+	string m_strSource;
 
 	//系统状态区
 	bool m_fSystemReady{ false }; // 市场初始态已经设置好.默认为假
 	bool m_fResettingMarket{ false }; // 市场正在重启标识，默认为假
 
 	// 系统时间区
-	CString m_strLocalMarketTimeZone{ _T("") }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
+	string m_strLocalMarketTimeZone{ _T("") }; // 本市场当地时区名称 Asia/Shanghai, America/New_York, ...
 	const chrono::time_zone* m_tzMarket{ nullptr }; // 本市场当地时区
 	chrono::sys_info m_marketSystemInformation{}; // 时区偏移等皆由此推出。
 	chrono::seconds m_TimeZoneOffset{ 0 };

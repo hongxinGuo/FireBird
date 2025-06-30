@@ -312,7 +312,6 @@ long CContainerChinaStock::GetDayLineNeedSaveNumber() const {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CContainerChinaStock::TaskUpdateDayLineDB() {
-	CString str;
 	bool fSave = false;
 
 	for (size_t l = 0; l < m_vStock.size(); l++) {
@@ -620,7 +619,6 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 	vector<int> vIndex;
 	vector<double> vRS;
 	int iTotalAShare = 0;
-	CString strSQL;
 	CSetDayLineBasicInfo setDayLineBasicInfo;
 	double dShanghaiIndexUpDownRate = 0;
 	double dShenzhenIndexUpDownRate = 0;
@@ -724,7 +722,6 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 	vector<int> vIndex;
 	vector<double> vRS;
 	int iTotalAShare = 0;
-	CString strSQL;
 	CSetWeekLineBasicInfo setWeekLineBasicInfo;
 	double dShanghaiIndexUpDownRate = 0;
 	double dShenzhenIndexUpDownRate = 0;

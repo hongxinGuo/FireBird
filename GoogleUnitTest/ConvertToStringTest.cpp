@@ -9,7 +9,7 @@
 
 namespace FireBirdTest {
 	struct StrConvertDoubleToString {
-		StrConvertDoubleToString(double dValue, const CString& CValueOfPeriod, long lDividend) {
+		StrConvertDoubleToString(double dValue, const string& CValueOfPeriod, long lDividend) {
 			m_dValue = dValue;
 			m_strValue = CValueOfPeriod;
 			m_lDividend = lDividend;
@@ -17,7 +17,7 @@ namespace FireBirdTest {
 
 	public:
 		double m_dValue;
-		CString m_strValue;
+		string m_strValue;
 		long m_lDividend;
 	};
 
@@ -48,7 +48,7 @@ namespace FireBirdTest {
 
 	public:
 		double dValue;
-		CString CValueOfPeriod;
+		string CValueOfPeriod;
 		long lDividend;
 	};
 
@@ -56,12 +56,12 @@ namespace FireBirdTest {
 		                         , &Data5));
 
 	TEST_P(ConvertDoubleToStringTest, TestDouble) {
-		const CString str = ConvertValueToString(dValue, lDividend);
-		EXPECT_STREQ(str, CValueOfPeriod);
+		const string str = ConvertValueToString(dValue, lDividend).GetString();
+		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
 	}
 
 	struct StrConvertLongToString {
-		StrConvertLongToString(long lValue, const CString& CValueOfPeriod, long lDividend) {
+		StrConvertLongToString(long lValue, const string& CValueOfPeriod, long lDividend) {
 			m_lValue = lValue;
 			m_strValue = CValueOfPeriod;
 			m_lDividend = lDividend;
@@ -69,7 +69,7 @@ namespace FireBirdTest {
 
 	public:
 		long m_lValue;
-		CString m_strValue;
+		string m_strValue;
 		long m_lDividend;
 	};
 
@@ -105,7 +105,7 @@ namespace FireBirdTest {
 
 	public:
 		long lValue;
-		CString CValueOfPeriod;
+		string CValueOfPeriod;
 		long lDividend;
 	};
 
@@ -113,12 +113,12 @@ namespace FireBirdTest {
 		                         &Data12, &Data13, &Data14, &Data15));
 
 	TEST_P(ConvertLongToStringTest, TestLong) {
-		const CString str = ConvertValueToString(lValue, lDividend);
-		EXPECT_STREQ(str, CValueOfPeriod);
+		const string str = ConvertValueToString(lValue, lDividend).GetString();
+		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
 	}
 
 	struct StrConvertIntegerToString {
-		StrConvertIntegerToString(int iValue, const CString& CValueOfPeriod, long lDividend) {
+		StrConvertIntegerToString(int iValue, const string& CValueOfPeriod, long lDividend) {
 			m_iValue = iValue;
 			m_strValue = CValueOfPeriod;
 			m_lDividend = lDividend;
@@ -126,7 +126,7 @@ namespace FireBirdTest {
 
 	public:
 		int m_iValue;
-		CString m_strValue;
+		string m_strValue;
 		long m_lDividend;
 	};
 
@@ -162,7 +162,7 @@ namespace FireBirdTest {
 
 	public:
 		int iValue;
-		CString CValueOfPeriod;
+		string CValueOfPeriod;
 		long lDividend;
 	};
 
@@ -170,12 +170,12 @@ namespace FireBirdTest {
 		                         &Data22, &Data23, &Data24, &Data25));
 
 	TEST_P(ConvertIntegerToStringTest, TestInteger) {
-		const CString str = ConvertValueToString(iValue, lDividend);
-		EXPECT_STREQ(str, CValueOfPeriod);
+		const string str = ConvertValueToString(iValue, lDividend).GetString();
+		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
 	}
 
 	struct StrConvertINT64ToString {
-		StrConvertINT64ToString(INT64 iValue, const CString& CValueOfPeriod, long lDividend) {
+		StrConvertINT64ToString(INT64 iValue, const string& CValueOfPeriod, long lDividend) {
 			m_iValue = iValue;
 			m_strValue = CValueOfPeriod;
 			m_lDividend = lDividend;
@@ -183,7 +183,7 @@ namespace FireBirdTest {
 
 	public:
 		INT64 m_iValue;
-		CString m_strValue;
+		string m_strValue;
 		long m_lDividend;
 	};
 
@@ -219,7 +219,7 @@ namespace FireBirdTest {
 
 	public:
 		INT64 iValue;
-		CString CValueOfPeriod;
+		string CValueOfPeriod;
 		long lDividend;
 	};
 
@@ -227,8 +227,8 @@ namespace FireBirdTest {
 		                         &Data42, &Data43, &Data44, &Data45));
 
 	TEST_P(ConvertINT64ToStringTest, TestINT64) {
-		const CString str = ConvertValueToString(iValue, lDividend);
-		EXPECT_STREQ(str, CValueOfPeriod);
+		const string str = ConvertValueToString(iValue, lDividend).GetString();
+		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
 	}
 
 	class CRSReferenceTest : public testing::Test {

@@ -118,69 +118,69 @@ public:
 	void SetUpdateInsiderSentimentDB(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderSentimentDB = fFlag; }
 	bool IsUpdateInsiderSentimentDBAndClearFlag() { return m_fUpdateFinnhubInsiderSentimentDB.exchange(false); }
 
-	CString GetType() const { return m_strType; }
-	void SetType(const CString& strType) { m_strType = strType; }
-	CString GetMic() const { return m_strMic; }
-	void SetMic(const CString& strMic) { m_strMic = strMic; }
-	CString GetFigi() const { return m_strFigi; }
-	void SetFigi(const CString& strFigi) { m_strFigi = strFigi; }
-	CString GetShareClassFIGI() const { return m_strShareClassFIGI; }
-	void SetShareClassFIGI(const CString& strFigi) { m_strShareClassFIGI = strFigi; }
-	CString GetSymbol2() const { return m_strSymbol2; }
-	void SetSymbol2(const CString& str) { m_strSymbol2 = str; }
-	CString GetCurrency() const { return m_strCurrency; }
-	void SetCurrency(const CString& strCurrency) { m_strCurrency = strCurrency; }
+	string GetType() const { return m_strType; }
+	void SetType(const string& strType) { m_strType = strType; }
+	string GetMic() const { return m_strMic; }
+	void SetMic(const string& strMic) { m_strMic = strMic; }
+	string GetFigi() const { return m_strFigi; }
+	void SetFigi(const string& strFigi) { m_strFigi = strFigi; }
+	string GetShareClassFIGI() const { return m_strShareClassFIGI; }
+	void SetShareClassFIGI(const string& strFigi) { m_strShareClassFIGI = strFigi; }
+	string GetSymbol2() const { return m_strSymbol2; }
+	void SetSymbol2(const string& str) { m_strSymbol2 = str; }
+	string GetCurrency() const { return m_strCurrency; }
+	void SetCurrency(const string& strCurrency) { m_strCurrency = strCurrency; }
 
-	CString GetAddress() const { return m_strAddress; }
-	void SetAddress(const CString& strAddress) { m_strAddress = strAddress; }
-	CString GetCity() const { return m_strCity; }
-	void SetCity(const CString& strCity) { m_strCity = strCity; }
-	CString GetCountry() const { return m_strCountry; }
-	void SetCountry(const CString& strCountry) { m_strCountry = strCountry; }
-	CString GetCusip() const { return m_strCusip; }
-	void SetCusip(const CString& strCusip) { m_strCusip = strCusip; }
-	CString GetSedol() const { return m_strSedol; }
-	void SetSedol(const CString& strSedol) { m_strSedol = strSedol; }
+	string GetAddress() const { return m_strAddress; }
+	void SetAddress(const string& strAddress) { m_strAddress = strAddress; }
+	string GetCity() const { return m_strCity; }
+	void SetCity(const string& strCity) { m_strCity = strCity; }
+	string GetCountry() const { return m_strCountry; }
+	void SetCountry(const string& strCountry) { m_strCountry = strCountry; }
+	string GetCusip() const { return m_strCusip; }
+	void SetCusip(const string& strCusip) { m_strCusip = strCusip; }
+	string GetSedol() const { return m_strSedol; }
+	void SetSedol(const string& strSedol) { m_strSedol = strSedol; }
 	long GetEmployeeTotal() const noexcept { return m_lEmployeeTotal; }
 	void SetEmployeeTotal(const long lEmployeeTotal) noexcept { m_lEmployeeTotal = lEmployeeTotal; }
-	CString GetGgroup() const { return m_strGgroup; }
-	void SetGgroup(const CString& strGgroup) { m_strGgroup = strGgroup; }
-	CString GetGind() const { return m_strGind; }
-	void SetGind(const CString& strGind) { m_strGind = strGind; }
-	CString GetGsector() const { return m_strGsector; }
-	void SetGsector(const CString& strGsector) { m_strGsector = strGsector; }
-	CString GetGsubind() const { return m_strGsubind; }
-	void SetGsubind(const CString& strGsubind) { m_strGsubind = strGsubind; }
-	CString GetIPODate() const { return m_strIPODate; }
-	void SetIPODate(const CString& strIPODate) { m_strIPODate = strIPODate; }
-	CString GetIsin() const { return m_strIsin; }
-	void SetIsin(const CString& strIsin) { m_strIsin = strIsin; }
+	string GetGgroup() const { return m_strGgroup; }
+	void SetGgroup(const string& strGgroup) { m_strGgroup = strGgroup; }
+	string GetGind() const { return m_strGind; }
+	void SetGind(const string& strGind) { m_strGind = strGind; }
+	string GetGsector() const { return m_strGsector; }
+	void SetGsector(const string& strGsector) { m_strGsector = strGsector; }
+	string GetGsubind() const { return m_strGsubind; }
+	void SetGsubind(const string& strGsubind) { m_strGsubind = strGsubind; }
+	string GetIPODate() const { return m_strIPODate; }
+	void SetIPODate(const string& strIPODate) { m_strIPODate = strIPODate; }
+	string GetIsin() const { return m_strIsin; }
+	void SetIsin(const string& strIsin) { m_strIsin = strIsin; }
 	double GetMarketCapitalization() const noexcept { return m_dMarketCapitalization; }
 	void SetMarketCapitalization(double dMarketCapitalization) noexcept { m_dMarketCapitalization = dMarketCapitalization; }
-	CString GetNaics() const { return m_strNaics; }
-	void SetNaics(const CString& strNaics) { m_strNaics = strNaics; }
-	CString GetNaicsNationalIndustry() const { return m_strNaicsNationalIndustry; }
-	void SetNaicsNationalIndustry(const CString& strNaicsNationalIndustry) { m_strNaicsNationalIndustry = strNaicsNationalIndustry; }
-	CString GetNaicsSector() const { return m_strNaicsSector; }
-	void SetNaicsSector(const CString& strNaicsSector) { m_strNaicsSector = strNaicsSector; }
-	CString GetNaicsSubsector() const { return m_strNaicsSubsector; }
-	void SetNaicsSubsector(const CString& strNaicsSubsector) { m_strNaicsSubsector = strNaicsSubsector; }
-	CString GetName() const { return m_strName; }
-	void SetName(const CString& strName) { m_strName = strName; }
-	CString GetPhone() const { return m_strPhone; }
-	void SetPhone(const CString& strPhone) { m_strPhone = strPhone; }
+	string GetNaics() const { return m_strNaics; }
+	void SetNaics(const string& strNaics) { m_strNaics = strNaics; }
+	string GetNaicsNationalIndustry() const { return m_strNaicsNationalIndustry; }
+	void SetNaicsNationalIndustry(const string& strNaicsNationalIndustry) { m_strNaicsNationalIndustry = strNaicsNationalIndustry; }
+	string GetNaicsSector() const { return m_strNaicsSector; }
+	void SetNaicsSector(const string& strNaicsSector) { m_strNaicsSector = strNaicsSector; }
+	string GetNaicsSubsector() const { return m_strNaicsSubsector; }
+	void SetNaicsSubsector(const string& strNaicsSubsector) { m_strNaicsSubsector = strNaicsSubsector; }
+	string GetName() const { return m_strName; }
+	void SetName(const string& strName) { m_strName = strName; }
+	string GetPhone() const { return m_strPhone; }
+	void SetPhone(const string& strPhone) { m_strPhone = strPhone; }
 	double GetShareOutstanding() const noexcept { return m_dShareOutstanding; }
 	void SetShareOutstanding(const double dShareOutstanding) noexcept { m_dShareOutstanding = dShareOutstanding; }
-	CString GetState() const { return m_strState; }
-	void SetState(const CString& strState) { m_strState = strState; }
+	string GetState() const { return m_strState; }
+	void SetState(const string& strState) { m_strState = strState; }
 	string GetTicker() const { return m_strTicker; }
-	void SetTicker(const CString& strTicker) { m_strTicker = strTicker; }
-	CString GetWebURL() const { return m_strWebURL; }
-	void SetWebURL(const CString& strWebURL) { m_strWebURL = strWebURL; }
-	CString GetLogo() const { return m_strLogo; }
-	void SetLogo(const CString& strLogo) { m_strLogo = strLogo; }
-	CString GetFinnhubIndustry() const { return m_strFinnhubIndustry; }
-	void SetFinnhubIndustry(const CString& strFinnhubIndustry) { m_strFinnhubIndustry = strFinnhubIndustry; }
+	void SetTicker(const string& strTicker) { m_strTicker = strTicker; }
+	string GetWebURL() const { return m_strWebURL; }
+	void SetWebURL(const string& strWebURL) { m_strWebURL = strWebURL; }
+	string GetLogo() const { return m_strLogo; }
+	void SetLogo(const string& strLogo) { m_strLogo = strLogo; }
+	string GetFinnhubIndustry() const { return m_strFinnhubIndustry; }
+	void SetFinnhubIndustry(const string& strFinnhubIndustry) { m_strFinnhubIndustry = strFinnhubIndustry; }
 	json GetPeer() { return m_jsonPeer; }
 	void SetPeer(const json& jsonPeer) { m_jsonPeer = jsonPeer; }
 	void SetSECFilings(const CSECFilingsPtr& pv) noexcept { m_pvSECFilings = pv; }
@@ -226,40 +226,40 @@ public:
 
 protected:
 	// Finnhub symbol信息
-	CString m_strType{ _T(" ") };
-	CString m_strSymbol2{ _T(" ") }; // Alternative ticker for exchanges with multiple tickers for 1 stock such as BSE
-	CString m_strMic{ _T(" ") };
-	CString m_strFigi{ _T(" ") }; // FIGI identifier
-	CString m_strShareClassFIGI{ _T(" ") }; // Global Share Class FIGI
-	CString m_strCurrency{ _T(" ") };
+	string m_strType{ _T(" ") };
+	string m_strSymbol2{ _T(" ") }; // Alternative ticker for exchanges with multiple tickers for 1 stock such as BSE
+	string m_strMic{ _T(" ") };
+	string m_strFigi{ _T(" ") }; // FIGI identifier
+	string m_strShareClassFIGI{ _T(" ") }; // Global Share Class FIGI
+	string m_strCurrency{ _T(" ") };
 
 	// Finnhub profile信息
-	CString m_strAddress{ _T(" ") };
-	CString m_strCity{ _T(" ") };
-	CString m_strCountry{ _T(" ") };
-	CString m_strCusip{ _T(" ") };
-	CString m_strSedol{ _T(" ") };
+	string m_strAddress{ _T(" ") };
+	string m_strCity{ _T(" ") };
+	string m_strCountry{ _T(" ") };
+	string m_strCusip{ _T(" ") };
+	string m_strSedol{ _T(" ") };
 	long m_lEmployeeTotal{ 0 };
-	//CString m_strListedExchange{ _T("US") }; // 使用virtualStock中的ExchangeCode
-	CString m_strGgroup{ _T(" ") };
-	CString m_strGind{ _T(" ") };
-	CString m_strGsector{ _T(" ") };
-	CString m_strGsubind{ _T(" ") };
-	CString m_strIPODate{ _T(" ") };
-	CString m_strIsin{ _T(" ") };
+	//string m_strListedExchange{ _T("US") }; // 使用virtualStock中的ExchangeCode
+	string m_strGgroup{ _T(" ") };
+	string m_strGind{ _T(" ") };
+	string m_strGsector{ _T(" ") };
+	string m_strGsubind{ _T(" ") };
+	string m_strIPODate{ _T(" ") };
+	string m_strIsin{ _T(" ") };
 	double m_dMarketCapitalization{ 0 };
-	CString m_strNaics{ _T(" ") };
-	CString m_strNaicsNationalIndustry{ _T(" ") };
-	CString m_strNaicsSector{ _T(" ") };
-	CString m_strNaicsSubsector{ _T(" ") };
-	CString m_strName{ _T(" ") };
-	CString m_strPhone{ _T(" ") };
+	string m_strNaics{ _T(" ") };
+	string m_strNaicsNationalIndustry{ _T(" ") };
+	string m_strNaicsSector{ _T(" ") };
+	string m_strNaicsSubsector{ _T(" ") };
+	string m_strName{ _T(" ") };
+	string m_strPhone{ _T(" ") };
 	double m_dShareOutstanding{ 0 };
-	CString m_strState{ _T(" ") };
+	string m_strState{ _T(" ") };
 	string m_strTicker{ _T(" ") };
-	CString m_strWebURL{ _T(" ") };
-	CString m_strLogo{ _T(" ") };
-	CString m_strFinnhubIndustry{ _T(" ") };
+	string m_strWebURL{ _T(" ") };
+	string m_strLogo{ _T(" ") };
+	string m_strFinnhubIndustry{ _T(" ") };
 	json m_jsonPeer{ json({}) }; // 读取到的Peer数据为json制式
 
 	// 系统生成信息

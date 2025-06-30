@@ -49,7 +49,7 @@ public:
 
 	void SetMarket(const CVirtualMarketPtr& pMarket) noexcept { m_pMarket = pMarket; }
 
-	void SetInquiringExchange(const CString& exchange) noexcept { m_strInquiringExchange = exchange; }
+	void SetInquiringExchange(const string& exchange) noexcept { m_strInquiringExchange = exchange; }
 	string GetInquiringExchange() const noexcept { return m_strInquiringExchange; }
 	bool IsUSMarket() const; // 如果是美国市场
 

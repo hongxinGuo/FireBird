@@ -26,8 +26,7 @@ void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	//检查合法性：只有美国股票代码无须加上交易所后缀。
 	if (!pvStock->empty()) {
 		const auto pStock = pvStock->at(0);
-		CString strExchange = m_strInquiringExchange.c_str();
-		if (IsNeedAddExchangeCode(pStock->GetSymbol(), m_strInquiringExchange) && (strExchange.CompareNoCase(_T("US")) == 0)) {
+		if (IsNeedAddExchangeCode(pStock->GetSymbol(), m_strInquiringExchange) && (m_strInquiringExchange.compare(_T("US")) == 0)) {
 			string s = _T("股票代码格式不符：");
 			s += pStock->GetSymbol();
 			s += _T("  ");

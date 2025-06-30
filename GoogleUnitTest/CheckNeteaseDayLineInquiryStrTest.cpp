@@ -5,7 +5,7 @@
 
 namespace FireBirdTest {
 	struct CheckNeteaseDayLineInquiryStrData {
-		CheckNeteaseDayLineInquiryStrData(int count, const CString& Data) {
+		CheckNeteaseDayLineInquiryStrData(int count, const string& Data) {
 			m_iCount = count;
 			m_strData = Data;
 		}

@@ -119,9 +119,9 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_STREQ(m_pvStock->at(0)->GetSymbol().c_str(), _T("A"));
-			EXPECT_STREQ(m_pvStock->at(0)->GetIsin(), _T("not null")) << "此时内容不为空，需要双引号";
+			EXPECT_STREQ(m_pvStock->at(0)->GetIsin().c_str(), _T("not null")) << "此时内容不为空，需要双引号";
 			EXPECT_STREQ(m_pvStock->at(1)->GetSymbol().c_str(), _T("New Symbol"));
-			EXPECT_STREQ(m_pvStock->at(1)->GetIsin(), _T(" ")) << "当内容为空（null）时，使用默认值“ ”";
+			EXPECT_STREQ(m_pvStock->at(1)->GetIsin().c_str(), _T(" ")) << "当内容为空（null）时，使用默认值“ ”";
 			EXPECT_STREQ(m_pvStock->at(0)->GetExchangeCode().c_str(), _T("US"));
 			EXPECT_EQ(m_pvStock->size(), 2);
 			break;

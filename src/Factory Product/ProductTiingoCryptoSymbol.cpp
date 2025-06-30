@@ -56,9 +56,7 @@ void CProductTiingoCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWebDataPtr& pWebData) {
 	auto pvTiingoCrypto = make_shared<vector<CTiingoCryptoPtr>>();
-	CString strNULL = _T(" ");
 	string s;
-	CString str, strNumber;
 	CTiingoCryptoPtr pTiingoCrypto = nullptr;
 	json js;
 
@@ -70,13 +68,13 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pTiingoCrypto = make_shared<CTiingoCrypto>();
 			s = jsonGetString(it, _T("ticker"));
-			pTiingoCrypto->SetSymbol(s.c_str());
+			pTiingoCrypto->SetSymbol(s);
 			s = jsonGetString(it, _T("name"));
-			if (!s.empty()) pTiingoCrypto->m_strName = s.c_str();
+			if (!s.empty()) pTiingoCrypto->m_strName = s;
 			s = jsonGetString(it, _T("baseCurrency"));
-			if (!s.empty()) pTiingoCrypto->m_strBaseCurrency = s.c_str();
+			if (!s.empty()) pTiingoCrypto->m_strBaseCurrency = s;
 			s = jsonGetString(it, _T("quoteCurrency"));
-			pTiingoCrypto->m_strQuoteCurrency = s.c_str();
+			pTiingoCrypto->m_strQuoteCurrency = s;
 
 			pTiingoCrypto->SetUpdateProfileDB(true); // 所有申请到的股票，皆当成新股票对待，需要存入数据库。
 			pvTiingoCrypto->push_back(pTiingoCrypto);

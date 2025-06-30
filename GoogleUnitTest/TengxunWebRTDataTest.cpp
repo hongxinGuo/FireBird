@@ -106,14 +106,14 @@ namespace FireBirdTest {
 	}
 
 	struct TengxunRTData {
-		TengxunRTData(int count, const CString& Data) {
+		TengxunRTData(int count, const string& Data) {
 			m_iCount = count;
 			m_strData = Data;
 		}
 
 	public:
 		int m_iCount;
-		CString m_strData;
+		string m_strData;
 	};
 
 	// 无错误数据
@@ -206,7 +206,7 @@ namespace FireBirdTest {
 			const TengxunRTData* pData = GetParam();
 			m_pTengxunWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;
-			m_lStringLength = pData->m_strData.GetLength();
+			m_lStringLength = pData->m_strData.length();
 			m_pTengxunWebRTData->Resize(m_lStringLength);
 			for (int i = 0; i < m_lStringLength; i++) {
 				m_pTengxunWebRTData->SetData(i, pData->m_strData[i]);

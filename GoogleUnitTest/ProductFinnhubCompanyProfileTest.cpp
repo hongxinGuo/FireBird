@@ -127,7 +127,7 @@ namespace FireBirdTest {
 			break;
 		case 6: // 缺乏address项
 			EXPECT_STREQ(m_pStock->GetExchangeCode().c_str(), _T("US")) << "交易所代码不使用读取的数据";
-			EXPECT_STRNE(m_pStock->GetCity(), _T("slaughterer")) << "没有赋值此项";
+			EXPECT_STRNE(m_pStock->GetCity().c_str(), _T("slaughterer")) << "没有赋值此项";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
@@ -142,7 +142,7 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_STREQ(m_pStock->GetExchangeCode().c_str(), _T("US")) << "交易所代码不使用读取的数据";
 			EXPECT_STREQ(m_pStock->GetTicker().c_str(), _T("AAPL"));
-			EXPECT_STREQ(m_pStock->GetCity(), _T("slaughterer"));
+			EXPECT_STREQ(m_pStock->GetCity().c_str(), _T("slaughterer"));
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());

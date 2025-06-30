@@ -73,7 +73,6 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB() {
 
 bool CContainerTiingoFundamentalDefinition::LoadDB() {
 	CSetTiingoFundamentalDefinition setTiingoFundamentalDefinition;
-	CString strSymbol = _T("");
 
 	m_vTiingoFundamentalDefinition.clear();
 	m_mapTiingoFundamentalDefinition.clear();

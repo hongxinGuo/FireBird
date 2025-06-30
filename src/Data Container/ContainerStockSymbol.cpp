@@ -85,7 +85,7 @@ void CContainerStockSymbol::LoadStockSectionDB() const {
 			m_vStockSection.at(setStockSection.m_IndexNumber)->SetActive(setStockSection.m_Active);
 			m_vStockSection.at(setStockSection.m_IndexNumber)->SetMarket(setStockSection.m_Market);
 			m_vStockSection.at(setStockSection.m_IndexNumber)->SetIndexNumber(setStockSection.m_IndexNumber);
-			m_vStockSection.at(setStockSection.m_IndexNumber)->SetComment(setStockSection.m_Comment);
+			m_vStockSection.at(setStockSection.m_IndexNumber)->SetComment(setStockSection.m_Comment.GetString());
 		}
 		setStockSection.MoveNext();
 	}
@@ -106,7 +106,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 			setStockSection.m_Active = pStockSection->IsActive();
 			setStockSection.m_Market = pStockSection->GetMarket();
 			setStockSection.m_IndexNumber = pStockSection->GetIndexNumber();
-			setStockSection.m_Comment = pStockSection->GetComment();
+			setStockSection.m_Comment = pStockSection->GetComment().c_str();
 			setStockSection.Update();
 		}
 	}
@@ -117,7 +117,7 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 				setStockSection.m_Active = m_vStockSection.at(setStockSection.m_ID)->IsActive();
 				setStockSection.m_Market = m_vStockSection.at(setStockSection.m_ID)->GetMarket();
 				setStockSection.m_IndexNumber = m_vStockSection.at(setStockSection.m_ID)->GetIndexNumber();
-				setStockSection.m_Comment = m_vStockSection.at(setStockSection.m_ID)->GetComment();
+				setStockSection.m_Comment = m_vStockSection.at(setStockSection.m_ID)->GetComment().c_str();
 				setStockSection.Update();
 			}
 			setStockSection.MoveNext();
@@ -131,7 +131,6 @@ void CContainerStockSymbol::UpdateStockSectionDB() {
 
 void CContainerStockSymbol::CreateStockSection(const string& strFirstStockCode) {
 	string strCode = GetStockSymbol(strFirstStockCode);
-	CString str = _T("");
 	const int iCode = atoi(strCode.c_str());
 	int iMarket = 0;
 	CChinaStockPtr pStock = nullptr;

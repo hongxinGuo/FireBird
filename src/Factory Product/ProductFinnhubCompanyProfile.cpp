@@ -14,7 +14,6 @@ CProductFinnhubCompanyProfile::CProductFinnhubCompanyProfile() {
 }
 
 string CProductFinnhubCompanyProfile::CreateMessage() {
-	CString strMessage;
 	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();

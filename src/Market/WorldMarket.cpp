@@ -32,7 +32,7 @@ CWorldMarket::CWorldMarket() {
 	}
 
 	m_strMarketId = _T("US");
-	m_exchange = gl_dataContainerStockExchange.GetExchange(m_strMarketId.GetString());
+	m_exchange = gl_dataContainerStockExchange.GetExchange(m_strMarketId);
 	ASSERT(m_exchange != nullptr);
 	m_strLocalMarketTimeZone = _T("America/New_York");
 	GetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 美国股市使用美东标准时间, 美国股市开市时间为九点三十分
@@ -410,7 +410,6 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
-	CString str;
 	bool fUpdated = false;
 	CFinnhubCryptoPtr pSymbol = nullptr;
 	const size_t symbolSize = gl_dataFinnhubCryptoSymbol.Size();
@@ -541,7 +540,6 @@ void CWorldMarket::TaskPerSecond(long lCurrentTime) {
 }
 
 bool CWorldMarket::UpdateEPSSurpriseDB() {
-	CString str;
 	const size_t stockSize = gl_dataContainerFinnhubStock.Size();
 
 	CFinnhubStockPtr pStock = nullptr;
@@ -557,7 +555,6 @@ bool CWorldMarket::UpdateEPSSurpriseDB() {
 }
 
 void CWorldMarket::UpdateSECFilingsDB() {
-	CString str;
 	const size_t stockSize = gl_dataContainerFinnhubStock.Size();
 
 	CFinnhubStockPtr pStock = nullptr;
@@ -917,12 +914,12 @@ void CWorldMarket::RebuildStockDayLineDB() {
 
 void CWorldMarket::UpdateStockDayLineStartEndDate() {
 	try {
-		const CString strFilterPrefix = _T("[Symbol] = '");
+		const string strFilterPrefix = _T("[Symbol] = '");
 		CSetFinnhubStockDayLine setFinnhubStockDayLine;
 
 		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			const auto pStock = gl_dataContainerFinnhubStock.GetStock(l);
-			setFinnhubStockDayLine.m_strFilter = strFilterPrefix + pStock->GetSymbol().c_str() + _T("'");
+			setFinnhubStockDayLine.m_strFilter = (strFilterPrefix + pStock->GetSymbol() + _T("'")).c_str();
 			setFinnhubStockDayLine.m_strSort = _T("[Date]");
 			setFinnhubStockDayLine.Open();
 			if (!setFinnhubStockDayLine.IsEOF()) {

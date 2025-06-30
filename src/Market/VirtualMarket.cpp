@@ -311,8 +311,8 @@ void CVirtualMarket::GetMarketTimeStruct(tm* tm_, time_t tUTC) const {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CVirtualMarket::GetMarketLocalTimeOffset(CString strLocalNameOfMarket) {
-	m_tzMarket = chrono::locate_zone(strLocalNameOfMarket.GetBuffer());
+void CVirtualMarket::GetMarketLocalTimeOffset(string strLocalNameOfMarket) {
+	m_tzMarket = chrono::locate_zone(strLocalNameOfMarket);
 	m_marketSystemInformation = m_tzMarket->get_info(chrono::sys_seconds());
 	m_TimeZoneOffset = m_marketSystemInformation.offset;
 	m_lTimeZone = m_TimeZoneOffset.count();

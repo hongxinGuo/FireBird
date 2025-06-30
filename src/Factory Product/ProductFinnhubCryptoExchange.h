@@ -10,7 +10,7 @@ public:
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
-	shared_ptr<vector<CString>> ParseFinnhubCryptoExchange(const CWebDataPtr& pWebData);
+	shared_ptr<vector<string>> ParseFinnhubCryptoExchange(const CWebDataPtr& pWebData);
 	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
 };
 

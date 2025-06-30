@@ -67,7 +67,6 @@ CTiingoFundamentalDefinitionsPtr CProductTiingoFundamentalDefinition::ParseTiing
 		const simdjson::padded_string jsonPadded(svJson);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 
-		CString str;
 		int iCount = 0;
 		for (auto item : doc) {
 			auto itemValue = item.value();

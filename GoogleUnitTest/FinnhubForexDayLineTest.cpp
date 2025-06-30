@@ -212,7 +212,6 @@ namespace FireBirdTest {
 		                         &finnhubForexCandle66, &finnhubForexCandle67, &finnhubForexCandle68, &finnhubForexCandle69, &finnhubForexCandle70));
 
 	TEST_P(ProcessFinnhubForexCandleTest, TestParseFinnhubForexCandle) {
-		CString strMessage;
 		CForexSymbolPtr pForex = gl_dataFinnhubForexSymbol.GetSymbol(0);
 
 		m_finnhubForexDayLine.ParseAndStoreWebData(m_pWebData);

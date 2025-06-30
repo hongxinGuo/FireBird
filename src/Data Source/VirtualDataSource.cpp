@@ -56,7 +56,6 @@ void CVirtualDataSource::Run(long lMarketTime) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 void CVirtualDataSource::InquireData() {
-	CString str = typeid(*this).name();
 	ASSERT(gl_systemConfiguration.IsWorkingMode()); // ≤ª‘ –Ì≤‚ ‘
 	ASSERT(IsInquiring());
 

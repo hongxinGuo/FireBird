@@ -28,14 +28,12 @@ void CInsiderTransaction::Update(CSetInsiderTransaction& setInsiderTransaction) 
 
 void CInsiderTransaction::Save(CSetInsiderTransaction& setInsiderTransaction) const {
 	setInsiderTransaction.m_Symbol = m_strSymbol.c_str();
-	CString strTemp = m_strPersonName.c_str();
-	setInsiderTransaction.m_PersonName = strTemp.Left(100); // 人名最多100个字符
+	setInsiderTransaction.m_PersonName = m_strPersonName.substr(0, 100).c_str(); // 人名最多100个字符
 	setInsiderTransaction.m_Share = ConvertValueToString(m_lShare); // 交易股数有可能超过int的范围，故而使用INT64。
 	setInsiderTransaction.m_Change = ConvertValueToString(m_lChange);// 交易股数有可能超过int的范围，故而使用INT64。
 	setInsiderTransaction.m_FilingDate = m_lFilingDate;
 	setInsiderTransaction.m_TransactionDate = m_lTransactionDate;
-	strTemp = m_strTransactionCode.c_str();
-	setInsiderTransaction.m_TransactionCode = strTemp.Left(4); // 交易代码最多4个字符
+	setInsiderTransaction.m_TransactionCode = m_strTransactionCode.substr(0, 4).c_str(); // 交易代码最多4个字符
 	setInsiderTransaction.m_TransactionPrice = m_dTransactionPrice;
 }
 

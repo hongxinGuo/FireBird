@@ -459,7 +459,7 @@ namespace FireBirdTest {
 		CChinaStock stock;
 		constexpr long lDate = 21091101;
 		const time_t tt = ConvertToTTime(lDate, gl_pChinaMarket->GetTimeZone(), 150000);
-		const CString strDate = _T("21091101"); // 最好设置此日期为未来，以防止误操作实际数据库
+		const string strDate = _T("21091101"); // 最好设置此日期为未来，以防止误操作实际数据库
 
 		stock.SetSymbol(_T("600000.SS"));
 		stock.SetDisplaySymbol("浦东发展");
@@ -479,7 +479,7 @@ namespace FireBirdTest {
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 
 		setDayLineBasicInfo.m_strFilter = _T("[Date] =");
-		setDayLineBasicInfo.m_strFilter += strDate;
+		setDayLineBasicInfo.m_strFilter += strDate.c_str();
 		setDayLineBasicInfo.Open();
 		setDayLineBasicInfo.m_pDatabase->BeginTrans();
 		while (!setDayLineBasicInfo.IsEOF()) {

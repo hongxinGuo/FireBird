@@ -131,7 +131,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 3: // 缺乏address项
-			EXPECT_STRNE(m_pStock->GetCountry(), _T("US")) << "没有赋值此项";
+			EXPECT_STRNE(m_pStock->GetCountry().c_str(), _T("US")) << "没有赋值此项";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNews());
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());

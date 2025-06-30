@@ -35,7 +35,6 @@ bool CDayLineWebData::ProcessNeteaseDayLineData() {
 	string_view svData = GetCurrentNeteaseData(); // 读过前缀
 	if (m_lCurrentPos >= m_sDataBuffer.size())return false;// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
 
-	CString strTemp;
 	CDayLinePtr pCurrentDayLine = nullptr;
 	while (m_lCurrentPos < m_sDataBuffer.size()) {	// 处理一条日线数据
 		svData = GetCurrentNeteaseData();

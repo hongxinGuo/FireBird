@@ -21,7 +21,7 @@ public:
 	void CreateCurrentInquireString() override;
 	void UpdateStatus(CWebDataPtr pData) override; // 成功接收后更新系统状态, 此处更新其股票代码
 
-	void SetDownLoadingStockCode(const CString& strStockCode);
+	void SetDownLoadingStockCode(const string& strStockCode);
 	string GetDownLoadingStockCode() { return m_strDownLoadingStockCode; }
 	void ResetDownLoadingStockCode() { m_strDownLoadingStockCode = _T(""); }
 
