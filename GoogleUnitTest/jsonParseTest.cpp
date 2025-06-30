@@ -68,7 +68,7 @@ namespace FireBirdTest {
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann4) {
 		json js;
-		CString s = _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}");
+		string s = _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}");
 		EXPECT_TRUE(CreateJsonWithNlohmann(js, s));
 		const string sSubscribe = js.at((_T("eventName")));
 		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
@@ -79,7 +79,7 @@ namespace FireBirdTest {
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann5) {
 		json js;
-		CString s = _T("NoUse{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}NoUseToo");
+		string s = _T("NoUse{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}NoUseToo");
 		EXPECT_TRUE(CreateJsonWithNlohmann(js, s, 5, 8)); // 排除前面的NoUse和后面的NoUseToo
 		const string sSubscribe = js.at((_T("eventName")));
 		EXPECT_STREQ(sSubscribe.c_str(), _T("subscribe"));
@@ -87,7 +87,7 @@ namespace FireBirdTest {
 
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann6) {
 		json js;
-		CString s = _T("NoUse{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}NoUseToo");
+		string s = _T("NoUse{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}NoUseToo");
 
 		EXPECT_FALSE(CreateJsonWithNlohmann(js, s, 0, 0)); // 排除前面的NoUse和后面的NoUseToo
 

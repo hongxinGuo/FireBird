@@ -87,14 +87,14 @@ namespace FireBirdTest {
 	}
 
 	struct NeteaseRTData {
-		NeteaseRTData(int count, const CString& Data) {
+		NeteaseRTData(int count, const string& Data) {
 			m_iCount = count;
 			m_strData = Data;
 		}
 
 	public:
 		int m_iCount;
-		CString m_strData;
+		string m_strData;
 	};
 
 	// ÎŞ´íÎóÊı¾İ
@@ -117,7 +117,7 @@ namespace FireBirdTest {
 			const NeteaseRTData* pData = GetParam();
 			m_pNeteaseWebRTData = make_shared<CWebData>();
 			m_iCount = pData->m_iCount;
-			m_lStringLength = pData->m_strData.GetLength();
+			m_lStringLength = pData->m_strData.length();
 			m_pNeteaseWebRTData->Resize(m_lStringLength);
 			for (int i = 0; i < m_lStringLength; i++) {
 				m_pNeteaseWebRTData->SetData(i, pData->m_strData[i]);

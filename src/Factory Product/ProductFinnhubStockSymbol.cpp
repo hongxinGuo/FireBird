@@ -26,7 +26,7 @@ void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	//检查合法性：只有美国股票代码无须加上交易所后缀。
 	if (!pvStock->empty()) {
 		const auto pStock = pvStock->at(0);
-		if (IsNeedAddExchangeCode(pStock->GetSymbol(), m_strInquiringExchange) && (m_strInquiringExchange.compare(_T("US")) == 0)) {
+		if (IsBadStockSymbol(pStock->GetSymbol(), m_strInquiringExchange)) {
 			string s = _T("股票代码格式不符：");
 			s += pStock->GetSymbol();
 			s += _T("  ");
@@ -43,18 +43,17 @@ void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	}
 }
 
-bool CProductFinnhubStockSymbol::IsNeedAddExchangeCode(const string& strStockSymbol, const string& strExchangeCode) {
+bool CProductFinnhubStockSymbol::IsBadStockSymbol(const string& strStockSymbol, const string& strExchangeCode) {
 	if (strExchangeCode.compare(_T("US")) == 0) return false; // 美国股票无需掭加交易所代码
 	if (strStockSymbol.length() <= strExchangeCode.length()) return true; // 股票代码长度不大于交易所代码长度时，需要掭加。
 
 	const int iLength = strExchangeCode.length();
 	const int iSymbolLength = strStockSymbol.length();
 	const string strRight = strStockSymbol.substr(strStockSymbol.length() - iLength, iLength);
-	CString strRight2 = strRight.c_str();
-	if ((strRight2.CompareNoCase(strExchangeCode.c_str()) == 0) && (strStockSymbol.at(iSymbolLength - iLength - 1) == '.')) {
-		return true;
+	if ((strRight.compare(strExchangeCode) == 0) && (strStockSymbol.at(iSymbolLength - iLength - 1) == '.')) {
+		return false;
 	}
-	return false;
+	return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

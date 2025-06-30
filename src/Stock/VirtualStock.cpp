@@ -13,8 +13,8 @@ void CVirtualStock::ResetAllUpdateDate() {
 	m_jsonUpdateDate[_T("DayLineEndDate")] = 19800101;
 }
 
-void CVirtualStock::LoadUpdateDate(CString& strUpdateDate) {
-	if (strUpdateDate.GetLength() < 10) {
+void CVirtualStock::LoadUpdateDate(string strUpdateDate) {
+	if (strUpdateDate.length() < 10) {
 		ResetAllUpdateDate();
 	}
 	else {
@@ -35,7 +35,7 @@ void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	m_strExchangeCode = setStockSymbol.m_Exchange;
 	m_strSymbol = setStockSymbol.m_Symbol;
 	m_lIPOStatus = setStockSymbol.m_IPOStatus;
-	LoadUpdateDate(setStockSymbol.m_UpdateDate);
+	LoadUpdateDate(setStockSymbol.m_UpdateDate.GetString());
 }
 
 void CVirtualStock::AppendSymbol(CVirtualSetStockSymbol& setStockSymbol) {

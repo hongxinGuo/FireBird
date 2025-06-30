@@ -12,7 +12,7 @@ void CTiingoCrypto::Load(CSetTiingoCrypto& setTiingoCrypto) {
 	m_strBaseCurrency = setTiingoCrypto.m_BaseCurrency;
 	m_strQuoteCurrency = setTiingoCrypto.m_QuoteCurrency;
 
-	LoadUpdateDate(setTiingoCrypto.m_UpdateDate);
+	LoadUpdateDate(setTiingoCrypto.m_UpdateDate.GetString());
 }
 
 void CTiingoCrypto::Append(CSetTiingoCrypto& setTiingoCrypto) {

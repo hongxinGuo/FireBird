@@ -495,15 +495,15 @@ namespace FireBirdTest {
 	}
 
 	struct strConvertBufferToTime {
-		strConvertBufferToTime(const CString& strFormat, const CString& strBuffer, const INT64 iTime) {
+		strConvertBufferToTime(const string& strFormat, const string& strBuffer, const INT64 iTime) {
 			m_strFormat = strFormat;
 			m_strBuffer = strBuffer;
 			m_Time = iTime;
 		}
 
 	public:
-		CString m_strFormat;
-		CString m_strBuffer;
+		string m_strFormat;
+		string m_strBuffer;
 		INT64 m_Time;
 	};
 }

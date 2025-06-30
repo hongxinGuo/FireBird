@@ -81,11 +81,11 @@ void CFinnhubStock::Load(CSetFinnhubStock& setFinnhubStock) {
 	m_strLogo = setFinnhubStock.m_Logo;
 	m_strFinnhubIndustry = setFinnhubStock.m_FinnhubIndustry;
 	if (setFinnhubStock.m_Peer.GetLength() > 2) {
-		CreateJsonWithNlohmann(m_jsonPeer, setFinnhubStock.m_Peer);
+		CreateJsonWithNlohmann(m_jsonPeer, setFinnhubStock.m_Peer.GetString());
 	}
 	m_lIPOStatus = setFinnhubStock.m_IPOStatus;
 
-	LoadUpdateDate(setFinnhubStock.m_UpdateDate);
+	LoadUpdateDate(setFinnhubStock.m_UpdateDate.GetString());
 }
 
 void CFinnhubStock::CheckUpdateStatus(long lTodayDate) {

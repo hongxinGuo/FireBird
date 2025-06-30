@@ -10,14 +10,14 @@
 
 namespace FireBirdTest {
 	struct NetEaseDayLineData {
-		NetEaseDayLineData(int count, const CString& Data) {
+		NetEaseDayLineData(int count, const string& Data) {
 			m_iCount = count;
 			m_strData = Data;
 		}
 
 	public:
 		int m_iCount;
-		CString m_strData;
+		string m_strData;
 	};
 
 	NetEaseDayLineData Data1(1, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
@@ -49,13 +49,13 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const NetEaseDayLineData* pData = GetParam();
 			m_iCount = pData->m_iCount;
-			const long lLength = pData->m_strData.GetLength();
+			const long lLength = pData->m_strData.length();
 			m_pData.resize(lLength);
 			for (int i = 0; i < lLength; i++) {
-				m_pData.at(i) = pData->m_strData.GetAt(i);
+				m_pData.at(i) = pData->m_strData.at(i);
 			}
 			m_lCountPos = 0;
-			svData = pData->m_strData.GetString();
+			svData = pData->m_strData;
 
 			m_DayLine.SetAmount(-1);
 			m_DayLine.SetVolume(-1);
@@ -78,7 +78,7 @@ namespace FireBirdTest {
 			m_DayLinePtr->SetCurrentValue(-1);
 
 			pWebData = make_shared<CWebData>();
-			pWebData->Test_SetBuffer_(pData->m_strData.GetString());
+			pWebData->Test_SetBuffer_(pData->m_strData);
 			pDownLoadedDayLine = make_shared<CDayLineWebData>();
 			pDownLoadedDayLine->TransferWebDataToBuffer(pWebData);
 			pDownLoadedDayLine->SetStockCode(_T("600000.SS"));
@@ -165,14 +165,14 @@ namespace FireBirdTest {
 	}
 
 	struct ReadDayLineOneValueData {
-		ReadDayLineOneValueData(int count, const CString& Data) {
+		ReadDayLineOneValueData(int count, const string& Data) {
 			m_iCount = count;
 			m_strData = Data;
 		}
 
 	public:
 		int m_iCount;
-		CString m_strData;
+		string m_strData;
 	};
 
 	// 成功
@@ -203,7 +203,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const ReadDayLineOneValueData* pData = GetParam();
 			m_iCount = pData->m_iCount;
-			const long lLength = pData->m_strData.GetLength();
+			const long lLength = pData->m_strData.length();
 			m_pData.resize(lLength);
 			for (int i = 0; i < lLength; i++) {
 				m_pData[i] = pData->m_strData[i];
@@ -231,23 +231,23 @@ namespace FireBirdTest {
 	TEST_P(ReadDayLineOneValueTest2, TestReadOneValue3) {
 		char buffer[30];
 		bool fSucceed = NeteaseData.ReadOneValueOfNeteaseDayLine(m_pData, buffer, m_lCountPos);
-		CString str;
+		string str;
 		str = buffer;
 		switch (m_iCount) {
 		case 1:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(m_lCountPos, 7);
-			EXPECT_STREQ(str, _T("11.050"));
+			EXPECT_STREQ(str.c_str(), _T("11.050"));
 			break;
 		case 2:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(m_lCountPos, 6);
-			EXPECT_STREQ(str, _T("11.05"));
+			EXPECT_STREQ(str.c_str(), _T("11.05"));
 			break;
 		case 3:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(m_lCountPos, 5);
-			EXPECT_STREQ(str, _T("11.0"));
+			EXPECT_STREQ(str.c_str(), _T("11.0"));
 			break;
 		case 4:
 			EXPECT_FALSE(fSucceed);
@@ -261,18 +261,18 @@ namespace FireBirdTest {
 		case 7:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(m_lCountPos, 10);
-			EXPECT_STREQ(str, _T("11.050000"));
+			EXPECT_STREQ(str.c_str(), _T("11.050000"));
 			break;
 		case 8:
 			EXPECT_FALSE(fSucceed);
 			break;
 		case 9:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(str, _T("技术领先"));
+			EXPECT_STREQ(str.c_str(), _T("技术领先"));
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(str, _T("none"));
+			EXPECT_STREQ(str.c_str(), _T("none"));
 			break;
 		default:
 			break;

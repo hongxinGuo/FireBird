@@ -68,17 +68,17 @@ namespace FireBirdTest {
 
 	TEST_F(CTengxunRTDataSourceTest, TestIsTengxunRTDataInValid) {
 		const CWebDataPtr pWebDataReceived = make_shared<CWebData>();
-		CString str = _T("v_pv_none_match=\"1\";\n");
-		pWebDataReceived->Resize(str.GetLength());
-		pWebDataReceived->SetData(str.GetBuffer(), str.GetLength());
+		string str = _T("v_pv_none_match=\"1\";\n");
+		pWebDataReceived->Resize(str.length());
+		pWebDataReceived->SetData(str.c_str(), str.length());
 		pWebDataReceived->ResetCurrentPos();
 
 		EXPECT_TRUE(tengxunRTDataSource.IsInvalidTengxunRTData(*pWebDataReceived));
 		EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
 
 		str = _T("v_pv_none_mtch=\"1\";\n");
-		pWebDataReceived->Resize(str.GetLength());
-		pWebDataReceived->SetData(str.GetBuffer(), str.GetLength());
+		pWebDataReceived->Resize(str.length());
+		pWebDataReceived->SetData(str.c_str(), str.length());
 		pWebDataReceived->ResetCurrentPos();
 
 		EXPECT_FALSE(tengxunRTDataSource.IsInvalidTengxunRTData(*pWebDataReceived));

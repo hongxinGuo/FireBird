@@ -372,16 +372,17 @@ bool CreateJsonWithNlohmann(json& js, const std::string& s, const long lBeginPos
 	return true;
 }
 
-bool CreateJsonWithNlohmann(json& js, CString& str, const long lBeginPos, const long lEndPos) {
-	const string s = str.GetBuffer();
+/*
+bool CreateJsonWithNlohmann(json& js, string& str, const long lBeginPos, const long lEndPos) {
 	try {
-		js = json::parse(s.begin() + lBeginPos, s.end() - lEndPos);
+		js = json::parse(str.begin() + lBeginPos, str.end() - lEndPos);
 	} catch (json::parse_error&) {
 		js.clear();
 		return false;
 	}
 	return true;
 }
+*/
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //

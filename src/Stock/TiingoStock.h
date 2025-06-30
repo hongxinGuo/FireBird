@@ -125,7 +125,7 @@ public:
 
 public:
 	string m_strTiingoPermaTicker{ _T("") }; // Tiingo永久代码标识
-	//CString m_strTicker; // 这个使用VirtualStock中的m_strSymbol来代替。
+	//string m_strTicker; // 这个使用VirtualStock中的m_strSymbol来代替。
 	string m_strName{ _T("") };
 	// bool m_fIsActive{ false }; // 这个使用VirtualStock中的m_fActive来代替
 	double m_fDividend{ 0 };

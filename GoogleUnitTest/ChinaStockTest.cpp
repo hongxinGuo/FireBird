@@ -1125,7 +1125,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsIPOed());
 		EXPECT_STREQ(stock.GetSymbol().c_str(), _T("000001.SS")) << "第一个股票";
-		CreateJsonWithNlohmann(jsonUpdateDate, setChinaStockSymbol.m_UpdateDate);
+		CreateJsonWithNlohmann(jsonUpdateDate, setChinaStockSymbol.m_UpdateDate.GetString());
 
 		EXPECT_EQ(stock.GetDayLineStartDate(), jsonUpdateDate[_T("DayLineStartDate")]);
 		EXPECT_EQ(stock.GetDayLineEndDate(), jsonUpdateDate[_T("DayLineEndDate")]);
@@ -1147,7 +1147,7 @@ namespace FireBirdTest {
 		stock.LoadStockCodeDB(setChinaStockSymbol);
 		EXPECT_STREQ(stock.GetSymbol().c_str(), _T("000003.SZ"));
 		EXPECT_EQ(stock.GetIPOStatus(), setChinaStockSymbol.m_IPOStatus);
-		CreateJsonWithNlohmann(jsonUpdateDate, setChinaStockSymbol.m_UpdateDate);
+		CreateJsonWithNlohmann(jsonUpdateDate, setChinaStockSymbol.m_UpdateDate.GetString());
 
 		//todo EXPECT_EQ(stock.GetDayLineStartDate(), jsonUpdateDate[_T("DayLineStartDate")]);
 		//todo EXPECT_EQ(stock.GetDayLineEndDate(), GetPrevDay(gl_pChinaMarket->GetMarketDate(), 31));
@@ -2225,7 +2225,7 @@ namespace FireBirdTest {
 		stock.SetSymbol(_T("600008.SS"));
 		stock.ReportDayLineDownLoaded();
 		//EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
-		//CString str = gl_systemMessage.PopDayLineInfoMessage();
+		//string str = gl_systemMessage.PopDayLineInfoMessage();
 		//EXPECT_STREQ(str, _T("sh600008日线下载完成."));
 	}
 

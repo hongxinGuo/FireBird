@@ -145,16 +145,16 @@ namespace FireBirdTest {
 	TEST_F(CWeekLineTest, TestGetTotalValue) {
 		CWeekLine dl;
 		EXPECT_EQ(dl.GetTotalValue(), 0);
-		CString str = _T("3.13e+11");
-		dl.SetTotalValue(str.GetBuffer());
+		string str = _T("3.13e+11");
+		dl.SetTotalValue(str.c_str());
 		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetTotalValue()), 3.13e+11);
 	}
 
 	TEST_F(CWeekLineTest, TestGetCurrentValue) {
 		CWeekLine dl;
 		EXPECT_EQ(dl.GetCurrentValue(), 0);
-		CString str = _T("3.15e+11");
-		dl.SetCurrentValue(str.GetBuffer());
+		string str = _T("3.15e+11");
+		dl.SetCurrentValue(str.c_str());
 		EXPECT_DOUBLE_EQ(static_cast<double>(dl.GetCurrentValue()), 3.15e+11);
 	}
 

@@ -55,7 +55,7 @@ public:
 	bool Choice10RSStrong1StockSet();
 	bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex);
 
-	[[nodiscard]] static double GetUpDownRate(const CString& strClose, const CString& strLastClose) noexcept;
+	[[nodiscard]] static double GetUpDownRate(const string& strClose, const string& strLastClose) noexcept;
 
 private:
 	static void DeleteDayLineBasicInfo(long lDate);

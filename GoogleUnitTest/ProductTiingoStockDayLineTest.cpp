@@ -141,7 +141,6 @@ namespace FireBirdTest {
 
 	TEST_P(ParseTiingoStockDayLineTest, TestParseTiingoStockDayLine0) {
 		CTiingoDayLinesPtr pvDayLine;
-		CString strMessage;
 		CTiingoDayLinePtr pDayLine;
 
 		pvDayLine = m_tiingoStockPriceCandle.ParseTiingoStockDayLine(m_pWebData);
@@ -234,7 +233,6 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessTiingoStockDayLineTest, TestProcessTiingoStockDayLine) {
 		CDayLinesPtr pvDayLine;
-		CString strMessage;
 		CDayLinePtr pDayLine;
 		CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(0); // 这个是当前处理的股票
 

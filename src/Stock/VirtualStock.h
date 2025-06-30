@@ -21,7 +21,7 @@ public:
 	virtual void ResetAllUpdateDate();
 	virtual int GetRatio() const = 0;
 
-	void LoadUpdateDate(CString& strUpdateDate);
+	void LoadUpdateDate(string strUpdateDate);
 	virtual void LoadSymbol(CVirtualSetStockSymbol& setStockSymbol);
 	virtual void AppendSymbol(CVirtualSetStockSymbol& setStockSymbol);
 	virtual void UpdateSymbol(CVirtualSetStockSymbol& setStockSymbol);

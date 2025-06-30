@@ -26,7 +26,7 @@ namespace FireBirdTest {
 	};
 
 	struct TiingoWebSocketData {
-		TiingoWebSocketData(const long lIndex, const CString& strSymbol, const CString& strData) {
+		TiingoWebSocketData(const long lIndex, const string& strSymbol, const string& strData) {
 			m_lIndex = lIndex;
 			m_strSymbol = strSymbol;
 			m_pData = strData;
@@ -36,7 +36,7 @@ namespace FireBirdTest {
 
 	public:
 		long m_lIndex;
-		CString m_strSymbol;
+		string m_strSymbol;
 		string m_pData;
 	};
 

@@ -182,7 +182,7 @@ void CChinaStock::UpdateStatusByDownloadedDayLine() {
 }
 
 void CChinaStock::ReportDayLineDownLoaded() {
-	//CString strTemp = GetSymbol();
+	//string strTemp = GetSymbol();
 	//strTemp += _T("日线下载完成.");
 	//gl_systemMessage.PushDayLineInfoMessage(strTemp);
 }

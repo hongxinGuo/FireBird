@@ -636,10 +636,10 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 	int iStockNumber = 0;
 	while (!setDayLineBasicInfo.IsEOF()) {
 		if (strcmp(setDayLineBasicInfo.m_Symbol, _T("sh000001")) == 0) {	// 上海综指
-			dShanghaiIndexUpDownRate = GetUpDownRate(setDayLineBasicInfo.m_Close, setDayLineBasicInfo.m_LastClose);
+			dShanghaiIndexUpDownRate = GetUpDownRate(setDayLineBasicInfo.m_Close.GetString(), setDayLineBasicInfo.m_LastClose.GetString());
 		}
 		else if (strcmp(setDayLineBasicInfo.m_Symbol, _T("sz399001")) == 0) {	// 深圳成指
-			dShenzhenIndexUpDownRate = GetUpDownRate(setDayLineBasicInfo.m_Close, setDayLineBasicInfo.m_LastClose);
+			dShenzhenIndexUpDownRate = GetUpDownRate(setDayLineBasicInfo.m_Close.GetString(), setDayLineBasicInfo.m_LastClose.GetString());
 		}
 		if (IsShareA(setDayLineBasicInfo.m_Symbol.GetString())) {
 			const auto lIndex = m_mapSymbol.at(setDayLineBasicInfo.m_Symbol.GetString());
@@ -740,10 +740,10 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 	int iStockNumber = 0;
 	while (!setWeekLineBasicInfo.IsEOF()) {
 		if (strcmp(setWeekLineBasicInfo.m_Symbol, _T("sh000001")) == 0) {	// 上海综指
-			dShanghaiIndexUpDownRate = GetUpDownRate(setWeekLineBasicInfo.m_Close, setWeekLineBasicInfo.m_LastClose);
+			dShanghaiIndexUpDownRate = GetUpDownRate(setWeekLineBasicInfo.m_Close.GetString(), setWeekLineBasicInfo.m_LastClose.GetString());
 		}
 		else if (strcmp(setWeekLineBasicInfo.m_Symbol, _T("sz399001")) == 0) {	// 深圳成指
-			dShenzhenIndexUpDownRate = GetUpDownRate(setWeekLineBasicInfo.m_Close, setWeekLineBasicInfo.m_LastClose);
+			dShenzhenIndexUpDownRate = GetUpDownRate(setWeekLineBasicInfo.m_Close.GetString(), setWeekLineBasicInfo.m_LastClose.GetString());
 		}
 		if (IsShareA(setWeekLineBasicInfo.m_Symbol.GetString())) {
 			const auto lIndex = m_mapSymbol.at(setWeekLineBasicInfo.m_Symbol.GetString());
@@ -798,11 +798,11 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 	return (true);
 }
 
-double CContainerChinaStock::GetUpDownRate(const CString& strClose, const CString& strLastClose) noexcept {
+double CContainerChinaStock::GetUpDownRate(const string& strClose, const string& strLastClose) noexcept {
 	char* p;
-	const double lastClose = strtod(strLastClose, &p);
+	const double lastClose = strtod(strLastClose.c_str(), &p);
 	if (lastClose < 0.001) return 0;
-	double result = (strtod(strClose, &p) - lastClose) / lastClose;
+	double result = (strtod(strClose.c_str(), &p) - lastClose) / lastClose;
 	if ((result > 0.11) || (result < -0.11)) result = 0;
 	return result;
 }

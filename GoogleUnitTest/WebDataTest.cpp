@@ -130,25 +130,25 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWebDataTest, TestGetData4) {
-		CString strTest = "abcdefg";
+		string strTest = "abcdefg";
 		webData.SetCurrentPos(0);
-		EXPECT_TRUE(webData.SetData(strTest.GetBuffer(), strTest.GetLength()));
+		EXPECT_TRUE(webData.SetData(strTest.c_str(), strTest.length()));
 		char buffer[8];
 		EXPECT_TRUE(webData.GetData(buffer, 7));
 		buffer[7] = 0x000;
-		CString strTest2 = buffer;
-		EXPECT_STREQ(strTest, strTest2);
+		string strTest2 = buffer;
+		EXPECT_STREQ(strTest.c_str(), strTest2.c_str());
 
 		webData.SetCurrentPos(1000);
-		EXPECT_TRUE(webData.SetData(strTest.GetBuffer(), strTest.GetLength()));
+		EXPECT_TRUE(webData.SetData(strTest.c_str(), strTest.length()));
 		EXPECT_TRUE(webData.GetData(buffer, 7));
 		buffer[7] = 0x000;
 		strTest2 = buffer;
-		EXPECT_STREQ(strTest, strTest2);
+		EXPECT_STREQ(strTest.c_str(), strTest2.c_str());
 
 		webData.Resize(6);
 		webData.SetCurrentPos(0);
-		EXPECT_FALSE(webData.SetData(strTest.GetBuffer(), strTest.GetLength())) << "数据容器长度为6个字节，但需要存储七个字节的数据，导致函数报错";
+		EXPECT_FALSE(webData.SetData(strTest.c_str(), strTest.length())) << "数据容器长度为6个字节，但需要存储七个字节的数据，导致函数报错";
 	}
 
 	TEST_F(CWebDataTest, TestGetCurrentPosData) {

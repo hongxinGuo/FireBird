@@ -13,7 +13,7 @@ CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData);
 shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, const string& strStockCode);
 bool IsTengxunRTDataInvalid(const CWebDataPtr& pWebDataReceived);
 
-bool CreateJsonWithNlohmann(json& js, CString& str, long lBeginPos = 0, long lEndPos = 0);
+//bool CreateJsonWithNlohmann(json& js, string& str, long lBeginPos = 0, long lEndPos = 0);
 bool CreateJsonWithNlohmann(json& js, const std::string& s, long lBeginPos = 0, long lEndPos = 0);
 void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRTData);
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs);

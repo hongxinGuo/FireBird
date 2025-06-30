@@ -27,7 +27,7 @@ namespace FireBirdTest {
 	};
 
 	struct FinnhubWebSocketData {
-		FinnhubWebSocketData(long lIndex, const CString& strData) {
+		FinnhubWebSocketData(long lIndex, const string& strData) {
 			m_lIndex = lIndex;
 			m_pData = strData;
 		}

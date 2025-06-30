@@ -52,7 +52,7 @@ public:
 public:
 	// 以下为测试用函数
 	void TESTSetBuffer(const char* buffer, INT64 lTotalNumber);
-	void TESTSetBuffer(CString str);
+	void TESTSetBuffer(string str);
 	void TESTSetWebBuffer(const char* buffer, INT64 lTotalNumber);
 
 protected:

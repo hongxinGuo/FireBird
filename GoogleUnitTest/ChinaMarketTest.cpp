@@ -1588,9 +1588,9 @@ namespace FireBirdTest {
 		pDayLine->SetDate(19900101);
 
 		_ltoa_s(19900101, buffer, 10);
-		const CString strDate = buffer;
+		const string strDate = buffer;
 		setDayLine.m_strFilter = _T("[Date] =");
-		setDayLine.m_strFilter += strDate;
+		setDayLine.m_strFilter += strDate.c_str();
 		setDayLine.Open();
 		setDayLine.m_pDatabase->BeginTrans();
 		pDayLine->AppendBasicData(&setDayLine);
@@ -1598,7 +1598,7 @@ namespace FireBirdTest {
 		setDayLine.Close();
 
 		setDayLine.m_strFilter = _T("[Date] =");
-		setDayLine.m_strFilter += strDate;
+		setDayLine.m_strFilter += strDate.c_str();
 		setDayLine.Open();
 		EXPECT_FALSE(setDayLine.IsEOF());
 		setDayLine.Close();
@@ -1606,7 +1606,7 @@ namespace FireBirdTest {
 		gl_pChinaMarket->DeleteDayLineBasicInfo(19900101);
 
 		setDayLine2.m_strFilter = _T("[Date] =");
-		setDayLine2.m_strFilter += strDate;
+		setDayLine2.m_strFilter += strDate.c_str();
 		setDayLine2.Open();
 		EXPECT_TRUE(setDayLine2.IsEOF());
 		setDayLine2.Close();
@@ -1622,7 +1622,7 @@ namespace FireBirdTest {
 		pDayLine->SetDate(19900101);
 
 		_ltoa_s(19900101, buffer, 10);
-		const CString strDate = buffer;
+		const string strDate = buffer;
 		setDayLine.m_strFilter = _T("[ID] = 1");
 		setDayLine.Open();
 		setDayLine.m_pDatabase->BeginTrans();
@@ -1634,7 +1634,7 @@ namespace FireBirdTest {
 		setDayLine.Close();
 
 		setDayLine.m_strFilter = _T("[Date] =");
-		setDayLine.m_strFilter += strDate;
+		setDayLine.m_strFilter += strDate.c_str();
 		setDayLine.Open();
 		EXPECT_FALSE(setDayLine.IsEOF());
 		setDayLine.Close();
@@ -1642,7 +1642,7 @@ namespace FireBirdTest {
 		gl_pChinaMarket->DeleteDayLineExtendInfo(19900101);
 
 		setDayLine2.m_strFilter = _T("[Date] =");
-		setDayLine2.m_strFilter += strDate;
+		setDayLine2.m_strFilter += strDate.c_str();
 		setDayLine2.Open();
 		EXPECT_TRUE(setDayLine2.IsEOF());
 		setDayLine2.Close();

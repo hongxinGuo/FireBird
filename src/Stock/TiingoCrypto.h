@@ -18,9 +18,9 @@ public:
 	void Save(CSetTiingoCrypto& setTiingoCrypto);
 	void Update(CSetTiingoCrypto& setTiingoCrypto);
 
-	//CString m_strTicker; //由VirtualStock中的m_strSymbol代替
+	//string m_strTicker; //由VirtualStock中的m_strSymbol代替
 	string m_strName{ _T("") };
-	//CString m_strDescription; // 已废弃。由CVirtualStock中的m_strDescription代替
+	//string m_strDescription; // 已废弃。由CVirtualStock中的m_strDescription代替
 	string m_strBaseCurrency{ _T("") };
 	string m_strQuoteCurrency{ _T("") };
 };

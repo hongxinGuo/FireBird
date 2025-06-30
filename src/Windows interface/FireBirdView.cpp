@@ -279,7 +279,6 @@ void CFireBirdView::ShowVolume(CDC* pDC, const CChinaStockPtr& pStock) {
 }
 
 void CFireBirdView::ShowRealtimeGuadan(CDC* pDC) {
-	CString str;
 	COLORREF crGreen(RGB(0, 255, 0));
 	constexpr COLORREF crYellow(RGB(255, 255, 0));
 	constexpr COLORREF crRed(RGB(255, 0, 0));
@@ -877,7 +876,7 @@ int CFireBirdView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	m_uIdTimer = SetTimer(3, 500, nullptr); // 500毫秒每次调度，用于显示实时股票数据。
 	if (m_uIdTimer == 0) {
-		CString str;
+		string str;
 	}
 
 	return 0;

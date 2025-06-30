@@ -9,14 +9,14 @@
 namespace FireBirdTest {
 	class CNeteaseRTDataTest {
 	public:
-		CNeteaseRTDataTest(int index, const CString& strData) {
+		CNeteaseRTDataTest(int index, const string& strData) {
 			m_iIndex = index;
 			m_strData = strData;
 		}
 
 	public:
 		int m_iIndex;
-		CString m_strData;
+		string m_strData;
 	};
 
 	//不知为何，此json字符串中无法使用中文字符。否则无法解析.

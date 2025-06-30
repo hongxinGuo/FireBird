@@ -48,13 +48,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanySymbolProductTest, TestIsNeedAddExchangeCode) {
-		EXPECT_TRUE(companySymbolProduct.IsNeedAddExchangeCode(_T("abcdefg.L"), _T("L")));
-		EXPECT_TRUE(companySymbolProduct.IsNeedAddExchangeCode(_T("abcdefg.L"), _T("l")));
-		EXPECT_TRUE(companySymbolProduct.IsNeedAddExchangeCode(_T("abcdefg.l"), _T("L")));
-		EXPECT_TRUE(companySymbolProduct.IsNeedAddExchangeCode(_T("abcdefg.abc"), _T("Abc")));
-		EXPECT_FALSE(companySymbolProduct.IsNeedAddExchangeCode(_T("abcdefg.ABC"), _T("L")));
-		EXPECT_FALSE(companySymbolProduct.IsNeedAddExchangeCode(_T("abcdefg"), _T("L")));
-		EXPECT_FALSE(companySymbolProduct.IsNeedAddExchangeCode(_T("abcdefg."), _T("L")));
+		EXPECT_FALSE(companySymbolProduct.IsBadStockSymbol(_T("abcdefg"), _T("US")));
+		EXPECT_FALSE(companySymbolProduct.IsBadStockSymbol(_T("abcdefg.L"), _T("US")));
+		EXPECT_TRUE(companySymbolProduct.IsBadStockSymbol(_T("abc"), _T("LLLL")));
+		EXPECT_FALSE(companySymbolProduct.IsBadStockSymbol(_T("abcdefg.L"), _T("L")));
+		EXPECT_TRUE(companySymbolProduct.IsBadStockSymbol(_T("abcdefg.ABC"), _T("L")));
+		EXPECT_TRUE(companySymbolProduct.IsBadStockSymbol(_T("abcdefg"), _T("L")));
+		EXPECT_TRUE(companySymbolProduct.IsBadStockSymbol(_T("abcdefg."), _T("L")));
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser

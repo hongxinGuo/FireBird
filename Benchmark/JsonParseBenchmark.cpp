@@ -364,12 +364,11 @@ public:
 		if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("SinaRTData.dat");
 		LoadFromFile(strFileName.c_str(), s);
-		CString str = s.c_str();
 		pWebData = make_shared<CWebData>();
-		const long lStringLength = str.GetLength();
+		const long lStringLength = s.length();
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		pWebData->Resize(lStringLength);
-		pWebData->SetData(str.GetBuffer(), lStringLength);
+		pWebData->SetData(s.c_str(), lStringLength);
 	}
 
 	void TearDown(const benchmark::State& state) override {
@@ -414,12 +413,11 @@ public:
 	void SetUp(const benchmark::State& state) override {
 		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("TengxunRTData.dat");
 		LoadFromFile(strFileName.c_str(), s);
-		CString str = s.c_str();
 		pWebData = make_shared<CWebData>();
 		const long lStringLength = s.length();
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
 		pWebData->Resize(lStringLength);
-		pWebData->SetData(str.GetBuffer(), lStringLength);
+		pWebData->SetData(s.c_str(), lStringLength);
 	}
 
 	void TearDown(const benchmark::State& state) override {

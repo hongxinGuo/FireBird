@@ -102,7 +102,6 @@ namespace FireBirdTest {
 	                         ));
 
 	TEST_P(TaskDistributeSinaRTDataToProperStockTest, TestCheck) {
-		CString strMessage, strRight;
 		auto lTotalStock = gl_dataContainerChinaStock.Size();
 		string strSymbol;
 

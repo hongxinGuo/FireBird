@@ -44,7 +44,7 @@ void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
 	m_strSECFilingWebSite = setTiingoStock.m_SECFilingWebSite;
 	m_lIPOStatus = setTiingoStock.m_IPOStatus;
 
-	LoadUpdateDate(setTiingoStock.m_UpdateDate);
+	LoadUpdateDate(setTiingoStock.m_UpdateDate.GetString());
 }
 
 void CTiingoStock::Append(CSetTiingoStock& setTiingoStock) {

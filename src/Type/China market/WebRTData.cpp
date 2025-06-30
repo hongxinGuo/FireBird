@@ -328,8 +328,8 @@ void CWebRTData::ParseTengxunData(const string_view& svData) {
 	// 35 成交价/成交量（手）/成交金额（元）
 	// 成交量和成交金额使用此处的数据，这样就可以使用腾讯实时数据了
 	sv = GetNextField(svData, lCurrentPos, '~'); //
-	CString str(sv.data(), sv.size());
-	sscanf_s(str.GetBuffer(), _T("%f/%d/%I64d"), &fTemp, &lTemp, &m_llAmount);
+	string str(sv.data(), sv.size());
+	sscanf_s(str.c_str(), _T("%f/%d/%I64d"), &fTemp, &lTemp, &m_llAmount);
 	m_llVolume = lTemp * 100; // 腾讯成交量数据单位为手（100股）。
 	// 成交手数
 	// 不使用此处的成交量。这里的成交量会大于第三十五处的成交量。

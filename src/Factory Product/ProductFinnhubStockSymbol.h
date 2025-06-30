@@ -9,7 +9,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
-	static bool IsNeedAddExchangeCode(const string& strStockSymbol, const string& strExchangeCode);
+	static bool IsBadStockSymbol(const string& strStockSymbol, const string& strExchangeCode);
 	CFinnhubStocksPtr ParseFinnhubStockSymbol(const CWebDataPtr& pWebData);
 };
 

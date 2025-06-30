@@ -116,16 +116,11 @@ void CInquireEngine::DeleteWebFile() {
 }
 
 void CInquireEngine::QueryDataLength() {
-	CString str;
-	m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
-	if (str.GetLength() > 0) { // 正常时此字符串不为零
-		char* p;
-		m_lContentLength = strtol(str.GetBuffer(), &p, 10);
-		ASSERT(m_lContentLength >= 0);
-	}
-	else { // 服务器无响应
-		m_lContentLength = 0;
-	}
+	char buffer[50]{};
+	//m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
+	m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, buffer, reinterpret_cast<LPDWORD>(50), nullptr);
+	m_lContentLength = atol(buffer);
+	ASSERT(m_lContentLength >= 0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -188,13 +183,12 @@ void CInquireEngine::TESTSetBuffer(const char* buffer, const INT64 lTotalNumber)
 	m_lByteRead = lTotalNumber;
 }
 
-void CInquireEngine::TESTSetBuffer(CString str) {
-	const INT64 lTotalNumber = str.GetLength();
-	const char* buffer = str.GetBuffer();
+void CInquireEngine::TESTSetBuffer(string str) {
+	const INT64 lTotalNumber = str.length();
 
 	m_sBuffer.resize(lTotalNumber + 1);
 	for (INT64 i = 0; i < lTotalNumber; i++) {
-		m_sBuffer.at(i) = buffer[i];
+		m_sBuffer.at(i) = str[i];
 	}
 	m_sBuffer.at(lTotalNumber) = 0x000;
 	m_lByteRead = lTotalNumber;
