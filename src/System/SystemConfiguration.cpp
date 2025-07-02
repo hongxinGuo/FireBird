@@ -335,6 +335,16 @@ void CSystemConfiguration::Update(json& jsonData) {
 		m_fUpdateDB = true;
 	}
 	try {
+		m_lTiingoFundamentalsMetaUpdateDate = jsonData.at("Tiingo").at("FundamentalsMetaUpdateDate"); // 
+	} catch (json::out_of_range&) {
+		m_fUpdateDB = true;
+	}
+	try {
+		m_lTiingoCryptoSymbolUpdateDate = jsonData.at("Tiingo").at("CryptoSymbolUpdateDate"); // 
+	} catch (json::out_of_range&) {
+		m_fUpdateDB = true;
+	}
+	try {
 		m_lTiingoIEXTopOfBookUpdateDate = jsonData.at("Tiingo").at("IEXTopOfBookUpdateDate"); // 
 	} catch (json::out_of_range&) {
 		m_fUpdateDB = true;
@@ -521,6 +531,8 @@ void CSystemConfiguration::UpdateJsonData(json& jsonData) {
 	// Tiingo.com
 	jsonData["Tiingo"]["AccountFeePaid"] = m_bTiingoAccountFeePaid;
 	jsonData["Tiingo"]["Token"] = m_strTiingoToken;
+	jsonData["Tiingo"]["FundamentalsMetaUpdateDate"] = m_lTiingoFundamentalsMetaUpdateDate;
+	jsonData["Tiingo"]["CryptoSymbolUpdateDate"] = m_lTiingoCryptoSymbolUpdateDate;
 	jsonData["Tiingo"]["IEXTopOfBookUpdateDate"] = m_lTiingoIEXTopOfBookUpdateDate;
 	jsonData["Tiingo"]["StockDayLineProcessedDate"] = m_lTiingoStockDayLineProcessedDate;
 	jsonData["Tiingo"]["Stock52WeekHighLowUpdate"] = m_lTiingoStock52WeekHighLowUpdateDate;

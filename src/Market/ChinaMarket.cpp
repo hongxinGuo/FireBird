@@ -1538,10 +1538,10 @@ void CChinaMarket::SaveCalculatingRSOption() const {
 		setRSOption.m_StrongDayLengthSecond = m_aRSStrongOption.at(i).m_lStrongDayLength[1];
 		setRSOption.m_StrongDayLengthThird = m_aRSStrongOption.at(i).m_lStrongDayLength[2];
 		setRSOption.m_StrongDayLengthFourth = m_aRSStrongOption.at(i).m_lStrongDayLength[3];
-		setRSOption.m_RSStrongFirst = ConvertValueToString(m_aRSStrongOption.at(i).m_dRSStrong[0]);
-		setRSOption.m_RSStrongSecond = ConvertValueToString(m_aRSStrongOption.at(i).m_dRSStrong[1]);
-		setRSOption.m_RSStrongThird = ConvertValueToString(m_aRSStrongOption.at(i).m_dRSStrong[2]);
-		setRSOption.m_RSStrongFourth = ConvertValueToString(m_aRSStrongOption.at(i).m_dRSStrong[3]);
+		setRSOption.m_RSStrongFirst = ConvertValueToCString(m_aRSStrongOption.at(i).m_dRSStrong[0]);
+		setRSOption.m_RSStrongSecond = ConvertValueToCString(m_aRSStrongOption.at(i).m_dRSStrong[1]);
+		setRSOption.m_RSStrongThird = ConvertValueToCString(m_aRSStrongOption.at(i).m_dRSStrong[2]);
+		setRSOption.m_RSStrongFourth = ConvertValueToCString(m_aRSStrongOption.at(i).m_dRSStrong[3]);
 		setRSOption.Update();
 	}
 	setRSOption.m_pDatabase->CommitTrans();

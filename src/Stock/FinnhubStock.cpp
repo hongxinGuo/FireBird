@@ -214,14 +214,14 @@ void CFinnhubStock::Save(CSetFinnhubStock& setFinnhubStock) const {
 	setFinnhubStock.m_Gsubind = m_strGsubind.substr(0, 45).c_str();
 	setFinnhubStock.m_IPODate = m_strIPODate.substr(0, 20).c_str();
 	setFinnhubStock.m_Isin = m_strIsin.substr(0, 45).c_str();
-	setFinnhubStock.m_MarketCapitalization = ConvertValueToString(m_dMarketCapitalization);
+	setFinnhubStock.m_MarketCapitalization = ConvertValueToCString(m_dMarketCapitalization);
 	setFinnhubStock.m_Naics = m_strNaics.substr(0, 45).c_str();
 	setFinnhubStock.m_NaicsNationalIndustry = m_strNaicsNationalIndustry.substr(0, 100).c_str();
 	setFinnhubStock.m_NaicsSector = m_strNaicsSector.substr(0, 100).c_str();
 	setFinnhubStock.m_NaicsSubsector = m_strNaicsSubsector.substr(0, 100).c_str();
 	setFinnhubStock.m_Name = m_strName.substr(0, 200).c_str();
 	setFinnhubStock.m_Phone = m_strPhone.substr(0, 100).c_str();
-	setFinnhubStock.m_ShareOutstanding = ConvertValueToString(m_dShareOutstanding);
+	setFinnhubStock.m_ShareOutstanding = ConvertValueToCString(m_dShareOutstanding);
 	setFinnhubStock.m_State = m_strState.substr(0, 45).c_str();
 	setFinnhubStock.m_Ticker = m_strTicker.substr(0, 45).c_str();
 	setFinnhubStock.m_WebURL = m_strWebURL.substr(0, 150).c_str();
@@ -445,8 +445,8 @@ bool CFinnhubStock::UpdateSECFilingsDB() const {
 }
 
 bool CFinnhubStock::UpdateDayLineDB() {
-	if (IsUpdateDayLineDBAndClearFlag()) {
-		// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+	if (IsUpdateDayLineDB()) {
+		SetUpdateDayLineDB(false);
 		if (GetDayLineSize() > 0) {
 			if (HaveNewDayLineData()) {
 				SaveDayLineDB();

@@ -96,7 +96,8 @@ void CContainerChinaStock::UpdateStockProfileDB() {
 				if (setChinaStockSymbol.IsEOF()) break;
 				if (IsSymbol(setChinaStockSymbol.m_Symbol.GetString())) {
 					const CChinaStockPtr pStock = GetStock(setChinaStockSymbol.m_Symbol.GetString());
-					if (pStock->IsUpdateProfileDBAndClearFlag()) {
+					if (pStock->IsUpdateProfileDB()) {
+						pStock->SetUpdateProfileDB(false);
 						//ASSERT(!pStock3->IsTodayNewStock());
 						iCount++;
 						pStock->UpdateSymbol(setChinaStockSymbol);
@@ -109,7 +110,8 @@ void CContainerChinaStock::UpdateStockProfileDB() {
 			}
 			if (iCount < iStockCodeNeedUpdate) { // 添加新股票代码
 				for (const auto& pStock3 : m_vStock) {
-					if (pStock3->IsUpdateProfileDBAndClearFlag()) {
+					if (pStock3->IsUpdateProfileDB()) {
+						pStock3->SetUpdateProfileDB(false);
 						ASSERT(pStock3->IsTodayNewStock());
 						iCount++;
 						pStock3->AppendSymbol(setChinaStockSymbol);
@@ -316,8 +318,8 @@ bool CContainerChinaStock::TaskUpdateDayLineDB() {
 
 	for (size_t l = 0; l < m_vStock.size(); l++) {
 		const CChinaStockPtr pStock = GetStock(l);
-		if (pStock->IsUpdateDayLineDBAndClearFlag()) {
-			// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pStock->IsUpdateDayLineDB()) {
+			pStock->SetUpdateDayLineDB(false);
 			if (pStock->GetDayLineSize() > 0) {
 				if (pStock->HaveNewDayLineData()) {
 					gl_UpdateChinaMarketDB.acquire();
@@ -677,23 +679,23 @@ bool CContainerChinaStock::BuildDayLineRS(long lDate) {
 				dRSIndex = (dUpDownRate - dIndexUpDownRate) * 500 + 50; // 以大盘涨跌为基准（50）。
 			}
 		}
-		setDayLineBasicInfo.m_RSIndex = ConvertValueToString(dRSIndex);
+		setDayLineBasicInfo.m_RSIndex = ConvertValueToCString(dRSIndex);
 
 		// 计算涨跌排名相对强度
 		if (dLastClose < 0.001) {
-			setDayLineBasicInfo.m_RS = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
+			setDayLineBasicInfo.m_RS = ConvertValueToCString(50); // 新股上市或者除权除息，不计算此股
 		}
 		else if (((dLow / dLastClose) < 0.88) || ((dHigh / dLastClose) > 1.12)) {	// 除权、新股上市等
-			setDayLineBasicInfo.m_RS = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
+			setDayLineBasicInfo.m_RS = ConvertValueToCString(50); // 新股上市或者除权除息，不计算此股
 		}
 		else if ((fabs(dHigh - dClose) < 0.0001) && (((dClose / dLastClose)) > 1.095)) {	// 涨停板
-			setDayLineBasicInfo.m_RS = ConvertValueToString(100);
+			setDayLineBasicInfo.m_RS = ConvertValueToCString(100);
 		}
 		else if ((fabs(dClose - dLow) < 0.0001) && ((dClose / dLastClose) < 0.905)) {// 跌停板
-			setDayLineBasicInfo.m_RS = ConvertValueToString(0);
+			setDayLineBasicInfo.m_RS = ConvertValueToCString(0);
 		}
 		else {
-			setDayLineBasicInfo.m_RS = ConvertValueToString(static_cast<double>(iCount) * 100 / iTotalAShare);
+			setDayLineBasicInfo.m_RS = ConvertValueToCString(static_cast<double>(iCount) * 100 / iTotalAShare);
 		}
 		setDayLineBasicInfo.Update();
 		iBefore = vIndex.at(iCount++);
@@ -774,14 +776,14 @@ bool CContainerChinaStock::BuildWeekLineRS(long lDate) {
 			const double dUpDownRate = (dClose - dLastClose) / dLastClose;
 			dRSIndex = (dUpDownRate - dIndexUpDownRate) * 500 + 50; // 以大盘涨跌为基准（50）。
 		}
-		setWeekLineBasicInfo.m_RSIndex = ConvertValueToString(dRSIndex);
+		setWeekLineBasicInfo.m_RSIndex = ConvertValueToCString(dRSIndex);
 
 		// 计算涨跌排名相对强度
 		if (dLastClose < 0.001) {
-			setWeekLineBasicInfo.m_RS = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
+			setWeekLineBasicInfo.m_RS = ConvertValueToCString(50); // 新股上市或者除权除息，不计算此股
 		}
 		else {
-			setWeekLineBasicInfo.m_RS = ConvertValueToString(static_cast<double>(iCount) * 100 / iTotalAShare);
+			setWeekLineBasicInfo.m_RS = ConvertValueToCString(static_cast<double>(iCount) * 100 / iTotalAShare);
 		}
 		setWeekLineBasicInfo.Update();
 		iBefore = vIndex.at(iCount++);

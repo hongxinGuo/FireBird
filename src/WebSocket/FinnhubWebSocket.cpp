@@ -94,12 +94,10 @@ void CFinnhubWebSocket::Connect() {
 }
 
 void CFinnhubWebSocket::Send(const vectorString& vSymbol) {
-	string strMessage;
-
 	ASSERT(IsOpen());
 	for (long l = 0; l < vSymbol.size(); l++) {
 		if (l >= 49) break; // note 免费账户只支持最多50个证券名称
-		strMessage = CreateFinnhubWebSocketString(vSymbol.at(l));
+		string strMessage = CreateFinnhubWebSocketString(vSymbol.at(l));
 		ix::WebSocketSendInfo info = m_webSocket.send(strMessage);
 		ASSERT(info.success);
 		gl_systemMessage.PushInnerSystemInformationMessage(strMessage);

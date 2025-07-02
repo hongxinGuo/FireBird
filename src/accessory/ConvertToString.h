@@ -5,8 +5,14 @@
 // 将utf-8字符串转化为CString
 [[nodiscard]] CString XferToCString(const std::string& s);
 
-[[nodiscard]] CString ConvertValueToString(long lValue, int iDividend = 1);
-[[nodiscard]] CString ConvertValueToString(INT64 iValue, int iDividend = 1);
-[[nodiscard]] CString ConvertValueToString(int iValue, int iDividend = 1);
-[[nodiscard]] CString ConvertValueToString(double dValue, int iDividend = 1);
+[[nodiscard]] CString ConvertValueToCString(long lValue, int iDividend = 1);
+[[nodiscard]] CString ConvertValueToCString(INT64 iValue, int iDividend = 1);
+[[nodiscard]] CString ConvertValueToCString(int iValue, int iDividend = 1);
+[[nodiscard]] CString ConvertValueToCString(double dValue, int iDividend = 1);
+
+[[nodiscard]] string ConvertValueToString(long lValue, int iDividend = 1);
+[[nodiscard]] string ConvertValueToString(INT64 iValue, int iDividend = 1);
+[[nodiscard]] string ConvertValueToString(int iValue, int iDividend = 1);
+[[nodiscard]] string ConvertValueToString(double dValue, int iDividend = 1);
+
 [[nodiscard]] string FormatToMK(int64_t iNumber);

@@ -60,8 +60,13 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateStockSymbol());
 		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("Tiingo stock symbol updated"));
+		EXPECT_EQ(gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate(), gl_pWorldMarket->GetMarketDate());
+		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
 
+		// 恢复原状
 		gl_pTiingoDataSource->SetUpdateStockSymbol(true);
+		gl_systemConfiguration.SetTiingoFundamentalsMetaUpdateDate(19800101);
+		gl_systemConfiguration.SetUpdateDB(false);
 	}
 
 	// 下列数据的permaTicker项故意修改了，这样可以激活gl_dataContainerFinnhubStock的UpdateProfileDB().

@@ -75,7 +75,6 @@ public:
 	void SetUpdateBasicFinancial(const bool fFlag) noexcept { m_fUpdateBasicFinancial = fFlag; }
 	bool IsUpdateBasicFinancialDB() const noexcept { return m_fUpdateFinnhubBasicFinancialDB; }
 	void SetUpdateBasicFinancialDB(const bool fFlag) noexcept { m_fUpdateFinnhubBasicFinancialDB = fFlag; }
-	bool IsUpdateBasicFinancialDBAndClearFlag() { return m_fUpdateFinnhubBasicFinancialDB.exchange(false); }
 
 	bool UpdateBasicFinancial(const CFinnhubStockBasicFinancialPtr& pFinnhubStockBasicFinancial);
 	CFinnhubStockBasicFinancialPtr GetBasicFinancial() noexcept { return m_pBasicFinancial; }
@@ -85,7 +84,6 @@ public:
 	bool CheckEPSSurpriseStatus(long lCurrentDate);
 	bool IsUpdateEPSSurpriseDB() const noexcept { return m_fUpdateEPSSurpriseDB; }
 	void SetUpdateEPSSurpriseDB(const bool fFlag) noexcept { m_fUpdateEPSSurpriseDB = fFlag; }
-	bool IsUpdateEPSSurpriseDBAndClearFlag() { return m_fUpdateEPSSurpriseDB.exchange(false); }
 
 	bool IsUpdatePeer() const noexcept { return m_fUpdateFinnhubPeer; }
 	void SetUpdatePeer(bool fFlag) noexcept { m_fUpdateFinnhubPeer = fFlag; }
@@ -96,7 +94,6 @@ public:
 	bool CheckSECFilingsStatus(long lCurrentDate);
 	bool IsUpdateSECFilingsDB() const noexcept { return m_fUpdateSECFilingsDB; }
 	void SetUpdateSECFilingsDB(const bool fFlag) noexcept { m_fUpdateSECFilingsDB = fFlag; }
-	bool IsUpdateSECFilingsDBAndClearFlag() { return m_fUpdateSECFilingsDB.exchange(false); }
 
 	bool HaveInsiderTransaction() const noexcept { return !m_vInsiderTransaction.empty(); }
 	void UnloadInsiderTransaction() { m_vInsiderTransaction.resize(0); }
@@ -106,7 +103,6 @@ public:
 	bool CheckInsiderTransactionStatus(long lCurrentDate);
 	bool IsUpdateInsiderTransactionDB() const noexcept { return m_fUpdateFinnhubInsiderTransactionDB; }
 	void SetUpdateInsiderTransactionDB(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderTransactionDB = fFlag; }
-	bool IsUpdateInsiderTransactionDBAndClearFlag() { return m_fUpdateFinnhubInsiderTransactionDB.exchange(false); }
 
 	bool HaveInsiderSentiment() const noexcept { return !m_vInsiderSentiment.empty(); }
 	void UnloadInsiderSentiment() { m_vInsiderSentiment.resize(0); }
@@ -116,7 +112,6 @@ public:
 	bool CheckInsiderSentimentStatus(long lCurrentDate);
 	bool IsUpdateInsiderSentimentDB() const noexcept { return m_fUpdateFinnhubInsiderSentimentDB; }
 	void SetUpdateInsiderSentimentDB(const bool fFlag) noexcept { m_fUpdateFinnhubInsiderSentimentDB = fFlag; }
-	bool IsUpdateInsiderSentimentDBAndClearFlag() { return m_fUpdateFinnhubInsiderSentimentDB.exchange(false); }
 
 	string GetType() const { return m_strType; }
 	void SetType(const string& strType) { m_strType = strType; }

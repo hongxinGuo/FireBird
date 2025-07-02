@@ -118,11 +118,24 @@ public:
 	bool IsPaidTypeTiingoAccount() const noexcept { return m_bTiingoAccountFeePaid; }
 	[[nodiscard]] string GetTiingoToken() noexcept { return m_strTiingoToken; }
 
+	[[nodiscard]] int GetTiingoFundamentalsMetaUpdateDate() const noexcept { return m_lTiingoFundamentalsMetaUpdateDate; }
+	void SetTiingoFundamentalsMetaUpdateDate(const long lTiingoFundamentalsMetaUpdateDate) noexcept {
+		m_lTiingoFundamentalsMetaUpdateDate = lTiingoFundamentalsMetaUpdateDate;
+		m_fUpdateDB = true;
+	}
+
+	[[nodiscard]] int GetTiingoCryptoSymbolUpdateDate() const noexcept { return m_lTiingoCryptoSymbolUpdateDate; }
+	void SetTiingoCryptoSymbolUpdateDate(const long lTiingoCryptoSymbolUpdateDate) noexcept {
+		m_lTiingoCryptoSymbolUpdateDate = lTiingoCryptoSymbolUpdateDate;
+		m_fUpdateDB = true;
+	}
+
 	[[nodiscard]] int GetTiingoIEXTopOfBookUpdateDate() const noexcept { return m_lTiingoIEXTopOfBookUpdateDate; }
 	void SetTiingoIEXTopOfBookUpdateDate(const long lTiingoIEXTopOfBookUpdateDate) noexcept {
 		m_lTiingoIEXTopOfBookUpdateDate = lTiingoIEXTopOfBookUpdateDate;
 		m_fUpdateDB = true;
 	}
+
 	[[nodiscard]] int GetTiingoStockDayLineProcessedDate() const noexcept { return m_lTiingoStockDayLineProcessedDate; }
 	void SetTiingoStockDayLineProcessedDate(const long lTiingoStockDayLineProcessedDate) noexcept {
 		m_lTiingoStockDayLineProcessedDate = lTiingoStockDayLineProcessedDate;
@@ -339,6 +352,8 @@ protected:
 	// Tiingo.com
 	bool m_bTiingoAccountFeePaid{ true };
 	string m_strTiingoToken{ _T("") };
+	long m_lTiingoFundamentalsMetaUpdateDate{ 19800101 };
+	long m_lTiingoCryptoSymbolUpdateDate{ 19800101 };
 	long m_lTiingoIEXTopOfBookUpdateDate{ 19800101 };
 	long m_lTiingoStockDayLineProcessedDate{ 19800101 };
 	long m_lTiingoStock52WeekHighLowUpdateDate{ 19800101 };

@@ -164,19 +164,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		stock.SetUpdateProfileDB(true);
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
-		EXPECT_TRUE(stock.IsUpdateProfileDBAndClearFlag());
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		stock.SetUpdateProfileDB(true);
-		EXPECT_TRUE(stock.IsUpdateProfileDB());
 		stock.SetUpdateProfileDB(false);
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-	}
-
-	TEST_F(CFinnhubStockTest, TestIsUpdateProfileDBAndClearFlag) {
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		EXPECT_FALSE(stock.IsUpdateProfileDBAndClearFlag());
-		stock.SetUpdateProfileDB(true);
-		EXPECT_TRUE(stock.IsUpdateProfileDBAndClearFlag());
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 	}
 
@@ -184,19 +172,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateCompanyNewsDB());
 		stock.SetUpdateCompanyNewsDB(true);
 		EXPECT_TRUE(stock.IsUpdateCompanyNewsDB());
-		EXPECT_TRUE(stock.IsUpdateCompanyNewsDBAndClearFlag());
-		EXPECT_FALSE(stock.IsUpdateCompanyNewsDB());
-		stock.SetUpdateCompanyNewsDB(true);
-		EXPECT_TRUE(stock.IsUpdateCompanyNewsDB());
 		stock.SetUpdateCompanyNewsDB(false);
-		EXPECT_FALSE(stock.IsUpdateCompanyNewsDB());
-	}
-
-	TEST_F(CFinnhubStockTest, TestIsUpdateCompanyNewsDBAndClearFlag) {
-		EXPECT_FALSE(stock.IsUpdateCompanyNewsDB());
-		EXPECT_FALSE(stock.IsUpdateCompanyNewsDBAndClearFlag());
-		stock.SetUpdateCompanyNewsDB(true);
-		EXPECT_TRUE(stock.IsUpdateCompanyNewsDBAndClearFlag());
 		EXPECT_FALSE(stock.IsUpdateCompanyNewsDB());
 	}
 
@@ -276,9 +252,6 @@ namespace FireBirdTest {
 		EXPECT_TRUE(stock.IsUpdateDayLineDB());
 		stock.SetUpdateDayLineDB(false);
 		EXPECT_FALSE(stock.IsUpdateDayLineDB());
-		stock.SetUpdateDayLineDB(true);
-		EXPECT_TRUE(stock.IsUpdateDayLineDBAndClearFlag());
-		EXPECT_FALSE(stock.IsUpdateDayLineDB());
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetProfileUpdateDate) {
@@ -345,15 +318,13 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateEPSSurpriseDB());
 		stock.SetUpdateEPSSurpriseDB(true);
 		EXPECT_TRUE(stock.IsUpdateEPSSurpriseDB());
-		EXPECT_TRUE(stock.IsUpdateEPSSurpriseDBAndClearFlag());
-		EXPECT_FALSE(stock.IsUpdateEPSSurpriseDB());
 	}
 
 	TEST_F(CFinnhubStockTest, TestIsUpdateSECFilingsDB) {
 		EXPECT_FALSE(stock.IsUpdateSECFilingsDB());
 		stock.SetUpdateSECFilingsDB(true);
 		EXPECT_TRUE(stock.IsUpdateSECFilingsDB());
-		EXPECT_TRUE(stock.IsUpdateSECFilingsDBAndClearFlag());
+		stock.SetUpdateSECFilingsDB(false);
 		EXPECT_FALSE(stock.IsUpdateSECFilingsDB());
 	}
 
@@ -369,8 +340,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateInsiderTransactionDB());
 		stock.SetUpdateInsiderTransactionDB(true);
 		EXPECT_TRUE(stock.IsUpdateInsiderTransactionDB());
-		EXPECT_TRUE(stock.IsUpdateInsiderTransactionDBAndClearFlag());
-		EXPECT_FALSE(stock.IsUpdateInsiderTransactionDB());
 	}
 
 	TEST_F(CFinnhubStockTest, TestIsUpdateInsiderSentiment) {
@@ -385,8 +354,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateInsiderSentimentDB());
 		stock.SetUpdateInsiderSentimentDB(true);
 		EXPECT_TRUE(stock.IsUpdateInsiderSentimentDB());
-		EXPECT_TRUE(stock.IsUpdateInsiderSentimentDBAndClearFlag());
-		EXPECT_FALSE(stock.IsUpdateInsiderSentimentDB());
 	}
 
 	TEST_F(CFinnhubStockTest, TestGetDescription) {

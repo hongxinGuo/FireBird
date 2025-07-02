@@ -2,32 +2,56 @@
 
 #include"ConvertToString.h"
 
-CString ConvertValueToString(const long lValue, const int iDividend) {
+CString ConvertValueToCString(const long lValue, const int iDividend) {
 	const double d = (static_cast<double>(lValue)) / iDividend;
 
 	string s = fmt::format("{:.6f}", d);
 	return s.c_str();
 }
 
-CString ConvertValueToString(const int iValue, const int iDividend) {
+CString ConvertValueToCString(const int iValue, const int iDividend) {
 	const double d = (static_cast<double>(iValue)) / iDividend;
 
 	string s = fmt::format("{:.6f}", d);
 	return s.c_str();
 }
 
-CString ConvertValueToString(const INT64 iValue, const int iDividend) {
+CString ConvertValueToCString(const INT64 iValue, const int iDividend) {
 	const double d = (static_cast<double>(iValue)) / iDividend;
 
 	string s = fmt::format("{:.6f}", d);
 	return s.c_str();
 }
 
-CString ConvertValueToString(const double dValue, const int iDividend) {
+CString ConvertValueToCString(const double dValue, const int iDividend) {
 	const double d = dValue / iDividend;
 
 	string s = fmt::format("{:.6f}", d);
 	return s.c_str();
+}
+
+string ConvertValueToString(const long lValue, const int iDividend) {
+	const double d = (static_cast<double>(lValue)) / iDividend;
+
+	return fmt::format("{:.6f}", d);
+}
+
+string ConvertValueToString(const int iValue, const int iDividend) {
+	const double d = (static_cast<double>(iValue)) / iDividend;
+
+	return fmt::format("{:.6f}", d);
+}
+
+string ConvertValueToString(const INT64 iValue, const int iDividend) {
+	const double d = (static_cast<double>(iValue)) / iDividend;
+
+	return fmt::format("{:.6f}", d);
+}
+
+string ConvertValueToString(const double dValue, const int iDividend) {
+	const double d = dValue / iDividend;
+
+	return fmt::format("{:.6f}", d);
 }
 
 wstring to_wide_string(const std::string& input) {

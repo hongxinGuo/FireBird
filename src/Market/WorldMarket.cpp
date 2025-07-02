@@ -334,11 +334,12 @@ void CWorldMarket::TaskUpdateTiingoStockDayLineDB() {
 		if (gl_systemConfiguration.IsExitingSystem()) break;// 如果程序正在退出，则停止存储。
 		pTiingoStock = gl_dataContainerTiingoStock.GetStock(i);
 		if (pTiingoStock->IsUpdateDayLineDB()) {
-			pTiingoStock->SetUpdateProfileDB(true);
 			pTiingoStock->UpdateDayLineDB();
+			SetTiingoStockDayLineUpdated(GetTiingoStockDayLineUpdated() + 1);
 			pTiingoStock->UpdateDayLineStartEndDate();
 			pTiingoStock->UnloadDayLine();
 			pTiingoStock->SetUpdateDayLineDB(false);
+			pTiingoStock->SetUpdateProfileDB(true);
 		}
 	}
 }
@@ -361,7 +362,9 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 	//TRACE("Finnhub forex dayLine\n");
 	for (int i = 0; i < symbolSize; i++) {
 		pSymbol = gl_dataFinnhubForexSymbol.GetSymbol(i);
-		if (pSymbol->IsUpdateDayLineDBAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pSymbol->IsUpdateDayLineDB()) {
+			pSymbol->SetUpdateDayLineDB(false);
+			pSymbol->SetUpdateDayLineDB(false);
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
 					gl_runtime.thread_executor()->post([pSymbol] {
@@ -417,7 +420,8 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 	//TRACE("Finnhub Crypto dayLine\n");
 	for (int i = 0; i < symbolSize; ++i) {
 		pSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(i);
-		if (pSymbol->IsUpdateDayLineDBAndClearFlag()) {	// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pSymbol->IsUpdateDayLineDB()) {
+			pSymbol->SetUpdateDayLineDB(false);
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
 					gl_runtime.thread_executor()->post([pSymbol] {
@@ -545,7 +549,8 @@ bool CWorldMarket::UpdateEPSSurpriseDB() {
 	CFinnhubStockPtr pStock = nullptr;
 	for (long l = 0; l < stockSize; ++l) {
 		pStock = gl_dataContainerFinnhubStock.GetStock(l);
-		if (pStock->IsUpdateEPSSurpriseDBAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pStock->IsUpdateEPSSurpriseDB()) {
+			pStock->SetUpdateEPSSurpriseDB(false);
 			pStock->UpdateEPSSurpriseDB();
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
@@ -560,7 +565,8 @@ void CWorldMarket::UpdateSECFilingsDB() {
 	CFinnhubStockPtr pStock = nullptr;
 	for (long l = 0; l < stockSize; ++l) {
 		pStock = gl_dataContainerFinnhubStock.GetStock(l);
-		if (pStock->IsUpdateSECFilingsDBAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pStock->IsUpdateSECFilingsDB()) {
+			pStock->SetUpdateSECFilingsDB(false);
 			ASSERT(pStock->UpdateSECFilingsDB());
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
@@ -855,7 +861,8 @@ bool CWorldMarket::UpdateFinnhubStockDayLineDB() {
 bool CWorldMarket::UpdateCompanyNewsDB() {
 	for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 		const auto pStock = gl_dataContainerFinnhubStock.GetStock(l);
-		if (pStock->IsUpdateCompanyNewsDBAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+		if (pStock->IsUpdateCompanyNewsDB()) {
+			pStock->SetUpdateCompanyNewsDB(false);
 			pStock->UpdateCompanyNewsDB();
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
@@ -867,7 +874,8 @@ bool CWorldMarket::UpdateCompanyNewsDB() {
 bool CWorldMarket::UpdateInsiderSentimentDB() {
 	for (long i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
-		if (pStock->IsUpdateInsiderSentimentDBAndClearFlag()) {
+		if (pStock->IsUpdateInsiderSentimentDB()) {
+			pStock->SetUpdateInsiderSentimentDB(false);
 			if (pStock->HaveInsiderSentiment()) {
 				pStock->UpdateInsiderSentimentDB();
 			}

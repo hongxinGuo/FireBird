@@ -353,7 +353,7 @@ void CContainerTiingoStock::TaskFixDayLine() {
 			// 如果本交易日的上一个交易日收盘价为零的话，使用上一个交易日的收盘价修复之。
 			if (currentLastClose == 0) {
 				setDayLineBasic.Edit();
-				setDayLineBasic.m_LastClose = ConvertValueToString(lLastClose, ratio);
+				setDayLineBasic.m_LastClose = ConvertValueToCString(lLastClose, ratio);
 				setDayLineBasic.Update();
 			}
 			lLastClose = atof(setDayLineBasic.m_Close) * ratio;

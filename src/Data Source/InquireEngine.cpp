@@ -117,8 +117,8 @@ void CInquireEngine::DeleteWebFile() {
 
 void CInquireEngine::QueryDataLength() {
 	char buffer[50]{};
-	//m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
-	m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, buffer, reinterpret_cast<LPDWORD>(50), nullptr);
+	DWORD dwLength = 50;
+	m_pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, buffer, &dwLength);
 	m_lContentLength = atol(buffer);
 	ASSERT(m_lContentLength >= 0);
 }

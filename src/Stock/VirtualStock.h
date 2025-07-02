@@ -96,14 +96,11 @@ public:
 
 	bool IsUpdateDayLineDB() const noexcept { return m_fUpdateDayLineDB; }
 	void SetUpdateDayLineDB(const bool fFlag) noexcept { m_fUpdateDayLineDB = fFlag; }
-	bool IsUpdateDayLineDBAndClearFlag() noexcept { return m_fUpdateDayLineDB.exchange(false); }
 	bool IsUpdateProfileDB() const noexcept { return m_fUpdateProfileDB; }
 	void SetUpdateProfileDB(const bool fFlag) noexcept { m_fUpdateProfileDB = fFlag; }
-	bool IsUpdateProfileDBAndClearFlag() noexcept { return m_fUpdateProfileDB.exchange(false); }
 
 	bool IsUpdateCompanyNewsDB() const noexcept { return m_fUpdateCompanyNewsDB; }
 	void SetUpdateCompanyNewsDB(const bool fFlag) noexcept { m_fUpdateCompanyNewsDB = fFlag; }
-	bool IsUpdateCompanyNewsDBAndClearFlag() noexcept { return m_fUpdateCompanyNewsDB.exchange(false); }
 
 protected:
 	string m_strDescription{ _T("") }; // ∏√÷§»Øµƒ√Ë ˆ

@@ -187,7 +187,8 @@ void CTiingoStock::UpdateFinancialStateDB() {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoStock::UpdateDayLineDB() {
-	if (IsUpdateDayLineDBAndClearFlag()) {// 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+	if (IsUpdateDayLineDB()) {
+		SetUpdateDayLineDB(false);
 		SaveDayLineDB();
 		UpdateDayLineStartEndDate();
 		SetUpdateProfileDB(true);
@@ -208,14 +209,14 @@ void CTiingoStock::SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine
 	setDayLine.m_Symbol = m_strSymbol.c_str();
 	setDayLine.m_Exchange = m_strExchangeCode.c_str();
 	setDayLine.m_DisplaySymbol = _T("");
-	setDayLine.m_Open = ConvertValueToString(m_lOpen, GetRatio());
-	setDayLine.m_High = ConvertValueToString(m_lHigh, GetRatio());
-	setDayLine.m_Low = ConvertValueToString(m_lLow, GetRatio());
-	setDayLine.m_Close = ConvertValueToString(m_lNew, GetRatio());
-	setDayLine.m_LastClose = ConvertValueToString(m_lLastClose, GetRatio());
-	setDayLine.m_Volume = ConvertValueToString(m_llVolume);
-	setDayLine.m_dividend = ConvertValueToString(m_fDividend);
-	setDayLine.m_splitFactor = ConvertValueToString(m_fSplitFactor);
+	setDayLine.m_Open = ConvertValueToCString(m_lOpen, GetRatio());
+	setDayLine.m_High = ConvertValueToCString(m_lHigh, GetRatio());
+	setDayLine.m_Low = ConvertValueToCString(m_lLow, GetRatio());
+	setDayLine.m_Close = ConvertValueToCString(m_lNew, GetRatio());
+	setDayLine.m_LastClose = ConvertValueToCString(m_lLastClose, GetRatio());
+	setDayLine.m_Volume = ConvertValueToCString(m_llVolume);
+	setDayLine.m_dividend = ConvertValueToCString(m_fDividend);
+	setDayLine.m_splitFactor = ConvertValueToCString(m_fSplitFactor);
 	setDayLine.Update();
 }
 

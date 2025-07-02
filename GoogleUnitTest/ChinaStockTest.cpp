@@ -239,21 +239,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		stock.SetUpdateProfileDB(true);
 		EXPECT_TRUE(stock.IsUpdateProfileDB());
-		EXPECT_TRUE(stock.IsUpdateProfileDBAndClearFlag());
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		stock.SetUpdateProfileDB(true);
-		EXPECT_TRUE(stock.IsUpdateProfileDB());
 		stock.SetUpdateProfileDB(false);
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-	}
-
-	TEST_F(CChinaStockTest, TestIsUpdateProfileDBAndClearFlag) {
-		CChinaStock stock;
-
-		EXPECT_FALSE(stock.IsUpdateProfileDB());
-		EXPECT_FALSE(stock.IsUpdateProfileDBAndClearFlag());
-		stock.SetUpdateProfileDB(true);
-		EXPECT_TRUE(stock.IsUpdateProfileDBAndClearFlag());
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 	}
 
@@ -335,9 +321,6 @@ namespace FireBirdTest {
 		stock.SetUpdateDayLineDB(true);
 		EXPECT_TRUE(stock.IsUpdateDayLineDB());
 		stock.SetUpdateDayLineDB(false);
-		EXPECT_FALSE(stock.IsUpdateDayLineDB());
-		stock.SetUpdateDayLineDB(true);
-		EXPECT_TRUE(stock.IsUpdateDayLineDBAndClearFlag());
 		EXPECT_FALSE(stock.IsUpdateDayLineDB());
 	}
 

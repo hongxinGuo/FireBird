@@ -34,23 +34,23 @@ void CVirtualHistoryCandleBasic::SaveBasicData(CVirtualSetHistoryCandleBasic* pV
 	pVirtualSetHistoryCandleBasic->m_Exchange = GetExchange().c_str();
 	pVirtualSetHistoryCandleBasic->m_Symbol = GetStockSymbol().c_str();
 	pVirtualSetHistoryCandleBasic->m_DisplaySymbol = GetDisplaySymbol().c_str();
-	pVirtualSetHistoryCandleBasic->m_LastClose = ConvertValueToString(GetLastClose(), ratio);
-	pVirtualSetHistoryCandleBasic->m_High = ConvertValueToString(GetHigh(), ratio);
-	pVirtualSetHistoryCandleBasic->m_Low = ConvertValueToString(GetLow(), ratio);
-	pVirtualSetHistoryCandleBasic->m_Open = ConvertValueToString(GetOpen(), ratio);
-	pVirtualSetHistoryCandleBasic->m_Close = ConvertValueToString(GetClose(), ratio);
-	pVirtualSetHistoryCandleBasic->m_dividend = ConvertValueToString(GetDividend());
-	pVirtualSetHistoryCandleBasic->m_splitFactor = ConvertValueToString(GetSplitFactor());
-	pVirtualSetHistoryCandleBasic->m_Volume = ConvertValueToString(GetVolume());
-	pVirtualSetHistoryCandleBasic->m_Amount = ConvertValueToString(GetAmount());
-	pVirtualSetHistoryCandleBasic->m_UpAndDown = ConvertValueToString(GetUpDown());
-	pVirtualSetHistoryCandleBasic->m_UpDownRate = ConvertValueToString(GetUpDownRate());
-	pVirtualSetHistoryCandleBasic->m_ChangeHandRate = ConvertValueToString(GetChangeHandRate());
-	pVirtualSetHistoryCandleBasic->m_TotalValue = ConvertValueToString(GetTotalValue());
-	pVirtualSetHistoryCandleBasic->m_CurrentValue = ConvertValueToString(GetCurrentValue());
-	pVirtualSetHistoryCandleBasic->m_RS = ConvertValueToString(GetRS());
-	pVirtualSetHistoryCandleBasic->m_RSIndex = ConvertValueToString(GetRSIndex());
-	pVirtualSetHistoryCandleBasic->m_RSBackup = ConvertValueToString(GetRSBackup());
+	pVirtualSetHistoryCandleBasic->m_LastClose = ConvertValueToCString(GetLastClose(), ratio);
+	pVirtualSetHistoryCandleBasic->m_High = ConvertValueToCString(GetHigh(), ratio);
+	pVirtualSetHistoryCandleBasic->m_Low = ConvertValueToCString(GetLow(), ratio);
+	pVirtualSetHistoryCandleBasic->m_Open = ConvertValueToCString(GetOpen(), ratio);
+	pVirtualSetHistoryCandleBasic->m_Close = ConvertValueToCString(GetClose(), ratio);
+	pVirtualSetHistoryCandleBasic->m_dividend = ConvertValueToCString(GetDividend());
+	pVirtualSetHistoryCandleBasic->m_splitFactor = ConvertValueToCString(GetSplitFactor());
+	pVirtualSetHistoryCandleBasic->m_Volume = ConvertValueToCString(GetVolume());
+	pVirtualSetHistoryCandleBasic->m_Amount = ConvertValueToCString(GetAmount());
+	pVirtualSetHistoryCandleBasic->m_UpAndDown = ConvertValueToCString(GetUpDown());
+	pVirtualSetHistoryCandleBasic->m_UpDownRate = ConvertValueToCString(GetUpDownRate());
+	pVirtualSetHistoryCandleBasic->m_ChangeHandRate = ConvertValueToCString(GetChangeHandRate());
+	pVirtualSetHistoryCandleBasic->m_TotalValue = ConvertValueToCString(GetTotalValue());
+	pVirtualSetHistoryCandleBasic->m_CurrentValue = ConvertValueToCString(GetCurrentValue());
+	pVirtualSetHistoryCandleBasic->m_RS = ConvertValueToCString(GetRS());
+	pVirtualSetHistoryCandleBasic->m_RSIndex = ConvertValueToCString(GetRSIndex());
+	pVirtualSetHistoryCandleBasic->m_RSBackup = ConvertValueToCString(GetRSBackup());
 }
 
 void CVirtualHistoryCandleBasic::AppendBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const {

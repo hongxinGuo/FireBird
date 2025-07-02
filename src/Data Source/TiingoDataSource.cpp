@@ -285,6 +285,11 @@ bool CTiingoDataSource::GenerateFundamentalDefinition() {
 bool CTiingoDataSource::GenerateCompanySymbol() {
 	ASSERT(!IsInquiring());
 	if (IsUpdateStockSymbol()) {
+		if (gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate() >= gl_pWorldMarket->GetMarketDate()) { // 已经更新过当日股票代码？
+			SetUpdateStockSymbol(false);
+			gl_systemMessage.PushInformationMessage(_T("Tiingo stock symbol needn't update"));
+			return false; // 
+		}
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, STOCK_SYMBOLS_);
 		StoreInquiry(p);
 		SetInquiring(true);
@@ -297,6 +302,11 @@ bool CTiingoDataSource::GenerateCompanySymbol() {
 bool CTiingoDataSource::GenerateCryptoSymbol() {
 	ASSERT(!IsInquiring());
 	if (IsUpdateCryptoSymbol()) {
+		if (gl_systemConfiguration.GetTiingoCryptoSymbolUpdateDate() >= gl_pWorldMarket->GetMarketDate()) { // 已经更新过当日crypto代码？
+			SetUpdateCryptoSymbol(false);
+			gl_systemMessage.PushInformationMessage(_T("Tiingo crypto symbol needn't update"));
+			return false; // 
+		}
 		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_);
 		StoreInquiry(p);
 		SetInquiring(true);
@@ -410,7 +420,8 @@ bool CTiingoDataSource::GenerateDayLine() {
 		else {
 			gl_systemMessage.SetCurrentTiingoFunction(_T(""));
 			SetUpdateDayLine(false);
-			const string str = "Tiingo stock dayLine Updated";
+			string str = fmt::format("{:Ld} Tiingo stock dayLine Updated", gl_pWorldMarket->GetTiingoStockDayLineUpdated());
+			gl_pWorldMarket->SetTiingoStockDayLineUpdated(0);
 			gl_systemMessage.PushInformationMessage(str);
 			if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
 				// Note 暂不自动处理日线数据

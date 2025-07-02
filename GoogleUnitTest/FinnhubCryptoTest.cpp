@@ -102,8 +102,6 @@ namespace FireBirdTest {
 		EXPECT_FALSE(symbol.IsUpdateDayLineDB());
 		symbol.SetUpdateDayLineDB(true);
 		EXPECT_TRUE(symbol.IsUpdateDayLineDB());
-		EXPECT_TRUE(symbol.IsUpdateDayLineDBAndClearFlag());
-		EXPECT_FALSE(symbol.IsUpdateDayLineDB());
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestSetCheckDayLineStatus) {

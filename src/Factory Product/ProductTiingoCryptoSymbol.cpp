@@ -8,6 +8,7 @@
 
 #include "TiingoDataSource.h"
 #include "WebData.h"
+#include "WorldMarket.h"
 
 CProductTiingoCryptoSymbol::CProductTiingoCryptoSymbol() {
 	m_strInquiryFunction = _T("https://api.tiingo.com/tiingo/crypto?");
@@ -89,5 +90,6 @@ CTiingoCryptosPtr CProductTiingoCryptoSymbol::ParseTiingoCryptoSymbol(const CWeb
 void CProductTiingoCryptoSymbol::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateCryptoSymbol(false);
+	gl_systemConfiguration.SetTiingoCryptoSymbolUpdateDate(gl_pWorldMarket->GetMarketDate());
 	gl_systemMessage.PushInformationMessage(_T("Tiingo crypto symbol updated"));
 }

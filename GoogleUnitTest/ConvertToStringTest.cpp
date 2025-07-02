@@ -56,7 +56,12 @@ namespace FireBirdTest {
 		                         , &Data5));
 
 	TEST_P(ConvertDoubleToStringTest, TestDouble) {
-		const string str = ConvertValueToString(dValue, lDividend).GetString();
+		const string str = ConvertValueToCString(dValue, lDividend).GetString();
+		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
+	}
+
+	TEST_P(ConvertDoubleToStringTest, TestDouble2) {
+		const string str = ConvertValueToString(dValue, lDividend);
 		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
 	}
 
@@ -113,7 +118,12 @@ namespace FireBirdTest {
 		                         &Data12, &Data13, &Data14, &Data15));
 
 	TEST_P(ConvertLongToStringTest, TestLong) {
-		const string str = ConvertValueToString(lValue, lDividend).GetString();
+		const string str = ConvertValueToCString(lValue, lDividend).GetString();
+		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
+	}
+
+	TEST_P(ConvertLongToStringTest, TestLong2) {
+		const string str = ConvertValueToString(lValue, lDividend);
 		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
 	}
 
@@ -170,7 +180,12 @@ namespace FireBirdTest {
 		                         &Data22, &Data23, &Data24, &Data25));
 
 	TEST_P(ConvertIntegerToStringTest, TestInteger) {
-		const string str = ConvertValueToString(iValue, lDividend).GetString();
+		const string str = ConvertValueToCString(iValue, lDividend).GetString();
+		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
+	}
+
+	TEST_P(ConvertIntegerToStringTest, TestInteger2) {
+		const string str = ConvertValueToString(iValue, lDividend);
 		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
 	}
 
@@ -227,7 +242,12 @@ namespace FireBirdTest {
 		                         &Data42, &Data43, &Data44, &Data45));
 
 	TEST_P(ConvertINT64ToStringTest, TestINT64) {
-		const string str = ConvertValueToString(iValue, lDividend).GetString();
+		const string str = ConvertValueToCString(iValue, lDividend).GetString();
+		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
+	}
+
+	TEST_P(ConvertINT64ToStringTest, TestINT64_2) {
+		const string str = ConvertValueToString(iValue, lDividend);
 		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
 	}
 
