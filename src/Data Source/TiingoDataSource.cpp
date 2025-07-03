@@ -421,7 +421,6 @@ bool CTiingoDataSource::GenerateDayLine() {
 			gl_systemMessage.SetCurrentTiingoFunction(_T(""));
 			SetUpdateDayLine(false);
 			string str = fmt::format("{:Ld} Tiingo stock dayLine Updated", gl_pWorldMarket->GetTiingoStockDayLineUpdated());
-			gl_pWorldMarket->SetTiingoStockDayLineUpdated(0);
 			gl_systemMessage.PushInformationMessage(str);
 			if (gl_systemConfiguration.IsPaidTypeTiingoAccount()) {
 				// Note 暂不自动处理日线数据

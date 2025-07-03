@@ -70,16 +70,19 @@ void CWorldMarket::ResetFinnhub() {
 	}
 	m_pvMarketStatus->clear();
 	m_pvMarketHoliday->clear();
+
+	m_lFinnhubDayLineUpdated = 0;
 }
 
 void CWorldMarket::ResetQuandl() {
 }
 
-void CWorldMarket::ResetTiingo() const {
+void CWorldMarket::ResetTiingo() {
 	if (IsEarlyThen(gl_tiingoInaccessibleStock.GetUpdateDate(), GetMarketDate(), 7)) {
 		gl_tiingoInaccessibleStock.Clear(); // 不使用更新时间早于一周的数据。清除之，让系统自动查验新的状态。
 		gl_tiingoInaccessibleStock.SetUpdateDate(GetMarketDate());
 	}
+	m_lTiingoStockDayLineUpdated = 0;
 }
 
 void CWorldMarket::ResetDataContainer() {

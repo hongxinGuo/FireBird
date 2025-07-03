@@ -29,7 +29,7 @@ public:
 	void Reset();
 	void ResetFinnhub();
 	void ResetQuandl();
-	void ResetTiingo() const;
+	void ResetTiingo();
 	void ResetDataContainer();
 
 	bool IsTimeToResetSystem(long lCurrentTime) final { return (lCurrentTime > GetPrevTime(GetResetTime(), 0, 2, 1)) && (lCurrentTime < GetNextTime(GetResetTime(), 0, 5, 1)); }
