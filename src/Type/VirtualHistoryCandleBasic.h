@@ -18,7 +18,7 @@ public:
 
 	void SaveBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const; // 存储基本数据
 	void AppendBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const;
-	void LoadBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic);
+	void LoadBasicData(const CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic);
 
 	virtual int GetRatio() const = 0;
 

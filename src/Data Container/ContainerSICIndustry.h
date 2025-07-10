@@ -20,15 +20,15 @@ public:
 		else return false;
 	}
 
-	bool IsSicIndustry(const CSicIndustryPtr& pSicIndustry) const { return IsSicIndustry(pSicIndustry->m_lCode); }
-	void Add(CSicIndustryPtr pSicIndustry);
-	bool Delete(CSicIndustryPtr pSicIndustry);
+	bool IsSicIndustry(const CSICIndustryPtr& pSicIndustry) const { return IsSicIndustry(pSicIndustry->m_lCode); }
+	void Add(CSICIndustryPtr pSicIndustry);
+	bool Delete(CSICIndustryPtr pSicIndustry);
 
 	bool UpdateDB();
 	bool LoadDB();
 
 protected:
-	vector<CSicIndustryPtr> m_vSicIndustry;
+	vector<CSICIndustryPtr> m_vSicIndustry;
 	map<long, long> m_mapSicIndustry;
 	long m_lLastTotalSicIndustry;
 };

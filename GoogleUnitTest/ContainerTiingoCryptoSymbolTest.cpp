@@ -2,8 +2,6 @@
 
 #include"GeneralCheck.h"
 
-#include"WorldMarket.h"
-
 #include"ContainerTiingoCryptoSymbol.h"
 
 using namespace testing;

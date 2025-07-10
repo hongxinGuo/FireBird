@@ -13,7 +13,7 @@ void CVirtualStock::ResetAllUpdateDate() {
 	m_jsonUpdateDate[_T("DayLineEndDate")] = 19800101;
 }
 
-void CVirtualStock::LoadUpdateDate(string strUpdateDate) {
+void CVirtualStock::LoadUpdateDate(const string& strUpdateDate) {
 	if (strUpdateDate.length() < 10) {
 		ResetAllUpdateDate();
 	}

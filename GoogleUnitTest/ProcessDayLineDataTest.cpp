@@ -2,8 +2,6 @@
 
 #include"GeneralCheck.h"
 
-#include"ChinaStock.h"
-
 #include"WebData.h"
 #include"DayLineWebData.h"
 

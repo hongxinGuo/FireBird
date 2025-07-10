@@ -30,7 +30,7 @@ public:
 	void ResetAllUpdateDate() override;
 	int GetRatio() const final { return 1000; }
 
-	void Load(CSetFinnhubStock& setFinnhubStock);
+	void Load(const CSetFinnhubStock& setFinnhubStock);
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckProfileUpdateStatus(long lTodayDate);
 	bool CheckCompanyNewsUpdateStatus(long lTodayDate);

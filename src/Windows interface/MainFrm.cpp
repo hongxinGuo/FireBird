@@ -752,7 +752,6 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	CChinaStockPtr pStock;
-	CString strTemp;
 	const CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
 
 	if (pCurrentStock != nullptr) {

@@ -13,7 +13,7 @@ public:
 	~CTiingoCrypto() override = default;
 	int GetRatio() const override { return 3; };
 
-	void Load(CSetTiingoCrypto& setTiingoCrypto);
+	void Load(const CSetTiingoCrypto& setTiingoCrypto);
 	void Append(CSetTiingoCrypto& setTiingoCrypto);
 	void Save(CSetTiingoCrypto& setTiingoCrypto);
 	void Update(CSetTiingoCrypto& setTiingoCrypto);

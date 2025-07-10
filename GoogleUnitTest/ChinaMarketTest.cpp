@@ -388,7 +388,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask4) {
-		tm tm_{ 0 };
+		tm tm_{};
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
 		tm_.tm_mday = 7; // 2019年11月9日是星期四。
@@ -463,7 +463,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask5) {
-		tm tm_{ 0 };
+		tm tm_{};
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
 		tm_.tm_mday = 9; // 2019年11月9日是星期六。
@@ -521,7 +521,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask6) {
-		tm tm_{ 0 };
+		tm tm_{};
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
 		tm_.tm_mday = 10; // 2019年11月10日是星期日。
@@ -580,7 +580,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask7) {
-		tm tm_{ 0 };
+		tm tm_{};
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
 		tm_.tm_mday = 9; // 2019年11月9日是星期六。
@@ -641,7 +641,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask8) {
-		tm tm_{ 0 };
+		tm tm_{};
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
 		tm_.tm_mday = 10; // 2019年11月10日是星期日。
@@ -711,7 +711,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaMarketTest, TestTaskCreateTask9) {
-		tm tm_{ 0 };
+		tm tm_{};
 		tm_.tm_year = 2019 - 1900;
 		tm_.tm_mon = 10;
 		tm_.tm_mday = 10; // 2019年11月10日是星期日。
@@ -788,7 +788,7 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaMarketTest, TestGetNeteaseDayLineInquiringStr) {
 		CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(0);
-		EXPECT_TRUE(pStock->IsUpdateDayLine()) << _T("测试时使用teststock数据库，此数据库比较旧，最后更新时间不是昨日，故而活跃股票也需要更新日线");
+		EXPECT_TRUE(pStock->IsUpdateDayLine()) << _T("测试时使用testStock数据库，此数据库比较旧，最后更新时间不是昨日，故而活跃股票也需要更新日线");
 
 		pStock->SetUpdateDayLine(false);
 		pStock = gl_dataContainerChinaStock.GetStock(1);

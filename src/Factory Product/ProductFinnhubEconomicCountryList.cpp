@@ -31,13 +31,13 @@ void CProductFinnhubEconomicCountryList::ParseAndStoreWebData(CWebDataPtr pWebDa
 CCountriesPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const CWebDataPtr& pWebData) {
 	auto pvCountry = make_shared<vector<CCountryPtr>>();
 	CCountryPtr pCountry = nullptr;
-	string s;
 	json js;
 
 	if (!pWebData->CreateJson(js)) return pvCountry;
 	if (!IsValidData(pWebData)) return pvCountry;
 
 	try {
+		string s;
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pCountry = make_shared<CCountry>();
 			s = jsonGetString(it, _T("code2"));

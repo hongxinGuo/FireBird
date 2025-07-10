@@ -60,7 +60,7 @@ void CVirtualHistoryCandleBasic::AppendBasicData(CVirtualSetHistoryCandleBasic* 
 	pVirtualSetHistoryCandleBasic->Update();
 }
 
-void CVirtualHistoryCandleBasic::LoadBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) {
+void CVirtualHistoryCandleBasic::LoadBasicData(const CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());
 	auto ratio = GetRatio();
 

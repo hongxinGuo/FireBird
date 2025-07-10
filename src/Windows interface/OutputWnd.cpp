@@ -95,7 +95,6 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 设置500毫秒每次的软调度
 	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(3), 500, nullptr);
 	if (m_uIdTimer == 0) {
-		CString str;
 	}
 
 	return 0;

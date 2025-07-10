@@ -2,8 +2,6 @@
 
 #include"GeneralCheck.h"
 
-#include"WorldMarket.h"
-
 #include"ContainerFinnhubEconomicCalendar.h"
 
 using namespace testing;

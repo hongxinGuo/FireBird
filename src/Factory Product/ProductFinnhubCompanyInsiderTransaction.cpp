@@ -65,7 +65,6 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 	auto pvInsiderTransaction = make_shared<vector<CInsiderTransactionPtr>>();
 	json pt1;
 	string sError;
-	string s;
 	string stockSymbol;
 	CInsiderTransactionPtr pInsiderTransaction = nullptr;
 	json js;
@@ -82,6 +81,7 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 	}
 
 	try {
+		string s;
 		for (auto it = pt1.begin(); it != pt1.end(); ++it) {
 			pInsiderTransaction = make_shared<CInsiderTransaction>();
 			pInsiderTransaction->m_strSymbol = stockSymbol.c_str();

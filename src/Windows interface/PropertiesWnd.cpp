@@ -200,7 +200,6 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 设置1秒每次的软调度
 	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(4), 1000, nullptr);
 	if (m_uIdTimer == 0) {
-		CString str1;
 	}
 
 	return 0;
@@ -247,7 +246,7 @@ void CPropertiesWnd::InitPropList() {
 	m_wndPropList.MarkModifiedProperties();
 
 	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("System Status"));
-	CString s;
+	string s;
 	switch (gl_systemConfiguration.GetLogLevel()) {
 	case SPDLOG_LEVEL_TRACE:
 		s = _T("Trace");
@@ -273,7 +272,7 @@ void CPropertiesWnd::InitPropList() {
 	default:
 		s = _T("Info");
 	}
-	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T("Log level"), s, _T("One of: Trace, Debug, Info, Warn, Error, Critical, or Off"), SYSTEM_LOG_LEVEL_);
+	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T("Log level"), s.c_str(), _T("One of: Trace, Debug, Info, Warn, Error, Critical, or Off"), SYSTEM_LOG_LEVEL_);
 	pProp->AddOption(_T("Trace"));
 	pProp->AddOption(_T("Debug"));
 	pProp->AddOption(_T("Info"));
@@ -411,7 +410,7 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	strMessage = gl_systemMessage.GetCurrentTiingoFunction();
 	m_pPropTiingoCurrentFunction->SetValue(strMessage.c_str());
 
-	CString str = _T("");
+	string str = _T("");
 	switch (gl_pFinnhubWebSocket->GetState()) {
 	case ix::ReadyState::Closed:
 		str = _T("Closed");
@@ -426,7 +425,7 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 		str = _T("Open");
 		break;
 	}
-	m_pPropFinnhubWebSocket->SetValue(str);
+	m_pPropFinnhubWebSocket->SetValue(str.c_str());
 
 	switch (gl_pTiingoIEXWebSocket->GetState()) {
 	case ix::ReadyState::Closed:
@@ -442,7 +441,7 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 		str = _T("Open");
 		break;
 	}
-	m_pPropTiingoIEXWebSocket->SetValue(str);
+	m_pPropTiingoIEXWebSocket->SetValue(str.c_str());
 
 	switch (gl_pTiingoForexWebSocket->GetState()) {
 	case ix::ReadyState::Closed:
@@ -458,7 +457,7 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 		str = _T("Open");
 		break;
 	}
-	m_pPropTiingoForexWebSocket->SetValue(str);
+	m_pPropTiingoForexWebSocket->SetValue(str.c_str());
 
 	switch (gl_pTiingoCryptoWebSocket->GetState()) {
 	case ix::ReadyState::Closed:
@@ -474,7 +473,7 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 		str = _T("Open");
 		break;
 	}
-	m_pPropTiingoCryptoWebSocket->SetValue(str);
+	m_pPropTiingoCryptoWebSocket->SetValue(str.c_str());
 
 	CDockablePane::OnTimer(nIDEvent);
 }

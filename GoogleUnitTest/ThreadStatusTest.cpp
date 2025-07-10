@@ -4,7 +4,6 @@
 
 #include"ThreadStatus.h"
 
-#include "ChinaMarket.h"
 #include "WorldMarket.h"
 
 using namespace testing;

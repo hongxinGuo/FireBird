@@ -47,13 +47,14 @@ void CProductFinnhubMarketStatus::ParseAndStoreWebData(CWebDataPtr pWebData) {
 CMarketStatusesPtr CProductFinnhubMarketStatus::ParseFinnhubMarketStatus(const CWebDataPtr& pWebData) {
 	auto pvMarketStatus = make_shared<vector<CMarketStatusPtr>>();
 	CMarketStatusPtr pMarketStatus = nullptr;
-	string s, sError;
+	string sError;
 	json js;
 
 	if (!pWebData->CreateJson(js)) return pvMarketStatus;
 	if (!IsValidData(pWebData)) return pvMarketStatus;
 
 	try {
+		string s;
 		pMarketStatus = make_shared<CMarketStatus>();
 		s = jsonGetString(js, _T("exchange"));
 		if (!s.empty()) pMarketStatus->m_strExchange = s;

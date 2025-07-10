@@ -27,7 +27,7 @@ void CTiingoStock::ResetAllUpdateDate() {
 	SetUpdateStockDailyMetaDate(19800101);
 }
 
-void CTiingoStock::Load(CSetTiingoStock& setTiingoStock) {
+void CTiingoStock::Load(const CSetTiingoStock& setTiingoStock) {
 	m_strTiingoPermaTicker = setTiingoStock.m_TiingoPermaTicker;
 	m_strSymbol = setTiingoStock.m_Ticker;
 	m_strName = setTiingoStock.m_Name;

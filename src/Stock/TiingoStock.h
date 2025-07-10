@@ -31,7 +31,7 @@ public:
 	void ResetAllUpdateDate() override;
 	int GetRatio() const override { return 1000000; }; // 
 
-	void Load(CSetTiingoStock& setTiingoStock);
+	void Load(const CSetTiingoStock& setTiingoStock);
 	void Append(CSetTiingoStock& setTiingoStock);
 	void Save(CSetTiingoStock& setTiingoStock);
 	void Update(CSetTiingoStock& setTiingoStock);

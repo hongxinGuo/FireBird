@@ -137,7 +137,6 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubForexSymbolTest, TestUpdateDayLineStartEndDate) {
 		CFinnhubForex symbol;
 		vector<CDayLinePtr> vDayLine;
-		CDayLinePtr pDayLine;
 
 		symbol.SetDayLineEndDate(19900101);
 		symbol.SetDayLineStartDate(19900101);
@@ -146,7 +145,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(symbol.GetDayLineEndDate(), 19800101);
 
 		EXPECT_EQ(symbol.GetDayLineSize(), 0);
-		pDayLine = make_shared<CDayLine>();
+		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200102);
 		pDayLine->SetClose(100);
 		vDayLine.push_back(pDayLine);

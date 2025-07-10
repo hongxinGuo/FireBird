@@ -1,4 +1,4 @@
 #pragma once
 
-void SaveToFile(const CString& strFileName, CString s);
-bool LoadFromFile(const CString& strFileName, string& s);
+void SaveToFile(const string& strFileName, string s);
+bool LoadFromFile(const string& strFileName, string& s);

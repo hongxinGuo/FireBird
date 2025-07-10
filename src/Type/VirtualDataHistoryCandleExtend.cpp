@@ -27,13 +27,13 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 
 	const size_t lSize = Size();
 	if (strStockSymbol.length() > 0) {
-		long lLastDate = 0;
 		pSetHistoryCandleBasic->m_strFilter = _T("[Symbol] = '");
 		pSetHistoryCandleBasic->m_strFilter += strStockSymbol.c_str();
 		pSetHistoryCandleBasic->m_strFilter += _T("'");
 		pSetHistoryCandleBasic->m_strSort = _T("[Date]");
 
 		if (pSetHistoryCandleBasic->Open()) {
+			long lLastDate = 0;
 			pSetHistoryCandleBasic->m_pDatabase->BeginTrans();
 			while (!pSetHistoryCandleBasic->IsEOF()) {
 				if (pSetHistoryCandleBasic->m_Date > lLastDate) {

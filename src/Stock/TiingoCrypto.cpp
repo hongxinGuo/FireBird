@@ -5,7 +5,7 @@
 CTiingoCrypto::CTiingoCrypto() {
 }
 
-void CTiingoCrypto::Load(CSetTiingoCrypto& setTiingoCrypto) {
+void CTiingoCrypto::Load(const CSetTiingoCrypto& setTiingoCrypto) {
 	m_strSymbol = setTiingoCrypto.m_Ticker;
 	m_strName = setTiingoCrypto.m_Name;
 	m_strDescription = setTiingoCrypto.m_Description;

@@ -2,13 +2,12 @@
 
 #include"GeneralCheck.h"
 
-#include"VirtualDataSource.h"
-
 #include"WorldMarket.h"
 
 #include"FinnhubInquiryType.h"
 
 #include"FinnhubFactory.h"
+#include"VirtualWebProduct.h"
 
 using namespace testing;
 

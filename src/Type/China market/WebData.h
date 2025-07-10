@@ -63,7 +63,7 @@ public:
 	bool CreateJson(json& js, long lBeginPos = 0, long lEndPos = 0) const;
 
 	// 测试用函数
-	void Test_SetBuffer_(string strBuffer);
+	void Test_SetBuffer_(const string& strBuffer);
 
 protected:
 	chrono::sys_seconds m_tpTime;// 此数据的提取时间。time point格式

@@ -68,7 +68,6 @@ int CPropertyRealtimeWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	// 设置1秒每次的软调度
 	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(4), 1000, nullptr);
 	if (m_uIdTimer == 0) {
-		CString str1;
 	}
 
 	return 0;

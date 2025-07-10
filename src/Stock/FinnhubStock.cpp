@@ -46,7 +46,7 @@ void CFinnhubStock::ResetAllUpdateDate() {
 	m_jsonUpdateDate["Finnhub"]["StockEstimatesEPSSurprise"] = 19800101;
 }
 
-void CFinnhubStock::Load(CSetFinnhubStock& setFinnhubStock) {
+void CFinnhubStock::Load(const CSetFinnhubStock& setFinnhubStock) {
 	m_strSymbol = setFinnhubStock.m_Symbol;
 	m_strExchangeCode = setFinnhubStock.m_ExchangeCode;
 	m_strDescription = setFinnhubStock.m_Description;
