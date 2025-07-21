@@ -21,27 +21,30 @@ void CProductIndexNasdaq100Stocks::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	gl_vNasdaq100Stocks = ParseIndexNasdaq100Stocks(pWebData);
 	std::ranges::sort(gl_vNasdaq100Stocks, [](const string& s1, const string& s2) { return s1 < s2; });
 
-	CSetIndexNasdaq100 setNasdaq100;
+	if (gl_vNasdaq100Stocks.size() >= 90) {
+		CSetIndexNasdaq100 setNasdaq100;
 
-	setNasdaq100.Open();
-	setNasdaq100.m_pDatabase->BeginTrans();
-	while (!setNasdaq100.IsEOF()) {
-		setNasdaq100.Delete();
-		setNasdaq100.MoveNext();
+		setNasdaq100.Open();
+		setNasdaq100.m_pDatabase->BeginTrans();
+		while (!setNasdaq100.IsEOF()) {
+			setNasdaq100.Delete();
+			setNasdaq100.MoveNext();
+		}
+		for (auto& s : gl_vNasdaq100Stocks) {
+			setNasdaq100.AddNew();
+			setNasdaq100.m_Symbol = s.c_str();
+			setNasdaq100.Update();
+		}
+		setNasdaq100.m_pDatabase->CommitTrans();
+		setNasdaq100.Close();
 	}
-	for (auto& s : gl_vNasdaq100Stocks) {
-		setNasdaq100.AddNew();
-		setNasdaq100.m_Symbol = s.c_str();
-		setNasdaq100.Update();
-	}
-	setNasdaq100.m_pDatabase->CommitTrans();
-	setNasdaq100.Close();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
+//  https://www.slickcharts.com/nasdaq100网页中，有效内容格式为：
 //
-//{
+// {
 //	"companyListComponent": {
 //		"companyList": [
 //		{
@@ -77,10 +80,10 @@ vector<string> CProductIndexNasdaq100Stocks::ParseIndexNasdaq100Stocks(const CWe
 	vector<string> vSymbol;
 
 	string_view svData = pWebData->GetStringView(0, pWebData->GetBufferLength());
-	size_t positionStart = svData.find(_T("<script> window.__sc_init_state__ = "));
+	size_t positionStart = svData.find(_T("<script> window.__sc_init_state__ = ")); // 有效数据前面的字符串
 	positionStart += 36; // 跨过此字符串
 	string_view svDataStart = svData.substr(positionStart);
-	size_t positionEnd = svDataStart.find(_T("; </script>"));
+	size_t positionEnd = svDataStart.find(_T("; </script>")); // 有效数据后的字符串
 	string_view sv = svDataStart.substr(0, positionEnd);
 
 	ondemand::parser parser;
