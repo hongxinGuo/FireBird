@@ -37,12 +37,12 @@ namespace FireBirdTest {
 		ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
 		CVirtualHistoryCandleExtend dl;
 		dl.SetDate(_CHINA_MARKET_BEGIN_DATE_);
-		EXPECT_EQ(dl.GetMarketDate(), _CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(dl.GetDate(), _CHINA_MARKET_BEGIN_DATE_);
 	}
 
 	TEST_F(CVirtualHistoryCandleExtendTest, TestGetTime) {
 		CVirtualHistoryCandleExtend dl;
-		EXPECT_EQ(dl.GetMarketDate(), 0);
+		EXPECT_EQ(dl.GetDate(), 0);
 		dl.SetTime(100100100);
 		EXPECT_EQ(dl.GetMarketTime(), 100100100);
 	}

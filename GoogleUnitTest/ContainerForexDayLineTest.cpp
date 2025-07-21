@@ -50,7 +50,7 @@ namespace FireBirdTest {
 		m_dataForexDayLine.SaveDB(_T("OANDA:AUD_SGD"));
 
 		m_dataForexDayLine.LoadDB(_T("OANDA:AUD_SGD"));
-		EXPECT_EQ(m_dataForexDayLine.GetData(5)->GetMarketDate(), 20200411) << "新存储数据位于第六位";
+		EXPECT_EQ(m_dataForexDayLine.GetData(5)->GetDate(), 20200411) << "新存储数据位于第六位";
 
 		// 恢复原状
 		CSetForexDayLine setForexDayLineBasic;

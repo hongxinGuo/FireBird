@@ -50,7 +50,7 @@ void ShowHistoryData(CDC* pDC, CVirtualDataHistoryCandleExtend* pHistoryCandle, 
 		if ((*it)->GetHigh() == (*it)->GetLow()) { y = y - 1; }
 		else { y = (0.5 - static_cast<double>((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height(); }
 		pDC->LineTo(x, y);
-		long lDate = (*it)->GetMarketDate();
+		long lDate = (*it)->GetDate();
 		i++;
 		if (3 * i > vData.size()) break;
 		if (rectClient.right <= 3 * i) break; // 画到窗口左边框为止

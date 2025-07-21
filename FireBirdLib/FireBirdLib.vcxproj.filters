@@ -196,6 +196,15 @@
     <Filter Include="源文件\Database\WorldMarket\Tiingo">
       <UniqueIdentifier>{17228aa2-8bea-4e48-a186-8e6afef1e227}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Factory-Product\Accessory">
+      <UniqueIdentifier>{afe80ecb-e336-4750-9ec8-cc3528be72c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Data Source\Accessory">
+      <UniqueIdentifier>{c984ee04-e97e-4511-b4ba-c0fb1940b16d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Factory-Product\Accessory">
+      <UniqueIdentifier>{01165a19-3b8f-4b65-8736-65e259a3fd1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h">
@@ -855,6 +864,21 @@
     <ClInclude Include="..\src\Data Source\InternetOption.h">
       <Filter>头文件\Data Source</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetIndexNasdaq100.h">
+      <Filter>头文件\database\WorldMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetIndexNasdaq100MA200UpDownRate.h">
+      <Filter>头文件\database\WorldMarket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\AccessoryFactory.h">
+      <Filter>头文件\Factory-Product\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Data Source\AccessoryDataSource.h">
+      <Filter>头文件\Data Source\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Factory Product\ProductIndexNasdaq100Stocks.h">
+      <Filter>头文件\Factory-Product\Accessory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1420,6 +1444,21 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerStockExchange.cpp">
       <Filter>源文件\Data container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetIndexNasdaq100.cpp">
+      <Filter>源文件\Database\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetIndexNasdaq100MA200UpDownRate.cpp">
+      <Filter>源文件\Database\WorldMarket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\AccessoryDataSource.cpp">
+      <Filter>源文件\Data Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\AccessoryFactory.cpp">
+      <Filter>源文件\Factory-Product\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Factory Product\ProductIndexNasdaq100Stocks.cpp">
+      <Filter>源文件\Factory-Product\Accessory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

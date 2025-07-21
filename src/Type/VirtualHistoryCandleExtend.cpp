@@ -160,7 +160,7 @@ bool CVirtualHistoryCandleExtend::LoadExtendData(const CVirtualSetHistoryCandleE
 
 bool CVirtualHistoryCandleExtend::Save(CVirtualSetHistoryCandle* pSet) const {
 	ASSERT(pSet->IsOpen());
-	pSet->m_Date = GetMarketDate();
+	pSet->m_Date = GetDate();
 	pSet->m_Exchange = GetExchange().c_str();
 	pSet->m_Symbol = GetStockSymbol().c_str();
 	pSet->m_DisplaySymbol = GetDisplaySymbol().c_str();

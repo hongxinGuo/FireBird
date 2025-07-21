@@ -36,7 +36,7 @@ public:
 	double GetRSLogarithm() const noexcept { return m_dRSLogarithm; }
 	void SetRSLogarithm(const double dValue) noexcept { m_dRSLogarithm = dValue; }
 
-	long GetMarketDate() const noexcept { return m_lDate; }
+	long GetDate() const noexcept { return m_lDate; }
 	void SetDate(const long lDate) noexcept { m_lDate = lDate; }
 	auto GetMarketTimePoint() const noexcept { return m_tpTime; }
 	time_t GetMarketTime() const noexcept { return m_tpTime.time_since_epoch().count(); }
@@ -102,7 +102,10 @@ public:
 	void Set120RS(const double dValue) noexcept { m_d120RS = dValue; }
 	double Get120RS() const noexcept { return m_d120RS; }
 
-public:
+	void SetAverage(const int length, const long lValue) noexcept;
+	long GetAverage(const int length) const noexcept;
+
+protected:
 	// need to save
 	long m_lDate{ 0 }; // 类型(YYYYMMDD)
 	std::chrono::sys_seconds m_tpTime{ std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(0)) };
@@ -133,7 +136,7 @@ public:
 	double m_dRSLogarithm{ 0 }; // 相对强度的对数值（最小为0， 最大为100，m_dRSLogarithm = (log(m_dRS) - log(50)) * 50 / (log(100)-log(50)) )
 	// 如果小于50， 则 m_dRSLogarithm = 100 - (log(100 - m_dRS) - log(50)) * 50 / (log(100)-log(50))
 
-public:
+protected:
 	// don't need to save
 	double m_d3RS{ 0 };
 	double m_d5RS{ 0 };
@@ -141,6 +144,17 @@ public:
 	double m_d30RS{ 0 };
 	double m_d60RS{ 0 };
 	double m_d120RS{ 0 };
+
+	// 各类平均线
+	long m_lAverage;
+	long m_l5Average;
+	long m_l10Average;
+	long m_l20Average;
+	long m_l30Average;
+	long m_l60Average;
+	long m_l120Average;
+	long m_l200Average;
+	long m_l240Average;
 };
 
 using CVirtualHistoryCandleBasicPtr = shared_ptr<CVirtualHistoryCandleBasic>;

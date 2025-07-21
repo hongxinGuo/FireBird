@@ -27,8 +27,10 @@ public:
 		ASSERT(lIndex < Size());
 		return m_vHistoryData.at(lIndex);
 	}
+	bool HaveDayLine(long lDate);
+	CTiingoDayLinePtr GetDayLine(long lDate);
 
-	bool Add(CTiingoDayLinePtr pData) {
+	bool Add(const CTiingoDayLinePtr& pData) {
 		m_vHistoryData.push_back(pData);
 		return true;
 	}
@@ -42,6 +44,7 @@ public:
 	}
 
 	// ÌØÓÐº¯Êý
+	void CalculateMA(int length) const;
 
 protected:
 	vector<CTiingoDayLinePtr> m_vHistoryData;

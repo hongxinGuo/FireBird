@@ -156,6 +156,8 @@
 #define ID_32933                        32933
 #define ID_TIINGO_32934                 32934
 #define ID_TIINGO_FIX_DAYLINE           32935
+#define ID_32936                        32936
+#define ID_CalculateNasdaq100_200MA_UpDownRate 32937
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -199,7 +201,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32936
+#define _APS_NEXT_COMMAND_VALUE         32938
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

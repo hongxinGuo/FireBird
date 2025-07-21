@@ -34,12 +34,12 @@ namespace FireBirdTest {
 	TEST_F(CStockDayLineTest, TestGetDate) {
 		CDayLine dl;
 		dl.SetDate(_CHINA_MARKET_BEGIN_DATE_);
-		EXPECT_EQ(dl.GetMarketDate(), _CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(dl.GetDate(), _CHINA_MARKET_BEGIN_DATE_);
 	}
 
 	TEST_F(CStockDayLineTest, TestGetTime) {
 		CDayLine dl;
-		EXPECT_EQ(dl.GetMarketDate(), 0);
+		EXPECT_EQ(dl.GetDate(), 0);
 		dl.SetTime(100100100);
 		EXPECT_EQ(dl.GetMarketTime(), 100100100);
 	}
@@ -550,7 +550,7 @@ namespace FireBirdTest {
 		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21100201");
 		setDayLineBasicInfo.Open();
 		id2.LoadBasicData(&setDayLineBasicInfo);
-		EXPECT_EQ(setDayLineBasicInfo.m_Date, id.GetMarketDate());
+		EXPECT_EQ(setDayLineBasicInfo.m_Date, id.GetDate());
 		EXPECT_STREQ(setDayLineBasicInfo.m_Symbol, id.GetStockSymbol().c_str());
 		//EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_LastClose) * id.GetRatio(), id.GetLastClose());
@@ -570,7 +570,7 @@ namespace FireBirdTest {
 		EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_RSBackup), id.GetRSBackup());
 		setDayLineBasicInfo.Close();
 
-		EXPECT_EQ(id2.GetMarketDate(), id.GetMarketDate());
+		EXPECT_EQ(id2.GetDate(), id.GetDate());
 		EXPECT_STREQ(id2.GetStockSymbol().c_str(), id.GetStockSymbol().c_str());
 		//EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_DOUBLE_EQ(id2.GetLastClose(), id.GetLastClose());
@@ -634,7 +634,7 @@ namespace FireBirdTest {
 		setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101001");
 		setDayLineBasicInfo.Open();
 		idLoaded.LoadBasicData(&setDayLineBasicInfo);
-		EXPECT_EQ(idLoaded.GetMarketDate(), id.GetMarketDate());
+		EXPECT_EQ(idLoaded.GetDate(), id.GetDate());
 		EXPECT_STREQ(idLoaded.GetStockSymbol().c_str(), id.GetStockSymbol().c_str());
 		//EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
 		EXPECT_EQ(idLoaded.GetLastClose(), id.GetLastClose());
@@ -696,7 +696,7 @@ namespace FireBirdTest {
 		setDayLineBasicInfo.m_strSort = _T("[Date]");
 		setDayLineBasicInfo.Open();
 		id2.LoadBasicData(&setDayLineBasicInfo);
-		EXPECT_EQ(id2.GetMarketDate(), _CHINA_MARKET_BEGIN_DATE_);
+		EXPECT_EQ(id2.GetDate(), _CHINA_MARKET_BEGIN_DATE_);
 		EXPECT_STREQ(id.GetStockSymbol().c_str(), id2.GetStockSymbol().c_str());
 		EXPECT_EQ(id2.GetOpen(), 1100);
 		EXPECT_EQ(id2.GetClose(), 1150);
@@ -714,7 +714,7 @@ namespace FireBirdTest {
 		dayLine.LoadBasicData(&setForexDayLine);
 		setForexDayLine.Close();
 
-		EXPECT_EQ(dayLine.GetMarketDate(), 20200406);
+		EXPECT_EQ(dayLine.GetDate(), 20200406);
 		EXPECT_STREQ(dayLine.GetExchange().c_str(), _T("oanda"));
 		EXPECT_STREQ(dayLine.GetStockSymbol().c_str(), _T("OANDA:AUD_SGD"));
 		EXPECT_EQ(dayLine.GetLastClose(), 0);

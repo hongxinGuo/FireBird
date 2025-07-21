@@ -127,6 +127,9 @@ enum {
 	TIINGO_STOCK_DAILY_META__,
 	TIINGO_FINANCIAL_STATEMENT_,
 	TIINGO_IEX_TOP_OF_BOOK_,
+
+	// Accessory product
+	ACCESSORY_INDEX_NASDAQ100_STOCKS = 10000,
 };
 
 class CFinnhubInquiryType {

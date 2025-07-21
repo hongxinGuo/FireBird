@@ -142,6 +142,9 @@
     <Filter Include="Test源文件\DataBase">
       <UniqueIdentifier>{d6d8ef2e-9218-4538-a6d4-8797a72b801e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Factory Product\Accessory">
+      <UniqueIdentifier>{a7806a7f-5b4a-4580-92ed-95fa51066bad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -650,6 +653,9 @@
     </ClCompile>
     <ClCompile Include="ContainerTiingoStockDayLineTest.cpp">
       <Filter>Test源文件\Data Container\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductIndexNasdaq100StocksTest.cpp">
+      <Filter>Test源文件\Factory Product\Accessory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

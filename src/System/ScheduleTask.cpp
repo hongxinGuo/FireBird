@@ -20,6 +20,8 @@
 
 #include <spdlog/sinks/basic_file_sink.h>
 
+#include "AccessoryDataSource.h"
+
 void TaskCheckWorldMarketReady() {
 	if (gl_pWorldMarket->IsSystemReady()) return;
 	if (gl_pFinnhubDataSource->IsUpdateSymbol()) return;
@@ -48,11 +50,12 @@ void CreateDataSource() {
 	gl_pNeteaseDayLineDataSource = make_shared<CNeteaseDayLineDataSource>();
 	gl_pTengxunDayLineDataSource = make_shared<CTengxunDayLineDataSource>();
 
-	// 此三个要在gl_pWorldMarket前生成
+	// 此四个要在gl_pWorldMarket前生成
 	ASSERT(gl_pWorldMarket == nullptr);
 	gl_pFinnhubDataSource = make_shared<CFinnhubDataSource>();
 	gl_pTiingoDataSource = make_shared<CTiingoDataSource>();
 	gl_pQuandlDataSource = make_shared<CQuandlDataSource>();
+	gl_pAccessoryDataSource = make_shared<CAccessoryDataSource>();
 }
 
 void CreateWebSocket() {
@@ -110,6 +113,7 @@ void AssignDataSourceAndWebInquiryToMarket() {
 	// world market's data source
 	gl_pWorldMarket->StoreDataSource(gl_pFinnhubDataSource);
 	gl_pWorldMarket->StoreDataSource(gl_pTiingoDataSource);
+	gl_pWorldMarket->StoreDataSource(gl_pAccessoryDataSource);
 }
 
 void InitializeMarkets() {

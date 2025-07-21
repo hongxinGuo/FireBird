@@ -5,7 +5,7 @@
 #include "WebData.h"
 
 [[nodiscard]] bool CompareDayLineDate(const CDayLinePtr& p1, const CDayLinePtr& p2) {
-	return p1->GetMarketDate() < p2->GetMarketDate();
+	return p1->GetDate() < p2->GetDate();
 }
 
 bool CVirtualWebProduct::IsVoidJson(const CWebDataPtr& pWebData) {

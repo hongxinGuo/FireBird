@@ -166,13 +166,13 @@ void CChinaStock::ClearRTDataDeque() {
 
 bool CChinaStock::HaveNewDayLineData() {
 	if (m_dataDayLine.Size() <= 0) return false;
-	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > GetDayLineEndDate()) return true;
+	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate() > GetDayLineEndDate()) return true;
 	return false;
 }
 
 void CChinaStock::UpdateStatusByDownloadedDayLine() {
 	if (m_dataDayLine.Empty()) return;
-	if (IsEarlyThen(m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
+	if (IsEarlyThen(m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate(), gl_pChinaMarket->GetMarketDate(), 30)) {
 		// 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
 		SetIPOStatus(_STOCK_DELISTED_); // 已退市或暂停交易。
 	}
@@ -332,13 +332,13 @@ void CChinaStock::UpdateDayLineStartEndDate() {
 	bool fUpdated = false;
 
 	if (m_dataDayLine.Size() > 0) {
-		if ((GetDayLineStartDate() == 19900101) || (m_dataDayLine.GetData(0)->GetMarketDate() < GetDayLineStartDate())) {
-			SetDayLineStartDate(m_dataDayLine.GetData(0)->GetMarketDate());
+		if ((GetDayLineStartDate() == 19900101) || (m_dataDayLine.GetData(0)->GetDate() < GetDayLineStartDate())) {
+			SetDayLineStartDate(m_dataDayLine.GetData(0)->GetDate());
 			SetDayLineDBUpdated(true);
 			fUpdated = true;
 		}
-		if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > GetDayLineEndDate()) {
-			SetDayLineEndDate(m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate());
+		if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate() > GetDayLineEndDate()) {
+			SetDayLineEndDate(m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate());
 			SetDayLineDBUpdated(true);
 			fUpdated = true;
 		}
@@ -1258,7 +1258,7 @@ bool CChinaStock::CalculatingWeekLine(long lStartDate) {
 	CWeekLinePtr pWeekLine = nullptr;
 
 	m_dataWeekLine.Unload();
-	while ((i < m_dataDayLine.Size()) && (m_dataDayLine.GetData(i)->GetMarketDate() < lStartDate)) {
+	while ((i < m_dataDayLine.Size()) && (m_dataDayLine.GetData(i)->GetDate() < lStartDate)) {
 		i++;
 	}
 	if (i < m_dataDayLine.Size()) {

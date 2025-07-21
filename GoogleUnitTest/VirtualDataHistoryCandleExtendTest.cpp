@@ -47,7 +47,7 @@ namespace FireBirdTest {
 		id.Add(pData);
 
 		const auto pContainer = id.GetContainer();
-		EXPECT_EQ((*pContainer)[0]->GetMarketDate(), 20202020);
+		EXPECT_EQ((*pContainer)[0]->GetDate(), 20202020);
 	}
 
 	TEST_F(CVirtualDataHistoryCandleExtendTest, TestGetRS1) {
@@ -272,7 +272,7 @@ namespace FireBirdTest {
 		HistoryDataContainer.UpdateData(vHistoryData);
 		EXPECT_EQ(HistoryDataContainer.Size(), 1);
 		pHistoryData2 = HistoryDataContainer.GetData(0);
-		EXPECT_EQ(pHistoryData2->GetMarketDate(), 20200101);
+		EXPECT_EQ(pHistoryData2->GetDate(), 20200101);
 		EXPECT_EQ(pHistoryData2->GetHigh(), 1000);
 		EXPECT_EQ(pHistoryData2->GetLow(), 200);
 		EXPECT_EQ(pHistoryData2->GetClose(), 100);

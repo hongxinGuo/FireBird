@@ -279,8 +279,8 @@ void CTiingoStock::UpdateDayLineStartEndDate() {
 
 bool CTiingoStock::HaveNewDayLineData() {
 	if (m_dataDayLine.Empty()) return false;
-	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > GetDayLineEndDate())
-		|| (m_dataDayLine.GetData(0)->GetMarketDate() < GetDayLineStartDate()))
+	if ((m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate() > GetDayLineEndDate())
+		|| (m_dataDayLine.GetData(0)->GetDate() < GetDayLineStartDate()))
 		return true;
 	return false;
 }
@@ -452,7 +452,7 @@ void CTiingoStock::ProcessDayLine() {
 	m_v52WeekHigh.clear();
 	m_v52WeekLow.clear();
 	for (size_t index = 0; index < endPos; index++) {
-		double d = m_dataDayLine.GetData(index)->m_lClose;
+		double d = m_dataDayLine.GetData(index)->GetClose();
 		m_vClose.push_back(d);
 	}
 
@@ -476,7 +476,7 @@ void CTiingoStock::ProcessDayLine2() {
 	m_v52WeekHigh.clear();
 	m_v52WeekLow.clear();
 	for (size_t index = 0; index < endPos; index++) {
-		double d = m_dataDayLine.GetData(index)->m_lClose;
+		double d = m_dataDayLine.GetData(index)->GetClose();
 		m_vClose.push_back(d);
 	}
 
@@ -498,7 +498,7 @@ void CTiingoStock::ProcessDayLine3() {
 	m_v52WeekHigh.clear();
 	m_v52WeekLow.clear();
 	for (size_t index = 0; index < endPos; index++) {
-		double d = m_dataDayLine.GetData(index)->m_lClose;
+		double d = m_dataDayLine.GetData(index)->GetClose();
 		m_vClose.push_back(d);
 	}
 
@@ -515,10 +515,10 @@ void CTiingoStock::FindHighLow3(size_t endPos) {
 		auto dClose = m_vClose[currentPos];
 		switch (IsLowOrHigh(currentPos, dClose)) {
 		case -1: // new low
-			Add52WeekLow(m_dataDayLine.GetData(currentPos)->GetMarketDate());
+			Add52WeekLow(m_dataDayLine.GetData(currentPos)->GetDate());
 			break;
 		case 1: // new high
-			Add52WeekHigh(m_dataDayLine.GetData(currentPos)->GetMarketDate());
+			Add52WeekHigh(m_dataDayLine.GetData(currentPos)->GetDate());
 			break;
 		default:
 			break;
@@ -571,7 +571,7 @@ void CTiingoStock::FindAll52WeekLow(size_t beginPos, size_t endPos) {
 					break;
 				}
 				if (m_vClose[currentPos] < belowCurrent52WeekLow) { // 找到了
-					Add52WeekLow(m_dataDayLine.GetData(currentPos)->m_lDate);
+					Add52WeekLow(m_dataDayLine.GetData(currentPos)->GetDate());
 					dCurrent52WeekLowValue = m_vClose[currentPos];
 					current52WeekLowPos = currentPos;
 					currentPos++;
@@ -629,7 +629,7 @@ void CTiingoStock::FindAll52WeekHigh(size_t beginPos, size_t endPos) {
 					break;
 				}
 				if (m_vClose[currentEndPos] > aboveCurrent52WeekHigh) { // 找到了
-					Add52WeekHigh(m_dataDayLine.GetData(currentEndPos)->m_lDate);
+					Add52WeekHigh(m_dataDayLine.GetData(currentEndPos)->GetDate());
 					dCurrent52WeekHighValue = m_vClose[currentEndPos];
 					current52WeekHighPos = currentEndPos;
 					fCurrentFound = true;
@@ -682,7 +682,7 @@ size_t CTiingoStock::FindCurrent52WeekHigh(size_t beginPos, size_t endPos, doubl
 double CTiingoStock::CalculateSplitFactor(size_t beginPos, size_t endPos) const {
 	double dRatio = 1;
 	for (auto index = beginPos; index < endPos; index++) {
-		auto splitFactor = m_dataDayLine.GetData(index)->m_dSplitFactor;
+		auto splitFactor = m_dataDayLine.GetData(index)->GetSplitFactor();
 		if (splitFactor > __SMALL_DOUBLE_) {
 			dRatio *= splitFactor;
 		}
@@ -695,7 +695,7 @@ void CTiingoStock::NormalizeStockCloseValue(double dSplitFactor, size_t calculat
 	if (dSplitFactor < 1) { // 总体是缩股的。
 		for (auto index = dayLineSize - 1; index > calculatePos; index--) { // 向前复权（保持目前的股价不变）
 			m_vClose[index] *= dCurrentSplitFactor; // 使用除法向前复权。要先计算，然后才算splitFactor
-			auto currentSplitFactor = m_dataDayLine.GetData(index)->m_dSplitFactor;
+			auto currentSplitFactor = m_dataDayLine.GetData(index)->GetSplitFactor();
 			if (currentSplitFactor < 1 + __SMALL_DOUBLE_ && currentSplitFactor > 1 - __SMALL_DOUBLE_) {
 				// do nothing
 			}
@@ -708,7 +708,7 @@ void CTiingoStock::NormalizeStockCloseValue(double dSplitFactor, size_t calculat
 	}
 	else { // 总体是扩股的。
 		for (auto index = calculatePos; index < dayLineSize; index++) { // 向后复权（目前的股价会变大）
-			auto currentSplitFactor = m_dataDayLine.GetData(index)->m_dSplitFactor;
+			auto currentSplitFactor = m_dataDayLine.GetData(index)->GetSplitFactor();
 			if ((currentSplitFactor < 1 + __SMALL_DOUBLE_) && currentSplitFactor > 1 - __SMALL_DOUBLE_) {
 				// do nothing
 			}

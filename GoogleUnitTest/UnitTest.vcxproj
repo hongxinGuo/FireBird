@@ -117,6 +117,7 @@
     <ClCompile Include="ProductFinnbhubSECFilingsTest.cpp" />
     <ClCompile Include="ProductFinnhubMarketHolidayTest.cpp" />
     <ClCompile Include="ProductFinnhubMarketStatusTest.cpp" />
+    <ClCompile Include="ProductIndexNasdaq100StocksTest.cpp" />
     <ClCompile Include="ProductNeteaseDayLineTest.cpp" />
     <ClCompile Include="ProductNeteaseRTTest.cpp" />
     <ClCompile Include="ProductSinaRTTest.cpp" />

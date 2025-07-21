@@ -140,4 +140,6 @@ public:
 	afx_msg void OnCalculateNewLowFiveTimes();
 	afx_msg void OnInquireIexTopOfBook();
 	afx_msg void OnTiingoFixDayline();
+	afx_msg void OnCalculateNasdaq100200maUpdownRate();
+	afx_msg void OnUpdateCalculateNasdaq100200maUpdownRate(CCmdUI* pCmdUI);
 };

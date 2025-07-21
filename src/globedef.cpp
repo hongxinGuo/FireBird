@@ -32,6 +32,7 @@
 #include"threadStatus.h"
 
 #undef max
+#include "AccessoryDataSource.h"
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
@@ -70,6 +71,8 @@ int64_t gl_TiingoTotalData = 0;
 int64_t gl_FinnhubTotalData = 0;
 int64_t gl_ChinaMarketTotalData = 0;
 
+vector<string> gl_vNasdaq100Stocks; // Nasdaq100指数股票代码
+
 // Data source, 皆为唯一实例
 CSinaRTDataSourcePtr gl_pSinaRTDataSource = nullptr;
 CTengxunRTDataSourcePtr gl_pTengxunRTDataSource = nullptr;
@@ -79,6 +82,7 @@ CTengxunDayLineDataSourcePtr gl_pTengxunDayLineDataSource = nullptr;
 CFinnhubDataSourcePtr gl_pFinnhubDataSource = nullptr;
 CTiingoDataSourcePtr gl_pTiingoDataSource = nullptr;
 CQuandlDataSourcePtr gl_pQuandlDataSource = nullptr;
+CAccessoryDataSourcePtr gl_pAccessoryDataSource = nullptr;
 
 // Web socket， 皆为唯一实例。
 CFinnhubWebSocketPtr gl_pFinnhubWebSocket;

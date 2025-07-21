@@ -561,7 +561,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetDayLineSize(), 4);
 
 		pDayLine = stock.GetDayLine(1);
-		EXPECT_EQ(pDayLine->GetMarketDate(), 20210102);
+		EXPECT_EQ(pDayLine->GetDate(), 20210102);
 
 		stock.SetUpdateProfileDB(false);
 		stock.SetDayLineStartDate(20210107);

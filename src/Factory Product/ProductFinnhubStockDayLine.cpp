@@ -47,7 +47,7 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pStock->SetUpdateProfileDB(true);
 			const auto lSize = pStock->GetDayLineSize() - 1;
 			const auto pDayLine = pStock->GetDayLine(lSize);
-			if (!IsEarlyThen(pDayLine->GetMarketDate(), GetMarket()->GetMarketDate(), 100)) {
+			if (!IsEarlyThen(pDayLine->GetDate(), GetMarket()->GetMarketDate(), 100)) {
 				pStock->SetIPOStatus(_STOCK_IPOED_);
 			}
 			return;

@@ -49,7 +49,7 @@ namespace FireBirdTest {
 		m_dataCryptoDayLine.SaveDB(_T("BINANCE:USDTUAH"));
 
 		m_dataCryptoDayLine.LoadDB(_T("BINANCE:USDTUAH"));
-		EXPECT_EQ(m_dataCryptoDayLine.GetData(0)->GetMarketDate(), 20200101) << "新存储数据的日期";
+		EXPECT_EQ(m_dataCryptoDayLine.GetData(0)->GetDate(), 20200101) << "新存储数据的日期";
 
 		// 恢复原状
 		CSetCryptoDayLine setCryptoDayLineBasic;

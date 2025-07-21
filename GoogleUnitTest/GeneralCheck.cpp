@@ -11,6 +11,7 @@
 
 #include "GeneralCheck.h"
 
+#include "AccessoryDataSource.h"
 #include "FinnhubInaccessibleExchange.h"
 #include "NeteaseDayLineDataSource.h"
 #include "NeteaseRTDataSource.h"
@@ -177,6 +178,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsWebError());
 		EXPECT_FALSE(gl_pTiingoDataSource->IsWebError());
+		EXPECT_FALSE(gl_pAccessoryDataSource->IsWebError());
 		EXPECT_FALSE(gl_pSinaRTDataSource->IsWebError());
 		EXPECT_FALSE(gl_pNeteaseDayLineDataSource->IsWebError());
 		EXPECT_FALSE(gl_pSinaRTDataSource->IsWebError());
@@ -202,6 +204,9 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) << "¸¶·ÑÕË»§";
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateStockSymbol());
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
+
+		EXPECT_TRUE(gl_pAccessoryDataSource->IsEnable());
+		EXPECT_TRUE(gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks());
 
 		EXPECT_EQ(gl_pTiingoDataSource->InquiryQueueSize(), 0);
 		EXPECT_EQ(gl_pFinnhubDataSource->InquiryQueueSize(), 0);

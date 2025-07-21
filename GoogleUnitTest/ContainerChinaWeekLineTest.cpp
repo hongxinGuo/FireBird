@@ -59,7 +59,7 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(dataChinaWeekLine.Size(), 1);
 		pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(0));
-		EXPECT_EQ(pWeekLine2->GetMarketDate(), 20200101);
+		EXPECT_EQ(pWeekLine2->GetDate(), 20200101);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 1000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 200);
 		EXPECT_TRUE(dataChinaWeekLine.IsDataLoaded());
@@ -83,7 +83,7 @@ namespace FireBirdTest {
 		dataChinaWeekLine.Add(pWeekLine);
 		dataChinaWeekLine.UpdateData(pDayLine);
 		const CWeekLinePtr pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(0));
-		EXPECT_EQ(pWeekLine2->GetMarketDate(), GetCurrentMonday(20200101));
+		EXPECT_EQ(pWeekLine2->GetDate(), GetCurrentMonday(20200101));
 		EXPECT_EQ(pWeekLine2->GetHigh(), 10000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 100);
 		EXPECT_EQ(pWeekLine2->GetTransactionNumber(), 102);
@@ -114,13 +114,13 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(dataChinaWeekLine.Size(), 2);
 		pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(0));
-		EXPECT_EQ(pWeekLine2->GetMarketDate(), 20200201);
+		EXPECT_EQ(pWeekLine2->GetDate(), 20200201);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 11000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 1200);
 		EXPECT_TRUE(dataChinaWeekLine.IsDataLoaded());
 
 		pWeekLine2 = static_pointer_cast<CWeekLine>(dataChinaWeekLine.GetData(1));
-		EXPECT_EQ(pWeekLine2->GetMarketDate(), 20200101);
+		EXPECT_EQ(pWeekLine2->GetDate(), 20200101);
 		EXPECT_EQ(pWeekLine2->GetHigh(), 1000);
 		EXPECT_EQ(pWeekLine2->GetLow(), 200);
 		EXPECT_TRUE(dataChinaWeekLine.IsDataLoaded());
@@ -141,7 +141,7 @@ namespace FireBirdTest {
 		weekLineContainer2.LoadCurrentWeekLine();
 		pWeekLine = static_pointer_cast<CWeekLine>(weekLineContainer2.GetData(0));
 		EXPECT_STREQ(pWeekLine->GetStockSymbol().c_str(), _T("600000.SS"));
-		EXPECT_EQ(pWeekLine->GetMarketDate(), 20191230) << "20200101之前的星期一";
+		EXPECT_EQ(pWeekLine->GetDate(), 20191230) << "20200101之前的星期一";
 
 		// 恢复原态
 		gl_pChinaMarket->DeleteCurrentWeekWeekLine();
@@ -161,7 +161,7 @@ namespace FireBirdTest {
 		dataChinaWeekLine.SaveDB(_T("000003.SZ"));
 
 		dataChinaWeekLine.LoadDB(_T("000003.SZ"));
-		EXPECT_EQ(dataChinaWeekLine.GetData(0)->GetMarketDate(), 19901224) << "新存储数据的日期";
+		EXPECT_EQ(dataChinaWeekLine.GetData(0)->GetDate(), 19901224) << "新存储数据的日期";
 
 		// 恢复原状
 		CSetWeekLineBasicInfo setChinaStockWeekLineBasic;

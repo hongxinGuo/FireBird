@@ -26,11 +26,66 @@ bool CVirtualHistoryCandleBasic::IsActive() const {
 	return false;
 }
 
+void CVirtualHistoryCandleBasic::SetAverage(const int length, const long lValue) noexcept {
+	switch (length) {
+	case 5:
+		m_l5Average = lValue;
+		break;
+	case 10:
+		m_l10Average = lValue;
+		break;
+	case 20:
+		m_l20Average = lValue;
+		break;
+	case 30:
+		m_l30Average = lValue;
+		break;
+	case 60:
+		m_l60Average = lValue;
+		break;
+	case 120:
+		m_l120Average = lValue;
+		break;
+	case 200:
+		m_l200Average = lValue;
+		break;
+	case 240:
+		m_l240Average = lValue;
+		break;
+	default: // 例外状态时存至MA处
+		m_lAverage = lValue;
+		break;
+	}
+}
+
+long CVirtualHistoryCandleBasic::GetAverage(const int length) const noexcept {
+	switch (length) {
+	case 5:
+		return m_l5Average;
+	case 10:
+		return m_l10Average;
+	case 20:
+		return m_l20Average;
+	case 30:
+		return m_l30Average;
+	case 60:
+		return m_l60Average;
+	case 120:
+		return m_l120Average;
+	case 200:
+		return m_l200Average;
+	case 240:
+		return m_l240Average;
+	default: // 例外状态
+		return m_lAverage;
+	}
+}
+
 void CVirtualHistoryCandleBasic::SaveBasicData(CVirtualSetHistoryCandleBasic* pVirtualSetHistoryCandleBasic) const {
 	ASSERT(pVirtualSetHistoryCandleBasic->IsOpen());
 	auto ratio = GetRatio();
 
-	pVirtualSetHistoryCandleBasic->m_Date = GetMarketDate();
+	pVirtualSetHistoryCandleBasic->m_Date = GetDate();
 	pVirtualSetHistoryCandleBasic->m_Exchange = GetExchange().c_str();
 	pVirtualSetHistoryCandleBasic->m_Symbol = GetStockSymbol().c_str();
 	pVirtualSetHistoryCandleBasic->m_DisplaySymbol = GetDisplaySymbol().c_str();

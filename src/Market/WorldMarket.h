@@ -64,6 +64,10 @@ public:
 	bool UpdateEPSSurpriseDB();
 	void UpdateSECFilingsDB();
 
+	void TaskCalculateNasdaq100_200MAUpDownRate(); // 计算Nasdaq100 200日平均线位于收盘价之上的百分比
+	void LoadNasdaq100StocksDayLine();
+	void CalculateNasdaq100StocksMA(const int length) const;
+	void calculateNasdaq100_200MA_UpDownRate();
 	// 各种状态
 
 	static bool UpdateToken();
@@ -71,7 +75,7 @@ public:
 	// 数据库操作
 	virtual bool UpdateCompanyNewsDB();
 	virtual bool UpdateFinnhubStockDayLineDB();
-	void UpdateInsiderTransactionDB() { gl_dataContainerFinnhubStock.UpdateInsiderTransactionDB(); }
+	static void UpdateInsiderTransactionDB() { gl_dataContainerFinnhubStock.UpdateInsiderTransactionDB(); }
 	virtual bool UpdateInsiderSentimentDB();
 	virtual bool UpdateTiingoIndustry();
 	virtual bool UpdateSicIndustry();
@@ -131,6 +135,9 @@ protected:
 	bool m_fPermitUpdateTiingoFundamentalDefinitionDB{ false };
 
 	bool m_fEndMarketIEXTopOfBookUpdated{ false }; // 最新交易日闭市IEXTopOfBook数据已更新。
+
+protected:
+	vector<CTiingoStockPtr> m_vNasdaq100TiingoStock;
 };
 
 using CWorldMarketPtr = shared_ptr<CWorldMarket>;

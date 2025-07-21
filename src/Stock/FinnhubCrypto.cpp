@@ -51,6 +51,6 @@ void CFinnhubCrypto::UpdateDayLineStartEndDate() {
 
 bool CFinnhubCrypto::HaveNewDayLineData() {
 	if (m_dataDayLine.Empty()) return false;
-	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetMarketDate() > GetDayLineEndDate()) return true;
+	if (m_dataDayLine.GetData(m_dataDayLine.Size() - 1)->GetDate() > GetDayLineEndDate()) return true;
 	return false;
 }

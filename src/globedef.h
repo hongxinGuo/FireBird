@@ -45,4 +45,6 @@ extern int64_t gl_TiingoTotalData;
 extern int64_t gl_FinnhubTotalData;
 extern int64_t gl_ChinaMarketTotalData;
 
+extern vector<string> gl_vNasdaq100Stocks;
+
 #define _TRACE_SCHEDULE_TASK___ // 跟踪任务调度

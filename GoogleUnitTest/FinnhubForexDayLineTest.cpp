@@ -165,8 +165,8 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_EQ(m_pvDayLine->size(), 2);
-			EXPECT_EQ(m_pvDayLine->at(0)->m_lClose, 1107) << "第二个数据时间较早，故位于第一个位置";
-			EXPECT_EQ(m_pvDayLine->at(1)->m_lClose, 1101) << "第一个数据时间较晚，故位于第二个位置";
+			EXPECT_EQ(m_pvDayLine->at(0)->GetClose(), 1107) << "第二个数据时间较早，故位于第一个位置";
+			EXPECT_EQ(m_pvDayLine->at(1)->GetClose(), 1101) << "第一个数据时间较晚，故位于第二个位置";
 			break;
 		case 11: // 没有s项
 			EXPECT_EQ(m_pvDayLine->size(), 0);

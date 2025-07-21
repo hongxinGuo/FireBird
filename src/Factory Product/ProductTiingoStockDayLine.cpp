@@ -157,7 +157,7 @@ CTiingoDayLinesPtr CProductTiingoStockDayLine::ParseTiingoStockDayLine(const CWe
 		ReportJSonErrorToSystemMessage(_T("Tiingo Stock DayLine ") + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。
 	}
-	std::ranges::sort(*pvDayLine, [](const CTiingoDayLinePtr& pData1, const CTiingoDayLinePtr& pData2) { return pData1->GetMarketDate() < pData2->GetMarketDate(); }); // 以日期早晚顺序排列。
+	std::ranges::sort(*pvDayLine, [](const CTiingoDayLinePtr& pData1, const CTiingoDayLinePtr& pData2) { return pData1->GetDate() < pData2->GetDate(); }); // 以日期早晚顺序排列。
 
 	return pvDayLine;
 }

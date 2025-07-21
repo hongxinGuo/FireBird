@@ -48,7 +48,7 @@ bool CDayLineWebData::ProcessNeteaseDayLineData() {
 		m_vTempDayLine.push_back(pCurrentDayLine); // 暂存于临时vector中，网易日线数据的时间顺序是颠倒的，最新的在最前面
 	}
 	// 正序排列
-	std::ranges::sort(m_vTempDayLine, [](const CDayLinePtr& p1, const CDayLinePtr& p2) { return p1->GetMarketDate() < p2->GetMarketDate(); });
+	std::ranges::sort(m_vTempDayLine, [](const CDayLinePtr& p1, const CDayLinePtr& p2) { return p1->GetDate() < p2->GetDate(); });
 	ReportDayLineDownLoaded();
 
 	return true;

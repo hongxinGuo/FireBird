@@ -172,7 +172,7 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_EQ(pvDayLine->size(), 2);
 			pDayLine = pvDayLine->at(0);
-			EXPECT_EQ(pDayLine->GetMarketDate(), 20210311);
+			EXPECT_EQ(pDayLine->GetDate(), 20210311);
 			EXPECT_EQ(pDayLine->GetClose(), 121960000);
 			EXPECT_EQ(pDayLine->GetHigh(), 123210000);
 			EXPECT_EQ(pDayLine->GetLow(), 121260000);

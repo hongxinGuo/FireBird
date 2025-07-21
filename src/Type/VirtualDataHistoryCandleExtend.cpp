@@ -60,13 +60,13 @@ bool CVirtualDataHistoryCandleExtend::UpdateBasicDB(CVirtualSetHistoryCandleBasi
 			long lCurrentPos = 0;
 			for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
 				pHistoryCandle = GetData(i);
-				if (pHistoryCandle->GetMarketDate() < vOldHistoryCandle.at(0)->GetMarketDate()) {	// 有更早的新数据？
+				if (pHistoryCandle->GetDate() < vOldHistoryCandle.at(0)->GetDate()) {	// 有更早的新数据？
 					pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
 				}
 				else {
-					while ((lCurrentPos < lSizeOfOldDayLine) && (vOldHistoryCandle.at(lCurrentPos)->GetMarketDate() < pHistoryCandle->GetMarketDate())) lCurrentPos++;
+					while ((lCurrentPos < lSizeOfOldDayLine) && (vOldHistoryCandle.at(lCurrentPos)->GetDate() < pHistoryCandle->GetDate())) lCurrentPos++;
 					if (lCurrentPos < lSizeOfOldDayLine) {
-						if (vOldHistoryCandle.at(lCurrentPos)->GetMarketDate() > pHistoryCandle->GetMarketDate()) { // 前数据集中有遗漏的日期
+						if (vOldHistoryCandle.at(lCurrentPos)->GetDate() > pHistoryCandle->GetDate()) { // 前数据集中有遗漏的日期
 							pHistoryCandle->AppendBasicData(pSetHistoryCandleBasic);
 							fNeedUpdate = true;
 						}
@@ -137,12 +137,12 @@ bool CVirtualDataHistoryCandleExtend::LoadExtendDB(CVirtualSetHistoryCandleExten
 
 	while (!pSetHistoryCandleExtend->IsEOF()) {
 		CVirtualHistoryCandleExtendPtr pHistoryCandle = GetData(iPosition);
-		while ((pHistoryCandle->GetMarketDate() < pSetHistoryCandleExtend->m_Date)
+		while ((pHistoryCandle->GetDate() < pSetHistoryCandleExtend->m_Date)
 			&& (Size() > (iPosition + 1))) {
 			iPosition++;
 			pHistoryCandle = GetData(iPosition);
 		}
-		if (pHistoryCandle->GetMarketDate() == pSetHistoryCandleExtend->m_Date) { pHistoryCandle->LoadExtendData(pSetHistoryCandleExtend); }
+		if (pHistoryCandle->GetDate() == pSetHistoryCandleExtend->m_Date) { pHistoryCandle->LoadExtendData(pSetHistoryCandleExtend); }
 		if (Size() <= (iPosition + 1)) break;
 		pSetHistoryCandleExtend->MoveNext();
 	}
@@ -183,8 +183,8 @@ void CVirtualDataHistoryCandleExtend::UpdateData(const vector<CDayLinePtr>& vTem
 bool CVirtualDataHistoryCandleExtend::GetStartEndDate(long& lStartDate, long& lEndDate) const {
 	if (m_vHistoryData.empty()) return false;
 
-	lStartDate = m_vHistoryData.at(0)->GetMarketDate();
-	lEndDate = m_vHistoryData.at(m_vHistoryData.size() - 1)->GetMarketDate();
+	lStartDate = m_vHistoryData.at(0)->GetDate();
+	lEndDate = m_vHistoryData.at(m_vHistoryData.size() - 1)->GetDate();
 	return true;
 }
 
@@ -234,22 +234,22 @@ bool CVirtualDataHistoryCandleExtend::CalculateRSLogarithm1(INT64 lNumber) {
 		for (INT64 j = i - lNumber; j < i; j++) { dTempRS += m_vHistoryData.at(j)->GetRSLogarithm(); }
 		switch (lNumber) {
 		case 3:
-			m_vHistoryData.at(i)->m_d3RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set3RS(dTempRS / lNumber);
 			break;
 		case 5:
-			m_vHistoryData.at(i)->m_d5RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set5RS(dTempRS / lNumber);
 			break;
 		case 10:
-			m_vHistoryData.at(i)->m_d10RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set10RS(dTempRS / lNumber);
 			break;
 		case 30:
-			m_vHistoryData.at(i)->m_d30RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set30RS(dTempRS / lNumber);
 			break;
 		case 60:
-			m_vHistoryData.at(i)->m_d60RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set60RS(dTempRS / lNumber);
 			break;
 		case 120:
-			m_vHistoryData.at(i)->m_d120RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set120RS(dTempRS / lNumber);
 			break;
 		default:
 			ASSERT(0);
@@ -265,22 +265,22 @@ bool CVirtualDataHistoryCandleExtend::CalculateRS1(INT64 lNumber) {
 		for (INT64 j = i - lNumber; j < i; j++) { dTempRS += m_vHistoryData.at(j)->GetRS(); }
 		switch (lNumber) {
 		case 3:
-			m_vHistoryData.at(i)->m_d3RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set3RS(dTempRS / lNumber);
 			break;
 		case 5:
-			m_vHistoryData.at(i)->m_d5RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set5RS(dTempRS / lNumber);
 			break;
 		case 10:
-			m_vHistoryData.at(i)->m_d10RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set10RS(dTempRS / lNumber);
 			break;
 		case 30:
-			m_vHistoryData.at(i)->m_d30RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set30RS(dTempRS / lNumber);
 			break;
 		case 60:
-			m_vHistoryData.at(i)->m_d60RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set60RS(dTempRS / lNumber);
 			break;
 		case 120:
-			m_vHistoryData.at(i)->m_d120RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set120RS(dTempRS / lNumber);
 			break;
 		default:
 			ASSERT(0);
@@ -293,25 +293,27 @@ bool CVirtualDataHistoryCandleExtend::CalculateRSIndex1(INT64 lNumber) {
 	const INT64 lTotalNumber = m_vHistoryData.size();
 	for (INT64 i = lNumber; i < lTotalNumber; i++) {
 		double dTempRS = 0;
-		for (INT64 j = i - lNumber; j < i; j++) { dTempRS += m_vHistoryData.at(j)->GetRSIndex(); }
+		for (INT64 j = i - lNumber; j < i; j++) {
+			dTempRS += m_vHistoryData.at(j)->GetRSIndex();
+		}
 		switch (lNumber) {
 		case 3:
-			m_vHistoryData.at(i)->m_d3RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set3RS(dTempRS / lNumber);
 			break;
 		case 5:
-			m_vHistoryData.at(i)->m_d5RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set5RS(dTempRS / lNumber);
 			break;
 		case 10:
-			m_vHistoryData.at(i)->m_d10RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set10RS(dTempRS / lNumber);
 			break;
 		case 30:
-			m_vHistoryData.at(i)->m_d30RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set30RS(dTempRS / lNumber);
 			break;
 		case 60:
-			m_vHistoryData.at(i)->m_d60RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set60RS(dTempRS / lNumber);
 			break;
 		case 120:
-			m_vHistoryData.at(i)->m_d120RS = dTempRS / lNumber;
+			m_vHistoryData.at(i)->Set120RS(dTempRS / lNumber);
 			break;
 		default:
 			ASSERT(0);

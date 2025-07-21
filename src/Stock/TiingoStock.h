@@ -62,12 +62,17 @@ public:
 
 	void UpdateDayLineStartEndDate();
 	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
+	bool HaveDayLine(const long lDate) noexcept { return m_dataDayLine.HaveDayLine(lDate); }
 	CTiingoDayLinePtr GetDayLine(const long lIndex) const { return m_dataDayLine.GetData(lIndex); }
+	CTiingoDayLinePtr GetDayLineAtDate(const long lDate) { return m_dataDayLine.GetDayLine(lDate); }
+
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }
+	void LoadDayLineDB() { m_dataDayLine.LoadDB(m_strSymbol); }
+
+	void CalculateDayLineMA(const int length) const { m_dataDayLine.CalculateMA(length); }
 
 	bool HaveNewDayLineData();
-
 	void CheckUpdateStatus(long lTodayDate);
 	void CheckFinancialStateUpdateStatus(long lTodayDate);
 	void CheckDayLineUpdateStatus(long llTodayDate);

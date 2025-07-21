@@ -62,7 +62,7 @@ namespace FireBirdTest {
 		m_dataTiingoStockDayLine.SaveDB(_T("A"));
 
 		m_dataTiingoStockDayLine.LoadDB(_T("A"));
-		EXPECT_EQ(m_dataTiingoStockDayLine.GetData(m_dataTiingoStockDayLine.Size() - 1)->GetMarketDate(),
+		EXPECT_EQ(m_dataTiingoStockDayLine.GetData(m_dataTiingoStockDayLine.Size() - 1)->GetDate(),
 		          20241111) << "新存储数据位于最后";
 
 		// 恢复原状

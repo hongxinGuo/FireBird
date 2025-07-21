@@ -20,6 +20,8 @@
 #include "ChinaMarket.h"
 #include "InfoReport.h"
 #include "QuandlDataSource.h"
+#include "SetIndexNasdaq100.h"
+#include "SetIndexNasdaq100MA200UpDownRate.h"
 #include "ThreadStatus.h"
 #include "TiingoDataSource.h"
 #include "TiingoInaccessibleStock.h"
@@ -574,6 +576,98 @@ void CWorldMarket::UpdateSECFilingsDB() {
 		}
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 	}
+}
+
+void CWorldMarket::TaskCalculateNasdaq100_200MAUpDownRate() {
+	LoadNasdaq100StocksDayLine();
+	CalculateNasdaq100StocksMA(200);
+	calculateNasdaq100_200MA_UpDownRate();
+}
+
+void CWorldMarket::LoadNasdaq100StocksDayLine() {
+	m_vNasdaq100TiingoStock.clear();
+	CSetIndexNasdaq100 setIndexNasdaq100;
+
+	setIndexNasdaq100.Open();
+	while (!setIndexNasdaq100.IsEOF()) {
+		string sSymbol = setIndexNasdaq100.m_Symbol.GetString();
+		if (gl_dataContainerTiingoStock.IsSymbol(sSymbol)) {
+			// 只计算代码集中的股票。目前GOOG代码不存在，只有GOOGL.
+			auto pStock = gl_dataContainerTiingoStock.GetStock(sSymbol);
+			m_vNasdaq100TiingoStock.push_back(pStock);
+		}
+		setIndexNasdaq100.MoveNext();
+	}
+	setIndexNasdaq100.Close();
+
+	for (auto pStock : m_vNasdaq100TiingoStock) {
+		if (!pStock->IsDayLineLoaded()) {
+			pStock->LoadDayLineDB();
+			TRACE("%s's dayline loaded\n", pStock->GetSymbol().c_str());
+		}
+	}
+}
+
+void CWorldMarket::CalculateNasdaq100StocksMA(const int length) const {
+	for (auto pStock : m_vNasdaq100TiingoStock) {
+		if (pStock->IsDayLineLoaded()) {
+			pStock->CalculateDayLineMA(length);
+		}
+	}
+}
+
+class upDownRate200MA {
+public:
+	long lDate;
+	int Rate;
+};
+
+void CWorldMarket::calculateNasdaq100_200MA_UpDownRate() {
+	vector<upDownRate200MA> vUpDownRate;
+
+	long lBeginDate = GetPrevDay(GetMarketDate(), 365); // 最多计算一年内的数据
+	long lCurrentDate = lBeginDate;
+	long lEndDate = GetMarketDate();
+	while (lCurrentDate < lEndDate) {
+		int iTotalStock = 0;
+		int iAbove200MA = 0;
+		for (auto& pStock : m_vNasdaq100TiingoStock) {
+			if (pStock->HaveDayLine(lCurrentDate)) {
+				iTotalStock++;
+				auto pDayLine = pStock->GetDayLineAtDate(lCurrentDate);
+				if (pDayLine->GetClose() > pDayLine->GetAverage(200)) iAbove200MA++;
+			}
+		}
+		if (iTotalStock > 80) {
+			upDownRate200MA upDown;
+			upDown.lDate = lCurrentDate;
+			upDown.Rate = iAbove200MA * 100 / iTotalStock;
+			vUpDownRate.push_back(upDown);
+		}
+		lCurrentDate = GetNextDay(lCurrentDate);
+	}
+
+	CSetIndexNasdaq100MA200UpDownRate setIndex;
+	lCurrentDate = 0;
+
+	setIndex.m_strSort = _T("[Date]");
+	setIndex.Open();
+	setIndex.m_pDatabase->BeginTrans();
+	if (!setIndex.IsEOF()) {
+		setIndex.MoveLast();
+		lCurrentDate = setIndex.m_Date;
+		setIndex.MoveNext();
+	}
+	for (auto upDownRate : vUpDownRate) {
+		if (upDownRate.lDate > lCurrentDate) {
+			setIndex.AddNew();
+			setIndex.m_Date = upDownRate.lDate;
+			setIndex.m_Rate = upDownRate.Rate;
+			setIndex.Update();
+		}
+	}
+	setIndex.m_pDatabase->CommitTrans();
+	setIndex.Close();
 }
 
 bool CWorldMarket::TaskCheckMarketReady(long lCurrentTime) {

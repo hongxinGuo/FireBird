@@ -36,6 +36,8 @@
 #include"SetFinnhubStockDayLine.h"
 #include"SetCryptoDayLine.h"
 #include"SetForexDayLine.h"
+#include "SetIndexNasdaq100.h"
+#include "SetIndexNasdaq100MA200UpDownRate.h"
 
 #include "SetTiingoMarketNews.h"
 #include "SetTiingoStockDayLine.h"
@@ -539,5 +541,29 @@ namespace FireBirdTest {
 		gl_systemConfiguration.SetWorkingMode(false);
 
 		EXPECT_STREQ(setBasicFinancialQuarter.GetDefaultSQL(), _T("[finnhub_stock_basic_financials_quarterly]"));
+	}
+
+	TEST_F(SetInitializeTest, TestIndexNasdaq100Initialize) {
+		CSetIndexNasdaq100 setIndexNasdaq100;
+
+		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
+		EXPECT_STREQ(setIndexNasdaq100.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+		gl_systemConfiguration.SetWorkingMode(true);
+		EXPECT_STREQ(setIndexNasdaq100.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
+		gl_systemConfiguration.SetWorkingMode(false);
+
+		EXPECT_STREQ(setIndexNasdaq100.GetDefaultSQL(), _T("[index_nasdaq100]"));
+	}
+
+	TEST_F(SetInitializeTest, TestIndexNasdaq100MA200UpDownRateInitialize) {
+		CSetIndexNasdaq100MA200UpDownRate setIndexNasdaq100MA200UpDownRate;
+
+		EXPECT_FALSE(gl_systemConfiguration.IsWorkingMode());
+		EXPECT_STREQ(setIndexNasdaq100MA200UpDownRate.GetDefaultConnect(), _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+		gl_systemConfiguration.SetWorkingMode(true);
+		EXPECT_STREQ(setIndexNasdaq100MA200UpDownRate.GetDefaultConnect(), _T("DSN=WorldMarket;UID=FireBird;PASSWORD=firebird;charset=utf8mb4"));
+		gl_systemConfiguration.SetWorkingMode(false);
+
+		EXPECT_STREQ(setIndexNasdaq100MA200UpDownRate.GetDefaultSQL(), _T("[index_nasdaq100_200ma_updown_rate]"));
 	}
 }

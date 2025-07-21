@@ -51,6 +51,7 @@
     <ClInclude Include="..\src\Data Container\ContainerFinnhubStock.h" />
     <ClInclude Include="..\src\Data Container\ContainerFinnhubStockDayline.h" />
     <ClInclude Include="..\src\Data Container\VirtualContainer.h" />
+    <ClInclude Include="..\src\Data Source\AccessoryDataSource.h" />
     <ClInclude Include="..\src\Data Source\InquireEngine.h" />
     <ClInclude Include="..\src\Data Source\InternetOption.h" />
     <ClInclude Include="..\src\Data Source\TengxunDayLineDataSource.h" />
@@ -94,6 +95,8 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubRecommendationTrends.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialQuarter.h" />
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetIndexNasdaq100.h" />
+    <ClInclude Include="..\src\DataBase\WorldMarket\SetIndexNasdaq100MA200UpDownRate.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetStockExchange.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetForexDayLine.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetInsiderSentiment.h" />
@@ -118,7 +121,9 @@
     <ClInclude Include="..\src\DataBase\WorldMarket\SetWorldChosenStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStock.h" />
     <ClInclude Include="..\src\DataBase\WorldMarket\SetFinnhubStockDayLine.h" />
+    <ClInclude Include="..\src\Factory Product\AccessoryFactory.h" />
     <ClInclude Include="..\src\Factory Product\ProductFinnhubSECFilings.h" />
+    <ClInclude Include="..\src\Factory Product\ProductIndexNasdaq100Stocks.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoCompanyDividend.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoFinancialState.h" />
     <ClInclude Include="..\src\Factory Product\ProductTiingoCryptoDayLine.h" />
@@ -273,6 +278,7 @@
     <ClCompile Include="..\src\Data Container\ContainerFinnhubStock.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerFinnhubStockDayLine.cpp" />
     <ClCompile Include="..\src\Data Container\VirtualContainer.cpp" />
+    <ClCompile Include="..\src\Data Source\AccessoryDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\InquireEngine.cpp" />
     <ClCompile Include="..\src\Data Source\FinnhubDataSource.cpp" />
     <ClCompile Include="..\src\Data Source\NeteaseDaylineDataSource.cpp" />
@@ -304,6 +310,8 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialAnnual.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialMetric.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetFinnhubStockBasicFinancialsQuarter.cpp" />
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetIndexNasdaq100.cpp" />
+    <ClCompile Include="..\src\DataBase\WorldMarket\SetIndexNasdaq100MA200UpDownRate.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetInsiderSemtiment.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetInsiderTransaction.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetNaicsIndustry.cpp" />
@@ -342,9 +350,11 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockCurrentTrace.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockDelistedSymbol.cpp" />
     <ClCompile Include="..\src\DataBase\WorldMarket\SetTiingoStockNewSymbol.cpp" />
+    <ClCompile Include="..\src\Factory Product\AccessoryFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketHoliday.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketStatus.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductFinnhubSECFilings.cpp" />
+    <ClCompile Include="..\src\Factory Product\ProductIndexNasdaq100Stocks.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductTengxunDayLine.cpp" />
     <ClCompile Include="..\src\Factory Product\FinnhubFactory.cpp" />
     <ClCompile Include="..\src\Factory Product\ProductDummy.cpp" />
