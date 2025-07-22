@@ -40,6 +40,7 @@ bool CTiingoDataSource::Reset() {
 	m_fUpdateDayLine = false; // 更新日线与否由任务决定
 	m_fUpdateFinancialState = true;
 	m_fUpdateIEXTopOFBook = true;
+	m_fEndMarketIEXTopOfBookUpdated = false;
 
 	return true;
 }

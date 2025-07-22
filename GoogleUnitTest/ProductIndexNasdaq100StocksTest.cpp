@@ -49,6 +49,8 @@ namespace FireBirdTest {
 		nasdaq100Stocks.UpdateDataSourceStatus(gl_pAccessoryDataSource);
 
 		EXPECT_FALSE(gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks());
+		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+		EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage().c_str(), _T("Nasdaq 100 stock list updated"));
 
 		// »Ö¸´Ô­×´
 		gl_pAccessoryDataSource->SetUpdateIndexNasdaq100Stocks(true);

@@ -609,10 +609,10 @@ void CChinaMarket::TaskCreateTask(long lCurrentTime) {
 	AddTask(CHINA_MARKET_PROCESS_AND_SAVE_DAY_LINE__, 113510); // 中午休市时开始更新日线历史数据。
 
 	// 每五分钟存储一次系统选项数据库
-	AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, GetNextTime(lTimeMinute + 5, 0, 3, 0)); // 开始执行时间为启动之后的三分钟。
+	AddTask(CHINA_MARKET_UPDATE_OPTION_DB__, GetNextTime(lTimeMinute, 0, 3, 5)); // 开始执行时间为启动之后的三分钟。
 
 	// 每五分钟存储一次股票简要数据库
-	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, GetNextTime(lTimeMinute + 10, 0, 4, 0)); // 开始执行时间为启动之后的四分钟。
+	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, GetNextTime(lTimeMinute, 0, 4, 10)); // 开始执行时间为启动之后的四分钟。
 
 	if (IsWorkingDay()) {
 		// 每五分钟存储一次临时数据

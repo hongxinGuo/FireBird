@@ -966,6 +966,11 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetTime(), 10200);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
+		pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE);
+		EXPECT_EQ(pTask->GetTime(), 10300);
+		gl_pWorldMarket->DiscardCurrentMarketTask();
+
 #ifndef _DEBUG
 		//Note 为了方便调试，测试版不再添加以下任务。发行版依然添加。
 		pTask = gl_pWorldMarket->GetMarketTask();
@@ -1021,6 +1026,11 @@ namespace FireBirdTest {
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__);
 		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 300);
+		gl_pWorldMarket->DiscardCurrentMarketTask();
+
+		pTask = gl_pWorldMarket->GetMarketTask();
+		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE);
+		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 400);
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 #ifndef _DEBUG

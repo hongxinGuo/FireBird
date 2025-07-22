@@ -48,6 +48,7 @@ enum {
 	WORLD_MARKET_UPDATE_DB__, // 更新市场各数据库。每一分钟一次。
 	WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, // 监测各WebSocket状态。每分钟一次
 	WORLD_MARKET_PROCESS_WEB_SOCKET_DATA__,	// 处理各WebSocket接收到的数据。每秒钟一次
+	WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE, // 每日计算Nasdaq100 200MA比率
 
 	// Tiingo.com数据
 	WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, // 每日收市后下载当天交易数据，以备生成当天日线数据。

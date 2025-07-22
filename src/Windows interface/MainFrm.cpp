@@ -1297,7 +1297,7 @@ void CMainFrame::OnTiingoFixDayline() {
 
 void CMainFrame::OnCalculateNasdaq100200maUpdownRate() {
 	// TODO: Add your command handler code here
-	gl_pWorldMarket->TaskCalculateNasdaq100_200MAUpDownRate();
+	gl_pWorldMarket->TaskCalculateNasdaq100MA200UpDownRate(gl_pWorldMarket->GetMarketTime());
 }
 
 void CMainFrame::OnUpdateCalculateNasdaq100200maUpdownRate(CCmdUI* pCmdUI) {

@@ -82,9 +82,9 @@ vector<string> CProductIndexNasdaq100Stocks::ParseIndexNasdaq100Stocks(const CWe
 	string_view svData = pWebData->GetStringView(0, pWebData->GetBufferLength());
 	size_t positionStart = svData.find(_T("<script> window.__sc_init_state__ = ")); // 有效数据前面的字符串
 	positionStart += 36; // 跨过此字符串
-	string_view svDataStart = svData.substr(positionStart);
-	size_t positionEnd = svDataStart.find(_T("; </script>")); // 有效数据后的字符串
-	string_view sv = svDataStart.substr(0, positionEnd);
+	string_view svData2 = svData.substr(positionStart);
+	size_t positionEnd = svData2.find(_T("; </script>")); // 有效数据后的字符串
+	string_view sv = svData2.substr(0, positionEnd);
 
 	ondemand::parser parser;
 	const simdjson::padded_string jsonPadded(sv);
@@ -105,4 +105,5 @@ vector<string> CProductIndexNasdaq100Stocks::ParseIndexNasdaq100Stocks(const CWe
 void CProductIndexNasdaq100Stocks::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CAccessoryDataSource")) == 0);
 	dynamic_pointer_cast<CAccessoryDataSource>(pDataSource)->SetUpdateIndexNasdaq100Stocks(false);
+	gl_systemMessage.PushInnerSystemInformationMessage(_T("Nasdaq 100 stock list updated"));
 }

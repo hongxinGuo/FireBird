@@ -4,6 +4,7 @@
 
 #include "WorldMarket.h"
 
+#include "AccessoryDataSource.h"
 #include"thread.h"
 
 #include"FinnhubInaccessibleExchange.h"
@@ -176,6 +177,9 @@ int CWorldMarket::ProcessTask(long lCurrentTime) {
 			TaskProcessWebSocketData(lCurrentTime);
 			TaskPerSecond(lCurrentTime);
 			break;
+		case WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE:
+			TaskCalculateNasdaq100MA200UpDownRate(lCurrentTime);
+			break;
 		case WORLD_MARKET_CONNECT_FINNHUB_WEB_SOCKET__:
 			ASSERT(!gl_systemConfiguration.IsUsingFinnhubWebSocket());
 			gl_systemConfiguration.SetUsingFinnhubWebSocket(true); // 只设置标识，实际启动由其他任务完成。
@@ -241,7 +245,9 @@ void CWorldMarket::TaskCreateTask(long lCurrentTime) {
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_DAYlINE__, GetNextTime(lCurrentTime, 0, 0, 20)); // 开始下载日线历史数据
 
 	AddTask(WORLD_MARKET_TIINGO_INQUIRE_IEX_TOP_OF_BOOK__, GetNextTime(lTimeMinute, 0, 1, 0)); // 
-	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute + 60, 0, 1, 0)); // 两分钟后开始监测WebSocket
+	AddTask(WORLD_MARKET_MONITOR_ALL_WEB_SOCKET__, GetNextTime(lTimeMinute, 0, 2, 0)); // 两分钟后开始监测WebSocket
+
+	AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE, GetNextTime(lTimeMinute, 0, 3, 0)); // 三分钟计算Nasdaq100 200MA比率
 
 	AddTask(WORLD_MARKET_CREATE_TASK__, 240000); // 重启市场任务的任务于每日零时执行
 }
@@ -578,13 +584,23 @@ void CWorldMarket::UpdateSECFilingsDB() {
 	}
 }
 
-void CWorldMarket::TaskCalculateNasdaq100_200MAUpDownRate() {
-	LoadNasdaq100StocksDayLine();
-	CalculateNasdaq100StocksMA(200);
-	calculateNasdaq100_200MA_UpDownRate();
+void CWorldMarket::TaskCalculateNasdaq100MA200UpDownRate(long lCurrentTime) {
+#ifdef DEBUG
+	ASSERT(!gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks()); // 每日更新Nasdaq100代码
+#else
+	if(!gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks() || gl_pTiingoDataSource->IsUpdateDayLine()) {
+		AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE, GetNextTime(lTimeMinute, 0, 10, 0)); // 十分钟继续计算Nasdaq100 200MA比率
+
+	}
+#endif
+	gl_runtime.thread_executor()->post([this] {
+		this->LoadNasdaq100StocksDayLine().get();
+		this->CalculateNasdaq100StocksMA(200);
+		this->calculateNasdaq100MA200UpDownRate();
+	});
 }
 
-void CWorldMarket::LoadNasdaq100StocksDayLine() {
+concurrencpp::result<bool> CWorldMarket::LoadNasdaq100StocksDayLine() {
 	m_vNasdaq100TiingoStock.clear();
 	CSetIndexNasdaq100 setIndexNasdaq100;
 
@@ -600,12 +616,34 @@ void CWorldMarket::LoadNasdaq100StocksDayLine() {
 	}
 	setIndexNasdaq100.Close();
 
+	vector<result<bool>> results;
+
+	bool succeed = true;
+	/*
+	for (auto pStock : m_vNasdaq100TiingoStock) {
+		gl_BackgroundWorkingThread.acquire();
+		auto result = gl_runtime.thread_executor()->submit([pStock] {
+			if (!pStock->IsDayLineLoaded()) {
+				pStock->LoadDayLineDB();
+			}
+			gl_BackgroundWorkingThread.release();
+			return true;
+		});
+		results.emplace_back(std::move(result));
+	}
+	for (auto& r : results) {
+		//auto a = r.resolve();
+		succeed &= co_await r;
+	}
+	*/
+
 	for (auto pStock : m_vNasdaq100TiingoStock) {
 		if (!pStock->IsDayLineLoaded()) {
 			pStock->LoadDayLineDB();
-			TRACE("%s's dayline loaded\n", pStock->GetSymbol().c_str());
 		}
 	}
+
+	co_return succeed;
 }
 
 void CWorldMarket::CalculateNasdaq100StocksMA(const int length) const {
@@ -622,7 +660,7 @@ public:
 	int Rate;
 };
 
-void CWorldMarket::calculateNasdaq100_200MA_UpDownRate() {
+void CWorldMarket::calculateNasdaq100MA200UpDownRate() const {
 	vector<upDownRate200MA> vUpDownRate;
 
 	long lBeginDate = GetPrevDay(GetMarketDate(), 365); // 最多计算一年内的数据

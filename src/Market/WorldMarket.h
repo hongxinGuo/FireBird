@@ -64,10 +64,10 @@ public:
 	bool UpdateEPSSurpriseDB();
 	void UpdateSECFilingsDB();
 
-	void TaskCalculateNasdaq100_200MAUpDownRate(); // 计算Nasdaq100 200日平均线位于收盘价之上的百分比
-	void LoadNasdaq100StocksDayLine();
+	void TaskCalculateNasdaq100MA200UpDownRate(long lCurrentTime); // 计算Nasdaq100 200日平均线位于收盘价之上的百分比
+	concurrencpp::result<bool> LoadNasdaq100StocksDayLine();
 	void CalculateNasdaq100StocksMA(const int length) const;
-	void calculateNasdaq100_200MA_UpDownRate();
+	void calculateNasdaq100MA200UpDownRate() const;
 	// 各种状态
 
 	static bool UpdateToken();

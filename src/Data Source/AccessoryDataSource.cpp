@@ -21,6 +21,7 @@ CAccessoryDataSource::CAccessoryDataSource() {
 
 bool CAccessoryDataSource::Reset() {
 	m_fAccessoryDataInquiryFinished = false;
+	m_fUpdateIndexNasdaq100Stocks = true;
 	return true;
 }
 
