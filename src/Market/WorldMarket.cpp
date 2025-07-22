@@ -585,14 +585,13 @@ void CWorldMarket::UpdateSECFilingsDB() {
 }
 
 void CWorldMarket::TaskCalculateNasdaq100MA200UpDownRate(long lCurrentTime) {
-#ifdef DEBUG
-	ASSERT(!gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks()); // 每日更新Nasdaq100代码
-#else
-	if(!gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks() || gl_pTiingoDataSource->IsUpdateDayLine()) {
-		AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE, GetNextTime(lTimeMinute, 0, 10, 0)); // 十分钟继续计算Nasdaq100 200MA比率
-
+#ifndef DEBUG
+	if (!gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks() || !gl_pTiingoDataSource->IsUpdateDayLine()) {
+		AddTask(WORLD_MARKET_CALCULATE_NASDAQ100_200MA_UPDOWN_RATE, GetNextTime(lCurrentTime, 0, 10, 0)); // 十分钟继续计算Nasdaq100 200MA比率
+		return;
 	}
 #endif
+	ASSERT(!gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks()); // 每日更新Nasdaq100代码
 	gl_runtime.thread_executor()->post([this] {
 		this->LoadNasdaq100StocksDayLine().get();
 		this->CalculateNasdaq100StocksMA(200);
