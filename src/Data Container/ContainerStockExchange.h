@@ -12,9 +12,9 @@ public:
 	~CContainerStockExchange() = default;
 	void Reset();
 
-	CStockExchangePtr GetExchange(const size_t lIndex) const { return m_vStockExchange.at(lIndex); }
-	CStockExchangePtr GetExchange(const string& strExchangeSymbol) const;
-	string GetExchangeCode(const size_t lIndex) const { return m_vStockExchange.at(lIndex)->m_strCode; }
+	CStockExchangePtr GetItem(const size_t lIndex) const { return m_vStockExchange.at(lIndex); }
+	CStockExchangePtr GetItem(const string& strExchangeSymbol) const;
+	string GetExchangeCode(const size_t lIndex) const { return m_vStockExchange.at(lIndex)->GetExchangeCode(); }
 	auto Size() const noexcept { return m_mapStockExchange.size(); }
 
 	bool LoadDB();

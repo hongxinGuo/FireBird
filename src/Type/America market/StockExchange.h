@@ -18,8 +18,12 @@ public:
 	void SetMarketHolidayUpdated(const bool fFlag) noexcept { m_fMarketHolidayUpdated = fFlag; }
 	bool IsMarketHolidayUpdated() const noexcept { return m_fMarketHolidayUpdated; }
 
-public:
+	string GetExchangeCode() const noexcept { return m_strCode; }
+	void SetExchangeCode(const string& code) noexcept { m_strCode = code; }
+
+protected:
 	string m_strCode; // 两位的交易所代码。上海市场为SS， 美国市场为US，。。。
+public:
 	string m_strName;
 	string m_strMic;
 	string m_strTimeZone;

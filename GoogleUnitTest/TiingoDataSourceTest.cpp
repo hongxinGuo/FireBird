@@ -240,7 +240,7 @@ namespace FireBirdTest {
 		}
 
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
-			auto pStock2 = gl_dataContainerFinnhubStock.GetStock(i);
+			auto pStock2 = gl_dataContainerFinnhubStock.GetItem(i);
 			pStock2->SetUpdateDayLine(true);
 		}
 

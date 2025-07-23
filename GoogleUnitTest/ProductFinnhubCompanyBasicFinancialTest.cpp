@@ -44,14 +44,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestCreatMessage) {
-		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(1);
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(1);
 		pStock->SetUpdateBasicFinancial(true);
 		companyBasicFinancial.SetMarket(gl_pWorldMarket);
 		companyBasicFinancial.SetIndex(1);
-		EXPECT_STREQ(companyBasicFinancial.CreateMessage().c_str(), (companyBasicFinancial.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol() + _T("&metric=all")).c_str());
+		EXPECT_STREQ(companyBasicFinancial.CreateMessage().c_str(), (companyBasicFinancial.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol() + _T("&metric=all")).c_str());
 		EXPECT_TRUE(pStock->IsUpdateBasicFinancial()) << "处理接收到的数据后方设置此标识";
 
-		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateBasicFinancial(true);
+		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateBasicFinancial(true);
 	}
 
 	Test_FinnhubWebData finnhubWebData1002(2, _T("AAPL"),
@@ -467,7 +467,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol.c_str());
+			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol.c_str());
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), 19800101);
 			m_pStock->SetUpdateBasicFinancial(true);
@@ -560,7 +560,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol.c_str());
+			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol.c_str());
 			EXPECT_TRUE(m_pStock != nullptr);
 			EXPECT_EQ(m_pStock->GetInsiderTransactionUpdateDate(), 19800101);
 			m_pStock->SetUpdateBasicFinancialDB(false);

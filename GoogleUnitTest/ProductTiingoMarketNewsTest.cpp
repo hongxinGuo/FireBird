@@ -205,7 +205,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateProfileDB()) << "第一个数据是正确的";
 
 		//恢复原状
-			pStock = gl_dataContainerFinnhubStock.GetStock(_T("A"));
+			pStock = gl_dataContainerFinnhubStock.GetItem(_T("A"));
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			pStock->SetUpdateProfileDB(false);
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
@@ -216,7 +216,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 
 		//恢复原状
-			pStock = gl_dataContainerFinnhubStock.GetStock(_T("AA"));
+			pStock = gl_dataContainerFinnhubStock.GetItem(_T("AA"));
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			pStock->SetUpdateProfileDB(false);
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
@@ -226,7 +226,7 @@ namespace FireBirdTest {
 			gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_TRUE(gl_dataContainerTiingoStock.IsStock(_T("NEW SYMBOL")));
 			EXPECT_TRUE((pTiingoStock = gl_dataContainerTiingoStock.GetStock(_T("NEW SYMBOL"))) != nullptr);
-			pStock = gl_dataContainerFinnhubStock.GetStock(_T("AA"));
+			pStock = gl_dataContainerFinnhubStock.GetItem(_T("AA"));
 			EXPECT_STREQ(pStock->GetName(), _T("New Name")) << "更改为此新名字";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 

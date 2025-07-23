@@ -44,13 +44,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyPeerTest, TestCreatMessage) {
-		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdatePeer(true);
+		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdatePeer(true);
 		companyPeer.SetMarket(gl_pWorldMarket);
 		companyPeer.SetIndex(1);
-		EXPECT_STREQ(companyPeer.CreateMessage().c_str(), (companyPeer.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol()).c_str());
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsUpdatePeer()) << "接收到的数据处理后方设置此标识";
+		EXPECT_STREQ(companyPeer.CreateMessage().c_str(), (companyPeer.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol()).c_str());
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdatePeer()) << "接收到的数据处理后方设置此标识";
 
-		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdatePeer(true);
+		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdatePeer(true);
 	}
 
 	// 不足三个字符
@@ -160,7 +160,7 @@ namespace FireBirdTest {
 
 	TEST_P(ProcessFinnhubStockPeerTest, TestProcessFinnhubStockPeer1) {
 		string s;
-		CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(0);
+		CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(0);
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 		m_finnhubCompanyPeer.ParseAndStoreWebData(m_pWebData);
 		EXPECT_FALSE(pStock->IsUpdatePeer());

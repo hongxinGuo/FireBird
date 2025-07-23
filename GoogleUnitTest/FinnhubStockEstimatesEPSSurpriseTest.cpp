@@ -43,7 +43,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestCreatMessage) {
 		stockEstimatesEPSSurprise.SetMarket(gl_pWorldMarket);
 		stockEstimatesEPSSurprise.SetIndex(1);
-		EXPECT_TRUE(stockEstimatesEPSSurprise.CreateMessage() == stockEstimatesEPSSurprise.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol());
+		EXPECT_TRUE(stockEstimatesEPSSurprise.CreateMessage() == stockEstimatesEPSSurprise.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol());
 	}
 
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestProcessWebData) {
@@ -68,7 +68,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol.c_str());
+			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol.c_str());
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
 			m_finnhubStockEstimatesEPSSurprise.__Test_checkAccessRight(m_pWebData);
@@ -149,7 +149,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol.c_str());
+			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol.c_str());
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
 			m_finnhubStockEstimatesEPSSurprise.__Test_checkAccessRight(m_pWebData);
@@ -179,7 +179,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData125, &finnhubWebData130));
 
 	TEST_P(ProcessFinnhubEPSSurpriseTest, TestProcessFinnhubEPSSurprise) {
-		CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(0);
+		CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(0);
 		m_finnhubStockEstimatesEPSSurprise.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // ¿ÕÊý¾Ý

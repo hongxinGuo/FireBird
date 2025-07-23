@@ -36,7 +36,7 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerFinnhubStockTest, TestResetBasicFinancial) {
 		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
-			const auto pStock = gl_dataContainerFinnhubStock.GetStock(l);
+			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
 			EXPECT_TRUE(pStock->IsUpdateBasicFinancial());
 			EXPECT_EQ(pStock->GetBasicFinancialUpdateDate(), 19800101);
 			EXPECT_FALSE(pStock->IsUpdateProfileDB());
@@ -49,7 +49,7 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.ResetBasicFinancial();
 
 		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
-			const auto pStock = gl_dataContainerFinnhubStock.GetStock(l);
+			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
 			EXPECT_TRUE(pStock->IsUpdateBasicFinancial());
 			EXPECT_EQ(pStock->GetBasicFinancialUpdateDate(), 19800101);
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
@@ -63,20 +63,20 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerFinnhubStockTest, TestClearUpdateBasicFinancialFlag) {
 		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
-			const auto pStock = gl_dataContainerFinnhubStock.GetStock(l);
+			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
 			EXPECT_FALSE(pStock->IsUpdateBasicFinancialDB());
 			pStock->SetUpdateBasicFinancialDB(true);
 		}
 		vector<CFinnhubStockPtr> vStock;
 		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
-			const auto pStock = gl_dataContainerFinnhubStock.GetStock(l);
+			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
 			vStock.push_back(pStock);
 		}
 
 		gl_dataContainerFinnhubStock.ClearUpdateBasicFinancialFlag(vStock);
 
 		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
-			const auto pStock = gl_dataContainerFinnhubStock.GetStock(l);
+			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
 			EXPECT_FALSE(pStock->IsUpdateBasicFinancialDB());
 		}
 
@@ -119,41 +119,41 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerFinnhubStockTest, TestIsUpdateInsiderTransactionDB) {
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateInsiderTransactionDB());
-		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateInsiderTransactionDB(true);
+		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateInsiderTransactionDB(true);
 
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateInsiderTransactionDB());
 
 		// »Ö¸´Ô­×´
-		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateInsiderTransactionDB(false);
+		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateInsiderTransactionDB(false);
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestIsSaveInsiderSentiment) {
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateInsiderSentimentDB());
-		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateInsiderSentimentDB(true);
+		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateInsiderSentimentDB(true);
 
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateInsiderSentimentDB());
 
 		// »Ö¸´Ô­×´
-		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateInsiderSentimentDB(false);
+		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateInsiderSentimentDB(false);
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestIsUpdateBasicFinancialDB) {
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateBasicFinancialDB());
-		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateBasicFinancialDB(true);
+		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateBasicFinancialDB(true);
 
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateBasicFinancialDB());
 
 		// »Ö¸´Ô­×´
-		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateBasicFinancialDB(false);
+		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateBasicFinancialDB(false);
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestIsUpdateCompanyNewsDB) {
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateCompanyNewsDB());
-		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateCompanyNewsDB(true);
+		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateCompanyNewsDB(true);
 
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateCompanyNewsDB());
 
 		// »Ö¸´Ô­×´
-		gl_dataContainerFinnhubStock.GetStock(0)->SetUpdateCompanyNewsDB(false);
+		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateCompanyNewsDB(false);
 	}
 }

@@ -35,7 +35,7 @@ CWorldMarket::CWorldMarket() {
 	}
 
 	m_strMarketId = _T("US");
-	m_exchange = gl_dataContainerStockExchange.GetExchange(m_strMarketId);
+	m_exchange = gl_dataContainerStockExchange.GetItem(m_strMarketId);
 	ASSERT(m_exchange != nullptr);
 	m_strLocalMarketTimeZone = _T("America/New_York");
 	GetMarketLocalTimeOffset(m_strLocalMarketTimeZone);// 美国股市使用美东标准时间, 美国股市开市时间为九点三十分
@@ -559,7 +559,7 @@ bool CWorldMarket::UpdateEPSSurpriseDB() {
 
 	CFinnhubStockPtr pStock = nullptr;
 	for (long l = 0; l < stockSize; ++l) {
-		pStock = gl_dataContainerFinnhubStock.GetStock(l);
+		pStock = gl_dataContainerFinnhubStock.GetItem(l);
 		if (pStock->IsUpdateEPSSurpriseDB()) {
 			pStock->SetUpdateEPSSurpriseDB(false);
 			pStock->UpdateEPSSurpriseDB();
@@ -575,7 +575,7 @@ void CWorldMarket::UpdateSECFilingsDB() {
 
 	CFinnhubStockPtr pStock = nullptr;
 	for (long l = 0; l < stockSize; ++l) {
-		pStock = gl_dataContainerFinnhubStock.GetStock(l);
+		pStock = gl_dataContainerFinnhubStock.GetItem(l);
 		if (pStock->IsUpdateSECFilingsDB()) {
 			pStock->SetUpdateSECFilingsDB(false);
 			ASSERT(pStock->UpdateSECFilingsDB());
@@ -596,6 +596,7 @@ void CWorldMarket::TaskCalculateNasdaq100MA200UpDownRate(long lCurrentTime) {
 		this->LoadNasdaq100StocksDayLine().get();
 		this->CalculateNasdaq100StocksMA(200);
 		this->calculateNasdaq100MA200UpDownRate();
+		gl_systemMessage.PushInformationMessage(_T("Nasdaq 100 200MA upDown rate calculated"));
 	});
 }
 
@@ -985,7 +986,7 @@ bool CWorldMarket::UpdateToken() {
 
 bool CWorldMarket::UpdateFinnhubStockDayLineDB() {
 	for (long i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
-		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(i);
 		pStock->UpdateDayLineDB();
 		if (gl_systemConfiguration.IsExitingSystem()) break; // 如果程序正在退出，则停止存储。
 	}
@@ -994,7 +995,7 @@ bool CWorldMarket::UpdateFinnhubStockDayLineDB() {
 
 bool CWorldMarket::UpdateCompanyNewsDB() {
 	for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
-		const auto pStock = gl_dataContainerFinnhubStock.GetStock(l);
+		const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
 		if (pStock->IsUpdateCompanyNewsDB()) {
 			pStock->SetUpdateCompanyNewsDB(false);
 			pStock->UpdateCompanyNewsDB();
@@ -1007,7 +1008,7 @@ bool CWorldMarket::UpdateCompanyNewsDB() {
 
 bool CWorldMarket::UpdateInsiderSentimentDB() {
 	for (long i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
-		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(i);
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(i);
 		if (pStock->IsUpdateInsiderSentimentDB()) {
 			pStock->SetUpdateInsiderSentimentDB(false);
 			if (pStock->HaveInsiderSentiment()) {
@@ -1060,7 +1061,7 @@ void CWorldMarket::UpdateStockDayLineStartEndDate() {
 		CSetFinnhubStockDayLine setFinnhubStockDayLine;
 
 		for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
-			const auto pStock = gl_dataContainerFinnhubStock.GetStock(l);
+			const auto pStock = gl_dataContainerFinnhubStock.GetItem(l);
 			setFinnhubStockDayLine.m_strFilter = (strFilterPrefix + pStock->GetSymbol() + _T("'")).c_str();
 			setFinnhubStockDayLine.m_strSort = _T("[Date]");
 			setFinnhubStockDayLine.Open();
@@ -1218,7 +1219,7 @@ void CWorldMarket::UpdateFinnhubStockFromWebSocket() {
 
 void CWorldMarket::UpdateFinnhubStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr& pTiingoIEXbData) {
 	if (gl_dataContainerFinnhubStock.IsSymbol(pTiingoIEXbData->m_sSymbol.c_str())) {
-		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(pTiingoIEXbData->m_sSymbol.c_str());
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(pTiingoIEXbData->m_sSymbol.c_str());
 		pStock->SetActive(true);
 		switch (pTiingoIEXbData->m_chMessageType) {
 		case 'T':
@@ -1236,7 +1237,7 @@ void CWorldMarket::UpdateFinnhubStockFromTiingoIEXSocket(const CTiingoIEXSocketP
 
 void CWorldMarket::UpdateFinnhubStockFromFinnhubSocket(const CFinnhubSocketPtr& pFinnhubData) {
 	if (gl_dataContainerFinnhubStock.IsSymbol(pFinnhubData->m_sSymbol.c_str())) {
-		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(pFinnhubData->m_sSymbol.c_str());
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(pFinnhubData->m_sSymbol.c_str());
 		pStock->SetActive(true);
 		pStock->SetNew(pFinnhubData->m_dLastPrice * 1000);
 	}

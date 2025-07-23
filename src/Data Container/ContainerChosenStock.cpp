@@ -24,7 +24,7 @@ bool CContainerChosenStock::LoadDB() {
 	setWorldChosenStock.m_pDatabase->BeginTrans();
 	while (!setWorldChosenStock.IsEOF()) {
 		if (gl_dataContainerFinnhubStock.IsSymbol(setWorldChosenStock.m_Symbol.GetString())) {
-			pStock = gl_dataContainerFinnhubStock.GetStock(setWorldChosenStock.m_Symbol.GetString());
+			pStock = gl_dataContainerFinnhubStock.GetItem(setWorldChosenStock.m_Symbol.GetString());
 			m_mapSymbol[setWorldChosenStock.m_Symbol.GetString()] = m_mapSymbol.size();
 			m_vStock.push_back(pStock);
 		}

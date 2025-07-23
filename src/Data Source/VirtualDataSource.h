@@ -2,6 +2,7 @@
 
 #include "InternetOption.h"
 #include"VirtualWebProduct.h"
+#include "WorldMarket.h"
 
 enum enum_ErrorMessageData {
 	ERROR_NO_ERROR__ = 0,
@@ -40,6 +41,64 @@ public:
 	CVirtualDataSource(const CVirtualDataSource&&) noexcept = delete;
 	CVirtualDataSource& operator=(const CVirtualDataSource&&) noexcept = delete;
 	virtual ~CVirtualDataSource() = default;
+
+	// Template parameters:
+	// UpdateCheck: Callable, returns bool, checks if update is needed
+	// ProductFactory: Callable, returns product, creates product for inquiry
+	// ReportMsg: Callable, reports the inquiry event
+	template <typename UpdateCheck, typename ProductFactory, typename ReportMsg>
+	bool GenerateSimpleInquiry(int inquireType, UpdateCheck&& isUpdateNeeded, ProductFactory&& createProduct, ReportMsg&& reportMsg) {
+		ASSERT(!IsInquiring());
+		if (isUpdateNeeded()) {
+			StoreInquiry(createProduct(inquireType));
+			SetInquiring(true);
+			reportMsg();
+			return true;
+		}
+		return false;
+	}
+
+	// Add this helper function in the class or as a static function in the file
+	template <typename Container, typename ItemPtr, typename UpdateCheck, typename InaccessibleCheck,
+	          typename ProductFactory, typename SetIndex, typename SetUpdateFlag, typename SetMessage>
+	bool GenerateInquiry(
+		Container& container,
+		int inquireType,
+		UpdateCheck isUpdateNeeded,
+		InaccessibleCheck isInaccessible,
+		ProductFactory createProduct,
+		SetIndex setIndex,
+		SetUpdateFlag setUpdateFlag,
+		SetMessage setMessage,
+		const std::string& finishedMsg
+	) {
+		const auto size = container.Size();
+		bool fHaveInquiry = false;
+		long currentPos = 0;
+		bool fFound = false;
+		for (; currentPos < size; ++currentPos) {
+			auto item = container.GetStock(currentPos);
+			if (isUpdateNeeded(item)) {
+				if (!isInaccessible(inquireType, item->GetExchangeCode())) {
+					fFound = true;
+					break;
+				}
+			}
+		}
+		if (fFound) {
+			auto product = createProduct(inquireType);
+			setIndex(product, currentPos);
+			StoreInquiry(product);
+			SetInquiring(true);
+			fHaveInquiry = true;
+			//setMessage(item->GetSymbol());
+		}
+		else {
+			setUpdateFlag(false);
+			gl_systemMessage.PushInformationMessage(finishedMsg);
+		}
+		return fHaveInquiry;
+	}
 
 	std::shared_ptr<CVirtualDataSource> GetShared() { return shared_from_this(); }
 
@@ -128,7 +187,7 @@ public:
 	void SetErrorMessage(enum_ErrorMessageData error) { m_eErrorMessageData = error; }
 
 protected:
-	queue<CVirtualProductWebDataPtr, list<CVirtualProductWebDataPtr>> m_qProduct; // ÍøÂç²éÑ¯ÃüÁî¶ÓÁÐ
+	queue<CVirtualProductWebDataPtr> m_qProduct; // ÍøÂç²éÑ¯ÃüÁî¶ÓÁÐ
 	CVirtualProductWebDataPtr m_pCurrentProduct{ nullptr };
 
 	atomic_int64_t m_dwHTTPStatusCode{ 0 }; // ÍøÂç×´Ì¬Âë

@@ -41,14 +41,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubStockDayLineTest, TestCreatMessage) {
-		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateDayLine(true);
+		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateDayLine(true);
 		stockDayLine.SetMarket(gl_pWorldMarket);
 		stockDayLine.SetIndex(1);
 		EXPECT_TRUE(stockDayLine.CreateMessage() ==
-			stockDayLine.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsUpdateDayLine()) << "接收到的数据处理后方重置此标识";
+			stockDayLine.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateDayLine()) << "接收到的数据处理后方重置此标识";
 
-		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateDayLine(true);
+		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateDayLine(true);
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser
@@ -85,7 +85,7 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubStockDayLine.__Test_checkAccessRight(m_pWebData);
 
-			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol.c_str());
+			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol.c_str());
 			m_finnhubStockDayLine.SetMarket(gl_pWorldMarket);
 			m_finnhubStockDayLine.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol.c_str()));
 		}

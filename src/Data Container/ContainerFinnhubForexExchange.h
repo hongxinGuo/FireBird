@@ -12,7 +12,7 @@ public:
 
 	bool IsExchange(const string& strExchange) const noexcept { return m_mapForexExchange.contains(strExchange); }
 	size_t Size() const noexcept { return m_vForexExchange.size(); }
-	string GetExchange(const size_t lIndex) const { return m_vForexExchange.at(lIndex); }
+	string GetItem(const size_t lIndex) const { return m_vForexExchange.at(lIndex); }
 	bool Delete(const string& strForexExchange);
 	void Add(const string& strForexExchange);
 

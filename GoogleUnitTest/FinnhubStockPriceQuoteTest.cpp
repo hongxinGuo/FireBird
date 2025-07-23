@@ -43,7 +43,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubStockPriceQuoteTest, TestCreatMessage) {
 		stockPriceQuote.SetMarket(gl_pWorldMarket);
 		stockPriceQuote.SetIndex(1);
-		EXPECT_TRUE(stockPriceQuote.CreateMessage() == stockPriceQuote.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol());
+		EXPECT_TRUE(stockPriceQuote.CreateMessage() == stockPriceQuote.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol());
 	}
 
 	TEST_F(CFinnhubStockPriceQuoteTest, TestProcessWebData) {
@@ -74,7 +74,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol.c_str());
+			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol.c_str());
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetNew(0);
 			m_pStock->SetHigh(0);

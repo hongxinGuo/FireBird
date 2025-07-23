@@ -43,7 +43,7 @@ namespace FireBirdTest {
 	TEST_F(CProductFinnhubForexSymbolTest, TestCreatMessage) {
 		productForexSymbol.SetMarket(gl_pWorldMarket);
 		productForexSymbol.SetIndex(1);
-		EXPECT_TRUE(productForexSymbol.CreateMessage() == productForexSymbol.GetInquiryFunction() + gl_dataContainerFinnhubForexExchange.GetExchange(1));
+		EXPECT_TRUE(productForexSymbol.CreateMessage() == productForexSymbol.GetInquiryFunction() + gl_dataContainerFinnhubForexExchange.GetItem(1));
 	}
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestProcessWebData) {

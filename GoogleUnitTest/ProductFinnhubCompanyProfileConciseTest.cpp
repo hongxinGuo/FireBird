@@ -44,13 +44,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubCompanyProfileConciseTest, TestCreatMessage) {
-		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateCompanyProfile(true);
+		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyProfile(true);
 		companyProfileConcise.SetMarket(gl_pWorldMarket);
 		companyProfileConcise.SetIndex(1);
-		EXPECT_STREQ(companyProfileConcise.CreateMessage().c_str(), (companyProfileConcise.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetStock(1)->GetSymbol()).c_str());
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsUpdateCompanyProfile()) << "处理接收到的数据后才设置此标识";
+		EXPECT_STREQ(companyProfileConcise.CreateMessage().c_str(), (companyProfileConcise.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol()).c_str());
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateCompanyProfile()) << "处理接收到的数据后才设置此标识";
 
-		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateCompanyProfile(true);
+		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyProfile(true);
 	}
 
 	// 格式不对(缺开始的‘{’），无法顺利Parser
@@ -69,7 +69,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol.c_str());
+			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol.c_str());
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCountry(_T(""));
 			m_pWebData = pData->m_pData;

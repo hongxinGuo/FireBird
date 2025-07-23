@@ -13,7 +13,7 @@ public:
 	bool IsExchange(const string& sExchange) const noexcept { return m_mapCryptoExchange.contains(sExchange); }
 
 	size_t Size() const noexcept { return m_vCryptoExchange.size(); }
-	string GetExchange(const size_t lIndex) const noexcept { return m_vCryptoExchange.at(lIndex); }
+	string GetItem(const size_t lIndex) const noexcept { return m_vCryptoExchange.at(lIndex); }
 	bool Delete(const string& sCryptoExchange);
 	void Add(const string& sCryptoExchange);
 

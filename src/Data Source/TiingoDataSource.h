@@ -25,7 +25,7 @@ public:
 	virtual bool GenerateFundamentalDefinition();
 	virtual bool GenerateCompanySymbol();
 	virtual bool GenerateCryptoSymbol();
-	virtual bool GenerateIEXTopOfBook(long lCurrentTime);
+	virtual bool GenerateIEXTopOfBook();
 	virtual bool GenerateStockDailyMeta();
 	virtual bool GenerateDayLine();
 	virtual bool GenerateFinancialState();

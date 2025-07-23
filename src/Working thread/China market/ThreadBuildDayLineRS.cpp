@@ -56,6 +56,7 @@ UINT ThreadBuildDayLineRS(const CChinaMarketPtr& pMarket, long startCalculatingD
 		pMarket->SetRSEndDate(pMarket->GetMarketDate());
 		pMarket->SetUpdateOptionDB(true); // 更新选项数据库
 		// 显示花费的时间
+
 		auto end = chrono::time_point_cast<chrono::seconds>(chrono::steady_clock::now());
 		const long tDiffer = (end - start).count();
 		const long hour = tDiffer / 3600;

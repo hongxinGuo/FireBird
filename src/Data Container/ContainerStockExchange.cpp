@@ -18,10 +18,10 @@ void CContainerStockExchange::Reset() {
 	m_mapStockExchange.clear();
 }
 
-CStockExchangePtr CContainerStockExchange::GetExchange(const string& strExchangeSymbol) const {
+CStockExchangePtr CContainerStockExchange::GetItem(const string& strExchangeSymbol) const {
 	if (m_mapStockExchange.contains(strExchangeSymbol)) {
 		for (auto pExchange : m_vStockExchange) {
-			if (pExchange->m_strCode.compare(strExchangeSymbol) == 0) {
+			if (pExchange->GetExchangeCode().compare(strExchangeSymbol) == 0) {
 				return pExchange;
 			}
 		}
@@ -42,7 +42,7 @@ bool CContainerStockExchange::LoadDB() {
 			pExchange = make_shared<CStockExchange>();
 			pExchange->Load(setExchange);
 			m_vStockExchange.push_back(pExchange);
-			m_mapStockExchange[pExchange->m_strCode] = m_vStockExchange.size();
+			m_mapStockExchange[pExchange->GetExchangeCode()] = m_vStockExchange.size();
 			setExchange.MoveNext();
 		}
 		setExchange.Close();

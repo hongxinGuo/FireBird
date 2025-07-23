@@ -47,10 +47,10 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCompanyNewsTest, TestCreatMessage) {
 		int year = 0, month = 0, day = 0;
 
-		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateCompanyNews(true);
+		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyNews(true);
 		companyNews.SetMarket(gl_pWorldMarket);
 		companyNews.SetIndex(1);
-		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(1);
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(1);
 		string strMessage = companyNews.GetInquiryFunction() + pStock->GetSymbol();
 		int iMarketData360 = GetPrevDay(gl_pWorldMarket->GetMarketDate(), 360);
 		const int iUpdateDate = pStock->GetCompanyNewsUpdateDate() > iMarketData360 ? pStock->GetCompanyNewsUpdateDate() : iMarketData360;
@@ -65,9 +65,9 @@ namespace FireBirdTest {
 		strMessage += sTemp.c_str();
 
 		EXPECT_STREQ(companyNews.CreateMessage().c_str(), strMessage.c_str());
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetStock(1)->IsUpdateCompanyNews()) << "处理接收到的数据后才设置此标识";
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateCompanyNews()) << "处理接收到的数据后才设置此标识";
 
-		gl_dataContainerFinnhubStock.GetStock(1)->SetUpdateCompanyNews(true);
+		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyNews(true);
 	}
 
 	// 格式不对(缺开始的‘[’），无法顺利Parser
@@ -89,7 +89,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol.c_str());
+			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol.c_str());
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCountry(_T(""));
 			m_pWebData = pData->m_pData;

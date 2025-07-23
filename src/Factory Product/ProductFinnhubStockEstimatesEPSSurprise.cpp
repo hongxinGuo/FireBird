@@ -15,7 +15,7 @@ CProductFinnhubStockEstimatesEPSSurprise::CProductFinnhubStockEstimatesEPSSurpri
 }
 
 string CProductFinnhubStockEstimatesEPSSurprise::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	const auto strParam = pStock->GetSymbol();
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
@@ -24,7 +24,7 @@ string CProductFinnhubStockEstimatesEPSSurprise::CreateMessage() {
 }
 
 void CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	const auto pvEPSSurprise = ParseFinnhubEPSSurprise(pWebData);
 	if (!pvEPSSurprise->empty()) { pStock->UpdateEPSSurprise(*pvEPSSurprise); }
 	else {

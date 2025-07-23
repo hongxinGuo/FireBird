@@ -14,7 +14,7 @@ CProductFinnhubSECFilings::CProductFinnhubSECFilings() {
 }
 
 string CProductFinnhubSECFilings::CreateMessage() {
-	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
 	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol();
@@ -24,7 +24,7 @@ string CProductFinnhubSECFilings::CreateMessage() {
 void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	auto pvSECFilings = ParseFinnhubStockSECFilings(pWebData);
 	auto size = pvSECFilings->size();
 	pStock->SetSECFilings(pvSECFilings);

@@ -132,7 +132,7 @@ namespace FireBirdTest {
 	void WorldMarketCheck() {
 		if (gl_pWorldMarket != nullptr) {
 			ASSERT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB()) << "不允许更新股票代码库";
-			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(_T("AAPL"));
+			const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(_T("AAPL"));
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			ASSERT_FALSE(pStock->IsUpdateProfileDB()) << "不允许更新股票代码库";
 			EXPECT_FALSE(pStock->IsUpdateDayLineDB());
@@ -147,15 +147,15 @@ namespace FireBirdTest {
 
 			EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 4847) << "默认状态下数据库总数为4847";
 
-			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(_T("A"))->IsUpdateDayLineDB());
-			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetStock(_T("AAPL"))->IsUpdateDayLineDB());
+			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem(_T("A"))->IsUpdateDayLineDB());
+			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem(_T("AAPL"))->IsUpdateDayLineDB());
 
 			EXPECT_EQ(gl_dataContainerTiingoStock.Size(), 7183) << "默认状态下数据库总数为7183";
 			//Note EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(0)->IsUpdateDayLine());
 			EXPECT_FALSE(gl_dataContainerTiingoStock.GetStock(0)->IsUpdateDayLineDB());
 
 			//	for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
-			//		const auto p_stock = gl_dataContainerFinnhubStock.GetStock(l);
+			//		const auto p_stock = gl_dataContainerFinnhubStock.GetItem(l);
 			//		EXPECT_TRUE(p_stock->IsUpdateBasicFinancial());
 			//		EXPECT_EQ(p_stock->GetBasicFinancialUpdateDate(), 19800101);
 			//		EXPECT_FALSE(p_stock->IsUpdateProfileDB());

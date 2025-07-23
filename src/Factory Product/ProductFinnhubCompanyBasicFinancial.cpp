@@ -25,7 +25,7 @@ CProductFinnhubCompanyBasicFinancial::CProductFinnhubCompanyBasicFinancial() {
 }
 
 string CProductFinnhubCompanyBasicFinancial::CreateMessage() {
-	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
+	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 
 	m_strInquiringExchange = pStock->GetExchangeCode();
 
@@ -42,7 +42,7 @@ string CProductFinnhubCompanyBasicFinancial::CreateMessage() {
 //
 void CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	CFinnhubStockBasicFinancialPtr pFinnhubStockBasicFinancial = nullptr;
-	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetStock(m_lIndex);
+	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	pFinnhubStockBasicFinancial = ParseFinnhubStockBasicFinancial(pWebData);
 	if (pFinnhubStockBasicFinancial != nullptr) {
 		// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.

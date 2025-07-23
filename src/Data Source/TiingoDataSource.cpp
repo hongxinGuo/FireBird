@@ -243,13 +243,14 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 
 	m_PrevInquireTimePoint = llTickCount;
 	ASSERT(!IsInquiring());
+	// Ensure we are not in the market reset window before proceeding
 	ASSERT(lCurrentTime <= GetPrevTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 10, 0)
 		|| lCurrentTime >= GetNextTime(gl_systemConfiguration.GetWorldMarketResettingTime(), 0, 5, 0)); // 重启市场时不允许接收网络信息。
 	if (GenerateMarketNews()) return true; // Note 此项必须位于第一位，用于判断tiingo账户的类型。
 	if (GenerateFundamentalDefinition()) return true;
 	if (GenerateCompanySymbol()) return true;
 	if (GenerateCryptoSymbol()) return true;
-	if (GenerateIEXTopOfBook(lCurrentTime)) return true; // Note 此项数据包含所有股票的即时信息，可以用来作为实时数据使用。
+	if (GenerateIEXTopOfBook()) return true; // Note 此项数据包含所有股票的即时信息，可以用来作为实时数据使用。
 	if (GenerateStockDailyMeta()) return true;
 	if (GenerateDayLine()) return true; // 申请日线数据要位于包含多项申请的项目之首。
 	if (GenerateFinancialState()) return true;
@@ -260,27 +261,29 @@ bool CTiingoDataSource::GenerateInquiryMessage(const long lCurrentTime) {
 }
 
 bool CTiingoDataSource::GenerateMarketNews() {
-	ASSERT(!IsInquiring());
-	if (IsUpdateMarketNews()) {
-		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, MARKET_NEWS_);
-		StoreInquiry(p);
-		SetInquiring(true);
-		gl_systemMessage.SetCurrentTiingoFunction(_T("Market news"));
-		return true;
-	}
-	return false;
+	auto isUpdateNeeded = [this]() { return IsUpdateMarketNews(); };
+	auto createProduct = [this](int inquireType) {
+		return m_TiingoFactory.CreateProduct(gl_pWorldMarket, inquireType);
+	};
+	return GenerateSimpleInquiry(
+		MARKET_NEWS_,
+		isUpdateNeeded,
+		createProduct,
+		[] { gl_systemMessage.SetCurrentTiingoFunction(_T("Market news")); }
+	);
 }
 
 bool CTiingoDataSource::GenerateFundamentalDefinition() {
-	ASSERT(!IsInquiring());
-	if (IsUpdateFundamentalDefinition()) {
-		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, TIINGO_FUNDAMENTAL_DEFINITION_);
-		StoreInquiry(p);
-		SetInquiring(true);
-		gl_systemMessage.SetCurrentTiingoFunction(_T("Fundamental Definition"));
-		return true;
-	}
-	return false;
+	auto isUpdateNeeded = [this]() { return IsUpdateFundamentalDefinition(); };
+	auto createProduct = [this](int inquireType) {
+		return m_TiingoFactory.CreateProduct(gl_pWorldMarket, inquireType);
+	};
+	return GenerateSimpleInquiry(
+		TIINGO_FUNDAMENTAL_DEFINITION_,
+		isUpdateNeeded,
+		createProduct,
+		[] { gl_systemMessage.SetCurrentTiingoFunction(_T("Fundamental Definition")); }
+	);
 }
 
 bool CTiingoDataSource::GenerateCompanySymbol() {
@@ -317,18 +320,17 @@ bool CTiingoDataSource::GenerateCryptoSymbol() {
 	return false;
 }
 
-bool CTiingoDataSource::GenerateIEXTopOfBook(long lCurrentTime) {
-	ASSERT(!IsInquiring());
-	if (IsUpdateIEXTopOfBook()) {
-		const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, TIINGO_IEX_TOP_OF_BOOK_);
-		StoreInquiry(p);
-		SetInquiring(true);
-		gl_systemMessage.SetCurrentTiingoFunction(_T("IEX top of book"));
-
-		SetUpdateIEXTopOfBook(false); // 申请过最近交易日的数据了
-		return true;
-	}
-	return false;
+bool CTiingoDataSource::GenerateIEXTopOfBook() {
+	auto isUpdateNeeded = [this]() { return IsUpdateIEXTopOfBook(); };
+	auto createProduct = [this](int inquireType) {
+		return m_TiingoFactory.CreateProduct(gl_pWorldMarket, inquireType);
+	};
+	return GenerateSimpleInquiry(
+		TIINGO_IEX_TOP_OF_BOOK_,
+		isUpdateNeeded,
+		createProduct,
+		[] { gl_systemMessage.SetCurrentTiingoFunction(_T("IEX top of book")); }
+	);
 }
 
 bool CTiingoDataSource::GenerateStockDailyMeta() {

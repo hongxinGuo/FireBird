@@ -12,7 +12,7 @@ CProductFinnhubForexSymbol::CProductFinnhubForexSymbol() {
 }
 
 string CProductFinnhubForexSymbol::CreateMessage() {
-	m_strInquiringExchange = gl_dataContainerFinnhubForexExchange.GetExchange(m_lIndex);
+	m_strInquiringExchange = gl_dataContainerFinnhubForexExchange.GetItem(m_lIndex);
 	m_strInquiry = m_strInquiryFunction + m_strInquiringExchange;
 	return m_strInquiry;
 }
@@ -22,7 +22,7 @@ void CProductFinnhubForexSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	if (pvForexSymbol->empty()) return;
 	for (const auto& pSymbol : *pvForexSymbol) {
 		if (!gl_dataFinnhubForexSymbol.IsSymbol(pSymbol->GetSymbol())) {
-			pSymbol->SetExchangeCode(gl_dataContainerFinnhubForexExchange.GetExchange(m_lIndex));
+			pSymbol->SetExchangeCode(gl_dataContainerFinnhubForexExchange.GetItem(m_lIndex));
 			gl_dataFinnhubForexSymbol.Add(pSymbol);
 		}
 	}

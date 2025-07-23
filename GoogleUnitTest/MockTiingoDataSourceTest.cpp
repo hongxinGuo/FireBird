@@ -60,7 +60,7 @@ namespace FireBirdTest {
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateCryptoSymbol()).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateIEXTopOfBook(_)).Times(1)
+		EXPECT_CALL(*m_pTiingoDataSource, GenerateIEXTopOfBook()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateStockDailyMeta()).Times(1)
 		.WillOnce(Return(false));
@@ -107,7 +107,7 @@ namespace FireBirdTest {
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateCryptoSymbol()).Times(1)
 		.WillOnce(Return(false));
-		EXPECT_CALL(*m_pTiingoDataSource, GenerateIEXTopOfBook(120500)).Times(1)
+		EXPECT_CALL(*m_pTiingoDataSource, GenerateIEXTopOfBook()).Times(1)
 		.WillRepeatedly(DoAll(Invoke([p]() {
 			m_pTiingoDataSource->SetInquiring(true);
 			m_pTiingoDataSource->StoreInquiry(p);

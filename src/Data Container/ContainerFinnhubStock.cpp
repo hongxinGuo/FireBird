@@ -29,7 +29,7 @@ void CContainerFinnhubStock::Reset() {
 
 void CContainerFinnhubStock::ResetEPSSurprise() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
-		const CFinnhubStockPtr pStock = GetStock(l);
+		const CFinnhubStockPtr pStock = GetItem(l);
 		pStock->SetLastEPSSurpriseUpdateDate(19800101);
 		pStock->m_fUpdateEPSSurprise = true;
 	}
@@ -37,7 +37,7 @@ void CContainerFinnhubStock::ResetEPSSurprise() {
 
 void CContainerFinnhubStock::ResetPeer() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
-		const CFinnhubStockPtr pStock = GetStock(l);
+		const CFinnhubStockPtr pStock = GetItem(l);
 		if (pStock->GetPeerUpdateDate() != 19800101) {
 			pStock->SetPeerUpdateDate(19800101);
 			pStock->SetUpdatePeer(true);
@@ -48,7 +48,7 @@ void CContainerFinnhubStock::ResetPeer() {
 
 void CContainerFinnhubStock::ResetBasicFinancial() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
-		const CFinnhubStockPtr pStock = GetStock(l);
+		const CFinnhubStockPtr pStock = GetItem(l);
 		if (pStock->GetBasicFinancialUpdateDate() != 19800101) {
 			pStock->SetBasicFinancialUpdateDate(19800101);
 			pStock->SetUpdateBasicFinancial(true);
@@ -59,7 +59,7 @@ void CContainerFinnhubStock::ResetBasicFinancial() {
 
 void CContainerFinnhubStock::ResetDayLine() {
 	for (size_t l = 0; l < m_vStock.size(); l++) {
-		const CFinnhubStockPtr pStock = GetStock(l);
+		const CFinnhubStockPtr pStock = GetItem(l);
 		pStock->SetIPOStatus(_STOCK_NOT_CHECKED_);
 		pStock->SetDayLineStartDate(29900101);
 		pStock->SetDayLineEndDate(19800101);
@@ -122,7 +122,7 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 		setFinnhubStock.m_pDatabase->BeginTrans();
 		while (iCurrentUpdated < iStockNeedUpdate) {	//更新原有的代码集状态
 			if (setFinnhubStock.IsEOF()) break;
-			const CFinnhubStockPtr pStock = GetStock(setFinnhubStock.m_Symbol.GetString());
+			const CFinnhubStockPtr pStock = GetItem(setFinnhubStock.m_Symbol.GetString());
 			ASSERT(pStock != nullptr);
 			if (pStock->IsUpdateProfileDB()) {
 				iCurrentUpdated++;
@@ -133,7 +133,7 @@ void CContainerFinnhubStock::UpdateProfileDB() {
 		}
 		if (iCurrentUpdated < iStockNeedUpdate) { // 添加新的股票简介
 			for (size_t l = 0; l < m_vStock.size(); l++) {
-				const CFinnhubStockPtr pStock = GetStock(l);
+				const CFinnhubStockPtr pStock = GetItem(l);
 				ASSERT(pStock != nullptr);
 				if (pStock->IsUpdateProfileDB()) {
 					iCurrentUpdated++;
@@ -169,7 +169,7 @@ bool CContainerFinnhubStock::UpdateBasicFinancialDB() {
 
 	vStock.clear();
 	for (size_t l = 0; l < m_vStock.size(); l++) {
-		const CFinnhubStockPtr pStock = GetStock(l);
+		const CFinnhubStockPtr pStock = GetItem(l);
 		if (pStock->IsUpdateBasicFinancialDB()) {
 			vStock.push_back(pStock);
 		}
@@ -228,7 +228,7 @@ void CContainerFinnhubStock::UpdateBasicFinancialMetricDB(const vector<CFinnhubS
 	while (iCurrentUpdated < iBasicFinancialNeedUpdate) {
 		if (setBasicFinancialMetric.IsEOF()) break;
 		if (IsSymbol(setBasicFinancialMetric.m_symbol.GetString())) {
-			CFinnhubStockPtr pStockNeedUpdate = GetStock(setBasicFinancialMetric.m_symbol.GetString());
+			CFinnhubStockPtr pStockNeedUpdate = GetItem(setBasicFinancialMetric.m_symbol.GetString());
 			if (vStock.end() != std::ranges::find(vStock.begin(), vStock.end(), pStockNeedUpdate)) {
 				iCurrentUpdated++;
 				pStockNeedUpdate->UpdateBasicFinancialMetric(setBasicFinancialMetric);
@@ -268,7 +268,7 @@ void CContainerFinnhubStock::ClearUpdateBasicFinancialFlag(const vector<CFinnhub
 
 void CContainerFinnhubStock::UpdateInsiderTransactionDB() {
 	for (long i = 0; i < m_vStock.size(); i++) {
-		const CFinnhubStockPtr pStock = GetStock(i);
+		const CFinnhubStockPtr pStock = GetItem(i);
 		if (pStock->IsUpdateInsiderTransactionDB()) {
 			pStock->SetUpdateInsiderTransactionDB(false);
 			if (pStock->HaveInsiderTransaction()) {

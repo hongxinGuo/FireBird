@@ -71,7 +71,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_dataContainerFinnhubStock.GetStock(pData->m_strSymbol.c_str());
+			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol.c_str());
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCurrency(_T(""));
 			m_pWebData = pData->m_pData;
@@ -176,7 +176,7 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol(_T("New Symbol"))) << "新增加的代码";
-			pStock = gl_dataContainerFinnhubStock.GetStock(_T("New Symbol"));
+			pStock = gl_dataContainerFinnhubStock.GetItem(_T("New Symbol"));
 			EXPECT_STREQ(pStock->GetExchangeCode().c_str(), _T("AD")) << "测试数据库的第一个交易所";
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 

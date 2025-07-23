@@ -31,7 +31,7 @@ namespace FireBirdTest {
 
 	TEST_F(CExchangeTest, TestInitialize) {
 		const CStockExchange Exchange;
-		EXPECT_STREQ(Exchange.m_strCode.c_str(), _T(" "));
+		EXPECT_STREQ(Exchange.GetExchangeCode().c_str(), _T(" "));
 		EXPECT_STREQ(Exchange.m_strName.c_str(), _T(" "));
 		EXPECT_STREQ(Exchange.m_strMic.c_str(), _T(" "));
 		EXPECT_STREQ(Exchange.m_strTimeZone.c_str(), _T(" "));
@@ -72,7 +72,7 @@ namespace FireBirdTest {
 		CSetStockExchange setExchange, setExchange2;
 		CStockExchange Exchange, Exchange2;
 
-		Exchange.m_strCode = _T("AA");
+		Exchange.SetExchangeCode(_T("AA"));
 		Exchange.m_strName = _T("aaa");
 		Exchange.m_strMic = _T("abdc");
 		Exchange.m_strTimeZone = _T("Beijing");
@@ -94,7 +94,7 @@ namespace FireBirdTest {
 		setExchange2.m_pDatabase->BeginTrans();
 		EXPECT_TRUE(!setExchange2.IsEOF()) << "此时已经存入了AA";
 		Exchange2.Load(setExchange2);
-		EXPECT_STREQ(Exchange.m_strCode.c_str(), _T("AA"));
+		EXPECT_STREQ(Exchange.GetExchangeCode().c_str(), _T("AA"));
 		EXPECT_STREQ(Exchange.m_strName.c_str(), _T("aaa"));
 		EXPECT_STREQ(Exchange.m_strMic.c_str(), _T("abdc"));
 		EXPECT_STREQ(Exchange.m_strTimeZone.c_str(), _T("Beijing"));
