@@ -219,44 +219,7 @@ bool CFinnhubDataSource::GenerateCountryList() {
 		[] { gl_systemMessage.SetCurrentFinnhubFunction(_T("Finnhub country List")); }
 	);
 }
-/*
-	template <typename Container, typename PtrType, typename UpdateCheck, typename AccessCheck, typename ProductCreate, typename IndexSet, typename MessageSet, typename UpdateFlag>
-	bool GenerateInquiry(
-		Container& container,
-		int inquireType,
-		UpdateCheck isUpdateNeeded,
-		AccessCheck isAccessible,
-		ProductCreate createProduct,
-		IndexSet setIndex,
-		MessageSet setMessage,
-		UpdateFlag setUpdateFlag,
-		const string& finishedMsg
-	) {
-		if (!isUpdateNeeded()) return false;
-		bool found = false;
-		long pos = 0;
-		for (; pos < container.Size(); ++pos) {
-			auto item = container.Get(pos);
-			if (item->IsUpdateNeeded() && isAccessible(inquireType, item->GetExchangeCode())) {
-				found = true;
-				break;
-			}
-		}
-		if (found) {
-			auto product = createProduct(inquireType);
-			setIndex(product, pos);
-			StoreInquiry(product);
-			SetInquiring(true);
-			setMessage(container.Get(pos));
-			return true;
-		}
-		else {
-			setUpdateFlag(false);
-			gl_systemMessage.PushInformationMessage(finishedMsg);
-			return false;
-		}
-	}
-*/
+
 /*
 bool CFinnhubDataSource::GenerateMarketStatus() {
 	const auto lExchangeSize = gl_dataContainerStockExchange.Size();
@@ -269,9 +232,9 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 		bool fFound = false;
 		size_t lCurrentStockExchangePos;
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
-			if (!gl_dataContainerStockExchange.GetItem(lCurrentStockExchangePos)->IsMarketStatusUpdated()) {
+			if (gl_dataContainerStockExchange.GetItem(lCurrentStockExchangePos)->IsUpdateMarketStatus()) {
 				pExchange = gl_dataContainerStockExchange.GetItem(lCurrentStockExchangePos);
-				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pExchange->m_strCode.c_str())) {
+				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pExchange->GetExchangeCode())) {
 					fFound = true;
 					break;
 				}
@@ -284,7 +247,7 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 			StoreInquiry(product);
 			SetInquiring(true);
 			string str = _T("Market status: ");
-			str += pExchange->m_strCode;
+			str += pExchange->GetExchangeCode();
 			gl_systemMessage.SetCurrentFinnhubFunction(str);
 		}
 		else {
@@ -295,14 +258,15 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 		}
 	}
 	return fHaveInquiry;
-}*/
+}
+*/
 
 bool CFinnhubDataSource::GenerateMarketStatus() {
 	// Lambda to check if update is needed
 	auto isUpdateNeeded = [this]() { return IsUpdateMarketStatus(); };
-	auto isUpdateItemNeeded = [](const auto& item) { return !item->IsMarketStatusUpdated(); };
+	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateMarketStatus(); };
 	auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode.c_str());
+		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
 	};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
 	auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
@@ -314,7 +278,7 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 	auto setUpdateFlag = [this](bool flag) { SetUpdateMarketStatus(flag); };
 	const std::string finishedMsg = "Finnhub market status finished";
 
-	return GenerateInquiryIterateWithAcessCheck(
+	return GenerateInquiryIterateWithAccessCheck(
 		gl_dataContainerStockExchange,
 		MARKET_STATUS_,
 		isUpdateNeeded,
@@ -340,7 +304,7 @@ bool CFinnhubDataSource::GenerateMarketHoliday() {
 		bool fFound = false;
 		long lCurrentStockExchangePos;
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
-			if (!gl_dataContainerStockExchange.GetItem(lCurrentStockExchangePos)->IsMarketHolidayUpdated()) {
+			if (gl_dataContainerStockExchange.GetItem(lCurrentStockExchangePos)->IsUpdateMarketHoliday()) {
 				pExchange = gl_dataContainerStockExchange.GetItem(lCurrentStockExchangePos);
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pExchange->GetExchangeCode())) {
 					fFound = true;
@@ -371,9 +335,9 @@ bool CFinnhubDataSource::GenerateMarketHoliday() {
 
 bool CFinnhubDataSource::GenerateMarketHoliday() {
 	auto isUpdateNeeded = [this]() { return IsUpdateMarketHoliday(); };
-	auto isUpdateItemNeeded = [](const auto& item) { return !item->IsMarketHolidayUpdated(); };
+	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateMarketHoliday(); };
 	auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode.c_str());
+		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
 	};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
 	auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
@@ -385,7 +349,7 @@ bool CFinnhubDataSource::GenerateMarketHoliday() {
 	auto setUpdateFlag = [this](bool flag) { SetUpdateMarketHoliday(flag); };
 	const std::string finishedMsg = "Finnhub market holiday finished";
 
-	return GenerateInquiryIterateWithAcessCheck(
+	return GenerateInquiryIterateWithAccessCheck(
 		gl_dataContainerStockExchange,
 		MARKET_HOLIDAY_,
 		isUpdateNeeded,
@@ -411,7 +375,7 @@ bool CFinnhubDataSource::GenerateCompanySymbol() {
 		bool fFound = false;
 		long lCurrentStockExchangePos;
 		for (lCurrentStockExchangePos = 0; lCurrentStockExchangePos < lExchangeSize; lCurrentStockExchangePos++) {
-			if (!gl_dataContainerStockExchange.GetItem(lCurrentStockExchangePos)->IsStockSymbolUpdated()) {
+			if (gl_dataContainerStockExchange.GetItem(lCurrentStockExchangePos)->IsUpdateStockSymbol()) {
 				pExchange = gl_dataContainerStockExchange.GetItem(lCurrentStockExchangePos);
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pExchange->GetExchangeCode())) {
 					fFound = true;
@@ -441,9 +405,9 @@ bool CFinnhubDataSource::GenerateCompanySymbol() {
 
 bool CFinnhubDataSource::GenerateCompanySymbol() {
 	auto isUpdateNeeded = [this]() { return IsUpdateSymbol(); };
-	auto isUpdateItemNeeded = [](const auto& item) { return !item->IsStockSymbolUpdated(); };
+	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateStockSymbol(); };
 	auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode.c_str());
+		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
 	};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
 	auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
@@ -455,7 +419,7 @@ bool CFinnhubDataSource::GenerateCompanySymbol() {
 	auto setUpdateFlag = [this](bool flag) { SetUpdateSymbol(flag); };
 	const std::string finishedMsg = "Finnhub exchange's stock updated";
 
-	return GenerateInquiryIterateWithAcessCheck(
+	return GenerateInquiryIterateWithAccessCheck(
 		gl_dataContainerStockExchange,
 		STOCK_SYMBOLS_,
 		isUpdateNeeded,
@@ -512,7 +476,7 @@ bool CFinnhubDataSource::GenerateCompanyProfileConcise() {
 	auto isUpdateNeeded = [this]() { return IsUpdateStockProfile(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateCompanyProfile(); };
 	auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode.c_str());
+		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
 	};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
 	auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
@@ -524,7 +488,7 @@ bool CFinnhubDataSource::GenerateCompanyProfileConcise() {
 	auto setUpdateFlag = [this](bool flag) { SetUpdateStockProfile(flag); };
 	const std::string finishedMsg = "Finnhub company profile basic updated";
 
-	return GenerateInquiryIterateWithAcessCheck(
+	return GenerateInquiryIterateWithAccessCheck(
 		gl_dataContainerFinnhubStock,
 		COMPANY_PROFILE_CONCISE_,
 		isUpdateNeeded,
@@ -586,7 +550,7 @@ bool CFinnhubDataSource::GenerateCompanyNews() {
 	auto isUpdateNeeded = [this]() { return IsUpdateCompanyNews(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateCompanyNews(); };
 	auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode.c_str());
+		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
 	};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
 	auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
@@ -598,7 +562,7 @@ bool CFinnhubDataSource::GenerateCompanyNews() {
 	auto setUpdateFlag = [this](bool flag) { SetUpdateCompanyNews(flag); };
 	const std::string finishedMsg = "Finnhub company news updated";
 
-	return GenerateInquiryIterateWithAcessCheck(
+	return GenerateInquiryIterateWithAccessCheck(
 		gl_dataContainerFinnhubStock,
 		COMPANY_NEWS_,
 		isUpdateNeeded,
@@ -656,7 +620,7 @@ bool CFinnhubDataSource::GenerateCompanyBasicFinancial() {
 	auto isUpdateNeeded = [this]() { return IsUpdateStockBasicFinancial(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateBasicFinancial(); };
 	auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode.c_str());
+		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
 	};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
 	auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
@@ -668,7 +632,7 @@ bool CFinnhubDataSource::GenerateCompanyBasicFinancial() {
 	auto setUpdateFlag = [this](bool flag) { SetUpdateStockBasicFinancial(flag); };
 	const std::string finishedMsg = "Finnhub basic financial updated";
 
-	return GenerateInquiryIterateWithAcessCheck(
+	return GenerateInquiryIterateWithAccessCheck(
 		gl_dataContainerFinnhubStock,
 		BASIC_FINANCIALS_,
 		isUpdateNeeded,
@@ -682,6 +646,7 @@ bool CFinnhubDataSource::GenerateCompanyBasicFinancial() {
 	);
 }
 
+/*
 bool CFinnhubDataSource::GenerateStockDayLine() {
 	const auto lStockSetSize = gl_dataContainerFinnhubStock.Size();
 	bool fHaveInquiry = false;
@@ -722,8 +687,39 @@ bool CFinnhubDataSource::GenerateStockDayLine() {
 		}
 	}
 	return fHaveInquiry;
+}*/
+
+bool CFinnhubDataSource::GenerateStockDayLine() {
+	auto isUpdateNeeded = [this]() { return IsUpdateStockDayLine(); };
+	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateDayLine(); };
+	auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
+		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
+	};
+	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
+	auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
+	auto setMessage = [](const auto& item) {
+		std::string str = _T("日线:");
+		str += item->GetSymbol();
+		gl_systemMessage.SetCurrentFinnhubFunction(str);
+	};
+	auto setUpdateFlag = [this](bool flag) { SetUpdateStockDayLine(flag); };
+	const std::string finishedMsg = "Finnhub dayline updated";
+
+	return GenerateInquiryIterateWithAccessCheck(
+		gl_dataContainerFinnhubStock,
+		STOCK_PRICE_CANDLES_,
+		isUpdateNeeded,
+		isUpdateItemNeeded,
+		isAccessible,
+		createProduct,
+		setIndex,
+		setMessage,
+		setUpdateFlag,
+		finishedMsg
+	);
 }
 
+/*
 bool CFinnhubDataSource::GenerateInsiderTransaction() {
 	const auto lStockSetSize = gl_dataContainerFinnhubStock.Size();
 	bool fHaveInquiry = false;
@@ -762,8 +758,39 @@ bool CFinnhubDataSource::GenerateInsiderTransaction() {
 		}
 	}
 	return fHaveInquiry;
+}*/
+
+bool CFinnhubDataSource::GenerateInsiderTransaction() {
+	auto isUpdateNeeded = [this]() { return IsUpdateInsiderTransaction(); };
+	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateInsiderTransaction(); };
+	auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
+		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
+	};
+	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
+	auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
+	auto setMessage = [](const auto& item) {
+		std::string str = _T("内部交易:");
+		str += item->GetSymbol();
+		gl_systemMessage.SetCurrentFinnhubFunction(str);
+	};
+	auto setUpdateFlag = [this](bool flag) { SetUpdateInsiderTransaction(flag); };
+	const std::string finishedMsg = "Finnhub Insider Transaction updated";
+
+	return GenerateInquiryIterateWithAccessCheck(
+		gl_dataContainerFinnhubStock,
+		INSIDER_TRANSACTION_,
+		isUpdateNeeded,
+		isUpdateItemNeeded,
+		isAccessible,
+		createProduct,
+		setIndex,
+		setMessage,
+		setUpdateFlag,
+		finishedMsg
+	);
 }
 
+/*
 bool CFinnhubDataSource::GenerateInsiderSentiment() {
 	const auto lStockSetSize = gl_dataContainerFinnhubStock.Size();
 	bool fHaveInquiry = false;
@@ -803,6 +830,36 @@ bool CFinnhubDataSource::GenerateInsiderSentiment() {
 		}
 	}
 	return fHaveInquiry;
+}*/
+
+bool CFinnhubDataSource::GenerateInsiderSentiment() {
+	auto isUpdateNeeded = [this]() { return IsUpdateInsiderSentiment(); };
+	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateInsiderSentiment(); };
+	auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
+		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
+	};
+	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
+	auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
+	auto setMessage = [](const auto& item) {
+		std::string str = _T("内部交易情绪:");
+		str += item->GetSymbol();
+		gl_systemMessage.SetCurrentFinnhubFunction(str);
+	};
+	auto setUpdateFlag = [this](bool flag) { SetUpdateInsiderSentiment(flag); };
+	const std::string finishedMsg = "Finnhub Insider Sentiment updated";
+
+	return GenerateInquiryIterateWithAccessCheck(
+		gl_dataContainerFinnhubStock,
+		INSIDER_SENTIMENT_,
+		isUpdateNeeded,
+		isUpdateItemNeeded,
+		isAccessible,
+		createProduct,
+		setIndex,
+		setMessage,
+		setUpdateFlag,
+		finishedMsg
+	);
 }
 
 bool CFinnhubDataSource::GenerateRTQuote() {
@@ -820,6 +877,7 @@ bool CFinnhubDataSource::GenerateRTQuote() {
 	return true;
 }
 
+/*
 bool CFinnhubDataSource::GeneratePeer() {
 	const auto lStockSetSize = gl_dataContainerFinnhubStock.Size();
 	bool fHaveInquiry = false;
@@ -857,6 +915,36 @@ bool CFinnhubDataSource::GeneratePeer() {
 		}
 	}
 	return fHaveInquiry;
+}*/
+
+bool CFinnhubDataSource::GeneratePeer() {
+	auto isUpdateNeeded = [this]() { return IsUpdatePeer(); };
+	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdatePeer(); };
+	auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
+		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
+	};
+	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
+	auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
+	auto setMessage = [](const auto& item) {
+		std::string str = _T("Peer:");
+		str += item->GetSymbol();
+		gl_systemMessage.SetCurrentFinnhubFunction(str);
+	};
+	auto setUpdateFlag = [this](bool flag) { SetUpdatePeer(flag); };
+	const std::string finishedMsg = "Finnhub Peer Updated";
+
+	return GenerateInquiryIterateWithAccessCheck(
+		gl_dataContainerFinnhubStock,
+		PEERS_,
+		isUpdateNeeded,
+		isUpdateItemNeeded,
+		isAccessible,
+		createProduct,
+		setIndex,
+		setMessage,
+		setUpdateFlag,
+		finishedMsg
+	);
 }
 
 /*
@@ -876,9 +964,7 @@ bool CFinnhubDataSource::GenerateEconomicCalendar() {
 
 bool CFinnhubDataSource::GenerateEconomicCalendar() {
 	auto isUpdateNeeded = [this]() { return IsUpdateEconomicCalendar(); };
-	auto createProduct = [this](int inquireType) {
-		return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType);
-	};
+	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
 	return GenerateSimpleInquiry(
 		ECONOMIC_CALENDAR_,
 		isUpdateNeeded,
@@ -887,6 +973,7 @@ bool CFinnhubDataSource::GenerateEconomicCalendar() {
 	);
 }
 
+/*
 bool CFinnhubDataSource::GenerateEPSSurprise() {
 	const auto lStockSetSize = gl_dataContainerFinnhubStock.Size();
 	bool fHaveInquiry = false;
@@ -926,8 +1013,39 @@ bool CFinnhubDataSource::GenerateEPSSurprise() {
 		}
 	}
 	return fHaveInquiry;
+} */
+
+bool CFinnhubDataSource::GenerateEPSSurprise() {
+	auto isUpdateNeeded = [this]() { return IsUpdateEPSSurprise(); };
+	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateEPSSurprise(); };
+	auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
+		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
+	};
+	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
+	auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
+	auto setMessage = [](const auto& item) {
+		std::string str = _T("EPS surprise:");
+		str += item->GetSymbol();
+		gl_systemMessage.SetCurrentFinnhubFunction(str);
+	};
+	auto setUpdateFlag = [this](bool flag) { SetUpdateEPSSurprise(flag); };
+	const std::string finishedMsg = "Finnhub EPS Surprise Updated";
+
+	return GenerateInquiryIterateWithAccessCheck(
+		gl_dataContainerFinnhubStock,
+		STOCK_ESTIMATES_EPS_SURPRISE_,
+		isUpdateNeeded,
+		isUpdateItemNeeded,
+		isAccessible,
+		createProduct,
+		setIndex,
+		setMessage,
+		setUpdateFlag,
+		finishedMsg
+	);
 }
 
+/*
 bool CFinnhubDataSource::GenerateSECFilings() {
 	const auto lStockSetSize = gl_dataContainerFinnhubStock.Size();
 	bool fHaveInquiry = false;
@@ -940,7 +1058,7 @@ bool CFinnhubDataSource::GenerateSECFilings() {
 		bool fFound = false;
 		for (m_lCurrentUpdateSECFilingsPos = 0; m_lCurrentUpdateSECFilingsPos < lStockSetSize; m_lCurrentUpdateSECFilingsPos++) {
 			pStock = gl_dataContainerFinnhubStock.GetItem(m_lCurrentUpdateSECFilingsPos);
-			if (!pStock->IsSECFilingsUpdated()) {
+			if (!pStock->IsUpdateSECFilings()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pStock->GetExchangeCode())) {
 					fFound = true;
 					break;
@@ -953,7 +1071,6 @@ bool CFinnhubDataSource::GenerateSECFilings() {
 			product->SetIndex(m_lCurrentUpdateSECFilingsPos);
 			StoreInquiry(product);
 			SetInquiring(true);
-			gl_dataContainerFinnhubStock.GetItem(m_lCurrentUpdateSECFilingsPos)->SetSECFilingsUpdated(true);
 			string str = _T("SEC Filings:");
 			str += pStock->GetSymbol();
 			gl_systemMessage.SetCurrentFinnhubFunction(str);
@@ -967,6 +1084,36 @@ bool CFinnhubDataSource::GenerateSECFilings() {
 		}
 	}
 	return fHaveInquiry;
+}*/
+
+bool CFinnhubDataSource::GenerateSECFilings() {
+	auto isUpdateNeeded = [this]() { return IsUpdateSECFilings(); };
+	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateSECFilings(); };
+	auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
+		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
+	};
+	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
+	auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
+	auto setMessage = [](const auto& item) {
+		std::string str = _T("SEC Filings:");
+		str += item->GetSymbol();
+		gl_systemMessage.SetCurrentFinnhubFunction(str);
+	};
+	auto setUpdateFlag = [this](bool flag) { SetUpdateSECFilings(flag); };
+	const std::string finishedMsg = "Finnhub SEC Filings Updated";
+
+	return GenerateInquiryIterateWithAccessCheck(
+		gl_dataContainerFinnhubStock,
+		SEC_FILINGS_,
+		isUpdateNeeded,
+		isUpdateItemNeeded,
+		isAccessible,
+		createProduct,
+		setIndex,
+		setMessage,
+		setUpdateFlag,
+		finishedMsg
+	);
 }
 
 /*
@@ -983,9 +1130,7 @@ bool CFinnhubDataSource::GenerateForexExchange() {
 
 bool CFinnhubDataSource::GenerateForexExchange() {
 	auto isUpdateNeeded = [this]() { return IsUpdateForexExchange(); };
-	auto createProduct = [this](int inquireType) {
-		return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType);
-	};
+	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
 	return GenerateSimpleInquiry(
 		FOREX_EXCHANGE_,
 		isUpdateNeeded,
@@ -1014,6 +1159,27 @@ bool CFinnhubDataSource::GenerateForexSymbol() {
 	return false;
 }
 
+bool CFinnhubDataSource::GenerateCryptoSymbol() {
+	ASSERT(!IsInquiring());
+	if (IsUpdateCryptoSymbol()) {
+		const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_);
+		product->SetIndex(m_lCurrentCryptoExchangePos);
+		StoreInquiry(product);
+		SetInquiring(true);
+		string str = _T("crypto symbol: ");
+		str += gl_dataContainerFinnhubCryptoExchange.GetItem(m_lCurrentCryptoExchangePos);
+		gl_systemMessage.SetCurrentFinnhubFunction(str);
+		if (++m_lCurrentCryptoExchangePos >= gl_dataContainerFinnhubCryptoExchange.Size()) {
+			SetUpdateCryptoSymbol(false);
+			m_lCurrentCryptoExchangePos = 0;
+			gl_systemMessage.PushInformationMessage(_T("Finnhub Crypto symbols updated"));
+		}
+		return true;
+	}
+	return false;
+}
+
+/*
 bool CFinnhubDataSource::GenerateForexDayLine() {
 	const auto lStockSetSize = gl_dataFinnhubForexSymbol.Size();
 	bool fHaveInquiry = false;
@@ -1026,7 +1192,7 @@ bool CFinnhubDataSource::GenerateForexDayLine() {
 		long lCurrentUpdateForexDayLinePos;
 		bool fFound = false;
 		for (lCurrentUpdateForexDayLinePos = 0; lCurrentUpdateForexDayLinePos < lStockSetSize; lCurrentUpdateForexDayLinePos++) {
-			pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(lCurrentUpdateForexDayLinePos);
+			pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(lCurrentUpdateForexDayLinePos);
 			if (pForexSymbol->IsUpdateDayLine()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pForexSymbol->GetExchangeCode())) {
 					fFound = true;
@@ -1052,6 +1218,36 @@ bool CFinnhubDataSource::GenerateForexDayLine() {
 		}
 	}
 	return fHaveInquiry;
+}*/
+
+bool CFinnhubDataSource::GenerateForexDayLine() {
+	auto isUpdateNeeded = [this]() { return IsUpdateForexDayLine(); };
+	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateDayLine(); };
+	auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
+		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
+	};
+	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
+	auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
+	auto setMessage = [](const auto& item) {
+		std::string str = _T("Forex日线：");
+		str += item->GetSymbol();
+		gl_systemMessage.SetCurrentFinnhubFunction(str);
+	};
+	auto setUpdateFlag = [this](bool flag) { SetUpdateForexDayLine(flag); };
+	const std::string finishedMsg = "Finnhub Forex DayLine Updated";
+
+	return GenerateInquiryIterateWithAccessCheck(
+		gl_dataFinnhubForexSymbol,
+		FOREX_CANDLES_,
+		isUpdateNeeded,
+		isUpdateItemNeeded,
+		isAccessible,
+		createProduct,
+		setIndex,
+		setMessage,
+		setUpdateFlag,
+		finishedMsg
+	);
 }
 
 /*
@@ -1068,9 +1264,7 @@ bool CFinnhubDataSource::GenerateCryptoExchange() {
 
 bool CFinnhubDataSource::GenerateCryptoExchange() {
 	auto isUpdateNeeded = [this]() { return IsUpdateCryptoExchange(); };
-	auto createProduct = [this](int inquireType) {
-		return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType);
-	};
+	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
 	return GenerateSimpleInquiry(
 		CRYPTO_EXCHANGE_,
 		isUpdateNeeded,
@@ -1079,26 +1273,7 @@ bool CFinnhubDataSource::GenerateCryptoExchange() {
 	);
 }
 
-bool CFinnhubDataSource::GenerateCryptoSymbol() {
-	ASSERT(!IsInquiring());
-	if (IsUpdateCryptoSymbol()) {
-		const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_);
-		product->SetIndex(m_lCurrentCryptoExchangePos);
-		StoreInquiry(product);
-		SetInquiring(true);
-		string str = _T("crypto symbol: ");
-		str += gl_dataContainerFinnhubCryptoExchange.GetItem(m_lCurrentCryptoExchangePos);
-		gl_systemMessage.SetCurrentFinnhubFunction(str);
-		if (++m_lCurrentCryptoExchangePos >= gl_dataContainerFinnhubCryptoExchange.Size()) {
-			SetUpdateCryptoSymbol(false);
-			m_lCurrentCryptoExchangePos = 0;
-			gl_systemMessage.PushInformationMessage(_T("Finnhub Crypto symbols updated"));
-		}
-		return true;
-	}
-	return false;
-}
-
+/*
 bool CFinnhubDataSource::GenerateCryptoDayLine() {
 	const auto lStockSetSize = gl_dataFinnhubCryptoSymbol.Size();
 	bool fHaveInquiry = false;
@@ -1111,7 +1286,7 @@ bool CFinnhubDataSource::GenerateCryptoDayLine() {
 		long lCurrentUpdateCryptoDayLinePos;
 		bool fFound = false;
 		for (lCurrentUpdateCryptoDayLinePos = 0; lCurrentUpdateCryptoDayLinePos < lStockSetSize; lCurrentUpdateCryptoDayLinePos++) {
-			pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(lCurrentUpdateCryptoDayLinePos);
+			pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem(lCurrentUpdateCryptoDayLinePos);
 			if (pCryptoSymbol->IsUpdateDayLine()) {
 				if (!gl_finnhubInaccessibleExchange.HaveExchange(iInquireType, pCryptoSymbol->GetExchangeCode())) {
 					fFound = true;
@@ -1137,4 +1312,34 @@ bool CFinnhubDataSource::GenerateCryptoDayLine() {
 		}
 	}
 	return fHaveInquiry;
+}*/
+
+bool CFinnhubDataSource::GenerateCryptoDayLine() {
+	auto isUpdateNeeded = [this]() { return IsUpdateCryptoDayLine(); };
+	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateDayLine(); };
+	auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
+		return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
+	};
+	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
+	auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
+	auto setMessage = [](const auto& item) {
+		std::string str = _T("Crypto日线：");
+		str += item->GetSymbol();
+		gl_systemMessage.SetCurrentFinnhubFunction(str);
+	};
+	auto setUpdateFlag = [this](bool flag) { SetUpdateCryptoDayLine(flag); };
+	const std::string finishedMsg = "Finnhub Crypto DayLine Updated";
+
+	return GenerateInquiryIterateWithAccessCheck(
+		gl_dataFinnhubCryptoSymbol,
+		CRYPTO_CANDLES_,
+		isUpdateNeeded,
+		isUpdateItemNeeded,
+		isAccessible,
+		createProduct,
+		setIndex,
+		setMessage,
+		setUpdateFlag,
+		finishedMsg
+	);
 }

@@ -372,7 +372,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 
 	//TRACE("Finnhub forex dayLine\n");
 	for (int i = 0; i < symbolSize; i++) {
-		pSymbol = gl_dataFinnhubForexSymbol.GetSymbol(i);
+		pSymbol = gl_dataFinnhubForexSymbol.GetItem(i);
 		if (pSymbol->IsUpdateDayLineDB()) {
 			pSymbol->SetUpdateDayLineDB(false);
 			pSymbol->SetUpdateDayLineDB(false);
@@ -430,7 +430,7 @@ bool CWorldMarket::TaskUpdateCryptoDayLineDB() {
 
 	//TRACE("Finnhub Crypto dayLine\n");
 	for (int i = 0; i < symbolSize; ++i) {
-		pSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(i);
+		pSymbol = gl_dataFinnhubCryptoSymbol.GetItem(i);
 		if (pSymbol->IsUpdateDayLineDB()) {
 			pSymbol->SetUpdateDayLineDB(false);
 			if (pSymbol->GetDayLineSize() > 0) {

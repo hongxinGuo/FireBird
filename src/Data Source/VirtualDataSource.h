@@ -58,48 +58,6 @@ public:
 		return false;
 	}
 
-	// Add this helper function in the class or as a static function in the file
-	template <typename Container, typename ItemPtr, typename UpdateCheck, typename InaccessibleCheck,
-	          typename ProductFactory, typename SetIndex, typename SetUpdateFlag, typename SetMessage>
-	bool GenerateInquiry(
-		Container& container,
-		int inquireType,
-		UpdateCheck isUpdateNeeded,
-		InaccessibleCheck isInaccessible,
-		ProductFactory createProduct,
-		SetIndex setIndex,
-		SetUpdateFlag setUpdateFlag,
-		SetMessage setMessage,
-		const std::string& finishedMsg
-	) {
-		const auto size = container.Size();
-		bool fHaveInquiry = false;
-		long currentPos = 0;
-		bool fFound = false;
-		for (; currentPos < size; ++currentPos) {
-			auto item = container.GetStock(currentPos);
-			if (isUpdateNeeded(item)) {
-				if (!isInaccessible(inquireType, item->GetExchangeCode())) {
-					fFound = true;
-					break;
-				}
-			}
-		}
-		if (fFound) {
-			auto product = createProduct(inquireType);
-			setIndex(product, currentPos);
-			StoreInquiry(product);
-			SetInquiring(true);
-			fHaveInquiry = true;
-			//setMessage(item->GetSymbol());
-		}
-		else {
-			setUpdateFlag(false);
-			gl_systemMessage.PushInformationMessage(finishedMsg);
-		}
-		return fHaveInquiry;
-	}
-
 	std::shared_ptr<CVirtualDataSource> GetShared() { return shared_from_this(); }
 
 	virtual bool Reset() { return true; }

@@ -16,9 +16,9 @@ CStockExchange::CStockExchange() {
 	m_strSource = _T("");
 	m_strMyUnknownColumn = _T(" ");
 
-	m_fStockSymbolUpdated = false;
-	m_fMarketHolidayUpdated = false;
-	m_fMarketStatusUpdated = false;
+	m_fUpdateStockSymbol = true;
+	m_fUpdateMarketHoliday = true;
+	m_fUpdateMarketStatus = true;
 }
 
 void CStockExchange::Append(CSetStockExchange& setExchange) const {

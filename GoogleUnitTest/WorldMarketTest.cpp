@@ -467,7 +467,7 @@ namespace FireBirdTest {
 		pForexSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
 		EXPECT_FALSE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
 		gl_dataFinnhubForexSymbol.Add(pForexSymbol);
-		pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(_T("OANDA:GBP_ZAR")); // 第二个现存的符号
+		pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(_T("OANDA:GBP_ZAR")); // 第二个现存的符号
 		EXPECT_EQ(pForexSymbol->GetIPOStatus(), _STOCK_IPOED_);
 		pForexSymbol->SetUpdateProfileDB(true);
 		pForexSymbol->SetIPOStatus(_STOCK_DELISTED_);
@@ -497,7 +497,7 @@ namespace FireBirdTest {
 
 		// 恢复原状
 		pForexSymbol->SetIPOStatus(_STOCK_IPOED_);
-		pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(_T("SS.SS.US"));
+		pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(_T("SS.SS.US"));
 		EXPECT_TRUE(pForexSymbol != nullptr);
 		gl_dataFinnhubForexSymbol.Delete(pForexSymbol);
 	}
@@ -507,7 +507,7 @@ namespace FireBirdTest {
 		pCryptoSymbol->SetSymbol(_T("SS.SS.US")); // 新符号
 		EXPECT_FALSE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
 		gl_dataFinnhubCryptoSymbol.Add(pCryptoSymbol);
-		pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(_T("BINANCE:USDTUAH")); // 第二个现存的符号
+		pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem(_T("BINANCE:USDTUAH")); // 第二个现存的符号
 		EXPECT_EQ(pCryptoSymbol->GetIPOStatus(), _STOCK_IPOED_);
 		pCryptoSymbol->SetUpdateProfileDB(true);
 		pCryptoSymbol->SetIPOStatus(_STOCK_DELISTED_);
@@ -537,7 +537,7 @@ namespace FireBirdTest {
 
 		// 恢复原状
 		pCryptoSymbol->SetIPOStatus(_STOCK_IPOED_);
-		pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetSymbol(_T("SS.SS.US"));
+		pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem(_T("SS.SS.US"));
 		EXPECT_TRUE(pCryptoSymbol != nullptr);
 		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol);
 	}

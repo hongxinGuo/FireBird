@@ -11,12 +11,12 @@ public:
 
 	void Load(const CSetStockExchange& setExchange);
 
-	void SetStockSymbolUpdated(const bool fFlag) noexcept { m_fStockSymbolUpdated = fFlag; }
-	bool IsStockSymbolUpdated() const noexcept { return m_fStockSymbolUpdated; }
-	void SetMarketStatusUpdated(const bool fFlag) noexcept { m_fMarketStatusUpdated = fFlag; }
-	bool IsMarketStatusUpdated() const noexcept { return m_fMarketStatusUpdated; }
-	void SetMarketHolidayUpdated(const bool fFlag) noexcept { m_fMarketHolidayUpdated = fFlag; }
-	bool IsMarketHolidayUpdated() const noexcept { return m_fMarketHolidayUpdated; }
+	void SetUpdateStockSymbol(const bool fFlag) noexcept { m_fUpdateStockSymbol = fFlag; }
+	bool IsUpdateStockSymbol() const noexcept { return m_fUpdateStockSymbol; }
+	void SetUpdateMarketStatus(const bool fFlag) noexcept { m_fUpdateMarketStatus = fFlag; }
+	bool IsUpdateMarketStatus() const noexcept { return m_fUpdateMarketStatus; }
+	void SetUpdateMarketHoliday(const bool fFlag) noexcept { m_fUpdateMarketHoliday = fFlag; }
+	bool IsUpdateMarketHoliday() const noexcept { return m_fUpdateMarketHoliday; }
 
 	string GetExchangeCode() const noexcept { return m_strCode; }
 	void SetExchangeCode(const string& code) noexcept { m_strCode = code; }
@@ -39,9 +39,9 @@ public:
 	long m_lMarketOpenTime{ 0 };
 	long m_lMarketCloseTime{ 0 };
 
-	bool m_fStockSymbolUpdated;
-	bool m_fMarketStatusUpdated;
-	bool m_fMarketHolidayUpdated;
+	bool m_fUpdateStockSymbol{ true };
+	bool m_fUpdateMarketStatus{ true };
+	bool m_fUpdateMarketHoliday{ true };
 };
 
 using CStockExchangePtr = shared_ptr<CStockExchange>;

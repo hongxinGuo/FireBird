@@ -172,7 +172,7 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(_T("New Symbol")));
-			pCrypto = gl_dataFinnhubCryptoSymbol.GetSymbol(_T("New Symbol"));
+			pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(_T("New Symbol"));
 			EXPECT_STREQ(pCrypto->GetDescription().c_str(), _T("Oanda Singapore 30"));
 
 		// »Ö¸´Ô­×´

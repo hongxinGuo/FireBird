@@ -21,7 +21,7 @@ string CProductFinnhubStockSymbol::CreateMessage() {
 void CProductFinnhubStockSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvStock = ParseFinnhubStockSymbol(pWebData);
 	const auto pExchange = gl_dataContainerStockExchange.GetItem(m_lIndex);
-	pExchange->SetStockSymbolUpdated(true);
+	pExchange->SetUpdateStockSymbol(false);
 
 	//检查合法性：只有美国股票代码无须加上交易所后缀。
 	if (!pvStock->empty()) {

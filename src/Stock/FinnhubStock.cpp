@@ -570,15 +570,15 @@ bool CFinnhubStock::CheckEPSSurpriseStatus(long lCurrentDate) {
 bool CFinnhubStock::CheckSECFilingsStatus(long lCurrentDate) {
 	const long lSECFilingsUpdateDate = GetSECFilingsUpdateDate();
 	if (IsNullStock() || IsDelisted()) {
-		m_fSECFilingsUpdated = true;
+		m_fUpdateSECFilings = false;
 	}
 	else if (!IsEarlyThen(lSECFilingsUpdateDate, lCurrentDate, gl_systemConfiguration.GetSECFilingsUpdateRate())) {	// 有不早于30天的数据？
-		m_fSECFilingsUpdated = true;
+		m_fUpdateSECFilings = false;
 	}
 	else {
-		m_fSECFilingsUpdated = false;
+		m_fUpdateSECFilings = true;
 	}
-	return m_fSECFilingsUpdated;
+	return m_fUpdateSECFilings;
 }
 
 bool CFinnhubStock::CheckPeerStatus(long lCurrentDate) {

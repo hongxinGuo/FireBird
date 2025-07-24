@@ -23,7 +23,7 @@ string CProductFinnhubMarketStatus::CreateMessage() {
 void CProductFinnhubMarketStatus::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvMarketStatus = ParseFinnhubMarketStatus(pWebData);
 	const auto pExchange = gl_dataContainerStockExchange.GetItem(m_lIndex);
-	pExchange->SetMarketStatusUpdated(true);
+	pExchange->SetUpdateMarketStatus(false);
 
 	if (!pvMarketStatus->empty()) {
 		gl_pWorldMarket->UpdateMarketStatus(pvMarketStatus);

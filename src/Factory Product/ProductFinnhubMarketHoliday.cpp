@@ -24,7 +24,7 @@ string CProductFinnhubMarketHoliday::CreateMessage() {
 void CProductFinnhubMarketHoliday::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvHoliday = ParseFinnhubMarketHoliday(pWebData);
 	const auto pExchange = gl_dataContainerStockExchange.GetItem(m_lIndex);
-	pExchange->SetMarketHolidayUpdated(true);
+	pExchange->SetUpdateMarketHoliday(false);
 
 	gl_pWorldMarket->UpdateMarketHoliday(pvHoliday);
 }

@@ -89,8 +89,8 @@ public:
 	void SetUpdatePeer(bool fFlag) noexcept { m_fUpdateFinnhubPeer = fFlag; }
 	bool CheckPeerStatus(long lCurrentDate);
 
-	bool IsSECFilingsUpdated() const noexcept { return m_fSECFilingsUpdated; }
-	void SetSECFilingsUpdated(bool fFlag) noexcept { m_fSECFilingsUpdated = fFlag; }
+	bool IsUpdateSECFilings() const noexcept { return m_fUpdateSECFilings; }
+	void SetUpdateSECFilings(bool fFlag) noexcept { m_fUpdateSECFilings = fFlag; }
 	bool CheckSECFilingsStatus(long lCurrentDate);
 	bool IsUpdateSECFilingsDB() const noexcept { return m_fUpdateSECFilingsDB; }
 	void SetUpdateSECFilingsDB(const bool fFlag) noexcept { m_fUpdateSECFilingsDB = fFlag; }
@@ -216,7 +216,7 @@ public:
 	long m_lInsiderSentimentStartDate{ 19800101 };
 
 	CSECFilingsPtr m_pvSECFilings{ nullptr };
-	bool m_fSECFilingsUpdated{ false };
+	bool m_fUpdateSECFilings{ true };
 	atomic_bool m_fUpdateSECFilingsDB{ false };
 
 protected:

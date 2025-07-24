@@ -693,27 +693,27 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubStockTest, TestCheckSECFilingsStatus) {
 		constexpr long lCurrentDate = 20200101;
 
-		stock.SetSECFilingsUpdated(false);
+		stock.SetUpdateSECFilings(true);
 		stock.SetIPOStatus(_STOCK_NULL_);
 		stock.CheckSECFilingsStatus(lCurrentDate);
-		EXPECT_TRUE(stock.IsSECFilingsUpdated());
+		EXPECT_FALSE(stock.IsUpdateSECFilings());
 
-		stock.SetSECFilingsUpdated(false);
+		stock.SetUpdateSECFilings(true);
 		stock.SetIPOStatus(_STOCK_DELISTED_);
 		stock.CheckSECFilingsStatus(lCurrentDate);
-		EXPECT_TRUE(stock.IsSECFilingsUpdated());
+		EXPECT_FALSE(stock.IsUpdateSECFilings());
 
-		stock.SetSECFilingsUpdated(false);
+		stock.SetUpdateSECFilings(true);
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetSECFilingsUpdateDate(20191202); // 不早于30天
 		stock.CheckSECFilingsStatus(lCurrentDate);
-		EXPECT_TRUE(stock.IsSECFilingsUpdated());
+		EXPECT_FALSE(stock.IsUpdateSECFilings());
 
-		stock.SetSECFilingsUpdated(false);
+		stock.SetUpdateSECFilings(true);
 		stock.SetIPOStatus(_STOCK_IPOED_);
 		stock.SetSECFilingsUpdateDate(20191201); // 早于30天
 		stock.CheckSECFilingsStatus(lCurrentDate);
-		EXPECT_FALSE(stock.IsSECFilingsUpdated());
+		EXPECT_TRUE(stock.IsUpdateSECFilings());
 	}
 
 	TEST_F(CFinnhubStockTest, TestSaveDayLine) {
@@ -1193,7 +1193,7 @@ namespace FireBirdTest {
 		stock.SetSymbol(_T("MFI"));
 		stock.SetSECFilings(pvSECFilings);
 		stock.SetUpdateSECFilingsDB(true);
-		stock.SetSECFilingsUpdated(true);
+		stock.SetUpdateSECFilings(false);
 
 		EXPECT_TRUE(stock.UpdateSECFilingsDB());
 

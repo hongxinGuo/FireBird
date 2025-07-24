@@ -56,7 +56,7 @@ bool CContainerFinnhubForexSymbol::UpdateDB() {
 		setForexSymbol.Open();
 		setForexSymbol.m_pDatabase->BeginTrans();
 		for (auto l = m_lastTotalSymbol; l < lTotalForexSymbol; l++) {
-			pSymbol = GetSymbol(l);
+			pSymbol = GetItem(l);
 			pSymbol->AppendSymbol(setForexSymbol);
 		}
 		setForexSymbol.m_pDatabase->CommitTrans();
@@ -75,7 +75,7 @@ bool CContainerFinnhubForexSymbol::UpdateDB() {
 		setForexSymbol.m_pDatabase->BeginTrans();
 		while (!setForexSymbol.IsEOF()) {
 			if (m_mapSymbol.contains(setForexSymbol.m_Symbol.GetString())) {
-				pSymbol = GetSymbol(setForexSymbol.m_Symbol.GetString());
+				pSymbol = GetItem(setForexSymbol.m_Symbol.GetString());
 				if (pSymbol->IsUpdateProfileDB()) {
 					pSymbol->UpdateSymbol(setForexSymbol);
 					pSymbol->SetUpdateProfileDB(false);

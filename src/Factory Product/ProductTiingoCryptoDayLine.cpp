@@ -36,7 +36,7 @@ string CProductTiingoCryptoDayLine::CreateMessage() {
 
 void CProductTiingoCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(m_lIndex >= 0);
-	const auto pCrypto = gl_dataFinnhubCryptoSymbol.GetSymbol(m_lIndex);
+	const auto pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(m_lIndex);
 	const CDayLinesPtr pvDayLine = ParseTiingoCryptoDayLine(pWebData);
 	pCrypto->SetUpdateDayLine(false);
 	/*

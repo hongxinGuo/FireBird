@@ -45,7 +45,7 @@ namespace FireBirdTest {
 		cryptoDayLine.SetMarket(gl_pWorldMarket);
 		cryptoDayLine.SetIndex(1);
 		EXPECT_STREQ(cryptoDayLine.CreateMessage().c_str(),
-		             (cryptoDayLine.GetInquiryFunction() + gl_dataFinnhubCryptoSymbol.GetSymbol(1)->GetFinnhubDayLineInquiryParam(GetUTCTime())).c_str());
+		             (cryptoDayLine.GetInquiryFunction() + gl_dataFinnhubCryptoSymbol.GetItem(1)->GetFinnhubDayLineInquiryParam(GetUTCTime())).c_str());
 	}
 
 	TEST_F(CProductFinnhubCryptoDayLineTest, TestProcessWebData) {
@@ -83,7 +83,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pData->m_strSymbol.c_str()));
-			gl_dataFinnhubCryptoSymbol.GetSymbol(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
+			gl_dataFinnhubCryptoSymbol.GetItem(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
 			m_pWebData = pData->m_pData;
 			m_finnhubCryptoDayLine.__Test_checkAccessRight(m_pWebData);
 
@@ -93,7 +93,7 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			gl_dataFinnhubCryptoSymbol.GetSymbol(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
+			gl_dataFinnhubCryptoSymbol.GetItem(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
 
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -164,8 +164,8 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pData->m_strSymbol.c_str()));
-			lIPOStatus = gl_dataFinnhubCryptoSymbol.GetSymbol(0)->GetIPOStatus();
-			gl_dataFinnhubCryptoSymbol.GetSymbol(0)->SetIPOStatus(_STOCK_IPOED_);
+			lIPOStatus = gl_dataFinnhubCryptoSymbol.GetItem(0)->GetIPOStatus();
+			gl_dataFinnhubCryptoSymbol.GetItem(0)->SetIPOStatus(_STOCK_IPOED_);
 			m_pWebData = pData->m_pData;
 			m_finnhubCryptoDayLine.__Test_checkAccessRight(m_pWebData);
 
@@ -176,7 +176,7 @@ namespace FireBirdTest {
 		void TearDown() override {
 			// clearUp
 			while (gl_systemMessage.ErrorMessageSize() > 0) gl_systemMessage.PopErrorMessage();
-			gl_dataFinnhubCryptoSymbol.GetSymbol(0)->SetIPOStatus(lIPOStatus);
+			gl_dataFinnhubCryptoSymbol.GetItem(0)->SetIPOStatus(lIPOStatus);
 
 			SCOPED_TRACE("");
 			GeneralCheck();
@@ -194,7 +194,7 @@ namespace FireBirdTest {
 		                         &finnhubWebData226, &finnhubWebData227, &finnhubWebData228, &finnhubWebData229, &finnhubWebData230));
 
 	TEST_P(ProcessFinnhubCryptoCandleTest, TestProcessFinnhubCryptoCandle) {
-		CFinnhubCryptoPtr pCrypto = gl_dataFinnhubCryptoSymbol.GetSymbol(0);
+		CFinnhubCryptoPtr pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(0);
 		m_finnhubCryptoDayLine.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 1: // 格式不对

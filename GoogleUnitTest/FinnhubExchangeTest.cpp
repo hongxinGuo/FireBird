@@ -39,33 +39,33 @@ namespace FireBirdTest {
 		EXPECT_STREQ(Exchange.m_strCloseDate.c_str(), _T(" "));
 		EXPECT_STREQ(Exchange.m_strCountry.c_str(), _T(""));
 		EXPECT_STREQ(Exchange.m_strSource.c_str(), _T(""));
-		EXPECT_FALSE(Exchange.m_fStockSymbolUpdated);
-		EXPECT_FALSE(Exchange.m_fMarketStatusUpdated);
-		EXPECT_FALSE(Exchange.m_fMarketHolidayUpdated);
+		EXPECT_TRUE(Exchange.m_fUpdateStockSymbol);
+		EXPECT_TRUE(Exchange.m_fUpdateMarketStatus);
+		EXPECT_TRUE(Exchange.m_fUpdateMarketHoliday);
 	}
 
-	TEST_F(CExchangeTest, TestIsStockSymbolUpdated) {
+	TEST_F(CExchangeTest, TestIsUpdateStockSymbol) {
 		CStockExchange finnhubExchange;
 
-		EXPECT_FALSE(finnhubExchange.IsStockSymbolUpdated());
-		finnhubExchange.SetStockSymbolUpdated(true);
-		EXPECT_TRUE(finnhubExchange.IsStockSymbolUpdated());
+		EXPECT_TRUE(finnhubExchange.IsUpdateStockSymbol());
+		finnhubExchange.SetUpdateStockSymbol(false);
+		EXPECT_FALSE(finnhubExchange.IsUpdateStockSymbol());
 	}
 
-	TEST_F(CExchangeTest, TestIsMarketStatusUpdated) {
+	TEST_F(CExchangeTest, TestIsUpdateMarketStatus) {
 		CStockExchange finnhubExchange;
 
-		EXPECT_FALSE(finnhubExchange.IsMarketStatusUpdated());
-		finnhubExchange.SetMarketStatusUpdated(true);
-		EXPECT_TRUE(finnhubExchange.IsMarketStatusUpdated());
+		EXPECT_TRUE(finnhubExchange.IsUpdateMarketStatus());
+		finnhubExchange.SetUpdateMarketStatus(false);
+		EXPECT_FALSE(finnhubExchange.IsUpdateMarketStatus());
 	}
 
 	TEST_F(CExchangeTest, TestIsMarketHolidayUpdated) {
 		CStockExchange finnhubExchange;
 
-		EXPECT_FALSE(finnhubExchange.IsMarketHolidayUpdated());
-		finnhubExchange.SetMarketHolidayUpdated(true);
-		EXPECT_TRUE(finnhubExchange.IsMarketHolidayUpdated());
+		EXPECT_TRUE(finnhubExchange.IsUpdateMarketHoliday());
+		finnhubExchange.SetUpdateMarketHoliday(false);
+		EXPECT_FALSE(finnhubExchange.IsUpdateMarketHoliday());
 	}
 
 	TEST_F(CExchangeTest, TestAppend) {
@@ -80,7 +80,7 @@ namespace FireBirdTest {
 		Exchange.m_strCloseDate = _T("20202020");
 		Exchange.m_strCountry = _T("dfe");
 		Exchange.m_strSource = _T("abc");
-		Exchange.m_fStockSymbolUpdated = true;
+		Exchange.m_fUpdateStockSymbol = false;
 
 		ASSERT(!gl_systemConfiguration.IsWorkingMode());
 		setExchange.Open();
@@ -102,7 +102,7 @@ namespace FireBirdTest {
 		EXPECT_STREQ(Exchange.m_strCloseDate.c_str(), _T("20202020"));
 		EXPECT_STREQ(Exchange.m_strCountry.c_str(), _T("dfe"));
 		EXPECT_STREQ(Exchange.m_strSource.c_str(), _T("abc"));
-		EXPECT_TRUE(Exchange.m_fStockSymbolUpdated) << "这个参数不存入数据库";
+		EXPECT_FALSE(Exchange.m_fUpdateStockSymbol) << "这个参数不存入数据库";
 		setExchange2.Delete();
 		setExchange2.m_pDatabase->CommitTrans();
 		setExchange2.Close();

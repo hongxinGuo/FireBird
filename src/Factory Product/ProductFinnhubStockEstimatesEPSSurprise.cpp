@@ -31,7 +31,7 @@ void CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr 
 		pStock->SetLastEPSSurpriseUpdateDate(19700101); // 将日期设置为更早。
 		pStock->SetUpdateProfileDB(true);
 	}
-	pStock->m_fUpdateEPSSurprise = false;
+	pStock->SetUpdateEPSSurprise(false);
 	pStock->m_fUpdateEPSSurpriseDB = true;
 }
 

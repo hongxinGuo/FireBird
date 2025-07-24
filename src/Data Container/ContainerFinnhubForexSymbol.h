@@ -16,8 +16,8 @@ public:
 	bool LoadDB();
 	bool UpdateDB();
 
-	CForexSymbolPtr GetSymbol(const size_t lIndex) { return dynamic_pointer_cast<CFinnhubForex>(Get(lIndex)); }
-	CForexSymbolPtr GetSymbol(const string& strStockCode) { return dynamic_pointer_cast<CFinnhubForex>(Get(strStockCode)); }
+	CForexSymbolPtr GetItem(const size_t lIndex) { return dynamic_pointer_cast<CFinnhubForex>(Get(lIndex)); }
+	CForexSymbolPtr GetItem(const string& strStockCode) { return dynamic_pointer_cast<CFinnhubForex>(Get(strStockCode)); }
 
 protected:
 	size_t m_lastTotalSymbol;

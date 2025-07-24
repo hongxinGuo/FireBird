@@ -28,7 +28,7 @@ void CProductFinnhubSECFilings::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	auto pvSECFilings = ParseFinnhubStockSECFilings(pWebData);
 	auto size = pvSECFilings->size();
 	pStock->SetSECFilings(pvSECFilings);
-	pStock->SetSECFilingsUpdated(true);
+	pStock->SetUpdateSECFilings(false);
 	pStock->SetSECFilingsUpdateDate(GetMarket()->GetMarketDate());
 	pStock->SetUpdateProfileDB(true);
 	if (size > 0) {

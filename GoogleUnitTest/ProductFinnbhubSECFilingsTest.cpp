@@ -43,11 +43,11 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubSECFilingsTest, TestCreatMessage) {
-		gl_dataContainerFinnhubStock.GetItem(1)->SetSECFilingsUpdated(false);
+		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateSECFilings(true);
 		companySECFilings.SetMarket(gl_pWorldMarket);
 		companySECFilings.SetIndex(1);
 		EXPECT_STREQ(companySECFilings.CreateMessage().c_str(), (companySECFilings.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol()).c_str());
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem(1)->IsSECFilingsUpdated()) << "接收到的数据处理后方设置此标识";
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateSECFilings()) << "接收到的数据处理后方设置此标识";
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdatePeer(true);
 	}
@@ -134,7 +134,7 @@ namespace FireBirdTest {
 			m_finnhubSECFilings.SetMarket(gl_pWorldMarket);
 			m_finnhubSECFilings.SetIndex(0); // 第一个股票
 			gl_dataContainerFinnhubStock.GetItem(0)->SetSECFilingsUpdateDate(19800101);
-			gl_dataContainerFinnhubStock.GetItem(0)->SetSECFilingsUpdated(false);
+			gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateSECFilings(true);
 		}
 
 		void TearDown() override {
@@ -158,7 +158,7 @@ namespace FireBirdTest {
 		CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(0);
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 		m_finnhubSECFilings.ParseAndStoreWebData(m_pWebData);
-		EXPECT_TRUE(pStock->IsSECFilingsUpdated());
+		EXPECT_FALSE(pStock->IsUpdateSECFilings());
 		EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		switch (m_lIndex) {
 		case 0: // 空数据

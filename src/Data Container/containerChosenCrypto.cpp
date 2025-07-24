@@ -22,7 +22,7 @@ bool CContainerChosenCrypto::LoadDB() {
 	setWorldChosenCrypto.m_pDatabase->BeginTrans();
 	while (!setWorldChosenCrypto.IsEOF()) {
 		if (gl_dataFinnhubCryptoSymbol.IsSymbol(setWorldChosenCrypto.m_Symbol.GetString())) {
-			pCrypto = gl_dataFinnhubCryptoSymbol.GetSymbol(setWorldChosenCrypto.m_Symbol.GetString());
+			pCrypto = gl_dataFinnhubCryptoSymbol.GetItem(setWorldChosenCrypto.m_Symbol.GetString());
 			m_mapSymbol[setWorldChosenCrypto.m_Symbol.GetString()] = m_mapSymbol.size();
 			m_vStock.push_back(pCrypto);
 		}

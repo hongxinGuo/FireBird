@@ -15,7 +15,7 @@ CProductFinnhubForexDayLine::CProductFinnhubForexDayLine() {
 }
 
 string CProductFinnhubForexDayLine::CreateMessage() {
-	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(m_lIndex);
+	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(m_lIndex);
 
 	m_strInquiringExchange = pForexSymbol->GetExchangeCode();
 	m_strInquiry = m_strInquiryFunction + pForexSymbol->GetFinnhubDayLineInquiryParam(GetUTCTime());
@@ -25,7 +25,7 @@ string CProductFinnhubForexDayLine::CreateMessage() {
 void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	ASSERT(std::strcmp(typeid(*GetMarket()).name(), _T("class CWorldMarket")) == 0);
 
-	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetSymbol(m_lIndex);
+	const auto pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(m_lIndex);
 	const CDayLinesPtr pvDayLine = ParseFinnhubForexCandle(pWebData);
 	pForexSymbol->SetUpdateDayLine(false);
 	if (!pvDayLine->empty()) {
