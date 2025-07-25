@@ -14,6 +14,7 @@
 #include <spdlog/spdlog.h>
 
 #include "ScheduleTask.h"
+#include "SystempublicDeclaration.h"
 #include "WorldMarket.h"
 
 #ifndef _MBCS
@@ -70,7 +71,7 @@ bool IsFireBirdAlreadyRunning(const string& sProgramToken) {
 BOOL CFireBirdApp::InitInstance() {
 	ASSERT(gl_systemConfiguration.IsWorkingMode()); // 确保此标识初始态为实际状态
 
-	if (IsFireBirdAlreadyRunning(_T("FireBirdStockAnalysis"))) {
+	if (IsFireBirdAlreadyRunning(sFireBirdApp)) {
 		MessageBox(nullptr,
 		           "Only one instance can run!",
 		           "FireBird Warning:",

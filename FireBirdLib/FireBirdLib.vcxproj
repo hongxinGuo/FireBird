@@ -188,6 +188,7 @@
     <ClInclude Include="..\src\Stock\TiingoStock.h" />
     <ClInclude Include="..\src\Stock\VirtualStock.h" />
     <ClInclude Include="..\src\Stock\FinnhubStock.h" />
+    <ClInclude Include="..\src\SystempublicDeclaration.h" />
     <ClInclude Include="..\src\System\FinnhubInaccessibleExchange.h" />
     <ClInclude Include="..\src\System\Inaccessible.h" />
     <ClInclude Include="..\src\System\ScheduleTask.h" />

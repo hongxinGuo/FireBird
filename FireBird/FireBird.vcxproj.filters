@@ -93,6 +93,9 @@
     <ClInclude Include="..\src\Windows interface\PropertyRealTimeDataWnd.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\SystempublicDeclaration.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Windows interface\FireBird.cpp">

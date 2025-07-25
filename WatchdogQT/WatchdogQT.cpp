@@ -1,5 +1,7 @@
 ﻿#include "WatchdogQT.h"
 
+#include"../src/SystempublicDeclaration.h"
+
 #include <afx.h>
 #include<QMessageBox>
 #include<QLabel>
@@ -74,21 +76,20 @@ bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr
 	case WM_FIREBIRD_RUNNING:
 		time = gl_tpNow.time_since_epoch().count();
 		localtime_s(&tmLocal, &time);
-		s = fmt::format("FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}启动", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		s = fmt::format("FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} 启动", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 		m_listOutput.push_back(s);
 		gl_dailyLogger->info("{}", s);
 		return true;
 	case WM_FIREBIRD_EXIT:
 		time = gl_tpNow.time_since_epoch().count();
 		localtime_s(&tmLocal, &time);
-		s = fmt::format("FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}主动关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		s = fmt::format("FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} 主动关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 		m_listOutput.push_back(s);
 		gl_dailyLogger->info("{}", s);
 		return true;
 	default:
 		return false;
 	}
-	return false;
 }
 
 void WatchdogQT::BuildUI() {
@@ -130,7 +131,7 @@ bool IsFireBirdAlreadyRunning(const string& strProgramToken) {
 void WatchdogQT::UpdatePer10Second() {
 	static int s_Counter = 6; // 初始值为6次，即一分钟后执行启动FireBird任务（每十秒钟监视一次）
 	if (--s_Counter < 1) {
-		if (!IsFireBirdAlreadyRunning("FireBirdStockAnalysis")) {
+		if (!IsFireBirdAlreadyRunning(sFireBirdApp)) {
 			const UINT iReturnCode = WinExec(("C:\\FireBird\\FireBird.exe"), SW_SHOW);
 			tm tmLocal;
 			const auto time = gl_tpNow.time_since_epoch().count();

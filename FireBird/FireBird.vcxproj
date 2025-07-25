@@ -229,6 +229,7 @@
     <None Include="res\FireBird.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\SystempublicDeclaration.h" />
     <ClInclude Include="..\src\Windows interface\ChildFrm.h" />
     <ClInclude Include="..\src\Windows interface\FireBird.h" />
     <ClInclude Include="..\src\Windows interface\FireBirdDoc.h" />

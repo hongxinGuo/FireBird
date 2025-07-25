@@ -879,6 +879,9 @@
     <ClInclude Include="..\src\Factory Product\ProductIndexNasdaq100Stocks.h">
       <Filter>头文件\Factory-Product\Accessory</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\SystempublicDeclaration.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
