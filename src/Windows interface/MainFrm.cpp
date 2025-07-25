@@ -173,6 +173,19 @@ CMainFrame::CMainFrame() {
 	}
 }
 
+int CMainFrame::ReportExitToWatchdog() {
+	HWND hWnd = ::FindWindow(NULL, "WatchdogQT");
+	char buffer[100];
+
+	if (hWnd == NULL) return 1; // Watchdog监控程序不在运行
+	COPYDATASTRUCT cds;
+	cds.dwData = 100; // message type
+	cds.cbData = 0;
+	cds.lpData = (PVOID)buffer;
+	::SendMessage(hWnd, WM_COPYDATA, NULL, (LPARAM)&cds);
+	return 0;
+}
+
 CMainFrame::~CMainFrame() {
 	//if (m_hOutputBarIcon != nullptr) ::CloseHandle(m_hOutputBarIcon);
 	//if (m_hPropertiesBarIcon != nullptr) ::CloseHandle(m_hPropertiesBarIcon);
@@ -471,6 +484,8 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 		UpdateInnerSystemStatus();
 	}
 
+	//ReportExitToWatchdog();
+
 	SysCallOnTimer(nIDEvent);
 }
 
@@ -624,6 +639,8 @@ void CMainFrame::UpdateInnerSystemStatus() {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 	if ((nID & 0Xfff0) == SC_CLOSE) {	// 如果是退出系统
+		ReportExitToWatchdog();
+
 		gl_systemConfiguration.SetExitingSystem(true); // 提示各工作线程中途退出
 
 		TRACE("应用户申请，准备退出程序\n");

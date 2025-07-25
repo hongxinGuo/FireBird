@@ -9,10 +9,60 @@
 #include <spdlog/spdlog.h>
 using namespace std;
 
-#include"resource.h"
+//#include"resource.h"
 
 std::chrono::sys_seconds gl_tpNow; // 协调世界时（Coordinated Universal Time）
 
+/*
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+	if(msg == WM_COPYDATA) {
+		COPYDATASTRUCT* pCds = (COPYDATASTRUCT*)lParam;
+		if(pCds->cbData == 0) {
+			string sTime = (char*)pCds->lpData;
+		}
+	}
+	return DefWindowProc(hWnd, msg, wParam, lParam);
+}
+
+int registerWindow() {
+	WNDCLASS wc = { 0 };
+	wc.lpfnWndProc = WndProc;
+	wc.hInstance = GetModuleHandle(NULL);
+	wc.lpszClassName = "ReceiverWindow";
+
+	if(!RegisterClass(&wc)) {
+		// Error
+		return 1;
+	}
+
+	HWND hWnd = CreateWindow(
+		"ReceiverWindow",
+		"ReceiverWindow",
+		WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		NULL,
+		NULL,
+		GetModuleHandle(NULL),
+		NULL
+	);
+
+	if(hWnd == NULL) {
+		// Error
+		return 1;
+	}
+
+	MSG msg;
+	while(GetMessage(&msg, NULL, 0, 0)) {
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+	getchar();
+	return 0;
+}
+*/
 WatchdogQT::WatchdogQT(QWidget* parent) : QMainWindow(parent) {
 	gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now()); // 程序运行的第一步即要获取当前时间。以防止出现时间为零的故障。
 
@@ -38,6 +88,31 @@ WatchdogQT::WatchdogQT(QWidget* parent) : QMainWindow(parent) {
 }
 
 WatchdogQT::~WatchdogQT() {
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 当FireBird主动退出时，它向WatchdogQT发送WM_COPYDATA消息，告知准备退出。
+//
+// QT nativeEvent()函数无法接收WParam和LParam.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr* result) {
+	tm tmLocal;
+	long long time;
+	string s;
+	MSG* msg = static_cast<MSG*>(message);
+	switch (msg->message) {
+	case WM_COPYDATA:
+		time = gl_tpNow.time_since_epoch().count();
+		localtime_s(&tmLocal, &time);
+		s = fmt::format("FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} 主动关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		m_listOutput.push_back(s);
+		break;
+	default:
+		return false;
+	}
+	return false;
 }
 
 void WatchdogQT::BuildUI() {

@@ -23,6 +23,9 @@ public:
 	WatchdogQT(QWidget* parent = nullptr);
 	~WatchdogQT() override;
 
+protected:
+	bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override;
+
 private:
 	void BuildUI();
 

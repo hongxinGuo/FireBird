@@ -29,3 +29,11 @@
 [2025-01-03 06:18:08.822] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
 [2025-01-03 06:18:10.031] [basic_warn_logger] [warning] virtualDataSource thread number not match 1 -- 0  class CFinnhubDataSourcehttps://finnhub.io/api/v1/calendar/economic?&token=
 [2025-01-03 06:18:26.162] [basic_warn_logger] [warning] virtualDataSource thread number not match 1 -- 0  class CFinnhubDataSourcehttps://finnhub.io/api/v1/calendar/economic?&token=
+[2025-07-25 08:03:50.827] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2025-07-25 08:03:59.347] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2025-07-25 08:04:10.785] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2025-07-25 08:04:19.259] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2025-07-25 08:04:28.360] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2025-07-25 08:04:41.025] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2025-07-25 08:04:49.484] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2025-07-25 08:09:02.990] [basic_warn_logger] [warning] {"detail":"Please supply a token"}

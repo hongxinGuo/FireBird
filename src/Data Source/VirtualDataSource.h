@@ -58,6 +58,49 @@ public:
 		return false;
 	}
 
+	template <typename Container, typename IsNeedUpdate, typename IsItemNeedUpdate, typename IsAccessible, typename CreateProduct, typename SetIndex, typename SetMessage, typename SetUpdateFlag>
+	bool GenerateInquiryIterateWithAccessCheck(
+		Container& container,
+		int inquireType,
+		IsNeedUpdate isNeedUpdate,
+		IsItemNeedUpdate isItemNeedUpdate,
+		IsAccessible isAccessible,
+		CreateProduct createProduct,
+		SetIndex setIndex,
+		SetMessage setMessage,
+		SetUpdateFlag setUpdateFlag,
+		const std::string& finishedMsg
+	) {
+		const auto size = container.Size();
+		bool haveInquiry = false;
+
+		if (isNeedUpdate()) {
+			bool found = false;
+			long pos;
+			for (pos = 0; pos < size; ++pos) {
+				auto item = container.GetItem(pos);
+				if (isItemNeedUpdate(item) && isAccessible(inquireType, item->GetExchangeCode())) {
+					found = true;
+					break;
+				}
+			}
+			if (found) {
+				auto product = createProduct(inquireType);
+				setIndex(product, pos);
+				StoreInquiry(product);
+				SetInquiring(true);
+				setMessage(container.GetItem(pos));
+				haveInquiry = true;
+			}
+			else {
+				setUpdateFlag(false);
+				gl_systemMessage.PushInformationMessage(finishedMsg);
+				haveInquiry = false;
+			}
+		}
+		return haveInquiry;
+	}
+
 	std::shared_ptr<CVirtualDataSource> GetShared() { return shared_from_this(); }
 
 	virtual bool Reset() { return true; }

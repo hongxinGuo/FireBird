@@ -13,6 +13,7 @@ class CMainFrame : public CMDIFrameWndEx {
 public:
 	CMainFrame();
 	~CMainFrame() override;
+	int ReportExitToWatchdog();
 
 	// 特性
 

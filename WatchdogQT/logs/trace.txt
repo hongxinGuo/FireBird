@@ -100,3 +100,85 @@
 [2025-01-03 06:18:13.078] [basic_trace_logger] [trace] 中国市场分配并处理实时数据 ms 0
 [2025-01-03 06:18:13.186] [basic_trace_logger] [trace] 世界市场处理WebSocket数据 ms 0
 [2025-01-03 06:18:13.323] [basic_trace_logger] [info] ****************** Backtrace End ********************
+[2025-07-25 08:04:00.932] [basic_trace_logger] [info] ****************** Backtrace Start ******************
+[2025-07-25 08:03:56.115] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:03:56.116] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:03:57.013] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:03:57.014] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:03:57.124] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:03:57.124] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:03:58.110] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:03:58.110] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:03:58.221] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:03:58.221] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:03:59.105] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:03:59.106] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:03:59.214] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:03:59.214] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:04:00.001] [basic_trace_logger] [trace] 查询Tiingo IEX实时数据 ms 0
+[2025-07-25 08:04:00.002] [basic_trace_logger] [trace] 系统状态监测 ms 0
+[2025-07-25 08:04:00.118] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:00.119] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:00.229] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:04:00.229] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:04:00.933] [basic_trace_logger] [info] ****************** Backtrace End ********************
+[2025-07-25 08:04:28.886] [basic_trace_logger] [info] ****************** Backtrace Start ******************
+[2025-07-25 08:04:24.107] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:24.107] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:24.220] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:04:24.220] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:04:25.104] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:25.104] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:25.220] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:04:25.220] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:04:26.107] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:26.107] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:26.217] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:04:26.218] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:04:27.097] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:27.097] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:27.209] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:04:27.210] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:04:28.093] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:28.093] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:28.206] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:04:28.207] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:04:28.886] [basic_trace_logger] [info] ****************** Backtrace End ********************
+[2025-07-25 08:04:52.700] [basic_trace_logger] [info] ****************** Backtrace Start ******************
+[2025-07-25 08:04:48.094] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:48.095] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:48.203] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:04:48.203] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:04:49.077] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:49.078] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:49.189] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:04:49.190] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:04:50.067] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:50.067] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:50.178] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:04:50.178] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:04:51.078] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:51.078] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:51.190] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:04:51.190] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:04:52.078] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:52.079] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:04:52.189] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:04:52.189] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:04:52.700] [basic_trace_logger] [info] ****************** Backtrace End ********************
+[2025-07-25 08:09:05.179] [basic_trace_logger] [info] ****************** Backtrace Start ******************
+[2025-07-25 08:09:02.144] [basic_trace_logger] [trace] 生成明日各项任务 ms 1
+[2025-07-25 08:09:02.145] [basic_trace_logger] [trace] 生成明日各项任务 ms 0
+[2025-07-25 08:09:02.254] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:09:02.254] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:09:02.365] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:09:02.365] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:09:03.013] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:09:03.013] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:09:03.128] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:09:03.129] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:09:04.003] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:09:04.003] [basic_trace_logger] [trace] 系统初始化检查 ms 0
+[2025-07-25 08:09:04.115] [basic_trace_logger] [trace] 处理WebSocket数据 ms 0
+[2025-07-25 08:09:04.115] [basic_trace_logger] [trace] 分配并处理实时数据 ms 0
+[2025-07-25 08:09:05.179] [basic_trace_logger] [info] ****************** Backtrace End ********************
