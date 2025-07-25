@@ -65,10 +65,6 @@ bool CFinnhubDataSource::Reset() {
 	m_fUpdateEPSSurprise = true;
 	m_fUpdateSECFilings = true;
 
-	m_lCurrentRTDataQuotePos = 0;
-	m_lCurrentForexExchangePos = 0;
-	m_lCurrentCryptoExchangePos = 0;
-
 	m_fFinnhubDataInquiryFinished = false;
 
 	return true;
@@ -863,16 +859,17 @@ bool CFinnhubDataSource::GenerateInsiderSentiment() {
 }
 
 bool CFinnhubDataSource::GenerateRTQuote() {
+	static size_t s_lCurrentRTDataQuotePos = 0;
 	ASSERT(!IsInquiring());
 	ASSERT(gl_pWorldMarket->IsSystemReady());
 	const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket, STOCK_PRICE_QUOTE_);
-	product->SetIndex(m_lCurrentRTDataQuotePos);
+	product->SetIndex(s_lCurrentRTDataQuotePos);
 	StoreInquiry(product);
 	SetInquiring(true);
-	m_lCurrentRTDataQuotePos++;
-	if (m_lCurrentRTDataQuotePos == gl_dataContainerFinnhubStock.Size()) m_lCurrentRTDataQuotePos = 0;
+	s_lCurrentRTDataQuotePos++;
+	if (s_lCurrentRTDataQuotePos == gl_dataContainerFinnhubStock.Size()) s_lCurrentRTDataQuotePos = 0;
 	string str = _T("stock RT: ");
-	str += gl_dataContainerFinnhubStock.GetItem(m_lCurrentRTDataQuotePos)->GetSymbol();
+	str += gl_dataContainerFinnhubStock.GetItem(s_lCurrentRTDataQuotePos)->GetSymbol();
 	gl_systemMessage.SetCurrentFinnhubFunction(str);
 	return true;
 }
@@ -1140,18 +1137,19 @@ bool CFinnhubDataSource::GenerateForexExchange() {
 }
 
 bool CFinnhubDataSource::GenerateForexSymbol() {
+	static size_t s_lCurrentForexExchangePos = 0;
 	ASSERT(!IsInquiring());
 	if (IsUpdateForexSymbol()) {
 		const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket, FOREX_SYMBOLS_);
-		product->SetIndex(m_lCurrentForexExchangePos);
+		product->SetIndex(s_lCurrentForexExchangePos);
 		StoreInquiry(product);
 		SetInquiring(true);
 		string str = _T("forex symbol: ");
-		str += gl_dataContainerFinnhubForexExchange.GetItem(m_lCurrentForexExchangePos);
+		str += gl_dataContainerFinnhubForexExchange.GetItem(s_lCurrentForexExchangePos);
 		gl_systemMessage.SetCurrentFinnhubFunction(str);
-		if (++m_lCurrentForexExchangePos >= gl_dataContainerFinnhubForexExchange.Size()) {
+		if (++s_lCurrentForexExchangePos >= gl_dataContainerFinnhubForexExchange.Size()) {
 			SetUpdateForexSymbol(false);
-			m_lCurrentForexExchangePos = 0;
+			s_lCurrentForexExchangePos = 0;
 			gl_systemMessage.PushInformationMessage(_T("Finnhub Forex symbols updated"));
 		}
 		return true;
@@ -1159,19 +1157,49 @@ bool CFinnhubDataSource::GenerateForexSymbol() {
 	return false;
 }
 
+/*
+bool CFinnhubDataSource::GenerateForexSymbol() {
+	auto isUpdateNeeded = [this]() { return IsUpdateForexSymbol(); };
+	auto isUpdateItemNeeded = [](const auto& item) { return true; };
+	auto isAccessible = [](int inquireType, const std::string& exchangeCode) { return true; };
+	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
+	auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
+	auto setMessage = [](const auto& item) {
+		std::string str = _T("forex symbol: ");
+		str += item;
+		gl_systemMessage.SetCurrentFinnhubFunction(str);
+	};
+	auto setUpdateFlag = [this](bool flag) { SetUpdateForexSymbol(flag); };
+	const std::string finishedMsg = "Finnhub Forex symbols updated";
+
+	return GenerateInquiryIterateWithAccessCheck(
+		gl_dataContainerFinnhubForexExchange,
+		FOREX_SYMBOLS_,
+		isUpdateNeeded,
+		isUpdateItemNeeded,
+		isAccessible,
+		createProduct,
+		setIndex,
+		setMessage,
+		setUpdateFlag,
+		finishedMsg
+	);
+}*/
+
 bool CFinnhubDataSource::GenerateCryptoSymbol() {
+	static size_t s_lCurrentCryptoExchangePos = 0
 	ASSERT(!IsInquiring());
 	if (IsUpdateCryptoSymbol()) {
 		const CVirtualProductWebDataPtr product = m_FinnhubFactory.CreateProduct(gl_pWorldMarket, CRYPTO_SYMBOLS_);
-		product->SetIndex(m_lCurrentCryptoExchangePos);
+		product->SetIndex(s_lCurrentCryptoExchangePos);
 		StoreInquiry(product);
 		SetInquiring(true);
 		string str = _T("crypto symbol: ");
-		str += gl_dataContainerFinnhubCryptoExchange.GetItem(m_lCurrentCryptoExchangePos);
+		str += gl_dataContainerFinnhubCryptoExchange.GetItem(s_lCurrentCryptoExchangePos);
 		gl_systemMessage.SetCurrentFinnhubFunction(str);
-		if (++m_lCurrentCryptoExchangePos >= gl_dataContainerFinnhubCryptoExchange.Size()) {
+		if (++s_lCurrentCryptoExchangePos >= gl_dataContainerFinnhubCryptoExchange.Size()) {
 			SetUpdateCryptoSymbol(false);
-			m_lCurrentCryptoExchangePos = 0;
+			s_lCurrentCryptoExchangePos = 0;
 			gl_systemMessage.PushInformationMessage(_T("Finnhub Crypto symbols updated"));
 		}
 		return true;

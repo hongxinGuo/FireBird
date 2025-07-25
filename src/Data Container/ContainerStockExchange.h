@@ -14,7 +14,7 @@ public:
 
 	CStockExchangePtr GetItem(const size_t lIndex) const { return m_vStockExchange.at(lIndex); }
 	CStockExchangePtr GetItem(const string& strExchangeSymbol) const;
-	string GetExchangeCode(const size_t lIndex) const { return m_vStockExchange.at(lIndex)->GetExchangeCode(); }
+	string GetItemExchangeCode(const size_t lIndex) const { return m_vStockExchange.at(lIndex)->GetExchangeCode(); }
 	auto Size() const noexcept { return m_mapStockExchange.size(); }
 
 	bool LoadDB();

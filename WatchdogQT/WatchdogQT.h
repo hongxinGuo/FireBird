@@ -2,11 +2,16 @@
 
 #include <QMessageBox>
 #include <QtWidgets/QMainWindow>
+#include <spdlog/logger.h>
+
 #include "ui_WatchdogQT.h"
 
 using std::array;
 
 extern std::chrono::sys_seconds gl_tpNow; // 协调世界时（Coordinated Universal Time）
+extern std::shared_ptr<spdlog::logger> gl_dailyLogger;
+#define WM_FIREBIRD_RUNNING               WM_APP + 1
+#define WM_FIREBIRD_EXIT               WM_APP + 2
 
 QT_BEGIN_NAMESPACE
 

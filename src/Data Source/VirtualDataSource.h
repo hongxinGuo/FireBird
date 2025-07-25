@@ -79,7 +79,7 @@ public:
 			long pos;
 			for (pos = 0; pos < size; ++pos) {
 				auto item = container.GetItem(pos);
-				if (isItemNeedUpdate(item) && isAccessible(inquireType, item->GetExchangeCode())) {
+				if (isItemNeedUpdate(item) && isAccessible(inquireType, container.GetItemExchangeCode(pos))) {
 					found = true;
 					break;
 				}

@@ -12,7 +12,7 @@ CProductFinnhubStockSymbol::CProductFinnhubStockSymbol() {
 }
 
 string CProductFinnhubStockSymbol::CreateMessage() {
-	m_strInquiringExchange = gl_dataContainerStockExchange.GetExchangeCode(m_lIndex);
+	m_strInquiringExchange = gl_dataContainerStockExchange.GetItemExchangeCode(m_lIndex);
 
 	m_strInquiry = m_strInquiryFunction + m_strInquiringExchange;
 	return m_strInquiry;

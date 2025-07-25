@@ -14,7 +14,7 @@ CProductFinnhubMarketHoliday::CProductFinnhubMarketHoliday() {
 }
 
 string CProductFinnhubMarketHoliday::CreateMessage() {
-	const auto strParam = gl_dataContainerStockExchange.GetExchangeCode(m_lIndex);
+	const auto strParam = gl_dataContainerStockExchange.GetItemExchangeCode(m_lIndex);
 
 	m_strInquiringExchange = strParam;
 	m_strInquiry = m_strInquiryFunction + strParam;

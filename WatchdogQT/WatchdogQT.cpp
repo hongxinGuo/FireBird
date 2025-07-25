@@ -7,63 +7,27 @@
 
 #include<chrono>
 #include <spdlog/spdlog.h>
+#include <spdlog/sinks/daily_file_sink.h>
 using namespace std;
 
 //#include"resource.h"
 
 std::chrono::sys_seconds gl_tpNow; // 协调世界时（Coordinated Universal Time）
+shared_ptr<spdlog::logger> gl_dailyLogger = nullptr;
 
-/*
-LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-	if(msg == WM_COPYDATA) {
-		COPYDATASTRUCT* pCds = (COPYDATASTRUCT*)lParam;
-		if(pCds->cbData == 0) {
-			string sTime = (char*)pCds->lpData;
-		}
-	}
-	return DefWindowProc(hWnd, msg, wParam, lParam);
+void InitializeLogSystem() {
+	// Create a daily logger - a new file is created every day at 2:30 am
+	gl_dailyLogger = spdlog::daily_logger_mt("watchdog_daily_logger", "logs/WatchdogDaily.txt", 2, 30);
+
+	//spdlog::flush_every(chrono::seconds(600)); // 每10分钟刷新一次（只能用于_mt模式生成的日志）
+	gl_dailyLogger->flush_on(spdlog::level::warn); // 警告等级及以上立刻刷新
+
+	gl_dailyLogger->info("WatchdogQT App begin running");
 }
 
-int registerWindow() {
-	WNDCLASS wc = { 0 };
-	wc.lpfnWndProc = WndProc;
-	wc.hInstance = GetModuleHandle(NULL);
-	wc.lpszClassName = "ReceiverWindow";
-
-	if(!RegisterClass(&wc)) {
-		// Error
-		return 1;
-	}
-
-	HWND hWnd = CreateWindow(
-		"ReceiverWindow",
-		"ReceiverWindow",
-		WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		NULL,
-		NULL,
-		GetModuleHandle(NULL),
-		NULL
-	);
-
-	if(hWnd == NULL) {
-		// Error
-		return 1;
-	}
-
-	MSG msg;
-	while(GetMessage(&msg, NULL, 0, 0)) {
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
-	getchar();
-	return 0;
-}
-*/
 WatchdogQT::WatchdogQT(QWidget* parent) : QMainWindow(parent) {
+	InitializeLogSystem();
+
 	gl_tpNow = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::now()); // 程序运行的第一步即要获取当前时间。以防止出现时间为零的故障。
 
 	// 设置每秒一次的计时器
@@ -88,6 +52,10 @@ WatchdogQT::WatchdogQT(QWidget* parent) : QMainWindow(parent) {
 }
 
 WatchdogQT::~WatchdogQT() {
+	gl_dailyLogger->info("WatchdogQT App exit");
+
+	// Under VisualStudio, this must be called before main finishes to work around a known VS issue
+	spdlog::drop_all();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,12 +71,20 @@ bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr
 	string s;
 	MSG* msg = static_cast<MSG*>(message);
 	switch (msg->message) {
-	case WM_COPYDATA:
+	case WM_FIREBIRD_RUNNING:
 		time = gl_tpNow.time_since_epoch().count();
 		localtime_s(&tmLocal, &time);
-		s = fmt::format("FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} 主动关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		s = fmt::format("FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}启动", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 		m_listOutput.push_back(s);
-		break;
+		gl_dailyLogger->info("{}", s);
+		return true;
+	case WM_FIREBIRD_EXIT:
+		time = gl_tpNow.time_since_epoch().count();
+		localtime_s(&tmLocal, &time);
+		s = fmt::format("FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}主动关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		m_listOutput.push_back(s);
+		gl_dailyLogger->info("{}", s);
+		return true;
 	default:
 		return false;
 	}
@@ -162,6 +138,7 @@ void WatchdogQT::UpdatePer10Second() {
 			const string s = fmt::format("启动FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 			if (m_listOutput.size() > 100) m_listOutput.pop_front();
 			m_listOutput.push_back(s);
+			gl_dailyLogger->info("{}", s);
 			ASSERT(iReturnCode > 31);
 		}
 		s_Counter = 0;

@@ -25,6 +25,8 @@ public:
 	CVirtualStockPtr Get(const size_t lIndex) { return m_vStock.at(lIndex); }
 	CVirtualStockPtr Get(const string& strSymbol) { return m_vStock.at(m_mapSymbol.at(strSymbol)); }
 
+	string GetItemExchangeCode(const size_t lIndex) const { return m_vStock.at(lIndex)->GetExchangeCode(); }
+
 	size_t GetOffset(const string& strSymbol) const { return m_mapSymbol.at(strSymbol); }
 	size_t GetOffset(const CVirtualStockPtr& pStock) const { return GetOffset(pStock->GetSymbol()); }
 

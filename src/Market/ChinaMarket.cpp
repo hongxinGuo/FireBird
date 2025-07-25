@@ -27,8 +27,6 @@
 #include "SinaRTDataSource.h"
 #include "TengxunRTDataSource.h"
 
-#define WM_FIREBIRD_EXIT                0X500
-
 CChinaMarket::CChinaMarket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {

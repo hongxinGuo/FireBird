@@ -1,0 +1,16 @@
+[2025-07-25 18:44:00.085] [watchdog_daily_logger] [info] WatchdogQT App begin running
+[2025-07-25 18:44:32.414] [watchdog_daily_logger] [info] FireBird于: 2025年07月25日 18:44:32 主动关闭
+[2025-07-25 18:45:06.062] [watchdog_daily_logger] [info] FireBird于: 2025年07月25日 18:45:05 主动关闭
+[2025-07-25 18:45:09.666] [watchdog_daily_logger] [info] WatchdogQT App exit
+[2025-07-25 19:01:40.373] [watchdog_daily_logger] [info] WatchdogQT App begin running
+[2025-07-25 19:02:09.542] [watchdog_daily_logger] [info] FireBird于: 2025年07月25日 19:02:03启动
+[2025-07-25 19:02:24.132] [watchdog_daily_logger] [info] FireBird于: 2025年07月25日 19:02:18主动关闭
+[2025-07-25 19:02:27.913] [watchdog_daily_logger] [info] WatchdogQT App exit
+[2025-07-25 19:03:51.813] [watchdog_daily_logger] [info] WatchdogQT App begin running
+[2025-07-25 19:04:14.572] [watchdog_daily_logger] [info] FireBird于: 2025年07月25日 19:04:13启动
+[2025-07-25 19:04:36.402] [watchdog_daily_logger] [info] FireBird于: 2025年07月25日 19:04:33主动关闭
+[2025-07-25 19:04:39.284] [watchdog_daily_logger] [info] WatchdogQT App exit
+[2025-07-25 19:05:48.793] [watchdog_daily_logger] [info] WatchdogQT App begin running
+[2025-07-25 19:06:12.717] [watchdog_daily_logger] [info] FireBird于: 2025年07月25日 19:06:09启动
+[2025-07-25 19:06:21.551] [watchdog_daily_logger] [info] FireBird于: 2025年07月25日 19:06:18主动关闭
+[2025-07-25 19:06:26.095] [watchdog_daily_logger] [info] WatchdogQT App exit

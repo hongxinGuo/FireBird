@@ -160,6 +160,8 @@ static UINT innerSystemIndicators[] =
 };
 
 // CMainFrame 构造/析构
+#define WM_FIREBIRD_RUNNING               WM_APP + 1
+#define WM_FIREBIRD_EXIT               WM_APP + 2
 
 CMainFrame::CMainFrame() {
 	if (!sm_fGlobeInit) {
@@ -173,16 +175,17 @@ CMainFrame::CMainFrame() {
 	}
 }
 
+int CMainFrame::ReportRunningToWatchdog() {
+	HWND hWnd = ::FindWindow(NULL, "WatchdogQT");
+	if (hWnd == NULL) return 1; // Watchdog监控程序不在运行，直接返回
+	::SendMessage(hWnd, WM_FIREBIRD_RUNNING, NULL, NULL); // tell watchdog that I am running now.
+	return 0;
+}
+
 int CMainFrame::ReportExitToWatchdog() {
 	HWND hWnd = ::FindWindow(NULL, "WatchdogQT");
-	char buffer[100];
-
-	if (hWnd == NULL) return 1; // Watchdog监控程序不在运行
-	COPYDATASTRUCT cds;
-	cds.dwData = 100; // message type
-	cds.cbData = 0;
-	cds.lpData = (PVOID)buffer;
-	::SendMessage(hWnd, WM_COPYDATA, NULL, (LPARAM)&cds);
+	if (hWnd == NULL) return 1; // Watchdog监控程序不在运行， 直接返回
+	::SendMessage(hWnd, WM_FIREBIRD_EXIT, NULL, NULL); // Tell watchdog that I am exit now.
 	return 0;
 }
 
@@ -370,6 +373,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	gl_systemConfiguration.SetSystemDisplayRect(GetSystemMetrics(SM_CXFULLSCREEN), GetSystemMetrics(SM_CYFULLSCREEN));
 	gl_systemConfiguration.SetCurrentWindowRect(GetSystemMetrics(SM_CXMAXIMIZED), GetSystemMetrics(SM_CYMAXIMIZED));
 
+	ReportRunningToWatchdog(); // report to watchdog
 	return 0;
 }
 
