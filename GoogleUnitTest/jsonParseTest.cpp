@@ -33,7 +33,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(StrToDecimal("123.1234", 3), 123123);
 		EXPECT_EQ(StrToDecimal("12345.12345", 4), 123451234);
 		EXPECT_EQ(StrToDecimal("123456.12456", 1), 1234561);
-		EXPECT_EQ(StrToDecimal("9876.9876", 2), 987698);
+		EXPECT_EQ(StrToDecimal("", 2), 0);
+		EXPECT_EQ(StrToDecimal("None", 2), 0);
 		//EXPECT_EQ(StrToDecimal(""), );
 		//EXPECT_EQ(StrToDecimal(""), );
 		//EXPECT_EQ(StrToDecimal(""), );
@@ -49,6 +50,8 @@ namespace FireBirdTest {
 		EXPECT_EQ(StrToDecimal2("12345.12345", 4), 123451234);
 		EXPECT_EQ(StrToDecimal2("123456.12456", 1), 1234561);
 		EXPECT_EQ(StrToDecimal2("9876.9876", 2), 987698);
+		EXPECT_EQ(StrToDecimal2("", 2), 0) << "¿Õ×Ö·û´®·µ»Ø0";
+		EXPECT_EQ(StrToDecimal2("None", 2), 0) << "´íÎó¸ñÊ½Ê±·µ»Ø0";
 		//EXPECT_EQ(StrToDecimal(""), );
 		//EXPECT_EQ(StrToDecimal(""), );
 		//EXPECT_EQ(StrToDecimal(""), );

@@ -41,10 +41,6 @@ using namespace concurrencpp;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 long long StrToDecimal2(const string_view& svData, int power) {
 	char buffer[100]{};
-	if (svData.length() == 0) return 0;
-	if (svData.length() == 4) {
-		if (svData.compare("None") == 0) return 0;
-	}
 	const auto iPointPosition = svData.find_first_of('.');
 	if (iPointPosition == std::string_view::npos) {		// 没有小数点？
 		long l = 10;
@@ -52,7 +48,7 @@ long long StrToDecimal2(const string_view& svData, int power) {
 			for (int i = 1; i < power; i++) l *= 10;
 		}
 		else l = 1;
-		return std::stoll(std::string(svData)) * l;
+		return std::atoll(svData.data()) * l; // 错误的格式一般没有字符'.'，故而都返回0.
 	}
 	// 有小数点
 	int i;
@@ -75,29 +71,25 @@ long long StrToDecimal2(const string_view& svData, int power) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 将输入的字符串转变成放大了10^power倍的长整型。要确保精确地转换，不使用浮点数过渡。
-// 这是copilot提供的范本，执行时间要慢20%，但更清晰。
+// 这是coPilot提供的范本，执行时间要慢20%，但更清晰。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 long long StrToDecimal(const std::string_view& svData, int power) {
 	std::string buffer;
 	buffer.reserve(svData.size() + power + 2);
-	if (svData.length() == 0) return 0;
-	if (svData.length() == 4) {
-		if (svData.compare("None") == 0) return 0;
-	}
 	auto iPointPosition = svData.find('.');
 	if (iPointPosition == std::string_view::npos) {
 		long l = 1;
 		for (int i = 0; i < power; ++i) l *= 10;
-		return std::stoll(std::string(svData)) * l;
+		return std::atoll(svData.data()) * l; // 错误的格式一般没有字符'.'，故而都返回0.
 	}
 	buffer.append(svData.substr(0, iPointPosition));
 	auto fraction = svData.substr(iPointPosition + 1);
 	if (fraction.size() > static_cast<size_t>(power)) fraction = fraction.substr(0, power);
 	buffer.append(fraction);
 	buffer.append(power > fraction.size() ? power - fraction.size() : 0, '0');
-	return std::stoll(buffer);
+	return std::atoll(buffer.c_str());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
