@@ -285,6 +285,27 @@ BENCHMARK_F(CJsonParse, StrToDecimal)(benchmark::State& state) {
 	}
 }
 
+BENCHMARK_F(CJsonParse, StrToDecimal_2)(benchmark::State& state) {
+	constexpr string_view svData{ "123457654" };
+	for (auto _ : state) {
+		StrToDecimal(svData, 3);
+	}
+}
+
+BENCHMARK_F(CJsonParse, StrToDecimal2)(benchmark::State& state) {
+	constexpr string_view svData{ "12345.7654" };
+	for (auto _ : state) {
+		StrToDecimal2(svData, 3);
+	}
+}
+
+BENCHMARK_F(CJsonParse, StrToDecimal2_2)(benchmark::State& state) {
+	constexpr string_view svData{ "123457654" };
+	for (auto _ : state) {
+		StrToDecimal2(svData, 3);
+	}
+}
+
 BENCHMARK_F(CJsonParse, StockSymbolParseUsingSimdjson)(benchmark::State& state) {
 	const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("StockSymbol.json");
 	const auto j = padded_string::load(strFileName);
@@ -426,6 +447,14 @@ public:
 	string s;
 	CWebDataPtr pWebData;
 };
+
+BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool1)(benchmark::State& state) {
+	gl_concurrency_level = 1;
+	for (auto _ : state) {
+		ParseTengxunRTData(pWebData); // Note 此函数测试时会申请大量的内存，在测试完成后释放得很慢。
+	}
+	gl_concurrency_level = 4;
+}
 
 BENCHMARK_F(CTengxunRTData, ParseTengxunRTDataUsingThreadPool2)(benchmark::State& state) {
 	gl_concurrency_level = 2;

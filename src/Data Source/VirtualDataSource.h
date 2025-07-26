@@ -207,8 +207,8 @@ protected:
 	int m_iMaxNormalInquireTime{ 500 }; // 最大正常查询时间（每个具体的数据源皆不同）
 	atomic_int64_t m_tCurrentInquiryTime{ 0 }; // 当前接收数据所需时间（以毫秒计）
 
-	static atomic_int64_t sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
-	static atomic_int64_t sm_lTotalByteReadPerSecond; // 
+	static atomic<int64_t> sm_lTotalByteRead; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
+	static atomic<int64_t> sm_lTotalByteReadPerSecond; // 
 
 	chrono::time_point<chrono::steady_clock> m_PrevInquireTimePoint{};
 

@@ -132,7 +132,7 @@ CDayLinePtr CDayLineWebData::ProcessOneNeteaseDayLine(const string_view& svData)
 		pDayLine->SetVolume(atoll(sv.data())); // 读入的是股数
 		// 成交金额
 		sv = GetNextField(svData, lCurrentPos, ',');
-		pDayLine->SetAmount(StrToDecimal(sv.data(), 0));
+		pDayLine->SetAmount(atoll(sv.data()));
 		// 总市值的数据有两种形式，需要程序判定。
 		sv = GetNextField(svData, lCurrentPos, ',');
 		pDayLine->SetTotalValue(atof(sv.data())); // 总市值的单位为：元

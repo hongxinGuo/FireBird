@@ -12,8 +12,8 @@
 #include"Thread.h"
 #include "WebData.h"
 
-atomic_int64_t CVirtualDataSource::sm_lTotalByteRead = 0;
-atomic_int64_t CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;
+atomic<int64_t> CVirtualDataSource::sm_lTotalByteRead = 0;
+atomic<int64_t> CVirtualDataSource::sm_lTotalByteReadPerSecond = 0;
 
 CVirtualDataSource::CVirtualDataSource() {
 	SetDefaultSessionOption();

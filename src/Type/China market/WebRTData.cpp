@@ -40,9 +40,7 @@ CWebRTData::CWebRTData() {
 }
 
 bool CWebRTData::CheckSinaRTDataActive() {
-	if (IsValidTime(14)) m_fActive = true;
-	else m_fActive = false;
-
+	m_fActive = IsValidTime(14);
 	return m_fActive;
 }
 
@@ -91,7 +89,7 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 	ASSERT(svData.length() >= 23);
 	size_t lCurrentPos = 11; // 跨过字符串："var hq_str_"
 	const string_view svStockSymbol(svData.data() + lCurrentPos, 8);
-	m_strSymbol = XferSinaToStandard(svStockSymbol).c_str();
+	m_strSymbol = XferSinaToStandard(svStockSymbol);
 	if (svData.length() == 23) { // 空数据: var hq_str_sh688801="";,包括最后的';'分号
 		m_fActive = false;
 		SetDataSource(SINA_RT_WEB_DATA_);
@@ -99,8 +97,8 @@ void CWebRTData::ParseSinaData(const string_view& svData) {
 	}
 	lCurrentPos += 10; // 跨过字符串： sh601006="
 	// 读入证券名称
-	string_view sv = GetNextField(svData, lCurrentPos, ',');
-	m_strStockName.append(sv.data(), sv.length());
+	auto sv = GetNextField(svData, lCurrentPos, ',');
+	m_strStockName.assign(sv.data(), sv.length());
 	// 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
 	sv = GetNextField(svData, lCurrentPos, ',');
 	m_lOpen = StrToDecimal(sv, 3);

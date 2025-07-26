@@ -36,10 +36,15 @@ using namespace concurrencpp;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 将输入的字符串转变成放大了10^power倍的长整型。要确保精确地转换，不使用浮点数过渡。
+// 字符穿为"None"返回0.
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-long StrToDecimal(const string_view& svData, int power) {
+long long StrToDecimal2(const string_view& svData, int power) {
 	char buffer[100]{};
+	if (svData.length() == 0) return 0;
+	if (svData.length() == 4) {
+		if (svData.compare("None") == 0) return 0;
+	}
 	const auto iPointPosition = svData.find_first_of('.');
 	if (iPointPosition == std::string_view::npos) {		// 没有小数点？
 		long l = 10;
@@ -47,7 +52,7 @@ long StrToDecimal(const string_view& svData, int power) {
 			for (int i = 1; i < power; i++) l *= 10;
 		}
 		else l = 1;
-		return atol(svData.data()) * l;
+		return std::stoll(std::string(svData)) * l;
 	}
 	// 有小数点
 	int i;
@@ -64,7 +69,35 @@ long StrToDecimal(const string_view& svData, int power) {
 	}
 	buffer[i - 1] = 0x000;
 	ASSERT(i < 99);
-	return atol(buffer);
+	return atoll(buffer);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 将输入的字符串转变成放大了10^power倍的长整型。要确保精确地转换，不使用浮点数过渡。
+// 这是copilot提供的范本，执行时间要慢20%，但更清晰。
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+long long StrToDecimal(const std::string_view& svData, int power) {
+	std::string buffer;
+	buffer.reserve(svData.size() + power + 2);
+	if (svData.length() == 0) return 0;
+	if (svData.length() == 4) {
+		if (svData.compare("None") == 0) return 0;
+	}
+	auto iPointPosition = svData.find('.');
+	if (iPointPosition == std::string_view::npos) {
+		long l = 1;
+		for (int i = 0; i < power; ++i) l *= 10;
+		return std::stoll(std::string(svData)) * l;
+	}
+	buffer.append(svData.substr(0, iPointPosition));
+	auto fraction = svData.substr(iPointPosition + 1);
+	if (fraction.size() > static_cast<size_t>(power)) fraction = fraction.substr(0, power);
+	buffer.append(fraction);
+	buffer.append(power > fraction.size() ? power - fraction.size() : 0, '0');
+	return std::stoll(buffer);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,7 +108,7 @@ long StrToDecimal(const string_view& svData, int power) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 string_view GetNextField(const string_view& svData, size_t& lCurrentPos, char delimiter) {
-	const string_view sv(svData.data() + lCurrentPos, svData.length() - lCurrentPos);
+	const string_view sv = svData.substr(lCurrentPos);
 	const auto lEnd = sv.find_first_of(delimiter);
 	if (lEnd > sv.length()) throw exception("GetNextField() out of range"); // 没找到的话抛出异常
 	lCurrentPos += lEnd + 1; // 将当前位置移至本数据之后
@@ -129,10 +162,11 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<vector<string_view>> pvStr
 	vector<result<bool>> results;
 	const auto DataSize = pvStringView->size();
 	const auto chunk_size = 1 + DataSize / gl_concurrency_level;
-	for (int i = 0; i < gl_concurrency_level; i++) {
+	//for (int i = 0; i < gl_concurrency_level; i++) {
+	for (auto i : std::views::iota(0, gl_concurrency_level)) {
 		auto chunk_begin = i * chunk_size;
 		auto chunk_end = chunk_begin + chunk_size;
-		if (chunk_end > DataSize) chunk_end = DataSize;
+		chunk_end = min(chunk_end, DataSize);
 		auto result = gl_runtime.thread_pool_executor()->submit([pvStringView, chunk_begin, chunk_end] {
 			for (auto j = chunk_begin; j < chunk_end; j++) {
 				const auto pRTData = make_shared<CWebRTData>();
@@ -143,11 +177,13 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<vector<string_view>> pvStr
 		});
 		results.emplace_back(std::move(result));
 	}
+
 	bool succeed = true;
 	for (auto& r : results) {
 		//auto a = r.resolve();
-		succeed &= co_await r;
+		succeed &= r.get();
 	}
+	//bool succeed = ranges::all_of(results, [](auto& r) { return  r.get(); });
 	co_return succeed;
 }
 
@@ -194,10 +230,11 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 	vector<concurrencpp::result<bool>> results;
 	const auto DataSize = pvStringView->size();
 	const auto chunk_size = 1 + DataSize / gl_concurrency_level;
-	for (int i = 0; i < gl_concurrency_level; i++) {
+	//for (int i = 0; i < gl_concurrency_level; i++) {
+	for (auto i : std::views::iota(0, gl_concurrency_level)) {
 		auto chunk_begin = i * chunk_size;
 		auto chunk_end = chunk_begin + chunk_size;
-		if (chunk_end > DataSize) chunk_end = DataSize;
+		chunk_end = min(chunk_end, DataSize);
 		auto result = tpe->submit([pvStringView, chunk_begin, chunk_end] {
 			try {
 				for (auto j = chunk_begin; j < chunk_end; j++) {

@@ -39,6 +39,21 @@ namespace FireBirdTest {
 		//EXPECT_EQ(StrToDecimal(""), );
 	}
 
+	TEST_F(jsonParseTest, TestStrToDecimal2) {
+		EXPECT_EQ(StrToDecimal2("5.7", 3), 5700);
+		EXPECT_EQ(StrToDecimal2("140", 3), 140000);
+		EXPECT_EQ(StrToDecimal2("140", 0), 140);
+		EXPECT_EQ(StrToDecimal2("0.354", 3), 354);
+		EXPECT_EQ(StrToDecimal2("12345.1", 3), 12345100);
+		EXPECT_EQ(StrToDecimal2("123.1234", 3), 123123);
+		EXPECT_EQ(StrToDecimal2("12345.12345", 4), 123451234);
+		EXPECT_EQ(StrToDecimal2("123456.12456", 1), 1234561);
+		EXPECT_EQ(StrToDecimal2("9876.9876", 2), 987698);
+		//EXPECT_EQ(StrToDecimal(""), );
+		//EXPECT_EQ(StrToDecimal(""), );
+		//EXPECT_EQ(StrToDecimal(""), );
+	}
+
 	TEST_F(jsonParseTest, TestCreateJsonWithNlohmann1) {
 		json js;
 		string s{ _T("{\"eventName\":\"subscribe\",\"authorization\":\"abcdefg\"}") };

@@ -139,7 +139,7 @@ UINT CInquireEngine::ReadWebFileOneTime() {
 //
 void CInquireEngine::XferReadingToBuffer(UINT uByteRead) {
 	ASSERT(m_sBuffer.size() > m_lByteRead + uByteRead);
-	memcpy(&m_sBuffer.at(m_lByteRead), m_dataBuffer, uByteRead);
+	memcpy(m_sBuffer.data() + m_lByteRead, m_dataBuffer, uByteRead);
 }
 
 bool CInquireEngine::IncreaseBufferSizeIfNeeded(long lIncreaseSize) {
@@ -187,9 +187,10 @@ void CInquireEngine::TESTSetBuffer(string str) {
 	const INT64 lTotalNumber = str.length();
 
 	m_sBuffer.resize(lTotalNumber + 1);
-	for (INT64 i = 0; i < lTotalNumber; i++) {
-		m_sBuffer.at(i) = str[i];
-	}
+	//for (INT64 i = 0; i < lTotalNumber; i++) {
+	//m_sBuffer.at(i) = str[i];
+	//}
+	ranges::copy(str, m_sBuffer.begin());
 	m_sBuffer.at(lTotalNumber) = 0x000;
 	m_lByteRead = lTotalNumber;
 }
