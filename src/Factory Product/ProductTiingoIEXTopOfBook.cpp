@@ -118,27 +118,27 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 			auto itemValue = item.value();
 			pIEXLastTopOFBook = nullptr;
 			pIEXLastTopOFBook = make_shared<CTiingoIEXTopOfBook>();
-			s1 = jsonGetStringView(itemValue, _T("ticker"));
+			s1 = simdjsonGetStringView(itemValue, _T("ticker"));
 			pIEXLastTopOFBook->m_strTicker = s1;
-			s1 = jsonGetStringView(itemValue, _T("timestamp"));
+			s1 = simdjsonGetStringView(itemValue, _T("timestamp"));
 			ss.clear();
 			ss.str(s1);
 			chrono::from_stream(ss, _T("%FT%T%Ez"), pIEXLastTopOFBook->m_timeStamp);
-			s1 = jsonGetStringView(itemValue, _T("lastSaleTimestamp"));
+			s1 = simdjsonGetStringView(itemValue, _T("lastSaleTimestamp"));
 			ss.clear();
 			ss.str(s1);
 			chrono::from_stream(ss, "%FT%T%0z", pIEXLastTopOFBook->m_lastSale);
-			s1 = jsonGetStringView(itemValue, _T("quoteTimestamp"));
+			s1 = simdjsonGetStringView(itemValue, _T("quoteTimestamp"));
 			ss.clear();
 			ss.str(s1);
 			chrono::from_stream(ss, "%FT%T%0z", pIEXLastTopOFBook->m_quote);
 
-			pIEXLastTopOFBook->m_lHigh = jsonGetDouble(itemValue, _T("high")) * stock.GetRatio();
-			pIEXLastTopOFBook->m_lLow = jsonGetDouble(itemValue, _T("low")) * stock.GetRatio();
-			pIEXLastTopOFBook->m_lLastClose = jsonGetDouble(itemValue, _T("prevClose")) * stock.GetRatio();
-			pIEXLastTopOFBook->m_lOpen = jsonGetDouble(itemValue, _T("open")) * stock.GetRatio();
-			pIEXLastTopOFBook->m_lNew = jsonGetDouble(itemValue, _T("last")) * stock.GetRatio();
-			pIEXLastTopOFBook->m_llVolume = jsonGetInt64(itemValue, _T("volume"));
+			pIEXLastTopOFBook->m_lHigh = simdjsonGetDouble(itemValue, _T("high")) * stock.GetRatio();
+			pIEXLastTopOFBook->m_lLow = simdjsonGetDouble(itemValue, _T("low")) * stock.GetRatio();
+			pIEXLastTopOFBook->m_lLastClose = simdjsonGetDouble(itemValue, _T("prevClose")) * stock.GetRatio();
+			pIEXLastTopOFBook->m_lOpen = simdjsonGetDouble(itemValue, _T("open")) * stock.GetRatio();
+			pIEXLastTopOFBook->m_lNew = simdjsonGetDouble(itemValue, _T("last")) * stock.GetRatio();
+			pIEXLastTopOFBook->m_llVolume = simdjsonGetInt64(itemValue, _T("volume"));
 
 			pvTiingoIEXLastTopOFBook->push_back(pIEXLastTopOFBook);
 			iCount++;

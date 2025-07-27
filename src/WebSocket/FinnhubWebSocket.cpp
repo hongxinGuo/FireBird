@@ -201,25 +201,25 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketDataWithSidmjson(const shared_ptr<s
 	try {
 		const padded_string jsonPadded(*pData);
 		s_docFinnhubWebSocket = s_parserFinnhubWebSocket.iterate(jsonPadded).value();
-		const string_view sType = jsonGetStringView(s_docFinnhubWebSocket, "type");
+		const string_view sType = simdjsonGetStringView(s_docFinnhubWebSocket, "type");
 		if (sType == _T("trade")) { // {"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
-			auto data_array = jsonGetArray(s_docFinnhubWebSocket, "data");
+			auto data_array = simdjsonGetArray(s_docFinnhubWebSocket, "data");
 			for (auto item : data_array) {
 				auto itemValue = item.value();
 				const auto pFinnhubDataPtr = make_shared<CFinnhubSocket>();
-				auto condition_array = jsonGetArray(itemValue, "c");
+				auto condition_array = simdjsonGetArray(itemValue, "c");
 				for (auto condition_item : condition_array) {
-					const string_view s5 = jsonGetStringView(condition_item.value());
+					const string_view s5 = simdjsonGetStringView(condition_item.value());
 					string_view s6 = s5.substr(0, s5.length());
 					string s2(s6);
 					pFinnhubDataPtr->m_vCode.push_back(s2);
 				}
-				pFinnhubDataPtr->m_dLastPrice = jsonGetDouble(itemValue, "p");
-				const string_view symbol = jsonGetStringView(itemValue, "s");
+				pFinnhubDataPtr->m_dLastPrice = simdjsonGetDouble(itemValue, "p");
+				const string_view symbol = simdjsonGetStringView(itemValue, "s");
 				const string_view symbol2 = symbol.substr(0, symbol.length());
 				pFinnhubDataPtr->m_sSymbol = symbol2;
-				pFinnhubDataPtr->m_iSeconds = jsonGetInt64(itemValue, "t");
-				pFinnhubDataPtr->m_dLastVolume = jsonGetDouble(itemValue, "v");
+				pFinnhubDataPtr->m_iSeconds = simdjsonGetInt64(itemValue, "t");
+				pFinnhubDataPtr->m_dLastVolume = simdjsonGetDouble(itemValue, "v");
 				gl_SystemData.PushFinnhubSocket(pFinnhubDataPtr);
 			}
 			m_HeartbeatTime = GetUTCTime();

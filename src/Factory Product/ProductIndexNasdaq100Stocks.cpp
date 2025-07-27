@@ -94,7 +94,7 @@ vector<string> CProductIndexNasdaq100Stocks::ParseIndexNasdaq100Stocks(const CWe
 
 	for (auto item : item2) {
 		auto itemValue = item.value();
-		auto svSymbol = jsonGetStringView(itemValue, _T("symbol"));
+		auto svSymbol = simdjsonGetStringView(itemValue, _T("symbol"));
 		string s(svSymbol.data(), svSymbol.length());
 		vSymbol.push_back(s);
 	}

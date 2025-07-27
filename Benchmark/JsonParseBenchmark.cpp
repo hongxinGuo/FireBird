@@ -292,20 +292,6 @@ BENCHMARK_F(CJsonParse, StrToDecimal_2)(benchmark::State& state) {
 	}
 }
 
-BENCHMARK_F(CJsonParse, StrToDecimal2)(benchmark::State& state) {
-	constexpr string_view svData{ "12345.7654" };
-	for (auto _ : state) {
-		StrToDecimal2(svData, 3);
-	}
-}
-
-BENCHMARK_F(CJsonParse, StrToDecimal2_2)(benchmark::State& state) {
-	constexpr string_view svData{ "123457654" };
-	for (auto _ : state) {
-		StrToDecimal2(svData, 3);
-	}
-}
-
 BENCHMARK_F(CJsonParse, StockSymbolParseUsingSimdjson)(benchmark::State& state) {
 	const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("StockSymbol.json");
 	const auto j = padded_string::load(strFileName);

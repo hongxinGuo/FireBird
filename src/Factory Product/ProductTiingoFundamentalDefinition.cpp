@@ -71,15 +71,15 @@ CTiingoFundamentalDefinitionsPtr CProductTiingoFundamentalDefinition::ParseTiing
 		for (auto item : doc) {
 			auto itemValue = item.value();
 			pFundamentalDefinition = make_shared<CTiingoFundamentalDefinition>();
-			s1 = jsonGetStringView(itemValue, _T("dataCode"));
+			s1 = simdjsonGetStringView(itemValue, _T("dataCode"));
 			pFundamentalDefinition->m_strDataCode = s1.c_str();;
-			s1 = jsonGetStringView(itemValue, _T("name"));
+			s1 = simdjsonGetStringView(itemValue, _T("name"));
 			pFundamentalDefinition->m_strName = s1.c_str();
-			s1 = jsonGetStringView(itemValue, _T("description"));
+			s1 = simdjsonGetStringView(itemValue, _T("description"));
 			pFundamentalDefinition->m_strDescription = s1.c_str();;
-			s1 = jsonGetStringView(itemValue, _T("statementType"));
+			s1 = simdjsonGetStringView(itemValue, _T("statementType"));
 			pFundamentalDefinition->m_strStatementType = s1.c_str();
-			s1 = jsonGetStringView(itemValue, _T("units"));
+			s1 = simdjsonGetStringView(itemValue, _T("units"));
 			pFundamentalDefinition->m_strUnits = s1.c_str();;
 
 			pvFundamentalDefinition->push_back(pFundamentalDefinition);

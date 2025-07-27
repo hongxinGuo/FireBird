@@ -180,23 +180,23 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 			pFinancialStatePtr->m_symbol = symbol;
 			pFinancialStatePtr->m_exchange = exchange;
 			auto itemValue = item.value();
-			auto year2 = jsonGetInt64(itemValue, _T("year"));
-			auto quarter = jsonGetInt64(itemValue, _T("quarter"));
+			auto year2 = simdjsonGetInt64(itemValue, _T("year"));
+			auto quarter = simdjsonGetInt64(itemValue, _T("quarter"));
 			pFinancialStatePtr->m_yearQuarter = year2 * 100 + quarter;
-			auto date = jsonGetStringView(itemValue, _T("date"));
+			auto date = simdjsonGetStringView(itemValue, _T("date"));
 			auto item2 = itemValue["statementData"];
 			try {
-				auto statesCashFlow = jsonGetArray(item2.value(), _T("cashFlow"));
+				auto statesCashFlow = simdjsonGetArray(item2.value(), _T("cashFlow"));
 				for (auto item4 : statesCashFlow) {
-					auto name = jsonGetStringView(item4.value(), _T("dataCode"));
+					auto name = simdjsonGetStringView(item4.value(), _T("dataCode"));
 					string s(name.data(), name.length());
 					auto value = item4[_T("value")];
 					double value4;
 					if (value.is_integer()) {
-						value4 = jsonGetInt64(value.value());
+						value4 = simdjsonGetInt64(value.value());
 					}
 					else {
-						value4 = jsonGetDouble(value.value());
+						value4 = simdjsonGetDouble(value.value());
 					}
 					//TRACE("%s\n", s.c_str());
 					int index = s_mapItem.at(s.c_str());
@@ -206,17 +206,17 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 			} catch (simdjson_error&) {
 			}
 			try {
-				auto incomeStatement = jsonGetArray(item2.value(), _T("incomeStatement"));
+				auto incomeStatement = simdjsonGetArray(item2.value(), _T("incomeStatement"));
 				for (auto item4 : incomeStatement) {
-					auto name = jsonGetStringView(item4.value(), _T("dataCode"));
+					auto name = simdjsonGetStringView(item4.value(), _T("dataCode"));
 					string s(name.data(), name.length());
 					auto value = item4[_T("value")];
 					double value4;
 					if (value.is_integer()) {
-						value4 = jsonGetInt64(value.value());
+						value4 = simdjsonGetInt64(value.value());
 					}
 					else {
-						value4 = jsonGetDouble(value.value());
+						value4 = simdjsonGetDouble(value.value());
 					}
 					//TRACE("%s\n", s.c_str());
 					int index = s_mapItem.at(s.c_str());
@@ -226,17 +226,17 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 			} catch (simdjson_error&) {
 			}
 			try {
-				auto balanceSheet = jsonGetArray(item2.value(), _T("balanceSheet"));
+				auto balanceSheet = simdjsonGetArray(item2.value(), _T("balanceSheet"));
 				for (auto item4 : balanceSheet) {
-					auto name = jsonGetStringView(item4.value(), _T("dataCode"));
+					auto name = simdjsonGetStringView(item4.value(), _T("dataCode"));
 					string s(name.data(), name.length());
 					auto value = item4[_T("value")];
 					double value4;
 					if (value.is_integer()) {
-						value4 = jsonGetInt64(value.value());
+						value4 = simdjsonGetInt64(value.value());
 					}
 					else {
-						value4 = jsonGetDouble(value.value());
+						value4 = simdjsonGetDouble(value.value());
 					}
 					//TRACE("%s\n", s.c_str());
 					int index = s_mapItem.at(s.c_str());
@@ -246,17 +246,17 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 			} catch (simdjson_error&) {
 			}
 			try {
-				auto overview = jsonGetArray(item2.value(), _T("overview"));
+				auto overview = simdjsonGetArray(item2.value(), _T("overview"));
 				for (auto item4 : overview) {
-					auto name = jsonGetStringView(item4.value(), _T("dataCode"));
+					auto name = simdjsonGetStringView(item4.value(), _T("dataCode"));
 					string s(name.data(), name.length());
 					auto value = item4[_T("value")];
 					double value4;
 					if (value.is_integer()) {
-						value4 = jsonGetInt64(value.value());
+						value4 = simdjsonGetInt64(value.value());
 					}
 					else {
-						value4 = jsonGetDouble(value.value());
+						value4 = simdjsonGetDouble(value.value());
 					}
 					//TRACE("%s\n", s.c_str());
 					int index = s_mapItem.at(s.c_str());

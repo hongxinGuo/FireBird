@@ -77,30 +77,30 @@ CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWeb
 		for (auto item : doc) {
 			auto itemValue = item.value();
 			auto pSECFiling = make_shared<CSECFiling>();
-			s1 = jsonGetStringView(itemValue, _T("symbol"));
+			s1 = simdjsonGetStringView(itemValue, _T("symbol"));
 			pSECFiling->m_strSymbol = s1;
-			s1 = jsonGetStringView(itemValue, _T("accessNumber"));
+			s1 = simdjsonGetStringView(itemValue, _T("accessNumber"));
 			pSECFiling->m_strAccessNumber = s1;
-			s1 = jsonGetStringView(itemValue, _T("cik"));
+			s1 = simdjsonGetStringView(itemValue, _T("cik"));
 			pSECFiling->m_iCIK = atoi(s1.c_str());
-			s1 = jsonGetStringView(itemValue, _T("form"));
+			s1 = simdjsonGetStringView(itemValue, _T("form"));
 			pSECFiling->m_strForm = s1;
-			s1 = jsonGetStringView(itemValue, _T("filedDate"));
+			s1 = simdjsonGetStringView(itemValue, _T("filedDate"));
 			ss.clear();
 			ss.str(s1);
 			chrono::sys_seconds tpTime;
 			chrono::from_stream(ss, "%F %T", tpTime);
 			tpTime -= gl_pWorldMarket->GetTimeZoneOffset();
 			pSECFiling->m_iFiledDate = tpTime.time_since_epoch().count();
-			s1 = jsonGetStringView(itemValue, _T("acceptedDate"));
+			s1 = simdjsonGetStringView(itemValue, _T("acceptedDate"));
 			ss.clear();
 			ss.str(s1);
 			chrono::from_stream(ss, "%F %T", tpTime);
 			tpTime -= gl_pWorldMarket->GetTimeZoneOffset();
 			pSECFiling->m_iAcceptedDate = tpTime.time_since_epoch().count();
-			s1 = jsonGetStringView(itemValue, _T("reportUrl"));
+			s1 = simdjsonGetStringView(itemValue, _T("reportUrl"));
 			pSECFiling->m_strReportURL = s1;
-			s1 = jsonGetStringView(itemValue, _T("filingUrl"));
+			s1 = simdjsonGetStringView(itemValue, _T("filingUrl"));
 			pSECFiling->m_strFilingURL = s1;
 			pvSECFilings->push_back(pSECFiling);
 		}

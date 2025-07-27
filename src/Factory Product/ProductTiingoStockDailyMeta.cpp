@@ -80,18 +80,18 @@ CTiingoStockDailyMetaPtr CProductTiingoStockDailyMeta::ParseTiingoStockDailyMeta
 		const simdjson::padded_string jsonPadded(svJson);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 
-		s1 = jsonGetStringView(doc, "ticker");
+		s1 = simdjsonGetStringView(doc, "ticker");
 		pTiingoStockDailyMeta->m_strCode = s1.c_str();
-		s1 = jsonGetStringView(doc, "name");
+		s1 = simdjsonGetStringView(doc, "name");
 		pTiingoStockDailyMeta->m_strName = s1.c_str();
-		s1 = jsonGetStringView(doc, "exchangeCode");
+		s1 = simdjsonGetStringView(doc, "exchangeCode");
 		pTiingoStockDailyMeta->m_strExchange = s1.c_str();
-		s1 = jsonGetStringView(doc, "description");
+		s1 = simdjsonGetStringView(doc, "description");
 		pTiingoStockDailyMeta->m_strDescription = s1.c_str();
-		s1 = jsonGetStringView(doc, "startDate", "1900-01-01"); // 如果没有日线开始日期（即没有日线数据），则设置为19000101
+		s1 = simdjsonGetStringView(doc, "startDate", "1900-01-01"); // 如果没有日线开始日期（即没有日线数据），则设置为19000101
 		sscanf_s(s1.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day);
 		pTiingoStockDailyMeta->m_lHistoryDayLineStartDate = year * 10000 + month * 100 + day;
-		s1 = jsonGetStringView(doc, "endDate", "1900-01-01"); // 如果没有日线结束日期（即没有日线数据），则设置为19000101
+		s1 = simdjsonGetStringView(doc, "endDate", "1900-01-01"); // 如果没有日线结束日期（即没有日线数据），则设置为19000101
 		sscanf_s(s1.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day);
 		pTiingoStockDailyMeta->m_lHistoryDayLineEndDate = year * 10000 + month * 100 + day;
 	} catch (simdjson_error& error) {

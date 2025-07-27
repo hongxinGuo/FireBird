@@ -22,7 +22,7 @@ void InitializeLogSystem() {
 	gl_dailyLogger = spdlog::daily_logger_mt("watchdog_daily_logger", "logs/WatchdogDaily.txt", 2, 30);
 
 	//spdlog::flush_every(chrono::seconds(600)); // 每10分钟刷新一次（只能用于_mt模式生成的日志）
-	gl_dailyLogger->flush_on(spdlog::level::warn); // 警告等级及以上立刻刷新
+	gl_dailyLogger->flush_on(spdlog::level::info); // 信息等级及以上立刻刷新
 
 	gl_dailyLogger->info("WatchdogQT App begin running");
 }
@@ -76,14 +76,14 @@ bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr
 	case WM_FIREBIRD_RUNNING:
 		time = gl_tpNow.time_since_epoch().count();
 		localtime_s(&tmLocal, &time);
-		s = fmt::format("FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} 启动", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		s = fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告启动", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 		m_listOutput.push_back(s);
 		gl_dailyLogger->info("{}", s);
 		return true;
 	case WM_FIREBIRD_EXIT:
 		time = gl_tpNow.time_since_epoch().count();
 		localtime_s(&tmLocal, &time);
-		s = fmt::format("FireBird于: {:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} 主动关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		s = fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d} FireBird报告关闭", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 		m_listOutput.push_back(s);
 		gl_dailyLogger->info("{}", s);
 		return true;
