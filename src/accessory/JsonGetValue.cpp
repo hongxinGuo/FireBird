@@ -2,137 +2,195 @@
 
 #include "JsonGetValue.h"
 
+template <typename T>
+T jsonGetValue(const json& js, const char* szKey, T defaultValue) {
+	//if (!js.contains(szKey)) return defaultValue;
+	const auto& val = js.at(szKey);
+	if constexpr (std::is_same_v<T, double>) {
+		return val.is_number() ? static_cast<double>(val) : defaultValue;
+		//return val.is_number() ? static_cast<double>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, int>) {
+		return val.is_number() ? static_cast<int>(val) : defaultValue;
+		//return val.is_number_integer() ? static_cast<int>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, long>) {
+		return val.is_number() ? static_cast<long>(val) : defaultValue;
+		//return val.is_number_integer() ? static_cast<long>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, long long>) {
+		return val.is_number() ? static_cast<long long>(val) : defaultValue;
+		//return val.is_number_integer() ? static_cast<long long>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, std::string>) {
+		return val.is_string() ? val.get<std::string>() : defaultValue;
+	}
+	return defaultValue;
+}
+
+template <typename T>
+T jsonGetValue(const json* pjs, const char* szKey, T defaultValue) {
+	//if (!pjs->contains(szKey)) return defaultValue;
+	const auto& val = pjs->at(szKey);
+	if constexpr (std::is_same_v<T, double>) {
+		return val.is_number() ? static_cast<double>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, int>) {
+		return val.is_number() ? static_cast<int>(val) : defaultValue;
+		//	return val.is_number_integer() ? static_cast<int>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, long>) {
+		return val.is_number() ? static_cast<long>(val) : defaultValue;
+		//return val.is_number_integer() ? static_cast<long>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, long long>) {
+		return val.is_number() ? static_cast<long long>(val) : defaultValue;
+		//return val.is_number_integer() ? static_cast<long long>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, std::string>) {
+		return val.is_string() ? val.get<std::string>() : defaultValue;
+	}
+	return defaultValue;
+}
+
+template <typename T>
+T jsonGetValue(const json::iterator& it, const char* szKey, T defaultValue) {
+	//if (!it->contains(szKey)) return defaultValue;
+	const auto& val = it->at(szKey);
+	if constexpr (std::is_same_v<T, double>) {
+		return val.is_number() ? static_cast<double>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, int>) {
+		return val.is_number() ? static_cast<int>(val) : defaultValue;
+		//	return val.is_number_integer() ? static_cast<int>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, long>) {
+		return val.is_number() ? static_cast<long>(val) : defaultValue;
+		//return val.is_number_integer() ? static_cast<long>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, long long>) {
+		return val.is_number() ? static_cast<long long>(val) : defaultValue;
+		//return val.is_number_integer() ? static_cast<long long>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, std::string>) {
+		return val.is_string() ? val.get<std::string>() : defaultValue;
+	}
+	return defaultValue;
+}
+
+template <typename T>
+T jsonGetValue(const json::iterator& it, T defaultValue) {
+	//if (!it->contains(szKey)) return defaultValue;
+	const auto& val = *it;
+	if constexpr (std::is_same_v<T, double>) {
+		return val.is_number() ? static_cast<double>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, int>) {
+		return val.is_number() ? static_cast<int>(val) : defaultValue;
+		//	return val.is_number_integer() ? static_cast<int>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, long>) {
+		return val.is_number() ? static_cast<long>(val) : defaultValue;
+		//return val.is_number_integer() ? static_cast<long>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, long long>) {
+		return val.is_number() ? static_cast<long long>(val) : defaultValue;
+		//return val.is_number_integer() ? static_cast<long long>(val) : defaultValue;
+	}
+	else if constexpr (std::is_same_v<T, std::string>) {
+		return val.is_string() ? val.get<std::string>() : defaultValue;
+	}
+	return defaultValue;
+}
+
 json jsonGetChild(json* pjs, const char* szKey) {
-	auto& js = pjs->at(szKey);
-	return js;
+	return pjs->at(szKey);
 }
 
-double jsonGetDouble(json* pjs, const char* szKey, const double dDefault) {
-	const auto d = pjs->at(szKey);
-	if (d.is_number()) return d;
-	else return dDefault;
+double jsonGetDouble(const json* pjs, const char* szKey, const double dDefault) {
+	return jsonGetValue<double>(pjs, szKey, dDefault);
 }
 
-std::string jsonGetString(json* pjs, const char* szKey, const char* szDefault) {
-	const auto& s = pjs->at(szKey);
-	if (s.is_string()) return s;
-	return szDefault;
+std::string jsonGetString(const json* pjs, const char* szKey, const char* szDefault) {
+	return jsonGetValue<string>(pjs, szKey, szDefault);
 }
 
-int jsonGetInt(json* pjs, const char* szKey, const int iDefault) {
-	const auto s = pjs->at(szKey);
-	if (s.is_number()) return s;
-	else return iDefault;
+int jsonGetInt(const json* pjs, const char* szKey, const int iDefault) {
+	return jsonGetValue<int>(pjs, szKey, iDefault);
 }
 
-long long jsonGetLongLong(json* pjs, const char* szKey, const long long llDefault) {
-	const auto s = pjs->at(szKey);
-	if (s.is_number()) return s;
-	else return llDefault;
+long long jsonGetLongLong(const json* pjs, const char* szKey, const long long llDefault) {
+	return jsonGetValue<long long>(pjs, szKey, llDefault);
 }
 
-long jsonGetLong(json* pjs, const char* szKey, const long lDefault) {
-	const auto s = pjs->at(szKey);
-	if (s.is_number()) return s;
-	else return lDefault;
+long jsonGetLong(const json* pjs, const char* szKey, const long lDefault) {
+	return jsonGetValue<long>(pjs, szKey, lDefault);
 }
 
 json jsonGetChild(json& js, const char* szKey) {
-	auto& js1 = js.at(szKey);
-	return js1;
+	return js.at(szKey);
 }
 
-double jsonGetDouble(json& js, const char* szKey, const double dDefault) {
-	const auto d = js.at(szKey);
-	if (d.is_number()) return d;
-	else return dDefault;
+double jsonGetDouble(const json& js, const char* szKey, const double dDefault) {
+	return jsonGetValue<double>(js, szKey, dDefault);
 }
 
-std::string jsonGetString(json& js, const char* szKey, const char* szDefault) {
-	const auto& s = js.at(szKey);
-	if (s.is_string()) return s;
-	return szDefault;
+std::string jsonGetString(const json& js, const char* szKey, const char* szDefault) {
+	return jsonGetValue<string>(js, szKey, szDefault);
 }
 
-int jsonGetInt(json& js, const char* szKey, const int iDefault) {
-	const auto s = js.at(szKey);
-	if (s.is_number()) return s;
-	else return iDefault;
+int jsonGetInt(const json& js, const char* szKey, const int iDefault) {
+	return jsonGetValue<int>(js, szKey, iDefault);
 }
 
-long long jsonGetLongLong(json& js, const char* szKey, const long long llDefault) {
-	const auto s = js.at(szKey);
-	if (s.is_number()) return s;
-	else return llDefault;
+long long jsonGetLongLong(const json& js, const char* szKey, const long long llDefault) {
+	return jsonGetValue<long long>(js, szKey, llDefault);
 }
 
-long jsonGetLong(json& js, const char* szKey, const long lDefault) {
-	const auto s = js.at(szKey);
-	if (s.is_number()) return s;
-	else return lDefault;
+long jsonGetLong(const json& js, const char* szKey, const long lDefault) {
+	return jsonGetValue<long>(js, szKey, lDefault);
 }
 
 json jsonGetChild(const json::iterator& it, const char* szKey) {
-	auto& js = it->at(szKey);
-	return js;
+	return it->at(szKey);
 }
 
 double jsonGetDouble(const json::iterator& it, const char* szKey, const double dDefault) {
-	const auto d = it->at(szKey);
-	if (d.is_number()) return d;
-	else return dDefault;
+	return jsonGetValue<double>(it, szKey, dDefault);
 }
 
 std::string jsonGetString(const json::iterator& it, const char* szKey, const char* szDefault) {
-	auto& str = it->at(szKey);
-	if (str.is_string()) return str;
-	else return szDefault;
+	return jsonGetValue<string>(it, szKey, szDefault);
 }
 
 int jsonGetInt(const json::iterator& it, const char* szKey, const int iDefault) {
-	const auto i = it->at(szKey);
-	if (i.is_number()) return i;
-	else return iDefault;
+	return jsonGetValue<int>(it, szKey, iDefault);
 }
 
 long long jsonGetLongLong(const json::iterator& it, const char* szKey, const long long llDefault) {
-	const auto s = it->at(szKey);
-	if (s.is_number()) return s;
-	else return llDefault;
+	return jsonGetValue<long long>(it, szKey, llDefault);
 }
 
 long jsonGetLong(const json::iterator& it, const char* szKey, const long lDefault) {
-	const auto s = it->at(szKey);
-	if (s.is_number()) return s;
-	else return lDefault;
+	return jsonGetValue<long>(it, szKey, lDefault);
 }
 
 double jsonGetDouble(const json::iterator& it) {
-	const auto d = *it;
-	if (d.is_number()) return d;
-	else return 0.0;
+	return jsonGetValue<double>(it, 0.0);
 }
 
 std::string jsonGetString(const json::iterator& it) {
-	const auto& s = *it;
-	if (s.is_string()) return s;
-	return _T("");
+	return jsonGetValue<string>(it, "");
 }
 
 int jsonGetInt(const json::iterator& it) {
-	const auto s = *it;
-	if (s.is_number()) return s;
-	else return 0;
+	return jsonGetValue<int>(it, 0);
 }
 
 long long jsonGetLongLong(const json::iterator& it) {
-	const auto s = *it;
-	if (s.is_number()) return s;
-	else return 0;
+	return jsonGetValue<long long>(it, 0);
 }
 
 long jsonGetLong(const json::iterator& it) {
-	const auto s = *it;
-	if (s.is_number()) return s;
-	else return 0;
+	return jsonGetValue<long>(it, 0);
 }
