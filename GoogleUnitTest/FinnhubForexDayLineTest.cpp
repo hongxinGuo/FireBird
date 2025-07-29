@@ -105,7 +105,7 @@ namespace FireBirdTest {
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
 			m_pvDayLine = nullptr;
-			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol.c_str())) << pData->m_strSymbol;
+			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol)) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
 			m_finnhubForexDayLine.__Test_checkAccessRight(m_pWebData);
 		}
@@ -140,7 +140,7 @@ namespace FireBirdTest {
 		case 2: // s项报告not ok
 			EXPECT_EQ(m_pvDayLine->size(), 0);
 			strMessage = _T("日线返回值不为ok");
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage().c_str(), strMessage.c_str());
+			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 3: // s项报告 no data
 			EXPECT_EQ(m_pvDayLine->size(), 0);
@@ -186,7 +186,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol.c_str())) << pData->m_strSymbol;
+			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(pData->m_strSymbol )) << pData->m_strSymbol;
 			m_pWebData = pData->m_pData;
 			m_finnhubForexDayLine.__Test_checkAccessRight(m_pWebData);
 

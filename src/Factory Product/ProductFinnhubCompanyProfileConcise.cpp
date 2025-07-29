@@ -62,27 +62,27 @@ bool CProductFinnhubCompanyProfileConcise::ParseFinnhubStockProfileConcise(const
 
 	try {
 		s = jsonGetString(js, _T("ticker"));
-		if (!s.empty()) pStock->SetTicker(s.c_str());
+		if (!s.empty()) pStock->SetTicker(s);
 		s = jsonGetString(js, _T("country"));
-		if (!s.empty()) pStock->SetCountry(s.c_str());
+		if (!s.empty()) pStock->SetCountry(s);
 		s = jsonGetString(js, _T("currency"));
-		if (!s.empty()) pStock->SetCurrency(s.c_str());
+		if (!s.empty()) pStock->SetCurrency(s);
 		s = jsonGetString(js, _T("exchange"));
-		//if (!s.empty()) pStock->SetExchangeCode(s.c_str()); // 这里是交易所的全称，不使用此项数据。
+		//if (!s.empty()) pStock->SetExchangeCode(s); // 这里是交易所的全称，不使用此项数据。
 		s = jsonGetString(js, _T("name"));
-		if (!s.empty()) pStock->SetName(s.c_str());
+		if (!s.empty()) pStock->SetName(s);
 		s = jsonGetString(js, _T("finnhubIndustry"));
-		if (!s.empty()) pStock->SetFinnhubIndustry(s.c_str());
+		if (!s.empty()) pStock->SetFinnhubIndustry(s);
 		s = jsonGetString(js, _T("logo"));
-		if (!s.empty()) pStock->SetLogo(s.c_str());
+		if (!s.empty()) pStock->SetLogo(s);
 		pStock->SetMarketCapitalization(jsonGetDouble(js, _T("marketCapitalization")));
 		s = jsonGetString(js, _T("phone"));
-		if (!s.empty()) pStock->SetPhone(s.c_str());
+		if (!s.empty()) pStock->SetPhone(s);
 		pStock->SetShareOutstanding(jsonGetDouble(js, _T("shareOutstanding")));
 		s = jsonGetString(js, _T("weburl"));
-		if (!s.empty()) pStock->SetWebURL(s.c_str());
+		if (!s.empty()) pStock->SetWebURL(s);
 		s = jsonGetString(js, _T("ipo"));
-		if (!s.empty()) pStock->SetIPODate(s.c_str());
+		if (!s.empty()) pStock->SetIPODate(s);
 	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Profile Concise "), e.what());
 		return false; // 出现错误则返回任务失败

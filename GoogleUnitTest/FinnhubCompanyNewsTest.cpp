@@ -41,7 +41,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyNewsTest, TestInitialize) {
 		EXPECT_EQ(companyNews.GetIndex(), 0);
-		EXPECT_STREQ(companyNews.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/company-news?symbol="));
+		EXPECT_EQ(companyNews.GetInquiryFunction(), _T("https://finnhub.io/api/v1/company-news?symbol="));
 	}
 
 	TEST_F(CFinnhubCompanyNewsTest, TestCreatMessage) {
@@ -57,14 +57,14 @@ namespace FireBirdTest {
 		XferDateToYearMonthDay(iUpdateDate, year, month, day);
 		string sTemp = fmt::format("{:4d}-{:02d}-{:02d}", year, month, day);
 		strMessage += _T("&from=");
-		strMessage += sTemp.c_str();
+		strMessage += sTemp;
 		const int iMarketDate = gl_pWorldMarket->GetMarketDate();
 		XferDateToYearMonthDay(iMarketDate, year, month, day);
 		sTemp = fmt::format("{:4d}-{:02d}-{:02d}", year, month, day);
 		strMessage += _T("&to=");
-		strMessage += sTemp.c_str();
+		strMessage += sTemp;
 
-		EXPECT_STREQ(companyNews.CreateMessage().c_str(), strMessage.c_str());
+		EXPECT_EQ(companyNews.CreateMessage(), strMessage);
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateCompanyNews()) << "处理接收到的数据后才设置此标识";
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyNews(true);
@@ -89,14 +89,14 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol.c_str());
+			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pStock->SetCountry(_T(""));
 			m_pWebData = pData->m_pData;
 			m_FinnhubCompanyNews.__Test_checkAccessRight(m_pWebData);
 
 			m_FinnhubCompanyNews.SetMarket(gl_pWorldMarket);
-			m_FinnhubCompanyNews.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol.c_str()));
+			m_FinnhubCompanyNews.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
 		}
 
 		void TearDown() override {
@@ -131,7 +131,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 3: // 缺乏address项
-			EXPECT_STRNE(m_pStock->GetCountry().c_str(), _T("US")) << "没有赋值此项";
+			EXPECT_NE(m_pStock->GetCountry(), _T("US")) << "没有赋值此项";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNews());
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNewsDB());
 			EXPECT_EQ(m_pStock->GetCompanyNewsUpdateDate(), gl_pWorldMarket->GetMarketDate());
@@ -152,7 +152,7 @@ namespace FireBirdTest {
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
 		case 10:
-			EXPECT_STREQ(m_pStock->GetTicker().c_str(), _T("AAPL"));
+			EXPECT_EQ(m_pStock->GetTicker(), _T("AAPL"));
 			EXPECT_EQ(m_pStock->GetCompanyNewsSize(), 2);
 			EXPECT_EQ(m_pStock->GetCompanyNewsDateTime(0), 19700101000001);
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyNews());

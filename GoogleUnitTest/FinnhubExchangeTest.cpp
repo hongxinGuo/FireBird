@@ -31,14 +31,14 @@ namespace FireBirdTest {
 
 	TEST_F(CExchangeTest, TestInitialize) {
 		const CStockExchange Exchange;
-		EXPECT_STREQ(Exchange.GetExchangeCode().c_str(), _T(" "));
-		EXPECT_STREQ(Exchange.m_strName.c_str(), _T(" "));
-		EXPECT_STREQ(Exchange.m_strMic.c_str(), _T(" "));
-		EXPECT_STREQ(Exchange.m_strTimeZone.c_str(), _T(" "));
-		EXPECT_STREQ(Exchange.m_strHour.c_str(), _T(" "));
-		EXPECT_STREQ(Exchange.m_strCloseDate.c_str(), _T(" "));
-		EXPECT_STREQ(Exchange.m_strCountry.c_str(), _T(""));
-		EXPECT_STREQ(Exchange.m_strSource.c_str(), _T(""));
+		EXPECT_EQ(Exchange.GetExchangeCode(), _T(" "));
+		EXPECT_EQ(Exchange.m_strName, _T(" "));
+		EXPECT_EQ(Exchange.m_strMic, _T(" "));
+		EXPECT_EQ(Exchange.m_strTimeZone, _T(" "));
+		EXPECT_EQ(Exchange.m_strHour, _T(" "));
+		EXPECT_EQ(Exchange.m_strCloseDate, _T(" "));
+		EXPECT_EQ(Exchange.m_strCountry, _T(""));
+		EXPECT_EQ(Exchange.m_strSource, _T(""));
 		EXPECT_TRUE(Exchange.m_fUpdateStockSymbol);
 		EXPECT_TRUE(Exchange.m_fUpdateMarketStatus);
 		EXPECT_TRUE(Exchange.m_fUpdateMarketHoliday);
@@ -94,14 +94,14 @@ namespace FireBirdTest {
 		setExchange2.m_pDatabase->BeginTrans();
 		EXPECT_TRUE(!setExchange2.IsEOF()) << "此时已经存入了AA";
 		Exchange2.Load(setExchange2);
-		EXPECT_STREQ(Exchange.GetExchangeCode().c_str(), _T("AA"));
-		EXPECT_STREQ(Exchange.m_strName.c_str(), _T("aaa"));
-		EXPECT_STREQ(Exchange.m_strMic.c_str(), _T("abdc"));
-		EXPECT_STREQ(Exchange.m_strTimeZone.c_str(), _T("Beijing"));
-		EXPECT_STREQ(Exchange.m_strHour.c_str(), _T("10101010"));
-		EXPECT_STREQ(Exchange.m_strCloseDate.c_str(), _T("20202020"));
-		EXPECT_STREQ(Exchange.m_strCountry.c_str(), _T("dfe"));
-		EXPECT_STREQ(Exchange.m_strSource.c_str(), _T("abc"));
+		EXPECT_EQ(Exchange.GetExchangeCode(), _T("AA"));
+		EXPECT_EQ(Exchange.m_strName, _T("aaa"));
+		EXPECT_EQ(Exchange.m_strMic, _T("abdc"));
+		EXPECT_EQ(Exchange.m_strTimeZone, _T("Beijing"));
+		EXPECT_EQ(Exchange.m_strHour, _T("10101010"));
+		EXPECT_EQ(Exchange.m_strCloseDate, _T("20202020"));
+		EXPECT_EQ(Exchange.m_strCountry, _T("dfe"));
+		EXPECT_EQ(Exchange.m_strSource, _T("abc"));
 		EXPECT_FALSE(Exchange.m_fUpdateStockSymbol) << "这个参数不存入数据库";
 		setExchange2.Delete();
 		setExchange2.m_pDatabase->CommitTrans();

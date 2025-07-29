@@ -27,6 +27,7 @@ bool CWebData::SetData(const char* buffer, size_t lDataLength) {
 	for (size_t i = 0; i < lDataLength; i++) {
 		m_sDataBuffer.at(i + m_lCurrentPos) = buffer[i];
 	}
+	m_svDataBuffer = string_view(m_sDataBuffer);
 	return true;
 }
 
@@ -43,7 +44,8 @@ bool CWebData::SetData(const char* buffer, size_t lDataLength) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 string_view CWebData::GetCurrentSinaData() {
-	const string_view svCurrentTotal = string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos);
+	//const string_view svCurrentTotal2 = string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos);
+	const string_view svCurrentTotal = string_view(m_sDataBuffer).substr(m_lCurrentPos);
 	const auto lStart = svCurrentTotal.find_first_of('v');
 	const auto lEnd = svCurrentTotal.find_first_of(';');
 	ASSERT(lStart <= svCurrentTotal.length());
@@ -71,7 +73,8 @@ string_view CWebData::GetCurrentSinaData() {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 string_view CWebData::GetCurrentTengxunData() {
-	const string_view svCurrentTotal = string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos);
+	//const string_view svCurrentTotal = string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos);
+	const string_view svCurrentTotal = string_view(m_sDataBuffer).substr(m_lCurrentPos);
 	const auto lStart = svCurrentTotal.find_first_of('v');
 	const auto lEnd = svCurrentTotal.find_first_of(';');
 	ASSERT(lStart <= svCurrentTotal.length());
@@ -90,4 +93,5 @@ void CWebData::Test_SetBuffer_(const string& strBuffer) {
 	for (long i = 0; i < m_sDataBuffer.size(); i++) {
 		m_sDataBuffer.at(i) = strBuffer[i];
 	}
+	m_svDataBuffer = string_view(m_sDataBuffer);
 }

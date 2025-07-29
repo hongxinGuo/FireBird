@@ -139,7 +139,7 @@ CDayLinesPtr CProductTiingoForexDayLine::ParseTiingoForexDayLine(const CWebDataP
 			pvDayLine->push_back(pDayLine);
 		}
 	} catch (json::exception& e) {
-		string str3 = pWebData->GetDataBuffer().c_str();
+		string str3 = pWebData->GetDataBuffer();
 		str3 = str3.substr(0, 120);
 		ReportJSonErrorToSystemMessage(_T("Tiingo Forex DayLine ") + str3, e.what());
 		return pvDayLine; // 数据解析出错的话，则放弃。

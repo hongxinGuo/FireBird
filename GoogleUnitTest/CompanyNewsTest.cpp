@@ -34,14 +34,14 @@ namespace FireBirdTest {
 		EXPECT_EQ(companyNews.m_llDateTime, 0);
 		EXPECT_EQ(companyNews.m_iNewsID, 0);
 
-		EXPECT_STREQ(companyNews.m_strCompanySymbol.c_str(), _T(""));
-		EXPECT_STREQ(companyNews.m_strCategory.c_str(), _T(""));
-		EXPECT_STREQ(companyNews.m_strRelatedSymbol.c_str(), _T(""));
-		EXPECT_STREQ(companyNews.m_strHeadLine.c_str(), _T(""));
-		EXPECT_STREQ(companyNews.m_strImage.c_str(), _T(""));
-		EXPECT_STREQ(companyNews.m_strSource.c_str(), _T(""));
-		EXPECT_STREQ(companyNews.m_strSummary.c_str(), _T(""));
-		EXPECT_STREQ(companyNews.m_strURL.c_str(), _T(""));
+		EXPECT_EQ(companyNews.m_strCompanySymbol, _T(""));
+		EXPECT_EQ(companyNews.m_strCategory, _T(""));
+		EXPECT_EQ(companyNews.m_strRelatedSymbol, _T(""));
+		EXPECT_EQ(companyNews.m_strHeadLine, _T(""));
+		EXPECT_EQ(companyNews.m_strImage, _T(""));
+		EXPECT_EQ(companyNews.m_strSource, _T(""));
+		EXPECT_EQ(companyNews.m_strSummary, _T(""));
+		EXPECT_EQ(companyNews.m_strURL, _T(""));
 	}
 
 	TEST_F(CCompanyNewsTest, TestAppend) {
@@ -78,14 +78,14 @@ namespace FireBirdTest {
 		EXPECT_EQ(companyNews.m_llDateTime, 10101010);
 		EXPECT_EQ(companyNews.m_iNewsID, 1);
 
-		EXPECT_STREQ(companyNews.m_strCompanySymbol.c_str(), _T("AAPL"));
-		EXPECT_STREQ(companyNews.m_strCategory.c_str(), _T("company news"));
-		EXPECT_STREQ(companyNews.m_strRelatedSymbol.c_str(), _T("AAPL"));
-		EXPECT_STREQ(companyNews.m_strHeadLine.c_str(), _T("Head line"));
-		EXPECT_STREQ(companyNews.m_strImage.c_str(), _T("abc"));
-		EXPECT_STREQ(companyNews.m_strSource.c_str(), _T("cde"));
-		EXPECT_STREQ(companyNews.m_strSummary.c_str(), _T("efg"));
-		EXPECT_STREQ(companyNews.m_strURL.c_str(), _T("https:://"));
+		EXPECT_EQ(companyNews.m_strCompanySymbol, _T("AAPL"));
+		EXPECT_EQ(companyNews.m_strCategory, _T("company news"));
+		EXPECT_EQ(companyNews.m_strRelatedSymbol, _T("AAPL"));
+		EXPECT_EQ(companyNews.m_strHeadLine, _T("Head line"));
+		EXPECT_EQ(companyNews.m_strImage, _T("abc"));
+		EXPECT_EQ(companyNews.m_strSource, _T("cde"));
+		EXPECT_EQ(companyNews.m_strSummary, _T("efg"));
+		EXPECT_EQ(companyNews.m_strURL, _T("https:://"));
 		setCompanyNews.Close();
 	}
 }

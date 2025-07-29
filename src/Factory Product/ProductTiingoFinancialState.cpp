@@ -169,7 +169,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 	if (!IsValidData(pWebData)) return pvTiingoFinancialState;
 
 	try {
-		string_view svJson = pWebData->GetStringView(0, pWebData->GetBufferLength());
+		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
 		const simdjson::padded_string jsonPadded(svJson);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
@@ -199,7 +199,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 						value4 = simdjsonGetDouble(value.value());
 					}
 					//TRACE("%s\n", s.c_str());
-					int index = s_mapItem.at(s.c_str());
+					int index = s_mapItem.at(s);
 					iCount++;
 					pFinancialStatePtr->Assign(index, value4);
 				}
@@ -219,7 +219,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 						value4 = simdjsonGetDouble(value.value());
 					}
 					//TRACE("%s\n", s.c_str());
-					int index = s_mapItem.at(s.c_str());
+					int index = s_mapItem.at(s);
 					iCount++;
 					pFinancialStatePtr->Assign(index, value4);
 				}
@@ -239,7 +239,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 						value4 = simdjsonGetDouble(value.value());
 					}
 					//TRACE("%s\n", s.c_str());
-					int index = s_mapItem.at(s.c_str());
+					int index = s_mapItem.at(s);
 					iCount++;
 					pFinancialStatePtr->Assign(index, value4);
 				}
@@ -259,7 +259,7 @@ CTiingoCompanyFinancialStatesPtr CProductTiingoFinancialState::ParseTiingoFinanc
 						value4 = simdjsonGetDouble(value.value());
 					}
 					//TRACE("%s\n", s.c_str());
-					int index = s_mapItem.at(s.c_str());
+					int index = s_mapItem.at(s);
 					iCount++;
 					pFinancialStatePtr->Assign(index, value4);
 				}

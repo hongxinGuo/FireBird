@@ -37,7 +37,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestInitialize) {
 		EXPECT_EQ(stockEstimatesEPSSurprise.GetIndex(), 0);
-		EXPECT_STREQ(stockEstimatesEPSSurprise.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/stock/earnings?symbol="));
+		EXPECT_EQ(stockEstimatesEPSSurprise.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/earnings?symbol="));
 	}
 
 	TEST_F(CFinnhubStockEstimatesEPSSurpriseTest, TestCreatMessage) {
@@ -68,7 +68,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol.c_str());
+			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
 			m_finnhubStockEstimatesEPSSurprise.__Test_checkAccessRight(m_pWebData);
@@ -117,25 +117,25 @@ namespace FireBirdTest {
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 1.68);
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 1.555857);
 			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20201231);
-			EXPECT_STREQ(m_pvEPSSurprise->at(0)->m_strSymbol.c_str(), _T("AAPL"));
+			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_strSymbol, _T("AAPL"));
 			break;
 		case 5: // 第三个数据缺CodeNo
 			EXPECT_EQ(m_pvEPSSurprise->size(), 2) << "第三个数据是错误的";
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 1.68);
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 1.555857);
 			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20201231);
-			EXPECT_STREQ(m_pvEPSSurprise->at(0)->m_strSymbol.c_str(), _T("AAPL"));
+			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_strSymbol, _T("AAPL"));
 			break;
 		case 10:
 			EXPECT_EQ(m_pvEPSSurprise->size(), 4);
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dActual, 0.6375);
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(0)->m_dEstimate, 0.5765856);
 			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_lDate, 20200331);
-			EXPECT_STREQ(m_pvEPSSurprise->at(0)->m_strSymbol.c_str(), _T("AAPL"));
+			EXPECT_EQ(m_pvEPSSurprise->at(0)->m_strSymbol, _T("AAPL"));
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dActual, 1.68) << "成功处理后，自动按日期排列，导致其被放置于最后";
 			EXPECT_DOUBLE_EQ(m_pvEPSSurprise->at(3)->m_dEstimate, 1.555857);
 			EXPECT_EQ(m_pvEPSSurprise->at(3)->m_lDate, 20201231);
-			EXPECT_STREQ(m_pvEPSSurprise->at(3)->m_strSymbol.c_str(), _T("AAPL"));
+			EXPECT_EQ(m_pvEPSSurprise->at(3)->m_strSymbol, _T("AAPL"));
 			break;
 		default:
 			break;
@@ -149,7 +149,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol.c_str());
+			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			EXPECT_TRUE(m_pStock != nullptr);
 			m_pWebData = pData->m_pData;
 			m_finnhubStockEstimatesEPSSurprise.__Test_checkAccessRight(m_pWebData);

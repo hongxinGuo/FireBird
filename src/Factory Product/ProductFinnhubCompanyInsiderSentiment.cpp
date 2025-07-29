@@ -19,7 +19,7 @@ string CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 
 	const string sCurrentDate = ConvertDateToTimeStamp(GetMarket()->GetMarketDate());
-	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + sCurrentDate.c_str();
+	m_strInquiry = m_strInquiryFunction + pStock->GetSymbol() + _T("&from=1980-01-01&to=") + sCurrentDate;
 	m_strInquiringExchange = pStock->GetExchangeCode();
 
 	return m_strInquiry;
@@ -82,9 +82,9 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 	try {
 		for (auto it = pt1.begin(); it != pt1.end(); ++it) {
 			pInsiderSentiment = make_shared<CInsiderSentiment>();
-			pInsiderSentiment->m_strSymbol = stockSymbol.c_str();
+			pInsiderSentiment->m_strSymbol = stockSymbol;
 			s = jsonGetString(it, _T("symbol"));
-			if (!s.empty()) pInsiderSentiment->m_strSymbol = s.c_str();
+			if (!s.empty()) pInsiderSentiment->m_strSymbol = s;
 			const long year = jsonGetLong(it,_T("year"));
 			const long month = jsonGetLong(it,_T("month"));
 			pInsiderSentiment->m_lDate = XferYearMonthDayToYYYYMMDD(year, month, 1); // 日期要有效，故而使用每月的第一天

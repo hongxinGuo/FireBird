@@ -108,7 +108,7 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 
 	try {
 		string_view sv;
-		string_view svJson = pWebData->GetStringView(0, pWebData->GetBufferLength());
+		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
 		const simdjson::padded_string jsonPadded(svJson);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
@@ -128,12 +128,12 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 			pStock->m_fIsADR = simdjsonGetBool(itemValue,_T("isADR"));
 			s1 = simdjsonGetStringView(itemValue, _T("industry"));
 			if (s1.compare(strNotAvailable) != 0) {
-				pStock->m_strTiingoIndustry = s1.c_str();;
+				pStock->m_strTiingoIndustry = s1;;
 			}
 			else pStock->m_strTiingoIndustry = strNULL;
 			s1 = simdjsonGetStringView(itemValue, _T("sector"));
 			if (s1.compare(strNotAvailable) != 0) {
-				pStock->m_strTiingoSector = s1.c_str();;
+				pStock->m_strTiingoSector = s1;;
 			}
 			else pStock->m_strTiingoSector = strNULL;
 
@@ -147,32 +147,32 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 			}
 			s1 = simdjsonGetStringView(itemValue, _T("sicIndustry"));
 			if (s1.compare(strNotAvailable) != 0) {
-				pStock->m_strSicIndustry = s1.c_str();;
+				pStock->m_strSicIndustry = s1;;
 			}
 			else pStock->m_strSicIndustry = strNULL;
 			s1 = simdjsonGetStringView(itemValue, _T("sicSector"));
 			if (s1.compare(strNotAvailable) != 0) {
-				pStock->m_strSicSector = s1.c_str();;
+				pStock->m_strSicSector = s1;;
 			}
 			else pStock->m_strSicSector = strNULL;
 			s1 = simdjsonGetStringView(itemValue, _T("reportingCurrency"));
 			if (s1.compare(strNotAvailable) != 0) { // 此项应该永远存在
-				pStock->m_strReportingCurrency = s1.c_str();;
+				pStock->m_strReportingCurrency = s1;;
 			}
 			else pStock->m_strReportingCurrency = strNULL;
 			s1 = simdjsonGetStringView(itemValue, _T("location"));
 			if (s1 != strNotAvailable) {
-				pStock->m_strLocation = s1.c_str();;
+				pStock->m_strLocation = s1;;
 			}
 			else pStock->m_strLocation = strNULL;
 			s1 = simdjsonGetStringView(itemValue, _T("companyWebsite"));
 			if (s1 != strNotAvailable) {
-				pStock->m_strCompanyWebSite = s1.c_str();;
+				pStock->m_strCompanyWebSite = s1;;
 			}
 			else pStock->m_strCompanyWebSite = strNULL;
 			s1 = simdjsonGetStringView(itemValue, _T("secFilingWebsite"));
 			if (s1 != strNotAvailable) {
-				pStock->m_strSECFilingWebSite = s1.c_str();;
+				pStock->m_strSECFilingWebSite = s1;;
 			}
 			else pStock->m_strSECFilingWebSite = strNULL;
 			s1 = simdjsonGetStringView(itemValue, _T("statementLastUpdated"));
@@ -181,7 +181,7 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 			pStock->SetDailyUpdateDate(XferToYYYYMMDD(s1));
 			s1 = simdjsonGetStringView(itemValue, _T("dataProviderPermaTicker"));
 			if (s1 != strNotAvailable) {
-				pStock->m_strDataProviderPermaTicker = s1.c_str();
+				pStock->m_strDataProviderPermaTicker = s1;
 			}
 			else pStock->m_strSECFilingWebSite = strNULL;
 

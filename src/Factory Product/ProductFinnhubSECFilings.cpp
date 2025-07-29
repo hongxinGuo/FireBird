@@ -69,7 +69,7 @@ CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWeb
 	if (!IsValidData(pWebData)) return pvSECFilings;
 	try {
 		std::stringstream ss;
-		string_view svJson = pWebData->GetStringView(0, pWebData->GetBufferLength());
+		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
 		const simdjson::padded_string jsonPadded(svJson);
 		ondemand::document doc = parser.iterate(jsonPadded).value();

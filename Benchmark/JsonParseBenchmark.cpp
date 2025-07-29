@@ -239,15 +239,15 @@ public:
 
 		string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("StockSymbol.json");
 		const string sFileName = strFileName;
-		LoadFromFile(strFileName.c_str(), sUSExchangeStockCode);
+		LoadFromFile(strFileName, sUSExchangeStockCode);
 		auto bError2 = USExchangedStockCode.load(sFileName);
 
 		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
-		LoadFromFile(strFileName.c_str(), sNeteaseRTData);
+		LoadFromFile(strFileName, sNeteaseRTData);
 		sv = sNeteaseRTData.substr(21, sNeteaseRTData.length() - 21 - 2);
 
 		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("TengxunDayLine.json");
-		LoadFromFile(strFileName.c_str(), sTengxunDayLine);
+		LoadFromFile(strFileName, sTengxunDayLine);
 
 		sNeteaseRTDataForPTree = sNeteaseRTData;
 		sNeteaseRTDataForPTree.resize(sNeteaseRTDataForPTree.size() - 2);
@@ -256,9 +256,9 @@ public:
 		sFinnhubStockUpdateParameter = _T("{\"Finnhub\":{\"StockFundamentalsCompanyProfileConcise\":20230110,\"StockFundamentalsCompanyNews\":20230205,\"StockFundamentalsBasicFinancials\":20230112,\"StockPriceQuote\":19800104,\"StockFundamentalsPeer\":20230115,\"StockFundamentalsInsiderTransaction\":20230116,\"StockFundamentalsInsiderSentiment\":20230117,\"StockEstimatesEPSSurprise\":19800108},\"Tiingo\":{\"StockFundamentalsCompanyProfile\":20221222,\"StockPriceCandles\":20230210}}");
 
 		strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("tiingo_fundamentals.json");
-		LoadFromFile(strFileName.c_str(), sTiingoSymbol);
+		LoadFromFile(strFileName, sTiingoSymbol);
 		pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(sTiingoSymbol.c_str());
+		pWebData->Test_SetBuffer_(sTiingoSymbol);
 	}
 
 	void TearDown(const benchmark::State& state) override {
@@ -335,7 +335,7 @@ class CWithNlohmannJson : public benchmark::Fixture {
 public:
 	void SetUp(const benchmark::State& state) override {
 		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("NeteaseRTData.json");
-		LoadFromFile(strFileName.c_str(), s);
+		LoadFromFile(strFileName, s);
 		sv = s;
 		sv = sv.substr(21, sv.length() - 21 - 2);
 		try {
@@ -344,7 +344,7 @@ public:
 			fDone = false;
 		}
 		pWebData = make_shared<CWebData>();
-		pWebData->Test_SetBuffer_(s.c_str());
+		pWebData->Test_SetBuffer_(s);
 	}
 
 	void TearDown(const benchmark::State& state) override {
@@ -370,7 +370,7 @@ public:
 	void SetUp(const benchmark::State& state) override {
 		if (gl_pChinaMarket == nullptr) gl_pChinaMarket = make_shared<CChinaMarket>();
 		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("SinaRTData.dat");
-		LoadFromFile(strFileName.c_str(), s);
+		LoadFromFile(strFileName, s);
 		pWebData = make_shared<CWebData>();
 		const long lStringLength = s.length();
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置
@@ -419,7 +419,7 @@ class CTengxunRTData : public benchmark::Fixture {
 public:
 	void SetUp(const benchmark::State& state) override {
 		const string strFileName = gl_systemConfiguration.GetBenchmarkTestFileDirectory() + _T("TengxunRTData.dat");
-		LoadFromFile(strFileName.c_str(), s);
+		LoadFromFile(strFileName, s);
 		pWebData = make_shared<CWebData>();
 		const long lStringLength = s.length();
 		pWebData->ResetCurrentPos(); // 每次要重置开始的位置

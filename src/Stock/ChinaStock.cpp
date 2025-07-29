@@ -323,8 +323,8 @@ void CChinaStock::UpdateRTData(const CWebRTDataPtr& pRTData) {
 
 void CChinaStock::UpdateStatus(const CWebRTDataPtr& pRTData) {
 	SetActive(true);
-	SetSymbol(pRTData->GetSymbol().c_str()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-	if (pRTData->GetStockName() != _T("")) SetDisplaySymbol(pRTData->GetStockName().c_str()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+	SetSymbol(pRTData->GetSymbol()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+	if (pRTData->GetStockName() != _T("")) SetDisplaySymbol(pRTData->GetStockName()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
 	SetIPOStatus(_STOCK_IPOED_);
 }
 

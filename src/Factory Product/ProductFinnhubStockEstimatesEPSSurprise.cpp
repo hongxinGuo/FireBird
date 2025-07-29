@@ -50,7 +50,7 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pEPSSurprise = make_shared<CEPSSurprise>();
 			s = jsonGetString(it, _T("symbol"));
-			pEPSSurprise->m_strSymbol = s.c_str();
+			pEPSSurprise->m_strSymbol = s;
 			s = jsonGetString(it,_T("period"));
 			pEPSSurprise->m_lDate = XferToYYYYMMDD(s);
 			pEPSSurprise->m_dEstimate = jsonGetDouble(it, _T("estimate"));

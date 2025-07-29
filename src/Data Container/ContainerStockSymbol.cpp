@@ -146,7 +146,7 @@ void CContainerStockSymbol::CreateStockSection(const string& strFirstStockCode) 
 	for (int i = iCode; i < (iCode + 1000); i++) {
 		const string strExchange = GetStockExchange(strFirstStockCode);
 		string sStockSymbol = fmt::format("{:06d}", i);
-		const string strStockCode = CreateStockCode(strExchange, sStockSymbol.c_str());
+		const string strStockCode = CreateStockCode(strExchange, sStockSymbol);
 		Add(strStockCode);
 	}
 	if (UpdateStockSection(iCode / 1000 + iMarket)) {

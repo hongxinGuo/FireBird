@@ -172,6 +172,7 @@ void CInquireEngine::TransferDataToWebData(const CWebDataPtr& pWebData) {
 	ASSERT(m_sBuffer.size() > m_lByteRead); // Note 即使知道数据总长度，也要多加上一个字节以防止越界，因string最后有一个隐藏的字符0x000
 	m_sBuffer.resize(m_lByteRead); //Note 缓冲区大小为实际数据量，抛弃掉最后的字符0x000. 切记
 	pWebData->m_sDataBuffer = std::move(m_sBuffer); // 使用std::move以加速执行速度
+	pWebData->m_svDataBuffer = string_view(pWebData->m_sDataBuffer); // 同时创建string_view
 }
 
 void CInquireEngine::TESTSetBuffer(const char* buffer, const INT64 lTotalNumber) {

@@ -88,25 +88,25 @@ CFinnhubStocksPtr CProductFinnhubStockSymbol::ParseFinnhubStockSymbol(const CWeb
 			pStock = make_shared<CFinnhubStock>();
 			pStock->SetExchangeCode(m_strInquiringExchange); // 数据中没有交易所代码，在此处加上。
 			s = jsonGetString(it, _T("currency"));
-			if (!s.empty()) pStock->SetCurrency(s.c_str());
+			if (!s.empty()) pStock->SetCurrency(s);
 			s = jsonGetString(it, _T("description"));
-			if (!s.empty()) pStock->SetDescription(s.c_str());
+			if (!s.empty()) pStock->SetDescription(s);
 			s = jsonGetString(it, _T("displaySymbol"));
-			pStock->SetDisplaySymbol(s.c_str());
+			pStock->SetDisplaySymbol(s);
 			s = jsonGetString(it, _T("figi"));
-			if (!s.empty()) pStock->SetFigi(s.c_str());
+			if (!s.empty()) pStock->SetFigi(s);
 			s = jsonGetString(it, _T("isin"));
-			if (!s.empty()) pStock->SetIsin(s.c_str());
+			if (!s.empty()) pStock->SetIsin(s);
 			s = jsonGetString(it, _T("mic"));
-			if (!s.empty()) pStock->SetMic(s.c_str());
+			if (!s.empty()) pStock->SetMic(s);
 			s = jsonGetString(it, _T("shareClassFIGI"));
-			if (!s.empty()) pStock->SetShareClassFIGI(s.c_str());
+			if (!s.empty()) pStock->SetShareClassFIGI(s);
 			s = jsonGetString(it, _T("symbol"));
 			pStock->SetSymbol(s.c_str());
 			s = jsonGetString(it, _T("symbol2"));
-			pStock->SetSymbol2(s.c_str());
+			pStock->SetSymbol2(s);
 			s = jsonGetString(it, _T("type"));
-			if (!s.empty()) pStock->SetType(s.c_str());
+			if (!s.empty()) pStock->SetType(s);
 			pvStock->push_back(pStock);
 		}
 	} catch (json::exception& e) {

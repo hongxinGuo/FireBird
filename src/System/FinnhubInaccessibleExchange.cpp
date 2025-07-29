@@ -85,11 +85,11 @@ void CFinnhubInaccessibleExchange::Update() {
 				// 有exchange数据的话才建立数据集
 				const auto pInaccessible = make_shared<CInaccessible>();
 				string s2 = m_finnhubInaccessibleExchange[_T("InaccessibleExchange")].at(i).at(_T("Function")); // 从json解析出的字符串格式为std::string
-				pInaccessible->SetFunctionString(s2.c_str());
+				pInaccessible->SetFunctionString(s2);
 				pInaccessible->SetFunction(gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString()));
 				for (size_t j = 0; j < size; j++) {
 					string s = m_finnhubInaccessibleExchange.at(_T("InaccessibleExchange")).at(i).at(_T("Exchange")).at(j);
-					pInaccessible->AddSymbol(s.c_str());
+					pInaccessible->AddSymbol(s);
 				}
 				m_mapExchange[gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString())] = pInaccessible;
 				//gl_finnhubInaccessibleExchange.m_mapExchange[gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString())] = pInaccessible;

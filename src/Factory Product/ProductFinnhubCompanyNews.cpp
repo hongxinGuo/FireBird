@@ -82,23 +82,23 @@ CCompanyNewssPtr CProductFinnhubCompanyNews::ParseFinnhubCompanyNews(const CWebD
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			auto pCompanyNews = make_shared<CFinnhubCompanyNews>();
 			s = jsonGetString(it, _T("category"));
-			if (!s.empty()) pCompanyNews->m_strCategory = s.c_str();
+			if (!s.empty()) pCompanyNews->m_strCategory = s;
 			const auto dateTime = jsonGetLongLong(it, _T("datetime"));
 			pCompanyNews->m_llDateTime = ConvertToDateTime(dateTime, 0);
 			s = jsonGetString(it, _T("headline"));
-			if (!s.empty()) pCompanyNews->m_strHeadLine = s.c_str();
+			if (!s.empty()) pCompanyNews->m_strHeadLine = s;
 			pCompanyNews->m_iNewsID = jsonGetInt(it,_T("id"));
 			s = jsonGetString(it,_T("image"));
-			if (!s.empty()) pCompanyNews->m_strImage = s.c_str();
-			//if (s.size() > 0) pCompanyNews->m_strImage = s.c_str();
+			if (!s.empty()) pCompanyNews->m_strImage = s;
+			//if (s.size() > 0) pCompanyNews->m_strImage = s;
 			s = jsonGetString(it,_T("related"));
-			if (!s.empty()) pCompanyNews->m_strRelatedSymbol = s.c_str();
+			if (!s.empty()) pCompanyNews->m_strRelatedSymbol = s;
 			s = jsonGetString(it,_T("source"));
-			if (!s.empty()) pCompanyNews->m_strSource = s.c_str();
+			if (!s.empty()) pCompanyNews->m_strSource = s;
 			s = jsonGetString(it,_T("summary"));
-			if (!s.empty()) pCompanyNews->m_strSummary = s.c_str();
+			if (!s.empty()) pCompanyNews->m_strSummary = s;
 			s = jsonGetString(it,_T("url"));
-			if (!s.empty()) pCompanyNews->m_strURL = s.c_str();
+			if (!s.empty()) pCompanyNews->m_strURL = s;
 			pvFinnhubCompanyNews->push_back(pCompanyNews);
 		}
 	} catch (json::exception& e) {

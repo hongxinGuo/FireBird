@@ -44,8 +44,8 @@ void CProductTiingoIEXTopOfBook::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	TRACE("Tiingo IEX TopOfBook number: %d\n", pvTiingoIEXTopOFBook->size());
 	for (const auto& pIEXTopOFBook : *pvTiingoIEXTopOFBook) {
 		if (pIEXTopOFBook->m_timeStamp.time_since_epoch().count() < ttNewestTradeDay) continue; // 只使用不早于一天的实时数据
-		if (!gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker.c_str())) continue; // 只更新已有代码
-		auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker.c_str());
+		if (!gl_dataContainerTiingoStock.IsSymbol(pIEXTopOFBook->m_strTicker)) continue; // 只更新已有代码
+		auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(pIEXTopOFBook->m_strTicker);
 		pTiingoStock->UpdateRTData(pIEXTopOFBook);
 		i++;
 	}
@@ -107,7 +107,7 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 
 	try {
 		stringstream ss;
-		string_view svJson = pWebData->GetStringView(0, pWebData->GetBufferLength());
+		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
 		const simdjson::padded_string jsonPadded(svJson);
 		ondemand::document doc = parser.iterate(jsonPadded).value();

@@ -37,7 +37,7 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubStockDayLineTest, TestInitialize) {
 		EXPECT_EQ(stockDayLine.GetIndex(), 0);
-		EXPECT_STREQ(stockDayLine.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/stock/candle?symbol="));
+		EXPECT_EQ(stockDayLine.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/candle?symbol="));
 	}
 
 	TEST_F(CFinnhubStockDayLineTest, TestCreatMessage) {
@@ -85,9 +85,9 @@ namespace FireBirdTest {
 			m_pWebData = pData->m_pData;
 			m_finnhubStockDayLine.__Test_checkAccessRight(m_pWebData);
 
-			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol.c_str());
+			m_pStock = gl_dataContainerFinnhubStock.GetItem(pData->m_strSymbol);
 			m_finnhubStockDayLine.SetMarket(gl_pWorldMarket);
-			m_finnhubStockDayLine.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol.c_str()));
+			m_finnhubStockDayLine.SetIndex(gl_dataContainerFinnhubStock.GetOffset(pData->m_strSymbol));
 		}
 
 		void TearDown() override {
@@ -128,7 +128,7 @@ namespace FireBirdTest {
 			break;
 		case 2: // s项报告not ok
 			strMessage = _T("日线返回值不为ok");
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage().c_str(), strMessage.c_str());
+			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());

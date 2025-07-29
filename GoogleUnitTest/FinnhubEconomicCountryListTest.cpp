@@ -39,11 +39,11 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubEconomicCountryListTest, TestInitialize) {
 		EXPECT_EQ(countryList.GetIndex(), 0);
-		EXPECT_STREQ(countryList.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/country?"));
+		EXPECT_EQ(countryList.GetInquiryFunction(), _T("https://finnhub.io/api/v1/country?"));
 	}
 
 	TEST_F(CFinnhubEconomicCountryListTest, TestCreatMessage) {
-		EXPECT_STREQ(countryList.CreateMessage().c_str(), _T("https://finnhub.io/api/v1/country?"));
+		EXPECT_EQ(countryList.CreateMessage(), _T("https://finnhub.io/api/v1/country?"));
 	}
 
 	TEST_F(CFinnhubEconomicCountryListTest, TestUpdateDataSourceStatus) {
@@ -53,7 +53,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateCountryList());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("Finnhub economic country List updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub economic country List updated"));
 
 		gl_pFinnhubDataSource->SetUpdateCountryList(true);
 	}
@@ -115,13 +115,13 @@ namespace FireBirdTest {
 			break;
 		case 4: // 第二个数据缺Code2
 			EXPECT_EQ(m_pvCountry->size(), 1);
-			EXPECT_STREQ(m_pvCountry->at(0)->m_strCode2.c_str(), _T("NR"));
-			EXPECT_STREQ(m_pvCountry->at(0)->m_strCurrencyCode.c_str(), _T("AUD"));
+			EXPECT_EQ(m_pvCountry->at(0)->m_strCode2, _T("NR"));
+			EXPECT_EQ(m_pvCountry->at(0)->m_strCurrencyCode, _T("AUD"));
 			break;
 		case 5: // 第二个数据缺CodeNo
 			EXPECT_EQ(m_pvCountry->size(), 1);
-			EXPECT_STREQ(m_pvCountry->at(0)->m_strCode2.c_str(), _T("NR"));
-			EXPECT_STREQ(m_pvCountry->at(0)->m_strCurrencyCode.c_str(), _T("AUD"));
+			EXPECT_EQ(m_pvCountry->at(0)->m_strCode2, _T("NR"));
+			EXPECT_EQ(m_pvCountry->at(0)->m_strCurrencyCode, _T("AUD"));
 			break;
 		case 6: // 空数据
 			EXPECT_TRUE(m_pvCountry->empty());
@@ -133,12 +133,12 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_EQ(m_pvCountry->size(), 2);
-			EXPECT_STREQ(m_pvCountry->at(1)->m_strCountry.c_str(), _T("Zero")) << "以国家名称排序，位于第二个位置";
-			EXPECT_STREQ(m_pvCountry->at(1)->m_strCode2.c_str(), _T("NR"));
-			EXPECT_STREQ(m_pvCountry->at(1)->m_strCurrencyCode.c_str(), _T("AUD"));
-			EXPECT_STREQ(m_pvCountry->at(0)->m_strCountry.c_str(), _T("Saint Martin (French part)")) << "以国家名称排序，位于第一个位置";
-			EXPECT_STREQ(m_pvCountry->at(0)->m_strCode2.c_str(), _T("MF"));
-			EXPECT_STREQ(m_pvCountry->at(0)->m_strCurrencyCode.c_str(), _T("ANG"));
+			EXPECT_EQ(m_pvCountry->at(1)->m_strCountry, _T("Zero")) << "以国家名称排序，位于第二个位置";
+			EXPECT_EQ(m_pvCountry->at(1)->m_strCode2, _T("NR"));
+			EXPECT_EQ(m_pvCountry->at(1)->m_strCurrencyCode, _T("AUD"));
+			EXPECT_EQ(m_pvCountry->at(0)->m_strCountry, _T("Saint Martin (French part)")) << "以国家名称排序，位于第一个位置";
+			EXPECT_EQ(m_pvCountry->at(0)->m_strCode2, _T("MF"));
+			EXPECT_EQ(m_pvCountry->at(0)->m_strCurrencyCode, _T("ANG"));
 			break;
 		default:
 			break;

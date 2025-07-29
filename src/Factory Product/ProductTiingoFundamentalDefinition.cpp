@@ -62,7 +62,7 @@ CTiingoFundamentalDefinitionsPtr CProductTiingoFundamentalDefinition::ParseTiing
 	if (!IsValidData(pWebData)) return pvFundamentalDefinition;
 
 	try {
-		string_view svJson = pWebData->GetStringView(0, pWebData->GetBufferLength());
+		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
 		const simdjson::padded_string jsonPadded(svJson);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
@@ -72,15 +72,15 @@ CTiingoFundamentalDefinitionsPtr CProductTiingoFundamentalDefinition::ParseTiing
 			auto itemValue = item.value();
 			pFundamentalDefinition = make_shared<CTiingoFundamentalDefinition>();
 			s1 = simdjsonGetStringView(itemValue, _T("dataCode"));
-			pFundamentalDefinition->m_strDataCode = s1.c_str();;
+			pFundamentalDefinition->m_strDataCode = s1;;
 			s1 = simdjsonGetStringView(itemValue, _T("name"));
-			pFundamentalDefinition->m_strName = s1.c_str();
+			pFundamentalDefinition->m_strName = s1;
 			s1 = simdjsonGetStringView(itemValue, _T("description"));
-			pFundamentalDefinition->m_strDescription = s1.c_str();;
+			pFundamentalDefinition->m_strDescription = s1;;
 			s1 = simdjsonGetStringView(itemValue, _T("statementType"));
-			pFundamentalDefinition->m_strStatementType = s1.c_str();
+			pFundamentalDefinition->m_strStatementType = s1;
 			s1 = simdjsonGetStringView(itemValue, _T("units"));
-			pFundamentalDefinition->m_strUnits = s1.c_str();;
+			pFundamentalDefinition->m_strUnits = s1;;
 
 			pvFundamentalDefinition->push_back(pFundamentalDefinition);
 			iCount++;

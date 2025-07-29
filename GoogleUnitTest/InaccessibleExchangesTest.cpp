@@ -26,10 +26,10 @@ namespace FireBirdTest {
 		json jsFinnhubInaccessibleExchange = json::parse(Test_gl_sFinnhubInaccessibleExchange);
 		CInaccessible exchange;
 		const string s2 = jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Function")];
-		exchange.SetFunctionString(s2.c_str());
+		exchange.SetFunctionString(s2);
 		for (int i = 0; i < jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Exchange")].size(); i++) {
 			string s = jsFinnhubInaccessibleExchange[_T("InaccessibleExchange")][0][_T("Exchange")][i];
-			exchange.AddSymbol(s.c_str());
+			exchange.AddSymbol(s);
 		}
 		EXPECT_EQ(jsFinnhubInaccessibleExchange["UpdateDate"], 20221205);
 		EXPECT_TRUE(exchange.GetFunctionString().compare( _T("StockFundamentalsCompanyProfileConcise"))== 0);

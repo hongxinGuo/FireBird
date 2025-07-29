@@ -124,7 +124,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		strView = pWebData->GetStringView(0, l); //
 		s2 = strView;
 		str = _T("Warning: Tiingo no handled ");
-		str += s2.c_str();
+		str += s2;
 		str += _T("  ") + m_pCurrentProduct->GetInquiry();
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 		gl_warnLogger->warn("{}", str);
@@ -161,7 +161,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 		strView = pWebData->GetStringView(0, l); //
 		s2 = strView;
 		str = _T("Warning: Tiingo no handled ");
-		str += s2.c_str();
+		str += s2;
 		str += _T("  ") + m_pCurrentProduct->GetInquiry();
 		gl_systemMessage.PushInnerSystemInformationMessage(str);
 		gl_warnLogger->warn("{}", str);
@@ -223,7 +223,7 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 			sView = pWebData->GetStringView(0, iStringViewLength);
 			s2 = sView;
 			statusCode = m_dwHTTPStatusCode.load();
-			gl_warnLogger->warn("TiingoDataSource Error status not handled http status code = {} message = {}", statusCode, s2.c_str());
+			gl_warnLogger->warn("TiingoDataSource Error status not handled http status code = {} message = {}", statusCode, s2);
 			ReportErrorNotHandled(error);
 			break;
 		default: // 缺省情况不应该出现

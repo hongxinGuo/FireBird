@@ -349,14 +349,14 @@ shared_ptr<vector<CDayLinePtr>> ParseTengxunDayLine(const string_view& svData, c
 CDayLineWebDataPtr ParseTengxunDayLine(const CWebDataPtr& pWebData) {
 	auto pDayLineData = make_shared<CDayLineWebData>();
 	const string strSymbol = pWebData->GetStockCode();
-	ASSERT(gl_dataContainerChinaStock.IsSymbol(strSymbol.c_str()));
-	const string strDisplaySymbol = gl_dataContainerChinaStock.GetStock(strSymbol.c_str())->GetDisplaySymbol();
-	const string_view svData = pWebData->GetStringView(0, pWebData->GetBufferLength());
+	ASSERT(gl_dataContainerChinaStock.IsSymbol(strSymbol));
+	const string strDisplaySymbol = gl_dataContainerChinaStock.GetStock(strSymbol)->GetDisplaySymbol();
+	const string_view svData = pWebData->GetStringView();
 
-	const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(svData, XferStandardToTengxun(pWebData->GetStockCode().c_str()));
+	const shared_ptr<vector<CDayLinePtr>> pvDayLine = ParseTengxunDayLine(svData, XferStandardToTengxun(pWebData->GetStockCode()));
 	std::ranges::sort(*pvDayLine, [](const CDayLinePtr& pData1, const CDayLinePtr& pData2) { return pData1->GetDate() < pData2->GetDate(); });
 	for (const auto& pDayLine : *pvDayLine) {
-		pDayLine->SetStockSymbol(strSymbol.c_str());
+		pDayLine->SetStockSymbol(strSymbol);
 		pDayLine->SetDisplaySymbol(strDisplaySymbol);
 		pDayLineData->AppendDayLine(pDayLine);
 	}

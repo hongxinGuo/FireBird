@@ -38,8 +38,8 @@ void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		return;
 	}
 	auto pStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
-	if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStockDailyMeta->m_strCode.c_str())) {
-		auto pStock2 = gl_dataContainerTiingoStock.GetStock(pTiingoStockDailyMeta->m_strCode.c_str());
+	if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStockDailyMeta->m_strCode)) {
+		auto pStock2 = gl_dataContainerTiingoStock.GetStock(pTiingoStockDailyMeta->m_strCode);
 		if (pStock->GetSymbol().compare(pStock2->GetSymbol()) == 0) {
 			pStock->UpdateDailyMeta(pTiingoStockDailyMeta); // 目前只更新HistoryDayLineBeginDate和HistoryDayLineEndDate。
 			pStock->SetUpdateStockDailyMetaDate(gl_pWorldMarket->GetCurrentTradeDate());
@@ -75,19 +75,19 @@ CTiingoStockDailyMetaPtr CProductTiingoStockDailyMeta::ParseTiingoStockDailyMeta
 	auto pTiingoStockDailyMeta = make_shared<CTiingoStockDailyMeta>();
 
 	try {
-		string_view svJson = pWebData->GetStringView(0, pWebData->GetBufferLength());
+		string_view svJson = pWebData->GetStringView();
 		ondemand::parser parser;
 		const simdjson::padded_string jsonPadded(svJson);
 		ondemand::document doc = parser.iterate(jsonPadded).value();
 
 		s1 = simdjsonGetStringView(doc, "ticker");
-		pTiingoStockDailyMeta->m_strCode = s1.c_str();
+		pTiingoStockDailyMeta->m_strCode = s1;
 		s1 = simdjsonGetStringView(doc, "name");
-		pTiingoStockDailyMeta->m_strName = s1.c_str();
+		pTiingoStockDailyMeta->m_strName = s1;
 		s1 = simdjsonGetStringView(doc, "exchangeCode");
-		pTiingoStockDailyMeta->m_strExchange = s1.c_str();
+		pTiingoStockDailyMeta->m_strExchange = s1;
 		s1 = simdjsonGetStringView(doc, "description");
-		pTiingoStockDailyMeta->m_strDescription = s1.c_str();
+		pTiingoStockDailyMeta->m_strDescription = s1;
 		s1 = simdjsonGetStringView(doc, "startDate", "1900-01-01"); // 如果没有日线开始日期（即没有日线数据），则设置为19000101
 		sscanf_s(s1.c_str(), _T("%04d-%02d-%02d"), &year, &month, &day);
 		pTiingoStockDailyMeta->m_lHistoryDayLineStartDate = year * 10000 + month * 100 + day;

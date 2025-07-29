@@ -181,13 +181,13 @@ void CSystemConfiguration::Update(json& jsonData) {
 
 	try {
 		sTemp = jsonData.at("SystemConfiguration").at("DatabaseAccountName");
-		m_strDatabaseAccountName = sTemp.c_str();
+		m_strDatabaseAccountName = sTemp;
 	} catch (json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		sTemp = jsonData.at("SystemConfiguration").at("DatabaseAccountPassword");
-		m_strDatabaseAccountPassword = sTemp.c_str();
+		m_strDatabaseAccountPassword = sTemp;
 	} catch (json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
@@ -274,7 +274,7 @@ void CSystemConfiguration::Update(json& jsonData) {
 	}
 	try {
 		sTemp = jsonData.at("ChinaMarket").at("CurrentStock"); // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
-		m_strCurrentStock = sTemp.c_str();
+		m_strCurrentStock = sTemp;
 	} catch (json::out_of_range&) {
 		m_strCurrentStock = _T("");
 		m_fUpdateDB = true;
@@ -288,13 +288,13 @@ void CSystemConfiguration::Update(json& jsonData) {
 	}
 	try {
 		sTemp = jsonData.at("WorldMarket").at("FinnhubToken"); // Finnhub token
-		m_strFinnhubToken = sTemp.c_str();
+		m_strFinnhubToken = sTemp;
 	} catch (json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
 	try {
 		sTemp = jsonData.at("WorldMarket").at("QuandlToken"); // Quandl token
-		m_strQuandlToken = sTemp.c_str();
+		m_strQuandlToken = sTemp;
 	} catch (json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
@@ -330,7 +330,7 @@ void CSystemConfiguration::Update(json& jsonData) {
 	}
 	try {
 		sTemp = jsonData.at("Tiingo").at("Token"); //
-		m_strTiingoToken = sTemp.c_str();
+		m_strTiingoToken = sTemp;
 	} catch (json::out_of_range&) {
 		m_fUpdateDB = true;
 	}
@@ -448,7 +448,7 @@ void CSystemConfiguration::Update(json& jsonData) {
 	// 测试系统选项
 	try {
 		sTemp = jsonData.at("TestConfiguration").at("BenchmarkTestFileDirectory");
-		m_strBenchmarkTestFileDirectory = sTemp.c_str();
+		m_strBenchmarkTestFileDirectory = sTemp;
 	} catch (json::out_of_range&) {
 		m_fUpdateDB = true;
 	}

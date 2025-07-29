@@ -433,12 +433,12 @@ long CChinaMarket::GetMinLineOffset(time_t tUTC) const {
 bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 	const string strSymbol = pRTData->GetSymbol();
 	if (IsCheckingActiveStock()) {
-		if (!gl_dataContainerChinaStock.IsSymbol(strSymbol.c_str()) && pRTData->IsActive()) {
+		if (!gl_dataContainerChinaStock.IsSymbol(strSymbol) && pRTData->IsActive()) {
 			ASSERT(strSymbol.length() == 9);
-			CreateStock(strSymbol.c_str(), pRTData->GetStockName().c_str(), true);
+			CreateStock(strSymbol, pRTData->GetStockName(), true);
 		}
 	}
-	else if (!gl_dataContainerChinaStock.IsSymbol(strSymbol.c_str())) {
+	else if (!gl_dataContainerChinaStock.IsSymbol(strSymbol)) {
 		return false;
 	}
 	if (pRTData->IsActive()) { // 此实时数据有效？
@@ -446,7 +446,7 @@ bool CChinaMarket::DistributeRTDataToStock(const CWebRTDataPtr& pRTData) {
 		if (m_tpNewTransactionTime < pRTData->GetTimePoint()) {
 			m_tpNewTransactionTime = pRTData->GetTimePoint();
 		}
-		const auto pStock = gl_dataContainerChinaStock.GetStock(pRTData->GetSymbol().c_str());
+		const auto pStock = gl_dataContainerChinaStock.GetStock(pRTData->GetSymbol());
 		if (!pStock->IsActive()) {
 			if (pRTData->IsValidTime(14)) {
 				pStock->UpdateStatus(pRTData);
@@ -514,8 +514,8 @@ void CChinaMarket::TaskChoiceRSSet(long lCurrentTime) {
 
 void CChinaMarket::TaskSetCurrentStock() {
 	if (gl_systemConfiguration.GetCurrentStock() != _T("")) { // 当前有选择股票
-		if (gl_dataContainerChinaStock.IsSymbol(gl_systemConfiguration.GetCurrentStock().c_str())) {
-			auto pStock = gl_dataContainerChinaStock.GetStock(gl_systemConfiguration.GetCurrentStock().c_str());
+		if (gl_dataContainerChinaStock.IsSymbol(gl_systemConfiguration.GetCurrentStock())) {
+			auto pStock = gl_dataContainerChinaStock.GetStock(gl_systemConfiguration.GetCurrentStock());
 			SetCurrentStock(pStock);
 		}
 	}
@@ -1091,7 +1091,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek() {
 	CreateStockCodeSet(setWeekLineStockCode, dataChinaWeekLine.GetContainer());
 
 	for (const auto& pData : *pDayLineData) {
-		if (!setWeekLineStockCode.contains(pData->GetStockSymbol().c_str())) {
+		if (!setWeekLineStockCode.contains(pData->GetStockSymbol())) {
 			//周线数据容器中无此日线数据
 			// 存储此日线数据至周线数据容器
 			const auto pWeekLine = make_shared<CWeekLine>();

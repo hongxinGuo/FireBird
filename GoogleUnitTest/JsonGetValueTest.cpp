@@ -28,14 +28,14 @@ namespace FireBirdTest {
 		EXPECT_TRUE(js.is_structured());
 		auto it = js.begin();
 		string s2 = it->at("period");
-		EXPECT_STREQ(s2.c_str(), _T("2021-03-31"));
+		EXPECT_EQ(s2, _T("2021-03-31"));
 		EXPECT_DOUBLE_EQ(it->at("v"), -2.7551);
 
 		js = jsonGetChild(*pjs.get(), _T("child"));
 		EXPECT_TRUE(js.is_structured());
 		it = js.begin();
 		s2 = it->at("period");
-		EXPECT_STREQ(s2.c_str(), _T("2021-03-31"));
+		EXPECT_EQ(s2, _T("2021-03-31"));
 		EXPECT_DOUBLE_EQ(it->at("v"), -2.7551);
 	}
 
@@ -48,14 +48,14 @@ namespace FireBirdTest {
 		EXPECT_TRUE(js.is_structured());
 		auto it = js.begin();
 		string s2 = it->at("period");
-		EXPECT_STREQ(s2.c_str(), _T("2021-03-31"));
+		EXPECT_EQ(s2, _T("2021-03-31"));
 		EXPECT_DOUBLE_EQ(it->at("v"), -2.7551);
 
 		js = jsonGetChild(*pjs.get(), str.c_str());
 		EXPECT_TRUE(js.is_structured());
 		it = js.begin();
 		s2 = it->at("period");
-		EXPECT_STREQ(s2.c_str(), _T("2021-03-31"));
+		EXPECT_EQ(s2, _T("2021-03-31"));
 		EXPECT_DOUBLE_EQ(it->at("v"), -2.7551);
 	}
 
@@ -64,15 +64,15 @@ namespace FireBirdTest {
 		const string s{ _T("{\"period\":\"2021-03-31\", \"v\" : -2.7551}") };
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		string str = jsonGetString(pjs.get(), _T("period"));
-		EXPECT_STREQ(str.c_str(), _T("2021-03-31"));
+		EXPECT_EQ(str, _T("2021-03-31"));
 		string str2 = jsonGetString(pjs.get(), _T("v"));
-		EXPECT_STREQ(str2.c_str(), _T("")) << "v为浮点数，返回默认值";
+		EXPECT_EQ(str2, _T("")) << "v为浮点数，返回默认值";
 
 		str = str2 = "-1";
 		str = jsonGetString(*pjs.get(), _T("period"));
-		EXPECT_STREQ(str.c_str(), _T("2021-03-31"));
+		EXPECT_EQ(str, _T("2021-03-31"));
 		str2 = jsonGetString(*pjs.get(), _T("v"));
-		EXPECT_STREQ(str2.c_str(), _T("")) << "v为浮点数，返回默认值";
+		EXPECT_EQ(str2, _T("")) << "v为浮点数，返回默认值";
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetDouble) {
@@ -144,10 +144,10 @@ namespace FireBirdTest {
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
 		const string str1 = jsonGetString(it, _T("period"));
-		EXPECT_STREQ(str1.c_str(), _T("2021-03-31"));
+		EXPECT_EQ(str1, _T("2021-03-31"));
 		++it;
 		const string str2 = jsonGetString(it, _T("v"));
-		EXPECT_STREQ(str2.c_str(), _T(""));
+		EXPECT_EQ(str2, _T(""));
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetDouble2) {
@@ -204,10 +204,10 @@ namespace FireBirdTest {
 		EXPECT_TRUE(CreateJsonWithNlohmann(*pjs, s, 0, 0));
 		auto it = pjs->begin();
 		const string str1 = jsonGetString(it);
-		EXPECT_STREQ(str1.c_str(), _T("2021-03-31"));
+		EXPECT_EQ(str1, _T("2021-03-31"));
 		++it;
 		const string str2 = jsonGetString(it);
-		EXPECT_STREQ(str2.c_str(), _T("")) << "无法解析的使用默认值";
+		EXPECT_EQ(str2, _T("")) << "无法解析的使用默认值";
 	}
 
 	TEST_F(jsonGetValueTest, TestjsonGetInt3) {

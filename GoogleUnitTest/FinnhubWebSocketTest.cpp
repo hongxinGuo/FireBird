@@ -40,7 +40,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CFinnhubWebSocketTest, TestGetURL) {
-		EXPECT_STREQ(m_finnhubWebSocket.GetURL().c_str(), _T("wss://ws.finnhub.io"));
+		EXPECT_EQ(m_finnhubWebSocket.GetURL(), _T("wss://ws.finnhub.io"));
 	}
 
 	TEST_F(CFinnhubWebSocketTest, TestSetSubscriptionId) {
@@ -62,13 +62,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CFinnhubWebSocketTest, TestCreateFinnhubWebSocketString) {
-		EXPECT_STREQ(m_finnhubWebSocket.CreateFinnhubWebSocketString(_T("AAPL")).c_str(), _T("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}"));
-		EXPECT_STREQ(m_finnhubWebSocket.CreateFinnhubWebSocketString(_T("BINANCE:BTCUSDT")).c_str(), _T("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"));
-		EXPECT_STREQ(m_finnhubWebSocket.CreateFinnhubWebSocketString(_T("IC MARKETS:1")).c_str(), _T("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS:1\"}"));
+		EXPECT_EQ(m_finnhubWebSocket.CreateFinnhubWebSocketString(_T("AAPL")), _T("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}"));
+		EXPECT_EQ(m_finnhubWebSocket.CreateFinnhubWebSocketString(_T("BINANCE:BTCUSDT")), _T("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"));
+		EXPECT_EQ(m_finnhubWebSocket.CreateFinnhubWebSocketString(_T("IC MARKETS:1")), _T("{\"type\":\"subscribe\",\"symbol\":\"IC MARKETS:1\"}"));
 	}
 
 	TEST_F(CFinnhubWebSocketTest, TestAddSymbol) {
-		const vectorString vSymbol{_T("a"), _T("b"), _T("c"), _T("d"), _T("e")};
+		const vectorString vSymbol{ _T("a"), _T("b"), _T("c"), _T("d"), _T("e") };
 
 		EXPECT_EQ(m_finnhubWebSocket.GetSymbolSize(), 0);
 		m_finnhubWebSocket.AppendSymbol(vSymbol);

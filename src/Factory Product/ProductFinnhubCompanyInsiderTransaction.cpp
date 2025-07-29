@@ -84,7 +84,7 @@ CInsiderTransactionsPtr CProductFinnhubCompanyInsiderTransaction::ParseFinnhubSt
 		string s;
 		for (auto it = pt1.begin(); it != pt1.end(); ++it) {
 			pInsiderTransaction = make_shared<CInsiderTransaction>();
-			pInsiderTransaction->m_strSymbol = stockSymbol.c_str();
+			pInsiderTransaction->m_strSymbol = stockSymbol;
 			s = jsonGetString(it, _T("name"));
 			if (!s.empty()) pInsiderTransaction->m_strPersonName = s;
 			pInsiderTransaction->m_lShare = jsonGetLongLong(it, _T("share"));

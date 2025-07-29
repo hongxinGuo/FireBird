@@ -22,7 +22,7 @@ void CDayLineWebData::Reset() {
 bool CDayLineWebData::TransferWebDataToBuffer(const CWebDataPtr& pWebData) {
 	// 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
 	m_sDataBuffer = std::move(pWebData->m_sDataBuffer);
-	m_strStockCode = pWebData->GetStockCode().c_str();
+	m_strStockCode = pWebData->GetStockCode();
 	m_lCurrentPos = 0;
 
 	return true;
@@ -55,7 +55,8 @@ bool CDayLineWebData::ProcessNeteaseDayLineData() {
 }
 
 string_view CDayLineWebData::GetCurrentNeteaseData() {
-	const string_view svCurrentTotal = string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos);
+	//const string_view svCurrentTotal = string_view(m_sDataBuffer.c_str() + m_lCurrentPos, m_sDataBuffer.size() - m_lCurrentPos);
+	const string_view svCurrentTotal = string_view(m_sDataBuffer).substr(m_lCurrentPos);
 	const auto lEnd = svCurrentTotal.find_first_of(0x0d);
 	if (lEnd > svCurrentTotal.length()) {
 		throw std::exception(_T("GetCurrentNeteaseDayLine() out of range"));

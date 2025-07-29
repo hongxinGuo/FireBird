@@ -156,7 +156,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	if ((gl_systemMessage.InformationSize()) > 0) {
 		lCurrentPos = m_wndOutputInformation.GetCurSel();
 		if (m_wndOutputInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayInformation(&m_wndOutputInformation, sTime.c_str());
+		gl_systemMessage.DisplayInformation(&m_wndOutputInformation, sTime);
 		if (fUpdate) {
 			m_wndOutputInformation.SetCurAtLastLine();
 		}
@@ -167,7 +167,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	if ((gl_systemMessage.DayLineInfoSize()) > 0) {
 		lCurrentPos = m_wndOutputDayLineInfo.GetCurSel();
 		if (m_wndOutputDayLineInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayDayLineInfo(&m_wndOutputDayLineInfo, sTime.c_str());
+		gl_systemMessage.DisplayDayLineInfo(&m_wndOutputDayLineInfo, sTime);
 		if (fUpdate) {
 			m_wndOutputDayLineInfo.SetCurAtLastLine();
 		}
@@ -178,7 +178,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	if ((gl_systemMessage.WebSocketInfoSize()) > 0) {
 		lCurrentPos = m_wndOutputWebSocketInfo.GetCurSel();
 		if (m_wndOutputWebSocketInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayWebSocketInfo(&m_wndOutputWebSocketInfo, sTime.c_str());
+		gl_systemMessage.DisplayWebSocketInfo(&m_wndOutputWebSocketInfo, sTime);
 		if (fUpdate) {
 			m_wndOutputWebSocketInfo.SetCurAtLastLine();
 		}
@@ -189,7 +189,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	if ((gl_systemMessage.InnerSystemInfoSize()) > 0) {
 		lCurrentPos = m_wndOutputInnerSystemInformation.GetCurSel();
 		if (m_wndOutputInnerSystemInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayInnerSystemInformation(&m_wndOutputInnerSystemInformation, sTime.c_str());
+		gl_systemMessage.DisplayInnerSystemInformation(&m_wndOutputInnerSystemInformation, sTime);
 		if (fUpdate) {
 			m_wndOutputInnerSystemInformation.SetCurAtLastLine();
 		}
@@ -200,7 +200,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 	if ((gl_systemMessage.ErrorMessageSize()) > 0) {
 		lCurrentPos = m_wndErrorMessage.GetCurSel();
 		if (m_wndErrorMessage.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-		gl_systemMessage.DisplayErrorMessage(&m_wndErrorMessage, sTime.c_str());
+		gl_systemMessage.DisplayErrorMessage(&m_wndErrorMessage, sTime);
 		if (fUpdate) {
 			m_wndErrorMessage.SetCurAtLastLine();
 		}

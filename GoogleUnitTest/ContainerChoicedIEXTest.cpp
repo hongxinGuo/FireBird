@@ -46,6 +46,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_dataChosenIEX.Size(), 4) << "默认状态下装载4个代码";
 
 		const CFinnhubStockPtr pIEX = dynamic_pointer_cast<CFinnhubStock>(m_dataChosenIEX.Get(2));
-		EXPECT_STREQ(pIEX->GetSymbol().c_str(), _T("AAL")) << "装载时没有排序，使用的是原始位置";
+		EXPECT_EQ(pIEX->GetSymbol(), _T("AAL")) << "装载时没有排序，使用的是原始位置";
 	}
 }

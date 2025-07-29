@@ -116,9 +116,7 @@ string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) {
-	string sSymbol;
 	string strSymbol;
-	string sTicker, sExchange, sValue;
 	CTiingoIEXSocketPtr pIEXData = nullptr;
 	chrono::time_point<chrono::system_clock, chrono::nanoseconds> tpTime;
 	chrono::minutes Minutes;
@@ -198,7 +196,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 					js3 = js2.at(_T("tickers"));
 					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) {
 						strSymbol = jsonGetString(it2);
-						m_vCurrentInquireSymbol.emplace_back(strSymbol.c_str());
+						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
 				} catch (json::exception&) { // ×¢²áID {"messageType":"I","data":{"subscriptionId":2563367},"response":{"code":200,"message":"Success"}}
 					ASSERT(GetSubscriptionId() == 0);

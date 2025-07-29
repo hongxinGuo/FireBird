@@ -41,7 +41,7 @@ void CProductFinnhub::AddInaccessibleSymbol() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 bool CProductFinnhub::__Test_checkAccessRight(CWebDataPtr pWebData) {
-	const string s(pWebData->GetStringView(0, pWebData->GetBufferLength()));
+	const string s(pWebData->GetStringView());
 	if (s == _T("{\"error\":\"You don't have access to this resource.\"}")) {
 		m_iReceivedDataStatus = NO_ACCESS_RIGHT_;
 		return false;

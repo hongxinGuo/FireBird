@@ -61,7 +61,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("Finnhub economic calendar updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub economic calendar updated"));
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()) << "有权处理时不更改";
 		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
 		EXPECT_EQ(gl_systemConfiguration.GetWorldMarketFinnhubInquiryTime().count(), 220);
@@ -86,7 +86,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("Finnhub economic calendar updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub economic calendar updated"));
 		EXPECT_FALSE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()) << "无权处理时更改为免费账户";
 
 		gl_pFinnhubDataSource->SetUpdateEconomicCalendar(true);
@@ -164,19 +164,19 @@ namespace FireBirdTest {
 		case 5: // 第二个数据缺actual
 			EXPECT_EQ(m_pvEconomicCalendar->size(), 1) << "第一个数据是正确的";
 			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dActual, 0.6);
-			EXPECT_STREQ(m_pvEconomicCalendar->at(0)->m_strUnit.c_str(), _T("%"));
+			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strUnit, _T("%"));
 			break;
 		case 10:
 			EXPECT_EQ(m_pvEconomicCalendar->size(), 2);
 			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dActual, 0.6);
-			EXPECT_STREQ(m_pvEconomicCalendar->at(0)->m_strUnit.c_str(), _T("%"));
+			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strUnit, _T("%"));
 			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(1)->m_dActual, -0.2);
-			EXPECT_STREQ(m_pvEconomicCalendar->at(1)->m_strUnit.c_str(), _T("%"));
+			EXPECT_EQ(m_pvEconomicCalendar->at(1)->m_strUnit, _T("%"));
 			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dEstimate, 0.6);
 			EXPECT_DOUBLE_EQ(m_pvEconomicCalendar->at(0)->m_dPrev, 1);
-			EXPECT_STREQ(m_pvEconomicCalendar->at(0)->m_strCountry.c_str(), _T("CN"));
-			EXPECT_STREQ(m_pvEconomicCalendar->at(0)->m_strEvent.c_str(), _T("CPI MM"));
-			EXPECT_STREQ(m_pvEconomicCalendar->at(0)->m_strTime.c_str(), _T("2021-03-10 01:30:00"));
+			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strCountry, _T("CN"));
+			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strEvent, _T("CPI MM"));
+			EXPECT_EQ(m_pvEconomicCalendar->at(0)->m_strTime, _T("2021-03-10 01:30:00"));
 			break;
 		default:
 			break;

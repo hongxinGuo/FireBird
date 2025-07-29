@@ -64,13 +64,13 @@ CMarketHolidaysPtr CProductFinnhubMarketHoliday::ParseFinnhubMarketHoliday(const
 	s = jsonGetString(js, _T("exchange"));
 	if (!s.empty()) sExchange = s;
 	s = jsonGetString(js, _T("timezone"));
-	if (!s.c_str()) sTimeZone = s;
+	if (!s.empty()) sTimeZone = s;
 	auto js1 = jsonGetChild(js, _T("data"));
 	try {
 		for (auto it = js1.begin(); it != js1.end(); ++it) {
 			pHoliday = make_shared<CMarketHoliday>();
 			s = jsonGetString(it, _T("eventName"));
-			if (!s.empty()) pHoliday->m_strEventName = s.c_str();
+			if (!s.empty()) pHoliday->m_strEventName = s;
 			s = jsonGetString(it, _T("atDate"));
 			pHoliday->m_lDate = XferToYYYYMMDD(s);
 			s = jsonGetString(it, _T("tradingHour"));

@@ -75,7 +75,7 @@ CDayLinesPtr CProductFinnhubCryptoDayLine::ParseFinnhubCryptoCandle(CWebDataPtr 
 		}
 	} catch (json::exception&) {
 		// 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle missing 's': "), pWebData->GetDataBuffer().c_str());
+		ReportJSonErrorToSystemMessage(_T("Finnhub Crypto Candle missing 's': "), pWebData->GetDataBuffer());
 		return pvDayLine;
 	}
 	try {

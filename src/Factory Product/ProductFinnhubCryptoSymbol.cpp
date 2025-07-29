@@ -23,7 +23,7 @@ void CProductFinnhubCryptoSymbol::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvCryptoSymbol = ParseFinnhubCryptoSymbol(pWebData);
 	for (const auto& pSymbol : *pvCryptoSymbol) {
 		if (!gl_dataFinnhubCryptoSymbol.IsSymbol(pSymbol->GetSymbol())) {
-			pSymbol->SetExchangeCode(gl_dataContainerFinnhubCryptoExchange.GetItem(m_lIndex).c_str());
+			pSymbol->SetExchangeCode(gl_dataContainerFinnhubCryptoExchange.GetItem(m_lIndex));
 			gl_dataFinnhubCryptoSymbol.Add(pSymbol);
 		}
 	}
@@ -56,11 +56,11 @@ CFinnhubCryptosPtr CProductFinnhubCryptoSymbol::ParseFinnhubCryptoSymbol(const C
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			auto pSymbol = make_shared<CFinnhubCrypto>();
 			s = jsonGetString(it, _T("description"));
-			if (!s.empty()) pSymbol->SetDescription(s.c_str());
+			if (!s.empty()) pSymbol->SetDescription(s);
 			s = jsonGetString(it,_T("displaySymbol"));
-			pSymbol->SetDisplaySymbol(s.c_str());
+			pSymbol->SetDisplaySymbol(s);
 			s = jsonGetString(it,_T("symbol"));
-			pSymbol->SetSymbol(s.c_str());
+			pSymbol->SetSymbol(s);
 			pvCryptoSymbol->push_back(pSymbol);
 		}
 	} catch (json::exception& e) {

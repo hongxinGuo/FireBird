@@ -113,23 +113,23 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestGetDescription) {
 		CChinaStock stock;
-		EXPECT_STREQ(stock.GetDescription().c_str(), _T(""));
+		EXPECT_EQ(stock.GetDescription(), _T(""));
 		stock.SetDescription(_T("SSabcdefg"));
-		EXPECT_STREQ(stock.GetDescription().c_str(), _T("SSabcdefg"));
+		EXPECT_EQ(stock.GetDescription(), _T("SSabcdefg"));
 	}
 
 	TEST_F(CChinaStockTest, TestGetExchangeCode) {
 		CChinaStock stock;
-		EXPECT_STREQ(stock.GetExchangeCode().c_str(), _T(""));
+		EXPECT_EQ(stock.GetExchangeCode(), _T(""));
 		stock.SetExchangeCode(_T("SS"));
-		EXPECT_STREQ(stock.GetExchangeCode().c_str(), _T("SS"));
+		EXPECT_EQ(stock.GetExchangeCode(), _T("SS"));
 	}
 
 	TEST_F(CChinaStockTest, TestGetSymbol) {
 		CChinaStock stock;
-		EXPECT_STREQ(stock.GetSymbol().c_str(), _T(""));
+		EXPECT_EQ(stock.GetSymbol(), _T(""));
 		stock.SetSymbol(_T("600000.SS"));
-		EXPECT_STREQ(stock.GetSymbol().c_str(), _T("600000.SS"));
+		EXPECT_EQ(stock.GetSymbol(), _T("600000.SS"));
 	}
 
 	TEST_F(CChinaStockTest, TestGetTransactionTime) {
@@ -326,8 +326,8 @@ namespace FireBirdTest {
 
 	TEST_F(CChinaStockTest, TestInitialize) {
 		CChinaStock stock;
-		EXPECT_STREQ(stock.GetSymbol().c_str(), _T(""));
-		EXPECT_STREQ(stock.GetDisplaySymbol().c_str(), _T(""));
+		EXPECT_EQ(stock.GetSymbol(), _T(""));
+		EXPECT_EQ(stock.GetDisplaySymbol(), _T(""));
 		EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
 		EXPECT_TRUE(stock.IsNotChecked());
@@ -354,16 +354,16 @@ namespace FireBirdTest {
 		stock.SetDisplaySymbol(_T("dcba"));
 		stock.SetDayLineEndDate(20020202);
 		stock.SetIPOStatus(0);
-		EXPECT_STREQ(stock.GetSymbol().c_str(), _T("abcde"));
-		EXPECT_STREQ(stock.GetDisplaySymbol().c_str(), _T("dcba"));
+		EXPECT_EQ(stock.GetSymbol(), _T("abcde"));
+		EXPECT_EQ(stock.GetDisplaySymbol(), _T("dcba"));
 		EXPECT_EQ(stock.GetDayLineEndDate(), 20020202);
 	}
 
 	TEST_F(CChinaStockTest, TestGetDisplaySymbol) {
 		CChinaStock stock;
-		EXPECT_STREQ(stock.GetDisplaySymbol().c_str(), _T(""));
+		EXPECT_EQ(stock.GetDisplaySymbol(), _T(""));
 		stock.SetDisplaySymbol(_T("浦发银行"));
-		EXPECT_STREQ(stock.GetDisplaySymbol().c_str(), _T("浦发银行"));
+		EXPECT_EQ(stock.GetDisplaySymbol(), _T("浦发银行"));
 	}
 
 	TEST_F(CChinaStockTest, TestGetHighLimit) {
@@ -1081,7 +1081,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsIPOed());
-		EXPECT_STREQ(stock.GetSymbol().c_str(), _T("000001.SS"));
+		EXPECT_EQ(stock.GetSymbol(), _T("000001.SS"));
 		stock.SetIPOStatus(_STOCK_NULL_);
 		stock.UpdateSymbol(setChinaStockSymbol);
 		setChinaStockSymbol.Close();
@@ -1107,7 +1107,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(stock.IsUpdateProfileDB());
 		EXPECT_TRUE(stock.IsUpdateDayLine());
 		EXPECT_TRUE(stock.IsIPOed());
-		EXPECT_STREQ(stock.GetSymbol().c_str(), _T("000001.SS")) << "第一个股票";
+		EXPECT_EQ(stock.GetSymbol(), _T("000001.SS")) << "第一个股票";
 		CreateJsonWithNlohmann(jsonUpdateDate, setChinaStockSymbol.m_UpdateDate.GetString());
 
 		EXPECT_EQ(stock.GetDayLineStartDate(), jsonUpdateDate[_T("DayLineStartDate")]);
@@ -1128,7 +1128,7 @@ namespace FireBirdTest {
 		setChinaStockSymbol.m_strFilter = _T("[Symbol] = '000003.SZ'");
 		setChinaStockSymbol.Open();
 		stock.LoadStockCodeDB(setChinaStockSymbol);
-		EXPECT_STREQ(stock.GetSymbol().c_str(), _T("000003.SZ"));
+		EXPECT_EQ(stock.GetSymbol(), _T("000003.SZ"));
 		EXPECT_EQ(stock.GetIPOStatus(), setChinaStockSymbol.m_IPOStatus);
 		CreateJsonWithNlohmann(jsonUpdateDate, setChinaStockSymbol.m_UpdateDate.GetString());
 
@@ -1441,7 +1441,7 @@ namespace FireBirdTest {
 		setDayLineTemp.Close();
 
 		EXPECT_EQ(stock.GetTransactionTime(), 0);
-		EXPECT_STREQ(stock.GetSymbol().c_str(), _T(""));
+		EXPECT_EQ(stock.GetSymbol(), _T(""));
 		EXPECT_EQ(stock.GetLastClose(), 0);
 		EXPECT_EQ(stock.GetOpen(), 0);
 		EXPECT_EQ(stock.GetHigh(), 0);
@@ -1629,7 +1629,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(pDayLine->GetDate(), ConvertToDate(pStock->GetTransactionTime(), 0));
 		EXPECT_TRUE(pDayLine->GetExchange().compare(pStock->GetExchangeCode()) == 0);
 		EXPECT_TRUE(pDayLine->GetStockSymbol().compare(pStock->GetSymbol()) == 0);
-		EXPECT_STREQ(pDayLine->GetDisplaySymbol().c_str(), pStock->GetDisplaySymbol().c_str());
+		EXPECT_EQ(pDayLine->GetDisplaySymbol(), pStock->GetDisplaySymbol());
 		EXPECT_EQ(pDayLine->GetLastClose(), pStock->GetLastClose());
 		EXPECT_EQ(pDayLine->GetOpen(), pStock->GetOpen());
 		EXPECT_EQ(pDayLine->GetHigh(), pStock->GetHigh());
@@ -2333,7 +2333,7 @@ namespace FireBirdTest {
 		dayLine.LoadExtendData(&setDayLineExtendInfo);
 		setDayLineExtendInfo.Close();
 		EXPECT_EQ(dayLine.GetMarketTime(), 0);
-		EXPECT_STREQ(dayLine.GetStockSymbol().c_str(), _T(""));
+		EXPECT_EQ(dayLine.GetStockSymbol(), _T(""));
 		EXPECT_EQ(dayLine.GetTransactionNumber(), stock.GetTransactionNumber());
 		EXPECT_EQ(dayLine.GetTransactionNumberBelow5000(), stock.GetTransactionNumberBelow5000());
 		EXPECT_EQ(dayLine.GetTransactionNumberBelow50000(), stock.GetTransactionNumberBelow50000());
@@ -2525,7 +2525,7 @@ namespace FireBirdTest {
 			pid = stock.GetWeekLine(i);
 			const CWeekLinePtr pWeekLine = pStock->GetWeekLine(i);
 			EXPECT_EQ(pWeekLine->GetDate(), pid->GetDate());
-			EXPECT_STREQ(pWeekLine->GetStockSymbol().c_str(), pid->GetStockSymbol().c_str());
+			EXPECT_EQ(pWeekLine->GetStockSymbol(), pid->GetStockSymbol());
 			EXPECT_EQ(pWeekLine->GetLastClose(), pid->GetLastClose());
 			EXPECT_EQ(pWeekLine->GetOpen(), pid->GetOpen());
 			EXPECT_EQ(pWeekLine->GetHigh(), pid->GetHigh());

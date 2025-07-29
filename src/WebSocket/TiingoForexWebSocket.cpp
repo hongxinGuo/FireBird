@@ -150,7 +150,7 @@ bool CTiingoForexWebSocket::ParseTiingoForexWebSocketData(shared_ptr<string> pDa
 					js3 = js2.at(_T("tickers"));
 					for (auto it3 = js3.begin(); it3 != js3.end(); ++it3) {
 						strSymbol = jsonGetString(it3);
-						m_vCurrentInquireSymbol.push_back(strSymbol.c_str());
+						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
 				} catch (json::exception&) { // {\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}
 					ASSERT(GetSubscriptionId() == 0);

@@ -57,12 +57,12 @@ namespace FireBirdTest {
 
 	TEST_P(ConvertDoubleToStringTest, TestDouble) {
 		const string str = ConvertValueToCString(dValue, lDividend).GetString();
-		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
+		EXPECT_EQ(str, CValueOfPeriod);
 	}
 
 	TEST_P(ConvertDoubleToStringTest, TestDouble2) {
 		const string str = ConvertValueToString(dValue, lDividend);
-		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
+		EXPECT_EQ(str, CValueOfPeriod);
 	}
 
 	struct StrConvertLongToString {
@@ -119,12 +119,12 @@ namespace FireBirdTest {
 
 	TEST_P(ConvertLongToStringTest, TestLong) {
 		const string str = ConvertValueToCString(lValue, lDividend).GetString();
-		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
+		EXPECT_EQ(str, CValueOfPeriod);
 	}
 
 	TEST_P(ConvertLongToStringTest, TestLong2) {
 		const string str = ConvertValueToString(lValue, lDividend);
-		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
+		EXPECT_EQ(str, CValueOfPeriod);
 	}
 
 	struct StrConvertIntegerToString {
@@ -181,12 +181,12 @@ namespace FireBirdTest {
 
 	TEST_P(ConvertIntegerToStringTest, TestInteger) {
 		const string str = ConvertValueToCString(iValue, lDividend).GetString();
-		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
+		EXPECT_EQ(str, CValueOfPeriod);
 	}
 
 	TEST_P(ConvertIntegerToStringTest, TestInteger2) {
 		const string str = ConvertValueToString(iValue, lDividend);
-		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
+		EXPECT_EQ(str, CValueOfPeriod);
 	}
 
 	struct StrConvertINT64ToString {
@@ -243,12 +243,12 @@ namespace FireBirdTest {
 
 	TEST_P(ConvertINT64ToStringTest, TestINT64) {
 		const string str = ConvertValueToCString(iValue, lDividend).GetString();
-		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
+		EXPECT_EQ(str, CValueOfPeriod);
 	}
 
 	TEST_P(ConvertINT64ToStringTest, TestINT64_2) {
 		const string str = ConvertValueToString(iValue, lDividend);
-		EXPECT_STREQ(str.c_str(), CValueOfPeriod.c_str());
+		EXPECT_EQ(str, CValueOfPeriod);
 	}
 
 	class CRSReferenceTest : public testing::Test {
@@ -271,14 +271,14 @@ namespace FireBirdTest {
 
 	TEST(FormatToMKTest, TestFormatToMK) {
 		string str = FormatToMK(123);
-		EXPECT_STREQ(str.c_str(), _T(" 123"));
+		EXPECT_EQ(str, _T(" 123"));
 		str = FormatToMK(12 * 1024);
-		EXPECT_STREQ(str.c_str(), _T("  12K"));
+		EXPECT_EQ(str, _T("  12K"));
 		str = FormatToMK(12 * 1024 * 1024);
-		EXPECT_STREQ(str.c_str(), _T("12M"));
+		EXPECT_EQ(str, _T("12M"));
 		str = FormatToMK(static_cast<int64_t>(12) * 1024 * 1024);
-		EXPECT_STREQ(str.c_str(), _T("12M"));
+		EXPECT_EQ(str, _T("12M"));
 		str = FormatToMK(static_cast<int64_t>(1234567) * 1024 * 1024);
-		EXPECT_STREQ(str.c_str(), _T("1234567M"));
+		EXPECT_EQ(str, _T("1234567M"));
 	}
 }

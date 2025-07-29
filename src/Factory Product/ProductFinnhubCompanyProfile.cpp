@@ -77,62 +77,62 @@ bool CProductFinnhubCompanyProfile::ParseFinnhubStockProfile(CWebDataPtr pWebDat
 	try {
 		double d = 0.0;
 		s = jsonGetString(js, _T("address"));
-		pStock->SetAddress(s.c_str());
+		pStock->SetAddress(s);
 		s = jsonGetString(js, _T("city"));
-		pStock->SetCity(s.c_str());
+		pStock->SetCity(s);
 		s = jsonGetString(js, _T("country"));
-		if (!s.empty()) pStock->SetCountry(s.c_str());
+		if (!s.empty()) pStock->SetCountry(s);
 		s = jsonGetString(js, _T("currency"));
-		if (!s.empty()) pStock->SetCurrency(s.c_str());
+		if (!s.empty()) pStock->SetCurrency(s);
 		s = jsonGetString(js, _T("cusip"));
-		if (!s.empty()) pStock->SetCusip(s.c_str());
+		if (!s.empty()) pStock->SetCusip(s);
 		s = jsonGetString(js, _T("sedol"));
-		if (!s.empty()) pStock->SetSedol(s.c_str());
+		if (!s.empty()) pStock->SetSedol(s);
 		s = jsonGetString(js, _T("description"));
-		if (!s.empty()) pStock->SetDescription(s.c_str());
+		if (!s.empty()) pStock->SetDescription(s);
 		s = jsonGetString(js, _T("exchange"));
 		//if (!s.empty()) pStock->SetExchangeCode(s.c_str()); // 不使用此项数据
 		s = jsonGetString(js, _T("ggroup"));
-		if (!s.empty()) pStock->SetGgroup(s.c_str());
+		if (!s.empty()) pStock->SetGgroup(s);
 		s = jsonGetString(js, _T("gind"));
-		if (!s.empty()) pStock->SetGind(s.c_str());
+		if (!s.empty()) pStock->SetGind(s);
 		s = jsonGetString(js, _T("gsector"));
-		if (!s.empty()) pStock->SetGsector(s.c_str());
+		if (!s.empty()) pStock->SetGsector(s);
 		s = jsonGetString(js, _T("gsubind"));
-		if (!s.empty()) pStock->SetGsubind(s.c_str());
+		if (!s.empty()) pStock->SetGsubind(s);
 		s = jsonGetString(js, _T("ipo"));
-		if (!s.empty()) pStock->SetIPODate(s.c_str());
+		if (!s.empty()) pStock->SetIPODate(s);
 		s = jsonGetString(js, _T("isin"));
-		if (!s.empty()) pStock->SetIsin(s.c_str());
+		if (!s.empty()) pStock->SetIsin(s);
 		d = jsonGetDouble(js, _T("marketCapitalization"));
 		pStock->SetMarketCapitalization(d);
 
 		s = jsonGetString(js, _T("naics"));
-		if (!s.empty()) pStock->SetNaics(s.c_str());
+		if (!s.empty()) pStock->SetNaics(s);
 		s = jsonGetString(js, _T("naicsNationalIndustry"));
-		if (!s.empty()) pStock->SetNaicsNationalIndustry(s.c_str());
+		if (!s.empty()) pStock->SetNaicsNationalIndustry(s);
 		s = jsonGetString(js, _T("naicsSector"));
-		if (!s.empty()) pStock->SetNaicsSector(s.c_str());
+		if (!s.empty()) pStock->SetNaicsSector(s);
 		s = jsonGetString(js, _T("naicsSubsector"));
-		if (!s.empty()) pStock->SetNaicsSubsector(s.c_str());
+		if (!s.empty()) pStock->SetNaicsSubsector(s);
 		s = jsonGetString(js, _T("name"));
-		if (!s.empty()) pStock->SetName(s.c_str());
+		if (!s.empty()) pStock->SetName(s);
 		s = jsonGetString(js, _T("phone"));
-		if (!s.empty()) pStock->SetPhone(s.c_str());
+		if (!s.empty()) pStock->SetPhone(s);
 
 		d = jsonGetDouble(js, _T("shareOutstanding"));
 		pStock->SetShareOutstanding(d);
 		s = jsonGetString(js, _T("state"));
-		if (!s.empty()) pStock->SetState(s.c_str());
+		if (!s.empty()) pStock->SetState(s);
 		s = jsonGetString(js, _T("ticker"));
-		if (!s.empty()) pStock->SetTicker(s.c_str());
+		if (!s.empty()) pStock->SetTicker(s);
 		s = jsonGetString(js, _T("weburl"));
-		if (!s.empty()) pStock->SetWebURL(s.c_str());
+		if (!s.empty()) pStock->SetWebURL(s);
 
 		s = jsonGetString(js, _T("logo"));
-		if (!s.empty()) pStock->SetLogo(s.c_str());
+		if (!s.empty()) pStock->SetLogo(s);
 		s = jsonGetString(js, _T("finnhubIndustry"));
-		if (!s.empty()) pStock->SetFinnhubIndustry(s.c_str());
+		if (!s.empty()) pStock->SetFinnhubIndustry(s);
 	} catch (json::exception& e) {
 		ReportJSonErrorToSystemMessage(_T("Finnhub Stock Profile "), e.what());
 		return false; // 没有公司简介

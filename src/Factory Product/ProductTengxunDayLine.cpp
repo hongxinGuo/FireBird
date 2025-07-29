@@ -51,7 +51,7 @@ void CProductTengxunDayLine::ParseAndStoreWebData(shared_ptr<vector<CWebDataPtr>
 		}
 	}
 	const CDayLineWebDataPtr p = make_shared<CDayLineWebData>();
-	p->SetStockCode(pvWebData->at(0)->GetStockCode().c_str());
+	p->SetStockCode(pvWebData->at(0)->GetStockCode());
 	p->ClearDayLine();
 	CheckAndPrepareDayLine(vDayLine);
 	for (const auto& pData : vDayLine) {

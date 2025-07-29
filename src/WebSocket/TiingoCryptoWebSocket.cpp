@@ -150,7 +150,7 @@ bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> p
 					js3 = js2.at(_T("tickers"));
 					for (auto it2 = js3.begin(); it2 != js3.end(); ++it2) { // 是代码："data":{"tickers":["*","uso","msft","tnk"]
 						strSymbol = jsonGetString(it2);
-						m_vCurrentInquireSymbol.emplace_back(strSymbol.c_str());
+						m_vCurrentInquireSymbol.emplace_back(strSymbol);
 					}
 				} catch (json::exception&) { //注册信息：{"messageType":"I","response":{"code":200,"message":"Success"},"data":{"subscriptionId":2563396}}
 					ASSERT(GetSubscriptionId() == 0);

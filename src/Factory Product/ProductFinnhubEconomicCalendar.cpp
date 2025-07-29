@@ -51,7 +51,7 @@ CEconomicCalendarsPtr CProductFinnhubEconomicCalendar::ParseFinnhubEconomicCalen
 		for (auto it = js2.begin(); it != js2.end(); ++it) {
 			pEconomicCalendar = make_shared<CEconomicCalendar>();
 			s = jsonGetString(it, _T("country"));
-			if (!s.empty()) pEconomicCalendar->m_strCountry = s.c_str();
+			if (!s.empty()) pEconomicCalendar->m_strCountry = s;
 			s = jsonGetString(it,_T("event"));
 			pEconomicCalendar->m_strEvent = s;
 			s = jsonGetString(it,_T("impact"));

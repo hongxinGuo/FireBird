@@ -977,19 +977,19 @@ bool CWorldMarket::UpdateToken() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 
 	if (gl_systemConfiguration.GetFinnhubToken().length() > 5) {
-		gl_pFinnhubDataSource->SetInquiryToken(gl_systemConfiguration.GetFinnhubToken().c_str());
+		gl_pFinnhubDataSource->SetInquiryToken(gl_systemConfiguration.GetFinnhubToken());
 	}
 	else {
 		gl_systemMessage.PushInformationMessage(_T("Finnhub Token Needed"));
 	}
 	if (gl_systemConfiguration.GetTiingoToken().length() > 5) {
-		gl_pTiingoDataSource->SetInquiryToken(gl_systemConfiguration.GetTiingoToken().c_str());
+		gl_pTiingoDataSource->SetInquiryToken(gl_systemConfiguration.GetTiingoToken());
 	}
 	else {
 		gl_systemMessage.PushInformationMessage(_T("Tiingo Token Needed"));
 	}
 	if (gl_systemConfiguration.GetQuandlToken().length() > 5) {
-		gl_pQuandlDataSource->SetInquiryToken(gl_systemConfiguration.GetQuandlToken().c_str());
+		gl_pQuandlDataSource->SetInquiryToken(gl_systemConfiguration.GetQuandlToken());
 	}
 	else {
 		gl_systemMessage.PushInformationMessage(_T("Quandl Token Needed"));
@@ -1265,8 +1265,8 @@ void CWorldMarket::UpdateFinnhubStockFromWebSocket() {
 }
 
 void CWorldMarket::UpdateFinnhubStockFromTiingoIEXSocket(const CTiingoIEXSocketPtr& pTiingoIEXbData) {
-	if (gl_dataContainerFinnhubStock.IsSymbol(pTiingoIEXbData->m_sSymbol.c_str())) {
-		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(pTiingoIEXbData->m_sSymbol.c_str());
+	if (gl_dataContainerFinnhubStock.IsSymbol(pTiingoIEXbData->m_sSymbol)) {
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(pTiingoIEXbData->m_sSymbol);
 		pStock->SetActive(true);
 		switch (pTiingoIEXbData->m_chMessageType) {
 		case 'T':
@@ -1283,8 +1283,8 @@ void CWorldMarket::UpdateFinnhubStockFromTiingoIEXSocket(const CTiingoIEXSocketP
 }
 
 void CWorldMarket::UpdateFinnhubStockFromFinnhubSocket(const CFinnhubSocketPtr& pFinnhubData) {
-	if (gl_dataContainerFinnhubStock.IsSymbol(pFinnhubData->m_sSymbol.c_str())) {
-		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(pFinnhubData->m_sSymbol.c_str());
+	if (gl_dataContainerFinnhubStock.IsSymbol(pFinnhubData->m_sSymbol)) {
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(pFinnhubData->m_sSymbol);
 		pStock->SetActive(true);
 		pStock->SetNew(pFinnhubData->m_dLastPrice * 1000);
 	}

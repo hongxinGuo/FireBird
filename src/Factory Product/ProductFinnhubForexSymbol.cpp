@@ -42,11 +42,11 @@ CForexSymbolsPtr CProductFinnhubForexSymbol::ParseFinnhubForexSymbol(const CWebD
 		for (auto it = js.begin(); it != js.end(); ++it) {
 			pSymbol = make_shared<CFinnhubForex>();
 			s = jsonGetString(it, _T("description"));
-			if (!s.empty()) pSymbol->SetDescription(s.c_str());
+			if (!s.empty()) pSymbol->SetDescription(s);
 			s = jsonGetString(it,_T("displaySymbol"));
-			pSymbol->SetDisplaySymbol(s.c_str());
+			pSymbol->SetDisplaySymbol(s);
 			s = jsonGetString(it,_T("symbol"));
-			pSymbol->SetSymbol(s.c_str());
+			pSymbol->SetSymbol(s);
 			pvForexSymbol->push_back(pSymbol);
 		}
 	} catch (json::exception& e) {

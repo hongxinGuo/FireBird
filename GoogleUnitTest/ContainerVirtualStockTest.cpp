@@ -62,19 +62,19 @@ namespace FireBirdTest {
 	TEST_F(CContainerVirtualStockTest, TestGetSymbols) {
 		const vectorString vString = m_containerVirtualStock.GetSymbols();
 
-		EXPECT_STREQ(vString.at(0).c_str(), _T("000001.SS"));
-		EXPECT_STREQ(vString.at(1).c_str(), _T("000001.SZ"));
-		EXPECT_STREQ(vString.at(2).c_str(), _T("000002.SS"));
+		EXPECT_EQ(vString.at(0), _T("000001.SS"));
+		EXPECT_EQ(vString.at(1), _T("000001.SZ"));
+		EXPECT_EQ(vString.at(2), _T("000002.SS"));
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestGet1) {
-		EXPECT_STREQ(gl_dataContainerChinaStock.GetStock(50)->GetSymbol().c_str(), m_containerVirtualStock.Get(50)->GetSymbol().c_str());
+		EXPECT_EQ(gl_dataContainerChinaStock.GetStock(50)->GetSymbol(), m_containerVirtualStock.Get(50)->GetSymbol());
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestGet2) {
 		const string strSymbol = gl_dataContainerChinaStock.GetStock(1)->GetSymbol();
 
-		EXPECT_STREQ(gl_dataContainerChinaStock.GetStock(strSymbol)->GetSymbol().c_str(), m_containerVirtualStock.Get(strSymbol)->GetSymbol().c_str());
+		EXPECT_EQ(gl_dataContainerChinaStock.GetStock(strSymbol)->GetSymbol(), m_containerVirtualStock.Get(strSymbol)->GetSymbol());
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestGetOffset) {
@@ -147,11 +147,11 @@ namespace FireBirdTest {
 		const auto pStock = make_shared<CChinaStock>();
 		pStock->SetSymbol(_T("0.A")); // 
 		m_containerVirtualStock.Add(pStock);
-		EXPECT_STREQ(m_containerVirtualStock.Get(m_containerVirtualStock.Size() - 1)->GetSymbol().c_str(), _T("0.A"));
+		EXPECT_EQ(m_containerVirtualStock.Get(m_containerVirtualStock.Size() - 1)->GetSymbol(), _T("0.A"));
 		EXPECT_EQ(m_containerVirtualStock.Size(), 101);
 
 		m_containerVirtualStock.Sort();
-		EXPECT_STREQ(m_containerVirtualStock.Get(0)->GetSymbol().c_str(), _T("0.A")) << "0.A位于第一位";
+		EXPECT_EQ(m_containerVirtualStock.Get(0)->GetSymbol(), _T("0.A")) << "0.A位于第一位";
 
 		m_containerVirtualStock.Delete(pStock);
 		EXPECT_EQ(m_containerVirtualStock.Size(), 100);

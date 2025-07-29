@@ -74,7 +74,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol(_T("KSMUST")));
 		EXPECT_FALSE(m_dataTiingoCryptoSymbol.IsSymbol(_T("500008.SS")));
 		CTiingoCryptoPtr pTiingoCrypto = m_dataTiingoCryptoSymbol.GetCrypto(_T("DKAETH"));
-		EXPECT_STREQ(pTiingoCrypto->GetSymbol().c_str(), _T("DKAETH"));
+		EXPECT_EQ(pTiingoCrypto->GetSymbol(), _T("DKAETH"));
 		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol(pTiingoCrypto));
 
 		// ≤‚ ‘UpdateDB

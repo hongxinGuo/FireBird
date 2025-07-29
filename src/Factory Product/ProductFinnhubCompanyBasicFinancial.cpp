@@ -254,7 +254,7 @@ CFinnhubStockBasicFinancialPtr CProductFinnhubCompanyBasicFinancial::ParseFinnhu
 	pBasicFinancial = std::make_shared<CFinnhubStockBasicFinancial>();
 	try {
 		s = js.at(_T("symbol"));
-		pBasicFinancial->m_symbol = s.c_str();
+		pBasicFinancial->m_symbol = s;
 
 		ptMetric = jsonGetChild(js, _T("metric"));
 		try {
