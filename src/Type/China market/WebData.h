@@ -12,7 +12,7 @@
 
 constexpr int DefaultWebDataBufferSize_ = 1024 * 1024;
 
-class CWebData final {
+class CWebData {
 public:
 	friend CVirtualDataSource;
 	friend CInquireEngine;
@@ -24,7 +24,7 @@ public:
 	CWebData& operator=(const CWebData&) = delete;
 	CWebData(const CWebData&&) noexcept = delete;
 	CWebData& operator=(const CWebData&&) noexcept = delete;
-	~CWebData();
+	virtual ~CWebData();
 
 	void Resize(const size_t lSize) { m_sDataBuffer.resize(lSize); }
 
@@ -40,12 +40,12 @@ public:
 	void SetTime(const time_t tTime) noexcept { m_tpTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(tTime)); }
 	string GetStockCode() const noexcept { return m_strStockCode; }
 	void SetStockCode(const string& strStockCode) noexcept { m_strStockCode = strStockCode; }
-	size_t GetBufferLength() const noexcept { return m_sDataBuffer.size(); }
+	virtual size_t GetBufferLength() const noexcept { return m_sDataBuffer.size(); }
 
 	string GetDataBuffer() noexcept { return m_sDataBuffer; }
 	auto GetCurrentPos() const noexcept { return m_lCurrentPos; }
 	void SetCurrentPos(const size_t lValue) noexcept { m_lCurrentPos = lValue; }
-	string_view GetStringView(const int iDataPos, const size_t iDataLength) const { return string_view(m_sDataBuffer.c_str() + iDataPos, iDataLength); }
+	virtual string_view GetStringView(const int iDataPos, const size_t iDataLength) const { return string_view(m_sDataBuffer.c_str() + iDataPos, iDataLength); }
 	bool GetData(char* buffer, size_t lDataLength) const; // 从m_lCurrentPos开始拷贝
 	bool SetData(const char* buffer, size_t lDataLength); // 从m_lCurrentPos开始填充。
 	char GetData(const size_t lIndex) const { return m_sDataBuffer.at(lIndex); }

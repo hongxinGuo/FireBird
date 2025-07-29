@@ -28,6 +28,21 @@
 #include "TiingoInaccessibleStock.h"
 #include "TimeConvert.h"
 
+template <typename TWebSocket>
+void ProcessWebSocketDataGeneric(TWebSocket pWebSocket, const std::string& prefix, std::function<void(size_t)> setProcessedFunc) {
+	const auto total = pWebSocket->DataSize();
+	size_t iTotalDataSize = 0;
+	for (size_t i = 0; i < total; i++) {
+		const auto pString = pWebSocket->PopData();
+		std::string strMessage = prefix;
+		strMessage += *pString;
+		gl_systemMessage.PushWebSocketInfoMessage(strMessage);
+		iTotalDataSize += pString->size();
+		(pWebSocket->ParseWebSocketData)(pString);
+	}
+	setProcessedFunc(iTotalDataSize);
+}
+
 CWorldMarket::CWorldMarket() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
@@ -374,8 +389,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB() {
 	for (int i = 0; i < symbolSize; i++) {
 		pSymbol = gl_dataFinnhubForexSymbol.GetItem(i);
 		if (pSymbol->IsUpdateDayLineDB()) {
-			pSymbol->SetUpdateDayLineDB(false);
-			pSymbol->SetUpdateDayLineDB(false);
+			pSymbol->SetUpdateDayLineDB(false);// Only call once
 			if (pSymbol->GetDayLineSize() > 0) {
 				if (pSymbol->HaveNewDayLineData()) {
 					gl_runtime.thread_executor()->post([pSymbol] {
@@ -619,8 +633,8 @@ concurrencpp::result<bool> CWorldMarket::LoadNasdaq100StocksDayLine() {
 	vector<result<bool>> results;
 
 	bool succeed = true;
-	/*
-	for (auto pStock : m_vNasdaq100TiingoStock) {
+
+	for (auto& pStock : m_vNasdaq100TiingoStock) {
 		gl_BackgroundWorkingThread.acquire();
 		auto result = gl_runtime.thread_executor()->submit([pStock] {
 			if (!pStock->IsDayLineLoaded()) {
@@ -635,19 +649,19 @@ concurrencpp::result<bool> CWorldMarket::LoadNasdaq100StocksDayLine() {
 		//auto a = r.resolve();
 		succeed &= co_await r;
 	}
-	*/
 
+	/*
 	for (auto pStock : m_vNasdaq100TiingoStock) {
 		if (!pStock->IsDayLineLoaded()) {
 			pStock->LoadDayLineDB();
 		}
-	}
+	}*/
 
 	co_return succeed;
 }
 
 void CWorldMarket::CalculateNasdaq100StocksMA(const int length) const {
-	for (auto pStock : m_vNasdaq100TiingoStock) {
+	for (auto& pStock : m_vNasdaq100TiingoStock) {
 		if (pStock->IsDayLineLoaded()) {
 			pStock->CalculateDayLineMA(length);
 		}
@@ -1127,6 +1141,7 @@ void CWorldMarket::ProcessWebSocketData() {
 	if (gl_pTiingoForexWebSocket->DataSize() > 0) ProcessTiingoForexWebSocketData();
 }
 
+/*
 void CWorldMarket::ProcessFinnhubWebSocketData() {
 	const auto total = gl_pFinnhubWebSocket->DataSize();
 	size_t iTotalDataSize = 0;
@@ -1140,6 +1155,7 @@ void CWorldMarket::ProcessFinnhubWebSocketData() {
 	}
 	gl_systemMessage.SetProcessedFinnhubWebSocket(iTotalDataSize);
 }
+
 
 void CWorldMarket::ProcessTiingoIEXWebSocketData() {
 	const auto total = gl_pTiingoIEXWebSocket->DataSize();
@@ -1182,6 +1198,37 @@ void CWorldMarket::ProcessTiingoForexWebSocketData() {
 		gl_pTiingoForexWebSocket->ParseTiingoForexWebSocketData(pString);
 	}
 	gl_systemMessage.SetProcessedTiingoForexWebSocket(iTotalDataSize);
+}*/
+
+void CWorldMarket::ProcessFinnhubWebSocketData() {
+	ProcessWebSocketDataGeneric(
+		gl_pFinnhubWebSocket,
+		"Finnhub: ",
+		[](size_t size) { gl_systemMessage.SetProcessedFinnhubWebSocket(size); });
+}
+
+void CWorldMarket::ProcessTiingoIEXWebSocketData() {
+	ProcessWebSocketDataGeneric(
+		gl_pTiingoIEXWebSocket,
+		"Tiingo IEX: ",
+		[](size_t size) { gl_systemMessage.SetProcessedTiingoIEXWebSocket(size); }
+	);
+}
+
+void CWorldMarket::ProcessTiingoCryptoWebSocketData() {
+	ProcessWebSocketDataGeneric(
+		gl_pTiingoCryptoWebSocket,
+		"Tiingo Crypto: ",
+		[](size_t size) { gl_systemMessage.SetProcessedTiingoCryptoWebSocket(size); }
+	);
+}
+
+void CWorldMarket::ProcessTiingoForexWebSocketData() {
+	ProcessWebSocketDataGeneric(
+		gl_pTiingoForexWebSocket,
+		"Tiingo Forex: ",
+		[](size_t size) { gl_systemMessage.SetProcessedTiingoForexWebSocket(size); }
+	);
 }
 
 /// <summary>

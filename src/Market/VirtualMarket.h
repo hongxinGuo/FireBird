@@ -53,13 +53,13 @@ public:
 
 	// MarketDisplayTask
 	bool HaveNewTask() const;
-	shared_ptr<vector<CMarketTaskPtr>> DiscardOutDatedTask(long m_lCurrentMarketTime);
+	vector<CMarketTaskPtr> DiscardOutDatedTask(long m_lCurrentMarketTime);
 	vector<CMarketTaskPtr> GetDisplayMarketTask();
 
 	// 时间函数
 	void CalculateTime() noexcept; // 计算本市场的各时间
 
-	void GetMarketLocalTimeOffset(string strLocalNameOfMarket);
+	void GetMarketLocalTimeOffset(const string& strLocalNameOfMarket);
 	long GetMarketOpenTime() const { return m_exchange->m_lMarketOpenTime; }
 	long GetMarketCloseTime() const { return m_exchange->m_lMarketCloseTime; }
 

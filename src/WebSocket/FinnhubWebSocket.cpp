@@ -132,11 +132,11 @@ void CFinnhubWebSocket::MonitorWebSocket(const vectorString& vSymbol) {
 /// <param name="pData"></param>
 /// <returns></returns>
 bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
-	string sType, sSymbol, sMessage;
 	string code;
 
 	try {
 		if (json pt; CreateJsonWithNlohmann(pt, *pData)) {
+			string sType;
 			sType = jsonGetString(&pt, _T("type"));
 			if (sType == _T("trade")) { // {"data":[{"c":null,"p":7296.89,"s":"BINANCE:BTCUSDT","t":1575526691134,"v":0.011467}],"type":"trade"}
 				json js2;
@@ -159,7 +159,9 @@ bool CFinnhubWebSocket::ParseFinnhubWebSocketData(shared_ptr<string> pData) {
 			}
 			else if (sType == _T("ping")) {	// ping  {\"type\":\"ping\"}
 			}
-			else if (sType == _T("error")) { // ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
+			else if (sType == _T("error")) {
+				string sMessage;
+				// ERROR {\"msg\":\"Subscribing to too many symbols\",\"type\":\"error\"}
 				sMessage = jsonGetString(&pt, _T("msg"));
 				string strMessage = "Finnhub WebSocket error message: ";
 				strMessage += sMessage;

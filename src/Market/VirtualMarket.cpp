@@ -49,8 +49,7 @@ void CVirtualMarket::ScheduleTask() {
 	vector<int> vTaskType;
 	for (int i = 0; i < immediateTaskSize; i++) {
 		auto pTask = m_marketImmediateTask.GetTask();
-		auto p = ProcessCurrentImmediateTask(lCurrentMarketTime); // 执行所有即时任务
-		vTaskType.push_back(p);
+		vTaskType.push_back(ProcessCurrentImmediateTask(lCurrentMarketTime));// 执行所有即时任务
 	}
 	ASSERT(vTaskType.size() == immediateTaskSize);
 #ifdef _TRACE_SCHEDULE_TASK___
@@ -128,22 +127,22 @@ bool CVirtualMarket::HaveNewTask() const {
 	return m_qMarketDisplayTask.size_approx() > m_lLastQueueLength;
 }
 
-shared_ptr<vector<CMarketTaskPtr>> CVirtualMarket::DiscardOutDatedTask(long m_lCurrentMarketTime) {
-	shared_ptr<vector<CMarketTaskPtr>> pvTask = make_shared<vector<CMarketTaskPtr>>();
+vector<CMarketTaskPtr> CVirtualMarket::DiscardOutDatedTask(long m_lCurrentMarketTime) {
+	vector<CMarketTaskPtr> validTasks;
 	CMarketTaskPtr pTask = nullptr;
 
 	while (m_qMarketDisplayTask.try_dequeue(pTask)) {
 		if (pTask->GetTime() > m_lCurrentMarketTime) {
-			pvTask->push_back(pTask);
+			validTasks.emplace_back(pTask);
 		}
 	}
-	m_lLastQueueLength = pvTask->size();
-	for (auto pTaskRemained : *pvTask) {
+	m_lLastQueueLength = validTasks.size();
+	for (const auto pTaskRemained : validTasks) {
 		m_qMarketDisplayTask.enqueue(pTaskRemained);
 	}
 
-	std::ranges::sort(*pvTask, [](const CMarketTaskPtr& p1, const CMarketTaskPtr& p2) { return p1->GetTime() < p2->GetTime(); });
-	return pvTask;
+	std::ranges::sort(validTasks, [](const CMarketTaskPtr& p1, const CMarketTaskPtr& p2) { return p1->GetTime() < p2->GetTime(); });
+	return validTasks;
 }
 
 vector<CMarketTaskPtr> CVirtualMarket::GetDisplayMarketTask() {
@@ -311,7 +310,7 @@ void CVirtualMarket::GetMarketTimeStruct(tm* tm_, time_t tUTC) const {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CVirtualMarket::GetMarketLocalTimeOffset(string strLocalNameOfMarket) {
+void CVirtualMarket::GetMarketLocalTimeOffset(const string& strLocalNameOfMarket) {
 	m_tzMarket = chrono::locate_zone(strLocalNameOfMarket);
 	m_marketSystemInformation = m_tzMarket->get_info(chrono::sys_seconds());
 	m_TimeZoneOffset = m_marketSystemInformation.offset;

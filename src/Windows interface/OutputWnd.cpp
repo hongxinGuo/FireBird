@@ -206,19 +206,19 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
 		}
 	}
 
-	const auto pvChinaTask = gl_pChinaMarket->DiscardOutDatedTask(gl_pChinaMarket->GetMarketTime());
+	const auto validChinaTasks = gl_pChinaMarket->DiscardOutDatedTask(gl_pChinaMarket->GetMarketTime());
 	if (m_wndChinaMarketTaskQueue.GetCount() > 0) m_wndChinaMarketTaskQueue.TruncateList(m_wndChinaMarketTaskQueue.GetCount());
 	int i = 0;
-	for (const auto& pTask : *pvChinaTask) {
+	for (const auto& pTask : validChinaTasks) {
 		string s = fmt::format("{}: {:06Ld}: {}", sTime, pTask->GetTime(), gl_mapMarketMapIndex.at(pTask->GetType()));
 		m_wndChinaMarketTaskQueue.AddString(s.c_str());
 		if (++i >= m_wndChinaMarketTaskQueue.GetLineNumber()) break;
 	}
 
-	const auto pvWorldTask = gl_pWorldMarket->DiscardOutDatedTask(gl_pWorldMarket->GetMarketTime());
+	const auto validWorldTasks = gl_pWorldMarket->DiscardOutDatedTask(gl_pWorldMarket->GetMarketTime());
 	if (m_wndWorldMarketTaskQueue.GetCount() > 0) m_wndWorldMarketTaskQueue.TruncateList(m_wndWorldMarketTaskQueue.GetCount());
 	i = 0;
-	for (const auto& pTask : *pvWorldTask) {
+	for (const auto& pTask : validWorldTasks) {
 		string s = fmt::format("{}: {:06Ld}: {}", sTime, pTask->GetTime(), gl_mapMarketMapIndex.at(pTask->GetType()));
 		m_wndWorldMarketTaskQueue.AddString(s.c_str());
 		if (++i >= m_wndWorldMarketTaskQueue.GetLineNumber()) break;

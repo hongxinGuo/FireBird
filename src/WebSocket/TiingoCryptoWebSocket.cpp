@@ -69,7 +69,7 @@ void CTiingoCryptoWebSocket::Send(const vectorString& vSymbol) {
 
 	ASSERT(IsOpen());
 
-	ix::WebSocketSendInfo info = m_webSocket.send(messageAuth);
+	m_webSocket.send(messageAuth);
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth);
 }
 
@@ -126,9 +126,7 @@ string CTiingoCryptoWebSocket::CreateMessage(const vectorString& vSymbol) {
 // <param name="pData"></param>
 // <returns></returns>
 bool CTiingoCryptoWebSocket::ParseTiingoCryptoWebSocketData(shared_ptr<string> pData) {
-	string sSymbol;
 	string strSymbol;
-	string sTickers;
 
 	try {
 		if (json js; CreateJsonWithNlohmann(js, *pData)) {

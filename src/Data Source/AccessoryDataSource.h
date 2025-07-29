@@ -22,7 +22,7 @@ public:
 	void ConfigureInternetOption() override;
 
 	bool IsUpdateIndexNasdaq100Stocks() const noexcept { return m_fUpdateIndexNasdaq100Stocks; }
-	void SetUpdateIndexNasdaq100Stocks(bool fFlag) noexcept { m_fUpdateIndexNasdaq100Stocks = fFlag; }
+	virtual void SetUpdateIndexNasdaq100Stocks(bool fFlag) noexcept { m_fUpdateIndexNasdaq100Stocks = fFlag; }
 
 protected:
 	CAccessoryFactory m_AccessoryFactory;

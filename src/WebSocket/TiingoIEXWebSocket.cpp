@@ -59,7 +59,7 @@ void CTiingoIEXWebSocket::Send(const vectorString& vSymbol) {
 	ASSERT(IsOpen());
 
 	const string messageAuth(CreateMessage(vSymbol));
-	ix::WebSocketSendInfo info = m_webSocket.send(messageAuth);
+	m_webSocket.send(messageAuth);
 
 	gl_systemMessage.PushInnerSystemInformationMessage(messageAuth);
 }
@@ -88,7 +88,7 @@ string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
 	json jsonMessage;
 	jsonMessage["eventName"] = _T("subscribe");
 	jsonMessage["authorization"] = gl_pTiingoDataSource->GetInquiryToken();
-	jsonMessage["eventData"]["thresholdLevel"] = 5; // threshold的有效数字为0或者5
+	jsonMessage["eventData"]["thresholdLevel"] = 6; //Note threshold0-5需要IEX额外授权，使用6无需授权。
 	for (auto str : vSymbol) {
 		std::ranges::transform(str, str.begin(), ::tolower); // Tiingo webSocket使用小写字符
 		vSymbol2.push_back(str);

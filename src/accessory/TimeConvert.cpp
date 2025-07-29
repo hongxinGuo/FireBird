@@ -135,13 +135,13 @@ long GetPrevDay(long lDate, long lTimeSpanDays) noexcept {
 	return (lNewDate);
 }
 
-const static CTimeSpan s_1Day(1, 0, 0, 0);
-const static CTimeSpan s_2Day(2, 0, 0, 0);
-const static CTimeSpan s_3Day(3, 0, 0, 0);
-const static CTimeSpan s_4Day(4, 0, 0, 0);
-const static CTimeSpan s_5Day(5, 0, 0, 0);
-const static CTimeSpan s_6Day(6, 0, 0, 0);
-const static CTimeSpan s_7Day(7, 0, 0, 0);
+static const CTimeSpan s_1Day(1, 0, 0, 0);
+static const CTimeSpan s_2Day(2, 0, 0, 0);
+static const CTimeSpan s_3Day(3, 0, 0, 0);
+static const CTimeSpan s_4Day(4, 0, 0, 0);
+static const CTimeSpan s_5Day(5, 0, 0, 0);
+static const CTimeSpan s_6Day(6, 0, 0, 0);
+static const CTimeSpan s_7Day(7, 0, 0, 0);
 
 long GetNextMonday(long lDate) {
 	const long year = lDate / 10000;

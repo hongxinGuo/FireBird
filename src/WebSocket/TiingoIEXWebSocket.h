@@ -59,6 +59,8 @@ public:
 	void Connect() override;
 	void Send(const vectorString& vSymbol) override;
 
+	bool ParseWebSocketData(shared_ptr<string> pData) override { return ParseTiingoIEXWebSocketData(pData); }
+
 	void MonitorWebSocket(const vectorString& vSymbol);
 
 	static string CreateMessage(const vectorString& vSymbol);

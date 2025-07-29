@@ -35,6 +35,9 @@ public:
 
 	void Connect() override;
 	void Send(const vectorString& vSymbol) override;
+
+	bool ParseWebSocketData(shared_ptr<string> pData) override { return ParseFinnhubWebSocketData(pData); }
+
 	static string CreateFinnhubWebSocketString(string sSymbol);
 
 	void MonitorWebSocket(const vectorString& vSymbol);

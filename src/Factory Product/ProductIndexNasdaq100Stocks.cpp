@@ -80,6 +80,7 @@ vector<string> CProductIndexNasdaq100Stocks::ParseIndexNasdaq100Stocks(const CWe
 	vector<string> vSymbol;
 
 	string_view svData = pWebData->GetStringView(0, pWebData->GetBufferLength());
+	string s(svData);
 	size_t positionStart = svData.find(_T("<script> window.__sc_init_state__ = ")); // 有效数据前面的字符串
 	positionStart += 36; // 跨过此字符串
 	string_view svData2 = svData.substr(positionStart);

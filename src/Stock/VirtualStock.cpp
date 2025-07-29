@@ -30,7 +30,7 @@ void CVirtualStock::LoadUpdateDate(const string& strUpdateDate) {
 void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	m_strDescription = setStockSymbol.m_Description;
 	CString str;
-	str = setStockSymbol.m_DisplaySymbol;
+	str = setStockSymbol.m_DisplaySymbol; //Note 需要如此初始化，不能将声明和赋值放在一起
 	m_strDisplaySymbol = str;
 	m_strExchangeCode = setStockSymbol.m_Exchange;
 	m_strSymbol = setStockSymbol.m_Symbol;
