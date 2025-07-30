@@ -35,20 +35,20 @@ namespace FireBirdTest {
 	TEST_F(CTiingoStockTest, TestInitialize) {
 		CTiingoStock tiingo;
 
-		EXPECT_STREQ(tiingo.m_strTiingoPermaTicker.c_str(), _T(""));
-		EXPECT_STREQ(tiingo.GetSymbol().c_str(), _T(""));
-		EXPECT_STREQ(tiingo.m_strName.c_str(), _T(""));
+		EXPECT_EQ(tiingo.m_strTiingoPermaTicker, _T(""));
+		EXPECT_EQ(tiingo.GetSymbol(), _T(""));
+		EXPECT_EQ(tiingo.m_strName, _T(""));
 		EXPECT_FALSE(tiingo.IsActive());
 		EXPECT_FALSE(tiingo.m_fIsADR);
 		EXPECT_EQ(tiingo.m_iSicCode, 0);
-		EXPECT_STREQ(tiingo.m_strSicIndustry.c_str(), _T(""));
-		EXPECT_STREQ(tiingo.m_strSicSector.c_str(), _T(""));
-		EXPECT_STREQ(tiingo.m_strTiingoIndustry.c_str(), _T(""));
-		EXPECT_STREQ(tiingo.m_strTiingoSector.c_str(), _T(""));
-		EXPECT_STREQ(tiingo.m_strReportingCurrency.c_str(), _T(""));
-		EXPECT_STREQ(tiingo.m_strLocation.c_str(), _T(""));
-		EXPECT_STREQ(tiingo.m_strCompanyWebSite.c_str(), _T(""));
-		EXPECT_STREQ(tiingo.m_strSECFilingWebSite.c_str(), _T(""));
+		EXPECT_EQ(tiingo.m_strSicIndustry, _T(""));
+		EXPECT_EQ(tiingo.m_strSicSector, _T(""));
+		EXPECT_EQ(tiingo.m_strTiingoIndustry, _T(""));
+		EXPECT_EQ(tiingo.m_strTiingoSector, _T(""));
+		EXPECT_EQ(tiingo.m_strReportingCurrency, _T(""));
+		EXPECT_EQ(tiingo.m_strLocation, _T(""));
+		EXPECT_EQ(tiingo.m_strCompanyWebSite, _T(""));
+		EXPECT_EQ(tiingo.m_strSECFilingWebSite, _T(""));
 		EXPECT_EQ(stock.GetCompanyFinancialStatementUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetDailyUpdateDate(), 19800101);
 		EXPECT_EQ(stock.GetDayLineEndDate(), 19800101);
@@ -71,15 +71,15 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestGetExchangeCode) {
-		EXPECT_STREQ(stock.GetExchangeCode().c_str(), _T("US"));
+		EXPECT_EQ(stock.GetExchangeCode(), _T("US"));
 		stock.SetExchangeCode(_T("SS"));
-		EXPECT_STREQ(stock.GetExchangeCode().c_str(), _T("SS"));
+		EXPECT_EQ(stock.GetExchangeCode(), _T("SS"));
 	}
 
 	TEST_F(CTiingoStockTest, TestGetSymbol) {
-		EXPECT_STREQ(stock.GetSymbol().c_str(), _T(""));
+		EXPECT_EQ(stock.GetSymbol(), _T(""));
 		stock.SetSymbol(_T("600000.SS"));
-		EXPECT_STREQ(stock.GetSymbol().c_str(), _T("600000.SS"));
+		EXPECT_EQ(stock.GetSymbol(), _T("600000.SS"));
 	}
 
 	TEST_F(CTiingoStockTest, TestGetTransactionTime) {

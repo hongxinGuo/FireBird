@@ -113,7 +113,7 @@ namespace FireBirdTest {
 		const size_t l = gl_systemMessage.InformationSize();
 		CSystemMessage systemMessage; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), l + 1); // 系统报警队列
-		EXPECT_STREQ(gl_systemMessage.PopErrorMessage().c_str(), _T("错误：系统不允许生成多个CSystemMessage实例"));
+		EXPECT_EQ(gl_systemMessage.PopErrorMessage(), _T("错误：系统不允许生成多个CSystemMessage实例"));
 	}
 
 	TEST_F(SystemMessageTest, TestGetInformationDequeSize) {
@@ -122,7 +122,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
 		const string str = gl_systemMessage.PopInformationMessage();
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 0);
-		EXPECT_STREQ(str.c_str(), _T("TEST"));
+		EXPECT_EQ(str, _T("TEST"));
 	}
 
 	TEST_F(SystemMessageTest, TestGetDayLineInfoDequeSize) {
@@ -131,7 +131,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 1);
 		const string str = gl_systemMessage.PopDayLineInfoMessage();
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
-		EXPECT_STREQ(str.c_str(), _T("TEST"));
+		EXPECT_EQ(str, _T("TEST"));
 	}
 
 	TEST_F(SystemMessageTest, TestGetWebSocketInfoDequeSize) {
@@ -140,7 +140,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.WebSocketInfoSize(), 1);
 		const string str = gl_systemMessage.PopWebSocketInfoMessage();
 		EXPECT_EQ(gl_systemMessage.WebSocketInfoSize(), 0);
-		EXPECT_STREQ(str.c_str(), _T("TEST"));
+		EXPECT_EQ(str, _T("TEST"));
 	}
 
 	TEST_F(SystemMessageTest, TestGetProcessedFinnhubWebSocket) {
@@ -173,32 +173,32 @@ namespace FireBirdTest {
 
 	TEST_F(SystemMessageTest, TestGetStockCodeForInquiringSinaRTData) {
 		gl_systemMessage.SetStockCodeForInquiringRTData(_T("601919.SS"));
-		EXPECT_STREQ(gl_systemMessage.GetStockCodeForInquiringRTData().c_str(), _T("601919.SS"));
+		EXPECT_EQ(gl_systemMessage.GetStockCodeForInquiringRTData(), _T("601919.SS"));
 	}
 
 	TEST_F(SystemMessageTest, TestGetStockCodeForInquiryDayLine) {
 		gl_systemMessage.SetStockCodeForInquiryDayLine(_T("600000.SS"));
-		EXPECT_STREQ(gl_systemMessage.GetStockCodeForInquiryDayLine().c_str(), _T("600000.SS"));
+		EXPECT_EQ(gl_systemMessage.GetStockCodeForInquiryDayLine(), _T("600000.SS"));
 	}
 
 	TEST_F(SystemMessageTest, TestGetCurrentFinnhubWebSocketStake) {
 		gl_systemMessage.SetCurrentFinnhubWebSocketStake(_T("600000.SS"));
-		EXPECT_STREQ(gl_systemMessage.GetCurrentFinnhubWebSocketStake().c_str(), _T("600000.SS"));
+		EXPECT_EQ(gl_systemMessage.GetCurrentFinnhubWebSocketStake(), _T("600000.SS"));
 	}
 
 	TEST_F(SystemMessageTest, TestGetCurrentTiingoWebSocketIEX) {
 		gl_systemMessage.SetCurrentTiingoWebSocketIEX(_T("600000.SS"));
-		EXPECT_STREQ(gl_systemMessage.GetCurrentTiingoWebSocketIEX().c_str(), _T("600000.SS"));
+		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketIEX(), _T("600000.SS"));
 	}
 
 	TEST_F(SystemMessageTest, TestGetCurrentTiingoWebSocketForex) {
 		gl_systemMessage.SetCurrentTiingoWebSocketForex(_T("600000.SS"));
-		EXPECT_STREQ(gl_systemMessage.GetCurrentTiingoWebSocketForex().c_str(), _T("600000.SS"));
+		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketForex(), _T("600000.SS"));
 	}
 
 	TEST_F(SystemMessageTest, TestGetCurrentTiingoWebSocketCrypto) {
 		gl_systemMessage.SetCurrentTiingoWebSocketCrypto(_T("600000.SS"));
-		EXPECT_STREQ(gl_systemMessage.GetCurrentTiingoWebSocketCrypto().c_str(), _T("600000.SS"));
+		EXPECT_EQ(gl_systemMessage.GetCurrentTiingoWebSocketCrypto(), _T("600000.SS"));
 	}
 
 	TEST_F(SystemMessageTest, TestIncreaseScheduleTaskTime) {

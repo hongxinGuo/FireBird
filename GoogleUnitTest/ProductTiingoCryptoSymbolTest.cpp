@@ -40,11 +40,11 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoCryptoTest, TestInitialize) {
 		EXPECT_EQ(stockSymbol.GetIndex(), 0);
-		EXPECT_STREQ(stockSymbol.GetInquiryFunction().c_str(), _T("https://api.tiingo.com/tiingo/crypto?"));
+		EXPECT_EQ(stockSymbol.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/crypto?"));
 	}
 
 	TEST_F(CProductTiingoCryptoTest, TestCreatMessage) {
-		EXPECT_STREQ(stockSymbol.CreateMessage().c_str(), stockSymbol.GetInquiryFunction().c_str());
+		EXPECT_EQ(stockSymbol.CreateMessage(), stockSymbol.GetInquiryFunction());
 	}
 
 	TEST_F(CProductTiingoCryptoTest, TestUpdateDataSourceStatus) {
@@ -53,7 +53,7 @@ namespace FireBirdTest {
 		stockSymbol.UpdateDataSourceStatus(gl_pTiingoDataSource);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateCryptoSymbol());
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("Tiingo crypto symbol updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Tiingo crypto symbol updated"));
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoCryptoSymbolUpdateDate(), gl_pWorldMarket->GetMarketDate());
 		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
 

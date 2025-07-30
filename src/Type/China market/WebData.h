@@ -7,7 +7,6 @@
 #pragma once
 
 #include"ClassDeclaration.h"
-
 #include"nlohmannJsonDeclaration.h"
 
 constexpr int DefaultWebDataBufferSize_ = 1024 * 1024;

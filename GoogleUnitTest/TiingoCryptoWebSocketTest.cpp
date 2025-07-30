@@ -35,7 +35,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTiingoCryptoWebSocketTest, TestGetURL) {
-		EXPECT_STREQ(gl_pTiingoCryptoWebSocket->GetURL().c_str(), _T("wss://api.tiingo.com/crypto"));
+		EXPECT_EQ(gl_pTiingoCryptoWebSocket->GetURL(), _T("wss://api.tiingo.com/crypto"));
 	}
 
 	TEST_F(CTiingoCryptoWebSocketTest, TestCreateMessage) {

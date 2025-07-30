@@ -41,7 +41,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoFinancialStateTest, TestInitialize) {
 		EXPECT_EQ(financialState.GetIndex(), 0);
-		EXPECT_STREQ(financialState.GetInquiryFunction().c_str(), _T("https://api.tiingo.com/tiingo/fundamentals"));
+		EXPECT_EQ(financialState.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/fundamentals"));
 	}
 
 	TEST_F(CProductTiingoFinancialStateTest, TestCreatMessage) {
@@ -49,7 +49,7 @@ namespace FireBirdTest {
 		string sDate = ConvertDateToTimeStamp(gl_dataContainerTiingoStock.GetStock(1)->GetCompanyFinancialStatementUpdateDate());
 		string strMessage = _T("https://api.tiingo.com/tiingo/fundamentals/AA/statements?startDate=");
 		strMessage += sDate;
-		EXPECT_STREQ(financialState.CreateMessage().c_str(), strMessage.c_str());
+		EXPECT_EQ(financialState.CreateMessage(), strMessage);
 	}
 
 	TEST_F(CProductTiingoFinancialStateTest, TestProcessWebData) {

@@ -52,7 +52,7 @@ namespace FireBirdTest {
 			pWebData->Test_SetBuffer_(pData->m_strData);
 
 			pDownLoadedDayLine = make_shared<CDayLineWebData>();
-			pDownLoadedDayLine->SetStockCode(pData->m_strSymbol.c_str());
+			pDownLoadedDayLine->SetStockCode(pData->m_strSymbol);
 			pDownLoadedDayLine->TransferWebDataToBuffer(pWebData);
 			m_iCount = pData->m_iCount;
 		}

@@ -38,11 +38,11 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestInitialize) {
 		EXPECT_EQ(marketNews.GetIndex(), 0);
-		EXPECT_STREQ(marketNews.GetInquiryFunction().c_str(), _T("https://api.tiingo.com/tiingo/fundamentals/definitions?"));
+		EXPECT_EQ(marketNews.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/fundamentals/definitions?"));
 	}
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestCreatMessage) {
-		EXPECT_STREQ(marketNews.CreateMessage().c_str(), marketNews.GetInquiryFunction().c_str());
+		EXPECT_EQ(marketNews.CreateMessage(), marketNews.GetInquiryFunction());
 	}
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestProcessWebData) {
@@ -56,7 +56,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateFundamentalDefinition());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("Fundamental definition updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Fundamental definition updated"));
 
 		gl_pTiingoDataSource->SetUpdateFundamentalDefinition(true);
 	}
@@ -68,7 +68,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateFundamentalDefinition());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("Fundamental definition updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Fundamental definition updated"));
 
 		gl_pTiingoDataSource->SetUpdateFundamentalDefinition(true);
 	}
@@ -130,16 +130,16 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_EQ(m_pvFundamentalDefinition->size(), 2);
-			EXPECT_STREQ(m_pvFundamentalDefinition->at(0)->m_strDataCode.c_str(), _T("liabilitiesCurrent"));
-			EXPECT_STREQ(m_pvFundamentalDefinition->at(0)->m_strName.c_str(), _T("Current Liabilities"));
-			EXPECT_STREQ(m_pvFundamentalDefinition->at(0)->m_strDescription.c_str(), _T("Debt or liabilities that are due within a year"));
-			EXPECT_STREQ(m_pvFundamentalDefinition->at(0)->m_strStatementType.c_str(), _T("balanceSheet"));
-			EXPECT_STREQ(m_pvFundamentalDefinition->at(0)->m_strUnits.c_str(), _T("$"));
-			EXPECT_STREQ(m_pvFundamentalDefinition->at(1)->m_strDataCode.c_str(), _T("rps"));
-			EXPECT_STREQ(m_pvFundamentalDefinition->at(1)->m_strName.c_str(), _T("Revenue Per Share"));
-			EXPECT_STREQ(m_pvFundamentalDefinition->at(1)->m_strDescription.c_str(), _T("Revenue per share"));
-			EXPECT_STREQ(m_pvFundamentalDefinition->at(1)->m_strStatementType.c_str(), _T("overview"));
-			EXPECT_STREQ(m_pvFundamentalDefinition->at(1)->m_strUnits.c_str(), _T("$"));
+			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strDataCode, _T("liabilitiesCurrent"));
+			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strName, _T("Current Liabilities"));
+			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strDescription, _T("Debt or liabilities that are due within a year"));
+			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strStatementType, _T("balanceSheet"));
+			EXPECT_EQ(m_pvFundamentalDefinition->at(0)->m_strUnits, _T("$"));
+			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strDataCode, _T("rps"));
+			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strName, _T("Revenue Per Share"));
+			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strDescription, _T("Revenue per share"));
+			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strStatementType, _T("overview"));
+			EXPECT_EQ(m_pvFundamentalDefinition->at(1)->m_strUnits, _T("$"));
 			break;
 		default:
 			break;

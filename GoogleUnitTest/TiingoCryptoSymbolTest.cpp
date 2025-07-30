@@ -32,11 +32,11 @@ namespace FireBirdTest {
 	TEST_F(CTiingoCryptoSymbolTest, TestInitialize) {
 		const CTiingoCrypto tiingo;
 
-		EXPECT_STREQ(tiingo.m_strBaseCurrency.c_str(), _T(""));
-		EXPECT_STREQ(tiingo.GetSymbol().c_str(), _T(""));
-		EXPECT_STREQ(tiingo.GetDescription().c_str(), _T(""));
-		EXPECT_STREQ(tiingo.m_strQuoteCurrency.c_str(), _T(""));
-		EXPECT_STREQ(tiingo.m_strName.c_str(), _T(""));
+		EXPECT_EQ(tiingo.m_strBaseCurrency, _T(""));
+		EXPECT_EQ(tiingo.GetSymbol(), _T(""));
+		EXPECT_EQ(tiingo.GetDescription(), _T(""));
+		EXPECT_EQ(tiingo.m_strQuoteCurrency, _T(""));
+		EXPECT_EQ(tiingo.m_strName, _T(""));
 
 		EXPECT_EQ(tiingo.GetRatio(), 3);
 	}
@@ -61,9 +61,9 @@ namespace FireBirdTest {
 		setTiingoCrypto.Delete();
 		setTiingoCrypto.Close();
 
-		EXPECT_STREQ(stock.m_strBaseCurrency.c_str(), stock2.m_strBaseCurrency.c_str());
-		EXPECT_STREQ(stock.GetSymbol().c_str(), stock2.GetSymbol().c_str());
-		EXPECT_STREQ(stock.GetDescription().c_str(), stock2.GetDescription().c_str());
+		EXPECT_EQ(stock.m_strBaseCurrency, stock2.m_strBaseCurrency);
+		EXPECT_EQ(stock.GetSymbol(), stock2.GetSymbol());
+		EXPECT_EQ(stock.GetDescription(), stock2.GetDescription());
 		EXPECT_TRUE(stock.m_strName == stock2.m_strName);
 		EXPECT_TRUE(stock.m_strQuoteCurrency == stock2.m_strQuoteCurrency);
 	}

@@ -40,9 +40,9 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CNeteaseDayLineDataSourceTest, TestInitialize) {
-		EXPECT_STREQ(NeteaseDayLineDataSource.GetInquiryFunction().c_str(), _T("http://quotes.money.163.com/service/chddata.html?code="));
-		EXPECT_STREQ(NeteaseDayLineDataSource.GetInquirySuffix().c_str(), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
-		EXPECT_STREQ(NeteaseDayLineDataSource.GetInquiryToken().c_str(), _T(""));
+		EXPECT_EQ(NeteaseDayLineDataSource.GetInquiryFunction(), _T("http://quotes.money.163.com/service/chddata.html?code="));
+		EXPECT_EQ(NeteaseDayLineDataSource.GetInquirySuffix(), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
+		EXPECT_EQ(NeteaseDayLineDataSource.GetInquiryToken(), _T(""));
 	}
 
 	TEST_F(CNeteaseDayLineDataSourceTest, TestSetDownLoadingStockCode) {
@@ -97,8 +97,8 @@ namespace FireBirdTest {
 		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductNeteaseDayLine"));
 
 		const string str = pProduct->GetInquiryFunction();
-		EXPECT_STREQ(str.substr(0, 54).c_str(), _T("http://quotes.money.163.com/service/chddata.html?code="));
-		EXPECT_STREQ(str.substr(str.length() - 81, 81).c_str(), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
+		EXPECT_EQ(str.substr(0, 54), _T("http://quotes.money.163.com/service/chddata.html?code="));
+		EXPECT_EQ(str.substr(str.length() - 81, 81), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
 		gl_pChinaMarket->SetSystemReady(false);
 		EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() + 1, gl_dataContainerChinaStock.Size()) << "已经有一个无需更新日线了";
 

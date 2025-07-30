@@ -39,14 +39,14 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoIEXTopOfBookTest, TestInitialize) {
 		EXPECT_EQ(IEXTopOfBook.GetIndex(), 0);
-		EXPECT_STREQ(IEXTopOfBook.GetInquiringSymbol().c_str(), _T(""));
-		EXPECT_STREQ(IEXTopOfBook.GetInquiryFunction().c_str(), _T("https://api.tiingo.com/iex?"));
+		EXPECT_EQ(IEXTopOfBook.GetInquiringSymbol(), _T(""));
+		EXPECT_EQ(IEXTopOfBook.GetInquiryFunction(), _T("https://api.tiingo.com/iex?"));
 	}
 
 	TEST_F(CProductTiingoIEXTopOfBookTest, TestCreatMessage) {
-		EXPECT_STREQ(IEXTopOfBook.CreateMessage().c_str(), IEXTopOfBook.GetInquiryFunction().c_str());
-		EXPECT_STREQ(IEXTopOfBook.CreateMessage().c_str(), _T("https://api.tiingo.com/iex?"));
-		EXPECT_STREQ(IEXTopOfBook.GetInquiringSymbol().c_str(), _T("All")) << "此时已被CreateMessage赋值";
+		EXPECT_EQ(IEXTopOfBook.CreateMessage(), IEXTopOfBook.GetInquiryFunction());
+		EXPECT_EQ(IEXTopOfBook.CreateMessage(), _T("https://api.tiingo.com/iex?"));
+		EXPECT_EQ(IEXTopOfBook.GetInquiringSymbol(), _T("All")) << "此时已被CreateMessage赋值";
 	}
 
 	TEST_F(CProductTiingoIEXTopOfBookTest, TestUpdateDataSourceStatus1) {
@@ -57,7 +57,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateIEXTopOfBook());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("Tiingo IEX top of book Updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Tiingo IEX top of book Updated"));
 
 		// 恢复原状
 		gl_pTiingoDataSource->SetUpdateIEXTopOfBook(false);
@@ -108,8 +108,8 @@ namespace FireBirdTest {
 		switch (m_lIndex) {
 		case 1: // 正确的数据
 			EXPECT_EQ(m_pvIEXTopOfBook->size(), 2);
-			EXPECT_STREQ(m_pvIEXTopOfBook->at(0)->m_strTicker.c_str(), _T("000001"));
-			EXPECT_STREQ(m_pvIEXTopOfBook->at(1)->m_strTicker.c_str(), _T("000002"));
+			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_strTicker, _T("000001"));
+			EXPECT_EQ(m_pvIEXTopOfBook->at(1)->m_strTicker, _T("000002"));
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_timeStamp.time_since_epoch().count(), 1727726400);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lLastClose, 11420000);
 			EXPECT_EQ(m_pvIEXTopOfBook->at(0)->m_lOpen, 11621300);

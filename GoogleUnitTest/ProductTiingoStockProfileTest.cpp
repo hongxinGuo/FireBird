@@ -42,7 +42,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoStockProfileTest, TestInitialize) {
 		EXPECT_EQ(stockSymbol.GetIndex(), 0);
-		EXPECT_STREQ(stockSymbol.GetInquiryFunction().c_str(), _T("https://api.tiingo.com/tiingo/fundamentals/meta?"));
+		EXPECT_EQ(stockSymbol.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/fundamentals/meta?"));
 	}
 
 	TEST_F(CProductTiingoStockProfileTest, TestCreatMessage) {
@@ -59,7 +59,7 @@ namespace FireBirdTest {
 		stockSymbol.UpdateDataSourceStatus(gl_pTiingoDataSource);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateStockSymbol());
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("Tiingo stock symbol updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Tiingo stock symbol updated"));
 		EXPECT_EQ(gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate(), gl_pWorldMarket->GetMarketDate());
 		EXPECT_TRUE(gl_systemConfiguration.IsUpdateDB());
 
@@ -124,56 +124,56 @@ namespace FireBirdTest {
 			break;
 		case 4:
 			EXPECT_EQ(m_pvStock->size(), 1);
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoPermaTicker.c_str(), _T("US000000000191"));
-			EXPECT_STREQ(m_pvStock->at(0)->GetSymbol().c_str(), _T("AA"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strName.c_str(), _T("Alcoa Corp"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strTiingoPermaTicker, _T("US000000000191"));
+			EXPECT_EQ(m_pvStock->at(0)->GetSymbol(), _T("AA"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strName, _T("Alcoa Corp"));
 			EXPECT_TRUE(m_pvStock->at(0)->IsActive());
 			EXPECT_FALSE(m_pvStock->at(0)->m_fIsADR);
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoIndustry.c_str(), _T("")) << "内容为null时返回空串_T("")";
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoSector.c_str(), _T("sector have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strSicIndustry.c_str(), _T("sicIndustry have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strSicSector.c_str(), _T("sicSector have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strReportingCurrency.c_str(), _T("usd"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strLocation.c_str(), _T("location have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strCompanyWebSite.c_str(), _T("companyWebsite have data"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strSECFilingWebSite.c_str(), _T("secFilingWebsite have data"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strTiingoIndustry, _T("")) << "内容为null时返回空串_T("")";
+			EXPECT_EQ(m_pvStock->at(0)->m_strTiingoSector, _T("sector have data"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strSicIndustry, _T("sicIndustry have data"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strSicSector, _T("sicSector have data"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strReportingCurrency, _T("usd"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strLocation, _T("location have data"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strCompanyWebSite, _T("companyWebsite have data"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strSECFilingWebSite, _T("secFilingWebsite have data"));
 			EXPECT_EQ(m_pvStock->at(0)->GetStatementLastUpdatedDate(), 20210302);
 			EXPECT_EQ(m_pvStock->at(0)->m_iSicCode, 1234);
-			EXPECT_STREQ(m_pvStock->at(0)->m_strDataProviderPermaTicker.c_str(), _T("123456"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strDataProviderPermaTicker, _T("123456"));
 			break;
 		case 10:
 			EXPECT_EQ(m_pvStock->size(), 2);
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoPermaTicker.c_str(), _T("US000000001247"));
-			EXPECT_STREQ(m_pvStock->at(0)->GetSymbol().c_str(), _T("NEW SYMBOL"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strName.c_str(), _T("Agilent Technologies Inc"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strTiingoPermaTicker, _T("US000000001247"));
+			EXPECT_EQ(m_pvStock->at(0)->GetSymbol(), _T("NEW SYMBOL"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strName, _T("Agilent Technologies Inc"));
 			EXPECT_TRUE(m_pvStock->at(0)->IsActive());
 			EXPECT_FALSE(m_pvStock->at(0)->m_fIsADR);
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoIndustry.c_str(), _T("free"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strTiingoSector.c_str(), _T(""));
+			EXPECT_EQ(m_pvStock->at(0)->m_strTiingoIndustry, _T("free"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strTiingoSector, _T(""));
 			EXPECT_EQ(m_pvStock->at(0)->m_iSicCode, 0);
-			EXPECT_STREQ(m_pvStock->at(0)->m_strSicIndustry.c_str(), _T("for"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strSicSector.c_str(), _T("not"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strReportingCurrency.c_str(), _T("usd"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strLocation.c_str(), _T(""));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strCompanyWebSite.c_str(), _T("free"));
-			EXPECT_STREQ(m_pvStock->at(0)->m_strSECFilingWebSite.c_str(), _T("Field"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strSicIndustry, _T("for"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strSicSector, _T("not"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strReportingCurrency, _T("usd"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strLocation, _T(""));
+			EXPECT_EQ(m_pvStock->at(0)->m_strCompanyWebSite, _T("free"));
+			EXPECT_EQ(m_pvStock->at(0)->m_strSECFilingWebSite, _T("Field"));
 			EXPECT_EQ(m_pvStock->at(0)->GetStatementLastUpdatedDate(), 20210305);
-			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoPermaTicker.c_str(), _T("US000000000091"));
-			EXPECT_STREQ(m_pvStock->at(1)->GetSymbol().c_str(), _T("AA"));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strName.c_str(), _T("New Name"));
+			EXPECT_EQ(m_pvStock->at(1)->m_strTiingoPermaTicker, _T("US000000000091"));
+			EXPECT_EQ(m_pvStock->at(1)->GetSymbol(), _T("AA"));
+			EXPECT_EQ(m_pvStock->at(1)->m_strName, _T("New Name"));
 			EXPECT_TRUE(m_pvStock->at(1)->IsActive());
 			EXPECT_FALSE(m_pvStock->at(1)->m_fIsADR);
-			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoIndustry.c_str(), _T("")) << "当字符串为Field not available for free/evaluation时，返回空串";
-			EXPECT_STREQ(m_pvStock->at(1)->m_strTiingoSector.c_str(), _T(""));
+			EXPECT_EQ(m_pvStock->at(1)->m_strTiingoIndustry, _T("")) << "当字符串为Field not available for free/evaluation时，返回空串";
+			EXPECT_EQ(m_pvStock->at(1)->m_strTiingoSector, _T(""));
 			EXPECT_EQ(m_pvStock->at(1)->m_iSicCode, 0);
-			EXPECT_STREQ(m_pvStock->at(1)->m_strSicIndustry.c_str(), _T(""));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strSicSector.c_str(), _T(""));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strReportingCurrency.c_str(), _T("usd"));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strLocation.c_str(), _T(""));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strCompanyWebSite.c_str(), _T(""));
-			EXPECT_STREQ(m_pvStock->at(1)->m_strSECFilingWebSite.c_str(), _T(""));
+			EXPECT_EQ(m_pvStock->at(1)->m_strSicIndustry, _T(""));
+			EXPECT_EQ(m_pvStock->at(1)->m_strSicSector, _T(""));
+			EXPECT_EQ(m_pvStock->at(1)->m_strReportingCurrency, _T("usd"));
+			EXPECT_EQ(m_pvStock->at(1)->m_strLocation, _T(""));
+			EXPECT_EQ(m_pvStock->at(1)->m_strCompanyWebSite, _T(""));
+			EXPECT_EQ(m_pvStock->at(1)->m_strSECFilingWebSite, _T(""));
 			EXPECT_EQ(m_pvStock->at(1)->GetStatementLastUpdatedDate(), 20210302);
-			EXPECT_STREQ(m_pvStock->at(1)->m_strDataProviderPermaTicker.c_str(), _T("123456"));
+			EXPECT_EQ(m_pvStock->at(1)->m_strDataProviderPermaTicker, _T("123456"));
 			break;
 		default:
 			break;

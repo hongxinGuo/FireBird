@@ -131,10 +131,10 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestGetTiingoStock) {
 		CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(0); // A
-		EXPECT_STREQ(pStock->GetSymbol().c_str(), _T("A")) << "第一个股票代码为A";
+		EXPECT_EQ(pStock->GetSymbol(), _T("A")) << "第一个股票代码为A";
 		pStock = gl_dataContainerTiingoStock.GetStock(_T("A"));
 		EXPECT_FALSE(pStock == nullptr);
-		EXPECT_STREQ(pStock->m_strName.c_str(), _T("Agilent Technologies Inc"));
+		EXPECT_EQ(pStock->m_strName, _T("Agilent Technologies Inc"));
 	}
 
 	TEST_F(CWorldMarketTest, TestIsUpdateProfileDB) {
@@ -177,10 +177,10 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestGetStock) {
 		CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(0); // 000001.SS
-		EXPECT_STREQ(pStock->GetSymbol().c_str(), _T("000001.SS")) << "第一个股票代码为000001.SS";
+		EXPECT_EQ(pStock->GetSymbol(), _T("000001.SS")) << "第一个股票代码为000001.SS";
 		pStock = gl_dataContainerFinnhubStock.GetItem(_T("000001.SS"));
 		EXPECT_FALSE(pStock == nullptr);
-		EXPECT_STREQ(pStock->GetDescription().c_str(), _T("SSE Composite Index"));
+		EXPECT_EQ(pStock->GetDescription(), _T("SSE Composite Index"));
 	}
 
 	TEST_F(CWorldMarketTest, TestAddTiingoStock) {
@@ -399,7 +399,7 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.Add(pStock);
 		pStock = gl_dataContainerFinnhubStock.GetItem(_T("000001.SS"));
 		EXPECT_TRUE(pStock != nullptr);
-		EXPECT_STREQ(pStock->GetCurrency().c_str(), _T(""));
+		EXPECT_EQ(pStock->GetCurrency(), _T(""));
 		pStock->SetUpdateProfileDB(true);
 		pStock->SetCurrency(_T("No Currency")); // 更新这个条目
 
@@ -1080,18 +1080,18 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestGetFinnhubWebSocketSymbols) {
 		const vectorString vString = gl_pWorldMarket->GetFinnhubWebSocketSymbols();
 
-		EXPECT_STREQ(vString.at(0).c_str(), _T("A"));
-		EXPECT_STREQ(vString.at(1).c_str(), _T("AA"));
-		EXPECT_STREQ(vString.at(2).c_str(), _T("AAL"));
-		EXPECT_STREQ(vString.at(3).c_str(), _T("AAPL"));
+		EXPECT_EQ(vString.at(0), _T("A"));
+		EXPECT_EQ(vString.at(1), _T("AA"));
+		EXPECT_EQ(vString.at(2), _T("AAL"));
+		EXPECT_EQ(vString.at(3), _T("AAPL"));
 
-		EXPECT_STREQ(vString.at(4).c_str(), _T("FXCM:USD/JPY"));
-		EXPECT_STREQ(vString.at(5).c_str(), _T("IC MARKETS:1"));
-		EXPECT_STREQ(vString.at(6).c_str(), _T("OANDA:AUD_SGD"));
+		EXPECT_EQ(vString.at(4), _T("FXCM:USD/JPY"));
+		EXPECT_EQ(vString.at(5), _T("IC MARKETS:1"));
+		EXPECT_EQ(vString.at(6), _T("OANDA:AUD_SGD"));
 
-		EXPECT_STREQ(vString.at(7).c_str(), _T("BINANCE:IDEXBUSD"));
-		EXPECT_STREQ(vString.at(8).c_str(), _T("BINANCE:MDAETH"));
-		EXPECT_STREQ(vString.at(9).c_str(), _T("BINANCE:OCEANBTC"));
+		EXPECT_EQ(vString.at(7), _T("BINANCE:IDEXBUSD"));
+		EXPECT_EQ(vString.at(8), _T("BINANCE:MDAETH"));
+		EXPECT_EQ(vString.at(9), _T("BINANCE:OCEANBTC"));
 	}
 
 	TEST_F(CWorldMarketTest, TestSetTiingoStockDayLineUpdated) {

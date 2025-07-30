@@ -31,10 +31,10 @@ namespace FireBirdTest {
 
 	TEST_F(CNaicsIndustryTest, TestInitialize) {
 		const CNaicsIndustry NaicsIndustry;
-		EXPECT_STREQ(NaicsIndustry.m_strNaics.c_str(), _T(" "));
-		EXPECT_STREQ(NaicsIndustry.m_strNationalIndustry.c_str(), _T(" "));
-		EXPECT_STREQ(NaicsIndustry.m_strSector.c_str(), _T(" "));
-		EXPECT_STREQ(NaicsIndustry.m_strSubSector.c_str(), _T(" "));
+		EXPECT_EQ(NaicsIndustry.m_strNaics, _T(" "));
+		EXPECT_EQ(NaicsIndustry.m_strNationalIndustry, _T(" "));
+		EXPECT_EQ(NaicsIndustry.m_strSector, _T(" "));
+		EXPECT_EQ(NaicsIndustry.m_strSubSector, _T(" "));
 		EXPECT_FALSE(NaicsIndustry.m_fUpdated);
 	}
 
@@ -68,10 +68,10 @@ namespace FireBirdTest {
 		setNaicsIndustry2.m_pDatabase->BeginTrans();
 		EXPECT_TRUE(!setNaicsIndustry2.IsEOF()) << "此时已经存入了AA";
 		NaicsIndustry2.Load(setNaicsIndustry2);
-		EXPECT_STREQ(NaicsIndustry.m_strNaics.c_str(), _T("AA"));
-		EXPECT_STREQ(NaicsIndustry.m_strNationalIndustry.c_str(), _T("aaa"));
-		EXPECT_STREQ(NaicsIndustry.m_strSector.c_str(), _T("abdc"));
-		EXPECT_STREQ(NaicsIndustry.m_strSubSector.c_str(), _T("Beijing"));
+		EXPECT_EQ(NaicsIndustry.m_strNaics, _T("AA"));
+		EXPECT_EQ(NaicsIndustry.m_strNationalIndustry, _T("aaa"));
+		EXPECT_EQ(NaicsIndustry.m_strSector, _T("abdc"));
+		EXPECT_EQ(NaicsIndustry.m_strSubSector, _T("Beijing"));
 		EXPECT_TRUE(NaicsIndustry.m_fUpdated);
 		setNaicsIndustry2.Delete();
 		setNaicsIndustry2.m_pDatabase->CommitTrans();

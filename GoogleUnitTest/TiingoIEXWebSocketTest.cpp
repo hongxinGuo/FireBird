@@ -35,7 +35,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTiingoIEXWebSocketTest, TestGetURL) {
-		EXPECT_STREQ(gl_pTiingoIEXWebSocket->GetURL().c_str(), _T("wss://api.tiingo.com/iex"));
+		EXPECT_EQ(gl_pTiingoIEXWebSocket->GetURL(), _T("wss://api.tiingo.com/iex"));
 	}
 
 	TEST_F(CTiingoIEXWebSocketTest, TestSetSubscriptionId) {

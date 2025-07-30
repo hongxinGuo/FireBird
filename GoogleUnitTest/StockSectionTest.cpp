@@ -58,9 +58,9 @@ namespace FireBirdTest {
 	TEST_F(CStockSectionTest, TestGetComment) {
 		CStockSection stockSection;
 
-		EXPECT_STREQ(stockSection.GetComment().c_str(), _T(""));
+		EXPECT_EQ(stockSection.GetComment(), _T(""));
 		stockSection.SetComment(_T("abc"));
-		EXPECT_STREQ(stockSection.GetComment().c_str(), _T("abc"));
+		EXPECT_EQ(stockSection.GetComment(), _T("abc"));
 	}
 
 	TEST_F(CStockSectionTest, TestIsBuildStockPtr) {

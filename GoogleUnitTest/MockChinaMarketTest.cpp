@@ -94,7 +94,7 @@ namespace FireBirdTest {
 				for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 					const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(i);
 					if (pStock->IsUpdateDayLineDB()) {
-						EXPECT_STREQ(pStock->GetSymbol().c_str(), _T(""));
+						EXPECT_EQ(pStock->GetSymbol(), _T(""));
 					}
 				}
 			}

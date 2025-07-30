@@ -40,14 +40,14 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCompanyPeerTest, TestInitialize) {
 		EXPECT_EQ(companyPeer.GetIndex(), 0);
-		EXPECT_STREQ(companyPeer.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/stock/peers?symbol="));
+		EXPECT_EQ(companyPeer.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/peers?symbol="));
 	}
 
 	TEST_F(CFinnhubCompanyPeerTest, TestCreatMessage) {
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdatePeer(true);
 		companyPeer.SetMarket(gl_pWorldMarket);
 		companyPeer.SetIndex(1);
-		EXPECT_STREQ(companyPeer.CreateMessage().c_str(), (companyPeer.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol()).c_str());
+		EXPECT_EQ(companyPeer.CreateMessage(), (companyPeer.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol()));
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdatePeer()) << "接收到的数据处理后方设置此标识";
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdatePeer(true);
@@ -120,7 +120,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(m_jsonPeer.empty()) << "多余2000个字符时截断";
 			break;
 		case 10:
-			EXPECT_STREQ(m_jsonPeer.dump().c_str(), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+			EXPECT_EQ(m_jsonPeer.dump(), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
 			break;
 		default:
 			break;
@@ -201,7 +201,7 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			s = pStock->GetPeer().dump();
-			EXPECT_STREQ(s.c_str(), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+			EXPECT_EQ(s, _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(pStock->IsUpdatePeer());
 			EXPECT_EQ(pStock->GetPeerUpdateDate(), m_finnhubCompanyPeer.GetMarket()->GetMarketDate()) << "已更改为当前市场日期";

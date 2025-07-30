@@ -123,18 +123,18 @@ namespace FireBirdTest {
 		case 3: // json格式错误
 			EXPECT_FALSE(fSucceed);
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
-			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage().c_str(), _T("Finnhub Web Socket json error"));
+			EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("Finnhub Web Socket json error"));
 			break;
 		case 4: // type类型不存在
 			EXPECT_FALSE(fSucceed);
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
-			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage().c_str(), _T("Finnhub Web Socket type error: message"));
+			EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(), _T("Finnhub Web Socket type error: message"));
 			break;
 		case 5: // error message
 			EXPECT_FALSE(fSucceed);
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 1);
-			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage().c_str(),
-			             _T("Finnhub WebSocket error message: Subscribing to too many symbols"));
+			EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(),
+			          _T("Finnhub WebSocket error message: Subscribing to too many symbols"));
 			break;
 		case 6: // 正确,但condition项为空
 			EXPECT_TRUE(fSucceed);
@@ -196,8 +196,8 @@ namespace FireBirdTest {
 		case 5: // error message
 			EXPECT_FALSE(fSucceed);
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 1);
-			EXPECT_STREQ(gl_systemMessage.PopInnerSystemInformationMessage().c_str(),
-			             _T("Finnhub WebSocket error message: Subscribing to too many symbols"));
+			EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(),
+			          _T("Finnhub WebSocket error message: Subscribing to too many symbols"));
 			break;
 		case 6: // 正确,但condition项为空
 			EXPECT_TRUE(fSucceed);

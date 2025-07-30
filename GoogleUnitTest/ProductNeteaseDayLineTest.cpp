@@ -39,11 +39,11 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductNeteaseDayLineTest, TestInitialize) {
-		EXPECT_STREQ(neteaseDayLine.GetInquiryFunction().c_str(), _T("http://quotes.money.163.com/service/chddata.html?code="));
+		EXPECT_EQ(neteaseDayLine.GetInquiryFunction(), _T("http://quotes.money.163.com/service/chddata.html?code="));
 	}
 
 	TEST_F(CProductNeteaseDayLineTest, TestCreateMessage) {
-		EXPECT_STREQ(neteaseDayLine.CreateMessage().c_str(), _T("http://quotes.money.163.com/service/chddata.html?code=")) << "网易日线数据的申请字符串由CNeteaseDayLineWebInquiry类完成，本Product无需动作";
+		EXPECT_EQ(neteaseDayLine.CreateMessage(), _T("http://quotes.money.163.com/service/chddata.html?code=")) << "网易日线数据的申请字符串由CNeteaseDayLineWebInquiry类完成，本Product无需动作";
 	}
 
 	TEST_F(CProductNeteaseDayLineTest, TestParseAndStoreWebData) {
@@ -60,7 +60,7 @@ namespace FireBirdTest {
 
 		const auto vDayLine = pNeteaseDayLine->GetProcessedDayLine();
 		EXPECT_EQ(vDayLine.size(), 2);
-		EXPECT_STREQ(vDayLine.at(0)->GetStockSymbol().c_str(), _T("600000.SS")) << "网易日线不从数据中解析股票代码，而是直接使用被查询股票的代码";
+		EXPECT_EQ(vDayLine.at(0)->GetStockSymbol(), _T("600000.SS")) << "网易日线不从数据中解析股票代码，而是直接使用被查询股票的代码";
 		EXPECT_EQ(vDayLine.at(0)->GetDate(), 20190723) << "网易日线逆序发送，最新的日期在最前面。处理后的数据进行正序排序";
 		EXPECT_EQ(vDayLine.at(1)->GetDate(), 20190724);
 	}

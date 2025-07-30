@@ -67,8 +67,8 @@ namespace FireBirdTest {
 			EXPECT_FALSE(gl_pChinaMarket->IsRTDataNeedCalculate());
 			const NeteaseData* pData = GetParam();
 			m_iCount = pData->m_iCount;
-			if (gl_dataContainerChinaStock.IsSymbol(pData->m_strSymbol.c_str())) {
-				pStock = gl_dataContainerChinaStock.GetStock(pData->m_strSymbol.c_str());
+			if (gl_dataContainerChinaStock.IsSymbol(pData->m_strSymbol)) {
+				pStock = gl_dataContainerChinaStock.GetStock(pData->m_strSymbol);
 				pStock->ClearRTDataDeque();
 				pStock->SetTransactionTime(s_tCurrentMarketTime - 10);
 			}

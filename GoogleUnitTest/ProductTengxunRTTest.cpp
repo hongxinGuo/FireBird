@@ -37,12 +37,12 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductTengxunRTTest, TestInitialize) {
-		EXPECT_STREQ(tengxunRT.GetInquiryFunction().c_str(), _T("http://qt.gtimg.cn/q="));
+		EXPECT_EQ(tengxunRT.GetInquiryFunction(), _T("http://qt.gtimg.cn/q="));
 	}
 
 	TEST_F(CProductTengxunRTTest, TestCreateMessage) {
 		const string strInquiry = tengxunRT.CreateMessage();
-		EXPECT_STREQ(strInquiry.substr(0, 21).c_str(), _T("http://qt.gtimg.cn/q="));
+		EXPECT_EQ(strInquiry.substr(0, 21), _T("http://qt.gtimg.cn/q="));
 		EXPECT_GT(strInquiry.length(), 21) << "无需检查随后的股票代码制式";
 	}
 

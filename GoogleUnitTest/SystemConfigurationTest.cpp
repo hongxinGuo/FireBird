@@ -89,7 +89,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(jsSystemConfiguration.at(json::json_pointer("/FinancialDataUpdateRate/TiingoCompanyFinancialState")), 30);
 
 		sTemp = jsSystemConfiguration.at(json::json_pointer("/TestConfiguration/BenchmarkTestFileDirectory"));
-		EXPECT_STREQ(sTemp.c_str(), _T("C:\\FireBird\\Test Data\\Benchmark\\"));
+		EXPECT_EQ(sTemp, _T("C:\\FireBird\\Test Data\\Benchmark\\"));
 	}
 
 	TEST_F(CSystemConfigurationTest, TestInitialize) {

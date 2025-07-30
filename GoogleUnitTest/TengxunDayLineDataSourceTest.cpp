@@ -39,9 +39,9 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CTengxunDayLineDataSourceTest, TestInitialize) {
-		EXPECT_STREQ(TengxunDayLineDataSource.GetInquiryFunction().c_str(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param="));
-		EXPECT_STREQ(TengxunDayLineDataSource.GetInquirySuffix().c_str(), _T(",2000,,"));
-		EXPECT_STREQ(TengxunDayLineDataSource.GetInquiryToken().c_str(), _T(""));
+		EXPECT_EQ(TengxunDayLineDataSource.GetInquiryFunction(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param="));
+		EXPECT_EQ(TengxunDayLineDataSource.GetInquirySuffix(), _T(",2000,,"));
+		EXPECT_EQ(TengxunDayLineDataSource.GetInquiryToken(), _T(""));
 	}
 
 	TEST_F(CTengxunDayLineDataSourceTest, TestIsUpdateDayLine) {
@@ -104,7 +104,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(TengxunDayLineDataSource.Inquire()) << "查询完了";
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("中国市场股票日线历史数据更新完毕"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("中国市场股票日线历史数据更新完毕"));
 		EXPECT_FALSE(TengxunDayLineDataSource.HaveInquiry());
 
 		// 恢复原状
@@ -125,7 +125,7 @@ namespace FireBirdTest {
 		const auto pProduct = vProduct.at(0);
 		EXPECT_STREQ(typeid(*pProduct).name(), _T("class CProductTengxunDayLine"));
 		EXPECT_EQ(pProduct->GetIndex(), gl_dataContainerChinaStock.GetOffset(pStock));
-		EXPECT_STREQ(pProduct->GetInquiryFunction().c_str(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2019-12-31,2023-02-01,2000,,")) << "起始日期为日线结束日期的前一天";
+		EXPECT_EQ(pProduct->GetInquiryFunction(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2019-12-31,2023-02-01,2000,,")) << "起始日期为日线结束日期的前一天";
 		EXPECT_EQ(dynamic_pointer_cast<CProductTengxunDayLine>(pProduct)->GetInquiryNumber(), 1);
 
 		// 恢复原状
@@ -145,12 +145,12 @@ namespace FireBirdTest {
 		const auto pProduct2 = vProduct.at(1);
 		EXPECT_STREQ(typeid(*pProduct1).name(), _T("class CProductTengxunDayLine"));
 		EXPECT_EQ(pProduct1->GetIndex(), gl_dataContainerChinaStock.GetOffset(pStock));
-		EXPECT_STREQ(pProduct1->GetInquiryFunction().c_str(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2009-12-31,2015-12-31,2000,,")) << "起始日期为日线结束日期的前一天";
+		EXPECT_EQ(pProduct1->GetInquiryFunction(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2009-12-31,2015-12-31,2000,,")) << "起始日期为日线结束日期的前一天";
 		EXPECT_EQ(dynamic_pointer_cast<CProductTengxunDayLine>(pProduct1)->GetInquiryNumber(), 2);
 
 		EXPECT_STREQ(typeid(*pProduct2).name(), _T("class CProductTengxunDayLine"));
 		EXPECT_EQ(pProduct2->GetIndex(), gl_dataContainerChinaStock.GetOffset(pStock));
-		EXPECT_STREQ(pProduct2->GetInquiryFunction().c_str(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2016-01-01,2023-02-01,2000,,"));
+		EXPECT_EQ(pProduct2->GetInquiryFunction(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2016-01-01,2023-02-01,2000,,"));
 		EXPECT_EQ(dynamic_pointer_cast<CProductTengxunDayLine>(pProduct1)->GetInquiryNumber(), 2);
 
 		// 恢复原状
@@ -173,10 +173,10 @@ namespace FireBirdTest {
 		EXPECT_STREQ(typeid(*pProduct1).name(), _T("class CProductTengxunDayLine"));
 		EXPECT_EQ(pProduct1->GetIndex(), gl_dataContainerChinaStock.GetOffset(pStock));
 		EXPECT_EQ(dynamic_pointer_cast<CProductTengxunDayLine>(pProduct1)->GetInquiryNumber(), 4);
-		EXPECT_STREQ(pProduct1->GetInquiryFunction().c_str(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,1999-12-31,2005-12-31,2000,,")) << "起始日期为日线结束日期的前一天";
-		EXPECT_STREQ(pProduct2->GetInquiryFunction().c_str(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2006-01-01,2012-12-31,2000,,")) << "起始日期为日线结束日期的前一天";
-		EXPECT_STREQ(pProduct3->GetInquiryFunction().c_str(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2013-01-01,2019-12-31,2000,,")) << "起始日期为日线结束日期的前一天";
-		EXPECT_STREQ(pProduct4->GetInquiryFunction().c_str(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2020-01-01,2023-02-01,2000,,")) << "起始日期为日线结束日期的前一天";
+		EXPECT_EQ(pProduct1->GetInquiryFunction(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,1999-12-31,2005-12-31,2000,,")) << "起始日期为日线结束日期的前一天";
+		EXPECT_EQ(pProduct2->GetInquiryFunction(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2006-01-01,2012-12-31,2000,,")) << "起始日期为日线结束日期的前一天";
+		EXPECT_EQ(pProduct3->GetInquiryFunction(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2013-01-01,2019-12-31,2000,,")) << "起始日期为日线结束日期的前一天";
+		EXPECT_EQ(pProduct4->GetInquiryFunction(), _T("https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=sh600008,day,2020-01-01,2023-02-01,2000,,")) << "起始日期为日线结束日期的前一天";
 
 		// 恢复原状
 		pStock->SetDayLineEndDate(lEndDate);

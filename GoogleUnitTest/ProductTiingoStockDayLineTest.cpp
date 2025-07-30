@@ -37,7 +37,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductTiingoStockDayLineTest, TestInitialize) {
 		EXPECT_EQ(stockPriceCandle.GetIndex(), 0);
-		EXPECT_STREQ(stockPriceCandle.GetInquiryFunction().c_str(), _T("https://api.tiingo.com/tiingo/daily/"));
+		EXPECT_EQ(stockPriceCandle.GetInquiryFunction(), _T("https://api.tiingo.com/tiingo/daily/"));
 	}
 
 	TEST_F(CProductTiingoStockDayLineTest, TestGetTiingoDayLineInquiryParam) {
@@ -188,7 +188,7 @@ namespace FireBirdTest {
 		case 11: // 股票没有日线数据
 			EXPECT_EQ(pvDayLine->size(), 0);
 			EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 1) << "函数报告错误信息";
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage().c_str(), _T("Tiingo stock dayLine Error:Ticker 'AAPL' not found"));
+			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), _T("Tiingo stock dayLine Error:Ticker 'AAPL' not found"));
 			break;
 		default:
 			break;
@@ -237,7 +237,7 @@ namespace FireBirdTest {
 		CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(0); // 这个是当前处理的股票
 
 		m_tiingoStockPriceCandle.ParseAndStoreWebData(m_pWebData);
-		EXPECT_STREQ(pStock->GetSymbol().c_str(), _T("A"));
+		EXPECT_EQ(pStock->GetSymbol(), _T("A"));
 		switch (m_lIndex) {
 		case 1: // 格式不对
 			EXPECT_EQ(pStock->GetDayLineSize(), 0);

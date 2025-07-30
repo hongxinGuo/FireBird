@@ -38,14 +38,14 @@ namespace FireBirdTest {
 
 	TEST_F(CProductFinnhubCryptoDayLineTest, TestInitialize) {
 		EXPECT_EQ(cryptoDayLine.GetIndex(), 0);
-		EXPECT_STREQ(cryptoDayLine.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/crypto/candle?symbol="));
+		EXPECT_EQ(cryptoDayLine.GetInquiryFunction(), _T("https://finnhub.io/api/v1/crypto/candle?symbol="));
 	}
 
 	TEST_F(CProductFinnhubCryptoDayLineTest, TestCreatMessage) {
 		cryptoDayLine.SetMarket(gl_pWorldMarket);
 		cryptoDayLine.SetIndex(1);
-		EXPECT_STREQ(cryptoDayLine.CreateMessage().c_str(),
-		             (cryptoDayLine.GetInquiryFunction() + gl_dataFinnhubCryptoSymbol.GetItem(1)->GetFinnhubDayLineInquiryParam(GetUTCTime())).c_str());
+		EXPECT_EQ(cryptoDayLine.CreateMessage(),
+		          (cryptoDayLine.GetInquiryFunction() + gl_dataFinnhubCryptoSymbol.GetItem(1)->GetFinnhubDayLineInquiryParam(GetUTCTime())));
 	}
 
 	TEST_F(CProductFinnhubCryptoDayLineTest, TestProcessWebData) {
@@ -82,7 +82,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pData->m_strSymbol.c_str()));
+			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pData->m_strSymbol));
 			gl_dataFinnhubCryptoSymbol.GetItem(m_lIndex)->SetIPOStatus(_STOCK_IPOED_);
 			m_pWebData = pData->m_pData;
 			m_finnhubCryptoDayLine.__Test_checkAccessRight(m_pWebData);
@@ -122,7 +122,7 @@ namespace FireBirdTest {
 		case 2: // s项报告not ok
 			EXPECT_EQ(m_pvDayLine->size(), 0);
 			strMessage = _T("日线返回值不为ok");
-			EXPECT_STREQ(gl_systemMessage.PopErrorMessage().c_str(), strMessage.c_str());
+			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
 		case 3: // s项报告 no data
 			EXPECT_EQ(m_pvDayLine->size(), 0);
@@ -163,7 +163,7 @@ namespace FireBirdTest {
 			GeneralCheck();
 			const Test_FinnhubWebData* pData = GetParam();
 			m_lIndex = pData->m_lIndex;
-			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pData->m_strSymbol.c_str()));
+			EXPECT_TRUE(gl_dataFinnhubCryptoSymbol.IsSymbol(pData->m_strSymbol));
 			lIPOStatus = gl_dataFinnhubCryptoSymbol.GetItem(0)->GetIPOStatus();
 			gl_dataFinnhubCryptoSymbol.GetItem(0)->SetIPOStatus(_STOCK_IPOED_);
 			m_pWebData = pData->m_pData;

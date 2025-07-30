@@ -38,13 +38,13 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubMarketHolidayProductTest, TestInitialize) {
 		EXPECT_EQ(MarketHolidayProduct.GetIndex(), 0);
-		EXPECT_STREQ(MarketHolidayProduct.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/stock/market-holiday?exchange="));
+		EXPECT_EQ(MarketHolidayProduct.GetInquiryFunction(), _T("https://finnhub.io/api/v1/stock/market-holiday?exchange="));
 	}
 
 	TEST_F(CFinnhubMarketHolidayProductTest, TestCreatMessage) {
 		MarketHolidayProduct.SetMarket(gl_pWorldMarket);
 		MarketHolidayProduct.SetIndex(1);
-		EXPECT_STREQ(MarketHolidayProduct.CreateMessage().c_str(), (MarketHolidayProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetItemExchangeCode(1)).c_str());
+		EXPECT_EQ(MarketHolidayProduct.CreateMessage(), (MarketHolidayProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetItemExchangeCode(1)));
 	}
 
 	// 正确的数据
@@ -92,10 +92,10 @@ namespace FireBirdTest {
 			break;
 		case 2: // 正确的数据
 			EXPECT_EQ(m_pvMarketHoliday->size(), 2);
-			EXPECT_STREQ(m_pvMarketHoliday->at(0)->m_strExchange.c_str(), _T("US"));
-			EXPECT_STREQ(m_pvMarketHoliday->at(0)->m_strEventName.c_str(), _T("Christmas"));
-			EXPECT_STREQ(m_pvMarketHoliday->at(1)->m_strExchange.c_str(), _T("US"));
-			EXPECT_STREQ(m_pvMarketHoliday->at(1)->m_strEventName.c_str(), _T("Independence Day"));
+			EXPECT_EQ(m_pvMarketHoliday->at(0)->m_strExchange, _T("US"));
+			EXPECT_EQ(m_pvMarketHoliday->at(0)->m_strEventName, _T("Christmas"));
+			EXPECT_EQ(m_pvMarketHoliday->at(1)->m_strExchange, _T("US"));
+			EXPECT_EQ(m_pvMarketHoliday->at(1)->m_strEventName, _T("Independence Day"));
 			break;
 		default:
 			break;

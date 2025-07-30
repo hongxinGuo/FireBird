@@ -39,12 +39,12 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductSinaRTTest, TestInitialize) {
-		EXPECT_STREQ(sinaRT.GetInquiryFunction().c_str(), _T("https://hq.sinajs.cn/list="));
+		EXPECT_EQ(sinaRT.GetInquiryFunction(), _T("https://hq.sinajs.cn/list="));
 	}
 
 	TEST_F(CProductSinaRTTest, TestCreateMessage) {
 		const string strInquiry = sinaRT.CreateMessage();
-		EXPECT_STREQ(strInquiry.substr(0, 26).c_str(), _T("https://hq.sinajs.cn/list="));
+		EXPECT_EQ(strInquiry.substr(0, 26), _T("https://hq.sinajs.cn/list="));
 		EXPECT_GT(strInquiry.length(), 26) << "无需检查随后的股票代码制式";
 	}
 

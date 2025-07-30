@@ -437,7 +437,7 @@ namespace FireBirdTest {
 
 		localtime_s(&tmLocal, &tUTC);
 		string s = fmt::format("{:02d}:{:02d}:{:02d}", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-		EXPECT_STREQ(virtualMarket.GetStringOfLocalTime().c_str(), s.c_str());
+		EXPECT_EQ(virtualMarket.GetStringOfLocalTime(), s);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfLocalDateTime) {
@@ -448,7 +448,7 @@ namespace FireBirdTest {
 
 		localtime_s(&tmLocal, &tUTC);
 		string s = fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
-		EXPECT_STREQ(virtualMarket.GetStringOfLocalDateTime().c_str(), s.c_str());
+		EXPECT_EQ(virtualMarket.GetStringOfLocalDateTime(), s);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfMarketTime) {
@@ -458,7 +458,7 @@ namespace FireBirdTest {
 		virtualMarket.GetMarketTimeStruct(&tmMarket, GetUTCTime());
 
 		string s = fmt::format("{:02d}:{:02d}:{:02d}", tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
-		EXPECT_STREQ(virtualMarket.GetStringOfMarketTime().c_str(), s.c_str());
+		EXPECT_EQ(virtualMarket.GetStringOfMarketTime(), s);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfMarketDateTime) {
@@ -468,7 +468,7 @@ namespace FireBirdTest {
 
 		virtualMarket.GetMarketTimeStruct(&tmMarket, GetUTCTime());
 		string s = fmt::format("{:04d}年{:02d}月{:02d}日 {:02d}:{:02d}:{:02d}", tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
-		EXPECT_STREQ(virtualMarket.GetStringOfMarketDateTime().c_str(), s.c_str());
+		EXPECT_EQ(virtualMarket.GetStringOfMarketDateTime(), s);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetStringOfMarketDate) {
@@ -477,7 +477,7 @@ namespace FireBirdTest {
 		const long month = lDate / 100 - year * 100;
 		const long day = lDate - year * 10000 - month * 100;
 		string s = fmt::format("{:04Ld}年{:02Ld}月{:02Ld}日", year, month, day);
-		EXPECT_STREQ(virtualMarket.GetStringOfMarketDate().c_str(), s.c_str());
+		EXPECT_EQ(virtualMarket.GetStringOfMarketDate(), s);
 	}
 
 	TEST_F(CVirtualMarketTest, TestGetDateOfWeek) {

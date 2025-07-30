@@ -39,11 +39,11 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CProductNeteaseRTTest, TestInitialize) {
-		EXPECT_STREQ(neteaseRT.GetInquiryFunction().c_str(), _T("http://api.money.126.net/data/feed/"));
+		EXPECT_EQ(neteaseRT.GetInquiryFunction(), _T("http://api.money.126.net/data/feed/"));
 	}
 
 	TEST_F(CProductNeteaseRTTest, TestCreateMessage) {
-		EXPECT_STREQ(neteaseRT.CreateMessage().c_str(), _T("http://api.money.126.net/data/feed/")) << "网易实时数据的申请字符串由CNeteaseRTWebInquiry类完成，本Product无需动作";
+		EXPECT_EQ(neteaseRT.CreateMessage(), _T("http://api.money.126.net/data/feed/")) << "网易实时数据的申请字符串由CNeteaseRTWebInquiry类完成，本Product无需动作";
 	}
 
 	TEST_F(CProductNeteaseRTTest, TestParseAndStoreWebData) {

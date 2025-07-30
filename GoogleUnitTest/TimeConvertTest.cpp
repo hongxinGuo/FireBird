@@ -211,7 +211,7 @@ namespace FireBirdTest {
 
 	TEST_F(TimeConvertTest, TestConvertDateToChineseTimeStampString) {
 		string s = fmt::format("{:4d}Äê{:02d}ÔÂ{:02d}ÈÕ", 2020, 2, 2);
-		EXPECT_STREQ(ConvertDateToChineseTimeStampString(20200202).c_str(), s.c_str());
+		EXPECT_EQ(ConvertDateToChineseTimeStampString(20200202), s);
 	}
 
 	TEST_F(TimeConvertTest, TestGetUTCTimeStruct) {

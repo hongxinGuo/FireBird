@@ -37,7 +37,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestInitialize) {
 		EXPECT_EQ(productForexSymbol.GetIndex(), 0);
-		EXPECT_STREQ(productForexSymbol.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/forex/symbol?exchange="));
+		EXPECT_EQ(productForexSymbol.GetInquiryFunction(), _T("https://finnhub.io/api/v1/forex/symbol?exchange="));
 	}
 
 	TEST_F(CProductFinnhubForexSymbolTest, TestCreatMessage) {
@@ -114,8 +114,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvForexSymbol->size(), 0);
 			break;
 		case 10:
-			EXPECT_STREQ(m_pvForexSymbol->at(0)->GetSymbol().c_str(), _T("New Symbol"));
-			EXPECT_STREQ(m_pvForexSymbol->at(1)->GetSymbol().c_str(), _T("OANDA:DE10YB_EUR"));
+			EXPECT_EQ(m_pvForexSymbol->at(0)->GetSymbol(), _T("New Symbol"));
+			EXPECT_EQ(m_pvForexSymbol->at(1)->GetSymbol(), _T("OANDA:DE10YB_EUR"));
 			EXPECT_EQ(m_pvForexSymbol->size(), 2);
 			break;
 		default:
@@ -173,7 +173,7 @@ namespace FireBirdTest {
 		case 10:
 			EXPECT_TRUE(gl_dataFinnhubForexSymbol.IsSymbol(_T("New Symbol"))) << "新添加的Forex代码";
 			pForexSymbol = gl_dataFinnhubForexSymbol.GetItem(_T("New Symbol"));
-			EXPECT_STREQ(pForexSymbol->GetExchangeCode().c_str(), _T("oanda")) << "Index为零时的交易所";
+			EXPECT_EQ(pForexSymbol->GetExchangeCode(), _T("oanda")) << "Index为零时的交易所";
 
 		// 恢复原状
 			gl_dataFinnhubForexSymbol.Delete(pForexSymbol);

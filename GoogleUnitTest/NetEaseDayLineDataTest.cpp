@@ -112,8 +112,8 @@ namespace FireBirdTest {
 		switch (m_iCount) {
 		case 1:
 			EXPECT_TRUE(m_DayLinePtr != nullptr);
-			EXPECT_STREQ(m_DayLinePtr->GetStockSymbol().c_str(), _T("600000.SS"));
-			EXPECT_STREQ(m_DayLinePtr->GetDisplaySymbol().c_str(), _T("浦发银行"));
+			EXPECT_EQ(m_DayLinePtr->GetStockSymbol(), _T("600000.SS"));
+			EXPECT_EQ(m_DayLinePtr->GetDisplaySymbol(), _T("浦发银行"));
 			EXPECT_EQ(m_DayLinePtr->GetClose(), 11490);
 			EXPECT_EQ(m_DayLinePtr->GetHigh(), 11560);
 			EXPECT_EQ(m_DayLinePtr->GetLow(), 11430);
@@ -141,7 +141,7 @@ namespace FireBirdTest {
 			break;
 		case 9:
 			EXPECT_TRUE(m_DayLinePtr != nullptr);
-			EXPECT_STREQ(m_DayLinePtr->GetDisplaySymbol().c_str(), _T("价值7030"));
+			EXPECT_EQ(m_DayLinePtr->GetDisplaySymbol(), _T("价值7030"));
 			EXPECT_EQ(m_DayLinePtr->GetClose(), 3658980);
 			EXPECT_EQ(m_DayLinePtr->GetLastClose(), 3654160);
 			EXPECT_EQ(m_DayLinePtr->GetHigh(), 0);
@@ -237,17 +237,17 @@ namespace FireBirdTest {
 		case 1:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(m_lCountPos, 7);
-			EXPECT_STREQ(str.c_str(), _T("11.050"));
+			EXPECT_EQ(str, _T("11.050"));
 			break;
 		case 2:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(m_lCountPos, 6);
-			EXPECT_STREQ(str.c_str(), _T("11.05"));
+			EXPECT_EQ(str, _T("11.05"));
 			break;
 		case 3:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(m_lCountPos, 5);
-			EXPECT_STREQ(str.c_str(), _T("11.0"));
+			EXPECT_EQ(str, _T("11.0"));
 			break;
 		case 4:
 			EXPECT_FALSE(fSucceed);
@@ -261,18 +261,18 @@ namespace FireBirdTest {
 		case 7:
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(m_lCountPos, 10);
-			EXPECT_STREQ(str.c_str(), _T("11.050000"));
+			EXPECT_EQ(str, _T("11.050000"));
 			break;
 		case 8:
 			EXPECT_FALSE(fSucceed);
 			break;
 		case 9:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(str.c_str(), _T("技术领先"));
+			EXPECT_EQ(str, _T("技术领先"));
 			break;
 		case 10:
 			EXPECT_TRUE(fSucceed);
-			EXPECT_STREQ(str.c_str(), _T("none"));
+			EXPECT_EQ(str, _T("none"));
 			break;
 		default:
 			break;

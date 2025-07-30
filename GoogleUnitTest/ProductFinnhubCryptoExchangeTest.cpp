@@ -41,11 +41,11 @@ namespace FireBirdTest {
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestInitialize) {
 		EXPECT_EQ(cryptoExchange.GetIndex(), 0);
-		EXPECT_STREQ(cryptoExchange.GetInquiryFunction().c_str(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
+		EXPECT_EQ(cryptoExchange.GetInquiryFunction(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
 	}
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestCreatMessage) {
-		EXPECT_STREQ(cryptoExchange.CreateMessage().c_str(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
+		EXPECT_EQ(cryptoExchange.CreateMessage(), _T("https://finnhub.io/api/v1/crypto/exchange?"));
 	}
 
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestProcessWebData) {
@@ -59,7 +59,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateCryptoExchange());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
-		EXPECT_STREQ(gl_systemMessage.PopInformationMessage().c_str(), _T("Finnhub crypto exchange updated"));
+		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Finnhub crypto exchange updated"));
 
 		gl_pFinnhubDataSource->SetUpdateCryptoExchange(true);
 	}
@@ -116,8 +116,8 @@ namespace FireBirdTest {
 			EXPECT_EQ(m_pvExchange->size(), 0);
 			break;
 		case 10:
-			EXPECT_STREQ(m_pvExchange->at(0).c_str(), _T("new exchange"));
-			EXPECT_STREQ(m_pvExchange->at(1).c_str(), _T("FXPIG"));
+			EXPECT_EQ(m_pvExchange->at(0), _T("new exchange"));
+			EXPECT_EQ(m_pvExchange->at(1), _T("FXPIG"));
 			EXPECT_EQ(m_pvExchange->size(), 9);
 			break;
 		default:

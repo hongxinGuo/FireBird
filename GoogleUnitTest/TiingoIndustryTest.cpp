@@ -31,8 +31,8 @@ namespace FireBirdTest {
 
 	TEST_F(CTiingoIndustryTest, TestInitialize) {
 		const CTiingoIndustry TiingoIndustry;
-		EXPECT_STREQ(TiingoIndustry.m_strIndustry.c_str(), _T(" "));
-		EXPECT_STREQ(TiingoIndustry.m_strSector.c_str(), _T(" "));
+		EXPECT_EQ(TiingoIndustry.m_strIndustry, _T(" "));
+		EXPECT_EQ(TiingoIndustry.m_strSector, _T(" "));
 		EXPECT_FALSE(TiingoIndustry.m_fUpdated);
 	}
 
@@ -64,8 +64,8 @@ namespace FireBirdTest {
 		setTiingoIndustry2.m_pDatabase->BeginTrans();
 		EXPECT_TRUE(!setTiingoIndustry2.IsEOF()) << "此时已经存入了AA";
 		TiingoIndustry2.Load(setTiingoIndustry2);
-		EXPECT_STREQ(TiingoIndustry.m_strIndustry.c_str(), _T("aaa"));
-		EXPECT_STREQ(TiingoIndustry.m_strSector.c_str(), _T("abdc"));
+		EXPECT_EQ(TiingoIndustry.m_strIndustry, _T("aaa"));
+		EXPECT_EQ(TiingoIndustry.m_strSector, _T("abdc"));
 		EXPECT_TRUE(TiingoIndustry.m_fUpdated);
 		setTiingoIndustry2.Delete();
 		setTiingoIndustry2.m_pDatabase->CommitTrans();

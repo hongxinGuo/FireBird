@@ -34,9 +34,9 @@ namespace FireBirdTest {
 			EXPECT_DOUBLE_EQ(simdjsonGetDouble(doc, "double1"), 2.0);
 			EXPECT_FALSE(simdjsonGetBool(doc, "doing"));
 			string s(simdjsonGetStringView(doc, "string1"));
-			EXPECT_STREQ(s.c_str(), "string1");
+			EXPECT_EQ(s, "string1");
 			s = simdjsonGetRawJsonToken(doc, "string1");
-			EXPECT_STREQ(s.c_str(), "\"string1\"");
+			EXPECT_EQ(s, "\"string1\"");
 			EXPECT_THROW(s = simdjsonGetRawJsonToken(doc, "no koken"), simdjson_error);
 			ondemand::array array1 = simdjsonGetArray(doc, "array1");
 			for (INT64 item : array1) {
@@ -47,7 +47,7 @@ namespace FireBirdTest {
 			EXPECT_DOUBLE_EQ(simdjsonGetDouble(doc, "double2"), 0.0);
 			EXPECT_FALSE(simdjsonGetBool(doc, "doing2"));
 			string s2(simdjsonGetStringView(doc, "string2"));
-			EXPECT_STREQ(s2.c_str(), "");
+			EXPECT_EQ(s2, "");
 			ondemand::array array2 = simdjsonGetArray(doc, "array2");
 			i = 0;
 			for ([[maybe_unused]] auto value : array2) {
@@ -91,10 +91,10 @@ namespace FireBirdTest {
 			EXPECT_EQ(ai.at(1), 0);
 			EXPECT_DOUBLE_EQ(ad.at(0), 2.0);
 			EXPECT_DOUBLE_EQ(ad.at(1), 0.0);
-			EXPECT_STREQ(as.at(0).c_str(), _T("string1"));
-			EXPECT_STREQ(as.at(1).c_str(), _T(""));
-			EXPECT_STREQ(ar.at(0).c_str(), _T("\"string1\""));
-			EXPECT_STREQ(ar.at(1).c_str(), _T("null"));
+			EXPECT_EQ(as.at(0), _T("string1"));
+			EXPECT_EQ(as.at(1), _T(""));
+			EXPECT_EQ(ar.at(0), _T("\"string1\""));
+			EXPECT_EQ(ar.at(1), _T("null"));
 			EXPECT_TRUE(ab.at(0));
 			EXPECT_FALSE(ab.at(1));
 			i = 0;
@@ -122,10 +122,10 @@ namespace FireBirdTest {
 			}
 			EXPECT_EQ(ai.at(2), 1) << "ai已存入了两个数据";
 			EXPECT_DOUBLE_EQ(ad.at(2), 2.0);
-			EXPECT_STREQ(as.at(2).c_str(), _T("string1")) << "as已存入了两个数据";
+			EXPECT_EQ(as.at(2), _T("string1")) << "as已存入了两个数据";
 			EXPECT_EQ(ai.at(3), 0);
 			EXPECT_DOUBLE_EQ(ad.at(3), 0.0);
-			EXPECT_STREQ(as.at(3).c_str(), _T(""));
+			EXPECT_EQ(as.at(3), _T(""));
 			// DataArray4
 			vector<int> viArray4;
 			ondemand::array array4, array5;
@@ -146,9 +146,9 @@ namespace FireBirdTest {
 					break;
 				case 4:
 					s5 = simdjsonGetStringView(itemValue);
-					EXPECT_STREQ(s5.c_str(), "string2");
+					EXPECT_EQ(s5, "string2");
 					s5 = simdjsonGetRawJsonToken(itemValue);
-					EXPECT_STREQ(s5.c_str(), "\"string2\"");
+					EXPECT_EQ(s5, "\"string2\"");
 					break;
 				case 5:
 					array4 = simdjsonGetArray(itemValue);
@@ -168,7 +168,7 @@ namespace FireBirdTest {
 					break;
 				case 9:
 					s5 = simdjsonGetStringView(itemValue);
-					EXPECT_STREQ(s5.c_str(), "");
+					EXPECT_EQ(s5, "");
 					break;
 				case 10:
 					array5 = simdjsonGetArray(itemValue);
@@ -225,9 +225,9 @@ namespace FireBirdTest {
 			EXPECT_DOUBLE_EQ(vd.at(0), 2.0);
 			EXPECT_DOUBLE_EQ(vd.at(1), 4.0);
 			EXPECT_DOUBLE_EQ(vd.at(2), 0.0);
-			EXPECT_STREQ(vs.at(0).c_str(), "string1");
-			EXPECT_STREQ(vs.at(1).c_str(), "string2");
-			EXPECT_STREQ(vs.at(2).c_str(), "");
+			EXPECT_EQ(vs.at(0), "string1");
+			EXPECT_EQ(vs.at(1), "string2");
+			EXPECT_EQ(vs.at(2), "");
 			EXPECT_TRUE(vb.at(0));
 			EXPECT_FALSE(vb.at(1));
 			EXPECT_FALSE(vb.at(2));
@@ -414,9 +414,9 @@ namespace FireBirdTest {
 			break;
 		case 4:
 			s1 = simdjsonGetStringView(doc, "string");
-			EXPECT_STREQ(s1.c_str(), "abc");
+			EXPECT_EQ(s1, "abc");
 			s2 = simdjsonGetStringView(doc, "string1");
-			EXPECT_STREQ(s2.c_str(), "");
+			EXPECT_EQ(s2, "");
 			EXPECT_THROW(string s3(simdjsonGetStringView(doc, "string2")), simdjson_error);
 			EXPECT_THROW(string d4(simdjsonGetStringView(doc, "string3")), simdjson_error);
 			break;

@@ -140,7 +140,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(strTest, strTest2);
 
 		webData.SetCurrentPos(1000);
-		EXPECT_TRUE(webData.SetData(strTest.c_str(), strTest.length()));
+		EXPECT_TRUE(webData.SetData(strTest.c_str() , strTest.length()));
 		EXPECT_TRUE(webData.GetData(buffer, 7));
 		buffer[7] = 0x000;
 		strTest2 = buffer;
