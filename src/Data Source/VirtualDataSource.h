@@ -42,14 +42,28 @@ public:
 	CVirtualDataSource& operator=(const CVirtualDataSource&&) noexcept = delete;
 	virtual ~CVirtualDataSource() = default;
 
-	// Template parameters:
-	// UpdateCheck: Callable, returns bool, checks if update is needed
-	// ProductFactory: Callable, returns product, creates product for inquiry
-	// ReportMsg: Callable, reports the inquiry event
 	template <typename UpdateCheck, typename ProductFactory, typename ReportMsg>
 	bool GenerateSimpleInquiry(int inquireType, UpdateCheck&& isUpdateNeeded, ProductFactory&& createProduct, ReportMsg&& reportMsg) {
 		ASSERT(!IsInquiring());
 		if (isUpdateNeeded()) {
+			StoreInquiry(createProduct(inquireType));
+			SetInquiring(true);
+			reportMsg();
+			return true;
+		}
+		return false;
+	}
+
+	template <typename UpdateCheck, typename ValidDate, typename SetUpdated, typename ReportMsg1, typename ProductFactory, typename ReportMsg>
+	bool GenerateSimpleInquiryWithCheck(int inquireType, ValidDate validDate, SetUpdated setUpdated, ReportMsg1 reportMsg1,
+	                                    UpdateCheck&& isUpdateNeeded, ProductFactory&& createProduct, ReportMsg&& reportMsg) {
+		ASSERT(!IsInquiring());
+		if (isUpdateNeeded()) {
+			if (!validDate()) {
+				setUpdated();
+				reportMsg1();
+				return false;
+			}
 			StoreInquiry(createProduct(inquireType));
 			SetInquiring(true);
 			reportMsg();

@@ -17,7 +17,6 @@ void ProcessTiingoIEXWebSocket(const ix::WebSocketMessagePtr& msg);
 class CTiingoIEXSocket final {
 public:
 	CTiingoIEXSocket() {
-		m_chMessageType = 'Q';
 		m_sDateTime = _T("");
 		m_sSymbol = _T("");
 		m_iNanoseconds = 0;
@@ -26,7 +25,6 @@ public:
 	}
 
 public:
-	char m_chMessageType; // 'Q', 'T', or 'B'
 	string m_sDateTime; // json ISO format
 	std::chrono::sys_seconds m_tpTime;
 	INT64 m_iNanoseconds;

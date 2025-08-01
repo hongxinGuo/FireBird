@@ -671,7 +671,6 @@ void CChinaMarket::TaskUpdateTempRTDB(long lCurrentTime) {
 			gl_systemMessage.SetChinaMarketSavingFunction(_T("update temp RT data"));
 			gl_dataContainerChinaStock.UpdateTempRTDB();
 			gl_ProcessChinaMarketRTData.release();
-			TRACE("update temp RT data\n");
 			gl_UpdateChinaMarketDB.release();
 		});
 	}

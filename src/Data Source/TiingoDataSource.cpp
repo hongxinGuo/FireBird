@@ -49,7 +49,7 @@ void CTiingoDataSource::ConfigureInternetOption() {
 	m_internetOption.option_connect_timeout = 12000;
 	m_internetOption.option_receive_timeout = 12000;
 	m_internetOption.option_data_receive_timeout = 12000;
-	m_internetOption.option_send_timeout = 1000;
+	m_internetOption.option_send_timeout = 2000;
 	m_internetOption.option_connect_retries = 1;
 }
 
@@ -286,6 +286,7 @@ bool CTiingoDataSource::GenerateFundamentalDefinition() {
 	);
 }
 
+/*
 bool CTiingoDataSource::GenerateCompanySymbol() {
 	ASSERT(!IsInquiring());
 	if (IsUpdateStockSymbol()) {
@@ -301,8 +302,29 @@ bool CTiingoDataSource::GenerateCompanySymbol() {
 		return true;
 	}
 	return false;
+}*/
+
+bool CTiingoDataSource::GenerateCompanySymbol() {
+	auto isUpdateNeeded = [this]() { return IsUpdateStockSymbol(); };
+	auto setUpdated = [this]() { return SetUpdateStockSymbol(false); };
+	auto createProduct = [this](int inquireType) {
+		return m_TiingoFactory.CreateProduct(gl_pWorldMarket, inquireType);
+	};
+	auto reportMsg1 = []() { return gl_systemMessage.PushInformationMessage("Tiingo crypto symbol needn't update"); };
+
+	return GenerateSimpleInquiryWithCheck(
+		STOCK_SYMBOLS_,
+		[]() { return gl_systemConfiguration.GetTiingoFundamentalsMetaUpdateDate() < gl_pWorldMarket->GetMarketDate(); },
+		setUpdated,
+		reportMsg1,
+		isUpdateNeeded,
+		createProduct,
+		[] { gl_systemMessage.SetCurrentTiingoFunction(_T("Fundamental Definition")); }
+
+	);
 }
 
+/*
 bool CTiingoDataSource::GenerateCryptoSymbol() {
 	ASSERT(!IsInquiring());
 	if (IsUpdateCryptoSymbol()) {
@@ -318,6 +340,26 @@ bool CTiingoDataSource::GenerateCryptoSymbol() {
 		return true;
 	}
 	return false;
+}*/
+
+bool CTiingoDataSource::GenerateCryptoSymbol() {
+	auto isUpdateNeeded = [this]() { return IsUpdateCryptoSymbol(); };
+	auto setUpdated = [this]() { return SetUpdateCryptoSymbol(false); };
+	auto createProduct = [this](int inquireType) {
+		return m_TiingoFactory.CreateProduct(gl_pWorldMarket, inquireType);
+	};
+	auto reportMsg1 = []() { return gl_systemMessage.PushInformationMessage("Tiingo crypto symbol needn't update"); };
+
+	return GenerateSimpleInquiryWithCheck(
+		CRYPTO_SYMBOLS_,
+		[]() { return gl_systemConfiguration.GetTiingoCryptoSymbolUpdateDate() < gl_pWorldMarket->GetMarketDate(); },
+		setUpdated,
+		reportMsg1,
+		isUpdateNeeded,
+		createProduct,
+		[] { gl_systemMessage.SetCurrentTiingoFunction(_T("Crypto symbol")); }
+
+	);
 }
 
 bool CTiingoDataSource::GenerateIEXTopOfBook() {
@@ -325,6 +367,7 @@ bool CTiingoDataSource::GenerateIEXTopOfBook() {
 	auto createProduct = [this](int inquireType) {
 		return m_TiingoFactory.CreateProduct(gl_pWorldMarket, inquireType);
 	};
+
 	return GenerateSimpleInquiry(
 		TIINGO_IEX_TOP_OF_BOOK_,
 		isUpdateNeeded,

@@ -699,6 +699,15 @@ void CWorldMarket::calculateNasdaq100MA200UpDownRate() const {
 		lCurrentDate = GetNextDay(lCurrentDate);
 	}
 
+	if (vUpDownRate.at(vUpDownRate.size() - 1).lDate == GetMarketDate()) {
+		if (vUpDownRate.at(vUpDownRate.size() - 1).Rate >= 80) {
+			gl_systemMessage.PushInformationMessage("Nasdaq 100 upDown rate > 80%");
+		}
+		if (vUpDownRate.at(vUpDownRate.size() - 1).Rate < 20) {
+			gl_systemMessage.PushInformationMessage("Nasdaq 100 upDown rate < 20%");
+		}
+	}
+
 	CSetIndexNasdaq100MA200UpDownRate setIndex;
 	lCurrentDate = 0;
 
@@ -1268,17 +1277,7 @@ void CWorldMarket::UpdateFinnhubStockFromTiingoIEXSocket(const CTiingoIEXSocketP
 	if (gl_dataContainerFinnhubStock.IsSymbol(pTiingoIEXbData->m_sSymbol)) {
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(pTiingoIEXbData->m_sSymbol);
 		pStock->SetActive(true);
-		switch (pTiingoIEXbData->m_chMessageType) {
-		case 'T':
-			pStock->SetNew(pTiingoIEXbData->m_dLastPrice * 1000);
-			break;
-		case 'Q':
-			// do nothing
-			break;
-		default:
-			// do nothing
-			break;
-		}
+		pStock->SetNew(pTiingoIEXbData->m_dLastPrice * 1000);
 	}
 }
 

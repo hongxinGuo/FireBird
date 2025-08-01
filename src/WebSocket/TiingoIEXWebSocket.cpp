@@ -114,6 +114,9 @@ string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
 // {"messageType":"A","service":"iex","data":["T","2019-01-30T13:33:45.594808294-05:00",1548873225594808294,"wes",null,null,null,null,null,50.285,200,null,0,0,0,0]}
 // {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
 //
+// Type A的新格式如下：
+// {"messageType":"A","service":"iex","data":["2019-01-30T13:33:45.383129126-05:00","vym",81.585]}
+//
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) {
 	string strSymbol;
@@ -124,9 +127,7 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 	try {
 		if (json js; CreateJsonWithNlohmann(js, *pData)) {
 			stringstream ss;
-			int i = 0;
 			string sMessageType;
-			char chType;
 			string sService;
 			string sType;
 			json js2, js3, js4;
@@ -134,59 +135,19 @@ bool CTiingoIEXWebSocket::ParseTiingoIEXWebSocketData(shared_ptr<string> pData) 
 			sType = jsonGetString(js, _T("messageType"));
 			if (sType.empty()) return false;
 			switch (sType.at(0)) {
-			case 'A': // 交易数据
+			case 'A': // 交易数据 {"messageType":"A","service":"iex","data":["2019-01-30T13:33:45.383129126-05:00","vym",81.585]}
 				pIEXData = make_shared<CTiingoIEXSocket>();
 				sService = jsonGetString(js, _T("service"));
 				if (sService != _T("iex")) return false; // 此项必须为"iex"
 				js2 = jsonGetChild(js, _T("data"));
 				it = js2.begin();
-				sMessageType = jsonGetString(it); // message type, 'Q'、'T'或者'B'
-				chType = sMessageType.at(0);
-				pIEXData->m_chMessageType = chType;
-				switch (chType) {
-				case 'Q': // top-of-book update message
-					pIEXData->m_sDateTime = jsonGetString(++it);
-					ss.clear();
-					ss.str(pIEXData->m_sDateTime);
-					chrono::from_stream(ss, "%FT%H:%M:%12S%Ez", tpTime, &sString, &Minutes);
-					pIEXData->m_tpTime = chrono::time_point_cast<chrono::seconds>(tpTime);
-					pIEXData->m_iNanoseconds = jsonGetLongLong(++it);
-					pIEXData->m_sSymbol = jsonGetString(++it);
-					pIEXData->m_dBidSize = jsonGetDouble(++it);
-					pIEXData->m_dBidPrice = jsonGetDouble(++it);
-					pIEXData->m_dMidPrice = jsonGetDouble(++it);
-					pIEXData->m_dAskPrice = jsonGetDouble(++it);
-					pIEXData->m_dAskSize = jsonGetDouble(++it);
-					pIEXData->m_dLastPrice = jsonGetDouble(++it);
-					pIEXData->m_dLastSize = jsonGetDouble(++it);
-					pIEXData->m_iAfterHour = jsonGetInt(++it);
-					pIEXData->m_iISO = jsonGetInt(++it);
-					pIEXData->m_iOddlot = jsonGetInt(++it);
-					pIEXData->m_iNMSRule611 = jsonGetInt(++it);
-					break;
-				case 'T': // T last trade message
-					pIEXData->m_sDateTime = jsonGetString(++it);
-					pIEXData->m_iNanoseconds = jsonGetLongLong(++it);
-					pIEXData->m_sSymbol = jsonGetString(++it);
-					pIEXData->m_dBidSize = jsonGetDouble(++it);
-					pIEXData->m_dBidPrice = jsonGetDouble(++it);
-					pIEXData->m_dMidPrice = jsonGetDouble(++it);
-					pIEXData->m_dAskPrice = jsonGetDouble(++it);
-					pIEXData->m_dAskSize = jsonGetDouble(++it);
-					pIEXData->m_dLastPrice = jsonGetDouble(++it);
-					pIEXData->m_dLastSize = jsonGetInt(++it);
-					pIEXData->m_iHalted = jsonGetInt(++it);
-					pIEXData->m_iISO = jsonGetInt(++it);
-					pIEXData->m_iOddlot = jsonGetInt(++it);
-					pIEXData->m_iNMSRule611 = jsonGetInt(++it);
-					break;
-				case 'B': // 'B' trade break messages
-					i++;
-					break;
-				default: // 错误
-					gl_systemMessage.PushInnerSystemInformationMessage(_T("Tiingo IEX WebSocket type error"));
-					return false;
-				}
+				pIEXData->m_sDateTime = jsonGetString(it);
+				ss.clear();
+				ss.str(pIEXData->m_sDateTime);
+				chrono::from_stream(ss, "%FT%H:%M:%12S%Ez", tpTime, &sString, &Minutes);
+				pIEXData->m_tpTime = chrono::time_point_cast<chrono::seconds>(tpTime);
+				pIEXData->m_sSymbol = jsonGetString(++it);
+				pIEXData->m_dLastPrice = jsonGetDouble(++it);
 				gl_SystemData.PushTiingoIEXSocket(pIEXData);
 				m_HeartbeatTime = GetUTCTime();
 				break;

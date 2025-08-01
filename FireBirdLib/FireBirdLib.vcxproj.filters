@@ -205,6 +205,9 @@
     <Filter Include="源文件\Factory-Product\Accessory">
       <UniqueIdentifier>{01165a19-3b8f-4b65-8736-65e259a3fd1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Data Source\Accessory">
+      <UniqueIdentifier>{960ee098-a702-4ba5-ab14-3acb4664490f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h">
@@ -1454,14 +1457,14 @@
     <ClCompile Include="..\src\DataBase\WorldMarket\SetIndexNasdaq100MA200UpDownRate.cpp">
       <Filter>源文件\Database\WorldMarket</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Data Source\AccessoryDataSource.cpp">
-      <Filter>源文件\Data Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Factory Product\AccessoryFactory.cpp">
       <Filter>源文件\Factory-Product\Accessory</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductIndexNasdaq100Stocks.cpp">
       <Filter>源文件\Factory-Product\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Source\AccessoryDataSource.cpp">
+      <Filter>源文件\Data Source\Accessory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
