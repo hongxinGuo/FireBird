@@ -47,10 +47,18 @@ void CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWeb
 	if (pFinnhubStockBasicFinancial != nullptr) {
 		// 因为接收到的股票代码是本土代码，可能与pStock中的不同（外国的ADR)，所以需要更新股票代码.
 		// 例如申请BVDRF的金融数据，回复的股票代码为MBWS.PA
-		pFinnhubStockBasicFinancial->m_symbol = pStock->GetSymbol();
+		pFinnhubStockBasicFinancial->m_symbol = pStock->GetSymbol(); // 使用pStock中的股票代码
 		pStock->UpdateBasicFinancial(pFinnhubStockBasicFinancial);
 		pStock->SetUpdateBasicFinancialDB(true);
 	}
+	// 这三个在UpdateSystemStatus中更新
+	//pStock->SetBasicFinancialUpdateDate(GetMarket()->GetMarketDate());
+	//pStock->SetUpdateBasicFinancial(false);
+	//pStock->SetUpdateProfileDB(true);
+}
+
+void CProductFinnhubCompanyBasicFinancial::UpdateSystemStatus(CVirtualDataSourcePtr) {
+	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	pStock->SetBasicFinancialUpdateDate(GetMarket()->GetMarketDate());
 	pStock->SetUpdateBasicFinancial(false);
 	pStock->SetUpdateProfileDB(true);
@@ -871,7 +879,6 @@ void CProductFinnhubCompanyBasicFinancial::Parse(json* pjs, vector<CValueOfPerio
 		for (auto it = pjs->begin(); it != pjs->end(); ++it) {
 			CValueOfPeriod sv{ 0, 0 };
 			string sDate;
-			int year{ 0 }, month{ 0 }, day{ 0 };
 			sDate = jsonGetString(it, _T("period"));
 			if (!sDate.empty()) {
 				sv.m_period = XferToYYYYMMDD(sDate);

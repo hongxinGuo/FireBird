@@ -121,7 +121,7 @@ CVectorTiingoMarketNewsPtr CProductTiingoMarketNews::ParseTiingoMarketNews(const
 	return pvTiingoMarketNews;
 }
 
-void CProductTiingoMarketNews::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
+void CProductTiingoMarketNews::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateMarketNews(false);
 	gl_systemMessage.PushInformationMessage(_T("Tiingo market news updated"));

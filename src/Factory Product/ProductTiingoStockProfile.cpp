@@ -195,7 +195,7 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 	return pvTiingoStock;
 }
 
-void CProductTiingoStockProfile::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
+void CProductTiingoStockProfile::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateStockSymbol(false);
 	gl_systemConfiguration.SetTiingoFundamentalsMetaUpdateDate(gl_pWorldMarket->GetMarketDate());

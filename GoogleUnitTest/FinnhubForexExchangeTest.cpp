@@ -52,7 +52,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubForexExchangeTest, TestUpdateDataSourceStatus) {
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateForexExchange());
 
-		forexExchange.UpdateDataSourceStatus(gl_pFinnhubDataSource);
+		forexExchange.UpdateSystemStatus(gl_pFinnhubDataSource);
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateForexExchange());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);

@@ -116,10 +116,10 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateEPSSurprise()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateSECFilings()).Times(1)
-		.WillRepeatedly(DoAll(Invoke([p]() {
+		.WillRepeatedly(DoAll([p]() {
 			m_pMockFinnhubDataSource->SetInquiring(true);
 			m_pMockFinnhubDataSource->StoreInquiry(p);
-		}), Return(true)));
+		}, Return(true)));
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateRTQuote()).Times(0);
 
 		EXPECT_FALSE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120500)) << "时间未到，继续等待";

@@ -57,7 +57,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeFinnhubAccount()); // 默认为付费账户
 		EXPECT_FALSE(economicCalendar.IsNoRightToAccess());
 
-		economicCalendar.UpdateDataSourceStatus(gl_pFinnhubDataSource);
+		economicCalendar.UpdateSystemStatus(gl_pFinnhubDataSource);
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);
@@ -82,7 +82,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(economicCalendar.IsNoRightToAccess());
 		economicCalendar.SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 
-		economicCalendar.UpdateDataSourceStatus(gl_pFinnhubDataSource);
+		economicCalendar.UpdateSystemStatus(gl_pFinnhubDataSource);
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateEconomicCalendar());
 		EXPECT_THAT(gl_systemMessage.InformationSize(), 1);

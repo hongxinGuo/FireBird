@@ -53,7 +53,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateIEXTopOfBook()) << "¸¶·ÑÕË»§";
 		gl_pTiingoDataSource->SetUpdateIEXTopOfBook(true);
 
-		IEXTopOfBook.UpdateDataSourceStatus(gl_pTiingoDataSource);
+		IEXTopOfBook.UpdateSystemStatus(gl_pTiingoDataSource);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateIEXTopOfBook());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);

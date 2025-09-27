@@ -50,7 +50,7 @@ shared_ptr<vector<string>> CProductFinnhubForexExchange::ParseFinnhubForexExchan
 	return pvExchange;
 }
 
-void CProductFinnhubForexExchange::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
+void CProductFinnhubForexExchange::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
 	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->SetUpdateForexExchange(false);
 	gl_systemMessage.PushInformationMessage(_T("Finnhub forex exchange updated"));

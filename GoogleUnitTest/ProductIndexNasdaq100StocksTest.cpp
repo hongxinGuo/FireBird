@@ -48,7 +48,7 @@ namespace FireBirdTest {
 
 	TEST_F(CProductIndexNasdaq100StocksTest, TestUpdateDataSourceStatus) {
 		EXPECT_TRUE(gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks());
-		nasdaq100Stocks.UpdateDataSourceStatus(gl_pAccessoryDataSource);
+		nasdaq100Stocks.UpdateSystemStatus(gl_pAccessoryDataSource);
 
 		EXPECT_FALSE(gl_pAccessoryDataSource->IsUpdateIndexNasdaq100Stocks());
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);

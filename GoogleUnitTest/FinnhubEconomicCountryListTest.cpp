@@ -49,7 +49,7 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubEconomicCountryListTest, TestUpdateDataSourceStatus) {
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCountryList());
 
-		countryList.UpdateDataSourceStatus(gl_pFinnhubDataSource);
+		countryList.UpdateSystemStatus(gl_pFinnhubDataSource);
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateCountryList());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);

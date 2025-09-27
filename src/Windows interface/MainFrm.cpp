@@ -31,6 +31,7 @@
 #include"ScheduleTask.h"
 
 #undef max
+#include "InfoReport.h"
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
@@ -173,20 +174,6 @@ CMainFrame::CMainFrame() {
 	for (int i = 0; i < __MAX_BACKGROUND_WORKING_THREAD__ - gl_systemConfiguration.GetBackgroundThreadPermittedNumber(); i++) {
 		gl_BackgroundWorkingThread.acquire();
 	}
-}
-
-int CMainFrame::ReportRunningToWatchdog() {
-	HWND hWnd = ::FindWindow(NULL, sWatchDogApp.c_str());
-	if (hWnd == NULL) return 1; // Watchdog监控程序不在运行，直接返回
-	::SendMessage(hWnd, WM_FIREBIRD_RUNNING, NULL, NULL); // tell watchdog that I am running now.
-	return 0;
-}
-
-int CMainFrame::ReportExitToWatchdog() {
-	HWND hWnd = ::FindWindow(NULL, sWatchDogApp.c_str());
-	if (hWnd == NULL) return 1; // Watchdog监控程序不在运行， 直接返回
-	::SendMessage(hWnd, WM_FIREBIRD_EXIT, NULL, NULL); // Tell watchdog that I am exit now.
-	return 0;
 }
 
 CMainFrame::~CMainFrame() {

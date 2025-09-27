@@ -50,10 +50,10 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.ErrorMessageSize(), 0);
 
 		EXPECT_CALL(*m_pInquireEngine, OpenFile).Times(1)
-		.WillOnce(Invoke([] {
+		.WillOnce([] {
 			auto e = new CInternetException(1);
 			throw e;
-		}));
+		});
 		EXPECT_CALL(*m_pInquireEngine, GetFileHeaderInformation).Times(0);
 
 		EXPECT_TRUE(m_pInquireEngine->GetWebData()->GetBufferLength() == 0) << "出现异常时数据为空";
@@ -72,9 +72,9 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*m_pInquireEngine, OpenFile).Times(1);
 		EXPECT_CALL(*m_pInquireEngine, GetFileHeaderInformation).Times(1)
-		.WillOnce(Invoke([] {
+		.WillOnce([] {
 			m_pInquireEngine->SetContentLength(0);
-		}));
+		});
 		EXPECT_CALL(*m_pInquireEngine, ReadWebFileOneTime).Times(0);
 
 		EXPECT_TRUE(m_pInquireEngine->GetWebData()->GetBufferLength() == 0) << "出现异常时数据为空";
@@ -95,9 +95,9 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*m_pInquireEngine, OpenFile).Times(1);
 		EXPECT_CALL(*m_pInquireEngine, GetFileHeaderInformation).Times(1)
-		.WillOnce(Invoke([] {
+		.WillOnce([] {
 			m_pInquireEngine->SetContentLength(2048);
-		}));
+		});
 		EXPECT_CALL(*m_pInquireEngine, ReadWebFileOneTime).Times(0);
 		EXPECT_CALL(*m_pInquireEngine, ReadWebFileOneTime).Times(2)
 		.WillOnce(Return(1024))
@@ -125,9 +125,9 @@ namespace FireBirdTest {
 
 		EXPECT_CALL(*m_pInquireEngine, OpenFile).Times(1);
 		EXPECT_CALL(*m_pInquireEngine, GetFileHeaderInformation).Times(1)
-		.WillOnce(Invoke([] {
+		.WillOnce([] {
 			m_pInquireEngine->SetContentLength(1024 * 17);
-		}));
+		});
 		EXPECT_CALL(*m_pInquireEngine, ReadWebFileOneTime).Times(0);
 		EXPECT_CALL(*m_pInquireEngine, ReadWebFileOneTime).Times(3)
 		.WillOnce(Return(1024 * 16))

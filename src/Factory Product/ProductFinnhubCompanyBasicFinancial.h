@@ -12,6 +12,7 @@ public:
 
 	string CreateMessage() override;
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
+	void UpdateSystemStatus(CVirtualDataSourcePtr) override;
 
 	CFinnhubStockBasicFinancialPtr ParseFinnhubStockBasicFinancial(CWebDataPtr pWebData);
 	void GetSeasonData(json* pjs, vector<CValueOfPeriod>& vData, const char* szMsg);

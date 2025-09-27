@@ -12,7 +12,7 @@ public:
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CEconomicCalendarsPtr ParseFinnhubEconomicCalendar(const CWebDataPtr& pWebData);
 
-	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
+	void UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) override;
 };
 
 using CFinnhubEconomicCalendarPtr = shared_ptr<CProductFinnhubEconomicCalendar>;

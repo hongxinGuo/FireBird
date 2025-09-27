@@ -68,6 +68,6 @@ namespace FireBirdTest {
 		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(4), _T("rig"));
 		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(5), _T("eurusd"));
 		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(6), _T("spy"));
-		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(7), _T("uso"));
+		EXPECT_EQ(jsonMessage["eventData"]["tickers"].at(7), _T("nmm"));
 	}
 }

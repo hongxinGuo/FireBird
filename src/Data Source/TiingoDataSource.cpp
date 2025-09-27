@@ -420,6 +420,82 @@ bool CTiingoDataSource::GenerateStockDailyMeta() {
 	return fHaveInquiry;
 }
 
+bool CTiingoDataSource::GenerateStockDailyMetaFreeAccount() {
+	bool fHaveInquiry = false;
+	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
+	constexpr int iInquireType = TIINGO_STOCK_DAILY_META__;
+
+	ASSERT(!IsInquiring());
+	if (IsUpdateStockDailyMeta()) {
+		long lCurrentUpdatePos;
+		bool fFound = false;
+		CTiingoStockPtr pTiingoStock;
+		for (lCurrentUpdatePos = 0; lCurrentUpdatePos < lStockSetSize; lCurrentUpdatePos++) {
+			pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdatePos);
+			if (pTiingoStock->IsUpdateStockDailyMeta()) {
+				if (gl_dataContainerTiingoNewSymbol.IsSymbol(pTiingoStock->GetSymbol())) { // 免费账户只更新本日新出现的新股票，保证每月新代码不超过500个。
+					fFound = true;
+					break;
+				}
+				pTiingoStock->SetUpdateStockDailyMeta(false); // 免费账户不更新旧股票
+			}
+		}
+		if (fFound) {
+			fHaveInquiry = true;
+			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
+			p->SetIndex(lCurrentUpdatePos);
+			StoreInquiry(p);
+			string s = _T("daily meta: ");
+			s += pTiingoStock->GetSymbol();
+			gl_systemMessage.SetCurrentTiingoFunction(s);
+			SetInquiring(true);
+		}
+		else {
+			gl_systemMessage.SetCurrentTiingoFunction(_T(""));
+			SetUpdateStockDailyMeta(false);
+			const string str = "Tiingo stock daily meta updated";
+			gl_systemMessage.PushInformationMessage(str);
+		}
+	}
+	return fHaveInquiry;
+}
+
+bool CTiingoDataSource::GenerateStockDailyMetaPaidAccount() {
+	bool fHaveInquiry = false;
+	size_t lStockSetSize = gl_dataContainerTiingoStock.Size();
+	constexpr int iInquireType = TIINGO_STOCK_DAILY_META__;
+
+	ASSERT(!IsInquiring());
+	if (IsUpdateStockDailyMeta()) {
+		long lCurrentUpdatePos;
+		bool fFound = false;
+		CTiingoStockPtr pTiingoStock;
+		for (lCurrentUpdatePos = 0; lCurrentUpdatePos < lStockSetSize; lCurrentUpdatePos++) {
+			pTiingoStock = gl_dataContainerTiingoStock.GetStock(lCurrentUpdatePos);
+			if (pTiingoStock->IsUpdateStockDailyMeta()) {
+				fFound = true;
+			}
+		}
+		if (fFound) {
+			fHaveInquiry = true;
+			const CVirtualProductWebDataPtr p = m_TiingoFactory.CreateProduct(gl_pWorldMarket, iInquireType);
+			p->SetIndex(lCurrentUpdatePos);
+			StoreInquiry(p);
+			string s = _T("daily meta: ");
+			s += pTiingoStock->GetSymbol();
+			gl_systemMessage.SetCurrentTiingoFunction(s);
+			SetInquiring(true);
+		}
+		else {
+			gl_systemMessage.SetCurrentTiingoFunction(_T(""));
+			SetUpdateStockDailyMeta(false);
+			const string str = "Tiingo stock daily meta updated";
+			gl_systemMessage.PushInformationMessage(str);
+		}
+	}
+	return fHaveInquiry;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Tiingo的下载日线数据与Finnhub的日线下载函数，只允许同时运行其中之一。

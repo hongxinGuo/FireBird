@@ -87,7 +87,7 @@ void CVirtualDataSource::InquireData() {
 		m_eErrorMessageData = IsAErrorMessageData(pvWebData->at(0)); // 返回的数据是错误信息？检查错误，判断申请资格，更新禁止目录
 		m_pCurrentProduct->CalculateTotalDataLength(pvWebData);
 		m_pCurrentProduct->ParseAndStoreWebData(pvWebData);
-		m_pCurrentProduct->UpdateDataSourceStatus(this->GetShared()); // 这里传递的是实际DataSource的智能指针
+		m_pCurrentProduct->UpdateSystemStatus(this->GetShared()); // 这里传递的是实际DataSource的智能指针
 	}
 	auto end = chrono::time_point_cast<chrono::milliseconds>(chrono::steady_clock::now());
 	SetCurrentInquiryTime((end - start).count());

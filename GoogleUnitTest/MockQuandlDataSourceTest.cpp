@@ -63,10 +63,10 @@ namespace FireBirdTest {
 		.WillOnce(Return(timePoint + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime()))
 		.WillOnce(Return(timePoint + 1ms + gl_systemConfiguration.GetWorldMarketQuandlInquiryTime()));
 		EXPECT_CALL(*m_pMockQuandlDataSource, Inquire()).Times(1)
-		.WillRepeatedly(DoAll(Invoke([p]() {
+		.WillRepeatedly(DoAll([p]() {
 			m_pMockQuandlDataSource->SetInquiring(true);
 			m_pMockQuandlDataSource->StoreInquiry(p);
-		}), Return(true)));
+		}, Return(true)));
 
 		EXPECT_FALSE(m_pMockQuandlDataSource->GenerateInquiryMessage(120500)) << "时间未到，继续等待";
 		EXPECT_FALSE(m_pMockQuandlDataSource->IsInquiring());

@@ -27,6 +27,8 @@ public:
 	virtual bool GenerateCryptoSymbol();
 	virtual bool GenerateIEXTopOfBook();
 	virtual bool GenerateStockDailyMeta();
+	virtual bool GenerateStockDailyMetaFreeAccount();
+	virtual bool GenerateStockDailyMetaPaidAccount();
 	virtual bool GenerateDayLine();
 	virtual bool GenerateFinancialState();
 

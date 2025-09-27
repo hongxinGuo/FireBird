@@ -6,7 +6,7 @@ namespace testing {
 	class CMockChinaMarket final : public CChinaMarket {
 	public:
 		MOCK_METHOD(void, TaskCreateTask, (long), (override));
-		MOCK_METHOD(void, TaskExitSystem, (long), (override));
+		MOCK_METHOD(void, TaskExitSystem, (), (override));
 		MOCK_METHOD(bool, TaskResetMarket, (long lCurrentTime), (override));
 
 		MOCK_METHOD(void, Choice10RSStrongStockSet, (), (override));

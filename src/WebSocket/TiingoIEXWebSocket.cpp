@@ -97,7 +97,7 @@ string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
 	jsonMessage["eventData"]["tickers"].emplace_back(_T("rig"));// tiingo使用的stock符号与finnhub不同
 	jsonMessage["eventData"]["tickers"].emplace_back(_T("eurusd"));// tiingo使用的stock符号与finnhub不同
 	jsonMessage["eventData"]["tickers"].emplace_back(_T("spy"));// tiingo使用的stock符号与finnhub不同
-	jsonMessage["eventData"]["tickers"].emplace_back(_T("uso"));// tiingo使用的stock符号与finnhub不同
+	jsonMessage["eventData"]["tickers"].emplace_back(_T("nmm"));// tiingo使用的stock符号与finnhub不同
 
 	return jsonMessage.dump();
 }
@@ -114,7 +114,7 @@ string CTiingoIEXWebSocket::CreateMessage(const vectorString& vSymbol) {
 // {"messageType":"A","service":"iex","data":["T","2019-01-30T13:33:45.594808294-05:00",1548873225594808294,"wes",null,null,null,null,null,50.285,200,null,0,0,0,0]}
 // {"messageType":"E","response":{"code":400,"message":"thresholdLevel not valid}}
 //
-// Type A的新格式如下：
+// messageType A的新格式如下：
 // {"messageType":"A","service":"iex","data":["2019-01-30T13:33:45.383129126-05:00","vym",81.585]}
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

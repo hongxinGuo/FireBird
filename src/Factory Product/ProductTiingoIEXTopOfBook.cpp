@@ -150,7 +150,7 @@ CTiingoIEXTopOfBooksPtr CProductTiingoIEXTopOfBook::ParseTiingoIEXTopOfBook(cons
 	return pvTiingoIEXLastTopOFBook;
 }
 
-void CProductTiingoIEXTopOfBook::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
+void CProductTiingoIEXTopOfBook::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CTiingoDataSource")) == 0);
 	dynamic_pointer_cast<CTiingoDataSource>(pDataSource)->SetUpdateIEXTopOfBook(false);
 	gl_systemMessage.PushInformationMessage(_T("Tiingo IEX top of book Updated"));

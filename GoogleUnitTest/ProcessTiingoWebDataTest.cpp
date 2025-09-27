@@ -278,9 +278,9 @@ namespace FireBirdTest {
 
 	// 正确数据
 	TiingoWebSocketData tiingoIEXData1(1, _T(""), _T(
-		                                   "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
+		                                   "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.383129126-05:00\",\"vym\",85.025]}"));
 	TiingoWebSocketData tiingoIEXData2(2, _T(""), _T(
-		                                   "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"T\",\"2019-01-30T13:33:45.594808294-05:00\",1548873225594808294,\"wes\",null,null,null,null,null,50.285,200,null,0,0,0,0]}"));
+		                                   "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.594808294-05:00\",\"wes\",50.123]}"));
 	// authentication
 	TiingoWebSocketData tiingoIEXData3(3, _T(""), _T(
 		                                   "{\"data\":{\"subscriptionId\":2563367},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
@@ -290,9 +290,6 @@ namespace FireBirdTest {
 	// messageType只能为'A''I''H'
 	TiingoWebSocketData tiingoIEXData5(5, _T(""), _T(
 		                                   "{\"messageType\":\"B\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
-	// data的首项只能为‘Q’ ‘T’ 或者‘B’
-	TiingoWebSocketData tiingoIEXData6(6, _T(""), _T(
-		                                   "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"C\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
 	// 错误。service的名称不为"iex",
 	TiingoWebSocketData tiingoIEXData7(7, _T(""), _T(
 		                                   "{\"messageType\":\"A\",\"service\":\"ex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
@@ -301,7 +298,7 @@ namespace FireBirdTest {
 		                                   "{\"messageType\":\"A\",\"servi\":\"iex\",\"data\":[\"T\",\"2019-01-30T13:33:45.594808294-05:00\",1548873225594808294,\"wes\",null,null,null,null,null,50.285,200,null,0,0,0,0]}"));
 	// json格式错误
 	TiingoWebSocketData tiingoIEXData9(9, _T(""), _T(
-		                                   "\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}"));
+		                                   "\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",81.58]}"));
 	// subscribe
 	TiingoWebSocketData tiingoIEXData10(10, _T(""), _T(
 		                                    "{\"data\":{\"tickers\":[\"*\",\"uso\",\"msft\",\"tnk\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}"));
@@ -338,8 +335,7 @@ namespace FireBirdTest {
 
 	INSTANTIATE_TEST_SUITE_P(TestProcessOneTiingoIEXWebSocketData1, ProcessOneTiingoIEXWebSocketDataTest,
 	                         testing::Values(&tiingoIEXData1, &tiingoIEXData2, &tiingoIEXData3, &tiingoIEXData4, &
-		                         tiingoIEXData5,
-		                         &tiingoIEXData6, &tiingoIEXData7, &tiingoIEXData8, &tiingoIEXData9, &tiingoIEXData10,&tiingoCryptoData11));
+		                         tiingoIEXData5, &tiingoIEXData7, &tiingoIEXData8, &tiingoIEXData9, &tiingoIEXData10,&tiingoCryptoData11));
 
 	TEST_P(ProcessOneTiingoIEXWebSocketDataTest, TestProcessOneTiingoIEXWebSocketData0) {
 		CTiingoIEXSocketPtr pTiingoIEX;
@@ -349,39 +345,15 @@ namespace FireBirdTest {
 		case 1: // 正确 Q
 			EXPECT_TRUE(fSucceed);
 			pTiingoIEX = gl_SystemData.PopTiingoIEXSocket();
-			EXPECT_EQ(pTiingoIEX->m_iNanoseconds, 1548873225383129126);
 			EXPECT_TRUE(pTiingoIEX->m_sSymbol == _T("vym"));
-			EXPECT_EQ(pTiingoIEX->m_dBidSize, 100);
-			EXPECT_EQ(pTiingoIEX->m_dBidPrice, 81.58);
-			EXPECT_EQ(pTiingoIEX->m_dMidPrice, 81.585);
-			EXPECT_EQ(pTiingoIEX->m_dAskPrice, 81.59);
-			EXPECT_EQ(pTiingoIEX->m_dAskSize, 100);
-			EXPECT_EQ(pTiingoIEX->m_dLastPrice, 0);
-			EXPECT_EQ(pTiingoIEX->m_dLastSize, 0);
-			EXPECT_EQ(pTiingoIEX->m_iHalted, 0);
-			EXPECT_EQ(pTiingoIEX->m_iAfterHour, 0);
-			EXPECT_EQ(pTiingoIEX->m_iISO, 0);
-			EXPECT_EQ(pTiingoIEX->m_iOddlot, 0);
-			EXPECT_EQ(pTiingoIEX->m_iNMSRule611, 0);
+			EXPECT_EQ(pTiingoIEX->m_dLastPrice, 85.025);
 			EXPECT_EQ(tiingoIEXWebSocket.GetHeartbeatTime(), GetUTCTime()) << "只有有效数据才设置心跳时间";
 			break;
 		case 2: // 正确 T
 			EXPECT_TRUE(fSucceed);
 			pTiingoIEX = gl_SystemData.PopTiingoIEXSocket();
-			EXPECT_EQ(pTiingoIEX->m_iNanoseconds, 1548873225594808294);
 			EXPECT_TRUE(pTiingoIEX->m_sSymbol == _T("wes"));
-			EXPECT_EQ(pTiingoIEX->m_dBidSize, 0);
-			EXPECT_EQ(pTiingoIEX->m_dBidPrice, 0);
-			EXPECT_EQ(pTiingoIEX->m_dMidPrice, 0);
-			EXPECT_EQ(pTiingoIEX->m_dAskPrice, 0);
-			EXPECT_EQ(pTiingoIEX->m_dAskSize, 0);
-			EXPECT_EQ(pTiingoIEX->m_dLastPrice, 50.285);
-			EXPECT_EQ(pTiingoIEX->m_dLastSize, 200);
-			EXPECT_EQ(pTiingoIEX->m_iHalted, 0);
-			EXPECT_EQ(pTiingoIEX->m_iAfterHour, 0);
-			EXPECT_EQ(pTiingoIEX->m_iISO, 0);
-			EXPECT_EQ(pTiingoIEX->m_iOddlot, 0);
-			EXPECT_EQ(pTiingoIEX->m_iNMSRule611, 0);
+			EXPECT_EQ(pTiingoIEX->m_dLastPrice, 50.123);
 			break;
 		case 3: // authentication
 			EXPECT_TRUE(fSucceed);
@@ -391,11 +363,6 @@ namespace FireBirdTest {
 			EXPECT_EQ(tiingoIEXWebSocket.GetHeartbeatTime(), 0) << "收到ping时不设置";
 			break;
 		case 5: //
-			EXPECT_FALSE(fSucceed);
-			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
-			gl_systemMessage.PopInnerSystemInformationMessage();
-			break;
-		case 6: //
 			EXPECT_FALSE(fSucceed);
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();

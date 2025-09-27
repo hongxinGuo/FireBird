@@ -12,7 +12,7 @@ public:
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	CTiingoStocksPtr ParseTiingoStockSymbol(const CWebDataPtr& pWebData);
 
-	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
+	void UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) override;
 	static CTiingoStocksPtr DeleteDuplicatedSymbol(const CTiingoStocksPtr& pvTiingoStock);
 	void SaveNewSymbol();
 	void SaveDelistedSymbol();

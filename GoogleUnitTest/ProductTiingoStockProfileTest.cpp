@@ -56,7 +56,7 @@ namespace FireBirdTest {
 	TEST_F(CProductTiingoStockProfileTest, TestUpdateDataSourceStatus) {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateStockSymbol());
 
-		stockSymbol.UpdateDataSourceStatus(gl_pTiingoDataSource);
+		stockSymbol.UpdateSystemStatus(gl_pTiingoDataSource);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateStockSymbol());
 		EXPECT_EQ(gl_systemMessage.PopInformationMessage(), _T("Tiingo stock symbol updated"));

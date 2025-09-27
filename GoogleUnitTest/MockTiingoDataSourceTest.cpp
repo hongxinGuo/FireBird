@@ -67,10 +67,10 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateDayLine()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateFinancialState()).Times(1)
-		.WillRepeatedly(DoAll(Invoke([p]() {
+		.WillRepeatedly(DoAll([p]() {
 			m_pTiingoDataSource->SetInquiring(true);
 			m_pTiingoDataSource->StoreInquiry(p);
-		}), Return(true)));
+		}, Return(true)));
 
 		EXPECT_FALSE(m_pTiingoDataSource->GenerateInquiryMessage(120500)) << "时间未到，继续等待";
 		EXPECT_FALSE(m_pTiingoDataSource->IsInquiring());
@@ -108,10 +108,10 @@ namespace FireBirdTest {
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateCryptoSymbol()).Times(1)
 		.WillOnce(Return(false));
 		EXPECT_CALL(*m_pTiingoDataSource, GenerateIEXTopOfBook()).Times(1)
-		.WillRepeatedly(DoAll(Invoke([p]() {
+		.WillRepeatedly(DoAll([p]() {
 			m_pTiingoDataSource->SetInquiring(true);
 			m_pTiingoDataSource->StoreInquiry(p);
-		}), Return(true)));
+		}, Return(true)));
 
 		EXPECT_FALSE(m_pTiingoDataSource->GenerateInquiryMessage(120000)) << "时间未到，继续等待";
 		EXPECT_FALSE(m_pTiingoDataSource->IsInquiring());

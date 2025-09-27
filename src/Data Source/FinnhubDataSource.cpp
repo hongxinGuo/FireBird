@@ -211,11 +211,7 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 	// Lambda to check if update is needed
 	auto isUpdateNeeded = [this]() { return IsUpdateMarketStatus(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateMarketStatus(); };
-	//auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-	//return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
-	//};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
-	//auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 	auto setMessage = [](const auto& item) {
 		std::string str = _T("Market status: ");
 		str += item->GetExchangeCode();
@@ -241,11 +237,7 @@ bool CFinnhubDataSource::GenerateMarketStatus() {
 bool CFinnhubDataSource::GenerateMarketHoliday() {
 	auto isUpdateNeeded = [this]() { return IsUpdateMarketHoliday(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateMarketHoliday(); };
-	//auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-	//return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
-	//};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
-	//auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 	auto setMessage = [](const auto& item) {
 		std::string str = _T("Market holiday: ");
 		str += item->GetExchangeCode();
@@ -271,11 +263,7 @@ bool CFinnhubDataSource::GenerateMarketHoliday() {
 bool CFinnhubDataSource::GenerateCompanySymbol() {
 	auto isUpdateNeeded = [this]() { return IsUpdateSymbol(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateStockSymbol(); };
-	//auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-	//return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
-	//};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
-	//auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 	auto setMessage = [](const auto& item) {
 		std::string str = _T("交易所代码:");
 		str += item->GetExchangeCode();
@@ -301,11 +289,7 @@ bool CFinnhubDataSource::GenerateCompanySymbol() {
 bool CFinnhubDataSource::GenerateCompanyProfileConcise() {
 	auto isUpdateNeeded = [this]() { return IsUpdateStockProfile(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateCompanyProfile(); };
-	//auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-	//return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
-	//};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
-	//auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 	auto setMessage = [](const auto& item) {
 		std::string str = _T("简介:");
 		str += item->GetSymbol();
@@ -331,11 +315,7 @@ bool CFinnhubDataSource::GenerateCompanyProfileConcise() {
 bool CFinnhubDataSource::GenerateCompanyNews() {
 	auto isUpdateNeeded = [this]() { return IsUpdateCompanyNews(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateCompanyNews(); };
-	//auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-	//return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
-	//};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
-	//auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 	auto setMessage = [](const auto& item) {
 		std::string str = _T("公司新闻:");
 		str += item->GetSymbol();
@@ -361,11 +341,7 @@ bool CFinnhubDataSource::GenerateCompanyNews() {
 bool CFinnhubDataSource::GenerateCompanyBasicFinancial() {
 	auto isUpdateNeeded = [this]() { return IsUpdateStockBasicFinancial(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateBasicFinancial(); };
-	//auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-	//return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
-	//};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
-	//auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 	auto setMessage = [](const auto& item) {
 		std::string str = _T("基本财务:");
 		str += item->GetSymbol();
@@ -391,11 +367,7 @@ bool CFinnhubDataSource::GenerateCompanyBasicFinancial() {
 bool CFinnhubDataSource::GenerateStockDayLine() {
 	auto isUpdateNeeded = [this]() { return IsUpdateStockDayLine(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateDayLine(); };
-	//auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-	//return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
-	//};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
-	//auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 	auto setMessage = [](const auto& item) {
 		std::string str = _T("日线:");
 		str += item->GetSymbol();
@@ -421,11 +393,7 @@ bool CFinnhubDataSource::GenerateStockDayLine() {
 bool CFinnhubDataSource::GenerateInsiderTransaction() {
 	auto isUpdateNeeded = [this]() { return IsUpdateInsiderTransaction(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateInsiderTransaction(); };
-	//auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-	//	return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
-	//};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
-	//auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 	auto setMessage = [](const auto& item) {
 		std::string str = _T("内部交易:");
 		str += item->GetSymbol();
@@ -451,11 +419,7 @@ bool CFinnhubDataSource::GenerateInsiderTransaction() {
 bool CFinnhubDataSource::GenerateInsiderSentiment() {
 	auto isUpdateNeeded = [this]() { return IsUpdateInsiderSentiment(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateInsiderSentiment(); };
-	//auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-	//	return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
-	//};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
-	//auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 	auto setMessage = [](const auto& item) {
 		std::string str = _T("内部交易情绪:");
 		str += item->GetSymbol();
@@ -497,11 +461,7 @@ bool CFinnhubDataSource::GenerateRTQuote() {
 bool CFinnhubDataSource::GeneratePeer() {
 	auto isUpdateNeeded = [this]() { return IsUpdatePeer(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdatePeer(); };
-	//auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-	//	return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
-	//};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
-	//auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 	auto setMessage = [](const auto& item) {
 		std::string str = _T("Peer:");
 		str += item->GetSymbol();
@@ -538,11 +498,7 @@ bool CFinnhubDataSource::GenerateEconomicCalendar() {
 bool CFinnhubDataSource::GenerateEPSSurprise() {
 	auto isUpdateNeeded = [this]() { return IsUpdateEPSSurprise(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateEPSSurprise(); };
-	//auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-	//	return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
-	//};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
-	//auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 	auto setMessage = [](const auto& item) {
 		std::string str = _T("EPS surprise:");
 		str += item->GetSymbol();
@@ -568,11 +524,7 @@ bool CFinnhubDataSource::GenerateEPSSurprise() {
 bool CFinnhubDataSource::GenerateSECFilings() {
 	auto isUpdateNeeded = [this]() { return IsUpdateSECFilings(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateSECFilings(); };
-	//auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-	//	return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
-	//};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
-	//auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 	auto setMessage = [](const auto& item) {
 		std::string str = _T("SEC Filings:");
 		str += item->GetSymbol();
@@ -680,11 +632,7 @@ bool CFinnhubDataSource::GenerateCryptoSymbol() {
 bool CFinnhubDataSource::GenerateForexDayLine() {
 	auto isUpdateNeeded = [this]() { return IsUpdateForexDayLine(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateDayLine(); };
-	//auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-	//return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
-	//};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
-	//auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 	auto setMessage = [](const auto& item) {
 		std::string str = _T("Forex日线：");
 		str += item->GetSymbol();
@@ -721,11 +669,7 @@ bool CFinnhubDataSource::GenerateCryptoExchange() {
 bool CFinnhubDataSource::GenerateCryptoDayLine() {
 	auto isUpdateNeeded = [this]() { return IsUpdateCryptoDayLine(); };
 	auto isUpdateItemNeeded = [](const auto& item) { return item->IsUpdateDayLine(); };
-	//auto isAccessible = [](int inquireType, const std::string& exchangeCode) {
-	//	return !gl_finnhubInaccessibleExchange.HaveExchange(inquireType, exchangeCode);
-	//};
 	auto createProduct = [this](int inquireType) { return m_FinnhubFactory.CreateProduct(gl_pWorldMarket, inquireType); };
-	//auto setIndex = [](auto& product, long pos) { product->SetIndex(pos); };
 	auto setMessage = [](const auto& item) {
 		std::string str = _T("Crypto日线：");
 		str += item->GetSymbol();

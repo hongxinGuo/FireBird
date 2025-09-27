@@ -14,9 +14,6 @@ public:
 	CMainFrame();
 	~CMainFrame() override;
 
-	int ReportRunningToWatchdog();
-	int ReportExitToWatchdog();
-
 	// 特性
 
 	// 操作

@@ -599,50 +599,44 @@ namespace FireBirdTest {
 		m_finnhubCompanyBasicFinancial.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
-			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
+			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancial()) << "此标识在UpdateSystemStatus中才清除";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此标识在UpdateSystemStatus中才设置";;
 			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancialDB());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
+			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancial()) << "此标识在UpdateSystemStatus中才清除";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此标识在UpdateSystemStatus中才设置";;
 			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancialDB());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 2:
-			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
+			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancial()) << "此标识在UpdateSystemStatus中才清除";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此标识在UpdateSystemStatus中才设置";;
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
 			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 3: // ADR
-			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
+			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancial()) << "此标识在UpdateSystemStatus中才清除";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此标识在UpdateSystemStatus中才设置";;
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
 			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 0) << "BVDRF ADR的本土代码名称为MBWS.PA，是合理的，不是错误代码，不用报错";
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 4: // 部分数据
-			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
+			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancial()) << "此标识在UpdateSystemStatus中才清除";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此标识在UpdateSystemStatus中才设置";;
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
 			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 0) << "BVDRF ADR的本土代码名称为MBWS.PA，是合理的，不是错误代码，不用报错";
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
 		case 5: // Metric out of range
-			EXPECT_FALSE(m_pStock->IsUpdateBasicFinancial());
+			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancial()) << "此标识在UpdateSystemStatus中才清除";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此标识在UpdateSystemStatus中才设置";;
 			EXPECT_TRUE(m_pStock->IsUpdateBasicFinancialDB());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetBasicFinancialUpdateDate(), m_finnhubCompanyBasicFinancial.GetMarket()->GetMarketDate());
 			EXPECT_THAT(m_pStock->GetBasicFinancial(), NotNull());
 			EXPECT_THAT(gl_systemMessage.InnerSystemInfoSize(), 1) << "Metric out of range";
 			gl_systemMessage.PopInnerSystemInformationMessage();
@@ -656,8 +650,5 @@ namespace FireBirdTest {
 		default:
 			break;
 		}
-		// 恢复原状
-		m_pStock->SetUpdateBasicFinancial(true);
-		m_pStock->SetUpdateProfileDB(false);
 	}
 }

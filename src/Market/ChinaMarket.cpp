@@ -202,7 +202,8 @@ int CChinaMarket::ProcessTask(long lCurrentTime) {
 			TaskCreateTask(lCurrentTime);
 			break;
 		case RELOAD_SYSTEM__: // 重启系统？
-			TaskExitSystem(lCurrentTime);
+			ReportSchedulingExitToWatchdog();
+			TaskExitSystem();
 			break;
 		case CHINA_MARKET_CHECK_SYSTEM_READY__:
 			TaskCheckMarketReady(lCurrentTime);
@@ -644,7 +645,7 @@ void CChinaMarket::TaskCreateTask(long lCurrentTime) {
 /// 本函数只是发出关闭系统的消息，系统关闭由关闭函数执行。系统重新载入由Watchdog监控程序完成。
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CChinaMarket::TaskExitSystem(long lCurrentTime) {
+void CChinaMarket::TaskExitSystem() {
 	// 向主窗口发送关闭窗口系统消息，通知框架窗口执行关闭任务。
 	// 由于系统需要顺序关闭各项任务，故而不允许直接退出系统。
 	PostMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), WM_SYSCOMMAND, SC_CLOSE, 0);

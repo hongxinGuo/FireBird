@@ -53,7 +53,7 @@ namespace FireBirdTest {
 	TEST_F(CProductTiingoMarketNewsTest, TestUpdateDataSourceStatus1) {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateMarketNews());
 
-		marketNews.UpdateDataSourceStatus(gl_pTiingoDataSource);
+		marketNews.UpdateSystemStatus(gl_pTiingoDataSource);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateMarketNews());
 
@@ -72,7 +72,7 @@ namespace FireBirdTest {
 	TEST_F(CProductTiingoMarketNewsTest, TestUpdateDataSourceStatus2) {
 		EXPECT_TRUE(gl_pTiingoDataSource->IsUpdateMarketNews());
 
-		marketNews.UpdateDataSourceStatus(gl_pTiingoDataSource);
+		marketNews.UpdateSystemStatus(gl_pTiingoDataSource);
 
 		EXPECT_FALSE(gl_pTiingoDataSource->IsUpdateMarketNews());
 

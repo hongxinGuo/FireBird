@@ -41,7 +41,7 @@ public:
 
 	// 各种任务
 	virtual void TaskCreateTask(long lCurrentTime);
-	virtual void TaskExitSystem(long lCurrentTime);
+	virtual void TaskExitSystem();
 	bool TaskCheckMarketReady(long lCurrentTime);
 	virtual bool TaskResetMarket(long lCurrentTime);
 	void TaskDistributeAndCalculateRTData(long lCurrentTime);

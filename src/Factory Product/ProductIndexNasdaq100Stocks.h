@@ -13,7 +13,7 @@ public:
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 	vector<string> ParseIndexNasdaq100Stocks(const CWebDataPtr& pWebData);
 
-	void UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) override;
+	void UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) override;
 };
 
 using CProductIndexNasdaq100StocksPtr = shared_ptr<CProductIndexNasdaq100Stocks>;

@@ -55,7 +55,7 @@ namespace FireBirdTest {
 	TEST_F(CProductFinnhubCryptoExchangeTest, TestUpdateDataSourceStatus) {
 		EXPECT_TRUE(gl_pFinnhubDataSource->IsUpdateCryptoExchange());
 
-		cryptoExchange.UpdateDataSourceStatus(gl_pFinnhubDataSource);
+		cryptoExchange.UpdateSystemStatus(gl_pFinnhubDataSource);
 
 		EXPECT_FALSE(gl_pFinnhubDataSource->IsUpdateCryptoExchange());
 		EXPECT_EQ(gl_systemMessage.InformationSize(), 1);

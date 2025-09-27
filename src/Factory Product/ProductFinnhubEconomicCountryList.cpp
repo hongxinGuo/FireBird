@@ -63,7 +63,7 @@ CCountriesPtr CProductFinnhubEconomicCountryList::ParseFinnhubCountryList(const 
 	return pvCountry;
 }
 
-void CProductFinnhubEconomicCountryList::UpdateDataSourceStatus(CVirtualDataSourcePtr pDataSource) {
+void CProductFinnhubEconomicCountryList::UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) {
 	ASSERT(strcmp(typeid(*pDataSource).name(), _T("class CFinnhubDataSource")) == 0);
 	dynamic_pointer_cast<CFinnhubDataSource>(pDataSource)->SetUpdateCountryList(false);
 	gl_systemMessage.PushInformationMessage(_T("Finnhub economic country List updated"));
