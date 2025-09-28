@@ -78,7 +78,7 @@ void CVirtualDataSource::InquireData() {
 	const shared_ptr<vector<CWebDataPtr>> pvWebData = make_shared<vector<CWebDataPtr>>();
 	for (auto& pWebData : vResults) {
 		auto p = pWebData.get(); // 在这里等待所有的线程执行完毕
-		if (p != nullptr) {
+		if (p != nullptr) { // 抛弃无效数据，空数据的话要保存
 			sm_lTotalByteRead += p->GetBufferLength();
 			pvWebData->push_back(p);
 		}

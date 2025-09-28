@@ -111,40 +111,40 @@ namespace FireBirdTest {
 		m_finnhubCompanyInsiderSentiment.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
 			break;
 		case 2: // 正确
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentimentDB());
-			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
 			break;
 		case 3:
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
 			break;
 		case 4:
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
 			break;
 		case 5: // 空数据
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_NE(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "已更改为当前市场日期";
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "市场日期未更改";
 			break;
 		default:
 			break;
@@ -196,40 +196,34 @@ namespace FireBirdTest {
 		m_finnhubCompanyInsiderSentiment.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0: // 空数据
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
 			break;
 		case 1: // 无权利访问的数据
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
 			break;
 		case 2: // 正确
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentimentDB());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentimentDB()) << "有效数据，需要更新";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
 			break;
 		case 3: // 缺乏data项
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
 			break;
 		case 4: // 缺乏Symbol
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
 			break;
 		case 5: //空数据
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentiment());
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
-			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), gl_pWorldMarket->GetMarketDate());
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "没有有效数据";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "此时不更改此标识";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "此时不更改此标识";;
 			break;
 		default:
 			break;

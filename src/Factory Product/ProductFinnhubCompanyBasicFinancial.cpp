@@ -51,10 +51,6 @@ void CProductFinnhubCompanyBasicFinancial::ParseAndStoreWebData(CWebDataPtr pWeb
 		pStock->UpdateBasicFinancial(pFinnhubStockBasicFinancial);
 		pStock->SetUpdateBasicFinancialDB(true);
 	}
-	// 这三个在UpdateSystemStatus中更新
-	//pStock->SetBasicFinancialUpdateDate(GetMarket()->GetMarketDate());
-	//pStock->SetUpdateBasicFinancial(false);
-	//pStock->SetUpdateProfileDB(true);
 }
 
 void CProductFinnhubCompanyBasicFinancial::UpdateSystemStatus(CVirtualDataSourcePtr) {

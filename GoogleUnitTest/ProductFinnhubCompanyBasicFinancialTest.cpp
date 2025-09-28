@@ -54,6 +54,28 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateBasicFinancial(true);
 	}
 
+	TEST_F(CProductFinnhubCompanyBasicFinancialTest, TestUpdateSystemStatus) {
+		auto date = gl_pWorldMarket->GetMarketDate();
+		companyBasicFinancial.SetMarket(gl_pWorldMarket);
+		companyBasicFinancial.SetIndex(0);
+
+		auto pStock = gl_dataContainerFinnhubStock.GetItem(companyBasicFinancial.GetIndex());
+		EXPECT_EQ(pStock->GetBasicFinancialUpdateDate(), 19800101);
+		EXPECT_TRUE(pStock->IsUpdateBasicFinancial());
+		EXPECT_FALSE(pStock->IsUpdateProfileDB());
+
+		companyBasicFinancial.UpdateSystemStatus(nullptr);
+
+		EXPECT_EQ(pStock->GetBasicFinancialUpdateDate(), date);
+		EXPECT_FALSE(pStock->IsUpdateBasicFinancial());
+		EXPECT_TRUE(pStock->IsUpdateProfileDB());
+
+		// »Ö¸´Ô­×´
+		pStock->SetBasicFinancialUpdateDate(19800101);
+		pStock->SetUpdateBasicFinancial(true);
+		pStock->SetUpdateProfileDB(false);
+	}
+
 	Test_FinnhubWebData finnhubWebData1002(2, _T("AAPL"),
 	                                       _T("{\
 		\"metric\": { \

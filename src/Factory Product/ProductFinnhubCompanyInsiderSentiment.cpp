@@ -26,15 +26,22 @@ string CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 }
 
 void CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 	const CInsiderSentimentsPtr pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
-	pStock->SetInsiderSentimentUpdateDate(GetMarket()->GetMarketDate());
-	pStock->SetUpdateInsiderSentiment(false);
-	pStock->SetUpdateProfileDB(true);
+	//pStock->SetInsiderSentimentUpdateDate(GetMarket()->GetMarketDate());
+	//pStock->SetUpdateInsiderSentiment(false);
+	//pStock->SetUpdateProfileDB(true);
 	if (!pvInsiderSentiment->empty()) {
+		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 		pStock->UpdateInsiderSentiment(*pvInsiderSentiment);
 		pStock->SetUpdateInsiderSentimentDB(true);
 	}
+}
+
+void CProductFinnhubCompanyInsiderSentiment::UpdateSystemStatus(CVirtualDataSourcePtr) {
+	const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
+	pStock->SetInsiderSentimentUpdateDate(GetMarket()->GetMarketDate());
+	pStock->SetUpdateInsiderSentiment(false);
+	pStock->SetUpdateProfileDB(true);
 }
 
 ////////
