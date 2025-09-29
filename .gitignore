@@ -260,6 +260,9 @@ paket-files/
 __pycache__/
 *.pyc
 /FireBird/logs
+/WatchlogQT/logs
+/X64/Debug/logs
+/X64/Release/logs
 /GoogleUnitTest/logs
 /FireBird/SystemConfiguration.bak
 /FireBird/SystemConfiguration.bak
@@ -267,3 +270,5 @@ __pycache__/
 /FireBird/SystemConfiguration.json
 /FireBird/FinnhubInaccessibleExchange.bak
 /FireBird/FinnhubInaccessibleExchange.json
+/WatchdogQT/logs/trace.txt
+/WatchdogQT/logs/warn.txt
