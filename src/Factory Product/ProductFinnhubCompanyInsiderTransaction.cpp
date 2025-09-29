@@ -37,6 +37,13 @@ void CProductFinnhubCompanyInsiderTransaction::ParseAndStoreWebData(CWebDataPtr 
 	}
 }
 
+void CProductFinnhubCompanyInsiderTransaction::UpdateSystemStatus(CVirtualDataSourcePtr) {
+	const auto pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
+	pStock->SetInsiderTransactionUpdateDate(GetMarket()->GetMarketDate());
+	pStock->SetUpdateInsiderTransaction(false);
+	pStock->SetUpdateProfileDB(true);
+}
+
 //
 //
 // {"data": [{

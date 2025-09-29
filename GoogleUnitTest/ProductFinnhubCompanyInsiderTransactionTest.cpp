@@ -62,6 +62,28 @@ namespace FireBirdTest {
 		gl_dataContainerFinnhubStock.GetItem(1)->SetInsiderTransactionUpdateDate(19800101);
 	}
 
+	TEST_F(CFinnhubCompanyInsiderTransactionTest, TestUpdateSystemStatus) {
+		auto date = gl_pWorldMarket->GetMarketDate();
+		companyInsiderTransaction.SetMarket(gl_pWorldMarket);
+		companyInsiderTransaction.SetIndex(0);
+
+		auto pStock = gl_dataContainerFinnhubStock.GetItem(companyInsiderTransaction.GetIndex());
+		EXPECT_EQ(pStock->GetInsiderTransactionUpdateDate(), 19800101);
+		EXPECT_TRUE(pStock->IsUpdateInsiderTransaction());
+		EXPECT_FALSE(pStock->IsUpdateProfileDB());
+
+		companyInsiderTransaction.UpdateSystemStatus(nullptr);
+
+		EXPECT_EQ(pStock->GetInsiderTransactionUpdateDate(), date);
+		EXPECT_FALSE(pStock->IsUpdateInsiderTransaction());
+		EXPECT_TRUE(pStock->IsUpdateProfileDB());
+
+		// 恢复原状
+		pStock->SetInsiderTransactionUpdateDate(19800101);
+		pStock->SetUpdateInsiderTransaction(true);
+		pStock->SetUpdateProfileDB(false);
+	}
+
 	// 正确数据
 	Test_FinnhubWebData finnhubWebData133(3, _T("AAPL"), _T(
 		                                      "{\"data\":[{\"name\":\"Long Brady K\",\"share\":269036,\"change\":-14236,\"filingDate\":\"2021-03-03\",\"transactionDate\":\"2021-03-03\",\"transactionCode\":\"F\",\"transactionPrice\":3.68},{\"name\":\"Adamson Keelan\",\"share\":221083,\"change\":-11347,\"filingDate\" : \"2021-03-03\",\"transactionDate\" : \"2021-03-02\",\"transactionCode\" : \"F\",\"transactionPrice\" : 3.68 }] , \"symbol\" : \"RIG\"}"));

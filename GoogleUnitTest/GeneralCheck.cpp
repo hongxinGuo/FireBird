@@ -154,6 +154,8 @@ namespace FireBirdTest {
 			//Note EXPECT_TRUE(gl_dataContainerTiingoStock.GetStock(0)->IsUpdateDayLine());
 			EXPECT_FALSE(gl_dataContainerTiingoStock.GetStock(0)->IsUpdateDayLineDB());
 
+			EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(0)->IsUpdateInsiderTransaction());
+
 			//	for (long l = 0; l < gl_dataContainerFinnhubStock.Size(); l++) {
 			//		const auto p_stock = gl_dataContainerFinnhubStock.GetItem(l);
 			//		EXPECT_TRUE(p_stock->IsUpdateBasicFinancial());

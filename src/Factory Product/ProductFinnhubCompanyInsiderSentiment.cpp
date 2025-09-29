@@ -27,9 +27,6 @@ string CProductFinnhubCompanyInsiderSentiment::CreateMessage() {
 
 void CProductFinnhubCompanyInsiderSentiment::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const CInsiderSentimentsPtr pvInsiderSentiment = ParseFinnhubStockInsiderSentiment(pWebData);
-	//pStock->SetInsiderSentimentUpdateDate(GetMarket()->GetMarketDate());
-	//pStock->SetUpdateInsiderSentiment(false);
-	//pStock->SetUpdateProfileDB(true);
 	if (!pvInsiderSentiment->empty()) {
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(m_lIndex);
 		pStock->UpdateInsiderSentiment(*pvInsiderSentiment);
