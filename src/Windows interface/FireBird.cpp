@@ -14,8 +14,7 @@
 #include <spdlog/spdlog.h>
 
 #include "ScheduleTask.h"
-#include "SystempublicDeclaration.h"
-#include "WorldMarket.h"
+#include "SystemPublicDeclaration.h"
 
 #ifndef _MBCS
 #error _T("本系统使用多字节字符集")

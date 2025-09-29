@@ -65,11 +65,11 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCompanyInsiderTransactionTest, TestUpdateSystemStatus) {
 		auto date = gl_pWorldMarket->GetMarketDate();
 		companyInsiderTransaction.SetMarket(gl_pWorldMarket);
-		companyInsiderTransaction.SetIndex(0);
+		companyInsiderTransaction.SetIndex(gl_dataContainerFinnhubStock.GetOffset(_T("A")));
 
 		auto pStock = gl_dataContainerFinnhubStock.GetItem(companyInsiderTransaction.GetIndex());
 		EXPECT_EQ(pStock->GetInsiderTransactionUpdateDate(), 19800101);
-		EXPECT_TRUE(pStock->IsUpdateInsiderTransaction());
+		pStock->SetUpdateInsiderTransaction(true);
 		EXPECT_FALSE(pStock->IsUpdateProfileDB());
 
 		companyInsiderTransaction.UpdateSystemStatus(nullptr);

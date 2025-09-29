@@ -1,0 +1,16 @@
+[2025-09-29 19:44:37.023] [watchdog_daily_logger] [info] WatchdogQT App begin running
+[2025-09-29 19:45:43.304] [watchdog_daily_logger] [info] WatchdogQT App exit
+[2025-09-29 19:46:23.392] [watchdog_daily_logger] [info] WatchdogQT App begin running
+[2025-09-29 19:47:39.332] [watchdog_daily_logger] [info] 2025年09月29日 19:47:22 FireBird报告启动
+[2025-09-29 19:47:39.667] [watchdog_daily_logger] [info] 启动FireBird于: 2025年09月29日 19:47:22
+[2025-09-29 19:52:35.167] [watchdog_daily_logger] [info] 2025年09月29日 19:52:31 FireBird报告关闭
+[2025-09-29 19:52:46.038] [watchdog_daily_logger] [info] 2025年09月29日 19:52:42 FireBird报告启动
+[2025-09-29 19:52:46.397] [watchdog_daily_logger] [info] 启动FireBird于: 2025年09月29日 19:52:42
+[2025-09-29 19:52:50.481] [watchdog_daily_logger] [info] WatchdogQT App exit
+[2025-09-29 19:59:32.867] [watchdog_daily_logger] [info] WatchdogQT App begin running
+[2025-09-29 20:00:35.588] [watchdog_daily_logger] [info] 2025年09月29日 20:00:31 FireBird报告启动
+[2025-09-29 20:00:35.936] [watchdog_daily_logger] [info] 启动FireBird于: 2025年09月29日 20:00:31
+[2025-09-29 20:01:13.387] [watchdog_daily_logger] [info] WatchdogQT App exit
+[2025-09-29 20:02:21.115] [watchdog_daily_logger] [info] WatchdogQT App begin running
+[2025-09-29 20:03:03.633] [watchdog_daily_logger] [info] 2025年09月29日 20:03:03 FireBird报告启动
+[2025-09-29 21:06:52.197] [watchdog_daily_logger] [info] WatchdogQT App exit

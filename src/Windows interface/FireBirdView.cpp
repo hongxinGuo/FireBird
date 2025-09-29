@@ -637,10 +637,10 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	CVirtualDataHistoryCandleExtend* pHistoryData;
 	switch (m_iCurrentShowType) {
 	case _SHOW_DAY_LINE_DATA_:
-		pHistoryData = pCurrentStock->GetDataChinaDayLine();
+		pHistoryData = pCurrentStock->DayLine();
 		break;
 	case _SHOW_WEEK_LINE_DATA_:
-		pHistoryData = pCurrentStock->GetDataChinaWeekLine();
+		pHistoryData = pCurrentStock->WeekLine();
 		break;
 	default:
 		pHistoryData = nullptr;

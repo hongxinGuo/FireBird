@@ -1,6 +1,6 @@
 ﻿#include "WatchdogQT.h"
 
-#include"../src/SystempublicDeclaration.h"
+#include"../src/SystemPublicDeclaration.h"
 
 #include <afx.h>
 #include<QMessageBox>
@@ -62,7 +62,7 @@ WatchdogQT::~WatchdogQT() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 当FireBird主动退出时，它向WatchdogQT发送WM_COPYDATA消息，告知准备退出。
+// 当FireBird主动退出时，它向WatchdogQT发送WM_FIREBIRD_EXIT消息，告知准备退出。
 //
 // QT nativeEvent()函数无法接收WParam和LParam.
 //
@@ -71,7 +71,7 @@ bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr
 	tm tmLocal;
 	long long time;
 	string s;
-	MSG* msg = static_cast<MSG*>(message);
+	const MSG* msg = static_cast<MSG*>(message);
 	switch (msg->message) {
 	case WM_FIREBIRD_RUNNING:
 		time = gl_tpNow.time_since_epoch().count();
@@ -95,7 +95,7 @@ bool WatchdogQT::nativeEvent(const QByteArray& eventType, void* message, qintptr
 		gl_dailyLogger->info("{}", s);
 		return true;
 	default:
-		return false;
+		return QMainWindow::nativeEvent(eventType, message, result);
 	}
 }
 

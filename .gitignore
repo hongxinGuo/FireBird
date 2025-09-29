@@ -260,6 +260,7 @@ paket-files/
 __pycache__/
 *.pyc
 /FireBird/logs
+/Watchdog/logs
 /WatchlogQT/logs
 /X64/Debug/logs
 /X64/Release/logs

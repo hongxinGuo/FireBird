@@ -1,8 +1,0 @@
-[2025-07-25 08:03:46.990] [daily_logger] [info] FireBird App begin running
-[2025-07-25 08:04:00.932] [daily_logger] [info] FireBird App exit
-[2025-07-25 08:04:06.998] [daily_logger] [info] FireBird App begin running
-[2025-07-25 08:04:28.886] [daily_logger] [info] FireBird App exit
-[2025-07-25 08:04:37.002] [daily_logger] [info] FireBird App begin running
-[2025-07-25 08:04:52.700] [daily_logger] [info] FireBird App exit
-[2025-07-25 08:08:59.216] [daily_logger] [info] FireBird App begin running
-[2025-07-25 08:09:05.179] [daily_logger] [info] FireBird App exit

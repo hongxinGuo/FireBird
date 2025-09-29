@@ -1,7 +1,7 @@
 ﻿// MainFrm.cpp: CMainFrame 类的实现
 #include"pch.h"
 
-#include"SystempublicDeclaration.h"
+#include"SystemPublicDeclaration.h"
 
 #include"ThreadStatus.h"
 #include"Thread.h"
