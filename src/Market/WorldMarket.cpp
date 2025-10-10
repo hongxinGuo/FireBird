@@ -861,7 +861,7 @@ void CWorldMarket::TaskUpdateWorldMarketDB(long lCurrentTime) {
 	}
 
 	// Tiingo²¿·Ö
-	static bool s_bUpdatingTiingoStockProfile = false;
+	static std::atomic<bool> s_bUpdatingTiingoStockProfile = false;
 	if (gl_dataContainerTiingoStock.IsUpdateProfileDB() && !gl_ThreadStatus.IsSavingWorldMarketThreadRunning() && !s_bUpdatingTiingoStockProfile) { // Tiingo Stock
 		gl_runtime.background_executor()->post([] {
 			s_bUpdatingTiingoStockProfile = true;

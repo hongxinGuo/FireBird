@@ -4,6 +4,7 @@
 
 #include<benchmark/benchmark.h>
 
+#include"ChinaStockCodeConverter.h"
 #include"ChinaMarket.h"
 
 class CChinaMarketBenchmark : public benchmark::Fixture {
@@ -15,3 +16,10 @@ public:
 	void TearDown(const ::benchmark::State& state) override {
 	}
 };
+
+BENCHMARK_F(CChinaMarketBenchmark, XferSinaToStandard)(benchmark::State& state) {
+	const string svData{ "sh600024" };
+	for (auto _ : state) {
+		string sResult = XferSinaToStandard(svData);
+	}
+}

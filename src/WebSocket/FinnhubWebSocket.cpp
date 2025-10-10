@@ -13,7 +13,7 @@
 
 void ProcessFinnhubWebSocket(const ix::WebSocketMessagePtr& msg) {
 	string str;
-	static bool s_bWebSocketClosing = false;
+	static atomic_bool s_bWebSocketClosing = false;
 	gl_pFinnhubWebSocket->SetError(false);
 	switch (msg->type) {
 	case ix::WebSocketMessageType::Message:

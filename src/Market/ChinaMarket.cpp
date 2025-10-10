@@ -846,7 +846,7 @@ void CChinaMarket::ProcessTodayStock() {
 }
 
 bool CChinaMarket::IsTaskOfSavingDayLineDBFinished() {
-	static bool s_bTaskOfSavingDayLineFinished = false;
+	static atomic_bool s_bTaskOfSavingDayLineFinished = false;
 	if (s_bTaskOfSavingDayLineFinished) {
 		if ((!gl_dataContainerChinaStock.IsUpdateDayLineDB()) && (!gl_dataContainerChinaStock.IsUpdateDayLine()) && (!IsDayLineNeedProcess())) {
 			s_bTaskOfSavingDayLineFinished = false;
@@ -878,7 +878,7 @@ bool CChinaMarket::CheckFastReceivingData(long lCurrentTime) {
 }
 
 bool CChinaMarket::IsWebBusy() {
-	static bool s_bWebBusy = false;
+	static std::atomic_bool s_bWebBusy = false;
 	bool bWebBusy = false;
 	switch (gl_systemConfiguration.GetChinaMarketRealtimeServer()) {
 	case 0: // 新浪实时数据

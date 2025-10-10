@@ -672,6 +672,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TaskUpdateInsiderTransactionDB) {
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem(_T("A"))->HaveInsiderTransaction());
+		EXPECT_EQ(gl_dataContainerFinnhubStock.GetItem(_T("A"))->GetInsiderTransactionUpdateDate(), 19800101);
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 
 		vector<CInsiderTransactionPtr> vInsiderTransaction;
@@ -751,6 +752,8 @@ namespace FireBirdTest {
 		setInsiderTransaction.Delete();
 		setInsiderTransaction.m_pDatabase->CommitTrans();
 		setInsiderTransaction.Close();
+
+		pStock->SetInsiderTransactionUpdateDate(19800101);
 	}
 
 	TEST_F(CWorldMarketTest, TaskUpdateInsiderSentimentDB) {
