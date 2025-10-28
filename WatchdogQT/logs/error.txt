@@ -1,0 +1,7 @@
+[2025-10-28 15:42:08.812] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2025-10-28 15:42:17.136] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2025-10-28 15:42:26.160] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2025-10-28 15:42:35.220] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2025-10-28 15:42:49.785] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2025-10-28 15:42:58.275] [basic_warn_logger] [warning] {"detail":"Please supply a token"}
+[2025-10-28 15:43:09.731] [basic_warn_logger] [warning] {"detail":"Please supply a token"}

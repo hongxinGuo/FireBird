@@ -289,9 +289,9 @@ void CPropertiesWnd::InitPropList() {
 	m_pPropThreadPoolExecutorMaxWorkerIdleTime = new CMFCPropertyGridProperty(_T("Thread pool idle time:"), _T(""));
 	m_pPropThreadPoolExecutorMaxWorkerIdleTime->Enable(false);
 	pGroup1->AddSubItem(m_pPropThreadPoolExecutorMaxWorkerIdleTime);
-	m_pPropBackgroundExecutorMaxWorkerIdleTime = new CMFCPropertyGridProperty(_T("Background idle time:"), _T(""));
-	m_pPropBackgroundExecutorMaxWorkerIdleTime->Enable(false);
-	pGroup1->AddSubItem(m_pPropBackgroundExecutorMaxWorkerIdleTime);
+	m_pPropChinaMarketRealTimeDataNumber = new CMFCPropertyGridProperty(_T("RealTime Data:"), _T(""));
+	m_pPropChinaMarketRealTimeDataNumber->Enable(false);
+	pGroup1->AddSubItem(m_pPropChinaMarketRealTimeDataNumber);
 	m_pPropCurrentWorkingThread = new CMFCPropertyGridProperty(_T("working thread:"), _T(""));
 	m_pPropCurrentWorkingThread->Enable(false);
 	pGroup1->AddSubItem(m_pPropCurrentWorkingThread);
@@ -380,10 +380,9 @@ void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
 	auto l = threadPooExecutorMaxIdleTime.count();
 	string s = fmt::format("{:Ld}", l);
 	m_pPropThreadPoolExecutorMaxWorkerIdleTime->SetValue(s.c_str());
-	auto backgroundExecutorMaxIdleTime = gl_runtime.background_executor()->max_worker_idle_time();
-	l = backgroundExecutorMaxIdleTime.count();
-	s = fmt::format("{:Ld}", l);
-	m_pPropBackgroundExecutorMaxWorkerIdleTime->SetValue(s.c_str());
+	int rmData = gl_qChinaMarketRTData.size_approx();
+	s = fmt::format("{:d}", rmData);
+	m_pPropChinaMarketRealTimeDataNumber->SetValue(s.c_str());
 
 	s = fmt::format("{:d}", gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
 	m_pPropCurrentWorkingThread->SetValue(s.c_str()); // 后台工作线程数

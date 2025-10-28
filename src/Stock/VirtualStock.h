@@ -1,5 +1,6 @@
 #pragma once
 
+#include "VirtualDataHistoryCandleExtend.h"
 #include"VirtualSetStockSymbol.h"
 
 using std::shared_ptr;
@@ -7,6 +8,7 @@ using std::atomic_bool;
 
 class CVirtualStock;
 using CVirtualStockPtr = shared_ptr<CVirtualStock>;
+extern CVirtualStockPtr gl_pCurrentStock; // 当前显示的股票
 
 class CVirtualStock {
 public:
@@ -77,6 +79,15 @@ public:
 	bool IsActive() const noexcept { return m_fActive; }
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
 
+	virtual CVirtualDataHistoryCandleExtend* DayLine() noexcept {
+		ASSERT(false);
+		return nullptr;
+	}
+	virtual CVirtualDataHistoryCandleExtend* WeekLine() noexcept {
+		ASSERT(false);
+		return nullptr;
+	}
+
 	long GetDayLineStartDate();
 	void SetDayLineStartDate(const long lDate) noexcept { m_jsonUpdateDate[_T("DayLineStartDate")] = lDate; }
 	long GetDayLineEndDate();
@@ -101,6 +112,8 @@ public:
 
 	bool IsUpdateCompanyNewsDB() const noexcept { return m_fUpdateCompanyNewsDB; }
 	void SetUpdateCompanyNewsDB(const bool fFlag) noexcept { m_fUpdateCompanyNewsDB = fFlag; }
+
+	CVirtualStockPtr GetCurrentStock() noexcept { return gl_pCurrentStock; }
 
 protected:
 	string m_strDescription{ _T("") }; // 该证券的描述

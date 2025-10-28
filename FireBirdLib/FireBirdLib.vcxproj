@@ -66,8 +66,8 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaChosenStock.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaStockSymbol.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetCurrentWeekLine.h" />
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetDayLineBasicInfo.h" />
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetDayLineExtendInfo.h" />
+    <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaMarketDayLineBasicInfo.h" />
+    <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaMarketDayLineExtendInfo.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetDayLineTodaySaved.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetOption.h" />
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetRSOption.h" />

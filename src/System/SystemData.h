@@ -121,7 +121,7 @@ public:
 		while (succeed) succeed = gl_qChinaMarketRTData.try_dequeue(pRTData);
 	}
 
-	static void ClearRTDataQueue() {
+	static void ClearDataQueue() {
 		ClearChinaMarketRTDataQueue();
 		bool succeed = true;
 		CDayLineWebDataPtr pData;

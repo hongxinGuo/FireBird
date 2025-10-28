@@ -252,10 +252,10 @@
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetCurrentWeekLine.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetDayLineBasicInfo.h">
+    <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaMarketDayLineBasicInfo.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DataBase\ChinaMarket\SetDayLineExtendInfo.h">
+    <ClInclude Include="..\src\DataBase\ChinaMarket\SetChinaMarketDayLineExtendInfo.h">
       <Filter>头文件\database\ChinaMarket</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DataBase\ChinaMarket\SetDayLineTodaySaved.h">

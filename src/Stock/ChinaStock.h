@@ -19,8 +19,8 @@ enum {
 
 #include"VirtualStock.h"
 
-#include"SetDayLineBasicInfo.h"
-#include"SetDayLineExtendInfo.h"
+#include"SetChinaMarketDayLineBasicInfo.h"
+#include"SetChinaMarketDayLineExtendInfo.h"
 #include"SetWeekLineBasicInfo.h"
 #include"SetDayLineTodaySaved.h"
 #include"SetChinaStockSymbol.h"
@@ -270,10 +270,10 @@ public:
 	virtual bool LoadDayLine(const string& strStockCode) { return m_dataDayLine.LoadDB(strStockCode); }
 	virtual bool SaveDayLineBasicInfo() { return m_dataDayLine.SaveDB(GetSymbol()); }
 
-	bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* pSetDayLineBasicInfo) { return m_dataDayLine.LoadBasicDB(pSetDayLineBasicInfo); }
+	bool LoadDayLineBasicInfo(CSetChinaMarketDayLneBasicInfo* pSetDayLineBasicInfo) { return m_dataDayLine.LoadBasicDB(pSetDayLineBasicInfo); }
 
-	void AppendTodayBasicInfo(CSetDayLineBasicInfo* pSetDayLine) const; // 存储当日基本数据
-	void AppendTodayExtendInfo(CSetDayLineExtendInfo* pSetDayLineExtendInfo) const;
+	void AppendTodayBasicInfo(CSetChinaMarketDayLneBasicInfo* pSetDayLine) const; // 存储当日基本数据
+	void AppendTodayExtendInfo(CSetChinaMarketDayLneExtendInfo* pSetDayLineExtendInfo) const;
 	void SaveTempInfo(CSetDayLineTodaySaved* pSetDayLineTemp) const; // 存储当日计算出的数据
 	void UpdateCurrentHistoryCandle(const CVirtualHistoryCandleExtendPtr& pBeUpdated) const; // 用当前状态更新历史数据
 	void UpdateDayLineStartEndDate();
@@ -394,8 +394,8 @@ public:
 	bool CalculateWeekLineRSLogarithm() { return m_dataWeekLine.CalculateRSLogarithm0(); }
 
 	// 当前被处理历史数据容器
-	CVirtualDataHistoryCandleExtend* DayLine() noexcept { return &m_dataDayLine; }
-	CVirtualDataHistoryCandleExtend* WeekLine() noexcept { return &m_dataWeekLine; }
+	CVirtualDataHistoryCandleExtend* DayLine() noexcept final { return &m_dataDayLine; }
+	CVirtualDataHistoryCandleExtend* WeekLine() noexcept final { return &m_dataWeekLine; }
 
 	bool IsShareA() const { return ::IsShareA(GetSymbol()); }
 

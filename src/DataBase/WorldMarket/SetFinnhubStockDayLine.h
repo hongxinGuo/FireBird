@@ -1,4 +1,4 @@
-// SetFinnhubStockDayLine.h : CSetDayLineBasicInfo 的声明
+// SetFinnhubStockDayLine.h : CSetChinaMarketDayLneBasicInfo 的声明
 
 #pragma once
 

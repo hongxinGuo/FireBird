@@ -285,10 +285,37 @@ BENCHMARK_F(CJsonParse, StrToDecimal)(benchmark::State& state) {
 	}
 }
 
+BENCHMARK_F(CJsonParse, StrToDecimal2)(benchmark::State& state) {
+	constexpr string_view svData{ "12345.7654" };
+	for (auto _ : state) {
+		StrToDecimal2(svData, 3);
+	}
+}
+
 BENCHMARK_F(CJsonParse, StrToDecimal_2)(benchmark::State& state) {
 	constexpr string_view svData{ "123457654" };
 	for (auto _ : state) {
 		StrToDecimal(svData, 3);
+	}
+}
+
+BENCHMARK_F(CJsonParse, StrToDecimal2_2)(benchmark::State& state) {
+	constexpr string_view svData{ "123457654" };
+	for (auto _ : state) {
+		StrToDecimal2(svData, 3);
+	}
+}
+BENCHMARK_F(CJsonParse, StrToDecimal_3)(benchmark::State& state) {
+	constexpr string_view svData{ "12345765.4" };
+	for (auto _ : state) {
+		StrToDecimal(svData, 3);
+	}
+}
+
+BENCHMARK_F(CJsonParse, StrToDecimal2_3)(benchmark::State& state) {
+	constexpr string_view svData{ "12345765.4" };
+	for (auto _ : state) {
+		StrToDecimal2(svData, 3);
 	}
 }
 

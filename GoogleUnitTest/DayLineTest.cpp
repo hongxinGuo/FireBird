@@ -517,7 +517,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockDayLineTest, TestSaveData) {
-		CSetDayLineBasicInfo setDayLineBasicInfo;
+		CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 		CDayLine id, id2;
 
 		id.SetDate(21100201);
@@ -601,7 +601,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CStockDayLineTest, TestLoadChinaMarketData) {
-		CSetDayLineBasicInfo setDayLineBasicInfo;
+		CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 		CDayLine id, idLoaded;
 
 		id.SetDate(21101001);
@@ -674,7 +674,7 @@ namespace FireBirdTest {
 
 	TEST_F(CStockDayLineTest, TestLoadChinaMarketStockDayLine) {
 		CDayLine id, id2;
-		CSetDayLineBasicInfo setDayLineBasicInfo;
+		CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 		id.SetDate(_CHINA_MARKET_BEGIN_DATE_);
 		id.SetStockSymbol(_T("600000.SS"));
 		id.SetDisplaySymbol(_T("ÆÖ·¢ÒøÐÐ"));

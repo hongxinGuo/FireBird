@@ -1,11 +1,11 @@
 #pragma once
 
-#include"VirtualHistoryCandleBasic.h"
+#include"VirtualHistoryCandleExtend.h"
 
 #include<memory>
 using std::vector;
 
-class CTiingoDayLine : public CVirtualHistoryCandleBasic {
+class CTiingoDayLine : public CVirtualHistoryCandleExtend {
 public:
 	CTiingoDayLine();
 	int GetRatio() const override; // TiingoDayLine的比率与TiingoStock相同

@@ -438,7 +438,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaStockTest, TestSaveTodayInfo) {
-		CSetDayLineBasicInfo setDayLineBasicInfo;
+		CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 		CChinaStock stock;
 		constexpr long lDate = 21091101;
 		const time_t tt = ConvertToTTime(lDate, gl_pChinaMarket->GetTimeZone(), 150000);
@@ -1711,7 +1711,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaStockTest, TestLoadDayLineAndDayLineInfo) {
-		CSetDayLineBasicInfo setDayLineBasicInfo;
+		CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 		CDayLinePtr pid;
 		CDayLine stock;
 		pStock = gl_dataContainerChinaStock.GetStock(_T("600011.SS"));
@@ -1812,7 +1812,7 @@ namespace FireBirdTest {
 		pStock->SetCanceledSellVolumeBelow200000(76);
 		pStock->SetCanceledSellVolumeAbove200000(77);
 
-		CSetDayLineExtendInfo setDayLineExtendInfo;
+		CSetChinaMarketDayLneExtendInfo setDayLineExtendInfo;
 		setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
 		setDayLineExtendInfo.Open();
 		setDayLineExtendInfo.m_pDatabase->BeginTrans();
@@ -1933,7 +1933,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaStockTest, TestSaveDayLine) {
-		CSetDayLineBasicInfo setDayLineBasicInfo;
+		CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 		CDayLinePtr pid;
 		CDayLine dayLine;
 		pStock = gl_dataContainerChinaStock.GetStock(_T("600016.SS"));
@@ -2015,7 +2015,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaStockTest, TestLoadDayLine) {
-		CSetDayLineBasicInfo setDayLineBasicInfo;
+		CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 		CDayLinePtr pid;
 		CChinaStock stock;
 
@@ -2319,7 +2319,7 @@ namespace FireBirdTest {
 		stock.SetCanceledSellVolumeBelow200000(76);
 		stock.SetCanceledSellVolumeAbove200000(77);
 
-		CSetDayLineExtendInfo setDayLineExtendInfo;
+		CSetChinaMarketDayLneExtendInfo setDayLineExtendInfo;
 		setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
 		setDayLineExtendInfo.Open();
 		setDayLineExtendInfo.m_pDatabase->BeginTrans();

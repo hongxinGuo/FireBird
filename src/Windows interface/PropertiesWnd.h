@@ -75,7 +75,7 @@ protected:
 
 	// system status group
 	CMFCPropertyGridProperty* m_pPropThreadPoolExecutorMaxWorkerIdleTime{ nullptr };
-	CMFCPropertyGridProperty* m_pPropBackgroundExecutorMaxWorkerIdleTime{ nullptr };
+	CMFCPropertyGridProperty* m_pPropChinaMarketRealTimeDataNumber{ nullptr };
 	CMFCPropertyGridProperty* m_pPropCurrentWorkingThread{ nullptr };
 
 	CMFCPropertyGridProperty* m_pPropSystemOption{ nullptr };

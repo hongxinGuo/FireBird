@@ -4,6 +4,8 @@
 
 #include "jsonParse.h"
 
+CVirtualStockPtr gl_pCurrentStock = nullptr; // 当前显示的股票
+
 CVirtualStock::CVirtualStock() {
 	CVirtualStock::ResetAllUpdateDate();
 }

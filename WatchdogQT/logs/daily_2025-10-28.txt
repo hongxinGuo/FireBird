@@ -1,0 +1,6 @@
+[2025-10-28 15:42:04.482] [daily_logger] [info] FireBird App begin running
+[2025-10-28 15:42:38.236] [daily_logger] [info] FireBird App exit
+[2025-10-28 15:42:45.573] [daily_logger] [info] FireBird App begin running
+[2025-10-28 15:43:00.800] [daily_logger] [info] FireBird App exit
+[2025-10-28 15:43:05.622] [daily_logger] [info] FireBird App begin running
+[2025-10-28 15:43:16.234] [daily_logger] [info] FireBird App exit

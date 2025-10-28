@@ -4,8 +4,8 @@
 
 #include"DayLine.h"
 #include "ContainerChinaDayLine.h"
-#include"SetDayLineBasicInfo.h"
-#include"SetDayLineExtendInfo.h"
+#include"SetChinaMarketDayLineBasicInfo.h"
+#include"SetChinaMarketDayLineExtendInfo.h"
 
 #include "InfoReport.h"
 
@@ -14,7 +14,7 @@ CContainerChinaDayLine::CContainerChinaDayLine() {
 
 bool CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
 	try {
-		CSetDayLineBasicInfo setDayLineBasic;
+		CSetChinaMarketDayLneBasicInfo setDayLineBasic;
 		UpdateBasicDB(&setDayLineBasic, strStockSymbol);
 	} catch (CException& e) {
 		ReportInformation(e);
@@ -24,8 +24,8 @@ bool CContainerChinaDayLine::SaveDB(const string& strStockSymbol) {
 }
 
 bool CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
-	CSetDayLineBasicInfo setDayLineBasicInfo;
-	CSetDayLineExtendInfo setDayLineExtendInfo;
+	CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
+	CSetChinaMarketDayLneExtendInfo setDayLineExtendInfo;
 
 	ASSERT(!m_fBasicDataLoaded);
 

@@ -116,7 +116,7 @@ void CVirtualDataSource::CreateTotalInquiringString() {
 
 void CVirtualDataSource::ReportErrorNotHandled(const string& sError) {
 	gl_dailyLogger->warn("error not processed: {}", sError);
-	gl_SoftwareDevelopingLogger->warn("error not processed: {}", sError);
+	gl_SoftwareDevelopingLogger->error("error not processed: {}", sError);
 	string s = _T("error not processed:");
 	s += sError;
 	gl_systemMessage.PushInnerSystemInformationMessage(s);

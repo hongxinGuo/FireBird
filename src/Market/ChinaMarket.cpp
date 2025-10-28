@@ -11,7 +11,7 @@
 #include"ChinaMarket.h"
 
 #include "InfoReport.h"
-#include"SetDayLineExtendInfo.h"
+#include"SetChinaMarketDayLineExtendInfo.h"
 #include"SetDayLineTodaySaved.h"
 #include"SetOption.h"
 #include"SetChinaChosenStock.h"
@@ -117,7 +117,7 @@ void CChinaMarket::Reset() {
 	m_lRTDataReceivedInCurrentMinute = 0;
 	m_lNewRTDataReceivedInCurrentMinute = 0;
 
-	gl_SystemData.ClearRTDataQueue();
+	gl_SystemData.ClearDataQueue();
 
 	m_RTDataNeedCalculate = false;
 	m_CalculatingDayLineRS = false;
@@ -992,7 +992,7 @@ bool CChinaMarket::TaskUpdateStockSection() {
 }
 
 bool CChinaMarket::ChangeDayLineStockCodeTypeToStandard() {
-	CSetDayLineExtendInfo setDayLineExtendInfo;
+	CSetChinaMarketDayLneExtendInfo setDayLineExtendInfo;
 
 	setDayLineExtendInfo.Open();
 	setDayLineExtendInfo.m_pDatabase->BeginTrans();
@@ -1179,8 +1179,8 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable() {
 }
 
 bool CChinaMarket::LoadDayLine(CContainerChinaDayLine& dataChinaDayLine, long lDate) const {
-	CSetDayLineBasicInfo setDayLineBasicInfo;
-	CSetDayLineExtendInfo setDayLineExtendInfo;
+	CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
+	CSetChinaMarketDayLneExtendInfo setDayLineExtendInfo;
 
 	string sDate = fmt::format("{:08Ld}", lDate);
 	setDayLineBasicInfo.m_strSort = _T("[Symbol]");
@@ -1372,7 +1372,7 @@ void CChinaMarket::DeleteDayLine(long lDate) const {
 
 void CChinaMarket::DeleteDayLineBasicInfo(long lDate) const {
 	char buffer[20]{ 0x000 };
-	CSetDayLineBasicInfo setDayLineBasicInfo;
+	CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 
 	_ltoa_s(lDate, buffer, 10);
 	const string strDate = buffer;
@@ -1390,7 +1390,7 @@ void CChinaMarket::DeleteDayLineBasicInfo(long lDate) const {
 
 void CChinaMarket::DeleteDayLineExtendInfo(long lDate) const {
 	char buffer[20]{ 0x000 };
-	CSetDayLineExtendInfo setDayLineExtendInfo;
+	CSetChinaMarketDayLneExtendInfo setDayLineExtendInfo;
 
 	_ltoa_s(lDate, buffer, 10);
 	const string strDate = buffer;

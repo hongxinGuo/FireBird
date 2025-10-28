@@ -48,7 +48,7 @@ void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			string str = _T("Tiingo stock daily meta not match: ");
 			str += pStock->GetSymbol() + _T("  ") + pStock2->GetSymbol();
 			gl_systemMessage.PushInnerSystemInformationMessage(str);
-			gl_warnLogger->warn("{}", str);
+			gl_errorLogger->warn("{}", str);
 		}
 	}
 	pStock->SetUpdateStockDailyMeta(false);

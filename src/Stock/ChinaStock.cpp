@@ -187,7 +187,7 @@ void CChinaStock::ReportDayLineDownLoaded() {
 	//gl_systemMessage.PushDayLineInfoMessage(strTemp);
 }
 
-void CChinaStock::AppendTodayBasicInfo(CSetDayLineBasicInfo* pSetDayLineBasicInfo) const {
+void CChinaStock::AppendTodayBasicInfo(CSetChinaMarketDayLneBasicInfo* pSetDayLineBasicInfo) const {
 	const auto pDayLine = make_shared<CDayLine>();
 
 	ASSERT(pSetDayLineBasicInfo->IsOpen());
@@ -348,7 +348,7 @@ void CChinaStock::UpdateDayLineStartEndDate() {
 	}
 }
 
-void CChinaStock::AppendTodayExtendInfo(CSetDayLineExtendInfo* pSetDayLineExtendInfo) const {
+void CChinaStock::AppendTodayExtendInfo(CSetChinaMarketDayLneExtendInfo* pSetDayLineExtendInfo) const {
 	const auto pDayLine = make_shared<CDayLine>();
 
 	ASSERT(pSetDayLineExtendInfo->IsOpen());
@@ -433,7 +433,7 @@ void CChinaStock::LoadTodaySavedInfo(const CSetDayLineTodaySaved* pSetDayLineTem
 }
 
 bool CChinaStock::Calculate10RSStrong2StockSet() {
-	CSetDayLineBasicInfo setDayLineBasicInfo;
+	CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 
 	ASSERT(m_dataDayLine.IsDataLoaded());
 	const size_t iDayLineSize = GetDayLineSize();
@@ -460,7 +460,7 @@ bool CChinaStock::Calculate10RSStrong2StockSet() {
 }
 
 bool CChinaStock::Calculate10RSStrong1StockSet() {
-	CSetDayLineBasicInfo setDayLineBasicInfo;
+	CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 	vector<double> m_v10DaysRS;
 	int iCountFirst = 0, iCountSecond = 0, iCountThird = 0;
 
@@ -495,7 +495,7 @@ bool CChinaStock::Calculate10RSStrong1StockSet() {
 }
 
 bool CChinaStock::Calculate10RSStrongStockSet(const CRSReference* pRef) {
-	CSetDayLineBasicInfo setDayLineBasicInfo;
+	CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 	vector<double> m_v10DaysRS;
 	int iCountFirst = 0, iCountSecond = 0, iCountThird = 0, iCountFourth = 0;
 	bool fFind1 = false, fFind2 = false, fFind3 = false, fFind4 = false;

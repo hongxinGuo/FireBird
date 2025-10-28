@@ -127,7 +127,7 @@ void InitializeLogSystem() {
 	// Create a daily logger - a new file is created every day at 2:30 am
 	gl_dailyLogger = spdlog::daily_logger_mt("daily_logger", "logs/daily.txt", 2, 30);
 	gl_dailyWebSocketLogger = spdlog::daily_logger_mt("dailyWebSocketLogger", "logs/dailyWebSocket.txt", 2, 30);
-	gl_warnLogger = spdlog::basic_logger_mt("basic_warn_logger", "logs/warn.txt");
+	gl_errorLogger = spdlog::basic_logger_mt("basic_warn_logger", "logs/error.txt");
 	gl_traceLogger = spdlog::basic_logger_mt("basic_trace_logger", "logs/trace.txt");
 	gl_SoftwareDevelopingLogger = spdlog::basic_logger_mt("software_developing_logger", "logs/softwareDeveloping.txt");
 
@@ -135,7 +135,7 @@ void InitializeLogSystem() {
 	gl_dailyWebSocketLogger->set_level(static_cast<spdlog::level::level_enum>(gl_systemConfiguration.GetLogLevel()));
 	gl_dailyLogger->flush_on(spdlog::level::warn); // 警告等级及以上立刻刷新
 	gl_dailyWebSocketLogger->flush_on(spdlog::level::warn);
-	gl_warnLogger->flush_on(spdlog::level::trace);
+	gl_errorLogger->flush_on(spdlog::level::trace);
 	gl_traceLogger->enable_backtrace(20); // 20个回溯消息
 
 	gl_dailyLogger->info("FireBird App begin running");
@@ -240,7 +240,7 @@ void TaskSchedulePerSecond() {
 		string str1 = "TaskSchedulePerSecond unhandled exception founded : ";
 		str1 += e->what();
 		gl_systemMessage.PushErrorMessage(str1);
-		gl_warnLogger->error("{}", str1);
+		gl_errorLogger->error("{}", str1);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 	catch (CException* e) {	// 此处截获本体指针，以备处理完后删除之。
@@ -249,7 +249,7 @@ void TaskSchedulePerSecond() {
 		e->GetErrorMessage(buffer, 1);
 		str += buffer;
 		gl_systemMessage.PushErrorMessage(str);
-		gl_warnLogger->error("{}", str);
+		gl_errorLogger->error("{}", str);
 		delete e; // 删除之，防止由于没有处理exception导致程序意外退出。
 	}
 }

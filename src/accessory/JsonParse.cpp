@@ -64,6 +64,30 @@ long long StrToDecimal(const std::string_view& svData, int power) {
 	}
 }
 
+long long StrToDecimal2(const std::string_view& svData, int power) {
+	try {
+		auto iPointPosition = svData.find('.');
+		if (iPointPosition == std::string_view::npos) {
+			std::string result(svData);
+			result.append(power, '0');
+			return std::stoll(result);
+		}
+		std::string result(svData.substr(0, iPointPosition));
+		auto fraction = svData.substr(iPointPosition + 1);
+		if (fraction.size() > static_cast<size_t>(power)) {
+			fraction = fraction.substr(0, power);
+		}
+		result.append(fraction);
+		if (power > static_cast<int>(fraction.size())) {
+			result.append(power - fraction.size(), '0');
+		}
+		return std::stoll(result);
+	} catch (const std::exception& e) {
+		spdlog::error("StrToDecimal exception: {}", e.what());
+		return 0;
+	}
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 出现exception时，上级调用函数负责处理
@@ -125,7 +149,8 @@ void ReportJSonErrorToSystemMessage(const string& strPrefix, const string& strWh
 result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<vector<string_view>> pvStringView) {
 	vector<result<bool>> results;
 	const auto DataSize = pvStringView->size();
-	const auto chunk_size = 1 + DataSize / gl_concurrency_level;
+	const auto chunk_size = 1 + std::div(DataSize, gl_concurrency_level).quot;
+	//const auto chunk_size = 1 + DataSize / gl_concurrency_level;
 	//for (int i = 0; i < gl_concurrency_level; i++) {
 	for (auto i : std::views::iota(0, gl_concurrency_level)) {
 		auto chunk_begin = i * chunk_size;
@@ -145,7 +170,7 @@ result<bool> ParseSinaRTDataUsingCoroutine(shared_ptr<vector<string_view>> pvStr
 	bool succeed = true;
 	for (auto& r : results) {
 		//auto a = r.resolve();
-		succeed &= r.get();
+		succeed &= co_await r; // r.get();
 	}
 	//bool succeed = ranges::all_of(results, [](auto& r) { return  r.get(); });
 	co_return succeed;
@@ -193,7 +218,8 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 	bool succeed = true;
 	vector<concurrencpp::result<bool>> results;
 	const auto DataSize = pvStringView->size();
-	const auto chunk_size = 1 + DataSize / gl_concurrency_level;
+	const auto chunk_size = 1 + std::div(DataSize, gl_concurrency_level).quot;
+	//const auto chunk_size = 1 + DataSize / gl_concurrency_level;
 	//for (int i = 0; i < gl_concurrency_level; i++) {
 	for (auto i : std::views::iota(0, gl_concurrency_level)) {
 		auto chunk_begin = i * chunk_size;
@@ -215,7 +241,7 @@ concurrencpp::result<bool> ParseTengxunRTDataUsingCoroutine(shared_ptr<concurren
 		results.emplace_back(std::move(result));
 	}
 	for (auto& r : results) {
-		succeed = succeed & r.get();
+		succeed = succeed & co_await r;// r.get();
 	}
 	co_return succeed;
 }

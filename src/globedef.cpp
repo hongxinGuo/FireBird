@@ -30,9 +30,9 @@
 
 #include"thread.h"
 #include"threadStatus.h"
+#include "AccessoryDataSource.h"
 
 #undef max
-#include "AccessoryDataSource.h"
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
@@ -40,7 +40,7 @@ HANDLE gl_hFireBirdMutex{ nullptr };
 
 shared_ptr<spdlog::logger> gl_dailyLogger = nullptr;
 shared_ptr<spdlog::logger> gl_traceLogger; // 跟踪日志，用于系统调试
-shared_ptr<spdlog::logger> gl_warnLogger; // 警告跟踪日志，用于系统调试
+shared_ptr<spdlog::logger> gl_errorLogger; // 错误跟踪日志，用于系统调试
 shared_ptr<spdlog::logger> gl_dailyWebSocketLogger = nullptr;
 shared_ptr<spdlog::logger> gl_SoftwareDevelopingLogger = nullptr;
 
@@ -91,7 +91,7 @@ CTiingoForexWebSocketPtr gl_pTiingoForexWebSocket;
 CTiingoCryptoWebSocketPtr gl_pTiingoCryptoWebSocket;
 
 // 处理后的数据
-ConcurrentQueue<CWebRTDataPtr> gl_qChinaMarketRTData(1000000); // 中国市场新浪实时数据队列。
+ConcurrentQueue<CWebRTDataPtr> gl_qChinaMarketRTData(100000); // 中国市场新浪实时数据队列。
 ConcurrentQueue<CDayLineWebDataPtr> gl_qDayLine(1000); // 日线数据
 
 // ChinaMarket处理的数据
