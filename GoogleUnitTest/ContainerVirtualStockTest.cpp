@@ -129,6 +129,22 @@ namespace FireBirdTest {
 		m_containerVirtualStock.Add(pStock);
 	}
 
+	TEST_F(CContainerVirtualStockTest, TestDelete4) {
+		const CVirtualStockPtr pStock = gl_dataContainerChinaStock.GetStock(101);
+
+		m_containerVirtualStock.Delete(pStock->GetSymbol());
+		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "不删除不存在的数据";
+	}
+
+	TEST_F(CContainerVirtualStockTest, TestDelete5) {
+		const CVirtualStockPtr pStock = gl_dataContainerChinaStock.GetStock(1);
+
+		m_containerVirtualStock.Delete(pStock->GetSymbol());
+		EXPECT_EQ(m_containerVirtualStock.Size(), 99) << "删除已存在的数据";
+
+		m_containerVirtualStock.Add(pStock);
+	}
+
 	TEST_F(CContainerVirtualStockTest, TestUpdateSymbolMap) {
 		const CVirtualStockPtr pStock = m_containerVirtualStock.Get(0);
 		const CVirtualStockPtr pStock2 = m_containerVirtualStock.Get(1);

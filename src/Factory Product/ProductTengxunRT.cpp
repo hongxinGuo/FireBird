@@ -3,6 +3,7 @@
 #include"ProductTengxunRT.h"
 
 //#include "HighPerformanceCounter.h"
+#include "ChinaMarket.h"
 #include"JsonParse.h"
 #include "TengxunRTDataSource.h"
 
@@ -25,5 +26,6 @@ string CProductTengxunRT::CreateMessage() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
+	gl_pChinaMarket->IncreaseRTDataReceivedNumber();
 	ParseTengxunRTData(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
 }

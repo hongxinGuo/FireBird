@@ -82,8 +82,10 @@ long long StrToDecimal2(const std::string_view& svData, int power) {
 			result.append(power - fraction.size(), '0');
 		}
 		return std::stoll(result);
-	} catch (const std::exception& e) {
-		spdlog::error("StrToDecimal exception: {}", e.what());
+	} catch (std::out_of_range) {
+		return 0;
+	}
+	catch (std::invalid_argument) {
 		return 0;
 	}
 }

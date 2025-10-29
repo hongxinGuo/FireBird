@@ -286,10 +286,10 @@ void CPropertiesWnd::InitPropList() {
 	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Debug Mode"), static_cast<_variant_t>(gl_systemConfiguration.IsDebugMode()), _T("Debug mode"), SYSTEM_DEBUG_MODE_));
 	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("Reload System"), static_cast<_variant_t>(gl_systemConfiguration.IsReloadSystem()), _T("Reload System"), SYSTEM_RELOAD_SYSTEM_));
 
-	m_pPropThreadPoolExecutorMaxWorkerIdleTime = new CMFCPropertyGridProperty(_T("Thread pool idle time:"), _T(""));
-	m_pPropThreadPoolExecutorMaxWorkerIdleTime->Enable(false);
-	pGroup1->AddSubItem(m_pPropThreadPoolExecutorMaxWorkerIdleTime);
-	m_pPropChinaMarketRealTimeDataNumber = new CMFCPropertyGridProperty(_T("RealTime Data:"), _T(""));
+	m_pPropRealTimeDataReceived = new CMFCPropertyGridProperty(_T("RealTime Data Total:"), _T(""));
+	m_pPropRealTimeDataReceived->Enable(false);
+	pGroup1->AddSubItem(m_pPropRealTimeDataReceived);
+	m_pPropChinaMarketRealTimeDataNumber = new CMFCPropertyGridProperty(_T("RealTime Data Received:"), _T(""));
 	m_pPropChinaMarketRealTimeDataNumber->Enable(false);
 	pGroup1->AddSubItem(m_pPropChinaMarketRealTimeDataNumber);
 	m_pPropCurrentWorkingThread = new CMFCPropertyGridProperty(_T("working thread:"), _T(""));
@@ -376,10 +376,8 @@ void CPropertiesWnd::SetPropListFont() {
 }
 
 void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
-	auto threadPooExecutorMaxIdleTime = gl_runtime.thread_pool_executor()->max_worker_idle_time();
-	auto l = threadPooExecutorMaxIdleTime.count();
-	string s = fmt::format("{:Ld}", l);
-	m_pPropThreadPoolExecutorMaxWorkerIdleTime->SetValue(s.c_str());
+	string s = fmt::format("{:Ld}", gl_pChinaMarket->GetRTDataReceivedNumber());
+	m_pPropRealTimeDataReceived->SetValue(s.c_str());
 	int rmData = gl_qChinaMarketRTData.size_approx();
 	s = fmt::format("{:d}", rmData);
 	m_pPropChinaMarketRealTimeDataNumber->SetValue(s.c_str());

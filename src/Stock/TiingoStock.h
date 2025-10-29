@@ -47,8 +47,8 @@ public:
 	bool IsUpdate52WeekHighLowDB() const noexcept { return m_fUpdate52WeekHighLowDB; }
 	void SetUpdate52WeekHighLowDB(bool fFlag) noexcept { m_fUpdate52WeekHighLowDB = fFlag; }
 
-	bool IsDayLineLoaded() const noexcept { return m_dataDayLine.IsDayLineLoaded(); }
-	void SetDayLineLoaded(bool fFlag) noexcept { m_dataDayLine.SetDayLineLoaded(fFlag); }
+	bool IsDayLineLoaded() const noexcept { return m_dataDayLine.IsDataLoaded(); }
+	void SetDayLineLoaded(bool fFlag) noexcept { m_dataDayLine.SetDataLoaded(fFlag); }
 
 	void UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook);
 	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
@@ -63,8 +63,8 @@ public:
 	void UpdateDayLineStartEndDate();
 	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	bool HaveDayLine(const long lDate) noexcept { return m_dataDayLine.HaveDayLine(lDate); }
-	CTiingoDayLinePtr GetDayLine(const long lIndex) const { return m_dataDayLine.GetData(lIndex); }
-	CTiingoDayLinePtr GetDayLineAtDate(const long lDate) { return m_dataDayLine.GetDayLine(lDate); }
+	CTiingoDayLinePtr GetDayLine(const long lIndex) const { return dynamic_pointer_cast<CTiingoDayLine>(m_dataDayLine.GetData(lIndex)); }
+	CTiingoDayLinePtr GetDayLineAtDate(const long lDate) { return dynamic_pointer_cast<CTiingoDayLine>(m_dataDayLine.GetDayLine(lDate)); }
 
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }

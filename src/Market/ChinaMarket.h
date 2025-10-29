@@ -242,6 +242,9 @@ public:
 	void SetRTDataReceived(const INT64 llValue) noexcept { m_llRTDataReceived = llValue; }
 	void IncreaseRTDataReceived(const INT64 llValue = 1) noexcept { m_llRTDataReceived += llValue; }
 
+	int GetRTDataReceivedNumber() const noexcept { return m_iCurrentDayRTDataReceived; }
+	void IncreaseRTDataReceivedNumber(const int iValue = 1) noexcept { m_iCurrentDayRTDataReceived += iValue; }
+
 	void ChangeToNextStock();
 	void ChangeToPrevStock();
 	void ChangeToPrevStockSet();
@@ -279,6 +282,7 @@ protected:
 	bool m_fCalculateChosen10RS;
 
 	atomic_int64_t m_llRTDataReceived; // 接收到的实时数据数量
+	atomic_int m_iCurrentDayRTDataReceived{ 0 };
 
 	bool m_RTDataNeedCalculate;
 	bool m_CalculatingDayLineRS;

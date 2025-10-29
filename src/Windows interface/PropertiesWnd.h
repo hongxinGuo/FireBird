@@ -74,7 +74,7 @@ protected:
 	CFireBirdPropertyGridCtrl m_wndPropList;
 
 	// system status group
-	CMFCPropertyGridProperty* m_pPropThreadPoolExecutorMaxWorkerIdleTime{ nullptr };
+	CMFCPropertyGridProperty* m_pPropRealTimeDataReceived{ nullptr };
 	CMFCPropertyGridProperty* m_pPropChinaMarketRealTimeDataNumber{ nullptr };
 	CMFCPropertyGridProperty* m_pPropCurrentWorkingThread{ nullptr };
 

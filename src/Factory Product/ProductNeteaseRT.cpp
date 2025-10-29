@@ -2,6 +2,7 @@
 
 #include"ProductNeteaseRT.h"
 
+#include "ChinaMarket.h"
 #include"JsonParse.h"
 
 CProductNeteaseRT::CProductNeteaseRT() {
@@ -22,5 +23,6 @@ void CProductNeteaseRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 }
 
 shared_ptr<vector<CWebRTDataPtr>> CProductNeteaseRT::ParseNeteaseRT(const CWebDataPtr& pWebData) {
+	gl_pChinaMarket->IncreaseRTDataReceivedNumber();
 	return ParseNeteaseRTDataWithSimdjson(pWebData); //  π”√simdjsonΩ‚Œˆ
 }

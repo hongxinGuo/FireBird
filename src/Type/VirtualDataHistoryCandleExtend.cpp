@@ -188,6 +188,24 @@ bool CVirtualDataHistoryCandleExtend::GetStartEndDate(long& lStartDate, long& lE
 	return true;
 }
 
+bool CVirtualDataHistoryCandleExtend::HaveDayLine(long lDate) {
+	auto it = ranges::find_if(m_vHistoryData.begin(), m_vHistoryData.end(),
+	                          [lDate](const CVirtualHistoryCandleExtendPtr& p) { return p->GetDate() == lDate; });
+	if (it == m_vHistoryData.end()) {
+		return false;
+	}
+	return true;
+}
+
+CVirtualHistoryCandleExtendPtr CVirtualDataHistoryCandleExtend::GetDayLine(long lDate) {
+	auto it = std::ranges::find_if(m_vHistoryData.begin(), m_vHistoryData.end(),
+	                               [lDate](const CVirtualHistoryCandleExtendPtr& p) { return (p->GetDate() == lDate); });
+	if (it != m_vHistoryData.end()) {
+		return *it;
+	}
+	else return nullptr;
+}
+
 void CVirtualDataHistoryCandleExtend::Reset() {
 	m_vHistoryData.clear();
 

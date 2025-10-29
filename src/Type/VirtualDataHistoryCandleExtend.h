@@ -59,6 +59,9 @@ public:
 		return true;
 	}
 
+	bool HaveDayLine(long lDate);
+	CVirtualHistoryCandleExtendPtr GetDayLine(long lDate);
+
 	bool IsDatabaseTodayUpdated() const noexcept { return (m_fDatabaseTodayUpdated); }
 	void SetDatabaseTodayUpdated(const bool fUpdate) noexcept { m_fDatabaseTodayUpdated = fUpdate; }
 	bool IsDataLoaded() const noexcept { return m_fDataLoaded.load(); }
