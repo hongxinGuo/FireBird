@@ -26,6 +26,6 @@ string CProductTengxunRT::CreateMessage() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CProductTengxunRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
-	gl_pChinaMarket->IncreaseRTDataReceivedNumber();
+	gl_pChinaMarket->IncreaseRTDataCounter();
 	ParseTengxunRTData(pWebData); // 使用thread pool + coroutine协程并行解析，速度比单线程模式快一倍以上。
 }

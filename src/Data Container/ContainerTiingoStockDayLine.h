@@ -23,6 +23,9 @@ public:
 
 	void UpdateData(CTiingoDayLinesPtr pvTempDayLine);
 
+	CTiingoDayLinePtr GetData(const size_t lIndex) const { return dynamic_pointer_cast<CTiingoDayLine>(CVirtualDataHistoryCandleExtend::GetData(lIndex)); }
+	CTiingoDayLinePtr GetDayLine(long lDate) { return dynamic_pointer_cast<CTiingoDayLine>(CVirtualDataHistoryCandleExtend::GetDayLine(lDate)); }
+
 	bool Add(const CTiingoDayLinePtr& pData) {
 		m_vHistoryData.push_back(pData);
 		return true;

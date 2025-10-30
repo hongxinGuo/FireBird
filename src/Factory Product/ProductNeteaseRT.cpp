@@ -23,6 +23,6 @@ void CProductNeteaseRT::ParseAndStoreWebData(CWebDataPtr pWebData) {
 }
 
 shared_ptr<vector<CWebRTDataPtr>> CProductNeteaseRT::ParseNeteaseRT(const CWebDataPtr& pWebData) {
-	gl_pChinaMarket->IncreaseRTDataReceivedNumber();
+	gl_pChinaMarket->IncreaseRTDataCounter();
 	return ParseNeteaseRTDataWithSimdjson(pWebData); //  π”√simdjsonΩ‚Œˆ
 }

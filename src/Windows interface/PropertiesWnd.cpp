@@ -376,7 +376,7 @@ void CPropertiesWnd::SetPropListFont() {
 }
 
 void CPropertiesWnd::OnTimer(UINT_PTR nIDEvent) {
-	string s = fmt::format("{:Ld}", gl_pChinaMarket->GetRTDataReceivedNumber());
+	string s = fmt::format("{:d}", gl_pChinaMarket->GetRTDataCounter());
 	m_pPropRealTimeDataReceived->SetValue(s.c_str());
 	int rmData = gl_qChinaMarketRTData.size_approx();
 	s = fmt::format("{:d}", rmData);

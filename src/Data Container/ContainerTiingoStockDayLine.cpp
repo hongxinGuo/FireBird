@@ -79,7 +79,7 @@ void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoSt
 	if (lSizeOfOldDayLine > 0) {// 有旧数据
 		long lCurrentPos = 0;
 		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
-			pHistoryCandle = dynamic_pointer_cast<CTiingoDayLine>(GetData(i));
+			pHistoryCandle = GetData(i);
 			if (pHistoryCandle->GetDate() < vOldHistoryCandle.at(0)->GetDate()) {	// 有更早的新数据？
 				pHistoryCandle->AppendBasicData(pSetTiingoStockDayLine);
 			}
@@ -98,7 +98,7 @@ void CContainerTiingoStockDayLine::UpdateDB(CSetTiingoStockDayLine* pSetTiingoSt
 	}
 	else {// 没有旧数据
 		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
-			pHistoryCandle = dynamic_pointer_cast<CTiingoDayLine>(GetData(i));
+			pHistoryCandle = GetData(i);
 			pHistoryCandle->AppendBasicData(pSetTiingoStockDayLine);
 		}
 	}
@@ -147,7 +147,7 @@ bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoS
 	if (lSizeOfOldDayLine > 0) {// 有旧数据
 		long lCurrentPos = 0;
 		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
-			pHistoryCandle = dynamic_pointer_cast<CTiingoDayLine>(GetData(i));
+			pHistoryCandle = GetData(i);
 			if (pHistoryCandle->GetDate() < vOldHistoryCandle.at(0)->GetDate()) {	// 有更早的新数据？
 				pHistoryCandle->AppendBasicData(pSetTiingoStockDayLine);
 			}
@@ -168,7 +168,7 @@ bool CContainerTiingoStockDayLine::UpdateDB2(CSetTiingoStockDayLine* pSetTiingoS
 	}
 	else {// 没有旧数据
 		for (int i = 0; i < lSize; i++) {	// 数据是正序存储的，需要从头部开始存储
-			pHistoryCandle = dynamic_pointer_cast<CTiingoDayLine>(GetData(i));
+			pHistoryCandle = GetData(i);
 			pHistoryCandle->AppendBasicData(pSetTiingoStockDayLine);
 		}
 	}

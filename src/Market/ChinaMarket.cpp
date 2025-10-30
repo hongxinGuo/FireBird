@@ -113,7 +113,7 @@ void CChinaMarket::Reset() {
 	m_fChosen10RSStrongStockSet = false;
 	m_fCalculateChosen10RS = false;
 
-	m_iCurrentDayRTDataReceived = 0;
+	m_iCurrentDayRTDataCounter = 0;
 	m_llRTDataReceived = 0;
 	m_lRTDataReceivedInCurrentMinute = 0;
 	m_lNewRTDataReceivedInCurrentMinute = 0;
