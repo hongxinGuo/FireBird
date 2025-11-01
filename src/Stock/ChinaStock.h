@@ -370,8 +370,8 @@ public:
 
 	bool IsDayLineDBUpdated() const noexcept { return (m_fDayLineDBUpdated); }
 	void SetDayLineDBUpdated(const bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
-	bool IsDayLineLoaded() const noexcept { return m_dataDayLine.IsDataLoaded(); }
-	void SetDayLineLoaded(const bool fFlag) noexcept { m_dataDayLine.SetDataLoaded(fFlag); }
+	bool IsDayLineLoaded() const noexcept override { return m_dataDayLine.IsDataLoaded(); }
+	void SetDayLineLoaded(const bool fFlag) noexcept override { m_dataDayLine.SetDataLoaded(fFlag); }
 
 	// 提取网易日线历史数据各函数
 	void UpdateStatusByDownloadedDayLine();
@@ -386,8 +386,8 @@ public:
 	void UnloadWeekLine() noexcept { m_dataWeekLine.Unload(); }
 	bool CalculatingWeekLine(long lStartDate);
 	bool StoreWeekLine(const CWeekLinePtr& pWeekLine) { return m_dataWeekLine.Add(pWeekLine); }
-	bool IsWeekLineLoaded() const noexcept { return m_dataWeekLine.IsDataLoaded(); }
-	void SetWeekLineLoaded(const bool fFlag) noexcept { m_dataWeekLine.SetDataLoaded(fFlag); }
+	bool IsWeekLineLoaded() const noexcept override { return m_dataWeekLine.IsDataLoaded(); }
+	void SetWeekLineLoaded(const bool fFlag) noexcept override { m_dataWeekLine.SetDataLoaded(fFlag); }
 	// 周线相对强度计算
 	bool CalculateWeekLineRS() { return m_dataWeekLine.CalculateRS0(); }
 	bool CalculateWeekLineRSIndex() { return m_dataWeekLine.CalculateRSIndex0(); }

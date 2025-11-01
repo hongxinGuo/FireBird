@@ -44,6 +44,7 @@ public:
 	virtual void TaskExitSystem();
 	bool TaskCheckMarketReady(long lCurrentTime);
 	virtual bool TaskResetMarket(long lCurrentTime);
+	bool TaskCheckSystem(long lCurrentTime);
 	void TaskDistributeAndCalculateRTData(long lCurrentTime);
 	void TaskProcessAndSaveDayLine(long lCurrentTime);
 	void TaskUpdateTempRTDB(long lCurrentTime);
@@ -89,10 +90,10 @@ public:
 	static size_t IncreaseStockInquiringIndex(size_t& lIndex, size_t lEndPosition);
 
 	// 得到当前显示股票
-	CChinaStockPtr GetCurrentStock() const noexcept { return m_pCurrentStock; }
+	CChinaStockPtr GetCurrentStock() const noexcept { return dynamic_pointer_cast<CChinaStock>(gl_pCurrentStock); }
 	void SetCurrentStock(const string& strStockCode);
 	void SetCurrentStock(const CChinaStockPtr& pStock);
-	void ClearCurrentStock() noexcept { m_pCurrentStock = nullptr; }
+	void ClearCurrentStock() noexcept { gl_pCurrentStock = nullptr; }
 	bool IsCurrentStockChanged() const noexcept { return m_fCurrentStockChanged; }
 	void SetCurrentStockChanged(const bool fFlag) noexcept { m_fCurrentStockChanged = fFlag; }
 
@@ -293,7 +294,7 @@ protected:
 	bool m_fFastReceivingRTData; // 是否开始接收实时数据
 	bool m_fRTDataSetCleared; // 实时数据库已清除标识。九点三十分之前为假，之后设置为真。
 	bool m_fUpdateTempDataDB; // 存储临时实时数据标识
-	CChinaStockPtr m_pCurrentStock; // 当前显示的股票
+	//CChinaStockPtr gl_pCurrentStock; // 当前显示的股票
 
 	chrono::sys_seconds m_tpNewTransactionTime{ chrono::duration<long long>(0) };
 

@@ -153,7 +153,7 @@ void CContainerTiingoStock::LoadDayLine(long lDate) {
 			pStock->SetLastClose(atof(setDayLine.m_LastClose) * pStock->GetRatio());
 			pStock->SetVolume(atof(setDayLine.m_Volume));
 			pStock->SetDividend(atof(setDayLine.m_dividend));
-			pStock->SetSpiltFactor(atof(setDayLine.m_splitFactor));
+			pStock->SetSplitFactor(atof(setDayLine.m_splitFactor));
 		}
 		setDayLine.MoveNext();
 	}
@@ -320,7 +320,7 @@ void CContainerTiingoStock::TaskCalculate2() {
 		setCurrentTrace.AddNew();
 		setCurrentTrace.m_Date = gl_pWorldMarket->GetMarketDate();
 		setCurrentTrace.m_Symbol = pStock->GetSymbol().c_str();
-		setCurrentTrace.m_SICCode = pStock->m_iSicCode;
+		setCurrentTrace.m_SICCode = pStock->GetSicCode();
 		setCurrentTrace.Update();
 	}
 	setCurrentTrace.m_pDatabase->CommitTrans();

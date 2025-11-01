@@ -33,7 +33,10 @@ string CProductTiingoStockProfile::CreateMessage() {
 void CProductTiingoStockProfile::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	const auto pvTiingoStock = ParseTiingoStockSymbol(pWebData);
 
-	ranges::sort(*pvTiingoStock, [](const CTiingoStockPtr& pData1, const CTiingoStockPtr& pData2) { return pData1->GetSymbol().compare(pData2->GetSymbol()) < 0; });
+	ranges::sort(*pvTiingoStock, [](const CTiingoStockPtr& pData1, const CTiingoStockPtr& pData2) {
+		auto s = pData1->GetSymbol();
+		return s.compare(pData2->GetSymbol()) < 0;
+	});
 
 	gl_dataContainerTiingoDelistedSymbol.Reset();
 	gl_dataContainerTiingoNewSymbol.Reset();
@@ -118,72 +121,72 @@ CTiingoStocksPtr CProductTiingoStockProfile::ParseTiingoStockSymbol(const CWebDa
 			auto itemValue = item.value();
 			pStock = make_shared<CTiingoStock>();
 			s1 = simdjsonGetStringView(itemValue, _T("permaTicker"));
-			pStock->m_strTiingoPermaTicker = s1;;
+			pStock->SetTiingoPermaTicker(s1);;
 			s1 = simdjsonGetStringView(itemValue, _T("ticker"));
 			std::ranges::transform(s1, s1.begin(), ::toupper); // 不知为什么，当生成库时，使用toupper报错；而使用_toupper则正常编译通过。(需要使用::toupper）
 			pStock->SetSymbol(s1);
 			s1 = simdjsonGetStringView(itemValue, _T("name"));
-			pStock->m_strName = s1;;
+			pStock->SetName(s1);;
 			pStock->SetActive(simdjsonGetBool(itemValue, "isActive"));
-			pStock->m_fIsADR = simdjsonGetBool(itemValue,_T("isADR"));
+			pStock->SetIsADR(simdjsonGetBool(itemValue, _T("isADR")));
 			s1 = simdjsonGetStringView(itemValue, _T("industry"));
 			if (s1.compare(strNotAvailable) != 0) {
-				pStock->m_strTiingoIndustry = s1;;
+				pStock->SetTiingoIndustry(s1);;
 			}
-			else pStock->m_strTiingoIndustry = strNULL;
+			else pStock->SetTiingoIndustry(strNULL);
 			s1 = simdjsonGetStringView(itemValue, _T("sector"));
 			if (s1.compare(strNotAvailable) != 0) {
-				pStock->m_strTiingoSector = s1;;
+				pStock->SetTiingoSector(s1);;
 			}
-			else pStock->m_strTiingoSector = strNULL;
+			else pStock->SetTiingoSector(strNULL);
 
 			sv = itemValue["sicCode"].raw_json();
 			if (sv == ("\"Field not available for free/evaluation\"") || sv.empty()) {
-				pStock->m_iSicCode = 0;
+				pStock->SetSicCode(0);
 			}
 			else {
 				string sTemp2(sv);
-				pStock->m_iSicCode = atoi(sTemp2.c_str());
+				pStock->SetSicCode(atoi(sTemp2.c_str()));
 			}
 			s1 = simdjsonGetStringView(itemValue, _T("sicIndustry"));
 			if (s1.compare(strNotAvailable) != 0) {
-				pStock->m_strSicIndustry = s1;;
+				pStock->SetSicIndustry(s1);;
 			}
-			else pStock->m_strSicIndustry = strNULL;
+			else pStock->SetSicIndustry(strNULL);
 			s1 = simdjsonGetStringView(itemValue, _T("sicSector"));
 			if (s1.compare(strNotAvailable) != 0) {
-				pStock->m_strSicSector = s1;;
+				pStock->SetSicSector(s1);;
 			}
-			else pStock->m_strSicSector = strNULL;
+			else pStock->SetSicSector(strNULL);
 			s1 = simdjsonGetStringView(itemValue, _T("reportingCurrency"));
 			if (s1.compare(strNotAvailable) != 0) { // 此项应该永远存在
-				pStock->m_strReportingCurrency = s1;;
+				pStock->SetReportingCurrency(s1);;
 			}
-			else pStock->m_strReportingCurrency = strNULL;
+			else pStock->SetReportingCurrency(strNULL);
 			s1 = simdjsonGetStringView(itemValue, _T("location"));
 			if (s1 != strNotAvailable) {
-				pStock->m_strLocation = s1;;
+				pStock->SetLocation(s1);
 			}
-			else pStock->m_strLocation = strNULL;
+			else pStock->SetLocation(strNULL);
 			s1 = simdjsonGetStringView(itemValue, _T("companyWebsite"));
 			if (s1 != strNotAvailable) {
-				pStock->m_strCompanyWebSite = s1;;
+				pStock->SetCompanyWebSite(s1);
 			}
-			else pStock->m_strCompanyWebSite = strNULL;
+			else pStock->SetCompanyWebSite(strNULL);
 			s1 = simdjsonGetStringView(itemValue, _T("secFilingWebsite"));
 			if (s1 != strNotAvailable) {
-				pStock->m_strSECFilingWebSite = s1;;
+				pStock->SetSECFilingWebSite(s1);
 			}
-			else pStock->m_strSECFilingWebSite = strNULL;
+			else pStock->SetSECFilingWebSite(strNULL);
 			s1 = simdjsonGetStringView(itemValue, _T("statementLastUpdated"));
 			pStock->SetStatementLastUpdatedDate(XferToYYYYMMDD(s1));
 			s1 = simdjsonGetStringView(itemValue, _T("dailyLastUpdated"));
 			pStock->SetDailyUpdateDate(XferToYYYYMMDD(s1));
 			s1 = simdjsonGetStringView(itemValue, _T("dataProviderPermaTicker"));
 			if (s1 != strNotAvailable) {
-				pStock->m_strDataProviderPermaTicker = s1;
+				pStock->SetDataProviderPermaTicker(s1);
 			}
-			else pStock->m_strSECFilingWebSite = strNULL;
+			else pStock->SetSECFilingWebSite(strNULL);
 
 			pStock->SetUpdateProfileDB(true); // 所有申请到的股票，皆当成新股票对待，需要存入数据库。
 			pvTiingoStock->push_back(pStock);
@@ -214,7 +217,8 @@ CTiingoStocksPtr CProductTiingoStockProfile::DeleteDuplicatedSymbol(const CTiing
 	CTiingoStockPtr pStockFirst = pvTiingoStock->at(0);
 	for (size_t l = 1; l < pvTiingoStock->size(); l++) {
 		CTiingoStockPtr pStockNext = pvTiingoStock->at(l);
-		if (pStockFirst->GetSymbol().compare(pStockNext->GetSymbol()) != 0) { // 代码不同
+		auto s = pStockFirst->GetSymbol();
+		if (s.compare(pStockNext->GetSymbol()) != 0) { // 代码不同
 			pvNewTiingoStock->push_back(pStockFirst);
 			pStockFirst = pStockNext;
 		}

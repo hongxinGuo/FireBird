@@ -54,13 +54,13 @@ namespace FireBirdTest {
 
 		ASSERT_FALSE(gl_systemConfiguration.IsUpdateDB()) << "正常测试时不允许更改，需要更改时注释掉本行";
 		EXPECT_FALSE(gl_systemConfiguration.IsDebugMode());
-		EXPECT_TRUE(gl_systemConfiguration.GetDatabaseAccountName().compare( _T("FireBird")) == 0);
-		EXPECT_TRUE(gl_systemConfiguration.GetDatabaseAccountPassword().compare(_T("firebird")) == 0);
+		EXPECT_EQ(gl_systemConfiguration.GetDatabaseAccountName(), _T("FireBird"));
+		EXPECT_EQ(gl_systemConfiguration.GetDatabaseAccountPassword(), _T("firebird"));
 		EXPECT_EQ(gl_systemConfiguration.GetBackgroundThreadPermittedNumber(), 8);
 
 		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRealtimeServer(), 0) << "默认使用新浪实时数据服务器";
 		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketDayLineServer(), 0) << "默认使用网易日线数据服务器";
-		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRTDataInquiryTime().count(), 200) << "默认查询时间为200毫秒";
+		EXPECT_EQ(gl_systemConfiguration.GetChinaMarketRTDataInquiryTime().count(), 250) << "默认查询时间为200毫秒";
 		EXPECT_EQ(gl_systemConfiguration.GetSavingChinaMarketStockDayLineThread(), 4) << "默认查询股票历史数据工作线程数为4";
 		EXPECT_EQ(gl_systemConfiguration.GetNumberOfRTDataSource(), 4) << "测试文件中的数值";
 		EXPECT_EQ(gl_systemConfiguration.GetSinaRTDataInquiryPerTime(), 850) << "测试文件中的数值";

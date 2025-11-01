@@ -82,6 +82,9 @@ void CContainerVirtualStock::UpdateSymbolMap() {
 }
 
 void CContainerVirtualStock::Sort() {
-	std::ranges::sort(m_vStock, [](const CVirtualStockPtr& p1, const CVirtualStockPtr& p2) { return (p1->GetSymbol().compare(p2->GetSymbol()) < 0); });
+	std::ranges::sort(m_vStock, [](const CVirtualStockPtr& p1, const CVirtualStockPtr& p2) {
+		auto str = p1->GetSymbol();
+		return (str.compare(p2->GetSymbol()) < 0);
+	});
 	UpdateSymbolMap();
 }

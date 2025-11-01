@@ -128,7 +128,7 @@ void CChinaMarket::Reset() {
 	m_fFastReceivingRTData = true;
 	m_fRTDataSetCleared = false;
 	m_fUpdateTempDataDB = true;
-	m_pCurrentStock = nullptr;
+	gl_pCurrentStock = nullptr;
 
 	m_tpNewTransactionTime = chrono::time_point_cast<chrono::seconds>(chrono::system_clock::from_time_t(0));
 
@@ -211,6 +211,9 @@ int CChinaMarket::ProcessTask(long lCurrentTime) {
 			break;
 		case CHINA_MARKET_RESET__: // 市场重置
 			TaskResetMarket(lCurrentTime);
+			break;
+		case CHINA_MARKET_CHECK_SYSTEM: // 系统检查
+			TaskCheckSystem(lCurrentTime);
 			break;
 		case CHINA_MARKET_LOAD_TEMP_RT_DATA__:
 			TaskLoadTempRTData(GetMarketDate(), lCurrentTime);
@@ -295,9 +298,9 @@ bool CChinaMarket::TaskCheckMarketReady(long lCurrentTime) {
 }
 
 void CChinaMarket::ChangeToNextStock() {
-	ASSERT(m_pCurrentStock != nullptr);
-	size_t lIndex = gl_dataContainerChinaStock.GetOffset(m_pCurrentStock);
-	CChinaStockPtr pStock = m_pCurrentStock;
+	ASSERT(gl_pCurrentStock != nullptr);
+	size_t lIndex = gl_dataContainerChinaStock.GetOffset(gl_pCurrentStock);
+	CChinaStockPtr pStock = dynamic_pointer_cast<CChinaStock>(gl_pCurrentStock);
 
 	if (IsTotalStockSetSelected()) {
 		bool fFound = false;
@@ -325,9 +328,9 @@ void CChinaMarket::ChangeToNextStock() {
 }
 
 void CChinaMarket::ChangeToPrevStock() {
-	ASSERT(m_pCurrentStock != nullptr);
-	size_t lIndex = gl_dataContainerChinaStock.GetOffset(m_pCurrentStock);
-	CChinaStockPtr pStock = m_pCurrentStock;
+	ASSERT(gl_pCurrentStock != nullptr);
+	size_t lIndex = gl_dataContainerChinaStock.GetOffset(gl_pCurrentStock);
+	CChinaStockPtr pStock = dynamic_pointer_cast<CChinaStock>(gl_pCurrentStock);
 
 	if (IsTotalStockSetSelected()) {
 		bool fFound = false;
@@ -597,6 +600,11 @@ void CChinaMarket::TaskCreateTask(long lCurrentTime) {
 		AddTask(CHINA_MARKET_RESET__, 91300); // 执行时间为：91300
 	}
 
+	// 第一次系统检查
+	if (lCurrentTime < 91800) {
+		AddTask(CHINA_MARKET_CHECK_SYSTEM, 91800); // 执行时间为：91800
+	}
+
 	// 装载本日存储的实时数据。必须于市场两次重启后（92600后）再执行，这样才能保证正常设置m_fLoadTodayRTData变量
 	AddTask(CHINA_MARKET_LOAD_TEMP_RT_DATA__, 92700);
 
@@ -679,10 +687,10 @@ void CChinaMarket::TaskUpdateTempRTDB(long lCurrentTime) {
 }
 
 void CChinaMarket::TaskLoadCurrentStockHistoryData() const {
-	ASSERT(m_pCurrentStock != nullptr);
-	ASSERT(!m_pCurrentStock->IsDayLineLoaded());
-	ASSERT(!m_pCurrentStock->IsWeekLineLoaded());
-	auto pStock = m_pCurrentStock;
+	ASSERT(gl_pCurrentStock != nullptr);
+	ASSERT(!gl_pCurrentStock->IsDayLineLoaded());
+	ASSERT(!gl_pCurrentStock->IsWeekLineLoaded());
+	CChinaStockPtr pStock = dynamic_pointer_cast<CChinaStock>(gl_pCurrentStock);
 	gl_runtime.thread_executor()->post([pStock] {
 		pStock->UnloadDayLine();
 		// 装入日线数据
@@ -931,6 +939,14 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 	return true;
 }
 
+bool CChinaMarket::TaskCheckSystem(long lCurrentTime) {
+	if ((gl_systemConfiguration.IsUsingSinaRTServer() && gl_pSinaRTDataSource->GetCurrentInquiryTime() > 200)
+		|| (gl_systemConfiguration.IsUsingTengxunRTServer() && gl_pTengxunRTDataSource->GetCurrentInquiryTime() > 200)) { // 如果接受网络数据时间超过300毫秒
+		AddTask(RELOAD_SYSTEM__, GetNextTime(lCurrentTime, 0, 0, 10)); // 十秒后重启系统
+	}
+	return true;
+}
+
 bool CChinaMarket::TaskUpdateStockProfileDB(long lCurrentTime) {
 	AddTask(CHINA_MARKET_UPDATE_STOCK_PROFILE_DB__, GetNextTime(lCurrentTime, 0, 5, 0));
 
@@ -1036,9 +1052,9 @@ void CChinaMarket::SetCurrentStock(const string& strStockCode) {
 	ASSERT(gl_dataContainerChinaStock.IsSymbol(strStockCode));
 	const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(strStockCode);
 	SetCurrentStock(pStock);
-	ASSERT(m_pCurrentStock != nullptr);
-	if (!m_pCurrentStock->IsDayLineLoaded()) {
-		ASSERT(!m_pCurrentStock->IsWeekLineLoaded());
+	ASSERT(gl_pCurrentStock != nullptr);
+	if (!gl_pCurrentStock->IsDayLineLoaded()) {
+		ASSERT(!gl_pCurrentStock->IsWeekLineLoaded());
 		AddImmediateTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__); // 装载日线历史数据
 	}
 }
@@ -1052,17 +1068,17 @@ void CChinaMarket::SetCurrentStock(const string& strStockCode) {
 /////////////////////////////////////////////////////////////////////////
 void CChinaMarket::SetCurrentStock(const CChinaStockPtr& pStock) {
 	if (pStock == nullptr) {
-		m_pCurrentStock = nullptr;
+		gl_pCurrentStock = nullptr;
 		return;
 	}
-	if (m_pCurrentStock != nullptr) {
-		if (m_pCurrentStock->IsSameStock(pStock)) return;
+	if (gl_pCurrentStock != nullptr) {
+		if (gl_pCurrentStock->IsSameStock(pStock)) return;
 	}
 
-	m_pCurrentStock = pStock;
+	gl_pCurrentStock = pStock;
 	SetCurrentStockChanged(true);
-	m_pCurrentStock->SetDayLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
-	m_pCurrentStock->SetWeekLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
+	gl_pCurrentStock->SetDayLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
+	gl_pCurrentStock->SetWeekLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
 	AddImmediateTask(CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__); // 装载日线历史数据
 }
 

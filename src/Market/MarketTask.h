@@ -19,6 +19,7 @@ enum {
 	CHINA_MARKET_CREATE_TASK__, // 生成其他任务的初始任务。每日240000
 	CHINA_MARKET_CHECK_SYSTEM_READY__, // 系统初始化检查
 	CHINA_MARKET_RESET__, // 重置系统。每日两次，时间为091300和092600
+	CHINA_MARKET_CHECK_SYSTEM, // 中国市场系统检查，如果发现有不满意的地方（如接受数据的时间过久，超过300毫秒），则重新启动系统。每日091800和092800
 	CHINA_MARKET_LOAD_TEMP_RT_DATA__, // 装载本日临时存储的实时数据
 	CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__, // 实时数据处理。自093000开始至1130500，然后从130000至150500，每次间隔一秒钟（不得超过三秒钟）
 	CHINA_MARKET_SAVE_TEMP_RT_DATA__, // 存储临时实时数据。自093000开始至1130500，然后从130000至150500，每次间隔五分钟

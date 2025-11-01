@@ -134,7 +134,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(pStock->GetSymbol(), _T("A")) << "第一个股票代码为A";
 		pStock = gl_dataContainerTiingoStock.GetStock(_T("A"));
 		EXPECT_FALSE(pStock == nullptr);
-		EXPECT_EQ(pStock->m_strName, _T("Agilent Technologies Inc"));
+		EXPECT_EQ(pStock->GetName(), _T("Agilent Technologies Inc"));
 	}
 
 	TEST_F(CWorldMarketTest, TestIsUpdateProfileDB) {
@@ -549,39 +549,39 @@ namespace FireBirdTest {
 
 		auto pTiingoStock = make_shared<CTiingoStock>(); // 这个是数据库中已存在的证券
 		pTiingoStock->SetActive(true);
-		pTiingoStock->m_fIsADR = false;
-		pTiingoStock->m_iSicCode = 1002;
+		pTiingoStock->SetIsADR(false);
+		pTiingoStock->SetSicCode(1002);
 		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);
-		pTiingoStock->m_strCompanyWebSite = _T("");
-		pTiingoStock->m_strLocation = _T("");
-		pTiingoStock->m_strName = _T(""); //
-		pTiingoStock->m_strReportingCurrency = _T("");
-		pTiingoStock->m_strSECFilingWebSite = _T("");
-		pTiingoStock->m_strSicIndustry = _T("");
-		pTiingoStock->m_strSicSector = _T("Test"); // 用于删除
+		pTiingoStock->SetCompanyWebSite(_T(""));
+		pTiingoStock->SetLocation(_T(""));
+		pTiingoStock->SetName(_T("")); //
+		pTiingoStock->SetReportingCurrency(_T(""));
+		pTiingoStock->SetSECFilingWebSite(_T(""));
+		pTiingoStock->SetSicIndustry(_T(""));
+		pTiingoStock->SetSicSector(_T("Test")); // 用于删除
 		pTiingoStock->SetSymbol(_T("A")); // 已存在代码
-		pTiingoStock->m_strTiingoIndustry = _T("");
-		pTiingoStock->m_strTiingoPermaTicker = _T("");
-		pTiingoStock->m_strTiingoSector = _T("");
+		pTiingoStock->SetTiingoIndustry(_T(""));
+		pTiingoStock->SetTiingoPermaTicker(_T(""));
+		pTiingoStock->SetTiingoSector(_T(""));
 		pTiingoStock->SetUpdateProfileDB(true);
 		gl_dataContainerTiingoStock.UpdateProfile(pTiingoStock);
 
 		pTiingoStock = make_shared<CTiingoStock>();
 		pTiingoStock->SetActive(true);
-		pTiingoStock->m_fIsADR = false;
-		pTiingoStock->m_iSicCode = 1002;
+		pTiingoStock->SetIsADR(false);
+		pTiingoStock->SetSicCode(1002);
 		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);
-		pTiingoStock->m_strCompanyWebSite = _T("www.abc.com");
-		pTiingoStock->m_strLocation = _T("Irvine CA USA");
-		pTiingoStock->m_strName = _T("ABCDE"); // 新代码
-		pTiingoStock->m_strReportingCurrency = _T("US Dollar");
-		pTiingoStock->m_strSECFilingWebSite = _T("abc");
-		pTiingoStock->m_strSicIndustry = _T("Computer Science");
-		pTiingoStock->m_strSicSector = _T("Test");
+		pTiingoStock->SetCompanyWebSite(_T("www.abc.com"));
+		pTiingoStock->SetLocation(_T("Irvine CA USA"));
+		pTiingoStock->SetName(_T("ABCDE")); // 新代码
+		pTiingoStock->SetReportingCurrency(_T("US Dollar"));
+		pTiingoStock->SetSECFilingWebSite(_T("abc"));
+		pTiingoStock->SetSicIndustry(_T("Computer Science"));
+		pTiingoStock->SetSicSector(_T("Test"));
 		pTiingoStock->SetSymbol(_T("ABCDEF")); // 新代码
-		pTiingoStock->m_strTiingoIndustry = _T("Computer");
-		pTiingoStock->m_strTiingoPermaTicker = _T("abcdefg");
-		pTiingoStock->m_strTiingoSector = _T("gfedcba");
+		pTiingoStock->SetTiingoIndustry(_T("Computer"));
+		pTiingoStock->SetTiingoPermaTicker(_T("abcdefg"));
+		pTiingoStock->SetTiingoSector(_T("gfedcba"));
 		pTiingoStock->SetUpdateProfileDB(true);
 		gl_dataContainerTiingoStock.Add(pTiingoStock);
 

@@ -270,7 +270,9 @@ void CContainerChinaStock::ClearDayLineNeedUpdateStatus() const {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 string CContainerChinaStock::GetStockName(const string& strStockCode) {
-	try { return (GetStock(m_mapSymbol.at(strStockCode))->GetDisplaySymbol()); } catch (exception& e) {
+	try {
+		return GetStock(m_mapSymbol.at(strStockCode))->GetDisplaySymbol();
+	} catch (exception& e) {
 		ReportErrorToSystemMessage(_T("GetStockName ") + strStockCode + _T(" "), e);
 		return _T("");
 	}

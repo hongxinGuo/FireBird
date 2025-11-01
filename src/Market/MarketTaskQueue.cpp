@@ -38,6 +38,7 @@ void CMarketTaskQueue::CreateIndexMap() {
 
 	gl_mapMarketMapIndex[CHINA_MARKET_CHECK_SYSTEM_READY__] = "系统初始化检查";
 	gl_mapMarketMapIndex[CHINA_MARKET_RESET__] = "市场重置";
+	gl_mapMarketMapIndex[CHINA_MARKET_CHECK_SYSTEM] = "中国市场系统检查";
 	gl_mapMarketMapIndex[CHINA_MARKET_LOAD_TEMP_RT_DATA__] = _T("装载本日临时存储的实时数据");
 	gl_mapMarketMapIndex[CHINA_MARKET_DISTRIBUTE_AND_CALCULATE_RT_DATA__] = _T("分配并处理实时数据");
 	gl_mapMarketMapIndex[CHINA_MARKET_SAVE_TEMP_RT_DATA__] = _T("保存实时数据");

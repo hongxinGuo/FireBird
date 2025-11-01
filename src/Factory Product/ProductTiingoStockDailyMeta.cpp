@@ -40,15 +40,16 @@ void CProductTiingoStockDailyMeta::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	auto pStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
 	if (gl_dataContainerTiingoStock.IsSymbol(pTiingoStockDailyMeta->m_strCode)) {
 		auto pStock2 = gl_dataContainerTiingoStock.GetStock(pTiingoStockDailyMeta->m_strCode);
-		if (pStock->GetSymbol().compare(pStock2->GetSymbol()) == 0) {
+		auto str = pStock->GetSymbol();
+		if (str.compare(pStock2->GetSymbol()) == 0) {
 			pStock->UpdateDailyMeta(pTiingoStockDailyMeta); // 目前只更新HistoryDayLineBeginDate和HistoryDayLineEndDate。
 			pStock->SetUpdateStockDailyMetaDate(gl_pWorldMarket->GetCurrentTradeDate());
 		}
 		else {
-			string str = _T("Tiingo stock daily meta not match: ");
-			str += pStock->GetSymbol() + _T("  ") + pStock2->GetSymbol();
-			gl_systemMessage.PushInnerSystemInformationMessage(str);
-			gl_errorLogger->warn("{}", str);
+			string str2 = _T("Tiingo stock daily meta not match: ");
+			str2 += pStock->GetSymbol() + _T("  ") + pStock2->GetSymbol();
+			gl_systemMessage.PushInnerSystemInformationMessage(str2);
+			gl_errorLogger->warn("{}", str2);
 		}
 	}
 	pStock->SetUpdateStockDailyMeta(false);

@@ -1216,7 +1216,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(stock.GetRTDataQueueSize(), 1);
 		stock.PushRTData(pData1);
 		EXPECT_EQ(stock.GetRTDataQueueSize(), 2);
-		EXPECT_TRUE(pData->GetSymbol().compare( _T("600008.SS")) == 0);
+		EXPECT_EQ(pData->GetSymbol(), _T("600008.SS"));
 		CWebRTDataPtr pData2 = stock.PopRTData();
 		EXPECT_EQ(stock.GetRTDataQueueSize(), 1);
 	}
@@ -1627,8 +1627,8 @@ namespace FireBirdTest {
 		pStock->UpdateCurrentHistoryCandle(pDayLine);
 
 		EXPECT_EQ(pDayLine->GetDate(), ConvertToDate(pStock->GetTransactionTime(), 0));
-		EXPECT_TRUE(pDayLine->GetExchange().compare(pStock->GetExchangeCode()) == 0);
-		EXPECT_TRUE(pDayLine->GetStockSymbol().compare(pStock->GetSymbol()) == 0);
+		EXPECT_EQ(pDayLine->GetExchange(), pStock->GetExchangeCode());
+		EXPECT_EQ(pDayLine->GetStockSymbol(), pStock->GetSymbol());
 		EXPECT_EQ(pDayLine->GetDisplaySymbol(), pStock->GetDisplaySymbol());
 		EXPECT_EQ(pDayLine->GetLastClose(), pStock->GetLastClose());
 		EXPECT_EQ(pDayLine->GetOpen(), pStock->GetOpen());
@@ -1828,7 +1828,7 @@ namespace FireBirdTest {
 		pDayLine = pStock->GetDayLine(pStock->GetDayLineSize() - 1);
 
 		EXPECT_EQ(pDayLine->GetMarketTime(), 0);
-		EXPECT_TRUE(pDayLine->GetStockSymbol().compare(_T("600011.SS")) == 0);
+		EXPECT_EQ(pDayLine->GetStockSymbol(), _T("600011.SS"));
 		EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
 		EXPECT_EQ(pDayLine->GetOpen(), pid->GetOpen());
 		EXPECT_EQ(pDayLine->GetHigh(), pid->GetHigh());
@@ -2054,7 +2054,7 @@ namespace FireBirdTest {
 			pid = stock.GetDayLine(i);
 			const CDayLinePtr pDayLine = pStock->GetDayLine(i);
 			EXPECT_EQ(pDayLine->GetDate(), pid->GetDate());
-			EXPECT_TRUE(pDayLine->GetStockSymbol().compare( pid->GetStockSymbol()) == 0);
+			EXPECT_EQ(pDayLine->GetStockSymbol(), pid->GetStockSymbol());
 			EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
 			EXPECT_EQ(pDayLine->GetOpen(), pid->GetOpen());
 			EXPECT_EQ(pDayLine->GetHigh(), pid->GetHigh());

@@ -32,9 +32,9 @@ namespace FireBirdTest {
 			exchange.AddSymbol(s);
 		}
 		EXPECT_EQ(jsFinnhubInaccessibleExchange["UpdateDate"], 20221205);
-		EXPECT_TRUE(exchange.GetFunctionString().compare( _T("StockFundamentalsCompanyProfileConcise"))== 0);
-		EXPECT_TRUE(exchange.GetSymbol(0).compare(_T("SS"))== 0);
-		EXPECT_TRUE(exchange.GetSymbol(1).compare( _T("SZ")) == 0);
+		EXPECT_EQ(exchange.GetFunctionString(), _T("StockFundamentalsCompanyProfileConcise"));
+		EXPECT_EQ(exchange.GetSymbol(0), _T("SS"));
+		EXPECT_EQ(exchange.GetSymbol(1), _T("SZ"));
 	}
 
 	TEST_F(CFinnhubInaccessibleExchangeTest, TestDeleteExchange) {
@@ -73,7 +73,7 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.Update();
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetUpdateDate(), 20230101);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetItemSize(), 1);
-		EXPECT_TRUE(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString().compare( _T("WebSocketTrades")) == 0);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(), _T("WebSocketTrades"));
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->SymbolSize(), 2);
 		const string str = gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetSymbol(0);
 		EXPECT_TRUE(str.compare( _T("SS")) == 0);
@@ -103,10 +103,10 @@ namespace FireBirdTest {
 		gl_finnhubInaccessibleExchange.Update();
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetUpdateDate(), 20230101);
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetItemSize(), 1);
-		EXPECT_TRUE(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString().compare( _T("WebSocketTrades")) == 0);
+		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetFunctionString(), _T("WebSocketTrades"));
 		EXPECT_EQ(gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->SymbolSize(), 2);
 		const string str = gl_finnhubInaccessibleExchange.GetExchange(gl_finnhubInaccessibleExchange.GetFinnhubInquiryIndex(pExchange->GetFunctionString()))->GetSymbol(0);
-		EXPECT_TRUE(str.compare( _T("SS")) == 0);
+		EXPECT_EQ(str, _T("SS"));
 
 		// »Ö¸´Ô­×´
 		DeleteFile((gl_systemConfiguration.GetConfigurationFileDirectory() + _T("FinnhubInaccessibleExchangeTest.json")).c_str());

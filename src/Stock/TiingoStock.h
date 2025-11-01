@@ -23,10 +23,65 @@ public:
 	CTiingoStock& operator=(const CTiingoStock&&) noexcept = delete;
 	~CTiingoStock() override = default;
 
+	// Getter and Setter for m_strTiingoPermaTicker
+	const string& GetTiingoPermaTicker() const { return m_strTiingoPermaTicker; }
+	void SetTiingoPermaTicker(const string& val) { m_strTiingoPermaTicker = val; }
+
+	// Getter and Setter for m_strName
+	const string& GetName() const { return m_strName; }
+	void SetName(const string& val) { m_strName = val; }
+
+	// Getter and Setter for m_fDividend
 	double GetDividend() const { return m_fDividend; }
-	void SetDividend(double dividend) { m_fDividend = dividend; }
-	double GetSpiltFactor() const { return m_fSplitFactor; }
-	void SetSpiltFactor(double spiltFactor) { m_fSplitFactor = spiltFactor; }
+	void SetDividend(double val) { m_fDividend = val; }
+
+	// Getter and Setter for m_fSplitFactor
+	double GetSplitFactor() const { return m_fSplitFactor; }
+	void SetSplitFactor(double val) { m_fSplitFactor = val; }
+
+	// Getter and Setter for m_fIsADR
+	bool IsADR() const { return m_fIsADR; }
+	void SetIsADR(bool val) { m_fIsADR = val; }
+
+	// Getter and Setter for m_strTiingoSector
+	const string& GetTiingoSector() const { return m_strTiingoSector; }
+	void SetTiingoSector(const string& val) { m_strTiingoSector = val; }
+
+	// Getter and Setter for m_strTiingoIndustry
+	const string& GetTiingoIndustry() const { return m_strTiingoIndustry; }
+	void SetTiingoIndustry(const string& val) { m_strTiingoIndustry = val; }
+
+	// Getter and Setter for m_iSicCode
+	INT32 GetSicCode() const { return m_iSicCode; }
+	void SetSicCode(INT32 val) { m_iSicCode = val; }
+
+	// Getter and Setter for m_strSicSector
+	const string& GetSicSector() const { return m_strSicSector; }
+	void SetSicSector(const string& val) { m_strSicSector = val; }
+
+	// Getter and Setter for m_strSicIndustry
+	const string& GetSicIndustry() const { return m_strSicIndustry; }
+	void SetSicIndustry(const string& val) { m_strSicIndustry = val; }
+
+	// Getter and Setter for m_strReportingCurrency
+	const string& GetReportingCurrency() const { return m_strReportingCurrency; }
+	void SetReportingCurrency(const string& val) { m_strReportingCurrency = val; }
+
+	// Getter and Setter for m_strLocation
+	const string& GetLocation() const { return m_strLocation; }
+	void SetLocation(const string& val) { m_strLocation = val; }
+
+	// Getter and Setter for m_strCompanyWebSite
+	const string& GetCompanyWebSite() const { return m_strCompanyWebSite; }
+	void SetCompanyWebSite(const string& val) { m_strCompanyWebSite = val; }
+
+	// Getter and Setter for m_strSECFilingWebSite
+	const string& GetSECFilingWebSite() const { return m_strSECFilingWebSite; }
+	void SetSECFilingWebSite(const string& val) { m_strSECFilingWebSite = val; }
+
+	// Getter and Setter for m_strDataProviderPermaTicker
+	const string& GetDataProviderPermaTicker() const { return m_strDataProviderPermaTicker; }
+	void SetDataProviderPermaTicker(const string& val) { m_strDataProviderPermaTicker = val; }
 
 	void ResetAllUpdateDate() override;
 	int GetRatio() const override { return 1000000; }; // 
@@ -47,8 +102,8 @@ public:
 	bool IsUpdate52WeekHighLowDB() const noexcept { return m_fUpdate52WeekHighLowDB; }
 	void SetUpdate52WeekHighLowDB(bool fFlag) noexcept { m_fUpdate52WeekHighLowDB = fFlag; }
 
-	bool IsDayLineLoaded() const noexcept { return m_dataDayLine.IsDataLoaded(); }
-	void SetDayLineLoaded(bool fFlag) noexcept { m_dataDayLine.SetDataLoaded(fFlag); }
+	bool IsDayLineLoaded() const noexcept override { return m_dataDayLine.IsDataLoaded(); }
+	void SetDayLineLoaded(bool fFlag) noexcept override { m_dataDayLine.SetDataLoaded(fFlag); }
 
 	void UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook);
 	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
@@ -129,6 +184,12 @@ public:
 	void Clear52WeekHigh() { m_v52WeekHigh.clear(); }
 
 public:
+	vector<long> m_v52WeekLow; // 年度最低价的日期
+	vector<long> m_v52WeekHigh; // 年度最高价的日期
+
+	vector<double> m_vClose; // 收盘价
+
+protected:
 	string m_strTiingoPermaTicker{ _T("") }; // Tiingo永久代码标识
 	//string m_strTicker; // 这个使用VirtualStock中的m_strSymbol来代替。
 	string m_strName{ _T("") };
@@ -147,12 +208,6 @@ public:
 	string m_strSECFilingWebSite{ _T("") };
 	string m_strDataProviderPermaTicker{ _T("") };
 
-	vector<long> m_v52WeekLow; // 年度最低价的日期
-	vector<long> m_v52WeekHigh; // 年度最高价的日期
-
-	vector<double> m_vClose; // 收盘价
-
-protected:
 	CTiingoCompanyFinancialStatesPtr m_pvFinancialState{ nullptr };
 	CContainerTiingoStockDayLine m_dataDayLine;
 

@@ -33,9 +33,9 @@ namespace FireBirdTest {
 			EXPECT_FALSE(s_pMockWorldMarket->IsSystemReady()) << "市场默认为尚未准备好";
 			s_pMockWorldMarket->SetSystemReady(true);// 测试系统默认为准备好了
 
-			EXPECT_EQ(gl_systemMessage.InformationSize(), 1);
+			EXPECT_EQ(gl_systemMessage.InformationSize(), 1) << gl_systemMessage.PopInformationMessage();
 			gl_systemMessage.PopInformationMessage();
-			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
+			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1) << gl_systemMessage.PopInnerSystemInformationMessage();
 			gl_systemMessage.PopInnerSystemInformationMessage();
 
 			while (!s_pMockWorldMarket->IsMarketTaskEmpty()) s_pMockWorldMarket->DiscardCurrentMarketTask();

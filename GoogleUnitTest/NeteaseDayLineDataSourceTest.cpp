@@ -46,13 +46,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CNeteaseDayLineDataSourceTest, TestSetDownLoadingStockCode) {
-		EXPECT_TRUE(NeteaseDayLineDataSource.GetDownLoadingStockCode().compare( _T("")) == 0);
+		EXPECT_EQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), _T(""));
 		NeteaseDayLineDataSource.SetDownLoadingStockCode(_T("1000001"));
-		EXPECT_TRUE(NeteaseDayLineDataSource.GetDownLoadingStockCode().compare( _T("1000001")) == 0);
+		EXPECT_EQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), _T("1000001"));
 		NeteaseDayLineDataSource.SetDownLoadingStockCode(_T("0600001"));
-		EXPECT_TRUE(NeteaseDayLineDataSource.GetDownLoadingStockCode().compare( _T("0600001")) == 0);
+		EXPECT_EQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), _T("0600001"));
 		NeteaseDayLineDataSource.SetDownLoadingStockCode(_T("2600001"));
-		EXPECT_TRUE(NeteaseDayLineDataSource.GetDownLoadingStockCode().compare( _T("2600001")) == 0);
+		EXPECT_EQ(NeteaseDayLineDataSource.GetDownLoadingStockCode(), _T("2600001"));
 	};
 
 	TEST_F(CNeteaseDayLineDataSourceTest, TestGenerateInquiryMessage1) {

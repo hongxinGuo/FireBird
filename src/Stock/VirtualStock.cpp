@@ -88,3 +88,11 @@ long CVirtualStock::GetDayLineEndDate() {
 
 	return l;
 }
+
+bool CVirtualStock::IsSameStock(const CVirtualStockPtr& pStock) const {
+	if (pStock == nullptr) return false;
+	if (m_strSymbol.compare(pStock->GetSymbol()) == 0) {
+		return true;
+	}
+	return false;
+}

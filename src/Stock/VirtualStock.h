@@ -113,7 +113,18 @@ public:
 	bool IsUpdateCompanyNewsDB() const noexcept { return m_fUpdateCompanyNewsDB; }
 	void SetUpdateCompanyNewsDB(const bool fFlag) noexcept { m_fUpdateCompanyNewsDB = fFlag; }
 
-	CVirtualStockPtr GetCurrentStock() noexcept { return gl_pCurrentStock; }
+	bool IsSameStock(const CVirtualStockPtr& pStock) const;
+
+	virtual bool IsDayLineLoaded() const noexcept {
+		ASSERT(0);
+		return false;
+	}
+	virtual void SetDayLineLoaded(const bool fFlag) noexcept { ASSERT(0); }
+	virtual bool IsWeekLineLoaded() const noexcept {
+		ASSERT(0);
+		return false;
+	}
+	virtual void SetWeekLineLoaded(const bool fFlag) noexcept { ASSERT(0); }
 
 protected:
 	string m_strDescription{ _T("") }; // ∏√÷§»Øµƒ√Ë ˆ
