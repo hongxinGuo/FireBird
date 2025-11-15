@@ -10,8 +10,16 @@ protected: // 仅从序列化创建
 
 	// 特性
 public:
+	bool IsEmpty() const noexcept { return m_pCurrentStock == nullptr; }
+	bool IsDayLineLoaded() const { return m_pCurrentStock->IsDayLineLoaded(); }
+	bool IsChinaStock() const { return strcmp(typeid(*m_pCurrentStock).name(), _T("class CChinaStock")) == 0; }
+	bool IsTiingoStock() const { return strcmp(typeid(*m_pCurrentStock).name(), _T("class CTiingoStock")) == 0; }
+
 	// 操作
 public:
+	CVirtualStockPtr GetCurrentStock() const noexcept { return m_pCurrentStock; }
+	void SetCurrentStock(const CVirtualStockPtr& pStock) { m_pCurrentStock = pStock; }
+
 	// 重写
 public:
 	BOOL OnNewDocument() override;
@@ -23,6 +31,8 @@ public:
 
 	// 实现
 	~CFireBirdDoc() override = default;
+
+	CVirtualStockPtr m_pCurrentStock{ nullptr };
 
 	// 生成的消息映射函数
 protected:

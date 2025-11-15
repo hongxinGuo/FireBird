@@ -1187,16 +1187,11 @@ bool CChinaStock::BuildWeekLine(long lStartDate) {
 
 	if (CalculatingWeekLine(lStartDate)) { SaveWeekLine(); }
 
-	if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
-		if (!IsSameStock(gl_pChinaMarket->GetCurrentStock())) {
-			UnloadDayLine();
-			UnloadWeekLine();
-		}
-	}
-	else {
+	if (!IsSelected()) {
 		UnloadDayLine();
 		UnloadWeekLine();
 	}
+
 	return true;
 }
 

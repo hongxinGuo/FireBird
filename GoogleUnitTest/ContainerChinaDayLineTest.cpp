@@ -35,7 +35,7 @@ namespace FireBirdTest {
 	TEST_F(CDataChinaDayLineTest, TestGetStartEndDate) {
 		CContainerChinaDayLine dataChinaDayLine;
 
-		vector<CDayLinePtr> vDayLine;
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 
 		auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 星期三
@@ -44,7 +44,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10001);
 		pDayLine->SetLastClose(10005);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
@@ -54,7 +54,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10002);
 		pDayLine->SetLastClose(10001);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
@@ -64,10 +64,10 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10003);
 		pDayLine->SetLastClose(10002);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		dataChinaDayLine.SetDataLoaded(false);
-		dataChinaDayLine.UpdateData(vDayLine);
+		dataChinaDayLine.UpdateData(pvDayLine);
 		long lStartDate = 0, lEndDate = 0;
 		dataChinaDayLine.GetStartEndDate(lStartDate, lEndDate);
 
@@ -78,7 +78,7 @@ namespace FireBirdTest {
 	TEST_F(CDataChinaDayLineTest, TestHaveDayLine) {
 		CContainerChinaDayLine dataChinaDayLine;
 
-		vector<CDayLinePtr> vDayLine;
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 
 		auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 星期三
@@ -87,7 +87,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10001);
 		pDayLine->SetLastClose(10005);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
@@ -97,7 +97,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10002);
 		pDayLine->SetLastClose(10001);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
@@ -107,10 +107,10 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10003);
 		pDayLine->SetLastClose(10002);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		dataChinaDayLine.SetDataLoaded(false);
-		dataChinaDayLine.UpdateData(vDayLine);
+		dataChinaDayLine.UpdateData(pvDayLine);
 
 		EXPECT_TRUE(dataChinaDayLine.HaveDayLine(20200101));
 		EXPECT_TRUE(dataChinaDayLine.HaveDayLine(20200102));
@@ -124,7 +124,7 @@ namespace FireBirdTest {
 	TEST_F(CDataChinaDayLineTest, TestGetDayLine) {
 		CContainerChinaDayLine dataChinaDayLine;
 
-		vector<CDayLinePtr> vDayLine;
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 
 		auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 星期三
@@ -133,7 +133,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10001);
 		pDayLine->SetLastClose(10005);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
@@ -143,7 +143,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10002);
 		pDayLine->SetLastClose(10001);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
@@ -153,10 +153,10 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10003);
 		pDayLine->SetLastClose(10002);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		dataChinaDayLine.SetDataLoaded(false);
-		dataChinaDayLine.UpdateData(vDayLine);
+		dataChinaDayLine.UpdateData(pvDayLine);
 
 		auto dayLine = dataChinaDayLine.GetDayLine(20200101);
 		EXPECT_TRUE(dayLine->GetDate() == 20200101);
@@ -168,7 +168,7 @@ namespace FireBirdTest {
 	TEST_F(CDataChinaDayLineTest, TestUpdateData1) {
 		CContainerChinaDayLine dataChinaDayLine;
 
-		vector<CDayLinePtr> vDayLine;
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 
 		auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 星期三
@@ -177,7 +177,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10001);
 		pDayLine->SetLastClose(10005);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
@@ -187,7 +187,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10002);
 		pDayLine->SetLastClose(10001);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
@@ -197,11 +197,11 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10003);
 		pDayLine->SetLastClose(10002);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		dataChinaDayLine.SetDataLoaded(false);
 
-		dataChinaDayLine.UpdateData(vDayLine);
+		dataChinaDayLine.UpdateData(pvDayLine);
 
 		EXPECT_THAT(dataChinaDayLine.IsDataLoaded(), IsTrue());
 		EXPECT_THAT(dataChinaDayLine.Size(), 3);
@@ -212,7 +212,7 @@ namespace FireBirdTest {
 	TEST_F(CDataChinaDayLineTest, TestCreateNewWeekLine) {
 		CContainerChinaDayLine dataChinaDayLine;
 
-		vector<CDayLinePtr> vDayLine;
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 		long lCurrentDayLinePos = 0;
 
 		auto pDayLine = make_shared<CDayLine>();
@@ -222,7 +222,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10001);
 		pDayLine->SetLastClose(10000); // 第一个数据为0
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
@@ -232,7 +232,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10002);
 		pDayLine->SetLastClose(10001);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
@@ -242,7 +242,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10003);
 		pDayLine->SetLastClose(10002);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
@@ -252,7 +252,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10004);
 		pDayLine->SetLastClose(10003);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
 
 		pDayLine->SetDate(20200107); // 星期二
@@ -261,9 +261,9 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10005);
 		pDayLine->SetLastClose(10004);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
-		dataChinaDayLine.UpdateData(vDayLine);
+		dataChinaDayLine.UpdateData(pvDayLine);
 		CWeekLinePtr pWeekLine = dataChinaDayLine.CreateNewWeekLine(lCurrentDayLinePos);
 
 		EXPECT_THAT(lCurrentDayLinePos, 3);
@@ -286,7 +286,7 @@ namespace FireBirdTest {
 	TEST_F(CDataChinaDayLineTest, TestBuildWeekLine) {
 		vector<CWeekLinePtr> vWeekLine;
 		CContainerChinaDayLine dataChinaDayLine;
-		vector<CDayLinePtr> vDayLine;
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 
 		auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200101); // 星期三
@@ -295,7 +295,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10001);
 		pDayLine->SetLastClose(10000);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
@@ -305,7 +305,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10002);
 		pDayLine->SetLastClose(10001);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
@@ -315,7 +315,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10003);
 		pDayLine->SetLastClose(10002);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		pDayLine = nullptr;
 		pDayLine = make_shared<CDayLine>();
@@ -325,7 +325,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10004);
 		pDayLine->SetLastClose(10003);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
 
 		pDayLine->SetDate(20200107); // 星期二
@@ -334,9 +334,9 @@ namespace FireBirdTest {
 		pDayLine->SetClose(10005);
 		pDayLine->SetLastClose(10004);
 		pDayLine->SetVolume(10000);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
-		dataChinaDayLine.UpdateData(vDayLine);
+		dataChinaDayLine.UpdateData(pvDayLine);
 		dataChinaDayLine.BuildWeekLine(vWeekLine);
 
 		EXPECT_THAT(vWeekLine.size(), 2);
@@ -354,15 +354,15 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CDataChinaDayLineTest, TestSaveDB) {
-		vector<CDayLinePtr> vDayLine;
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 		CContainerChinaDayLine dataChinaDayLine;
 
 		const auto pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(19910102); // 测试数据库中最早的日期为19910103，故此数据位于最前面
 		pDayLine->SetStockSymbol(_T("000001.SZ"));
 		pDayLine->SetClose(100);
-		vDayLine.push_back(pDayLine);
-		dataChinaDayLine.UpdateData(vDayLine);
+		pvDayLine->push_back(pDayLine);
+		dataChinaDayLine.UpdateData(pvDayLine);
 
 		CSetChinaMarketDayLneBasicInfo setDayLineBasic;
 		setDayLineBasic.m_strFilter = _T("[symbol] = '000001.SZ'");

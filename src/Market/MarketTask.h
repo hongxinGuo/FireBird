@@ -39,7 +39,6 @@ enum {
 
 	// China market即时任务
 	CHINA_MARKET_UPDATE_CHOSEN_STOCK_DB__, //Note 即时任务。 更新自选股数据库
-	CHINA_MARKET_LOAD_CURRENT_STOCK_DAY_LINE__, //Note 即时任务。装载当前股票的日线数据
 	CHINA_MARKET_UPDATE_CURRENT_STOCK__, //Note 即时任务。更新当前股票。
 
 	// World market

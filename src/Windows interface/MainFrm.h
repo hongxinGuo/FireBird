@@ -17,8 +17,16 @@ public:
 	// 特性
 
 	// 操作
+	void CreateDocumentViewIfNeeded();
+	void CreateNewView();
+	void SetCurrentDocumentStock(const CVirtualStockPtr& pStock);
+
 	void UpdateStatus();
 	void UpdateInnerSystemStatus();
+
+	void SetCurrentStock(const CVirtualStockPtr& pStock);
+	bool IsCurrentEditStockChanged() const noexcept { return m_fCurrentEditStockChanged; }
+	void SetCurrentEditStockChanged(const bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
 
 	// 需包裹的调用系统函数的函数（以便于使用GMock），前缀为SysCall
 	virtual void SysCallOnTimer(UINT_PTR nIDEvent) { CMDIFrameWndEx::OnTimer(nIDEvent); }
@@ -48,6 +56,7 @@ protected:
 	long m_lCurrentPos{ 0 };
 
 	char m_aStockCodeTemp[30]{};
+	bool m_fCurrentEditStockChanged{ false };
 
 	static bool sm_fGlobeInit;
 

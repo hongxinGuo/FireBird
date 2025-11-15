@@ -48,7 +48,6 @@ public:
 	void TaskDistributeAndCalculateRTData(long lCurrentTime);
 	void TaskProcessAndSaveDayLine(long lCurrentTime);
 	void TaskUpdateTempRTDB(long lCurrentTime);
-	void TaskLoadCurrentStockHistoryData() const;// 装载当前股票日线
 	void TaskPerSecond(long lCurrentTime); // 每秒一次的辅助任务
 	void TaskAccessoryPerMinuteTask(long lCurrentTime); // 每分钟重复执行的辅助任务
 	void TaskPreparingMarketOpen(long lCurrentTime);
@@ -90,12 +89,8 @@ public:
 	static size_t IncreaseStockInquiringIndex(size_t& lIndex, size_t lEndPosition);
 
 	// 得到当前显示股票
+	//CChinaStockPtr GetCurrentStock() const noexcept { return dynamic_pointer_cast<CChinaStock>(m_pCurrentStock); }
 	CChinaStockPtr GetCurrentStock() const noexcept { return dynamic_pointer_cast<CChinaStock>(gl_pCurrentStock); }
-	void SetCurrentStock(const string& strStockCode);
-	void SetCurrentStock(const CChinaStockPtr& pStock);
-	void ClearCurrentStock() noexcept { gl_pCurrentStock = nullptr; }
-	bool IsCurrentStockChanged() const noexcept { return m_fCurrentStockChanged; }
-	void SetCurrentStockChanged(const bool fFlag) noexcept { m_fCurrentStockChanged = fFlag; }
 
 	long GetMinLineOffset(time_t tUTC) const;
 
@@ -213,9 +208,6 @@ public:
 	bool IsUpdateTempDataDB() const noexcept { return m_fUpdateTempDataDB; }
 	void SetUpdateTempDataDB(const bool fFlag) noexcept { m_fUpdateTempDataDB = fFlag; }
 
-	bool IsCurrentEditStockChanged() const noexcept { return m_fCurrentEditStockChanged; }
-	void SetCurrentEditStockChanged(const bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
-
 	// 实时数据需要计算与否和设置
 	void SetRTDataNeedCalculate(const bool fFlag) noexcept { m_RTDataNeedCalculate = fFlag; }
 	bool IsRTDataNeedCalculate() const noexcept { return m_RTDataNeedCalculate; }
@@ -289,12 +281,10 @@ protected:
 	bool m_CalculatingDayLineRS;
 	bool m_CalculatingWeekLineRS;
 
-	bool m_fCurrentEditStockChanged;
 	bool m_fMarketOpened; // 是否开市
 	bool m_fFastReceivingRTData; // 是否开始接收实时数据
 	bool m_fRTDataSetCleared; // 实时数据库已清除标识。九点三十分之前为假，之后设置为真。
 	bool m_fUpdateTempDataDB; // 存储临时实时数据标识
-	//CChinaStockPtr gl_pCurrentStock; // 当前显示的股票
 
 	chrono::sys_seconds m_tpNewTransactionTime{ chrono::duration<long long>(0) };
 
@@ -314,7 +304,6 @@ protected:
 
 	bool m_fSelectedStockLoaded;
 
-	bool m_fCurrentStockChanged; // 当前选择的股票改变了
 	INT64 m_lTotalMarketBuy; // 沪深市场中的A股向上买入金额
 	INT64 m_lTotalMarketSell; // 沪深市场中的A股向下卖出金额
 

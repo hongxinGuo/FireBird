@@ -19,6 +19,7 @@ public:
 	~CFireBirdView() override = default;
 	// ReSharper disable once CppHidingFunction
 	CFireBirdDoc* GetDocument() const;
+	CVirtualStockPtr GetCurrentStock() const { return GetDocument()->GetCurrentStock(); }
 
 	CRect GetClientSize() const noexcept { return m_rectClient; }
 	bool IsShowRS() const noexcept { return m_fShowRS; }
@@ -114,6 +115,8 @@ protected:
 	int m_iShowRSOption; // 显示相对相对强度的选项。1 = 线性； 2 = 对数；3 = 指数相对；
 	vector<double> m_vRSShow;
 
+	CVirtualStockPtr m_pCurrentStock{ nullptr }; // 当前显示的股票
+
 	// 生成的消息映射函数
 protected:
 	afx_msg void OnFilePrintPreview();
@@ -149,6 +152,7 @@ public:
 	afx_msg void OnUpdateShowRealTime(CCmdUI* pCmdUI);
 	afx_msg void OnShowWeekLine();
 	afx_msg void OnUpdateShowWeekLine(CCmdUI* pCmdUI);
+	afx_msg void OnSetFocus(CWnd* pOldWnd);
 };
 
 #ifndef _DEBUG  // 调试版本在FireBirdView.cpp中

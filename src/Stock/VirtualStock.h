@@ -8,7 +8,6 @@ using std::atomic_bool;
 
 class CVirtualStock;
 using CVirtualStockPtr = shared_ptr<CVirtualStock>;
-extern CVirtualStockPtr gl_pCurrentStock; // 当前显示的股票
 
 class CVirtualStock {
 public:
@@ -80,11 +79,11 @@ public:
 	void SetActive(const bool fFlag) noexcept { m_fActive = fFlag; }
 
 	virtual CVirtualDataHistoryCandleExtend* DayLine() noexcept {
-		ASSERT(false);
+		ASSERT(0);
 		return nullptr;
 	}
 	virtual CVirtualDataHistoryCandleExtend* WeekLine() noexcept {
-		ASSERT(false);
+		ASSERT(0);
 		return nullptr;
 	}
 
@@ -126,6 +125,9 @@ public:
 	}
 	virtual void SetWeekLineLoaded(const bool fFlag) noexcept { ASSERT(0); }
 
+	void SetSelected(bool flag) noexcept { m_bSelected = flag; }
+	bool IsSelected() const noexcept { return m_bSelected; }
+
 protected:
 	string m_strDescription{ _T("") }; // 该证券的描述
 	string m_strExchangeCode{ _T("") }; // 证券所属交易所。美国为US，上海为SS，深圳为SZ；外汇为forex等。
@@ -154,9 +156,13 @@ protected:
 	long m_lIPOStatus{ _STOCK_NOT_CHECKED_ }; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
 	// 未上市（无效股票代码）为_STOCK_NULL_；正常为_STOCK_IPOED_；已通过IPO但尚未上市或退市为_STOCK_DELISTED；其他情况尚未出现，留待以后处理。
 
+	bool m_bSelected{ false };
+
 	atomic_bool m_fUpdateDayLine{ true }; // 日线需要更新。默认为真
 
 	atomic_bool m_fUpdateProfileDB{ false }; // 更新股票简介
 	atomic_bool m_fUpdateCompanyNewsDB{ false }; // 更新公司新闻
 	atomic_bool m_fUpdateDayLineDB{ false }; // 日线历史数据已处理，等待存储。
 };
+
+extern CVirtualStockPtr gl_pCurrentStock;

@@ -24,6 +24,7 @@
     <ClInclude Include="..\src\accessory\TimeConvert.h" />
     <ClInclude Include="..\src\ClassDeclaration.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.h" />
+    <ClInclude Include="..\src\Data Container\ContainerTiingoStockWeekLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoSymbol.h" />
     <ClInclude Include="..\src\Data Container\ContainerTiingoStockDayLine.h" />
     <ClInclude Include="..\src\Data Container\ContainerVirtualStock.h" />
@@ -218,6 +219,7 @@
     <ClInclude Include="..\src\Type\America market\TiingoIndustry.h" />
     <ClInclude Include="..\src\Type\America market\TiingoMarketNews.h" />
     <ClInclude Include="..\src\Type\America market\TiingoStockDailyMeta.h" />
+    <ClInclude Include="..\src\Type\America market\TiingoWeekLine.h" />
     <ClInclude Include="..\src\Type\China market\DayLine.h" />
     <ClInclude Include="..\src\Type\China market\Guadan.h" />
     <ClInclude Include="..\src\Type\China market\DayLineWebData.h" />
@@ -257,6 +259,7 @@
     <ClCompile Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerTiingoNewSymbol.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerTiingoStockDayLine.cpp" />
+    <ClCompile Include="..\src\Data Container\ContainerTiingoStockWeekLine.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerVirtualStock.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerChinaDayLine.cpp" />
     <ClCompile Include="..\src\Data Container\ContainerChinaStock.cpp" />
@@ -446,6 +449,7 @@
     <ClCompile Include="..\src\Type\America market\TiingoIEXTopOfBook.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoIndustry.cpp" />
     <ClCompile Include="..\src\Type\America market\TiingoMarketNews.cpp" />
+    <ClCompile Include="..\src\Type\America market\TiingoWeekLine.cpp" />
     <ClCompile Include="..\src\Type\China market\DayLine.cpp" />
     <ClCompile Include="..\src\Type\China market\Guadan.cpp" />
     <ClCompile Include="..\src\Type\China market\DayLineWebData.cpp" />
@@ -467,6 +471,7 @@
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildDayLineRS.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadBuildWeekLineRS.cpp" />
     <ClCompile Include="..\src\Working thread\China market\ThreadChoice10RSStrongSTockSet.cpp" />
+    <ClCompile Include="..\src\Working thread\ThreadLoadSelectedStockDayLine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoogleTestLib\GoogleTestLib.vcxproj">

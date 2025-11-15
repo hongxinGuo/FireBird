@@ -121,22 +121,22 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubForexSymbolTest, TestHaveNewDayLineData) {
 		CFinnhubForex symbol;
-		vector<CDayLinePtr> vDayLine;
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 
 		const CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20300102);
 		pDayLine->SetClose(100);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		EXPECT_FALSE(symbol.HaveNewDayLineData());
-		symbol.UpdateDayLine(vDayLine);
+		symbol.UpdateDayLine(pvDayLine);
 		symbol.SetDayLineEndDate(20200101); // 比日线最新数据旧
 		EXPECT_TRUE(symbol.HaveNewDayLineData());
 	}
 
 	TEST_F(CFinnhubForexSymbolTest, TestUpdateDayLineStartEndDate) {
 		CFinnhubForex symbol;
-		vector<CDayLinePtr> vDayLine;
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 
 		symbol.SetDayLineEndDate(19900101);
 		symbol.SetDayLineStartDate(19900101);
@@ -148,12 +148,12 @@ namespace FireBirdTest {
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200102);
 		pDayLine->SetClose(100);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200105);
 		pDayLine->SetClose(100);
-		vDayLine.push_back(pDayLine);
-		symbol.UpdateDayLine(vDayLine);
+		pvDayLine->push_back(pDayLine);
+		symbol.UpdateDayLine(pvDayLine);
 		EXPECT_EQ(symbol.GetDayLineSize(), 2);
 
 		EXPECT_FALSE(symbol.IsUpdateProfileDB());
@@ -298,15 +298,15 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubForexSymbolTest, TestSaveDayLine) {
 		CFinnhubForex FinnhubForexSymbol, FinnhubForexSymbol2;
 		auto pDayLine = make_shared<CDayLine>();
-		vector<CDayLinePtr> vDayLine;
 		CSetForexDayLine setForexDayLine;
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 
 		pDayLine->SetDate(19800101);
 		pDayLine->SetClose(100);
 		pDayLine->SetStockSymbol(_T("OANDA:AUD_SGD"));
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 		FinnhubForexSymbol.SetSymbol(_T("OANDA:AUD_SGD"));
-		FinnhubForexSymbol.UpdateDayLine(vDayLine);
+		FinnhubForexSymbol.UpdateDayLine(pvDayLine);
 
 		EXPECT_THAT(FinnhubForexSymbol.GetDayLineStartDate(), Eq(29900101));
 

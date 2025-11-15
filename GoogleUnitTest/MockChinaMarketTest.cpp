@@ -27,8 +27,6 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
-
 			s_pMockChinaMarket = make_shared<CMockChinaMarket>();
 			s_pMockChinaMarket->ResetMarket();
 			while (gl_systemMessage.InformationSize() > 0) gl_systemMessage.PopInformationMessage();
@@ -63,9 +61,6 @@ namespace FireBirdTest {
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			EXPECT_FALSE(gl_dataContainerChinaStock.IsUpdateDayLineDB());
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedSaveNumber(), 0);
-
-			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
-			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
 			// 重置以下指针，以测试是否存在没有配对的Mock。
 			s_pMockChinaMarket = nullptr;

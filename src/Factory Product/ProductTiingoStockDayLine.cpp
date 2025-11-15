@@ -51,7 +51,7 @@ void CProductTiingoStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 	const auto pTiingoStock = gl_dataContainerTiingoStock.GetStock(m_lIndex);
 
-	const CTiingoDayLinesPtr pvDayLine = ParseTiingoStockDayLine(pWebData);
+	auto pvDayLine = ParseTiingoStockDayLine(pWebData);
 	if (!pvDayLine->empty()) {
 		long lastClose = 0;
 		for (const auto& pDayLine2 : *pvDayLine) {

@@ -17,8 +17,6 @@ namespace FireBirdTest {
 		}
 
 		static void TearDownTestSuite() {
-			gl_pChinaMarket->ClearCurrentStock();
-			gl_pChinaMarket->SetCurrentStockChanged(false);
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -27,7 +25,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			gl_pChinaMarket->SetCurrentStock(_T("600000.SS"));
+			gl_pCurrentStock = gl_dataContainerChinaStock.GetStock(_T("600000.SS"));
 			pMockStock = make_shared<CMockChinaStock>();
 
 			//恢复原状
@@ -35,8 +33,7 @@ namespace FireBirdTest {
 		}
 
 		void TearDown() override {
-			CChinaStockPtr p = nullptr;
-			gl_pChinaMarket->SetCurrentStock(p);
+			gl_pCurrentStock = nullptr;
 			//恢复原状
 			while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
 
@@ -307,8 +304,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(pMockStock->IsDayLineLoaded()) << "没有加载日线数据";
 
 		// 恢复原状
-		CChinaStockPtr p = nullptr;
-		gl_pChinaMarket->SetCurrentStock(p);
+		gl_pCurrentStock = nullptr;
 	}
 
 	TEST_F(CThreadCalculateRSTest, TestThreadCalculate10RSStrong2Stock6) {

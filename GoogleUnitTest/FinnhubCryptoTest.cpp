@@ -121,22 +121,22 @@ namespace FireBirdTest {
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestHaveNewDayLineData) {
 		CFinnhubCrypto symbol;
-		vector<CDayLinePtr> vDayLine;
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 
 		const CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200102);
 		pDayLine->SetClose(100); // 确保此数据为有效数据
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 
 		EXPECT_FALSE(symbol.HaveNewDayLineData());
-		symbol.UpdateDayLine(vDayLine);
+		symbol.UpdateDayLine(pvDayLine);
 		symbol.SetDayLineEndDate(20200101); // 比日线最新数据旧
 		EXPECT_TRUE(symbol.HaveNewDayLineData());
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestUpdateDayLineStartEndDate) {
 		CFinnhubCrypto symbol;
-		vector<CDayLinePtr> vDayLine;
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 
 		symbol.SetDayLineEndDate(19900101);
 		symbol.SetDayLineStartDate(19900101);
@@ -148,12 +148,12 @@ namespace FireBirdTest {
 		CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200102);
 		pDayLine->SetClose(100);
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 		pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200105);
 		pDayLine->SetClose(100);
-		vDayLine.push_back(pDayLine);
-		symbol.UpdateDayLine(vDayLine);
+		pvDayLine->push_back(pDayLine);
+		symbol.UpdateDayLine(pvDayLine);
 		EXPECT_EQ(symbol.GetDayLineSize(), 2);
 
 		EXPECT_FALSE(symbol.IsUpdateProfileDB());
@@ -294,15 +294,15 @@ namespace FireBirdTest {
 	TEST_F(CFinnhubCryptoSymbolTest, TestUpdateDayLineDB) {
 		CFinnhubCrypto FinnhubCryptoSymbol, FinnhubCryptoSymbol2;
 		auto pDayLine = make_shared<CDayLine>();
-		vector<CDayLinePtr> vDayLine;
 		CSetCryptoDayLine setCryptoDayLine;
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 
 		pDayLine->SetDate(19800101);
 		pDayLine->SetClose(100);
 		pDayLine->SetStockSymbol(_T("NewSymbol"));
-		vDayLine.push_back(pDayLine);
+		pvDayLine->push_back(pDayLine);
 		FinnhubCryptoSymbol.SetSymbol(_T("NewSymbol")); // 新代码
-		FinnhubCryptoSymbol.UpdateDayLine(vDayLine);
+		FinnhubCryptoSymbol.UpdateDayLine(pvDayLine);
 
 		FinnhubCryptoSymbol.UpdateDayLineDB();
 

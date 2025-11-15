@@ -1,6 +1,7 @@
 #pragma once
 
 #include"MarketTask.h"
+#include<queue>
 
 using std::priority_queue;
 using std::vector;

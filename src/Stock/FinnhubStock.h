@@ -52,7 +52,7 @@ public:
 	void AppendBasicFinancialAnnual() const;
 	void AppendBasicFinancialQuarter() const;
 
-	void UpdateDayLine(const vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
+	void UpdateDayLine(const CDayLinesPtr& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UpdateCompanyNews(const CCompanyNewssPtr& pvCompanyNews);
 	void UpdateEPSSurprise(const vector<CEPSSurprisePtr>& vEPSSurprise);
 

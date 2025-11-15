@@ -141,7 +141,6 @@ namespace FireBirdTest {
 			EXPECT_GT(gl_dataContainerChinaStock.Size(), 4800);
 			EXPECT_FALSE(gl_pChinaMarket->IsSystemReady()) << "市场默认为尚未准备好";
 			gl_pChinaMarket->SetSystemReady(true); // 测试系统默认为准备好了
-			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 
 			while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
 			while (!gl_pWorldMarket->IsMarketTaskEmpty()) gl_pWorldMarket->DiscardCurrentMarketTask();
@@ -169,7 +168,6 @@ namespace FireBirdTest {
 			GeneralCheck();
 
 			ASSERT_FALSE(gl_systemConfiguration.IsWorkingMode());
-			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 
 			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
@@ -194,7 +192,6 @@ namespace FireBirdTest {
 			//gl_pMockMainFrame = nullptr;
 			//EXPECT_TRUE(gl_systemConfiguration.IsExitingSystem()) << "MainFrame析构时设置此标识";
 
-			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
 
 			// 以下真实的数据指针需要主动赋值为nullptr

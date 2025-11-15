@@ -36,7 +36,7 @@ void CProductFinnhubForexDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			pDayLine->SetDate(lTemp);
 		}
 		pForexSymbol->SetIPOStatus(_STOCK_IPOED_);
-		pForexSymbol->UpdateDayLine(*pvDayLine);
+		pForexSymbol->UpdateDayLine(pvDayLine);
 		pForexSymbol->SetUpdateDayLineDB(true);
 		pForexSymbol->SetUpdateProfileDB(true);
 		//TRACE("处理%s日线数据\n", pForexSymbol->GetSymbol().GetBuffer());

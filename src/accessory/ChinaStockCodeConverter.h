@@ -8,7 +8,7 @@ using std::string;
 [[nodiscard]] inline bool IsShanghaiExchange(const string& strStandardCode) { return strStandardCode.substr(strStandardCode.length() - 2, 2).compare(_T("SS")) == 0; }
 [[nodiscard]] inline bool IsShenzhenExchange(const string& strStandardCode) { return strStandardCode.substr(strStandardCode.length() - 2, 2).compare(_T("SZ")) == 0; }
 [[nodiscard]] inline string GetStockSymbol(const string& strStandardCode) { return strStandardCode.substr(0, strStandardCode.length() - 3); }
-[[nodiscard]] inline string GetStockExchange(const string& strStandardCode) { return (strStandardCode.substr(strStandardCode.length() - 2, 2)); }
+[[nodiscard]] inline string GetStockExchange(const string& strStandardCode) { return strStandardCode.substr(strStandardCode.length() - 2, 2); }
 [[nodiscard]] inline string CreateStockCode(const string& strStockExchange, const string& strStockSymbol) { return strStockSymbol + _T(".") + strStockExchange; }
 
 // ¹ÉÆ±´úÂë×ª

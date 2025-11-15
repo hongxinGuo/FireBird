@@ -170,6 +170,7 @@ protected:
 	tm m_tmMarket{ 0, 0, 0, 1, 0, 1970 }; // 本市场时间结构
 
 	long m_lMarketCloseTime{ 0 }; // 市场闭市时间。
+
 private:
 	bool m_fResetMarket{ true }; // 重启系统标识
 };

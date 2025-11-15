@@ -8,6 +8,7 @@
 
 #include "FireBird.h"
 #include "MainFrm.h"
+#include "FireBirdDoc.h"
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
@@ -29,9 +30,9 @@
 #include "TimeConvert.h"
 
 #include"ScheduleTask.h"
+#include "InfoReport.h"
 
 #undef max
-#include "InfoReport.h"
 #include"concurrencpp/concurrencpp.h"
 using namespace concurrencpp;
 
@@ -487,16 +488,15 @@ void CMainFrame::UpdateStatus() {
 	const CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
 
 	//更新状态条
-	if (gl_pChinaMarket->IsCurrentEditStockChanged()) {
+	if (IsCurrentEditStockChanged()) {
 		s = m_aStockCodeTemp;
 		SysCallSetPaneText(1, s);
-		gl_pChinaMarket->SetCurrentEditStockChanged(false);
+		SetCurrentEditStockChanged(false);
 	}
 	// 显示股票代码和名称
-	if (gl_pChinaMarket->IsCurrentStockChanged()) {
-		gl_pChinaMarket->SetCurrentStockChanged(false);
-		SysCallSetPaneText(2, pCurrentStock->GetSymbol());
-		SysCallSetPaneText(3, pCurrentStock->GetDisplaySymbol());
+	if (gl_pCurrentStock != nullptr) {
+		SysCallSetPaneText(2, gl_pCurrentStock->GetSymbol());
+		SysCallSetPaneText(3, gl_pCurrentStock->GetDisplaySymbol());
 	}
 
 	// 显示当前选择的股票
@@ -620,6 +620,19 @@ void CMainFrame::UpdateInnerSystemStatus() {
 	SysCallSetInnerSystemPaneText(17, FormatToMK(gl_FinnhubTotalData));
 	SysCallSetInnerSystemPaneText(18, FormatToMK(gl_ChinaMarketTotalData));
 }
+void CMainFrame::SetCurrentStock(const CVirtualStockPtr& pStock) {
+	if (pStock == nullptr) {
+		gl_pCurrentStock = nullptr;
+		return;
+	}
+	if (gl_pCurrentStock != nullptr) {
+		gl_pCurrentStock->SetSelected(false);
+	}
+	gl_pCurrentStock = pStock;
+	gl_pCurrentStock->SetSelected(true);
+	gl_pCurrentStock->SetDayLineLoaded(false);
+	gl_pCurrentStock->SetWeekLineLoaded(false);
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -709,51 +722,60 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg) {
 	return SysCallPreTranslateMessage(pMsg);
 }
 
+void CMainFrame::CreateDocumentViewIfNeeded() {
+	auto pDoc = static_cast<CFireBirdDoc*>(GetActiveFrame()->GetActiveDocument());
+	if (pDoc == nullptr) {
+		CreateNewView();
+	}
+}
+
+void CMainFrame::CreateNewView() {
+	AfxGetMainWnd()->SendMessage(WM_COMMAND, ID_FILE_NEW, 0);
+}
+
+void CMainFrame::SetCurrentDocumentStock(const CVirtualStockPtr& pStock) {
+	auto pDoc = static_cast<CFireBirdDoc*>(GetActiveFrame()->GetActiveDocument());
+	ASSERT(pDoc != nullptr);
+	pDoc->SetCurrentStock(pStock);
+}
+
 void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	string strTemp;
+	CVirtualStockPtr pStock = nullptr;
 
 	switch (nChar) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'S':
-	case 's':
-	case 'Z':
-	case 'z':
-	case '.':
-		if (m_lCurrentPos < 10) {
-			m_aStockCodeTemp[m_lCurrentPos] = toupper(nChar);
-			m_lCurrentPos++;
-			m_aStockCodeTemp[m_lCurrentPos] = 0x000;
-		}
-		gl_pChinaMarket->SetCurrentEditStockChanged(true);
-		break;
 	case 0x00d: // 回车
 		strTemp = m_aStockCodeTemp;
-		if (gl_dataContainerChinaStock.IsSymbol(strTemp)) {
-			const CChinaStockPtr pStock = gl_dataContainerChinaStock.GetStock(strTemp);
-			gl_pChinaMarket->SetCurrentStock(pStock);
-			SysCallInvalidate();
+		if (gl_dataContainerChinaStock.IsSymbol(strTemp)) { // 中国市场股票
+			pStock = gl_dataContainerChinaStock.GetStock(strTemp);
 		}
+		else if (gl_dataContainerTiingoStock.IsSymbol(strTemp)) { // Tiingo股票
+			pStock = gl_dataContainerTiingoStock.GetStock(strTemp);
+		}
+		SetCurrentStock(pStock);
+		TaskLoadSelectedStockHistoryData(); // 加载日线数据
+		CreateDocumentViewIfNeeded();
+		SetCurrentDocumentStock(pStock);
+
+		SysCallInvalidate();
 		m_aStockCodeTemp[0] = 0x000;
 		m_lCurrentPos = 0;
-		gl_pChinaMarket->SetCurrentEditStockChanged(true);
+		SetCurrentEditStockChanged(true);
 		break;
 	case 0x008: // backspace
 		if (m_lCurrentPos > 0) {
 			m_lCurrentPos--;
 			m_aStockCodeTemp[m_lCurrentPos] = 0x000;
-			gl_pChinaMarket->SetCurrentEditStockChanged(true);
+			SetCurrentEditStockChanged(true);
 		}
 		break;
 	default:
+		if (m_lCurrentPos < 10) {
+			m_aStockCodeTemp[m_lCurrentPos] = toupper(nChar);
+			m_lCurrentPos++;
+			m_aStockCodeTemp[m_lCurrentPos] = 0x000;
+		}
+		SetCurrentEditStockChanged(true);
 		break;
 	}
 
@@ -769,12 +791,12 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		case 118: // F7，选择前一个股票集
 			gl_pChinaMarket->ChangeToPrevStockSet();
 			gl_pChinaMarket->SetCurrentSelectedPosition(0);
-			gl_pChinaMarket->SetCurrentStock(gl_pChinaMarket->GetCurrentSelectedStock());
+			gl_pCurrentStock = gl_pChinaMarket->GetCurrentSelectedStock();
 			break;
 		case 119: // F8， 选择后一个股票集
 			gl_pChinaMarket->ChangeToNextStockSet();
 			gl_pChinaMarket->SetCurrentSelectedPosition(0);
-			gl_pChinaMarket->SetCurrentStock(gl_pChinaMarket->GetCurrentSelectedStock());
+			gl_pCurrentStock = gl_pChinaMarket->GetCurrentSelectedStock();
 			break;
 		case 33: // PAGE UP
 			// last stock

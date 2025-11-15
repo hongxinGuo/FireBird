@@ -21,4 +21,4 @@ public:
 	bool BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) const;
 };
 
-using CDataChinaDayLinePtr = shared_ptr<CContainerChinaDayLine>;
+using CContainerChinaDayLinePtr = shared_ptr<CContainerChinaDayLine>;

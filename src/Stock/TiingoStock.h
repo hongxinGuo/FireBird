@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ContainerTiingoStockDayLine.h"
+#include "ContainerTiingoStockWeekLine.h"
 #include"SetTiingoStock.h"
 #include "SetTiingoStock52WeekHigh.h"
 #include "SetTiingoStock52WeekLow.h"
@@ -24,11 +25,12 @@ public:
 	~CTiingoStock() override = default;
 
 	// Getter and Setter for m_strTiingoPermaTicker
-	const string& GetTiingoPermaTicker() const { return m_strTiingoPermaTicker; }
+	string GetTiingoPermaTicker() const { return m_strTiingoPermaTicker; }
+	string GetTiingoPermaTicker2() const { return m_strTiingoPermaTicker; }
 	void SetTiingoPermaTicker(const string& val) { m_strTiingoPermaTicker = val; }
 
 	// Getter and Setter for m_strName
-	const string& GetName() const { return m_strName; }
+	string GetName() const { return m_strName; }
 	void SetName(const string& val) { m_strName = val; }
 
 	// Getter and Setter for m_fDividend
@@ -44,11 +46,11 @@ public:
 	void SetIsADR(bool val) { m_fIsADR = val; }
 
 	// Getter and Setter for m_strTiingoSector
-	const string& GetTiingoSector() const { return m_strTiingoSector; }
+	string GetTiingoSector() const { return m_strTiingoSector; }
 	void SetTiingoSector(const string& val) { m_strTiingoSector = val; }
 
 	// Getter and Setter for m_strTiingoIndustry
-	const string& GetTiingoIndustry() const { return m_strTiingoIndustry; }
+	string GetTiingoIndustry() const { return m_strTiingoIndustry; }
 	void SetTiingoIndustry(const string& val) { m_strTiingoIndustry = val; }
 
 	// Getter and Setter for m_iSicCode
@@ -56,31 +58,31 @@ public:
 	void SetSicCode(INT32 val) { m_iSicCode = val; }
 
 	// Getter and Setter for m_strSicSector
-	const string& GetSicSector() const { return m_strSicSector; }
+	string GetSicSector() const { return m_strSicSector; }
 	void SetSicSector(const string& val) { m_strSicSector = val; }
 
 	// Getter and Setter for m_strSicIndustry
-	const string& GetSicIndustry() const { return m_strSicIndustry; }
+	string GetSicIndustry() const { return m_strSicIndustry; }
 	void SetSicIndustry(const string& val) { m_strSicIndustry = val; }
 
 	// Getter and Setter for m_strReportingCurrency
-	const string& GetReportingCurrency() const { return m_strReportingCurrency; }
+	string GetReportingCurrency() const { return m_strReportingCurrency; }
 	void SetReportingCurrency(const string& val) { m_strReportingCurrency = val; }
 
 	// Getter and Setter for m_strLocation
-	const string& GetLocation() const { return m_strLocation; }
+	string GetLocation() const { return m_strLocation; }
 	void SetLocation(const string& val) { m_strLocation = val; }
 
 	// Getter and Setter for m_strCompanyWebSite
-	const string& GetCompanyWebSite() const { return m_strCompanyWebSite; }
+	string GetCompanyWebSite() const { return m_strCompanyWebSite; }
 	void SetCompanyWebSite(const string& val) { m_strCompanyWebSite = val; }
 
 	// Getter and Setter for m_strSECFilingWebSite
-	const string& GetSECFilingWebSite() const { return m_strSECFilingWebSite; }
+	string GetSECFilingWebSite() const { return m_strSECFilingWebSite; }
 	void SetSECFilingWebSite(const string& val) { m_strSECFilingWebSite = val; }
 
 	// Getter and Setter for m_strDataProviderPermaTicker
-	const string& GetDataProviderPermaTicker() const { return m_strDataProviderPermaTicker; }
+	string GetDataProviderPermaTicker() const { return m_strDataProviderPermaTicker; }
 	void SetDataProviderPermaTicker(const string& val) { m_strDataProviderPermaTicker = val; }
 
 	void ResetAllUpdateDate() override;
@@ -104,10 +106,12 @@ public:
 
 	bool IsDayLineLoaded() const noexcept override { return m_dataDayLine.IsDataLoaded(); }
 	void SetDayLineLoaded(bool fFlag) noexcept override { m_dataDayLine.SetDataLoaded(fFlag); }
+	bool IsWeekLineLoaded() const noexcept override { return m_dataWeekLine.IsDataLoaded(); }
+	void SetWeekLineLoaded(bool fFlag) noexcept override { m_dataWeekLine.SetDataLoaded(fFlag); }
 
 	void UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook);
 	void UpdateFinancialState(const CTiingoCompanyFinancialStatesPtr& pv) noexcept { m_pvFinancialState = pv; }
-	void UpdateDayLine(const CTiingoDayLinesPtr& vTempDayLine) { m_dataDayLine.UpdateData(vTempDayLine); }
+	void UpdateDayLine(const CTiingoDayLinesPtr& vTempDayLine);
 	void UpdateFinancialStateDB();
 	bool UpdateDayLineDB();
 	void SaveCurrentDataToDayLineDB(CSetTiingoStockDayLine& setDayLine, long lTradeDay) const; // 将当前数据存入日线数据库
@@ -118,12 +122,18 @@ public:
 	void UpdateDayLineStartEndDate();
 	auto GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	bool HaveDayLine(const long lDate) noexcept { return m_dataDayLine.HaveDayLine(lDate); }
-	CTiingoDayLinePtr GetDayLine(const long lIndex) const { return dynamic_pointer_cast<CTiingoDayLine>(m_dataDayLine.GetData(lIndex)); }
-	CTiingoDayLinePtr GetDayLineAtDate(const long lDate) { return dynamic_pointer_cast<CTiingoDayLine>(m_dataDayLine.GetDayLine(lDate)); }
+	CTiingoDayLinePtr GetDayLine(const long lIndex) const { return m_dataDayLine.GetData(lIndex); }
+	CTiingoDayLinePtr GetDayLineAtDate(const long lDate) { return m_dataDayLine.GetDayLine(lDate); }
+
+	// 当前被处理历史数据容器
+	CVirtualDataHistoryCandleExtend* DayLine() noexcept final { return &m_dataDayLine; }
+	CVirtualDataHistoryCandleExtend* WeekLine() noexcept final { return &m_dataWeekLine; }
 
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }
 	void LoadDayLineDB() { m_dataDayLine.LoadDB(m_strSymbol); }
+
+	void CreateWeekLine();
 
 	void CalculateDayLineMA(const int length) const { m_dataDayLine.CalculateMA(length); }
 
@@ -209,7 +219,9 @@ protected:
 	string m_strDataProviderPermaTicker{ _T("") };
 
 	CTiingoCompanyFinancialStatesPtr m_pvFinancialState{ nullptr };
+
 	CContainerTiingoStockDayLine m_dataDayLine;
+	CContainerTiingoStockWeekLine m_dataWeekLine;
 
 	// 无需存储数据区
 	bool m_fUpdateStockDailyMeta{ true };

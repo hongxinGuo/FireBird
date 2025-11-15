@@ -20,7 +20,6 @@ namespace FireBirdTest {
 		}
 
 		static void TearDownTestSuite() {
-			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}

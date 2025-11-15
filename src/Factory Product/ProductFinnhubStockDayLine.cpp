@@ -41,7 +41,7 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 		lastClose = pDayLine->GetClose();
 	}
 	if (!pvDayLine->empty()) {
-		pStock->UpdateDayLine(*pvDayLine);
+		pStock->UpdateDayLine(pvDayLine);
 		if (pStock->GetDayLineSize() > 0) {// 添加了新数据
 			pStock->SetUpdateDayLineDB(true);
 			pStock->SetUpdateProfileDB(true);

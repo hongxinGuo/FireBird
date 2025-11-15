@@ -23,7 +23,7 @@ public:
 
 	string GetFinnhubDayLineInquiryParam(time_t tCurrentTime);
 
-	void UpdateDayLine(const vector<CDayLinePtr>& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
+	void UpdateDayLine(const CDayLinesPtr& vDayLine) { m_dataDayLine.UpdateData(vDayLine); }
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	size_t GetDayLineSize() const noexcept { return m_dataDayLine.Size(); }
 	void UpdateDayLineStartEndDate();

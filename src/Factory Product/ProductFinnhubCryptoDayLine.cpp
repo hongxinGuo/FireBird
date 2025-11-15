@@ -35,7 +35,7 @@ void CProductFinnhubCryptoDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 			const long lTemp = GetMarket()->ConvertToDate(pDayLine->GetMarketTime());
 			pDayLine->SetDate(lTemp);
 		}
-		pCryptoSymbol->UpdateDayLine(*pvDayLine);
+		pCryptoSymbol->UpdateDayLine(pvDayLine);
 		pCryptoSymbol->UpdateDayLineStartEndDate();
 		if (gl_pWorldMarket->GetLastTradeDate() <= pCryptoSymbol->GetDayLineEndDate()) { pCryptoSymbol->SetIPOStatus(_STOCK_IPOED_); }
 		else { pCryptoSymbol->SetIPOStatus(_STOCK_DELISTED_); }

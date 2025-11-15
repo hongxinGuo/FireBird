@@ -38,7 +38,6 @@ namespace FireBirdTest {
 
 			EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber(), gl_dataContainerChinaStock.Size());
 			gl_pChinaMarket->SetSystemReady(true);
-			gl_pChinaMarket->SetCurrentStockChanged(false);
 			for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 				gl_dataContainerChinaStock.GetStock(i)->SetUpdateDayLine(true);
 			}

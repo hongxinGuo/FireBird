@@ -15,6 +15,8 @@
 #include "FireBirdDoc.h"
 #include "FireBirdView.h"
 
+#include "MainFrm.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -138,6 +140,9 @@ BEGIN_MESSAGE_MAP(CFireBirdView, CView)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_REALTIME, &CFireBirdView::OnUpdateShowRealTime)
 	ON_COMMAND(ID_SHOW_WEEKLINE, &CFireBirdView::OnShowWeekLine)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_WEEKLINE, &CFireBirdView::OnUpdateShowWeekLine)
+	//	ON_WM_SETFOCUS()
+	//	ON_WM_ACTIVATE()
+	ON_WM_SETFOCUS()
 END_MESSAGE_MAP()
 
 // CFireBirdView 构造/析构
@@ -286,7 +291,7 @@ void CFireBirdView::ShowRealtimeGuadan(CDC* pDC) {
 	CPen penWhite(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed(PS_SOLID, 1, crRed);
 	CPoint ptCurrent;
 
-	const CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
+	auto pCurrentStock = GetDocument()->GetCurrentStock();
 
 	constexpr int iGraphXStart = 60;
 	constexpr int iGraphXEnd = iGraphXStart + 480;
@@ -323,7 +328,6 @@ void CFireBirdView::ShowRealtimeGuadan(CDC* pDC) {
 	int y14 = y13 + 20;
 
 	COLORREF crBefore = pDC->SetBkColor(crYellow);
-	CChinaStockPtr pStock = gl_pChinaMarket->GetCurrentStock();
 
 	CPen* ppen = SysCallSelectObject(pDC, &penRed);
 	ptCurrent.x = iTextStart - 5;
@@ -359,7 +363,7 @@ void CFireBirdView::ShowRealtimeGuadan(CDC* pDC) {
 	SysCallSelectObject(pDC, ppen);
 
 	if (pCurrentStock != nullptr) {
-		ShowGuadan(pDC, pCurrentStock, 10, 10, 500);
+		//	ShowGuadan(pDC, pCurrentStock, 10, 10, 500);
 
 		//ShowCurrentTransactionInfo(pdc, 200, 10);
 	}
@@ -630,7 +634,7 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	CPen penYellow1(PS_SOLID, 1, crYellow), penYellow2(PS_SOLID, 2, crYellow), penYellow3(PS_SOLID, 3, crYellow);
 	CPen penBlue1(PS_SOLID, 1, crBlue), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
 	CPoint ptCurrent;
-	const CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
+	auto pCurrentStock = gl_pCurrentStock;
 
 	if (pCurrentStock == nullptr) return;
 	//当前被操作的历史数据容器
@@ -1037,4 +1041,11 @@ void CFireBirdView::OnShowWeekLine() {
 void CFireBirdView::OnUpdateShowWeekLine(CCmdUI* pCmdUI) {
 	if (m_iCurrentShowType == _SHOW_WEEK_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
+}
+
+void CFireBirdView::OnSetFocus(CWnd* pOldWnd) {
+	// TODO: Add your message handler code here
+	gl_pCurrentStock = GetDocument()->GetCurrentStock(); // 设置当前被选中的股票
+
+	CView::OnSetFocus(pOldWnd);
 }

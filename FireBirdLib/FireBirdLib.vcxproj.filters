@@ -208,6 +208,12 @@
     <Filter Include="源文件\Data Source\Accessory">
       <UniqueIdentifier>{960ee098-a702-4ba5-ab14-3acb4664490f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Type\America market\Tiingo">
+      <UniqueIdentifier>{9d1adf18-4f48-445d-bb90-b2833f09fad7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Type\America market\Finnhub">
+      <UniqueIdentifier>{6f70fd6e-91dd-4dc5-b18b-d5fdc5b237d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h">
@@ -885,6 +891,12 @@
     <ClInclude Include="..\src\SystempublicDeclaration.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Data Container\ContainerTiingoStockWeekLine.h">
+      <Filter>头文件\Data container\Tiingo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Type\America market\TiingoWeekLine.h">
+      <Filter>头文件\Type\America market\Tiingo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -995,12 +1007,6 @@
     <ClCompile Include="..\src\Type\America market\EPSSurprise.cpp">
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\America market\FinnhubCompanyNews.cpp">
-      <Filter>源文件\Type\America market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Type\America market\FinnhubStockBasicFinancial.cpp">
-      <Filter>源文件\Type\America market</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Type\America market\InsiderSentment.cpp">
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
@@ -1011,9 +1017,6 @@
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\SICIndustry.cpp">
-      <Filter>源文件\Type\America market</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Type\America market\TiingoIndustry.cpp">
       <Filter>源文件\Type\America market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\China market\DayLine.cpp">
@@ -1241,9 +1244,6 @@
     <ClCompile Include="..\src\Factory Product\ProductFinnhubMarketHoliday.cpp">
       <Filter>源文件\Factory-Product\Finnhub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\America market\FinnhubRecommendationTrends.cpp">
-      <Filter>源文件\Type\America market</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTiingo.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
@@ -1295,9 +1295,6 @@
     <ClCompile Include="..\src\Factory Product\ProductTiingoMarketNews.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\America market\TiingoMarketNews.cpp">
-      <Filter>源文件\Type\America market</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTiingoFundamentalDefinition.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
@@ -1307,14 +1304,8 @@
     <ClCompile Include="..\src\Factory Product\ProductTiingoCryptoDayLine.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\America market\TiingoFundamentalDefinition.cpp">
-      <Filter>源文件\Type\America market</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerTiingoFundamentalDefinition.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Type\TiingoCompanyFinancialState.cpp">
-      <Filter>源文件\Type\America market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTiingoFinancialState.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
@@ -1406,17 +1397,11 @@
     <ClCompile Include="..\src\Factory Product\ProductTiingoIEXTopOfBook.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Type\America market\TiingoIEXTopOfBook.cpp">
-      <Filter>源文件\Type\America market</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Factory Product\ProductTiingoStockDailyMeta.cpp">
       <Filter>源文件\Factory-Product\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerTiingoNewSymbol.cpp">
       <Filter>源文件\Data container\Tiingo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Type\America market\TiingoDayLine.cpp">
-      <Filter>源文件\Type\America market</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Data Container\ContainerFinnhubStock.cpp">
       <Filter>源文件\Data container\Finnhub</Filter>
@@ -1465,6 +1450,42 @@
     </ClCompile>
     <ClCompile Include="..\src\Data Source\AccessoryDataSource.cpp">
       <Filter>源文件\Data Source\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Working thread\ThreadLoadSelectedStockDayLine.cpp">
+      <Filter>源文件\Working thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Data Container\ContainerTiingoStockWeekLine.cpp">
+      <Filter>源文件\Data container\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\TiingoCompanyFinancialState.cpp">
+      <Filter>源文件\Type\America market\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoDayLine.cpp">
+      <Filter>源文件\Type\America market\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoFundamentalDefinition.cpp">
+      <Filter>源文件\Type\America market\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoIEXTopOfBook.cpp">
+      <Filter>源文件\Type\America market\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoIndustry.cpp">
+      <Filter>源文件\Type\America market\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoMarketNews.cpp">
+      <Filter>源文件\Type\America market\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\FinnhubCompanyNews.cpp">
+      <Filter>源文件\Type\America market\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\FinnhubRecommendationTrends.cpp">
+      <Filter>源文件\Type\America market\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\FinnhubStockBasicFinancial.cpp">
+      <Filter>源文件\Type\America market\Finnhub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\America market\TiingoWeekLine.cpp">
+      <Filter>源文件\Type\America market\Tiingo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

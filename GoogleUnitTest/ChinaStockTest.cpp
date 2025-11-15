@@ -60,14 +60,10 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 
-			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
-			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 		}
 
 		static void TearDownTestSuite() {
-			EXPECT_EQ(gl_pChinaMarket->GetCurrentStock(), nullptr) << gl_pChinaMarket->GetCurrentStock()->GetSymbol();
-			EXPECT_FALSE(gl_pChinaMarket->IsCurrentStockChanged());
 			EXPECT_FALSE(gl_pChinaMarket->IsMarketOpened());
 
 			SCOPED_TRACE("");
@@ -2213,18 +2209,19 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CChinaStockTest, TestStoreDayLine) {
-		vector<CDayLinePtr> vDayLine;
+		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
+
 		for (int i = 0; i < 10; i++) {
 			CDayLinePtr pDayLine = make_shared<CDayLine>();
 			pDayLine->SetDate(19900101 + i);
 			pDayLine->SetClose(10);
 			pDayLine->SetLastClose(10);
-			vDayLine.push_back(pDayLine);
+			pvDayLine->push_back(pDayLine);
 		}
-		EXPECT_EQ(vDayLine.size(), 10);
+		EXPECT_EQ(pvDayLine->size(), 10);
 		CChinaStock stock;
 		EXPECT_FALSE(stock.IsDayLineLoaded());
-		stock.UpdateDayLine(vDayLine);
+		stock.UpdateDayLine(*pvDayLine);
 		EXPECT_EQ(stock.GetDayLineSize(), 10);
 		for (int i = 0; i < 10; i++) { EXPECT_EQ(stock.GetDayLine(i)->GetDate(), 19900101 + i); }
 		EXPECT_TRUE(stock.IsDayLineLoaded());

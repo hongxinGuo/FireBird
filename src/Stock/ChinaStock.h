@@ -377,8 +377,10 @@ public:
 	void UpdateStatusByDownloadedDayLine();
 
 	void UpdateDayLine(const vector<CDayLinePtr>& vTempDayLine) { m_dataDayLine.UpdateData(vTempDayLine); }
-
 	static void ReportDayLineDownLoaded();
+	// 当前被处理历史数据容器
+	CVirtualDataHistoryCandleExtend* DayLine() noexcept final { return &m_dataDayLine; }
+	CVirtualDataHistoryCandleExtend* WeekLine() noexcept final { return &m_dataWeekLine; }
 
 	// 周线相关函数
 	size_t GetWeekLineSize() const noexcept { return m_dataWeekLine.Size(); }
@@ -392,10 +394,6 @@ public:
 	bool CalculateWeekLineRS() { return m_dataWeekLine.CalculateRS0(); }
 	bool CalculateWeekLineRSIndex() { return m_dataWeekLine.CalculateRSIndex0(); }
 	bool CalculateWeekLineRSLogarithm() { return m_dataWeekLine.CalculateRSLogarithm0(); }
-
-	// 当前被处理历史数据容器
-	CVirtualDataHistoryCandleExtend* DayLine() noexcept final { return &m_dataDayLine; }
-	CVirtualDataHistoryCandleExtend* WeekLine() noexcept final { return &m_dataWeekLine; }
 
 	bool IsShareA() const { return ::IsShareA(GetSymbol()); }
 

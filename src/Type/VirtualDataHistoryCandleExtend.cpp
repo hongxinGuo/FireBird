@@ -162,16 +162,23 @@ void CVirtualDataHistoryCandleExtend::UpdateData(const vector<CVirtualHistoryCan
 	}
 	SetDataLoaded(true);
 }
+void CVirtualDataHistoryCandleExtend::UpdateData(const vector<CDayLinePtr>& vTempData) {
+	Unload(); // 清除已载入的数据（如果有的话）
+	for (const auto& p : vTempData) {
+		if (p->IsActive()) Add(p);
+	}
+	SetDataLoaded(true);
+}
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CVirtualDataHistoryCandleExtend::UpdateData(const vector<CDayLinePtr>& vTempDayLine) {
+void CVirtualDataHistoryCandleExtend::UpdateData(CDayLinesPtr vTempDayLine) {
 	Unload(); // 清除已载入的日线数据（如果有的话）
 	// 将日线数据以时间为正序存入
-	for (const auto& pDayLine : vTempDayLine) {
+	for (const auto& pDayLine : *vTempDayLine) {
 		if (pDayLine->IsActive()) {
 			// 清除掉不再交易（停牌或退市后出现的）的股票日线
 			Add(pDayLine);

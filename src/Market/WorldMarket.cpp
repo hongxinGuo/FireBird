@@ -232,8 +232,12 @@ int CWorldMarket::ProcessCurrentImmediateTask(long lMarketTime) {
 	auto pTask = m_marketImmediateTask.GetTask();
 	auto taskType = pTask->GetType();
 	m_marketImmediateTask.DiscardCurrentTask();
-
-	return taskType;
+	switch (taskType) {
+	default:
+		ASSERT(0); // ´íÎóµÄÈÎÎñºÅ
+		break;
+	}
+	return pTask->GetType();
 }
 
 int CWorldMarket::XferMarketTimeToIndex() {

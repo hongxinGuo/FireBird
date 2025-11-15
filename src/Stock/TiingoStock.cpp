@@ -111,6 +111,14 @@ void CTiingoStock::UpdateRTData(const CTiingoIEXTopOfBookPtr& pIEXTopOfBook) {
 	m_llVolume = pIEXTopOfBook->m_llVolume;
 }
 
+void CTiingoStock::UpdateDayLine(const CTiingoDayLinesPtr& vTempDayLine) {
+	m_dataDayLine.Unload();
+	for (auto p : *vTempDayLine) {
+		m_dataDayLine.Add(p);
+	}
+	m_dataDayLine.SetDataLoaded(true);
+}
+
 void CTiingoStock::UpdateFinancialStateDB() {
 	ASSERT(m_pvFinancialState != nullptr);
 	CSetTiingoCompanyFinancialState setFinancialState;
@@ -275,6 +283,38 @@ void CTiingoStock::UpdateDayLineStartEndDate() {
 			m_fUpdateProfileDB = true;
 		}
 	}
+}
+
+void CTiingoStock::CreateWeekLine() {
+	ASSERT(m_dataDayLine.IsDataLoaded());
+	long lCurrentEndDate = 0;
+	size_t index = 0;
+	CTiingoWeekLinePtr pWeekLine = nullptr;
+	size_t dayLineSize = m_dataDayLine.Size();
+	TRACE("all week line %d\n", m_dataWeekLine.Size());
+	while (index < dayLineSize) {
+		auto pDayLine = m_dataDayLine.GetData(index++);
+		lCurrentEndDate = GetNextMonday(pDayLine->GetDate());
+		pWeekLine = make_shared<CTiingoWeekLine>();
+		pWeekLine->SetDate(pDayLine->GetDate());
+		pWeekLine->SetOpen(pDayLine->GetOpen());
+		pWeekLine->SetLow(pDayLine->GetLow());
+		pWeekLine->SetVolume(pDayLine->GetVolume());
+		pWeekLine->SetAmount(pDayLine->GetAmount());
+		do {
+			if (pDayLine->GetHigh() > pWeekLine->GetHigh()) pWeekLine->SetHigh(pDayLine->GetHigh());
+			if (pDayLine->GetLow() < pWeekLine->GetLow()) pWeekLine->SetLow(pDayLine->GetLow());
+			pWeekLine->SetVolume(pWeekLine->GetVolume() + pDayLine->GetVolume());
+			pWeekLine->SetAmount(pWeekLine->GetAmount() + pDayLine->GetAmount());
+			pWeekLine->SetClose(pDayLine->GetClose());
+			if (index < dayLineSize) pDayLine = m_dataDayLine.GetData(index++);
+			else break;
+		} while (pDayLine->GetDate() < lCurrentEndDate);
+
+		if (pWeekLine->GetClose() > 0) m_dataWeekLine.Add(pWeekLine); // 有数据才存储
+	}
+
+	m_dataWeekLine.SetDataLoaded(true);
 }
 
 bool CTiingoStock::HaveNewDayLineData() {
