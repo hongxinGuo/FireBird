@@ -527,33 +527,40 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CTiingoStockTest, TestCreateWeekLine) {
-		auto pvDayLine = make_shared<vector<CTiingoDayLinePtr>>();
-		CSetTiingoStockDayLine setDayLine;
+		stock.SetSymbol(_T("AAPL"));
+		stock.LoadDayLineDB();
+		stock.CreateWeekLine();
+		auto pvDayLine = stock.DayLine();
+		auto pvWeekLine = stock.WeekLine();
 
-		CTiingoDayLinePtr pDayLine = make_shared<CTiingoDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
-		pDayLine->SetDate(20200101); // 这个日期早于数据库中的最早日期，需要添加进数据库
-		pDayLine->SetClose(115);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
-		pDayLine->SetDate(20200102); // 这个日期为新日期，需要添加进数据库
-		pDayLine->SetClose(12340);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
-		pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
-		pDayLine->SetClose(10020);
-		pvDayLine->push_back(pDayLine);
-		pDayLine = make_shared<CTiingoDayLine>();
-		pDayLine->SetStockSymbol(_T("A"));
-		pDayLine->SetDate(20241111); // 这个日期为新日期，需要添加进数据库
-		pDayLine->SetClose(135);
-		pvDayLine->push_back(pDayLine);
+		EXPECT_EQ(pvDayLine->Size(), 11061);
+		EXPECT_EQ(pvWeekLine->Size(), 2291);
+		EXPECT_EQ(pvDayLine->GetData(11052)->GetDate(), pvWeekLine->GetData(2289)->GetDate()) << pvDayLine->GetData(11052)->GetDate();
+		EXPECT_EQ(pvDayLine->GetData(11055)->GetClose(), pvWeekLine->GetData(2289)->GetClose()) << pvDayLine->GetData(11055)->GetDate();
+		EXPECT_EQ(pvDayLine->GetData(11052)->GetOpen(), pvWeekLine->GetData(2289)->GetOpen()) << "周一的开盘价相等";
+		EXPECT_EQ(234325000, pvWeekLine->GetData(2289)->GetHigh()) << "最高价";
+		EXPECT_EQ(220270000, pvWeekLine->GetData(2289)->GetLow()) << "最低价";
+		INT64 volume = 0, amount = 0;
+		for (int i = 0; i < 4; i++) {
+			volume += pvDayLine->GetData(11052 + i)->GetVolume();
+			amount += pvDayLine->GetData(11051 + i)->GetAmount();
+		}
+		EXPECT_EQ(volume, pvWeekLine->GetData(2289)->GetVolume()) << "成交量相等";
+		EXPECT_EQ(amount, pvWeekLine->GetData(2289)->GetAmount()) << "成交金额相等";
 
-		stock.SetSymbol(_T("A"));
-		stock.SetDayLineEndDate(20210107);
-		stock.UpdateDayLine(pvDayLine);
+		EXPECT_EQ(pvDayLine->GetData(11056)->GetDate(), pvWeekLine->GetData(2290)->GetDate()) << "周一的日期";
+		EXPECT_EQ(pvDayLine->GetData(11060)->GetClose(), pvWeekLine->GetData(2290)->GetClose()) << "最后的收盘价相等";
+		EXPECT_EQ(pvDayLine->GetData(11056)->GetOpen(), pvWeekLine->GetData(2290)->GetOpen()) << "周一的开盘价相等";
+		EXPECT_EQ(228660000, pvWeekLine->GetData(2290)->GetHigh()) << "最高价";
+		EXPECT_EQ(219710000, pvWeekLine->GetData(2290)->GetLow()) << "最低价";
+		volume = 0;
+		amount = 0;
+		for (int i = 0; i < 5; i++) {
+			volume += pvDayLine->GetData(11056 + i)->GetVolume();
+			amount += pvDayLine->GetData(11056 + i)->GetAmount();
+		}
+		EXPECT_EQ(volume, pvWeekLine->GetData(2290)->GetVolume()) << "成交量相等";
+		EXPECT_EQ(amount, pvWeekLine->GetData(2290)->GetAmount()) << "成交金额相等";
 	}
 
 	TEST_F(CTiingoStockTest, TestHaveNewDayLineData) {

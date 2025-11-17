@@ -21,6 +21,9 @@ public:
 	CFireBirdDoc* GetDocument() const;
 	CVirtualStockPtr GetCurrentStock() const { return GetDocument()->GetCurrentStock(); }
 
+	void ShowMA(CDC* pDC, vector<long>* pvData, CRect rectClient, long lHigh, long lLow);
+	void ShowHistoryData(CDC* pDC, CVirtualDataHistoryCandleExtend* pHistoryCandle, CRect rectClient);
+
 	CRect GetClientSize() const noexcept { return m_rectClient; }
 	bool IsShowRS() const noexcept { return m_fShowRS; }
 	bool IsShow3DaysRS() const noexcept { return m_fShow3DaysRS; }

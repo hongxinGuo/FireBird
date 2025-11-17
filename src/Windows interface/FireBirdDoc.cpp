@@ -17,6 +17,72 @@ END_MESSAGE_MAP()
 // CFireBirdDoc 构造/析构
 CFireBirdDoc::CFireBirdDoc() {}
 
+void CFireBirdDoc::CalculateDayLineMA() {
+	auto pvDayLine = m_pCurrentStock->DayLine();
+	auto dayLineSize = m_pCurrentStock->DayLine()->Size();
+	long long total;
+
+	m_DayLine5MA.resize(dayLineSize);
+	m_DayLine10MA.resize(dayLineSize);
+	m_DayLine30MA.resize(dayLineSize);
+	m_DayLine50MA.resize(dayLineSize);
+	m_DayLine120MA.resize(dayLineSize);
+	m_DayLine250MA.resize(dayLineSize);
+
+	for (size_t index = 4; index < dayLineSize; index++) {
+		total = 0;
+		for (size_t i = 0; i < 5; i++) {
+			total += pvDayLine->GetData(index - i)->GetClose();
+		}
+		m_DayLine5MA[index] = total / 5;
+	}
+	for (size_t index = 9; index < dayLineSize; index++) {
+		total = 0;
+		for (size_t i = 0; i < 10; i++) {
+			total += pvDayLine->GetData(index - i)->GetClose();
+		}
+		m_DayLine10MA[index] = total / 10;
+	}
+	for (size_t index = 29; index < dayLineSize; index++) {
+		total = 0;
+		for (size_t i = 0; i < 30; i++) {
+			total += pvDayLine->GetData(index - i)->GetClose();
+		}
+		m_DayLine30MA[index] = total / 30;
+	}
+	for (size_t index = 49; index < dayLineSize; index++) {
+		total = 0;
+		for (size_t i = 0; i < 50; i++) {
+			total += pvDayLine->GetData(index - i)->GetClose();
+		}
+		m_DayLine50MA[index] = total / 50;
+	}
+	for (size_t index = 119; index < dayLineSize; index++) {
+		total = 0;
+		for (size_t i = 0; i < 120; i++) {
+			total += pvDayLine->GetData(index - i)->GetClose();
+		}
+		m_DayLine120MA[index] = total / 5;
+	}
+	for (size_t index = 249; index < dayLineSize; index++) {
+		total = 0;
+		for (size_t i = 0; i < 250; i++) {
+			total += pvDayLine->GetData(index - i)->GetClose();
+		}
+		m_DayLine250MA[index] = total / 250;
+	}
+}
+
+void CFireBirdDoc::CalculateWeekLineMA() {
+	m_WeekLine5MA.resize(m_pCurrentStock->WeekLine()->Size());
+	m_WeekLine10MA.resize(m_pCurrentStock->WeekLine()->Size());
+	m_WeekLine30MA.resize(m_pCurrentStock->WeekLine()->Size());
+	m_WeekLine5MA.resize(m_pCurrentStock->WeekLine()->Size());
+	m_WeekLine60MA.resize(m_pCurrentStock->WeekLine()->Size());
+	m_WeekLine120MA.resize(m_pCurrentStock->WeekLine()->Size());
+	m_WeekLine240MA.resize(m_pCurrentStock->WeekLine()->Size());
+}
+
 BOOL CFireBirdDoc::OnNewDocument() {
 	if (!CDocument::OnNewDocument()) return FALSE;
 

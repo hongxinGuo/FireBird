@@ -229,6 +229,7 @@
     <ClInclude Include="..\src\Type\China market\WebRTData.h" />
     <ClInclude Include="..\src\Type\China market\WeekLine.h" />
     <ClInclude Include="..\src\Type\SECFiling.h" />
+    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorKDJ.h" />
     <ClInclude Include="..\src\Type\TiingoCompanyFinancialState.h" />
     <ClInclude Include="..\src\Type\VirtualDataHistoryCandleExtend.h" />
     <ClInclude Include="..\src\Type\VirtualHistoryCandleBasic.h" />
@@ -459,6 +460,7 @@
     <ClCompile Include="..\src\Type\China market\WebRTData.cpp" />
     <ClCompile Include="..\src\Type\China market\WeekLine.cpp" />
     <ClCompile Include="..\src\Type\SECFiling.cpp" />
+    <ClCompile Include="..\src\Type\TechAnalysis\IndicatorKDJ.cpp" />
     <ClCompile Include="..\src\Type\TiingoCompanyFinancialState.cpp" />
     <ClCompile Include="..\src\Type\VirtualDataHistoryCandleExtend.cpp" />
     <ClCompile Include="..\src\Type\VirtualHistoryCandleBasic.cpp" />

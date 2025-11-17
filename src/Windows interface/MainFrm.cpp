@@ -630,8 +630,6 @@ void CMainFrame::SetCurrentStock(const CVirtualStockPtr& pStock) {
 	}
 	gl_pCurrentStock = pStock;
 	gl_pCurrentStock->SetSelected(true);
-	gl_pCurrentStock->SetDayLineLoaded(false);
-	gl_pCurrentStock->SetWeekLineLoaded(false);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -747,16 +745,33 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	case 0x00d: // 回车
 		strTemp = m_aStockCodeTemp;
 		if (gl_dataContainerChinaStock.IsSymbol(strTemp)) { // 中国市场股票
-			pStock = gl_dataContainerChinaStock.GetStock(strTemp);
+			auto p = gl_dataContainerChinaStock.GetStock(strTemp);
+			if (!p->IsDayLineLoaded()) {
+				// 装入日线数据
+				p->LoadDayLine(pStock->GetSymbol());
+				// 计算各相对强度（以指数相对强度为默认值）
+				p->CalculateDayLineRSIndex();
+				p->SetDayLineLoaded(true);
+				// 装入周线数据
+				p->LoadWeekLine();
+				// 计算各相对强度（以指数相对强度为默认值）
+				p->CalculateWeekLineRSIndex();
+				p->SetWeekLineLoaded(true);
+			}
+			pStock = p;
 		}
 		else if (gl_dataContainerTiingoStock.IsSymbol(strTemp)) { // Tiingo股票
-			pStock = gl_dataContainerTiingoStock.GetStock(strTemp);
+			auto p = gl_dataContainerTiingoStock.GetStock(strTemp);
+			if (!p->IsDayLineLoaded()) {
+				p->LoadDayLineDB();
+				p->CreateWeekLine(); // 生成weekLine
+				p->SetWeekLineLoaded(true);
+			}
+			pStock = p;
 		}
 		SetCurrentStock(pStock);
-		TaskLoadSelectedStockHistoryData(); // 加载日线数据
 		CreateDocumentViewIfNeeded();
 		SetCurrentDocumentStock(pStock);
-
 		SysCallInvalidate();
 		m_aStockCodeTemp[0] = 0x000;
 		m_lCurrentPos = 0;

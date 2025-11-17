@@ -214,6 +214,12 @@
     <Filter Include="源文件\Type\America market\Finnhub">
       <UniqueIdentifier>{6f70fd6e-91dd-4dc5-b18b-d5fdc5b237d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Type\TechAnalysis">
+      <UniqueIdentifier>{2828e26b-108f-49e3-83c7-05cc1bf624d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Type\TechAnalysis">
+      <UniqueIdentifier>{98f34aec-40ab-447f-9f6e-13bc2fb56afe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\accessory\ChinaStockCodeConverter.h">
@@ -897,6 +903,9 @@
     <ClInclude Include="..\src\Type\America market\TiingoWeekLine.h">
       <Filter>头文件\Type\America market\Tiingo</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Type\TechAnalysis\IndicatorKDJ.h">
+      <Filter>头文件\Type\TechAnalysis</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1486,6 +1495,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Type\America market\TiingoWeekLine.cpp">
       <Filter>源文件\Type\America market\Tiingo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\TechAnalysis\IndicatorKDJ.cpp">
+      <Filter>源文件\Type\TechAnalysis</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -23,7 +23,25 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void ShowHistoryData(CDC* pDC, CVirtualDataHistoryCandleExtend* pHistoryCandle, CRect rectClient) {
+void CFireBirdView::ShowMA(CDC* pDC, vector<long>* pvData, CRect rectClient, long lHigh, long lLow) {
+	auto it = pvData->end();
+	--it;
+	int i = 0;
+	long x = rectClient.right;
+	long y = (0.5 - static_cast<double>(*it - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
+	pDC->MoveTo(x, y);
+	--it;
+	for (; it != pvData->begin(); --it) {
+		x = rectClient.right - i * 3;
+		y = (0.5 - static_cast<double>(*it - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
+		pDC->LineTo(x, y);
+		i++;
+		if (i > pvData->size()) break;
+		if (rectClient.right <= 3 * i) break; // 画到窗口左边框为止
+	}
+}
+
+void CFireBirdView::ShowHistoryData(CDC* pDC, CVirtualDataHistoryCandleExtend* pHistoryCandle, CRect rectClient) {
 	constexpr COLORREF crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)),
 	                   crRed(RGB(255, 0, 0));
 	CPen penGreen1(PS_SOLID, 1, crGreen), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
@@ -36,8 +54,8 @@ void ShowHistoryData(CDC* pDC, CVirtualDataHistoryCandleExtend* pHistoryCandle, 
 	for (; it != vData.begin(); --it) {
 		if (lHigh < (*it)->GetHigh()) lHigh = (*it)->GetHigh();
 		if ((*it)->GetLow() > 0) { if (lLow > (*it)->GetLow()) lLow = (*it)->GetLow(); }
-		if (3 * i > vData.size()) break;
-		if (rectClient.right <= 3 * i) break; // 画到
+		if (i > vData.size()) break;
+		if (rectClient.right <= 3 * i) break;
 		i++;
 	}
 
@@ -54,9 +72,11 @@ void ShowHistoryData(CDC* pDC, CVirtualDataHistoryCandleExtend* pHistoryCandle, 
 		pDC->LineTo(x, y);
 		long lDate = (*it)->GetDate();
 		i++;
-		if (3 * i > vData.size()) break;
+		if (i > vData.size()) break;
 		if (rectClient.right <= 3 * i) break; // 画到窗口左边框为止
 	}
+
+	ShowMA(pDC, GetDocument()->GetDayLine5MA(), rectClient, lHigh, lLow);
 }
 
 void ShowRealtimeVolume(CDC* pDC, const vector<INT64>& vVolume, const vector<INT64>& vData, int iRightPos, CRect rectClient, bool fUpsideDown) {
@@ -662,65 +682,67 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	SysCallMoveTo(pDC, m_rectClient.right, m_rectClient.bottom * 3 / 4);
 	SysCallLineTo(pDC, 0, m_rectClient.bottom * 3 / 4);
 
-	// 画相对强度
-	if (m_fShowRS) {
-		pDC->SelectObject(&penWhite1);
-		switch (m_iShowRSOption) {
-		case 0: // 显示相对指数的强度
-			pHistoryData->GetRSIndex1(m_vRSShow);
-			break;
-		case 1:
-			pHistoryData->GetRS1(m_vRSShow);
-			break;
-		case 2:
-			pHistoryData->GetRSLogarithm1(m_vRSShow);
-			break;
-		default:
-			// 错误
-			break;
+	if (GetDocument()->IsChinaStock()) {
+		// 画相对强度
+		if (m_fShowRS) {
+			pDC->SelectObject(&penWhite1);
+			switch (m_iShowRSOption) {
+			case 0: // 显示相对指数的强度
+				pHistoryData->GetRSIndex1(m_vRSShow);
+				break;
+			case 1:
+				pHistoryData->GetRS1(m_vRSShow);
+				break;
+			case 2:
+				pHistoryData->GetRSLogarithm1(m_vRSShow);
+				break;
+			default:
+				// 错误
+				break;
+			}
+			if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
 		}
-		if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
-	}
-	// 画相对强度3日均线
-	if (m_fShow3DaysRS) {
-		pDC->SelectObject(&penYellow1);
-		pHistoryData->GetRS3(m_vRSShow);
-		if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
-	}
-	// 画相对强度5日均线
-	if (m_fShow5DaysRS) {
-		pDC->SelectObject(&penGreen1);
-		pHistoryData->GetRS5(m_vRSShow);
-		ZoomIn(m_vRSShow, 50, 1.5);
-		if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
-	}
-	// 画相对强度10日均线
-	if (m_fShow10DaysRS) {
-		pDC->SelectObject(&penRed1);
-		pHistoryData->GetRS10(m_vRSShow);
-		ZoomIn(m_vRSShow, 50, 3);
-		if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
-	}
-	// 画相对强度30日均线
-	if (m_fShow30DaysRS) {
-		pDC->SelectObject(&penYellow1);
-		pHistoryData->GetRS30(m_vRSShow);
-		ZoomIn(m_vRSShow, 50, 3);
-		if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
-	}
-	// 画相对强度60日均线
-	if (m_fShow60DaysRS) {
-		pDC->SelectObject(&penBlue1);
-		pHistoryData->GetRS60(m_vRSShow);
-		ZoomIn(m_vRSShow, 50, 6);
-		if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
-	}
-	// 画相对强度120日均线
-	if (m_fShow120DaysRS) {
-		pDC->SelectObject(&penWhite1);
-		pHistoryData->GetRS120(m_vRSShow);
-		ZoomIn(m_vRSShow, 50, 6);
-		if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
+		// 画相对强度3日均线
+		if (m_fShow3DaysRS) {
+			pDC->SelectObject(&penYellow1);
+			pHistoryData->GetRS3(m_vRSShow);
+			if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
+		}
+		// 画相对强度5日均线
+		if (m_fShow5DaysRS) {
+			pDC->SelectObject(&penGreen1);
+			pHistoryData->GetRS5(m_vRSShow);
+			ZoomIn(m_vRSShow, 50, 1.5);
+			if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
+		}
+		// 画相对强度10日均线
+		if (m_fShow10DaysRS) {
+			pDC->SelectObject(&penRed1);
+			pHistoryData->GetRS10(m_vRSShow);
+			ZoomIn(m_vRSShow, 50, 3);
+			if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
+		}
+		// 画相对强度30日均线
+		if (m_fShow30DaysRS) {
+			pDC->SelectObject(&penYellow1);
+			pHistoryData->GetRS30(m_vRSShow);
+			ZoomIn(m_vRSShow, 50, 3);
+			if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
+		}
+		// 画相对强度60日均线
+		if (m_fShow60DaysRS) {
+			pDC->SelectObject(&penBlue1);
+			pHistoryData->GetRS60(m_vRSShow);
+			ZoomIn(m_vRSShow, 50, 6);
+			if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
+		}
+		// 画相对强度120日均线
+		if (m_fShow120DaysRS) {
+			pDC->SelectObject(&penWhite1);
+			pHistoryData->GetRS120(m_vRSShow);
+			ZoomIn(m_vRSShow, 50, 6);
+			if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
+		}
 	}
 
 	////////////////////////////////////////////////////////////////画日线蜡烛线
@@ -792,7 +814,7 @@ void CFireBirdView::Show(CDC* pdc) {
 
 	CRect rect;
 	SysCallGetClientRect(&rect);
-	CChinaStockPtr pStock = gl_pChinaMarket->GetCurrentStock();
+	auto pStock = GetCurrentStock();
 	if (pStock == nullptr || !pStock->IsDayLineLoaded()) {
 		pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
 		m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);

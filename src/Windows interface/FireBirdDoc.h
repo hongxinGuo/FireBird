@@ -18,7 +18,18 @@ public:
 	// 操作
 public:
 	CVirtualStockPtr GetCurrentStock() const noexcept { return m_pCurrentStock; }
-	void SetCurrentStock(const CVirtualStockPtr& pStock) { m_pCurrentStock = pStock; }
+	void SetCurrentStock(const CVirtualStockPtr& pStock) {
+		m_pCurrentStock = pStock;
+		if (m_pCurrentStock != nullptr) {
+			ASSERT(pStock->IsDayLineLoaded());
+			CalculateDayLineMA();
+		}
+	}
+
+	void CalculateDayLineMA();
+	void CalculateWeekLineMA();
+
+	vector<long>* GetDayLine5MA() { return &m_DayLine5MA; }
 
 	// 重写
 public:
@@ -32,7 +43,22 @@ public:
 	// 实现
 	~CFireBirdDoc() override = default;
 
-	CVirtualStockPtr m_pCurrentStock{ nullptr };
+protected:
+	CVirtualStockPtr m_pCurrentStock{ nullptr }; // 当前股票
+
+	vector<long> m_DayLine5MA{};
+	vector<long> m_DayLine10MA{};
+	vector<long> m_DayLine30MA{};
+	vector<long> m_DayLine50MA{};
+	vector<long> m_DayLine120MA{};
+	vector<long> m_DayLine250MA{};
+
+	vector<long> m_WeekLine5MA{};
+	vector<long> m_WeekLine10MA{};
+	vector<long> m_WeekLine30MA{};
+	vector<long> m_WeekLine60MA{};
+	vector<long> m_WeekLine120MA{};
+	vector<long> m_WeekLine240MA{};
 
 	// 生成的消息映射函数
 protected:

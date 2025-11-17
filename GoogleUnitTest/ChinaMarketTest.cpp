@@ -1342,6 +1342,7 @@ namespace FireBirdTest {
 
 		//恢复原状
 		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+		gl_pCurrentStock = nullptr;
 	}
 
 	TEST_F(CChinaMarketTest, TestChangeCurrentStockToNextStock2) {
@@ -1364,6 +1365,7 @@ namespace FireBirdTest {
 
 		//恢复原状
 		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+		gl_pCurrentStock = nullptr;
 	}
 
 	TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock1) {
@@ -1376,6 +1378,7 @@ namespace FireBirdTest {
 
 		//恢复原状
 		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+		gl_pCurrentStock = nullptr;
 	}
 
 	TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock2) {
@@ -1396,6 +1399,7 @@ namespace FireBirdTest {
 
 		//恢复原状
 		while (!gl_pChinaMarket->IsMarketTaskEmpty()) gl_pChinaMarket->DiscardCurrentMarketTask();
+		gl_pCurrentStock = nullptr;
 	}
 
 	TEST_F(CChinaMarketTest, TestChangeToPrevStockSet) {

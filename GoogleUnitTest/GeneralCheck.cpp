@@ -35,6 +35,7 @@ namespace FireBirdTest {
 	}
 
 	void SystemConfigurationCheck() {
+		EXPECT_TRUE(gl_pCurrentStock == nullptr);
 		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB()) << "不允许更新系统配置";
 		EXPECT_FALSE(gl_finnhubInaccessibleExchange.IsUpdateDB()) << "不允许更新禁入交易所名单";
 		EXPECT_TRUE(gl_systemConfiguration.IsUsingSinaRTServer());

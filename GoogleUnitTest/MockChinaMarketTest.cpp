@@ -113,6 +113,8 @@ namespace FireBirdTest {
 		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask(10000));
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << s_pMockChinaMarket->GetMarketTask()->GetTime();
+
+		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask2) {
@@ -123,6 +125,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask(91300));
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
+		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask3) {
@@ -133,6 +136,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask(92700));
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
+		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask4) {
@@ -147,6 +151,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetTime(), 93001) << "每秒一次";
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
+		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestProcessEveryDayTask9) {
@@ -157,6 +162,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(s_pMockChinaMarket->ProcessTask(210000));
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty()) << s_pMockChinaMarket->GetMarketTask()->GetTime();
+		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskAccessoryPerMinuteTask) {
@@ -171,6 +177,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetTime(), 10100) << "每一分钟一次";
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
+		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskDistributeAndCalculateRTData) {
@@ -182,6 +189,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTask->GetTime(), 100001) << "每秒一次";
 
 		EXPECT_TRUE(s_pMockChinaMarket->IsMarketTaskEmpty());
+		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 	}
 
 	TEST_F(CMockChinaMarketTest, TestTaskChoice10RSStrongStockSet) {
@@ -208,5 +216,6 @@ namespace FireBirdTest {
 		s_pMockChinaMarket->SetChosen10RSStrongStockSet(false);
 		EXPECT_FALSE(s_pMockChinaMarket->TaskChoice10RSStrongStockSet(151001));
 		EXPECT_FALSE(s_pMockChinaMarket->IsChosen10RSStrongStockSet()) << _T("休息日不处理");
+		EXPECT_FALSE(gl_systemConfiguration.IsUpdateDB());
 	}
 }
