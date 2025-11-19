@@ -20,8 +20,10 @@ public:
 	// ReSharper disable once CppHidingFunction
 	CFireBirdDoc* GetDocument() const;
 	CVirtualStockPtr GetCurrentStock() const { return GetDocument()->GetCurrentStock(); }
+	bool IsChinaStock() { return GetDocument()->IsChinaStock(); }
+	bool IsTiingoStock() { return GetDocument()->IsTiingoStock(); }
 
-	void ShowMA(CDC* pDC, vector<long>* pvData, CRect rectClient, long lHigh, long lLow);
+	void ShowMovingAverage(CDC* pDC, vector<long>* pvData, CRect rectClient, long lHigh, long lLow);
 	void ShowHistoryData(CDC* pDC, CVirtualDataHistoryCandleExtend* pHistoryCandle, CRect rectClient);
 
 	CRect GetClientSize() const noexcept { return m_rectClient; }

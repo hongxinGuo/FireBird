@@ -156,6 +156,8 @@ enum_ErrorMessageData CTiingoDataSource::IsAErrorMessageData(const CWebDataPtr& 
 			}
 		}
 		break;
+	case 500: // 
+		break;
 	default:
 		l = pWebData->GetBufferLength() > 30 ? 30 : pWebData->GetBufferLength();
 		strView = pWebData->GetStringView(0, l); //

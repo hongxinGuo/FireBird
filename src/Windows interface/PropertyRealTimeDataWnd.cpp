@@ -154,7 +154,7 @@ void CPropertyRealtimeWnd::SetPropListFont() {
 }
 
 void CPropertyRealtimeWnd::OnTimer(UINT_PTR nIDEvent) {
-	auto pStock = gl_pChinaMarket->GetCurrentStock();
+	auto pStock = dynamic_pointer_cast<CChinaStock>(gl_pCurrentStock);
 
 	if (pStock != nullptr) {
 		string symbol = pStock->GetSymbol();

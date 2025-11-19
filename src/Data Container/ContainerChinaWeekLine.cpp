@@ -63,6 +63,7 @@ bool CContainerChinaWeekLine::LoadDB(const string& strStockCode) {
 	LoadExtendDB(&setWeekLineExtendInfo);
 	setWeekLineExtendInfo.Close();
 
+	CalculateRSIndex0();
 	m_fDataLoaded = true;
 
 	ASSERT(!m_fBasicDataLoaded);

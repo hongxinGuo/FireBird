@@ -906,6 +906,9 @@
     <ClInclude Include="..\src\Type\TechAnalysis\IndicatorKDJ.h">
       <Filter>头文件\Type\TechAnalysis</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Type\TechAnalysis\MovingAverage.h">
+      <Filter>头文件\Type\TechAnalysis</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\accessory\ChinaStockCodeConverter.cpp">
@@ -1497,6 +1500,9 @@
       <Filter>源文件\Type\America market\Tiingo</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Type\TechAnalysis\IndicatorKDJ.cpp">
+      <Filter>源文件\Type\TechAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Type\TechAnalysis\MovingAverage.cpp">
       <Filter>源文件\Type\TechAnalysis</Filter>
     </ClCompile>
   </ItemGroup>

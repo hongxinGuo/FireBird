@@ -14,18 +14,8 @@ UINT TaskLoadSelectedStockHistoryData() {
 		auto pStock = gl_dataContainerChinaStock.GetStock(index);
 		if (pStock->IsSelected() && !pStock->IsDayLineLoaded()) {
 			gl_runtime.thread_executor()->post([pStock] {
-				// 装入日线数据
-				pStock->LoadDayLine(pStock->GetSymbol());
-				// 计算各相对强度（以指数相对强度为默认值）
-				pStock->CalculateDayLineRSIndex();
-				pStock->SetDayLineLoaded(true);
-			});
-			gl_runtime.thread_executor()->post([pStock] {
-				// 装入周线数据
-				pStock->LoadWeekLine();
-				// 计算各相对强度（以指数相对强度为默认值）
-				pStock->CalculateWeekLineRSIndex();
-				pStock->SetWeekLineLoaded(true);
+				pStock->LoadDayLineDB();
+				pStock->LoadWeekLineDB();
 			});
 		}
 	}
@@ -35,8 +25,7 @@ UINT TaskLoadSelectedStockHistoryData() {
 		if (pStock->IsSelected() && !pStock->IsDayLineLoaded()) {
 			gl_runtime.thread_executor()->post([pStock] {
 				pStock->LoadDayLineDB();
-				pStock->CreateWeekLine(); // 生成weekLine
-				pStock->SetWeekLineLoaded(true);
+				pStock->LoadWeekLineDB(); // 生成weekLine
 			});
 		}
 	}

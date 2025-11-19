@@ -88,10 +88,6 @@ public:
 
 	static size_t IncreaseStockInquiringIndex(size_t& lIndex, size_t lEndPosition);
 
-	// 得到当前显示股票
-	//CChinaStockPtr GetCurrentStock() const noexcept { return dynamic_pointer_cast<CChinaStock>(m_pCurrentStock); }
-	CChinaStockPtr GetCurrentStock() const noexcept { return dynamic_pointer_cast<CChinaStock>(gl_pCurrentStock); }
-
 	long GetMinLineOffset(time_t tUTC) const;
 
 	auto GetCurrentSelectedPosition() const noexcept { return m_lCurrentSelectedPosition; }

@@ -1817,7 +1817,7 @@ namespace FireBirdTest {
 		setDayLineExtendInfo.Close();
 
 		EXPECT_FALSE(pStock->IsDayLineLoaded());
-		pStock->LoadDayLine(pStock->GetSymbol());
+		pStock->LoadDayLineDB();
 		EXPECT_TRUE(pStock->IsDayLineLoaded());
 
 		CDayLinePtr pDayLine;

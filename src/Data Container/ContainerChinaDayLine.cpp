@@ -47,6 +47,7 @@ bool CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
 	LoadExtendDB(&setDayLineExtendInfo);
 	setDayLineExtendInfo.Close();
 
+	CalculateRS0();
 	m_fDataLoaded = true;
 	ASSERT(!m_fBasicDataLoaded);
 

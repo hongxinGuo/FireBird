@@ -1335,7 +1335,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_pChinaMarket->GetCurrentSelectedStockSet(), -1);
 		gl_pCurrentStock = gl_dataContainerChinaStock.GetStock(0);
 		gl_pChinaMarket->ChangeToNextStock();
-		EXPECT_EQ(gl_dataContainerChinaStock.GetOffset(gl_pChinaMarket->GetCurrentStock()), 1);
+		EXPECT_EQ(gl_dataContainerChinaStock.GetOffset(gl_pCurrentStock), 1);
 
 		gl_pChinaMarket->SetCurrentSelectedPosition(0);
 		gl_pChinaMarket->SetCurrentSelectedStockSet(-1);
@@ -1373,7 +1373,7 @@ namespace FireBirdTest {
 		gl_pCurrentStock = gl_dataContainerChinaStock.GetStock(1); // 选取A股指数
 		gl_pChinaMarket->ChangeToPrevStock();
 		gl_pChinaMarket->ChangeToPrevStock();
-		EXPECT_EQ(gl_dataContainerChinaStock.GetOffset(gl_pChinaMarket->GetCurrentStock()), gl_dataContainerChinaStock.Size() - 1) << _T("上证指数前的为空，然后就转到最后面的中证煤炭了");
+		EXPECT_EQ(gl_dataContainerChinaStock.GetOffset(gl_pCurrentStock), gl_dataContainerChinaStock.Size() - 1) << _T("上证指数前的为空，然后就转到最后面的中证煤炭了");
 		gl_pChinaMarket->SetCurrentSelectedPosition(0);
 
 		//恢复原状

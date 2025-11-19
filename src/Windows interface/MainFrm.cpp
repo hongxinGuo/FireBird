@@ -485,7 +485,6 @@ void CMainFrame::UpdateStatus() {
 	ASSERT(!IsMarketResetting());
 
 	string s;
-	const CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
 
 	//更新状态条
 	if (IsCurrentEditStockChanged()) {
@@ -747,16 +746,8 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		if (gl_dataContainerChinaStock.IsSymbol(strTemp)) { // 中国市场股票
 			auto p = gl_dataContainerChinaStock.GetStock(strTemp);
 			if (!p->IsDayLineLoaded()) {
-				// 装入日线数据
-				p->LoadDayLine(pStock->GetSymbol());
-				// 计算各相对强度（以指数相对强度为默认值）
-				p->CalculateDayLineRSIndex();
-				p->SetDayLineLoaded(true);
-				// 装入周线数据
-				p->LoadWeekLine();
-				// 计算各相对强度（以指数相对强度为默认值）
-				p->CalculateWeekLineRSIndex();
-				p->SetWeekLineLoaded(true);
+				p->LoadDayLineDB();
+				p->LoadWeekLineDB();
 			}
 			pStock = p;
 		}
@@ -764,8 +755,7 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 			auto p = gl_dataContainerTiingoStock.GetStock(strTemp);
 			if (!p->IsDayLineLoaded()) {
 				p->LoadDayLineDB();
-				p->CreateWeekLine(); // 生成weekLine
-				p->SetWeekLineLoaded(true);
+				p->LoadWeekLineDB(); // 生成weekLine
 			}
 			pStock = p;
 		}
@@ -799,9 +789,8 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	CChinaStockPtr pStock;
-	const CChinaStockPtr pCurrentStock = gl_pChinaMarket->GetCurrentStock();
 
-	if (pCurrentStock != nullptr) {
+	if (gl_pCurrentStock != nullptr) {
 		switch (nChar) {
 		case 118: // F7，选择前一个股票集
 			gl_pChinaMarket->ChangeToPrevStockSet();
@@ -822,16 +811,16 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 			gl_pChinaMarket->ChangeToNextStock();
 			break;
 		case 45: // Ins, 加入自选股票
-			pCurrentStock->SetChosen(true);
-			if (gl_pChinaMarket->AddChosenStock(pCurrentStock)) {
-				gl_pChinaMarket->SetUpdateChosenStockDB(true);
-			}
+			//gl_pCurrentStock->SetChosen(true);
+			//if (gl_pChinaMarket->AddChosenStock(gl_pCurrentStock)) {
+			//	gl_pChinaMarket->SetUpdateChosenStockDB(true);
+			//}
 			break;
 		case 46: // delete,从自选股票池中删除
-			pCurrentStock->SetChosen(false);
-			if (gl_pChinaMarket->DeleteChosenStock(pCurrentStock)) {
-				gl_pChinaMarket->SetUpdateChosenStockDB(true);
-			}
+			//gl_pCurrentStock->SetChosen(false);
+			//if (gl_pChinaMarket->DeleteChosenStock(gl_pCurrentStock)) {
+			//	gl_pChinaMarket->SetUpdateChosenStockDB(true);
+			//}
 			break;
 		default:
 			// 无需处理字符，略过

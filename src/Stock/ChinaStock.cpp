@@ -1182,7 +1182,7 @@ bool CChinaStock::CheckDayLineStatus() {
 
 bool CChinaStock::BuildWeekLine(long lStartDate) {
 	if (IsNullStock()) return true;
-	if (!IsDayLineLoaded()) { LoadDayLine(GetSymbol()); }
+	if (!IsDayLineLoaded()) { LoadDayLineDB(); }
 	if (GetDayLineSize() <= 0) return true;
 
 	if (CalculatingWeekLine(lStartDate)) { SaveWeekLine(); }
@@ -1193,14 +1193,6 @@ bool CChinaStock::BuildWeekLine(long lStartDate) {
 	}
 
 	return true;
-}
-
-bool CChinaStock::IsSameStock(const CChinaStockPtr& pStock) const {
-	if (pStock == nullptr) return false;
-	if (m_strSymbol.compare(pStock->GetSymbol()) == 0) {
-		return true;
-	}
-	return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

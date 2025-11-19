@@ -23,62 +23,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void CFireBirdView::ShowMA(CDC* pDC, vector<long>* pvData, CRect rectClient, long lHigh, long lLow) {
-	auto it = pvData->end();
-	--it;
-	int i = 0;
-	long x = rectClient.right;
-	long y = (0.5 - static_cast<double>(*it - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
-	pDC->MoveTo(x, y);
-	--it;
-	for (; it != pvData->begin(); --it) {
-		x = rectClient.right - i * 3;
-		y = (0.5 - static_cast<double>(*it - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
-		pDC->LineTo(x, y);
-		i++;
-		if (i > pvData->size()) break;
-		if (rectClient.right <= 3 * i) break; // 画到窗口左边框为止
-	}
-}
-
-void CFireBirdView::ShowHistoryData(CDC* pDC, CVirtualDataHistoryCandleExtend* pHistoryCandle, CRect rectClient) {
-	constexpr COLORREF crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)),
-	                   crRed(RGB(255, 0, 0));
-	CPen penGreen1(PS_SOLID, 1, crGreen), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
-	long lHigh = 0;
-	auto vData = pHistoryCandle->GetDataVector();
-	auto it = vData.end();
-	--it;
-	int i = 0;
-	long lLow = (*it)->GetLow();
-	for (; it != vData.begin(); --it) {
-		if (lHigh < (*it)->GetHigh()) lHigh = (*it)->GetHigh();
-		if ((*it)->GetLow() > 0) { if (lLow > (*it)->GetLow()) lLow = (*it)->GetLow(); }
-		if (i > vData.size()) break;
-		if (rectClient.right <= 3 * i) break;
-		i++;
-	}
-
-	it = vData.end();
-	--it;
-	i = 0;
-	pDC->SelectObject(&penRed1);
-	for (; it != vData.begin(); --it) {
-		const long x = rectClient.right - 2 - i * 3;
-		int y = (0.5 - static_cast<double>((*it)->GetHigh() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
-		pDC->MoveTo(x, y);
-		if ((*it)->GetHigh() == (*it)->GetLow()) { y = y - 1; }
-		else { y = (0.5 - static_cast<double>((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height(); }
-		pDC->LineTo(x, y);
-		long lDate = (*it)->GetDate();
-		i++;
-		if (i > vData.size()) break;
-		if (rectClient.right <= 3 * i) break; // 画到窗口左边框为止
-	}
-
-	ShowMA(pDC, GetDocument()->GetDayLine5MA(), rectClient, lHigh, lLow);
-}
-
 void ShowRealtimeVolume(CDC* pDC, const vector<INT64>& vVolume, const vector<INT64>& vData, int iRightPos, CRect rectClient, bool fUpsideDown) {
 	ASSERT(vData.size() == 240);
 
@@ -222,13 +166,77 @@ CFireBirdView::CFireBirdView() {
 	m_fCreateMemoryDC = false;
 }
 
+void CFireBirdView::ShowMovingAverage(CDC* pDC, vector<long>* pvData, CRect rectClient, long lHigh, long lLow) {
+	auto it = pvData->end();
+	--it;
+	int i = 0;
+	long x = rectClient.right;
+	long y = (0.5 - static_cast<double>(*it - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
+	pDC->MoveTo(x, y);
+	--it;
+	for (; it != pvData->begin(); --it) {
+		x = rectClient.right - i * 3;
+		y = (0.5 - static_cast<double>(*it - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
+		pDC->LineTo(x, y);
+		i++;
+		if (i > pvData->size()) break;
+		if (rectClient.right <= 3 * i) break; // 画到窗口左边框为止
+	}
+}
+
+void CFireBirdView::ShowHistoryData(CDC* pDC, CVirtualDataHistoryCandleExtend* pHistoryCandle, CRect rectClient) {
+	constexpr COLORREF crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)),
+	                   crRed(RGB(255, 0, 0));
+	CPen penGreen1(PS_SOLID, 1, crGreen), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
+	long lHigh = 0;
+	auto vData = pHistoryCandle->GetDataVector();
+	auto it = vData.end();
+	--it;
+	int i = 0;
+	long lLow = (*it)->GetLow();
+	for (; it != vData.begin(); --it) {
+		if (lHigh < (*it)->GetHigh()) lHigh = (*it)->GetHigh();
+		if ((*it)->GetLow() > 0) { if (lLow > (*it)->GetLow()) lLow = (*it)->GetLow(); }
+		if (i > vData.size()) break;
+		if (rectClient.right <= 3 * i) break;
+		i++;
+	}
+
+	it = vData.end();
+	--it;
+	i = 0;
+	pDC->SelectObject(&penRed1);
+	for (; it != vData.begin(); --it) {
+		const long x = rectClient.right - 2 - i * 3;
+		int y = (0.5 - static_cast<double>((*it)->GetHigh() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
+		pDC->MoveTo(x, y);
+		if ((*it)->GetHigh() == (*it)->GetLow()) { y = y - 1; }
+		else { y = (0.5 - static_cast<double>((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height(); }
+		pDC->LineTo(x, y);
+		i++;
+		if (i > vData.size()) break;
+		if (rectClient.right <= 3 * i) break; // 画到窗口左边框为止
+	}
+
+	/*
+	ShowMA(pDC, GetDocument()->GetDayLine5MA(), rectClient, lHigh, lLow);
+	pDC->SelectObject(&penWhite1);
+	ShowMA(pDC, GetDocument()->GetDayLine50MA(), rectClient, lHigh, lLow);
+	pDC->SelectObject(&penGreen1);
+	ShowMA(pDC, GetDocument()->GetDayLine250MA(), rectClient, lHigh, lLow);
+	*/
+
+	GetDocument()->ShowDayLine5MovingAverage(pDC, &penRed1, rectClient, lHigh, lLow);
+	GetDocument()->ShowDayLine50MovingAverage(pDC, &penWhite1, rectClient, lHigh, lLow);
+	GetDocument()->ShowDayLine250MovingAverage(pDC, &penGreen1, rectClient, lHigh, lLow);
+}
+
 bool CFireBirdView::ShowGuadan(CDC* pDC, const CChinaStockPtr& pStock, int iXStart, int iYStart, int iYEnd) {
 	string s = _T("");
 	const CSize sizeText = SysCallGetTextExtent(pDC, s.c_str());
 	const int iNumberOfLine = (iYEnd - iYStart) / sizeText.cy;
 
 	const long lStartPrice = (static_cast<long>(pStock->GetCurrentGuadanTransactionPrice() * 100) - iNumberOfLine / 2) * 10;
-	char buffer[20];
 	int j = 0;
 
 	for (int i = iNumberOfLine; i > 0; i--) {
@@ -275,9 +283,9 @@ void CFireBirdView::ShowRealtimeData(CDC* pDC) {
 	const CRect rectAttackBuySell(cThirdPosition, 0, cThirdPosition + 100, 400);
 	const CRect rectCanceledBuySell(cFirstPosition, 450, cFirstPosition + 300, 850);
 
-	auto thisStock = gl_pChinaMarket->GetCurrentStock();
+	if (IsChinaStock()) {
+		auto thisStock = dynamic_pointer_cast<CChinaStock>(GetCurrentStock());
 
-	if (thisStock != nullptr) {
 		ShowVolume(pDC, thisStock);
 		//ShowBuySell(pDC, thisStock, rectBuySell);
 		//ShowOrdinaryBuySell(pDC, thisStock, rectOrdinaryBuySell);
@@ -793,16 +801,18 @@ void CFireBirdView::OnDraw(CDC* pDC) {
 	ASSERT_VALID(pDoc);
 	if (!pDoc) return;
 
-	pDC = GetDC();
-
-	Show(pDC);
-
-	ReleaseDC(pDC);
+	if (pDoc->IsDataReady()) { // 只有在加载日线数据等后才显示
+		pDC = GetDC();
+		Show(pDC);
+		ReleaseDC(pDC);
+	}
 }
 
 void CFireBirdView::Show(CDC* pdc) {
 	CBitmap* pOldBitmap;
 	COLORREF crGray(RGB(24, 24, 24));
+
+	ASSERT(GetDocument()->IsDataReady());
 
 	// create memory DC
 	if (!m_fCreateMemoryDC) {
@@ -888,7 +898,9 @@ CFireBirdDoc* CFireBirdView::GetDocument() const // 非调试版本是内联的
 void CFireBirdView::OnTimer(UINT_PTR nIDEvent) {
 	CDC* pdc = GetDC();
 
-	Show(pdc);
+	if (GetDocument()->IsDataReady()) { // 只有在加载日线数据等后才显示
+		Show(pdc);
+	}
 
 	ReleaseDC(pdc);
 
@@ -978,63 +990,66 @@ void CFireBirdView::OnUpdateShowRs60(CCmdUI* pCmdUI) {
 void CFireBirdView::OnShowRsInLogarithm() {
 	if (m_iShowRSOption != 2) {
 		m_iShowRSOption = 2;
-		if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
-			gl_pChinaMarket->GetCurrentStock()->CalculateDayLineRSLogarithm();
-			gl_pChinaMarket->GetCurrentStock()->CalculateDayLineRSLogarithm();
+		if (IsChinaStock()) {
+			auto pStock = dynamic_pointer_cast<CChinaStock>(GetCurrentStock());
+			pStock->CalculateDayLineRSLogarithm();
+			pStock->CalculateDayLineRSLogarithm();
 		}
 	}
 }
 
 void CFireBirdView::OnUpdateShowRsInLogarithm(CCmdUI* pCmdUI) {
-	if (gl_pChinaMarket->GetCurrentStock() == nullptr) {
-		SysCallCmdUIEnable(pCmdUI, false);
-	}
-	else {
+	if (IsChinaStock()) {
 		SysCallCmdUIEnable(pCmdUI, true);
 		if (m_iShowRSOption == 2) SysCallCmdUISetCheck(pCmdUI, 1);
 		else SysCallCmdUISetCheck(pCmdUI, 0);
+	}
+	else {
+		SysCallCmdUIEnable(pCmdUI, false);
 	}
 }
 
 void CFireBirdView::OnShowRsInLinear() {
 	if (m_iShowRSOption != 1) {
 		m_iShowRSOption = 1;
-		if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
-			gl_pChinaMarket->GetCurrentStock()->CalculateDayLineRS();
-			gl_pChinaMarket->GetCurrentStock()->CalculateWeekLineRS();
+		if (IsChinaStock()) {
+			CChinaStockPtr pStock = dynamic_pointer_cast<CChinaStock>(GetCurrentStock());
+			pStock->CalculateDayLineRS();
+			pStock->CalculateWeekLineRS();
 		}
 	}
 }
 
 void CFireBirdView::OnUpdateShowRsInLinear(CCmdUI* pCmdUI) {
-	if (gl_pChinaMarket->GetCurrentStock() == nullptr) {
-		SysCallCmdUIEnable(pCmdUI, false);
-	}
-	else {
+	if (IsChinaStock()) {
 		SysCallCmdUIEnable(pCmdUI, true);
 		if (m_iShowRSOption == 1) SysCallCmdUISetCheck(pCmdUI, 1);
 		else SysCallCmdUISetCheck(pCmdUI, 0);
+	}
+	else {
+		SysCallCmdUIEnable(pCmdUI, false);
 	}
 }
 
 void CFireBirdView::OnShowRsIndex() {
 	if (m_iShowRSOption != 0) {
 		m_iShowRSOption = 0;
-		if (gl_pChinaMarket->GetCurrentStock() != nullptr) {
-			gl_pChinaMarket->GetCurrentStock()->CalculateDayLineRSIndex();
-			gl_pChinaMarket->GetCurrentStock()->CalculateWeekLineRSIndex();
+		if (IsChinaStock()) {
+			auto pStock = dynamic_pointer_cast<CChinaStock>(GetCurrentStock());
+			pStock->CalculateDayLineRSIndex();
+			pStock->CalculateWeekLineRSIndex();
 		}
 	}
 }
 
 void CFireBirdView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
-	if (gl_pChinaMarket->GetCurrentStock() == nullptr) {
-		SysCallCmdUIEnable(pCmdUI, false);
-	}
-	else {
+	if (IsChinaStock()) {
 		SysCallCmdUIEnable(pCmdUI, true);
 		if (m_iShowRSOption == 0) SysCallCmdUISetCheck(pCmdUI, 1);
 		else SysCallCmdUISetCheck(pCmdUI, 0);
+	}
+	else {
+		SysCallCmdUIEnable(pCmdUI, false);
 	}
 }
 

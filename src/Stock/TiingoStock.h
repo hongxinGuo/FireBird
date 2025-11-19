@@ -131,7 +131,11 @@ public:
 
 	void UnloadDayLine() { m_dataDayLine.Unload(); }
 	void SaveDayLineDB() { m_dataDayLine.SaveDB(m_strSymbol); }
-	void LoadDayLineDB() { m_dataDayLine.LoadDB(m_strSymbol); }
+	bool LoadDayLineDB() override { return m_dataDayLine.LoadDB(m_strSymbol); }
+	bool LoadWeekLineDB() override {
+		CreateWeekLine();
+		return true;
+	}
 
 	void CreateWeekLine();
 

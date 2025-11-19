@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include"MovingAverage.h"
+
 class CFireBirdDoc : public CDocument {
 protected: // 仅从序列化创建
 	CFireBirdDoc();
@@ -12,24 +14,83 @@ protected: // 仅从序列化创建
 public:
 	bool IsEmpty() const noexcept { return m_pCurrentStock == nullptr; }
 	bool IsDayLineLoaded() const { return m_pCurrentStock->IsDayLineLoaded(); }
-	bool IsChinaStock() const { return strcmp(typeid(*m_pCurrentStock).name(), _T("class CChinaStock")) == 0; }
-	bool IsTiingoStock() const { return strcmp(typeid(*m_pCurrentStock).name(), _T("class CTiingoStock")) == 0; }
+	bool IsChinaStock() const {
+		if (m_pCurrentStock == nullptr) return false;
+		return strcmp(typeid(*m_pCurrentStock).name(), _T("class CChinaStock")) == 0;
+	}
+	bool IsTiingoStock() const {
+		if (m_pCurrentStock == nullptr) return false;
+		return strcmp(typeid(*m_pCurrentStock).name(), _T("class CTiingoStock")) == 0;
+	}
 
 	// 操作
 public:
+	bool IsDataReady() const noexcept { return m_bDataReady; }
+	void SetDataReady(bool bFlag) noexcept { m_bDataReady = bFlag; }
+
 	CVirtualStockPtr GetCurrentStock() const noexcept { return m_pCurrentStock; }
-	void SetCurrentStock(const CVirtualStockPtr& pStock) {
-		m_pCurrentStock = pStock;
-		if (m_pCurrentStock != nullptr) {
-			ASSERT(pStock->IsDayLineLoaded());
-			CalculateDayLineMA();
-		}
+	void SetCurrentStock(const CVirtualStockPtr& pStock);
+
+	void CalculateDayLineMovingAverage();
+	void CalculateWeekLineMovingAverage();
+	void CalculateMonthLineMovingAverage();
+
+	void ShowDayLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_dayLine5MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+	void ShowDayLine10MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_dayLine10MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+	void ShowDayLine30MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_dayLine30MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+	void ShowDayLine50MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_dayLine50MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+	void ShowDayLine120MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_dayLine120MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+	void ShowDayLine250MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_dayLine250MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
 	}
 
-	void CalculateDayLineMA();
-	void CalculateWeekLineMA();
+	void ShowWeekLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_weekLine5MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+	void ShowWeekLine10MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_weekLine10MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+	void ShowWeekLine30MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_weekLine30MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+	void ShowWeekLine50MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_weekLine50MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+	void ShowWeekLine120MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_weekLine120MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+	void ShowWeekLine250MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_weekLine250MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
 
-	vector<long>* GetDayLine5MA() { return &m_DayLine5MA; }
+	void ShowMonthLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_monthLine5MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+	void ShowMonthLine10MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_monthLine10MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+	void ShowMonthLine30MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_monthLine30MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+	void ShowMonthLine50MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_monthLine50MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+	void ShowMonthLine120MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_monthLine120MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+	void ShowMonthLine250MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+		m_monthLine250MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
 
 	// 重写
 public:
@@ -44,21 +105,32 @@ public:
 	~CFireBirdDoc() override = default;
 
 protected:
+	atomic_bool m_bDataReady{ false }; // 各种指标最好使用工作线程来异步计算，计算完成时设置此标识为真；当重新设置股票时设置此标识为假。
 	CVirtualStockPtr m_pCurrentStock{ nullptr }; // 当前股票
 
-	vector<long> m_DayLine5MA{};
-	vector<long> m_DayLine10MA{};
-	vector<long> m_DayLine30MA{};
-	vector<long> m_DayLine50MA{};
-	vector<long> m_DayLine120MA{};
-	vector<long> m_DayLine250MA{};
+	//日线移动平均线
+	CMovingAverage m_dayLine5MovingAverage{ 5 };
+	CMovingAverage m_dayLine10MovingAverage{ 10 };
+	CMovingAverage m_dayLine30MovingAverage{ 30 };
+	CMovingAverage m_dayLine50MovingAverage{ 50 };
+	CMovingAverage m_dayLine120MovingAverage{ 120 };
+	CMovingAverage m_dayLine250MovingAverage{ 250 };
 
-	vector<long> m_WeekLine5MA{};
-	vector<long> m_WeekLine10MA{};
-	vector<long> m_WeekLine30MA{};
-	vector<long> m_WeekLine60MA{};
-	vector<long> m_WeekLine120MA{};
-	vector<long> m_WeekLine240MA{};
+	// 周线移动平均线
+	CMovingAverage m_weekLine5MovingAverage{ 5 };
+	CMovingAverage m_weekLine10MovingAverage{ 10 };
+	CMovingAverage m_weekLine30MovingAverage{ 30 };
+	CMovingAverage m_weekLine50MovingAverage{ 50 };
+	CMovingAverage m_weekLine120MovingAverage{ 120 };
+	CMovingAverage m_weekLine250MovingAverage{ 250 };
+
+	// 月线移动平均线
+	CMovingAverage m_monthLine5MovingAverage{ 5 };
+	CMovingAverage m_monthLine10MovingAverage{ 10 };
+	CMovingAverage m_monthLine30MovingAverage{ 30 };
+	CMovingAverage m_monthLine50MovingAverage{ 50 };
+	CMovingAverage m_monthLine120MovingAverage{ 120 };
+	CMovingAverage m_monthLine250MovingAverage{ 250 };
 
 	// 生成的消息映射函数
 protected:

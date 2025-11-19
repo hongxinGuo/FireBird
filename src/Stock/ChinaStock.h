@@ -246,8 +246,6 @@ public:
 	bool IsUpdateChosenStockDB() const noexcept { return m_fUpdateChosenStockDB; }
 	void SetUpdateChosenStockDB(const bool fSaved) noexcept { m_fUpdateChosenStockDB = fSaved; }
 
-	bool IsSameStock(const CChinaStockPtr& pStock) const;
-
 	// 第一个实时数据判断和设置
 	bool HaveFirstRTData() const noexcept { return m_fHaveFirstRTData; }
 
@@ -267,7 +265,7 @@ public:
 
 	// 数据库的提取和存储
 	// 日线装载函数，由工作线程ThreadLoadDayLine调用
-	virtual bool LoadDayLine(const string& strStockCode) { return m_dataDayLine.LoadDB(strStockCode); }
+	bool LoadDayLineDB() override { return m_dataDayLine.LoadDB(GetSymbol()); }
 	virtual bool SaveDayLineBasicInfo() { return m_dataDayLine.SaveDB(GetSymbol()); }
 
 	bool LoadDayLineBasicInfo(CSetChinaMarketDayLneBasicInfo* pSetDayLineBasicInfo) { return m_dataDayLine.LoadBasicDB(pSetDayLineBasicInfo); }
@@ -283,7 +281,7 @@ public:
 	void CheckIPOStatus();
 	bool CheckDayLineStatus();
 	//周线历史数据存取
-	virtual bool LoadWeekLine() { return m_dataWeekLine.LoadDB(GetSymbol()); }
+	bool LoadWeekLineDB() override { return m_dataWeekLine.LoadDB(GetSymbol()); }
 	virtual bool SaveWeekLine() { return m_dataWeekLine.SaveDB(GetSymbol()); }
 
 	bool LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* pSetWeekLineBasicInfo) { return m_dataWeekLine.LoadBasicDB(pSetWeekLineBasicInfo); }

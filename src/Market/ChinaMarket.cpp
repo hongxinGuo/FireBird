@@ -59,14 +59,14 @@ CChinaMarket::CChinaMarket() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CChinaMarket::~CChinaMarket() {
-	if (GetCurrentStock() == nullptr) {
+	if (gl_pCurrentStock == nullptr) {
 		if (gl_systemConfiguration.GetCurrentStock().length() > 0) {
 			gl_systemConfiguration.SetCurrentStock(_T(""));
 			gl_systemConfiguration.SetUpdateDB(true);
 		}
 	}
-	else if (GetCurrentStock()->GetSymbol().compare(gl_systemConfiguration.GetCurrentStock()) != 0) {
-		gl_systemConfiguration.SetCurrentStock(gl_pChinaMarket->GetCurrentStock()->GetSymbol());
+	else if (gl_pCurrentStock->GetSymbol().compare(gl_systemConfiguration.GetCurrentStock()) != 0) {
+		gl_systemConfiguration.SetCurrentStock(gl_pCurrentStock->GetSymbol());
 		gl_systemConfiguration.SetUpdateDB(true);
 	}
 }
@@ -294,7 +294,7 @@ bool CChinaMarket::TaskCheckMarketReady(long lCurrentTime) {
 void CChinaMarket::ChangeToNextStock() {
 	ASSERT(gl_pCurrentStock != nullptr);
 	size_t lIndex = gl_dataContainerChinaStock.GetOffset(gl_pCurrentStock);
-	CChinaStockPtr pStock = GetCurrentStock();
+	CChinaStockPtr pStock = dynamic_pointer_cast<CChinaStock>(gl_pCurrentStock);
 
 	if (IsTotalStockSetSelected()) {
 		bool fFound = false;
@@ -324,7 +324,7 @@ void CChinaMarket::ChangeToNextStock() {
 void CChinaMarket::ChangeToPrevStock() {
 	ASSERT(gl_pCurrentStock != nullptr);
 	size_t lIndex = gl_dataContainerChinaStock.GetOffset(gl_pCurrentStock);
-	CChinaStockPtr pStock = GetCurrentStock();
+	CChinaStockPtr pStock = dynamic_pointer_cast<CChinaStock>(gl_pCurrentStock);
 
 	if (IsTotalStockSetSelected()) {
 		bool fFound = false;

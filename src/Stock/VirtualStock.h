@@ -86,6 +86,23 @@ public:
 		ASSERT(0);
 		return nullptr;
 	}
+	virtual CVirtualDataHistoryCandleExtend* MonthLine() noexcept {
+		ASSERT(0);
+		return nullptr;
+	}
+
+	void LoadHistoryCandleDB() {
+		LoadDayLineDB();
+		LoadWeekLineDB();
+	}
+	virtual bool LoadDayLineDB() {
+		ASSERT(0);
+		return false;
+	}
+	virtual bool LoadWeekLineDB() {
+		ASSERT(0);
+		return false;
+	}
 
 	long GetDayLineStartDate();
 	void SetDayLineStartDate(const long lDate) noexcept { m_jsonUpdateDate[_T("DayLineStartDate")] = lDate; }

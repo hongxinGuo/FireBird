@@ -58,7 +58,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
 		.Times(1)
 		.WillOnce(Return(true));
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(1)
 		.WillOnce(Return(true));
 		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), static_cast<UINT>(104));
@@ -74,7 +74,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
 		.Times(1)
 		.WillOnce(Return(true));
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(1)
 		.WillOnce(Return(true));
 		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), static_cast<UINT>(104));
@@ -89,7 +89,7 @@ namespace FireBirdTest {
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
 		.Times(0);
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(0);
 		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), static_cast<UINT>(104));
 		EXPECT_EQ(vStock.size(), 0);
@@ -103,7 +103,7 @@ namespace FireBirdTest {
 		pMockStock->SetActive(false);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
 		.Times(0);
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(0);
 		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), static_cast<UINT>(104));
 		EXPECT_EQ(vStock.size(), 0);
@@ -117,7 +117,7 @@ namespace FireBirdTest {
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
 		.Times(0);
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(0);
 		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), static_cast<UINT>(104));
 		EXPECT_EQ(vStock.size(), 0);
@@ -133,7 +133,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pMockStock, Calculate10RSStrongStockSet(&ref))
 		.Times(1)
 		.WillOnce(Return(true));
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(0);
 		EXPECT_EQ(ThreadCalculate10RSStrongStock(&vStock, &ref, pMockStock), static_cast<UINT>(104));
 		EXPECT_EQ(vStock.size(), 1) << pMockStock->GetSymbol();
@@ -148,7 +148,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
 		.Times(1)
 		.WillOnce(Return(true));
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(1)
 		.WillOnce(Return(true));
 		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), static_cast<UINT>(105));
@@ -164,7 +164,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
 		.Times(1)
 		.WillOnce(Return(true));
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(1)
 		.WillOnce(Return(true));
 		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), static_cast<UINT>(105));
@@ -179,7 +179,7 @@ namespace FireBirdTest {
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
 		.Times(0);
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(0);
 		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), static_cast<UINT>(105));
 		EXPECT_EQ(vStock.size(), 0);
@@ -193,7 +193,7 @@ namespace FireBirdTest {
 		pMockStock->SetActive(false);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
 		.Times(0);
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(0);
 		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), static_cast<UINT>(105));
 		EXPECT_EQ(vStock.size(), 0);
@@ -207,7 +207,7 @@ namespace FireBirdTest {
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
 		.Times(0);
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(0);
 		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), static_cast<UINT>(105));
 		EXPECT_EQ(vStock.size(), 0);
@@ -223,7 +223,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong1StockSet())
 		.Times(1)
 		.WillOnce(Return(true));
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(0);
 		EXPECT_EQ(ThreadCalculate10RSStrong1Stock(&vStock, pMockStock), static_cast<UINT>(105));
 		EXPECT_EQ(vStock.size(), 1) << pMockStock->GetSymbol();
@@ -238,7 +238,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
 		.Times(1)
 		.WillOnce(Return(true));
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(1)
 		.WillOnce(Return(true));
 		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), static_cast<UINT>(106));
@@ -254,7 +254,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
 		.Times(1)
 		.WillOnce(Return(true));
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(1)
 		.WillOnce(Return(true));
 		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), static_cast<UINT>(106));
@@ -269,7 +269,7 @@ namespace FireBirdTest {
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
 		.Times(0);
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(0);
 		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), static_cast<UINT>(106));
 		EXPECT_EQ(vStock.size(), 0);
@@ -283,7 +283,7 @@ namespace FireBirdTest {
 		pMockStock->SetActive(false);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
 		.Times(0);
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(0);
 		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), static_cast<UINT>(106));
 		EXPECT_EQ(vStock.size(), 0);
@@ -297,7 +297,7 @@ namespace FireBirdTest {
 		pMockStock->SetActive(true);
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
 		.Times(0);
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(0);
 		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), static_cast<UINT>(106));
 		EXPECT_EQ(vStock.size(), 0);
@@ -316,7 +316,7 @@ namespace FireBirdTest {
 		EXPECT_CALL(*pMockStock, Calculate10RSStrong2StockSet())
 		.Times(1)
 		.WillOnce(Return(true));
-		EXPECT_CALL(*pMockStock, LoadDayLine(pMockStock->GetSymbol()))
+		EXPECT_CALL(*pMockStock, LoadDayLineDB())
 		.Times(0);
 		EXPECT_EQ(ThreadCalculate10RSStrong2Stock(&vStock, pMockStock), static_cast<UINT>(106));
 		EXPECT_EQ(vStock.size(), 1);

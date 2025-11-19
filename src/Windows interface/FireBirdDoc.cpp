@@ -9,6 +9,8 @@
 
 #include "FireBirdDoc.h"
 
+#include "Thread.h"
+
 IMPLEMENT_DYNCREATE(CFireBirdDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CFireBirdDoc, CDocument)
@@ -17,70 +19,53 @@ END_MESSAGE_MAP()
 // CFireBirdDoc 构造/析构
 CFireBirdDoc::CFireBirdDoc() {}
 
-void CFireBirdDoc::CalculateDayLineMA() {
-	auto pvDayLine = m_pCurrentStock->DayLine();
-	auto dayLineSize = m_pCurrentStock->DayLine()->Size();
-	long long total;
-
-	m_DayLine5MA.resize(dayLineSize);
-	m_DayLine10MA.resize(dayLineSize);
-	m_DayLine30MA.resize(dayLineSize);
-	m_DayLine50MA.resize(dayLineSize);
-	m_DayLine120MA.resize(dayLineSize);
-	m_DayLine250MA.resize(dayLineSize);
-
-	for (size_t index = 4; index < dayLineSize; index++) {
-		total = 0;
-		for (size_t i = 0; i < 5; i++) {
-			total += pvDayLine->GetData(index - i)->GetClose();
+void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
+	m_pCurrentStock = pStock;
+	if (pStock != nullptr) {
+		if (!pStock->IsDayLineLoaded() || !pStock->IsWeekLineLoaded()) {
+			m_bDataReady = false;
+			gl_runtime.thread_executor()->post([this, pStock] {
+				pStock->LoadHistoryCandleDB();
+				ASSERT(pStock->IsDayLineLoaded());
+				ASSERT(pStock->IsWeekLineLoaded());
+				CalculateDayLineMovingAverage();
+				CalculateWeekLineMovingAverage();
+				m_bDataReady = true;
+			});
 		}
-		m_DayLine5MA[index] = total / 5;
-	}
-	for (size_t index = 9; index < dayLineSize; index++) {
-		total = 0;
-		for (size_t i = 0; i < 10; i++) {
-			total += pvDayLine->GetData(index - i)->GetClose();
-		}
-		m_DayLine10MA[index] = total / 10;
-	}
-	for (size_t index = 29; index < dayLineSize; index++) {
-		total = 0;
-		for (size_t i = 0; i < 30; i++) {
-			total += pvDayLine->GetData(index - i)->GetClose();
-		}
-		m_DayLine30MA[index] = total / 30;
-	}
-	for (size_t index = 49; index < dayLineSize; index++) {
-		total = 0;
-		for (size_t i = 0; i < 50; i++) {
-			total += pvDayLine->GetData(index - i)->GetClose();
-		}
-		m_DayLine50MA[index] = total / 50;
-	}
-	for (size_t index = 119; index < dayLineSize; index++) {
-		total = 0;
-		for (size_t i = 0; i < 120; i++) {
-			total += pvDayLine->GetData(index - i)->GetClose();
-		}
-		m_DayLine120MA[index] = total / 5;
-	}
-	for (size_t index = 249; index < dayLineSize; index++) {
-		total = 0;
-		for (size_t i = 0; i < 250; i++) {
-			total += pvDayLine->GetData(index - i)->GetClose();
-		}
-		m_DayLine250MA[index] = total / 250;
 	}
 }
+void CFireBirdDoc::CalculateDayLineMovingAverage() {
+	auto pvDayLine = m_pCurrentStock->DayLine();
 
-void CFireBirdDoc::CalculateWeekLineMA() {
-	m_WeekLine5MA.resize(m_pCurrentStock->WeekLine()->Size());
-	m_WeekLine10MA.resize(m_pCurrentStock->WeekLine()->Size());
-	m_WeekLine30MA.resize(m_pCurrentStock->WeekLine()->Size());
-	m_WeekLine5MA.resize(m_pCurrentStock->WeekLine()->Size());
-	m_WeekLine60MA.resize(m_pCurrentStock->WeekLine()->Size());
-	m_WeekLine120MA.resize(m_pCurrentStock->WeekLine()->Size());
-	m_WeekLine240MA.resize(m_pCurrentStock->WeekLine()->Size());
+	m_dayLine5MovingAverage.Calculate(pvDayLine);
+	m_dayLine10MovingAverage.Calculate(pvDayLine);
+	m_dayLine30MovingAverage.Calculate(pvDayLine);
+	m_dayLine50MovingAverage.Calculate(pvDayLine);
+	m_dayLine120MovingAverage.Calculate(pvDayLine);
+	m_dayLine250MovingAverage.Calculate(pvDayLine);
+}
+
+void CFireBirdDoc::CalculateWeekLineMovingAverage() {
+	auto pvWeekLine = m_pCurrentStock->WeekLine();
+
+	m_weekLine5MovingAverage.Calculate(pvWeekLine);
+	m_weekLine10MovingAverage.Calculate(pvWeekLine);
+	m_weekLine30MovingAverage.Calculate(pvWeekLine);
+	m_weekLine50MovingAverage.Calculate(pvWeekLine);
+	m_weekLine120MovingAverage.Calculate(pvWeekLine);
+	m_weekLine250MovingAverage.Calculate(pvWeekLine);
+}
+
+void CFireBirdDoc::CalculateMonthLineMovingAverage() {
+	auto pvMonthLine = m_pCurrentStock->MonthLine();
+
+	m_monthLine5MovingAverage.Calculate(pvMonthLine);
+	m_monthLine10MovingAverage.Calculate(pvMonthLine);
+	m_monthLine30MovingAverage.Calculate(pvMonthLine);
+	m_monthLine50MovingAverage.Calculate(pvMonthLine);
+	m_monthLine120MovingAverage.Calculate(pvMonthLine);
+	m_monthLine250MovingAverage.Calculate(pvMonthLine);
 }
 
 BOOL CFireBirdDoc::OnNewDocument() {
