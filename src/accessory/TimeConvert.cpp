@@ -107,10 +107,23 @@ long TimeSpawn(long lLatelyDate, long lEarlyDate) {
 	return (ts.GetDays());
 }
 
+using namespace std::chrono;
+
 void XferDateToYearMonthDay(long lDate, int& year, int& month, int& day) {
 	year = lDate / 10000;
 	month = (lDate - year * 10000) / 100;
 	day = lDate - year * 10000 - month * 100;
+}
+
+long GetNextMonth(long lDate) noexcept {
+	long year = lDate / 10000;
+	unsigned int month = lDate / 100 - year * 100;
+	chrono::year y{ year };
+	chrono::month m{ month };
+	chrono::month m1{ 1 };
+	auto ymd = year_month_day{ y, m, day(1) } + months(1);
+
+	return static_cast<int>(ymd.year()) * 10000 + static_cast<unsigned>(ymd.month()) * 100 + 01;
 }
 
 long GetNextDay(long lDate, long lTimeSpanDays) noexcept {

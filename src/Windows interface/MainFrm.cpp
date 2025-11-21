@@ -744,20 +744,10 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	case 0x00d: // 回车
 		strTemp = m_aStockCodeTemp;
 		if (gl_dataContainerChinaStock.IsSymbol(strTemp)) { // 中国市场股票
-			auto p = gl_dataContainerChinaStock.GetStock(strTemp);
-			if (!p->IsDayLineLoaded()) {
-				p->LoadDayLineDB();
-				p->LoadWeekLineDB();
-			}
-			pStock = p;
+			pStock = gl_dataContainerChinaStock.GetStock(strTemp);
 		}
 		else if (gl_dataContainerTiingoStock.IsSymbol(strTemp)) { // Tiingo股票
-			auto p = gl_dataContainerTiingoStock.GetStock(strTemp);
-			if (!p->IsDayLineLoaded()) {
-				p->LoadDayLineDB();
-				p->LoadWeekLineDB(); // 生成weekLine
-			}
-			pStock = p;
+			pStock = gl_dataContainerTiingoStock.GetStock(strTemp);
 		}
 		SetCurrentStock(pStock);
 		CreateDocumentViewIfNeeded();

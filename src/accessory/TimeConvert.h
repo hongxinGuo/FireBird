@@ -17,6 +17,8 @@ long TimeSpawn(long lLatelyDate, long lEarlyDate);
 
 void XferDateToYearMonthDay(long lDate, int& year, int& month, int& day);
 
+long GetNextMonth(long lDate) noexcept; // 得到下个月的第一天日期
+
 long GetNextDay(long lDate, long lTimeSpanDays = 1) noexcept;
 long GetPrevDay(long lDate, long lTimeSpanDays = 1) noexcept;
 

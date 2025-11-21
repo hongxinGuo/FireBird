@@ -24,12 +24,16 @@ void CFireBirdDoc::SetCurrentStock(const CVirtualStockPtr& pStock) {
 	if (pStock != nullptr) {
 		if (!pStock->IsDayLineLoaded() || !pStock->IsWeekLineLoaded()) {
 			m_bDataReady = false;
-			gl_runtime.thread_executor()->post([this, pStock] {
+			gl_runtime.background_executor()->post([this, pStock] {
 				pStock->LoadHistoryCandleDB();
 				ASSERT(pStock->IsDayLineLoaded());
 				ASSERT(pStock->IsWeekLineLoaded());
 				CalculateDayLineMovingAverage();
 				CalculateWeekLineMovingAverage();
+				m_dayLineKDJ.SetCandle(pStock->DayLine());
+				m_dayLineKDJ.Calculate();
+				m_weekLineKDJ.SetCandle(pStock->WeekLine());
+				m_weekLineKDJ.Calculate();
 				m_bDataReady = true;
 			});
 		}

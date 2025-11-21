@@ -2,9 +2,11 @@
 <!-- File name extension must be .runsettings -->
 <RunSettings>
 	<RunConfiguration>
+		<!-- don't use QtTest -->
+		<TestCaseFilter>TestCategory!=QtTest</TestCaseFilter>
 		<TargetPlatform>x64</TargetPlatform>
-		<TestSessionTimeout>1200000</TestSessionTimeout>
 		<!-- timeout 120 seconds -->
+		<TestSessionTimeout>1200000</TestSessionTimeout>
 	</RunConfiguration>
 
 	<DataCollectionRunSettings>

@@ -20,11 +20,8 @@ public:
 	// ReSharper disable once CppHidingFunction
 	CFireBirdDoc* GetDocument() const;
 	CVirtualStockPtr GetCurrentStock() const { return GetDocument()->GetCurrentStock(); }
-	bool IsChinaStock() { return GetDocument()->IsChinaStock(); }
-	bool IsTiingoStock() { return GetDocument()->IsTiingoStock(); }
 
-	void ShowMovingAverage(CDC* pDC, vector<long>* pvData, CRect rectClient, long lHigh, long lLow);
-	void ShowHistoryData(CDC* pDC, CVirtualDataHistoryCandleExtend* pHistoryCandle, CRect rectClient);
+	void ShowHistoryData(CDC* pDC, CRect rectClient);
 
 	CRect GetClientSize() const noexcept { return m_rectClient; }
 	bool IsShowRS() const noexcept { return m_fShowRS; }
@@ -55,8 +52,6 @@ public:
 	void ShowCanceledBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea);
 	void ShowCurrentRS(CDC* pDC, vector<double>& vRS);
 	bool RSLineTo(CDC* pDC, int i, double dValue, int iSize);
-
-	void SetClientSize(CRect rect) noexcept { m_rectClient = rect; }
 
 	int GetCurrentShowType() const noexcept { return m_iCurrentShowType; }
 	void SetCurrentShowType(const int iValue) noexcept { m_iCurrentShowType = iValue; }
@@ -96,6 +91,13 @@ protected:
 	CBitmap m_Bitmap;
 
 	CRect m_rectClient;
+	CRect m_rectCandle;
+	CRect m_rectIndicator;
+
+	long lDayLineHigh{ 0 };
+	long lDayLineLow{ 0 };
+	long lWeekLineHigh{ 0 };
+	long lWeekLineLow{ 0 };
 
 	UINT m_uIdTimer;
 	int m_iCurrentShowType; // 当前显示状态（日线、周线或实时。。。）

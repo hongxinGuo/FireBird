@@ -82,6 +82,13 @@ namespace FireBirdTest {
 		EXPECT_EQ(XferToYYYYMMDD("2020-1-2"), 20200102);
 	}
 
+	TEST_F(TimeConvertTest, TestGetNextMonth) {
+		EXPECT_EQ(GetNextMonth(20200101), 20200201);
+		EXPECT_EQ(GetNextMonth(20201205), 20210101);
+		EXPECT_EQ(GetNextMonth(20201111), 20201201);
+		EXPECT_EQ(GetNextMonth(20200231), 20200301) << "不检查日期的合法性";
+	}
+
 	TEST_F(TimeConvertTest, TestGetNextDate) {
 		EXPECT_EQ(GetNextDay(20200101, 1), 20200102);
 		EXPECT_EQ(GetNextDay(20200101, 11), 20200112);

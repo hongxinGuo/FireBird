@@ -85,6 +85,10 @@ public:
 	void GetRS60(vector<double>& vRS) const;
 	void GetRS120(vector<double>& vRS) const;
 
+	// 显示此容器
+	void ToShow(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow);
+	void GetHighLow(CRect rectClient, long& lHigh, long& lLow);
+
 protected:
 	vector<CVirtualHistoryCandleExtendPtr> m_vHistoryData;
 	atomic_bool m_fDataLoaded{ false }; // 数据装载与否标识

@@ -42,6 +42,7 @@ using std::map;
 using std::queue;
 
 bool IsShareA(const string& strStockCode);
+bool IsChinaStock(const CVirtualStockPtr& pStock);
 
 // 证券名称数据包
 class CChinaStock : public CVirtualStock {

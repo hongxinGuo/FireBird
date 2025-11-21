@@ -31,6 +31,11 @@ bool IsShareA(const string& strStockCode) {
 	return false;
 }
 
+bool IsChinaStock(const CVirtualStockPtr& pStock) {
+	if (pStock == nullptr) return false;
+	return strcmp(typeid(*pStock).name(), _T("class CChinaStock")) == 0;
+}
+
 CChinaStock::CChinaStock() {
 	for (int i = 0; i < 5; i++) {
 		m_lPBuy.at(i) = m_lPSell.at(i) = 0;

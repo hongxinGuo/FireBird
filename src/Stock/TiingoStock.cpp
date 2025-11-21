@@ -8,6 +8,11 @@
 #include "TimeConvert.h"
 #include "WorldMarket.h"
 
+bool IsTiingoStock(const CVirtualStockPtr& pStock) {
+	if (pStock == nullptr) return false;
+	return strcmp(typeid(*pStock).name(), _T("class CTiingoStock")) == 0;
+}
+
 CTiingoStock::CTiingoStock() {
 	m_v52WeekHigh.clear();
 	m_v52WeekLow.clear();
@@ -315,6 +320,39 @@ void CTiingoStock::CreateWeekLine() {
 
 	m_dataWeekLine.SetDataLoaded(true);
 }
+
+/*
+void CTiingoStock::CreateMonthLine() {
+	ASSERT(m_dataDayLine.IsDataLoaded());
+	size_t index = 0;
+	CTiingoMonthLinePtr pWeekLine = nullptr;
+	size_t dayLineSize = m_dataDayLine.Size();
+	TRACE("all week line %d\n", m_dataMonthLine.Size());
+	while (index < dayLineSize) {
+		auto pDayLine = m_dataDayLine.GetData(index++);
+		long lCurrentEndDate = GetNextMonday(pDayLine->GetDate());
+		pWeekLine = make_shared<CTiingoWeekLine>();
+		pWeekLine->SetDate(pDayLine->GetDate());
+		pWeekLine->SetOpen(pDayLine->GetOpen());
+		pWeekLine->SetLow(pDayLine->GetLow());
+		do {
+			if (pDayLine->GetHigh() > pWeekLine->GetHigh()) pWeekLine->SetHigh(pDayLine->GetHigh());
+			if (pDayLine->GetLow() < pWeekLine->GetLow()) pWeekLine->SetLow(pDayLine->GetLow());
+			pWeekLine->SetVolume(pWeekLine->GetVolume() + pDayLine->GetVolume());
+			pWeekLine->SetAmount(pWeekLine->GetAmount() + pDayLine->GetAmount());
+			pWeekLine->SetClose(pDayLine->GetClose());
+			if (index < dayLineSize) pDayLine = m_dataDayLine.GetData(index);
+			else break;
+			if (pDayLine->GetDate() < lCurrentEndDate) index++;
+			else break;
+		} while (true);
+
+		if (pWeekLine->GetClose() > 0) m_dataWeekLine.Add(pWeekLine); // 有数据才存储
+	}
+
+	m_dataWeekLine.SetDataLoaded(true);
+}
+*/
 
 bool CTiingoStock::HaveNewDayLineData() {
 	if (m_dataDayLine.Empty()) return false;

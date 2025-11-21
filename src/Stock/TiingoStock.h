@@ -136,8 +136,14 @@ public:
 		CreateWeekLine();
 		return true;
 	}
+	/*
+	bool LoadMonthLineDB() override {
+		CreateMonthLine();
+		return true;
+	}*/
 
 	void CreateWeekLine();
+	void CreateMonthLine();
 
 	void CalculateDayLineMA(const int length) const { m_dataDayLine.CalculateMA(length); }
 
@@ -240,3 +246,5 @@ protected:
 
 using CTiingoStockPtr = shared_ptr<CTiingoStock>;
 using CTiingoStocksPtr = shared_ptr<vector<CTiingoStockPtr>>;
+
+bool IsTiingoStock(const CVirtualStockPtr& pStock);

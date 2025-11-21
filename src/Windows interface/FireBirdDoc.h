@@ -4,6 +4,7 @@
 #pragma once
 
 #include"MovingAverage.h"
+#include"IndicatorKDJ.h"
 
 class CFireBirdDoc : public CDocument {
 protected: // 仅从序列化创建
@@ -14,14 +15,6 @@ protected: // 仅从序列化创建
 public:
 	bool IsEmpty() const noexcept { return m_pCurrentStock == nullptr; }
 	bool IsDayLineLoaded() const { return m_pCurrentStock->IsDayLineLoaded(); }
-	bool IsChinaStock() const {
-		if (m_pCurrentStock == nullptr) return false;
-		return strcmp(typeid(*m_pCurrentStock).name(), _T("class CChinaStock")) == 0;
-	}
-	bool IsTiingoStock() const {
-		if (m_pCurrentStock == nullptr) return false;
-		return strcmp(typeid(*m_pCurrentStock).name(), _T("class CTiingoStock")) == 0;
-	}
 
 	// 操作
 public:
@@ -34,6 +27,13 @@ public:
 	void CalculateDayLineMovingAverage();
 	void CalculateWeekLineMovingAverage();
 	void CalculateMonthLineMovingAverage();
+
+	void GetDayLineHighLow(CRect rectClient, long& lHigh, long& lLow) const { GetCurrentStock()->DayLine()->GetHighLow(rectClient, lHigh, lLow); }
+	void GetWeekLineHighLow(CRect rectClient, long& lHigh, long& lLow) const { GetCurrentStock()->WeekLine()->GetHighLow(rectClient, lHigh, lLow); }
+
+	void ShowDayLine(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) const {
+		m_pCurrentStock->DayLine()->ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
 
 	void ShowDayLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
 		m_dayLine5MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
@@ -52,6 +52,10 @@ public:
 	}
 	void ShowDayLine250MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
 		m_dayLine250MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+
+	void ShowWeekLine(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) const {
+		m_pCurrentStock->WeekLine()->ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
 	}
 
 	void ShowWeekLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
@@ -90,6 +94,14 @@ public:
 	}
 	void ShowMonthLine250MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
 		m_monthLine250MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	}
+
+	void ShowDayLineKDJ(CDC* pDC, CRect rectDraw) {
+		m_dayLineKDJ.ToShow(pDC, rectDraw);
+	}
+
+	void ShowWeekLineKDJ(CDC* pDC, CRect rectDraw) {
+		m_weekLineKDJ.ToShow(pDC, rectDraw);
 	}
 
 	// 重写
@@ -131,6 +143,9 @@ protected:
 	CMovingAverage m_monthLine50MovingAverage{ 50 };
 	CMovingAverage m_monthLine120MovingAverage{ 120 };
 	CMovingAverage m_monthLine250MovingAverage{ 250 };
+
+	CIndicatorKDJ m_dayLineKDJ;
+	CIndicatorKDJ m_weekLineKDJ;
 
 	// 生成的消息映射函数
 protected:

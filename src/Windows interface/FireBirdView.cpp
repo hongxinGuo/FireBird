@@ -104,8 +104,6 @@ BEGIN_MESSAGE_MAP(CFireBirdView, CView)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_REALTIME, &CFireBirdView::OnUpdateShowRealTime)
 	ON_COMMAND(ID_SHOW_WEEKLINE, &CFireBirdView::OnShowWeekLine)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_WEEKLINE, &CFireBirdView::OnUpdateShowWeekLine)
-	//	ON_WM_SETFOCUS()
-	//	ON_WM_ACTIVATE()
 	ON_WM_SETFOCUS()
 END_MESSAGE_MAP()
 
@@ -166,69 +164,34 @@ CFireBirdView::CFireBirdView() {
 	m_fCreateMemoryDC = false;
 }
 
-void CFireBirdView::ShowMovingAverage(CDC* pDC, vector<long>* pvData, CRect rectClient, long lHigh, long lLow) {
-	auto it = pvData->end();
-	--it;
-	int i = 0;
-	long x = rectClient.right;
-	long y = (0.5 - static_cast<double>(*it - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
-	pDC->MoveTo(x, y);
-	--it;
-	for (; it != pvData->begin(); --it) {
-		x = rectClient.right - i * 3;
-		y = (0.5 - static_cast<double>(*it - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
-		pDC->LineTo(x, y);
-		i++;
-		if (i > pvData->size()) break;
-		if (rectClient.right <= 3 * i) break; // 画到窗口左边框为止
-	}
-}
-
-void CFireBirdView::ShowHistoryData(CDC* pDC, CVirtualDataHistoryCandleExtend* pHistoryCandle, CRect rectClient) {
+void CFireBirdView::ShowHistoryData(CDC* pDC, CRect rectClient) {
 	constexpr COLORREF crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)),
-	                   crRed(RGB(255, 0, 0));
+	                   crRed(RGB(255, 0, 0)), crBlue(RGB(0, 0, 255)), crYellow(RGB(255, 255, 0));
 	CPen penGreen1(PS_SOLID, 1, crGreen), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
-	long lHigh = 0;
-	auto vData = pHistoryCandle->GetDataVector();
-	auto it = vData.end();
-	--it;
-	int i = 0;
-	long lLow = (*it)->GetLow();
-	for (; it != vData.begin(); --it) {
-		if (lHigh < (*it)->GetHigh()) lHigh = (*it)->GetHigh();
-		if ((*it)->GetLow() > 0) { if (lLow > (*it)->GetLow()) lLow = (*it)->GetLow(); }
-		if (i > vData.size()) break;
-		if (rectClient.right <= 3 * i) break;
-		i++;
+	CPen penYellow(PS_SOLID, 1, crYellow);
+
+	switch (m_iCurrentShowType) {
+	case _SHOW_DAY_LINE_DATA_:
+		GetDocument()->GetDayLineHighLow(rectClient, lDayLineHigh, lDayLineLow);
+		GetDocument()->ShowDayLine(pDC, &penRed1, rectClient, lDayLineHigh, lDayLineLow);
+		GetDocument()->ShowDayLine5MovingAverage(pDC, &penRed1, rectClient, lDayLineHigh, lDayLineLow);
+		GetDocument()->ShowDayLine30MovingAverage(pDC, &penYellow, rectClient, lDayLineHigh, lDayLineLow);
+		GetDocument()->ShowDayLine50MovingAverage(pDC, &penWhite1, rectClient, lDayLineHigh, lDayLineLow);
+		GetDocument()->ShowDayLine250MovingAverage(pDC, &penGreen1, rectClient, lDayLineHigh, lDayLineLow);
+
+		GetDocument()->ShowDayLineKDJ(pDC, m_rectIndicator);
+		break;
+	case _SHOW_WEEK_LINE_DATA_:
+		GetDocument()->GetWeekLineHighLow(rectClient, lWeekLineHigh, lWeekLineLow);
+		GetDocument()->ShowWeekLine(pDC, &penRed1, rectClient, lWeekLineHigh, lWeekLineLow);
+		GetDocument()->ShowWeekLine5MovingAverage(pDC, &penRed1, rectClient, lWeekLineHigh, lWeekLineLow);
+		GetDocument()->ShowWeekLine30MovingAverage(pDC, &penYellow, rectClient, lWeekLineHigh, lWeekLineLow);
+		GetDocument()->ShowWeekLine50MovingAverage(pDC, &penWhite1, rectClient, lWeekLineHigh, lWeekLineLow);
+		GetDocument()->ShowWeekLine250MovingAverage(pDC, &penGreen1, rectClient, lWeekLineHigh, lWeekLineLow);
+		break;
+	default:
+		break;
 	}
-
-	it = vData.end();
-	--it;
-	i = 0;
-	pDC->SelectObject(&penRed1);
-	for (; it != vData.begin(); --it) {
-		const long x = rectClient.right - 2 - i * 3;
-		int y = (0.5 - static_cast<double>((*it)->GetHigh() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
-		pDC->MoveTo(x, y);
-		if ((*it)->GetHigh() == (*it)->GetLow()) { y = y - 1; }
-		else { y = (0.5 - static_cast<double>((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height(); }
-		pDC->LineTo(x, y);
-		i++;
-		if (i > vData.size()) break;
-		if (rectClient.right <= 3 * i) break; // 画到窗口左边框为止
-	}
-
-	/*
-	ShowMA(pDC, GetDocument()->GetDayLine5MA(), rectClient, lHigh, lLow);
-	pDC->SelectObject(&penWhite1);
-	ShowMA(pDC, GetDocument()->GetDayLine50MA(), rectClient, lHigh, lLow);
-	pDC->SelectObject(&penGreen1);
-	ShowMA(pDC, GetDocument()->GetDayLine250MA(), rectClient, lHigh, lLow);
-	*/
-
-	GetDocument()->ShowDayLine5MovingAverage(pDC, &penRed1, rectClient, lHigh, lLow);
-	GetDocument()->ShowDayLine50MovingAverage(pDC, &penWhite1, rectClient, lHigh, lLow);
-	GetDocument()->ShowDayLine250MovingAverage(pDC, &penGreen1, rectClient, lHigh, lLow);
 }
 
 bool CFireBirdView::ShowGuadan(CDC* pDC, const CChinaStockPtr& pStock, int iXStart, int iYStart, int iYEnd) {
@@ -283,7 +246,7 @@ void CFireBirdView::ShowRealtimeData(CDC* pDC) {
 	const CRect rectAttackBuySell(cThirdPosition, 0, cThirdPosition + 100, 400);
 	const CRect rectCanceledBuySell(cFirstPosition, 450, cFirstPosition + 300, 850);
 
-	if (IsChinaStock()) {
+	if (IsChinaStock(GetCurrentStock())) {
 		auto thisStock = dynamic_pointer_cast<CChinaStock>(GetCurrentStock());
 
 		ShowVolume(pDC, thisStock);
@@ -683,14 +646,11 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 
 	if (!pHistoryData->IsDataLoaded()) return;
 
-	const long lXHigh = m_rectClient.bottom / 2;
-	const long lXLow = m_rectClient.bottom;
-	const long lYEnd = m_rectClient.right;
 	ppen = pDC->SelectObject(&penRed1);
 	SysCallMoveTo(pDC, m_rectClient.right, m_rectClient.bottom * 3 / 4);
 	SysCallLineTo(pDC, 0, m_rectClient.bottom * 3 / 4);
 
-	if (GetDocument()->IsChinaStock()) {
+	if (IsChinaStock(GetCurrentStock())) {
 		// 画相对强度
 		if (m_fShowRS) {
 			pDC->SelectObject(&penWhite1);
@@ -754,8 +714,7 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	}
 
 	////////////////////////////////////////////////////////////////画日线蜡烛线
-	if (pHistoryData->GetDataVector().size() > 0) ShowHistoryData(pDC, pHistoryData, m_rectClient);
-	//pHistoryData->ShowData(pDC, m_rectClient);
+	if (pHistoryData->GetDataVector().size() > 0) ShowHistoryData(pDC, m_rectCandle);
 
 	pDC->SelectObject(ppen);
 }
@@ -764,18 +723,18 @@ void CFireBirdView::ShowCurrentRS(CDC* pDC, vector<double>& vRS) {
 	auto it = vRS.end();
 	int i = 1;
 	--it;
-	const int y = m_rectClient.bottom - (*it--) * m_rectClient.bottom / 200;
-	SysCallMoveTo(pDC, m_rectClient.right - 1, y);
+	const int y = m_rectIndicator.bottom - (*it--) * m_rectIndicator.Height() / 100;
+	SysCallMoveTo(pDC, m_rectIndicator.right - 1, y);
 	for (; it != vRS.begin(); --it, i++) {
 		if (!RSLineTo(pDC, i, (*it), vRS.size())) break;
 	}
 }
 
 bool CFireBirdView::RSLineTo(CDC* pDC, int i, double dValue, int iSize) {
-	int y = m_rectClient.bottom - dValue * m_rectClient.bottom / 200;
-	SysCallLineTo(pDC, m_rectClient.right - 1 - 3 * i, y);
+	int y = m_rectIndicator.bottom - dValue * m_rectIndicator.Height() / 100;
+	SysCallLineTo(pDC, m_rectIndicator.right - 1 - 3 * i, y);
 	if (3 * i > iSize) return false;
-	if (m_rectClient.right <= 3 * i) return false; // 画到窗口左边框为止
+	if (m_rectIndicator.right <= 3 * i) return false; // 画到窗口左边框为止
 	return true;
 }
 
@@ -801,18 +760,14 @@ void CFireBirdView::OnDraw(CDC* pDC) {
 	ASSERT_VALID(pDoc);
 	if (!pDoc) return;
 
-	if (pDoc->IsDataReady()) { // 只有在加载日线数据等后才显示
-		pDC = GetDC();
-		Show(pDC);
-		ReleaseDC(pDC);
-	}
+	//pDC = GetDC();
+	Show(pDC);
+	//ReleaseDC(pDC);
 }
 
 void CFireBirdView::Show(CDC* pdc) {
 	CBitmap* pOldBitmap;
 	COLORREF crGray(RGB(24, 24, 24));
-
-	ASSERT(GetDocument()->IsDataReady());
 
 	// create memory DC
 	if (!m_fCreateMemoryDC) {
@@ -825,7 +780,7 @@ void CFireBirdView::Show(CDC* pdc) {
 	CRect rect;
 	SysCallGetClientRect(&rect);
 	auto pStock = GetCurrentStock();
-	if (pStock == nullptr || !pStock->IsDayLineLoaded()) {
+	if (pStock == nullptr || !GetDocument()->IsDataReady()) {
 		pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
 		m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
 		SysCallBitBlt(pdc, 0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
@@ -834,7 +789,7 @@ void CFireBirdView::Show(CDC* pdc) {
 	}
 
 	ASSERT(pStock != nullptr);
-	ASSERT(pStock->IsDayLineLoaded());
+	ASSERT(GetDocument()->IsDataReady());
 	switch (m_iCurrentShowType) {
 	case _SHOW_DAY_LINE_DATA_: // show day line(or week line) stock data
 	case _SHOW_WEEK_LINE_DATA_:
@@ -898,9 +853,7 @@ CFireBirdDoc* CFireBirdView::GetDocument() const // 非调试版本是内联的
 void CFireBirdView::OnTimer(UINT_PTR nIDEvent) {
 	CDC* pdc = GetDC();
 
-	if (GetDocument()->IsDataReady()) { // 只有在加载日线数据等后才显示
-		Show(pdc);
-	}
+	Show(pdc);
 
 	ReleaseDC(pdc);
 
@@ -911,6 +864,16 @@ int CFireBirdView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	if (CView::OnCreate(lpCreateStruct) == -1) return -1;
 
 	GetClientRect(&m_rectClient);
+
+	m_rectCandle.left = m_rectClient.left;
+	m_rectCandle.top = m_rectClient.top;
+	m_rectCandle.right = m_rectClient.right;
+	m_rectCandle.bottom = m_rectClient.bottom / 2;
+
+	m_rectIndicator.left = m_rectClient.left;
+	m_rectIndicator.top = m_rectClient.bottom / 2 + 1;
+	m_rectIndicator.right = m_rectClient.right;
+	m_rectIndicator.bottom = m_rectClient.bottom;
 
 	m_uIdTimer = SetTimer(3, 500, nullptr); // 500毫秒每次调度，用于显示实时股票数据。
 	if (m_uIdTimer == 0) {
@@ -925,6 +888,16 @@ void CFireBirdView::OnSize(UINT nType, int cx, int cy) {
 
 	m_rectClient.right = cx;
 	m_rectClient.bottom = cy;
+
+	m_rectCandle.left = m_rectClient.left;
+	m_rectCandle.top = m_rectClient.top;
+	m_rectCandle.right = m_rectClient.right;
+	m_rectCandle.bottom = m_rectClient.bottom / 2;
+
+	m_rectIndicator.left = m_rectClient.left;
+	m_rectIndicator.top = m_rectClient.bottom / 2 + 1;
+	m_rectIndicator.right = m_rectClient.right;
+	m_rectIndicator.bottom = m_rectClient.bottom;
 }
 
 void CFireBirdView::OnShowRs3() {
@@ -990,7 +963,7 @@ void CFireBirdView::OnUpdateShowRs60(CCmdUI* pCmdUI) {
 void CFireBirdView::OnShowRsInLogarithm() {
 	if (m_iShowRSOption != 2) {
 		m_iShowRSOption = 2;
-		if (IsChinaStock()) {
+		if (IsChinaStock(GetCurrentStock())) {
 			auto pStock = dynamic_pointer_cast<CChinaStock>(GetCurrentStock());
 			pStock->CalculateDayLineRSLogarithm();
 			pStock->CalculateDayLineRSLogarithm();
@@ -999,7 +972,7 @@ void CFireBirdView::OnShowRsInLogarithm() {
 }
 
 void CFireBirdView::OnUpdateShowRsInLogarithm(CCmdUI* pCmdUI) {
-	if (IsChinaStock()) {
+	if (IsChinaStock(GetCurrentStock())) {
 		SysCallCmdUIEnable(pCmdUI, true);
 		if (m_iShowRSOption == 2) SysCallCmdUISetCheck(pCmdUI, 1);
 		else SysCallCmdUISetCheck(pCmdUI, 0);
@@ -1012,7 +985,7 @@ void CFireBirdView::OnUpdateShowRsInLogarithm(CCmdUI* pCmdUI) {
 void CFireBirdView::OnShowRsInLinear() {
 	if (m_iShowRSOption != 1) {
 		m_iShowRSOption = 1;
-		if (IsChinaStock()) {
+		if (IsChinaStock(GetCurrentStock())) {
 			CChinaStockPtr pStock = dynamic_pointer_cast<CChinaStock>(GetCurrentStock());
 			pStock->CalculateDayLineRS();
 			pStock->CalculateWeekLineRS();
@@ -1021,7 +994,7 @@ void CFireBirdView::OnShowRsInLinear() {
 }
 
 void CFireBirdView::OnUpdateShowRsInLinear(CCmdUI* pCmdUI) {
-	if (IsChinaStock()) {
+	if (IsChinaStock(GetCurrentStock())) {
 		SysCallCmdUIEnable(pCmdUI, true);
 		if (m_iShowRSOption == 1) SysCallCmdUISetCheck(pCmdUI, 1);
 		else SysCallCmdUISetCheck(pCmdUI, 0);
@@ -1034,7 +1007,7 @@ void CFireBirdView::OnUpdateShowRsInLinear(CCmdUI* pCmdUI) {
 void CFireBirdView::OnShowRsIndex() {
 	if (m_iShowRSOption != 0) {
 		m_iShowRSOption = 0;
-		if (IsChinaStock()) {
+		if (IsChinaStock(GetCurrentStock())) {
 			auto pStock = dynamic_pointer_cast<CChinaStock>(GetCurrentStock());
 			pStock->CalculateDayLineRSIndex();
 			pStock->CalculateWeekLineRSIndex();
@@ -1043,7 +1016,7 @@ void CFireBirdView::OnShowRsIndex() {
 }
 
 void CFireBirdView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
-	if (IsChinaStock()) {
+	if (IsChinaStock(GetCurrentStock())) {
 		SysCallCmdUIEnable(pCmdUI, true);
 		if (m_iShowRSOption == 0) SysCallCmdUISetCheck(pCmdUI, 1);
 		else SysCallCmdUISetCheck(pCmdUI, 0);
