@@ -56,6 +56,9 @@ public:
 	int GetCurrentShowType() const noexcept { return m_iCurrentShowType; }
 	void SetCurrentShowType(const int iValue) noexcept { m_iCurrentShowType = iValue; }
 
+	int GetCandleWidth() const noexcept { return m_iCandleWidth; }
+	void SetCandleWidth(const int width) noexcept { m_iCandleWidth = width; }
+
 	void ZoomIn(vector<double>& vData, double dLevel, double dRate);
 
 	//系统包裹函数
@@ -92,15 +95,18 @@ protected:
 
 	CRect m_rectClient;
 	CRect m_rectCandle;
+	CRect m_rectRS; // 用于显示相对强度的区域，只用于中国市场的股票
 	CRect m_rectIndicator;
 
-	long lDayLineHigh{ 0 };
-	long lDayLineLow{ 0 };
-	long lWeekLineHigh{ 0 };
-	long lWeekLineLow{ 0 };
+	long m_lDayLineHigh{ 0 };
+	long m_lDayLineLow{ 0 };
+	long m_lWeekLineHigh{ 0 };
+	long m_lWeekLineLow{ 0 };
 
 	UINT m_uIdTimer;
 	int m_iCurrentShowType; // 当前显示状态（日线、周线或实时。。。）
+
+	int m_iCandleWidth{ 3 }; // 蜡烛宽度。
 
 	bool m_fShowTransactionGraph; // 显示交易具体情况的图
 	CRect m_rectTransactionGraph; // 交易具体情况图的位置和大小。

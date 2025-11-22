@@ -24,84 +24,84 @@ public:
 	CVirtualStockPtr GetCurrentStock() const noexcept { return m_pCurrentStock; }
 	void SetCurrentStock(const CVirtualStockPtr& pStock);
 
-	void CalculateDayLineMovingAverage();
-	void CalculateWeekLineMovingAverage();
-	void CalculateMonthLineMovingAverage();
+	void CalculateDayLineMovingAverage(const CVirtualStockPtr& pStock);
+	void CalculateWeekLineMovingAverage(const CVirtualStockPtr& pStock);
+	void CalculateMonthLineMovingAverage(const CVirtualStockPtr& pStock);
 
-	void GetDayLineHighLow(CRect rectClient, long& lHigh, long& lLow) const { GetCurrentStock()->DayLine()->GetHighLow(rectClient, lHigh, lLow); }
-	void GetWeekLineHighLow(CRect rectClient, long& lHigh, long& lLow) const { GetCurrentStock()->WeekLine()->GetHighLow(rectClient, lHigh, lLow); }
+	std::pair<long, long> GetDayLineHighLow(int iCandleNumber) const;
+	std::pair<long, long> GetWeekLineHighLow(int iCandleNumber) const;
 
-	void ShowDayLine(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) const {
-		m_pCurrentStock->DayLine()->ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
-	}
-
-	void ShowDayLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_dayLine5MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
-	}
-	void ShowDayLine10MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_dayLine10MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
-	}
-	void ShowDayLine30MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_dayLine30MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
-	}
-	void ShowDayLine50MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_dayLine50MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
-	}
-	void ShowDayLine120MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_dayLine120MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
-	}
-	void ShowDayLine250MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_dayLine250MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	void ShowDayLine(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
+		m_pCurrentStock->DayLine()->ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
 	}
 
-	void ShowWeekLine(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) const {
-		m_pCurrentStock->WeekLine()->ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	void ShowDayLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_dayLine5MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
+	}
+	void ShowDayLine10MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_dayLine10MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
+	}
+	void ShowDayLine30MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_dayLine30MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
+	}
+	void ShowDayLine50MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_dayLine50MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
+	}
+	void ShowDayLine120MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_dayLine120MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
+	}
+	void ShowDayLine250MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_dayLine250MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
 	}
 
-	void ShowWeekLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_weekLine5MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
-	}
-	void ShowWeekLine10MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_weekLine10MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
-	}
-	void ShowWeekLine30MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_weekLine30MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
-	}
-	void ShowWeekLine50MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_weekLine50MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
-	}
-	void ShowWeekLine120MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_weekLine120MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
-	}
-	void ShowWeekLine250MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_weekLine250MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	void ShowWeekLine(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) const {
+		m_pCurrentStock->WeekLine()->ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
 	}
 
-	void ShowMonthLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_monthLine5MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	void ShowWeekLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_weekLine5MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
 	}
-	void ShowMonthLine10MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_monthLine10MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	void ShowWeekLine10MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_weekLine10MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
 	}
-	void ShowMonthLine30MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_monthLine30MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	void ShowWeekLine30MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_weekLine30MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
 	}
-	void ShowMonthLine50MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_monthLine50MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	void ShowWeekLine50MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_weekLine50MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
 	}
-	void ShowMonthLine120MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_monthLine120MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
+	void ShowWeekLine120MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_weekLine120MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
 	}
-	void ShowMonthLine250MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
-		m_monthLine250MovingAverage.ToShow(pDC, pNewPen, rectClient, lHigh, lLow);
-	}
-
-	void ShowDayLineKDJ(CDC* pDC, CRect rectDraw) {
-		m_dayLineKDJ.ToShow(pDC, rectDraw);
+	void ShowWeekLine250MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_weekLine250MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
 	}
 
-	void ShowWeekLineKDJ(CDC* pDC, CRect rectDraw) {
-		m_weekLineKDJ.ToShow(pDC, rectDraw);
+	void ShowMonthLine5MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_monthLine5MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
+	}
+	void ShowMonthLine10MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_monthLine10MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
+	}
+	void ShowMonthLine30MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_monthLine30MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
+	}
+	void ShowMonthLine50MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_monthLine50MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
+	}
+	void ShowMonthLine120MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_monthLine120MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
+	}
+	void ShowMonthLine250MovingAverage(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
+		m_monthLine250MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
+	}
+
+	void ShowDayLineKDJ(CDC* pDC, CRect rectDraw, int iStepWidth) {
+		m_dayLineKDJ.ToShow(pDC, rectDraw, iStepWidth);
+	}
+
+	void ShowWeekLineKDJ(CDC* pDC, CRect rectDraw, int iStepWidth) {
+		m_weekLineKDJ.ToShow(pDC, rectDraw, iStepWidth);
 	}
 
 	// 重写

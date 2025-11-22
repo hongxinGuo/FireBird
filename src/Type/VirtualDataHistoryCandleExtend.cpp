@@ -383,13 +383,13 @@ void CVirtualDataHistoryCandleExtend::GetRS120(vector<double>& vRS) const {
 	for (int i = 0; i < m_vHistoryData.size(); i++) { vRS[i] = m_vHistoryData.at(i)->Get120RS(); }
 }
 
-void CVirtualDataHistoryCandleExtend::ToShow(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow) {
+void CVirtualDataHistoryCandleExtend::ToShow(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow) {
 	auto it = m_vHistoryData.end();
 	--it;
 	size_t i = 0;
 	auto pOldPen = pDC->SelectObject(&pNewPen);
 	for (; it != m_vHistoryData.begin(); --it) {
-		const long x = rectClient.right - 2 - i * 3;
+		const long x = rectClient.right - 2 - i * iStepWidth;
 		int y = (1 - static_cast<double>((*it)->GetHigh() - lLow) / (lHigh - lLow)) * rectClient.Height();
 		pDC->MoveTo(x, y);
 		if ((*it)->GetHigh() == (*it)->GetLow()) {
@@ -401,22 +401,23 @@ void CVirtualDataHistoryCandleExtend::ToShow(CDC* pDC, CPen* pNewPen, CRect rect
 		pDC->LineTo(x, y);
 		i++;
 		if (i > m_vHistoryData.size()) break;
-		if (rectClient.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+		if (rectClient.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
 	}
 	pDC->SelectObject(pOldPen);
 }
 
-void CVirtualDataHistoryCandleExtend::GetHighLow(CRect rectClient, long& lHigh, long& lLow) {
-	lHigh = 0;
+std::pair<long, long> CVirtualDataHistoryCandleExtend::GetHighLow(int iCandleNumber) {
+	long lHigh = 0;
 	auto it = m_vHistoryData.end();
 	--it;
 	int i = 0;
-	lLow = (*it)->GetLow();
+	long lLow = (*it)->GetLow();
 	for (; it != m_vHistoryData.begin(); --it) {
 		if (lHigh < (*it)->GetHigh()) lHigh = (*it)->GetHigh();
 		if ((*it)->GetLow() > 0) { if (lLow > (*it)->GetLow()) lLow = (*it)->GetLow(); }
 		if (i > m_vHistoryData.size()) break;
-		if (rectClient.right <= 3 * i) break;
+		if (i >= iCandleNumber) break;
 		i++;
 	}
+	return { lHigh, lLow };
 }

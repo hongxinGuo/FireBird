@@ -164,30 +164,35 @@ CFireBirdView::CFireBirdView() {
 	m_fCreateMemoryDC = false;
 }
 
-void CFireBirdView::ShowHistoryData(CDC* pDC, CRect rectClient) {
+void CFireBirdView::ShowHistoryData(CDC* pDC, CRect rectDrawArea) {
 	constexpr COLORREF crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)),
-	                   crRed(RGB(255, 0, 0)), crBlue(RGB(0, 0, 255)), crYellow(RGB(255, 255, 0));
+	                   crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));
 	CPen penGreen1(PS_SOLID, 1, crGreen), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
 	CPen penYellow(PS_SOLID, 1, crYellow);
-
+	std::pair<long, long> pairHighLow;
 	switch (m_iCurrentShowType) {
 	case _SHOW_DAY_LINE_DATA_:
-		GetDocument()->GetDayLineHighLow(rectClient, lDayLineHigh, lDayLineLow);
-		GetDocument()->ShowDayLine(pDC, &penRed1, rectClient, lDayLineHigh, lDayLineLow);
-		GetDocument()->ShowDayLine5MovingAverage(pDC, &penRed1, rectClient, lDayLineHigh, lDayLineLow);
-		GetDocument()->ShowDayLine30MovingAverage(pDC, &penYellow, rectClient, lDayLineHigh, lDayLineLow);
-		GetDocument()->ShowDayLine50MovingAverage(pDC, &penWhite1, rectClient, lDayLineHigh, lDayLineLow);
-		GetDocument()->ShowDayLine250MovingAverage(pDC, &penGreen1, rectClient, lDayLineHigh, lDayLineLow);
+		pairHighLow = GetDocument()->GetDayLineHighLow(rectDrawArea.Width() / m_iCandleWidth);
+		m_lDayLineHigh = pairHighLow.first;
+		m_lDayLineLow = pairHighLow.second;
+		GetDocument()->ShowDayLine(pDC, &penRed1, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
+		GetDocument()->ShowDayLine5MovingAverage(pDC, &penRed1, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
+		GetDocument()->ShowDayLine30MovingAverage(pDC, &penYellow, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
+		GetDocument()->ShowDayLine50MovingAverage(pDC, &penWhite1, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
+		GetDocument()->ShowDayLine250MovingAverage(pDC, &penGreen1, rectDrawArea, m_iCandleWidth, m_lDayLineHigh, m_lDayLineLow);
 
-		GetDocument()->ShowDayLineKDJ(pDC, m_rectIndicator);
+		GetDocument()->ShowDayLineKDJ(pDC, m_rectIndicator, m_iCandleWidth);
 		break;
 	case _SHOW_WEEK_LINE_DATA_:
-		GetDocument()->GetWeekLineHighLow(rectClient, lWeekLineHigh, lWeekLineLow);
-		GetDocument()->ShowWeekLine(pDC, &penRed1, rectClient, lWeekLineHigh, lWeekLineLow);
-		GetDocument()->ShowWeekLine5MovingAverage(pDC, &penRed1, rectClient, lWeekLineHigh, lWeekLineLow);
-		GetDocument()->ShowWeekLine30MovingAverage(pDC, &penYellow, rectClient, lWeekLineHigh, lWeekLineLow);
-		GetDocument()->ShowWeekLine50MovingAverage(pDC, &penWhite1, rectClient, lWeekLineHigh, lWeekLineLow);
-		GetDocument()->ShowWeekLine250MovingAverage(pDC, &penGreen1, rectClient, lWeekLineHigh, lWeekLineLow);
+		pairHighLow = GetDocument()->GetWeekLineHighLow(rectDrawArea.Width() / m_iCandleWidth);
+		m_lWeekLineHigh = pairHighLow.first;
+		m_lWeekLineLow = pairHighLow.second;
+		GetDocument()->ShowWeekLine(pDC, &penRed1, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
+		GetDocument()->ShowWeekLine5MovingAverage(pDC, &penRed1, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
+		GetDocument()->ShowWeekLine30MovingAverage(pDC, &penYellow, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
+		GetDocument()->ShowWeekLine50MovingAverage(pDC, &penWhite1, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
+		GetDocument()->ShowWeekLine250MovingAverage(pDC, &penGreen1, rectDrawArea, m_iCandleWidth, m_lWeekLineHigh, m_lWeekLineLow);
+		GetDocument()->ShowWeekLineKDJ(pDC, m_rectIndicator, m_iCandleWidth);
 		break;
 	default:
 		break;
@@ -241,10 +246,10 @@ void CFireBirdView::ShowRealtimeData(CDC* pDC) {
 	int cFirstPosition = rectVolume.right + 500;
 	int cSecondPosition = cFirstPosition + 200;
 	int cThirdPosition = cSecondPosition + 300;
-	const CRect rectBuySell(cFirstPosition, 0, cFirstPosition + 150, 400);
-	const CRect rectOrdinaryBuySell(cSecondPosition, 0, cSecondPosition + 300, 400);
-	const CRect rectAttackBuySell(cThirdPosition, 0, cThirdPosition + 100, 400);
-	const CRect rectCanceledBuySell(cFirstPosition, 450, cFirstPosition + 300, 850);
+	//const CRect rectBuySell(cFirstPosition, 0, cFirstPosition + 150, 400);
+	//const CRect rectOrdinaryBuySell(cSecondPosition, 0, cSecondPosition + 300, 400);
+	//const CRect rectAttackBuySell(cThirdPosition, 0, cThirdPosition + 100, 400);
+	//const CRect rectCanceledBuySell(cFirstPosition, 450, cFirstPosition + 300, 850);
 
 	if (IsChinaStock(GetCurrentStock())) {
 		auto thisStock = dynamic_pointer_cast<CChinaStock>(GetCurrentStock());
@@ -275,10 +280,10 @@ void CFireBirdView::ShowVolume(CDC* pDC, const CChinaStockPtr& pStock) {
 }
 
 void CFireBirdView::ShowRealtimeGuadan(CDC* pDC) {
-	COLORREF crGreen(RGB(0, 255, 0));
+	//COLORREF crGreen(RGB(0, 255, 0));
 	constexpr COLORREF crYellow(RGB(255, 255, 0));
 	constexpr COLORREF crRed(RGB(255, 0, 0));
-	COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
+	COLORREF crWhite(RGB(255, 255, 255));
 	CPen penWhite(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed(PS_SOLID, 1, crRed);
 	CPoint ptCurrent;
 
@@ -288,20 +293,19 @@ void CFireBirdView::ShowRealtimeGuadan(CDC* pDC) {
 	constexpr int iGraphXEnd = iGraphXStart + 480;
 	constexpr int iGraphYStart = 20;
 	constexpr int iGraphYEnd = iGraphYStart + 300;
-	int iGraphYEnd2 = iGraphYEnd + 100;
 	constexpr int iGuadanXBegin = iGraphXEnd + 80;
 	constexpr int iGuadanXVolume = iGuadanXBegin + 200;
-	int iGuadanXVolume1 = iGuadanXBegin + 100;
-	int iGuadanYMiddle = 600;
+	//int iGuadanXVolume1 = iGuadanXBegin + 100;
+	//int iGuadanYMiddle = 600;
 	constexpr int iTextStart = iGuadanXVolume + 70;
 	constexpr int iTextStart1 = iTextStart + 50;
 	constexpr int iTextNext = iTextStart1 + 100;
 	constexpr int iTextNext1 = iTextNext + 50;
 	constexpr int iTextNext2 = iTextNext1 + 50;
 	constexpr int iTextStart3 = iTextNext2 + 50;
-	int iTextNext3 = iTextStart3 + 60;
+	//int iTextNext3 = iTextStart3 + 60;
 	constexpr int iPSell = iGraphXEnd;
-	int iVSell = iPSell + 100;
+	//int iVSell = iPSell + 100;
 	constexpr int y0 = 0;
 	constexpr int y1 = y0 + 30;
 	constexpr int y2 = y1 + 20;
@@ -316,7 +320,7 @@ void CFireBirdView::ShowRealtimeGuadan(CDC* pDC) {
 	constexpr int y11 = y10 + 20;
 	constexpr int y12 = y11 + 30;
 	constexpr int y13 = y12 + 20;
-	int y14 = y13 + 20;
+	//int y14 = y13 + 20;
 
 	COLORREF crBefore = pDC->SetBkColor(crYellow);
 
@@ -359,6 +363,7 @@ void CFireBirdView::ShowRealtimeGuadan(CDC* pDC) {
 		//ShowCurrentTransactionInfo(pdc, 200, 10);
 	}
 
+	pDC->SetBkColor(crBefore);
 	SysCallSelectObject(pDC, ppen);
 }
 
@@ -723,18 +728,18 @@ void CFireBirdView::ShowCurrentRS(CDC* pDC, vector<double>& vRS) {
 	auto it = vRS.end();
 	int i = 1;
 	--it;
-	const int y = m_rectIndicator.bottom - (*it--) * m_rectIndicator.Height() / 100;
-	SysCallMoveTo(pDC, m_rectIndicator.right - 1, y);
+	const int y = m_rectRS.bottom - (*it--) * m_rectRS.Height() / 100;
+	SysCallMoveTo(pDC, m_rectRS.right - 1, y);
 	for (; it != vRS.begin(); --it, i++) {
 		if (!RSLineTo(pDC, i, (*it), vRS.size())) break;
 	}
 }
 
 bool CFireBirdView::RSLineTo(CDC* pDC, int i, double dValue, int iSize) {
-	int y = m_rectIndicator.bottom - dValue * m_rectIndicator.Height() / 100;
-	SysCallLineTo(pDC, m_rectIndicator.right - 1 - 3 * i, y);
+	int y = m_rectRS.bottom - dValue * m_rectRS.Height() / 100;
+	SysCallLineTo(pDC, m_rectRS.right - 1 - 3 * i, y);
 	if (3 * i > iSize) return false;
-	if (m_rectIndicator.right <= 3 * i) return false; // 画到窗口左边框为止
+	if (m_rectRS.right <= 3 * i) return false; // 画到窗口左边框为止
 	return true;
 }
 
@@ -870,8 +875,13 @@ int CFireBirdView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	m_rectCandle.right = m_rectClient.right;
 	m_rectCandle.bottom = m_rectClient.bottom / 2;
 
+	m_rectRS.left = m_rectClient.left;
+	m_rectRS.top = m_rectClient.bottom / 2 + 1;
+	m_rectRS.right = m_rectClient.right;
+	m_rectRS.bottom = m_rectClient.bottom * 3 / 4;
+
 	m_rectIndicator.left = m_rectClient.left;
-	m_rectIndicator.top = m_rectClient.bottom / 2 + 1;
+	m_rectIndicator.top = m_rectClient.bottom * 3 / 4 + 1;
 	m_rectIndicator.right = m_rectClient.right;
 	m_rectIndicator.bottom = m_rectClient.bottom;
 
@@ -894,8 +904,13 @@ void CFireBirdView::OnSize(UINT nType, int cx, int cy) {
 	m_rectCandle.right = m_rectClient.right;
 	m_rectCandle.bottom = m_rectClient.bottom / 2;
 
+	m_rectRS.left = m_rectClient.left;
+	m_rectRS.top = m_rectClient.bottom / 2 + 1;
+	m_rectRS.right = m_rectClient.right;
+	m_rectRS.bottom = m_rectClient.bottom * 3 / 4;
+
 	m_rectIndicator.left = m_rectClient.left;
-	m_rectIndicator.top = m_rectClient.bottom / 2 + 1;
+	m_rectIndicator.top = m_rectClient.bottom * 3 / 4 + 1;
 	m_rectIndicator.right = m_rectClient.right;
 	m_rectIndicator.bottom = m_rectClient.bottom;
 }

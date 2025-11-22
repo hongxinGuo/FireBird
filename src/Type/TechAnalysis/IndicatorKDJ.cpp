@@ -17,8 +17,6 @@ void CIndicatorKDJ::Calculate() {
 	ASSERT(m_pvCandle != nullptr);
 
 	m_vKDJ.resize(m_pvCandle->Size());
-	long lHigh = 0;
-	long lLow = m_pvCandle->GetData(0)->GetLow();
 	for (size_t i = 0; i < m_Period; i++) {
 		m_vKDJ[i].m_RSV = 50;
 		m_vKDJ[i].m_K = 50;
@@ -27,8 +25,8 @@ void CIndicatorKDJ::Calculate() {
 	}
 	for (size_t index = m_Period - 1; index < m_pvCandle->Size(); index++) {
 		auto data = m_pvCandle->GetData(index);
-		lHigh = 0;
-		lLow = data->GetLow();
+		long lHigh = 0;
+		long lLow = data->GetLow();
 		for (size_t i = index - m_Period + 1; i <= index; i++) {
 			auto data2 = m_pvCandle->GetData(i);
 			if (lHigh < data2->GetHigh()) lHigh = data2->GetHigh();
@@ -41,49 +39,57 @@ void CIndicatorKDJ::Calculate() {
 	}
 }
 
-void CIndicatorKDJ::ToShow(CDC* pDC, CRect rectDraw) {
+void CIndicatorKDJ::ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth) {
 	constexpr COLORREF crPurple(RGB(128, 0, 128)), crWhite(RGB(255, 255, 255)),
-	                   crRed(RGB(255, 0, 0)), crBlue(RGB(0, 0, 255)), crYellow(RGB(255, 255, 0));
+	                   crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));
 	CPen penPurple(PS_SOLID, 1, crPurple), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
 	CPen penYellow(PS_SOLID, 1, crYellow);
 
-	auto pOLdPen = pDC->SelectObject(&penYellow);
+	auto pOLdPen = pDC->SelectObject(&penRed1);
+	int iLine20 = rectDrawArea.bottom - rectDrawArea.Height() / 5;
+	pDC->MoveTo(rectDrawArea.right - 1, iLine20); // »­20%Ïß
+	pDC->LineTo(rectDrawArea.left, iLine20);
+	int iLine80 = rectDrawArea.bottom - rectDrawArea.Height() * 40 / 5;
+	pDC->MoveTo(rectDrawArea.right - 1, iLine80); // »­20%Ïß
+	pDC->LineTo(rectDrawArea.left, iLine80);
+
+	pDC->SelectObject(&penYellow);
 	auto it = m_vKDJ.end();
 	int i = 1;
 	--it;
-	int y = rectDraw.bottom - (it--)->m_K * rectDraw.Height() / 100;
-	pDC->MoveTo(rectDraw.right - 1, y);
+	int y = rectDrawArea.bottom - (it--)->m_K * rectDrawArea.Height() / 100;
+	pDC->MoveTo(rectDrawArea.right - 1, y);
 	for (; it != m_vKDJ.begin(); --it, i++) {
-		y = rectDraw.bottom - it->m_K * rectDraw.Height() / 100;
-		pDC->LineTo(rectDraw.right - 1 - 3 * i, y);
-		if (3 * i > m_vKDJ.size()) break;
-		if (rectDraw.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+		y = rectDrawArea.bottom - it->m_K * rectDrawArea.Height() / 100;
+		pDC->LineTo(rectDrawArea.right - 1 - iStepWidth * i, y);
+		if (i >= m_vKDJ.size()) break;
+		if (rectDrawArea.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
 	}
 
 	pDC->SelectObject(&penWhite1);
 	it = m_vKDJ.end();
 	i = 1;
 	--it;
-	y = rectDraw.bottom - (it--)->m_D * rectDraw.Height() / 100;
-	pDC->MoveTo(rectDraw.right - 1, y);
+	y = rectDrawArea.bottom - (it--)->m_D * rectDrawArea.Height() / 100;
+	pDC->MoveTo(rectDrawArea.right - 1, y);
 	for (; it != m_vKDJ.begin(); --it, i++) {
-		y = rectDraw.bottom - it->m_D * rectDraw.Height() / 100;
-		pDC->LineTo(rectDraw.right - 1 - 3 * i, y);
-		if (3 * i > m_vKDJ.size()) break;
-		if (rectDraw.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+		y = rectDrawArea.bottom - it->m_D * rectDrawArea.Height() / 100;
+		pDC->LineTo(rectDrawArea.right - 1 - iStepWidth * i, y);
+		if (i >= m_vKDJ.size()) break;
+		if (rectDrawArea.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
 	}
 
 	pDC->SelectObject(&penYellow);
 	it = m_vKDJ.end();
 	i = 1;
 	--it;
-	y = rectDraw.bottom - (it--)->m_J * rectDraw.Height() / 100;
-	pDC->MoveTo(rectDraw.right - 1, y);
+	y = rectDrawArea.bottom - (it--)->m_J * rectDrawArea.Height() / 100;
+	pDC->MoveTo(rectDrawArea.right - 1, y);
 	for (; it != m_vKDJ.begin(); --it, i++) {
-		y = rectDraw.bottom - it->m_J * rectDraw.Height() / 100;
-		pDC->LineTo(rectDraw.right - 1 - 3 * i, y);
-		if (3 * i > m_vKDJ.size()) break;
-		if (rectDraw.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+		y = rectDrawArea.bottom - it->m_J * rectDrawArea.Height() / 100;
+		pDC->LineTo(rectDrawArea.right - 1 - iStepWidth * i, y);
+		if (i >= m_vKDJ.size()) break;
+		if (rectDrawArea.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
 	}
 
 	pDC->SelectObject(pOLdPen);

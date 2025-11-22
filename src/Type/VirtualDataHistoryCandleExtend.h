@@ -86,8 +86,8 @@ public:
 	void GetRS120(vector<double>& vRS) const;
 
 	// œ‘ æ¥À»›∆˜
-	void ToShow(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow);
-	void GetHighLow(CRect rectClient, long& lHigh, long& lLow);
+	void ToShow(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow);
+	std::pair<long, long> GetHighLow(int iCandleNumber);
 
 protected:
 	vector<CVirtualHistoryCandleExtendPtr> m_vHistoryData;

@@ -17,7 +17,7 @@ public:
 	void SetCandle(CVirtualDataHistoryCandleExtend* pCandle) { m_pvCandle = pCandle; }
 	void Calculate(); //计算KDJ指标
 
-	void ToShow(CDC* pDC, CRect rectDraw);
+	void ToShow(CDC* pDC, CRect rectDrawArea, int iStepWidth);
 
 protected:
 	int m_Period{ 9 }; // 默认九天为一个周期

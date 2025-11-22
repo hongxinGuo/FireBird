@@ -11,7 +11,7 @@ public:
 	void Calculate(const vector<long>& vValue);
 	void Calculate(const CVirtualDataHistoryCandleExtend* pData);
 
-	void ToShow(CDC* pDC, CPen* pNewPen, CRect rectClient, long lHigh, long lLow);
+	void ToShow(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStepWidth, long lHigh, long lLow);
 
 protected:
 	int m_period;
