@@ -400,10 +400,169 @@ void CVirtualDataHistoryCandleExtend::ToShow(CDC* pDC, CPen* pNewPen, CRect rect
 		}
 		pDC->LineTo(x, y);
 		i++;
-		if (i > m_vHistoryData.size()) break;
+		if (i >= m_vHistoryData.size()) break;
 		if (rectClient.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
 	}
 	pDC->SelectObject(pOldPen);
+}
+
+void CVirtualDataHistoryCandleExtend::ShowRS3(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+	vector<double> vData;
+	vData.reserve(rectDrawArea.right / iStepWidth + 1);
+
+	auto it = m_vHistoryData.end();
+	int i = 1;
+	--it;
+	for (; it != m_vHistoryData.begin(); --it, i++) {
+		int y = 50.0 + ((*it)->Get3RS() - 50.0) * dZoomInRatio;
+		vData.push_back(y);
+		if (i >= m_vHistoryData.size()) break;
+		if (rectDrawArea.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+	}
+	ShowLine(pDC, pNewPen, rectDrawArea, iStepWidth, vData);
+}
+
+void CVirtualDataHistoryCandleExtend::ShowRS5(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+	vector<double> vData;
+	vData.reserve(rectDrawArea.right / iStepWidth + 1);
+
+	auto it = m_vHistoryData.end();
+	int i = 1;
+	--it;
+	for (; it != m_vHistoryData.begin(); --it, i++) {
+		int y = 50.0 + ((*it)->Get5RS() - 50.0) * dZoomInRatio;
+		vData.push_back(y);
+		if (i >= m_vHistoryData.size()) break;
+		if (rectDrawArea.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+	}
+	ShowLine(pDC, pNewPen, rectDrawArea, iStepWidth, vData);
+}
+
+void CVirtualDataHistoryCandleExtend::ShowRS10(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+	vector<double> vData;
+	vData.reserve(rectDrawArea.right / iStepWidth + 1);
+
+	auto it = m_vHistoryData.end();
+	int i = 1;
+	--it;
+	for (; it != m_vHistoryData.begin(); --it, i++) {
+		int y = 50.0 + ((*it)->Get10RS() - 50.0) * dZoomInRatio;
+		vData.push_back(y);
+		if (i >= m_vHistoryData.size()) break;
+		if (rectDrawArea.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+	}
+	ShowLine(pDC, pNewPen, rectDrawArea, iStepWidth, vData);
+}
+
+void CVirtualDataHistoryCandleExtend::ShowRS30(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+	vector<double> vData;
+	vData.reserve(rectDrawArea.right / iStepWidth + 1);
+
+	auto it = m_vHistoryData.end();
+	int i = 1;
+	--it;
+	for (; it != m_vHistoryData.begin(); --it, i++) {
+		int y = 50.0 + ((*it)->Get30RS() - 50.0) * dZoomInRatio;
+		vData.push_back(y);
+		if (i >= m_vHistoryData.size()) break;
+		if (rectDrawArea.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+	}
+	ShowLine(pDC, pNewPen, rectDrawArea, iStepWidth, vData);
+}
+
+void CVirtualDataHistoryCandleExtend::ShowRS60(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+	vector<double> vData;
+	vData.reserve(rectDrawArea.right / iStepWidth + 1);
+
+	auto it = m_vHistoryData.end();
+	int i = 1;
+	--it;
+	for (; it != m_vHistoryData.begin(); --it, i++) {
+		int y = 50.0 + ((*it)->Get60RS() - 50.0) * dZoomInRatio;
+		vData.push_back(y);
+		if (i >= m_vHistoryData.size()) break;
+		if (rectDrawArea.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+	}
+	ShowLine(pDC, pNewPen, rectDrawArea, iStepWidth, vData);
+}
+
+void CVirtualDataHistoryCandleExtend::ShowRS120(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+	vector<double> vData;
+	vData.reserve(rectDrawArea.right / iStepWidth + 1);
+
+	auto it = m_vHistoryData.end();
+	int i = 1;
+	--it;
+	for (; it != m_vHistoryData.begin(); --it, i++) {
+		int y = 50.0 + ((*it)->Get120RS() - 50.0) * dZoomInRatio;
+		vData.push_back(y);
+		if (i >= m_vHistoryData.size()) break;
+		if (rectDrawArea.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+	}
+	ShowLine(pDC, pNewPen, rectDrawArea, iStepWidth, vData);
+}
+
+void CVirtualDataHistoryCandleExtend::ShowRSIndex(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+	vector<double> vData;
+	vData.reserve(rectDrawArea.right / iStepWidth + 1);
+
+	auto it = m_vHistoryData.end();
+	int i = 1;
+	--it;
+	for (; it != m_vHistoryData.begin(); --it, i++) {
+		int y = 50.0 + ((*it)->GetRSIndex() - 50.0);
+		vData.push_back(y);
+		if (i >= m_vHistoryData.size()) break;
+		if (rectDrawArea.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+	}
+	ShowLine(pDC, pNewPen, rectDrawArea, iStepWidth, vData);
+}
+
+void CVirtualDataHistoryCandleExtend::ShowRSLogarithm(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+	vector<double> vData;
+	vData.reserve(rectDrawArea.right / iStepWidth + 1);
+
+	auto it = m_vHistoryData.end();
+	int i = 1;
+	--it;
+	for (; it != m_vHistoryData.begin(); --it, i++) {
+		int y = 50.0 + ((*it)->GetRSLogarithm() - 50.0);
+		vData.push_back(y);
+		if (i >= m_vHistoryData.size()) break;
+		if (rectDrawArea.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+	}
+	ShowLine(pDC, pNewPen, rectDrawArea, iStepWidth, vData);
+}
+
+void CVirtualDataHistoryCandleExtend::ShowRS1(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+	vector<double> vData;
+	vData.reserve(rectDrawArea.right / iStepWidth + 1);
+
+	auto it = m_vHistoryData.end();
+	int i = 1;
+	--it;
+	for (; it != m_vHistoryData.begin(); --it, i++) {
+		int y = 50.0 + ((*it)->GetRS() - 50.0);
+		vData.push_back(y);
+		if (i >= m_vHistoryData.size()) break;
+		if (rectDrawArea.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+	}
+	ShowLine(pDC, pNewPen, rectDrawArea, iStepWidth, vData);
+}
+
+void CVirtualDataHistoryCandleExtend::ShowLine(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, const vector<double>& vData) {
+	auto it = vData.begin();
+	int i = 1;
+
+	int y = rectDrawArea.bottom - *it * rectDrawArea.Height() / 100;
+	auto pLodPen = pDC->SelectObject(pNewPen);
+	pDC->MoveTo(rectDrawArea.right - 1, y);
+	for (; it != vData.end(); ++it, i++) {
+		y = rectDrawArea.bottom - *it * rectDrawArea.Height() / 100;
+		pDC->LineTo(rectDrawArea.right - 1 - iStepWidth * i, y);
+		if (rectDrawArea.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+	}
+	pDC->SelectObject(pLodPen);
 }
 
 std::pair<long, long> CVirtualDataHistoryCandleExtend::GetHighLow(int iCandleNumber) {

@@ -4,6 +4,7 @@
 	<RunConfiguration>
 		<!-- don't use QtTest -->
 		<TestCaseFilter>TestCategory!=QtTest</TestCaseFilter>
+    <TestCaseFilter>TestCategory=GoogleTest</TestCaseFilter>
 		<TargetPlatform>x64</TargetPlatform>
 		<!-- timeout 120 seconds -->
 		<TestSessionTimeout>1200000</TestSessionTimeout>

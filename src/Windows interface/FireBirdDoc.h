@@ -96,6 +96,62 @@ public:
 		m_monthLine250MovingAverage.ToShow(pDC, pNewPen, rectClient, iStepWidth, lHigh, lLow);
 	}
 
+	void ShowDayLineRS3(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowDayLineRS3(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRS5(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowDayLineRS5(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRS10(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowDayLineRS10(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRS30(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowDayLineRS30(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRS60(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowDayLineRS60(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRS120(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowDayLineRS120(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRSIndex(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowDayLineRSIndex(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRSLogarithm(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowDayLineRSLogarithm(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRS1(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowDayLineRS1(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+
+	void ShowWeekLineRS3(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowWeekLineRS3(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRS5(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowWeekLineRS5(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRS10(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowWeekLineRS10(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRS30(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowWeekLineRS30(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRS60(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowWeekLineRS60(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRS120(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowWeekLineRS120(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRSIndex(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowWeekLineRSIndex(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRSLogarithm(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowWeekLineRSLogarithm(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRS1(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) const {
+		m_pCurrentStock->ShowWeekLineRS1(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+
 	void ShowDayLineKDJ(CDC* pDC, CRect rectDraw, int iStepWidth) {
 		m_dayLineKDJ.ToShow(pDC, rectDraw, iStepWidth);
 	}

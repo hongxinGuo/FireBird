@@ -145,6 +145,62 @@ public:
 	void SetSelected(bool flag) noexcept { m_bSelected = flag; }
 	bool IsSelected() const noexcept { return m_bSelected; }
 
+	void ShowDayLineRS3(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		DayLine()->ShowRS3(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRS5(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		DayLine()->ShowRS5(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRS10(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		DayLine()->ShowRS10(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRS30(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		DayLine()->ShowRS30(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRS60(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		DayLine()->ShowRS60(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRS120(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		DayLine()->ShowRS120(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRSIndex(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		DayLine()->ShowRSIndex(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRSLogarithm(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		DayLine()->ShowRSLogarithm(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowDayLineRS1(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		DayLine()->ShowRS1(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+
+	void ShowWeekLineRS3(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		WeekLine()->ShowRS3(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRS5(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		WeekLine()->ShowRS5(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRS10(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		WeekLine()->ShowRS10(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRS30(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		WeekLine()->ShowRS30(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRS60(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		WeekLine()->ShowRS60(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRS120(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		WeekLine()->ShowRS120(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRSIndex(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		WeekLine()->ShowRSIndex(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRSLogarithm(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		WeekLine()->ShowRSLogarithm(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+	void ShowWeekLineRS1(CDC* pDC, CPen* pNewPen, CRect rectDrawArea, int iStepWidth, double dZoomInRatio) {
+		WeekLine()->ShowRS1(pDC, pNewPen, rectDrawArea, iStepWidth, dZoomInRatio);
+	}
+
 protected:
 	string m_strDescription{ _T("") }; // 该证券的描述
 	string m_strExchangeCode{ _T("") }; // 证券所属交易所。美国为US，上海为SS，深圳为SZ；外汇为forex等。

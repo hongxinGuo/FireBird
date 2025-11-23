@@ -633,93 +633,113 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	auto pCurrentStock = gl_pCurrentStock;
 
 	if (pCurrentStock == nullptr) return;
-	//当前被操作的历史数据容器
-	CVirtualDataHistoryCandleExtend* pHistoryData;
-	switch (m_iCurrentShowType) {
-	case _SHOW_DAY_LINE_DATA_:
-		pHistoryData = pCurrentStock->DayLine();
-		break;
-	case _SHOW_WEEK_LINE_DATA_:
-		pHistoryData = pCurrentStock->WeekLine();
-		break;
-	default:
-		pHistoryData = nullptr;
-		break;
-	}
-
-	if (m_vRSShow.size() != pHistoryData->Size()) m_vRSShow.resize(pHistoryData->Size());
-
-	if (!pHistoryData->IsDataLoaded()) return;
-
 	ppen = pDC->SelectObject(&penRed1);
 	SysCallMoveTo(pDC, m_rectClient.right, m_rectClient.bottom * 3 / 4);
 	SysCallLineTo(pDC, 0, m_rectClient.bottom * 3 / 4);
 
-	if (IsChinaStock(GetCurrentStock())) {
-		// 画相对强度
-		if (m_fShowRS) {
-			pDC->SelectObject(&penWhite1);
-			switch (m_iShowRSOption) {
-			case 0: // 显示相对指数的强度
-				pHistoryData->GetRSIndex1(m_vRSShow);
-				break;
-			case 1:
-				pHistoryData->GetRS1(m_vRSShow);
-				break;
-			case 2:
-				pHistoryData->GetRSLogarithm1(m_vRSShow);
-				break;
-			default:
-				// 错误
-				break;
+	//当前被操作的历史数据容器
+	//CVirtualDataHistoryCandleExtend* pHistoryData;
+	switch (m_iCurrentShowType) {
+	case _SHOW_DAY_LINE_DATA_:
+		if (IsChinaStock(GetCurrentStock())) {
+			// 画相对强度
+			if (m_fShowRS) {
+				pDC->SelectObject(&penWhite1);
+				switch (m_iShowRSOption) {
+				case 0: // 显示相对指数的强度
+					GetCurrentStock()->ShowDayLineRSIndex(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 1);
+					break;
+				case 1:
+					GetCurrentStock()->ShowDayLineRS1(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 1);
+					break;
+				case 2:
+					GetCurrentStock()->ShowDayLineRSLogarithm(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 1);
+					break;
+				default:
+					// 错误
+					break;
+				}
 			}
-			if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
+
+			// 画相对强度3日均线
+			if (m_fShow3DaysRS) {
+				GetCurrentStock()->ShowDayLineRS3(pDC, &penYellow1, m_rectRS, m_iCandleWidth, 1.5);
+			}
+			// 画相对强度5日均线
+			if (m_fShow5DaysRS) {
+				GetCurrentStock()->ShowDayLineRS5(pDC, &penGreen1, m_rectRS, m_iCandleWidth, 1.5);
+			}
+			// 画相对强度10日均线
+			if (m_fShow10DaysRS) {
+				GetCurrentStock()->ShowDayLineRS10(pDC, &penRed1, m_rectRS, m_iCandleWidth, 3);
+			}
+			// 画相对强度30日均线
+			if (m_fShow30DaysRS) {
+				GetCurrentStock()->ShowDayLineRS30(pDC, &penYellow1, m_rectRS, m_iCandleWidth, 3);
+			}
+			// 画相对强度60日均线
+			if (m_fShow60DaysRS) {
+				GetCurrentStock()->ShowDayLineRS60(pDC, &penBlue1, m_rectRS, m_iCandleWidth, 6);
+			}
+			// 画相对强度120日均线
+			if (m_fShow120DaysRS) {
+				GetCurrentStock()->ShowDayLineRS120(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 6);
+			}
 		}
-		// 画相对强度3日均线
-		if (m_fShow3DaysRS) {
-			pDC->SelectObject(&penYellow1);
-			pHistoryData->GetRS3(m_vRSShow);
-			if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
+		break;
+	case _SHOW_WEEK_LINE_DATA_:
+		if (IsChinaStock(GetCurrentStock())) {
+			// 画相对强度
+			if (m_fShowRS) {
+				pDC->SelectObject(&penWhite1);
+				switch (m_iShowRSOption) {
+				case 0: // 显示相对指数的强度
+					GetCurrentStock()->ShowDayLineRSIndex(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 1);
+					break;
+				case 1:
+					GetCurrentStock()->ShowDayLineRS1(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 1);
+					break;
+				case 2:
+					GetCurrentStock()->ShowDayLineRSLogarithm(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 1);
+					break;
+				default:
+					// 错误
+					break;
+				}
+			}
+
+			// 画相对强度3日均线
+			if (m_fShow3DaysRS) {
+				GetCurrentStock()->ShowWeekLineRS3(pDC, &penYellow1, m_rectRS, m_iCandleWidth, 1.5);
+			}
+			// 画相对强度5日均线
+			if (m_fShow5DaysRS) {
+				GetCurrentStock()->ShowWeekLineRS5(pDC, &penGreen1, m_rectRS, m_iCandleWidth, 1.5);
+			}
+			// 画相对强度10日均线
+			if (m_fShow10DaysRS) {
+				GetCurrentStock()->ShowWeekLineRS10(pDC, &penRed1, m_rectRS, m_iCandleWidth, 3);
+			}
+			// 画相对强度30日均线
+			if (m_fShow30DaysRS) {
+				GetCurrentStock()->ShowWeekLineRS30(pDC, &penYellow1, m_rectRS, m_iCandleWidth, 3);
+			}
+			// 画相对强度60日均线
+			if (m_fShow60DaysRS) {
+				GetCurrentStock()->ShowWeekLineRS60(pDC, &penBlue1, m_rectRS, m_iCandleWidth, 6);
+			}
+			// 画相对强度120日均线
+			if (m_fShow120DaysRS) {
+				GetCurrentStock()->ShowWeekLineRS120(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 6);
+			}
 		}
-		// 画相对强度5日均线
-		if (m_fShow5DaysRS) {
-			pDC->SelectObject(&penGreen1);
-			pHistoryData->GetRS5(m_vRSShow);
-			ZoomIn(m_vRSShow, 50, 1.5);
-			if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
-		}
-		// 画相对强度10日均线
-		if (m_fShow10DaysRS) {
-			pDC->SelectObject(&penRed1);
-			pHistoryData->GetRS10(m_vRSShow);
-			ZoomIn(m_vRSShow, 50, 3);
-			if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
-		}
-		// 画相对强度30日均线
-		if (m_fShow30DaysRS) {
-			pDC->SelectObject(&penYellow1);
-			pHistoryData->GetRS30(m_vRSShow);
-			ZoomIn(m_vRSShow, 50, 3);
-			if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
-		}
-		// 画相对强度60日均线
-		if (m_fShow60DaysRS) {
-			pDC->SelectObject(&penBlue1);
-			pHistoryData->GetRS60(m_vRSShow);
-			ZoomIn(m_vRSShow, 50, 6);
-			if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
-		}
-		// 画相对强度120日均线
-		if (m_fShow120DaysRS) {
-			pDC->SelectObject(&penWhite1);
-			pHistoryData->GetRS120(m_vRSShow);
-			ZoomIn(m_vRSShow, 50, 6);
-			if (m_vRSShow.size() > 0) ShowCurrentRS(pDC, m_vRSShow);
-		}
+		break;
+	default:
+		break;
 	}
 
 	////////////////////////////////////////////////////////////////画日线蜡烛线
-	if (pHistoryData->GetDataVector().size() > 0) ShowHistoryData(pDC, m_rectCandle);
+	ShowHistoryData(pDC, m_rectCandle);
 
 	pDC->SelectObject(ppen);
 }

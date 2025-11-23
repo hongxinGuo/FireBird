@@ -39,7 +39,7 @@ void CMovingAverage::ToShow(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStep
 		y = (1 - static_cast<double>(value - lLow) / (lHigh - lLow)) * rectClient.Height();
 		pDC->LineTo(x, y);
 		i++;
-		if (i > Size()) break;
+		if (i >= Size()) break;
 		if (rectClient.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
 	}
 	pDC->SelectObject(pOldPen);
