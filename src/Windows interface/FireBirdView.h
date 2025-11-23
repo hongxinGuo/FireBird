@@ -5,7 +5,6 @@
 
 enum {
 	_SHOW_DAY_LINE_DATA_ = 1,
-	_SHOW_REAL_TIME_DATA_ = 2,
 	_SHOW_WEEK_LINE_DATA_ = 3,
 };
 
@@ -40,26 +39,12 @@ public:
 public:
 	void Show(CDC* pdc);
 	virtual void ShowStockHistoryDataLine(CDC* pDC);
-	virtual void ShowRealtimeData(CDC* pDC);
-
-	bool ShowGuadan(CDC* pDC, const CChinaStockPtr& pStock, int iXStart, int iYStart, int iYEnd);
-	bool ShowCurrentTransactionInfo(CDC* pDC, int iXStart, int iYStart);
-	void ShowRealtimeGuadan(CDC* pdc);
-	void ShowVolume(CDC* pDC, const CChinaStockPtr& pStock);
-	void ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
-	void ShowOrdinaryBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea);
-	void ShowAttackBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea);
-	void ShowCanceledBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea);
-	void ShowCurrentRS(CDC* pDC, vector<double>& vRS);
-	bool RSLineTo(CDC* pDC, int i, double dValue, int iSize);
 
 	int GetCurrentShowType() const noexcept { return m_iCurrentShowType; }
 	void SetCurrentShowType(const int iValue) noexcept { m_iCurrentShowType = iValue; }
 
 	int GetCandleWidth() const noexcept { return m_iCandleWidth; }
 	void SetCandleWidth(const int width) noexcept { m_iCandleWidth = width; }
-
-	void ZoomIn(vector<double>& vData, double dLevel, double dRate);
 
 	//系统包裹函数
 public:
@@ -161,8 +146,6 @@ public:
 	afx_msg void OnUpdateShowRsIndex(CCmdUI* pCmdUI);
 	afx_msg void OnShowDayLine();
 	afx_msg void OnUpdateShowDayLine(CCmdUI* pCmdUI);
-	afx_msg void OnShowRealTime();
-	afx_msg void OnUpdateShowRealTime(CCmdUI* pCmdUI);
 	afx_msg void OnShowWeekLine();
 	afx_msg void OnUpdateShowWeekLine(CCmdUI* pCmdUI);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);

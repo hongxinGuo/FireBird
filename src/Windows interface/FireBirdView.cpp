@@ -4,7 +4,6 @@
 #include"pch.h"
 
 #include"ChinaStock.h"
-#include"ChinaMarket.h"
 
 // SHARED_HANDayLineERS 可以在实现预览、缩略图和搜索筛选器句柄的
 // ATL 项目中进行定义，并允许与该项目共享文档代码。
@@ -100,8 +99,8 @@ BEGIN_MESSAGE_MAP(CFireBirdView, CView)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_RS_INDEX, &CFireBirdView::OnUpdateShowRsIndex)
 	ON_COMMAND(ID_SHOW_DAYLINE, &CFireBirdView::OnShowDayLine)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_DAYLINE, &CFireBirdView::OnUpdateShowDayLine)
-	ON_COMMAND(ID_SHOW_REALTIME, &CFireBirdView::OnShowRealTime)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_REALTIME, &CFireBirdView::OnUpdateShowRealTime)
+	//	ON_COMMAND(ID_SHOW_REALTIME, &CFireBirdView::OnShowRealTime)
+	//	ON_UPDATE_COMMAND_UI(ID_SHOW_REALTIME, &CFireBirdView::OnUpdateShowRealTime)
 	ON_COMMAND(ID_SHOW_WEEKLINE, &CFireBirdView::OnShowWeekLine)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_WEEKLINE, &CFireBirdView::OnUpdateShowWeekLine)
 	ON_WM_SETFOCUS()
@@ -199,441 +198,18 @@ void CFireBirdView::ShowHistoryData(CDC* pDC, CRect rectDrawArea) {
 	}
 }
 
-bool CFireBirdView::ShowGuadan(CDC* pDC, const CChinaStockPtr& pStock, int iXStart, int iYStart, int iYEnd) {
-	string s = _T("");
-	const CSize sizeText = SysCallGetTextExtent(pDC, s.c_str());
-	const int iNumberOfLine = (iYEnd - iYStart) / sizeText.cy;
-
-	const long lStartPrice = (static_cast<long>(pStock->GetCurrentGuadanTransactionPrice() * 100) - iNumberOfLine / 2) * 10;
-	int j = 0;
-
-	for (int i = iNumberOfLine; i > 0; i--) {
-		s = fmt::format("{:7.2f}", (static_cast<double>(lStartPrice) + i * 10) / 1000);
-		string sPrice;
-		const long lCurrentPrice = lStartPrice + i * 10;
-
-		if (!pStock->HaveGuadan(lCurrentPrice)) {
-			// 此价位没有挂单
-			sPrice = _T("    ----------");
-		}
-		else {
-			sPrice = fmt::format("    {:10Ld}", pStock->GetGuadan(lCurrentPrice));
-		}
-
-		s += sPrice;
-		pDC->TextOut(iXStart + 10, iYStart + sizeText.cy * j + 10, s.c_str());
-		j++;
-	}
-
-	return true;
-}
-
-bool CFireBirdView::ShowCurrentTransactionInfo(CDC* pDC, int iXStart, int iYStart) {
-	CChinaStockPtr pStock;
-	if (gl_dataContainerChinaStock.Size() > 0) {
-		pStock = gl_dataContainerChinaStock.GetStock(0); // 000001.SS
-	}
-	else return false;
-
-	string s = fmt::format("当前挂单成交价格：{:8.3f}", pStock->GetCurrentGuadanTransactionPrice());
-	pDC->TextOut(iXStart, iYStart + 10, s.c_str());
-
-	return true;
-}
-
-void CFireBirdView::ShowRealtimeData(CDC* pDC) {
-	const CRect rectVolume(2, 0, 962, 100);
-	int cFirstPosition = rectVolume.right + 500;
-	int cSecondPosition = cFirstPosition + 200;
-	int cThirdPosition = cSecondPosition + 300;
-	//const CRect rectBuySell(cFirstPosition, 0, cFirstPosition + 150, 400);
-	//const CRect rectOrdinaryBuySell(cSecondPosition, 0, cSecondPosition + 300, 400);
-	//const CRect rectAttackBuySell(cThirdPosition, 0, cThirdPosition + 100, 400);
-	//const CRect rectCanceledBuySell(cFirstPosition, 450, cFirstPosition + 300, 850);
-
-	if (IsChinaStock(GetCurrentStock())) {
-		auto thisStock = dynamic_pointer_cast<CChinaStock>(GetCurrentStock());
-
-		ShowVolume(pDC, thisStock);
-		//ShowBuySell(pDC, thisStock, rectBuySell);
-		//ShowOrdinaryBuySell(pDC, thisStock, rectOrdinaryBuySell);
-		//ShowAttackBuySell(pDC, thisStock, rectAttackBuySell);
-		//ShowCanceledBuySell(pDC, thisStock, rectCanceledBuySell);
-	}
-
-	//ShowRealtimeGuadan(pDC);
-}
-
-void CFireBirdView::ShowVolume(CDC* pDC, const CChinaStockPtr& pStock) {
-	auto vVolume = pStock->GetVolumeVector();
-
-	const int index = gl_pChinaMarket->XferMarketTimeToIndex();
-	ShowRealtimeVolume(pDC, vVolume, pStock->GetOrdinaryBuyVolumeVector(), index, m_rectOrdinaryBuyVolume, false);
-	ShowRealtimeVolume(pDC, vVolume, pStock->GetOrdinarySellVolumeVector(), index, m_rectOrdinarySellVolume, true);
-	ShowRealtimeVolume(pDC, vVolume, pStock->GetAttackBuyVolumeVector(), index, m_rectAttackBuyVolume, false);
-	ShowRealtimeVolume(pDC, vVolume, pStock->GetAttackSellVolumeVector(), index, m_rectAttackSellVolume, true);
-	ShowRealtimeVolume(pDC, vVolume, pStock->GetStrongBuyVolumeVector(), index, m_rectStrongBuyVolume, false);
-	ShowRealtimeVolume(pDC, vVolume, pStock->GetStrongSellVolumeVector(), index, m_rectStrongSellVolume, true);
-	// Note cancel volume有时会超过当时的成交数量，导致显示越界。暂停使用
-	//ShowRealtimeVolume(pDC, vVolume, pStock->GetCancelBuyVolumeVector(), index, m_rectCancelBuyVolume, false);
-	//ShowRealtimeVolume(pDC, vVolume, pStock->GetCancelSellVolumeVector(), index, m_rectCancelSellVolume, true);
-}
-
-void CFireBirdView::ShowRealtimeGuadan(CDC* pDC) {
-	//COLORREF crGreen(RGB(0, 255, 0));
-	constexpr COLORREF crYellow(RGB(255, 255, 0));
-	constexpr COLORREF crRed(RGB(255, 0, 0));
-	COLORREF crWhite(RGB(255, 255, 255));
-	CPen penWhite(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed(PS_SOLID, 1, crRed);
-	CPoint ptCurrent;
-
-	auto pCurrentStock = GetDocument()->GetCurrentStock();
-
-	constexpr int iGraphXStart = 60;
-	constexpr int iGraphXEnd = iGraphXStart + 480;
-	constexpr int iGraphYStart = 20;
-	constexpr int iGraphYEnd = iGraphYStart + 300;
-	constexpr int iGuadanXBegin = iGraphXEnd + 80;
-	constexpr int iGuadanXVolume = iGuadanXBegin + 200;
-	//int iGuadanXVolume1 = iGuadanXBegin + 100;
-	//int iGuadanYMiddle = 600;
-	constexpr int iTextStart = iGuadanXVolume + 70;
-	constexpr int iTextStart1 = iTextStart + 50;
-	constexpr int iTextNext = iTextStart1 + 100;
-	constexpr int iTextNext1 = iTextNext + 50;
-	constexpr int iTextNext2 = iTextNext1 + 50;
-	constexpr int iTextStart3 = iTextNext2 + 50;
-	//int iTextNext3 = iTextStart3 + 60;
-	constexpr int iPSell = iGraphXEnd;
-	//int iVSell = iPSell + 100;
-	constexpr int y0 = 0;
-	constexpr int y1 = y0 + 30;
-	constexpr int y2 = y1 + 20;
-	constexpr int y3 = y2 + 20;
-	constexpr int y4 = y3 + 20;
-	constexpr int y5 = y4 + 20;
-	constexpr int y6 = y5 + 30;
-	constexpr int y7 = y6 + 20;
-	constexpr int y8 = y7 + 20;
-	constexpr int y9 = y8 + 30;
-	constexpr int y10 = y9 + 20;
-	constexpr int y11 = y10 + 20;
-	constexpr int y12 = y11 + 30;
-	constexpr int y13 = y12 + 20;
-	//int y14 = y13 + 20;
-
-	COLORREF crBefore = pDC->SetBkColor(crYellow);
-
-	CPen* ppen = SysCallSelectObject(pDC, &penRed);
-	ptCurrent.x = iTextStart - 5;
-	ptCurrent.y = 0;
-	SysCallMoveTo(pDC, ptCurrent);
-	ptCurrent.y = 768;
-	SysCallLineTo(pDC, ptCurrent);
-	ptCurrent.x = iTextStart - 5;
-	ptCurrent.y = y1 - 5;
-	SysCallMoveTo(pDC, ptCurrent);
-	ptCurrent.x = 1024;
-	SysCallLineTo(pDC, ptCurrent);
-	ptCurrent.x = iTextStart - 5;
-	ptCurrent.y = y6 - 5;
-	SysCallMoveTo(pDC, ptCurrent);
-	ptCurrent.x = 1024;
-	SysCallLineTo(pDC, ptCurrent);
-	ptCurrent.x = iTextStart - 5;
-	ptCurrent.y = y9 - 5;
-	SysCallMoveTo(pDC, ptCurrent);
-	ptCurrent.x = 1024;
-	SysCallLineTo(pDC, ptCurrent);
-	ptCurrent.x = iTextStart - 5;
-	ptCurrent.y = y12 - 5;
-	SysCallMoveTo(pDC, ptCurrent);
-	ptCurrent.x = 1024;
-	SysCallLineTo(pDC, ptCurrent);
-	ptCurrent.x = iGuadanXBegin;
-	ptCurrent.y = 0;
-	SysCallMoveTo(pDC, ptCurrent);
-	ptCurrent.y = 1060;
-	SysCallLineTo(pDC, ptCurrent);
-	SysCallSelectObject(pDC, ppen);
-
-	if (pCurrentStock != nullptr) {
-		//	ShowGuadan(pDC, pCurrentStock, 10, 10, 500);
-
-		//ShowCurrentTransactionInfo(pdc, 200, 10);
-	}
-
-	pDC->SetBkColor(crBefore);
-	SysCallSelectObject(pDC, ppen);
-}
-
-void CFireBirdView::ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
-	constexpr COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
-	CPen* ppen = nullptr;
-	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
-	CPen penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
-	CRect rectTop, rectBottom;
-	double base;
-	double HalfHeight = rectArea.Height() / 2.0;
-	double yBase = rectArea.top + HalfHeight;
-	double dRatio = 1.0;
-
-	if (pStock->GetVolume() > 0) base = pStock->GetVolume();
-	else return;
-
-	rectTop.bottom = yBase;
-	rectBottom.top = yBase + 1;
-	rectTop.left = rectBottom.left = rectArea.left;
-	rectTop.right = rectBottom.right = rectArea.right;
-	rectTop.left = rectArea.left;
-	rectTop.right = rectArea.left + 30;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetUnknownVolume()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 31;
-	rectTop.right = rectArea.left + 60;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetOrdinaryBuyVolume()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 61;
-	rectTop.right = rectArea.left + 90;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetAttackBuyVolume()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 91;
-	rectTop.right = rectArea.left + 120;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetStrongBuyVolume()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-
-	rectBottom.top = yBase;
-	rectBottom.left = rectArea.left + 31;
-	rectBottom.right = rectArea.left + 60;
-	rectBottom.bottom = yBase + HalfHeight * (static_cast<double>(pStock->GetOrdinarySellVolume()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 61;
-	rectBottom.right = rectArea.left + 90;
-	rectBottom.bottom = yBase + HalfHeight * (static_cast<double>(pStock->GetAttackSellVolume()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 91;
-	rectBottom.right = rectArea.left + 120;
-	rectBottom.bottom = yBase + HalfHeight * (static_cast<double>(pStock->GetStrongSellVolume()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-}
-
-void CFireBirdView::ShowAttackBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea) {
-	constexpr COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
-	CPen* ppen = nullptr;
-	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
-	CPen penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
-	CRect rectTop, rectBottom;
-	double base;
-	const double HalfHeight = rectArea.Height() / 2.0;
-	const double yBase = rectArea.top + HalfHeight;
-	constexpr double dRatio = 4.0;
-
-	if (pStock->GetVolume() > 0) base = pStock->GetVolume();
-	else return;
-
-	rectTop.bottom = yBase;
-	rectBottom.top = yBase + 1;
-	rectTop.left = rectBottom.left = rectArea.left;
-	rectTop.right = rectBottom.right = rectArea.right;
-	rectTop.left = rectArea.left;
-	rectTop.right = rectArea.left + 30;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetAttackBuyBelow50000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 31;
-	rectTop.right = rectArea.left + 60;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetAttackBuyBelow200000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 61;
-	rectTop.right = rectArea.left + 90;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetAttackBuyAbove200000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-
-	rectBottom.top = yBase;
-	rectBottom.left = rectArea.left;
-	rectBottom.right = rectArea.left + 30;
-	rectBottom.bottom = yBase + HalfHeight * (static_cast<double>(pStock->GetAttackSellBelow50000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 31;
-	rectBottom.right = rectArea.left + 60;
-	rectBottom.bottom = yBase + HalfHeight * (static_cast<double>(pStock->GetAttackSellBelow200000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 61;
-	rectBottom.right = rectArea.left + 90;
-	rectBottom.bottom = yBase + HalfHeight * (static_cast<double>(pStock->GetAttackSellAbove200000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-}
-
-void CFireBirdView::ShowOrdinaryBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea) {
-	constexpr COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
-	CPen* ppen = nullptr;
-	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
-	CPen penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
-	CRect rectTop, rectBottom;
-	double base;
-	double HalfHeight = rectArea.Height() / 2.0;
-	double yBase = rectArea.top + HalfHeight;
-	double dRatio = 4.0;
-
-	if (pStock->GetVolume() > 0) base = pStock->GetVolume();
-	else return;
-
-	rectTop.bottom = yBase;
-	rectBottom.top = yBase + 1;
-	rectTop.left = rectBottom.left = rectArea.left;
-	rectTop.right = rectBottom.right = rectArea.right;
-	rectTop.left = rectArea.left;
-	rectTop.right = rectArea.left + 30;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetOrdinaryBuyVolumeBelow5000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 31;
-	rectTop.right = rectArea.left + 60;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetOrdinaryBuyVolumeBelow10000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 61;
-	rectTop.right = rectArea.left + 90;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetOrdinaryBuyVolumeBelow20000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 91;
-	rectTop.right = rectArea.left + 120;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetOrdinaryBuyVolumeBelow50000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 121;
-	rectTop.right = rectArea.left + 150;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetOrdinaryBuyVolumeBelow100000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 151;
-	rectTop.right = rectArea.left + 180;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetOrdinaryBuyVolumeBelow200000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 181;
-	rectTop.right = rectArea.left + 210;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetOrdinaryBuyVolumeAbove200000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-
-	rectBottom.top = yBase;
-	rectBottom.left = rectArea.left;
-	rectBottom.right = rectArea.left + 30;
-	rectBottom.bottom = yBase + HalfHeight * (static_cast<double>(pStock->GetOrdinarySellVolumeBelow5000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 31;
-	rectBottom.right = rectArea.left + 60;
-	rectBottom.bottom = yBase + HalfHeight * (static_cast<double>(pStock->GetOrdinarySellVolumeBelow10000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 61;
-	rectBottom.right = rectArea.left + 90;
-	rectBottom.bottom = yBase + HalfHeight * (static_cast<double>(pStock->GetOrdinarySellVolumeBelow20000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 91;
-	rectBottom.right = rectArea.left + 120;
-	rectBottom.bottom = yBase + HalfHeight * (static_cast<double>(pStock->GetOrdinarySellVolumeBelow50000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 121;
-	rectBottom.right = rectArea.left + 150;
-	rectBottom.bottom = yBase + HalfHeight * (static_cast<double>(pStock->GetOrdinarySellVolumeBelow100000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 151;
-	rectBottom.right = rectArea.left + 180;
-	rectBottom.bottom = yBase + HalfHeight * (static_cast<double>(pStock->GetOrdinarySellVolumeBelow200000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 181;
-	rectBottom.right = rectArea.left + 210;
-	rectBottom.bottom = yBase + HalfHeight * (static_cast<double>(pStock->GetOrdinarySellVolumeAbove200000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-}
-
-void CFireBirdView::ShowCanceledBuySell(CDC* pDC, const CChinaStockPtr& pStock, CRect rectArea) {
-	constexpr COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
-	CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
-	CPen penGreen20(PS_SOLID, 20, crGreen), penGreen30(PS_SOLID, 30, crGreen), penGreen40(PS_SOLID, 40, crGreen);
-
-	double base;
-	const double HalfHeight = rectArea.Height() / 2.0;
-	const double yBase = rectArea.top + HalfHeight;
-	constexpr double dRatio = 1.0;
-	CRect rectTop, rectBottom;
-
-	if ((pStock->GetCanceledBuyVolume() == 0) && (pStock->GetCanceledSellVolume() == 0)) return;
-	if ((pStock->GetCanceledBuyVolume() > pStock->GetCanceledSellVolume())) base = pStock->GetCanceledBuyVolume();
-	else base = pStock->GetCanceledSellVolume();
-
-	rectTop.bottom = yBase;
-	rectBottom.top = yBase - 1;
-	rectTop.left = rectBottom.left = rectArea.left;
-	rectTop.right = rectBottom.right = rectArea.right;
-	rectTop.left = rectArea.left;
-	rectTop.right = rectArea.left + 30;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetCanceledBuyVolumeBelow5000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 31;
-	rectTop.right = rectArea.left + 60;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetCanceledBuyVolumeBelow10000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 61;
-	rectTop.right = rectArea.left + 90;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetCanceledBuyVolumeBelow20000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 91;
-	rectTop.right = rectArea.left + 120;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetCanceledBuyVolumeBelow50000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 121;
-	rectTop.right = rectArea.left + 150;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetCanceledBuyVolumeBelow100000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 151;
-	rectTop.right = rectArea.left + 180;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetCanceledBuyVolumeBelow200000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-	rectTop.left = rectArea.left + 181;
-	rectTop.right = rectArea.left + 210;
-	rectTop.top = yBase - HalfHeight * (static_cast<double>(pStock->GetCanceledBuyVolumeAbove200000()) * dRatio / base);
-	SysCallFillSolidRect(pDC, rectTop, crRed);
-
-	rectBottom.top = yBase;
-	rectBottom.left = rectArea.left;
-	rectBottom.right = rectArea.left + 30;
-	rectBottom.bottom = yBase + HalfHeight * (pStock->GetCanceledSellVolumeBelow5000() * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 31;
-	rectBottom.right = rectArea.left + 60;
-	rectBottom.bottom = yBase + HalfHeight * (pStock->GetCanceledSellVolumeBelow10000() * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 61;
-	rectBottom.right = rectArea.left + 90;
-	rectBottom.bottom = yBase + HalfHeight * (pStock->GetCanceledSellVolumeBelow20000() * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 91;
-	rectBottom.right = rectArea.left + 120;
-	rectBottom.bottom = yBase + HalfHeight * (pStock->GetCanceledSellVolumeBelow50000() * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 121;
-	rectBottom.right = rectArea.left + 150;
-	rectBottom.bottom = yBase + HalfHeight * (pStock->GetCanceledSellVolumeBelow100000() * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 151;
-	rectBottom.right = rectArea.left + 180;
-	rectBottom.bottom = yBase + HalfHeight * (pStock->GetCanceledSellVolumeBelow200000() * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-	rectBottom.left = rectArea.left + 181;
-	rectBottom.right = rectArea.left + 210;
-	rectBottom.bottom = yBase + HalfHeight * (pStock->GetCanceledSellVolumeAbove200000() * dRatio / base);
-	SysCallFillSolidRect(pDC, rectBottom, crGreen);
-}
-
 void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
-	constexpr COLORREF crBlack(RGB(0, 0, 0)), crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));
+	constexpr COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));
 	constexpr COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
-	CPen* ppen = nullptr;
 	CPen penWhite1(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penWhite3(PS_SOLID, 3, crWhite);
 	CPen penRed1(PS_SOLID, 1, crRed), penRed2(PS_SOLID, 2, crRed), penRed3(PS_SOLID, 3, crRed);
 	CPen penGreen1(PS_SOLID, 1, crGreen), penGreen2(PS_SOLID, 2, crGreen), penGreen3(PS_SOLID, 3, crGreen);
 	CPen penYellow1(PS_SOLID, 1, crYellow), penYellow2(PS_SOLID, 2, crYellow), penYellow3(PS_SOLID, 3, crYellow);
 	CPen penBlue1(PS_SOLID, 1, crBlue), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
-	CPoint ptCurrent;
 	auto pCurrentStock = gl_pCurrentStock;
 
 	if (pCurrentStock == nullptr) return;
-	ppen = pDC->SelectObject(&penRed1);
+	CPen* ppen = pDC->SelectObject(&penRed1);
 	SysCallMoveTo(pDC, m_rectClient.right, m_rectClient.bottom * 3 / 4);
 	SysCallLineTo(pDC, 0, m_rectClient.bottom * 3 / 4);
 
@@ -688,52 +264,7 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 		}
 		break;
 	case _SHOW_WEEK_LINE_DATA_:
-		if (IsChinaStock(GetCurrentStock())) {
-			// 画相对强度
-			if (m_fShowRS) {
-				pDC->SelectObject(&penWhite1);
-				switch (m_iShowRSOption) {
-				case 0: // 显示相对指数的强度
-					GetCurrentStock()->ShowDayLineRSIndex(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 1);
-					break;
-				case 1:
-					GetCurrentStock()->ShowDayLineRS1(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 1);
-					break;
-				case 2:
-					GetCurrentStock()->ShowDayLineRSLogarithm(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 1);
-					break;
-				default:
-					// 错误
-					break;
-				}
-			}
-
-			// 画相对强度3日均线
-			if (m_fShow3DaysRS) {
-				GetCurrentStock()->ShowWeekLineRS3(pDC, &penYellow1, m_rectRS, m_iCandleWidth, 1.5);
-			}
-			// 画相对强度5日均线
-			if (m_fShow5DaysRS) {
-				GetCurrentStock()->ShowWeekLineRS5(pDC, &penGreen1, m_rectRS, m_iCandleWidth, 1.5);
-			}
-			// 画相对强度10日均线
-			if (m_fShow10DaysRS) {
-				GetCurrentStock()->ShowWeekLineRS10(pDC, &penRed1, m_rectRS, m_iCandleWidth, 3);
-			}
-			// 画相对强度30日均线
-			if (m_fShow30DaysRS) {
-				GetCurrentStock()->ShowWeekLineRS30(pDC, &penYellow1, m_rectRS, m_iCandleWidth, 3);
-			}
-			// 画相对强度60日均线
-			if (m_fShow60DaysRS) {
-				GetCurrentStock()->ShowWeekLineRS60(pDC, &penBlue1, m_rectRS, m_iCandleWidth, 6);
-			}
-			// 画相对强度120日均线
-			if (m_fShow120DaysRS) {
-				GetCurrentStock()->ShowWeekLineRS120(pDC, &penWhite1, m_rectRS, m_iCandleWidth, 6);
-			}
-		}
-		break;
+		break; // 周线不显示相对强度
 	default:
 		break;
 	}
@@ -742,34 +273,6 @@ void CFireBirdView::ShowStockHistoryDataLine(CDC* pDC) {
 	ShowHistoryData(pDC, m_rectCandle);
 
 	pDC->SelectObject(ppen);
-}
-
-void CFireBirdView::ShowCurrentRS(CDC* pDC, vector<double>& vRS) {
-	auto it = vRS.end();
-	int i = 1;
-	--it;
-	const int y = m_rectRS.bottom - (*it--) * m_rectRS.Height() / 100;
-	SysCallMoveTo(pDC, m_rectRS.right - 1, y);
-	for (; it != vRS.begin(); --it, i++) {
-		if (!RSLineTo(pDC, i, (*it), vRS.size())) break;
-	}
-}
-
-bool CFireBirdView::RSLineTo(CDC* pDC, int i, double dValue, int iSize) {
-	int y = m_rectRS.bottom - dValue * m_rectRS.Height() / 100;
-	SysCallLineTo(pDC, m_rectRS.right - 1 - 3 * i, y);
-	if (3 * i > iSize) return false;
-	if (m_rectRS.right <= 3 * i) return false; // 画到窗口左边框为止
-	return true;
-}
-
-void CFireBirdView::ZoomIn(vector<double>& vData, double dLevel, double dRate) {
-	for (int i = 0; i < vData.size(); i++) {
-		double d = dLevel + (vData.at(i) - dLevel) * dRate;
-		if (d < 0) vData.at(i) = 0;
-		else if (d > 100) vData.at(i) = 100;
-		else vData.at(i) = d;
-	}
 }
 
 BOOL CFireBirdView::PreCreateWindow(CREATESTRUCT& cs) {
@@ -821,13 +324,6 @@ void CFireBirdView::Show(CDC* pdc) {
 		pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
 		m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
 		ShowStockHistoryDataLine(&m_MemoryDC);
-		SysCallBitBlt(pdc, 0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
-		if (pOldBitmap != nullptr) m_MemoryDC.SelectObject(pOldBitmap);
-		break;
-	case _SHOW_REAL_TIME_DATA_: // show realtime stock data
-		pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
-		m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
-		ShowRealtimeData(&m_MemoryDC);
 		SysCallBitBlt(pdc, 0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
 		if (pOldBitmap != nullptr) m_MemoryDC.SelectObject(pOldBitmap);
 		break;
@@ -1067,15 +563,6 @@ void CFireBirdView::OnShowDayLine() {
 
 void CFireBirdView::OnUpdateShowDayLine(CCmdUI* pCmdUI) {
 	if (m_iCurrentShowType == _SHOW_DAY_LINE_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
-	else SysCallCmdUISetCheck(pCmdUI, 0);
-}
-
-void CFireBirdView::OnShowRealTime() {
-	m_iCurrentShowType = _SHOW_REAL_TIME_DATA_;
-}
-
-void CFireBirdView::OnUpdateShowRealTime(CCmdUI* pCmdUI) {
-	if (m_iCurrentShowType == _SHOW_REAL_TIME_DATA_) SysCallCmdUISetCheck(pCmdUI, 1);
 	else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
