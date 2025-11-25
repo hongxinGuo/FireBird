@@ -1,4 +1,4 @@
-// SetWorldChosenCrypto.h : CSetWorldChosenCrypto µÄÉùÃ÷
+ï»¿// SetWorldChosenCrypto.h : CSetWorldChosenCrypto çš„å£°æ˜Ž
 #pragma once
 
 #include"VirtualSetChosenStake.h"

@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -47,16 +47,16 @@ namespace FireBirdTest {
 		companySECFilings.SetMarket(gl_pWorldMarket);
 		companySECFilings.SetIndex(1);
 		EXPECT_EQ(companySECFilings.CreateMessage(), (companySECFilings.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol()));
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateSECFilings()) << "½ÓÊÕµ½µÄÊı¾İ´¦Àíºó·½ÉèÖÃ´Ë±êÊ¶";
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateSECFilings()) << "æ¥æ”¶åˆ°çš„æ•°æ®å¤„ç†åæ–¹è®¾ç½®æ­¤æ ‡è¯†";
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdatePeer(true);
 	}
 
-	// ²»×ãÈı¸ö×Ö·û
+	// ä¸è¶³ä¸‰ä¸ªå­—ç¬¦
 	Test_FinnhubWebData SECFilings102(3, "AAPL", "{}");
-	// ¸ñÊ½²»¶Ô(È±¿ªÊ¼µÄ¡®[¡¯£©£¬ÎŞ·¨Ë³ÀûParser
+	// æ ¼å¼ä¸å¯¹(ç¼ºå¼€å§‹çš„â€˜[â€™ï¼‰ï¼Œæ— æ³•é¡ºåˆ©Parser
 	Test_FinnhubWebData SECFilings103(4, "AAPL", "{\"accessNumber\":\"0000320193-24-000056\",\"symbol\":\"AAPL\",\"cik\":\"320193\",\"form\":\"4\",\"filedDate\":\"2024-04-15 00:00:00\",\"acceptedDate\":\"2024-04-15 18:31:11\",\"reportUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml\",\"filingUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html\"}]");
-	// ÕıÈ·µÄÊı¾İ
+	// æ­£ç¡®çš„æ•°æ®
 	Test_FinnhubWebData SECFilings110(10, "AAPL", "[{\"accessNumber\":\"0000320193-24-000056\",\"symbol\":\"AAPL\",\"cik\":\"320193\",\"form\":\"4\",\"filedDate\":\"2024-04-15 00:00:00\",\"acceptedDate\":\"2024-04-15 18:31:11\",\"reportUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/wk-form4_1713220262.xml\",\"filingUrl\":\"https://www.sec.gov/Archives/edgar/data/1496686/000032019324000056/0000320193-24-000056-index.html\"}]");
 
 	class ParseFinnhubSECFilingsTest : public TestWithParam<Test_FinnhubWebData*> {
@@ -90,20 +90,20 @@ namespace FireBirdTest {
 	TEST_P(ParseFinnhubSECFilingsTest, TestParseFinnhubSECFilings2) {
 		pvSECFilings = m_finnhubSECFilings.ParseFinnhubStockSECFilings(m_pWebData);
 		switch (m_lIndex) {
-		case 0: // ¿ÕÊı¾İ
+		case 0: // ç©ºæ•°æ®
 			EXPECT_TRUE(pvSECFilings->empty());
 			break;
-		case 1: // ÎŞÈ¨Àû·ÃÎÊµÄÊı¾İ
+		case 1: // æ— æƒåˆ©è®¿é—®çš„æ•°æ®
 			EXPECT_TRUE(pvSECFilings->empty());
 			break;
-		case 2: // ¿ÕÊı¾İ
+		case 2: // ç©ºæ•°æ®
 			EXPECT_TRUE(pvSECFilings->empty());
 			break;
-		case 3: // ²»×ãÈı¸ö×Ö·û
+		case 3: // ä¸è¶³ä¸‰ä¸ªå­—ç¬¦
 			EXPECT_TRUE(pvSECFilings->empty());
 			break;
-		case 4: // ¸ñÊ½²»¶Ô
-			EXPECT_TRUE(pvSECFilings->empty()) << "Ã»ÓĞ¸Ä±ä";
+		case 4: // æ ¼å¼ä¸å¯¹
+			EXPECT_TRUE(pvSECFilings->empty()) << "æ²¡æœ‰æ”¹å˜";
 			break;
 		case 10:
 			EXPECT_EQ(pvSECFilings->size(), 1);
@@ -132,7 +132,7 @@ namespace FireBirdTest {
 			m_finnhubSECFilings.__Test_checkAccessRight(m_pWebData);
 
 			m_finnhubSECFilings.SetMarket(gl_pWorldMarket);
-			m_finnhubSECFilings.SetIndex(0); // µÚÒ»¸ö¹ÉÆ±
+			m_finnhubSECFilings.SetIndex(0); // ç¬¬ä¸€ä¸ªè‚¡ç¥¨
 			gl_dataContainerFinnhubStock.GetItem(0)->SetSECFilingsUpdateDate(19800101);
 			gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateSECFilings(true);
 		}
@@ -161,41 +161,41 @@ namespace FireBirdTest {
 		EXPECT_FALSE(pStock->IsUpdateSECFilings());
 		EXPECT_TRUE(pStock->IsUpdateProfileDB());
 		switch (m_lIndex) {
-		case 0: // ¿ÕÊı¾İ
+		case 0: // ç©ºæ•°æ®
 			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "ÒÑ¸ü¸ÄÎªµ±Ç°ÊĞ³¡ÈÕÆÚ";
+			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "å·²æ›´æ”¹ä¸ºå½“å‰å¸‚åœºæ—¥æœŸ";
 			break;
-		case 1: // ÎŞÈ¨Àû·ÃÎÊµÄÊı¾İ
+		case 1: // æ— æƒåˆ©è®¿é—®çš„æ•°æ®
 			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "ÒÑ¸ü¸ÄÎªµ±Ç°ÊĞ³¡ÈÕÆÚ";
+			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "å·²æ›´æ”¹ä¸ºå½“å‰å¸‚åœºæ—¥æœŸ";
 			break;
-		case 2: // ¿ÕÊı¾İ
+		case 2: // ç©ºæ•°æ®
 			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "ÒÑ¸ü¸ÄÎªµ±Ç°ÊĞ³¡ÈÕÆÚ";
+			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "å·²æ›´æ”¹ä¸ºå½“å‰å¸‚åœºæ—¥æœŸ";
 			break;
-		case 3: // ²»×ãÈı¸ö×Ö·û
+		case 3: // ä¸è¶³ä¸‰ä¸ªå­—ç¬¦
 			EXPECT_TRUE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "ÒÑ¸ü¸ÄÎªµ±Ç°ÊĞ³¡ÈÕÆÚ";
+			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "å·²æ›´æ”¹ä¸ºå½“å‰å¸‚åœºæ—¥æœŸ";
 			break;
-		case 4: // ¸ñÊ½²»¶Ô
-			EXPECT_TRUE(pStock->m_pvSECFilings->empty()) << "Ã»ÓĞ¸Ä±ä";
+		case 4: // æ ¼å¼ä¸å¯¹
+			EXPECT_TRUE(pStock->m_pvSECFilings->empty()) << "æ²¡æœ‰æ”¹å˜";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "ÒÑ¸ü¸ÄÎªµ±Ç°ÊĞ³¡ÈÕÆÚ";
+			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "å·²æ›´æ”¹ä¸ºå½“å‰å¸‚åœºæ—¥æœŸ";
 			break;
 		case 10:
 			EXPECT_FALSE(pStock->m_pvSECFilings->empty());
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
-			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "ÒÑ¸ü¸ÄÎªµ±Ç°ÊĞ³¡ÈÕÆÚ";
+			EXPECT_EQ(pStock->GetSECFilingsUpdateDate(), m_finnhubSECFilings.GetMarket()->GetMarketDate()) << "å·²æ›´æ”¹ä¸ºå½“å‰å¸‚åœºæ—¥æœŸ";
 			break;
 		default:
 			break;
 		}
 
-		//»Ö¸´Ô­×´
+		//æ¢å¤åŸçŠ¶
 		pStock->SetUpdateProfileDB(false);
 	}
 }

@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
@@ -9,7 +9,7 @@
 namespace FireBirdTest {
 	class CStockDayLineTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êı
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -54,8 +54,8 @@ namespace FireBirdTest {
 	TEST_F(CStockDayLineTest, TestGetDisplaySymbol) {
 		CDayLine dl;
 		EXPECT_EQ(dl.GetDisplaySymbol(), "");
-		dl.SetDisplaySymbol("ÆÖ¶«ÒøĞĞ");
-		EXPECT_EQ(dl.GetDisplaySymbol(), "ÆÖ¶«ÒøĞĞ");
+		dl.SetDisplaySymbol("æµ¦ä¸œé“¶è¡Œ");
+		EXPECT_EQ(dl.GetDisplaySymbol(), "æµ¦ä¸œé“¶è¡Œ");
 	}
 
 	TEST_F(CStockDayLineTest, TestGetLastClose) {
@@ -522,7 +522,7 @@ namespace FireBirdTest {
 
 		id.SetDate(21100201);
 		id.SetStockSymbol("600008.SS");
-		id.SetDisplaySymbol("Ê×´´¹É·İ");
+		id.SetDisplaySymbol("é¦–åˆ›è‚¡ä»½");
 		id.SetLastClose(34235345);
 		id.SetOpen(343452435);
 		id.SetHigh(45234543);
@@ -606,7 +606,7 @@ namespace FireBirdTest {
 
 		id.SetDate(21101001);
 		id.SetStockSymbol("600008.SS");
-		id.SetDisplaySymbol("Ê×´´¹É·İ");
+		id.SetDisplaySymbol("é¦–åˆ›è‚¡ä»½");
 		id.SetLastClose(34235345);
 		id.SetOpen(343452435);
 		id.SetHigh(45234543);
@@ -677,7 +677,7 @@ namespace FireBirdTest {
 		CSetChinaMarketDayLneBasicInfo setDayLineBasicInfo;
 		id.SetDate(_CHINA_MARKET_BEGIN_DATE_);
 		id.SetStockSymbol("600000.SS");
-		id.SetDisplaySymbol("ÆÖ·¢ÒøĞĞ");
+		id.SetDisplaySymbol("æµ¦å‘é“¶è¡Œ");
 		id.SetLastClose(1010);
 		id.SetOpen(1100);
 		id.SetHigh(1200);
@@ -701,7 +701,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(id2.GetOpen(), 1100);
 		EXPECT_EQ(id2.GetClose(), 1150);
 
-		setDayLineBasicInfo.Delete(); // Çå³ı´ËĞÂ¼ÓµÄÊı¾İ
+		setDayLineBasicInfo.Delete(); // æ¸…é™¤æ­¤æ–°åŠ çš„æ•°æ®
 		setDayLineBasicInfo.Close();
 	}
 

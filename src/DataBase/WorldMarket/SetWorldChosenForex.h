@@ -1,4 +1,4 @@
-// CSetWorldChosenForex.h : CSetChinaChosenForex µÄÉùÃ÷
+ï»¿// CSetWorldChosenForex.h : CSetChinaChosenForex çš„å£°æ˜Ž
 #pragma once
 #include"VirtualSetChosenStake.h"
 

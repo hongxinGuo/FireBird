@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"TiingoCompanyFinancialState.h"
 
@@ -300,7 +300,7 @@ void CTiingoCompanyFinancialState::Assign(int index, double fValue) {
 	case 5:
 		m_assetsNonCurrent = fValue;
 		break;
-	case 6: // ÉÐÎ´Ê¹ÓÃ
+	case 6: // å°šæœªä½¿ç”¨
 		m_assetTurnover = fValue;
 		break;
 	case 7:
@@ -357,7 +357,7 @@ void CTiingoCompanyFinancialState::Assign(int index, double fValue) {
 	case 24:
 		m_ebt = fValue;
 		break;
-	case 25: // ÉÐÎ´Ê¹ÓÃ
+	case 25: // å°šæœªä½¿ç”¨
 		m_enterpriseVal = fValue;
 		break;
 	case 26:
@@ -375,7 +375,7 @@ void CTiingoCompanyFinancialState::Assign(int index, double fValue) {
 	case 30:
 		m_freeCashFlow = fValue;
 		break;
-	case 31: // ÉÐÎ´Ê¹ÓÃ
+	case 31: // å°šæœªä½¿ç”¨
 		m_fxRate = fValue;
 		break;
 	case 32:
@@ -420,7 +420,7 @@ void CTiingoCompanyFinancialState::Assign(int index, double fValue) {
 	case 45:
 		m_longTermDebtEquity = fValue;
 		break;
-	case 46: // ÉÐÎ´Ê¹ÓÃ
+	case 46: // å°šæœªä½¿ç”¨
 		m_marketCap = fValue;
 		break;
 	case 47:
@@ -447,7 +447,7 @@ void CTiingoCompanyFinancialState::Assign(int index, double fValue) {
 	case 54:
 		m_netIncDiscOps = fValue;
 		break;
-	case 55: // ÉÐÎ´Ê¹ÓÃ
+	case 55: // å°šæœªä½¿ç”¨
 		m_netMargin = fValue;
 		break;
 	case 56:
@@ -459,16 +459,16 @@ void CTiingoCompanyFinancialState::Assign(int index, double fValue) {
 	case 58:
 		m_opinc = fValue;
 		break;
-	case 59: // ÉÐÎ´Ê¹ÓÃ
+	case 59: // å°šæœªä½¿ç”¨
 		m_opMargin = fValue;
 		break;
 	case 60:
 		m_payDiv = fValue;
 		break;
-	case 61: // ÉÐÎ´Ê¹ÓÃ
+	case 61: // å°šæœªä½¿ç”¨
 		m_pbRatio = fValue;
 		break;
-	case 62: // ÉÐÎ´Ê¹ÓÃ
+	case 62: // å°šæœªä½¿ç”¨
 		m_peRatio = fValue;
 		break;
 	case 63:
@@ -537,7 +537,7 @@ void CTiingoCompanyFinancialState::Assign(int index, double fValue) {
 	case 84:
 		m_totalLiabilities = fValue;
 		break;
-	case 85: // ÉÐÎ´Ê¹ÓÃ
+	case 85: // å°šæœªä½¿ç”¨
 		m_trailingPEG1Y = fValue;
 		break;
 	default:

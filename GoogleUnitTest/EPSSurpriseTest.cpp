@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -7,7 +7,7 @@
 namespace FireBirdTest {
 	class CEPSSurpriseTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êı
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -55,7 +55,7 @@ namespace FireBirdTest {
 
 		setEPSSurprise2.m_strFilter = "[Symbol] = 'AAAAA'";
 		setEPSSurprise2.Open();
-		EXPECT_TRUE(!setEPSSurprise2.IsEOF()) << "´ËÊ±ÒÑ¾­´æÈëÁËABCDEF";
+		EXPECT_TRUE(!setEPSSurprise2.IsEOF()) << "æ­¤æ—¶å·²ç»å­˜å…¥äº†ABCDEF";
 		EXPECT_DOUBLE_EQ(setEPSSurprise2.m_Actual, 1.2);
 		EPSSurprise2.Load(setEPSSurprise2);
 		EXPECT_EQ(EPSSurprise2.m_strSymbol, "AAAAA");

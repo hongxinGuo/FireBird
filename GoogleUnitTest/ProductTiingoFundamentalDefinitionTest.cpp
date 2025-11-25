@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 #include"FinnhubStock.h"
@@ -46,7 +46,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestProcessWebData) {
-		// ÓÉMockWorldMarketTest¸ºÔğ²âÊÔ
+		// ç”±MockWorldMarketTestè´Ÿè´£æµ‹è¯•
 	}
 
 	TEST_F(CProductTiingoFundamentalDefinitionTest, TestUpdateDataSourceStatus1) {
@@ -73,15 +73,15 @@ namespace FireBirdTest {
 		gl_pTiingoDataSource->SetUpdateFundamentalDefinition(true);
 	}
 
-	// ÕıÈ·µÄÊı¾İ
+	// æ­£ç¡®çš„æ•°æ®
 	Test_TiingoWebData tiingoFundamentalDefinition1(1, "", "[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]");
-	// µÚÒ»¸öÊı¾İÈ±Ïî
+	// ç¬¬ä¸€ä¸ªæ•°æ®ç¼ºé¡¹
 	Test_TiingoWebData tiingoFundamentalDefinition2(2, "", "[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]");
-	// µÚ¶ş¸öÊı¾İÈ±Ïî
+	// ç¬¬äºŒä¸ªæ•°æ®ç¼ºé¡¹
 	Test_TiingoWebData tiingoFundamentalDefinition3(3, "aapl", "[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]");
-	// ÕıÈ·µÄÊı¾İ
+	// æ­£ç¡®çš„æ•°æ®
 	Test_TiingoWebData tiingoFundamentalDefinition4(4, "", "[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]");
-	// ÕıÈ·µÄÊı¾İ
+	// æ­£ç¡®çš„æ•°æ®
 	Test_TiingoWebData tiingoFundamentalDefinition10(10, "", "[{\"dataCode\":\"liabilitiesCurrent\",\"name\":\"Current Liabilities\",\"description\":\"Debt or liabilities that are due within a year\",\"statementType\":\"balanceSheet\",\"units\":\"$\"},{\"dataCode\":\"rps\",\"name\":\"Revenue Per Share\",\"description\":\"Revenue per share\",\"statementType\":\"overview\",\"units\":\"$\"}]");
 
 	class ParseTiingoFundamentalDefinitionTest : public TestWithParam<Test_TiingoWebData*> {
@@ -116,13 +116,13 @@ namespace FireBirdTest {
 	TEST_P(ParseTiingoFundamentalDefinitionTest, TestParseTiingoFundamentalDefinition) {
 		m_pvFundamentalDefinition = m_tiingoFundamentalDefinitionProduct.ParseTiingoFundamentalDefinition(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // ¸ñÊ½²»¶Ô
+		case 1: // æ ¼å¼ä¸å¯¹
 			EXPECT_EQ(m_pvFundamentalDefinition->size(), 2);
 			break;
-		case 2: // ¸ñÊ½²»¶Ô
+		case 2: // æ ¼å¼ä¸å¯¹
 			EXPECT_EQ(m_pvFundamentalDefinition->size(), 2);
 			break;
-		case 3: // È±·¦addressÏî
+		case 3: // ç¼ºä¹addressé¡¹
 			EXPECT_EQ(m_pvFundamentalDefinition->size(), 2);
 			break;
 		case 4:
@@ -185,20 +185,20 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 		m_tiingoFundamentalDefinitionProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // ¸ñÊ½²»¶Ô
+		case 1: // æ ¼å¼ä¸å¯¹
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 			break;
-		case 2: // ¸ñÊ½²»¶Ô
+		case 2: // æ ¼å¼ä¸å¯¹
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 0) << gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_FALSE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 			break;
-		case 3: // µÚ¶ş¸öÊı¾İÈ±·¦addressÏî,·µ»ØÒ»¸ö³É¹¦
-			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1) << "µÚÒ»¸öÊı¾İÊÇÕıÈ·µÄ";
+		case 3: // ç¬¬äºŒä¸ªæ•°æ®ç¼ºä¹addressé¡¹,è¿”å›ä¸€ä¸ªæˆåŠŸ
+			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1) << "ç¬¬ä¸€ä¸ªæ•°æ®æ˜¯æ­£ç¡®çš„";
 			gl_systemMessage.PopInnerSystemInformationMessage();
-			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateProfileDB()) << "µÚÒ»¸öÊı¾İÊÇÕıÈ·µÄ";
+			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateProfileDB()) << "ç¬¬ä¸€ä¸ªæ•°æ®æ˜¯æ­£ç¡®çš„";
 
-		//»Ö¸´Ô­×´
+		//æ¢å¤åŸçŠ¶
 			pStock = gl_dataContainerFinnhubStock.GetItem("A");
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			pStock->SetUpdateProfileDB(false);
@@ -209,7 +209,7 @@ namespace FireBirdTest {
 			gl_systemMessage.PopInnerSystemInformationMessage();
 			EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateProfileDB());
 
-		//»Ö¸´Ô­×´
+		//æ¢å¤åŸçŠ¶
 			pStock = gl_dataContainerFinnhubStock.GetItem("AA");
 			EXPECT_TRUE(pStock->IsUpdateCompanyProfile());
 			pStock->SetUpdateProfileDB(false);
@@ -221,10 +221,10 @@ namespace FireBirdTest {
 			EXPECT_TRUE(gl_dataContainerTiingoStock.IsStock("NEW SYMBOL")));
 			EXPECT_TRUE((pTiingoStock = gl_dataContainerTiingoStock.GetStock("NEW SYMBOL"))) != nullptr);
 			pStock = gl_dataContainerFinnhubStock.GetItem("AA");
-			EXPECT_STREQ(pStock->GetName(), "New Name")) << "¸ü¸ÄÎª´ËĞÂÃû×Ö";
+			EXPECT_STREQ(pStock->GetName(), "New Name")) << "æ›´æ”¹ä¸ºæ­¤æ–°åå­—";
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 			gl_dataContainerTiingoStock.Delete(pTiingoStock);
 			pStock->SetUpdateProfileDB(false);
 			pStock->SetName("Alcoa Corp");

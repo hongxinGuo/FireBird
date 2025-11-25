@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -41,11 +41,11 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerTiingoFundamentalDefinitionTest, TestAddDelete) {
 		m_dataTiingoFundamentalDefinition.LoadDB();
-		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 85) << "²âÊÔ¿âÖÐÓÐ85¸ö»ù±¾¶¨Òå";
+		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 85) << "æµ‹è¯•åº“ä¸­æœ‰85ä¸ªåŸºæœ¬å®šä¹‰";
 		EXPECT_FALSE(m_dataTiingoFundamentalDefinition.IsUpdateDB());
 
 		CTiingoFundamentalDefinitionPtr pDefinition = make_shared<CTiingoFundamentalDefinition>();
-		pDefinition->m_strDataCode = "AAA"; // ÐÂ´úÂë
+		pDefinition->m_strDataCode = "AAA"; // æ–°ä»£ç 
 		pDefinition->m_strName = "abc";
 
 		m_dataTiingoFundamentalDefinition.Add(pDefinition);
@@ -54,36 +54,36 @@ namespace FireBirdTest {
 		m_dataTiingoFundamentalDefinition.SetUpdateDB(false);
 
 		CTiingoFundamentalDefinitionPtr pDefinition2 = make_shared<CTiingoFundamentalDefinition>();
-		pDefinition2->m_strDataCode = "AAA"; // ÒÑÓÐ´úÂë
+		pDefinition2->m_strDataCode = "AAA"; // å·²æœ‰ä»£ç 
 		pDefinition2->m_strName = "abc";
 
 		m_dataTiingoFundamentalDefinition.Add(pDefinition2);
-		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 86) << "²»Ìí¼ÓÒÑÓÐ´úÂë";
+		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 86) << "ä¸æ·»åŠ å·²æœ‰ä»£ç ";
 		EXPECT_FALSE(m_dataTiingoFundamentalDefinition.IsUpdateDB());
 
 		m_dataTiingoFundamentalDefinition.Delete(pDefinition);
-		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 85) << "É¾³ýÒÑ´æÔÚ´úÂë";
+		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 85) << "åˆ é™¤å·²å­˜åœ¨ä»£ç ";
 		EXPECT_TRUE(m_dataTiingoFundamentalDefinition.IsUpdateDB());
 		m_dataTiingoFundamentalDefinition.SetUpdateDB(false);
 
-		pDefinition2->m_strDataCode = "AAA"; // ÒÑÉ¾³ý´úÂë
+		pDefinition2->m_strDataCode = "AAA"; // å·²åˆ é™¤ä»£ç 
 		pDefinition2->m_strName = "abc";
 
 		m_dataTiingoFundamentalDefinition.Delete(pDefinition);
-		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 85) << "²»´æÔÚ¸Ã´úÂë";
+		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 85) << "ä¸å­˜åœ¨è¯¥ä»£ç ";
 		EXPECT_FALSE(m_dataTiingoFundamentalDefinition.IsUpdateDB());
 	}
 
 	TEST_F(CContainerTiingoFundamentalDefinitionTest, TestUpdateDB) {
 		m_dataTiingoFundamentalDefinition.LoadDB();
-		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 85) << "²âÊÔ¿âÖÐÓÐ85¸ö»ù±¾¶¨Òå";
+		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 85) << "æµ‹è¯•åº“ä¸­æœ‰85ä¸ªåŸºæœ¬å®šä¹‰";
 		EXPECT_FALSE(m_dataTiingoFundamentalDefinition.IsUpdateDB());
 		m_dataTiingoFundamentalDefinition.Delete("rps");
 		m_dataTiingoFundamentalDefinition.Delete(("roa"));
-		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 83) << "²âÊÔ¿âÖÐÓÐ85¸ö»ù±¾¶¨Òå";
+		EXPECT_EQ(m_dataTiingoFundamentalDefinition.GetTotalDefinition(), 83) << "æµ‹è¯•åº“ä¸­æœ‰85ä¸ªåŸºæœ¬å®šä¹‰";
 
 		CTiingoFundamentalDefinitionPtr pDefinition = make_shared<CTiingoFundamentalDefinition>();
-		pDefinition->m_strDataCode = "AAAA"; // ÐÂ´úÂë
+		pDefinition->m_strDataCode = "AAAA"; // æ–°ä»£ç 
 		pDefinition->m_strName = "Test";
 
 		m_dataTiingoFundamentalDefinition.Add(pDefinition);
@@ -92,7 +92,7 @@ namespace FireBirdTest {
 		m_dataTiingoFundamentalDefinition.SetUpdateDB(false);
 
 		pDefinition = make_shared<CTiingoFundamentalDefinition>();
-		pDefinition->m_strDataCode = "AAAAA"; // ÐÂ´úÂë
+		pDefinition->m_strDataCode = "AAAAA"; // æ–°ä»£ç 
 		pDefinition->m_strName = "Test";
 
 		m_dataTiingoFundamentalDefinition.Add(pDefinition);

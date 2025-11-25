@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"TimeConvert.h"
 
@@ -29,7 +29,7 @@ bool CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
 
 	ASSERT(!m_fBasicDataLoaded);
 
-	// ×°ÈëDayLineÊı¾İ
+	// è£…å…¥DayLineæ•°æ®
 	setDayLineBasicInfo.m_strFilter = "[Symbol] = '";
 	setDayLineBasicInfo.m_strFilter += strStockSymbol.c_str();
 	setDayLineBasicInfo.m_strFilter += "'";
@@ -38,7 +38,7 @@ bool CContainerChinaDayLine::LoadDB(const string& strStockSymbol) {
 	LoadBasicDB(&setDayLineBasicInfo);
 	setDayLineBasicInfo.Close();
 
-	// ×°ÈëDayLineExtendInfoÊı¾İ
+	// è£…å…¥DayLineExtendInfoæ•°æ®
 	setDayLineExtendInfo.m_strFilter = "[Symbol] = '";
 	setDayLineExtendInfo.m_strFilter += strStockSymbol.c_str();
 	setDayLineExtendInfo.m_strFilter += "'";
@@ -77,13 +77,13 @@ CWeekLinePtr CContainerChinaDayLine::CreateNewWeekLine(long& lCurrentDayLinePos)
 	const long lNewestDay = GetData(Size() - 1)->GetDate();
 	auto pWeekLine = make_shared<CWeekLine>();
 	if (lNextMonday < lNewestDay) {
-		// ÖĞ¼äÊı¾İ
+		// ä¸­é—´æ•°æ®
 		while (GetData(lCurrentDayLinePos)->GetDate() < lNextMonday) {
 			pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(GetData(lCurrentDayLinePos++)));
 		}
 	}
 	else {
-		// ×îºóÒ»×éÊı¾İ
+		// æœ€åä¸€ç»„æ•°æ®
 		while (lCurrentDayLinePos <= (Size() - 1)) {
 			pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(GetData(lCurrentDayLinePos++)));
 		}

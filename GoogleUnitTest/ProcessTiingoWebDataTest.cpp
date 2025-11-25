@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -44,13 +44,13 @@ namespace FireBirdTest {
 	TiingoWebSocketData tiingoForexData2(2, "", "{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
 	TiingoWebSocketData tiingoForexData4(4, "", "{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
 	TiingoWebSocketData tiingoForexData5(5, "", "{\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
-	// dataÃû³Æ´íÎª'dta'
+	// dataåç§°é”™ä¸º'dta'
 	TiingoWebSocketData tiingoForexData6(6, "", "{\"messageType\":\"A\",\"service\":\"fx\",\"dta\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
-	// dataÊ×Ïî±ØÐëÎª¡®fx'
+	// dataé¦–é¡¹å¿…é¡»ä¸ºâ€˜fx'
 	TiingoWebSocketData tiingoForexData7(7, "", "{\"messageType\":\"A\",\"service\":\"ifx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
-	// messageType´íÎó
+	// messageTypeé”™è¯¯
 	TiingoWebSocketData tiingoForexData8(8, "", "{\"messageType\":\"B\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
-	// json¸ñÊ½´íÎó
+	// jsonæ ¼å¼é”™è¯¯
 	TiingoWebSocketData tiingoForexData9(9, "", "\"messageType\":\"A\",\"service\":\"fx\",\"data\":[\"Q\",\"gbpaud\",\"2019-07-05T15:49:15.236000+00:00\",1000000.0,1.79457,1.79477,5000000.0,1.79497]}");
 	// heart beat
 	TiingoWebSocketData tiingoForexData10(
@@ -99,7 +99,7 @@ namespace FireBirdTest {
 		CTiingoForexSocketPtr pForex;
 		fSucceed = tiingoForexWebSocket.ParseTiingoForexWebSocketData(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // ÕýÈ·
+		case 1: // æ­£ç¡®
 			EXPECT_TRUE(fSucceed);
 			pForex = gl_SystemData.PopTiingoForexSocket();
 			EXPECT_EQ(pForex->m_chMessageType, 'Q');
@@ -109,9 +109,9 @@ namespace FireBirdTest {
 			EXPECT_DOUBLE_EQ(pForex->m_dMidPrice, 9.678135);
 			EXPECT_DOUBLE_EQ(pForex->m_dAskSize, 5000000.0);
 			EXPECT_DOUBLE_EQ(pForex->m_dAskPrice, 9.67987);
-			EXPECT_EQ(tiingoForexWebSocket.GetHeartbeatTime(), GetUTCTime()) << "Ö»ÓÐÓÐÐ§Êý¾Ý²ÅÉèÖÃÐÄÌøÊ±¼ä";
+			EXPECT_EQ(tiingoForexWebSocket.GetHeartbeatTime(), GetUTCTime()) << "åªæœ‰æœ‰æ•ˆæ•°æ®æ‰è®¾ç½®å¿ƒè·³æ—¶é—´";
 			break;
-		case 2: // ÕýÈ·
+		case 2: // æ­£ç¡®
 			EXPECT_TRUE(fSucceed);
 			pForex = gl_SystemData.PopTiingoForexSocket();
 			break;
@@ -121,10 +121,10 @@ namespace FireBirdTest {
 		case 7: //
 			EXPECT_FALSE(fSucceed);
 			break;
-		case 8: // messageType´íÎó
+		case 8: // messageTypeé”™è¯¯
 			EXPECT_FALSE(fSucceed);
 			break;
-		case 9: // json¸ñÊ½´íÎó
+		case 9: // jsonæ ¼å¼é”™è¯¯
 			EXPECT_FALSE(fSucceed);
 			break;
 		case 10: // heart beat
@@ -159,13 +159,13 @@ namespace FireBirdTest {
 		3, "", "{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}");
 	// authentication
 	TiingoWebSocketData tiingoCryptoData4(4, "", "{\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"},\"data\":{\"subscriptionId\":2563396}}");
-	// messageType±ØÐëÎª'A' 'H' »òÕß'I'
+	// messageTypeå¿…é¡»ä¸º'A' 'H' æˆ–è€…'I'
 	TiingoWebSocketData tiingoCryptoData5(5, "", "{\"messageType\":\"B\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}");
-	// data´íÎª'dta'
+	// dataé”™ä¸º'dta'
 	TiingoWebSocketData tiingoCryptoData6(6, "", "{\"messageType\":\"A\",\"service\":\"crypto_data\",\"dta\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}");
-	// dataµÚÒ»Ïî±ØÐëÎª'Q'»òÕß'T'
+	// dataç¬¬ä¸€é¡¹å¿…é¡»ä¸º'Q'æˆ–è€…'T'
 	TiingoWebSocketData tiingoCryptoData7(7, "", "{\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"A\",\"evxbtc\",\"2019-01-30T18:03:40.056000+00:00\",\"binance\",405.0,9.631e-05]}");
-	// json¸ñÊ½´íÎó
+	// jsonæ ¼å¼é”™è¯¯
 	TiingoWebSocketData tiingoCryptoData9(9, "", "\"messageType\":\"A\",\"service\":\"crypto_data\",\"data\":[\"Q\",\"neojpy\",\"2019-01-30T18:03:40.195515+00:00\",\"bitfinex\",38.11162867,787.82,787.83,42.4153887,787.84]}");
 	// subscribe
 	TiingoWebSocketData tiingoCryptoData10(10, "", "{\"data\":{\"tickers\":[\"*\",\"BINANCE:IDEXBUSD\",\"BITTREX:USDT-ADA\",\"HITBTC:XRPEOS\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}");
@@ -208,7 +208,7 @@ namespace FireBirdTest {
 		CTiingoCryptoSocketPtr pCrypto;
 		fSucceed = tiingoCryptoWebSocket.ParseTiingoCryptoWebSocketData(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // ÕýÈ· Q
+		case 1: // æ­£ç¡® Q
 			EXPECT_TRUE(fSucceed);
 			pCrypto = gl_SystemData.PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'Q');
@@ -221,9 +221,9 @@ namespace FireBirdTest {
 			EXPECT_DOUBLE_EQ(pCrypto->m_dAskSize, 42.4153887);
 			EXPECT_DOUBLE_EQ(pCrypto->m_dLastPrice, 0);
 			EXPECT_DOUBLE_EQ(pCrypto->m_dLastSize, 0);
-			EXPECT_EQ(tiingoCryptoWebSocket.GetHeartbeatTime(), GetUTCTime()) << "Ö»ÓÐÓÐÐ§Êý¾Ý²ÅÉèÖÃÐÄÌøÊ±¼ä";
+			EXPECT_EQ(tiingoCryptoWebSocket.GetHeartbeatTime(), GetUTCTime()) << "åªæœ‰æœ‰æ•ˆæ•°æ®æ‰è®¾ç½®å¿ƒè·³æ—¶é—´";
 			break;
-		case 2: // ÕýÈ· T
+		case 2: // æ­£ç¡® T
 			EXPECT_TRUE(fSucceed);
 			pCrypto = gl_SystemData.PopTiingoCryptoSocket();
 			EXPECT_EQ(pCrypto->m_chMessageType, 'T');
@@ -237,14 +237,14 @@ namespace FireBirdTest {
 			EXPECT_DOUBLE_EQ(pCrypto->m_dLastSize, 405.0);
 			EXPECT_DOUBLE_EQ(pCrypto->m_dLastPrice, 9.631e-05);
 			break;
-		case 3: // ÕýÈ· heart beat
+		case 3: // æ­£ç¡® heart beat
 			EXPECT_TRUE(fSucceed);
 			EXPECT_EQ(tiingoCryptoWebSocket.GetHeartbeatTime(), 0);
 			break;
-		case 4: // ÕýÈ· authentication
+		case 4: // æ­£ç¡® authentication
 			EXPECT_TRUE(fSucceed);
 			break;
-		case 5: // messageType´íÎó
+		case 5: // messageTypeé”™è¯¯
 			EXPECT_FALSE(fSucceed);
 			break;
 		case 6:
@@ -253,7 +253,7 @@ namespace FireBirdTest {
 		case 7:
 			EXPECT_FALSE(fSucceed);
 			break;
-		case 9: // json¸ñÊ½´íÎó
+		case 9: // jsonæ ¼å¼é”™è¯¯
 			EXPECT_FALSE(fSucceed);
 			break;
 		case 10: // subscribe
@@ -274,20 +274,20 @@ namespace FireBirdTest {
 		}
 	}
 
-	// ÕýÈ·Êý¾Ý
+	// æ­£ç¡®æ•°æ®
 	TiingoWebSocketData tiingoIEXData1(1, "", "{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.383129126-05:00\",\"vym\",85.025]}");
 	TiingoWebSocketData tiingoIEXData2(2, "","{\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.594808294-05:00\",\"wes\",50.123]}");
 	// authentication
 	TiingoWebSocketData tiingoIEXData3(3, "", "{\"data\":{\"subscriptionId\":2563367},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}");
 	// Heart beat
 	TiingoWebSocketData tiingoIEXData4(4, "", "{\"messageType\":\"H\",\"response\":{\"code\":200,\"message\":\"HeartBeat\"}}");
-	// messageTypeÖ»ÄÜÎª'A''I''H'
+	// messageTypeåªèƒ½ä¸º'A''I''H'
 	TiingoWebSocketData tiingoIEXData5(5, "", "{\"messageType\":\"B\",\"service\":\"iex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}");
-	// ´íÎó¡£serviceµÄÃû³Æ²»Îª"iex",
+	// é”™è¯¯ã€‚serviceçš„åç§°ä¸ä¸º"iex",
 	TiingoWebSocketData tiingoIEXData7(7, "", "{\"messageType\":\"A\",\"service\":\"ex\",\"data\":[\"Q\",\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",100,81.58,81.585,81.59,100,null,null,0,0,null,null,null]}");
-	// service´íÎªservi
+	// serviceé”™ä¸ºservi
 	TiingoWebSocketData tiingoIEXData8(8, "", "{\"messageType\":\"A\",\"servi\":\"iex\",\"data\":[\"T\",\"2019-01-30T13:33:45.594808294-05:00\",1548873225594808294,\"wes\",null,null,null,null,null,50.285,200,null,0,0,0,0]}");
-	// json¸ñÊ½´íÎó
+	// jsonæ ¼å¼é”™è¯¯
 	TiingoWebSocketData tiingoIEXData9(9, "","\"messageType\":\"A\",\"service\":\"iex\",\"data\":[\"2019-01-30T13:33:45.383129126-05:00\",1548873225383129126,\"vym\",81.58]}");
 	// subscribe
 	TiingoWebSocketData tiingoIEXData10(10, "","{\"data\":{\"tickers\":[\"*\",\"uso\",\"msft\",\"tnk\"],\"thresholdLevel\":\"0\"},\"messageType\":\"I\",\"response\":{\"code\":200,\"message\":\"Success\"}}");
@@ -331,14 +331,14 @@ namespace FireBirdTest {
 		bool fSucceed = false;
 		fSucceed = tiingoIEXWebSocket.ParseTiingoIEXWebSocketData(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // ÕýÈ· Q
+		case 1: // æ­£ç¡® Q
 			EXPECT_TRUE(fSucceed);
 			pTiingoIEX = gl_SystemData.PopTiingoIEXSocket();
 			EXPECT_TRUE(pTiingoIEX->m_sSymbol == "vym");
 			EXPECT_EQ(pTiingoIEX->m_dLastPrice, 85.025);
-			EXPECT_EQ(tiingoIEXWebSocket.GetHeartbeatTime(), GetUTCTime()) << "Ö»ÓÐÓÐÐ§Êý¾Ý²ÅÉèÖÃÐÄÌøÊ±¼ä";
+			EXPECT_EQ(tiingoIEXWebSocket.GetHeartbeatTime(), GetUTCTime()) << "åªæœ‰æœ‰æ•ˆæ•°æ®æ‰è®¾ç½®å¿ƒè·³æ—¶é—´";
 			break;
-		case 2: // ÕýÈ· T
+		case 2: // æ­£ç¡® T
 			EXPECT_TRUE(fSucceed);
 			pTiingoIEX = gl_SystemData.PopTiingoIEXSocket();
 			EXPECT_TRUE(pTiingoIEX->m_sSymbol == "wes");
@@ -349,20 +349,20 @@ namespace FireBirdTest {
 			break;
 		case 4: // Heart beat
 			EXPECT_TRUE(fSucceed);
-			EXPECT_EQ(tiingoIEXWebSocket.GetHeartbeatTime(), 0) << "ÊÕµ½pingÊ±²»ÉèÖÃ";
+			EXPECT_EQ(tiingoIEXWebSocket.GetHeartbeatTime(), 0) << "æ”¶åˆ°pingæ—¶ä¸è®¾ç½®";
 			break;
 		case 5: //
 			EXPECT_FALSE(fSucceed);
 			EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 			gl_systemMessage.PopInnerSystemInformationMessage();
 			break;
-		case 7: // serviceµÄÃû³Æ±ØÐëÎª"iex"
+		case 7: // serviceçš„åç§°å¿…é¡»ä¸º"iex"
 			EXPECT_FALSE(fSucceed);
 			break;
-		case 8: // service´íÎªserci
+		case 8: // serviceé”™ä¸ºserci
 			EXPECT_FALSE(fSucceed);
 			break;
-		case 9: // json¸ñÊ½´íÎó
+		case 9: // jsonæ ¼å¼é”™è¯¯
 			EXPECT_FALSE(fSucceed);
 			break;
 		case 10: // subscribe

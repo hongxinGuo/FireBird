@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Lightweight URL & URI parser (RFC 1738, RFC 3986)
  * https://github.com/corporateshark/LUrlParser
  *

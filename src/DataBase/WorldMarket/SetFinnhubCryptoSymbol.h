@@ -1,4 +1,4 @@
-// SetFinnhubCryptoSymbol.h : CSetFinnhubCryptoSymbol µÄÉùÃ÷
+ï»¿// SetFinnhubCryptoSymbol.h : CSetFinnhubCryptoSymbol çš„å£°æ˜Ž
 
 #pragma once
 #include"VirtualSetStockSymbol.h"

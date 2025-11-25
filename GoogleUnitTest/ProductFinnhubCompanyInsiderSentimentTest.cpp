@@ -1,4 +1,4 @@
-#include"pch.h"
+Ôªø#include"pch.h"
 
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
@@ -50,18 +50,18 @@ namespace FireBirdTest {
 		companyInsiderSentiment.SetIndex(1);
 		EXPECT_EQ(companyInsiderSentiment.CreateMessage(),
 		          (companyInsiderSentiment.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol() + "&from=1980-01-01&to=" + sCurrentDate));
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateInsiderSentiment()) << "Ω” ’µΩµƒ ˝¥¶¿Ì∫Û∑Ω…Ë÷√¥À±Í ∂";
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateInsiderSentiment()) << "Êé•Êî∂Âà∞ÁöÑÊï∞Â§ÑÁêÜÂêéÊñπËÆæÁΩÆÊ≠§Ê†áËØÜ";
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateInsiderSentiment(true);
 	}
 
-	// ’˝»∑ ˝æ›
+	// Ê≠£Á°ÆÊï∞ÊçÆ
 	Test_FinnhubWebData finnhubWebData142(2, "AAPL", "{\"data\":[{\"symbol\":\"TSLA\",\"year\":2022,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2021,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}");
-	// »±∑¶ dataœÓ
+	// Áº∫‰πè dataÈ°π
 	Test_FinnhubWebData finnhubWebData143(3, "AAPL", "{\"no data\":[{\"symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}");
-	// »±∑¶ SymbolœÓ
+	// Áº∫‰πè SymbolÈ°π
 	Test_FinnhubWebData finnhubWebData144(4, "AAPL", "{\"data\":[{\"no symbol\":\"TSLA\",\"year\":2021,\"month\":3,\"change\":5540,\"mspr\":12.209097},{\"symbol\":\"TSLA\",\"year\":2022,\"month\":1,\"change\":-1250,\"mspr\":-5.6179776}], \"symbol\":\"TSLA\"}");
-	// ø’ ˝æ›
+	// Á©∫Êï∞ÊçÆ
 	Test_FinnhubWebData finnhubWebData145(5, "AAPL", "{\"data\":[], \"symbol\":\"QNICF\"}");
 
 	class ProcessFinnhubInsiderSentimentTest : public TestWithParam<Test_FinnhubWebData*> {
@@ -108,41 +108,41 @@ namespace FireBirdTest {
 	TEST_P(ProcessFinnhubInsiderSentimentTest, TestProsessFinnhubInsiderSentiment0) {
 		m_finnhubCompanyInsiderSentiment.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
-		case 0: // ø’ ˝æ›
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "√ª”–”––ß ˝æ›";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";;
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << " –≥°»’∆⁄Œ¥∏¸∏ƒ";
+		case 0: // Á©∫Êï∞ÊçÆ
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "Ê≤°ÊúâÊúâÊïàÊï∞ÊçÆ";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";;
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "Â∏ÇÂú∫Êó•ÊúüÊú™Êõ¥Êîπ";
 			break;
-		case 1: // Œﬁ»®¿˚∑√Œ µƒ ˝æ›
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "√ª”–”––ß ˝æ›";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";;
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << " –≥°»’∆⁄Œ¥∏¸∏ƒ";
+		case 1: // Êó†ÊùÉÂà©ËÆøÈóÆÁöÑÊï∞ÊçÆ
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "Ê≤°ÊúâÊúâÊïàÊï∞ÊçÆ";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";;
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "Â∏ÇÂú∫Êó•ÊúüÊú™Êõ¥Êîπ";
 			break;
-		case 2: // ’˝»∑
+		case 2: // Ê≠£Á°Æ
 			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentimentDB());
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << " –≥°»’∆⁄Œ¥∏¸∏ƒ";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";;
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "Â∏ÇÂú∫Êó•ÊúüÊú™Êõ¥Êîπ";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";;
 			break;
 		case 3:
 			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB());
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << " –≥°»’∆⁄Œ¥∏¸∏ƒ";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";;
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "Â∏ÇÂú∫Êó•ÊúüÊú™Êõ¥Êîπ";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";;
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";
 			break;
 		case 4:
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "√ª”–”––ß ˝æ›";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";;
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << " –≥°»’∆⁄Œ¥∏¸∏ƒ";
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "Ê≤°ÊúâÊúâÊïàÊï∞ÊçÆ";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";;
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "Â∏ÇÂú∫Êó•ÊúüÊú™Êõ¥Êîπ";
 			break;
-		case 5: // ø’ ˝æ›
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "√ª”–”––ß ˝æ›";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";;
-			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << " –≥°»’∆⁄Œ¥∏¸∏ƒ";
+		case 5: // Á©∫Êï∞ÊçÆ
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "Ê≤°ÊúâÊúâÊïàÊï∞ÊçÆ";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";;
+			EXPECT_EQ(m_pStock->GetInsiderSentimentUpdateDate(), 19800101) << "Â∏ÇÂú∫Êó•ÊúüÊú™Êõ¥Êîπ";
 			break;
 		default:
 			break;
@@ -193,35 +193,35 @@ namespace FireBirdTest {
 	TEST_P(ParseFinnhubInsiderSentimentTest, TestParseFinnhubInsiderSentiment0) {
 		m_finnhubCompanyInsiderSentiment.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
-		case 0: // ø’ ˝æ›
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "√ª”–”––ß ˝æ›";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";;
+		case 0: // Á©∫Êï∞ÊçÆ
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "Ê≤°ÊúâÊúâÊïàÊï∞ÊçÆ";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";;
 			break;
-		case 1: // Œﬁ»®¿˚∑√Œ µƒ ˝æ›
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "√ª”–”––ß ˝æ›";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";;
+		case 1: // Êó†ÊùÉÂà©ËÆøÈóÆÁöÑÊï∞ÊçÆ
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "Ê≤°ÊúâÊúâÊïàÊï∞ÊçÆ";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";;
 			break;
-		case 2: // ’˝»∑
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentimentDB()) << "”––ß ˝æ›£¨–Ë“™∏¸–¬";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";;
+		case 2: // Ê≠£Á°Æ
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentimentDB()) << "ÊúâÊïàÊï∞ÊçÆÔºåÈúÄË¶ÅÊõ¥Êñ∞";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";;
 			break;
-		case 3: // »±∑¶dataœÓ
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "√ª”–”––ß ˝æ›";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";;
+		case 3: // Áº∫‰πèdataÈ°π
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "Ê≤°ÊúâÊúâÊïàÊï∞ÊçÆ";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";;
 			break;
-		case 4: // »±∑¶Symbol
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "√ª”–”––ß ˝æ›";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";;
+		case 4: // Áº∫‰πèSymbol
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "Ê≤°ÊúâÊúâÊïàÊï∞ÊçÆ";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";;
 			break;
-		case 5: //ø’ ˝æ›
-			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "√ª”–”––ß ˝æ›";
-			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";
-			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "¥À ±≤ª∏¸∏ƒ¥À±Í ∂";;
+		case 5: //Á©∫Êï∞ÊçÆ
+			EXPECT_FALSE(m_pStock->IsUpdateInsiderSentimentDB()) << "Ê≤°ÊúâÊúâÊïàÊï∞ÊçÆ";
+			EXPECT_TRUE(m_pStock->IsUpdateInsiderSentiment()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";
+			EXPECT_FALSE(m_pStock->IsUpdateProfileDB()) << "Ê≠§Êó∂‰∏çÊõ¥ÊîπÊ≠§Ê†áËØÜ";;
 			break;
 		default:
 			break;
@@ -269,27 +269,27 @@ namespace FireBirdTest {
 	TEST_P(ParseFinnhubInsiderSentimentTest2, TestParseFinnhubInsiderSentiment0) {
 		m_pvInsiderSentiment = m_finnhubCompanyInsiderSentiment.ParseFinnhubStockInsiderSentiment(m_pWebData);
 		switch (m_lIndex) {
-		case 0: // ø’ ˝æ›
+		case 0: // Á©∫Êï∞ÊçÆ
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
 			break;
-		case 1: // Œﬁ»®¿˚∑√Œ µƒ ˝æ›
+		case 1: // Êó†ÊùÉÂà©ËÆøÈóÆÁöÑÊï∞ÊçÆ
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
 			break;
-		case 2: // ’˝»∑
+		case 2: // Ê≠£Á°Æ
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 2);
-			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_strSymbol, "TSLA") << " ˝æ›∞¥»’∆⁄≈≈¡–£¨¥Àµ⁄“ªÃı≈≈µΩ¡Àµ⁄∂˛Œª";
-			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_lDate, 20220301) << " π”√”––ß»’∆⁄£∫√ø‘¬µƒµ⁄“ªÃÏ£¨π ∂¯“™º”“ª";
+			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_strSymbol, "TSLA") << "Êï∞ÊçÆÊåâÊó•ÊúüÊéíÂàóÔºåÊ≠§Á¨¨‰∏ÄÊù°ÊéíÂà∞‰∫ÜÁ¨¨‰∫å‰Ωç";
+			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_lDate, 20220301) << "‰ΩøÁî®ÊúâÊïàÊó•ÊúüÔºöÊØèÊúàÁöÑÁ¨¨‰∏ÄÂ§©ÔºåÊïÖËÄåË¶ÅÂä†‰∏Ä";
 			EXPECT_EQ(m_pvInsiderSentiment->at(1)->m_lChange, 5540);
 			EXPECT_DOUBLE_EQ(m_pvInsiderSentiment->at(1)->m_mspr, 12.209097);
-			EXPECT_TRUE(m_pvInsiderSentiment->at(1)->m_lDate <= m_pvInsiderSentiment->at(1)->m_lDate) << "¥À–Ú¡–∞¥Ωª“◊»’∆⁄À≥–Ú≈≈¡–";
+			EXPECT_TRUE(m_pvInsiderSentiment->at(1)->m_lDate <= m_pvInsiderSentiment->at(1)->m_lDate) << "Ê≠§Â∫èÂàóÊåâ‰∫§ÊòìÊó•ÊúüÈ°∫Â∫èÊéíÂàó";
 			break;
-		case 3: // »±∑¶dataœÓ
+		case 3: // Áº∫‰πèdataÈ°π
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
 			break;
-		case 4: // »±∑¶Symbol
+		case 4: // Áº∫‰πèSymbol
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
 			break;
-		case 5: //ø’ ˝æ›
+		case 5: //Á©∫Êï∞ÊçÆ
 			EXPECT_EQ(m_pvInsiderSentiment->size(), 0);
 			break;
 		default:

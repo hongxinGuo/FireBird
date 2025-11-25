@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 class CPropertyRealtimeWnd : public CDockablePane {
 	// Construction

@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
@@ -46,32 +46,32 @@ namespace FireBirdTest {
 		stockDayLine.SetIndex(1);
 		EXPECT_TRUE(stockDayLine.CreateMessage() ==
 			stockDayLine.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateDayLine()) << "½ÓÊÕµ½µÄÊı¾İ´¦Àíºó·½ÖØÖÃ´Ë±êÊ¶";
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateDayLine()) << "æ¥æ”¶åˆ°çš„æ•°æ®å¤„ç†åæ–¹é‡ç½®æ­¤æ ‡è¯†";
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateDayLine(true);
 	}
 
-	// ¸ñÊ½²»¶Ô(È±¿ªÊ¼µÄ¡®{¡¯£©£¬ÎŞ·¨Ë³ÀûParser
+	// æ ¼å¼ä¸å¯¹(ç¼ºå¼€å§‹çš„â€˜{â€™ï¼‰ï¼Œæ— æ³•é¡ºåˆ©Parser
 	Test_FinnhubWebData finnhubWebData31(1, "AAPL", "\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"ok\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}");
-	// Ã»ÓĞsÏî
+	// æ²¡æœ‰sé¡¹
 	Test_FinnhubWebData finnhubWebData32_1(11, "AAPL", "{\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"a\":\"ok\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}");
-	// sÏî±¨¸æ·Çok
+	// sé¡¹æŠ¥å‘Šéok
 	Test_FinnhubWebData finnhubWebData32(2, "AAPL", "{\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"not ok\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}");
-	// sÏî±¨¸æno data
+	// sé¡¹æŠ¥å‘Šno data
 	Test_FinnhubWebData finnhubWebData33(3, "AAPL", "{\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"no_data\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}");
-	// Êı¾İÈ±·¦tÏî
+	// æ•°æ®ç¼ºä¹té¡¹
 	Test_FinnhubWebData finnhubWebData34(4, "AAPL", "{\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"ok\",\"a\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}");
-	// È±·¦cÏî¡£ÎªÎŞĞ§Êı¾İ
+	// ç¼ºä¹cé¡¹ã€‚ä¸ºæ— æ•ˆæ•°æ®
 	Test_FinnhubWebData finnhubWebData35(5, "AAPL", "{\"a\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"ok\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}");
-	// È±·¦hÏî
+	// ç¼ºä¹hé¡¹
 	Test_FinnhubWebData finnhubWebData36(6, "AAPL", "{\"c\":[118.7,119.11,119.04],\"a\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"ok\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}");
-	// È±·¦lÏî
+	// ç¼ºä¹lé¡¹
 	Test_FinnhubWebData finnhubWebData37(7, "AAPL", "{\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"a\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"ok\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}");
-	// È±·¦oÏî
+	// ç¼ºä¹oé¡¹
 	Test_FinnhubWebData finnhubWebData38(8, "AAPL", "{\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"a\":[118.86,118.69,119.15],\"s\":\"ok\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}");
-	// È±·¦vÏî
+	// ç¼ºä¹vé¡¹
 	Test_FinnhubWebData finnhubWebData39(9, "AAPL", "{\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"ok\",\"t\":[1615300020,1615300080,1615300140],\"a\":[36665,105291,68286]}");
-	// ÕıÈ·µÄÊı¾İ
+	// æ­£ç¡®çš„æ•°æ®
 	Test_FinnhubWebData finnhubWebData40(10, "AAPL", "{\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"ok\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}");
 
 	class ProcessFinnhubStockCandleTest : public TestWithParam<Test_FinnhubWebData*> {
@@ -121,19 +121,19 @@ namespace FireBirdTest {
 
 		m_finnhubStockDayLine.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // ¸ñÊ½²»¶Ô
+		case 1: // æ ¼å¼ä¸å¯¹
 			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
-		case 2: // sÏî±¨¸ænot ok
-			strMessage = "ÈÕÏß·µ»ØÖµ²»Îªok";
+		case 2: // sé¡¹æŠ¥å‘Šnot ok
+			strMessage = "æ—¥çº¿è¿”å›å€¼ä¸ä¸ºok";
 			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
-		case 3: // sÏî±¨¸æ no data
+		case 3: // sé¡¹æŠ¥å‘Š no data
 			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
@@ -143,7 +143,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			break;
-		case 5: // È±·¦CÏî£¬ÎªÎŞĞ§Êı¾İ
+		case 5: // ç¼ºä¹Cé¡¹ï¼Œä¸ºæ— æ•ˆæ•°æ®
 			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
@@ -174,7 +174,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			break;
-		case 11: // Ã»ÓĞsÏî
+		case 11: // æ²¡æœ‰sé¡¹
 			EXPECT_EQ(m_pStock->GetDayLineSize(), 0);
 			EXPECT_FALSE(m_pStock->IsUpdateDayLineDB());
 			EXPECT_FALSE(m_pStock->IsUpdateDayLine());

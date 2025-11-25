@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include"WeekLine.h"
 #include "VirtualDataHistoryCandleExtend.h"
@@ -17,7 +17,7 @@ public:
 
 	CWeekLinePtr CreateNewWeekLine(long& lCurrentDayLinePos) const;
 
-	// ÌØÓÐº¯Êý
+	// ç‰¹æœ‰å‡½æ•°
 	bool BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) const;
 };
 

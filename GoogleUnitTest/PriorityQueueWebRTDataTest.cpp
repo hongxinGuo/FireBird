@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -39,6 +39,6 @@ namespace FireBirdTest {
 		gl_PriorityQueueRTData.PushData(pRTData);
 		gl_PriorityQueueRTData.PushData(pRTData2);
 		const CWebRTDataPtr pRTData3 = gl_PriorityQueueRTData.PopData();
-		EXPECT_EQ(pRTData3->GetTimePoint().time_since_epoch().count(), 0) << "ÓÐÓÅÏÈÈ¨µÄ¶ÓÁÐ£¬½»Ò×Ê±¼äÔçµÄÎ»ÓÚÇ°ÁÐ";
+		EXPECT_EQ(pRTData3->GetTimePoint().time_since_epoch().count(), 0) << "æœ‰ä¼˜å…ˆæƒçš„é˜Ÿåˆ—ï¼Œäº¤æ˜“æ—¶é—´æ—©çš„ä½äºŽå‰åˆ—";
 	}
 }

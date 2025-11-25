@@ -1,4 +1,4 @@
-// CSetChinaMarketDayLneBasicInfo.h : CSetChinaMarketDayLneBasicInfo µÄÉùÃ÷
+ï»¿// CSetChinaMarketDayLneBasicInfo.h : CSetChinaMarketDayLneBasicInfo çš„å£°æ˜Ž
 
 #pragma once
 

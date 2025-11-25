@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include<vector>
 
@@ -28,7 +28,7 @@ public:
 	CGuadan();
 	~CGuadan() = default;
 
-	// ÒÑ²âÊÔº¯Êý
+	// å·²æµ‹è¯•å‡½æ•°
 	void AddGuadan(COneGuadan oneGuadan);
 
 	COneGuadan& GetGuadan();
@@ -41,7 +41,7 @@ public:
 	long GetFormerVolume() const noexcept { return m_lFormerVolume; }
 	void SetCurrentVolume(long lVolume);
 
-	// ´ý²âÊÔº¯Êý
+	// å¾…æµ‹è¯•å‡½æ•°
 	void ReSet();
 	void SetStatus(long lPos, long lStatus);
 	//	void				ProcessGuadan(

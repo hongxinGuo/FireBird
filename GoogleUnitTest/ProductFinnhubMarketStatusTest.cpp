@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -47,7 +47,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(MarketStatusProduct.CreateMessage(), (MarketStatusProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetItemExchangeCode(1)));
 	}
 
-	// ÕıÈ·µÄÊı¾İ
+	// æ­£ç¡®çš„æ•°æ®
 	Test_FinnhubWebData finnhubMarketStatusWebData22(2, "AAPL", "{\"exchange\": \"US\",\"holiday\": null,\"isOpen\" : false,\"session\" : \"pre-market\",\"timezone\" : \"America/New York\",\"t\" : 1697018041}");
 
 	class ParseFinnhubMarketStatusTest : public TestWithParam<Test_FinnhubWebData*> {
@@ -84,13 +84,13 @@ namespace FireBirdTest {
 	TEST_P(ParseFinnhubMarketStatusTest, TestParseFinnhubMarketStatus0) {
 		m_pvMarketStatus = m_finnhubMarketStatusProduct.ParseFinnhubMarketStatus(m_pWebData);
 		switch (m_lIndex) {
-		case 0: // ¿ÕÊı¾İ
+		case 0: // ç©ºæ•°æ®
 			EXPECT_EQ(m_pvMarketStatus->size(), 0);
 			break;
-		case 1: // ÎŞÈ¨Àû·ÃÎÊµÄÊı¾İ
+		case 1: // æ— æƒåˆ©è®¿é—®çš„æ•°æ®
 			EXPECT_EQ(m_pvMarketStatus->size(), 0);
 			break;
-		case 2: // ÕıÈ·µÄÊı¾İ
+		case 2: // æ­£ç¡®çš„æ•°æ®
 			EXPECT_EQ(m_pvMarketStatus->size(), 1);
 			EXPECT_EQ(m_pvMarketStatus->at(0)->m_strExchange, "US");
 			EXPECT_EQ(m_pvMarketStatus->at(0)->m_strHoliday, "");
@@ -111,7 +111,7 @@ namespace FireBirdTest {
 			m_finnhubMarketStatusProduct.__Test_checkAccessRight(m_pWebData);
 
 			m_finnhubMarketStatusProduct.SetMarket(gl_pWorldMarket);
-			m_finnhubMarketStatusProduct.SetIndex(0); // µÚÒ»¸ö½»Ò×Ëù£¨AS)
+			m_finnhubMarketStatusProduct.SetIndex(0); // ç¬¬ä¸€ä¸ªäº¤æ˜“æ‰€ï¼ˆAS)
 		}
 
 		void TearDown() override {
@@ -134,11 +134,11 @@ namespace FireBirdTest {
 		CMarketStatusPtr pMarketStatus;
 		m_finnhubMarketStatusProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
-		case 0: // ¿ÕÊı¾İ
+		case 0: // ç©ºæ•°æ®
 			break;
-		case 1: // ÎŞÈ¨Àû·ÃÎÊµÄÊı¾İ
+		case 1: // æ— æƒåˆ©è®¿é—®çš„æ•°æ®
 			break;
-		case 2: // ÕıÈ·µÄÊı¾İ
+		case 2: // æ­£ç¡®çš„æ•°æ®
 
 			break;
 		default:

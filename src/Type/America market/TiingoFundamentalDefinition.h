@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include"SetTiingoFundamentalDefinition.h"
 
@@ -10,7 +10,7 @@ using std::vector;
 class CTiingoFundamentalDefinition final {
 public:
 	CTiingoFundamentalDefinition();
-	// ²»ÔÊĞí¸´ÖÆºÍ¸³Öµ¡£
+	// ä¸å…è®¸å¤åˆ¶å’Œèµ‹å€¼ã€‚
 	CTiingoFundamentalDefinition(const CTiingoFundamentalDefinition&) = delete;
 	CTiingoFundamentalDefinition& operator=(const CTiingoFundamentalDefinition&) = delete;
 	CTiingoFundamentalDefinition(const CTiingoFundamentalDefinition&&) noexcept = delete;
@@ -30,7 +30,7 @@ public:
 	string m_strStatementType{ "" };
 	string m_strUnits{ "" };
 
-	// ÎŞĞè´æ´¢Êı¾İÇø
+	// æ— éœ€å­˜å‚¨æ•°æ®åŒº
 };
 
 using CTiingoFundamentalDefinitionPtr = shared_ptr<CTiingoFundamentalDefinition>;

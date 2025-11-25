@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "ContainerCryptoDayLine.h"
 
 #include "InfoReport.h"
@@ -20,7 +20,7 @@ bool CContainerCryptoDayLine::SaveDB(const string& strCryptoSymbol) {
 bool CContainerCryptoDayLine::LoadDB(const string& strCryptoSymbol) {
 	CSetCryptoDayLine setDayLineBasic;
 
-	// ×°ÈëDayLineÊı¾İ
+	// è£…å…¥DayLineæ•°æ®
 	setDayLineBasic.m_strFilter = "[Symbol] = '";
 	setDayLineBasic.m_strFilter += strCryptoSymbol.c_str();
 	setDayLineBasic.m_strFilter += "'";

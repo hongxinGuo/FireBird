@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 #include"WorldMarket.h"
@@ -47,45 +47,45 @@ namespace FireBirdTest {
 		forexDayLine.SetIndex(1);
 		EXPECT_TRUE(forexDayLine.CreateMessage() ==
 			forexDayLine.GetInquiryFunction() + gl_dataFinnhubForexSymbol.GetItem(1)->GetFinnhubDayLineInquiryParam(GetUTCTime()));
-		EXPECT_TRUE(gl_dataFinnhubForexSymbol.GetItem(1)->IsUpdateDayLine()) << "½ÓÊÕµ½µÄÊı¾İ´¦Àíºó·½ÉèÖÃ´Ë±êÊ¶";
+		EXPECT_TRUE(gl_dataFinnhubForexSymbol.GetItem(1)->IsUpdateDayLine()) << "æ¥æ”¶åˆ°çš„æ•°æ®å¤„ç†åæ–¹è®¾ç½®æ­¤æ ‡è¯†";
 
 		gl_dataFinnhubForexSymbol.GetItem(1)->SetUpdateDayLine(true);
 	}
 
 	TEST_F(CFinnhubForexDayLineTest, TestProcessWebData) {
-		// ÓÉMockWorldMarketTest¸ºÔğ²âÊÔ
+		// ç”±MockWorldMarketTestè´Ÿè´£æµ‹è¯•
 	}
 
-	// ¸ñÊ½²»¶Ô(È±¿ªÊ¼µÄ¡®{¡¯£©£¬ÎŞ·¨Ë³ÀûParser
+	// æ ¼å¼ä¸å¯¹(ç¼ºå¼€å§‹çš„â€˜{â€™ï¼‰ï¼Œæ— æ³•é¡ºåˆ©Parser
 	Test_FinnhubWebData finnhubForexCandle61(1, "OANDA:EUR_ZAR",
 	                                         "\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}");
-	// Ã»ÓĞsÏî
+	// æ²¡æœ‰sé¡¹
 	Test_FinnhubWebData finnhubForexCandle62_1(11, "OANDA:XAU_SGD",
 		                                           "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"a\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}");
-	// sÏî±¨¸æ·Çok
+	// sé¡¹æŠ¥å‘Šéok
 	Test_FinnhubWebData finnhubForexCandle62(2, "OANDA:EUR_ZAR",
 		                                         "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"not ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}");
-	// sÏî±¨¸æno data
+	// sé¡¹æŠ¥å‘Šno data
 	Test_FinnhubWebData finnhubForexCandle63(3, "OANDA:EUR_ZAR",
 		                                         "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"no_data\",\"a\":[1574978400,1575237600],\"v\":[36521,47505]}");
-	// Êı¾İÈ±·¦tÏî
+	// æ•°æ®ç¼ºä¹té¡¹
 	Test_FinnhubWebData finnhubForexCandle64(4, "OANDA:EUR_ZAR",
 		                                         "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"a\":[1574978400,1575237600],\"v\":[36521,47505]}");
-	// È±·¦cÏî¡£²»Ó°Ïì½á¹û
+	// ç¼ºä¹cé¡¹ã€‚ä¸å½±å“ç»“æœ
 	Test_FinnhubWebData finnhubForexCandle65(5, "OANDA:EUR_ZAR",
 		                                         "{\"a\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}");
-	// È±·¦hÏî
+	// ç¼ºä¹hé¡¹
 	Test_FinnhubWebData finnhubForexCandle66(6, "OANDA:EUR_ZAR",
 		                                         "{\"c\":[1.10159,1.10784],\"a\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}");
-	// È±·¦lÏî
+	// ç¼ºä¹lé¡¹
 	Test_FinnhubWebData finnhubForexCandle67(7, "OANDA:XAU_SGD",
 		                                         "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"a\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}");
-	// È±·¦oÏî
+	// ç¼ºä¹oé¡¹
 	Test_FinnhubWebData finnhubForexCandle68(8, "OANDA:XAU_SGD","{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"a\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}");
-	// È±·¦vÏî
+	// ç¼ºä¹vé¡¹
 	Test_FinnhubWebData finnhubForexCandle69(9, "OANDA:XAU_SGD",
 		                                         "{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"a\":[36521,47505]}");
-	// ÕıÈ·µÄÊı¾İ
+	// æ­£ç¡®çš„æ•°æ®
 	Test_FinnhubWebData finnhubForexCandle70(10, "OANDA:XAU_SGD","{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1575237600, 1574978400],\"v\":[36521,47505]}");
 
 	class ParseFinnhubForexCandleTest : public::testing::TestWithParam<Test_FinnhubWebData*> {
@@ -125,15 +125,15 @@ namespace FireBirdTest {
 
 		m_pvDayLine = m_finnhubForexDayLine.ParseFinnhubForexCandle(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // ¸ñÊ½²»¶Ô
+		case 1: // æ ¼å¼ä¸å¯¹
 			EXPECT_EQ(m_pvDayLine->size(), 0);
 			break;
-		case 2: // sÏî±¨¸ænot ok
+		case 2: // sé¡¹æŠ¥å‘Šnot ok
 			EXPECT_EQ(m_pvDayLine->size(), 0);
-			strMessage = "ÈÕÏß·µ»ØÖµ²»Îªok";
+			strMessage = "æ—¥çº¿è¿”å›å€¼ä¸ä¸ºok";
 			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), strMessage);
 			break;
-		case 3: // sÏî±¨¸æ no data
+		case 3: // sé¡¹æŠ¥å‘Š no data
 			EXPECT_EQ(m_pvDayLine->size(), 0);
 			break;
 		case 4:
@@ -156,10 +156,10 @@ namespace FireBirdTest {
 			break;
 		case 10:
 			EXPECT_EQ(m_pvDayLine->size(), 2);
-			EXPECT_EQ(m_pvDayLine->at(0)->GetClose(), 1107) << "µÚ¶ş¸öÊı¾İÊ±¼ä½ÏÔç£¬¹ÊÎ»ÓÚµÚÒ»¸öÎ»ÖÃ";
-			EXPECT_EQ(m_pvDayLine->at(1)->GetClose(), 1101) << "µÚÒ»¸öÊı¾İÊ±¼ä½ÏÍí£¬¹ÊÎ»ÓÚµÚ¶ş¸öÎ»ÖÃ";
+			EXPECT_EQ(m_pvDayLine->at(0)->GetClose(), 1107) << "ç¬¬äºŒä¸ªæ•°æ®æ—¶é—´è¾ƒæ—©ï¼Œæ•…ä½äºç¬¬ä¸€ä¸ªä½ç½®";
+			EXPECT_EQ(m_pvDayLine->at(1)->GetClose(), 1101) << "ç¬¬ä¸€ä¸ªæ•°æ®æ—¶é—´è¾ƒæ™šï¼Œæ•…ä½äºç¬¬äºŒä¸ªä½ç½®";
 			break;
-		case 11: // Ã»ÓĞsÏî
+		case 11: // æ²¡æœ‰sé¡¹
 			EXPECT_EQ(m_pvDayLine->size(), 0);
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
@@ -207,19 +207,19 @@ namespace FireBirdTest {
 
 		m_finnhubForexDayLine.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
-		case 1: // ¸ñÊ½²»¶Ô
+		case 1: // æ ¼å¼ä¸å¯¹
 			EXPECT_FALSE(pForex->IsUpdateDayLineDB());
 			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
 			break;
-		case 2: // sÏî±¨¸ænot ok
+		case 2: // sé¡¹æŠ¥å‘Šnot ok
 			EXPECT_FALSE(pForex->IsUpdateDayLineDB());
 			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			gl_systemMessage.PopErrorMessage();
 			break;
-		case 3: // sÏî±¨¸æ no data
+		case 3: // sé¡¹æŠ¥å‘Š no data
 			EXPECT_FALSE(pForex->IsUpdateDayLineDB());
 			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
@@ -229,7 +229,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());
 			break;
-		case 5: // È±·¦CÏî£¬ÎŞĞ§Êı¾İ
+		case 5: // ç¼ºä¹Cé¡¹ï¼Œæ— æ•ˆæ•°æ®
 			EXPECT_EQ(pForex->GetDayLineSize(), 0);
 			EXPECT_TRUE(pForex->IsUpdateDayLineDB());
 			EXPECT_FALSE(pForex->IsUpdateDayLine());
@@ -266,7 +266,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_TRUE(pForex->IsUpdateProfileDB());
 			break;
-		case 11: // Ã»ÓĞsÏî
+		case 11: // æ²¡æœ‰sé¡¹
 			EXPECT_FALSE(pForex->IsUpdateDayLineDB());
 			EXPECT_FALSE(pForex->IsUpdateDayLine());
 			EXPECT_FALSE(pForex->IsUpdateProfileDB());

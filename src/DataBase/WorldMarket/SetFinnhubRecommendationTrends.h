@@ -1,4 +1,4 @@
-// CSetCountry.h : CSetCountry µÄÉùÃ÷
+ï»¿// CSetCountry.h : CSetCountry çš„å£°æ˜
 
 #pragma once
 
@@ -10,15 +10,15 @@ public:
 
 	long m_ID{ 0 };
 	CString m_Symbol{ "" };
-	long m_Period{ 0 }; // ¸ñÊ½£º2020-03-01
+	long m_Period{ 0 }; // æ ¼å¼ï¼š2020-03-01
 	long m_StrongBuy{ 0 };
 	long m_Buy{ 0 };
 	long m_Hold{ 0 };
 	long m_Sell{ 0 };
 	long m_StrongSell{ 0 };
 
-	// ÖØĞ´
-	// Ïòµ¼Éú³ÉµÄĞéº¯ÊıÖØĞ´
+	// é‡å†™
+	// å‘å¯¼ç”Ÿæˆçš„è™šå‡½æ•°é‡å†™
 public:
-	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX Ö§³Ö
+	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX æ”¯æŒ
 };

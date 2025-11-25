@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include "Inaccessible.h"
 
@@ -51,7 +51,7 @@ bool CInaccessible::AddSymbol(const string& sSymbolName) {
 }
 
 bool CInaccessible::DeleteSymbol(const string& sSymbolName) {
-	if (m_setSymbol.contains(sSymbolName)) { // ¼¯ºÏÖĞ´æÔÚ´ËÔªËØ£¿
+	if (m_setSymbol.contains(sSymbolName)) { // é›†åˆä¸­å­˜åœ¨æ­¤å…ƒç´ ï¼Ÿ
 		m_setSymbol.erase(sSymbolName);
 		for (int position = 0; position < m_vSymbol.size(); position++) {
 			if (m_vSymbol.at(position).compare(sSymbolName) == 0) {

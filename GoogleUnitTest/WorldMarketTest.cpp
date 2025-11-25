@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -65,16 +65,16 @@ namespace FireBirdTest {
 		gmtime_s(&tm2_, &tt);
 		tm tm_;
 		gl_pWorldMarket->GetMarketTimeStruct(&tm_, GetUTCTime());
-		if (gl_pWorldMarket->GetTimeZone() == 4 * 3600) { //ÃÀ¶«ÏÄÊ±ÖÆ£¿
-			EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour - 4) || (tm_.tm_hour == tm2_.tm_hour + 20))) << "WorldMarketÄ¬ÈÏÎªÎ÷ËÄÇø(ÃÀ¶«ÏÄÊ±ÖÆ±ê×¼Ê±¼ä)";
+		if (gl_pWorldMarket->GetTimeZone() == 4 * 3600) { //ç¾ä¸œå¤æ—¶åˆ¶ï¼Ÿ
+			EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour - 4) || (tm_.tm_hour == tm2_.tm_hour + 20))) << "WorldMarketé»˜è®¤ä¸ºè¥¿å››åŒº(ç¾ä¸œå¤æ—¶åˆ¶æ ‡å‡†æ—¶é—´)";
 		}
 		else {
-			EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour - 5) || (tm_.tm_hour == tm2_.tm_hour + 19))) << "WorldMarketÄ¬ÈÏÎªÎ÷ËÄÇø(ÃÀ¶«±ê×¼Ê±¼ä)";
+			EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour - 5) || (tm_.tm_hour == tm2_.tm_hour + 19))) << "WorldMarketé»˜è®¤ä¸ºè¥¿å››åŒº(ç¾ä¸œæ ‡å‡†æ—¶é—´)";
 		}
 	}
 
 	TEST_F(CWorldMarketTest, TestGetTotalStock) {
-		EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 4847) << "Ä¬ÈÏ×´Ì¬ÏÂÊı¾İ¿â×ÜÊıÎª4847(È«²¿ÉÏº£¹ÉÆ±ºÍĞ¡²¿·ÖÃÀ¹ú¹ÉÆ±)";
+		EXPECT_EQ(gl_dataContainerFinnhubStock.Size(), 4847) << "é»˜è®¤çŠ¶æ€ä¸‹æ•°æ®åº“æ€»æ•°ä¸º4847(å…¨éƒ¨ä¸Šæµ·è‚¡ç¥¨å’Œå°éƒ¨åˆ†ç¾å›½è‚¡ç¥¨)";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsStock) {
@@ -82,7 +82,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol("000001.SS"));
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol("600601.SS"));
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsSymbol("A"));
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSymbol("000001.SZ")) << "Ä¿Ç°²âÊÔÊı¾İ¿âÖĞÖ»ÓĞÉÏº£ºÍÃÀ¹ú¹ÉÆ±¼¯";
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSymbol("000001.SZ")) << "ç›®å‰æµ‹è¯•æ•°æ®åº“ä¸­åªæœ‰ä¸Šæµ·å’Œç¾å›½è‚¡ç¥¨é›†";
 
 		const auto pStock = make_shared<CFinnhubStock>();
 		pStock->SetSymbol("000000.SS");
@@ -102,7 +102,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_dataContainerTiingoStock.IsSymbol("AA"));
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsSymbol("600601.SS"));
 		EXPECT_TRUE(gl_dataContainerTiingoStock.IsSymbol("A"));
-		EXPECT_FALSE(gl_dataContainerTiingoStock.IsSymbol("000001.SZ")) << "Ä¿Ç°²âÊÔÊı¾İ¿âÖĞÖ»ÓĞÉÏº£ºÍÃÀ¹ú¹ÉÆ±¼¯";
+		EXPECT_FALSE(gl_dataContainerTiingoStock.IsSymbol("000001.SZ")) << "ç›®å‰æµ‹è¯•æ•°æ®åº“ä¸­åªæœ‰ä¸Šæµ·å’Œç¾å›½è‚¡ç¥¨é›†";
 
 		const auto pStock = make_shared<CFinnhubStock>();
 		pStock->SetSymbol("000000.SS");
@@ -131,7 +131,7 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestGetTiingoStock) {
 		CTiingoStockPtr pStock = gl_dataContainerTiingoStock.GetStock(0); // A
-		EXPECT_EQ(pStock->GetSymbol(), "A") << "µÚÒ»¸ö¹ÉÆ±´úÂëÎªA";
+		EXPECT_EQ(pStock->GetSymbol(), "A") << "ç¬¬ä¸€ä¸ªè‚¡ç¥¨ä»£ç ä¸ºA";
 		pStock = gl_dataContainerTiingoStock.GetStock("A");
 		EXPECT_FALSE(pStock == nullptr);
 		EXPECT_EQ(pStock->GetName(), "Agilent Technologies Inc");
@@ -165,19 +165,19 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteStock) {
-		// do nothing. ÒÑ¾­ÔÚTestAddStockÖĞ²âÊÔÁËDeleteStockº¯Êı
+		// do nothing. å·²ç»åœ¨TestAddStockä¸­æµ‹è¯•äº†DeleteStockå‡½æ•°
 		CFinnhubStockPtr pStock = nullptr;
 
 		gl_dataContainerFinnhubStock.Delete(pStock);
 
 		pStock = make_shared<CFinnhubStock>();
 		pStock->SetSymbol("000001.SZ");
-		gl_dataContainerFinnhubStock.Delete(pStock); // "´Ë¹ÉÆ±´úÂë²»´æÔÚÓÚ´úÂë¼¯ÖĞ";
+		gl_dataContainerFinnhubStock.Delete(pStock); // "æ­¤è‚¡ç¥¨ä»£ç ä¸å­˜åœ¨äºä»£ç é›†ä¸­";
 	}
 
 	TEST_F(CWorldMarketTest, TestGetStock) {
 		CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem(0); // 000001.SS
-		EXPECT_EQ(pStock->GetSymbol(), "000001.SS") << "µÚÒ»¸ö¹ÉÆ±´úÂëÎª000001.SS";
+		EXPECT_EQ(pStock->GetSymbol(), "000001.SS") << "ç¬¬ä¸€ä¸ªè‚¡ç¥¨ä»£ç ä¸º000001.SS";
 		pStock = gl_dataContainerFinnhubStock.GetItem("000001.SS");
 		EXPECT_FALSE(pStock == nullptr);
 		EXPECT_EQ(pStock->GetDescription(), "SSE Composite Index");
@@ -198,7 +198,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteTiingoStock) {
-		// do nothing. ÒÑ¾­ÔÚTestAddStockÖĞ²âÊÔÁËDeleteStockº¯Êı
+		// do nothing. å·²ç»åœ¨TestAddStockä¸­æµ‹è¯•äº†DeleteStockå‡½æ•°
 		CTiingoStockPtr pStock = nullptr;
 
 		gl_dataContainerTiingoStock.Delete(pStock);
@@ -228,8 +228,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteForexExchange) {
-		// do nothing. ÒÑ¾­ÔÚTestAddForexExchangeÖĞ²âÊÔÁËDeleteForexExchangeº¯Êı
-		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.Delete("US.US.US")) << "´Ë·ûºÅÔÚ·ûºÅ¼¯ÖĞ²»´æÔÚ";
+		// do nothing. å·²ç»åœ¨TestAddForexExchangeä¸­æµ‹è¯•äº†DeleteForexExchangeå‡½æ•°
+		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.Delete("US.US.US")) << "æ­¤ç¬¦å·åœ¨ç¬¦å·é›†ä¸­ä¸å­˜åœ¨";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsForexSymbol) {
@@ -261,14 +261,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteForexSymbol) {
-		// do nothing. ÒÑ¾­ÔÚTestAddForexSymbolÖĞ²âÊÔÁËDeleteForexSymbolº¯Êı
+		// do nothing. å·²ç»åœ¨TestAddForexSymbolä¸­æµ‹è¯•äº†DeleteForexSymbolå‡½æ•°
 		CForexSymbolPtr pForexSymbol = nullptr;
 
-		gl_dataFinnhubForexSymbol.Delete(pForexSymbol); // "¿ÕÖ¸Õë";
+		gl_dataFinnhubForexSymbol.Delete(pForexSymbol); // "ç©ºæŒ‡é’ˆ";
 
 		pForexSymbol = make_shared<CFinnhubForex>();
 		pForexSymbol->SetSymbol("000001.SZ");
-		gl_dataFinnhubForexSymbol.Delete(pForexSymbol); // "´Ë·ûºÅÔÚ·ûºÅ¼¯ÖĞ²»´æÔÚ";
+		gl_dataFinnhubForexSymbol.Delete(pForexSymbol); // "æ­¤ç¬¦å·åœ¨ç¬¦å·é›†ä¸­ä¸å­˜åœ¨";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCryptoExchange) {
@@ -291,8 +291,8 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteCryptoExchange) {
-		// do nothing. ÒÑ¾­ÔÚTestAddCryptoExchangeÖĞ²âÊÔÁËDeleteCryptoExchangeº¯Êı
-		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.Delete("US.US.US")) << "´Ë·ûºÅÔÚ·ûºÅ¼¯ÖĞ²»´æÔÚ";
+		// do nothing. å·²ç»åœ¨TestAddCryptoExchangeä¸­æµ‹è¯•äº†DeleteCryptoExchangeå‡½æ•°
+		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.Delete("US.US.US")) << "æ­¤ç¬¦å·åœ¨ç¬¦å·é›†ä¸­ä¸å­˜åœ¨";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCryptoSymbol) {
@@ -326,14 +326,14 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CWorldMarketTest, TestDeleteCryptoSymbol) {
-		// do nothing. ÒÑ¾­ÔÚTestAddCryptoSymbolÖĞ²âÊÔÁËDeleteCryptoSymbolº¯Êı
+		// do nothing. å·²ç»åœ¨TestAddCryptoSymbolä¸­æµ‹è¯•äº†DeleteCryptoSymbolå‡½æ•°
 		CFinnhubCryptoPtr pCryptoSymbol = nullptr;
 
-		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); // "¿ÕÖ¸Õë";
+		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); // "ç©ºæŒ‡é’ˆ";
 
 		pCryptoSymbol = make_shared<CFinnhubCrypto>();
 		pCryptoSymbol->SetSymbol("000001.SZ");
-		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); // "´Ë·ûºÅÔÚ·ûºÅ¼¯ÖĞ²»´æÔÚ";
+		gl_dataFinnhubCryptoSymbol.Delete(pCryptoSymbol); // "æ­¤ç¬¦å·åœ¨ç¬¦å·é›†ä¸­ä¸å­˜åœ¨";
 	}
 
 	TEST_F(CWorldMarketTest, TestIsCountry) {
@@ -375,7 +375,7 @@ namespace FireBirdTest {
 		EXPECT_FALSE(gl_dataContainerFinnhubCountry.IsCountry(pCountry));
 		gl_dataContainerFinnhubCountry.Add(pCountry);
 		EXPECT_EQ(gl_dataContainerFinnhubCountry.GetTotalCountry(), lTotal + 1);
-		gl_dataContainerFinnhubCountry.UpdateDB(); // ´Ë²âÊÔº¯ÊıÖ´ĞĞÍêºó£¬ĞÂÔöÁËÒ»¸öCountryÃ»ÓĞÉ¾³ı£¨Êı¾İ¿âÖĞµÄÉ¾³ıÁË£©¡£
+		gl_dataContainerFinnhubCountry.UpdateDB(); // æ­¤æµ‹è¯•å‡½æ•°æ‰§è¡Œå®Œåï¼Œæ–°å¢äº†ä¸€ä¸ªCountryæ²¡æœ‰åˆ é™¤ï¼ˆæ•°æ®åº“ä¸­çš„åˆ é™¤äº†ï¼‰ã€‚
 
 		CSetCountry setCountry;
 		setCountry.m_strFilter = "[Country] = 'NoName'";
@@ -393,7 +393,7 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestUpdateStockProfileDB) {
 		auto pStock = make_shared<CFinnhubStock>();
 		pStock->SetSymbol("SS.SS.US");
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSymbol(pStock)); // È·±£ÊÇÒ»¸öĞÂ¹ÉÆ±´úÂë
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.IsSymbol(pStock)); // ç¡®ä¿æ˜¯ä¸€ä¸ªæ–°è‚¡ç¥¨ä»£ç 
 		pStock->SetTodayNewStock(true);
 		pStock->SetUpdateProfileDB(true);
 		gl_dataContainerFinnhubStock.Add(pStock);
@@ -401,7 +401,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(pStock != nullptr);
 		EXPECT_EQ(pStock->GetCurrency(), "");
 		pStock->SetUpdateProfileDB(true);
-		pStock->SetCurrency("No Currency"); // ¸üĞÂÕâ¸öÌõÄ¿
+		pStock->SetCurrency("No Currency"); // æ›´æ–°è¿™ä¸ªæ¡ç›®
 
 		try {
 			gl_dataContainerFinnhubStock.UpdateProfileDB();
@@ -411,7 +411,7 @@ namespace FireBirdTest {
 		catch (CException&) {
 		}
 		catch (...) {
-			EXPECT_TRUE(false) << "Î´Öªexception";
+			EXPECT_TRUE(false) << "æœªçŸ¥exception";
 			ASSERT_FALSE(true);
 		}
 
@@ -419,7 +419,7 @@ namespace FireBirdTest {
 		setFinnhubStock.m_strFilter = "[Symbol] = '000001.SS'";
 		setFinnhubStock.Open();
 		EXPECT_FALSE(setFinnhubStock.IsEOF());
-		EXPECT_STREQ(setFinnhubStock.m_Currency, _T("No Currency")) << "´ËÌõÄ¿ÒÑ¸üĞÂ";
+		EXPECT_STREQ(setFinnhubStock.m_Currency, _T("No Currency")) << "æ­¤æ¡ç›®å·²æ›´æ–°";
 		setFinnhubStock.m_pDatabase->BeginTrans();
 		setFinnhubStock.Edit();
 		setFinnhubStock.m_Currency = "";
@@ -439,7 +439,7 @@ namespace FireBirdTest {
 		setFinnhubStock2.m_pDatabase->CommitTrans();
 		setFinnhubStock2.Close();
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 		pStock = gl_dataContainerFinnhubStock.GetItem("SS.SS.US");
 		EXPECT_TRUE(pStock != nullptr);
 		gl_dataContainerFinnhubStock.Delete(pStock);
@@ -453,21 +453,21 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestUpdateDayLineDB) {
 		EXPECT_TRUE(gl_pWorldMarket->UpdateFinnhubStockDayLineDB());
 
-		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem(0)->IsUpdateDayLineDB()) << "´Ë±êÊ¶±»ÖØÖÃ";
+		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem(0)->IsUpdateDayLineDB()) << "æ­¤æ ‡è¯†è¢«é‡ç½®";
 		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateDayLineDB(true);
 
 		EXPECT_TRUE(gl_pWorldMarket->UpdateFinnhubStockDayLineDB());
 		for (int i = 0; i < gl_dataContainerFinnhubStock.Size(); i++) {
-			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem(i)->IsUpdateDayLineDB()) << "´Ë±êÊ¶±»ÖØÖÃ";
+			EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem(i)->IsUpdateDayLineDB()) << "æ­¤æ ‡è¯†è¢«é‡ç½®";
 		}
 	}
 
 	TEST_F(CWorldMarketTest, TestUpdateForexSymbolDB) {
 		auto pForexSymbol = make_shared<CFinnhubForex>();
-		pForexSymbol->SetSymbol("SS.SS.US"); // ĞÂ·ûºÅ
+		pForexSymbol->SetSymbol("SS.SS.US"); // æ–°ç¬¦å·
 		EXPECT_FALSE(gl_dataFinnhubForexSymbol.IsSymbol(pForexSymbol));
 		gl_dataFinnhubForexSymbol.Add(pForexSymbol);
-		pForexSymbol = gl_dataFinnhubForexSymbol.GetItem("OANDA:GBP_ZAR"); // µÚ¶ş¸öÏÖ´æµÄ·ûºÅ
+		pForexSymbol = gl_dataFinnhubForexSymbol.GetItem("OANDA:GBP_ZAR"); // ç¬¬äºŒä¸ªç°å­˜çš„ç¬¦å·
 		EXPECT_EQ(pForexSymbol->GetIPOStatus(), _STOCK_IPOED_);
 		pForexSymbol->SetUpdateProfileDB(true);
 		pForexSymbol->SetIPOStatus(_STOCK_DELISTED_);
@@ -486,7 +486,7 @@ namespace FireBirdTest {
 
 		setCryptoSymbol.m_strFilter = "[Symbol] = 'SS.SS.US'";
 		setCryptoSymbol.Open();
-		EXPECT_FALSE(setCryptoSymbol.IsEOF()) << "´æÈëÁËĞÂ·ûºÅ";
+		EXPECT_FALSE(setCryptoSymbol.IsEOF()) << "å­˜å…¥äº†æ–°ç¬¦å·";
 		setCryptoSymbol.m_pDatabase->BeginTrans();
 		while (!setCryptoSymbol.IsEOF()) {
 			setCryptoSymbol.Delete();
@@ -495,7 +495,7 @@ namespace FireBirdTest {
 		setCryptoSymbol.m_pDatabase->CommitTrans();
 		setCryptoSymbol.Close();
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 		pForexSymbol->SetIPOStatus(_STOCK_IPOED_);
 		pForexSymbol = gl_dataFinnhubForexSymbol.GetItem("SS.SS.US");
 		EXPECT_TRUE(pForexSymbol != nullptr);
@@ -504,10 +504,10 @@ namespace FireBirdTest {
 
 	TEST_F(CWorldMarketTest, TestUpdateFinnhubCryptoSymbolDB) {
 		auto pCryptoSymbol = make_shared<CFinnhubCrypto>();
-		pCryptoSymbol->SetSymbol("SS.SS.US"); // ĞÂ·ûºÅ
+		pCryptoSymbol->SetSymbol("SS.SS.US"); // æ–°ç¬¦å·
 		EXPECT_FALSE(gl_dataFinnhubCryptoSymbol.IsSymbol(pCryptoSymbol));
 		gl_dataFinnhubCryptoSymbol.Add(pCryptoSymbol);
-		pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem("BINANCE:USDTUAH"); // µÚ¶ş¸öÏÖ´æµÄ·ûºÅ
+		pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem("BINANCE:USDTUAH"); // ç¬¬äºŒä¸ªç°å­˜çš„ç¬¦å·
 		EXPECT_EQ(pCryptoSymbol->GetIPOStatus(), _STOCK_IPOED_);
 		pCryptoSymbol->SetUpdateProfileDB(true);
 		pCryptoSymbol->SetIPOStatus(_STOCK_DELISTED_);
@@ -516,7 +516,7 @@ namespace FireBirdTest {
 		CSetFinnhubCryptoSymbol setCryptoSymbol;
 		setCryptoSymbol.m_strFilter = "[Symbol] = 'BINANCE:USDTUAH'";
 		setCryptoSymbol.Open();
-		EXPECT_EQ(setCryptoSymbol.m_IPOStatus, _STOCK_DELISTED_) << "×´Ì¬ÒÑ±»ĞŞ¸ÄÎªÕªÅÆ";
+		EXPECT_EQ(setCryptoSymbol.m_IPOStatus, _STOCK_DELISTED_) << "çŠ¶æ€å·²è¢«ä¿®æ”¹ä¸ºæ‘˜ç‰Œ";
 		setCryptoSymbol.m_pDatabase->BeginTrans();
 		setCryptoSymbol.Edit();
 		setCryptoSymbol.m_IPOStatus = _STOCK_IPOED_;
@@ -526,16 +526,16 @@ namespace FireBirdTest {
 
 		setCryptoSymbol.m_strFilter = "[Symbol] = 'SS.SS.US'";
 		setCryptoSymbol.Open();
-		EXPECT_FALSE(setCryptoSymbol.IsEOF()) << "´æÈëÁËĞÂ·ûºÅ";
+		EXPECT_FALSE(setCryptoSymbol.IsEOF()) << "å­˜å…¥äº†æ–°ç¬¦å·";
 		setCryptoSymbol.m_pDatabase->BeginTrans();
 		while (!setCryptoSymbol.IsEOF()) {
-			setCryptoSymbol.Delete(); // É¾³ı´ËĞÂ´úÂë
+			setCryptoSymbol.Delete(); // åˆ é™¤æ­¤æ–°ä»£ç 
 			setCryptoSymbol.MoveNext();
 		}
 		setCryptoSymbol.m_pDatabase->CommitTrans();
 		setCryptoSymbol.Close();
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 		pCryptoSymbol->SetIPOStatus(_STOCK_IPOED_);
 		pCryptoSymbol = gl_dataFinnhubCryptoSymbol.GetItem("SS.SS.US");
 		EXPECT_TRUE(pCryptoSymbol != nullptr);
@@ -545,9 +545,9 @@ namespace FireBirdTest {
 	TEST_F(CWorldMarketTest, TestUpdateTiingoStockDB) {
 		CSetTiingoStock setTiingoStock;
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
-		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount()) << "º¯ÊıUpdateProfileÖ»ÔËĞĞÔÚ¸¶·ÑÕË»§×´Ì¬ÏÂ";
+		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount()) << "å‡½æ•°UpdateProfileåªè¿è¡Œåœ¨ä»˜è´¹è´¦æˆ·çŠ¶æ€ä¸‹";
 
-		auto pTiingoStock = make_shared<CTiingoStock>(); // Õâ¸öÊÇÊı¾İ¿âÖĞÒÑ´æÔÚµÄÖ¤È¯
+		auto pTiingoStock = make_shared<CTiingoStock>(); // è¿™ä¸ªæ˜¯æ•°æ®åº“ä¸­å·²å­˜åœ¨çš„è¯åˆ¸
 		pTiingoStock->SetActive(true);
 		pTiingoStock->SetIsADR(false);
 		pTiingoStock->SetSicCode(1002);
@@ -558,8 +558,8 @@ namespace FireBirdTest {
 		pTiingoStock->SetReportingCurrency("");
 		pTiingoStock->SetSECFilingWebSite("");
 		pTiingoStock->SetSicIndustry("");
-		pTiingoStock->SetSicSector("Test"); // ÓÃÓÚÉ¾³ı
-		pTiingoStock->SetSymbol("A"); // ÒÑ´æÔÚ´úÂë
+		pTiingoStock->SetSicSector("Test"); // ç”¨äºåˆ é™¤
+		pTiingoStock->SetSymbol("A"); // å·²å­˜åœ¨ä»£ç 
 		pTiingoStock->SetTiingoIndustry("");
 		pTiingoStock->SetTiingoPermaTicker("");
 		pTiingoStock->SetTiingoSector("");
@@ -573,36 +573,36 @@ namespace FireBirdTest {
 		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);
 		pTiingoStock->SetCompanyWebSite("www.abc.com");
 		pTiingoStock->SetLocation("Irvine CA USA");
-		pTiingoStock->SetName("ABCDE"); // ĞÂ´úÂë
+		pTiingoStock->SetName("ABCDE"); // æ–°ä»£ç 
 		pTiingoStock->SetReportingCurrency("US Dollar");
 		pTiingoStock->SetSECFilingWebSite("abc");
 		pTiingoStock->SetSicIndustry("Computer Science");
 		pTiingoStock->SetSicSector("Test");
-		pTiingoStock->SetSymbol("ABCDEF"); // ĞÂ´úÂë
+		pTiingoStock->SetSymbol("ABCDEF"); // æ–°ä»£ç 
 		pTiingoStock->SetTiingoIndustry("Computer");
 		pTiingoStock->SetTiingoPermaTicker("abcdefg");
 		pTiingoStock->SetTiingoSector("gfedcba");
 		pTiingoStock->SetUpdateProfileDB(true);
 		gl_dataContainerTiingoStock.Add(pTiingoStock);
 
-		EXPECT_TRUE(gl_dataContainerTiingoStock.IsUpdateProfileDB()) << "Ìí¼ÓÁËÁ½¸ö¹ÉÆ±";
+		EXPECT_TRUE(gl_dataContainerTiingoStock.IsUpdateProfileDB()) << "æ·»åŠ äº†ä¸¤ä¸ªè‚¡ç¥¨";
 
-		gl_dataContainerTiingoStock.UpdateDB(); // ¸üĞÂ´úÂë¼¯
+		gl_dataContainerTiingoStock.UpdateDB(); // æ›´æ–°ä»£ç é›†
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 		setTiingoStock.m_strFilter = "[SICSector] = 'Test'";
 		setTiingoStock.m_strSort = "[Ticker]";
 		setTiingoStock.Open();
-		EXPECT_FALSE(setTiingoStock.IsEOF()) << "´æÈëÁËÁ½¹ÉÆ±´úÂë";
+		EXPECT_FALSE(setTiingoStock.IsEOF()) << "å­˜å…¥äº†ä¸¤è‚¡ç¥¨ä»£ç ";
 		setTiingoStock.m_pDatabase->BeginTrans();
-		EXPECT_STREQ(setTiingoStock.m_Ticker, _T("A")) << "ÒÑ´æÔÚ´úÂë";
+		EXPECT_STREQ(setTiingoStock.m_Ticker, _T("A")) << "å·²å­˜åœ¨ä»£ç ";
 		EXPECT_EQ(setTiingoStock.m_SicCode, 1002);
 		setTiingoStock.Edit();
 		setTiingoStock.m_SicSector = "";
 		setTiingoStock.m_SicCode = 0;
 		setTiingoStock.Update();
 		setTiingoStock.MoveNext();
-		EXPECT_STREQ(setTiingoStock.m_Ticker, _T("ABCDEF")) << "ĞÂ´úÂë";
+		EXPECT_STREQ(setTiingoStock.m_Ticker, _T("ABCDEF")) << "æ–°ä»£ç ";
 		setTiingoStock.Delete();
 		setTiingoStock.MoveNext();
 		EXPECT_TRUE(setTiingoStock.IsEOF());
@@ -616,9 +616,9 @@ namespace FireBirdTest {
 		const string strSymbol = "US.US.US";
 
 		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.IsNeedUpdate());
-		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.UpdateDB()) << "Ã»ÓĞĞÂForex Exchange";
+		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.UpdateDB()) << "æ²¡æœ‰æ–°Forex Exchange";
 
-		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.IsExchange(strSymbol)); // È·±£ÊÇÒ»¸öĞÂ¹ÉÆ±´úÂë
+		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.IsExchange(strSymbol)); // ç¡®ä¿æ˜¯ä¸€ä¸ªæ–°è‚¡ç¥¨ä»£ç 
 		gl_dataContainerFinnhubForexExchange.Add(strSymbol);
 		EXPECT_TRUE(gl_dataContainerFinnhubForexExchange.IsNeedUpdate());
 		EXPECT_TRUE(gl_dataContainerFinnhubForexExchange.UpdateDB());
@@ -635,7 +635,7 @@ namespace FireBirdTest {
 		setForexExchange.m_pDatabase->CommitTrans();
 		setForexExchange.Close();
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 		gl_dataContainerFinnhubForexExchange.Delete(strSymbol);
 		gl_dataContainerFinnhubForexExchange.SetLastSize(gl_dataContainerFinnhubForexExchange.Size());
 		EXPECT_FALSE(gl_dataContainerFinnhubForexExchange.IsNeedUpdate());
@@ -645,9 +645,9 @@ namespace FireBirdTest {
 		const string sSymbol = "US.US.US";
 
 		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.IsNeedUpdate());
-		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.UpdateDB()) << "Ã»ÓĞĞÂCrypto Exchange";
+		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.UpdateDB()) << "æ²¡æœ‰æ–°Crypto Exchange";
 
-		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.IsExchange(sSymbol)); // È·±£ÊÇÒ»¸öĞÂCrypto´úÂë
+		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.IsExchange(sSymbol)); // ç¡®ä¿æ˜¯ä¸€ä¸ªæ–°Cryptoä»£ç 
 		gl_dataContainerFinnhubCryptoExchange.Add(sSymbol);
 		EXPECT_TRUE(gl_dataContainerFinnhubCryptoExchange.IsNeedUpdate());
 		EXPECT_TRUE(gl_dataContainerFinnhubCryptoExchange.UpdateDB());
@@ -658,13 +658,13 @@ namespace FireBirdTest {
 		EXPECT_FALSE(setCryptoExchange.IsEOF());
 		setCryptoExchange.m_pDatabase->BeginTrans();
 		while (!setCryptoExchange.IsEOF()) {
-			setCryptoExchange.Delete(); // É¾³ıĞÂÌí¼ÓµÄÕâ¸ö´úÂë
+			setCryptoExchange.Delete(); // åˆ é™¤æ–°æ·»åŠ çš„è¿™ä¸ªä»£ç 
 			setCryptoExchange.MoveNext();
 		}
 		setCryptoExchange.m_pDatabase->CommitTrans();
 		setCryptoExchange.Close();
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 		gl_dataContainerFinnhubCryptoExchange.Delete(sSymbol);
 		gl_dataContainerFinnhubCryptoExchange.SetLastSize(gl_dataContainerFinnhubCryptoExchange.Size());
 		EXPECT_FALSE(gl_dataContainerFinnhubCryptoExchange.IsNeedUpdate());
@@ -681,31 +681,31 @@ namespace FireBirdTest {
 		CInsiderTransactionPtr pInsiderTransaction = make_shared<CInsiderTransaction>();
 		pInsiderTransaction->m_strSymbol = "B";
 		pInsiderTransaction->m_strPersonName = "a b c";
-		pInsiderTransaction->m_lTransactionDate = 20200101; // Õâ¸ö¹ÉÆ±´úÂë²»·û£¬ĞèÒªÌí¼Ó½øÊı¾İ¿â
+		pInsiderTransaction->m_lTransactionDate = 20200101; // è¿™ä¸ªè‚¡ç¥¨ä»£ç ä¸ç¬¦ï¼Œéœ€è¦æ·»åŠ è¿›æ•°æ®åº“
 		vInsiderTransaction.push_back(pInsiderTransaction);
 		pInsiderTransaction = make_shared<CInsiderTransaction>();
 		pInsiderTransaction->m_strSymbol = "A";
 		pInsiderTransaction->m_strPersonName = "a b c d";
-		pInsiderTransaction->m_lTransactionDate = 20210101; // Õâ¸öÄÚ²¿½»Ò×ÈËÔ±Ãû³Æ²»·û£¬ĞèÒªÌí¼Ó½øÊı¾İ¿â
+		pInsiderTransaction->m_lTransactionDate = 20210101; // è¿™ä¸ªå†…éƒ¨äº¤æ˜“äººå‘˜åç§°ä¸ç¬¦ï¼Œéœ€è¦æ·»åŠ è¿›æ•°æ®åº“
 		vInsiderTransaction.push_back(pInsiderTransaction);
 		pInsiderTransaction = make_shared<CInsiderTransaction>();
 		pInsiderTransaction->m_strSymbol = "A";
 		pInsiderTransaction->m_strPersonName = "a b c";
 		pInsiderTransaction->m_lTransactionDate = 20210107;
-		pInsiderTransaction->m_strTransactionCode = "M"; // Õâ¸öÊı¾İ¿âÖĞÓĞ£¬ÎŞĞèÌí¼Ó
+		pInsiderTransaction->m_strTransactionCode = "M"; // è¿™ä¸ªæ•°æ®åº“ä¸­æœ‰ï¼Œæ— éœ€æ·»åŠ 
 		vInsiderTransaction.push_back(pInsiderTransaction);
 		pInsiderTransaction = make_shared<CInsiderTransaction>();
 		pInsiderTransaction->m_strSymbol = "A";
 		pInsiderTransaction->m_strPersonName = "a b c";
-		pInsiderTransaction->m_lTransactionDate = 20210124; // Õâ¸öÈÕÆÚ²»·û£¬ĞèÒªÌí¼Ó½øÊı¾İ¿â
+		pInsiderTransaction->m_lTransactionDate = 20210124; // è¿™ä¸ªæ—¥æœŸä¸ç¬¦ï¼Œéœ€è¦æ·»åŠ è¿›æ•°æ®åº“
 		vInsiderTransaction.push_back(pInsiderTransaction);
 		pInsiderTransaction->m_strSymbol = "A";
 		pInsiderTransaction->m_strPersonName = "a b c";
-		pInsiderTransaction->m_strTransactionCode = "S"; // Õâ¸ö½»Ò×ÀàĞÍ²»·û£¬ĞèÒªÌí¼Ó½øÊı¾İ¿â
+		pInsiderTransaction->m_strTransactionCode = "S"; // è¿™ä¸ªäº¤æ˜“ç±»å‹ä¸ç¬¦ï¼Œéœ€è¦æ·»åŠ è¿›æ•°æ®åº“
 		vInsiderTransaction.push_back(pInsiderTransaction);
 
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem("A");
-		EXPECT_FALSE(pStock->HaveInsiderTransaction()) << "´ËÊ±ÉĞÎ´´æÈëÊı¾İ";
+		EXPECT_FALSE(pStock->HaveInsiderTransaction()) << "æ­¤æ—¶å°šæœªå­˜å…¥æ•°æ®";
 
 		pStock->SetUpdateInsiderTransactionDB(true);
 		pStock->SetInsiderTransactionUpdateDate(20210123);
@@ -717,10 +717,10 @@ namespace FireBirdTest {
 		//gl_systemMessage.PopDayLineInfoMessage();
 		auto pStock2 = gl_dataContainerFinnhubStock.GetItem("A");
 		EXPECT_FALSE(pStock2->IsUpdateInsiderTransactionDB());
-		EXPECT_TRUE(pStock2->HaveInsiderTransaction()) << "´æ´¢ºó²¢Ã»ÓĞÉ¾³ıÊı¾İ";
+		EXPECT_TRUE(pStock2->HaveInsiderTransaction()) << "å­˜å‚¨åå¹¶æ²¡æœ‰åˆ é™¤æ•°æ®";
 		pStock2->UnloadInsiderTransaction();
 
-		// ÑéÖ¤²¢»Ö¸´Ô­×´
+		// éªŒè¯å¹¶æ¢å¤åŸçŠ¶
 		setInsiderTransaction.m_strFilter = "[Symbol] = 'B'";
 		setInsiderTransaction.Open();
 		setInsiderTransaction.m_pDatabase->BeginTrans();
@@ -764,21 +764,21 @@ namespace FireBirdTest {
 		CSetInsiderSentiment setInsiderSentiment;
 
 		CInsiderSentimentPtr pInsiderSentiment = make_shared<CInsiderSentiment>();
-		pInsiderSentiment->m_strSymbol = "B";// Õâ¸ö¹ÉÆ±´úÂë²»·û£¬ĞèÒªÌí¼Ó½øÊı¾İ¿â
+		pInsiderSentiment->m_strSymbol = "B";// è¿™ä¸ªè‚¡ç¥¨ä»£ç ä¸ç¬¦ï¼Œéœ€è¦æ·»åŠ è¿›æ•°æ®åº“
 		pInsiderSentiment->m_lDate = 20200101;
 		vInsiderSentiment.push_back(pInsiderSentiment);
 		pInsiderSentiment = make_shared<CInsiderSentiment>();
 		pInsiderSentiment = make_shared<CInsiderSentiment>();
 		pInsiderSentiment->m_strSymbol = "A";
-		pInsiderSentiment->m_lDate = 20200101;// Õâ¸öÊı¾İ¿âÖĞÓĞ£¬ÎŞĞèÌí¼Ó
+		pInsiderSentiment->m_lDate = 20200101;// è¿™ä¸ªæ•°æ®åº“ä¸­æœ‰ï¼Œæ— éœ€æ·»åŠ 
 		vInsiderSentiment.push_back(pInsiderSentiment);
 		pInsiderSentiment = make_shared<CInsiderSentiment>();
 		pInsiderSentiment->m_strSymbol = "A";
-		pInsiderSentiment->m_lDate = 20210101; // Õâ¸öÈÕÆÚ²»·û£¬ĞèÒªÌí¼Ó½øÊı¾İ¿â
+		pInsiderSentiment->m_lDate = 20210101; // è¿™ä¸ªæ—¥æœŸä¸ç¬¦ï¼Œéœ€è¦æ·»åŠ è¿›æ•°æ®åº“
 		vInsiderSentiment.push_back(pInsiderSentiment);
 
 		const CFinnhubStockPtr pStock = gl_dataContainerFinnhubStock.GetItem("A");
-		EXPECT_FALSE(pStock->HaveInsiderSentiment()) << "´ËÊ±ÉĞÎ´´æÈëÊı¾İ";
+		EXPECT_FALSE(pStock->HaveInsiderSentiment()) << "æ­¤æ—¶å°šæœªå­˜å…¥æ•°æ®";
 
 		pStock->SetUpdateInsiderSentimentDB(true);
 		pStock->SetInsiderSentimentUpdateDate(20210101);
@@ -788,9 +788,9 @@ namespace FireBirdTest {
 
 		EXPECT_EQ(gl_systemMessage.DayLineInfoSize(), 0);
 		EXPECT_FALSE(gl_dataContainerFinnhubStock.GetItem("A")->IsUpdateInsiderSentimentDB());
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem("A")->HaveInsiderSentiment()) << "´æ´¢ºó²¢Ã»ÓĞÉ¾³ıÊı¾İ";
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem("A")->HaveInsiderSentiment()) << "å­˜å‚¨åå¹¶æ²¡æœ‰åˆ é™¤æ•°æ®";
 
-		// ÑéÖ¤²¢»Ö¸´Ô­×´
+		// éªŒè¯å¹¶æ¢å¤åŸçŠ¶
 		setInsiderSentiment.m_strFilter = "[Symbol] = 'B'";
 		setInsiderSentiment.Open();
 		EXPECT_TRUE(setInsiderSentiment.IsEOF());
@@ -826,7 +826,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_dataContainerFinnhubEconomicCalendar.Update(vEconomicCalendar));
 		EXPECT_TRUE(gl_dataContainerFinnhubEconomicCalendar.UpdateDB());
 
-		// ²âÊÔ²¢»Ö¸´Ô­×´
+		// æµ‹è¯•å¹¶æ¢å¤åŸçŠ¶
 		setEconomicCalendar.Open();
 		EXPECT_FALSE(setEconomicCalendar.IsEOF());
 		EXPECT_STREQ(setEconomicCalendar.m_Country, _T("USA"));
@@ -975,7 +975,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 #ifndef _DEBUG
-		//Note ÎªÁË·½±ãµ÷ÊÔ£¬²âÊÔ°æ²»ÔÙÌí¼ÓÒÔÏÂÈÎÎñ¡£·¢ĞĞ°æÒÀÈ»Ìí¼Ó¡£
+		//Note ä¸ºäº†æ–¹ä¾¿è°ƒè¯•ï¼Œæµ‹è¯•ç‰ˆä¸å†æ·»åŠ ä»¥ä¸‹ä»»åŠ¡ã€‚å‘è¡Œç‰ˆä¾ç„¶æ·»åŠ ã€‚
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_PROCESS_DAYLINE__);
 		EXPECT_EQ(pTask->GetTime(), 10500);
@@ -1037,7 +1037,7 @@ namespace FireBirdTest {
 		gl_pWorldMarket->DiscardCurrentMarketTask();
 
 #ifndef _DEBUG
-		//Note ÎªÁË·½±ãµ÷ÊÔ£¬²âÊÔ°æ²»ÔÙÌí¼ÓÒÔÏÂÈÎÎñ¡£·¢ĞĞ°æÒÀÈ»Ìí¼Ó¡£
+		//Note ä¸ºäº†æ–¹ä¾¿è°ƒè¯•ï¼Œæµ‹è¯•ç‰ˆä¸å†æ·»åŠ ä»¥ä¸‹ä»»åŠ¡ã€‚å‘è¡Œç‰ˆä¾ç„¶æ·»åŠ ã€‚
 		pTask = gl_pWorldMarket->GetMarketTask();
 		EXPECT_EQ(pTask->GetType(), WORLD_MARKET_TIINGO_PROCESS_DAYLINE__);
 		EXPECT_EQ(pTask->GetTime(), gl_pWorldMarket->GetResetTime() + 600);

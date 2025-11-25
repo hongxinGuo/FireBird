@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"ConvertToString.h"
 #include"VirtualHistoryCandleBasic.h"
@@ -52,7 +52,7 @@ void CVirtualHistoryCandleBasic::SetAverage(const int length, const long lValue)
 	case 240:
 		m_l240Average = lValue;
 		break;
-	default: // ÀıÍâ×´Ì¬Ê±´æÖÁMA´¦
+	default: // ä¾‹å¤–çŠ¶æ€æ—¶å­˜è‡³MAå¤„
 		m_lAverage = lValue;
 		break;
 	}
@@ -76,7 +76,7 @@ long CVirtualHistoryCandleBasic::GetAverage(const int length) const noexcept {
 		return m_l200Average;
 	case 240:
 		return m_l240Average;
-	default: // ÀıÍâ×´Ì¬
+	default: // ä¾‹å¤–çŠ¶æ€
 		return m_lAverage;
 	}
 }

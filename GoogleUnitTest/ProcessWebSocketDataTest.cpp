@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -28,7 +28,7 @@ namespace FireBirdTest {
 		string m_strError;
 	};
 
-	const string s("abcdefg"); // ´Ë×Ö·û´®ÓÃÓÚ³õÊ¼»¯const pointer m_MsgÖĞµÄconst string£¬¹Ê¶øÔÚ²âÊÔÆÚ¼äĞèÒªÒ»Ö±±£³Ö´æĞø×´Ì¬¡£
+	const string s("abcdefg"); // æ­¤å­—ç¬¦ä¸²ç”¨äºåˆå§‹åŒ–const pointer m_Msgä¸­çš„const stringï¼Œæ•…è€Œåœ¨æµ‹è¯•æœŸé—´éœ€è¦ä¸€ç›´ä¿æŒå­˜ç»­çŠ¶æ€ã€‚
 
 	WebSocketMessageData finnhubWebSocketMessage1(static_cast<long>(ix::WebSocketMessageType::Message), "abcdefg", "");
 	WebSocketMessageData finnhubWebSocketMessage2(static_cast<long>(ix::WebSocketMessageType::Open), "abcdefg", "");
@@ -74,7 +74,7 @@ namespace FireBirdTest {
 		ProcessFinnhubWebSocket(m_pMsg);
 		switch (m_pMsg->type) {
 		case ix::WebSocketMessageType::Message:
-			EXPECT_THAT(gl_pFinnhubWebSocket->DataSize(), 1) << "³É¹¦½ÓÊÕÁËÒ»¸öÊı¾İ";
+			EXPECT_THAT(gl_pFinnhubWebSocket->DataSize(), 1) << "æˆåŠŸæ¥æ”¶äº†ä¸€ä¸ªæ•°æ®";
 			pString = gl_pFinnhubWebSocket->PopData();
 			EXPECT_EQ(*pString, "abcdefg");
 			break;
@@ -91,7 +91,7 @@ namespace FireBirdTest {
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), "Finnhub WebSocket Error: Error");
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 			gl_pFinnhubWebSocket->SetError(false);
 			break;
 		case ix::WebSocketMessageType::Ping:
@@ -158,7 +158,7 @@ namespace FireBirdTest {
 		switch (m_pMsg->type) {
 		case ix::WebSocketMessageType::Message:
 			EXPECT_FALSE(gl_pTiingoIEXWebSocket->IsError());
-			EXPECT_THAT(gl_pTiingoIEXWebSocket->DataSize(), 1) << "³É¹¦½ÓÊÕÁËÒ»¸öÊı¾İ";
+			EXPECT_THAT(gl_pTiingoIEXWebSocket->DataSize(), 1) << "æˆåŠŸæ¥æ”¶äº†ä¸€ä¸ªæ•°æ®";
 			pString = gl_pTiingoIEXWebSocket->PopData();
 			EXPECT_STREQ(pString->c_str(), "abcdefg");
 			break;
@@ -177,7 +177,7 @@ namespace FireBirdTest {
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), "Error");
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 			gl_pTiingoIEXWebSocket->SetError(false);
 			break;
 		case ix::WebSocketMessageType::Ping:
@@ -249,7 +249,7 @@ namespace FireBirdTest {
 		switch (m_pMsg->type) {
 		case ix::WebSocketMessageType::Message:
 			EXPECT_FALSE(gl_pTiingoCryptoWebSocket->IsError());
-			EXPECT_THAT(gl_pTiingoCryptoWebSocket->DataSize(), 1) << "³É¹¦½ÓÊÕÁËÒ»¸öÊı¾İ";
+			EXPECT_THAT(gl_pTiingoCryptoWebSocket->DataSize(), 1) << "æˆåŠŸæ¥æ”¶äº†ä¸€ä¸ªæ•°æ®";
 			pString = gl_pTiingoCryptoWebSocket->PopData();
 			EXPECT_STREQ(pString->c_str(), "abcdefg");
 			break;
@@ -268,7 +268,7 @@ namespace FireBirdTest {
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), "Error");
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 			gl_pTiingoCryptoWebSocket->SetError(false);
 			break;
 		case ix::WebSocketMessageType::Ping:
@@ -340,7 +340,7 @@ namespace FireBirdTest {
 		switch (m_pMsg->type) {
 		case ix::WebSocketMessageType::Message:
 			EXPECT_FALSE(gl_pTiingoForexWebSocket->IsError());
-			EXPECT_THAT(gl_pTiingoForexWebSocket->DataSize(), 1) << "³É¹¦½ÓÊÕÁËÒ»¸öÊı¾İ";
+			EXPECT_THAT(gl_pTiingoForexWebSocket->DataSize(), 1) << "æˆåŠŸæ¥æ”¶äº†ä¸€ä¸ªæ•°æ®";
 			pString = gl_pTiingoForexWebSocket->PopData();
 			EXPECT_STREQ(pString->c_str(), "abcdefg");
 			break;
@@ -359,7 +359,7 @@ namespace FireBirdTest {
 			EXPECT_THAT(gl_systemMessage.ErrorMessageSize(), 1);
 			EXPECT_EQ(gl_systemMessage.PopErrorMessage(), "Error");
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 			gl_pTiingoForexWebSocket->SetError(false);
 			break;
 		case ix::WebSocketMessageType::Ping:

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include"FinnhubInquiryType.h"
 
@@ -16,8 +16,8 @@ CVirtualProductWebDataPtr CAccessoryFactory::CreateProduct(CVirtualMarketPtr pMa
 		break;
 	default:
 		p = make_shared<CProductDummy>();
-		TRACE("Î´´¦ÀíÖ¸Áî%d\n", iInquireType);
-		gl_systemMessage.PushErrorMessage("Finnhub productÎ´ÊµÏÖ");
+		TRACE("æœªå¤„ç†æŒ‡ä»¤%d\n", iInquireType);
+		gl_systemMessage.PushErrorMessage("Finnhub productæœªå®žçŽ°");
 		break;
 	}
 	p->SetMarket(pMarket);

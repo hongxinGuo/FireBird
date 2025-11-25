@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include"VirtualStock.h"
 
@@ -10,13 +10,13 @@
 class CFinnhubCrypto : public CVirtualStock {
 public:
 	CFinnhubCrypto();
-	// ²»ÔÊĞí¸³Öµ¡£
+	// ä¸å…è®¸èµ‹å€¼ã€‚
 	CFinnhubCrypto(const CFinnhubCrypto&) = delete;
 	CFinnhubCrypto& operator=(const CFinnhubCrypto&) = delete;
 	CFinnhubCrypto(const CFinnhubCrypto&&) noexcept = delete;
 	CFinnhubCrypto& operator=(const CFinnhubCrypto&&) noexcept = delete;
 
-	int GetRatio() const override { return 1000; } // ±ÈÀıÎª1000
+	int GetRatio() const override { return 1000; } // æ¯”ä¾‹ä¸º1000
 
 	virtual bool UpdateDayLineDB() { return m_dataDayLine.SaveDB(m_strSymbol); }
 

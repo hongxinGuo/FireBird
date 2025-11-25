@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "VirtualDataHistoryCandleExtend.h"
 
@@ -14,7 +14,7 @@ public:
 	bool SaveDB(const string& strCryptoSymbol) override;
 	bool LoadDB(const string& strCryptoSymbol) override;
 
-	// ÌØÓÐº¯Êý
+	// ç‰¹æœ‰å‡½æ•°
 };
 
 using CContainerForexDayLinePtr = shared_ptr<CContainerForexDayLine>;

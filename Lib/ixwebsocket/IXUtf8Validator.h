@@ -1,4 +1,4 @@
-/*
+﻿/*
  * The following code is adapted from code originally written by Bjoern
  * Hoehrmann <bjoern@hoehrmann.de>. See
  * http://bjoern.hoehrmann.de/utf-8/decoder/dfa/ for details.

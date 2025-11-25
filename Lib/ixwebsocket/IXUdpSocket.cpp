@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  IXUdpSocket.cpp
  *  Author: Benjamin Sergeant
  *  Copyright (c) 2020 Machine Zone, Inc. All rights reserved.

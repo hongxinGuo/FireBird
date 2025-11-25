@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 
 #include"SetFinnhubRecommendationTrends.h"
 
@@ -14,7 +14,7 @@ public:
 
 public:
 	string m_strSymbol;
-	long m_lPeriod; // ∏Ò Ω£∫2020-03-01
+	long m_lPeriod; // Ê†ºÂºèÔºö2020-03-01
 	long m_lStrongBuy;
 	long m_lBuy;
 	long m_lHold;

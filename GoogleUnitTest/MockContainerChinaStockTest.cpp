@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -13,7 +13,7 @@ namespace FireBirdTest {
 
 	class CMockContainerChinaStockTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êı
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 			s_pMockContainerChinaStock = make_shared<CMockContainerChinaStock>();

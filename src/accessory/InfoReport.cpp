@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include "InfoReport.h"
 
@@ -16,7 +16,7 @@ void ReportWebError(const DWORD dwErrorNo, const string& strInputMessage) {
 }
 
 void ReportWebError(const DWORD dwErrorNo, const long long llTime, const string& strInputMessage) {
-	string s = fmt::format("Net Error # {:Ld} ÓÃÊ±£º{:Ld}ºÁÃë message: {}", dwErrorNo, llTime, strInputMessage);
+	string s = fmt::format("Net Error # {:Ld} ç”¨æ—¶ï¼š{:Ld}æ¯«ç§’ message: {}", dwErrorNo, llTime, strInputMessage);
 	gl_systemMessage.PushErrorMessage(s);
 }
 
@@ -38,21 +38,21 @@ void ReportInformation(CException& e) {
 
 int ReportRunningToWatchdog() {
 	HWND hWnd = ::FindWindow(NULL, reinterpret_cast<LPCWSTR>(sWatchDogApp.c_str()));
-	if (hWnd == NULL) return 1; // Watchdog¼à¿Ø³ÌĞò²»ÔÚÔËĞĞ£¬Ö±½Ó·µ»Ø
+	if (hWnd == NULL) return 1; // Watchdogç›‘æ§ç¨‹åºä¸åœ¨è¿è¡Œï¼Œç›´æ¥è¿”å›
 	::SendMessage(hWnd, WM_FIREBIRD_RUNNING, NULL, NULL); // tell watchdog that I am running now.
 	return 0;
 }
 
 int ReportExitToWatchdog() {
 	HWND hWnd = ::FindWindow(NULL, reinterpret_cast<LPCWSTR>(sWatchDogApp.c_str()));
-	if (hWnd == NULL) return 1; // Watchdog¼à¿Ø³ÌĞò²»ÔÚÔËĞĞ£¬ Ö±½Ó·µ»Ø
+	if (hWnd == NULL) return 1; // Watchdogç›‘æ§ç¨‹åºä¸åœ¨è¿è¡Œï¼Œ ç›´æ¥è¿”å›
 	::SendMessage(hWnd, WM_FIREBIRD_EXIT, NULL, NULL); // Tell watchdog that I am exit now.
 	return 0;
 }
 
 int ReportSchedulingExitToWatchdog() {
 	HWND hWnd = ::FindWindow(NULL, reinterpret_cast<LPCWSTR>(sWatchDogApp.c_str()));
-	if (hWnd == NULL) return 1; // Watchdog¼à¿Ø³ÌĞò²»ÔÚÔËĞĞ£¬ Ö±½Ó·µ»Ø
+	if (hWnd == NULL) return 1; // Watchdogç›‘æ§ç¨‹åºä¸åœ¨è¿è¡Œï¼Œ ç›´æ¥è¿”å›
 	::SendMessage(hWnd, WM_FIREBIRD_SCHEDULING_EXIT, NULL, NULL); // Tell watchdog that I am exit now.
 	return 0;
 }

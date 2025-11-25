@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include"TimeConvert.h"
 #include"jsonParse.h"
@@ -42,7 +42,7 @@ void CProductFinnhubStockDayLine::ParseAndStoreWebData(CWebDataPtr pWebData) {
 	}
 	if (!pvDayLine->empty()) {
 		pStock->UpdateDayLine(pvDayLine);
-		if (pStock->GetDayLineSize() > 0) {// Ìí¼ÓÁËĞÂÊı¾İ
+		if (pStock->GetDayLineSize() > 0) {// æ·»åŠ äº†æ–°æ•°æ®
 			pStock->SetUpdateDayLineDB(true);
 			pStock->SetUpdateProfileDB(true);
 			const auto lSize = pStock->GetDayLineSize() - 1;
@@ -68,15 +68,15 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pW
 	try {
 		auto s = jsonGetString(js, "s");
 		if (s == "no_data") {
-			// Ã»ÓĞÈÕÏßÊı¾İ£¬ÎŞĞè¼ì²é´Ë¹ÉÆ±µÄÈÕÏßºÍÊµÊ±Êı¾İ
+			// æ²¡æœ‰æ—¥çº¿æ•°æ®ï¼Œæ— éœ€æ£€æŸ¥æ­¤è‚¡ç¥¨çš„æ—¥çº¿å’Œå®æ—¶æ•°æ®
 			return pvDayLine;
 		}
 		if (s != "ok") {
-			gl_systemMessage.PushErrorMessage("ÈÕÏß·µ»ØÖµ²»Îªok");
+			gl_systemMessage.PushErrorMessage("æ—¥çº¿è¿”å›å€¼ä¸ä¸ºok");
 			return pvDayLine;
 		}
 	} catch (json::exception& e) {
-		// ÕâÖÖÇë¿öÊÇ´Ë´úÂë³öÏÖÎÊÌâ¡£Èç·şÎñÆ÷·µ»Ø"error":"you don't have access this resource."
+		// è¿™ç§è¯·å†µæ˜¯æ­¤ä»£ç å‡ºç°é—®é¢˜ã€‚å¦‚æœåŠ¡å™¨è¿”å›"error":"you don't have access this resource."
 		ReportJSonErrorToSystemMessage("Finnhub Stock Candle missing 's' " + GetInquiryFunction(), e.what());
 		return pvDayLine;
 	}
@@ -134,7 +134,7 @@ CDayLinesPtr CProductFinnhubStockDayLine::ParseFinnhubStockCandle(CWebDataPtr pW
 			pDayLine->SetVolume(llTemp);
 		}
 	} catch (json::exception& e) { ReportJSonErrorToSystemMessage("Finnhub Stock Candle Error#3 " + GetInquiryFunction(), e.what()); }
-	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // ÒÔÈÕÆÚÔçÍíË³ĞòÅÅÁĞ¡£
+	std::ranges::sort(pvDayLine->begin(), pvDayLine->end(), CompareDayLineDate); // ä»¥æ—¥æœŸæ—©æ™šé¡ºåºæ’åˆ—ã€‚
 
 	return pvDayLine;
 }

@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -45,12 +45,12 @@ namespace FireBirdTest {
 	TEST_F(CProductSinaRTTest, TestCreateMessage) {
 		const string strInquiry = sinaRT.CreateMessage();
 		EXPECT_EQ(strInquiry.substr(0, 26), "https://hq.sinajs.cn/list=");
-		EXPECT_GT(strInquiry.length(), 26) << "ÎŞĞè¼ì²éËæºóµÄ¹ÉÆ±´úÂëÖÆÊ½";
+		EXPECT_GT(strInquiry.length(), 26) << "æ— éœ€æ£€æŸ¥éšåçš„è‚¡ç¥¨ä»£ç åˆ¶å¼";
 	}
 
 	TEST_F(CProductSinaRTTest, TestParseAndStoreWebData) {
 		CWebRTDataPtr pRTData;
-		const string strData = "var hq_str_sh600000=\"ÆÖ·¢ÒøĞĞ,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00,\";\nvar hq_str_sh600001=\"ÆÖ·¢ÒøĞĞ,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00,\";\n";
+		const string strData = "var hq_str_sh600000=\"æµ¦å‘é“¶è¡Œ,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00,\";\nvar hq_str_sh600001=\"æµ¦å‘é“¶è¡Œ,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00,\";\n";
 		const CWebDataPtr pData = make_shared<CWebData>();
 		pData->Test_SetBuffer_(strData);
 		EXPECT_FALSE(gl_qChinaMarketRTData.try_dequeue(pRTData));
@@ -59,7 +59,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_qChinaMarketRTData.try_dequeue(pRTData));
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 		while (gl_qChinaMarketRTData.try_dequeue(pRTData));
 	}
 }

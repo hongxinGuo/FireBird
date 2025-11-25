@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"PriorityQueueWebRTData.h"
 
@@ -10,7 +10,7 @@ void CPriorityQueueWebRTData::Reset() {
 	m_MutexAccessData.lock();
 	const size_t lTotal = m_priorityQueueWebRTData.size();
 	for (int i = 0; i < lTotal; i++) {
-		// Çå¿Õ¶ÓÁÐ
+		// æ¸…ç©ºé˜Ÿåˆ—
 		m_priorityQueueWebRTData.pop();
 	}
 	m_MutexAccessData.unlock();

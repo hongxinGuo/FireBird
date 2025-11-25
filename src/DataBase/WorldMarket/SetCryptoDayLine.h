@@ -1,4 +1,4 @@
-// CSetCryptoDayLine.h : CSetCryptoDayLine µÄÉùÃ÷
+ï»¿// CSetCryptoDayLine.h : CSetCryptoDayLine çš„å£°æ˜Ž
 
 #pragma once
 

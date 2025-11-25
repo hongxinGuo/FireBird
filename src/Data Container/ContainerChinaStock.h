@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include"RSReference.h"
 #include"ChinaStock.h"
@@ -7,7 +7,7 @@
 class CContainerChinaStock : public CContainerVirtualStock {
 public:
 	CContainerChinaStock();
-	// Ö»ÄÜÓĞÒ»¸öÊµÀı,²»ÔÊĞí¸³Öµ¡£
+	// åªèƒ½æœ‰ä¸€ä¸ªå®ä¾‹,ä¸å…è®¸èµ‹å€¼ã€‚
 	CContainerChinaStock(const CContainerChinaStock&) = delete;
 	CContainerChinaStock& operator=(const CContainerChinaStock&) = delete;
 	CContainerChinaStock(const CContainerChinaStock&&) noexcept = delete;
@@ -62,5 +62,5 @@ private:
 	static void DeleteDayLineExtendInfo(long lDate);
 
 protected:
-	size_t m_lLoadedStock; // ±¾´Î×°ÔØµÄ¹ÉÆ±×ÜÊı
+	size_t m_lLoadedStock; // æœ¬æ¬¡è£…è½½çš„è‚¡ç¥¨æ€»æ•°
 };

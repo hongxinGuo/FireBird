@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include"jsonParse.h"
 #include"JsonGetValue.h"
@@ -31,7 +31,7 @@ void CProductFinnhubMarketHoliday::ParseAndStoreWebData(CWebDataPtr pWebData) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ÍøÖ·£ºhttps://finnhub.io/docs/api/market-holiday
+// ç½‘å€ï¼šhttps://finnhub.io/docs/api/market-holiday
 //
 // {
 //	"data": [

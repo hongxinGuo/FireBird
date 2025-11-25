@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -57,10 +57,10 @@ namespace FireBirdTest {
 		.WillOnce(Return(timePoint + 1ms));
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateEconomicCalendar()).Times(0);
 
-		EXPECT_FALSE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120000)) << "ÍøÂç±¨´í£¬²»ÉêÇëÊı¾İ";
+		EXPECT_FALSE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120000)) << "ç½‘ç»œæŠ¥é”™ï¼Œä¸ç”³è¯·æ•°æ®";
 		EXPECT_FALSE(m_pMockFinnhubDataSource->IsInquiring());
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 		gl_pSinaRTDataSource->SetWebError(false);
 	}
 
@@ -122,10 +122,10 @@ namespace FireBirdTest {
 		}, Return(true)));
 		EXPECT_CALL(*m_pMockFinnhubDataSource, GenerateRTQuote()).Times(0);
 
-		EXPECT_FALSE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120500)) << "Ê±¼äÎ´µ½£¬¼ÌĞøµÈ´ı";
+		EXPECT_FALSE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120500)) << "æ—¶é—´æœªåˆ°ï¼Œç»§ç»­ç­‰å¾…";
 		EXPECT_FALSE(m_pMockFinnhubDataSource->IsInquiring());
 		EXPECT_FALSE(m_pMockFinnhubDataSource->HaveInquiry());
-		EXPECT_TRUE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120500)) << "ÉêÇëÊı¾İ";
+		EXPECT_TRUE(m_pMockFinnhubDataSource->GenerateInquiryMessage(120500)) << "ç”³è¯·æ•°æ®";
 
 		EXPECT_TRUE(m_pMockFinnhubDataSource->IsInquiring());
 		EXPECT_TRUE(m_pMockFinnhubDataSource->HaveInquiry());

@@ -1,4 +1,4 @@
-// SetForexExchange.h : CSetFinnhubForexExchange µÄÉùÃ÷
+ï»¿// SetForexExchange.h : CSetFinnhubForexExchange çš„å£°æ˜Ž
 
 #pragma once
 #include"afxdb.h"

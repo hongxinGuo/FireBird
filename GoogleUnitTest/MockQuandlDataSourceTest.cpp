@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"WorldMarket.h"
 
@@ -10,7 +10,7 @@ using namespace testing;
 
 namespace FireBirdTest {
 	static bool m_fSystemStatus;
-	CMockQuandlDataSourcePtr m_pMockQuandlDataSource; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
+	CMockQuandlDataSourcePtr m_pMockQuandlDataSource; // ç½‘æ˜“æ—¥çº¿å†å²æ•°æ®
 
 	class CMockQuandlDataSourceTest : public ::testing::Test {
 	protected:
@@ -18,7 +18,7 @@ namespace FireBirdTest {
 			SCOPED_TRACE("");
 			GeneralCheck();
 			m_fSystemStatus = gl_pWorldMarket->IsSystemReady();
-			gl_pWorldMarket->SetSystemReady(true); // QuandlÒıÇæ±ØĞëµÈ´ıÏµÍ³³õÊ¼»¯ºó²Å¿ÉÊ¹ÓÃ¡£
+			gl_pWorldMarket->SetSystemReady(true); // Quandlå¼•æ“å¿…é¡»ç­‰å¾…ç³»ç»Ÿåˆå§‹åŒ–åæ‰å¯ä½¿ç”¨ã€‚
 		}
 
 		static void TearDownTestSuite() {
@@ -48,7 +48,7 @@ namespace FireBirdTest {
 	TEST_F(CMockQuandlDataSourceTest, TestInitialize) {
 		EXPECT_EQ(QuandlDataSource.GetInquiryFunction(), "");
 		EXPECT_EQ(QuandlDataSource.GetInquirySuffix(), "&api_key=");
-		EXPECT_EQ(QuandlDataSource.GetInquiryToken(), "") << "Ä¬ÈÏÁîÅÆÔÚÏµÍ³ÅäÖÃÎÄ¼şÖĞ£¬´Ë´¦³õÊ¼»¯Ê±Îª¿Õ";
+		EXPECT_EQ(QuandlDataSource.GetInquiryToken(), "") << "é»˜è®¤ä»¤ç‰Œåœ¨ç³»ç»Ÿé…ç½®æ–‡ä»¶ä¸­ï¼Œæ­¤å¤„åˆå§‹åŒ–æ—¶ä¸ºç©º";
 	}
 
 	TEST_F(CMockQuandlDataSourceTest, TestGenerateInquiryMessage1) {
@@ -68,10 +68,10 @@ namespace FireBirdTest {
 			m_pMockQuandlDataSource->StoreInquiry(p);
 		}, Return(true)));
 
-		EXPECT_FALSE(m_pMockQuandlDataSource->GenerateInquiryMessage(120500)) << "Ê±¼äÎ´µ½£¬¼ÌĞøµÈ´ı";
+		EXPECT_FALSE(m_pMockQuandlDataSource->GenerateInquiryMessage(120500)) << "æ—¶é—´æœªåˆ°ï¼Œç»§ç»­ç­‰å¾…";
 		EXPECT_FALSE(m_pMockQuandlDataSource->IsInquiring());
 		EXPECT_FALSE(m_pMockQuandlDataSource->HaveInquiry());
-		EXPECT_TRUE(m_pMockQuandlDataSource->GenerateInquiryMessage(120500)) << "ÉêÇëÊı¾İ";
+		EXPECT_TRUE(m_pMockQuandlDataSource->GenerateInquiryMessage(120500)) << "ç”³è¯·æ•°æ®";
 
 		EXPECT_TRUE(m_pMockQuandlDataSource->IsInquiring());
 		EXPECT_TRUE(m_pMockQuandlDataSource->HaveInquiry());

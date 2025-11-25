@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include"SetEconomicCalendar.h"
 
@@ -15,7 +15,7 @@ public:
 	void Save(CSetEconomicCalendar& setEconomicCalendar) const;
 
 public:
-	INT64 m_iTime; // ²»´æ´¢Õâ¸öÊı¾İ
+	INT64 m_iTime; // ä¸å­˜å‚¨è¿™ä¸ªæ•°æ®
 	string m_strTime;
 	string m_strCountry;
 	string m_strEvent;

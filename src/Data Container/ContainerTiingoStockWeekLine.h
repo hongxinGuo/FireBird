@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "TiingoWeekLine.h"
 
@@ -23,7 +23,7 @@ public:
 		return true;
 	}
 
-	// ÌØÓÐº¯Êý
+	// ç‰¹æœ‰å‡½æ•°
 };
 
 using CContainerTiingoStockWeekLinePtr = shared_ptr<CContainerTiingoStockWeekLine>;

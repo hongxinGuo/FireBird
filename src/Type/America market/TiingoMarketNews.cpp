@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"TiingoMarketNews.h"
 
@@ -27,7 +27,7 @@ void CTiingoMarketNews::Save(CSetTiingoMarketNews& setTiingoMarketNews) {
 		|| (m_strUrl.length() > 100)) {
 		string s = "Tiingo market news ";
 		s += m_strTickers;
-		s += " ×Ö·û´®Ì«³¤";
+		s += " å­—ç¬¦ä¸²å¤ªé•¿";
 		gl_systemMessage.PushErrorMessage(s);
 	}
 }

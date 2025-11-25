@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include "GeneralCheck.h"
 #include"simdjsonGetValue.h"
@@ -29,7 +29,7 @@ namespace FireBirdTest {
 			ondemand::parser parser;
 			ondemand::document doc = parser.iterate(s_simdjson1).value();
 			int i = 1;
-			// ²âÊÔ doc
+			// æµ‹è¯• doc
 			EXPECT_EQ(simdjsonGetInt64(doc, "integer1"), 1);
 			EXPECT_DOUBLE_EQ(simdjsonGetDouble(doc, "double1"), 2.0);
 			EXPECT_FALSE(simdjsonGetBool(doc, "doing"));
@@ -40,7 +40,7 @@ namespace FireBirdTest {
 			EXPECT_THROW(s = simdjsonGetRawJsonToken(doc, "no koken"), simdjson_error);
 			ondemand::array array1 = simdjsonGetArray(doc, "array1");
 			for (INT64 item : array1) {
-				EXPECT_EQ(item, i++) << "array1µÄÊý¾ÝÎª£º1£¬ 2£¬ 3";
+				EXPECT_EQ(item, i++) << "array1çš„æ•°æ®ä¸ºï¼š1ï¼Œ 2ï¼Œ 3";
 			}
 			EXPECT_EQ(i, 4);
 			EXPECT_EQ(simdjsonGetInt64(doc, "integer2"), 0);
@@ -53,8 +53,8 @@ namespace FireBirdTest {
 			for ([[maybe_unused]] auto value : array2) {
 				i++;
 			}
-			EXPECT_EQ(i, 0) << "array2µÄÊý¾ÝÎªnull,·µ»ØµÄÊÇÒ»¸ö¿ÕÊý×é";
-			// ²âÊÔÊý×éÖÐµÄÊý¾Ý
+			EXPECT_EQ(i, 0) << "array2çš„æ•°æ®ä¸ºnull,è¿”å›žçš„æ˜¯ä¸€ä¸ªç©ºæ•°ç»„";
+			// æµ‹è¯•æ•°ç»„ä¸­çš„æ•°æ®
 			vector<int> ai;
 			vector<double> ad;
 			vector<string> as;
@@ -120,9 +120,9 @@ namespace FireBirdTest {
 					EXPECT_TRUE(false);
 				}
 			}
-			EXPECT_EQ(ai.at(2), 1) << "aiÒÑ´æÈëÁËÁ½¸öÊý¾Ý";
+			EXPECT_EQ(ai.at(2), 1) << "aiå·²å­˜å…¥äº†ä¸¤ä¸ªæ•°æ®";
 			EXPECT_DOUBLE_EQ(ad.at(2), 2.0);
-			EXPECT_EQ(as.at(2), "string1") << "asÒÑ´æÈëÁËÁ½¸öÊý¾Ý";
+			EXPECT_EQ(as.at(2), "string1") << "aså·²å­˜å…¥äº†ä¸¤ä¸ªæ•°æ®";
 			EXPECT_EQ(ai.at(3), 0);
 			EXPECT_DOUBLE_EQ(ad.at(3), 0.0);
 			EXPECT_EQ(as.at(3), "");
@@ -172,7 +172,7 @@ namespace FireBirdTest {
 					break;
 				case 10:
 					array5 = simdjsonGetArray(itemValue);
-					EXPECT_TRUE(array5.is_empty().value()) << "null·µ»Ø¿ÕÊý¾Ý";
+					EXPECT_TRUE(array5.is_empty().value()) << "nullè¿”å›žç©ºæ•°æ®";
 					break;
 				default:
 					EXPECT_TRUE(false);
@@ -281,11 +281,11 @@ namespace FireBirdTest {
 		try {
 			ondemand::parser parser;
 			ondemand::document doc = parser.iterate(s_BadSimdjson3).value();
-			EXPECT_THROW(INT64 i = simdjsonGetInt64(doc, ("No integer")), simdjson_error) << "Ã»ÓÐÕâ¸ö¼ü";
-			EXPECT_THROW(double d = simdjsonGetDouble(doc, ("No double")), simdjson_error) << "Ã»ÓÐÕâ¸ö¼ü";
-			EXPECT_THROW(string_view sv = simdjsonGetStringView(doc, "No string"), simdjson_error) << "Ã»ÓÐÕâ¸ö¼ü";
-			EXPECT_THROW(bool f = simdjsonGetBool(doc, "No bool"), simdjson_error) << "Ã»ÓÐÕâ¸ö¼ü";
-			EXPECT_THROW(auto array = simdjsonGetArray(doc, "No array"), simdjson_error) << "Ã»ÓÐÕâ¸ö¼ü";
+			EXPECT_THROW(INT64 i = simdjsonGetInt64(doc, ("No integer")), simdjson_error) << "æ²¡æœ‰è¿™ä¸ªé”®";
+			EXPECT_THROW(double d = simdjsonGetDouble(doc, ("No double")), simdjson_error) << "æ²¡æœ‰è¿™ä¸ªé”®";
+			EXPECT_THROW(string_view sv = simdjsonGetStringView(doc, "No string"), simdjson_error) << "æ²¡æœ‰è¿™ä¸ªé”®";
+			EXPECT_THROW(bool f = simdjsonGetBool(doc, "No bool"), simdjson_error) << "æ²¡æœ‰è¿™ä¸ªé”®";
+			EXPECT_THROW(auto array = simdjsonGetArray(doc, "No array"), simdjson_error) << "æ²¡æœ‰è¿™ä¸ªé”®";
 			EXPECT_THROW(INT64 i = simdjsonGetInt64(doc, ("integer")), simdjson_error);
 			EXPECT_THROW(double d = simdjsonGetDouble(doc, ("double")), simdjson_error);
 			EXPECT_THROW(string_view sv = simdjsonGetStringView(doc, "string"), simdjson_error);

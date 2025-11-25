@@ -1,4 +1,4 @@
-// SetFinnhubForexSymbol.h : CSetFinnhubForexSymbol µÄÉùÃ÷
+ï»¿// SetFinnhubForexSymbol.h : CSetFinnhubForexSymbol çš„å£°æ˜Ž
 
 #pragma once
 #include"VirtualSetStockSymbol.h"

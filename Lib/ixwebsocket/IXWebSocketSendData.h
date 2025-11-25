@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  IXWebSocketSendData.h
  *
  *  WebSocket (Binary/Text) send data buffer

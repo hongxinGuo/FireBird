@@ -1,11 +1,11 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"FinnhubInquiryType.h"
 
 CFinnhubInquiryType::CFinnhubInquiryType() {
 	ASSERT(gl_systemConfiguration.IsInitialized());
 	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE("XferFinnhubInquiryTypeÈ«¾Ö±äÁ¿Ö»ÔÊĞí´æÔÚÒ»¸öÊµÀı\n");
+		TRACE("XferFinnhubInquiryTypeå…¨å±€å˜é‡åªå…è®¸å­˜åœ¨ä¸€ä¸ªå®ä¾‹\n");
 #ifdef _DEBUG
 		ASSERT(FALSE);
 #endif // _DEBUG
@@ -72,8 +72,8 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	m_mapFinnhubInquiryIndexToString[STOCK_ESTIMATES_EARNING_CALENDAR_] = "StockEstimatesEarningCalendar";
 
 	// Stock Price
-	m_mapFinnhubInquiryIndexToString[STOCK_PRICE_QUOTE_] = "StockPriceQuote"; // ÊµÊ±Êı¾İÓÅÏÈ¼¶×îµÍ
-	m_mapFinnhubInquiryIndexToString[STOCK_PRICE_CANDLES_] = "StockPriceCandles"; // ÀúÊ·Êı¾İÓÅÏÈ¼¶µÍ
+	m_mapFinnhubInquiryIndexToString[STOCK_PRICE_QUOTE_] = "StockPriceQuote"; // å®æ—¶æ•°æ®ä¼˜å…ˆçº§æœ€ä½
+	m_mapFinnhubInquiryIndexToString[STOCK_PRICE_CANDLES_] = "StockPriceCandles"; // å†å²æ•°æ®ä¼˜å…ˆçº§ä½
 	m_mapFinnhubInquiryIndexToString[STOCK_PRICE_TICK_DATA_] = "StockPriceTickData"; //Premium
 	m_mapFinnhubInquiryIndexToString[STOCK_PRICE_HISTORICAL_NBBO_] = "StockPriceHistoricalNBBO"; // Premium
 	m_mapFinnhubInquiryIndexToString[STOCK_PRICE_LAST_BID_ASK_] = "StockPriceLastBidAsk"; //Premium
@@ -101,7 +101,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryIndexToStringMap() {
 	// Forex
 	m_mapFinnhubInquiryIndexToString[FOREX_EXCHANGE_] = "ForexExchange";
 	m_mapFinnhubInquiryIndexToString[FOREX_SYMBOLS_] = "ForexSymbols";
-	m_mapFinnhubInquiryIndexToString[FOREX_CANDLES_] = "ForexCandles"; // ÀúÊ·Êı¾İÓÅÏÈ¼¶µÍ Premium
+	m_mapFinnhubInquiryIndexToString[FOREX_CANDLES_] = "ForexCandles"; // å†å²æ•°æ®ä¼˜å…ˆçº§ä½ Premium
 	m_mapFinnhubInquiryIndexToString[FOREX_ALL_RATES_] = "ForexAllRates"; // Premium
 
 	// Crypto
@@ -188,8 +188,8 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 	m_mapFinnhubInquiryStringToIndex["StockEstimatesEarningCalendar"] = STOCK_ESTIMATES_EARNING_CALENDAR_;
 
 	// Stock Price
-	m_mapFinnhubInquiryStringToIndex["StockPriceQuote"] = STOCK_PRICE_QUOTE_; // ÊµÊ±Êı¾İÓÅÏÈ¼¶×îµÍ
-	m_mapFinnhubInquiryStringToIndex["StockPriceCandles"] = STOCK_PRICE_CANDLES_; // ÀúÊ·Êı¾İÓÅÏÈ¼¶µÍ
+	m_mapFinnhubInquiryStringToIndex["StockPriceQuote"] = STOCK_PRICE_QUOTE_; // å®æ—¶æ•°æ®ä¼˜å…ˆçº§æœ€ä½
+	m_mapFinnhubInquiryStringToIndex["StockPriceCandles"] = STOCK_PRICE_CANDLES_; // å†å²æ•°æ®ä¼˜å…ˆçº§ä½
 	m_mapFinnhubInquiryStringToIndex["StockPriceTickData"] = STOCK_PRICE_TICK_DATA_; //Premium
 	m_mapFinnhubInquiryStringToIndex["StockPriceHistoricalNBBO"] = STOCK_PRICE_HISTORICAL_NBBO_; // Premium
 	m_mapFinnhubInquiryStringToIndex["StockPriceLastBidAsk"] = STOCK_PRICE_LAST_BID_ASK_; //Premium
@@ -217,7 +217,7 @@ void CFinnhubInquiryType::CreateFinnhubInquiryStringToIndexMap() {
 	// Forex
 	m_mapFinnhubInquiryStringToIndex["ForexExchange"] = FOREX_EXCHANGE_;
 	m_mapFinnhubInquiryStringToIndex["ForexSymbols"] = FOREX_SYMBOLS_;
-	m_mapFinnhubInquiryStringToIndex["ForexCandles"] = FOREX_CANDLES_; // ÀúÊ·Êı¾İÓÅÏÈ¼¶µÍ Premium
+	m_mapFinnhubInquiryStringToIndex["ForexCandles"] = FOREX_CANDLES_; // å†å²æ•°æ®ä¼˜å…ˆçº§ä½ Premium
 	m_mapFinnhubInquiryStringToIndex["ForexAllRates"] = FOREX_ALL_RATES_; // Premium
 
 	// Crypto

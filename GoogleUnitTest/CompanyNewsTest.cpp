@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -7,7 +7,7 @@
 namespace FireBirdTest {
 	class CCompanyNewsTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êý
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -61,7 +61,7 @@ namespace FireBirdTest {
 		setCompanyNews2.Open();
 		setCompanyNews2.m_pDatabase->BeginTrans();
 		while (!setCompanyNews2.IsEOF()) {
-			EXPECT_TRUE(!setCompanyNews2.IsEOF()) << "´ËÊ±ÒÑ¾­´æÈëÁËAA";
+			EXPECT_TRUE(!setCompanyNews2.IsEOF()) << "æ­¤æ—¶å·²ç»å­˜å…¥äº†AA";
 			setCompanyNews2.Delete();
 			setCompanyNews2.MoveNext();
 		}
@@ -74,7 +74,7 @@ namespace FireBirdTest {
 		CFinnhubCompanyNews companyNews;
 
 		setCompanyNews.Open();
-		companyNews.Load(setCompanyNews); // ×°ÈëµÚÒ»¸ö¹ú¼ÒµÄÐÅÏ¢£ºAL, ALB, 8, Albania, Lek, All
+		companyNews.Load(setCompanyNews); // è£…å…¥ç¬¬ä¸€ä¸ªå›½å®¶çš„ä¿¡æ¯ï¼šAL, ALB, 8, Albania, Lek, All
 		EXPECT_EQ(companyNews.m_llDateTime, 10101010);
 		EXPECT_EQ(companyNews.m_iNewsID, 1);
 

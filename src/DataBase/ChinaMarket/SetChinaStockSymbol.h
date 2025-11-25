@@ -1,4 +1,4 @@
-// SetChinaStockSymbol.h : CSetChinaStockSymbol µÄÉùÃ÷
+ï»¿// SetChinaStockSymbol.h : CSetChinaStockSymbol çš„å£°æ˜Ž
 
 #pragma once
 #include"VirtualSetStockSymbol.h"

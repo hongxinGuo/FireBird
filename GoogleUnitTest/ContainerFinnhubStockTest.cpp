@@ -1,4 +1,4 @@
-#include"pch.h"
+﻿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -54,7 +54,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(pStock->GetBasicFinancialUpdateDate(), 19800101);
 			EXPECT_TRUE(pStock->IsUpdateProfileDB());
 
-			// �ָ�ԭ״
+			// 恢复原状
 			//pStock->SetUpdateBasicFinancial(false);
 			pStock->SetUpdateProfileDB(false);
 			//pStock->SetBasicFinancialUpdateDate(20000101);
@@ -80,7 +80,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(pStock->IsUpdateBasicFinancialDB());
 		}
 
-		// �ָ�ԭ״
+		// 恢复原状
 	}
 
 	TEST_F(CContainerFinnhubStockTest, TestValidateStockSymbol1) {
@@ -113,7 +113,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateDayLineDB());
 
-		// �ָ�ԭ״
+		// 恢复原状
 		gl_dataContainerFinnhubStock.Get(0)->SetUpdateDayLineDB(false);
 	}
 
@@ -123,7 +123,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateInsiderTransactionDB());
 
-		// �ָ�ԭ״
+		// 恢复原状
 		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateInsiderTransactionDB(false);
 	}
 
@@ -133,7 +133,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateInsiderSentimentDB());
 
-		// �ָ�ԭ״
+		// 恢复原状
 		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateInsiderSentimentDB(false);
 	}
 
@@ -143,7 +143,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateBasicFinancialDB());
 
-		// �ָ�ԭ״
+		// 恢复原状
 		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateBasicFinancialDB(false);
 	}
 
@@ -153,7 +153,7 @@ namespace FireBirdTest {
 
 		EXPECT_TRUE(gl_dataContainerFinnhubStock.IsUpdateCompanyNewsDB());
 
-		// �ָ�ԭ״
+		// 恢复原状
 		gl_dataContainerFinnhubStock.GetItem(0)->SetUpdateCompanyNewsDB(false);
 	}
 }

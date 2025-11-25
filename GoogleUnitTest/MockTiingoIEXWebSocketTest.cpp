@@ -1,4 +1,4 @@
-#include"pch.h"
+﻿#include"pch.h"
 
 #include "TiingoDataSource.h"
 #include"GeneralCheck.h"
@@ -53,7 +53,7 @@ namespace FireBirdTest {
 
 		m_tiingoIEXWebSocket.MonitorWebSocket(vSymbol);
 
-		// �ָ�ԭ״
+		// 恢复原状
 		gl_pTiingoDataSource->SetWebError(false);
 	}
 
@@ -66,11 +66,11 @@ namespace FireBirdTest {
 		.WillOnce(Return(ix::ReadyState::Closed))
 		.WillOnce(Return(ix::ReadyState::Closed));
 
-		EXPECT_CALL(m_tiingoIEXWebSocket, TaskDisconnect()).Times(0); // "web Socket�ѹرգ������ٴιر�";
+		EXPECT_CALL(m_tiingoIEXWebSocket, TaskDisconnect()).Times(0); // "web Socket已关闭，无需再次关闭";
 
 		m_tiingoIEXWebSocket.MonitorWebSocket(vSymbol);
 
-		// �ָ�ԭ״
+		// 恢复原状
 		gl_pTiingoDataSource->SetWebError(false);
 	}
 
@@ -91,7 +91,7 @@ namespace FireBirdTest {
 		m_tiingoIEXWebSocket.MonitorWebSocket(vSymbol);
 		EXPECT_EQ(m_tiingoIEXWebSocket.GetHeartbeatTime(), GetUTCTime());
 
-		// �ָ�ԭ״
+		// 恢复原状
 	}
 
 	TEST_F(CMockTiingoIEXWebSocketTest, TestMonitorWebSocket4) {
@@ -111,7 +111,7 @@ namespace FireBirdTest {
 		m_tiingoIEXWebSocket.MonitorWebSocket(vSymbol);
 		EXPECT_EQ(m_tiingoIEXWebSocket.GetHeartbeatTime(), GetUTCTime());
 
-		// �ָ�ԭ״
+		// 恢复原状
 	}
 
 	TEST_F(CMockTiingoIEXWebSocketTest, TestMonitorWebSocket5) {
@@ -130,7 +130,7 @@ namespace FireBirdTest {
 
 		m_tiingoIEXWebSocket.MonitorWebSocket(vSymbol);
 
-		// �ָ�ԭ״
+		// 恢复原状
 	}
 
 	TEST_F(CMockTiingoIEXWebSocketTest, TestMonitorWebSocket6) {
@@ -149,7 +149,7 @@ namespace FireBirdTest {
 
 		m_tiingoIEXWebSocket.MonitorWebSocket(vSymbol);
 
-		// �ָ�ԭ״
+		// 恢复原状
 	}
 
 	TEST_F(CMockTiingoIEXWebSocketTest, TestMonitorWebSocket7) {
@@ -167,7 +167,7 @@ namespace FireBirdTest {
 
 		m_tiingoIEXWebSocket.MonitorWebSocket(vSymbol);
 
-		// �ָ�ԭ״
+		// 恢复原状
 		gl_systemConfiguration.SetUsingTiingoIEXWebSocket(true);
 		gl_systemConfiguration.SetUpdateDB(false);
 	}
@@ -185,6 +185,6 @@ namespace FireBirdTest {
 
 		m_tiingoIEXWebSocket.MonitorWebSocket(vSymbol);
 
-		// �ָ�ԭ״
+		// 恢复原状
 	}
 }

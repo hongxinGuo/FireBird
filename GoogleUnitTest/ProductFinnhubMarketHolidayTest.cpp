@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -47,7 +47,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(MarketHolidayProduct.CreateMessage(), (MarketHolidayProduct.GetInquiryFunction() + gl_dataContainerStockExchange.GetItemExchangeCode(1)));
 	}
 
-	// ÕıÈ·µÄÊı¾İ
+	// æ­£ç¡®çš„æ•°æ®
 	Test_FinnhubWebData finnhubMarketHolidayWebData22(2, "AAPL", "{\"data\": [{\"eventName\": \"Christmas\",\"atDate\": \"2023-12-25\",\"tradingHour\" : \"\"},{\"eventName\": \"Independence Day\",\"atDate\": \"2023-07-04\",\"tradingHour\" : \"09:30-13:00\"}],\"exchange\": \"US\",\"timezone\": \"America/New_York\"}");
 
 	class ParseFinnhubMarketHolidayTest : public TestWithParam<Test_FinnhubWebData*> {
@@ -84,13 +84,13 @@ namespace FireBirdTest {
 	TEST_P(ParseFinnhubMarketHolidayTest, TestParseFinnhubMarketHoliday0) {
 		m_pvMarketHoliday = m_finnhubMarketHolidayProduct.ParseFinnhubMarketHoliday(m_pWebData);
 		switch (m_lIndex) {
-		case 0: // ¿ÕÊı¾İ
+		case 0: // ç©ºæ•°æ®
 			EXPECT_EQ(m_pvMarketHoliday->size(), 0);
 			break;
-		case 1: // ÎŞÈ¨Àû·ÃÎÊµÄÊı¾İ
+		case 1: // æ— æƒåˆ©è®¿é—®çš„æ•°æ®
 			EXPECT_EQ(m_pvMarketHoliday->size(), 0);
 			break;
-		case 2: // ÕıÈ·µÄÊı¾İ
+		case 2: // æ­£ç¡®çš„æ•°æ®
 			EXPECT_EQ(m_pvMarketHoliday->size(), 2);
 			EXPECT_EQ(m_pvMarketHoliday->at(0)->m_strExchange, "US");
 			EXPECT_EQ(m_pvMarketHoliday->at(0)->m_strEventName, "Christmas");
@@ -113,7 +113,7 @@ namespace FireBirdTest {
 			m_finnhubMarketHolidayProduct.__Test_checkAccessRight(m_pWebData);
 
 			m_finnhubMarketHolidayProduct.SetMarket(gl_pWorldMarket);
-			m_finnhubMarketHolidayProduct.SetIndex(0); // µÚÒ»¸ö½»Ò×Ëù£¨AS)
+			m_finnhubMarketHolidayProduct.SetIndex(0); // ç¬¬ä¸€ä¸ªäº¤æ˜“æ‰€ï¼ˆAS)
 		}
 
 		void TearDown() override {
@@ -136,11 +136,11 @@ namespace FireBirdTest {
 		CMarketHolidayPtr pMarketHoliday;
 		m_finnhubMarketHolidayProduct.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
-		case 0: // ¿ÕÊı¾İ
+		case 0: // ç©ºæ•°æ®
 			break;
-		case 1: // ÎŞÈ¨Àû·ÃÎÊµÄÊı¾İ
+		case 1: // æ— æƒåˆ©è®¿é—®çš„æ•°æ®
 			break;
-		case 2: // ÕıÈ·µÄÊı¾İ
+		case 2: // æ­£ç¡®çš„æ•°æ®
 
 			break;
 		default:

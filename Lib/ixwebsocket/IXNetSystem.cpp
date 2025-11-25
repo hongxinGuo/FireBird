@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  IXNetSystem.cpp
  *  Author: Korchynskyi Dmytro
  *  Copyright (c) 2019 Machine Zone. All rights reserved.

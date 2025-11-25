@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -39,9 +39,9 @@ namespace FireBirdTest {
 	TEST_F(CContainerTiingoStockTest, TestUpdateTiingoStockDB) {
 		CSetTiingoStock setTiingoStock;
 		EXPECT_FALSE(gl_dataContainerTiingoStock.IsUpdateProfileDB());
-		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount()) << "º¯ÊıUpdateProfileÖ»ÔËĞĞÔÚ¸¶·ÑÕË»§×´Ì¬ÏÂ";
+		EXPECT_TRUE(gl_systemConfiguration.IsPaidTypeTiingoAccount()) << "å‡½æ•°UpdateProfileåªè¿è¡Œåœ¨ä»˜è´¹è´¦æˆ·çŠ¶æ€ä¸‹";
 
-		auto pTiingoStock = make_shared<CTiingoStock>(); // Õâ¸öÊÇÊı¾İ¿âÖĞÒÑ´æÔÚµÄÖ¤È¯
+		auto pTiingoStock = make_shared<CTiingoStock>(); // è¿™ä¸ªæ˜¯æ•°æ®åº“ä¸­å·²å­˜åœ¨çš„è¯åˆ¸
 		pTiingoStock->SetActive(true);
 		pTiingoStock->SetIsADR(false);
 		pTiingoStock->SetSicCode(1002);
@@ -52,8 +52,8 @@ namespace FireBirdTest {
 		pTiingoStock->SetReportingCurrency("");
 		pTiingoStock->SetSECFilingWebSite("");
 		pTiingoStock->SetSicIndustry("");
-		pTiingoStock->SetSicSector("Test"); // ÓÃÓÚÉ¾³ı
-		pTiingoStock->SetSymbol("A"); // ÒÑ´æÔÚ´úÂë
+		pTiingoStock->SetSicSector("Test"); // ç”¨äºåˆ é™¤
+		pTiingoStock->SetSymbol("A"); // å·²å­˜åœ¨ä»£ç 
 		pTiingoStock->SetTiingoIndustry("");
 		pTiingoStock->SetTiingoPermaTicker("");
 		pTiingoStock->SetTiingoSector("");
@@ -67,36 +67,36 @@ namespace FireBirdTest {
 		pTiingoStock->SetCompanyFinancialStatementUpdateDate(20210101);
 		pTiingoStock->SetCompanyWebSite("www.abc.com");
 		pTiingoStock->SetLocation("Irvine CA USA");
-		pTiingoStock->SetName("ABCDE"); // ĞÂ´úÂë
+		pTiingoStock->SetName("ABCDE"); // æ–°ä»£ç 
 		pTiingoStock->SetReportingCurrency("US Dollar");
 		pTiingoStock->SetSECFilingWebSite("abc");
 		pTiingoStock->SetSicIndustry("Computer Science");
 		pTiingoStock->SetSicSector("Test");
-		pTiingoStock->SetSymbol("ABCDEF"); // ĞÂ´úÂë
+		pTiingoStock->SetSymbol("ABCDEF"); // æ–°ä»£ç 
 		pTiingoStock->SetTiingoIndustry("Computer");
 		pTiingoStock->SetTiingoPermaTicker("abcdefg");
 		pTiingoStock->SetTiingoSector("gfedcba");
 		pTiingoStock->SetUpdateProfileDB(true);
 		gl_dataContainerTiingoStock.Add(pTiingoStock);
 
-		EXPECT_TRUE(gl_dataContainerTiingoStock.IsUpdateProfileDB()) << "Ìí¼ÓÁËÁ½¸ö¹ÉÆ±";
+		EXPECT_TRUE(gl_dataContainerTiingoStock.IsUpdateProfileDB()) << "æ·»åŠ äº†ä¸¤ä¸ªè‚¡ç¥¨";
 
-		gl_dataContainerTiingoStock.UpdateDB(); // ¸üĞÂ´úÂë¼¯
+		gl_dataContainerTiingoStock.UpdateDB(); // æ›´æ–°ä»£ç é›†
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 		setTiingoStock.m_strFilter = "[SICSector] = 'Test'";
 		setTiingoStock.m_strSort = "[Ticker]";
 		setTiingoStock.Open();
-		EXPECT_FALSE(setTiingoStock.IsEOF()) << "´æÈëÁËÁ½¹ÉÆ±´úÂë";
+		EXPECT_FALSE(setTiingoStock.IsEOF()) << "å­˜å…¥äº†ä¸¤è‚¡ç¥¨ä»£ç ";
 		setTiingoStock.m_pDatabase->BeginTrans();
-		EXPECT_STREQ(setTiingoStock.m_Ticker, _T("A")) << "ÒÑ´æÔÚ´úÂë";
+		EXPECT_STREQ(setTiingoStock.m_Ticker, _T("A")) << "å·²å­˜åœ¨ä»£ç ";
 		EXPECT_EQ(setTiingoStock.m_SicCode, 1002);
 		setTiingoStock.Edit();
 		setTiingoStock.m_SicSector = "";
 		setTiingoStock.m_SicCode = 0;
 		setTiingoStock.Update();
 		setTiingoStock.MoveNext();
-		EXPECT_STREQ(setTiingoStock.m_Ticker, _T("ABCDEF")) << "ĞÂ´úÂë";
+		EXPECT_STREQ(setTiingoStock.m_Ticker, _T("ABCDEF")) << "æ–°ä»£ç ";
 		setTiingoStock.Delete();
 		setTiingoStock.MoveNext();
 		EXPECT_TRUE(setTiingoStock.IsEOF());
@@ -119,7 +119,7 @@ namespace FireBirdTest {
 			EXPECT_FALSE(pStock->IsUpdateFinancialState());
 		}
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 		m_dataTiingoStock.SetUpdateFinancialState(true);
 	}
 }

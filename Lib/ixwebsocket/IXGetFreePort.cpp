@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  IXGetFreePort.cpp
  *  Author: Benjamin Sergeant
  *  Copyright (c) 2019 Machine Zone. All rights reserved.

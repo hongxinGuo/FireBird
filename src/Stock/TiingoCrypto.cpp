@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"TiingoCrypto.h"
 
@@ -29,7 +29,7 @@ void CTiingoCrypto::Save(CSetTiingoCrypto& setTiingoCrypto) {
 		|| (m_strQuoteCurrency.length() > 20)) {
 		string s = "Tiingo Crypto ";
 		s += m_strSymbol;
-		s += " ×Ö·û´®Ì«³¤";
+		s += " å­—ç¬¦ä¸²å¤ªé•¿";
 		gl_systemMessage.PushErrorMessage(s);
 	}
 	m_strName = m_strName.substr(0, 99);

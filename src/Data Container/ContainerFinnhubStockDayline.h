@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "VirtualDataHistoryCandleExtend.h"
 
@@ -14,7 +14,7 @@ public:
 	bool SaveDB(const string& strStockSymbol) override;
 	bool LoadDB(const string& strStockSymbol) override;
 
-	// ÌØÓÐº¯Êý
+	// ç‰¹æœ‰å‡½æ•°
 };
 
 using CContainerFinnhubStockDayLinePtr = shared_ptr<CContainerFinnhubStockDayLine>;

@@ -1,4 +1,4 @@
-// CSetStockExchange.h : CSetStockExchange µÄÉùÃ÷
+ï»¿// CSetStockExchange.h : CSetStockExchange çš„å£°æ˜Ž
 
 #pragma once
 

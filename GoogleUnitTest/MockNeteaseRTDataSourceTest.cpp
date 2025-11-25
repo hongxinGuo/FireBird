@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
@@ -9,7 +9,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	CMockNeteaseRTDataSourcePtr m_pMockNeteaseRTDataSource; // ÍøÒ×ÊµÊ±Êı¾İ²É¼¯
+	CMockNeteaseRTDataSourcePtr m_pMockNeteaseRTDataSource; // ç½‘æ˜“å®æ—¶æ•°æ®é‡‡é›†
 	class CMockNeteaseRTDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
@@ -39,7 +39,7 @@ namespace FireBirdTest {
 	TEST_F(CMockNeteaseRTDataSourceTest, TestInitialize) {
 		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiryFunction(), "http://api.money.126.net/data/feed/");
 		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiryToken(), "");
-		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiringNumber(), 900) << "DEBUGÄ£Ê½ÏÂÍøÒ×Ä¬ÈÏÖµ";
+		EXPECT_EQ(m_pMockNeteaseRTDataSource->GetInquiringNumber(), 900) << "DEBUGæ¨¡å¼ä¸‹ç½‘æ˜“é»˜è®¤å€¼";
 	}
 
 	TEST_F(CMockNeteaseRTDataSourceTest, TestGenerateInquiryMessage) {
@@ -48,7 +48,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(m_pMockNeteaseRTDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
-		gl_pChinaMarket->SetSystemReady(false); // ±£Ö¤¿ìËÙÉêÇëÊı¾İ
+		gl_pChinaMarket->SetSystemReady(false); // ä¿è¯å¿«é€Ÿç”³è¯·æ•°æ®
 
 		EXPECT_CALL(*m_pMockNeteaseRTDataSource, GetTickCount()).Times(3)
 		.WillOnce(Return(timePoint))
@@ -58,14 +58,14 @@ namespace FireBirdTest {
 		EXPECT_FALSE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120000));
 		EXPECT_FALSE(m_pMockNeteaseRTDataSource->IsInquiring());
 
-		EXPECT_FALSE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120100)) << "Ê±¼äÎ´µ½£¬¼ÌĞøµÈ´ı";
+		EXPECT_FALSE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120100)) << "æ—¶é—´æœªåˆ°ï¼Œç»§ç»­ç­‰å¾…";
 		EXPECT_FALSE(m_pMockNeteaseRTDataSource->IsInquiring());
-		EXPECT_TRUE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120600)) << "ÉêÇëÊı¾İ";
+		EXPECT_TRUE(m_pMockNeteaseRTDataSource->GenerateInquiryMessage(120600)) << "ç”³è¯·æ•°æ®";
 
 		EXPECT_TRUE(m_pMockNeteaseRTDataSource->IsInquiring());
 		EXPECT_TRUE(m_pMockNeteaseRTDataSource->HaveInquiry());
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 		gl_pChinaMarket->SetSystemReady(true);
 	}
 

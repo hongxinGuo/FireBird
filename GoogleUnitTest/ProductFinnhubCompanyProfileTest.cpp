@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -48,18 +48,18 @@ namespace FireBirdTest {
 		companyProfile.SetMarket(gl_pWorldMarket);
 		companyProfile.SetIndex(1);
 		EXPECT_EQ(companyProfile.CreateMessage(), (companyProfile.GetInquiryFunction() + gl_dataContainerFinnhubStock.GetItem(1)->GetSymbol()));
-		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateCompanyProfile()) << "½ÓÊÕµ½µÄÊı¾İ´¦Àíºó·½ÉèÖÃ´Ë±êÊ¶";
+		EXPECT_TRUE(gl_dataContainerFinnhubStock.GetItem(1)->IsUpdateCompanyProfile()) << "æ¥æ”¶åˆ°çš„æ•°æ®å¤„ç†åæ–¹è®¾ç½®æ­¤æ ‡è¯†";
 
 		gl_dataContainerFinnhubStock.GetItem(1)->SetUpdateCompanyProfile(true);
 	}
 
-	// ¸ñÊ½²»¶Ô(È±¿ªÊ¼µÄ¡®{¡¯£©£¬ÎŞ·¨Ë³ÀûParser
+	// æ ¼å¼ä¸å¯¹(ç¼ºå¼€å§‹çš„â€˜{â€™ï¼‰ï¼Œæ— æ³•é¡ºåˆ©Parser
 	Test_FinnhubWebData finnhubWebData5(5, "AAPL", "\"address\":\"contentious  selectively\",\"city\":\"slaughterer\",\"country\":\"miscuing\",\"currency\":\"inveigles\",\"cusip\":\"Grable's\",\"description\":\"crooked ng Odis tint's\",\"employeeTotal\":\"jalopies\",\"exchange\":\"sieves abominating cuff's hesitation's debilitating\",\"finnhubIndustry\":\"culottes\",\"ggroup\":\"Ziegler's tendrils\",\"gind\":\"prairies  catalysis\",\"gsector\":\"habituate Scandinavians\",\"gsubind\":\"checkout  cherished\",\"ipo\":\"1980-12-12\",\"isin\":\"rapport\",\"logo\":\"freelancer's\",\"marketCapitalization\":8790583.5,\"naics\":\"mishmAlisha\",\"naicsNationalIndustry\":\"pollen jay's flops\",\"naicsSector\":\"smuggest\",\"naicsSubsector\":\"apprenticeship's Kringle\",\"name\":\"impediment's gondolier\",\"phone\":\"shootout's\",\"sedol\":\"decrescendi\",\"shareOutstanding\":75546.432,\"state\":\"Tweedledee\",\"ticker\":\"AAPL\",\"weburl\":\"gestated\"}");
-	// Êı¾İÈ±·¦addressÏî
+	// æ•°æ®ç¼ºä¹addressé¡¹
 	Test_FinnhubWebData finnhubWebData6(6, "AAPL", "{\"adss\":\"contctively\",\"city\":\"slaughterer\",\"country\":\"miscuing\",\"currency\":\"inveigles\",\"cusip\":\"Grable's\",\"description\":\"crooked ng Odis tint's\",\"employeeTotal\":\"jalopies\",\"exchange\":\"sieves abominating cuff's hesitation's debilitating\",\"finnhubIndustry\":\"culottes\",\"ggroup\":\"Ziegler's tendrils\",\"gind\":\"prairies  catalysis\",\"gsector\":\"habituate Scandinavians\",\"gsubind\":\"checkout  cherished\",\"ipo\":\"1980-12-12\",\"isin\":\"rapport\",\"logo\":\"freelancer's\",\"marketCapitalization\":8790583.5,\"naics\":\"mishmAlisha\",\"naicsNationalIndustry\":\"pollen jay's flops\",\"naicsSector\":\"smuggest\",\"naicsSubsector\":\"apprenticeship's Kringle\",\"name\":\"impediment's gondolier\",\"phone\":\"shootout's\",\"sedol\":\"decrescendi\",\"shareOutstanding\":75546.432,\"state\":\"Tweedledee\",\"ticker\":\"AAPL\",\"weburl\":\"gestated\"}");
 	//dummy data
 	Test_FinnhubWebData finnhubWebData7(7, "AAPL", "{}");
-	// ÕıÈ·µÄÊı¾İ
+	// æ­£ç¡®çš„æ•°æ®
 	Test_FinnhubWebData finnhubWebData10(10, "AAPL", "{\"address\":\"contentious  selectively\",\"city\":\"slaughterer\",\"country\":\"miscuing\",\"currency\":\"inveigles\",\"cusip\":\"Grable's\",\"description\":\"crooked ng Odis tint's\",\"employeeTotal\":\"jalopies\",\"exchange\":\"sieves abominating cuff's hesitation's debilitating\",\"finnhubIndustry\":\"culottes\",\"ggroup\":\"Ziegler's tendrils\",\"gind\":\"prairies  catalysis\",\"gsector\":\"habituate Scandinavians\",\"gsubind\":\"checkout  cherished\",\"ipo\":\"1980-12-12\",\"isin\":\"rapport\",\"logo\":\"freelancer's\",\"marketCapitalization\":8790583.5,\"naics\":\"mishmAlisha\",\"naicsNationalIndustry\":\"pollen jay's flops\",\"naicsSector\":\"smuggest\",\"naicsSubsector\":\"apprenticeship's Kringle\",\"name\":\"impediment's gondolier\",\"phone\":\"shootout's\",\"sedol\":\"decrescendi\",\"shareOutstanding\":75546.432,\"state\":\"Tweedledee\",\"ticker\":\"AAPL\",\"weburl\":\"gestated\"}");
 
 	class ProcessFinnhubStockProfileTest : public TestWithParam<Test_FinnhubWebData*> {
@@ -106,41 +106,41 @@ namespace FireBirdTest {
 		m_finnhubCompanyProfile.ParseAndStoreWebData(m_pWebData);
 		switch (m_lIndex) {
 		case 0:
-			EXPECT_EQ(m_pStock->GetExchangeCode(), "US") << "½»Ò×Ëù´úÂë²»Ê¹ÓÃ¶ÁÈ¡µÄÊı¾İ";
+			EXPECT_EQ(m_pStock->GetExchangeCode(), "US") << "äº¤æ˜“æ‰€ä»£ç ä¸ä½¿ç”¨è¯»å–çš„æ•°æ®";
 			EXPECT_EQ(m_pStock->GetTicker(), "AAPL");
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 1:
-			EXPECT_EQ(m_pStock->GetExchangeCode(), "US") << "½»Ò×Ëù´úÂë²»Ê¹ÓÃ¶ÁÈ¡µÄÊı¾İ";
+			EXPECT_EQ(m_pStock->GetExchangeCode(), "US") << "äº¤æ˜“æ‰€ä»£ç ä¸ä½¿ç”¨è¯»å–çš„æ•°æ®";
 			EXPECT_EQ(m_pStock->GetTicker(), "AAPL");
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
-		case 5: // ¸ñÊ½²»¶Ô
-			EXPECT_EQ(m_pStock->GetExchangeCode(), "US") << "½»Ò×Ëù´úÂë²»Ê¹ÓÃ¶ÁÈ¡µÄÊı¾İ";
+		case 5: // æ ¼å¼ä¸å¯¹
+			EXPECT_EQ(m_pStock->GetExchangeCode(), "US") << "äº¤æ˜“æ‰€ä»£ç ä¸ä½¿ç”¨è¯»å–çš„æ•°æ®";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
-		case 6: // È±·¦addressÏî
-			EXPECT_EQ(m_pStock->GetExchangeCode(), "US") << "½»Ò×Ëù´úÂë²»Ê¹ÓÃ¶ÁÈ¡µÄÊı¾İ";
-			EXPECT_NE(m_pStock->GetCity(), "slaughterer") << "Ã»ÓĞ¸³Öµ´ËÏî";
+		case 6: // ç¼ºä¹addressé¡¹
+			EXPECT_EQ(m_pStock->GetExchangeCode(), "US") << "äº¤æ˜“æ‰€ä»£ç ä¸ä½¿ç”¨è¯»å–çš„æ•°æ®";
+			EXPECT_NE(m_pStock->GetCity(), "slaughterer") << "æ²¡æœ‰èµ‹å€¼æ­¤é¡¹";
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_FALSE(m_pStock->IsUpdateProfileDB());
 			EXPECT_NE(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 7: // dummy data
-			EXPECT_EQ(m_pStock->GetExchangeCode(), "US") << "½»Ò×Ëù´úÂë²»Ê¹ÓÃ¶ÁÈ¡µÄÊı¾İ";
+			EXPECT_EQ(m_pStock->GetExchangeCode(), "US") << "äº¤æ˜“æ‰€ä»£ç ä¸ä½¿ç”¨è¯»å–çš„æ•°æ®";
 			EXPECT_EQ(m_pStock->GetTicker(), "AAPL");
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());
 			EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
 			EXPECT_EQ(m_pStock->GetProfileUpdateDate(), gl_pWorldMarket->GetMarketDate());
 			break;
 		case 10:
-			EXPECT_EQ(m_pStock->GetExchangeCode(), "US") << "½»Ò×Ëù´úÂë²»Ê¹ÓÃ¶ÁÈ¡µÄÊı¾İ";
+			EXPECT_EQ(m_pStock->GetExchangeCode(), "US") << "äº¤æ˜“æ‰€ä»£ç ä¸ä½¿ç”¨è¯»å–çš„æ•°æ®";
 			EXPECT_EQ(m_pStock->GetTicker(), "AAPL");
 			EXPECT_EQ(m_pStock->GetCity(), "slaughterer");
 			EXPECT_FALSE(m_pStock->IsUpdateCompanyProfile());

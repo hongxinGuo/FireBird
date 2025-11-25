@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -47,7 +47,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(webSocket.IsIdle());
 
-		webSocket.SetHeartbeatTime(GetUTCTime() - 301); // Ä¬ÈÏÖµÎªÎå·ÖÖÓ
+		webSocket.SetHeartbeatTime(GetUTCTime() - 301); // é»˜è®¤å€¼ä¸ºäº”åˆ†é’Ÿ
 		EXPECT_TRUE(webSocket.IsIdle());
 	}
 }

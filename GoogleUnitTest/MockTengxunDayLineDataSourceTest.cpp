@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
@@ -10,7 +10,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	CMockTengxunDayLineDataSourcePtr m_pMockTengxunDayLineDataSource; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
+	CMockTengxunDayLineDataSourcePtr m_pMockTengxunDayLineDataSource; // ç½‘æ˜“æ—¥çº¿å†å²æ•°æ®
 
 	class CMockTengxunDayLineDataSourceTest : public ::testing::Test {
 	protected:
@@ -61,7 +61,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_systemConfiguration.IsWebBusy());
 		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, Inquire).Times(0);
 
-		EXPECT_FALSE(m_pMockTengxunDayLineDataSource->GenerateInquiryMessage(120000)) << "WebBusyÊ±£¬²»ÉêÇëÊı¾İ";
+		EXPECT_FALSE(m_pMockTengxunDayLineDataSource->GenerateInquiryMessage(120000)) << "WebBusyæ—¶ï¼Œä¸ç”³è¯·æ•°æ®";
 
 		gl_pSinaRTDataSource->SetWebError(false);
 	}
@@ -72,7 +72,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(gl_systemConfiguration.IsWebBusy());
 		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, Inquire).Times(0);
 
-		EXPECT_FALSE(m_pMockTengxunDayLineDataSource->GenerateInquiryMessage(120000)) << "WebBusyÊ±£¬²»ÉêÇëÊı¾İ";
+		EXPECT_FALSE(m_pMockTengxunDayLineDataSource->GenerateInquiryMessage(120000)) << "WebBusyæ—¶ï¼Œä¸ç”³è¯·æ•°æ®";
 
 		gl_pNeteaseRTDataSource->SetWebError(false);
 	}
@@ -87,7 +87,7 @@ namespace FireBirdTest {
 		m_pMockTengxunDayLineDataSource->SetInquiring(true);
 		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, Inquire).Times(0);
 
-		EXPECT_FALSE(m_pMockTengxunDayLineDataSource->GenerateInquiryMessage(120000)) << "ÓĞ²éÑ¯ÉêÇëÊ±£¬²»ÉêÇëÊı¾İ";
+		EXPECT_FALSE(m_pMockTengxunDayLineDataSource->GenerateInquiryMessage(120000)) << "æœ‰æŸ¥è¯¢ç”³è¯·æ—¶ï¼Œä¸ç”³è¯·æ•°æ®";
 	}
 
 	TEST_F(CMockTengxunDayLineDataSourceTest, TestGenerateInquiryMessage4) {
@@ -100,6 +100,6 @@ namespace FireBirdTest {
 		m_pMockTengxunDayLineDataSource->SetInquiring(false);
 		EXPECT_CALL(*m_pMockTengxunDayLineDataSource, Inquire).Times(1);
 
-		EXPECT_TRUE(m_pMockTengxunDayLineDataSource->GenerateInquiryMessage(120000)) << "Ã»ÓĞ²éÑ¯ÉêÇëÊ±£¬ÉêÇëÊı¾İ";
+		EXPECT_TRUE(m_pMockTengxunDayLineDataSource->GenerateInquiryMessage(120000)) << "æ²¡æœ‰æŸ¥è¯¢ç”³è¯·æ—¶ï¼Œç”³è¯·æ•°æ®";
 	}
 }

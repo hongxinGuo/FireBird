@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"VirtualRecordset.h"
 
 class CSetRSOption : public CVirtualRecordset {
@@ -22,5 +22,5 @@ public:
 	CString m_RSStrongFourth{ "" };
 
 public:
-	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX ֧��
+	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX 支持
 };

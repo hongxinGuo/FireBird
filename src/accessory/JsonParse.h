@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 
 long long StrToDecimal(const string_view& svData, int power);
 long long StrToDecimal2(const string_view& svData, int power);
@@ -19,4 +19,4 @@ bool CreateJsonWithNlohmann(json& js, const std::string& s, long lBeginPos = 0, 
 void ParseOneNeteaseRTData(const json::iterator& it, const CWebRTDataPtr& pWebRTData);
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTData(json* pjs);
 shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(string_view svJsonData);
-shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(const CWebDataPtr& pData); // Ω‚Œˆ“ª∏ˆWebData
+shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRTDataWithSimdjson(const CWebDataPtr& pData); // Ëß£Êûê‰∏Ä‰∏™WebData

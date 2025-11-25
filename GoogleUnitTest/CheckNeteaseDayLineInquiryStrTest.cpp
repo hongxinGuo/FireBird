@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"ChinaMarket.h"
 #include"GeneralCheck.h"
@@ -17,11 +17,11 @@ namespace FireBirdTest {
 
 	CheckNeteaseDayLineInquiryStrData Data1(1, "0600000");
 	CheckNeteaseDayLineInquiryStrData Data2(2, "1000001");
-	// ÎŞĞ§ÉÏº£¹ÉÆ±´úÂë
+	// æ— æ•ˆä¸Šæµ·è‚¡ç¥¨ä»£ç 
 	CheckNeteaseDayLineInquiryStrData Data3(3, "0700000");
 	CheckNeteaseDayLineInquiryStrData Data4(4, "0400000");
 	CheckNeteaseDayLineInquiryStrData Data5(5, "0400000");
-	// ÎŞĞ§ÉîÛÚ¹ÉÆ±´úÂë
+	// æ— æ•ˆæ·±åœ³è‚¡ç¥¨ä»£ç 
 	CheckNeteaseDayLineInquiryStrData Data6(6, "1400000");
 	CheckNeteaseDayLineInquiryStrData Data7(7, "1400000");
 	CheckNeteaseDayLineInquiryStrData Data8(8, "1400000");

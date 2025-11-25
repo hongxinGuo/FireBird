@@ -1,4 +1,4 @@
-#include"pch.h"
+﻿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -54,7 +54,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(gl_systemMessage.InnerSystemInfoSize(), 1);
 		EXPECT_EQ(gl_systemMessage.PopInnerSystemInformationMessage(), "Nasdaq 100 stock list updated");
 
-		// �ָ�ԭ״
+		// 恢复原状
 		gl_pAccessoryDataSource->SetUpdateIndexNasdaq100Stocks(true);
 	}
 }

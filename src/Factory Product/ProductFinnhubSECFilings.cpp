@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include"WorldMarket.h"
 #include"FinnhubStock.h"
@@ -107,7 +107,7 @@ CSECFilingsPtr CProductFinnhubSECFilings::ParseFinnhubStockSECFilings(const CWeb
 	} catch (simdjson_error& error) {
 		ReportJSonErrorToSystemMessage("finnhub SEC Filings ", error.what());
 	}
-	// °´accessNumberÅÅÐò
+	// æŒ‰accessNumberæŽ’åº
 	std::ranges::sort(*pvSECFilings, [](const CSECFilingPtr& p1, const CSECFilingPtr& p2) { return p1->m_strAccessNumber.compare(p2->m_strAccessNumber); });
 
 	return pvSECFilings;

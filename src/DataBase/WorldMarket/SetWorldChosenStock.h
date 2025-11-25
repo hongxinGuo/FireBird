@@ -1,4 +1,4 @@
-// SetWorldChosenStock.h : CSetWorldChosenStock µÄÉùÃ÷
+ï»¿// SetWorldChosenStock.h : CSetWorldChosenStock çš„å£°æ˜Ž
 #pragma once
 
 #include"VirtualSetChosenStake.h"

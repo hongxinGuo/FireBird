@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -46,7 +46,7 @@ namespace FireBirdTest {
 		finnhubProduct.SetReceivedDataStatus(NO_ACCESS_RIGHT_);
 		EXPECT_TRUE(finnhubProduct.IsNoRightToAccess());
 
-		EXPECT_TRUE(finnhubProduct.__Test_checkAccessRight(pWebData)) << "ÓÐÈ¨¶ÁÈ¡";
+		EXPECT_TRUE(finnhubProduct.__Test_checkAccessRight(pWebData)) << "æœ‰æƒè¯»å–";
 		EXPECT_FALSE(finnhubProduct.IsNoRightToAccess());
 	}
 
@@ -56,39 +56,39 @@ namespace FireBirdTest {
 		pWebData->Test_SetBuffer_(str);
 		EXPECT_FALSE(finnhubProduct.IsNoRightToAccess());
 
-		EXPECT_FALSE(finnhubProduct.__Test_checkAccessRight(pWebData)) << "ÎÞÈ¨¶ÁÈ¡";
-		EXPECT_TRUE(finnhubProduct.IsNoRightToAccess()) << "ÖØÖÃ´Ë×´Ì¬";
+		EXPECT_FALSE(finnhubProduct.__Test_checkAccessRight(pWebData)) << "æ— æƒè¯»å–";
+		EXPECT_TRUE(finnhubProduct.IsNoRightToAccess()) << "é‡ç½®æ­¤çŠ¶æ€";
 	}
 
 	TEST_F(CFinnhubProductTest, TestAddInaccessibleExchange) {
 		finnhubProduct.SetInquireType(STOCK_SYMBOLS_);
-		finnhubProduct.SetInquiringExchange("AA"); // ÐÂµÄ½»Ò×Ëù´úÂë
+		finnhubProduct.SetInquiringExchange("AA"); // æ–°çš„äº¤æ˜“æ‰€ä»£ç 
 
 		finnhubProduct.AddInaccessibleSymbol();
 
 		CInaccessibleExchangesPtr pExchange = gl_finnhubInaccessibleExchange.GetExchange(STOCK_SYMBOLS_);
 		EXPECT_TRUE(pExchange->HaveSymbol("AA"));
-		EXPECT_EQ(pExchange->SymbolSize(), 1) << "Ôö¼ÓÁËÒ»¸ö½»Ò×Ëù";
+		EXPECT_EQ(pExchange->SymbolSize(), 1) << "å¢žåŠ äº†ä¸€ä¸ªäº¤æ˜“æ‰€";
 
 		finnhubProduct.SetInquireType(STOCK_SYMBOLS_);
-		finnhubProduct.SetInquiringExchange("AB"); // ÐÂµÄ½»Ò×Ëù´úÂë
+		finnhubProduct.SetInquiringExchange("AB"); // æ–°çš„äº¤æ˜“æ‰€ä»£ç 
 
 		finnhubProduct.AddInaccessibleSymbol();
 
 		pExchange = gl_finnhubInaccessibleExchange.GetExchange(STOCK_SYMBOLS_);
 		EXPECT_TRUE(pExchange->HaveSymbol("AB"));
-		EXPECT_EQ(pExchange->SymbolSize(), 2) << "Ôö¼ÓµÚ¶þ¸ö½»Ò×Ëù";
+		EXPECT_EQ(pExchange->SymbolSize(), 2) << "å¢žåŠ ç¬¬äºŒä¸ªäº¤æ˜“æ‰€";
 
 		finnhubProduct.SetInquireType(STOCK_SYMBOLS_);
-		finnhubProduct.SetInquiringExchange("AB"); // ÒÑ´æÔÚÓÚÊý¾Ý¼¯ÖÐµÄ½»Ò×Ëù´úÂë
+		finnhubProduct.SetInquiringExchange("AB"); // å·²å­˜åœ¨äºŽæ•°æ®é›†ä¸­çš„äº¤æ˜“æ‰€ä»£ç 
 
 		finnhubProduct.AddInaccessibleSymbol();
 
 		pExchange = gl_finnhubInaccessibleExchange.GetExchange(STOCK_SYMBOLS_);
 		EXPECT_TRUE(pExchange->HaveSymbol("AB"));
-		EXPECT_EQ(pExchange->SymbolSize(), 2) << "AB½»Ò×ËùÒÑ´æÔÚÓÚÊý¾Ý¼¯ÖÐ£¬¹Ê¶øÃ»ÓÐÔö¼Ó";
+		EXPECT_EQ(pExchange->SymbolSize(), 2) << "ABäº¤æ˜“æ‰€å·²å­˜åœ¨äºŽæ•°æ®é›†ä¸­ï¼Œæ•…è€Œæ²¡æœ‰å¢žåŠ ";
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŽŸçŠ¶
 		pExchange->DeleteSymbol("AA");
 		pExchange->DeleteSymbol("AB");
 

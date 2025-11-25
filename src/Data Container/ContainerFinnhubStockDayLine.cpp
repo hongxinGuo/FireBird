@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include "ContainerFinnhubStockDayLine.h"
 
@@ -21,7 +21,7 @@ bool CContainerFinnhubStockDayLine::SaveDB(const string& strStockSymbol) {
 bool CContainerFinnhubStockDayLine::LoadDB(const string& strStockSymbol) {
 	CSetFinnhubStockDayLine setDayLineBasic;
 
-	// ×°ÈëDayLineÊı¾İ
+	// è£…å…¥DayLineæ•°æ®
 	setDayLineBasic.m_strFilter = "[Symbol] = '";
 	setDayLineBasic.m_strFilter += strStockSymbol.c_str();
 	setDayLineBasic.m_strFilter += "'";

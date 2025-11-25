@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -7,7 +7,7 @@
 namespace FireBirdTest {
 	class CSICIndustryTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êý
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -64,7 +64,7 @@ namespace FireBirdTest {
 		setSICIndustry2.m_strFilter = "[Code] = 1234";
 		setSICIndustry2.Open();
 		setSICIndustry2.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(!setSICIndustry2.IsEOF()) << "´ËÊ±ÒÑ¾­´æÈëÁËAA";
+		EXPECT_TRUE(!setSICIndustry2.IsEOF()) << "æ­¤æ—¶å·²ç»å­˜å…¥äº†AA";
 		SICIndustry2.Load(setSICIndustry2);
 		EXPECT_EQ(SICIndustry.m_lCode, 1234);
 		EXPECT_EQ(SICIndustry.m_strIndustry, "aaa");

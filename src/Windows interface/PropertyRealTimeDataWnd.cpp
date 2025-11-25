@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "framework.h"
 
 #include "PropertyRealTimeDataWnd.h"
@@ -65,7 +65,7 @@ int CPropertyRealtimeWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	AdjustLayout();
 
-	// ÉèÖÃ1ÃëÃ¿´ÎµÄÈíµ÷¶È
+	// è®¾ç½®1ç§’æ¯æ¬¡çš„è½¯è°ƒåº¦
 	m_uIdTimer = SetTimer(static_cast<UINT_PTR>(4), 1000, nullptr);
 	if (m_uIdTimer == 0) {
 	}

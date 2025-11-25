@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -7,7 +7,7 @@
 namespace FireBirdTest {
 	class CExchangeTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êý
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -92,7 +92,7 @@ namespace FireBirdTest {
 		setExchange2.m_strFilter = "[Code] = 'AA'";
 		setExchange2.Open();
 		setExchange2.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(!setExchange2.IsEOF()) << "´ËÊ±ÒÑ¾­´æÈëÁËAA";
+		EXPECT_TRUE(!setExchange2.IsEOF()) << "æ­¤æ—¶å·²ç»å­˜å…¥äº†AA";
 		Exchange2.Load(setExchange2);
 		EXPECT_EQ(Exchange.GetExchangeCode(), "AA");
 		EXPECT_EQ(Exchange.m_strName, "aaa");
@@ -102,7 +102,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(Exchange.m_strCloseDate, "20202020");
 		EXPECT_EQ(Exchange.m_strCountry, "dfe");
 		EXPECT_EQ(Exchange.m_strSource, "abc");
-		EXPECT_FALSE(Exchange.m_fUpdateStockSymbol) << "Õâ¸ö²ÎÊý²»´æÈëÊý¾Ý¿â";
+		EXPECT_FALSE(Exchange.m_fUpdateStockSymbol) << "è¿™ä¸ªå‚æ•°ä¸å­˜å…¥æ•°æ®åº“";
 		setExchange2.Delete();
 		setExchange2.m_pDatabase->CommitTrans();
 		setExchange2.Close();

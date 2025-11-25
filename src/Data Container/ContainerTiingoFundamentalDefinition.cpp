@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include "ContainerTiingoFundamentalDefinition.h"
 #include "InfoReport.h"
@@ -57,7 +57,7 @@ bool CContainerTiingoFundamentalDefinition::UpdateDB() {
 			for (long l = 0; l < m_vTiingoFundamentalDefinition.size(); l++) {
 				const CTiingoFundamentalDefinitionPtr pTiingoFundamentalDefinition = m_vTiingoFundamentalDefinition.at(l);
 				ASSERT(pTiingoFundamentalDefinition != nullptr);
-				if (!mapDefinition.contains(pTiingoFundamentalDefinition->m_strDataCode)) { // Ö»Ìí¼ÓÐÂÔöµÄÏîÄ¿¡£
+				if (!mapDefinition.contains(pTiingoFundamentalDefinition->m_strDataCode)) { // åªæ·»åŠ æ–°å¢žçš„é¡¹ç›®ã€‚
 					pTiingoFundamentalDefinition->Append(setTiingoFundamentalDefinition);
 				}
 			}

@@ -1,4 +1,4 @@
-// SetTiingoStockDayLine.h : CSetChinaMarketDayLneBasicInfo µÄÉùÃ÷
+ï»¿// SetTiingoStockDayLine.h : CSetChinaMarketDayLneBasicInfo çš„å£°æ˜Ž
 
 #pragma once
 

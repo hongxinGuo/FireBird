@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -40,12 +40,12 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CContainerChinaStockTest, TestGetUpDownRate) {
-		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("10.0", "0.0009"), 0.0) << "LastCloseĞ¡ÓÚ0.001Ê±·µ»Ø0";
+		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("10.0", "0.0009"), 0.0) << "LastCloseå°äº0.001æ—¶è¿”å›0";
 		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("11.0", "10.0"), 0.1);
 		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("10.5", "10.0"), 0.05);
 		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("9.0", "10.0"), -0.1);
-		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("11.11", "10.0"), 0.0) << "´óÓÚ0.11Ê±·µ»Ø0";
-		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("8.89", "10.0"), 0.0) << "Ğ¡ÓÚ-0.11Ê±·µ»Ø0";
+		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("11.11", "10.0"), 0.0) << "å¤§äº0.11æ—¶è¿”å›0";
+		EXPECT_DOUBLE_EQ(m_containerChinaStock.GetUpDownRate("8.89", "10.0"), 0.0) << "å°äº-0.11æ—¶è¿”å›0";
 	}
 
 	TEST_F(CContainerChinaStockTest, TestGetNeteaseRTDataInquiringIndex) {
@@ -77,7 +77,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_containerChinaStock.GetNextIndex(l), 99);
 		EXPECT_EQ(l, 98);
 		l++;
-		EXPECT_EQ(m_containerChinaStock.GetNextIndex(l), 0) << "Ä¬ÈÏµÄStockÊıÎª100";
+		EXPECT_EQ(m_containerChinaStock.GetNextIndex(l), 0) << "é»˜è®¤çš„Stockæ•°ä¸º100";
 		EXPECT_EQ(l, 99);
 	}
 
@@ -88,7 +88,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_containerChinaStock.GetStock(m_containerChinaStock.Size() - 1)->GetSymbol(), "0.A");
 
 		m_containerChinaStock.Sort();
-		EXPECT_EQ(m_containerChinaStock.GetStock(0)->GetSymbol(), "0.A") << "0.AÎ»ÓÚµÚÒ»Î»";
+		EXPECT_EQ(m_containerChinaStock.GetStock(0)->GetSymbol(), "0.A") << "0.Aä½äºç¬¬ä¸€ä½";
 
 		m_containerChinaStock.Delete(pStock);
 	}
@@ -125,7 +125,7 @@ namespace FireBirdTest {
 		EXPECT_TRUE(m_containerChinaStock.IsUpdateDayLine());
 		EXPECT_EQ(m_containerChinaStock.GetStock(1)->GetDayLineEndDate(), 19900101);
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 		for (int i = 0; i < m_containerChinaStock.Size(); i++) {
 			m_containerChinaStock.GetStock(i)->SetDayLineEndDate(vEndDate[i]);
 		}

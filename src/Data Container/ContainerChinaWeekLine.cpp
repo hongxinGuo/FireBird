@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include "ContainerChinaWeekLine.h"
 
@@ -36,7 +36,7 @@ void CContainerChinaWeekLine::SaveCurrentWeekLine() const {
 	for (const auto& pData : m_vHistoryData) { pData->Append(&setCurrentWeekLineInfo); }
 	setCurrentWeekLineInfo.m_pDatabase->CommitTrans();
 	setCurrentWeekLineInfo.Close();
-	TRACE("´æ´¢ÁË%d¸öµ±Ç°ÖÜÖÜÏßÊı¾İ\n", m_vHistoryData.size());
+	TRACE("å­˜å‚¨äº†%dä¸ªå½“å‰å‘¨å‘¨çº¿æ•°æ®\n", m_vHistoryData.size());
 }
 
 bool CContainerChinaWeekLine::LoadDB(const string& strStockCode) {
@@ -45,7 +45,7 @@ bool CContainerChinaWeekLine::LoadDB(const string& strStockCode) {
 
 	ASSERT(!m_fBasicDataLoaded);
 
-	// ×°ÈëWeekLineÊı¾İ
+	// è£…å…¥WeekLineæ•°æ®
 	setWeekLineBasicInfo.m_strFilter = "[Symbol] = '";
 	setWeekLineBasicInfo.m_strFilter += strStockCode.c_str();
 	setWeekLineBasicInfo.m_strFilter += "'";
@@ -54,7 +54,7 @@ bool CContainerChinaWeekLine::LoadDB(const string& strStockCode) {
 	LoadBasicDB(&setWeekLineBasicInfo);
 	setWeekLineBasicInfo.Close();
 
-	// ×°ÈëWeekLineInfoÊı¾İ
+	// è£…å…¥WeekLineInfoæ•°æ®
 	setWeekLineExtendInfo.m_strFilter = "[Symbol] = '";
 	setWeekLineExtendInfo.m_strFilter += strStockCode.c_str();
 	setWeekLineExtendInfo.m_strFilter += "'";
@@ -95,12 +95,12 @@ void CContainerChinaWeekLine::StoreVectorData(const vector<CWeekLinePtr>& vWeekL
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// ¸üĞÂÈÕÏßÈİÆ÷¡£
+// æ›´æ–°æ—¥çº¿å®¹å™¨ã€‚
 //
 /////////////////////////////////////////////////////////////////////////////////////
 void CContainerChinaWeekLine::UpdateData(const vector<CWeekLinePtr>& vTempWeekLine) {
-	Unload(); // Çå³ıÒÑÔØÈëµÄÖÜÏßÊı¾İ£¨Èç¹ûÓĞµÄ»°£©
-	// ½«ÈÕÏßÊı¾İÒÔÊ±¼äÎªÕıĞò´æÈë
+	Unload(); // æ¸…é™¤å·²è½½å…¥çš„å‘¨çº¿æ•°æ®ï¼ˆå¦‚æœæœ‰çš„è¯ï¼‰
+	// å°†æ—¥çº¿æ•°æ®ä»¥æ—¶é—´ä¸ºæ­£åºå­˜å…¥
 	for (const auto& pWeekLine : vTempWeekLine) { Add(pWeekLine); }
 	SetDataLoaded(true);
 }

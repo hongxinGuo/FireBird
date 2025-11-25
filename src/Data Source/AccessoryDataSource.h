@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include"VirtualDataSource.h"
 #include"AccessoryFactory.h"
@@ -16,7 +16,7 @@ public:
 
 	bool GenerateInquiryMessage(long lCurrentTime) override;
 
-	// Accessory factory ¸üĞÂÏîÄ¿
+	// Accessory factory æ›´æ–°é¡¹ç›®
 	virtual bool GenerateIndexNasdaq100Stocks();
 
 	void ConfigureInternetOption() override;
@@ -27,7 +27,7 @@ public:
 protected:
 	CAccessoryFactory m_AccessoryFactory;
 
-	// Ã¿ÈÕ¸üĞÂÏîÄ¿
+	// æ¯æ—¥æ›´æ–°é¡¹ç›®
 	bool m_fUpdateIndexNasdaq100Stocks{ true };
 
 	bool m_fAccessoryDataInquiryFinished{ false };

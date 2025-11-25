@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  IXStrCaseCompare.h
  *  Author: Benjamin Sergeant
  *  Copyright (c) 2020 Machine Zone. All rights reserved.

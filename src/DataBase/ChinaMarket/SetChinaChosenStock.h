@@ -1,4 +1,4 @@
-// SetChinaChosenStock.h : CSetChinaChosenStock µÄÉùÃ÷
+ï»¿// SetChinaChosenStock.h : CSetChinaChosenStock çš„å£°æ˜Ž
 
 #pragma once
 #include"VirtualSetChosenStake.h"

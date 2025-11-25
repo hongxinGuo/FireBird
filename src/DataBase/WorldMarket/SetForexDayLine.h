@@ -1,4 +1,4 @@
-// CSetForexDayLine.h : CSetForexDayLine µÄÉùÃ÷
+ï»¿// CSetForexDayLine.h : CSetForexDayLine çš„å£°æ˜Ž
 
 #pragma once
 

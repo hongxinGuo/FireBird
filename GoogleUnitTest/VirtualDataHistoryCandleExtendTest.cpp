@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -7,7 +7,7 @@
 namespace FireBirdTest {
 	class CVirtualDataHistoryCandleExtendTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êı
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -254,13 +254,13 @@ namespace FireBirdTest {
 		pHistoryData->SetDate(20200101);
 		pHistoryData->SetHigh(1000);
 		pHistoryData->SetLow(200);
-		pHistoryData->SetClose(100); // È·±£´ËÊı¾İÓĞĞ§
+		pHistoryData->SetClose(100); // ç¡®ä¿æ­¤æ•°æ®æœ‰æ•ˆ
 		auto pHistoryData2 = make_shared<CVirtualHistoryCandleExtend>();
 		pHistoryData2->SetStockSymbol("600001.SS");
 		pHistoryData2->SetDate(20200201);
 		pHistoryData2->SetHigh(11000);
 		pHistoryData2->SetLow(1200);
-		pHistoryData2->SetClose(100); // È·±£´ËÊı¾İÓĞĞ§
+		pHistoryData2->SetClose(100); // ç¡®ä¿æ­¤æ•°æ®æœ‰æ•ˆ
 
 		CVirtualDataHistoryCandleExtend HistoryDataContainer;
 		vector<CVirtualHistoryCandleExtendPtr> vHistoryData;

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include"FinnhubInquiryType.h"
 
@@ -22,7 +22,7 @@ std::string Test_gl_sTiingoInaccessibleStock = R"(
 
 CTiingoInaccessibleStock::CTiingoInaccessibleStock() {
 	if (static int siInstance = 0; ++siInstance > 1) {
-		TRACE("TiingoInaccessibleStockÈ«¾Ö±äÁ¿Ö»ÔÊĞí´æÔÚÒ»¸öÊµÀı\n");
+		TRACE("TiingoInaccessibleStockå…¨å±€å˜é‡åªå…è®¸å­˜åœ¨ä¸€ä¸ªå®ä¾‹\n");
 		ASSERT(FALSE);
 	}
 
@@ -43,7 +43,7 @@ void CTiingoInaccessibleStock::UpdateDB() {
 	const string strNew = m_strFileName.substr(0, m_strFileName.length() - 4) + "bak";
 
 	std::filesystem::remove(gl_systemConfiguration.GetConfigurationFileDirectory() + strNew);
-	rename((gl_systemConfiguration.GetConfigurationFileDirectory() + strOld).c_str(), (gl_systemConfiguration.GetConfigurationFileDirectory() + strNew).c_str()); // ±£´æ±¸·İ
+	rename((gl_systemConfiguration.GetConfigurationFileDirectory() + strOld).c_str(), (gl_systemConfiguration.GetConfigurationFileDirectory() + strNew).c_str()); // ä¿å­˜å¤‡ä»½
 	UpdateJson();
 	SaveDB();
 	SetUpdateDB(false);
@@ -82,9 +82,9 @@ void CTiingoInaccessibleStock::Update() {
 		for (size_t i = 0; i < m_finnhubInaccessibleStock.at("InaccessibleStock").size(); i++) {
 			const auto size = m_finnhubInaccessibleStock.at("InaccessibleStock").at(i).at("Stock").size();
 			if (size > 0) {
-				// ÓĞstockÊı¾İµÄ»°²Å½¨Á¢Êı¾İ¼¯
+				// æœ‰stockæ•°æ®çš„è¯æ‰å»ºç«‹æ•°æ®é›†
 				const auto pInaccessible = make_shared<CInaccessible>();
-				string s2 = m_finnhubInaccessibleStock["InaccessibleStock"].at(i).at("Function"); // ´Ójson½âÎö³öµÄ×Ö·û´®¸ñÊ½Îªstd::string
+				string s2 = m_finnhubInaccessibleStock["InaccessibleStock"].at(i).at("Function"); // ä»jsonè§£æå‡ºçš„å­—ç¬¦ä¸²æ ¼å¼ä¸ºstd::string
 				pInaccessible->SetFunctionString(s2);
 				pInaccessible->SetFunction(gl_FinnhubInquiryType.GetInquiryType(pInaccessible->GetFunctionString()));
 				for (size_t j = 0; j < size; j++) {
@@ -104,7 +104,7 @@ void CTiingoInaccessibleStock::UpdateJson() {
 	m_finnhubInaccessibleStock["UpdateDate"] = m_lUpdateDate;
 	for (const auto& val : m_mapStock | std::views::values) {
 		if (val->HaveSymbol()) {
-			// ÓĞexchangeÊı¾İµÄ»°²Å½¨Á¢Êı¾İ¼¯
+			// æœ‰exchangeæ•°æ®çš„è¯æ‰å»ºç«‹æ•°æ®é›†
 			auto jsonStock = json{ { "Function", val->GetFunctionString() } };
 			for (int i = 0; i < val->SymbolSize(); i++) {
 				auto s = val->GetSymbol(i);

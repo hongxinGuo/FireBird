@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -43,17 +43,17 @@ namespace FireBirdTest {
 		CTiingoDayLinesPtr dayLinesPtr = make_shared<vector<CTiingoDayLinePtr>>();
 
 		CTiingoDayLinePtr pDayLine = make_shared<CTiingoDayLine>();
-		pDayLine->SetDate(20241103); // ²âÊÔ¿âÖÐÃ»ÓÐ£¬²åÈë
+		pDayLine->SetDate(20241103); // æµ‹è¯•åº“ä¸­æ²¡æœ‰ï¼Œæ’å…¥
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetClose(100);
 		dayLinesPtr->push_back(pDayLine);
 		pDayLine = make_shared<CTiingoDayLine>();
-		pDayLine->SetDate(20241107); // ²âÊÔ¿âÖÐÓÐ
+		pDayLine->SetDate(20241107); // æµ‹è¯•åº“ä¸­æœ‰
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetClose(100);
 		dayLinesPtr->push_back(pDayLine);
 		pDayLine = make_shared<CTiingoDayLine>();
-		pDayLine->SetDate(20241111); // ²âÊÔ¿âÖÐµÄÊý¾Ý×îÐÂÈÕÆÚÎª20241108£¬´ËÈÕÆÚÎ»ÓÚÆäºó
+		pDayLine->SetDate(20241111); // æµ‹è¯•åº“ä¸­çš„æ•°æ®æœ€æ–°æ—¥æœŸä¸º20241108ï¼Œæ­¤æ—¥æœŸä½äºŽå…¶åŽ
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetClose(100);
 		dayLinesPtr->push_back(pDayLine);
@@ -63,14 +63,14 @@ namespace FireBirdTest {
 
 		m_dataTiingoStockDayLine.LoadDB("A");
 		EXPECT_EQ(m_dataTiingoStockDayLine.GetData(m_dataTiingoStockDayLine.Size() - 1)->GetDate(),
-		          20241111) << "ÐÂ´æ´¢Êý¾ÝÎ»ÓÚ×îºó";
+		          20241111) << "æ–°å­˜å‚¨æ•°æ®ä½äºŽæœ€åŽ";
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŽŸçŠ¶
 		CSetTiingoStockDayLine setTiingoStockDayLineBasic;
 		setTiingoStockDayLineBasic.m_strFilter = "[Date] = 20241111";
 		setTiingoStockDayLineBasic.Open();
 		setTiingoStockDayLineBasic.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setTiingoStockDayLineBasic.IsEOF()) << "ÐÂ´æ´¢Êý¾ÝµÄÈÕÆÚ";
+		EXPECT_FALSE(setTiingoStockDayLineBasic.IsEOF()) << "æ–°å­˜å‚¨æ•°æ®çš„æ—¥æœŸ";
 		EXPECT_STREQ(setTiingoStockDayLineBasic.m_Symbol, _T("A"));
 		while (!setTiingoStockDayLineBasic.IsEOF()) {
 			setTiingoStockDayLineBasic.Delete();
@@ -82,7 +82,7 @@ namespace FireBirdTest {
 		setTiingoStockDayLineBasic.m_strFilter = "[Date] = 20241103";
 		setTiingoStockDayLineBasic.Open();
 		setTiingoStockDayLineBasic.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setTiingoStockDayLineBasic.IsEOF()) << "²åÈëÊý¾ÝµÄÈÕÆÚ";
+		EXPECT_FALSE(setTiingoStockDayLineBasic.IsEOF()) << "æ’å…¥æ•°æ®çš„æ—¥æœŸ";
 		EXPECT_STREQ(setTiingoStockDayLineBasic.m_Symbol, _T( "A"));
 		while (!setTiingoStockDayLineBasic.IsEOF()) {
 			setTiingoStockDayLineBasic.Delete();

@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 #include"VirtualMarket.h"
@@ -41,27 +41,27 @@ namespace FireBirdTest {
 		virtualMarket.AddTask(2, 10000);
 
 		auto pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 1) << "ÏàÍ¬Ê±¼äµÄÈÎÎñ£¬Ëæ»úÅÅÁÐ";
+		EXPECT_EQ(pTask->GetTime(), 1) << "ç›¸åŒæ—¶é—´çš„ä»»åŠ¡ï¼ŒéšæœºæŽ’åˆ—";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 1) << "ÏàÍ¬Ê±¼äµÄÈÎÎñ£¬Ëæ»úÅÅÁÐ";
+		EXPECT_EQ(pTask->GetTime(), 1) << "ç›¸åŒæ—¶é—´çš„ä»»åŠ¡ï¼ŒéšæœºæŽ’åˆ—";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 10000) << "ÏàÍ¬Ê±¼äµÄÈÎÎñ£¬Ëæ»úÅÅÁÐ";
+		EXPECT_EQ(pTask->GetTime(), 10000) << "ç›¸åŒæ—¶é—´çš„ä»»åŠ¡ï¼ŒéšæœºæŽ’åˆ—";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 10000) << "ÏàÍ¬Ê±¼äµÄÈÎÎñ£¬Ëæ»úÅÅÁÐ";
+		EXPECT_EQ(pTask->GetTime(), 10000) << "ç›¸åŒæ—¶é—´çš„ä»»åŠ¡ï¼ŒéšæœºæŽ’åˆ—";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 10000) << "ÏàÍ¬Ê±¼äµÄÈÎÎñ£¬Ëæ»úÅÅÁÐ";
+		EXPECT_EQ(pTask->GetTime(), 10000) << "ç›¸åŒæ—¶é—´çš„ä»»åŠ¡ï¼ŒéšæœºæŽ’åˆ—";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 10000) << "ÏàÍ¬Ê±¼äµÄÈÎÎñ£¬Ëæ»úÅÅÁÐ";
+		EXPECT_EQ(pTask->GetTime(), 10000) << "ç›¸åŒæ—¶é—´çš„ä»»åŠ¡ï¼ŒéšæœºæŽ’åˆ—";
 		virtualMarket.DiscardCurrentMarketTask();
 
 		pTask = virtualMarket.GetMarketTask();
@@ -84,13 +84,13 @@ namespace FireBirdTest {
 		virtualMarket.AdjustTaskTime();
 
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 350) << "ËùÓÐµÄÊ±¼ä½Ô´óÓÚ240000£¬¹Ê¶ø½Ô¼õÈ¥240000";
+		EXPECT_EQ(pTask->GetTime(), 350) << "æ‰€æœ‰çš„æ—¶é—´çš†å¤§äºŽ240000ï¼Œæ•…è€Œçš†å‡åŽ»240000";
 		virtualMarket.DiscardCurrentMarketTask();
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 34010) << "ËùÓÐµÄÊ±¼ä½Ô´óÓÚ240000£¬¹Ê¶ø½Ô¼õÈ¥240000";
+		EXPECT_EQ(pTask->GetTime(), 34010) << "æ‰€æœ‰çš„æ—¶é—´çš†å¤§äºŽ240000ï¼Œæ•…è€Œçš†å‡åŽ»240000";
 		virtualMarket.DiscardCurrentMarketTask();
 		pTask = virtualMarket.GetMarketTask();
-		EXPECT_EQ(pTask->GetTime(), 60000) << "ËùÓÐµÄÊ±¼ä½Ô´óÓÚ240000£¬¹Ê¶ø½Ô¼õÈ¥240000";
+		EXPECT_EQ(pTask->GetTime(), 60000) << "æ‰€æœ‰çš„æ—¶é—´çš†å¤§äºŽ240000ï¼Œæ•…è€Œçš†å‡åŽ»240000";
 		virtualMarket.DiscardCurrentMarketTask();
 	}
 
@@ -131,7 +131,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestMarketReady) {
-		EXPECT_FALSE(virtualMarket.IsSystemReady()) << "ÊÐ³¡»ùÀàÄ¬ÈÏÎª¼Ù";
+		EXPECT_FALSE(virtualMarket.IsSystemReady()) << "å¸‚åœºåŸºç±»é»˜è®¤ä¸ºå‡";
 		virtualMarket.SetSystemReady(false);
 		EXPECT_FALSE(virtualMarket.IsSystemReady());
 		virtualMarket.SetSystemReady(true);
@@ -178,17 +178,17 @@ namespace FireBirdTest {
 			virtualMarket.GetMarketTimeStruct(&tmMarketTime2, GetUTCTime() - virtualMarket.GetMarketOpenTime());
 
 			switch (tmMarketTime2.tm_wday) {
-			case 1: // ÐÇÆÚÒ»
-				tMarket = GetUTCTime() - 3 * 24 * 3600; // ÉÏÖÜÎå
+			case 1: // æ˜ŸæœŸä¸€
+				tMarket = GetUTCTime() - 3 * 24 * 3600; // ä¸Šå‘¨äº”
 				break;
-			case 0: //ÐÇÆÚÈÕ
-				tMarket = GetUTCTime() - 3 * 24 * 3600; // ÖÜËÄ
+			case 0: //æ˜ŸæœŸæ—¥
+				tMarket = GetUTCTime() - 3 * 24 * 3600; // å‘¨å››
 				break;
-			case 6: // ÐÇÆÚÁù
-				tMarket = GetUTCTime() - 2 * 24 * 3600; // ÖÜËÄ
+			case 6: // æ˜ŸæœŸå…­
+				tMarket = GetUTCTime() - 2 * 24 * 3600; // å‘¨å››
 				break;
-			default: // ÆäËû
-				tMarket = GetUTCTime() - 24 * 3600; // ÉÏÒ»ÈÕ
+			default: // å…¶ä»–
+				tMarket = GetUTCTime() - 24 * 3600; // ä¸Šä¸€æ—¥
 			}
 			tm tmMarketTime;
 			virtualMarket.GetMarketTimeStruct(&tmMarketTime, tMarket - virtualMarket.GetMarketOpenTime());
@@ -196,7 +196,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(virtualMarket.GetLastTradeDate(), lMarketLastTradeDate) << i;
 		}
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŽŸçŠ¶
 		TestSetUTCTime(tUTCTime);
 	}
 
@@ -209,14 +209,14 @@ namespace FireBirdTest {
 			virtualMarket.GetMarketTimeStruct(&tmMarketTime2, GetUTCTime() - virtualMarket.GetMarketOpenTime());
 
 			switch (tmMarketTime2.tm_wday) {
-			case 0: //ÐÇÆÚÈÕ
-				tMarket = GetUTCTime() - 2 * 24 * 3600; // ÖÜÎå
+			case 0: //æ˜ŸæœŸæ—¥
+				tMarket = GetUTCTime() - 2 * 24 * 3600; // å‘¨äº”
 				break;
-			case 6: // ÐÇÆÚÁù
-				tMarket = GetUTCTime() - 1 * 24 * 3600; // ÖÜÎå
+			case 6: // æ˜ŸæœŸå…­
+				tMarket = GetUTCTime() - 1 * 24 * 3600; // å‘¨äº”
 				break;
-			default: // ÆäËû
-				tMarket = GetUTCTime(); // ±¾ÈÕ
+			default: // å…¶ä»–
+				tMarket = GetUTCTime(); // æœ¬æ—¥
 			}
 			tm tmMarketTime;
 			virtualMarket.GetMarketTimeStruct(&tmMarketTime, tMarket - virtualMarket.GetMarketOpenTime());
@@ -224,7 +224,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(virtualMarket.GetCurrentTradeDate(), lMarketCurrentTradeDate) << i;
 		}
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŽŸçŠ¶
 		TestSetUTCTime(tUTCTime);
 	}
 
@@ -238,14 +238,14 @@ namespace FireBirdTest {
 			virtualMarket.GetMarketTimeStruct(&tmMarketTime2, GetUTCTime() - virtualMarket.GetMarketOpenTime());
 
 			switch (tmMarketTime2.tm_wday) {
-			case 6: // ÐÇÆÚÁù
-				tMarket = GetUTCTime() + 2 * 24 * 3600; // ÏÂÖÜÒ»
+			case 6: // æ˜ŸæœŸå…­
+				tMarket = GetUTCTime() + 2 * 24 * 3600; // ä¸‹å‘¨ä¸€
 				break;
-			case 5: // ÖÜÎå
-				tMarket = GetUTCTime() + 3 * 24 * 3600; // ÏÂÖÜÒ»
+			case 5: // å‘¨äº”
+				tMarket = GetUTCTime() + 3 * 24 * 3600; // ä¸‹å‘¨ä¸€
 				break;
-			default: // ÆäËû
-				tMarket = GetUTCTime() + 24 * 3600; // ´ÎÈÕ
+			default: // å…¶ä»–
+				tMarket = GetUTCTime() + 24 * 3600; // æ¬¡æ—¥
 			}
 			tm tmMarketTime;
 			virtualMarket.GetMarketTimeStruct(&tmMarketTime, tMarket - virtualMarket.GetMarketOpenTime());
@@ -253,7 +253,7 @@ namespace FireBirdTest {
 			EXPECT_EQ(virtualMarket.GetNextTradeDate(), lMarketNextTradeDate) << i;
 		}
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŽŸçŠ¶
 		TestSetUTCTime(tUTCTime);
 	}
 
@@ -264,7 +264,7 @@ namespace FireBirdTest {
 		gmtime_s(&tm2_, &tt);
 		tm tm_;
 		virtualMarket.GetMarketTimeStruct(&tm_, GetUTCTime());
-		EXPECT_TRUE(tm_.tm_hour == tm2_.tm_hour) << "VirtualMarketÄ¬ÈÏÎªGMT±ê×¼Ê±¼ä";
+		EXPECT_TRUE(tm_.tm_hour == tm2_.tm_hour) << "VirtualMarketé»˜è®¤ä¸ºGMTæ ‡å‡†æ—¶é—´";
 	}
 
 	TEST_F(CVirtualMarketTest, TestTransferToUTCTime1) {
@@ -280,7 +280,7 @@ namespace FireBirdTest {
 		tmMarket.tm_min = lMarketTime / 100 - (lMarketTime / 10000) * 100;
 		tmMarket.tm_sec = lMarketTime - (lMarketTime / 100) * 100;
 
-		tTime = virtualMarket.TransferToUTCTime(&tmMarket); // Ê¹ÓÃÄ¬ÈÏÊ±¼ä150000.
+		tTime = virtualMarket.TransferToUTCTime(&tmMarket); // ä½¿ç”¨é»˜è®¤æ—¶é—´150000.
 		virtualMarket.GetMarketTimeStruct(&tm2, tTime);
 		EXPECT_EQ(tm2.tm_year, 100);
 		EXPECT_EQ(tm2.tm_mon, 2);
@@ -289,7 +289,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(tm2.tm_min, 20);
 		EXPECT_EQ(tm2.tm_sec, 30);
 
-		tTime = virtualMarket.TransferToUTCTime(lMarketDate); // Ê¹ÓÃÄ¬ÈÏÊ±¼ä150000.
+		tTime = virtualMarket.TransferToUTCTime(lMarketDate); // ä½¿ç”¨é»˜è®¤æ—¶é—´150000.
 		virtualMarket.GetMarketTimeStruct(&tm2, tTime);
 		EXPECT_EQ(tm2.tm_year, 100);
 		EXPECT_EQ(tm2.tm_mon, 2);
@@ -336,13 +336,13 @@ namespace FireBirdTest {
 			TestSetUTCTime(tUTC);
 
 			switch (tm_.tm_wday) {
-			case 6: //ÐÇÆÚÁù
+			case 6: //æ˜ŸæœŸå…­
 				tUTC += 2 * 24 * 3600; //
 				break;
-			case 5: // ÐÇÆÚÎå
+			case 5: // æ˜ŸæœŸäº”
 				tUTC += 3 * 24 * 3600; //
 				break;
-			default: // ÆäËû
+			default: // å…¶ä»–
 				tUTC += 24 * 3600;
 				break;
 			}
@@ -362,13 +362,13 @@ namespace FireBirdTest {
 			TestSetUTCTime(tUTC);
 
 			switch (tm_.tm_wday) {
-			case 0: //ÐÇÆÚÈÕ
+			case 0: //æ˜ŸæœŸæ—¥
 				tUTC -= 2 * 24 * 3600; //
 				break;
-			case 6: // ÐÇÆÚÁù
+			case 6: // æ˜ŸæœŸå…­
 				tUTC -= 1 * 24 * 3600; //
 				break;
-			default: // ÆäËû
+			default: // å…¶ä»–
 				break;
 			}
 			virtualMarket.GetMarketTimeStruct(&tm_, tUTC - virtualMarket.GetMarketOpenTime());
@@ -387,16 +387,16 @@ namespace FireBirdTest {
 			TestSetUTCTime(tUTC);
 
 			switch (tm_.tm_wday) {
-			case 1: // ÐÇÆÚÒ»
+			case 1: // æ˜ŸæœŸä¸€
 				tUTC -= 3 * 24 * 3600; //
 				break;
-			case 0: //ÐÇÆÚÈÕ
+			case 0: //æ˜ŸæœŸæ—¥
 				tUTC -= 3 * 24 * 3600; //
 				break;
-			case 6: // ÐÇÆÚÁù
+			case 6: // æ˜ŸæœŸå…­
 				tUTC -= 2 * 24 * 3600; //
 				break;
-			default: // ÆäËû
+			default: // å…¶ä»–
 				tUTC -= 24 * 3600; //
 			}
 			virtualMarket.GetMarketTimeStruct(&tm_, tUTC - virtualMarket.GetMarketOpenTime());
@@ -406,25 +406,25 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CVirtualMarketTest, TestIsWorkingDay) {
-		const CTime time1(2019, 11, 25, 0, 0, 0); // ´ËÈÕÎªÐÇÆÚÒ»
+		const CTime time1(2019, 11, 25, 0, 0, 0); // æ­¤æ—¥ä¸ºæ˜ŸæœŸä¸€
 		EXPECT_TRUE(virtualMarket.IsWorkingDay(time1));
 		EXPECT_TRUE(virtualMarket.IsWorkingDay(20191125));
-		const CTime time2(2019, 11, 26, 0, 0, 0); // ´ËÈÕÎªÐÇÆÚ¶þ
+		const CTime time2(2019, 11, 26, 0, 0, 0); // æ­¤æ—¥ä¸ºæ˜ŸæœŸäºŒ
 		EXPECT_TRUE(virtualMarket.IsWorkingDay(time2));
 		EXPECT_TRUE(virtualMarket.IsWorkingDay(20191126));
-		const CTime time3(2019, 11, 27, 0, 0, 0); // ´ËÈÕÎªÐÇÆÚÈý
+		const CTime time3(2019, 11, 27, 0, 0, 0); // æ­¤æ—¥ä¸ºæ˜ŸæœŸä¸‰
 		EXPECT_TRUE(virtualMarket.IsWorkingDay(time3));
 		EXPECT_TRUE(virtualMarket.IsWorkingDay(20191127));
-		const CTime time4(2019, 11, 28, 0, 0, 0); // ´ËÈÕÎªÐÇÆÚËÄ
+		const CTime time4(2019, 11, 28, 0, 0, 0); // æ­¤æ—¥ä¸ºæ˜ŸæœŸå››
 		EXPECT_TRUE(virtualMarket.IsWorkingDay(time4));
 		EXPECT_TRUE(virtualMarket.IsWorkingDay(20191128));
-		const CTime time5(2019, 11, 29, 0, 0, 0); // ´ËÈÕÎªÐÇÆÚÎå
+		const CTime time5(2019, 11, 29, 0, 0, 0); // æ­¤æ—¥ä¸ºæ˜ŸæœŸäº”
 		EXPECT_TRUE(virtualMarket.IsWorkingDay(time5));
 		EXPECT_TRUE(virtualMarket.IsWorkingDay(20191129));
-		const CTime time6(2019, 11, 30, 0, 0, 0); // ´ËÈÕÎªÐÇÆÚÁù
+		const CTime time6(2019, 11, 30, 0, 0, 0); // æ­¤æ—¥ä¸ºæ˜ŸæœŸå…­
 		EXPECT_FALSE(virtualMarket.IsWorkingDay(time6));
 		EXPECT_FALSE(virtualMarket.IsWorkingDay(20191130));
-		const CTime time7(2019, 12, 1, 0, 0, 0); // ´ËÈÕÎªÐÇÆÚÈÕ
+		const CTime time7(2019, 12, 1, 0, 0, 0); // æ­¤æ—¥ä¸ºæ˜ŸæœŸæ—¥
 		EXPECT_FALSE(virtualMarket.IsWorkingDay(time7));
 		EXPECT_FALSE(virtualMarket.IsWorkingDay(20191201));
 	}
@@ -447,7 +447,7 @@ namespace FireBirdTest {
 		tm tmLocal;
 
 		localtime_s(&tmLocal, &tUTC);
-		string s = fmt::format("{:04d}Äê{:02d}ÔÂ{:02d}ÈÕ {:02d}:{:02d}:{:02d}", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		string s = fmt::format("{:04d}å¹´{:02d}æœˆ{:02d}æ—¥ {:02d}:{:02d}:{:02d}", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 		EXPECT_EQ(virtualMarket.GetStringOfLocalDateTime(), s);
 	}
 
@@ -467,7 +467,7 @@ namespace FireBirdTest {
 		tm tmMarket;
 
 		virtualMarket.GetMarketTimeStruct(&tmMarket, GetUTCTime());
-		string s = fmt::format("{:04d}Äê{:02d}ÔÂ{:02d}ÈÕ {:02d}:{:02d}:{:02d}", tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
+		string s = fmt::format("{:04d}å¹´{:02d}æœˆ{:02d}æ—¥ {:02d}:{:02d}:{:02d}", tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
 		EXPECT_EQ(virtualMarket.GetStringOfMarketDateTime(), s);
 	}
 
@@ -476,7 +476,7 @@ namespace FireBirdTest {
 		const long year = lDate / 10000;
 		const long month = lDate / 100 - year * 100;
 		const long day = lDate - year * 10000 - month * 100;
-		string s = fmt::format("{:04Ld}Äê{:02Ld}ÔÂ{:02Ld}ÈÕ", year, month, day);
+		string s = fmt::format("{:04Ld}å¹´{:02Ld}æœˆ{:02Ld}æ—¥", year, month, day);
 		EXPECT_EQ(virtualMarket.GetStringOfMarketDate(), s);
 	}
 

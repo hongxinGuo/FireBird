@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include"VirtualStock.h"
 #include"ContainerForexDayLine.h"
@@ -9,7 +9,7 @@
 class CFinnhubForex : public CVirtualStock {
 public:
 	CFinnhubForex();
-	// ²»ÔÊĞí¸³Öµ¡£
+	// ä¸å…è®¸èµ‹å€¼ã€‚
 	CFinnhubForex(const CFinnhubForex&) = delete;
 	CFinnhubForex& operator=(const CFinnhubForex&) = delete;
 	CFinnhubForex(const CFinnhubForex&&) noexcept = delete;

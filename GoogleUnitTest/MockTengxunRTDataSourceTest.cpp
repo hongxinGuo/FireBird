@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"ThreadStatus.h"
 #include"ChinaMarket.h"
@@ -9,7 +9,7 @@
 using namespace testing;
 
 namespace FireBirdTest {
-	CMockTengxunRTDataSourcePtr m_pMockTengxunRTDataSource; // ÌÚÑ¶ÊµÊ±Êı¾İ²É¼¯
+	CMockTengxunRTDataSourcePtr m_pMockTengxunRTDataSource; // è…¾è®¯å®æ—¶æ•°æ®é‡‡é›†
 	class CMockTengxunRTDataSourceTest : public ::testing::Test {
 	protected:
 		static void SetUpTestSuite() {
@@ -47,7 +47,7 @@ namespace FireBirdTest {
 	TEST_F(CMockTengxunRTDataSourceTest, TestInitialize) {
 		EXPECT_EQ(TengxunRTDataSource.GetInquiryFunction(), "http://qt.gtimg.cn/q=");
 		EXPECT_EQ(TengxunRTDataSource.GetInquiryToken(), "");
-		EXPECT_EQ(TengxunRTDataSource.GetInquiringNumber(), 900) << "ÌÚÑ¶Ä¬ÈÏÖµ";
+		EXPECT_EQ(TengxunRTDataSource.GetInquiringNumber(), 900) << "è…¾è®¯é»˜è®¤å€¼";
 	}
 
 	TEST_F(CMockTengxunRTDataSourceTest, TestGenerateInquiryMessage) {
@@ -55,7 +55,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(m_pMockTengxunRTDataSource->IsInquiring());
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
-		gl_pChinaMarket->SetSystemReady(false); // ±£Ö¤¿ìËÙÉêÇëÊı¾İ
+		gl_pChinaMarket->SetSystemReady(false); // ä¿è¯å¿«é€Ÿç”³è¯·æ•°æ®
 
 		m_pMockTengxunRTDataSource->SetWebError(true);
 		EXPECT_CALL(*m_pMockTengxunRTDataSource, GetTickCount()).Times(3)
@@ -65,16 +65,16 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(120000));
 
-		EXPECT_FALSE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(120100)) << "¼ÌĞøµÈ´ı";
+		EXPECT_FALSE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(120100)) << "ç»§ç»­ç­‰å¾…";
 		EXPECT_FALSE(m_pMockTengxunRTDataSource->IsInquiring());
 		EXPECT_FALSE(m_pMockTengxunRTDataSource->HaveInquiry());
 
-		EXPECT_TRUE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(120600)) << "ÉêÇëÊı¾İ";
+		EXPECT_TRUE(m_pMockTengxunRTDataSource->GenerateInquiryMessage(120600)) << "ç”³è¯·æ•°æ®";
 
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->IsInquiring());
 		EXPECT_TRUE(m_pMockTengxunRTDataSource->HaveInquiry());
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŸçŠ¶
 		gl_pChinaMarket->SetSystemReady(true);
 	}
 }

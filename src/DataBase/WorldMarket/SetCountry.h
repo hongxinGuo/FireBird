@@ -1,4 +1,4 @@
-// CSetCountry.h : CSetCountry µÄÉùÃ÷
+ï»¿// CSetCountry.h : CSetCountry çš„å£°æ˜
 
 #pragma once
 
@@ -16,8 +16,8 @@ public:
 	CString m_Currency{ "" };
 	CString m_CurrencyCode{ "" };
 
-	// ÖØĞ´
-	// Ïòµ¼Éú³ÉµÄĞéº¯ÊıÖØĞ´
+	// é‡å†™
+	// å‘å¯¼ç”Ÿæˆçš„è™šå‡½æ•°é‡å†™
 public:
-	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX Ö§³Ö
+	void DoFieldExchange(CFieldExchange* pFX) override;	// RFX æ”¯æŒ
 };

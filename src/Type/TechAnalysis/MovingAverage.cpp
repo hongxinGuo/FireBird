@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"MovingAverage.h"
 
@@ -40,7 +40,7 @@ void CMovingAverage::ToShow(CDC* pDC, CPen* pNewPen, CRect rectClient, int iStep
 		pDC->LineTo(x, y);
 		i++;
 		if (i >= Size()) break;
-		if (rectClient.right <= iStepWidth * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+		if (rectClient.right <= iStepWidth * i) break; // ç”»åˆ°çª—å£å·¦è¾¹æ¡†ä¸ºæ­¢
 	}
 	pDC->SelectObject(pOldPen);
 }

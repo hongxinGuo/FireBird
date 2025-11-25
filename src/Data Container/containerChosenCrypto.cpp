@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include"SetWorldChosenCrypto.h"
 #include "containerChosenCrypto.h"
@@ -27,7 +27,7 @@ bool CContainerChosenCrypto::LoadDB() {
 			m_vStock.push_back(pCrypto);
 		}
 		else {
-			setWorldChosenCrypto.Delete(); // É¾³ıÒÑ²»´æÔÚµÄ´úÂë
+			setWorldChosenCrypto.Delete(); // åˆ é™¤å·²ä¸å­˜åœ¨çš„ä»£ç 
 		}
 		setWorldChosenCrypto.MoveNext();
 	}

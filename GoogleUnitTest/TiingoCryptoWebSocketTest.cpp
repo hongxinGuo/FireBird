@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -48,7 +48,7 @@ namespace FireBirdTest {
 		json jsonMessage;
 		try {
 			jsonMessage = json::parse(strSymbol);
-		} catch (json::exception&) { EXPECT_TRUE(false) << "´ËstrÓ¦¸ÃÊÇjsonÖÆÊ½µÄ"; }
+		} catch (json::exception&) { EXPECT_TRUE(false) << "æ­¤stråº”è¯¥æ˜¯jsonåˆ¶å¼çš„"; }
 		EXPECT_TRUE(jsonMessage["eventName"] == "subscribe");
 		EXPECT_EQ(jsonMessage["eventData"]["thresholdLevel"], 2);
 		EXPECT_EQ(jsonMessage["authorization"], "c897a00b7cfc2630d235316a4683156");

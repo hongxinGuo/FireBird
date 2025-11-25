@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "ContainerFinnhubEconomicCalendar.h"
 #include"SetEconomicCalendar.h"
 
@@ -54,7 +54,7 @@ bool CContainerFinnhubEconomicCalendar::Update(const vector<CEconomicCalendarPtr
 
 	for (auto& pEconomicCalendar : vEconomicCalendar) {
 		strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
-		if (!m_mapEconomicCalendar.contains(strSymbol)) {	// ÐÂÊÂ¼þ£¿
+		if (!m_mapEconomicCalendar.contains(strSymbol)) {	// æ–°äº‹ä»¶ï¼Ÿ
 			m_mapEconomicCalendar[strSymbol] = m_vEconomicCalendar.size();
 			m_vEconomicCalendar.push_back(pEconomicCalendar);
 		}

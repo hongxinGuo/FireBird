@@ -1,4 +1,4 @@
-#include"pch.h"
+﻿#include"pch.h"
 
 #include "FinnhubDataSource.h"
 #include"GeneralCheck.h"
@@ -53,7 +53,7 @@ namespace FireBirdTest {
 
 		m_finnhubWebSocket.MonitorWebSocket(vSymbol);
 
-		// �ָ�ԭ״
+		// 恢复原状
 		gl_pFinnhubDataSource->SetWebError(false);
 	}
 
@@ -66,11 +66,11 @@ namespace FireBirdTest {
 		.WillOnce(Return(ix::ReadyState::Closed))
 		.WillOnce(Return(ix::ReadyState::Closed));
 
-		EXPECT_CALL(m_finnhubWebSocket, TaskDisconnect()).Times(0); // "web Socket�ѹرգ������ٴιر�";
+		EXPECT_CALL(m_finnhubWebSocket, TaskDisconnect()).Times(0); // "web Socket已关闭，无需再次关闭";
 
 		m_finnhubWebSocket.MonitorWebSocket(vSymbol);
 
-		// �ָ�ԭ״
+		// 恢复原状
 		gl_pFinnhubDataSource->SetWebError(false);
 	}
 
@@ -91,7 +91,7 @@ namespace FireBirdTest {
 		m_finnhubWebSocket.MonitorWebSocket(vSymbol);
 		EXPECT_EQ(m_finnhubWebSocket.GetHeartbeatTime(), GetUTCTime());
 
-		// �ָ�ԭ״
+		// 恢复原状
 	}
 
 	TEST_F(CMockFinnhubWebSocketTest, TestMonitorWebSocket4) {
@@ -111,7 +111,7 @@ namespace FireBirdTest {
 		m_finnhubWebSocket.MonitorWebSocket(vSymbol);
 		EXPECT_EQ(m_finnhubWebSocket.GetHeartbeatTime(), GetUTCTime());
 
-		// �ָ�ԭ״
+		// 恢复原状
 	}
 
 	TEST_F(CMockFinnhubWebSocketTest, TestMonitorWebSocket5) {
@@ -130,7 +130,7 @@ namespace FireBirdTest {
 
 		m_finnhubWebSocket.MonitorWebSocket(vSymbol);
 
-		// �ָ�ԭ״
+		// 恢复原状
 	}
 
 	TEST_F(CMockFinnhubWebSocketTest, TestMonitorWebSocket6) {
@@ -149,7 +149,7 @@ namespace FireBirdTest {
 
 		m_finnhubWebSocket.MonitorWebSocket(vSymbol);
 
-		// �ָ�ԭ״
+		// 恢复原状
 	}
 
 	TEST_F(CMockFinnhubWebSocketTest, TestMonitorWebSocket7) {
@@ -167,7 +167,7 @@ namespace FireBirdTest {
 
 		m_finnhubWebSocket.MonitorWebSocket(vSymbol);
 
-		// �ָ�ԭ״
+		// 恢复原状
 		gl_systemConfiguration.SetUsingFinnhubWebSocket(true);
 	}
 
@@ -184,6 +184,6 @@ namespace FireBirdTest {
 
 		m_finnhubWebSocket.MonitorWebSocket(vSymbol);
 
-		// �ָ�ԭ״
+		// 恢复原状
 	}
 }

@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include "VirtualStock.h"
 
@@ -32,7 +32,7 @@ void CVirtualStock::LoadUpdateDate(const string& strUpdateDate) {
 void CVirtualStock::LoadSymbol(CVirtualSetStockSymbol& setStockSymbol) {
 	m_strDescription = ToUTF8(setStockSymbol.m_Description);
 	CString str;
-	str = setStockSymbol.m_DisplaySymbol; //Note ĞèÒªÈç´Ë³õÊ¼»¯£¬²»ÄÜ½«ÉùÃ÷ºÍ¸³Öµ·ÅÔÚÒ»Æğ
+	str = setStockSymbol.m_DisplaySymbol; //Note éœ€è¦å¦‚æ­¤åˆå§‹åŒ–ï¼Œä¸èƒ½å°†å£°æ˜å’Œèµ‹å€¼æ”¾åœ¨ä¸€èµ·
 	m_strDisplaySymbol = ToUTF8(str);
 	m_strExchangeCode = ToUTF8(setStockSymbol.m_Exchange);
 	m_strSymbol = ToUTF8(setStockSymbol.m_Symbol);

@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  IXExponentialBackoff.h
  *  Author: Benjamin Sergeant
  *  Copyright (c) 2017-2019 Machine Zone, Inc. All rights reserved.

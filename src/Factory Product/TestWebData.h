@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 
 #include"WebData.h"
 
-// ´Ë½á¹¹Ö»ÓÃÓÚ²âÊÔÖĞ
+// æ­¤ç»“æ„åªç”¨äºæµ‹è¯•ä¸­
 struct Test_FinnhubWebData {
 	Test_FinnhubWebData(const long lIndex, const string& strSymbol, const string& strData) {
 		m_lIndex = lIndex;
@@ -23,7 +23,7 @@ extern Test_FinnhubWebData finnhubWebData0;
 extern Test_FinnhubWebData finnhubWebData1;
 extern Test_FinnhubWebData finnhubWebData2;
 
-// ´Ë½á¹¹Ö»ÓÃÓÚ²âÊÔÖĞ
+// æ­¤ç»“æ„åªç”¨äºæµ‹è¯•ä¸­
 struct Test_TiingoWebData {
 	Test_TiingoWebData(const long lIndex, const string& strSymbol, const string& strData) {
 		m_lIndex = lIndex;

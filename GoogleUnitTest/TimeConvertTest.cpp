@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"WorldMarket.h"
 #include"ChinaMarket.h"
@@ -33,8 +33,8 @@ namespace FireBirdTest {
 		tm tm_2 = tm_;
 		const INT64 lDateTime = ConvertToDateTime(&tm_);
 		const time_t tt = _mkgmtime(&tm_2);
-		const INT64 lDateTime2 = ConvertToDateTime(tt, 0); // UTCÊ±¼ä
-		const INT64 lDateTime3 = ConvertToDateTime(tt, gl_pChinaMarket->GetTimeZone()); // ¶«°ËÇøÊ±¼ä
+		const INT64 lDateTime2 = ConvertToDateTime(tt, 0); // UTCæ—¶é—´
+		const INT64 lDateTime3 = ConvertToDateTime(tt, gl_pChinaMarket->GetTimeZone()); // ä¸œå…«åŒºæ—¶é—´
 		EXPECT_EQ(lDateTime, lDateTime2);
 		EXPECT_EQ(lDateTime, 20000105102030);
 		EXPECT_EQ(lDateTime2, 20000105102030);
@@ -86,7 +86,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(GetNextMonth(20200101), 20200201);
 		EXPECT_EQ(GetNextMonth(20201205), 20210101);
 		EXPECT_EQ(GetNextMonth(20201111), 20201201);
-		EXPECT_EQ(GetNextMonth(20200231), 20200301) << "²»¼ì²éÈÕÆÚµÄºÏ·¨ÐÔ";
+		EXPECT_EQ(GetNextMonth(20200231), 20200301) << "ä¸æ£€æŸ¥æ—¥æœŸçš„åˆæ³•æ€§";
 	}
 
 	TEST_F(TimeConvertTest, TestGetNextDate) {
@@ -151,7 +151,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(TimeConvertTest, TestGetCurrentMonday) {
-		EXPECT_EQ(20200720, GetCurrentMonday(20200720)) << "20200720ÎªÐÇÆÚÒ»";
+		EXPECT_EQ(20200720, GetCurrentMonday(20200720)) << "20200720ä¸ºæ˜ŸæœŸä¸€";
 		EXPECT_EQ(20200720, GetCurrentMonday(20200721));
 		EXPECT_EQ(20200720, GetCurrentMonday(20200722));
 		EXPECT_EQ(20200720, GetCurrentMonday(20200723));
@@ -194,13 +194,13 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(TimeConvertTest, TestTransferToTTime) {
-		if (gl_pWorldMarket->GetTimeZone() == 4 * 3600) { // ÃÀ¶«ÏÄÊ±ÖÆ£¿
-			EXPECT_EQ(315601200, ConvertToTTime(19800101, gl_pWorldMarket->GetTimeZone(), 150000)) << "ÃÀ¶«±ê×¼Ê±¼äµÄ19800101150000£¬ÆäUTCÊ±¼äÎª315601200";
+		if (gl_pWorldMarket->GetTimeZone() == 4 * 3600) { // ç¾Žä¸œå¤æ—¶åˆ¶ï¼Ÿ
+			EXPECT_EQ(315601200, ConvertToTTime(19800101, gl_pWorldMarket->GetTimeZone(), 150000)) << "ç¾Žä¸œæ ‡å‡†æ—¶é—´çš„19800101150000ï¼Œå…¶UTCæ—¶é—´ä¸º315601200";
 		}
 		else {
-			EXPECT_EQ(315604800, ConvertToTTime(19800101, gl_pWorldMarket->GetTimeZone(), 150000)) << "ÃÀ¶«ÏÄÊ±ÖÆ±ê×¼Ê±¼äµÄ19800101150000£¬ÆäUTCÊ±¼äÎª315601200";
+			EXPECT_EQ(315604800, ConvertToTTime(19800101, gl_pWorldMarket->GetTimeZone(), 150000)) << "ç¾Žä¸œå¤æ—¶åˆ¶æ ‡å‡†æ—¶é—´çš„19800101150000ï¼Œå…¶UTCæ—¶é—´ä¸º315601200";
 		}
-		EXPECT_EQ(315558000, ConvertToTTime(19800101, gl_pChinaMarket->GetTimeZone(), 150000)) << "±±¾©±ê×¼Ê±¼äµÄ19800101150000£¬ÆäUTCÊ±¼äÎª315558000";
+		EXPECT_EQ(315558000, ConvertToTTime(19800101, gl_pChinaMarket->GetTimeZone(), 150000)) << "åŒ—äº¬æ ‡å‡†æ—¶é—´çš„19800101150000ï¼Œå…¶UTCæ—¶é—´ä¸º315558000";
 	}
 
 	TEST_F(TimeConvertTest, TestTransferToDate2) {
@@ -212,12 +212,12 @@ namespace FireBirdTest {
 		tm_.tm_min = 0;
 		tm_.tm_sec = 0;
 		const time_t tt = _mkgmtime(&tm_);
-		const long lDate = ConvertToDate(tt, 0); // UTCÊ±¼ä
+		const long lDate = ConvertToDate(tt, 0); // UTCæ—¶é—´
 		EXPECT_EQ(lDate, 20000105);
 	}
 
 	TEST_F(TimeConvertTest, TestConvertDateToChineseTimeStampString) {
-		string s = fmt::format("{:4d}Äê{:02d}ÔÂ{:02d}ÈÕ", 2020, 2, 2);
+		string s = fmt::format("{:4d}å¹´{:02d}æœˆ{:02d}æ—¥", 2020, 2, 2);
 		EXPECT_EQ(ConvertDateToChineseTimeStampString(20200202), s);
 	}
 
@@ -240,7 +240,7 @@ namespace FireBirdTest {
 
 		gmtime_s(&tm2_, &tt);
 		GetMarketTimeStruct(&tm_, tt, 8 * 3600);
-		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour + 8) || (tm_.tm_hour == tm2_.tm_hour - 16))) << "¶«°ËÇøÊ±¼ä³¬Ç°8Ð¡Ê±";
+		EXPECT_TRUE((tm_.tm_hour == (tm2_.tm_hour + 8) || (tm_.tm_hour == tm2_.tm_hour - 16))) << "ä¸œå…«åŒºæ—¶é—´è¶…å‰8å°æ—¶";
 	}
 
 	TEST_F(TimeConvertTest, TestXferTimeToIndex) {

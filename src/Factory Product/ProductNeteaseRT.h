@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include"VirtualChinaMarketWebProduct.h"
 
@@ -14,5 +14,5 @@ public:
 	shared_ptr<vector<CWebRTDataPtr>> ParseNeteaseRT(const CWebDataPtr& pWebData);
 
 protected:
-	long m_lCurrentStockPosition; // ¹ÉÆ±µ±Ç°²éÑ¯Î»ÖÃ
+	long m_lCurrentStockPosition; // è‚¡ç¥¨å½“å‰æŸ¥è¯¢ä½ç½®
 };

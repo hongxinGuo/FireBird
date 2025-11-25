@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "ContainerTiingoCryptoSymbol.h"
 
 #include "InfoReport.h"
@@ -48,7 +48,7 @@ void CContainerTiingoCryptoSymbol::UpdateDB() {
 			setWorldCrypto.m_strSort = "[Ticker]";
 			setWorldCrypto.Open();
 			setWorldCrypto.m_pDatabase->BeginTrans();
-			while (!setWorldCrypto.IsEOF()) {	//����ԭ�еĴ��뼯״̬
+			while (!setWorldCrypto.IsEOF()) {	//更新原有的代码集状态
 				if (IsSymbol(ToUTF8(setWorldCrypto.m_Ticker))) {
 					const CTiingoCryptoPtr pCrypto = GetCrypto(ToUTF8(setWorldCrypto.m_Ticker));
 					ASSERT(pCrypto != nullptr);

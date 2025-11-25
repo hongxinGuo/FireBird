@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  IXSocketServer.cpp
  *  Author: Benjamin Sergeant
  *  Copyright (c) 2018 Machine Zone, Inc. All rights reserved.

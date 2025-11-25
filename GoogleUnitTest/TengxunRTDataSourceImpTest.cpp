@@ -1,4 +1,4 @@
-#include"pch.h"
+﻿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -41,7 +41,7 @@ namespace FireBirdTest {
 	TEST_F(CTengxunRTDataSourceTest, TestInitialize2) {
 		EXPECT_EQ(tengxunRTDataSource.GetInquiryFunction(), "http://qt.gtimg.cn/q=");
 		EXPECT_EQ(tengxunRTDataSource.GetInquiryToken(), "");
-		EXPECT_EQ(tengxunRTDataSource.GetInquiringNumber(), 900) << "��ѶĬ��ֵ";
+		EXPECT_EQ(tengxunRTDataSource.GetInquiringNumber(), 900) << "腾讯默认值";
 	}
 
 	TEST_F(CTengxunRTDataSourceTest, TestGenerateInquiryMessage1) {

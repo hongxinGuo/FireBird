@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 using std::vector;
 using std::shared_ptr;

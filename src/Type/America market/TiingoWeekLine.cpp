@@ -1,9 +1,9 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include "TiingoWeekLine.h"
 #include"TiingoStock.h"
 
-static CTiingoStock s_stock; // ÓÃÓÚ»ñµÃ¸÷¼Û¸ñµÄ·Å´ó±ÈÂÊ¡£
+static CTiingoStock s_stock; // ç”¨äºè·å¾—å„ä»·æ ¼çš„æ”¾å¤§æ¯”ç‡ã€‚
 
 CTiingoWeekLine::CTiingoWeekLine() {
 }

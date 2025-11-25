@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include"SetTiingoMarketNews.h"
 
@@ -8,7 +8,7 @@
 class CTiingoMarketNews final {
 public:
 	CTiingoMarketNews();
-	// ²»ÔÊĞí¸´ÖÆºÍ¸³Öµ¡£
+	// ä¸å…è®¸å¤åˆ¶å’Œèµ‹å€¼ã€‚
 	CTiingoMarketNews(const CTiingoMarketNews&) = delete;
 	CTiingoMarketNews& operator=(const CTiingoMarketNews&) = delete;
 	CTiingoMarketNews(const CTiingoMarketNews&&) noexcept = delete;
@@ -31,7 +31,7 @@ public:
 	string m_strUrl;
 	long long m_llCrawlDate;
 	long long m_LLPublishDate;
-	// ÎŞĞè´æ´¢Êı¾İÇø
+	// æ— éœ€å­˜å‚¨æ•°æ®åŒº
 };
 
 using CTiingoMarketNewsPtr = shared_ptr<CTiingoMarketNews>;

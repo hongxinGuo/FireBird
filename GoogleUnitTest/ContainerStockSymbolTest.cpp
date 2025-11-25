@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -18,7 +18,7 @@ namespace FireBirdTest {
 			s_pDataStockSymbol = make_shared<CContainerStockSymbol>();
 
 			EXPECT_FALSE(s_pDataStockSymbol->IsUpdateStockSection());
-			EXPECT_EQ(s_pDataStockSymbol->Size(), 14000) << "Ä¬ÈÏ×°ÈëµÄStockSymbolÊýÎª14000";
+			EXPECT_EQ(s_pDataStockSymbol->Size(), 14000) << "é»˜è®¤è£…å…¥çš„StockSymbolæ•°ä¸º14000";
 		}
 
 		static void TearDownTestSuite() {
@@ -77,13 +77,13 @@ namespace FireBirdTest {
 		constexpr long lIndex = 600;
 		constexpr long lIndex2 = 1000;
 
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(lIndex)) << "×°ÔØÔ¤ÉèÊý¾Ý¿âºóÈç´Ë";
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(lIndex)) << "è£…è½½é¢„è®¾æ•°æ®åº“åŽå¦‚æ­¤";
 		s_pDataStockSymbol->SetStockSectionActiveFlag(lIndex, false);
 		EXPECT_TRUE(s_pDataStockSymbol->UpdateStockSection(strShanghaiStock));
 		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(lIndex));
 		EXPECT_FALSE(s_pDataStockSymbol->UpdateStockSection(strShanghaiStock));
 
-		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(lIndex2)) << "×°ÔØÔ¤ÉèÊý¾Ý¿âºóÈç´Ë";
+		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(lIndex2)) << "è£…è½½é¢„è®¾æ•°æ®åº“åŽå¦‚æ­¤";
 		s_pDataStockSymbol->SetStockSectionActiveFlag(lIndex2, false);
 		EXPECT_TRUE(s_pDataStockSymbol->UpdateStockSection(strShenzhenStock));
 		EXPECT_TRUE(s_pDataStockSymbol->IsStockSectionActive(lIndex2));
@@ -112,12 +112,12 @@ namespace FireBirdTest {
 		EXPECT_EQ(s_pDataStockSymbol->GetNextIndex(l), 14000 - 1);
 		EXPECT_EQ(l, 14000 - 2);
 		l++;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextIndex(l), 0) << "Ä¬ÈÏ×°ÈëµÄStockSymbolÊýÎª14000";
+		EXPECT_EQ(s_pDataStockSymbol->GetNextIndex(l), 0) << "é»˜è®¤è£…å…¥çš„StockSymbolæ•°ä¸º14000";
 		EXPECT_EQ(l, 13999);
 	}
 
 	TEST_F(CDataStockSymbolTest, TestAdd) {
-		EXPECT_FALSE(s_pDataStockSymbol->IsStockSymbol("800800.SS")) << "Ã»ÓÐÕâ¸öÊý¾Ý¶ÎµÄ¹ÉÆ±´úÂë";
+		EXPECT_FALSE(s_pDataStockSymbol->IsStockSymbol("800800.SS")) << "æ²¡æœ‰è¿™ä¸ªæ•°æ®æ®µçš„è‚¡ç¥¨ä»£ç ";
 		s_pDataStockSymbol->Add("800800.SS");
 		EXPECT_TRUE(s_pDataStockSymbol->IsStockSymbol("800800.SS"));
 
@@ -153,25 +153,25 @@ namespace FireBirdTest {
 
 	TEST_F(CDataStockSymbolTest, TestGetNextSinaStockInquiringMiddleStr) {
 		long i = 2;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextSinaStockInquiringMiddleStr(i), "sh000000,sh000001") << "ÆðÊ¼Î»ÖÃÎªÁã";
+		EXPECT_EQ(s_pDataStockSymbol->GetNextSinaStockInquiringMiddleStr(i), "sh000000,sh000001") << "èµ·å§‹ä½ç½®ä¸ºé›¶";
 
 		i = 3;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextSinaStockInquiringMiddleStr(i), "sh000002,sh000003,sh000004") << "ÆðÊ¼Î»ÖÃÎª2";
+		EXPECT_EQ(s_pDataStockSymbol->GetNextSinaStockInquiringMiddleStr(i), "sh000002,sh000003,sh000004") << "èµ·å§‹ä½ç½®ä¸º2";
 	}
 
 	TEST_F(CDataStockSymbolTest, TestGetNextTengxunStockInquiringMiddleStr) {
 		long i = 2;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextTengxunStockInquiringMiddleStr(i), "sh000000,sh000001") << "ÆðÊ¼Î»ÖÃÎªÁã";
+		EXPECT_EQ(s_pDataStockSymbol->GetNextTengxunStockInquiringMiddleStr(i), "sh000000,sh000001") << "èµ·å§‹ä½ç½®ä¸ºé›¶";
 
 		i = 3;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextTengxunStockInquiringMiddleStr(i), "sh000002,sh000003,sh000004") << "ÆðÊ¼Î»ÖÃÎª2";
+		EXPECT_EQ(s_pDataStockSymbol->GetNextTengxunStockInquiringMiddleStr(i), "sh000002,sh000003,sh000004") << "èµ·å§‹ä½ç½®ä¸º2";
 	}
 
 	TEST_F(CDataStockSymbolTest, TestGetNextNeteaseStockInquiringMiddleStr) {
 		long i = 2;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextNeteaseStockInquiringMiddleStr(i), "0000000,0000001") << "ÆðÊ¼Î»ÖÃÎªÁã";
+		EXPECT_EQ(s_pDataStockSymbol->GetNextNeteaseStockInquiringMiddleStr(i), "0000000,0000001") << "èµ·å§‹ä½ç½®ä¸ºé›¶";
 
 		i = 3;
-		EXPECT_EQ(s_pDataStockSymbol->GetNextNeteaseStockInquiringMiddleStr(i), "0000002,0000003,0000004") << "ÆðÊ¼Î»ÖÃÎª2";;
+		EXPECT_EQ(s_pDataStockSymbol->GetNextNeteaseStockInquiringMiddleStr(i), "0000002,0000003,0000004") << "èµ·å§‹ä½ç½®ä¸º2";;
 	}
 }

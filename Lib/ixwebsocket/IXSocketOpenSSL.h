@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  IXSocketOpenSSL.h
  *  Author: Benjamin Sergeant, Matt DeBoer
  *  Copyright (c) 2017-2020 Machine Zone, Inc. All rights reserved.

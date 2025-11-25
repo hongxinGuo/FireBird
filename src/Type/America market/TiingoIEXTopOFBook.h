@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include<memory>
 #include<vector>
@@ -6,7 +6,7 @@
 class CTiingoIEXTopOfBook final {
 public:
 	CTiingoIEXTopOfBook();
-	// ²»ÔÊĞí¸´ÖÆºÍ¸³Öµ¡£
+	// ä¸å…è®¸å¤åˆ¶å’Œèµ‹å€¼ã€‚
 	CTiingoIEXTopOfBook(const CTiingoIEXTopOfBook&) = delete;
 	CTiingoIEXTopOfBook& operator=(const CTiingoIEXTopOfBook&) = delete;
 	CTiingoIEXTopOfBook(const CTiingoIEXTopOfBook&&) noexcept = delete;
@@ -18,11 +18,11 @@ public:
 	chrono::sys_seconds m_timeStamp;
 	chrono::sys_seconds m_lastSale;
 	chrono::sys_seconds m_quote;
-	long m_lLastClose{ 0 }; // Ç°ÊÕÅÌ¡£µ¥Î»£º0.001Ôª
-	long m_lOpen{ 0 }; // ¿ªÅÌ¼Û
-	long m_lHigh{ 0 }; // ×î¸ß¼Û
-	long m_lLow{ 0 }; // ×îµÍ¼Û
-	long m_lNew{ 0 }; // ×îĞÂ¼Û
+	long m_lLastClose{ 0 }; // å‰æ”¶ç›˜ã€‚å•ä½ï¼š0.001å…ƒ
+	long m_lOpen{ 0 }; // å¼€ç›˜ä»·
+	long m_lHigh{ 0 }; // æœ€é«˜ä»·
+	long m_lLow{ 0 }; // æœ€ä½ä»·
+	long m_lNew{ 0 }; // æœ€æ–°ä»·
 	INT64 m_llVolume{ 0 };
 };
 

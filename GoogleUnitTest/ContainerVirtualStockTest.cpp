@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 #include"ChinaMarket.h"
@@ -44,10 +44,10 @@ namespace FireBirdTest {
 
 	TEST_F(CContainerVirtualStockTest, TestIsInSymbolMap1) {
 		string strSymbol = gl_dataContainerChinaStock.GetStock(1)->GetSymbol();
-		EXPECT_TRUE(m_containerVirtualStock.IsSymbol(strSymbol)) << "Î»ÓÚ1-100Ö®¼ä";
+		EXPECT_TRUE(m_containerVirtualStock.IsSymbol(strSymbol)) << "ä½äºŽ1-100ä¹‹é—´";
 
 		strSymbol = gl_dataContainerChinaStock.GetStock(101)->GetSymbol();
-		EXPECT_FALSE(m_containerVirtualStock.IsSymbol(strSymbol)) << "²»Î»ÓÚ1-100Ö®¼ä";
+		EXPECT_FALSE(m_containerVirtualStock.IsSymbol(strSymbol)) << "ä¸ä½äºŽ1-100ä¹‹é—´";
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestIsUpdateProfileDB1) {
@@ -87,21 +87,21 @@ namespace FireBirdTest {
 		const CVirtualStockPtr pStock = nullptr;
 
 		m_containerVirtualStock.Add(pStock);
-		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "²»Ìí¼Ónullptr";
+		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "ä¸æ·»åŠ nullptr";
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestAdd2) {
 		const CVirtualStockPtr pStock = m_containerVirtualStock.Get(1);
 
 		m_containerVirtualStock.Add(pStock);
-		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "²»Ìí¼ÓÒÑ´æÔÚµÄÊý¾Ý";
+		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "ä¸æ·»åŠ å·²å­˜åœ¨çš„æ•°æ®";
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestAdd3) {
 		const CVirtualStockPtr pStock = gl_dataContainerChinaStock.GetStock(101);
 
 		m_containerVirtualStock.Add(pStock);
-		EXPECT_EQ(m_containerVirtualStock.Size(), 101) << "Ìí¼Ó²»´æÔÚµÄÊý¾Ý";
+		EXPECT_EQ(m_containerVirtualStock.Size(), 101) << "æ·»åŠ ä¸å­˜åœ¨çš„æ•°æ®";
 
 		m_containerVirtualStock.Delete(pStock);
 	}
@@ -110,21 +110,21 @@ namespace FireBirdTest {
 		const CVirtualStockPtr pStock = nullptr;
 
 		m_containerVirtualStock.Delete(pStock);
-		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "²»É¾³ýnullptr";
+		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "ä¸åˆ é™¤nullptr";
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestDelete2) {
 		const CVirtualStockPtr pStock = gl_dataContainerChinaStock.GetStock(101);
 
 		m_containerVirtualStock.Delete(pStock);
-		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "²»É¾³ý²»´æÔÚµÄÊý¾Ý";
+		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "ä¸åˆ é™¤ä¸å­˜åœ¨çš„æ•°æ®";
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestDelete3) {
 		const CVirtualStockPtr pStock = gl_dataContainerChinaStock.GetStock(1);
 
 		m_containerVirtualStock.Delete(pStock);
-		EXPECT_EQ(m_containerVirtualStock.Size(), 99) << "É¾³ýÒÑ´æÔÚµÄÊý¾Ý";
+		EXPECT_EQ(m_containerVirtualStock.Size(), 99) << "åˆ é™¤å·²å­˜åœ¨çš„æ•°æ®";
 
 		m_containerVirtualStock.Add(pStock);
 	}
@@ -133,14 +133,14 @@ namespace FireBirdTest {
 		const CVirtualStockPtr pStock = gl_dataContainerChinaStock.GetStock(101);
 
 		m_containerVirtualStock.Delete(pStock->GetSymbol());
-		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "²»É¾³ý²»´æÔÚµÄÊý¾Ý";
+		EXPECT_EQ(m_containerVirtualStock.Size(), 100) << "ä¸åˆ é™¤ä¸å­˜åœ¨çš„æ•°æ®";
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestDelete5) {
 		const CVirtualStockPtr pStock = gl_dataContainerChinaStock.GetStock(1);
 
 		m_containerVirtualStock.Delete(pStock->GetSymbol());
-		EXPECT_EQ(m_containerVirtualStock.Size(), 99) << "É¾³ýÒÑ´æÔÚµÄÊý¾Ý";
+		EXPECT_EQ(m_containerVirtualStock.Size(), 99) << "åˆ é™¤å·²å­˜åœ¨çš„æ•°æ®";
 
 		m_containerVirtualStock.Add(pStock);
 	}
@@ -151,12 +151,12 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_containerVirtualStock.GetOffset(pStock->GetSymbol()), 0);
 		m_containerVirtualStock.Delete(pStock);
 
-		EXPECT_EQ(m_containerVirtualStock.Size(), 99) << "É¾³ýÒÑ´æÔÚµÄÊý¾Ý";
-		EXPECT_EQ(m_containerVirtualStock.GetOffset(pStock2->GetSymbol()), 0) << "Deleteµ÷ÓÃUpdateSymbolMap";
+		EXPECT_EQ(m_containerVirtualStock.Size(), 99) << "åˆ é™¤å·²å­˜åœ¨çš„æ•°æ®";
+		EXPECT_EQ(m_containerVirtualStock.GetOffset(pStock2->GetSymbol()), 0) << "Deleteè°ƒç”¨UpdateSymbolMap";
 
 		m_containerVirtualStock.Add(pStock);
 		EXPECT_EQ(m_containerVirtualStock.Size(), 100);
-		EXPECT_EQ(m_containerVirtualStock.GetOffset(pStock->GetSymbol()), 99) << "Add²»µ÷ÓÃUpdateSymbolMap";
+		EXPECT_EQ(m_containerVirtualStock.GetOffset(pStock->GetSymbol()), 99) << "Addä¸è°ƒç”¨UpdateSymbolMap";
 	}
 
 	TEST_F(CContainerVirtualStockTest, TestSort) {
@@ -167,7 +167,7 @@ namespace FireBirdTest {
 		EXPECT_EQ(m_containerVirtualStock.Size(), 101);
 
 		m_containerVirtualStock.Sort();
-		EXPECT_EQ(m_containerVirtualStock.Get(0)->GetSymbol(), "0.A") << "0.AÎ»ÓÚµÚÒ»Î»";
+		EXPECT_EQ(m_containerVirtualStock.Get(0)->GetSymbol(), "0.A") << "0.Aä½äºŽç¬¬ä¸€ä½";
 
 		m_containerVirtualStock.Delete(pStock);
 		EXPECT_EQ(m_containerVirtualStock.Size(), 100);

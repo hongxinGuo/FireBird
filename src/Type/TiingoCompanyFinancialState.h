@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include"SetTiingoCompanyFinancialState.h"
 
@@ -8,7 +8,7 @@
 class CTiingoCompanyFinancialState final {
 public:
 	CTiingoCompanyFinancialState();
-	// ²»ÔÊĞí¸´ÖÆºÍ¸³Öµ¡£
+	// ä¸å…è®¸å¤åˆ¶å’Œèµ‹å€¼ã€‚
 	CTiingoCompanyFinancialState(const CTiingoCompanyFinancialState&) = delete;
 	CTiingoCompanyFinancialState& operator=(const CTiingoCompanyFinancialState&) = delete;
 	CTiingoCompanyFinancialState(const CTiingoCompanyFinancialState&&) noexcept = delete;
@@ -111,7 +111,7 @@ public:
 	double m_totalLiabilities{ 0 };
 	double m_trailingPEG1Y{ 0 };
 
-	// ÎŞĞè´æ´¢Êı¾İÇø
+	// æ— éœ€å­˜å‚¨æ•°æ®åŒº
 };
 
 using CTiingoCompanyFinancialStatePtr = shared_ptr<CTiingoCompanyFinancialState>;

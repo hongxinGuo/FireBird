@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include"ProductTiingo.h"
 #include"TiingoCrypto.h"
@@ -14,7 +14,7 @@ public:
 
 	void UpdateSystemStatus(CVirtualDataSourcePtr pDataSource) override;
 
-	// ²âÊÔÓÃ
+	// æµ‹è¯•ç”¨
 	long long m_differ1, m_differ2;
 	double m_ratio;
 };

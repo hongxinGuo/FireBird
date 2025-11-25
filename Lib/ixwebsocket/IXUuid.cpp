@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  IXUuid.cpp
  *  Author: Benjamin Sergeant
  *  Copyright (c) 2018 Machine Zone. All rights reserved.

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include "ContainerFinnhubCrypto.h"
 #include"SetFinnhubCryptoSymbol.h"
@@ -34,7 +34,7 @@ bool CContainerFinnhubCrypto::LoadDB() {
 			pSymbol->LoadSymbol(setCryptoSymbol);
 			pSymbol->SetCheckingDayLineStatus();
 			if (m_mapSymbol.contains(pSymbol->GetSymbol())) {
-				string s = "Finnhub Crypto·¢ÏÖÖØ¸´´úÂë£º";
+				string s = "Finnhub Cryptoå‘çŽ°é‡å¤ä»£ç ï¼š";
 				s += pSymbol->GetSymbol();
 				gl_systemMessage.PushErrorMessage(s);
 			}

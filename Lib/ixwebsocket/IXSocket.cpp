@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  IXSocket.cpp
  *  Author: Benjamin Sergeant
  *  Copyright (c) 2017-2018 Machine Zone, Inc. All rights reserved.

@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -7,7 +7,7 @@
 namespace FireBirdTest {
 	class CCountryTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êý
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -56,7 +56,7 @@ namespace FireBirdTest {
 		setCountry2.Open();
 		setCountry2.m_pDatabase->BeginTrans();
 		while (!setCountry2.IsEOF()) {
-			EXPECT_TRUE(!setCountry2.IsEOF()) << "´ËÊ±ÒÑ¾­´æÈëÁËAA";
+			EXPECT_TRUE(!setCountry2.IsEOF()) << "æ­¤æ—¶å·²ç»å­˜å…¥äº†AA";
 			setCountry2.Delete();
 			setCountry2.MoveNext();
 		}
@@ -69,7 +69,7 @@ namespace FireBirdTest {
 		CCountry country;
 
 		setCountry.Open();
-		country.Load(setCountry); // ×°ÈëµÚÒ»¸ö¹ú¼ÒµÄÐÅÏ¢£ºAL, ALB, 8, Albania, Lek, All
+		country.Load(setCountry); // è£…å…¥ç¬¬ä¸€ä¸ªå›½å®¶çš„ä¿¡æ¯ï¼šAL, ALB, 8, Albania, Lek, All
 		EXPECT_EQ(country.m_strCode2.compare("AL"), 0);
 		EXPECT_EQ(country.m_strCode3.compare("ALB"), 0);
 		EXPECT_EQ(country.m_strCodeNo.compare("8"), 0);

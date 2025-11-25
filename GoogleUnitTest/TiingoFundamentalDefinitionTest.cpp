@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -7,7 +7,7 @@
 namespace FireBirdTest {
 	class CTiingoFundamentalDefinitionTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êý
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -60,7 +60,7 @@ namespace FireBirdTest {
 		setTiingoFundamentalDefinition2.m_strFilter = "[dataCode] = 'aaa'";
 		setTiingoFundamentalDefinition2.Open();
 		setTiingoFundamentalDefinition2.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(!setTiingoFundamentalDefinition2.IsEOF()) << "´ËÊ±ÒÑ¾­´æÈëÁËAA";
+		EXPECT_TRUE(!setTiingoFundamentalDefinition2.IsEOF()) << "æ­¤æ—¶å·²ç»å­˜å…¥äº†AA";
 		fundamentalDefinition.Load(setTiingoFundamentalDefinition2);
 		EXPECT_EQ(fundamentalDefinition.m_strDataCode, "aaa");
 		EXPECT_EQ(fundamentalDefinition.m_strName, "don't reply");

@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -66,7 +66,7 @@ namespace FireBirdTest {
 
 	TEST_F(CNeteaseDayLineDataSourceTest, TestGenerateInquiryMessage2) {
 		//gl_pSinaRTDataSource->SetWebError(false);
-		gl_pChinaMarket->TEST_SetFormattedMarketTime(120000); // ¿ÕÏÐÊ±¼ä
+		gl_pChinaMarket->TEST_SetFormattedMarketTime(120000); // ç©ºé—²æ—¶é—´
 		EXPECT_FALSE(gl_systemConfiguration.IsWebBusy());
 		EXPECT_TRUE(gl_pChinaMarket->IsSystemReady());
 		EXPECT_TRUE(gl_pChinaMarket->IsDummyTime());
@@ -82,7 +82,7 @@ namespace FireBirdTest {
 		const auto pStock = gl_dataContainerChinaStock.GetStock(XferNeteaseToStandard(strSymbol));
 		EXPECT_FALSE(pStock->IsUpdateDayLine());
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŽŸçŠ¶
 		pStock->SetUpdateDayLine(true);
 	}
 
@@ -100,9 +100,9 @@ namespace FireBirdTest {
 		EXPECT_EQ(str.substr(0, 54), "http://quotes.money.163.com/service/chddata.html?code=");
 		EXPECT_EQ(str.substr(str.length() - 81, 81), "&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 		gl_pChinaMarket->SetSystemReady(false);
-		EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() + 1, gl_dataContainerChinaStock.Size()) << "ÒÑ¾­ÓÐÒ»¸öÎÞÐè¸üÐÂÈÕÏßÁË";
+		EXPECT_EQ(gl_dataContainerChinaStock.GetDayLineNeedUpdateNumber() + 1, gl_dataContainerChinaStock.Size()) << "å·²ç»æœ‰ä¸€ä¸ªæ— éœ€æ›´æ–°æ—¥çº¿äº†";
 
-		// »Ö¸´Ô­Ì¬
+		// æ¢å¤åŽŸæ€
 		for (int i = 0; i < gl_dataContainerChinaStock.Size(); i++) {
 			gl_dataContainerChinaStock.GetStock(i)->SetUpdateDayLine(true);
 		}

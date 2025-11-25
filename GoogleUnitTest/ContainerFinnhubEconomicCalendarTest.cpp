@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -35,7 +35,7 @@ namespace FireBirdTest {
 	};
 
 	TEST_F(CContainerFinnhubEconomicCalendarTest, TestIsUpdateDB) {
-		EXPECT_FALSE(m_containerEconomicCalendar.IsUpdateDB()) << "½ÔÎª¿Õ£¬ÎÞÐè¸üÐÂ";
+		EXPECT_FALSE(m_containerEconomicCalendar.IsUpdateDB()) << "çš†ä¸ºç©ºï¼Œæ— éœ€æ›´æ–°";
 
 		vector<CEconomicCalendarPtr> vEconomicCalendar;
 		const auto p1 = make_shared<CEconomicCalendar>();
@@ -62,7 +62,7 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerFinnhubEconomicCalendarTest, TestUpdate2) {
-		EXPECT_FALSE(m_containerEconomicCalendar.IsUpdateDB()) << "½ÔÎª¿Õ£¬ÎÞÐè¸üÐÂ";
+		EXPECT_FALSE(m_containerEconomicCalendar.IsUpdateDB()) << "çš†ä¸ºç©ºï¼Œæ— éœ€æ›´æ–°";
 
 		vector<CEconomicCalendarPtr> vEconomicCalendar;
 		const auto p1 = make_shared<CEconomicCalendar>();

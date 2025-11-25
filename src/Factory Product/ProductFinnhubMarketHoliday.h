@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "MarketHoliday.h"
 #include"ProductFinnhub.h"

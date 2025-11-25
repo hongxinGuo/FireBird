@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  IXUuid.h
  *  Author: Benjamin Sergeant
  *  Copyright (c) 2017 Machine Zone. All rights reserved.

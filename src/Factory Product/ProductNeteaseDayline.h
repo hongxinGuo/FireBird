@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include"VirtualChinaMarketWebProduct.h"
 
@@ -12,7 +12,7 @@ public:
 	void ParseAndStoreWebData(CWebDataPtr pWebData) override;
 
 protected:
-	long m_lCurrentStockPosition; // ¹ÉÆ±µ±Ç°²éÑ¯Î»ÖÃ
+	long m_lCurrentStockPosition; // è‚¡ç¥¨å½“å‰æŸ¥è¯¢ä½ç½®
 };
 
 using CProductNeteaseDayLinePtr = shared_ptr<CProductNeteaseDayLine>;

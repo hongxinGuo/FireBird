@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -41,7 +41,7 @@ namespace FireBirdTest {
 		CDayLinesPtr pvDayLine = make_shared<vector<CDayLinePtr>>();
 
 		const CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20200411); // ´ËÈÕÎªÐÇÆÚÁù£¬ÐÂÊý¾Ý
+		pDayLine->SetDate(20200411); // æ­¤æ—¥ä¸ºæ˜ŸæœŸå…­ï¼Œæ–°æ•°æ®
 		pDayLine->SetStockSymbol("OANDA:AUD_SGD");
 		pDayLine->SetClose(100);
 		pvDayLine->push_back(pDayLine);
@@ -50,14 +50,14 @@ namespace FireBirdTest {
 		m_dataForexDayLine.SaveDB("OANDA:AUD_SGD");
 
 		m_dataForexDayLine.LoadDB("OANDA:AUD_SGD");
-		EXPECT_EQ(m_dataForexDayLine.GetData(5)->GetDate(), 20200411) << "ÐÂ´æ´¢Êý¾ÝÎ»ÓÚµÚÁùÎ»";
+		EXPECT_EQ(m_dataForexDayLine.GetData(5)->GetDate(), 20200411) << "æ–°å­˜å‚¨æ•°æ®ä½äºŽç¬¬å…­ä½";
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŽŸçŠ¶
 		CSetForexDayLine setForexDayLineBasic;
 		setForexDayLineBasic.m_strFilter = "[Date] = 20200411";
 		setForexDayLineBasic.Open();
 		setForexDayLineBasic.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setForexDayLineBasic.IsEOF()) << "ÐÂ´æ´¢Êý¾ÝµÄÈÕÆÚ";
+		EXPECT_FALSE(setForexDayLineBasic.IsEOF()) << "æ–°å­˜å‚¨æ•°æ®çš„æ—¥æœŸ";
 		while (!setForexDayLineBasic.IsEOF()) {
 			setForexDayLineBasic.Delete();
 			setForexDayLineBasic.MoveNext();

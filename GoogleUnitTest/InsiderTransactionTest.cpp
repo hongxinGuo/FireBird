@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -7,7 +7,7 @@
 namespace FireBirdTest {
 	class CInsiderTransactionTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êý
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -57,7 +57,7 @@ namespace FireBirdTest {
 		setInsiderTransaction.m_strFilter = "[Symbol] = 'AA.US'";
 		setInsiderTransaction.Open();
 		setInsiderTransaction.m_pDatabase->BeginTrans();
-		insiderTransaction.Load(setInsiderTransaction); // ×°ÈëµÚÒ»¸öInsider TransactionÐÅÏ¢£ºAA.US
+		insiderTransaction.Load(setInsiderTransaction); // è£…å…¥ç¬¬ä¸€ä¸ªInsider Transactionä¿¡æ¯ï¼šAA.US
 		EXPECT_EQ(insiderTransaction.m_strSymbol, "AA.US");
 		EXPECT_EQ(insiderTransaction.m_strPersonName, " ");
 		EXPECT_EQ(insiderTransaction.m_lShare, 0);
@@ -66,16 +66,16 @@ namespace FireBirdTest {
 		EXPECT_EQ(insiderTransaction.m_lTransactionDate, 19800101);
 		EXPECT_DOUBLE_EQ(insiderTransaction.m_dTransactionPrice, 0.0);
 
-		insiderTransaction2.Update(setInsiderTransaction); // ¸üÐÂ´ËÊý¾Ý£¬½«SymbolÃû³Æ¸ÄÎªAA.US2
+		insiderTransaction2.Update(setInsiderTransaction); // æ›´æ–°æ­¤æ•°æ®ï¼Œå°†Symbolåç§°æ”¹ä¸ºAA.US2
 		setInsiderTransaction.m_pDatabase->CommitTrans();
 		setInsiderTransaction.Close();
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŽŸçŠ¶
 		setInsiderTransaction2.m_strFilter = "[Symbol] = 'AA.US2'";
 		setInsiderTransaction2.Open();
 		setInsiderTransaction2.m_pDatabase->BeginTrans();
 		while (!setInsiderTransaction2.IsEOF()) {
-			EXPECT_TRUE(!setInsiderTransaction2.IsEOF()) << "´ËÊ±ÒÑ¾­´æÈëÁËAA.US2";
+			EXPECT_TRUE(!setInsiderTransaction2.IsEOF()) << "æ­¤æ—¶å·²ç»å­˜å…¥äº†AA.US2";
 			setInsiderTransaction2.Delete();
 			setInsiderTransaction2.MoveNext();
 		}
@@ -88,7 +88,7 @@ namespace FireBirdTest {
 		CInsiderTransaction insiderTransaction;
 
 		setInsiderTransaction.Open();
-		insiderTransaction.Load(setInsiderTransaction); // ×°ÈëµÚÒ»¸öÄÚ²¿½»Ò×ÐÅÏ¢£ºA, a b c, ...
+		insiderTransaction.Load(setInsiderTransaction); // è£…å…¥ç¬¬ä¸€ä¸ªå†…éƒ¨äº¤æ˜“ä¿¡æ¯ï¼šA, a b c, ...
 		EXPECT_EQ(insiderTransaction.m_strSymbol, "A");
 		EXPECT_EQ(insiderTransaction.m_strPersonName, "a b c");
 		EXPECT_EQ(insiderTransaction.m_lShare, 0);

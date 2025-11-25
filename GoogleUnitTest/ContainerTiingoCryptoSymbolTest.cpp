@@ -1,4 +1,4 @@
-#include"pch.h"
+Ôªø#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -66,10 +66,10 @@ namespace FireBirdTest {
 	}
 
 	TEST_F(CContainerTiingoCryptoSymbolTest, TestLoadUpdate) {
-		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 0) << "≥ı ºŒ¥◊∞‘ÿCrypto¥˙¬Î";
+		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 0) << "ÂàùÂßãÊú™Ë£ÖËΩΩCrypto‰ª£Á†Å";
 
 		m_dataTiingoCryptoSymbol.LoadDB();
-		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 1278) << "ƒ¨»œ◊¥Ã¨œ¬◊∞‘ÿ1278∏ˆCrypto¥˙¬Î";
+		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 1278) << "ÈªòËÆ§Áä∂ÊÄÅ‰∏ãË£ÖËΩΩ1278‰∏™Crypto‰ª£Á†Å";
 		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol("DKAETH"));
 		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol("KSMUST"));
 		EXPECT_FALSE(m_dataTiingoCryptoSymbol.IsSymbol("500008.SS"));
@@ -77,15 +77,15 @@ namespace FireBirdTest {
 		EXPECT_EQ(pTiingoCrypto->GetSymbol(), "DKAETH");
 		EXPECT_TRUE(m_dataTiingoCryptoSymbol.IsSymbol(pTiingoCrypto));
 
-		// ≤‚ ‘UpdateDB
+		// ÊµãËØïUpdateDB
 		pTiingoCrypto = make_shared<CTiingoCrypto>();
-		pTiingoCrypto->SetSymbol("AA.BB"); // –¬¥˙¬Î
+		pTiingoCrypto->SetSymbol("AA.BB"); // Êñ∞‰ª£Á†Å
 		pTiingoCrypto->SetUpdateProfileDB(true);
 		m_dataTiingoCryptoSymbol.Add(pTiingoCrypto);
 		EXPECT_EQ(m_dataTiingoCryptoSymbol.Size(), 1279);
 		m_dataTiingoCryptoSymbol.UpdateDB();
 
-		// ª÷∏¥‘≠◊¥
+		// ÊÅ¢Â§çÂéüÁä∂
 		CSetTiingoCrypto setCryptoSymbol;
 		setCryptoSymbol.m_strFilter = "[Ticker] = 'AA.BB'";
 		setCryptoSymbol.Open();

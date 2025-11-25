@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"WorldMarket.h"
 #include"GeneralCheck.h"
@@ -12,7 +12,7 @@ using namespace testing;
 namespace FireBirdTest {
 	class CFinnhubForexSymbolTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êı
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -130,7 +130,7 @@ namespace FireBirdTest {
 
 		EXPECT_FALSE(symbol.HaveNewDayLineData());
 		symbol.UpdateDayLine(pvDayLine);
-		symbol.SetDayLineEndDate(20200101); // ±ÈÈÕÏß×îĞÂÊı¾İ¾É
+		symbol.SetDayLineEndDate(20200101); // æ¯”æ—¥çº¿æœ€æ–°æ•°æ®æ—§
 		EXPECT_TRUE(symbol.HaveNewDayLineData());
 	}
 
@@ -172,10 +172,10 @@ namespace FireBirdTest {
 		symbol.SetSymbol("ABCDE");
 		const string str = symbol.GetFinnhubDayLineInquiryParam(123456789);
 		if (gl_pWorldMarket->GetTimeZone() == 4 * 3600) { // 
-			EXPECT_EQ(str, "ABCDE&resolution=D&from=315601200&to=123456789") << "µ±Ç°Ê±¼äĞ¡ÓÚ19800101£¬315601200¾ÍÊÇÃÀ¶«±ê×¼Ê±¼äµÄ19800101";
+			EXPECT_EQ(str, "ABCDE&resolution=D&from=315601200&to=123456789") << "å½“å‰æ—¶é—´å°äº19800101ï¼Œ315601200å°±æ˜¯ç¾ä¸œæ ‡å‡†æ—¶é—´çš„19800101";
 		}
 		else {
-			EXPECT_EQ(str, "ABCDE&resolution=D&from=315604800&to=123456789") << "µ±Ç°Ê±¼äĞ¡ÓÚ19800101£¬315601200¾ÍÊÇÃÀ¶«±ê×¼Ê±¼äµÄ19800101";
+			EXPECT_EQ(str, "ABCDE&resolution=D&from=315604800&to=123456789") << "å½“å‰æ—¶é—´å°äº19800101ï¼Œ315601200å°±æ˜¯ç¾ä¸œæ ‡å‡†æ—¶é—´çš„19800101";
 		}
 	}
 	TEST_F(CFinnhubForexSymbolTest, TestGetFinnhubDayLineInquiringString2) {
@@ -210,7 +210,7 @@ namespace FireBirdTest {
 
 		setFinnhubForexSymbol2.m_strFilter = "[Symbol] = 'AAABC'";
 		setFinnhubForexSymbol2.Open();
-		EXPECT_TRUE(!setFinnhubForexSymbol2.IsEOF()) << "´ËÊ±ÒÑ¾­´æÈëÁËAAABC";
+		EXPECT_TRUE(!setFinnhubForexSymbol2.IsEOF()) << "æ­¤æ—¶å·²ç»å­˜å…¥äº†AAABC";
 		FinnhubForexSymbol2.LoadSymbol(setFinnhubForexSymbol2);
 		EXPECT_EQ(FinnhubForexSymbol.GetDescription(), "abc");
 		EXPECT_EQ(FinnhubForexSymbol.GetDisplaySymbol(), "cba");
@@ -253,7 +253,7 @@ namespace FireBirdTest {
 		setFinnhubForexSymbol.m_pDatabase->CommitTrans();
 		setFinnhubForexSymbol.Close();
 
-		// ¸Ä³ÉĞÂÖµ
+		// æ”¹æˆæ–°å€¼
 		FinnhubForexSymbol.SetDescription("abc changed");
 		FinnhubForexSymbol.SetDisplaySymbol("changed");
 		FinnhubForexSymbol.SetSymbol("AAABB");
@@ -274,7 +274,7 @@ namespace FireBirdTest {
 
 		setFinnhubForexSymbol2.m_strFilter = "[Symbol] = 'AAABB'";
 		setFinnhubForexSymbol2.Open();
-		EXPECT_TRUE(!setFinnhubForexSymbol2.IsEOF()) << "´ËÊ±ÒÑ¾­´æÈëÁËAA";
+		EXPECT_TRUE(!setFinnhubForexSymbol2.IsEOF()) << "æ­¤æ—¶å·²ç»å­˜å…¥äº†AA";
 		FinnhubForexSymbol2.LoadSymbol(setFinnhubForexSymbol2);
 		EXPECT_EQ(FinnhubForexSymbol.GetDescription(), "abc changed");
 		EXPECT_EQ(FinnhubForexSymbol.GetDisplaySymbol(), "changed");
@@ -315,7 +315,7 @@ namespace FireBirdTest {
 		setForexDayLine.m_strFilter = "[Symbol] = 'OANDA:AUD_SGD'";
 		setForexDayLine.m_strSort = "[Date]";
 		setForexDayLine.Open();
-		EXPECT_EQ(setForexDayLine.m_Date, 19800101) << "¸Õ´æ´¢µÄÊı¾İ";
+		EXPECT_EQ(setForexDayLine.m_Date, 19800101) << "åˆšå­˜å‚¨çš„æ•°æ®";
 		setForexDayLine.m_pDatabase->BeginTrans();
 		setForexDayLine.Delete();
 		setForexDayLine.m_pDatabase->CommitTrans();

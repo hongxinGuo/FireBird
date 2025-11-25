@@ -1,4 +1,4 @@
-
+﻿
 /*
  *  IXSocketFactory.h
  *  Author: Benjamin Sergeant

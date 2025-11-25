@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 enum configuration_option {
 	SYSTEM_LOG_LEVEL_ = 1,

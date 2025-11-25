@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  IXHttpClient.cpp
  *  Author: Benjamin Sergeant
  *  Copyright (c) 2019 Machine Zone, Inc. All rights reserved.

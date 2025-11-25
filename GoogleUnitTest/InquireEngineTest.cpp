@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -57,10 +57,10 @@ namespace FireBirdTest {
 		const auto pWebData = engine.CreateWebData();
 
 		EXPECT_TRUE(pWebData != nullptr);
-		EXPECT_EQ(pWebData->GetTime(), 10) << "ÉèÖÃÎªµ±Ç°µÄUTCTime";
+		EXPECT_EQ(pWebData->GetTime(), 10) << "è®¾ç½®ä¸ºå½“å‰çš„UTCTime";
 		EXPECT_TRUE(pWebData->GetDataBuffer().at(11) == '}');
-		EXPECT_TRUE(pWebData->GetDataBuffer().at(pWebData->GetBufferLength()-1) != 0x000) << "×îºóµÄ0x000ÒÑ¾­Å×ÆúµôÁË";
-		EXPECT_EQ(pWebData->GetDataBuffer().size(), 12) << "×îºóµÄ×Ö·û0x000ÒÑ¾­±»Å×ÆúµôÁË";
+		EXPECT_TRUE(pWebData->GetDataBuffer().at(pWebData->GetBufferLength()-1) != 0x000) << "æœ€åŽçš„0x000å·²ç»æŠ›å¼ƒæŽ‰äº†";
+		EXPECT_EQ(pWebData->GetDataBuffer().size(), 12) << "æœ€åŽçš„å­—ç¬¦0x000å·²ç»è¢«æŠ›å¼ƒæŽ‰äº†";
 
 		// restore
 		TestSetUTCTime(tUTCTime);

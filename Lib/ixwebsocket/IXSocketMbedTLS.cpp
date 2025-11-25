@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  IXSocketMbedTLS.cpp
  *  Author: Benjamin Sergeant, Max Weisel
  *  Copyright (c) 2019-2020 Machine Zone, Inc. All rights reserved.

@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -41,7 +41,7 @@ namespace FireBirdTest {
 		CDayLinesPtr vDayLine = make_shared<vector<CDayLinePtr>>();
 
 		const CDayLinePtr pDayLine = make_shared<CDayLine>();
-		pDayLine->SetDate(20220101); // ²âÊÔ¿âÖÐµÄÊý¾Ý×îÐÂÈÕÆÚÎª20210330£¬´ËÈÕÆÚÎ»ÓÚÆäºó
+		pDayLine->SetDate(20220101); // æµ‹è¯•åº“ä¸­çš„æ•°æ®æœ€æ–°æ—¥æœŸä¸º20210330ï¼Œæ­¤æ—¥æœŸä½äºŽå…¶åŽ
 		pDayLine->SetStockSymbol("A");
 		pDayLine->SetClose(100);
 		vDayLine->push_back(pDayLine);
@@ -51,14 +51,14 @@ namespace FireBirdTest {
 
 		m_dataFinnhubStockDayLine.LoadDB("A");
 		EXPECT_EQ(m_dataFinnhubStockDayLine.GetData(m_dataFinnhubStockDayLine.Size() - 1)->GetDate(),
-		          20220101) << "ÐÂ´æ´¢Êý¾ÝÎ»ÓÚ×îºó";
+		          20220101) << "æ–°å­˜å‚¨æ•°æ®ä½äºŽæœ€åŽ";
 
-		// »Ö¸´Ô­×´
+		// æ¢å¤åŽŸçŠ¶
 		CSetFinnhubStockDayLine setFinnhubStockDayLineBasic;
 		setFinnhubStockDayLineBasic.m_strFilter = "[Date] = 20220101";
 		setFinnhubStockDayLineBasic.Open();
 		setFinnhubStockDayLineBasic.m_pDatabase->BeginTrans();
-		EXPECT_FALSE(setFinnhubStockDayLineBasic.IsEOF()) << "ÐÂ´æ´¢Êý¾ÝµÄÈÕÆÚ";
+		EXPECT_FALSE(setFinnhubStockDayLineBasic.IsEOF()) << "æ–°å­˜å‚¨æ•°æ®çš„æ—¥æœŸ";
 		EXPECT_STREQ(setFinnhubStockDayLineBasic.m_Symbol, _T("A"));
 		while (!setFinnhubStockDayLineBasic.IsEOF()) {
 			setFinnhubStockDayLineBasic.Delete();

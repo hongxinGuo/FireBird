@@ -1,4 +1,4 @@
-// SetCurrentWeekLine.h : CSetCurrentWeekLine µÄÉùÃ÷
+ï»¿// SetCurrentWeekLine.h : CSetCurrentWeekLine çš„å£°æ˜
 
 #pragma once
 

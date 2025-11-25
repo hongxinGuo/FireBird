@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include"TimeConvert.h"
 #include"jsonParse.h"
@@ -91,7 +91,7 @@ CInsiderSentimentsPtr CProductFinnhubCompanyInsiderSentiment::ParseFinnhubStockI
 			if (!s.empty()) pInsiderSentiment->m_strSymbol = s;
 			const long year = jsonGetLong(it, "year");
 			const long month = jsonGetLong(it, "month");
-			pInsiderSentiment->m_lDate = XferYearMonthDayToYYYYMMDD(year, month, 1); // ÈÕÆÚÒªÓÐÐ§£¬¹Ê¶øÊ¹ÓÃÃ¿ÔÂµÄµÚÒ»Ìì
+			pInsiderSentiment->m_lDate = XferYearMonthDayToYYYYMMDD(year, month, 1); // æ—¥æœŸè¦æœ‰æ•ˆï¼Œæ•…è€Œä½¿ç”¨æ¯æœˆçš„ç¬¬ä¸€å¤©
 			pInsiderSentiment->m_lChange = jsonGetLong(it, "change");
 			pInsiderSentiment->m_mspr = jsonGetDouble(it, "mspr");
 			pvInsiderSentiment->push_back(pInsiderSentiment);

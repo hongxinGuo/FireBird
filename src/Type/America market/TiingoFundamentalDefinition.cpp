@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"TiingoFundamentalDefinition.h"
 
@@ -36,7 +36,7 @@ void CTiingoFundamentalDefinition::Save(CSetTiingoFundamentalDefinition& setTiin
 		|| (m_strUnits.length() > 45)) {
 		string s = "Tiingo fundamental definitions ";
 		s += m_strDataCode;
-		s += " ×Ö·û´®Ì«³¤";
+		s += " å­—ç¬¦ä¸²å¤ªé•¿";
 		gl_systemMessage.PushErrorMessage(s);
 	}
 	m_strDataCode = m_strDataCode.substr(0, 44);

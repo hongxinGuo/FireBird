@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"WorldMarket.h"
 #include"GeneralCheck.h"
@@ -12,7 +12,7 @@ using namespace testing;
 namespace FireBirdTest {
 	class CFinnhubCryptoSymbolTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êı
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -125,12 +125,12 @@ namespace FireBirdTest {
 
 		const CDayLinePtr pDayLine = make_shared<CDayLine>();
 		pDayLine->SetDate(20200102);
-		pDayLine->SetClose(100); // È·±£´ËÊı¾İÎªÓĞĞ§Êı¾İ
+		pDayLine->SetClose(100); // ç¡®ä¿æ­¤æ•°æ®ä¸ºæœ‰æ•ˆæ•°æ®
 		pvDayLine->push_back(pDayLine);
 
 		EXPECT_FALSE(symbol.HaveNewDayLineData());
 		symbol.UpdateDayLine(pvDayLine);
-		symbol.SetDayLineEndDate(20200101); // ±ÈÈÕÏß×îĞÂÊı¾İ¾É
+		symbol.SetDayLineEndDate(20200101); // æ¯”æ—¥çº¿æœ€æ–°æ•°æ®æ—§
 		EXPECT_TRUE(symbol.HaveNewDayLineData());
 	}
 
@@ -171,7 +171,7 @@ namespace FireBirdTest {
 
 		symbol.SetSymbol("ABCDE");
 		const string str = symbol.GetFinnhubDayLineInquiryParam(123456789);
-		EXPECT_EQ(str, "ABCDE&resolution=D&from=91920789&to=123456789") << "91920789±È123456789ÔçÒ»Äê£¨365Ìì£©";
+		EXPECT_EQ(str, "ABCDE&resolution=D&from=91920789&to=123456789") << "91920789æ¯”123456789æ—©ä¸€å¹´ï¼ˆ365å¤©ï¼‰";
 	}
 
 	TEST_F(CFinnhubCryptoSymbolTest, TestGetFinnhubDayLineInquiringString2) {
@@ -206,7 +206,7 @@ namespace FireBirdTest {
 
 		setFinnhubCryptoSymbol2.m_strFilter = "[Symbol] = 'AAAAA'";
 		setFinnhubCryptoSymbol2.Open();
-		EXPECT_TRUE(!setFinnhubCryptoSymbol2.IsEOF()) << "´ËÊ±ÒÑ¾­´æÈëÁËAA";
+		EXPECT_TRUE(!setFinnhubCryptoSymbol2.IsEOF()) << "æ­¤æ—¶å·²ç»å­˜å…¥äº†AA";
 		FinnhubCryptoSymbol2.LoadSymbol(setFinnhubCryptoSymbol2);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDescription(), "abc");
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDisplaySymbol(), "cba");
@@ -249,7 +249,7 @@ namespace FireBirdTest {
 		setFinnhubCryptoSymbol.m_pDatabase->CommitTrans();
 		setFinnhubCryptoSymbol.Close();
 
-		// ¸Ä³ÉĞÂÖµ
+		// æ”¹æˆæ–°å€¼
 		FinnhubCryptoSymbol.SetDescription("abc changed");
 		FinnhubCryptoSymbol.SetDisplaySymbol("changed");
 		FinnhubCryptoSymbol.SetSymbol("AAAAA");
@@ -270,7 +270,7 @@ namespace FireBirdTest {
 
 		setFinnhubCryptoSymbol2.m_strFilter = "[Symbol] = 'AAAAA'";
 		setFinnhubCryptoSymbol2.Open();
-		EXPECT_TRUE(!setFinnhubCryptoSymbol2.IsEOF()) << "´ËÊ±ÒÑ¾­´æÈëÁËAA";
+		EXPECT_TRUE(!setFinnhubCryptoSymbol2.IsEOF()) << "æ­¤æ—¶å·²ç»å­˜å…¥äº†AA";
 		FinnhubCryptoSymbol2.LoadSymbol(setFinnhubCryptoSymbol2);
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDescription(), "abc changed");
 		EXPECT_EQ(FinnhubCryptoSymbol.GetDisplaySymbol(), "changed");
@@ -301,7 +301,7 @@ namespace FireBirdTest {
 		pDayLine->SetClose(100);
 		pDayLine->SetStockSymbol("NewSymbol");
 		pvDayLine->push_back(pDayLine);
-		FinnhubCryptoSymbol.SetSymbol("NewSymbol"); // ĞÂ´úÂë
+		FinnhubCryptoSymbol.SetSymbol("NewSymbol"); // æ–°ä»£ç 
 		FinnhubCryptoSymbol.UpdateDayLine(pvDayLine);
 
 		FinnhubCryptoSymbol.UpdateDayLineDB();
@@ -309,7 +309,7 @@ namespace FireBirdTest {
 		setCryptoDayLine.m_strFilter = "[Symbol] = 'NewSymbol'";
 		setCryptoDayLine.m_strSort = "[Date]";
 		setCryptoDayLine.Open();
-		EXPECT_EQ(setCryptoDayLine.m_Date, 19800101) << "Õâ¸öÊÇĞÂ´æ´¢µÄÊı¾İ";
+		EXPECT_EQ(setCryptoDayLine.m_Date, 19800101) << "è¿™ä¸ªæ˜¯æ–°å­˜å‚¨çš„æ•°æ®";
 		setCryptoDayLine.m_pDatabase->BeginTrans();
 		setCryptoDayLine.Delete();
 		setCryptoDayLine.m_pDatabase->CommitTrans();

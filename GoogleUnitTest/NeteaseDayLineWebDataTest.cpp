@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -7,7 +7,7 @@
 namespace FireBirdTest {
 	class CDownLoadedNeteaseDayLineTest : public testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êı
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -33,25 +33,25 @@ namespace FireBirdTest {
 		CDayLineWebData DayLine;
 		INT64 lCurrentPos = 0;
 
-		string str = "ÈÕÆÚ,¹ÉÆ±´úÂë,Ãû³Æ,ÊÕÅÌ¼Û,×î¸ß¼Û,×îµÍ¼Û,¿ªÅÌ¼Û,Ç°ÊÕÅÌ,ÕÇµø¶î,»»ÊÖÂÊ,³É½»Á¿,³É½»½ğ¶î,×ÜÊĞÖµ,Á÷Í¨ÊĞÖµ\r\n";
+		string str = "æ—¥æœŸ,è‚¡ç¥¨ä»£ç ,åç§°,æ”¶ç›˜ä»·,æœ€é«˜ä»·,æœ€ä½ä»·,å¼€ç›˜ä»·,å‰æ”¶ç›˜,æ¶¨è·Œé¢,æ¢æ‰‹ç‡,æˆäº¤é‡,æˆäº¤é‡‘é¢,æ€»å¸‚å€¼,æµé€šå¸‚å€¼\r\n";
 		DayLine.SetStockCode("600000.SS");
 		EXPECT_TRUE(DayLine.SkipNeteaseDayLineInformationHeader(str, lCurrentPos));
 		EXPECT_EQ(lCurrentPos, str.size());
 		lCurrentPos = 0;
 
-		str = "ÈÕÆÚ,¹ÉÆ±´úÂë,Ãû³Æ,ÊÕÅÌ¼Û,×î¸ß¼Û,×îµÍ¼Û,¿ªÅÌ¼Û,Ç°ÊÕÅÌ,ÕÇµø¶î,»»ÊÖÂÊ,³É½»Á¿,³É½»½ğ¶î,×ÜÊĞÖµ,Á÷Í¨ÊĞÖµ\n"; // È±ÉÙ\r
+		str = "æ—¥æœŸ,è‚¡ç¥¨ä»£ç ,åç§°,æ”¶ç›˜ä»·,æœ€é«˜ä»·,æœ€ä½ä»·,å¼€ç›˜ä»·,å‰æ”¶ç›˜,æ¶¨è·Œé¢,æ¢æ‰‹ç‡,æˆäº¤é‡,æˆäº¤é‡‘é¢,æ€»å¸‚å€¼,æµé€šå¸‚å€¼\n"; // ç¼ºå°‘\r
 		DayLine.SetStockCode("600000.SS");
 		EXPECT_FALSE(DayLine.SkipNeteaseDayLineInformationHeader(str, lCurrentPos));
 		EXPECT_EQ(lCurrentPos, str.size());
 		lCurrentPos = 0;
 
-		str = "ÈÕÆÚ,¹ÉÆ±´úÂë,Ãû³Æ,ÊÕÅÌ¼Û,×î¸ß¼Û,×îµÍ¼Û,¿ªÅÌ¼Û,Ç°ÊÕÅÌ,ÕÇµø¶î,»»ÊÖÂÊ,³É½»Á¿,³É½»½ğ¶î,×ÜÊĞÖµ,Á÷Í¨ÊĞÖµ\r"; // È±ÉÙ\n
+		str = "æ—¥æœŸ,è‚¡ç¥¨ä»£ç ,åç§°,æ”¶ç›˜ä»·,æœ€é«˜ä»·,æœ€ä½ä»·,å¼€ç›˜ä»·,å‰æ”¶ç›˜,æ¶¨è·Œé¢,æ¢æ‰‹ç‡,æˆäº¤é‡,æˆäº¤é‡‘é¢,æ€»å¸‚å€¼,æµé€šå¸‚å€¼\r"; // ç¼ºå°‘\n
 		DayLine.SetStockCode("600000.SS");
 		EXPECT_FALSE(DayLine.SkipNeteaseDayLineInformationHeader(str, lCurrentPos));
 		EXPECT_EQ(lCurrentPos, str.size());
 		lCurrentPos = 0;
 
-		str = "ÈÕÆÚ,¹ÉÆ±´úÂë,Ãû³Æ,ÊÕÅÌ¼Û,×î¸ß¼Û,×îµÍ¼Û,¿ªÅÌ¼Û,Ç°ÊÕÅÌ,ÕÇµø¶î,»»ÊÖÂÊ,³É½»Á¿,³É½»½ğ¶î,×ÜÊĞÖµ,Á÷Í¨ÊĞÖµ"; // È±ÉÙ\r
+		str = "æ—¥æœŸ,è‚¡ç¥¨ä»£ç ,åç§°,æ”¶ç›˜ä»·,æœ€é«˜ä»·,æœ€ä½ä»·,å¼€ç›˜ä»·,å‰æ”¶ç›˜,æ¶¨è·Œé¢,æ¢æ‰‹ç‡,æˆäº¤é‡,æˆäº¤é‡‘é¢,æ€»å¸‚å€¼,æµé€šå¸‚å€¼"; // ç¼ºå°‘\r
 		DayLine.SetStockCode("600000.SS");
 		EXPECT_FALSE(DayLine.SkipNeteaseDayLineInformationHeader(str, lCurrentPos));
 		EXPECT_EQ(lCurrentPos, str.size());

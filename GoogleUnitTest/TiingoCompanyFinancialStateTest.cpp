@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -7,7 +7,7 @@
 namespace FireBirdTest {
 	class CTiingoCompanyFinancialStateTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êý
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -225,7 +225,7 @@ namespace FireBirdTest {
 		setNaicsIndustry2.m_strFilter = "[Symbol] = 'AAAAA'";
 		setNaicsIndustry2.Open();
 		setNaicsIndustry2.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(!setNaicsIndustry2.IsEOF()) << "´ËÊ±ÒÑ¾­´æÈëÁËAAAAA";
+		EXPECT_TRUE(!setNaicsIndustry2.IsEOF()) << "æ­¤æ—¶å·²ç»å­˜å…¥äº†AAAAA";
 		financialState.Load(setNaicsIndustry2);
 		setNaicsIndustry2.Delete();
 		setNaicsIndustry2.m_pDatabase->CommitTrans();

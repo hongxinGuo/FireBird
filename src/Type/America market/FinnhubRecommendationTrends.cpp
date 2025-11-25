@@ -1,9 +1,9 @@
-#include"pch.h"
+Ôªø#include"pch.h"
 #include"FinnhubRecommendationTrends.h"
 
 CFinnhubRecommendationTrends::CFinnhubRecommendationTrends() {
 	m_strSymbol = "";
-	m_lPeriod = 19700101; // ∏Ò Ω£∫2020-03-01
+	m_lPeriod = 19700101; // Ê†ºÂºèÔºö2020-03-01
 	m_lStrongBuy = 0;
 	m_lBuy = 0;
 	m_lHold = 0;

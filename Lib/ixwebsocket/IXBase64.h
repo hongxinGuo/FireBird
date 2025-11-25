@@ -1,4 +1,4 @@
-#ifndef _MACARON_BASE64_H_
+﻿#ifndef _MACARON_BASE64_H_
 #define _MACARON_BASE64_H_
 
 /**

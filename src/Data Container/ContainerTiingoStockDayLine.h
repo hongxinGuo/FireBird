@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "SetTiingoStockDayLine.h"
 #include "TiingoDayLine.h"
@@ -31,7 +31,7 @@ public:
 		return true;
 	}
 
-	// ÌØÓÐº¯Êý
+	// ç‰¹æœ‰å‡½æ•°
 	void CalculateMA(int length) const;
 };
 

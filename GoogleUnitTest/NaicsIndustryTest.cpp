@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -7,7 +7,7 @@
 namespace FireBirdTest {
 	class CNaicsIndustryTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êý
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -66,7 +66,7 @@ namespace FireBirdTest {
 		setNaicsIndustry2.m_strFilter = "[Naics] = 'AA'";
 		setNaicsIndustry2.Open();
 		setNaicsIndustry2.m_pDatabase->BeginTrans();
-		EXPECT_TRUE(!setNaicsIndustry2.IsEOF()) << "´ËÊ±ÒÑ¾­´æÈëÁËAA";
+		EXPECT_TRUE(!setNaicsIndustry2.IsEOF()) << "æ­¤æ—¶å·²ç»å­˜å…¥äº†AA";
 		NaicsIndustry2.Load(setNaicsIndustry2);
 		EXPECT_EQ(NaicsIndustry.m_strNaics, "AA");
 		EXPECT_EQ(NaicsIndustry.m_strNationalIndustry, "aaa");

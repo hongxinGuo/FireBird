@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include"jsonParse.h"
 #include"JsonGetValue.h"
@@ -28,7 +28,7 @@ void CProductFinnhubStockEstimatesEPSSurprise::ParseAndStoreWebData(CWebDataPtr 
 	const auto pvEPSSurprise = ParseFinnhubEPSSurprise(pWebData);
 	if (!pvEPSSurprise->empty()) { pStock->UpdateEPSSurprise(*pvEPSSurprise); }
 	else {
-		pStock->SetLastEPSSurpriseUpdateDate(19700101); // ½«ÈÕÆÚÉèÖÃÎª¸üÔç¡£
+		pStock->SetLastEPSSurpriseUpdateDate(19700101); // å°†æ—¥æœŸè®¾ç½®ä¸ºæ›´æ—©ã€‚
 		pStock->SetUpdateProfileDB(true);
 	}
 	pStock->SetUpdateEPSSurprise(false);
@@ -62,6 +62,6 @@ CEPSSurprisesPtr CProductFinnhubStockEstimatesEPSSurprise::ParseFinnhubEPSSurpri
 		return pvEPSSurprise;
 	}
 	std::ranges::sort(pvEPSSurprise->begin(), pvEPSSurprise->end(),
-	                  [](const CEPSSurprisePtr& p1, const CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }); // ÒÔÈÕÆÚÔçÍíË³ĞòÅÅÁĞ¡£
+	                  [](const CEPSSurprisePtr& p1, const CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }); // ä»¥æ—¥æœŸæ—©æ™šé¡ºåºæ’åˆ—ã€‚
 	return pvEPSSurprise;
 }

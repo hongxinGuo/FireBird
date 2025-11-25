@@ -1,4 +1,4 @@
-#include"pch.h"
+ï»¿#include"pch.h"
 
 #include"GeneralCheck.h"
 
@@ -7,7 +7,7 @@
 namespace FireBirdTest {
 	class CEconomicCalendarTest : public ::testing::Test {
 	protected:
-		static void SetUpTestSuite() { // ±¾²âÊÔÀàµÄ³õÊ¼»¯º¯Êı
+		static void SetUpTestSuite() { // æœ¬æµ‹è¯•ç±»çš„åˆå§‹åŒ–å‡½æ•°
 			SCOPED_TRACE("");
 			GeneralCheck();
 		}
@@ -62,7 +62,7 @@ namespace FireBirdTest {
 
 		setEconomicCalendar2.m_strFilter = "[Event] = 'Abcdefghighlmnop'";
 		setEconomicCalendar2.Open();
-		EXPECT_TRUE(!setEconomicCalendar2.IsEOF()) << "´ËÊ±ÒÑ¾­´æÈëÁËAbcdefghighlmnop";
+		EXPECT_TRUE(!setEconomicCalendar2.IsEOF()) << "æ­¤æ—¶å·²ç»å­˜å…¥äº†Abcdefghighlmnop";
 		EconomicCalendar2.Load(setEconomicCalendar2);
 		EXPECT_EQ(EconomicCalendar2.m_strCountry, "US");
 		EXPECT_EQ(EconomicCalendar2.m_strEvent, "Abcdefghighlmnop");
